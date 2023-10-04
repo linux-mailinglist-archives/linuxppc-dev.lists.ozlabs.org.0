@@ -2,41 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2F227B9722
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Oct 2023 00:06:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3AD77B9723
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Oct 2023 00:07:41 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KTQOzUCh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BecAjuFh;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S18156D6Hz3vcP
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Oct 2023 09:06:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S18233wNNz3vbf
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Oct 2023 09:07:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KTQOzUCh;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BecAjuFh;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=jlayton@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=jlayton@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S13j7257Sz2yps;
-	Thu,  5 Oct 2023 05:52:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S13jR1SXJz2yLr;
+	Thu,  5 Oct 2023 05:52:59 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id 0FE67B81FB1;
-	Wed,  4 Oct 2023 18:52:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 595D0C433C7;
-	Wed,  4 Oct 2023 18:52:23 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 8A2B8CE1DE0;
+	Wed,  4 Oct 2023 18:52:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 408DBC433D9;
+	Wed,  4 Oct 2023 18:52:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1696445558;
-	bh=AuiZB/7uB4CHbwpVaR4tfn4wAgkza1/YpzIo5Foeud0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=KTQOzUChrpg+Z0EAPGR8AruwPNLutqOD//NSnAvvth8GSx0cF37vTHIa1kn8pBEap
-	 CYCEzu+xUbfqSXTKhLzm194LHPOsCHdfPucaxUh3YsdQF5IT/WegZ0Qyl+ewr//1vC
-	 /daLD8vdiBRwYo5mdVl8W/u+WDb4Rf/GA3sF1WUVvA+ROKAEqgeFBwt995jfGJkwnd
-	 bZ7xQj55eTB5JOGQwUoBKyq27+Mv+G7mtdaULwpl3MC+y+DeTTxEVZJKzoTyB+A2rz
-	 cSgj8BMhRVNB+D2FYLBc1jsaSFKjQNTuxo16oRqwigPVjwe86Omd0hkOnhsOF92J53
-	 mF+huBvz7lhAw==
+	s=k20201202; t=1696445575;
+	bh=P50VBvZT3ngOZd5GDZltcCl374+Fh0mYUNMVsQK9mlI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=BecAjuFhPIlkVHiFVOjjY3Xkns4no3JWbmomh9+1c0Fh7B56ALsgl1Wvk3D7TsLmq
+	 wvswlVAyW4HhBMnSsy2sgrhtBP8+Arsg01ketJyqIgO8KYPb9sHEibNppcVG3X3fn7
+	 G2xWJuGgd+plODbbmIc/mVkBuNva0I/5VJG87hKdjtIIl0nCtU2eQS3zZYeVPKsdso
+	 iomUCy6ivXxV8b4V6veU8FcVKKviBhA3bGX5csMk1MhzcgNqCwCPxd4fIqJXYXFXwV
+	 Q0/ezJ/cGZu2/nHKsnqxHueOsyhRZB2oKflbg6PxD7hnRagtvUTcydQsxoqaGOzpop
+	 FmiFQ7UWuU5KA==
 From: Jeff Layton <jlayton@kernel.org>
 To: Alexander Viro <viro@zeniv.linux.org.uk>,
 	Christian Brauner <brauner@kernel.org>,
@@ -178,10 +178,12 @@ To: Alexander Viro <viro@zeniv.linux.org.uk>,
 	Eric Paris <eparis@parisplace.org>,
 	Kent Overstreet <kent.overstreet@linux.dev>,
 	Brian Foster <bfoster@redhat.com>
-Subject: [PATCH v2 00/89] fs: new accessor methods for inode atime and mtime
-Date: Wed,  4 Oct 2023 14:52:21 -0400
-Message-ID: <20231004185221.80802-1-jlayton@kernel.org>
+Subject: [PATCH v2 01/89] fs: new accessor methods for atime and mtime
+Date: Wed,  4 Oct 2023 14:52:37 -0400
+Message-ID: <20231004185239.80830-1-jlayton@kernel.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231004185221.80802-1-jlayton@kernel.org>
+References: <20231004185221.80802-1-jlayton@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Thu, 05 Oct 2023 09:05:16 +1100
@@ -201,343 +203,234 @@ Cc: jfs-discussion@lists.sourceforge.net, linux-efi@vger.kernel.org, platform-dr
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-v2:
-- bugfix in mtime handling
-- incorporate _sec and _nsec accessor functions (Chuck Lever)
-- move i_generation to plug hole after changing timestamps (Amir Goldstein)
+Recently, we converted the ctime accesses in the kernel to use new
+accessor functions. Linus recently pointed out though that if we add
+accessors for the atime and mtime, then that would allow us to
+seamlessly change how these timestamps are stored in the inode.
 
-While working on the multigrain timestamp changes, Linus suggested
-adding some similar wrappers for accessing the atime and mtime that we
-have for the ctime. With that, we could then move to using discrete
-integers instead of struct timespec64 in struct inode and shrink it.
+Add new accessor functions for the atime and mtime that mirror the
+accessors for the ctime.
 
-This patch implements this. Linus suggested using macros for the new
-accessors, but the existing ctime wrappers were static inlines and since
-there are only 3 different timestamps, I didn't see that trying to
-fiddle with macros would gain us anything (other than less verbosity in
-fs.h).
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+---
+ fs/libfs.c         | 41 ++++++++++++++++------
+ include/linux/fs.h | 85 +++++++++++++++++++++++++++++++++++++++-------
+ 2 files changed, 102 insertions(+), 24 deletions(-)
 
-The second to last patch makes the conversion to discrete integers,
-which shaves 8 bytes off of struct inode on my x86_64 kernel. The last
-patch reshuffles things a little to keep the i_lock in the same
-cacheline as the fields it protects.
-
-About 75% of this conversion was done with coccinelle, with the rest
-done by hand.
-
-I think we probably ought to try to get everything but the last two
-patches into v6.7 (though we could consider those too if we're feeling
-lucky).
-
-Jeff Layton (89):
-  fs: new accessor methods for atime and mtime
-  fs: convert core infrastructure to new timestamp accessors
-  spufs: convert to new timestamp accessors
-  hypfs: convert to new timestamp accessors
-  android: convert to new timestamp accessors
-  char: convert to new timestamp accessors
-  qib: convert to new timestamp accessors
-  ibmasm: convert to new timestamp accessors
-  misc: convert to new timestamp accessors
-  x86: convert to new timestamp accessors
-  tty: convert to new timestamp accessors
-  function: convert to new timestamp accessors
-  legacy: convert to new timestamp accessors
-  usb: convert to new timestamp accessors
-  9p: convert to new timestamp accessors
-  adfs: convert to new timestamp accessors
-  affs: convert to new timestamp accessors
-  afs: convert to new timestamp accessors
-  autofs: convert to new timestamp accessors
-  bcachefs: convert to new timestamp accessors
-  befs: convert to new timestamp accessors
-  bfs: convert to new timestamp accessors
-  btrfs: convert to new timestamp accessors
-  ceph: convert to new timestamp accessors
-  coda: convert to new timestamp accessors
-  configfs: convert to new timestamp accessors
-  cramfs: convert to new timestamp accessors
-  debugfs: convert to new timestamp accessors
-  devpts: convert to new timestamp accessors
-  efivarfs: convert to new timestamp accessors
-  efs: convert to new timestamp accessors
-  erofs: convert to new timestamp accessors
-  exfat: convert to new timestamp accessors
-  ext2: convert to new timestamp accessors
-  ext4: convert to new timestamp accessors
-  f2fs: convert to new timestamp accessors
-  fat: convert to new timestamp accessors
-  freevxfs: convert to new timestamp accessors
-  fuse: convert to new timestamp accessors
-  gfs2: convert to new timestamp accessors
-  hfs: convert to new timestamp accessors
-  hfsplus: convert to new timestamp accessors
-  hostfs: convert to new timestamp accessors
-  hpfs: convert to new timestamp accessors
-  hugetlbfs: convert to new timestamp accessors
-  isofs: convert to new timestamp accessors
-  jffs2: convert to new timestamp accessors
-  jfs: convert to new timestamp accessors
-  kernfs: convert to new timestamp accessors
-  minix: convert to new timestamp accessors
-  nfs: convert to new timestamp accessors
-  nfsd: convert to new timestamp accessors
-  nilfs2: convert to new timestamp accessors
-  ntfs: convert to new timestamp accessors
-  ntfs3: convert to new timestamp accessors
-  ocfs2: convert to new timestamp accessors
-  omfs: convert to new timestamp accessors
-  openpromfs: convert to new timestamp accessors
-  orangefs: convert to new timestamp accessors
-  overlayfs: convert to new timestamp accessors
-  proc: convert to new timestamp accessors
-  pstore: convert to new timestamp accessors
-  qnx4: convert to new timestamp accessors
-  qnx6: convert to new timestamp accessors
-  ramfs: convert to new timestamp accessors
-  reiserfs: convert to new timestamp accessors
-  romfs: convert to new timestamp accessors
-  client: convert to new timestamp accessors
-  server: convert to new timestamp accessors
-  squashfs: convert to new timestamp accessors
-  sysv: convert to new timestamp accessors
-  tracefs: convert to new timestamp accessors
-  ubifs: convert to new timestamp accessors
-  udf: convert to new timestamp accessors
-  ufs: convert to new timestamp accessors
-  vboxsf: convert to new timestamp accessors
-  xfs: convert to new timestamp accessors
-  zonefs: convert to new timestamp accessors
-  linux: convert to new timestamp accessors
-  ipc: convert to new timestamp accessors
-  bpf: convert to new timestamp accessors
-  mm: convert to new timestamp accessors
-  sunrpc: convert to new timestamp accessors
-  apparmor: convert to new timestamp accessors
-  selinux: convert to new timestamp accessors
-  security: convert to new timestamp accessors
-  fs: rename inode i_atime and i_mtime fields
-  fs: switch timespec64 fields in inode to discrete integers
-  fs: move i_generation into new hole created after timestamp conversion
-
- arch/powerpc/platforms/cell/spufs/inode.c |   2 +-
- arch/s390/hypfs/inode.c                   |   4 +-
- drivers/android/binderfs.c                |   8 +-
- drivers/char/sonypi.c                     |   2 +-
- drivers/infiniband/hw/qib/qib_fs.c        |   4 +-
- drivers/misc/ibmasm/ibmasmfs.c            |   2 +-
- drivers/misc/ibmvmc.c                     |   2 +-
- drivers/platform/x86/sony-laptop.c        |   2 +-
- drivers/tty/tty_io.c                      |  10 +-
- drivers/usb/core/devio.c                  |  26 +++--
- drivers/usb/gadget/function/f_fs.c        |   4 +-
- drivers/usb/gadget/legacy/inode.c         |   2 +-
- fs/9p/vfs_inode.c                         |   6 +-
- fs/9p/vfs_inode_dotl.c                    |  16 +--
- fs/adfs/inode.c                           |  13 ++-
- fs/affs/amigaffs.c                        |   4 +-
- fs/affs/inode.c                           |  17 ++-
- fs/afs/dynroot.c                          |   2 +-
- fs/afs/inode.c                            |   8 +-
- fs/afs/write.c                            |   2 +-
- fs/attr.c                                 |   4 +-
- fs/autofs/inode.c                         |   2 +-
- fs/autofs/root.c                          |   6 +-
- fs/bad_inode.c                            |   2 +-
- fs/bcachefs/fs.c                          |  12 +--
- fs/befs/linuxvfs.c                        |  10 +-
- fs/bfs/dir.c                              |   9 +-
- fs/bfs/inode.c                            |  12 +--
- fs/binfmt_misc.c                          |   2 +-
- fs/btrfs/delayed-inode.c                  |  20 ++--
- fs/btrfs/file.c                           |  18 ++--
- fs/btrfs/inode.c                          |  43 ++++----
- fs/btrfs/reflink.c                        |   2 +-
- fs/btrfs/transaction.c                    |   3 +-
- fs/btrfs/tree-log.c                       |  12 +--
- fs/ceph/addr.c                            |  10 +-
- fs/ceph/caps.c                            |   4 +-
- fs/ceph/file.c                            |   2 +-
- fs/ceph/inode.c                           |  64 ++++++------
- fs/ceph/mds_client.c                      |   8 +-
- fs/ceph/snap.c                            |   4 +-
- fs/coda/coda_linux.c                      |   6 +-
- fs/coda/dir.c                             |   2 +-
- fs/coda/file.c                            |   2 +-
- fs/configfs/inode.c                       |   8 +-
- fs/cramfs/inode.c                         |   4 +-
- fs/debugfs/inode.c                        |   2 +-
- fs/devpts/inode.c                         |   6 +-
- fs/efivarfs/file.c                        |   2 +-
- fs/efivarfs/inode.c                       |   2 +-
- fs/efs/inode.c                            |   5 +-
- fs/erofs/inode.c                          |   3 +-
- fs/exfat/exfat_fs.h                       |   1 +
- fs/exfat/file.c                           |   7 +-
- fs/exfat/inode.c                          |  31 +++---
- fs/exfat/misc.c                           |   8 ++
- fs/exfat/namei.c                          |  31 +++---
- fs/exfat/super.c                          |   4 +-
- fs/ext2/dir.c                             |   6 +-
- fs/ext2/ialloc.c                          |   2 +-
- fs/ext2/inode.c                           |  13 ++-
- fs/ext2/super.c                           |   2 +-
- fs/ext4/ext4.h                            |  20 +++-
- fs/ext4/extents.c                         |  11 +-
- fs/ext4/ialloc.c                          |   4 +-
- fs/ext4/inline.c                          |   4 +-
- fs/ext4/inode.c                           |  19 ++--
- fs/ext4/ioctl.c                           |  13 ++-
- fs/ext4/namei.c                           |  10 +-
- fs/ext4/super.c                           |   2 +-
- fs/ext4/xattr.c                           |   8 +-
- fs/f2fs/dir.c                             |   6 +-
- fs/f2fs/f2fs.h                            |  10 +-
- fs/f2fs/file.c                            |  14 +--
- fs/f2fs/inline.c                          |   2 +-
- fs/f2fs/inode.c                           |  24 ++---
- fs/f2fs/namei.c                           |   4 +-
- fs/f2fs/recovery.c                        |   8 +-
- fs/f2fs/super.c                           |   2 +-
- fs/fat/inode.c                            |  25 +++--
- fs/fat/misc.c                             |   6 +-
- fs/freevxfs/vxfs_inode.c                  |   6 +-
- fs/fuse/control.c                         |   2 +-
- fs/fuse/dir.c                             |  10 +-
- fs/fuse/inode.c                           |  29 +++---
- fs/fuse/readdir.c                         |   6 +-
- fs/gfs2/bmap.c                            |  10 +-
- fs/gfs2/dir.c                             |  10 +-
- fs/gfs2/glops.c                           |  11 +-
- fs/gfs2/inode.c                           |   7 +-
- fs/gfs2/quota.c                           |   2 +-
- fs/gfs2/super.c                           |  12 +--
- fs/hfs/catalog.c                          |   8 +-
- fs/hfs/inode.c                            |  16 +--
- fs/hfs/sysdep.c                           |  10 +-
- fs/hfsplus/catalog.c                      |   8 +-
- fs/hfsplus/inode.c                        |  22 ++--
- fs/hostfs/hostfs_kern.c                   |  12 ++-
- fs/hpfs/dir.c                             |  12 ++-
- fs/hpfs/inode.c                           |  16 +--
- fs/hpfs/namei.c                           |  22 ++--
- fs/hpfs/super.c                           |  10 +-
- fs/hugetlbfs/inode.c                      |  10 +-
- fs/inode.c                                |  35 ++++---
- fs/isofs/inode.c                          |   4 +-
- fs/isofs/rock.c                           |  18 ++--
- fs/jffs2/dir.c                            |  35 ++++---
- fs/jffs2/file.c                           |   4 +-
- fs/jffs2/fs.c                             |  20 ++--
- fs/jffs2/os-linux.h                       |   4 +-
- fs/jfs/inode.c                            |   2 +-
- fs/jfs/jfs_imap.c                         |  20 ++--
- fs/jfs/jfs_inode.c                        |   4 +-
- fs/jfs/namei.c                            |  20 ++--
- fs/jfs/super.c                            |   2 +-
- fs/kernfs/inode.c                         |   6 +-
- fs/libfs.c                                |  41 ++++++--
- fs/minix/bitmap.c                         |   2 +-
- fs/minix/dir.c                            |   6 +-
- fs/minix/inode.c                          |  17 ++-
- fs/minix/itree_common.c                   |   2 +-
- fs/nfs/callback_proc.c                    |   2 +-
- fs/nfs/fscache.h                          |   4 +-
- fs/nfs/inode.c                            |  30 +++---
- fs/nfsd/blocklayout.c                     |   3 +-
- fs/nfsd/nfs3proc.c                        |   4 +-
- fs/nfsd/nfs4proc.c                        |   8 +-
- fs/nfsd/nfsctl.c                          |   2 +-
- fs/nfsd/vfs.c                             |   2 +-
- fs/nilfs2/dir.c                           |   6 +-
- fs/nilfs2/inode.c                         |  20 ++--
- fs/nsfs.c                                 |   2 +-
- fs/ntfs/inode.c                           |  25 ++---
- fs/ntfs/mft.c                             |   2 +-
- fs/ntfs3/file.c                           |   6 +-
- fs/ntfs3/frecord.c                        |  11 +-
- fs/ntfs3/inode.c                          |  25 +++--
- fs/ntfs3/namei.c                          |   4 +-
- fs/ocfs2/acl.c                            |   4 +-
- fs/ocfs2/alloc.c                          |   6 +-
- fs/ocfs2/aops.c                           |   6 +-
- fs/ocfs2/dir.c                            |   9 +-
- fs/ocfs2/dlmfs/dlmfs.c                    |   4 +-
- fs/ocfs2/dlmglue.c                        |  29 +++---
- fs/ocfs2/file.c                           |  30 +++---
- fs/ocfs2/inode.c                          |  28 ++---
- fs/ocfs2/move_extents.c                   |   4 +-
- fs/ocfs2/namei.c                          |  16 +--
- fs/ocfs2/refcounttree.c                   |  12 +--
- fs/ocfs2/xattr.c                          |   4 +-
- fs/omfs/inode.c                           |  12 +--
- fs/openpromfs/inode.c                     |   4 +-
- fs/orangefs/orangefs-utils.c              |  16 +--
- fs/overlayfs/file.c                       |   9 +-
- fs/overlayfs/inode.c                      |   3 +-
- fs/overlayfs/util.c                       |   4 +-
- fs/pipe.c                                 |   2 +-
- fs/proc/base.c                            |   2 +-
- fs/proc/inode.c                           |   2 +-
- fs/proc/proc_sysctl.c                     |   2 +-
- fs/proc/self.c                            |   2 +-
- fs/proc/thread_self.c                     |   2 +-
- fs/pstore/inode.c                         |   5 +-
- fs/qnx4/inode.c                           |   6 +-
- fs/qnx6/inode.c                           |   6 +-
- fs/ramfs/inode.c                          |   7 +-
- fs/reiserfs/inode.c                       |  26 ++---
- fs/reiserfs/namei.c                       |   8 +-
- fs/reiserfs/stree.c                       |   5 +-
- fs/reiserfs/super.c                       |   2 +-
- fs/romfs/super.c                          |   3 +-
- fs/smb/client/file.c                      |  18 ++--
- fs/smb/client/fscache.h                   |   6 +-
- fs/smb/client/inode.c                     |  17 ++-
- fs/smb/client/smb2ops.c                   |   6 +-
- fs/smb/server/smb2pdu.c                   |   8 +-
- fs/squashfs/inode.c                       |   6 +-
- fs/stack.c                                |   4 +-
- fs/stat.c                                 |   4 +-
- fs/sysv/dir.c                             |   6 +-
- fs/sysv/ialloc.c                          |   2 +-
- fs/sysv/inode.c                           |  12 +--
- fs/sysv/itree.c                           |   2 +-
- fs/tracefs/inode.c                        |   2 +-
- fs/ubifs/debug.c                          |  12 +--
- fs/ubifs/dir.c                            |  23 +++--
- fs/ubifs/file.c                           |  16 +--
- fs/ubifs/journal.c                        |  12 +--
- fs/ubifs/super.c                          |   8 +-
- fs/udf/ialloc.c                           |   4 +-
- fs/udf/inode.c                            |  38 ++++---
- fs/udf/namei.c                            |  16 +--
- fs/ufs/dir.c                              |   6 +-
- fs/ufs/ialloc.c                           |   2 +-
- fs/ufs/inode.c                            |  42 ++++----
- fs/vboxsf/utils.c                         |  15 +--
- fs/xfs/libxfs/xfs_inode_buf.c             |  10 +-
- fs/xfs/libxfs/xfs_rtbitmap.c              |   6 +-
- fs/xfs/libxfs/xfs_trans_inode.c           |   2 +-
- fs/xfs/xfs_bmap_util.c                    |   7 +-
- fs/xfs/xfs_inode.c                        |   4 +-
- fs/xfs/xfs_inode_item.c                   |   4 +-
- fs/xfs/xfs_iops.c                         |   8 +-
- fs/xfs/xfs_itable.c                       |  12 +--
- fs/xfs/xfs_rtalloc.c                      |  30 +++---
- fs/zonefs/super.c                         |  10 +-
- include/linux/fs.h                        | 120 +++++++++++++++++-----
- include/linux/fs_stack.h                  |   6 +-
- ipc/mqueue.c                              |  19 ++--
- kernel/bpf/inode.c                        |   5 +-
- mm/shmem.c                                |  20 ++--
- net/sunrpc/rpc_pipe.c                     |   2 +-
- security/apparmor/apparmorfs.c            |   7 +-
- security/apparmor/policy_unpack.c         |   4 +-
- security/inode.c                          |   2 +-
- security/selinux/selinuxfs.c              |   2 +-
- 216 files changed, 1220 insertions(+), 1000 deletions(-)
-
+diff --git a/fs/libfs.c b/fs/libfs.c
+index 37f2d34ee090..abe2b5a40ba1 100644
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -541,7 +541,8 @@ void simple_recursive_removal(struct dentry *dentry,
+ 				dput(victim);		// unpin it
+ 			}
+ 			if (victim == dentry) {
+-				inode->i_mtime = inode_set_ctime_current(inode);
++				inode_set_mtime_to_ts(inode,
++						      inode_set_ctime_current(inode));
+ 				if (d_is_dir(dentry))
+ 					drop_nlink(inode);
+ 				inode_unlock(inode);
+@@ -582,7 +583,7 @@ static int pseudo_fs_fill_super(struct super_block *s, struct fs_context *fc)
+ 	 */
+ 	root->i_ino = 1;
+ 	root->i_mode = S_IFDIR | S_IRUSR | S_IWUSR;
+-	root->i_atime = root->i_mtime = inode_set_ctime_current(root);
++	simple_inode_init_ts(root);
+ 	s->s_root = d_make_root(root);
+ 	if (!s->s_root)
+ 		return -ENOMEM;
+@@ -638,8 +639,8 @@ int simple_link(struct dentry *old_dentry, struct inode *dir, struct dentry *den
+ {
+ 	struct inode *inode = d_inode(old_dentry);
+ 
+-	dir->i_mtime = inode_set_ctime_to_ts(dir,
+-					     inode_set_ctime_current(inode));
++	inode_set_mtime_to_ts(dir,
++			      inode_set_ctime_to_ts(dir, inode_set_ctime_current(inode)));
+ 	inc_nlink(inode);
+ 	ihold(inode);
+ 	dget(dentry);
+@@ -673,8 +674,8 @@ int simple_unlink(struct inode *dir, struct dentry *dentry)
+ {
+ 	struct inode *inode = d_inode(dentry);
+ 
+-	dir->i_mtime = inode_set_ctime_to_ts(dir,
+-					     inode_set_ctime_current(inode));
++	inode_set_mtime_to_ts(dir,
++			      inode_set_ctime_to_ts(dir, inode_set_ctime_current(inode)));
+ 	drop_nlink(inode);
+ 	dput(dentry);
+ 	return 0;
+@@ -709,9 +710,10 @@ void simple_rename_timestamp(struct inode *old_dir, struct dentry *old_dentry,
+ {
+ 	struct inode *newino = d_inode(new_dentry);
+ 
+-	old_dir->i_mtime = inode_set_ctime_current(old_dir);
++	inode_set_mtime_to_ts(old_dir, inode_set_ctime_current(old_dir));
+ 	if (new_dir != old_dir)
+-		new_dir->i_mtime = inode_set_ctime_current(new_dir);
++		inode_set_mtime_to_ts(new_dir,
++				      inode_set_ctime_current(new_dir));
+ 	inode_set_ctime_current(d_inode(old_dentry));
+ 	if (newino)
+ 		inode_set_ctime_current(newino);
+@@ -926,7 +928,7 @@ int simple_fill_super(struct super_block *s, unsigned long magic,
+ 	 */
+ 	inode->i_ino = 1;
+ 	inode->i_mode = S_IFDIR | 0755;
+-	inode->i_atime = inode->i_mtime = inode_set_ctime_current(inode);
++	simple_inode_init_ts(inode);
+ 	inode->i_op = &simple_dir_inode_operations;
+ 	inode->i_fop = &simple_dir_operations;
+ 	set_nlink(inode, 2);
+@@ -952,7 +954,7 @@ int simple_fill_super(struct super_block *s, unsigned long magic,
+ 			goto out;
+ 		}
+ 		inode->i_mode = S_IFREG | files->mode;
+-		inode->i_atime = inode->i_mtime = inode_set_ctime_current(inode);
++		simple_inode_init_ts(inode);
+ 		inode->i_fop = files->ops;
+ 		inode->i_ino = i;
+ 		d_add(dentry, inode);
+@@ -1520,7 +1522,7 @@ struct inode *alloc_anon_inode(struct super_block *s)
+ 	inode->i_uid = current_fsuid();
+ 	inode->i_gid = current_fsgid();
+ 	inode->i_flags |= S_PRIVATE;
+-	inode->i_atime = inode->i_mtime = inode_set_ctime_current(inode);
++	simple_inode_init_ts(inode);
+ 	return inode;
+ }
+ EXPORT_SYMBOL(alloc_anon_inode);
+@@ -1912,3 +1914,20 @@ ssize_t direct_write_fallback(struct kiocb *iocb, struct iov_iter *iter,
+ 	return direct_written + buffered_written;
+ }
+ EXPORT_SYMBOL_GPL(direct_write_fallback);
++
++/**
++ * simple_inode_init_ts - initialize the timestamps for a new inode
++ * @inode: inode to be initialized
++ *
++ * When a new inode is created, most filesystems set the timestamps to the
++ * current time. Add a helper to do this.
++ */
++struct timespec64 simple_inode_init_ts(struct inode *inode)
++{
++	struct timespec64 ts = inode_set_ctime_current(inode);
++
++	inode_set_atime_to_ts(inode, ts);
++	inode_set_mtime_to_ts(inode, ts);
++	return ts;
++}
++EXPORT_SYMBOL(simple_inode_init_ts);
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 7b8c6a9d52ec..3ca610d42176 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -1515,24 +1515,81 @@ static inline bool fsuidgid_has_mapping(struct super_block *sb,
+ struct timespec64 current_time(struct inode *inode);
+ struct timespec64 inode_set_ctime_current(struct inode *inode);
+ 
+-/**
+- * inode_get_ctime - fetch the current ctime from the inode
+- * @inode: inode from which to fetch ctime
+- *
+- * Grab the current ctime from the inode and return it.
+- */
++static inline time64_t inode_get_atime_sec(const struct inode *inode)
++{
++	return inode->i_atime.tv_sec;
++}
++
++static inline long inode_get_atime_nsec(const struct inode *inode)
++{
++	return inode->i_atime.tv_nsec;
++}
++
++static inline struct timespec64 inode_get_atime(const struct inode *inode)
++{
++	return inode->i_atime;
++}
++
++static inline struct timespec64 inode_set_atime_to_ts(struct inode *inode,
++						      struct timespec64 ts)
++{
++	inode->i_atime = ts;
++	return ts;
++}
++
++static inline struct timespec64 inode_set_atime(struct inode *inode,
++						time64_t sec, long nsec)
++{
++	struct timespec64 ts = { .tv_sec  = sec,
++				 .tv_nsec = nsec };
++	return inode_set_atime_to_ts(inode, ts);
++}
++
++static inline time64_t inode_get_mtime_sec(const struct inode *inode)
++{
++	return inode->i_mtime.tv_sec;
++}
++
++static inline long inode_get_mtime_nsec(const struct inode *inode)
++{
++	return inode->i_mtime.tv_nsec;
++}
++
++static inline struct timespec64 inode_get_mtime(const struct inode *inode)
++{
++	return inode->i_mtime;
++}
++
++static inline struct timespec64 inode_set_mtime_to_ts(struct inode *inode,
++						      struct timespec64 ts)
++{
++	inode->i_mtime = ts;
++	return ts;
++}
++
++static inline struct timespec64 inode_set_mtime(struct inode *inode,
++						time64_t sec, long nsec)
++{
++	struct timespec64 ts = { .tv_sec  = sec,
++				 .tv_nsec = nsec };
++	return inode_set_mtime_to_ts(inode, ts);
++}
++
++static inline time64_t inode_get_ctime_sec(const struct inode *inode)
++{
++	return inode->__i_ctime.tv_sec;
++}
++
++static inline long inode_get_ctime_nsec(const struct inode *inode)
++{
++	return inode->__i_ctime.tv_nsec;
++}
++
+ static inline struct timespec64 inode_get_ctime(const struct inode *inode)
+ {
+ 	return inode->__i_ctime;
+ }
+ 
+-/**
+- * inode_set_ctime_to_ts - set the ctime in the inode
+- * @inode: inode in which to set the ctime
+- * @ts: value to set in the ctime field
+- *
+- * Set the ctime in @inode to @ts
+- */
+ static inline struct timespec64 inode_set_ctime_to_ts(struct inode *inode,
+ 						      struct timespec64 ts)
+ {
+@@ -1557,6 +1614,8 @@ static inline struct timespec64 inode_set_ctime(struct inode *inode,
+ 	return inode_set_ctime_to_ts(inode, ts);
+ }
+ 
++struct timespec64 simple_inode_init_ts(struct inode *inode);
++
+ /*
+  * Snapshotting support.
+  */
 -- 
 2.41.0
 
