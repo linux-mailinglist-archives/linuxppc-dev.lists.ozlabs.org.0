@@ -2,166 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 933FE7B75DE
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 02:31:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D547B7657
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 03:39:23 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kfaXjooI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IFuIzoM4;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S0bGV3jpVz3vbQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 11:31:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S0cmn1Y5Hz3clw
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 12:39:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kfaXjooI;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IFuIzoM4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mgamail.intel.com; envelope-from=rick.p.edgecombe@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::2f; helo=mail-oa1-x2f.google.com; envelope-from=linasvepstas@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-oa1-x2f.google.com (mail-oa1-x2f.google.com [IPv6:2001:4860:4864:20::2f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S0bDz1xh2z3cR1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Oct 2023 11:30:10 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696379411; x=1727915411;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=5Qa+IHBeExD4AXx/rsptNAADo7WJ1Hgdh7xwiQi+mOA=;
-  b=kfaXjooIDterFZyIG/jluEyceVPMWqTBcn2ott15pHXJ5//eQKW0p5Ez
-   ke95ncSZgnTyG7AWnN/NdzpBya2ErvruXB6dAcATK78w0qYFsZMK35doC
-   x2pCB6jYj3yAZHOxw08bCtHfpd1YCL8a1CJVwBOfBFOvoIrqDc4y/mLax
-   DIY0Cot53Y3NuG8H7GXRH78odQIk6Ky5/W6xurFnafN9e7jRn9j9UWpfU
-   0zNieBs+WBnnWKY8nPuyfxYqRWJP0pmrBViNycH0zDxsENwpuFm3doi1S
-   M2BvuWTf3hP02D4vIeAJ023zmwR9IbLUYzWqaoDga7xvHJuXqvm6juLEY
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10852"; a="368068449"
-X-IronPort-AV: E=Sophos;i="6.03,198,1694761200"; 
-   d="scan'208";a="368068449"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2023 17:30:05 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10852"; a="998253743"
-X-IronPort-AV: E=Sophos;i="6.03,198,1694761200"; 
-   d="scan'208";a="998253743"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by fmsmga006.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 03 Oct 2023 17:30:01 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Tue, 3 Oct 2023 17:30:00 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Tue, 3 Oct 2023 17:30:00 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32 via Frontend Transport; Tue, 3 Oct 2023 17:30:00 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.172)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.32; Tue, 3 Oct 2023 17:30:00 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=esnZqJzCwAZG7E4w9s/bT+dk/LEXuYaiNukhNk1cyleAZaYB49WvrAybWj/KywMwGjZ7/2/8karz30qYwdNr3IrGGV+Gbe93UhUIx6Gwe/UanHs3VFvQTTBbv2hzm0ISd2HRjE2x/wO6Iu2csW6fxiKytWL8hB1/T28yTUWQREYpI9wsAd+2wwZcoNZCRc2MynMgUXNHddByeS2AZB4saFYEoe3MP2bCkbq3bkH3X+j3FH1dieF1wp+uWdsW5yrowlKkEICtsLz1tA75jwgcn+uWEPJiC+tNOjysjSf8y80bwchC3I6G7OFJUpf8w2Q87OxLCMVip8NfU16nW2dM5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5Qa+IHBeExD4AXx/rsptNAADo7WJ1Hgdh7xwiQi+mOA=;
- b=GJSi+vwCyfhor+vcTO6fo/Pq+5UxB2zuLN+O9LFlga3jErAhSQVRwr/GZfMyoHpD932d51AahqucHCe6S16Po7guZ38r8UluV8Sy/z52EI2VZD9JiQtUk/ZDByxPgwd0MUb5c2ccZ7kw6UNkWGQ/Hc4GhsVk/mXKsb1wQzoFxeipCoHUhvU9fttDAtp3v4mVBym3PFTBSjIFtjGBFF8xRQurqLpQ+af94BxUDGrqjMOybwe5ZUzIWAPy3g6B8e05ksRCTtsehIlOVe5rSmVqdYfcTy1NAJeGEwTwT5zOFLhdT9W8ECP8U0MFUxwzPuxJHApaTpQb1BZNK89KG72LDA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MN0PR11MB5963.namprd11.prod.outlook.com (2603:10b6:208:372::10)
- by IA0PR11MB8335.namprd11.prod.outlook.com (2603:10b6:208:493::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.21; Wed, 4 Oct
- 2023 00:29:58 +0000
-Received: from MN0PR11MB5963.namprd11.prod.outlook.com
- ([fe80::56f1:507b:133e:57cf]) by MN0PR11MB5963.namprd11.prod.outlook.com
- ([fe80::56f1:507b:133e:57cf%5]) with mapi id 15.20.6838.030; Wed, 4 Oct 2023
- 00:29:58 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"rppt@kernel.org" <rppt@kernel.org>
-Subject: Re: [PATCH v3 03/13] mm/execmem, arch: convert simple overrides of
- module_alloc to execmem
-Thread-Topic: [PATCH v3 03/13] mm/execmem, arch: convert simple overrides of
- module_alloc to execmem
-Thread-Index: AQHZ6gIbIXJGUlk14kaIslF+Xg+n8bA438mA
-Date: Wed, 4 Oct 2023 00:29:58 +0000
-Message-ID: <607927885bb8ca12d4cd5787f01207c256cc8798.camel@intel.com>
-References: <20230918072955.2507221-1-rppt@kernel.org>
-	 <20230918072955.2507221-4-rppt@kernel.org>
-In-Reply-To: <20230918072955.2507221-4-rppt@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.44.4-0ubuntu2 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MN0PR11MB5963:EE_|IA0PR11MB8335:EE_
-x-ms-office365-filtering-correlation-id: 9e3eb437-1aba-4deb-013d-08dbc4710a2a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: H2OptuR9NdvA+X+zZn7wUs6zdMy/wwu+eWc+W/qmgBVbJaP/TtGvhFa4qWRCSQPfsdiZ68RudY5qaaoRlrf2f8CsZF54LIK39bCIt3c/GmpVrh9qWnIUVUvJ7z46BTZOEMw6afzYHMHkWKE3PA0ximn+KwKgZwuZCwtG3AXlEXtd1c9u6KkOPiSLe0ubDh5zmDeN2dfXQQ74KzUFvJ25j9mPLylCNm1NTQJ20JnILZ7sDEtHt9m0HyXqEwsPnZi0zPwByW9c5jtmccTWLx4XFVWwzDtsMlRquxdkUVBpPnCaLimZwAas/Khy1tF+Z9VyU45GFH3QQ7Hx7dxtVeGtjzE5FOMvHv834/OA6sQBX7cwoyvlIsVuZhpehdz072zuzuwGFe3kkNwLkQkyVVPduZ/knUU9xX2W6vLGJHDcz1Rc0+OPwqjFIF6nma61ObvwyKVzBGTj095MDXAi4/JRJWywUChPhupUi0I1GRHKGT7WwjDMDzKjnqRfjPIEpdVKLXdkrbzGxDVzYnCyGG5Yp7rBIx+e5t/DG9Aj4SYROhpU9iKdUqyBt6kdzxEj9f0HEGwEvaMuLhO3AEw3WDibB4PX54bUon4xAFHL/Aa+LL8ttVlfvhjJGdXTv+HMjySZ
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB5963.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(366004)(136003)(396003)(346002)(39860400002)(230922051799003)(451199024)(64100799003)(1800799009)(186009)(2906002)(2616005)(6512007)(82960400001)(38070700005)(86362001)(71200400001)(36756003)(41300700001)(122000001)(4744005)(6506007)(38100700002)(64756008)(478600001)(6486002)(66446008)(316002)(66556008)(7416002)(7406005)(66476007)(54906003)(76116006)(8936002)(4326008)(91956017)(110136005)(5660300002)(26005)(8676002)(66946007);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?RGI3YU1Zb0wvU1ZZc1BGL2g0UmFmemx1THRnV0F2dEVDSnFJQmJveDNUWVFy?=
- =?utf-8?B?SXVSb1BNODlmeENvRmtnNUdFSWpxWElHUmhXRDBTcFArTHBsbDIzZGlMNWFL?=
- =?utf-8?B?dHM4ekxZeXBtRStrTTRkV2l2bHFkU3hnWXU1Q1IySlJMaVlLb2JBQWk0bzd5?=
- =?utf-8?B?VDR3MkM1dENDenVEL05uVVp0cmxhdjQyRDZudm1GZHA3eXRVMmJ0c2FhL3E4?=
- =?utf-8?B?WTFCODBQV3lETzJvaU9sUUJwcXNmRmVNRkx2dXowemFZSHd1UW11ZjJhd25E?=
- =?utf-8?B?bTc2Qzl4cmNUWlJrN3ZZNE9kSWs4NHV6dTN1VnJwQjEzVDhhUVEwQ0ora0FX?=
- =?utf-8?B?N1JZMnFLS1VnTWM2THVYUUtmeFhZZElJa3VzOUJHTU5yVlE5K0xxM2EybzJa?=
- =?utf-8?B?eVlDWlViRllKQTdsZ2lSMXdxNFFoNWtQY1BXRVp1VVo0UXAvYjRSa0lURzZM?=
- =?utf-8?B?NkxNaDFiS011MFdEV0FKaHdEYzdPTzVINWxWT2hNZ2wyRzg4aUFlY0wxWmE3?=
- =?utf-8?B?WGVNYU9NSVhGVUoyZHhJaDVRUGUva0QxQXMza0N2b2dBYWhnVXBCbkRDSHg0?=
- =?utf-8?B?d09KK2NTdThoZVoyZDQ2bTk3UUxLWTlnMEE5VmUvYjRqdHNoaFFKcEltR1E2?=
- =?utf-8?B?RVJUcFF2VCt6WUk2N0ZyTzRLVG1PSmhNY3pDNGJWbWduTk5PNkpyMGFMUUMz?=
- =?utf-8?B?eHhsMXUzYWhMZ1lzQmdNRmhlcWJXaEZ3cGU2bTQ5MEkzZ3BmYURIMi9BOU5I?=
- =?utf-8?B?eVkzbXUvNlNkR1NwL1JWTERsV3FwV095RTczMDZ5ZE9hYTNJQm1sQVNOUkgx?=
- =?utf-8?B?em1lNTZRRG9jZUpKdmtpdFIza3VsMmJacFBMSlVtVVhqZ21MQmpxS0ZDbnhj?=
- =?utf-8?B?ekJjakVDTjFKM1Rha2tiUWdlR1ZKZG5IekZBU1VJVm9ucmdCQ1piRlB5K3BB?=
- =?utf-8?B?OGYzdGxOVjlYcGhLVmJPaXRvaktPY2hHeWVaKy9yL3dDS2t3ejAyNFZhVkx3?=
- =?utf-8?B?dmRGWkVCUFlOSnlkV2k2cm9FKzFnaVM3TDFlSkgwYTZsc0ExeUw5aUVlVEt4?=
- =?utf-8?B?d3hyZGovYlVjL0VmMGUzRFdNY2tBZldYZDdvdU9BTkR0MFVXOWtib1RZQ2xH?=
- =?utf-8?B?ak9tcUJUWlE1RURRVVJjTHZIOXN1V3hQeHl3WWhJMjkvamhFbGdYZG9lN3Rn?=
- =?utf-8?B?U0FpY1hTZURXT0UvVUpSSnhkOGFwQU8rNnFvQy9NVDlnZm5LNzdOeExWU2Mv?=
- =?utf-8?B?VW1sd2xwWm5mRGpzZ3Z4cm9SVVkwSTZNcU5Ub1MrWWR4YjlRS25xMFpWVXU4?=
- =?utf-8?B?VzVqc0VTYjBVZXk0MTNrL0xhM2duOE0yK0dqSi95cUUzdG1JbHE5VWdWc3lP?=
- =?utf-8?B?dVBwWTRnM0lVNjUyVGRkNExRQUFxZ2piekRqblZGYk50YXZXTG9sdC9ZVVBp?=
- =?utf-8?B?dmhyRHI3WjkzMkVBamRPVkhPRy84UDlVRXViZEFmNkNPNmxYRUt2S1llRFN6?=
- =?utf-8?B?eVYydC8zOU02UkFvRFEwQWFLRWpZSE9lbEZOazNFZmFGNlUvcUdzMDhvMTcy?=
- =?utf-8?B?TUo2SlAwOXhxV1ZDRENtbFMxSkhMNnVNSFNZY2p0L2d6M25sbzFYQWwyY1dw?=
- =?utf-8?B?aWVsei9ONzB4a3UraGg5eDB0ZHpxelhRNEZBNEV0bWQ1UEJUU3lmYzN2dEJm?=
- =?utf-8?B?Mk5NckZ1UHNVekxQYk1vYTN1QjM0SHZ6QWJDNUxSZ2FrQnFVb3NjTkZhS2hj?=
- =?utf-8?B?bzRrTWgrL1BYVnhLWE93aGo2bnZ4QnBiN3ErdlNkbG9oUUREZGgxK3F1SEJ5?=
- =?utf-8?B?ZncrTzQvMFVVbGFhMVpXcDRJUGRWR090d0N1RDZ5UFNyaXhkVGtVV1VjWjBO?=
- =?utf-8?B?SGZFUW5rQ3J3T3R0U2hZYm1WRHlRVlQwRUNOWnZRTk9yNEtncHY4dDB4RE9k?=
- =?utf-8?B?T1Rta0ZETFFpSXIvZ0NWUnN5N1JWcU5iT3o3NEFqeVhHQnh3K2MvcHhUaXAv?=
- =?utf-8?B?U0svZy9UQmJibDdDbmNCTkxQVFB5NnFGYi8ydG13MVVHR3J6RDVjRGRvUTli?=
- =?utf-8?B?YXdRYXhjQWoreFAycHFyUksrbGgvKzE1MGxKU0YraW9LQ1BRd1JwaFBPQ3Rx?=
- =?utf-8?B?dkZ3eFZhZUhraHAwYnhzU0I3d0NqQkVNM25xbVZtajY1VldhUHpTUmwwdmxz?=
- =?utf-8?B?U1E9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <EF50F2DF95CF804EA4D73D98F82DF160@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S0bgl2p1yz2yt0
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Oct 2023 11:49:54 +1100 (AEDT)
+Received: by mail-oa1-x2f.google.com with SMTP id 586e51a60fabf-1dc863efb61so1036239fac.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Oct 2023 17:49:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696380584; x=1696985384; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:reply-to:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=NUvS75joHYsAicjUoDVxAK1yIuHU+VSql4f6gMgkWMs=;
+        b=IFuIzoM4NMvCtL9RKc/aiYWj0TKK5KWWa3cKWp51g1T+m6coGVYc3Ur/5AebawVwsQ
+         AQ8xVvb8aWLllnaMRsbPA1G3lkWLqr33z9zW+PN/6MaxXO5apipv2OgwJtFGa/yLpJry
+         lnrFi02453k2vphh/E8Gyes0dxSs6OYPsKfKbHbiRlwnA3UvR0LHhEILE45DoZc2Jaqn
+         KF23Y8DBh5WJUxCcoR02PlFt/JzgnxT1WiIJ+KYgpNyICO7ba85OaAa5vUojHWiAe0b4
+         NGIeayvSLGLdl/Supa0joHFhcdP9xRT6ZNYi7G5qjU7DhxHr6enojDqIqgvKnMyylJqC
+         5C3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696380584; x=1696985384;
+        h=cc:to:subject:message-id:date:from:reply-to:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NUvS75joHYsAicjUoDVxAK1yIuHU+VSql4f6gMgkWMs=;
+        b=fMPrHYuO8b/t2yVUGwXAgLfosgNANnMqdJvvLsULHU2/VWM/7uoKdsKVjc+vGLHWbr
+         ds7wrPh/iFo2Hd4osjFe4e0z7h0p3EPswJI17wfaVhGLm0GTk0n0c1VIgcMZ7sJLq2Si
+         VlzzRzoBjc9tXB213E4Ztd3JOe8e0BcGW3e3g52Ex6CWrcnwyWFGIImWEScPEoevVHcy
+         Z68osdKoTVuTtVflDuojfx7uh0FDfji545hVIcsPqEPjZutVGh9pY2jX7Zn1a5GkXGki
+         h+cXmf9F2IcUtTkMywft1lLh340uZcLzZAZPwmSfQXxmhKExEX0o2eOH5mc8Q6x9asWZ
+         hjoA==
+X-Gm-Message-State: AOJu0YylTyBuaMW1iqJ/iL8cEGXniP8Iix/cy5QIAeUR0FU2BElCXovR
+	NLplK2sgBGH7kmASipCn+D+GJufE3FXBKZWNEtI=
+X-Google-Smtp-Source: AGHT+IFpnziMhSyZtMLg8jT772Rc3KhzYOZ1Q6cCjsj+YPYOx8xfo4yYsaVwypbWakxQeD3j3Fr+aK9SQ6q0TOTh/2k=
+X-Received: by 2002:a05:6870:b622:b0:1dd:651a:74ac with SMTP id
+ cm34-20020a056870b62200b001dd651a74acmr1375235oab.45.1696380584617; Tue, 03
+ Oct 2023 17:49:44 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB5963.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e3eb437-1aba-4deb-013d-08dbc4710a2a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Oct 2023 00:29:58.3414
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Y6aFzYVqI31C0hgBgmsMawvr4vQT+/3a8FjkBeNa12zI1PhX4dODTTHvt7hGYVsbxDWgsBMag94vI513OqMTN8r027YsbijxPuWX6e/FirQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB8335
-X-OriginatorOrg: intel.com
+References: <169052340516.4355.10339828466636149348@legolas.ozlabs.org>
+ <20230826165737.2101199-1-costa.shul@redhat.com> <87cyxvelnn.fsf@meer.lwn.net>
+In-Reply-To: <87cyxvelnn.fsf@meer.lwn.net>
+From: Linas Vepstas <linasvepstas@gmail.com>
+Date: Tue, 3 Oct 2023 19:49:10 -0500
+Message-ID: <CAHrUA37reWJZ7QQzYGB71LY9H6=XENA+RysuXd4eckiwoiC6zw@mail.gmail.com>
+Subject: Re: [PATCH] docs: move powerpc under arch
+To: Jonathan Corbet <corbet@lwn.net>
+Content-Type: multipart/alternative; boundary="000000000000266cd50606d9622c"
+X-Mailman-Approved-At: Wed, 04 Oct 2023 12:38:37 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -173,29 +75,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>, "x86@kernel.org" <x86@kernel.org>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, "song@kernel.org" <song@kernel.org>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "nadav.amit@gmail.com" <nadav.amit@gmail.com>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "deller@gmx.de" <deller@gmx.de>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>, "naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>, "linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, "will@kernel.org" <will@kernel.org>, "hca@linux.ibm.com" <hca@linux.ibm.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, "bjorn@kernel.org" <bjorn@kernel.org>, "tglx@linutronix.de" <tglx@linutronix.de>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "lin
- ux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>, "puranjay12@gmail.com" <puranjay12@gmail.com>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "kent.overstreet@linux.dev" <kent.overstreet@linux.dev>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "dinguyen@kernel.org" <dinguyen@kernel.org>, "mcgrof@kernel.org" <mcgrof@kernel.org>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "davem@davemloft.net" <davem@davemloft.net>, "linux-modules@vger.kernel.org" <linux-modules@vger.kernel.org>
+Reply-To: linasvepstas@gmail.com
+Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, Wolfram Sang <wsa+renesas@sang-engineering.com>, Oliver O'Halloran <oohall@gmail.com>, Benjamin Gray <bgray@linux.ibm.com>, Brian King <brking@linux.vnet.ibm.com>, Jiri Slaby <jirislaby@kernel.org>, Qiang Zhao <qiang.zhao@nxp.com>, Costa Shulyupin <costa.shul@redhat.com>, Yanteng Si <siyanteng@loongson.cn>, linux-scsi@vger.kernel.org, Nicholas Miehlbradt <nicholas@linux.ibm.com>, Laurent Dufour <laurent.dufour@fr.ibm.com>, linux-serial@vger.kernel.org, "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, Nathan Lynch <nathanl@linux.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Rohan McLure <rmclure@linux.ibm.com>, "Manoj N. Kumar" <manoj@linux.ibm.com>, Sathvika Vasireddy <sv@linux.ibm.com>, Al Viro <viro@zeniv.linux.org.uk>, Bjorn Helgaas <bhelgaas@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, linux
+ -arm-kernel@lists.infradead.org, "Matthew R. Ochs" <mrochs@linux.ibm.com>, Uma Krishnan <ukrishn@linux.ibm.com>, =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Li Yang <leoyang.li@nxp.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Frederic Barrat <fbarrat@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gTW9uLCAyMDIzLTA5LTE4IGF0IDEwOjI5ICswMzAwLCBNaWtlIFJhcG9wb3J0IHdyb3RlOgo+
-ICsKPiArc3RhdGljIHZvaWQgZXhlY21lbV9pbml0X21pc3Npbmcoc3RydWN0IGV4ZWNtZW1fcGFy
-YW1zICpwKQo+ICt7Cj4gK8KgwqDCoMKgwqDCoMKgc3RydWN0IGV4ZWNtZW1fcmFuZ2UgKmRlZmF1
-bHRfcmFuZ2UgPSAmcC0KPiA+cmFuZ2VzW0VYRUNNRU1fREVGQVVMVF07Cj4gKwo+ICvCoMKgwqDC
-oMKgwqDCoGZvciAoaW50IGkgPSBFWEVDTUVNX0RFRkFVTFQgKyAxOyBpIDwgRVhFQ01FTV9UWVBF
-X01BWDsgaSsrKQo+IHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgc3RydWN0IGV4
-ZWNtZW1fcmFuZ2UgKnIgPSAmcC0+cmFuZ2VzW2ldOwo+ICsKPiArwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgaWYgKCFyLT5zdGFydCkgewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgci0+cGdwcm90ID0gZGVmYXVsdF9yYW5nZS0+cGdwcm90Owo+
-ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgci0+YWxpZ25t
-ZW50ID0gZGVmYXVsdF9yYW5nZS0+YWxpZ25tZW50Owo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgci0+c3RhcnQgPSBkZWZhdWx0X3JhbmdlLT5zdGFydDsK
-PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHItPmVuZCA9
-IGRlZmF1bHRfcmFuZ2UtPmVuZDsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQo+
-ICvCoMKgwqDCoMKgwqDCoH0KPiArfQo+ICsKCkl0IHNlZW1zIGEgYml0IHdlaXJkIHRvIGNvcHkg
-YWxsIG9mIHRoaXMuIElzIGl0IHRyeWluZyB0byBiZSBmYXN0ZXIgb3IKc29tZXRoaW5nPwoKQ291
-bGRuJ3QgaXQganVzdCBjaGVjayByLT5zdGFydCBpbiBleGVjbWVtX3RleHQvZGF0YV9hbGxvYygp
-IHBhdGggYW5kCnN3aXRjaCB0byBFWEVDTUVNX0RFRkFVTFQgaWYgbmVlZGVkIHRoZW4/IFRoZSBl
-eGVjbWVtX3JhbmdlX2lzX2RhdGEoKQpwYXJ0IHRoYXQgY29tZXMgbGF0ZXIgY291bGQgYmUgYWRk
-ZWQgdG8gdGhlIGxvZ2ljIHRoZXJlIHRvby4gU28gdGhpcwpzZWVtcyBsaWtlIHVubmVjZXNzYXJ5
-IGNvbXBsZXhpdHkgdG8gbWUgb3IgSSBkb24ndCBzZWUgdGhlIHJlYXNvbi4K
+--000000000000266cd50606d9622c
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi Jon,
+
+Got the message; I'm not an active maintainer, haven't been for over a
+decade, and cannot comment on style issues. But if all the other arches are
+doing this, I see no reason why not. Feel free to interpret this as an
+Acked-by: if that's appropriate.
+
+-- linas
+
+On Tue, Oct 3, 2023 at 11:05=E2=80=AFAM Jonathan Corbet <corbet@lwn.net> wr=
+ote:
+
+> Costa Shulyupin <costa.shul@redhat.com> writes:
+>
+> > and fix all in-tree references.
+> >
+> > Architecture-specific documentation is being moved into
+> Documentation/arch/
+> > as a way of cleaning up the top-level documentation directory and makin=
+g
+> > the docs hierarchy more closely match the source hierarchy.
+> >
+> > Signed-off-by: Costa Shulyupin <costa.shul@redhat.com>
+>
+> So this patch appears to have not been picked up, and to have received
+> no comments.  I'll happily carry it in docs-next, but it would be nice
+> to have an ack from the powerpc folks...?
+>
+> Thanks,
+>
+> jon
+>
+
+
+--=20
+Patrick: Are they laughing at us?
+Sponge Bob: No, Patrick, they are laughing next to us.
+
+--000000000000266cd50606d9622c
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Hi Jon,</div><div><br></div><div>Got the message; I&#=
+39;m not an active maintainer, haven&#39;t been for over a decade, and cann=
+ot comment on style issues. But if all the other arches are doing this, I s=
+ee no reason why not. Feel free to interpret this as an Acked-by: if that&#=
+39;s appropriate.</div><div><br></div><div>-- linas<br></div></div><br><div=
+ class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Oct 3,=
+ 2023 at 11:05=E2=80=AFAM Jonathan Corbet &lt;<a href=3D"mailto:corbet@lwn.=
+net">corbet@lwn.net</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quot=
+e" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204)=
+;padding-left:1ex">Costa Shulyupin &lt;<a href=3D"mailto:costa.shul@redhat.=
+com" target=3D"_blank">costa.shul@redhat.com</a>&gt; writes:<br>
+<br>
+&gt; and fix all in-tree references.<br>
+&gt;<br>
+&gt; Architecture-specific documentation is being moved into Documentation/=
+arch/<br>
+&gt; as a way of cleaning up the top-level documentation directory and maki=
+ng<br>
+&gt; the docs hierarchy more closely match the source hierarchy.<br>
+&gt;<br>
+&gt; Signed-off-by: Costa Shulyupin &lt;<a href=3D"mailto:costa.shul@redhat=
+.com" target=3D"_blank">costa.shul@redhat.com</a>&gt;<br>
+<br>
+So this patch appears to have not been picked up, and to have received<br>
+no comments.=C2=A0 I&#39;ll happily carry it in docs-next, but it would be =
+nice<br>
+to have an ack from the powerpc folks...?<br>
+<br>
+Thanks,<br>
+<br>
+jon<br>
+</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
+fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><div dir=3D"l=
+tr"><div>Patrick: Are they laughing at us?</div><div>Sponge Bob: No, Patric=
+k, they are laughing next to us.</div><div>=C2=A0<br></div><br></div></div>
+
+--000000000000266cd50606d9622c--
