@@ -2,83 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC0F67BA9BE
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Oct 2023 21:07:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BFB47BAB9B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Oct 2023 22:47:02 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fD3mdQJu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=JY4ptC+P;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S1gzn5qrGz3dk2
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Oct 2023 06:07:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S1kBX0dxBz3dlT
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Oct 2023 07:47:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fD3mdQJu;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=JY4ptC+P;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=eajames@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::534; helo=mail-ed1-x534.google.com; envelope-from=edumazet@google.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S1gyt2xCWz3c7C
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Oct 2023 06:06:46 +1100 (AEDT)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 395Iiv9D010927;
-	Thu, 5 Oct 2023 19:06:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : to : cc : from : subject : content-type :
- content-transfer-encoding; s=pp1;
- bh=DACDKnQ3Dvf18in8XyBG9cRM7jWk/7aVAW5xPGQ6VqY=;
- b=fD3mdQJuazN9HHmV3kCXVm8BPqG0f64hhlDMXuE9gV8OcM3F0n9IewtMWWB167jDilmF
- weOPVMCVg3bHrJmXFdr3nH5QI5nwUDdI2xFaNHWpAq/NcNdCDpEuHfLdh3+18rIPiRlu
- ci0kv7c9jUVSx6iRrRH2MWuzWqCTMVxEDu94AM0i4hiXeGxJCxfxIVCAJynWLLA6eat0
- XCz+vqkxcWerI7IxOO/WDWLrTip0nu8Im06s7y7wji17OXGP1OtVMIlhtw+bwqfeOt3o
- 5hT0eJQQu4TWQXq9dVtUPuXCVhtLFen6ifh2uHsu0Ok04nTZYJumZ40T3hZyO93H/eP9 RQ== 
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tj2prrpbe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Oct 2023 19:06:34 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 395IgcWd006692;
-	Thu, 5 Oct 2023 19:06:33 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tf07krtdg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Oct 2023 19:06:33 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 395J6W4I37617990
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 5 Oct 2023 19:06:32 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CB9E15805D;
-	Thu,  5 Oct 2023 19:06:32 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A94A158057;
-	Thu,  5 Oct 2023 19:06:32 +0000 (GMT)
-Received: from [9.61.60.170] (unknown [9.61.60.170])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  5 Oct 2023 19:06:32 +0000 (GMT)
-Message-ID: <fdaadc46-7476-9237-e104-1d2168526e72@linux.ibm.com>
-Date: Thu, 5 Oct 2023 14:06:32 -0500
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S1c334R4pz3vbn
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Oct 2023 03:10:06 +1100 (AEDT)
+Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-537f07dfe8eso12311a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Oct 2023 09:10:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1696522200; x=1697127000; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wRCO/tDP4lRLu2OPV/gEOu9clmIfNVaCcbX9ayRgMZQ=;
+        b=JY4ptC+P2eDdpbtL+m5xO+kNMOW0gwd+f7z0OONw+JOWgL8BvmSOPPPLUwDQRsOaB7
+         KA3pl3oWlA+T5PnnkcwASv1PllATGoQAgB30nkXQ+Xt9OLsUpoVwmKORNKn8j0cdx1JP
+         LDutEXbWgHvm8F3TplCEFcXG0snbHcPv0eNy1dx1y/neQJigVEl4cQ/lnw5udsrmkbnP
+         tWrkFuouEGHW55ntPFzoDjxZUaqWCzicm8eHtn6IG7FlI9qx1tpDcRDnIDFxkpVDwSGA
+         V01iIPf6LmNj21pUGPEAF2r+lHQJOPUmaMnBVb485cxja0LyKTNUWHqHeoZ1mftzH5Pj
+         2/TQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696522200; x=1697127000;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wRCO/tDP4lRLu2OPV/gEOu9clmIfNVaCcbX9ayRgMZQ=;
+        b=uzD5AYcdAp1z0NBrYaCntgYWV43OqVuWfrKIVTLiawozfz4Gaxmv+ZHnkXeCX5dpjh
+         x0s3ic3MzVV8zcbiocXyMQ9OV58kIVOWlo0cFjkH6DM4YvoWiIIXcRMDokCx8S0fuWoT
+         MuBZfYYtuu9kcQ7MHtyUnG3cAtw2zDii+pNeVuNw0CnPABVOAMpWMI26aGJdj3L7LE9P
+         XV6NAElpspeXYakOJX5UZgcE1XkPozFcPBwA4hntcJ2tcB3ZYRWamLhhCGqV4KNs/TJ1
+         dmpG0JAilF8+jcdkpdrTXCd0/GjGm+UTtYv401oY1BbrmtJWPAcoN9YCYP36QbBQZ6H6
+         5ORw==
+X-Gm-Message-State: AOJu0YxcNyngmXnhFAxYNJ4GKYqxplJTVj2TNh+uFMFuQIxFW1CQyRW8
+	eJovh7ozuUTbIoBLhwJklETWvlbaxzng317LsqvbdQ==
+X-Google-Smtp-Source: AGHT+IFzYlK6nOXqFn3XTRyZ9yDEZC9Bs5FeKRJ0Zfr3978r7XwjxquujorP05hjLrjSFu1gUI2ea386eAkHyH3Ha+s=
+X-Received: by 2002:a50:8d0f:0:b0:538:50e4:5446 with SMTP id
+ s15-20020a508d0f000000b0053850e45446mr71813eds.5.1696522199600; Thu, 05 Oct
+ 2023 09:09:59 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Content-Language: en-US
-To: linuxppc-dev@lists.ozlabs.org
-From: Eddie James <eajames@linux.ibm.com>
-Subject: KUEP broken on FSP2?
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: VQPzMYzHUX3QyvdOJaQn1eEb_gdy11Pe
-X-Proofpoint-ORIG-GUID: VQPzMYzHUX3QyvdOJaQn1eEb_gdy11Pe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-05_13,2023-10-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
- malwarescore=0 adultscore=0 mlxscore=0 spamscore=0 priorityscore=1501
- phishscore=0 clxscore=1011 mlxlogscore=481 suspectscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310050143
+References: <20231003145150.2498-1-ansuelsmth@gmail.com>
+In-Reply-To: <20231003145150.2498-1-ansuelsmth@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 5 Oct 2023 18:09:42 +0200
+Message-ID: <CANn89iK5E=SFJoNNTd3SNdT0oPR503dEf_gNfP=Ls3AKS_4F_g@mail.gmail.com>
+Subject: Re: [net-next PATCH v2 1/4] netdev: replace simple
+ napi_schedule_prep/__napi_schedule to napi_schedule
+To: Christian Marangi <ansuelsmth@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailman-Approved-At: Fri, 06 Oct 2023 07:46:16 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,64 +77,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: paulus@samba.org
+Cc: Andrew Lunn <andrew@lunn.ch>, Sergey Ryazanov <ryazanov.s.a@gmail.com>, Ziwei Xiao <ziweixiao@google.com>, Chris Snook <chris.snook@gmail.com>, Rick Lindsley <ricklind@linux.ibm.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Krzysztof Halasa <khalasa@piap.pl>, Yuri Karpov <YKarpov@ispras.ru>, netdev@vger.kernel.org, ath10k@lists.infradead.org, Dany Madden <danymadden@us.ibm.com>, Gregory Greenman <gregory.greenman@intel.com>, Zhengchao Shao <shaozhengchao@huawei.com>, Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>, Dawei Li <set_pte_at@outlook.com>, Intel Corporation <linuxwwan@intel.com>, Rob Herring <robh@kernel.org>, Jeroen de Borst <jeroendb@google.com>, Leon Romanovsky <leon@kernel.org>, linux-rdma@vger.kernel.org, Lee Jones <lee@kernel.org>, Haren Myneni <haren@linux.ibm.com>, linux-stm32@st-md-mailman.stormreply.com, Rushil Gupta <rushilg@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Thomas Falcon <tlfalcon@linux.ibm.com>, Jose Abreu <joabreu@synopsys.com>,
+  =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, linux-wireless@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Wei Fang <wei.fang@nxp.com>, Wolfgang Grandegger <wg@grandegger.com>, Nick Child <nnac123@linux.ibm.com>, Simon Horman <horms@kernel.org>, Liu Haijun <haijun.liu@mediatek.com>, Kalle Valo <kvalo@kernel.org>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, linux-can@vger.kernel.org, Yuanjun Gong <ruc_gongyuanjun@163.com>, Shailend Chand <shailend@google.com>, Marc Kleine-Budde <mkl@pengutronix.de>, Benjamin Berg <benjamin.berg@intel.com>, M Chetan Kumar <m.chetan.kumar@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, Coco Li <lixiaoyan@google.com>, linux-arm-kernel@lists.infradead.org, Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>, Ricardo Martinez <ricardo.martinez@linux.intel.com>, Loic Poulain <loic.poulain@linaro.org>, Zheng Zengkai <zhengzengkai@huawei.com>, Maximilian Lu
+ z <luzmaximilian@gmail.com>, Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Douglas Miller <dougmill@linux.ibm.com>, linux-kernel@vger.kernel.org, Tariq Toukan <tariqt@nvidia.com>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Junfeng Guo <junfeng.guo@intel.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Raju Rangoju <rajur@chelsio.com>, Praveen Kaligineedi <pkaligineedi@google.com>, Johannes Berg <johannes@sipsolutions.net>, Jeff Johnson <quic_jjohnson@quicinc.com>, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+On Tue, Oct 3, 2023 at 8:36=E2=80=AFPM Christian Marangi <ansuelsmth@gmail.=
+com> wrote:
+>
+> Replace drivers that still use napi_schedule_prep/__napi_schedule
+> with napi_schedule helper as it does the same exact check and call.
+>
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 
-I'm attempting to run linux 6.1 on my FSP2, but my kernel crashes 
-attempting to get into userspace. The init script works, but the first 
-binary (mount) I run results in oops. Can anyone help me to debug this 
-further or suggest anything?
-
-
-Thanks,
-
-Eddie
-
-
-[    1.042743] kernel tried to execute user page (b7ee2000) - exploit 
-attempt? (
-uid: 0)
-[    1.042846] BUG: Unable to handle kernel instruction fetch
-[    1.042919] Faulting instruction address: 0xb7ee2000
-[    1.042986] Oops: Kernel access of bad area, sig: 11 [#1]
-[    1.043059] BE PAGE_SIZE=4K FSP-2
-[    1.043106] Modules linked in:
-[    1.043149] CPU: 0 PID: 61 Comm: mount Not tainted 
-6.1.55-d23900f.ppcnf-fsp2
-#1
-[    1.043249] Hardware name: ibm,fsp2 476fpe 0x7ff520c0 FSP-2
-[    1.043323] NIP:  b7ee2000 LR: 8c008000 CTR: 00000000
-[    1.043392] REGS: bffebd83 TRAP: 0400   Not tainted 
-(6.1.55-d23900f.ppcnf-fs
-p2)
-[    1.043491] MSR:  00000030 <IR,DR>  CR: 00001000  XER: 20000000
-[    1.043579]
-[    1.043579] GPR00: c00110ac bffebe63 bffebe7e bffebe88 8c008000 
-00001000 0000
-0d12 b7ee2000
-[    1.043579] GPR08: 00000033 00000000 00000000 c139df10 48224824 
-1016c314 1016
-0000 00000000
-[    1.043579] GPR16: 10160000 10160000 00000008 00000000 10160000 
-00000000 1016
-0000 1017f5b0
-[    1.043579] GPR24: 1017fa50 1017f4f0 1017fa50 1017f740 1017f630 
-00000000 0000
-0000 1017f4f0
-[    1.044101] NIP [b7ee2000] 0xb7ee2000
-[    1.044153] LR [8c008000] 0x8c008000
-[    1.044204] Call Trace:
-[    1.044238] Instruction dump:
-[    1.044279] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX 
-XXXXXXXX XX
-XXXXXX
-[    1.044392] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX 
-XXXXXXXX XX
-XXXXXX
-[    1.044506] ---[ end trace 0000000000000000 ]---
-[    1.044568]
-[    1.044590] note: mount[61] exited with irqs disabled
-
+Reviewed-by: Eric Dumazet <edumazet@google.com>
