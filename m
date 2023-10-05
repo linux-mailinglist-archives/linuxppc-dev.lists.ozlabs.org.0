@@ -2,70 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8A3C7BABA1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Oct 2023 22:50:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 222517BAF63
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Oct 2023 01:41:56 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=4Gbiq94z;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=t8H9luS6;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S1kGL5q6Nz3vf2
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Oct 2023 07:50:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S1p4K6RzJz3cl3
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Oct 2023 10:41:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=4Gbiq94z;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=t8H9luS6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::335; helo=mail-wm1-x335.google.com; envelope-from=edumazet@google.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S1cl33sDGz3cN6
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Oct 2023 03:41:18 +1100 (AEDT)
-Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-405459d9a96so1955e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Oct 2023 09:41:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1696524075; x=1697128875; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kKTDRIoUmCSN9wKAZkd+bxIJEDblkCbUKypHY3ps4Iw=;
-        b=4Gbiq94zQfZu4LzLZMFDFYJ8msFuBtwoTs1lPhAaR/KiS359h2apV9yVNB7gkqcnBF
-         QBJAuzNHrYCJvMbmd88G7+vuAmNL1KsEEXAyY11zPsParRRZ/61KtpsM+wyJ2PB/YiV8
-         A9cw2uymzgurBFHcM7RAL5M+i7+3U7IZiJrEfdP+IICHwn6HapgpL8txSsn13SKyS/2D
-         RZnLRmsInHL62whAuRixeaepaGGPYYvttgMEGO6Eo/2GOKlg4u+voF3ig372CprtRYOX
-         5C/WRxGlD9XXVy193UPA4Lz4bltot4hc9WIvuMF0WzHIJOfd9r3QA0c2lM4GCAjikS0W
-         r2iA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696524075; x=1697128875;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kKTDRIoUmCSN9wKAZkd+bxIJEDblkCbUKypHY3ps4Iw=;
-        b=bCzfcR8nVGVaXMKkWTBjiiJOgAQpYBbcNEyPYtfkFpSbL/c4e7lPr/FRCoU9P4Ay8D
-         92prhpa3JhVLJ/EVphlEPFk/ZvuAHmsW1r3y2oTucgKiH4FPxXyA8OsMPvVkBbYJ8fsh
-         LGFT+Z6MPSmhmLUYCqY7CM0WNCWXrTyUp2qe+TEccfCovh5pPTKcuO6oUi8cUeGzOcfr
-         ed2HX+IrgXoVR50iLEqfzM45FxwnD2uXg+0V0kTlzEfmekmT762rMaR0JIt4FzO79s31
-         HJaigBRuYjZHnrZcax7wYC0Mzn7PiKvYgJ6dpWmapHWo1wkXoskVf09e3+1Cn0cQTQEr
-         GZVA==
-X-Gm-Message-State: AOJu0YwhRzAXYIx40WKXLiHK1txqBUtVx4rKgbEhBiC01C1eIRQTwf8f
-	U6D66ayNpBQ4P/0XFL6K/MzBJeMnPuQsMlVLJgGdZA==
-X-Google-Smtp-Source: AGHT+IHCYz0blMBWwpdJoZ1RUCKFkOGFeBm9VdaHikhjZLlf2r3eA9UAmptIepXMQVxXyXzuuEUlEkvL8t18CpmL0rk=
-X-Received: by 2002:a05:600c:2301:b0:405:38d1:e146 with SMTP id
- 1-20020a05600c230100b0040538d1e146mr66369wmo.4.1696524074654; Thu, 05 Oct
- 2023 09:41:14 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231003145150.2498-1-ansuelsmth@gmail.com> <20231003145150.2498-3-ansuelsmth@gmail.com>
- <CANn89iK226C-pHUJm7HKMyEtMycGC=KCA2M6kw2KJaUj0cCT6w@mail.gmail.com> <20231005093253.2e25533a@kernel.org>
-In-Reply-To: <20231005093253.2e25533a@kernel.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 5 Oct 2023 18:41:03 +0200
-Message-ID: <CANn89iJQ50AdXP2C1YB2pGjE02WCJ-QCsZqE1yGXtcGsfLA0Jw@mail.gmail.com>
-Subject: Re: [net-next PATCH v2 3/4] netdev: replace napi_reschedule with napi_schedule
-To: Jakub Kicinski <kuba@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S1p3Q5Mm8z3c4M
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Oct 2023 10:41:06 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id AD32ECE2494
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Oct 2023 23:41:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id ECB95C433C9
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Oct 2023 23:41:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1696549264;
+	bh=oOOyajYEKtGlLo5e7jnns0BCjbiUx4fwv1OfkDeUNNY=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=t8H9luS6KOrGiXmuU7NjbV4tbXxmv+ThPrBtfZwCMyPaIYgYgqnHL3UKDUvyj3Gr0
+	 1JyuhCnJHqIY6gIECap3o8HxvW+qtBMhh5AZE2NIGmrom3sj/54kSjlNJd4fMzquz4
+	 NiKERpAXgAa54xZsgrfI3OXlgtOYYiKctM8oDVzMBo4hJmUm0rANX46q8DnMiLDKUH
+	 ZYwZs4XvOmLJAx0T6BcFK6DcZjnQD/sPkMZbHZpzGvb5wBnON29OTePMQiRXHwldJZ
+	 pzgG5E28l9WtsWLLO+M9wE+Sg1Gqk2kRAptV6CuTLATK3/V2INTSalE5pVgEsVf+uA
+	 cNtEe9nYnqjbA==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id CA200C4332E; Thu,  5 Oct 2023 23:41:03 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 216156] [bisected] kmemleak: Not scanning unknown object at
+ 0xc00000007f000000
+Date: Thu, 05 Oct 2023 23:41:03 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: short_desc
+Message-ID: <bug-216156-206035-9mQgxTI3Kz@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-216156-206035@https.bugzilla.kernel.org/>
+References: <bug-216156-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Mailman-Approved-At: Fri, 06 Oct 2023 07:46:16 +1100
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,35 +78,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Sergey Ryazanov <ryazanov.s.a@gmail.com>, Ziwei Xiao <ziweixiao@google.com>, Chris Snook <chris.snook@gmail.com>, Rick Lindsley <ricklind@linux.ibm.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Krzysztof Halasa <khalasa@piap.pl>, Yuri Karpov <YKarpov@ispras.ru>, netdev@vger.kernel.org, ath10k@lists.infradead.org, Dany Madden <danymadden@us.ibm.com>, Gregory Greenman <gregory.greenman@intel.com>, Zhengchao Shao <shaozhengchao@huawei.com>, Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>, Dawei Li <set_pte_at@outlook.com>, Intel Corporation <linuxwwan@intel.com>, Rob Herring <robh@kernel.org>, Jeroen de Borst <jeroendb@google.com>, Leon Romanovsky <leon@kernel.org>, linux-rdma@vger.kernel.org, Lee Jones <lee@kernel.org>, Haren Myneni <haren@linux.ibm.com>, linux-stm32@st-md-mailman.stormreply.com, Rushil Gupta <rushilg@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Thomas Falcon <tlfalcon@linux.ibm.com>, Jose Abreu <joabreu@synopsys.com>,
-  =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, linux-wireless@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, Wei Fang <wei.fang@nxp.com>, Christian Marangi <ansuelsmth@gmail.com>, Wolfgang Grandegger <wg@grandegger.com>, Nick Child <nnac123@linux.ibm.com>, Simon Horman <horms@kernel.org>, Liu Haijun <haijun.liu@mediatek.com>, Kalle Valo <kvalo@kernel.org>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, linux-can@vger.kernel.org, Yuanjun Gong <ruc_gongyuanjun@163.com>, Shailend Chand <shailend@google.com>, Marc Kleine-Budde <mkl@pengutronix.de>, Benjamin Berg <benjamin.berg@intel.com>, M Chetan Kumar <m.chetan.kumar@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, Coco Li <lixiaoyan@google.com>, linux-arm-kernel@lists.infradead.org, Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>, Ricardo Martinez <ricardo.martinez@linux.intel.com>, Loic Poulain <loic.poulain@linaro.org>, Zheng Zengkai <zhengzengkai@huawei.com>, Maxim
- ilian Luz <luzmaximilian@gmail.com>, Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Douglas Miller <dougmill@linux.ibm.com>, linux-kernel@vger.kernel.org, Tariq Toukan <tariqt@nvidia.com>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Junfeng Guo <junfeng.guo@intel.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Raju Rangoju <rajur@chelsio.com>, Praveen Kaligineedi <pkaligineedi@google.com>, Johannes Berg <johannes@sipsolutions.net>, Jeff Johnson <quic_jjohnson@quicinc.com>, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Oct 5, 2023 at 6:32=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wro=
-te:
->
-> On Thu, 5 Oct 2023 18:11:56 +0200 Eric Dumazet wrote:
-> > OK, but I suspect some users of napi_reschedule() might not be race-fre=
-e...
->
-> What's the race you're thinking of?
+https://bugzilla.kernel.org/show_bug.cgi?id=3D216156
 
-This sort of thing... the race is in fl_starving() though...
+Erhard F. (erhard_f@mailbox.org) changed:
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/sge.c
-b/drivers/net/ethernet/chelsio/cxgb4/sge.c
-index 98dd78551d89..b5ff2e1a9975 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/sge.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/sge.c
-@@ -4261,7 +4261,7 @@ static void sge_rx_timer_cb(struct timer_list *t)
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+            Summary|kmemleak: Not scanning      |[bisected] kmemleak: Not
+                   |unknown object at           |scanning unknown object at
+                   |0xc00000007f000000          |0xc00000007f000000
 
-                        if (fl_starving(adap, fl)) {
-                                rxq =3D container_of(fl, struct sge_eth_rxq=
-, fl);
--                               if (napi_reschedule(&rxq->rspq.napi))
-+                               if (napi_schedule(&rxq->rspq.napi))
-                                        fl->starving++;
-                                else
-                                        set_bit(id, s->starving_fl);
+--- Comment #10 from Erhard F. (erhard_f@mailbox.org) ---
+Finally had some time to bisect this issue.
+
+ # git bisect bad
+23c2d497de21f25898fbea70aeb292ab8acc8c94 is the first bad commit
+commit 23c2d497de21f25898fbea70aeb292ab8acc8c94
+Author: Patrick Wang <patrick.wang.shcn@gmail.com>
+Date:   Thu Apr 14 19:14:04 2022 -0700
+
+    mm: kmemleak: take a full lowmem check in kmemleak_*_phys()
+
+    The kmemleak_*_phys() apis do not check the address for lowmem's min
+    boundary, while the caller may pass an address below lowmem, which will
+    trigger an oops:
+
+      # echo scan > /sys/kernel/debug/kmemleak
+      Unable to handle kernel paging request at virtual address
+ff5fffffffe00000
+      Oops [#1]
+      Modules linked in:
+      CPU: 2 PID: 134 Comm: bash Not tainted 5.18.0-rc1-next-20220407 #33
+      Hardware name: riscv-virtio,qemu (DT)
+      epc : scan_block+0x74/0x15c
+       ra : scan_block+0x72/0x15c
+      epc : ffffffff801e5806 ra : ffffffff801e5804 sp : ff200000104abc30
+       gp : ffffffff815cd4e8 tp : ff60000004cfa340 t0 : 0000000000000200
+       t1 : 00aaaaaac23954cc t2 : 00000000000003ff s0 : ff200000104abc90
+       s1 : ffffffff81b0ff28 a0 : 0000000000000000 a1 : ff5fffffffe01000
+       a2 : ffffffff81b0ff28 a3 : 0000000000000002 a4 : 0000000000000001
+       a5 : 0000000000000000 a6 : ff200000104abd7c a7 : 0000000000000005
+       s2 : ff5fffffffe00ff9 s3 : ffffffff815cd998 s4 : ffffffff815d0e90
+       s5 : ffffffff81b0ff28 s6 : 0000000000000020 s7 : ffffffff815d0eb0
+       s8 : ffffffffffffffff s9 : ff5fffffffe00000 s10: ff5fffffffe01000
+       s11: 0000000000000022 t3 : 00ffffffaa17db4c t4 : 000000000000000f
+       t5 : 0000000000000001 t6 : 0000000000000000
+      status: 0000000000000100 badaddr: ff5fffffffe00000 cause:
+000000000000000d
+        scan_gray_list+0x12e/0x1a6
+        kmemleak_scan+0x2aa/0x57e
+        kmemleak_write+0x32a/0x40c
+        full_proxy_write+0x56/0x82
+        vfs_write+0xa6/0x2a6
+        ksys_write+0x6c/0xe2
+        sys_write+0x22/0x2a
+        ret_from_syscall+0x0/0x2
+
+    The callers may not quite know the actual address they pass(e.g. from
+    devicetree).  So the kmemleak_*_phys() apis should guarantee the address
+    they finally use is in lowmem range, so check the address for lowmem's
+    min boundary.
+
+    Link:
+https://lkml.kernel.org/r/20220413122925.33856-1-patrick.wang.shcn@gmail.com
+    Signed-off-by: Patrick Wang <patrick.wang.shcn@gmail.com>
+    Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+    Cc: <stable@vger.kernel.org>
+    Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+    Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+
+ mm/kmemleak.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+
+And indeed if I revert 23c2d497de21f25898fbea70aeb292ab8acc8c94 (on top of =
+5.19
+as mm/kmemleak.c differs too much in later kernels) the "kmemleak: Not scan=
+ning
+unknown object at 0xc00000007f000000" is gone.
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
