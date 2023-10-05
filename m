@@ -1,52 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 409987B9AD2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Oct 2023 07:03:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AEA27B9ADB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Oct 2023 07:05:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S1KFK5V2Mz3vc9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Oct 2023 16:03:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S1KHy1PC3z3vdQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Oct 2023 16:05:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.216.51; helo=mail-pj1-f51.google.com; envelope-from=namhyung@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.216.41; helo=mail-pj1-f41.google.com; envelope-from=namhyung@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S1KDr6RzNz2yVv
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Oct 2023 16:02:35 +1100 (AEDT)
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-27760c31056so364044a91.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Oct 2023 22:02:35 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S1KHT4FXXz30hj
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Oct 2023 16:04:53 +1100 (AEDT)
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2777a5e22b5so425252a91.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Oct 2023 22:04:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696482153; x=1697086953;
+        d=1e100.net; s=20230601; t=1696482291; x=1697087091;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ucXGMM2wsWZRQUIgE61EwUCtxRL/wptAnVm0ckROPSc=;
-        b=mtpa0PpkFb3c4N+/mF6KzdzP7V9xrus+gRxBAvTTTb6dvVHaTxv6JSY2l+zIHfH+Fp
-         OzMdk5UuQHdunaKDA5AgEXge94EUh6Gnp42COU3OZLyq+LqSN9lnncI8q7l5Q2XfpuIu
-         mIvCS9X+V8FmVn1WWpe45gzHrUELovDoSdlnIxALfnNO+/cKEYe3SqagA1/0xalgkSXa
-         qY39a0WulSnnBTyuEMDbepdfF//lS5yxWEL6WBKQkHQsWHy9in15YsTTbmPRHmSyZ6hM
-         5Bs5zG9p1/IXHLvRxL3EWJLMsd277M2urP1cjMKX9Lckfq2ncm5pCAp+dSmaF7AfujlV
-         g2Cw==
-X-Gm-Message-State: AOJu0YxRXUrrZlrcKxN5k1lZKaKDIFx36KFaOzOA6YCOJsdOSJV0yqds
-	LS1ss2VOYz/Uk715LTWXvo3qbz9j6OtKbk/rl4I=
-X-Google-Smtp-Source: AGHT+IFcEDolgIB6QYHPmh5ef7Xci5FyI7BIz/Zahu5T5nGT9LDu5s5Q7rezmdB93yE13CCofmJWcfrMGf1+iG0cHcE=
-X-Received: by 2002:a17:90a:a38b:b0:274:99e7:217e with SMTP id
- x11-20020a17090aa38b00b0027499e7217emr4008307pjp.16.1696482153357; Wed, 04
- Oct 2023 22:02:33 -0700 (PDT)
+        bh=6GpQOgC+hdgh0C9LQyr/MypfTxuRF/K6WCOldOnnXYA=;
+        b=OF5e7tynQ3ajc48kjRhVTrlAPVxWsnsEOMFWS6Ybci3GDK83b7MjYDikS7VdlC6ddr
+         gMDVY2OUH7BSCq7m8WjNKOlDDZHNC7tokxm4/vjo1mtse/EcMknojFIB/XqP5XXEor+H
+         VQwiUmf1wnSzqPOztlSG8PG5WJKLu6JYCy3b+PT3cE4WEtoIWJ99fYRBmRR1CInIpfVJ
+         2Sn/VNpwQJjLjFFw6RSop/bXlf8JutvvXuZ/k4hDNzG9m2naAN9JEJuzGeJu7SA2zlvw
+         oEjUfpTHgJ/8kOXRQDA0cwvuhQngDXFoo4oKDhJ61K3JehPYPI/jzwPK8B2wZL2dVX+h
+         ZW+Q==
+X-Gm-Message-State: AOJu0Yzc1C+od1+UbTmGVYXerxJZCIKYa0vVj/Gk65Qfd/cdd1iN3cUJ
+	pIMqTevDr/fMRMhkt3RRJ3AG2zwo9GvTnTwGPWI=
+X-Google-Smtp-Source: AGHT+IFboV2QT7m/k+gdl6ovBnuALbYSTfeigYPbQQByLDnmqlc2aCPlMBNIdTAXTgLjM9gWhJ6jMIsND9j3Kl6RORw=
+X-Received: by 2002:a17:90a:c711:b0:268:dad:2fdc with SMTP id
+ o17-20020a17090ac71100b002680dad2fdcmr4294888pjt.21.1696482291408; Wed, 04
+ Oct 2023 22:04:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230929041133.95355-1-atrajeev@linux.vnet.ibm.com> <20230929041133.95355-2-atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <20230929041133.95355-2-atrajeev@linux.vnet.ibm.com>
+References: <20230929041133.95355-1-atrajeev@linux.vnet.ibm.com> <20230929041133.95355-4-atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <20230929041133.95355-4-atrajeev@linux.vnet.ibm.com>
 From: Namhyung Kim <namhyung@kernel.org>
-Date: Wed, 4 Oct 2023 22:02:20 -0700
-Message-ID: <CAM9d7cj26Dpit3igZjybsbnotBiv_F8mEu62Aor+9bBhwVh55g@mail.gmail.com>
-Subject: Re: [PATCH 1/3] perf tests test_arm_coresight: Fix the shellcheck
- warning in latest test_arm_coresight.sh
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Mike Leach <mike.leach@linaro.org>, James Clark <james.clark@arm.com>, 
-	Leo Yan <leo.yan@linaro.org>
+Date: Wed, 4 Oct 2023 22:04:38 -0700
+Message-ID: <CAM9d7cjr0TDjrMkgu3TJ-JTDbi17SAVfeE0_2=ZCjLJ8_uS=Pw@mail.gmail.com>
+Subject: Re: [PATCH 3/3] tools/perf/tests: Fix shellcheck warning in
+ record_sideband.sh test
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -67,65 +65,49 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 On Thu, Sep 28, 2023 at 9:11=E2=80=AFPM Athira Rajeev
 <atrajeev@linux.vnet.ibm.com> wrote:
 >
-> Running shellcheck on tests/shell/test_arm_coresight.sh
-> throws below warnings:
+> Running shellcheck on record_sideband.sh throws below
+> warning:
 >
->         In tests/shell/test_arm_coresight.sh line 15:
->         cs_etm_path=3D$(find  /sys/bus/event_source/devices/cs_etm/ -name=
- cpu* -print -quit)
->                   ^--^ SC2061: Quote the parameter to -name so the shell =
-won't interpret it.
+>         In tests/shell/record_sideband.sh line 25:
+>           if ! perf record -o ${perfdata} -BN --no-bpf-event -C $1 true 2=
+>&1 >/dev/null
+>             ^--^ SC2069: To redirect stdout+stderr, 2>&1 must be last (or=
+ use '{ cmd > file; } 2>&1' to clarify).
 >
->         In tests/shell/test_arm_coresight.sh line 20:
->                 if [ $archhver -eq 5 -a "$(printf "0x%X\n" $archpart)" =
-=3D "0xA13" ] ; then
->                                      ^-- SC2166: Prefer [ p ] && [ q ] as=
- [ p -a q ] is not well defined
+> This shows shellcheck warning SC2069 where the redirection
+> order needs to be fixed. Use { cmd > file; } 2>&1 to fix the
+> redirection of perf record output
 >
-> This warning is observed after commit:
-> "commit bb350847965d ("perf test: Update cs_etm testcase for Arm ETE")"
->
-> Fixed this issue by using quoting 'cpu*' for SC2061 and
-> using "&&" in line number 20 for SC2166 warning
->
-> Fixes: bb350847965d ("perf test: Update cs_etm testcase for Arm ETE")
+> Fixes: 23b97c7ee963 ("perf test: Add test case for record sideband events=
+")
 > Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> ---
+>  tools/perf/tests/shell/record_sideband.sh | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/tools/perf/tests/shell/record_sideband.sh b/tools/perf/tests=
+/shell/record_sideband.sh
+> index 5024a7ce0c51..7e036763a43c 100755
+> --- a/tools/perf/tests/shell/record_sideband.sh
+> +++ b/tools/perf/tests/shell/record_sideband.sh
+> @@ -22,7 +22,7 @@ trap trap_cleanup EXIT TERM INT
+>
+>  can_cpu_wide()
+>  {
+> -    if ! perf record -o ${perfdata} -BN --no-bpf-event -C $1 true 2>&1 >=
+/dev/null
+> +    if ! { perf record -o ${perfdata} -BN --no-bpf-event -C $1 true > /d=
+ev/null; } 2>&1
 
-You'd better add Coresight folks on this.
-Maybe this file was missing in the MAINTAINERS file.
+I think we usually go without braces.
 
 Thanks,
 Namhyung
 
 
-> ---
->  tools/perf/tests/shell/test_arm_coresight.sh | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/tools/perf/tests/shell/test_arm_coresight.sh b/tools/perf/te=
-sts/shell/test_arm_coresight.sh
-> index fe78c4626e45..f2115dfa24a5 100755
-> --- a/tools/perf/tests/shell/test_arm_coresight.sh
-> +++ b/tools/perf/tests/shell/test_arm_coresight.sh
-> @@ -12,12 +12,12 @@
->  glb_err=3D0
->
->  cs_etm_dev_name() {
-> -       cs_etm_path=3D$(find  /sys/bus/event_source/devices/cs_etm/ -name=
- cpu* -print -quit)
-> +       cs_etm_path=3D$(find  /sys/bus/event_source/devices/cs_etm/ -name=
- 'cpu*' -print -quit)
->         trcdevarch=3D$(cat ${cs_etm_path}/mgmt/trcdevarch)
->         archhver=3D$((($trcdevarch >> 12) & 0xf))
->         archpart=3D$(($trcdevarch & 0xfff))
->
-> -       if [ $archhver -eq 5 -a "$(printf "0x%X\n" $archpart)" =3D "0xA13=
-" ] ; then
-> +       if [ $archhver -eq 5 ] && [ "$(printf "0x%X\n" $archpart)" =3D "0=
-xA13" ] ; then
->                 echo "ete"
->         else
->                 echo "etm"
+>      then
+>          echo "record sideband test [Skipped cannot record cpu$1]"
+>          err=3D2
 > --
 > 2.31.1
 >
