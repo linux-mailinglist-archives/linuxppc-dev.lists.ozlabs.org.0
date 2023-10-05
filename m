@@ -2,66 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BFB47BAB9B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Oct 2023 22:47:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EA3B7BAB9D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Oct 2023 22:47:52 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=JY4ptC+P;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=H/lgRrKK;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S1kBX0dxBz3dlT
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Oct 2023 07:47:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S1kCV0Tbfz3vZh
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Oct 2023 07:47:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=JY4ptC+P;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=H/lgRrKK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::534; helo=mail-ed1-x534.google.com; envelope-from=edumazet@google.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::32b; helo=mail-wm1-x32b.google.com; envelope-from=edumazet@google.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S1c334R4pz3vbn
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Oct 2023 03:10:06 +1100 (AEDT)
-Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-537f07dfe8eso12311a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Oct 2023 09:10:06 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S1c5S2r8Bz3cD5
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Oct 2023 03:12:12 +1100 (AEDT)
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-405459d9a96so99685e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Oct 2023 09:12:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1696522200; x=1697127000; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1696522328; x=1697127128; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wRCO/tDP4lRLu2OPV/gEOu9clmIfNVaCcbX9ayRgMZQ=;
-        b=JY4ptC+P2eDdpbtL+m5xO+kNMOW0gwd+f7z0OONw+JOWgL8BvmSOPPPLUwDQRsOaB7
-         KA3pl3oWlA+T5PnnkcwASv1PllATGoQAgB30nkXQ+Xt9OLsUpoVwmKORNKn8j0cdx1JP
-         LDutEXbWgHvm8F3TplCEFcXG0snbHcPv0eNy1dx1y/neQJigVEl4cQ/lnw5udsrmkbnP
-         tWrkFuouEGHW55ntPFzoDjxZUaqWCzicm8eHtn6IG7FlI9qx1tpDcRDnIDFxkpVDwSGA
-         V01iIPf6LmNj21pUGPEAF2r+lHQJOPUmaMnBVb485cxja0LyKTNUWHqHeoZ1mftzH5Pj
-         2/TQ==
+        bh=0r0z6lg6WCpdjTrIkK0dVsLYyVCZ/7MdG8Aqn4UL8Rc=;
+        b=H/lgRrKKTWRMsE7Je0Mw1jPs45WKKq3mIvJT4TMMIXEZTcCXSD6KvihuFtLILQzCXN
+         qbUMw17I/PM6mfyGH5Ig3uPJWm1mp3O7wcU/xa8qlW694lvFJLxvpfD85OKt5Jd53ItU
+         6Ge954p0WGOk1zxkALPSFGYMXPkrqwFJcIwOCEn9GaBT4jFACi514HzbR5x3YzO1D0S1
+         LGtBUb1AYSc7bU5Pygk8cOPZz8LZk7xUnBlUbhCyWEuE/pUWA4E1b28UTqGWfFUuk70t
+         htTXAyzFH/2AmNK4O8P2FNOIhivVX5RK3EuQXTGvcLDPopACGfOTRW9k1vpaEeznjQ/j
+         vIKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696522200; x=1697127000;
+        d=1e100.net; s=20230601; t=1696522328; x=1697127128;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wRCO/tDP4lRLu2OPV/gEOu9clmIfNVaCcbX9ayRgMZQ=;
-        b=uzD5AYcdAp1z0NBrYaCntgYWV43OqVuWfrKIVTLiawozfz4Gaxmv+ZHnkXeCX5dpjh
-         x0s3ic3MzVV8zcbiocXyMQ9OV58kIVOWlo0cFjkH6DM4YvoWiIIXcRMDokCx8S0fuWoT
-         MuBZfYYtuu9kcQ7MHtyUnG3cAtw2zDii+pNeVuNw0CnPABVOAMpWMI26aGJdj3L7LE9P
-         XV6NAElpspeXYakOJX5UZgcE1XkPozFcPBwA4hntcJ2tcB3ZYRWamLhhCGqV4KNs/TJ1
-         dmpG0JAilF8+jcdkpdrTXCd0/GjGm+UTtYv401oY1BbrmtJWPAcoN9YCYP36QbBQZ6H6
-         5ORw==
-X-Gm-Message-State: AOJu0YxcNyngmXnhFAxYNJ4GKYqxplJTVj2TNh+uFMFuQIxFW1CQyRW8
-	eJovh7ozuUTbIoBLhwJklETWvlbaxzng317LsqvbdQ==
-X-Google-Smtp-Source: AGHT+IFzYlK6nOXqFn3XTRyZ9yDEZC9Bs5FeKRJ0Zfr3978r7XwjxquujorP05hjLrjSFu1gUI2ea386eAkHyH3Ha+s=
-X-Received: by 2002:a50:8d0f:0:b0:538:50e4:5446 with SMTP id
- s15-20020a508d0f000000b0053850e45446mr71813eds.5.1696522199600; Thu, 05 Oct
- 2023 09:09:59 -0700 (PDT)
+        bh=0r0z6lg6WCpdjTrIkK0dVsLYyVCZ/7MdG8Aqn4UL8Rc=;
+        b=rGLBx095mK2rNKwrMBm6FOt8kpc9LDFCnHr7erXmoxMI8SUudZ9T1p+ZRftIc5TW62
+         gL0yMm7VHSvx1NLPmQjSFAB+TtqqVzeaQRfdkvcx4HoZY3y0S+LGfKjNu2fLnmBV0gWi
+         QV3FxFc8UtAaFDtRyUyGvBG1Di6N0YLx1HJuKDliV1I8Bsu1t/e+VEi+3DNlgpwk0oDT
+         eYSxyNVOs4V+FxdBbZFaA6OsImOEuFEgwKAZX3fKgELZQ6OjaSJPM4qOCDzKy1S8SIj9
+         Vue5xZ2s/2P9TFJVUpmcxjjJeghssbyHOzV+BNipnk9ZU/2dJfscrpsLugafgc1P4Kjf
+         BZFw==
+X-Gm-Message-State: AOJu0Yyo/8FdMxrUO8DiVnbKhneKXSvxEobDAWAVR5WnN56Ra9Bt62yy
+	a1iP3ZkOKOOEGVe6XG6q8a73vUli9FrEb3SpUBYX/A==
+X-Google-Smtp-Source: AGHT+IHsG9cALy9l/AGtf9WGqoTk1+vFPuwod1G0A2HPE9T+W6tIBWkayyF2LSEa5O28SfRy9xIMPv/xnERf3BuOFTY=
+X-Received: by 2002:a05:600c:b93:b0:3fe:eb42:7ec with SMTP id
+ fl19-20020a05600c0b9300b003feeb4207ecmr61696wmb.1.1696522327966; Thu, 05 Oct
+ 2023 09:12:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231003145150.2498-1-ansuelsmth@gmail.com>
-In-Reply-To: <20231003145150.2498-1-ansuelsmth@gmail.com>
+References: <20231003145150.2498-1-ansuelsmth@gmail.com> <20231003145150.2498-3-ansuelsmth@gmail.com>
+In-Reply-To: <20231003145150.2498-3-ansuelsmth@gmail.com>
 From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 5 Oct 2023 18:09:42 +0200
-Message-ID: <CANn89iK5E=SFJoNNTd3SNdT0oPR503dEf_gNfP=Ls3AKS_4F_g@mail.gmail.com>
-Subject: Re: [net-next PATCH v2 1/4] netdev: replace simple
- napi_schedule_prep/__napi_schedule to napi_schedule
+Date: Thu, 5 Oct 2023 18:11:56 +0200
+Message-ID: <CANn89iK226C-pHUJm7HKMyEtMycGC=KCA2M6kw2KJaUj0cCT6w@mail.gmail.com>
+Subject: Re: [net-next PATCH v2 3/4] netdev: replace napi_reschedule with napi_schedule
 To: Christian Marangi <ansuelsmth@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -86,9 +85,20 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 On Tue, Oct 3, 2023 at 8:36=E2=80=AFPM Christian Marangi <ansuelsmth@gmail.=
 com> wrote:
 >
-> Replace drivers that still use napi_schedule_prep/__napi_schedule
-> with napi_schedule helper as it does the same exact check and call.
+> Now that napi_schedule return a bool, we can drop napi_reschedule that
+> does the same exact function. The function comes from a very old commit
+> bfe13f54f502 ("ibm_emac: Convert to use napi_struct independent of struct
+> net_device") and the purpose is actually deprecated in favour of
+> different logic.
+>
+> Convert every user of napi_reschedule to napi_schedule.
 >
 > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com> # ath10k
+> Acked-by: Nick Child <nnac123@linux.ibm.com> # ibm
+> Acked-by: Marc Kleine-Budde <mkl@pengutronix.de> # for can/dev/rx-offload=
+.c
+
+OK, but I suspect some users of napi_reschedule() might not be race-free...
 
 Reviewed-by: Eric Dumazet <edumazet@google.com>
