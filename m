@@ -1,60 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0D5F7B8E02
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 22:29:10 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=h1x1dXpx;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 409987B9AD2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Oct 2023 07:03:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S15rN4Lb7z3cb2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Oct 2023 07:29:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S1KFK5V2Mz3vc9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Oct 2023 16:03:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=h1x1dXpx;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.216.51; helo=mail-pj1-f51.google.com; envelope-from=namhyung@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S15qT5Nh8z2yG9
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Oct 2023 07:28:21 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id C357261712
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Oct 2023 20:28:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72DA3C433CB
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Oct 2023 20:28:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1696451297;
-	bh=ESQvJZctYiv8lN6ltsro47C1eNao1M4P8HhyGWJi1h4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=h1x1dXpxsW0znEXAMg1TsOxUEQAeL4mameKwEflZkI3ud72E4SfSnMLv4MTyPJOGK
-	 91xKEos+lnRlsdOawtcs1w7xjj/NrHk6TkQun8DsZU6AEJZ9kq8yvqhWsCcAP7ToV0
-	 3GMHy78dDOOJgAnAvr2ii/YekvQwjb2tiYwKcj8h+qj46tO8durP9jmgOwujcb89DT
-	 1Fcvt0BdxthkDKsconPNNWQjko1VboNg1Q5AJwRe7Wl23lo/dozWL04bt+Kplgmc+I
-	 i/sX6rb9bwFGm0GxmpG+U6qFYRmMILtd8DUJKRvdgDyKyyQ3S4+2RbKVtrvmaizWbG
-	 91yqWlSOeijRA==
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2bfea381255so3116611fa.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Oct 2023 13:28:17 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyaXiQRURMXytXrpyp0Cd4fAzk/zYE+IqwE/440Gl4MlyunwLal
-	ICiEw/oZKBYZWFkV6DLYpCeYa8uuuejeDtYjFg==
-X-Google-Smtp-Source: AGHT+IFXJfh8tz1TfG4klEB0mQGxX4Kz28T+ev5c9ShobOxqcsUhL+MV/lbeEpe9jSwPaddrVVnL759EryfLJI5QK0U=
-X-Received: by 2002:a05:6512:605:b0:503:1ca6:c590 with SMTP id
- b5-20020a056512060500b005031ca6c590mr2798624lfe.22.1696451275113; Wed, 04 Oct
- 2023 13:27:55 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S1KDr6RzNz2yVv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Oct 2023 16:02:35 +1100 (AEDT)
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-27760c31056so364044a91.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Oct 2023 22:02:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696482153; x=1697086953;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ucXGMM2wsWZRQUIgE61EwUCtxRL/wptAnVm0ckROPSc=;
+        b=mtpa0PpkFb3c4N+/mF6KzdzP7V9xrus+gRxBAvTTTb6dvVHaTxv6JSY2l+zIHfH+Fp
+         OzMdk5UuQHdunaKDA5AgEXge94EUh6Gnp42COU3OZLyq+LqSN9lnncI8q7l5Q2XfpuIu
+         mIvCS9X+V8FmVn1WWpe45gzHrUELovDoSdlnIxALfnNO+/cKEYe3SqagA1/0xalgkSXa
+         qY39a0WulSnnBTyuEMDbepdfF//lS5yxWEL6WBKQkHQsWHy9in15YsTTbmPRHmSyZ6hM
+         5Bs5zG9p1/IXHLvRxL3EWJLMsd277M2urP1cjMKX9Lckfq2ncm5pCAp+dSmaF7AfujlV
+         g2Cw==
+X-Gm-Message-State: AOJu0YxRXUrrZlrcKxN5k1lZKaKDIFx36KFaOzOA6YCOJsdOSJV0yqds
+	LS1ss2VOYz/Uk715LTWXvo3qbz9j6OtKbk/rl4I=
+X-Google-Smtp-Source: AGHT+IFcEDolgIB6QYHPmh5ef7Xci5FyI7BIz/Zahu5T5nGT9LDu5s5Q7rezmdB93yE13CCofmJWcfrMGf1+iG0cHcE=
+X-Received: by 2002:a17:90a:a38b:b0:274:99e7:217e with SMTP id
+ x11-20020a17090aa38b00b0027499e7217emr4008307pjp.16.1696482153357; Wed, 04
+ Oct 2023 22:02:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231004-dt-asoc-header-cleanups-v2-0-e77765080cbc@kernel.org>
- <20231004-dt-asoc-header-cleanups-v2-1-e77765080cbc@kernel.org> <72f8f521-93f0-4e3d-929c-f7478622ddb3@sirena.org.uk>
-In-Reply-To: <72f8f521-93f0-4e3d-929c-f7478622ddb3@sirena.org.uk>
-From: Rob Herring <robh@kernel.org>
-Date: Wed, 4 Oct 2023 15:27:42 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqLw6TKBsTee6U5Yfiz_T7WDt+1LZZNWzW1pL+z9bK5R0w@mail.gmail.com>
-Message-ID: <CAL_JsqLw6TKBsTee6U5Yfiz_T7WDt+1LZZNWzW1pL+z9bK5R0w@mail.gmail.com>
-Subject: Re: [PATCH v2 1/5] ASoC: Explicitly include correct DT includes
-To: Mark Brown <broonie@kernel.org>
+References: <20230929041133.95355-1-atrajeev@linux.vnet.ibm.com> <20230929041133.95355-2-atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <20230929041133.95355-2-atrajeev@linux.vnet.ibm.com>
+From: Namhyung Kim <namhyung@kernel.org>
+Date: Wed, 4 Oct 2023 22:02:20 -0700
+Message-ID: <CAM9d7cj26Dpit3igZjybsbnotBiv_F8mEu62Aor+9bBhwVh55g@mail.gmail.com>
+Subject: Re: [PATCH 1/3] perf tests test_arm_coresight: Fix the shellcheck
+ warning in latest test_arm_coresight.sh
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Mike Leach <mike.leach@linaro.org>, James Clark <james.clark@arm.com>, 
+	Leo Yan <leo.yan@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -68,29 +60,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Cezary Rojewski <cezary.rojewski@intel.com>, Bard Liao <yung-chuan.liao@linux.intel.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, nuno.sa@analog.com, Kevin Lu <kevin-lu@ti.com>, Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, Sylwester Nawrocki <s.nawrocki@samsung.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, Shengjiu Wang <shengjiu.wang@gmail.com>, Lars-Peter Clausen <lars@metafoo.de>, Ban Tao <fengzheng923@gmail.com>, Fabio Estevam <festevam@gmail.com>, Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>, Peter Ujfalusi <peter.ujfalusi@gmail.com>, Nicolas Frattaroli <frattaroli.nicolas@gmail.com>, Ranjani Sridharan <ranjani.sridharan@linux.intel.com>, Olivier Moysan <olivier.moysan@foss.st.com>, Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, Baojun Xu <baojun.xu@ti.com>, Charles Keepax <ckeepax@opensource.cirrus.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, alsa-devel@als
- a-project.org, Shenghao Ding <shenghao-ding@ti.com>, James Schulman <james.schulman@cirrus.com>, Nicolin Chen <nicoleotsuka@gmail.com>, Richard Fitzgerald <rf@opensource.cirrus.com>, Jaroslav Kysela <perex@perex.cz>, Kevin Cernekee <cernekee@chromium.org>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Oder Chiou <oder_chiou@realtek.com>, Kai Vehmanen <kai.vehmanen@linux.intel.com>, Kiseok Jo <kiseok.jo@irondevice.com>, linuxppc-dev@lists.ozlabs.org, Takashi Iwai <tiwai@suse.com>, linux-kernel@vger.kernel.org, Banajit Goswami <bgoswami@quicinc.com>, David Rhodes <david.rhodes@cirrus.com>, Peter Rosin <peda@axentia.se>, Jarkko Nikula <jarkko.nikula@bitmer.com>
+Cc: irogers@google.com, maddy@linux.ibm.com, kjain@linux.ibm.com, adrian.hunter@intel.com, acme@kernel.org, linux-perf-users@vger.kernel.org, jolsa@kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 4, 2023 at 12:39=E2=80=AFPM Mark Brown <broonie@kernel.org> wro=
-te:
+On Thu, Sep 28, 2023 at 9:11=E2=80=AFPM Athira Rajeev
+<atrajeev@linux.vnet.ibm.com> wrote:
 >
-> On Wed, Oct 04, 2023 at 10:58:05AM -0500, Rob Herring wrote:
-> > The DT of_device.h and of_platform.h date back to the separate
-> > of_platform_bus_type before it was merged into the regular platform bus=
-.
-> > As part of that merge prepping Arm DT support 13 years ago, they
-> > "temporarily" include each other. They also include platform_device.h
-> > and of.h. As a result, there's a pretty much random mix of those includ=
-e
-> > files used throughout the tree. In order to detangle these headers and
-> > replace the implicit includes with struct declarations, users need to
-> > explicitly include the correct includes.
+> Running shellcheck on tests/shell/test_arm_coresight.sh
+> throws below warnings:
 >
-> This is breaking various builds for me, for example arm64 defconfig:
+>         In tests/shell/test_arm_coresight.sh line 15:
+>         cs_etm_path=3D$(find  /sys/bus/event_source/devices/cs_etm/ -name=
+ cpu* -print -quit)
+>                   ^--^ SC2061: Quote the parameter to -name so the shell =
+won't interpret it.
+>
+>         In tests/shell/test_arm_coresight.sh line 20:
+>                 if [ $archhver -eq 5 -a "$(printf "0x%X\n" $archpart)" =
+=3D "0xA13" ] ; then
+>                                      ^-- SC2166: Prefer [ p ] && [ q ] as=
+ [ p -a q ] is not well defined
+>
+> This warning is observed after commit:
+> "commit bb350847965d ("perf test: Update cs_etm testcase for Arm ETE")"
+>
+> Fixed this issue by using quoting 'cpu*' for SC2061 and
+> using "&&" in line number 20 for SC2166 warning
+>
+> Fixes: bb350847965d ("perf test: Update cs_etm testcase for Arm ETE")
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-I believe I got some of the include changes in the wrong place. They
-should go into patch 5.
+You'd better add Coresight folks on this.
+Maybe this file was missing in the MAINTAINERS file.
 
-Rob
+Thanks,
+Namhyung
+
+
+> ---
+>  tools/perf/tests/shell/test_arm_coresight.sh | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/tools/perf/tests/shell/test_arm_coresight.sh b/tools/perf/te=
+sts/shell/test_arm_coresight.sh
+> index fe78c4626e45..f2115dfa24a5 100755
+> --- a/tools/perf/tests/shell/test_arm_coresight.sh
+> +++ b/tools/perf/tests/shell/test_arm_coresight.sh
+> @@ -12,12 +12,12 @@
+>  glb_err=3D0
+>
+>  cs_etm_dev_name() {
+> -       cs_etm_path=3D$(find  /sys/bus/event_source/devices/cs_etm/ -name=
+ cpu* -print -quit)
+> +       cs_etm_path=3D$(find  /sys/bus/event_source/devices/cs_etm/ -name=
+ 'cpu*' -print -quit)
+>         trcdevarch=3D$(cat ${cs_etm_path}/mgmt/trcdevarch)
+>         archhver=3D$((($trcdevarch >> 12) & 0xf))
+>         archpart=3D$(($trcdevarch & 0xfff))
+>
+> -       if [ $archhver -eq 5 -a "$(printf "0x%X\n" $archpart)" =3D "0xA13=
+" ] ; then
+> +       if [ $archhver -eq 5 ] && [ "$(printf "0x%X\n" $archpart)" =3D "0=
+xA13" ] ; then
+>                 echo "ete"
+>         else
+>                 echo "etm"
+> --
+> 2.31.1
+>
