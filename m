@@ -2,49 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFCDC7BC18F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Oct 2023 23:47:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C38037BC1F7
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Oct 2023 00:03:48 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UIB5D7QU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mr5hNZS7;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S2MVN57c7z3vbv
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Oct 2023 08:47:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S2Mrf4G4Hz3cnR
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Oct 2023 09:03:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UIB5D7QU;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mr5hNZS7;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org)
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S2MTX5Xr4z3c58
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Oct 2023 08:47:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S2Mql0blxz30NP
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Oct 2023 09:02:58 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id CD072B82A90;
-	Fri,  6 Oct 2023 21:47:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B17AC433C7;
-	Fri,  6 Oct 2023 21:47:08 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTP id D95C7B82ABF;
+	Fri,  6 Oct 2023 22:02:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C4CC433C7;
+	Fri,  6 Oct 2023 22:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1696628829;
-	bh=7ShH9lM/jTtdIpDBd5tkXIdLZJ6EOzXUhDKKnj55xPo=;
+	s=k20201202; t=1696629774;
+	bh=5qNpTHdPbPHNPOq+CPvh8QULUoFCrWL4op5DAxKIpGM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=UIB5D7QUgappiPLI6dOoUHSxvt5YAjXDxSa8MYt3/cAFv/c5IHJYHnYTPpU858ZTu
-	 ClL/Cf8dYmT/K2AsekQJqM/9c+T/Lu+ejjHS7ojVK3HC8q8o9i3501u//0M0XEEIUA
-	 kQhpB665WwNyXG+96GLLJwQmYMwetRfLQ0qkrS4cswc44g/UYawosmoi4NMFiFOe4q
-	 duYX45Tg97UhJ6fdrukD6yY2MmoCfaH9XlYzON02quQybVLTyXOqpCIZOPLdLN7pvz
-	 WNUh6/12mNBI+Q820T8snzNGUsqfrHG91QPyG1E9MvoRh77CxpA+aVQH87ZXbvLdOH
-	 hY2YnF6sVQk4Q==
-Date: Fri, 6 Oct 2023 14:47:02 -0700
+	b=mr5hNZS7cPEC9fZ9Pm1otMuyEoQtn5x0MebbmvDKT1ysxZd56Xx+tCIEM8QZkQ0Rx
+	 2HUNxrgaPRHz8QjWANUbD1mH6curuCdl6HomjYf2KnrCtmGyAAnY5ufgjcVH8v/6jb
+	 QG2jDbcpxxyNYg4G8snQQRAUJZiH1mXGOYt8SQQGeANRY51XoIQTOlWK6yuYXJMFzl
+	 JuNX4YzwFq+kxxRqEiTycDfkPmkv5j5xhBajGBUP1pMm0yb+NbugndmWBLihXxE3sN
+	 +UAuDIx49s6xJ7b8nNHq77RCfPL2Bx0miv1JSuqRDSCA4eQG0Z9vQ8/jx1890NcVXF
+	 fyDg6rJJsfGGg==
+Date: Fri, 6 Oct 2023 15:02:52 -0700
 From: Jakub Kicinski <kuba@kernel.org>
 To: Herve Codina <herve.codina@bootlin.com>
-Subject: Re: [PATCH v7 10/30] net: wan: Add support for QMC HDLC
-Message-ID: <20231006144702.778c165e@kernel.org>
-In-Reply-To: <20230928070652.330429-11-herve.codina@bootlin.com>
+Subject: Re: [PATCH v7 26/30] net: wan: framer: Add support for the Lantiq
+ PEF2256 framer
+Message-ID: <20231006150252.6d45be95@kernel.org>
+In-Reply-To: <20230928070652.330429-27-herve.codina@bootlin.com>
 References: <20230928070652.330429-1-herve.codina@bootlin.com>
-	<20230928070652.330429-11-herve.codina@bootlin.com>
+	<20230928070652.330429-27-herve.codina@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
@@ -64,39 +65,16 @@ Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org, Thomas Petazzoni 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 28 Sep 2023 09:06:28 +0200 Herve Codina wrote:
-> +static int qmc_hdlc_close(struct net_device *netdev)
-> +{
-> +	struct qmc_hdlc *qmc_hdlc = netdev_to_qmc_hdlc(netdev);
-> +	struct qmc_hdlc_desc *desc;
-> +	int i;
-> +
-> +	netif_stop_queue(netdev);
-> +
-> +	qmc_chan_stop(qmc_hdlc->qmc_chan, QMC_CHAN_ALL);
-> +	qmc_chan_reset(qmc_hdlc->qmc_chan, QMC_CHAN_ALL);
+On Thu, 28 Sep 2023 09:06:44 +0200 Herve Codina wrote:
+> +	for (i = 0; i < count; i++) {
+> +		(audio_devs + i)->name = "framer-codec";
+> +		(audio_devs + i)->of_compatible = compatible;
+> +		(audio_devs + i)->id = i;
 
-stopping the queue looks a bit racy, a completion may come in 
-and restart the queue
+Why not array notation?
 
-> +	for (i = 0; i < ARRAY_SIZE(qmc_hdlc->tx_descs); i++) {
-> +		desc = &qmc_hdlc->tx_descs[i];
-> +		if (!desc->skb)
-> +			continue;
-> +		dma_unmap_single(qmc_hdlc->dev, desc->dma_addr, desc->dma_size,
-> +				 DMA_TO_DEVICE);
-> +		kfree_skb(desc->skb);
-> +		desc->skb = NULL;
 > +	}
 > +
-> +	for (i = 0; i < ARRAY_SIZE(qmc_hdlc->rx_descs); i++) {
-> +		desc = &qmc_hdlc->rx_descs[i];
-> +		if (!desc->skb)
-> +			continue;
-> +		dma_unmap_single(qmc_hdlc->dev, desc->dma_addr, desc->dma_size,
-> +				 DMA_FROM_DEVICE);
-> +		kfree_skb(desc->skb);
-> +		desc->skb = NULL;
-> +	}
-> +
-> +	hdlc_close(netdev);
+> +	ret = mfd_add_devices(pef2256->dev, 0, audio_devs, count, NULL, 0, NULL);
+
+Should Lee be CCed for the MFD part?
