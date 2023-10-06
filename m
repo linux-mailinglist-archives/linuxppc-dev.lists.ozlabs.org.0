@@ -2,58 +2,112 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C22A47BB598
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Oct 2023 12:46:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F6337BB688
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Oct 2023 13:37:59 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=iYB5jTcL;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=O8RYZgc5;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S24qj483Zz3vXd
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Oct 2023 21:46:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S25yY22qJz3vXc
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Oct 2023 22:37:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=iYB5jTcL;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=O8RYZgc5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=mailbox.org (client-ip=2001:67c:2050:0:465::201; helo=mout-p-201.mailbox.org; envelope-from=erhard_f@mailbox.org; receiver=lists.ozlabs.org)
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [IPv6:2001:67c:2050:0:465::201])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f400:fe5b::60d; helo=nam12-bn8-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2060d.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe5b::60d])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S24pk2PGsz3c01
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Oct 2023 21:46:03 +1100 (AEDT)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4S24pR1j3Vz9sl2;
-	Fri,  6 Oct 2023 12:45:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1696589151;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SLvuk2IgweQ8ikhPjyefFhykL92f2Msr8nDnUTvIvCM=;
-	b=iYB5jTcLtpOui5MNtJsFFgLnknvJcFLdU8bkBhAc+EgcjShOImCMt3QTbxe6eWsiFOhSfF
-	5me5q4NcnopbPdgNf34ngDGhDETxk4mR8MlTQp8ZfIPhjf6CjntN4vraLni3kGR7972ia6
-	JCaX/LgS+6Njrg6kyfNvKL7WycubdJspSa614s4teopuQXeUnoFDyUe6KOB5B1I4JAGP6e
-	OqeXvM3JgE50Q1Il3iJMoZ4vkC0/YkqrRf75C6bPKVyYawI6ZgRA8S4hWCQhR9hzQhiu8M
-	UH7yqn0EKN6XQFNJ0WmOo7rSa7biTIDlqkTNxlSAWVZyV8W4T7yrZUhDM0F9EQ==
-Date: Fri, 6 Oct 2023 12:45:48 +0200
-From: Erhard Furtner <erhard_f@mailbox.org>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [Bisected] PowerMac G5 fails booting kernel 6.6-rc3 (BUG:
- Unable to handle kernel data access at 0xfeffbb62ffec65fe)
-Message-ID: <20231006124548.54d4b7a8@yea>
-In-Reply-To: <87sf6onwko.fsf@linux.ibm.com>
-References: <20230929132750.3cd98452@yea>
-	<87sf6onwko.fsf@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S25xd2nSzz3cRv
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Oct 2023 22:37:07 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mD5btIUv7muxLEyIY4YNasMU0VHU5BDW4aZmBMsZYJU3oQNnboiCUN5Gxf4MZpMYAcy3jZyx1k0/Lp+gbfADeoL3ahVzG87jW5sN3bbsOij3+Tr4lcHeuC290LwNnyV3PHrA0infLWKC0c2mFV4Tfjj35IysAd1GHL9o3ztsUlwsbQngUV//76ymfTzVK5yqxNfzozI/Q5j0wi5H2QU5m4WCshDLbTSpRhhCH3nD9WTqRLClrvMMf0IuOFYfSGOTweFMKaZWQ2SgN8/OfY1sGtiKReBd9+XP0oQfhMjIXMNUNWxV+XSY9fjARsUpwSXzi5NLpxnzhRUZX4grnWU/YA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8YS4GKvPWR+qtNIH0/VPfhhrwct9zM/hGetdmYRwC6Y=;
+ b=i9drSmA6hwaV0MMbuHFtBNu7fc6h36QA+3Sfj3du1XWdz3i65ELJBPdAeLp1Ihq7RPfkm00HF+Fj1EbxazLbCeNtBn/NLhJHqfS5I/J4xSBGnzXS52XZ/YTnQgMApmiOq7zgApG9ol74/krzWTgJE5QlJSJCiQ+Q31vUjcgY2P9Qo95NVMkumtU23pLKQpeSNbeIyhPPCqkcKWDOiKr/udgbuiGsn8PbOEmzdivs+a7wLwRFE3TfEkL2dsVU5HWPxl8/t7UNimjsCu6GbTMnj4MmCafQi+vWkKcMh/63DvgwyhAH36wRDF22yeWwSaGCD+dsKqpnc7lU1WJPZ6IdZA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8YS4GKvPWR+qtNIH0/VPfhhrwct9zM/hGetdmYRwC6Y=;
+ b=O8RYZgc5QVi59yDYMK9wJj3eE1maamFl3+zEXmCjdN2iffaJYSJ1wa4W9MeB4V42mQabzyvXt81iY+ckVNfJPBbHZ/r8FufiCxf6eLgrzrnuoRl9/i8huO2UOOYnqFlwNRZry3QZxAYl1UYaA7A6LweX/HzInUOFryVdyRqBw/TeguVlH/wqtF3yA+FE8zsugLHQgWYILcSyrSqQgyQ2FAUlXlylNGgRxQPyEzgoLSlip4lASSvHA/KaSe2ssJKvNnP4UWi+48ncftRyGET9941fbpF+d8toVVsrOTp264PwNKbPJJMok3MCPGiwFiB8aRMRtRn6jADJ1Z7TApo0pQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by MN0PR12MB5833.namprd12.prod.outlook.com (2603:10b6:208:378::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.25; Fri, 6 Oct
+ 2023 11:36:45 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::3f66:c2b6:59eb:78c2]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::3f66:c2b6:59eb:78c2%6]) with mapi id 15.20.6838.030; Fri, 6 Oct 2023
+ 11:36:45 +0000
+Date: Fri, 6 Oct 2023 08:36:44 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Tasmiya Nalatwad <tasmiya@linux.vnet.ibm.com>
+Subject: Re: [Bisected] [commit 2ad56efa80db] [Hotplug] WARNING while
+ performing hotplug operation on 6.6-rc3-next
+Message-ID: <20231006113644.GN682044@nvidia.com>
+References: <92db426f-4a31-9c2c-e23a-85a8d353fbae@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <92db426f-4a31-9c2c-e23a-85a8d353fbae@linux.vnet.ibm.com>
+X-ClientProxiedBy: MN2PR20CA0040.namprd20.prod.outlook.com
+ (2603:10b6:208:235::9) To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-ID: f9dd99bd94f5421164f
-X-MBO-RS-META: 4ypuoa48dxuubi5s4tbe8z65wue5jxjk
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|MN0PR12MB5833:EE_
+X-MS-Office365-Filtering-Correlation-Id: c7fcbc66-99bc-4b2f-6ca3-08dbc66084bd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	nf4KgmNb+mRs9Bl/BCJYCEEhIR8KAVdvUM7YIklGK5MDHUJxmUaUL7AbLfnz1xxbpYN+N0Vq3vH6VmZPHXkzwX3knlKWZNJS2Blvl3kDVdgQFYnhEMftKOpcDuneYUDCRQiZvtUR3wiR+KXwJlMEmL8w+p6qhSBEGcN4Q9ov8pSre0Yb/Q+y/sO7c0z+E45gD7hcFGj+EcnqVn3HBff4zbmmSce0eLttI6elcQve3qlRChGH8XZFnPmqEyAwmWtpU7fWTChuPUyYmBPsfIFtnQdg6AXN2sRh4ItxvrAP+g3iHEPF7/m/qlZjpVCr4WMAGfh1FNe0GmtitzqbPYVhSx3HvPuA636Zk9Ej0SAZnU2oDO+NWlGWy+0134xp1uOB6ufKfV7y4jYs4rqdkV2zXXqBMMBAZ/zQRdGfApiq3NxNdXvlLqL52Qjkm0WSM0pI6A3haHV/910M0s5dGdLebhdWBc6Pgx7SBwGHdNLet1MjwZRer9sbVyYusTkM0fKpC3cyEnpSZ5GpxtI+JCBmD9NZRpUKv49M5t+XWC0ZaERJT++P3IYEWgIJlXFc1Fay2nyo+mMKp3hZYfFlKUahDYjLyyLitKL8/VUcgDuduM1l7bH6OPJ4kfMmuCnowGcUwW9UHhZun7IPb4nRmHM/XQ==
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5869.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(136003)(366004)(396003)(39860400002)(376002)(230922051799003)(451199024)(64100799003)(1800799009)(186009)(83380400001)(6506007)(6512007)(6486002)(966005)(478600001)(86362001)(38100700002)(33656002)(4744005)(7416002)(41300700001)(316002)(2616005)(1076003)(26005)(2906002)(36756003)(66946007)(66556008)(66476007)(5660300002)(6916009)(4326008)(8936002)(8676002)(27376004);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?YdLpxw1kx+SBdY3HvKQulg6ARz0d4JBX5Akpvra7hYMkVzZeNkE71dAVEQqL?=
+ =?us-ascii?Q?eSO+rUpJIe3MMhez+ngEJViaIbq/LsccY/l2RjfVFoZCqw8uZ5Qair5V+lAY?=
+ =?us-ascii?Q?nn5shW1vw2Ahep501euCLm8NPm6PVeWJ8PCqPveTqvmgf6dfIprUo9bW/LFs?=
+ =?us-ascii?Q?PgDLD5RITvTOazxS5g9n3IFYvsoKhw/dzRndNzOMotVZisGcBkLxDEZoHZEy?=
+ =?us-ascii?Q?aoNkEdDO8f4JcqUEv+7PzGGadx4w/7eRBjjARwDBFtoZvAA5ROjtliIQqbbG?=
+ =?us-ascii?Q?Q1yro/pGGZWMnzWWXahvfYYjtgrMcW/d8dA+guy+1gl5M+I8rfXoFH+Rj2hs?=
+ =?us-ascii?Q?oD6b63nlz+XLTxtgLPBIEcoEHRm09YEppqNztvfavMrgq6rI5xXimsApLRr0?=
+ =?us-ascii?Q?G7x9qNWp9VTvpTCY/dkUPMwDklhBB6RvU6jSo17iEPWsZVqmwYZB/Vnl/dSa?=
+ =?us-ascii?Q?9SLQ2WP20mVhuX+3IN+HJj2tc4Uwv6thmqEau/TCQD9FhjDquyElSz6loNTN?=
+ =?us-ascii?Q?pLKs7gRN11m44BP71pQqZki4loE1xkpnhIz89fus8P3P030W6q6+e9hLNKGP?=
+ =?us-ascii?Q?xfiKqJdl/VCX8jIg/JxlpixnxroyBbiCKnUTw2iojsrurb6xOIxGDIA05eZU?=
+ =?us-ascii?Q?gWGSg2tJFq9TJO5p4//YMeV/F1TS5zbLLaqkcIan6yNCujRJ+72+QO0wBUld?=
+ =?us-ascii?Q?2z4FwuEc3zobyRudXlC6aWEA/bbGBkZ4t7usrlMsj/Ooaw7uk9cgS4YlsPcP?=
+ =?us-ascii?Q?vB8h3MQb2D4m5LkesiuGMtpkK+Lu2jwj5x0LIJ/EipyWd6eDH7BqMWaxiupV?=
+ =?us-ascii?Q?4SJb6MwkcUoIvkwxInvuaWgooQY3cIYZUdDI++hHfLpXjDjxCFPebVj/fHyS?=
+ =?us-ascii?Q?QjuEGcrhXVC1KcaxxHqb6gRTgi/aY9LTHr/1Z8aXMU/UnZXAHLH5xufsfuXf?=
+ =?us-ascii?Q?ly2GDKHaDBVUUm45yWjAU3+6tkLud23ZLUnnqmdqha+6jYSJhn+hze5So/br?=
+ =?us-ascii?Q?/eLBlYNgnMI2ncyyPwKJAt2aS2Xv26fzpgb3afl2aiHI78StZ1F8ieTqcFt8?=
+ =?us-ascii?Q?uJQ2dEFDLIVtrEobW9iUaWUHev1PaTdO9HwGC15frdvp1dc1kGOVRyKXGnLI?=
+ =?us-ascii?Q?DW3/+DbJINgMmyUKGs/z+T8tP3G/OIp6PvXjteKyTCICJGxrq7b8lFt6lwQG?=
+ =?us-ascii?Q?AIMSIYRdReZPkxhkDKHmH99j9EJFvbn0VXiX1eLoeHQvU3VbeVuXLsuH47It?=
+ =?us-ascii?Q?/WX36kJC03o6HuI/UN5JzOglaLrjP7aKWCHmivN2IbouYwrDOJURvr4A+DEu?=
+ =?us-ascii?Q?WgzYSAt6UEcwET4bCLN88KgHkK1KhZuLtTyS07ZZesSF0EAEh8o90Arj7etm?=
+ =?us-ascii?Q?Y/wstnclToCaos+BZ1zfa8c6chKWoaXsEkaSOS0VO9ehwcI8VGSzby3k/SvD?=
+ =?us-ascii?Q?MWPa6vLb7wfxL4PhM+w/CDFbb3y0MtPBS+QKJgSqoHc3jul/rqwqzyC//zJ0?=
+ =?us-ascii?Q?ekl0uO86brma9hXE+YU8cN5T4xjhIXnyC45KR+cVzP8YMKZT0xaiY4jkN61w?=
+ =?us-ascii?Q?SnxB4sZ0v2nHaqYYRVxdOtqhQV+t/ljDWbD+9b2g?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c7fcbc66-99bc-4b2f-6ca3-08dbc66084bd
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2023 11:36:45.0619
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ks6EBsKGpMO5mdtOSOgPATMjKKLjoz5WNqcvSJQ8OCjntHX1s6toE9kIdPot7kEb
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5833
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,138 +119,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, willy@infradead.org
+Cc: sachinp@linux.vnet.com, jroedel@suse.de, will@kernel.org, linux-arm-msm@vger.kernel.org, joro@8bytes.org, jsnitsel@redhat.com, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, abdhalee@linux.vnet.ibm.com, iommu@lists.linux.dev, linux-next@vger.kernel.org, mputtash@linux.vnet.com, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, baolu.lu@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 06 Oct 2023 11:04:15 +0530
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> wrote:
-
-> Can you check this change?
+On Fri, Oct 06, 2023 at 01:20:17PM +0530, Tasmiya Nalatwad wrote:
+> Greetings,
 > 
-> diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-> index 3ba9fe411604..6d144fedd557 100644
-> --- a/arch/powerpc/mm/pgtable.c
-> +++ b/arch/powerpc/mm/pgtable.c
-> @@ -187,8 +187,8 @@ static pte_t set_access_flags_filter(pte_t pte, struct vm_area_struct *vma,
->  /*
->   * set_pte stores a linux PTE into the linux page table.
->   */
-> -void set_ptes(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
-> -		pte_t pte, unsigned int nr)
-> +static void set_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
-> +		pte_t pte)
->  {
->  	/*
->  	 * Make sure hardware valid bit is not set. We don't do
-> @@ -203,16 +203,23 @@ void set_ptes(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
->  	pte = set_pte_filter(pte);
->  
->  	/* Perform the setting of the PTE */
-> -	arch_enter_lazy_mmu_mode();
-> +	__set_pte_at(mm, addr, ptep, pte, 0);
-> +}
-> +
-> +/*
-> + * set_pte stores a linux PTE into the linux page table.
-> + */
-> +void set_ptes(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
-> +		pte_t pte, unsigned int nr)
-> +{
-> +	/* Perform the setting of the PTE */
->  	for (;;) {
-> -		__set_pte_at(mm, addr, ptep, pte, 0);
-> +		set_pte_at(mm, addr, ptep, pte);
->  		if (--nr == 0)
->  			break;
->  		ptep++;
-> -		pte = __pte(pte_val(pte) + (1UL << PTE_RPN_SHIFT));
->  		addr += PAGE_SIZE;
->  	}
-> -	arch_leave_lazy_mmu_mode();
->  }
->  
->  void unmap_kernel_page(unsigned long va)
+> [linux-next] [6.6.0-rc3-next-20230929] WARNING: CPU: 5 PID: 185612 at
+> drivers/iommu/iommu.c:3049 iommu_setup_default_domain+0x410/0x680
+> 
+> --- Traces ---
+> 
+> [ 6296.425934] WARNING: CPU: 5 PID: 185612 at drivers/iommu/iommu.c:3049
+> iommu_setup_default_domain+0x410/0x680
 
-Thanks for having a look into the issue! Your patch applies but I got a build failure:
+Does this fix it too? I think it should?
 
- # make
-  CALL    scripts/checksyscalls.sh
-  CC      arch/powerpc/mm/pgtable.o
-In file included from ./include/linux/mm.h:29,
-                 from arch/powerpc/mm/pgtable.c:22:
-./include/linux/pgtable.h:247:71: error: expected declaration specifiers or '...' before numeric constant
-  247 | #define set_pte_at(mm, addr, ptep, pte) set_ptes(mm, addr, ptep, pte, 1)
-      |                                                                       ^
-arch/powerpc/mm/pgtable.c:190:13: note: in expansion of macro 'set_pte_at'
-  190 | static void set_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
-      |             ^~~~~~~~~~
-make[4]: *** [scripts/Makefile.build:243: arch/powerpc/mm/pgtable.o] Fehler 1
-make[3]: *** [scripts/Makefile.build:480: arch/powerpc/mm] Fehler 2
-make[2]: *** [scripts/Makefile.build:480: arch/powerpc] Fehler 2
-make[1]: *** [/usr/src/linux-stable/Makefile:1913: .] Fehler 2
-make: *** [Makefile:234: __sub-make] Fehler 2
+https://lore.kernel.org/r/0-v1-2b52423411b9+164fc-iommu_ppc_defdomain_jgg@nvidia.com
 
-Probably you forgot adding a parameter on this line of your patch:
--		__set_pte_at(mm, addr, ptep, pte, 0);
-+		set_pte_at(mm, addr, ptep, pte);
-
-So I changed it to:
--		__set_pte_at(mm, addr, ptep, pte, 0);
-+		set_pte_at(mm, addr, ptep, pte, 0);
-
-Got the kernel building after that but on booting I still run into the issue. Though details of the dmesg look different now:
-
-BUG: Unable to handle kernel data access at 0xfffffb6affee6dfe
-Faulting instruction address: 0xc00000000005d150
-Oops: Kernel access of bad area, sig: 11 [#1]
-BE PAGE_SIZE=4K MMU=Hash SMP NR_CPUS=2 PowerMac
-Modules linked in:
-CPU: 0 PID: 0 Comm: swapper/0 Tainted: G                T  6.6.0-rc4-PMacGS #1
-Hardware name: PowerMac11,2 PPC970MP 0x440101 PowerMac
-NIP:  c00000000005d150 LR: c000000000065a70 CTR: c000000000007730
-REGS: c0000000022bf4c0 TRAP: 0380   Tainted: G                T (6.6.0-rc3-PMacGS)
-MSR:  9000000000001032 <SF,HV,ME,IR,DR,RI>  CR: 44004242  XER: 00000000
-IRQMASK: 3
-GPR00: 0000000000000000 c0000000022bf760 c0000000010bb900 00000000000001ac
-GPR04: 0000000003c80000 0000000000000300 c0000000f20001ae 0000000000000300
-GPR08: 0000000000000006 fffffb6affee6dff 0000000000000001 0000000000000000
-GPR12: 9000000000001032 c000000002362000 c000000000f9eb80 0000000000000000
-GPR16: 0000000000000000 000000047fb56ef0 0000000000000006 c000000000f62280
-GPR20: 00000000000001ac c00000000000000c c0000000022ce985 000000000000000c
-GPR24: 0000000000000300 00000003b0a3691d c0003e008030000e 0000000000000000
-GPR28: c00000000000000c c0000000f20001ee fffffb6affee6dfe 00000000000001ac
-NIP [c00000000005d150] hash_page_do_lazy_icache+0x50/0x100
-LR [c000000000065a70] __hash_page_4K+0x420/0x590
-Call Trace:
-[c0000000022bf760] [c0000000022bf7a0] 0xc0000000022bf7a0 (unreliable)
-[c0000000022bf790] [c0000000022bf7d0] 0xc0000000022bf7d0
-[c0000000022bf870] [c00000000005d55c] hash_page_mm+0x24c/0x770
-[c0000000022bf950] [c00000000005dc0c] do_hash_fault+0x10c/0x290
-[c0000000022bf980] [c0000000000078e8] data_access_common_virt+0x198/0x1f0
---- interrupt: 300 at mpic_init+0x530/0x1164
-NIP:  c000000002020c10 LR: c000000002020b40 CTR: 0000000000000000
-REGS: c0000000022bf9f0 TRAP: 0300   Tainted: G                T (6.6.0-rc4-PMacGS)
-MSR:  9000000000001032 <SF,HV,ME,IR,DR,RI>  CR: 24004248  XER: 00000000
-DAR: c0003e008030000e DSISR: 40000000 IRQMASK: 1
-GPR00: 0000000000000000 c0000000022bfc50 c0000000010bb900 c0003e0080300000
-GPR04: 0000000000000000 0000000000000000 f6331d6a321c0000 06d34d7094f60000
-GPR08: 49fea3a513a00000 46082ea04e99f795 854c3f242ccc0000 0000000000000000
-GPR12: 0000000000000000 c000000002362000 c000000000f9eb80 0000000000000000
-GPR16: 0000000000000000 c00000047fb56ef0 0000000000000000 c000000000f62280
-GPR20: c000000000f69bd0 eff371268bb2fcef f584c8e573e37e99 0000000000000001
-GPR24: c0003e0080300000 c000000002270348 c00000000404c640 0000000000000000
-GPR28: c0003e0080300000 c00000000404c000 2ecb2e344f558316 c0000000022bfc50
-NIP [c000000002020c10] mpic_init+0x530/0x1164
-LR [c000000002020b40] mpic_init+0x460/0x1164
-~~~ interrupt: 300
-[c0000000022bfd80] [c000000002022ca8] pmac_setup_one_mpic+0x258/0x2dc
-[c0000000022bfe10] [c000000002022f8c] pmac_pic_init+0x260/0x41c
-[c0000000022bfef0] [c00000000200b7d4] init_IRQ+0x90/0x144
-[c0000000022bff30] [c000000002005408] start_kernel+0x57c/0x78c
-[c0000000022bffe0] [c00000000000cb48] start_here_common+0x1c/0x20
-Code: e9290000 7c292040 4081007c fbc10020 3d220127 78843664 39292900 ebc90000 7fde2214 e93e0000 712a0001 40820064 <e93e0000> 71292000 40820048 e93e0000
----[ end trace 0000000000000000 ]---
-
-Regards,
-Erhard
+Jason
