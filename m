@@ -1,95 +1,165 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 366747BCA87
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Oct 2023 01:41:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0CCC7BCA88
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Oct 2023 01:41:50 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=permerror header.d=arndb.de header.i=@arndb.de header.a=rsa-sha1 header.s=fm2 header.b=omPecccg;
-	dkim=permerror header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha1 header.s=fm2 header.b=B//wub1a;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OiL0MCSK;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S31yL0qLpz3vdK
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Oct 2023 10:40:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S31zJ3m1hz3vpc
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Oct 2023 10:41:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=omPecccg;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=B//wub1a;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OiL0MCSK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.230; helo=new4-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from new4-smtp.messagingengine.com (new4-smtp.messagingengine.com [66.111.4.230])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mgamail.intel.com; envelope-from=sohil.mehta@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S2KmS56Qlz3cmK
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Oct 2023 07:30:00 +1100 (AEDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailnew.nyi.internal (Postfix) with ESMTP id F0AFA580189;
-	Fri,  6 Oct 2023 16:29:56 -0400 (EDT)
-Received: from imap50 ([10.202.2.100])
-  by compute5.internal (MEProxy); Fri, 06 Oct 2023 16:29:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm2; t=1696624196; x=1696631396; bh=BV
-	WEu9N65Klz9zi6Gx/GBcHI5219Lk7Ewdrm46HwRAI=; b=omPecccgnOwKKqkgkh
-	fXaQbvuxDrNgtA0Fclg0Qav7KkGDwqJo4MUk5a4bIXeKPAUFffAhW5bTk5lWIZ4J
-	FZ/sYP0LIkckXlFBpbKyUucWaj+2FXXCyMdOkQ508Xtl1yc6x/8RcAUe5RIcqQK0
-	BvwVU23ocFfQIKHIRy67i0+lV6PEQXGXK46KfHHPo4+vCI6KOzcmWd8r2xDj0IkS
-	6emTCcuHN85dAOlF7GtL5pzwrITagf7qIj6jotxIhC0VdPPCLYJB62QndDxqvy++
-	P98JjOj3Evc5z5dUgs/dTF1CV/x0dKHj+31NxnRgNPYo0hZlFXuYEQjMfQPOtmNZ
-	B0WA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm2; t=1696624196; x=1696631396; bh=BVWEu9N65Klz9
-	zi6Gx/GBcHI5219Lk7Ewdrm46HwRAI=; b=B//wub1a8aWIVbQHcPyg1L2Vo+aHy
-	6HnaNtW3kxNZHPNNURAs42vjI5Oge/4/672MKqI6cNh+b+yEmTOiMBjuBgECoQFi
-	Yyp8ka0zAXE8Nu7WKWyUQfMOv7TZvYy03gqXk6usbF5IWZZmE2dWCDmI1QjPErxZ
-	9RJmU92BHh97nqDyWfZkiw7XwS4RAlZvcqfraSQRIyeNCfGNUDzV35rj/1sUzhDo
-	lNkh0gOaK+prBEjE+zcflLPiIohuGQFjOjj9jm98/ARIQujR5wzb1Y/+n14E3qp6
-	W6IjrUFHljQdH81+zUP1NLC8VzHpvwDDwvvUaxS8y7H7Wu40XR0QHv+/w==
-X-ME-Sender: <xms:QW4gZTa3cNl67fqLKQRADDd1fjb9SyD3FkWpuubpQTvvqRWSWyQNlA>
-    <xme:QW4gZSaiVtvX42rVgpGqYkntDuhATH6PzD5fBBLwcOFOK4MmKRfnhhIOlXl-Ea5R5
-    KIV2caTtPTqqtmUdbY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrgeeigddugeejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:Qm4gZV-G-Z_NUxjVDne1z0PRyjPRZAefw5FdMYDKMi_yaUqY19Lfjw>
-    <xmx:Qm4gZZr8btK_0uekt1uxPu676Y_Jv6c_dLVQtmb7w52FBxKToOQR1A>
-    <xmx:Qm4gZeqtb_ZvR8W-To1Y-EmiB0SrR3R4tL2KcNWXZ3G0drsxPfyC4w>
-    <xmx:RG4gZay2kbKLMuzGt87T6u4wwrRjylvwHM0azqtv77JMnaVGEOXcWg>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id A7E4B1700093; Fri,  6 Oct 2023 16:29:53 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-958-g1b1b911df8-fm-20230927.002-g1b1b911d
-MIME-Version: 1.0
-Message-Id: <5d397fe4-a520-4336-b966-29bc5b798236@app.fastmail.com>
-In-Reply-To: <3bd9a85c6f10279af6372cf17064978ad38c18b3.camel@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S2Kwl5qyTz3cnK
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Oct 2023 07:37:08 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696624632; x=1728160632;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=okMWSP0XerKBjVMhRWRlJNtJdItVBh/FgLWQngU5No0=;
+  b=OiL0MCSKK6ggwj1xvQzhE47cMWSFB4dVwRockGl1dvWJnK3N54/WpNVY
+   rV2VyAwv530FyZGFXq6wTndb+eFpmWm1It3wKoIzky6JxbH9OTLKWtCp4
+   K5iJtkYgYH+0mu1cbm+TjLtKaWPboNDtmVSYtSHVhXClzO/9Q9Dl7s/Fx
+   03RpRUXQWdFc8KxBC6dM/cwExnL/kgqDD4O1xhWqNnuUsNPK/XsBDrTXt
+   usnKyXUnt3kI036ORlzM2Nb/8fm3sPeEdDraMEmgkVX4SMLiKwliCwQKa
+   eeJ2swL0LRap+zJj9382ZLhAeZrRT922ztQ6BkcW6TsYs5rhiwL+yBj+S
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="387706278"
+X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; 
+   d="scan'208";a="387706278"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2023 13:37:01 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="781772917"
+X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; 
+   d="scan'208";a="781772917"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by orsmga008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 06 Oct 2023 13:37:01 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Fri, 6 Oct 2023 13:37:01 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32 via Frontend Transport; Fri, 6 Oct 2023 13:37:01 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.49) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.32; Fri, 6 Oct 2023 13:36:59 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kp2+ig6ks44wUK6VKF5cIAebfUD+Radkga+8GNpkOhiFb9k2VQwwouet+73C1mS2KlV1A5A3ZOW+tuhsw5/lumCeePeCNl9G7oMeUChBPxP1yfT+C34MavuA0qV7YwGghE4n6okFYfAE5uuGFILB8Yq/HmSTAw6Dz9TYMKWd9LXW3BQtkBvXxtWQ9GdVcG2w7YUnEEJKUKsnBVTz2SliVJ6MazRjGq3klasGQUMQnx1Y7WcNKcSgJWBodEv86YIW6YgzkAZDWQqPeA1Ntn2AYCZpjqhdrMmtqP7wok4pdGh2Kji2cwKFLTXKEdqdJTLX9pBX0ls0AUUj4EkqTSNhgQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uMj1No8rfb83Q72/19A0QEX6fZPIpjc6zqVTJktrzcs=;
+ b=hY0j3aRqkIKSDDvmzAhTVrbz1tF6Uyb4WaQTuHg8pfren1JZHo5ikAjaYGwkBeSGKaQVaDqsbjRX8wPk+NBG2bGLnFN9d5ECoJqNSkUZGY1LAxk1OhgAAwT9lMcULKl3sgJ5xxDgff+F9aY6FyfB/BUJAVxZ+wKLgeyUSG5pvZz55p6ICvYCpkJLQTWMAenE+w3UNYJF9yhATLBK4dQsFqfSfL4QIGdrJHr6Q11LqRkW4PQjNyiDHWpAsIGmICvsjLkN5bqro/Iwg9W5S2Cdhs+cxbXbbGDxKpo0BnSLW70el49kcYLeI4HqNVSBOMGROYVZqGH082AJGivLtDpnxQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BYAPR11MB3320.namprd11.prod.outlook.com (2603:10b6:a03:18::25)
+ by DS0PR11MB6495.namprd11.prod.outlook.com (2603:10b6:8:c1::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.25; Fri, 6 Oct
+ 2023 20:36:55 +0000
+Received: from BYAPR11MB3320.namprd11.prod.outlook.com
+ ([fe80::5e34:ee45:c5e8:59d0]) by BYAPR11MB3320.namprd11.prod.outlook.com
+ ([fe80::5e34:ee45:c5e8:59d0%7]) with mapi id 15.20.6838.033; Fri, 6 Oct 2023
+ 20:36:54 +0000
+Message-ID: <4d22540c-f38a-e22f-2cea-0c74fc6556bf@intel.com>
+Date: Fri, 6 Oct 2023 13:36:48 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v2] arch: Reserve map_shadow_stack() syscall number for
+ all architectures
+Content-Language: en-US
+To: Arnd Bergmann <arnd@arndb.de>, Rick Edgecombe
+	<rick.p.edgecombe@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+	"Ingo Molnar" <mingo@redhat.com>, Linux-Arch <linux-arch@vger.kernel.org>,
+	"linux-api@vger.kernel.org" <linux-api@vger.kernel.org>
 References: <20230914185804.2000497-1-sohil.mehta@intel.com>
  <487836fc-7c9f-2662-66a4-fa5e3829cf6b@intel.com>
  <231994b0-ca11-4347-8d93-ce66fdbe3d25@app.fastmail.com>
  <622b95d8-f8ad-5bd4-0145-d6aed2e3c07d@intel.com>
  <3bd9a85c6f10279af6372cf17064978ad38c18b3.camel@intel.com>
-Date: Fri, 06 Oct 2023 22:29:32 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Rick Edgecombe" <rick.p.edgecombe@intel.com>,
- "Sohil Mehta" <sohil.mehta@intel.com>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- "Ingo Molnar" <mingo@redhat.com>, Linux-Arch <linux-arch@vger.kernel.org>,
- "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>
-Subject: Re: [PATCH v2] arch: Reserve map_shadow_stack() syscall number for all
- architectures
-Content-Type: text/plain
+ <5d397fe4-a520-4336-b966-29bc5b798236@app.fastmail.com>
+From: Sohil Mehta <sohil.mehta@intel.com>
+In-Reply-To: <5d397fe4-a520-4336-b966-29bc5b798236@app.fastmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BYAPR07CA0038.namprd07.prod.outlook.com
+ (2603:10b6:a03:60::15) To BYAPR11MB3320.namprd11.prod.outlook.com
+ (2603:10b6:a03:18::25)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BYAPR11MB3320:EE_|DS0PR11MB6495:EE_
+X-MS-Office365-Filtering-Correlation-Id: 35470dd8-3566-4c8f-cb35-08dbc6abfa77
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: UX+RHO0bwVCi77k3SyyhGikY6BIr6AyVfaSn4yw7O4qMPzTZxd2U7KtZx0cSzei2+OjyMRLfYIzkGNVJ4UITmvEJp+ycfu1pYMRMjQPy2GhXcvz5T8ZJgfSqCx8FolC8JYz3ZPiGeTdyDjIFExSdVGRvDIH9KSIonaNm+l+PIeUj/rFrugR4IEylzvKxpDk1eEMZE3E++qV0xPxtY6epg42fhXJTI6k9lgFxcQXXEP/MV2voxZfwK3/Nqr92RnNmAncTEd5OeBXohluf4xso8cQ0f113f2DaWiWbjTaUFLBbihyrVOwg61nIoIqT1HQfjmkfnmTxWCUXlrO4tLxr5ELxugfIJiS8/x833kjbmy1HsyMezjLyyjAKQA6RxyepjKkkvwYvl5mujs84fQQn19N0rNYF/q/5RB75udIMPizcm5N1W/Ix7guzqjIgL4TCkzLsuGTOQqMSp48VQ1+5y+cTEJRDf8eXaFz3gg2VrjhI8L11Yese/O4hSM1+HjU1g+pdgprUR4hF6JDnsIdiSvLtOPksoH+g4M895lWOmXOCSe0aT2gFnspImtGeKfm5DtUmk3cGEZN4nVb7aRqBH3Ljl6R8gVZI/vxcBubk/8snjb9NilhW8MCiKw1TYKpTtPW8IT/jDK1DdQlSa+nQXw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3320.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(39860400002)(396003)(136003)(376002)(346002)(230922051799003)(1800799009)(186009)(64100799003)(451199024)(2616005)(6512007)(53546011)(6506007)(6666004)(26005)(6486002)(478600001)(41300700001)(4744005)(44832011)(4326008)(66946007)(7416002)(66556008)(66476007)(54906003)(110136005)(316002)(5660300002)(2906002)(8936002)(7366002)(8676002)(31686004)(38100700002)(7406005)(82960400001)(36756003)(31696002)(86362001)(45980500001)(43740500002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Mkg0NmFyd0VzbEQ4T3pUTFVVUVZFM29uM0xiaVhwY3MwTXNMbS9uemo5Wnha?=
+ =?utf-8?B?SzJmS2o4Mkl4VmRBbDdIK2dzb2xYampnOUgybkV1VGM2L1dKWmZRRWlzcXpP?=
+ =?utf-8?B?RVlNdFg0S0g3eXF6QWJ5ZVc1WnNDUHg5OHJmMW1zT2krNWZkQ0lqWUQ5REwz?=
+ =?utf-8?B?YnFKL2JxSnllZU9tUlVJTDAxMFlMdytKQUMvZHlmTnFNWURQSDJYUi9pekxP?=
+ =?utf-8?B?SjJIZUpFN3cxR0VYWjBNa29zSXQ0VjlkQlFiNld3Mk9Pc1Y3Wi9tMzl6TlQ4?=
+ =?utf-8?B?bVFhYm9CQUNmdDd1c21wbkk1MGwvRlJzVkQ1REJpdEZEeUxQWTlhYkltQzhT?=
+ =?utf-8?B?SktQcDljNEZPaVhRdDFPMmp1L1V2N09VcmdyWHJHMFJtOEtaVTUwRExFekRj?=
+ =?utf-8?B?VE1NRkRvbUFQVGRyYWJtdEhZbXNKNGM1V1gzZzdoMFp0TEZOcjBNMElmVGdV?=
+ =?utf-8?B?eW9jUWFVb0NuOTRpZVVZRmpFODJqREtYTUs1TWgyeXV3d2lReTBiREFqVE5o?=
+ =?utf-8?B?OWVMMG1oNUJQQlpSUUE2SldnMnNjbFhvaDNENjh6UnlhRmdscmdBcDB1TXBw?=
+ =?utf-8?B?MURxVWpVbXRHQnVvMllST0diSG1KeHJmNkNIcDRaMXI0TFM3b1U3dmQ3TzJI?=
+ =?utf-8?B?Z25kbXl3dk0rTFp0aEc2WVNGeDRRMUVOOC9HeEFlYThza1ZMWXBValIzb0li?=
+ =?utf-8?B?eTN2Zy8wakpvYkdhd0xmTzVrb2VqWEFZd3MvWlRMWndMVThyQS9ZU2VqRGZh?=
+ =?utf-8?B?SlNLbGNJMzJieVBHbXNYZnk4YVB4cllmSjYvczlBdlVRdVpWdzl5VnIyNTNG?=
+ =?utf-8?B?TGROdFRqdmN1OFlvRkNuaWR1NXBSODJsSEdKdFFwa2g4Tit2QkpGWGdXM1M2?=
+ =?utf-8?B?Tjdkd1pZTmVYVEhZODFrSDBtd0dHWG9weTdjZ3BrcDV6dWJtamZaalh0dEta?=
+ =?utf-8?B?UmFHRXpnVmZSMEZ5b1VxNFVDOUJCMURIeXN3bTFaUGlIRC95TzRKNjZvWUpX?=
+ =?utf-8?B?YXhZWEJYTjl2WFRXN3N2WmFRZU9KanNybjNHTEhEZHFTdXloUmlIc2pkZlh1?=
+ =?utf-8?B?dzk3Z083MW1hSDJrKytWVURyYTZmdUpuaXFSQzN4OHIrUWpqczltakhETm5L?=
+ =?utf-8?B?ME92MElJZG1qZ1JnNGlMSXk5WUVibGZBRmdJa2pnRHFRbUh1R0RPMTE3bFZL?=
+ =?utf-8?B?WE90bmgzLyt5eUJLQXU4SHliTm15bVNiUDJjdkhIVTBhQ3BuajNKMTRxUzZq?=
+ =?utf-8?B?VnMxMWcwUEdmQVF4cVZ6bUducjkrY1J5WU05bUorL3hhQjRnRUxwc0NJcU9j?=
+ =?utf-8?B?bEdFMEpnd3hIcEVEUE43d0tpV2JQWlhXdjQ2V0lZcHBrcU9qU2VvNnNmb1Z2?=
+ =?utf-8?B?TVdkVnk3QzJXME03NkJNUldwejhNV0lIN0JYVEwwTUdKOWxoWmhKRE8vR0Fx?=
+ =?utf-8?B?UkR2NCtQK0lpNTluTXY4eWlFcWVpZ0ozbWQ1SmNNMVhaSnZhQk1nTXphYlpK?=
+ =?utf-8?B?SlZQdFB1cEFNWWJDWU1rT0JwUmVlakZ2cWlFVGpuWXY2bFpYMm85K3R6cW54?=
+ =?utf-8?B?cXdJT1JaZitxUkU4UXdyWWh3cGlZN1VkUEZMQjJwY1JNaW95ZE96aDBrZW1p?=
+ =?utf-8?B?MmE0UXJDWnJ5Mnd0M0xFWHpFeDArNE5udk4zbXVCZFJWUXRzWEpKM3hJM3dw?=
+ =?utf-8?B?TE91dk1CR1hkc2xnZm1MSXA3VWtqeGdRb2xRRjRaWkZ4UkhsRzErK2RnNjgx?=
+ =?utf-8?B?RG5VTHJSUWlmY3NyekRITi9RNmFSUEhuU3RDMjZPNmF6V0V4NjBCTElQMHlU?=
+ =?utf-8?B?UlRkdUlueGZmWHp4a3RTUW02NVZsN05YNmZxZVFUUXVwRFRGZitLalkzK0RN?=
+ =?utf-8?B?KzBha2s4SVFrVjh0V0VSOFp3RUR4MFlyajljK0VkamxmWFo1NWRkejMzNlZl?=
+ =?utf-8?B?YXlNUWQ5dDZ2ZmdiQkdZSGNHUDI1d2llWDFoTWxPTlZDRTR6MTdrZVZSTmRO?=
+ =?utf-8?B?cGh6dEJLUXZjeFJZeENrR2czK0o1N3JrMENxWWFrSkhRTHQrYjd5UnZDYWtx?=
+ =?utf-8?B?M2RCckFFbDRUVVNTNzY0aDRCeStqZzZFcVBhdDB5azNEeVErNDFGSUxZQXQ5?=
+ =?utf-8?Q?oAdI0dOI7q5xoXMJtJg41zCaC?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 35470dd8-3566-4c8f-cb35-08dbc6abfa77
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3320.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2023 20:36:54.8693
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OFT1uXEWS6hM3h1Wg1HQzuGmQoxCuvzk5nmpl46x8hFfSoFEUbDAffFgig4cp5sbD/SqWXXXsZkWWifJ4nHpAw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB6495
+X-OriginatorOrg: intel.com
 X-Mailman-Approved-At: Sun, 08 Oct 2023 10:36:54 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -103,37 +173,27 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, Rich Felker <dalias@libc.org>, "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>, "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Adrian Hunter <adrian.hunter@intel.com>, "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>, Max Filippov <jcmvbkbc@gmail.com>, Andreas Schwab <schwab@linux-m68k.org>, "H. Peter Anvin" <hpa@zytor.com>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Sven Schnelle <svens@linux.ibm.com>, Helge Deller <deller@gmx.de>, "x86@kernel.org" <x86@kernel.org>, Russell King <linux@armlinux.org.uk>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Lu
- kas Bulwahn <lukas.bulwahn@gmail.com>, Matt Turner <mattst88@gmail.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Sergei Trofimovich <slyich@gmail.com>, "gor@linux.ibm.com" <gor@linux.ibm.com>, Brian Gerst <brgerst@gmail.com>, Heiko Carstens <hca@linux.ibm.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>, Mark Brown <broonie@kernel.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Arnaldo Carvalho de Melo <acme@kernel.org>, Andy Lutomirski <luto@kernel.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Deepak Gupta <debug@rivosinc.com>, "chris@zankel.net" <chris@zankel.net>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "linux-parisc@vger.kernel.org" <linux-parisc@
- vger.kernel.org>, Rohan McLure <rmclure@linux.ibm.com>, Randy Dunlap <rdunlap@infradead.org>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>, "Eric W. Biederman" <ebiederm@xmission.com>, Jiri Olsa <jolsa@kernel.org>, "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>, Borislav Petkov <bp@alien8.de>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "David S . Miller" <davem@davemloft.net>
+ kas Bulwahn <lukas.bulwahn@gmail.com>, Matt Turner <mattst88@gmail.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Sergei Trofimovich <slyich@gmail.com>, "gor@linux.ibm.com" <gor@linux.ibm.com>, Brian Gerst <brgerst@gmail.com>, Heiko Carstens <hca@linux.ibm.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>, Mark Brown <broonie@kernel.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Arnaldo Carvalho de Melo <acme@kernel.org>, Andy
+ Lutomirski <luto@kernel.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Deepak
+ Gupta <debug@rivosinc.com>, "chris@zankel.net" <chris@zankel.net>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, Rohan McLure <rmclure@linux.ibm.com>, Randy Dunlap <rdunlap@infradead.org>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>, "Eric W. Biederman" <ebiederm@xmission.com>, Jiri Olsa <jolsa@kernel.org>, "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>, Borislav Petkov <bp@alien8.de>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 6, 2023, at 22:01, Edgecombe, Rick P wrote:
-> On Tue, 2023-10-03 at 10:18 -0700, Sohil Mehta wrote:
->> > If you like, I can pick this up for 6.7 through the asm-generic
->> > tree. If you think this should be part of 6.6, I would suggest
->> > to merge it through the tree that originally contained the
->> > syscall code.
->> > 
->> 
->> Dave, Ingo, would you prefer to take this patch through 6.6 or defer
->> it
->> until 6.7?
->> 
->> It's not necessarily a fix but it does help finish up the shstk
->> syscall
->> added with 6.6. Also, it might help reduce some merge conflicts later
->> if
->> newer syscalls are being added during the 6.7 window.
->
-> Hi Arnd,
->
-> It doesn't look like anyone is pouncing on the syscall number in linux-
-> next currently. It might be nice to have this patch go through linux-
-> next since it touches so many architectures. And it sounds like x86
-> folk are ok with this, so if you could pick it up for 6.7 that would be
-> great. Thanks!
+On 10/6/2023 1:29 PM, Arnd Bergmann wrote:
+> On Fri, Oct 6, 2023, at 22:01, Edgecombe, Rick P wrote:
+>> Hi Arnd,
+>>
+>> It doesn't look like anyone is pouncing on the syscall number in linux-
+>> next currently. It might be nice to have this patch go through linux-
+>> next since it touches so many architectures. And it sounds like x86
+>> folk are ok with this, so if you could pick it up for 6.7 that would be
+>> great. Thanks!
+> 
+> Ok, I picked it up now, should be in linux-next starting next week.
+> 
 
-Ok, I picked it up now, should be in linux-next starting next week.
+Great, thanks Arnd and Rick!
 
-     Arnd
+Sohil
+
+
