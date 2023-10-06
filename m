@@ -1,89 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B3427BBE7E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Oct 2023 20:14:11 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BOWZxJeS;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CBC67BC00A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Oct 2023 22:10:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S2Glj0pycz3dK7
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Oct 2023 05:14:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S2KKS32jCz3vfS
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Oct 2023 07:10:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BOWZxJeS;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.167.176; helo=mail-oi1-f176.google.com; envelope-from=robherring2@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S2Gkn4nqvz2xdd
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Oct 2023 05:13:21 +1100 (AEDT)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 396IC3kl027033;
-	Fri, 6 Oct 2023 18:13:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=uG89KsPrCmOIbR7tpcHiLM6LXCzlK59QVw5m4kwOAjg=;
- b=BOWZxJeS8DSAkFT9+9xNfEabc6F1FrTZkLs7dctXDho+KFz/y16nwyW5C5n6oYoyks+H
- Um2v4PiTdZcJiLOv+ywZ95bqb6kazDleeqG0HomUDExbDOMw+2GmDnELiMuLg2EvMJLI
- Vaayg9y437+ry3S0H/oRMfnBLKq7YkmiG+02ALur0zEh5UHo4XqfLGYsVkPQ/LGxYMZw
- Tsj+ANnETVeEnrWeNPI9D5T5zqdq9uL2olsATszr0+P8sLfeXEtFv9QbfNxaTo+qEHpE
- Rv5hR5+6qF5eGEpW8CWgVCMy6mupkQHj+4F6nJT4JDeleNe72VQCxT5X6ywEmD/u4pk+ RQ== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tjqa980wv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Oct 2023 18:13:03 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 396HmNMK007428;
-	Fri, 6 Oct 2023 18:12:50 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3teygn3cxx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Oct 2023 18:12:49 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 396IClr724838844
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 6 Oct 2023 18:12:48 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DD26020040;
-	Fri,  6 Oct 2023 18:12:47 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 612A42004D;
-	Fri,  6 Oct 2023 18:12:46 +0000 (GMT)
-Received: from [9.43.70.9] (unknown [9.43.70.9])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  6 Oct 2023 18:12:46 +0000 (GMT)
-Message-ID: <159f0096-5b39-04c4-aaea-64e0742fb192@linux.ibm.com>
-Date: Fri, 6 Oct 2023 23:42:45 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S2KJy1wC3z3cjt
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Oct 2023 07:09:36 +1100 (AEDT)
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-3af8b4a557dso1606449b6e.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Oct 2023 13:09:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696622973; x=1697227773;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KErA21m5/OQ8AOwXNSwDx2ZPMJkH+bkAlEkK8UsmwXU=;
+        b=GRSdNQMUXtvF1nw5mKvb/LmgLQl3Di52kc9wv+bC1zEt7R1++eXxR2fqIDdayq8wi7
+         NeeRIgYhKRMOLtGIs7rDRU2obNybL6ZV2H2iOQQcBa5nwTvNAtFS9Czkp3eVPU/SaUZc
+         aS6q0GckxGRR4EYT8RSu/CHZrWcka8dPhwBh+y9ZMim7kmMgDrFLzQIaUkRjMFyNHQ9o
+         G9D6fbK2onh2wMtrxZMqIXUQ1Tpym2AS/Ro8+KqrNDGVaDtORbBt4SrZJ95h3A0/Wz7f
+         HOxzVyd3uFSjeaogpmDooIcwTf7qPUwNQaP8HfFZOUOXekv0BvJzKWdd93tuwoAKmtuA
+         E+jg==
+X-Gm-Message-State: AOJu0YyJa+nGf5zZ6Soq5lLDaoIEtZi9i86u0KAuVBojsz2J3a28/Pbv
+	Ms4lxD/mW3c3sUHn1hSXKg==
+X-Google-Smtp-Source: AGHT+IFRzMzSgRbTRlSzjsgcoQYZamdCf0TE5qBnvGQNYUylB5iU3Rrie8xQ2uDfKDIWaRgdzAbiSA==
+X-Received: by 2002:a05:6808:2d6:b0:3a7:3988:87ee with SMTP id a22-20020a05680802d600b003a7398887eemr8329079oid.58.1696622973140;
+        Fri, 06 Oct 2023 13:09:33 -0700 (PDT)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id w16-20020a0568080d5000b003a99bb60815sm706613oik.22.2023.10.06.13.09.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Oct 2023 13:09:32 -0700 (PDT)
+Received: (nullmailer pid 229122 invoked by uid 1000);
+	Fri, 06 Oct 2023 20:09:30 -0000
+From: Rob Herring <robh@kernel.org>
+Subject: [PATCH v3 0/5] ASoC: DT matching and header cleanups
+Date: Fri, 06 Oct 2023 15:09:09 -0500
+Message-Id: <20231006-dt-asoc-header-cleanups-v3-0-13a4f0f7fee6@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v5 1/5] powerpc/code-patching: introduce
- patch_instructions()
-Content-Language: en-US
-To: Song Liu <song@kernel.org>
-References: <20230928194818.261163-1-hbathini@linux.ibm.com>
- <20230928194818.261163-2-hbathini@linux.ibm.com>
- <CAPhsuW6o+4STm0AUviP_M8c-xK9Y7Uzke1zouEsEreggVBofkw@mail.gmail.com>
-From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <CAPhsuW6o+4STm0AUviP_M8c-xK9Y7Uzke1zouEsEreggVBofkw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: SoWxSm9TO-cFq6udCp4aS4lULbVqSwyU
-X-Proofpoint-ORIG-GUID: SoWxSm9TO-cFq6udCp4aS4lULbVqSwyU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-06_15,2023-10-06_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
- mlxscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0 mlxlogscore=582
- spamscore=0 priorityscore=1501 malwarescore=0 clxscore=1015 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
- definitions=main-2310060137
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGVpIGUC/4WNwQ6CMBAFf8X07Jqllbbx5H8YD6Us0EgKaaHRE
+ P7dwkkPxuO85M0sLFJwFNnlsLBAyUU3+AzieGC2M74lcHVmxpGLAlFAPYGJg4WOTE0BbE/Gz2M
+ ErRpum9JwjiXL78pEgioYb7v893Pf53EM1LjnnrvdM3cuTkN47fVUbOv/UCoAQaCWUmqUQunrg
+ 4Kn/jSElm3SxD9F598inkWklJIlarSV/RKt6/oGJuoHuh0BAAA=
+To: Mark Brown <broonie@kernel.org>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Peter Rosin <peda@axentia.se>, 
+	Lars-Peter Clausen <lars@metafoo.de>, nuno.sa@analog.com, 
+	James Schulman <james.schulman@cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, 
+	Richard Fitzgerald <rf@opensource.cirrus.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>, Baojun Xu <baojun.xu@ti.com>, 
+	Oder Chiou <oder_chiou@realtek.com>, Fabio Estevam <festevam@gmail.com>, 
+	Kiseok Jo <kiseok.jo@irondevice.com>, Kevin Cernekee <cernekee@chromium.org>, 
+	Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
+	Nicolin Chen <nicoleotsuka@gmail.com>, 
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, Banajit Goswami <bgoswami@quicinc.com>, 
+	Nicolas Frattaroli <frattaroli.nicolas@gmail.com>, Sylwester Nawrocki <s.nawrocki@samsung.com>, 
+	Ban Tao <fengzheng923@gmail.com>, Peter Ujfalusi <peter.ujfalusi@gmail.com>, 
+	Jarkko Nikula <jarkko.nikula@bitmer.com>, Cezary Rojewski <cezary.rojewski@intel.com>, 
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>, 
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
+	Bard Liao <yung-chuan.liao@linux.intel.com>, 
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>, 
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>, Olivier Moysan <olivier.moysan@foss.st.com>, 
+	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>
+X-Mailer: b4 0.13-dev
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,54 +86,207 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, bpf@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Charles Keepax <ckeepax@opensource.cirrus.com>, alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Jernej Skrabec <jernej.skrabec@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thanks for the review, Song.
+(trimmed the recipient list due to bounces on v1)
 
-On 29/09/23 2:38 am, Song Liu wrote:
-> On Thu, Sep 28, 2023 at 12:48 PM Hari Bathini <hbathini@linux.ibm.com> wrote:
->>
->> patch_instruction() entails setting up pte, patching the instruction,
->> clearing the pte and flushing the tlb. If multiple instructions need
->> to be patched, every instruction would have to go through the above
->> drill unnecessarily. Instead, introduce function patch_instructions()
->> that sets up the pte, clears the pte and flushes the tlb only once per
->> page range of instructions to be patched. This adds a slight overhead
->> to patch_instruction() call while improving the patching time for
->> scenarios where more than one instruction needs to be patched.
->>
->> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-> 
-> Acked-by: Song Liu <song@kernel.org>
-> 
-> With a nit below.
-> 
-> [...]
->> +/*
->> + * A page is mapped and instructions that fit the page are patched.
->> + * Assumes 'len' to be (PAGE_SIZE - offset_in_page(addr)) or below.
->> + */
->> +static int __do_patch_instructions_mm(u32 *addr, void *code, size_t len, bool repeat_instr)
->>   {
->>          int err;
->>          u32 *patch_addr;
->> @@ -307,11 +336,15 @@ static int __do_patch_instruction_mm(u32 *addr, ppc_inst_t instr)
->>
->>          orig_mm = start_using_temp_mm(patching_mm);
->>
->> -       err = __patch_instruction(addr, instr, patch_addr);
->> +       /* Single instruction case. */
->> +       if (len == 0) {
->> +               err = __patch_instruction(addr, *(ppc_inst_t *)code, patch_addr);
-> 
-> len == 0 for single instruction is a little weird to me. How about we just use
-> len == 4 or 8 depending on the instruction to patch?
+This is a series is part of ongoing clean-ups related to device 
+matching and DT related implicit includes. Essentially of_device.h has 
+a bunch of implicit includes and generally isn't needed any nore except 
+for of_match_device(). As we also generally want to get rid of 
+of_match_device() as well, I've done that so we're not updating the 
+includes twice.
 
-Yeah. Looks a bit weird but it avoids the need to call ppc_inst_read()
-& ppc_inst_len(). A comment explaining why this weird check could
-have been better though..
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+Changes in v3:
+- Move some include changes from patch #1 to #5 to fix build with just 
+  patch #1 applied.
+- Link to v2: https://lore.kernel.org/r/20231004-dt-asoc-header-cleanups-v2-0-e77765080cbc@kernel.org
 
-Thanks
-Hari
+Changes in v2:
+- Add tags
+- Link to v1: https://lore.kernel.org/r/20231003-dt-asoc-header-cleanups-v1-0-308666806378@kernel.org
+- Link to v1 resend: https://lore.kernel.org/r/20231003-dt-asoc-header-cleanups-v1-0-05b5d6447e5a@kernel.org/
+
+---
+Rob Herring (5):
+      ASoC: Explicitly include correct DT includes
+      ASoC: Drop unnecessary of_match_device() calls
+      ASoC: da7218: Use i2c_get_match_data()
+      ASoC: qcom/lpass: Constify struct lpass_variant
+      ASoC: Use device_get_match_data()
+
+ sound/soc/atmel/atmel_wm8904.c                     |  1 -
+ sound/soc/atmel/mchp-i2s-mcc.c                     |  2 +-
+ sound/soc/atmel/tse850-pcm5142.c                   |  1 -
+ sound/soc/bcm/cygnus-ssp.c                         |  2 +-
+ sound/soc/codecs/adau1701.c                        |  1 -
+ sound/soc/codecs/adau1977-spi.c                    |  1 -
+ sound/soc/codecs/ak4104.c                          |  2 +-
+ sound/soc/codecs/ak4118.c                          |  2 +-
+ sound/soc/codecs/ak4375.c                          |  2 +-
+ sound/soc/codecs/ak4458.c                          |  2 +-
+ sound/soc/codecs/ak4613.c                          |  2 +-
+ sound/soc/codecs/ak4642.c                          |  2 +-
+ sound/soc/codecs/ak5386.c                          |  7 +---
+ sound/soc/codecs/ak5558.c                          |  2 +-
+ sound/soc/codecs/cs35l32.c                         |  2 +-
+ sound/soc/codecs/cs35l33.c                         |  2 -
+ sound/soc/codecs/cs35l34.c                         |  2 +-
+ sound/soc/codecs/cs35l35.c                         |  3 +-
+ sound/soc/codecs/cs35l36.c                         |  3 +-
+ sound/soc/codecs/cs35l41-i2c.c                     |  2 +-
+ sound/soc/codecs/cs35l41.c                         |  1 -
+ sound/soc/codecs/cs4270.c                          |  2 +-
+ sound/soc/codecs/cs4271.c                          | 22 +++--------
+ sound/soc/codecs/cs42l42.c                         |  1 -
+ sound/soc/codecs/cs42l56.c                         |  2 +-
+ sound/soc/codecs/cs42xx8-i2c.c                     |  2 +-
+ sound/soc/codecs/cs43130.c                         |  3 +-
+ sound/soc/codecs/cs4349.c                          |  2 +-
+ sound/soc/codecs/da7213.c                          |  2 +-
+ sound/soc/codecs/da7218.c                          | 29 +--------------
+ sound/soc/codecs/da7218.h                          |  2 +-
+ sound/soc/codecs/da7219.c                          |  2 +-
+ sound/soc/codecs/da9055.c                          |  1 -
+ sound/soc/codecs/es8328.c                          |  1 -
+ sound/soc/codecs/gtm601.c                          |  2 +-
+ sound/soc/codecs/lpass-macro-common.c              |  2 +-
+ sound/soc/codecs/mt6351.c                          |  2 +-
+ sound/soc/codecs/mt6358.c                          |  2 +-
+ sound/soc/codecs/mt6359-accdet.c                   |  4 --
+ sound/soc/codecs/mt6359.c                          |  2 +-
+ sound/soc/codecs/nau8540.c                         |  2 +-
+ sound/soc/codecs/pcm1681.c                         |  2 -
+ sound/soc/codecs/rt715.c                           |  2 -
+ sound/soc/codecs/sgtl5000.c                        |  2 +-
+ sound/soc/codecs/sma1303.c                         |  2 +-
+ sound/soc/codecs/sta32x.c                          |  3 +-
+ sound/soc/codecs/sta350.c                          |  3 +-
+ sound/soc/codecs/tas5086.c                         |  6 +--
+ sound/soc/codecs/tas571x.c                         |  2 +-
+ sound/soc/codecs/uda1334.c                         |  2 +-
+ sound/soc/codecs/wm8510.c                          |  2 +-
+ sound/soc/codecs/wm8523.c                          |  2 +-
+ sound/soc/codecs/wm8524.c                          |  2 +-
+ sound/soc/codecs/wm8580.c                          |  2 +-
+ sound/soc/codecs/wm8711.c                          |  2 +-
+ sound/soc/codecs/wm8728.c                          |  2 +-
+ sound/soc/codecs/wm8731-i2c.c                      |  2 +-
+ sound/soc/codecs/wm8731-spi.c                      |  2 +-
+ sound/soc/codecs/wm8737.c                          |  2 +-
+ sound/soc/codecs/wm8741.c                          |  2 +-
+ sound/soc/codecs/wm8750.c                          |  2 +-
+ sound/soc/codecs/wm8753.c                          |  2 +-
+ sound/soc/codecs/wm8770.c                          |  2 +-
+ sound/soc/codecs/wm8776.c                          |  2 +-
+ sound/soc/codecs/wm8804.c                          |  1 -
+ sound/soc/fsl/efika-audio-fabric.c                 |  4 +-
+ sound/soc/fsl/fsl_aud2htx.c                        |  3 +-
+ sound/soc/fsl/fsl_mqs.c                            |  2 +-
+ sound/soc/fsl/fsl_rpmsg.c                          |  3 +-
+ sound/soc/fsl/fsl_sai.c                            |  3 +-
+ sound/soc/fsl/fsl_spdif.c                          |  4 +-
+ sound/soc/fsl/imx-audmux.c                         |  1 -
+ sound/soc/fsl/imx-card.c                           |  3 +-
+ sound/soc/fsl/imx-rpmsg.c                          |  3 +-
+ sound/soc/fsl/mpc5200_dma.c                        |  4 +-
+ sound/soc/fsl/mpc5200_psc_ac97.c                   |  3 +-
+ sound/soc/fsl/mpc5200_psc_i2s.c                    |  3 +-
+ sound/soc/fsl/mpc8610_hpcd.c                       |  2 +-
+ sound/soc/fsl/p1022_ds.c                           |  2 +-
+ sound/soc/fsl/p1022_rdk.c                          |  2 +-
+ sound/soc/fsl/pcm030-audio-fabric.c                |  3 +-
+ sound/soc/generic/audio-graph-card.c               |  2 -
+ sound/soc/generic/audio-graph-card2.c              |  2 -
+ sound/soc/generic/simple-card.c                    |  2 +-
+ sound/soc/generic/test-component.c                 |  2 +-
+ sound/soc/intel/keembay/kmb_platform.c             | 13 +------
+ sound/soc/mediatek/mt2701/mt2701-afe-pcm.c         |  2 -
+ sound/soc/mediatek/mt8183/mt8183-da7219-max98357.c |  2 +-
+ .../mt8183/mt8183-mt6358-ts3a227-max98357.c        |  2 +-
+ .../mt8186/mt8186-mt6366-da7219-max98357.c         |  2 +-
+ .../mediatek/mt8186/mt8186-mt6366-rt1019-rt5682s.c |  2 +-
+ sound/soc/mediatek/mt8188/mt8188-mt6359.c          |  2 +-
+ .../mediatek/mt8192/mt8192-mt6359-rt1015-rt5682.c  |  2 +-
+ sound/soc/mediatek/mt8195/mt8195-mt6359.c          |  2 +-
+ sound/soc/mxs/mxs-saif.c                           |  1 -
+ sound/soc/mxs/mxs-sgtl5000.c                       |  1 -
+ sound/soc/qcom/apq8096.c                           |  2 +-
+ sound/soc/qcom/lpass-apq8016.c                     |  6 +--
+ sound/soc/qcom/lpass-cdc-dma.c                     |  2 +-
+ sound/soc/qcom/lpass-cpu.c                         | 43 ++++++++++------------
+ sound/soc/qcom/lpass-ipq806x.c                     |  2 +-
+ sound/soc/qcom/lpass-platform.c                    | 36 +++++++++---------
+ sound/soc/qcom/lpass-sc7180.c                      |  6 +--
+ sound/soc/qcom/lpass-sc7280.c                      |  6 +--
+ sound/soc/qcom/lpass.h                             |  2 +-
+ sound/soc/qcom/qdsp6/q6apm-dai.c                   |  2 +-
+ sound/soc/qcom/qdsp6/q6asm-dai.c                   |  2 +-
+ sound/soc/qcom/qdsp6/q6dsp-lpass-clocks.c          |  1 -
+ sound/soc/qcom/qdsp6/q6routing.c                   |  3 +-
+ sound/soc/qcom/sc7180.c                            |  2 +-
+ sound/soc/qcom/sc7280.c                            |  2 +-
+ sound/soc/qcom/sc8280xp.c                          |  2 +-
+ sound/soc/qcom/sdm845.c                            |  2 +-
+ sound/soc/qcom/sm8250.c                            |  2 +-
+ sound/soc/rockchip/rockchip_i2s.c                  |  8 ++--
+ sound/soc/rockchip/rockchip_i2s_tdm.c              | 24 ++++--------
+ sound/soc/rockchip/rockchip_max98090.c             |  3 +-
+ sound/soc/rockchip/rockchip_pdm.c                  |  7 +---
+ sound/soc/samsung/aries_wm8994.c                   |  1 -
+ sound/soc/samsung/arndale.c                        |  2 +-
+ sound/soc/samsung/i2s.c                            |  2 -
+ sound/soc/samsung/midas_wm1811.c                   |  2 -
+ sound/soc/samsung/odroid.c                         |  1 -
+ sound/soc/samsung/smdk_wm8994.c                    | 28 ++------------
+ sound/soc/samsung/snow.c                           |  1 -
+ sound/soc/sh/fsi.c                                 |  1 -
+ sound/soc/sh/rcar/core.c                           |  1 +
+ sound/soc/sh/rcar/rsnd.h                           |  4 +-
+ sound/soc/sh/rcar/src.c                            |  1 +
+ sound/soc/sh/rcar/ssi.c                            |  2 +
+ sound/soc/sh/rz-ssi.c                              |  1 -
+ sound/soc/stm/stm32_i2s.c                          |  7 +---
+ sound/soc/stm/stm32_sai.c                          |  8 ++--
+ sound/soc/stm/stm32_sai_sub.c                      |  6 +--
+ sound/soc/stm/stm32_spdifrx.c                      |  8 +---
+ sound/soc/sunxi/sun4i-codec.c                      |  4 --
+ sound/soc/sunxi/sun4i-i2s.c                        |  2 +-
+ sound/soc/sunxi/sun4i-spdif.c                      |  3 +-
+ sound/soc/sunxi/sun50i-codec-analog.c              |  3 +-
+ sound/soc/sunxi/sun50i-dmic.c                      |  2 +-
+ sound/soc/sunxi/sun8i-codec-analog.c               |  1 -
+ sound/soc/sunxi/sun8i-codec.c                      |  2 +-
+ sound/soc/tegra/tegra186_asrc.c                    |  3 +-
+ sound/soc/tegra/tegra186_dspk.c                    |  2 +-
+ sound/soc/tegra/tegra20_spdif.c                    |  2 +-
+ sound/soc/tegra/tegra210_adx.c                     |  3 +-
+ sound/soc/tegra/tegra210_amx.c                     | 10 +----
+ sound/soc/tegra/tegra210_dmic.c                    |  2 +-
+ sound/soc/tegra/tegra210_i2s.c                     |  2 +-
+ sound/soc/tegra/tegra210_mixer.c                   |  3 +-
+ sound/soc/tegra/tegra210_mvc.c                     |  3 +-
+ sound/soc/tegra/tegra210_ope.c                     |  3 +-
+ sound/soc/tegra/tegra210_peq.c                     |  1 -
+ sound/soc/tegra/tegra210_sfc.c                     |  1 -
+ sound/soc/tegra/tegra30_i2s.c                      |  1 -
+ sound/soc/tegra/tegra_asoc_machine.c               |  1 -
+ sound/soc/tegra/tegra_audio_graph_card.c           |  2 +-
+ sound/soc/ti/davinci-evm.c                         |  7 +---
+ sound/soc/ti/davinci-mcasp.c                       |  9 ++---
+ sound/soc/ti/omap-dmic.c                           |  2 +-
+ sound/soc/ti/omap-mcbsp.c                          | 10 ++---
+ sound/soc/ti/omap-mcpdm.c                          |  2 +-
+ 162 files changed, 205 insertions(+), 390 deletions(-)
+---
+base-commit: c9f2baaa18b5ea8f006a2b3a616da9597c71d15e
+change-id: 20231003-dt-asoc-header-cleanups-87f2cf5a2205
+
+Best regards,
+-- 
+Rob Herring <robh@kernel.org>
+
