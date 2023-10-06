@@ -1,51 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C38037BC1F7
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Oct 2023 00:03:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 170F07BC20B
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Oct 2023 00:09:03 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mr5hNZS7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lqqUlsyH;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S2Mrf4G4Hz3cnR
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Oct 2023 09:03:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S2Myh728Jz3vZn
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Oct 2023 09:09:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mr5hNZS7;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lqqUlsyH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S2Mql0blxz30NP
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Oct 2023 09:02:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S2Mxp6mTmz2yGF
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Oct 2023 09:08:14 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id D95C7B82ABF;
-	Fri,  6 Oct 2023 22:02:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C4CC433C7;
-	Fri,  6 Oct 2023 22:02:53 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id A041A60BB8;
+	Fri,  6 Oct 2023 22:08:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46CD3C433C7;
+	Fri,  6 Oct 2023 22:08:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1696629774;
-	bh=5qNpTHdPbPHNPOq+CPvh8QULUoFCrWL4op5DAxKIpGM=;
+	s=k20201202; t=1696630092;
+	bh=S/N63H4X+QPAGfS1YS/mBfx58DuAbwAsy+1fq8W1EuY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=mr5hNZS7cPEC9fZ9Pm1otMuyEoQtn5x0MebbmvDKT1ysxZd56Xx+tCIEM8QZkQ0Rx
-	 2HUNxrgaPRHz8QjWANUbD1mH6curuCdl6HomjYf2KnrCtmGyAAnY5ufgjcVH8v/6jb
-	 QG2jDbcpxxyNYg4G8snQQRAUJZiH1mXGOYt8SQQGeANRY51XoIQTOlWK6yuYXJMFzl
-	 JuNX4YzwFq+kxxRqEiTycDfkPmkv5j5xhBajGBUP1pMm0yb+NbugndmWBLihXxE3sN
-	 +UAuDIx49s6xJ7b8nNHq77RCfPL2Bx0miv1JSuqRDSCA4eQG0Z9vQ8/jx1890NcVXF
-	 fyDg6rJJsfGGg==
-Date: Fri, 6 Oct 2023 15:02:52 -0700
+	b=lqqUlsyH7HQbKjX6+5MZaW5p3Joc5/jp6VffbnbSi4frEd/pPhmgULRdlX5REnhpP
+	 BK2xli8u32zh+fkxpuHUOLaTi6MD1PXmD4uaT4ger+hlNVtAIdfLCOrFRtKzFzQdQz
+	 2sQXEvvtRBzYF6TTKxDU1a+OboOZzIkfFfzieoDXlciUuulj9kl61ww0wJPKsFKgrl
+	 bG0J56gOoLjF3VNIh6eD3ijl/+KNdaIHPaK1qZBx8m+Qm/Nj6jA1it1GsSd/KDmDTO
+	 8t97yI7Q9ito8x5R+7R8OzvwKOZlUfEqCdWiEARsL6pB/CF8A3b9DgN6yKbMV0niw2
+	 jzXwcskBcwReg==
+Date: Fri, 6 Oct 2023 15:08:10 -0700
 From: Jakub Kicinski <kuba@kernel.org>
 To: Herve Codina <herve.codina@bootlin.com>
-Subject: Re: [PATCH v7 26/30] net: wan: framer: Add support for the Lantiq
- PEF2256 framer
-Message-ID: <20231006150252.6d45be95@kernel.org>
-In-Reply-To: <20230928070652.330429-27-herve.codina@bootlin.com>
+Subject: Re: [PATCH v7 24/30] net: wan: Add framer framework support
+Message-ID: <20231006150810.09e2c1a9@kernel.org>
+In-Reply-To: <20230928070652.330429-25-herve.codina@bootlin.com>
 References: <20230928070652.330429-1-herve.codina@bootlin.com>
-	<20230928070652.330429-27-herve.codina@bootlin.com>
+	<20230928070652.330429-25-herve.codina@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
@@ -65,16 +64,50 @@ Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org, Thomas Petazzoni 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 28 Sep 2023 09:06:44 +0200 Herve Codina wrote:
-> +	for (i = 0; i < count; i++) {
-> +		(audio_devs + i)->name = "framer-codec";
-> +		(audio_devs + i)->of_compatible = compatible;
-> +		(audio_devs + i)->id = i;
-
-Why not array notation?
-
-> +	}
+On Thu, 28 Sep 2023 09:06:42 +0200 Herve Codina wrote:
+> +menu "Framer Subsystem"
 > +
-> +	ret = mfd_add_devices(pef2256->dev, 0, audio_devs, count, NULL, 0, NULL);
+> +config GENERIC_FRAMER
+> +	bool "Framer Core"
+> +	help
+> +	  Generic Framer support.
+> +	  A framer is a component in charge of an E1/T1 line interface.
+> +	  Connected usually to a TDM bus, it converts TDM frames to/from E1/T1
+> +	  frames. It also provides information related to the E1/T1 line.
+> +	  Used with HDLC, the network can be reached through the E1/T1 line.
+> +
+> +	  This framework is designed to provide a generic interface for framer
+> +	  devices present in the kernel. This layer will have the generic
+> +	  API by which framer drivers can create framer using the framer
+> +	  framework and framer users can obtain reference to the framer.
+> +	  All the users of this framework should select this config.
 
-Should Lee be CCed for the MFD part?
+maybe make the menu a menuconfig with info about framers but hide 
+the GENERIC_FRAMER symbol? The driver 'select' it anyway, what's
+the point of prompting the user..
+
+> +	if (WARN_ON(!dev))
+> +		return ERR_PTR(-EINVAL);
+
+no defensive programming, let the kernel crash
+
+> +	ret = framer_pm_runtime_get_sync(framer);
+> +	if (ret < 0 && ret != -EOPNOTSUPP)
+> +		goto err_pm_sync;
+> +
+> +	ret = 0; /* Override possible ret == -EOPNOTSUPP */
+
+This looks pointless given that ret is either overwritten or not used
+later on
+
+> +	mutex_lock(&framer->mutex);
+> +	if (framer->power_count == 0 && framer->ops->power_on) {
+> +		ret = framer->ops->power_on(framer);
+> +		if (ret < 0) {
+> +			dev_err(&framer->dev, "framer poweron failed --> %d\n", ret);
+> +			goto err_pwr_on;
+> +		}
+> +	}
+> +	++framer->power_count;
+> +	mutex_unlock(&framer->mutex);
+> +	return 0;
