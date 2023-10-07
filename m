@@ -1,75 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDC157BD9FD
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Oct 2023 13:36:06 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZD5+6iFH;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZD5+6iFH;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99CA67BDF1D
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Oct 2023 15:26:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S3xn058mjz3vnq
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Oct 2023 22:36:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S40DP4mYxz3vX0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Oct 2023 00:26:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZD5+6iFH;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZD5+6iFH;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=piliu@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S3xgk02kCz3cRv
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Oct 2023 22:31:29 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1696851087;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ln7pY+wr2qQD2ScMy6ex68H7bIVNwsO6jnYm/CoN2CQ=;
-	b=ZD5+6iFHPVAGRsA0wui7lPKgGKqAsOiO1AeRf4BBKWUqaRonacI5sDGacsHMq0onvZiadV
-	buwTHi3/tcD/s24U3DzAZJm6qCsawrqQabwLIq5qLUPzrBgbeC7Uew2zYnz+HWKCoCpevM
-	JHqSxk/lY5yshdmvOXA+OxcZD8EcVNA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1696851087;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ln7pY+wr2qQD2ScMy6ex68H7bIVNwsO6jnYm/CoN2CQ=;
-	b=ZD5+6iFHPVAGRsA0wui7lPKgGKqAsOiO1AeRf4BBKWUqaRonacI5sDGacsHMq0onvZiadV
-	buwTHi3/tcD/s24U3DzAZJm6qCsawrqQabwLIq5qLUPzrBgbeC7Uew2zYnz+HWKCoCpevM
-	JHqSxk/lY5yshdmvOXA+OxcZD8EcVNA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-685-bGOoXTBWNBWO2o2YKQeI3w-1; Mon, 09 Oct 2023 07:31:15 -0400
-X-MC-Unique: bGOoXTBWNBWO2o2YKQeI3w-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 96A61811E97;
-	Mon,  9 Oct 2023 11:31:14 +0000 (UTC)
-Received: from piliu.users.ipa.redhat.com (unknown [10.72.120.3])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 9780F215671F;
-	Mon,  9 Oct 2023 11:31:10 +0000 (UTC)
-From: Pingfan Liu <piliu@redhat.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCHv8 5/5] powerpc/setup: alloc extra paca_ptrs to hold boot_cpuid
-Date: Mon,  9 Oct 2023 19:30:36 +0800
-Message-Id: <20231009113036.45988-6-piliu@redhat.com>
-In-Reply-To: <20231009113036.45988-1-piliu@redhat.com>
-References: <20231009113036.45988-1-piliu@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S40Cs5bq4z3c13
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Oct 2023 00:25:59 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4S40Cj14mDz9vBy;
+	Mon,  9 Oct 2023 15:25:53 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id Gphn4PpLowuC; Mon,  9 Oct 2023 15:25:53 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4S40Ch6Kpkz9vBQ;
+	Mon,  9 Oct 2023 15:25:52 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id D33CB8B794;
+	Mon,  9 Oct 2023 15:25:52 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id O5Nkp0HQcBAB; Mon,  9 Oct 2023 15:25:52 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.138])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id AE9738B780;
+	Mon,  9 Oct 2023 15:25:52 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 397AkNme258256
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Sat, 7 Oct 2023 12:46:23 +0200
+Received: (from chleroy@localhost)
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 397AkMZ8258254;
+	Sat, 7 Oct 2023 12:46:22 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+Subject: [PATCH] powerpc/code-patching: Perform hwsync in __patch_instruction() in case of failure
+Date: Sat,  7 Oct 2023 12:46:19 +0200
+Message-ID: <e88b154eaf2efd9ff177d472d3411dcdec8ff4f5.1696675567.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1696675578; l=1348; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=k9MOIxjlEEg3xQ6FC272ePXV8stsS7VaLfDlN1rnk+A=; b=hLdvCOgOVWYoBIXrpWrB0Ja6rVFEwwkXVLbkWv8R+Sz1AlP6QTmKgTloUS9aOavXUbUvoscOM awoz7adu5idDnnHdGzUiebX+TlKUSisFGdmc+HkXO+O3QDnoXQ2ltYO
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,97 +65,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Baoquan He <bhe@redhat.com>, Pingfan Liu <piliu@redhat.com>, kexec@lists.infradead.org, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Ming Lei <ming.lei@redhat.com>, Wen Xiong <wenxiong@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: Hari Bathini <hbathini@linux.ibm.com>, "Christopher M . Riedl" <cmr@bluescreens.de>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-paca_ptrs should be large enough to hold the boot_cpuid, hence, its
-lower boundary is set to the bigger one between boot_cpuid+1 and
-nr_cpus.
+Commit c28c15b6d28a ("powerpc/code-patching: Use temporary mm for
+Radix MMU") added a hwsync for when __patch_instruction() fails,
+we results in a quite odd unbalanced logic.
 
-On the other hand, some kernel component: -1. the timer assumes cpu0
-online since the timer_list->flags subfield 'TIMER_CPUMASK' is zero if
-not initialized to a proper present cpu.  -2. power9_idle_stop() assumes
-the primary thread's paca is allocated.
+Instead of calling mb() when __patch_instruction() returns an error,
+call mb() in the __patch_instruction()'s error path directly.
 
-Hence lift nr_cpu_ids from one to two to ensure cpu0 is onlined, if the
-boot cpu is not cpu0.
-
-Result:
-When nr_cpus=1, taskset -c 14 bash -c 'echo c > /proc/sysrq-trigger'
-the kdump kernel brings up two cpus.
-While when taskset -c 4 bash -c 'echo c > /proc/sysrq-trigger',
-the kdump kernel brings up one cpu.
-
-Signed-off-by: Pingfan Liu <piliu@redhat.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Cc: Wen Xiong <wenxiong@linux.ibm.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Ming Lei <ming.lei@redhat.com>
-Cc: kexec@lists.infradead.org
-To: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Hari Bathini <hbathini@linux.ibm.com>
+Cc: Christopher M. Riedl <cmr@bluescreens.de>
 ---
- arch/powerpc/kernel/paca.c | 10 ++++++----
- arch/powerpc/kernel/prom.c |  9 ++++++---
- 2 files changed, 12 insertions(+), 7 deletions(-)
+ arch/powerpc/lib/code-patching.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kernel/paca.c b/arch/powerpc/kernel/paca.c
-index cda4e00b67c1..91e2401de1bd 100644
---- a/arch/powerpc/kernel/paca.c
-+++ b/arch/powerpc/kernel/paca.c
-@@ -242,9 +242,10 @@ static int __initdata paca_struct_size;
+diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
+index b00112d7ad46..7a47a871e6b8 100644
+--- a/arch/powerpc/lib/code-patching.c
++++ b/arch/powerpc/lib/code-patching.c
+@@ -38,6 +38,7 @@ static int __patch_instruction(u32 *exec_addr, ppc_inst_t instr, u32 *patch_addr
+ 	return 0;
  
- void __init allocate_paca_ptrs(void)
- {
--	paca_nr_cpu_ids = nr_cpu_ids;
-+	int n = (boot_cpuid + 1) > nr_cpu_ids ? (boot_cpuid + 1) : nr_cpu_ids;
+ failed:
++	mb();  /* sync */
+ 	return -EPERM;
+ }
  
--	paca_ptrs_size = sizeof(struct paca_struct *) * nr_cpu_ids;
-+	paca_nr_cpu_ids = n;
-+	paca_ptrs_size = sizeof(struct paca_struct *) * n;
- 	paca_ptrs = memblock_alloc_raw(paca_ptrs_size, SMP_CACHE_BYTES);
- 	if (!paca_ptrs)
- 		panic("Failed to allocate %d bytes for paca pointers\n",
-@@ -287,13 +288,14 @@ void __init allocate_paca(int cpu)
- void __init free_unused_pacas(void)
- {
- 	int new_ptrs_size;
-+	int n = (boot_cpuid + 1) > nr_cpu_ids ? (boot_cpuid + 1) : nr_cpu_ids;
+@@ -309,10 +310,6 @@ static int __do_patch_instruction_mm(u32 *addr, ppc_inst_t instr)
  
--	new_ptrs_size = sizeof(struct paca_struct *) * nr_cpu_ids;
-+	new_ptrs_size = sizeof(struct paca_struct *) * n;
- 	if (new_ptrs_size < paca_ptrs_size)
- 		memblock_phys_free(__pa(paca_ptrs) + new_ptrs_size,
- 				   paca_ptrs_size - new_ptrs_size);
+ 	err = __patch_instruction(addr, instr, patch_addr);
  
--	paca_nr_cpu_ids = nr_cpu_ids;
-+	paca_nr_cpu_ids = n;
- 	paca_ptrs_size = new_ptrs_size;
+-	/* hwsync performed by __patch_instruction (sync) if successful */
+-	if (err)
+-		mb();  /* sync */
+-
+ 	/* context synchronisation performed by __patch_instruction (isync or exception) */
+ 	stop_using_temp_mm(patching_mm, orig_mm);
  
- #ifdef CONFIG_PPC_64S_HASH_MMU
-diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 87272a2d8c10..15c994f54bf9 100644
---- a/arch/powerpc/kernel/prom.c
-+++ b/arch/powerpc/kernel/prom.c
-@@ -362,9 +362,12 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
- 			 */
- 			boot_cpuid = i;
- 			found = true;
--			/* This works around the hole in paca_ptrs[]. */
--			if (nr_cpu_ids < nthreads)
--				set_nr_cpu_ids(nthreads);
-+			/*
-+			 * Ideally, nr_cpus=1 can be achieved if each kernel
-+			 * component does not assume cpu0 is onlined.
-+			 */
-+			if (boot_cpuid != 0 && nr_cpu_ids < 2)
-+				set_nr_cpu_ids(2);
- 		}
- #ifdef CONFIG_SMP
- 		/* logical cpu id is always 0 on UP kernels */
 -- 
-2.31.1
+2.41.0
 
