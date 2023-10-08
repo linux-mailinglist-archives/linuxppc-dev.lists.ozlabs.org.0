@@ -1,69 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C41A97BCD95
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Oct 2023 11:39:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E7CF7BCE32
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Oct 2023 13:33:34 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dkkXRF2i;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=JQlcXDiF;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S3HDK6FWvz3dhR
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Oct 2023 20:38:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S3KmX3DFrz3cVj
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Oct 2023 22:33:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dkkXRF2i;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=JQlcXDiF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::12d; helo=mail-il1-x12d.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::530; helo=mail-ed1-x530.google.com; envelope-from=edumazet@google.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S3HCT1MKZz3c8r
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Oct 2023 20:38:11 +1100 (AEDT)
-Received: by mail-il1-x12d.google.com with SMTP id e9e14a558f8ab-351437112c1so15171835ab.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 08 Oct 2023 02:38:11 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S3Cjt3YbSz2ytj
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Oct 2023 18:00:49 +1100 (AEDT)
+Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-534694a9f26so5420a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 08 Oct 2023 00:00:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696757886; x=1697362686; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1696748442; x=1697353242; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1fYiXpHzdursWStkJtczyobJvyoVD92PbbCoVYotrfY=;
-        b=dkkXRF2iKwwTihZDK6aV2liM5G6WokOMnR5xO/j5RD5YlLxTY5WhR2SVkuREUCuk//
-         wafiCu9Dh8u3oDZ3AU/A1/mEJhxeNSFqwDpyalHsxfYdvxYL8xC7+7DWRWL9O9AoXAgc
-         PtSJrKNFwGuL9ETcsb97L4NSeGw0R/kecrYCZzjrZr78reybQyGlh+Dl0TNebz1p9EtB
-         dF9Z+MB4N2MJi/rsY1u8pEOOXTzoIQr4Yvy+Pi3LfANFU1ntZE9qYdlr10xwlyt7WW0V
-         /l0Ojhn9FED4TsMbsfgMjOCA1cwDaRouufkVFnwMwAxYYieYTCeVnqfEndb8+Twi4JFR
-         36IA==
+        bh=mH8rgsD0Hcv//mdO9CGjCjg749l4skH04u5NpNfXSJo=;
+        b=JQlcXDiF6DmfZHjGCFjn6MSixLYXVSWFLXdv3N0HppbywJ7SrCdFD1SCg3XV/y1ioT
+         QJSMCldrneeydRosBAPvjBOr81fyIan7uttgECBVTUSTJqKFbpyQnkvzp1Xq+WuopBOy
+         FUCfw8HkXgBUsLYLM5Y28fsZ465e51OumyJa0JtA5OUMQc1pC5iB/14UM+ZxuGePOpKe
+         moBrJJbYE0vIHS88NY2YNC6XVRGksZ3zKmmrShs5ApZ4eoYohqzpjo592FQ6IoSAWUcj
+         id7eMsNF2e8ZgwWjwYgqqVkjAPGl0RQ9Qaf4i/o3SBNcCgRLmQWir0JFWdu1H1z9NZdh
+         PWew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696757886; x=1697362686;
+        d=1e100.net; s=20230601; t=1696748442; x=1697353242;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1fYiXpHzdursWStkJtczyobJvyoVD92PbbCoVYotrfY=;
-        b=LmvRZnCcFIhZkFYGDLV5aJy2xb2Aa21xw4csndQpa0UyU4cno6HeURfaP89c2H+uaE
-         NtMuYyMG83PSf0uhfD1JKsCOVIPDCiqF8ttcbl/KwCH//nsfK5tXUl2fc2eMXPH2kAQX
-         uI80rWpZ78g1T7/OVr7M281PE9iEYlFju3wcBfHtsWVIlMzeRa/MfbwbT6yS+mnqjmcD
-         zfEhTAKgRE9JpdEczA1tlIi3xJRnGWtppaaA8GWeqMW0mtyv2vlsZjPRS3c1tIzgpCBm
-         PBXKemnxh0kW6zAg9g9xfxsgGu5GzmQoab191QYaaoQzt+dgGinQJVHRW1+S/vKCZMGJ
-         XbzQ==
-X-Gm-Message-State: AOJu0YwQjpdTqiS43sPHFZ/sADNDCM2Cs3YENWZsdRHwHQRRxXOMmkCC
-	lxwUyTFz+qaunt/ntMDpRcXM4XW/yBB+RLzD8ew=
-X-Google-Smtp-Source: AGHT+IFOPXqa1g6fZGD/2vL4Ek92lAQIZ3j/sZIBurFiKkx5uCP6NxLrJQ6ZaN6RV8gr8K1oXMJbJlZME8c7U+Lw4uA=
-X-Received: by 2002:a05:6e02:184f:b0:349:3020:d103 with SMTP id
- b15-20020a056e02184f00b003493020d103mr15718726ilv.25.1696757886364; Sun, 08
- Oct 2023 02:38:06 -0700 (PDT)
+        bh=mH8rgsD0Hcv//mdO9CGjCjg749l4skH04u5NpNfXSJo=;
+        b=EvtQp5OI6KVws528sp496Ra3Ifmi2XwuuoHh1WHwb6bEoM3yfsUQZz9WLdfAZnR4qd
+         1gxaCJq5HKrNKY4ivbQtL4SUQi8FUvOqAyakgpadseLtWn/Ig7+muuZIS/2A3hbdFLGF
+         lg9e/Y5bGdILPP8pa0DOnJNBbN8Gun2qrPntUK/0F02w6dV0KW+eU6kimIrtb1Hr/G4+
+         EZOfaou1aKOVQUfBq844hQxpWH+Y4StlhAIjFR3mUl55ayHGL/5ReSgwrMPi5moIEGF5
+         yaA5nFiUp0kX1AWcpDd3UtJjRuUtWpJlJGqAkvpOR5giz7vHHoXpkROpWZaUgIwBQ4cn
+         bBhA==
+X-Gm-Message-State: AOJu0YyM7jxOpxUd9dPzdBcyzAMhgXNziomMpPyIeVZeXvtiiXRExELP
+	v4p1kGLzVSPT1BR+cOQpKEE8jt1y9416vT6bcvXnuA==
+X-Google-Smtp-Source: AGHT+IEsm3Yaeezo31ko5A6vpc3J66AXEC7Qr6Rm72BDJiSgp93BqqzS34935wa+NNU03Xl/ZB6KCTMLkH8SD9/RjuM=
+X-Received: by 2002:a50:9fa4:0:b0:538:5f9e:f0fc with SMTP id
+ c33-20020a509fa4000000b005385f9ef0fcmr307070edf.0.1696748442128; Sun, 08 Oct
+ 2023 00:00:42 -0700 (PDT)
 MIME-Version: 1.0
-References: <tencent_681B0528D436898B1B945A8B2D46300C0F07@qq.com>
-In-Reply-To: <tencent_681B0528D436898B1B945A8B2D46300C0F07@qq.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Sun, 8 Oct 2023 17:37:54 +0800
-Message-ID: <CAA+D8ANxyQbZDp0DuaxzvucHWvuU9N-ckWQYAEa89LAD7-whUA@mail.gmail.com>
-Subject: Re: [PATCH] ASoC: fsl: Fix PM disable depth imbalance in fsl_easrc_probe
-To: Zhang Shurong <zhang_shurong@foxmail.com>
+References: <20231003145150.2498-1-ansuelsmth@gmail.com> <20231003145150.2498-3-ansuelsmth@gmail.com>
+ <CANn89iK226C-pHUJm7HKMyEtMycGC=KCA2M6kw2KJaUj0cCT6w@mail.gmail.com>
+ <20231005093253.2e25533a@kernel.org> <CANn89iJQ50AdXP2C1YB2pGjE02WCJ-QCsZqE1yGXtcGsfLA0Jw@mail.gmail.com>
+ <65205789.5d0a0220.7e49b.ccb0@mx.google.com>
+In-Reply-To: <65205789.5d0a0220.7e49b.ccb0@mx.google.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Sun, 8 Oct 2023 09:00:29 +0200
+Message-ID: <CANn89i+ntByi2709y10PN6cgri-b0EWxPSNXdu_Nf2nOvJ45FQ@mail.gmail.com>
+Subject: Re: [net-next PATCH v2 3/4] netdev: replace napi_reschedule with napi_schedule
+To: Christian Marangi <ansuelsmth@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Mailman-Approved-At: Sun, 08 Oct 2023 22:32:48 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,60 +79,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com, linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz, nicoleotsuka@gmail.com, broonie@kernel.org, festevam@gmail.com, linux-kernel@vger.kernel.org
+Cc: Andrew Lunn <andrew@lunn.ch>, Sergey Ryazanov <ryazanov.s.a@gmail.com>, Ziwei Xiao <ziweixiao@google.com>, Chris Snook <chris.snook@gmail.com>, Rick Lindsley <ricklind@linux.ibm.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Krzysztof Halasa <khalasa@piap.pl>, Yuri Karpov <YKarpov@ispras.ru>, netdev@vger.kernel.org, ath10k@lists.infradead.org, Dany Madden <danymadden@us.ibm.com>, Gregory Greenman <gregory.greenman@intel.com>, Zhengchao Shao <shaozhengchao@huawei.com>, Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>, Dawei Li <set_pte_at@outlook.com>, Intel Corporation <linuxwwan@intel.com>, Rob Herring <robh@kernel.org>, Jeroen de Borst <jeroendb@google.com>, Leon Romanovsky <leon@kernel.org>, linux-rdma@vger.kernel.org, Lee Jones <lee@kernel.org>, Haren Myneni <haren@linux.ibm.com>, linux-stm32@st-md-mailman.stormreply.com, Rushil Gupta <rushilg@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Thomas Falcon <tlfalcon@linux.ibm.com>, Jose Abreu <joabreu@synopsys.com>,
+  =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, linux-wireless@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Wei Fang <wei.fang@nxp.com>, Wolfgang Grandegger <wg@grandegger.com>, Nick Child <nnac123@linux.ibm.com>, Simon Horman <horms@kernel.org>, Liu Haijun <haijun.liu@mediatek.com>, Kalle Valo <kvalo@kernel.org>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, linux-can@vger.kernel.org, Yuanjun Gong <ruc_gongyuanjun@163.com>, Shailend Chand <shailend@google.com>, Marc Kleine-Budde <mkl@pengutronix.de>, Benjamin Berg <benjamin.berg@intel.com>, M Chetan Kumar <m.chetan.kumar@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, Coco Li <lixiaoyan@google.com>, linux-arm-kernel@lists.infradead.org, Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>, Ricardo Martinez <ricardo.martinez@linux.intel.com>, Loic Poulain <loic.poulain@linaro.org>, Zheng Zengkai <zhengzengkai@huawei.com>, Maximilian Lu
+ z <luzmaximilian@gmail.com>, Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Douglas Miller <dougmill@linux.ibm.com>, linux-kernel@vger.kernel.org, Tariq Toukan <tariqt@nvidia.com>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Junfeng Guo <junfeng.guo@intel.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Raju Rangoju <rajur@chelsio.com>, Praveen Kaligineedi <pkaligineedi@google.com>, Johannes Berg <johannes@sipsolutions.net>, Jeff Johnson <quic_jjohnson@quicinc.com>, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 4, 2023 at 3:12=E2=80=AFPM Zhang Shurong <zhang_shurong@foxmail=
-.com> wrote:
+On Fri, Oct 6, 2023 at 8:52=E2=80=AFPM Christian Marangi <ansuelsmth@gmail.=
+com> wrote:
 >
-> The pm_runtime_enable will increase power disable depth. Thus
-> a pairing decrement is needed on the error handling path to
-> keep it balanced according to context. We fix it by calling
-> pm_runtime_disable when error returns.
+> On Thu, Oct 05, 2023 at 06:41:03PM +0200, Eric Dumazet wrote:
+> > On Thu, Oct 5, 2023 at 6:32=E2=80=AFPM Jakub Kicinski <kuba@kernel.org>=
+ wrote:
+> > >
+> > > On Thu, 5 Oct 2023 18:11:56 +0200 Eric Dumazet wrote:
+> > > > OK, but I suspect some users of napi_reschedule() might not be race=
+-free...
+> > >
+> > > What's the race you're thinking of?
+> >
+> > This sort of thing... the race is in fl_starving() though...
+> >
+> > diff --git a/drivers/net/ethernet/chelsio/cxgb4/sge.c
+> > b/drivers/net/ethernet/chelsio/cxgb4/sge.c
+> > index 98dd78551d89..b5ff2e1a9975 100644
+> > --- a/drivers/net/ethernet/chelsio/cxgb4/sge.c
+> > +++ b/drivers/net/ethernet/chelsio/cxgb4/sge.c
+> > @@ -4261,7 +4261,7 @@ static void sge_rx_timer_cb(struct timer_list *t)
+> >
+> >                         if (fl_starving(adap, fl)) {
+> >                                 rxq =3D container_of(fl, struct sge_eth=
+_rxq, fl);
+> > -                               if (napi_reschedule(&rxq->rspq.napi))
+> > +                               if (napi_schedule(&rxq->rspq.napi))
+> >                                         fl->starving++;
+> >                                 else
+> >                                         set_bit(id, s->starving_fl);
+>
+> Ehhh problem is that this is a simple rename so if any race is present,
+> it's already there and not caused by this rename :(
+>
+> Don't know maybe this is out of scope and should be investigated with a
+> bug report?
+>
+> Maybe this should be changed to prep/__schedule to prevent any kind of
+> race? But doing so doesn't prevent any kind of ""starving""?
 >
 
-Please add a Fixes tag.
-Thanks.
+I gave a "Reviewed-by: Eric Dumazet <edumazet@google.com>", meaning
+your patch was ok for me.
 
-Best regards
-Wang Shengjiu
-
-> Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-> ---
->  sound/soc/fsl/fsl_easrc.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
->
-> diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
-> index ba62995c909a..ec53bda46a46 100644
-> --- a/sound/soc/fsl/fsl_easrc.c
-> +++ b/sound/soc/fsl/fsl_easrc.c
-> @@ -1966,17 +1966,21 @@ static int fsl_easrc_probe(struct platform_device=
- *pdev)
->                                               &fsl_easrc_dai, 1);
->         if (ret) {
->                 dev_err(dev, "failed to register ASoC DAI\n");
-> -               return ret;
-> +               goto err_pm_disable;
->         }
->
->         ret =3D devm_snd_soc_register_component(dev, &fsl_asrc_component,
->                                               NULL, 0);
->         if (ret) {
->                 dev_err(&pdev->dev, "failed to register ASoC platform\n")=
-;
-> -               return ret;
-> +               goto err_pm_disable;
->         }
->
->         return 0;
-> +
-> +err_pm_disable:
-> +       pm_runtime_disable(&pdev->dev);
-> +       return ret;
->  }
->
->  static void fsl_easrc_remove(struct platform_device *pdev)
-> --
-> 2.30.2
->
+My remark was orthogonal, I am not asking you to act on it ;)
