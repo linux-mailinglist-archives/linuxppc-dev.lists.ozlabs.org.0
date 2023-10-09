@@ -2,63 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 504867BD2E6
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Oct 2023 07:55:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71C167BD2EE
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Oct 2023 07:57:49 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZaiZ52G/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tUs7l4Bl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S3pCq195sz3cWp
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Oct 2023 16:55:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S3pGg2WMdz3vd2
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Oct 2023 16:57:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZaiZ52G/;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tUs7l4Bl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S3pBv4bFnz2y1l
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Oct 2023 16:54:31 +1100 (AEDT)
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3995kJLm028631;
-	Mon, 9 Oct 2023 05:54:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=ggDeTe7U4EoWI97QgqL+TinWadvspyYvqsE4tpGPPwg=;
- b=ZaiZ52G/AF4lnnm3pwT1QX5oHjlsgeAl0y5CPvfmccIhn6T9ZZekgllM05mhtaDX1i+W
- a+wg/babpniF7HR+b/wvkEBbRYWXaQJ4/zDpd4qKNyHQvDL4dWIjwJrDh5wA4sZSR4hL
- hIpNrtgkEP8lrRShyGsMCW07HJf66+JpbMFvgqAgjxQkuzbU4fY2DilRgwYqtlfgEIWx
- AEXVLqgJ3rARTO/eh1UBmdcp5dFGtRKuO0uQ0yJiNblDcrkHul1a782+4O4KDs5BSJVv
- wGcAzxrnD7ud9g6uqVrKakbXlObeJPHPDYprzIscFreVBmcqYOn4ZQabmSmEKYAulB2g Cw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmb880nw3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Oct 2023 05:54:26 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3995m9xL004642;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S3pBw5cZrz2yGv
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Oct 2023 16:54:32 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3995ifaH001251;
 	Mon, 9 Oct 2023 05:54:26 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmb880nvy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Oct 2023 05:54:26 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39956auh024439;
-	Mon, 9 Oct 2023 05:54:25 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tkhns78py-1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=P4bKbUjz+FMHZd4LURo+jCDaLFGOEKNqXp3lTajBeZs=;
+ b=tUs7l4BlyDD9X5vTMbSuniTk83Koki4ZBt92oV1IRdNVm33RFz7/nmW6Nf5FGz87+AYb
+ gm3O5TLoxo+EZO/rSltnRHfCnm22NiG0zRFF5bF3uepYH5yqQWL4KKd1q0OOy450HdoR
+ s4aTNJiXnG075bYeHXY2TXaV9YHMwZL66FcnOI2NgU5JERkeY8Q2bwTrirItwEaIQZs2
+ eAFGePavYXZjieLrWaOS9TZHvGWPRxYThswmT6HQmZBZJTJ1hsyFgyrgJJ/piZWImWWI
+ cph0qaIkoJ10NtyGUq3GIlypGkvevNB7XUow7lwsVMGdA4uoQw/6QBRYwwT5QM2a4LMo Aw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmbn0r60v-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Mon, 09 Oct 2023 05:54:25 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3995j9V9004035;
+	Mon, 9 Oct 2023 05:54:25 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmbn0r60p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 09 Oct 2023 05:54:25 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39950nJw023032;
+	Mon, 9 Oct 2023 05:54:24 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tkmc16dca-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 09 Oct 2023 05:54:24 +0000
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3995sN2t44434126
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3995sNou42008836
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
 	Mon, 9 Oct 2023 05:54:23 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6F77D20043;
+	by IMSVA (Postfix) with ESMTP id 0BA8B2004E;
 	Mon,  9 Oct 2023 05:54:23 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8DDDF20040;
+	by IMSVA (Postfix) with ESMTP id 8DE3720043;
 	Mon,  9 Oct 2023 05:54:22 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
 	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
@@ -66,27 +67,28 @@ Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
 Received: from bgray-lenovo-p15.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id A6AF560419;
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id A978A6047D;
 	Mon,  9 Oct 2023 16:54:20 +1100 (AEDT)
 From: Benjamin Gray <bgray@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH 0/6] Add dynamic DEXCR support
-Date: Mon,  9 Oct 2023 16:54:00 +1100
-Message-ID: <20231009055406.142940-1-bgray@linux.ibm.com>
+Subject: [RFC PATCH 1/6] powerpc/dexcr: Make all aspects CPU features
+Date: Mon,  9 Oct 2023 16:54:01 +1100
+Message-ID: <20231009055406.142940-2-bgray@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: qJZwQixvS6i0cljnemKWqx31Ll0vezpY
-X-Proofpoint-GUID: RKUEkz1ZJwHAsT3N_iLQMjDa8TPkqCz4
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+In-Reply-To: <20231009055406.142940-1-bgray@linux.ibm.com>
+References: <20231009055406.142940-1-bgray@linux.ibm.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: SNFupuKkxLrM2wcA4oGtxL_4Ot2SLxo9
+X-Proofpoint-ORIG-GUID: fD-TMAQLm25r6oVS6TUfIIKEq7xO6v6r
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-10-09_04,2023-10-06_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- phishscore=0 clxscore=1015 priorityscore=1501 lowpriorityscore=0
- adultscore=0 malwarescore=0 spamscore=0 mlxlogscore=999 suspectscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ phishscore=0 suspectscore=0 spamscore=0 impostorscore=0 bulkscore=0
+ mlxlogscore=808 adultscore=0 priorityscore=1501 clxscore=1011 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2309180000 definitions=main-2310090051
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -103,95 +105,58 @@ Cc: ajd@linux.ibm.com, npiggin@gmail.com, Benjamin Gray <bgray@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-(This RFC is mainly to get feedback on the user interface. Tests and
-documentation will be added to the non-rfc followups. This builds but
-is otherwise untested.)
+The CPU_FEATURE_* mechanism is the only way right now to get
+configuration from the "ibm,pa-features" devicetree node. Add a
+CPU_FEATURE_* entry for each other DEXCR aspect that will be
+exposed to userspace.
 
-In the "Add static DEXCR support" series[1] the kernel was made to
-initialise the DEXCR to a static value on all CPUs when they online.
+The NPHIE feature value is changed for consistency; the actual value is
+never accessed or exposed to userspace, so there is no breakage.
 
-This series allows the DEXCR value to be changed at runtime with a
-per-thread granularity. It provides a prctl interface to set and query
-this configuration. It also provides a system wide sysctl override for
-the SBHE aspect, which specifically has effects that can bleed over to
-other CPUs (temporarily after changing it) and certain tracing tools
-may require it be set globally across all threads.
+Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+---
+ arch/powerpc/include/asm/cputable.h | 6 +++++-
+ arch/powerpc/kernel/prom.c          | 3 +++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-Some notes on the patches/changes from the original RFC:
-
-1. We don't need all the aspects to use feature bits, but the
-   aspect information is in the device tree and this is the
-   simplest mechanism to access it. Adding some kind of callback
-   support to the feature detector would also work.
-
-   The dexcr_supported variable introduced in patch 4 is a half-hearted
-   example of how the callbacks could just update that variable, and
-   no more CPU features would be necessary.
-
-2. The thread used to track 'default' as a separate state (way back in
-   the original RFC before the split into static/dynamic). This RFC
-   simplifies it away, as it is only useful if there is a system wide
-   default that can be changed. The current system wide default is
-   decided at compile time, so we just initialise the thread config
-   to that.
-
-   If the 'default' state were added in future though, would that be
-   a userspace ABI concern? I guess it could just return a 'default'
-   flag as well as the current 'on' and 'off' flags to indicate what
-   the default is.
-
-3. The prctl controls are reduced to what I expect to be most useful.
-   Default state is removed as above, and so is 'force' (where the aspect
-   would no longer be configurable). 'inherit' remains as a way to control
-   the DEXCR of child process trees that may not be aware of it.
-
-4. The prctl set interface is privileged. The concern is a non-privileged
-   process disabling NPHIE (HASHCHK enabler) and then invoking a setuid
-   binary which doesn't set NPHIE itself. It seems that kind of 
-   information about the exec target is not available in arch specific
-   code.
-
-5. A lot of the synchonization of the sysctl interface is removed.
-   Apparently the kernfs system that manages these files enforces
-   exclusive access to a given sysctl file. Additionally, the 
-   proc_dointvec_minmax() function was made to store the result with 
-   WRITE_ONCE(), so we can assume a regular atomic store of an aligned
-   word.
-
-6. The ROP protection enforcement is refactored a bit. The idea is to
-   allow baking into the kernel at compile time that NPHIE cannot be
-   changed by a thread. Seems to allow making the system more secure on
-   paper, not sure how useful it is in practice.
-
-7. The prctl interface tries to stay separate from the DEXCR structure.
-   This makes it a little contorted (having to convert the prctl value to
-   an aspect), but I think makes the interface more robust against future
-   changes to the DEXCR. E.g., if all 32 aspect bits were exhausted and a
-   second DEXCR added, the current interface could still handle that.
-
-
-[1]: https://patchwork.ozlabs.org/project/linuxppc-dev/cover/20230616034846.311705-1-bgray@linux.ibm.com/
-
-
-Benjamin Gray (6):
-  powerpc/dexcr: Make all aspects CPU features
-  powerpc/dexcr: Add thread specific DEXCR configuration
-  prctl: Define PowerPC DEXCR interface
-  powerpc/dexcr: Add prctl implementation
-  powerpc/dexcr: Add sysctl entry for SBHE system override
-  powerpc/dexcr: Add enforced userspace ROP protection config
-
- arch/powerpc/Kconfig                 |   5 +
- arch/powerpc/include/asm/cputable.h  |   6 +-
- arch/powerpc/include/asm/processor.h |  22 +++
- arch/powerpc/kernel/Makefile         |   1 +
- arch/powerpc/kernel/dexcr.c          | 218 +++++++++++++++++++++++++++
- arch/powerpc/kernel/process.c        |  24 +++
- arch/powerpc/kernel/prom.c           |   3 +
- include/uapi/linux/prctl.h           |  13 ++
- kernel/sys.c                         |  16 ++
- 9 files changed, 307 insertions(+), 1 deletion(-)
- create mode 100644 arch/powerpc/kernel/dexcr.c
-
+diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
+index 8765d5158324..bd087d0cb5fa 100644
+--- a/arch/powerpc/include/asm/cputable.h
++++ b/arch/powerpc/include/asm/cputable.h
+@@ -192,7 +192,10 @@ static inline void cpu_feature_keys_init(void) { }
+ #define CPU_FTR_P9_RADIX_PREFETCH_BUG	LONG_ASM_CONST(0x0002000000000000)
+ #define CPU_FTR_ARCH_31			LONG_ASM_CONST(0x0004000000000000)
+ #define CPU_FTR_DAWR1			LONG_ASM_CONST(0x0008000000000000)
+-#define CPU_FTR_DEXCR_NPHIE		LONG_ASM_CONST(0x0010000000000000)
++#define CPU_FTR_DEXCR_SBHE		LONG_ASM_CONST(0x0010000000000000)
++#define CPU_FTR_DEXCR_IBRTPD		LONG_ASM_CONST(0x0020000000000000)
++#define CPU_FTR_DEXCR_SRAPD		LONG_ASM_CONST(0x0040000000000000)
++#define CPU_FTR_DEXCR_NPHIE		LONG_ASM_CONST(0x0080000000000000)
+ 
+ #ifndef __ASSEMBLY__
+ 
+@@ -453,6 +456,7 @@ static inline void cpu_feature_keys_init(void) { }
+ 	    CPU_FTR_DBELL | CPU_FTR_HAS_PPR | CPU_FTR_ARCH_207S | \
+ 	    CPU_FTR_ARCH_300 | CPU_FTR_ARCH_31 | \
+ 	    CPU_FTR_DAWR | CPU_FTR_DAWR1 | \
++	    CPU_FTR_DEXCR_SBHE | CPU_FTR_DEXCR_IBRTPD | CPU_FTR_DEXCR_SRAPD | \
+ 	    CPU_FTR_DEXCR_NPHIE)
+ #define CPU_FTRS_CELL	(CPU_FTR_LWSYNC | \
+ 	    CPU_FTR_PPCAS_ARCH_V2 | CPU_FTR_CTRL | \
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index 0b5878c3125b..ea081a5d2023 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -182,6 +182,9 @@ static struct ibm_feature ibm_pa_features[] __initdata = {
+ 	  .cpu_user_ftrs2 = PPC_FEATURE2_HTM_COMP | PPC_FEATURE2_HTM_NOSC_COMP },
+ 
+ 	{ .pabyte = 64, .pabit = 0, .cpu_features = CPU_FTR_DAWR1 },
++	{ .pabyte = 68, .pabit = 0, .cpu_features = CPU_FTR_DEXCR_SBHE },
++	{ .pabyte = 68, .pabit = 3, .cpu_features = CPU_FTR_DEXCR_IBRTPD },
++	{ .pabyte = 68, .pabit = 4, .cpu_features = CPU_FTR_DEXCR_SRAPD },
+ 	{ .pabyte = 68, .pabit = 5, .cpu_features = CPU_FTR_DEXCR_NPHIE },
+ };
+ 
 -- 
 2.41.0
+
