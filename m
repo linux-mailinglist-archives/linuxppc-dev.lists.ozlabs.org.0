@@ -1,98 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70F597BD28A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Oct 2023 06:23:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 222A57BD287
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Oct 2023 06:21:50 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZsMB5fwi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=clMQigAp;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S3m9s0rh4z3vX2
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Oct 2023 15:23:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S3m7w0SVKz3ddR
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Oct 2023 15:21:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZsMB5fwi;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=clMQigAp;
 	dkim-atps=neutral
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S3m5z4C8Gz3c1Q
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S3m5z6nWfz3c5K
 	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Oct 2023 15:20:07 +1100 (AEDT)
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4S3m5x6y4kz4xW1
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Oct 2023 15:20:05 +1100 (AEDT)
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4S3m5z6B0mz4xW5
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Oct 2023 15:20:07 +1100 (AEDT)
 Received: by gandalf.ozlabs.org (Postfix)
-	id 4S3m5x6nxYz4xVy; Mon,  9 Oct 2023 15:20:05 +1100 (AEDT)
+	id 4S3m5z66pFz4x5J; Mon,  9 Oct 2023 15:20:07 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZsMB5fwi;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=clMQigAp;
 	dkim-atps=neutral
 Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4S3m5x4TVdz4xVx;
-	Mon,  9 Oct 2023 15:20:05 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3994HQFS012294;
-	Mon, 9 Oct 2023 04:20:04 GMT
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4S3m5z3mdXz4xVy;
+	Mon,  9 Oct 2023 15:20:07 +1100 (AEDT)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3994HZIK013734;
+	Mon, 9 Oct 2023 04:20:05 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=kjaO3vdIgsS3IuENaUA+AYjRex+yP0cXaPFERIbt3qc=;
- b=ZsMB5fwii7hh8mS9Ya0P63Q4PKDMfT5pgdb86yOAcidQXW+WasoHQ7YN0VQHYOoN1SlU
- Ry7SYeUQOShbpoJRmySjoekMuk8V/FmXYwv6JZiqKHCIEG/wdXFP4EAHtEJxFwlcBzRD
- us4l0eygIaImtn0TXN+47AmElHD7IoyO90qifXMTYiiQvQt/QnHFkH6DyaJJpOEoUpct
- wqt8BKFkmPO142uxyzuWcM9phJG98wZz1AqQYSap9KtPRe0hQ6o4MoAjXTWgcEDdznnG
- F2z7/bccEwbOvTCQ2KPX2LcR/JB/1c68OOwO+tsjlsjxQGWxvjfrPMTrMVVqwpU8zuil Cg== 
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmac301av-1
+ bh=WJWc9WirxFdlEcpBdL49ZOb8yoNkNcgrzCiSlhmhAp0=;
+ b=clMQigApJBNSY5WV+inCztGlanCE/HR6Z51Sr9QvOTthB7068+phnlI0XcVB6FwmSD2w
+ /LT5BWCaVl0iY9WVxZZLvWQqLs/N4YC0FjZekNa+kHqCV4yLKc5LhOa56JFXS4J5LXYh
+ ilLm/ZkpX2omHQ0vzktzl9N+48/rqR01qG9IyRIfLykrukFMHXBgCLebiRv1vGpz1BOS
+ 90cUL/r6r84F+iDUAUOLBzK4PDhws3EYn/UDkIwHb1khhaMfXLfyW9VE1adKCAE9EZfa
+ WKPgE0luGA6zhyoG606DY77RCrc81dz5x1wiAgg36G5HfcXsY4ta5QvvASMnJmQ8kaO6 Ag== 
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmac0g1ft-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Oct 2023 04:20:03 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3994Ge1v001147;
-	Mon, 9 Oct 2023 04:20:02 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tkkvje63d-1
+	Mon, 09 Oct 2023 04:20:05 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3990pxa4023094;
+	Mon, 9 Oct 2023 04:20:04 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tkmc1618f-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Oct 2023 04:20:02 +0000
+	Mon, 09 Oct 2023 04:20:04 +0000
 Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3994Jx4820709944
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3994K14744761676
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 9 Oct 2023 04:19:59 GMT
+	Mon, 9 Oct 2023 04:20:01 GMT
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A640F20043;
-	Mon,  9 Oct 2023 04:19:59 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 7FA6C20043;
+	Mon,  9 Oct 2023 04:20:01 +0000 (GMT)
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2E34520040;
-	Mon,  9 Oct 2023 04:19:58 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 2E7B320040;
+	Mon,  9 Oct 2023 04:20:00 +0000 (GMT)
 Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.c4p-in.ibmmobiledemo.com (unknown [9.43.79.177])
 	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  9 Oct 2023 04:19:58 +0000 (GMT)
+	Mon,  9 Oct 2023 04:19:59 +0000 (GMT)
 From: Sourabh Jain <sourabhjain@linux.ibm.com>
 To: linuxppc-dev@ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v3 2/3] powerpc/fadump: add hotplug_ready sysfs interface
-Date: Mon,  9 Oct 2023 09:49:52 +0530
-Message-ID: <20231009041953.36139-3-sourabhjain@linux.ibm.com>
+Subject: [PATCH v3 3/3] Documentation/powerpc: update fadump implementation details
+Date: Mon,  9 Oct 2023 09:49:53 +0530
+Message-ID: <20231009041953.36139-4-sourabhjain@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231009041953.36139-1-sourabhjain@linux.ibm.com>
 References: <20231009041953.36139-1-sourabhjain@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: LGmED31PGIRcmWVyW_KYrtZGKXoEP0qF
-X-Proofpoint-GUID: LGmED31PGIRcmWVyW_KYrtZGKXoEP0qF
+X-Proofpoint-GUID: _XKrws9lel0Onkgbpik7IN-dZHkO0pFm
+X-Proofpoint-ORIG-GUID: _XKrws9lel0Onkgbpik7IN-dZHkO0pFm
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-10-09_02,2023-10-06_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxlogscore=999
- suspectscore=0 priorityscore=1501 spamscore=0 lowpriorityscore=0
- impostorscore=0 malwarescore=0 adultscore=0 phishscore=0 mlxscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
+ adultscore=0 mlxlogscore=999 priorityscore=1501 lowpriorityscore=0
+ spamscore=0 mlxscore=0 suspectscore=0 clxscore=1015 malwarescore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2309180000 definitions=main-2310090037
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -109,86 +109,159 @@ Cc: mahesh@linux.vnet.ibm.com, adityag@linux.ibm.com, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The elfcorehdr describes the CPUs and memory of the crashed kernel to
-the kernel that captures the dump, known as the second or fadump kernel.
-The elfcorehdr needs to be updated if the system's memory changes due to
-memory hotplug or online/offline events.
+The patch titled ("powerpc: make fadump resilient with memory add/remove
+events") has made significant changes to the implementation of fadump,
+particularly on elfcorehdr creation and fadump crash info header
+structure. Therefore, updating the fadump implementation documentation
+to reflect those changes.
 
-Currently, memory hotplug events are monitored in userspace by udev
-rules, and fadump is re-registered, which recreates the elfcorehdr with
-the latest available memory in the system.
+Following updates are done to firmware assisted dump documentation:
 
-However, the previous patch ("powerpc: make fadump resilient with memory
-add/remove events") moved the creation of elfcorehdr to the second or
-fadump kernel. This eliminates the need to regenerate the elfcorehdr
-during memory hotplug or online/offline events.
+1. The elfcorehdr is no longer stored after fadump HDR in the reserved
+   dump area. Instead, the second kernel dynamically allocates memory
+   for the elfcorehdr within the address range from 0 to the boot memory
+   size. Therefore, update figures 1 and 2 of Memory Reservation during
+   the first and second kernels to reflect this change.
 
-Create a sysfs entry at /sys/kernel/fadump/hotplug_ready to let
-userspace know that fadump re-registration is not required for memory
-add/remove events.
+2. A version field has been added to the fadump header to maintain
+   backward compatibility without changing the fadump header magic
+   number in the future. Therefore, remove the corresponding TODO from
+   the document.
 
 Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
 ---
- Documentation/ABI/testing/sysfs-kernel-fadump | 12 ++++++++++++
- arch/powerpc/kernel/fadump.c                  | 14 ++++++++++++++
- 2 files changed, 26 insertions(+)
+ .../powerpc/firmware-assisted-dump.rst        | 91 +++++++++----------
+ 1 file changed, 42 insertions(+), 49 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-kernel-fadump b/Documentation/ABI/testing/sysfs-kernel-fadump
-index 8f7a64a81783..f8ba21da0f71 100644
---- a/Documentation/ABI/testing/sysfs-kernel-fadump
-+++ b/Documentation/ABI/testing/sysfs-kernel-fadump
-@@ -38,3 +38,15 @@ Contact:	linuxppc-dev@lists.ozlabs.org
- Description:	read only
- 		Provide information about the amount of memory reserved by
- 		FADump to save the crash dump in bytes.
-+What:		/sys/kernel/fadump/hotplug_ready
-+Date:		Sep 2023
-+Contact:	linuxppc-dev@lists.ozlabs.org
-+Description:	read only
-+		The Kdump scripts utilize udev rules to monitor memory add/remove
-+		events, ensuring that FADUMP is automatically re-registered when
-+		system memory changes occur. This re-registration was necessary
-+		to update the elfcorehdr, which describes the system memory to the
-+		second kernel. Now If this sysfs node holds a value of 1, it
-+		indicates to userspace that FADUMP does not require re-registration
-+		since the elfcorehdr is now generated in the second kernel.
-+User:		kexec-tools
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index 2d59225a0664..7696cbf70699 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -1473,6 +1473,18 @@ static ssize_t enabled_show(struct kobject *kobj,
- 	return sprintf(buf, "%d\n", fw_dump.fadump_enabled);
- }
+diff --git a/Documentation/powerpc/firmware-assisted-dump.rst b/Documentation/powerpc/firmware-assisted-dump.rst
+index e363fc48529a..7e37aadd1f77 100644
+--- a/Documentation/powerpc/firmware-assisted-dump.rst
++++ b/Documentation/powerpc/firmware-assisted-dump.rst
+@@ -134,12 +134,12 @@ that are run. If there is dump data, then the
+ memory is held.
  
-+/*
-+ * /sys/kernel/fadump/hotplug_ready sysfs node only returns 1,
-+ * which inidcates to usersapce that fadump re-registration is not
-+ * required on memory hotplug events.
-+ */
-+static ssize_t hotplug_ready_show(struct kobject *kobj,
-+				      struct kobj_attribute *attr,
-+				      char *buf)
-+{
-+	return sprintf(buf, "%d\n", 1);
-+}
+ If there is no waiting dump data, then only the memory required to
+-hold CPU state, HPTE region, boot memory dump, FADump header and
+-elfcore header, is usually reserved at an offset greater than boot
+-memory size (see Fig. 1). This area is *not* released: this region
+-will be kept permanently reserved, so that it can act as a receptacle
+-for a copy of the boot memory content in addition to CPU state and
+-HPTE region, in the case a crash does occur.
++hold CPU state, HPTE region, boot memory dump, and FADump header is
++usually reserved at an offset greater than boot memory size (see Fig. 1).
++This area is *not* released: this region will be kept permanently
++reserved, so that it can act as a receptacle for a copy of the boot
++memory content in addition to CPU state and HPTE region, in the case
++a crash does occur.
+ 
+ Since this reserved memory area is used only after the system crash,
+ there is no point in blocking this significant chunk of memory from
+@@ -153,22 +153,22 @@ that were present in CMA region::
+ 
+   o Memory Reservation during first kernel
+ 
+-  Low memory                                                 Top of memory
+-  0    boot memory size   |<--- Reserved dump area --->|       |
+-  |           |           |    Permanent Reservation   |       |
+-  V           V           |                            |       V
+-  +-----------+-----/ /---+---+----+-------+-----+-----+----+--+
+-  |           |           |///|////|  DUMP | HDR | ELF |////|  |
+-  +-----------+-----/ /---+---+----+-------+-----+-----+----+--+
+-        |                   ^    ^     ^      ^           ^
+-        |                   |    |     |      |           |
+-        \                  CPU  HPTE   /      |           |
+-         ------------------------------       |           |
+-      Boot memory content gets transferred    |           |
+-      to reserved area by firmware at the     |           |
+-      time of crash.                          |           |
+-                                          FADump Header   |
+-                                           (meta area)    |
++  Low memory                                                  Top of memory
++  0    boot memory size   |<------ Reserved dump area ----->|     |
++  |           |           |      Permanent Reservation      |     |
++  V           V           |                                 |     V
++  +-----------+-----/ /---+---+----+-----------+-------+----+-----+
++  |           |           |///|////|    DUMP   |  HDR  |////|     |
++  +-----------+-----/ /---+---+----+-----------+-------+----+-----+
++        |                   ^    ^       ^         ^      ^
++        |                   |    |       |         |      |
++        \                  CPU  HPTE     /         |      |
++         --------------------------------          |      |
++      Boot memory content gets transferred         |      |
++      to reserved area by firmware at the          |      |
++      time of crash.                               |      |
++                                           FADump Header  |
++                                            (meta area)   |
+                                                           |
+                                                           |
+                       Metadata: This area holds a metadata structure whose
+@@ -186,13 +186,20 @@ that were present in CMA region::
+   0      boot memory size                                      |
+   |           |<------------ Crash preserved area ------------>|
+   V           V           |<--- Reserved dump area --->|       |
+-  +-----------+-----/ /---+---+----+-------+-----+-----+----+--+
+-  |           |           |///|////|  DUMP | HDR | ELF |////|  |
+-  +-----------+-----/ /---+---+----+-------+-----+-----+----+--+
+-        |                                           |
+-        V                                           V
+-   Used by second                             /proc/vmcore
+-   kernel to boot
++  +----+---+--+-----/ /---+---+----+-------+-----+-----+-------+
++  |    |ELF|  |           |///|////|  DUMP | HDR |/////|       |
++  +----+---+--+-----/ /---+---+----+-------+-----+-----+-------+
++       |   |  |                            |     |             |
++       -----  ------------------------------     ---------------
++         \              |                               |
++           \            |                               |
++             \          |                               |
++               \        |    ----------------------------
++                 \      |   /
++                   \    |  /
++                     \  | /
++                  /proc/vmcore
 +
- static ssize_t mem_reserved_show(struct kobject *kobj,
- 				 struct kobj_attribute *attr,
- 				 char *buf)
-@@ -1545,11 +1557,13 @@ static struct kobj_attribute release_attr = __ATTR_WO(release_mem);
- static struct kobj_attribute enable_attr = __ATTR_RO(enabled);
- static struct kobj_attribute register_attr = __ATTR_RW(registered);
- static struct kobj_attribute mem_reserved_attr = __ATTR_RO(mem_reserved);
-+static struct kobj_attribute hotplug_ready_attr = __ATTR_RO(hotplug_ready);
  
- static struct attribute *fadump_attrs[] = {
- 	&enable_attr.attr,
- 	&register_attr.attr,
- 	&mem_reserved_attr.attr,
-+	&hotplug_ready_attr.attr,
- 	NULL,
- };
+         +---+
+         |///| -> Regions (CPU, HPTE & Metadata) marked like this in the above
+@@ -200,6 +207,12 @@ that were present in CMA region::
+                  does not have CPU & HPTE regions while Metadata region is
+                  not supported on pSeries currently.
+ 
++        +---+
++        |ELF| -> elfcorehdr, it is created in second kernel after crash.
++        +---+
++
++        Note: Memory from 0 to the boot memory size is used by second kernel
++
+                    Fig. 2
+ 
+ 
+@@ -353,26 +366,6 @@ TODO:
+  - Need to come up with the better approach to find out more
+    accurate boot memory size that is required for a kernel to
+    boot successfully when booted with restricted memory.
+- - The FADump implementation introduces a FADump crash info structure
+-   in the scratch area before the ELF core header. The idea of introducing
+-   this structure is to pass some important crash info data to the second
+-   kernel which will help second kernel to populate ELF core header with
+-   correct data before it gets exported through /proc/vmcore. The current
+-   design implementation does not address a possibility of introducing
+-   additional fields (in future) to this structure without affecting
+-   compatibility. Need to come up with the better approach to address this.
+-
+-   The possible approaches are:
+-
+-	1. Introduce version field for version tracking, bump up the version
+-	whenever a new field is added to the structure in future. The version
+-	field can be used to find out what fields are valid for the current
+-	version of the structure.
+-	2. Reserve the area of predefined size (say PAGE_SIZE) for this
+-	structure and have unused area as reserved (initialized to zero)
+-	for future field additions.
+-
+-   The advantage of approach 1 over 2 is we don't need to reserve extra space.
+ 
+ Author: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>
  
 -- 
 2.41.0
