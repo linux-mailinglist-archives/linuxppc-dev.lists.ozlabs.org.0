@@ -2,88 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B1087BEB54
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Oct 2023 22:10:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A049C7BEC99
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Oct 2023 23:16:15 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iwclkPWd;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UX5AlFcs;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S49BX05d8z3cCc
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Oct 2023 07:10:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S4BfP2yxJz3cjr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Oct 2023 08:16:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iwclkPWd;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UX5AlFcs;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rob@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S499Z6Rt9z3c3s
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Oct 2023 07:09:38 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 399Jw22o018102;
-	Mon, 9 Oct 2023 20:09:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=q+O/1IF9MI/VcedDKO8hWj5Drfd3015ovaHt4oHZ1o4=;
- b=iwclkPWdVt+6RtFeq1qnFEbS7Pua1HowTfWkiCA+cPTV2a23K2BgKSfSuLJSEYfUc5GT
- 3rg9+2GYuAXVLptp5GVRQGSFw56ViYGwujRtEWCF/6bgIXL+tj3ffE55ip4UYF/u1zw7
- fvgMqHMZJY8zQSrSZa3Syi1rDxARAAdN6yYfEGsVSP6tNiIEHAH4T28gw59jP1qj/nR0
- 3TAELdzaJSFuqE9wbwKD25HkT42a/7wkD0pvIqJn88cOgFGCdBICrVW5ibfRELWdi5wj
- tltCXFkpKChsFPOoVRkkUlwVNZsIvsk9/axWUXrQSrUaOVXaWtjtnd96jB293kIaQJPt EQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmr4u0b2p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Oct 2023 20:09:30 +0000
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 399K0ZWV027746;
-	Mon, 9 Oct 2023 20:09:30 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmr4u0b1m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Oct 2023 20:09:30 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 399J6VoF028633;
-	Mon, 9 Oct 2023 20:09:29 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tkj1xun4h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Oct 2023 20:09:29 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 399K9RH549545672
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 9 Oct 2023 20:09:27 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F422D5805B;
-	Mon,  9 Oct 2023 20:09:26 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D0ED758055;
-	Mon,  9 Oct 2023 20:09:26 +0000 (GMT)
-Received: from localhost (unknown [9.41.178.242])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  9 Oct 2023 20:09:26 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/pseries/vas: Migration suspend waits for no
- in-progress open windows
-In-Reply-To: <20230927031558.759396-1-haren@linux.ibm.com>
-References: <20230927031558.759396-1-haren@linux.ibm.com>
-Date: Mon, 09 Oct 2023 15:09:26 -0500
-Message-ID: <8734yjwoax.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S4BcW0RGWz2yps
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Oct 2023 08:14:35 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 4980561422;
+	Mon,  9 Oct 2023 21:14:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A26EC433C8;
+	Mon,  9 Oct 2023 21:14:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1696886073;
+	bh=X1cH/h9NDVZrOok4vly/3g9sh+E04rVkCkSlfXlWOkc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UX5AlFcsmSNuOATqpTq/hIGo5FVEW6AOvZIzMyjgNvPnEIMxc0WKvQu08BweMdCFw
+	 0zCmWnxuIchvRaQE/rVjCjZwq4po/w6dpkLmCDkI9D1Na1t0515QYR2RidgCz5Rd90
+	 gdYcXPc0XrMJCb1s2LWdURita5X6F46xykVT0w25UhELnABfNrQ8xod18E3DeOgYAx
+	 tyXN6j/t9dhuK06eMT4UBk+nV+3s6U149ln3ThjasbJeCwtIcBTfCwWOtYlzuYrlxe
+	 mdEFlKV9cyMp0wjIPJUQGKLMKwkMzrWWijwCSKm7L6KNtXaN/x83pdrstCq1bDtYU1
+	 EWK50UVpWY+/g==
+Received: (nullmailer pid 3246487 invoked by uid 1000);
+	Mon, 09 Oct 2023 21:14:15 -0000
+From: Rob Herring <robh@kernel.org>
+To: Peter Chen <peter.chen@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Minas Harutyunyan <hminas@synopsys.com>, Li Yang <leoyang.li@nxp.com>, Matthias Kaehlcke <mka@chromium.org>
+Subject: [PATCH] usb: Use device_get_match_data()
+Date: Mon,  9 Oct 2023 16:13:46 -0500
+Message-ID: <20231009211356.3242037-16-robh@kernel.org>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: xIHA4p0wUGGtRqjh1CRl-7UzZc1oEpwN
-X-Proofpoint-ORIG-GUID: IihkvcPaR3ERX293rwvcKdc_rHTQbz5N
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-09_18,2023-10-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- lowpriorityscore=0 malwarescore=0 clxscore=1011 suspectscore=0
- adultscore=0 priorityscore=1501 spamscore=0 bulkscore=0 mlxscore=0
- impostorscore=0 mlxlogscore=660 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2309180000 definitions=main-2310090163
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,77 +58,175 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: npiggin@gmail.com
+Cc: linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Haren,
+Use preferred device_get_match_data() instead of of_match_device() to
+get the driver match data. With this, adjust the includes to explicitly
+include the correct headers.
 
-Haren Myneni <haren@linux.ibm.com> writes:
-> The hypervisor returns migration failure if all VAS windows are not
-> closed. During pre-migration stage, vas_migration_handler() sets
-> migration_in_progress flag and closes all windows from the list.
-> The allocate VAS window routine checks the migration flag, setup
-> the window and then add it to the list. So there is possibility of
-> the migration handler missing the window that is still in the
-> process of setup.
->
-> t1: Allocate and open VAS	t2: Migration event
->     window
->
-> lock vas_pseries_mutex
-> If migration_in_progress set
->   unlock vas_pseries_mutex
->   return
-> open window HCALL
-> unlock vas_pseries_mutex
-> Modify window HCALL		lock vas_pseries_mutex
-> setup window			migration_in_progress=true
-> 				Closes all windows from
-> 				the list
-> 				unlock vas_pseries_mutex
-> lock vas_pseries_mutex		return
-> if nr_closed_windows == 0
->   // No DLPAR CPU or migration
->   add to the list
->   unlock vas_pseries_mutex
->   return
-> unlock vas_pseries_mutex
-> Close VAS window
-> // due to DLPAR CPU or migration
-> return -EBUSY
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+ drivers/usb/chipidea/ci_hdrc_usb2.c | 11 +++++------
+ drivers/usb/dwc2/params.c           | 21 ++++++---------------
+ drivers/usb/gadget/udc/fsl_qe_udc.c | 10 +++-------
+ drivers/usb/misc/onboard_usb_hub.c  |  7 +------
+ 4 files changed, 15 insertions(+), 34 deletions(-)
 
-Could the the path t1 takes simply hold the mutex for the duration of
-its execution instead of dropping and reacquiring it in the middle?
+diff --git a/drivers/usb/chipidea/ci_hdrc_usb2.c b/drivers/usb/chipidea/ci_hdrc_usb2.c
+index 1321ee67f3b8..180a632dd7ba 100644
+--- a/drivers/usb/chipidea/ci_hdrc_usb2.c
++++ b/drivers/usb/chipidea/ci_hdrc_usb2.c
+@@ -9,9 +9,9 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/of_platform.h>
+ #include <linux/phy/phy.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/usb/chipidea.h>
+ #include <linux/usb/hcd.h>
+ #include <linux/usb/ulpi.h>
+@@ -51,8 +51,8 @@ static int ci_hdrc_usb2_probe(struct platform_device *pdev)
+ 	struct device *dev = &pdev->dev;
+ 	struct ci_hdrc_usb2_priv *priv;
+ 	struct ci_hdrc_platform_data *ci_pdata = dev_get_platdata(dev);
++	const struct ci_hdrc_platform_data *data;
+ 	int ret;
+-	const struct of_device_id *match;
+ 
+ 	if (!ci_pdata) {
+ 		ci_pdata = devm_kmalloc(dev, sizeof(*ci_pdata), GFP_KERNEL);
+@@ -61,11 +61,10 @@ static int ci_hdrc_usb2_probe(struct platform_device *pdev)
+ 		*ci_pdata = ci_default_pdata;	/* struct copy */
+ 	}
+ 
+-	match = of_match_device(ci_hdrc_usb2_of_match, &pdev->dev);
+-	if (match && match->data) {
++	data = device_get_match_data(&pdev->dev);
++	if (data)
+ 		/* struct copy */
+-		*ci_pdata = *(struct ci_hdrc_platform_data *)match->data;
+-	}
++		*ci_pdata = *data;
+ 
+ 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+diff --git a/drivers/usb/dwc2/params.c b/drivers/usb/dwc2/params.c
+index 93f52e371cdd..fb03162ae9b7 100644
+--- a/drivers/usb/dwc2/params.c
++++ b/drivers/usb/dwc2/params.c
+@@ -5,7 +5,7 @@
+ 
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
+ #include <linux/usb/of.h>
+ #include <linux/pci_ids.h>
+ #include <linux/pci.h>
+@@ -968,26 +968,17 @@ typedef void (*set_params_cb)(struct dwc2_hsotg *data);
+ 
+ int dwc2_init_params(struct dwc2_hsotg *hsotg)
+ {
+-	const struct of_device_id *match;
+ 	set_params_cb set_params;
+ 
+ 	dwc2_set_default_params(hsotg);
+ 	dwc2_get_device_properties(hsotg);
+ 
+-	match = of_match_device(dwc2_of_match_table, hsotg->dev);
+-	if (match && match->data) {
+-		set_params = match->data;
++	set_params = device_get_match_data(hsotg->dev);
++	if (set_params) {
+ 		set_params(hsotg);
+-	} else if (!match) {
+-		const struct acpi_device_id *amatch;
+-		const struct pci_device_id *pmatch = NULL;
+-
+-		amatch = acpi_match_device(dwc2_acpi_match, hsotg->dev);
+-		if (amatch && amatch->driver_data) {
+-			set_params = (set_params_cb)amatch->driver_data;
+-			set_params(hsotg);
+-		} else if (!amatch)
+-			pmatch = pci_match_id(dwc2_pci_ids, to_pci_dev(hsotg->dev->parent));
++	} else {
++		const struct pci_device_id *pmatch =
++			pci_match_id(dwc2_pci_ids, to_pci_dev(hsotg->dev->parent));
+ 
+ 		if (pmatch && pmatch->driver_data) {
+ 			set_params = (set_params_cb)pmatch->driver_data;
+diff --git a/drivers/usb/gadget/udc/fsl_qe_udc.c b/drivers/usb/gadget/udc/fsl_qe_udc.c
+index 4aae86b47edf..4e88681a79b6 100644
+--- a/drivers/usb/gadget/udc/fsl_qe_udc.c
++++ b/drivers/usb/gadget/udc/fsl_qe_udc.c
+@@ -27,9 +27,10 @@
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+ #include <linux/moduleparam.h>
++#include <linux/of.h>
+ #include <linux/of_address.h>
+ #include <linux/of_irq.h>
+-#include <linux/of_platform.h>
++#include <linux/platform_device.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/usb/ch9.h>
+ #include <linux/usb/gadget.h>
+@@ -2471,17 +2472,12 @@ static const struct of_device_id qe_udc_match[];
+ static int qe_udc_probe(struct platform_device *ofdev)
+ {
+ 	struct qe_udc *udc;
+-	const struct of_device_id *match;
+ 	struct device_node *np = ofdev->dev.of_node;
+ 	struct qe_ep *ep;
+ 	unsigned int ret = 0;
+ 	unsigned int i;
+ 	const void *prop;
+ 
+-	match = of_match_device(qe_udc_match, &ofdev->dev);
+-	if (!match)
+-		return -EINVAL;
+-
+ 	prop = of_get_property(np, "mode", NULL);
+ 	if (!prop || strcmp(prop, "peripheral"))
+ 		return -ENODEV;
+@@ -2493,7 +2489,7 @@ static int qe_udc_probe(struct platform_device *ofdev)
+ 		return -ENOMEM;
+ 	}
+ 
+-	udc->soc_type = (unsigned long)match->data;
++	udc->soc_type = (unsigned long)device_get_match_data(&ofdev->dev);
+ 	udc->usb_regs = of_iomap(np, 0);
+ 	if (!udc->usb_regs) {
+ 		ret = -ENOMEM;
+diff --git a/drivers/usb/misc/onboard_usb_hub.c b/drivers/usb/misc/onboard_usb_hub.c
+index 57bbe1309094..a341b2fbb7b4 100644
+--- a/drivers/usb/misc/onboard_usb_hub.c
++++ b/drivers/usb/misc/onboard_usb_hub.c
+@@ -240,7 +240,6 @@ static void onboard_hub_attach_usb_driver(struct work_struct *work)
+ 
+ static int onboard_hub_probe(struct platform_device *pdev)
+ {
+-	const struct of_device_id *of_id;
+ 	struct device *dev = &pdev->dev;
+ 	struct onboard_hub *hub;
+ 	unsigned int i;
+@@ -250,11 +249,7 @@ static int onboard_hub_probe(struct platform_device *pdev)
+ 	if (!hub)
+ 		return -ENOMEM;
+ 
+-	of_id = of_match_device(onboard_hub_match, &pdev->dev);
+-	if (!of_id)
+-		return -ENODEV;
+-
+-	hub->pdata = of_id->data;
++	hub->pdata = device_get_match_data(&pdev->dev);
+ 	if (!hub->pdata)
+ 		return -EINVAL;
+ 
+-- 
+2.42.0
 
-Here's the relevant code from vas_allocate_window():
-
-	mutex_lock(&vas_pseries_mutex);
-	if (migration_in_progress)
-		rc = -EBUSY;
-	else
-		rc = allocate_setup_window(txwin, (u64 *)&domain[0],
-				   cop_feat_caps->win_type);
-	mutex_unlock(&vas_pseries_mutex);
-	if (rc)
-		goto out;
-
-	rc = h_modify_vas_window(txwin);
-	if (!rc)
-		rc = get_vas_user_win_ref(&txwin->vas_win.task_ref);
-	if (rc)
-		goto out_free;
-
-	txwin->win_type = cop_feat_caps->win_type;
-	mutex_lock(&vas_pseries_mutex);
-	if (!caps->nr_close_wins) {
-		list_add(&txwin->win_list, &caps->list);
-		caps->nr_open_windows++;
-		mutex_unlock(&vas_pseries_mutex);
-		vas_user_win_add_mm_context(&txwin->vas_win.task_ref);
-		return &txwin->vas_win;
-	}
-	mutex_unlock(&vas_pseries_mutex);
-
-Is there something about h_modify_vas_window() or get_vas_user_win_ref()
-that requires temporarily dropping the lock?
