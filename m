@@ -1,87 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B7FB7BD2C5
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Oct 2023 07:18:55 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EZvYiHLZ;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 170A27BD2CB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Oct 2023 07:23:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S3nPn4059z3vXZ
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Oct 2023 16:18:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S3nVZ53TVz3cV4
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Oct 2023 16:23:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EZvYiHLZ;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.216.41; helo=mail-pj1-f41.google.com; envelope-from=namhyung@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S3nNw6Z3Lz3cBx
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Oct 2023 16:18:08 +1100 (AEDT)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3995HMoV018659;
-	Mon, 9 Oct 2023 05:18:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=qBJsK+N7F7mpro8cbm0GVtYNPWHLhyhNfImup5Az/lk=;
- b=EZvYiHLZQnhc0IllO3zuQIVgIoO/No9IGFtUuBeD7bsSOW1gc+jSuhyCCz2TK2fHVXGv
- ld+e7bsGqrLGDTvfQriWyj8Pld37SMbLNCCfgehEdS1ltyUB3Yi2MM4UVFb7/JnTYocH
- Ao89G24n5rssOBccksZXpLlWnGPYTmHgw30KYsmQDwdphj7gzv8ppjQd6CEVoBGCwNgR
- OVhw2KABUXHmsJUO3ftYi6oUbebAn2QdhSGBFmX88dofp+ziFSs6QQxwsE7Y2H1N9KNW
- r1DjgT+F6NLpeIrtxwaEUnX6qj/FsRTwEerkh5+1sq47+qzDcy4ixdVnOZA1uRgoTjJ2 GA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmb87r0b6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Oct 2023 05:18:00 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3995HxvU019757;
-	Mon, 9 Oct 2023 05:17:59 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmb87r0ax-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Oct 2023 05:17:59 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3994F4R9001239;
-	Mon, 9 Oct 2023 05:17:58 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tkkvjedf0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Oct 2023 05:17:58 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3995HudZ42402142
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 9 Oct 2023 05:17:56 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B872620049;
-	Mon,  9 Oct 2023 05:17:56 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3A88920040;
-	Mon,  9 Oct 2023 05:17:54 +0000 (GMT)
-Received: from sapthagiri.in.ibm.com (unknown [9.43.27.236])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  9 Oct 2023 05:17:53 +0000 (GMT)
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc/paravirt: Improve vcpu_is_preempted
-Date: Mon,  9 Oct 2023 10:47:40 +0530
-Message-ID: <20231009051740.17683-1-srikar@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.41.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S3nV46YBPz2xdT
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Oct 2023 16:22:35 +1100 (AEDT)
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2773f2e599cso2243628a91.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 08 Oct 2023 22:22:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696828952; x=1697433752;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KKDjDbJ7FjBDQQgX7EI5ljX+mPg09NnPyujEusdUD2c=;
+        b=TGcSscvT7XtciCSDy5s4bxlgLVwcP9k2Ew0ebU0/OmfJ1wZMSLudGE7xmD6lapj7Yw
+         v9mJSdw68y2i4bsiqCU/kyM3MtIiCLvJQ6dw6qgdC73gGW9Gqre/3myIleqqWYVJ6/en
+         I4O7uwePEe3lsWXrIWnU+6g8zAcAGSOTZntJsBcO2lmlIOAptCoexFUAPJrmIS+XcMmf
+         Ye/P7t9JtFwW1iOiMsz+JebvJjmzIjL9hArWt7x4lzmFdpg0d+E5RLOmju5mPIH+gCbD
+         LK0VpB9tvW9/DA+DsACwv4hFv1ltaNYVwHR9AHoMsmMtyfOtp0LZUqiNugQuYU9c+zlQ
+         Ia8w==
+X-Gm-Message-State: AOJu0YwenB0p6aXPscZKeUan0xklRM7zex8F8v5bLBvVfvT6NSVBEZSC
+	OMZrE5aBqb3WrkIgUmIpNBTsof39N3PsR8j2wdk=
+X-Google-Smtp-Source: AGHT+IENZzLxeNSXadpD69/vTTWQ9pE2S1iKF8DEI/1CBQYLuymTXAKGnyb44p79qCUIi+AxalU9sd7YfmeRpKOzu4w=
+X-Received: by 2002:a17:90b:1c83:b0:274:616e:3fc4 with SMTP id
+ oo3-20020a17090b1c8300b00274616e3fc4mr11154380pjb.34.1696828952468; Sun, 08
+ Oct 2023 22:22:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: boGaKEVLWafjKpG1zLcL62MUCsKp1fS7
-X-Proofpoint-GUID: t3uSOm2sLLjmjYRgAXcGrA3HRSvQu90Q
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-09_04,2023-10-06_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=999
- lowpriorityscore=0 bulkscore=0 spamscore=0 impostorscore=0 adultscore=0
- priorityscore=1501 suspectscore=0 malwarescore=0 mlxscore=0 clxscore=1011
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
- definitions=main-2310090046
+References: <20230928075213.84392-1-atrajeev@linux.vnet.ibm.com>
+ <CAM9d7cj0iLdrV6EYmo_oC9M_32fuRVv_geBPz4GJv41jZR5WNQ@mail.gmail.com> <63F6D59C-3C40-4E39-BC63-4CB2DDAD0F47@linux.vnet.ibm.com>
+In-Reply-To: <63F6D59C-3C40-4E39-BC63-4CB2DDAD0F47@linux.vnet.ibm.com>
+From: Namhyung Kim <namhyung@kernel.org>
+Date: Sun, 8 Oct 2023 22:22:21 -0700
+Message-ID: <CAM9d7cjRD5TwgTCxb+Nc3xM6QJbHBu8=M-QMh=MkH+k1jOeLvg@mail.gmail.com>
+Subject: Re: [PATCH V5 1/3] tools/perf: Add text_end to "struct dso" to save
+ .text section size
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,90 +59,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juergen Gross <jgross@suse.com>, Srikar Dronamraju <srikar@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, Ajay Kaher <akaher@vmware.com>, Nicholas Piggin <npiggin@gmail.com>, Alexey Makhalov <amakhalov@vmware.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Ian Rogers <irogers@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Disha Goel <disgoel@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users <linux-perf-users@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PowerVM Hypervisor dispatches on a whole core basis. In a shared LPAR, a
-CPU from a core that is preempted may have a larger latency. In
-such a scenario, its preferable to choose a different CPU to run.
+On Mon, Oct 2, 2023 at 11:47=E2=80=AFPM Athira Rajeev
+<atrajeev@linux.vnet.ibm.com> wrote:
+>
+>
+>
+> > On 03-Oct-2023, at 9:58 AM, Namhyung Kim <namhyung@kernel.org> wrote:
+> >
+> > Hello,
+> >
+> > On Thu, Sep 28, 2023 at 12:52=E2=80=AFAM Athira Rajeev
+> > <atrajeev@linux.vnet.ibm.com> wrote:
+> >>
+> >> Update "struct dso" to include new member "text_end".
+> >> This new field will represent the offset for end of text
+> >> section for a dso. For elf, this value is derived as:
+> >> sh_size (Size of section in byes) + sh_offset (Section file
+> >> offst) of the elf header for text.
+> >>
+> >> For bfd, this value is derived as:
+> >> 1. For PE file,
+> >> section->size + ( section->vma - dso->text_offset)
+> >> 2. Other cases:
+> >> section->filepos (file position) + section->size (size of
+> >> section)
+> >>
+> >> To resolve the address from a sample, perf looks at the
+> >> DSO maps. In case of address from a kernel module, there
+> >> were some address found to be not resolved. This was
+> >> observed while running perf test for "Object code reading".
+> >> Though the ip falls beteen the start address of the loaded
+> >> module (perf map->start ) and end address ( perf map->end),
+> >> it was unresolved.
+> >>
+> >> Example:
+> >>
+> >>    Reading object code for memory address: 0xc008000007f0142c
+> >>    File is: /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko
+> >>    On file address is: 0x1114cc
+> >>    Objdump command is: objdump -z -d --start-address=3D0x11142c --stop=
+-address=3D0x1114ac /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko
+> >>    objdump read too few bytes: 128
+> >>    test child finished with -1
+> >>
+> >> Here, module is loaded at:
+> >>    # cat /proc/modules | grep xfs
+> >>    xfs 2228224 3 - Live 0xc008000007d00000
+> >>
+> >> From objdump for xfs module, text section is:
+> >>    text 0010f7bc  0000000000000000 0000000000000000 000000a0 2**4
+> >>
+> >> Here the offset for 0xc008000007f0142c ie  0x112074 falls out
+> >> .text section which is up to 0x10f7bc.
+> >>
+> >> In this case for module, the address 0xc008000007e11fd4 is pointing
+> >> to stub instructions. This address range represents the module stubs
+> >> which is allocated on module load and hence is not part of DSO offset.
+> >>
+> >> To identify such  address, which falls out of text
+> >> section and within module end, added the new field "text_end" to
+> >> "struct dso".
+> >>
+> >> Reported-by: Disha Goel <disgoel@linux.ibm.com>
+> >> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> >> Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+> >> Reviewed-by: Kajol Jain <kjain@linux.ibm.com>
+> >
+> > For the series,
+> > Acked-by: Namhyung Kim <namhyung@kernel.org>
+> >
+> > Thanks,
+> > Namhyung
+>
+> Thanks for checking Namhyung,
 
-If one of the CPUs in the core is active, i.e neither CEDED nor
-preempted, then consider this CPU as not preempted.
-
-Also if any of the CPUs in the core has yielded but OS has not requested
-CEDE or CONFER, then consider this CPU to be preempted.
-
-Cc: Ajay Kaher <akaher@vmware.com>
-Cc: Alexey Makhalov <amakhalov@vmware.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Juergen Gross <jgross@suse.com>
-Cc: linux-kernel@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: virtualization@lists.linux-foundation.org
-Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
----
- arch/powerpc/include/asm/paravirt.h | 33 ++++++++++++++++++++++++++---
- 1 file changed, 30 insertions(+), 3 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/asm/paravirt.h
-index e08513d73119..a980756f58df 100644
---- a/arch/powerpc/include/asm/paravirt.h
-+++ b/arch/powerpc/include/asm/paravirt.h
-@@ -121,9 +121,19 @@ static inline bool vcpu_is_preempted(int cpu)
- 	if (!is_shared_processor())
- 		return false;
- 
-+	if (!(yield_count_of(cpu) & 1))
-+		return false;
-+
-+	/*
-+	 * If CPU has yielded but OS has not requested idle then this CPU is
-+	 * definitely preempted.
-+	 */
-+	if (!lppaca_of(cpu).idle)
-+		return true;
-+
- #ifdef CONFIG_PPC_SPLPAR
- 	if (!is_kvm_guest()) {
--		int first_cpu;
-+		int first_cpu, i;
- 
- 		/*
- 		 * The result of vcpu_is_preempted() is used in a
-@@ -149,11 +159,28 @@ static inline bool vcpu_is_preempted(int cpu)
- 		 */
- 		if (cpu_first_thread_sibling(cpu) == first_cpu)
- 			return false;
-+
-+		/*
-+		 * If any of the threads of this core is not preempted or
-+		 * ceded, then consider this CPU to be non-preempted
-+		 */
-+		first_cpu = cpu_first_thread_sibling(cpu);
-+		for (i = first_cpu; i < first_cpu + threads_per_core; i++) {
-+			if (i == cpu)
-+				continue;
-+			if (!(yield_count_of(i) & 1))
-+				return false;
-+			if (!lppaca_of(i).idle)
-+				return true;
-+		}
- 	}
- #endif
- 
--	if (yield_count_of(cpu) & 1)
--		return true;
-+	/*
-+	 * None of the threads in this thread group are running but none of
-+	 * them were preempted too. Hence assume the thread to be
-+	 * non-preempted.
-+	 */
- 	return false;
- }
- 
--- 
-2.31.1
-
+Applied to perf-tools-next, thanks!
