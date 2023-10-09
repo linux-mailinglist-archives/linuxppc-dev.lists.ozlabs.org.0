@@ -2,86 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F98E7BE469
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Oct 2023 17:17:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 842A27BE560
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Oct 2023 17:50:59 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KP8MzxYL;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VQCKSbFR;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S42h81MdQz3vYW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Oct 2023 02:17:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S43R52gmdz3cBC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Oct 2023 02:50:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KP8MzxYL;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VQCKSbFR;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=eajames@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S42gF57jfz3c7Q
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Oct 2023 02:16:25 +1100 (AEDT)
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 399FG2Kd011326;
-	Mon, 9 Oct 2023 15:16:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=o3zBO2zjGTMR5NxNWvkao8DtpMbTx8DRhZ5lwEapP9g=;
- b=KP8MzxYLU9EVbrfUrpC9SAh6nyoCQU6JrD2IOePBQlGjcQixcEZgrWCWQn55Xh7p77+b
- GDpstf0RGpMgHpyiJ7Lb5+FjzLs/h3DAU68TtHdkaapz6GgN5N2YCwhuMpJE8WNCNEuH
- kVK9XjubVix9sc+mjLkLIaULqxyRS0Xyh/J4QknXQ0jVgR+mGOApHQjwuj80djCXUzZI
- SPhadR1fzpi1SzPFjFfljIfXqiwdYSDIQ3yX5UbDKntOfvMYBHAKBMshLYzJlY0Qjcp6
- A2h+x8b30inzGgK/FDsXf+qTHhctkvXodXmJ1h0ApiAPsUIbALlCc1TAicfcVzs9Z9/V xg== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmm0s80hg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Oct 2023 15:16:13 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 399D16Jd000647;
-	Mon, 9 Oct 2023 15:12:14 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tkk5k9m1m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Oct 2023 15:12:14 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 399FCDAI18154088
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 9 Oct 2023 15:12:13 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C0F5C58064;
-	Mon,  9 Oct 2023 15:12:13 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9ECBF5805A;
-	Mon,  9 Oct 2023 15:12:13 +0000 (GMT)
-Received: from [9.61.118.13] (unknown [9.61.118.13])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  9 Oct 2023 15:12:13 +0000 (GMT)
-Message-ID: <4fd21fd5-6da9-271f-4827-c6ce48af16e1@linux.ibm.com>
-Date: Mon, 9 Oct 2023 10:12:13 -0500
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S43QB4cflz3c2L
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Oct 2023 02:50:10 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by ams.source.kernel.org (Postfix) with ESMTP id 3D56BB815A1
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Oct 2023 15:50:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 978B1C433C7
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Oct 2023 15:50:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1696866606;
+	bh=YUtCzdo9LURELgR1KhwCnp76RzatV7ypdfpGGj/cpC0=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=VQCKSbFRWvtBwZWnUyopZuJ109RQ5lJZqUdsY4oGr9ilvOlqSyvZK0rPKQ2YtTojF
+	 uXr3s7YOaa4E7TnP23Oywb0vscGvtHpZMr/6dnplLxzeLZfY4paIfprCC7e3erAaJ+
+	 JrG+WtP2fRdkZJEm07RfRmT9fFov/9tImedRngnAJQxvnGADE4DRMuPFTSqtG8Wt2n
+	 t68QFv0KYbl90ff4xFiNUkMTPBDYNwuSuLoBUSbUvKmdbtBm0IRVWiNH+UEfACfZn2
+	 qAEljscNUsisu6FMgHJHZtrp9zbg6T0Ss7IeBPllWvYRC1NHl5qpDw95LmIJ6drtaO
+	 EChOA63t5T1Pw==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 853C4C4332E; Mon,  9 Oct 2023 15:50:06 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 216156] [bisected] kmemleak: Not scanning unknown object at
+ 0xc00000007f000000
+Date: Mon, 09 Oct 2023 15:50:06 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: ASSIGNED
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-216156-206035-vxaYTGKDIb@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-216156-206035@https.bugzilla.kernel.org/>
+References: <bug-216156-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: KUEP broken on FSP2?
-Content-Language: en-US
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-References: <fdaadc46-7476-9237-e104-1d2168526e72@linux.ibm.com>
- <87a5ssrl9c.fsf@mail.lhotse>
-From: Eddie James <eajames@linux.ibm.com>
-In-Reply-To: <87a5ssrl9c.fsf@mail.lhotse>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: sBwAStO7kUnnKRB4M6dqsOSvxI-wlcu8
-X-Proofpoint-GUID: sBwAStO7kUnnKRB4M6dqsOSvxI-wlcu8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-09_13,2023-10-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- mlxlogscore=999 clxscore=1015 suspectscore=0 impostorscore=0 adultscore=0
- bulkscore=0 phishscore=0 spamscore=0 lowpriorityscore=0 priorityscore=1501
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310090126
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,62 +78,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: paulus@samba.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+https://bugzilla.kernel.org/show_bug.cgi?id=3D216156
 
-On 10/9/23 08:14, Michael Ellerman wrote:
-> Eddie James <eajames@linux.ibm.com> writes:
->> Hi,
->>
->> I'm attempting to run linux 6.1 on my FSP2, but my kernel crashes
->> attempting to get into userspace. The init script works, but the first
->> binary (mount) I run results in oops. Can anyone help me to debug this
->> further or suggest anything?
-> Hi Eddie,
->
-> It looks like breakage in syscall_exit_finish.
-> Can you test this? Patch is against v6.1.
+--- Comment #14 from Erhard F. (erhard_f@mailbox.org) ---
+Thanks for having a look at the issue!
 
+Applied your patch on top of v6.5.6 but it didn't work out. Now I get:
 
-That worked! Perfect. Thank you very much! Will you send it upstream?
+[...]
+drmem: No dynamic reconfiguration memory found
+ata5.00: ATAPI: HL-DT-STDVD-RAM GH22NP20, 2.00, max UDMA/66
+kmemleak: Not scanning unknown object at 0xc00000007f000000
+ata5.01: CFA: DeLOCK 54143 512MB, 100511E, max UDMA/66
+CPU: 1 PID: 1 Comm: swapper/0 Not tainted 6.5.6-PMacG5-dirty #1
+ata5.01: 1009008 sectors, multi 1: LBA=20
+Hardware name: PowerMac11,2 PPC970MP 0x440101 PowerMac
+Call Trace:
+[c0000000030ebbd0] [c000000000c2adac] dump_stack_lvl+0x70/0xa0 (unreliable)
+[c0000000030ebc00] [c0000000003125d0] kmemleak_no_scan+0xf0/0x110
+[c0000000030ebc70] [c000000001011594] iommu_init_late_dart+0x28/0x5c
+[c0000000030ebc90] [c00000000000d6f8] do_one_initcall+0x68/0x2f8
+[c0000000030ebd60] [c000000001004534] kernel_init_freeable+0x2d8/0x358
+[c0000000030ebdf0] [c00000000000dc18] kernel_init+0x28/0x180
+[c0000000030ebe50] [c00000000000bf94] ret_from_kernel_user_thread+0x14/0x1c
+--- interrupt: 0 at 0x0
+NIP:  0000000000000000 LR: 0000000000000000 CTR: 0000000000000000
+REGS: c0000000030ebe80 TRAP: 0000   Not tainted  (6.5.6-PMacG5-dirty)
+MSR:  0000000000000000 <>  CR: 00000000  XER: 00000000
+IRQMASK: 0=20
+GPR00: 0000000000000000 0000000000000000 0000000000000000 0000000000000000=
+=20
+GPR04: 0000000000000000 0000000000000000 0000000000000000 0000000000000000=
+=20
+GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000=
+=20
+GPR12: 0000000000000000 0000000000000000 0000000000000000 0000000000000000=
+=20
+GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000=
+=20
+GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000=
+=20
+GPR24: 0000000000000000 0000000000000000 0000000000000000 0000000000000000=
+=20
+GPR28: 0000000000000000 0000000000000000 0000000000000000 0000000000000000=
+=20
+ata1: SATA link down (SStatus 4 SControl 300)
+NIP [0000000000000000] 0x0
+LR [0000000000000000] 0x0
+--- interrupt: 0
+Loading compiled-in X.509 certificates
+kmemleak: Kernel memory leak detector initialized (mem pool available: 1578=
+8)
+kmemleak: Automatic memory scanning thread started
+debug_vm_pgtable: [debug_vm_pgtable         ]: Validating architecture page
+table helpers
+Btrfs loaded, zoned=3Dno, fsverity=3Dno
+[...]
 
+--=20
+You may reply to this email to add a comment.
 
-Thanks,
-
-Eddie
-
-
->
-> cheers
->
->
-> diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-> index 3fc7c9886bb7..decd2594fb9c 100644
-> --- a/arch/powerpc/kernel/entry_32.S
-> +++ b/arch/powerpc/kernel/entry_32.S
-> @@ -135,7 +135,8 @@ ret_from_syscall:
->   	lis	r4,icache_44x_need_flush@ha
->   	lwz	r5,icache_44x_need_flush@l(r4)
->   	cmplwi	cr0,r5,0
-> -	bne-	2f
-> +	bne-	.L44x_icache_flush
-> +.L44x_icache_flush_return:
->   #endif /* CONFIG_PPC_47x */
->   	kuep_unlock
->   	lwz	r4,_LINK(r1)
-> @@ -170,10 +171,11 @@ syscall_exit_finish:
->   	b	1b
->   
->   #ifdef CONFIG_44x
-> -2:	li	r7,0
-> +.L44x_icache_flush:
-> +	li	r7,0
->   	iccci	r0,r0
->   	stw	r7,icache_44x_need_flush@l(r4)
-> -	b	1b
-> +	b	.L44x_icache_flush_return
->   #endif  /* CONFIG_44x */
->   
->   	.globl	ret_from_fork
+You are receiving this mail because:
+You are watching the assignee of the bug.=
