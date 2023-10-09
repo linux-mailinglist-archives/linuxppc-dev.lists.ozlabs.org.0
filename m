@@ -1,59 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99CA67BDF1D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Oct 2023 15:26:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35B5A7BDE05
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Oct 2023 15:15:07 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VzXJXIi8;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S40DP4mYxz3vX0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Oct 2023 00:26:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S3zzF07r3z3cV3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Oct 2023 00:15:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VzXJXIi8;
+	dkim-atps=neutral
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S40Cs5bq4z3c13
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Oct 2023 00:25:59 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4S40Cj14mDz9vBy;
-	Mon,  9 Oct 2023 15:25:53 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id Gphn4PpLowuC; Mon,  9 Oct 2023 15:25:53 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4S40Ch6Kpkz9vBQ;
-	Mon,  9 Oct 2023 15:25:52 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id D33CB8B794;
-	Mon,  9 Oct 2023 15:25:52 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id O5Nkp0HQcBAB; Mon,  9 Oct 2023 15:25:52 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.138])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id AE9738B780;
-	Mon,  9 Oct 2023 15:25:52 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 397AkNme258256
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sat, 7 Oct 2023 12:46:23 +0200
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 397AkMZ8258254;
-	Sat, 7 Oct 2023 12:46:22 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH] powerpc/code-patching: Perform hwsync in __patch_instruction() in case of failure
-Date: Sat,  7 Oct 2023 12:46:19 +0200
-Message-ID: <e88b154eaf2efd9ff177d472d3411dcdec8ff4f5.1696675567.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.41.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S3zyK2xnsz2yVv
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Oct 2023 00:14:17 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1696857251;
+	bh=TSiatPgwJ5C77ethX9r6ZW+8VMKiX6LN1q7Pm+eFmIA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=VzXJXIi8qoZtXIjJYd66plh5zpI4LaKwopsi7NJgV+IT2iNTNbBU+GiGGBjjN3QOW
+	 FyDLc1YSlETmEukBTm9by084LWs1ii0sN/FYhR9RYWwPoRrBUn/EwWvHLoogX6uo95
+	 VN4Hu+lpBD+Gb9HJXL2nAejNnKnC+etEUeVKpR2bEfnBJw3f4D0PJIN6uKCQZ2DXKV
+	 ypfnQMGh5gVlm4xOQtWSH5xToPsU+3s5sJoGLEGoMFjWxIA3NSuQ4c+IERy4HhocPi
+	 tJucrK4AeW9Q52xYly3wPz2w9EqYY7d11YcRmvlLh63tkWYz2j4rUqyv0m+qGmj4rX
+	 xRhf47yjN6QfA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4S3zyB2vWcz4xWr;
+	Tue, 10 Oct 2023 00:14:10 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Eddie James <eajames@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: KUEP broken on FSP2?
+In-Reply-To: <fdaadc46-7476-9237-e104-1d2168526e72@linux.ibm.com>
+References: <fdaadc46-7476-9237-e104-1d2168526e72@linux.ibm.com>
+Date: Tue, 10 Oct 2023 00:14:07 +1100
+Message-ID: <87a5ssrl9c.fsf@mail.lhotse>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1696675578; l=1348; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=k9MOIxjlEEg3xQ6FC272ePXV8stsS7VaLfDlN1rnk+A=; b=hLdvCOgOVWYoBIXrpWrB0Ja6rVFEwwkXVLbkWv8R+Sz1AlP6QTmKgTloUS9aOavXUbUvoscOM awoz7adu5idDnnHdGzUiebX+TlKUSisFGdmc+HkXO+O3QDnoXQ2ltYO
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,47 +57,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hari Bathini <hbathini@linux.ibm.com>, "Christopher M . Riedl" <cmr@bluescreens.de>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: paulus@samba.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit c28c15b6d28a ("powerpc/code-patching: Use temporary mm for
-Radix MMU") added a hwsync for when __patch_instruction() fails,
-we results in a quite odd unbalanced logic.
+Eddie James <eajames@linux.ibm.com> writes:
+> Hi,
+>
+> I'm attempting to run linux 6.1 on my FSP2, but my kernel crashes 
+> attempting to get into userspace. The init script works, but the first 
+> binary (mount) I run results in oops. Can anyone help me to debug this 
+> further or suggest anything?
 
-Instead of calling mb() when __patch_instruction() returns an error,
-call mb() in the __patch_instruction()'s error path directly.
+Hi Eddie,
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Hari Bathini <hbathini@linux.ibm.com>
-Cc: Christopher M. Riedl <cmr@bluescreens.de>
----
- arch/powerpc/lib/code-patching.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+It looks like breakage in syscall_exit_finish.
 
-diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
-index b00112d7ad46..7a47a871e6b8 100644
---- a/arch/powerpc/lib/code-patching.c
-+++ b/arch/powerpc/lib/code-patching.c
-@@ -38,6 +38,7 @@ static int __patch_instruction(u32 *exec_addr, ppc_inst_t instr, u32 *patch_addr
- 	return 0;
- 
- failed:
-+	mb();  /* sync */
- 	return -EPERM;
- }
- 
-@@ -309,10 +310,6 @@ static int __do_patch_instruction_mm(u32 *addr, ppc_inst_t instr)
- 
- 	err = __patch_instruction(addr, instr, patch_addr);
- 
--	/* hwsync performed by __patch_instruction (sync) if successful */
--	if (err)
--		mb();  /* sync */
--
- 	/* context synchronisation performed by __patch_instruction (isync or exception) */
- 	stop_using_temp_mm(patching_mm, orig_mm);
- 
--- 
-2.41.0
+Can you test this? Patch is against v6.1.
 
+cheers
+
+
+diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+index 3fc7c9886bb7..decd2594fb9c 100644
+--- a/arch/powerpc/kernel/entry_32.S
++++ b/arch/powerpc/kernel/entry_32.S
+@@ -135,7 +135,8 @@ ret_from_syscall:
+ 	lis	r4,icache_44x_need_flush@ha
+ 	lwz	r5,icache_44x_need_flush@l(r4)
+ 	cmplwi	cr0,r5,0
+-	bne-	2f
++	bne-	.L44x_icache_flush
++.L44x_icache_flush_return:
+ #endif /* CONFIG_PPC_47x */
+ 	kuep_unlock
+ 	lwz	r4,_LINK(r1)
+@@ -170,10 +171,11 @@ syscall_exit_finish:
+ 	b	1b
+ 
+ #ifdef CONFIG_44x
+-2:	li	r7,0
++.L44x_icache_flush:
++	li	r7,0
+ 	iccci	r0,r0
+ 	stw	r7,icache_44x_need_flush@l(r4)
+-	b	1b
++	b	.L44x_icache_flush_return
+ #endif  /* CONFIG_44x */
+ 
+ 	.globl	ret_from_fork
