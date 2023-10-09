@@ -2,68 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB83A7BE6C0
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Oct 2023 18:43:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDCF37BE816
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Oct 2023 19:31:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=odo2WmVi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=W+Ynaydm;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S44c73N21z3cVd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Oct 2023 03:43:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S45gP3qgKz3cF1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Oct 2023 04:31:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=odo2WmVi;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=W+Ynaydm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=brainfault.org (client-ip=2607:f8b0:4864:20::102d; helo=mail-pj1-x102d.google.com; envelope-from=anup@brainfault.org; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S44bH1hKQz3c76
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Oct 2023 03:43:05 +1100 (AEDT)
-Received: by mail-pj1-x102d.google.com with SMTP id 98e67ed59e1d1-2773f2e599cso2663227a91.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Oct 2023 09:43:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1696869781; x=1697474581; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FG8/7MZsEmSy/+ZOJX4VRYzGIaA1rko7EIxVVdUiS9s=;
-        b=odo2WmVimeBYrpBAgTOND4Kxe8vAwU9NQibwSs05hGgZf6RGFTeKtyr44fktPhTcUO
-         oV5zeMWZVP2x4/niCrncUTRe5BvF3gegZ+mS7+/RYiW/gsKctLQI9Gs6zyqV0zn2gFlK
-         yx18WgFVlqYUw83KW3nPY1zuzr8zwQCGTg2PVvqWumRxHTGk3RYQ2zD1L2zA/K8hdes5
-         14cv2ilkeRZZcWDuF+/W5+Oww3GigCnUrYQ5qVBFsAQdsyHvBDiIV/ILTEPlGBoen8OK
-         v6sWFCggnHgI+T8WUW1PfJ9u/nsQr8+aWcHHVi8T0PUvjuTq/CHqWE0lyr01vrwLCKBm
-         dh5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696869781; x=1697474581;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FG8/7MZsEmSy/+ZOJX4VRYzGIaA1rko7EIxVVdUiS9s=;
-        b=IUaf/bbL30JuxOFgd79QKoY0A9Y7Z8BnCnToSxhf9w50bChnew/VX8thInKOVIEwG6
-         k8N+3RSdhsSj5a2Ss7B0Gr7kRssVEdpJRjyzs0mtF2Ob59H3KNsyqBLCDXx4qHTXL/Ra
-         kfAYONvX1ppICisliu/V3Fo8nR5ptbTbnJP+584LUggIdZwDvQetnsg/eDhwT7LzxeYn
-         iW76s/AWQ1pI/W4ulqt+HCd6mUefKmGhZBv8gGvBEj4DDFQH4ZHs9D+uWPLtHORLFg/A
-         n9Qoch9dSdzc0m3R/a9BCRbfv6jubZlEB/oK3W9mmmoThskN8i9usL3HSugdOQoJtMb0
-         bfNQ==
-X-Gm-Message-State: AOJu0YzqBp4P2x5izZXzifl3CG1ZBSbSPhYMdBlX/MS8sECtbKQzlJEr
-	YXI+ZKN3gXmyNURZ+cJUOmimfFW4aHsu5Nhj7kqBxg==
-X-Google-Smtp-Source: AGHT+IHclShG/62PdrOCt9igov7WYEEPxprU1xMMAYDeZ3leyFYnGLVU/OjmfUMLVeZqG6vHv+unNrUci7n642kMqlo=
-X-Received: by 2002:a17:90b:3c4:b0:276:757d:8c89 with SMTP id
- go4-20020a17090b03c400b00276757d8c89mr12379576pjb.44.1696869781158; Mon, 09
- Oct 2023 09:43:01 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S45fW18yXz3c7q
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Oct 2023 04:30:59 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 7AEE2612B7;
+	Mon,  9 Oct 2023 17:30:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57EEDC433C7;
+	Mon,  9 Oct 2023 17:30:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1696872655;
+	bh=Y+JRjQjy6aEMVusw3+mI2JFX4h/wKJooksD3bi06J5M=;
+	h=From:To:Cc:Subject:Date:From;
+	b=W+Ynaydm3yaAhrbiYCrKk9nCoglhA4dmwU1qKuPEFIdu4MmFvwE7P7tNioGw3aCHp
+	 0xxU5l7Vf8fNdnRuXKh2jeWB04Q+iR2aqMlgMw7s8vPD5HY7IDSaIeBo00B9yzjFlN
+	 Ewm7IXFr24hyXgGvIBBv6nfd55mXNfWoAPbApjVFYCRfzArgLLuGz9aR4cA6OfwWRH
+	 S839eo9JM1e0m90ifVYEOhDKQelwquT1QLub5Fd2HRbgeWZxc9I7mInHMwPy3+2v3N
+	 xFCMkp2xx4oSP1e57Zz6JPkf09HpBuRNt0a+/WgoCBV3oDFhKMajbNw0Ci/0deRBvH
+	 F9ixT+Mm9lG6w==
+Received: (nullmailer pid 2492231 invoked by uid 1000);
+	Mon, 09 Oct 2023 17:30:52 -0000
+From: Rob Herring <robh@kernel.org>
+To: Joyce Ooi <joyce.ooi@intel.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, Iyappan Subramanian <iyappan@os.amperecomputing.com>, Keyur Chudgar <keyur@os.amperecomputing.com>, Quan Nguyen <quan@os.amperecomputing.com>, Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, NXP Linux Team <linux-imx@nxp.com>, Pantelis Antoniou <pantelis.antoniou@gmail.com>, Yisen Zhuang <yisen.zhuang@huawei.com>, Salil Mehta <salil.mehta@huawei.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Jose Abreu <joabreu@synopsys.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Grygorii Strashko <grygorii.strashko@ti.com>, Russell King <linux@armlinux.org.uk>
+Subject: [PATCH net-next] net: ethernet: Use device_get_match_data()
+Date: Mon,  9 Oct 2023 12:28:58 -0500
+Message-ID: <20231009172923.2457844-3-robh@kernel.org>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-References: <20230914015531.1419405-1-seanjc@google.com> <20230914015531.1419405-6-seanjc@google.com>
-In-Reply-To: <20230914015531.1419405-6-seanjc@google.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Mon, 9 Oct 2023 22:12:49 +0530
-Message-ID: <CAAhSdy3J_3g0F4yNXD4pv9Xhe1qEk3045jdZoshxASopazksWw@mail.gmail.com>
-Subject: Re: [RFC PATCH v12 05/33] KVM: Convert KVM_ARCH_WANT_MMU_NOTIFIER to CONFIG_KVM_GENERIC_MMU_NOTIFIER
-To: Sean Christopherson <seanjc@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,350 +58,609 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Paul Moore <paul@paul-moore.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, James Morris <jmorris@namei.org>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Vlastimil Babka <vbabka@suse.cz>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, Quentin Perret <qperret@google.com>, Liam Merwick <liam.merwick@orac
- le.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, linux-security-module@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Xu Yilun <yilun.xu@intel.com>, Anish Moorthy <amoorthy@google.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 14, 2023 at 7:25=E2=80=AFAM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> Convert KVM_ARCH_WANT_MMU_NOTIFIER into a Kconfig and select it where
-> appropriate to effectively maintain existing behavior.  Using a proper
-> Kconfig will simplify building more functionality on top of KVM's
-> mmu_notifier infrastructure.
->
-> Add a forward declaration of kvm_gfn_range to kvm_types.h so that
-> including arch/powerpc/include/asm/kvm_ppc.h's with CONFIG_KVM=3Dn doesn'=
-t
-> generate warnings due to kvm_gfn_range being undeclared.  PPC defines
-> hooks for PR vs. HV without guarding them via #ifdeffery, e.g.
->
->   bool (*unmap_gfn_range)(struct kvm *kvm, struct kvm_gfn_range *range);
->   bool (*age_gfn)(struct kvm *kvm, struct kvm_gfn_range *range);
->   bool (*test_age_gfn)(struct kvm *kvm, struct kvm_gfn_range *range);
->   bool (*set_spte_gfn)(struct kvm *kvm, struct kvm_gfn_range *range);
->
-> Alternatively, PPC could forward declare kvm_gfn_range, but there's no
-> good reason not to define it in common KVM.
->
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+Use preferred device_get_match_data() instead of of_match_device() to
+get the driver match data. With this, adjust the includes to explicitly
+include the correct headers.
 
-Looks good to me.
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+ drivers/net/ethernet/altera/altera_tse.h      |  2 +-
+ drivers/net/ethernet/altera/altera_tse_main.c | 13 ++----
+ drivers/net/ethernet/amd/xgbe/xgbe-platform.c | 42 +------------------
+ .../net/ethernet/apm/xgene/xgene_enet_main.c  | 15 +------
+ .../net/ethernet/apm/xgene/xgene_enet_main.h  |  3 +-
+ drivers/net/ethernet/freescale/fec_main.c     | 12 +++---
+ .../ethernet/freescale/fs_enet/fs_enet-main.c | 18 ++++----
+ .../net/ethernet/freescale/fs_enet/mii-fec.c  | 10 ++---
+ drivers/net/ethernet/freescale/fsl_pq_mdio.c  | 12 ++----
+ drivers/net/ethernet/hisilicon/hix5hd2_gmac.c | 11 ++---
+ .../stmicro/stmmac/dwmac-intel-plat.c         |  9 ++--
+ drivers/net/ethernet/ti/davinci_emac.c        | 12 ++----
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c  | 13 ++----
+ 13 files changed, 40 insertions(+), 132 deletions(-)
 
-For KVM RISC-V:
-Acked-by: Anup Patel <anup@brainfault.org>
+diff --git a/drivers/net/ethernet/altera/altera_tse.h b/drivers/net/ethernet/altera/altera_tse.h
+index db5eed06e92d..82f2363a45cd 100644
+--- a/drivers/net/ethernet/altera/altera_tse.h
++++ b/drivers/net/ethernet/altera/altera_tse.h
+@@ -472,7 +472,7 @@ struct altera_tse_private {
+ 	/* ethtool msglvl option */
+ 	u32 msg_enable;
+ 
+-	struct altera_dmaops *dmaops;
++	const struct altera_dmaops *dmaops;
+ 
+ 	struct phylink *phylink;
+ 	struct phylink_config phylink_config;
+diff --git a/drivers/net/ethernet/altera/altera_tse_main.c b/drivers/net/ethernet/altera/altera_tse_main.c
+index 1b1799985d1d..1c8763be0e4b 100644
+--- a/drivers/net/ethernet/altera/altera_tse_main.c
++++ b/drivers/net/ethernet/altera/altera_tse_main.c
+@@ -29,13 +29,13 @@
+ #include <linux/mii.h>
+ #include <linux/mdio/mdio-regmap.h>
+ #include <linux/netdevice.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
+ #include <linux/of_mdio.h>
+ #include <linux/of_net.h>
+-#include <linux/of_platform.h>
+ #include <linux/pcs-lynx.h>
+ #include <linux/phy.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/regmap.h>
+ #include <linux/skbuff.h>
+ #include <asm/cacheflush.h>
+@@ -82,8 +82,6 @@ MODULE_PARM_DESC(dma_tx_num, "Number of descriptors in the TX list");
+ 
+ #define TXQUEUESTOP_THRESHHOLD	2
+ 
+-static const struct of_device_id altera_tse_ids[];
+-
+ static inline u32 tse_tx_avail(struct altera_tse_private *priv)
+ {
+ 	return priv->tx_cons + priv->tx_ring_size - priv->tx_prod - 1;
+@@ -1133,7 +1131,6 @@ static int request_and_map(struct platform_device *pdev, const char *name,
+  */
+ static int altera_tse_probe(struct platform_device *pdev)
+ {
+-	const struct of_device_id *of_id = NULL;
+ 	struct regmap_config pcs_regmap_cfg;
+ 	struct altera_tse_private *priv;
+ 	struct mdio_regmap_config mrc;
+@@ -1159,11 +1156,7 @@ static int altera_tse_probe(struct platform_device *pdev)
+ 	priv->dev = ndev;
+ 	priv->msg_enable = netif_msg_init(debug, default_msg_level);
+ 
+-	of_id = of_match_device(altera_tse_ids, &pdev->dev);
+-
+-	if (of_id)
+-		priv->dmaops = (struct altera_dmaops *)of_id->data;
+-
++	priv->dmaops = device_get_match_data(&pdev->dev);
+ 
+ 	if (priv->dmaops &&
+ 	    priv->dmaops->altera_dtype == ALTERA_DTYPE_SGDMA) {
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-platform.c b/drivers/net/ethernet/amd/xgbe/xgbe-platform.c
+index 91842a5e161b..9131020d06af 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-platform.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-platform.c
+@@ -123,9 +123,7 @@
+ #include <linux/io.h>
+ #include <linux/of.h>
+ #include <linux/of_net.h>
+-#include <linux/of_address.h>
+ #include <linux/of_platform.h>
+-#include <linux/of_device.h>
+ #include <linux/clk.h>
+ #include <linux/property.h>
+ #include <linux/acpi.h>
+@@ -135,17 +133,6 @@
+ #include "xgbe-common.h"
+ 
+ #ifdef CONFIG_ACPI
+-static const struct acpi_device_id xgbe_acpi_match[];
+-
+-static struct xgbe_version_data *xgbe_acpi_vdata(struct xgbe_prv_data *pdata)
+-{
+-	const struct acpi_device_id *id;
+-
+-	id = acpi_match_device(xgbe_acpi_match, pdata->dev);
+-
+-	return id ? (struct xgbe_version_data *)id->driver_data : NULL;
+-}
+-
+ static int xgbe_acpi_support(struct xgbe_prv_data *pdata)
+ {
+ 	struct device *dev = pdata->dev;
+@@ -173,11 +160,6 @@ static int xgbe_acpi_support(struct xgbe_prv_data *pdata)
+ 	return 0;
+ }
+ #else   /* CONFIG_ACPI */
+-static struct xgbe_version_data *xgbe_acpi_vdata(struct xgbe_prv_data *pdata)
+-{
+-	return NULL;
+-}
+-
+ static int xgbe_acpi_support(struct xgbe_prv_data *pdata)
+ {
+ 	return -EINVAL;
+@@ -185,17 +167,6 @@ static int xgbe_acpi_support(struct xgbe_prv_data *pdata)
+ #endif  /* CONFIG_ACPI */
+ 
+ #ifdef CONFIG_OF
+-static const struct of_device_id xgbe_of_match[];
+-
+-static struct xgbe_version_data *xgbe_of_vdata(struct xgbe_prv_data *pdata)
+-{
+-	const struct of_device_id *id;
+-
+-	id = of_match_device(xgbe_of_match, pdata->dev);
+-
+-	return id ? (struct xgbe_version_data *)id->data : NULL;
+-}
+-
+ static int xgbe_of_support(struct xgbe_prv_data *pdata)
+ {
+ 	struct device *dev = pdata->dev;
+@@ -244,11 +215,6 @@ static struct platform_device *xgbe_of_get_phy_pdev(struct xgbe_prv_data *pdata)
+ 	return phy_pdev;
+ }
+ #else   /* CONFIG_OF */
+-static struct xgbe_version_data *xgbe_of_vdata(struct xgbe_prv_data *pdata)
+-{
+-	return NULL;
+-}
+-
+ static int xgbe_of_support(struct xgbe_prv_data *pdata)
+ {
+ 	return -EINVAL;
+@@ -290,12 +256,6 @@ static struct platform_device *xgbe_get_phy_pdev(struct xgbe_prv_data *pdata)
+ 	return phy_pdev;
+ }
+ 
+-static struct xgbe_version_data *xgbe_get_vdata(struct xgbe_prv_data *pdata)
+-{
+-	return pdata->use_acpi ? xgbe_acpi_vdata(pdata)
+-			       : xgbe_of_vdata(pdata);
+-}
+-
+ static int xgbe_platform_probe(struct platform_device *pdev)
+ {
+ 	struct xgbe_prv_data *pdata;
+@@ -321,7 +281,7 @@ static int xgbe_platform_probe(struct platform_device *pdev)
+ 	pdata->use_acpi = dev->of_node ? 0 : 1;
+ 
+ 	/* Get the version data */
+-	pdata->vdata = xgbe_get_vdata(pdata);
++	pdata->vdata = (struct xgbe_version_data *)device_get_match_data(dev);
+ 
+ 	phy_pdev = xgbe_get_phy_pdev(pdata);
+ 	if (!phy_pdev) {
+diff --git a/drivers/net/ethernet/apm/xgene/xgene_enet_main.c b/drivers/net/ethernet/apm/xgene/xgene_enet_main.c
+index b5d9f9a55b7f..56f2b3c229af 100644
+--- a/drivers/net/ethernet/apm/xgene/xgene_enet_main.c
++++ b/drivers/net/ethernet/apm/xgene/xgene_enet_main.c
+@@ -2018,7 +2018,6 @@ static int xgene_enet_probe(struct platform_device *pdev)
+ 	struct xgene_enet_pdata *pdata;
+ 	struct device *dev = &pdev->dev;
+ 	void (*link_state)(struct work_struct *);
+-	const struct of_device_id *of_id;
+ 	int ret;
+ 
+ 	ndev = alloc_etherdev_mqs(sizeof(struct xgene_enet_pdata),
+@@ -2039,19 +2038,7 @@ static int xgene_enet_probe(struct platform_device *pdev)
+ 			  NETIF_F_GRO |
+ 			  NETIF_F_SG;
+ 
+-	of_id = of_match_device(xgene_enet_of_match, &pdev->dev);
+-	if (of_id) {
+-		pdata->enet_id = (uintptr_t)of_id->data;
+-	}
+-#ifdef CONFIG_ACPI
+-	else {
+-		const struct acpi_device_id *acpi_id;
+-
+-		acpi_id = acpi_match_device(xgene_enet_acpi_match, &pdev->dev);
+-		if (acpi_id)
+-			pdata->enet_id = (enum xgene_enet_id) acpi_id->driver_data;
+-	}
+-#endif
++	pdata->enet_id = (enum xgene_enet_id)device_get_match_data(&pdev->dev);
+ 	if (!pdata->enet_id) {
+ 		ret = -ENODEV;
+ 		goto err;
+diff --git a/drivers/net/ethernet/apm/xgene/xgene_enet_main.h b/drivers/net/ethernet/apm/xgene/xgene_enet_main.h
+index 643f5e646740..bce2c19e3f22 100644
+--- a/drivers/net/ethernet/apm/xgene/xgene_enet_main.h
++++ b/drivers/net/ethernet/apm/xgene/xgene_enet_main.h
+@@ -15,9 +15,10 @@
+ #include <linux/efi.h>
+ #include <linux/irq.h>
+ #include <linux/io.h>
+-#include <linux/of_platform.h>
++#include <linux/of.h>
+ #include <linux/of_net.h>
+ #include <linux/of_mdio.h>
++#include <linux/platform_device.h>
+ #include <linux/mdio/mdio-xgene.h>
+ #include <linux/module.h>
+ #include <net/ip.h>
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 77c8e9cfb445..e0c991e792a4 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -52,11 +52,11 @@
+ #include <linux/clk.h>
+ #include <linux/crc32.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/mdio.h>
+ #include <linux/phy.h>
+ #include <linux/fec.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+ #include <linux/of_mdio.h>
+ #include <linux/of_net.h>
+ #include <linux/regulator/consumer.h>
+@@ -4292,14 +4292,13 @@ fec_probe(struct platform_device *pdev)
+ 	phy_interface_t interface;
+ 	struct net_device *ndev;
+ 	int i, irq, ret = 0;
+-	const struct of_device_id *of_id;
+ 	static int dev_id;
+ 	struct device_node *np = pdev->dev.of_node, *phy_node;
+ 	int num_tx_qs;
+ 	int num_rx_qs;
+ 	char irq_name[8];
+ 	int irq_cnt;
+-	struct fec_devinfo *dev_info;
++	const struct fec_devinfo *dev_info;
+ 
+ 	fec_enet_get_queue_num(pdev, &num_tx_qs, &num_rx_qs);
+ 
+@@ -4314,10 +4313,9 @@ fec_probe(struct platform_device *pdev)
+ 	/* setup board info structure */
+ 	fep = netdev_priv(ndev);
+ 
+-	of_id = of_match_device(fec_dt_ids, &pdev->dev);
+-	if (of_id)
+-		pdev->id_entry = of_id->data;
+-	dev_info = (struct fec_devinfo *)pdev->id_entry->driver_data;
++	dev_info = device_get_match_data(&pdev->dev);
++	if (!dev_info)
++		dev_info = (const struct fec_devinfo *)pdev->id_entry->driver_data;
+ 	if (dev_info)
+ 		fep->quirks = dev_info->quirks;
+ 
+diff --git a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
+index a6dfc8807d3d..cf392faa6105 100644
+--- a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
++++ b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
+@@ -35,10 +35,9 @@
+ #include <linux/fs.h>
+ #include <linux/platform_device.h>
+ #include <linux/phy.h>
++#include <linux/property.h>
+ #include <linux/of.h>
+ #include <linux/of_mdio.h>
+-#include <linux/of_platform.h>
+-#include <linux/of_gpio.h>
+ #include <linux/of_net.h>
+ #include <linux/pgtable.h>
+ 
+@@ -884,9 +883,9 @@ static const struct ethtool_ops fs_ethtool_ops = {
+ /**************************************************************************************/
+ 
+ #ifdef CONFIG_FS_ENET_HAS_FEC
+-#define IS_FEC(match) ((match)->data == &fs_fec_ops)
++#define IS_FEC(ops) ((ops) == &fs_fec_ops)
+ #else
+-#define IS_FEC(match) 0
++#define IS_FEC(ops) 0
+ #endif
+ 
+ static const struct net_device_ops fs_enet_netdev_ops = {
+@@ -903,10 +902,9 @@ static const struct net_device_ops fs_enet_netdev_ops = {
+ #endif
+ };
+ 
+-static const struct of_device_id fs_enet_match[];
+ static int fs_enet_probe(struct platform_device *ofdev)
+ {
+-	const struct of_device_id *match;
++	const struct fs_ops *ops;
+ 	struct net_device *ndev;
+ 	struct fs_enet_private *fep;
+ 	struct fs_platform_info *fpi;
+@@ -916,15 +914,15 @@ static int fs_enet_probe(struct platform_device *ofdev)
+ 	const char *phy_connection_type;
+ 	int privsize, len, ret = -ENODEV;
+ 
+-	match = of_match_device(fs_enet_match, &ofdev->dev);
+-	if (!match)
++	ops = device_get_match_data(&ofdev->dev);
++	if (!ops)
+ 		return -EINVAL;
+ 
+ 	fpi = kzalloc(sizeof(*fpi), GFP_KERNEL);
+ 	if (!fpi)
+ 		return -ENOMEM;
+ 
+-	if (!IS_FEC(match)) {
++	if (!IS_FEC(ops)) {
+ 		data = of_get_property(ofdev->dev.of_node, "fsl,cpm-command", &len);
+ 		if (!data || len != 4)
+ 			goto out_free_fpi;
+@@ -986,7 +984,7 @@ static int fs_enet_probe(struct platform_device *ofdev)
+ 	fep->dev = &ofdev->dev;
+ 	fep->ndev = ndev;
+ 	fep->fpi = fpi;
+-	fep->ops = match->data;
++	fep->ops = ops;
+ 
+ 	ret = fep->ops->setup_data(ndev);
+ 	if (ret)
+diff --git a/drivers/net/ethernet/freescale/fs_enet/mii-fec.c b/drivers/net/ethernet/freescale/fs_enet/mii-fec.c
+index a1e777a4b75f..7bb69727952a 100644
+--- a/drivers/net/ethernet/freescale/fs_enet/mii-fec.c
++++ b/drivers/net/ethernet/freescale/fs_enet/mii-fec.c
+@@ -30,9 +30,10 @@
+ #include <linux/ethtool.h>
+ #include <linux/bitops.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
++#include <linux/of.h>
+ #include <linux/of_address.h>
+ #include <linux/of_mdio.h>
+-#include <linux/of_platform.h>
+ #include <linux/pgtable.h>
+ 
+ #include <asm/irq.h>
+@@ -96,20 +97,15 @@ static int fs_enet_fec_mii_write(struct mii_bus *bus, int phy_id, int location,
+ 
+ }
+ 
+-static const struct of_device_id fs_enet_mdio_fec_match[];
+ static int fs_enet_mdio_probe(struct platform_device *ofdev)
+ {
+-	const struct of_device_id *match;
+ 	struct resource res;
+ 	struct mii_bus *new_bus;
+ 	struct fec_info *fec;
+ 	int (*get_bus_freq)(struct device *);
+ 	int ret = -ENOMEM, clock, speed;
+ 
+-	match = of_match_device(fs_enet_mdio_fec_match, &ofdev->dev);
+-	if (!match)
+-		return -EINVAL;
+-	get_bus_freq = match->data;
++	get_bus_freq = device_get_match_data(&ofdev->dev);
+ 
+ 	new_bus = mdiobus_alloc();
+ 	if (!new_bus)
+diff --git a/drivers/net/ethernet/freescale/fsl_pq_mdio.c b/drivers/net/ethernet/freescale/fsl_pq_mdio.c
+index eee675a25b2c..70dd982a5edc 100644
+--- a/drivers/net/ethernet/freescale/fsl_pq_mdio.c
++++ b/drivers/net/ethernet/freescale/fsl_pq_mdio.c
+@@ -19,9 +19,10 @@
+ #include <linux/delay.h>
+ #include <linux/module.h>
+ #include <linux/mii.h>
++#include <linux/of.h>
+ #include <linux/of_address.h>
+ #include <linux/of_mdio.h>
+-#include <linux/of_device.h>
++#include <linux/property.h>
+ 
+ #include <asm/io.h>
+ #if IS_ENABLED(CONFIG_UCC_GETH)
+@@ -407,8 +408,6 @@ static void set_tbipa(const u32 tbipa_val, struct platform_device *pdev,
+ 
+ static int fsl_pq_mdio_probe(struct platform_device *pdev)
+ {
+-	const struct of_device_id *id =
+-		of_match_device(fsl_pq_mdio_match, &pdev->dev);
+ 	const struct fsl_pq_mdio_data *data;
+ 	struct device_node *np = pdev->dev.of_node;
+ 	struct resource res;
+@@ -417,15 +416,12 @@ static int fsl_pq_mdio_probe(struct platform_device *pdev)
+ 	struct mii_bus *new_bus;
+ 	int err;
+ 
+-	if (!id) {
++	data = device_get_match_data(&pdev->dev);
++	if (!data) {
+ 		dev_err(&pdev->dev, "Failed to match device\n");
+ 		return -ENODEV;
+ 	}
+ 
+-	data = id->data;
+-
+-	dev_dbg(&pdev->dev, "found %s compatible node\n", id->compatible);
+-
+ 	new_bus = mdiobus_alloc_size(sizeof(*priv));
+ 	if (!new_bus)
+ 		return -ENOMEM;
+diff --git a/drivers/net/ethernet/hisilicon/hix5hd2_gmac.c b/drivers/net/ethernet/hisilicon/hix5hd2_gmac.c
+index 506fa3d8bbee..1a972b093a42 100644
+--- a/drivers/net/ethernet/hisilicon/hix5hd2_gmac.c
++++ b/drivers/net/ethernet/hisilicon/hix5hd2_gmac.c
+@@ -7,7 +7,8 @@
+ #include <linux/interrupt.h>
+ #include <linux/etherdevice.h>
+ #include <linux/platform_device.h>
+-#include <linux/of_device.h>
++#include <linux/property.h>
++#include <linux/of.h>
+ #include <linux/of_net.h>
+ #include <linux/of_mdio.h>
+ #include <linux/reset.h>
+@@ -1094,7 +1095,6 @@ static int hix5hd2_dev_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+ 	struct device_node *node = dev->of_node;
+-	const struct of_device_id *of_id = NULL;
+ 	struct net_device *ndev;
+ 	struct hix5hd2_priv *priv;
+ 	struct mii_bus *bus;
+@@ -1110,12 +1110,7 @@ static int hix5hd2_dev_probe(struct platform_device *pdev)
+ 	priv->dev = dev;
+ 	priv->netdev = ndev;
+ 
+-	of_id = of_match_device(hix5hd2_of_match, dev);
+-	if (!of_id) {
+-		ret = -EINVAL;
+-		goto out_free_netdev;
+-	}
+-	priv->hw_cap = (unsigned long)of_id->data;
++	priv->hw_cap = (unsigned long)device_get_match_data(dev);
+ 
+ 	priv->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(priv->base)) {
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
+index 70edc5232379..d68f0c4e7835 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel-plat.c
+@@ -7,8 +7,8 @@
+ #include <linux/ethtool.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/stmmac.h>
+ 
+ #include "dwmac4.h"
+@@ -76,7 +76,6 @@ static int intel_eth_plat_probe(struct platform_device *pdev)
+ {
+ 	struct plat_stmmacenet_data *plat_dat;
+ 	struct stmmac_resources stmmac_res;
+-	const struct of_device_id *match;
+ 	struct intel_dwmac *dwmac;
+ 	unsigned long rate;
+ 	int ret;
+@@ -98,10 +97,8 @@ static int intel_eth_plat_probe(struct platform_device *pdev)
+ 	dwmac->dev = &pdev->dev;
+ 	dwmac->tx_clk = NULL;
+ 
+-	match = of_match_device(intel_eth_plat_match, &pdev->dev);
+-	if (match && match->data) {
+-		dwmac->data = (const struct intel_dwmac_data *)match->data;
+-
++	dwmac->data = device_get_match_data(&pdev->dev);
++	if (dwmac->data) {
+ 		if (dwmac->data->fix_mac_speed)
+ 			plat_dat->fix_mac_speed = dwmac->data->fix_mac_speed;
+ 
+diff --git a/drivers/net/ethernet/ti/davinci_emac.c b/drivers/net/ethernet/ti/davinci_emac.c
+index 5d756df133eb..23f8bc1cd20d 100644
+--- a/drivers/net/ethernet/ti/davinci_emac.c
++++ b/drivers/net/ethernet/ti/davinci_emac.c
+@@ -38,6 +38,7 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/clk.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/regmap.h>
+ #include <linux/semaphore.h>
+ #include <linux/phy.h>
+@@ -47,10 +48,7 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/davinci_emac.h>
+ #include <linux/of.h>
+-#include <linux/of_address.h>
+-#include <linux/of_device.h>
+ #include <linux/of_mdio.h>
+-#include <linux/of_irq.h>
+ #include <linux/of_net.h>
+ #include <linux/mfd/syscon.h>
+ 
+@@ -1726,13 +1724,10 @@ static const struct net_device_ops emac_netdev_ops = {
+ #endif
+ };
+ 
+-static const struct of_device_id davinci_emac_of_match[];
+-
+ static struct emac_platform_data *
+ davinci_emac_of_get_pdata(struct platform_device *pdev, struct emac_priv *priv)
+ {
+ 	struct device_node *np;
+-	const struct of_device_id *match;
+ 	const struct emac_platform_data *auxdata;
+ 	struct emac_platform_data *pdata = NULL;
+ 
+@@ -1779,9 +1774,8 @@ davinci_emac_of_get_pdata(struct platform_device *pdev, struct emac_priv *priv)
+ 		pdata->interrupt_disable = auxdata->interrupt_disable;
+ 	}
+ 
+-	match = of_match_device(davinci_emac_of_match, &pdev->dev);
+-	if (match && match->data) {
+-		auxdata = match->data;
++	auxdata = device_get_match_data(&pdev->dev);
++	if (auxdata) {
+ 		pdata->version = auxdata->version;
+ 		pdata->hw_ram_addr = auxdata->hw_ram_addr;
+ 	}
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+index 6635b28bc672..79e896972392 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+@@ -19,11 +19,11 @@
+ #include <linux/mfd/syscon.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/of_irq.h>
+ #include <linux/of_mdio.h>
+ #include <linux/of_net.h>
+-#include <linux/of_platform.h>
++#include <linux/platform_device.h>
+ #include <linux/phy.h>
++#include <linux/property.h>
+ #include <linux/remoteproc/pruss.h>
+ #include <linux/regmap.h>
+ #include <linux/remoteproc.h>
+@@ -1934,8 +1934,6 @@ static void prueth_put_cores(struct prueth *prueth, int slice)
+ 		pru_rproc_put(prueth->pru[slice]);
+ }
+ 
+-static const struct of_device_id prueth_dt_match[];
+-
+ static int prueth_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *eth_node, *eth_ports_node;
+@@ -1944,7 +1942,6 @@ static int prueth_probe(struct platform_device *pdev)
+ 	struct genpool_data_align gp_data = {
+ 		.align = SZ_64K,
+ 	};
+-	const struct of_device_id *match;
+ 	struct device *dev = &pdev->dev;
+ 	struct device_node *np;
+ 	struct prueth *prueth;
+@@ -1954,17 +1951,13 @@ static int prueth_probe(struct platform_device *pdev)
+ 
+ 	np = dev->of_node;
+ 
+-	match = of_match_device(prueth_dt_match, dev);
+-	if (!match)
+-		return -ENODEV;
+-
+ 	prueth = devm_kzalloc(dev, sizeof(*prueth), GFP_KERNEL);
+ 	if (!prueth)
+ 		return -ENOMEM;
+ 
+ 	dev_set_drvdata(dev, prueth);
+ 	prueth->pdev = pdev;
+-	prueth->pdata = *(const struct prueth_pdata *)match->data;
++	prueth->pdata = *(const struct prueth_pdata *)device_get_match_data(dev);
+ 
+ 	prueth->dev = dev;
+ 	eth_ports_node = of_get_child_by_name(np, "ethernet-ports");
+-- 
+2.42.0
 
-Thanks,
-Anup
-
-> ---
->  arch/arm64/include/asm/kvm_host.h   |  2 --
->  arch/arm64/kvm/Kconfig              |  2 +-
->  arch/mips/include/asm/kvm_host.h    |  2 --
->  arch/mips/kvm/Kconfig               |  2 +-
->  arch/powerpc/include/asm/kvm_host.h |  2 --
->  arch/powerpc/kvm/Kconfig            |  8 ++++----
->  arch/powerpc/kvm/powerpc.c          |  4 +---
->  arch/riscv/include/asm/kvm_host.h   |  2 --
->  arch/riscv/kvm/Kconfig              |  2 +-
->  arch/x86/include/asm/kvm_host.h     |  2 --
->  arch/x86/kvm/Kconfig                |  2 +-
->  include/linux/kvm_host.h            |  6 +++---
->  include/linux/kvm_types.h           |  1 +
->  virt/kvm/Kconfig                    |  4 ++++
->  virt/kvm/kvm_main.c                 | 10 +++++-----
->  15 files changed, 22 insertions(+), 29 deletions(-)
->
-> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/k=
-vm_host.h
-> index af06ccb7ee34..9e046b64847a 100644
-> --- a/arch/arm64/include/asm/kvm_host.h
-> +++ b/arch/arm64/include/asm/kvm_host.h
-> @@ -921,8 +921,6 @@ int __kvm_arm_vcpu_get_events(struct kvm_vcpu *vcpu,
->  int __kvm_arm_vcpu_set_events(struct kvm_vcpu *vcpu,
->                               struct kvm_vcpu_events *events);
->
-> -#define KVM_ARCH_WANT_MMU_NOTIFIER
-> -
->  void kvm_arm_halt_guest(struct kvm *kvm);
->  void kvm_arm_resume_guest(struct kvm *kvm);
->
-> diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
-> index 83c1e09be42e..1a777715199f 100644
-> --- a/arch/arm64/kvm/Kconfig
-> +++ b/arch/arm64/kvm/Kconfig
-> @@ -22,7 +22,7 @@ menuconfig KVM
->         bool "Kernel-based Virtual Machine (KVM) support"
->         depends on HAVE_KVM
->         select KVM_GENERIC_HARDWARE_ENABLING
-> -       select MMU_NOTIFIER
-> +       select KVM_GENERIC_MMU_NOTIFIER
->         select PREEMPT_NOTIFIERS
->         select HAVE_KVM_CPU_RELAX_INTERCEPT
->         select KVM_MMIO
-> diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm=
-_host.h
-> index 54a85f1d4f2c..179f320cc231 100644
-> --- a/arch/mips/include/asm/kvm_host.h
-> +++ b/arch/mips/include/asm/kvm_host.h
-> @@ -810,8 +810,6 @@ int kvm_mips_mkclean_gpa_pt(struct kvm *kvm, gfn_t st=
-art_gfn, gfn_t end_gfn);
->  pgd_t *kvm_pgd_alloc(void);
->  void kvm_mmu_free_memory_caches(struct kvm_vcpu *vcpu);
->
-> -#define KVM_ARCH_WANT_MMU_NOTIFIER
-> -
->  /* Emulation */
->  enum emulation_result update_pc(struct kvm_vcpu *vcpu, u32 cause);
->  int kvm_get_badinstr(u32 *opc, struct kvm_vcpu *vcpu, u32 *out);
-> diff --git a/arch/mips/kvm/Kconfig b/arch/mips/kvm/Kconfig
-> index a8cdba75f98d..c04987d2ed2e 100644
-> --- a/arch/mips/kvm/Kconfig
-> +++ b/arch/mips/kvm/Kconfig
-> @@ -25,7 +25,7 @@ config KVM
->         select HAVE_KVM_EVENTFD
->         select HAVE_KVM_VCPU_ASYNC_IOCTL
->         select KVM_MMIO
-> -       select MMU_NOTIFIER
-> +       select KVM_GENERIC_MMU_NOTIFIER
->         select INTERVAL_TREE
->         select KVM_GENERIC_HARDWARE_ENABLING
->         help
-> diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/a=
-sm/kvm_host.h
-> index 14ee0dece853..4b5c3f2acf78 100644
-> --- a/arch/powerpc/include/asm/kvm_host.h
-> +++ b/arch/powerpc/include/asm/kvm_host.h
-> @@ -62,8 +62,6 @@
->
->  #include <linux/mmu_notifier.h>
->
-> -#define KVM_ARCH_WANT_MMU_NOTIFIER
-> -
->  #define HPTEG_CACHE_NUM                        (1 << 15)
->  #define HPTEG_HASH_BITS_PTE            13
->  #define HPTEG_HASH_BITS_PTE_LONG       12
-> diff --git a/arch/powerpc/kvm/Kconfig b/arch/powerpc/kvm/Kconfig
-> index 902611954200..b33358ee6424 100644
-> --- a/arch/powerpc/kvm/Kconfig
-> +++ b/arch/powerpc/kvm/Kconfig
-> @@ -42,7 +42,7 @@ config KVM_BOOK3S_64_HANDLER
->  config KVM_BOOK3S_PR_POSSIBLE
->         bool
->         select KVM_MMIO
-> -       select MMU_NOTIFIER
-> +       select KVM_GENERIC_MMU_NOTIFIER
->
->  config KVM_BOOK3S_HV_POSSIBLE
->         bool
-> @@ -85,7 +85,7 @@ config KVM_BOOK3S_64_HV
->         tristate "KVM for POWER7 and later using hypervisor mode in host"
->         depends on KVM_BOOK3S_64 && PPC_POWERNV
->         select KVM_BOOK3S_HV_POSSIBLE
-> -       select MMU_NOTIFIER
-> +       select KVM_GENERIC_MMU_NOTIFIER
->         select CMA
->         help
->           Support running unmodified book3s_64 guest kernels in
-> @@ -194,7 +194,7 @@ config KVM_E500V2
->         depends on !CONTEXT_TRACKING_USER
->         select KVM
->         select KVM_MMIO
-> -       select MMU_NOTIFIER
-> +       select KVM_GENERIC_MMU_NOTIFIER
->         help
->           Support running unmodified E500 guest kernels in virtual machin=
-es on
->           E500v2 host processors.
-> @@ -211,7 +211,7 @@ config KVM_E500MC
->         select KVM
->         select KVM_MMIO
->         select KVM_BOOKE_HV
-> -       select MMU_NOTIFIER
-> +       select KVM_GENERIC_MMU_NOTIFIER
->         help
->           Support running unmodified E500MC/E5500/E6500 guest kernels in
->           virtual machines on E500MC/E5500/E6500 host processors.
-> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> index 8d3ec483bc2b..aac75c98a956 100644
-> --- a/arch/powerpc/kvm/powerpc.c
-> +++ b/arch/powerpc/kvm/powerpc.c
-> @@ -632,9 +632,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, lon=
-g ext)
->                 break;
->  #endif
->         case KVM_CAP_SYNC_MMU:
-> -#if !defined(CONFIG_MMU_NOTIFIER) || !defined(KVM_ARCH_WANT_MMU_NOTIFIER=
-)
-> -               BUILD_BUG();
-> -#endif
-> +               BUILD_BUG_ON(!IS_ENABLED(CONFIG_KVM_GENERIC_MMU_NOTIFIER)=
-);
->                 r =3D 1;
->                 break;
->  #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
-> diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/k=
-vm_host.h
-> index 1ebf20dfbaa6..66ee9ff483e9 100644
-> --- a/arch/riscv/include/asm/kvm_host.h
-> +++ b/arch/riscv/include/asm/kvm_host.h
-> @@ -249,8 +249,6 @@ struct kvm_vcpu_arch {
->  static inline void kvm_arch_sync_events(struct kvm *kvm) {}
->  static inline void kvm_arch_sched_in(struct kvm_vcpu *vcpu, int cpu) {}
->
-> -#define KVM_ARCH_WANT_MMU_NOTIFIER
-> -
->  #define KVM_RISCV_GSTAGE_TLB_MIN_ORDER         12
->
->  void kvm_riscv_local_hfence_gvma_vmid_gpa(unsigned long vmid,
-> diff --git a/arch/riscv/kvm/Kconfig b/arch/riscv/kvm/Kconfig
-> index dfc237d7875b..ae2e05f050ec 100644
-> --- a/arch/riscv/kvm/Kconfig
-> +++ b/arch/riscv/kvm/Kconfig
-> @@ -30,7 +30,7 @@ config KVM
->         select KVM_GENERIC_HARDWARE_ENABLING
->         select KVM_MMIO
->         select KVM_XFER_TO_GUEST_WORK
-> -       select MMU_NOTIFIER
-> +       select KVM_GENERIC_MMU_NOTIFIER
->         select PREEMPT_NOTIFIERS
->         help
->           Support hosting virtualized guest machines.
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_h=
-ost.h
-> index 1a4def36d5bb..3a2b53483524 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -2131,8 +2131,6 @@ enum {
->  # define kvm_memslots_for_spte_role(kvm, role) __kvm_memslots(kvm, 0)
->  #endif
->
-> -#define KVM_ARCH_WANT_MMU_NOTIFIER
-> -
->  int kvm_cpu_has_injectable_intr(struct kvm_vcpu *v);
->  int kvm_cpu_has_interrupt(struct kvm_vcpu *vcpu);
->  int kvm_cpu_has_extint(struct kvm_vcpu *v);
-> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-> index ed90f148140d..091b74599c22 100644
-> --- a/arch/x86/kvm/Kconfig
-> +++ b/arch/x86/kvm/Kconfig
-> @@ -24,7 +24,7 @@ config KVM
->         depends on HIGH_RES_TIMERS
->         depends on X86_LOCAL_APIC
->         select PREEMPT_NOTIFIERS
-> -       select MMU_NOTIFIER
-> +       select KVM_GENERIC_MMU_NOTIFIER
->         select HAVE_KVM_IRQCHIP
->         select HAVE_KVM_PFNCACHE
->         select HAVE_KVM_IRQFD
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 11d091688346..5faba69403ac 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -253,7 +253,7 @@ bool kvm_setup_async_pf(struct kvm_vcpu *vcpu, gpa_t =
-cr2_or_gpa,
->  int kvm_async_pf_wakeup_all(struct kvm_vcpu *vcpu);
->  #endif
->
-> -#ifdef KVM_ARCH_WANT_MMU_NOTIFIER
-> +#ifdef CONFIG_KVM_GENERIC_MMU_NOTIFIER
->  union kvm_mmu_notifier_arg {
->         pte_t pte;
->  };
-> @@ -783,7 +783,7 @@ struct kvm {
->         struct hlist_head irq_ack_notifier_list;
->  #endif
->
-> -#if defined(CONFIG_MMU_NOTIFIER) && defined(KVM_ARCH_WANT_MMU_NOTIFIER)
-> +#ifdef CONFIG_KVM_GENERIC_MMU_NOTIFIER
->         struct mmu_notifier mmu_notifier;
->         unsigned long mmu_invalidate_seq;
->         long mmu_invalidate_in_progress;
-> @@ -1946,7 +1946,7 @@ extern const struct _kvm_stats_desc kvm_vm_stats_de=
-sc[];
->  extern const struct kvm_stats_header kvm_vcpu_stats_header;
->  extern const struct _kvm_stats_desc kvm_vcpu_stats_desc[];
->
-> -#if defined(CONFIG_MMU_NOTIFIER) && defined(KVM_ARCH_WANT_MMU_NOTIFIER)
-> +#ifdef CONFIG_KVM_GENERIC_MMU_NOTIFIER
->  static inline int mmu_invalidate_retry(struct kvm *kvm, unsigned long mm=
-u_seq)
->  {
->         if (unlikely(kvm->mmu_invalidate_in_progress))
-> diff --git a/include/linux/kvm_types.h b/include/linux/kvm_types.h
-> index 6f4737d5046a..9d1f7835d8c1 100644
-> --- a/include/linux/kvm_types.h
-> +++ b/include/linux/kvm_types.h
-> @@ -6,6 +6,7 @@
->  struct kvm;
->  struct kvm_async_pf;
->  struct kvm_device_ops;
-> +struct kvm_gfn_range;
->  struct kvm_interrupt;
->  struct kvm_irq_routing_table;
->  struct kvm_memory_slot;
-> diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-> index 484d0873061c..ecae2914c97e 100644
-> --- a/virt/kvm/Kconfig
-> +++ b/virt/kvm/Kconfig
-> @@ -92,3 +92,7 @@ config HAVE_KVM_PM_NOTIFIER
->
->  config KVM_GENERIC_HARDWARE_ENABLING
->         bool
-> +
-> +config KVM_GENERIC_MMU_NOTIFIER
-> +       select MMU_NOTIFIER
-> +       bool
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 4fad3b01dc1f..8d21757cd5e9 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -535,7 +535,7 @@ void kvm_destroy_vcpus(struct kvm *kvm)
->  }
->  EXPORT_SYMBOL_GPL(kvm_destroy_vcpus);
->
-> -#if defined(CONFIG_MMU_NOTIFIER) && defined(KVM_ARCH_WANT_MMU_NOTIFIER)
-> +#ifdef CONFIG_KVM_GENERIC_MMU_NOTIFIER
->  static inline struct kvm *mmu_notifier_to_kvm(struct mmu_notifier *mn)
->  {
->         return container_of(mn, struct kvm, mmu_notifier);
-> @@ -960,14 +960,14 @@ static int kvm_init_mmu_notifier(struct kvm *kvm)
->         return mmu_notifier_register(&kvm->mmu_notifier, current->mm);
->  }
->
-> -#else  /* !(CONFIG_MMU_NOTIFIER && KVM_ARCH_WANT_MMU_NOTIFIER) */
-> +#else  /* !CONFIG_KVM_GENERIC_MMU_NOTIFIER */
->
->  static int kvm_init_mmu_notifier(struct kvm *kvm)
->  {
->         return 0;
->  }
->
-> -#endif /* CONFIG_MMU_NOTIFIER && KVM_ARCH_WANT_MMU_NOTIFIER */
-> +#endif /* CONFIG_KVM_GENERIC_MMU_NOTIFIER */
->
->  #ifdef CONFIG_HAVE_KVM_PM_NOTIFIER
->  static int kvm_pm_notifier_call(struct notifier_block *bl,
-> @@ -1287,7 +1287,7 @@ static struct kvm *kvm_create_vm(unsigned long type=
-, const char *fdname)
->  out_err_no_debugfs:
->         kvm_coalesced_mmio_free(kvm);
->  out_no_coalesced_mmio:
-> -#if defined(CONFIG_MMU_NOTIFIER) && defined(KVM_ARCH_WANT_MMU_NOTIFIER)
-> +#ifdef CONFIG_KVM_GENERIC_MMU_NOTIFIER
->         if (kvm->mmu_notifier.ops)
->                 mmu_notifier_unregister(&kvm->mmu_notifier, current->mm);
->  #endif
-> @@ -1347,7 +1347,7 @@ static void kvm_destroy_vm(struct kvm *kvm)
->                 kvm->buses[i] =3D NULL;
->         }
->         kvm_coalesced_mmio_free(kvm);
-> -#if defined(CONFIG_MMU_NOTIFIER) && defined(KVM_ARCH_WANT_MMU_NOTIFIER)
-> +#ifdef CONFIG_KVM_GENERIC_MMU_NOTIFIER
->         mmu_notifier_unregister(&kvm->mmu_notifier, kvm->mm);
->         /*
->          * At this point, pending calls to invalidate_range_start()
-> --
-> 2.42.0.283.g2d96d420d3-goog
->
