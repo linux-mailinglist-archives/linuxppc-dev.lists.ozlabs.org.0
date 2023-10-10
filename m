@@ -1,82 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B2277C0386
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Oct 2023 20:35:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A447C414A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Oct 2023 22:33:42 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AQOWLjK2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=u3BP37hg;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S4l2h2zwCz3vfl
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Oct 2023 05:35:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S4nfr2q32z2ygX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Oct 2023 07:33:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AQOWLjK2;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=u3BP37hg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S4l0F4Twlz3cRn
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Oct 2023 05:33:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S4ndz4s5Bz2ygX
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Oct 2023 07:32:55 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 5914CCE1FB4;
-	Tue, 10 Oct 2023 18:33:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58551C433C7;
-	Tue, 10 Oct 2023 18:33:21 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 1701DCE20F4;
+	Tue, 10 Oct 2023 20:32:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A8AC433C7;
+	Tue, 10 Oct 2023 20:32:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1696962810;
-	bh=TD+nNrMs7Ka9gbbvwhiSbbShWQAcXDb6ypAqBq/kzqM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=AQOWLjK2hbh4erAVcclHzik682RWE1TlLameD3PmoJ3Uo1EdHIJ3I8/svUjMmldVS
-	 XKGHGno3DQjgda+yYyDLV2RgAr+QriR0weN/s6GlrLt2EP2nrnM3k7FqjHSo4shDkw
-	 4YmAJnWUU4FAAo1DHwnLIb8T2QihDbJHWsAQp7ljuhV/SoB2Z783yD6vtQBBzc/IRQ
-	 0ur+GjZeh2BTN51SAEQ8MnAsJz1GmthDlzy8kQP5bEiQOBHYYqI08ijmcdvovR3rTe
-	 mdNfvNNct9aXKnVZ5lIyJsNKZBp2NOzY5e0WdSm6aWk8sQkZRfGYEl2Hl/agRRXcRK
-	 XSovxYLIK9kMw==
-From: Mark Brown <broonie@kernel.org>
-To: Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- Peter Rosin <peda@axentia.se>, Lars-Peter Clausen <lars@metafoo.de>, 
- nuno.sa@analog.com, James Schulman <james.schulman@cirrus.com>, 
- David Rhodes <david.rhodes@cirrus.com>, 
- Richard Fitzgerald <rf@opensource.cirrus.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>, 
- Baojun Xu <baojun.xu@ti.com>, Oder Chiou <oder_chiou@realtek.com>, 
- Fabio Estevam <festevam@gmail.com>, Kiseok Jo <kiseok.jo@irondevice.com>, 
- Kevin Cernekee <cernekee@chromium.org>, 
- Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
- Nicolin Chen <nicoleotsuka@gmail.com>, 
- Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
- Banajit Goswami <bgoswami@quicinc.com>, 
- Nicolas Frattaroli <frattaroli.nicolas@gmail.com>, 
- Sylwester Nawrocki <s.nawrocki@samsung.com>, 
- Ban Tao <fengzheng923@gmail.com>, Peter Ujfalusi <peter.ujfalusi@gmail.com>, 
- Jarkko Nikula <jarkko.nikula@bitmer.com>, 
- Cezary Rojewski <cezary.rojewski@intel.com>, 
- Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>, 
- Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
- Bard Liao <yung-chuan.liao@linux.intel.com>, 
- Ranjani Sridharan <ranjani.sridharan@linux.intel.com>, 
- Kai Vehmanen <kai.vehmanen@linux.intel.com>, 
- Olivier Moysan <olivier.moysan@foss.st.com>, 
- Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Rob Herring <robh@kernel.org>
-In-Reply-To: <20231006-dt-asoc-header-cleanups-v3-0-13a4f0f7fee6@kernel.org>
-References: <20231006-dt-asoc-header-cleanups-v3-0-13a4f0f7fee6@kernel.org>
-Subject: Re: [PATCH v3 0/5] ASoC: DT matching and header cleanups
-Message-Id: <169696280106.221758.12652834857695234139.b4-ty@kernel.org>
-Date: Tue, 10 Oct 2023 19:33:21 +0100
+	s=k20201202; t=1696969971;
+	bh=hq+lAC9aHGR9lwOmWbeBkHbds2JgCNJWhr+zVJ8l2Uw=;
+	h=From:Date:Subject:To:Cc:From;
+	b=u3BP37hgP/SnJDK5AnP14YulTGVK8usLMuN/mWe5jiJWNpA84BZVXG177VX/ArJD9
+	 BlC7MdeLI5Jm555PinRzZpItd3/M6XZ9LzNYOmoqGGV/Yh9DYX/V8nC+pzdn54u3pK
+	 25KGz7az//HjOr+An9sl5w/wBiKkz6y1E8EAjYcsUVg9cYE0musDBr5/dBPIlICfTQ
+	 b5M+TTOSgHy55npJT6IjtS+HGfBIS7GH0Wr1Y4hkDICi5/Fkt2idTMdQJj0YN8FCa3
+	 38aYYa8IDRbi0wnQTt4ezKCLaf4IlfZgqhu0oFbZ3rf0KBVwqzYTYmV+BnVvzUZH79
+	 57QBRha6dRr4g==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Tue, 10 Oct 2023 13:32:37 -0700
+Subject: [PATCH] scsi: ibmvfc: Use 'unsigned int' for single-bit bitfields
+ in 'struct ibmvfc_host'
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-0438c
+Message-Id: <20231010-ibmvfc-fix-bitfields-type-v1-1-37e95b5a60e5@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAOS0JWUC/x2MWwqAIBAArxL73YJWJHWV6ENtrYVeaEQh3j3pc
+ 2BmIgTyTAH6IoKnmwMfewZZFmAXvc+EPGWGSlS1FFIgm+12Fh0/aPhyTOsU8HpPwk5JLZRtG7I
+ t5P70lK3/PYwpfWHBbSRrAAAA
+To: tyreld@linux.ibm.com, martin.petersen@oracle.com
+X-Mailer: b4 0.13-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2012; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=hq+lAC9aHGR9lwOmWbeBkHbds2JgCNJWhr+zVJ8l2Uw=;
+ b=owGbwMvMwCEmm602sfCA1DTG02pJDKmqWz6ZpPaX7+8KSv70iDvklOHB9wmO1lGmTe87p4THr
+ N+/aeK7jlIWBjEOBlkxRZbqx6rHDQ3nnGW8cWoSzBxWJpAhDFycAjCRiwsYGc5crNG58fq0+xPF
+ AyynVrAvEnRYtCg6S0Hn1sdS4aqJ//4xMvzrFDP/b2ankzzhhaK0VY9cwtU7Cw3MY1aF6PJX7Oq
+ u4QAA
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,55 +69,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Charles Keepax <ckeepax@opensource.cirrus.com>, alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Jernej Skrabec <jernej.skrabec@gmail.com>
+Cc: linux-scsi@vger.kernel.org, trix@redhat.com, jejb@linux.ibm.com, llvm@lists.linux.dev, ndesaulniers@google.com, patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>, brking@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 06 Oct 2023 15:09:09 -0500, Rob Herring wrote:
-> (trimmed the recipient list due to bounces on v1)
-> 
-> This is a series is part of ongoing clean-ups related to device
-> matching and DT related implicit includes. Essentially of_device.h has
-> a bunch of implicit includes and generally isn't needed any nore except
-> for of_match_device(). As we also generally want to get rid of
-> of_match_device() as well, I've done that so we're not updating the
-> includes twice.
-> 
-> [...]
+Clang warns (or errors with CONFIG_WERROR=y) several times along the
+lines of:
 
-Applied to
+  drivers/scsi/ibmvscsi/ibmvfc.c:650:17: warning: implicit truncation from 'int' to a one-bit wide bit-field changes value from 1 to -1 [-Wsingle-bit-bitfield-constant-conversion]
+    650 |                 vhost->reinit = 1;
+        |                               ^ ~
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+A single-bit signed integer bitfield only has possible values of -1 and
+0, not 0 and 1 like an unsigned one would. No context appears to check
+the actual value of these bitfields, just whether or not it is zero.
+However, it is easy enough to change the type of the fields to 'unsigned
+int', which keeps the same size in memory and resolves the warning.
 
-Thanks!
+Fixes: 5144905884e2 ("scsi: ibmvfc: Use a bitfield for boolean flags")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ drivers/scsi/ibmvscsi/ibmvfc.h | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-[1/5] ASoC: Explicitly include correct DT includes
-      commit: 340d79a14d6ab5066ba40651764db20bd151aea7
-[2/5] ASoC: Drop unnecessary of_match_device() calls
-      commit: 56c075b2d31c626370481a62d334a0575f751522
-[3/5] ASoC: da7218: Use i2c_get_match_data()
-      commit: fe26425518862020449cb2c9709e62cc76a56de2
-[4/5] ASoC: qcom/lpass: Constify struct lpass_variant
-      commit: ec5236c2e6ec1ce62237a2e9345dd2ffc4fc6d56
-[5/5] ASoC: Use device_get_match_data()
-      commit: 9958d85968ed2df4b704105fd2a9c3669eb9cd97
+diff --git a/drivers/scsi/ibmvscsi/ibmvfc.h b/drivers/scsi/ibmvscsi/ibmvfc.h
+index 331ecf8254be..745ad5ac7251 100644
+--- a/drivers/scsi/ibmvscsi/ibmvfc.h
++++ b/drivers/scsi/ibmvscsi/ibmvfc.h
+@@ -892,15 +892,15 @@ struct ibmvfc_host {
+ 	int init_retries;
+ 	int discovery_threads;
+ 	int abort_threads;
+-	int client_migrated:1;
+-	int reinit:1;
+-	int delay_init:1;
+-	int logged_in:1;
+-	int mq_enabled:1;
+-	int using_channels:1;
+-	int do_enquiry:1;
+-	int aborting_passthru:1;
+-	int scan_complete:1;
++	unsigned int client_migrated:1;
++	unsigned int reinit:1;
++	unsigned int delay_init:1;
++	unsigned int logged_in:1;
++	unsigned int mq_enabled:1;
++	unsigned int using_channels:1;
++	unsigned int do_enquiry:1;
++	unsigned int aborting_passthru:1;
++	unsigned int scan_complete:1;
+ 	int scan_timeout;
+ 	int events_to_log;
+ #define IBMVFC_AE_LINKUP	0x0001
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+---
+base-commit: b6f2e063017b92491976a40c32a0e4b3c13e7d2f
+change-id: 20231010-ibmvfc-fix-bitfields-type-971a07c64ec6
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Best regards,
+-- 
+Nathan Chancellor <nathan@kernel.org>
 
