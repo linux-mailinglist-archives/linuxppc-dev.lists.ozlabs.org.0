@@ -2,94 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A17BB7BF966
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Oct 2023 13:12:58 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=obMYYZIj;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id B474B7BF8A1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Oct 2023 12:27:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S4YCr3xLcz3vbN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Oct 2023 22:12:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S4XCD4mZBz3dDk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Oct 2023 21:27:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=obMYYZIj;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=disgoel@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.128.170; helo=mail-yw1-f170.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S4W6z0r6Dz2xLN
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Oct 2023 20:38:34 +1100 (AEDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39A9MUHx018159;
-	Tue, 10 Oct 2023 09:38:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- message-id : date : mime-version : subject : to : cc : references : from :
- in-reply-to; s=pp1; bh=acADwH9A7GarsaoP7iPa74Ss1CTM+rEwAywYefiGO8Q=;
- b=obMYYZIjSmtXa3Z5O6PU3ppmLE2bd0V6qDNuaCK+WKYOYJWkTXYX5+HuLhtdgjv5MbRB
- Ivt5HXj54oJ7rLtig83/wq3Mdc13E8qLVkYyKYBzPf5RttLp4Y0zqAS7DRUrmi6w4w6D
- 4MaiL8ATkEvjYCxUE0xzbQnV1kcNSe6K0miamVwPAm/hceQ96nkw2nK10uuvHKEwR+2E
- WZwS/VrKovY3cRaWGAD2AnZ73hMBWyeGQBzCLXPBatE8WCvkdhxqc9i1LnIwKFGd1szF
- jycIL42Va9fRLbIyaPFxGCUFkFeM3VlmWX1FK4izrHhGrmIlnlLS5MgwdwkYWEqQyu9s XA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tn3ta8gs5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Oct 2023 09:38:27 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39A9cBiS009187;
-	Tue, 10 Oct 2023 09:38:26 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tn3ta8gpv-5
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Oct 2023 09:38:26 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39A8U5eu000643;
-	Tue, 10 Oct 2023 09:13:15 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tkk5kf3r8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Oct 2023 09:13:14 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39A9DBWl15532776
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 10 Oct 2023 09:13:11 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A128020043;
-	Tue, 10 Oct 2023 09:13:11 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B67AA20040;
-	Tue, 10 Oct 2023 09:13:09 +0000 (GMT)
-Received: from [9.109.252.67] (unknown [9.109.252.67])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 10 Oct 2023 09:13:09 +0000 (GMT)
-Content-Type: multipart/alternative;
- boundary="------------xuGAkCJgd4qHhE7vX0DJgOuW"
-Message-ID: <a5465409-fcd4-3400-c0a6-ae52fed86143@linux.ibm.com>
-Date: Tue, 10 Oct 2023 14:43:08 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S4XBh425Dz30P3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Oct 2023 21:26:50 +1100 (AEDT)
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-5a7af52ee31so13939447b3.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Oct 2023 03:26:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696933606; x=1697538406;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vbmON3xp7LlIs9AFrDaNfaYi2KFfIcOVngy3VzyA1Hk=;
+        b=g5iypg/S7sGKFEqjJLwa9b9ts3LyqP3Q2sxThu8pXKNmsYCpHYqzQXkqeZCPPbe3hL
+         9oW6woXMw0n/gn/8hXt1diXG0nnm36jyUPSFGUNKI9VkZhIIl8Ai+Xwq6KBCAgsasWvj
+         vwcKPtrzy+4AaszHP2V5zTBTJ73cvXKNy+aPffZnRiy53Kl+YBan3/aHS1hfX6ZHzCcz
+         7GVPpupp0g57Tm5D5eN9VJvXB4pnaFZ0KSag18aaT30gQviJaRqmjwr286S6TPFaTRBC
+         SGmrZYWHh6BAfFjHUi3Uj67GlNXiqNqbycUxRBwM/DwFxkX2VMIUgice84GEqp5mLKt7
+         n+Ew==
+X-Gm-Message-State: AOJu0Yy5KPyaLdK8/hEUgI5BvBrcvJigxOf/igrYIDnc494/B5MC66A1
+	qsmBB3g9aGBJ/qhP1k+Ji3bhyqyxKEsmkQ==
+X-Google-Smtp-Source: AGHT+IEioGs67h/No3tgbg2SyyYy8CK1rgn0FckBzn1kkHMWEwH6pXMGCBNk0J5pj7FxM3fXMyE7Hw==
+X-Received: by 2002:a25:e20b:0:b0:d85:b765:782c with SMTP id h11-20020a25e20b000000b00d85b765782cmr15436483ybe.20.1696933605953;
+        Tue, 10 Oct 2023 03:26:45 -0700 (PDT)
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com. [209.85.128.179])
+        by smtp.gmail.com with ESMTPSA id y7-20020a25dc07000000b00d85abbdc93esm3706119ybe.12.2023.10.10.03.26.45
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Oct 2023 03:26:45 -0700 (PDT)
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-59f4db9e11eso64641297b3.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Oct 2023 03:26:45 -0700 (PDT)
+X-Received: by 2002:a81:8647:0:b0:595:89b0:6b56 with SMTP id
+ w68-20020a818647000000b0059589b06b56mr20014839ywf.28.1696933584327; Tue, 10
+ Oct 2023 03:26:24 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH] tools/perf/arch/powerpc: Fix the CPU ID const char* value
- by adding 0x prefix
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, acme@kernel.org,
-        jolsa@kernel.org, adrian.hunter@intel.com, irogers@google.com,
-        namhyung@kernel.org
-References: <20231009050052.64935-1-atrajeev@linux.vnet.ibm.com>
-From: Disha Goel <disgoel@linux.ibm.com>
-In-Reply-To: <20231009050052.64935-1-atrajeev@linux.vnet.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: W6pA2NaZNXF_iTMPNF9HnPzH-0OHmnnE
-X-Proofpoint-GUID: rqWE5jwD7_fYvqq2nNi_SybqTZKunEjH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-10_04,2023-10-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
- lowpriorityscore=0 mlxlogscore=999 malwarescore=0 adultscore=0
- clxscore=1011 mlxscore=0 suspectscore=0 phishscore=0 priorityscore=1501
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310100072
-X-Mailman-Approved-At: Tue, 10 Oct 2023 22:11:22 +1100
+References: <20231009211845.3136536-1-arnd@kernel.org> <20231009211845.3136536-2-arnd@kernel.org>
+In-Reply-To: <20231009211845.3136536-2-arnd@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 10 Oct 2023 12:26:07 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdU6MFLCOe4BSWr5oVC4JcLpBS+2PvQsoSEWMLRAFpvaGA@mail.gmail.com>
+Message-ID: <CAMuHMdU6MFLCOe4BSWr5oVC4JcLpBS+2PvQsoSEWMLRAFpvaGA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/9] vgacon: rework Kconfig dependencies
+To: Arnd Bergmann <arnd@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,222 +67,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-perf-users@vger.kernel.org, kjain@linux.ibm.com, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, disgoel@linux.vnet.ibm.com
+Cc: linux-fbdev@vger.kernel.org, x86@kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Linus Walleij <linus.walleij@linaro.org>, Dave Hansen <dave.hansen@linux.intel.com>, linux-hyperv@vger.kernel.org, dri-devel@lists.freedesktop.org, Russell King <linux@armlinux.org.uk>, Max Filippov <jcmvbkbc@gmail.com>, Will Deacon <will@kernel.org>, linux-efi@vger.kernel.org, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, "K. Y. Srinivasan" <kys@microsoft.com>, David Airlie <airlied@gmail.com>, Ard Biesheuvel <ardb@kernel.org>, Wei Liu <wei.liu@kernel.org>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Dexuan Cui <decui@microsoft.com>, Javier Martinez Canillas <javierm@redhat.com>, Deepak Rawat <drawat.floss@gmail.com>, Ingo Molnar <mingo@redhat.com>, Matt Turner <mattst88@gmail.com>, linux-mips@vger.kernel.org, Thoma
+ s Zimmermann <tzimmermann@suse.de>, Arnd Bergmann <arnd@arndb.de>, Haiyang Zhang <haiyangz@microsoft.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Khalid Aziz <khalid@gonehiking.org>, Brian Cain <bcain@quicinc.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Daniel Vetter <daniel@ffwll.ch>, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
---------------xuGAkCJgd4qHhE7vX0DJgOuW
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Hi Arnd,
 
-On 09/10/23 10:30 am, Athira Rajeev wrote:
-
-> Simple expression parser test fails in powerpc as below:
+On Mon, Oct 9, 2023 at 11:19=E2=80=AFPM Arnd Bergmann <arnd@kernel.org> wro=
+te:
+> From: Arnd Bergmann <arnd@arndb.de>
 >
->      4: Simple expression parser
->      test child forked, pid 170385
->      Using CPUID 004e2102
->      division by zero
->      syntax error
->      syntax error
->      FAILED tests/expr.c:65 parse test failed
->      test child finished with -1
->      Simple expression parser: FAILED!
+> The list of dependencies here is phrased as an opt-out, but this is missi=
+ng
+> a lot of architectures that don't actually support VGA consoles, and some
+> of the entries are stale:
 >
-> This is observed after commit:
-> 'commit 9d5da30e4ae9 ("perf jevents: Add a new expression builtin strcmp_cpuid_str()")'
+>  - powerpc used to support VGA consoles in the old arch/ppc codebase, but
+>    the merged arch/powerpc never did
 >
-> With this commit, a new expression builtin strcmp_cpuid_str
-> got added. This function takes an 'ID' type value, which is
-> a string. So expression parse for strcmp_cpuid_str expects
-> const char * as cpuid value type. In case of powerpc, CPU IDs
-> are numbers. Hence it doesn't get interpreted correctly by
-> bison parser. Example in case of power9, cpuid string returns
-> as: 004e2102
+>  - arm lists footbridge, integrator and netwinder, but netwinder is actua=
+lly
+>    part of footbridge, and integrator does not appear to have an actual
+>    VGA hardware, or list it in its ATAG or DT.
 >
-> cpuid of string type is expected in two cases:
-> 1. char *get_cpuid_str(struct perf_pmu *pmu __maybe_unused);
+>  - mips has a few platforms (malta, sibyte, and sni) that initialize
+>    screen_info, on everything else the console is selected but cannot
+>    actually work.
 >
->     Testcase "tests/expr.c" uses "perf_pmu__getcpuid" which calls
->     get_cpuid_str to get the cpuid string.
+>  - csky, hexgagon, loongarch, nios2, riscv and xtensa are not listed
+>    in the opt-out table and declare a screen_info to allow building
+>    vga_con, but this cannot work because the console is never selected.
 >
-> 2. cpuid field in  :struct pmu_events_map
+> Replace this with an opt-in table that lists only the platforms that
+> remain. This is effectively x86, plus a couple of historic workstation
+> and server machines that reused parts of the x86 system architecture.
 >
->     struct pmu_events_map {
->             const char *arch;
-> 	   const char *cpuid;
+> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Reviewed-by: Khalid Aziz <khalid@gonehiking.org>
+> Acked-by: Helge Deller <deller@gmx.de>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+
+Thanks for your patch!
+
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+
+A few suggestions for simplification below...
+
+> --- a/drivers/video/console/Kconfig
+> +++ b/drivers/video/console/Kconfig
+> @@ -7,9 +7,9 @@ menu "Console display driver support"
 >
->     Here cpuid field is used in "perf_pmu__find_events_table"
->     function as "strcmp_cpuid_str(map->cpuid, cpuid)". The
->     value for cpuid field is picked from mapfile.csv.
->
-> Fix the mapfile.csv and get_cpuid_str function to prefix
-> cpuid with 0x so that it gets correctly interpreted by
-> the bison parser
->
-> Signed-off-by: Athira Rajeev<atrajeev@linux.vnet.ibm.com>
+>  config VGA_CONSOLE
+>         bool "VGA text console" if EXPERT || !X86
+> -       depends on !4xx && !PPC_8xx && !SPARC && !M68K && !PARISC &&  !SU=
+PERH && \
+> -               (!ARM || ARCH_FOOTBRIDGE || ARCH_INTEGRATOR || ARCH_NETWI=
+NDER) && \
+> -               !ARM64 && !ARC && !MICROBLAZE && !OPENRISC && !S390 && !U=
+ML
+> +       depends on ALPHA || IA64 || X86 || \
+> +               (ARM && ARCH_FOOTBRIDGE) || \
 
-Tested the patch on Power10 machine, now its correctly able to interpret cpuid
-value and perf Simple expression parser test passed.
+You can drop "ARM &&", as it is implied by ARCH_FOOTBRIDGE.
 
-# ./perf test -v 7
-   7: Simple expression parser                                        :
---- start ---
-test child forked, pid 87922
-Using CPUID 0x00800200
-division by zero
-syntax error
-test child finished with 0
----- end ----
-Simple expression parser: Ok
+> +               (MIPS && (MIPS_MALTA || SIBYTE_BCM112X || SIBYTE_SB1250 |=
+| SIBYTE_BCM1x80 || SNI_RM))
 
-Tested-by: Disha Goel<disgoel@linux.ibm.com>
+Likewise for "MIPS &&".
 
-> ---
->   tools/perf/arch/powerpc/util/header.c          | 2 +-
->   tools/perf/pmu-events/arch/powerpc/mapfile.csv | 6 +++---
->   2 files changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/tools/perf/arch/powerpc/util/header.c b/tools/perf/arch/powerpc/util/header.c
-> index c8d0dc775e5d..6b00efd53638 100644
-> --- a/tools/perf/arch/powerpc/util/header.c
-> +++ b/tools/perf/arch/powerpc/util/header.c
-> @@ -34,7 +34,7 @@ get_cpuid_str(struct perf_pmu *pmu __maybe_unused)
->   {
->   	char *bufp;
->
-> -	if (asprintf(&bufp, "%.8lx", mfspr(SPRN_PVR)) < 0)
-> +	if (asprintf(&bufp, "0x%.8lx", mfspr(SPRN_PVR)) < 0)
->   		bufp = NULL;
->
->   	return bufp;
-> diff --git a/tools/perf/pmu-events/arch/powerpc/mapfile.csv b/tools/perf/pmu-events/arch/powerpc/mapfile.csv
-> index a534ff6db14b..f4908af7ad66 100644
-> --- a/tools/perf/pmu-events/arch/powerpc/mapfile.csv
-> +++ b/tools/perf/pmu-events/arch/powerpc/mapfile.csv
-> @@ -13,6 +13,6 @@
->   #
->
->   # Power8 entries
-> -004[bcd][[:xdigit:]]{4},1,power8,core
-> -004e[[:xdigit:]]{4},1,power9,core
-> -0080[[:xdigit:]]{4},1,power10,core
-> +0x004[bcd][[:xdigit:]]{4},1,power8,core
-> +0x004e[[:xdigit:]]{4},1,power9,core
-> +0x0080[[:xdigit:]]{4},1,power10,core
---------------xuGAkCJgd4qHhE7vX0DJgOuW
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+The 3 SIBYTE dependencies can be replaced by SIBYTE_SB1xxx_SOC.
 
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <pre>On 09/10/23 10:30 am, Athira Rajeev wrote:</pre>
-    <blockquote type="cite"
-      cite="mid:20231009050052.64935-1-atrajeev@linux.vnet.ibm.com">
-      <pre class="moz-quote-pre" wrap="">Simple expression parser test fails in powerpc as below:
+>         select APERTURE_HELPERS if (DRM || FB || VFIO_PCI_CORE)
+>         default y
+>         help
 
-    4: Simple expression parser
-    test child forked, pid 170385
-    Using CPUID 004e2102
-    division by zero
-    syntax error
-    syntax error
-    FAILED tests/expr.c:65 parse test failed
-    test child finished with -1
-    Simple expression parser: FAILED!
+Gr{oetje,eeting}s,
 
-This is observed after commit:
-'commit 9d5da30e4ae9 ("perf jevents: Add a new expression builtin strcmp_cpuid_str()")'
+                        Geert
 
-With this commit, a new expression builtin strcmp_cpuid_str
-got added. This function takes an 'ID' type value, which is
-a string. So expression parse for strcmp_cpuid_str expects
-const char * as cpuid value type. In case of powerpc, CPU IDs
-are numbers. Hence it doesn't get interpreted correctly by
-bison parser. Example in case of power9, cpuid string returns
-as: 004e2102
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
 
-cpuid of string type is expected in two cases:
-1. char *get_cpuid_str(struct perf_pmu *pmu __maybe_unused);
-
-   Testcase "tests/expr.c" uses "perf_pmu__getcpuid" which calls
-   get_cpuid_str to get the cpuid string.
-
-2. cpuid field in  :struct pmu_events_map
-
-   struct pmu_events_map {
-           const char *arch;
-	   const char *cpuid;
-
-   Here cpuid field is used in "perf_pmu__find_events_table"
-   function as "strcmp_cpuid_str(map-&gt;cpuid, cpuid)". The
-   value for cpuid field is picked from mapfile.csv.
-
-Fix the mapfile.csv and get_cpuid_str function to prefix
-cpuid with 0x so that it gets correctly interpreted by
-the bison parser
-
-Signed-off-by: Athira Rajeev <a class="moz-txt-link-rfc2396E" href="mailto:atrajeev@linux.vnet.ibm.com">&lt;atrajeev@linux.vnet.ibm.com&gt;</a></pre>
-    </blockquote>
-    <pre>Tested the patch on Power10 machine, now its correctly able to interpret cpuid
-value and perf Simple expression parser test passed.
-
-# ./perf test -v 7
-  7: Simple expression parser                                        :
---- start ---
-test child forked, pid 87922
-Using CPUID 0x00800200
-division by zero
-syntax error
-test child finished with 0
----- end ----
-Simple expression parser: Ok
-
-Tested-by: Disha Goel <a class="moz-txt-link-rfc2396E" href="mailto:disgoel@linux.ibm.com">&lt;disgoel@linux.ibm.com&gt;</a>
-</pre>
-    <blockquote type="cite"
-      cite="mid:20231009050052.64935-1-atrajeev@linux.vnet.ibm.com">
-      <pre class="moz-quote-pre" wrap="">
----
- tools/perf/arch/powerpc/util/header.c          | 2 +-
- tools/perf/pmu-events/arch/powerpc/mapfile.csv | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/tools/perf/arch/powerpc/util/header.c b/tools/perf/arch/powerpc/util/header.c
-index c8d0dc775e5d..6b00efd53638 100644
---- a/tools/perf/arch/powerpc/util/header.c
-+++ b/tools/perf/arch/powerpc/util/header.c
-@@ -34,7 +34,7 @@ get_cpuid_str(struct perf_pmu *pmu __maybe_unused)
- {
- 	char *bufp;
-
--	if (asprintf(&amp;bufp, "%.8lx", mfspr(SPRN_PVR)) &lt; 0)
-+	if (asprintf(&amp;bufp, "0x%.8lx", mfspr(SPRN_PVR)) &lt; 0)
- 		bufp = NULL;
-
- 	return bufp;
-diff --git a/tools/perf/pmu-events/arch/powerpc/mapfile.csv b/tools/perf/pmu-events/arch/powerpc/mapfile.csv
-index a534ff6db14b..f4908af7ad66 100644
---- a/tools/perf/pmu-events/arch/powerpc/mapfile.csv
-+++ b/tools/perf/pmu-events/arch/powerpc/mapfile.csv
-@@ -13,6 +13,6 @@
- #
-
- # Power8 entries
--004[bcd][[:xdigit:]]{4},1,power8,core
--004e[[:xdigit:]]{4},1,power9,core
--0080[[:xdigit:]]{4},1,power10,core
-+0x004[bcd][[:xdigit:]]{4},1,power8,core
-+0x004e[[:xdigit:]]{4},1,power9,core
-+0x0080[[:xdigit:]]{4},1,power10,core
-</pre>
-    </blockquote>
-  </body>
-</html>
-
---------------xuGAkCJgd4qHhE7vX0DJgOuW--
-
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
