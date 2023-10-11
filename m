@@ -1,40 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD6377C4AAF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Oct 2023 08:33:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D21B7C4AB0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Oct 2023 08:34:35 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=Sb5kWRhd;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=oy3q07tM;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S52zC4CrSz3cm9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Oct 2023 17:33:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S53090bPCz3vYJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Oct 2023 17:34:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=Sb5kWRhd;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=oy3q07tM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.196; helo=relay4-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::224; helo=relay4-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S52Zs0QJ0z3vXh
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Oct 2023 17:16:04 +1100 (AEDT)
-Received: by mail.gandi.net (Postfix) with ESMTPA id 2B83EE0006;
-	Wed, 11 Oct 2023 06:15:59 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S52Zw5tCWz3vb9
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Oct 2023 17:16:08 +1100 (AEDT)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 97453E000D;
+	Wed, 11 Oct 2023 06:16:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1697004962;
+	t=1697004966;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6uqdKgSiDG4ViV4ixZAwBWMC5+BSFyshQvmKaykUU3o=;
-	b=Sb5kWRhdrMdx6c/yrMU4qm7ULONV1JIbfayHW8gjnzPo/lhKz2p1Q4ixhNk6SDLr4ZNmM6
-	xjrfM0wFLuBWW5n+c6fVLz0z4cdBzIHlAt52RIj+bXWlFbXdu3uHEHQcz8UC03pV8EA39W
-	DspDqwbHsJo587Z+ohGyfSWPwBaMXLbqDRKkhsY8G2eGiJsY+z1CUQ4hAkyIShnqS5LkBA
-	Gm+Bh/ueM+MAZZL2qgV8cszTugpxQBzZjgl0TlWsU3a2DMhDZSdEGP6a/2Rj7OaCHr2FOp
-	+EbyUFRhWCXlDWI30K77SF/kIn98siI2Xfd2dRn3CSb1uoSNGINEgSPgDD238A==
+	bh=y3si6n+8C/3nGddG/bex4gaYwAJkDU16eps4QpP35QQ=;
+	b=oy3q07tMkbPmektydjh66Us2GNOb/sQbWWgVFy3UWlMhFAubaEpkrMq+qazlxMhFf9nQFt
+	HsXlpjtkSJsFaZYojDudGLURi2kzEPESUVLCfGHrvmyxwJuYuXlEMTB55ii2uL3nTddCF/
+	Uj+Ud6EdDSv5dIIJAO3HzFMxRFFwEHBH5Y+GKVJ1ITgHB8mBybWTsl8pM0rAllD+zrYhRx
+	uYKIKgOzhBRoCf2CesD7uPyAM/eXHLmT3b6sZIf346PJZCHn/LfeNBp4Ty0ePPKW3wStu6
+	AlIEBDD9jII868mVOwmK5usPfaf3ocknToV7hSvmG7nf1SqvaCCVMByspRR6DA==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Herve Codina <herve.codina@bootlin.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -59,9 +59,9 @@ To: Herve Codina <herve.codina@bootlin.com>,
 	Nicolin Chen <nicoleotsuka@gmail.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v8 21/30] soc: fsl: cpm1: qmc: Remove timeslots handling from setup_chan()
-Date: Wed, 11 Oct 2023 08:14:25 +0200
-Message-ID: <20231011061437.64213-22-herve.codina@bootlin.com>
+Subject: [PATCH v8 22/30] soc: fsl: cpm1: qmc: Introduce functions to change timeslots at runtime
+Date: Wed, 11 Oct 2023 08:14:26 +0200
+Message-ID: <20231011061437.64213-23-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231011061437.64213-1-herve.codina@bootlin.com>
 References: <20231011061437.64213-1-herve.codina@bootlin.com>
@@ -83,63 +83,104 @@ Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, Thomas Petazzoni <t
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Timeslots setting is done at channel start() and stop().
-There is no more need to do that during setup_chan().
+Introduce qmc_chan_{get,set}_ts_info() function to allow timeslots
+modification at runtime.
 
-Simply remove timeslot setting from setup_chan().
+The modification is provided using qmc_chan_set_ts_info() and will be
+applied on next qmc_chan_start().
+qmc_chan_set_ts_info() must be called with the channel rx and/or tx
+stopped.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- drivers/soc/fsl/qe/qmc.c | 28 ----------------------------
- 1 file changed, 28 deletions(-)
+ drivers/soc/fsl/qe/qmc.c | 51 ++++++++++++++++++++++++++++++++++++++++
+ include/soc/fsl/qe/qmc.h | 10 ++++++++
+ 2 files changed, 61 insertions(+)
 
 diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
-index 185e6e87a83f..b63b54ec0a3a 100644
+index b63b54ec0a3a..6e22b96b4e7a 100644
 --- a/drivers/soc/fsl/qe/qmc.c
 +++ b/drivers/soc/fsl/qe/qmc.c
-@@ -723,30 +723,6 @@ static int qmc_chan_setup_tsa_rx(struct qmc_chan *chan, bool enable)
- 	return qmc_chan_setup_tsa_32rx(chan, &info, enable);
+@@ -290,6 +290,57 @@ int qmc_chan_get_info(struct qmc_chan *chan, struct qmc_chan_info *info)
  }
+ EXPORT_SYMBOL(qmc_chan_get_info);
  
--static int qmc_chan_setup_tsa(struct qmc_chan *chan, bool enable)
--{
--	struct tsa_serial_info info;
--	int ret;
--
--	/* Retrieve info from the TSA related serial */
--	ret = tsa_serial_get_info(chan->qmc->tsa_serial, &info);
--	if (ret)
--		return ret;
--
--	/*
--	 * Setup one common 64 entries table or two 32 entries (one for Tx
--	 * and one for Tx) according to assigned TS numbers.
--	 */
--	if (chan->qmc->is_tsa_64rxtx)
--		return qmc_chan_setup_tsa_64rxtx(chan, &info, enable);
--
--	ret = qmc_chan_setup_tsa_32rx(chan, &info, enable);
--	if (ret)
--		return ret;
--
--	return qmc_chan_setup_tsa_32tx(chan, &info, enable);
--}
--
- static int qmc_chan_command(struct qmc_chan *chan, u8 qmc_opcode)
++int qmc_chan_get_ts_info(struct qmc_chan *chan, struct qmc_chan_ts_info *ts_info)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&chan->ts_lock, flags);
++
++	ts_info->rx_ts_mask_avail = chan->rx_ts_mask_avail;
++	ts_info->tx_ts_mask_avail = chan->tx_ts_mask_avail;
++	ts_info->rx_ts_mask = chan->rx_ts_mask;
++	ts_info->tx_ts_mask = chan->tx_ts_mask;
++
++	spin_unlock_irqrestore(&chan->ts_lock, flags);
++
++	return 0;
++}
++EXPORT_SYMBOL(qmc_chan_get_ts_info);
++
++int qmc_chan_set_ts_info(struct qmc_chan *chan, const struct qmc_chan_ts_info *ts_info)
++{
++	unsigned long flags;
++	int ret;
++
++	/* Only a subset of available timeslots is allowed */
++	if ((ts_info->rx_ts_mask & chan->rx_ts_mask_avail) != ts_info->rx_ts_mask)
++		return -EINVAL;
++	if ((ts_info->tx_ts_mask & chan->tx_ts_mask_avail) != ts_info->tx_ts_mask)
++		return -EINVAL;
++
++	/* In case of common rx/tx table, rx/tx masks must be identical */
++	if (chan->qmc->is_tsa_64rxtx) {
++		if (ts_info->rx_ts_mask != ts_info->tx_ts_mask)
++			return -EINVAL;
++	}
++
++	spin_lock_irqsave(&chan->ts_lock, flags);
++
++	if ((chan->tx_ts_mask != ts_info->tx_ts_mask && !chan->is_tx_stopped) ||
++	    (chan->rx_ts_mask != ts_info->rx_ts_mask && !chan->is_rx_stopped)) {
++		dev_err(chan->qmc->dev, "Channel rx and/or tx not stopped\n");
++		ret = -EBUSY;
++	} else {
++		chan->tx_ts_mask = ts_info->tx_ts_mask;
++		chan->rx_ts_mask = ts_info->rx_ts_mask;
++		ret = 0;
++	}
++	spin_unlock_irqrestore(&chan->ts_lock, flags);
++
++	return ret;
++}
++EXPORT_SYMBOL(qmc_chan_set_ts_info);
++
+ int qmc_chan_set_param(struct qmc_chan *chan, const struct qmc_chan_param *param)
  {
- 	return cpm_command(chan->id << 2, (qmc_opcode << 4) | 0x0E);
-@@ -1323,10 +1299,6 @@ static int qmc_setup_chan(struct qmc *qmc, struct qmc_chan *chan)
+ 	if (param->mode != chan->mode)
+diff --git a/include/soc/fsl/qe/qmc.h b/include/soc/fsl/qe/qmc.h
+index 166484bb4294..2a333fc1ea81 100644
+--- a/include/soc/fsl/qe/qmc.h
++++ b/include/soc/fsl/qe/qmc.h
+@@ -40,6 +40,16 @@ struct qmc_chan_info {
  
- 	chan->qmc = qmc;
+ int qmc_chan_get_info(struct qmc_chan *chan, struct qmc_chan_info *info);
  
--	ret = qmc_chan_setup_tsa(chan, true);
--	if (ret)
--		return ret;
--
- 	/* Set channel specific parameter base address */
- 	chan->s_param = qmc->dpram + (chan->id * 64);
- 	/* 16 bd per channel (8 rx and 8 tx) */
++struct qmc_chan_ts_info {
++	u64 rx_ts_mask_avail;
++	u64 tx_ts_mask_avail;
++	u64 rx_ts_mask;
++	u64 tx_ts_mask;
++};
++
++int qmc_chan_get_ts_info(struct qmc_chan *chan, struct qmc_chan_ts_info *ts_info);
++int qmc_chan_set_ts_info(struct qmc_chan *chan, const struct qmc_chan_ts_info *ts_info);
++
+ struct qmc_chan_param {
+ 	enum qmc_mode mode;
+ 	union {
 -- 
 2.41.0
 
