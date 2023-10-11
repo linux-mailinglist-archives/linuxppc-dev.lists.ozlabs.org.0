@@ -2,69 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40FF27C4AD2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Oct 2023 08:42:25 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=I7SdvZWA;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E29B7C4AD8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Oct 2023 08:42:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S539C19LFz3wL7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Oct 2023 17:42:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S539n23WPz3wXs
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Oct 2023 17:42:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=I7SdvZWA;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=apatel@ventanamicro.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S52fl1rVvz3vdb
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Oct 2023 17:19:26 +1100 (AEDT)
-Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-69af8a42066so3969122b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Oct 2023 23:19:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1697005164; x=1697609964; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zcqMB30naFRgYdHZVjh4rWtjXZPaceEDVeZe+D6ZGQM=;
-        b=I7SdvZWA9EPcERjTj9B6wKD+Gx8SdoiYmwBFWxQClojHSHQpy9MseJ396aeIU5X28P
-         LoZ8gNmHFhuawB8AIQP4HphcpvqBb/UN8swzcXWkrKvKo2O1vlZOqq0QuevwE1YHHD+n
-         dHcsurx1+t6JivLTvsWdRjWzZzG6V2pSLMyVa18cN5ODZ48YSfWx9fL7uQ4wzdrWIv+4
-         CFJFMQagavp6oJFDDwQpab0KJnSXEli8UFLRGo3+dbpVOkDxO4qxAutCv8mljwldHaCX
-         Tw2De+GY+omfeonCxOzgIGnh+oR8OG534DoDhLelohofS3YIycqUX2TxGQUyk6b5mMk1
-         43fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697005164; x=1697609964;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zcqMB30naFRgYdHZVjh4rWtjXZPaceEDVeZe+D6ZGQM=;
-        b=OQSQVnxR982Mrfh2a6zD4AA7Wr/Lgs32DVckmM5HfPBnIapvfT1mwh+vwqn9TXbW+W
-         iaoi3EEDGiPVZ3A8EZ2Nsd9CPix/+2Tj4DX+bm3DUwFdfKZ82HfHtk6DdhattrQ0BRa/
-         EqmM2AQrkqFewvithnRWjSSZyU4f/ivMty64VlUW0mCagwpJZLBiYbQCOZbVS5CFb4/Q
-         a70gRj7QHUFHU0+pZJqIm1P8KJjnYdkhGbeY/egqha3VYX475mdfLHPM660NCxQb9KYp
-         gMQPheZJfU60ztKo/QEjaq+Vmt2VyxTRZI5+n+2Mj2O+tTzrdSwkH1mGhdZk+6KzAsiI
-         e+bA==
-X-Gm-Message-State: AOJu0YxtVzYTn3yGaog21qVKrr6roI2NriAzt9cXah5uZKKjeYoHLUEX
-	YwGsliw9LwpMfuXHyidtHelMIDbh6S6I4291nu8M6g==
-X-Google-Smtp-Source: AGHT+IH0dVQdsDAFTukx58Mm4npJdNbm0bLcgPLvVKj0AVOxI4yYVZT6FxUGUblbjBF7BjO/DvhKeANQ/axsKvXGtw8=
-X-Received: by 2002:a05:6a20:4305:b0:15e:2d9f:cae0 with SMTP id
- h5-20020a056a20430500b0015e2d9fcae0mr20933619pzk.10.1697005164547; Tue, 10
- Oct 2023 23:19:24 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S52qr5sK5z3vkp
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Oct 2023 17:27:20 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4S52qk5Ql9z9v8R;
+	Wed, 11 Oct 2023 08:27:14 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id ORNncKpYHXHZ; Wed, 11 Oct 2023 08:27:14 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4S52qk4hHrz9v83;
+	Wed, 11 Oct 2023 08:27:14 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 9D7738B76C;
+	Wed, 11 Oct 2023 08:27:14 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id giHIOhD3Tu93; Wed, 11 Oct 2023 08:27:14 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.108])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 74C958B764;
+	Wed, 11 Oct 2023 08:27:14 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 39B6RDx8534969
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 11 Oct 2023 08:27:13 +0200
+Received: (from chleroy@localhost)
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 39B6RCAP534965;
+	Wed, 11 Oct 2023 08:27:12 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+Subject: [PATCH] powerpc: Remove cpm_dp...() macros
+Date: Wed, 11 Oct 2023 08:27:03 +0200
+Message-ID: <3aaa40bf706afeab8fe9a74b8437704a4269a6a2.1697005615.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20231010170503.657189-1-apatel@ventanamicro.com>
- <20231010170503.657189-3-apatel@ventanamicro.com> <2023101013-overfeed-online-7f69@gregkh>
-In-Reply-To: <2023101013-overfeed-online-7f69@gregkh>
-From: Anup Patel <apatel@ventanamicro.com>
-Date: Wed, 11 Oct 2023 11:49:14 +0530
-Message-ID: <CAK9=C2WbW_WvoU59Ba9VrKf5GbbXmMOhB2jsiAp0a=SJYh3d7w@mail.gmail.com>
-Subject: Re: [PATCH 2/6] RISC-V: KVM: Change the SBI specification version to v2.0
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1697005622; l=2661; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=yCO4UmIxtNPBDL6E0JoDseZ7f6g6qatCxE2FsOihxP8=; b=aqzOxYUjq+urtoMQQIXAvhNSEXAGfXqBH+GwpUIs5E9pk6zgxjuLg9/bJWkXy2QwH567oQSTE AxA9R4pMjTSAbiUBIMJo3RTA3PVfnYtur7Bk1GghGrFjdLyAyTMAw6c
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,65 +65,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-serial@vger.kernel.org, kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Atish Patra <atishp@atishpatra.org>, linux-kernel@vger.kernel.org, Conor Dooley <conor@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>, Paolo Bonzini <pbonzini@redhat.com>, linux-riscv@lists.infradead.org, Jiri Slaby <jirislaby@kernel.org>, Andrew Jones <ajones@ventanamicro.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Oct 10, 2023 at 10:43=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Tue, Oct 10, 2023 at 10:34:59PM +0530, Anup Patel wrote:
-> > We will be implementing SBI DBCN extension for KVM RISC-V so let
-> > us change the KVM RISC-V SBI specification version to v2.0.
-> >
-> > Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-> > ---
-> >  arch/riscv/include/asm/kvm_vcpu_sbi.h | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/arch/riscv/include/asm/kvm_vcpu_sbi.h b/arch/riscv/include=
-/asm/kvm_vcpu_sbi.h
-> > index cdcf0ff07be7..8d6d4dce8a5e 100644
-> > --- a/arch/riscv/include/asm/kvm_vcpu_sbi.h
-> > +++ b/arch/riscv/include/asm/kvm_vcpu_sbi.h
-> > @@ -11,7 +11,7 @@
-> >
-> >  #define KVM_SBI_IMPID 3
-> >
-> > -#define KVM_SBI_VERSION_MAJOR 1
-> > +#define KVM_SBI_VERSION_MAJOR 2
->
-> What does this number mean?  Who checks it?  Why do you have to keep
-> incrementing it?
+Since commit d3c511ac1d72 ("powerpc/cpm: Remove
+!CONFIG_PPC_CPM_NEW_BINDING code") cpm_dp...() macros have no added
+value anymore.
 
-This number is the SBI specification version implemented by KVM RISC-V
-for the Guest kernel.
+Last user of those macros were fixed by commit 5e6cb39a256d ("net:
+fs_enet: Use cpm_muram_xxx() functions instead of cpm_dpxxx() macros")
 
-The original sbi_console_putchar() and sbi_console_getchar() are legacy
-functions (aka SBI v0.1) which were introduced a few years back along
-with the Linux RISC-V port.
+Remove them.
 
-The latest SBI v2.0 specification (which is now frozen) introduces a new
-SBI debug console extension which replaces legacy sbi_console_putchar()
-and sbi_console_getchar() functions with better alternatives.
-(Refer, https://github.com/riscv-non-isa/riscv-sbi-doc/releases/download/co=
-mmit-fe4562532a9cc57e5743b6466946c5e5c98c73ca/riscv-sbi.pdf)
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/include/asm/cpm1.h | 5 -----
+ arch/powerpc/include/asm/cpm2.h | 4 ----
+ drivers/soc/fsl/qe/qe_common.c  | 4 ++--
+ 3 files changed, 2 insertions(+), 11 deletions(-)
 
-This series adds SBI debug console implementation in KVM RISC-V
-so the SBI specification version advertised by KVM RISC-V must also be
-upgraded to v2.0.
+diff --git a/arch/powerpc/include/asm/cpm1.h b/arch/powerpc/include/asm/cpm1.h
+index 3bdd74739cb8..e3c6969853ef 100644
+--- a/arch/powerpc/include/asm/cpm1.h
++++ b/arch/powerpc/include/asm/cpm1.h
+@@ -49,11 +49,6 @@
+  */
+ extern cpm8xx_t __iomem *cpmp; /* Pointer to comm processor */
+ 
+-#define cpm_dpalloc cpm_muram_alloc
+-#define cpm_dpfree cpm_muram_free
+-#define cpm_dpram_addr cpm_muram_addr
+-#define cpm_dpram_phys cpm_muram_dma
+-
+ extern void cpm_setbrg(uint brg, uint rate);
+ 
+ extern void __init cpm_load_patch(cpm8xx_t *cp);
+diff --git a/arch/powerpc/include/asm/cpm2.h b/arch/powerpc/include/asm/cpm2.h
+index 249d43cc6427..a22acc36eb9b 100644
+--- a/arch/powerpc/include/asm/cpm2.h
++++ b/arch/powerpc/include/asm/cpm2.h
+@@ -87,10 +87,6 @@
+  */
+ extern cpm_cpm2_t __iomem *cpmp; /* Pointer to comm processor */
+ 
+-#define cpm_dpalloc cpm_muram_alloc
+-#define cpm_dpfree cpm_muram_free
+-#define cpm_dpram_addr cpm_muram_addr
+-
+ extern void cpm2_reset(void);
+ 
+ /* Baud rate generators.
+diff --git a/drivers/soc/fsl/qe/qe_common.c b/drivers/soc/fsl/qe/qe_common.c
+index 9729ce86db59..a877347d37d3 100644
+--- a/drivers/soc/fsl/qe/qe_common.c
++++ b/drivers/soc/fsl/qe/qe_common.c
+@@ -141,7 +141,7 @@ static s32 cpm_muram_alloc_common(unsigned long size,
+  *
+  * This function returns a non-negative offset into the muram area, or
+  * a negative errno on failure.
+- * Use cpm_dpram_addr() to get the virtual address of the area.
++ * Use cpm_muram_addr() to get the virtual address of the area.
+  * Use cpm_muram_free() to free the allocation.
+  */
+ s32 cpm_muram_alloc(unsigned long size, unsigned long align)
+@@ -193,7 +193,7 @@ EXPORT_SYMBOL(cpm_muram_free);
+  * @size: number of bytes to allocate
+  * This function returns @offset if the area was available, a negative
+  * errno otherwise.
+- * Use cpm_dpram_addr() to get the virtual address of the area.
++ * Use cpm_muram_addr() to get the virtual address of the area.
+  * Use cpm_muram_free() to free the allocation.
+  */
+ s32 cpm_muram_alloc_fixed(unsigned long offset, unsigned long size)
+-- 
+2.41.0
 
-Regarding who checks its, the SBI client drivers in the Linux kernel
-will check SBI specification version implemented by higher privilege
-mode (M-mode firmware or HS-mode hypervisor) before probing
-the SBI extension. For example, the HVC SBI driver (PATCH5)
-will ensure SBI spec version to be at least v2.0 before probing
-SBI debug console extension.
-
->
-> thanks,
->
-> greg k-h
-
-Regards,
-Anup
