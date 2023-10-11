@@ -1,73 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A267C5837
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Oct 2023 17:39:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1AFE7C5E85
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Oct 2023 22:37:57 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=FZbkECB4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=O4gmR1o2;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S5H4k5ftWz3cSQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Oct 2023 02:39:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S5PjH5zpsz3cQr
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Oct 2023 07:37:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=FZbkECB4;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=O4gmR1o2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2607:f8b0:4864:20::1034; helo=mail-pj1-x1034.google.com; envelope-from=apatel@ventanamicro.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S5H3k6g7wz2yTy
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Oct 2023 02:38:25 +1100 (AEDT)
-Received: by mail-pj1-x1034.google.com with SMTP id 98e67ed59e1d1-27d1373f631so226845a91.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Oct 2023 08:38:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1697038701; x=1697643501; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1bZpkRgovz51AKO2Ok87+Y9u7MeLQt0Mw3B5ANlnfec=;
-        b=FZbkECB43kQBOtSrBZpfKMaItOHhyC/ELW4PITAdxju+0XRJ2YyvagqeA8trhAz3sq
-         UfzDQAUBxsfZiCvVWgcRvpmOXr7FAWpNuddyHS1u4ASDK4zxeH69oOr75so2SAYwcTwY
-         swropsK7FhBRvPy3uua+6hy4lK+QTA4LfN4nL4argb8p6Be8TM4OO6m4CZmZ5rNmnGcn
-         stBhdUROnzXPxBY3yq/rgh9V2rYRcFEwO8LL6mwdNhiLy3DO08++Z9j8w1sYv40s+li4
-         j00Bbhol9MUir5XxA5rKvl60xlo8MxIi02AvY/xFC7rCTvQIaG6smb45VTda/xTmdhjV
-         DluA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697038701; x=1697643501;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1bZpkRgovz51AKO2Ok87+Y9u7MeLQt0Mw3B5ANlnfec=;
-        b=d4DbLZ7Fpy8rtbZsXMinrKKqLYEEpeh95duHbN+Ai6W/ff0Zo2vwJCjhIZ2tuRbhM6
-         jKY+1oBlZDmUjZbj2NCk+FEbLwmpjaTopXS5PHK1sLd6zfsSaWLSAoAUrjzz6RyMg5LF
-         vJ1a865gVH6rdq39+M5dsJE7tNGwoEQL9cXg0T9taZ6RhlcKZ8iCwwaXvBKrIsvDRZbs
-         oNV5P5pEtir3ViRcLB2HbHazCN47tzeoRwSUvIsGgWB2GMTW0npn+G4sbzyw+oU17MlC
-         33SWVBHjyRZT05Cwhk64nXtxI5bQaxvS/VsY6QIhOB9zfXiAzGeB1P02JZLlEwTcKSaw
-         tdSA==
-X-Gm-Message-State: AOJu0YwzZMv0+d+EXMQDSJhYA4jrFJnnvokxwrqttv3+E/ZzqnmjHrQQ
-	/NbXf5B9SGF9SR3XR26F5QKAN1BGC8ZWwdF5PY5k+5JFoIhSaASEyTc=
-X-Google-Smtp-Source: AGHT+IH+Duhf61q+4YQ+h+trrczoreLWiVAuNX7LPf/svKzSeewv2TIyrBxClNtHOHej4LGq2AeV1O2tRvRwJwp6muo=
-X-Received: by 2002:a17:90a:5383:b0:27c:ea4c:d8c5 with SMTP id
- y3-20020a17090a538300b0027cea4cd8c5mr5192162pjh.19.1697038701054; Wed, 11 Oct
- 2023 08:38:21 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S5PhP30WBz2yhR
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Oct 2023 07:37:08 +1100 (AEDT)
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39BKYvpe026402;
+	Wed, 11 Oct 2023 20:37:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=HGjE+EN9y7gPzNLYaOCJJeyw3D7Ja6OV8FLqTslzsOc=;
+ b=O4gmR1o2zvhfb059DgPUGc2T1KRbzb8wFNS5SZyPRJNaoRtCBaqD3svHyL7Jl7hzVGSf
+ QzJSnz024npfHx3GoySHI0vT7dPotZxMPcUt4KKwhpCH6qzDzFVtYfQAjgdz0ck8i+TA
+ FkYDsZqRSdnfnblar4AgDu9/AK8NLZfU1KgF32cs4ewgeAeBoaicj9/nOFPWF5enQt2w
+ V+Y3FypJ/RFOSwDy5vGShCh7UJ5+lKW5eTRKoR9kBx1ETZXORSag5ekAd43NvMMvyYMI
+ ZaWN01PFVcEArKO4DU90zhiAk5KiqtijC03Q2O8ZQ5aw9Z77TW9H9alEf2uO0/I6ftO0 Dg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tp2ga8ugy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 11 Oct 2023 20:37:01 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39BK9mbQ016720;
+	Wed, 11 Oct 2023 20:37:01 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tp2ga8ufs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 11 Oct 2023 20:37:01 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39BI5iPp028633;
+	Wed, 11 Oct 2023 20:37:00 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tkj1yb1ek-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 11 Oct 2023 20:37:00 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39BKaxhh19727060
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 11 Oct 2023 20:36:59 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 295665805C;
+	Wed, 11 Oct 2023 20:36:59 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 142265805A;
+	Wed, 11 Oct 2023 20:36:59 +0000 (GMT)
+Received: from localhost (unknown [9.41.178.242])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 11 Oct 2023 20:36:59 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/pseries/vas: Migration suspend waits for no
+ in-progress open windows
+In-Reply-To: <ebeaa0f9-5d0e-317f-b0bc-f5212f6c8934@linux.ibm.com>
+References: <20230927031558.759396-1-haren@linux.ibm.com>
+ <8734yjwoax.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+ <ebeaa0f9-5d0e-317f-b0bc-f5212f6c8934@linux.ibm.com>
+Date: Wed, 11 Oct 2023 15:36:58 -0500
+Message-ID: <87ttqwvqtx.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
 MIME-Version: 1.0
-References: <20231010170503.657189-1-apatel@ventanamicro.com>
- <20231010170503.657189-3-apatel@ventanamicro.com> <2023101013-overfeed-online-7f69@gregkh>
- <CAK9=C2WbW_WvoU59Ba9VrKf5GbbXmMOhB2jsiAp0a=SJYh3d7w@mail.gmail.com>
- <2023101107-endorse-large-ef50@gregkh> <CAK9=C2XYQ0U9CbuCg6cTf79sSsy+0BxF5mBE0R+E3s9iZFzEWw@mail.gmail.com>
- <2023101148-anatomy-mantis-a0f5@gregkh>
-In-Reply-To: <2023101148-anatomy-mantis-a0f5@gregkh>
-From: Anup Patel <apatel@ventanamicro.com>
-Date: Wed, 11 Oct 2023 21:08:10 +0530
-Message-ID: <CAK9=C2XpfQc2eoBmrd5ZicR+HO34-2BZdvrNu_CQ5qC47WKBVw@mail.gmail.com>
-Subject: Re: [PATCH 2/6] RISC-V: KVM: Change the SBI specification version to v2.0
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 38a0xkDu95cMdwcB4mzHD0OFeS606mbg
+X-Proofpoint-GUID: EsgKDLNkBLfmcT5zAtC8l288yjm4qkF2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-11_15,2023-10-11_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
+ mlxlogscore=971 bulkscore=0 impostorscore=0 phishscore=0 malwarescore=0
+ spamscore=0 priorityscore=1501 mlxscore=0 adultscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
+ definitions=main-2310110180
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,106 +97,144 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-serial@vger.kernel.org, kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Atish Patra <atishp@atishpatra.org>, linux-kernel@vger.kernel.org, Conor Dooley <conor@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>, Paolo Bonzini <pbonzini@redhat.com>, linux-riscv@lists.infradead.org, Jiri Slaby <jirislaby@kernel.org>, Andrew Jones <ajones@ventanamicro.com>
+Cc: npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 11, 2023 at 8:56=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+Haren Myneni <haren@linux.ibm.com> writes:
+>> Haren Myneni <haren@linux.ibm.com> writes:
+>>> The hypervisor returns migration failure if all VAS windows are not
+>>> closed. During pre-migration stage, vas_migration_handler() sets
+>>> migration_in_progress flag and closes all windows from the list.
+>>> The allocate VAS window routine checks the migration flag, setup
+>>> the window and then add it to the list. So there is possibility of
+>>> the migration handler missing the window that is still in the
+>>> process of setup.
+>>>
+>>> t1: Allocate and open VAS	t2: Migration event
+>>>      window
+>>>
+>>> lock vas_pseries_mutex
+>>> If migration_in_progress set
+>>>    unlock vas_pseries_mutex
+>>>    return
+>>> open window HCALL
+>>> unlock vas_pseries_mutex
+>>> Modify window HCALL		lock vas_pseries_mutex
+>>> setup window			migration_in_progress=true
+>>> 				Closes all windows from
+>>> 				the list
+>>> 				unlock vas_pseries_mutex
+>>> lock vas_pseries_mutex		return
+>>> if nr_closed_windows == 0
+>>>    // No DLPAR CPU or migration
+>>>    add to the list
+>>>    unlock vas_pseries_mutex
+>>>    return
+>>> unlock vas_pseries_mutex
+>>> Close VAS window
+>>> // due to DLPAR CPU or migration
+>>> return -EBUSY
+>> 
+>> Could the the path t1 takes simply hold the mutex for the duration of
+>> its execution instead of dropping and reacquiring it in the middle?
+>> 
+>> Here's the relevant code from vas_allocate_window():
+>> 
+>> 	mutex_lock(&vas_pseries_mutex);
+>> 	if (migration_in_progress)
+>> 		rc = -EBUSY;
+>> 	else
+>> 		rc = allocate_setup_window(txwin, (u64 *)&domain[0],
+>> 				   cop_feat_caps->win_type);
+>> 	mutex_unlock(&vas_pseries_mutex);
+>> 	if (rc)
+>> 		goto out;
+>> 
+>> 	rc = h_modify_vas_window(txwin);
+>> 	if (!rc)
+>> 		rc = get_vas_user_win_ref(&txwin->vas_win.task_ref);
+>> 	if (rc)
+>> 		goto out_free;
+>> 
+>> 	txwin->win_type = cop_feat_caps->win_type;
+>> 	mutex_lock(&vas_pseries_mutex);
+>> 	if (!caps->nr_close_wins) {
+>> 		list_add(&txwin->win_list, &caps->list);
+>> 		caps->nr_open_windows++;
+>> 		mutex_unlock(&vas_pseries_mutex);
+>> 		vas_user_win_add_mm_context(&txwin->vas_win.task_ref);
+>> 		return &txwin->vas_win;
+>> 	}
+>> 	mutex_unlock(&vas_pseries_mutex);
+>> 
+>> Is there something about h_modify_vas_window() or get_vas_user_win_ref()
+>> that requires temporarily dropping the lock?
+>> 
 >
-> On Wed, Oct 11, 2023 at 04:32:22PM +0530, Anup Patel wrote:
-> > On Wed, Oct 11, 2023 at 12:57=E2=80=AFPM Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > On Wed, Oct 11, 2023 at 11:49:14AM +0530, Anup Patel wrote:
-> > > > On Tue, Oct 10, 2023 at 10:43=E2=80=AFPM Greg Kroah-Hartman
-> > > > <gregkh@linuxfoundation.org> wrote:
-> > > > >
-> > > > > On Tue, Oct 10, 2023 at 10:34:59PM +0530, Anup Patel wrote:
-> > > > > > We will be implementing SBI DBCN extension for KVM RISC-V so le=
-t
-> > > > > > us change the KVM RISC-V SBI specification version to v2.0.
-> > > > > >
-> > > > > > Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-> > > > > > ---
-> > > > > >  arch/riscv/include/asm/kvm_vcpu_sbi.h | 2 +-
-> > > > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > > >
-> > > > > > diff --git a/arch/riscv/include/asm/kvm_vcpu_sbi.h b/arch/riscv=
-/include/asm/kvm_vcpu_sbi.h
-> > > > > > index cdcf0ff07be7..8d6d4dce8a5e 100644
-> > > > > > --- a/arch/riscv/include/asm/kvm_vcpu_sbi.h
-> > > > > > +++ b/arch/riscv/include/asm/kvm_vcpu_sbi.h
-> > > > > > @@ -11,7 +11,7 @@
-> > > > > >
-> > > > > >  #define KVM_SBI_IMPID 3
-> > > > > >
-> > > > > > -#define KVM_SBI_VERSION_MAJOR 1
-> > > > > > +#define KVM_SBI_VERSION_MAJOR 2
-> > > > >
-> > > > > What does this number mean?  Who checks it?  Why do you have to k=
-eep
-> > > > > incrementing it?
-> > > >
-> > > > This number is the SBI specification version implemented by KVM RIS=
-C-V
-> > > > for the Guest kernel.
-> > > >
-> > > > The original sbi_console_putchar() and sbi_console_getchar() are le=
-gacy
-> > > > functions (aka SBI v0.1) which were introduced a few years back alo=
-ng
-> > > > with the Linux RISC-V port.
-> > > >
-> > > > The latest SBI v2.0 specification (which is now frozen) introduces =
-a new
-> > > > SBI debug console extension which replaces legacy sbi_console_putch=
-ar()
-> > > > and sbi_console_getchar() functions with better alternatives.
-> > > > (Refer, https://github.com/riscv-non-isa/riscv-sbi-doc/releases/dow=
-nload/commit-fe4562532a9cc57e5743b6466946c5e5c98c73ca/riscv-sbi.pdf)
-> > > >
-> > > > This series adds SBI debug console implementation in KVM RISC-V
-> > > > so the SBI specification version advertised by KVM RISC-V must also=
- be
-> > > > upgraded to v2.0.
-> > > >
-> > > > Regarding who checks its, the SBI client drivers in the Linux kerne=
-l
-> > > > will check SBI specification version implemented by higher privileg=
-e
-> > > > mode (M-mode firmware or HS-mode hypervisor) before probing
-> > > > the SBI extension. For example, the HVC SBI driver (PATCH5)
-> > > > will ensure SBI spec version to be at least v2.0 before probing
-> > > > SBI debug console extension.
-> > >
-> > > Is this api backwards compatible, or did you just break existing
-> > > userspace that only expects version 1.0?
-> >
-> > The legacy sbi_console_putchar() and sbi_console_getchar()
-> > functions have not changed so it does not break existing
-> > user-space.
-> >
-> > The new SBI DBCN functions to be implemented by KVM
-> > user space are:
-> > sbi_debug_console_write()
-> > sbi_debug_console_read()
-> > sbi_debug_console_write_byte()
+> Thanks Nathan for your comments.
 >
-> And where exactly is that code for us to review that this is tested?
-
-The KVM selftests for KVM RISC-V are under development. Eventually,
-we will have dedicated KVM selftests for the SBI extensions implemented
-by KVM RISC-V.
-
-Until then we have KVMTOOL implementation for SBI DBCN, which is
-available in riscv_sbi_dbcn_v1 branch at:
-https://github.com/avpatel/kvmtool.git
-
+> vas_pseries_mutex protects window ID and IRQ allocation between alloc 
+> and free window HCALLs, and window list. Generally try to not using 
+> mutex in HCALLs, but we need this mutex with these HCALLs.
 >
-> thanks,
->
-> greg k-h
+> We can add h_modify_vas_window() or get_vas_user_win_ref() with in the 
+> mutex context, but not needed.
 
-Regards,
-Anup
+Hmm. I contend that it would fix your bug in a simpler way that
+eliminates the race instead of coping with it by adding more state and
+complicating the locking model. With your change, readers of the
+migration_in_progress flag check it under the mutex, but the writer
+updates it outside of the mutex, which seems strange and unlikely to be
+correct.
+
+> Also free HCALL can take longer depends 
+> on pending NX requests since the hypervisor waits for all requests to be 
+> completed before closing the window.
+>
+> Applications can issue window open / free calls at the same time which 
+> can experience mutex contention especially on the large system where 
+> 100's of credits are available. Another example: The migration event can 
+> wait longer (or timeout) to get this mutex if many threads issue 
+> open/free window calls. Hence added h_modify_vas_window() (modify HCALL) 
+> or get_vas_user_win_ref() outside of mutex.
+
+OK. I believe you're referring to this code, which can run under the lock:
+
+static long hcall_return_busy_check(long rc)
+{
+	/* Check if we are stalled for some time */
+	if (H_IS_LONG_BUSY(rc)) {
+		msleep(get_longbusy_msecs(rc));
+		rc = H_BUSY;
+	} else if (rc == H_BUSY) {
+		cond_resched();
+	}
+
+	return rc;
+}
+
+...
+
+static int h_deallocate_vas_window(u64 winid)
+{
+	long rc;
+
+	do {
+		rc = plpar_hcall_norets(H_DEALLOCATE_VAS_WINDOW, winid);
+
+		rc = hcall_return_busy_check(rc);
+	} while (rc == H_BUSY);
+
+...
+
+[ with similar loops in the window allocate and modify functions ]
+
+If get_longbusy_msecs() typically returns low values (<20), then you
+should prefer usleep_range() over msleep() to avoid over-sleeping. For
+example, msleep(1) can schedule away for much longer than 1ms -- often
+more like 20ms.
+
+If mutex hold times have been a problem in this code, then it's probably
+worth improving the way it handles the busy/retry statuses under the
+lock.
