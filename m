@@ -1,71 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CB177C50C7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Oct 2023 13:03:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEFE57C5152
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Oct 2023 13:15:42 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=mwMiGi4s;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iURDGTYk;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S58yM5xsHz3vZy
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Oct 2023 22:03:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S59DX5cXHz3dCt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Oct 2023 22:15:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=mwMiGi4s;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iURDGTYk;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2607:f8b0:4864:20::e2e; helo=mail-vs1-xe2e.google.com; envelope-from=apatel@ventanamicro.com; receiver=lists.ozlabs.org)
-Received: from mail-vs1-xe2e.google.com (mail-vs1-xe2e.google.com [IPv6:2607:f8b0:4864:20::e2e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S58xW3DG9z3c5T
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Oct 2023 22:02:37 +1100 (AEDT)
-Received: by mail-vs1-xe2e.google.com with SMTP id ada2fe7eead31-4526c6579afso550163137.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Oct 2023 04:02:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1697022154; x=1697626954; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Xm0CdxGnQbe0GlEx3+GHVomKZQHiVEeERNIEs1qllzo=;
-        b=mwMiGi4s8Bk9S6UB2UVTsWhp/VHdcgXuuupFgmk1mXLKgfIppWsZZWhWTcIiC9yOz/
-         dARLuz4wBpYKWaorDJ4k21tbAzYBcuwy0ifzdiJK+mPOkNVTxzcSrHH0lC735TfA458B
-         gp+F8hLuX7lPatF4LZ17h+ibAAGbqHbpED/Bjnp6THknA0LocPkT62nxyHTHVY2oqQ/3
-         DggSIKIWUAunsppQgJqa613dCjV2xXtuMKwckDBgNZi2gLlrmBFWNiuoXm+o2NbErohw
-         CM+bHPXpDEhE5pHGeXwFyiVQCJi/HeflH3cwGKRYpWmZZvbroBKTW61Sjs5tY3IgrCic
-         aV5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697022154; x=1697626954;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Xm0CdxGnQbe0GlEx3+GHVomKZQHiVEeERNIEs1qllzo=;
-        b=NsOOuZRecWdV2z2mWBRtQ2lR7RPtdUDYLZlvp0/0QsWB0tSI1zxOs5P6cwLC00RyTu
-         JI6KyFCjlKqKfGAU+o3i5yXu0U5oxhZ+BA2YHrueEPx9BEP3EpZApmxqXFZN6pEd/3x5
-         bfTvYqanJp15k9dlr/jiRDKXgmQv+mbdGeE2iiCJ5TEsYZkFKcGoCealHfEecqLmo8CY
-         h8+EZ7EYAsgZ3i93qLbrKRNUM2EDJNT/9NRHn5S0wYZ7EdwAfMuDici7k3bstafOzTWS
-         feCSgYPQpr8YqI5YqnRS3A+M577dQ1jixp8nPkIwTrqIXrEN9tfcVDnMatcoB/DzT7ry
-         YDCA==
-X-Gm-Message-State: AOJu0YyAkPo+BF/CTRT8Xjx52AyjP3IIvm8AFlXypnZQe83oCL3IkwHm
-	UecFlzHLkYdPDxQicsqMMuIfjxYAGPJxMVfsR+3OcQ==
-X-Google-Smtp-Source: AGHT+IFIHtzjwJekUc0/aKAwYGhSo8Q1f+C4Kna6UDSuc6EpwK7D5p52+dKgEnHoF5qIkm5zUTFf99ptwfMujMMVIFQ=
-X-Received: by 2002:a05:6102:27c8:b0:452:79da:94a with SMTP id
- t8-20020a05610227c800b0045279da094amr8993764vsu.4.1697022154194; Wed, 11 Oct
- 2023 04:02:34 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231010170503.657189-1-apatel@ventanamicro.com>
- <20231010170503.657189-3-apatel@ventanamicro.com> <2023101013-overfeed-online-7f69@gregkh>
- <CAK9=C2WbW_WvoU59Ba9VrKf5GbbXmMOhB2jsiAp0a=SJYh3d7w@mail.gmail.com> <2023101107-endorse-large-ef50@gregkh>
-In-Reply-To: <2023101107-endorse-large-ef50@gregkh>
-From: Anup Patel <apatel@ventanamicro.com>
-Date: Wed, 11 Oct 2023 16:32:22 +0530
-Message-ID: <CAK9=C2XYQ0U9CbuCg6cTf79sSsy+0BxF5mBE0R+E3s9iZFzEWw@mail.gmail.com>
-Subject: Re: [PATCH 2/6] RISC-V: KVM: Change the SBI specification version to v2.0
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S59Cb5rRgz3cC7
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Oct 2023 22:14:48 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697022892; x=1728558892;
+  h=date:from:to:cc:subject:message-id;
+  bh=pckjEAKt8OfLoBpH/6PXIWWi7vHUXP8L5rpRJfkSyPU=;
+  b=iURDGTYkCxFPsxqvVV4UT0B3hVd6qppF02kvTUWxc56QnO/LnGguoOBY
+   ofVF5ooxOLmpEy5WIUHyeGpdslvLgBkt1lX6q7XnkgDsoO55aDtfCsIQB
+   CN0h1hLKZHa0VuheSpsJKJznGR1qEQj9U4zqTLzVoW0W6U8NBv9t//DFQ
+   pdql9hz5bvjQxQdocIv/hdXTsysPocrprDyQyW7QLH3uoDWyheeeQcDqw
+   kG9i8czsdLowEoPJuu8ByUJRogEfUssPjvCVJFpZf/Qo1gnJgmNE07otL
+   c0Zl62F13Yir2/eFK8BCGjM5HAAHffzStQeVxuBShZC3babBudnewEN2L
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="363996476"
+X-IronPort-AV: E=Sophos;i="6.03,214,1694761200"; 
+   d="scan'208";a="363996476"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2023 04:14:45 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="824120258"
+X-IronPort-AV: E=Sophos;i="6.03,214,1694761200"; 
+   d="scan'208";a="824120258"
+Received: from lkp-server02.sh.intel.com (HELO f64821696465) ([10.239.97.151])
+  by fmsmga004.fm.intel.com with ESMTP; 11 Oct 2023 04:14:44 -0700
+Received: from kbuild by f64821696465 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qqXAn-000295-2S;
+	Wed, 11 Oct 2023 11:14:41 +0000
+Date: Wed, 11 Oct 2023 19:13:54 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 8e8a12ecbc86700b5e1a3596ce2b3c43dafad336
+Message-ID: <202310111951.dR31WMPl-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,83 +66,223 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-serial@vger.kernel.org, kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Atish Patra <atishp@atishpatra.org>, linux-kernel@vger.kernel.org, Conor Dooley <conor@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>, Paolo Bonzini <pbonzini@redhat.com>, linux-riscv@lists.infradead.org, Jiri Slaby <jirislaby@kernel.org>, Andrew Jones <ajones@ventanamicro.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 11, 2023 at 12:57=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Wed, Oct 11, 2023 at 11:49:14AM +0530, Anup Patel wrote:
-> > On Tue, Oct 10, 2023 at 10:43=E2=80=AFPM Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > On Tue, Oct 10, 2023 at 10:34:59PM +0530, Anup Patel wrote:
-> > > > We will be implementing SBI DBCN extension for KVM RISC-V so let
-> > > > us change the KVM RISC-V SBI specification version to v2.0.
-> > > >
-> > > > Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-> > > > ---
-> > > >  arch/riscv/include/asm/kvm_vcpu_sbi.h | 2 +-
-> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/arch/riscv/include/asm/kvm_vcpu_sbi.h b/arch/riscv/inc=
-lude/asm/kvm_vcpu_sbi.h
-> > > > index cdcf0ff07be7..8d6d4dce8a5e 100644
-> > > > --- a/arch/riscv/include/asm/kvm_vcpu_sbi.h
-> > > > +++ b/arch/riscv/include/asm/kvm_vcpu_sbi.h
-> > > > @@ -11,7 +11,7 @@
-> > > >
-> > > >  #define KVM_SBI_IMPID 3
-> > > >
-> > > > -#define KVM_SBI_VERSION_MAJOR 1
-> > > > +#define KVM_SBI_VERSION_MAJOR 2
-> > >
-> > > What does this number mean?  Who checks it?  Why do you have to keep
-> > > incrementing it?
-> >
-> > This number is the SBI specification version implemented by KVM RISC-V
-> > for the Guest kernel.
-> >
-> > The original sbi_console_putchar() and sbi_console_getchar() are legacy
-> > functions (aka SBI v0.1) which were introduced a few years back along
-> > with the Linux RISC-V port.
-> >
-> > The latest SBI v2.0 specification (which is now frozen) introduces a ne=
-w
-> > SBI debug console extension which replaces legacy sbi_console_putchar()
-> > and sbi_console_getchar() functions with better alternatives.
-> > (Refer, https://github.com/riscv-non-isa/riscv-sbi-doc/releases/downloa=
-d/commit-fe4562532a9cc57e5743b6466946c5e5c98c73ca/riscv-sbi.pdf)
-> >
-> > This series adds SBI debug console implementation in KVM RISC-V
-> > so the SBI specification version advertised by KVM RISC-V must also be
-> > upgraded to v2.0.
-> >
-> > Regarding who checks its, the SBI client drivers in the Linux kernel
-> > will check SBI specification version implemented by higher privilege
-> > mode (M-mode firmware or HS-mode hypervisor) before probing
-> > the SBI extension. For example, the HVC SBI driver (PATCH5)
-> > will ensure SBI spec version to be at least v2.0 before probing
-> > SBI debug console extension.
->
-> Is this api backwards compatible, or did you just break existing
-> userspace that only expects version 1.0?
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: 8e8a12ecbc86700b5e1a3596ce2b3c43dafad336  powerpc/85xx: Fix math emulation exception
 
-The legacy sbi_console_putchar() and sbi_console_getchar()
-functions have not changed so it does not break existing
-user-space.
+elapsed time: 1371m
 
-The new SBI DBCN functions to be implemented by KVM
-user space are:
-sbi_debug_console_write()
-sbi_debug_console_read()
-sbi_debug_console_write_byte()
+configs tested: 199
+configs skipped: 2
 
->
-> thanks,
->
-> greg k-h
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Regards,
-Anup
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20231010   gcc  
+arc                   randconfig-001-20231011   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                           h3600_defconfig   gcc  
+arm                   randconfig-001-20231011   gcc  
+arm                        vexpress_defconfig   clang
+arm64                            allmodconfig   gcc  
+arm64                             allnoconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20231010   gcc  
+i386         buildonly-randconfig-001-20231011   gcc  
+i386         buildonly-randconfig-002-20231010   gcc  
+i386         buildonly-randconfig-002-20231011   gcc  
+i386         buildonly-randconfig-003-20231010   gcc  
+i386         buildonly-randconfig-003-20231011   gcc  
+i386         buildonly-randconfig-004-20231010   gcc  
+i386         buildonly-randconfig-004-20231011   gcc  
+i386         buildonly-randconfig-005-20231010   gcc  
+i386         buildonly-randconfig-005-20231011   gcc  
+i386         buildonly-randconfig-006-20231010   gcc  
+i386         buildonly-randconfig-006-20231011   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20231010   gcc  
+i386                  randconfig-001-20231011   gcc  
+i386                  randconfig-002-20231010   gcc  
+i386                  randconfig-002-20231011   gcc  
+i386                  randconfig-003-20231010   gcc  
+i386                  randconfig-003-20231011   gcc  
+i386                  randconfig-004-20231010   gcc  
+i386                  randconfig-004-20231011   gcc  
+i386                  randconfig-005-20231010   gcc  
+i386                  randconfig-005-20231011   gcc  
+i386                  randconfig-006-20231010   gcc  
+i386                  randconfig-006-20231011   gcc  
+i386                  randconfig-011-20231010   gcc  
+i386                  randconfig-011-20231011   gcc  
+i386                  randconfig-012-20231010   gcc  
+i386                  randconfig-012-20231011   gcc  
+i386                  randconfig-013-20231010   gcc  
+i386                  randconfig-013-20231011   gcc  
+i386                  randconfig-014-20231010   gcc  
+i386                  randconfig-014-20231011   gcc  
+i386                  randconfig-015-20231010   gcc  
+i386                  randconfig-015-20231011   gcc  
+i386                  randconfig-016-20231010   gcc  
+i386                  randconfig-016-20231011   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20231010   gcc  
+loongarch             randconfig-001-20231011   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   clang
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                  cavium_octeon_defconfig   clang
+mips                          malta_defconfig   clang
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   gcc  
+powerpc                   lite5200b_defconfig   clang
+powerpc                 mpc832x_rdb_defconfig   clang
+powerpc                 mpc834x_itx_defconfig   gcc  
+powerpc                      pcm030_defconfig   gcc  
+powerpc                    socrates_defconfig   clang
+powerpc                     tqm8555_defconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                 randconfig-001-20231010   gcc  
+riscv                 randconfig-001-20231011   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20231010   gcc  
+s390                  randconfig-001-20231011   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                         microdev_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                 randconfig-001-20231011   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-001-20231010   gcc  
+x86_64       buildonly-randconfig-001-20231011   gcc  
+x86_64       buildonly-randconfig-002-20231010   gcc  
+x86_64       buildonly-randconfig-002-20231011   gcc  
+x86_64       buildonly-randconfig-003-20231010   gcc  
+x86_64       buildonly-randconfig-003-20231011   gcc  
+x86_64       buildonly-randconfig-004-20231010   gcc  
+x86_64       buildonly-randconfig-004-20231011   gcc  
+x86_64       buildonly-randconfig-005-20231010   gcc  
+x86_64       buildonly-randconfig-005-20231011   gcc  
+x86_64       buildonly-randconfig-006-20231010   gcc  
+x86_64       buildonly-randconfig-006-20231011   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64                randconfig-001-20231010   gcc  
+x86_64                randconfig-001-20231011   gcc  
+x86_64                randconfig-002-20231010   gcc  
+x86_64                randconfig-002-20231011   gcc  
+x86_64                randconfig-003-20231010   gcc  
+x86_64                randconfig-003-20231011   gcc  
+x86_64                randconfig-004-20231010   gcc  
+x86_64                randconfig-004-20231011   gcc  
+x86_64                randconfig-005-20231010   gcc  
+x86_64                randconfig-005-20231011   gcc  
+x86_64                randconfig-006-20231010   gcc  
+x86_64                randconfig-006-20231011   gcc  
+x86_64                randconfig-011-20231010   gcc  
+x86_64                randconfig-011-20231011   gcc  
+x86_64                randconfig-012-20231010   gcc  
+x86_64                randconfig-012-20231011   gcc  
+x86_64                randconfig-013-20231010   gcc  
+x86_64                randconfig-013-20231011   gcc  
+x86_64                randconfig-014-20231010   gcc  
+x86_64                randconfig-014-20231011   gcc  
+x86_64                randconfig-015-20231010   gcc  
+x86_64                randconfig-015-20231011   gcc  
+x86_64                randconfig-016-20231010   gcc  
+x86_64                randconfig-016-20231011   gcc  
+x86_64                randconfig-071-20231010   gcc  
+x86_64                randconfig-071-20231011   gcc  
+x86_64                randconfig-072-20231010   gcc  
+x86_64                randconfig-072-20231011   gcc  
+x86_64                randconfig-073-20231010   gcc  
+x86_64                randconfig-073-20231011   gcc  
+x86_64                randconfig-074-20231010   gcc  
+x86_64                randconfig-074-20231011   gcc  
+x86_64                randconfig-075-20231010   gcc  
+x86_64                randconfig-075-20231011   gcc  
+x86_64                randconfig-076-20231010   gcc  
+x86_64                randconfig-076-20231011   gcc  
+x86_64                           rhel-8.3-bpf   gcc  
+x86_64                          rhel-8.3-func   gcc  
+x86_64                    rhel-8.3-kselftests   gcc  
+x86_64                         rhel-8.3-kunit   gcc  
+x86_64                           rhel-8.3-ltp   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                            allnoconfig   gcc  
+xtensa                           allyesconfig   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
