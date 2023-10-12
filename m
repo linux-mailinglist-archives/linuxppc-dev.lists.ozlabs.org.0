@@ -2,60 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1367A7C71BF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Oct 2023 17:42:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CBD87C71D1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Oct 2023 17:49:04 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=YuZoPYWl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FmmjQA9Y;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S5v5t6Jv5z3cnS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Oct 2023 02:42:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S5vFV1lHtz3vYJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Oct 2023 02:49:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=YuZoPYWl;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FmmjQA9Y;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sipsolutions.net (client-ip=2a01:4f8:242:246e::2; helo=sipsolutions.net; envelope-from=johannes@sipsolutions.net; receiver=lists.ozlabs.org)
-X-Greylist: delayed 766 seconds by postgrey-1.37 at boromir; Fri, 13 Oct 2023 02:41:40 AEDT
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S5v503cdjz3c7q
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Oct 2023 02:41:40 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=1AUZ4kSi2AEEEv3nuAS4HldMWbbuyLi811omII/FRFQ=;
-	t=1697125300; x=1698334900; b=YuZoPYWlancrBYpzye4ruAsyQGeOH4GoO2oG7CHFtEd3aEc
-	LAgofW3RHAL1SvXvf+7vcfw9CKPXpwxRA+beZMs52+DngQmln/31BUt+N9EgRCrBquuMEx/HqU/2E
-	wv9fSNlMiTQcY6Kg4I9GeS8ggAYgFL5zzScCvNsDjXwupHDH2/8AwbeAArC3DfHPYQ6IsZENaYBQv
-	Vnk7dAO425mUCieptYLQFdr9Ox2CDERyRHjJmrEG3BWRqqWZq09KTt1LCHYOKqJUZHiZav/tH5M1J
-	BFXBt4bJ0H63PMwcENiHuaubkkEGvaTAEvtzTZhtO+j487f16VyUZlcCVIfQZPxA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97-RC1)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1qqxoW-00000003T2i-3J0o;
-	Thu, 12 Oct 2023 17:41:29 +0200
-Message-ID: <d336126d58e12e8e67078c8142a524c667cc5639.camel@sipsolutions.net>
-Subject: Re: [PATCH] [RFC] wireless: move obsolete drivers to staging
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 12 Oct 2023 17:41:27 +0200
-In-Reply-To: <CAMuHMdX3F9rvD3Fzbc1dwm7Vm73VW1x5ETbxkk-jJm3Bpr5i+A@mail.gmail.com>
-References: <20231010155444.858483-1-arnd@kernel.org>
-	 <2023101051-unmasked-cleaver-79b3@gregkh> <87y1g94szz.fsf@kernel.org>
-	 <2023101139-pyromania-game-2237@gregkh> <87r0m1fwg9.fsf@kernel.org>
-	 <20231011080955.1beeb010@kernel.org> <87sf6g2hc8.fsf@kernel.org>
-	 <63e57ef8-c9f2-489a-8df8-51dcffd437c6@app.fastmail.com>
-	 <b1c87f71abef5aba6b39893a417466bf9f65c2d5.camel@sipsolutions.net>
-	 <CAMuHMdX3F9rvD3Fzbc1dwm7Vm73VW1x5ETbxkk-jJm3Bpr5i+A@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S5vDZ51STz3cRJ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Oct 2023 02:48:14 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39CFlDki016590;
+	Thu, 12 Oct 2023 15:47:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=U5ir2vs0drNHQeLDviI0cv61McQFqlJaNnUqsSxMXaw=;
+ b=FmmjQA9YVW3cuNeYJJK7fVYY1evtryu2+lFSn9Ufyzg0RltI7YetGovvbJmeG0zU2ZIB
+ 3BXJFLATMXk+UBRBPCP1Hk/ZYv+zVS5b4uY/DZ/0aFHZY0F9MdoJ/QHfICIJ1HP645Mz
+ cghydCkQm1NZsoP/RDxyjXPY1bmnKPnvLxFKDqbsfgl38ePl950iB3P2ZLkxs6pct4e4
+ oDPfOUg/0AXAB/Axtqtw9Ww+O4Uvo+wKZHUwHw84bICI9INOeweKLSXHP4sBw/ULGd2Q
+ ZfXdxluxu7QCh5XY92M0vxCQ/eFeVjFm7rqQqQcxnHDuNy/ur/Ikz/CUVhiD7ClFf+6R fQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tpkrdg12f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Oct 2023 15:47:46 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39CFlKtr017185;
+	Thu, 12 Oct 2023 15:47:46 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tpkrdg121-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Oct 2023 15:47:46 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39CDtcAG023000;
+	Thu, 12 Oct 2023 15:47:45 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tkmc1yxv4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Oct 2023 15:47:45 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39CFlgC745023956
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 12 Oct 2023 15:47:42 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9847920043;
+	Thu, 12 Oct 2023 15:47:42 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B530E20040;
+	Thu, 12 Oct 2023 15:47:40 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.59.173])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 12 Oct 2023 15:47:40 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.700.6\))
+Subject: Re: [PATCH 1/3] perf tests test_arm_coresight: Fix the shellcheck
+ warning in latest test_arm_coresight.sh
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <5d79ca77e4ca4f6c895e26384655563f@AcuMS.aculab.com>
+Date: Thu, 12 Oct 2023 21:17:28 +0530
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
-MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Message-Id: <F265857D-0D37-4878-908C-D20732F212F9@linux.vnet.ibm.com>
+References: <20230929041133.95355-1-atrajeev@linux.vnet.ibm.com>
+ <20230929041133.95355-2-atrajeev@linux.vnet.ibm.com>
+ <3b7b34e74bdb4b05b6b21edd81af59d0@AcuMS.aculab.com>
+ <5d79ca77e4ca4f6c895e26384655563f@AcuMS.aculab.com>
+To: David Laight <David.Laight@ACULAB.COM>
+X-Mailer: Apple Mail (2.3731.700.6)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: RovymA2gl0qwa6nsdBmdBMZBHkRN0SfY
+X-Proofpoint-ORIG-GUID: Kqf1swBl_Rra9hI05bdZ2RsP5yJPI95P
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-12_05,2023-10-12_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ priorityscore=1501 malwarescore=0 bulkscore=0 impostorscore=0 phishscore=0
+ clxscore=1011 mlxscore=0 mlxlogscore=999 adultscore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310120131
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,36 +102,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@kernel.org>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Arnd Bergmann <arnd@arndb.de>, Geoff Levand <geoff@infradead.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Kalle Valo <kvalo@kernel.org>, linux-staging@lists.linux.dev, linux-wireless@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, linux-arm-kernel@lists.infradead.org, Pavel Machek <pavel@ucw.cz>, Jakub Kicinski <kuba@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "David S . Miller" <davem@davemloft.net>, linux-kernel@vger.kernel.org, Larry Finger <Larry.Finger@lwfinger.net>
+Cc: "irogers@google.com" <irogers@google.com>, "maddy@linux.ibm.com" <maddy@linux.ibm.com>, "kjain@linux.ibm.com" <kjain@linux.ibm.com>, "adrian.hunter@intel.com" <adrian.hunter@intel.com>, "acme@kernel.org" <acme@kernel.org>, "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>, "jolsa@kernel.org" <jolsa@kernel.org>, "namhyung@kernel.org" <namhyung@kernel.org>, "disgoel@linux.vnet.ibm.com" <disgoel@linux.vnet.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2023-10-12 at 17:39 +0200, Geert Uytterhoeven wrote:
-> Hi Johannes,
+
+
+> On 05-Oct-2023, at 9:15 PM, David Laight <David.Laight@ACULAB.COM> =
+wrote:
 >=20
-> On Thu, Oct 12, 2023 at 5:28=E2=80=AFPM Johannes Berg <johannes@sipsoluti=
-ons.net> wrote:
-> > On Thu, 2023-10-12 at 16:36 +0200, Arnd Bergmann wrote:
-> > >=20
-> > > ps3-gelic-wireless
-> >=20
-> > Didn't Sony disable Linux on PS3 eventually? Though maybe someone still
-> > has some devices with old software.
+> From: David Laight
+>> Sent: 05 October 2023 11:16
+> ...
+>>> - cs_etm_path=3D$(find  /sys/bus/event_source/devices/cs_etm/ -name =
+cpu* -print -quit)
+>>> + cs_etm_path=3D$(find  /sys/bus/event_source/devices/cs_etm/ -name =
+'cpu*' -print -quit)
+>>=20
+>> Isn't the intention to get the shell to expand "cpu* ?
+>> So quoting it completely breaks the script.
 >=20
-> If you didn't update the firmware, you could keep on using Linux.
+> Complete brain-fade :-(
+
+Hi David,
+
+Yeah, quoting it also will expand
+
+Thanks
+Athira
 >=20
-> And people may have found a vulnerability in more recent firmware
-> versions that allows them to run custom software.
+> -
+> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, =
+MK1 1PT, UK
+> Registration No: 1397386 (Wales)
+>=20
 
-Yeah, fair.
-
-> I don't know, it's been +10 years ago I touched a PS3 ;-)
-
-I never had one :-)
-
-But seriously - is it worth to try to keep a wireless driver for it if
-we don't even know anyone using a PS3 at all?
-
-But maybe we'll find someone :-)
-
-johannes
