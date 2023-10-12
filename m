@@ -1,83 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C93E87C779A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Oct 2023 22:06:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C058F7C779C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Oct 2023 22:06:56 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=keFGcbc4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=k0QrG0/v;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S60y554hPz3vgs
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Oct 2023 07:06:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S60z24BpTz3vlD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Oct 2023 07:06:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=keFGcbc4;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=k0QrG0/v;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S60vN2h9nz3cC7
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Oct 2023 07:03:44 +1100 (AEDT)
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39CJjQDt004295;
-	Thu, 12 Oct 2023 20:03:22 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S60vP5Ygzz3cC7
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Oct 2023 07:03:45 +1100 (AEDT)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39CK2TBM018925;
+	Thu, 12 Oct 2023 20:03:25 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=wW5MxSXDsk1MN1figrJvd8th5T4i7SU4hrGNO0oZBjM=;
- b=keFGcbc4716p2pJTyQh/8WEahATv0CwH2uD8aIwjhupwfmQ2xt0FQ0WAZLw4t/wNQyS+
- ZZ2sTuVT0cKOt2t+9bE+mCQY3lNIru29gfekz1YhVZKtt0f91toP4Uaava0vTz/LqVLb
- uTTK8Trf8ZWFKJ9O7XnDM6MYsssqNlD4iH1BTbUBsVQd7MkTDJRwDa2MclVV96Xc//Lt
- 3oB/sMid0kyFKYhtZXac5S1HvxiGmuv/u9dvNVPxSIy+tRluO1Ggd/RfttNI6fAmMmPn
- Y2LdcjFhd7FZCiiChJrILnvnIXBRGmeCSfi933gUqq0ChjCo8WT/HjdLMyIJ9fLz2mta 5Q== 
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tpq828urg-1
+ bh=XBqZEBc0lHhrPgaItdCHyPytFDNoFTFIyL4WMwFL38M=;
+ b=k0QrG0/v5ee7BZGDboo6x1xwhgzQZwWMz+ll22F3F9e+2i60nT+N5QUM4YYNKVLO0kaz
+ jWUGctgnzTYoyUJlHhQHNtvurhyf1Kr/dLAYSG375hjLYDIjYRx/ySofUMOkvj5Tz7TV
+ CpfiJaxBBga4W5odq0UTYj8Peoo88Kn/xbXbYAIyERwwYb1Fcjm2Pf78XZxRejMmBWQD
+ G7pTVrXOGc6jUpeTgmX9V3xQqgW2RKbLIfQx9fFs+oek6VsGbFYAL1JRuAhXDLSrwmkz
+ ui9zSUz3xatRuUKY15VQIWPXQT0DhJAL66zbY2SvMOXavNO+ioansNXypf/fKuX3hqHG og== 
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tpqfxr0s4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Oct 2023 20:03:21 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39CJJovR024461;
-	Thu, 12 Oct 2023 20:03:21 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tkhnt2efm-1
+	Thu, 12 Oct 2023 20:03:25 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39CHwVDB000647;
+	Thu, 12 Oct 2023 20:03:23 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tkk5m1w23-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Oct 2023 20:03:20 +0000
+	Thu, 12 Oct 2023 20:03:23 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39CK3JA62818594
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39CK3L1n52691306
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 12 Oct 2023 20:03:19 GMT
+	Thu, 12 Oct 2023 20:03:21 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3202F20043;
+	by IMSVA (Postfix) with ESMTP id 8E42420043;
+	Thu, 12 Oct 2023 20:03:21 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 81AE420040;
 	Thu, 12 Oct 2023 20:03:19 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3216820040;
-	Thu, 12 Oct 2023 20:03:17 +0000 (GMT)
 Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.ibm.com.com (unknown [9.43.73.24])
 	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 12 Oct 2023 20:03:17 +0000 (GMT)
+	Thu, 12 Oct 2023 20:03:19 +0000 (GMT)
 From: Hari Bathini <hbathini@linux.ibm.com>
 To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org
-Subject: [PATCH v6 2/5] powerpc/bpf: implement bpf_arch_text_copy
-Date: Fri, 13 Oct 2023 01:33:07 +0530
-Message-ID: <20231012200310.235137-3-hbathini@linux.ibm.com>
+Subject: [PATCH v6 3/5] powerpc/bpf: implement bpf_arch_text_invalidate for bpf_prog_pack
+Date: Fri, 13 Oct 2023 01:33:08 +0530
+Message-ID: <20231012200310.235137-4-hbathini@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231012200310.235137-1-hbathini@linux.ibm.com>
 References: <20231012200310.235137-1-hbathini@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: nH9kPAcz-FVodhp0CilvmhTjeOyMWgMF
-X-Proofpoint-GUID: nH9kPAcz-FVodhp0CilvmhTjeOyMWgMF
+X-Proofpoint-GUID: YYi2CCBh1V_T-lziTgxrxalJ6xOxxPkW
+X-Proofpoint-ORIG-GUID: YYi2CCBh1V_T-lziTgxrxalJ6xOxxPkW
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-10-12_12,2023-10-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
- bulkscore=0 adultscore=0 clxscore=1015 suspectscore=0 phishscore=0
- malwarescore=0 priorityscore=1501 mlxlogscore=999 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310120165
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ suspectscore=0 lowpriorityscore=0 malwarescore=0 mlxlogscore=933
+ adultscore=0 spamscore=0 bulkscore=0 impostorscore=0 phishscore=0
+ clxscore=1015 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310120167
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,52 +93,37 @@ Cc: Song Liu <songliubraving@fb.com>, Daniel Borkmann <daniel@iogearbox.net>, Al
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-bpf_arch_text_copy is used to dump JITed binary to RX page, allowing
-multiple BPF programs to share the same page. Use the newly introduced
-patch_instructions() to implement it.
+Implement bpf_arch_text_invalidate and use it to fill unused part of
+the bpf_prog_pack with trap instructions when a BPF program is freed.
 
 Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
 Acked-by: Song Liu <song@kernel.org>
 ---
- arch/powerpc/net/bpf_jit_comp.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ arch/powerpc/net/bpf_jit_comp.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
 diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-index 37043dfc1add..c740eac8d584 100644
+index c740eac8d584..ecd7cffbbe28 100644
 --- a/arch/powerpc/net/bpf_jit_comp.c
 +++ b/arch/powerpc/net/bpf_jit_comp.c
-@@ -13,9 +13,13 @@
- #include <linux/netdevice.h>
- #include <linux/filter.h>
- #include <linux/if_vlan.h>
--#include <asm/kprobes.h>
-+#include <linux/kernel.h>
-+#include <linux/memory.h>
- #include <linux/bpf.h>
+@@ -292,3 +292,18 @@ void *bpf_arch_text_copy(void *dst, void *src, size_t len)
  
-+#include <asm/kprobes.h>
-+#include <asm/code-patching.h>
-+
- #include "bpf_jit.h"
- 
- static void bpf_jit_fill_ill_insns(void *area, unsigned int size)
-@@ -274,3 +278,17 @@ int bpf_add_extable_entry(struct bpf_prog *fp, u32 *image, int pass, struct code
- 	ctx->exentry_idx++;
- 	return 0;
+ 	return err ? ERR_PTR(err) : dst;
  }
 +
-+void *bpf_arch_text_copy(void *dst, void *src, size_t len)
++int bpf_arch_text_invalidate(void *dst, size_t len)
 +{
-+	int err;
++	u32 insn = BREAKPOINT_INSTRUCTION;
++	int ret;
 +
 +	if (WARN_ON_ONCE(core_kernel_text((unsigned long)dst)))
-+		return ERR_PTR(-EINVAL);
++		return -EINVAL;
 +
 +	mutex_lock(&text_mutex);
-+	err = patch_instructions(dst, src, len, false);
++	ret = patch_instructions(dst, &insn, len, true);
 +	mutex_unlock(&text_mutex);
 +
-+	return err ? ERR_PTR(err) : dst;
++	return ret;
 +}
 -- 
 2.41.0
