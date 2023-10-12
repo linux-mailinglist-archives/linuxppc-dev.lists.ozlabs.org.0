@@ -2,76 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 329107C6498
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Oct 2023 07:22:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA6F87C64A4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Oct 2023 07:37:18 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=gQOjdbWW;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mlrUtjXn;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S5dLz0cSHz3vx9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Oct 2023 16:22:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S5dgc59Dlz3ck2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Oct 2023 16:37:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=gQOjdbWW;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mlrUtjXn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=apatel@ventanamicro.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S5dC06HSvz3cSQ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Oct 2023 16:15:56 +1100 (AEDT)
-Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-692c02adeefso421785b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Oct 2023 22:15:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1697087754; x=1697692554; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OF/0DZOVOE1sZojsrN9hmq2DR3MNn3xhzg86O8Xb4xI=;
-        b=gQOjdbWWm7rr5rTpqnIxI37ywNlIfugdL3TQuZ32qNKWMYGUBkWAu+UYkODrcOAU5m
-         4TTcFUQL/h7gdLXKkAtRuGLTtv2zEEX25MRa4g9ifnNhcPXlBAFW0+1sdOV6RfGtbv6F
-         6Bnjxu1OhDUK0/L+N6Wce7zDVM9dp8YC3V0FX9N3CT6ywtLV3Sb1+PsPl6lQhouAWrPf
-         aJ6nBRmQbRWtup5CdohQo8Xo2NTxPfvOB/adyekIvGw8Fe/eLrbh52bZhxtAMjOc9Bd1
-         I3OCDPV3hFBJSajwIFAELdWlaTg3z2VBtPN1widiHQPbA+qy29qcWuztOqFrY27GUkwz
-         HePA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697087754; x=1697692554;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OF/0DZOVOE1sZojsrN9hmq2DR3MNn3xhzg86O8Xb4xI=;
-        b=RyXYor0B7ha+Gga4OiN6lYJcZHK6V52reRDCouPhYjqVzcgX/Z7ir6rALIJVcBnw5t
-         CHOidrqXOe0XgyS2xUl0DcirqmFzuHSrZvc254VIklOfGGBYio24JK9P+N27cFQWUnp1
-         O4gZvMC+0gP3Xqq6E7OGFrXSvQjPlx3Qd4ITyjQtIcsDzn/MdSDPlq701z+jEKdeOSFN
-         b+l/jE563x6pdV3TAxJgspWobqKXaq55VzjQSezimrdRABH40ku+481P5ZcRNjppnvhw
-         cER47JibdSFcCwBU94zIh2Sp8jgKFeJCT5199u8OYz33vj0R6DqwbeJPDjuwlvqoxcQC
-         IbSg==
-X-Gm-Message-State: AOJu0YxSNGAJMvvgfwjAz0M7KOfgydfX7M1asjQU+Qr2MsmvnVKPrc8I
-	codMKyz+Y2tFULd65fUbNoKzlw==
-X-Google-Smtp-Source: AGHT+IHHIH1Tdrtn/mSat4PHYLTk01ptLU1brEyLKx+dYtjl1X4EaH3wN0nwyAyQPO2cGFlvgUSgrQ==
-X-Received: by 2002:a05:6a20:918e:b0:162:edc2:4e9f with SMTP id v14-20020a056a20918e00b00162edc24e9fmr22994297pzd.62.1697087754489;
-        Wed, 11 Oct 2023 22:15:54 -0700 (PDT)
-Received: from anup-ubuntu-vm.localdomain ([106.51.83.242])
-        by smtp.gmail.com with ESMTPSA id s18-20020a17090330d200b001b9d95945afsm851309plc.155.2023.10.11.22.15.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Oct 2023 22:15:54 -0700 (PDT)
-From: Anup Patel <apatel@ventanamicro.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Atish Patra <atishp@atishpatra.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH v2 8/8] RISC-V: Enable SBI based earlycon support
-Date: Thu, 12 Oct 2023 10:45:09 +0530
-Message-Id: <20231012051509.738750-9-apatel@ventanamicro.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231012051509.738750-1-apatel@ventanamicro.com>
-References: <20231012051509.738750-1-apatel@ventanamicro.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S5dfk1FLwz2ygZ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Oct 2023 16:36:29 +1100 (AEDT)
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39C5Db2q021480;
+	Thu, 12 Oct 2023 05:36:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=zTTyFiLcXXGKvFzVglfAIx31wIMbASNF7keLhqF+43c=;
+ b=mlrUtjXnZPzbv/wZFrMotFPUzwwZuaaa8ABS1Gp/crkrQ6+vfJYxAeoNak8iolGDhVrf
+ hAskj+DjGjV9Mx4Z+trY7gqGNQVs4UEzEJKr8VicVu2xp/6HvPZLSMSMeZD18l4/NBvZ
+ BTAIGdQut3b04gu+hU8NL4uaf1fvt1nw9GUDRz9x0fRFaMjaiCc5xpUVolCQO1cixt2Y
+ 33YjRvnKqK6i0a7KDA3qPiU85r4PtwaUkugi5q18SdYxWhgeFSQsupFhPV0XwZVBcFyX
+ TuTP4gvSrntL+lU25TDV9/+YypFz/hMLDz88YDUVVdvaQSjB4TPfelZFj/c/7p17ztV5 qA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tpab4gpvq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Oct 2023 05:36:17 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39C5Mx7f018271;
+	Thu, 12 Oct 2023 05:36:17 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tpab4gpt3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Oct 2023 05:36:17 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39C4HuA8000693;
+	Thu, 12 Oct 2023 05:32:25 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tkk5kw6da-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Oct 2023 05:32:25 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39C5WM5X38863352
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 12 Oct 2023 05:32:22 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8F576200B7;
+	Thu, 12 Oct 2023 05:32:22 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3BE7F200B8;
+	Thu, 12 Oct 2023 05:32:21 +0000 (GMT)
+Received: from [9.203.106.137] (unknown [9.203.106.137])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 12 Oct 2023 05:32:21 +0000 (GMT)
+Message-ID: <fb374fcc-487b-cb6c-6aa6-76fb49eee99a@linux.ibm.com>
+Date: Thu, 12 Oct 2023 11:02:20 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCHv8 3/5] powerpc/setup: Handle the case when boot_cpuid
+ greater than nr_cpus
+Content-Language: en-US
+To: Pingfan Liu <piliu@redhat.com>
+References: <20231009113036.45988-1-piliu@redhat.com>
+ <20231009113036.45988-4-piliu@redhat.com>
+ <8216e3e3-8475-158f-dc79-1b5ba1032150@linux.ibm.com>
+ <ZSYQ9odHpQDWN5ca@piliu.users.ipa.redhat.com>
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <ZSYQ9odHpQDWN5ca@piliu.users.ipa.redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 15gWf4GiB0jZEvv5BJ-Hj4Vxbv_n-AmV
+X-Proofpoint-ORIG-GUID: y0ZbYGqCNdIRYEKCmNU9bTtJcOjWyHtt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-12_02,2023-10-11_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ lowpriorityscore=0 malwarescore=0 adultscore=0 spamscore=0 bulkscore=0
+ impostorscore=0 clxscore=1015 mlxscore=0 priorityscore=1501 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310120046
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,43 +103,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anup Patel <apatel@ventanamicro.com>, linux-serial@vger.kernel.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, Conor Dooley <conor@kernel.org>, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Andrew Jones <ajones@ventanamicro.com>
+Cc: Baoquan He <bhe@redhat.com>, kexec@lists.infradead.org, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Ming Lei <ming.lei@redhat.com>, Wen Xiong <wenxiong@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Let us enable SBI based earlycon support in defconfigs for both RV32
-and RV64 so that "earlycon=sbi" can be used again.
 
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
----
- arch/riscv/configs/defconfig      | 1 +
- arch/riscv/configs/rv32_defconfig | 1 +
- 2 files changed, 2 insertions(+)
 
-diff --git a/arch/riscv/configs/defconfig b/arch/riscv/configs/defconfig
-index ab86ec3b9eab..f82700da0056 100644
---- a/arch/riscv/configs/defconfig
-+++ b/arch/riscv/configs/defconfig
-@@ -132,6 +132,7 @@ CONFIG_SERIAL_8250_CONSOLE=y
- CONFIG_SERIAL_8250_DW=y
- CONFIG_SERIAL_OF_PLATFORM=y
- CONFIG_SERIAL_SH_SCI=y
-+CONFIG_SERIAL_EARLYCON_RISCV_SBI=y
- CONFIG_VIRTIO_CONSOLE=y
- CONFIG_HW_RANDOM=y
- CONFIG_HW_RANDOM_VIRTIO=y
-diff --git a/arch/riscv/configs/rv32_defconfig b/arch/riscv/configs/rv32_defconfig
-index 89b601e253a6..5721af39afd1 100644
---- a/arch/riscv/configs/rv32_defconfig
-+++ b/arch/riscv/configs/rv32_defconfig
-@@ -66,6 +66,7 @@ CONFIG_INPUT_MOUSEDEV=y
- CONFIG_SERIAL_8250=y
- CONFIG_SERIAL_8250_CONSOLE=y
- CONFIG_SERIAL_OF_PLATFORM=y
-+CONFIG_SERIAL_EARLYCON_RISCV_SBI=y
- CONFIG_VIRTIO_CONSOLE=y
- CONFIG_HW_RANDOM=y
- CONFIG_HW_RANDOM_VIRTIO=y
--- 
-2.34.1
+On 11/10/23 8:35 am, Pingfan Liu wrote:
+> On Tue, Oct 10, 2023 at 01:56:13PM +0530, Hari Bathini wrote:
+>>
+>>
+>> On 09/10/23 5:00 pm, Pingfan Liu wrote:
+>>> If the boot_cpuid is smaller than nr_cpus, it requires extra effort to
+>>> ensure the boot_cpu is in cpu_present_mask. This can be achieved by
+>>> reserving the last quota for the boot cpu.
+>>>
+>>> Note: the restriction on nr_cpus will be lifted with more effort in the
+>>> successive patches
+>>>
+>>> Signed-off-by: Pingfan Liu <piliu@redhat.com>
+>>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>>> Cc: Nicholas Piggin <npiggin@gmail.com>
+>>> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+>>> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+>>> Cc: Wen Xiong <wenxiong@linux.ibm.com>
+>>> Cc: Baoquan He <bhe@redhat.com>
+>>> Cc: Ming Lei <ming.lei@redhat.com>
+>>> Cc: kexec@lists.infradead.org
+>>> To: linuxppc-dev@lists.ozlabs.org
+>>> ---
+>>>    arch/powerpc/kernel/setup-common.c | 25 ++++++++++++++++++++++---
+>>>    1 file changed, 22 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+>>> index 81291e13dec0..f9ef0a2666b0 100644
+>>> --- a/arch/powerpc/kernel/setup-common.c
+>>> +++ b/arch/powerpc/kernel/setup-common.c
+>>> @@ -454,8 +454,8 @@ struct interrupt_server_node {
+>>>    void __init smp_setup_cpu_maps(void)
+>>>    {
+>>>    	struct device_node *dn;
+>>> -	int shift = 0, cpu = 0;
+>>> -	int j, nthreads = 1;
+>>> +	int terminate, shift = 0, cpu = 0;
+>>> +	int j, bt_thread = 0, nthreads = 1;
+>>>    	int len;
+>>>    	struct interrupt_server_node *intserv_node, *n;
+>>>    	struct list_head *bt_node, head;
+>>> @@ -518,6 +518,7 @@ void __init smp_setup_cpu_maps(void)
+>>>    			for (j = 0 ; j < nthreads; j++) {
+>>>    				if (be32_to_cpu(intserv[j]) == boot_cpu_hwid) {
+>>>    					bt_node = &intserv_node->node;
+>>> +					bt_thread = j;
+>>>    					found_boot_cpu = true;
+>>>    					/*
+>>>    					 * Record the round-shift between dt
+>>> @@ -537,11 +538,21 @@ void __init smp_setup_cpu_maps(void)
+>>>    	/* Select the primary thread, the boot cpu's slibing, as the logic 0 */
+>>>    	list_add_tail(&head, bt_node);
+>>>    	pr_info("the round shift between dt seq and the cpu logic number: %d\n", shift);
+>>> +	terminate = nr_cpu_ids;
+>>>    	list_for_each_entry(intserv_node, &head, node) {
+>>> +		j = 0;
+>>
+>>> +		/* Choose a start point to cover the boot cpu */
+>>> +		if (nr_cpu_ids - 1 < bt_thread) {
+>>> +			/*
+>>> +			 * The processor core puts assumption on the thread id,
+>>> +			 * not to breach the assumption.
+>>> +			 */
+>>> +			terminate = nr_cpu_ids - 1;
+>>
+>> nthreads is anyway assumed to be same for all cores. So, enforcing
+>> nr_cpu_ids to a minimum of nthreads (and multiple of nthreads) should
+>> make the code much simpler without the need for above check and the
+>> other complexities addressed in the subsequent patches...
+>>
+> 
+> Indeed, this series can be splited into two partsk, [1-2/5] and [3-5/5].
+> In [1-2/5], if smaller, the nr_cpu_ids is enforced to be equal to
+> nthreads. I will make it align upward on nthreads in the next version.
+> So [1-2/5] can be totally independent from the rest patches in this
+> series.
 
+Yup. Would prefer it that way.
+
+>  From an engineer's perspective, [3-5/5] are added to maintain the
+> nr_cpus semantics. (Finally, nr_cpus=1 can be achieved but requiring
+> effort on other subsystem)
+
+I understand it would be nice to maintain semantics but not worth the
+complexity it brings, IMHO. So, my suggest would be to drop [3-5/5].
+
+Thanks
+Hari
