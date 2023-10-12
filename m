@@ -2,57 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75FD27C6C87
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Oct 2023 13:39:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D4947C6C97
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Oct 2023 13:42:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hyQLEv+1;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=R0GTo2eX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S5njh25LMz3cfQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Oct 2023 22:39:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S5nnK0sxhz3dwG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Oct 2023 22:42:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hyQLEv+1;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=R0GTo2eX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=bjorn@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S5nhr2Vczz2xpp
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Oct 2023 22:38:52 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id B3D1EB82334;
-	Thu, 12 Oct 2023 11:38:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F688C433C7;
-	Thu, 12 Oct 2023 11:38:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1697110727;
-	bh=VIjNs8XAzFrSrD46vd4rLb+i7yS6FSpOQzPGdLFca3I=;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S5nmR3LhPz2xpp
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Oct 2023 22:41:59 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1697110919;
+	bh=iOsESke18g3RuubwM1/KV7QnX9w2UOpEn1GqnmACR+U=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=hyQLEv+1J8r5uGrpnxlhbH7cdZUYJ0sUhwdXhnH7m6avcqRv3zQP0sQ8LYdf6kWu7
-	 /x/B7UHwjQPXgeKsT9kxZr2GB9McF6/+brZFPn1Tb8vtntOLd2ZLGCrWdhdV51SRpG
-	 mKex4JFjTf6Jp+hTRKW1er/RxhxwXCGxmat7LLs5jzr3rMXlHwVLQaQtN5jr1ZRsfU
-	 6Cvvwj9rHZjPx9fH1FkgB2pfdSwSrnCHFVouAwZzQprfpoBBkgp5i8kW3cxlnG/k7t
-	 IOTbVEM1v972unfuwienAF3jcsYgP6l6gf41BNyPK1Wv3Qjy7L1n3vHC+XGwkkixMT
-	 Dh/KwmVXd9J/g==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: Anup Patel <apatel@ventanamicro.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Atish Patra <atishp@atishpatra.org>, Palmer Dabbelt
- <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby
- <jirislaby@kernel.org>
-Subject: Re: [PATCH v2 7/8] tty: Add SBI debug console support to HVC SBI
- driver
-In-Reply-To: <20231012051509.738750-8-apatel@ventanamicro.com>
-References: <20231012051509.738750-1-apatel@ventanamicro.com>
- <20231012051509.738750-8-apatel@ventanamicro.com>
-Date: Thu, 12 Oct 2023 13:38:44 +0200
-Message-ID: <87fs2ghxyz.fsf@all.your.base.are.belong.to.us>
+	b=R0GTo2eXFKMpSDkDNDOZZwVJfhQ3rdgn+OPXCnjqzgkAdRIJNPy7kZcopm/HhcHlA
+	 J1rQhvGzxSBtvMgV7njyj8LOT3UMPrtAgaFSiK2kARRmjZBv8jd98vDBzli3gCCFtA
+	 SXzJQhU261DwMPOAJzRWLJrobpQbsLw+qlz06NBmlOP09OLtEPlmqXAz2LtDVE9FWu
+	 g6dhp7t50pwVACbNMQ50TfNTPqlmUu3ZfshFLhgCu9iySErio/M8WZN6O+awWozh/T
+	 kIWjfYtiEZ2rP8Bm6JVC7i+vyXeORkfrxKnXL4CTf1irZwKSpH4Z0FQrRyIP4Xa0t7
+	 ljLQm8TjR7+2A==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4S5nmR1trdz4x5G;
+	Thu, 12 Oct 2023 22:41:59 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Erhard Furtner <erhard_f@mailbox.org>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [Bisected] PowerMac G5 fails booting kernel 6.6-rc3 (BUG:
+ Unable to handle kernel data access at 0xfeffbb62ffec65fe)
+In-Reply-To: <20230929132750.3cd98452@yea>
+References: <20230929132750.3cd98452@yea>
+Date: Thu, 12 Oct 2023 22:41:56 +1100
+Message-ID: <87lec8qd8b.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,97 +58,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anup Patel <apatel@ventanamicro.com>, linux-serial@vger.kernel.org, kvm@vger.kernel.org, Atish Patra <atishp@rivosinc.com>, linux-kernel@vger.kernel.org, Conor Dooley <conor@kernel.org>, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Andrew Jones <ajones@ventanamicro.com>
+Cc: willy@infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Anup Patel <apatel@ventanamicro.com> writes:
-
-> From: Atish Patra <atishp@rivosinc.com>
+Erhard Furtner <erhard_f@mailbox.org> writes:
+> Greetings!
 >
-> RISC-V SBI specification supports advanced debug console
-> support via SBI DBCN extension.
+> Kernel 6.5.5 boots fine on my PowerMac G5 11,2 but kernel 6.6-rc3 fails to boot with following dmesg shown on the OpenFirmware console (transcribed screenshot):
 >
-> Extend the HVC SBI driver to support it.
->
-> Signed-off-by: Atish Patra <atishp@rivosinc.com>
-> Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-> ---
->  drivers/tty/hvc/Kconfig         |  2 +-
->  drivers/tty/hvc/hvc_riscv_sbi.c | 76 ++++++++++++++++++++++++++++++---
->  2 files changed, 70 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/tty/hvc/Kconfig b/drivers/tty/hvc/Kconfig
-> index 4f9264d005c0..6e05c5c7bca1 100644
-> --- a/drivers/tty/hvc/Kconfig
-> +++ b/drivers/tty/hvc/Kconfig
-> @@ -108,7 +108,7 @@ config HVC_DCC_SERIALIZE_SMP
->=20=20
->  config HVC_RISCV_SBI
->  	bool "RISC-V SBI console support"
-> -	depends on RISCV_SBI_V01
-> +	depends on RISCV_SBI
->  	select HVC_DRIVER
->  	help
->  	  This enables support for console output via RISC-V SBI calls, which
-> diff --git a/drivers/tty/hvc/hvc_riscv_sbi.c b/drivers/tty/hvc/hvc_riscv_=
-sbi.c
-> index 31f53fa77e4a..da318d7f55c5 100644
-> --- a/drivers/tty/hvc/hvc_riscv_sbi.c
-> +++ b/drivers/tty/hvc/hvc_riscv_sbi.c
-> @@ -39,21 +39,83 @@ static int hvc_sbi_tty_get(uint32_t vtermno, char *bu=
-f, int count)
->  	return i;
->  }
->=20=20
-> -static const struct hv_ops hvc_sbi_ops =3D {
-> +static const struct hv_ops hvc_sbi_v01_ops =3D {
->  	.get_chars =3D hvc_sbi_tty_get,
->  	.put_chars =3D hvc_sbi_tty_put,
->  };
->=20=20
-> -static int __init hvc_sbi_init(void)
-> +static int hvc_sbi_dbcn_tty_put(uint32_t vtermno, const char *buf, int c=
-ount)
->  {
-> -	return PTR_ERR_OR_ZERO(hvc_alloc(0, 0, &hvc_sbi_ops, 16));
-> +	phys_addr_t pa;
-> +	struct sbiret ret;
-> +
-> +	if (is_vmalloc_addr(buf))
-> +		pa =3D page_to_phys(vmalloc_to_page(buf)) + offset_in_page(buf);
+> [...]
+> SLUB: HWalign=128, Order=0-3, MinObjects=0, CPUs=2, Nodes=1
+> rcu: Hierarchical RCU implementation.
+>  Tracing variant of Tasks RCU enabled.
+> rcu: RCU calculated value of scheduler-enlistment delay is 30 jiffies.
+> NR_IRQS: 512, nr_irqs: 512, preallocated irqs: 16
+> mpic: Setting up MPIC " MPIC 1   " version 1.2 at f8040000, max 2 CPUs
+> mpic: ISU size: 124, shift: 7, mask: 7f
+> mpic: Initializing for 124 sources
+> mpic: Setting up HT PICs workarounds for U3/U4
+> BUG: Unable to handle kernel data access at 0xfeffbb62ffec65fe
+> Faulting instruction address: 0xc00000000005dc40
+> Oops: Kernel access of bad area, sig: 11 [#1]
+> BE PAGE_SIZE=4K MMU=Hash SMP NR_CPUS=2 PowerMac
+> Modules linked in:
+> CPU: 0 PID: 0 Comm: swapper/0 Tainted: G                T  6.6.0-rc3-PMacGS #1
+> Hardware name: PowerMac11,2 PPC970MP 0x440101 PowerMac
+> NIP:  c00000000005dc40 LR: c000000000066660 CTR: c000000000007730
+> REGS: c0000000022bf510 TRAP: 0380   Tainted: G                T (6.6.0-rc3-PMacGS)
+> MSR:  9000000000001032 <SF,HV,ME,IR,DR,RI>  CR: 44004242  XER: 00000000
+> IRQMASK: 3
+> GPR00: 0000000000000000 c0000000022bf7b0 c0000000010c0b00 00000000000001ac
+> GPR04: 0000000003c80000 0000000000000300 c0000000f20001ae 0000000000000300
+> GPR08: 0000000000000006 feffbb62ffec65ff 0000000000000001 0000000000000000
+> GPR12: 9000000000001032 c000000002362000 c000000000f76b80 000000000349ecd8
+> GPR16: 0000000002367ba8 0000000002367f08 0000000000000006 0000000000000000
+> GPR20: 00000000000001ac c000000000f6f920 c0000000022cd985 000000000000000c
+> GPR24: 0000000000000300 00000003b0a3691d c0003e008030000e 0000000000000000
+> GPR28: c00000000000000c c0000000f20001ee feffbb62ffec65fe 00000000000001ac
+> NIP [c00000000005dc40] hash_page_do_lazy_icache+0x50/0x100
+> LR [c000000000066660] __hash_page_4K+0x420/0x590
+> Call Trace:
+> [c0000000022bf7e0] [ffffffffffffffff] 0xffffffffffffffff
+> [c0000000022bf8c0] [c00000000005e164] hash_page_mm+0x364/0x6f0
+> [c0000000022bf990] [c00000000005e684] do_hash_fault+0x114/0x2b0
+> [c0000000022bf9c0] [c0000000000078e8] data_access_common_virt+0x198/0x1f0
+> --- interrupt: 300 at mpic_init+0x4bc/0x10c4
+> NIP:  c000000002020a5c LR: c000000002020a04 CTR: 0000000000000000
+> REGS: c0000000022bf9f0 TRAP: 0300   Tainted: G                T (6.6.0-rc3-PMacGS)
+> MSR:  9000000000001032 <SF,HV,ME,IR,DR,RI>  CR: 24004248  XER: 00000000
+> DAR: c0003e008030000e DSISR: 40000000 IRQMASK: 1
+> GPR00: 0000000000000000 c0000000022bfc90 c0000000010c0b00 c0003e0080300000
+> GPR04: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> GPR08: 0000000000000000 221b80894c06df2f 0000000000000000 0000000000000000
+> GPR12: 0000000000000000 c000000002362000 c000000000f76b80 000000000349ecd8
+> GPR16: 0000000002367ba8 0000000002367f08 0000000002367c70 0000000000000000
+> GPR20: 567ce25e8c9202b7 c000000000f6f920 0000000000000001 c0003e0080300000
+> GPR24: c00000000226f348 0000000000000004 c00000000404c640 0000000000000000
+> GPR28: c0003e0080300000 c00000000404c000 45886d8559cb69b4 c0000000022bfc90
+> NIP [c00000000005dc40] mpic_init+0x4bc/0x10c4
+> LR [c000000000066660] mpic_init+0x464/0x10c4
+> ~~~ interrupt: 300
+> [c0000000022bfd90] [c000000002022ae4] pmac_setup_one_mpic+0x258/0x2dc
+> [c0000000022bf2e0] [c000000002022df4] pmac_pic_init+0x28c/0x3d8
+> [c0000000022bfef0] [c00000000200b750] init_IRQ+0x90/0x140
+> [c0000000022bff30] [c0000000020053c0] start_kernel+0x57c/0x78c
+> [c0000000022bffe0] [c00000000000cb48] start_here_common+0x1c/0x20
+> Code: 09290000 7c292040 4081007c fbc10020 3d220127 78843664 3929d700 ebc90000 7fde2214 e93e0000 712a0001 40820064 <e93e0000> 71232000 40820048 e93e0000
+> ---[ end trace 0000000000000000 ]---
 
-What is assumed from buf here? If buf is crossing a page, you need to
-adjust the count, no?
+Can you checkout the exact commit that crash is from and do:
 
-> +	else
-> +		pa =3D __pa(buf);
-> +
-> +	if (IS_ENABLED(CONFIG_32BIT))
-> +		ret =3D sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE,
-> +				count, lower_32_bits(pa), upper_32_bits(pa),
-> +				0, 0, 0);
-> +	else
-> +		ret =3D sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE,
-> +				count, pa, 0, 0, 0, 0);
-> +	if (ret.error)
-> +		return 0;
-> +
-> +	return count;
->  }
-> -device_initcall(hvc_sbi_init);
->=20=20
-> -static int __init hvc_sbi_console_init(void)
-> +static int hvc_sbi_dbcn_tty_get(uint32_t vtermno, char *buf, int count)
->  {
-> -	hvc_instantiate(0, 0, &hvc_sbi_ops);
-> +	phys_addr_t pa;
-> +	struct sbiret ret;
-> +
-> +	if (is_vmalloc_addr(buf))
-> +		pa =3D page_to_phys(vmalloc_to_page(buf)) + offset_in_page(buf);
+ $ make arch/powerpc/mm/book3s64/hash_utils.lst
 
-And definitely adjust count here, if we're crossing a page!
+And paste/attach the content of that file.
 
-
-Bj=C3=B6rn
+cheers
