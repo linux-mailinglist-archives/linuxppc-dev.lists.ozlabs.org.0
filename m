@@ -1,52 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70DD27C613C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Oct 2023 01:48:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E742B7C61FD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Oct 2023 02:52:58 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=llZ4fOjk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VE5CUTDP;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S5TxY1y6gz3cPd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Oct 2023 10:48:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S5WMX6Gj3z3dCy
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Oct 2023 11:52:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=llZ4fOjk;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VE5CUTDP;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S5Twd47Zjz2yhZ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Oct 2023 10:48:01 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1697068081;
-	bh=v6nwpHe4J/UW7amVCn9IXv2fo3diti+324I5sej05bs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=llZ4fOjk+Ah8EX3I+mPNK/G8vzII/W9vLjvmN95boRJgsA8RXjBNicfFEjRsWp6d0
-	 qTZEyvsA9XVrPRSpoLH2Vc+Oj3a9qwYOjODCvdN+LDC4GTeX29/QXl97QRM7qaull7
-	 XzKovJNrTKvqrf5GMVjJH8qC+/MReuJ5tcMmPzGG2wnXjStc+kK+b7YYkuCyDr50wF
-	 Me3JBoper4KaL5P2hcWXYPIIm/jYXJ5G491RFOL1zsctxH7bNGRAr4WV0QOYYOCmTB
-	 ZOt6hNCJ6HqbtpljdmynOYPYz7B34ut4is4Zr6/+i6hCsdFtNvWPEb2fJthVb04IED
-	 OiW9m2PJyEG3w==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4S5Twd1Fb3z4xWF;
-	Thu, 12 Oct 2023 10:48:00 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Erhard Furtner <erhard_f@mailbox.org>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [Bisected] PowerMac G5 fails booting kernel 6.6-rc3 (BUG:
- Unable to handle kernel data access at 0xfeffbb62ffec65fe)
-In-Reply-To: <20230929132750.3cd98452@yea>
-References: <20230929132750.3cd98452@yea>
-Date: Thu, 12 Oct 2023 10:47:51 +1100
-Message-ID: <87r0m0raag.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S5W5H0K28z30GC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Oct 2023 11:40:34 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id C88A761B46;
+	Thu, 12 Oct 2023 00:40:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 83E1DC43391;
+	Thu, 12 Oct 2023 00:40:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1697071229;
+	bh=wGHJyiALp3GFYTvWaoHxyso+f2Vuj4QGs+ejJHlDf/k=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=VE5CUTDPsvYyqkldEDqOEXMVmFtYsTPZSIVSOrPhdqUiu+qC0gTSFu6e4mo37ejhQ
+	 /nJHSRLR/5Uq37Vk7V8G+nOXlNvk8vH6E7h/jFJuVqHPRQONGS0TzuyWGyPhojUAH7
+	 Y4urAQ4NY7DQHqZIv7DL90hwQTF8/SrBLn8tcK2EKIaO4+tESHK8SoJsiMlOStfslk
+	 O/7RUIjozO0FXUzHR0diff2R+Z5LRSigjR9sS4lydG4rj6L1lOXawWzS/iyDrc3/8u
+	 ubZ2+bqVueHFdmEqJE9Vi1b+9kyKU6EIaNcULLSEz66GZICCGoNPjSU3dE+Xj/HwlZ
+	 8gXY0TDIzUzzA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 5A538E21ED9;
+	Thu, 12 Oct 2023 00:40:29 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+Subject: Re: [net-next v3 1/5] netdev: replace simple
+ napi_schedule_prep/__napi_schedule to napi_schedule
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id:  <169707122936.23011.6924255297609142862.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Oct 2023 00:40:29 +0000
+References: <20231009133754.9834-1-ansuelsmth@gmail.com>
+In-Reply-To: <20231009133754.9834-1-ansuelsmth@gmail.com>
+To: Christian Marangi <ansuelsmth@gmail.com>
+X-Mailman-Approved-At: Thu, 12 Oct 2023 11:52:14 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,23 +63,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: willy@infradead.org
+Cc: andrew@lunn.ch, ryazanov.s.a@gmail.com, ziweixiao@google.com, chris.snook@gmail.com, ricklind@linux.ibm.com, alexandre.torgue@foss.st.com, linux-kernel@vger.kernel.org, khalasa@piap.pl, edumazet@google.com, ath10k@lists.infradead.org, danymadden@us.ibm.com, gregory.greenman@intel.com, set_pte_at@outlook.com, chiranjeevi.rapolu@linux.intel.com, linux-stm32@st-md-mailman.stormreply.com, linuxwwan@intel.com, robh@kernel.org, jeroendb@google.com, leon@kernel.org, linux-rdma@vger.kernel.org, haren@linux.ibm.com, rushilg@google.com, jgg@ziepe.ca, tlfalcon@linux.ibm.com, joabreu@synopsys.com, elder@linaro.org, linux-wireless@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com, wg@grandegger.com, nnac123@linux.ibm.com, bhupesh.sharma@linaro.org, haijun.liu@mediatek.com, kvalo@kernel.org, u.kleine-koenig@pengutronix.de, bcf@google.com, npiggin@gmail.com, linux-can@vger.kernel.org, ruc_gongyuanjun@163.com, shailend@google.com, mkl@pengutronix.de, benjamin.berg@intel.com, m.chetan.kumar@lin
+ ux.intel.com, tglx@linutronix.de, YKarpov@ispras.ru, linux-arm-kernel@lists.infradead.org, chandrashekar.devegowda@intel.com, ricardo.martinez@linux.intel.com, loic.poulain@linaro.org, zhengzengkai@huawei.com, netdev@vger.kernel.org, pagadala.yesu.anjaneyulu@intel.com, linuxppc-dev@lists.ozlabs.org, dougmill@linux.ibm.com, gustavoars@kernel.org, tariqt@nvidia.com, horms@kernel.org, krzysztof.kozlowski@linaro.org, junfeng.guo@intel.com, mcoquelin.stm32@gmail.com, rajur@chelsio.com, pkaligineedi@google.com, johannes@sipsolutions.net, quic_jjohnson@quicinc.com, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Erhard Furtner <erhard_f@mailbox.org> writes:
-> Greetings!
->
-> Kernel 6.5.5 boots fine on my PowerMac G5 11,2 but kernel 6.6-rc3
-> fails to boot with following dmesg shown on the OpenFirmware console
-> (transcribed screenshot):
+Hello:
 
-Thanks for transcribing all that :)
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-I don't see this crash on my quad G5.
+On Mon,  9 Oct 2023 15:37:50 +0200 you wrote:
+> Replace drivers that still use napi_schedule_prep/__napi_schedule
+> with napi_schedule helper as it does the same exact check and call.
+> 
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> Reviewed-by: Eric Dumazet <edumazet@google.com>
+> ---
+> Changes v3:
+> - Add Reviewed-by tag
+> Changes v2:
+> - Add missing semicolon
+> 
+> [...]
 
-I notice that your config has CONFIG_FLATMEM=y. Can you try switching to
-SPARSEMEM and see if that helps? It might help us narrow down the bug at
-least.
+Here is the summary with links:
+  - [net-next,v3,1/5] netdev: replace simple napi_schedule_prep/__napi_schedule to napi_schedule
+    https://git.kernel.org/netdev/net-next/c/ef724517b596
+  - [net-next,v3,2/5] netdev: make napi_schedule return bool on NAPI successful schedule
+    https://git.kernel.org/netdev/net-next/c/0a779003213b
+  - [net-next,v3,3/5] netdev: replace napi_reschedule with napi_schedule
+    https://git.kernel.org/netdev/net-next/c/73382e919f3d
+  - [net-next,v3,4/5] net: tc35815: rework network interface interrupt logic
+    https://git.kernel.org/netdev/net-next/c/be176234d0a8
+  - [net-next,v3,5/5] netdev: use napi_schedule bool instead of napi_schedule_prep/__napi_schedule
+    https://git.kernel.org/netdev/net-next/c/d1fea38f01ac
 
-cheers
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
