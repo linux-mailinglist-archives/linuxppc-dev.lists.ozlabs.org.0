@@ -2,70 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0BAD7C729A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Oct 2023 18:30:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 392FB7C732B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Oct 2023 18:37:39 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=cOqoNdRH;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=AcK5zXeW;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S5w8v6GsBz3vZR
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Oct 2023 03:30:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S5wKY18LRz3vXB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Oct 2023 03:37:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=cOqoNdRH;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=AcK5zXeW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::42f; helo=mail-pf1-x42f.google.com; envelope-from=keescook@chromium.org; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=geoff@infradead.org; receiver=lists.ozlabs.org)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S5w7z3TbXz2ygx
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Oct 2023 03:29:17 +1100 (AEDT)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-68bed2c786eso882221b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Oct 2023 09:29:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1697128152; x=1697732952; darn=lists.ozlabs.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=WE3Jo0Q6R2eDhOXLPAn5fI6nLqGl+yopyVyIxuKQuCM=;
-        b=cOqoNdRHG47AflkDwkXbAPNkmCy6MapAI2q5hUrd35gjsEpGu8XXpnR1TGMF36agkk
-         cOlbEOU2cc/S3klNOPIKzV4yJwxd5Tmrft3daSkkYq2BvKlN6OTzd5u/RCVz2Bb4Lnfc
-         lE9QRfCA9MLGknbxF6zZqlF9vcdmTaMjYSAbQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697128152; x=1697732952;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WE3Jo0Q6R2eDhOXLPAn5fI6nLqGl+yopyVyIxuKQuCM=;
-        b=Yge24KD5huYTa0eDL6+Cle3pIvlMZV7k0woPgt73zT57gXvbpn3gWVDfpqwxxKZBhP
-         kYiWI+WwkGip1GQU11Pc6BnUb4mmU/3m9Dx14STJPZ4hDYEvByjy83Tv1/kxXVHK2zTJ
-         j7b5mlOBYl6rUNYWmvyV87FMmfrI5KospOCgBjD16OTPH9wCCkvKZaXbzl5p88s7Za6q
-         Y/REuDoDUWFyfFJuLY+87WYaI9EnkUosfrFwbJVBnZtUiPkICi9soJFJ2Gy3Ec0mitaw
-         gq7Lt8PMotzU2S35qHLt5FU96HqwIWSH6+7dsNJV0PXliFCEi1h41980hO+1bhwt0x3o
-         SLrw==
-X-Gm-Message-State: AOJu0Yzw9U5ccESc01yHNpDklLQ2t1zOekHkkmSNYGDcrLVagW7WzWrx
-	0TtvyoWEcXONMwuGy3krIYbuRA==
-X-Google-Smtp-Source: AGHT+IGA3dYnTX2gx4tRNTqDSyaFZvdLD9jQ0uv4zzCA9gC04oYWVXvQWjDByBX7oKKZvymQRliLuA==
-X-Received: by 2002:a05:6a00:451b:b0:691:2d4:238e with SMTP id cw27-20020a056a00451b00b0069102d4238emr22840850pfb.6.1697128152366;
-        Thu, 12 Oct 2023 09:29:12 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id z23-20020aa785d7000000b00690d64a0cb6sm11942071pfn.72.2023.10.12.09.29.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Oct 2023 09:29:11 -0700 (PDT)
-Date: Thu, 12 Oct 2023 09:29:11 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Florian Westphal <fw@strlen.de>
-Subject: Re: [Bisected] [1b4fa28a8b07] Build failure "net/core/gso_test.c"
-Message-ID: <202310120928.398BF883A8@keescook>
-References: <79fbe35c-4dd1-4f27-acb2-7a60794bc348@linux.vnet.ibm.com>
- <20231012095746.GA26871@breakpoint.cc>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S5wJZ3gzLz2ygx
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Oct 2023 03:36:45 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description;
+	bh=FSonfJ43zgcuW47KrZQgDGNzqMRjSofTrzRRTIZpHxw=; b=AcK5zXeWq6cVOul5gredeXoI3t
+	7pceXZIXjt6v//yo13Ykd6hmIKqGaVf8Euj9mIAxAX+gs1j8yYwly9Fqt8jn2G3uAOFZXJGkV5PZD
+	DmYOXr712vrJ2F7eIB3L2S1ryBex2vA8uGFzSMWZ0JpEeqrhZJ39ktHwJDgsCNZbK77YUWJt02jcy
+	tubb6Lb7EKT/fXiREytmIdkjUpIRL1yS9EOP3iX14D5Ab0pDzhNm1nWl2hhavT8iHjI4XIHOb3SMc
+	9V2c4zfH8VPG4L9AnDrfUIeiW/ucau1GS2+LnOkzvSucMCLiciR2vPwmNeCZpYxDFimKbmhQS1MvG
+	E98Cg9pw==;
+Received: from 173.red-88-11-240.dynamicip.rima-tde.net ([88.11.240.173] helo=[192.168.100.242])
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1qqyfP-000KOI-5s; Thu, 12 Oct 2023 16:36:07 +0000
+Message-ID: <39719eae-f166-4059-a70d-c6b74ecd46e2@infradead.org>
+Date: Thu, 12 Oct 2023 18:36:04 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231012095746.GA26871@breakpoint.cc>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] [RFC] wireless: move obsolete drivers to staging
+To: Johannes Berg <johannes@sipsolutions.net>,
+ Geert Uytterhoeven <geert@linux-m68k.org>
+References: <20231010155444.858483-1-arnd@kernel.org>
+ <2023101051-unmasked-cleaver-79b3@gregkh> <87y1g94szz.fsf@kernel.org>
+ <2023101139-pyromania-game-2237@gregkh> <87r0m1fwg9.fsf@kernel.org>
+ <20231011080955.1beeb010@kernel.org> <87sf6g2hc8.fsf@kernel.org>
+ <63e57ef8-c9f2-489a-8df8-51dcffd437c6@app.fastmail.com>
+ <b1c87f71abef5aba6b39893a417466bf9f65c2d5.camel@sipsolutions.net>
+ <CAMuHMdX3F9rvD3Fzbc1dwm7Vm73VW1x5ETbxkk-jJm3Bpr5i+A@mail.gmail.com>
+ <d336126d58e12e8e67078c8142a524c667cc5639.camel@sipsolutions.net>
+Content-Language: en-US
+From: Geoff Levand <geoff@infradead.org>
+In-Reply-To: <d336126d58e12e8e67078c8142a524c667cc5639.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,155 +66,16 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: willemb@google.com, netdev@vger.kernel.org, Tasmiya Nalatwad <tasmiya@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org, sachinp@linux.vnet.com, abdhalee@linux.vnet.ibm.com, edumazet@google.com, mputtash@linux.vnet.com, kuba@kernel.org, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: Arnd Bergmann <arnd@kernel.org>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Kalle Valo <kvalo@kernel.org>, linux-staging@lists.linux.dev, linux-wireless@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, linux-arm-kernel@lists.infradead.org, Pavel Machek <pavel@ucw.cz>, Jakub Kicinski <kuba@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "David S . Miller" <davem@davemloft.net>, linux-kernel@vger.kernel.org, Larry Finger <Larry.Finger@lwfinger.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Oct 12, 2023 at 11:57:46AM +0200, Florian Westphal wrote:
-> Tasmiya Nalatwad <tasmiya@linux.vnet.ibm.com> wrote:
-> > Greetings,
-> > 
-> > [net-next] [6.6-rc4] Build failure "net/core/gso_test.c"
-> > 
-> > --- Traces ---
-> > 
-> > make -j 33 -s && make modules_install && make install
-> > net/core/gso_test.c:58:48: error: initializer element is not constant
-> >    58 |                 .segs = (const unsigned int[]) { gso_size },
-> >       |                                                ^
-> 
-> Ouch, I can reproduce this with: gcc --version
-> gcc (Debian 12.2.0-14) 12.2.0
-> Copyright (C) 2022 Free Software Foundation, Inc.
-> 
-> gcc 13.2.1 and clang-16.0.6 are ok.
-> 
-> Whats the preference here?  We could use simple preprocessor constant
-> or we could require much more recent compiler version for the net
-> kunit tests via kconfig.
-> 
-> gcc-12.2.0 can compile it after this simple s//g "fix":
-> 
-> diff --git a/net/core/gso_test.c b/net/core/gso_test.c
-> --- a/net/core/gso_test.c
-> +++ b/net/core/gso_test.c
-> @@ -4,7 +4,7 @@
->  #include <linux/skbuff.h>
->  
->  static const char hdr[] = "abcdefgh";
-> -static const int gso_size = 1000;
-> +#define GSO_TEST_SIZE 1000
+On 10/12/23 17:41, Johannes Berg wrote:
+> But seriously - is it worth to try to keep a wireless driver for it if
+> we don't even know anyone using a PS3 at all?
 
-This fixes the build for me too.
+There is still a considerable user base for the PS3, so we
+must keep the ps3-gelic-wireless driver.
 
-Tested-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
+-Geoff
 
--Kees
-
->  
->  static void __init_skb(struct sk_buff *skb)
->  {
-> @@ -18,7 +18,7 @@ static void __init_skb(struct sk_buff *skb)
->  
->  	/* proto is arbitrary, as long as not ETH_P_TEB or vlan */
->  	skb->protocol = htons(ETH_P_ATALK);
-> -	skb_shinfo(skb)->gso_size = gso_size;
-> +	skb_shinfo(skb)->gso_size = GSO_TEST_SIZE;
->  }
->  
->  enum gso_test_nr {
-> @@ -53,70 +53,70 @@ static struct gso_test_case cases[] = {
->  	{
->  		.id = GSO_TEST_NO_GSO,
->  		.name = "no_gso",
-> -		.linear_len = gso_size,
-> +		.linear_len = GSO_TEST_SIZE,
->  		.nr_segs = 1,
-> -		.segs = (const unsigned int[]) { gso_size },
-> +		.segs = (const unsigned int[]) { GSO_TEST_SIZE },
->  	},
->  	{
->  		.id = GSO_TEST_LINEAR,
->  		.name = "linear",
-> -		.linear_len = gso_size + gso_size + 1,
-> +		.linear_len = GSO_TEST_SIZE + GSO_TEST_SIZE + 1,
->  		.nr_segs = 3,
-> -		.segs = (const unsigned int[]) { gso_size, gso_size, 1 },
-> +		.segs = (const unsigned int[]) { GSO_TEST_SIZE, GSO_TEST_SIZE, 1 },
->  	},
->  	{
->  		.id = GSO_TEST_FRAGS,
->  		.name = "frags",
-> -		.linear_len = gso_size,
-> +		.linear_len = GSO_TEST_SIZE,
->  		.nr_frags = 2,
-> -		.frags = (const unsigned int[]) { gso_size, 1 },
-> +		.frags = (const unsigned int[]) { GSO_TEST_SIZE, 1 },
->  		.nr_segs = 3,
-> -		.segs = (const unsigned int[]) { gso_size, gso_size, 1 },
-> +		.segs = (const unsigned int[]) { GSO_TEST_SIZE, GSO_TEST_SIZE, 1 },
->  	},
->  	{
->  		.id = GSO_TEST_FRAGS_PURE,
->  		.name = "frags_pure",
->  		.nr_frags = 3,
-> -		.frags = (const unsigned int[]) { gso_size, gso_size, 2 },
-> +		.frags = (const unsigned int[]) { GSO_TEST_SIZE, GSO_TEST_SIZE, 2 },
->  		.nr_segs = 3,
-> -		.segs = (const unsigned int[]) { gso_size, gso_size, 2 },
-> +		.segs = (const unsigned int[]) { GSO_TEST_SIZE, GSO_TEST_SIZE, 2 },
->  	},
->  	{
->  		.id = GSO_TEST_GSO_PARTIAL,
->  		.name = "gso_partial",
-> -		.linear_len = gso_size,
-> +		.linear_len = GSO_TEST_SIZE,
->  		.nr_frags = 2,
-> -		.frags = (const unsigned int[]) { gso_size, 3 },
-> +		.frags = (const unsigned int[]) { GSO_TEST_SIZE, 3 },
->  		.nr_segs = 2,
-> -		.segs = (const unsigned int[]) { 2 * gso_size, 3 },
-> +		.segs = (const unsigned int[]) { 2 * GSO_TEST_SIZE, 3 },
->  	},
->  	{
->  		/* commit 89319d3801d1: frag_list on mss boundaries */
->  		.id = GSO_TEST_FRAG_LIST,
->  		.name = "frag_list",
-> -		.linear_len = gso_size,
-> +		.linear_len = GSO_TEST_SIZE,
->  		.nr_frag_skbs = 2,
-> -		.frag_skbs = (const unsigned int[]) { gso_size, gso_size },
-> +		.frag_skbs = (const unsigned int[]) { GSO_TEST_SIZE, GSO_TEST_SIZE },
->  		.nr_segs = 3,
-> -		.segs = (const unsigned int[]) { gso_size, gso_size, gso_size },
-> +		.segs = (const unsigned int[]) { GSO_TEST_SIZE, GSO_TEST_SIZE, GSO_TEST_SIZE },
->  	},
->  	{
->  		.id = GSO_TEST_FRAG_LIST_PURE,
->  		.name = "frag_list_pure",
->  		.nr_frag_skbs = 2,
-> -		.frag_skbs = (const unsigned int[]) { gso_size, gso_size },
-> +		.frag_skbs = (const unsigned int[]) { GSO_TEST_SIZE, GSO_TEST_SIZE },
->  		.nr_segs = 2,
-> -		.segs = (const unsigned int[]) { gso_size, gso_size },
-> +		.segs = (const unsigned int[]) { GSO_TEST_SIZE, GSO_TEST_SIZE },
->  	},
->  	{
->  		/* commit 43170c4e0ba7: GRO of frag_list trains */
->  		.id = GSO_TEST_FRAG_LIST_NON_UNIFORM,
->  		.name = "frag_list_non_uniform",
-> -		.linear_len = gso_size,
-> +		.linear_len = GSO_TEST_SIZE,
->  		.nr_frag_skbs = 4,
-> -		.frag_skbs = (const unsigned int[]) { gso_size, 1, gso_size, 2 },
-> +		.frag_skbs = (const unsigned int[]) { GSO_TEST_SIZE, 1, GSO_TEST_SIZE, 2 },
->  		.nr_segs = 4,
-> -		.segs = (const unsigned int[]) { gso_size, gso_size, gso_size, 3 },
-> +		.segs = (const unsigned int[]) { GSO_TEST_SIZE, GSO_TEST_SIZE, GSO_TEST_SIZE, 3 },
->  	},
->  	{
->  		/* commit 3953c46c3ac7 ("sk_buff: allow segmenting based on frag sizes") and
-
--- 
-Kees Cook
