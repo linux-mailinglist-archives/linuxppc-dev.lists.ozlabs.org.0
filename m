@@ -1,51 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E07767C917C
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Oct 2023 01:46:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66CD17C9188
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Oct 2023 01:47:42 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Lkg3GJVL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lC51rbW1;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S6jnN58rlz3vdm
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Oct 2023 10:46:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S6jqJ2FLRz3vc0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Oct 2023 10:47:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Lkg3GJVL;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lC51rbW1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S6jlk6g6Mz3vbn
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Oct 2023 10:44:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S6jpQ1FWpz30NP
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Oct 2023 10:46:54 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id D46AD62218;
-	Fri, 13 Oct 2023 23:44:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 416F8C433C7;
-	Fri, 13 Oct 2023 23:44:31 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id B2C4ECE31C3;
+	Fri, 13 Oct 2023 23:46:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF9EC433C7;
+	Fri, 13 Oct 2023 23:46:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1697240672;
-	bh=ijje59ACJtXkV0PV4ct/39uK254k7vq/jxYbdX4CDko=;
+	s=k20201202; t=1697240810;
+	bh=I0Ybzefpb0f46pCoW0lXoe0QVolFQKp1by7iMXMV2ig=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Lkg3GJVLxAFEblDKDAbGOX3PPSz/Ohni7SKs69PJULcZqfl9siFQDYH6F9p3koTpk
-	 Y8Rv/OCUkPNLJa6VlZAVE+4TCrVKJSY25ix+4pEjYDdDn1qur8kLVyUiN6M3snOiiR
-	 txCLYu+RUcbqonpin8jPSXTY8E0sgJfIvxffMExnx4l64YtiqeECwQib5YLbrtnm1/
-	 3Wgd3BPp+gJNUWFiqK6NReQwMAt3g0/xwkPjWja6VkTP6rK+jlEF2akKVqgzTD3x0M
-	 BfDgrrBGcfku17AkV5gdT+usndxTkXyXKqrGrHlqIj6GT/LbtUeNNinKrFZGkD/n9/
-	 bhRZOiWIFPxtw==
-Date: Fri, 13 Oct 2023 16:44:30 -0700
+	b=lC51rbW1gspwCMSFrJZZKpFXg7hwiUBH02usnJhD4v+VeActrNiPIFdHj9RlFhcIO
+	 OrnL8HaWjePfytoVvVqKd/HhDiXPeYY7lk1ZxdWxEXyatr1hXgkp9n7IUYwlypwC4n
+	 0M3CV7Pq+jjkV3gaxEHD0prKTp+saM5DxkDMl3AaXnHCsGYqbgbk2l/TbdBO63wZif
+	 7/CkacxbI+QhT3KnrqbGwNLiScxjQskkwXtU7yvDQsgk22IKrukuEL2XzEi104Npny
+	 SQbjMVZC/WNa2BVJiSItinrMu0FI0V/yIfzrTnEqNw9u6gyALZLXMsA+Y7QwuYWImc
+	 jms88xG498QjA==
+Date: Fri, 13 Oct 2023 16:46:47 -0700
 From: Jakub Kicinski <kuba@kernel.org>
 To: Herve Codina <herve.codina@bootlin.com>
-Subject: Re: [PATCH v8 26/30] net: wan: framer: Add support for the Lantiq
- PEF2256 framer
-Message-ID: <20231013164430.7a57def5@kernel.org>
-In-Reply-To: <20231011061437.64213-27-herve.codina@bootlin.com>
+Subject: Re: [PATCH v8 00/30] Add support for QMC HDLC, framer
+ infrastructure and PEF2256 framer
+Message-ID: <20231013164647.7855f09a@kernel.org>
+In-Reply-To: <20231011061437.64213-1-herve.codina@bootlin.com>
 References: <20231011061437.64213-1-herve.codina@bootlin.com>
-	<20231011061437.64213-27-herve.codina@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
@@ -65,9 +64,12 @@ Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org, Thomas Petazzoni 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 11 Oct 2023 08:14:30 +0200 Herve Codina wrote:
-> The Lantiq PEF2256 is a framer and line interface component designed to
-> fulfill all required interfacing between an analog E1/T1/J1 line and the
-> digital PCM system highway/H.100 bus.
+On Wed, 11 Oct 2023 08:14:04 +0200 Herve Codina wrote:
+> Compare to the previous iteration
+>   https://lore.kernel.org/linux-kernel/20230928070652.330429-1-herve.codina@bootlin.com/
+> This v8 series:
+>  - Fixes a race condition
+>  - Uses menuconfig instead of menu and hides CONFIG_GENERIC_FRAMER
+>  - Performs minor changes
 
-Acked-by: Jakub Kicinski <kuba@kernel.org>
+Which way will those patches go? Via some FSL SoC tree?
