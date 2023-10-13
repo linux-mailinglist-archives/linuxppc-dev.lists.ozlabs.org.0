@@ -2,69 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1467C88F1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Oct 2023 17:42:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0087B7C8909
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Oct 2023 17:46:07 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=POZZ/bkr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=QfSe04c+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=HlebnGki;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S6W3s1Yh9z3vXF
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Oct 2023 02:42:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S6W7d5P9pz3vZT
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Oct 2023 02:46:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=POZZ/bkr;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=QfSe04c+;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=HlebnGki;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2607:f8b0:4864:20::332; helo=mail-ot1-x332.google.com; envelope-from=apatel@ventanamicro.com; receiver=lists.ozlabs.org)
-Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=64.147.123.19; helo=wout3-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S6W2z2nZFz3c4y
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Oct 2023 02:42:01 +1100 (AEDT)
-Received: by mail-ot1-x332.google.com with SMTP id 46e09a7af769-6c644a1845cso1409333a34.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Oct 2023 08:42:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1697211718; x=1697816518; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=58F4pC3mBDu8F+pvcYNIm1FByUJEAPva6M9hCs3f/vs=;
-        b=POZZ/bkrHvcctQ1Y/qWD3yKXAMaXLucxuVxXgBD1tPZs7uVEI+6V1Gg4UeB0Xf0x5P
-         jxUDjdbybhMCUxFLNe44XFxodExmCN2oKRJjLcUvGI+mNV3oGOI5tdAGakD45Rzcp8oP
-         ubkCHCh243bmX9fqn8/xCOOnozw0dOtxKCltx5OLZNEIOCrIL04hrxEXwYfRui4lAwcP
-         lkXIhuv07RHEByYpYNVBbrfnv1dUT1RUNsvLL67KKWzan2o8WNuNKr1VI1FUNJf0rKv1
-         vgaH9d8GrFTaKoRKKx4mdgYTMKHV7IhYqRmyi5if7+MldLogqzCgBEJSs/AXZgS9kqky
-         QdnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697211718; x=1697816518;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=58F4pC3mBDu8F+pvcYNIm1FByUJEAPva6M9hCs3f/vs=;
-        b=NVG0rdV9dmP5YNwgp+yubTpWuiMPURP56Ks43PvoM3gJHuCMaKQrR6AKgonVcKJ67r
-         7Y2ZL+hnmW4hi6I6pUSZOe9HfokSq0KI8NBiPgGSt8C19qlZuKw8cxMGtZQeJWY3uxYF
-         dKVKEB5iLbzqF4xDXShp9fckY3PYExh9/BWm6O+H9u5nQDplsVCtPuGsk8gA6zGFRXtz
-         5U/KET3elq/7ciPrYc+uh/cepALMoUxLkslinchaDwLTH7gzkgvCjVc1LwaF5JlWLwTH
-         w5mcZoJn+tnuI4l9zvCQjxXwzrbqBQZkxhAtbGSED4nkpzlYQ5IeXOxIWR/ICHhlAzjt
-         aH5g==
-X-Gm-Message-State: AOJu0YyzJOz3rcdYMb8bjGwqdzhTgbUzAbS+xyD89UFipl4p2XTX/onc
-	nPwbRvBqwwl8dP0iwYXeAIzESigkgEh+wxi+9BXakw==
-X-Google-Smtp-Source: AGHT+IEzcIYsSKMe5bsbRMbzf4xh1PED9ixUfbd1o7ixVah0VHZj9arKWffuv9/jPa1nkBsBkAGklSaRf41sshg9uSY=
-X-Received: by 2002:a05:6870:6587:b0:1e9:b7a7:8efe with SMTP id
- fp7-20020a056870658700b001e9b7a78efemr5211668oab.2.1697211718067; Fri, 13 Oct
- 2023 08:41:58 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S6W6f42D1z30LM
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Oct 2023 02:45:14 +1100 (AEDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailout.west.internal (Postfix) with ESMTP id 8C99C3200A38;
+	Fri, 13 Oct 2023 11:45:07 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Fri, 13 Oct 2023 11:45:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:sender
+	:subject:subject:to:to; s=fm2; t=1697211907; x=1697298307; bh=0S
+	q5aN/LEeIdEtvpU4m3Ee5Hif+IIBF9F9j0cI69vvg=; b=QfSe04c+Y6UV+PgVX8
+	ipjzO11XYYPPGyAwgDHlq+Bw0zIP9gWxJjcNcvCQYhHzdsqlEySU7hdPN3yXE+kV
+	sWIdr6p69QcAUCyXmWoN8OoJVh9UYAm31S2HsNFANMOZ461tIkn8J0AZn79Rs2Ow
+	dVx5XpBZcN0Ku1DApCTl9EIRhjigzffykqoUclC3McWBRt19TcHEnIpOZ7NpBtZ+
+	rn+g30Wq4JRQS67BuZfmFi7hegvvc3ZScX3HvcCBn72A+DwO1Jub5FnhEQItUMUe
+	yy/UhIHvvgHCOBus5Ot8HJpEvyAGmchRO/LMfr79D3c7l1GIIegFPc2e1gwvFnUM
+	0ZJw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm2; t=1697211907; x=1697298307; bh=0Sq5aN/LEeIdE
+	tvpU4m3Ee5Hif+IIBF9F9j0cI69vvg=; b=HlebnGkiYLove2NgAjXZ1BrX1E4BO
+	rllh75aIqbF3UPjtExUKH1fFjWwxqzxGKFxLl85cMBN6oiqj3/obCkMIe/j27JEx
+	K6DUA2H+433N0yckEmdVYfKJvUD3obb++KT36pLVOMtXKhsr3CWeVTXdt6mJCEBb
+	PRkdaHcARKcWSO0U3zjYR/06rvY3243LEPC3l53pJvWsQ3RE+BQGeCDISzOcuq12
+	FEyXi4Hfu5JGncNXSB7sLdl52wzOKLPivcp6qMc29pnS6gJdRElg2oezts5g3W+D
+	qfy+CEH/my0ScNwhjtXM8gpvTMORnfsFRknJkpeGP/kh7UQNI1gntuQZg==
+X-ME-Sender: <xms:AmYpZcsvVDyOhwSyQ70izb8_xBVsCY_kfn6gdWQWio7HXLWxZusBPA>
+    <xme:AmYpZZfX4rNm-lh5GW_s8Fpfo0otpXih4YpZZlPZePJEwjIo-TOIu6moQ8_b7hGSl
+    eOLjPNmu67Og7Fx9Qs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrieefgdeilecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
+    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
+    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
+    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
+    hnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:AmYpZXzN2w3dbR22gN4m-cKujh4GRSIxI8kLEk5iXqN-3zzR1xutyw>
+    <xmx:AmYpZfNRZ5xYU705tJzb4gFqaDT5P2H_jwJmbuRMJMxX7Sa3ug505A>
+    <xmx:AmYpZc_65e0KsmA9vWgubuAuTXNCLVK-UdJEwJ7CoQcBqQM2LCorag>
+    <xmx:A2YpZfeA7_dBOkylpD1LmWWHIkTTd6VjkTkNStwUHhVVjHjqWRhgug>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 4F568B60089; Fri, 13 Oct 2023 11:45:06 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-1019-ged83ad8595-fm-20231002.001-ged83ad85
 MIME-Version: 1.0
-References: <20231012051509.738750-1-apatel@ventanamicro.com>
- <20231012051509.738750-8-apatel@ventanamicro.com> <87fs2ghxyz.fsf@all.your.base.are.belong.to.us>
-In-Reply-To: <87fs2ghxyz.fsf@all.your.base.are.belong.to.us>
-From: Anup Patel <apatel@ventanamicro.com>
-Date: Fri, 13 Oct 2023 21:11:46 +0530
-Message-ID: <CAK9=C2XFTULtQ6YoNHDb7WJwm8p3wkG_pJA8h+XYGEOzt18Ctg@mail.gmail.com>
-Subject: Re: [PATCH v2 7/8] tty: Add SBI debug console support to HVC SBI driver
-To: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-Id: <2fb4f151-9146-4cce-a3e6-ca80a95cf590@app.fastmail.com>
+In-Reply-To: <39719eae-f166-4059-a70d-c6b74ecd46e2@infradead.org>
+References: <20231010155444.858483-1-arnd@kernel.org>
+ <2023101051-unmasked-cleaver-79b3@gregkh> <87y1g94szz.fsf@kernel.org>
+ <2023101139-pyromania-game-2237@gregkh> <87r0m1fwg9.fsf@kernel.org>
+ <20231011080955.1beeb010@kernel.org> <87sf6g2hc8.fsf@kernel.org>
+ <63e57ef8-c9f2-489a-8df8-51dcffd437c6@app.fastmail.com>
+ <b1c87f71abef5aba6b39893a417466bf9f65c2d5.camel@sipsolutions.net>
+ <CAMuHMdX3F9rvD3Fzbc1dwm7Vm73VW1x5ETbxkk-jJm3Bpr5i+A@mail.gmail.com>
+ <d336126d58e12e8e67078c8142a524c667cc5639.camel@sipsolutions.net>
+ <39719eae-f166-4059-a70d-c6b74ecd46e2@infradead.org>
+Date: Fri, 13 Oct 2023 17:44:43 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Geoff Levand" <geoff@infradead.org>,
+ "Johannes Berg" <johannes@sipsolutions.net>,
+ "Geert Uytterhoeven" <geert@linux-m68k.org>
+Subject: Re: [PATCH] [RFC] wireless: move obsolete drivers to staging
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,113 +102,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-serial@vger.kernel.org, kvm@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Atish Patra <atishp@atishpatra.org>, Atish Patra <atishp@rivosinc.com>, linuxppc-dev@lists.ozlabs.org, Conor Dooley <conor@kernel.org>, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>, Paolo Bonzini <pbonzini@redhat.com>, linux-riscv@lists.infradead.org, Jiri Slaby <jirislaby@kernel.org>, Andrew Jones <ajones@ventanamicro.com>
+Cc: Arnd Bergmann <arnd@kernel.org>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Kalle Valo <kvalo@kernel.org>, linux-staging@lists.linux.dev, linux-wireless@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, linux-arm-kernel@lists.infradead.org, Pavel Machek <pavel@ucw.cz>, Jakub Kicinski <kuba@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "David S . Miller" <davem@davemloft.net>, linux-kernel@vger.kernel.org, Larry Finger <Larry.Finger@lwfinger.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Oct 12, 2023 at 5:08=E2=80=AFPM Bj=C3=B6rn T=C3=B6pel <bjorn@kernel=
-.org> wrote:
+On Thu, Oct 12, 2023, at 18:36, Geoff Levand wrote:
+> On 10/12/23 17:41, Johannes Berg wrote:
+>> But seriously - is it worth to try to keep a wireless driver for it if
+>> we don't even know anyone using a PS3 at all?
 >
-> Anup Patel <apatel@ventanamicro.com> writes:
->
-> > From: Atish Patra <atishp@rivosinc.com>
-> >
-> > RISC-V SBI specification supports advanced debug console
-> > support via SBI DBCN extension.
-> >
-> > Extend the HVC SBI driver to support it.
-> >
-> > Signed-off-by: Atish Patra <atishp@rivosinc.com>
-> > Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-> > ---
-> >  drivers/tty/hvc/Kconfig         |  2 +-
-> >  drivers/tty/hvc/hvc_riscv_sbi.c | 76 ++++++++++++++++++++++++++++++---
-> >  2 files changed, 70 insertions(+), 8 deletions(-)
-> >
-> > diff --git a/drivers/tty/hvc/Kconfig b/drivers/tty/hvc/Kconfig
-> > index 4f9264d005c0..6e05c5c7bca1 100644
-> > --- a/drivers/tty/hvc/Kconfig
-> > +++ b/drivers/tty/hvc/Kconfig
-> > @@ -108,7 +108,7 @@ config HVC_DCC_SERIALIZE_SMP
-> >
-> >  config HVC_RISCV_SBI
-> >       bool "RISC-V SBI console support"
-> > -     depends on RISCV_SBI_V01
-> > +     depends on RISCV_SBI
-> >       select HVC_DRIVER
-> >       help
-> >         This enables support for console output via RISC-V SBI calls, w=
-hich
-> > diff --git a/drivers/tty/hvc/hvc_riscv_sbi.c b/drivers/tty/hvc/hvc_risc=
-v_sbi.c
-> > index 31f53fa77e4a..da318d7f55c5 100644
-> > --- a/drivers/tty/hvc/hvc_riscv_sbi.c
-> > +++ b/drivers/tty/hvc/hvc_riscv_sbi.c
-> > @@ -39,21 +39,83 @@ static int hvc_sbi_tty_get(uint32_t vtermno, char *=
-buf, int count)
-> >       return i;
-> >  }
-> >
-> > -static const struct hv_ops hvc_sbi_ops =3D {
-> > +static const struct hv_ops hvc_sbi_v01_ops =3D {
-> >       .get_chars =3D hvc_sbi_tty_get,
-> >       .put_chars =3D hvc_sbi_tty_put,
-> >  };
-> >
-> > -static int __init hvc_sbi_init(void)
-> > +static int hvc_sbi_dbcn_tty_put(uint32_t vtermno, const char *buf, int=
- count)
-> >  {
-> > -     return PTR_ERR_OR_ZERO(hvc_alloc(0, 0, &hvc_sbi_ops, 16));
-> > +     phys_addr_t pa;
-> > +     struct sbiret ret;
-> > +
-> > +     if (is_vmalloc_addr(buf))
-> > +             pa =3D page_to_phys(vmalloc_to_page(buf)) + offset_in_pag=
-e(buf);
->
-> What is assumed from buf here? If buf is crossing a page, you need to
-> adjust the count, no?
+> There is still a considerable user base for the PS3, so we
+> must keep the ps3-gelic-wireless driver.
 
-I never saw a page crossing buffer but I will certainly address this
-in the next revision.
+Do you know if anyone has tried changing this driver over to the
+cfg80211 interface from the wireless extensions? With the
+series I have prepared now, it is the only driver outside of
+drivers/staging that still uses wext and stops us from removing
+that altogether. 
 
->
-> > +     else
-> > +             pa =3D __pa(buf);
-> > +
-> > +     if (IS_ENABLED(CONFIG_32BIT))
-> > +             ret =3D sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRIT=
-E,
-> > +                             count, lower_32_bits(pa), upper_32_bits(p=
-a),
-> > +                             0, 0, 0);
-> > +     else
-> > +             ret =3D sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRIT=
-E,
-> > +                             count, pa, 0, 0, 0, 0);
-> > +     if (ret.error)
-> > +             return 0;
-> > +
-> > +     return count;
-> >  }
-> > -device_initcall(hvc_sbi_init);
-> >
-> > -static int __init hvc_sbi_console_init(void)
-> > +static int hvc_sbi_dbcn_tty_get(uint32_t vtermno, char *buf, int count=
-)
-> >  {
-> > -     hvc_instantiate(0, 0, &hvc_sbi_ops);
-> > +     phys_addr_t pa;
-> > +     struct sbiret ret;
-> > +
-> > +     if (is_vmalloc_addr(buf))
-> > +             pa =3D page_to_phys(vmalloc_to_page(buf)) + offset_in_pag=
-e(buf);
->
-> And definitely adjust count here, if we're crossing a page!
+[side note: it appears that the PS3 I have is the only model
+ without wireless networking, as I bought cheapest Asian 20GB version
+ back in early 2007. It still has the original firmware on it
+ and should run Linux, but I haven't tried it since at least
+ 2009].
 
-Sure, I will update here as well.
-
-Thanks,
-Anup
+    Arnd
