@@ -1,72 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAA1E7C7D84
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Oct 2023 08:11:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEAA37C7EA4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Oct 2023 09:34:18 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=GTHEL/fK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aaHk70p6;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S6GN94SWZz3vX0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Oct 2023 17:11:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S6JD84C1nz3dC5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Oct 2023 18:34:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=GTHEL/fK;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aaHk70p6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=m.muzzammilashraf@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S6FVb6lK8z30gn
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Oct 2023 16:31:34 +1100 (AEDT)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6b20577ef7bso330266b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Oct 2023 22:31:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697175089; x=1697779889; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Jy7TboT1tjJJztCz7Esa81WmhMy+A2tzF01Kh4RO/iQ=;
-        b=GTHEL/fKDVwyTUA8UfY7a2z6lNwvJXK6Y+vIYPIRSNHAJwrJ7O8biiRttto5WVYZhc
-         JwLvTLERuaapcBBkL01YTY3PZDqHyWs0ha1b8vpngPZOZI9jT9HkgZbWICXWC57Hozl+
-         oYRGVoNKXV/YqdqiBjPlDktMqvj2ccCTq2Aw1JsXOKcfFA3SQpdjdLGfUf9cgxtuWBwn
-         ++iZF4xPVfZkMQ9G9WjOz1cIbD1ShHoRlmWTfYOu0WWH9zRa2FYjrDWc31iYlxGg0Zau
-         yiqQ5vdUkm0QAdSpj2JBBymKIFNU0Jx6X3y2rqP82Ve1LOG581bJNMM1xCd7p+9chGF9
-         Uy5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697175089; x=1697779889;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Jy7TboT1tjJJztCz7Esa81WmhMy+A2tzF01Kh4RO/iQ=;
-        b=qepUJbVkXqWIP5evQ9iD3avoqpHyzbvo4VnonHMGVm1DYg0dvcRIXezJ14WuUnJFVC
-         8w3CIipzQD8FtbFEpXZvHQJn2cWmqnu1DImj3/M0ViMrgycKCaXqdVGXUp2wrbcPpqmp
-         8kTj2AjYOFnB69bgvsatb3ilsrUbtYMYXpR9QtWHsCUSKIn5xLr59FW/1rV3u+0SlnVm
-         eepZ2jx0Z4SFEl83uO2vJaqVJ1IrcTXcFYqlm4pNv5zzUlIsLjatMMGmGVwiBVx0eQym
-         5jGENQfIxRkvPja1HHjKnom5kmg0UTXAnJYZDJCawY/hUwf2Z4YhGMHjyvq6QQoFPS3Y
-         7FUg==
-X-Gm-Message-State: AOJu0YyHb7V0mXZUrRyclKU/P9yxbq46SVCda6evqFkcjEbpMbBYZvmP
-	Xl6Hi02MS+9KSv8U80POrlo=
-X-Google-Smtp-Source: AGHT+IHySDr3oEw1qDXbIuzEx4XcRygIfCFWDj/u4f5YrKZqXJ1e1m2fIFG1DX9JEnpa3d6n1wKU4w==
-X-Received: by 2002:a05:6a20:729c:b0:15e:bcd:57f5 with SMTP id o28-20020a056a20729c00b0015e0bcd57f5mr26569539pzk.3.1697175089434;
-        Thu, 12 Oct 2023 22:31:29 -0700 (PDT)
-Received: from dreambig.dreambig.corp ([58.27.187.115])
-        by smtp.gmail.com with ESMTPSA id d16-20020a17090ad99000b00274bbfc34c8sm2764917pjv.16.2023.10.12.22.31.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Oct 2023 22:31:29 -0700 (PDT)
-From: Muhammad Muzammil <m.muzzammilashraf@gmail.com>
-To: martin.lau@linux.dev,
-	yonghong.song@linux.dev,
-	john.fastabend@gmail.com
-Subject: [PATCH] arch: powerpc: net: bpf_jit_comp32.c: Fixed 'instead' typo
-Date: Fri, 13 Oct 2023 10:31:18 +0500
-Message-Id: <20231013053118.11221-1-m.muzzammilashraf@gmail.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S6J8V5QxMz3bYc
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Oct 2023 18:31:06 +1100 (AEDT)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39D7QR15016091;
+	Fri, 13 Oct 2023 07:30:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=PZcn3Fv4gRUXZDkr1qH1Xsndhw6sXPvItkl6A6F4V2I=;
+ b=aaHk70p6Sdg14piObE3UtJKu3j7T4x7VsGRd8wADiJL+wkALQT917fGIpZjyZ3BvUu2k
+ cve1JcBCPz/FNm+jrNqx2emDCeujOgWGpQe8/3Iy91ux2UqNLgUfFutqvsVaN6ZZML6Z
+ 4uxy4eQHFdVGs4DYIxQiOcPa0TJGl+KU1uCtsPw8XJLVdT8VqUdhYDGmWbRY9WeaH9hH
+ gp6Pfm/9vvRhiRGsS4FYIpRcxX9WAIpw1JbsyKN9qEHWfm3Gfn0vcAtPbqbW6VMNy3p0
+ f/SZBteGPxMlgYV1LEbWrZgVW9hG9KX6z8+x0XYDL90O2oZ04TCQcDoZtmK6GJUJHbBS jA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tq15bgj95-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Oct 2023 07:30:35 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39D7QTHU016361;
+	Fri, 13 Oct 2023 07:30:35 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tq15bgj8r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Oct 2023 07:30:35 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39D5PO5H029739;
+	Fri, 13 Oct 2023 07:30:34 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tpt5bjbb5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Oct 2023 07:30:34 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39D7URKS3736246
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 13 Oct 2023 07:30:27 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F29EE2004E;
+	Fri, 13 Oct 2023 07:30:26 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 197EE20043;
+	Fri, 13 Oct 2023 07:30:25 +0000 (GMT)
+Received: from athiras-mbp.in.ibm.com (unknown [9.109.214.47])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 13 Oct 2023 07:30:24 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
+        irogers@google.com, namhyung@kernel.org
+Subject: [PATCH V2 0/3] Fix for shellcheck issues with latest scripts in tests/shell
+Date: Fri, 13 Oct 2023 13:00:18 +0530
+Message-Id: <20231013073021.99794-1-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.35.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: rgqWIhMhFOnjlH99B2bhDgw9JFTcu9kC
+X-Proofpoint-GUID: 4mfAP3UJKOVpSQQ5Q2c22I75q1wl8Uql
 Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Fri, 13 Oct 2023 17:10:23 +1100
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-13_03,2023-10-12_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 mlxscore=0
+ lowpriorityscore=0 adultscore=0 phishscore=0 priorityscore=1501
+ clxscore=1015 impostorscore=0 spamscore=0 suspectscore=0 mlxlogscore=740
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310130061
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,30 +95,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Muhammad Muzammil <m.muzzammilashraf@gmail.com>
+Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fixed 'instead' typo
+shellcheck was run on perf tool shell scripts as a pre-requisite
+to include a build option for shellcheck discussed here:
+https://www.spinics.net/lists/linux-perf-users/msg25553.html
 
-Signed-off-by: Muhammad Muzammil <m.muzzammilashraf@gmail.com>
----
- arch/powerpc/net/bpf_jit_comp32.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+And fixes were added for the coding/formatting issues in
+two patchsets:
+https://lore.kernel.org/linux-perf-users/20230613164145.50488-1-atrajeev@linux.vnet.ibm.com/
+https://lore.kernel.org/linux-perf-users/20230709182800.53002-1-atrajeev@linux.vnet.ibm.com/
 
-diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
-index 7f91ea064c08..bc7f92ec7f2d 100644
---- a/arch/powerpc/net/bpf_jit_comp32.c
-+++ b/arch/powerpc/net/bpf_jit_comp32.c
-@@ -940,7 +940,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
- 				 * !fp->aux->verifier_zext. Emit NOP otherwise.
- 				 *
- 				 * Note that "li reg_h,0" is emitted for BPF_B/H/W case,
--				 * if necessary. So, jump there insted of emitting an
-+				 * if necessary. So, jump there instead of emitting an
- 				 * additional "li reg_h,0" instruction.
- 				 */
- 				if (size == BPF_DW && !fp->aux->verifier_zext)
+Three additional issues were observed and fixes are part of:
+git://git.kernel.org/pub/scm/linux/kernel/git/acme/linux.git
+
+With recent commits in perf, other three issues are observed.
+shellcheck version: 0.6.0
+The changes are with recent commits ( which is mentioned in each patch)
+for lock_contention, record_sideband and stat_all_metricgroups test.
+Patch series fixes these testcases and patches are on top of:
+git://git.kernel.org/pub/scm/linux/kernel/git/acme/linux.git
+
+The version 1 patchset had fix patch for test_arm_coresight.sh.
+Dropping that in V2 based on discussion here:
+https://lore.kernel.org/linux-perf-users/F265857D-0D37-4878-908C-D20732F212F9@linux.vnet.ibm.com/T/#u
+
+Athira Rajeev (3):
+  tools/perf/tests Ignore the shellcheck SC2046 warning in
+    lock_contention
+  tools/perf/tests: Fix shellcheck warning in record_sideband.sh test
+  tools/perf/tests/shell: Fix shellcheck warning SC2112 with
+    stat_all_metricgroups
+
+ tools/perf/tests/shell/lock_contention.sh       | 1 +
+ tools/perf/tests/shell/record_sideband.sh       | 2 +-
+ tools/perf/tests/shell/stat_all_metricgroups.sh | 2 +-
+ 3 files changed, 3 insertions(+), 2 deletions(-)
+
 -- 
-2.27.0
+2.31.1
 
