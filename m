@@ -2,106 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 451A57C8B93
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Oct 2023 18:47:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75F647C8CBF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Oct 2023 20:04:04 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=k4i41Nkv;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=LGUFqBJR;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S6XVD0bHkz3vYH
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Oct 2023 03:47:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S6ZBp2PG0z3vYf
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Oct 2023 05:04:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=k4i41Nkv;
+	dkim=pass (2048-bit key; secure) header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=LGUFqBJR;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sipsolutions.net (client-ip=2a01:4f8:242:246e::2; helo=sipsolutions.net; envelope-from=johannes@sipsolutions.net; receiver=lists.ozlabs.org)
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S6XTJ3TV0z3cB0
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Oct 2023 03:46:28 +1100 (AEDT)
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4S6XTD4Pjwz4xPY
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Oct 2023 03:46:24 +1100 (AEDT)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4S6XTD4LQTz4xVb; Sat, 14 Oct 2023 03:46:24 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=k4i41Nkv;
-	dkim-atps=neutral
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4S6XTD1NDLz4xPY
-	for <linuxppc-dev@ozlabs.org>; Sat, 14 Oct 2023 03:46:23 +1100 (AEDT)
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39DGZQds000884;
-	Fri, 13 Oct 2023 16:46:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=UVwTBnE0hv0Xyxv8GV2ZZ3977whpTZ5bVjZAsJt/mkw=;
- b=k4i41Nkv+CEzfCXqq4X9ULnfslah/ZwbqOnHYLZ/gsc822SwA6UeUnig036qQiY/Mdb6
- IbwnrCv+/L8qmAsVgBxvQ5w5rng4WDxu+M4mQCzalSLtc2ykcoHhra+Y/k+rCPeONKnW
- b+c2z4822WK+kOmz9iiLu4w6VuKh396Rtg5UBRw0WgSZqA5Giwp/JbNuqY0/swJudmF1
- w6edaLT3kT8p778qnu46ttYRoKaiGlJUKzKjjy6K+o+QmGV+dpNAdq4PyyiTpJnLDC+w
- a2IifnPvDsoHn/aIZ9+A/dOp0e1c/haSYgYWle9FYm43svhu4LXDEuSzjhNywpUCZ5mI HA== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tq9ht8b20-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Oct 2023 16:46:09 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39DGgXa8009030;
-	Fri, 13 Oct 2023 16:46:08 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tpt57n9bd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Oct 2023 16:46:08 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39DGk5P344958300
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 13 Oct 2023 16:46:05 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 71EF120043;
-	Fri, 13 Oct 2023 16:46:05 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ED46F20040;
-	Fri, 13 Oct 2023 16:46:02 +0000 (GMT)
-Received: from [9.43.43.225] (unknown [9.43.43.225])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 13 Oct 2023 16:46:02 +0000 (GMT)
-Message-ID: <991aba16-fee6-ee78-4d80-f5c58fca801f@linux.ibm.com>
-Date: Fri, 13 Oct 2023 22:16:01 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S6Z9w0NMkz2yh5
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Oct 2023 05:03:14 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=+YCPIF7bIuvSFdfYLoHL+t68NvW/EnMItKeS5kyuoaw=;
+	t=1697220194; x=1698429794; b=LGUFqBJRDSQz5DffLHzZTeJ4jMlwtWA6p2fMYUeVM8uLdUt
+	k5eJsA8NjxUV4MyJ0OsiIUikw0WDuuXZ6BoqV0LQh75b4ba+k5eQx2OJGWbE1wC1p7aenM8UtIiNN
+	74Wts7eojwfum47p9BKoTuEmZ4x5MR/SbuiqW+EdkqWmo1z6BFZcHon2D+J8l5N0elJSXEhoOiQma
+	+v5ktwHxVzVNnDF7TT7SwLIkheVC2OdVQx0721olZtKaTizugG7JiRJOK/xqQxGhvM6gISuXo5isZ
+	fmDU6YuRfBjhgq5BDpbLqG+zpVk4wFCgJwxqYLF85QJ1kSh44tahbnG9Ps3x/txQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97-RC1)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1qrMUs-00000004lf0-44Ty;
+	Fri, 13 Oct 2023 20:02:51 +0200
+Message-ID: <789449f63ff6175ff46951507c03753f4430aa85.camel@sipsolutions.net>
+Subject: Re: [PATCH] [RFC] wireless: move obsolete drivers to staging
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Arnd Bergmann <arnd@arndb.de>, Geoff Levand <geoff@infradead.org>, Geert
+	Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 13 Oct 2023 20:02:49 +0200
+In-Reply-To: <2fb4f151-9146-4cce-a3e6-ca80a95cf590@app.fastmail.com>
+References: <20231010155444.858483-1-arnd@kernel.org>
+	 <2023101051-unmasked-cleaver-79b3@gregkh> <87y1g94szz.fsf@kernel.org>
+	 <2023101139-pyromania-game-2237@gregkh> <87r0m1fwg9.fsf@kernel.org>
+	 <20231011080955.1beeb010@kernel.org> <87sf6g2hc8.fsf@kernel.org>
+	 <63e57ef8-c9f2-489a-8df8-51dcffd437c6@app.fastmail.com>
+	 <b1c87f71abef5aba6b39893a417466bf9f65c2d5.camel@sipsolutions.net>
+	 <CAMuHMdX3F9rvD3Fzbc1dwm7Vm73VW1x5ETbxkk-jJm3Bpr5i+A@mail.gmail.com>
+	 <d336126d58e12e8e67078c8142a524c667cc5639.camel@sipsolutions.net>
+	 <39719eae-f166-4059-a70d-c6b74ecd46e2@infradead.org>
+	 <2fb4f151-9146-4cce-a3e6-ca80a95cf590@app.fastmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v11 1/4] powerpc/kexec: turn some static helper functions
- public
-Content-Language: en-US
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        "linuxppc-dev@ozlabs.org" <linuxppc-dev@ozlabs.org>,
-        "mpe@ellerman.id.au" <mpe@ellerman.id.au>
-References: <20230619024934.567046-1-sourabhjain@linux.ibm.com>
- <20230619024934.567046-2-sourabhjain@linux.ibm.com>
- <11f50c2e-a9b7-c5b5-d2b1-d52d3b3b73dc@csgroup.eu>
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <11f50c2e-a9b7-c5b5-d2b1-d52d3b3b73dc@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: nn4ldwinsp9V0DNo3e0cvOrgoJl4InPO
-X-Proofpoint-ORIG-GUID: nn4ldwinsp9V0DNo3e0cvOrgoJl4InPO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-13_07,2023-10-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- malwarescore=0 mlxscore=0 suspectscore=0 lowpriorityscore=0 phishscore=0
- priorityscore=1501 bulkscore=0 clxscore=1011 spamscore=0 impostorscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310130141
+X-malware-bazaar: not-scanned
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,426 +70,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "ldufour@linux.ibm.com" <ldufour@linux.ibm.com>, "mahesh@linux.vnet.ibm.com" <mahesh@linux.vnet.ibm.com>, "kexec@lists.infradead.org" <kexec@lists.infradead.org>, Laurent Dufour <laurent.dufour@fr.ibm.com>, "eric.devolder@oracle.com" <eric.devolder@oracle.com>, "hbathini@linux.ibm.com" <hbathini@linux.ibm.com>
+Cc: Arnd Bergmann <arnd@kernel.org>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Kalle Valo <kvalo@kernel.org>, linux-staging@lists.linux.dev, linux-wireless@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, linux-arm-kernel@lists.infradead.org, Pavel Machek <pavel@ucw.cz>, Jakub Kicinski <kuba@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "David S . Miller" <davem@davemloft.net>, linux-kernel@vger.kernel.org, Larry Finger <Larry.Finger@lwfinger.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Christophe,
+On Fri, 2023-10-13 at 17:44 +0200, Arnd Bergmann wrote:
+> On Thu, Oct 12, 2023, at 18:36, Geoff Levand wrote:
+> > On 10/12/23 17:41, Johannes Berg wrote:
+> > > But seriously - is it worth to try to keep a wireless driver for it i=
+f
+> > > we don't even know anyone using a PS3 at all?
+> >=20
+> > There is still a considerable user base for the PS3, so we
+> > must keep the ps3-gelic-wireless driver.
+>=20
+> Do you know if anyone has tried changing this driver over to the
+> cfg80211 interface from the wireless extensions?
 
-On 13/10/23 18:59, Christophe Leroy wrote:
->
-> Le 19/06/2023 à 04:49, Sourabh Jain a écrit :
->> Move update_cpus_node and get_crash_memory_ranges functions from
->> kexec/file_load_64.c to kexec/core_64.c to make these functions usable
->> by other kexec components.
->>
->> Later in the series, these functions are utilized to do in-kernel update
->> to kexec segments on CPU/Memory hot plug/unplug or online/offline events
->> for both kexec_load and kexec_file_load syscalls.
->>
->> No functional change intended.
->>
->> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
->> Reviewed-by: Laurent Dufour <laurent.dufour@fr.ibm.com>
-> This patch doesn't apply, if still applicable can you rebase and resubmit ?
+I looked at that yesterday, and sadly I _think_ it's not even possible,
+there are some corner cases in it like "no WPA2" that don't seem to be
+fully covered in cfg80211/nl80211, at least not with the APIs today and
+with current versions of wpa_supplicant.
 
-I will be sending next version soon.
+It might still be doable because things like
+WPA_DRIVER_CAPA_KEY_MGMT_WPA2_PSK don't really seem to be used much in
+wpa_supplicant, but we'd have to carefully test that I guess.
 
-Thanks
-Sourabh
->
->> ---
->>    arch/powerpc/include/asm/kexec.h  |   6 ++
->>    arch/powerpc/kexec/core_64.c      | 166 ++++++++++++++++++++++++++++++
->>    arch/powerpc/kexec/file_load_64.c | 162 -----------------------------
->>    3 files changed, 172 insertions(+), 162 deletions(-)
->>
->> diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
->> index a1ddba01e7d1..8090ad7d97d9 100644
->> --- a/arch/powerpc/include/asm/kexec.h
->> +++ b/arch/powerpc/include/asm/kexec.h
->> @@ -99,6 +99,12 @@ void relocate_new_kernel(unsigned long indirection_page, unsigned long reboot_co
->>    
->>    void kexec_copy_flush(struct kimage *image);
->>    
->> +#ifdef CONFIG_PPC64
->> +struct crash_mem;
->> +int update_cpus_node(void *fdt);
->> +int get_crash_memory_ranges(struct crash_mem **mem_ranges);
->> +#endif
->> +
->>    #if defined(CONFIG_CRASH_DUMP) && defined(CONFIG_PPC_RTAS)
->>    void crash_free_reserved_phys_range(unsigned long begin, unsigned long end);
->>    #define crash_free_reserved_phys_range crash_free_reserved_phys_range
->> diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
->> index a79e28c91e2b..0b292f93a74c 100644
->> --- a/arch/powerpc/kexec/core_64.c
->> +++ b/arch/powerpc/kexec/core_64.c
->> @@ -17,6 +17,8 @@
->>    #include <linux/cpu.h>
->>    #include <linux/hardirq.h>
->>    #include <linux/of.h>
->> +#include <linux/libfdt.h>
->> +#include <linux/memblock.h>
->>    
->>    #include <asm/page.h>
->>    #include <asm/current.h>
->> @@ -30,6 +32,8 @@
->>    #include <asm/hw_breakpoint.h>
->>    #include <asm/svm.h>
->>    #include <asm/ultravisor.h>
->> +#include <asm/kexec_ranges.h>
->> +#include <asm/crashdump-ppc64.h>
->>    
->>    int machine_kexec_prepare(struct kimage *image)
->>    {
->> @@ -377,6 +381,168 @@ void default_machine_kexec(struct kimage *image)
->>    	/* NOTREACHED */
->>    }
->>    
->> +/**
->> + * get_crash_memory_ranges - Get crash memory ranges. This list includes
->> + *                           first/crashing kernel's memory regions that
->> + *                           would be exported via an elfcore.
->> + * @mem_ranges:              Range list to add the memory ranges to.
->> + *
->> + * Returns 0 on success, negative errno on error.
->> + */
->> +int get_crash_memory_ranges(struct crash_mem **mem_ranges)
->> +{
->> +	phys_addr_t base, end;
->> +	struct crash_mem *tmem;
->> +	u64 i;
->> +	int ret;
->> +
->> +	for_each_mem_range(i, &base, &end) {
->> +		u64 size = end - base;
->> +
->> +		/* Skip backup memory region, which needs a separate entry */
->> +		if (base == BACKUP_SRC_START) {
->> +			if (size > BACKUP_SRC_SIZE) {
->> +				base = BACKUP_SRC_END + 1;
->> +				size -= BACKUP_SRC_SIZE;
->> +			} else
->> +				continue;
->> +		}
->> +
->> +		ret = add_mem_range(mem_ranges, base, size);
->> +		if (ret)
->> +			goto out;
->> +
->> +		/* Try merging adjacent ranges before reallocation attempt */
->> +		if ((*mem_ranges)->nr_ranges == (*mem_ranges)->max_nr_ranges)
->> +			sort_memory_ranges(*mem_ranges, true);
->> +	}
->> +
->> +	/* Reallocate memory ranges if there is no space to split ranges */
->> +	tmem = *mem_ranges;
->> +	if (tmem && (tmem->nr_ranges == tmem->max_nr_ranges)) {
->> +		tmem = realloc_mem_ranges(mem_ranges);
->> +		if (!tmem)
->> +			goto out;
->> +	}
->> +
->> +	/* Exclude crashkernel region */
->> +	ret = crash_exclude_mem_range(tmem, crashk_res.start, crashk_res.end);
->> +	if (ret)
->> +		goto out;
->> +
->> +	/*
->> +	 * FIXME: For now, stay in parity with kexec-tools but if RTAS/OPAL
->> +	 *        regions are exported to save their context at the time of
->> +	 *        crash, they should actually be backed up just like the
->> +	 *        first 64K bytes of memory.
->> +	 */
->> +	ret = add_rtas_mem_range(mem_ranges);
->> +	if (ret)
->> +		goto out;
->> +
->> +	ret = add_opal_mem_range(mem_ranges);
->> +	if (ret)
->> +		goto out;
->> +
->> +	/* create a separate program header for the backup region */
->> +	ret = add_mem_range(mem_ranges, BACKUP_SRC_START, BACKUP_SRC_SIZE);
->> +	if (ret)
->> +		goto out;
->> +
->> +	sort_memory_ranges(*mem_ranges, false);
->> +out:
->> +	if (ret)
->> +		pr_err("Failed to setup crash memory ranges\n");
->> +	return ret;
->> +}
->> +
->> +/**
->> + * add_node_props - Reads node properties from device node structure and add
->> + *                  them to fdt.
->> + * @fdt:            Flattened device tree of the kernel
->> + * @node_offset:    offset of the node to add a property at
->> + * @dn:             device node pointer
->> + *
->> + * Returns 0 on success, negative errno on error.
->> + */
->> +static int add_node_props(void *fdt, int node_offset, const struct device_node *dn)
->> +{
->> +	int ret = 0;
->> +	struct property *pp;
->> +
->> +	if (!dn)
->> +		return -EINVAL;
->> +
->> +	for_each_property_of_node(dn, pp) {
->> +		ret = fdt_setprop(fdt, node_offset, pp->name, pp->value, pp->length);
->> +		if (ret < 0) {
->> +			pr_err("Unable to add %s property: %s\n", pp->name, fdt_strerror(ret));
->> +			return ret;
->> +		}
->> +	}
->> +	return ret;
->> +}
->> +
->> +/**
->> + * update_cpus_node - Update cpus node of flattened device tree using of_root
->> + *                    device node.
->> + * @fdt:              Flattened device tree of the kernel.
->> + *
->> + * Returns 0 on success, negative errno on error.
->> + */
->> +int update_cpus_node(void *fdt)
->> +{
->> +	struct device_node *cpus_node, *dn;
->> +	int cpus_offset, cpus_subnode_offset, ret = 0;
->> +
->> +	cpus_offset = fdt_path_offset(fdt, "/cpus");
->> +	if (cpus_offset < 0 && cpus_offset != -FDT_ERR_NOTFOUND) {
->> +		pr_err("Malformed device tree: error reading /cpus node: %s\n",
->> +		       fdt_strerror(cpus_offset));
->> +		return cpus_offset;
->> +	}
->> +
->> +	if (cpus_offset > 0) {
->> +		ret = fdt_del_node(fdt, cpus_offset);
->> +		if (ret < 0) {
->> +			pr_err("Error deleting /cpus node: %s\n", fdt_strerror(ret));
->> +			return -EINVAL;
->> +		}
->> +	}
->> +
->> +	/* Add cpus node to fdt */
->> +	cpus_offset = fdt_add_subnode(fdt, fdt_path_offset(fdt, "/"), "cpus");
->> +	if (cpus_offset < 0) {
->> +		pr_err("Error creating /cpus node: %s\n", fdt_strerror(cpus_offset));
->> +		return -EINVAL;
->> +	}
->> +
->> +	/* Add cpus node properties */
->> +	cpus_node = of_find_node_by_path("/cpus");
->> +	ret = add_node_props(fdt, cpus_offset, cpus_node);
->> +	of_node_put(cpus_node);
->> +	if (ret < 0)
->> +		return ret;
->> +
->> +	/* Loop through all subnodes of cpus and add them to fdt */
->> +	for_each_node_by_type(dn, "cpu") {
->> +		cpus_subnode_offset = fdt_add_subnode(fdt, cpus_offset, dn->full_name);
->> +		if (cpus_subnode_offset < 0) {
->> +			pr_err("Unable to add %s subnode: %s\n", dn->full_name,
->> +			       fdt_strerror(cpus_subnode_offset));
->> +			ret = cpus_subnode_offset;
->> +			goto out;
->> +		}
->> +
->> +		ret = add_node_props(fdt, cpus_subnode_offset, dn);
->> +		if (ret < 0)
->> +			goto out;
->> +	}
->> +out:
->> +	of_node_put(dn);
->> +	return ret;
->> +}
->> +
->>    #ifdef CONFIG_PPC_64S_HASH_MMU
->>    /* Values we need to export to the second kernel via the device tree. */
->>    static unsigned long htab_base;
->> diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
->> index 110d28bede2a..5b0b3f61e0e7 100644
->> --- a/arch/powerpc/kexec/file_load_64.c
->> +++ b/arch/powerpc/kexec/file_load_64.c
->> @@ -133,81 +133,6 @@ static int get_usable_memory_ranges(struct crash_mem **mem_ranges)
->>    	return ret;
->>    }
->>    
->> -/**
->> - * get_crash_memory_ranges - Get crash memory ranges. This list includes
->> - *                           first/crashing kernel's memory regions that
->> - *                           would be exported via an elfcore.
->> - * @mem_ranges:              Range list to add the memory ranges to.
->> - *
->> - * Returns 0 on success, negative errno on error.
->> - */
->> -static int get_crash_memory_ranges(struct crash_mem **mem_ranges)
->> -{
->> -	phys_addr_t base, end;
->> -	struct crash_mem *tmem;
->> -	u64 i;
->> -	int ret;
->> -
->> -	for_each_mem_range(i, &base, &end) {
->> -		u64 size = end - base;
->> -
->> -		/* Skip backup memory region, which needs a separate entry */
->> -		if (base == BACKUP_SRC_START) {
->> -			if (size > BACKUP_SRC_SIZE) {
->> -				base = BACKUP_SRC_END + 1;
->> -				size -= BACKUP_SRC_SIZE;
->> -			} else
->> -				continue;
->> -		}
->> -
->> -		ret = add_mem_range(mem_ranges, base, size);
->> -		if (ret)
->> -			goto out;
->> -
->> -		/* Try merging adjacent ranges before reallocation attempt */
->> -		if ((*mem_ranges)->nr_ranges == (*mem_ranges)->max_nr_ranges)
->> -			sort_memory_ranges(*mem_ranges, true);
->> -	}
->> -
->> -	/* Reallocate memory ranges if there is no space to split ranges */
->> -	tmem = *mem_ranges;
->> -	if (tmem && (tmem->nr_ranges == tmem->max_nr_ranges)) {
->> -		tmem = realloc_mem_ranges(mem_ranges);
->> -		if (!tmem)
->> -			goto out;
->> -	}
->> -
->> -	/* Exclude crashkernel region */
->> -	ret = crash_exclude_mem_range(tmem, crashk_res.start, crashk_res.end);
->> -	if (ret)
->> -		goto out;
->> -
->> -	/*
->> -	 * FIXME: For now, stay in parity with kexec-tools but if RTAS/OPAL
->> -	 *        regions are exported to save their context at the time of
->> -	 *        crash, they should actually be backed up just like the
->> -	 *        first 64K bytes of memory.
->> -	 */
->> -	ret = add_rtas_mem_range(mem_ranges);
->> -	if (ret)
->> -		goto out;
->> -
->> -	ret = add_opal_mem_range(mem_ranges);
->> -	if (ret)
->> -		goto out;
->> -
->> -	/* create a separate program header for the backup region */
->> -	ret = add_mem_range(mem_ranges, BACKUP_SRC_START, BACKUP_SRC_SIZE);
->> -	if (ret)
->> -		goto out;
->> -
->> -	sort_memory_ranges(*mem_ranges, false);
->> -out:
->> -	if (ret)
->> -		pr_err("Failed to setup crash memory ranges\n");
->> -	return ret;
->> -}
->> -
->>    /**
->>     * get_reserved_memory_ranges - Get reserve memory ranges. This list includes
->>     *                              memory regions that should be added to the
->> @@ -1018,93 +943,6 @@ unsigned int kexec_extra_fdt_size_ppc64(struct kimage *image)
->>    	return extra_size;
->>    }
->>    
->> -/**
->> - * add_node_props - Reads node properties from device node structure and add
->> - *                  them to fdt.
->> - * @fdt:            Flattened device tree of the kernel
->> - * @node_offset:    offset of the node to add a property at
->> - * @dn:             device node pointer
->> - *
->> - * Returns 0 on success, negative errno on error.
->> - */
->> -static int add_node_props(void *fdt, int node_offset, const struct device_node *dn)
->> -{
->> -	int ret = 0;
->> -	struct property *pp;
->> -
->> -	if (!dn)
->> -		return -EINVAL;
->> -
->> -	for_each_property_of_node(dn, pp) {
->> -		ret = fdt_setprop(fdt, node_offset, pp->name, pp->value, pp->length);
->> -		if (ret < 0) {
->> -			pr_err("Unable to add %s property: %s\n", pp->name, fdt_strerror(ret));
->> -			return ret;
->> -		}
->> -	}
->> -	return ret;
->> -}
->> -
->> -/**
->> - * update_cpus_node - Update cpus node of flattened device tree using of_root
->> - *                    device node.
->> - * @fdt:              Flattened device tree of the kernel.
->> - *
->> - * Returns 0 on success, negative errno on error.
->> - */
->> -static int update_cpus_node(void *fdt)
->> -{
->> -	struct device_node *cpus_node, *dn;
->> -	int cpus_offset, cpus_subnode_offset, ret = 0;
->> -
->> -	cpus_offset = fdt_path_offset(fdt, "/cpus");
->> -	if (cpus_offset < 0 && cpus_offset != -FDT_ERR_NOTFOUND) {
->> -		pr_err("Malformed device tree: error reading /cpus node: %s\n",
->> -		       fdt_strerror(cpus_offset));
->> -		return cpus_offset;
->> -	}
->> -
->> -	if (cpus_offset > 0) {
->> -		ret = fdt_del_node(fdt, cpus_offset);
->> -		if (ret < 0) {
->> -			pr_err("Error deleting /cpus node: %s\n", fdt_strerror(ret));
->> -			return -EINVAL;
->> -		}
->> -	}
->> -
->> -	/* Add cpus node to fdt */
->> -	cpus_offset = fdt_add_subnode(fdt, fdt_path_offset(fdt, "/"), "cpus");
->> -	if (cpus_offset < 0) {
->> -		pr_err("Error creating /cpus node: %s\n", fdt_strerror(cpus_offset));
->> -		return -EINVAL;
->> -	}
->> -
->> -	/* Add cpus node properties */
->> -	cpus_node = of_find_node_by_path("/cpus");
->> -	ret = add_node_props(fdt, cpus_offset, cpus_node);
->> -	of_node_put(cpus_node);
->> -	if (ret < 0)
->> -		return ret;
->> -
->> -	/* Loop through all subnodes of cpus and add them to fdt */
->> -	for_each_node_by_type(dn, "cpu") {
->> -		cpus_subnode_offset = fdt_add_subnode(fdt, cpus_offset, dn->full_name);
->> -		if (cpus_subnode_offset < 0) {
->> -			pr_err("Unable to add %s subnode: %s\n", dn->full_name,
->> -			       fdt_strerror(cpus_subnode_offset));
->> -			ret = cpus_subnode_offset;
->> -			goto out;
->> -		}
->> -
->> -		ret = add_node_props(fdt, cpus_subnode_offset, dn);
->> -		if (ret < 0)
->> -			goto out;
->> -	}
->> -out:
->> -	of_node_put(dn);
->> -	return ret;
->> -}
->> -
->>    static int copy_property(void *fdt, int node_offset, const struct device_node *dn,
->>    			 const char *propname)
->>    {
+Also, it depends on the PS3 firmware version whether or not that's
+supported.
 
+Then again, arguably wifi without WPA2 is pretty much useless these
+days?
+
+johannes
