@@ -2,70 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 324E17C8EB0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Oct 2023 23:04:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57E477C8F29
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Oct 2023 23:33:15 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=hyOkyV3i;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kJHIqgzM;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S6fBl0gKlz3cbx
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Oct 2023 08:04:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S6fr92610z3cF4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Oct 2023 08:33:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=hyOkyV3i;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kJHIqgzM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b31; helo=mail-yb1-xb31.google.com; envelope-from=vishal.moola@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S6f9q51pxz2y1b
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Oct 2023 08:03:25 +1100 (AEDT)
-Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-d9ac31cb051so2412165276.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Oct 2023 14:03:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697231000; x=1697835800; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JtiOVCn2uSsz0FoSYRDQt6Ad/oEEDkzUyvmWznVzlSA=;
-        b=hyOkyV3iQ+iqCtc9Ia9ogb8ySsoZxo7DE/DC8cHOnHEmXznDYBDnesLqaaZ8CfPJV6
-         9VcLS8NJRE8fjVCxeZ0Eh04e/e+/VznFZEKbVQ9/bNhL1Q5FNG2irOMVoMayQ1DPJ5lB
-         ++YNxNj/lBGmRhilJOufImzBr7keXSb4pjgW1okOfM6Zuy+qSPZBVfKb3YkMpHIhUOKW
-         P8U1cjJ4CZBeFlI6Rra3AknWjZ3Oh/IP344oCRRS17ubckNgWV5Yx+6GM8FCmpQ05RTR
-         qEf9aZVSouvApPaOXBQLkq/JdkK5CD+ZzBe4HuUw074fJYPmxLVta4CI+C7oACFoJo+r
-         fmJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697231000; x=1697835800;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JtiOVCn2uSsz0FoSYRDQt6Ad/oEEDkzUyvmWznVzlSA=;
-        b=kJ/2N7EZ67WRHjzv+d3CwUCGMIvT5Z4o9ABGguCL/JQ3q73l8QcmyAabOx/jt1qVlw
-         ANZxW1w6NSSuOax3Yk4qw3FNpyyeCD5j8ViFw2L+tmFcu+8CIiu+2nMqgMYS99DblMlo
-         DfP5xpdL0L5ubAiwGvGvZ29k5WeEyGi0nr3iOJT64OjG87Y8L7J0Z6J+aE5DBTNJUUYp
-         /Fa0xsl5Cvuh6wENdoWZjO5UyUn/giQ+13pcL3K+LbJCcnVG/kxqNMGSKcuhAuAEupkT
-         Uo5Dv1QoKzFnkzvF0WF4i6at78DaonBTrCgrnHO/PdY59Y3tB52Ffi894uijE9/HEk2T
-         FVgw==
-X-Gm-Message-State: AOJu0YwCcZDYMJnL816MInio1NtadYQCduBPlhPKr5c8pJNeD4oT5fh/
-	/TDVsM+oudN/NAGBcbHn9ZD99wJvfaN6XJPYTWc=
-X-Google-Smtp-Source: AGHT+IHWHj9ILTPWExZ8ekeA0/ryyRW0ZV6k5VhEVnOo+k5EpZsvEbKt/nom23K7vTTS2zHZvjjk2tEmm58T8MLLm1U=
-X-Received: by 2002:a5b:64d:0:b0:d9b:3b3e:5a07 with SMTP id
- o13-20020a5b064d000000b00d9b3b3e5a07mr2004058ybq.5.1697230999223; Fri, 13 Oct
- 2023 14:03:19 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S6fqD5cmRz3bV7
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Oct 2023 08:32:24 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id C53B7CE3263;
+	Fri, 13 Oct 2023 21:32:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 04C12C433D9;
+	Fri, 13 Oct 2023 21:32:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1697232741;
+	bh=IEfWyZt/HG1wMIwURxC/fhcJtcXHmo+O3C/3hgdYIfY=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=kJHIqgzMNJDbgW0lrN1z/RajsQOKrGowCh0HDzfvzqSCQNrANnRDBpggORz43/aP9
+	 qaPrmRrGWfsAWm+wvlOEt4isLIESQdfw3A/rFiQf9QkUNtiLDnMvSAT/b8pupoe3DK
+	 0bB4CA3QHCYaBF+mRhHqA1ynerxR4DR2WINcqP83PbvTnjhPpH0hSney8C13gP3DN7
+	 TyKXvRuom3JLIBL5S174Sl3rJSjXz4/H1deExcqotf4MOIeIH1aUS2IN4V/rtGY0vc
+	 1wmdfF4XG2FUFtZm3t0D9dTbX7yVOHbIzhk7NGVskO47hh0NWeG4d6So0WlpE8leOZ
+	 w1mCHB4OjpKng==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E0AF9CDB482;
+	Fri, 13 Oct 2023 21:32:20 +0000 (UTC)
+From: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
+Subject: [PATCH v2 0/7] powerpc/pseries: new character devices for system
+ parameters and VPD
+Date: Fri, 13 Oct 2023 16:32:07 -0500
+Message-Id:  <20231013-papr-sys_rtas-vs-lockdown-v2-0-ead01ce01722@linux.ibm.com>
 MIME-Version: 1.0
-References: <20230807230513.102486-1-vishal.moola@gmail.com>
- <20230807230513.102486-15-vishal.moola@gmail.com> <20231012072505.6160-A-hca@linux.ibm.com>
-In-Reply-To: <20231012072505.6160-A-hca@linux.ibm.com>
-From: Vishal Moola <vishal.moola@gmail.com>
-Date: Fri, 13 Oct 2023 14:03:08 -0700
-Message-ID: <CAOzc2px-SFSnmjcPriiB3cm1fNj3+YC8S0VSp4t1QvDR0f4E2A@mail.gmail.com>
-Subject: Re: [PATCH mm-unstable v9 14/31] s390: Convert various pgalloc
- functions to use ptdescs
-To: Heiko Carstens <hca@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAFe3KWUC/4XNQQ6CMBCF4auQri0pUyniynsYYmgp0ggt6SBCC
+ He3EFcudPlPMt9bCGpvNJJztBCvR4PG2RBwiIhqSnvX1FShCTDg7JRktC97T3HGmx9KpCPS1ql
+ H5V6Wpio9piytZJYDCf+917WZdvtahG4MDs7P+9SYbNePCvBDHRPKaM5BAFc1V5m8tMY+p9jIL
+ lau24Y2JWFM/FN4yYWspRAa9JdSrOv6Bk0NQo4MAQAA
+To: Michael Ellerman <mpe@ellerman.id.au>, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ =?utf-8?q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1697232739; l=4080;
+ i=nathanl@linux.ibm.com; s=20230817; h=from:subject:message-id;
+ bh=IEfWyZt/HG1wMIwURxC/fhcJtcXHmo+O3C/3hgdYIfY=;
+ b=73IsP5J7aupFPCcMuZxJ7b21yWS9eh0Mu5cSbJyeF23z9t/S5H9dAEqqTzuhPaNt+6D5zIv0i
+ 7DBoUUtW3j1A2t5WX7XO4c0Wed0JEaA9dkcKgKirNR2GeYgqH0ZaY+0
+X-Developer-Key: i=nathanl@linux.ibm.com; a=ed25519;
+ pk=jPDF44RvT+9DGFOH3NGoIu1xN9dF+82pjdpnKjXfoJ0=
+X-Endpoint-Received:  by B4 Relay for nathanl@linux.ibm.com/20230817 with auth_id=78
+X-Original-From: Nathan Lynch <nathanl@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,58 +76,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linux-sh@vger.kernel.org, linux-openrisc@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>, linux-csky@vger.kernel.org, xen-devel@lists.xenproject.org, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-mips@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
+Reply-To: nathanl@linux.ibm.com
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, tyreld@linux.ibm.com, gcwilson@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Oct 12, 2023 at 12:25=E2=80=AFAM Heiko Carstens <hca@linux.ibm.com>=
- wrote:
->
-> On Mon, Aug 07, 2023 at 04:04:56PM -0700, Vishal Moola (Oracle) wrote:
-> > As part of the conversions to replace pgtable constructor/destructors w=
-ith
-> > ptdesc equivalents, convert various page table functions to use ptdescs=
-.
-> >
-> > Some of the functions use the *get*page*() helper functions. Convert
-> > these to use pagetable_alloc() and ptdesc_address() instead to help
-> > standardize page tables further.
-> >
-> > Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
-> > Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-> > ---
-> >  arch/s390/include/asm/pgalloc.h |   4 +-
-> >  arch/s390/include/asm/tlb.h     |   4 +-
-> >  arch/s390/mm/pgalloc.c          | 128 ++++++++++++++++----------------
-> >  3 files changed, 69 insertions(+), 67 deletions(-)
-> ...
-> > diff --git a/arch/s390/mm/pgalloc.c b/arch/s390/mm/pgalloc.c
-> > index d7374add7820..07fc660a24aa 100644
-> > --- a/arch/s390/mm/pgalloc.c
-> > +++ b/arch/s390/mm/pgalloc.c
-> ...
-> > @@ -488,16 +486,20 @@ static void base_pgt_free(unsigned long *table)
-> >  static unsigned long *base_crst_alloc(unsigned long val)
-> >  {
-> >       unsigned long *table;
-> > +     struct ptdesc *ptdesc;
-> >
-> > -     table =3D (unsigned long *)__get_free_pages(GFP_KERNEL, CRST_ALLO=
-C_ORDER);
-> > -     if (table)
-> > -             crst_table_init(table, val);
-> > +     ptdesc =3D pagetable_alloc(GFP_KERNEL & ~__GFP_HIGHMEM, CRST_ALLO=
-C_ORDER);
->
-> I guess I must miss something, but what is the reason to mask out
-> __GFP_HIGHMEM here? It is not part of GFP_KERNEL, nor does s390 support
-> HIGHMEM.
+Add character devices that expose PAPR-specific system parameters and
+VPD to user space.
 
-You're not missing anything.
+The problem: important platform features are enabled on Linux VMs
+through the powerpc-specific rtas() syscall in combination with
+writeable mappings of /dev/mem. In typical usage, this is encapsulated
+behind APIs provided by the librtas library. This paradigm is
+incompatible with lockdown, which prohibits /dev/mem access. It also
+is too low-level in many cases: a single logical operation may require
+multiple sys_rtas() calls in succession to complete. This carries the
+risk that a process may exit while leaving an operation unfinished. It
+also means that callers must coordinate their use of the syscall for
+functions that cannot tolerate multiple concurrent clients, such as
+ibm,get-vpd.
 
-This was replacing __get_free_pages() which also doesn't support HIGHMEM,
-so I had that in to ensure a non-HIGHMEM allocation in case a
-passed-in gfp_flags
-had it set. In hindsight since we're just passing in the GFP flags
-directly here, we don't
-actually need to mask out GFP_HIGHMEM.
+The solution presented here is to add a pair of small pseries-specific
+"drivers," one for VPD and one for system parameters. The new drivers
+expose these facilities to user space in ways that are compatible with
+lockdown and require no coordination between their clients.
+
+Both drivers could potentially support poll() methods to notify
+clients of changes to parameters or VPD that happen due to partition
+migration and other events. But that should be safe to leave for
+later, assuming there's any interest.
+
+I have made changes to librtas to prefer the new interfaces and
+verified that existing clients work correctly with the new code. A
+draft PR for that work is here:
+
+https://github.com/ibm-power-utilities/librtas/pull/36
+
+I expect to propose at least one more small driver in this style for
+platform dump retrieval in a separate submission in the future.
+
+---
+Changes in v2:
+- Fix unused-but-set variable warning in papr-sysparm code.
+- Rebase on powerpc/next branch.
+- Link to v1: https://lore.kernel.org/r/20231006-papr-sys_rtas-vs-lockdown-v1-0-3a36bfb66e2e@linux.ibm.com
+
+Changes in v1 vs initial RFC:
+- Add papr-sysparm driver and tests.
+- Add a papr-miscdev.h uapi header.
+- Prevent sys_rtas() from interfering with papr-vpd call sequences.
+- Handle -4 ("VPD changed") status in papr-vpd.
+- Include string_helpers.h in papr-vpd.c, per Michal Suchánek
+- Link to RFC: https://lore.kernel.org/r/20230822-papr-sys_rtas-vs-lockdown-v1-0-932623cf3c7b@linux.ibm.com
+
+---
+Nathan Lynch (7):
+      powerpc/uapi: export papr-miscdev.h header
+      powerpc/pseries: papr-vpd char driver for VPD retrieval
+      powerpc/rtas: serialize ibm,get-vpd service with papr-vpd sequences
+      powerpc/pseries/papr-sysparm: validate buffer object lengths
+      powerpc/pseries/papr-sysparm: expose chardev API to user space
+      powerpc/selftests: add test for papr-vpd
+      powerpc/selftests: add test for papr-sysparm
+
+ Documentation/userspace-api/ioctl/ioctl-number.rst |   4 +
+ arch/powerpc/include/asm/papr-sysparm.h            |  17 +-
+ arch/powerpc/include/asm/papr-vpd.h                |  18 +
+ arch/powerpc/include/uapi/asm/papr-miscdev.h       |   9 +
+ arch/powerpc/include/uapi/asm/papr-sysparm.h       |  58 +++
+ arch/powerpc/include/uapi/asm/papr-vpd.h           |  22 +
+ arch/powerpc/kernel/rtas.c                         |  26 +
+ arch/powerpc/platforms/pseries/Makefile            |   1 +
+ arch/powerpc/platforms/pseries/papr-sysparm.c      | 201 +++++++-
+ arch/powerpc/platforms/pseries/papr-vpd.c          | 542 +++++++++++++++++++++
+ tools/testing/selftests/powerpc/Makefile           |   2 +
+ .../selftests/powerpc/papr_sysparm/.gitignore      |   1 +
+ .../selftests/powerpc/papr_sysparm/Makefile        |  12 +
+ .../selftests/powerpc/papr_sysparm/papr_sysparm.c  | 164 +++++++
+ .../testing/selftests/powerpc/papr_vpd/.gitignore  |   1 +
+ tools/testing/selftests/powerpc/papr_vpd/Makefile  |  12 +
+ .../testing/selftests/powerpc/papr_vpd/papr_vpd.c  | 352 +++++++++++++
+ 17 files changed, 1434 insertions(+), 8 deletions(-)
+---
+base-commit: 0ebc7feae79ac07772a20382eebd8c3503313714
+change-id: 20230817-papr-sys_rtas-vs-lockdown-5c54505db792
+
+Best regards,
+-- 
+Nathan Lynch <nathanl@linux.ibm.com>
+
