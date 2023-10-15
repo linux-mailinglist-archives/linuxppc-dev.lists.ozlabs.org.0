@@ -1,59 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D57557C9C93
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Oct 2023 01:33:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 184F47C9C9A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Oct 2023 01:46:59 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=D3gtkzPI;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=S8HnPBaz;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S7xQB50xdz3cRY
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Oct 2023 10:33:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S7xjX751rz3cD7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Oct 2023 10:46:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=D3gtkzPI;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=S8HnPBaz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S7xPJ6dDtz2ydW
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Oct 2023 10:32:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S7xhd41H4z2yTN
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Oct 2023 10:46:08 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697412774; x=1728948774;
+  t=1697413570; x=1728949570;
   h=date:from:to:cc:subject:message-id;
-  bh=UYLWz6GWqHAtNk8xb/Nt+2Z7UofUp94+jyWy4ud0ncE=;
-  b=D3gtkzPIw74xaN8n6a7NBlK4s/XtNjiSJK+818qT78Y+cHVVjNcvIv0q
-   J6sOEGCTjmnZPIxXm/G2t6dIT0DMu2pTvSG9S3/Qeq/t1gn9l5Azoio1A
-   BsMl5URGg626N0g6yxKNLUTX6UEUU4l8ksi/9eugSimZTHWPEbe8MQBnq
-   Cv9UUfFpteROAj2AA2kl1AxJspVQFk88ZaoFGD8tZUdD3Y7avPC9oqory
-   s9r9gp/GADSMzd02t3Me5PfYugh0+Mr48OZHWaDsBaT/p7TNdI754v8dx
-   bgIn0Hr3yi6pr9c8G98z/aZywFZLT1rxi9pnwwC12qRxHxUFh8IbZROox
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="416487611"
-X-IronPort-AV: E=Sophos;i="6.03,226,1694761200"; 
-   d="scan'208";a="416487611"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2023 16:32:44 -0700
+  bh=gO7099l1v7l1nW1/IXEwpaLp+x3DIyjXIjYmi/lukis=;
+  b=S8HnPBazgMFfAlEo2QWO6O+BFxOAFZlm6qqTdxPxY5tOi2/ePRFHXDki
+   CkmjUmw1P0kN+37iCvkhM6JYz3U6/3NRz7InzuJg4dkNxaqxtcIyTPubX
+   AdRbLq+n3kkOLhVzUN/jM33y80k/BoxkwvYQ31wfEzGQB6FR2Y1xjqi+x
+   j7CY0x3Dojwlo6Z/w4qBtf70IdZ9hygtY7ODT3CVa99ezlsApR7a9QBla
+   Ah6J4GQ9SWVO8uf81KEZ+gClToReqBYYZHwAcqbXzj44hR6I1I9ybH2vt
+   +7WqQFLVtEKl3BljvuHiaDKcxsUUtGRUmLkp+vTHAV+aWyy2UeOfW7TuX
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="388287083"
+X-IronPort-AV: E=Sophos;i="6.03,228,1694761200"; 
+   d="scan'208";a="388287083"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2023 16:46:03 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="790618056"
+X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="749097405"
 X-IronPort-AV: E=Sophos;i="6.03,226,1694761200"; 
-   d="scan'208";a="790618056"
+   d="scan'208";a="749097405"
 Received: from lkp-server02.sh.intel.com (HELO f64821696465) ([10.239.97.151])
-  by orsmga001.jf.intel.com with ESMTP; 15 Oct 2023 16:32:43 -0700
+  by orsmga007.jf.intel.com with ESMTP; 15 Oct 2023 16:46:01 -0700
 Received: from kbuild by f64821696465 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1qsAb8-0007v9-0J;
-	Sun, 15 Oct 2023 23:32:39 +0000
-Date: Mon, 16 Oct 2023 07:32:36 +0800
+	id 1qsAo0-0007vf-30;
+	Sun, 15 Oct 2023 23:45:58 +0000
+Date: Mon, 16 Oct 2023 07:45:34 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- ff9e8f41513669e290f6e1904e1bc75950584491
-Message-ID: <202310160733.YDaPTmh3-lkp@intel.com>
+Subject: [powerpc:merge] BUILD SUCCESS
+ 16cbbabfa2a7d32f7d4eae046dda0ece2f157a70
+Message-ID: <202310160731.DGEQGKAD-lkp@intel.com>
 User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -70,10 +70,10 @@ Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: ff9e8f41513669e290f6e1904e1bc75950584491  powerpc/mm: Allow ARCH_FORCE_MAX_ORDER up to 12
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 16cbbabfa2a7d32f7d4eae046dda0ece2f157a70  Automatic merge of 'next' into merge (2023-10-15 20:56)
 
-elapsed time: 727m
+elapsed time: 740m
 
 configs tested: 104
 configs skipped: 2
