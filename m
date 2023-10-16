@@ -1,95 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B7227CA6F2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Oct 2023 13:51:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B2AF7CA7F6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Oct 2023 14:29:13 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=jannau.net header.i=@jannau.net header.a=rsa-sha256 header.s=fm1 header.b=nW8JwL/T;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=AF28Q16d;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=iogearbox.net header.i=@iogearbox.net header.a=rsa-sha256 header.s=default2302 header.b=mgT5JJOA;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S8Fnl0Fgpz3c56
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Oct 2023 22:51:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S8Gd31jNZz3c7K
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Oct 2023 23:29:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=jannau.net header.i=@jannau.net header.a=rsa-sha256 header.s=fm1 header.b=nW8JwL/T;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=AF28Q16d;
+	dkim=pass (2048-bit key; unprotected) header.d=iogearbox.net header.i=@iogearbox.net header.a=rsa-sha256 header.s=default2302 header.b=mgT5JJOA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=jannau.net (client-ip=66.111.4.229; helo=new3-smtp.messagingengine.com; envelope-from=j@jannau.net; receiver=lists.ozlabs.org)
-X-Greylist: delayed 353 seconds by postgrey-1.37 at boromir; Mon, 16 Oct 2023 22:50:50 AEDT
-Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com [66.111.4.229])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iogearbox.net (client-ip=213.133.104.62; helo=www62.your-server.de; envelope-from=daniel@iogearbox.net; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1275 seconds by postgrey-1.37 at boromir; Mon, 16 Oct 2023 23:28:26 AEDT
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S8Fmp1TGvz2yLr
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Oct 2023 22:50:50 +1100 (AEDT)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailnew.nyi.internal (Postfix) with ESMTP id 3011758034D;
-	Mon, 16 Oct 2023 07:44:51 -0400 (EDT)
-Received: from imap53 ([10.202.2.103])
-  by compute1.internal (MEProxy); Mon, 16 Oct 2023 07:44:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm1; t=1697456691; x=1697460291; bh=3C
-	1PfPveiaRs3ElXRm2Ihf7X0mwxNyKdWtRCHHHpbpo=; b=nW8JwL/TTNFtxwc2UK
-	CF+NkCnYs9+Td4HriptzKiYQTQmo++kTw+gxYsEctgs6XpUJfBMtN08wyVqipPYV
-	DVQAEpG3no+3Pr/JHa9L9+j59kFTCUbpaVV8XNZUiToWTN7kVOKJ/t9Jn03kqIW8
-	8PvCtnW6dM8mnlkVk+5aFFHcTf4Mchz5KtlsKM5PjlHW4OPC7xtML/jBnqTFUUWv
-	MJ8szAs9pCB1CIZdhvEDLkSUsx3H59DMMSwEysjCS/MPcBCU2WvVypxLYqNZl/Og
-	pHvABZlGaTzQCPBUQ+tIkJAxr4LIAyY4ASUWSw3C9YNeHSNFFGZ4i/IDvfIoXLau
-	7lMA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm3; t=1697456691; x=1697460291; bh=3C1PfPveiaRs3
-	ElXRm2Ihf7X0mwxNyKdWtRCHHHpbpo=; b=AF28Q16dg412MfVbXAXSTcwqZzLgs
-	0BmuDR5X2adEVDx0SNfpNpAfR/fKtkDmWT7qhlscnr4A/bN6Kk6+LifFP5t5qa25
-	erCG1gLeiiSnWxDLsQnJqYHssS9Btp+oiyRI+W1frAHFD+tNFe7r9RBHQZyuVFhY
-	I9oa2En/l8ABUYjKH5WD/wZdCznHGSYaAd0shVSPUOxx6w0kUg3lOVtEo3RYVJHH
-	01shsYNPD//w+6KnTtIeBnJKaQERy8ZS7vUdi9BjHT5XBdYfS8jVxxQKugD3gb5i
-	Nz+v9xD63rcv88VLvVkEOjZShxP7V+CIldAQX0ougMf4LhyuZFlGsEUYA==
-X-ME-Sender: <xms:MSItZZNDGu6k9bRZ3WhGgvGMiInakhaEopTlfaLZ2EH24xUWz8i7rw>
-    <xme:MSItZb_zXgdaESj-avPZXoF-_q7iPLmKfbXWvtj2x66XKECQk2XBVzFHxAFZTGRr7
-    mW_4M-Er2TceJtJDiY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrjedtgdegudcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdflrghn
-    nhgvucfirhhunhgruhdfuceojhesjhgrnhhnrghurdhnvghtqeenucggtffrrghtthgvrh
-    hnpeevvdfhtddvvddtgffggfeuteduhfeigeevfeffueekheetffekjeehjeefhfeitden
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjsehjrg
-    hnnhgruhdrnhgvth
-X-ME-Proxy: <xmx:MSItZYS637994kT_xsAHEBWDws37IUZPhHpeuCyoZt1m2W02MxuGFw>
-    <xmx:MSItZVtuaGJQpUfpmnsVy_fi5RBdrJipuKkBUx_QQ-EiHrAuAcdNIg>
-    <xmx:MSItZReDxJvIX9a4wA08kLZ1vNf77NZRCnZameqwwxuQvuJbycCfQA>
-    <xmx:MyItZc35kZ09XlJiHtxn5ky_KhbYa-UMT89LGIohaJO0CFcIVoYVJQ>
-Feedback-ID: i47b949f6:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 81B0C36409AE; Mon, 16 Oct 2023 07:44:49 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-1019-ged83ad8595-fm-20231002.001-ged83ad85
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S8GcB0fTqz2yps
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Oct 2023 23:28:26 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=TEnSZIvpSmwaN7cCqVlIu4FsV7ACOF+OL3jC1tuaUH0=; b=mgT5JJOALKatilAZzAvSwnGGcO
+	F1fn4cXst/MP3vXLygT0dFa0Vs1EV75pevRhCX7mfEXJ3C3g7fgrH8nmZE+FXVAIPbnrIMLqoadnC
+	xmYQJOxvQvBsb+PU8orK1E4xDVMTQ7D1zeMXRabULVyuFn9uVENytWZKJQ+JUHCdnha6KbG46C37K
+	nyVPRrs9r5ZxRV3Bue+ue12o3pZBmk+esjDRCfTsvWxUiiXnTuSD3S4ZuFZI8g+wAUwFkQUjizKFn
+	ADS1r2HhxyyNyf+J4Uz+p0FaDTAtLYrPnewuHUrL/09rnXhoP+tRzV8RgrjQZBVKR6rN+QCAxwd8D
+	2mVxKTjw==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1qsMND-000ALG-Pl; Mon, 16 Oct 2023 14:07:03 +0200
+Received: from [85.1.206.226] (helo=linux.home)
+	by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1qsMND-000F9v-E0; Mon, 16 Oct 2023 14:07:03 +0200
+Subject: Re: [PATCH v6 0/5] powerpc/bpf: use BPF prog pack allocator
+To: Hari Bathini <hbathini@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org
+References: <20231012200310.235137-1-hbathini@linux.ibm.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <140a1e76-dfa4-d20e-fc10-09b4f3a85cb4@iogearbox.net>
+Date: Mon, 16 Oct 2023 14:07:02 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Message-Id: <2111fedf-a690-453a-a705-6e9b8141d93d@app.fastmail.com>
-In-Reply-To: <9-v2-bff223cf6409+282-dart_paging_jgg@nvidia.com>
-References: <9-v2-bff223cf6409+282-dart_paging_jgg@nvidia.com>
-Date: Mon, 16 Oct 2023 13:44:29 +0200
-From: "Janne Grunau" <j@jannau.net>
-To: "Jason Gunthorpe" <jgg@nvidia.com>,
- "Alyssa Rosenzweig" <alyssa@rosenzweig.io>, asahi@lists.linux.dev,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "David Woodhouse" <dwmw2@infradead.org>, iommu@lists.linux.dev,
- "Joerg Roedel" <joro@8bytes.org>, "Kevin Tian" <kevin.tian@intel.com>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- "Hector Martin" <marcan@marcan.st>, "Michael Ellerman" <mpe@ellerman.id.au>,
- "Nicholas Piggin" <npiggin@gmail.com>, "Robin Murphy" <robin.murphy@arm.com>,
- "Sven Peter" <sven@svenpeter.dev>, "Will Deacon" <will@kernel.org>
-Subject: Re: [PATCH v2 9/9] iommu/dart: Remove the force_bypass variable
-Content-Type: text/plain
+In-Reply-To: <20231012200310.235137-1-hbathini@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.103.10/27063/Mon Oct 16 10:02:17 2023)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,137 +71,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Lu Baolu <baolu.lu@linux.intel.com>
+Cc: Song Liu <songliubraving@fb.com>, Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hej,
+On 10/12/23 10:03 PM, Hari Bathini wrote:
+> Most BPF programs are small, but they consume a page each. For systems
+> with busy traffic and many BPF programs, this may also add significant
+> pressure on instruction TLB. High iTLB pressure usually slows down the
+> whole system causing visible performance degradation for production
+> workloads.
+> 
+> bpf_prog_pack, a customized allocator that packs multiple bpf programs
+> into preallocated memory chunks, was proposed [1] to address it. This
+> series extends this support on powerpc.
+> 
+> Both bpf_arch_text_copy() & bpf_arch_text_invalidate() functions,
+> needed for this support depend on instruction patching in text area.
+> Currently, patch_instruction() supports patching only one instruction
+> at a time. The first patch introduces patch_instructions() function
+> to enable patching more than one instruction at a time. This helps in
+> avoiding performance degradation while JITing bpf programs.
+> 
+> Patches 2 & 3 implement the above mentioned arch specific functions
+> using patch_instructions(). Patch 4 fixes a misnomer in bpf JITing
+> code. The last patch enables the use of BPF prog pack allocator on
+> powerpc and also, ensures cleanup is handled gracefully.
+> 
+> [1] https://lore.kernel.org/bpf/20220204185742.271030-1-song@kernel.org/
+> 
+> Changes in v6:
+> * No changes in patches 2-5/5 except addition of Acked-by tags from Song.
+> * Skipped merging code path of patch_instruction() & patch_instructions()
+>    to avoid performance overhead observed on ppc32 with that.
 
-On Thu, Sep 28, 2023, at 01:47, Jason Gunthorpe wrote:
-> This flag just caches if the IO page size is larger than the CPU
-> PAGE_SIZE. This only needs to be checked in two places so remove the
-> confusingly named cache.
->
-> dart would like to not support paging domains at all if the IO page size
-> is larger than the CPU page size. In this case we should ideally fail
-> domain_alloc_paging(), as there is no point in creating a domain that can
-> never be attached. Move the test into apple_dart_finalize_domain().
->
-> The check in apple_dart_mod_streams() will prevent the domain from being
-> attached to the wrong dart
->
-> There is no HW limitation that prevents BLOCKED domains from working,
-> remove that test.
->
-> The check in apple_dart_of_xlate() is redundant since immediately after
-> the pgsize is checked. Remove it.
->
-> Remove the variable.
->
-> Suggested-by: Janne Grunau <j@jannau.net>
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> ---
->  drivers/iommu/apple-dart.c | 20 ++++++--------------
->  1 file changed, 6 insertions(+), 14 deletions(-)
->
-> diff --git a/drivers/iommu/apple-dart.c b/drivers/iommu/apple-dart.c
-> index 126da0d89f0dd4..821b4a3465dfb9 100644
-> --- a/drivers/iommu/apple-dart.c
-> +++ b/drivers/iommu/apple-dart.c
-> @@ -196,7 +196,6 @@ struct apple_dart_hw {
->   * @lock: lock for hardware operations involving this dart
->   * @pgsize: pagesize supported by this DART
->   * @supports_bypass: indicates if this DART supports bypass mode
-> - * @force_bypass: force bypass mode due to pagesize mismatch?
->   * @sid2group: maps stream ids to iommu_groups
->   * @iommu: iommu core device
->   */
-> @@ -217,7 +216,6 @@ struct apple_dart {
->  	u32 pgsize;
->  	u32 num_streams;
->  	u32 supports_bypass : 1;
-> -	u32 force_bypass : 1;
-> 
->  	struct iommu_group *sid2group[DART_MAX_STREAMS];
->  	struct iommu_device iommu;
-> @@ -576,6 +574,9 @@ static int apple_dart_finalize_domain(struct 
-> apple_dart_domain *dart_domain,
->  	int ret = 0;
->  	int i, j;
-> 
-> +	if (dart->pgsize > PAGE_SIZE)
-> +		return -EINVAL;
-> +
->  	mutex_lock(&dart_domain->init_lock);
-> 
->  	if (dart_domain->finalized)
-> @@ -659,9 +660,6 @@ static int apple_dart_attach_dev_paging(struct 
-> iommu_domain *domain,
->  	struct apple_dart_master_cfg *cfg = dev_iommu_priv_get(dev);
->  	struct apple_dart_domain *dart_domain = to_dart_domain(domain);
-> 
-> -	if (cfg->stream_maps[0].dart->force_bypass)
-> -		return -EINVAL;
-> -
->  	ret = apple_dart_finalize_domain(dart_domain, cfg);
->  	if (ret)
->  		return ret;
-> @@ -706,9 +704,6 @@ static int apple_dart_attach_dev_blocked(struct 
-> iommu_domain *domain,
->  	struct apple_dart_stream_map *stream_map;
->  	int i;
-> 
-> -	if (cfg->stream_maps[0].dart->force_bypass)
-> -		return -EINVAL;
-> -
->  	for_each_stream_map(i, cfg, stream_map)
->  		apple_dart_hw_disable_dma(stream_map);
->  	return 0;
-> @@ -803,8 +798,6 @@ static int apple_dart_of_xlate(struct device *dev, 
-> struct of_phandle_args *args)
->  	if (cfg_dart) {
->  		if (cfg_dart->supports_bypass != dart->supports_bypass)
->  			return -EINVAL;
-> -		if (cfg_dart->force_bypass != dart->force_bypass)
-> -			return -EINVAL;
->  		if (cfg_dart->pgsize != dart->pgsize)
->  			return -EINVAL;
->  	}
-> @@ -946,7 +939,7 @@ static int apple_dart_def_domain_type(struct device 
-> *dev)
->  {
->  	struct apple_dart_master_cfg *cfg = dev_iommu_priv_get(dev);
-> 
-> -	if (cfg->stream_maps[0].dart->force_bypass)
-> +	if (cfg->stream_maps[0].dart->pgsize > PAGE_SIZE)
->  		return IOMMU_DOMAIN_IDENTITY;
->  	if (!cfg->stream_maps[0].dart->supports_bypass)
->  		return IOMMU_DOMAIN_DMA;
-> @@ -1146,8 +1139,6 @@ static int apple_dart_probe(struct platform_device *pdev)
->  		goto err_clk_disable;
->  	}
-> 
-> -	dart->force_bypass = dart->pgsize > PAGE_SIZE;
-> -
->  	ret = apple_dart_hw_reset(dart);
->  	if (ret)
->  		goto err_clk_disable;
-> @@ -1171,7 +1162,8 @@ static int apple_dart_probe(struct 
-> platform_device *pdev)
->  	dev_info(
->  		&pdev->dev,
->  		"DART [pagesize %x, %d streams, bypass support: %d, bypass forced: 
-> %d] initialized\n",
-> -		dart->pgsize, dart->num_streams, dart->supports_bypass, 
-> dart->force_bypass);
-> +		dart->pgsize, dart->num_streams, dart->supports_bypass,
-> +		dart->pgsize > PAGE_SIZE);
->  	return 0;
-> 
->  err_sysfs_remove:
-> -- 
+I presume this will be routed via Michael?
 
-Reviewed-by: Janne Grunau <j@jannau.net>
-
-thanks,
-Janne
+Thanks,
+Daniel
