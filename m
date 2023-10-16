@@ -1,61 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A29F7CA447
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Oct 2023 11:36:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B7227CA6F2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Oct 2023 13:51:41 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=GIv1silQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=jannau.net header.i=@jannau.net header.a=rsa-sha256 header.s=fm1 header.b=nW8JwL/T;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=AF28Q16d;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S8Bp170bvz3cPN
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Oct 2023 20:36:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S8Fnl0Fgpz3c56
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Oct 2023 22:51:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=GIv1silQ;
+	dkim=pass (2048-bit key; unprotected) header.d=jannau.net header.i=@jannau.net header.a=rsa-sha256 header.s=fm1 header.b=nW8JwL/T;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=AF28Q16d;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::240; helo=mslow1.mail.gandi.net; envelope-from=miquel.raynal@bootlin.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 446 seconds by postgrey-1.37 at boromir; Mon, 16 Oct 2023 20:35:55 AEDT
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [IPv6:2001:4b98:dc4:8::240])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=jannau.net (client-ip=66.111.4.229; helo=new3-smtp.messagingengine.com; envelope-from=j@jannau.net; receiver=lists.ozlabs.org)
+X-Greylist: delayed 353 seconds by postgrey-1.37 at boromir; Mon, 16 Oct 2023 22:50:50 AEDT
+Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com [66.111.4.229])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S8Bn76R49z2yN3
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Oct 2023 20:35:55 +1100 (AEDT)
-Received: from relay1-d.mail.gandi.net (unknown [217.70.183.193])
-	by mslow1.mail.gandi.net (Postfix) with ESMTP id 539A0D282D
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Oct 2023 09:28:34 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A6139240005;
-	Mon, 16 Oct 2023 09:28:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1697448496;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=a6IVIONiBlLTPJvSoaXoXU+IQhuU7muOI/zmLHmGZDE=;
-	b=GIv1silQsBHKTYuTsaj0EZ3gKr2WYYDuFfU0qu6XVdi6NzAJEGR+LszzN1KmwjjzqEdWb2
-	gtSeyCGIcgDve1f2hCuuxPWPbsf5ZAKg/sxANLmncpQ+2hS3mu2ULacLMXTygI63bDfCNE
-	6U4KdXbqzSuf+1u1Qmpp1VTWdToA0ITwgaVdFbWl+VxNz14B8lPjJTNLJ0ANgRbI+dS9US
-	mvhSaLBXBDdkJJBpHqeeBM29mkXQ6mbkhK3lEhREcwASnFB+P0uOtiJl5sjV69ebWfOqDg
-	g3ffT55BHybzMQBqouSyvTEjBeC68QYSaaqRiKaEUM5+gROjf0UMkydh6vH9Dw==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Subject: Re: [PATCH 06/20] mtd: powernv_flash: Convert to platform remove callback returning void
-Date: Mon, 16 Oct 2023 11:28:13 +0200
-Message-Id: <20231016092814.288736-1-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231008200143.196369-7-u.kleine-koenig@pengutronix.de>
-References: 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S8Fmp1TGvz2yLr
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Oct 2023 22:50:50 +1100 (AEDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailnew.nyi.internal (Postfix) with ESMTP id 3011758034D;
+	Mon, 16 Oct 2023 07:44:51 -0400 (EDT)
+Received: from imap53 ([10.202.2.103])
+  by compute1.internal (MEProxy); Mon, 16 Oct 2023 07:44:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:sender
+	:subject:subject:to:to; s=fm1; t=1697456691; x=1697460291; bh=3C
+	1PfPveiaRs3ElXRm2Ihf7X0mwxNyKdWtRCHHHpbpo=; b=nW8JwL/TTNFtxwc2UK
+	CF+NkCnYs9+Td4HriptzKiYQTQmo++kTw+gxYsEctgs6XpUJfBMtN08wyVqipPYV
+	DVQAEpG3no+3Pr/JHa9L9+j59kFTCUbpaVV8XNZUiToWTN7kVOKJ/t9Jn03kqIW8
+	8PvCtnW6dM8mnlkVk+5aFFHcTf4Mchz5KtlsKM5PjlHW4OPC7xtML/jBnqTFUUWv
+	MJ8szAs9pCB1CIZdhvEDLkSUsx3H59DMMSwEysjCS/MPcBCU2WvVypxLYqNZl/Og
+	pHvABZlGaTzQCPBUQ+tIkJAxr4LIAyY4ASUWSw3C9YNeHSNFFGZ4i/IDvfIoXLau
+	7lMA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm3; t=1697456691; x=1697460291; bh=3C1PfPveiaRs3
+	ElXRm2Ihf7X0mwxNyKdWtRCHHHpbpo=; b=AF28Q16dg412MfVbXAXSTcwqZzLgs
+	0BmuDR5X2adEVDx0SNfpNpAfR/fKtkDmWT7qhlscnr4A/bN6Kk6+LifFP5t5qa25
+	erCG1gLeiiSnWxDLsQnJqYHssS9Btp+oiyRI+W1frAHFD+tNFe7r9RBHQZyuVFhY
+	I9oa2En/l8ABUYjKH5WD/wZdCznHGSYaAd0shVSPUOxx6w0kUg3lOVtEo3RYVJHH
+	01shsYNPD//w+6KnTtIeBnJKaQERy8ZS7vUdi9BjHT5XBdYfS8jVxxQKugD3gb5i
+	Nz+v9xD63rcv88VLvVkEOjZShxP7V+CIldAQX0ougMf4LhyuZFlGsEUYA==
+X-ME-Sender: <xms:MSItZZNDGu6k9bRZ3WhGgvGMiInakhaEopTlfaLZ2EH24xUWz8i7rw>
+    <xme:MSItZb_zXgdaESj-avPZXoF-_q7iPLmKfbXWvtj2x66XKECQk2XBVzFHxAFZTGRr7
+    mW_4M-Er2TceJtJDiY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrjedtgdegudcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdflrghn
+    nhgvucfirhhunhgruhdfuceojhesjhgrnhhnrghurdhnvghtqeenucggtffrrghtthgvrh
+    hnpeevvdfhtddvvddtgffggfeuteduhfeigeevfeffueekheetffekjeehjeefhfeitden
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjsehjrg
+    hnnhgruhdrnhgvth
+X-ME-Proxy: <xmx:MSItZYS637994kT_xsAHEBWDws37IUZPhHpeuCyoZt1m2W02MxuGFw>
+    <xmx:MSItZVtuaGJQpUfpmnsVy_fi5RBdrJipuKkBUx_QQ-EiHrAuAcdNIg>
+    <xmx:MSItZReDxJvIX9a4wA08kLZ1vNf77NZRCnZameqwwxuQvuJbycCfQA>
+    <xmx:MyItZc35kZ09XlJiHtxn5ky_KhbYa-UMT89LGIohaJO0CFcIVoYVJQ>
+Feedback-ID: i47b949f6:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 81B0C36409AE; Mon, 16 Oct 2023 07:44:49 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-1019-ged83ad8595-fm-20231002.001-ged83ad85
 MIME-Version: 1.0
-X-linux-mtd-patch-notification: thanks
-X-linux-mtd-patch-commit: b'56b877dc5fd7503958d84b5341bc6f8704e5b41a'
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: miquel.raynal@bootlin.com
+Message-Id: <2111fedf-a690-453a-a705-6e9b8141d93d@app.fastmail.com>
+In-Reply-To: <9-v2-bff223cf6409+282-dart_paging_jgg@nvidia.com>
+References: <9-v2-bff223cf6409+282-dart_paging_jgg@nvidia.com>
+Date: Mon, 16 Oct 2023 13:44:29 +0200
+From: "Janne Grunau" <j@jannau.net>
+To: "Jason Gunthorpe" <jgg@nvidia.com>,
+ "Alyssa Rosenzweig" <alyssa@rosenzweig.io>, asahi@lists.linux.dev,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "David Woodhouse" <dwmw2@infradead.org>, iommu@lists.linux.dev,
+ "Joerg Roedel" <joro@8bytes.org>, "Kevin Tian" <kevin.tian@intel.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ "Hector Martin" <marcan@marcan.st>, "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Nicholas Piggin" <npiggin@gmail.com>, "Robin Murphy" <robin.murphy@arm.com>,
+ "Sven Peter" <sven@svenpeter.dev>, "Will Deacon" <will@kernel.org>
+Subject: Re: [PATCH v2 9/9] iommu/dart: Remove the force_bypass variable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,26 +101,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mtd@lists.infradead.org, Nicholas Piggin <npiggin@gmail.com>, kernel@pengutronix.de, linuxppc-dev@lists.ozlabs.org
+Cc: Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, 2023-10-08 at 20:01:29 UTC, =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= wrote:
-> The .remove() callback for a platform driver returns an int which makes
-> many driver authors wrongly assume it's possible to do error handling by
-> returning an error code. However the value returned is ignored (apart
-> from emitting a warning) and this typically results in resource leaks.
-> 
-> To improve here there is a quest to make the remove callback return
-> void. In the first step of this quest all drivers are converted to
-> .remove_new(), which already returns void. Eventually after all drivers
-> are converted, .remove_new() will be renamed to .remove().
-> 
-> Trivially convert this driver from always returning zero in the remove
-> callback to the void returning variant.
-> 
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Hej,
 
-Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git mtd/next, thanks.
+On Thu, Sep 28, 2023, at 01:47, Jason Gunthorpe wrote:
+> This flag just caches if the IO page size is larger than the CPU
+> PAGE_SIZE. This only needs to be checked in two places so remove the
+> confusingly named cache.
+>
+> dart would like to not support paging domains at all if the IO page size
+> is larger than the CPU page size. In this case we should ideally fail
+> domain_alloc_paging(), as there is no point in creating a domain that can
+> never be attached. Move the test into apple_dart_finalize_domain().
+>
+> The check in apple_dart_mod_streams() will prevent the domain from being
+> attached to the wrong dart
+>
+> There is no HW limitation that prevents BLOCKED domains from working,
+> remove that test.
+>
+> The check in apple_dart_of_xlate() is redundant since immediately after
+> the pgsize is checked. Remove it.
+>
+> Remove the variable.
+>
+> Suggested-by: Janne Grunau <j@jannau.net>
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> ---
+>  drivers/iommu/apple-dart.c | 20 ++++++--------------
+>  1 file changed, 6 insertions(+), 14 deletions(-)
+>
+> diff --git a/drivers/iommu/apple-dart.c b/drivers/iommu/apple-dart.c
+> index 126da0d89f0dd4..821b4a3465dfb9 100644
+> --- a/drivers/iommu/apple-dart.c
+> +++ b/drivers/iommu/apple-dart.c
+> @@ -196,7 +196,6 @@ struct apple_dart_hw {
+>   * @lock: lock for hardware operations involving this dart
+>   * @pgsize: pagesize supported by this DART
+>   * @supports_bypass: indicates if this DART supports bypass mode
+> - * @force_bypass: force bypass mode due to pagesize mismatch?
+>   * @sid2group: maps stream ids to iommu_groups
+>   * @iommu: iommu core device
+>   */
+> @@ -217,7 +216,6 @@ struct apple_dart {
+>  	u32 pgsize;
+>  	u32 num_streams;
+>  	u32 supports_bypass : 1;
+> -	u32 force_bypass : 1;
+> 
+>  	struct iommu_group *sid2group[DART_MAX_STREAMS];
+>  	struct iommu_device iommu;
+> @@ -576,6 +574,9 @@ static int apple_dart_finalize_domain(struct 
+> apple_dart_domain *dart_domain,
+>  	int ret = 0;
+>  	int i, j;
+> 
+> +	if (dart->pgsize > PAGE_SIZE)
+> +		return -EINVAL;
+> +
+>  	mutex_lock(&dart_domain->init_lock);
+> 
+>  	if (dart_domain->finalized)
+> @@ -659,9 +660,6 @@ static int apple_dart_attach_dev_paging(struct 
+> iommu_domain *domain,
+>  	struct apple_dart_master_cfg *cfg = dev_iommu_priv_get(dev);
+>  	struct apple_dart_domain *dart_domain = to_dart_domain(domain);
+> 
+> -	if (cfg->stream_maps[0].dart->force_bypass)
+> -		return -EINVAL;
+> -
+>  	ret = apple_dart_finalize_domain(dart_domain, cfg);
+>  	if (ret)
+>  		return ret;
+> @@ -706,9 +704,6 @@ static int apple_dart_attach_dev_blocked(struct 
+> iommu_domain *domain,
+>  	struct apple_dart_stream_map *stream_map;
+>  	int i;
+> 
+> -	if (cfg->stream_maps[0].dart->force_bypass)
+> -		return -EINVAL;
+> -
+>  	for_each_stream_map(i, cfg, stream_map)
+>  		apple_dart_hw_disable_dma(stream_map);
+>  	return 0;
+> @@ -803,8 +798,6 @@ static int apple_dart_of_xlate(struct device *dev, 
+> struct of_phandle_args *args)
+>  	if (cfg_dart) {
+>  		if (cfg_dart->supports_bypass != dart->supports_bypass)
+>  			return -EINVAL;
+> -		if (cfg_dart->force_bypass != dart->force_bypass)
+> -			return -EINVAL;
+>  		if (cfg_dart->pgsize != dart->pgsize)
+>  			return -EINVAL;
+>  	}
+> @@ -946,7 +939,7 @@ static int apple_dart_def_domain_type(struct device 
+> *dev)
+>  {
+>  	struct apple_dart_master_cfg *cfg = dev_iommu_priv_get(dev);
+> 
+> -	if (cfg->stream_maps[0].dart->force_bypass)
+> +	if (cfg->stream_maps[0].dart->pgsize > PAGE_SIZE)
+>  		return IOMMU_DOMAIN_IDENTITY;
+>  	if (!cfg->stream_maps[0].dart->supports_bypass)
+>  		return IOMMU_DOMAIN_DMA;
+> @@ -1146,8 +1139,6 @@ static int apple_dart_probe(struct platform_device *pdev)
+>  		goto err_clk_disable;
+>  	}
+> 
+> -	dart->force_bypass = dart->pgsize > PAGE_SIZE;
+> -
+>  	ret = apple_dart_hw_reset(dart);
+>  	if (ret)
+>  		goto err_clk_disable;
+> @@ -1171,7 +1162,8 @@ static int apple_dart_probe(struct 
+> platform_device *pdev)
+>  	dev_info(
+>  		&pdev->dev,
+>  		"DART [pagesize %x, %d streams, bypass support: %d, bypass forced: 
+> %d] initialized\n",
+> -		dart->pgsize, dart->num_streams, dart->supports_bypass, 
+> dart->force_bypass);
+> +		dart->pgsize, dart->num_streams, dart->supports_bypass,
+> +		dart->pgsize > PAGE_SIZE);
+>  	return 0;
+> 
+>  err_sysfs_remove:
+> -- 
 
-Miquel
+Reviewed-by: Janne Grunau <j@jannau.net>
+
+thanks,
+Janne
