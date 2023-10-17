@@ -2,91 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 807FB7CBBCD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Oct 2023 08:58:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8AF87CBD39
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Oct 2023 10:18:35 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GUeyKd8d;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Vc581irM;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S8lDg3GDbz3cSg
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Oct 2023 17:58:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S8n1P5G8Lz3cc6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Oct 2023 19:18:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GUeyKd8d;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Vc581irM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::1032; helo=mail-pj1-x1032.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S8lCl6X2Kz2yVv
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Oct 2023 17:57:23 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39H6m2CX001157;
-	Tue, 17 Oct 2023 06:57:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=Aoq/TfmR+3EqbzYQXP11Q844hFYlhfZRSa5eM2tQUxg=;
- b=GUeyKd8dMRcOoXTUFz8vkvfIix76aFxzOGFz/12BqMQlY2MBBqIYguNcCFtZOOGJWsPO
- US0olhgp8wPfz5P+kRo/MQYAJVytY4RBta93xLrZk/HgbNYAqAkZNqCdzlm2GTN8AuD/
- 5BrCZBp2LQKCFwoiKW/wftQ8g0rJz0Wh938o3s88L75jqNVoAl2ytQ5cqeKwrLjyR3dr
- CPe2c42ni5gFxWTFB7I+p9DX6+QX4tC81FtqScN2pzi3wZGJKDgGnx0CtPFsmJ8Ld4C/
- lCIgDqEVoJbHdU1WCBOaI8qAt1g6hCk00WMuZAXKP8A/tUjPZMwDtHdH0zWpLZcuHXK2 ag== 
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tsnae0dh8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Oct 2023 06:57:16 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39H5ZvNR012858;
-	Tue, 17 Oct 2023 06:57:06 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tr5py6pbg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Oct 2023 06:57:05 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39H6v38w21955174
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 17 Oct 2023 06:57:03 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B95DB20049;
-	Tue, 17 Oct 2023 06:57:03 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D6F8820040;
-	Tue, 17 Oct 2023 06:57:02 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 17 Oct 2023 06:57:02 +0000 (GMT)
-Received: from [9.43.201.62] (unknown [9.43.201.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 8D41A600D6;
-	Tue, 17 Oct 2023 17:56:58 +1100 (AEDT)
-Message-ID: <6dcfb1dc-ff4b-485d-befc-4928bb1460a4@linux.ibm.com>
-Date: Tue, 17 Oct 2023 17:56:55 +1100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S8n0V3GQZz30dt
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Oct 2023 19:17:44 +1100 (AEDT)
+Received: by mail-pj1-x1032.google.com with SMTP id 98e67ed59e1d1-27d104fa285so4379208a91.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Oct 2023 01:17:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1697530659; x=1698135459; darn=lists.ozlabs.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=+LlVnjovZQKa7NrShhm24YzALCz3Jiaz+eKNaJ3ulnM=;
+        b=Vc581irMcjYc8hABpXWFMkt4AdzM+82xC3vWqYqAElQgs8JSTPkxvZ9Mz7YVThdZUq
+         tridPYLnDE0NcSB+qMbhZDIt35OnW9QN+I41ZVRw6kwpNbsK4fU9XhoFVcqVEk+plBKD
+         PJ0T6Y+R7+2R+nZeTryB8bPSKjl8sm+AznixsbYG0YHJ7O9mPBxYNsNd/nmquqL2tTOd
+         wxGFhwcX3PQKWvjMpxUL+PyExyHedBz2J3alg31v0sK4NQVbW8GM5f+tnXoVz5o/W/lS
+         zyfl28QvxeMb1V7f+fHwGCkrX5AhSDdvg7IajXN9G5f0iMbBy60IoA9eadrPaXNFC3BZ
+         nc3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697530659; x=1698135459;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+LlVnjovZQKa7NrShhm24YzALCz3Jiaz+eKNaJ3ulnM=;
+        b=i3s6gxXf1L0GkkgsGy+o36DP5iad3A0aTX9IGU++iSTLcpoPMAK0niIvIw+S8uyBGD
+         uSucB113EnzfNjYoblCaeZNzUjgrXuU/l7jRMkBr57X2qlwPAIUY33XpLUM+alqxmoFw
+         m5hbguHbae7Ic97qEMLWRxsrsPDnV/p1By9MS3fRLBxkWXYNBLHZ15Sv3ecy3RoddNZS
+         MIRKy5yFVa6PwqkQlheLR7y4JBpdpr6qrFQ2iP26DGvv4wk0qYndrOi544d2wYGW0+FD
+         Nvg2siEkcT9WU4SFPiw2Qfejlql99Rtks63Wf1todqVQCWzEAiDMCFAiUBbI0VvBz/Nz
+         CZSQ==
+X-Gm-Message-State: AOJu0YxzhFh3r8PwxbOO0aUVd5nmXD1gaaXT0KotfKKYiUF5OY5FZ4Gv
+	rkQ7oHwN0I8l9ROJFVCF/vAR
+X-Google-Smtp-Source: AGHT+IFJ+XwjBNsHb401tnImJrgO8tIl7GAykVmzgDpD/pNzSxKnSUYd1c7yondYd4ensK7UNVBRzA==
+X-Received: by 2002:a17:90a:d98d:b0:261:685:95b6 with SMTP id d13-20020a17090ad98d00b00261068595b6mr1492510pjv.13.1697530659344;
+        Tue, 17 Oct 2023 01:17:39 -0700 (PDT)
+Received: from thinkpad ([117.207.31.199])
+        by smtp.gmail.com with ESMTPSA id h16-20020a17090adb9000b002791d5a3e29sm769640pjv.6.2023.10.17.01.17.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Oct 2023 01:17:38 -0700 (PDT)
+Date: Tue, 17 Oct 2023 13:47:31 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Frank Li <Frank.li@nxp.com>
+Subject: Re: [PATCH 2/3] PCI: layerscape: add suspend/resume for ls1021a
+Message-ID: <20231017081731.GD5274@thinkpad>
+References: <20230915184306.2374670-1-Frank.Li@nxp.com>
+ <20230915184306.2374670-2-Frank.Li@nxp.com>
+ <20231016165824.GF39962@thinkpad>
+ <ZS2anCpWakttzaAu@lizhi-Precision-Tower-5810>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] Add generic data patching functions
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <20231016050147.115686-1-bgray@linux.ibm.com>
- <e2fd9e0a-9371-c8a8-39de-6bca99732567@csgroup.eu>
-Content-Language: en-US, en-AU
-From: Benjamin Gray <bgray@linux.ibm.com>
-In-Reply-To: <e2fd9e0a-9371-c8a8-39de-6bca99732567@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: kKsbVJvQlc-vYY2ziostIxmekDF11icU
-X-Proofpoint-ORIG-GUID: kKsbVJvQlc-vYY2ziostIxmekDF11icU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-16_13,2023-10-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- impostorscore=0 mlxlogscore=999 clxscore=1015 lowpriorityscore=0
- bulkscore=0 spamscore=0 mlxscore=0 priorityscore=1501 phishscore=0
- suspectscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2309180000 definitions=main-2310170057
+In-Reply-To: <ZS2anCpWakttzaAu@lizhi-Precision-Tower-5810>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,152 +82,191 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, imx@lists.linux.dev, Rob Herring <robh@kernel.org>, "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, open list <linux-kernel@vger.kernel.org>, Minghuan Lian <minghuan.Lian@nxp.com>, "moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-arm-kernel@lists.infradead.org>, Roy Zang <roy.zang@nxp.com>, Bjorn Helgaas <bhelgaas@google.com>, "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>, Mingkai Hu <mingkai.hu@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 17/10/23 5:39 pm, Christophe Leroy wrote:
-> Le 16/10/2023 à 07:01, Benjamin Gray a écrit :
->> Currently patch_instruction() bases the write length on the value being
->> written. If the value looks like a prefixed instruction it writes 8 bytes,
->> otherwise it writes 4 bytes. This makes it potentially buggy to use for
->> writing arbitrary data, as if you want to write 4 bytes but it decides to
->> write 8 bytes it may clobber the following memory or be unaligned and
->> trigger an oops if it tries to cross a page boundary.
->>
->> To solve this, this series pulls out the size parameter to the 'top' of
->> the text patching logic, and propagates it through the various functions.
->>
->> The two sizes supported are int and long; this allows for patching
->> instructions and pointers on both ppc32 and ppc64. On ppc32 these are the
->> same size, so care is taken to only use the size parameter on static
->> functions, so the compiler can optimise it out entirely. Unfortunately
->> GCC trips over its own feet here and won't optimise in a way that is
->> optimal for strict RWX (mpc85xx_smp_defconfig) and no RWX
->> (pmac32_defconfig).
->>
->> In the first case, patch_memory() is very large and can only be inlined
->> if a single function calls it. While the source only calls it in
->> patch_instruction(), an earlier optimisation pass inlined
->> patch_instruction() into patch_branch(), so now there are 'two' references
->> to patch_memory() and it cannot be inlined into patch_instruction().
->> Instead patch_instruction() becomes a single branch directly to
->> patch_memory().
->>
->> We can fix this by marking patch_instruction() as noinline, but this
->> prevents patch_memory() from being directly inlined into patch_branch()
->> when RWX is disabled and patch_memory() is very small.
->>
->> It may be possible to avoid this by merging together patch_instruction()
->> and patch_memory() on ppc32, but the only way I can think to do this
->> without duplicating the implementation involves using the preprocessor
->> to change if is_dword is a parameter or a local variable, which is gross.
+On Mon, Oct 16, 2023 at 04:18:36PM -0400, Frank Li wrote:
+> On Mon, Oct 16, 2023 at 10:28:24PM +0530, Manivannan Sadhasivam wrote:
+> > On Fri, Sep 15, 2023 at 02:43:05PM -0400, Frank Li wrote:
+> > > ls1021a add suspend/resume support.
+> > > 
+> > 
+> > Please add what the driver is doing during suspend/resume.
+> > 
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > >  drivers/pci/controller/dwc/pci-layerscape.c | 88 ++++++++++++++++++++-
+> > >  1 file changed, 87 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
+> > > index 20c48c06e2248..bc5a8ff1a26ce 100644
+> > > --- a/drivers/pci/controller/dwc/pci-layerscape.c
+> > > +++ b/drivers/pci/controller/dwc/pci-layerscape.c
+> > > @@ -35,6 +35,12 @@
+> > >  #define PF_MCR_PTOMR		BIT(0)
+> > >  #define PF_MCR_EXL2S		BIT(1)
+> > >  
+> > > +/* LS1021A PEXn PM Write Control Register */
+> > > +#define SCFG_PEXPMWRCR(idx)	(0x5c + (idx) * 0x64)
+> > > +#define PMXMTTURNOFF		BIT(31)
+> > > +#define SCFG_PEXSFTRSTCR	0x190
+> > > +#define PEXSR(idx)		BIT(idx)
+> > > +
+> > >  #define PCIE_IATU_NUM		6
+> > >  
+> > >  struct ls_pcie_drvdata {
+> > > @@ -48,6 +54,8 @@ struct ls_pcie {
+> > >  	struct dw_pcie *pci;
+> > >  	const struct ls_pcie_drvdata *drvdata;
+> > >  	void __iomem *pf_base;
+> > > +	struct regmap *scfg;
+> > > +	int index;
+> > >  	bool big_endian;
+> > >  };
+> > >  
+> > > @@ -170,13 +178,91 @@ static int ls_pcie_host_init(struct dw_pcie_rp *pp)
+> > >  	return 0;
+> > >  }
+> > >  
+> > > +static void ls1021a_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
+> > > +{
+> > > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> > > +	struct ls_pcie *pcie = to_ls_pcie(pci);
+> > > +	u32 val;
+> > > +
+> > > +	if (!pcie->scfg) {
+> > 
+> > Can this ever happen?
+> > 
+> > > +		dev_dbg(pcie->pci->dev, "SYSCFG is NULL\n");
+> > > +		return;
+> > > +	}
+> > > +
+> > > +	/* Send Turn_off message */
+> > 
+> > "Send PME_Turn_Off message"
+> > 
+> > > +	regmap_read(pcie->scfg, SCFG_PEXPMWRCR(pcie->index), &val);
+> > > +	val |= PMXMTTURNOFF;
+> > > +	regmap_write(pcie->scfg, SCFG_PEXPMWRCR(pcie->index), val);
+> > > +
+> > > +	/* There are not register to check ACK, so wait PCIE_PME_TO_L2_TIMEOUT_US */
+> > 
+> > "There is no specific register to check for PME_To_Ack from endpoint. So on the
+> > safe side, wait for PCIE_PME_TO_L2_TIMEOUT_US."
+> > 
+> > > +	mdelay(PCIE_PME_TO_L2_TIMEOUT_US/1000);
+> > > +
+> > > +	/* Clear Turn_off message */
+> > 
+> > "PME_Turn_off". But I'm not sure if this is really required. Are you doing it
+> > because the layerspace hw implements the PME_Turn_Off bit as "level triggered"?
 > 
-> What about:
-> 
-> diff --git a/arch/powerpc/include/asm/code-patching.h
-> b/arch/powerpc/include/asm/code-patching.h
-> index 7c6056bb1706..af89ef450c93 100644
-> --- a/arch/powerpc/include/asm/code-patching.h
-> +++ b/arch/powerpc/include/asm/code-patching.h
-> @@ -72,7 +72,7 @@ static inline int create_branch(ppc_inst_t *instr,
-> const u32 *addr,
->    int create_cond_branch(ppc_inst_t *instr, const u32 *addr,
->    		       unsigned long target, int flags);
->    int patch_branch(u32 *addr, unsigned long target, int flags);
-> -int patch_instruction(u32 *addr, ppc_inst_t instr);
-> +int patch_memory(void *addr, unsigned long val, bool is_dword);
->    int raw_patch_instruction(u32 *addr, ppc_inst_t instr);
-> 
->    /*
-> @@ -87,24 +87,28 @@ int raw_patch_instruction(u32 *addr, ppc_inst_t instr);
-> 
->    #ifdef CONFIG_PPC64
-> 
-> -int patch_uint(void *addr, unsigned int val);
-> -int patch_ulong(void *addr, unsigned long val);
-> +int patch_instruction(u32 *addr, ppc_inst_t instr);
-> 
->    #define patch_u64 patch_ulong
-> 
->    #else
-> 
-> -static inline int patch_uint(u32 *addr, unsigned int val)
-> +static inline int patch_instruction(u32 *addr, ppc_inst_t instr)
->    {
-> -	return patch_instruction(addr, ppc_inst(val));
-> +	return patch_memory(addr, ppc_inst_val(instr), false);
->    }
-> 
-> +#endif
-> +
->    static inline int patch_ulong(void *addr, unsigned long val)
->    {
-> -	return patch_instruction(addr, ppc_inst(val));
-> +	return patch_memory(addr, val, true);
->    }
-> 
-> -#endif
-> +static inline int patch_uint(void *addr, unsigned int val)
-> +{
-> +	return patch_memory(addr, val, false);
-> +}
-> 
->    #define patch_u32 patch_uint
-> 
-> diff --git a/arch/powerpc/lib/code-patching.c
-> b/arch/powerpc/lib/code-patching.c
-> index 60289332412f..77418b2a4aa4 100644
-> --- a/arch/powerpc/lib/code-patching.c
-> +++ b/arch/powerpc/lib/code-patching.c
-> @@ -355,7 +355,7 @@ static int __do_patch_memory(void *addr, unsigned
-> long val, bool is_dword)
->    	return err;
->    }
-> 
-> -static int patch_memory(void *addr, unsigned long val, bool is_dword)
-> +int patch_memory(void *addr, unsigned long val, bool is_dword)
->    {
->    	int err;
->    	unsigned long flags;
-> @@ -378,6 +378,7 @@ static int patch_memory(void *addr, unsigned long
-> val, bool is_dword)
-> 
->    	return err;
->    }
-> +NOKPROBE_SYMBOL(patch_memory)
-> 
->    #ifdef CONFIG_PPC64
-> 
-> @@ -390,26 +391,6 @@ int patch_instruction(u32 *addr, ppc_inst_t instr)
->    }
->    NOKPROBE_SYMBOL(patch_instruction)
-> 
-> -int patch_uint(void *addr, unsigned int val)
-> -{
-> -	return patch_memory(addr, val, false);
-> -}
-> -NOKPROBE_SYMBOL(patch_uint)
-> -
-> -int patch_ulong(void *addr, unsigned long val)
-> -{
-> -	return patch_memory(addr, val, true);
-> -}
-> -NOKPROBE_SYMBOL(patch_ulong)
-> -
-> -#else
-> -
-> -int patch_instruction(u32 *addr, ppc_inst_t instr)
-> -{
-> -	return patch_memory(addr, ppc_inst_val(instr), false);
-> -}
-> -NOKPROBE_SYMBOL(patch_instruction)
-> -
->    #endif
-> 
->    int patch_branch(u32 *addr, unsigned long target, int flags)
+> I am not sure how hardware implement this. But reference manual said:
+>  
+> PMXMTTURNOFF:
+> Generate PM turnoff message for power management of PCI Express controllers.
+> This bit should be cleared by software.
+> 0 Clear PM turnoff (default)
+> 1 Trigger PM turnoff
 > 
 
-Wouldn't every caller need to initialise the is_dword parameter in that 
-case? It can't tell it's unused across a translation unit boundary 
-without LTO.
+Hmm, okay. Atleast add the below comment to make it understandable in the
+future:
 
+"Layerscape hardware reference manual recommends clearing the PMXMTTURNOFF bit
+to complete the PME_Turn_Off handshake."
+
+- Mani
+
+> Frank
+> 
+> > 
+> > > +	regmap_read(pcie->scfg, SCFG_PEXPMWRCR(pcie->index), &val);
+> > > +	val &= ~PMXMTTURNOFF;
+> > > +	regmap_write(pcie->scfg, SCFG_PEXPMWRCR(pcie->index), val);
+> > > +}
+> > > +
+> > > +static void ls1021a_pcie_exit_from_l2(struct dw_pcie_rp *pp)
+> > > +{
+> > > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> > > +	struct ls_pcie *pcie = to_ls_pcie(pci);
+> > > +	u32 val;
+> > > +
+> > 
+> > A comment here would be good.
+> > 
+> > > +	regmap_read(pcie->scfg, SCFG_PEXSFTRSTCR, &val);
+> > > +	val |= PEXSR(pcie->index);
+> > > +	regmap_write(pcie->scfg, SCFG_PEXSFTRSTCR, val);
+> > > +
+> > > +	regmap_read(pcie->scfg, SCFG_PEXSFTRSTCR, &val);
+> > > +	val &= ~PEXSR(pcie->index);
+> > > +	regmap_write(pcie->scfg, SCFG_PEXSFTRSTCR, val);
+> > > +}
+> > > +
+> > > +static int ls1021a_pcie_host_init(struct dw_pcie_rp *pp)
+> > > +{
+> > > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> > > +	struct ls_pcie *pcie = to_ls_pcie(pci);
+> > > +	struct device *dev = pcie->pci->dev;
+> > > +	u32 index[2];
+> > > +	int ret;
+> > > +
+> > > +	ret = ls_pcie_host_init(pp);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	pcie->scfg = syscon_regmap_lookup_by_phandle(dev->of_node, "fsl,pcie-scfg");
+> > > +	if (IS_ERR(pcie->scfg)) {
+> > > +		ret = PTR_ERR(pcie->scfg);
+> > > +		dev_err(dev, "No syscfg phandle specified\n");
+> > > +		pcie->scfg = NULL;
+> > > +		return ret;
+> > > +	}
+> > > +
+> > > +	ret = of_property_read_u32_array(dev->of_node, "fsl,pcie-scfg", index, 2);
+> > > +	if (ret) {
+> > > +		pcie->scfg = NULL;
+> > > +		return ret;
+> > > +	}
+> > > +
+> > > +	pcie->index = index[1];
+> > > +
+> > 
+> > The above syscon parsing could be done conditionally during probe itself. There
+> > is no need to do it during host_init() time.
+> > 
+> > - Mani
+> > 
+> > > +	return ret;
+> > > +}
+> > > +
+> > >  static const struct dw_pcie_host_ops ls_pcie_host_ops = {
+> > >  	.host_init = ls_pcie_host_init,
+> > >  	.pme_turn_off = ls_pcie_send_turnoff_msg,
+> > >  };
+> > >  
+> > > +static const struct dw_pcie_host_ops ls1021a_pcie_host_ops = {
+> > > +	.host_init = ls1021a_pcie_host_init,
+> > > +	.pme_turn_off = ls1021a_pcie_send_turnoff_msg,
+> > > +};
+> > > +
+> > >  static const struct ls_pcie_drvdata ls1021a_drvdata = {
+> > > -	.pm_support = false,
+> > > +	.pm_support = true,
+> > > +	.ops = &ls1021a_pcie_host_ops,
+> > > +	.exit_from_l2 = ls1021a_pcie_exit_from_l2,
+> > >  };
+> > >  
+> > >  static const struct ls_pcie_drvdata layerscape_drvdata = {
+> > > -- 
+> > > 2.34.1
+> > > 
+> > 
+> > -- 
+> > மணிவண்ணன் சதாசிவம்
+
+-- 
+மணிவண்ணன் சதாசிவம்
