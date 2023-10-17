@@ -2,83 +2,193 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38CBD7CC4DA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Oct 2023 15:37:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FBCB7CC5DF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Oct 2023 16:25:22 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=f2VwFAzb;
+	dkim=pass (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=selector1 header.b=dE+CC7p4;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S8w5s16XQz3cSg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 00:37:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S8x8c1q5Rz3cNN
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 01:25:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=comv=f7=xs4all.nl=hverkuil@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=f2VwFAzb;
+	dkim=pass (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=selector1 header.b=dE+CC7p4;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cisco.com (client-ip=173.37.86.79; helo=rcdn-iport-8.cisco.com; envelope-from=danielwa@cisco.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 124 seconds by postgrey-1.37 at boromir; Wed, 18 Oct 2023 01:24:27 AEDT
+Received: from rcdn-iport-8.cisco.com (rcdn-iport-8.cisco.com [173.37.86.79])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S8w5J0w5bz2yQ8
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Oct 2023 00:37:24 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 51F4B61512;
-	Tue, 17 Oct 2023 13:37:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89C2C433C7;
-	Tue, 17 Oct 2023 13:37:15 +0000 (UTC)
-Message-ID: <0ae6d9e1-bdd9-45ab-9749-8b0cb5c624ff@xs4all.nl>
-Date: Tue, 17 Oct 2023 15:37:13 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S8x7b38W9z3c8Y
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Oct 2023 01:24:27 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=cisco.com; i=@cisco.com; l=462; q=dns/txt; s=iport;
+  t=1697552668; x=1698762268;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=5aAWebvPEcDpKtjwQ/nVVboltxcJGpq7ZDfeNGcav3g=;
+  b=f2VwFAzbYMSy8RX99uSPJReJ7dWW2Akg4Xs5SefhVq/wB24ia/wAAbOH
+   5AJn5Der7NMiXZ/H6hiovl+7VaaP4fjgIMxZGGfqTOPRzuvi+08EyI6zf
+   oKe+KvSsaKujtG88q4aVi3ssdbKOlJRteQ+f33Oz8PhEJg+5X6EDwWFq9
+   0=;
+X-CSE-ConnectionGUID: ghTgn9YrSCK8PwOhAXXmUA==
+X-CSE-MsgGUID: W9HmGosNRpOG3145a9Mo+A==
+X-IPAS-Result: =?us-ascii?q?A0AtAAAlly5lmJ1dJa1aHQEBAQEJARIBBQUBQCWBFggBC?=
+ =?us-ascii?q?wGBZVJ4WyoSSIgeA4ROX4ZAggYghXqMXYskgSUDVg8BAQENAQFEBAEBhQYCh?=
+ =?us-ascii?q?xECJjQJDgECAgIBAQEBAwIDAQEBAQEBAQIBAQUBAQECAQcEFAEBAQEBAQEBH?=
+ =?us-ascii?q?hkFEA4nhWgNhk0BAQEDEigGAQE3AQ8CAQgOCh4QECIlAgQOJ4Jcgl8DAadVA?=
+ =?us-ascii?q?YFAAoooeIE0gQGCCQEBBgQFsmwJGIEwAYgJAYoGJxuBSUSEQD6CYQKBYIZDg?=
+ =?us-ascii?q?3aFPQeCVINZiwReIkdwGwMHA4EDECsHBDIbBwYJFhgVJQZRBC0kCRMSPgSBZ?=
+ =?us-ascii?q?4FRCoEGPw8OEYJDIgIHNjYZS4JbCRUMNE12ECoEFBeBEQRqHxUeNxESFw0DC?=
+ =?us-ascii?q?HYdAhEjPAMFAwQ0ChUNCyEFFEMDRwZKCwMCHAUDAwSBNgUPHgIQGgYOJwMDG?=
+ =?us-ascii?q?U0CEBQDHh0DAwYDCzEDMIEeDFkDbB82CUIDRB1AA3g9NRQbBmedQZx7Aa52C?=
+ =?us-ascii?q?oQMoWiDWwESjHKYdpg8qCUCBAIEBQIOAQEGgWM6gVtwFTuCZ1IZD44gGYNfj?=
+ =?us-ascii?q?3l2OwIHCwEBAwmLSgEB?=
+IronPort-PHdr: A9a23:jrwLWxdAXkjhRdfg+9Xc6mp9lGM/fYqcDmcuAtIPkblCdOGk55v9e
+ RaZ7vR2h1iPVoLeuLpIiOvT5rjpQndIoY2Av3YLbIFWWlcbhN8XkQ0tDI/NCUDyIPPwKS1vN
+ M9DT1RiuXq8NBsdA97wMmXbuWb69jsOAlP6PAtxKP7yH9vehsK22uSt8rXYYh5Dg3y2ZrYhZ
+ BmzpB/a49EfmpAqar5k0wbAuHJOZ+VQyCtkJEnGmRH664b48Mto8j9bvLQq8MsobA==
+IronPort-Data: A9a23:dpj6qqvN6i3QkP9g8AJBEZeC7OfnVE5eMUV32f8akzHdYApBsoF/q
+ tZmKWuBb/+OajH0ctAnYdmy9RkA65bSx9EyTwBk/ypgRXgWgMeUXt7xwmUckM+xwmwvaGo9s
+ q3yv/GZdJhcokf0/0rrav656yAkiclkf5KkYMbcICd9WAR4fykojBNnioYRj5Vh6TSDK1vlV
+ eja/YuHYzdJ5xYuajhPsvra90s11BjPkGpwUmIWNKgjUGD2zxH5PLpHTYmtIn3xRJVjH+LSb
+ 44vG5ngows1Vz90Yj+Uuu6Tnn8iG9Y+DiDS4pZiYJVOtzAZzsAEPgnXA9JHAatfo23hc9mcU
+ 7yhv7ToIesiFvWkdOjwz3C0HgkmVZCq9oMrLlCwsfCcyRz3aUDH4KVWE2Y2FL0o/9teVDQmG
+ fwwcFjhbziZjO6whbm8UOQp2IIoLdLgO8UUvXQIITPxVKl9B8ucBfSRo4YFg1/chegWdRraT
+ 8YQbztiaAvJSxZOIVwQTpk5mY9Eg1GmKm0E+QjJ+PdfD277811R1ZfqK/zvYvulHpwJw0/Jg
+ 2WF1jGsav0dHIXPlWXamp62vcfLnCXmSJoKH/i0++BChFyI2ndVDw8SXFGg5/6jhSaDt8l3M
+ UcY/G8lqrI/sRLtRdjmVBr+q3mB1vIBZzZOO+I61A6Lm5vO2C26VlAbaT5oWOwjieZjEFTGy
+ WS1t9/uADVutpicRnSc6qqYoFuO1c49cD9qicgsEFRt3jXznG0gpkmQEYs7QcZZmvWwSG6gm
+ WnbxMQrr+xL1ZZj6kmtwbzQb9uRSnXhVAU54EDcWXioq10/b4++bIvu4l/ehRqhEGp7Zgfd1
+ JTns5HOhAzrMX1rvHfdKAnqNOr5j8tpyBWG3TZS82AJrlxBAUKLc4FK+y1ZL0x0KMsCcjKBS
+ BaN6FwNtMYLYCX0PPcfj2eN5yICkPmI+TPNCKi8UzaySsMZmPKvpXs3PhfAgwgBbmB1yPtkU
+ XtkTSpcJS9KVfs4pNZHb+wcyrQsjjsv3n/eQIuT8vhU+eT2WZJhcp9caAHmRrlgtMus+VyFm
+ /4BbJHi40sED4XDjtz/rNR7waYidyZrXPgbaqV/K4a+H+aRMDh/UqCNmuJ8K9MNcmY8vr6gw
+ 0xRk3RwkTLXrXbGMg6NLHtkbdvSsVxX9BrX4QRE0Y6U5kUe
+IronPort-HdrOrdr: A9a23:KK8q76PZtRrJLcBcT7P255DYdb4zR+YMi2TDiHoBKiC9I/b5qy
+ nxppUmPEfP+UcssREb9expOMG7MArhHQYc2/hRAV7QZniXhILOFvAj0WKC+UyvJ8SazJ8+6U
+ 4OSdkCNDSdNykcsS++2njHLz9C+qjFzEnLv5aj854Fd2gDAM8QinYcNu/YKDwIeOAsP+tAKH
+ Po3Ls8m9PWQwVtUi3UPAhiYwHrnay4qLvWJTQ9K1oM7g6IgTm06Lj8PSS5834lOQ9n8PMJy0
+ SAtxb2yJmCnpiApyM00VW9071m3P/ajvdTDs2FjcYYbh/2jByzWYhnU7qe+BgoveCG8j8R4Z
+ zxiiZlG/42x2Laf2mzrxeo8RLnyiwS53jrzkLdqWf/oPb+WCkxB6N69MZkm1rimg0dVeNHof
+ t2NlGixsJq5NT77X/ADu3zJldXf4yP0CAfeKAo/iFiuMAlGcxsRMQkjTZo+dE7bWDHAERNKp
+ gwMCkaj8wmLW+yfjTXuHJiz8erWWl2FhCaQlIassjQyDROmmtlpnFoifD3s01wv67VcaM0rd
+ jsI+BtjvVDX8UWZaVyCKMIRta2EHXERVbJPHiJKVrqGakbMzaVwqSHr4kd9aWvYtgF3ZEykJ
+ POXBdRsnMzYVvnDYmL0IdQ+h7ATW2hVXDmy91Y5ZJ+prrgLYCbfRGrWRQriY+tsv8fCsrUV7
+ K6P49XGebqKS/0FYNAz2TFKtFvwLklIYQoU/oAKiSzS5jwW/nXX8TgAYHuGIY=
+X-Talos-CUID: 9a23:Wv61P28165Y8xz07fS6Vv0EUJs8jI0zH91zzc3enLmZAeI2QdHbFrQ==
+X-Talos-MUID: =?us-ascii?q?9a23=3AycC1mAwdbvWLJN3V8wxC6u2JHHeaqJv/KEUilo4?=
+ =?us-ascii?q?ggdGjGncpZ2qU3RGwAaZyfw=3D=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+Received: from rcdn-core-6.cisco.com ([173.37.93.157])
+  by rcdn-iport-8.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2023 14:21:07 +0000
+Received: from rcdn-opgw-2.cisco.com (rcdn-opgw-2.cisco.com [72.163.7.163])
+	by rcdn-core-6.cisco.com (8.15.2/8.15.2) with ESMTPS id 39HEL6Wt008582
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Oct 2023 14:21:06 GMT
+X-CSE-ConnectionGUID: tfJpBOipQKSVv8/3Kimb8Q==
+X-CSE-MsgGUID: 2CH32QnOQ165c4yWxazKUQ==
+Authentication-Results: rcdn-opgw-2.cisco.com; dkim=pass (signature verified) header.i=@cisco.com; spf=Pass smtp.mailfrom=danielwa@cisco.com; dmarc=pass (p=quarantine dis=none) d=cisco.com
+X-IronPort-AV: E=Sophos;i="6.03,232,1694736000"; 
+   d="scan'208";a="5044469"
+Received: from mail-bn8nam12lp2168.outbound.protection.outlook.com (HELO NAM12-BN8-obe.outbound.protection.outlook.com) ([104.47.55.168])
+  by rcdn-opgw-2.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2023 14:21:05 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Gdq2bOP92J4vYyrz18fOtqxQWwwvdedWwmhXE5pGzga7QZpjMnpVaVQBWexN2/EZZehr6IWFB/nac1Kd5QQAQBJJTvLCDHg0SWvsma8sOWsIPnWJzLZy59HVjRlloE1Zvv1SOvKpCod1DLsXRPTHO/5uIWB4OUuxhH1dbSXDfQYFdI/qtHTHM2MzvA0A9kzVHUoOYnvHvg7MiMQC7IEXVDjO4alAhIERfzeTN4DcJPN/SyJbLoB0pF0mOmCy4DInnbG1eaDk99zDkEXzQRTlUEd1nYZUre6vIPVxNjPzQH6NZIA8cvEJVtxA4wwKUfEr/6gd2AGy5O6HwJiiq4J9zw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5aAWebvPEcDpKtjwQ/nVVboltxcJGpq7ZDfeNGcav3g=;
+ b=QaHRgmWFKkeQR1K/7p6W3HWKF+4qPz8IewG0ti9mWMn9isVdlOtW5vPIHGw+PQN53gsDsdZvKaWH+E0PUbWU/u6dM7PCDdwZjzhXLFJz7QmRUucFlznfc01+7+uYXTEg3fmjaG87/zqRpWjaHaxXM4E1AYoC60rxTYizW9l4BuYfbvJeOxI7VCcKRwQB05uY2tUAXN3DknefjvKxdGR+EV/zy3+nSFUl9Rp3GkA3Z/CMlW7kkROtR9BNQtyIBTiUHVAKLc5KiP6ifyKjz/MEFYCZwVtDcYN2a6AXCHqRPAoBI6VD66BgQSJPp2A2hR4BYCWYH3EgQ4d799mezBTB7w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cisco.com; dmarc=pass action=none header.from=cisco.com;
+ dkim=pass header.d=cisco.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cisco.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5aAWebvPEcDpKtjwQ/nVVboltxcJGpq7ZDfeNGcav3g=;
+ b=dE+CC7p4L/bUj3nlL2sbiO1Is0tCqesCjljp4vLrq2ch0Yi3nPFMuVryw2Pm2nzBSTHFxY5TRszMbB3ZU5hs2oX+urSSklCdTvK+gWV4d8G89la3Hl1uMylNlxwtLERLPBIau5FWDRWdcGvqN7bpdLYRTexh/Q2WPjjk51QxbXM=
+Received: from SJ0PR11MB5790.namprd11.prod.outlook.com (2603:10b6:a03:422::15)
+ by PH7PR11MB6859.namprd11.prod.outlook.com (2603:10b6:510:1ef::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.21; Tue, 17 Oct
+ 2023 14:21:00 +0000
+Received: from SJ0PR11MB5790.namprd11.prod.outlook.com
+ ([fe80::b8f8:71:8478:2d51]) by SJ0PR11MB5790.namprd11.prod.outlook.com
+ ([fe80::b8f8:71:8478:2d51%6]) with mapi id 15.20.6886.034; Tue, 17 Oct 2023
+ 14:21:00 +0000
+From: "Daniel Walker (danielwa)" <danielwa@cisco.com>
+To: Pratyush Brahma <quic_pbrahma@quicinc.com>
+Subject: Re: [PATCH 1/4] add generic builtin command line
+Thread-Topic: [PATCH 1/4] add generic builtin command line
+Thread-Index: AQHZcUkOD6ppc7o7REqMkKuIthkl5Q==
+Date: Tue, 17 Oct 2023 14:21:00 +0000
+Message-ID: <ZS6YIjZznHMojNLO@goliath>
+References: <20230417162415.GF1391488@zorba>
+ <4c420081-fe57-d036-ded7-2899c13738ee@quicinc.com>
+In-Reply-To: <4c420081-fe57-d036-ded7-2899c13738ee@quicinc.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-Auto-Response-Suppress: DR, OOF, AutoReply
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR11MB5790:EE_|PH7PR11MB6859:EE_
+x-ms-office365-filtering-correlation-id: 785d98e9-1200-4c43-d199-08dbcf1c49e5
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  7+S+6f3sK9SWw+zpkBElQVK0TD7OQ+ebTv2H3QDynCnLPiHPy2KXav87IIB3H+EhMsYvKc3MNATemJxfQqORcVxMbpOliSwhAYv/AfqmXmU9qOrWqhIStb+VTfAMreGgK79cRAuA03ijGtj4hg+7XjMAvJxIWKU89CxZqhlpkotRU9HYun5LvyM1dTCxwXdif1DnMdZboqAlonj5LnNq/lYI9ARm7QdBLMxF2K20VmxNVhFfPU1/eG080YrQP7zikEtfi9HYk431w8/aKGFaw6XAdscutAMSoHXi8RVkmieP1JWYbmS9L0Y25gbZcf29iQHMzShjISdEMNAbZb1SCCkxneppMDhjA15a2umrsGwzuykYsxfT/prkfUUvopA6Yys/fYWv0XDJLvbfYNZuYizj3VqMRx14ffuWd8+JFk4Dhq4LQmYLg2Fth6KWsPk8ANiSCD+fWSd3bRvo2CkdfefHrZT7J+idvHcG/eZ+sW6wdtt7Yle16JhojqptN/fi7KjH9goV1Gpo1/YCPcuc6S0LhjFn09A+49TipgOGUNlS51UKYqgpnG/d/1+Ztejf5YXWmK6BVgUZtLvXy2FUQfs8673fJSfVI/JGIImPu4IlATOpdxXFdBssO+HwSiaTClNjvmzV/nCQsRu7/o0clQ==
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5790.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(39860400002)(346002)(136003)(366004)(376002)(396003)(230922051799003)(64100799003)(1800799009)(186009)(451199024)(122000001)(33716001)(316002)(6916009)(66556008)(66476007)(66446008)(64756008)(54906003)(66946007)(26005)(76116006)(71200400001)(6506007)(478600001)(6486002)(38070700005)(9686003)(6512007)(5660300002)(41300700001)(86362001)(7416002)(2906002)(4744005)(83380400001)(4326008)(8676002)(8936002)(38100700002)(41533002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?us-ascii?Q?NdjEyNsNGxA/3hf9Iz+NuOFTC17RnTPudrU3BRbMo6eXbvLWMZM83Fn+aaKK?=
+ =?us-ascii?Q?GPdgBJdmhjqkG0muoxCLZA36z8iir9ehV7WKYvy+ZYxRdXpd1VeCbU4JzxyW?=
+ =?us-ascii?Q?h4ImCdc8yrCEI0X1MGDSqICEkyHKroM63flBB9Jm0xL/Oo2gSvLIQk4rJe0M?=
+ =?us-ascii?Q?Eo8qshB5xr/msGOQ/JfZlOzJ0mt0IFwCeArEoOx5m8zkk0RNUWIeIt7CC3CK?=
+ =?us-ascii?Q?v1zTLZvFlpQgZq0Ipre/dnDYw0ywA3xu5Uf0Ck3lJbqe3ny/kELQLRcLKSFN?=
+ =?us-ascii?Q?uPYxQ/tYRqEq+vB163z57Ds5xPUAzoMdKF8E6Xm1gT527wODlWhzYY3ebmO0?=
+ =?us-ascii?Q?7Mq9I8syPSUAifzRNBKfXgXtXPPdJKO6Un31KXN+bbkwJGyzWxZJjDu8xIyV?=
+ =?us-ascii?Q?yVpESCrrdbTlaKgdbCa6pghm6Fay3bYVLWsO8Hf1DcU7e9RGaVc0DI6KxmKn?=
+ =?us-ascii?Q?I8CHWaB9p1d3D76oPYFLPQ5VWKR15Xcr20CZkUrzAORyCvf+kyR9BgUOvl+L?=
+ =?us-ascii?Q?xXXKdf2fJEQKu8YyBL1EdQJvxzzuf7iIU/09qbgqMZNJTmGpNtS+fAy9Yg73?=
+ =?us-ascii?Q?qswoaeeJps2kNhdhuR9gsLITc/D6kqHQBd3oiKduoCYW639nXqhjWgFfWm0Q?=
+ =?us-ascii?Q?ItkTCFNMCcxvENLB0ODaTWPLqG4Qvxj3Ud21hNzer0qgqdAkqXkbDAMY/6N2?=
+ =?us-ascii?Q?EB30o2AZKwo4xTnYJ7ekKIi5pOyPFH2MxuVafn9Rf6roTIaFrSzr4oE1KHRk?=
+ =?us-ascii?Q?kVqZMjr7ZFshWiqV63qs7DupC9EPV+MP5AfDMXzJiGgD8mWKMUKPBMuZwSYA?=
+ =?us-ascii?Q?o7M9Iez76/byuqj50/I0+xj6FrdZbi4Nhj4BeEWyJWJ/YaR/Gm41i4k6jCE/?=
+ =?us-ascii?Q?weLwdMrY0d4UfyzeG50QqE40vs+RVnrCpwFVEiHMuweaQIQgLQac3vVA2ZV9?=
+ =?us-ascii?Q?dvLUXsgUxwtZwGJP2bqVq0QGnxpaUrlbNp+emhJopUJcSmWcCpgQQk6gIzmm?=
+ =?us-ascii?Q?oAuKbgnXw8NFXMhnWdUiEn33Yf3GY9EP6uvI3+swrV7CtPC31JunzvkYTJvJ?=
+ =?us-ascii?Q?+YbFI6+MSqQLAs/x0njcxPa2zyisGAz60pwNAr72SQHmW0NwDn6xrhbwPwXj?=
+ =?us-ascii?Q?qZ8Tp6P0QykLdViW/lcmorN0ptdn31RvidgbA0HZiKNTX2cTeli+nYcoIGhv?=
+ =?us-ascii?Q?yPLC7C9oevsWpZu8be7po8kQXrXLMUi1VAreKGp2eWgSMcMjqtP5o6xQDpy8?=
+ =?us-ascii?Q?RiBZW/ivH935E7xanjPWeCwKBDmhGxPJ9Yp5rf0AorzYaDHecMfScf5z+YQP?=
+ =?us-ascii?Q?05huRFbIDDCq09P+XRMzaVpyWHeMVKudtIkF1L4E/PoPUkOtJoCoUYGFWhE5?=
+ =?us-ascii?Q?+2lnFyhLkBXG7LkU8XvZM4FLYSZ75mQSyzI4YgNtxWzfktdmNOmZ8XpDv+pa?=
+ =?us-ascii?Q?wv+wK9gSQswgwrT6WjbgSJCSNpKCX7B5Wnif++g603/qPoBsk0NB7Dt/kg7/?=
+ =?us-ascii?Q?+ihGuYZMuv1kQcWQv4TITpf6lc3Jer8uP2WWh/+AYXrpW/1CHSFiEunzg28W?=
+ =?us-ascii?Q?EjTiyGxUU65w/DWAh3GzEs8glO3ecpEZx8WLuwYR?=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <38490A7D2F951C49A843CF2C73A85C03@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v6 09/11] media: uapi: Add audio rate controls support
-Content-Language: en-US, nl
-To: Shengjiu Wang <shengjiu.wang@gmail.com>
-References: <1697185865-27528-1-git-send-email-shengjiu.wang@nxp.com>
- <1697185865-27528-10-git-send-email-shengjiu.wang@nxp.com>
- <a0dfe959-3b32-4d03-9f1b-8f3c1054ecf7@xs4all.nl>
- <CAA+D8AP1a-Vioy2Cr7dZ4wErXpkm7g9Caw-yPKc9jbWpPnN0JQ@mail.gmail.com>
-From: Hans Verkuil <hverkuil@xs4all.nl>
-Autocrypt: addr=hverkuil@xs4all.nl; keydata=
- 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
-In-Reply-To: <CAA+D8AP1a-Vioy2Cr7dZ4wErXpkm7g9Caw-yPKc9jbWpPnN0JQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: cisco.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5790.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 785d98e9-1200-4c43-d199-08dbcf1c49e5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Oct 2023 14:21:00.8698
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 5ae1af62-9505-4097-a69a-c1553ef7840e
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: oFrNWFKQglYX0DsvdEcv5MUCviYzcSjIh+LzQbaFgEGH2621vQzwm2UPthZgBBeU07F9DdZOw05iLqpIaSIl4A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6859
+X-Outbound-SMTP-Client: 72.163.7.163, rcdn-opgw-2.cisco.com
+X-Outbound-Node: rcdn-core-6.cisco.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,354 +200,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, nicoleotsuka@gmail.com, linuxppc-dev@lists.ozlabs.org, broonie@kernel.org, sakari.ailus@iki.fi, perex@perex.cz, mchehab@kernel.org, festevam@gmail.com, m.szyprowski@samsung.com
+Cc: "christophe.leroy@c-s.fr" <christophe.leroy@c-s.fr>, Pavan Kondeti <quic_pkondeti@quicinc.com>, "tomas.mudrunka@gmail.com" <tomas.mudrunka@gmail.com>, "quic_vjitta@quicinc.com" <quic_vjitta@quicinc.com>, "xe-linux-external\(mailer list\)" <xe-linux-external@cisco.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "robh+dt@kernel.org" <robh+dt@kernel.org>, "quic_guptap@quicinc.com" <quic_guptap@quicinc.com>, "maksym.kokhan@globallogic.com" <maksym.kokhan@globallogic.com>, "dwalker@fifo99.com" <dwalker@fifo99.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 17/10/2023 15:11, Shengjiu Wang wrote:
-> On Mon, Oct 16, 2023 at 9:16 PM Hans Verkuil <hverkuil@xs4all.nl> wrote:
->>
->> Hi Shengjiu,
->>
->> On 13/10/2023 10:31, Shengjiu Wang wrote:
->>> Fixed point controls are used by the user to configure
->>> the audio sample rate to driver.
->>>
->>> Add V4L2_CID_ASRC_SOURCE_RATE and V4L2_CID_ASRC_DEST_RATE
->>> new IDs for ASRC rate control.
->>>
->>> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
->>> ---
->>>  .../userspace-api/media/v4l/common.rst        |  1 +
->>>  .../media/v4l/ext-ctrls-fixed-point.rst       | 36 +++++++++++++++++++
->>>  .../media/v4l/vidioc-g-ext-ctrls.rst          |  4 +++
->>>  .../media/v4l/vidioc-queryctrl.rst            |  7 ++++
->>>  .../media/videodev2.h.rst.exceptions          |  1 +
->>>  drivers/media/v4l2-core/v4l2-ctrls-core.c     |  5 +++
->>>  drivers/media/v4l2-core/v4l2-ctrls-defs.c     |  4 +++
->>>  include/media/v4l2-ctrls.h                    |  2 ++
->>>  include/uapi/linux/v4l2-controls.h            | 13 +++++++
->>>  include/uapi/linux/videodev2.h                |  3 ++
->>>  10 files changed, 76 insertions(+)
->>>  create mode 100644 Documentation/userspace-api/media/v4l/ext-ctrls-fixed-point.rst
->>>
->>> diff --git a/Documentation/userspace-api/media/v4l/common.rst b/Documentation/userspace-api/media/v4l/common.rst
->>> index ea0435182e44..35707edffb13 100644
->>> --- a/Documentation/userspace-api/media/v4l/common.rst
->>> +++ b/Documentation/userspace-api/media/v4l/common.rst
->>> @@ -52,6 +52,7 @@ applicable to all devices.
->>>      ext-ctrls-fm-rx
->>>      ext-ctrls-detect
->>>      ext-ctrls-colorimetry
->>> +    ext-ctrls-fixed-point
->>
->> Rename this to ext-ctrls-audio-m2m.
->>
->>>      fourcc
->>>      format
->>>      planar-apis
->>> diff --git a/Documentation/userspace-api/media/v4l/ext-ctrls-fixed-point.rst b/Documentation/userspace-api/media/v4l/ext-ctrls-fixed-point.rst
->>> new file mode 100644
->>> index 000000000000..2ef6e250580c
->>> --- /dev/null
->>> +++ b/Documentation/userspace-api/media/v4l/ext-ctrls-fixed-point.rst
->>> @@ -0,0 +1,36 @@
->>> +.. SPDX-License-Identifier: GFDL-1.1-no-invariants-or-later
->>> +
->>> +.. _fixed-point-controls:
->>> +
->>> +***************************
->>> +Fixed Point Control Reference
->>
->> This is for audio controls. "Fixed Point" is just the type, and it doesn't make
->> sense to group fixed point controls. But it does make sense to group the audio
->> controls.
->>
->> V4L2 controls can be grouped into classes. Basically it is a way to put controls
->> into categories, and for each category there is also a control that gives a
->> description of the class (see 2.15.15 in
->> https://linuxtv.org/downloads/v4l-dvb-apis-new/driver-api/v4l2-controls.html#introduction)
->>
->> If you use e.g. 'v4l2-ctl -l' to list all the controls, then you will see that
->> they are grouped based on what class of control they are.
->>
->> So I think it would be a good idea to create a new control class for M2M audio controls,
->> instead of just adding them to the catch-all 'User Controls' class.
->>
->> Search e.g. for V4L2_CTRL_CLASS_COLORIMETRY and V4L2_CID_COLORIMETRY_CLASS to see how
->> it is done.
->>
->> M2M_AUDIO would probably be a good name for the class.
->>
->>> +***************************
->>> +
->>> +These controls are intended to support an asynchronous sample
->>> +rate converter.
->>
->> Add ' (ASRC).' at the end to indicate the common abbreviation for
->> that.
->>
->>> +
->>> +.. _v4l2-audio-asrc:
->>> +
->>> +``V4L2_CID_ASRC_SOURCE_RATE``
->>> +    sets the resampler source rate.
->>> +
->>> +``V4L2_CID_ASRC_DEST_RATE``
->>> +    sets the resampler destination rate.
->>
->> Document the unit (Hz) for these two controls.
->>
->>> +
->>> +.. c:type:: v4l2_ctrl_fixed_point
->>> +
->>> +.. cssclass:: longtable
->>> +
->>> +.. tabularcolumns:: |p{1.5cm}|p{5.8cm}|p{10.0cm}|
->>> +
->>> +.. flat-table:: struct v4l2_ctrl_fixed_point
->>> +    :header-rows:  0
->>> +    :stub-columns: 0
->>> +    :widths:       1 1 2
->>> +
->>> +    * - __u32
->>
->> Hmm, shouldn't this be __s32?
->>
->>> +      - ``integer``
->>> +      - integer part of fixed point value.
->>> +    * - __s32
->>
->> and this __u32?
->>
->> You want to be able to use this generic type as a signed value.
->>
->>> +      - ``fractional``
->>> +      - fractional part of fixed point value, which is Q31.
->>> diff --git a/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst b/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
->>> index f9f73530a6be..1811dabf5c74 100644
->>> --- a/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
->>> +++ b/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
->>> @@ -295,6 +295,10 @@ still cause this situation.
->>>        - ``p_av1_film_grain``
->>>        - A pointer to a struct :c:type:`v4l2_ctrl_av1_film_grain`. Valid if this control is
->>>          of type ``V4L2_CTRL_TYPE_AV1_FILM_GRAIN``.
->>> +    * - struct :c:type:`v4l2_ctrl_fixed_point` *
->>> +      - ``p_fixed_point``
->>> +      - A pointer to a struct :c:type:`v4l2_ctrl_fixed_point`. Valid if this control is
->>> +        of type ``V4L2_CTRL_TYPE_FIXED_POINT``.
->>>      * - void *
->>>        - ``ptr``
->>>        - A pointer to a compound type which can be an N-dimensional array
->>> diff --git a/Documentation/userspace-api/media/v4l/vidioc-queryctrl.rst b/Documentation/userspace-api/media/v4l/vidioc-queryctrl.rst
->>> index 4d38acafe8e1..9285f4f39eed 100644
->>> --- a/Documentation/userspace-api/media/v4l/vidioc-queryctrl.rst
->>> +++ b/Documentation/userspace-api/media/v4l/vidioc-queryctrl.rst
->>> @@ -549,6 +549,13 @@ See also the examples in :ref:`control`.
->>>        - n/a
->>>        - A struct :c:type:`v4l2_ctrl_av1_film_grain`, containing AV1 Film Grain
->>>          parameters for stateless video decoders.
->>> +    * - ``V4L2_CTRL_TYPE_FIXED_POINT``
->>> +      - n/a
->>> +      - n/a
->>> +      - n/a
->>> +      - A struct :c:type:`v4l2_ctrl_fixed_point`, containing parameter which has
->>> +        integer part and fractional part, i.e. audio sample rate.
->>> +
->>>
->>>  .. raw:: latex
->>>
->>> diff --git a/Documentation/userspace-api/media/videodev2.h.rst.exceptions b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
->>> index e61152bb80d1..2faa5a2015eb 100644
->>> --- a/Documentation/userspace-api/media/videodev2.h.rst.exceptions
->>> +++ b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
->>> @@ -167,6 +167,7 @@ replace symbol V4L2_CTRL_TYPE_AV1_SEQUENCE :c:type:`v4l2_ctrl_type`
->>>  replace symbol V4L2_CTRL_TYPE_AV1_TILE_GROUP_ENTRY :c:type:`v4l2_ctrl_type`
->>>  replace symbol V4L2_CTRL_TYPE_AV1_FRAME :c:type:`v4l2_ctrl_type`
->>>  replace symbol V4L2_CTRL_TYPE_AV1_FILM_GRAIN :c:type:`v4l2_ctrl_type`
->>> +replace symbol V4L2_CTRL_TYPE_FIXED_POINT :c:type:`v4l2_ctrl_type`
->>>
->>>  # V4L2 capability defines
->>>  replace define V4L2_CAP_VIDEO_CAPTURE device-capabilities
->>> diff --git a/drivers/media/v4l2-core/v4l2-ctrls-core.c b/drivers/media/v4l2-core/v4l2-ctrls-core.c
->>> index a662fb60f73f..7a616ac91059 100644
->>> --- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
->>> +++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
->>> @@ -1168,6 +1168,8 @@ static int std_validate_compound(const struct v4l2_ctrl *ctrl, u32 idx,
->>>               if (!area->width || !area->height)
->>>                       return -EINVAL;
->>>               break;
->>> +     case V4L2_CTRL_TYPE_FIXED_POINT:
->>> +             break;
->>
->> Hmm, this would need this patch 'v4l2-ctrls: add support for V4L2_CTRL_WHICH_MIN/MAX_VAL':
->>
->> https://patchwork.linuxtv.org/project/linux-media/patch/20231010022136.1504015-7-yunkec@google.com/
->>
->> since min and max values are perfectly fine for a fixed point value.
->>
->> Even a step value (currently not supported in that patch) would make sense.
->>
->> But I wonder if we couldn't simplify this: instead of creating a v4l2_ctrl_fixed_point,
->> why not represent the fixed point value as a Q31.32. Then the standard
->> minimum/maximum/step values can be used, and it acts like a regular V4L2_TYPE_INTEGER64.
->>
->> Except that both userspace and drivers need to multiply it with 2^-32 to get the actual
->> value.
->>
->> So in enum v4l2_ctrl_type add:
->>
->>         V4L2_CTRL_TYPE_FIXED_POINT = 10,
->>
->> (10, because it is no longer a compound type).
-> 
-> Seems we don't need V4L2_CTRL_TYPE_FIXED_POINT, just use V4L2_TYPE_INTEGER64?
-> 
-> The reason I use the 'integer' and 'fractional' is that I want
-> 'integer' to be the normal sample
-> rate, for example 48kHz.  The 'fractional' is the difference with
-> normal sample rate.
-> 
-> For example, the rate = 47998.12345.  so integer = 48000,  fractional= -1.87655.
-> 
-> So if we use s64 for rate, then in driver need to convert the rate to
-> the closed normal
-> sample rate + fractional.
+On Tue, Oct 17, 2023 at 04:10:42PM +0530, Pratyush Brahma wrote:
+> For such a usecase, the CONFIG_CMDLINE_PREPEND seems to be quite useful a=
+s
+> it would help to stitch bootloader
+> and the desired build variant's configs together. Can you please help to
+> merge this patch?
 
-That wasn't what the documentation said :-)
+Yes, your at least the second person that's asked for it, and it's been on =
+my
+list for some time to release again. I'll try to release it as soon as poss=
+ible.
 
-So this is really two controls: one for the 'normal sample rate' (whatever 'normal'
-means in this context) and the offset to the actual sample rate.
-
-Presumably the 'normal' sample rate is set once, while the offset changes
-regularly.
-
-But why do you need the 'normal' sample rate? With audio resampling I assume
-you resample from one rate to another, so why do you need a third 'normal'
-rate?
-
-Regards,
-
-	Hans
-
-> 
-> best regards
-> wang shengjiu
-> 
->>
->>>
->>>       default:
->>>               return -EINVAL;
->>> @@ -1868,6 +1870,9 @@ static struct v4l2_ctrl *v4l2_ctrl_new(struct v4l2_ctrl_handler *hdl,
->>>       case V4L2_CTRL_TYPE_AREA:
->>>               elem_size = sizeof(struct v4l2_area);
->>>               break;
->>> +     case V4L2_CTRL_TYPE_FIXED_POINT:
->>> +             elem_size = sizeof(struct v4l2_ctrl_fixed_point);
->>> +             break;
->>>       default:
->>>               if (type < V4L2_CTRL_COMPOUND_TYPES)
->>>                       elem_size = sizeof(s32);
->>> diff --git a/drivers/media/v4l2-core/v4l2-ctrls-defs.c b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
->>> index 8696eb1cdd61..d8f232df6b6a 100644
->>> --- a/drivers/media/v4l2-core/v4l2-ctrls-defs.c
->>> +++ b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
->>> @@ -1602,6 +1602,10 @@ void v4l2_ctrl_fill(u32 id, const char **name, enum v4l2_ctrl_type *type,
->>>       case V4L2_CID_COLORIMETRY_HDR10_MASTERING_DISPLAY:
->>>               *type = V4L2_CTRL_TYPE_HDR10_MASTERING_DISPLAY;
->>>               break;
->>> +     case V4L2_CID_ASRC_SOURCE_RATE:
->>> +     case V4L2_CID_ASRC_DEST_RATE:
->>> +             *type = V4L2_CTRL_TYPE_FIXED_POINT;
->>> +             break;
->>>       default:
->>>               *type = V4L2_CTRL_TYPE_INTEGER;
->>>               break;
->>> diff --git a/include/media/v4l2-ctrls.h b/include/media/v4l2-ctrls.h
->>> index 59679a42b3e7..645e4cccafc7 100644
->>> --- a/include/media/v4l2-ctrls.h
->>> +++ b/include/media/v4l2-ctrls.h
->>> @@ -56,6 +56,7 @@ struct video_device;
->>>   * @p_av1_tile_group_entry:  Pointer to an AV1 tile group entry structure.
->>>   * @p_av1_frame:             Pointer to an AV1 frame structure.
->>>   * @p_av1_film_grain:                Pointer to an AV1 film grain structure.
->>> + * @p_fixed_point:           Pointer to a struct v4l2_ctrl_fixed_point.
->>>   * @p:                               Pointer to a compound value.
->>>   * @p_const:                 Pointer to a constant compound value.
->>>   */
->>> @@ -89,6 +90,7 @@ union v4l2_ctrl_ptr {
->>>       struct v4l2_ctrl_av1_tile_group_entry *p_av1_tile_group_entry;
->>>       struct v4l2_ctrl_av1_frame *p_av1_frame;
->>>       struct v4l2_ctrl_av1_film_grain *p_av1_film_grain;
->>> +     struct v4l2_ctrl_fixed_point *p_fixed_point;
->>>       void *p;
->>>       const void *p_const;
->>>  };
->>> diff --git a/include/uapi/linux/v4l2-controls.h b/include/uapi/linux/v4l2-controls.h
->>> index c3604a0a3e30..91096259e3ea 100644
->>> --- a/include/uapi/linux/v4l2-controls.h
->>> +++ b/include/uapi/linux/v4l2-controls.h
->>> @@ -112,6 +112,8 @@ enum v4l2_colorfx {
->>>
->>>  /* last CID + 1 */
->>>  #define V4L2_CID_LASTP1                         (V4L2_CID_BASE+44)
->>> +#define V4L2_CID_ASRC_SOURCE_RATE            (V4L2_CID_BASE + 45)
->>> +#define V4L2_CID_ASRC_DEST_RATE                      (V4L2_CID_BASE + 46)
->>
->> This patch needs to be split in three parts:
->>
->> 1) Add the new M2M_AUDIO control class,
->> 2) Add the new V4L2_CTRL_TYPE_FIXED_POINT type,
->> 3) Add the new controls.
->>
->> These are all independent changes, so separating them makes it easier to
->> review.
->>
->>>
->>>  /* USER-class private control IDs */
->>>
->>> @@ -3488,4 +3490,15 @@ struct v4l2_ctrl_av1_film_grain {
->>>  #define V4L2_CID_MPEG_MFC51_BASE        V4L2_CID_CODEC_MFC51_BASE
->>>  #endif
->>>
->>> +/**
->>> + * struct v4l2_ctrl_fixed_point - fixed point parameter.
->>> + *
->>> + * @rate_integer: integer part of fixed point value.
->>> + * @rate_fractional: fractional part of fixed point value
->>> + */
->>> +struct v4l2_ctrl_fixed_point {
->>> +     __u32 integer;
->>
->> __s32?
->>
->>> +     __u32 fractional;
->>> +};
->>> +
->>>  #endif
->>> diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
->>> index 2ac7b989394c..3ef32c09c2fa 100644
->>> --- a/include/uapi/linux/videodev2.h
->>> +++ b/include/uapi/linux/videodev2.h
->>> @@ -1888,6 +1888,7 @@ struct v4l2_ext_control {
->>>               struct v4l2_ctrl_av1_tile_group_entry __user *p_av1_tile_group_entry;
->>>               struct v4l2_ctrl_av1_frame __user *p_av1_frame;
->>>               struct v4l2_ctrl_av1_film_grain __user *p_av1_film_grain;
->>> +             struct v4l2_ctrl_fixed_point __user *p_fixed_point;
->>>               void __user *ptr;
->>>       };
->>>  } __attribute__ ((packed));
->>> @@ -1966,6 +1967,8 @@ enum v4l2_ctrl_type {
->>>       V4L2_CTRL_TYPE_AV1_TILE_GROUP_ENTRY = 0x281,
->>>       V4L2_CTRL_TYPE_AV1_FRAME            = 0x282,
->>>       V4L2_CTRL_TYPE_AV1_FILM_GRAIN       = 0x283,
->>> +
->>> +     V4L2_CTRL_TYPE_FIXED_POINT          = 0x290,
->>>  };
->>>
->>>  /*  Used in the VIDIOC_QUERYCTRL ioctl for querying controls */
->>
->> Regards,
->>
->>         Hans
-
+Daniel=
