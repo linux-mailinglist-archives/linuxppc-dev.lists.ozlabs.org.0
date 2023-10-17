@@ -1,76 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FEF87CB83E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Oct 2023 04:09:22 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2023-03-30 header.b=ccZ8tDzU;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4F1D7CB83A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Oct 2023 04:04:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S8cqN0M6lz3cL0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Oct 2023 13:09:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S8ckF4Plyz3vXC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Oct 2023 13:04:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2023-03-30 header.b=ccZ8tDzU;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.165.32; helo=mx0a-00069f02.pphosted.com; envelope-from=martin.petersen@oracle.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 3366 seconds by postgrey-1.37 at boromir; Tue, 17 Oct 2023 13:08:31 AEDT
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.216.47; helo=mail-pj1-f47.google.com; envelope-from=namhyung@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S8cpR4w36z2xpm
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Oct 2023 13:08:30 +1100 (AEDT)
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39GKOApQ013037;
-	Tue, 17 Oct 2023 01:12:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2023-03-30;
- bh=Xs+QD230V90/UG6DoR1nbW1dfXhgdVRcogMOWpKkp+E=;
- b=ccZ8tDzU22fJjPK4Tj33ctkm3A+wyHBe7iX0r0h1zIxaNZ9zcSPiMpajeUrI78L7XhbK
- s5ox8sf0HGAuYLOEai3Dks60Jlqvu4S35Q9W//bQZfTls2v/DHmRssWSD8gYk38ODwxu
- ryXkUn/sGkNGacveZavUOfDEx8mD43d3gj7D8GJdQlSkolEQfX0t5/Qo9pHzTIdnVJhm
- 1XDUmlpXjJjXvS8dZQ/GVL8pwqTSWApqGbV68DQlyB3mtAKOvSAOB86IwYiVuAyzDQNZ
- Znb3wolZob4aLTfGKNmH7uTX7P7g9muT301yltCWzMhjiMuTgaQ0waNLNb1TPJKXBTvY sA== 
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3tqk3jm253-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 17 Oct 2023 01:12:12 +0000
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 39GN0GAp027087;
-	Tue, 17 Oct 2023 01:12:11 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3trg5366rm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 17 Oct 2023 01:12:11 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39H1C3su039761;
-	Tue, 17 Oct 2023 01:12:10 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 3trg5366mf-8;
-	Tue, 17 Oct 2023 01:12:10 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: tyreld@linux.ibm.com, Nathan Chancellor <nathan@kernel.org>
-Subject: Re: [PATCH] scsi: ibmvfc: Use 'unsigned int' for single-bit bitfields in 'struct ibmvfc_host'
-Date: Mon, 16 Oct 2023 21:11:55 -0400
-Message-Id: <169750286917.2183937.1857222190314885925.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20231010-ibmvfc-fix-bitfields-type-v1-1-37e95b5a60e5@kernel.org>
-References: <20231010-ibmvfc-fix-bitfields-type-v1-1-37e95b5a60e5@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S8cjn0pFZz2yjD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Oct 2023 13:04:27 +1100 (AEDT)
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-27d5fe999caso1237110a91.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Oct 2023 19:04:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697508264; x=1698113064;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=z+GF7dCDjHk8m5WS8HzK25lhtAgTi6Fyhpd2LEXBsic=;
+        b=NEx1eyQTrJUQFfpdltH6N4SqsebC9Rf2w6QhI8uKg1CrMcFYrV/79CSSjg9QoJDM6v
+         amgQvXx+J6aV876OcVckAXDqqH32sMJbllym4E4ior09+0b1r2AD2M1hYkLXcoV/NetZ
+         gAcqTfF4M+o02Lxj34wDW0E3gcQZyKKyvj+PHFeoWElN+N8rp2obKJVu/d5fXWS0bf/B
+         vB4toUwl4SPC9LR8zOfoKch+oNX3rGg9ji0kcXa8WVAXQeoVG+oBtyOXf17QMexcjMh/
+         hkPFkpRZ+xrAflbCgrWy08mswm8Z2IUqd7vz5UZoxPHXQFtKozZhdJc9jjQg9IXsDuYz
+         z8/g==
+X-Gm-Message-State: AOJu0YxJglmt/H00e4N72elKvlkao0G/LvMs18ilM/vDTZyuHqynrRLZ
+	zjdhv0qC1KP/bfD9OGjcy/YGe1i37eUCY9Z8VQg=
+X-Google-Smtp-Source: AGHT+IFrYuYxrCcB1JXBA8JEqzHU7hCBkSpTeW7cvEzxyZwI8/33nx+B/IyphfEiNQF5w2vmkvQ/kEG3UnUP0AIV0PA=
+X-Received: by 2002:a17:90a:fa11:b0:27d:3fa4:9d9a with SMTP id
+ cm17-20020a17090afa1100b0027d3fa49d9amr799520pjb.29.1697508264166; Mon, 16
+ Oct 2023 19:04:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-16_13,2023-10-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0 phishscore=0
- malwarescore=0 suspectscore=0 mlxlogscore=858 spamscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
- definitions=main-2310170008
-X-Proofpoint-GUID: NfheMxzNAJGvnXMTzl5tZqtIkAH1iC5e
-X-Proofpoint-ORIG-GUID: NfheMxzNAJGvnXMTzl5tZqtIkAH1iC5e
+References: <20231013073021.99794-1-atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <20231013073021.99794-1-atrajeev@linux.vnet.ibm.com>
+From: Namhyung Kim <namhyung@kernel.org>
+Date: Mon, 16 Oct 2023 19:04:12 -0700
+Message-ID: <CAM9d7ch9Ap+NkdQwTD+BCXNuL6GXRJYJ3vFmH3hFS3F2avT0Jw@mail.gmail.com>
+Subject: Re: [PATCH V2 0/3] Fix for shellcheck issues with latest scripts in tests/shell
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,25 +57,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>, linux-scsi@vger.kernel.org, trix@redhat.com, jejb@linux.ibm.com, llvm@lists.linux.dev, ndesaulniers@google.com, patches@lists.linux.dev, brking@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: irogers@google.com, maddy@linux.ibm.com, kjain@linux.ibm.com, adrian.hunter@intel.com, acme@kernel.org, linux-perf-users@vger.kernel.org, jolsa@kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 10 Oct 2023 13:32:37 -0700, Nathan Chancellor wrote:
+Hello,
 
-> Clang warns (or errors with CONFIG_WERROR=y) several times along the
-> lines of:
-> 
->   drivers/scsi/ibmvscsi/ibmvfc.c:650:17: warning: implicit truncation from 'int' to a one-bit wide bit-field changes value from 1 to -1 [-Wsingle-bit-bitfield-constant-conversion]
->     650 |                 vhost->reinit = 1;
->         |                               ^ ~
-> 
-> [...]
+On Fri, Oct 13, 2023 at 12:31=E2=80=AFAM Athira Rajeev
+<atrajeev@linux.vnet.ibm.com> wrote:
+>
+> shellcheck was run on perf tool shell scripts as a pre-requisite
+> to include a build option for shellcheck discussed here:
+> https://www.spinics.net/lists/linux-perf-users/msg25553.html
+>
+> And fixes were added for the coding/formatting issues in
+> two patchsets:
+> https://lore.kernel.org/linux-perf-users/20230613164145.50488-1-atrajeev@=
+linux.vnet.ibm.com/
+> https://lore.kernel.org/linux-perf-users/20230709182800.53002-1-atrajeev@=
+linux.vnet.ibm.com/
+>
+> Three additional issues were observed and fixes are part of:
+> git://git.kernel.org/pub/scm/linux/kernel/git/acme/linux.git
+>
+> With recent commits in perf, other three issues are observed.
+> shellcheck version: 0.6.0
+> The changes are with recent commits ( which is mentioned in each patch)
+> for lock_contention, record_sideband and stat_all_metricgroups test.
+> Patch series fixes these testcases and patches are on top of:
+> git://git.kernel.org/pub/scm/linux/kernel/git/acme/linux.git
+>
+> The version 1 patchset had fix patch for test_arm_coresight.sh.
+> Dropping that in V2 based on discussion here:
+> https://lore.kernel.org/linux-perf-users/F265857D-0D37-4878-908C-D20732F2=
+12F9@linux.vnet.ibm.com/T/#u
+>
+> Athira Rajeev (3):
+>   tools/perf/tests Ignore the shellcheck SC2046 warning in
+>     lock_contention
+>   tools/perf/tests: Fix shellcheck warning in record_sideband.sh test
+>   tools/perf/tests/shell: Fix shellcheck warning SC2112 with
+>     stat_all_metricgroups
 
-Applied to 6.7/scsi-queue, thanks!
+For the series,
+Acked-by: Namhyung Kim <namhyung@kernel.org>
 
-[1/1] scsi: ibmvfc: Use 'unsigned int' for single-bit bitfields in 'struct ibmvfc_host'
-      https://git.kernel.org/mkp/scsi/c/78882c7657bb
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Thanks,
+Namhyung
