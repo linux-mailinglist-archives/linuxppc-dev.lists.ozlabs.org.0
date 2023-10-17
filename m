@@ -1,59 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF71A7CD04B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 01:15:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 658157CD04C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 01:16:38 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=HxtKZKLs;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NxGosvxC;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S98wW6NX0z3cK8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 10:15:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S98xc1shRz3c8L
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 10:16:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=HxtKZKLs;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NxGosvxC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=mailbox.org (client-ip=80.241.56.152; helo=mout-p-102.mailbox.org; envelope-from=erhard_f@mailbox.org; receiver=lists.ozlabs.org)
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bergner@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S98vc47Q0z30NP
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Oct 2023 10:14:51 +1100 (AEDT)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4S98vV5cBmz9sXg;
-	Wed, 18 Oct 2023 01:14:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1697584486;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Cmtq4fWj5Rl8hlT+/wDd4j3/Uz9lprd8zFd/8pF1nPY=;
-	b=HxtKZKLsmXiXc3pFtY43GBAEzKy09Otq7ByZ3x2MMcWctFaedNZJxCMReVUq0+VgnYehlx
-	J99ULnk1lQtml6cJdQJWZNxnlVbuUgDNH6GRJ1oRd5sL6mhjusK4/7gEBNpN7OuPIbgfOW
-	o7WRjdk5MGSNNH/UzePyoyKGqQqVtAW2YNVsu8LUoCTxm0IlWHal/iCL5MG0BMQqETyN4A
-	8JhnRsCBX8iiDrAtM3C9fN11lKtxen6f9lQbS8exoYMRoRNzYkw2GquORS6/iAPC9ChEAn
-	t0q7yqdgM+klxvv0EcFgZqTq4ZpDCeqV9jjt0Y7hFUr6LIsUgAQJ3LLH1GqCwA==
-Date: Wed, 18 Oct 2023 01:14:43 +0200
-From: Erhard Furtner <erhard_f@mailbox.org>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH 0/2] Allow nesting of lazy MMU mode
-Message-ID: <20231018011443.3bd8b366@yea>
-In-Reply-To: <875y35zswo.fsf@linux.ibm.com>
-References: <20231012195415.282357-1-willy@infradead.org>
-	<20231013154220.02fb2e6d@yea>
-	<875y35zswo.fsf@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S98vs2N5Tz3cDd
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Oct 2023 10:15:05 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39HNCFuV016883;
+	Tue, 17 Oct 2023 23:14:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : from : to : cc : references : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=6l8K+zlwEhLLX214l6vpRGzDWkRe5WLN3fGIjut9A8k=;
+ b=NxGosvxCFLdIKyADacPqMj7Z/2VpAKnwwhDdYrnPVODOBVPQnIbzuCQMrj0zrkssDZ0j
+ skYZz3R//lYOaS/Ah93/RzFRGJJeGBRH4fGC4wBii/aZBacmDKJgao88FMfAYNwbCIvv
+ vYwp/CELiopI2PEPFYRJ+IxnOkdWexc4ZTBhpmN9dylQ8l1ADwqXmv8cQL/nRT0/xGEJ
+ dIkMT+CRet9pOfpPaboNg3KHeSZVvIT6GdjgcLWgQffsepquWLPa3a6P2HRJ+e4Ffoxz
+ tuD/pkeqCCclrpT9zt9Sdmf7m40fw7R+ua33UKkAHX8mVX7G765OLhZCVu54FLlwriCk Fw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tt3qv033b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Oct 2023 23:14:57 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39HND8OV020148;
+	Tue, 17 Oct 2023 23:14:57 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tt3qv0330-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Oct 2023 23:14:56 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39HMNbud027130;
+	Tue, 17 Oct 2023 23:14:55 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tr6tkc8de-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Oct 2023 23:14:55 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39HNEsLL22217252
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 17 Oct 2023 23:14:55 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B15D15804B;
+	Tue, 17 Oct 2023 23:14:54 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D750A58055;
+	Tue, 17 Oct 2023 23:14:53 +0000 (GMT)
+Received: from [9.61.148.54] (unknown [9.61.148.54])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 17 Oct 2023 23:14:53 +0000 (GMT)
+Message-ID: <4294d9ae-3f5e-4f81-b586-2c134d21896a@linux.ibm.com>
+Date: Tue, 17 Oct 2023 18:14:53 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: [PING][PATCH] uapi/auxvec: Define AT_HWCAP3 and AT_HWCAP4 aux vector,
+ entries
+Content-Language: en-US
+From: Peter Bergner <bergner@linux.ibm.com>
+To: linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <fd879f60-3f0b-48d1-bfa1-6d337768207e@linux.ibm.com>
+In-Reply-To: <fd879f60-3f0b-48d1-bfa1-6d337768207e@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-MBO-RS-ID: 99c3693f2065b8fe824
-X-MBO-RS-META: dcbcmyejoc5m4xaoafkbxmyubyh5pkqz
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: nN4KjNZj50rO6_LqZkRXygqLOQCFnOq1
+X-Proofpoint-GUID: lLwL3FQnW5CClXBEbUZX8rWUOQs8gJGH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-17_06,2023-10-17_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
+ bulkscore=0 mlxlogscore=999 spamscore=0 clxscore=1011 adultscore=0
+ suspectscore=0 lowpriorityscore=0 malwarescore=0 priorityscore=1501
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310170196
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,75 +101,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juergen Gross <jgross@suse.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, linux-sparc@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>
+Cc: GNU C Library <libc-alpha@sourceware.org>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 17 Oct 2023 11:34:23 +0530
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> wrote:
+CCing linux-kernel for more exposure.
 
-> ie, we can do something like below. The change also make sure we call
-> set_pte_filter on all the ptes we are setting via set_ptes(). I haven't
-> sent this as a proper patch because we still are not able to fix the
-> issue Erhard reported. 
+PING.  I'm waiting on a reply from anyone on the kernel side of things
+to see whether they have an issue with reserving values for AT_HWCAP3
+and AT_HWCAP4.  
+
+I'll note reviews from the GLIBC camp did not have an issue with the below patch.
+
+Thanks.
+
+Peter
+
+
+On 9/26/23 5:02 PM, Peter Bergner wrote:
+> The powerpc toolchain keeps a copy of the HWCAP bit masks in our TCB for fast
+> access by our __builtin_cpu_supports built-in function.  The TCB space for
+> the HWCAP entries - which are created in pairs - is an ABI extension, so
+> waiting to create the space for HWCAP3 and HWCAP4 until we need them is
+> problematical, given distro unwillingness to apply ABI modifying patches
+> to distro point releases.  Define AT_HWCAP3 and AT_HWCAP4 in the generic
+> uapi header so they can be used in GLIBC to reserve space in the powerpc
+> TCB for their future use.
 > 
-> diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-> index 3ba9fe411604..95ab20cca2da 100644
-> --- a/arch/powerpc/mm/pgtable.c
-> +++ b/arch/powerpc/mm/pgtable.c
-> @@ -191,28 +191,35 @@ void set_ptes(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
->  		pte_t pte, unsigned int nr)
->  {
->  	/*
-> -	 * Make sure hardware valid bit is not set. We don't do
-> -	 * tlb flush for this update.
-> +	 * We don't need to call arch_enter/leave_lazy_mmu_mode()
-> +	 * because we expect set_ptes to be only be used on not present
-> +	 * and not hw_valid ptes. Hence there is not translation cache flush
-> +	 * involved that need to be batched.
->  	 */
-> -	VM_WARN_ON(pte_hw_valid(*ptep) && !pte_protnone(*ptep));
-> +	for (;;) {
+> I scanned both the Linux and GLIBC source codes looking for unused AT_*
+> values and 29 and 30 did not seem to be used, so they are what I went
+> with.  If anyone sees a problem with using those specific values, I'm
+> amenable to using other values, just let me know what would be better.
+> 
+> Peter
+> 
+> 
+> Signed-off-by: Peter Bergner <bergner@linux.ibm.com>
+> ---
+>  include/uapi/linux/auxvec.h | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/include/uapi/linux/auxvec.h b/include/uapi/linux/auxvec.h
+> index 6991c4b8ab18..cc61cb9b3e9a 100644
+> --- a/include/uapi/linux/auxvec.h
+> +++ b/include/uapi/linux/auxvec.h
+> @@ -32,6 +32,8 @@
+>  #define AT_HWCAP2 26	/* extension of AT_HWCAP */
+>  #define AT_RSEQ_FEATURE_SIZE	27	/* rseq supported feature size */
+>  #define AT_RSEQ_ALIGN		28	/* rseq allocation alignment */
+> +#define AT_HWCAP3 29	/* extension of AT_HWCAP */
+> +#define AT_HWCAP4 30	/* extension of AT_HWCAP */
 >  
-> -	/* Note: mm->context.id might not yet have been assigned as
-> -	 * this context might not have been activated yet when this
-> -	 * is called.
-> -	 */
-> -	pte = set_pte_filter(pte);
-> +		/*
-> +		 * Make sure hardware valid bit is not set. We don't do
-> +		 * tlb flush for this update.
-> +		 */
-> +		VM_WARN_ON(pte_hw_valid(*ptep) && !pte_protnone(*ptep));
+>  #define AT_EXECFN  31	/* filename of program */
 >  
-> -	/* Perform the setting of the PTE */
-> -	arch_enter_lazy_mmu_mode();
-> -	for (;;) {
-> +		/* Note: mm->context.id might not yet have been assigned as
-> +		 * this context might not have been activated yet when this
-> +		 * is called.
-> +		 */
-> +		pte = set_pte_filter(pte);
-> +
-> +		/* Perform the setting of the PTE */
->  		__set_pte_at(mm, addr, ptep, pte, 0);
->  		if (--nr == 0)
->  			break;
->  		ptep++;
-> -		pte = __pte(pte_val(pte) + (1UL << PTE_RPN_SHIFT));
->  		addr += PAGE_SIZE;
-> +		/* increment the pfn */
-> +		pte = __pte(pte_val(pte) + PAGE_SIZE);
-> +
->  	}
-> -	arch_leave_lazy_mmu_mode();
->  }
->  
->  void unmap_kernel_page(unsigned long va)
 
-Was this a new version of the patch for me to test? Sorry for asking but this was a bit unclear to me.
-
-In any case I tried it on top of v6.6-rc6 and it did not help with the issue I reported.
-
-Regards,
-Erhard
