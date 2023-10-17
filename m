@@ -2,75 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8AF87CBD39
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Oct 2023 10:18:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C70E7CBEC9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Oct 2023 11:18:01 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Vc581irM;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BBOkZpng;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S8n1P5G8Lz3cc6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Oct 2023 19:18:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S8pKz2hNQz3fNd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Oct 2023 20:17:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Vc581irM;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BBOkZpng;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::1032; helo=mail-pj1-x1032.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S8n0V3GQZz30dt
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Oct 2023 19:17:44 +1100 (AEDT)
-Received: by mail-pj1-x1032.google.com with SMTP id 98e67ed59e1d1-27d104fa285so4379208a91.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Oct 2023 01:17:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697530659; x=1698135459; darn=lists.ozlabs.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=+LlVnjovZQKa7NrShhm24YzALCz3Jiaz+eKNaJ3ulnM=;
-        b=Vc581irMcjYc8hABpXWFMkt4AdzM+82xC3vWqYqAElQgs8JSTPkxvZ9Mz7YVThdZUq
-         tridPYLnDE0NcSB+qMbhZDIt35OnW9QN+I41ZVRw6kwpNbsK4fU9XhoFVcqVEk+plBKD
-         PJ0T6Y+R7+2R+nZeTryB8bPSKjl8sm+AznixsbYG0YHJ7O9mPBxYNsNd/nmquqL2tTOd
-         wxGFhwcX3PQKWvjMpxUL+PyExyHedBz2J3alg31v0sK4NQVbW8GM5f+tnXoVz5o/W/lS
-         zyfl28QvxeMb1V7f+fHwGCkrX5AhSDdvg7IajXN9G5f0iMbBy60IoA9eadrPaXNFC3BZ
-         nc3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697530659; x=1698135459;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+LlVnjovZQKa7NrShhm24YzALCz3Jiaz+eKNaJ3ulnM=;
-        b=i3s6gxXf1L0GkkgsGy+o36DP5iad3A0aTX9IGU++iSTLcpoPMAK0niIvIw+S8uyBGD
-         uSucB113EnzfNjYoblCaeZNzUjgrXuU/l7jRMkBr57X2qlwPAIUY33XpLUM+alqxmoFw
-         m5hbguHbae7Ic97qEMLWRxsrsPDnV/p1By9MS3fRLBxkWXYNBLHZ15Sv3ecy3RoddNZS
-         MIRKy5yFVa6PwqkQlheLR7y4JBpdpr6qrFQ2iP26DGvv4wk0qYndrOi544d2wYGW0+FD
-         Nvg2siEkcT9WU4SFPiw2Qfejlql99Rtks63Wf1todqVQCWzEAiDMCFAiUBbI0VvBz/Nz
-         CZSQ==
-X-Gm-Message-State: AOJu0YxzhFh3r8PwxbOO0aUVd5nmXD1gaaXT0KotfKKYiUF5OY5FZ4Gv
-	rkQ7oHwN0I8l9ROJFVCF/vAR
-X-Google-Smtp-Source: AGHT+IFJ+XwjBNsHb401tnImJrgO8tIl7GAykVmzgDpD/pNzSxKnSUYd1c7yondYd4ensK7UNVBRzA==
-X-Received: by 2002:a17:90a:d98d:b0:261:685:95b6 with SMTP id d13-20020a17090ad98d00b00261068595b6mr1492510pjv.13.1697530659344;
-        Tue, 17 Oct 2023 01:17:39 -0700 (PDT)
-Received: from thinkpad ([117.207.31.199])
-        by smtp.gmail.com with ESMTPSA id h16-20020a17090adb9000b002791d5a3e29sm769640pjv.6.2023.10.17.01.17.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Oct 2023 01:17:38 -0700 (PDT)
-Date: Tue, 17 Oct 2023 13:47:31 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Frank Li <Frank.li@nxp.com>
-Subject: Re: [PATCH 2/3] PCI: layerscape: add suspend/resume for ls1021a
-Message-ID: <20231017081731.GD5274@thinkpad>
-References: <20230915184306.2374670-1-Frank.Li@nxp.com>
- <20230915184306.2374670-2-Frank.Li@nxp.com>
- <20231016165824.GF39962@thinkpad>
- <ZS2anCpWakttzaAu@lizhi-Precision-Tower-5810>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZS2anCpWakttzaAu@lizhi-Precision-Tower-5810>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S8pK425jDz30YZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Oct 2023 20:17:11 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39H9Ea5M018239;
+	Tue, 17 Oct 2023 09:17:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : content-type :
+ content-transfer-encoding : mime-version : subject : message-id : date :
+ cc : to; s=pp1; bh=xN7Xz7bdiV5FnscEEpFBNx8e2AdVqvL557a7SjDjUCc=;
+ b=BBOkZpngSynpO7I96rj6RaYMTlDSJ16LvmA5XFsYg8fJUW+xo4NbCKs/aSicy1cnyz6e
+ vqmAev1N+pE9WpPx3VmYu+LfjyoMSV5Er+pQqv6dkbaV0anwyiY+FfO4LTgoT3h6doRQ
+ NMpV+lC0dlK3bckH/O8J+uVHS9cD0eT3hrtAiz3n02sGYKc988ixC+qtkGG6Df0pyBzr
+ OYxhtBpbreG28bs/Ld7DnB/XZuqc8Qth77TnW8nUQ+vVJ1i0bfWM+MAiuzi0zwlaVASD
+ gJDHugxrMn6v2TlmN4ShViGNh3/9dNlt+CKP9fOe3MZil71W+VzX+fiYlchBMX4S3S8y tw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tsqf58566-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Oct 2023 09:17:03 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39H9EnKt019342;
+	Tue, 17 Oct 2023 09:16:58 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tsqf584a4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Oct 2023 09:16:57 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39H8sxfW012850;
+	Tue, 17 Oct 2023 09:16:22 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tr5py7uq5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Oct 2023 09:16:22 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39H9GJc237945844
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 17 Oct 2023 09:16:19 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 50D702004B;
+	Tue, 17 Oct 2023 09:16:19 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3783B20043;
+	Tue, 17 Oct 2023 09:16:18 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.80.84])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 17 Oct 2023 09:16:17 +0000 (GMT)
+From: Sachin Sant <sachinp@linux.ibm.com>
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.100.2.1.4\))
+Subject: [powerpc] Kernel crash while running LTP (bisected)
+Message-Id: <81C9E2C1-DCC3-4DDD-8466-069893398B5B@linux.ibm.com>
+Date: Tue, 17 Oct 2023 14:46:07 +0530
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, lstoakes@gmail.com
+X-Mailer: Apple Mail (2.3774.100.2.1.4)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: otCDU0km5g1xxX2zAESsEmX8oPRpQBzX
+X-Proofpoint-GUID: j6wSEwpGQIVJ5sULyiTY_orJXecYQi4D
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-16_13,2023-10-12_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=672 mlxscore=0
+ suspectscore=0 bulkscore=0 phishscore=0 clxscore=1011 lowpriorityscore=0
+ impostorscore=0 priorityscore=1501 spamscore=0 adultscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
+ definitions=main-2310170076
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,191 +95,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, imx@lists.linux.dev, Rob Herring <robh@kernel.org>, "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, open list <linux-kernel@vger.kernel.org>, Minghuan Lian <minghuan.Lian@nxp.com>, "moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-arm-kernel@lists.infradead.org>, Roy Zang <roy.zang@nxp.com>, Bjorn Helgaas <bhelgaas@google.com>, "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>, Mingkai Hu <mingkai.hu@nxp.com>
+Cc: linux-mm@kvack.org, open list <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 16, 2023 at 04:18:36PM -0400, Frank Li wrote:
-> On Mon, Oct 16, 2023 at 10:28:24PM +0530, Manivannan Sadhasivam wrote:
-> > On Fri, Sep 15, 2023 at 02:43:05PM -0400, Frank Li wrote:
-> > > ls1021a add suspend/resume support.
-> > > 
-> > 
-> > Please add what the driver is doing during suspend/resume.
-> > 
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > >  drivers/pci/controller/dwc/pci-layerscape.c | 88 ++++++++++++++++++++-
-> > >  1 file changed, 87 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
-> > > index 20c48c06e2248..bc5a8ff1a26ce 100644
-> > > --- a/drivers/pci/controller/dwc/pci-layerscape.c
-> > > +++ b/drivers/pci/controller/dwc/pci-layerscape.c
-> > > @@ -35,6 +35,12 @@
-> > >  #define PF_MCR_PTOMR		BIT(0)
-> > >  #define PF_MCR_EXL2S		BIT(1)
-> > >  
-> > > +/* LS1021A PEXn PM Write Control Register */
-> > > +#define SCFG_PEXPMWRCR(idx)	(0x5c + (idx) * 0x64)
-> > > +#define PMXMTTURNOFF		BIT(31)
-> > > +#define SCFG_PEXSFTRSTCR	0x190
-> > > +#define PEXSR(idx)		BIT(idx)
-> > > +
-> > >  #define PCIE_IATU_NUM		6
-> > >  
-> > >  struct ls_pcie_drvdata {
-> > > @@ -48,6 +54,8 @@ struct ls_pcie {
-> > >  	struct dw_pcie *pci;
-> > >  	const struct ls_pcie_drvdata *drvdata;
-> > >  	void __iomem *pf_base;
-> > > +	struct regmap *scfg;
-> > > +	int index;
-> > >  	bool big_endian;
-> > >  };
-> > >  
-> > > @@ -170,13 +178,91 @@ static int ls_pcie_host_init(struct dw_pcie_rp *pp)
-> > >  	return 0;
-> > >  }
-> > >  
-> > > +static void ls1021a_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
-> > > +{
-> > > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> > > +	struct ls_pcie *pcie = to_ls_pcie(pci);
-> > > +	u32 val;
-> > > +
-> > > +	if (!pcie->scfg) {
-> > 
-> > Can this ever happen?
-> > 
-> > > +		dev_dbg(pcie->pci->dev, "SYSCFG is NULL\n");
-> > > +		return;
-> > > +	}
-> > > +
-> > > +	/* Send Turn_off message */
-> > 
-> > "Send PME_Turn_Off message"
-> > 
-> > > +	regmap_read(pcie->scfg, SCFG_PEXPMWRCR(pcie->index), &val);
-> > > +	val |= PMXMTTURNOFF;
-> > > +	regmap_write(pcie->scfg, SCFG_PEXPMWRCR(pcie->index), val);
-> > > +
-> > > +	/* There are not register to check ACK, so wait PCIE_PME_TO_L2_TIMEOUT_US */
-> > 
-> > "There is no specific register to check for PME_To_Ack from endpoint. So on the
-> > safe side, wait for PCIE_PME_TO_L2_TIMEOUT_US."
-> > 
-> > > +	mdelay(PCIE_PME_TO_L2_TIMEOUT_US/1000);
-> > > +
-> > > +	/* Clear Turn_off message */
-> > 
-> > "PME_Turn_off". But I'm not sure if this is really required. Are you doing it
-> > because the layerspace hw implements the PME_Turn_Off bit as "level triggered"?
-> 
-> I am not sure how hardware implement this. But reference manual said:
->  
-> PMXMTTURNOFF:
-> Generate PM turnoff message for power management of PCI Express controllers.
-> This bit should be cleared by software.
-> 0 Clear PM turnoff (default)
-> 1 Trigger PM turnoff
-> 
+While running LTP tests (getpid02) on a Power10 server booted with
+6.6.0-rc6-next-20231016 following crash was seen:
 
-Hmm, okay. Atleast add the below comment to make it understandable in the
-future:
+[   76.386628] Kernel attempted to read user page (d8) - exploit =
+attempt? (uid: 0)
+[   76.386649] BUG: Kernel NULL pointer dereference on read at =
+0x000000d8
+[   76.386653] Faulting instruction address: 0xc0000000004cda90
+[   76.386658] Oops: Kernel access of bad area, sig: 11 [#1]
+[   76.386661] LE PAGE_SIZE=3D64K MMU=3DRadix SMP NR_CPUS=3D8192 NUMA =
+pSeries
+[   76.386667] Modules linked in: rpadlpar_io rpaphp xsk_diag =
+nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet =
+nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat =
+nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 bonding rfkill tls ip_set =
+nf_tables nfnetlink sunrpc pseries_rng vmx_crypto aes_gcm_p10_crypto =
+binfmt_misc xfs libcrc32c sd_mod t10_pi sr_mod cdrom crc64_rocksoft =
+crc64 sg ibmvscsi ibmveth scsi_transport_srp fuse
+[   76.386709] CPU: 22 PID: 5763 Comm: getpid02 Kdump: loaded Not =
+tainted 6.6.0-rc6-next-20231016 #3
+[   76.386713] Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 =
+0xf000006 of:IBM,FW1030.20 (NH1030_058) hv:phyp pSeries
+[   76.386718] NIP:  c0000000004cda90 LR: c0000000004cd840 CTR: =
+0000000000000000
+[   76.386721] REGS: c0000001f491b840 TRAP: 0300   Not tainted  =
+(6.6.0-rc6-next-20231016)
+[   76.386724] MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: =
+48082804  XER: 00000000
+[   76.386733] CFAR: c0000000004cd848 DAR: 00000000000000d8 DSISR: =
+40000000 IRQMASK: 0
+[   76.386733] GPR00: c0000000004cd840 c0000001f491bae0 c000000001471a00 =
+0000000000000000
+[   76.386733] GPR04: 00000000000000fb 0000000000000000 0000000000000000 =
+0000000000000001
+[   76.386733] GPR08: 00000000000001c4 c0000001fb8aa830 c0000001e5140d00 =
+c0000001eccfac00
+[   76.386733] GPR12: 000000000000001f c000000e87bf7300 0000000000000000 =
+0000000000000000
+[   76.386733] GPR16: 0000000000000000 0000000000000000 0000000000000000 =
+0000000000000000
+[   76.386733] GPR20: 00007fff9944ffff 0000000000000000 c0000001e86bdd60 =
+c0000001e86be8e0
+[   76.386733] GPR24: 0000000000000001 0000000000000001 0000000000000001 =
+0000000000000000
+[   76.386733] GPR28: 00000000000000fb c0000001e5140d00 00007fff99440000 =
+c0000001fb8aa830
+[   76.386773] NIP [c0000000004cda90] mmap_region+0x8b0/0xb30
+[   76.386781] LR [c0000000004cd840] mmap_region+0x660/0xb30
+[   76.386784] Call Trace:
+[   76.386786] [c0000001f491bae0] [c0000000004cd840] =
+mmap_region+0x660/0xb30 (unreliable)
+[   76.386791] [c0000001f491bc10] [c0000000004ce0dc] do_mmap+0x3cc/0x5c0
+[   76.386794] [c0000001f491bca0] [c000000000486724] =
+vm_mmap_pgoff+0x134/0x240
+[   76.386800] [c0000001f491bd80] [c0000000004c98a8] =
+ksys_mmap_pgoff+0x158/0x2b0
+[   76.386806] [c0000001f491bdf0] [c000000000011834] do_mmap2+0x54/0xc0
+[   76.386811] [c0000001f491be10] [c000000000036624] =
+system_call_exception+0x134/0x330
+[   76.386817] [c0000001f491be50] [c00000000000d6a0] =
+system_call_common+0x160/0x2e4
+[   76.386822] --- interrupt: c00 at 0x7fff9932ff68
+[   76.386825] NIP:  00007fff9932ff68 LR: 0000000010005074 CTR: =
+0000000000000000
+[   76.386828] REGS: c0000001f491be80 TRAP: 0c00   Not tainted  =
+(6.6.0-rc6-next-20231016)
+[   76.386831] MSR:  800000000280f033 =
+<SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 24002204  XER: 00000000
+[   76.386840] IRQMASK: 0
+[   76.386840] GPR00: 000000000000005a 00007fffd709f9f0 00007fff99407300 =
+0000000000000000
+[   76.386840] GPR04: 0000000000000004 0000000000000003 0000000000000021 =
+ffffffffffffffff
+[   76.386840] GPR08: 0000000000000000 0000000000000000 0000000000000000 =
+0000000000000000
+[   76.386840] GPR12: 0000000000000000 00007fff994ea3d0 0000000000000000 =
+0000000000000000
+[   76.386840] GPR16: ffffffffffffffff 0000000010034498 0000000010034be8 =
+00000000100336a8
+[   76.386840] GPR20: 0000000010034ba8 0000000000000001 000000001007c418 =
+0000000010033770
+[   76.386840] GPR24: 0000000000000000 0000000000000000 0000000010034bd0 =
+000000001007c438
+[   76.386840] GPR28: 0000000010061c88 00007fffd70afed5 000000001007c438 =
+0000000010033770
+[   76.386876] NIP [00007fff9932ff68] 0x7fff9932ff68
+[   76.386879] LR [0000000010005074] 0x10005074
+[   76.386881] --- interrupt: c00
+[   76.386883] Code: 73890008 4082012c e93f0020 3b000000 fb7f0078 =
+4bfffc74 60000000 60000000 e87f0088 3b000000 4bffff20 60000000 =
+<e93b00d8> 39490044 7d005028 3108ffff  [   76.386896] ---[ end trace =
+0000000000000000 ]---
+[   76.388667] pstore: backend (nvram) writing error (-1)
 
-"Layerscape hardware reference manual recommends clearing the PMXMTTURNOFF bit
-to complete the PME_Turn_Off handshake."
+Git bisect points to following patch
 
-- Mani
+commit 1db41d29b79ad271674081c752961edd064bbbac
+    mm: perform the mapping_map_writable() check after call_mmap()
 
-> Frank
-> 
-> > 
-> > > +	regmap_read(pcie->scfg, SCFG_PEXPMWRCR(pcie->index), &val);
-> > > +	val &= ~PMXMTTURNOFF;
-> > > +	regmap_write(pcie->scfg, SCFG_PEXPMWRCR(pcie->index), val);
-> > > +}
-> > > +
-> > > +static void ls1021a_pcie_exit_from_l2(struct dw_pcie_rp *pp)
-> > > +{
-> > > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> > > +	struct ls_pcie *pcie = to_ls_pcie(pci);
-> > > +	u32 val;
-> > > +
-> > 
-> > A comment here would be good.
-> > 
-> > > +	regmap_read(pcie->scfg, SCFG_PEXSFTRSTCR, &val);
-> > > +	val |= PEXSR(pcie->index);
-> > > +	regmap_write(pcie->scfg, SCFG_PEXSFTRSTCR, val);
-> > > +
-> > > +	regmap_read(pcie->scfg, SCFG_PEXSFTRSTCR, &val);
-> > > +	val &= ~PEXSR(pcie->index);
-> > > +	regmap_write(pcie->scfg, SCFG_PEXSFTRSTCR, val);
-> > > +}
-> > > +
-> > > +static int ls1021a_pcie_host_init(struct dw_pcie_rp *pp)
-> > > +{
-> > > +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> > > +	struct ls_pcie *pcie = to_ls_pcie(pci);
-> > > +	struct device *dev = pcie->pci->dev;
-> > > +	u32 index[2];
-> > > +	int ret;
-> > > +
-> > > +	ret = ls_pcie_host_init(pp);
-> > > +	if (ret)
-> > > +		return ret;
-> > > +
-> > > +	pcie->scfg = syscon_regmap_lookup_by_phandle(dev->of_node, "fsl,pcie-scfg");
-> > > +	if (IS_ERR(pcie->scfg)) {
-> > > +		ret = PTR_ERR(pcie->scfg);
-> > > +		dev_err(dev, "No syscfg phandle specified\n");
-> > > +		pcie->scfg = NULL;
-> > > +		return ret;
-> > > +	}
-> > > +
-> > > +	ret = of_property_read_u32_array(dev->of_node, "fsl,pcie-scfg", index, 2);
-> > > +	if (ret) {
-> > > +		pcie->scfg = NULL;
-> > > +		return ret;
-> > > +	}
-> > > +
-> > > +	pcie->index = index[1];
-> > > +
-> > 
-> > The above syscon parsing could be done conditionally during probe itself. There
-> > is no need to do it during host_init() time.
-> > 
-> > - Mani
-> > 
-> > > +	return ret;
-> > > +}
-> > > +
-> > >  static const struct dw_pcie_host_ops ls_pcie_host_ops = {
-> > >  	.host_init = ls_pcie_host_init,
-> > >  	.pme_turn_off = ls_pcie_send_turnoff_msg,
-> > >  };
-> > >  
-> > > +static const struct dw_pcie_host_ops ls1021a_pcie_host_ops = {
-> > > +	.host_init = ls1021a_pcie_host_init,
-> > > +	.pme_turn_off = ls1021a_pcie_send_turnoff_msg,
-> > > +};
-> > > +
-> > >  static const struct ls_pcie_drvdata ls1021a_drvdata = {
-> > > -	.pm_support = false,
-> > > +	.pm_support = true,
-> > > +	.ops = &ls1021a_pcie_host_ops,
-> > > +	.exit_from_l2 = ls1021a_pcie_exit_from_l2,
-> > >  };
-> > >  
-> > >  static const struct ls_pcie_drvdata layerscape_drvdata = {
-> > > -- 
-> > > 2.34.1
-> > > 
-> > 
-> > -- 
-> > மணிவண்ணன் சதாசிவம்
+Reverting the patch allows the test to complete.
 
--- 
-மணிவண்ணன் சதாசிவம்
+- Sachin=
