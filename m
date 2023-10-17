@@ -2,78 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A3977CCF6C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Oct 2023 23:40:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FB767CCF6D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Oct 2023 23:41:33 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=TDwQC0Hi;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=avm.de header.i=@avm.de header.a=rsa-sha256 header.s=mail header.b=H3xiTCRT;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S96pw0cjmz3c54
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 08:40:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S96qv0Cjyz3cTZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 08:41:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=TDwQC0Hi;
+	dkim=pass (1024-bit key; unprotected) header.d=avm.de header.i=@avm.de header.a=rsa-sha256 header.s=mail header.b=H3xiTCRT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=quicinc.com (client-ip=205.220.180.131; helo=mx0b-0031df01.pphosted.com; envelope-from=quic_pbrahma@quicinc.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1391 seconds by postgrey-1.37 at boromir; Tue, 17 Oct 2023 22:04:37 AEDT
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=avm.de (client-ip=2001:bf0:244:244::119; helo=mail.avm.de; envelope-from=n.schier@avm.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 175 seconds by postgrey-1.37 at boromir; Tue, 17 Oct 2023 23:12:45 AEDT
+Received: from mail.avm.de (mail.avm.de [IPv6:2001:bf0:244:244::119])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S8rj11hZTz2xmC
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Oct 2023 22:04:35 +1100 (AEDT)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39H8GRuK014171;
-	Tue, 17 Oct 2023 10:41:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : to : cc : references : subject : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=zBhBLqqpj0n+5jzHyUrlt0lv7F+dDsbPhpjc08ioUEQ=;
- b=TDwQC0HikJ/UYtBkHD7h61cTXujZv3SrZ2WUb9ePKx+DvDe87gLqT+FD7MnliGdvN29L
- j14jiq6axOjLHO1GP6uQa6DGkzRkbe/Lpt/WQCUXl9HLh88EuPvkgMv2Dt0dZTLW4Dq1
- I98etMMnLTHGlR2f0FKoisvScNqjsm2EuPKCWBSMnc2PrrSSS+mjs4VJazOScTVArgPt
- m0FhiKbUR6hPXP/IVTeGYQpjXn7cQP1ufkal/suuta02ffDjRfKwlAdFcezMHPh9h8Qs
- 2xK7v1ujUY3mYoub8nXof5TN6l4ZwiLybDjmeDJ/ONiWV0wmYWfynFk2H8tweN79kZwj Vg== 
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ts85fta6b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Oct 2023 10:41:08 +0000
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39HAewZd022148
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Oct 2023 10:40:58 GMT
-Received: from [10.214.66.187] (10.80.80.8) by nasanex01c.na.qualcomm.com
- (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Tue, 17 Oct
- 2023 03:40:54 -0700
-Message-ID: <4c420081-fe57-d036-ded7-2899c13738ee@quicinc.com>
-Date: Tue, 17 Oct 2023 16:10:42 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S8tCd5gytz30fk
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Oct 2023 23:12:45 +1100 (AEDT)
+Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
+	by mail.avm.de (Postfix) with ESMTPS;
+	Tue, 17 Oct 2023 14:09:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
+	t=1697544572; bh=KD3DEtP5d6DCBHOitoR8vzNgmhwKZ20ThM66mmXaQDA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=H3xiTCRTfXo07q+mWSyekXKERZRHw8/lwaQcPG8H37jzuclELv0P1eZcewRqi9xfm
+	 4FjwkD5E/CAI7Jsf1jt27JdGi4xolHrKm534XM7mLulgUbh3foeFQbVeHZrkGEgsx3
+	 6NcIgfurfJnD3rsiwm/mEe1Iw8nhHG8j82oJD9DM=
+Received: from buildd.core.avm.de (buildd-sv-01.avm.de [172.16.0.225])
+	by mail-auth.avm.de (Postfix) with ESMTPA id CFCFB81EAD;
+	Tue, 17 Oct 2023 14:09:31 +0200 (CEST)
+Received: by buildd.core.avm.de (Postfix, from userid 1000)
+	id B9EFA1819D1; Tue, 17 Oct 2023 14:09:31 +0200 (CEST)
+Date: Tue, 17 Oct 2023 14:09:31 +0200
+From: Nicolas Schier <n.schier@avm.de>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH 1/4] kbuild: remove ARCH_POSTLINK from module builds
+Message-ID: <ZS55e3ZyzoNDchD+@buildd.core.avm.de>
+Mail-Followup-To: Masahiro Yamada <masahiroy@kernel.org>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Albert Ou <aou@eecs.berkeley.edu>, Borislav Petkov <bp@alien8.de>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>, linux-mips@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	x86@kernel.org
+References: <20231017103742.130927-1-masahiroy@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.1.2
-To: <danielwa@cisco.com>
-References: <20230417162415.GF1391488@zorba>
-Subject: Re: [PATCH 1/4] add generic builtin command line
-Content-Language: en-US
-From: Pratyush Brahma <quic_pbrahma@quicinc.com>
-In-Reply-To: <20230417162415.GF1391488@zorba>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: MRvxMaYkqsM1Y31hTxHRI_3fVzxS599_
-X-Proofpoint-GUID: MRvxMaYkqsM1Y31hTxHRI_3fVzxS599_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-16_13,2023-10-17_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 adultscore=0
- priorityscore=1501 phishscore=0 malwarescore=0 spamscore=0 mlxscore=0
- bulkscore=0 impostorscore=0 suspectscore=0 mlxlogscore=535
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310170089
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231017103742.130927-1-masahiroy@kernel.org>
+Organization: AVM GmbH
+X-purgate-ID: 149429::1697544571-C3E340EE-41584499/0/0
+X-purgate-type: clean
+X-purgate-size: 585
+X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
+X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
+X-purgate: clean
 X-Mailman-Approved-At: Wed, 18 Oct 2023 08:39:55 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -86,39 +82,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: christophe.leroy@c-s.fr, Pavan Kondeti <quic_pkondeti@quicinc.com>, tomas.mudrunka@gmail.com, quic_vjitta@quicinc.com, xe-linux-external@cisco.com, linux-kernel@vger.kernel.org, robh+dt@kernel.org, maksym.kokhan@globallogic.com, "quic_guptap@quicinc.com quic_ylal"@quicinc.com, dwalker@fifo99.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: x86@kernel.org, Albert Ou <aou@eecs.berkeley.edu>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, "H. Peter Anvin" <hpa@zytor.com>, Palmer Dabbelt <palmer@dabbelt.com>, Thomas Gleixner <tglx@linutronix.de>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Daniel
+On Tue, Oct 17, 2023 at 07:37:39PM +0900, Masahiro Yamada wrote:
+> The '%.ko' rule in arch/*/Makefile.postlink does nothing but call the
+> 'true' command.
+> 
+> Remove the meaningless code.
+> 
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+> 
+>  arch/mips/Makefile.postlink    | 3 ---
+>  arch/powerpc/Makefile.postlink | 3 ---
+>  arch/riscv/Makefile.postlink   | 3 ---
+>  arch/x86/Makefile.postlink     | 3 ---
+>  scripts/Makefile.modfinal      | 5 +----
+>  5 files changed, 1 insertion(+), 16 deletions(-)
 
-We have a usecase which requires this patch necessarily. For android 
-usecases, we have two different build variants
-differentiated by defconfigs - production and debug. However, we only 
-have a single dts for both these variants.
-
-
-We want to enable certain features like page owner and slub debug which 
-require cmdline params in addition to
-their respective configs to be enabled. Enabling page_owner and 
-slub_debug options in dts file enables it for both
-production and debug variants. These features have significant memory 
-overhead which are undesirable for
-our production environment. However, these are necessary for debug 
-environment to enable internal testing and debug.
-Currently, android uses out-of-tree configs like CONFIG_CMDLINE_EXTEND 
-to do so in gki_defconfig [1].
-One option is to use CMDLINE_FORCE option which would enable these 
-cmdline params but this disables the bootloader to add
-any additional cmdline params which may be necessary.
-
-
-For such a usecase, the CONFIG_CMDLINE_PREPEND seems to be quite useful 
-as it would help to stitch bootloader
-and the desired build variant's configs together. Can you please help to 
-merge this patch?
-
-
-[1] 
-https://android.googlesource.com/kernel/common/+/refs/heads/android14-6.1-lts/arch/arm64/configs/gki_defconfig#62
-
+Reviewed-by: Nicolas Schier <n.schier@avm.de>
