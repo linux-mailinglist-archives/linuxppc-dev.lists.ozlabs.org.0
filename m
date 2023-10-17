@@ -2,76 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B94157CCCB5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Oct 2023 21:56:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A3977CCF6C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Oct 2023 23:40:42 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WvhT+81J;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=TDwQC0Hi;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S94Vh4xCPz3cdn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 06:56:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S96pw0cjmz3c54
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 08:40:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WvhT+81J;
+	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=TDwQC0Hi;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::433; helo=mail-pf1-x433.google.com; envelope-from=namhyung@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=quicinc.com (client-ip=205.220.180.131; helo=mx0b-0031df01.pphosted.com; envelope-from=quic_pbrahma@quicinc.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1391 seconds by postgrey-1.37 at boromir; Tue, 17 Oct 2023 22:04:37 AEDT
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S94Tl2Gdjz3cFw
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Oct 2023 06:55:38 +1100 (AEDT)
-Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-6bb4abb8100so2692626b3a.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Oct 2023 12:55:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697572535; x=1698177335; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eUfAT9j+UiGDkMtqjgkrEGPlSXxDKIe3u0fbK8YKgkE=;
-        b=WvhT+81JRDpyKYX0BkigVZ9Txip7EAjZD2Dy2UZQpGJujXJFqAS2cyOCZXstIF2w98
-         7d54fbzq1YvIEhTaPtbH29CPq7BvMtz8hy1nLa5/4Tj5cu9ZeASrijFHaOksH7gPdWfU
-         sJrwtzPRPZCfwTSgdqeaurvbzhuHOlvkKMwgRxCDVpNHZw7QFMHLyIfRZyFYbhXehqcl
-         vpkRgRU7TWfZB7ewepFVVOxMX7fGGuZIuptX8Cr7HXHw2AThe8DB5o39bCKqkeqIABHe
-         l2f1Ivq0p3XSIl7Fyc1t4Ch2WR1rRMDsGCMw/hHDl6j7PSwRM/+oCnBym2s5jypoIuzn
-         8MQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697572535; x=1698177335;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=eUfAT9j+UiGDkMtqjgkrEGPlSXxDKIe3u0fbK8YKgkE=;
-        b=aPSDBw+aIGC/u1W/N6eom05I9U0XTlzoiui7vXKmaq1zqrY89Ieu93CdlC5dhpb0Mt
-         KdYS1+0zLDK6beY6DbevyAZcqOJREeYh0/jE1XCHOmAcfndIv2aShfe8zAGSyJ+ps/Uu
-         0AJXlGOcyhBSEhnNy4r8nd9LPq0Y4LG241DzJInaq8ONyJlMuPUnDXOd/gzHAMqjw0IX
-         M+WqJb1gLRGhXs5y1A/izwmp00yj3Z5gvVcIrXx6hzO8guwoyOvkG7Ok3wNwm3ad82ex
-         E4jEHdLNGXB4jT1eHSXw1JQBsQHE9KY1k/KyjL1F5ed5Azsss3umqo1zdogBoowIKM+S
-         N8xA==
-X-Gm-Message-State: AOJu0YzgE8s7VJM3J7SpdDYA13sbqdzRwJxE2NCltB0LdoPVJc/rhAf0
-	XLMEV1mxzNlEzKmeS12DJ0A=
-X-Google-Smtp-Source: AGHT+IHpOTr5wIEIVlxb57lkDcxQShrj6O+3bGwiMbh9AQqBmlmlcAGpMNq6jgvSt6NG+sTZrnQKxg==
-X-Received: by 2002:a05:6a00:1494:b0:68f:c865:5ba8 with SMTP id v20-20020a056a00149400b0068fc8655ba8mr3770474pfu.18.1697572535241;
-        Tue, 17 Oct 2023 12:55:35 -0700 (PDT)
-Received: from moohyul.svl.corp.google.com ([2620:15c:2a3:200:c77b:3fef:28e3:81d2])
-        by smtp.gmail.com with ESMTPSA id a6-20020aa79706000000b0068fece2c190sm1848041pfg.70.2023.10.17.12.55.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Oct 2023 12:55:34 -0700 (PDT)
-From: Namhyung Kim <namhyung@kernel.org>
-To: Arnaldo Carvalho de Melo <acme@kernel.org>,
-	adrian.hunter@intel.com,
-	irogers@google.com,
-	jolsa@kernel.org,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH V2 0/3] Fix for shellcheck issues with latest scripts in tests/shell
-Date: Tue, 17 Oct 2023 12:55:27 -0700
-Message-ID: <169757198796.167943.10552920255799914362.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.42.0.655.g421f12c284-goog
-In-Reply-To: <20231013073021.99794-1-atrajeev@linux.vnet.ibm.com>
-References: <20231013073021.99794-1-atrajeev@linux.vnet.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S8rj11hZTz2xmC
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Oct 2023 22:04:35 +1100 (AEDT)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39H8GRuK014171;
+	Tue, 17 Oct 2023 10:41:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : to : cc : references : subject : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=zBhBLqqpj0n+5jzHyUrlt0lv7F+dDsbPhpjc08ioUEQ=;
+ b=TDwQC0HikJ/UYtBkHD7h61cTXujZv3SrZ2WUb9ePKx+DvDe87gLqT+FD7MnliGdvN29L
+ j14jiq6axOjLHO1GP6uQa6DGkzRkbe/Lpt/WQCUXl9HLh88EuPvkgMv2Dt0dZTLW4Dq1
+ I98etMMnLTHGlR2f0FKoisvScNqjsm2EuPKCWBSMnc2PrrSSS+mjs4VJazOScTVArgPt
+ m0FhiKbUR6hPXP/IVTeGYQpjXn7cQP1ufkal/suuta02ffDjRfKwlAdFcezMHPh9h8Qs
+ 2xK7v1ujUY3mYoub8nXof5TN6l4ZwiLybDjmeDJ/ONiWV0wmYWfynFk2H8tweN79kZwj Vg== 
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ts85fta6b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Oct 2023 10:41:08 +0000
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39HAewZd022148
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Oct 2023 10:40:58 GMT
+Received: from [10.214.66.187] (10.80.80.8) by nasanex01c.na.qualcomm.com
+ (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Tue, 17 Oct
+ 2023 03:40:54 -0700
+Message-ID: <4c420081-fe57-d036-ded7-2899c13738ee@quicinc.com>
+Date: Tue, 17 Oct 2023 16:10:42 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.1.2
+To: <danielwa@cisco.com>
+References: <20230417162415.GF1391488@zorba>
+Subject: Re: [PATCH 1/4] add generic builtin command line
+Content-Language: en-US
+From: Pratyush Brahma <quic_pbrahma@quicinc.com>
+In-Reply-To: <20230417162415.GF1391488@zorba>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: MRvxMaYkqsM1Y31hTxHRI_3fVzxS599_
+X-Proofpoint-GUID: MRvxMaYkqsM1Y31hTxHRI_3fVzxS599_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-16_13,2023-10-17_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 adultscore=0
+ priorityscore=1501 phishscore=0 malwarescore=0 spamscore=0 mlxscore=0
+ bulkscore=0 impostorscore=0 suspectscore=0 mlxlogscore=535
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310170089
+X-Mailman-Approved-At: Wed, 18 Oct 2023 08:39:55 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,21 +86,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.ibm.com, Peter Zijlstra <peterz@infradead.org>, kjain@linux.ibm.com, LKML <linux-kernel@vger.kernel.org>, linux-perf-users@vger.kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, Ingo Molnar <mingo@kernel.org>
+Cc: christophe.leroy@c-s.fr, Pavan Kondeti <quic_pkondeti@quicinc.com>, tomas.mudrunka@gmail.com, quic_vjitta@quicinc.com, xe-linux-external@cisco.com, linux-kernel@vger.kernel.org, robh+dt@kernel.org, maksym.kokhan@globallogic.com, "quic_guptap@quicinc.com quic_ylal"@quicinc.com, dwalker@fifo99.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 13 Oct 2023 13:00:18 +0530, Athira Rajeev wrote:
-> shellcheck was run on perf tool shell scripts as a pre-requisite
-> to include a build option for shellcheck discussed here:
-> https://www.spinics.net/lists/linux-perf-users/msg25553.html
-> 
-> And fixes were added for the coding/formatting issues in
-> two patchsets:
-> https://lore.kernel.org/linux-perf-users/20230613164145.50488-1-atrajeev@linux.vnet.ibm.com/
-> https://lore.kernel.org/linux-perf-users/20230709182800.53002-1-atrajeev@linux.vnet.ibm.com/
-> 
-> [...]
+Hi Daniel
 
-Applied to perf-tools-next, thanks!
+We have a usecase which requires this patch necessarily. For android 
+usecases, we have two different build variants
+differentiated by defconfigs - production and debug. However, we only 
+have a single dts for both these variants.
+
+
+We want to enable certain features like page owner and slub debug which 
+require cmdline params in addition to
+their respective configs to be enabled. Enabling page_owner and 
+slub_debug options in dts file enables it for both
+production and debug variants. These features have significant memory 
+overhead which are undesirable for
+our production environment. However, these are necessary for debug 
+environment to enable internal testing and debug.
+Currently, android uses out-of-tree configs like CONFIG_CMDLINE_EXTEND 
+to do so in gki_defconfig [1].
+One option is to use CMDLINE_FORCE option which would enable these 
+cmdline params but this disables the bootloader to add
+any additional cmdline params which may be necessary.
+
+
+For such a usecase, the CONFIG_CMDLINE_PREPEND seems to be quite useful 
+as it would help to stitch bootloader
+and the desired build variant's configs together. Can you please help to 
+merge this patch?
+
+
+[1] 
+https://android.googlesource.com/kernel/common/+/refs/heads/android14-6.1-lts/arch/arm64/configs/gki_defconfig#62
 
