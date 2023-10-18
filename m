@@ -2,97 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A5297CD8C5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 12:01:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DEAA7CD8EF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 12:15:35 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=beGJ6rVU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=cfKz3ud3;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S9RG56Rg1z3cbl
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 21:01:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S9RYx0n0gz3cNV
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 21:15:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=beGJ6rVU;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=cfKz3ud3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S9RFB4Z1kz2xZG
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Oct 2023 21:01:02 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39I9xNiO028168;
-	Wed, 18 Oct 2023 10:00:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=+NY2qdokqUMk7aLdUrFqxRCwnBKqkD6Oo5LgedWSieE=;
- b=beGJ6rVUM997twXgBvhhrwAvO5bATXBp6f9Bj+mSqv8icNFDGGrkwy0N0vg1R0Q7vnoz
- Kox5HKyJmGTURmy0bv9VbGDqBwvxGTgqFYs4DuAuWUHaPBJV7xIM3u2T6SVqaV15sHGc
- PNMtM98o7DiXGJ6QYsaqvM2WEsasmDEd/RO6CTdfb6s5jr1eq1YHyJsAqRXKKQpkO99U
- +enHF5ABhPZEk/ApJ05jrjI1rbFR+r+417jq0GPlm9kppw3TWzLgredbS8LrRRCoYtxt
- KHKErniA8sbbY43iDFQbvK/oYO7dNzONaKMcS6QdWCVLG+aGZLfiFMi9u5kAu4cCMl72 7A== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ttd0cgh9c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Oct 2023 10:00:44 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39I9kY2b010439;
-	Wed, 18 Oct 2023 10:00:44 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ttd0cgh8v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Oct 2023 10:00:44 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39I8SZrx027177;
-	Wed, 18 Oct 2023 10:00:43 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tr6tkf86u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Oct 2023 10:00:43 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39IA0hVu11666072
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 18 Oct 2023 10:00:43 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0BA5B58062;
-	Wed, 18 Oct 2023 10:00:43 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E4CD05805C;
-	Wed, 18 Oct 2023 10:00:40 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.43.81.129])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 18 Oct 2023 10:00:40 +0000 (GMT)
-X-Mailer: emacs 29.1 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
-        "npiggin@gmail.com" <npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc/mm: Update set_ptes to call pte_filter for all
- the ptes
-In-Reply-To: <85534337-d558-42ed-b042-115f3460d740@linux.ibm.com>
-References: <20231018045523.776679-1-aneesh.kumar@linux.ibm.com>
- <9c598590-6911-3254-1560-62785fc325dc@csgroup.eu>
- <85534337-d558-42ed-b042-115f3460d740@linux.ibm.com>
-Date: Wed, 18 Oct 2023 15:30:37 +0530
-Message-ID: <8734y8z1ve.fsf@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: _A7E9BIQ5Bi5e6qVpnL4qXSEbRhOpVgL
-X-Proofpoint-GUID: FHtV3X49Bw7WLmoa94UyhoWiIbl8vF5n
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S9RY20Q7mz2yDD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Oct 2023 21:14:46 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1697624081;
+	bh=LktSjS3vmBsejeAGSRajlqWTMErsGc7cXIChHwpvG88=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=cfKz3ud3bKFejTLx8Q3tfNH802VNJNHcs4R8ZouktGijeMuAEpdumsrCSv5sutEie
+	 7ykNAuDfpc3TbMHjP+G7kmZdZ6b/qFxy/Byeoct5kOQ2mjI+JPu5Qz7hx+BLSpiu7U
+	 29bk1pKTBbT4x/CTVblg9M987HuNoiuDTRQOKE8XU9JQ0mq9fSNEYDYqEXqEAt0ZsG
+	 JiG0C9D6088Y1fEVJkMzljhFeuGKZJk0w/YVllB8ERqD5w3gCC4KzvjV5l2lN5s1cM
+	 cO3jy8b6b8LrmPlStkYW/CLF4MyYpuqRwNlPcBv37cW2wIFsE7rJxc/ByHlEbmL2Mu
+	 NXftgmsA0Dycw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4S9RXx0xcsz4wcf;
+	Wed, 18 Oct 2023 21:14:41 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/vas: Limit open window failure messages in log
+ bufffer
+In-Reply-To: <20231018044308.880705-1-haren@linux.ibm.com>
+References: <20231018044308.880705-1-haren@linux.ibm.com>
+Date: Wed, 18 Oct 2023 21:14:36 +1100
+Message-ID: <87fs286xv7.fsf@mail.lhotse>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-18_08,2023-10-17_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1015
- mlxscore=0 adultscore=0 mlxlogscore=999 phishscore=0 impostorscore=0
- suspectscore=0 bulkscore=0 lowpriorityscore=0 malwarescore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310180083
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,225 +58,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "willy@infradead.org" <willy@infradead.org>
+Cc: nathanl@linux.ibm.com, Haren Myneni <haren@linux.ibm.com>, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Aneesh Kumar K V <aneesh.kumar@linux.ibm.com> writes:
+Haren Myneni <haren@linux.ibm.com> writes:
+> The VAS open window call prints error message and returns -EBUSY
+> after the migration suspend event initiated and until the resume
+> event completed on the destination system. It can cause the log
+> buffer filled with these error messages if the user space issues
+> continuous open window calls.  Similar case even for DLPAR CPU
+> remove event when no credits are available until the credits are
+> freed or with the other DLPAR CPU add event.
 
-> On 10/18/23 11:25 AM, Christophe Leroy wrote:
->>=20
->>=20
->> Le 18/10/2023 =C3=A0 06:55, Aneesh Kumar K.V a =C3=A9crit=C2=A0:
->>> With commit 9fee28baa601 ("powerpc: implement the new page table range
->>> API") we added set_ptes to powerpc architecture but the implementation
->>> missed calling the pte filter for all the ptes we are setting in the
->>> range. set_pte_filter can be used for filter pte values and on some
->>> platforms which don't support coherent icache it clears the exec bit so
->>> that we can flush the icache on exec fault
->>>
->>> The patch also removes the usage of arch_enter/leave_lazy_mmu() because
->>> set_pte is not supposed to be used when updating a pte entry. Powerpc
->>> architecture uses this rule to skip the expensive tlb invalidate which
->>> is not needed when you are setting up the pte for the first time. See
->>> commit 56eecdb912b5 ("mm: Use ptep/pmdp_set_numa() for updating
->>> _PAGE_NUMA bit") for more details
->>>
->>> Fixes: 9fee28baa601 ("powerpc: implement the new page table range API")
->>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->>> ---
->>>   arch/powerpc/mm/pgtable.c | 33 ++++++++++++++++++++-------------
->>>   1 file changed, 20 insertions(+), 13 deletions(-)
->>>
->>> diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
->>> index 3ba9fe411604..95ab20cca2da 100644
->>> --- a/arch/powerpc/mm/pgtable.c
->>> +++ b/arch/powerpc/mm/pgtable.c
->>> @@ -191,28 +191,35 @@ void set_ptes(struct mm_struct *mm, unsigned long=
- addr, pte_t *ptep,
->>>   		pte_t pte, unsigned int nr)
->>>   {
->>>   	/*
->>> -	 * Make sure hardware valid bit is not set. We don't do
->>> -	 * tlb flush for this update.
->>> +	 * We don't need to call arch_enter/leave_lazy_mmu_mode()
->>> +	 * because we expect set_ptes to be only be used on not present
->>> +	 * and not hw_valid ptes. Hence there is not translation cache flush
->>> +	 * involved that need to be batched.
->>>   	 */
->>> -	VM_WARN_ON(pte_hw_valid(*ptep) && !pte_protnone(*ptep));
->>> +	for (;;) {
->>>=20=20=20
->>> -	/* Note: mm->context.id might not yet have been assigned as
->>> -	 * this context might not have been activated yet when this
->>> -	 * is called.
->>> -	 */
->>> -	pte =3D set_pte_filter(pte);
->>> +		/*
->>> +		 * Make sure hardware valid bit is not set. We don't do
->>> +		 * tlb flush for this update.
->>> +		 */
->>> +		VM_WARN_ON(pte_hw_valid(*ptep) && !pte_protnone(*ptep));
->>>=20=20=20
->>> -	/* Perform the setting of the PTE */
->>> -	arch_enter_lazy_mmu_mode();
->>> -	for (;;) {
->>> +		/* Note: mm->context.id might not yet have been assigned as
->>> +		 * this context might not have been activated yet when this
->>> +		 * is called.
->>> +		 */
->>> +		pte =3D set_pte_filter(pte);
->>=20
->> Why do you need to call set_pte_filter() inside the loop ?
->> The only difference between previous pte and next pte is the RPN, other=
-=20
->> flags remain untouched so I can't see why you need to call=20
->> set_pte_filter() again.
->>=20
+This should probably have a Fixes: tag so it gets backported.
+
+> So changes in the patch to use pr_err_ratelimited() instead of
+> pr_err() to display open window failure and not-available credits
+> error messages.
 >
-> I missed the fact that we use the filtered pte in all the ptes in the ran=
-ge. One other details
-> that made me look at calling the filter in the loop was we clearing the s=
-truct page->flags.
-> The only flag right now we care about the PG_dcache_clean and that moved =
-to folio. So we might be
-> good here. May be we add a comment in set_pte_filter saying can operate o=
-nly on folio->flags ?=20
+> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/book3s/vas-api.c | 4 ++--
+>  arch/powerpc/platforms/pseries/vas.c    | 4 ++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
 >
->>> +
->>> +		/* Perform the setting of the PTE */
->>>   		__set_pte_at(mm, addr, ptep, pte, 0);
->>>   		if (--nr =3D=3D 0)
->>>   			break;
->>>   		ptep++;
->>> -		pte =3D __pte(pte_val(pte) + (1UL << PTE_RPN_SHIFT));
->>>   		addr +=3D PAGE_SIZE;
->>> +		/* increment the pfn */
->>> +		pte =3D __pte(pte_val(pte) + PAGE_SIZE);
->>=20
->> PAGE_SIZE doesn't work on all platforms, see for instance e500.
->>=20
->> see comment at=20
->> https://elixir.bootlin.com/linux/v6.3-rc2/source/arch/powerpc/include/as=
-m/nohash/32/pgtable.h#L147
->>=20
->> And then you see=20
->> https://elixir.bootlin.com/linux/v6.3-rc2/source/arch/powerpc/include/as=
-m/nohash/pte-e500.h#L63
->>=20
->
-> Didn't know that. I actually wanted to do pfn_pte(pte_pfn(pte) + 1) . But=
- that needs pgprot_t. I
-> can move it back to PTE_RPN_SHIFT with details of the above documented.=20
->
+> diff --git a/arch/powerpc/platforms/book3s/vas-api.c b/arch/powerpc/platforms/book3s/vas-api.c
+> index 77ea9335fd04..203cfc2fb8ff 100644
+> --- a/arch/powerpc/platforms/book3s/vas-api.c
+> +++ b/arch/powerpc/platforms/book3s/vas-api.c
+> @@ -311,8 +311,8 @@ static int coproc_ioc_tx_win_open(struct file *fp, unsigned long arg)
+>  	txwin = cp_inst->coproc->vops->open_win(uattr.vas_id, uattr.flags,
+>  						cp_inst->coproc->cop_type);
+>  	if (IS_ERR(txwin)) {
+> -		pr_err("%s() VAS window open failed, %ld\n", __func__,
+> -				PTR_ERR(txwin));
+> +		pr_err_ratelimited("%s() VAS window open failed, %ld\n",
+> +				__func__, PTR_ERR(txwin));
 
-something like this ?
+Rather than using __func__ which is a bit over specific for a user
+visible error, I'd prefer something like "vas: window open failed rc = %ld".
 
-From 62825870d4b48ffb53e9837dfb4cf7c0422732ec Mon Sep 17 00:00:00 2001
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Date: Fri, 6 Oct 2023 22:47:00 +0530
-Subject: [PATCH] powerpc/mm: Avoid calling arch_enter/leave_lazy_mmu() in
- set_ptes
+Probably vas-api.c should use pr_fmt so that all the messages have a
+consistent prefix.
 
-With commit 9fee28baa601 ("powerpc: implement the new page table range
-API") we added set_ptes to powerpc architecture. The implementation
-included calling arch_enter/leave_lazy_mmu() calls.
+cheers
 
-The patch removes the usage of arch_enter/leave_lazy_mmu() because
-set_pte is not supposed to be used when updating a pte entry. Powerpc
-architecture uses this rule to skip the expensive tlb invalidate which
-is not needed when you are setting up the pte for the first time. See
-commit 56eecdb912b5 ("mm: Use ptep/pmdp_set_numa() for updating
-_PAGE_NUMA bit") for more details
-
-The patch also makes sure we are not using the interface to update a
-valid/present pte entry by adding VM_WARN_ON check all the ptes we
-are setting up. Furthermore, we add a comment to set_pte_filter to
-clarify it can only update folio-related flags and cannot filter
-pfn specific details in pte filtering.
-
-Removal of arch_enter/leave_lazy_mmu() also will avoid nesting of
-these functions that are not supported. For ex:
-
-remap_pte_range()
-  -> arch_enter_lazy_mmu()
-  -> set_ptes()
-      -> arch_enter_lazy_mmu()
-      -> arch_leave_lazy_mmu()
-  -> arch_leave_lazy_mmu()
-
-Fixes: 9fee28baa601 ("powerpc: implement the new page table range API")
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/mm/pgtable.c | 32 ++++++++++++++++++++++----------
- 1 file changed, 22 insertions(+), 10 deletions(-)
-
-diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-index 3ba9fe411604..4d69bfb9bc11 100644
---- a/arch/powerpc/mm/pgtable.c
-+++ b/arch/powerpc/mm/pgtable.c
-@@ -104,6 +104,8 @@ static pte_t set_pte_filter_hash(pte_t pte) { return pt=
-e; }
- /* Embedded type MMU with HW exec support. This is a bit more complicated
-  * as we don't have two bits to spare for _PAGE_EXEC and _PAGE_HWEXEC so
-  * instead we "filter out" the exec permission for non clean pages.
-+ *
-+ * This is also called once for the folio. So only work with folio->flags =
-here.
-  */
- static inline pte_t set_pte_filter(pte_t pte)
- {
-@@ -190,29 +192,39 @@ static pte_t set_access_flags_filter(pte_t pte, struc=
-t vm_area_struct *vma,
- void set_ptes(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
- 		pte_t pte, unsigned int nr)
- {
--	/*
--	 * Make sure hardware valid bit is not set. We don't do
--	 * tlb flush for this update.
--	 */
--	VM_WARN_ON(pte_hw_valid(*ptep) && !pte_protnone(*ptep));
-=20
- 	/* Note: mm->context.id might not yet have been assigned as
- 	 * this context might not have been activated yet when this
--	 * is called.
-+	 * is called. Filter the pte value and use the filtered value
-+	 * to setup all the ptes in the range.
- 	 */
- 	pte =3D set_pte_filter(pte);
-=20
--	/* Perform the setting of the PTE */
--	arch_enter_lazy_mmu_mode();
-+	/*
-+	 * We don't need to call arch_enter/leave_lazy_mmu_mode()
-+	 * because we expect set_ptes to be only be used on not present
-+	 * and not hw_valid ptes. Hence there is no translation cache flush
-+	 * involved that need to be batched.
-+	 */
- 	for (;;) {
-+
-+		/*
-+		 * Make sure hardware valid bit is not set. We don't do
-+		 * tlb flush for this update.
-+		 */
-+		VM_WARN_ON(pte_hw_valid(*ptep) && !pte_protnone(*ptep));
-+
-+		/* Perform the setting of the PTE */
- 		__set_pte_at(mm, addr, ptep, pte, 0);
- 		if (--nr =3D=3D 0)
- 			break;
- 		ptep++;
--		pte =3D __pte(pte_val(pte) + (1UL << PTE_RPN_SHIFT));
- 		addr +=3D PAGE_SIZE;
-+		/*
-+		 * increment the pfn.
-+		 */
-+		pte =3D pfn_pte(pte_pfn(pte) + 1, pte_pgprot((pte)));
- 	}
--	arch_leave_lazy_mmu_mode();
- }
-=20
- void unmap_kernel_page(unsigned long va)
---=20
-2.41.0
-
+>  		return PTR_ERR(txwin);
+>  	}
+>  
+> diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
+> index b86f0db08e98..7259e6676503 100644
+> --- a/arch/powerpc/platforms/pseries/vas.c
+> +++ b/arch/powerpc/platforms/pseries/vas.c
+> @@ -341,7 +341,7 @@ static struct vas_window *vas_allocate_window(int vas_id, u64 flags,
+>  
+>  	if (atomic_inc_return(&cop_feat_caps->nr_used_credits) >
+>  			atomic_read(&cop_feat_caps->nr_total_credits)) {
+> -		pr_err("Credits are not available to allocate window\n");
+> +		pr_err_ratelimited("Credits are not available to allocate window\n");
+>  		rc = -EINVAL;
+>  		goto out;
+>  	}
+> @@ -439,7 +439,7 @@ static struct vas_window *vas_allocate_window(int vas_id, u64 flags,
+>  
+>  	put_vas_user_win_ref(&txwin->vas_win.task_ref);
+>  	rc = -EBUSY;
+> -	pr_err("No credit is available to allocate window\n");
+> +	pr_err_ratelimited("No credit is available to allocate window\n");
+>  
+>  out_free:
+>  	/*
+> -- 
+> 2.26.3
