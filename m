@@ -2,92 +2,102 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 180FA7CE36A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 19:06:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40D2B7CE450
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 19:21:17 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dYA3PH53;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=y6jsoUaw;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S9cgs6Cn2z3vgw
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Oct 2023 04:06:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S9d170W8kz3ckl
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Oct 2023 04:21:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dYA3PH53;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=y6jsoUaw;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=tasmiya@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f400:7eae::601; helo=nam11-bn8-obe.outbound.protection.outlook.com; envelope-from=robert.richter@amd.com; receiver=lists.ozlabs.org)
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on20601.outbound.protection.outlook.com [IPv6:2a01:111:f400:7eae::601])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S9cdt2dTYz3vX0
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Oct 2023 04:04:34 +1100 (AEDT)
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39IGgHhj030890;
-	Wed, 18 Oct 2023 17:04:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=UQ8bRRqWkcM/QrRf4fj3JJ71zdos9kuQtnHqJ+BFwHM=;
- b=dYA3PH53oRDIsPJWm5E6PMnA+4e3S1Pv1a3/MNJ2zzZt6O/hTbqZjfIw/yIG9MhpVEFl
- PqWwhGpvUvqsc7QKVmFrmRPXx1SzbAzeRYI6PLejNrlOt/vdC+XGRgfDZZ+jkGE/djIK
- Fl4PgCFvoCy9MG5pLadsy4NNsiEtEYyILYHQaXJ4oQOiAxjWu0ho12P5ULf5eElnSgKy
- 9a8gnfgUJNyEWfrRfIC3KmE7ob08HPgsqVLHbak0szdUh0WW8HyzxOGSjKvMrXppXWdk
- YslwG1RJUiB2HNu24v2MQBEAcoNsVE9deLMqi7kMNfS6zYtf5+7AAXucPyKcqe0BhKos xA== 
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ttk470yd1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Oct 2023 17:04:32 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39IGg2Kj012949;
-	Wed, 18 Oct 2023 17:04:30 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tr5pyjfwv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Oct 2023 17:04:30 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39IH4TLe22348288
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 18 Oct 2023 17:04:30 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B61FE58060;
-	Wed, 18 Oct 2023 17:04:29 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 017E05803F;
-	Wed, 18 Oct 2023 17:04:24 +0000 (GMT)
-Received: from [9.171.21.120] (unknown [9.171.21.120])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 18 Oct 2023 17:04:23 +0000 (GMT)
-Message-ID: <80a4706a-d33c-4a46-b93d-75b08aa5577e@linux.vnet.ibm.com>
-Date: Wed, 18 Oct 2023 22:34:21 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [EXT] [Bisected] [efeda3bf912f] OOPS crash while performing Block
- device module parameter test [qla2xxx / FC]
-Content-Language: en-US
-To: Nilesh Javali <njavali@marvell.com>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>
-References: <24a8559c-cd35-4828-9d1b-458d82e4f3ec@linux.vnet.ibm.com>
- <CO6PR18MB45000CADE930729578C4FA26AFD5A@CO6PR18MB4500.namprd18.prod.outlook.com>
-From: Tasmiya Nalatwad <tasmiya@linux.vnet.ibm.com>
-In-Reply-To: <CO6PR18MB45000CADE930729578C4FA26AFD5A@CO6PR18MB4500.namprd18.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: hMY1-JZeLz2wHK-JYuFyguCp7tJC0tGn
-X-Proofpoint-GUID: hMY1-JZeLz2wHK-JYuFyguCp7tJC0tGn
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S9d0B0Gpcz2xmC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Oct 2023 04:20:22 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RQz8djnEkCrd/q1HRF1jvnBdDO2siIh8Ai3u+5UVBM31r2gmBV6H3Q+vSbm41FswJlxetrWs10WD6WO+Skpj+kTd7Ku3WbaKUlYgbElTOBhkcxRvfWFOgfOFR0Fz+hhj53Z6oyXyhuhiz/DsFhE1EmrSSTzazWS+VrklEwqgym8dzBnFvQrLjQpKNI0Mr9abD/hZ/lMkMvh4v/cWHCvn4SotlyPDD6ht6Dmxp/0mQhwlZBI37cElKcEyOZ6EwApbYk9Q9oVrOA6C10UTP0wKegmK0CHUhFTbqTn47sjCdQeKEiOHmikmPaoRUzCVLhlnxd59hJ1v82aGZbw5kiElRA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5OQKVGh3EZ/j+8iwVEPWfT+hqonAJDDZqGI8hLrumcM=;
+ b=F/Ugye1EUinNCLEGTP0VT2NihJmgHxrWTBn5FcTb2siRiam8FvJbj4UOF3/NkWXY7gwDM8zzGXfiAZjz1C0b8T3CQ387ZnpV5F5j/lksmnZT/YrUNLeo3df0QDSWG3mXaFmU69u6HHCnAa+6aasL0n9Gmn+j3ezPTsF9Brr51GceFEORwC05ZGickJx+wKFBbFctfydxwLYLiVjUKjWciZ77rZtlHqW2K1JYBBt4jd9wx6O/1OGJMN3VRBpECRAnovrxw/P5N+VIF9vTybNM3DTLlkOIEMp7i3tkytL012dnezJHDx9pEVRw4ADjcR/GgRYPLP95ms6sIybJ+RFuZg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=stgolabs.net smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5OQKVGh3EZ/j+8iwVEPWfT+hqonAJDDZqGI8hLrumcM=;
+ b=y6jsoUawkF660MO2zOx8MJDEtZz25mSND+Beml0WlNOq9ayHr2ve0WNyulDmNQmeShhBThYGhz421RBdZGNkL4lGWth3uxOgm+V8LwQRm1w9jf8Xt01/WrmKcbOWEB83cgt+kO+MUkoj+/av0vjPFsZWXS71XhZsRhs+v2BWxT8=
+Received: from SA0PR11CA0186.namprd11.prod.outlook.com (2603:10b6:806:1bc::11)
+ by PH7PR12MB6491.namprd12.prod.outlook.com (2603:10b6:510:1f4::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.23; Wed, 18 Oct
+ 2023 17:20:01 +0000
+Received: from SN1PEPF000252A1.namprd05.prod.outlook.com
+ (2603:10b6:806:1bc:cafe::3) by SA0PR11CA0186.outlook.office365.com
+ (2603:10b6:806:1bc::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.23 via Frontend
+ Transport; Wed, 18 Oct 2023 17:20:01 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SN1PEPF000252A1.mail.protection.outlook.com (10.167.242.8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6907.20 via Frontend Transport; Wed, 18 Oct 2023 17:20:00 +0000
+Received: from rric.localdomain (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 18 Oct
+ 2023 12:19:52 -0500
+From: Robert Richter <rrichter@amd.com>
+To: Davidlohr Bueso <dave@stgolabs.net>, Jonathan Cameron
+	<jonathan.cameron@huawei.com>, Dave Jiang <dave.jiang@intel.com>, "Alison
+ Schofield" <alison.schofield@intel.com>, Vishal Verma
+	<vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, Ben Widawsky
+	<bwidawsk@kernel.org>, Dan Williams <dan.j.williams@intel.com>, "Mahesh J
+ Salgaonkar" <mahesh@linux.ibm.com>, Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH v12 12/20] PCI/AER: Refactor cper_print_aer() for use by CXL driver module
+Date: Wed, 18 Oct 2023 19:17:05 +0200
+Message-ID: <20231018171713.1883517-13-rrichter@amd.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20231018171713.1883517-1-rrichter@amd.com>
+References: <20231018171713.1883517-1-rrichter@amd.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-18_15,2023-10-18_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- mlxscore=0 mlxlogscore=999 spamscore=0 malwarescore=0 adultscore=0
- clxscore=1015 priorityscore=1501 impostorscore=0 suspectscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310180139
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF000252A1:EE_|PH7PR12MB6491:EE_
+X-MS-Office365-Filtering-Correlation-Id: 83e9582f-8ba2-41de-5aeb-08dbcffe75b2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	iYEN+XP1Ly/xvnRz1HX47knYDC/uFvO9kbk9aUH6BzTip85n5Aovj+d2fSY75MYSaQWTVIgVivmkfvQE+MZJW5SclSNJkzFhxTRJ31hSfPBN3iXi8S+UWgx7fJT9D2hmWEJRKxzJ8KuOMs6mEF3TXMWv9/G9R4so5VHpVI2uAUcyZOIiOflSQiEiSSKrN4sMZAfMJJsdnBnwXVdlCPyaEe7c7+MZBcOzv7L9mDG6tQo2yw65DCA8jv0YNtZgNZPO7gV1ka8UZLC9f04FRe+hfR3YIrqy52jwJDhUZ07oLrKpHVe/73Z3e3Z21cUqMsCieSRAu7vfWRz/fpm5F7TJBQYIus8H+aJG7+l6qOSNOOx/Ivy2M+I3mkXOiITGovG0DDl9V69P+VTp0NYDorV8hyRW76xzMG8NdUa5vOjbaIegLOmyuZ3z32FYzM+A86ZIz5KdO3gztJDAZWlRCC6hsb2HkHaalyZheOKejFyO/QcJOwJROzNOpON/aIegcJoXYiO+vd5NijRSr5HnRyRBaVL5KA8Kevpw2sLpagJv97MW6l2XAWUh9gePqRFwV8O1Vdwmkjrf7L0ZrAYePGcM7zBQtjBfa7v3Yiy8SXR5DlM1H8duQUu50VsAV4x/e00bQZL6E8dpXp7HIC/L/lT4NgvH+9FMD3BUDAz5vuxgJfxWv6t9G7KfzVgsUC1i3gtlwb4P3Y/qpAXcOaZb0O61CpveO2kxt1gMCX4xYv9a7NMc2e/3sxvosS3YalgxkLJMuuMDlu6aComhB/jyQQzHt8sjfKJo3n27FjgFuroesm8=
+X-Forefront-Antispam-Report: 	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(346002)(376002)(396003)(136003)(230922051799003)(451199024)(1800799009)(82310400011)(186009)(64100799003)(46966006)(40470700004)(36840700001)(36860700001)(40460700003)(478600001)(5660300002)(70586007)(110136005)(70206006)(83380400001)(8936002)(8676002)(7416002)(2906002)(41300700001)(6666004)(54906003)(316002)(4326008)(336012)(40480700001)(47076005)(81166007)(1076003)(26005)(2616005)(16526019)(356005)(426003)(82740400003)(921005)(36756003)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Oct 2023 17:20:00.5385
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 83e9582f-8ba2-41de-5aeb-08dbcffe75b2
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: 	SN1PEPF000252A1.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6491
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,134 +109,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "martin.petersen@oracle.com" <martin.petersen@oracle.com>, "abdhalee@linux.vnet.ibm.com" <abdhalee@linux.vnet.ibm.com>, "mputtash@linux.vnet.com" <mputtash@linux.vnet.com>, "jejb@linux.ibm.com" <jejb@linux.ibm.com>, "himanshu.madhani@oracle.com" <himanshu.madhani@oracle.com>, "sachinp@linux.vnet.com" <sachinp@linux.vnet.com>, GR-QLogic-Storage-Upstream <GR-QLogic-Storage-Upstream@marvell.com>, Quinn Tran <qutran@marvell.com>
+Cc: Robert Richter <rrichter@amd.com>, Terry Bowman <terry.bowman@amd.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thanks Nilesh. The patch fixes the issue.
+From: Terry Bowman <terry.bowman@amd.com>
 
-On 10/18/23 19:59, Nilesh Javali wrote:
-> Hi Tasmiya,
->
->> -----Original Message-----
->> From: Tasmiya Nalatwad <tasmiya@linux.vnet.ibm.com>
->> Sent: Wednesday, October 18, 2023 6:51 PM
->> To: linux-scsi@vger.kernel.org; linux-kernel@vger.kernel.org; linuxppc-
->> dev@lists.ozlabs.org; linux-block@vger.kernel.org; linux-next@vger.kernel.org
->> Cc: Quinn Tran <qutran@marvell.com>; Nilesh Javali <njavali@marvell.com>;
->> himanshu.madhani@oracle.com; martin.petersen@oracle.com; GR-QLogic-
->> Storage-Upstream <GR-QLogic-Storage-Upstream@marvell.com>;
->> jejb@linux.ibm.com; abdhalee@linux.vnet.ibm.com; mputtash@linux.vnet.com;
->> sachinp@linux.vnet.com
->> Subject: [EXT] [Bisected] [efeda3bf912f] OOPS crash while performing Block
->> device module parameter test [qla2xxx / FC]
->>
->> External Email
->>
->> ----------------------------------------------------------------------
->> Greetings,
->>
->> OOPs Kernel crash while performing Block device module parameter test
->> [qla2xxx / FC] on linux-next 6.6.0-rc5-next-20231010
->>
->> --- Traces ---
->>
->> [30876.431678] Kernel attempted to read user page (30) - exploit
->> attempt? (uid: 0)
->> [30876.431687] BUG: Kernel NULL pointer dereference on read at 0x00000030
->> [30876.431692] Faulting instruction address: 0xc0080000018e3180
->> [30876.431697] Oops: Kernel access of bad area, sig: 11 [#1]
->> [30876.431700] LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=8192 NUMA
->> pSeries
->> [30876.431705] Modules linked in: qla2xxx(+) nvme_fc nvme_fabrics
->> nvme_core dm_round_robin dm_queue_length exfat vfat fat btrfs
->> blake2b_generic zstd_compress loop raid10 raid456 async_raid6_recov
->> async_memcpy async_pq async_xor async_tx xor raid6_pq raid1 linear xfs
->> libcrc32c raid0 nvram rpadlpar_io rpaphp xsk_diag bonding tls rfkill
->> vmx_crypto pseries_rng binfmt_misc ext4 mbcache jbd2 dm_service_time
->> sd_mod sg ibmvfc ibmveth t10_pi crc64_rocksoft crc64 scsi_transport_fc
->> dm_multipath dm_mirror dm_region_hash dm_log dm_mod fuse [last unloaded:
->> nvme_core]
->> [30876.431767] CPU: 0 PID: 1289400 Comm: kworker/0:2 Kdump: loaded Not
->> tainted 6.6.0-rc5-next-20231010-auto #1
->> [30876.431773] Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200
->> 0xf000006 of:IBM,FW1030.30 (NH1030_062) hv:phyp pSeries
->> [30876.431779] Workqueue: events work_for_cpu_fn
->> [30876.431788] NIP:  c0080000018e3180 LR: c0080000018e3128 CTR:
->> c000000000513f80
->> [30876.431792] REGS: c000000062a8b930 TRAP: 0300   Not tainted
->> (6.6.0-rc5-next-20231010-auto)
->> [30876.431797] MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>
->> CR: 28000482  XER: 2004000f
->> [30876.431811] CFAR: c0080000018e3138 DAR: 0000000000000030 DSISR:
->> 40000000 IRQMASK: 0
->> [30876.431811] GPR00: c0080000018e3128 c000000062a8bbd0
->> c008000000eb8300
->> 0000000000000000
->> [30876.431811] GPR04: 0000000000000000 0000000000000000
->> 0000000000000000
->> 000000000017bbac
->> [30876.431811] GPR08: 0000000000000000 0000000000000030
->> 0000000000000000
->> c0080000019a6d68
->> [30876.431811] GPR12: 0000000000000000 c000000002ff0000
->> c00000000019cb98
->> c000000082a97980
->> [30876.431811] GPR16: 0000000000000000 0000000000000000
->> 0000000000000000
->> c000000003071ab0
->> [30876.431811] GPR20: c000000003491c0d c000000063bb9a00
->> c000000063bb30c0
->> c0000001d8b52928
->> [30876.431811] GPR24: c008000000eb63a8 ffffffffffffffed c0000001d8b52000
->> 0000000000000102
->> [30876.431811] GPR28: c008000000ebaf00 c0000001d8b52890
->> 0000000000000000
->> c0000001d8b58000
->> [30876.431856] NIP [c0080000018e3180] qla2x00_mem_free+0x298/0x6b0
->> [qla2xxx]
->> [30876.431876] LR [c0080000018e3128] qla2x00_mem_free+0x240/0x6b0
->> [qla2xxx]
->> [30876.431895] Call Trace:
->> [30876.431897] [c000000062a8bbd0] [c0080000018e2f1c]
->> qla2x00_mem_free+0x34/0x6b0 [qla2xxx] (unreliable)
->> [30876.431917] [c000000062a8bc20] [c0080000018eed30]
->> qla2x00_probe_one+0x16d8/0x2640 [qla2xxx]
->> [30876.431937] [c000000062a8bd90] [c0000000008c589c]
->> local_pci_probe+0x6c/0x110
->> [30876.431943] [c000000062a8be10] [c000000000189ba8]
->> work_for_cpu_fn+0x38/0x60
->> [30876.431948] [c000000062a8be40] [c00000000018d0d0]
->> process_scheduled_works+0x230/0x4f0
->> [30876.431952] [c000000062a8bf10] [c00000000018fe14]
->> worker_thread+0x1e4/0x500
->> [30876.431955] [c000000062a8bf90] [c00000000019ccc8]
->> kthread+0x138/0x140
->> [30876.431960] [c000000062a8bfe0] [c00000000000df98]
->> start_kernel_thread+0x14/0x18
->> [30876.431965] Code: 4082000c a09f0198 78841b68 e8df0278 38e00000
->> 480c3b8d e8410018 39200000 e91f0178 f93f0280 f93f0278 39280030
->> <e9480030> 7fa95040 419e00b8 ebc80030
->> [30876.431977] ---[ end trace 0000000000000000 ]---
->> [30876.480385] pstore: backend (nvram) writing error (-1)
->>
->>
->> Git bisect points to below commit. Reverting this commit fixes the problem.
->> commit efeda3bf912f269bcae16816683f432f58d68075
->>       scsi: qla2xxx: Move resource to allow code reuse
->>
->> --
->> Regards,
->> Tasmiya Nalatwad
->> IBM Linux Technology Center
-> We have recently posted a fix for the commit that you have pointed here,
-> https://marc.info/?l=linux-scsi&m=169750508721982&w=2
->
-> Thanks,
-> Nilesh
+The CXL driver plans to use cper_print_aer() for logging restricted CXL
+host (RCH) AER errors. cper_print_aer() is not currently exported and
+therefore not usable by the CXL drivers built as loadable modules. Export
+the cper_print_aer() function. Use the EXPORT_SYMBOL_NS_GPL() variant
+to restrict the export to CXL drivers.
 
+The CONFIG_ACPI_APEI_PCIEAER kernel config is currently used to enable
+cper_print_aer(). cper_print_aer() logs the AER registers and is
+useful in PCIE AER logging outside of APEI. Remove the
+CONFIG_ACPI_APEI_PCIEAER dependency to enable cper_print_aer().
+
+The cper_print_aer() function name implies CPER specific use but is useful
+in non-CPER cases as well. Rename cper_print_aer() to pci_print_aer().
+
+Also, update cxl_core to import CXL namespace imports.
+
+Co-developed-by: Robert Richter <rrichter@amd.com>
+Signed-off-by: Terry Bowman <terry.bowman@amd.com>
+Signed-off-by: Robert Richter <rrichter@amd.com>
+Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+Cc: "Oliver O'Halloran" <oohall@gmail.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: linux-pci@vger.kernel.org
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+---
+ drivers/cxl/core/port.c | 1 +
+ drivers/pci/pcie/aer.c  | 9 +++++----
+ include/linux/aer.h     | 2 +-
+ 3 files changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
+index 41a8aa56cffd..802e85321a63 100644
+--- a/drivers/cxl/core/port.c
++++ b/drivers/cxl/core/port.c
+@@ -2101,3 +2101,4 @@ static void cxl_core_exit(void)
+ subsys_initcall(cxl_core_init);
+ module_exit(cxl_core_exit);
+ MODULE_LICENSE("GPL v2");
++MODULE_IMPORT_NS(CXL);
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index 9c8fd69ae5ad..6593fe3fc555 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -759,9 +759,10 @@ int cper_severity_to_aer(int cper_severity)
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(cper_severity_to_aer);
++#endif
+ 
+-void cper_print_aer(struct pci_dev *dev, int aer_severity,
+-		    struct aer_capability_regs *aer)
++void pci_print_aer(struct pci_dev *dev, int aer_severity,
++		   struct aer_capability_regs *aer)
+ {
+ 	int layer, agent, tlp_header_valid = 0;
+ 	u32 status, mask;
+@@ -800,7 +801,7 @@ void cper_print_aer(struct pci_dev *dev, int aer_severity,
+ 	trace_aer_event(dev_name(&dev->dev), (status & ~mask),
+ 			aer_severity, tlp_header_valid, &aer->header_log);
+ }
+-#endif
++EXPORT_SYMBOL_NS_GPL(pci_print_aer, CXL);
+ 
+ /**
+  * add_error_device - list device to be handled
+@@ -996,7 +997,7 @@ static void aer_recover_work_func(struct work_struct *work)
+ 			       PCI_SLOT(entry.devfn), PCI_FUNC(entry.devfn));
+ 			continue;
+ 		}
+-		cper_print_aer(pdev, entry.severity, entry.regs);
++		pci_print_aer(pdev, entry.severity, entry.regs);
+ 		if (entry.severity == AER_NONFATAL)
+ 			pcie_do_recovery(pdev, pci_channel_io_normal,
+ 					 aer_root_reset);
+diff --git a/include/linux/aer.h b/include/linux/aer.h
+index 29cc10220952..f6ea2f57d808 100644
+--- a/include/linux/aer.h
++++ b/include/linux/aer.h
+@@ -51,7 +51,7 @@ static inline int pci_aer_clear_nonfatal_status(struct pci_dev *dev)
+ static inline int pcie_aer_is_native(struct pci_dev *dev) { return 0; }
+ #endif
+ 
+-void cper_print_aer(struct pci_dev *dev, int aer_severity,
++void pci_print_aer(struct pci_dev *dev, int aer_severity,
+ 		    struct aer_capability_regs *aer);
+ int cper_severity_to_aer(int cper_severity);
+ void aer_recover_queue(int domain, unsigned int bus, unsigned int devfn,
 -- 
-Regards,
-Tasmiya Nalatwad
-IBM Linux Technology Center
+2.30.2
 
