@@ -2,71 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B41C17CD245
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 04:28:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C54677CD27F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 05:04:37 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=cGWP3Nne;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dlY9vwq/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S9FBf4DWdz3cP5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 13:28:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S9G0g4LVWz3ccC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 14:04:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=cGWP3Nne;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dlY9vwq/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035; helo=mail-pj1-x1035.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S9F9l6H22z2yGF
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Oct 2023 13:27:21 +1100 (AEDT)
-Received: by mail-pj1-x1035.google.com with SMTP id 98e67ed59e1d1-27d3c886671so4133020a91.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Oct 2023 19:27:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697596036; x=1698200836; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fpapaPVduYgFxDQdAXiTKPpqkL0RWX3+eE48j4c0f2E=;
-        b=cGWP3Nne41fd3xjwuL0yqG7mFu9I7NG/SYkTkKUdhecmXCrS+iKyznuOJSPlTHZ3y9
-         FbtTLsOzrb2rXZP1Fk2C9FrPilkI/efPokCNsFKSEUOePSIKIpznHvBWzudxBitB2Dpg
-         tYs9qtMwlZ3/hENIPhDFWbsTpg9b4O9a8O/uKmBz6bGUTf+M+uPDMDxp+w6jJbuq3Sk8
-         OvIkATTw7v2v4trpQJPgLEUzvPmXibzP5wQojFYeknOZUbyZzM8ZzRWunrrUScA2hibh
-         ytrILfLZxzKgwB5vQJg5AsjwWJUymGCmKqjM8h3NisgbnSfF5OmluiuwNiIEpsb+z5oL
-         McKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697596036; x=1698200836;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fpapaPVduYgFxDQdAXiTKPpqkL0RWX3+eE48j4c0f2E=;
-        b=jvc0R6vNoN1rn0lXA11UqNO2qgO+Z0su7Lj/kg1ZeRtgjQlEWaTWXci6c7ygzMx1NP
-         JE9+9Y1bw/bxBsTrTRo4YPKZkR/A7crZGK4Mx5KYrT/TaAqKl4hlxs+uCeay/+rwBj2G
-         EWhVPSgAjHrrECH4mzcCItEs8ctZGESAbdmA6Ij30kV+ustgL1kYXMljbW9yGLAz3ptu
-         DsBHnp9VGh7PmtubNK25uUIFqHDrXAoLrpPRyhVt0G2iW/m7Ajuue7rRAc3q71d6sRLu
-         S/6M/MvQrqZi/LttiD3K7tXkHAUlrkngeBj4NMcAodMbNHlfpFbN41QC1Fu699miPtUQ
-         pCTw==
-X-Gm-Message-State: AOJu0YwQHXh/8LTjUOrw37ysSZc6hTtYHBNu+3KPKyw2vWBo0J9kT1jV
-	IWS31r86LhCi8nqPFyC9TvCuerVB0BEGCGAM+rQ=
-X-Google-Smtp-Source: AGHT+IG8cbFhti3tqgv18BFt1md7TxeyETFpz97wYeQCp+1Y6Drj5dLwKZs95ptutOxSLoxUAgMO5sEkidOsPguKlsg=
-X-Received: by 2002:a17:90a:d404:b0:27c:e062:c464 with SMTP id
- r4-20020a17090ad40400b0027ce062c464mr4062788pju.37.1697596035916; Tue, 17 Oct
- 2023 19:27:15 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S9Fzl6mppz2yDt
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Oct 2023 14:03:47 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39I2j9bM014477;
+	Wed, 18 Oct 2023 03:03:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=p8CaWGnzV2lTMTOuhcMbKNJ143XdcNxL2eYnHkfL/GQ=;
+ b=dlY9vwq/QNi2qJxU/HZ2DOz3q85iMa5X0FL+WFNLYVJXE4wzX2mrvtNiLU6REBAeFziA
+ 1JPoMPT0SWF6tFm4i6iiAlKBdSePFJ8lTY/y6ZePLXLINNsqXU08Qn6pBJ5uK7uLNBlD
+ x7oA8dqQDZkDw5CyNOqpmLmtvsuf4O8GcXuk1oIlu0P6JXOZ0o1UpcJdHvUfDfMw41wG
+ 2xmXfgLAPH250bJIm1SKcNITG0FICl+/WXsD5IN/F8q/NTxpMvv1u3lgoXF/Be6wjkW1
+ fyfWzVEBut3c7NKp8qn1EKgUC/XN0colmjEBFEcsZnqGZ/MN3VCNFg7osl1MXZaA4IZi kA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tt6usgecb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Oct 2023 03:03:40 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39I2jZHP016577;
+	Wed, 18 Oct 2023 03:03:39 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tt6usgebw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Oct 2023 03:03:39 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39HNo4Fh019900;
+	Wed, 18 Oct 2023 03:03:39 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tr811mxax-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Oct 2023 03:03:39 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39I33a5Q18350764
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 18 Oct 2023 03:03:37 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CEB965805A;
+	Wed, 18 Oct 2023 03:03:36 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B48425803F;
+	Wed, 18 Oct 2023 03:03:35 +0000 (GMT)
+Received: from localhost.ibm.com (unknown [9.67.91.245])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 18 Oct 2023 03:03:35 +0000 (GMT)
+From: Haren Myneni <haren@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2] powerpc/pseries/vas: Migration suspend waits for no in-progress open windows
+Date: Tue, 17 Oct 2023 20:03:32 -0700
+Message-Id: <20231018030332.862606-1-haren@linux.ibm.com>
+X-Mailer: git-send-email 2.26.3
 MIME-Version: 1.0
-References: <1697185865-27528-1-git-send-email-shengjiu.wang@nxp.com>
- <1697185865-27528-10-git-send-email-shengjiu.wang@nxp.com>
- <a0dfe959-3b32-4d03-9f1b-8f3c1054ecf7@xs4all.nl> <CAA+D8AP1a-Vioy2Cr7dZ4wErXpkm7g9Caw-yPKc9jbWpPnN0JQ@mail.gmail.com>
- <0ae6d9e1-bdd9-45ab-9749-8b0cb5c624ff@xs4all.nl>
-In-Reply-To: <0ae6d9e1-bdd9-45ab-9749-8b0cb5c624ff@xs4all.nl>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Wed, 18 Oct 2023 10:27:04 +0800
-Message-ID: <CAA+D8AMa9tpMq08XsUuAtV0DLWbLOwsfYjd30NJ3OBezkTs5YA@mail.gmail.com>
-Subject: Re: [RFC PATCH v6 09/11] media: uapi: Add audio rate controls support
-To: Hans Verkuil <hverkuil@xs4all.nl>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: H-yrioOeq4FC-ZxZEoSJC7OFQYnSb6LV
+X-Proofpoint-GUID: ZFpV-Zpz63J9Y1c7b8QpRvVQH59M23sO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-17_08,2023-10-17_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 impostorscore=0
+ spamscore=0 adultscore=0 malwarescore=0 priorityscore=1501 clxscore=1015
+ lowpriorityscore=0 phishscore=0 mlxlogscore=999 bulkscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
+ definitions=main-2310180025
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,412 +93,203 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, nicoleotsuka@gmail.com, linuxppc-dev@lists.ozlabs.org, broonie@kernel.org, sakari.ailus@iki.fi, perex@perex.cz, mchehab@kernel.org, festevam@gmail.com, m.szyprowski@samsung.com
+Cc: nathanl@linux.ibm.com, Haren Myneni <haren@linux.ibm.com>, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Oct 17, 2023 at 9:37=E2=80=AFPM Hans Verkuil <hverkuil@xs4all.nl> w=
-rote:
->
-> On 17/10/2023 15:11, Shengjiu Wang wrote:
-> > On Mon, Oct 16, 2023 at 9:16=E2=80=AFPM Hans Verkuil <hverkuil@xs4all.n=
-l> wrote:
-> >>
-> >> Hi Shengjiu,
-> >>
-> >> On 13/10/2023 10:31, Shengjiu Wang wrote:
-> >>> Fixed point controls are used by the user to configure
-> >>> the audio sample rate to driver.
-> >>>
-> >>> Add V4L2_CID_ASRC_SOURCE_RATE and V4L2_CID_ASRC_DEST_RATE
-> >>> new IDs for ASRC rate control.
-> >>>
-> >>> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> >>> ---
-> >>>  .../userspace-api/media/v4l/common.rst        |  1 +
-> >>>  .../media/v4l/ext-ctrls-fixed-point.rst       | 36 +++++++++++++++++=
-++
-> >>>  .../media/v4l/vidioc-g-ext-ctrls.rst          |  4 +++
-> >>>  .../media/v4l/vidioc-queryctrl.rst            |  7 ++++
-> >>>  .../media/videodev2.h.rst.exceptions          |  1 +
-> >>>  drivers/media/v4l2-core/v4l2-ctrls-core.c     |  5 +++
-> >>>  drivers/media/v4l2-core/v4l2-ctrls-defs.c     |  4 +++
-> >>>  include/media/v4l2-ctrls.h                    |  2 ++
-> >>>  include/uapi/linux/v4l2-controls.h            | 13 +++++++
-> >>>  include/uapi/linux/videodev2.h                |  3 ++
-> >>>  10 files changed, 76 insertions(+)
-> >>>  create mode 100644 Documentation/userspace-api/media/v4l/ext-ctrls-f=
-ixed-point.rst
-> >>>
-> >>> diff --git a/Documentation/userspace-api/media/v4l/common.rst b/Docum=
-entation/userspace-api/media/v4l/common.rst
-> >>> index ea0435182e44..35707edffb13 100644
-> >>> --- a/Documentation/userspace-api/media/v4l/common.rst
-> >>> +++ b/Documentation/userspace-api/media/v4l/common.rst
-> >>> @@ -52,6 +52,7 @@ applicable to all devices.
-> >>>      ext-ctrls-fm-rx
-> >>>      ext-ctrls-detect
-> >>>      ext-ctrls-colorimetry
-> >>> +    ext-ctrls-fixed-point
-> >>
-> >> Rename this to ext-ctrls-audio-m2m.
-> >>
-> >>>      fourcc
-> >>>      format
-> >>>      planar-apis
-> >>> diff --git a/Documentation/userspace-api/media/v4l/ext-ctrls-fixed-po=
-int.rst b/Documentation/userspace-api/media/v4l/ext-ctrls-fixed-point.rst
-> >>> new file mode 100644
-> >>> index 000000000000..2ef6e250580c
-> >>> --- /dev/null
-> >>> +++ b/Documentation/userspace-api/media/v4l/ext-ctrls-fixed-point.rst
-> >>> @@ -0,0 +1,36 @@
-> >>> +.. SPDX-License-Identifier: GFDL-1.1-no-invariants-or-later
-> >>> +
-> >>> +.. _fixed-point-controls:
-> >>> +
-> >>> +***************************
-> >>> +Fixed Point Control Reference
-> >>
-> >> This is for audio controls. "Fixed Point" is just the type, and it doe=
-sn't make
-> >> sense to group fixed point controls. But it does make sense to group t=
-he audio
-> >> controls.
-> >>
-> >> V4L2 controls can be grouped into classes. Basically it is a way to pu=
-t controls
-> >> into categories, and for each category there is also a control that gi=
-ves a
-> >> description of the class (see 2.15.15 in
-> >> https://linuxtv.org/downloads/v4l-dvb-apis-new/driver-api/v4l2-control=
-s.html#introduction)
-> >>
-> >> If you use e.g. 'v4l2-ctl -l' to list all the controls, then you will =
-see that
-> >> they are grouped based on what class of control they are.
-> >>
-> >> So I think it would be a good idea to create a new control class for M=
-2M audio controls,
-> >> instead of just adding them to the catch-all 'User Controls' class.
-> >>
-> >> Search e.g. for V4L2_CTRL_CLASS_COLORIMETRY and V4L2_CID_COLORIMETRY_C=
-LASS to see how
-> >> it is done.
-> >>
-> >> M2M_AUDIO would probably be a good name for the class.
-> >>
-> >>> +***************************
-> >>> +
-> >>> +These controls are intended to support an asynchronous sample
-> >>> +rate converter.
-> >>
-> >> Add ' (ASRC).' at the end to indicate the common abbreviation for
-> >> that.
-> >>
-> >>> +
-> >>> +.. _v4l2-audio-asrc:
-> >>> +
-> >>> +``V4L2_CID_ASRC_SOURCE_RATE``
-> >>> +    sets the resampler source rate.
-> >>> +
-> >>> +``V4L2_CID_ASRC_DEST_RATE``
-> >>> +    sets the resampler destination rate.
-> >>
-> >> Document the unit (Hz) for these two controls.
-> >>
-> >>> +
-> >>> +.. c:type:: v4l2_ctrl_fixed_point
-> >>> +
-> >>> +.. cssclass:: longtable
-> >>> +
-> >>> +.. tabularcolumns:: |p{1.5cm}|p{5.8cm}|p{10.0cm}|
-> >>> +
-> >>> +.. flat-table:: struct v4l2_ctrl_fixed_point
-> >>> +    :header-rows:  0
-> >>> +    :stub-columns: 0
-> >>> +    :widths:       1 1 2
-> >>> +
-> >>> +    * - __u32
-> >>
-> >> Hmm, shouldn't this be __s32?
-> >>
-> >>> +      - ``integer``
-> >>> +      - integer part of fixed point value.
-> >>> +    * - __s32
-> >>
-> >> and this __u32?
-> >>
-> >> You want to be able to use this generic type as a signed value.
-> >>
-> >>> +      - ``fractional``
-> >>> +      - fractional part of fixed point value, which is Q31.
-> >>> diff --git a/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls=
-.rst b/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
-> >>> index f9f73530a6be..1811dabf5c74 100644
-> >>> --- a/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
-> >>> +++ b/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
-> >>> @@ -295,6 +295,10 @@ still cause this situation.
-> >>>        - ``p_av1_film_grain``
-> >>>        - A pointer to a struct :c:type:`v4l2_ctrl_av1_film_grain`. Va=
-lid if this control is
-> >>>          of type ``V4L2_CTRL_TYPE_AV1_FILM_GRAIN``.
-> >>> +    * - struct :c:type:`v4l2_ctrl_fixed_point` *
-> >>> +      - ``p_fixed_point``
-> >>> +      - A pointer to a struct :c:type:`v4l2_ctrl_fixed_point`. Valid=
- if this control is
-> >>> +        of type ``V4L2_CTRL_TYPE_FIXED_POINT``.
-> >>>      * - void *
-> >>>        - ``ptr``
-> >>>        - A pointer to a compound type which can be an N-dimensional a=
-rray
-> >>> diff --git a/Documentation/userspace-api/media/v4l/vidioc-queryctrl.r=
-st b/Documentation/userspace-api/media/v4l/vidioc-queryctrl.rst
-> >>> index 4d38acafe8e1..9285f4f39eed 100644
-> >>> --- a/Documentation/userspace-api/media/v4l/vidioc-queryctrl.rst
-> >>> +++ b/Documentation/userspace-api/media/v4l/vidioc-queryctrl.rst
-> >>> @@ -549,6 +549,13 @@ See also the examples in :ref:`control`.
-> >>>        - n/a
-> >>>        - A struct :c:type:`v4l2_ctrl_av1_film_grain`, containing AV1 =
-Film Grain
-> >>>          parameters for stateless video decoders.
-> >>> +    * - ``V4L2_CTRL_TYPE_FIXED_POINT``
-> >>> +      - n/a
-> >>> +      - n/a
-> >>> +      - n/a
-> >>> +      - A struct :c:type:`v4l2_ctrl_fixed_point`, containing paramet=
-er which has
-> >>> +        integer part and fractional part, i.e. audio sample rate.
-> >>> +
-> >>>
-> >>>  .. raw:: latex
-> >>>
-> >>> diff --git a/Documentation/userspace-api/media/videodev2.h.rst.except=
-ions b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
-> >>> index e61152bb80d1..2faa5a2015eb 100644
-> >>> --- a/Documentation/userspace-api/media/videodev2.h.rst.exceptions
-> >>> +++ b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
-> >>> @@ -167,6 +167,7 @@ replace symbol V4L2_CTRL_TYPE_AV1_SEQUENCE :c:typ=
-e:`v4l2_ctrl_type`
-> >>>  replace symbol V4L2_CTRL_TYPE_AV1_TILE_GROUP_ENTRY :c:type:`v4l2_ctr=
-l_type`
-> >>>  replace symbol V4L2_CTRL_TYPE_AV1_FRAME :c:type:`v4l2_ctrl_type`
-> >>>  replace symbol V4L2_CTRL_TYPE_AV1_FILM_GRAIN :c:type:`v4l2_ctrl_type=
-`
-> >>> +replace symbol V4L2_CTRL_TYPE_FIXED_POINT :c:type:`v4l2_ctrl_type`
-> >>>
-> >>>  # V4L2 capability defines
-> >>>  replace define V4L2_CAP_VIDEO_CAPTURE device-capabilities
-> >>> diff --git a/drivers/media/v4l2-core/v4l2-ctrls-core.c b/drivers/medi=
-a/v4l2-core/v4l2-ctrls-core.c
-> >>> index a662fb60f73f..7a616ac91059 100644
-> >>> --- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
-> >>> +++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
-> >>> @@ -1168,6 +1168,8 @@ static int std_validate_compound(const struct v=
-4l2_ctrl *ctrl, u32 idx,
-> >>>               if (!area->width || !area->height)
-> >>>                       return -EINVAL;
-> >>>               break;
-> >>> +     case V4L2_CTRL_TYPE_FIXED_POINT:
-> >>> +             break;
-> >>
-> >> Hmm, this would need this patch 'v4l2-ctrls: add support for V4L2_CTRL=
-_WHICH_MIN/MAX_VAL':
-> >>
-> >> https://patchwork.linuxtv.org/project/linux-media/patch/20231010022136=
-.1504015-7-yunkec@google.com/
-> >>
-> >> since min and max values are perfectly fine for a fixed point value.
-> >>
-> >> Even a step value (currently not supported in that patch) would make s=
-ense.
-> >>
-> >> But I wonder if we couldn't simplify this: instead of creating a v4l2_=
-ctrl_fixed_point,
-> >> why not represent the fixed point value as a Q31.32. Then the standard
-> >> minimum/maximum/step values can be used, and it acts like a regular V4=
-L2_TYPE_INTEGER64.
-> >>
-> >> Except that both userspace and drivers need to multiply it with 2^-32 =
-to get the actual
-> >> value.
-> >>
-> >> So in enum v4l2_ctrl_type add:
-> >>
-> >>         V4L2_CTRL_TYPE_FIXED_POINT =3D 10,
-> >>
-> >> (10, because it is no longer a compound type).
-> >
-> > Seems we don't need V4L2_CTRL_TYPE_FIXED_POINT, just use V4L2_TYPE_INTE=
-GER64?
-> >
-> > The reason I use the 'integer' and 'fractional' is that I want
-> > 'integer' to be the normal sample
-> > rate, for example 48kHz.  The 'fractional' is the difference with
-> > normal sample rate.
-> >
-> > For example, the rate =3D 47998.12345.  so integer =3D 48000,  fraction=
-al=3D -1.87655.
-> >
-> > So if we use s64 for rate, then in driver need to convert the rate to
-> > the closed normal
-> > sample rate + fractional.
->
-> That wasn't what the documentation said :-)
->
-> So this is really two controls: one for the 'normal sample rate' (whateve=
-r 'normal'
-> means in this context) and the offset to the actual sample rate.
->
-> Presumably the 'normal' sample rate is set once, while the offset changes
-> regularly.
->
-> But why do you need the 'normal' sample rate? With audio resampling I ass=
-ume
-> you resample from one rate to another, so why do you need a third 'normal=
-'
-> rate?
->
+The hypervisor returns migration failure if all VAS windows are not
+closed. During pre-migration stage, vas_migration_handler() sets
+migration_in_progress flag and closes all windows from the list.
+The allocate VAS window routine checks the migration flag, setup
+the window and then add it to the list. So there is possibility of
+the migration handler missing the window that is still in the
+process of setup.
 
-'Normal' rate is used to select the prefilter table.
+t1: Allocate and open VAS	t2: Migration event
+    window
 
-Best regards
-Wang Shengjiu
+lock vas_pseries_mutex
+If migration_in_progress set
+  unlock vas_pseries_mutex
+  return
+open window HCALL
+unlock vas_pseries_mutex
+Modify window HCALL		lock vas_pseries_mutex
+setup window			migration_in_progress=true
+				Closes all windows from
+				the list
+				unlock vas_pseries_mutex
+lock vas_pseries_mutex		return
+if nr_closed_windows == 0
+  // No DLPAR CPU or migration
+  add to the list
+  unlock vas_pseries_mutex
+  return
+unlock vas_pseries_mutex
+Close VAS window
+// due to DLPAR CPU or migration
+return -EBUSY
 
-> Regards,
->
->         Hans
->
-> >
-> > best regards
-> > wang shengjiu
-> >
-> >>
-> >>>
-> >>>       default:
-> >>>               return -EINVAL;
-> >>> @@ -1868,6 +1870,9 @@ static struct v4l2_ctrl *v4l2_ctrl_new(struct v=
-4l2_ctrl_handler *hdl,
-> >>>       case V4L2_CTRL_TYPE_AREA:
-> >>>               elem_size =3D sizeof(struct v4l2_area);
-> >>>               break;
-> >>> +     case V4L2_CTRL_TYPE_FIXED_POINT:
-> >>> +             elem_size =3D sizeof(struct v4l2_ctrl_fixed_point);
-> >>> +             break;
-> >>>       default:
-> >>>               if (type < V4L2_CTRL_COMPOUND_TYPES)
-> >>>                       elem_size =3D sizeof(s32);
-> >>> diff --git a/drivers/media/v4l2-core/v4l2-ctrls-defs.c b/drivers/medi=
-a/v4l2-core/v4l2-ctrls-defs.c
-> >>> index 8696eb1cdd61..d8f232df6b6a 100644
-> >>> --- a/drivers/media/v4l2-core/v4l2-ctrls-defs.c
-> >>> +++ b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
-> >>> @@ -1602,6 +1602,10 @@ void v4l2_ctrl_fill(u32 id, const char **name,=
- enum v4l2_ctrl_type *type,
-> >>>       case V4L2_CID_COLORIMETRY_HDR10_MASTERING_DISPLAY:
-> >>>               *type =3D V4L2_CTRL_TYPE_HDR10_MASTERING_DISPLAY;
-> >>>               break;
-> >>> +     case V4L2_CID_ASRC_SOURCE_RATE:
-> >>> +     case V4L2_CID_ASRC_DEST_RATE:
-> >>> +             *type =3D V4L2_CTRL_TYPE_FIXED_POINT;
-> >>> +             break;
-> >>>       default:
-> >>>               *type =3D V4L2_CTRL_TYPE_INTEGER;
-> >>>               break;
-> >>> diff --git a/include/media/v4l2-ctrls.h b/include/media/v4l2-ctrls.h
-> >>> index 59679a42b3e7..645e4cccafc7 100644
-> >>> --- a/include/media/v4l2-ctrls.h
-> >>> +++ b/include/media/v4l2-ctrls.h
-> >>> @@ -56,6 +56,7 @@ struct video_device;
-> >>>   * @p_av1_tile_group_entry:  Pointer to an AV1 tile group entry stru=
-cture.
-> >>>   * @p_av1_frame:             Pointer to an AV1 frame structure.
-> >>>   * @p_av1_film_grain:                Pointer to an AV1 film grain st=
-ructure.
-> >>> + * @p_fixed_point:           Pointer to a struct v4l2_ctrl_fixed_poi=
-nt.
-> >>>   * @p:                               Pointer to a compound value.
-> >>>   * @p_const:                 Pointer to a constant compound value.
-> >>>   */
-> >>> @@ -89,6 +90,7 @@ union v4l2_ctrl_ptr {
-> >>>       struct v4l2_ctrl_av1_tile_group_entry *p_av1_tile_group_entry;
-> >>>       struct v4l2_ctrl_av1_frame *p_av1_frame;
-> >>>       struct v4l2_ctrl_av1_film_grain *p_av1_film_grain;
-> >>> +     struct v4l2_ctrl_fixed_point *p_fixed_point;
-> >>>       void *p;
-> >>>       const void *p_const;
-> >>>  };
-> >>> diff --git a/include/uapi/linux/v4l2-controls.h b/include/uapi/linux/=
-v4l2-controls.h
-> >>> index c3604a0a3e30..91096259e3ea 100644
-> >>> --- a/include/uapi/linux/v4l2-controls.h
-> >>> +++ b/include/uapi/linux/v4l2-controls.h
-> >>> @@ -112,6 +112,8 @@ enum v4l2_colorfx {
-> >>>
-> >>>  /* last CID + 1 */
-> >>>  #define V4L2_CID_LASTP1                         (V4L2_CID_BASE+44)
-> >>> +#define V4L2_CID_ASRC_SOURCE_RATE            (V4L2_CID_BASE + 45)
-> >>> +#define V4L2_CID_ASRC_DEST_RATE                      (V4L2_CID_BASE =
-+ 46)
-> >>
-> >> This patch needs to be split in three parts:
-> >>
-> >> 1) Add the new M2M_AUDIO control class,
-> >> 2) Add the new V4L2_CTRL_TYPE_FIXED_POINT type,
-> >> 3) Add the new controls.
-> >>
-> >> These are all independent changes, so separating them makes it easier =
-to
-> >> review.
-> >>
-> >>>
-> >>>  /* USER-class private control IDs */
-> >>>
-> >>> @@ -3488,4 +3490,15 @@ struct v4l2_ctrl_av1_film_grain {
-> >>>  #define V4L2_CID_MPEG_MFC51_BASE        V4L2_CID_CODEC_MFC51_BASE
-> >>>  #endif
-> >>>
-> >>> +/**
-> >>> + * struct v4l2_ctrl_fixed_point - fixed point parameter.
-> >>> + *
-> >>> + * @rate_integer: integer part of fixed point value.
-> >>> + * @rate_fractional: fractional part of fixed point value
-> >>> + */
-> >>> +struct v4l2_ctrl_fixed_point {
-> >>> +     __u32 integer;
-> >>
-> >> __s32?
-> >>
-> >>> +     __u32 fractional;
-> >>> +};
-> >>> +
-> >>>  #endif
-> >>> diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/vide=
-odev2.h
-> >>> index 2ac7b989394c..3ef32c09c2fa 100644
-> >>> --- a/include/uapi/linux/videodev2.h
-> >>> +++ b/include/uapi/linux/videodev2.h
-> >>> @@ -1888,6 +1888,7 @@ struct v4l2_ext_control {
-> >>>               struct v4l2_ctrl_av1_tile_group_entry __user *p_av1_til=
-e_group_entry;
-> >>>               struct v4l2_ctrl_av1_frame __user *p_av1_frame;
-> >>>               struct v4l2_ctrl_av1_film_grain __user *p_av1_film_grai=
-n;
-> >>> +             struct v4l2_ctrl_fixed_point __user *p_fixed_point;
-> >>>               void __user *ptr;
-> >>>       };
-> >>>  } __attribute__ ((packed));
-> >>> @@ -1966,6 +1967,8 @@ enum v4l2_ctrl_type {
-> >>>       V4L2_CTRL_TYPE_AV1_TILE_GROUP_ENTRY =3D 0x281,
-> >>>       V4L2_CTRL_TYPE_AV1_FRAME            =3D 0x282,
-> >>>       V4L2_CTRL_TYPE_AV1_FILM_GRAIN       =3D 0x283,
-> >>> +
-> >>> +     V4L2_CTRL_TYPE_FIXED_POINT          =3D 0x290,
-> >>>  };
-> >>>
-> >>>  /*  Used in the VIDIOC_QUERYCTRL ioctl for querying controls */
-> >>
-> >> Regards,
-> >>
-> >>         Hans
->
+This patch resolves the issue with the following steps:
+- Define migration_in_progress as atomic so that the migration
+  handler sets this flag without holding mutex.
+- Introduce nr_open_wins_progress counter in VAS capabilities
+  struct
+- This counter tracks the number of open windows are still in
+  progress
+- The allocate setup window thread closes windows if the migration
+  is set and decrements nr_open_window_progress counter
+- The migration handler waits for no in-progress open windows.
+
+Fixes: 37e6764895ef ("powerpc/pseries/vas: Add VAS migration handler")
+Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+
+---
+Changes from v1:
+- Do not define the migration_in_progress flag as atomic as
+  suggested by Nathan
+---
+ arch/powerpc/platforms/pseries/vas.c | 45 +++++++++++++++++++++++-----
+ arch/powerpc/platforms/pseries/vas.h |  2 ++
+ 2 files changed, 40 insertions(+), 7 deletions(-)
+
+diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
+index 15d958e38eca..b86f0db08e98 100644
+--- a/arch/powerpc/platforms/pseries/vas.c
++++ b/arch/powerpc/platforms/pseries/vas.c
+@@ -32,6 +32,7 @@ static struct hv_vas_cop_feat_caps hv_cop_caps;
+ static struct vas_caps vascaps[VAS_MAX_FEAT_TYPE];
+ static DEFINE_MUTEX(vas_pseries_mutex);
+ static bool migration_in_progress;
++static DECLARE_WAIT_QUEUE_HEAD(open_win_progress_wq);
+ 
+ static long hcall_return_busy_check(long rc)
+ {
+@@ -384,11 +385,15 @@ static struct vas_window *vas_allocate_window(int vas_id, u64 flags,
+ 	 * same fault IRQ is not freed by the OS before.
+ 	 */
+ 	mutex_lock(&vas_pseries_mutex);
+-	if (migration_in_progress)
++	if (migration_in_progress) {
+ 		rc = -EBUSY;
+-	else
++	} else {
+ 		rc = allocate_setup_window(txwin, (u64 *)&domain[0],
+ 				   cop_feat_caps->win_type);
++		if (!rc)
++			atomic_inc(&caps->nr_open_wins_progress);
++	}
++
+ 	mutex_unlock(&vas_pseries_mutex);
+ 	if (rc)
+ 		goto out;
+@@ -403,8 +408,17 @@ static struct vas_window *vas_allocate_window(int vas_id, u64 flags,
+ 		goto out_free;
+ 
+ 	txwin->win_type = cop_feat_caps->win_type;
+-	mutex_lock(&vas_pseries_mutex);
++
+ 	/*
++	 * The migration SUSPEND thread sets migration_in_progress and
++	 * closes all open windows from the list. But the window is
++	 * added to the list after open and modify HCALLs. So possible
++	 * that migration_in_progress is set before modify HCALL which
++	 * may cause some windows are still open when the hypervisor
++	 * initiates the migration.
++	 * So checks the migration_in_progress flag again and close all
++	 * open windows.
++	 *
+ 	 * Possible to lose the acquired credit with DLPAR core
+ 	 * removal after the window is opened. So if there are any
+ 	 * closed windows (means with lost credits), do not give new
+@@ -412,9 +426,11 @@ static struct vas_window *vas_allocate_window(int vas_id, u64 flags,
+ 	 * after the existing windows are reopened when credits are
+ 	 * available.
+ 	 */
+-	if (!caps->nr_close_wins) {
++	mutex_lock(&vas_pseries_mutex);
++	if (!caps->nr_close_wins && !migration_in_progress) {
+ 		list_add(&txwin->win_list, &caps->list);
+ 		caps->nr_open_windows++;
++		atomic_dec(&caps->nr_open_wins_progress);
+ 		mutex_unlock(&vas_pseries_mutex);
+ 		vas_user_win_add_mm_context(&txwin->vas_win.task_ref);
+ 		return &txwin->vas_win;
+@@ -432,6 +448,8 @@ static struct vas_window *vas_allocate_window(int vas_id, u64 flags,
+ 	 */
+ 	free_irq_setup(txwin);
+ 	h_deallocate_vas_window(txwin->vas_win.winid);
++	atomic_dec(&caps->nr_open_wins_progress);
++	wake_up(&open_win_progress_wq);
+ out:
+ 	atomic_dec(&cop_feat_caps->nr_used_credits);
+ 	kfree(txwin);
+@@ -936,14 +954,14 @@ int vas_migration_handler(int action)
+ 	struct vas_caps *vcaps;
+ 	int i, rc = 0;
+ 
++	pr_info("VAS migration event %d\n", action);
++
+ 	/*
+ 	 * NX-GZIP is not enabled. Nothing to do for migration.
+ 	 */
+ 	if (!copypaste_feat)
+ 		return rc;
+ 
+-	mutex_lock(&vas_pseries_mutex);
+-
+ 	if (action == VAS_SUSPEND)
+ 		migration_in_progress = true;
+ 	else
+@@ -989,12 +1007,24 @@ int vas_migration_handler(int action)
+ 
+ 		switch (action) {
+ 		case VAS_SUSPEND:
++			mutex_lock(&vas_pseries_mutex);
+ 			rc = reconfig_close_windows(vcaps, vcaps->nr_open_windows,
+ 							true);
++			mutex_unlock(&vas_pseries_mutex);
++			/*
++			 * Windows are included in the list after successful
++			 * open. So wait for closing these in-progress open
++			 * windows in vas_allocate_window() which will be
++			 * done if the migration_in_progress is set.
++			 */
++			rc = wait_event_interruptible(open_win_progress_wq,
++				!atomic_read(&vcaps->nr_open_wins_progress));
+ 			break;
+ 		case VAS_RESUME:
++			mutex_lock(&vas_pseries_mutex);
+ 			atomic_set(&caps->nr_total_credits, new_nr_creds);
+ 			rc = reconfig_open_windows(vcaps, new_nr_creds, true);
++			mutex_unlock(&vas_pseries_mutex);
+ 			break;
+ 		default:
+ 			/* should not happen */
+@@ -1010,8 +1040,9 @@ int vas_migration_handler(int action)
+ 			goto out;
+ 	}
+ 
++	pr_info("VAS migration event (%d) successful\n", action);
++
+ out:
+-	mutex_unlock(&vas_pseries_mutex);
+ 	return rc;
+ }
+ 
+diff --git a/arch/powerpc/platforms/pseries/vas.h b/arch/powerpc/platforms/pseries/vas.h
+index 7115043ec488..35e899f2ee20 100644
+--- a/arch/powerpc/platforms/pseries/vas.h
++++ b/arch/powerpc/platforms/pseries/vas.h
+@@ -91,6 +91,8 @@ struct vas_cop_feat_caps {
+ struct vas_caps {
+ 	struct vas_cop_feat_caps caps;
+ 	struct list_head list;	/* List of open windows */
++	atomic_t nr_open_wins_progress;	/* Number of open windows in */
++					/* progress. Used in migration */
+ 	int nr_close_wins;	/* closed windows in the hypervisor for DLPAR */
+ 	int nr_open_windows;	/* Number of successful open windows */
+ 	u8 feat;		/* Feature type */
+-- 
+2.26.3
+
