@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A52597CDE97
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 16:13:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B54257CDEC0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 16:14:02 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G5Fg/J5l;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qFTH4B63;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S9Xqy48jQz3clp
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Oct 2023 01:13:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S9Xs44Mdjz3vZ8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Oct 2023 01:14:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G5Fg/J5l;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qFTH4B63;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S9Xq35ZmBz2xm3
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Oct 2023 01:12:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S9XrB2rlTz3dfb
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Oct 2023 01:13:14 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id 704CCB82374;
-	Wed, 18 Oct 2023 14:12:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953A4C433C8;
-	Wed, 18 Oct 2023 14:12:10 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id A1CAE617F7;
+	Wed, 18 Oct 2023 14:13:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F062AC433AD;
+	Wed, 18 Oct 2023 14:13:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1697638331;
-	bh=/w5UhJTlM4f3g0xvKK31B3U73QejfR514S44BgEBF04=;
+	s=k20201202; t=1697638386;
+	bh=IAM9CKLaPtNXubWoOm1/p0ts6fbbUCbkGOnaiX63Cy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G5Fg/J5llAHLXg0PoeUbtm3P65rLNOGrgvqeiVf60LhHwLdNoWymM+v0XjKaSTzxg
-	 YKovYwhQGxC13A/xUlf/LVOv/UVLFR0WezwFzEuwF4K5aLwnZRY4tIEvQGo+H9U6Z8
-	 Ewr2pjXqq7XMOpEoLIUccsb3TOwmaasu4fnUrk4aImMENuN5extY+fPDDxB07gJ8Zn
-	 GK29//4M82ONrdOAQkAhR6nmSpX9XDhT5aFOFunobLQiH9Up3Z0jLAsLKT42HWBBL6
-	 tNYzv+iuIS15lfFNINAyQjIqLW1vsIj3Ak2JagsnhcHX68kTILApkpVDGZ9eW/kRY2
-	 nEyVdb/1388Ig==
+	b=qFTH4B63ai6zWgvNDeY8DhhdgLCcRRAVcS1xEXJxKBRHjBEBNKC2ZP9udb/IGYrW9
+	 X9MHypwuoCrzhs3QvtaxO0W8DvwXAndCrn5Mww7GFj0XnNMI+ScD7XjR+zBEioWRk4
+	 lgAtTw7RgEQDKk3gGJurDAfOIsjJ0eSh9USe320l9gbsTOm9rfNNs2duzxiKJ/ewn6
+	 C5SctS27IOMSCn4228ZurmagccUMaDF4VTxago4M6B6sjboI3I/3F76f8yFMc98+I2
+	 HpmPFABpiq7E2pDGu5DuRwpS3ndBWXfqTGx2x7+0PjctOmGLeR1v/d6brKaAC77P3d
+	 17cwl12MXALBQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.5 07/31] ASoC: fsl-asoc-card: use integer type for fll_id and pll_id
-Date: Wed, 18 Oct 2023 10:11:24 -0400
-Message-Id: <20231018141151.1334501-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.5 27/31] powerpc/85xx: Fix math emulation exception
+Date: Wed, 18 Oct 2023 10:11:44 -0400
+Message-Id: <20231018141151.1334501-27-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20231018141151.1334501-1-sashal@kernel.org>
 References: <20231018141151.1334501-1-sashal@kernel.org>
@@ -62,77 +62,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com, linuxppc-dev@lists.ozlabs.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz, Mark Brown <broonie@kernel.org>, shengjiu.wang@gmail.com
+Cc: Sasha Levin <sashal@kernel.org>, masahiroy@kernel.org, npiggin@gmail.com, sv@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 2b21207afd06714986a3d22442ed4860ba4f9ced ]
+[ Upstream commit 8e8a12ecbc86700b5e1a3596ce2b3c43dafad336 ]
 
-As the pll_id and pll_id can be zero (WM8960_SYSCLK_AUTO)
-with the commit 2bbc2df46e67 ("ASoC: wm8960: Make automatic the
-default clocking mode")
+Booting mpc85xx_defconfig kernel on QEMU leads to:
 
-Then the machine driver will skip to call set_sysclk() and set_pll()
-for codec, when the sysclk rate is different with what wm8960 read
-at probe, the output sound frequency is wrong.
+Bad trap at PC: fe9bab0, SR: 2d000, vector=800
+awk[82]: unhandled trap (5) at 0 nip fe9bab0 lr fe9e01c code 5 in libc-2.27.so[fe5a000+17a000]
+awk[82]: code: 3aa00000 3a800010 4bffe03c 9421fff0 7ca62b78 38a00000 93c10008 83c10008
+awk[82]: code: 38210010 4bffdec8 9421ffc0 7c0802a6 <fc00048e> d8010008 4815190d 93810030
+Trace/breakpoint trap
+WARNING: no useful console
 
-So change the fll_id and pll_id initial value, still keep machine
-driver's behavior same as before.
+This is because allthough CONFIG_MATH_EMULATION is selected,
+Exception 800 calls unknown_exception().
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://lore.kernel.org/r/1695202992-24864-1-git-send-email-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Call emulation_assist_interrupt() instead.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/066caa6d9480365da9b8ed83692d7101e10ac5f8.1695657339.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl-asoc-card.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ arch/powerpc/kernel/head_85xx.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
-index 76b5bfc288fde..bab7d34cf585b 100644
---- a/sound/soc/fsl/fsl-asoc-card.c
-+++ b/sound/soc/fsl/fsl-asoc-card.c
-@@ -52,8 +52,8 @@ struct codec_priv {
- 	unsigned long mclk_freq;
- 	unsigned long free_freq;
- 	u32 mclk_id;
--	u32 fll_id;
--	u32 pll_id;
-+	int fll_id;
-+	int pll_id;
- };
+diff --git a/arch/powerpc/kernel/head_85xx.S b/arch/powerpc/kernel/head_85xx.S
+index fdbee1093e2ba..f9634111e82ed 100644
+--- a/arch/powerpc/kernel/head_85xx.S
++++ b/arch/powerpc/kernel/head_85xx.S
+@@ -396,7 +396,7 @@ interrupt_base:
+ #ifdef CONFIG_PPC_FPU
+ 	FP_UNAVAILABLE_EXCEPTION
+ #else
+-	EXCEPTION(0x0800, FP_UNAVAIL, FloatingPointUnavailable, unknown_exception)
++	EXCEPTION(0x0800, FP_UNAVAIL, FloatingPointUnavailable, emulation_assist_interrupt)
+ #endif
  
- /**
-@@ -206,7 +206,7 @@ static int fsl_asoc_card_hw_params(struct snd_pcm_substream *substream,
- 	}
- 
- 	/* Specific configuration for PLL */
--	if (codec_priv->pll_id && codec_priv->fll_id) {
-+	if (codec_priv->pll_id >= 0 && codec_priv->fll_id >= 0) {
- 		if (priv->sample_format == SNDRV_PCM_FORMAT_S24_LE)
- 			pll_out = priv->sample_rate * 384;
- 		else
-@@ -248,7 +248,7 @@ static int fsl_asoc_card_hw_free(struct snd_pcm_substream *substream)
- 
- 	priv->streams &= ~BIT(substream->stream);
- 
--	if (!priv->streams && codec_priv->pll_id && codec_priv->fll_id) {
-+	if (!priv->streams && codec_priv->pll_id >= 0 && codec_priv->fll_id >= 0) {
- 		/* Force freq to be free_freq to avoid error message in codec */
- 		ret = snd_soc_dai_set_sysclk(asoc_rtd_to_codec(rtd, 0),
- 					     codec_priv->mclk_id,
-@@ -621,6 +621,10 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
- 	priv->card.dapm_routes = audio_map;
- 	priv->card.num_dapm_routes = ARRAY_SIZE(audio_map);
- 	priv->card.driver_name = DRIVER_NAME;
-+
-+	priv->codec_priv.fll_id = -1;
-+	priv->codec_priv.pll_id = -1;
-+
- 	/* Diversify the card configurations */
- 	if (of_device_is_compatible(np, "fsl,imx-audio-cs42888")) {
- 		codec_dai_name = "cs42888";
+ 	/* System Call Interrupt */
 -- 
 2.40.1
 
