@@ -2,47 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6A347CE10D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 17:20:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB14C7CE14B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Oct 2023 17:35:22 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qWpvifiK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=m6xRo07+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S9ZLG4WXrz3cnR
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Oct 2023 02:20:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S9Zfw4TBKz3cl9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Oct 2023 02:35:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qWpvifiK;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=m6xRo07+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S9ZKM5TFbz3c5j
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Oct 2023 02:20:07 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id BB32CB823DD;
-	Wed, 18 Oct 2023 15:20:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9464AC433C8;
-	Wed, 18 Oct 2023 15:20:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1697642404;
-	bh=d9q2EGQopnbrrZB9hrsBcWEpKabaAuR6MB/YUqLsU4w=;
-	h=From:To:Cc:Subject:Date:From;
-	b=qWpvifiKtTK5o66piHOruftpghs50wXvOldPydTwAZWMgN9cLJfVLlvGl9Nucou7Q
-	 ecBxT7h/Yv5+/t4yVhUiWVSYN2rBDIXXboM51HEDPFpgYttQUCpZdh7en0zSaTHw8E
-	 6DyNmXSbBBt1qk2hmpZbB1eXVL2JdOlz+mbtMSfqgaQEaV4axi18xctWfmwJcwc+zu
-	 xJI0epn7jgszwmZbLlESdaczmIe7PxrQUmRdpP3sY68RaoSAWPA7WB9shIl++7+0iY
-	 ryu+JsPEw+Qu6jMHzajqLcdDgOltoj4CC1agv/doRuOoxHFL9MjV/+ieuT1TzsS8uO
-	 IMS1ILXONw1VA==
-From: Masahiro Yamada <masahiroy@kernel.org>
-To: linux-kbuild@vger.kernel.org
-Subject: [bpf-next PATCH v2 1/4] kbuild: remove ARCH_POSTLINK from module builds
-Date: Thu, 19 Oct 2023 00:19:47 +0900
-Message-Id: <20231018151950.205265-1-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.40.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S9Zf12MLLz3c8x
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Oct 2023 02:34:31 +1100 (AEDT)
+Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6b497c8575aso5053610b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Oct 2023 08:34:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697643269; x=1698248069; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qIFFgnXlmL9OSdV9BYoDFgvVe1Udxn1Wq4dk/jcDDIA=;
+        b=m6xRo07+MfkyDJ2ui2S60uk5SngfhZ+b8Gc0LxaSW1J2q6IxHXZ6lZdEsUr7s1KQZO
+         qzwoFep5ovk4gdCrn0h4XJgMnhIm7Wssc3+Gnq9ta3TSu3QXBqD+n4OGDmhI7Jgz6Tq2
+         k/kfdIpVOm5fLsaK7qAapfv8XGG5+XPVUIzr2Xug8B8Gx9/B3Jk6NoE+Qr5MqspODW4u
+         UwlAC5DKbpqnnAZ4LCXsNVHCsLjkLPUOm2YgX+oYA28FmicAGC1/JAvGys/hOQjplrZW
+         qFikeCY4kZcRASsdU6PozxRfm2qDWWDzgTfIGcwHx5ax59cFnckBdaBTe5GFCr+OxCW0
+         szRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697643269; x=1698248069;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qIFFgnXlmL9OSdV9BYoDFgvVe1Udxn1Wq4dk/jcDDIA=;
+        b=tZLqOxjooPTHhsZkaxmz8cFIAtt8WJCZ+1/t4awsWb94fv3MpoAH9RqFgKA9Xr8x6M
+         X8UPToZNF4hWfeZEZUcllYjB+6EnlHhBI8As3m59pNnLaISgPzmdoGLpSDLs6zOdaPQu
+         xA0ts4oRRJSTeOSEZV7atH7wyzMaxnBvLQSDsn85w1CZcU8UjMn+JHD6gpbJXwrZYITL
+         05TKkoB/EZjB/tVch/T7gfsBmSh74wF/2dHHD9OyccTvOxSocnGEx5ZWu4LSVXSWKh1J
+         VfcgDzXW7BI8zLMlZTy+Frw+XlYwqzi1vBxh+hgF9ahD6XKCh6IZ+OgoQ7kVFxRcB29i
+         PyBg==
+X-Gm-Message-State: AOJu0YxAiUpbXQG1XSSWdb+cyqnyr9uZN2OwktrlVVbfyLFDJwliUSNn
+	e8xHvRWKkVUDevH+Mh5eJBNylKtusBA=
+X-Google-Smtp-Source: AGHT+IHDRklaHGDCq78zTSo/+7qbNfQhBS4vLfm+Ds40Q4B9Cpe6vyGuxwVjlLja+oeSef6hzZrkdQ==
+X-Received: by 2002:a05:6a00:15cf:b0:6be:319:446b with SMTP id o15-20020a056a0015cf00b006be0319446bmr6897071pfu.21.1697643268737;
+        Wed, 18 Oct 2023 08:34:28 -0700 (PDT)
+Received: from wheely.local0.net (61-68-209-245.tpgi.com.au. [61.68.209.245])
+        by smtp.gmail.com with ESMTPSA id q10-20020aa7982a000000b006b725b2158bsm3478919pfl.41.2023.10.18.08.34.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Oct 2023 08:34:28 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/perf: Fix disabling BHRB and instruction sampling
+Date: Thu, 19 Oct 2023 01:34:23 +1000
+Message-ID: <20231018153423.298373-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -56,104 +75,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>, linux-riscv@lists.infradead.org, Masahiro Yamada <masahiroy@kernel.org>, x86@kernel.org, Ingo Molnar <mingo@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>, Nicolas Schier <nicolas@fjasle.eu>, Nicholas Piggin <npiggin@gmail.com>, Nathan Chancellor <nathan@kernel.org>, Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>, Nicolas Schier <n.schier@avm.de>, Thomas Gleixner <tglx@linutronix.de>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The '%.ko' rule in arch/*/Makefile.postlink does nothing but call the
-'true' command.
+When the PMU is disabled, MMCRA is not updated to disable BHRB and
+instruction sampling. This can lead to those features remaining enabled,
+which can slow down a real or emulated CPU.
 
-Remove the meaningless code.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Nicolas Schier <n.schier@avm.de>
+Fixes: 1cade527f6e9 ("powerpc/perf: BHRB control to disable BHRB logic when not used")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
+ arch/powerpc/perf/core-book3s.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-(no changes since v1)
-
- arch/mips/Makefile.postlink    | 3 ---
- arch/powerpc/Makefile.postlink | 3 ---
- arch/riscv/Makefile.postlink   | 3 ---
- arch/x86/Makefile.postlink     | 3 ---
- scripts/Makefile.modfinal      | 5 +----
- 5 files changed, 1 insertion(+), 16 deletions(-)
-
-diff --git a/arch/mips/Makefile.postlink b/arch/mips/Makefile.postlink
-index 34e3bd71f3b0..6cfdc149d3bc 100644
---- a/arch/mips/Makefile.postlink
-+++ b/arch/mips/Makefile.postlink
-@@ -31,9 +31,6 @@ ifeq ($(CONFIG_RELOCATABLE),y)
- 	$(call if_changed,relocs)
- endif
+diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+index 8c1f7def596e..10b946e9c6e7 100644
+--- a/arch/powerpc/perf/core-book3s.c
++++ b/arch/powerpc/perf/core-book3s.c
+@@ -1371,8 +1371,7 @@ static void power_pmu_disable(struct pmu *pmu)
+ 		/*
+ 		 * Disable instruction sampling if it was enabled
+ 		 */
+-		if (cpuhw->mmcr.mmcra & MMCRA_SAMPLE_ENABLE)
+-			val &= ~MMCRA_SAMPLE_ENABLE;
++		val &= ~MMCRA_SAMPLE_ENABLE;
  
--%.ko: FORCE
--	@true
--
- clean:
- 	@true
- 
-diff --git a/arch/powerpc/Makefile.postlink b/arch/powerpc/Makefile.postlink
-index 1f860b3c9bec..ae5a4256b03d 100644
---- a/arch/powerpc/Makefile.postlink
-+++ b/arch/powerpc/Makefile.postlink
-@@ -35,9 +35,6 @@ ifdef CONFIG_RELOCATABLE
- 	$(call if_changed,relocs_check)
- endif
- 
--%.ko: FORCE
--	@true
--
- clean:
- 	rm -f .tmp_symbols.txt
- 
-diff --git a/arch/riscv/Makefile.postlink b/arch/riscv/Makefile.postlink
-index a46fc578b30b..829b9abc91f6 100644
---- a/arch/riscv/Makefile.postlink
-+++ b/arch/riscv/Makefile.postlink
-@@ -36,9 +36,6 @@ ifdef CONFIG_RELOCATABLE
- 	$(call if_changed,relocs_strip)
- endif
- 
--%.ko: FORCE
--	@true
--
- clean:
- 	@true
- 
-diff --git a/arch/x86/Makefile.postlink b/arch/x86/Makefile.postlink
-index 936093d29160..fef2e977cc7d 100644
---- a/arch/x86/Makefile.postlink
-+++ b/arch/x86/Makefile.postlink
-@@ -34,9 +34,6 @@ ifeq ($(CONFIG_X86_NEED_RELOCS),y)
- 	$(call cmd,strip_relocs)
- endif
- 
--%.ko: FORCE
--	@true
--
- clean:
- 	@rm -f $(OUT_RELOCS)/vmlinux.relocs
- 
-diff --git a/scripts/Makefile.modfinal b/scripts/Makefile.modfinal
-index b3a6aa8fbe8c..8568d256d6fb 100644
---- a/scripts/Makefile.modfinal
-+++ b/scripts/Makefile.modfinal
-@@ -28,14 +28,11 @@ quiet_cmd_cc_o_c = CC [M]  $@
- %.mod.o: %.mod.c FORCE
- 	$(call if_changed_dep,cc_o_c)
- 
--ARCH_POSTLINK := $(wildcard $(srctree)/arch/$(SRCARCH)/Makefile.postlink)
--
- quiet_cmd_ld_ko_o = LD [M]  $@
-       cmd_ld_ko_o +=							\
- 	$(LD) -r $(KBUILD_LDFLAGS)					\
- 		$(KBUILD_LDFLAGS_MODULE) $(LDFLAGS_MODULE)		\
--		-T scripts/module.lds -o $@ $(filter %.o, $^);		\
--	$(if $(ARCH_POSTLINK), $(MAKE) -f $(ARCH_POSTLINK) $@, true)
-+		-T scripts/module.lds -o $@ $(filter %.o, $^)
- 
- quiet_cmd_btf_ko = BTF [M] $@
-       cmd_btf_ko = 							\
+ 		/* Disable BHRB via mmcra (BHRBRD) for p10 */
+ 		if (ppmu->flags & PPMU_ARCH_31)
+@@ -1383,7 +1382,7 @@ static void power_pmu_disable(struct pmu *pmu)
+ 		 * instruction sampling or BHRB.
+ 		 */
+ 		if (val != mmcra) {
+-			mtspr(SPRN_MMCRA, mmcra);
++			mtspr(SPRN_MMCRA, val);
+ 			mb();
+ 			isync();
+ 		}
 -- 
-2.40.1
+2.42.0
 
