@@ -1,51 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6154B7CEEB2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Oct 2023 06:39:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E79B67CEEB7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Oct 2023 06:42:26 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=JC0wjKhx;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=J6FyjU8Z;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S9w3c2J5Tz3dfr
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Oct 2023 15:39:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S9w746DXmz3dkm
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Oct 2023 15:42:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=JC0wjKhx;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=J6FyjU8Z;
 	dkim-atps=neutral
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S9w2n2D4zz2y1Y
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Oct 2023 15:38:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S9w6F0101z3c8L
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Oct 2023 15:41:41 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1697690320;
-	bh=Rv0RE/UnlB8ImLuckgrocUTCXXYAwShhb75jdX29cjc=;
+	s=201909; t=1697690500;
+	bh=aZD3f3MJzhsJpL8v00FCIVTR80RmPudwdmbBGZ55N60=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=JC0wjKhxL2KrO9rfTQylV0wrN1YQQTse08jfgDBNxbyiJkS4q1SvRMJIWc9XG81gy
-	 LcHjOsq5IYrWqiuG48TdYsX0dhkH1VpWMq1uHO5zxGpWlmKIE+tMdgcKSZpW1s1Y27
-	 9Gaas4gEdVokMsT90w7cSvRiQB4Wa1Yl12Myy6rlAycLx5YPkbTjG7xtcwMZx2inmA
-	 BlnmzP8TYW7X+Kg6wbXhogcS33ZvEpxWSp29K7T6Swpv2E+Eiq8buPG+rNlg/ta9Xg
-	 mOTTQKQIjXqG3MtyRMTa3b1hPWklNMPmud9M2pWbfd6LpRf9lvgCsZwZkAcWdjziyZ
-	 AgTu/xGIiB7ug==
+	b=J6FyjU8ZcUqzKfrbX6tvRVugxcuuDAuhQZm7b9zE61MsAnCf5APF7LyescJyN6wZR
+	 m1khyZCQYb/ZJSmomAzMQZInm2insvZJDM5l0ZJsR6LKiXPRE7vWag8RxDZVT8L3Rg
+	 c32Y5+4JYqlQKndElHkVVephQtpVDDNqG3LwkED0A28En/90Tm7Rqocn7z4UBFnJq0
+	 6uXg/vzi871Xe6qTz6cEK/jaOkU0tIpqozIqty+xr4ybU1YzHiLKRNsH8wbe+i5He8
+	 HLjtmDOw9kIpRAms4NOPuXh+UuNhMrCrklTZ+rbg7GlqCF48yQOGZfMNqy92wYSh4q
+	 t6gZAbp6V8vtA==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4S9w2m3N7Wz4xZS;
-	Thu, 19 Oct 2023 15:38:40 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4S9w6D66dcz4xPy;
+	Thu, 19 Oct 2023 15:41:40 +1100 (AEDT)
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 2/6] powerpc/smp: Enable Asym packing for cores on
- shared processor
-In-Reply-To: <20231018163751.2423181-3-srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 3/6] powerpc/smp: Move shared_processor static key to
+ smp.h
+In-Reply-To: <20231018163751.2423181-4-srikar@linux.vnet.ibm.com>
 References: <20231018163751.2423181-1-srikar@linux.vnet.ibm.com>
- <20231018163751.2423181-3-srikar@linux.vnet.ibm.com>
-Date: Thu, 19 Oct 2023 15:38:40 +1100
-Message-ID: <87v8b35ir3.fsf@mail.lhotse>
+ <20231018163751.2423181-4-srikar@linux.vnet.ibm.com>
+Date: Thu, 19 Oct 2023 15:41:40 +1100
+Message-ID: <87sf675im3.fsf@mail.lhotse>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -59,81 +59,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Valentin Schneider <vschneid@redhat.com>, Srikar Dronamraju <srikar@linux.vnet.ibm.com>, Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org, Rohan McLure <rmclure@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Valentin Schneider <vschneid@redhat.com>, Srikar Dronamraju <srikar@linux.vnet.ibm.com>, Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org, x86@kernel.org, Ajay Kaher <akaher@vmware.com>, virtualization@lists.linux-foundation.org, VMware PV-Drivers Reviewers <pv-drivers@vmware.com>, Rohan McLure <rmclure@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Alexey Makhalov <amakhalov@vmware.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Josh Poimboeuf <jpoimboe@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
-> If there are shared processor LPARs, underlying Hypervisor can have more
-> virtual cores to handle than actual physical cores.
->
-> Starting with Power 9, a core has 2 nearly independent thread groups.
+> The ability to detect if the system is running in a shared processor
+> mode is helpful in few more generic cases not just in
+> paravirtualization.
+> For example: At boot time, different scheduler/ topology flags may be
+> set based on the processor mode. Hence move it to a more generic file.
 
-You need to be clearer here that you're talking about "big cores", not
-SMT4 cores as seen on bare metal systems.
-
-> On a shared processors LPARs, it helps to pack threads to lesser number
-> of cores so that the overall system performance and utilization
-> improves. PowerVM schedules at a core level. Hence packing to fewer
-> cores helps.
->
-> For example: Lets says there are two 8-core Shared LPARs that are
-> actually sharing a 8 Core shared physical pool, each running 8 threads
-> each. Then Consolidating 8 threads to 4 cores on each LPAR would help
-> them to perform better. This is because each of the LPAR will get
-> 100% time to run applications and there will no switching required by
-> the Hypervisor.
->
-> To achieve this, enable SD_ASYM_PACKING flag at CACHE, MC and DIE level.
-
-.. when the system is running in shared processor mode and has big cores.
+I'd rather you just included paravirt.h in the few files where you need it.
 
 cheers
 
-> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-> index 37c41297c9ce..498c2d51fc20 100644
-> --- a/arch/powerpc/kernel/smp.c
-> +++ b/arch/powerpc/kernel/smp.c
-> @@ -1009,9 +1009,20 @@ static int powerpc_smt_flags(void)
->   */
->  static int powerpc_shared_cache_flags(void)
->  {
-> +	if (static_branch_unlikely(&powerpc_asym_packing))
-> +		return SD_SHARE_PKG_RESOURCES | SD_ASYM_PACKING;
-> +
->  	return SD_SHARE_PKG_RESOURCES;
+> diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/asm/paravirt.h
+> index 0372b0093f72..cf83e837a571 100644
+> --- a/arch/powerpc/include/asm/paravirt.h
+> +++ b/arch/powerpc/include/asm/paravirt.h
+> @@ -15,13 +15,6 @@
+>  #include <asm/kvm_guest.h>
+>  #include <asm/cputhreads.h>
+>  
+> -DECLARE_STATIC_KEY_FALSE(shared_processor);
+> -
+> -static inline bool is_shared_processor(void)
+> -{
+> -	return static_branch_unlikely(&shared_processor);
+> -}
+> -
+>  #ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
+>  extern struct static_key paravirt_steal_enabled;
+>  extern struct static_key paravirt_steal_rq_enabled;
+> @@ -77,11 +70,6 @@ static inline bool is_vcpu_idle(int vcpu)
+>  	return lppaca_of(vcpu).idle;
 >  }
+>  #else
+> -static inline bool is_shared_processor(void)
+> -{
+> -	return false;
+> -}
+> -
+>  static inline u32 yield_count_of(int cpu)
+>  {
+>  	return 0;
+> diff --git a/arch/powerpc/include/asm/smp.h b/arch/powerpc/include/asm/smp.h
+> index aaaa576d0e15..08631b2a4528 100644
+> --- a/arch/powerpc/include/asm/smp.h
+> +++ b/arch/powerpc/include/asm/smp.h
+> @@ -34,6 +34,20 @@ extern bool coregroup_enabled;
+>  extern int cpu_to_chip_id(int cpu);
+>  extern int *chip_id_lookup_table;
 >  
-> +static int powerpc_shared_proc_flags(void)
+> +#ifdef CONFIG_PPC_SPLPAR
+> +DECLARE_STATIC_KEY_FALSE(shared_processor);
+> +
+> +static inline bool is_shared_processor(void)
 > +{
-> +	if (static_branch_unlikely(&powerpc_asym_packing))
-> +		return SD_ASYM_PACKING;
-> +
-> +	return 0;
+> +	return static_branch_unlikely(&shared_processor);
 > +}
+> +#else
+> +static inline bool is_shared_processor(void)
+> +{
+> +	return false;
+> +}
+> +#endif
 > +
->  /*
->   * We can't just pass cpu_l2_cache_mask() directly because
->   * returns a non-const pointer and the compiler barfs on that.
-> @@ -1048,8 +1059,8 @@ static struct sched_domain_topology_level powerpc_topology[] = {
->  	{ cpu_smt_mask, powerpc_smt_flags, SD_INIT_NAME(SMT) },
->  #endif
->  	{ shared_cache_mask, powerpc_shared_cache_flags, SD_INIT_NAME(CACHE) },
-> -	{ cpu_mc_mask, SD_INIT_NAME(MC) },
-> -	{ cpu_cpu_mask, SD_INIT_NAME(DIE) },
-> +	{ cpu_mc_mask, powerpc_shared_proc_flags, SD_INIT_NAME(MC) },
-> +	{ cpu_cpu_mask, powerpc_shared_proc_flags, SD_INIT_NAME(DIE) },
->  	{ NULL, },
->  };
->  
-> @@ -1687,6 +1698,8 @@ static void __init fixup_topology(void)
->  	if (cpu_has_feature(CPU_FTR_ASYM_SMT)) {
->  		pr_info_once("Enabling Asymmetric SMT scheduling\n");
->  		static_branch_enable(&powerpc_asym_packing);
-> +	} else if (is_shared_processor() && has_big_cores) {
-> +		static_branch_enable(&powerpc_asym_packing);
->  	}
->  
->  #ifdef CONFIG_SCHED_SMT
+>  DECLARE_PER_CPU(cpumask_var_t, thread_group_l1_cache_map);
+>  DECLARE_PER_CPU(cpumask_var_t, thread_group_l2_cache_map);
+>  DECLARE_PER_CPU(cpumask_var_t, thread_group_l3_cache_map);
 > -- 
 > 2.31.1
