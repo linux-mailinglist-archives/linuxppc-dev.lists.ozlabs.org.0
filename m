@@ -1,87 +1,149 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2746B7D043A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Oct 2023 23:51:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEBE57D0560
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Oct 2023 01:25:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Mr/4a8+e;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OQOZitIz;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SBLyc20mRz3cN7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Oct 2023 08:51:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SBP3F4WZWz2ygx
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Oct 2023 10:25:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Mr/4a8+e;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OQOZitIz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mgamail.intel.com; envelope-from=philip.li@intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Fri, 20 Oct 2023 10:24:58 AEDT
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SBLxh5f5wz3cFg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Oct 2023 08:50:48 +1100 (AEDT)
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39JLeW9A023859;
-	Thu, 19 Oct 2023 21:50:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=KJZ6JgNasfhc58oO79La9aKdnQGUmraU2h4Vsao1I3U=;
- b=Mr/4a8+euq2C75fno48YMrW0oXiI5zXAauycbcjbXqAP/SapwTSnKoqsSntHC6zIRzKD
- 98bMlJ4G6y4aocEnxCaYPg5rTgjyLw3NgH1FHZMtbPMF7ICoP1ZTveblRmnktC8otFcp
- qcOh/G/IrhVAcT1NfCV10fPsdRrZZp2BAqTB2VRUfJEfr5vA5tGLXvLfa+KqzNobXYnV
- xTqIDyFcb9BEENon1hzouBMy5bSHMnQjuLwXknqMq2GgtXIi7Tw1pGLAdsLNZ3X2dubw
- VX91xo7zL/m3YsvETVXFp+nJjseQz/EB8ngblc+H6Uit3wB95yy490r8PZJuvJ2q3aQR Ug== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tucjxga4b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Oct 2023 21:50:40 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39JLgw9r000637;
-	Thu, 19 Oct 2023 21:50:40 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tucjxga3x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Oct 2023 21:50:40 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39JL4Wkh007084;
-	Thu, 19 Oct 2023 21:50:39 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tuc27g73k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Oct 2023 21:50:39 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39JLocDd22807122
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 19 Oct 2023 21:50:38 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8534858058;
-	Thu, 19 Oct 2023 21:50:38 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4E4A45805D;
-	Thu, 19 Oct 2023 21:50:37 +0000 (GMT)
-Received: from localhost.ibm.com (unknown [9.67.91.245])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 19 Oct 2023 21:50:37 +0000 (GMT)
-From: Haren Myneni <haren@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2] powerpc/vas: Limit open window failure messages in log bufffer
-Date: Thu, 19 Oct 2023 14:50:33 -0700
-Message-Id: <20231019215033.1335251-1-haren@linux.ibm.com>
-X-Mailer: git-send-email 2.26.3
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SBP2L62V2z2xrD
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Oct 2023 10:24:58 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697757899; x=1729293899;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=9q51xMKpOqTNxKPj3WYQ7KS0PEq3Na0ag+ZZZWy3hE8=;
+  b=OQOZitIzqXGeYgJYGmzpP78sN9NkTNkMX0rQAFTK192HWElZUbrNhGPF
+   63C5puYvRRAQBv4Kfb0M7WE/PcWMUz4GWhZCLwFQByZjZDNz/TinyYXDa
+   i9dPgalYL0iO++enLjHlwn5PpJGPQV58nhm+e/unQr6dODH30hC2jUXth
+   h8FEzFukYwoBRGLYbW5FugOtsk/YHJjpi6T8bFGHeRz9S9+bYVkV2j/3d
+   2EBCyN1jWCo/fsM1Yhl+xmX6ed9HqaY84lb6mZrNDQhe0xGqDUC0wK329
+   IKs9r0uY/cgmdbuwZxUziDxoYDxfYRQoFAltjtFLEVTWrnYSk9fqG24jz
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="452868822"
+X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; 
+   d="scan'208";a="452868822"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2023 16:23:45 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="847881606"
+X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; 
+   d="scan'208";a="847881606"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by FMSMGA003.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 19 Oct 2023 16:23:45 -0700
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Thu, 19 Oct 2023 16:23:44 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Thu, 19 Oct 2023 16:23:44 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32 via Frontend Transport; Thu, 19 Oct 2023 16:23:44 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.101)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.32; Thu, 19 Oct 2023 16:23:43 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Q8ZgWbJSbSwqiy+GL+g8fKs3bGkmy2xIa6keCMKX0DFi0FrZ7znhndv2d3oRwARajkLACUfnFKG2HrwzTXLzhb2ietLqsT3H6ScayVEwW0iTPwqpDz71UDKZ/eLTUaXfIi3TkUDhsEE/Edhlmfg2GcYjc+s0FWugw+KX5XUpj41KxwkgQDaWnwdi4QoXme1XFi25ryJZsn5xLzEukE4TFtehAnbFIDwxrnAnvaxuXLDkr2gpG40QtAeceEuU4Cvx2GL/wSkbxmJoTsOPUqK4pZpxj//yxj6NtXWC3zRS8R/pdLjrtkmhRlzjBXP/H0eh5gDjjeZ9/IhzexJfnNlhTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4AIT6Mw5NE+RWeerLeDVpBI6GsIjM16lJKQz97bQEqI=;
+ b=VyqpcuEC3u1Jqvf+NYoqvBX8p/PYy3PSl14NVTaS1Jfclcq/abwnL4sxY5v5sDT7P7YQ2AfH6Q0WTPsm54FDdQtn2styVSe0EMzYQapb0U5FojLzbbA1tO3ApHsrqKGgaig2OX98lg/nxLVtnvcUsBk8NcscdXgFZPcaE4LbmCFOekdDK01sW/6eThV4xtQygy4oIHdCKsoyrQLo7gYtJiCLNHMalpKaropl73hShDz/EKNKkQD6UU+SqhSWkiD0psAn6qvEXyVXyucv0f7Isnx0MFhV32oIWFTVZHspUfxOGaLWqt2NgusFA7XINcg4XZ1G5iQIDB3mwyCKwo+ObQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BL0PR11MB2995.namprd11.prod.outlook.com (2603:10b6:208:7a::28)
+ by BN9PR11MB5545.namprd11.prod.outlook.com (2603:10b6:408:102::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.24; Thu, 19 Oct
+ 2023 23:23:42 +0000
+Received: from BL0PR11MB2995.namprd11.prod.outlook.com
+ ([fe80::f64:17c0:d3ab:196]) by BL0PR11MB2995.namprd11.prod.outlook.com
+ ([fe80::f64:17c0:d3ab:196%7]) with mapi id 15.20.6907.022; Thu, 19 Oct 2023
+ 23:23:41 +0000
+Date: Fri, 20 Oct 2023 07:23:31 +0800
+From: Philip Li <philip.li@intel.com>
+To: Heiko Carstens <hca@linux.ibm.com>
+Subject: Re: [linux-next:master] BUILD REGRESSION
+ 2dac75696c6da3c848daa118a729827541c89d33
+Message-ID: <ZTG6c3E7ti1uFI5y@rli9-mobl>
+References: <202310190456.pryB092r-lkp@intel.com>
+ <20231019153205.9160-A-hca@linux.ibm.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20231019153205.9160-A-hca@linux.ibm.com>
+X-ClientProxiedBy: SG2PR04CA0160.apcprd04.prod.outlook.com (2603:1096:4::22)
+ To BL0PR11MB2995.namprd11.prod.outlook.com (2603:10b6:208:7a::28)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 0FmQtMTMHGoqNEnZZPkunbOTX1EEXrTO
-X-Proofpoint-ORIG-GUID: Vy6ihppCbQSpGQl3-JvsZ8OSiE3o0PWY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-19_21,2023-10-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 mlxscore=0
- impostorscore=0 suspectscore=0 clxscore=1015 adultscore=0 bulkscore=0
- priorityscore=1501 lowpriorityscore=0 spamscore=0 mlxlogscore=942
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310170001 definitions=main-2310190184
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR11MB2995:EE_|BN9PR11MB5545:EE_
+X-MS-Office365-Filtering-Correlation-Id: bfe60795-c231-43ea-4313-08dbd0fa6e3d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: vbiZ3soXsj/7SRZTahePHso3lcaLUhJt+sPcDWpytqAfgh6XFLXu//mBi/oATw9K6n/CVFIneiTit803btRdxjmYWZ7jDkusm65wj+BKJMNMaUt96Yj6qgMThFhyCUckdWo5rWLiQ7BfNQw3gbtSi+4UUme0bpV61YI2zlDwia7LKKbAuqz8OhFlrLh1y9ZMyYqOp4q8ec/H2BmATXTg6F+rMv/T9PoC9AcMPQBjIPab7x8r/ngjsaZ0BfZLF4oG6S9bBrdnkdndJDDgzWcjyhiJBlqNWiXZoyOo3CmSe7SJhxbJ3h28gBEzudSdQGTrx2srL9YUk5PFrAmdYds/o5b1KWw0ycRf0ZZZ8ghnN4n3Lz3YVeHXKDzLO5snS+TLt1RO30AwSAFM699KBgfHqrQF4DTQlGzUIDXyeeleRNbEiBCagpAxURxaBtvwzAe0WzW+HhuBrEmezZTW6PqAo6ksXwDAIBDvC6eioK41JziFMAw7b52Zi5Ol1IYFgXQHqFIGa/prXned1fdOpdORRLJmJcOGTddVbyP3k94xEK4ZZaHjJiH/m7j1UwtCEMxI
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR11MB2995.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(346002)(366004)(396003)(39860400002)(136003)(376002)(230922051799003)(186009)(451199024)(64100799003)(1800799009)(82960400001)(26005)(38100700002)(41300700001)(83380400001)(8676002)(86362001)(8936002)(66556008)(54906003)(7416002)(66946007)(4326008)(316002)(2906002)(44832011)(5660300002)(6916009)(66476007)(6486002)(6506007)(478600001)(6666004)(6512007)(9686003)(33716001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?bi6TRHk/GbJtCdVWJf46sJDmbNgkR6sCSHu7UFZkpEAFl08JDR5WeauF+q8z?=
+ =?us-ascii?Q?fi+qPjcDpR7xvwenjH0Qm8E18NJ5owvPt4hcaYh+SSdDF5HGnjya/wXdmv2g?=
+ =?us-ascii?Q?2Xzwr1e4GwST3H2cJkK3kLkyq+k+mSAd/KaZkmteuPl5MKmn2lVqestKn8o0?=
+ =?us-ascii?Q?mbebC4w2+5W7gS8Qft/QIVbzaQwfNXxPcKZ9hml47s0C3G7aobYryaVzsqRo?=
+ =?us-ascii?Q?ujnn0M+/no1rFb7e1W/jsaEGmJnK+M3P/AcjHpGImVoFJ59yH+PANmO3cSyl?=
+ =?us-ascii?Q?Ic1rXi2IlkuW+u8q/j2mMkx/nYM83qY0HB1TFEix/RlTItcpIYqrBKr6hvAQ?=
+ =?us-ascii?Q?nq8rH+O92LigwjyhRmGaJJm7QbLDZMqFRs3FSGalzCa4kO07bOf0fZgtgkFA?=
+ =?us-ascii?Q?aGMeabfs//arb1S9jDUhA0V+eoSwM+WAhJ7qjZZzYNzrIrfAwgEbayC7fvoZ?=
+ =?us-ascii?Q?jsJrYuqx46+xXlyq6nIN+v7hXpRhBjX+Kp7RF/Vx2OVLeIehrwinkqQ1y/P2?=
+ =?us-ascii?Q?sMi/EZrfBv8nRxqOvTIO6b3hFL/guQMleGdAzX3duBQkZCUOnlnsaAzMjCU+?=
+ =?us-ascii?Q?CvkH/EWkyhXwEZB4xKBzqu9OJNUSclPR/KvKPtYSDPM1pu8yofb6qKBNHNtY?=
+ =?us-ascii?Q?uPg4XnRZZhjoBHtjT1luqh1ULOg/KeqM80A6IVH3/h3TRYKJKbjURueDOrJI?=
+ =?us-ascii?Q?wjdLKyK5ylZS/5sjExpYUmCA5cpWNhlmnjyeRaEBTxlEqfYaBLZ9m0OTrqWl?=
+ =?us-ascii?Q?qVck8Xn1qKhV0jihXIEX87JC1yprMtWna7QCbFf7azq3AOnrPK+uT9hrAq17?=
+ =?us-ascii?Q?8sLrt+tey98qa16+2o6C7+c0RCBMwY07TRuUg3WeM27Agd5TLWak4V8IqP1W?=
+ =?us-ascii?Q?VXJ0mYrJL41ZwBdVqhEqsB/7fMZ86LQLu78kVOoN1ZjCUAoQVGaC7DOLG9Aj?=
+ =?us-ascii?Q?QmnypCT/7dS92Mz4bUU0avzFI8E4YKn+IHE9VYLweMneQuN/1G+PQ7dUBUvz?=
+ =?us-ascii?Q?mI/Z6SKkTlAknIdTFyveEYttapEyvgnsIXI9WR9s4Pl1SS7vrSxVwDOGrKr4?=
+ =?us-ascii?Q?hXmzUsVwbpT5NI/y72eU/+OpQzcjWZvbDlCYQhORMzYMMRqfKJb1uY8Zv7tR?=
+ =?us-ascii?Q?7dliELFPMLSIi4TcuynplqbePasj5vyQjxdaY1Lhl042F5C/Z4rT9r9ol0vY?=
+ =?us-ascii?Q?pEMncbRMxKV0HM5t4VFYgC2Xvi7BpcCM8QA2eNcdwtOE9gZWhYGGEGjr9W8g?=
+ =?us-ascii?Q?4SZP10F9s+PhtOWTvg0rUNU0wNe8U7ceN3WElKB2vh2S/m029fddaEVYvP/K?=
+ =?us-ascii?Q?8wb/2Qjh/UMiK+tLMbGAQewibwe2hIhGZH1eDDKe39ATEwphLnplpN5LpkWE?=
+ =?us-ascii?Q?dKV5Q+58fGma+n6cWZnPISIniu53twpHmHoJZWdVPfxoR3cwJX42TbOcW+hJ?=
+ =?us-ascii?Q?srPDc6C6CB94jRddhNEwJaXcLS3yU7vStuGY2J0Cx4MnvyP9mMbDagnvawKZ?=
+ =?us-ascii?Q?AxF9Ikh3xoBod/sRqrQgJXxTgXZxTeC3bERd/9pQo1h2ZL8lUDyQ6yQi/neU?=
+ =?us-ascii?Q?1VFJffn2fyjOfE55IS3Pp4vMlTq7PFBf1tvtYrKH?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: bfe60795-c231-43ea-4313-08dbd0fa6e3d
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR11MB2995.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2023 23:23:41.6688
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pryZnC4Xcowf2QHpafKlLxt8fZRJcgkqKD30rGADyKy59+MtQWGLP6z0HNt19oo2ZIhnP8Gv+JkaJfC3gIh7Pw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR11MB5545
+X-OriginatorOrg: intel.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,185 +155,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, Haren Myneni <haren@linux.ibm.com>, npiggin@gmail.com
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, kernel test robot <lkp@intel.com>, kvm@vger.kernel.org, linux-rockchip@lists.infradead.org, linux-arm-msm@vger.kernel.org, amd-gfx@lists.freedesktop.org, Linux Memory Management List <linux-mm@kvack.org>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The VAS open window call prints error message and returns -EBUSY
-after the migration suspend event initiated and until the resume
-event completed on the destination system. It can cause the log
-buffer filled with these error messages if the user space issues
-continuous open window calls.  Similar case even for DLPAR CPU
-remove event when no credits are available until the credits are
-freed or with the other DLPAR CPU add event.
+On Thu, Oct 19, 2023 at 05:32:05PM +0200, Heiko Carstens wrote:
+> On Thu, Oct 19, 2023 at 04:07:35AM +0800, kernel test robot wrote:
+> > arch/s390/include/asm/ctlreg.h:129:9: warning: array subscript 0 is outside array bounds of 'struct ctlreg[0]' [-Warray-bounds=]
+> > arch/s390/include/asm/ctlreg.h:80:9: warning: array subscript 0 is outside array bounds of 'struct ctlreg[0]' [-Warray-bounds=]
+> ...
+> > |-- s390-defconfig
+> > |   `-- arch-s390-include-asm-ctlreg.h:warning:array-subscript-is-outside-array-bounds-of-struct-ctlreg
+> ...
+> > s390                                defconfig   gcc  
+> 
+> I'm wondering how this warning can appear in the builds. array-bounds
+> warnings are explicitly disabled, see init/Kconfig: CC_NO_ARRAY_BOUNDS. And
+> as expected, if I compile the kernel with gcc, defconfig, and with or
+> without W=1 the option -Wno-array-bounds is passed to the compiler.
+> 
+> And also as expected I do not see the above warnings.
+> 
+> So something is quite odd here.
 
-So changes in the patch to use pr_err_ratelimited() instead of
-pr_err() to display open window failure and not-available credits
-error messages.
+Sorry about this Heiko, this is a bug in the bot that it wrongly ignores
+the CC_NO_ARRAY_BOUNDS config and always test with -Warray-bounds. We
+will fix this asap.
 
-Use pr_fmt() and make the corresponding changes to have the
-consistencein prefix all pr_*() messages (vas-api.c).
-
-Fixes: 37e6764895ef ("powerpc/pseries/vas: Add VAS migration handler")
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
----
- arch/powerpc/platforms/book3s/vas-api.c | 34 ++++++++++++-------------
- arch/powerpc/platforms/pseries/vas.c    |  4 +--
- 2 files changed, 18 insertions(+), 20 deletions(-)
-
-diff --git a/arch/powerpc/platforms/book3s/vas-api.c b/arch/powerpc/platforms/book3s/vas-api.c
-index 77ea9335fd04..52dabbe52da1 100644
---- a/arch/powerpc/platforms/book3s/vas-api.c
-+++ b/arch/powerpc/platforms/book3s/vas-api.c
-@@ -4,6 +4,8 @@
-  * Copyright (C) 2019 Haren Myneni, IBM Corp
-  */
- 
-+#define pr_fmt(fmt)	"VAS-API: " fmt
-+
- #include <linux/kernel.h>
- #include <linux/device.h>
- #include <linux/cdev.h>
-@@ -78,7 +80,7 @@ int get_vas_user_win_ref(struct vas_user_win_ref *task_ref)
- 	task_ref->mm = get_task_mm(current);
- 	if (!task_ref->mm) {
- 		put_pid(task_ref->pid);
--		pr_err("VAS: pid(%d): mm_struct is not found\n",
-+		pr_err("pid(%d): mm_struct is not found\n",
- 				current->pid);
- 		return -EPERM;
- 	}
-@@ -235,8 +237,7 @@ void vas_update_csb(struct coprocessor_request_block *crb,
- 	rc = kill_pid_info(SIGSEGV, &info, pid);
- 	rcu_read_unlock();
- 
--	pr_devel("%s(): pid %d kill_proc_info() rc %d\n", __func__,
--			pid_vnr(pid), rc);
-+	pr_devel("pid %d kill_proc_info() rc %d\n", pid_vnr(pid), rc);
- }
- 
- void vas_dump_crb(struct coprocessor_request_block *crb)
-@@ -294,7 +295,7 @@ static int coproc_ioc_tx_win_open(struct file *fp, unsigned long arg)
- 
- 	rc = copy_from_user(&uattr, uptr, sizeof(uattr));
- 	if (rc) {
--		pr_err("%s(): copy_from_user() returns %d\n", __func__, rc);
-+		pr_err("copy_from_user() returns %d\n", rc);
- 		return -EFAULT;
- 	}
- 
-@@ -311,7 +312,7 @@ static int coproc_ioc_tx_win_open(struct file *fp, unsigned long arg)
- 	txwin = cp_inst->coproc->vops->open_win(uattr.vas_id, uattr.flags,
- 						cp_inst->coproc->cop_type);
- 	if (IS_ERR(txwin)) {
--		pr_err("%s() VAS window open failed, %ld\n", __func__,
-+		pr_err_ratelimited("VAS window open failed rc=%ld\n",
- 				PTR_ERR(txwin));
- 		return PTR_ERR(txwin);
- 	}
-@@ -405,8 +406,7 @@ static vm_fault_t vas_mmap_fault(struct vm_fault *vmf)
- 	 * window is not opened. Shouldn't expect this error.
- 	 */
- 	if (!cp_inst || !cp_inst->txwin) {
--		pr_err("%s(): Unexpected fault on paste address with TX window closed\n",
--				__func__);
-+		pr_err("Unexpected fault on paste address with TX window closed\n");
- 		return VM_FAULT_SIGBUS;
- 	}
- 
-@@ -421,8 +421,7 @@ static vm_fault_t vas_mmap_fault(struct vm_fault *vmf)
- 	 * issue NX request.
- 	 */
- 	if (txwin->task_ref.vma != vmf->vma) {
--		pr_err("%s(): No previous mapping with paste address\n",
--			__func__);
-+		pr_err("No previous mapping with paste address\n");
- 		return VM_FAULT_SIGBUS;
- 	}
- 
-@@ -481,19 +480,19 @@ static int coproc_mmap(struct file *fp, struct vm_area_struct *vma)
- 	txwin = cp_inst->txwin;
- 
- 	if ((vma->vm_end - vma->vm_start) > PAGE_SIZE) {
--		pr_debug("%s(): size 0x%zx, PAGE_SIZE 0x%zx\n", __func__,
-+		pr_debug("size 0x%zx, PAGE_SIZE 0x%zx\n",
- 				(vma->vm_end - vma->vm_start), PAGE_SIZE);
- 		return -EINVAL;
- 	}
- 
- 	/* Ensure instance has an open send window */
- 	if (!txwin) {
--		pr_err("%s(): No send window open?\n", __func__);
-+		pr_err("No send window open?\n");
- 		return -EINVAL;
- 	}
- 
- 	if (!cp_inst->coproc->vops || !cp_inst->coproc->vops->paste_addr) {
--		pr_err("%s(): VAS API is not registered\n", __func__);
-+		pr_err("VAS API is not registered\n");
- 		return -EACCES;
- 	}
- 
-@@ -510,14 +509,14 @@ static int coproc_mmap(struct file *fp, struct vm_area_struct *vma)
- 	 */
- 	mutex_lock(&txwin->task_ref.mmap_mutex);
- 	if (txwin->status != VAS_WIN_ACTIVE) {
--		pr_err("%s(): Window is not active\n", __func__);
-+		pr_err("Window is not active\n");
- 		rc = -EACCES;
- 		goto out;
- 	}
- 
- 	paste_addr = cp_inst->coproc->vops->paste_addr(txwin);
- 	if (!paste_addr) {
--		pr_err("%s(): Window paste address failed\n", __func__);
-+		pr_err("Window paste address failed\n");
- 		rc = -EINVAL;
- 		goto out;
- 	}
-@@ -533,8 +532,8 @@ static int coproc_mmap(struct file *fp, struct vm_area_struct *vma)
- 	rc = remap_pfn_range(vma, vma->vm_start, pfn + vma->vm_pgoff,
- 			vma->vm_end - vma->vm_start, prot);
- 
--	pr_devel("%s(): paste addr %llx at %lx, rc %d\n", __func__,
--			paste_addr, vma->vm_start, rc);
-+	pr_devel("paste addr %llx at %lx, rc %d\n", paste_addr,
-+			vma->vm_start, rc);
- 
- 	txwin->task_ref.vma = vma;
- 	vma->vm_ops = &vas_vm_ops;
-@@ -609,8 +608,7 @@ int vas_register_coproc_api(struct module *mod, enum vas_cop_type cop_type,
- 		goto err;
- 	}
- 
--	pr_devel("%s: Added dev [%d,%d]\n", __func__, MAJOR(devno),
--			MINOR(devno));
-+	pr_devel("Added dev [%d,%d]\n", MAJOR(devno), MINOR(devno));
- 
- 	return 0;
- 
-diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
-index 513180467562..88bee56ff92b 100644
---- a/arch/powerpc/platforms/pseries/vas.c
-+++ b/arch/powerpc/platforms/pseries/vas.c
-@@ -340,7 +340,7 @@ static struct vas_window *vas_allocate_window(int vas_id, u64 flags,
- 
- 	if (atomic_inc_return(&cop_feat_caps->nr_used_credits) >
- 			atomic_read(&cop_feat_caps->nr_total_credits)) {
--		pr_err("Credits are not available to allocate window\n");
-+		pr_err_ratelimited("Credits are not available to allocate window\n");
- 		rc = -EINVAL;
- 		goto out;
- 	}
-@@ -423,7 +423,7 @@ static struct vas_window *vas_allocate_window(int vas_id, u64 flags,
- 
- 	put_vas_user_win_ref(&txwin->vas_win.task_ref);
- 	rc = -EBUSY;
--	pr_err("No credit is available to allocate window\n");
-+	pr_err_ratelimited("No credit is available to allocate window\n");
- 
- out_free:
- 	/*
--- 
-2.26.3
-
+> 
