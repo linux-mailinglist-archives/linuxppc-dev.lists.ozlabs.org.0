@@ -1,95 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2EC27CF60B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Oct 2023 13:03:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B59D7CF591
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Oct 2023 12:45:31 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=J0q0YPl/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=HAyOqsi1;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SB4bF5JyKz3cDS
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Oct 2023 22:03:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SB4B13l1xz3dCt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Oct 2023 21:45:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=J0q0YPl/;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=HAyOqsi1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SB4ZK0qrNz3cLj
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Oct 2023 22:03:04 +1100 (AEDT)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39JAxaWT019521;
-	Thu, 19 Oct 2023 11:02:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=pJKMY/8E3mDP8kAbLi7x+Il6uLPnYOVA9qFZRNYZYmM=;
- b=J0q0YPl/XCkUuaZJApc0ZebTfMAcqfdVcxz9UfquECnqyn2NucOcL41hovRITm0GzTaZ
- 0HSvKi00qFQ6C+7TGp2g/eZM00J/AeCjdhs7ujfRW7y6PuYft+S+cb4oS1dtcyTU3RJJ
- 5lI4MMMZbfQwB1aDYK5LKRv3mp/fe/29z8qqMbKp7KJ0glJ3OKmZcPSJw1FyUW20t+nl
- 5sKh4dP0Df1Nl/bzExv6D8MctMiAlJ8H7iR8smtkT1tWEW3MOPSUOXV9qqFNjy1tCX+4
- fMp+B4fhtDBp/C2QK6BpHxiA7h1S8rn5JXZ6ockLWzva9XEsUtQFSW2kqdAxIUxY8bQi iw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tu36jg592-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Oct 2023 11:02:44 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39JB0AUS022046;
-	Thu, 19 Oct 2023 11:02:44 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tu36jg579-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Oct 2023 11:02:44 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39J90BfP031184;
-	Thu, 19 Oct 2023 10:30:56 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tr7hjysxh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Oct 2023 10:30:56 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39JAUuNW20251332
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 19 Oct 2023 10:30:56 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 41CB35805A;
-	Thu, 19 Oct 2023 10:30:56 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 01C2558051;
-	Thu, 19 Oct 2023 10:30:52 +0000 (GMT)
-Received: from [9.109.201.126] (unknown [9.109.201.126])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 19 Oct 2023 10:30:51 +0000 (GMT)
-Message-ID: <b57962d9-93dc-4545-8d4f-37f5e071fc0b@linux.vnet.ibm.com>
-Date: Thu, 19 Oct 2023 16:00:50 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/6] powerpc/smp: Move shared_processor static key to
- smp.h
-Content-Language: en-US
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-References: <20231018163751.2423181-1-srikar@linux.vnet.ibm.com>
- <20231018163751.2423181-4-srikar@linux.vnet.ibm.com>
-From: Shrikanth Hegde <sshegde@linux.vnet.ibm.com>
-In-Reply-To: <20231018163751.2423181-4-srikar@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Peq5v0YHO2hZ6VlO4bnzEHl9ORAffMi1
-X-Proofpoint-GUID: jHlzS-sO4vRR1-xrqnUfQ2m-K5sqRohK
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SB4962YXhz3cCS
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Oct 2023 21:44:40 +1100 (AEDT)
+Received: by mail-pj1-x102f.google.com with SMTP id 98e67ed59e1d1-27d538a73d6so3365228a91.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Oct 2023 03:44:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697712278; x=1698317078; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NT4JCAH2srbjF+FM/8pW8ddkcMPARuEjEdCDwNurqBc=;
+        b=HAyOqsi1x4PQ83DZ0eRcAsUzK8g4xozy7BCFPNAkmVay1y0LEpOVW2VKEf4eMebqxN
+         /ujk6uXqlVAuCGFN1kmGGYx5oN5loDd58f8rFBgKI3tWXZfA2bd+u1FYvu9++lzIU71t
+         9pGphhPD4G5Go20fCYPRQVOJlF1/0VGCI7Ina68wEbPCRdiYz5hFI/+56NK4gT5PeULw
+         d9W8hEjLPHBXPZ8B8yP2Z6YuUCPYVc1FdCqG8zvbvYa7MGYFnKwERlYdxvm2avhWPZkM
+         Estvqrg4npCamiPK9+ou0MV57TuEELGLWA1n2ZIbp6lrhnvhKJ6O2i9uKEEh3StwhGaD
+         o64w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697712278; x=1698317078;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NT4JCAH2srbjF+FM/8pW8ddkcMPARuEjEdCDwNurqBc=;
+        b=FbET3ySgX+szPwRTLkCT6sUXFcYc9X6enNb6L9wjfDZEQxrzz3sn2Hw1g8+fj0kjEr
+         +bMcabxg4HQgPOk/sY6QPipGnyTL1vw7khm6GTuivauvpTA8CuA9aW20f4WKcNIKea6t
+         naXhAmb7IaFQ7uEhkNGhOp6HxocIHQ56u4z7+Nix2sulLM9gh5Vq+ao6fcmyPvxMAwQD
+         GTIGCaA7MNatwpyUMyQtCV2a6Go3Fjp2ECPzn/WwB0GNMAqnl9yTu1rlTtyrcNut0jIe
+         wKuPHKo3/juwA24C/CvS37e7qc7agtgwQZyzhDmD1Go6v9ZNj99CIbLXSsJsPqfzmGAU
+         xTrw==
+X-Gm-Message-State: AOJu0YwX+VL2wtZhdpzBVPcEEM5glV5Tsl5fq0Hzxf1THbKjaUbVmY1b
+	fpj8/8vfNqH8vLd55JQvhu/6kmtpXfVkRFFWI18=
+X-Google-Smtp-Source: AGHT+IGWNlLy11+hspt7gWdd+kc99BOHsh0ZDfny/q7oGEtnpHfLUhD1srDa+h8MD43EBBvvaQ9tE7I1f0Hm2eHi4Ps=
+X-Received: by 2002:a17:90a:aa93:b0:27d:51c4:1681 with SMTP id
+ l19-20020a17090aaa9300b0027d51c41681mr1479084pjq.18.1697712278018; Thu, 19
+ Oct 2023 03:44:38 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-19_08,2023-10-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- suspectscore=0 mlxlogscore=797 mlxscore=0 bulkscore=0 impostorscore=0
- malwarescore=0 phishscore=0 clxscore=1011 priorityscore=1501 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310190093
+References: <1697185865-27528-1-git-send-email-shengjiu.wang@nxp.com>
+ <1697185865-27528-10-git-send-email-shengjiu.wang@nxp.com>
+ <a0dfe959-3b32-4d03-9f1b-8f3c1054ecf7@xs4all.nl> <CAA+D8AP1a-Vioy2Cr7dZ4wErXpkm7g9Caw-yPKc9jbWpPnN0JQ@mail.gmail.com>
+ <0ae6d9e1-bdd9-45ab-9749-8b0cb5c624ff@xs4all.nl> <CAA+D8AMa9tpMq08XsUuAtV0DLWbLOwsfYjd30NJ3OBezkTs5YA@mail.gmail.com>
+ <CAA+D8AOJ=Akp5AmE4PCy=O=TGYaP3Cn0jLveL-aoqV3tFAVPSg@mail.gmail.com>
+ <36360a55-4cb4-4494-aa69-96837ba7750d@xs4all.nl> <CAA+D8APMRpWXPy3VHPev5A+g8o6m5Tj4BKivSGk_SZAZsMoBAw@mail.gmail.com>
+ <90873bfe-f5c2-44b3-834e-2cea82cb3c48@xs4all.nl>
+In-Reply-To: <90873bfe-f5c2-44b3-834e-2cea82cb3c48@xs4all.nl>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Thu, 19 Oct 2023 18:44:26 +0800
+Message-ID: <CAA+D8ANqt9_1vM8cAoT8PUPH7s+u2XE0C2PSAVpZ4a9yx=VcLA@mail.gmail.com>
+Subject: Re: [RFC PATCH v6 09/11] media: uapi: Add audio rate controls support
+To: Hans Verkuil <hverkuil@xs4all.nl>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,83 +81,529 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Valentin Schneider <vschneid@redhat.com>, Peter Zijlstra <peterz@infradead.org>, x86@kernel.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, virtualization@lists.linux-foundation.org, VMware PV-Drivers Reviewers <pv-drivers@vmware.com>, Ajay Kaher <akaher@vmware.com>, Rohan McLure <rmclure@linux.ibm.com>, Alexey Makhalov <amakhalov@vmware.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, nicoleotsuka@gmail.com, linuxppc-dev@lists.ozlabs.org, broonie@kernel.org, sakari.ailus@iki.fi, perex@perex.cz, mchehab@kernel.org, festevam@gmail.com, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, Oct 18, 2023 at 3:58=E2=80=AFPM Hans Verkuil <hverkuil@xs4all.nl> w=
+rote:
+>
+> On 18/10/2023 09:40, Shengjiu Wang wrote:
+> > On Wed, Oct 18, 2023 at 3:31=E2=80=AFPM Hans Verkuil <hverkuil@xs4all.n=
+l> wrote:
+> >>
+> >> On 18/10/2023 09:23, Shengjiu Wang wrote:
+> >>> On Wed, Oct 18, 2023 at 10:27=E2=80=AFAM Shengjiu Wang <shengjiu.wang=
+@gmail.com> wrote:
+> >>>>
+> >>>> On Tue, Oct 17, 2023 at 9:37=E2=80=AFPM Hans Verkuil <hverkuil@xs4al=
+l.nl> wrote:
+> >>>>>
+> >>>>> On 17/10/2023 15:11, Shengjiu Wang wrote:
+> >>>>>> On Mon, Oct 16, 2023 at 9:16=E2=80=AFPM Hans Verkuil <hverkuil@xs4=
+all.nl> wrote:
+> >>>>>>>
+> >>>>>>> Hi Shengjiu,
+> >>>>>>>
+> >>>>>>> On 13/10/2023 10:31, Shengjiu Wang wrote:
+> >>>>>>>> Fixed point controls are used by the user to configure
+> >>>>>>>> the audio sample rate to driver.
+> >>>>>>>>
+> >>>>>>>> Add V4L2_CID_ASRC_SOURCE_RATE and V4L2_CID_ASRC_DEST_RATE
+> >>>>>>>> new IDs for ASRC rate control.
+> >>>>>>>>
+> >>>>>>>> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> >>>>>>>> ---
+> >>>>>>>>  .../userspace-api/media/v4l/common.rst        |  1 +
+> >>>>>>>>  .../media/v4l/ext-ctrls-fixed-point.rst       | 36 ++++++++++++=
++++++++
+> >>>>>>>>  .../media/v4l/vidioc-g-ext-ctrls.rst          |  4 +++
+> >>>>>>>>  .../media/v4l/vidioc-queryctrl.rst            |  7 ++++
+> >>>>>>>>  .../media/videodev2.h.rst.exceptions          |  1 +
+> >>>>>>>>  drivers/media/v4l2-core/v4l2-ctrls-core.c     |  5 +++
+> >>>>>>>>  drivers/media/v4l2-core/v4l2-ctrls-defs.c     |  4 +++
+> >>>>>>>>  include/media/v4l2-ctrls.h                    |  2 ++
+> >>>>>>>>  include/uapi/linux/v4l2-controls.h            | 13 +++++++
+> >>>>>>>>  include/uapi/linux/videodev2.h                |  3 ++
+> >>>>>>>>  10 files changed, 76 insertions(+)
+> >>>>>>>>  create mode 100644 Documentation/userspace-api/media/v4l/ext-ct=
+rls-fixed-point.rst
+> >>>>>>>>
+> >>>>>>>> diff --git a/Documentation/userspace-api/media/v4l/common.rst b/=
+Documentation/userspace-api/media/v4l/common.rst
+> >>>>>>>> index ea0435182e44..35707edffb13 100644
+> >>>>>>>> --- a/Documentation/userspace-api/media/v4l/common.rst
+> >>>>>>>> +++ b/Documentation/userspace-api/media/v4l/common.rst
+> >>>>>>>> @@ -52,6 +52,7 @@ applicable to all devices.
+> >>>>>>>>      ext-ctrls-fm-rx
+> >>>>>>>>      ext-ctrls-detect
+> >>>>>>>>      ext-ctrls-colorimetry
+> >>>>>>>> +    ext-ctrls-fixed-point
+> >>>>>>>
+> >>>>>>> Rename this to ext-ctrls-audio-m2m.
+> >>>>>>>
+> >>>>>>>>      fourcc
+> >>>>>>>>      format
+> >>>>>>>>      planar-apis
+> >>>>>>>> diff --git a/Documentation/userspace-api/media/v4l/ext-ctrls-fix=
+ed-point.rst b/Documentation/userspace-api/media/v4l/ext-ctrls-fixed-point.=
+rst
+> >>>>>>>> new file mode 100644
+> >>>>>>>> index 000000000000..2ef6e250580c
+> >>>>>>>> --- /dev/null
+> >>>>>>>> +++ b/Documentation/userspace-api/media/v4l/ext-ctrls-fixed-poin=
+t.rst
+> >>>>>>>> @@ -0,0 +1,36 @@
+> >>>>>>>> +.. SPDX-License-Identifier: GFDL-1.1-no-invariants-or-later
+> >>>>>>>> +
+> >>>>>>>> +.. _fixed-point-controls:
+> >>>>>>>> +
+> >>>>>>>> +***************************
+> >>>>>>>> +Fixed Point Control Reference
+> >>>>>>>
+> >>>>>>> This is for audio controls. "Fixed Point" is just the type, and i=
+t doesn't make
+> >>>>>>> sense to group fixed point controls. But it does make sense to gr=
+oup the audio
+> >>>>>>> controls.
+> >>>>>>>
+> >>>>>>> V4L2 controls can be grouped into classes. Basically it is a way =
+to put controls
+> >>>>>>> into categories, and for each category there is also a control th=
+at gives a
+> >>>>>>> description of the class (see 2.15.15 in
+> >>>>>>> https://linuxtv.org/downloads/v4l-dvb-apis-new/driver-api/v4l2-co=
+ntrols.html#introduction)
+> >>>>>>>
+> >>>>>>> If you use e.g. 'v4l2-ctl -l' to list all the controls, then you =
+will see that
+> >>>>>>> they are grouped based on what class of control they are.
+> >>>>>>>
+> >>>>>>> So I think it would be a good idea to create a new control class =
+for M2M audio controls,
+> >>>>>>> instead of just adding them to the catch-all 'User Controls' clas=
+s.
+> >>>>>>>
+> >>>>>>> Search e.g. for V4L2_CTRL_CLASS_COLORIMETRY and V4L2_CID_COLORIME=
+TRY_CLASS to see how
+> >>>>>>> it is done.
+> >>>>>>>
+> >>>>>>> M2M_AUDIO would probably be a good name for the class.
+> >>>>>>>
+> >>>>>>>> +***************************
+> >>>>>>>> +
+> >>>>>>>> +These controls are intended to support an asynchronous sample
+> >>>>>>>> +rate converter.
+> >>>>>>>
+> >>>>>>> Add ' (ASRC).' at the end to indicate the common abbreviation for
+> >>>>>>> that.
+> >>>>>>>
+> >>>>>>>> +
+> >>>>>>>> +.. _v4l2-audio-asrc:
+> >>>>>>>> +
+> >>>>>>>> +``V4L2_CID_ASRC_SOURCE_RATE``
+> >>>>>>>> +    sets the resampler source rate.
+> >>>>>>>> +
+> >>>>>>>> +``V4L2_CID_ASRC_DEST_RATE``
+> >>>>>>>> +    sets the resampler destination rate.
+> >>>>>>>
+> >>>>>>> Document the unit (Hz) for these two controls.
+> >>>>>>>
+> >>>>>>>> +
+> >>>>>>>> +.. c:type:: v4l2_ctrl_fixed_point
+> >>>>>>>> +
+> >>>>>>>> +.. cssclass:: longtable
+> >>>>>>>> +
+> >>>>>>>> +.. tabularcolumns:: |p{1.5cm}|p{5.8cm}|p{10.0cm}|
+> >>>>>>>> +
+> >>>>>>>> +.. flat-table:: struct v4l2_ctrl_fixed_point
+> >>>>>>>> +    :header-rows:  0
+> >>>>>>>> +    :stub-columns: 0
+> >>>>>>>> +    :widths:       1 1 2
+> >>>>>>>> +
+> >>>>>>>> +    * - __u32
+> >>>>>>>
+> >>>>>>> Hmm, shouldn't this be __s32?
+> >>>>>>>
+> >>>>>>>> +      - ``integer``
+> >>>>>>>> +      - integer part of fixed point value.
+> >>>>>>>> +    * - __s32
+> >>>>>>>
+> >>>>>>> and this __u32?
+> >>>>>>>
+> >>>>>>> You want to be able to use this generic type as a signed value.
+> >>>>>>>
+> >>>>>>>> +      - ``fractional``
+> >>>>>>>> +      - fractional part of fixed point value, which is Q31.
+> >>>>>>>> diff --git a/Documentation/userspace-api/media/v4l/vidioc-g-ext-=
+ctrls.rst b/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
+> >>>>>>>> index f9f73530a6be..1811dabf5c74 100644
+> >>>>>>>> --- a/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.r=
+st
+> >>>>>>>> +++ b/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.r=
+st
+> >>>>>>>> @@ -295,6 +295,10 @@ still cause this situation.
+> >>>>>>>>        - ``p_av1_film_grain``
+> >>>>>>>>        - A pointer to a struct :c:type:`v4l2_ctrl_av1_film_grain=
+`. Valid if this control is
+> >>>>>>>>          of type ``V4L2_CTRL_TYPE_AV1_FILM_GRAIN``.
+> >>>>>>>> +    * - struct :c:type:`v4l2_ctrl_fixed_point` *
+> >>>>>>>> +      - ``p_fixed_point``
+> >>>>>>>> +      - A pointer to a struct :c:type:`v4l2_ctrl_fixed_point`. =
+Valid if this control is
+> >>>>>>>> +        of type ``V4L2_CTRL_TYPE_FIXED_POINT``.
+> >>>>>>>>      * - void *
+> >>>>>>>>        - ``ptr``
+> >>>>>>>>        - A pointer to a compound type which can be an N-dimensio=
+nal array
+> >>>>>>>> diff --git a/Documentation/userspace-api/media/v4l/vidioc-queryc=
+trl.rst b/Documentation/userspace-api/media/v4l/vidioc-queryctrl.rst
+> >>>>>>>> index 4d38acafe8e1..9285f4f39eed 100644
+> >>>>>>>> --- a/Documentation/userspace-api/media/v4l/vidioc-queryctrl.rst
+> >>>>>>>> +++ b/Documentation/userspace-api/media/v4l/vidioc-queryctrl.rst
+> >>>>>>>> @@ -549,6 +549,13 @@ See also the examples in :ref:`control`.
+> >>>>>>>>        - n/a
+> >>>>>>>>        - A struct :c:type:`v4l2_ctrl_av1_film_grain`, containing=
+ AV1 Film Grain
+> >>>>>>>>          parameters for stateless video decoders.
+> >>>>>>>> +    * - ``V4L2_CTRL_TYPE_FIXED_POINT``
+> >>>>>>>> +      - n/a
+> >>>>>>>> +      - n/a
+> >>>>>>>> +      - n/a
+> >>>>>>>> +      - A struct :c:type:`v4l2_ctrl_fixed_point`, containing pa=
+rameter which has
+> >>>>>>>> +        integer part and fractional part, i.e. audio sample rat=
+e.
+> >>>>>>>> +
+> >>>>>>>>
+> >>>>>>>>  .. raw:: latex
+> >>>>>>>>
+> >>>>>>>> diff --git a/Documentation/userspace-api/media/videodev2.h.rst.e=
+xceptions b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
+> >>>>>>>> index e61152bb80d1..2faa5a2015eb 100644
+> >>>>>>>> --- a/Documentation/userspace-api/media/videodev2.h.rst.exceptio=
+ns
+> >>>>>>>> +++ b/Documentation/userspace-api/media/videodev2.h.rst.exceptio=
+ns
+> >>>>>>>> @@ -167,6 +167,7 @@ replace symbol V4L2_CTRL_TYPE_AV1_SEQUENCE :=
+c:type:`v4l2_ctrl_type`
+> >>>>>>>>  replace symbol V4L2_CTRL_TYPE_AV1_TILE_GROUP_ENTRY :c:type:`v4l=
+2_ctrl_type`
+> >>>>>>>>  replace symbol V4L2_CTRL_TYPE_AV1_FRAME :c:type:`v4l2_ctrl_type=
+`
+> >>>>>>>>  replace symbol V4L2_CTRL_TYPE_AV1_FILM_GRAIN :c:type:`v4l2_ctrl=
+_type`
+> >>>>>>>> +replace symbol V4L2_CTRL_TYPE_FIXED_POINT :c:type:`v4l2_ctrl_ty=
+pe`
+> >>>>>>>>
+> >>>>>>>>  # V4L2 capability defines
+> >>>>>>>>  replace define V4L2_CAP_VIDEO_CAPTURE device-capabilities
+> >>>>>>>> diff --git a/drivers/media/v4l2-core/v4l2-ctrls-core.c b/drivers=
+/media/v4l2-core/v4l2-ctrls-core.c
+> >>>>>>>> index a662fb60f73f..7a616ac91059 100644
+> >>>>>>>> --- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
+> >>>>>>>> +++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
+> >>>>>>>> @@ -1168,6 +1168,8 @@ static int std_validate_compound(const str=
+uct v4l2_ctrl *ctrl, u32 idx,
+> >>>>>>>>               if (!area->width || !area->height)
+> >>>>>>>>                       return -EINVAL;
+> >>>>>>>>               break;
+> >>>>>>>> +     case V4L2_CTRL_TYPE_FIXED_POINT:
+> >>>>>>>> +             break;
+> >>>>>>>
+> >>>>>>> Hmm, this would need this patch 'v4l2-ctrls: add support for V4L2=
+_CTRL_WHICH_MIN/MAX_VAL':
+> >>>>>>>
+> >>>>>>> https://patchwork.linuxtv.org/project/linux-media/patch/202310100=
+22136.1504015-7-yunkec@google.com/
+> >>>>>>>
+> >>>>>>> since min and max values are perfectly fine for a fixed point val=
+ue.
+> >>>>>>>
+> >>>>>>> Even a step value (currently not supported in that patch) would m=
+ake sense.
+> >>>>>>>
+> >>>>>>> But I wonder if we couldn't simplify this: instead of creating a =
+v4l2_ctrl_fixed_point,
+> >>>>>>> why not represent the fixed point value as a Q31.32. Then the sta=
+ndard
+> >>>>>>> minimum/maximum/step values can be used, and it acts like a regul=
+ar V4L2_TYPE_INTEGER64.
+> >>>>>>>
+> >>>>>>> Except that both userspace and drivers need to multiply it with 2=
+^-32 to get the actual
+> >>>>>>> value.
+> >>>>>>>
+> >>>>>>> So in enum v4l2_ctrl_type add:
+> >>>>>>>
+> >>>>>>>         V4L2_CTRL_TYPE_FIXED_POINT =3D 10,
+> >>>>>>>
+> >>>>>>> (10, because it is no longer a compound type).
+> >>>>>>
+> >>>>>> Seems we don't need V4L2_CTRL_TYPE_FIXED_POINT, just use V4L2_TYPE=
+_INTEGER64?
+> >>>>>>
+> >>>>>> The reason I use the 'integer' and 'fractional' is that I want
+> >>>>>> 'integer' to be the normal sample
+> >>>>>> rate, for example 48kHz.  The 'fractional' is the difference with
+> >>>>>> normal sample rate.
+> >>>>>>
+> >>>>>> For example, the rate =3D 47998.12345.  so integer =3D 48000,  fra=
+ctional=3D -1.87655.
+> >>>>>>
+> >>>>>> So if we use s64 for rate, then in driver need to convert the rate=
+ to
+> >>>>>> the closed normal
+> >>>>>> sample rate + fractional.
+> >>>>>
+> >>>>> That wasn't what the documentation said :-)
+> >>>>>
+> >>>>> So this is really two controls: one for the 'normal sample rate' (w=
+hatever 'normal'
+> >>>>> means in this context) and the offset to the actual sample rate.
+> >>>>>
+> >>>>> Presumably the 'normal' sample rate is set once, while the offset c=
+hanges
+> >>>>> regularly.
+> >>>>>
+> >>>>> But why do you need the 'normal' sample rate? With audio resampling=
+ I assume
+> >>>>> you resample from one rate to another, so why do you need a third '=
+normal'
+> >>>>> rate?
+> >>>>>
+> >>>>
+> >>>> 'Normal' rate is used to select the prefilter table.
+> >>>>
+> >>>
+> >>> Currently I think we may define
+> >>> V4L2_CID_M2M_AUDIO_SOURCE_RATE
+> >>> V4L2_CID_M2M_AUDIO_DEST_RATE
+> >>
+> >> That makes sense.
+> >>
+> >>> V4L2_CID_M2M_AUDIO_ASRC_RATIO_MOD
+> >>
+> >> OK, can you document this control? Just write it down in the reply, I =
+just want
+> >> to understand how the integer value you set here is used.
+> >>
+> >
+> > It is Q31 value.   It is equal to:
+> > in_rate_new / out_rate_new -  in_rate_old / out_rate_old
+>
+> So that's not an integer. Also, Q31 is limited to -1...1, and I think
+> that's too limiting.
+>
+> For this having a Q31.32 fixed point type still makes a lot of sense.
 
+Can we use V4L2_CTRL_TYPE_INTEGER64 for Q31.32?
+or still need to define V4L2_CTRL_TYPE_FIXED_POINT?
 
-On 10/18/23 10:07 PM, Srikar Dronamraju wrote:
-> The ability to detect if the system is running in a shared processor
-> mode is helpful in few more generic cases not just in
-> paravirtualization.
-> For example: At boot time, different scheduler/ topology flags may be
-> set based on the processor mode. Hence move it to a more generic file.
-> 
-> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-> ---
->  arch/powerpc/include/asm/paravirt.h | 12 ------------
->  arch/powerpc/include/asm/smp.h      | 14 ++++++++++++++
->  2 files changed, 14 insertions(+), 12 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/asm/paravirt.h
-> index 0372b0093f72..cf83e837a571 100644
-> --- a/arch/powerpc/include/asm/paravirt.h
-> +++ b/arch/powerpc/include/asm/paravirt.h
-> @@ -15,13 +15,6 @@
->  #include <asm/kvm_guest.h>
->  #include <asm/cputhreads.h>
-> 
-> -DECLARE_STATIC_KEY_FALSE(shared_processor);
-> -
-> -static inline bool is_shared_processor(void)
-> -{
-> -	return static_branch_unlikely(&shared_processor);
-> -}
-> -
->  #ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
->  extern struct static_key paravirt_steal_enabled;
->  extern struct static_key paravirt_steal_rq_enabled;
-> @@ -77,11 +70,6 @@ static inline bool is_vcpu_idle(int vcpu)
->  	return lppaca_of(vcpu).idle;
->  }
-
-Hi Srikar, 
-
-This patch fails to apply on tip/master as it depends on 
-https://lore.kernel.org/all/20231019091452.95260-1-srikar@linux.vnet.ibm.com/ to be applied first.
-
->  #else
-> -static inline bool is_shared_processor(void)
-> -{
-> -	return false;
-> -}
-> -
->  static inline u32 yield_count_of(int cpu)
->  {
->  	return 0;
-> diff --git a/arch/powerpc/include/asm/smp.h b/arch/powerpc/include/asm/smp.h
-> index aaaa576d0e15..08631b2a4528 100644
-> --- a/arch/powerpc/include/asm/smp.h
-> +++ b/arch/powerpc/include/asm/smp.h
-> @@ -34,6 +34,20 @@ extern bool coregroup_enabled;
->  extern int cpu_to_chip_id(int cpu);
->  extern int *chip_id_lookup_table;
-> 
-> +#ifdef CONFIG_PPC_SPLPAR
-> +DECLARE_STATIC_KEY_FALSE(shared_processor);
-> +
-> +static inline bool is_shared_processor(void)
-> +{
-> +	return static_branch_unlikely(&shared_processor);
-> +}
-> +#else
-> +static inline bool is_shared_processor(void)
-> +{
-> +	return false;
-> +}
-> +#endif
-> +
->  DECLARE_PER_CPU(cpumask_var_t, thread_group_l1_cache_map);
->  DECLARE_PER_CPU(cpumask_var_t, thread_group_l2_cache_map);
->  DECLARE_PER_CPU(cpumask_var_t, thread_group_l3_cache_map);
+best regards
+wang shengjiu
+>
+> I still feel this is a overly complicated API.
+>
+> See more below...
+>
+> >
+> > Best regards
+> > Wang shengjiu
+> >
+> >> Regards,
+> >>
+> >>         Hans
+> >>
+> >>>
+> >>> All of them can be V4L2_CTRL_TYPE_INTEGER.
+> >>>
+> >>> RATIO_MOD was defined in the very beginning version.
+> >>> I think it is better to let users calculate this value.
+> >>>
+> >>> The reason is:
+> >>> if we define the offset for source rate and dest rate in
+> >>> driver separately,  when offset of source rate is set,
+> >>> driver don't know if it needs to wait or not the dest rate
+> >>> offset,  then go to calculate the ratio_mod.
+>
+> Ah, in order to update the ratio mod userspace needs to set both source a=
+nd
+> dest rate at the same time to avoid race conditions.
+>
+> That is perfectly possible in the V4L2 control framework. See:
+>
+> https://linuxtv.org/downloads/v4l-dvb-apis-new/driver-api/v4l2-controls.h=
+tml#control-clusters
+>
+> In practice, isn't it likely that you would fix either the source or
+> destination rate, and let the other rate fluctuate? It kind of feels weir=
+d
+> to me that both source AND destination rates can fluctuate over time.
+>
+> In any case, with a control cluster it doesn't really matter, you can set
+> one rate or both rates, and it will be handled atomically.
+>
+> I feel that the RATIO_MOD control is too hardware specific. This is somet=
+hing
+> that should be hidden in the driver.
+>
+> Regards,
+>
+>         Hans
+>
+> >>>
+> >>> best regards
+> >>> wang shengjiu
+> >>>
+> >>>> Best regards
+> >>>> Wang Shengjiu
+> >>>>
+> >>>>> Regards,
+> >>>>>
+> >>>>>         Hans
+> >>>>>
+> >>>>>>
+> >>>>>> best regards
+> >>>>>> wang shengjiu
+> >>>>>>
+> >>>>>>>
+> >>>>>>>>
+> >>>>>>>>       default:
+> >>>>>>>>               return -EINVAL;
+> >>>>>>>> @@ -1868,6 +1870,9 @@ static struct v4l2_ctrl *v4l2_ctrl_new(str=
+uct v4l2_ctrl_handler *hdl,
+> >>>>>>>>       case V4L2_CTRL_TYPE_AREA:
+> >>>>>>>>               elem_size =3D sizeof(struct v4l2_area);
+> >>>>>>>>               break;
+> >>>>>>>> +     case V4L2_CTRL_TYPE_FIXED_POINT:
+> >>>>>>>> +             elem_size =3D sizeof(struct v4l2_ctrl_fixed_point)=
+;
+> >>>>>>>> +             break;
+> >>>>>>>>       default:
+> >>>>>>>>               if (type < V4L2_CTRL_COMPOUND_TYPES)
+> >>>>>>>>                       elem_size =3D sizeof(s32);
+> >>>>>>>> diff --git a/drivers/media/v4l2-core/v4l2-ctrls-defs.c b/drivers=
+/media/v4l2-core/v4l2-ctrls-defs.c
+> >>>>>>>> index 8696eb1cdd61..d8f232df6b6a 100644
+> >>>>>>>> --- a/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+> >>>>>>>> +++ b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+> >>>>>>>> @@ -1602,6 +1602,10 @@ void v4l2_ctrl_fill(u32 id, const char **=
+name, enum v4l2_ctrl_type *type,
+> >>>>>>>>       case V4L2_CID_COLORIMETRY_HDR10_MASTERING_DISPLAY:
+> >>>>>>>>               *type =3D V4L2_CTRL_TYPE_HDR10_MASTERING_DISPLAY;
+> >>>>>>>>               break;
+> >>>>>>>> +     case V4L2_CID_ASRC_SOURCE_RATE:
+> >>>>>>>> +     case V4L2_CID_ASRC_DEST_RATE:
+> >>>>>>>> +             *type =3D V4L2_CTRL_TYPE_FIXED_POINT;
+> >>>>>>>> +             break;
+> >>>>>>>>       default:
+> >>>>>>>>               *type =3D V4L2_CTRL_TYPE_INTEGER;
+> >>>>>>>>               break;
+> >>>>>>>> diff --git a/include/media/v4l2-ctrls.h b/include/media/v4l2-ctr=
+ls.h
+> >>>>>>>> index 59679a42b3e7..645e4cccafc7 100644
+> >>>>>>>> --- a/include/media/v4l2-ctrls.h
+> >>>>>>>> +++ b/include/media/v4l2-ctrls.h
+> >>>>>>>> @@ -56,6 +56,7 @@ struct video_device;
+> >>>>>>>>   * @p_av1_tile_group_entry:  Pointer to an AV1 tile group entry=
+ structure.
+> >>>>>>>>   * @p_av1_frame:             Pointer to an AV1 frame structure.
+> >>>>>>>>   * @p_av1_film_grain:                Pointer to an AV1 film gra=
+in structure.
+> >>>>>>>> + * @p_fixed_point:           Pointer to a struct v4l2_ctrl_fixe=
+d_point.
+> >>>>>>>>   * @p:                               Pointer to a compound valu=
+e.
+> >>>>>>>>   * @p_const:                 Pointer to a constant compound val=
+ue.
+> >>>>>>>>   */
+> >>>>>>>> @@ -89,6 +90,7 @@ union v4l2_ctrl_ptr {
+> >>>>>>>>       struct v4l2_ctrl_av1_tile_group_entry *p_av1_tile_group_en=
+try;
+> >>>>>>>>       struct v4l2_ctrl_av1_frame *p_av1_frame;
+> >>>>>>>>       struct v4l2_ctrl_av1_film_grain *p_av1_film_grain;
+> >>>>>>>> +     struct v4l2_ctrl_fixed_point *p_fixed_point;
+> >>>>>>>>       void *p;
+> >>>>>>>>       const void *p_const;
+> >>>>>>>>  };
+> >>>>>>>> diff --git a/include/uapi/linux/v4l2-controls.h b/include/uapi/l=
+inux/v4l2-controls.h
+> >>>>>>>> index c3604a0a3e30..91096259e3ea 100644
+> >>>>>>>> --- a/include/uapi/linux/v4l2-controls.h
+> >>>>>>>> +++ b/include/uapi/linux/v4l2-controls.h
+> >>>>>>>> @@ -112,6 +112,8 @@ enum v4l2_colorfx {
+> >>>>>>>>
+> >>>>>>>>  /* last CID + 1 */
+> >>>>>>>>  #define V4L2_CID_LASTP1                         (V4L2_CID_BASE+=
+44)
+> >>>>>>>> +#define V4L2_CID_ASRC_SOURCE_RATE            (V4L2_CID_BASE + 4=
+5)
+> >>>>>>>> +#define V4L2_CID_ASRC_DEST_RATE                      (V4L2_CID_=
+BASE + 46)
+> >>>>>>>
+> >>>>>>> This patch needs to be split in three parts:
+> >>>>>>>
+> >>>>>>> 1) Add the new M2M_AUDIO control class,
+> >>>>>>> 2) Add the new V4L2_CTRL_TYPE_FIXED_POINT type,
+> >>>>>>> 3) Add the new controls.
+> >>>>>>>
+> >>>>>>> These are all independent changes, so separating them makes it ea=
+sier to
+> >>>>>>> review.
+> >>>>>>>
+> >>>>>>>>
+> >>>>>>>>  /* USER-class private control IDs */
+> >>>>>>>>
+> >>>>>>>> @@ -3488,4 +3490,15 @@ struct v4l2_ctrl_av1_film_grain {
+> >>>>>>>>  #define V4L2_CID_MPEG_MFC51_BASE        V4L2_CID_CODEC_MFC51_BA=
+SE
+> >>>>>>>>  #endif
+> >>>>>>>>
+> >>>>>>>> +/**
+> >>>>>>>> + * struct v4l2_ctrl_fixed_point - fixed point parameter.
+> >>>>>>>> + *
+> >>>>>>>> + * @rate_integer: integer part of fixed point value.
+> >>>>>>>> + * @rate_fractional: fractional part of fixed point value
+> >>>>>>>> + */
+> >>>>>>>> +struct v4l2_ctrl_fixed_point {
+> >>>>>>>> +     __u32 integer;
+> >>>>>>>
+> >>>>>>> __s32?
+> >>>>>>>
+> >>>>>>>> +     __u32 fractional;
+> >>>>>>>> +};
+> >>>>>>>> +
+> >>>>>>>>  #endif
+> >>>>>>>> diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux=
+/videodev2.h
+> >>>>>>>> index 2ac7b989394c..3ef32c09c2fa 100644
+> >>>>>>>> --- a/include/uapi/linux/videodev2.h
+> >>>>>>>> +++ b/include/uapi/linux/videodev2.h
+> >>>>>>>> @@ -1888,6 +1888,7 @@ struct v4l2_ext_control {
+> >>>>>>>>               struct v4l2_ctrl_av1_tile_group_entry __user *p_av=
+1_tile_group_entry;
+> >>>>>>>>               struct v4l2_ctrl_av1_frame __user *p_av1_frame;
+> >>>>>>>>               struct v4l2_ctrl_av1_film_grain __user *p_av1_film=
+_grain;
+> >>>>>>>> +             struct v4l2_ctrl_fixed_point __user *p_fixed_point=
+;
+> >>>>>>>>               void __user *ptr;
+> >>>>>>>>       };
+> >>>>>>>>  } __attribute__ ((packed));
+> >>>>>>>> @@ -1966,6 +1967,8 @@ enum v4l2_ctrl_type {
+> >>>>>>>>       V4L2_CTRL_TYPE_AV1_TILE_GROUP_ENTRY =3D 0x281,
+> >>>>>>>>       V4L2_CTRL_TYPE_AV1_FRAME            =3D 0x282,
+> >>>>>>>>       V4L2_CTRL_TYPE_AV1_FILM_GRAIN       =3D 0x283,
+> >>>>>>>> +
+> >>>>>>>> +     V4L2_CTRL_TYPE_FIXED_POINT          =3D 0x290,
+> >>>>>>>>  };
+> >>>>>>>>
+> >>>>>>>>  /*  Used in the VIDIOC_QUERYCTRL ioctl for querying controls */
+> >>>>>>>
+> >>>>>>> Regards,
+> >>>>>>>
+> >>>>>>>         Hans
+> >>>>>
+> >>
+>
