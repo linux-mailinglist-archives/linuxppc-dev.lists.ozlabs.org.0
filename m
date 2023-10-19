@@ -1,73 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F787CF19C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Oct 2023 09:46:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 633F87CF1A6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Oct 2023 09:49:46 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=YwXRLKLk;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=oB0C2SqM;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SB0Cz3DTSz3vYN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Oct 2023 18:46:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SB0HD28VTz3vYK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Oct 2023 18:49:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=YwXRLKLk;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=oB0C2SqM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2a00:1450:4864:20::436; helo=mail-wr1-x436.google.com; envelope-from=ajones@ventanamicro.com; receiver=lists.ozlabs.org)
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SB0C363Hyz3cdV
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Oct 2023 18:46:07 +1100 (AEDT)
-Received: by mail-wr1-x436.google.com with SMTP id ffacd0b85a97d-32dc918d454so1777203f8f.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Oct 2023 00:46:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1697701564; x=1698306364; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PeyvUx1rVja27wirLq4XcNrRcR3eqmAH3gyz1hpKoZo=;
-        b=YwXRLKLkHKJR6lkhAW4qSdE/LTuHw0DagpD4pL2yneoOiMysR0yfv5vtuYbaHdncE9
-         mE5TlpPy5DmunJ23zY4paeUcnoT7+0EaNDaLcXNv8GaO3TUNE/ew7TVhdZUFHa+a3gKa
-         JNJUM75p+jRJV5aSvODltVAOev6fShNC6J6YbGnMrKahHn+Glsiwr+Q9ygPh5hCh596h
-         2wgdInahu3Pg3f1YsxQVVzgG9GSwLGbmEVOu+AhMnXWF4oRYvXMwvESkcj4dUEJfbfl7
-         VNlAvJ8gb7rQv/rpb1jZ2jtLNVpSZW0VXHEAPl7qFwTSUuGLxlFQcQF8wR1lwbsCvzAw
-         pk7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697701564; x=1698306364;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PeyvUx1rVja27wirLq4XcNrRcR3eqmAH3gyz1hpKoZo=;
-        b=TNitX5JEqjajB0mKJSv+LIXSrUdmC+9+CiUGDh5y+AaEh0i5VnjRCYUuki/jwQNK+y
-         4fDJ+LSDM/tfq1AdLi99ZcMwQ0axHMuKmgQalTcIQohfJ/TlIsG0I2YV93UNxszR24ZK
-         k6YMVG2gsoliRhmIYWm32bwvU9AzqmRR5lyNJOEcGu5IwBkW4secArbxktN4FFLK2Uzf
-         a98OvxrSny/oSzr9bKXeXbVxBVE0/th0OF2NluHpr58JZhdYorPGtwjDZlsJASjfZTkg
-         vzemf9b29ilsdw6N40cNAAfnzm8wwGqwjquc8jX5d7te/6reNYTY6dLPSoBabEY8xNc6
-         MO/w==
-X-Gm-Message-State: AOJu0YwkrEo6aocTSnIt5jNDJFlEYwEjcZZFYRDJG0h9F1Fx/2KqhgB0
-	4Dd7bck/ezMipkT8Gulzs4QHUw==
-X-Google-Smtp-Source: AGHT+IGLUlcDD7K55509EI9MCn7Lj/SluH9GT9R5OrexuSg3htFw/XSGrzpIAwUrw57WzavQkmaRxw==
-X-Received: by 2002:a05:6000:1815:b0:32d:82f7:e76 with SMTP id m21-20020a056000181500b0032d82f70e76mr906073wrh.34.1697701563248;
-        Thu, 19 Oct 2023 00:46:03 -0700 (PDT)
-Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
-        by smtp.gmail.com with ESMTPSA id q15-20020adff78f000000b0032da6f17ffdsm3846942wrp.38.2023.10.19.00.46.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Oct 2023 00:46:02 -0700 (PDT)
-Date: Thu, 19 Oct 2023 09:46:01 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Anup Patel <apatel@ventanamicro.com>
-Subject: Re: [PATCH v2 2/8] RISC-V: KVM: Change the SBI specification version
- to v2.0
-Message-ID: <20231019-d6386d58125da87f5e4c5ff2@orel>
-References: <20231012051509.738750-1-apatel@ventanamicro.com>
- <20231012051509.738750-3-apatel@ventanamicro.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SB0GH2S9fz2xpd
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Oct 2023 18:48:54 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=52ez8nSrgRe3BDw+KtrmWbkQdWoUUpNLS1BD5WCW5VY=; b=oB0C2SqM/ERV6YhikduJIrED1I
+	3dNNNUf4ZYh3apNYcLw+ANjwon7ECj9BiRr4A/7ZzDrbLU+tdr988zt6h9yhnHDOZvMGKVe5ZRQ3c
+	66SZtxwBk6Uxn8pVMV1+kJSU2Yjx7qPJKgnwJ9tyU4dalyVu6GM7B1ZAkeYQgxb2y620GsfAGUfbX
+	hIe+UEBZVoSFF+deFTreep2ab+u83EzmGe8U+XIFz/smO8qw6WxVSxMdy6O8sa7ODViclVDENG4q+
+	MRP2grYUxp+z7EJKAMm8kEq4b64lF9v6LVbmS4msinqn6lRqPJXz8QOzT2SfaC73tD567ByDEOmf7
+	FnvrFs3g==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+	id 1qtNlc-009guo-2J;
+	Thu, 19 Oct 2023 07:48:29 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 62F60300392; Thu, 19 Oct 2023 09:48:28 +0200 (CEST)
+Date: Thu, 19 Oct 2023 09:48:28 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v2 2/6] powerpc/smp: Enable Asym packing for cores on
+ shared processor
+Message-ID: <20231019074828.GM33217@noisy.programming.kicks-ass.net>
+References: <20231018163751.2423181-1-srikar@linux.vnet.ibm.com>
+ <20231018163751.2423181-3-srikar@linux.vnet.ibm.com>
+ <87v8b35ir3.fsf@mail.lhotse>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231012051509.738750-3-apatel@ventanamicro.com>
+In-Reply-To: <87v8b35ir3.fsf@mail.lhotse>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,34 +62,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-serial@vger.kernel.org, kvm@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Atish Patra <atishp@atishpatra.org>, linuxppc-dev@lists.ozlabs.org, Conor Dooley <conor@kernel.org>, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>, Paolo Bonzini <pbonzini@redhat.com>, linux-riscv@lists.infradead.org, Jiri Slaby <jirislaby@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, Valentin Schneider <vschneid@redhat.com>, Srikar Dronamraju <srikar@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org, Rohan McLure <rmclure@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Josh Poimboeuf <jpoimboe@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Oct 12, 2023 at 10:45:03AM +0530, Anup Patel wrote:
-> We will be implementing SBI DBCN extension for KVM RISC-V so let
-> us change the KVM RISC-V SBI specification version to v2.0.
+On Thu, Oct 19, 2023 at 03:38:40PM +1100, Michael Ellerman wrote:
+> Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
+> > If there are shared processor LPARs, underlying Hypervisor can have more
+> > virtual cores to handle than actual physical cores.
+> >
+> > Starting with Power 9, a core has 2 nearly independent thread groups.
 > 
-> Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-> ---
->  arch/riscv/include/asm/kvm_vcpu_sbi.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/riscv/include/asm/kvm_vcpu_sbi.h b/arch/riscv/include/asm/kvm_vcpu_sbi.h
-> index cdcf0ff07be7..8d6d4dce8a5e 100644
-> --- a/arch/riscv/include/asm/kvm_vcpu_sbi.h
-> +++ b/arch/riscv/include/asm/kvm_vcpu_sbi.h
-> @@ -11,7 +11,7 @@
->  
->  #define KVM_SBI_IMPID 3
->  
-> -#define KVM_SBI_VERSION_MAJOR 1
-> +#define KVM_SBI_VERSION_MAJOR 2
->  #define KVM_SBI_VERSION_MINOR 0
->  
->  enum kvm_riscv_sbi_ext_status {
-> -- 
-> 2.34.1
->
+> You need to be clearer here that you're talking about "big cores", not
+> SMT4 cores as seen on bare metal systems.
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+What is a 'big core' ? I'm thinking big.LITTLE, but I didn't think Power
+went that route (yet?).. help?
+
+> > On a shared processors LPARs, it helps to pack threads to lesser number
+> > of cores so that the overall system performance and utilization
+> > improves. PowerVM schedules at a core level. Hence packing to fewer
+> > cores helps.
+> >
+> > For example: Lets says there are two 8-core Shared LPARs that are
+> > actually sharing a 8 Core shared physical pool, each running 8 threads
+> > each. Then Consolidating 8 threads to 4 cores on each LPAR would help
+> > them to perform better. This is because each of the LPAR will get
+> > 100% time to run applications and there will no switching required by
+> > the Hypervisor.
+> >
+> > To achieve this, enable SD_ASYM_PACKING flag at CACHE, MC and DIE level.
+> 
+> .. when the system is running in shared processor mode and has big cores.
+> 
+> cheers
+> 
+> > diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+> > index 37c41297c9ce..498c2d51fc20 100644
+> > --- a/arch/powerpc/kernel/smp.c
+> > +++ b/arch/powerpc/kernel/smp.c
+> > @@ -1009,9 +1009,20 @@ static int powerpc_smt_flags(void)
+> >   */
+> >  static int powerpc_shared_cache_flags(void)
+> >  {
+> > +	if (static_branch_unlikely(&powerpc_asym_packing))
+> > +		return SD_SHARE_PKG_RESOURCES | SD_ASYM_PACKING;
+> > +
+> >  	return SD_SHARE_PKG_RESOURCES;
+> >  }
+> >  
+> > +static int powerpc_shared_proc_flags(void)
+> > +{
+> > +	if (static_branch_unlikely(&powerpc_asym_packing))
+> > +		return SD_ASYM_PACKING;
+> > +
+> > +	return 0;
+> > +}
+
+Can you leave the future reader a clue in the form of a comment around
+here perhaps? Explaining *why* things are as they are etc..
+
+> > +
+> >  /*
+> >   * We can't just pass cpu_l2_cache_mask() directly because
+> >   * returns a non-const pointer and the compiler barfs on that.
+> > @@ -1048,8 +1059,8 @@ static struct sched_domain_topology_level powerpc_topology[] = {
+> >  	{ cpu_smt_mask, powerpc_smt_flags, SD_INIT_NAME(SMT) },
+> >  #endif
+> >  	{ shared_cache_mask, powerpc_shared_cache_flags, SD_INIT_NAME(CACHE) },
+> > -	{ cpu_mc_mask, SD_INIT_NAME(MC) },
+> > -	{ cpu_cpu_mask, SD_INIT_NAME(DIE) },
+> > +	{ cpu_mc_mask, powerpc_shared_proc_flags, SD_INIT_NAME(MC) },
+> > +	{ cpu_cpu_mask, powerpc_shared_proc_flags, SD_INIT_NAME(DIE) },
+> >  	{ NULL, },
+> >  };
+> >  
+> > @@ -1687,6 +1698,8 @@ static void __init fixup_topology(void)
+> >  	if (cpu_has_feature(CPU_FTR_ASYM_SMT)) {
+> >  		pr_info_once("Enabling Asymmetric SMT scheduling\n");
+> >  		static_branch_enable(&powerpc_asym_packing);
+> > +	} else if (is_shared_processor() && has_big_cores) {
+> > +		static_branch_enable(&powerpc_asym_packing);
+> >  	}
+> >  
+> >  #ifdef CONFIG_SCHED_SMT
+> > -- 
+> > 2.31.1
