@@ -2,91 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD867D07C2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Oct 2023 07:46:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CDC37D0958
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Oct 2023 09:22:41 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gCulxrZE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=cu51dN24;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SBYV00yNYz3vXS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Oct 2023 16:46:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SBbdW46jJz3dK7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Oct 2023 18:22:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gCulxrZE;
+	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=cu51dN24;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2607:f8b0:4864:20::32b; helo=mail-ot1-x32b.google.com; envelope-from=apatel@ventanamicro.com; receiver=lists.ozlabs.org)
+Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SBYT70gnhz3c4r
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Oct 2023 16:45:14 +1100 (AEDT)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39K5gQ3N008048;
-	Fri, 20 Oct 2023 05:44:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=nqrnMCe98ci6txoaU8IrERG77izBRJ91QlE6fdoyJJo=;
- b=gCulxrZEN8WbmydSY1btCVRTI4wA8LQ9XbIh2mdbG6otH8hScolJCWcgxb7yLZ1A8I+S
- JWFK6p3BEVlMUaj3pEEtAi3d+MxTY+B9+91tdqJyUbzquoBOfZGuKWOFfCCJ13nIgADb
- sLQwn0XHEOGJadP55Ylkj2eo0O/vWrP+lCBp2HWY6sNzVIIy4yOIjOIVV/tfAiyOLs7g
- MsvH44fKXwzsLbUJdxYK/A25Kga/X77tXj+/xP9mhxGV6O+2DWeSBEkQOK0Dq738dAXv
- 4cG3J2K/FULJFs7k5hYOk/mGHsGtNmHYHCklUw8WZnndRXaPkR+Gcntip+OvvM0Jl37c bA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tukmq03mf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Oct 2023 05:44:52 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39K5hEuV011798;
-	Fri, 20 Oct 2023 05:44:51 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tukmq03kk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Oct 2023 05:44:51 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39K2oC9d002683;
-	Fri, 20 Oct 2023 05:44:50 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tuc44ahx5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Oct 2023 05:44:50 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39K5imUY56295772
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 20 Oct 2023 05:44:48 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 588E920043;
-	Fri, 20 Oct 2023 05:44:48 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 37F4920040;
-	Fri, 20 Oct 2023 05:44:46 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Fri, 20 Oct 2023 05:44:46 +0000 (GMT)
-Date: Fri, 20 Oct 2023 11:14:45 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Shrikanth Hegde <sshegde@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 2/6] powerpc/smp: Enable Asym packing for cores on
- shared processor
-Message-ID: <20231020054445.GL2194132@linux.vnet.ibm.com>
-References: <20231018163751.2423181-1-srikar@linux.vnet.ibm.com>
- <20231018163751.2423181-3-srikar@linux.vnet.ibm.com>
- <45a14ebb-91e7-489d-ad5d-6d39a48bc1f5@linux.vnet.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SBbcf6hwZz3bfK
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Oct 2023 18:21:52 +1100 (AEDT)
+Received: by mail-ot1-x32b.google.com with SMTP id 46e09a7af769-6ce37d0f1a9so158995a34.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Oct 2023 00:21:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1697786510; x=1698391310; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vbaUx5tgc13C+fDPGJz++EpIqc5R/EjgaTQRdQ/gzH0=;
+        b=cu51dN24MMzrDvU9cp3jbA5L5A+Qgm8G9VRiLPmzHmQedUt8IBdiBge4xNF2VjGy+w
+         JZCkjT1ZVjZIsMvjTr+oczCOyx/VXGIOsV65CNEy12Tbx+RJEdbsI9hf71VYmLC9KRpt
+         4yeh1WjrkRQYhfz8uJUi39qQMnhT4lMbTmdE8XZgctSi8pm0+lxNEX8KtqE8ClkFtAK9
+         HwZIloQbZ2xBm3QobaqZAF86GLtSSaLUO5P4iLkJGY5+GgUge9plk4+wxH4gacMv9BrD
+         TtKcBHarTY+q0SIQz9fCCrSd9Zw8NmS2bacmUBlsxkwgpQpY5kurhEXSKNwxRx1VMqWu
+         GB9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697786510; x=1698391310;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vbaUx5tgc13C+fDPGJz++EpIqc5R/EjgaTQRdQ/gzH0=;
+        b=CnmeWpm0dlu49O6CrdcPb3Ps8k52IFDnR2rkxCSGvwRJgvMbX4E2pZxViVJdyTBmjt
+         i44jKPRHwn/+eVvBv1cfAa2B2O6bnLovQD8muvPMDUCFd/IsM7fALbraddYr1/fldMFh
+         DAjSs6bSjqsUVONR7zzMWGNqbeapeb+INmqPxzvTd+GHlfnmnp0ZZgKBcF+JI68F4tAM
+         JVcWQUSnUellLlsbABVPm7y9MO84wKeQO6rPNe8Vw+yeL7nWt33yWHt5hlfyFIWw3cJf
+         wN3Xtf7yxjKd+dn2APUWr10iKzojrydYvPzNBugFGPQVd5veptTP/b9Sr4+oyrUoX7k+
+         79Uw==
+X-Gm-Message-State: AOJu0Yx5KxO7MaNUbMjOqCKGwZzKR+IXUzbFBTPDqI/CIBEL2wXje0pw
+	Eqd9Ry3a7VU0phX7Ynn2QUlLdg==
+X-Google-Smtp-Source: AGHT+IGd8XOYNX5Cl6NNnHjukDwjUbSrOdVya8xac9O1HehPftFC2/Zt55vtSezxHy+OiVL/3DWrYQ==
+X-Received: by 2002:a05:6358:5927:b0:168:a3b2:945a with SMTP id g39-20020a056358592700b00168a3b2945amr1087904rwf.0.1697786509722;
+        Fri, 20 Oct 2023 00:21:49 -0700 (PDT)
+Received: from anup-ubuntu-vm.localdomain ([171.76.83.81])
+        by smtp.gmail.com with ESMTPSA id v12-20020a63f20c000000b005b32d6b4f2fsm828204pgh.81.2023.10.20.00.21.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Oct 2023 00:21:49 -0700 (PDT)
+From: Anup Patel <apatel@ventanamicro.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Atish Patra <atishp@atishpatra.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH v3 0/9] RISC-V SBI debug console extension support
+Date: Fri, 20 Oct 2023 12:51:31 +0530
+Message-Id: <20231020072140.900967-1-apatel@ventanamicro.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <45a14ebb-91e7-489d-ad5d-6d39a48bc1f5@linux.vnet.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: va9b7wCKRExEmjcCpA5TKGv1kXoUMz0J
-X-Proofpoint-GUID: K7lH2W5Asytm59uDHQ4YNKDr4Vn7yyok
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-20_04,2023-10-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
- malwarescore=0 adultscore=0 spamscore=0 priorityscore=1501 suspectscore=0
- impostorscore=0 mlxlogscore=914 bulkscore=0 phishscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310170001
- definitions=main-2310200049
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,42 +80,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>, Valentin Schneider <vschneid@redhat.com>, Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Rohan McLure <rmclure@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Anup Patel <apatel@ventanamicro.com>, linux-serial@vger.kernel.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, Conor Dooley <conor@kernel.org>, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Andrew Jones <ajones@ventanamicro.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Shrikanth Hegde <sshegde@linux.vnet.ibm.com> [2023-10-19 21:26:56]:
+The SBI v2.0 specification is now frozen. The SBI v2.0 specification defines
+SBI debug console (DBCN) extension which replaces the legacy SBI v0.1
+functions sbi_console_putchar() and sbi_console_getchar().
+(Refer v2.0-rc5 at https://github.com/riscv-non-isa/riscv-sbi-doc/releases)
 
-> 
-> 
-> On 10/18/23 10:07 PM, Srikar Dronamraju wrote:
-> > If there are shared processor LPARs, underlying Hypervisor can have more
-> > virtual cores to handle than actual physical cores.
-> > 
-> > Starting with Power 9, a core has 2 nearly independent thread groups.
-> > On a shared processors LPARs, it helps to pack threads to lesser number
-> > of cores so that the overall system performance and utilization
-> > improves. PowerVM schedules at a core level. Hence packing to fewer
-> > cores helps.
-> > 
-> > For example: Lets says there are two 8-core Shared LPARs that are
-> > actually sharing a 8 Core shared physical pool, each running 8 threads
-> > each. Then Consolidating 8 threads to 4 cores on each LPAR would help
-> > them to perform better. This is because each of the LPAR will get
-> > 100% time to run applications and there will no switching required by
-> > the Hypervisor.
-> > 
-> > To achieve this, enable SD_ASYM_PACKING flag at CACHE, MC and DIE level.
-> 
-> This would have a conflict with tip/master. 
-> DIE has been renamed to PKG and Both changelog and code below should 
-> change DIE to PKG. 
+This series adds support for SBI debug console (DBCN) extension in KVM RISC-V
+and Linux RISC-V.
 
-Once the changes are part of powerpc/merge, will rebase and accomodate the
-changes from DIE to PKG.
+To try these patches with KVM RISC-V, use KVMTOOL from riscv_sbi_dbcn_v1
+branch at: https://github.com/avpatel/kvmtool.git
 
+These patches can also be found in the riscv_sbi_dbcn_v3 branch at:
+https://github.com/avpatel/linux.git
+
+Changes since v2:
+ - Rebased on Linux-6.6-rc5
+ - Handled page-crossing in PATCH7 of v2 series
+ - Addressed Drew's comment in PATCH3 of v2 series
+ - Added new PATCH5 to make get-reg-list test aware of SBI DBCN extension
+
+Changes since v1:
+ - Remove use of #ifdef from PATCH4 and PATCH5 of the v1 series
+ - Improved commit description of PATCH3 in v1 series
+ - Introduced new PATCH3 in this series to allow some SBI extensions
+   (such as SBI DBCN) do to disabled by default so that older KVM user space
+   work fine and newer KVM user space have to explicitly opt-in for emulating
+   SBI DBCN.
+ - Introduced new PATCH5 in this series which adds inline version of
+   sbi_console_getchar() and sbi_console_putchar() for the case where
+   CONFIG_RISCV_SBI_V01 is disabled.
+
+Anup Patel (8):
+  RISC-V: Add defines for SBI debug console extension
+  RISC-V: KVM: Change the SBI specification version to v2.0
+  RISC-V: KVM: Allow some SBI extensions to be disabled by default
+  RISC-V: KVM: Forward SBI DBCN extension to user-space
+  KVM: riscv: selftests: Add SBI DBCN extension to get-reg-list test
+  RISC-V: Add stubs for sbi_console_putchar/getchar()
+  tty/serial: Add RISC-V SBI debug console based earlycon
+  RISC-V: Enable SBI based earlycon support
+
+Atish Patra (1):
+  tty: Add SBI debug console support to HVC SBI driver
+
+ arch/riscv/configs/defconfig                  |  1 +
+ arch/riscv/configs/rv32_defconfig             |  1 +
+ arch/riscv/include/asm/kvm_vcpu_sbi.h         |  7 +-
+ arch/riscv/include/asm/sbi.h                  | 12 +++
+ arch/riscv/include/uapi/asm/kvm.h             |  1 +
+ arch/riscv/kvm/vcpu.c                         |  6 ++
+ arch/riscv/kvm/vcpu_sbi.c                     | 61 +++++++-------
+ arch/riscv/kvm/vcpu_sbi_replace.c             | 32 ++++++++
+ drivers/tty/hvc/Kconfig                       |  2 +-
+ drivers/tty/hvc/hvc_riscv_sbi.c               | 82 +++++++++++++++++--
+ drivers/tty/serial/Kconfig                    |  2 +-
+ drivers/tty/serial/earlycon-riscv-sbi.c       | 32 +++++++-
+ .../selftests/kvm/riscv/get-reg-list.c        |  2 +
+ 13 files changed, 198 insertions(+), 43 deletions(-)
 
 -- 
-Thanks and Regards
-Srikar Dronamraju
+2.34.1
+
