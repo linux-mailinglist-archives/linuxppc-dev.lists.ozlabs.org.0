@@ -2,28 +2,28 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D02D7D0CEF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Oct 2023 12:13:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37F327D0CF1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Oct 2023 12:14:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SBgQt1nYnz3vjk
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Oct 2023 21:13:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SBgRP1DrPz3vxQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Oct 2023 21:14:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
 Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SBgKY0QmJz3vZG
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Oct 2023 21:09:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SBgKZ3nGLz3vYl
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Oct 2023 21:09:06 +1100 (AEDT)
 Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 47450201E83;
-	Fri, 20 Oct 2023 12:09:02 +0200 (CEST)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id BFE7D200895;
+	Fri, 20 Oct 2023 12:09:03 +0200 (CEST)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id D79252008B4;
-	Fri, 20 Oct 2023 12:09:01 +0200 (CEST)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 5BBC1201E84;
+	Fri, 20 Oct 2023 12:09:03 +0200 (CEST)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id E70E41820F76;
-	Fri, 20 Oct 2023 18:08:59 +0800 (+08)
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 61F1B1834898;
+	Fri, 20 Oct 2023 18:09:01 +0800 (+08)
 From: Shengjiu Wang <shengjiu.wang@nxp.com>
 To: hverkuil@xs4all.nl,
 	sakari.ailus@iki.fi,
@@ -42,9 +42,9 @@ To: hverkuil@xs4all.nl,
 	tiwai@suse.com,
 	alsa-devel@alsa-project.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH v7 09/13] media: uapi: Add V4L2_CTRL_CLASS_M2M_AUDIO
-Date: Fri, 20 Oct 2023 17:30:28 +0800
-Message-Id: <1697794232-2607-10-git-send-email-shengjiu.wang@nxp.com>
+Subject: [RFC PATCH v7 10/13] media: uapi: Add V4L2_CTRL_TYPE_FIXED_POINT
+Date: Fri, 20 Oct 2023 17:30:29 +0800
+Message-Id: <1697794232-2607-11-git-send-email-shengjiu.wang@nxp.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1697794232-2607-1-git-send-email-shengjiu.wang@nxp.com>
 References: <1697794232-2607-1-git-send-email-shengjiu.wang@nxp.com>
@@ -63,116 +63,109 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The Audio M2M class includes controls for audio memory-to-memory
-use cases. The controls can be used for audio codecs, audio
-preprocessing, audio postprocessing.
+Fixed point controls are used by the user to configure
+a fixed point value in 64bits, which Q31.32 format.
 
 Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 ---
- .../userspace-api/media/v4l/common.rst        |  1 +
- .../media/v4l/ext-ctrls-audio-m2m.rst         | 21 +++++++++++++++++++
- .../media/v4l/vidioc-g-ext-ctrls.rst          |  4 ++++
- drivers/media/v4l2-core/v4l2-ctrls-defs.c     |  4 ++++
- include/uapi/linux/v4l2-controls.h            |  4 ++++
- 5 files changed, 34 insertions(+)
- create mode 100644 Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
+ Documentation/userspace-api/media/v4l/vidioc-queryctrl.rst  | 6 ++++++
+ .../userspace-api/media/videodev2.h.rst.exceptions          | 1 +
+ drivers/media/v4l2-core/v4l2-ctrls-api.c                    | 5 ++++-
+ drivers/media/v4l2-core/v4l2-ctrls-core.c                   | 2 ++
+ include/uapi/linux/videodev2.h                              | 1 +
+ 5 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/userspace-api/media/v4l/common.rst b/Documentation/userspace-api/media/v4l/common.rst
-index ea0435182e44..d5366e96a596 100644
---- a/Documentation/userspace-api/media/v4l/common.rst
-+++ b/Documentation/userspace-api/media/v4l/common.rst
-@@ -52,6 +52,7 @@ applicable to all devices.
-     ext-ctrls-fm-rx
-     ext-ctrls-detect
-     ext-ctrls-colorimetry
-+    ext-ctrls-audio-m2m
-     fourcc
-     format
-     planar-apis
-diff --git a/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst b/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
-new file mode 100644
-index 000000000000..82d2ecedbfee
---- /dev/null
-+++ b/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
-@@ -0,0 +1,21 @@
-+.. SPDX-License-Identifier: GFDL-1.1-no-invariants-or-later
-+
-+.. _audiom2m-controls:
-+
-+***************************
-+Audio M2M Control Reference
-+***************************
-+
-+The Audio M2M class includes controls for audio memory-to-memory
-+use cases. The controls can be used for audio codecs, audio
-+preprocessing, audio postprocessing.
-+
-+Audio M2M Control IDs
-+-----------------------
-+
-+.. _audiom2m-control-id:
-+
-+``V4L2_CID_M2M_AUDIO_CLASS (class)``
-+    The Audio M2M class descriptor. Calling
-+    :ref:`VIDIOC_QUERYCTRL` for this control will
-+    return a description of this control class.
-diff --git a/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst b/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
-index f9f73530a6be..e8475f9fd2cf 100644
---- a/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
-+++ b/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
-@@ -480,6 +480,10 @@ still cause this situation.
-       - 0xa50000
-       - The class containing colorimetry controls. These controls are
- 	described in :ref:`colorimetry-controls`.
-+    * - ``V4L2_CTRL_CLASS_M2M_AUDIO``
-+      - 0xa60000
-+      - The class containing audio m2m controls. These controls are
-+	described in :ref:`audiom2m-controls`.
+diff --git a/Documentation/userspace-api/media/v4l/vidioc-queryctrl.rst b/Documentation/userspace-api/media/v4l/vidioc-queryctrl.rst
+index 4d38acafe8e1..2e15db0779f2 100644
+--- a/Documentation/userspace-api/media/v4l/vidioc-queryctrl.rst
++++ b/Documentation/userspace-api/media/v4l/vidioc-queryctrl.rst
+@@ -549,6 +549,12 @@ See also the examples in :ref:`control`.
+       - n/a
+       - A struct :c:type:`v4l2_ctrl_av1_film_grain`, containing AV1 Film Grain
+         parameters for stateless video decoders.
++    * - ``V4L2_CTRL_TYPE_FIXED_POINT``
++      - n/a
++      - n/a
++      - n/a
++      - A struct :c:type:`v4l2_ctrl_fixed_point`, containing parameter which is
++        Q31.32 format.
  
- Return Value
- ============
-diff --git a/drivers/media/v4l2-core/v4l2-ctrls-defs.c b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
-index 8696eb1cdd61..2a85ea3dc92f 100644
---- a/drivers/media/v4l2-core/v4l2-ctrls-defs.c
-+++ b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
-@@ -1242,6 +1242,9 @@ const char *v4l2_ctrl_get_name(u32 id)
- 	case V4L2_CID_COLORIMETRY_CLASS:	return "Colorimetry Controls";
- 	case V4L2_CID_COLORIMETRY_HDR10_CLL_INFO:		return "HDR10 Content Light Info";
- 	case V4L2_CID_COLORIMETRY_HDR10_MASTERING_DISPLAY:	return "HDR10 Mastering Display";
-+
-+	/* Audio M2M controls */
-+	case V4L2_CID_M2M_AUDIO_CLASS:  return "Audio M2M Controls";
+ .. raw:: latex
+ 
+diff --git a/Documentation/userspace-api/media/videodev2.h.rst.exceptions b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
+index e61152bb80d1..2faa5a2015eb 100644
+--- a/Documentation/userspace-api/media/videodev2.h.rst.exceptions
++++ b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
+@@ -167,6 +167,7 @@ replace symbol V4L2_CTRL_TYPE_AV1_SEQUENCE :c:type:`v4l2_ctrl_type`
+ replace symbol V4L2_CTRL_TYPE_AV1_TILE_GROUP_ENTRY :c:type:`v4l2_ctrl_type`
+ replace symbol V4L2_CTRL_TYPE_AV1_FRAME :c:type:`v4l2_ctrl_type`
+ replace symbol V4L2_CTRL_TYPE_AV1_FILM_GRAIN :c:type:`v4l2_ctrl_type`
++replace symbol V4L2_CTRL_TYPE_FIXED_POINT :c:type:`v4l2_ctrl_type`
+ 
+ # V4L2 capability defines
+ replace define V4L2_CAP_VIDEO_CAPTURE device-capabilities
+diff --git a/drivers/media/v4l2-core/v4l2-ctrls-api.c b/drivers/media/v4l2-core/v4l2-ctrls-api.c
+index 002ea6588edf..e6a0fb8d6791 100644
+--- a/drivers/media/v4l2-core/v4l2-ctrls-api.c
++++ b/drivers/media/v4l2-core/v4l2-ctrls-api.c
+@@ -57,6 +57,7 @@ static int ptr_to_user(struct v4l2_ext_control *c,
+ 		return copy_to_user(c->string, ptr.p_char, len + 1) ?
+ 		       -EFAULT : 0;
+ 	case V4L2_CTRL_TYPE_INTEGER64:
++	case V4L2_CTRL_TYPE_FIXED_POINT:
+ 		c->value64 = *ptr.p_s64;
+ 		break;
  	default:
- 		return NULL;
- 	}
-@@ -1451,6 +1454,7 @@ void v4l2_ctrl_fill(u32 id, const char **name, enum v4l2_ctrl_type *type,
- 	case V4L2_CID_DETECT_CLASS:
- 	case V4L2_CID_CODEC_STATELESS_CLASS:
- 	case V4L2_CID_COLORIMETRY_CLASS:
-+	case V4L2_CID_M2M_AUDIO_CLASS:
- 		*type = V4L2_CTRL_TYPE_CTRL_CLASS;
- 		/* You can neither read nor write these */
- 		*flags |= V4L2_CTRL_FLAG_READ_ONLY | V4L2_CTRL_FLAG_WRITE_ONLY;
-diff --git a/include/uapi/linux/v4l2-controls.h b/include/uapi/linux/v4l2-controls.h
-index 68db66d4aae8..eb0f0a76f867 100644
---- a/include/uapi/linux/v4l2-controls.h
-+++ b/include/uapi/linux/v4l2-controls.h
-@@ -30,6 +30,7 @@
- #define V4L2_CTRL_CLASS_DETECT		0x00a30000	/* Detection controls */
- #define V4L2_CTRL_CLASS_CODEC_STATELESS 0x00a40000	/* Stateless codecs controls */
- #define V4L2_CTRL_CLASS_COLORIMETRY	0x00a50000	/* Colorimetry controls */
-+#define V4L2_CTRL_CLASS_M2M_AUDIO	0x00a60000	/* Audio M2M controls */
+@@ -132,6 +133,7 @@ static int user_to_new(struct v4l2_ext_control *c, struct v4l2_ctrl *ctrl)
  
- /* User-class control IDs */
+ 	switch (ctrl->type) {
+ 	case V4L2_CTRL_TYPE_INTEGER64:
++	case V4L2_CTRL_TYPE_FIXED_POINT:
+ 		*ctrl->p_new.p_s64 = c->value64;
+ 		break;
+ 	case V4L2_CTRL_TYPE_STRING:
+@@ -540,7 +542,8 @@ static int validate_ctrls(struct v4l2_ext_controls *cs,
+ 		 */
+ 		if (ctrl->is_ptr)
+ 			continue;
+-		if (ctrl->type == V4L2_CTRL_TYPE_INTEGER64)
++		if (ctrl->type == V4L2_CTRL_TYPE_INTEGER64 ||
++		    ctrl->type == V4L2_CTRL_TYPE_FIXED_POINT)
+ 			p_new.p_s64 = &cs->controls[i].value64;
+ 		else
+ 			p_new.p_s32 = &cs->controls[i].value;
+diff --git a/drivers/media/v4l2-core/v4l2-ctrls-core.c b/drivers/media/v4l2-core/v4l2-ctrls-core.c
+index a662fb60f73f..9d50df0d9874 100644
+--- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
++++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
+@@ -1187,6 +1187,7 @@ static int std_validate_elem(const struct v4l2_ctrl *ctrl, u32 idx,
+ 	case V4L2_CTRL_TYPE_INTEGER:
+ 		return ROUND_TO_RANGE(ptr.p_s32[idx], u32, ctrl);
+ 	case V4L2_CTRL_TYPE_INTEGER64:
++	case V4L2_CTRL_TYPE_FIXED_POINT:
+ 		/*
+ 		 * We can't use the ROUND_TO_RANGE define here due to
+ 		 * the u64 divide that needs special care.
+@@ -1779,6 +1780,7 @@ static struct v4l2_ctrl *v4l2_ctrl_new(struct v4l2_ctrl_handler *hdl,
+ 	/* Prefill elem_size for all types handled by std_type_ops */
+ 	switch ((u32)type) {
+ 	case V4L2_CTRL_TYPE_INTEGER64:
++	case V4L2_CTRL_TYPE_FIXED_POINT:
+ 		elem_size = sizeof(s64);
+ 		break;
+ 	case V4L2_CTRL_TYPE_STRING:
+diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
+index 4ef08b3a9e39..ef8913d561bf 100644
+--- a/include/uapi/linux/videodev2.h
++++ b/include/uapi/linux/videodev2.h
+@@ -1903,6 +1903,7 @@ enum v4l2_ctrl_type {
+ 	V4L2_CTRL_TYPE_STRING        = 7,
+ 	V4L2_CTRL_TYPE_BITMASK       = 8,
+ 	V4L2_CTRL_TYPE_INTEGER_MENU  = 9,
++	V4L2_CTRL_TYPE_FIXED_POINT   = 10,
  
-@@ -3494,4 +3495,7 @@ struct v4l2_ctrl_av1_film_grain {
- #define V4L2_CID_MPEG_MFC51_BASE        V4L2_CID_CODEC_MFC51_BASE
- #endif
- 
-+#define V4L2_CID_M2M_AUDIO_CLASS_BASE  (V4L2_CTRL_CLASS_M2M_AUDIO | 0x900)
-+#define V4L2_CID_M2M_AUDIO_CLASS       (V4L2_CTRL_CLASS_M2M_AUDIO | 1)
-+
- #endif
+ 	/* Compound types are >= 0x0100 */
+ 	V4L2_CTRL_COMPOUND_TYPES     = 0x0100,
 -- 
 2.34.1
 
