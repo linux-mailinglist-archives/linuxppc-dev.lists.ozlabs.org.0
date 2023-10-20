@@ -1,87 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 477007D05F1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Oct 2023 02:45:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A73D57D0798
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Oct 2023 07:27:18 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ExVI2Gv9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=i45AijkL;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SBQqF1Dsnz3dwr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Oct 2023 11:45:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SBY4N484Nz3cdM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Oct 2023 16:27:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ExVI2Gv9;
+	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=i45AijkL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2607:f8b0:4864:20::e2d; helo=mail-vs1-xe2d.google.com; envelope-from=apatel@ventanamicro.com; receiver=lists.ozlabs.org)
+Received: from mail-vs1-xe2d.google.com (mail-vs1-xe2d.google.com [IPv6:2607:f8b0:4864:20::e2d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SBQpK1lkMz300f
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Oct 2023 11:44:40 +1100 (AEDT)
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39K0Yd5J029182;
-	Fri, 20 Oct 2023 00:44:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=LhBOyEAMBfOJg4hWmoNV1vPLp07+joBgms+dLW6CcNA=;
- b=ExVI2Gv9+zJnSsSuwE2xk4v9QgH5vN/SHqZHPomY1OVSlop/VerxhmX9HFEBfPhJLQFx
- svLnJWRKagCzy3Jq7SyIL7rU1IdZ0yBksFwMpiJpZFjA+Wtq/lOscArBhZuLP49IrQqS
- HYR5LYtNJoN/JRNjs2hZ14okutz+37FbjwW1efXnd5tePkwOnFdsMIF4U5Fo4k5736LE
- 54BciOWiGj0Ssh0T0dqbnUymcIiwd8jCSym/nH+OTKuikXHMJK3kXZze7PfEFXc1KsWb
- lLP0a7UeJpwShsXhVF2dwvphjhmlmBBsnIX6Cy2rMedYLR3ePb2QgSA29+KKGsll1cjh bA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tuf4f85kn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Oct 2023 00:44:33 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39K0ZRJY030617;
-	Fri, 20 Oct 2023 00:44:32 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tuf4f85j0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Oct 2023 00:44:32 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39JNncZj002683;
-	Fri, 20 Oct 2023 00:44:31 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tuc4495dc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Oct 2023 00:44:31 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39K0iSJE43975420
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 20 Oct 2023 00:44:29 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9FB9758056;
-	Fri, 20 Oct 2023 00:44:28 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 216B55803F;
-	Fri, 20 Oct 2023 00:44:27 +0000 (GMT)
-Received: from localhost.ibm.com (unknown [9.67.91.245])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 20 Oct 2023 00:44:26 +0000 (GMT)
-From: Haren Myneni <haren@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3] powerpc/pseries/vas: Migration suspend waits for no in-progress open windows
-Date: Thu, 19 Oct 2023 17:44:24 -0700
-Message-Id: <20231020004424.1370320-1-haren@linux.ibm.com>
-X-Mailer: git-send-email 2.26.3
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SBY3V31BVz3bYc
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Oct 2023 16:26:28 +1100 (AEDT)
+Received: by mail-vs1-xe2d.google.com with SMTP id ada2fe7eead31-457c057bdb5so170553137.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Oct 2023 22:26:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1697779581; x=1698384381; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IVgRisShFqd7EiamTTw+bWWTirWYsFZ+qCSq/HGAIy0=;
+        b=i45AijkLlpmEj+rYRoMYOdQX2IPQcSn/uq/0/cNs6R2gMGdw8CpTuQ4jSb04H3nHpA
+         moUPqJrz5uj1a+ACGjcjsl/EkZlSJpc05ersw6lSSgLZXS214Pxddaw95bV4xW5ktUs5
+         MGU+uu+SCB860uliTaEmFJ3yq+ozWDYefQ8E4xALc16tdy3iV8Zsqz1LgHlLWrdZiBRJ
+         SQrgI21Ligx2bpTJK+/mHLeerbSyNY+M8PCIHP08wh8ORYELU8hsg7Lxtxix3Ekqbk7B
+         SJivUZEeBq3XXu7xLoDoAYdFmfMZ2qlg2vJ2TzTygEqe/I4+TM+/1/9ZNZTyGu0+AH7r
+         3Rfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697779581; x=1698384381;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IVgRisShFqd7EiamTTw+bWWTirWYsFZ+qCSq/HGAIy0=;
+        b=PLUbuS6Ai+eVDt9zPFmYOzVSdbJBDR6jc69t9caKkMKq6je/43yboxQyXuUCdF+MK/
+         DswTSkvyZvAWKJ1oossd56iF5kix5fq8sxalv55tFyV1e04h7ck9LR67s0fo+87fvnHT
+         9hh+zXPhb1kvitYo+Jmube9F1RfShzPOs7DWko5d2nZFKSPEB0dqZwNoN19ZJSG9H67r
+         xVFzeJvF19IwtM38Xsj0/n2XkDkGYvsDXaJfFOd24a17V6OmcWInDKsfJfSrxbLrbUfl
+         rTP/KsgfVcybJx7iinWsdpqXN8obKFqnQNYBsi+DUmTG6Dax4g5Oepy2dmT10N0gBQ0H
+         cTug==
+X-Gm-Message-State: AOJu0YxzaUi4rvpgpvm/hXxLnyZfDUD6pct15ts7YyqOoF9HzCsY0U86
+	C5W9kk2+qZN2Ecq0+FPRdLEBV2fDf1A8T4pwI6N4kQ==
+X-Google-Smtp-Source: AGHT+IHo8erdk2AN0cF2HUMClMRLyNwghQbHQC1m7KfJFjkcJhqBzh3HXIExQo07E3k6BH9SqTyX3KGslOi9ibHfP8c=
+X-Received: by 2002:a67:ef51:0:b0:457:dbe3:ef45 with SMTP id
+ k17-20020a67ef51000000b00457dbe3ef45mr1085001vsr.19.1697779581093; Thu, 19
+ Oct 2023 22:26:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 0uCGKFoawjNR-Eo24NCZOmxJ9jm8zaYU
-X-Proofpoint-GUID: nN7UuD6CyVfhffbzXEmKbPo8rbT1YJhO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-19_23,2023-10-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
- mlxscore=0 lowpriorityscore=0 bulkscore=0 priorityscore=1501 spamscore=0
- clxscore=1011 suspectscore=0 malwarescore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310170001
- definitions=main-2310200004
+References: <20231012051509.738750-1-apatel@ventanamicro.com>
+ <20231012051509.738750-4-apatel@ventanamicro.com> <20231019-1e6f411e1cbc4a3b0fbff3f5@orel>
+In-Reply-To: <20231019-1e6f411e1cbc4a3b0fbff3f5@orel>
+From: Anup Patel <apatel@ventanamicro.com>
+Date: Fri, 20 Oct 2023 10:56:09 +0530
+Message-ID: <CAK9=C2XSdrOSTp7skR4btGFkfL==0E+Su71d4bgJGXB80x6rBw@mail.gmail.com>
+Subject: Re: [PATCH v2 3/8] RISC-V: KVM: Allow some SBI extensions to be
+ disabled by default
+To: Andrew Jones <ajones@ventanamicro.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,206 +77,208 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, Haren Myneni <haren@linux.ibm.com>, npiggin@gmail.com
+Cc: linux-serial@vger.kernel.org, kvm@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Atish Patra <atishp@atishpatra.org>, linuxppc-dev@lists.ozlabs.org, Conor Dooley <conor@kernel.org>, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>, Paolo Bonzini <pbonzini@redhat.com>, linux-riscv@lists.infradead.org, Jiri Slaby <jirislaby@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The hypervisor returns migration failure if all VAS windows are not
-closed. During pre-migration stage, vas_migration_handler() sets
-migration_in_progress flag and closes all windows from the list.
-The allocate VAS window routine checks the migration flag, setup
-the window and then add it to the list. So there is possibility of
-the migration handler missing the window that is still in the
-process of setup.
+On Thu, Oct 19, 2023 at 1:27=E2=80=AFPM Andrew Jones <ajones@ventanamicro.c=
+om> wrote:
+>
+> On Thu, Oct 12, 2023 at 10:45:04AM +0530, Anup Patel wrote:
+> > Currently, all SBI extensions are enabled by default which is
+> > problematic for SBI extensions (such as DBCN) which are forwarded
+> > to the KVM user-space because we might have an older KVM user-space
+> > which is not aware/ready to handle newer SBI extensions. Ideally,
+> > the SBI extensions forwarded to the KVM user-space must be
+> > disabled by default.
+> >
+> > To address above, we allow certain SBI extensions to be disabled
+> > by default so that KVM user-space must explicitly enable such
+> > SBI extensions to receive forwarded calls from Guest VCPU.
+> >
+> > Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+> > ---
+> >  arch/riscv/include/asm/kvm_vcpu_sbi.h |  4 +++
+> >  arch/riscv/kvm/vcpu.c                 |  6 ++++
+> >  arch/riscv/kvm/vcpu_sbi.c             | 45 ++++++++++++++++-----------
+> >  3 files changed, 36 insertions(+), 19 deletions(-)
+> >
+> > diff --git a/arch/riscv/include/asm/kvm_vcpu_sbi.h b/arch/riscv/include=
+/asm/kvm_vcpu_sbi.h
+> > index 8d6d4dce8a5e..c02bda5559d7 100644
+> > --- a/arch/riscv/include/asm/kvm_vcpu_sbi.h
+> > +++ b/arch/riscv/include/asm/kvm_vcpu_sbi.h
+> > @@ -35,6 +35,9 @@ struct kvm_vcpu_sbi_return {
+> >  struct kvm_vcpu_sbi_extension {
+> >       unsigned long extid_start;
+> >       unsigned long extid_end;
+> > +
+> > +     bool default_unavail;
+> > +
+> >       /**
+> >        * SBI extension handler. It can be defined for a given extension=
+ or group of
+> >        * extension. But it should always return linux error codes rathe=
+r than SBI
+> > @@ -59,6 +62,7 @@ int kvm_riscv_vcpu_get_reg_sbi_ext(struct kvm_vcpu *v=
+cpu,
+> >  const struct kvm_vcpu_sbi_extension *kvm_vcpu_sbi_find_ext(
+> >                               struct kvm_vcpu *vcpu, unsigned long exti=
+d);
+> >  int kvm_riscv_vcpu_sbi_ecall(struct kvm_vcpu *vcpu, struct kvm_run *ru=
+n);
+> > +void kvm_riscv_vcpu_sbi_init(struct kvm_vcpu *vcpu);
+> >
+> >  #ifdef CONFIG_RISCV_SBI_V01
+> >  extern const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_v01;
+> > diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
+> > index c061a1c5fe98..e087c809073c 100644
+> > --- a/arch/riscv/kvm/vcpu.c
+> > +++ b/arch/riscv/kvm/vcpu.c
+> > @@ -141,6 +141,12 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
+> >       if (rc)
+> >               return rc;
+> >
+> > +     /*
+> > +      * Setup SBI extensions
+> > +      * NOTE: This must be the last thing to be initialized.
+> > +      */
+> > +     kvm_riscv_vcpu_sbi_init(vcpu);
+>
+> With this, we no longer defer probing to the first access (whether that's
+> by the guest or KVM userspace). With our current small set of SBI
+> extensions where only a single one has a probe function, then this
+> simpler approach is good enough. We can always go back to the lazy
+> approach later if needed.
 
-t1: Allocate and open VAS	t2: Migration event
-    window
+I agree. We can fallback to lazy probing in the future if required.
 
-lock vas_pseries_mutex
-If migration_in_progress set
-  unlock vas_pseries_mutex
-  return
-open window HCALL
-unlock vas_pseries_mutex
-Modify window HCALL		lock vas_pseries_mutex
-setup window			migration_in_progress=true
-				Closes all windows from
-				the list
-				unlock vas_pseries_mutex
-lock vas_pseries_mutex		return
-if nr_closed_windows == 0
-  // No DLPAR CPU or migration
-  add to the list
-  unlock vas_pseries_mutex
-  return
-unlock vas_pseries_mutex
-Close VAS window
-// due to DLPAR CPU or migration
-return -EBUSY
+>
+> > +
+> >       /* Reset VCPU */
+> >       kvm_riscv_reset_vcpu(vcpu);
+> >
+> > diff --git a/arch/riscv/kvm/vcpu_sbi.c b/arch/riscv/kvm/vcpu_sbi.c
+> > index 9cd97091c723..1b1cee86efda 100644
+> > --- a/arch/riscv/kvm/vcpu_sbi.c
+> > +++ b/arch/riscv/kvm/vcpu_sbi.c
+> > @@ -155,14 +155,8 @@ static int riscv_vcpu_set_sbi_ext_single(struct kv=
+m_vcpu *vcpu,
+> >       if (!sext)
+> >               return -ENOENT;
+> >
+> > -     /*
+> > -      * We can't set the extension status to available here, since it =
+may
+> > -      * have a probe() function which needs to confirm availability fi=
+rst,
+> > -      * but it may be too early to call that here. We can set the stat=
+us to
+> > -      * unavailable, though.
+> > -      */
+> > -     if (!reg_val)
+> > -             scontext->ext_status[sext->ext_idx] =3D
+> > +     scontext->ext_status[sext->ext_idx] =3D (reg_val) ?
+> > +                     KVM_RISCV_SBI_EXT_AVAILABLE :
+> >                       KVM_RISCV_SBI_EXT_UNAVAILABLE;
+>
+> We're missing the change to riscv_vcpu_get_sbi_ext_single() which should
+> also drop the comment block explaining the limits to status knowledge
+> without initial probing (which we now do) and then just check for
+> available, i.e.
+>
+> diff --git a/arch/riscv/kvm/vcpu_sbi.c b/arch/riscv/kvm/vcpu_sbi.c
+> index bb76c3cf633f..92c42d9aba1c 100644
+> --- a/arch/riscv/kvm/vcpu_sbi.c
+> +++ b/arch/riscv/kvm/vcpu_sbi.c
+> @@ -186,15 +186,8 @@ static int riscv_vcpu_get_sbi_ext_single(struct kvm_=
+vcpu *vcpu,
+>         if (!sext)
+>                 return -ENOENT;
+>
+> -       /*
+> -        * If the extension status is still uninitialized, then we should=
+ probe
+> -        * to determine if it's available, but it may be too early to do =
+that
+> -        * here. The best we can do is report that the extension has not =
+been
+> -        * disabled, i.e. we return 1 when the extension is available and=
+ also
+> -        * when it only may be available.
+> -        */
+> -       *reg_val =3D scontext->ext_status[sext->ext_idx] !=3D
+> -                               KVM_RISCV_SBI_EXT_UNAVAILABLE;
+> +       *reg_val =3D scontext->ext_status[sext->ext_idx] =3D=3D
+> +                               KVM_RISCV_SBI_EXT_AVAILABLE;
+>
+>         return 0;
+>  }
 
-This patch resolves the issue with the following steps:
-- Set the migration_in_progress flag without holding mutex.
-- Introduce nr_open_wins_progress counter in VAS capabilities
-  struct
-- This counter tracks the number of open windows are still in
-  progress
-- The allocate setup window thread closes windows if the migration
-  is set and decrements nr_open_window_progress counter
-- The migration handler waits for no in-progress open windows.
+Thanks, I will include this change in the next revision.
 
-Fixes: 37e6764895ef ("powerpc/pseries/vas: Add VAS migration handler")
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+>
+> >
+> >       return 0;
+> > @@ -337,18 +331,8 @@ const struct kvm_vcpu_sbi_extension *kvm_vcpu_sbi_=
+find_ext(
+> >                           scontext->ext_status[entry->ext_idx] =3D=3D
+> >                                               KVM_RISCV_SBI_EXT_AVAILAB=
+LE)
+> >                               return ext;
+> > -                     if (scontext->ext_status[entry->ext_idx] =3D=3D
+> > -                                             KVM_RISCV_SBI_EXT_UNAVAIL=
+ABLE)
+> > -                             return NULL;
+> > -                     if (ext->probe && !ext->probe(vcpu)) {
+> > -                             scontext->ext_status[entry->ext_idx] =3D
+> > -                                     KVM_RISCV_SBI_EXT_UNAVAILABLE;
+> > -                             return NULL;
+> > -                     }
+> >
+> > -                     scontext->ext_status[entry->ext_idx] =3D
+> > -                             KVM_RISCV_SBI_EXT_AVAILABLE;
+> > -                     return ext;
+> > +                     return NULL;
+> >               }
+> >       }
+> >
+> > @@ -419,3 +403,26 @@ int kvm_riscv_vcpu_sbi_ecall(struct kvm_vcpu *vcpu=
+, struct kvm_run *run)
+> >
+> >       return ret;
+> >  }
+> > +
+> > +void kvm_riscv_vcpu_sbi_init(struct kvm_vcpu *vcpu)
+> > +{
+> > +     struct kvm_vcpu_sbi_context *scontext =3D &vcpu->arch.sbi_context=
+;
+> > +     const struct kvm_riscv_sbi_extension_entry *entry;
+> > +     const struct kvm_vcpu_sbi_extension *ext;
+> > +     int i;
+> > +
+> > +     for (i =3D 0; i < ARRAY_SIZE(sbi_ext); i++) {
+> > +             entry =3D &sbi_ext[i];
+> > +             ext =3D entry->ext_ptr;
+> > +
+> > +             if (ext->probe && !ext->probe(vcpu)) {
+> > +                     scontext->ext_status[entry->ext_idx] =3D
+> > +                             KVM_RISCV_SBI_EXT_UNAVAILABLE;
+> > +                     continue;
+> > +             }
+> > +
+> > +             scontext->ext_status[entry->ext_idx] =3D ext->default_una=
+vail ?
+> > +                                     KVM_RISCV_SBI_EXT_UNAVAILABLE :
+> > +                                     KVM_RISCV_SBI_EXT_AVAILABLE;
+> > +     }
+> > +}
+> > --
+> > 2.34.1
+> >
+>
+> Thanks,
+> drew
 
----
-v1 -> v2:
-- Do not define the migration_in_progress flag as atomic as
-  suggested by Nathan
-
-v2 -> v3:
-- Use wait_event() instead of wait_event_interruptible() so that
-  returns after all windows are closed as suggested by Nathan
----
- arch/powerpc/platforms/pseries/vas.c | 45 +++++++++++++++++++++++-----
- arch/powerpc/platforms/pseries/vas.h |  2 ++
- 2 files changed, 40 insertions(+), 7 deletions(-)
-
-diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
-index 88bee56ff92b..c2c6cc2b22ea 100644
---- a/arch/powerpc/platforms/pseries/vas.c
-+++ b/arch/powerpc/platforms/pseries/vas.c
-@@ -32,6 +32,7 @@ static struct hv_vas_cop_feat_caps hv_cop_caps;
- static struct vas_caps vascaps[VAS_MAX_FEAT_TYPE];
- static DEFINE_MUTEX(vas_pseries_mutex);
- static bool migration_in_progress;
-+static DECLARE_WAIT_QUEUE_HEAD(open_win_progress_wq);
- 
- static long hcall_return_busy_check(long rc)
- {
-@@ -384,11 +385,15 @@ static struct vas_window *vas_allocate_window(int vas_id, u64 flags,
- 	 * same fault IRQ is not freed by the OS before.
- 	 */
- 	mutex_lock(&vas_pseries_mutex);
--	if (migration_in_progress)
-+	if (migration_in_progress) {
- 		rc = -EBUSY;
--	else
-+	} else {
- 		rc = allocate_setup_window(txwin, (u64 *)&domain[0],
- 				   cop_feat_caps->win_type);
-+		if (!rc)
-+			atomic_inc(&caps->nr_open_wins_progress);
-+	}
-+
- 	mutex_unlock(&vas_pseries_mutex);
- 	if (rc)
- 		goto out;
-@@ -403,8 +408,17 @@ static struct vas_window *vas_allocate_window(int vas_id, u64 flags,
- 		goto out_free;
- 
- 	txwin->win_type = cop_feat_caps->win_type;
--	mutex_lock(&vas_pseries_mutex);
-+
- 	/*
-+	 * The migration SUSPEND thread sets migration_in_progress and
-+	 * closes all open windows from the list. But the window is
-+	 * added to the list after open and modify HCALLs. So possible
-+	 * that migration_in_progress is set before modify HCALL which
-+	 * may cause some windows are still open when the hypervisor
-+	 * initiates the migration.
-+	 * So checks the migration_in_progress flag again and close all
-+	 * open windows.
-+	 *
- 	 * Possible to lose the acquired credit with DLPAR core
- 	 * removal after the window is opened. So if there are any
- 	 * closed windows (means with lost credits), do not give new
-@@ -412,9 +426,11 @@ static struct vas_window *vas_allocate_window(int vas_id, u64 flags,
- 	 * after the existing windows are reopened when credits are
- 	 * available.
- 	 */
--	if (!caps->nr_close_wins) {
-+	mutex_lock(&vas_pseries_mutex);
-+	if (!caps->nr_close_wins && !migration_in_progress) {
- 		list_add(&txwin->win_list, &caps->list);
- 		caps->nr_open_windows++;
-+		atomic_dec(&caps->nr_open_wins_progress);
- 		mutex_unlock(&vas_pseries_mutex);
- 		vas_user_win_add_mm_context(&txwin->vas_win.task_ref);
- 		return &txwin->vas_win;
-@@ -432,6 +448,8 @@ static struct vas_window *vas_allocate_window(int vas_id, u64 flags,
- 	 */
- 	free_irq_setup(txwin);
- 	h_deallocate_vas_window(txwin->vas_win.winid);
-+	if (atomic_dec_return(&caps->nr_open_wins_progress) == 0)
-+		wake_up(&open_win_progress_wq);
- out:
- 	atomic_dec(&cop_feat_caps->nr_used_credits);
- 	kfree(txwin);
-@@ -931,14 +949,14 @@ int vas_migration_handler(int action)
- 	struct vas_caps *vcaps;
- 	int i, rc = 0;
- 
-+	pr_info("VAS migration event %d\n", action);
-+
- 	/*
- 	 * NX-GZIP is not enabled. Nothing to do for migration.
- 	 */
- 	if (!copypaste_feat)
- 		return rc;
- 
--	mutex_lock(&vas_pseries_mutex);
--
- 	if (action == VAS_SUSPEND)
- 		migration_in_progress = true;
- 	else
-@@ -984,12 +1002,24 @@ int vas_migration_handler(int action)
- 
- 		switch (action) {
- 		case VAS_SUSPEND:
-+			mutex_lock(&vas_pseries_mutex);
- 			rc = reconfig_close_windows(vcaps, vcaps->nr_open_windows,
- 							true);
-+			mutex_unlock(&vas_pseries_mutex);
-+			/*
-+			 * Windows are included in the list after successful
-+			 * open. So wait for closing these in-progress open
-+			 * windows in vas_allocate_window() which will be
-+			 * done if the migration_in_progress is set.
-+			 */
-+			wait_event(open_win_progress_wq,
-+				!atomic_read(&vcaps->nr_open_wins_progress));
- 			break;
- 		case VAS_RESUME:
-+			mutex_lock(&vas_pseries_mutex);
- 			atomic_set(&caps->nr_total_credits, new_nr_creds);
- 			rc = reconfig_open_windows(vcaps, new_nr_creds, true);
-+			mutex_unlock(&vas_pseries_mutex);
- 			break;
- 		default:
- 			/* should not happen */
-@@ -1005,8 +1035,9 @@ int vas_migration_handler(int action)
- 			goto out;
- 	}
- 
-+	pr_info("VAS migration event (%d) successful\n", action);
-+
- out:
--	mutex_unlock(&vas_pseries_mutex);
- 	return rc;
- }
- 
-diff --git a/arch/powerpc/platforms/pseries/vas.h b/arch/powerpc/platforms/pseries/vas.h
-index 7115043ec488..35e899f2ee20 100644
---- a/arch/powerpc/platforms/pseries/vas.h
-+++ b/arch/powerpc/platforms/pseries/vas.h
-@@ -91,6 +91,8 @@ struct vas_cop_feat_caps {
- struct vas_caps {
- 	struct vas_cop_feat_caps caps;
- 	struct list_head list;	/* List of open windows */
-+	atomic_t nr_open_wins_progress;	/* Number of open windows in */
-+					/* progress. Used in migration */
- 	int nr_close_wins;	/* closed windows in the hypervisor for DLPAR */
- 	int nr_open_windows;	/* Number of successful open windows */
- 	u8 feat;		/* Feature type */
--- 
-2.26.3
-
+Regards,
+Anup
