@@ -1,70 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 800E07D10C0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Oct 2023 15:48:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F2AC7D1157
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Oct 2023 16:15:17 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=bPlWy9Hf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=stqh7lJN;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SBmBG3GZkz3dC5
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Oct 2023 00:48:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SBmnb1yDgz3dBM
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Oct 2023 01:15:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=bPlWy9Hf;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=stqh7lJN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2607:f8b0:4864:20::429; helo=mail-pf1-x429.google.com; envelope-from=apatel@ventanamicro.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SBm9Q2JgRz3cFL
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Oct 2023 00:47:20 +1100 (AEDT)
-Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-6b709048f32so747434b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Oct 2023 06:47:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1697809636; x=1698414436; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ujFKaHWQlVUmMQlPTcdZIic60Ioy7TSqQ3nDhHoDDn0=;
-        b=bPlWy9HfwRCdPVwnEQhcSVIr9lIbvNRFfDIj/w8V87hIQMoMykdYq9R2dPoaLMYcd7
-         CgTm6crZ0WKg6koHtVgIocMqPv5Sd/cWOhifgwynYR2n5UYzlWgdXQAG45jBoEs9zrEq
-         3uaYvGzDOKqmJAxSrbMU/BzrxeWsgZHzANEVdc1oAgV38knotZc79+Pg8vLagAtG9Vvx
-         3FegQH8BMNC5+jRR+Iz+LTHMUlqoF58EWfqIeXpa9gqsHo32ZlWvPGVxF7RTlfV7Omnw
-         fJfrugDdQUIOLcV0h8XclHI9n0Wdt9F1QejlJsQ/39hKQFi5Ye7JCvuzF54Rcofs5BIT
-         CM1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697809636; x=1698414436;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ujFKaHWQlVUmMQlPTcdZIic60Ioy7TSqQ3nDhHoDDn0=;
-        b=akbnNEUq1KS1KySGw/PoG76CcM+CTvrCCPlo701k66wATCcFtq5jBogt0qeQlP6mG2
-         RuvH+uQHC5mJrNX0KHq68H+hQKPrT/j3aUJOOFOLZ5qR1rmnGfZAKFzT09bJDmIXPVde
-         o6WBhQZMasJ9iW3cQaGK49kXBhdapDG9lXGOld1BJCFwKijc1tV55rZK124Je6YDsNXc
-         Cu5UxJWVFYCoIg/FGnEPVUPZ21X0NvMKku60svluU5R6gvFsTvAntM/MP4YwAo+RWUVI
-         l70iTiRVxfbNkI+gPcWOQlsmrtW4VFj0+00DHfQBV59hTw5dtL9BAUBwhDKUOjkXeekG
-         RMNw==
-X-Gm-Message-State: AOJu0Yzj/FXwXD0UC7WybDicP55odfwJLOovnWDht3xXGLNov4+p4+Cq
-	rF5B0HOJIOqnYCgsX81og23ZyiQ2qgKSGcXTQTTUxw==
-X-Google-Smtp-Source: AGHT+IEe1qO4q6kLy01GbxGxRAix8XMIPBN+082Nf7nryQBHvgSvHroABh+Pz6NLehEhxMDygq9zBHrYtbpZO8gR1/0=
-X-Received: by 2002:a05:6a21:66cb:b0:172:f4e:5104 with SMTP id
- ze11-20020a056a2166cb00b001720f4e5104mr1738132pzb.20.1697809636011; Fri, 20
- Oct 2023 06:47:16 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SBmmj3y9fz3bT8
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Oct 2023 01:14:28 +1100 (AEDT)
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39KEA4BW010079;
+	Fri, 20 Oct 2023 14:14:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=vYihVZhhEqkil7q6mTllNMq9mfh32x1mF1x7BTOUpAg=;
+ b=stqh7lJNzzwXuMKLoRpogoUfGBha30pWpWttDZ0zn7Zd7Qt1fTAB1p80wdpeZqbZp+xB
+ M3uQSk260m2CBWcKuILBLOJ6XfpVcrD5u6TWQWSJplh1/GyhYX88tAA8YkmTxUEtMbqd
+ l/RO9r7nFR1YT6WYsQdV8Aot+vuI55Qn41NRYk0h6niJVS3EQdGNV5kLKWnFLniMxNrh
+ a/m3gYRjnf2b2nZf5Z+AkeMaQrapsrPdBQda17rC+3LK+38+KfyqSFMicDkOn1NzA8IC
+ DtxoZ80Qt25NxgKnQVCIdIJMFyabJrP10LJKhoK+bhO/dRrW4HshhmnVckWxwyCkyDgk Mg== 
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tuu2w84gc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 20 Oct 2023 14:14:05 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39KBxLm3024162;
+	Fri, 20 Oct 2023 14:14:04 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tuc2951hx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 20 Oct 2023 14:14:04 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39KEE2lj21299930
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 20 Oct 2023 14:14:02 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3077520043;
+	Fri, 20 Oct 2023 14:14:02 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E2FCC20040;
+	Fri, 20 Oct 2023 14:13:59 +0000 (GMT)
+Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.ibm.com.com (unknown [9.43.18.181])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 20 Oct 2023 14:13:59 +0000 (GMT)
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org
+Subject: [PATCH v7 0/5] powerpc/bpf: use BPF prog pack allocator
+Date: Fri, 20 Oct 2023 19:43:53 +0530
+Message-ID: <20231020141358.643575-1-hbathini@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: R921qn1U7N0_S4OYz292ecGosRJSdehs
+X-Proofpoint-ORIG-GUID: R921qn1U7N0_S4OYz292ecGosRJSdehs
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <20231020072140.900967-1-apatel@ventanamicro.com>
- <20231020072140.900967-9-apatel@ventanamicro.com> <20231020-f1ec2b7e384a4cfeae39966f@orel>
-In-Reply-To: <20231020-f1ec2b7e384a4cfeae39966f@orel>
-From: Anup Patel <apatel@ventanamicro.com>
-Date: Fri, 20 Oct 2023 19:17:03 +0530
-Message-ID: <CAK9=C2Vg8O_6OaND_s1MhpBHpm1petoU7DNXOOaSOxXYUY1iAw@mail.gmail.com>
-Subject: Re: [PATCH v3 8/9] tty: Add SBI debug console support to HVC SBI driver
-To: Andrew Jones <ajones@ventanamicro.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-20_10,2023-10-19_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 phishscore=0
+ mlxscore=0 spamscore=0 mlxlogscore=688 lowpriorityscore=0
+ priorityscore=1501 impostorscore=0 clxscore=1015 suspectscore=0
+ bulkscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310170001 definitions=main-2310200116
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,186 +87,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-serial@vger.kernel.org, kvm@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Atish Patra <atishp@atishpatra.org>, Atish Patra <atishp@rivosinc.com>, linuxppc-dev@lists.ozlabs.org, Conor Dooley <conor@kernel.org>, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>, Paolo Bonzini <pbonzini@redhat.com>, linux-riscv@lists.infradead.org, Jiri Slaby <jirislaby@kernel.org>
+Cc: Song Liu <songliubraving@fb.com>, Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 20, 2023 at 4:16=E2=80=AFPM Andrew Jones <ajones@ventanamicro.c=
-om> wrote:
->
-> On Fri, Oct 20, 2023 at 12:51:39PM +0530, Anup Patel wrote:
-> > From: Atish Patra <atishp@rivosinc.com>
-> >
-> > RISC-V SBI specification supports advanced debug console
-> > support via SBI DBCN extension.
-> >
-> > Extend the HVC SBI driver to support it.
-> >
-> > Signed-off-by: Atish Patra <atishp@rivosinc.com>
-> > Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-> > ---
-> >  drivers/tty/hvc/Kconfig         |  2 +-
-> >  drivers/tty/hvc/hvc_riscv_sbi.c | 82 ++++++++++++++++++++++++++++++---
-> >  2 files changed, 76 insertions(+), 8 deletions(-)
-> >
-> > diff --git a/drivers/tty/hvc/Kconfig b/drivers/tty/hvc/Kconfig
-> > index 4f9264d005c0..6e05c5c7bca1 100644
-> > --- a/drivers/tty/hvc/Kconfig
-> > +++ b/drivers/tty/hvc/Kconfig
-> > @@ -108,7 +108,7 @@ config HVC_DCC_SERIALIZE_SMP
-> >
-> >  config HVC_RISCV_SBI
-> >       bool "RISC-V SBI console support"
-> > -     depends on RISCV_SBI_V01
-> > +     depends on RISCV_SBI
-> >       select HVC_DRIVER
-> >       help
-> >         This enables support for console output via RISC-V SBI calls, w=
-hich
-> > diff --git a/drivers/tty/hvc/hvc_riscv_sbi.c b/drivers/tty/hvc/hvc_risc=
-v_sbi.c
-> > index 31f53fa77e4a..56da1a4b5aca 100644
-> > --- a/drivers/tty/hvc/hvc_riscv_sbi.c
-> > +++ b/drivers/tty/hvc/hvc_riscv_sbi.c
-> > @@ -39,21 +39,89 @@ static int hvc_sbi_tty_get(uint32_t vtermno, char *=
-buf, int count)
-> >       return i;
-> >  }
-> >
-> > -static const struct hv_ops hvc_sbi_ops =3D {
-> > +static const struct hv_ops hvc_sbi_v01_ops =3D {
-> >       .get_chars =3D hvc_sbi_tty_get,
-> >       .put_chars =3D hvc_sbi_tty_put,
-> >  };
-> >
-> > -static int __init hvc_sbi_init(void)
-> > +static int hvc_sbi_dbcn_tty_put(uint32_t vtermno, const char *buf, int=
- count)
-> >  {
-> > -     return PTR_ERR_OR_ZERO(hvc_alloc(0, 0, &hvc_sbi_ops, 16));
-> > +     phys_addr_t pa;
-> > +     struct sbiret ret;
-> > +
-> > +     if (is_vmalloc_addr(buf)) {
-> > +             pa =3D page_to_phys(vmalloc_to_page(buf)) + offset_in_pag=
-e(buf);
-> > +             if (PAGE_SIZE < (offset_in_page(buf) + count))
->
-> I thought checkpatch complained about uppercase constants being on the
-> left in comparisons.
+Most BPF programs are small, but they consume a page each. For systems
+with busy traffic and many BPF programs, this may also add significant
+pressure on instruction TLB. High iTLB pressure usually slows down the
+whole system causing visible performance degradation for production
+workloads.
 
-Nope checkpatch does not complain about this.
+bpf_prog_pack, a customized allocator that packs multiple bpf programs
+into preallocated memory chunks, was proposed [1] to address it. This
+series extends this support on powerpc.
 
->
-> > +                     count =3D PAGE_SIZE - offset_in_page(buf);
-> > +     } else {
-> > +             pa =3D __pa(buf);
-> > +     }
-> > +
-> > +     if (IS_ENABLED(CONFIG_32BIT))
-> > +             ret =3D sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRIT=
-E,
-> > +                             count, lower_32_bits(pa), upper_32_bits(p=
-a),
-> > +                             0, 0, 0);
-> > +     else
-> > +             ret =3D sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRIT=
-E,
-> > +                             count, pa, 0, 0, 0, 0);
-> > +     if (ret.error)
-> > +             return 0;
-> > +
-> > +     return count;
->
-> Shouldn't we return ret.value here in case it's less than count? I see we
-> already do that below in get().
+Both bpf_arch_text_copy() & bpf_arch_text_invalidate() functions,
+needed for this support depend on instruction patching in text area.
+Currently, patch_instruction() supports patching only one instruction
+at a time. The first patch introduces patch_instructions() function
+to enable patching more than one instruction at a time. This helps in
+avoiding performance degradation while JITing bpf programs.
 
-Ahh, yes. Good catch, I will update.
+Patches 2 & 3 implement the above mentioned arch specific functions
+using patch_instructions(). Patch 4 fixes a misnomer in bpf JITing
+code. The last patch enables the use of BPF prog pack allocator on
+powerpc and also, ensures cleanup is handled gracefully.
 
->
-> >  }
-> > -device_initcall(hvc_sbi_init);
-> >
-> > -static int __init hvc_sbi_console_init(void)
-> > +static int hvc_sbi_dbcn_tty_get(uint32_t vtermno, char *buf, int count=
-)
-> >  {
-> > -     hvc_instantiate(0, 0, &hvc_sbi_ops);
-> > +     phys_addr_t pa;
-> > +     struct sbiret ret;
-> > +
-> > +     if (is_vmalloc_addr(buf)) {
-> > +             pa =3D page_to_phys(vmalloc_to_page(buf)) + offset_in_pag=
-e(buf);
-> > +             if (PAGE_SIZE < (offset_in_page(buf) + count))
-> > +                     count =3D PAGE_SIZE - offset_in_page(buf);
-> > +     } else {
-> > +             pa =3D __pa(buf);
-> > +     }
-> > +
-> > +     if (IS_ENABLED(CONFIG_32BIT))
-> > +             ret =3D sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_READ=
-,
-> > +                             count, lower_32_bits(pa), upper_32_bits(p=
-a),
-> > +                             0, 0, 0);
-> > +     else
-> > +             ret =3D sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_READ=
-,
-> > +                             count, pa, 0, 0, 0, 0);
-> > +     if (ret.error)
-> > +             return 0;
-> > +
-> > +     return ret.value;
-> > +}
-> > +
-> > +static const struct hv_ops hvc_sbi_dbcn_ops =3D {
-> > +     .put_chars =3D hvc_sbi_dbcn_tty_put,
-> > +     .get_chars =3D hvc_sbi_dbcn_tty_get,
-> > +};
-> > +
-> > +static int __init hvc_sbi_init(void)
-> > +{
-> > +     int err;
-> > +
-> > +     if ((sbi_spec_version >=3D sbi_mk_version(2, 0)) &&
-> > +         (sbi_probe_extension(SBI_EXT_DBCN) > 0)) {
-> > +             err =3D PTR_ERR_OR_ZERO(hvc_alloc(0, 0, &hvc_sbi_dbcn_ops=
-, 16));
->
-> Why an outbuf size of only 16?
+[1] https://lore.kernel.org/bpf/20220204185742.271030-1-song@kernel.org/
 
-The output buffer size of 16 is a very common choice across
-HVC drivers. The next best choice is 256.
+Changes in v7:
+* Fixed crash observed with !STRICT_RWX.
 
-I guess 256 is better so I will go with that.
+Changes in v6:
+* No changes in patches 2-5/5 except addition of Acked-by tags from Song.
+* Skipped merging code path of patch_instruction() & patch_instructions()
+  to avoid performance overhead observed on ppc32 with that.
 
->
-> > +             if (err)
-> > +                     return err;
-> > +             hvc_instantiate(0, 0, &hvc_sbi_dbcn_ops);
-> > +     } else {
-> > +             if (IS_ENABLED(CONFIG_RISCV_SBI_V01)) {
-> > +                     err =3D PTR_ERR_OR_ZERO(hvc_alloc(0, 0, &hvc_sbi_=
-v01_ops, 16));
-> > +                     if (err)
-> > +                             return err;
-> > +                     hvc_instantiate(0, 0, &hvc_sbi_v01_ops);
-> > +             } else {
-> > +                     return -ENODEV;
-> > +             }
-> > +     }
-> >
-> >       return 0;
-> >  }
-> > -console_initcall(hvc_sbi_console_init);
-> > +device_initcall(hvc_sbi_init);
-> > --
-> > 2.34.1
-> >
->
-> Thanks,
-> drew
+Changes in v5:
+* Moved introduction of patch_instructions() as 1st patch in series.
+* Improved patch_instructions() to use memset & memcpy.
+* Fixed the misnomer in JITing code as a separate patch.
+* Removed unused bpf_flush_icache() function.
 
-Regards,
-Anup
+Changes in v4:
+* Updated bpf_patch_instructions() definition in patch 1/5 so that
+  it doesn't have to be updated again in patch 2/5.
+* Addressed Christophe's comment on bpf_arch_text_invalidate() return
+  value in patch 2/5.
+
+Changes in v3:
+* Fixed segfault issue observed on ppc32 due to inaccurate offset
+  calculation for branching.
+* Tried to minimize the performance impact for patch_instruction()
+  with the introduction of patch_instructions().
+* Corrected uses of u32* vs ppc_instr_t.
+* Moved the change that introduces patch_instructions() to after
+  enabling bpf_prog_pack support.
+* Added few comments to improve code readability.
+
+Changes in v2:
+* Introduced patch_instructions() to help with patching bpf programs.
+
+
+Hari Bathini (5):
+  powerpc/code-patching: introduce patch_instructions()
+  powerpc/bpf: implement bpf_arch_text_copy
+  powerpc/bpf: implement bpf_arch_text_invalidate for bpf_prog_pack
+  powerpc/bpf: rename powerpc64_jit_data to powerpc_jit_data
+  powerpc/bpf: use bpf_jit_binary_pack_[alloc|finalize|free]
+
+ arch/powerpc/include/asm/code-patching.h |   1 +
+ arch/powerpc/lib/code-patching.c         | 141 +++++++++++++++++++++-
+ arch/powerpc/net/bpf_jit.h               |  18 +--
+ arch/powerpc/net/bpf_jit_comp.c          | 145 ++++++++++++++++++-----
+ arch/powerpc/net/bpf_jit_comp32.c        |  13 +-
+ arch/powerpc/net/bpf_jit_comp64.c        |  10 +-
+ 6 files changed, 271 insertions(+), 57 deletions(-)
+
+-- 
+2.41.0
+
