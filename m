@@ -1,97 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC7A87D09B9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Oct 2023 09:51:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB477D0A56
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Oct 2023 10:14:39 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=m6d45GUQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=O5tRks0h;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SBcHC4DYSz3dFL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Oct 2023 18:51:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SBcnT42dYz3fFT
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Oct 2023 19:14:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=m6d45GUQ;
+	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=O5tRks0h;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2a00:1450:4864:20::62e; helo=mail-ej1-x62e.google.com; envelope-from=ajones@ventanamicro.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SBcGG0Krnz30MQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Oct 2023 18:51:01 +1100 (AEDT)
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39K7mRQ2004535;
-	Fri, 20 Oct 2023 07:50:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=e8tVBaP4rUo7ARgSkxRhpBP3qGXpMtmE+c9ua0BGE5k=;
- b=m6d45GUQSj3wwcq5RTE5y542M8ElGzsLD3yfECmKbyyRaM2Lm8TJmzZnwfMlFoiim08t
- 6pEc1JCbalz/7lwIbEW8//pxVSPTAIYpYbxX9wWPTOct4G15izznfADi9CHwnj+Muj16
- UF6Bkf/TzQrbtLwvJz5qPDuo3sUULtygY+jejsT2FPIGuEXNPTuneudyknDOioDvejsi
- RIMWbrUjWqzbw9nLE2hY42xEVtuIgvam5yXj614VXThkBqGRFss5enLunsMBLwPUnrrU
- xnuDas77Ju7t/A7I1x5Nqs5dJZMTu8W9NP0J3GWAl2krd/vo4EwFJ0x96cuZF3o4huyb uw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tunc60af6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Oct 2023 07:50:53 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39K7maXG005424;
-	Fri, 20 Oct 2023 07:50:53 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tunc60aet-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Oct 2023 07:50:53 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39K66CVv002735;
-	Fri, 20 Oct 2023 07:50:52 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tuc44b52h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Oct 2023 07:50:52 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39K7olbp24445582
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 20 Oct 2023 07:50:47 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2C31C2004B;
-	Fri, 20 Oct 2023 07:50:47 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 204E32004E;
-	Fri, 20 Oct 2023 07:50:45 +0000 (GMT)
-Received: from [9.203.106.137] (unknown [9.203.106.137])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 20 Oct 2023 07:50:44 +0000 (GMT)
-Message-ID: <71e968e2-4d9e-bf65-d00c-bb9feac7e4ed@linux.ibm.com>
-Date: Fri, 20 Oct 2023 13:20:44 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SBcmb0jlLz300f
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Oct 2023 19:13:49 +1100 (AEDT)
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-99c3d3c3db9so80495166b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Oct 2023 01:13:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1697789623; x=1698394423; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=it5LId2C4H1U91VsyvnGjoaX7yK9lqJY40QPQhvwsSU=;
+        b=O5tRks0hcJJEQkStP4hO+jdHDgvPZb+qBETJFLJmClIJn57BLby/sjoEYsz8X9fm0f
+         0NdcQ8+9xK0oe1HzSqP93OKwCICpf+0GL1Pc8opk1eJfZJjpQF2TNGXImjdabnrrGUb9
+         mhsPa7z+MDYxM4+FHqzRO6/2mVkt5jwbLA3gn+BJ7bAJvJrxHcMkWXWlmYA3rY1hKZXP
+         QHHCIUoa3THw4CIHg1Ycx0Ep8L9TIYAfW2nQxWvTy/NRZis2ZmTRu1psVi5Vf7hzPqTa
+         8B1hbSaTsxM/+7ranwVVwOi456D52kn23xgog1Mpx/4upJNPoQwGOuDbS+FzD0ciZbnw
+         vDPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697789623; x=1698394423;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=it5LId2C4H1U91VsyvnGjoaX7yK9lqJY40QPQhvwsSU=;
+        b=M3ql6hg2ohrSL0arVbmK+M505QfJZP/ey7Qhahxm3qlFpM4PQKt3PzoaDAA2E1u7ze
+         QtuJdadO2rWNQmsVul+hEMNQSTW2rn00+9jgX1bKBUUCETrdKRVbst9NnLYrANKNHvug
+         btG2eb5pYdlurb5PLLgTNcMFXUgS15l5iiklhnpBSGgxEALJe/EKGjx7es791UEOMFUo
+         L5AblMUlMyxxSoOWkfLIZfdj9sf4a1j4k/RlJVEbC25nMelF8H4mkmLe0xFoURkwE1AR
+         fwYdGK8im01sWDAdrXPW1oLVV92cvQTF3Dm/ab3FZ/kQFO4SZJyjZ3p3kMmtrBxJynLY
+         5jZg==
+X-Gm-Message-State: AOJu0Yx6dxj3JYFsGG5PICFHvTuMj9yUnSSFKwM7QIQi1FlneTjh9p9s
+	WPuQqg353SPiTKedYUuVNpWLKA==
+X-Google-Smtp-Source: AGHT+IEeFrCSkm3FbczMa45J0DrCEhJJ+FVSEOfJ8fULIE2AW4z8E/7QxxfmoXpEZ0bHuooCq861jg==
+X-Received: by 2002:a17:906:ef03:b0:9bd:d961:ddea with SMTP id f3-20020a170906ef0300b009bdd961ddeamr818382ejs.45.1697789623226;
+        Fri, 20 Oct 2023 01:13:43 -0700 (PDT)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz. [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+        by smtp.gmail.com with ESMTPSA id j8-20020a50ed08000000b00533dad8a9c5sm980417eds.38.2023.10.20.01.13.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Oct 2023 01:13:42 -0700 (PDT)
+Date: Fri, 20 Oct 2023 10:13:41 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Anup Patel <apatel@ventanamicro.com>
+Subject: Re: [PATCH v3 3/9] RISC-V: KVM: Allow some SBI extensions to be
+ disabled by default
+Message-ID: <20231020-622a7f510c98e8c82135e6fc@orel>
+References: <20231020072140.900967-1-apatel@ventanamicro.com>
+ <20231020072140.900967-4-apatel@ventanamicro.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCHv9 2/2] powerpc/setup: Loosen the mapping between cpu
- logical id and its seq in dt
-Content-Language: en-US
-To: Pingfan Liu <piliu@redhat.com>
-References: <20231017022806.4523-1-piliu@redhat.com>
- <20231017022806.4523-3-piliu@redhat.com>
- <064ae2ee-ad15-c0ab-f78b-7b3e7dc6612d@linux.ibm.com>
- <CAF+s44S33-x=bjZsLc=Ke+J6UFPq6DMxPA1Vaohc6_qLoEw9iw@mail.gmail.com>
-From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <CAF+s44S33-x=bjZsLc=Ke+J6UFPq6DMxPA1Vaohc6_qLoEw9iw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: MKp8snkWj-7H8mMgUeZZVuUcfW4VHAKw
-X-Proofpoint-GUID: cQHzV8DwMACxKlFUf1E5Vj1PWnWuFnjQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-20_06,2023-10-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- suspectscore=0 spamscore=0 mlxscore=0 lowpriorityscore=0 malwarescore=0
- bulkscore=0 phishscore=0 adultscore=0 priorityscore=1501 clxscore=1015
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310170001 definitions=main-2310200065
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231020072140.900967-4-apatel@ventanamicro.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,63 +79,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Baoquan He <bhe@redhat.com>, kexec@lists.infradead.org, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>, Ming Lei <ming.lei@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, Wen Xiong <wenxiong@us.ibm.com>
+Cc: linux-serial@vger.kernel.org, kvm@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Atish Patra <atishp@atishpatra.org>, linuxppc-dev@lists.ozlabs.org, Conor Dooley <conor@kernel.org>, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>, Paolo Bonzini <pbonzini@redhat.com>, linux-riscv@lists.infradead.org, Jiri Slaby <jirislaby@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 18/10/23 1:51 pm, Pingfan Liu wrote:
-> On Tue, Oct 17, 2023 at 6:39 PM Hari Bathini <hbathini@linux.ibm.com> wrote:
->>
->>
->>
->> On 17/10/23 7:58 am, Pingfan Liu wrote:
->>> *** Idea ***
->>> For kexec -p, the boot cpu can be not the cpu0, this causes the problem
->>> of allocating memory for paca_ptrs[]. However, in theory, there is no
->>> requirement to assign cpu's logical id as its present sequence in the
->>> device tree. But there is something like cpu_first_thread_sibling(),
->>> which makes assumption on the mapping inside a core. Hence partially
->>> loosening the mapping, i.e. unbind the mapping of core while keep the
->>> mapping inside a core.
->>>
->>> *** Implement ***
->>> At this early stage, there are plenty of memory to utilize. Hence, this
->>> patch allocates interim memory to link the cpu info on a list, then
->>> reorder cpus by changing the list head. As a result, there is a rotate
->>> shift between the sequence number in dt and the cpu logical number.
->>>
->>> *** Result ***
->>> After this patch, a boot-cpu's logical id will always be mapped into the
->>> range [0,threads_per_core).
->>>
->>> Besides this, at this phase, all threads in the boot core are forced to
->>> be onlined. This restriction will be lifted in a later patch with
->>> extra effort.
->>>
->>> Signed-off-by: Pingfan Liu <piliu@redhat.com>
->>> Cc: Michael Ellerman <mpe@ellerman.id.au>
->>> Cc: Nicholas Piggin <npiggin@gmail.com>
->>> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
->>> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
->>> Cc: Wen Xiong <wenxiong@us.ibm.com>
->>> Cc: Baoquan He <bhe@redhat.com>
->>> Cc: Ming Lei <ming.lei@redhat.com>
->>> Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
->>> Cc: Hari Bathini <hbathini@linux.ibm.com>
->>> Cc: kexec@lists.infradead.org
->>> To: linuxppc-dev@lists.ozlabs.org
->>
->> Thanks for working on this, Pingfan.
->> Looks good to me.
->>
->> Acked-by: Hari Bathini <hbathini@linux.ibm.com>
->>
+On Fri, Oct 20, 2023 at 12:51:34PM +0530, Anup Patel wrote:
+> Currently, all SBI extensions are enabled by default which is
+> problematic for SBI extensions (such as DBCN) which are forwarded
+> to the KVM user-space because we might have an older KVM user-space
+> which is not aware/ready to handle newer SBI extensions. Ideally,
+> the SBI extensions forwarded to the KVM user-space must be
+> disabled by default.
 > 
-> Thank you for kindly reviewing. I hope that after all these years, we
-> have accomplished the objective.
+> To address above, we allow certain SBI extensions to be disabled
+> by default so that KVM user-space must explicitly enable such
+> SBI extensions to receive forwarded calls from Guest VCPU.
 > 
+> Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+> ---
+>  arch/riscv/include/asm/kvm_vcpu_sbi.h |  4 ++
+>  arch/riscv/kvm/vcpu.c                 |  6 +++
+>  arch/riscv/kvm/vcpu_sbi.c             | 57 +++++++++++++--------------
+>  3 files changed, 38 insertions(+), 29 deletions(-)
+>
 
-I hope so too.
-Thanks!
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
