@@ -2,46 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 420EE7D41BB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Oct 2023 23:32:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 985157D41B7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Oct 2023 23:31:16 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lcAFFLdA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MzfgWA1P;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SDpLV0nmPz3dTH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Oct 2023 08:32:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SDpKG3Tr1z3dBV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Oct 2023 08:31:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lcAFFLdA;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MzfgWA1P;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SDbRz4M8Tz3cWG
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Oct 2023 00:21:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SDbRt3Xfjz3cY0
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Oct 2023 00:21:14 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 754616253C;
-	Mon, 23 Oct 2023 13:21:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2872EC433CB;
-	Mon, 23 Oct 2023 13:20:58 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 943E3CE248A;
+	Mon, 23 Oct 2023 13:21:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74EDBC433CA;
+	Mon, 23 Oct 2023 13:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1698067263;
-	bh=YCczuewqJF2BW/KNAxf1qzDKO2tdBSII3kCJI8VwkjE=;
+	s=k20201202; t=1698067269;
+	bh=58amRca9wppVYUrZkRa54hjoW/mvXoAKIe+GBgp57WY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lcAFFLdAlAjIYpwXUROoFCKbTz7w6Qfk/EQE8RaHkGwD/9Aqp08GavzcNEdLaRO4B
-	 gJxv+GVCOFEJ0jL5nrHqSwh99UcEB5PQsuisRnmqyTQMkJ1AGnFnECarQ6KqrWqce1
-	 HFWGEK3N9l+hPFQaYV/FBqTBgy1xc/sCv2oURLz5WYBya/Dm+fqdc8zTSBJMzhqGbR
-	 MpcnOCg+seCfsJrXExVCHTWBNkNhttklUOAWPt4DbS2g+LhD+IeaTRedVq4L0iEj5d
-	 aGmGieAoqclOtxe6ID/erAKbNTstnhqMHYHkj/vkf2kMeLjcXXNjey+fdPP9m/Wfb+
-	 XDue8WHl7TmqA==
+	b=MzfgWA1PVZ7jNgpGklSHOJ8GRuZaPeudNPFGJ9zFdEtCCu56xegZ2d5kCmvXAPWAi
+	 /qOeQM/N43WlNd9SNyoyT34aKslROH5Ozoh3tbIDRDQyX55AWFEHSu2gOEs1px0Fyc
+	 5MB7z+5ZrGXv3jdrXBfSwBu982l5/sV7pOkd3X8WhrpjXmfhSPXM0vTmPrgH7r7UAJ
+	 +MGyx1WAFhcAu9wI7o7KDYFUZBq5XwF9hVV0C8BnUdXXsZAupHvADsFyUV7NAsvhf4
+	 nBJzmWpbeYR3r79gH/E2csjz55n9j4813qdfvazjjh6sRuTqJr8UY2IJQg6mVZjHmU
+	 Q0EklKs+z2Qow==
 From: Arnd Bergmann <arnd@kernel.org>
 To: Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 10/10] [RFC] wifi: remove ipw2100/ipw2200 drivers
-Date: Mon, 23 Oct 2023 15:19:52 +0200
-Message-Id: <20231023131953.2876682-11-arnd@kernel.org>
+Subject: [PATCH 10/10] wifi: remove ipw2100/ipw2200 drivers
+Date: Mon, 23 Oct 2023 15:19:53 +0200
+Message-Id: <20231023131953.2876682-12-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231023131953.2876682-1-arnd@kernel.org>
 References: <20231023131953.2876682-1-arnd@kernel.org>
@@ -80,10 +80,6 @@ Link: https://lore.kernel.org/all/87fs2fgals.fsf@kernel.org/
 Cc: Stanislav Yakovlev <stas.yakovlev@gmail.com>
 Cc: Linux Wireless <ilw@linux.intel.com>
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
-I'm not convinced this should be in the same set of drivers as the
-rest, since this is clearly less obsolete than the other hardware
-that I would remove support for.
 ---
  .../networking/device_drivers/wifi/index.rst  |    19 -
  .../device_drivers/wifi/intel/ipw2100.rst     |   323 -
@@ -1009,10 +1005,10 @@ index 0cb42d2fd7e5f..0000000000000
 -  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
 -
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 42117d5a1d4e4..73e843194739a 100644
+index 3a0e63038872b..9cf287971cd8c 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -10823,14 +10823,6 @@ M:	David E. Box <david.e.box@linux.intel.com>
+@@ -10723,14 +10723,6 @@ M:	David E. Box <david.e.box@linux.intel.com>
  S:	Supported
  F:	drivers/platform/x86/intel/pmt/
  
@@ -25003,7 +24999,7 @@ index 8ebf09121e173..0000000000000
 -#endif				/* __ipw2200_h__ */
 diff --git a/drivers/net/wireless/intel/ipw2x00/libipw.h b/drivers/net/wireless/intel/ipw2x00/libipw.h
 deleted file mode 100644
-index 9065ca5b02085..0000000000000
+index bec7bc2737488..0000000000000
 --- a/drivers/net/wireless/intel/ipw2x00/libipw.h
 +++ /dev/null
 @@ -1,1001 +0,0 @@
@@ -25497,7 +25493,7 @@ index 9065ca5b02085..0000000000000
 -	u8 reserved;
 -	u16 frag_size;
 -	u16 payload_size;
--	struct sk_buff *fragments[] __counted_by(nr_frags);
+-	struct sk_buff *fragments[];
 -};
 -
 -/* SWEEP TABLE ENTRIES NUMBER */
