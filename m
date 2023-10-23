@@ -1,51 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01E207D37FE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Oct 2023 15:26:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 891407D3802
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Oct 2023 15:27:39 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CAwE4vpj;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fDKGNa2x;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SDbZG6JK8z3dLG
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Oct 2023 00:26:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SDbbF3DhMz3vgS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Oct 2023 00:27:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CAwE4vpj;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fDKGNa2x;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SDbRT1F9pz3cV0
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Oct 2023 00:20:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SDbRY063zz3cP3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Oct 2023 00:20:56 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id D9C67B81DCB;
+	by sin.source.kernel.org (Postfix) with ESMTP id B1323CE2490;
+	Mon, 23 Oct 2023 13:20:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5033C433D9;
 	Mon, 23 Oct 2023 13:20:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE1A0C433C8;
-	Mon, 23 Oct 2023 13:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1698067249;
-	bh=i39yxpLbZ11W5L47t7F8M74uve8mYfDcqtQ7ZjpGM4w=;
+	s=k20201202; t=1698067254;
+	bh=4WVKISKuHonsID6Tr7gWujfI8PUL6m78F6A9q3ZhcH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CAwE4vpjYswO/3LwJuPe1hFegSoDN693JyVrILxOrHXZztuL51s1JSqJ/Gh1965x6
-	 w7jxZpmeUQjERId7w9TaJ1m/YfZ97W1ekUAS0Ox5IJgHwNvlJO2KJ52C8JG3tgl+Yp
-	 dW7GMD8fHW4YlT79xauhLHo+daMTPf5QkjDyzQq6Vuep3KRR0hiStXfj2pWbIsoz0e
-	 rt3sedCPUlD85tajz5symGivV7XJDLiN0xJufjOlv4PQZnEymymkb96IfRwcjw400T
-	 Qmqdl1Lvgahg2ccZDZibf/VaetAqndvaZlAlnQGPw7SjS6nDn//He2f92wMe6Gln6I
-	 w6eBQc0wbwiEA==
+	b=fDKGNa2xt2Ptpj/X+xvgPzK/TZ/UF1ga0COuJJLRuL8Kw7tD4qwTHmMqvwgeLs7sF
+	 1CvQ0LuF6I8uNhhETfyg9jmk4agKLi6GB8xlr+xMx4RtKCnCqY+qdilqSCMx0MjFRk
+	 bt4kOcbU65DyUdmlY5/o5x57SrGe5yel1OApwhHoLpQXrkTxrcGyilyvDZbgL2ejpc
+	 y6bXNsHg7Sc4UIHlTvRM8ZnAWIkzqMy6BJGhTv7a7HFb3EhEciaqOzGnaJ8y6R4edY
+	 5OOf4bVc2xQTxunq+xlKoQCJNqB6Y+NmGPPv0OtSdktGWVIfzEb7I2XuXm5exyQVT6
+	 LJ1+hTbolZzGw==
 From: Arnd Bergmann <arnd@kernel.org>
 To: Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 07/10] wifi: remove orphaned ray_cs driver
-Date: Mon, 23 Oct 2023 15:19:49 +0200
-Message-Id: <20231023131953.2876682-8-arnd@kernel.org>
+Subject: [PATCH 08/10] wifi: remove orphaned wl3501 driver
+Date: Mon, 23 Oct 2023 15:19:50 +0200
+Message-Id: <20231023131953.2876682-9-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231023131953.2876682-1-arnd@kernel.org>
 References: <20231023131953.2876682-1-arnd@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -64,3913 +65,2730 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-Aviator/Raytheon is an early PCMCIA driver, apparently predating 802.11b
-and only supporting wireless extensions.
+Planet WL3501 is another PCMCIA driver for pre-802.11b interfaces
+(2Mbit/s) with incomplete CFG80211 support.
 
-The driver has been orphaned since 2010 and only seen cosmetic updates
-long before than. Jean Tourrilhes pointed out in a 2005 changelog that
-he tested a change on actual hardware, which was apparently already
-noteworthy back then.
+This was marked as orphaned in 2017 but has been unmaintained
+for a long time before that.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- .../networking/device_drivers/wifi/index.rst  |    1 -
- .../networking/device_drivers/wifi/ray_cs.rst |  165 -
- MAINTAINERS                                   |    5 -
- drivers/net/wireless/legacy/Kconfig           |   16 -
- drivers/net/wireless/legacy/Makefile          |    1 -
- drivers/net/wireless/legacy/ray_cs.c          | 2824 -----------------
- drivers/net/wireless/legacy/ray_cs.h          |   74 -
- drivers/net/wireless/legacy/rayctl.h          |  734 -----
- 8 files changed, 3820 deletions(-)
- delete mode 100644 Documentation/networking/device_drivers/wifi/ray_cs.rst
- delete mode 100644 drivers/net/wireless/legacy/ray_cs.c
- delete mode 100644 drivers/net/wireless/legacy/ray_cs.h
- delete mode 100644 drivers/net/wireless/legacy/rayctl.h
+ MAINTAINERS                             |    5 -
+ drivers/net/wireless/legacy/Kconfig     |   10 -
+ drivers/net/wireless/legacy/Makefile    |    3 -
+ drivers/net/wireless/legacy/wl3501.h    |  615 -------
+ drivers/net/wireless/legacy/wl3501_cs.c | 2036 -----------------------
+ 5 files changed, 2669 deletions(-)
+ delete mode 100644 drivers/net/wireless/legacy/wl3501.h
+ delete mode 100644 drivers/net/wireless/legacy/wl3501_cs.c
 
-diff --git a/Documentation/networking/device_drivers/wifi/index.rst b/Documentation/networking/device_drivers/wifi/index.rst
-index bf91a87c7acff..fb394f5de4a94 100644
---- a/Documentation/networking/device_drivers/wifi/index.rst
-+++ b/Documentation/networking/device_drivers/wifi/index.rst
-@@ -10,7 +10,6 @@ Contents:
- 
-    intel/ipw2100
-    intel/ipw2200
--   ray_cs
- 
- .. only::  subproject and html
- 
-diff --git a/Documentation/networking/device_drivers/wifi/ray_cs.rst b/Documentation/networking/device_drivers/wifi/ray_cs.rst
-deleted file mode 100644
-index 9a46d1ae8f209..0000000000000
---- a/Documentation/networking/device_drivers/wifi/ray_cs.rst
-+++ /dev/null
-@@ -1,165 +0,0 @@
--.. SPDX-License-Identifier: GPL-2.0
--
--.. include:: <isonum.txt>
--
--=========================
--Raylink wireless LAN card
--=========================
--
--September 21, 1999
--
--Copyright |copy| 1998  Corey Thomas (corey@world.std.com)
--
--This file is the documentation for the Raylink Wireless LAN card driver for
--Linux.  The Raylink wireless LAN card is a PCMCIA card which provides IEEE
--802.11 compatible wireless network connectivity at 1 and 2 megabits/second.
--See http://www.raytheon.com/micro/raylink/ for more information on the Raylink
--card.  This driver is in early development and does have bugs.  See the known
--bugs and limitations at the end of this document for more information.
--This driver also works with WebGear's Aviator 2.4 and Aviator Pro
--wireless LAN cards.
--
--As of kernel 2.3.18, the ray_cs driver is part of the Linux kernel
--source.  My web page for the development of ray_cs is at
--http://web.ralinktech.com/ralink/Home/Support/Linux.html
--and I can be emailed at corey@world.std.com
--
--The kernel driver is based on ray_cs-1.62.tgz
--
--The driver at my web page is intended to be used as an add on to
--David Hinds pcmcia package.  All the command line parameters are
--available when compiled as a module.  When built into the kernel, only
--the essid= string parameter is available via the kernel command line.
--This will change after the method of sorting out parameters for all
--the PCMCIA drivers is agreed upon.  If you must have a built in driver
--with nondefault parameters, they can be edited in
--/usr/src/linux/drivers/net/pcmcia/ray_cs.c.  Searching for module_param
--will find them all.
--
--Information on card services is available at:
--
--	http://pcmcia-cs.sourceforge.net/
--
--
--Card services user programs are still required for PCMCIA devices.
--pcmcia-cs-3.1.1 or greater is required for the kernel version of
--the driver.
--
--Currently, ray_cs is not part of David Hinds card services package,
--so the following magic is required.
--
--At the end of the /etc/pcmcia/config.opts file, add the line:
--source ./ray_cs.opts
--This will make card services read the ray_cs.opts file
--when starting.  Create the file /etc/pcmcia/ray_cs.opts containing the
--following::
--
--  #### start of /etc/pcmcia/ray_cs.opts ###################
--  # Configuration options for Raylink Wireless LAN PCMCIA card
--  device "ray_cs"
--    class "network" module "misc/ray_cs"
--
--  card "RayLink PC Card WLAN Adapter"
--    manfid 0x01a6, 0x0000
--    bind "ray_cs"
--
--  module "misc/ray_cs" opts ""
--  #### end of /etc/pcmcia/ray_cs.opts #####################
--
--
--To join an existing network with
--different parameters, contact the network administrator for the
--configuration information, and edit /etc/pcmcia/ray_cs.opts.
--Add the parameters below between the empty quotes.
--
--Parameters for ray_cs driver which may be specified in ray_cs.opts:
--
--=============== =============== =============================================
--bc              integer         0 = normal mode (802.11 timing),
--				1 = slow down inter frame timing to allow
--				operation with older breezecom access
--				points.
--
--beacon_period	integer         beacon period in Kilo-microseconds,
--
--				legal values = must be integer multiple
--				of hop dwell
--
--				default = 256
--
--country         integer         1 = USA (default),
--				2 = Europe,
--				3 = Japan,
--				4 = Korea,
--				5 = Spain,
--				6 = France,
--				7 = Israel,
--				8 = Australia
--
--essid		string		ESS ID - network name to join
--
--				string with maximum length of 32 chars
--				default value = "ADHOC_ESSID"
--
--hop_dwell	integer         hop dwell time in Kilo-microseconds
--
--				legal values = 16,32,64,128(default),256
--
--irq_mask	integer         linux standard 16 bit value 1bit/IRQ
--
--				lsb is IRQ 0, bit 1 is IRQ 1 etc.
--				Used to restrict choice of IRQ's to use.
--				Recommended method for controlling
--				interrupts is in /etc/pcmcia/config.opts
--
--net_type	integer		0 (default) = adhoc network,
--				1 = infrastructure
--
--phy_addr	string          string containing new MAC address in
--				hex, must start with x eg
--				x00008f123456
--
--psm		integer         0 = continuously active,
--				1 = power save mode (not useful yet)
--
--pc_debug	integer		(0-5) larger values for more verbose
--				logging.  Replaces ray_debug.
--
--ray_debug	integer		Replaced with pc_debug
--
--ray_mem_speed   integer         defaults to 500
--
--sniffer         integer         0 = not sniffer (default),
--				1 = sniffer which can be used to record all
--				network traffic using tcpdump or similar,
--				but no normal network use is allowed.
--
--translate	integer		0 = no translation (encapsulate frames),
--				1 = translation    (RFC1042/802.1)
--=============== =============== =============================================
--
--More on sniffer mode:
--
--tcpdump does not understand 802.11 headers, so it can't
--interpret the contents, but it can record to a file.  This is only
--useful for debugging 802.11 lowlevel protocols that are not visible to
--linux.  If you want to watch ftp xfers, or do similar things, you
--don't need to use sniffer mode.  Also, some packet types are never
--sent up by the card, so you will never see them (ack, rts, cts, probe
--etc.)  There is a simple program (showcap) included in the ray_cs
--package which parses the 802.11 headers.
--
--Known Problems and missing features
--
--	Does not work with non x86
--
--	Does not work with SMP
--
--	Support for defragmenting frames is not yet debugged, and in
--	fact is known to not work.  I have never encountered a net set
--	up to fragment, but still, it should be fixed.
--
--	The ioctl support is incomplete.  The hardware address cannot be set
--	using ifconfig yet.  If a different hardware address is needed, it may
--	be set using the phy_addr parameter in ray_cs.opts.  This requires
--	a card insertion to take effect.
 diff --git a/MAINTAINERS b/MAINTAINERS
-index e5c669d9bca00..3123c955bb7f5 100644
+index 3123c955bb7f5..ee3c96de689c0 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -17947,11 +17947,6 @@ F:	drivers/ras/
- F:	include/linux/ras.h
- F:	include/ras/ras_event.h
+@@ -23221,11 +23221,6 @@ M:	Miloslav Trmac <mitr@volny.cz>
+ S:	Maintained
+ F:	drivers/input/misc/wistron_btns.c
  
--RAYLINK/WEBGEAR 802.11 WIRELESS LAN DRIVER
+-WL3501 WIRELESS PCMCIA CARD DRIVER
 -L:	linux-wireless@vger.kernel.org
 -S:	Orphan
--F:	drivers/net/wireless/legacy/ray*
+-F:	drivers/net/wireless/legacy/wl3501*
 -
- RC-CORE / LIRC FRAMEWORK
- M:	Sean Young <sean@mess.org>
- L:	linux-media@vger.kernel.org
+ WMI BINARY MOF DRIVER
+ M:	Armin Wolf <W_Armin@gmx.de>
+ R:	Thomas Weißschuh <linux@weissschuh.net>
 diff --git a/drivers/net/wireless/legacy/Kconfig b/drivers/net/wireless/legacy/Kconfig
-index 3a5275941212d..1d77d53d64409 100644
+index 1d77d53d64409..b4e0e516f2faa 100644
 --- a/drivers/net/wireless/legacy/Kconfig
 +++ b/drivers/net/wireless/legacy/Kconfig
-@@ -1,19 +1,3 @@
--config PCMCIA_RAYCS
--	tristate "Aviator/Raytheon 2.4GHz wireless support"
--	depends on PCMCIA
+@@ -1,13 +1,3 @@
+-config PCMCIA_WL3501
+-	tristate "Planet WL3501 PCMCIA cards"
+-	depends on CFG80211 && PCMCIA
 -	select WIRELESS_EXT
 -	select WEXT_SPY
--	select WEXT_PRIV
 -	help
--	  Say Y here if you intend to attach an Aviator/Raytheon PCMCIA
--	  (PC-card) wireless Ethernet networking card to your computer.
--	  Please read the file
--	  <file:Documentation/networking/device_drivers/wifi/ray_cs.rst> for
--	  details.
+-	  A driver for WL3501 PCMCIA 802.11 wireless cards made by Planet.
+-	  It has basic support for Linux wireless extensions and initial
+-	  micro support for ethtool.
 -
--	  To compile this driver as a module, choose M here: the module will be
--	  called ray_cs.  If unsure, say N.
--
- config PCMCIA_WL3501
- 	tristate "Planet WL3501 PCMCIA cards"
- 	depends on CFG80211 && PCMCIA
+ config USB_NET_RNDIS_WLAN
+ 	tristate "Wireless RNDIS USB support"
+ 	depends on USB
 diff --git a/drivers/net/wireless/legacy/Makefile b/drivers/net/wireless/legacy/Makefile
-index 36878f080bfc5..d8705ccc5cf5d 100644
+index d8705ccc5cf5d..1ed83f33ad20e 100644
 --- a/drivers/net/wireless/legacy/Makefile
 +++ b/drivers/net/wireless/legacy/Makefile
-@@ -1,5 +1,4 @@
- # 16-bit wireless PCMCIA client drivers
--obj-$(CONFIG_PCMCIA_RAYCS)	+= ray_cs.o
- obj-$(CONFIG_PCMCIA_WL3501)	+= wl3501_cs.o
- 
- obj-$(CONFIG_USB_NET_RNDIS_WLAN)	+= rndis_wlan.o
-diff --git a/drivers/net/wireless/legacy/ray_cs.c b/drivers/net/wireless/legacy/ray_cs.c
-deleted file mode 100644
-index 8ace797ce951c..0000000000000
---- a/drivers/net/wireless/legacy/ray_cs.c
-+++ /dev/null
-@@ -1,2824 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*=============================================================================
-- *
-- * A  PCMCIA client driver for the Raylink wireless LAN card.
-- * The starting point for this module was the skeleton.c in the
-- * PCMCIA 2.9.12 package written by David Hinds, dahinds@users.sourceforge.net
-- *
-- * Copyright (c) 1998  Corey Thomas (corey@world.std.com)
-- *
-- * Changes:
-- * Arnaldo Carvalho de Melo <acme@conectiva.com.br> - 08/08/2000
-- * - reorganize kmallocs in ray_attach, checking all for failure
-- *   and releasing the previous allocations if one fails
-- *
-- * Daniele Bellucci <bellucda@tiscali.it> - 07/10/2003
-- * - Audit copy_to_user in ioctl(SIOCGIWESSID)
-- *
--=============================================================================*/
+@@ -1,5 +1,2 @@
+-# 16-bit wireless PCMCIA client drivers
+-obj-$(CONFIG_PCMCIA_WL3501)	+= wl3501_cs.o
 -
--#include <linux/module.h>
+ obj-$(CONFIG_USB_NET_RNDIS_WLAN)	+= rndis_wlan.o
+ 
+diff --git a/drivers/net/wireless/legacy/wl3501.h b/drivers/net/wireless/legacy/wl3501.h
+deleted file mode 100644
+index 91f276dd22a1b..0000000000000
+--- a/drivers/net/wireless/legacy/wl3501.h
++++ /dev/null
+@@ -1,615 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef __WL3501_H__
+-#define __WL3501_H__
+-
+-#include <linux/spinlock.h>
+-#include <linux/ieee80211.h>
+-
+-/* define for WLA 2.0 */
+-#define WL3501_BLKSZ 256
+-/*
+- * ID for input Signals of DRIVER block
+- * bit[7-5] is block ID: 000
+- * bit[4-0] is signal ID
+-*/
+-enum wl3501_signals {
+-	WL3501_SIG_ALARM,
+-	WL3501_SIG_MD_CONFIRM,
+-	WL3501_SIG_MD_IND,
+-	WL3501_SIG_ASSOC_CONFIRM,
+-	WL3501_SIG_ASSOC_IND,
+-	WL3501_SIG_AUTH_CONFIRM,
+-	WL3501_SIG_AUTH_IND,
+-	WL3501_SIG_DEAUTH_CONFIRM,
+-	WL3501_SIG_DEAUTH_IND,
+-	WL3501_SIG_DISASSOC_CONFIRM,
+-	WL3501_SIG_DISASSOC_IND,
+-	WL3501_SIG_GET_CONFIRM,
+-	WL3501_SIG_JOIN_CONFIRM,
+-	WL3501_SIG_PWR_MGMT_CONFIRM,
+-	WL3501_SIG_REASSOC_CONFIRM,
+-	WL3501_SIG_REASSOC_IND,
+-	WL3501_SIG_SCAN_CONFIRM,
+-	WL3501_SIG_SET_CONFIRM,
+-	WL3501_SIG_START_CONFIRM,
+-	WL3501_SIG_RESYNC_CONFIRM,
+-	WL3501_SIG_SITE_CONFIRM,
+-	WL3501_SIG_SAVE_CONFIRM,
+-	WL3501_SIG_RFTEST_CONFIRM,
+-/*
+- * ID for input Signals of MLME block
+- * bit[7-5] is block ID: 010
+- * bit[4-0] is signal ID
+- */
+-	WL3501_SIG_ASSOC_REQ = 0x20,
+-	WL3501_SIG_AUTH_REQ,
+-	WL3501_SIG_DEAUTH_REQ,
+-	WL3501_SIG_DISASSOC_REQ,
+-	WL3501_SIG_GET_REQ,
+-	WL3501_SIG_JOIN_REQ,
+-	WL3501_SIG_PWR_MGMT_REQ,
+-	WL3501_SIG_REASSOC_REQ,
+-	WL3501_SIG_SCAN_REQ,
+-	WL3501_SIG_SET_REQ,
+-	WL3501_SIG_START_REQ,
+-	WL3501_SIG_MD_REQ,
+-	WL3501_SIG_RESYNC_REQ,
+-	WL3501_SIG_SITE_REQ,
+-	WL3501_SIG_SAVE_REQ,
+-	WL3501_SIG_RF_TEST_REQ,
+-	WL3501_SIG_MM_CONFIRM = 0x60,
+-	WL3501_SIG_MM_IND,
+-};
+-
+-enum wl3501_mib_attribs {
+-	WL3501_MIB_ATTR_STATION_ID,
+-	WL3501_MIB_ATTR_AUTH_ALGORITHMS,
+-	WL3501_MIB_ATTR_AUTH_TYPE,
+-	WL3501_MIB_ATTR_MEDIUM_OCCUPANCY_LIMIT,
+-	WL3501_MIB_ATTR_CF_POLLABLE,
+-	WL3501_MIB_ATTR_CFP_PERIOD,
+-	WL3501_MIB_ATTR_CFPMAX_DURATION,
+-	WL3501_MIB_ATTR_AUTH_RESP_TMOUT,
+-	WL3501_MIB_ATTR_RX_DTIMS,
+-	WL3501_MIB_ATTR_PRIV_OPT_IMPLEMENTED,
+-	WL3501_MIB_ATTR_PRIV_INVOKED,
+-	WL3501_MIB_ATTR_WEP_DEFAULT_KEYS,
+-	WL3501_MIB_ATTR_WEP_DEFAULT_KEY_ID,
+-	WL3501_MIB_ATTR_WEP_KEY_MAPPINGS,
+-	WL3501_MIB_ATTR_WEP_KEY_MAPPINGS_LEN,
+-	WL3501_MIB_ATTR_EXCLUDE_UNENCRYPTED,
+-	WL3501_MIB_ATTR_WEP_ICV_ERROR_COUNT,
+-	WL3501_MIB_ATTR_WEP_UNDECRYPTABLE_COUNT,
+-	WL3501_MIB_ATTR_WEP_EXCLUDED_COUNT,
+-	WL3501_MIB_ATTR_MAC_ADDR,
+-	WL3501_MIB_ATTR_GROUP_ADDRS,
+-	WL3501_MIB_ATTR_RTS_THRESHOLD,
+-	WL3501_MIB_ATTR_SHORT_RETRY_LIMIT,
+-	WL3501_MIB_ATTR_LONG_RETRY_LIMIT,
+-	WL3501_MIB_ATTR_FRAG_THRESHOLD,
+-	WL3501_MIB_ATTR_MAX_TX_MSDU_LIFETIME,
+-	WL3501_MIB_ATTR_MAX_RX_LIFETIME,
+-	WL3501_MIB_ATTR_MANUFACTURER_ID,
+-	WL3501_MIB_ATTR_PRODUCT_ID,
+-	WL3501_MIB_ATTR_TX_FRAG_COUNT,
+-	WL3501_MIB_ATTR_MULTICAST_TX_FRAME_COUNT,
+-	WL3501_MIB_ATTR_FAILED_COUNT,
+-	WL3501_MIB_ATTR_RX_FRAG_COUNT,
+-	WL3501_MIB_ATTR_MULTICAST_RX_COUNT,
+-	WL3501_MIB_ATTR_FCS_ERROR_COUNT,
+-	WL3501_MIB_ATTR_RETRY_COUNT,
+-	WL3501_MIB_ATTR_MULTIPLE_RETRY_COUNT,
+-	WL3501_MIB_ATTR_RTS_SUCCESS_COUNT,
+-	WL3501_MIB_ATTR_RTS_FAILURE_COUNT,
+-	WL3501_MIB_ATTR_ACK_FAILURE_COUNT,
+-	WL3501_MIB_ATTR_FRAME_DUPLICATE_COUNT,
+-	WL3501_MIB_ATTR_PHY_TYPE,
+-	WL3501_MIB_ATTR_REG_DOMAINS_SUPPORT,
+-	WL3501_MIB_ATTR_CURRENT_REG_DOMAIN,
+-	WL3501_MIB_ATTR_SLOT_TIME,
+-	WL3501_MIB_ATTR_CCA_TIME,
+-	WL3501_MIB_ATTR_RX_TX_TURNAROUND_TIME,
+-	WL3501_MIB_ATTR_TX_PLCP_DELAY,
+-	WL3501_MIB_ATTR_RX_TX_SWITCH_TIME,
+-	WL3501_MIB_ATTR_TX_RAMP_ON_TIME,
+-	WL3501_MIB_ATTR_TX_RF_DELAY,
+-	WL3501_MIB_ATTR_SIFS_TIME,
+-	WL3501_MIB_ATTR_RX_RF_DELAY,
+-	WL3501_MIB_ATTR_RX_PLCP_DELAY,
+-	WL3501_MIB_ATTR_MAC_PROCESSING_DELAY,
+-	WL3501_MIB_ATTR_TX_RAMP_OFF_TIME,
+-	WL3501_MIB_ATTR_PREAMBLE_LEN,
+-	WL3501_MIB_ATTR_PLCP_HEADER_LEN,
+-	WL3501_MIB_ATTR_MPDU_DURATION_FACTOR,
+-	WL3501_MIB_ATTR_AIR_PROPAGATION_TIME,
+-	WL3501_MIB_ATTR_TEMP_TYPE,
+-	WL3501_MIB_ATTR_CW_MIN,
+-	WL3501_MIB_ATTR_CW_MAX,
+-	WL3501_MIB_ATTR_SUPPORT_DATA_RATES_TX,
+-	WL3501_MIB_ATTR_SUPPORT_DATA_RATES_RX,
+-	WL3501_MIB_ATTR_MPDU_MAX_LEN,
+-	WL3501_MIB_ATTR_SUPPORT_TX_ANTENNAS,
+-	WL3501_MIB_ATTR_CURRENT_TX_ANTENNA,
+-	WL3501_MIB_ATTR_SUPPORT_RX_ANTENNAS,
+-	WL3501_MIB_ATTR_DIVERSITY_SUPPORT,
+-	WL3501_MIB_ATTR_DIVERSITY_SELECTION_RS,
+-	WL3501_MIB_ATTR_NR_SUPPORTED_PWR_LEVELS,
+-	WL3501_MIB_ATTR_TX_PWR_LEVEL1,
+-	WL3501_MIB_ATTR_TX_PWR_LEVEL2,
+-	WL3501_MIB_ATTR_TX_PWR_LEVEL3,
+-	WL3501_MIB_ATTR_TX_PWR_LEVEL4,
+-	WL3501_MIB_ATTR_TX_PWR_LEVEL5,
+-	WL3501_MIB_ATTR_TX_PWR_LEVEL6,
+-	WL3501_MIB_ATTR_TX_PWR_LEVEL7,
+-	WL3501_MIB_ATTR_TX_PWR_LEVEL8,
+-	WL3501_MIB_ATTR_CURRENT_TX_PWR_LEVEL,
+-	WL3501_MIB_ATTR_CURRENT_CHAN,
+-	WL3501_MIB_ATTR_CCA_MODE_SUPPORTED,
+-	WL3501_MIB_ATTR_CURRENT_CCA_MODE,
+-	WL3501_MIB_ATTR_ED_THRESHOLD,
+-	WL3501_MIB_ATTR_SINTHESIZER_LOCKED,
+-	WL3501_MIB_ATTR_CURRENT_PWR_STATE,
+-	WL3501_MIB_ATTR_DOZE_TURNON_TIME,
+-	WL3501_MIB_ATTR_RCR33,
+-	WL3501_MIB_ATTR_DEFAULT_CHAN,
+-	WL3501_MIB_ATTR_SSID,
+-	WL3501_MIB_ATTR_PWR_MGMT_ENABLE,
+-	WL3501_MIB_ATTR_NET_CAPABILITY,
+-	WL3501_MIB_ATTR_ROUTING,
+-};
+-
+-enum wl3501_net_type {
+-	WL3501_NET_TYPE_INFRA,
+-	WL3501_NET_TYPE_ADHOC,
+-	WL3501_NET_TYPE_ANY_BSS,
+-};
+-
+-enum wl3501_scan_type {
+-	WL3501_SCAN_TYPE_ACTIVE,
+-	WL3501_SCAN_TYPE_PASSIVE,
+-};
+-
+-enum wl3501_tx_result {
+-	WL3501_TX_RESULT_SUCCESS,
+-	WL3501_TX_RESULT_NO_BSS,
+-	WL3501_TX_RESULT_RETRY_LIMIT,
+-};
+-
+-enum wl3501_sys_type {
+-	WL3501_SYS_TYPE_OPEN,
+-	WL3501_SYS_TYPE_SHARE_KEY,
+-};
+-
+-enum wl3501_status {
+-	WL3501_STATUS_SUCCESS,
+-	WL3501_STATUS_INVALID,
+-	WL3501_STATUS_TIMEOUT,
+-	WL3501_STATUS_REFUSED,
+-	WL3501_STATUS_MANY_REQ,
+-	WL3501_STATUS_ALREADY_BSS,
+-};
+-
+-#define WL3501_MGMT_CAPABILITY_ESS		0x0001  /* see 802.11 p.58 */
+-#define WL3501_MGMT_CAPABILITY_IBSS		0x0002  /*      - " -	   */
+-#define WL3501_MGMT_CAPABILITY_CF_POLLABLE	0x0004  /*      - " -	   */
+-#define WL3501_MGMT_CAPABILITY_CF_POLL_REQUEST	0x0008  /*      - " -	   */
+-#define WL3501_MGMT_CAPABILITY_PRIVACY		0x0010  /*      - " -	   */
+-
+-#define IW_REG_DOMAIN_FCC	0x10	/* Channel 1 to 11	USA    */
+-#define IW_REG_DOMAIN_DOC	0x20	/* Channel 1 to 11	Canada */
+-#define IW_REG_DOMAIN_ETSI	0x30	/* Channel 1 to 13	Europe */
+-#define IW_REG_DOMAIN_SPAIN	0x31	/* Channel 10 to 11	Spain  */
+-#define IW_REG_DOMAIN_FRANCE	0x32	/* Channel 10 to 13	France */
+-#define IW_REG_DOMAIN_MKK	0x40	/* Channel 14		Japan  */
+-#define IW_REG_DOMAIN_MKK1	0x41	/* Channel 1-14		Japan  */
+-#define IW_REG_DOMAIN_ISRAEL	0x50	/* Channel 3 - 9	Israel */
+-
+-#define IW_MGMT_RATE_LABEL_MANDATORY 128 /* MSB */
+-
+-enum iw_mgmt_rate_labels {
+-	IW_MGMT_RATE_LABEL_1MBIT   = 2,
+-	IW_MGMT_RATE_LABEL_2MBIT   = 4,
+-	IW_MGMT_RATE_LABEL_5_5MBIT = 11,
+-	IW_MGMT_RATE_LABEL_11MBIT  = 22,
+-};
+-
+-enum iw_mgmt_info_element_ids {
+-	IW_MGMT_INFO_ELEMENT_SSID,		  /* Service Set Identity */
+-	IW_MGMT_INFO_ELEMENT_SUPPORTED_RATES,
+-	IW_MGMT_INFO_ELEMENT_FH_PARAMETER_SET,
+-	IW_MGMT_INFO_ELEMENT_DS_PARAMETER_SET,
+-	IW_MGMT_INFO_ELEMENT_CS_PARAMETER_SET,
+-	IW_MGMT_INFO_ELEMENT_CS_TIM,		  /* Traffic Information Map */
+-	IW_MGMT_INFO_ELEMENT_IBSS_PARAMETER_SET,
+-	/* 7-15: Reserved, unused */
+-	IW_MGMT_INFO_ELEMENT_CHALLENGE_TEXT = 16,
+-	/* 17-31 Reserved for challenge text extension */
+-	/* 32-255 Reserved, unused */
+-};
+-
+-struct iw_mgmt_info_element {
+-	u8 id; /* one of enum iw_mgmt_info_element_ids,
+-		  but sizeof(enum) > sizeof(u8) :-( */
+-	u8 len;
+-	u8 data[];
+-} __packed;
+-
+-struct iw_mgmt_essid_pset {
+-	struct iw_mgmt_info_element el;
+-	u8 			    essid[IW_ESSID_MAX_SIZE];
+-} __packed;
+-
+-/*
+- * According to 802.11 Wireless Networks, the definitive guide - O'Reilly
+- * Pg 75
+- */ 
+-#define IW_DATA_RATE_MAX_LABELS 8
+-
+-struct iw_mgmt_data_rset {
+-	struct iw_mgmt_info_element el;
+-	u8 			    data_rate_labels[IW_DATA_RATE_MAX_LABELS];
+-} __packed;
+-
+-struct iw_mgmt_ds_pset {
+-	struct iw_mgmt_info_element el;
+-	u8 			    chan;
+-} __packed;
+-
+-struct iw_mgmt_cf_pset {
+-	struct iw_mgmt_info_element el;
+-	u8 			    cfp_count;
+-	u8 			    cfp_period;
+-	u16 			    cfp_max_duration;
+-	u16 			    cfp_dur_remaining;
+-} __packed;
+-
+-struct iw_mgmt_ibss_pset {
+-	struct iw_mgmt_info_element el;
+-	u16 			    atim_window;
+-} __packed;
+-
+-struct wl3501_tx_hdr {
+-	u16	tx_cnt;
+-	u8	sync[16];
+-	u16	sfd;
+-	u8	signal;
+-	u8	service;
+-	u16	len;
+-	u16	crc16;
+-	u16	frame_ctrl;
+-	u16	duration_id;
+-	u8	addr1[ETH_ALEN];
+-	u8	addr2[ETH_ALEN];
+-	u8	addr3[ETH_ALEN];
+-	u16	seq_ctrl;
+-	u8	addr4[ETH_ALEN];
+-};
+-
+-struct wl3501_rx_hdr {
+-	u16	rx_next_blk;
+-	u16	rc_next_frame_blk;
+-	u8	rx_blk_ctrl;
+-	u8	rx_next_frame;
+-	u8	rx_next_frame1;
+-	u8	rssi;
+-	char	time[8];
+-	u8	signal;
+-	u8	service;
+-	u16	len;
+-	u16	crc16;
+-	u16	frame_ctrl;
+-	u16	duration;
+-	u8	addr1[ETH_ALEN];
+-	u8	addr2[ETH_ALEN];
+-	u8	addr3[ETH_ALEN];
+-	u16	seq;
+-	u8	addr4[ETH_ALEN];
+-};
+-
+-struct wl3501_start_req {
+-	u16			    next_blk;
+-	u8			    sig_id;
+-	u8			    bss_type;
+-	u16			    beacon_period;
+-	u16			    dtim_period;
+-	u16			    probe_delay;
+-	u16			    cap_info;
+-	struct iw_mgmt_essid_pset   ssid;
+-	struct iw_mgmt_data_rset    bss_basic_rset;
+-	struct iw_mgmt_data_rset    operational_rset;
+-	struct iw_mgmt_cf_pset	    cf_pset;
+-	struct iw_mgmt_ds_pset	    ds_pset;
+-	struct iw_mgmt_ibss_pset    ibss_pset;
+-};
+-
+-struct wl3501_assoc_req {
+-	u16	next_blk;
+-	u8	sig_id;
+-	u8	reserved;
+-	u16	timeout;
+-	u16	cap_info;
+-	u16	listen_interval;
+-	u8	mac_addr[ETH_ALEN];
+-};
+-
+-struct wl3501_assoc_confirm {
+-	u16	next_blk;
+-	u8	sig_id;
+-	u8	reserved;
+-	u16	status;
+-};
+-
+-struct wl3501_assoc_ind {
+-	u16	next_blk;
+-	u8	sig_id;
+-	u8	mac_addr[ETH_ALEN];
+-};
+-
+-struct wl3501_auth_req {
+-	u16	next_blk;
+-	u8	sig_id;
+-	u8	reserved;
+-	u16	type;
+-	u16	timeout;
+-	u8	mac_addr[ETH_ALEN];
+-};
+-
+-struct wl3501_auth_confirm {
+-	u16	next_blk;
+-	u8	sig_id;
+-	u8	reserved;
+-	u16	type;
+-	u16	status;
+-	u8	mac_addr[ETH_ALEN];
+-};
+-
+-struct wl3501_get_req {
+-	u16	next_blk;
+-	u8	sig_id;
+-	u8	reserved;
+-	u16	mib_attrib;
+-};
+-
+-struct wl3501_get_confirm {
+-	u16	next_blk;
+-	u8	sig_id;
+-	u8	reserved;
+-	u16	mib_status;
+-	u16	mib_attrib;
+-	u8	mib_value[100];
+-};
+-
+-struct wl3501_req {
+-	u16			    beacon_period;
+-	u16			    dtim_period;
+-	u16			    cap_info;
+-	u8			    bss_type;
+-	u8			    bssid[ETH_ALEN];
+-	struct iw_mgmt_essid_pset   ssid;
+-	struct iw_mgmt_ds_pset	    ds_pset;
+-	struct iw_mgmt_cf_pset	    cf_pset;
+-	struct iw_mgmt_ibss_pset    ibss_pset;
+-	struct iw_mgmt_data_rset    bss_basic_rset;
+-};
+-
+-struct wl3501_join_req {
+-	u16			    next_blk;
+-	u8			    sig_id;
+-	u8			    reserved;
+-	struct iw_mgmt_data_rset    operational_rset;
+-	u16			    reserved2;
+-	u16			    timeout;
+-	u16			    probe_delay;
+-	u8			    timestamp[8];
+-	u8			    local_time[8];
+-	struct wl3501_req	    req;
+-};
+-
+-struct wl3501_join_confirm {
+-	u16	next_blk;
+-	u8	sig_id;
+-	u8	reserved;
+-	u16	status;
+-};
+-
+-struct wl3501_pwr_mgmt_req {
+-	u16	next_blk;
+-	u8	sig_id;
+-	u8	pwr_save;
+-	u8	wake_up;
+-	u8	receive_dtims;
+-};
+-
+-struct wl3501_pwr_mgmt_confirm {
+-	u16	next_blk;
+-	u8	sig_id;
+-	u8	reserved;
+-	u16	status;
+-};
+-
+-struct wl3501_scan_req {
+-	u16			    next_blk;
+-	u8			    sig_id;
+-	u8			    bss_type;
+-	u16			    probe_delay;
+-	u16			    min_chan_time;
+-	u16			    max_chan_time;
+-	u8			    chan_list[14];
+-	u8			    bssid[ETH_ALEN];
+-	struct iw_mgmt_essid_pset   ssid;
+-	enum wl3501_scan_type	    scan_type;
+-};
+-
+-struct wl3501_scan_confirm {
+-	u16			    next_blk;
+-	u8			    sig_id;
+-	u8			    reserved;
+-	u16			    status;
+-	char			    timestamp[8];
+-	char			    localtime[8];
+-	struct wl3501_req	    req;
+-	u8			    rssi;
+-};
+-
+-struct wl3501_start_confirm {
+-	u16	next_blk;
+-	u8	sig_id;
+-	u8	reserved;
+-	u16	status;
+-};
+-
+-struct wl3501_md_req {
+-	u16	next_blk;
+-	u8	sig_id;
+-	u8	routing;
+-	u16	data;
+-	u16	size;
+-	u8	pri;
+-	u8	service_class;
+-	struct {
+-		u8	daddr[ETH_ALEN];
+-		u8	saddr[ETH_ALEN];
+-	} addr;
+-};
+-
+-struct wl3501_md_ind {
+-	u16	next_blk;
+-	u8	sig_id;
+-	u8	routing;
+-	u16	data;
+-	u16	size;
+-	u8	reception;
+-	u8	pri;
+-	u8	service_class;
+-	struct {
+-		u8	daddr[ETH_ALEN];
+-		u8	saddr[ETH_ALEN];
+-	} addr;
+-};
+-
+-struct wl3501_md_confirm {
+-	u16	next_blk;
+-	u8	sig_id;
+-	u8	reserved;
+-	u16	data;
+-	u8	status;
+-	u8	pri;
+-	u8	service_class;
+-};
+-
+-struct wl3501_resync_req {
+-	u16	next_blk;
+-	u8	sig_id;
+-};
+-
+-/* Definitions for supporting clone adapters. */
+-/* System Interface Registers (SIR space) */
+-#define WL3501_NIC_GCR ((u8)0x00)	/* SIR0 - General Conf Register */
+-#define WL3501_NIC_BSS ((u8)0x01)	/* SIR1 - Bank Switching Select Reg */
+-#define WL3501_NIC_LMAL ((u8)0x02)	/* SIR2 - Local Mem addr Reg [7:0] */
+-#define WL3501_NIC_LMAH ((u8)0x03)	/* SIR3 - Local Mem addr Reg [14:8] */
+-#define WL3501_NIC_IODPA ((u8)0x04)	/* SIR4 - I/O Data Port A */
+-#define WL3501_NIC_IODPB ((u8)0x05)	/* SIR5 - I/O Data Port B */
+-#define WL3501_NIC_IODPC ((u8)0x06)	/* SIR6 - I/O Data Port C */
+-#define WL3501_NIC_IODPD ((u8)0x07)	/* SIR7 - I/O Data Port D */
+-
+-/* Bits in GCR */
+-#define WL3501_GCR_SWRESET ((u8)0x80)
+-#define WL3501_GCR_CORESET ((u8)0x40)
+-#define WL3501_GCR_DISPWDN ((u8)0x20)
+-#define WL3501_GCR_ECWAIT  ((u8)0x10)
+-#define WL3501_GCR_ECINT   ((u8)0x08)
+-#define WL3501_GCR_INT2EC  ((u8)0x04)
+-#define WL3501_GCR_ENECINT ((u8)0x02)
+-#define WL3501_GCR_DAM     ((u8)0x01)
+-
+-/* Bits in BSS (Bank Switching Select Register) */
+-#define WL3501_BSS_FPAGE0 ((u8)0x20)	/* Flash memory page0 */
+-#define WL3501_BSS_FPAGE1 ((u8)0x28)
+-#define WL3501_BSS_FPAGE2 ((u8)0x30)
+-#define WL3501_BSS_FPAGE3 ((u8)0x38)
+-#define WL3501_BSS_SPAGE0 ((u8)0x00)	/* SRAM page0 */
+-#define WL3501_BSS_SPAGE1 ((u8)0x08)
+-#define WL3501_BSS_SPAGE2 ((u8)0x10)
+-#define WL3501_BSS_SPAGE3 ((u8)0x18)
+-
+-/* Define Driver Interface */
+-/* Refer IEEE 802.11 */
+-/* Tx packet header, include PLCP and MPDU */
+-/* Tx PLCP Header */
+-struct wl3501_80211_tx_plcp_hdr {
+-	u8	sync[16];
+-	u16	sfd;
+-	u8	signal;
+-	u8	service;
+-	u16	len;
+-	u16	crc16;
+-} __packed;
+-
+-struct wl3501_80211_tx_hdr {
+-	struct wl3501_80211_tx_plcp_hdr	pclp_hdr;
+-	struct ieee80211_hdr		mac_hdr;
+-} __packed __aligned(2);
+-
+-/*
+-   Reserve the beginning Tx space for descriptor use.
+-
+-   TxBlockOffset -->	*----*----*----*----* \
+-	(TxFreeDesc)	|  0 |  1 |  2 |  3 |  \
+-			|  4 |  5 |  6 |  7 |   |
+-			|  8 |  9 | 10 | 11 |   TX_DESC * 20
+-			| 12 | 13 | 14 | 15 |   |
+-			| 16 | 17 | 18 | 19 |  /
+-   TxBufferBegin -->	*----*----*----*----* /
+-   (TxBufferHead)	| 		    |
+-   (TxBufferTail)	| 		    |
+-			|    Send Buffer    |
+-			| 		    |
+-			|		    |
+-			*-------------------*
+-   TxBufferEnd    -------------------------/
+-
+-*/
+-
+-struct wl3501_card {
+-	int				base_addr;
+-	u8				mac_addr[ETH_ALEN];
+-	spinlock_t			lock;
+-	wait_queue_head_t		wait;
+-	struct wl3501_get_confirm	sig_get_confirm;
+-	struct wl3501_pwr_mgmt_confirm	sig_pwr_mgmt_confirm;
+-	u16				tx_buffer_size;
+-	u16				tx_buffer_head;
+-	u16				tx_buffer_tail;
+-	u16				tx_buffer_cnt;
+-	u16				esbq_req_start;
+-	u16				esbq_req_end;
+-	u16				esbq_req_head;
+-	u16				esbq_req_tail;
+-	u16				esbq_confirm_start;
+-	u16				esbq_confirm_end;
+-	u16				esbq_confirm;
+-	struct iw_mgmt_essid_pset  	essid;
+-	struct iw_mgmt_essid_pset  	keep_essid;
+-	u8				bssid[ETH_ALEN];
+-	int				net_type;
+-	char				nick[32];
+-	char				card_name[32];
+-	char				firmware_date[32];
+-	u8				chan;
+-	u8				cap_info;
+-	u16				start_seg;
+-	u16				bss_cnt;
+-	u16				join_sta_bss;
+-	u8				rssi;
+-	u8				adhoc_times;
+-	u8				reg_domain;
+-	u8				version[2];
+-	struct wl3501_scan_confirm	bss_set[20];
+-
+-	struct iw_statistics		wstats;
+-	struct iw_spy_data		spy_data;
+-	struct iw_public_data		wireless_data;
+-	struct pcmcia_device		*p_dev;
+-};
+-#endif
+diff --git a/drivers/net/wireless/legacy/wl3501_cs.c b/drivers/net/wireless/legacy/wl3501_cs.c
+deleted file mode 100644
+index c45c4b7cbbaf1..0000000000000
+--- a/drivers/net/wireless/legacy/wl3501_cs.c
++++ /dev/null
+@@ -1,2036 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * WL3501 Wireless LAN PCMCIA Card Driver for Linux
+- * Written originally for Linux 2.0.30 by Fox Chen, mhchen@golf.ccl.itri.org.tw
+- * Ported to 2.2, 2.4 & 2.5 by Arnaldo Carvalho de Melo <acme@conectiva.com.br>
+- * Wireless extensions in 2.4 by Gustavo Niemeyer <niemeyer@conectiva.com>
+- *
+- * References used by Fox Chen while writing the original driver for 2.0.30:
+- *
+- *   1. WL24xx packet drivers (tooasm.asm)
+- *   2. Access Point Firmware Interface Specification for IEEE 802.11 SUTRO
+- *   3. IEEE 802.11
+- *   4. Linux network driver (/usr/src/linux/drivers/net)
+- *   5. ISA card driver - wl24.c
+- *   6. Linux PCMCIA skeleton driver - skeleton.c
+- *   7. Linux PCMCIA 3c589 network driver - 3c589_cs.c
+- *
+- * Tested with WL2400 firmware 1.2, Linux 2.0.30, and pcmcia-cs-2.9.12
+- *   1. Performance: about 165 Kbytes/sec in TCP/IP with Ad-Hoc mode.
+- *      rsh 192.168.1.3 "dd if=/dev/zero bs=1k count=1000" > /dev/null
+- *      (Specification 2M bits/sec. is about 250 Kbytes/sec., but we must deduct
+- *       ETHER/IP/UDP/TCP header, and acknowledgement overhead)
+- *
+- * Tested with Planet AP in 2.4.17, 184 Kbytes/s in UDP in Infrastructure mode,
+- * 173 Kbytes/s in TCP.
+- *
+- * Tested with Planet AP in 2.5.73-bk, 216 Kbytes/s in Infrastructure mode
+- * with a SMP machine (dual pentium 100), using pktgen, 432 pps (pkt_size = 60)
+- */
+-
+-#include <linux/delay.h>
+-#include <linux/types.h>
+-#include <linux/interrupt.h>
+-#include <linux/in.h>
 -#include <linux/kernel.h>
--#include <linux/proc_fs.h>
--#include <linux/ptrace.h>
--#include <linux/seq_file.h>
--#include <linux/string.h>
--#include <linux/timer.h>
--#include <linux/init.h>
--#include <linux/netdevice.h>
--#include <linux/etherdevice.h>
+-#include <linux/module.h>
+-#include <linux/fcntl.h>
 -#include <linux/if_arp.h>
 -#include <linux/ioport.h>
+-#include <linux/netdevice.h>
+-#include <linux/etherdevice.h>
 -#include <linux/skbuff.h>
--#include <linux/ieee80211.h>
+-#include <linux/slab.h>
+-#include <linux/string.h>
+-#include <linux/wireless.h>
+-#include <net/cfg80211.h>
+-
+-#include <net/iw_handler.h>
 -
 -#include <pcmcia/cistpl.h>
 -#include <pcmcia/cisreg.h>
 -#include <pcmcia/ds.h>
 -
--#include <linux/wireless.h>
--#include <net/iw_handler.h>
--
 -#include <asm/io.h>
--#include <asm/byteorder.h>
 -#include <linux/uaccess.h>
 -
--/* Warning : these stuff will slow down the driver... */
--#define WIRELESS_SPY		/* Enable spying addresses */
--/* Definitions we need for spy */
--typedef struct iw_statistics iw_stats;
--typedef u_char mac_addr[ETH_ALEN];	/* Hardware address */
+-#include "wl3501.h"
 -
--#include "rayctl.h"
--#include "ray_cs.h"
+-#ifndef __i386__
+-#define slow_down_io()
+-#endif
+-
+-/* For rough constant delay */
+-#define WL3501_NOPLOOP(n) { int x = 0; while (x++ < n) slow_down_io(); }
 -
 -
--/** Prototypes based on PCMCIA skeleton driver *******************************/
--static int ray_config(struct pcmcia_device *link);
--static void ray_release(struct pcmcia_device *link);
--static void ray_detach(struct pcmcia_device *p_dev);
 -
--/***** Prototypes indicated by device structure ******************************/
--static int ray_dev_close(struct net_device *dev);
--static int ray_dev_config(struct net_device *dev, struct ifmap *map);
--static struct net_device_stats *ray_get_stats(struct net_device *dev);
--static int ray_dev_init(struct net_device *dev);
+-#define wl3501_outb(a, b) { outb(a, b); slow_down_io(); }
+-#define wl3501_outb_p(a, b) { outb_p(a, b); slow_down_io(); }
+-#define wl3501_outsb(a, b, c) { outsb(a, b, c); slow_down_io(); }
 -
--static int ray_open(struct net_device *dev);
--static netdev_tx_t ray_dev_start_xmit(struct sk_buff *skb,
--					    struct net_device *dev);
--static void set_multicast_list(struct net_device *dev);
--static void ray_update_multi_list(struct net_device *dev, int all);
--static int translate_frame(ray_dev_t *local, struct tx_msg __iomem *ptx,
--			   unsigned char *data, int len);
--static void ray_build_header(ray_dev_t *local, struct tx_msg __iomem *ptx,
--			     UCHAR msg_type, unsigned char *data);
--static void untranslate(ray_dev_t *local, struct sk_buff *skb, int len);
--static iw_stats *ray_get_wireless_stats(struct net_device *dev);
--static const struct iw_handler_def ray_handler_def;
+-#define WL3501_RELEASE_TIMEOUT (25 * HZ)
+-#define WL3501_MAX_ADHOC_TRIES 16
 -
--/***** Prototypes for raylink functions **************************************/
--static void authenticate(ray_dev_t *local);
--static int build_auth_frame(ray_dev_t *local, UCHAR *dest, int auth_type);
--static void authenticate_timeout(struct timer_list *t);
--static int get_free_ccs(ray_dev_t *local);
--static int get_free_tx_ccs(ray_dev_t *local);
--static void init_startup_params(ray_dev_t *local);
--static int parse_addr(char *in_str, UCHAR *out);
--static int ray_hw_xmit(unsigned char *data, int len, struct net_device *dev, UCHAR type);
--static int ray_init(struct net_device *dev);
--static int interrupt_ecf(ray_dev_t *local, int ccs);
--static void ray_reset(struct net_device *dev);
--static void ray_update_parm(struct net_device *dev, UCHAR objid, UCHAR *value, int len);
--static void verify_dl_startup(struct timer_list *t);
+-#define WL3501_RESUME	0
+-#define WL3501_SUSPEND	1
 -
--/* Prototypes for interrpt time functions **********************************/
--static irqreturn_t ray_interrupt(int reg, void *dev_id);
--static void clear_interrupt(ray_dev_t *local);
--static void rx_deauthenticate(ray_dev_t *local, struct rcs __iomem *prcs,
--			      unsigned int pkt_addr, int rx_len);
--static int copy_from_rx_buff(ray_dev_t *local, UCHAR *dest, int pkt_addr, int len);
--static void ray_rx(struct net_device *dev, ray_dev_t *local, struct rcs __iomem *prcs);
--static void release_frag_chain(ray_dev_t *local, struct rcs __iomem *prcs);
--static void rx_authenticate(ray_dev_t *local, struct rcs __iomem *prcs,
--			    unsigned int pkt_addr, int rx_len);
--static void rx_data(struct net_device *dev, struct rcs __iomem *prcs,
--		    unsigned int pkt_addr, int rx_len);
--static void associate(ray_dev_t *local);
+-static int wl3501_config(struct pcmcia_device *link);
+-static void wl3501_release(struct pcmcia_device *link);
 -
--/* Card command functions */
--static int dl_startup_params(struct net_device *dev);
--static void join_net(struct timer_list *t);
--static void start_net(struct timer_list *t);
+-static const struct {
+-	int reg_domain;
+-	int min, max, deflt;
+-} iw_channel_table[] = {
+-	{
+-		.reg_domain = IW_REG_DOMAIN_FCC,
+-		.min	    = 1,
+-		.max	    = 11,
+-		.deflt	    = 1,
+-	},
+-	{
+-		.reg_domain = IW_REG_DOMAIN_DOC,
+-		.min	    = 1,
+-		.max	    = 11,
+-		.deflt	    = 1,
+-	},
+-	{
+-		.reg_domain = IW_REG_DOMAIN_ETSI,
+-		.min	    = 1,
+-		.max	    = 13,
+-		.deflt	    = 1,
+-	},
+-	{
+-		.reg_domain = IW_REG_DOMAIN_SPAIN,
+-		.min	    = 10,
+-		.max	    = 11,
+-		.deflt	    = 10,
+-	},
+-	{
+-		.reg_domain = IW_REG_DOMAIN_FRANCE,
+-		.min	    = 10,
+-		.max	    = 13,
+-		.deflt	    = 10,
+-	},
+-	{
+-		.reg_domain = IW_REG_DOMAIN_MKK,
+-		.min	    = 14,
+-		.max	    = 14,
+-		.deflt	    = 14,
+-	},
+-	{
+-		.reg_domain = IW_REG_DOMAIN_MKK1,
+-		.min	    = 1,
+-		.max	    = 14,
+-		.deflt	    = 1,
+-	},
+-	{
+-		.reg_domain = IW_REG_DOMAIN_ISRAEL,
+-		.min	    = 3,
+-		.max	    = 9,
+-		.deflt	    = 9,
+-	},
+-};
 -
--/*===========================================================================*/
--/* Parameters that can be set with 'insmod' */
--
--/* ADHOC=0, Infrastructure=1 */
--static int net_type = ADHOC;
--
--/* Hop dwell time in Kus (1024 us units defined by 802.11) */
--static int hop_dwell = 128;
--
--/* Beacon period in Kus */
--static int beacon_period = 256;
--
--/* power save mode (0 = off, 1 = save power) */
--static int psm;
--
--/* String for network's Extended Service Set ID. 32 Characters max */
--static char *essid;
--
--/* Default to encapsulation unless translation requested */
--static bool translate = true;
--
--static int country = USA;
--
--static int sniffer;
--
--static int bc;
--
--/* 48 bit physical card address if overriding card's real physical
-- * address is required.  Since IEEE 802.11 addresses are 48 bits
-- * like ethernet, an int can't be used, so a string is used. To
-- * allow use of addresses starting with a decimal digit, the first
-- * character must be a letter and will be ignored. This letter is
-- * followed by up to 12 hex digits which are the address.  If less
-- * than 12 digits are used, the address will be left filled with 0's.
-- * Note that bit 0 of the first byte is the broadcast bit, and evil
-- * things will happen if it is not 0 in a card address.
+-/**
+- * iw_valid_channel - validate channel in regulatory domain
+- * @reg_domain: regulatory domain
+- * @channel: channel to validate
+- *
+- * Returns 0 if invalid in the specified regulatory domain, non-zero if valid.
 - */
--static char *phy_addr = NULL;
+-static int iw_valid_channel(int reg_domain, int channel)
+-{
+-	int i, rc = 0;
 -
--static unsigned int ray_mem_speed = 500;
+-	for (i = 0; i < ARRAY_SIZE(iw_channel_table); i++)
+-		if (reg_domain == iw_channel_table[i].reg_domain) {
+-			rc = channel >= iw_channel_table[i].min &&
+-			     channel <= iw_channel_table[i].max;
+-			break;
+-		}
+-	return rc;
+-}
 -
--/* WARNING: THIS DRIVER IS NOT CAPABLE OF HANDLING MULTIPLE DEVICES! */
--static struct pcmcia_device *this_device = NULL;
+-/**
+- * iw_default_channel - get default channel for a regulatory domain
+- * @reg_domain: regulatory domain
+- *
+- * Returns the default channel for a regulatory domain
+- */
+-static int iw_default_channel(int reg_domain)
+-{
+-	int i, rc = 1;
 -
--MODULE_AUTHOR("Corey Thomas <corey@world.std.com>");
--MODULE_DESCRIPTION("Raylink/WebGear wireless LAN driver");
--MODULE_LICENSE("GPL");
+-	for (i = 0; i < ARRAY_SIZE(iw_channel_table); i++)
+-		if (reg_domain == iw_channel_table[i].reg_domain) {
+-			rc = iw_channel_table[i].deflt;
+-			break;
+-		}
+-	return rc;
+-}
 -
--module_param(net_type, int, 0);
--module_param(hop_dwell, int, 0);
--module_param(beacon_period, int, 0);
--module_param(psm, int, 0);
--module_param(essid, charp, 0);
--module_param(translate, bool, 0);
--module_param(country, int, 0);
--module_param(sniffer, int, 0);
--module_param(bc, int, 0);
--module_param(phy_addr, charp, 0);
--module_param(ray_mem_speed, int, 0);
+-static void iw_set_mgmt_info_element(enum iw_mgmt_info_element_ids id,
+-				     struct iw_mgmt_info_element *el,
+-				     void *value, int len)
+-{
+-	el->id  = id;
+-	el->len = len;
+-	memcpy(el->data, value, len);
+-}
 -
--static const UCHAR b5_default_startup_parms[] = {
--	0, 0,			/* Adhoc station */
--	'L', 'I', 'N', 'U', 'X', 0, 0, 0,	/* 32 char ESSID */
--	0, 0, 0, 0, 0, 0, 0, 0,
--	0, 0, 0, 0, 0, 0, 0, 0,
--	0, 0, 0, 0, 0, 0, 0, 0,
--	1, 0,			/* Active scan, CA Mode */
--	0, 0, 0, 0, 0, 0,	/* No default MAC addr  */
--	0x7f, 0xff,		/* Frag threshold */
--	0x00, 0x80,		/* Hop time 128 Kus */
--	0x01, 0x00,		/* Beacon period 256 Kus */
--	0x01, 0x07, 0xa3,	/* DTIM, retries, ack timeout */
--	0x1d, 0x82, 0x4e,	/* SIFS, DIFS, PIFS */
--	0x7f, 0xff,		/* RTS threshold */
--	0x04, 0xe2, 0x38, 0xA4,	/* scan_dwell, max_scan_dwell */
--	0x05,			/* assoc resp timeout thresh */
--	0x08, 0x02, 0x08,	/* adhoc, infra, super cycle max */
--	0,			/* Promiscuous mode */
--	0x0c, 0x0bd,		/* Unique word */
--	0x32,			/* Slot time */
--	0xff, 0xff,		/* roam-low snr, low snr count */
--	0x05, 0xff,		/* Infra, adhoc missed bcn thresh */
--	0x01, 0x0b, 0x4f,	/* USA, hop pattern, hop pat length */
--/* b4 - b5 differences start here */
--	0x00, 0x3f,		/* CW max */
--	0x00, 0x0f,		/* CW min */
--	0x04, 0x08,		/* Noise gain, limit offset */
--	0x28, 0x28,		/* det rssi, med busy offsets */
--	7,			/* det sync thresh */
--	0, 2, 2,		/* test mode, min, max */
--	0,			/* allow broadcast SSID probe resp */
--	0, 0,			/* privacy must start, can join */
--	2, 0, 0, 0, 0, 0, 0, 0	/* basic rate set */
+-static void iw_copy_mgmt_info_element(struct iw_mgmt_info_element *to,
+-				      struct iw_mgmt_info_element *from)
+-{
+-	iw_set_mgmt_info_element(from->id, to, from->data, from->len);
+-}
+-
+-static inline void wl3501_switch_page(struct wl3501_card *this, u8 page)
+-{
+-	wl3501_outb(page, this->base_addr + WL3501_NIC_BSS);
+-}
+-
+-/*
+- * Get Ethernet MAC address.
+- *
+- * WARNING: We switch to FPAGE0 and switc back again.
+- *          Making sure there is no other WL function beening called by ISR.
+- */
+-static int wl3501_get_flash_mac_addr(struct wl3501_card *this)
+-{
+-	int base_addr = this->base_addr;
+-
+-	/* get MAC addr */
+-	wl3501_outb(WL3501_BSS_FPAGE3, base_addr + WL3501_NIC_BSS); /* BSS */
+-	wl3501_outb(0x00, base_addr + WL3501_NIC_LMAL);	/* LMAL */
+-	wl3501_outb(0x40, base_addr + WL3501_NIC_LMAH);	/* LMAH */
+-
+-	/* wait for reading EEPROM */
+-	WL3501_NOPLOOP(100);
+-	this->mac_addr[0] = inb(base_addr + WL3501_NIC_IODPA);
+-	WL3501_NOPLOOP(100);
+-	this->mac_addr[1] = inb(base_addr + WL3501_NIC_IODPA);
+-	WL3501_NOPLOOP(100);
+-	this->mac_addr[2] = inb(base_addr + WL3501_NIC_IODPA);
+-	WL3501_NOPLOOP(100);
+-	this->mac_addr[3] = inb(base_addr + WL3501_NIC_IODPA);
+-	WL3501_NOPLOOP(100);
+-	this->mac_addr[4] = inb(base_addr + WL3501_NIC_IODPA);
+-	WL3501_NOPLOOP(100);
+-	this->mac_addr[5] = inb(base_addr + WL3501_NIC_IODPA);
+-	WL3501_NOPLOOP(100);
+-	this->reg_domain = inb(base_addr + WL3501_NIC_IODPA);
+-	WL3501_NOPLOOP(100);
+-	wl3501_outb(WL3501_BSS_FPAGE0, base_addr + WL3501_NIC_BSS);
+-	wl3501_outb(0x04, base_addr + WL3501_NIC_LMAL);
+-	wl3501_outb(0x40, base_addr + WL3501_NIC_LMAH);
+-	WL3501_NOPLOOP(100);
+-	this->version[0] = inb(base_addr + WL3501_NIC_IODPA);
+-	WL3501_NOPLOOP(100);
+-	this->version[1] = inb(base_addr + WL3501_NIC_IODPA);
+-	/* switch to SRAM Page 0 (for safety) */
+-	wl3501_switch_page(this, WL3501_BSS_SPAGE0);
+-
+-	/* The MAC addr should be 00:60:... */
+-	return this->mac_addr[0] == 0x00 && this->mac_addr[1] == 0x60;
+-}
+-
+-/**
+- * wl3501_set_to_wla - Move 'size' bytes from PC to card
+- * @this: Card
+- * @dest: Card addressing space
+- * @src: PC addressing space
+- * @size: Bytes to move
+- *
+- * Move 'size' bytes from PC to card. (Shouldn't be interrupted)
+- */
+-static void wl3501_set_to_wla(struct wl3501_card *this, u16 dest, void *src,
+-			      int size)
+-{
+-	/* switch to SRAM Page 0 */
+-	wl3501_switch_page(this, (dest & 0x8000) ? WL3501_BSS_SPAGE1 :
+-						   WL3501_BSS_SPAGE0);
+-	/* set LMAL and LMAH */
+-	wl3501_outb(dest & 0xff, this->base_addr + WL3501_NIC_LMAL);
+-	wl3501_outb(((dest >> 8) & 0x7f), this->base_addr + WL3501_NIC_LMAH);
+-
+-	/* rep out to Port A */
+-	wl3501_outsb(this->base_addr + WL3501_NIC_IODPA, src, size);
+-}
+-
+-/**
+- * wl3501_get_from_wla - Move 'size' bytes from card to PC
+- * @this: Card
+- * @src: Card addressing space
+- * @dest: PC addressing space
+- * @size: Bytes to move
+- *
+- * Move 'size' bytes from card to PC. (Shouldn't be interrupted)
+- */
+-static void wl3501_get_from_wla(struct wl3501_card *this, u16 src, void *dest,
+-				int size)
+-{
+-	/* switch to SRAM Page 0 */
+-	wl3501_switch_page(this, (src & 0x8000) ? WL3501_BSS_SPAGE1 :
+-						  WL3501_BSS_SPAGE0);
+-	/* set LMAL and LMAH */
+-	wl3501_outb(src & 0xff, this->base_addr + WL3501_NIC_LMAL);
+-	wl3501_outb((src >> 8) & 0x7f, this->base_addr + WL3501_NIC_LMAH);
+-
+-	/* rep get from Port A */
+-	insb(this->base_addr + WL3501_NIC_IODPA, dest, size);
+-}
+-
+-/*
+- * Get/Allocate a free Tx Data Buffer
+- *
+- *  *--------------*-----------------*----------------------------------*
+- *  |    PLCP      |    MAC Header   |  DST  SRC         Data ...       |
+- *  |  (24 bytes)  |    (30 bytes)   |  (6)  (6)  (Ethernet Row Data)   |
+- *  *--------------*-----------------*----------------------------------*
+- *  \               \- IEEE 802.11 -/ \-------------- len --------------/
+- *   \-struct wl3501_80211_tx_hdr--/   \-------- Ethernet Frame -------/
+- *
+- * Return = Position in Card
+- */
+-static u16 wl3501_get_tx_buffer(struct wl3501_card *this, u16 len)
+-{
+-	u16 next, blk_cnt = 0, zero = 0;
+-	u16 full_len = sizeof(struct wl3501_80211_tx_hdr) + len;
+-	u16 ret = 0;
+-
+-	if (full_len > this->tx_buffer_cnt * 254)
+-		goto out;
+-	ret = this->tx_buffer_head;
+-	while (full_len) {
+-		if (full_len < 254)
+-			full_len = 0;
+-		else
+-			full_len -= 254;
+-		wl3501_get_from_wla(this, this->tx_buffer_head, &next,
+-				    sizeof(next));
+-		if (!full_len)
+-			wl3501_set_to_wla(this, this->tx_buffer_head, &zero,
+-					  sizeof(zero));
+-		this->tx_buffer_head = next;
+-		blk_cnt++;
+-		/* if buffer is not enough */
+-		if (!next && full_len) {
+-			this->tx_buffer_head = ret;
+-			ret = 0;
+-			goto out;
+-		}
+-	}
+-	this->tx_buffer_cnt -= blk_cnt;
+-out:
+-	return ret;
+-}
+-
+-/*
+- * Free an allocated Tx Buffer. ptr must be correct position.
+- */
+-static void wl3501_free_tx_buffer(struct wl3501_card *this, u16 ptr)
+-{
+-	/* check if all space is not free */
+-	if (!this->tx_buffer_head)
+-		this->tx_buffer_head = ptr;
+-	else
+-		wl3501_set_to_wla(this, this->tx_buffer_tail,
+-				  &ptr, sizeof(ptr));
+-	while (ptr) {
+-		u16 next;
+-
+-		this->tx_buffer_cnt++;
+-		wl3501_get_from_wla(this, ptr, &next, sizeof(next));
+-		this->tx_buffer_tail = ptr;
+-		ptr = next;
+-	}
+-}
+-
+-static int wl3501_esbq_req_test(struct wl3501_card *this)
+-{
+-	u8 tmp = 0;
+-
+-	wl3501_get_from_wla(this, this->esbq_req_head + 3, &tmp, sizeof(tmp));
+-	return tmp & 0x80;
+-}
+-
+-static void wl3501_esbq_req(struct wl3501_card *this, u16 *ptr)
+-{
+-	u16 tmp = 0;
+-
+-	wl3501_set_to_wla(this, this->esbq_req_head, ptr, 2);
+-	wl3501_set_to_wla(this, this->esbq_req_head + 2, &tmp, sizeof(tmp));
+-	this->esbq_req_head += 4;
+-	if (this->esbq_req_head >= this->esbq_req_end)
+-		this->esbq_req_head = this->esbq_req_start;
+-}
+-
+-static int wl3501_esbq_exec(struct wl3501_card *this, void *sig, int sig_size)
+-{
+-	int rc = -EIO;
+-
+-	if (wl3501_esbq_req_test(this)) {
+-		u16 ptr = wl3501_get_tx_buffer(this, sig_size);
+-		if (ptr) {
+-			wl3501_set_to_wla(this, ptr, sig, sig_size);
+-			wl3501_esbq_req(this, &ptr);
+-			rc = 0;
+-		}
+-	}
+-	return rc;
+-}
+-
+-static int wl3501_request_mib(struct wl3501_card *this, u8 index, void *bf)
+-{
+-	struct wl3501_get_req sig = {
+-		.sig_id	    = WL3501_SIG_GET_REQ,
+-		.mib_attrib = index,
+-	};
+-	unsigned long flags;
+-	int rc = -EIO;
+-
+-	spin_lock_irqsave(&this->lock, flags);
+-	if (wl3501_esbq_req_test(this)) {
+-		u16 ptr = wl3501_get_tx_buffer(this, sizeof(sig));
+-		if (ptr) {
+-			wl3501_set_to_wla(this, ptr, &sig, sizeof(sig));
+-			wl3501_esbq_req(this, &ptr);
+-			this->sig_get_confirm.mib_status = 255;
+-			rc = 0;
+-		}
+-	}
+-	spin_unlock_irqrestore(&this->lock, flags);
+-
+-	return rc;
+-}
+-
+-static int wl3501_get_mib_value(struct wl3501_card *this, u8 index,
+-				void *bf, int size)
+-{
+-	int rc;
+-
+-	rc = wl3501_request_mib(this, index, bf);
+-	if (rc)
+-		return rc;
+-
+-	rc = wait_event_interruptible(this->wait,
+-		this->sig_get_confirm.mib_status != 255);
+-	if (rc)
+-		return rc;
+-
+-	memcpy(bf, this->sig_get_confirm.mib_value, size);
+-	return 0;
+-}
+-
+-static int wl3501_pwr_mgmt(struct wl3501_card *this, int suspend)
+-{
+-	struct wl3501_pwr_mgmt_req sig = {
+-		.sig_id		= WL3501_SIG_PWR_MGMT_REQ,
+-		.pwr_save	= suspend,
+-		.wake_up	= !suspend,
+-		.receive_dtims	= 10,
+-	};
+-	unsigned long flags;
+-	int rc = -EIO;
+-
+-	spin_lock_irqsave(&this->lock, flags);
+-	if (wl3501_esbq_req_test(this)) {
+-		u16 ptr = wl3501_get_tx_buffer(this, sizeof(sig));
+-		if (ptr) {
+-			wl3501_set_to_wla(this, ptr, &sig, sizeof(sig));
+-			wl3501_esbq_req(this, &ptr);
+-			this->sig_pwr_mgmt_confirm.status = 255;
+-			spin_unlock_irqrestore(&this->lock, flags);
+-			rc = wait_event_interruptible(this->wait,
+-				this->sig_pwr_mgmt_confirm.status != 255);
+-			printk(KERN_INFO "%s: %s status=%d\n", __func__,
+-			       suspend ? "suspend" : "resume",
+-			       this->sig_pwr_mgmt_confirm.status);
+-			goto out;
+-		}
+-	}
+-	spin_unlock_irqrestore(&this->lock, flags);
+-out:
+-	return rc;
+-}
+-
+-/**
+- * wl3501_send_pkt - Send a packet.
+- * @this: Card
+- * @data: Ethernet raw frame.  (e.g. data[0] - data[5] is Dest MAC Addr,
+- *                                   data[6] - data[11] is Src MAC Addr)
+- * @len: Packet length
+- * Ref: IEEE 802.11
+- */
+-static int wl3501_send_pkt(struct wl3501_card *this, u8 *data, u16 len)
+-{
+-	u16 bf, sig_bf, next, tmplen, pktlen;
+-	struct wl3501_md_req sig = {
+-		.sig_id = WL3501_SIG_MD_REQ,
+-	};
+-	size_t sig_addr_len = sizeof(sig.addr);
+-	u8 *pdata = (char *)data;
+-	int rc = -EIO;
+-
+-	if (wl3501_esbq_req_test(this)) {
+-		sig_bf = wl3501_get_tx_buffer(this, sizeof(sig));
+-		rc = -ENOMEM;
+-		if (!sig_bf)	/* No free buffer available */
+-			goto out;
+-		bf = wl3501_get_tx_buffer(this, len + 26 + 24);
+-		if (!bf) {
+-			/* No free buffer available */
+-			wl3501_free_tx_buffer(this, sig_bf);
+-			goto out;
+-		}
+-		rc = 0;
+-		memcpy(&sig.addr, pdata, sig_addr_len);
+-		pktlen = len - sig_addr_len;
+-		pdata += sig_addr_len;
+-		sig.data = bf;
+-		if (((*pdata) * 256 + (*(pdata + 1))) > 1500) {
+-			u8 addr4[ETH_ALEN] = {
+-				[0] = 0xAA, [1] = 0xAA, [2] = 0x03, [4] = 0x00,
+-			};
+-
+-			wl3501_set_to_wla(this, bf + 2 +
+-					  offsetof(struct wl3501_tx_hdr, addr4),
+-					  addr4, sizeof(addr4));
+-			sig.size = pktlen + 24 + 4 + 6;
+-			if (pktlen > (254 - sizeof(struct wl3501_tx_hdr))) {
+-				tmplen = 254 - sizeof(struct wl3501_tx_hdr);
+-				pktlen -= tmplen;
+-			} else {
+-				tmplen = pktlen;
+-				pktlen = 0;
+-			}
+-			wl3501_set_to_wla(this,
+-					  bf + 2 + sizeof(struct wl3501_tx_hdr),
+-					  pdata, tmplen);
+-			pdata += tmplen;
+-			wl3501_get_from_wla(this, bf, &next, sizeof(next));
+-			bf = next;
+-		} else {
+-			sig.size = pktlen + 24 + 4 - 2;
+-			pdata += 2;
+-			pktlen -= 2;
+-			if (pktlen > (254 - sizeof(struct wl3501_tx_hdr) + 6)) {
+-				tmplen = 254 - sizeof(struct wl3501_tx_hdr) + 6;
+-				pktlen -= tmplen;
+-			} else {
+-				tmplen = pktlen;
+-				pktlen = 0;
+-			}
+-			wl3501_set_to_wla(this, bf + 2 +
+-					  offsetof(struct wl3501_tx_hdr, addr4),
+-					  pdata, tmplen);
+-			pdata += tmplen;
+-			wl3501_get_from_wla(this, bf, &next, sizeof(next));
+-			bf = next;
+-		}
+-		while (pktlen > 0) {
+-			if (pktlen > 254) {
+-				tmplen = 254;
+-				pktlen -= 254;
+-			} else {
+-				tmplen = pktlen;
+-				pktlen = 0;
+-			}
+-			wl3501_set_to_wla(this, bf + 2, pdata, tmplen);
+-			pdata += tmplen;
+-			wl3501_get_from_wla(this, bf, &next, sizeof(next));
+-			bf = next;
+-		}
+-		wl3501_set_to_wla(this, sig_bf, &sig, sizeof(sig));
+-		wl3501_esbq_req(this, &sig_bf);
+-	}
+-out:
+-	return rc;
+-}
+-
+-static int wl3501_mgmt_resync(struct wl3501_card *this)
+-{
+-	struct wl3501_resync_req sig = {
+-		.sig_id = WL3501_SIG_RESYNC_REQ,
+-	};
+-
+-	return wl3501_esbq_exec(this, &sig, sizeof(sig));
+-}
+-
+-static inline int wl3501_fw_bss_type(struct wl3501_card *this)
+-{
+-	return this->net_type == IW_MODE_INFRA ? WL3501_NET_TYPE_INFRA :
+-						 WL3501_NET_TYPE_ADHOC;
+-}
+-
+-static inline int wl3501_fw_cap_info(struct wl3501_card *this)
+-{
+-	return this->net_type == IW_MODE_INFRA ? WL3501_MGMT_CAPABILITY_ESS :
+-						 WL3501_MGMT_CAPABILITY_IBSS;
+-}
+-
+-static int wl3501_mgmt_scan(struct wl3501_card *this, u16 chan_time)
+-{
+-	struct wl3501_scan_req sig = {
+-		.sig_id		= WL3501_SIG_SCAN_REQ,
+-		.scan_type	= WL3501_SCAN_TYPE_ACTIVE,
+-		.probe_delay	= 0x10,
+-		.min_chan_time	= chan_time,
+-		.max_chan_time	= chan_time,
+-		.bss_type	= wl3501_fw_bss_type(this),
+-	};
+-
+-	this->bss_cnt = this->join_sta_bss = 0;
+-	return wl3501_esbq_exec(this, &sig, sizeof(sig));
+-}
+-
+-static int wl3501_mgmt_join(struct wl3501_card *this, u16 stas)
+-{
+-	struct wl3501_join_req sig = {
+-		.sig_id		  = WL3501_SIG_JOIN_REQ,
+-		.timeout	  = 10,
+-		.req.ds_pset = {
+-			.el = {
+-				.id  = IW_MGMT_INFO_ELEMENT_DS_PARAMETER_SET,
+-				.len = 1,
+-			},
+-			.chan	= this->chan,
+-		},
+-	};
+-
+-	memcpy(&sig.req, &this->bss_set[stas].req, sizeof(sig.req));
+-	return wl3501_esbq_exec(this, &sig, sizeof(sig));
+-}
+-
+-static int wl3501_mgmt_start(struct wl3501_card *this)
+-{
+-	struct wl3501_start_req sig = {
+-		.sig_id			= WL3501_SIG_START_REQ,
+-		.beacon_period		= 400,
+-		.dtim_period		= 1,
+-		.ds_pset = {
+-			.el = {
+-				.id  = IW_MGMT_INFO_ELEMENT_DS_PARAMETER_SET,
+-				.len = 1,
+-			},
+-			.chan	= this->chan,
+-		},
+-		.bss_basic_rset	= {
+-			.el = {
+-				.id	= IW_MGMT_INFO_ELEMENT_SUPPORTED_RATES,
+-				.len = 2,
+-			},
+-			.data_rate_labels = {
+-				[0] = IW_MGMT_RATE_LABEL_MANDATORY |
+-				      IW_MGMT_RATE_LABEL_1MBIT,
+-				[1] = IW_MGMT_RATE_LABEL_MANDATORY |
+-				      IW_MGMT_RATE_LABEL_2MBIT,
+-			},
+-		},
+-		.operational_rset	= {
+-			.el = {
+-				.id	= IW_MGMT_INFO_ELEMENT_SUPPORTED_RATES,
+-				.len = 2,
+-			},
+-			.data_rate_labels = {
+-				[0] = IW_MGMT_RATE_LABEL_MANDATORY |
+-				      IW_MGMT_RATE_LABEL_1MBIT,
+-				[1] = IW_MGMT_RATE_LABEL_MANDATORY |
+-				      IW_MGMT_RATE_LABEL_2MBIT,
+-			},
+-		},
+-		.ibss_pset		= {
+-			.el = {
+-				.id	 = IW_MGMT_INFO_ELEMENT_IBSS_PARAMETER_SET,
+-				.len     = 2,
+-			},
+-			.atim_window = 10,
+-		},
+-		.bss_type		= wl3501_fw_bss_type(this),
+-		.cap_info		= wl3501_fw_cap_info(this),
+-	};
+-
+-	iw_copy_mgmt_info_element(&sig.ssid.el, &this->essid.el);
+-	iw_copy_mgmt_info_element(&this->keep_essid.el, &this->essid.el);
+-	return wl3501_esbq_exec(this, &sig, sizeof(sig));
+-}
+-
+-static void wl3501_mgmt_scan_confirm(struct wl3501_card *this, u16 addr)
+-{
+-	u16 i = 0;
+-	int matchflag = 0;
+-	struct wl3501_scan_confirm sig;
+-
+-	pr_debug("entry");
+-	wl3501_get_from_wla(this, addr, &sig, sizeof(sig));
+-	if (sig.status == WL3501_STATUS_SUCCESS) {
+-		pr_debug("success");
+-		if ((this->net_type == IW_MODE_INFRA &&
+-		     (sig.req.cap_info & WL3501_MGMT_CAPABILITY_ESS)) ||
+-		    (this->net_type == IW_MODE_ADHOC &&
+-		     (sig.req.cap_info & WL3501_MGMT_CAPABILITY_IBSS)) ||
+-		    this->net_type == IW_MODE_AUTO) {
+-			if (!this->essid.el.len)
+-				matchflag = 1;
+-			else if (this->essid.el.len == 3 &&
+-				 !memcmp(this->essid.essid, "ANY", 3))
+-				matchflag = 1;
+-			else if (this->essid.el.len != sig.req.ssid.el.len)
+-				matchflag = 0;
+-			else if (memcmp(this->essid.essid, sig.req.ssid.essid,
+-					this->essid.el.len))
+-				matchflag = 0;
+-			else
+-				matchflag = 1;
+-			if (matchflag) {
+-				for (i = 0; i < this->bss_cnt; i++) {
+-					if (ether_addr_equal_unaligned(this->bss_set[i].req.bssid,
+-								       sig.req.bssid)) {
+-						matchflag = 0;
+-						break;
+-					}
+-				}
+-			}
+-			if (matchflag && (i < 20)) {
+-				memcpy(&this->bss_set[i].req,
+-				       &sig.req, sizeof(sig.req));
+-				this->bss_cnt++;
+-				this->rssi = sig.rssi;
+-				this->bss_set[i].rssi = sig.rssi;
+-			}
+-		}
+-	} else if (sig.status == WL3501_STATUS_TIMEOUT) {
+-		pr_debug("timeout");
+-		this->join_sta_bss = 0;
+-		for (i = this->join_sta_bss; i < this->bss_cnt; i++)
+-			if (!wl3501_mgmt_join(this, i))
+-				break;
+-		this->join_sta_bss = i;
+-		if (this->join_sta_bss == this->bss_cnt) {
+-			if (this->net_type == IW_MODE_INFRA)
+-				wl3501_mgmt_scan(this, 100);
+-			else {
+-				this->adhoc_times++;
+-				if (this->adhoc_times > WL3501_MAX_ADHOC_TRIES)
+-					wl3501_mgmt_start(this);
+-				else
+-					wl3501_mgmt_scan(this, 100);
+-			}
+-		}
+-	}
+-}
+-
+-/**
+- * wl3501_block_interrupt - Mask interrupt from SUTRO
+- * @this: Card
+- *
+- * Mask interrupt from SUTRO. (i.e. SUTRO cannot interrupt the HOST)
+- * Return: 1 if interrupt is originally enabled
+- */
+-static int wl3501_block_interrupt(struct wl3501_card *this)
+-{
+-	u8 old = inb(this->base_addr + WL3501_NIC_GCR);
+-	u8 new = old & (~(WL3501_GCR_ECINT | WL3501_GCR_INT2EC |
+-			WL3501_GCR_ENECINT));
+-
+-	wl3501_outb(new, this->base_addr + WL3501_NIC_GCR);
+-	return old & WL3501_GCR_ENECINT;
+-}
+-
+-/**
+- * wl3501_unblock_interrupt - Enable interrupt from SUTRO
+- * @this: Card
+- *
+- * Enable interrupt from SUTRO. (i.e. SUTRO can interrupt the HOST)
+- * Return: 1 if interrupt is originally enabled
+- */
+-static int wl3501_unblock_interrupt(struct wl3501_card *this)
+-{
+-	u8 old = inb(this->base_addr + WL3501_NIC_GCR);
+-	u8 new = (old & ~(WL3501_GCR_ECINT | WL3501_GCR_INT2EC)) |
+-		  WL3501_GCR_ENECINT;
+-
+-	wl3501_outb(new, this->base_addr + WL3501_NIC_GCR);
+-	return old & WL3501_GCR_ENECINT;
+-}
+-
+-/**
+- * wl3501_receive - Receive data from Receive Queue.
+- *
+- * Receive data from Receive Queue.
+- *
+- * @this: card
+- * @bf: address of host
+- * @size: size of buffer.
+- */
+-static u16 wl3501_receive(struct wl3501_card *this, u8 *bf, u16 size)
+-{
+-	u16 next_addr, next_addr1;
+-	u8 *data = bf + 12;
+-
+-	size -= 12;
+-	wl3501_get_from_wla(this, this->start_seg + 2,
+-			    &next_addr, sizeof(next_addr));
+-	if (size > WL3501_BLKSZ - sizeof(struct wl3501_rx_hdr)) {
+-		wl3501_get_from_wla(this,
+-				    this->start_seg +
+-					sizeof(struct wl3501_rx_hdr), data,
+-				    WL3501_BLKSZ -
+-					sizeof(struct wl3501_rx_hdr));
+-		size -= WL3501_BLKSZ - sizeof(struct wl3501_rx_hdr);
+-		data += WL3501_BLKSZ - sizeof(struct wl3501_rx_hdr);
+-	} else {
+-		wl3501_get_from_wla(this,
+-				    this->start_seg +
+-					sizeof(struct wl3501_rx_hdr),
+-				    data, size);
+-		size = 0;
+-	}
+-	while (size > 0) {
+-		if (size > WL3501_BLKSZ - 5) {
+-			wl3501_get_from_wla(this, next_addr + 5, data,
+-					    WL3501_BLKSZ - 5);
+-			size -= WL3501_BLKSZ - 5;
+-			data += WL3501_BLKSZ - 5;
+-			wl3501_get_from_wla(this, next_addr + 2, &next_addr1,
+-					    sizeof(next_addr1));
+-			next_addr = next_addr1;
+-		} else {
+-			wl3501_get_from_wla(this, next_addr + 5, data, size);
+-			size = 0;
+-		}
+-	}
+-	return 0;
+-}
+-
+-static void wl3501_esbq_req_free(struct wl3501_card *this)
+-{
+-	u8 tmp;
+-	u16 addr;
+-
+-	if (this->esbq_req_head == this->esbq_req_tail)
+-		goto out;
+-	wl3501_get_from_wla(this, this->esbq_req_tail + 3, &tmp, sizeof(tmp));
+-	if (!(tmp & 0x80))
+-		goto out;
+-	wl3501_get_from_wla(this, this->esbq_req_tail, &addr, sizeof(addr));
+-	wl3501_free_tx_buffer(this, addr);
+-	this->esbq_req_tail += 4;
+-	if (this->esbq_req_tail >= this->esbq_req_end)
+-		this->esbq_req_tail = this->esbq_req_start;
+-out:
+-	return;
+-}
+-
+-static int wl3501_esbq_confirm(struct wl3501_card *this)
+-{
+-	u8 tmp;
+-
+-	wl3501_get_from_wla(this, this->esbq_confirm + 3, &tmp, sizeof(tmp));
+-	return tmp & 0x80;
+-}
+-
+-static void wl3501_online(struct net_device *dev)
+-{
+-	struct wl3501_card *this = netdev_priv(dev);
+-
+-	printk(KERN_INFO "%s: Wireless LAN online. BSSID: %pM\n",
+-	       dev->name, this->bssid);
+-	netif_wake_queue(dev);
+-}
+-
+-static void wl3501_esbq_confirm_done(struct wl3501_card *this)
+-{
+-	u8 tmp = 0;
+-
+-	wl3501_set_to_wla(this, this->esbq_confirm + 3, &tmp, sizeof(tmp));
+-	this->esbq_confirm += 4;
+-	if (this->esbq_confirm >= this->esbq_confirm_end)
+-		this->esbq_confirm = this->esbq_confirm_start;
+-}
+-
+-static int wl3501_mgmt_auth(struct wl3501_card *this)
+-{
+-	struct wl3501_auth_req sig = {
+-		.sig_id	 = WL3501_SIG_AUTH_REQ,
+-		.type	 = WL3501_SYS_TYPE_OPEN,
+-		.timeout = 1000,
+-	};
+-
+-	pr_debug("entry");
+-	memcpy(sig.mac_addr, this->bssid, ETH_ALEN);
+-	return wl3501_esbq_exec(this, &sig, sizeof(sig));
+-}
+-
+-static int wl3501_mgmt_association(struct wl3501_card *this)
+-{
+-	struct wl3501_assoc_req sig = {
+-		.sig_id		 = WL3501_SIG_ASSOC_REQ,
+-		.timeout	 = 1000,
+-		.listen_interval = 5,
+-		.cap_info	 = this->cap_info,
+-	};
+-
+-	pr_debug("entry");
+-	memcpy(sig.mac_addr, this->bssid, ETH_ALEN);
+-	return wl3501_esbq_exec(this, &sig, sizeof(sig));
+-}
+-
+-static void wl3501_mgmt_join_confirm(struct net_device *dev, u16 addr)
+-{
+-	struct wl3501_card *this = netdev_priv(dev);
+-	struct wl3501_join_confirm sig;
+-
+-	pr_debug("entry");
+-	wl3501_get_from_wla(this, addr, &sig, sizeof(sig));
+-	if (sig.status == WL3501_STATUS_SUCCESS) {
+-		if (this->net_type == IW_MODE_INFRA) {
+-			if (this->join_sta_bss < this->bss_cnt) {
+-				const int i = this->join_sta_bss;
+-				memcpy(this->bssid,
+-				       this->bss_set[i].req.bssid, ETH_ALEN);
+-				this->chan = this->bss_set[i].req.ds_pset.chan;
+-				iw_copy_mgmt_info_element(&this->keep_essid.el,
+-						     &this->bss_set[i].req.ssid.el);
+-				wl3501_mgmt_auth(this);
+-			}
+-		} else {
+-			const int i = this->join_sta_bss;
+-
+-			memcpy(&this->bssid, &this->bss_set[i].req.bssid, ETH_ALEN);
+-			this->chan = this->bss_set[i].req.ds_pset.chan;
+-			iw_copy_mgmt_info_element(&this->keep_essid.el,
+-						  &this->bss_set[i].req.ssid.el);
+-			wl3501_online(dev);
+-		}
+-	} else {
+-		int i;
+-		this->join_sta_bss++;
+-		for (i = this->join_sta_bss; i < this->bss_cnt; i++)
+-			if (!wl3501_mgmt_join(this, i))
+-				break;
+-		this->join_sta_bss = i;
+-		if (this->join_sta_bss == this->bss_cnt) {
+-			if (this->net_type == IW_MODE_INFRA)
+-				wl3501_mgmt_scan(this, 100);
+-			else {
+-				this->adhoc_times++;
+-				if (this->adhoc_times > WL3501_MAX_ADHOC_TRIES)
+-					wl3501_mgmt_start(this);
+-				else
+-					wl3501_mgmt_scan(this, 100);
+-			}
+-		}
+-	}
+-}
+-
+-static inline void wl3501_alarm_interrupt(struct net_device *dev,
+-					  struct wl3501_card *this)
+-{
+-	if (this->net_type == IW_MODE_INFRA) {
+-		printk(KERN_INFO "Wireless LAN offline\n");
+-		netif_stop_queue(dev);
+-		wl3501_mgmt_resync(this);
+-	}
+-}
+-
+-static inline void wl3501_md_confirm_interrupt(struct net_device *dev,
+-					       struct wl3501_card *this,
+-					       u16 addr)
+-{
+-	struct wl3501_md_confirm sig;
+-
+-	pr_debug("entry");
+-	wl3501_get_from_wla(this, addr, &sig, sizeof(sig));
+-	wl3501_free_tx_buffer(this, sig.data);
+-	if (netif_queue_stopped(dev))
+-		netif_wake_queue(dev);
+-}
+-
+-static inline void wl3501_md_ind_interrupt(struct net_device *dev,
+-					   struct wl3501_card *this, u16 addr)
+-{
+-	struct wl3501_md_ind sig;
+-	struct sk_buff *skb;
+-	u8 rssi, addr4[ETH_ALEN];
+-	u16 pkt_len;
+-
+-	wl3501_get_from_wla(this, addr, &sig, sizeof(sig));
+-	this->start_seg = sig.data;
+-	wl3501_get_from_wla(this,
+-			    sig.data + offsetof(struct wl3501_rx_hdr, rssi),
+-			    &rssi, sizeof(rssi));
+-	this->rssi = rssi <= 63 ? (rssi * 100) / 64 : 255;
+-
+-	wl3501_get_from_wla(this,
+-			    sig.data +
+-				offsetof(struct wl3501_rx_hdr, addr4),
+-			    &addr4, sizeof(addr4));
+-	if (!(addr4[0] == 0xAA && addr4[1] == 0xAA &&
+-	      addr4[2] == 0x03 && addr4[4] == 0x00)) {
+-		printk(KERN_INFO "Unsupported packet type!\n");
+-		return;
+-	}
+-	pkt_len = sig.size + 12 - 24 - 4 - 6;
+-
+-	skb = dev_alloc_skb(pkt_len + 5);
+-
+-	if (!skb) {
+-		printk(KERN_WARNING "%s: Can't alloc a sk_buff of size %d.\n",
+-		       dev->name, pkt_len);
+-		dev->stats.rx_dropped++;
+-	} else {
+-		skb->dev = dev;
+-		skb_reserve(skb, 2); /* IP headers on 16 bytes boundaries */
+-		skb_copy_to_linear_data(skb, (unsigned char *)&sig.addr,
+-					sizeof(sig.addr));
+-		wl3501_receive(this, skb->data, pkt_len);
+-		skb_put(skb, pkt_len);
+-		skb->protocol	= eth_type_trans(skb, dev);
+-		dev->stats.rx_packets++;
+-		dev->stats.rx_bytes += skb->len;
+-		netif_rx(skb);
+-	}
+-}
+-
+-static inline void wl3501_get_confirm_interrupt(struct wl3501_card *this,
+-						u16 addr, void *sig, int size)
+-{
+-	pr_debug("entry");
+-	wl3501_get_from_wla(this, addr, &this->sig_get_confirm,
+-			    sizeof(this->sig_get_confirm));
+-	wake_up(&this->wait);
+-}
+-
+-static inline void wl3501_start_confirm_interrupt(struct net_device *dev,
+-						  struct wl3501_card *this,
+-						  u16 addr)
+-{
+-	struct wl3501_start_confirm sig;
+-
+-	pr_debug("entry");
+-	wl3501_get_from_wla(this, addr, &sig, sizeof(sig));
+-	if (sig.status == WL3501_STATUS_SUCCESS)
+-		netif_wake_queue(dev);
+-}
+-
+-static inline void wl3501_assoc_confirm_interrupt(struct net_device *dev,
+-						  u16 addr)
+-{
+-	struct wl3501_card *this = netdev_priv(dev);
+-	struct wl3501_assoc_confirm sig;
+-
+-	pr_debug("entry");
+-	wl3501_get_from_wla(this, addr, &sig, sizeof(sig));
+-
+-	if (sig.status == WL3501_STATUS_SUCCESS)
+-		wl3501_online(dev);
+-}
+-
+-static inline void wl3501_auth_confirm_interrupt(struct wl3501_card *this,
+-						 u16 addr)
+-{
+-	struct wl3501_auth_confirm sig;
+-
+-	pr_debug("entry");
+-	wl3501_get_from_wla(this, addr, &sig, sizeof(sig));
+-
+-	if (sig.status == WL3501_STATUS_SUCCESS)
+-		wl3501_mgmt_association(this);
+-	else
+-		wl3501_mgmt_resync(this);
+-}
+-
+-static inline void wl3501_rx_interrupt(struct net_device *dev)
+-{
+-	int morepkts;
+-	u16 addr;
+-	u8 sig_id;
+-	struct wl3501_card *this = netdev_priv(dev);
+-
+-	pr_debug("entry");
+-loop:
+-	morepkts = 0;
+-	if (!wl3501_esbq_confirm(this))
+-		goto free;
+-	wl3501_get_from_wla(this, this->esbq_confirm, &addr, sizeof(addr));
+-	wl3501_get_from_wla(this, addr + 2, &sig_id, sizeof(sig_id));
+-
+-	switch (sig_id) {
+-	case WL3501_SIG_DEAUTH_IND:
+-	case WL3501_SIG_DISASSOC_IND:
+-	case WL3501_SIG_ALARM:
+-		wl3501_alarm_interrupt(dev, this);
+-		break;
+-	case WL3501_SIG_MD_CONFIRM:
+-		wl3501_md_confirm_interrupt(dev, this, addr);
+-		break;
+-	case WL3501_SIG_MD_IND:
+-		wl3501_md_ind_interrupt(dev, this, addr);
+-		break;
+-	case WL3501_SIG_GET_CONFIRM:
+-		wl3501_get_confirm_interrupt(this, addr,
+-					     &this->sig_get_confirm,
+-					     sizeof(this->sig_get_confirm));
+-		break;
+-	case WL3501_SIG_PWR_MGMT_CONFIRM:
+-		wl3501_get_confirm_interrupt(this, addr,
+-					     &this->sig_pwr_mgmt_confirm,
+-					    sizeof(this->sig_pwr_mgmt_confirm));
+-		break;
+-	case WL3501_SIG_START_CONFIRM:
+-		wl3501_start_confirm_interrupt(dev, this, addr);
+-		break;
+-	case WL3501_SIG_SCAN_CONFIRM:
+-		wl3501_mgmt_scan_confirm(this, addr);
+-		break;
+-	case WL3501_SIG_JOIN_CONFIRM:
+-		wl3501_mgmt_join_confirm(dev, addr);
+-		break;
+-	case WL3501_SIG_ASSOC_CONFIRM:
+-		wl3501_assoc_confirm_interrupt(dev, addr);
+-		break;
+-	case WL3501_SIG_AUTH_CONFIRM:
+-		wl3501_auth_confirm_interrupt(this, addr);
+-		break;
+-	case WL3501_SIG_RESYNC_CONFIRM:
+-		wl3501_mgmt_resync(this); /* FIXME: should be resync_confirm */
+-		break;
+-	}
+-	wl3501_esbq_confirm_done(this);
+-	morepkts = 1;
+-	/* free request if necessary */
+-free:
+-	wl3501_esbq_req_free(this);
+-	if (morepkts)
+-		goto loop;
+-}
+-
+-static inline void wl3501_ack_interrupt(struct wl3501_card *this)
+-{
+-	wl3501_outb(WL3501_GCR_ECINT, this->base_addr + WL3501_NIC_GCR);
+-}
+-
+-/**
+- * wl3501_interrupt - Hardware interrupt from card.
+- * @irq: Interrupt number
+- * @dev_id: net_device
+- *
+- * We must acknowledge the interrupt as soon as possible, and block the
+- * interrupt from the same card immediately to prevent re-entry.
+- *
+- * Before accessing the Control_Status_Block, we must lock SUTRO first.
+- * On the other hand, to prevent SUTRO from malfunctioning, we must
+- * unlock the SUTRO as soon as possible.
+- */
+-static irqreturn_t wl3501_interrupt(int irq, void *dev_id)
+-{
+-	struct net_device *dev = dev_id;
+-	struct wl3501_card *this;
+-
+-	this = netdev_priv(dev);
+-	spin_lock(&this->lock);
+-	wl3501_ack_interrupt(this);
+-	wl3501_block_interrupt(this);
+-	wl3501_rx_interrupt(dev);
+-	wl3501_unblock_interrupt(this);
+-	spin_unlock(&this->lock);
+-
+-	return IRQ_HANDLED;
+-}
+-
+-static int wl3501_reset_board(struct wl3501_card *this)
+-{
+-	u8 tmp = 0;
+-	int i, rc = 0;
+-
+-	/* Coreset */
+-	wl3501_outb_p(WL3501_GCR_CORESET, this->base_addr + WL3501_NIC_GCR);
+-	wl3501_outb_p(0, this->base_addr + WL3501_NIC_GCR);
+-	wl3501_outb_p(WL3501_GCR_CORESET, this->base_addr + WL3501_NIC_GCR);
+-
+-	/* Reset SRAM 0x480 to zero */
+-	wl3501_set_to_wla(this, 0x480, &tmp, sizeof(tmp));
+-
+-	/* Start up */
+-	wl3501_outb_p(0, this->base_addr + WL3501_NIC_GCR);
+-
+-	WL3501_NOPLOOP(1024 * 50);
+-
+-	wl3501_unblock_interrupt(this);	/* acme: was commented */
+-
+-	/* Polling Self_Test_Status */
+-	for (i = 0; i < 10000; i++) {
+-		wl3501_get_from_wla(this, 0x480, &tmp, sizeof(tmp));
+-
+-		if (tmp == 'W') {
+-			/* firmware complete all test successfully */
+-			tmp = 'A';
+-			wl3501_set_to_wla(this, 0x480, &tmp, sizeof(tmp));
+-			goto out;
+-		}
+-		WL3501_NOPLOOP(10);
+-	}
+-	printk(KERN_WARNING "%s: failed to reset the board!\n", __func__);
+-	rc = -ENODEV;
+-out:
+-	return rc;
+-}
+-
+-static int wl3501_init_firmware(struct wl3501_card *this)
+-{
+-	u16 ptr, next;
+-	int rc = wl3501_reset_board(this);
+-
+-	if (rc)
+-		goto fail;
+-	this->card_name[0] = '\0';
+-	wl3501_get_from_wla(this, 0x1a00,
+-			    this->card_name, sizeof(this->card_name));
+-	this->card_name[sizeof(this->card_name) - 1] = '\0';
+-	this->firmware_date[0] = '\0';
+-	wl3501_get_from_wla(this, 0x1a40,
+-			    this->firmware_date, sizeof(this->firmware_date));
+-	this->firmware_date[sizeof(this->firmware_date) - 1] = '\0';
+-	/* Switch to SRAM Page 0 */
+-	wl3501_switch_page(this, WL3501_BSS_SPAGE0);
+-	/* Read parameter from card */
+-	wl3501_get_from_wla(this, 0x482, &this->esbq_req_start, 2);
+-	wl3501_get_from_wla(this, 0x486, &this->esbq_req_end, 2);
+-	wl3501_get_from_wla(this, 0x488, &this->esbq_confirm_start, 2);
+-	wl3501_get_from_wla(this, 0x48c, &this->esbq_confirm_end, 2);
+-	wl3501_get_from_wla(this, 0x48e, &this->tx_buffer_head, 2);
+-	wl3501_get_from_wla(this, 0x492, &this->tx_buffer_size, 2);
+-	this->esbq_req_tail	= this->esbq_req_head = this->esbq_req_start;
+-	this->esbq_req_end     += this->esbq_req_start;
+-	this->esbq_confirm	= this->esbq_confirm_start;
+-	this->esbq_confirm_end += this->esbq_confirm_start;
+-	/* Initial Tx Buffer */
+-	this->tx_buffer_cnt = 1;
+-	ptr = this->tx_buffer_head;
+-	next = ptr + WL3501_BLKSZ;
+-	while ((next - this->tx_buffer_head) < this->tx_buffer_size) {
+-		this->tx_buffer_cnt++;
+-		wl3501_set_to_wla(this, ptr, &next, sizeof(next));
+-		ptr = next;
+-		next = ptr + WL3501_BLKSZ;
+-	}
+-	rc = 0;
+-	next = 0;
+-	wl3501_set_to_wla(this, ptr, &next, sizeof(next));
+-	this->tx_buffer_tail = ptr;
+-out:
+-	return rc;
+-fail:
+-	printk(KERN_WARNING "%s: failed!\n", __func__);
+-	goto out;
+-}
+-
+-static int wl3501_close(struct net_device *dev)
+-{
+-	struct wl3501_card *this = netdev_priv(dev);
+-	unsigned long flags;
+-	struct pcmcia_device *link;
+-	link = this->p_dev;
+-
+-	spin_lock_irqsave(&this->lock, flags);
+-	link->open--;
+-
+-	/* Stop wl3501_hard_start_xmit() from now on */
+-	netif_stop_queue(dev);
+-	wl3501_ack_interrupt(this);
+-
+-	/* Mask interrupts from the SUTRO */
+-	wl3501_block_interrupt(this);
+-
+-	printk(KERN_INFO "%s: WL3501 closed\n", dev->name);
+-	spin_unlock_irqrestore(&this->lock, flags);
+-	return 0;
+-}
+-
+-/**
+- * wl3501_reset - Reset the SUTRO.
+- * @dev: network device
+- *
+- * It is almost the same as wl3501_open(). In fact, we may just wl3501_close()
+- * and wl3501_open() again, but I wouldn't like to free_irq() when the driver
+- * is running. It seems to be dangerous.
+- */
+-static int wl3501_reset(struct net_device *dev)
+-{
+-	struct wl3501_card *this = netdev_priv(dev);
+-	int rc = -ENODEV;
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&this->lock, flags);
+-	wl3501_block_interrupt(this);
+-
+-	if (wl3501_init_firmware(this)) {
+-		printk(KERN_WARNING "%s: Can't initialize Firmware!\n",
+-		       dev->name);
+-		/* Free IRQ, and mark IRQ as unused */
+-		free_irq(dev->irq, dev);
+-		goto out;
+-	}
+-
+-	/*
+-	 * Queue has to be started only when the Card is Started
+-	 */
+-	netif_stop_queue(dev);
+-	this->adhoc_times = 0;
+-	wl3501_ack_interrupt(this);
+-	wl3501_unblock_interrupt(this);
+-	wl3501_mgmt_scan(this, 100);
+-	pr_debug("%s: device reset", dev->name);
+-	rc = 0;
+-out:
+-	spin_unlock_irqrestore(&this->lock, flags);
+-	return rc;
+-}
+-
+-static void wl3501_tx_timeout(struct net_device *dev, unsigned int txqueue)
+-{
+-	struct net_device_stats *stats = &dev->stats;
+-	int rc;
+-
+-	stats->tx_errors++;
+-	rc = wl3501_reset(dev);
+-	if (rc)
+-		printk(KERN_ERR "%s: Error %d resetting card on Tx timeout!\n",
+-		       dev->name, rc);
+-	else {
+-		netif_trans_update(dev); /* prevent tx timeout */
+-		netif_wake_queue(dev);
+-	}
+-}
+-
+-/*
+- * Return : 0 - OK
+- *	    1 - Could not transmit (dev_queue_xmit will queue it)
+- *		and try to sent it later
+- */
+-static netdev_tx_t wl3501_hard_start_xmit(struct sk_buff *skb,
+-						struct net_device *dev)
+-{
+-	int enabled, rc;
+-	struct wl3501_card *this = netdev_priv(dev);
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&this->lock, flags);
+-	enabled = wl3501_block_interrupt(this);
+-	rc = wl3501_send_pkt(this, skb->data, skb->len);
+-	if (enabled)
+-		wl3501_unblock_interrupt(this);
+-	if (rc) {
+-		++dev->stats.tx_dropped;
+-		netif_stop_queue(dev);
+-	} else {
+-		++dev->stats.tx_packets;
+-		dev->stats.tx_bytes += skb->len;
+-		dev_kfree_skb_irq(skb);
+-
+-		if (this->tx_buffer_cnt < 2)
+-			netif_stop_queue(dev);
+-	}
+-	spin_unlock_irqrestore(&this->lock, flags);
+-	return NETDEV_TX_OK;
+-}
+-
+-static int wl3501_open(struct net_device *dev)
+-{
+-	int rc = -ENODEV;
+-	struct wl3501_card *this = netdev_priv(dev);
+-	unsigned long flags;
+-	struct pcmcia_device *link;
+-	link = this->p_dev;
+-
+-	spin_lock_irqsave(&this->lock, flags);
+-	if (!pcmcia_dev_present(link))
+-		goto out;
+-	netif_device_attach(dev);
+-	link->open++;
+-
+-	/* Initial WL3501 firmware */
+-	pr_debug("%s: Initialize WL3501 firmware...", dev->name);
+-	if (wl3501_init_firmware(this))
+-		goto fail;
+-	/* Initial device variables */
+-	this->adhoc_times = 0;
+-	/* Acknowledge Interrupt, for cleaning last state */
+-	wl3501_ack_interrupt(this);
+-
+-	/* Enable interrupt from card after all */
+-	wl3501_unblock_interrupt(this);
+-	wl3501_mgmt_scan(this, 100);
+-	rc = 0;
+-	pr_debug("%s: WL3501 opened", dev->name);
+-	printk(KERN_INFO "%s: Card Name: %s\n"
+-			 "%s: Firmware Date: %s\n",
+-			 dev->name, this->card_name,
+-			 dev->name, this->firmware_date);
+-out:
+-	spin_unlock_irqrestore(&this->lock, flags);
+-	return rc;
+-fail:
+-	printk(KERN_WARNING "%s: Can't initialize firmware!\n", dev->name);
+-	goto out;
+-}
+-
+-static struct iw_statistics *wl3501_get_wireless_stats(struct net_device *dev)
+-{
+-	struct wl3501_card *this = netdev_priv(dev);
+-	struct iw_statistics *wstats = &this->wstats;
+-	u32 value; /* size checked: it is u32 */
+-
+-	memset(wstats, 0, sizeof(*wstats));
+-	wstats->status = netif_running(dev);
+-	if (!wl3501_get_mib_value(this, WL3501_MIB_ATTR_WEP_ICV_ERROR_COUNT,
+-				  &value, sizeof(value)))
+-		wstats->discard.code += value;
+-	if (!wl3501_get_mib_value(this, WL3501_MIB_ATTR_WEP_UNDECRYPTABLE_COUNT,
+-				  &value, sizeof(value)))
+-		wstats->discard.code += value;
+-	if (!wl3501_get_mib_value(this, WL3501_MIB_ATTR_WEP_EXCLUDED_COUNT,
+-				  &value, sizeof(value)))
+-		wstats->discard.code += value;
+-	if (!wl3501_get_mib_value(this, WL3501_MIB_ATTR_RETRY_COUNT,
+-				  &value, sizeof(value)))
+-		wstats->discard.retries	= value;
+-	if (!wl3501_get_mib_value(this, WL3501_MIB_ATTR_FAILED_COUNT,
+-				  &value, sizeof(value)))
+-		wstats->discard.misc += value;
+-	if (!wl3501_get_mib_value(this, WL3501_MIB_ATTR_RTS_FAILURE_COUNT,
+-				  &value, sizeof(value)))
+-		wstats->discard.misc += value;
+-	if (!wl3501_get_mib_value(this, WL3501_MIB_ATTR_ACK_FAILURE_COUNT,
+-				  &value, sizeof(value)))
+-		wstats->discard.misc += value;
+-	if (!wl3501_get_mib_value(this, WL3501_MIB_ATTR_FRAME_DUPLICATE_COUNT,
+-				  &value, sizeof(value)))
+-		wstats->discard.misc += value;
+-	return wstats;
+-}
+-
+-/**
+- * wl3501_detach - deletes a driver "instance"
+- * @link: FILL_IN
+- *
+- * This deletes a driver "instance". The device is de-registered with Card
+- * Services. If it has been released, all local data structures are freed.
+- * Otherwise, the structures will be freed when the device is released.
+- */
+-static void wl3501_detach(struct pcmcia_device *link)
+-{
+-	struct net_device *dev = link->priv;
+-
+-	/* If the device is currently configured and active, we won't actually
+-	 * delete it yet.  Instead, it is marked so that when the release()
+-	 * function is called, that will trigger a proper detach(). */
+-
+-	while (link->open > 0)
+-		wl3501_close(dev);
+-
+-	netif_device_detach(dev);
+-	wl3501_release(link);
+-
+-	unregister_netdev(dev);
+-	free_netdev(dev);
+-}
+-
+-static int wl3501_get_name(struct net_device *dev, struct iw_request_info *info,
+-			   union iwreq_data *wrqu, char *extra)
+-{
+-	strscpy(wrqu->name, "IEEE 802.11-DS", sizeof(wrqu->name));
+-	return 0;
+-}
+-
+-static int wl3501_set_freq(struct net_device *dev, struct iw_request_info *info,
+-			   union iwreq_data *wrqu, char *extra)
+-{
+-	struct wl3501_card *this = netdev_priv(dev);
+-	int channel = wrqu->freq.m;
+-	int rc = -EINVAL;
+-
+-	if (iw_valid_channel(this->reg_domain, channel)) {
+-		this->chan = channel;
+-		rc = wl3501_reset(dev);
+-	}
+-	return rc;
+-}
+-
+-static int wl3501_get_freq(struct net_device *dev, struct iw_request_info *info,
+-			   union iwreq_data *wrqu, char *extra)
+-{
+-	struct wl3501_card *this = netdev_priv(dev);
+-
+-	wrqu->freq.m = 100000 *
+-		ieee80211_channel_to_frequency(this->chan, NL80211_BAND_2GHZ);
+-	wrqu->freq.e = 1;
+-	return 0;
+-}
+-
+-static int wl3501_set_mode(struct net_device *dev, struct iw_request_info *info,
+-			   union iwreq_data *wrqu, char *extra)
+-{
+-	int rc = -EINVAL;
+-
+-	if (wrqu->mode == IW_MODE_INFRA ||
+-	    wrqu->mode == IW_MODE_ADHOC ||
+-	    wrqu->mode == IW_MODE_AUTO) {
+-		struct wl3501_card *this = netdev_priv(dev);
+-
+-		this->net_type = wrqu->mode;
+-		rc = wl3501_reset(dev);
+-	}
+-	return rc;
+-}
+-
+-static int wl3501_get_mode(struct net_device *dev, struct iw_request_info *info,
+-			   union iwreq_data *wrqu, char *extra)
+-{
+-	struct wl3501_card *this = netdev_priv(dev);
+-
+-	wrqu->mode = this->net_type;
+-	return 0;
+-}
+-
+-static int wl3501_get_sens(struct net_device *dev, struct iw_request_info *info,
+-			   union iwreq_data *wrqu, char *extra)
+-{
+-	struct wl3501_card *this = netdev_priv(dev);
+-
+-	wrqu->sens.value = this->rssi;
+-	wrqu->sens.disabled = !wrqu->sens.value;
+-	wrqu->sens.fixed = 1;
+-	return 0;
+-}
+-
+-static int wl3501_get_range(struct net_device *dev,
+-			    struct iw_request_info *info,
+-			    union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_range *range = (struct iw_range *)extra;
+-
+-	/* Set the length (very important for backward compatibility) */
+-	wrqu->data.length = sizeof(*range);
+-
+-	/* Set all the info we don't care or don't know about to zero */
+-	memset(range, 0, sizeof(*range));
+-
+-	/* Set the Wireless Extension versions */
+-	range->we_version_compiled	= WIRELESS_EXT;
+-	range->we_version_source	= 1;
+-	range->throughput		= 2 * 1000 * 1000;     /* ~2 Mb/s */
+-	/* FIXME: study the code to fill in more fields... */
+-	return 0;
+-}
+-
+-static int wl3501_set_wap(struct net_device *dev, struct iw_request_info *info,
+-			  union iwreq_data *wrqu, char *extra)
+-{
+-	struct wl3501_card *this = netdev_priv(dev);
+-	int rc = -EINVAL;
+-
+-	/* FIXME: we support other ARPHRDs...*/
+-	if (wrqu->ap_addr.sa_family != ARPHRD_ETHER)
+-		goto out;
+-	if (is_broadcast_ether_addr(wrqu->ap_addr.sa_data)) {
+-		/* FIXME: rescan? */
+-	} else
+-		memcpy(this->bssid, wrqu->ap_addr.sa_data, ETH_ALEN);
+-		/* FIXME: rescan? deassoc & scan? */
+-	rc = 0;
+-out:
+-	return rc;
+-}
+-
+-static int wl3501_get_wap(struct net_device *dev, struct iw_request_info *info,
+-			  union iwreq_data *wrqu, char *extra)
+-{
+-	struct wl3501_card *this = netdev_priv(dev);
+-
+-	wrqu->ap_addr.sa_family = ARPHRD_ETHER;
+-	memcpy(wrqu->ap_addr.sa_data, this->bssid, ETH_ALEN);
+-	return 0;
+-}
+-
+-static int wl3501_set_scan(struct net_device *dev, struct iw_request_info *info,
+-			   union iwreq_data *wrqu, char *extra)
+-{
+-	/*
+-	 * FIXME: trigger scanning with a reset, yes, I'm lazy
+-	 */
+-	return wl3501_reset(dev);
+-}
+-
+-static int wl3501_get_scan(struct net_device *dev, struct iw_request_info *info,
+-			   union iwreq_data *wrqu, char *extra)
+-{
+-	struct wl3501_card *this = netdev_priv(dev);
+-	int i;
+-	char *current_ev = extra;
+-	struct iw_event iwe;
+-
+-	for (i = 0; i < this->bss_cnt; ++i) {
+-		iwe.cmd			= SIOCGIWAP;
+-		iwe.u.ap_addr.sa_family = ARPHRD_ETHER;
+-		memcpy(iwe.u.ap_addr.sa_data, this->bss_set[i].req.bssid, ETH_ALEN);
+-		current_ev = iwe_stream_add_event(info, current_ev,
+-						  extra + IW_SCAN_MAX_DATA,
+-						  &iwe, IW_EV_ADDR_LEN);
+-		iwe.cmd		  = SIOCGIWESSID;
+-		iwe.u.data.flags  = 1;
+-		iwe.u.data.length = this->bss_set[i].req.ssid.el.len;
+-		current_ev = iwe_stream_add_point(info, current_ev,
+-						  extra + IW_SCAN_MAX_DATA,
+-						  &iwe,
+-						  this->bss_set[i].req.ssid.essid);
+-		iwe.cmd	   = SIOCGIWMODE;
+-		iwe.u.mode = this->bss_set[i].req.bss_type;
+-		current_ev = iwe_stream_add_event(info, current_ev,
+-						  extra + IW_SCAN_MAX_DATA,
+-						  &iwe, IW_EV_UINT_LEN);
+-		iwe.cmd = SIOCGIWFREQ;
+-		iwe.u.freq.m = this->bss_set[i].req.ds_pset.chan;
+-		iwe.u.freq.e = 0;
+-		current_ev = iwe_stream_add_event(info, current_ev,
+-						  extra + IW_SCAN_MAX_DATA,
+-						  &iwe, IW_EV_FREQ_LEN);
+-		iwe.cmd = SIOCGIWENCODE;
+-		if (this->bss_set[i].req.cap_info & WL3501_MGMT_CAPABILITY_PRIVACY)
+-			iwe.u.data.flags = IW_ENCODE_ENABLED | IW_ENCODE_NOKEY;
+-		else
+-			iwe.u.data.flags = IW_ENCODE_DISABLED;
+-		iwe.u.data.length = 0;
+-		current_ev = iwe_stream_add_point(info, current_ev,
+-						  extra + IW_SCAN_MAX_DATA,
+-						  &iwe, NULL);
+-	}
+-	/* Length of data */
+-	wrqu->data.length = (current_ev - extra);
+-	wrqu->data.flags = 0; /* FIXME: set properly these flags */
+-	return 0;
+-}
+-
+-static int wl3501_set_essid(struct net_device *dev,
+-			    struct iw_request_info *info,
+-			    union iwreq_data *wrqu, char *extra)
+-{
+-	struct wl3501_card *this = netdev_priv(dev);
+-
+-	if (wrqu->data.flags) {
+-		iw_set_mgmt_info_element(IW_MGMT_INFO_ELEMENT_SSID,
+-					 &this->essid.el,
+-					 extra, wrqu->data.length);
+-	} else { /* We accept any ESSID */
+-		iw_set_mgmt_info_element(IW_MGMT_INFO_ELEMENT_SSID,
+-					 &this->essid.el, "ANY", 3);
+-	}
+-	return wl3501_reset(dev);
+-}
+-
+-static int wl3501_get_essid(struct net_device *dev,
+-			    struct iw_request_info *info,
+-			    union iwreq_data *wrqu, char *extra)
+-{
+-	struct wl3501_card *this = netdev_priv(dev);
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&this->lock, flags);
+-	wrqu->essid.flags  = 1;
+-	wrqu->essid.length = this->essid.el.len;
+-	memcpy(extra, this->essid.essid, this->essid.el.len);
+-	spin_unlock_irqrestore(&this->lock, flags);
+-	return 0;
+-}
+-
+-static int wl3501_set_nick(struct net_device *dev, struct iw_request_info *info,
+-			   union iwreq_data *wrqu, char *extra)
+-{
+-	struct wl3501_card *this = netdev_priv(dev);
+-
+-	if (wrqu->data.length > sizeof(this->nick))
+-		return -E2BIG;
+-	strscpy(this->nick, extra, wrqu->data.length);
+-	return 0;
+-}
+-
+-static int wl3501_get_nick(struct net_device *dev, struct iw_request_info *info,
+-			   union iwreq_data *wrqu, char *extra)
+-{
+-	struct wl3501_card *this = netdev_priv(dev);
+-
+-	strscpy(extra, this->nick, 32);
+-	wrqu->data.length = strlen(extra);
+-	return 0;
+-}
+-
+-static int wl3501_get_rate(struct net_device *dev, struct iw_request_info *info,
+-			   union iwreq_data *wrqu, char *extra)
+-{
+-	/*
+-	 * FIXME: have to see from where to get this info, perhaps this card
+-	 * works at 1 Mbit/s too... for now leave at 2 Mbit/s that is the most
+-	 * common with the Planet Access Points. -acme
+-	 */
+-	wrqu->bitrate.value = 2000000;
+-	wrqu->bitrate.fixed = 1;
+-	return 0;
+-}
+-
+-static int wl3501_get_rts_threshold(struct net_device *dev,
+-				    struct iw_request_info *info,
+-				    union iwreq_data *wrqu, char *extra)
+-{
+-	u16 threshold; /* size checked: it is u16 */
+-	struct wl3501_card *this = netdev_priv(dev);
+-	int rc = wl3501_get_mib_value(this, WL3501_MIB_ATTR_RTS_THRESHOLD,
+-				      &threshold, sizeof(threshold));
+-	if (!rc) {
+-		wrqu->rts.value = threshold;
+-		wrqu->rts.disabled = threshold >= 2347;
+-		wrqu->rts.fixed = 1;
+-	}
+-	return rc;
+-}
+-
+-static int wl3501_get_frag_threshold(struct net_device *dev,
+-				     struct iw_request_info *info,
+-				     union iwreq_data *wrqu, char *extra)
+-{
+-	u16 threshold; /* size checked: it is u16 */
+-	struct wl3501_card *this = netdev_priv(dev);
+-	int rc = wl3501_get_mib_value(this, WL3501_MIB_ATTR_FRAG_THRESHOLD,
+-				      &threshold, sizeof(threshold));
+-	if (!rc) {
+-		wrqu->frag.value = threshold;
+-		wrqu->frag.disabled = threshold >= 2346;
+-		wrqu->frag.fixed = 1;
+-	}
+-	return rc;
+-}
+-
+-static int wl3501_get_txpow(struct net_device *dev,
+-			    struct iw_request_info *info,
+-			    union iwreq_data *wrqu, char *extra)
+-{
+-	u16 txpow;
+-	struct wl3501_card *this = netdev_priv(dev);
+-	int rc = wl3501_get_mib_value(this,
+-				      WL3501_MIB_ATTR_CURRENT_TX_PWR_LEVEL,
+-				      &txpow, sizeof(txpow));
+-	if (!rc) {
+-		wrqu->txpower.value = txpow;
+-		wrqu->txpower.disabled = 0;
+-		/*
+-		 * From the MIB values I think this can be configurable,
+-		 * as it lists several tx power levels -acme
+-		 */
+-		wrqu->txpower.fixed = 0;
+-		wrqu->txpower.flags = IW_TXPOW_MWATT;
+-	}
+-	return rc;
+-}
+-
+-static int wl3501_get_retry(struct net_device *dev,
+-			    struct iw_request_info *info,
+-			    union iwreq_data *wrqu, char *extra)
+-{
+-	u8 retry; /* size checked: it is u8 */
+-	struct wl3501_card *this = netdev_priv(dev);
+-	int rc = wl3501_get_mib_value(this,
+-				      WL3501_MIB_ATTR_LONG_RETRY_LIMIT,
+-				      &retry, sizeof(retry));
+-	if (rc)
+-		goto out;
+-	if (wrqu->retry.flags & IW_RETRY_LONG) {
+-		wrqu->retry.flags = IW_RETRY_LIMIT | IW_RETRY_LONG;
+-		goto set_value;
+-	}
+-	rc = wl3501_get_mib_value(this, WL3501_MIB_ATTR_SHORT_RETRY_LIMIT,
+-				  &retry, sizeof(retry));
+-	if (rc)
+-		goto out;
+-	wrqu->retry.flags = IW_RETRY_LIMIT | IW_RETRY_SHORT;
+-set_value:
+-	wrqu->retry.value = retry;
+-	wrqu->retry.disabled = 0;
+-out:
+-	return rc;
+-}
+-
+-static int wl3501_get_encode(struct net_device *dev,
+-			     struct iw_request_info *info,
+-			     union iwreq_data *wrqu, char *extra)
+-{
+-	u8 implemented, restricted, keys[100], len_keys, tocopy;
+-	struct wl3501_card *this = netdev_priv(dev);
+-	int rc = wl3501_get_mib_value(this,
+-				      WL3501_MIB_ATTR_PRIV_OPT_IMPLEMENTED,
+-				      &implemented, sizeof(implemented));
+-	if (rc)
+-		goto out;
+-	if (!implemented) {
+-		wrqu->encoding.flags = IW_ENCODE_DISABLED;
+-		goto out;
+-	}
+-	rc = wl3501_get_mib_value(this, WL3501_MIB_ATTR_EXCLUDE_UNENCRYPTED,
+-				  &restricted, sizeof(restricted));
+-	if (rc)
+-		goto out;
+-	wrqu->encoding.flags = restricted ? IW_ENCODE_RESTRICTED :
+-					    IW_ENCODE_OPEN;
+-	rc = wl3501_get_mib_value(this, WL3501_MIB_ATTR_WEP_KEY_MAPPINGS_LEN,
+-				  &len_keys, sizeof(len_keys));
+-	if (rc)
+-		goto out;
+-	rc = wl3501_get_mib_value(this, WL3501_MIB_ATTR_WEP_KEY_MAPPINGS,
+-				  keys, len_keys);
+-	if (rc)
+-		goto out;
+-	tocopy = min_t(u16, len_keys, wrqu->encoding.length);
+-	tocopy = min_t(u8, tocopy, 100);
+-	wrqu->encoding.length = tocopy;
+-	memcpy(extra, keys, tocopy);
+-out:
+-	return rc;
+-}
+-
+-static int wl3501_get_power(struct net_device *dev,
+-			    struct iw_request_info *info,
+-			    union iwreq_data *wrqu, char *extra)
+-{
+-	u8 pwr_state;
+-	struct wl3501_card *this = netdev_priv(dev);
+-	int rc = wl3501_get_mib_value(this,
+-				      WL3501_MIB_ATTR_CURRENT_PWR_STATE,
+-				      &pwr_state, sizeof(pwr_state));
+-	if (rc)
+-		goto out;
+-	wrqu->power.disabled = !pwr_state;
+-	wrqu->power.flags = IW_POWER_ON;
+-out:
+-	return rc;
+-}
+-
+-static const iw_handler	wl3501_handler[] = {
+-	IW_HANDLER(SIOCGIWNAME, wl3501_get_name),
+-	IW_HANDLER(SIOCSIWFREQ, wl3501_set_freq),
+-	IW_HANDLER(SIOCGIWFREQ, wl3501_get_freq),
+-	IW_HANDLER(SIOCSIWMODE, wl3501_set_mode),
+-	IW_HANDLER(SIOCGIWMODE, wl3501_get_mode),
+-	IW_HANDLER(SIOCGIWSENS, wl3501_get_sens),
+-	IW_HANDLER(SIOCGIWRANGE, wl3501_get_range),
+-	IW_HANDLER(SIOCSIWSPY, iw_handler_set_spy),
+-	IW_HANDLER(SIOCGIWSPY, iw_handler_get_spy),
+-	IW_HANDLER(SIOCSIWTHRSPY, iw_handler_set_thrspy),
+-	IW_HANDLER(SIOCGIWTHRSPY, iw_handler_get_thrspy),
+-	IW_HANDLER(SIOCSIWAP, wl3501_set_wap),
+-	IW_HANDLER(SIOCGIWAP, wl3501_get_wap),
+-	IW_HANDLER(SIOCSIWSCAN, wl3501_set_scan),
+-	IW_HANDLER(SIOCGIWSCAN, wl3501_get_scan),
+-	IW_HANDLER(SIOCSIWESSID, wl3501_set_essid),
+-	IW_HANDLER(SIOCGIWESSID, wl3501_get_essid),
+-	IW_HANDLER(SIOCSIWNICKN, wl3501_set_nick),
+-	IW_HANDLER(SIOCGIWNICKN, wl3501_get_nick),
+-	IW_HANDLER(SIOCGIWRATE, wl3501_get_rate),
+-	IW_HANDLER(SIOCGIWRTS, wl3501_get_rts_threshold),
+-	IW_HANDLER(SIOCGIWFRAG, wl3501_get_frag_threshold),
+-	IW_HANDLER(SIOCGIWTXPOW, wl3501_get_txpow),
+-	IW_HANDLER(SIOCGIWRETRY, wl3501_get_retry),
+-	IW_HANDLER(SIOCGIWENCODE, wl3501_get_encode),
+-	IW_HANDLER(SIOCGIWPOWER, wl3501_get_power),
 -};
 -
--static const UCHAR b4_default_startup_parms[] = {
--	0, 0,			/* Adhoc station */
--	'L', 'I', 'N', 'U', 'X', 0, 0, 0,	/* 32 char ESSID */
--	0, 0, 0, 0, 0, 0, 0, 0,
--	0, 0, 0, 0, 0, 0, 0, 0,
--	0, 0, 0, 0, 0, 0, 0, 0,
--	1, 0,			/* Active scan, CA Mode */
--	0, 0, 0, 0, 0, 0,	/* No default MAC addr  */
--	0x7f, 0xff,		/* Frag threshold */
--	0x02, 0x00,		/* Hop time */
--	0x00, 0x01,		/* Beacon period */
--	0x01, 0x07, 0xa3,	/* DTIM, retries, ack timeout */
--	0x1d, 0x82, 0xce,	/* SIFS, DIFS, PIFS */
--	0x7f, 0xff,		/* RTS threshold */
--	0xfb, 0x1e, 0xc7, 0x5c,	/* scan_dwell, max_scan_dwell */
--	0x05,			/* assoc resp timeout thresh */
--	0x04, 0x02, 0x4,	/* adhoc, infra, super cycle max */
--	0,			/* Promiscuous mode */
--	0x0c, 0x0bd,		/* Unique word */
--	0x4e,			/* Slot time (TBD seems wrong) */
--	0xff, 0xff,		/* roam-low snr, low snr count */
--	0x05, 0xff,		/* Infra, adhoc missed bcn thresh */
--	0x01, 0x0b, 0x4e,	/* USA, hop pattern, hop pat length */
--/* b4 - b5 differences start here */
--	0x3f, 0x0f,		/* CW max, min */
--	0x04, 0x08,		/* Noise gain, limit offset */
--	0x28, 0x28,		/* det rssi, med busy offsets */
--	7,			/* det sync thresh */
--	0, 2, 2,		/* test mode, min, max */
--	0,			/* rx/tx delay */
--	0, 0, 0, 0, 0, 0,	/* current BSS id */
--	0			/* hop set */
+-static const struct iw_handler_def wl3501_handler_def = {
+-	.num_standard	= ARRAY_SIZE(wl3501_handler),
+-	.standard	= (iw_handler *)wl3501_handler,
+-	.get_wireless_stats = wl3501_get_wireless_stats,
 -};
 -
--/*===========================================================================*/
--static const u8 eth2_llc[] = { 0xaa, 0xaa, 3, 0, 0, 0 };
--
--static const char hop_pattern_length[] = { 1,
--	USA_HOP_MOD, EUROPE_HOP_MOD,
--	JAPAN_HOP_MOD, KOREA_HOP_MOD,
--	SPAIN_HOP_MOD, FRANCE_HOP_MOD,
--	ISRAEL_HOP_MOD, AUSTRALIA_HOP_MOD,
--	JAPAN_TEST_HOP_MOD
--};
--
--static const char rcsid[] =
--    "Raylink/WebGear wireless LAN - Corey <Thomas corey@world.std.com>";
--
--static const struct net_device_ops ray_netdev_ops = {
--	.ndo_init 		= ray_dev_init,
--	.ndo_open 		= ray_open,
--	.ndo_stop 		= ray_dev_close,
--	.ndo_start_xmit		= ray_dev_start_xmit,
--	.ndo_set_config		= ray_dev_config,
--	.ndo_get_stats		= ray_get_stats,
--	.ndo_set_rx_mode	= set_multicast_list,
+-static const struct net_device_ops wl3501_netdev_ops = {
+-	.ndo_open		= wl3501_open,
+-	.ndo_stop		= wl3501_close,
+-	.ndo_start_xmit		= wl3501_hard_start_xmit,
+-	.ndo_tx_timeout		= wl3501_tx_timeout,
 -	.ndo_set_mac_address 	= eth_mac_addr,
 -	.ndo_validate_addr	= eth_validate_addr,
 -};
 -
--static int ray_probe(struct pcmcia_device *p_dev)
+-static int wl3501_probe(struct pcmcia_device *p_dev)
 -{
--	ray_dev_t *local;
 -	struct net_device *dev;
+-	struct wl3501_card *this;
 -	int ret;
 -
--	dev_dbg(&p_dev->dev, "ray_attach()\n");
+-	/* The io structure describes IO port mapping */
+-	p_dev->resource[0]->end	= 16;
+-	p_dev->resource[0]->flags	= IO_DATA_PATH_WIDTH_8;
 -
--	/* Allocate space for private device-specific data */
--	dev = alloc_etherdev(sizeof(ray_dev_t));
+-	/* General socket configuration */
+-	p_dev->config_flags	= CONF_ENABLE_IRQ;
+-	p_dev->config_index	= 1;
+-
+-	dev = alloc_etherdev(sizeof(struct wl3501_card));
 -	if (!dev)
 -		return -ENOMEM;
 -
--	local = netdev_priv(dev);
--	local->finder = p_dev;
+-	dev->netdev_ops		= &wl3501_netdev_ops;
+-	dev->watchdog_timeo	= 5 * HZ;
 -
--	/* The io structure describes IO port mapping. None used here */
--	p_dev->resource[0]->end = 0;
--	p_dev->resource[0]->flags |= IO_DATA_PATH_WIDTH_8;
--
--	/* General socket configuration */
--	p_dev->config_flags |= CONF_ENABLE_IRQ;
--	p_dev->config_index = 1;
--
+-	this = netdev_priv(dev);
+-	this->wireless_data.spy_data = &this->spy_data;
+-	this->p_dev = p_dev;
+-	dev->wireless_data	= &this->wireless_data;
+-	dev->wireless_handlers	= &wl3501_handler_def;
+-	netif_stop_queue(dev);
 -	p_dev->priv = dev;
 -
--	local->finder = p_dev;
--	local->card_status = CARD_INSERTED;
--	local->authentication_state = UNAUTHENTICATED;
--	local->num_multi = 0;
--	dev_dbg(&p_dev->dev, "ray_attach p_dev = %p,  dev = %p,  local = %p, intr = %p\n",
--	      p_dev, dev, local, &ray_interrupt);
--
--	/* Raylink entries in the device structure */
--	dev->netdev_ops = &ray_netdev_ops;
--	dev->wireless_handlers = &ray_handler_def;
--#ifdef WIRELESS_SPY
--	local->wireless_data.spy_data = &local->spy_data;
--	dev->wireless_data = &local->wireless_data;
--#endif /* WIRELESS_SPY */
--
--
--	dev_dbg(&p_dev->dev, "ray_cs ray_attach calling ether_setup.)\n");
--	netif_stop_queue(dev);
--
--	timer_setup(&local->timer, NULL, 0);
--
--	this_device = p_dev;
--	ret = ray_config(p_dev);
+-	ret = wl3501_config(p_dev);
 -	if (ret)
--		goto err_free_dev;
+-		goto out_free_etherdev;
 -
 -	return 0;
 -
--err_free_dev:
+-out_free_etherdev:
 -	free_netdev(dev);
 -	return ret;
 -}
 -
--static void ray_detach(struct pcmcia_device *link)
+-static int wl3501_config(struct pcmcia_device *link)
 -{
--	struct net_device *dev;
+-	struct net_device *dev = link->priv;
+-	int i = 0, j, ret;
+-	struct wl3501_card *this;
 -
--	dev_dbg(&link->dev, "ray_detach\n");
+-	/* Try allocating IO ports.  This tries a few fixed addresses.  If you
+-	 * want, you can also read the card's config table to pick addresses --
+-	 * see the serial driver for an example. */
+-	link->io_lines = 5;
 -
--	this_device = NULL;
--	dev = link->priv;
--
--	ray_release(link);
--
--	if (link->priv) {
--		unregister_netdev(dev);
--		free_netdev(dev);
+-	for (j = 0x280; j < 0x400; j += 0x20) {
+-		/* The '^0x300' is so that we probe 0x300-0x3ff first, then
+-		 * 0x200-0x2ff, and so on, because this seems safer */
+-		link->resource[0]->start = j;
+-		link->resource[1]->start = link->resource[0]->start + 0x10;
+-		i = pcmcia_request_io(link);
+-		if (i == 0)
+-			break;
 -	}
--	dev_dbg(&link->dev, "ray_cs ray_detach ending\n");
--} /* ray_detach */
+-	if (i != 0)
+-		goto failed;
 -
--#define MAX_TUPLE_SIZE 128
--static int ray_config(struct pcmcia_device *link)
--{
--	int ret = 0;
--	int i;
--	struct net_device *dev = (struct net_device *)link->priv;
--	ray_dev_t *local = netdev_priv(dev);
+-	/* Now allocate an interrupt line. Note that this does not actually
+-	 * assign a handler to the interrupt. */
 -
--	dev_dbg(&link->dev, "ray_config\n");
--
--	/* Determine card type and firmware version */
--	printk(KERN_INFO "ray_cs Detected: %s%s%s%s\n",
--	       link->prod_id[0] ? link->prod_id[0] : " ",
--	       link->prod_id[1] ? link->prod_id[1] : " ",
--	       link->prod_id[2] ? link->prod_id[2] : " ",
--	       link->prod_id[3] ? link->prod_id[3] : " ");
--
--	/* Now allocate an interrupt line.  Note that this does not
--	   actually assign a handler to the interrupt.
--	 */
--	ret = pcmcia_request_irq(link, ray_interrupt);
+-	ret = pcmcia_request_irq(link, wl3501_interrupt);
 -	if (ret)
 -		goto failed;
--	dev->irq = link->irq;
 -
 -	ret = pcmcia_enable_device(link);
 -	if (ret)
 -		goto failed;
 -
--/*** Set up 32k window for shared memory (transmit and control) ************/
--	link->resource[2]->flags |= WIN_DATA_WIDTH_8 | WIN_MEMORY_TYPE_CM | WIN_ENABLE | WIN_USE_WAIT;
--	link->resource[2]->start = 0;
--	link->resource[2]->end = 0x8000;
--	ret = pcmcia_request_window(link, link->resource[2], ray_mem_speed);
--	if (ret)
--		goto failed;
--	ret = pcmcia_map_mem_page(link, link->resource[2], 0);
--	if (ret)
--		goto failed;
--	local->sram = ioremap(link->resource[2]->start,
--			resource_size(link->resource[2]));
--	if (!local->sram)
--		goto failed;
--
--/*** Set up 16k window for shared memory (receive buffer) ***************/
--	link->resource[3]->flags |=
--	    WIN_DATA_WIDTH_8 | WIN_MEMORY_TYPE_CM | WIN_ENABLE | WIN_USE_WAIT;
--	link->resource[3]->start = 0;
--	link->resource[3]->end = 0x4000;
--	ret = pcmcia_request_window(link, link->resource[3], ray_mem_speed);
--	if (ret)
--		goto failed;
--	ret = pcmcia_map_mem_page(link, link->resource[3], 0x8000);
--	if (ret)
--		goto failed;
--	local->rmem = ioremap(link->resource[3]->start,
--			resource_size(link->resource[3]));
--	if (!local->rmem)
--		goto failed;
--
--/*** Set up window for attribute memory ***********************************/
--	link->resource[4]->flags |=
--	    WIN_DATA_WIDTH_8 | WIN_MEMORY_TYPE_AM | WIN_ENABLE | WIN_USE_WAIT;
--	link->resource[4]->start = 0;
--	link->resource[4]->end = 0x1000;
--	ret = pcmcia_request_window(link, link->resource[4], ray_mem_speed);
--	if (ret)
--		goto failed;
--	ret = pcmcia_map_mem_page(link, link->resource[4], 0);
--	if (ret)
--		goto failed;
--	local->amem = ioremap(link->resource[4]->start,
--			resource_size(link->resource[4]));
--	if (!local->amem)
--		goto failed;
--
--	dev_dbg(&link->dev, "ray_config sram=%p\n", local->sram);
--	dev_dbg(&link->dev, "ray_config rmem=%p\n", local->rmem);
--	dev_dbg(&link->dev, "ray_config amem=%p\n", local->amem);
--	if (ray_init(dev) < 0) {
--		ray_release(link);
--		return -ENODEV;
--	}
--
+-	dev->irq = link->irq;
+-	dev->base_addr = link->resource[0]->start;
 -	SET_NETDEV_DEV(dev, &link->dev);
--	i = register_netdev(dev);
--	if (i != 0) {
--		printk("ray_config register_netdev() failed\n");
--		ray_release(link);
--		return i;
+-	if (register_netdev(dev)) {
+-		printk(KERN_NOTICE "wl3501_cs: register_netdev() failed\n");
+-		goto failed;
 -	}
 -
--	printk(KERN_INFO "%s: RayLink, irq %d, hw_addr %pM\n",
--	       dev->name, dev->irq, dev->dev_addr);
+-	this = netdev_priv(dev);
 -
+-	this->base_addr = dev->base_addr;
+-
+-	if (!wl3501_get_flash_mac_addr(this)) {
+-		printk(KERN_WARNING "%s: Can't read MAC addr in flash ROM?\n",
+-		       dev->name);
+-		unregister_netdev(dev);
+-		goto failed;
+-	}
+-
+-	eth_hw_addr_set(dev, this->mac_addr);
+-
+-	/* print probe information */
+-	printk(KERN_INFO "%s: wl3501 @ 0x%3.3x, IRQ %d, "
+-	       "MAC addr in flash ROM:%pM\n",
+-	       dev->name, this->base_addr, (int)dev->irq,
+-	       dev->dev_addr);
+-	/*
+-	 * Initialize card parameters - added by jss
+-	 */
+-	this->net_type		= IW_MODE_INFRA;
+-	this->bss_cnt		= 0;
+-	this->join_sta_bss	= 0;
+-	this->adhoc_times	= 0;
+-	iw_set_mgmt_info_element(IW_MGMT_INFO_ELEMENT_SSID, &this->essid.el,
+-				 "ANY", 3);
+-	this->card_name[0]	= '\0';
+-	this->firmware_date[0]	= '\0';
+-	this->rssi		= 255;
+-	this->chan		= iw_default_channel(this->reg_domain);
+-	strscpy(this->nick, "Planet WL3501", sizeof(this->nick));
+-	spin_lock_init(&this->lock);
+-	init_waitqueue_head(&this->wait);
+-	netif_start_queue(dev);
 -	return 0;
 -
 -failed:
--	ray_release(link);
+-	wl3501_release(link);
 -	return -ENODEV;
--} /* ray_config */
--
--static inline struct ccs __iomem *ccs_base(ray_dev_t *dev)
--{
--	return dev->sram + CCS_BASE;
 -}
 -
--static inline struct rcs __iomem *rcs_base(ray_dev_t *dev)
+-static void wl3501_release(struct pcmcia_device *link)
 -{
--	/*
--	 * This looks nonsensical, since there is a separate
--	 * RCS_BASE. But the difference between a "struct rcs"
--	 * and a "struct ccs" ends up being in the _index_ off
--	 * the base, so the base pointer is the same for both
--	 * ccs/rcs.
--	 */
--	return dev->sram + CCS_BASE;
--}
--
--/*===========================================================================*/
--static int ray_init(struct net_device *dev)
--{
--	int i;
--	struct ccs __iomem *pccs;
--	ray_dev_t *local = netdev_priv(dev);
--	struct pcmcia_device *link = local->finder;
--	dev_dbg(&link->dev, "ray_init(0x%p)\n", dev);
--	if (!(pcmcia_dev_present(link))) {
--		dev_dbg(&link->dev, "ray_init - device not present\n");
--		return -1;
--	}
--
--	local->net_type = net_type;
--	local->sta_type = TYPE_STA;
--
--	/* Copy the startup results to local memory */
--	memcpy_fromio(&local->startup_res, local->sram + ECF_TO_HOST_BASE,
--		      sizeof(struct startup_res_6));
--
--	/* Check Power up test status and get mac address from card */
--	if (local->startup_res.startup_word != 0x80) {
--		printk(KERN_INFO "ray_init ERROR card status = %2x\n",
--		       local->startup_res.startup_word);
--		local->card_status = CARD_INIT_ERROR;
--		return -1;
--	}
--
--	local->fw_ver = local->startup_res.firmware_version[0];
--	local->fw_bld = local->startup_res.firmware_version[1];
--	local->fw_var = local->startup_res.firmware_version[2];
--	dev_dbg(&link->dev, "ray_init firmware version %d.%d\n", local->fw_ver,
--	      local->fw_bld);
--
--	local->tib_length = 0x20;
--	if ((local->fw_ver == 5) && (local->fw_bld >= 30))
--		local->tib_length = local->startup_res.tib_length;
--	dev_dbg(&link->dev, "ray_init tib_length = 0x%02x\n", local->tib_length);
--	/* Initialize CCS's to buffer free state */
--	pccs = ccs_base(local);
--	for (i = 0; i < NUMBER_OF_CCS; i++) {
--		writeb(CCS_BUFFER_FREE, &(pccs++)->buffer_status);
--	}
--	init_startup_params(local);
--
--	/* copy mac address to startup parameters */
--	if (!parse_addr(phy_addr, local->sparm.b4.a_mac_addr)) {
--		memcpy(&local->sparm.b4.a_mac_addr,
--		       &local->startup_res.station_addr, ADDRLEN);
--	}
--
--	clear_interrupt(local);	/* Clear any interrupt from the card */
--	local->card_status = CARD_AWAITING_PARAM;
--	dev_dbg(&link->dev, "ray_init ending\n");
--	return 0;
--} /* ray_init */
--
--/*===========================================================================*/
--/* Download startup parameters to the card and command it to read them       */
--static int dl_startup_params(struct net_device *dev)
--{
--	int ccsindex;
--	ray_dev_t *local = netdev_priv(dev);
--	struct ccs __iomem *pccs;
--	struct pcmcia_device *link = local->finder;
--
--	dev_dbg(&link->dev, "dl_startup_params entered\n");
--	if (!(pcmcia_dev_present(link))) {
--		dev_dbg(&link->dev, "ray_cs dl_startup_params - device not present\n");
--		return -1;
--	}
--
--	/* Copy parameters to host to ECF area */
--	if (local->fw_ver == 0x55)
--		memcpy_toio(local->sram + HOST_TO_ECF_BASE, &local->sparm.b4,
--			    sizeof(struct b4_startup_params));
--	else
--		memcpy_toio(local->sram + HOST_TO_ECF_BASE, &local->sparm.b5,
--			    sizeof(struct b5_startup_params));
--
--	/* Fill in the CCS fields for the ECF */
--	if ((ccsindex = get_free_ccs(local)) < 0)
--		return -1;
--	local->dl_param_ccs = ccsindex;
--	pccs = ccs_base(local) + ccsindex;
--	writeb(CCS_DOWNLOAD_STARTUP_PARAMS, &pccs->cmd);
--	dev_dbg(&link->dev, "dl_startup_params start ccsindex = %d\n",
--	      local->dl_param_ccs);
--	/* Interrupt the firmware to process the command */
--	if (interrupt_ecf(local, ccsindex)) {
--		printk(KERN_INFO "ray dl_startup_params failed - "
--		       "ECF not ready for intr\n");
--		local->card_status = CARD_DL_PARAM_ERROR;
--		writeb(CCS_BUFFER_FREE, &(pccs++)->buffer_status);
--		return -2;
--	}
--	local->card_status = CARD_DL_PARAM;
--	/* Start kernel timer to wait for dl startup to complete. */
--	local->timer.expires = jiffies + HZ / 2;
--	local->timer.function = verify_dl_startup;
--	add_timer(&local->timer);
--	dev_dbg(&link->dev,
--	      "ray_cs dl_startup_params started timer for verify_dl_startup\n");
--	return 0;
--} /* dl_startup_params */
--
--/*===========================================================================*/
--static void init_startup_params(ray_dev_t *local)
--{
--	int i;
--
--	if (country > JAPAN_TEST)
--		country = USA;
--	else if (country < USA)
--		country = USA;
--	/* structure for hop time and beacon period is defined here using
--	 * New 802.11D6.1 format.  Card firmware is still using old format
--	 * until version 6.
--	 *    Before                    After
--	 *    a_hop_time ms byte        a_hop_time ms byte
--	 *    a_hop_time 2s byte        a_hop_time ls byte
--	 *    a_hop_time ls byte        a_beacon_period ms byte
--	 *    a_beacon_period           a_beacon_period ls byte
--	 *
--	 *    a_hop_time = uS           a_hop_time = KuS
--	 *    a_beacon_period = hops    a_beacon_period = KuS
--	 *//* 64ms = 010000 */
--	if (local->fw_ver == 0x55) {
--		memcpy(&local->sparm.b4, b4_default_startup_parms,
--		       sizeof(struct b4_startup_params));
--		/* Translate sane kus input values to old build 4/5 format */
--		/* i = hop time in uS truncated to 3 bytes */
--		i = (hop_dwell * 1024) & 0xffffff;
--		local->sparm.b4.a_hop_time[0] = (i >> 16) & 0xff;
--		local->sparm.b4.a_hop_time[1] = (i >> 8) & 0xff;
--		local->sparm.b4.a_beacon_period[0] = 0;
--		local->sparm.b4.a_beacon_period[1] =
--		    ((beacon_period / hop_dwell) - 1) & 0xff;
--		local->sparm.b4.a_curr_country_code = country;
--		local->sparm.b4.a_hop_pattern_length =
--		    hop_pattern_length[(int)country] - 1;
--		if (bc) {
--			local->sparm.b4.a_ack_timeout = 0x50;
--			local->sparm.b4.a_sifs = 0x3f;
--		}
--	} else { /* Version 5 uses real kus values */
--		memcpy((UCHAR *) &local->sparm.b5, b5_default_startup_parms,
--		       sizeof(struct b5_startup_params));
--
--		local->sparm.b5.a_hop_time[0] = (hop_dwell >> 8) & 0xff;
--		local->sparm.b5.a_hop_time[1] = hop_dwell & 0xff;
--		local->sparm.b5.a_beacon_period[0] =
--		    (beacon_period >> 8) & 0xff;
--		local->sparm.b5.a_beacon_period[1] = beacon_period & 0xff;
--		if (psm)
--			local->sparm.b5.a_power_mgt_state = 1;
--		local->sparm.b5.a_curr_country_code = country;
--		local->sparm.b5.a_hop_pattern_length =
--		    hop_pattern_length[(int)country];
--	}
--
--	local->sparm.b4.a_network_type = net_type & 0x01;
--	local->sparm.b4.a_acting_as_ap_status = TYPE_STA;
--
--	if (essid != NULL)
--		strscpy(local->sparm.b4.a_current_ess_id, essid, ESSID_SIZE);
--} /* init_startup_params */
--
--/*===========================================================================*/
--static void verify_dl_startup(struct timer_list *t)
--{
--	ray_dev_t *local = from_timer(local, t, timer);
--	struct ccs __iomem *pccs = ccs_base(local) + local->dl_param_ccs;
--	UCHAR status;
--	struct pcmcia_device *link = local->finder;
--
--	if (!(pcmcia_dev_present(link))) {
--		dev_dbg(&link->dev, "ray_cs verify_dl_startup - device not present\n");
--		return;
--	}
--#if 0
--	{
--		int i;
--		printk(KERN_DEBUG
--		       "verify_dl_startup parameters sent via ccs %d:\n",
--		       local->dl_param_ccs);
--		for (i = 0; i < sizeof(struct b5_startup_params); i++) {
--			printk(" %2x",
--			       (unsigned int)readb(local->sram +
--						   HOST_TO_ECF_BASE + i));
--		}
--		printk("\n");
--	}
--#endif
--
--	status = readb(&pccs->buffer_status);
--	if (status != CCS_BUFFER_FREE) {
--		printk(KERN_INFO
--		       "Download startup params failed.  Status = %d\n",
--		       status);
--		local->card_status = CARD_DL_PARAM_ERROR;
--		return;
--	}
--	if (local->sparm.b4.a_network_type == ADHOC)
--		start_net(&local->timer);
--	else
--		join_net(&local->timer);
--} /* end verify_dl_startup */
--
--/*===========================================================================*/
--/* Command card to start a network */
--static void start_net(struct timer_list *t)
--{
--	ray_dev_t *local = from_timer(local, t, timer);
--	struct ccs __iomem *pccs;
--	int ccsindex;
--	struct pcmcia_device *link = local->finder;
--	if (!(pcmcia_dev_present(link))) {
--		dev_dbg(&link->dev, "ray_cs start_net - device not present\n");
--		return;
--	}
--	/* Fill in the CCS fields for the ECF */
--	if ((ccsindex = get_free_ccs(local)) < 0)
--		return;
--	pccs = ccs_base(local) + ccsindex;
--	writeb(CCS_START_NETWORK, &pccs->cmd);
--	writeb(0, &pccs->var.start_network.update_param);
--	/* Interrupt the firmware to process the command */
--	if (interrupt_ecf(local, ccsindex)) {
--		dev_dbg(&link->dev, "ray start net failed - card not ready for intr\n");
--		writeb(CCS_BUFFER_FREE, &(pccs++)->buffer_status);
--		return;
--	}
--	local->card_status = CARD_DOING_ACQ;
--} /* end start_net */
--
--/*===========================================================================*/
--/* Command card to join a network */
--static void join_net(struct timer_list *t)
--{
--	ray_dev_t *local = from_timer(local, t, timer);
--
--	struct ccs __iomem *pccs;
--	int ccsindex;
--	struct pcmcia_device *link = local->finder;
--
--	if (!(pcmcia_dev_present(link))) {
--		dev_dbg(&link->dev, "ray_cs join_net - device not present\n");
--		return;
--	}
--	/* Fill in the CCS fields for the ECF */
--	if ((ccsindex = get_free_ccs(local)) < 0)
--		return;
--	pccs = ccs_base(local) + ccsindex;
--	writeb(CCS_JOIN_NETWORK, &pccs->cmd);
--	writeb(0, &pccs->var.join_network.update_param);
--	writeb(0, &pccs->var.join_network.net_initiated);
--	/* Interrupt the firmware to process the command */
--	if (interrupt_ecf(local, ccsindex)) {
--		dev_dbg(&link->dev, "ray join net failed - card not ready for intr\n");
--		writeb(CCS_BUFFER_FREE, &(pccs++)->buffer_status);
--		return;
--	}
--	local->card_status = CARD_DOING_ACQ;
--}
--
--
--static void ray_release(struct pcmcia_device *link)
--{
--	struct net_device *dev = link->priv;
--	ray_dev_t *local = netdev_priv(dev);
--
--	dev_dbg(&link->dev, "ray_release\n");
--
--	del_timer_sync(&local->timer);
--
--	if (local->sram)
--		iounmap(local->sram);
--	if (local->rmem)
--		iounmap(local->rmem);
--	if (local->amem)
--		iounmap(local->amem);
 -	pcmcia_disable_device(link);
--
--	dev_dbg(&link->dev, "ray_release ending\n");
 -}
 -
--static int ray_suspend(struct pcmcia_device *link)
+-static int wl3501_suspend(struct pcmcia_device *link)
 -{
 -	struct net_device *dev = link->priv;
 -
+-	wl3501_pwr_mgmt(netdev_priv(dev), WL3501_SUSPEND);
 -	if (link->open)
 -		netif_device_detach(dev);
 -
 -	return 0;
 -}
 -
--static int ray_resume(struct pcmcia_device *link)
+-static int wl3501_resume(struct pcmcia_device *link)
 -{
 -	struct net_device *dev = link->priv;
 -
+-	wl3501_pwr_mgmt(netdev_priv(dev), WL3501_RESUME);
 -	if (link->open) {
--		ray_reset(dev);
+-		wl3501_reset(dev);
 -		netif_device_attach(dev);
 -	}
 -
 -	return 0;
 -}
 -
--/*===========================================================================*/
--static int ray_dev_init(struct net_device *dev)
--{
--#ifdef RAY_IMMEDIATE_INIT
--	int i;
--#endif /* RAY_IMMEDIATE_INIT */
--	ray_dev_t *local = netdev_priv(dev);
--	struct pcmcia_device *link = local->finder;
 -
--	dev_dbg(&link->dev, "ray_dev_init(dev=%p)\n", dev);
--	if (!(pcmcia_dev_present(link))) {
--		dev_dbg(&link->dev, "ray_dev_init - device not present\n");
--		return -1;
--	}
--#ifdef RAY_IMMEDIATE_INIT
--	/* Download startup parameters */
--	if ((i = dl_startup_params(dev)) < 0) {
--		printk(KERN_INFO "ray_dev_init dl_startup_params failed - "
--		       "returns 0x%x\n", i);
--		return -1;
--	}
--#else /* RAY_IMMEDIATE_INIT */
--	/* Postpone the card init so that we can still configure the card,
--	 * for example using the Wireless Extensions. The init will happen
--	 * in ray_open() - Jean II */
--	dev_dbg(&link->dev,
--	      "ray_dev_init: postponing card init to ray_open() ; Status = %d\n",
--	      local->card_status);
--#endif /* RAY_IMMEDIATE_INIT */
--
--	/* copy mac and broadcast addresses to linux device */
--	eth_hw_addr_set(dev, local->sparm.b4.a_mac_addr);
--	eth_broadcast_addr(dev->broadcast);
--
--	dev_dbg(&link->dev, "ray_dev_init ending\n");
--	return 0;
--}
--
--/*===========================================================================*/
--static int ray_dev_config(struct net_device *dev, struct ifmap *map)
--{
--	ray_dev_t *local = netdev_priv(dev);
--	struct pcmcia_device *link = local->finder;
--	/* Dummy routine to satisfy device structure */
--	dev_dbg(&link->dev, "ray_dev_config(dev=%p,ifmap=%p)\n", dev, map);
--	if (!(pcmcia_dev_present(link))) {
--		dev_dbg(&link->dev, "ray_dev_config - device not present\n");
--		return -1;
--	}
--
--	return 0;
--}
--
--/*===========================================================================*/
--static netdev_tx_t ray_dev_start_xmit(struct sk_buff *skb,
--					    struct net_device *dev)
--{
--	ray_dev_t *local = netdev_priv(dev);
--	struct pcmcia_device *link = local->finder;
--	short length = skb->len;
--
--	if (!pcmcia_dev_present(link)) {
--		dev_dbg(&link->dev, "ray_dev_start_xmit - device not present\n");
--		dev_kfree_skb(skb);
--		return NETDEV_TX_OK;
--	}
--
--	dev_dbg(&link->dev, "ray_dev_start_xmit(skb=%p, dev=%p)\n", skb, dev);
--	if (local->authentication_state == NEED_TO_AUTH) {
--		dev_dbg(&link->dev, "ray_cs Sending authentication request.\n");
--		if (!build_auth_frame(local, local->auth_id, OPEN_AUTH_REQUEST)) {
--			local->authentication_state = AUTHENTICATED;
--			netif_stop_queue(dev);
--			return NETDEV_TX_BUSY;
--		}
--	}
--
--	if (length < ETH_ZLEN) {
--		if (skb_padto(skb, ETH_ZLEN))
--			return NETDEV_TX_OK;
--		length = ETH_ZLEN;
--	}
--	switch (ray_hw_xmit(skb->data, length, dev, DATA_TYPE)) {
--	case XMIT_NO_CCS:
--	case XMIT_NEED_AUTH:
--		netif_stop_queue(dev);
--		return NETDEV_TX_BUSY;
--	case XMIT_NO_INTR:
--	case XMIT_MSG_BAD:
--	case XMIT_OK:
--	default:
--		dev_kfree_skb(skb);
--	}
--
--	return NETDEV_TX_OK;
--} /* ray_dev_start_xmit */
--
--/*===========================================================================*/
--static int ray_hw_xmit(unsigned char *data, int len, struct net_device *dev,
--		       UCHAR msg_type)
--{
--	ray_dev_t *local = netdev_priv(dev);
--	struct ccs __iomem *pccs;
--	int ccsindex;
--	int offset;
--	struct tx_msg __iomem *ptx;	/* Address of xmit buffer in PC space */
--	short int addr;		/* Address of xmit buffer in card space */
--
--	pr_debug("ray_hw_xmit(data=%p, len=%d, dev=%p)\n", data, len, dev);
--	if (len + TX_HEADER_LENGTH > TX_BUF_SIZE) {
--		printk(KERN_INFO "ray_hw_xmit packet too large: %d bytes\n",
--		       len);
--		return XMIT_MSG_BAD;
--	}
--	switch (ccsindex = get_free_tx_ccs(local)) {
--	case ECCSBUSY:
--		pr_debug("ray_hw_xmit tx_ccs table busy\n");
--		fallthrough;
--	case ECCSFULL:
--		pr_debug("ray_hw_xmit No free tx ccs\n");
--		fallthrough;
--	case ECARDGONE:
--		netif_stop_queue(dev);
--		return XMIT_NO_CCS;
--	default:
--		break;
--	}
--	addr = TX_BUF_BASE + (ccsindex << 11);
--
--	if (msg_type == DATA_TYPE) {
--		local->stats.tx_bytes += len;
--		local->stats.tx_packets++;
--	}
--
--	ptx = local->sram + addr;
--
--	ray_build_header(local, ptx, msg_type, data);
--	if (translate) {
--		offset = translate_frame(local, ptx, data, len);
--	} else { /* Encapsulate frame */
--		/* TBD TIB length will move address of ptx->var */
--		memcpy_toio(&ptx->var, data, len);
--		offset = 0;
--	}
--
--	/* fill in the CCS */
--	pccs = ccs_base(local) + ccsindex;
--	len += TX_HEADER_LENGTH + offset;
--	writeb(CCS_TX_REQUEST, &pccs->cmd);
--	writeb(addr >> 8, &pccs->var.tx_request.tx_data_ptr[0]);
--	writeb(local->tib_length, &pccs->var.tx_request.tx_data_ptr[1]);
--	writeb(len >> 8, &pccs->var.tx_request.tx_data_length[0]);
--	writeb(len & 0xff, &pccs->var.tx_request.tx_data_length[1]);
--/* TBD still need psm_cam? */
--	writeb(PSM_CAM, &pccs->var.tx_request.pow_sav_mode);
--	writeb(local->net_default_tx_rate, &pccs->var.tx_request.tx_rate);
--	writeb(0, &pccs->var.tx_request.antenna);
--	pr_debug("ray_hw_xmit default_tx_rate = 0x%x\n",
--	      local->net_default_tx_rate);
--
--	/* Interrupt the firmware to process the command */
--	if (interrupt_ecf(local, ccsindex)) {
--		pr_debug("ray_hw_xmit failed - ECF not ready for intr\n");
--/* TBD very inefficient to copy packet to buffer, and then not
--   send it, but the alternative is to queue the messages and that
--   won't be done for a while.  Maybe set tbusy until a CCS is free?
--*/
--		writeb(CCS_BUFFER_FREE, &pccs->buffer_status);
--		return XMIT_NO_INTR;
--	}
--	return XMIT_OK;
--} /* end ray_hw_xmit */
--
--/*===========================================================================*/
--static int translate_frame(ray_dev_t *local, struct tx_msg __iomem *ptx,
--			   unsigned char *data, int len)
--{
--	__be16 proto = ((struct ethhdr *)data)->h_proto;
--	if (ntohs(proto) >= ETH_P_802_3_MIN) { /* DIX II ethernet frame */
--		pr_debug("ray_cs translate_frame DIX II\n");
--		/* Copy LLC header to card buffer */
--		memcpy_toio(&ptx->var, eth2_llc, sizeof(eth2_llc));
--		memcpy_toio(((void __iomem *)&ptx->var) + sizeof(eth2_llc),
--			    (UCHAR *) &proto, 2);
--		if (proto == htons(ETH_P_AARP) || proto == htons(ETH_P_IPX)) {
--			/* This is the selective translation table, only 2 entries */
--			writeb(0xf8,
--			       &((struct snaphdr_t __iomem *)ptx->var)->org[2]);
--		}
--		/* Copy body of ethernet packet without ethernet header */
--		memcpy_toio((void __iomem *)&ptx->var +
--			    sizeof(struct snaphdr_t), data + ETH_HLEN,
--			    len - ETH_HLEN);
--		return (int)sizeof(struct snaphdr_t) - ETH_HLEN;
--	} else { /* already  802 type, and proto is length */
--		pr_debug("ray_cs translate_frame 802\n");
--		if (proto == htons(0xffff)) { /* evil netware IPX 802.3 without LLC */
--			pr_debug("ray_cs translate_frame evil IPX\n");
--			memcpy_toio(&ptx->var, data + ETH_HLEN, len - ETH_HLEN);
--			return 0 - ETH_HLEN;
--		}
--		memcpy_toio(&ptx->var, data + ETH_HLEN, len - ETH_HLEN);
--		return 0 - ETH_HLEN;
--	}
--	/* TBD do other frame types */
--} /* end translate_frame */
--
--/*===========================================================================*/
--static void ray_build_header(ray_dev_t *local, struct tx_msg __iomem *ptx,
--			     UCHAR msg_type, unsigned char *data)
--{
--	writeb(PROTOCOL_VER | msg_type, &ptx->mac.frame_ctl_1);
--/*** IEEE 802.11 Address field assignments *************
--		TODS	FROMDS	addr_1		addr_2		addr_3	addr_4
--Adhoc		0	0	dest		src (terminal)	BSSID	N/A
--AP to Terminal	0	1	dest		AP(BSSID)	source	N/A
--Terminal to AP	1	0	AP(BSSID)	src (terminal)	dest	N/A
--AP to AP	1	1	dest AP		src AP		dest	source
--*******************************************************/
--	if (local->net_type == ADHOC) {
--		writeb(0, &ptx->mac.frame_ctl_2);
--		memcpy_toio(ptx->mac.addr_1, ((struct ethhdr *)data)->h_dest,
--			    ADDRLEN);
--		memcpy_toio(ptx->mac.addr_2, ((struct ethhdr *)data)->h_source,
--			    ADDRLEN);
--		memcpy_toio(ptx->mac.addr_3, local->bss_id, ADDRLEN);
--	} else { /* infrastructure */
--
--		if (local->sparm.b4.a_acting_as_ap_status) {
--			writeb(FC2_FROM_DS, &ptx->mac.frame_ctl_2);
--			memcpy_toio(ptx->mac.addr_1,
--				    ((struct ethhdr *)data)->h_dest, ADDRLEN);
--			memcpy_toio(ptx->mac.addr_2, local->bss_id, 6);
--			memcpy_toio(ptx->mac.addr_3,
--				    ((struct ethhdr *)data)->h_source, ADDRLEN);
--		} else { /* Terminal */
--
--			writeb(FC2_TO_DS, &ptx->mac.frame_ctl_2);
--			memcpy_toio(ptx->mac.addr_1, local->bss_id, ADDRLEN);
--			memcpy_toio(ptx->mac.addr_2,
--				    ((struct ethhdr *)data)->h_source, ADDRLEN);
--			memcpy_toio(ptx->mac.addr_3,
--				    ((struct ethhdr *)data)->h_dest, ADDRLEN);
--		}
--	}
--} /* end encapsulate_frame */
--
--/*====================================================================*/
--
--/*------------------------------------------------------------------*/
--/*
-- * Wireless Handler : get protocol name
-- */
--static int ray_get_name(struct net_device *dev, struct iw_request_info *info,
--			union iwreq_data *wrqu, char *extra)
--{
--	strcpy(wrqu->name, "IEEE 802.11-FH");
--	return 0;
--}
--
--/*------------------------------------------------------------------*/
--/*
-- * Wireless Handler : set frequency
-- */
--static int ray_set_freq(struct net_device *dev, struct iw_request_info *info,
--			union iwreq_data *wrqu, char *extra)
--{
--	ray_dev_t *local = netdev_priv(dev);
--	int err = -EINPROGRESS;	/* Call commit handler */
--
--	/* Reject if card is already initialised */
--	if (local->card_status != CARD_AWAITING_PARAM)
--		return -EBUSY;
--
--	/* Setting by channel number */
--	if ((wrqu->freq.m > USA_HOP_MOD) || (wrqu->freq.e > 0))
--		err = -EOPNOTSUPP;
--	else
--		local->sparm.b5.a_hop_pattern = wrqu->freq.m;
--
--	return err;
--}
--
--/*------------------------------------------------------------------*/
--/*
-- * Wireless Handler : get frequency
-- */
--static int ray_get_freq(struct net_device *dev, struct iw_request_info *info,
--			union iwreq_data *wrqu, char *extra)
--{
--	ray_dev_t *local = netdev_priv(dev);
--
--	wrqu->freq.m = local->sparm.b5.a_hop_pattern;
--	wrqu->freq.e = 0;
--	return 0;
--}
--
--/*------------------------------------------------------------------*/
--/*
-- * Wireless Handler : set ESSID
-- */
--static int ray_set_essid(struct net_device *dev, struct iw_request_info *info,
--			 union iwreq_data *wrqu, char *extra)
--{
--	ray_dev_t *local = netdev_priv(dev);
--
--	/* Reject if card is already initialised */
--	if (local->card_status != CARD_AWAITING_PARAM)
--		return -EBUSY;
--
--	/* Check if we asked for `any' */
--	if (wrqu->essid.flags == 0)
--		/* Corey : can you do that ? */
--		return -EOPNOTSUPP;
--
--	/* Check the size of the string */
--	if (wrqu->essid.length > IW_ESSID_MAX_SIZE)
--		return -E2BIG;
--
--	/* Set the ESSID in the card */
--	memset(local->sparm.b5.a_current_ess_id, 0, IW_ESSID_MAX_SIZE);
--	memcpy(local->sparm.b5.a_current_ess_id, extra, wrqu->essid.length);
--
--	return -EINPROGRESS;	/* Call commit handler */
--}
--
--/*------------------------------------------------------------------*/
--/*
-- * Wireless Handler : get ESSID
-- */
--static int ray_get_essid(struct net_device *dev, struct iw_request_info *info,
--			 union iwreq_data *wrqu, char *extra)
--{
--	ray_dev_t *local = netdev_priv(dev);
--	UCHAR tmp[IW_ESSID_MAX_SIZE + 1];
--
--	/* Get the essid that was set */
--	memcpy(extra, local->sparm.b5.a_current_ess_id, IW_ESSID_MAX_SIZE);
--	memcpy(tmp, local->sparm.b5.a_current_ess_id, IW_ESSID_MAX_SIZE);
--	tmp[IW_ESSID_MAX_SIZE] = '\0';
--
--	/* Push it out ! */
--	wrqu->essid.length = strlen(tmp);
--	wrqu->essid.flags = 1;	/* active */
--
--	return 0;
--}
--
--/*------------------------------------------------------------------*/
--/*
-- * Wireless Handler : get AP address
-- */
--static int ray_get_wap(struct net_device *dev, struct iw_request_info *info,
--		       union iwreq_data *wrqu, char *extra)
--{
--	ray_dev_t *local = netdev_priv(dev);
--
--	memcpy(wrqu->ap_addr.sa_data, local->bss_id, ETH_ALEN);
--	wrqu->ap_addr.sa_family = ARPHRD_ETHER;
--
--	return 0;
--}
--
--/*------------------------------------------------------------------*/
--/*
-- * Wireless Handler : set Bit-Rate
-- */
--static int ray_set_rate(struct net_device *dev, struct iw_request_info *info,
--			union iwreq_data *wrqu, char *extra)
--{
--	ray_dev_t *local = netdev_priv(dev);
--
--	/* Reject if card is already initialised */
--	if (local->card_status != CARD_AWAITING_PARAM)
--		return -EBUSY;
--
--	/* Check if rate is in range */
--	if ((wrqu->bitrate.value != 1000000) && (wrqu->bitrate.value != 2000000))
--		return -EINVAL;
--
--	/* Hack for 1.5 Mb/s instead of 2 Mb/s */
--	if ((local->fw_ver == 0x55) &&	/* Please check */
--	    (wrqu->bitrate.value == 2000000))
--		local->net_default_tx_rate = 3;
--	else
--		local->net_default_tx_rate = wrqu->bitrate.value / 500000;
--
--	return 0;
--}
--
--/*------------------------------------------------------------------*/
--/*
-- * Wireless Handler : get Bit-Rate
-- */
--static int ray_get_rate(struct net_device *dev, struct iw_request_info *info,
--			union iwreq_data *wrqu, char *extra)
--{
--	ray_dev_t *local = netdev_priv(dev);
--
--	if (local->net_default_tx_rate == 3)
--		wrqu->bitrate.value = 2000000;	/* Hum... */
--	else
--		wrqu->bitrate.value = local->net_default_tx_rate * 500000;
--	wrqu->bitrate.fixed = 0;	/* We are in auto mode */
--
--	return 0;
--}
--
--/*------------------------------------------------------------------*/
--/*
-- * Wireless Handler : set RTS threshold
-- */
--static int ray_set_rts(struct net_device *dev, struct iw_request_info *info,
--		       union iwreq_data *wrqu, char *extra)
--{
--	ray_dev_t *local = netdev_priv(dev);
--	int rthr = wrqu->rts.value;
--
--	/* Reject if card is already initialised */
--	if (local->card_status != CARD_AWAITING_PARAM)
--		return -EBUSY;
--
--	/* if(wrq->u.rts.fixed == 0) we should complain */
--	if (wrqu->rts.disabled)
--		rthr = 32767;
--	else {
--		if ((rthr < 0) || (rthr > 2347))   /* What's the max packet size ??? */
--			return -EINVAL;
--	}
--	local->sparm.b5.a_rts_threshold[0] = (rthr >> 8) & 0xFF;
--	local->sparm.b5.a_rts_threshold[1] = rthr & 0xFF;
--
--	return -EINPROGRESS;	/* Call commit handler */
--}
--
--/*------------------------------------------------------------------*/
--/*
-- * Wireless Handler : get RTS threshold
-- */
--static int ray_get_rts(struct net_device *dev, struct iw_request_info *info,
--		       union iwreq_data *wrqu, char *extra)
--{
--	ray_dev_t *local = netdev_priv(dev);
--
--	wrqu->rts.value = (local->sparm.b5.a_rts_threshold[0] << 8)
--	    + local->sparm.b5.a_rts_threshold[1];
--	wrqu->rts.disabled = (wrqu->rts.value == 32767);
--	wrqu->rts.fixed = 1;
--
--	return 0;
--}
--
--/*------------------------------------------------------------------*/
--/*
-- * Wireless Handler : set Fragmentation threshold
-- */
--static int ray_set_frag(struct net_device *dev, struct iw_request_info *info,
--			union iwreq_data *wrqu, char *extra)
--{
--	ray_dev_t *local = netdev_priv(dev);
--	int fthr = wrqu->frag.value;
--
--	/* Reject if card is already initialised */
--	if (local->card_status != CARD_AWAITING_PARAM)
--		return -EBUSY;
--
--	/* if(wrq->u.frag.fixed == 0) should complain */
--	if (wrqu->frag.disabled)
--		fthr = 32767;
--	else {
--		if ((fthr < 256) || (fthr > 2347))	/* To check out ! */
--			return -EINVAL;
--	}
--	local->sparm.b5.a_frag_threshold[0] = (fthr >> 8) & 0xFF;
--	local->sparm.b5.a_frag_threshold[1] = fthr & 0xFF;
--
--	return -EINPROGRESS;	/* Call commit handler */
--}
--
--/*------------------------------------------------------------------*/
--/*
-- * Wireless Handler : get Fragmentation threshold
-- */
--static int ray_get_frag(struct net_device *dev, struct iw_request_info *info,
--			union iwreq_data *wrqu, char *extra)
--{
--	ray_dev_t *local = netdev_priv(dev);
--
--	wrqu->frag.value = (local->sparm.b5.a_frag_threshold[0] << 8)
--	    + local->sparm.b5.a_frag_threshold[1];
--	wrqu->frag.disabled = (wrqu->frag.value == 32767);
--	wrqu->frag.fixed = 1;
--
--	return 0;
--}
--
--/*------------------------------------------------------------------*/
--/*
-- * Wireless Handler : set Mode of Operation
-- */
--static int ray_set_mode(struct net_device *dev, struct iw_request_info *info,
--			union iwreq_data *wrqu, char *extra)
--{
--	ray_dev_t *local = netdev_priv(dev);
--	int err = -EINPROGRESS;	/* Call commit handler */
--	char card_mode = 1;
--
--	/* Reject if card is already initialised */
--	if (local->card_status != CARD_AWAITING_PARAM)
--		return -EBUSY;
--
--	switch (wrqu->mode) {
--	case IW_MODE_ADHOC:
--		card_mode = 0;
--		fallthrough;
--	case IW_MODE_INFRA:
--		local->sparm.b5.a_network_type = card_mode;
--		break;
--	default:
--		err = -EINVAL;
--	}
--
--	return err;
--}
--
--/*------------------------------------------------------------------*/
--/*
-- * Wireless Handler : get Mode of Operation
-- */
--static int ray_get_mode(struct net_device *dev, struct iw_request_info *info,
--			union iwreq_data *wrqu, char *extra)
--{
--	ray_dev_t *local = netdev_priv(dev);
--
--	if (local->sparm.b5.a_network_type)
--		wrqu->mode = IW_MODE_INFRA;
--	else
--		wrqu->mode = IW_MODE_ADHOC;
--
--	return 0;
--}
--
--/*------------------------------------------------------------------*/
--/*
-- * Wireless Handler : get range info
-- */
--static int ray_get_range(struct net_device *dev, struct iw_request_info *info,
--			 union iwreq_data *wrqu, char *extra)
--{
--	struct iw_range *range = (struct iw_range *)extra;
--
--	memset(range, 0, sizeof(struct iw_range));
--
--	/* Set the length (very important for backward compatibility) */
--	wrqu->data.length = sizeof(struct iw_range);
--
--	/* Set the Wireless Extension versions */
--	range->we_version_compiled = WIRELESS_EXT;
--	range->we_version_source = 9;
--
--	/* Set information in the range struct */
--	range->throughput = 1.1 * 1000 * 1000;	/* Put the right number here */
--	range->num_channels = hop_pattern_length[(int)country];
--	range->num_frequency = 0;
--	range->max_qual.qual = 0;
--	range->max_qual.level = 255;	/* What's the correct value ? */
--	range->max_qual.noise = 255;	/* Idem */
--	range->num_bitrates = 2;
--	range->bitrate[0] = 1000000;	/* 1 Mb/s */
--	range->bitrate[1] = 2000000;	/* 2 Mb/s */
--	return 0;
--}
--
--/*------------------------------------------------------------------*/
--/*
-- * Wireless Private Handler : set framing mode
-- */
--static int ray_set_framing(struct net_device *dev, struct iw_request_info *info,
--			   union iwreq_data *wrqu, char *extra)
--{
--	translate = !!*(extra);	/* Set framing mode */
--
--	return 0;
--}
--
--/*------------------------------------------------------------------*/
--/*
-- * Wireless Private Handler : get framing mode
-- */
--static int ray_get_framing(struct net_device *dev, struct iw_request_info *info,
--			   union iwreq_data *wrqu, char *extra)
--{
--	*(extra) = translate;
--
--	return 0;
--}
--
--/*------------------------------------------------------------------*/
--/*
-- * Wireless Private Handler : get country
-- */
--static int ray_get_country(struct net_device *dev, struct iw_request_info *info,
--			   union iwreq_data *wrqu, char *extra)
--{
--	*(extra) = country;
--
--	return 0;
--}
--
--/*------------------------------------------------------------------*/
--/*
-- * Commit handler : called after a bunch of SET operations
-- */
--static int ray_commit(struct net_device *dev, struct iw_request_info *info,
--		      union iwreq_data *wrqu, char *extra)
--{
--	return 0;
--}
--
--/*------------------------------------------------------------------*/
--/*
-- * Stats handler : return Wireless Stats
-- */
--static iw_stats *ray_get_wireless_stats(struct net_device *dev)
--{
--	ray_dev_t *local = netdev_priv(dev);
--	struct pcmcia_device *link = local->finder;
--	struct status __iomem *p = local->sram + STATUS_BASE;
--
--	local->wstats.status = local->card_status;
--#ifdef WIRELESS_SPY
--	if ((local->spy_data.spy_number > 0)
--	    && (local->sparm.b5.a_network_type == 0)) {
--		/* Get it from the first node in spy list */
--		local->wstats.qual.qual = local->spy_data.spy_stat[0].qual;
--		local->wstats.qual.level = local->spy_data.spy_stat[0].level;
--		local->wstats.qual.noise = local->spy_data.spy_stat[0].noise;
--		local->wstats.qual.updated =
--		    local->spy_data.spy_stat[0].updated;
--	}
--#endif /* WIRELESS_SPY */
--
--	if (pcmcia_dev_present(link)) {
--		local->wstats.qual.noise = readb(&p->rxnoise);
--		local->wstats.qual.updated |= 4;
--	}
--
--	return &local->wstats;
--} /* end ray_get_wireless_stats */
--
--/*------------------------------------------------------------------*/
--/*
-- * Structures to export the Wireless Handlers
-- */
--
--static const iw_handler ray_handler[] = {
--	IW_HANDLER(SIOCSIWCOMMIT, ray_commit),
--	IW_HANDLER(SIOCGIWNAME, ray_get_name),
--	IW_HANDLER(SIOCSIWFREQ, ray_set_freq),
--	IW_HANDLER(SIOCGIWFREQ, ray_get_freq),
--	IW_HANDLER(SIOCSIWMODE, ray_set_mode),
--	IW_HANDLER(SIOCGIWMODE, ray_get_mode),
--	IW_HANDLER(SIOCGIWRANGE, ray_get_range),
--#ifdef WIRELESS_SPY
--	IW_HANDLER(SIOCSIWSPY, iw_handler_set_spy),
--	IW_HANDLER(SIOCGIWSPY, iw_handler_get_spy),
--	IW_HANDLER(SIOCSIWTHRSPY, iw_handler_set_thrspy),
--	IW_HANDLER(SIOCGIWTHRSPY, iw_handler_get_thrspy),
--#endif /* WIRELESS_SPY */
--	IW_HANDLER(SIOCGIWAP, ray_get_wap),
--	IW_HANDLER(SIOCSIWESSID, ray_set_essid),
--	IW_HANDLER(SIOCGIWESSID, ray_get_essid),
--	IW_HANDLER(SIOCSIWRATE, ray_set_rate),
--	IW_HANDLER(SIOCGIWRATE, ray_get_rate),
--	IW_HANDLER(SIOCSIWRTS, ray_set_rts),
--	IW_HANDLER(SIOCGIWRTS, ray_get_rts),
--	IW_HANDLER(SIOCSIWFRAG, ray_set_frag),
--	IW_HANDLER(SIOCGIWFRAG, ray_get_frag),
+-static const struct pcmcia_device_id wl3501_ids[] = {
+-	PCMCIA_DEVICE_MANF_CARD(0xd601, 0x0001),
+-	PCMCIA_DEVICE_NULL
 -};
+-MODULE_DEVICE_TABLE(pcmcia, wl3501_ids);
 -
--#define SIOCSIPFRAMING	SIOCIWFIRSTPRIV	/* Set framing mode */
--#define SIOCGIPFRAMING	SIOCIWFIRSTPRIV + 1	/* Get framing mode */
--#define SIOCGIPCOUNTRY	SIOCIWFIRSTPRIV + 3	/* Get country code */
--
--static const iw_handler ray_private_handler[] = {
--	[0] = ray_set_framing,
--	[1] = ray_get_framing,
--	[3] = ray_get_country,
+-static struct pcmcia_driver wl3501_driver = {
+-	.owner		= THIS_MODULE,
+-	.name		= "wl3501_cs",
+-	.probe		= wl3501_probe,
+-	.remove		= wl3501_detach,
+-	.id_table	= wl3501_ids,
+-	.suspend	= wl3501_suspend,
+-	.resume		= wl3501_resume,
 -};
--
--static const struct iw_priv_args ray_private_args[] = {
--/* cmd,		set_args,	get_args,	name */
--	{SIOCSIPFRAMING, IW_PRIV_TYPE_BYTE | IW_PRIV_SIZE_FIXED | 1, 0,
--	 "set_framing"},
--	{SIOCGIPFRAMING, 0, IW_PRIV_TYPE_BYTE | IW_PRIV_SIZE_FIXED | 1,
--	 "get_framing"},
--	{SIOCGIPCOUNTRY, 0, IW_PRIV_TYPE_BYTE | IW_PRIV_SIZE_FIXED | 1,
--	 "get_country"},
--};
--
--static const struct iw_handler_def ray_handler_def = {
--	.num_standard = ARRAY_SIZE(ray_handler),
--	.num_private = ARRAY_SIZE(ray_private_handler),
--	.num_private_args = ARRAY_SIZE(ray_private_args),
--	.standard = ray_handler,
--	.private = ray_private_handler,
--	.private_args = ray_private_args,
--	.get_wireless_stats = ray_get_wireless_stats,
--};
--
--/*===========================================================================*/
--static int ray_open(struct net_device *dev)
--{
--	ray_dev_t *local = netdev_priv(dev);
--	struct pcmcia_device *link;
--	link = local->finder;
--
--	dev_dbg(&link->dev, "ray_open('%s')\n", dev->name);
--
--	if (link->open == 0)
--		local->num_multi = 0;
--	link->open++;
--
--	/* If the card is not started, time to start it ! - Jean II */
--	if (local->card_status == CARD_AWAITING_PARAM) {
--		int i;
--
--		dev_dbg(&link->dev, "ray_open: doing init now !\n");
--
--		/* Download startup parameters */
--		if ((i = dl_startup_params(dev)) < 0) {
--			printk(KERN_INFO
--			       "ray_dev_init dl_startup_params failed - "
--			       "returns 0x%x\n", i);
--			return -1;
--		}
--	}
--
--	if (sniffer)
--		netif_stop_queue(dev);
--	else
--		netif_start_queue(dev);
--
--	dev_dbg(&link->dev, "ray_open ending\n");
--	return 0;
--} /* end ray_open */
--
--/*===========================================================================*/
--static int ray_dev_close(struct net_device *dev)
--{
--	ray_dev_t *local = netdev_priv(dev);
--	struct pcmcia_device *link;
--	link = local->finder;
--
--	dev_dbg(&link->dev, "ray_dev_close('%s')\n", dev->name);
--
--	link->open--;
--	netif_stop_queue(dev);
--
--	/* In here, we should stop the hardware (stop card from beeing active)
--	 * and set local->card_status to CARD_AWAITING_PARAM, so that while the
--	 * card is closed we can chage its configuration.
--	 * Probably also need a COR reset to get sane state - Jean II */
--
--	return 0;
--} /* end ray_dev_close */
--
--/*===========================================================================*/
--static void ray_reset(struct net_device *dev)
--{
--	pr_debug("ray_reset entered\n");
--}
--
--/*===========================================================================*/
--/* Cause a firmware interrupt if it is ready for one                         */
--/* Return nonzero if not ready                                               */
--static int interrupt_ecf(ray_dev_t *local, int ccs)
--{
--	int i = 50;
--	struct pcmcia_device *link = local->finder;
--
--	if (!(pcmcia_dev_present(link))) {
--		dev_dbg(&link->dev, "ray_cs interrupt_ecf - device not present\n");
--		return -1;
--	}
--	dev_dbg(&link->dev, "interrupt_ecf(local=%p, ccs = 0x%x\n", local, ccs);
--
--	while (i &&
--	       (readb(local->amem + CIS_OFFSET + ECF_INTR_OFFSET) &
--		ECF_INTR_SET))
--		i--;
--	if (i == 0) {
--		dev_dbg(&link->dev, "ray_cs interrupt_ecf card not ready for interrupt\n");
--		return -1;
--	}
--	/* Fill the mailbox, then kick the card */
--	writeb(ccs, local->sram + SCB_BASE);
--	writeb(ECF_INTR_SET, local->amem + CIS_OFFSET + ECF_INTR_OFFSET);
--	return 0;
--} /* interrupt_ecf */
--
--/*===========================================================================*/
--/* Get next free transmit CCS                                                */
--/* Return - index of current tx ccs                                          */
--static int get_free_tx_ccs(ray_dev_t *local)
--{
--	int i;
--	struct ccs __iomem *pccs = ccs_base(local);
--	struct pcmcia_device *link = local->finder;
--
--	if (!(pcmcia_dev_present(link))) {
--		dev_dbg(&link->dev, "ray_cs get_free_tx_ccs - device not present\n");
--		return ECARDGONE;
--	}
--
--	if (test_and_set_bit(0, &local->tx_ccs_lock)) {
--		dev_dbg(&link->dev, "ray_cs tx_ccs_lock busy\n");
--		return ECCSBUSY;
--	}
--
--	for (i = 0; i < NUMBER_OF_TX_CCS; i++) {
--		if (readb(&(pccs + i)->buffer_status) == CCS_BUFFER_FREE) {
--			writeb(CCS_BUFFER_BUSY, &(pccs + i)->buffer_status);
--			writeb(CCS_END_LIST, &(pccs + i)->link);
--			local->tx_ccs_lock = 0;
--			return i;
--		}
--	}
--	local->tx_ccs_lock = 0;
--	dev_dbg(&link->dev, "ray_cs ERROR no free tx CCS for raylink card\n");
--	return ECCSFULL;
--} /* get_free_tx_ccs */
--
--/*===========================================================================*/
--/* Get next free CCS                                                         */
--/* Return - index of current ccs                                             */
--static int get_free_ccs(ray_dev_t *local)
--{
--	int i;
--	struct ccs __iomem *pccs = ccs_base(local);
--	struct pcmcia_device *link = local->finder;
--
--	if (!(pcmcia_dev_present(link))) {
--		dev_dbg(&link->dev, "ray_cs get_free_ccs - device not present\n");
--		return ECARDGONE;
--	}
--	if (test_and_set_bit(0, &local->ccs_lock)) {
--		dev_dbg(&link->dev, "ray_cs ccs_lock busy\n");
--		return ECCSBUSY;
--	}
--
--	for (i = NUMBER_OF_TX_CCS; i < NUMBER_OF_CCS; i++) {
--		if (readb(&(pccs + i)->buffer_status) == CCS_BUFFER_FREE) {
--			writeb(CCS_BUFFER_BUSY, &(pccs + i)->buffer_status);
--			writeb(CCS_END_LIST, &(pccs + i)->link);
--			local->ccs_lock = 0;
--			return i;
--		}
--	}
--	local->ccs_lock = 0;
--	dev_dbg(&link->dev, "ray_cs ERROR no free CCS for raylink card\n");
--	return ECCSFULL;
--} /* get_free_ccs */
--
--/*===========================================================================*/
--static void authenticate_timeout(struct timer_list *t)
--{
--	ray_dev_t *local = from_timer(local, t, timer);
--	del_timer(&local->timer);
--	printk(KERN_INFO "ray_cs Authentication with access point failed"
--	       " - timeout\n");
--	join_net(&local->timer);
--}
--
--/*===========================================================================*/
--static int parse_addr(char *in_str, UCHAR *out)
--{
--	int i, k;
--	int len;
--
--	if (in_str == NULL)
--		return 0;
--	len = strnlen(in_str, ADDRLEN * 2 + 1) - 1;
--	if (len < 1)
--		return 0;
--	memset(out, 0, ADDRLEN);
--
--	i = 5;
--
--	while (len > 0) {
--		if ((k = hex_to_bin(in_str[len--])) != -1)
--			out[i] = k;
--		else
--			return 0;
--
--		if (len == 0)
--			break;
--		if ((k = hex_to_bin(in_str[len--])) != -1)
--			out[i] += k << 4;
--		else
--			return 0;
--		if (!i--)
--			break;
--	}
--	return 1;
--}
--
--/*===========================================================================*/
--static struct net_device_stats *ray_get_stats(struct net_device *dev)
--{
--	ray_dev_t *local = netdev_priv(dev);
--	struct pcmcia_device *link = local->finder;
--	struct status __iomem *p = local->sram + STATUS_BASE;
--	if (!(pcmcia_dev_present(link))) {
--		dev_dbg(&link->dev, "ray_cs net_device_stats - device not present\n");
--		return &local->stats;
--	}
--	if (readb(&p->mrx_overflow_for_host)) {
--		local->stats.rx_over_errors += swab16(readw(&p->mrx_overflow));
--		writeb(0, &p->mrx_overflow);
--		writeb(0, &p->mrx_overflow_for_host);
--	}
--	if (readb(&p->mrx_checksum_error_for_host)) {
--		local->stats.rx_crc_errors +=
--		    swab16(readw(&p->mrx_checksum_error));
--		writeb(0, &p->mrx_checksum_error);
--		writeb(0, &p->mrx_checksum_error_for_host);
--	}
--	if (readb(&p->rx_hec_error_for_host)) {
--		local->stats.rx_frame_errors += swab16(readw(&p->rx_hec_error));
--		writeb(0, &p->rx_hec_error);
--		writeb(0, &p->rx_hec_error_for_host);
--	}
--	return &local->stats;
--}
--
--/*===========================================================================*/
--static void ray_update_parm(struct net_device *dev, UCHAR objid, UCHAR *value,
--			    int len)
--{
--	ray_dev_t *local = netdev_priv(dev);
--	struct pcmcia_device *link = local->finder;
--	int ccsindex;
--	int i;
--	struct ccs __iomem *pccs;
--
--	if (!(pcmcia_dev_present(link))) {
--		dev_dbg(&link->dev, "ray_update_parm - device not present\n");
--		return;
--	}
--
--	if ((ccsindex = get_free_ccs(local)) < 0) {
--		dev_dbg(&link->dev, "ray_update_parm - No free ccs\n");
--		return;
--	}
--	pccs = ccs_base(local) + ccsindex;
--	writeb(CCS_UPDATE_PARAMS, &pccs->cmd);
--	writeb(objid, &pccs->var.update_param.object_id);
--	writeb(1, &pccs->var.update_param.number_objects);
--	writeb(0, &pccs->var.update_param.failure_cause);
--	for (i = 0; i < len; i++) {
--		writeb(value[i], local->sram + HOST_TO_ECF_BASE);
--	}
--	/* Interrupt the firmware to process the command */
--	if (interrupt_ecf(local, ccsindex)) {
--		dev_dbg(&link->dev, "ray_cs associate failed - ECF not ready for intr\n");
--		writeb(CCS_BUFFER_FREE, &(pccs++)->buffer_status);
--	}
--}
--
--/*===========================================================================*/
--static void ray_update_multi_list(struct net_device *dev, int all)
--{
--	int ccsindex;
--	struct ccs __iomem *pccs;
--	ray_dev_t *local = netdev_priv(dev);
--	struct pcmcia_device *link = local->finder;
--	void __iomem *p = local->sram + HOST_TO_ECF_BASE;
--
--	if (!(pcmcia_dev_present(link))) {
--		dev_dbg(&link->dev, "ray_update_multi_list - device not present\n");
--		return;
--	} else
--		dev_dbg(&link->dev, "ray_update_multi_list(%p)\n", dev);
--	if ((ccsindex = get_free_ccs(local)) < 0) {
--		dev_dbg(&link->dev, "ray_update_multi - No free ccs\n");
--		return;
--	}
--	pccs = ccs_base(local) + ccsindex;
--	writeb(CCS_UPDATE_MULTICAST_LIST, &pccs->cmd);
--
--	if (all) {
--		writeb(0xff, &pccs->var);
--		local->num_multi = 0xff;
--	} else {
--		struct netdev_hw_addr *ha;
--		int i = 0;
--
--		/* Copy the kernel's list of MC addresses to card */
--		netdev_for_each_mc_addr(ha, dev) {
--			memcpy_toio(p, ha->addr, ETH_ALEN);
--			dev_dbg(&link->dev, "ray_update_multi add addr %pm\n",
--				ha->addr);
--			p += ETH_ALEN;
--			i++;
--		}
--		if (i > 256 / ADDRLEN)
--			i = 256 / ADDRLEN;
--		writeb((UCHAR) i, &pccs->var);
--		dev_dbg(&link->dev, "ray_cs update_multi %d addresses in list\n", i);
--		/* Interrupt the firmware to process the command */
--		local->num_multi = i;
--	}
--	if (interrupt_ecf(local, ccsindex)) {
--		dev_dbg(&link->dev,
--		      "ray_cs update_multi failed - ECF not ready for intr\n");
--		writeb(CCS_BUFFER_FREE, &(pccs++)->buffer_status);
--	}
--} /* end ray_update_multi_list */
--
--/*===========================================================================*/
--static void set_multicast_list(struct net_device *dev)
--{
--	ray_dev_t *local = netdev_priv(dev);
--	UCHAR promisc;
--
--	pr_debug("ray_cs set_multicast_list(%p)\n", dev);
--
--	if (dev->flags & IFF_PROMISC) {
--		if (local->sparm.b5.a_promiscuous_mode == 0) {
--			pr_debug("ray_cs set_multicast_list promisc on\n");
--			local->sparm.b5.a_promiscuous_mode = 1;
--			promisc = 1;
--			ray_update_parm(dev, OBJID_promiscuous_mode,
--					&promisc, sizeof(promisc));
--		}
--	} else {
--		if (local->sparm.b5.a_promiscuous_mode == 1) {
--			pr_debug("ray_cs set_multicast_list promisc off\n");
--			local->sparm.b5.a_promiscuous_mode = 0;
--			promisc = 0;
--			ray_update_parm(dev, OBJID_promiscuous_mode,
--					&promisc, sizeof(promisc));
--		}
--	}
--
--	if (dev->flags & IFF_ALLMULTI)
--		ray_update_multi_list(dev, 1);
--	else {
--		if (local->num_multi != netdev_mc_count(dev))
--			ray_update_multi_list(dev, 0);
--	}
--} /* end set_multicast_list */
--
--/*=============================================================================
-- * All routines below here are run at interrupt time.
--=============================================================================*/
--static irqreturn_t ray_interrupt(int irq, void *dev_id)
--{
--	struct net_device *dev = (struct net_device *)dev_id;
--	struct pcmcia_device *link;
--	ray_dev_t *local;
--	struct ccs __iomem *pccs;
--	struct rcs __iomem *prcs;
--	UCHAR rcsindex;
--	UCHAR tmp;
--	UCHAR cmd;
--	UCHAR status;
--	UCHAR memtmp[ESSID_SIZE + 1];
--
--
--	if (dev == NULL)	/* Note that we want interrupts with dev->start == 0 */
--		return IRQ_NONE;
--
--	pr_debug("ray_cs: interrupt for *dev=%p\n", dev);
--
--	local = netdev_priv(dev);
--	link = local->finder;
--	if (!pcmcia_dev_present(link)) {
--		pr_debug(
--			"ray_cs interrupt from device not present or suspended.\n");
--		return IRQ_NONE;
--	}
--	rcsindex = readb(&((struct scb __iomem *)(local->sram))->rcs_index);
--
--	if (rcsindex >= (NUMBER_OF_CCS + NUMBER_OF_RCS)) {
--		dev_dbg(&link->dev, "ray_cs interrupt bad rcsindex = 0x%x\n", rcsindex);
--		clear_interrupt(local);
--		return IRQ_HANDLED;
--	}
--	if (rcsindex < NUMBER_OF_CCS) { /* If it's a returned CCS */
--		pccs = ccs_base(local) + rcsindex;
--		cmd = readb(&pccs->cmd);
--		status = readb(&pccs->buffer_status);
--		switch (cmd) {
--		case CCS_DOWNLOAD_STARTUP_PARAMS:	/* Happens in firmware someday */
--			del_timer(&local->timer);
--			if (status == CCS_COMMAND_COMPLETE) {
--				dev_dbg(&link->dev,
--				      "ray_cs interrupt download_startup_parameters OK\n");
--			} else {
--				dev_dbg(&link->dev,
--				      "ray_cs interrupt download_startup_parameters fail\n");
--			}
--			break;
--		case CCS_UPDATE_PARAMS:
--			dev_dbg(&link->dev, "ray_cs interrupt update params done\n");
--			if (status != CCS_COMMAND_COMPLETE) {
--				tmp =
--				    readb(&pccs->var.update_param.
--					  failure_cause);
--				dev_dbg(&link->dev,
--				      "ray_cs interrupt update params failed - reason %d\n",
--				      tmp);
--			}
--			break;
--		case CCS_REPORT_PARAMS:
--			dev_dbg(&link->dev, "ray_cs interrupt report params done\n");
--			break;
--		case CCS_UPDATE_MULTICAST_LIST:	/* Note that this CCS isn't returned */
--			dev_dbg(&link->dev,
--			      "ray_cs interrupt CCS Update Multicast List done\n");
--			break;
--		case CCS_UPDATE_POWER_SAVINGS_MODE:
--			dev_dbg(&link->dev,
--			      "ray_cs interrupt update power save mode done\n");
--			break;
--		case CCS_START_NETWORK:
--		case CCS_JOIN_NETWORK:
--			memcpy(memtmp, local->sparm.b4.a_current_ess_id,
--								ESSID_SIZE);
--			memtmp[ESSID_SIZE] = '\0';
--
--			if (status == CCS_COMMAND_COMPLETE) {
--				if (readb
--				    (&pccs->var.start_network.net_initiated) ==
--				    1) {
--					dev_dbg(&link->dev,
--					      "ray_cs interrupt network \"%s\" started\n",
--					      memtmp);
--				} else {
--					dev_dbg(&link->dev,
--					      "ray_cs interrupt network \"%s\" joined\n",
--					      memtmp);
--				}
--				memcpy_fromio(&local->bss_id,
--					      pccs->var.start_network.bssid,
--					      ADDRLEN);
--
--				if (local->fw_ver == 0x55)
--					local->net_default_tx_rate = 3;
--				else
--					local->net_default_tx_rate =
--					    readb(&pccs->var.start_network.
--						  net_default_tx_rate);
--				local->encryption =
--				    readb(&pccs->var.start_network.encryption);
--				if (!sniffer && (local->net_type == INFRA)
--				    && !(local->sparm.b4.a_acting_as_ap_status)) {
--					authenticate(local);
--				}
--				local->card_status = CARD_ACQ_COMPLETE;
--			} else {
--				local->card_status = CARD_ACQ_FAILED;
--
--				del_timer(&local->timer);
--				local->timer.expires = jiffies + HZ * 5;
--				if (status == CCS_START_NETWORK) {
--					dev_dbg(&link->dev,
--					      "ray_cs interrupt network \"%s\" start failed\n",
--					      memtmp);
--					local->timer.function = start_net;
--				} else {
--					dev_dbg(&link->dev,
--					      "ray_cs interrupt network \"%s\" join failed\n",
--					      memtmp);
--					local->timer.function = join_net;
--				}
--				add_timer(&local->timer);
--			}
--			break;
--		case CCS_START_ASSOCIATION:
--			if (status == CCS_COMMAND_COMPLETE) {
--				local->card_status = CARD_ASSOC_COMPLETE;
--				dev_dbg(&link->dev, "ray_cs association successful\n");
--			} else {
--				dev_dbg(&link->dev, "ray_cs association failed,\n");
--				local->card_status = CARD_ASSOC_FAILED;
--				join_net(&local->timer);
--			}
--			break;
--		case CCS_TX_REQUEST:
--			if (status == CCS_COMMAND_COMPLETE) {
--				dev_dbg(&link->dev,
--				      "ray_cs interrupt tx request complete\n");
--			} else {
--				dev_dbg(&link->dev,
--				      "ray_cs interrupt tx request failed\n");
--			}
--			if (!sniffer)
--				netif_start_queue(dev);
--			netif_wake_queue(dev);
--			break;
--		case CCS_TEST_MEMORY:
--			dev_dbg(&link->dev, "ray_cs interrupt mem test done\n");
--			break;
--		case CCS_SHUTDOWN:
--			dev_dbg(&link->dev,
--			      "ray_cs interrupt Unexpected CCS returned - Shutdown\n");
--			break;
--		case CCS_DUMP_MEMORY:
--			dev_dbg(&link->dev, "ray_cs interrupt dump memory done\n");
--			break;
--		case CCS_START_TIMER:
--			dev_dbg(&link->dev,
--			      "ray_cs interrupt DING - raylink timer expired\n");
--			break;
--		default:
--			dev_dbg(&link->dev,
--			      "ray_cs interrupt Unexpected CCS 0x%x returned 0x%x\n",
--			      rcsindex, cmd);
--		}
--		writeb(CCS_BUFFER_FREE, &pccs->buffer_status);
--	} else { /* It's an RCS */
--
--		prcs = rcs_base(local) + rcsindex;
--
--		switch (readb(&prcs->interrupt_id)) {
--		case PROCESS_RX_PACKET:
--			ray_rx(dev, local, prcs);
--			break;
--		case REJOIN_NET_COMPLETE:
--			dev_dbg(&link->dev, "ray_cs interrupt rejoin net complete\n");
--			local->card_status = CARD_ACQ_COMPLETE;
--			/* do we need to clear tx buffers CCS's? */
--			if (local->sparm.b4.a_network_type == ADHOC) {
--				if (!sniffer)
--					netif_start_queue(dev);
--			} else {
--				memcpy_fromio(&local->bss_id,
--					      prcs->var.rejoin_net_complete.
--					      bssid, ADDRLEN);
--				dev_dbg(&link->dev, "ray_cs new BSSID = %pm\n",
--					local->bss_id);
--				if (!sniffer)
--					authenticate(local);
--			}
--			break;
--		case ROAMING_INITIATED:
--			dev_dbg(&link->dev, "ray_cs interrupt roaming initiated\n");
--			netif_stop_queue(dev);
--			local->card_status = CARD_DOING_ACQ;
--			break;
--		case JAPAN_CALL_SIGN_RXD:
--			dev_dbg(&link->dev, "ray_cs interrupt japan call sign rx\n");
--			break;
--		default:
--			dev_dbg(&link->dev,
--			      "ray_cs Unexpected interrupt for RCS 0x%x cmd = 0x%x\n",
--			      rcsindex,
--			      (unsigned int)readb(&prcs->interrupt_id));
--			break;
--		}
--		writeb(CCS_BUFFER_FREE, &prcs->buffer_status);
--	}
--	clear_interrupt(local);
--	return IRQ_HANDLED;
--} /* ray_interrupt */
--
--/*===========================================================================*/
--static void ray_rx(struct net_device *dev, ray_dev_t *local,
--		   struct rcs __iomem *prcs)
--{
--	int rx_len;
--	unsigned int pkt_addr;
--	void __iomem *pmsg;
--	pr_debug("ray_rx process rx packet\n");
--
--	/* Calculate address of packet within Rx buffer */
--	pkt_addr = ((readb(&prcs->var.rx_packet.rx_data_ptr[0]) << 8)
--		    + readb(&prcs->var.rx_packet.rx_data_ptr[1])) & RX_BUFF_END;
--	/* Length of first packet fragment */
--	rx_len = (readb(&prcs->var.rx_packet.rx_data_length[0]) << 8)
--	    + readb(&prcs->var.rx_packet.rx_data_length[1]);
--
--	local->last_rsl = readb(&prcs->var.rx_packet.rx_sig_lev);
--	pmsg = local->rmem + pkt_addr;
--	switch (readb(pmsg)) {
--	case DATA_TYPE:
--		pr_debug("ray_rx data type\n");
--		rx_data(dev, prcs, pkt_addr, rx_len);
--		break;
--	case AUTHENTIC_TYPE:
--		pr_debug("ray_rx authentic type\n");
--		if (sniffer)
--			rx_data(dev, prcs, pkt_addr, rx_len);
--		else
--			rx_authenticate(local, prcs, pkt_addr, rx_len);
--		break;
--	case DEAUTHENTIC_TYPE:
--		pr_debug("ray_rx deauth type\n");
--		if (sniffer)
--			rx_data(dev, prcs, pkt_addr, rx_len);
--		else
--			rx_deauthenticate(local, prcs, pkt_addr, rx_len);
--		break;
--	case NULL_MSG_TYPE:
--		pr_debug("ray_cs rx NULL msg\n");
--		break;
--	case BEACON_TYPE:
--		pr_debug("ray_rx beacon type\n");
--		if (sniffer)
--			rx_data(dev, prcs, pkt_addr, rx_len);
--
--		copy_from_rx_buff(local, (UCHAR *) &local->last_bcn, pkt_addr,
--				  rx_len < sizeof(struct beacon_rx) ?
--				  rx_len : sizeof(struct beacon_rx));
--
--		local->beacon_rxed = 1;
--		/* Get the statistics so the card counters never overflow */
--		ray_get_stats(dev);
--		break;
--	default:
--		pr_debug("ray_cs unknown pkt type %2x\n",
--		      (unsigned int)readb(pmsg));
--		break;
--	}
--
--} /* end ray_rx */
--
--/*===========================================================================*/
--static void rx_data(struct net_device *dev, struct rcs __iomem *prcs,
--		    unsigned int pkt_addr, int rx_len)
--{
--	struct sk_buff *skb = NULL;
--	struct rcs __iomem *prcslink = prcs;
--	ray_dev_t *local = netdev_priv(dev);
--	UCHAR *rx_ptr;
--	int total_len;
--	int tmp;
--#ifdef WIRELESS_SPY
--	int siglev = local->last_rsl;
--	u_char linksrcaddr[ETH_ALEN];	/* Other end of the wireless link */
--#endif
--
--	if (!sniffer) {
--		if (translate) {
--/* TBD length needs fixing for translated header */
--			if (rx_len < (ETH_HLEN + RX_MAC_HEADER_LENGTH) ||
--			    rx_len >
--			    (dev->mtu + RX_MAC_HEADER_LENGTH + ETH_HLEN +
--			     FCS_LEN)) {
--				pr_debug(
--				      "ray_cs invalid packet length %d received\n",
--				      rx_len);
--				return;
--			}
--		} else { /* encapsulated ethernet */
--
--			if (rx_len < (ETH_HLEN + RX_MAC_HEADER_LENGTH) ||
--			    rx_len >
--			    (dev->mtu + RX_MAC_HEADER_LENGTH + ETH_HLEN +
--			     FCS_LEN)) {
--				pr_debug(
--				      "ray_cs invalid packet length %d received\n",
--				      rx_len);
--				return;
--			}
--		}
--	}
--	pr_debug("ray_cs rx_data packet\n");
--	/* If fragmented packet, verify sizes of fragments add up */
--	if (readb(&prcs->var.rx_packet.next_frag_rcs_index) != 0xFF) {
--		pr_debug("ray_cs rx'ed fragment\n");
--		tmp = (readb(&prcs->var.rx_packet.totalpacketlength[0]) << 8)
--		    + readb(&prcs->var.rx_packet.totalpacketlength[1]);
--		total_len = tmp;
--		prcslink = prcs;
--		do {
--			tmp -=
--			    (readb(&prcslink->var.rx_packet.rx_data_length[0])
--			     << 8)
--			    + readb(&prcslink->var.rx_packet.rx_data_length[1]);
--			if (readb(&prcslink->var.rx_packet.next_frag_rcs_index)
--			    == 0xFF || tmp < 0)
--				break;
--			prcslink = rcs_base(local)
--			    + readb(&prcslink->link_field);
--		} while (1);
--
--		if (tmp < 0) {
--			pr_debug(
--			      "ray_cs rx_data fragment lengths don't add up\n");
--			local->stats.rx_dropped++;
--			release_frag_chain(local, prcs);
--			return;
--		}
--	} else { /* Single unfragmented packet */
--		total_len = rx_len;
--	}
--
--	skb = dev_alloc_skb(total_len + 5);
--	if (skb == NULL) {
--		pr_debug("ray_cs rx_data could not allocate skb\n");
--		local->stats.rx_dropped++;
--		if (readb(&prcs->var.rx_packet.next_frag_rcs_index) != 0xFF)
--			release_frag_chain(local, prcs);
--		return;
--	}
--	skb_reserve(skb, 2);	/* Align IP on 16 byte (TBD check this) */
--
--	pr_debug("ray_cs rx_data total_len = %x, rx_len = %x\n", total_len,
--	      rx_len);
--
--/************************/
--	/* Reserve enough room for the whole damn packet. */
--	rx_ptr = skb_put(skb, total_len);
--	/* Copy the whole packet to sk_buff */
--	rx_ptr +=
--	    copy_from_rx_buff(local, rx_ptr, pkt_addr & RX_BUFF_END, rx_len);
--	/* Get source address */
--#ifdef WIRELESS_SPY
--	skb_copy_from_linear_data_offset(skb,
--					 offsetof(struct mac_header, addr_2),
--					 linksrcaddr, ETH_ALEN);
--#endif
--	/* Now, deal with encapsulation/translation/sniffer */
--	if (!sniffer) {
--		if (!translate) {
--			/* Encapsulated ethernet, so just lop off 802.11 MAC header */
--/* TBD reserve            skb_reserve( skb, RX_MAC_HEADER_LENGTH); */
--			skb_pull(skb, RX_MAC_HEADER_LENGTH);
--		} else {
--			/* Do translation */
--			untranslate(local, skb, total_len);
--		}
--	} else { /* sniffer mode, so just pass whole packet */
--	}
--
--/************************/
--	/* Now pick up the rest of the fragments if any */
--	tmp = 17;
--	if (readb(&prcs->var.rx_packet.next_frag_rcs_index) != 0xFF) {
--		prcslink = prcs;
--		pr_debug("ray_cs rx_data in fragment loop\n");
--		do {
--			prcslink = rcs_base(local)
--			    +
--			    readb(&prcslink->var.rx_packet.next_frag_rcs_index);
--			rx_len =
--			    ((readb(&prcslink->var.rx_packet.rx_data_length[0])
--			      << 8)
--			     +
--			     readb(&prcslink->var.rx_packet.rx_data_length[1]))
--			    & RX_BUFF_END;
--			pkt_addr =
--			    ((readb(&prcslink->var.rx_packet.rx_data_ptr[0]) <<
--			      8)
--			     + readb(&prcslink->var.rx_packet.rx_data_ptr[1]))
--			    & RX_BUFF_END;
--
--			rx_ptr +=
--			    copy_from_rx_buff(local, rx_ptr, pkt_addr, rx_len);
--
--		} while (tmp-- &&
--			 readb(&prcslink->var.rx_packet.next_frag_rcs_index) !=
--			 0xFF);
--		release_frag_chain(local, prcs);
--	}
--
--	skb->protocol = eth_type_trans(skb, dev);
--	netif_rx(skb);
--	local->stats.rx_packets++;
--	local->stats.rx_bytes += total_len;
--
--	/* Gather signal strength per address */
--#ifdef WIRELESS_SPY
--	/* For the Access Point or the node having started the ad-hoc net
--	 * note : ad-hoc work only in some specific configurations, but we
--	 * kludge in ray_get_wireless_stats... */
--	if (!memcmp(linksrcaddr, local->bss_id, ETH_ALEN)) {
--		/* Update statistics */
--		/*local->wstats.qual.qual = none ? */
--		local->wstats.qual.level = siglev;
--		/*local->wstats.qual.noise = none ? */
--		local->wstats.qual.updated = 0x2;
--	}
--	/* Now, update the spy stuff */
--	{
--		struct iw_quality wstats;
--		wstats.level = siglev;
--		/* wstats.noise = none ? */
--		/* wstats.qual = none ? */
--		wstats.updated = 0x2;
--		/* Update spy records */
--		wireless_spy_update(dev, linksrcaddr, &wstats);
--	}
--#endif /* WIRELESS_SPY */
--} /* end rx_data */
--
--/*===========================================================================*/
--static void untranslate(ray_dev_t *local, struct sk_buff *skb, int len)
--{
--	snaphdr_t *psnap = (snaphdr_t *) (skb->data + RX_MAC_HEADER_LENGTH);
--	struct ieee80211_hdr *pmac = (struct ieee80211_hdr *)skb->data;
--	__be16 type = *(__be16 *) psnap->ethertype;
--	int delta;
--	struct ethhdr *peth;
--	UCHAR srcaddr[ADDRLEN];
--	UCHAR destaddr[ADDRLEN];
--	static const UCHAR org_bridge[3] = { 0, 0, 0xf8 };
--	static const UCHAR org_1042[3] = { 0, 0, 0 };
--
--	memcpy(destaddr, ieee80211_get_DA(pmac), ADDRLEN);
--	memcpy(srcaddr, ieee80211_get_SA(pmac), ADDRLEN);
--
--#if 0
--	if {
--		print_hex_dump(KERN_DEBUG, "skb->data before untranslate: ",
--			       DUMP_PREFIX_NONE, 16, 1,
--			       skb->data, 64, true);
--		printk(KERN_DEBUG
--		       "type = %08x, xsap = %02x%02x%02x, org = %02x02x02x\n",
--		       ntohs(type), psnap->dsap, psnap->ssap, psnap->ctrl,
--		       psnap->org[0], psnap->org[1], psnap->org[2]);
--		printk(KERN_DEBUG "untranslate skb->data = %p\n", skb->data);
--	}
--#endif
--
--	if (psnap->dsap != 0xaa || psnap->ssap != 0xaa || psnap->ctrl != 3) {
--		/* not a snap type so leave it alone */
--		pr_debug("ray_cs untranslate NOT SNAP %02x %02x %02x\n",
--		      psnap->dsap, psnap->ssap, psnap->ctrl);
--
--		delta = RX_MAC_HEADER_LENGTH - ETH_HLEN;
--		peth = (struct ethhdr *)(skb->data + delta);
--		peth->h_proto = htons(len - RX_MAC_HEADER_LENGTH);
--	} else { /* Its a SNAP */
--		if (memcmp(psnap->org, org_bridge, 3) == 0) {
--		/* EtherII and nuke the LLC */
--			pr_debug("ray_cs untranslate Bridge encap\n");
--			delta = RX_MAC_HEADER_LENGTH
--			    + sizeof(struct snaphdr_t) - ETH_HLEN;
--			peth = (struct ethhdr *)(skb->data + delta);
--			peth->h_proto = type;
--		} else if (memcmp(psnap->org, org_1042, 3) == 0) {
--			switch (ntohs(type)) {
--			case ETH_P_IPX:
--			case ETH_P_AARP:
--				pr_debug("ray_cs untranslate RFC IPX/AARP\n");
--				delta = RX_MAC_HEADER_LENGTH - ETH_HLEN;
--				peth = (struct ethhdr *)(skb->data + delta);
--				peth->h_proto =
--				    htons(len - RX_MAC_HEADER_LENGTH);
--				break;
--			default:
--				pr_debug("ray_cs untranslate RFC default\n");
--				delta = RX_MAC_HEADER_LENGTH +
--				    sizeof(struct snaphdr_t) - ETH_HLEN;
--				peth = (struct ethhdr *)(skb->data + delta);
--				peth->h_proto = type;
--				break;
--			}
--		} else {
--			printk("ray_cs untranslate very confused by packet\n");
--			delta = RX_MAC_HEADER_LENGTH - ETH_HLEN;
--			peth = (struct ethhdr *)(skb->data + delta);
--			peth->h_proto = type;
--		}
--	}
--/* TBD reserve  skb_reserve(skb, delta); */
--	skb_pull(skb, delta);
--	pr_debug("untranslate after skb_pull(%d), skb->data = %p\n", delta,
--	      skb->data);
--	memcpy(peth->h_dest, destaddr, ADDRLEN);
--	memcpy(peth->h_source, srcaddr, ADDRLEN);
--#if 0
--	{
--		int i;
--		printk(KERN_DEBUG "skb->data after untranslate:");
--		for (i = 0; i < 64; i++)
--			printk("%02x ", skb->data[i]);
--		printk("\n");
--	}
--#endif
--} /* end untranslate */
--
--/*===========================================================================*/
--/* Copy data from circular receive buffer to PC memory.
-- * dest     = destination address in PC memory
-- * pkt_addr = source address in receive buffer
-- * len      = length of packet to copy
-- */
--static int copy_from_rx_buff(ray_dev_t *local, UCHAR *dest, int pkt_addr,
--			     int length)
--{
--	int wrap_bytes = (pkt_addr + length) - (RX_BUFF_END + 1);
--	if (wrap_bytes <= 0) {
--		memcpy_fromio(dest, local->rmem + pkt_addr, length);
--	} else { /* Packet wrapped in circular buffer */
--
--		memcpy_fromio(dest, local->rmem + pkt_addr,
--			      length - wrap_bytes);
--		memcpy_fromio(dest + length - wrap_bytes, local->rmem,
--			      wrap_bytes);
--	}
--	return length;
--}
--
--/*===========================================================================*/
--static void release_frag_chain(ray_dev_t *local, struct rcs __iomem *prcs)
--{
--	struct rcs __iomem *prcslink = prcs;
--	int tmp = 17;
--	unsigned rcsindex = readb(&prcs->var.rx_packet.next_frag_rcs_index);
--
--	while (tmp--) {
--		writeb(CCS_BUFFER_FREE, &prcslink->buffer_status);
--		if (rcsindex >= (NUMBER_OF_CCS + NUMBER_OF_RCS)) {
--			pr_debug("ray_cs interrupt bad rcsindex = 0x%x\n",
--			      rcsindex);
--			break;
--		}
--		prcslink = rcs_base(local) + rcsindex;
--		rcsindex = readb(&prcslink->var.rx_packet.next_frag_rcs_index);
--	}
--	writeb(CCS_BUFFER_FREE, &prcslink->buffer_status);
--}
--
--/*===========================================================================*/
--static void authenticate(ray_dev_t *local)
--{
--	struct pcmcia_device *link = local->finder;
--	dev_dbg(&link->dev, "ray_cs Starting authentication.\n");
--	if (!(pcmcia_dev_present(link))) {
--		dev_dbg(&link->dev, "ray_cs authenticate - device not present\n");
--		return;
--	}
--
--	del_timer(&local->timer);
--	if (build_auth_frame(local, local->bss_id, OPEN_AUTH_REQUEST)) {
--		local->timer.function = join_net;
--	} else {
--		local->timer.function = authenticate_timeout;
--	}
--	local->timer.expires = jiffies + HZ * 2;
--	add_timer(&local->timer);
--	local->authentication_state = AWAITING_RESPONSE;
--} /* end authenticate */
--
--/*===========================================================================*/
--static void rx_authenticate(ray_dev_t *local, struct rcs __iomem *prcs,
--			    unsigned int pkt_addr, int rx_len)
--{
--	UCHAR buff[256];
--	struct ray_rx_msg *msg = (struct ray_rx_msg *) buff;
--
--	del_timer(&local->timer);
--
--	copy_from_rx_buff(local, buff, pkt_addr, rx_len & 0xff);
--	/* if we are trying to get authenticated */
--	if (local->sparm.b4.a_network_type == ADHOC) {
--		pr_debug("ray_cs rx_auth var= %6ph\n", msg->var);
--		if (msg->var[2] == 1) {
--			pr_debug("ray_cs Sending authentication response.\n");
--			if (!build_auth_frame
--			    (local, msg->mac.addr_2, OPEN_AUTH_RESPONSE)) {
--				local->authentication_state = NEED_TO_AUTH;
--				memcpy(local->auth_id, msg->mac.addr_2,
--				       ADDRLEN);
--			}
--		}
--	} else { /* Infrastructure network */
--
--		if (local->authentication_state == AWAITING_RESPONSE) {
--			/* Verify authentication sequence #2 and success */
--			if (msg->var[2] == 2) {
--				if ((msg->var[3] | msg->var[4]) == 0) {
--					pr_debug("Authentication successful\n");
--					local->card_status = CARD_AUTH_COMPLETE;
--					associate(local);
--					local->authentication_state =
--					    AUTHENTICATED;
--				} else {
--					pr_debug("Authentication refused\n");
--					local->card_status = CARD_AUTH_REFUSED;
--					join_net(&local->timer);
--					local->authentication_state =
--					    UNAUTHENTICATED;
--				}
--			}
--		}
--	}
--
--} /* end rx_authenticate */
--
--/*===========================================================================*/
--static void associate(ray_dev_t *local)
--{
--	struct ccs __iomem *pccs;
--	struct pcmcia_device *link = local->finder;
--	struct net_device *dev = link->priv;
--	int ccsindex;
--	if (!(pcmcia_dev_present(link))) {
--		dev_dbg(&link->dev, "ray_cs associate - device not present\n");
--		return;
--	}
--	/* If no tx buffers available, return */
--	if ((ccsindex = get_free_ccs(local)) < 0) {
--/* TBD should never be here but... what if we are? */
--		dev_dbg(&link->dev, "ray_cs associate - No free ccs\n");
--		return;
--	}
--	dev_dbg(&link->dev, "ray_cs Starting association with access point\n");
--	pccs = ccs_base(local) + ccsindex;
--	/* fill in the CCS */
--	writeb(CCS_START_ASSOCIATION, &pccs->cmd);
--	/* Interrupt the firmware to process the command */
--	if (interrupt_ecf(local, ccsindex)) {
--		dev_dbg(&link->dev, "ray_cs associate failed - ECF not ready for intr\n");
--		writeb(CCS_BUFFER_FREE, &(pccs++)->buffer_status);
--
--		del_timer(&local->timer);
--		local->timer.expires = jiffies + HZ * 2;
--		local->timer.function = join_net;
--		add_timer(&local->timer);
--		local->card_status = CARD_ASSOC_FAILED;
--		return;
--	}
--	if (!sniffer)
--		netif_start_queue(dev);
--
--} /* end associate */
--
--/*===========================================================================*/
--static void rx_deauthenticate(ray_dev_t *local, struct rcs __iomem *prcs,
--			      unsigned int pkt_addr, int rx_len)
--{
--/*  UCHAR buff[256];
--    struct ray_rx_msg *msg = (struct ray_rx_msg *) buff;
--*/
--	pr_debug("Deauthentication frame received\n");
--	local->authentication_state = UNAUTHENTICATED;
--	/* Need to reauthenticate or rejoin depending on reason code */
--/*  copy_from_rx_buff(local, buff, pkt_addr, rx_len & 0xff);
-- */
--}
--
--/*===========================================================================*/
--static void clear_interrupt(ray_dev_t *local)
--{
--	writeb(0, local->amem + CIS_OFFSET + HCS_INTR_OFFSET);
--}
--
--/*===========================================================================*/
--#ifdef CONFIG_PROC_FS
--#define MAXDATA (PAGE_SIZE - 80)
--
--static const char *card_status[] = {
--	"Card inserted - uninitialized",	/* 0 */
--	"Card not downloaded",			/* 1 */
--	"Waiting for download parameters",	/* 2 */
--	"Card doing acquisition",		/* 3 */
--	"Acquisition complete",			/* 4 */
--	"Authentication complete",		/* 5 */
--	"Association complete",			/* 6 */
--	"???", "???", "???", "???",		/* 7 8 9 10 undefined */
--	"Card init error",			/* 11 */
--	"Download parameters error",		/* 12 */
--	"???",					/* 13 */
--	"Acquisition failed",			/* 14 */
--	"Authentication refused",		/* 15 */
--	"Association failed"			/* 16 */
--};
--
--static const char *nettype[] = { "Adhoc", "Infra " };
--static const char *framing[] = { "Encapsulation", "Translation" }
--
--;
--/*===========================================================================*/
--static int ray_cs_proc_show(struct seq_file *m, void *v)
--{
--/* Print current values which are not available via other means
-- * eg ifconfig
-- */
--	int i;
--	struct pcmcia_device *link;
--	struct net_device *dev;
--	ray_dev_t *local;
--	UCHAR *p;
--	struct freq_hop_element *pfh;
--	UCHAR c[33];
--
--	link = this_device;
--	if (!link)
--		return 0;
--	dev = (struct net_device *)link->priv;
--	if (!dev)
--		return 0;
--	local = netdev_priv(dev);
--	if (!local)
--		return 0;
--
--	seq_puts(m, "Raylink Wireless LAN driver status\n");
--	seq_printf(m, "%s\n", rcsid);
--	/* build 4 does not report version, and field is 0x55 after memtest */
--	seq_puts(m, "Firmware version     = ");
--	if (local->fw_ver == 0x55)
--		seq_puts(m, "4 - Use dump_cis for more details\n");
--	else
--		seq_printf(m, "%2d.%02d.%02d\n",
--			   local->fw_ver, local->fw_bld, local->fw_var);
--
--	for (i = 0; i < 32; i++)
--		c[i] = local->sparm.b5.a_current_ess_id[i];
--	c[32] = 0;
--	seq_printf(m, "%s network ESSID = \"%s\"\n",
--		   nettype[local->sparm.b5.a_network_type], c);
--
--	p = local->bss_id;
--	seq_printf(m, "BSSID                = %pM\n", p);
--
--	seq_printf(m, "Country code         = %d\n",
--		   local->sparm.b5.a_curr_country_code);
--
--	i = local->card_status;
--	if (i < 0)
--		i = 10;
--	if (i > 16)
--		i = 10;
--	seq_printf(m, "Card status          = %s\n", card_status[i]);
--
--	seq_printf(m, "Framing mode         = %s\n", framing[translate]);
--
--	seq_printf(m, "Last pkt signal lvl  = %d\n", local->last_rsl);
--
--	if (local->beacon_rxed) {
--		/* Pull some fields out of last beacon received */
--		seq_printf(m, "Beacon Interval      = %d Kus\n",
--			   local->last_bcn.beacon_intvl[0]
--			   + 256 * local->last_bcn.beacon_intvl[1]);
--
--		p = local->last_bcn.elements;
--		if (p[0] == C_ESSID_ELEMENT_ID)
--			p += p[1] + 2;
--		else {
--			seq_printf(m,
--				   "Parse beacon failed at essid element id = %d\n",
--				   p[0]);
--			return 0;
--		}
--
--		if (p[0] == C_SUPPORTED_RATES_ELEMENT_ID) {
--			seq_puts(m, "Supported rate codes = ");
--			for (i = 2; i < p[1] + 2; i++)
--				seq_printf(m, "0x%02x ", p[i]);
--			seq_putc(m, '\n');
--			p += p[1] + 2;
--		} else {
--			seq_puts(m, "Parse beacon failed at rates element\n");
--			return 0;
--		}
--
--		if (p[0] == C_FH_PARAM_SET_ELEMENT_ID) {
--			pfh = (struct freq_hop_element *)p;
--			seq_printf(m, "Hop dwell            = %d Kus\n",
--				   pfh->dwell_time[0] +
--				   256 * pfh->dwell_time[1]);
--			seq_printf(m, "Hop set              = %d\n",
--				   pfh->hop_set);
--			seq_printf(m, "Hop pattern          = %d\n",
--				   pfh->hop_pattern);
--			seq_printf(m, "Hop index            = %d\n",
--				   pfh->hop_index);
--			p += p[1] + 2;
--		} else {
--			seq_puts(m,
--				 "Parse beacon failed at FH param element\n");
--			return 0;
--		}
--	} else {
--		seq_puts(m, "No beacons received\n");
--	}
--	return 0;
--}
--#endif
--/*===========================================================================*/
--static int build_auth_frame(ray_dev_t *local, UCHAR *dest, int auth_type)
--{
--	int addr;
--	struct ccs __iomem *pccs;
--	struct tx_msg __iomem *ptx;
--	int ccsindex;
--
--	/* If no tx buffers available, return */
--	if ((ccsindex = get_free_tx_ccs(local)) < 0) {
--		pr_debug("ray_cs send authenticate - No free tx ccs\n");
--		return -1;
--	}
--
--	pccs = ccs_base(local) + ccsindex;
--
--	/* Address in card space */
--	addr = TX_BUF_BASE + (ccsindex << 11);
--	/* fill in the CCS */
--	writeb(CCS_TX_REQUEST, &pccs->cmd);
--	writeb(addr >> 8, pccs->var.tx_request.tx_data_ptr);
--	writeb(0x20, pccs->var.tx_request.tx_data_ptr + 1);
--	writeb(TX_AUTHENTICATE_LENGTH_MSB, pccs->var.tx_request.tx_data_length);
--	writeb(TX_AUTHENTICATE_LENGTH_LSB,
--	       pccs->var.tx_request.tx_data_length + 1);
--	writeb(0, &pccs->var.tx_request.pow_sav_mode);
--
--	ptx = local->sram + addr;
--	/* fill in the mac header */
--	writeb(PROTOCOL_VER | AUTHENTIC_TYPE, &ptx->mac.frame_ctl_1);
--	writeb(0, &ptx->mac.frame_ctl_2);
--
--	memcpy_toio(ptx->mac.addr_1, dest, ADDRLEN);
--	memcpy_toio(ptx->mac.addr_2, local->sparm.b4.a_mac_addr, ADDRLEN);
--	memcpy_toio(ptx->mac.addr_3, local->bss_id, ADDRLEN);
--
--	/* Fill in msg body with protocol 00 00, sequence 01 00 ,status 00 00 */
--	memset_io(ptx->var, 0, 6);
--	writeb(auth_type & 0xff, ptx->var + 2);
--
--	/* Interrupt the firmware to process the command */
--	if (interrupt_ecf(local, ccsindex)) {
--		pr_debug(
--		      "ray_cs send authentication request failed - ECF not ready for intr\n");
--		writeb(CCS_BUFFER_FREE, &(pccs++)->buffer_status);
--		return -1;
--	}
--	return 0;
--} /* End build_auth_frame */
--
--/*===========================================================================*/
--#ifdef CONFIG_PROC_FS
--static ssize_t ray_cs_essid_proc_write(struct file *file,
--		const char __user *buffer, size_t count, loff_t *pos)
--{
--	static char proc_essid[33];
--	unsigned int len = count;
--
--	if (len > 32)
--		len = 32;
--	memset(proc_essid, 0, 33);
--	if (copy_from_user(proc_essid, buffer, len))
--		return -EFAULT;
--	essid = proc_essid;
--	return count;
--}
--
--static const struct proc_ops ray_cs_essid_proc_ops = {
--	.proc_write	= ray_cs_essid_proc_write,
--	.proc_lseek	= noop_llseek,
--};
--
--static ssize_t int_proc_write(struct file *file, const char __user *buffer,
--			      size_t count, loff_t *pos)
--{
--	static char proc_number[10];
--	char *p;
--	int nr, len;
--
--	if (!count)
--		return 0;
--
--	if (count > 9)
--		return -EINVAL;
--	if (copy_from_user(proc_number, buffer, count))
--		return -EFAULT;
--	p = proc_number;
--	nr = 0;
--	len = count;
--	do {
--		unsigned int c = *p - '0';
--		if (c > 9)
--			return -EINVAL;
--		nr = nr * 10 + c;
--		p++;
--	} while (--len);
--	*(int *)pde_data(file_inode(file)) = nr;
--	return count;
--}
--
--static const struct proc_ops int_proc_ops = {
--	.proc_write	= int_proc_write,
--	.proc_lseek	= noop_llseek,
--};
--#endif
--
--static const struct pcmcia_device_id ray_ids[] = {
--	PCMCIA_DEVICE_MANF_CARD(0x01a6, 0x0000),
--	PCMCIA_DEVICE_NULL,
--};
--
--MODULE_DEVICE_TABLE(pcmcia, ray_ids);
--
--static struct pcmcia_driver ray_driver = {
--	.owner = THIS_MODULE,
--	.name = "ray_cs",
--	.probe = ray_probe,
--	.remove = ray_detach,
--	.id_table = ray_ids,
--	.suspend = ray_suspend,
--	.resume = ray_resume,
--};
--
--static int __init init_ray_cs(void)
--{
--	int rc;
--
--	pr_debug("%s\n", rcsid);
--	rc = pcmcia_register_driver(&ray_driver);
--	pr_debug("raylink init_module register_pcmcia_driver returns 0x%x\n",
--	      rc);
--	if (rc)
--		return rc;
--
--#ifdef CONFIG_PROC_FS
--	proc_mkdir("driver/ray_cs", NULL);
--
--	proc_create_single("driver/ray_cs/ray_cs", 0, NULL, ray_cs_proc_show);
--	proc_create("driver/ray_cs/essid", 0200, NULL, &ray_cs_essid_proc_ops);
--	proc_create_data("driver/ray_cs/net_type", 0200, NULL, &int_proc_ops,
--			 &net_type);
--	proc_create_data("driver/ray_cs/translate", 0200, NULL, &int_proc_ops,
--			 &translate);
--#endif
--	translate = !!translate;
--	return 0;
--} /* init_ray_cs */
--
--/*===========================================================================*/
--
--static void __exit exit_ray_cs(void)
--{
--	pr_debug("ray_cs: cleanup_module\n");
--
--#ifdef CONFIG_PROC_FS
--	remove_proc_subtree("driver/ray_cs", NULL);
--#endif
--
--	pcmcia_unregister_driver(&ray_driver);
--} /* exit_ray_cs */
--
--module_init(init_ray_cs);
--module_exit(exit_ray_cs);
--
--/*===========================================================================*/
-diff --git a/drivers/net/wireless/legacy/ray_cs.h b/drivers/net/wireless/legacy/ray_cs.h
-deleted file mode 100644
-index 0609d86250192..0000000000000
---- a/drivers/net/wireless/legacy/ray_cs.h
-+++ /dev/null
-@@ -1,74 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--/* Raytheon wireless LAN PCMCIA card driver for Linux 
--   A  PCMCIA client driver for the Raylink wireless network card
--   Written by Corey Thomas
--*/
--
--#ifndef _RAY_CS_H_
--#define _RAY_CS_H_
--
--struct beacon_rx {
--    struct mac_header mac;
--    UCHAR timestamp[8];
--    UCHAR beacon_intvl[2];
--    UCHAR capability[2];
--    UCHAR elements[sizeof(struct essid_element) 
--                  + sizeof(struct rates_element)
--                  + sizeof(struct freq_hop_element) 
--                  + sizeof(struct japan_call_sign_element)
--                  + sizeof(struct tim_element)];
--};
--
--/* Return values for get_free{,_tx}_ccs */
--#define ECCSFULL  (-1)
--#define ECCSBUSY  (-2)
--#define ECARDGONE (-3)
--
--typedef struct ray_dev_t {
--    int card_status;
--    int authentication_state;
--    void __iomem *sram;            /* pointer to beginning of shared RAM     */
--    void __iomem *amem;            /* pointer to attribute mem window        */
--    void __iomem *rmem;            /* pointer to receive buffer window       */
--    struct pcmcia_device *finder;            /* pointer back to struct pcmcia_device for card    */
--    struct timer_list timer;
--    unsigned long tx_ccs_lock;
--    unsigned long ccs_lock;
--    int   dl_param_ccs;
--    union {
--        struct b4_startup_params b4;
--        struct b5_startup_params b5;
--    } sparm;
--    int timeout_flag;
--    UCHAR supported_rates[8];
--    UCHAR japan_call_sign[12];
--    struct startup_res_6 startup_res;
--    int num_multi;
--    /* Network parameters from start/join */
--    UCHAR bss_id[6];
--    UCHAR auth_id[6];
--    UCHAR net_default_tx_rate;
--    UCHAR encryption;
--    struct net_device_stats stats;
--
--    UCHAR net_type;
--    UCHAR sta_type;
--    UCHAR fw_ver;
--    UCHAR fw_bld;
--    UCHAR fw_var;
--    UCHAR ASIC_version;
--    UCHAR assoc_id[2];
--    UCHAR tib_length;
--    UCHAR last_rsl;
--    int beacon_rxed;
--    struct beacon_rx last_bcn;
--    iw_stats	wstats;		/* Wireless specific stats */
--#ifdef WIRELESS_SPY
--    struct iw_spy_data		spy_data;
--    struct iw_public_data	wireless_data;
--#endif	/* WIRELESS_SPY */
--
--} ray_dev_t;
--/*****************************************************************************/
--
--#endif /* _RAY_CS_H_ */
-diff --git a/drivers/net/wireless/legacy/rayctl.h b/drivers/net/wireless/legacy/rayctl.h
-deleted file mode 100644
-index 1f3bde8ac73d4..0000000000000
---- a/drivers/net/wireless/legacy/rayctl.h
-+++ /dev/null
-@@ -1,734 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef _RAYCTL_H_
--#define _RAYCTL_H_
--
--typedef unsigned char UCHAR;
--
--/****** IEEE 802.11 constants ************************************************/
--#define ADDRLEN           6
--/* Frame control 1 bit fields */
--#define PROTOCOL_VER      0x00
--#define DATA_TYPE         0x08
--#define ASSOC_REQ_TYPE    0x00
--#define ASSOC_RESP_TYPE   0x10
--#define REASSOC_REQ_TYPE  0x20
--#define REASSOC_RESP_TYPE 0x30
--#define NULL_MSG_TYPE     0x48
--#define BEACON_TYPE       0x80
--#define DISASSOC_TYPE     0xA0
--#define PSPOLL_TYPE       0xA4
--#define AUTHENTIC_TYPE    0xB0
--#define DEAUTHENTIC_TYPE  0xC0
--/* Frame control 2 bit fields */
--#define FC2_TO_DS         0x01
--#define FC2_FROM_DS       0x02
--#define FC2_MORE_FRAG     0x04
--#define FC2_RETRY         0x08
--#define FC2_PSM           0x10
--#define FC2_MORE_DATA     0x20
--#define FC2_WEP           0x40
--#define FC2_ORDER         0x80
--/*****************************************************************************/
--/* 802.11 element ID's and lengths */
--#define C_BP_CAPABILITY_ESS             0x01
--#define C_BP_CAPABILITY_IBSS            0x02
--#define C_BP_CAPABILITY_CF_POLLABLE     0x04
--#define C_BP_CAPABILITY_CF_POLL_REQUEST 0x08
--#define C_BP_CAPABILITY_PRIVACY         0x10
--
--#define C_ESSID_ELEMENT_ID               0
--#define C_ESSID_ELEMENT_MAX_LENGTH       32
--
--#define C_SUPPORTED_RATES_ELEMENT_ID     1
--#define C_SUPPORTED_RATES_ELEMENT_LENGTH 2
--
--#define C_FH_PARAM_SET_ELEMENT_ID        2
--#define C_FH_PARAM_SET_ELEMENT_LNGTH     5
--
--#define C_CF_PARAM_SET_ELEMENT_ID        4
--#define C_CF_PARAM_SET_ELEMENT_LNGTH     6
--
--#define C_TIM_ELEMENT_ID                 5
--#define C_TIM_BITMAP_LENGTH            251
--#define C_TIM_BMCAST_BIT              0x01
--
--#define C_IBSS_ELEMENT_ID                6
--#define C_IBSS_ELEMENT_LENGTH            2
--
--#define C_JAPAN_CALL_SIGN_ELEMENT_ID    51
--#define C_JAPAN_CALL_SIGN_ELEMENT_LNGTH 12
--
--#define C_DISASSOC_REASON_CODE_LEN       2
--#define C_DISASSOC_REASON_CODE_DEFAULT   8
--
--#define C_CRC_LEN                        4
--#define C_NUM_SUPPORTED_RATES            8 
--/****** IEEE 802.11 mac header for type data packets *************************/
--struct mac_header {
--  UCHAR frame_ctl_1;                          
--  UCHAR frame_ctl_2;
--  UCHAR duration_lsb;
--  UCHAR duration_msb;
--  UCHAR addr_1[ADDRLEN];
--  UCHAR addr_2[ADDRLEN];
--  UCHAR addr_3[ADDRLEN];
--  UCHAR seq_frag_num[2];
--/*  UCHAR addr_4[ADDRLEN]; *//* only present for AP to AP (TO DS and FROM DS */
--};
--/****** IEEE 802.11 frame element structures *********************************/
--struct essid_element
--{
--  UCHAR id;
--  UCHAR length;
--  UCHAR text[C_ESSID_ELEMENT_MAX_LENGTH];
--};
--struct rates_element
--{
--  UCHAR id;
--  UCHAR length;
--  UCHAR value[8];
--};
--struct freq_hop_element
--{
--  UCHAR id;
--  UCHAR length;
--  UCHAR dwell_time[2];
--  UCHAR hop_set;
--  UCHAR hop_pattern;
--  UCHAR hop_index;
--};
--struct tim_element
--{
--  UCHAR id;
--  UCHAR length;
--  UCHAR dtim_count;
--  UCHAR dtim_period;    
--  UCHAR bitmap_control;
--  UCHAR tim[C_TIM_BITMAP_LENGTH];
--};
--struct ibss_element
--{
--  UCHAR id;
--  UCHAR length;
--  UCHAR atim_window[2];
--};
--struct japan_call_sign_element
--{
--  UCHAR id;
--  UCHAR length;
--  UCHAR call_sign[12];
--};
--/****** Beacon message structures ********************************************/
--/* .elements is a large lump of max size because elements are variable size  */
--struct infra_beacon
--{
--    UCHAR timestamp[8];
--    UCHAR beacon_intvl[2];
--    UCHAR capability[2];
--    UCHAR elements[sizeof(struct essid_element) 
--                  + sizeof(struct rates_element)
--                  + sizeof(struct freq_hop_element) 
--                  + sizeof(struct japan_call_sign_element)
--                  + sizeof(struct tim_element)];
--};
--struct adhoc_beacon
--{
--    UCHAR timestamp[8];
--    UCHAR beacon_intvl[2];
--    UCHAR capability[2];
--    UCHAR elements[sizeof(struct essid_element) 
--                  + sizeof(struct rates_element)
--                  + sizeof(struct freq_hop_element) 
--                  + sizeof(struct japan_call_sign_element)
--                  + sizeof(struct ibss_element)];
--};
--/*****************************************************************************/
--/*****************************************************************************/
--/* #define C_MAC_HDR_2_WEP 0x40 */
--/* TX/RX CCS constants */
--#define TX_HEADER_LENGTH 0x1C
--#define RX_MAC_HEADER_LENGTH 0x18
--#define TX_AUTHENTICATE_LENGTH (TX_HEADER_LENGTH + 6)
--#define TX_AUTHENTICATE_LENGTH_MSB (TX_AUTHENTICATE_LENGTH >> 8)
--#define TX_AUTHENTICATE_LENGTH_LSB (TX_AUTHENTICATE_LENGTH & 0xff)
--#define TX_DEAUTHENTICATE_LENGTH (TX_HEADER_LENGTH + 2)
--#define TX_DEAUTHENTICATE_LENGTH_MSB (TX_AUTHENTICATE_LENGTH >> 8)
--#define TX_DEAUTHENTICATE_LENGTH_LSB (TX_AUTHENTICATE_LENGTH & 0xff)
--#define FCS_LEN           4
--
--#define ADHOC                 0
--#define INFRA                 1
--
--#define TYPE_STA              0
--#define TYPE_AP               1
--
--#define PASSIVE_SCAN          1
--#define ACTIVE_SCAN           1
--
--#define PSM_CAM               0
--
--/* Country codes */
--#define USA                   1
--#define EUROPE                2
--#define JAPAN                 3
--#define KOREA                 4
--#define SPAIN                 5
--#define FRANCE                6
--#define ISRAEL                7
--#define AUSTRALIA             8
--#define JAPAN_TEST            9
--
--/* Hop pattern lengths */
--#define USA_HOP_MOD          79 
--#define EUROPE_HOP_MOD       79 
--#define JAPAN_HOP_MOD        23
--#define KOREA_HOP_MOD        23
--#define SPAIN_HOP_MOD        27
--#define FRANCE_HOP_MOD       35
--#define ISRAEL_HOP_MOD       35
--#define AUSTRALIA_HOP_MOD    47
--#define JAPAN_TEST_HOP_MOD   23
--
--#define ESSID_SIZE           32
--/**********************************************************************/
--/* CIS Register Constants */
--#define CIS_OFFSET             0x0f00
--/* Configuration Option Register (0x0F00) */
--#define COR_OFFSET             0x00
--#define COR_SOFT_RESET         0x80
--#define COR_LEVEL_IRQ          0x40
--#define COR_CONFIG_NUM         0x01
--#define COR_DEFAULT            (COR_LEVEL_IRQ | COR_CONFIG_NUM)
--
--/* Card Configuration and Status Register (0x0F01) */
--#define CCSR_OFFSET            0x01
--#define CCSR_HOST_INTR_PENDING 0x01
--#define CCSR_POWER_DOWN        0x04
--
--/* HCS Interrupt Register (0x0F05) */
--#define HCS_INTR_OFFSET        0x05
--/* #define HCS_INTR_OFFSET        0x0A */
--#define HCS_INTR_CLEAR         0x00
--
--/* ECF Interrupt Register (0x0F06) */
--#define ECF_INTR_OFFSET        0x06
--/* #define ECF_INTR_OFFSET        0x0C */
--#define ECF_INTR_SET           0x01
--
--/* Authorization Register 0 (0x0F08) */
--#define AUTH_0_ON              0x57
--
--/* Authorization Register 1 (0x0F09) */
--#define AUTH_1_ON              0x82
--
--/* Program Mode Register (0x0F0A) */
--#define PC2PM                  0x02
--#define PC2CAL                 0x10
--#define PC2MLSE                0x20
--
--/* PC Test Mode Register (0x0F0B) */
--#define PC_TEST_MODE           0x08
--
--/* Frequency Control Word (0x0F10) */
--/* Range 0x02 - 0xA6 */
--
--/* Test Mode Control 1-4 (0x0F14 - 0x0F17) */
--
--/**********************************************************************/
--
--/* Shared RAM Area */
--#define SCB_BASE               0x0000
--#define STATUS_BASE            0x0100
--#define HOST_TO_ECF_BASE       0x0200
--#define ECF_TO_HOST_BASE       0x0300
--#define CCS_BASE               0x0400
--#define RCS_BASE               0x0800
--#define INFRA_TIM_BASE         0x0C00
--#define SSID_LIST_BASE         0x0D00
--#define TX_BUF_BASE            0x1000
--#define RX_BUF_BASE            0x8000
--
--#define NUMBER_OF_CCS    64
--#define NUMBER_OF_RCS    64
--/*#define NUMBER_OF_TX_CCS 14 */
--#define NUMBER_OF_TX_CCS 14
--
--#define TX_BUF_SIZE      (2048 - sizeof(struct tx_msg))
--#define RX_BUFF_END      0x3FFF
--/* Values for buffer_status */
--#define CCS_BUFFER_FREE       0
--#define CCS_BUFFER_BUSY       1
--#define CCS_COMMAND_COMPLETE  2
--#define CCS_COMMAND_FAILED    3
--
--/* Values for cmd */
--#define CCS_DOWNLOAD_STARTUP_PARAMS    1
--#define CCS_UPDATE_PARAMS              2
--#define CCS_REPORT_PARAMS              3
--#define CCS_UPDATE_MULTICAST_LIST      4
--#define CCS_UPDATE_POWER_SAVINGS_MODE  5
--#define CCS_START_NETWORK              6
--#define CCS_JOIN_NETWORK               7
--#define CCS_START_ASSOCIATION          8
--#define CCS_TX_REQUEST                 9
--#define CCS_TEST_MEMORY              0xa
--#define CCS_SHUTDOWN                 0xb
--#define CCS_DUMP_MEMORY              0xc
--#define CCS_START_TIMER              0xe
--#define CCS_LAST_CMD                 CCS_START_TIMER
--
--/* Values for link field */
--#define CCS_END_LIST                 0xff
--
--/* values for buffer_status field */
--#define RCS_BUFFER_FREE       0
--#define RCS_BUFFER_BUSY       1
--#define RCS_COMPLETE          2
--#define RCS_FAILED            3
--#define RCS_BUFFER_RELEASE    0xFF
--
--/* values for interrupt_id field */
--#define PROCESS_RX_PACKET           0x80 /* */
--#define REJOIN_NET_COMPLETE         0x81 /* RCS ID: Rejoin Net Complete */
--#define ROAMING_INITIATED           0x82 /* RCS ID: Roaming Initiated   */
--#define JAPAN_CALL_SIGN_RXD         0x83 /* RCS ID: New Japan Call Sign */
--
--/*****************************************************************************/
--/* Memory types for dump memory command */
--#define C_MEM_PROG  0
--#define C_MEM_XDATA 1
--#define C_MEM_SFR   2
--#define C_MEM_IDATA 3
--
--/*** Return values for hw_xmit **********/
--#define XMIT_OK        (0)
--#define XMIT_MSG_BAD   (-1)
--#define XMIT_NO_CCS    (-2)
--#define XMIT_NO_INTR   (-3)
--#define XMIT_NEED_AUTH (-4)
--
--/*** Values for card status */
--#define CARD_INSERTED       (0)
--
--#define CARD_AWAITING_PARAM (1)
--#define CARD_INIT_ERROR     (11)
--
--#define CARD_DL_PARAM       (2)
--#define CARD_DL_PARAM_ERROR (12)
--
--#define CARD_DOING_ACQ      (3)
--
--#define CARD_ACQ_COMPLETE   (4)
--#define CARD_ACQ_FAILED     (14)
--
--#define CARD_AUTH_COMPLETE  (5)
--#define CARD_AUTH_REFUSED   (15)
--
--#define CARD_ASSOC_COMPLETE (6)
--#define CARD_ASSOC_FAILED   (16)
--
--/*** Values for authentication_state ***********************************/
--#define UNAUTHENTICATED     (0)
--#define AWAITING_RESPONSE   (1)
--#define AUTHENTICATED       (2)
--#define NEED_TO_AUTH        (3)
--
--/*** Values for authentication type ************************************/
--#define OPEN_AUTH_REQUEST   (1)
--#define OPEN_AUTH_RESPONSE  (2)
--#define BROADCAST_DEAUTH    (0xc0)
--/*** Values for timer functions ****************************************/
--#define TODO_NOTHING              (0)
--#define TODO_VERIFY_DL_START      (-1)
--#define TODO_START_NET            (-2)
--#define TODO_JOIN_NET             (-3)
--#define TODO_AUTHENTICATE_TIMEOUT (-4)
--#define TODO_SEND_CCS             (-5)
--/***********************************************************************/
--/* Parameter passing structure for update/report parameter CCS's */
--struct object_id {
--    void          *object_addr;
--    unsigned char object_length;
--};
--
--#define OBJID_network_type            0
--#define OBJID_acting_as_ap_status     1
--#define OBJID_current_ess_id          2
--#define OBJID_scanning_mode           3
--#define OBJID_power_mgt_state         4
--#define OBJID_mac_address             5
--#define OBJID_frag_threshold          6
--#define OBJID_hop_time                7
--#define OBJID_beacon_period           8
--#define OBJID_dtim_period             9
--#define OBJID_retry_max              10
--#define OBJID_ack_timeout            11
--#define OBJID_sifs                   12
--#define OBJID_difs                   13
--#define OBJID_pifs                   14
--#define OBJID_rts_threshold          15
--#define OBJID_scan_dwell_time        16
--#define OBJID_max_scan_dwell_time    17
--#define OBJID_assoc_resp_timeout     18
--#define OBJID_adhoc_scan_cycle_max   19
--#define OBJID_infra_scan_cycle_max   20
--#define OBJID_infra_super_cycle_max  21
--#define OBJID_promiscuous_mode       22
--#define OBJID_unique_word            23
--#define OBJID_slot_time              24
--#define OBJID_roaming_low_snr        25
--#define OBJID_low_snr_count_thresh   26
--#define OBJID_infra_missed_bcn       27
--#define OBJID_adhoc_missed_bcn       28
--#define OBJID_curr_country_code      29
--#define OBJID_hop_pattern            30
--#define OBJID_reserved               31
--#define OBJID_cw_max_msb             32
--#define OBJID_cw_min_msb             33
--#define OBJID_noise_filter_gain      34
--#define OBJID_noise_limit_offset     35
--#define OBJID_det_rssi_thresh_offset 36
--#define OBJID_med_busy_thresh_offset 37
--#define OBJID_det_sync_thresh        38
--#define OBJID_test_mode              39
--#define OBJID_test_min_chan_num      40
--#define OBJID_test_max_chan_num      41
--#define OBJID_allow_bcast_ID_prbrsp  42
--#define OBJID_privacy_must_start     43
--#define OBJID_privacy_can_join       44
--#define OBJID_basic_rate_set         45
--
--/**** Configuration/Status/Control Area ***************************/
--/*    System Control Block (SCB) Area
-- *    Located at Shared RAM offset 0
-- */
--struct scb {
--    UCHAR ccs_index;
--    UCHAR rcs_index;
--};
--
--/****** Status area at Shared RAM offset 0x0100 ******************************/
--struct status {
--    UCHAR mrx_overflow_for_host;         /* 0=ECF may write, 1=host may write*/
--    UCHAR mrx_checksum_error_for_host;   /* 0=ECF may write, 1=host may write*/
--    UCHAR rx_hec_error_for_host;         /* 0=ECF may write, 1=host may write*/
--    UCHAR reserved1;
--    short mrx_overflow;                  /* ECF increments on rx overflow    */
--    short mrx_checksum_error;            /* ECF increments on rx CRC error   */
--    short rx_hec_error;                  /* ECF incs on mac header CRC error */
--    UCHAR rxnoise;                       /* Average RSL measurement          */
--};
--
--/****** Host-to-ECF Data Area at Shared RAM offset 0x200 *********************/
--struct host_to_ecf_area {
--    
--};
--
--/****** ECF-to-Host Data Area at Shared RAM offset 0x0300 ********************/
--struct startup_res_518 {
--    UCHAR startup_word;
--    UCHAR station_addr[ADDRLEN];
--    UCHAR calc_prog_chksum;
--    UCHAR calc_cis_chksum;
--    UCHAR ecf_spare[7];
--    UCHAR japan_call_sign[12];
--};
--
--struct startup_res_6 {
--    UCHAR startup_word;
--    UCHAR station_addr[ADDRLEN];
--    UCHAR reserved;
--    UCHAR supp_rates[8];
--    UCHAR japan_call_sign[12];
--    UCHAR calc_prog_chksum;
--    UCHAR calc_cis_chksum;
--    UCHAR firmware_version[3];
--    UCHAR asic_version;
--    UCHAR tib_length;
--};
--
--struct start_join_net_params {
--    UCHAR net_type;
--    UCHAR ssid[ESSID_SIZE];
--    UCHAR reserved;
--    UCHAR privacy_can_join;
--};
--
--/****** Command Control Structure area at Shared ram offset 0x0400 ***********/
--/* Structures for command specific parameters (ccs.var) */
--struct update_param_cmd {
--    UCHAR object_id;
--    UCHAR number_objects;
--    UCHAR failure_cause;
--};
--struct report_param_cmd {
--    UCHAR object_id;
--    UCHAR number_objects;
--    UCHAR failure_cause;
--    UCHAR length;
--};
--struct start_network_cmd {
--    UCHAR update_param;
--    UCHAR bssid[ADDRLEN];
--    UCHAR net_initiated;
--    UCHAR net_default_tx_rate;
--    UCHAR encryption;
--};
--struct join_network_cmd {
--    UCHAR update_param;
--    UCHAR bssid[ADDRLEN];
--    UCHAR net_initiated;
--    UCHAR net_default_tx_rate;
--    UCHAR encryption;
--};
--struct tx_requested_cmd {
-- 
--    UCHAR tx_data_ptr[2];
--    UCHAR tx_data_length[2];
--    UCHAR host_reserved[2];
--    UCHAR reserved[3];
--    UCHAR tx_rate;
--    UCHAR pow_sav_mode;
--    UCHAR retries;
--    UCHAR antenna;
--};
--struct tx_requested_cmd_4 {
-- 
--    UCHAR tx_data_ptr[2];
--    UCHAR tx_data_length[2];
--    UCHAR dest_addr[ADDRLEN];
--    UCHAR pow_sav_mode;
--    UCHAR retries;
--    UCHAR station_id;
--};
--struct memory_dump_cmd {
--    UCHAR memory_type;
--    UCHAR memory_ptr[2];
--    UCHAR length;
--};
--struct update_association_cmd {
--    UCHAR status;
--    UCHAR aid[2];
--};
--struct start_timer_cmd {
--    UCHAR duration[2];
--};
--
--struct ccs {
--    UCHAR buffer_status;                 /* 0 = buffer free, 1 = buffer busy */
--                                         /* 2 = command complete, 3 = failed */
--    UCHAR cmd;                           /* command to ECF                   */
--    UCHAR link;                          /* link to next CCS, FF=end of list */
--    /* command specific parameters      */
--    union {
--        char reserved[13];
--        struct update_param_cmd update_param;
--        struct report_param_cmd report_param;
--        UCHAR nummulticast;
--        UCHAR mode;
--        struct start_network_cmd start_network;
--        struct join_network_cmd join_network;
--        struct tx_requested_cmd tx_request;
--        struct memory_dump_cmd memory_dump;
--        struct update_association_cmd update_assoc;
--        struct start_timer_cmd start_timer;
--    } var;
--};
--
--/*****************************************************************************/
--/* Transmit buffer structures */
--struct tib_structure {
--    UCHAR ccs_index;
--    UCHAR psm;
--    UCHAR pass_fail;
--    UCHAR retry_count;
--    UCHAR max_retries;
--    UCHAR frags_remaining;
--    UCHAR no_rb;
--    UCHAR rts_reqd;
--    UCHAR csma_tx_cntrl_2;
--    UCHAR sifs_tx_cntrl_2;
--    UCHAR tx_dma_addr_1[2];
--    UCHAR tx_dma_addr_2[2];
--    UCHAR var_dur_2mhz[2];
--    UCHAR var_dur_1mhz[2];
--    UCHAR max_dur_2mhz[2];
--    UCHAR max_dur_1mhz[2];
--    UCHAR hdr_len;
--    UCHAR max_frag_len[2];
--    UCHAR var_len[2];
--    UCHAR phy_hdr_4;
--    UCHAR mac_hdr_1;
--    UCHAR mac_hdr_2;
--    UCHAR sid[2];
--};
--
--struct phy_header {
--    UCHAR sfd[2];
--    UCHAR hdr_3;
--    UCHAR hdr_4;
--};
--struct ray_rx_msg {
--    struct mac_header mac;
--	UCHAR	var[];
--};
--
--struct tx_msg {
--    struct tib_structure tib;
--    struct phy_header phy;
--    struct mac_header mac;
--    UCHAR  var[];
--};
--
--/****** ECF Receive Control Structure (RCS) Area at Shared RAM offset 0x0800  */
--/* Structures for command specific parameters (rcs.var) */
--struct rx_packet_cmd {
--    UCHAR rx_data_ptr[2];
--    UCHAR rx_data_length[2];
--    UCHAR rx_sig_lev;
--    UCHAR next_frag_rcs_index;
--    UCHAR totalpacketlength[2];
--};
--struct rejoin_net_cmplt_cmd {
--    UCHAR reserved;
--    UCHAR bssid[ADDRLEN];
--};
--struct japan_call_sign_rxd {
--    UCHAR rxd_call_sign[8];
--    UCHAR reserved[5];
--};
--
--struct rcs {
--    UCHAR buffer_status;
--    UCHAR interrupt_id;
--    UCHAR link_field;
--    /* command specific parameters      */
--    union {
--        UCHAR reserved[13]; 
--        struct rx_packet_cmd rx_packet;
--        struct rejoin_net_cmplt_cmd rejoin_net_complete;
--        struct japan_call_sign_rxd japan_call_sign;
--    } var;
--};
--
--/****** Startup parameter structures for both versions of firmware ***********/
--struct b4_startup_params {
--    UCHAR a_network_type;                /* C_ADHOC, C_INFRA                 */
--    UCHAR a_acting_as_ap_status;         /* C_TYPE_STA, C_TYPE_AP            */
--    UCHAR a_current_ess_id[ESSID_SIZE];  /* Null terminated unless 32 long   */
--    UCHAR a_scanning_mode;               /* passive 0, active 1              */
--    UCHAR a_power_mgt_state;             /* CAM 0,                           */
--    UCHAR a_mac_addr[ADDRLEN];           /*                                  */
--    UCHAR a_frag_threshold[2];           /* 512                              */
--    UCHAR a_hop_time[2];                 /* 16k * 2**n, n=0-4 in Kus         */
--    UCHAR a_beacon_period[2];            /* n * a_hop_time  in Kus           */
--    UCHAR a_dtim_period;                 /* in beacons                       */
--    UCHAR a_retry_max;                   /*                                  */
--    UCHAR a_ack_timeout;                 /*                                  */
--    UCHAR a_sifs;                        /*                                  */
--    UCHAR a_difs;                        /*                                  */
--    UCHAR a_pifs;                        /*                                  */
--    UCHAR a_rts_threshold[2];            /*                                  */
--    UCHAR a_scan_dwell_time[2];          /*                                  */
--    UCHAR a_max_scan_dwell_time[2];      /*                                  */
--    UCHAR a_assoc_resp_timeout_thresh;   /*                                  */
--    UCHAR a_adhoc_scan_cycle_max;        /*                                  */
--    UCHAR a_infra_scan_cycle_max;        /*                                  */
--    UCHAR a_infra_super_scan_cycle_max;  /*                                  */
--    UCHAR a_promiscuous_mode;            /*                                  */
--    UCHAR a_unique_word[2];              /*                                  */
--    UCHAR a_slot_time;                   /*                                  */
--    UCHAR a_roaming_low_snr_thresh;      /*                                  */
--    UCHAR a_low_snr_count_thresh;        /*                                  */
--    UCHAR a_infra_missed_bcn_thresh;     /*                                  */
--    UCHAR a_adhoc_missed_bcn_thresh;     /*                                  */
--    UCHAR a_curr_country_code;           /* C_USA                            */
--    UCHAR a_hop_pattern;                 /*                                  */
--    UCHAR a_hop_pattern_length;          /*                                  */
--/* b4 - b5 differences start here */
--    UCHAR a_cw_max;                      /*                                  */
--    UCHAR a_cw_min;                      /*                                  */
--    UCHAR a_noise_filter_gain;           /*                                  */
--    UCHAR a_noise_limit_offset;          /*                                  */
--    UCHAR a_det_rssi_thresh_offset;      /*                                  */
--    UCHAR a_med_busy_thresh_offset;      /*                                  */
--    UCHAR a_det_sync_thresh;             /*                                  */
--    UCHAR a_test_mode;                   /*                                  */
--    UCHAR a_test_min_chan_num;           /*                                  */
--    UCHAR a_test_max_chan_num;           /*                                  */
--    UCHAR a_rx_tx_delay;                 /*                                  */
--    UCHAR a_current_bss_id[ADDRLEN];     /*                                  */
--    UCHAR a_hop_set;                     /*                                  */
--};
--struct b5_startup_params {
--    UCHAR a_network_type;                /* C_ADHOC, C_INFRA                 */
--    UCHAR a_acting_as_ap_status;         /* C_TYPE_STA, C_TYPE_AP            */
--    UCHAR a_current_ess_id[ESSID_SIZE];  /* Null terminated unless 32 long   */
--    UCHAR a_scanning_mode;               /* passive 0, active 1              */
--    UCHAR a_power_mgt_state;             /* CAM 0,                           */
--    UCHAR a_mac_addr[ADDRLEN];           /*                                  */
--    UCHAR a_frag_threshold[2];           /* 512                              */
--    UCHAR a_hop_time[2];                 /* 16k * 2**n, n=0-4 in Kus         */
--    UCHAR a_beacon_period[2];            /* n * a_hop_time  in Kus           */
--    UCHAR a_dtim_period;                 /* in beacons                       */
--    UCHAR a_retry_max;                   /* 4                                */
--    UCHAR a_ack_timeout;                 /*                                  */
--    UCHAR a_sifs;                        /*                                  */
--    UCHAR a_difs;                        /*                                  */
--    UCHAR a_pifs;                        /*                                  */
--    UCHAR a_rts_threshold[2];            /*                                  */
--    UCHAR a_scan_dwell_time[2];          /*                                  */
--    UCHAR a_max_scan_dwell_time[2];      /*                                  */
--    UCHAR a_assoc_resp_timeout_thresh;   /*                                  */
--    UCHAR a_adhoc_scan_cycle_max;        /*                                  */
--    UCHAR a_infra_scan_cycle_max;        /*                                  */
--    UCHAR a_infra_super_scan_cycle_max;  /*                                  */
--    UCHAR a_promiscuous_mode;            /*                                  */
--    UCHAR a_unique_word[2];              /*                                  */
--    UCHAR a_slot_time;                   /*                                  */
--    UCHAR a_roaming_low_snr_thresh;      /*                                  */
--    UCHAR a_low_snr_count_thresh;        /*                                  */
--    UCHAR a_infra_missed_bcn_thresh;     /*                                  */
--    UCHAR a_adhoc_missed_bcn_thresh;     /*                                  */
--    UCHAR a_curr_country_code;           /* C_USA                            */
--    UCHAR a_hop_pattern;                 /*                                  */
--    UCHAR a_hop_pattern_length;          /*                                  */
--/* b4 - b5 differences start here */
--    UCHAR a_cw_max[2];                   /*                                  */
--    UCHAR a_cw_min[2];                   /*                                  */
--    UCHAR a_noise_filter_gain;           /*                                  */
--    UCHAR a_noise_limit_offset;          /*                                  */
--    UCHAR a_det_rssi_thresh_offset;      /*                                  */
--    UCHAR a_med_busy_thresh_offset;      /*                                  */
--    UCHAR a_det_sync_thresh;             /*                                  */
--    UCHAR a_test_mode;                   /*                                  */
--    UCHAR a_test_min_chan_num;           /*                                  */
--    UCHAR a_test_max_chan_num;           /*                                  */
--    UCHAR a_allow_bcast_SSID_probe_rsp;
--    UCHAR a_privacy_must_start;
--    UCHAR a_privacy_can_join;
--    UCHAR a_basic_rate_set[8];
--};
--
--/*****************************************************************************/
--#define RAY_IOCG_PARMS (SIOCDEVPRIVATE)
--#define RAY_IOCS_PARMS (SIOCDEVPRIVATE + 1)
--#define RAY_DO_CMD     (SIOCDEVPRIVATE + 2)
--
--/****** ethernet <-> 802.11 translation **************************************/
--typedef struct snaphdr_t
--{
--  UCHAR   dsap;
--  UCHAR   ssap;
--  UCHAR   ctrl;
--  UCHAR   org[3];
--  UCHAR   ethertype[2];
--} snaphdr_t;
--
--#define BRIDGE_ENCAP  0xf80000
--#define RFC1042_ENCAP 0
--#define SNAP_ID       0x0003aaaa
--#define RAY_IPX_TYPE  0x8137
--#define APPLEARP_TYPE 0x80f3
--/*****************************************************************************/
--#endif /* _RAYCTL_H_ */
+-module_pcmcia_driver(wl3501_driver);
+-
+-MODULE_AUTHOR("Fox Chen <mhchen@golf.ccl.itri.org.tw>, "
+-	      "Arnaldo Carvalho de Melo <acme@conectiva.com.br>,"
+-	      "Gustavo Niemeyer <niemeyer@conectiva.com>");
+-MODULE_DESCRIPTION("Planet wl3501 wireless driver");
+-MODULE_LICENSE("GPL");
 -- 
 2.39.2
 
