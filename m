@@ -2,47 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 127587D37B4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Oct 2023 15:21:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04A9D7D37BF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Oct 2023 15:21:54 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ghT2J3SD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bO1s2x5V;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SDbRg1Zm5z3cTf
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Oct 2023 00:21:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SDbSb68NMz3d8p
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Oct 2023 00:21:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ghT2J3SD;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bO1s2x5V;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SDbQq36wXz2yG9
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Oct 2023 00:20:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SDbQt5YJ8z3bX1
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Oct 2023 00:20:22 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 0B91062510;
-	Mon, 23 Oct 2023 13:20:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77CA9C433C7;
-	Mon, 23 Oct 2023 13:20:11 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 00A126250A;
+	Mon, 23 Oct 2023 13:20:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9DAC433CB;
+	Mon, 23 Oct 2023 13:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1698067215;
-	bh=nTyauBHRPG08A+9hZJs2qahNZ8Jagercz5HEXYwcAWw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ghT2J3SDSUrw5fLAKRgXRXnqxX2UhQ1ba3fQviNpxfGz6s2R5wf4uIf8OzwTNTmSy
-	 +UuZfUTUKgAzenx/gBGOzUAH3wUlJQYthvAa6euqUDasxB2msCi3aiEGCmZoy2BdWG
-	 bqn3nbvGbuFNTgbb4O11TEpg7LqgtmIUNaWGrFi/XD310a/5VJUOEWHgFXwlC4O1Rx
-	 Hwp9E7vQRMetHRPUTEZduhT35zRG8eC+8enLWy2MX9WhdBaj6hIeKQ08j9EVoBWVez
-	 YQIZp+qeIjEmJ7n2HjGUxJH5lJQPG8gT7tFYwL/IFHopyffhiurTN4nsmGZPTgRudu
-	 6nvBU64vrCThg==
+	s=k20201202; t=1698067220;
+	bh=1uQ3UftdNupi6GUCKesLQ+YGYpGJU/qknE1j++WyrxM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bO1s2x5VfooPhrxLEwameiNn7g4M+tqgaujfL3cIgQXaUI1GK3BtN/qmxeh9S6gO+
+	 9bJSZfGRZCZGOMNKIuJccflxlFNxIsVxLdp5wLYbo1I2IYF4IdWvnQJcCg4QKBZGKJ
+	 5OiGFqJGCtPN5t3c+z1vHNs7QFrgXk6yJdU5CMOH4c9cfvD3t8yz/0K2ZVgLSdJMWb
+	 43Aiq4m4RxtpPCp2i/NGjxlzYHo1OBkCo42McMPlRXDQ+Hjv+qesshpSSAgvmupSo7
+	 rqTdXHI74HgEz9jgR0M+Ylh62S93YEo7b8cHfdv2vIMPQmyUqrNHLa1bHapUoICG6O
+	 ZnnMjqFCvFT1w==
 From: Arnd Bergmann <arnd@kernel.org>
 To: Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 00/10] Remove obsolete and orphaned wifi drivers
-Date: Mon, 23 Oct 2023 15:19:42 +0200
-Message-Id: <20231023131953.2876682-1-arnd@kernel.org>
+Subject: [PATCH 01/10] wifi: libertas: drop 16-bit PCMCIA support
+Date: Mon, 23 Oct 2023 15:19:43 +0200
+Message-Id: <20231023131953.2876682-2-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231023131953.2876682-1-arnd@kernel.org>
+References: <20231023131953.2876682-1-arnd@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -62,255 +64,1017 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-As discussed previously, a lot of the older wifi drivers are likely
-entirely unused, Though we can't know for sure.
+With all the other PCMCIA WLAN adapters gone from the kernel, this is now
+the last remaining device with this interface, but as far as I can tell,
+all the actual libertas users were actually using either SDIO or USB.
 
-As suggested by both Greg and Jakub, let's remove the ones that look
-are most likely to have no users left and also get in the way of the
-wext cleanup. If anyone is still using any of these, we can revert the
-driver removal individually.
-
-I would suggest merging these for net-next after 6.7-rc1 is out, to give
-them the maximum amount of time for users to speak up before a release
-comes out.
-
-This kills off all pcmcia wifi drivers, and all wext users in
-drivers/net/wireless, but not the ps3-gelic-wireless driver in
-drivers/net/ethernet, or the staging drivers.
-
-In staging, rtl8192u was already removed in the meantime, while rtl8712
-and rtl8192e are apparently still used.  I have not been able to find
-out whether ks7010 is still in use.
-
-	Arnd
-
-Link: https://lore.kernel.org/lkml/20231011080955.1beeb010@kernel.org/
-
-
-Arnd Bergmann (10):
-  wifi: libertas: drop 16-bit PCMCIA support
-  wifi: atmel: remove wext style at76c50x drivers
-  wifi: remove orphaned cisco/aironet driver
-  wifi: remove obsolete hostap driver
-  wifi: remove orphaned zd1201 driver
-  wifi: remove orphaned orinoco driver
-  wifi: remove orphaned ray_cs driver
-  wifi: remove orphaned wl3501 driver
-  wifi: remove orphaned rndis_wlan driver
-  [RFC] wifi: remove ipw2100/ipw2200 drivers
-
- .../networking/device_drivers/wifi/index.rst  |    20 -
- .../device_drivers/wifi/intel/ipw2100.rst     |   323 -
- .../device_drivers/wifi/intel/ipw2200.rst     |   526 -
- .../networking/device_drivers/wifi/ray_cs.rst |   165 -
- MAINTAINERS                                   |    49 -
- drivers/net/wireless/Kconfig                  |     3 -
- drivers/net/wireless/Makefile                 |     2 -
- drivers/net/wireless/atmel/Kconfig            |    35 -
- drivers/net/wireless/atmel/Makefile           |     4 -
- drivers/net/wireless/atmel/atmel.c            |  4452 ------
- drivers/net/wireless/atmel/atmel.h            |    31 -
- drivers/net/wireless/atmel/atmel_cs.c         |   292 -
- drivers/net/wireless/atmel/atmel_pci.c        |    65 -
- drivers/net/wireless/cisco/Kconfig            |    59 -
- drivers/net/wireless/cisco/Makefile           |     3 -
- drivers/net/wireless/cisco/airo.c             |  8288 -----------
- drivers/net/wireless/cisco/airo.h             |    10 -
- drivers/net/wireless/cisco/airo_cs.c          |   218 -
- drivers/net/wireless/intel/Kconfig            |     1 -
- drivers/net/wireless/intel/Makefile           |     3 -
- drivers/net/wireless/intel/ipw2x00/Kconfig    |   195 -
- drivers/net/wireless/intel/ipw2x00/Makefile   |    15 -
- drivers/net/wireless/intel/ipw2x00/ipw.h      |    20 -
- drivers/net/wireless/intel/ipw2x00/ipw2100.c  |  8587 -----------
- drivers/net/wireless/intel/ipw2x00/ipw2100.h  |  1142 --
- drivers/net/wireless/intel/ipw2x00/ipw2200.c  | 11965 ----------------
- drivers/net/wireless/intel/ipw2x00/ipw2200.h  |  1984 ---
- drivers/net/wireless/intel/ipw2x00/libipw.h   |  1001 --
- .../net/wireless/intel/ipw2x00/libipw_geo.c   |   179 -
- .../wireless/intel/ipw2x00/libipw_module.c    |   297 -
- .../net/wireless/intel/ipw2x00/libipw_rx.c    |  1737 ---
- .../net/wireless/intel/ipw2x00/libipw_tx.c    |   519 -
- .../net/wireless/intel/ipw2x00/libipw_wx.c    |   726 -
- drivers/net/wireless/intersil/Kconfig         |     2 -
- drivers/net/wireless/intersil/Makefile        |     2 -
- drivers/net/wireless/intersil/hostap/Kconfig  |    95 -
- drivers/net/wireless/intersil/hostap/Makefile |     8 -
- drivers/net/wireless/intersil/hostap/hostap.h |    98 -
- .../wireless/intersil/hostap/hostap_80211.h   |    97 -
- .../intersil/hostap/hostap_80211_rx.c         |  1116 --
- .../intersil/hostap/hostap_80211_tx.c         |   554 -
- .../net/wireless/intersil/hostap/hostap_ap.c  |  3277 -----
- .../net/wireless/intersil/hostap/hostap_ap.h  |   264 -
- .../wireless/intersil/hostap/hostap_common.h  |   420 -
- .../wireless/intersil/hostap/hostap_config.h  |    49 -
- .../net/wireless/intersil/hostap/hostap_cs.c  |   710 -
- .../intersil/hostap/hostap_download.c         |   810 --
- .../net/wireless/intersil/hostap/hostap_hw.c  |  3387 -----
- .../wireless/intersil/hostap/hostap_info.c    |   509 -
- .../wireless/intersil/hostap/hostap_ioctl.c   |  3847 -----
- .../wireless/intersil/hostap/hostap_main.c    |  1123 --
- .../net/wireless/intersil/hostap/hostap_pci.c |   445 -
- .../net/wireless/intersil/hostap/hostap_plx.c |   617 -
- .../wireless/intersil/hostap/hostap_proc.c    |   411 -
- .../wireless/intersil/hostap/hostap_wlan.h    |  1051 --
- drivers/net/wireless/intersil/orinoco/Kconfig |   143 -
- .../net/wireless/intersil/orinoco/Makefile    |    15 -
- .../net/wireless/intersil/orinoco/airport.c   |   268 -
- drivers/net/wireless/intersil/orinoco/cfg.c   |   291 -
- drivers/net/wireless/intersil/orinoco/cfg.h   |    15 -
- drivers/net/wireless/intersil/orinoco/fw.c    |   387 -
- drivers/net/wireless/intersil/orinoco/fw.h    |    21 -
- .../net/wireless/intersil/orinoco/hermes.c    |   778 -
- .../net/wireless/intersil/orinoco/hermes.h    |   534 -
- .../wireless/intersil/orinoco/hermes_dld.c    |   477 -
- .../wireless/intersil/orinoco/hermes_dld.h    |    52 -
- .../wireless/intersil/orinoco/hermes_rid.h    |   165 -
- drivers/net/wireless/intersil/orinoco/hw.c    |  1362 --
- drivers/net/wireless/intersil/orinoco/hw.h    |    60 -
- drivers/net/wireless/intersil/orinoco/main.c  |  2414 ----
- drivers/net/wireless/intersil/orinoco/main.h  |    50 -
- drivers/net/wireless/intersil/orinoco/mic.c   |    89 -
- drivers/net/wireless/intersil/orinoco/mic.h   |    23 -
- .../net/wireless/intersil/orinoco/orinoco.h   |   251 -
- .../wireless/intersil/orinoco/orinoco_cs.c    |   350 -
- .../intersil/orinoco/orinoco_nortel.c         |   314 -
- .../wireless/intersil/orinoco/orinoco_pci.c   |   257 -
- .../wireless/intersil/orinoco/orinoco_pci.h   |    54 -
- .../wireless/intersil/orinoco/orinoco_plx.c   |   362 -
- .../wireless/intersil/orinoco/orinoco_tmd.c   |   237 -
- .../wireless/intersil/orinoco/orinoco_usb.c   |  1787 ---
- drivers/net/wireless/intersil/orinoco/scan.c  |   259 -
- drivers/net/wireless/intersil/orinoco/scan.h  |    21 -
- .../wireless/intersil/orinoco/spectrum_cs.c   |   328 -
- drivers/net/wireless/intersil/orinoco/wext.c  |  1428 --
- drivers/net/wireless/intersil/orinoco/wext.h  |    13 -
- drivers/net/wireless/legacy/Kconfig           |    55 -
- drivers/net/wireless/legacy/Makefile          |     6 -
- drivers/net/wireless/legacy/ray_cs.c          |  2824 ----
- drivers/net/wireless/legacy/ray_cs.h          |    74 -
- drivers/net/wireless/legacy/rayctl.h          |   734 -
- drivers/net/wireless/legacy/rndis_wlan.c      |  3760 -----
- drivers/net/wireless/legacy/wl3501.h          |   615 -
- drivers/net/wireless/legacy/wl3501_cs.c       |  2036 ---
- drivers/net/wireless/marvell/libertas/Kconfig |     7 +-
- .../net/wireless/marvell/libertas/Makefile    |     1 -
- drivers/net/wireless/marvell/libertas/if_cs.c |   957 --
- drivers/net/wireless/zydas/Kconfig            |    19 -
- drivers/net/wireless/zydas/Makefile           |     2 -
- drivers/net/wireless/zydas/zd1201.c           |  1909 ---
- drivers/net/wireless/zydas/zd1201.h           |   144 -
- 101 files changed, 1 insertion(+), 87755 deletions(-)
- delete mode 100644 Documentation/networking/device_drivers/wifi/index.rst
- delete mode 100644 Documentation/networking/device_drivers/wifi/intel/ipw2100.rst
- delete mode 100644 Documentation/networking/device_drivers/wifi/intel/ipw2200.rst
- delete mode 100644 Documentation/networking/device_drivers/wifi/ray_cs.rst
- delete mode 100644 drivers/net/wireless/atmel/atmel.c
- delete mode 100644 drivers/net/wireless/atmel/atmel.h
- delete mode 100644 drivers/net/wireless/atmel/atmel_cs.c
- delete mode 100644 drivers/net/wireless/atmel/atmel_pci.c
- delete mode 100644 drivers/net/wireless/cisco/Kconfig
- delete mode 100644 drivers/net/wireless/cisco/Makefile
- delete mode 100644 drivers/net/wireless/cisco/airo.c
- delete mode 100644 drivers/net/wireless/cisco/airo.h
- delete mode 100644 drivers/net/wireless/cisco/airo_cs.c
- delete mode 100644 drivers/net/wireless/intel/ipw2x00/Kconfig
- delete mode 100644 drivers/net/wireless/intel/ipw2x00/Makefile
- delete mode 100644 drivers/net/wireless/intel/ipw2x00/ipw.h
- delete mode 100644 drivers/net/wireless/intel/ipw2x00/ipw2100.c
- delete mode 100644 drivers/net/wireless/intel/ipw2x00/ipw2100.h
- delete mode 100644 drivers/net/wireless/intel/ipw2x00/ipw2200.c
- delete mode 100644 drivers/net/wireless/intel/ipw2x00/ipw2200.h
- delete mode 100644 drivers/net/wireless/intel/ipw2x00/libipw.h
- delete mode 100644 drivers/net/wireless/intel/ipw2x00/libipw_geo.c
- delete mode 100644 drivers/net/wireless/intel/ipw2x00/libipw_module.c
- delete mode 100644 drivers/net/wireless/intel/ipw2x00/libipw_rx.c
- delete mode 100644 drivers/net/wireless/intel/ipw2x00/libipw_tx.c
- delete mode 100644 drivers/net/wireless/intel/ipw2x00/libipw_wx.c
- delete mode 100644 drivers/net/wireless/intersil/hostap/Kconfig
- delete mode 100644 drivers/net/wireless/intersil/hostap/Makefile
- delete mode 100644 drivers/net/wireless/intersil/hostap/hostap.h
- delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_80211.h
- delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_80211_rx.c
- delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_80211_tx.c
- delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_ap.c
- delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_ap.h
- delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_common.h
- delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_config.h
- delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_cs.c
- delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_download.c
- delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_hw.c
- delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_info.c
- delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_ioctl.c
- delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_main.c
- delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_pci.c
- delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_plx.c
- delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_proc.c
- delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_wlan.h
- delete mode 100644 drivers/net/wireless/intersil/orinoco/Kconfig
- delete mode 100644 drivers/net/wireless/intersil/orinoco/Makefile
- delete mode 100644 drivers/net/wireless/intersil/orinoco/airport.c
- delete mode 100644 drivers/net/wireless/intersil/orinoco/cfg.c
- delete mode 100644 drivers/net/wireless/intersil/orinoco/cfg.h
- delete mode 100644 drivers/net/wireless/intersil/orinoco/fw.c
- delete mode 100644 drivers/net/wireless/intersil/orinoco/fw.h
- delete mode 100644 drivers/net/wireless/intersil/orinoco/hermes.c
- delete mode 100644 drivers/net/wireless/intersil/orinoco/hermes.h
- delete mode 100644 drivers/net/wireless/intersil/orinoco/hermes_dld.c
- delete mode 100644 drivers/net/wireless/intersil/orinoco/hermes_dld.h
- delete mode 100644 drivers/net/wireless/intersil/orinoco/hermes_rid.h
- delete mode 100644 drivers/net/wireless/intersil/orinoco/hw.c
- delete mode 100644 drivers/net/wireless/intersil/orinoco/hw.h
- delete mode 100644 drivers/net/wireless/intersil/orinoco/main.c
- delete mode 100644 drivers/net/wireless/intersil/orinoco/main.h
- delete mode 100644 drivers/net/wireless/intersil/orinoco/mic.c
- delete mode 100644 drivers/net/wireless/intersil/orinoco/mic.h
- delete mode 100644 drivers/net/wireless/intersil/orinoco/orinoco.h
- delete mode 100644 drivers/net/wireless/intersil/orinoco/orinoco_cs.c
- delete mode 100644 drivers/net/wireless/intersil/orinoco/orinoco_nortel.c
- delete mode 100644 drivers/net/wireless/intersil/orinoco/orinoco_pci.c
- delete mode 100644 drivers/net/wireless/intersil/orinoco/orinoco_pci.h
- delete mode 100644 drivers/net/wireless/intersil/orinoco/orinoco_plx.c
- delete mode 100644 drivers/net/wireless/intersil/orinoco/orinoco_tmd.c
- delete mode 100644 drivers/net/wireless/intersil/orinoco/orinoco_usb.c
- delete mode 100644 drivers/net/wireless/intersil/orinoco/scan.c
- delete mode 100644 drivers/net/wireless/intersil/orinoco/scan.h
- delete mode 100644 drivers/net/wireless/intersil/orinoco/spectrum_cs.c
- delete mode 100644 drivers/net/wireless/intersil/orinoco/wext.c
- delete mode 100644 drivers/net/wireless/intersil/orinoco/wext.h
- delete mode 100644 drivers/net/wireless/legacy/Kconfig
- delete mode 100644 drivers/net/wireless/legacy/Makefile
- delete mode 100644 drivers/net/wireless/legacy/ray_cs.c
- delete mode 100644 drivers/net/wireless/legacy/ray_cs.h
- delete mode 100644 drivers/net/wireless/legacy/rayctl.h
- delete mode 100644 drivers/net/wireless/legacy/rndis_wlan.c
- delete mode 100644 drivers/net/wireless/legacy/wl3501.h
- delete mode 100644 drivers/net/wireless/legacy/wl3501_cs.c
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/net/wireless/marvell/libertas/Kconfig |   7 +-
+ .../net/wireless/marvell/libertas/Makefile    |   1 -
+ drivers/net/wireless/marvell/libertas/if_cs.c | 957 ------------------
+ 3 files changed, 1 insertion(+), 964 deletions(-)
  delete mode 100644 drivers/net/wireless/marvell/libertas/if_cs.c
- delete mode 100644 drivers/net/wireless/zydas/zd1201.c
- delete mode 100644 drivers/net/wireless/zydas/zd1201.h
 
+diff --git a/drivers/net/wireless/marvell/libertas/Kconfig b/drivers/net/wireless/marvell/libertas/Kconfig
+index 6d62ab49aa8d4..5bc92cb6b0fed 100644
+--- a/drivers/net/wireless/marvell/libertas/Kconfig
++++ b/drivers/net/wireless/marvell/libertas/Kconfig
+@@ -1,6 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ config LIBERTAS
+ 	tristate "Marvell 8xxx Libertas WLAN driver support"
++	depends on USB || SDIO || SPI
+ 	depends on CFG80211
+ 	select WIRELESS_EXT
+ 	select WEXT_SPY
+@@ -15,12 +16,6 @@ config LIBERTAS_USB
+ 	help
+ 	  A driver for Marvell Libertas 8388 USB devices.
+ 
+-config LIBERTAS_CS
+-	tristate "Marvell Libertas 8385 CompactFlash 802.11b/g cards"
+-	depends on LIBERTAS && PCMCIA && HAS_IOPORT_MAP
+-	help
+-	  A driver for Marvell Libertas 8385 CompactFlash devices.
+-
+ config LIBERTAS_SDIO
+ 	tristate "Marvell Libertas 8385/8686/8688 SDIO 802.11b/g cards"
+ 	depends on LIBERTAS && MMC
+diff --git a/drivers/net/wireless/marvell/libertas/Makefile b/drivers/net/wireless/marvell/libertas/Makefile
+index 41b9b440a5422..2ac04f4d61a52 100644
+--- a/drivers/net/wireless/marvell/libertas/Makefile
++++ b/drivers/net/wireless/marvell/libertas/Makefile
+@@ -17,6 +17,5 @@ libertas_spi-objs += if_spi.o
+ 
+ obj-$(CONFIG_LIBERTAS)     += libertas.o
+ obj-$(CONFIG_LIBERTAS_USB) += usb8xxx.o
+-obj-$(CONFIG_LIBERTAS_CS)  += libertas_cs.o
+ obj-$(CONFIG_LIBERTAS_SDIO) += libertas_sdio.o
+ obj-$(CONFIG_LIBERTAS_SPI) += libertas_spi.o
+diff --git a/drivers/net/wireless/marvell/libertas/if_cs.c b/drivers/net/wireless/marvell/libertas/if_cs.c
+deleted file mode 100644
+index 4103f15bca6bf..0000000000000
+--- a/drivers/net/wireless/marvell/libertas/if_cs.c
++++ /dev/null
+@@ -1,957 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+-
+-  Driver for the Marvell 8385 based compact flash WLAN cards.
+-
+-  (C) 2007 by Holger Schurig <hs4233@mail.mn-solutions.de>
+-
+-
+-*/
+-
+-#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+-
+-#include <linux/module.h>
+-#include <linux/slab.h>
+-#include <linux/delay.h>
+-#include <linux/moduleparam.h>
+-#include <linux/firmware.h>
+-#include <linux/netdevice.h>
+-
+-#include <pcmcia/cistpl.h>
+-#include <pcmcia/ds.h>
+-
+-#include <linux/io.h>
+-
+-#define DRV_NAME "libertas_cs"
+-
+-#include "decl.h"
+-#include "defs.h"
+-#include "dev.h"
+-
+-
+-/********************************************************************/
+-/* Module stuff                                                     */
+-/********************************************************************/
+-
+-MODULE_AUTHOR("Holger Schurig <hs4233@mail.mn-solutions.de>");
+-MODULE_DESCRIPTION("Driver for Marvell 83xx compact flash WLAN cards");
+-MODULE_LICENSE("GPL");
+-
+-
+-
+-/********************************************************************/
+-/* Data structures                                                  */
+-/********************************************************************/
+-
+-struct if_cs_card {
+-	struct pcmcia_device *p_dev;
+-	struct lbs_private *priv;
+-	void __iomem *iobase;
+-	bool align_regs;
+-	u32 model;
+-};
+-
+-
+-enum {
+-	MODEL_UNKNOWN = 0x00,
+-	MODEL_8305 = 0x01,
+-	MODEL_8381 = 0x02,
+-	MODEL_8385 = 0x03
+-};
+-
+-static const struct lbs_fw_table fw_table[] = {
+-	{ MODEL_8305, "libertas/cf8305.bin", NULL },
+-	{ MODEL_8305, "libertas_cs_helper.fw", NULL },
+-	{ MODEL_8381, "libertas/cf8381_helper.bin", "libertas/cf8381.bin" },
+-	{ MODEL_8381, "libertas_cs_helper.fw", "libertas_cs.fw" },
+-	{ MODEL_8385, "libertas/cf8385_helper.bin", "libertas/cf8385.bin" },
+-	{ MODEL_8385, "libertas_cs_helper.fw", "libertas_cs.fw" },
+-	{ 0, NULL, NULL }
+-};
+-MODULE_FIRMWARE("libertas/cf8305.bin");
+-MODULE_FIRMWARE("libertas/cf8381_helper.bin");
+-MODULE_FIRMWARE("libertas/cf8381.bin");
+-MODULE_FIRMWARE("libertas/cf8385_helper.bin");
+-MODULE_FIRMWARE("libertas/cf8385.bin");
+-MODULE_FIRMWARE("libertas_cs_helper.fw");
+-MODULE_FIRMWARE("libertas_cs.fw");
+-
+-
+-/********************************************************************/
+-/* Hardware access                                                  */
+-/********************************************************************/
+-
+-/* This define enables wrapper functions which allow you
+-   to dump all register accesses. You normally won't this,
+-   except for development */
+-/* #define DEBUG_IO */
+-
+-#ifdef DEBUG_IO
+-static int debug_output = 0;
+-#else
+-/* This way the compiler optimizes the printk's away */
+-#define debug_output 0
+-#endif
+-
+-static inline unsigned int if_cs_read8(struct if_cs_card *card, uint reg)
+-{
+-	unsigned int val = ioread8(card->iobase + reg);
+-	if (debug_output)
+-		printk(KERN_INFO "inb %08x<%02x\n", reg, val);
+-	return val;
+-}
+-static inline unsigned int if_cs_read16(struct if_cs_card *card, uint reg)
+-{
+-	unsigned int val = ioread16(card->iobase + reg);
+-	if (debug_output)
+-		printk(KERN_INFO "inw %08x<%04x\n", reg, val);
+-	return val;
+-}
+-static inline void if_cs_read16_rep(
+-	struct if_cs_card *card,
+-	uint reg,
+-	void *buf,
+-	unsigned long count)
+-{
+-	if (debug_output)
+-		printk(KERN_INFO "insw %08x<(0x%lx words)\n",
+-			reg, count);
+-	ioread16_rep(card->iobase + reg, buf, count);
+-}
+-
+-static inline void if_cs_write8(struct if_cs_card *card, uint reg, u8 val)
+-{
+-	if (debug_output)
+-		printk(KERN_INFO "outb %08x>%02x\n", reg, val);
+-	iowrite8(val, card->iobase + reg);
+-}
+-
+-static inline void if_cs_write16(struct if_cs_card *card, uint reg, u16 val)
+-{
+-	if (debug_output)
+-		printk(KERN_INFO "outw %08x>%04x\n", reg, val);
+-	iowrite16(val, card->iobase + reg);
+-}
+-
+-static inline void if_cs_write16_rep(
+-	struct if_cs_card *card,
+-	uint reg,
+-	const void *buf,
+-	unsigned long count)
+-{
+-	if (debug_output)
+-		printk(KERN_INFO "outsw %08x>(0x%lx words)\n",
+-			reg, count);
+-	iowrite16_rep(card->iobase + reg, buf, count);
+-}
+-
+-
+-/*
+- * I know that polling/delaying is frowned upon. However, this procedure
+- * with polling is needed while downloading the firmware. At this stage,
+- * the hardware does unfortunately not create any interrupts.
+- *
+- * Fortunately, this function is never used once the firmware is in
+- * the card. :-)
+- *
+- * As a reference, see the "Firmware Specification v5.1", page 18
+- * and 19. I did not follow their suggested timing to the word,
+- * but this works nice & fast anyway.
+- */
+-static int if_cs_poll_while_fw_download(struct if_cs_card *card, uint addr, u8 reg)
+-{
+-	int i;
+-
+-	for (i = 0; i < 100000; i++) {
+-		u8 val = if_cs_read8(card, addr);
+-		if (val == reg)
+-			return 0;
+-		udelay(5);
+-	}
+-	return -ETIME;
+-}
+-
+-
+-
+-/*
+- * First the bitmasks for the host/card interrupt/status registers:
+- */
+-#define IF_CS_BIT_TX			0x0001
+-#define IF_CS_BIT_RX			0x0002
+-#define IF_CS_BIT_COMMAND		0x0004
+-#define IF_CS_BIT_RESP			0x0008
+-#define IF_CS_BIT_EVENT			0x0010
+-#define	IF_CS_BIT_MASK			0x001f
+-
+-
+-
+-/*
+- * It's not really clear to me what the host status register is for. It
+- * needs to be set almost in union with "host int cause". The following
+- * bits from above are used:
+- *
+- *   IF_CS_BIT_TX         driver downloaded a data packet
+- *   IF_CS_BIT_RX         driver got a data packet
+- *   IF_CS_BIT_COMMAND    driver downloaded a command
+- *   IF_CS_BIT_RESP       not used (has some meaning with powerdown)
+- *   IF_CS_BIT_EVENT      driver read a host event
+- */
+-#define IF_CS_HOST_STATUS		0x00000000
+-
+-/*
+- * With the host int cause register can the host (that is, Linux) cause
+- * an interrupt in the firmware, to tell the firmware about those events:
+- *
+- *   IF_CS_BIT_TX         a data packet has been downloaded
+- *   IF_CS_BIT_RX         a received data packet has retrieved
+- *   IF_CS_BIT_COMMAND    a firmware block or a command has been downloaded
+- *   IF_CS_BIT_RESP       not used (has some meaning with powerdown)
+- *   IF_CS_BIT_EVENT      a host event (link lost etc) has been retrieved
+- */
+-#define IF_CS_HOST_INT_CAUSE		0x00000002
+-
+-/*
+- * The host int mask register is used to enable/disable interrupt.  However,
+- * I have the suspicion that disabled interrupts are lost.
+- */
+-#define IF_CS_HOST_INT_MASK		0x00000004
+-
+-/*
+- * Used to send or receive data packets:
+- */
+-#define IF_CS_WRITE			0x00000016
+-#define IF_CS_WRITE_LEN			0x00000014
+-#define IF_CS_READ			0x00000010
+-#define IF_CS_READ_LEN			0x00000024
+-
+-/*
+- * Used to send commands (and to send firmware block) and to
+- * receive command responses:
+- */
+-#define IF_CS_CMD			0x0000001A
+-#define IF_CS_CMD_LEN			0x00000018
+-#define IF_CS_RESP			0x00000012
+-#define IF_CS_RESP_LEN			0x00000030
+-
+-/*
+- * The card status registers shows what the card/firmware actually
+- * accepts:
+- *
+- *   IF_CS_BIT_TX        you may send a data packet
+- *   IF_CS_BIT_RX        you may retrieve a data packet
+- *   IF_CS_BIT_COMMAND   you may send a command
+- *   IF_CS_BIT_RESP      you may retrieve a command response
+- *   IF_CS_BIT_EVENT     the card has a event for use (link lost, snr low etc)
+- *
+- * When reading this register several times, you will get back the same
+- * results --- with one exception: the IF_CS_BIT_EVENT clear itself
+- * automatically.
+- *
+- * Not that we don't rely on BIT_RX,_BIT_RESP or BIT_EVENT because
+- * we handle this via the card int cause register.
+- */
+-#define IF_CS_CARD_STATUS		0x00000020
+-#define IF_CS_CARD_STATUS_MASK		0x7f00
+-
+-/*
+- * The card int cause register is used by the card/firmware to notify us
+- * about the following events:
+- *
+- *   IF_CS_BIT_TX        a data packet has successfully been sentx
+- *   IF_CS_BIT_RX        a data packet has been received and can be retrieved
+- *   IF_CS_BIT_COMMAND   not used
+- *   IF_CS_BIT_RESP      the firmware has a command response for us
+- *   IF_CS_BIT_EVENT     the card has a event for use (link lost, snr low etc)
+- */
+-#define IF_CS_CARD_INT_CAUSE		0x00000022
+-
+-/*
+- * This is used to for handshaking with the card's bootloader/helper image
+- * to synchronize downloading of firmware blocks.
+- */
+-#define IF_CS_SQ_READ_LOW		0x00000028
+-#define IF_CS_SQ_HELPER_OK		0x10
+-
+-/*
+- * The scratch register tells us ...
+- *
+- * IF_CS_SCRATCH_BOOT_OK     the bootloader runs
+- * IF_CS_SCRATCH_HELPER_OK   the helper firmware already runs
+- */
+-#define IF_CS_SCRATCH			0x0000003F
+-#define IF_CS_SCRATCH_BOOT_OK		0x00
+-#define IF_CS_SCRATCH_HELPER_OK		0x5a
+-
+-/*
+- * Used to detect ancient chips:
+- */
+-#define IF_CS_PRODUCT_ID		0x0000001C
+-#define IF_CS_CF8385_B1_REV		0x12
+-#define IF_CS_CF8381_B3_REV		0x04
+-#define IF_CS_CF8305_B1_REV		0x03
+-
+-/*
+- * Used to detect other cards than CF8385 since their revisions of silicon
+- * doesn't match those from CF8385, eg. CF8381 B3 works with this driver.
+- */
+-#define CF8305_MANFID		0x02db
+-#define CF8305_CARDID		0x8103
+-#define CF8381_MANFID		0x02db
+-#define CF8381_CARDID		0x6064
+-#define CF8385_MANFID		0x02df
+-#define CF8385_CARDID		0x8103
+-
+-/*
+- * FIXME: just use the 'driver_info' field of 'struct pcmcia_device_id' when
+- * that gets fixed.  Currently there's no way to access it from the probe hook.
+- */
+-static inline u32 get_model(u16 manf_id, u16 card_id)
+-{
+-	/* NOTE: keep in sync with if_cs_ids */
+-	if (manf_id == CF8305_MANFID && card_id == CF8305_CARDID)
+-		return MODEL_8305;
+-	else if (manf_id == CF8381_MANFID && card_id == CF8381_CARDID)
+-		return MODEL_8381;
+-	else if (manf_id == CF8385_MANFID && card_id == CF8385_CARDID)
+-		return MODEL_8385;
+-	return MODEL_UNKNOWN;
+-}
+-
+-/********************************************************************/
+-/* I/O and interrupt handling                                       */
+-/********************************************************************/
+-
+-static inline void if_cs_enable_ints(struct if_cs_card *card)
+-{
+-	if_cs_write16(card, IF_CS_HOST_INT_MASK, 0);
+-}
+-
+-static inline void if_cs_disable_ints(struct if_cs_card *card)
+-{
+-	if_cs_write16(card, IF_CS_HOST_INT_MASK, IF_CS_BIT_MASK);
+-}
+-
+-/*
+- * Called from if_cs_host_to_card to send a command to the hardware
+- */
+-static int if_cs_send_cmd(struct lbs_private *priv, u8 *buf, u16 nb)
+-{
+-	struct if_cs_card *card = (struct if_cs_card *)priv->card;
+-	int ret = -1;
+-	int loops = 0;
+-
+-	if_cs_disable_ints(card);
+-
+-	/* Is hardware ready? */
+-	while (1) {
+-		u16 status = if_cs_read16(card, IF_CS_CARD_STATUS);
+-		if (status & IF_CS_BIT_COMMAND)
+-			break;
+-		if (++loops > 100) {
+-			netdev_err(priv->dev, "card not ready for commands\n");
+-			goto done;
+-		}
+-		mdelay(1);
+-	}
+-
+-	if_cs_write16(card, IF_CS_CMD_LEN, nb);
+-
+-	if_cs_write16_rep(card, IF_CS_CMD, buf, nb / 2);
+-	/* Are we supposed to transfer an odd amount of bytes? */
+-	if (nb & 1)
+-		if_cs_write8(card, IF_CS_CMD, buf[nb-1]);
+-
+-	/* "Assert the download over interrupt command in the Host
+-	 * status register" */
+-	if_cs_write16(card, IF_CS_HOST_STATUS, IF_CS_BIT_COMMAND);
+-
+-	/* "Assert the download over interrupt command in the Card
+-	 * interrupt case register" */
+-	if_cs_write16(card, IF_CS_HOST_INT_CAUSE, IF_CS_BIT_COMMAND);
+-	ret = 0;
+-
+-done:
+-	if_cs_enable_ints(card);
+-	return ret;
+-}
+-
+-/*
+- * Called from if_cs_host_to_card to send a data to the hardware
+- */
+-static void if_cs_send_data(struct lbs_private *priv, u8 *buf, u16 nb)
+-{
+-	struct if_cs_card *card = (struct if_cs_card *)priv->card;
+-	u16 status;
+-
+-	if_cs_disable_ints(card);
+-
+-	status = if_cs_read16(card, IF_CS_CARD_STATUS);
+-	BUG_ON((status & IF_CS_BIT_TX) == 0);
+-
+-	if_cs_write16(card, IF_CS_WRITE_LEN, nb);
+-
+-	/* write even number of bytes, then odd byte if necessary */
+-	if_cs_write16_rep(card, IF_CS_WRITE, buf, nb / 2);
+-	if (nb & 1)
+-		if_cs_write8(card, IF_CS_WRITE, buf[nb-1]);
+-
+-	if_cs_write16(card, IF_CS_HOST_STATUS, IF_CS_BIT_TX);
+-	if_cs_write16(card, IF_CS_HOST_INT_CAUSE, IF_CS_BIT_TX);
+-	if_cs_enable_ints(card);
+-}
+-
+-/*
+- * Get the command result out of the card.
+- */
+-static int if_cs_receive_cmdres(struct lbs_private *priv, u8 *data, u32 *len)
+-{
+-	unsigned long flags;
+-	int ret = -1;
+-	u16 status;
+-
+-	/* is hardware ready? */
+-	status = if_cs_read16(priv->card, IF_CS_CARD_STATUS);
+-	if ((status & IF_CS_BIT_RESP) == 0) {
+-		netdev_err(priv->dev, "no cmd response in card\n");
+-		*len = 0;
+-		goto out;
+-	}
+-
+-	*len = if_cs_read16(priv->card, IF_CS_RESP_LEN);
+-	if ((*len == 0) || (*len > LBS_CMD_BUFFER_SIZE)) {
+-		netdev_err(priv->dev,
+-			   "card cmd buffer has invalid # of bytes (%d)\n",
+-			   *len);
+-		goto out;
+-	}
+-
+-	/* read even number of bytes, then odd byte if necessary */
+-	if_cs_read16_rep(priv->card, IF_CS_RESP, data, *len/sizeof(u16));
+-	if (*len & 1)
+-		data[*len-1] = if_cs_read8(priv->card, IF_CS_RESP);
+-
+-	/* This is a workaround for a firmware that reports too much
+-	 * bytes */
+-	*len -= 8;
+-	ret = 0;
+-
+-	/* Clear this flag again */
+-	spin_lock_irqsave(&priv->driver_lock, flags);
+-	priv->dnld_sent = DNLD_RES_RECEIVED;
+-	spin_unlock_irqrestore(&priv->driver_lock, flags);
+-
+-out:
+-	return ret;
+-}
+-
+-static struct sk_buff *if_cs_receive_data(struct lbs_private *priv)
+-{
+-	struct sk_buff *skb = NULL;
+-	u16 len;
+-	u8 *data;
+-
+-	len = if_cs_read16(priv->card, IF_CS_READ_LEN);
+-	if (len == 0 || len > MRVDRV_ETH_RX_PACKET_BUFFER_SIZE) {
+-		netdev_err(priv->dev,
+-			   "card data buffer has invalid # of bytes (%d)\n",
+-			   len);
+-		priv->dev->stats.rx_dropped++;
+-		goto dat_err;
+-	}
+-
+-	skb = dev_alloc_skb(MRVDRV_ETH_RX_PACKET_BUFFER_SIZE + 2);
+-	if (!skb)
+-		goto out;
+-	skb_put(skb, len);
+-	skb_reserve(skb, 2);/* 16 byte align */
+-	data = skb->data;
+-
+-	/* read even number of bytes, then odd byte if necessary */
+-	if_cs_read16_rep(priv->card, IF_CS_READ, data, len/sizeof(u16));
+-	if (len & 1)
+-		data[len-1] = if_cs_read8(priv->card, IF_CS_READ);
+-
+-dat_err:
+-	if_cs_write16(priv->card, IF_CS_HOST_STATUS, IF_CS_BIT_RX);
+-	if_cs_write16(priv->card, IF_CS_HOST_INT_CAUSE, IF_CS_BIT_RX);
+-
+-out:
+-	return skb;
+-}
+-
+-static irqreturn_t if_cs_interrupt(int irq, void *data)
+-{
+-	struct if_cs_card *card = data;
+-	struct lbs_private *priv = card->priv;
+-	u16 cause;
+-
+-	/* Ask card interrupt cause register if there is something for us */
+-	cause = if_cs_read16(card, IF_CS_CARD_INT_CAUSE);
+-	lbs_deb_cs("cause 0x%04x\n", cause);
+-
+-	if (cause == 0) {
+-		/* Not for us */
+-		return IRQ_NONE;
+-	}
+-
+-	if (cause == 0xffff) {
+-		/* Read in junk, the card has probably been removed */
+-		card->priv->surpriseremoved = 1;
+-		return IRQ_HANDLED;
+-	}
+-
+-	if (cause & IF_CS_BIT_RX) {
+-		struct sk_buff *skb;
+-		lbs_deb_cs("rx packet\n");
+-		skb = if_cs_receive_data(priv);
+-		if (skb)
+-			lbs_process_rxed_packet(priv, skb);
+-	}
+-
+-	if (cause & IF_CS_BIT_TX) {
+-		lbs_deb_cs("tx done\n");
+-		lbs_host_to_card_done(priv);
+-	}
+-
+-	if (cause & IF_CS_BIT_RESP) {
+-		unsigned long flags;
+-		u8 i;
+-
+-		lbs_deb_cs("cmd resp\n");
+-		spin_lock_irqsave(&priv->driver_lock, flags);
+-		i = (priv->resp_idx == 0) ? 1 : 0;
+-		spin_unlock_irqrestore(&priv->driver_lock, flags);
+-
+-		BUG_ON(priv->resp_len[i]);
+-		if_cs_receive_cmdres(priv, priv->resp_buf[i],
+-			&priv->resp_len[i]);
+-
+-		spin_lock_irqsave(&priv->driver_lock, flags);
+-		lbs_notify_command_response(priv, i);
+-		spin_unlock_irqrestore(&priv->driver_lock, flags);
+-	}
+-
+-	if (cause & IF_CS_BIT_EVENT) {
+-		u16 status = if_cs_read16(priv->card, IF_CS_CARD_STATUS);
+-		if_cs_write16(priv->card, IF_CS_HOST_INT_CAUSE,
+-			IF_CS_BIT_EVENT);
+-		lbs_queue_event(priv, (status & IF_CS_CARD_STATUS_MASK) >> 8);
+-	}
+-
+-	/* Clear interrupt cause */
+-	if_cs_write16(card, IF_CS_CARD_INT_CAUSE, cause & IF_CS_BIT_MASK);
+-
+-	return IRQ_HANDLED;
+-}
+-
+-
+-
+-
+-/********************************************************************/
+-/* Firmware                                                         */
+-/********************************************************************/
+-
+-/*
+- * Tries to program the helper firmware.
+- *
+- * Return 0 on success
+- */
+-static int if_cs_prog_helper(struct if_cs_card *card, const struct firmware *fw)
+-{
+-	int ret = 0;
+-	int sent = 0;
+-	u8  scratch;
+-
+-	/*
+-	 * This is the only place where an unaligned register access happens on
+-	 * the CF8305 card, therefore for the sake of speed of the driver, we do
+-	 * the alignment correction here.
+-	 */
+-	if (card->align_regs)
+-		scratch = if_cs_read16(card, IF_CS_SCRATCH) >> 8;
+-	else
+-		scratch = if_cs_read8(card, IF_CS_SCRATCH);
+-
+-	/* "If the value is 0x5a, the firmware is already
+-	 * downloaded successfully"
+-	 */
+-	if (scratch == IF_CS_SCRATCH_HELPER_OK)
+-		goto done;
+-
+-	/* "If the value is != 00, it is invalid value of register */
+-	if (scratch != IF_CS_SCRATCH_BOOT_OK) {
+-		ret = -ENODEV;
+-		goto done;
+-	}
+-
+-	lbs_deb_cs("helper size %td\n", fw->size);
+-
+-	/* "Set the 5 bytes of the helper image to 0" */
+-	/* Not needed, this contains an ARM branch instruction */
+-
+-	for (;;) {
+-		/* "the number of bytes to send is 256" */
+-		int count = 256;
+-		int remain = fw->size - sent;
+-
+-		if (remain < count)
+-			count = remain;
+-
+-		/*
+-		 * "write the number of bytes to be sent to the I/O Command
+-		 * write length register"
+-		 */
+-		if_cs_write16(card, IF_CS_CMD_LEN, count);
+-
+-		/* "write this to I/O Command port register as 16 bit writes */
+-		if (count)
+-			if_cs_write16_rep(card, IF_CS_CMD,
+-				&fw->data[sent],
+-				count >> 1);
+-
+-		/*
+-		 * "Assert the download over interrupt command in the Host
+-		 * status register"
+-		 */
+-		if_cs_write8(card, IF_CS_HOST_STATUS, IF_CS_BIT_COMMAND);
+-
+-		/*
+-		 * "Assert the download over interrupt command in the Card
+-		 * interrupt case register"
+-		 */
+-		if_cs_write16(card, IF_CS_HOST_INT_CAUSE, IF_CS_BIT_COMMAND);
+-
+-		/*
+-		 * "The host polls the Card Status register ... for 50 ms before
+-		 * declaring a failure"
+-		 */
+-		ret = if_cs_poll_while_fw_download(card, IF_CS_CARD_STATUS,
+-			IF_CS_BIT_COMMAND);
+-		if (ret < 0) {
+-			pr_err("can't download helper at 0x%x, ret %d\n",
+-			       sent, ret);
+-			goto done;
+-		}
+-
+-		if (count == 0)
+-			break;
+-
+-		sent += count;
+-	}
+-
+-done:
+-	return ret;
+-}
+-
+-
+-static int if_cs_prog_real(struct if_cs_card *card, const struct firmware *fw)
+-{
+-	int ret = 0;
+-	int retry = 0;
+-	int len = 0;
+-	int sent;
+-
+-	lbs_deb_cs("fw size %td\n", fw->size);
+-
+-	ret = if_cs_poll_while_fw_download(card, IF_CS_SQ_READ_LOW,
+-		IF_CS_SQ_HELPER_OK);
+-	if (ret < 0) {
+-		pr_err("helper firmware doesn't answer\n");
+-		goto done;
+-	}
+-
+-	for (sent = 0; sent < fw->size; sent += len) {
+-		len = if_cs_read16(card, IF_CS_SQ_READ_LOW);
+-		if (len & 1) {
+-			retry++;
+-			pr_info("odd, need to retry this firmware block\n");
+-		} else {
+-			retry = 0;
+-		}
+-
+-		if (retry > 20) {
+-			pr_err("could not download firmware\n");
+-			ret = -ENODEV;
+-			goto done;
+-		}
+-		if (retry) {
+-			sent -= len;
+-		}
+-
+-
+-		if_cs_write16(card, IF_CS_CMD_LEN, len);
+-
+-		if_cs_write16_rep(card, IF_CS_CMD,
+-			&fw->data[sent],
+-			(len+1) >> 1);
+-		if_cs_write8(card, IF_CS_HOST_STATUS, IF_CS_BIT_COMMAND);
+-		if_cs_write16(card, IF_CS_HOST_INT_CAUSE, IF_CS_BIT_COMMAND);
+-
+-		ret = if_cs_poll_while_fw_download(card, IF_CS_CARD_STATUS,
+-			IF_CS_BIT_COMMAND);
+-		if (ret < 0) {
+-			pr_err("can't download firmware at 0x%x\n", sent);
+-			goto done;
+-		}
+-	}
+-
+-	ret = if_cs_poll_while_fw_download(card, IF_CS_SCRATCH, 0x5a);
+-	if (ret < 0)
+-		pr_err("firmware download failed\n");
+-
+-done:
+-	return ret;
+-}
+-
+-static void if_cs_prog_firmware(struct lbs_private *priv, int ret,
+-				 const struct firmware *helper,
+-				 const struct firmware *mainfw)
+-{
+-	struct if_cs_card *card = priv->card;
+-
+-	if (ret) {
+-		pr_err("failed to find firmware (%d)\n", ret);
+-		return;
+-	}
+-
+-	/* Load the firmware */
+-	ret = if_cs_prog_helper(card, helper);
+-	if (ret == 0 && (card->model != MODEL_8305))
+-		ret = if_cs_prog_real(card, mainfw);
+-	if (ret)
+-		return;
+-
+-	/* Now actually get the IRQ */
+-	ret = request_irq(card->p_dev->irq, if_cs_interrupt,
+-		IRQF_SHARED, DRV_NAME, card);
+-	if (ret) {
+-		pr_err("error in request_irq\n");
+-		return;
+-	}
+-
+-	/*
+-	 * Clear any interrupt cause that happened while sending
+-	 * firmware/initializing card
+-	 */
+-	if_cs_write16(card, IF_CS_CARD_INT_CAUSE, IF_CS_BIT_MASK);
+-	if_cs_enable_ints(card);
+-
+-	/* And finally bring the card up */
+-	priv->fw_ready = 1;
+-	if (lbs_start_card(priv) != 0) {
+-		pr_err("could not activate card\n");
+-		free_irq(card->p_dev->irq, card);
+-	}
+-}
+-
+-
+-/********************************************************************/
+-/* Callback functions for libertas.ko                               */
+-/********************************************************************/
+-
+-/* Send commands or data packets to the card */
+-static int if_cs_host_to_card(struct lbs_private *priv,
+-	u8 type,
+-	u8 *buf,
+-	u16 nb)
+-{
+-	int ret = -1;
+-
+-	switch (type) {
+-	case MVMS_DAT:
+-		priv->dnld_sent = DNLD_DATA_SENT;
+-		if_cs_send_data(priv, buf, nb);
+-		ret = 0;
+-		break;
+-	case MVMS_CMD:
+-		priv->dnld_sent = DNLD_CMD_SENT;
+-		ret = if_cs_send_cmd(priv, buf, nb);
+-		break;
+-	default:
+-		netdev_err(priv->dev, "%s: unsupported type %d\n",
+-			   __func__, type);
+-	}
+-
+-	return ret;
+-}
+-
+-
+-static void if_cs_release(struct pcmcia_device *p_dev)
+-{
+-	struct if_cs_card *card = p_dev->priv;
+-
+-	free_irq(p_dev->irq, card);
+-	pcmcia_disable_device(p_dev);
+-	if (card->iobase)
+-		ioport_unmap(card->iobase);
+-}
+-
+-
+-static int if_cs_ioprobe(struct pcmcia_device *p_dev, void *priv_data)
+-{
+-	p_dev->resource[0]->flags &= ~IO_DATA_PATH_WIDTH;
+-	p_dev->resource[0]->flags |= IO_DATA_PATH_WIDTH_AUTO;
+-
+-	if (p_dev->resource[1]->end) {
+-		pr_err("wrong CIS (check number of IO windows)\n");
+-		return -ENODEV;
+-	}
+-
+-	/* This reserves IO space but doesn't actually enable it */
+-	return pcmcia_request_io(p_dev);
+-}
+-
+-static int if_cs_probe(struct pcmcia_device *p_dev)
+-{
+-	int ret = -ENOMEM;
+-	unsigned int prod_id;
+-	struct lbs_private *priv;
+-	struct if_cs_card *card;
+-
+-	card = kzalloc(sizeof(struct if_cs_card), GFP_KERNEL);
+-	if (!card)
+-		goto out;
+-
+-	card->p_dev = p_dev;
+-	p_dev->priv = card;
+-
+-	p_dev->config_flags |= CONF_ENABLE_IRQ | CONF_AUTO_SET_IO;
+-
+-	if (pcmcia_loop_config(p_dev, if_cs_ioprobe, NULL)) {
+-		pr_err("error in pcmcia_loop_config\n");
+-		goto out1;
+-	}
+-
+-	/*
+-	 * Allocate an interrupt line.  Note that this does not assign
+-	 * a handler to the interrupt, unless the 'Handler' member of
+-	 * the irq structure is initialized.
+-	 */
+-	if (!p_dev->irq)
+-		goto out1;
+-
+-	/* Initialize io access */
+-	card->iobase = ioport_map(p_dev->resource[0]->start,
+-				resource_size(p_dev->resource[0]));
+-	if (!card->iobase) {
+-		pr_err("error in ioport_map\n");
+-		ret = -EIO;
+-		goto out1;
+-	}
+-
+-	ret = pcmcia_enable_device(p_dev);
+-	if (ret) {
+-		pr_err("error in pcmcia_enable_device\n");
+-		goto out2;
+-	}
+-
+-	/* Finally, report what we've done */
+-	lbs_deb_cs("irq %d, io %pR", p_dev->irq, p_dev->resource[0]);
+-
+-	/*
+-	 * Most of the libertas cards can do unaligned register access, but some
+-	 * weird ones cannot. That's especially true for the CF8305 card.
+-	 */
+-	card->align_regs = false;
+-
+-	card->model = get_model(p_dev->manf_id, p_dev->card_id);
+-	if (card->model == MODEL_UNKNOWN) {
+-		pr_err("unsupported manf_id 0x%04x / card_id 0x%04x\n",
+-		       p_dev->manf_id, p_dev->card_id);
+-		ret = -ENODEV;
+-		goto out2;
+-	}
+-
+-	/* Check if we have a current silicon */
+-	prod_id = if_cs_read8(card, IF_CS_PRODUCT_ID);
+-	if (card->model == MODEL_8305) {
+-		card->align_regs = true;
+-		if (prod_id < IF_CS_CF8305_B1_REV) {
+-			pr_err("8305 rev B0 and older are not supported\n");
+-			ret = -ENODEV;
+-			goto out2;
+-		}
+-	}
+-
+-	if ((card->model == MODEL_8381) && prod_id < IF_CS_CF8381_B3_REV) {
+-		pr_err("8381 rev B2 and older are not supported\n");
+-		ret = -ENODEV;
+-		goto out2;
+-	}
+-
+-	if ((card->model == MODEL_8385) && prod_id < IF_CS_CF8385_B1_REV) {
+-		pr_err("8385 rev B0 and older are not supported\n");
+-		ret = -ENODEV;
+-		goto out2;
+-	}
+-
+-	/* Make this card known to the libertas driver */
+-	priv = lbs_add_card(card, &p_dev->dev);
+-	if (IS_ERR(priv)) {
+-		ret = PTR_ERR(priv);
+-		goto out2;
+-	}
+-
+-	/* Set up fields in lbs_private */
+-	card->priv = priv;
+-	priv->card = card;
+-	priv->hw_host_to_card = if_cs_host_to_card;
+-	priv->enter_deep_sleep = NULL;
+-	priv->exit_deep_sleep = NULL;
+-	priv->reset_deep_sleep_wakeup = NULL;
+-
+-	/* Get firmware */
+-	ret = lbs_get_firmware_async(priv, &p_dev->dev, card->model, fw_table,
+-				     if_cs_prog_firmware);
+-	if (ret) {
+-		pr_err("failed to find firmware (%d)\n", ret);
+-		goto out3;
+-	}
+-
+-	goto out;
+-
+-out3:
+-	lbs_remove_card(priv);
+-out2:
+-	ioport_unmap(card->iobase);
+-out1:
+-	pcmcia_disable_device(p_dev);
+-out:
+-	return ret;
+-}
+-
+-
+-static void if_cs_detach(struct pcmcia_device *p_dev)
+-{
+-	struct if_cs_card *card = p_dev->priv;
+-
+-	lbs_stop_card(card->priv);
+-	lbs_remove_card(card->priv);
+-	if_cs_disable_ints(card);
+-	if_cs_release(p_dev);
+-	kfree(card);
+-}
+-
+-
+-
+-/********************************************************************/
+-/* Module initialization                                            */
+-/********************************************************************/
+-
+-static const struct pcmcia_device_id if_cs_ids[] = {
+-	PCMCIA_DEVICE_MANF_CARD(CF8305_MANFID, CF8305_CARDID),
+-	PCMCIA_DEVICE_MANF_CARD(CF8381_MANFID, CF8381_CARDID),
+-	PCMCIA_DEVICE_MANF_CARD(CF8385_MANFID, CF8385_CARDID),
+-	/* NOTE: keep in sync with get_model() */
+-	PCMCIA_DEVICE_NULL,
+-};
+-MODULE_DEVICE_TABLE(pcmcia, if_cs_ids);
+-
+-static struct pcmcia_driver lbs_driver = {
+-	.owner		= THIS_MODULE,
+-	.name		= DRV_NAME,
+-	.probe		= if_cs_probe,
+-	.remove		= if_cs_detach,
+-	.id_table       = if_cs_ids,
+-};
+-module_pcmcia_driver(lbs_driver);
 -- 
 2.39.2
 
-Cc: "David S . Miller" <davem@davemloft.net>,
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Geoff Levand <geoff@infradead.org>,
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-Cc: Jakub Kicinski <kuba@kernel.org>,
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: Larry Finger <Larry.Finger@lwfinger.net>,
-Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
-Cc: Pavel Machek <pavel@ucw.cz>,
-Cc: Stanislaw Gruszka <stf_xl@wp.pl>
-Cc: Gregory Greenman <gregory.greenman@intel.com>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: <linux-arm-kernel@lists.infradead.org>,
-Cc: <linux-kernel@vger.kernel.org>
-Cc: <linux-staging@lists.linux.dev>,
-Cc: <linux-wireless@vger.kernel.org>,
