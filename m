@@ -2,54 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F0007D3D62
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Oct 2023 19:21:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31F157D41B2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Oct 2023 23:30:08 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZOVDksWf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=E0uFqtyn;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SDhnd2DFWz3cTb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Oct 2023 04:21:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SDpHy0bKNz3cWq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Oct 2023 08:30:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZOVDksWf;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=E0uFqtyn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SDhmn0Kr7z2xdZ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Oct 2023 04:21:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SDbRF5fv2z3bqW
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Oct 2023 00:20:41 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id CF6ADCE0C47;
-	Mon, 23 Oct 2023 17:21:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977DEC433C7;
-	Mon, 23 Oct 2023 17:21:03 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id DB514CE248E;
+	Mon, 23 Oct 2023 13:20:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6567C433C9;
+	Mon, 23 Oct 2023 13:20:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1698081670;
-	bh=WQYEKm0Mc7inaH0wFnxcEUmfAmPR1JoMV7fRygVNKQQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZOVDksWfw+hV9R+Z5ZexM6NcY3xDNdzdq9AsRt4vO9wMdxWhqWWcxLwP+eW4A962q
-	 Qk6ekhq2Ipm65VVsfFxXGy8qQeQOWzCvDqLJfEU8nWaZHFbI6flnaXvlVH0CRDWH+w
-	 hIMRahts5mdD+tpF+6eXFcpVMEl1Ep7tHL5W7fbVdPmlfZ6yQugf14RafBolwJcEMn
-	 21vyDdZz0h9WC0+Q/QJBX2oIB6fGQ1kXhcFuxCsKB2tbLoPEgU/BSdSOixB9qw31iO
-	 OgDPN8A4Uqs6uFqTMJcPk6zjMZ/offJmG+hcHSxPefHsLKYd1oYsfoKs6fvoRIkbKX
-	 wMvEth+vb/+ag==
-Date: Mon, 23 Oct 2023 18:21:00 +0100
-From: Will Deacon <will@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v3 07/13] arm64, execmem: extend execmem_params for
- generated code allocations
-Message-ID: <20231023172059.GB4041@willie-the-truck>
-References: <20230918072955.2507221-1-rppt@kernel.org>
- <20230918072955.2507221-8-rppt@kernel.org>
+	s=k20201202; t=1698067235;
+	bh=bdpeoUoSwC+7iVPYeBpvQt06B4Hq04mMHXgrTYaN9Dw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=E0uFqtynTDnx3Y3FmnBiA8FhDiTzwv8TVSL4QJoAs0V7LFDOA0EOr4cYszylFD7o1
+	 /ifIhrELWmZML1oqaIygf88A8tV7L/aDuhQBQb3InWfhp2u+/pHY9hWR6sKAM1NFSv
+	 zNjvBJzIgTBjVroauDkrmVUPYNZcqeXkvWuAnZGbnLfeGxkx46PFysY/2wpYdeLqmQ
+	 4/scfxhveZ92qnQ95X13RJ34gAWbXZ1hEj9C5qOqJJrC3pf8N1BC1FEtDkz8+rxAq1
+	 skh7VFtS+KWZLHw5fA/7VEznpGFWu8IV1BP7RRGnHioeVUGH/0D9Ru09HWVDOT3jAL
+	 3KRTfqv4UvuUQ==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 04/10] wifi: remove obsolete hostap driver
+Date: Mon, 23 Oct 2023 15:19:46 +0200
+Message-Id: <20231023131953.2876682-5-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231023131953.2876682-1-arnd@kernel.org>
+References: <20231023131953.2876682-1-arnd@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230918072955.2507221-8-rppt@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Tue, 24 Oct 2023 08:29:15 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,77 +59,19344 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Song Liu <song@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Puranjay Mohan <puranjay12@gmail.com>, linux-mm@kvack.org, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, =?iso-8859-1?Q?Bj=F6rn_
- T=F6pel?= <bjorn@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, linux-modules@vger.kernel.org
+Cc: Stanislaw Gruszka <stf_xl@wp.pl>, Alexandre Belloni <alexandre.belloni@bootlin.com>, linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, Geoff Levand <geoff@infradead.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-wireless@vger.kernel.org, Claudiu Beznea <claudiu.beznea@tuxon.dev>, Nicolas Ferre <nicolas.ferre@microchip.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Pavel Machek <pavel@ucw.cz>, Gregory Greenman <gregory.greenman@intel.com>, Jakub Kicinski <kuba@kernel.org>, Johannes Berg <johannes@sipsolutions.net>, Jeff Johnson <quic_jjohnson@quicinc.com>, "David S . Miller" <davem@davemloft.net>, linux-arm-kernel@lists.infradead.org, Larry Finger <Larry.Finger@lwfinger.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 18, 2023 at 10:29:49AM +0300, Mike Rapoport wrote:
-> From: "Mike Rapoport (IBM)" <rppt@kernel.org>
-> 
-> The memory allocations for kprobes and BPF on arm64 can be placed
-> anywhere in vmalloc address space and currently this is implemented with
-> overrides of alloc_insn_page() and bpf_jit_alloc_exec() in arm64.
-> 
-> Define EXECMEM_KPROBES and EXECMEM_BPF ranges in arm64::execmem_params and
-> drop overrides of alloc_insn_page() and bpf_jit_alloc_exec().
-> 
-> Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
-> ---
->  arch/arm64/kernel/module.c         | 13 +++++++++++++
->  arch/arm64/kernel/probes/kprobes.c |  7 -------
->  arch/arm64/net/bpf_jit_comp.c      | 11 -----------
->  3 files changed, 13 insertions(+), 18 deletions(-)
-> 
-> diff --git a/arch/arm64/kernel/module.c b/arch/arm64/kernel/module.c
-> index cd6320de1c54..d27db168d2a2 100644
-> --- a/arch/arm64/kernel/module.c
-> +++ b/arch/arm64/kernel/module.c
-> @@ -116,6 +116,16 @@ static struct execmem_params execmem_params __ro_after_init = {
->  			.flags = EXECMEM_KASAN_SHADOW,
->  			.alignment = MODULE_ALIGN,
->  		},
-> +		[EXECMEM_KPROBES] = {
-> +			.start = VMALLOC_START,
-> +			.end = VMALLOC_END,
-> +			.alignment = 1,
-> +		},
-> +		[EXECMEM_BPF] = {
-> +			.start = VMALLOC_START,
-> +			.end = VMALLOC_END,
-> +			.alignment = 1,
-> +		},
->  	},
->  };
->  
-> @@ -140,6 +150,9 @@ struct execmem_params __init *execmem_arch_params(void)
->  		r->end = module_plt_base + SZ_2G;
->  	}
->  
-> +	execmem_params.ranges[EXECMEM_KPROBES].pgprot = PAGE_KERNEL_ROX;
-> +	execmem_params.ranges[EXECMEM_BPF].pgprot = PAGE_KERNEL;
-> +
->  	return &execmem_params;
->  }
->  
-> diff --git a/arch/arm64/kernel/probes/kprobes.c b/arch/arm64/kernel/probes/kprobes.c
-> index 70b91a8c6bb3..6fccedd02b2a 100644
-> --- a/arch/arm64/kernel/probes/kprobes.c
-> +++ b/arch/arm64/kernel/probes/kprobes.c
-> @@ -129,13 +129,6 @@ int __kprobes arch_prepare_kprobe(struct kprobe *p)
->  	return 0;
->  }
->  
-> -void *alloc_insn_page(void)
-> -{
-> -	return __vmalloc_node_range(PAGE_SIZE, 1, VMALLOC_START, VMALLOC_END,
-> -			GFP_KERNEL, PAGE_KERNEL_ROX, VM_FLUSH_RESET_PERMS,
-> -			NUMA_NO_NODE, __builtin_return_address(0));
-> -}
+From: Arnd Bergmann <arnd@arndb.de>
 
-It's slightly curious that we didn't clear the tag here, so it's nice that
-it all happens magically with your series:
+HostAP is an ISA/PCMCIA style 802.11b driver supporting only
+wireless extensions, and some custom ioctls (already removed).
+Some devices include a legacy PCI bridge but no DMA.
 
-Acked-by: Will Deacon <will@kernel.org>
+The driver was marked obsolete in 2016 and is highly unlikely
+to still have any users.
 
-Will
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ MAINTAINERS                                   |    5 -
+ drivers/net/wireless/intersil/Kconfig         |    1 -
+ drivers/net/wireless/intersil/Makefile        |    1 -
+ drivers/net/wireless/intersil/hostap/Kconfig  |   95 -
+ drivers/net/wireless/intersil/hostap/Makefile |    8 -
+ drivers/net/wireless/intersil/hostap/hostap.h |   99 -
+ .../wireless/intersil/hostap/hostap_80211.h   |   97 -
+ .../intersil/hostap/hostap_80211_rx.c         | 1116 -----
+ .../intersil/hostap/hostap_80211_tx.c         |  554 ---
+ .../net/wireless/intersil/hostap/hostap_ap.c  | 3277 -------------
+ .../net/wireless/intersil/hostap/hostap_ap.h  |  264 --
+ .../wireless/intersil/hostap/hostap_common.h  |  420 --
+ .../wireless/intersil/hostap/hostap_config.h  |   49 -
+ .../net/wireless/intersil/hostap/hostap_cs.c  |  710 ---
+ .../intersil/hostap/hostap_download.c         |  811 ----
+ .../net/wireless/intersil/hostap/hostap_hw.c  | 3387 --------------
+ .../wireless/intersil/hostap/hostap_info.c    |  509 --
+ .../wireless/intersil/hostap/hostap_ioctl.c   | 4075 -----------------
+ .../wireless/intersil/hostap/hostap_main.c    | 1126 -----
+ .../net/wireless/intersil/hostap/hostap_pci.c |  445 --
+ .../net/wireless/intersil/hostap/hostap_plx.c |  617 ---
+ .../wireless/intersil/hostap/hostap_proc.c    |  411 --
+ .../wireless/intersil/hostap/hostap_wlan.h    | 1051 -----
+ 23 files changed, 19128 deletions(-)
+ delete mode 100644 drivers/net/wireless/intersil/hostap/Kconfig
+ delete mode 100644 drivers/net/wireless/intersil/hostap/Makefile
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap.h
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_80211.h
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_80211_rx.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_80211_tx.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_ap.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_ap.h
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_common.h
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_config.h
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_cs.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_download.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_hw.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_info.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_ioctl.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_main.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_pci.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_plx.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_proc.c
+ delete mode 100644 drivers/net/wireless/intersil/hostap/hostap_wlan.h
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 6ee0318468f41..78fa9932ba28f 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9521,11 +9521,6 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml
+ F:	drivers/iio/pressure/mprls0025pa.c
+ 
+-HOST AP DRIVER
+-L:	linux-wireless@vger.kernel.org
+-S:	Obsolete
+-F:	drivers/net/wireless/intersil/hostap/
+-
+ HP BIOSCFG DRIVER
+ M:	Jorge Lopez <jorge.lopez2@hp.com>
+ L:	platform-driver-x86@vger.kernel.org
+diff --git a/drivers/net/wireless/intersil/Kconfig b/drivers/net/wireless/intersil/Kconfig
+index bd6bf70ece03d..f2455ef45d995 100644
+--- a/drivers/net/wireless/intersil/Kconfig
++++ b/drivers/net/wireless/intersil/Kconfig
+@@ -12,7 +12,6 @@ config WLAN_VENDOR_INTERSIL
+ 
+ if WLAN_VENDOR_INTERSIL
+ 
+-source "drivers/net/wireless/intersil/hostap/Kconfig"
+ source "drivers/net/wireless/intersil/orinoco/Kconfig"
+ source "drivers/net/wireless/intersil/p54/Kconfig"
+ 
+diff --git a/drivers/net/wireless/intersil/Makefile b/drivers/net/wireless/intersil/Makefile
+index 65281d1b3d852..773147110c54e 100644
+--- a/drivers/net/wireless/intersil/Makefile
++++ b/drivers/net/wireless/intersil/Makefile
+@@ -1,4 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-obj-$(CONFIG_HOSTAP)		+= hostap/
+ obj-$(CONFIG_HERMES)		+= orinoco/
+ obj-$(CONFIG_P54_COMMON)	+= p54/
+diff --git a/drivers/net/wireless/intersil/hostap/Kconfig b/drivers/net/wireless/intersil/hostap/Kconfig
+deleted file mode 100644
+index 2edff8efbcbb1..0000000000000
+--- a/drivers/net/wireless/intersil/hostap/Kconfig
++++ /dev/null
+@@ -1,95 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0-only
+-config HOSTAP
+-	tristate "IEEE 802.11 for Host AP (Prism2/2.5/3 and WEP/TKIP/CCMP)"
+-	select WIRELESS_EXT
+-	select WEXT_SPY
+-	select WEXT_PRIV
+-	select CRYPTO
+-	select CRYPTO_MICHAEL_MIC
+-	select CRC32
+-	select LIB80211
+-	select LIB80211_CRYPT_WEP
+-	select LIB80211_CRYPT_TKIP
+-	select LIB80211_CRYPT_CCMP
+-	help
+-	Shared driver code for IEEE 802.11b wireless cards based on
+-	Intersil Prism2/2.5/3 chipset. This driver supports so called
+-	Host AP mode that allows the card to act as an IEEE 802.11
+-	access point.
+-
+-	See <http://hostap.epitest.fi/> for more information about the
+-	Host AP driver configuration and tools. This site includes
+-	information and tools (hostapd and wpa_supplicant) for WPA/WPA2
+-	support.
+-
+-	This option includes the base Host AP driver code that is shared by
+-	different hardware models. You will also need to enable support for
+-	PLX/PCI/CS version of the driver to actually use the driver.
+-
+-	The driver can be compiled as a module and it will be called
+-	hostap.
+-
+-config HOSTAP_FIRMWARE
+-	bool "Support downloading firmware images with Host AP driver"
+-	depends on HOSTAP
+-	help
+-	Configure Host AP driver to include support for firmware image
+-	download. This option by itself only enables downloading to the
+-	volatile memory, i.e. the card RAM. This option is required to
+-	support cards that don't have firmware in flash, such as D-Link
+-	DWL-520 rev E and D-Link DWL-650 rev P.
+-
+-	Firmware image downloading needs a user space tool, prism2_srec.
+-	It is available from http://hostap.epitest.fi/.
+-
+-config HOSTAP_FIRMWARE_NVRAM
+-	bool "Support for non-volatile firmware download"
+-	depends on HOSTAP_FIRMWARE
+-	help
+-	Allow Host AP driver to write firmware images to the non-volatile
+-	card memory, i.e. flash memory that survives power cycling.
+-	Enable this option if you want to be able to change card firmware
+-	permanently.
+-
+-	Firmware image downloading needs a user space tool, prism2_srec.
+-	It is available from http://hostap.epitest.fi/.
+-
+-config HOSTAP_PLX
+-	tristate "Host AP driver for Prism2/2.5/3 in PLX9052 PCI adaptors"
+-	depends on PCI && HOSTAP && HAS_IOPORT
+-	help
+-	Host AP driver's version for Prism2/2.5/3 PC Cards in PLX9052 based
+-	PCI adaptors.
+-
+-	"Host AP support for Prism2/2.5/3 IEEE 802.11b" is required for this
+-	driver and its help text includes more information about the Host AP
+-	driver.
+-
+-	The driver can be compiled as a module and will be named
+-	hostap_plx.
+-
+-config HOSTAP_PCI
+-	tristate "Host AP driver for Prism2.5 PCI adaptors"
+-	depends on PCI && HOSTAP
+-	help
+-	Host AP driver's version for Prism2.5 PCI adaptors.
+-
+-	"Host AP support for Prism2/2.5/3 IEEE 802.11b" is required for this
+-	driver and its help text includes more information about the Host AP
+-	driver.
+-
+-	The driver can be compiled as a module and will be named
+-	hostap_pci.
+-
+-config HOSTAP_CS
+-	tristate "Host AP driver for Prism2/2.5/3 PC Cards"
+-	depends on PCMCIA && HOSTAP
+-	help
+-	Host AP driver's version for Prism2/2.5/3 PC Cards.
+-
+-	"Host AP support for Prism2/2.5/3 IEEE 802.11b" is required for this
+-	driver and its help text includes more information about the Host AP
+-	driver.
+-
+-	The driver can be compiled as a module and will be named
+-	hostap_cs.
+diff --git a/drivers/net/wireless/intersil/hostap/Makefile b/drivers/net/wireless/intersil/hostap/Makefile
+deleted file mode 100644
+index ae3bb73b2d99d..0000000000000
+--- a/drivers/net/wireless/intersil/hostap/Makefile
++++ /dev/null
+@@ -1,8 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0
+-hostap-y := hostap_80211_rx.o hostap_80211_tx.o hostap_ap.o hostap_info.o \
+-            hostap_ioctl.o hostap_main.o hostap_proc.o 
+-obj-$(CONFIG_HOSTAP) += hostap.o
+-
+-obj-$(CONFIG_HOSTAP_CS) += hostap_cs.o
+-obj-$(CONFIG_HOSTAP_PLX) += hostap_plx.o
+-obj-$(CONFIG_HOSTAP_PCI) += hostap_pci.o
+diff --git a/drivers/net/wireless/intersil/hostap/hostap.h b/drivers/net/wireless/intersil/hostap/hostap.h
+deleted file mode 100644
+index c17ab6dbbb538..0000000000000
+--- a/drivers/net/wireless/intersil/hostap/hostap.h
++++ /dev/null
+@@ -1,99 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef HOSTAP_H
+-#define HOSTAP_H
+-
+-#include <linux/ethtool.h>
+-#include <linux/kernel.h>
+-
+-#include "hostap_wlan.h"
+-#include "hostap_ap.h"
+-
+-static const long __maybe_unused freq_list[] = {
+-	2412, 2417, 2422, 2427, 2432, 2437, 2442,
+-	2447, 2452, 2457, 2462, 2467, 2472, 2484
+-};
+-#define FREQ_COUNT ARRAY_SIZE(freq_list)
+-
+-/* hostap.c */
+-
+-extern struct proc_dir_entry *hostap_proc;
+-
+-u16 hostap_tx_callback_register(local_info_t *local,
+-				void (*func)(struct sk_buff *, int ok, void *),
+-				void *data);
+-int hostap_tx_callback_unregister(local_info_t *local, u16 idx);
+-int hostap_set_word(struct net_device *dev, int rid, u16 val);
+-int hostap_set_string(struct net_device *dev, int rid, const char *val);
+-u16 hostap_get_porttype(local_info_t *local);
+-int hostap_set_encryption(local_info_t *local);
+-int hostap_set_antsel(local_info_t *local);
+-int hostap_set_roaming(local_info_t *local);
+-int hostap_set_auth_algs(local_info_t *local);
+-void hostap_dump_rx_header(const char *name,
+-			   const struct hfa384x_rx_frame *rx);
+-void hostap_dump_tx_header(const char *name,
+-			   const struct hfa384x_tx_frame *tx);
+-extern const struct header_ops hostap_80211_ops;
+-int hostap_80211_get_hdrlen(__le16 fc);
+-struct net_device_stats *hostap_get_stats(struct net_device *dev);
+-void hostap_setup_dev(struct net_device *dev, local_info_t *local,
+-		      int type);
+-void hostap_set_multicast_list_queue(struct work_struct *work);
+-int hostap_set_hostapd(local_info_t *local, int val, int rtnl_locked);
+-int hostap_set_hostapd_sta(local_info_t *local, int val, int rtnl_locked);
+-void hostap_cleanup(local_info_t *local);
+-void hostap_cleanup_handler(void *data);
+-struct net_device * hostap_add_interface(struct local_info *local,
+-					 int type, int rtnl_locked,
+-					 const char *prefix, const char *name);
+-void hostap_remove_interface(struct net_device *dev, int rtnl_locked,
+-			     int remove_from_list);
+-int prism2_update_comms_qual(struct net_device *dev);
+-int prism2_sta_send_mgmt(local_info_t *local, u8 *dst, u16 stype,
+-			 u8 *body, size_t bodylen);
+-int prism2_sta_deauth(local_info_t *local, u16 reason);
+-int prism2_wds_add(local_info_t *local, u8 *remote_addr,
+-		   int rtnl_locked);
+-int prism2_wds_del(local_info_t *local, u8 *remote_addr,
+-		   int rtnl_locked, int do_not_remove);
+-
+-
+-/* hostap_ap.c */
+-
+-int ap_control_add_mac(struct mac_restrictions *mac_restrictions, u8 *mac);
+-int ap_control_del_mac(struct mac_restrictions *mac_restrictions, u8 *mac);
+-void ap_control_flush_macs(struct mac_restrictions *mac_restrictions);
+-int ap_control_kick_mac(struct ap_data *ap, struct net_device *dev, u8 *mac);
+-void ap_control_kickall(struct ap_data *ap);
+-void * ap_crypt_get_ptrs(struct ap_data *ap, u8 *addr, int permanent,
+-			 struct lib80211_crypt_data ***crypt);
+-int prism2_ap_get_sta_qual(local_info_t *local, struct sockaddr addr[],
+-			   struct iw_quality qual[], int buf_size,
+-			   int aplist);
+-int prism2_ap_translate_scan(struct net_device *dev,
+-			     struct iw_request_info *info, char *buffer);
+-int prism2_hostapd(struct ap_data *ap, struct prism2_hostapd_param *param);
+-
+-
+-/* hostap_proc.c */
+-
+-void hostap_init_proc(local_info_t *local);
+-void hostap_remove_proc(local_info_t *local);
+-
+-
+-/* hostap_info.c */
+-
+-void hostap_info_init(local_info_t *local);
+-void hostap_info_process(local_info_t *local, struct sk_buff *skb);
+-
+-
+-/* hostap_ioctl.c */
+-
+-extern const struct iw_handler_def hostap_iw_handler_def;
+-extern const struct ethtool_ops prism2_ethtool_ops;
+-
+-int hostap_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd);
+-int hostap_siocdevprivate(struct net_device *dev, struct ifreq *ifr,
+-			  void __user *data, int cmd);
+-
+-#endif /* HOSTAP_H */
+diff --git a/drivers/net/wireless/intersil/hostap/hostap_80211.h b/drivers/net/wireless/intersil/hostap/hostap_80211.h
+deleted file mode 100644
+index 1452cf6ecb07e..0000000000000
+--- a/drivers/net/wireless/intersil/hostap/hostap_80211.h
++++ /dev/null
+@@ -1,97 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef HOSTAP_80211_H
+-#define HOSTAP_80211_H
+-
+-#include <linux/types.h>
+-#include <linux/skbuff.h>
+-#include <linux/netdevice.h>
+-
+-struct hostap_ieee80211_mgmt {
+-	__le16 frame_control;
+-	__le16 duration;
+-	u8 da[6];
+-	u8 sa[6];
+-	u8 bssid[6];
+-	__le16 seq_ctrl;
+-	union {
+-		struct {
+-			__le16 auth_alg;
+-			__le16 auth_transaction;
+-			__le16 status_code;
+-			/* possibly followed by Challenge text */
+-			u8 variable[0];
+-		} __packed auth;
+-		struct {
+-			__le16 reason_code;
+-		} __packed deauth;
+-		struct {
+-			__le16 capab_info;
+-			__le16 listen_interval;
+-			/* followed by SSID and Supported rates */
+-			u8 variable[0];
+-		} __packed assoc_req;
+-		struct {
+-			__le16 capab_info;
+-			__le16 status_code;
+-			__le16 aid;
+-			/* followed by Supported rates */
+-			u8 variable[0];
+-		} __packed assoc_resp, reassoc_resp;
+-		struct {
+-			__le16 capab_info;
+-			__le16 listen_interval;
+-			u8 current_ap[6];
+-			/* followed by SSID and Supported rates */
+-			u8 variable[0];
+-		} __packed reassoc_req;
+-		struct {
+-			__le16 reason_code;
+-		} __packed disassoc;
+-		struct {
+-		} __packed probe_req;
+-		struct {
+-			u8 timestamp[8];
+-			__le16 beacon_int;
+-			__le16 capab_info;
+-			/* followed by some of SSID, Supported rates,
+-			 * FH Params, DS Params, CF Params, IBSS Params, TIM */
+-			u8 variable[0];
+-		} __packed beacon, probe_resp;
+-	} u;
+-} __packed;
+-
+-
+-#define IEEE80211_MGMT_HDR_LEN 24
+-#define IEEE80211_DATA_HDR3_LEN 24
+-#define IEEE80211_DATA_HDR4_LEN 30
+-
+-
+-struct hostap_80211_rx_status {
+-	u32 mac_time;
+-	u8 signal;
+-	u8 noise;
+-	u16 rate; /* in 100 kbps */
+-};
+-
+-/* prism2_rx_80211 'type' argument */
+-enum {
+-	PRISM2_RX_MONITOR, PRISM2_RX_MGMT, PRISM2_RX_NON_ASSOC,
+-	PRISM2_RX_NULLFUNC_ACK
+-};
+-
+-int prism2_rx_80211(struct net_device *dev, struct sk_buff *skb,
+-		    struct hostap_80211_rx_status *rx_stats, int type);
+-void hostap_80211_rx(struct net_device *dev, struct sk_buff *skb,
+-		     struct hostap_80211_rx_status *rx_stats);
+-void hostap_dump_rx_80211(const char *name, struct sk_buff *skb,
+-			  struct hostap_80211_rx_status *rx_stats);
+-
+-void hostap_dump_tx_80211(const char *name, struct sk_buff *skb);
+-netdev_tx_t hostap_data_start_xmit(struct sk_buff *skb,
+-				   struct net_device *dev);
+-netdev_tx_t hostap_mgmt_start_xmit(struct sk_buff *skb,
+-				   struct net_device *dev);
+-netdev_tx_t hostap_master_start_xmit(struct sk_buff *skb,
+-				     struct net_device *dev);
+-
+-#endif /* HOSTAP_80211_H */
+diff --git a/drivers/net/wireless/intersil/hostap/hostap_80211_rx.c b/drivers/net/wireless/intersil/hostap/hostap_80211_rx.c
+deleted file mode 100644
+index 61be822f90b51..0000000000000
+--- a/drivers/net/wireless/intersil/hostap/hostap_80211_rx.c
++++ /dev/null
+@@ -1,1116 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-#include <linux/etherdevice.h>
+-#include <linux/slab.h>
+-#include <linux/export.h>
+-#include <net/lib80211.h>
+-#include <linux/if_arp.h>
+-
+-#include "hostap_80211.h"
+-#include "hostap.h"
+-#include "hostap_ap.h"
+-
+-/* See IEEE 802.1H for LLC/SNAP encapsulation/decapsulation */
+-/* Ethernet-II snap header (RFC1042 for most EtherTypes) */
+-static unsigned char rfc1042_header[] =
+-{ 0xaa, 0xaa, 0x03, 0x00, 0x00, 0x00 };
+-/* Bridge-Tunnel header (for EtherTypes ETH_P_AARP and ETH_P_IPX) */
+-static unsigned char bridge_tunnel_header[] =
+-{ 0xaa, 0xaa, 0x03, 0x00, 0x00, 0xf8 };
+-/* No encapsulation header if EtherType < 0x600 (=length) */
+-
+-void hostap_dump_rx_80211(const char *name, struct sk_buff *skb,
+-			  struct hostap_80211_rx_status *rx_stats)
+-{
+-	struct ieee80211_hdr *hdr;
+-	u16 fc;
+-
+-	hdr = (struct ieee80211_hdr *) skb->data;
+-
+-	printk(KERN_DEBUG "%s: RX signal=%d noise=%d rate=%d len=%d "
+-	       "jiffies=%ld\n",
+-	       name, rx_stats->signal, rx_stats->noise, rx_stats->rate,
+-	       skb->len, jiffies);
+-
+-	if (skb->len < 2)
+-		return;
+-
+-	fc = le16_to_cpu(hdr->frame_control);
+-	printk(KERN_DEBUG "   FC=0x%04x (type=%d:%d)%s%s",
+-	       fc, (fc & IEEE80211_FCTL_FTYPE) >> 2,
+-	       (fc & IEEE80211_FCTL_STYPE) >> 4,
+-	       fc & IEEE80211_FCTL_TODS ? " [ToDS]" : "",
+-	       fc & IEEE80211_FCTL_FROMDS ? " [FromDS]" : "");
+-
+-	if (skb->len < IEEE80211_DATA_HDR3_LEN) {
+-		printk("\n");
+-		return;
+-	}
+-
+-	printk(" dur=0x%04x seq=0x%04x\n", le16_to_cpu(hdr->duration_id),
+-	       le16_to_cpu(hdr->seq_ctrl));
+-
+-	printk(KERN_DEBUG "   A1=%pM", hdr->addr1);
+-	printk(" A2=%pM", hdr->addr2);
+-	printk(" A3=%pM", hdr->addr3);
+-	if (skb->len >= 30)
+-		printk(" A4=%pM", hdr->addr4);
+-	printk("\n");
+-}
+-
+-
+-/* Send RX frame to netif with 802.11 (and possible prism) header.
+- * Called from hardware or software IRQ context. */
+-int prism2_rx_80211(struct net_device *dev, struct sk_buff *skb,
+-		    struct hostap_80211_rx_status *rx_stats, int type)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int hdrlen, phdrlen, head_need, tail_need;
+-	u16 fc;
+-	int prism_header, ret;
+-	struct ieee80211_hdr *fhdr;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (dev->type == ARPHRD_IEEE80211_PRISM) {
+-		if (local->monitor_type == PRISM2_MONITOR_PRISM) {
+-			prism_header = 1;
+-			phdrlen = sizeof(struct linux_wlan_ng_prism_hdr);
+-		} else { /* local->monitor_type == PRISM2_MONITOR_CAPHDR */
+-			prism_header = 2;
+-			phdrlen = sizeof(struct linux_wlan_ng_cap_hdr);
+-		}
+-	} else if (dev->type == ARPHRD_IEEE80211_RADIOTAP) {
+-		prism_header = 3;
+-		phdrlen = sizeof(struct hostap_radiotap_rx);
+-	} else {
+-		prism_header = 0;
+-		phdrlen = 0;
+-	}
+-
+-	fhdr = (struct ieee80211_hdr *) skb->data;
+-	fc = le16_to_cpu(fhdr->frame_control);
+-
+-	if (type == PRISM2_RX_MGMT && (fc & IEEE80211_FCTL_VERS)) {
+-		printk(KERN_DEBUG "%s: dropped management frame with header "
+-		       "version %d\n", dev->name, fc & IEEE80211_FCTL_VERS);
+-		dev_kfree_skb_any(skb);
+-		return 0;
+-	}
+-
+-	hdrlen = hostap_80211_get_hdrlen(fhdr->frame_control);
+-
+-	/* check if there is enough room for extra data; if not, expand skb
+-	 * buffer to be large enough for the changes */
+-	head_need = phdrlen;
+-	tail_need = 0;
+-#ifdef PRISM2_ADD_BOGUS_CRC
+-	tail_need += 4;
+-#endif /* PRISM2_ADD_BOGUS_CRC */
+-
+-	head_need -= skb_headroom(skb);
+-	tail_need -= skb_tailroom(skb);
+-
+-	if (head_need > 0 || tail_need > 0) {
+-		if (pskb_expand_head(skb, head_need > 0 ? head_need : 0,
+-				     tail_need > 0 ? tail_need : 0,
+-				     GFP_ATOMIC)) {
+-			printk(KERN_DEBUG "%s: prism2_rx_80211 failed to "
+-			       "reallocate skb buffer\n", dev->name);
+-			dev_kfree_skb_any(skb);
+-			return 0;
+-		}
+-	}
+-
+-	/* We now have an skb with enough head and tail room, so just insert
+-	 * the extra data */
+-
+-#ifdef PRISM2_ADD_BOGUS_CRC
+-	memset(skb_put(skb, 4), 0xff, 4); /* Prism2 strips CRC */
+-#endif /* PRISM2_ADD_BOGUS_CRC */
+-
+-	if (prism_header == 1) {
+-		struct linux_wlan_ng_prism_hdr *hdr;
+-		hdr = skb_push(skb, phdrlen);
+-		memset(hdr, 0, phdrlen);
+-		hdr->msgcode = LWNG_CAP_DID_BASE;
+-		hdr->msglen = sizeof(*hdr);
+-		memcpy(hdr->devname, dev->name, sizeof(hdr->devname));
+-#define LWNG_SETVAL(f,i,s,l,d) \
+-hdr->f.did = LWNG_CAP_DID_BASE | (i << 12); \
+-hdr->f.status = s; hdr->f.len = l; hdr->f.data = d
+-		LWNG_SETVAL(hosttime, 1, 0, 4, jiffies);
+-		LWNG_SETVAL(mactime, 2, 0, 4, rx_stats->mac_time);
+-		LWNG_SETVAL(channel, 3, 1 /* no value */, 4, 0);
+-		LWNG_SETVAL(rssi, 4, 1 /* no value */, 4, 0);
+-		LWNG_SETVAL(sq, 5, 1 /* no value */, 4, 0);
+-		LWNG_SETVAL(signal, 6, 0, 4, rx_stats->signal);
+-		LWNG_SETVAL(noise, 7, 0, 4, rx_stats->noise);
+-		LWNG_SETVAL(rate, 8, 0, 4, rx_stats->rate / 5);
+-		LWNG_SETVAL(istx, 9, 0, 4, 0);
+-		LWNG_SETVAL(frmlen, 10, 0, 4, skb->len - phdrlen);
+-#undef LWNG_SETVAL
+-	} else if (prism_header == 2) {
+-		struct linux_wlan_ng_cap_hdr *hdr;
+-		hdr = skb_push(skb, phdrlen);
+-		memset(hdr, 0, phdrlen);
+-		hdr->version    = htonl(LWNG_CAPHDR_VERSION);
+-		hdr->length     = htonl(phdrlen);
+-		hdr->mactime    = __cpu_to_be64(rx_stats->mac_time);
+-		hdr->hosttime   = __cpu_to_be64(jiffies);
+-		hdr->phytype    = htonl(4); /* dss_dot11_b */
+-		hdr->channel    = htonl(local->channel);
+-		hdr->datarate   = htonl(rx_stats->rate);
+-		hdr->antenna    = htonl(0); /* unknown */
+-		hdr->priority   = htonl(0); /* unknown */
+-		hdr->ssi_type   = htonl(3); /* raw */
+-		hdr->ssi_signal = htonl(rx_stats->signal);
+-		hdr->ssi_noise  = htonl(rx_stats->noise);
+-		hdr->preamble   = htonl(0); /* unknown */
+-		hdr->encoding   = htonl(1); /* cck */
+-	} else if (prism_header == 3) {
+-		struct hostap_radiotap_rx *hdr;
+-		hdr = skb_push(skb, phdrlen);
+-		memset(hdr, 0, phdrlen);
+-		hdr->hdr.it_len = cpu_to_le16(phdrlen);
+-		hdr->hdr.it_present =
+-			cpu_to_le32((1 << IEEE80211_RADIOTAP_TSFT) |
+-				    (1 << IEEE80211_RADIOTAP_CHANNEL) |
+-				    (1 << IEEE80211_RADIOTAP_RATE) |
+-				    (1 << IEEE80211_RADIOTAP_DBM_ANTSIGNAL) |
+-				    (1 << IEEE80211_RADIOTAP_DBM_ANTNOISE));
+-		hdr->tsft = cpu_to_le64(rx_stats->mac_time);
+-		hdr->chan_freq = cpu_to_le16(freq_list[local->channel - 1]);
+-		hdr->chan_flags = cpu_to_le16(IEEE80211_CHAN_CCK |
+-						 IEEE80211_CHAN_2GHZ);
+-		hdr->rate = rx_stats->rate / 5;
+-		hdr->dbm_antsignal = rx_stats->signal;
+-		hdr->dbm_antnoise = rx_stats->noise;
+-	}
+-
+-	ret = skb->len - phdrlen;
+-	skb->dev = dev;
+-	skb_reset_mac_header(skb);
+-	skb_pull(skb, hdrlen);
+-	if (prism_header)
+-		skb_pull(skb, phdrlen);
+-	skb->pkt_type = PACKET_OTHERHOST;
+-	skb->protocol = cpu_to_be16(ETH_P_802_2);
+-	memset(skb->cb, 0, sizeof(skb->cb));
+-	netif_rx(skb);
+-
+-	return ret;
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static void monitor_rx(struct net_device *dev, struct sk_buff *skb,
+-		       struct hostap_80211_rx_status *rx_stats)
+-{
+-	int len;
+-
+-	len = prism2_rx_80211(dev, skb, rx_stats, PRISM2_RX_MONITOR);
+-	dev->stats.rx_packets++;
+-	dev->stats.rx_bytes += len;
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static struct prism2_frag_entry *
+-prism2_frag_cache_find(local_info_t *local, unsigned int seq,
+-		       unsigned int frag, u8 *src, u8 *dst)
+-{
+-	struct prism2_frag_entry *entry;
+-	int i;
+-
+-	for (i = 0; i < PRISM2_FRAG_CACHE_LEN; i++) {
+-		entry = &local->frag_cache[i];
+-		if (entry->skb != NULL &&
+-		    time_after(jiffies, entry->first_frag_time + 2 * HZ)) {
+-			printk(KERN_DEBUG "%s: expiring fragment cache entry "
+-			       "seq=%u last_frag=%u\n",
+-			       local->dev->name, entry->seq, entry->last_frag);
+-			dev_kfree_skb(entry->skb);
+-			entry->skb = NULL;
+-		}
+-
+-		if (entry->skb != NULL && entry->seq == seq &&
+-		    (entry->last_frag + 1 == frag || frag == -1) &&
+-		    memcmp(entry->src_addr, src, ETH_ALEN) == 0 &&
+-		    memcmp(entry->dst_addr, dst, ETH_ALEN) == 0)
+-			return entry;
+-	}
+-
+-	return NULL;
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static struct sk_buff *
+-prism2_frag_cache_get(local_info_t *local, struct ieee80211_hdr *hdr)
+-{
+-	struct sk_buff *skb = NULL;
+-	u16 sc;
+-	unsigned int frag, seq;
+-	struct prism2_frag_entry *entry;
+-
+-	sc = le16_to_cpu(hdr->seq_ctrl);
+-	frag = sc & IEEE80211_SCTL_FRAG;
+-	seq = (sc & IEEE80211_SCTL_SEQ) >> 4;
+-
+-	if (frag == 0) {
+-		/* Reserve enough space to fit maximum frame length */
+-		skb = dev_alloc_skb(local->dev->mtu +
+-				    sizeof(struct ieee80211_hdr) +
+-				    8 /* LLC */ +
+-				    2 /* alignment */ +
+-				    8 /* WEP */ + ETH_ALEN /* WDS */);
+-		if (skb == NULL)
+-			return NULL;
+-
+-		entry = &local->frag_cache[local->frag_next_idx];
+-		local->frag_next_idx++;
+-		if (local->frag_next_idx >= PRISM2_FRAG_CACHE_LEN)
+-			local->frag_next_idx = 0;
+-
+-		if (entry->skb != NULL)
+-			dev_kfree_skb(entry->skb);
+-
+-		entry->first_frag_time = jiffies;
+-		entry->seq = seq;
+-		entry->last_frag = frag;
+-		entry->skb = skb;
+-		memcpy(entry->src_addr, hdr->addr2, ETH_ALEN);
+-		memcpy(entry->dst_addr, hdr->addr1, ETH_ALEN);
+-	} else {
+-		/* received a fragment of a frame for which the head fragment
+-		 * should have already been received */
+-		entry = prism2_frag_cache_find(local, seq, frag, hdr->addr2,
+-					       hdr->addr1);
+-		if (entry != NULL) {
+-			entry->last_frag = frag;
+-			skb = entry->skb;
+-		}
+-	}
+-
+-	return skb;
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static int prism2_frag_cache_invalidate(local_info_t *local,
+-					struct ieee80211_hdr *hdr)
+-{
+-	u16 sc;
+-	unsigned int seq;
+-	struct prism2_frag_entry *entry;
+-
+-	sc = le16_to_cpu(hdr->seq_ctrl);
+-	seq = (sc & IEEE80211_SCTL_SEQ) >> 4;
+-
+-	entry = prism2_frag_cache_find(local, seq, -1, hdr->addr2, hdr->addr1);
+-
+-	if (entry == NULL) {
+-		printk(KERN_DEBUG "%s: could not invalidate fragment cache "
+-		       "entry (seq=%u)\n",
+-		       local->dev->name, seq);
+-		return -1;
+-	}
+-
+-	entry->skb = NULL;
+-	return 0;
+-}
+-
+-
+-static struct hostap_bss_info *__hostap_get_bss(local_info_t *local, u8 *bssid,
+-						u8 *ssid, size_t ssid_len)
+-{
+-	struct list_head *ptr;
+-	struct hostap_bss_info *bss;
+-
+-	list_for_each(ptr, &local->bss_list) {
+-		bss = list_entry(ptr, struct hostap_bss_info, list);
+-		if (memcmp(bss->bssid, bssid, ETH_ALEN) == 0 &&
+-		    (ssid == NULL ||
+-		     (ssid_len == bss->ssid_len &&
+-		      memcmp(ssid, bss->ssid, ssid_len) == 0))) {
+-			list_move(&bss->list, &local->bss_list);
+-			return bss;
+-		}
+-	}
+-
+-	return NULL;
+-}
+-
+-
+-static struct hostap_bss_info *__hostap_add_bss(local_info_t *local, u8 *bssid,
+-						u8 *ssid, size_t ssid_len)
+-{
+-	struct hostap_bss_info *bss;
+-
+-	if (local->num_bss_info >= HOSTAP_MAX_BSS_COUNT) {
+-		bss = list_entry(local->bss_list.prev,
+-				 struct hostap_bss_info, list);
+-		list_del(&bss->list);
+-		local->num_bss_info--;
+-	} else {
+-		bss = kmalloc(sizeof(*bss), GFP_ATOMIC);
+-		if (bss == NULL)
+-			return NULL;
+-	}
+-
+-	memset(bss, 0, sizeof(*bss));
+-	memcpy(bss->bssid, bssid, ETH_ALEN);
+-	memcpy(bss->ssid, ssid, ssid_len);
+-	bss->ssid_len = ssid_len;
+-	local->num_bss_info++;
+-	list_add(&bss->list, &local->bss_list);
+-	return bss;
+-}
+-
+-
+-static void __hostap_expire_bss(local_info_t *local)
+-{
+-	struct hostap_bss_info *bss;
+-
+-	while (local->num_bss_info > 0) {
+-		bss = list_entry(local->bss_list.prev,
+-				 struct hostap_bss_info, list);
+-		if (!time_after(jiffies, bss->last_update + 60 * HZ))
+-			break;
+-
+-		list_del(&bss->list);
+-		local->num_bss_info--;
+-		kfree(bss);
+-	}
+-}
+-
+-
+-/* Both IEEE 802.11 Beacon and Probe Response frames have similar structure, so
+- * the same routine can be used to parse both of them. */
+-static void hostap_rx_sta_beacon(local_info_t *local, struct sk_buff *skb,
+-				 int stype)
+-{
+-	struct hostap_ieee80211_mgmt *mgmt;
+-	int left, chan = 0;
+-	u8 *pos;
+-	u8 *ssid = NULL, *wpa = NULL, *rsn = NULL;
+-	size_t ssid_len = 0, wpa_len = 0, rsn_len = 0;
+-	struct hostap_bss_info *bss;
+-
+-	if (skb->len < IEEE80211_MGMT_HDR_LEN + sizeof(mgmt->u.beacon))
+-		return;
+-
+-	mgmt = (struct hostap_ieee80211_mgmt *) skb->data;
+-	pos = mgmt->u.beacon.variable;
+-	left = skb->len - (pos - skb->data);
+-
+-	while (left >= 2) {
+-		if (2 + pos[1] > left)
+-			return; /* parse failed */
+-		switch (*pos) {
+-		case WLAN_EID_SSID:
+-			ssid = pos + 2;
+-			ssid_len = pos[1];
+-			break;
+-		case WLAN_EID_VENDOR_SPECIFIC:
+-			if (pos[1] >= 4 &&
+-			    pos[2] == 0x00 && pos[3] == 0x50 &&
+-			    pos[4] == 0xf2 && pos[5] == 1) {
+-				wpa = pos;
+-				wpa_len = pos[1] + 2;
+-			}
+-			break;
+-		case WLAN_EID_RSN:
+-			rsn = pos;
+-			rsn_len = pos[1] + 2;
+-			break;
+-		case WLAN_EID_DS_PARAMS:
+-			if (pos[1] >= 1)
+-				chan = pos[2];
+-			break;
+-		}
+-		left -= 2 + pos[1];
+-		pos += 2 + pos[1];
+-	}
+-
+-	if (wpa_len > MAX_WPA_IE_LEN)
+-		wpa_len = MAX_WPA_IE_LEN;
+-	if (rsn_len > MAX_WPA_IE_LEN)
+-		rsn_len = MAX_WPA_IE_LEN;
+-	if (ssid_len > sizeof(bss->ssid))
+-		ssid_len = sizeof(bss->ssid);
+-
+-	spin_lock(&local->lock);
+-	bss = __hostap_get_bss(local, mgmt->bssid, ssid, ssid_len);
+-	if (bss == NULL)
+-		bss = __hostap_add_bss(local, mgmt->bssid, ssid, ssid_len);
+-	if (bss) {
+-		bss->last_update = jiffies;
+-		bss->count++;
+-		bss->capab_info = le16_to_cpu(mgmt->u.beacon.capab_info);
+-		if (wpa) {
+-			memcpy(bss->wpa_ie, wpa, wpa_len);
+-			bss->wpa_ie_len = wpa_len;
+-		} else
+-			bss->wpa_ie_len = 0;
+-		if (rsn) {
+-			memcpy(bss->rsn_ie, rsn, rsn_len);
+-			bss->rsn_ie_len = rsn_len;
+-		} else
+-			bss->rsn_ie_len = 0;
+-		bss->chan = chan;
+-	}
+-	__hostap_expire_bss(local);
+-	spin_unlock(&local->lock);
+-}
+-
+-
+-static int
+-hostap_rx_frame_mgmt(local_info_t *local, struct sk_buff *skb,
+-		     struct hostap_80211_rx_status *rx_stats, u16 type,
+-		     u16 stype)
+-{
+-	if (local->iw_mode == IW_MODE_MASTER)
+-		hostap_update_sta_ps(local, (struct ieee80211_hdr *) skb->data);
+-
+-	if (local->hostapd && type == IEEE80211_FTYPE_MGMT) {
+-		if (stype == IEEE80211_STYPE_BEACON &&
+-		    local->iw_mode == IW_MODE_MASTER) {
+-			struct sk_buff *skb2;
+-			/* Process beacon frames also in kernel driver to
+-			 * update STA(AP) table statistics */
+-			skb2 = skb_clone(skb, GFP_ATOMIC);
+-			if (skb2)
+-				hostap_rx(skb2->dev, skb2, rx_stats);
+-		}
+-
+-		/* send management frames to the user space daemon for
+-		 * processing */
+-		local->apdevstats.rx_packets++;
+-		local->apdevstats.rx_bytes += skb->len;
+-		if (local->apdev == NULL)
+-			return -1;
+-		prism2_rx_80211(local->apdev, skb, rx_stats, PRISM2_RX_MGMT);
+-		return 0;
+-	}
+-
+-	if (local->iw_mode == IW_MODE_MASTER) {
+-		if (type != IEEE80211_FTYPE_MGMT &&
+-		    type != IEEE80211_FTYPE_CTL) {
+-			printk(KERN_DEBUG "%s: unknown management frame "
+-			       "(type=0x%02x, stype=0x%02x) dropped\n",
+-			       skb->dev->name, type >> 2, stype >> 4);
+-			return -1;
+-		}
+-
+-		hostap_rx(skb->dev, skb, rx_stats);
+-		return 0;
+-	} else if (type == IEEE80211_FTYPE_MGMT &&
+-		   (stype == IEEE80211_STYPE_BEACON ||
+-		    stype == IEEE80211_STYPE_PROBE_RESP)) {
+-		hostap_rx_sta_beacon(local, skb, stype);
+-		return -1;
+-	} else if (type == IEEE80211_FTYPE_MGMT &&
+-		   (stype == IEEE80211_STYPE_ASSOC_RESP ||
+-		    stype == IEEE80211_STYPE_REASSOC_RESP)) {
+-		/* Ignore (Re)AssocResp silently since these are not currently
+-		 * needed but are still received when WPA/RSN mode is enabled.
+-		 */
+-		return -1;
+-	} else {
+-		printk(KERN_DEBUG "%s: hostap_rx_frame_mgmt: dropped unhandled"
+-		       " management frame in non-Host AP mode (type=%d:%d)\n",
+-		       skb->dev->name, type >> 2, stype >> 4);
+-		return -1;
+-	}
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static struct net_device *prism2_rx_get_wds(local_info_t *local,
+-						   u8 *addr)
+-{
+-	struct hostap_interface *iface = NULL;
+-	struct list_head *ptr;
+-
+-	read_lock_bh(&local->iface_lock);
+-	list_for_each(ptr, &local->hostap_interfaces) {
+-		iface = list_entry(ptr, struct hostap_interface, list);
+-		if (iface->type == HOSTAP_INTERFACE_WDS &&
+-		    memcmp(iface->u.wds.remote_addr, addr, ETH_ALEN) == 0)
+-			break;
+-		iface = NULL;
+-	}
+-	read_unlock_bh(&local->iface_lock);
+-
+-	return iface ? iface->dev : NULL;
+-}
+-
+-
+-static int
+-hostap_rx_frame_wds(local_info_t *local, struct ieee80211_hdr *hdr, u16 fc,
+-		    struct net_device **wds)
+-{
+-	/* FIX: is this really supposed to accept WDS frames only in Master
+-	 * mode? What about Repeater or Managed with WDS frames? */
+-	if ((fc & (IEEE80211_FCTL_TODS | IEEE80211_FCTL_FROMDS)) !=
+-	    (IEEE80211_FCTL_TODS | IEEE80211_FCTL_FROMDS) &&
+-	    (local->iw_mode != IW_MODE_MASTER || !(fc & IEEE80211_FCTL_TODS)))
+-		return 0; /* not a WDS frame */
+-
+-	/* Possible WDS frame: either IEEE 802.11 compliant (if FromDS)
+-	 * or own non-standard frame with 4th address after payload */
+-	if (!ether_addr_equal(hdr->addr1, local->dev->dev_addr) &&
+-	    (hdr->addr1[0] != 0xff || hdr->addr1[1] != 0xff ||
+-	     hdr->addr1[2] != 0xff || hdr->addr1[3] != 0xff ||
+-	     hdr->addr1[4] != 0xff || hdr->addr1[5] != 0xff)) {
+-		/* RA (or BSSID) is not ours - drop */
+-		PDEBUG(DEBUG_EXTRA2, "%s: received WDS frame with "
+-		       "not own or broadcast %s=%pM\n",
+-		       local->dev->name,
+-		       fc & IEEE80211_FCTL_FROMDS ? "RA" : "BSSID",
+-		       hdr->addr1);
+-		return -1;
+-	}
+-
+-	/* check if the frame came from a registered WDS connection */
+-	*wds = prism2_rx_get_wds(local, hdr->addr2);
+-	if (*wds == NULL && fc & IEEE80211_FCTL_FROMDS &&
+-	    (local->iw_mode != IW_MODE_INFRA ||
+-	     !(local->wds_type & HOSTAP_WDS_AP_CLIENT) ||
+-	     memcmp(hdr->addr2, local->bssid, ETH_ALEN) != 0)) {
+-		/* require that WDS link has been registered with TA or the
+-		 * frame is from current AP when using 'AP client mode' */
+-		PDEBUG(DEBUG_EXTRA, "%s: received WDS[4 addr] frame "
+-		       "from unknown TA=%pM\n",
+-		       local->dev->name, hdr->addr2);
+-		if (local->ap && local->ap->autom_ap_wds)
+-			hostap_wds_link_oper(local, hdr->addr2, WDS_ADD);
+-		return -1;
+-	}
+-
+-	if (*wds && !(fc & IEEE80211_FCTL_FROMDS) && local->ap &&
+-	    hostap_is_sta_assoc(local->ap, hdr->addr2)) {
+-		/* STA is actually associated with us even though it has a
+-		 * registered WDS link. Assume it is in 'AP client' mode.
+-		 * Since this is a 3-addr frame, assume it is not (bogus) WDS
+-		 * frame and process it like any normal ToDS frame from
+-		 * associated STA. */
+-		*wds = NULL;
+-	}
+-
+-	return 0;
+-}
+-
+-
+-static int hostap_is_eapol_frame(local_info_t *local, struct sk_buff *skb)
+-{
+-	struct net_device *dev = local->dev;
+-	u16 fc, ethertype;
+-	struct ieee80211_hdr *hdr;
+-	u8 *pos;
+-
+-	if (skb->len < 24)
+-		return 0;
+-
+-	hdr = (struct ieee80211_hdr *) skb->data;
+-	fc = le16_to_cpu(hdr->frame_control);
+-
+-	/* check that the frame is unicast frame to us */
+-	if ((fc & (IEEE80211_FCTL_TODS | IEEE80211_FCTL_FROMDS)) ==
+-	    IEEE80211_FCTL_TODS &&
+-	    ether_addr_equal(hdr->addr1, dev->dev_addr) &&
+-	    ether_addr_equal(hdr->addr3, dev->dev_addr)) {
+-		/* ToDS frame with own addr BSSID and DA */
+-	} else if ((fc & (IEEE80211_FCTL_TODS | IEEE80211_FCTL_FROMDS)) ==
+-		   IEEE80211_FCTL_FROMDS &&
+-		   ether_addr_equal(hdr->addr1, dev->dev_addr)) {
+-		/* FromDS frame with own addr as DA */
+-	} else
+-		return 0;
+-
+-	if (skb->len < 24 + 8)
+-		return 0;
+-
+-	/* check for port access entity Ethernet type */
+-	pos = skb->data + 24;
+-	ethertype = (pos[6] << 8) | pos[7];
+-	if (ethertype == ETH_P_PAE)
+-		return 1;
+-
+-	return 0;
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static int
+-hostap_rx_frame_decrypt(local_info_t *local, struct sk_buff *skb,
+-			struct lib80211_crypt_data *crypt)
+-{
+-	struct ieee80211_hdr *hdr;
+-	int res, hdrlen;
+-
+-	if (crypt == NULL || crypt->ops->decrypt_mpdu == NULL)
+-		return 0;
+-
+-	hdr = (struct ieee80211_hdr *) skb->data;
+-	hdrlen = hostap_80211_get_hdrlen(hdr->frame_control);
+-
+-	if (local->tkip_countermeasures &&
+-	    strcmp(crypt->ops->name, "TKIP") == 0) {
+-		if (net_ratelimit()) {
+-			printk(KERN_DEBUG "%s: TKIP countermeasures: dropped "
+-			       "received packet from %pM\n",
+-			       local->dev->name, hdr->addr2);
+-		}
+-		return -1;
+-	}
+-
+-	atomic_inc(&crypt->refcnt);
+-	res = crypt->ops->decrypt_mpdu(skb, hdrlen, crypt->priv);
+-	atomic_dec(&crypt->refcnt);
+-	if (res < 0) {
+-		printk(KERN_DEBUG "%s: decryption failed (SA=%pM) res=%d\n",
+-		       local->dev->name, hdr->addr2, res);
+-		local->comm_tallies.rx_discards_wep_undecryptable++;
+-		return -1;
+-	}
+-
+-	return res;
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static int
+-hostap_rx_frame_decrypt_msdu(local_info_t *local, struct sk_buff *skb,
+-			     int keyidx, struct lib80211_crypt_data *crypt)
+-{
+-	struct ieee80211_hdr *hdr;
+-	int res, hdrlen;
+-
+-	if (crypt == NULL || crypt->ops->decrypt_msdu == NULL)
+-		return 0;
+-
+-	hdr = (struct ieee80211_hdr *) skb->data;
+-	hdrlen = hostap_80211_get_hdrlen(hdr->frame_control);
+-
+-	atomic_inc(&crypt->refcnt);
+-	res = crypt->ops->decrypt_msdu(skb, keyidx, hdrlen, crypt->priv);
+-	atomic_dec(&crypt->refcnt);
+-	if (res < 0) {
+-		printk(KERN_DEBUG "%s: MSDU decryption/MIC verification failed"
+-		       " (SA=%pM keyidx=%d)\n",
+-		       local->dev->name, hdr->addr2, keyidx);
+-		return -1;
+-	}
+-
+-	return 0;
+-}
+-
+-
+-/* All received frames are sent to this function. @skb contains the frame in
+- * IEEE 802.11 format, i.e., in the format it was sent over air.
+- * This function is called only as a tasklet (software IRQ). */
+-void hostap_80211_rx(struct net_device *dev, struct sk_buff *skb,
+-		     struct hostap_80211_rx_status *rx_stats)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	struct ieee80211_hdr *hdr;
+-	size_t hdrlen;
+-	u16 fc, type, stype, sc;
+-	struct net_device *wds = NULL;
+-	unsigned int frag;
+-	u8 *payload;
+-	struct sk_buff *skb2 = NULL;
+-	u16 ethertype;
+-	int frame_authorized = 0;
+-	int from_assoc_ap = 0;
+-	u8 dst[ETH_ALEN];
+-	u8 src[ETH_ALEN];
+-	struct lib80211_crypt_data *crypt = NULL;
+-	void *sta = NULL;
+-	int keyidx = 0;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-	iface->stats.rx_packets++;
+-	iface->stats.rx_bytes += skb->len;
+-
+-	/* dev is the master radio device; change this to be the default
+-	 * virtual interface (this may be changed to WDS device below) */
+-	dev = local->ddev;
+-	iface = netdev_priv(dev);
+-
+-	hdr = (struct ieee80211_hdr *) skb->data;
+-
+-	if (skb->len < 10)
+-		goto rx_dropped;
+-
+-	fc = le16_to_cpu(hdr->frame_control);
+-	type = fc & IEEE80211_FCTL_FTYPE;
+-	stype = fc & IEEE80211_FCTL_STYPE;
+-	sc = le16_to_cpu(hdr->seq_ctrl);
+-	frag = sc & IEEE80211_SCTL_FRAG;
+-	hdrlen = hostap_80211_get_hdrlen(hdr->frame_control);
+-
+-	/* Put this code here so that we avoid duplicating it in all
+-	 * Rx paths. - Jean II */
+-#ifdef IW_WIRELESS_SPY		/* defined in iw_handler.h */
+-	/* If spy monitoring on */
+-	if (iface->spy_data.spy_number > 0) {
+-		struct iw_quality wstats;
+-		wstats.level = rx_stats->signal;
+-		wstats.noise = rx_stats->noise;
+-		wstats.updated = IW_QUAL_LEVEL_UPDATED | IW_QUAL_NOISE_UPDATED
+-			| IW_QUAL_QUAL_INVALID | IW_QUAL_DBM;
+-		/* Update spy records */
+-		wireless_spy_update(dev, hdr->addr2, &wstats);
+-	}
+-#endif /* IW_WIRELESS_SPY */
+-	hostap_update_rx_stats(local->ap, hdr, rx_stats);
+-
+-	if (local->iw_mode == IW_MODE_MONITOR) {
+-		monitor_rx(dev, skb, rx_stats);
+-		return;
+-	}
+-
+-	if (local->host_decrypt) {
+-		int idx = 0;
+-		if (skb->len >= hdrlen + 3)
+-			idx = skb->data[hdrlen + 3] >> 6;
+-		crypt = local->crypt_info.crypt[idx];
+-		sta = NULL;
+-
+-		/* Use station specific key to override default keys if the
+-		 * receiver address is a unicast address ("individual RA"). If
+-		 * bcrx_sta_key parameter is set, station specific key is used
+-		 * even with broad/multicast targets (this is against IEEE
+-		 * 802.11, but makes it easier to use different keys with
+-		 * stations that do not support WEP key mapping). */
+-
+-		if (!(hdr->addr1[0] & 0x01) || local->bcrx_sta_key)
+-			(void) hostap_handle_sta_crypto(local, hdr, &crypt,
+-							&sta);
+-
+-		/* allow NULL decrypt to indicate an station specific override
+-		 * for default encryption */
+-		if (crypt && (crypt->ops == NULL ||
+-			      crypt->ops->decrypt_mpdu == NULL))
+-			crypt = NULL;
+-
+-		if (!crypt && (fc & IEEE80211_FCTL_PROTECTED)) {
+-#if 0
+-			/* This seems to be triggered by some (multicast?)
+-			 * frames from other than current BSS, so just drop the
+-			 * frames silently instead of filling system log with
+-			 * these reports. */
+-			printk(KERN_DEBUG "%s: WEP decryption failed (not set)"
+-			       " (SA=%pM)\n",
+-			       local->dev->name, hdr->addr2);
+-#endif
+-			local->comm_tallies.rx_discards_wep_undecryptable++;
+-			goto rx_dropped;
+-		}
+-	}
+-
+-	if (type != IEEE80211_FTYPE_DATA) {
+-		if (type == IEEE80211_FTYPE_MGMT &&
+-		    stype == IEEE80211_STYPE_AUTH &&
+-		    fc & IEEE80211_FCTL_PROTECTED && local->host_decrypt &&
+-		    (keyidx = hostap_rx_frame_decrypt(local, skb, crypt)) < 0)
+-		{
+-			printk(KERN_DEBUG "%s: failed to decrypt mgmt::auth "
+-			       "from %pM\n", dev->name, hdr->addr2);
+-			/* TODO: could inform hostapd about this so that it
+-			 * could send auth failure report */
+-			goto rx_dropped;
+-		}
+-
+-		if (hostap_rx_frame_mgmt(local, skb, rx_stats, type, stype))
+-			goto rx_dropped;
+-		else
+-			goto rx_exit;
+-	}
+-
+-	/* Data frame - extract src/dst addresses */
+-	if (skb->len < IEEE80211_DATA_HDR3_LEN)
+-		goto rx_dropped;
+-
+-	switch (fc & (IEEE80211_FCTL_FROMDS | IEEE80211_FCTL_TODS)) {
+-	case IEEE80211_FCTL_FROMDS:
+-		memcpy(dst, hdr->addr1, ETH_ALEN);
+-		memcpy(src, hdr->addr3, ETH_ALEN);
+-		break;
+-	case IEEE80211_FCTL_TODS:
+-		memcpy(dst, hdr->addr3, ETH_ALEN);
+-		memcpy(src, hdr->addr2, ETH_ALEN);
+-		break;
+-	case IEEE80211_FCTL_FROMDS | IEEE80211_FCTL_TODS:
+-		if (skb->len < IEEE80211_DATA_HDR4_LEN)
+-			goto rx_dropped;
+-		memcpy(dst, hdr->addr3, ETH_ALEN);
+-		memcpy(src, hdr->addr4, ETH_ALEN);
+-		break;
+-	default:
+-		memcpy(dst, hdr->addr1, ETH_ALEN);
+-		memcpy(src, hdr->addr2, ETH_ALEN);
+-		break;
+-	}
+-
+-	if (hostap_rx_frame_wds(local, hdr, fc, &wds))
+-		goto rx_dropped;
+-	if (wds)
+-		skb->dev = dev = wds;
+-
+-	if (local->iw_mode == IW_MODE_MASTER && !wds &&
+-	    (fc & (IEEE80211_FCTL_TODS | IEEE80211_FCTL_FROMDS)) ==
+-	    IEEE80211_FCTL_FROMDS &&
+-	    local->stadev &&
+-	    memcmp(hdr->addr2, local->assoc_ap_addr, ETH_ALEN) == 0) {
+-		/* Frame from BSSID of the AP for which we are a client */
+-		skb->dev = dev = local->stadev;
+-		from_assoc_ap = 1;
+-	}
+-
+-	if ((local->iw_mode == IW_MODE_MASTER ||
+-	     local->iw_mode == IW_MODE_REPEAT) &&
+-	    !from_assoc_ap) {
+-		switch (hostap_handle_sta_rx(local, dev, skb, rx_stats,
+-					     wds != NULL)) {
+-		case AP_RX_CONTINUE_NOT_AUTHORIZED:
+-			frame_authorized = 0;
+-			break;
+-		case AP_RX_CONTINUE:
+-			frame_authorized = 1;
+-			break;
+-		case AP_RX_DROP:
+-			goto rx_dropped;
+-		case AP_RX_EXIT:
+-			goto rx_exit;
+-		}
+-	}
+-
+-	/* Nullfunc frames may have PS-bit set, so they must be passed to
+-	 * hostap_handle_sta_rx() before being dropped here. */
+-	if (stype != IEEE80211_STYPE_DATA &&
+-	    stype != IEEE80211_STYPE_DATA_CFACK &&
+-	    stype != IEEE80211_STYPE_DATA_CFPOLL &&
+-	    stype != IEEE80211_STYPE_DATA_CFACKPOLL) {
+-		if (stype != IEEE80211_STYPE_NULLFUNC)
+-			printk(KERN_DEBUG "%s: RX: dropped data frame "
+-			       "with no data (type=0x%02x, subtype=0x%02x)\n",
+-			       dev->name, type >> 2, stype >> 4);
+-		goto rx_dropped;
+-	}
+-
+-	/* skb: hdr + (possibly fragmented, possibly encrypted) payload */
+-
+-	if (local->host_decrypt && (fc & IEEE80211_FCTL_PROTECTED) &&
+-	    (keyidx = hostap_rx_frame_decrypt(local, skb, crypt)) < 0)
+-		goto rx_dropped;
+-	hdr = (struct ieee80211_hdr *) skb->data;
+-
+-	/* skb: hdr + (possibly fragmented) plaintext payload */
+-
+-	if (local->host_decrypt && (fc & IEEE80211_FCTL_PROTECTED) &&
+-	    (frag != 0 || (fc & IEEE80211_FCTL_MOREFRAGS))) {
+-		int flen;
+-		struct sk_buff *frag_skb =
+-			prism2_frag_cache_get(local, hdr);
+-		if (!frag_skb) {
+-			printk(KERN_DEBUG "%s: Rx cannot get skb from "
+-			       "fragment cache (morefrag=%d seq=%u frag=%u)\n",
+-			       dev->name, (fc & IEEE80211_FCTL_MOREFRAGS) != 0,
+-			       (sc & IEEE80211_SCTL_SEQ) >> 4, frag);
+-			goto rx_dropped;
+-		}
+-
+-		flen = skb->len;
+-		if (frag != 0)
+-			flen -= hdrlen;
+-
+-		if (frag_skb->tail + flen > frag_skb->end) {
+-			printk(KERN_WARNING "%s: host decrypted and "
+-			       "reassembled frame did not fit skb\n",
+-			       dev->name);
+-			prism2_frag_cache_invalidate(local, hdr);
+-			goto rx_dropped;
+-		}
+-
+-		if (frag == 0) {
+-			/* copy first fragment (including full headers) into
+-			 * beginning of the fragment cache skb */
+-			skb_copy_from_linear_data(skb, skb_put(frag_skb, flen),
+-						  flen);
+-		} else {
+-			/* append frame payload to the end of the fragment
+-			 * cache skb */
+-			skb_copy_from_linear_data_offset(skb, hdrlen,
+-							 skb_put(frag_skb,
+-								 flen), flen);
+-		}
+-		dev_kfree_skb(skb);
+-		skb = NULL;
+-
+-		if (fc & IEEE80211_FCTL_MOREFRAGS) {
+-			/* more fragments expected - leave the skb in fragment
+-			 * cache for now; it will be delivered to upper layers
+-			 * after all fragments have been received */
+-			goto rx_exit;
+-		}
+-
+-		/* this was the last fragment and the frame will be
+-		 * delivered, so remove skb from fragment cache */
+-		skb = frag_skb;
+-		hdr = (struct ieee80211_hdr *) skb->data;
+-		prism2_frag_cache_invalidate(local, hdr);
+-	}
+-
+-	/* skb: hdr + (possible reassembled) full MSDU payload; possibly still
+-	 * encrypted/authenticated */
+-
+-	if (local->host_decrypt && (fc & IEEE80211_FCTL_PROTECTED) &&
+-	    hostap_rx_frame_decrypt_msdu(local, skb, keyidx, crypt))
+-		goto rx_dropped;
+-
+-	hdr = (struct ieee80211_hdr *) skb->data;
+-	if (crypt && !(fc & IEEE80211_FCTL_PROTECTED) && !local->open_wep) {
+-		if (local->ieee_802_1x &&
+-		    hostap_is_eapol_frame(local, skb)) {
+-			/* pass unencrypted EAPOL frames even if encryption is
+-			 * configured */
+-			PDEBUG(DEBUG_EXTRA2, "%s: RX: IEEE 802.1X - passing "
+-			       "unencrypted EAPOL frame\n", local->dev->name);
+-		} else {
+-			printk(KERN_DEBUG "%s: encryption configured, but RX "
+-			       "frame not encrypted (SA=%pM)\n",
+-			       local->dev->name, hdr->addr2);
+-			goto rx_dropped;
+-		}
+-	}
+-
+-	if (local->drop_unencrypted && !(fc & IEEE80211_FCTL_PROTECTED) &&
+-	    !hostap_is_eapol_frame(local, skb)) {
+-		if (net_ratelimit()) {
+-			printk(KERN_DEBUG "%s: dropped unencrypted RX data "
+-			       "frame from %pM (drop_unencrypted=1)\n",
+-			       dev->name, hdr->addr2);
+-		}
+-		goto rx_dropped;
+-	}
+-
+-	/* skb: hdr + (possible reassembled) full plaintext payload */
+-
+-	payload = skb->data + hdrlen;
+-	ethertype = (payload[6] << 8) | payload[7];
+-
+-	/* If IEEE 802.1X is used, check whether the port is authorized to send
+-	 * the received frame. */
+-	if (local->ieee_802_1x && local->iw_mode == IW_MODE_MASTER) {
+-		if (ethertype == ETH_P_PAE) {
+-			PDEBUG(DEBUG_EXTRA2, "%s: RX: IEEE 802.1X frame\n",
+-			       dev->name);
+-			if (local->hostapd && local->apdev) {
+-				/* Send IEEE 802.1X frames to the user
+-				 * space daemon for processing */
+-				prism2_rx_80211(local->apdev, skb, rx_stats,
+-						PRISM2_RX_MGMT);
+-				local->apdevstats.rx_packets++;
+-				local->apdevstats.rx_bytes += skb->len;
+-				goto rx_exit;
+-			}
+-		} else if (!frame_authorized) {
+-			printk(KERN_DEBUG "%s: dropped frame from "
+-			       "unauthorized port (IEEE 802.1X): "
+-			       "ethertype=0x%04x\n",
+-			       dev->name, ethertype);
+-			goto rx_dropped;
+-		}
+-	}
+-
+-	/* convert hdr + possible LLC headers into Ethernet header */
+-	if (skb->len - hdrlen >= 8 &&
+-	    ((memcmp(payload, rfc1042_header, 6) == 0 &&
+-	      ethertype != ETH_P_AARP && ethertype != ETH_P_IPX) ||
+-	     memcmp(payload, bridge_tunnel_header, 6) == 0)) {
+-		/* remove RFC1042 or Bridge-Tunnel encapsulation and
+-		 * replace EtherType */
+-		skb_pull(skb, hdrlen + 6);
+-		memcpy(skb_push(skb, ETH_ALEN), src, ETH_ALEN);
+-		memcpy(skb_push(skb, ETH_ALEN), dst, ETH_ALEN);
+-	} else {
+-		__be16 len;
+-		/* Leave Ethernet header part of hdr and full payload */
+-		skb_pull(skb, hdrlen);
+-		len = htons(skb->len);
+-		memcpy(skb_push(skb, 2), &len, 2);
+-		memcpy(skb_push(skb, ETH_ALEN), src, ETH_ALEN);
+-		memcpy(skb_push(skb, ETH_ALEN), dst, ETH_ALEN);
+-	}
+-
+-	if (wds && ((fc & (IEEE80211_FCTL_TODS | IEEE80211_FCTL_FROMDS)) ==
+-		    IEEE80211_FCTL_TODS) &&
+-	    skb->len >= ETH_HLEN + ETH_ALEN) {
+-		/* Non-standard frame: get addr4 from its bogus location after
+-		 * the payload */
+-		skb_copy_from_linear_data_offset(skb, skb->len - ETH_ALEN,
+-						 skb->data + ETH_ALEN,
+-						 ETH_ALEN);
+-		skb_trim(skb, skb->len - ETH_ALEN);
+-	}
+-
+-	dev->stats.rx_packets++;
+-	dev->stats.rx_bytes += skb->len;
+-
+-	if (local->iw_mode == IW_MODE_MASTER && !wds &&
+-	    local->ap->bridge_packets) {
+-		if (dst[0] & 0x01) {
+-			/* copy multicast frame both to the higher layers and
+-			 * to the wireless media */
+-			local->ap->bridged_multicast++;
+-			skb2 = skb_clone(skb, GFP_ATOMIC);
+-			if (skb2 == NULL)
+-				printk(KERN_DEBUG "%s: skb_clone failed for "
+-				       "multicast frame\n", dev->name);
+-		} else if (hostap_is_sta_authorized(local->ap, dst)) {
+-			/* send frame directly to the associated STA using
+-			 * wireless media and not passing to higher layers */
+-			local->ap->bridged_unicast++;
+-			skb2 = skb;
+-			skb = NULL;
+-		}
+-	}
+-
+-	if (skb2 != NULL) {
+-		/* send to wireless media */
+-		skb2->dev = dev;
+-		skb2->protocol = cpu_to_be16(ETH_P_802_3);
+-		skb_reset_mac_header(skb2);
+-		skb_reset_network_header(skb2);
+-		/* skb2->network_header += ETH_HLEN; */
+-		dev_queue_xmit(skb2);
+-	}
+-
+-	if (skb) {
+-		skb->protocol = eth_type_trans(skb, dev);
+-		memset(skb->cb, 0, sizeof(skb->cb));
+-		netif_rx(skb);
+-	}
+-
+- rx_exit:
+-	if (sta)
+-		hostap_handle_sta_release(sta);
+-	return;
+-
+- rx_dropped:
+-	dev_kfree_skb(skb);
+-
+-	dev->stats.rx_dropped++;
+-	goto rx_exit;
+-}
+-
+-
+-EXPORT_SYMBOL(hostap_80211_rx);
+diff --git a/drivers/net/wireless/intersil/hostap/hostap_80211_tx.c b/drivers/net/wireless/intersil/hostap/hostap_80211_tx.c
+deleted file mode 100644
+index c47da06945c26..0000000000000
+--- a/drivers/net/wireless/intersil/hostap/hostap_80211_tx.c
++++ /dev/null
+@@ -1,554 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-#include <linux/slab.h>
+-#include <linux/export.h>
+-#include <linux/etherdevice.h>
+-
+-#include "hostap_80211.h"
+-#include "hostap_common.h"
+-#include "hostap_wlan.h"
+-#include "hostap.h"
+-#include "hostap_ap.h"
+-
+-/* See IEEE 802.1H for LLC/SNAP encapsulation/decapsulation */
+-/* Ethernet-II snap header (RFC1042 for most EtherTypes) */
+-static unsigned char rfc1042_header[] =
+-{ 0xaa, 0xaa, 0x03, 0x00, 0x00, 0x00 };
+-/* Bridge-Tunnel header (for EtherTypes ETH_P_AARP and ETH_P_IPX) */
+-static unsigned char bridge_tunnel_header[] =
+-{ 0xaa, 0xaa, 0x03, 0x00, 0x00, 0xf8 };
+-/* No encapsulation header if EtherType < 0x600 (=length) */
+-
+-void hostap_dump_tx_80211(const char *name, struct sk_buff *skb)
+-{
+-	struct ieee80211_hdr *hdr;
+-	u16 fc;
+-
+-	hdr = (struct ieee80211_hdr *) skb->data;
+-
+-	printk(KERN_DEBUG "%s: TX len=%d jiffies=%ld\n",
+-	       name, skb->len, jiffies);
+-
+-	if (skb->len < 2)
+-		return;
+-
+-	fc = le16_to_cpu(hdr->frame_control);
+-	printk(KERN_DEBUG "   FC=0x%04x (type=%d:%d)%s%s",
+-	       fc, (fc & IEEE80211_FCTL_FTYPE) >> 2,
+-	       (fc & IEEE80211_FCTL_STYPE) >> 4,
+-	       fc & IEEE80211_FCTL_TODS ? " [ToDS]" : "",
+-	       fc & IEEE80211_FCTL_FROMDS ? " [FromDS]" : "");
+-
+-	if (skb->len < IEEE80211_DATA_HDR3_LEN) {
+-		printk("\n");
+-		return;
+-	}
+-
+-	printk(" dur=0x%04x seq=0x%04x\n", le16_to_cpu(hdr->duration_id),
+-	       le16_to_cpu(hdr->seq_ctrl));
+-
+-	printk(KERN_DEBUG "   A1=%pM", hdr->addr1);
+-	printk(" A2=%pM", hdr->addr2);
+-	printk(" A3=%pM", hdr->addr3);
+-	if (skb->len >= 30)
+-		printk(" A4=%pM", hdr->addr4);
+-	printk("\n");
+-}
+-
+-
+-/* hard_start_xmit function for data interfaces (wlan#, wlan#wds#, wlan#sta)
+- * Convert Ethernet header into a suitable IEEE 802.11 header depending on
+- * device configuration. */
+-netdev_tx_t hostap_data_start_xmit(struct sk_buff *skb,
+-				   struct net_device *dev)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int need_headroom, need_tailroom = 0;
+-	struct ieee80211_hdr hdr;
+-	u16 fc, ethertype = 0;
+-	enum {
+-		WDS_NO = 0, WDS_OWN_FRAME, WDS_COMPLIANT_FRAME
+-	} use_wds = WDS_NO;
+-	u8 *encaps_data;
+-	int hdr_len, encaps_len, skip_header_bytes;
+-	int to_assoc_ap = 0;
+-	struct hostap_skb_tx_data *meta;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (skb->len < ETH_HLEN) {
+-		printk(KERN_DEBUG "%s: hostap_data_start_xmit: short skb "
+-		       "(len=%d)\n", dev->name, skb->len);
+-		kfree_skb(skb);
+-		return NETDEV_TX_OK;
+-	}
+-
+-	if (local->ddev != dev) {
+-		use_wds = (local->iw_mode == IW_MODE_MASTER &&
+-			   !(local->wds_type & HOSTAP_WDS_STANDARD_FRAME)) ?
+-			WDS_OWN_FRAME : WDS_COMPLIANT_FRAME;
+-		if (dev == local->stadev) {
+-			to_assoc_ap = 1;
+-			use_wds = WDS_NO;
+-		} else if (dev == local->apdev) {
+-			printk(KERN_DEBUG "%s: prism2_tx: trying to use "
+-			       "AP device with Ethernet net dev\n", dev->name);
+-			kfree_skb(skb);
+-			return NETDEV_TX_OK;
+-		}
+-	} else {
+-		if (local->iw_mode == IW_MODE_REPEAT) {
+-			printk(KERN_DEBUG "%s: prism2_tx: trying to use "
+-			       "non-WDS link in Repeater mode\n", dev->name);
+-			kfree_skb(skb);
+-			return NETDEV_TX_OK;
+-		} else if (local->iw_mode == IW_MODE_INFRA &&
+-			   (local->wds_type & HOSTAP_WDS_AP_CLIENT) &&
+-			   !ether_addr_equal(skb->data + ETH_ALEN, dev->dev_addr)) {
+-			/* AP client mode: send frames with foreign src addr
+-			 * using 4-addr WDS frames */
+-			use_wds = WDS_COMPLIANT_FRAME;
+-		}
+-	}
+-
+-	/* Incoming skb->data: dst_addr[6], src_addr[6], proto[2], payload
+-	 * ==>
+-	 * Prism2 TX frame with 802.11 header:
+-	 * txdesc (address order depending on used mode; includes dst_addr and
+-	 * src_addr), possible encapsulation (RFC1042/Bridge-Tunnel;
+-	 * proto[2], payload {, possible addr4[6]} */
+-
+-	ethertype = (skb->data[12] << 8) | skb->data[13];
+-
+-	memset(&hdr, 0, sizeof(hdr));
+-
+-	/* Length of data after IEEE 802.11 header */
+-	encaps_data = NULL;
+-	encaps_len = 0;
+-	skip_header_bytes = ETH_HLEN;
+-	if (ethertype == ETH_P_AARP || ethertype == ETH_P_IPX) {
+-		encaps_data = bridge_tunnel_header;
+-		encaps_len = sizeof(bridge_tunnel_header);
+-		skip_header_bytes -= 2;
+-	} else if (ethertype >= 0x600) {
+-		encaps_data = rfc1042_header;
+-		encaps_len = sizeof(rfc1042_header);
+-		skip_header_bytes -= 2;
+-	}
+-
+-	fc = IEEE80211_FTYPE_DATA | IEEE80211_STYPE_DATA;
+-	hdr_len = IEEE80211_DATA_HDR3_LEN;
+-
+-	if (use_wds != WDS_NO) {
+-		/* Note! Prism2 station firmware has problems with sending real
+-		 * 802.11 frames with four addresses; until these problems can
+-		 * be fixed or worked around, 4-addr frames needed for WDS are
+-		 * using incompatible format: FromDS flag is not set and the
+-		 * fourth address is added after the frame payload; it is
+-		 * assumed, that the receiving station knows how to handle this
+-		 * frame format */
+-
+-		if (use_wds == WDS_COMPLIANT_FRAME) {
+-			fc |= IEEE80211_FCTL_FROMDS | IEEE80211_FCTL_TODS;
+-			/* From&To DS: Addr1 = RA, Addr2 = TA, Addr3 = DA,
+-			 * Addr4 = SA */
+-			skb_copy_from_linear_data_offset(skb, ETH_ALEN,
+-							 &hdr.addr4, ETH_ALEN);
+-			hdr_len += ETH_ALEN;
+-		} else {
+-			/* bogus 4-addr format to workaround Prism2 station
+-			 * f/w bug */
+-			fc |= IEEE80211_FCTL_TODS;
+-			/* From DS: Addr1 = DA (used as RA),
+-			 * Addr2 = BSSID (used as TA), Addr3 = SA (used as DA),
+-			 */
+-
+-			/* SA from skb->data + ETH_ALEN will be added after
+-			 * frame payload; use hdr.addr4 as a temporary buffer
+-			 */
+-			skb_copy_from_linear_data_offset(skb, ETH_ALEN,
+-							 &hdr.addr4, ETH_ALEN);
+-			need_tailroom += ETH_ALEN;
+-		}
+-
+-		/* send broadcast and multicast frames to broadcast RA, if
+-		 * configured; otherwise, use unicast RA of the WDS link */
+-		if ((local->wds_type & HOSTAP_WDS_BROADCAST_RA) &&
+-		    is_multicast_ether_addr(skb->data))
+-			eth_broadcast_addr(hdr.addr1);
+-		else if (iface->type == HOSTAP_INTERFACE_WDS)
+-			memcpy(&hdr.addr1, iface->u.wds.remote_addr,
+-			       ETH_ALEN);
+-		else
+-			memcpy(&hdr.addr1, local->bssid, ETH_ALEN);
+-		memcpy(&hdr.addr2, dev->dev_addr, ETH_ALEN);
+-		skb_copy_from_linear_data(skb, &hdr.addr3, ETH_ALEN);
+-	} else if (local->iw_mode == IW_MODE_MASTER && !to_assoc_ap) {
+-		fc |= IEEE80211_FCTL_FROMDS;
+-		/* From DS: Addr1 = DA, Addr2 = BSSID, Addr3 = SA */
+-		skb_copy_from_linear_data(skb, &hdr.addr1, ETH_ALEN);
+-		memcpy(&hdr.addr2, dev->dev_addr, ETH_ALEN);
+-		skb_copy_from_linear_data_offset(skb, ETH_ALEN, &hdr.addr3,
+-						 ETH_ALEN);
+-	} else if (local->iw_mode == IW_MODE_INFRA || to_assoc_ap) {
+-		fc |= IEEE80211_FCTL_TODS;
+-		/* To DS: Addr1 = BSSID, Addr2 = SA, Addr3 = DA */
+-		memcpy(&hdr.addr1, to_assoc_ap ?
+-		       local->assoc_ap_addr : local->bssid, ETH_ALEN);
+-		skb_copy_from_linear_data_offset(skb, ETH_ALEN, &hdr.addr2,
+-						 ETH_ALEN);
+-		skb_copy_from_linear_data(skb, &hdr.addr3, ETH_ALEN);
+-	} else if (local->iw_mode == IW_MODE_ADHOC) {
+-		/* not From/To DS: Addr1 = DA, Addr2 = SA, Addr3 = BSSID */
+-		skb_copy_from_linear_data(skb, &hdr.addr1, ETH_ALEN);
+-		skb_copy_from_linear_data_offset(skb, ETH_ALEN, &hdr.addr2,
+-						 ETH_ALEN);
+-		memcpy(&hdr.addr3, local->bssid, ETH_ALEN);
+-	}
+-
+-	hdr.frame_control = cpu_to_le16(fc);
+-
+-	skb_pull(skb, skip_header_bytes);
+-	need_headroom = local->func->need_tx_headroom + hdr_len + encaps_len;
+-	if (skb_tailroom(skb) < need_tailroom) {
+-		skb = skb_unshare(skb, GFP_ATOMIC);
+-		if (skb == NULL) {
+-			iface->stats.tx_dropped++;
+-			return NETDEV_TX_OK;
+-		}
+-		if (pskb_expand_head(skb, need_headroom, need_tailroom,
+-				     GFP_ATOMIC)) {
+-			kfree_skb(skb);
+-			iface->stats.tx_dropped++;
+-			return NETDEV_TX_OK;
+-		}
+-	} else if (skb_headroom(skb) < need_headroom) {
+-		struct sk_buff *tmp = skb;
+-		skb = skb_realloc_headroom(skb, need_headroom);
+-		kfree_skb(tmp);
+-		if (skb == NULL) {
+-			iface->stats.tx_dropped++;
+-			return NETDEV_TX_OK;
+-		}
+-	} else {
+-		skb = skb_unshare(skb, GFP_ATOMIC);
+-		if (skb == NULL) {
+-			iface->stats.tx_dropped++;
+-			return NETDEV_TX_OK;
+-		}
+-	}
+-
+-	if (encaps_data)
+-		memcpy(skb_push(skb, encaps_len), encaps_data, encaps_len);
+-	memcpy(skb_push(skb, hdr_len), &hdr, hdr_len);
+-	if (use_wds == WDS_OWN_FRAME) {
+-		skb_put_data(skb, &hdr.addr4, ETH_ALEN);
+-	}
+-
+-	iface->stats.tx_packets++;
+-	iface->stats.tx_bytes += skb->len;
+-
+-	skb_reset_mac_header(skb);
+-	meta = (struct hostap_skb_tx_data *) skb->cb;
+-	memset(meta, 0, sizeof(*meta));
+-	meta->magic = HOSTAP_SKB_TX_DATA_MAGIC;
+-	if (use_wds)
+-		meta->flags |= HOSTAP_TX_FLAGS_WDS;
+-	meta->ethertype = ethertype;
+-	meta->iface = iface;
+-
+-	/* Send IEEE 802.11 encapsulated frame using the master radio device */
+-	skb->dev = local->dev;
+-	dev_queue_xmit(skb);
+-	return NETDEV_TX_OK;
+-}
+-
+-
+-/* hard_start_xmit function for hostapd wlan#ap interfaces */
+-netdev_tx_t hostap_mgmt_start_xmit(struct sk_buff *skb,
+-				   struct net_device *dev)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	struct hostap_skb_tx_data *meta;
+-	struct ieee80211_hdr *hdr;
+-	u16 fc;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (skb->len < 10) {
+-		printk(KERN_DEBUG "%s: hostap_mgmt_start_xmit: short skb "
+-		       "(len=%d)\n", dev->name, skb->len);
+-		kfree_skb(skb);
+-		return NETDEV_TX_OK;
+-	}
+-
+-	iface->stats.tx_packets++;
+-	iface->stats.tx_bytes += skb->len;
+-
+-	meta = (struct hostap_skb_tx_data *) skb->cb;
+-	memset(meta, 0, sizeof(*meta));
+-	meta->magic = HOSTAP_SKB_TX_DATA_MAGIC;
+-	meta->iface = iface;
+-
+-	if (skb->len >= IEEE80211_DATA_HDR3_LEN + sizeof(rfc1042_header) + 2) {
+-		hdr = (struct ieee80211_hdr *) skb->data;
+-		fc = le16_to_cpu(hdr->frame_control);
+-		if (ieee80211_is_data(hdr->frame_control) &&
+-		    (fc & IEEE80211_FCTL_STYPE) == IEEE80211_STYPE_DATA) {
+-			u8 *pos = &skb->data[IEEE80211_DATA_HDR3_LEN +
+-					     sizeof(rfc1042_header)];
+-			meta->ethertype = (pos[0] << 8) | pos[1];
+-		}
+-	}
+-
+-	/* Send IEEE 802.11 encapsulated frame using the master radio device */
+-	skb->dev = local->dev;
+-	dev_queue_xmit(skb);
+-	return NETDEV_TX_OK;
+-}
+-
+-
+-/* Called only from software IRQ */
+-static struct sk_buff * hostap_tx_encrypt(struct sk_buff *skb,
+-					  struct lib80211_crypt_data *crypt)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	struct ieee80211_hdr *hdr;
+-	int prefix_len, postfix_len, hdr_len, res;
+-
+-	iface = netdev_priv(skb->dev);
+-	local = iface->local;
+-
+-	if (skb->len < IEEE80211_DATA_HDR3_LEN) {
+-		kfree_skb(skb);
+-		return NULL;
+-	}
+-
+-	if (local->tkip_countermeasures &&
+-	    strcmp(crypt->ops->name, "TKIP") == 0) {
+-		hdr = (struct ieee80211_hdr *) skb->data;
+-		if (net_ratelimit()) {
+-			printk(KERN_DEBUG "%s: TKIP countermeasures: dropped "
+-			       "TX packet to %pM\n",
+-			       local->dev->name, hdr->addr1);
+-		}
+-		kfree_skb(skb);
+-		return NULL;
+-	}
+-
+-	skb = skb_unshare(skb, GFP_ATOMIC);
+-	if (skb == NULL)
+-		return NULL;
+-
+-	prefix_len = crypt->ops->extra_mpdu_prefix_len +
+-		crypt->ops->extra_msdu_prefix_len;
+-	postfix_len = crypt->ops->extra_mpdu_postfix_len +
+-		crypt->ops->extra_msdu_postfix_len;
+-	if ((skb_headroom(skb) < prefix_len ||
+-	     skb_tailroom(skb) < postfix_len) &&
+-	    pskb_expand_head(skb, prefix_len, postfix_len, GFP_ATOMIC)) {
+-		kfree_skb(skb);
+-		return NULL;
+-	}
+-
+-	hdr = (struct ieee80211_hdr *) skb->data;
+-	hdr_len = hostap_80211_get_hdrlen(hdr->frame_control);
+-
+-	/* Host-based IEEE 802.11 fragmentation for TX is not yet supported, so
+-	 * call both MSDU and MPDU encryption functions from here. */
+-	atomic_inc(&crypt->refcnt);
+-	res = 0;
+-	if (crypt->ops->encrypt_msdu)
+-		res = crypt->ops->encrypt_msdu(skb, hdr_len, crypt->priv);
+-	if (res == 0 && crypt->ops->encrypt_mpdu)
+-		res = crypt->ops->encrypt_mpdu(skb, hdr_len, crypt->priv);
+-	atomic_dec(&crypt->refcnt);
+-	if (res < 0) {
+-		kfree_skb(skb);
+-		return NULL;
+-	}
+-
+-	return skb;
+-}
+-
+-
+-/* hard_start_xmit function for master radio interface wifi#.
+- * AP processing (TX rate control, power save buffering, etc.).
+- * Use hardware TX function to send the frame. */
+-netdev_tx_t hostap_master_start_xmit(struct sk_buff *skb,
+-				     struct net_device *dev)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	netdev_tx_t ret = NETDEV_TX_BUSY;
+-	u16 fc;
+-	struct hostap_tx_data tx;
+-	ap_tx_ret tx_ret;
+-	struct hostap_skb_tx_data *meta;
+-	int no_encrypt = 0;
+-	struct ieee80211_hdr *hdr;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	tx.skb = skb;
+-	tx.sta_ptr = NULL;
+-
+-	meta = (struct hostap_skb_tx_data *) skb->cb;
+-	if (meta->magic != HOSTAP_SKB_TX_DATA_MAGIC) {
+-		printk(KERN_DEBUG "%s: invalid skb->cb magic (0x%08x, "
+-		       "expected 0x%08x)\n",
+-		       dev->name, meta->magic, HOSTAP_SKB_TX_DATA_MAGIC);
+-		ret = NETDEV_TX_OK;
+-		iface->stats.tx_dropped++;
+-		goto fail;
+-	}
+-
+-	if (local->host_encrypt) {
+-		/* Set crypt to default algorithm and key; will be replaced in
+-		 * AP code if STA has own alg/key */
+-		tx.crypt = local->crypt_info.crypt[local->crypt_info.tx_keyidx];
+-		tx.host_encrypt = 1;
+-	} else {
+-		tx.crypt = NULL;
+-		tx.host_encrypt = 0;
+-	}
+-
+-	if (skb->len < 24) {
+-		printk(KERN_DEBUG "%s: hostap_master_start_xmit: short skb "
+-		       "(len=%d)\n", dev->name, skb->len);
+-		ret = NETDEV_TX_OK;
+-		iface->stats.tx_dropped++;
+-		goto fail;
+-	}
+-
+-	/* FIX (?):
+-	 * Wi-Fi 802.11b test plan suggests that AP should ignore power save
+-	 * bit in authentication and (re)association frames and assume tha
+-	 * STA remains awake for the response. */
+-	tx_ret = hostap_handle_sta_tx(local, &tx);
+-	skb = tx.skb;
+-	meta = (struct hostap_skb_tx_data *) skb->cb;
+-	hdr = (struct ieee80211_hdr *) skb->data;
+-	fc = le16_to_cpu(hdr->frame_control);
+-	switch (tx_ret) {
+-	case AP_TX_CONTINUE:
+-		break;
+-	case AP_TX_CONTINUE_NOT_AUTHORIZED:
+-		if (local->ieee_802_1x &&
+-		    ieee80211_is_data(hdr->frame_control) &&
+-		    meta->ethertype != ETH_P_PAE &&
+-		    !(meta->flags & HOSTAP_TX_FLAGS_WDS)) {
+-			printk(KERN_DEBUG "%s: dropped frame to unauthorized "
+-			       "port (IEEE 802.1X): ethertype=0x%04x\n",
+-			       dev->name, meta->ethertype);
+-			hostap_dump_tx_80211(dev->name, skb);
+-
+-			ret = NETDEV_TX_OK; /* drop packet */
+-			iface->stats.tx_dropped++;
+-			goto fail;
+-		}
+-		break;
+-	case AP_TX_DROP:
+-		ret = NETDEV_TX_OK; /* drop packet */
+-		iface->stats.tx_dropped++;
+-		goto fail;
+-	case AP_TX_RETRY:
+-		goto fail;
+-	case AP_TX_BUFFERED:
+-		/* do not free skb here, it will be freed when the
+-		 * buffered frame is sent/timed out */
+-		ret = NETDEV_TX_OK;
+-		goto tx_exit;
+-	}
+-
+-	/* Request TX callback if protocol version is 2 in 802.11 header;
+-	 * this version 2 is a special case used between hostapd and kernel
+-	 * driver */
+-	if (((fc & IEEE80211_FCTL_VERS) == BIT(1)) &&
+-	    local->ap && local->ap->tx_callback_idx && meta->tx_cb_idx == 0) {
+-		meta->tx_cb_idx = local->ap->tx_callback_idx;
+-
+-		/* remove special version from the frame header */
+-		fc &= ~IEEE80211_FCTL_VERS;
+-		hdr->frame_control = cpu_to_le16(fc);
+-	}
+-
+-	if (!ieee80211_is_data(hdr->frame_control)) {
+-		no_encrypt = 1;
+-		tx.crypt = NULL;
+-	}
+-
+-	if (local->ieee_802_1x && meta->ethertype == ETH_P_PAE && tx.crypt &&
+-	    !(fc & IEEE80211_FCTL_PROTECTED)) {
+-		no_encrypt = 1;
+-		PDEBUG(DEBUG_EXTRA2, "%s: TX: IEEE 802.1X - passing "
+-		       "unencrypted EAPOL frame\n", dev->name);
+-		tx.crypt = NULL; /* no encryption for IEEE 802.1X frames */
+-	}
+-
+-	if (tx.crypt && (!tx.crypt->ops || !tx.crypt->ops->encrypt_mpdu))
+-		tx.crypt = NULL;
+-	else if ((tx.crypt ||
+-		 local->crypt_info.crypt[local->crypt_info.tx_keyidx]) &&
+-		 !no_encrypt) {
+-		/* Add ISWEP flag both for firmware and host based encryption
+-		 */
+-		fc |= IEEE80211_FCTL_PROTECTED;
+-		hdr->frame_control = cpu_to_le16(fc);
+-	} else if (local->drop_unencrypted &&
+-		   ieee80211_is_data(hdr->frame_control) &&
+-		   meta->ethertype != ETH_P_PAE) {
+-		if (net_ratelimit()) {
+-			printk(KERN_DEBUG "%s: dropped unencrypted TX data "
+-			       "frame (drop_unencrypted=1)\n", dev->name);
+-		}
+-		iface->stats.tx_dropped++;
+-		ret = NETDEV_TX_OK;
+-		goto fail;
+-	}
+-
+-	if (tx.crypt) {
+-		skb = hostap_tx_encrypt(skb, tx.crypt);
+-		if (skb == NULL) {
+-			printk(KERN_DEBUG "%s: TX - encryption failed\n",
+-			       dev->name);
+-			ret = NETDEV_TX_OK;
+-			goto fail;
+-		}
+-		meta = (struct hostap_skb_tx_data *) skb->cb;
+-		if (meta->magic != HOSTAP_SKB_TX_DATA_MAGIC) {
+-			printk(KERN_DEBUG "%s: invalid skb->cb magic (0x%08x, "
+-			       "expected 0x%08x) after hostap_tx_encrypt\n",
+-			       dev->name, meta->magic,
+-			       HOSTAP_SKB_TX_DATA_MAGIC);
+-			ret = NETDEV_TX_OK;
+-			iface->stats.tx_dropped++;
+-			goto fail;
+-		}
+-	}
+-
+-	if (local->func->tx == NULL || local->func->tx(skb, dev)) {
+-		ret = NETDEV_TX_OK;
+-		iface->stats.tx_dropped++;
+-	} else {
+-		ret = NETDEV_TX_OK;
+-		iface->stats.tx_packets++;
+-		iface->stats.tx_bytes += skb->len;
+-	}
+-
+- fail:
+-	if (ret == NETDEV_TX_OK && skb)
+-		dev_kfree_skb(skb);
+- tx_exit:
+-	if (tx.sta_ptr)
+-		hostap_handle_sta_release(tx.sta_ptr);
+-	return ret;
+-}
+-
+-
+-EXPORT_SYMBOL(hostap_master_start_xmit);
+diff --git a/drivers/net/wireless/intersil/hostap/hostap_ap.c b/drivers/net/wireless/intersil/hostap/hostap_ap.c
+deleted file mode 100644
+index 9b546a71e7a2e..0000000000000
+--- a/drivers/net/wireless/intersil/hostap/hostap_ap.c
++++ /dev/null
+@@ -1,3277 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/*
+- * Intersil Prism2 driver with Host AP (software access point) support
+- * Copyright (c) 2001-2002, SSH Communications Security Corp and Jouni Malinen
+- * <j@w1.fi>
+- * Copyright (c) 2002-2005, Jouni Malinen <j@w1.fi>
+- *
+- * This file is to be included into hostap.c when S/W AP functionality is
+- * compiled.
+- *
+- * AP:  FIX:
+- * - if unicast Class 2 (assoc,reassoc,disassoc) frame received from
+- *   unauthenticated STA, send deauth. frame (8802.11: 5.5)
+- * - if unicast Class 3 (data with to/from DS,deauth,pspoll) frame received
+- *   from authenticated, but unassoc STA, send disassoc frame (8802.11: 5.5)
+- * - if unicast Class 3 received from unauthenticated STA, send deauth. frame
+- *   (8802.11: 5.5)
+- */
+-
+-#include <linux/proc_fs.h>
+-#include <linux/seq_file.h>
+-#include <linux/delay.h>
+-#include <linux/random.h>
+-#include <linux/if_arp.h>
+-#include <linux/slab.h>
+-#include <linux/export.h>
+-#include <linux/moduleparam.h>
+-#include <linux/etherdevice.h>
+-
+-#include "hostap_wlan.h"
+-#include "hostap.h"
+-#include "hostap_ap.h"
+-
+-static int other_ap_policy[MAX_PARM_DEVICES] = { AP_OTHER_AP_SKIP_ALL,
+-						 DEF_INTS };
+-module_param_array(other_ap_policy, int, NULL, 0444);
+-MODULE_PARM_DESC(other_ap_policy, "Other AP beacon monitoring policy (0-3)");
+-
+-static int ap_max_inactivity[MAX_PARM_DEVICES] = { AP_MAX_INACTIVITY_SEC,
+-						   DEF_INTS };
+-module_param_array(ap_max_inactivity, int, NULL, 0444);
+-MODULE_PARM_DESC(ap_max_inactivity, "AP timeout (in seconds) for station "
+-		 "inactivity");
+-
+-static int ap_bridge_packets[MAX_PARM_DEVICES] = { 1, DEF_INTS };
+-module_param_array(ap_bridge_packets, int, NULL, 0444);
+-MODULE_PARM_DESC(ap_bridge_packets, "Bridge packets directly between "
+-		 "stations");
+-
+-static int autom_ap_wds[MAX_PARM_DEVICES] = { 0, DEF_INTS };
+-module_param_array(autom_ap_wds, int, NULL, 0444);
+-MODULE_PARM_DESC(autom_ap_wds, "Add WDS connections to other APs "
+-		 "automatically");
+-
+-
+-static struct sta_info* ap_get_sta(struct ap_data *ap, u8 *sta);
+-static void hostap_event_expired_sta(struct net_device *dev,
+-				     struct sta_info *sta);
+-static void handle_add_proc_queue(struct work_struct *work);
+-
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-static void handle_wds_oper_queue(struct work_struct *work);
+-static void prism2_send_mgmt(struct net_device *dev,
+-			     u16 type_subtype, char *body,
+-			     int body_len, u8 *addr, u16 tx_cb_idx);
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-
+-
+-#if !defined(PRISM2_NO_PROCFS_DEBUG) && defined(CONFIG_PROC_FS)
+-static int ap_debug_proc_show(struct seq_file *m, void *v)
+-{
+-	struct ap_data *ap = pde_data(file_inode(m->file));
+-
+-	seq_printf(m, "BridgedUnicastFrames=%u\n", ap->bridged_unicast);
+-	seq_printf(m, "BridgedMulticastFrames=%u\n", ap->bridged_multicast);
+-	seq_printf(m, "max_inactivity=%u\n", ap->max_inactivity / HZ);
+-	seq_printf(m, "bridge_packets=%u\n", ap->bridge_packets);
+-	seq_printf(m, "nullfunc_ack=%u\n", ap->nullfunc_ack);
+-	seq_printf(m, "autom_ap_wds=%u\n", ap->autom_ap_wds);
+-	seq_printf(m, "auth_algs=%u\n", ap->local->auth_algs);
+-	seq_printf(m, "tx_drop_nonassoc=%u\n", ap->tx_drop_nonassoc);
+-	return 0;
+-}
+-#endif
+-
+-static void ap_sta_hash_add(struct ap_data *ap, struct sta_info *sta)
+-{
+-	sta->hnext = ap->sta_hash[STA_HASH(sta->addr)];
+-	ap->sta_hash[STA_HASH(sta->addr)] = sta;
+-}
+-
+-static void ap_sta_hash_del(struct ap_data *ap, struct sta_info *sta)
+-{
+-	struct sta_info *s;
+-
+-	s = ap->sta_hash[STA_HASH(sta->addr)];
+-	if (s == NULL) return;
+-	if (ether_addr_equal(s->addr, sta->addr)) {
+-		ap->sta_hash[STA_HASH(sta->addr)] = s->hnext;
+-		return;
+-	}
+-
+-	while (s->hnext != NULL && !ether_addr_equal(s->hnext->addr, sta->addr))
+-		s = s->hnext;
+-	if (s->hnext != NULL)
+-		s->hnext = s->hnext->hnext;
+-	else
+-		printk("AP: could not remove STA %pM from hash table\n",
+-		       sta->addr);
+-}
+-
+-static void ap_free_sta(struct ap_data *ap, struct sta_info *sta)
+-{
+-	if (sta->ap && sta->local)
+-		hostap_event_expired_sta(sta->local->dev, sta);
+-
+-	if (ap->proc != NULL) {
+-		char name[20];
+-		sprintf(name, "%pM", sta->addr);
+-		remove_proc_entry(name, ap->proc);
+-	}
+-
+-	if (sta->crypt) {
+-		sta->crypt->ops->deinit(sta->crypt->priv);
+-		kfree(sta->crypt);
+-		sta->crypt = NULL;
+-	}
+-
+-	skb_queue_purge(&sta->tx_buf);
+-
+-	ap->num_sta--;
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-	if (sta->aid > 0)
+-		ap->sta_aid[sta->aid - 1] = NULL;
+-
+-	if (!sta->ap)
+-		kfree(sta->u.sta.challenge);
+-	timer_shutdown_sync(&sta->timer);
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-
+-	kfree(sta);
+-}
+-
+-
+-static void hostap_set_tim(local_info_t *local, int aid, int set)
+-{
+-	if (local->func->set_tim)
+-		local->func->set_tim(local->dev, aid, set);
+-}
+-
+-
+-static void hostap_event_new_sta(struct net_device *dev, struct sta_info *sta)
+-{
+-	union iwreq_data wrqu;
+-	memset(&wrqu, 0, sizeof(wrqu));
+-	memcpy(wrqu.addr.sa_data, sta->addr, ETH_ALEN);
+-	wrqu.addr.sa_family = ARPHRD_ETHER;
+-	wireless_send_event(dev, IWEVREGISTERED, &wrqu, NULL);
+-}
+-
+-
+-static void hostap_event_expired_sta(struct net_device *dev,
+-				     struct sta_info *sta)
+-{
+-	union iwreq_data wrqu;
+-	memset(&wrqu, 0, sizeof(wrqu));
+-	memcpy(wrqu.addr.sa_data, sta->addr, ETH_ALEN);
+-	wrqu.addr.sa_family = ARPHRD_ETHER;
+-	wireless_send_event(dev, IWEVEXPIRED, &wrqu, NULL);
+-}
+-
+-
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-
+-static void ap_handle_timer(struct timer_list *t)
+-{
+-	struct sta_info *sta = from_timer(sta, t, timer);
+-	local_info_t *local;
+-	struct ap_data *ap;
+-	unsigned long next_time = 0;
+-	int was_assoc;
+-
+-	if (sta == NULL || sta->local == NULL || sta->local->ap == NULL) {
+-		PDEBUG(DEBUG_AP, "ap_handle_timer() called with NULL data\n");
+-		return;
+-	}
+-
+-	local = sta->local;
+-	ap = local->ap;
+-	was_assoc = sta->flags & WLAN_STA_ASSOC;
+-
+-	if (atomic_read(&sta->users) != 0)
+-		next_time = jiffies + HZ;
+-	else if ((sta->flags & WLAN_STA_PERM) && !(sta->flags & WLAN_STA_AUTH))
+-		next_time = jiffies + ap->max_inactivity;
+-
+-	if (time_before(jiffies, sta->last_rx + ap->max_inactivity)) {
+-		/* station activity detected; reset timeout state */
+-		sta->timeout_next = STA_NULLFUNC;
+-		next_time = sta->last_rx + ap->max_inactivity;
+-	} else if (sta->timeout_next == STA_DISASSOC &&
+-		   !(sta->flags & WLAN_STA_PENDING_POLL)) {
+-		/* STA ACKed data nullfunc frame poll */
+-		sta->timeout_next = STA_NULLFUNC;
+-		next_time = jiffies + ap->max_inactivity;
+-	}
+-
+-	if (next_time) {
+-		sta->timer.expires = next_time;
+-		add_timer(&sta->timer);
+-		return;
+-	}
+-
+-	if (sta->ap)
+-		sta->timeout_next = STA_DEAUTH;
+-
+-	if (sta->timeout_next == STA_DEAUTH && !(sta->flags & WLAN_STA_PERM)) {
+-		spin_lock(&ap->sta_table_lock);
+-		ap_sta_hash_del(ap, sta);
+-		list_del(&sta->list);
+-		spin_unlock(&ap->sta_table_lock);
+-		sta->flags &= ~(WLAN_STA_AUTH | WLAN_STA_ASSOC);
+-	} else if (sta->timeout_next == STA_DISASSOC)
+-		sta->flags &= ~WLAN_STA_ASSOC;
+-
+-	if (was_assoc && !(sta->flags & WLAN_STA_ASSOC) && !sta->ap)
+-		hostap_event_expired_sta(local->dev, sta);
+-
+-	if (sta->timeout_next == STA_DEAUTH && sta->aid > 0 &&
+-	    !skb_queue_empty(&sta->tx_buf)) {
+-		hostap_set_tim(local, sta->aid, 0);
+-		sta->flags &= ~WLAN_STA_TIM;
+-	}
+-
+-	if (sta->ap) {
+-		if (ap->autom_ap_wds) {
+-			PDEBUG(DEBUG_AP, "%s: removing automatic WDS "
+-			       "connection to AP %pM\n",
+-			       local->dev->name, sta->addr);
+-			hostap_wds_link_oper(local, sta->addr, WDS_DEL);
+-		}
+-	} else if (sta->timeout_next == STA_NULLFUNC) {
+-		/* send data frame to poll STA and check whether this frame
+-		 * is ACKed */
+-		/* FIX: IEEE80211_STYPE_NULLFUNC would be more appropriate, but
+-		 * it is apparently not retried so TX Exc events are not
+-		 * received for it */
+-		sta->flags |= WLAN_STA_PENDING_POLL;
+-		prism2_send_mgmt(local->dev, IEEE80211_FTYPE_DATA |
+-				 IEEE80211_STYPE_DATA, NULL, 0,
+-				 sta->addr, ap->tx_callback_poll);
+-	} else {
+-		int deauth = sta->timeout_next == STA_DEAUTH;
+-		__le16 resp;
+-		PDEBUG(DEBUG_AP, "%s: sending %s info to STA %pM"
+-		       "(last=%lu, jiffies=%lu)\n",
+-		       local->dev->name,
+-		       deauth ? "deauthentication" : "disassociation",
+-		       sta->addr, sta->last_rx, jiffies);
+-
+-		resp = cpu_to_le16(deauth ? WLAN_REASON_PREV_AUTH_NOT_VALID :
+-				   WLAN_REASON_DISASSOC_DUE_TO_INACTIVITY);
+-		prism2_send_mgmt(local->dev, IEEE80211_FTYPE_MGMT |
+-				 (deauth ? IEEE80211_STYPE_DEAUTH :
+-				  IEEE80211_STYPE_DISASSOC),
+-				 (char *) &resp, 2, sta->addr, 0);
+-	}
+-
+-	if (sta->timeout_next == STA_DEAUTH) {
+-		if (sta->flags & WLAN_STA_PERM) {
+-			PDEBUG(DEBUG_AP, "%s: STA %pM"
+-			       " would have been removed, "
+-			       "but it has 'perm' flag\n",
+-			       local->dev->name, sta->addr);
+-		} else
+-			ap_free_sta(ap, sta);
+-		return;
+-	}
+-
+-	if (sta->timeout_next == STA_NULLFUNC) {
+-		sta->timeout_next = STA_DISASSOC;
+-		sta->timer.expires = jiffies + AP_DISASSOC_DELAY;
+-	} else {
+-		sta->timeout_next = STA_DEAUTH;
+-		sta->timer.expires = jiffies + AP_DEAUTH_DELAY;
+-	}
+-
+-	add_timer(&sta->timer);
+-}
+-
+-
+-void hostap_deauth_all_stas(struct net_device *dev, struct ap_data *ap,
+-			    int resend)
+-{
+-	u8 addr[ETH_ALEN];
+-	__le16 resp;
+-	int i;
+-
+-	PDEBUG(DEBUG_AP, "%s: Deauthenticate all stations\n", dev->name);
+-	eth_broadcast_addr(addr);
+-
+-	resp = cpu_to_le16(WLAN_REASON_PREV_AUTH_NOT_VALID);
+-
+-	/* deauth message sent; try to resend it few times; the message is
+-	 * broadcast, so it may be delayed until next DTIM; there is not much
+-	 * else we can do at this point since the driver is going to be shut
+-	 * down */
+-	for (i = 0; i < 5; i++) {
+-		prism2_send_mgmt(dev, IEEE80211_FTYPE_MGMT |
+-				 IEEE80211_STYPE_DEAUTH,
+-				 (char *) &resp, 2, addr, 0);
+-
+-		if (!resend || ap->num_sta <= 0)
+-			return;
+-
+-		mdelay(50);
+-	}
+-}
+-
+-
+-static int ap_control_proc_show(struct seq_file *m, void *v)
+-{
+-	struct ap_data *ap = pde_data(file_inode(m->file));
+-	char *policy_txt;
+-	struct mac_entry *entry;
+-
+-	if (v == SEQ_START_TOKEN) {
+-		switch (ap->mac_restrictions.policy) {
+-		case MAC_POLICY_OPEN:
+-			policy_txt = "open";
+-			break;
+-		case MAC_POLICY_ALLOW:
+-			policy_txt = "allow";
+-			break;
+-		case MAC_POLICY_DENY:
+-			policy_txt = "deny";
+-			break;
+-		default:
+-			policy_txt = "unknown";
+-			break;
+-		}
+-		seq_printf(m, "MAC policy: %s\n", policy_txt);
+-		seq_printf(m, "MAC entries: %u\n", ap->mac_restrictions.entries);
+-		seq_puts(m, "MAC list:\n");
+-		return 0;
+-	}
+-
+-	entry = v;
+-	seq_printf(m, "%pM\n", entry->addr);
+-	return 0;
+-}
+-
+-static void *ap_control_proc_start(struct seq_file *m, loff_t *_pos)
+-{
+-	struct ap_data *ap = pde_data(file_inode(m->file));
+-	spin_lock_bh(&ap->mac_restrictions.lock);
+-	return seq_list_start_head(&ap->mac_restrictions.mac_list, *_pos);
+-}
+-
+-static void *ap_control_proc_next(struct seq_file *m, void *v, loff_t *_pos)
+-{
+-	struct ap_data *ap = pde_data(file_inode(m->file));
+-	return seq_list_next(v, &ap->mac_restrictions.mac_list, _pos);
+-}
+-
+-static void ap_control_proc_stop(struct seq_file *m, void *v)
+-{
+-	struct ap_data *ap = pde_data(file_inode(m->file));
+-	spin_unlock_bh(&ap->mac_restrictions.lock);
+-}
+-
+-static const struct seq_operations ap_control_proc_seqops = {
+-	.start	= ap_control_proc_start,
+-	.next	= ap_control_proc_next,
+-	.stop	= ap_control_proc_stop,
+-	.show	= ap_control_proc_show,
+-};
+-
+-int ap_control_add_mac(struct mac_restrictions *mac_restrictions, u8 *mac)
+-{
+-	struct mac_entry *entry;
+-
+-	entry = kmalloc(sizeof(struct mac_entry), GFP_KERNEL);
+-	if (entry == NULL)
+-		return -ENOMEM;
+-
+-	memcpy(entry->addr, mac, ETH_ALEN);
+-
+-	spin_lock_bh(&mac_restrictions->lock);
+-	list_add_tail(&entry->list, &mac_restrictions->mac_list);
+-	mac_restrictions->entries++;
+-	spin_unlock_bh(&mac_restrictions->lock);
+-
+-	return 0;
+-}
+-
+-
+-int ap_control_del_mac(struct mac_restrictions *mac_restrictions, u8 *mac)
+-{
+-	struct list_head *ptr;
+-	struct mac_entry *entry;
+-
+-	spin_lock_bh(&mac_restrictions->lock);
+-	for (ptr = mac_restrictions->mac_list.next;
+-	     ptr != &mac_restrictions->mac_list; ptr = ptr->next) {
+-		entry = list_entry(ptr, struct mac_entry, list);
+-
+-		if (ether_addr_equal(entry->addr, mac)) {
+-			list_del(ptr);
+-			kfree(entry);
+-			mac_restrictions->entries--;
+-			spin_unlock_bh(&mac_restrictions->lock);
+-			return 0;
+-		}
+-	}
+-	spin_unlock_bh(&mac_restrictions->lock);
+-	return -1;
+-}
+-
+-
+-static int ap_control_mac_deny(struct mac_restrictions *mac_restrictions,
+-			       u8 *mac)
+-{
+-	struct mac_entry *entry;
+-	int found = 0;
+-
+-	if (mac_restrictions->policy == MAC_POLICY_OPEN)
+-		return 0;
+-
+-	spin_lock_bh(&mac_restrictions->lock);
+-	list_for_each_entry(entry, &mac_restrictions->mac_list, list) {
+-		if (ether_addr_equal(entry->addr, mac)) {
+-			found = 1;
+-			break;
+-		}
+-	}
+-	spin_unlock_bh(&mac_restrictions->lock);
+-
+-	if (mac_restrictions->policy == MAC_POLICY_ALLOW)
+-		return !found;
+-	else
+-		return found;
+-}
+-
+-
+-void ap_control_flush_macs(struct mac_restrictions *mac_restrictions)
+-{
+-	struct list_head *ptr, *n;
+-	struct mac_entry *entry;
+-
+-	if (mac_restrictions->entries == 0)
+-		return;
+-
+-	spin_lock_bh(&mac_restrictions->lock);
+-	for (ptr = mac_restrictions->mac_list.next, n = ptr->next;
+-	     ptr != &mac_restrictions->mac_list;
+-	     ptr = n, n = ptr->next) {
+-		entry = list_entry(ptr, struct mac_entry, list);
+-		list_del(ptr);
+-		kfree(entry);
+-	}
+-	mac_restrictions->entries = 0;
+-	spin_unlock_bh(&mac_restrictions->lock);
+-}
+-
+-
+-int ap_control_kick_mac(struct ap_data *ap, struct net_device *dev, u8 *mac)
+-{
+-	struct sta_info *sta;
+-	__le16 resp;
+-
+-	spin_lock_bh(&ap->sta_table_lock);
+-	sta = ap_get_sta(ap, mac);
+-	if (sta) {
+-		ap_sta_hash_del(ap, sta);
+-		list_del(&sta->list);
+-	}
+-	spin_unlock_bh(&ap->sta_table_lock);
+-
+-	if (!sta)
+-		return -EINVAL;
+-
+-	resp = cpu_to_le16(WLAN_REASON_PREV_AUTH_NOT_VALID);
+-	prism2_send_mgmt(dev, IEEE80211_FTYPE_MGMT | IEEE80211_STYPE_DEAUTH,
+-			 (char *) &resp, 2, sta->addr, 0);
+-
+-	if ((sta->flags & WLAN_STA_ASSOC) && !sta->ap)
+-		hostap_event_expired_sta(dev, sta);
+-
+-	ap_free_sta(ap, sta);
+-
+-	return 0;
+-}
+-
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-
+-
+-void ap_control_kickall(struct ap_data *ap)
+-{
+-	struct list_head *ptr, *n;
+-	struct sta_info *sta;
+-
+-	spin_lock_bh(&ap->sta_table_lock);
+-	for (ptr = ap->sta_list.next, n = ptr->next; ptr != &ap->sta_list;
+-	     ptr = n, n = ptr->next) {
+-		sta = list_entry(ptr, struct sta_info, list);
+-		ap_sta_hash_del(ap, sta);
+-		list_del(&sta->list);
+-		if ((sta->flags & WLAN_STA_ASSOC) && !sta->ap && sta->local)
+-			hostap_event_expired_sta(sta->local->dev, sta);
+-		ap_free_sta(ap, sta);
+-	}
+-	spin_unlock_bh(&ap->sta_table_lock);
+-}
+-
+-
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-
+-static int prism2_ap_proc_show(struct seq_file *m, void *v)
+-{
+-	struct sta_info *sta = v;
+-	int i;
+-
+-	if (v == SEQ_START_TOKEN) {
+-		seq_printf(m, "# BSSID CHAN SIGNAL NOISE RATE SSID FLAGS\n");
+-		return 0;
+-	}
+-
+-	if (!sta->ap)
+-		return 0;
+-
+-	seq_printf(m, "%pM %d %d %d %d '",
+-		   sta->addr,
+-		   sta->u.ap.channel, sta->last_rx_signal,
+-		   sta->last_rx_silence, sta->last_rx_rate);
+-
+-	for (i = 0; i < sta->u.ap.ssid_len; i++) {
+-		if (sta->u.ap.ssid[i] >= 32 && sta->u.ap.ssid[i] < 127)
+-			seq_putc(m, sta->u.ap.ssid[i]);
+-		else
+-			seq_printf(m, "<%02x>", sta->u.ap.ssid[i]);
+-	}
+-
+-	seq_putc(m, '\'');
+-	if (sta->capability & WLAN_CAPABILITY_ESS)
+-		seq_puts(m, " [ESS]");
+-	if (sta->capability & WLAN_CAPABILITY_IBSS)
+-		seq_puts(m, " [IBSS]");
+-	if (sta->capability & WLAN_CAPABILITY_PRIVACY)
+-		seq_puts(m, " [WEP]");
+-	seq_putc(m, '\n');
+-	return 0;
+-}
+-
+-static void *prism2_ap_proc_start(struct seq_file *m, loff_t *_pos)
+-{
+-	struct ap_data *ap = pde_data(file_inode(m->file));
+-	spin_lock_bh(&ap->sta_table_lock);
+-	return seq_list_start_head(&ap->sta_list, *_pos);
+-}
+-
+-static void *prism2_ap_proc_next(struct seq_file *m, void *v, loff_t *_pos)
+-{
+-	struct ap_data *ap = pde_data(file_inode(m->file));
+-	return seq_list_next(v, &ap->sta_list, _pos);
+-}
+-
+-static void prism2_ap_proc_stop(struct seq_file *m, void *v)
+-{
+-	struct ap_data *ap = pde_data(file_inode(m->file));
+-	spin_unlock_bh(&ap->sta_table_lock);
+-}
+-
+-static const struct seq_operations prism2_ap_proc_seqops = {
+-	.start	= prism2_ap_proc_start,
+-	.next	= prism2_ap_proc_next,
+-	.stop	= prism2_ap_proc_stop,
+-	.show	= prism2_ap_proc_show,
+-};
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-
+-
+-void hostap_check_sta_fw_version(struct ap_data *ap, int sta_fw_ver)
+-{
+-	if (!ap)
+-		return;
+-
+-	if (sta_fw_ver == PRISM2_FW_VER(0,8,0)) {
+-		PDEBUG(DEBUG_AP, "Using data::nullfunc ACK workaround - "
+-		       "firmware upgrade recommended\n");
+-		ap->nullfunc_ack = 1;
+-	} else
+-		ap->nullfunc_ack = 0;
+-
+-	if (sta_fw_ver == PRISM2_FW_VER(1,4,2)) {
+-		printk(KERN_WARNING "%s: Warning: secondary station firmware "
+-		       "version 1.4.2 does not seem to work in Host AP mode\n",
+-		       ap->local->dev->name);
+-	}
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static void hostap_ap_tx_cb(struct sk_buff *skb, int ok, void *data)
+-{
+-	struct ap_data *ap = data;
+-	struct ieee80211_hdr *hdr;
+-
+-	if (!ap->local->hostapd || !ap->local->apdev) {
+-		dev_kfree_skb(skb);
+-		return;
+-	}
+-
+-	/* Pass the TX callback frame to the hostapd; use 802.11 header version
+-	 * 1 to indicate failure (no ACK) and 2 success (frame ACKed) */
+-
+-	hdr = (struct ieee80211_hdr *) skb->data;
+-	hdr->frame_control &= cpu_to_le16(~IEEE80211_FCTL_VERS);
+-	hdr->frame_control |= cpu_to_le16(ok ? BIT(1) : BIT(0));
+-
+-	skb->dev = ap->local->apdev;
+-	skb_pull(skb, hostap_80211_get_hdrlen(hdr->frame_control));
+-	skb->pkt_type = PACKET_OTHERHOST;
+-	skb->protocol = cpu_to_be16(ETH_P_802_2);
+-	memset(skb->cb, 0, sizeof(skb->cb));
+-	netif_rx(skb);
+-}
+-
+-
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-/* Called only as a tasklet (software IRQ) */
+-static void hostap_ap_tx_cb_auth(struct sk_buff *skb, int ok, void *data)
+-{
+-	struct ap_data *ap = data;
+-	struct net_device *dev = ap->local->dev;
+-	struct ieee80211_hdr *hdr;
+-	u16 auth_alg, auth_transaction, status;
+-	__le16 *pos;
+-	struct sta_info *sta = NULL;
+-	char *txt = NULL;
+-
+-	if (ap->local->hostapd) {
+-		dev_kfree_skb(skb);
+-		return;
+-	}
+-
+-	hdr = (struct ieee80211_hdr *) skb->data;
+-	if (!ieee80211_is_auth(hdr->frame_control) ||
+-	    skb->len < IEEE80211_MGMT_HDR_LEN + 6) {
+-		printk(KERN_DEBUG "%s: hostap_ap_tx_cb_auth received invalid "
+-		       "frame\n", dev->name);
+-		dev_kfree_skb(skb);
+-		return;
+-	}
+-
+-	pos = (__le16 *) (skb->data + IEEE80211_MGMT_HDR_LEN);
+-	auth_alg = le16_to_cpu(*pos++);
+-	auth_transaction = le16_to_cpu(*pos++);
+-	status = le16_to_cpu(*pos++);
+-
+-	if (!ok) {
+-		txt = "frame was not ACKed";
+-		goto done;
+-	}
+-
+-	spin_lock(&ap->sta_table_lock);
+-	sta = ap_get_sta(ap, hdr->addr1);
+-	if (sta)
+-		atomic_inc(&sta->users);
+-	spin_unlock(&ap->sta_table_lock);
+-
+-	if (!sta) {
+-		txt = "STA not found";
+-		goto done;
+-	}
+-
+-	if (status == WLAN_STATUS_SUCCESS &&
+-	    ((auth_alg == WLAN_AUTH_OPEN && auth_transaction == 2) ||
+-	     (auth_alg == WLAN_AUTH_SHARED_KEY && auth_transaction == 4))) {
+-		txt = "STA authenticated";
+-		sta->flags |= WLAN_STA_AUTH;
+-		sta->last_auth = jiffies;
+-	} else if (status != WLAN_STATUS_SUCCESS)
+-		txt = "authentication failed";
+-
+- done:
+-	if (sta)
+-		atomic_dec(&sta->users);
+-	if (txt) {
+-		PDEBUG(DEBUG_AP, "%s: %pM auth_cb - alg=%d "
+-		       "trans#=%d status=%d - %s\n",
+-		       dev->name, hdr->addr1,
+-		       auth_alg, auth_transaction, status, txt);
+-	}
+-	dev_kfree_skb(skb);
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static void hostap_ap_tx_cb_assoc(struct sk_buff *skb, int ok, void *data)
+-{
+-	struct ap_data *ap = data;
+-	struct net_device *dev = ap->local->dev;
+-	struct ieee80211_hdr *hdr;
+-	u16 status;
+-	__le16 *pos;
+-	struct sta_info *sta = NULL;
+-	char *txt = NULL;
+-
+-	if (ap->local->hostapd) {
+-		dev_kfree_skb(skb);
+-		return;
+-	}
+-
+-	hdr = (struct ieee80211_hdr *) skb->data;
+-	if ((!ieee80211_is_assoc_resp(hdr->frame_control) &&
+-	     !ieee80211_is_reassoc_resp(hdr->frame_control)) ||
+-	    skb->len < IEEE80211_MGMT_HDR_LEN + 4) {
+-		printk(KERN_DEBUG "%s: hostap_ap_tx_cb_assoc received invalid "
+-		       "frame\n", dev->name);
+-		dev_kfree_skb(skb);
+-		return;
+-	}
+-
+-	if (!ok) {
+-		txt = "frame was not ACKed";
+-		goto done;
+-	}
+-
+-	spin_lock(&ap->sta_table_lock);
+-	sta = ap_get_sta(ap, hdr->addr1);
+-	if (sta)
+-		atomic_inc(&sta->users);
+-	spin_unlock(&ap->sta_table_lock);
+-
+-	if (!sta) {
+-		txt = "STA not found";
+-		goto done;
+-	}
+-
+-	pos = (__le16 *) (skb->data + IEEE80211_MGMT_HDR_LEN);
+-	pos++;
+-	status = le16_to_cpu(*pos++);
+-	if (status == WLAN_STATUS_SUCCESS) {
+-		if (!(sta->flags & WLAN_STA_ASSOC))
+-			hostap_event_new_sta(dev, sta);
+-		txt = "STA associated";
+-		sta->flags |= WLAN_STA_ASSOC;
+-		sta->last_assoc = jiffies;
+-	} else
+-		txt = "association failed";
+-
+- done:
+-	if (sta)
+-		atomic_dec(&sta->users);
+-	if (txt) {
+-		PDEBUG(DEBUG_AP, "%s: %pM assoc_cb - %s\n",
+-		       dev->name, hdr->addr1, txt);
+-	}
+-	dev_kfree_skb(skb);
+-}
+-
+-/* Called only as a tasklet (software IRQ); TX callback for poll frames used
+- * in verifying whether the STA is still present. */
+-static void hostap_ap_tx_cb_poll(struct sk_buff *skb, int ok, void *data)
+-{
+-	struct ap_data *ap = data;
+-	struct ieee80211_hdr *hdr;
+-	struct sta_info *sta;
+-
+-	if (skb->len < 24)
+-		goto fail;
+-	hdr = (struct ieee80211_hdr *) skb->data;
+-	if (ok) {
+-		spin_lock(&ap->sta_table_lock);
+-		sta = ap_get_sta(ap, hdr->addr1);
+-		if (sta)
+-			sta->flags &= ~WLAN_STA_PENDING_POLL;
+-		spin_unlock(&ap->sta_table_lock);
+-	} else {
+-		PDEBUG(DEBUG_AP,
+-		       "%s: STA %pM did not ACK activity poll frame\n",
+-		       ap->local->dev->name, hdr->addr1);
+-	}
+-
+- fail:
+-	dev_kfree_skb(skb);
+-}
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-
+-
+-void hostap_init_data(local_info_t *local)
+-{
+-	struct ap_data *ap = local->ap;
+-
+-	if (ap == NULL) {
+-		printk(KERN_WARNING "hostap_init_data: ap == NULL\n");
+-		return;
+-	}
+-	memset(ap, 0, sizeof(struct ap_data));
+-	ap->local = local;
+-
+-	ap->ap_policy = GET_INT_PARM(other_ap_policy, local->card_idx);
+-	ap->bridge_packets = GET_INT_PARM(ap_bridge_packets, local->card_idx);
+-	ap->max_inactivity =
+-		GET_INT_PARM(ap_max_inactivity, local->card_idx) * HZ;
+-	ap->autom_ap_wds = GET_INT_PARM(autom_ap_wds, local->card_idx);
+-
+-	spin_lock_init(&ap->sta_table_lock);
+-	INIT_LIST_HEAD(&ap->sta_list);
+-
+-	/* Initialize task queue structure for AP management */
+-	INIT_WORK(&local->ap->add_sta_proc_queue, handle_add_proc_queue);
+-
+-	ap->tx_callback_idx =
+-		hostap_tx_callback_register(local, hostap_ap_tx_cb, ap);
+-	if (ap->tx_callback_idx == 0)
+-		printk(KERN_WARNING "%s: failed to register TX callback for "
+-		       "AP\n", local->dev->name);
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-	INIT_WORK(&local->ap->wds_oper_queue, handle_wds_oper_queue);
+-
+-	ap->tx_callback_auth =
+-		hostap_tx_callback_register(local, hostap_ap_tx_cb_auth, ap);
+-	ap->tx_callback_assoc =
+-		hostap_tx_callback_register(local, hostap_ap_tx_cb_assoc, ap);
+-	ap->tx_callback_poll =
+-		hostap_tx_callback_register(local, hostap_ap_tx_cb_poll, ap);
+-	if (ap->tx_callback_auth == 0 || ap->tx_callback_assoc == 0 ||
+-		ap->tx_callback_poll == 0)
+-		printk(KERN_WARNING "%s: failed to register TX callback for "
+-		       "AP\n", local->dev->name);
+-
+-	spin_lock_init(&ap->mac_restrictions.lock);
+-	INIT_LIST_HEAD(&ap->mac_restrictions.mac_list);
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-
+-	ap->initialized = 1;
+-}
+-
+-
+-void hostap_init_ap_proc(local_info_t *local)
+-{
+-	struct ap_data *ap = local->ap;
+-
+-	ap->proc = local->proc;
+-	if (ap->proc == NULL)
+-		return;
+-
+-#ifndef PRISM2_NO_PROCFS_DEBUG
+-	proc_create_single_data("ap_debug", 0, ap->proc, ap_debug_proc_show, ap);
+-#endif /* PRISM2_NO_PROCFS_DEBUG */
+-
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-	proc_create_seq_data("ap_control", 0, ap->proc, &ap_control_proc_seqops,
+-			ap);
+-	proc_create_seq_data("ap", 0, ap->proc, &prism2_ap_proc_seqops, ap);
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-
+-}
+-
+-
+-void hostap_free_data(struct ap_data *ap)
+-{
+-	struct sta_info *n, *sta;
+-
+-	if (ap == NULL || !ap->initialized) {
+-		printk(KERN_DEBUG "hostap_free_data: ap has not yet been "
+-		       "initialized - skip resource freeing\n");
+-		return;
+-	}
+-
+-	flush_work(&ap->add_sta_proc_queue);
+-
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-	flush_work(&ap->wds_oper_queue);
+-	if (ap->crypt)
+-		ap->crypt->deinit(ap->crypt_priv);
+-	ap->crypt = ap->crypt_priv = NULL;
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-
+-	list_for_each_entry_safe(sta, n, &ap->sta_list, list) {
+-		ap_sta_hash_del(ap, sta);
+-		list_del(&sta->list);
+-		if ((sta->flags & WLAN_STA_ASSOC) && !sta->ap && sta->local)
+-			hostap_event_expired_sta(sta->local->dev, sta);
+-		ap_free_sta(ap, sta);
+-	}
+-
+-#ifndef PRISM2_NO_PROCFS_DEBUG
+-	if (ap->proc != NULL) {
+-		remove_proc_entry("ap_debug", ap->proc);
+-	}
+-#endif /* PRISM2_NO_PROCFS_DEBUG */
+-
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-	if (ap->proc != NULL) {
+-	  remove_proc_entry("ap", ap->proc);
+-		remove_proc_entry("ap_control", ap->proc);
+-	}
+-	ap_control_flush_macs(&ap->mac_restrictions);
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-
+-	ap->initialized = 0;
+-}
+-
+-
+-/* caller should have mutex for AP STA list handling */
+-static struct sta_info* ap_get_sta(struct ap_data *ap, u8 *sta)
+-{
+-	struct sta_info *s;
+-
+-	s = ap->sta_hash[STA_HASH(sta)];
+-	while (s != NULL && !ether_addr_equal(s->addr, sta))
+-		s = s->hnext;
+-	return s;
+-}
+-
+-
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-
+-/* Called from timer handler and from scheduled AP queue handlers */
+-static void prism2_send_mgmt(struct net_device *dev,
+-			     u16 type_subtype, char *body,
+-			     int body_len, u8 *addr, u16 tx_cb_idx)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	struct ieee80211_hdr *hdr;
+-	u16 fc;
+-	struct sk_buff *skb;
+-	struct hostap_skb_tx_data *meta;
+-	int hdrlen;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-	dev = local->dev; /* always use master radio device */
+-	iface = netdev_priv(dev);
+-
+-	if (!(dev->flags & IFF_UP)) {
+-		PDEBUG(DEBUG_AP, "%s: prism2_send_mgmt - device is not UP - "
+-		       "cannot send frame\n", dev->name);
+-		return;
+-	}
+-
+-	skb = dev_alloc_skb(sizeof(*hdr) + body_len);
+-	if (skb == NULL) {
+-		PDEBUG(DEBUG_AP, "%s: prism2_send_mgmt failed to allocate "
+-		       "skb\n", dev->name);
+-		return;
+-	}
+-
+-	fc = type_subtype;
+-	hdrlen = hostap_80211_get_hdrlen(cpu_to_le16(type_subtype));
+-	hdr = skb_put_zero(skb, hdrlen);
+-	if (body)
+-		skb_put_data(skb, body, body_len);
+-
+-	/* FIX: ctrl::ack sending used special HFA384X_TX_CTRL_802_11
+-	 * tx_control instead of using local->tx_control */
+-
+-
+-	memcpy(hdr->addr1, addr, ETH_ALEN); /* DA / RA */
+-	if (ieee80211_is_data(hdr->frame_control)) {
+-		fc |= IEEE80211_FCTL_FROMDS;
+-		memcpy(hdr->addr2, dev->dev_addr, ETH_ALEN); /* BSSID */
+-		memcpy(hdr->addr3, dev->dev_addr, ETH_ALEN); /* SA */
+-	} else if (ieee80211_is_ctl(hdr->frame_control)) {
+-		/* control:ACK does not have addr2 or addr3 */
+-		eth_zero_addr(hdr->addr2);
+-		eth_zero_addr(hdr->addr3);
+-	} else {
+-		memcpy(hdr->addr2, dev->dev_addr, ETH_ALEN); /* SA */
+-		memcpy(hdr->addr3, dev->dev_addr, ETH_ALEN); /* BSSID */
+-	}
+-
+-	hdr->frame_control = cpu_to_le16(fc);
+-
+-	meta = (struct hostap_skb_tx_data *) skb->cb;
+-	memset(meta, 0, sizeof(*meta));
+-	meta->magic = HOSTAP_SKB_TX_DATA_MAGIC;
+-	meta->iface = iface;
+-	meta->tx_cb_idx = tx_cb_idx;
+-
+-	skb->dev = dev;
+-	skb_reset_mac_header(skb);
+-	skb_reset_network_header(skb);
+-	dev_queue_xmit(skb);
+-}
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-
+-#ifdef CONFIG_PROC_FS
+-static int prism2_sta_proc_show(struct seq_file *m, void *v)
+-{
+-	struct sta_info *sta = m->private;
+-	int i;
+-
+-	/* FIX: possible race condition.. the STA data could have just expired,
+-	 * but proc entry was still here so that the read could have started;
+-	 * some locking should be done here.. */
+-
+-	seq_printf(m,
+-		   "%s=%pM\nusers=%d\naid=%d\n"
+-		   "flags=0x%04x%s%s%s%s%s%s%s\n"
+-		   "capability=0x%02x\nlisten_interval=%d\nsupported_rates=",
+-		   sta->ap ? "AP" : "STA",
+-		   sta->addr, atomic_read(&sta->users), sta->aid,
+-		   sta->flags,
+-		   sta->flags & WLAN_STA_AUTH ? " AUTH" : "",
+-		   sta->flags & WLAN_STA_ASSOC ? " ASSOC" : "",
+-		   sta->flags & WLAN_STA_PS ? " PS" : "",
+-		   sta->flags & WLAN_STA_TIM ? " TIM" : "",
+-		   sta->flags & WLAN_STA_PERM ? " PERM" : "",
+-		   sta->flags & WLAN_STA_AUTHORIZED ? " AUTHORIZED" : "",
+-		   sta->flags & WLAN_STA_PENDING_POLL ? " POLL" : "",
+-		   sta->capability, sta->listen_interval);
+-	/* supported_rates: 500 kbit/s units with msb ignored */
+-	for (i = 0; i < sizeof(sta->supported_rates); i++)
+-		if (sta->supported_rates[i] != 0)
+-			seq_printf(m, "%d%sMbps ",
+-				   (sta->supported_rates[i] & 0x7f) / 2,
+-				   sta->supported_rates[i] & 1 ? ".5" : "");
+-	seq_printf(m,
+-		   "\njiffies=%lu\nlast_auth=%lu\nlast_assoc=%lu\n"
+-		   "last_rx=%lu\nlast_tx=%lu\nrx_packets=%lu\n"
+-		   "tx_packets=%lu\n"
+-		   "rx_bytes=%lu\ntx_bytes=%lu\nbuffer_count=%d\n"
+-		   "last_rx: silence=%d dBm signal=%d dBm rate=%d%s Mbps\n"
+-		   "tx_rate=%d\ntx[1M]=%d\ntx[2M]=%d\ntx[5.5M]=%d\n"
+-		   "tx[11M]=%d\n"
+-		   "rx[1M]=%d\nrx[2M]=%d\nrx[5.5M]=%d\nrx[11M]=%d\n",
+-		   jiffies, sta->last_auth, sta->last_assoc, sta->last_rx,
+-		   sta->last_tx,
+-		   sta->rx_packets, sta->tx_packets, sta->rx_bytes,
+-		   sta->tx_bytes, skb_queue_len(&sta->tx_buf),
+-		   sta->last_rx_silence,
+-		   sta->last_rx_signal, sta->last_rx_rate / 10,
+-		   sta->last_rx_rate % 10 ? ".5" : "",
+-		   sta->tx_rate, sta->tx_count[0], sta->tx_count[1],
+-		   sta->tx_count[2], sta->tx_count[3],  sta->rx_count[0],
+-		   sta->rx_count[1], sta->rx_count[2], sta->rx_count[3]);
+-	if (sta->crypt && sta->crypt->ops && sta->crypt->ops->print_stats)
+-		sta->crypt->ops->print_stats(m, sta->crypt->priv);
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-	if (sta->ap) {
+-		if (sta->u.ap.channel >= 0)
+-			seq_printf(m, "channel=%d\n", sta->u.ap.channel);
+-		seq_puts(m, "ssid=");
+-		for (i = 0; i < sta->u.ap.ssid_len; i++) {
+-			if (sta->u.ap.ssid[i] >= 32 && sta->u.ap.ssid[i] < 127)
+-				seq_putc(m, sta->u.ap.ssid[i]);
+-			else
+-				seq_printf(m, "<%02x>", sta->u.ap.ssid[i]);
+-		}
+-		seq_putc(m, '\n');
+-	}
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-
+-	return 0;
+-}
+-#endif
+-
+-static void handle_add_proc_queue(struct work_struct *work)
+-{
+-	struct ap_data *ap = container_of(work, struct ap_data,
+-					  add_sta_proc_queue);
+-	struct sta_info *sta;
+-	char name[20];
+-	struct add_sta_proc_data *entry, *prev;
+-
+-	entry = ap->add_sta_proc_entries;
+-	ap->add_sta_proc_entries = NULL;
+-
+-	while (entry) {
+-		spin_lock_bh(&ap->sta_table_lock);
+-		sta = ap_get_sta(ap, entry->addr);
+-		if (sta)
+-			atomic_inc(&sta->users);
+-		spin_unlock_bh(&ap->sta_table_lock);
+-
+-		if (sta) {
+-			sprintf(name, "%pM", sta->addr);
+-			sta->proc = proc_create_single_data(
+-				name, 0, ap->proc,
+-				prism2_sta_proc_show, sta);
+-
+-			atomic_dec(&sta->users);
+-		}
+-
+-		prev = entry;
+-		entry = entry->next;
+-		kfree(prev);
+-	}
+-}
+-
+-
+-static struct sta_info * ap_add_sta(struct ap_data *ap, u8 *addr)
+-{
+-	struct sta_info *sta;
+-
+-	sta = kzalloc(sizeof(struct sta_info), GFP_ATOMIC);
+-	if (sta == NULL) {
+-		PDEBUG(DEBUG_AP, "AP: kmalloc failed\n");
+-		return NULL;
+-	}
+-
+-	/* initialize STA info data */
+-	sta->local = ap->local;
+-	skb_queue_head_init(&sta->tx_buf);
+-	memcpy(sta->addr, addr, ETH_ALEN);
+-
+-	atomic_inc(&sta->users);
+-	spin_lock_bh(&ap->sta_table_lock);
+-	list_add(&sta->list, &ap->sta_list);
+-	ap->num_sta++;
+-	ap_sta_hash_add(ap, sta);
+-	spin_unlock_bh(&ap->sta_table_lock);
+-
+-	if (ap->proc) {
+-		struct add_sta_proc_data *entry;
+-		/* schedule a non-interrupt context process to add a procfs
+-		 * entry for the STA since procfs code use GFP_KERNEL */
+-		entry = kmalloc(sizeof(*entry), GFP_ATOMIC);
+-		if (entry) {
+-			memcpy(entry->addr, sta->addr, ETH_ALEN);
+-			entry->next = ap->add_sta_proc_entries;
+-			ap->add_sta_proc_entries = entry;
+-			schedule_work(&ap->add_sta_proc_queue);
+-		} else
+-			printk(KERN_DEBUG "Failed to add STA proc data\n");
+-	}
+-
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-	timer_setup(&sta->timer, ap_handle_timer, 0);
+-	sta->timer.expires = jiffies + ap->max_inactivity;
+-	if (!ap->local->hostapd)
+-		add_timer(&sta->timer);
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-
+-	return sta;
+-}
+-
+-
+-static int ap_tx_rate_ok(int rateidx, struct sta_info *sta,
+-			 local_info_t *local)
+-{
+-	if (rateidx > sta->tx_max_rate ||
+-	    !(sta->tx_supp_rates & (1 << rateidx)))
+-		return 0;
+-
+-	if (local->tx_rate_control != 0 &&
+-	    !(local->tx_rate_control & (1 << rateidx)))
+-		return 0;
+-
+-	return 1;
+-}
+-
+-
+-static void prism2_check_tx_rates(struct sta_info *sta)
+-{
+-	int i;
+-
+-	sta->tx_supp_rates = 0;
+-	for (i = 0; i < sizeof(sta->supported_rates); i++) {
+-		if ((sta->supported_rates[i] & 0x7f) == 2)
+-			sta->tx_supp_rates |= WLAN_RATE_1M;
+-		if ((sta->supported_rates[i] & 0x7f) == 4)
+-			sta->tx_supp_rates |= WLAN_RATE_2M;
+-		if ((sta->supported_rates[i] & 0x7f) == 11)
+-			sta->tx_supp_rates |= WLAN_RATE_5M5;
+-		if ((sta->supported_rates[i] & 0x7f) == 22)
+-			sta->tx_supp_rates |= WLAN_RATE_11M;
+-	}
+-	sta->tx_max_rate = sta->tx_rate = sta->tx_rate_idx = 0;
+-	if (sta->tx_supp_rates & WLAN_RATE_1M) {
+-		sta->tx_max_rate = 0;
+-		if (ap_tx_rate_ok(0, sta, sta->local)) {
+-			sta->tx_rate = 10;
+-			sta->tx_rate_idx = 0;
+-		}
+-	}
+-	if (sta->tx_supp_rates & WLAN_RATE_2M) {
+-		sta->tx_max_rate = 1;
+-		if (ap_tx_rate_ok(1, sta, sta->local)) {
+-			sta->tx_rate = 20;
+-			sta->tx_rate_idx = 1;
+-		}
+-	}
+-	if (sta->tx_supp_rates & WLAN_RATE_5M5) {
+-		sta->tx_max_rate = 2;
+-		if (ap_tx_rate_ok(2, sta, sta->local)) {
+-			sta->tx_rate = 55;
+-			sta->tx_rate_idx = 2;
+-		}
+-	}
+-	if (sta->tx_supp_rates & WLAN_RATE_11M) {
+-		sta->tx_max_rate = 3;
+-		if (ap_tx_rate_ok(3, sta, sta->local)) {
+-			sta->tx_rate = 110;
+-			sta->tx_rate_idx = 3;
+-		}
+-	}
+-}
+-
+-
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-
+-static void ap_crypt_init(struct ap_data *ap)
+-{
+-	ap->crypt = lib80211_get_crypto_ops("WEP");
+-
+-	if (ap->crypt) {
+-		if (ap->crypt->init) {
+-			ap->crypt_priv = ap->crypt->init(0);
+-			if (ap->crypt_priv == NULL)
+-				ap->crypt = NULL;
+-			else {
+-				u8 key[WEP_KEY_LEN];
+-				get_random_bytes(key, WEP_KEY_LEN);
+-				ap->crypt->set_key(key, WEP_KEY_LEN, NULL,
+-						   ap->crypt_priv);
+-			}
+-		}
+-	}
+-
+-	if (ap->crypt == NULL) {
+-		printk(KERN_WARNING "AP could not initialize WEP: load module "
+-		       "lib80211_crypt_wep.ko\n");
+-	}
+-}
+-
+-
+-/* Generate challenge data for shared key authentication. IEEE 802.11 specifies
+- * that WEP algorithm is used for generating challenge. This should be unique,
+- * but otherwise there is not really need for randomness etc. Initialize WEP
+- * with pseudo random key and then use increasing IV to get unique challenge
+- * streams.
+- *
+- * Called only as a scheduled task for pending AP frames.
+- */
+-static char * ap_auth_make_challenge(struct ap_data *ap)
+-{
+-	char *tmpbuf;
+-	struct sk_buff *skb;
+-
+-	if (ap->crypt == NULL) {
+-		ap_crypt_init(ap);
+-		if (ap->crypt == NULL)
+-			return NULL;
+-	}
+-
+-	tmpbuf = kmalloc(WLAN_AUTH_CHALLENGE_LEN, GFP_ATOMIC);
+-	if (tmpbuf == NULL) {
+-		PDEBUG(DEBUG_AP, "AP: kmalloc failed for challenge\n");
+-		return NULL;
+-	}
+-
+-	skb = dev_alloc_skb(WLAN_AUTH_CHALLENGE_LEN +
+-			    ap->crypt->extra_mpdu_prefix_len +
+-			    ap->crypt->extra_mpdu_postfix_len);
+-	if (skb == NULL) {
+-		kfree(tmpbuf);
+-		return NULL;
+-	}
+-
+-	skb_reserve(skb, ap->crypt->extra_mpdu_prefix_len);
+-	skb_put_zero(skb, WLAN_AUTH_CHALLENGE_LEN);
+-	if (ap->crypt->encrypt_mpdu(skb, 0, ap->crypt_priv)) {
+-		dev_kfree_skb(skb);
+-		kfree(tmpbuf);
+-		return NULL;
+-	}
+-
+-	skb_copy_from_linear_data_offset(skb, ap->crypt->extra_mpdu_prefix_len,
+-					 tmpbuf, WLAN_AUTH_CHALLENGE_LEN);
+-	dev_kfree_skb(skb);
+-
+-	return tmpbuf;
+-}
+-
+-
+-/* Called only as a scheduled task for pending AP frames. */
+-static void handle_authen(local_info_t *local, struct sk_buff *skb,
+-			  struct hostap_80211_rx_status *rx_stats)
+-{
+-	struct net_device *dev = local->dev;
+-	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *) skb->data;
+-	size_t hdrlen;
+-	struct ap_data *ap = local->ap;
+-	char body[8 + WLAN_AUTH_CHALLENGE_LEN], *challenge = NULL;
+-	int len, olen;
+-	u16 auth_alg, auth_transaction, status_code;
+-	__le16 *pos;
+-	u16 resp = WLAN_STATUS_SUCCESS;
+-	struct sta_info *sta = NULL;
+-	struct lib80211_crypt_data *crypt;
+-	char *txt = "";
+-
+-	len = skb->len - IEEE80211_MGMT_HDR_LEN;
+-
+-	hdrlen = hostap_80211_get_hdrlen(hdr->frame_control);
+-
+-	if (len < 6) {
+-		PDEBUG(DEBUG_AP, "%s: handle_authen - too short payload "
+-		       "(len=%d) from %pM\n", dev->name, len, hdr->addr2);
+-		return;
+-	}
+-
+-	spin_lock_bh(&local->ap->sta_table_lock);
+-	sta = ap_get_sta(local->ap, hdr->addr2);
+-	if (sta)
+-		atomic_inc(&sta->users);
+-	spin_unlock_bh(&local->ap->sta_table_lock);
+-
+-	if (sta && sta->crypt)
+-		crypt = sta->crypt;
+-	else {
+-		int idx = 0;
+-		if (skb->len >= hdrlen + 3)
+-			idx = skb->data[hdrlen + 3] >> 6;
+-		crypt = local->crypt_info.crypt[idx];
+-	}
+-
+-	pos = (__le16 *) (skb->data + IEEE80211_MGMT_HDR_LEN);
+-	auth_alg = __le16_to_cpu(*pos);
+-	pos++;
+-	auth_transaction = __le16_to_cpu(*pos);
+-	pos++;
+-	status_code = __le16_to_cpu(*pos);
+-	pos++;
+-
+-	if (ether_addr_equal(dev->dev_addr, hdr->addr2) ||
+-	    ap_control_mac_deny(&ap->mac_restrictions, hdr->addr2)) {
+-		txt = "authentication denied";
+-		resp = WLAN_STATUS_UNSPECIFIED_FAILURE;
+-		goto fail;
+-	}
+-
+-	if (((local->auth_algs & PRISM2_AUTH_OPEN) &&
+-	     auth_alg == WLAN_AUTH_OPEN) ||
+-	    ((local->auth_algs & PRISM2_AUTH_SHARED_KEY) &&
+-	     crypt && auth_alg == WLAN_AUTH_SHARED_KEY)) {
+-	} else {
+-		txt = "unsupported algorithm";
+-		resp = WLAN_STATUS_NOT_SUPPORTED_AUTH_ALG;
+-		goto fail;
+-	}
+-
+-	if (len >= 8) {
+-		u8 *u = (u8 *) pos;
+-		if (*u == WLAN_EID_CHALLENGE) {
+-			if (*(u + 1) != WLAN_AUTH_CHALLENGE_LEN) {
+-				txt = "invalid challenge len";
+-				resp = WLAN_STATUS_CHALLENGE_FAIL;
+-				goto fail;
+-			}
+-			if (len - 8 < WLAN_AUTH_CHALLENGE_LEN) {
+-				txt = "challenge underflow";
+-				resp = WLAN_STATUS_CHALLENGE_FAIL;
+-				goto fail;
+-			}
+-			challenge = (char *) (u + 2);
+-		}
+-	}
+-
+-	if (sta && sta->ap) {
+-		if (time_after(jiffies, sta->u.ap.last_beacon +
+-			       (10 * sta->listen_interval * HZ) / 1024)) {
+-			PDEBUG(DEBUG_AP, "%s: no beacons received for a while,"
+-			       " assuming AP %pM is now STA\n",
+-			       dev->name, sta->addr);
+-			sta->ap = 0;
+-			sta->flags = 0;
+-			sta->u.sta.challenge = NULL;
+-		} else {
+-			txt = "AP trying to authenticate?";
+-			resp = WLAN_STATUS_UNSPECIFIED_FAILURE;
+-			goto fail;
+-		}
+-	}
+-
+-	if ((auth_alg == WLAN_AUTH_OPEN && auth_transaction == 1) ||
+-	    (auth_alg == WLAN_AUTH_SHARED_KEY &&
+-	     (auth_transaction == 1 ||
+-	      (auth_transaction == 3 && sta != NULL &&
+-	       sta->u.sta.challenge != NULL)))) {
+-	} else {
+-		txt = "unknown authentication transaction number";
+-		resp = WLAN_STATUS_UNKNOWN_AUTH_TRANSACTION;
+-		goto fail;
+-	}
+-
+-	if (sta == NULL) {
+-		txt = "new STA";
+-
+-		if (local->ap->num_sta >= MAX_STA_COUNT) {
+-			/* FIX: might try to remove some old STAs first? */
+-			txt = "no more room for new STAs";
+-			resp = WLAN_STATUS_UNSPECIFIED_FAILURE;
+-			goto fail;
+-		}
+-
+-		sta = ap_add_sta(local->ap, hdr->addr2);
+-		if (sta == NULL) {
+-			txt = "ap_add_sta failed";
+-			resp = WLAN_STATUS_UNSPECIFIED_FAILURE;
+-			goto fail;
+-		}
+-	}
+-
+-	switch (auth_alg) {
+-	case WLAN_AUTH_OPEN:
+-		txt = "authOK";
+-		/* IEEE 802.11 standard is not completely clear about
+-		 * whether STA is considered authenticated after
+-		 * authentication OK frame has been send or after it
+-		 * has been ACKed. In order to reduce interoperability
+-		 * issues, mark the STA authenticated before ACK. */
+-		sta->flags |= WLAN_STA_AUTH;
+-		break;
+-
+-	case WLAN_AUTH_SHARED_KEY:
+-		if (auth_transaction == 1) {
+-			if (sta->u.sta.challenge == NULL) {
+-				sta->u.sta.challenge =
+-					ap_auth_make_challenge(local->ap);
+-				if (sta->u.sta.challenge == NULL) {
+-					resp = WLAN_STATUS_UNSPECIFIED_FAILURE;
+-					goto fail;
+-				}
+-			}
+-		} else {
+-			if (sta->u.sta.challenge == NULL ||
+-			    challenge == NULL ||
+-			    memcmp(sta->u.sta.challenge, challenge,
+-				   WLAN_AUTH_CHALLENGE_LEN) != 0 ||
+-			    !ieee80211_has_protected(hdr->frame_control)) {
+-				txt = "challenge response incorrect";
+-				resp = WLAN_STATUS_CHALLENGE_FAIL;
+-				goto fail;
+-			}
+-
+-			txt = "challenge OK - authOK";
+-			/* IEEE 802.11 standard is not completely clear about
+-			 * whether STA is considered authenticated after
+-			 * authentication OK frame has been send or after it
+-			 * has been ACKed. In order to reduce interoperability
+-			 * issues, mark the STA authenticated before ACK. */
+-			sta->flags |= WLAN_STA_AUTH;
+-			kfree(sta->u.sta.challenge);
+-			sta->u.sta.challenge = NULL;
+-		}
+-		break;
+-	}
+-
+- fail:
+-	pos = (__le16 *) body;
+-	*pos = cpu_to_le16(auth_alg);
+-	pos++;
+-	*pos = cpu_to_le16(auth_transaction + 1);
+-	pos++;
+-	*pos = cpu_to_le16(resp); /* status_code */
+-	pos++;
+-	olen = 6;
+-
+-	if (resp == WLAN_STATUS_SUCCESS && sta != NULL &&
+-	    sta->u.sta.challenge != NULL &&
+-	    auth_alg == WLAN_AUTH_SHARED_KEY && auth_transaction == 1) {
+-		u8 *tmp = (u8 *) pos;
+-		*tmp++ = WLAN_EID_CHALLENGE;
+-		*tmp++ = WLAN_AUTH_CHALLENGE_LEN;
+-		pos++;
+-		memcpy(pos, sta->u.sta.challenge, WLAN_AUTH_CHALLENGE_LEN);
+-		olen += 2 + WLAN_AUTH_CHALLENGE_LEN;
+-	}
+-
+-	prism2_send_mgmt(dev, IEEE80211_FTYPE_MGMT | IEEE80211_STYPE_AUTH,
+-			 body, olen, hdr->addr2, ap->tx_callback_auth);
+-
+-	if (sta) {
+-		sta->last_rx = jiffies;
+-		atomic_dec(&sta->users);
+-	}
+-
+-	if (resp) {
+-		PDEBUG(DEBUG_AP, "%s: %pM auth (alg=%d "
+-		       "trans#=%d stat=%d len=%d fc=%04x) ==> %d (%s)\n",
+-		       dev->name, hdr->addr2,
+-		       auth_alg, auth_transaction, status_code, len,
+-		       le16_to_cpu(hdr->frame_control), resp, txt);
+-	}
+-}
+-
+-
+-/* Called only as a scheduled task for pending AP frames. */
+-static void handle_assoc(local_info_t *local, struct sk_buff *skb,
+-			 struct hostap_80211_rx_status *rx_stats, int reassoc)
+-{
+-	struct net_device *dev = local->dev;
+-	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *) skb->data;
+-	char body[12], *p, *lpos;
+-	int len, left;
+-	__le16 *pos;
+-	u16 resp = WLAN_STATUS_SUCCESS;
+-	struct sta_info *sta = NULL;
+-	int send_deauth = 0;
+-	char __always_unused *txt = "";
+-	u8 prev_ap[ETH_ALEN];
+-
+-	left = len = skb->len - IEEE80211_MGMT_HDR_LEN;
+-
+-	if (len < (reassoc ? 10 : 4)) {
+-		PDEBUG(DEBUG_AP, "%s: handle_assoc - too short payload "
+-		       "(len=%d, reassoc=%d) from %pM\n",
+-		       dev->name, len, reassoc, hdr->addr2);
+-		return;
+-	}
+-
+-	spin_lock_bh(&local->ap->sta_table_lock);
+-	sta = ap_get_sta(local->ap, hdr->addr2);
+-	if (sta == NULL || (sta->flags & WLAN_STA_AUTH) == 0) {
+-		spin_unlock_bh(&local->ap->sta_table_lock);
+-		txt = "trying to associate before authentication";
+-		send_deauth = 1;
+-		resp = WLAN_STATUS_UNSPECIFIED_FAILURE;
+-		sta = NULL; /* do not decrement sta->users */
+-		goto fail;
+-	}
+-	atomic_inc(&sta->users);
+-	spin_unlock_bh(&local->ap->sta_table_lock);
+-
+-	pos = (__le16 *) (skb->data + IEEE80211_MGMT_HDR_LEN);
+-	sta->capability = __le16_to_cpu(*pos);
+-	pos++; left -= 2;
+-	sta->listen_interval = __le16_to_cpu(*pos);
+-	pos++; left -= 2;
+-
+-	if (reassoc) {
+-		memcpy(prev_ap, pos, ETH_ALEN);
+-		pos++; pos++; pos++; left -= 6;
+-	} else
+-		eth_zero_addr(prev_ap);
+-
+-	if (left >= 2) {
+-		unsigned int ileft;
+-		unsigned char *u = (unsigned char *) pos;
+-
+-		if (*u == WLAN_EID_SSID) {
+-			u++; left--;
+-			ileft = *u;
+-			u++; left--;
+-
+-			if (ileft > left || ileft > MAX_SSID_LEN) {
+-				txt = "SSID overflow";
+-				resp = WLAN_STATUS_UNSPECIFIED_FAILURE;
+-				goto fail;
+-			}
+-
+-			if (ileft != strlen(local->essid) ||
+-			    memcmp(local->essid, u, ileft) != 0) {
+-				txt = "not our SSID";
+-				resp = WLAN_STATUS_ASSOC_DENIED_UNSPEC;
+-				goto fail;
+-			}
+-
+-			u += ileft;
+-			left -= ileft;
+-		}
+-
+-		if (left >= 2 && *u == WLAN_EID_SUPP_RATES) {
+-			u++; left--;
+-			ileft = *u;
+-			u++; left--;
+-
+-			if (ileft > left || ileft == 0 ||
+-			    ileft > WLAN_SUPP_RATES_MAX) {
+-				txt = "SUPP_RATES len error";
+-				resp = WLAN_STATUS_UNSPECIFIED_FAILURE;
+-				goto fail;
+-			}
+-
+-			memset(sta->supported_rates, 0,
+-			       sizeof(sta->supported_rates));
+-			memcpy(sta->supported_rates, u, ileft);
+-			prism2_check_tx_rates(sta);
+-
+-			u += ileft;
+-			left -= ileft;
+-		}
+-
+-		if (left > 0) {
+-			PDEBUG(DEBUG_AP, "%s: assoc from %pM"
+-			       " with extra data (%d bytes) [",
+-			       dev->name, hdr->addr2, left);
+-			while (left > 0) {
+-				PDEBUG2(DEBUG_AP, "<%02x>", *u);
+-				u++; left--;
+-			}
+-			PDEBUG2(DEBUG_AP, "]\n");
+-		}
+-	} else {
+-		txt = "frame underflow";
+-		resp = WLAN_STATUS_UNSPECIFIED_FAILURE;
+-		goto fail;
+-	}
+-
+-	/* get a unique AID */
+-	if (sta->aid > 0)
+-		txt = "OK, old AID";
+-	else {
+-		spin_lock_bh(&local->ap->sta_table_lock);
+-		for (sta->aid = 1; sta->aid <= MAX_AID_TABLE_SIZE; sta->aid++)
+-			if (local->ap->sta_aid[sta->aid - 1] == NULL)
+-				break;
+-		if (sta->aid > MAX_AID_TABLE_SIZE) {
+-			sta->aid = 0;
+-			spin_unlock_bh(&local->ap->sta_table_lock);
+-			resp = WLAN_STATUS_AP_UNABLE_TO_HANDLE_NEW_STA;
+-			txt = "no room for more AIDs";
+-		} else {
+-			local->ap->sta_aid[sta->aid - 1] = sta;
+-			spin_unlock_bh(&local->ap->sta_table_lock);
+-			txt = "OK, new AID";
+-		}
+-	}
+-
+- fail:
+-	pos = (__le16 *) body;
+-
+-	if (send_deauth) {
+-		*pos = cpu_to_le16(WLAN_REASON_STA_REQ_ASSOC_WITHOUT_AUTH);
+-		pos++;
+-	} else {
+-		/* FIX: CF-Pollable and CF-PollReq should be set to match the
+-		 * values in beacons/probe responses */
+-		/* FIX: how about privacy and WEP? */
+-		/* capability */
+-		*pos = cpu_to_le16(WLAN_CAPABILITY_ESS);
+-		pos++;
+-
+-		/* status_code */
+-		*pos = cpu_to_le16(resp);
+-		pos++;
+-
+-		*pos = cpu_to_le16((sta && sta->aid > 0 ? sta->aid : 0) |
+-				     BIT(14) | BIT(15)); /* AID */
+-		pos++;
+-
+-		/* Supported rates (Information element) */
+-		p = (char *) pos;
+-		*p++ = WLAN_EID_SUPP_RATES;
+-		lpos = p;
+-		*p++ = 0; /* len */
+-		if (local->tx_rate_control & WLAN_RATE_1M) {
+-			*p++ = local->basic_rates & WLAN_RATE_1M ? 0x82 : 0x02;
+-			(*lpos)++;
+-		}
+-		if (local->tx_rate_control & WLAN_RATE_2M) {
+-			*p++ = local->basic_rates & WLAN_RATE_2M ? 0x84 : 0x04;
+-			(*lpos)++;
+-		}
+-		if (local->tx_rate_control & WLAN_RATE_5M5) {
+-			*p++ = local->basic_rates & WLAN_RATE_5M5 ?
+-				0x8b : 0x0b;
+-			(*lpos)++;
+-		}
+-		if (local->tx_rate_control & WLAN_RATE_11M) {
+-			*p++ = local->basic_rates & WLAN_RATE_11M ?
+-				0x96 : 0x16;
+-			(*lpos)++;
+-		}
+-		pos = (__le16 *) p;
+-	}
+-
+-	prism2_send_mgmt(dev, IEEE80211_FTYPE_MGMT |
+-			 (send_deauth ? IEEE80211_STYPE_DEAUTH :
+-			  (reassoc ? IEEE80211_STYPE_REASSOC_RESP :
+-			   IEEE80211_STYPE_ASSOC_RESP)),
+-			 body, (u8 *) pos - (u8 *) body,
+-			 hdr->addr2,
+-			 send_deauth ? 0 : local->ap->tx_callback_assoc);
+-
+-	if (sta) {
+-		if (resp == WLAN_STATUS_SUCCESS) {
+-			sta->last_rx = jiffies;
+-			/* STA will be marked associated from TX callback, if
+-			 * AssocResp is ACKed */
+-		}
+-		atomic_dec(&sta->users);
+-	}
+-
+-#if 0
+-	PDEBUG(DEBUG_AP, "%s: %pM %sassoc (len=%d "
+-	       "prev_ap=%pM) => %d(%d) (%s)\n",
+-	       dev->name,
+-	       hdr->addr2,
+-	       reassoc ? "re" : "", len,
+-	       prev_ap,
+-	       resp, send_deauth, txt);
+-#endif
+-}
+-
+-
+-/* Called only as a scheduled task for pending AP frames. */
+-static void handle_deauth(local_info_t *local, struct sk_buff *skb,
+-			  struct hostap_80211_rx_status *rx_stats)
+-{
+-	struct net_device *dev = local->dev;
+-	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *) skb->data;
+-	char *body = (char *) (skb->data + IEEE80211_MGMT_HDR_LEN);
+-	int len;
+-	u16 reason_code;
+-	__le16 *pos;
+-	struct sta_info *sta = NULL;
+-
+-	len = skb->len - IEEE80211_MGMT_HDR_LEN;
+-
+-	if (len < 2) {
+-		printk("handle_deauth - too short payload (len=%d)\n", len);
+-		return;
+-	}
+-
+-	pos = (__le16 *) body;
+-	reason_code = le16_to_cpu(*pos);
+-
+-	PDEBUG(DEBUG_AP, "%s: deauthentication: %pM len=%d, "
+-	       "reason_code=%d\n", dev->name, hdr->addr2,
+-	       len, reason_code);
+-
+-	spin_lock_bh(&local->ap->sta_table_lock);
+-	sta = ap_get_sta(local->ap, hdr->addr2);
+-	if (sta != NULL) {
+-		if ((sta->flags & WLAN_STA_ASSOC) && !sta->ap)
+-			hostap_event_expired_sta(local->dev, sta);
+-		sta->flags &= ~(WLAN_STA_AUTH | WLAN_STA_ASSOC);
+-	}
+-	spin_unlock_bh(&local->ap->sta_table_lock);
+-	if (sta == NULL) {
+-		printk("%s: deauthentication from %pM, "
+-	       "reason_code=%d, but STA not authenticated\n", dev->name,
+-		       hdr->addr2, reason_code);
+-	}
+-}
+-
+-
+-/* Called only as a scheduled task for pending AP frames. */
+-static void handle_disassoc(local_info_t *local, struct sk_buff *skb,
+-			    struct hostap_80211_rx_status *rx_stats)
+-{
+-	struct net_device *dev = local->dev;
+-	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *) skb->data;
+-	char *body = skb->data + IEEE80211_MGMT_HDR_LEN;
+-	int len;
+-	u16 reason_code;
+-	__le16 *pos;
+-	struct sta_info *sta = NULL;
+-
+-	len = skb->len - IEEE80211_MGMT_HDR_LEN;
+-
+-	if (len < 2) {
+-		printk("handle_disassoc - too short payload (len=%d)\n", len);
+-		return;
+-	}
+-
+-	pos = (__le16 *) body;
+-	reason_code = le16_to_cpu(*pos);
+-
+-	PDEBUG(DEBUG_AP, "%s: disassociation: %pM len=%d, "
+-	       "reason_code=%d\n", dev->name, hdr->addr2,
+-	       len, reason_code);
+-
+-	spin_lock_bh(&local->ap->sta_table_lock);
+-	sta = ap_get_sta(local->ap, hdr->addr2);
+-	if (sta != NULL) {
+-		if ((sta->flags & WLAN_STA_ASSOC) && !sta->ap)
+-			hostap_event_expired_sta(local->dev, sta);
+-		sta->flags &= ~WLAN_STA_ASSOC;
+-	}
+-	spin_unlock_bh(&local->ap->sta_table_lock);
+-	if (sta == NULL) {
+-		printk("%s: disassociation from %pM, "
+-		       "reason_code=%d, but STA not authenticated\n",
+-		       dev->name, hdr->addr2, reason_code);
+-	}
+-}
+-
+-
+-/* Called only as a scheduled task for pending AP frames. */
+-static void ap_handle_data_nullfunc(local_info_t *local,
+-				    struct ieee80211_hdr *hdr)
+-{
+-	struct net_device *dev = local->dev;
+-
+-	/* some STA f/w's seem to require control::ACK frame for
+-	 * data::nullfunc, but at least Prism2 station f/w version 0.8.0 does
+-	 * not send this..
+-	 * send control::ACK for the data::nullfunc */
+-
+-	printk(KERN_DEBUG "Sending control::ACK for data::nullfunc\n");
+-	prism2_send_mgmt(dev, IEEE80211_FTYPE_CTL | IEEE80211_STYPE_ACK,
+-			 NULL, 0, hdr->addr2, 0);
+-}
+-
+-
+-/* Called only as a scheduled task for pending AP frames. */
+-static void ap_handle_dropped_data(local_info_t *local,
+-				   struct ieee80211_hdr *hdr)
+-{
+-	struct net_device *dev = local->dev;
+-	struct sta_info *sta;
+-	__le16 reason;
+-
+-	spin_lock_bh(&local->ap->sta_table_lock);
+-	sta = ap_get_sta(local->ap, hdr->addr2);
+-	if (sta)
+-		atomic_inc(&sta->users);
+-	spin_unlock_bh(&local->ap->sta_table_lock);
+-
+-	if (sta != NULL && (sta->flags & WLAN_STA_ASSOC)) {
+-		PDEBUG(DEBUG_AP, "ap_handle_dropped_data: STA is now okay?\n");
+-		atomic_dec(&sta->users);
+-		return;
+-	}
+-
+-	reason = cpu_to_le16(WLAN_REASON_CLASS3_FRAME_FROM_NONASSOC_STA);
+-	prism2_send_mgmt(dev, IEEE80211_FTYPE_MGMT |
+-			 ((sta == NULL || !(sta->flags & WLAN_STA_ASSOC)) ?
+-			  IEEE80211_STYPE_DEAUTH : IEEE80211_STYPE_DISASSOC),
+-			 (char *) &reason, sizeof(reason), hdr->addr2, 0);
+-
+-	if (sta)
+-		atomic_dec(&sta->users);
+-}
+-
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-
+-
+-/* Called only as a scheduled task for pending AP frames. */
+-static void pspoll_send_buffered(local_info_t *local, struct sta_info *sta,
+-				 struct sk_buff *skb)
+-{
+-	struct hostap_skb_tx_data *meta;
+-
+-	if (!(sta->flags & WLAN_STA_PS)) {
+-		/* Station has moved to non-PS mode, so send all buffered
+-		 * frames using normal device queue. */
+-		dev_queue_xmit(skb);
+-		return;
+-	}
+-
+-	/* add a flag for hostap_handle_sta_tx() to know that this skb should
+-	 * be passed through even though STA is using PS */
+-	meta = (struct hostap_skb_tx_data *) skb->cb;
+-	meta->flags |= HOSTAP_TX_FLAGS_BUFFERED_FRAME;
+-	if (!skb_queue_empty(&sta->tx_buf)) {
+-		/* indicate to STA that more frames follow */
+-		meta->flags |= HOSTAP_TX_FLAGS_ADD_MOREDATA;
+-	}
+-	dev_queue_xmit(skb);
+-}
+-
+-
+-/* Called only as a scheduled task for pending AP frames. */
+-static void handle_pspoll(local_info_t *local,
+-			  struct ieee80211_hdr *hdr,
+-			  struct hostap_80211_rx_status *rx_stats)
+-{
+-	struct net_device *dev = local->dev;
+-	struct sta_info *sta;
+-	u16 aid;
+-	struct sk_buff *skb;
+-
+-	PDEBUG(DEBUG_PS2, "handle_pspoll: BSSID=%pM, TA=%pM PWRMGT=%d\n",
+-	       hdr->addr1, hdr->addr2, !!ieee80211_has_pm(hdr->frame_control));
+-
+-	if (!ether_addr_equal(hdr->addr1, dev->dev_addr)) {
+-		PDEBUG(DEBUG_AP,
+-		       "handle_pspoll - addr1(BSSID)=%pM not own MAC\n",
+-		       hdr->addr1);
+-		return;
+-	}
+-
+-	aid = le16_to_cpu(hdr->duration_id);
+-	if ((aid & (BIT(15) | BIT(14))) != (BIT(15) | BIT(14))) {
+-		PDEBUG(DEBUG_PS, "   PSPOLL and AID[15:14] not set\n");
+-		return;
+-	}
+-	aid &= ~(BIT(15) | BIT(14));
+-	if (aid == 0 || aid > MAX_AID_TABLE_SIZE) {
+-		PDEBUG(DEBUG_PS, "   invalid aid=%d\n", aid);
+-		return;
+-	}
+-	PDEBUG(DEBUG_PS2, "   aid=%d\n", aid);
+-
+-	spin_lock_bh(&local->ap->sta_table_lock);
+-	sta = ap_get_sta(local->ap, hdr->addr2);
+-	if (sta)
+-		atomic_inc(&sta->users);
+-	spin_unlock_bh(&local->ap->sta_table_lock);
+-
+-	if (sta == NULL) {
+-		PDEBUG(DEBUG_PS, "   STA not found\n");
+-		return;
+-	}
+-	if (sta->aid != aid) {
+-		PDEBUG(DEBUG_PS, "   received aid=%i does not match with "
+-		       "assoc.aid=%d\n", aid, sta->aid);
+-		return;
+-	}
+-
+-	/* FIX: todo:
+-	 * - add timeout for buffering (clear aid in TIM vector if buffer timed
+-	 *   out (expiry time must be longer than ListenInterval for
+-	 *   the corresponding STA; "8802-11: 11.2.1.9 AP aging function"
+-	 * - what to do, if buffered, pspolled, and sent frame is not ACKed by
+-	 *   sta; store buffer for later use and leave TIM aid bit set? use
+-	 *   TX event to check whether frame was ACKed?
+-	 */
+-
+-	while ((skb = skb_dequeue(&sta->tx_buf)) != NULL) {
+-		/* send buffered frame .. */
+-		PDEBUG(DEBUG_PS2, "Sending buffered frame to STA after PS POLL"
+-		       " (buffer_count=%d)\n", skb_queue_len(&sta->tx_buf));
+-
+-		pspoll_send_buffered(local, sta, skb);
+-
+-		if (sta->flags & WLAN_STA_PS) {
+-			/* send only one buffered packet per PS Poll */
+-			/* FIX: should ignore further PS Polls until the
+-			 * buffered packet that was just sent is acknowledged
+-			 * (Tx or TxExc event) */
+-			break;
+-		}
+-	}
+-
+-	if (skb_queue_empty(&sta->tx_buf)) {
+-		/* try to clear aid from TIM */
+-		if (!(sta->flags & WLAN_STA_TIM))
+-			PDEBUG(DEBUG_PS2,  "Re-unsetting TIM for aid %d\n",
+-			       aid);
+-		hostap_set_tim(local, aid, 0);
+-		sta->flags &= ~WLAN_STA_TIM;
+-	}
+-
+-	atomic_dec(&sta->users);
+-}
+-
+-
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-
+-static void handle_wds_oper_queue(struct work_struct *work)
+-{
+-	struct ap_data *ap = container_of(work, struct ap_data,
+-					  wds_oper_queue);
+-	local_info_t *local = ap->local;
+-	struct wds_oper_data *entry, *prev;
+-
+-	spin_lock_bh(&local->lock);
+-	entry = local->ap->wds_oper_entries;
+-	local->ap->wds_oper_entries = NULL;
+-	spin_unlock_bh(&local->lock);
+-
+-	while (entry) {
+-		PDEBUG(DEBUG_AP, "%s: %s automatic WDS connection "
+-		       "to AP %pM\n",
+-		       local->dev->name,
+-		       entry->type == WDS_ADD ? "adding" : "removing",
+-		       entry->addr);
+-		if (entry->type == WDS_ADD)
+-			prism2_wds_add(local, entry->addr, 0);
+-		else if (entry->type == WDS_DEL)
+-			prism2_wds_del(local, entry->addr, 0, 1);
+-
+-		prev = entry;
+-		entry = entry->next;
+-		kfree(prev);
+-	}
+-}
+-
+-
+-/* Called only as a scheduled task for pending AP frames. */
+-static void handle_beacon(local_info_t *local, struct sk_buff *skb,
+-			  struct hostap_80211_rx_status *rx_stats)
+-{
+-	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *) skb->data;
+-	char *body = skb->data + IEEE80211_MGMT_HDR_LEN;
+-	int len, left;
+-	u16 beacon_int, capability;
+-	__le16 *pos;
+-	char *ssid = NULL;
+-	unsigned char *supp_rates = NULL;
+-	int ssid_len = 0, supp_rates_len = 0;
+-	struct sta_info *sta = NULL;
+-	int new_sta = 0, channel = -1;
+-
+-	len = skb->len - IEEE80211_MGMT_HDR_LEN;
+-
+-	if (len < 8 + 2 + 2) {
+-		printk(KERN_DEBUG "handle_beacon - too short payload "
+-		       "(len=%d)\n", len);
+-		return;
+-	}
+-
+-	pos = (__le16 *) body;
+-	left = len;
+-
+-	/* Timestamp (8 octets) */
+-	pos += 4; left -= 8;
+-	/* Beacon interval (2 octets) */
+-	beacon_int = le16_to_cpu(*pos);
+-	pos++; left -= 2;
+-	/* Capability information (2 octets) */
+-	capability = le16_to_cpu(*pos);
+-	pos++; left -= 2;
+-
+-	if (local->ap->ap_policy != AP_OTHER_AP_EVEN_IBSS &&
+-	    capability & WLAN_CAPABILITY_IBSS)
+-		return;
+-
+-	if (left >= 2) {
+-		unsigned int ileft;
+-		unsigned char *u = (unsigned char *) pos;
+-
+-		if (*u == WLAN_EID_SSID) {
+-			u++; left--;
+-			ileft = *u;
+-			u++; left--;
+-
+-			if (ileft > left || ileft > MAX_SSID_LEN) {
+-				PDEBUG(DEBUG_AP, "SSID: overflow\n");
+-				return;
+-			}
+-
+-			if (local->ap->ap_policy == AP_OTHER_AP_SAME_SSID &&
+-			    (ileft != strlen(local->essid) ||
+-			     memcmp(local->essid, u, ileft) != 0)) {
+-				/* not our SSID */
+-				return;
+-			}
+-
+-			ssid = u;
+-			ssid_len = ileft;
+-
+-			u += ileft;
+-			left -= ileft;
+-		}
+-
+-		if (*u == WLAN_EID_SUPP_RATES) {
+-			u++; left--;
+-			ileft = *u;
+-			u++; left--;
+-
+-			if (ileft > left || ileft == 0 || ileft > 8) {
+-				PDEBUG(DEBUG_AP, " - SUPP_RATES len error\n");
+-				return;
+-			}
+-
+-			supp_rates = u;
+-			supp_rates_len = ileft;
+-
+-			u += ileft;
+-			left -= ileft;
+-		}
+-
+-		if (*u == WLAN_EID_DS_PARAMS) {
+-			u++; left--;
+-			ileft = *u;
+-			u++; left--;
+-
+-			if (ileft > left || ileft != 1) {
+-				PDEBUG(DEBUG_AP, " - DS_PARAMS len error\n");
+-				return;
+-			}
+-
+-			channel = *u;
+-
+-			u += ileft;
+-			left -= ileft;
+-		}
+-	}
+-
+-	spin_lock_bh(&local->ap->sta_table_lock);
+-	sta = ap_get_sta(local->ap, hdr->addr2);
+-	if (sta != NULL)
+-		atomic_inc(&sta->users);
+-	spin_unlock_bh(&local->ap->sta_table_lock);
+-
+-	if (sta == NULL) {
+-		/* add new AP */
+-		new_sta = 1;
+-		sta = ap_add_sta(local->ap, hdr->addr2);
+-		if (sta == NULL) {
+-			printk(KERN_INFO "prism2: kmalloc failed for AP "
+-			       "data structure\n");
+-			return;
+-		}
+-		hostap_event_new_sta(local->dev, sta);
+-
+-		/* mark APs authentication and associated for pseudo ad-hoc
+-		 * style communication */
+-		sta->flags = WLAN_STA_AUTH | WLAN_STA_ASSOC;
+-
+-		if (local->ap->autom_ap_wds) {
+-			hostap_wds_link_oper(local, sta->addr, WDS_ADD);
+-		}
+-	}
+-
+-	sta->ap = 1;
+-	if (ssid) {
+-		sta->u.ap.ssid_len = ssid_len;
+-		memcpy(sta->u.ap.ssid, ssid, ssid_len);
+-		sta->u.ap.ssid[ssid_len] = '\0';
+-	} else {
+-		sta->u.ap.ssid_len = 0;
+-		sta->u.ap.ssid[0] = '\0';
+-	}
+-	sta->u.ap.channel = channel;
+-	sta->rx_packets++;
+-	sta->rx_bytes += len;
+-	sta->u.ap.last_beacon = sta->last_rx = jiffies;
+-	sta->capability = capability;
+-	sta->listen_interval = beacon_int;
+-
+-	atomic_dec(&sta->users);
+-
+-	if (new_sta) {
+-		memset(sta->supported_rates, 0, sizeof(sta->supported_rates));
+-		memcpy(sta->supported_rates, supp_rates, supp_rates_len);
+-		prism2_check_tx_rates(sta);
+-	}
+-}
+-
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-
+-
+-/* Called only as a tasklet. */
+-static void handle_ap_item(local_info_t *local, struct sk_buff *skb,
+-			   struct hostap_80211_rx_status *rx_stats)
+-{
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-	struct net_device *dev = local->dev;
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-	u16 fc, type, stype;
+-	struct ieee80211_hdr *hdr;
+-
+-	/* FIX: should give skb->len to handler functions and check that the
+-	 * buffer is long enough */
+-	hdr = (struct ieee80211_hdr *) skb->data;
+-	fc = le16_to_cpu(hdr->frame_control);
+-	type = fc & IEEE80211_FCTL_FTYPE;
+-	stype = fc & IEEE80211_FCTL_STYPE;
+-
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-	if (!local->hostapd && type == IEEE80211_FTYPE_DATA) {
+-		PDEBUG(DEBUG_AP, "handle_ap_item - data frame\n");
+-
+-		if (!(fc & IEEE80211_FCTL_TODS) ||
+-		    (fc & IEEE80211_FCTL_FROMDS)) {
+-			if (stype == IEEE80211_STYPE_NULLFUNC) {
+-				/* no ToDS nullfunc seems to be used to check
+-				 * AP association; so send reject message to
+-				 * speed up re-association */
+-				ap_handle_dropped_data(local, hdr);
+-				goto done;
+-			}
+-			PDEBUG(DEBUG_AP, "   not ToDS frame (fc=0x%04x)\n",
+-			       fc);
+-			goto done;
+-		}
+-
+-		if (!ether_addr_equal(hdr->addr1, dev->dev_addr)) {
+-			PDEBUG(DEBUG_AP, "handle_ap_item - addr1(BSSID)=%pM"
+-			       " not own MAC\n", hdr->addr1);
+-			goto done;
+-		}
+-
+-		if (local->ap->nullfunc_ack &&
+-		    stype == IEEE80211_STYPE_NULLFUNC)
+-			ap_handle_data_nullfunc(local, hdr);
+-		else
+-			ap_handle_dropped_data(local, hdr);
+-		goto done;
+-	}
+-
+-	if (type == IEEE80211_FTYPE_MGMT && stype == IEEE80211_STYPE_BEACON) {
+-		handle_beacon(local, skb, rx_stats);
+-		goto done;
+-	}
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-
+-	if (type == IEEE80211_FTYPE_CTL && stype == IEEE80211_STYPE_PSPOLL) {
+-		handle_pspoll(local, hdr, rx_stats);
+-		goto done;
+-	}
+-
+-	if (local->hostapd) {
+-		PDEBUG(DEBUG_AP, "Unknown frame in AP queue: type=0x%02x "
+-		       "subtype=0x%02x\n", type, stype);
+-		goto done;
+-	}
+-
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-	if (type != IEEE80211_FTYPE_MGMT) {
+-		PDEBUG(DEBUG_AP, "handle_ap_item - not a management frame?\n");
+-		goto done;
+-	}
+-
+-	if (!ether_addr_equal(hdr->addr1, dev->dev_addr)) {
+-		PDEBUG(DEBUG_AP, "handle_ap_item - addr1(DA)=%pM"
+-		       " not own MAC\n", hdr->addr1);
+-		goto done;
+-	}
+-
+-	if (!ether_addr_equal(hdr->addr3, dev->dev_addr)) {
+-		PDEBUG(DEBUG_AP, "handle_ap_item - addr3(BSSID)=%pM"
+-		       " not own MAC\n", hdr->addr3);
+-		goto done;
+-	}
+-
+-	switch (stype) {
+-	case IEEE80211_STYPE_ASSOC_REQ:
+-		handle_assoc(local, skb, rx_stats, 0);
+-		break;
+-	case IEEE80211_STYPE_ASSOC_RESP:
+-		PDEBUG(DEBUG_AP, "==> ASSOC RESP (ignored)\n");
+-		break;
+-	case IEEE80211_STYPE_REASSOC_REQ:
+-		handle_assoc(local, skb, rx_stats, 1);
+-		break;
+-	case IEEE80211_STYPE_REASSOC_RESP:
+-		PDEBUG(DEBUG_AP, "==> REASSOC RESP (ignored)\n");
+-		break;
+-	case IEEE80211_STYPE_ATIM:
+-		PDEBUG(DEBUG_AP, "==> ATIM (ignored)\n");
+-		break;
+-	case IEEE80211_STYPE_DISASSOC:
+-		handle_disassoc(local, skb, rx_stats);
+-		break;
+-	case IEEE80211_STYPE_AUTH:
+-		handle_authen(local, skb, rx_stats);
+-		break;
+-	case IEEE80211_STYPE_DEAUTH:
+-		handle_deauth(local, skb, rx_stats);
+-		break;
+-	default:
+-		PDEBUG(DEBUG_AP, "Unknown mgmt frame subtype 0x%02x\n",
+-		       stype >> 4);
+-		break;
+-	}
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-
+- done:
+-	dev_kfree_skb(skb);
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-void hostap_rx(struct net_device *dev, struct sk_buff *skb,
+-	       struct hostap_80211_rx_status *rx_stats)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	struct ieee80211_hdr *hdr;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (skb->len < 16)
+-		goto drop;
+-
+-	dev->stats.rx_packets++;
+-
+-	hdr = (struct ieee80211_hdr *) skb->data;
+-
+-	if (local->ap->ap_policy == AP_OTHER_AP_SKIP_ALL &&
+-	    ieee80211_is_beacon(hdr->frame_control))
+-		goto drop;
+-
+-	skb->protocol = cpu_to_be16(ETH_P_HOSTAP);
+-	handle_ap_item(local, skb, rx_stats);
+-	return;
+-
+- drop:
+-	dev_kfree_skb(skb);
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static void schedule_packet_send(local_info_t *local, struct sta_info *sta)
+-{
+-	struct sk_buff *skb;
+-	struct ieee80211_hdr *hdr;
+-	struct hostap_80211_rx_status rx_stats;
+-
+-	if (skb_queue_empty(&sta->tx_buf))
+-		return;
+-
+-	skb = dev_alloc_skb(16);
+-	if (skb == NULL) {
+-		printk(KERN_DEBUG "%s: schedule_packet_send: skb alloc "
+-		       "failed\n", local->dev->name);
+-		return;
+-	}
+-
+-	hdr = skb_put(skb, 16);
+-
+-	/* Generate a fake pspoll frame to start packet delivery */
+-	hdr->frame_control = cpu_to_le16(
+-		IEEE80211_FTYPE_CTL | IEEE80211_STYPE_PSPOLL);
+-	memcpy(hdr->addr1, local->dev->dev_addr, ETH_ALEN);
+-	memcpy(hdr->addr2, sta->addr, ETH_ALEN);
+-	hdr->duration_id = cpu_to_le16(sta->aid | BIT(15) | BIT(14));
+-
+-	PDEBUG(DEBUG_PS2,
+-	       "%s: Scheduling buffered packet delivery for STA %pM\n",
+-	       local->dev->name, sta->addr);
+-
+-	skb->dev = local->dev;
+-
+-	memset(&rx_stats, 0, sizeof(rx_stats));
+-	hostap_rx(local->dev, skb, &rx_stats);
+-}
+-
+-
+-int prism2_ap_get_sta_qual(local_info_t *local, struct sockaddr addr[],
+-			   struct iw_quality qual[], int buf_size,
+-			   int aplist)
+-{
+-	struct ap_data *ap = local->ap;
+-	struct list_head *ptr;
+-	int count = 0;
+-
+-	spin_lock_bh(&ap->sta_table_lock);
+-
+-	for (ptr = ap->sta_list.next; ptr != NULL && ptr != &ap->sta_list;
+-	     ptr = ptr->next) {
+-		struct sta_info *sta = (struct sta_info *) ptr;
+-
+-		if (aplist && !sta->ap)
+-			continue;
+-		addr[count].sa_family = ARPHRD_ETHER;
+-		memcpy(addr[count].sa_data, sta->addr, ETH_ALEN);
+-		if (sta->last_rx_silence == 0)
+-			qual[count].qual = sta->last_rx_signal < 27 ?
+-				0 : (sta->last_rx_signal - 27) * 92 / 127;
+-		else
+-			qual[count].qual = sta->last_rx_signal -
+-				sta->last_rx_silence - 35;
+-		qual[count].level = HFA384X_LEVEL_TO_dBm(sta->last_rx_signal);
+-		qual[count].noise = HFA384X_LEVEL_TO_dBm(sta->last_rx_silence);
+-		qual[count].updated = sta->last_rx_updated;
+-
+-		sta->last_rx_updated = IW_QUAL_DBM;
+-
+-		count++;
+-		if (count >= buf_size)
+-			break;
+-	}
+-	spin_unlock_bh(&ap->sta_table_lock);
+-
+-	return count;
+-}
+-
+-
+-/* Translate our list of Access Points & Stations to a card independent
+- * format that the Wireless Tools will understand - Jean II */
+-int prism2_ap_translate_scan(struct net_device *dev,
+-			     struct iw_request_info *info, char *buffer)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	struct ap_data *ap;
+-	struct list_head *ptr;
+-	struct iw_event iwe;
+-	char *current_ev = buffer;
+-	char *end_buf = buffer + IW_SCAN_MAX_DATA;
+-#if !defined(PRISM2_NO_KERNEL_IEEE80211_MGMT)
+-	char buf[64];
+-#endif
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-	ap = local->ap;
+-
+-	spin_lock_bh(&ap->sta_table_lock);
+-
+-	for (ptr = ap->sta_list.next; ptr != NULL && ptr != &ap->sta_list;
+-	     ptr = ptr->next) {
+-		struct sta_info *sta = (struct sta_info *) ptr;
+-
+-		/* First entry *MUST* be the AP MAC address */
+-		memset(&iwe, 0, sizeof(iwe));
+-		iwe.cmd = SIOCGIWAP;
+-		iwe.u.ap_addr.sa_family = ARPHRD_ETHER;
+-		memcpy(iwe.u.ap_addr.sa_data, sta->addr, ETH_ALEN);
+-		iwe.len = IW_EV_ADDR_LEN;
+-		current_ev = iwe_stream_add_event(info, current_ev, end_buf,
+-						  &iwe, IW_EV_ADDR_LEN);
+-
+-		/* Use the mode to indicate if it's a station or
+-		 * an Access Point */
+-		memset(&iwe, 0, sizeof(iwe));
+-		iwe.cmd = SIOCGIWMODE;
+-		if (sta->ap)
+-			iwe.u.mode = IW_MODE_MASTER;
+-		else
+-			iwe.u.mode = IW_MODE_INFRA;
+-		iwe.len = IW_EV_UINT_LEN;
+-		current_ev = iwe_stream_add_event(info, current_ev, end_buf,
+-						  &iwe, IW_EV_UINT_LEN);
+-
+-		/* Some quality */
+-		memset(&iwe, 0, sizeof(iwe));
+-		iwe.cmd = IWEVQUAL;
+-		if (sta->last_rx_silence == 0)
+-			iwe.u.qual.qual = sta->last_rx_signal < 27 ?
+-				0 : (sta->last_rx_signal - 27) * 92 / 127;
+-		else
+-			iwe.u.qual.qual = sta->last_rx_signal -
+-				sta->last_rx_silence - 35;
+-		iwe.u.qual.level = HFA384X_LEVEL_TO_dBm(sta->last_rx_signal);
+-		iwe.u.qual.noise = HFA384X_LEVEL_TO_dBm(sta->last_rx_silence);
+-		iwe.u.qual.updated = sta->last_rx_updated;
+-		iwe.len = IW_EV_QUAL_LEN;
+-		current_ev = iwe_stream_add_event(info, current_ev, end_buf,
+-						  &iwe, IW_EV_QUAL_LEN);
+-
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-		if (sta->ap) {
+-			memset(&iwe, 0, sizeof(iwe));
+-			iwe.cmd = SIOCGIWESSID;
+-			iwe.u.data.length = sta->u.ap.ssid_len;
+-			iwe.u.data.flags = 1;
+-			current_ev = iwe_stream_add_point(info, current_ev,
+-							  end_buf, &iwe,
+-							  sta->u.ap.ssid);
+-
+-			memset(&iwe, 0, sizeof(iwe));
+-			iwe.cmd = SIOCGIWENCODE;
+-			if (sta->capability & WLAN_CAPABILITY_PRIVACY)
+-				iwe.u.data.flags =
+-					IW_ENCODE_ENABLED | IW_ENCODE_NOKEY;
+-			else
+-				iwe.u.data.flags = IW_ENCODE_DISABLED;
+-			current_ev = iwe_stream_add_point(info, current_ev,
+-							  end_buf, &iwe,
+-							  sta->u.ap.ssid);
+-
+-			if (sta->u.ap.channel > 0 &&
+-			    sta->u.ap.channel <= FREQ_COUNT) {
+-				memset(&iwe, 0, sizeof(iwe));
+-				iwe.cmd = SIOCGIWFREQ;
+-				iwe.u.freq.m = freq_list[sta->u.ap.channel - 1]
+-					* 100000;
+-				iwe.u.freq.e = 1;
+-				current_ev = iwe_stream_add_event(
+-					info, current_ev, end_buf, &iwe,
+-					IW_EV_FREQ_LEN);
+-			}
+-
+-			memset(&iwe, 0, sizeof(iwe));
+-			iwe.cmd = IWEVCUSTOM;
+-			sprintf(buf, "beacon_interval=%d",
+-				sta->listen_interval);
+-			iwe.u.data.length = strlen(buf);
+-			current_ev = iwe_stream_add_point(info, current_ev,
+-							  end_buf, &iwe, buf);
+-		}
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-
+-		sta->last_rx_updated = IW_QUAL_DBM;
+-
+-		/* To be continued, we should make good use of IWEVCUSTOM */
+-	}
+-
+-	spin_unlock_bh(&ap->sta_table_lock);
+-
+-	return current_ev - buffer;
+-}
+-
+-
+-static int prism2_hostapd_add_sta(struct ap_data *ap,
+-				  struct prism2_hostapd_param *param)
+-{
+-	struct sta_info *sta;
+-
+-	spin_lock_bh(&ap->sta_table_lock);
+-	sta = ap_get_sta(ap, param->sta_addr);
+-	if (sta)
+-		atomic_inc(&sta->users);
+-	spin_unlock_bh(&ap->sta_table_lock);
+-
+-	if (sta == NULL) {
+-		sta = ap_add_sta(ap, param->sta_addr);
+-		if (sta == NULL)
+-			return -1;
+-	}
+-
+-	if (!(sta->flags & WLAN_STA_ASSOC) && !sta->ap && sta->local)
+-		hostap_event_new_sta(sta->local->dev, sta);
+-
+-	sta->flags |= WLAN_STA_AUTH | WLAN_STA_ASSOC;
+-	sta->last_rx = jiffies;
+-	sta->aid = param->u.add_sta.aid;
+-	sta->capability = param->u.add_sta.capability;
+-	sta->tx_supp_rates = param->u.add_sta.tx_supp_rates;
+-	if (sta->tx_supp_rates & WLAN_RATE_1M)
+-		sta->supported_rates[0] = 2;
+-	if (sta->tx_supp_rates & WLAN_RATE_2M)
+-		sta->supported_rates[1] = 4;
+-	if (sta->tx_supp_rates & WLAN_RATE_5M5)
+-		sta->supported_rates[2] = 11;
+-	if (sta->tx_supp_rates & WLAN_RATE_11M)
+-		sta->supported_rates[3] = 22;
+-	prism2_check_tx_rates(sta);
+-	atomic_dec(&sta->users);
+-	return 0;
+-}
+-
+-
+-static int prism2_hostapd_remove_sta(struct ap_data *ap,
+-				     struct prism2_hostapd_param *param)
+-{
+-	struct sta_info *sta;
+-
+-	spin_lock_bh(&ap->sta_table_lock);
+-	sta = ap_get_sta(ap, param->sta_addr);
+-	if (sta) {
+-		ap_sta_hash_del(ap, sta);
+-		list_del(&sta->list);
+-	}
+-	spin_unlock_bh(&ap->sta_table_lock);
+-
+-	if (!sta)
+-		return -ENOENT;
+-
+-	if ((sta->flags & WLAN_STA_ASSOC) && !sta->ap && sta->local)
+-		hostap_event_expired_sta(sta->local->dev, sta);
+-	ap_free_sta(ap, sta);
+-
+-	return 0;
+-}
+-
+-
+-static int prism2_hostapd_get_info_sta(struct ap_data *ap,
+-				       struct prism2_hostapd_param *param)
+-{
+-	struct sta_info *sta;
+-
+-	spin_lock_bh(&ap->sta_table_lock);
+-	sta = ap_get_sta(ap, param->sta_addr);
+-	if (sta)
+-		atomic_inc(&sta->users);
+-	spin_unlock_bh(&ap->sta_table_lock);
+-
+-	if (!sta)
+-		return -ENOENT;
+-
+-	param->u.get_info_sta.inactive_sec = (jiffies - sta->last_rx) / HZ;
+-
+-	atomic_dec(&sta->users);
+-
+-	return 1;
+-}
+-
+-
+-static int prism2_hostapd_set_flags_sta(struct ap_data *ap,
+-					struct prism2_hostapd_param *param)
+-{
+-	struct sta_info *sta;
+-
+-	spin_lock_bh(&ap->sta_table_lock);
+-	sta = ap_get_sta(ap, param->sta_addr);
+-	if (sta) {
+-		sta->flags |= param->u.set_flags_sta.flags_or;
+-		sta->flags &= param->u.set_flags_sta.flags_and;
+-	}
+-	spin_unlock_bh(&ap->sta_table_lock);
+-
+-	if (!sta)
+-		return -ENOENT;
+-
+-	return 0;
+-}
+-
+-
+-static int prism2_hostapd_sta_clear_stats(struct ap_data *ap,
+-					  struct prism2_hostapd_param *param)
+-{
+-	struct sta_info *sta;
+-	int rate;
+-
+-	spin_lock_bh(&ap->sta_table_lock);
+-	sta = ap_get_sta(ap, param->sta_addr);
+-	if (sta) {
+-		sta->rx_packets = sta->tx_packets = 0;
+-		sta->rx_bytes = sta->tx_bytes = 0;
+-		for (rate = 0; rate < WLAN_RATE_COUNT; rate++) {
+-			sta->tx_count[rate] = 0;
+-			sta->rx_count[rate] = 0;
+-		}
+-	}
+-	spin_unlock_bh(&ap->sta_table_lock);
+-
+-	if (!sta)
+-		return -ENOENT;
+-
+-	return 0;
+-}
+-
+-
+-int prism2_hostapd(struct ap_data *ap, struct prism2_hostapd_param *param)
+-{
+-	switch (param->cmd) {
+-	case PRISM2_HOSTAPD_FLUSH:
+-		ap_control_kickall(ap);
+-		return 0;
+-	case PRISM2_HOSTAPD_ADD_STA:
+-		return prism2_hostapd_add_sta(ap, param);
+-	case PRISM2_HOSTAPD_REMOVE_STA:
+-		return prism2_hostapd_remove_sta(ap, param);
+-	case PRISM2_HOSTAPD_GET_INFO_STA:
+-		return prism2_hostapd_get_info_sta(ap, param);
+-	case PRISM2_HOSTAPD_SET_FLAGS_STA:
+-		return prism2_hostapd_set_flags_sta(ap, param);
+-	case PRISM2_HOSTAPD_STA_CLEAR_STATS:
+-		return prism2_hostapd_sta_clear_stats(ap, param);
+-	default:
+-		printk(KERN_WARNING "prism2_hostapd: unknown cmd=%d\n",
+-		       param->cmd);
+-		return -EOPNOTSUPP;
+-	}
+-}
+-
+-
+-/* Update station info for host-based TX rate control and return current
+- * TX rate */
+-static int ap_update_sta_tx_rate(struct sta_info *sta, struct net_device *dev)
+-{
+-	int ret = sta->tx_rate;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	sta->tx_count[sta->tx_rate_idx]++;
+-	sta->tx_since_last_failure++;
+-	sta->tx_consecutive_exc = 0;
+-	if (sta->tx_since_last_failure >= WLAN_RATE_UPDATE_COUNT &&
+-	    sta->tx_rate_idx < sta->tx_max_rate) {
+-		/* use next higher rate */
+-		int old_rate, new_rate;
+-		old_rate = new_rate = sta->tx_rate_idx;
+-		while (new_rate < sta->tx_max_rate) {
+-			new_rate++;
+-			if (ap_tx_rate_ok(new_rate, sta, local)) {
+-				sta->tx_rate_idx = new_rate;
+-				break;
+-			}
+-		}
+-		if (old_rate != sta->tx_rate_idx) {
+-			switch (sta->tx_rate_idx) {
+-			case 0: sta->tx_rate = 10; break;
+-			case 1: sta->tx_rate = 20; break;
+-			case 2: sta->tx_rate = 55; break;
+-			case 3: sta->tx_rate = 110; break;
+-			default: sta->tx_rate = 0; break;
+-			}
+-			PDEBUG(DEBUG_AP, "%s: STA %pM TX rate raised to %d\n",
+-			       dev->name, sta->addr, sta->tx_rate);
+-		}
+-		sta->tx_since_last_failure = 0;
+-	}
+-
+-	return ret;
+-}
+-
+-
+-/* Called only from software IRQ. Called for each TX frame prior possible
+- * encryption and transmit. */
+-ap_tx_ret hostap_handle_sta_tx(local_info_t *local, struct hostap_tx_data *tx)
+-{
+-	struct sta_info *sta = NULL;
+-	struct sk_buff *skb = tx->skb;
+-	int set_tim, ret;
+-	struct ieee80211_hdr *hdr;
+-	struct hostap_skb_tx_data *meta;
+-
+-	meta = (struct hostap_skb_tx_data *) skb->cb;
+-	ret = AP_TX_CONTINUE;
+-	if (local->ap == NULL || skb->len < 10 ||
+-	    meta->iface->type == HOSTAP_INTERFACE_STA)
+-		goto out;
+-
+-	hdr = (struct ieee80211_hdr *) skb->data;
+-
+-	if (hdr->addr1[0] & 0x01) {
+-		/* broadcast/multicast frame - no AP related processing */
+-		if (local->ap->num_sta <= 0)
+-			ret = AP_TX_DROP;
+-		goto out;
+-	}
+-
+-	/* unicast packet - check whether destination STA is associated */
+-	spin_lock(&local->ap->sta_table_lock);
+-	sta = ap_get_sta(local->ap, hdr->addr1);
+-	if (sta)
+-		atomic_inc(&sta->users);
+-	spin_unlock(&local->ap->sta_table_lock);
+-
+-	if (local->iw_mode == IW_MODE_MASTER && sta == NULL &&
+-	    !(meta->flags & HOSTAP_TX_FLAGS_WDS) &&
+-	    meta->iface->type != HOSTAP_INTERFACE_MASTER &&
+-	    meta->iface->type != HOSTAP_INTERFACE_AP) {
+-#if 0
+-		/* This can happen, e.g., when wlan0 is added to a bridge and
+-		 * bridging code does not know which port is the correct target
+-		 * for a unicast frame. In this case, the packet is send to all
+-		 * ports of the bridge. Since this is a valid scenario, do not
+-		 * print out any errors here. */
+-		if (net_ratelimit()) {
+-			printk(KERN_DEBUG "AP: drop packet to non-associated "
+-			       "STA %pM\n", hdr->addr1);
+-		}
+-#endif
+-		local->ap->tx_drop_nonassoc++;
+-		ret = AP_TX_DROP;
+-		goto out;
+-	}
+-
+-	if (sta == NULL)
+-		goto out;
+-
+-	if (!(sta->flags & WLAN_STA_AUTHORIZED))
+-		ret = AP_TX_CONTINUE_NOT_AUTHORIZED;
+-
+-	/* Set tx_rate if using host-based TX rate control */
+-	if (!local->fw_tx_rate_control)
+-		local->ap->last_tx_rate = meta->rate =
+-			ap_update_sta_tx_rate(sta, local->dev);
+-
+-	if (local->iw_mode != IW_MODE_MASTER)
+-		goto out;
+-
+-	if (!(sta->flags & WLAN_STA_PS))
+-		goto out;
+-
+-	if (meta->flags & HOSTAP_TX_FLAGS_ADD_MOREDATA) {
+-		/* indicate to STA that more frames follow */
+-		hdr->frame_control |=
+-			cpu_to_le16(IEEE80211_FCTL_MOREDATA);
+-	}
+-
+-	if (meta->flags & HOSTAP_TX_FLAGS_BUFFERED_FRAME) {
+-		/* packet was already buffered and now send due to
+-		 * PS poll, so do not rebuffer it */
+-		goto out;
+-	}
+-
+-	if (skb_queue_len(&sta->tx_buf) >= STA_MAX_TX_BUFFER) {
+-		PDEBUG(DEBUG_PS, "%s: No more space in STA (%pM)'s"
+-		       "PS mode buffer\n",
+-		       local->dev->name, sta->addr);
+-		/* Make sure that TIM is set for the station (it might not be
+-		 * after AP wlan hw reset). */
+-		/* FIX: should fix hw reset to restore bits based on STA
+-		 * buffer state.. */
+-		hostap_set_tim(local, sta->aid, 1);
+-		sta->flags |= WLAN_STA_TIM;
+-		ret = AP_TX_DROP;
+-		goto out;
+-	}
+-
+-	/* STA in PS mode, buffer frame for later delivery */
+-	set_tim = skb_queue_empty(&sta->tx_buf);
+-	skb_queue_tail(&sta->tx_buf, skb);
+-	/* FIX: could save RX time to skb and expire buffered frames after
+-	 * some time if STA does not poll for them */
+-
+-	if (set_tim) {
+-		if (sta->flags & WLAN_STA_TIM)
+-			PDEBUG(DEBUG_PS2, "Re-setting TIM for aid %d\n",
+-			       sta->aid);
+-		hostap_set_tim(local, sta->aid, 1);
+-		sta->flags |= WLAN_STA_TIM;
+-	}
+-
+-	ret = AP_TX_BUFFERED;
+-
+- out:
+-	if (sta != NULL) {
+-		if (ret == AP_TX_CONTINUE ||
+-		    ret == AP_TX_CONTINUE_NOT_AUTHORIZED) {
+-			sta->tx_packets++;
+-			sta->tx_bytes += skb->len;
+-			sta->last_tx = jiffies;
+-		}
+-
+-		if ((ret == AP_TX_CONTINUE ||
+-		     ret == AP_TX_CONTINUE_NOT_AUTHORIZED) &&
+-		    sta->crypt && tx->host_encrypt) {
+-			tx->crypt = sta->crypt;
+-			tx->sta_ptr = sta; /* hostap_handle_sta_release() will
+-					    * be called to release sta info
+-					    * later */
+-		} else
+-			atomic_dec(&sta->users);
+-	}
+-
+-	return ret;
+-}
+-
+-
+-void hostap_handle_sta_release(void *ptr)
+-{
+-	struct sta_info *sta = ptr;
+-	atomic_dec(&sta->users);
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-void hostap_handle_sta_tx_exc(local_info_t *local, struct sk_buff *skb)
+-{
+-	struct sta_info *sta;
+-	struct ieee80211_hdr *hdr;
+-	struct hostap_skb_tx_data *meta;
+-
+-	hdr = (struct ieee80211_hdr *) skb->data;
+-	meta = (struct hostap_skb_tx_data *) skb->cb;
+-
+-	spin_lock(&local->ap->sta_table_lock);
+-	sta = ap_get_sta(local->ap, hdr->addr1);
+-	if (!sta) {
+-		spin_unlock(&local->ap->sta_table_lock);
+-		PDEBUG(DEBUG_AP, "%s: Could not find STA %pM"
+-		       " for this TX error (@%lu)\n",
+-		       local->dev->name, hdr->addr1, jiffies);
+-		return;
+-	}
+-
+-	sta->tx_since_last_failure = 0;
+-	sta->tx_consecutive_exc++;
+-
+-	if (sta->tx_consecutive_exc >= WLAN_RATE_DECREASE_THRESHOLD &&
+-	    sta->tx_rate_idx > 0 && meta->rate <= sta->tx_rate) {
+-		/* use next lower rate */
+-		int old, rate;
+-		old = rate = sta->tx_rate_idx;
+-		while (rate > 0) {
+-			rate--;
+-			if (ap_tx_rate_ok(rate, sta, local)) {
+-				sta->tx_rate_idx = rate;
+-				break;
+-			}
+-		}
+-		if (old != sta->tx_rate_idx) {
+-			switch (sta->tx_rate_idx) {
+-			case 0: sta->tx_rate = 10; break;
+-			case 1: sta->tx_rate = 20; break;
+-			case 2: sta->tx_rate = 55; break;
+-			case 3: sta->tx_rate = 110; break;
+-			default: sta->tx_rate = 0; break;
+-			}
+-			PDEBUG(DEBUG_AP,
+-			       "%s: STA %pM TX rate lowered to %d\n",
+-			       local->dev->name, sta->addr, sta->tx_rate);
+-		}
+-		sta->tx_consecutive_exc = 0;
+-	}
+-	spin_unlock(&local->ap->sta_table_lock);
+-}
+-
+-
+-static void hostap_update_sta_ps2(local_info_t *local, struct sta_info *sta,
+-				  int pwrmgt, int type, int stype)
+-{
+-	if (pwrmgt && !(sta->flags & WLAN_STA_PS)) {
+-		sta->flags |= WLAN_STA_PS;
+-		PDEBUG(DEBUG_PS2, "STA %pM changed to use PS "
+-		       "mode (type=0x%02X, stype=0x%02X)\n",
+-		       sta->addr, type >> 2, stype >> 4);
+-	} else if (!pwrmgt && (sta->flags & WLAN_STA_PS)) {
+-		sta->flags &= ~WLAN_STA_PS;
+-		PDEBUG(DEBUG_PS2, "STA %pM changed to not use "
+-		       "PS mode (type=0x%02X, stype=0x%02X)\n",
+-		       sta->addr, type >> 2, stype >> 4);
+-		if (type != IEEE80211_FTYPE_CTL ||
+-		    stype != IEEE80211_STYPE_PSPOLL)
+-			schedule_packet_send(local, sta);
+-	}
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ). Called for each RX frame to update
+- * STA power saving state. pwrmgt is a flag from 802.11 frame_control field. */
+-int hostap_update_sta_ps(local_info_t *local, struct ieee80211_hdr *hdr)
+-{
+-	struct sta_info *sta;
+-	u16 fc;
+-
+-	spin_lock(&local->ap->sta_table_lock);
+-	sta = ap_get_sta(local->ap, hdr->addr2);
+-	if (sta)
+-		atomic_inc(&sta->users);
+-	spin_unlock(&local->ap->sta_table_lock);
+-
+-	if (!sta)
+-		return -1;
+-
+-	fc = le16_to_cpu(hdr->frame_control);
+-	hostap_update_sta_ps2(local, sta, fc & IEEE80211_FCTL_PM,
+-			      fc & IEEE80211_FCTL_FTYPE,
+-			      fc & IEEE80211_FCTL_STYPE);
+-
+-	atomic_dec(&sta->users);
+-	return 0;
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ). Called for each RX frame after
+- * getting RX header and payload from hardware. */
+-ap_rx_ret hostap_handle_sta_rx(local_info_t *local, struct net_device *dev,
+-			       struct sk_buff *skb,
+-			       struct hostap_80211_rx_status *rx_stats,
+-			       int wds)
+-{
+-	int ret;
+-	struct sta_info *sta;
+-	u16 fc, type, stype;
+-	struct ieee80211_hdr *hdr;
+-
+-	if (local->ap == NULL)
+-		return AP_RX_CONTINUE;
+-
+-	hdr = (struct ieee80211_hdr *) skb->data;
+-
+-	fc = le16_to_cpu(hdr->frame_control);
+-	type = fc & IEEE80211_FCTL_FTYPE;
+-	stype = fc & IEEE80211_FCTL_STYPE;
+-
+-	spin_lock(&local->ap->sta_table_lock);
+-	sta = ap_get_sta(local->ap, hdr->addr2);
+-	if (sta)
+-		atomic_inc(&sta->users);
+-	spin_unlock(&local->ap->sta_table_lock);
+-
+-	if (sta && !(sta->flags & WLAN_STA_AUTHORIZED))
+-		ret = AP_RX_CONTINUE_NOT_AUTHORIZED;
+-	else
+-		ret = AP_RX_CONTINUE;
+-
+-
+-	if (fc & IEEE80211_FCTL_TODS) {
+-		if (!wds && (sta == NULL || !(sta->flags & WLAN_STA_ASSOC))) {
+-			if (local->hostapd) {
+-				prism2_rx_80211(local->apdev, skb, rx_stats,
+-						PRISM2_RX_NON_ASSOC);
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-			} else {
+-				printk(KERN_DEBUG "%s: dropped received packet"
+-				       " from non-associated STA %pM"
+-				       " (type=0x%02x, subtype=0x%02x)\n",
+-				       dev->name, hdr->addr2,
+-				       type >> 2, stype >> 4);
+-				hostap_rx(dev, skb, rx_stats);
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-			}
+-			ret = AP_RX_EXIT;
+-			goto out;
+-		}
+-	} else if (fc & IEEE80211_FCTL_FROMDS) {
+-		if (!wds) {
+-			/* FromDS frame - not for us; probably
+-			 * broadcast/multicast in another BSS - drop */
+-			if (ether_addr_equal(hdr->addr1, dev->dev_addr)) {
+-				printk(KERN_DEBUG "Odd.. FromDS packet "
+-				       "received with own BSSID\n");
+-				hostap_dump_rx_80211(dev->name, skb, rx_stats);
+-			}
+-			ret = AP_RX_DROP;
+-			goto out;
+-		}
+-	} else if (stype == IEEE80211_STYPE_NULLFUNC && sta == NULL &&
+-		   ether_addr_equal(hdr->addr1, dev->dev_addr)) {
+-
+-		if (local->hostapd) {
+-			prism2_rx_80211(local->apdev, skb, rx_stats,
+-					PRISM2_RX_NON_ASSOC);
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-		} else {
+-			/* At least Lucent f/w seems to send data::nullfunc
+-			 * frames with no ToDS flag when the current AP returns
+-			 * after being unavailable for some time. Speed up
+-			 * re-association by informing the station about it not
+-			 * being associated. */
+-			printk(KERN_DEBUG "%s: rejected received nullfunc frame"
+-			       " without ToDS from not associated STA %pM\n",
+-			       dev->name, hdr->addr2);
+-			hostap_rx(dev, skb, rx_stats);
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-		}
+-		ret = AP_RX_EXIT;
+-		goto out;
+-	} else if (stype == IEEE80211_STYPE_NULLFUNC) {
+-		/* At least Lucent cards seem to send periodic nullfunc
+-		 * frames with ToDS. Let these through to update SQ
+-		 * stats and PS state. Nullfunc frames do not contain
+-		 * any data and they will be dropped below. */
+-	} else {
+-		/* If BSSID (Addr3) is foreign, this frame is a normal
+-		 * broadcast frame from an IBSS network. Drop it silently.
+-		 * If BSSID is own, report the dropping of this frame. */
+-		if (ether_addr_equal(hdr->addr3, dev->dev_addr)) {
+-			printk(KERN_DEBUG "%s: dropped received packet from %pM"
+-			       " with no ToDS flag "
+-			       "(type=0x%02x, subtype=0x%02x)\n", dev->name,
+-			       hdr->addr2, type >> 2, stype >> 4);
+-			hostap_dump_rx_80211(dev->name, skb, rx_stats);
+-		}
+-		ret = AP_RX_DROP;
+-		goto out;
+-	}
+-
+-	if (sta) {
+-		hostap_update_sta_ps2(local, sta, fc & IEEE80211_FCTL_PM,
+-				      type, stype);
+-
+-		sta->rx_packets++;
+-		sta->rx_bytes += skb->len;
+-		sta->last_rx = jiffies;
+-	}
+-
+-	if (local->ap->nullfunc_ack && stype == IEEE80211_STYPE_NULLFUNC &&
+-	    fc & IEEE80211_FCTL_TODS) {
+-		if (local->hostapd) {
+-			prism2_rx_80211(local->apdev, skb, rx_stats,
+-					PRISM2_RX_NULLFUNC_ACK);
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-		} else {
+-			/* some STA f/w's seem to require control::ACK frame
+-			 * for data::nullfunc, but Prism2 f/w 0.8.0 (at least
+-			 * from Compaq) does not send this.. Try to generate
+-			 * ACK for these frames from the host driver to make
+-			 * power saving work with, e.g., Lucent WaveLAN f/w */
+-			hostap_rx(dev, skb, rx_stats);
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-		}
+-		ret = AP_RX_EXIT;
+-		goto out;
+-	}
+-
+- out:
+-	if (sta)
+-		atomic_dec(&sta->users);
+-
+-	return ret;
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-int hostap_handle_sta_crypto(local_info_t *local,
+-			     struct ieee80211_hdr *hdr,
+-			     struct lib80211_crypt_data **crypt,
+-			     void **sta_ptr)
+-{
+-	struct sta_info *sta;
+-
+-	spin_lock(&local->ap->sta_table_lock);
+-	sta = ap_get_sta(local->ap, hdr->addr2);
+-	if (sta)
+-		atomic_inc(&sta->users);
+-	spin_unlock(&local->ap->sta_table_lock);
+-
+-	if (!sta)
+-		return -1;
+-
+-	if (sta->crypt) {
+-		*crypt = sta->crypt;
+-		*sta_ptr = sta;
+-		/* hostap_handle_sta_release() will be called to release STA
+-		 * info */
+-	} else
+-		atomic_dec(&sta->users);
+-
+-	return 0;
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-int hostap_is_sta_assoc(struct ap_data *ap, u8 *sta_addr)
+-{
+-	struct sta_info *sta;
+-	int ret = 0;
+-
+-	spin_lock(&ap->sta_table_lock);
+-	sta = ap_get_sta(ap, sta_addr);
+-	if (sta != NULL && (sta->flags & WLAN_STA_ASSOC) && !sta->ap)
+-		ret = 1;
+-	spin_unlock(&ap->sta_table_lock);
+-
+-	return ret;
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-int hostap_is_sta_authorized(struct ap_data *ap, u8 *sta_addr)
+-{
+-	struct sta_info *sta;
+-	int ret = 0;
+-
+-	spin_lock(&ap->sta_table_lock);
+-	sta = ap_get_sta(ap, sta_addr);
+-	if (sta != NULL && (sta->flags & WLAN_STA_ASSOC) && !sta->ap &&
+-	    ((sta->flags & WLAN_STA_AUTHORIZED) ||
+-	     ap->local->ieee_802_1x == 0))
+-		ret = 1;
+-	spin_unlock(&ap->sta_table_lock);
+-
+-	return ret;
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-int hostap_add_sta(struct ap_data *ap, u8 *sta_addr)
+-{
+-	struct sta_info *sta;
+-	int ret = 1;
+-
+-	if (!ap)
+-		return -1;
+-
+-	spin_lock(&ap->sta_table_lock);
+-	sta = ap_get_sta(ap, sta_addr);
+-	if (sta)
+-		ret = 0;
+-	spin_unlock(&ap->sta_table_lock);
+-
+-	if (ret == 1) {
+-		sta = ap_add_sta(ap, sta_addr);
+-		if (!sta)
+-			return -1;
+-		sta->flags = WLAN_STA_AUTH | WLAN_STA_ASSOC;
+-		sta->ap = 1;
+-		memset(sta->supported_rates, 0, sizeof(sta->supported_rates));
+-		/* No way of knowing which rates are supported since we did not
+-		 * get supported rates element from beacon/assoc req. Assume
+-		 * that remote end supports all 802.11b rates. */
+-		sta->supported_rates[0] = 0x82;
+-		sta->supported_rates[1] = 0x84;
+-		sta->supported_rates[2] = 0x0b;
+-		sta->supported_rates[3] = 0x16;
+-		sta->tx_supp_rates = WLAN_RATE_1M | WLAN_RATE_2M |
+-			WLAN_RATE_5M5 | WLAN_RATE_11M;
+-		sta->tx_rate = 110;
+-		sta->tx_max_rate = sta->tx_rate_idx = 3;
+-	}
+-
+-	return ret;
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-int hostap_update_rx_stats(struct ap_data *ap,
+-			   struct ieee80211_hdr *hdr,
+-			   struct hostap_80211_rx_status *rx_stats)
+-{
+-	struct sta_info *sta;
+-
+-	if (!ap)
+-		return -1;
+-
+-	spin_lock(&ap->sta_table_lock);
+-	sta = ap_get_sta(ap, hdr->addr2);
+-	if (sta) {
+-		sta->last_rx_silence = rx_stats->noise;
+-		sta->last_rx_signal = rx_stats->signal;
+-		sta->last_rx_rate = rx_stats->rate;
+-		sta->last_rx_updated = IW_QUAL_ALL_UPDATED | IW_QUAL_DBM;
+-		if (rx_stats->rate == 10)
+-			sta->rx_count[0]++;
+-		else if (rx_stats->rate == 20)
+-			sta->rx_count[1]++;
+-		else if (rx_stats->rate == 55)
+-			sta->rx_count[2]++;
+-		else if (rx_stats->rate == 110)
+-			sta->rx_count[3]++;
+-	}
+-	spin_unlock(&ap->sta_table_lock);
+-
+-	return sta ? 0 : -1;
+-}
+-
+-
+-void hostap_update_rates(local_info_t *local)
+-{
+-	struct sta_info *sta;
+-	struct ap_data *ap = local->ap;
+-
+-	if (!ap)
+-		return;
+-
+-	spin_lock_bh(&ap->sta_table_lock);
+-	list_for_each_entry(sta, &ap->sta_list, list) {
+-		prism2_check_tx_rates(sta);
+-	}
+-	spin_unlock_bh(&ap->sta_table_lock);
+-}
+-
+-
+-void * ap_crypt_get_ptrs(struct ap_data *ap, u8 *addr, int permanent,
+-			 struct lib80211_crypt_data ***crypt)
+-{
+-	struct sta_info *sta;
+-
+-	spin_lock_bh(&ap->sta_table_lock);
+-	sta = ap_get_sta(ap, addr);
+-	if (sta)
+-		atomic_inc(&sta->users);
+-	spin_unlock_bh(&ap->sta_table_lock);
+-
+-	if (!sta && permanent)
+-		sta = ap_add_sta(ap, addr);
+-
+-	if (!sta)
+-		return NULL;
+-
+-	if (permanent)
+-		sta->flags |= WLAN_STA_PERM;
+-
+-	*crypt = &sta->crypt;
+-
+-	return sta;
+-}
+-
+-
+-void hostap_add_wds_links(local_info_t *local)
+-{
+-	struct ap_data *ap = local->ap;
+-	struct sta_info *sta;
+-
+-	spin_lock_bh(&ap->sta_table_lock);
+-	list_for_each_entry(sta, &ap->sta_list, list) {
+-		if (sta->ap)
+-			hostap_wds_link_oper(local, sta->addr, WDS_ADD);
+-	}
+-	spin_unlock_bh(&ap->sta_table_lock);
+-
+-	schedule_work(&local->ap->wds_oper_queue);
+-}
+-
+-
+-void hostap_wds_link_oper(local_info_t *local, u8 *addr, wds_oper_type type)
+-{
+-	struct wds_oper_data *entry;
+-
+-	entry = kmalloc(sizeof(*entry), GFP_ATOMIC);
+-	if (!entry)
+-		return;
+-	memcpy(entry->addr, addr, ETH_ALEN);
+-	entry->type = type;
+-	spin_lock_bh(&local->lock);
+-	entry->next = local->ap->wds_oper_entries;
+-	local->ap->wds_oper_entries = entry;
+-	spin_unlock_bh(&local->lock);
+-
+-	schedule_work(&local->ap->wds_oper_queue);
+-}
+-
+-
+-EXPORT_SYMBOL(hostap_init_data);
+-EXPORT_SYMBOL(hostap_init_ap_proc);
+-EXPORT_SYMBOL(hostap_free_data);
+-EXPORT_SYMBOL(hostap_check_sta_fw_version);
+-EXPORT_SYMBOL(hostap_handle_sta_tx_exc);
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+diff --git a/drivers/net/wireless/intersil/hostap/hostap_ap.h b/drivers/net/wireless/intersil/hostap/hostap_ap.h
+deleted file mode 100644
+index b7ac9e2f1a394..0000000000000
+--- a/drivers/net/wireless/intersil/hostap/hostap_ap.h
++++ /dev/null
+@@ -1,264 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef HOSTAP_AP_H
+-#define HOSTAP_AP_H
+-
+-#include "hostap_80211.h"
+-
+-/* AP data structures for STAs */
+-
+-/* maximum number of frames to buffer per STA */
+-#define STA_MAX_TX_BUFFER 32
+-
+-/* STA flags */
+-#define WLAN_STA_AUTH BIT(0)
+-#define WLAN_STA_ASSOC BIT(1)
+-#define WLAN_STA_PS BIT(2)
+-#define WLAN_STA_TIM BIT(3) /* TIM bit is on for PS stations */
+-#define WLAN_STA_PERM BIT(4) /* permanent; do not remove entry on expiration */
+-#define WLAN_STA_AUTHORIZED BIT(5) /* If 802.1X is used, this flag is
+-				    * controlling whether STA is authorized to
+-				    * send and receive non-IEEE 802.1X frames
+-				    */
+-#define WLAN_STA_PENDING_POLL BIT(6) /* pending activity poll not ACKed */
+-
+-#define WLAN_RATE_1M BIT(0)
+-#define WLAN_RATE_2M BIT(1)
+-#define WLAN_RATE_5M5 BIT(2)
+-#define WLAN_RATE_11M BIT(3)
+-#define WLAN_RATE_COUNT 4
+-
+-/* Maximum size of Supported Rates info element. IEEE 802.11 has a limit of 8,
+- * but some pre-standard IEEE 802.11g products use longer elements. */
+-#define WLAN_SUPP_RATES_MAX 32
+-
+-/* Try to increase TX rate after # successfully sent consecutive packets */
+-#define WLAN_RATE_UPDATE_COUNT 50
+-
+-/* Decrease TX rate after # consecutive dropped packets */
+-#define WLAN_RATE_DECREASE_THRESHOLD 2
+-
+-struct sta_info {
+-	struct list_head list;
+-	struct sta_info *hnext; /* next entry in hash table list */
+-	atomic_t users; /* number of users (do not remove if > 0) */
+-	struct proc_dir_entry *proc;
+-
+-	u8 addr[6];
+-	u16 aid; /* STA's unique AID (1 .. 2007) or 0 if not yet assigned */
+-	u32 flags;
+-	u16 capability;
+-	u16 listen_interval; /* or beacon_int for APs */
+-	u8 supported_rates[WLAN_SUPP_RATES_MAX];
+-
+-	unsigned long last_auth;
+-	unsigned long last_assoc;
+-	unsigned long last_rx;
+-	unsigned long last_tx;
+-	unsigned long rx_packets, tx_packets;
+-	unsigned long rx_bytes, tx_bytes;
+-	struct sk_buff_head tx_buf;
+-	/* FIX: timeout buffers with an expiry time somehow derived from
+-	 * listen_interval */
+-
+-	s8 last_rx_silence; /* Noise in dBm */
+-	s8 last_rx_signal; /* Signal strength in dBm */
+-	u8 last_rx_rate; /* TX rate in 0.1 Mbps */
+-	u8 last_rx_updated; /* IWSPY's struct iw_quality::updated */
+-
+-	u8 tx_supp_rates; /* bit field of supported TX rates */
+-	u8 tx_rate; /* current TX rate (in 0.1 Mbps) */
+-	u8 tx_rate_idx; /* current TX rate (WLAN_RATE_*) */
+-	u8 tx_max_rate; /* max TX rate (WLAN_RATE_*) */
+-	u32 tx_count[WLAN_RATE_COUNT]; /* number of frames sent (per rate) */
+-	u32 rx_count[WLAN_RATE_COUNT]; /* number of frames received (per rate)
+-					*/
+-	u32 tx_since_last_failure;
+-	u32 tx_consecutive_exc;
+-
+-	struct lib80211_crypt_data *crypt;
+-
+-	int ap; /* whether this station is an AP */
+-
+-	local_info_t *local;
+-
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-	union {
+-		struct {
+-			char *challenge; /* shared key authentication
+-					  * challenge */
+-		} sta;
+-		struct {
+-			int ssid_len;
+-			unsigned char ssid[MAX_SSID_LEN + 1]; /* AP's ssid */
+-			int channel;
+-			unsigned long last_beacon; /* last RX beacon time */
+-		} ap;
+-	} u;
+-
+-	struct timer_list timer;
+-	enum { STA_NULLFUNC = 0, STA_DISASSOC, STA_DEAUTH } timeout_next;
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-};
+-
+-
+-#define MAX_STA_COUNT 1024
+-
+-/* Maximum number of AIDs to use for STAs; must be 2007 or lower
+- * (8802.11 limitation) */
+-#define MAX_AID_TABLE_SIZE 128
+-
+-#define STA_HASH_SIZE 256
+-#define STA_HASH(sta) (sta[5])
+-
+-
+-/* Default value for maximum station inactivity. After AP_MAX_INACTIVITY_SEC
+- * has passed since last received frame from the station, a nullfunc data
+- * frame is sent to the station. If this frame is not acknowledged and no other
+- * frames have been received, the station will be disassociated after
+- * AP_DISASSOC_DELAY. Similarly, a the station will be deauthenticated after
+- * AP_DEAUTH_DELAY. AP_TIMEOUT_RESOLUTION is the resolution that is used with
+- * max inactivity timer. */
+-#define AP_MAX_INACTIVITY_SEC (5 * 60)
+-#define AP_DISASSOC_DELAY (HZ)
+-#define AP_DEAUTH_DELAY (HZ)
+-
+-/* ap_policy: whether to accept frames to/from other APs/IBSS */
+-typedef enum {
+-	AP_OTHER_AP_SKIP_ALL = 0,
+-	AP_OTHER_AP_SAME_SSID = 1,
+-	AP_OTHER_AP_ALL = 2,
+-	AP_OTHER_AP_EVEN_IBSS = 3
+-} ap_policy_enum;
+-
+-#define PRISM2_AUTH_OPEN BIT(0)
+-#define PRISM2_AUTH_SHARED_KEY BIT(1)
+-
+-
+-/* MAC address-based restrictions */
+-struct mac_entry {
+-	struct list_head list;
+-	u8 addr[6];
+-};
+-
+-struct mac_restrictions {
+-	enum { MAC_POLICY_OPEN = 0, MAC_POLICY_ALLOW, MAC_POLICY_DENY } policy;
+-	unsigned int entries;
+-	struct list_head mac_list;
+-	spinlock_t lock;
+-};
+-
+-
+-struct add_sta_proc_data {
+-	u8 addr[ETH_ALEN];
+-	struct add_sta_proc_data *next;
+-};
+-
+-
+-typedef enum { WDS_ADD, WDS_DEL } wds_oper_type;
+-struct wds_oper_data {
+-	wds_oper_type type;
+-	u8 addr[ETH_ALEN];
+-	struct wds_oper_data *next;
+-};
+-
+-
+-struct ap_data {
+-	int initialized; /* whether ap_data has been initialized */
+-	local_info_t *local;
+-	int bridge_packets; /* send packet to associated STAs directly to the
+-			     * wireless media instead of higher layers in the
+-			     * kernel */
+-	unsigned int bridged_unicast; /* number of unicast frames bridged on
+-				       * wireless media */
+-	unsigned int bridged_multicast; /* number of non-unicast frames
+-					 * bridged on wireless media */
+-	unsigned int tx_drop_nonassoc; /* number of unicast TX packets dropped
+-					* because they were to an address that
+-					* was not associated */
+-	int nullfunc_ack; /* use workaround for nullfunc frame ACKs */
+-
+-	spinlock_t sta_table_lock;
+-	int num_sta; /* number of entries in sta_list */
+-	struct list_head sta_list; /* STA info list head */
+-	struct sta_info *sta_hash[STA_HASH_SIZE];
+-
+-	struct proc_dir_entry *proc;
+-
+-	ap_policy_enum ap_policy;
+-	unsigned int max_inactivity;
+-	int autom_ap_wds;
+-
+-	struct mac_restrictions mac_restrictions; /* MAC-based auth */
+-	int last_tx_rate;
+-
+-	struct work_struct add_sta_proc_queue;
+-	struct add_sta_proc_data *add_sta_proc_entries;
+-
+-	struct work_struct wds_oper_queue;
+-	struct wds_oper_data *wds_oper_entries;
+-
+-	u16 tx_callback_idx;
+-
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-	/* pointers to STA info; based on allocated AID or NULL if AID free
+-	 * AID is in the range 1-2007, so sta_aid[0] corresponders to AID 1
+-	 * and so on
+-	 */
+-	struct sta_info *sta_aid[MAX_AID_TABLE_SIZE];
+-
+-	u16 tx_callback_auth, tx_callback_assoc, tx_callback_poll;
+-
+-	/* WEP operations for generating challenges to be used with shared key
+-	 * authentication */
+-	struct lib80211_crypto_ops *crypt;
+-	void *crypt_priv;
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-};
+-
+-
+-void hostap_rx(struct net_device *dev, struct sk_buff *skb,
+-	       struct hostap_80211_rx_status *rx_stats);
+-void hostap_init_data(local_info_t *local);
+-void hostap_init_ap_proc(local_info_t *local);
+-void hostap_free_data(struct ap_data *ap);
+-void hostap_check_sta_fw_version(struct ap_data *ap, int sta_fw_ver);
+-
+-typedef enum {
+-	AP_TX_CONTINUE, AP_TX_DROP, AP_TX_RETRY, AP_TX_BUFFERED,
+-	AP_TX_CONTINUE_NOT_AUTHORIZED
+-} ap_tx_ret;
+-struct hostap_tx_data {
+-	struct sk_buff *skb;
+-	int host_encrypt;
+-	struct lib80211_crypt_data *crypt;
+-	void *sta_ptr;
+-};
+-ap_tx_ret hostap_handle_sta_tx(local_info_t *local, struct hostap_tx_data *tx);
+-void hostap_handle_sta_release(void *ptr);
+-void hostap_handle_sta_tx_exc(local_info_t *local, struct sk_buff *skb);
+-int hostap_update_sta_ps(local_info_t *local, struct ieee80211_hdr *hdr);
+-typedef enum {
+-	AP_RX_CONTINUE, AP_RX_DROP, AP_RX_EXIT, AP_RX_CONTINUE_NOT_AUTHORIZED
+-} ap_rx_ret;
+-ap_rx_ret hostap_handle_sta_rx(local_info_t *local, struct net_device *dev,
+-			       struct sk_buff *skb,
+-			       struct hostap_80211_rx_status *rx_stats,
+-			       int wds);
+-int hostap_handle_sta_crypto(local_info_t *local, struct ieee80211_hdr *hdr,
+-			     struct lib80211_crypt_data **crypt,
+-			     void **sta_ptr);
+-int hostap_is_sta_assoc(struct ap_data *ap, u8 *sta_addr);
+-int hostap_is_sta_authorized(struct ap_data *ap, u8 *sta_addr);
+-int hostap_add_sta(struct ap_data *ap, u8 *sta_addr);
+-int hostap_update_rx_stats(struct ap_data *ap, struct ieee80211_hdr *hdr,
+-			   struct hostap_80211_rx_status *rx_stats);
+-void hostap_update_rates(local_info_t *local);
+-void hostap_add_wds_links(local_info_t *local);
+-void hostap_wds_link_oper(local_info_t *local, u8 *addr, wds_oper_type type);
+-
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-void hostap_deauth_all_stas(struct net_device *dev, struct ap_data *ap,
+-			    int resend);
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-
+-#endif /* HOSTAP_AP_H */
+diff --git a/drivers/net/wireless/intersil/hostap/hostap_common.h b/drivers/net/wireless/intersil/hostap/hostap_common.h
+deleted file mode 100644
+index dd29a8e8d3496..0000000000000
+--- a/drivers/net/wireless/intersil/hostap/hostap_common.h
++++ /dev/null
+@@ -1,420 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef HOSTAP_COMMON_H
+-#define HOSTAP_COMMON_H
+-
+-#include <linux/types.h>
+-#include <linux/if_ether.h>
+-
+-/* IEEE 802.11 defines */
+-
+-/* HFA384X Configuration RIDs */
+-#define HFA384X_RID_CNFPORTTYPE 0xFC00
+-#define HFA384X_RID_CNFOWNMACADDR 0xFC01
+-#define HFA384X_RID_CNFDESIREDSSID 0xFC02
+-#define HFA384X_RID_CNFOWNCHANNEL 0xFC03
+-#define HFA384X_RID_CNFOWNSSID 0xFC04
+-#define HFA384X_RID_CNFOWNATIMWINDOW 0xFC05
+-#define HFA384X_RID_CNFSYSTEMSCALE 0xFC06
+-#define HFA384X_RID_CNFMAXDATALEN 0xFC07
+-#define HFA384X_RID_CNFWDSADDRESS 0xFC08
+-#define HFA384X_RID_CNFPMENABLED 0xFC09
+-#define HFA384X_RID_CNFPMEPS 0xFC0A
+-#define HFA384X_RID_CNFMULTICASTRECEIVE 0xFC0B
+-#define HFA384X_RID_CNFMAXSLEEPDURATION 0xFC0C
+-#define HFA384X_RID_CNFPMHOLDOVERDURATION 0xFC0D
+-#define HFA384X_RID_CNFOWNNAME 0xFC0E
+-#define HFA384X_RID_CNFOWNDTIMPERIOD 0xFC10
+-#define HFA384X_RID_CNFWDSADDRESS1 0xFC11 /* AP f/w only */
+-#define HFA384X_RID_CNFWDSADDRESS2 0xFC12 /* AP f/w only */
+-#define HFA384X_RID_CNFWDSADDRESS3 0xFC13 /* AP f/w only */
+-#define HFA384X_RID_CNFWDSADDRESS4 0xFC14 /* AP f/w only */
+-#define HFA384X_RID_CNFWDSADDRESS5 0xFC15 /* AP f/w only */
+-#define HFA384X_RID_CNFWDSADDRESS6 0xFC16 /* AP f/w only */
+-#define HFA384X_RID_CNFMULTICASTPMBUFFERING 0xFC17 /* AP f/w only */
+-#define HFA384X_RID_UNKNOWN1 0xFC20
+-#define HFA384X_RID_UNKNOWN2 0xFC21
+-#define HFA384X_RID_CNFWEPDEFAULTKEYID 0xFC23
+-#define HFA384X_RID_CNFDEFAULTKEY0 0xFC24
+-#define HFA384X_RID_CNFDEFAULTKEY1 0xFC25
+-#define HFA384X_RID_CNFDEFAULTKEY2 0xFC26
+-#define HFA384X_RID_CNFDEFAULTKEY3 0xFC27
+-#define HFA384X_RID_CNFWEPFLAGS 0xFC28
+-#define HFA384X_RID_CNFWEPKEYMAPPINGTABLE 0xFC29
+-#define HFA384X_RID_CNFAUTHENTICATION 0xFC2A
+-#define HFA384X_RID_CNFMAXASSOCSTA 0xFC2B /* AP f/w only */
+-#define HFA384X_RID_CNFTXCONTROL 0xFC2C
+-#define HFA384X_RID_CNFROAMINGMODE 0xFC2D
+-#define HFA384X_RID_CNFHOSTAUTHENTICATION 0xFC2E /* AP f/w only */
+-#define HFA384X_RID_CNFRCVCRCERROR 0xFC30
+-#define HFA384X_RID_CNFMMLIFE 0xFC31
+-#define HFA384X_RID_CNFALTRETRYCOUNT 0xFC32
+-#define HFA384X_RID_CNFBEACONINT 0xFC33
+-#define HFA384X_RID_CNFAPPCFINFO 0xFC34 /* AP f/w only */
+-#define HFA384X_RID_CNFSTAPCFINFO 0xFC35
+-#define HFA384X_RID_CNFPRIORITYQUSAGE 0xFC37
+-#define HFA384X_RID_CNFTIMCTRL 0xFC40
+-#define HFA384X_RID_UNKNOWN3 0xFC41 /* added in STA f/w 0.7.x */
+-#define HFA384X_RID_CNFTHIRTY2TALLY 0xFC42 /* added in STA f/w 0.8.0 */
+-#define HFA384X_RID_CNFENHSECURITY 0xFC43 /* AP f/w or STA f/w >= 1.6.3 */
+-#define HFA384X_RID_CNFDBMADJUST 0xFC46 /* added in STA f/w 1.3.1 */
+-#define HFA384X_RID_GENERICELEMENT 0xFC48 /* added in STA f/w 1.7.0;
+-					   * write only */
+-#define HFA384X_RID_PROPAGATIONDELAY 0xFC49 /* added in STA f/w 1.7.6 */
+-#define HFA384X_RID_GROUPADDRESSES 0xFC80
+-#define HFA384X_RID_CREATEIBSS 0xFC81
+-#define HFA384X_RID_FRAGMENTATIONTHRESHOLD 0xFC82
+-#define HFA384X_RID_RTSTHRESHOLD 0xFC83
+-#define HFA384X_RID_TXRATECONTROL 0xFC84
+-#define HFA384X_RID_PROMISCUOUSMODE 0xFC85
+-#define HFA384X_RID_FRAGMENTATIONTHRESHOLD0 0xFC90 /* AP f/w only */
+-#define HFA384X_RID_FRAGMENTATIONTHRESHOLD1 0xFC91 /* AP f/w only */
+-#define HFA384X_RID_FRAGMENTATIONTHRESHOLD2 0xFC92 /* AP f/w only */
+-#define HFA384X_RID_FRAGMENTATIONTHRESHOLD3 0xFC93 /* AP f/w only */
+-#define HFA384X_RID_FRAGMENTATIONTHRESHOLD4 0xFC94 /* AP f/w only */
+-#define HFA384X_RID_FRAGMENTATIONTHRESHOLD5 0xFC95 /* AP f/w only */
+-#define HFA384X_RID_FRAGMENTATIONTHRESHOLD6 0xFC96 /* AP f/w only */
+-#define HFA384X_RID_RTSTHRESHOLD0 0xFC97 /* AP f/w only */
+-#define HFA384X_RID_RTSTHRESHOLD1 0xFC98 /* AP f/w only */
+-#define HFA384X_RID_RTSTHRESHOLD2 0xFC99 /* AP f/w only */
+-#define HFA384X_RID_RTSTHRESHOLD3 0xFC9A /* AP f/w only */
+-#define HFA384X_RID_RTSTHRESHOLD4 0xFC9B /* AP f/w only */
+-#define HFA384X_RID_RTSTHRESHOLD5 0xFC9C /* AP f/w only */
+-#define HFA384X_RID_RTSTHRESHOLD6 0xFC9D /* AP f/w only */
+-#define HFA384X_RID_TXRATECONTROL0 0xFC9E /* AP f/w only */
+-#define HFA384X_RID_TXRATECONTROL1 0xFC9F /* AP f/w only */
+-#define HFA384X_RID_TXRATECONTROL2 0xFCA0 /* AP f/w only */
+-#define HFA384X_RID_TXRATECONTROL3 0xFCA1 /* AP f/w only */
+-#define HFA384X_RID_TXRATECONTROL4 0xFCA2 /* AP f/w only */
+-#define HFA384X_RID_TXRATECONTROL5 0xFCA3 /* AP f/w only */
+-#define HFA384X_RID_TXRATECONTROL6 0xFCA4 /* AP f/w only */
+-#define HFA384X_RID_CNFSHORTPREAMBLE 0xFCB0
+-#define HFA384X_RID_CNFEXCLUDELONGPREAMBLE 0xFCB1
+-#define HFA384X_RID_CNFAUTHENTICATIONRSPTO 0xFCB2
+-#define HFA384X_RID_CNFBASICRATES 0xFCB3
+-#define HFA384X_RID_CNFSUPPORTEDRATES 0xFCB4
+-#define HFA384X_RID_CNFFALLBACKCTRL 0xFCB5 /* added in STA f/w 1.3.1 */
+-#define HFA384X_RID_WEPKEYDISABLE 0xFCB6 /* added in STA f/w 1.3.1 */
+-#define HFA384X_RID_WEPKEYMAPINDEX 0xFCB7 /* ? */
+-#define HFA384X_RID_BROADCASTKEYID 0xFCB8 /* ? */
+-#define HFA384X_RID_ENTSECFLAGEYID 0xFCB9 /* ? */
+-#define HFA384X_RID_CNFPASSIVESCANCTRL 0xFCBA /* added in STA f/w 1.5.0 */
+-#define HFA384X_RID_SSNHANDLINGMODE 0xFCBB /* added in STA f/w 1.7.0 */
+-#define HFA384X_RID_MDCCONTROL 0xFCBC /* added in STA f/w 1.7.0 */
+-#define HFA384X_RID_MDCCOUNTRY 0xFCBD /* added in STA f/w 1.7.0 */
+-#define HFA384X_RID_TXPOWERMAX 0xFCBE /* added in STA f/w 1.7.0 */
+-#define HFA384X_RID_CNFLFOENABLED 0xFCBF /* added in STA f/w 1.6.3 */
+-#define HFA384X_RID_CAPINFO 0xFCC0 /* added in STA f/w 1.7.0 */
+-#define HFA384X_RID_LISTENINTERVAL 0xFCC1 /* added in STA f/w 1.7.0 */
+-#define HFA384X_RID_SW_ANT_DIV 0xFCC2 /* added in STA f/w 1.7.0; Prism3 */
+-#define HFA384X_RID_LED_CTRL 0xFCC4 /* added in STA f/w 1.7.6 */
+-#define HFA384X_RID_HFODELAY 0xFCC5 /* added in STA f/w 1.7.6 */
+-#define HFA384X_RID_DISALLOWEDBSSID 0xFCC6 /* added in STA f/w 1.8.0 */
+-#define HFA384X_RID_TICKTIME 0xFCE0
+-#define HFA384X_RID_SCANREQUEST 0xFCE1
+-#define HFA384X_RID_JOINREQUEST 0xFCE2
+-#define HFA384X_RID_AUTHENTICATESTATION 0xFCE3 /* AP f/w only */
+-#define HFA384X_RID_CHANNELINFOREQUEST 0xFCE4 /* AP f/w only */
+-#define HFA384X_RID_HOSTSCAN 0xFCE5 /* added in STA f/w 1.3.1 */
+-
+-/* HFA384X Information RIDs */
+-#define HFA384X_RID_MAXLOADTIME 0xFD00
+-#define HFA384X_RID_DOWNLOADBUFFER 0xFD01
+-#define HFA384X_RID_PRIID 0xFD02
+-#define HFA384X_RID_PRISUPRANGE 0xFD03
+-#define HFA384X_RID_CFIACTRANGES 0xFD04
+-#define HFA384X_RID_NICSERNUM 0xFD0A
+-#define HFA384X_RID_NICID 0xFD0B
+-#define HFA384X_RID_MFISUPRANGE 0xFD0C
+-#define HFA384X_RID_CFISUPRANGE 0xFD0D
+-#define HFA384X_RID_CHANNELLIST 0xFD10
+-#define HFA384X_RID_REGULATORYDOMAINS 0xFD11
+-#define HFA384X_RID_TEMPTYPE 0xFD12
+-#define HFA384X_RID_CIS 0xFD13
+-#define HFA384X_RID_STAID 0xFD20
+-#define HFA384X_RID_STASUPRANGE 0xFD21
+-#define HFA384X_RID_MFIACTRANGES 0xFD22
+-#define HFA384X_RID_CFIACTRANGES2 0xFD23
+-#define HFA384X_RID_PRODUCTNAME 0xFD24 /* added in STA f/w 1.3.1;
+-					* only Prism2.5(?) */
+-#define HFA384X_RID_PORTSTATUS 0xFD40
+-#define HFA384X_RID_CURRENTSSID 0xFD41
+-#define HFA384X_RID_CURRENTBSSID 0xFD42
+-#define HFA384X_RID_COMMSQUALITY 0xFD43
+-#define HFA384X_RID_CURRENTTXRATE 0xFD44
+-#define HFA384X_RID_CURRENTBEACONINTERVAL 0xFD45
+-#define HFA384X_RID_CURRENTSCALETHRESHOLDS 0xFD46
+-#define HFA384X_RID_PROTOCOLRSPTIME 0xFD47
+-#define HFA384X_RID_SHORTRETRYLIMIT 0xFD48
+-#define HFA384X_RID_LONGRETRYLIMIT 0xFD49
+-#define HFA384X_RID_MAXTRANSMITLIFETIME 0xFD4A
+-#define HFA384X_RID_MAXRECEIVELIFETIME 0xFD4B
+-#define HFA384X_RID_CFPOLLABLE 0xFD4C
+-#define HFA384X_RID_AUTHENTICATIONALGORITHMS 0xFD4D
+-#define HFA384X_RID_PRIVACYOPTIONIMPLEMENTED 0xFD4F
+-#define HFA384X_RID_DBMCOMMSQUALITY 0xFD51 /* added in STA f/w 1.3.1 */
+-#define HFA384X_RID_CURRENTTXRATE1 0xFD80 /* AP f/w only */
+-#define HFA384X_RID_CURRENTTXRATE2 0xFD81 /* AP f/w only */
+-#define HFA384X_RID_CURRENTTXRATE3 0xFD82 /* AP f/w only */
+-#define HFA384X_RID_CURRENTTXRATE4 0xFD83 /* AP f/w only */
+-#define HFA384X_RID_CURRENTTXRATE5 0xFD84 /* AP f/w only */
+-#define HFA384X_RID_CURRENTTXRATE6 0xFD85 /* AP f/w only */
+-#define HFA384X_RID_OWNMACADDR 0xFD86 /* AP f/w only */
+-#define HFA384X_RID_SCANRESULTSTABLE 0xFD88 /* added in STA f/w 0.8.3 */
+-#define HFA384X_RID_HOSTSCANRESULTS 0xFD89 /* added in STA f/w 1.3.1 */
+-#define HFA384X_RID_AUTHENTICATIONUSED 0xFD8A /* added in STA f/w 1.3.4 */
+-#define HFA384X_RID_CNFFAASWITCHCTRL 0xFD8B /* added in STA f/w 1.6.3 */
+-#define HFA384X_RID_ASSOCIATIONFAILURE 0xFD8D /* added in STA f/w 1.8.0 */
+-#define HFA384X_RID_PHYTYPE 0xFDC0
+-#define HFA384X_RID_CURRENTCHANNEL 0xFDC1
+-#define HFA384X_RID_CURRENTPOWERSTATE 0xFDC2
+-#define HFA384X_RID_CCAMODE 0xFDC3
+-#define HFA384X_RID_SUPPORTEDDATARATES 0xFDC6
+-#define HFA384X_RID_LFO_VOLT_REG_TEST_RES 0xFDC7 /* added in STA f/w 1.7.1 */
+-#define HFA384X_RID_BUILDSEQ 0xFFFE
+-#define HFA384X_RID_FWID 0xFFFF
+-
+-
+-struct hfa384x_comp_ident
+-{
+-	__le16 id;
+-	__le16 variant;
+-	__le16 major;
+-	__le16 minor;
+-} __packed;
+-
+-#define HFA384X_COMP_ID_PRI 0x15
+-#define HFA384X_COMP_ID_STA 0x1f
+-#define HFA384X_COMP_ID_FW_AP 0x14b
+-
+-struct hfa384x_sup_range
+-{
+-	__le16 role;
+-	__le16 id;
+-	__le16 variant;
+-	__le16 bottom;
+-	__le16 top;
+-} __packed;
+-
+-
+-struct hfa384x_build_id
+-{
+-	__le16 pri_seq;
+-	__le16 sec_seq;
+-} __packed;
+-
+-/* FD01 - Download Buffer */
+-struct hfa384x_rid_download_buffer
+-{
+-	__le16 page;
+-	__le16 offset;
+-	__le16 length;
+-} __packed;
+-
+-/* BSS connection quality (RID FD43 range, RID FD51 dBm-normalized) */
+-struct hfa384x_comms_quality {
+-	__le16 comm_qual; /* 0 .. 92 */
+-	__le16 signal_level; /* 27 .. 154 */
+-	__le16 noise_level; /* 27 .. 154 */
+-} __packed;
+-
+-
+-/* netdevice private ioctls (used, e.g., with iwpriv from user space) */
+-
+-/* New wireless extensions API - SET/GET convention (even ioctl numbers are
+- * root only)
+- */
+-#define PRISM2_IOCTL_PRISM2_PARAM (SIOCIWFIRSTPRIV + 0)
+-#define PRISM2_IOCTL_GET_PRISM2_PARAM (SIOCIWFIRSTPRIV + 1)
+-#define PRISM2_IOCTL_WRITEMIF (SIOCIWFIRSTPRIV + 2)
+-#define PRISM2_IOCTL_READMIF (SIOCIWFIRSTPRIV + 3)
+-#define PRISM2_IOCTL_MONITOR (SIOCIWFIRSTPRIV + 4)
+-#define PRISM2_IOCTL_RESET (SIOCIWFIRSTPRIV + 6)
+-#define PRISM2_IOCTL_INQUIRE (SIOCIWFIRSTPRIV + 8)
+-#define PRISM2_IOCTL_WDS_ADD (SIOCIWFIRSTPRIV + 10)
+-#define PRISM2_IOCTL_WDS_DEL (SIOCIWFIRSTPRIV + 12)
+-#define PRISM2_IOCTL_SET_RID_WORD (SIOCIWFIRSTPRIV + 14)
+-#define PRISM2_IOCTL_MACCMD (SIOCIWFIRSTPRIV + 16)
+-#define PRISM2_IOCTL_ADDMAC (SIOCIWFIRSTPRIV + 18)
+-#define PRISM2_IOCTL_DELMAC (SIOCIWFIRSTPRIV + 20)
+-#define PRISM2_IOCTL_KICKMAC (SIOCIWFIRSTPRIV + 22)
+-
+-/* following are not in SIOCGIWPRIV list; check permission in the driver code
+- */
+-#define PRISM2_IOCTL_DOWNLOAD (SIOCDEVPRIVATE + 13)
+-#define PRISM2_IOCTL_HOSTAPD (SIOCDEVPRIVATE + 14)
+-
+-
+-/* PRISM2_IOCTL_PRISM2_PARAM ioctl() subtypes: */
+-enum {
+-	/* PRISM2_PARAM_PTYPE = 1, */ /* REMOVED 2003-10-22 */
+-	PRISM2_PARAM_TXRATECTRL = 2,
+-	PRISM2_PARAM_BEACON_INT = 3,
+-	PRISM2_PARAM_PSEUDO_IBSS = 4,
+-	PRISM2_PARAM_ALC = 5,
+-	/* PRISM2_PARAM_TXPOWER = 6, */ /* REMOVED 2003-10-22 */
+-	PRISM2_PARAM_DUMP = 7,
+-	PRISM2_PARAM_OTHER_AP_POLICY = 8,
+-	PRISM2_PARAM_AP_MAX_INACTIVITY = 9,
+-	PRISM2_PARAM_AP_BRIDGE_PACKETS = 10,
+-	PRISM2_PARAM_DTIM_PERIOD = 11,
+-	PRISM2_PARAM_AP_NULLFUNC_ACK = 12,
+-	PRISM2_PARAM_MAX_WDS = 13,
+-	PRISM2_PARAM_AP_AUTOM_AP_WDS = 14,
+-	PRISM2_PARAM_AP_AUTH_ALGS = 15,
+-	PRISM2_PARAM_MONITOR_ALLOW_FCSERR = 16,
+-	PRISM2_PARAM_HOST_ENCRYPT = 17,
+-	PRISM2_PARAM_HOST_DECRYPT = 18,
+-	/* PRISM2_PARAM_BUS_MASTER_THRESHOLD_RX = 19, REMOVED 2005-08-14 */
+-	/* PRISM2_PARAM_BUS_MASTER_THRESHOLD_TX = 20, REMOVED 2005-08-14 */
+-	PRISM2_PARAM_HOST_ROAMING = 21,
+-	PRISM2_PARAM_BCRX_STA_KEY = 22,
+-	PRISM2_PARAM_IEEE_802_1X = 23,
+-	PRISM2_PARAM_ANTSEL_TX = 24,
+-	PRISM2_PARAM_ANTSEL_RX = 25,
+-	PRISM2_PARAM_MONITOR_TYPE = 26,
+-	PRISM2_PARAM_WDS_TYPE = 27,
+-	PRISM2_PARAM_HOSTSCAN = 28,
+-	PRISM2_PARAM_AP_SCAN = 29,
+-	PRISM2_PARAM_ENH_SEC = 30,
+-	PRISM2_PARAM_IO_DEBUG = 31,
+-	PRISM2_PARAM_BASIC_RATES = 32,
+-	PRISM2_PARAM_OPER_RATES = 33,
+-	PRISM2_PARAM_HOSTAPD = 34,
+-	PRISM2_PARAM_HOSTAPD_STA = 35,
+-	PRISM2_PARAM_WPA = 36,
+-	PRISM2_PARAM_PRIVACY_INVOKED = 37,
+-	PRISM2_PARAM_TKIP_COUNTERMEASURES = 38,
+-	PRISM2_PARAM_DROP_UNENCRYPTED = 39,
+-	PRISM2_PARAM_SCAN_CHANNEL_MASK = 40,
+-};
+-
+-enum { HOSTAP_ANTSEL_DO_NOT_TOUCH = 0, HOSTAP_ANTSEL_DIVERSITY = 1,
+-       HOSTAP_ANTSEL_LOW = 2, HOSTAP_ANTSEL_HIGH = 3 };
+-
+-
+-/* PRISM2_IOCTL_MACCMD ioctl() subcommands: */
+-enum { AP_MAC_CMD_POLICY_OPEN = 0, AP_MAC_CMD_POLICY_ALLOW = 1,
+-       AP_MAC_CMD_POLICY_DENY = 2, AP_MAC_CMD_FLUSH = 3,
+-       AP_MAC_CMD_KICKALL = 4 };
+-
+-
+-/* PRISM2_IOCTL_DOWNLOAD ioctl() dl_cmd: */
+-enum {
+-	PRISM2_DOWNLOAD_VOLATILE = 1 /* RAM */,
+-	/* Note! Old versions of prism2_srec have a fatal error in CRC-16
+-	 * calculation, which will corrupt all non-volatile downloads.
+-	 * PRISM2_DOWNLOAD_NON_VOLATILE used to be 2, but it is now 3 to
+-	 * prevent use of old versions of prism2_srec for non-volatile
+-	 * download. */
+-	PRISM2_DOWNLOAD_NON_VOLATILE = 3 /* FLASH */,
+-	PRISM2_DOWNLOAD_VOLATILE_GENESIS = 4 /* RAM in Genesis mode */,
+-	/* Persistent versions of volatile download commands (keep firmware
+-	 * data in memory and automatically re-download after hw_reset */
+-	PRISM2_DOWNLOAD_VOLATILE_PERSISTENT = 5,
+-	PRISM2_DOWNLOAD_VOLATILE_GENESIS_PERSISTENT = 6,
+-};
+-
+-struct prism2_download_param {
+-	u32 dl_cmd;
+-	u32 start_addr;
+-	u32 num_areas;
+-	struct prism2_download_area {
+-		u32 addr; /* wlan card address */
+-		u32 len;
+-		void __user *ptr; /* pointer to data in user space */
+-	} data[];
+-};
+-
+-#define PRISM2_MAX_DOWNLOAD_AREA_LEN 131072
+-#define PRISM2_MAX_DOWNLOAD_LEN 262144
+-
+-
+-/* PRISM2_IOCTL_HOSTAPD ioctl() cmd: */
+-enum {
+-	PRISM2_HOSTAPD_FLUSH = 1,
+-	PRISM2_HOSTAPD_ADD_STA = 2,
+-	PRISM2_HOSTAPD_REMOVE_STA = 3,
+-	PRISM2_HOSTAPD_GET_INFO_STA = 4,
+-	/* REMOVED: PRISM2_HOSTAPD_RESET_TXEXC_STA = 5, */
+-	PRISM2_SET_ENCRYPTION = 6,
+-	PRISM2_GET_ENCRYPTION = 7,
+-	PRISM2_HOSTAPD_SET_FLAGS_STA = 8,
+-	PRISM2_HOSTAPD_GET_RID = 9,
+-	PRISM2_HOSTAPD_SET_RID = 10,
+-	PRISM2_HOSTAPD_SET_ASSOC_AP_ADDR = 11,
+-	PRISM2_HOSTAPD_SET_GENERIC_ELEMENT = 12,
+-	PRISM2_HOSTAPD_MLME = 13,
+-	PRISM2_HOSTAPD_SCAN_REQ = 14,
+-	PRISM2_HOSTAPD_STA_CLEAR_STATS = 15,
+-};
+-
+-#define PRISM2_HOSTAPD_MAX_BUF_SIZE 1024
+-#define PRISM2_HOSTAPD_RID_HDR_LEN \
+-offsetof(struct prism2_hostapd_param, u.rid.data)
+-#define PRISM2_HOSTAPD_GENERIC_ELEMENT_HDR_LEN \
+-offsetof(struct prism2_hostapd_param, u.generic_elem.data)
+-
+-/* Maximum length for algorithm names (-1 for nul termination) used in ioctl()
+- */
+-#define HOSTAP_CRYPT_ALG_NAME_LEN 16
+-
+-
+-struct prism2_hostapd_param {
+-	u32 cmd;
+-	u8 sta_addr[ETH_ALEN];
+-	union {
+-		struct {
+-			u16 aid;
+-			u16 capability;
+-			u8 tx_supp_rates;
+-		} add_sta;
+-		struct {
+-			u32 inactive_sec;
+-		} get_info_sta;
+-		struct {
+-			u8 alg[HOSTAP_CRYPT_ALG_NAME_LEN];
+-			u32 flags;
+-			u32 err;
+-			u8 idx;
+-			u8 seq[8]; /* sequence counter (set: RX, get: TX) */
+-			u16 key_len;
+-			u8 key[0];
+-		} crypt;
+-		struct {
+-			u32 flags_and;
+-			u32 flags_or;
+-		} set_flags_sta;
+-		struct {
+-			u16 rid;
+-			u16 len;
+-			u8 data[0];
+-		} rid;
+-		struct {
+-			u8 len;
+-			u8 data[0];
+-		} generic_elem;
+-		struct {
+-#define MLME_STA_DEAUTH 0
+-#define MLME_STA_DISASSOC 1
+-			u16 cmd;
+-			u16 reason_code;
+-		} mlme;
+-		struct {
+-			u8 ssid_len;
+-			u8 ssid[32];
+-		} scan_req;
+-	} u;
+-};
+-
+-#define HOSTAP_CRYPT_FLAG_SET_TX_KEY BIT(0)
+-#define HOSTAP_CRYPT_FLAG_PERMANENT BIT(1)
+-
+-#define HOSTAP_CRYPT_ERR_UNKNOWN_ALG 2
+-#define HOSTAP_CRYPT_ERR_UNKNOWN_ADDR 3
+-#define HOSTAP_CRYPT_ERR_CRYPT_INIT_FAILED 4
+-#define HOSTAP_CRYPT_ERR_KEY_SET_FAILED 5
+-#define HOSTAP_CRYPT_ERR_TX_KEY_SET_FAILED 6
+-#define HOSTAP_CRYPT_ERR_CARD_CONF_FAILED 7
+-
+-
+-#endif /* HOSTAP_COMMON_H */
+diff --git a/drivers/net/wireless/intersil/hostap/hostap_config.h b/drivers/net/wireless/intersil/hostap/hostap_config.h
+deleted file mode 100644
+index 3ebd55847fad3..0000000000000
+--- a/drivers/net/wireless/intersil/hostap/hostap_config.h
++++ /dev/null
+@@ -1,49 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef HOSTAP_CONFIG_H
+-#define HOSTAP_CONFIG_H
+-
+-/* In the previous versions of Host AP driver, support for user space version
+- * of IEEE 802.11 management (hostapd) used to be disabled in the default
+- * configuration. From now on, support for hostapd is always included and it is
+- * possible to disable kernel driver version of IEEE 802.11 management with a
+- * separate define, PRISM2_NO_KERNEL_IEEE80211_MGMT. */
+-/* #define PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-
+-/* Maximum number of events handler per one interrupt */
+-#define PRISM2_MAX_INTERRUPT_EVENTS 20
+-
+-/* Include code for downloading firmware images into volatile RAM. */
+-#define PRISM2_DOWNLOAD_SUPPORT
+-
+-/* Allow kernel configuration to enable download support. */
+-#if !defined(PRISM2_DOWNLOAD_SUPPORT) && defined(CONFIG_HOSTAP_FIRMWARE)
+-#define PRISM2_DOWNLOAD_SUPPORT
+-#endif
+-
+-/* Allow kernel configuration to enable non-volatile download support. */
+-#ifdef CONFIG_HOSTAP_FIRMWARE_NVRAM
+-#define PRISM2_NON_VOLATILE_DOWNLOAD
+-#endif
+-
+-/* Save low-level I/O for debugging. This should not be enabled in normal use.
+- */
+-/* #define PRISM2_IO_DEBUG */
+-
+-/* Following defines can be used to remove unneeded parts of the driver, e.g.,
+- * to limit the size of the kernel module. Definitions can be added here in
+- * hostap_config.h or they can be added to make command with ccflags-y,
+- * e.g.,
+- * 'make pccard ccflags-y="-DPRISM2_NO_DEBUG -DPRISM2_NO_PROCFS_DEBUG"'
+- */
+-
+-/* Do not include debug messages into the driver */
+-/* #define PRISM2_NO_DEBUG */
+-
+-/* Do not include /proc/net/prism2/wlan#/{registers,debug} */
+-/* #define PRISM2_NO_PROCFS_DEBUG */
+-
+-/* Do not include station functionality (i.e., allow only Master (Host AP) mode
+- */
+-/* #define PRISM2_NO_STATION_MODES */
+-
+-#endif /* HOSTAP_CONFIG_H */
+diff --git a/drivers/net/wireless/intersil/hostap/hostap_cs.c b/drivers/net/wireless/intersil/hostap/hostap_cs.c
+deleted file mode 100644
+index ec7db2badc40e..0000000000000
+--- a/drivers/net/wireless/intersil/hostap/hostap_cs.c
++++ /dev/null
+@@ -1,710 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-#define PRISM2_PCCARD
+-
+-#include <linux/module.h>
+-#include <linux/if.h>
+-#include <linux/slab.h>
+-#include <linux/wait.h>
+-#include <linux/timer.h>
+-#include <linux/skbuff.h>
+-#include <linux/netdevice.h>
+-#include <linux/workqueue.h>
+-#include <linux/wireless.h>
+-#include <net/iw_handler.h>
+-
+-#include <pcmcia/cistpl.h>
+-#include <pcmcia/cisreg.h>
+-#include <pcmcia/ds.h>
+-
+-#include <asm/io.h>
+-
+-#include "hostap_wlan.h"
+-
+-
+-static char *dev_info = "hostap_cs";
+-
+-MODULE_AUTHOR("Jouni Malinen");
+-MODULE_DESCRIPTION("Support for Intersil Prism2-based 802.11 wireless LAN "
+-		   "cards (PC Card).");
+-MODULE_LICENSE("GPL");
+-
+-
+-static int ignore_cis_vcc;
+-module_param(ignore_cis_vcc, int, 0444);
+-MODULE_PARM_DESC(ignore_cis_vcc, "Ignore broken CIS VCC entry");
+-
+-
+-/* struct local_info::hw_priv */
+-struct hostap_cs_priv {
+-	struct pcmcia_device *link;
+-	int sandisk_connectplus;
+-};
+-
+-
+-#ifdef PRISM2_IO_DEBUG
+-
+-static inline void hfa384x_outb_debug(struct net_device *dev, int a, u8 v)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	unsigned long flags;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-	spin_lock_irqsave(&local->lock, flags);
+-	prism2_io_debug_add(dev, PRISM2_IO_DEBUG_CMD_OUTB, a, v);
+-	outb(v, dev->base_addr + a);
+-	spin_unlock_irqrestore(&local->lock, flags);
+-}
+-
+-static inline u8 hfa384x_inb_debug(struct net_device *dev, int a)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	unsigned long flags;
+-	u8 v;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-	spin_lock_irqsave(&local->lock, flags);
+-	v = inb(dev->base_addr + a);
+-	prism2_io_debug_add(dev, PRISM2_IO_DEBUG_CMD_INB, a, v);
+-	spin_unlock_irqrestore(&local->lock, flags);
+-	return v;
+-}
+-
+-static inline void hfa384x_outw_debug(struct net_device *dev, int a, u16 v)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	unsigned long flags;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-	spin_lock_irqsave(&local->lock, flags);
+-	prism2_io_debug_add(dev, PRISM2_IO_DEBUG_CMD_OUTW, a, v);
+-	outw(v, dev->base_addr + a);
+-	spin_unlock_irqrestore(&local->lock, flags);
+-}
+-
+-static inline u16 hfa384x_inw_debug(struct net_device *dev, int a)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	unsigned long flags;
+-	u16 v;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-	spin_lock_irqsave(&local->lock, flags);
+-	v = inw(dev->base_addr + a);
+-	prism2_io_debug_add(dev, PRISM2_IO_DEBUG_CMD_INW, a, v);
+-	spin_unlock_irqrestore(&local->lock, flags);
+-	return v;
+-}
+-
+-static inline void hfa384x_outsw_debug(struct net_device *dev, int a,
+-				       u8 *buf, int wc)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	unsigned long flags;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-	spin_lock_irqsave(&local->lock, flags);
+-	prism2_io_debug_add(dev, PRISM2_IO_DEBUG_CMD_OUTSW, a, wc);
+-	outsw(dev->base_addr + a, buf, wc);
+-	spin_unlock_irqrestore(&local->lock, flags);
+-}
+-
+-static inline void hfa384x_insw_debug(struct net_device *dev, int a,
+-				      u8 *buf, int wc)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	unsigned long flags;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-	spin_lock_irqsave(&local->lock, flags);
+-	prism2_io_debug_add(dev, PRISM2_IO_DEBUG_CMD_INSW, a, wc);
+-	insw(dev->base_addr + a, buf, wc);
+-	spin_unlock_irqrestore(&local->lock, flags);
+-}
+-
+-#define HFA384X_OUTB(v,a) hfa384x_outb_debug(dev, (a), (v))
+-#define HFA384X_INB(a) hfa384x_inb_debug(dev, (a))
+-#define HFA384X_OUTW(v,a) hfa384x_outw_debug(dev, (a), (v))
+-#define HFA384X_INW(a) hfa384x_inw_debug(dev, (a))
+-#define HFA384X_OUTSW(a, buf, wc) hfa384x_outsw_debug(dev, (a), (buf), (wc))
+-#define HFA384X_INSW(a, buf, wc) hfa384x_insw_debug(dev, (a), (buf), (wc))
+-
+-#else /* PRISM2_IO_DEBUG */
+-
+-#define HFA384X_OUTB(v,a) outb((v), dev->base_addr + (a))
+-#define HFA384X_INB(a) inb(dev->base_addr + (a))
+-#define HFA384X_OUTW(v,a) outw((v), dev->base_addr + (a))
+-#define HFA384X_INW(a) inw(dev->base_addr + (a))
+-#define HFA384X_INSW(a, buf, wc) insw(dev->base_addr + (a), buf, wc)
+-#define HFA384X_OUTSW(a, buf, wc) outsw(dev->base_addr + (a), buf, wc)
+-
+-#endif /* PRISM2_IO_DEBUG */
+-
+-
+-static int hfa384x_from_bap(struct net_device *dev, u16 bap, void *buf,
+-			    int len)
+-{
+-	u16 d_off;
+-	u16 *pos;
+-
+-	d_off = (bap == 1) ? HFA384X_DATA1_OFF : HFA384X_DATA0_OFF;
+-	pos = (u16 *) buf;
+-
+-	if (len / 2)
+-		HFA384X_INSW(d_off, buf, len / 2);
+-	pos += len / 2;
+-
+-	if (len & 1)
+-		*((char *) pos) = HFA384X_INB(d_off);
+-
+-	return 0;
+-}
+-
+-
+-static int hfa384x_to_bap(struct net_device *dev, u16 bap, void *buf, int len)
+-{
+-	u16 d_off;
+-	u16 *pos;
+-
+-	d_off = (bap == 1) ? HFA384X_DATA1_OFF : HFA384X_DATA0_OFF;
+-	pos = (u16 *) buf;
+-
+-	if (len / 2)
+-		HFA384X_OUTSW(d_off, buf, len / 2);
+-	pos += len / 2;
+-
+-	if (len & 1)
+-		HFA384X_OUTB(*((char *) pos), d_off);
+-
+-	return 0;
+-}
+-
+-
+-/* FIX: This might change at some point.. */
+-#include "hostap_hw.c"
+-
+-
+-
+-static void prism2_detach(struct pcmcia_device *p_dev);
+-static void prism2_release(u_long arg);
+-static int prism2_config(struct pcmcia_device *link);
+-
+-
+-static int prism2_pccard_card_present(local_info_t *local)
+-{
+-	struct hostap_cs_priv *hw_priv = local->hw_priv;
+-	if (hw_priv != NULL && hw_priv->link != NULL && pcmcia_dev_present(hw_priv->link))
+-		return 1;
+-	return 0;
+-}
+-
+-
+-/*
+- * SanDisk CompactFlash WLAN Flashcard - Product Manual v1.0
+- * Document No. 20-10-00058, January 2004
+- * http://www.sandisk.com/pdf/industrial/ProdManualCFWLANv1.0.pdf
+- */
+-#define SANDISK_WLAN_ACTIVATION_OFF 0x40
+-#define SANDISK_HCR_OFF 0x42
+-
+-
+-static void sandisk_set_iobase(local_info_t *local)
+-{
+-	int res;
+-	struct hostap_cs_priv *hw_priv = local->hw_priv;
+-
+-	res = pcmcia_write_config_byte(hw_priv->link, 0x10,
+-				hw_priv->link->resource[0]->start & 0x00ff);
+-	if (res != 0) {
+-		printk(KERN_DEBUG "Prism3 SanDisk - failed to set I/O base 0 -"
+-		       " res=%d\n", res);
+-	}
+-	udelay(10);
+-
+-	res = pcmcia_write_config_byte(hw_priv->link, 0x12,
+-				(hw_priv->link->resource[0]->start >> 8) & 0x00ff);
+-	if (res != 0) {
+-		printk(KERN_DEBUG "Prism3 SanDisk - failed to set I/O base 1 -"
+-		       " res=%d\n", res);
+-	}
+-}
+-
+-
+-static void sandisk_write_hcr(local_info_t *local, int hcr)
+-{
+-	struct net_device *dev = local->dev;
+-	int i;
+-
+-	HFA384X_OUTB(0x80, SANDISK_WLAN_ACTIVATION_OFF);
+-	udelay(50);
+-	for (i = 0; i < 10; i++) {
+-		HFA384X_OUTB(hcr, SANDISK_HCR_OFF);
+-	}
+-	udelay(55);
+-	HFA384X_OUTB(0x45, SANDISK_WLAN_ACTIVATION_OFF);
+-}
+-
+-
+-static int sandisk_enable_wireless(struct net_device *dev)
+-{
+-	int res, ret = 0;
+-	struct hostap_interface *iface = netdev_priv(dev);
+-	local_info_t *local = iface->local;
+-	struct hostap_cs_priv *hw_priv = local->hw_priv;
+-
+-	if (resource_size(hw_priv->link->resource[0]) < 0x42) {
+-		/* Not enough ports to be SanDisk multi-function card */
+-		ret = -ENODEV;
+-		goto done;
+-	}
+-
+-	if (hw_priv->link->manf_id != 0xd601 || hw_priv->link->card_id != 0x0101) {
+-		/* No SanDisk manfid found */
+-		ret = -ENODEV;
+-		goto done;
+-	}
+-
+-	if (hw_priv->link->socket->functions < 2) {
+-		/* No multi-function links found */
+-		ret = -ENODEV;
+-		goto done;
+-	}
+-
+-	printk(KERN_DEBUG "%s: Multi-function SanDisk ConnectPlus detected"
+-	       " - using vendor-specific initialization\n", dev->name);
+-	hw_priv->sandisk_connectplus = 1;
+-
+-	res = pcmcia_write_config_byte(hw_priv->link, CISREG_COR,
+-				COR_SOFT_RESET);
+-	if (res != 0) {
+-		printk(KERN_DEBUG "%s: SanDisk - COR sreset failed (%d)\n",
+-		       dev->name, res);
+-		goto done;
+-	}
+-	mdelay(5);
+-
+-	/*
+-	 * Do not enable interrupts here to avoid some bogus events. Interrupts
+-	 * will be enabled during the first cor_sreset call.
+-	 */
+-	res = pcmcia_write_config_byte(hw_priv->link, CISREG_COR,
+-				(COR_LEVEL_REQ | 0x8 | COR_ADDR_DECODE |
+-					COR_FUNC_ENA));
+-	if (res != 0) {
+-		printk(KERN_DEBUG "%s: SanDisk - COR sreset failed (%d)\n",
+-		       dev->name, res);
+-		goto done;
+-	}
+-	mdelay(5);
+-
+-	sandisk_set_iobase(local);
+-
+-	HFA384X_OUTB(0xc5, SANDISK_WLAN_ACTIVATION_OFF);
+-	udelay(10);
+-	HFA384X_OUTB(0x4b, SANDISK_WLAN_ACTIVATION_OFF);
+-	udelay(10);
+-
+-done:
+-	return ret;
+-}
+-
+-
+-static void prism2_pccard_cor_sreset(local_info_t *local)
+-{
+-	int res;
+-	u8 val;
+-	struct hostap_cs_priv *hw_priv = local->hw_priv;
+-
+-	if (!prism2_pccard_card_present(local))
+-	       return;
+-
+-	res = pcmcia_read_config_byte(hw_priv->link, CISREG_COR, &val);
+-	if (res != 0) {
+-		printk(KERN_DEBUG "prism2_pccard_cor_sreset failed 1 (%d)\n",
+-		       res);
+-		return;
+-	}
+-	printk(KERN_DEBUG "prism2_pccard_cor_sreset: original COR %02x\n",
+-		val);
+-
+-	val |= COR_SOFT_RESET;
+-	res = pcmcia_write_config_byte(hw_priv->link, CISREG_COR, val);
+-	if (res != 0) {
+-		printk(KERN_DEBUG "prism2_pccard_cor_sreset failed 2 (%d)\n",
+-		       res);
+-		return;
+-	}
+-
+-	mdelay(hw_priv->sandisk_connectplus ? 5 : 2);
+-
+-	val &= ~COR_SOFT_RESET;
+-	if (hw_priv->sandisk_connectplus)
+-		val |= COR_IREQ_ENA;
+-	res = pcmcia_write_config_byte(hw_priv->link, CISREG_COR, val);
+-	if (res != 0) {
+-		printk(KERN_DEBUG "prism2_pccard_cor_sreset failed 3 (%d)\n",
+-		       res);
+-		return;
+-	}
+-
+-	mdelay(hw_priv->sandisk_connectplus ? 5 : 2);
+-
+-	if (hw_priv->sandisk_connectplus)
+-		sandisk_set_iobase(local);
+-}
+-
+-
+-static void prism2_pccard_genesis_reset(local_info_t *local, int hcr)
+-{
+-	int res;
+-	u8 old_cor;
+-	struct hostap_cs_priv *hw_priv = local->hw_priv;
+-
+-	if (!prism2_pccard_card_present(local))
+-	       return;
+-
+-	if (hw_priv->sandisk_connectplus) {
+-		sandisk_write_hcr(local, hcr);
+-		return;
+-	}
+-
+-	res = pcmcia_read_config_byte(hw_priv->link, CISREG_COR, &old_cor);
+-	if (res != 0) {
+-		printk(KERN_DEBUG "%s failed 1 (%d)\n", __func__, res);
+-		return;
+-	}
+-	printk(KERN_DEBUG "%s: original COR %02x\n", __func__, old_cor);
+-
+-	res = pcmcia_write_config_byte(hw_priv->link, CISREG_COR,
+-				old_cor | COR_SOFT_RESET);
+-	if (res != 0) {
+-		printk(KERN_DEBUG "%s failed 2 (%d)\n", __func__, res);
+-		return;
+-	}
+-
+-	mdelay(10);
+-
+-	/* Setup Genesis mode */
+-	res = pcmcia_write_config_byte(hw_priv->link, CISREG_CCSR, hcr);
+-	if (res != 0) {
+-		printk(KERN_DEBUG "%s failed 3 (%d)\n", __func__, res);
+-		return;
+-	}
+-	mdelay(10);
+-
+-	res = pcmcia_write_config_byte(hw_priv->link, CISREG_COR,
+-				old_cor & ~COR_SOFT_RESET);
+-	if (res != 0) {
+-		printk(KERN_DEBUG "%s failed 4 (%d)\n", __func__, res);
+-		return;
+-	}
+-
+-	mdelay(10);
+-}
+-
+-
+-static struct prism2_helper_functions prism2_pccard_funcs =
+-{
+-	.card_present	= prism2_pccard_card_present,
+-	.cor_sreset	= prism2_pccard_cor_sreset,
+-	.genesis_reset	= prism2_pccard_genesis_reset,
+-	.hw_type	= HOSTAP_HW_PCCARD,
+-};
+-
+-
+-/* allocate local data and register with CardServices
+- * initialize dev_link structure, but do not configure the card yet */
+-static int hostap_cs_probe(struct pcmcia_device *p_dev)
+-{
+-	int ret;
+-
+-	PDEBUG(DEBUG_HW, "%s: setting Vcc=33 (constant)\n", dev_info);
+-
+-	ret = prism2_config(p_dev);
+-	if (ret) {
+-		PDEBUG(DEBUG_EXTRA, "prism2_config() failed\n");
+-	}
+-
+-	return ret;
+-}
+-
+-
+-static void prism2_detach(struct pcmcia_device *link)
+-{
+-	PDEBUG(DEBUG_FLOW, "prism2_detach\n");
+-
+-	prism2_release((u_long)link);
+-
+-	/* release net devices */
+-	if (link->priv) {
+-		struct hostap_cs_priv *hw_priv;
+-		struct net_device *dev;
+-		struct hostap_interface *iface;
+-		dev = link->priv;
+-		iface = netdev_priv(dev);
+-		hw_priv = iface->local->hw_priv;
+-		prism2_free_local_data(dev);
+-		kfree(hw_priv);
+-	}
+-}
+-
+-
+-static int prism2_config_check(struct pcmcia_device *p_dev, void *priv_data)
+-{
+-	if (p_dev->config_index == 0)
+-		return -EINVAL;
+-
+-	return pcmcia_request_io(p_dev);
+-}
+-
+-static int prism2_config(struct pcmcia_device *link)
+-{
+-	struct net_device *dev;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int ret;
+-	struct hostap_cs_priv *hw_priv;
+-	unsigned long flags;
+-
+-	PDEBUG(DEBUG_FLOW, "prism2_config()\n");
+-
+-	hw_priv = kzalloc(sizeof(*hw_priv), GFP_KERNEL);
+-	if (hw_priv == NULL) {
+-		ret = -ENOMEM;
+-		goto failed;
+-	}
+-
+-	/* Look for an appropriate configuration table entry in the CIS */
+-	link->config_flags |= CONF_AUTO_SET_VPP | CONF_AUTO_AUDIO |
+-		CONF_AUTO_CHECK_VCC | CONF_AUTO_SET_IO | CONF_ENABLE_IRQ;
+-	if (ignore_cis_vcc)
+-		link->config_flags &= ~CONF_AUTO_CHECK_VCC;
+-	ret = pcmcia_loop_config(link, prism2_config_check, NULL);
+-	if (ret) {
+-		if (!ignore_cis_vcc)
+-			printk(KERN_ERR "GetNextTuple(): No matching "
+-			       "CIS configuration.  Maybe you need the "
+-			       "ignore_cis_vcc=1 parameter.\n");
+-		goto failed;
+-	}
+-
+-	/* Need to allocate net_device before requesting IRQ handler */
+-	dev = prism2_init_local_data(&prism2_pccard_funcs, 0,
+-				     &link->dev);
+-	if (!dev) {
+-		ret = -ENOMEM;
+-		goto failed;
+-	}
+-	link->priv = dev;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-	local->hw_priv = hw_priv;
+-	hw_priv->link = link;
+-
+-	/*
+-	 * We enable IRQ here, but IRQ handler will not proceed
+-	 * until dev->base_addr is set below. This protect us from
+-	 * receive interrupts when driver is not initialized.
+-	 */
+-	ret = pcmcia_request_irq(link, prism2_interrupt);
+-	if (ret)
+-		goto failed;
+-
+-	ret = pcmcia_enable_device(link);
+-	if (ret)
+-		goto failed;
+-
+-	spin_lock_irqsave(&local->irq_init_lock, flags);
+-	dev->irq = link->irq;
+-	dev->base_addr = link->resource[0]->start;
+-	spin_unlock_irqrestore(&local->irq_init_lock, flags);
+-
+-	local->shutdown = 0;
+-
+-	sandisk_enable_wireless(dev);
+-
+-	ret = prism2_hw_config(dev, 1);
+-	if (!ret)
+-		ret = hostap_hw_ready(dev);
+-
+-	return ret;
+-
+- failed:
+-	kfree(hw_priv);
+-	prism2_release((u_long)link);
+-	return ret;
+-}
+-
+-
+-static void prism2_release(u_long arg)
+-{
+-	struct pcmcia_device *link = (struct pcmcia_device *)arg;
+-
+-	PDEBUG(DEBUG_FLOW, "prism2_release\n");
+-
+-	if (link->priv) {
+-		struct net_device *dev = link->priv;
+-		struct hostap_interface *iface;
+-
+-		iface = netdev_priv(dev);
+-		prism2_hw_shutdown(dev, 0);
+-		iface->local->shutdown = 1;
+-	}
+-
+-	pcmcia_disable_device(link);
+-	PDEBUG(DEBUG_FLOW, "release - done\n");
+-}
+-
+-static int hostap_cs_suspend(struct pcmcia_device *link)
+-{
+-	struct net_device *dev = (struct net_device *) link->priv;
+-	int dev_open = 0;
+-	struct hostap_interface *iface = NULL;
+-
+-	if (!dev)
+-		return -ENODEV;
+-
+-	iface = netdev_priv(dev);
+-
+-	PDEBUG(DEBUG_EXTRA, "%s: CS_EVENT_PM_SUSPEND\n", dev_info);
+-	if (iface && iface->local)
+-		dev_open = iface->local->num_dev_open > 0;
+-	if (dev_open) {
+-		netif_stop_queue(dev);
+-		netif_device_detach(dev);
+-	}
+-	prism2_suspend(dev);
+-
+-	return 0;
+-}
+-
+-static int hostap_cs_resume(struct pcmcia_device *link)
+-{
+-	struct net_device *dev = (struct net_device *) link->priv;
+-	int dev_open = 0;
+-	struct hostap_interface *iface = NULL;
+-
+-	if (!dev)
+-		return -ENODEV;
+-
+-	iface = netdev_priv(dev);
+-
+-	PDEBUG(DEBUG_EXTRA, "%s: CS_EVENT_PM_RESUME\n", dev_info);
+-
+-	if (iface && iface->local)
+-		dev_open = iface->local->num_dev_open > 0;
+-
+-	prism2_hw_shutdown(dev, 1);
+-	prism2_hw_config(dev, dev_open ? 0 : 1);
+-	if (dev_open) {
+-		netif_device_attach(dev);
+-		netif_start_queue(dev);
+-	}
+-
+-	return 0;
+-}
+-
+-static const struct pcmcia_device_id hostap_cs_ids[] = {
+-	PCMCIA_DEVICE_MANF_CARD(0x000b, 0x7100),
+-	PCMCIA_DEVICE_MANF_CARD(0x000b, 0x7300),
+-	PCMCIA_DEVICE_MANF_CARD(0x0101, 0x0777),
+-	PCMCIA_DEVICE_MANF_CARD(0x0126, 0x8000),
+-	PCMCIA_DEVICE_MANF_CARD(0x0138, 0x0002),
+-	PCMCIA_DEVICE_MANF_CARD(0x01bf, 0x3301),
+-	PCMCIA_DEVICE_MANF_CARD(0x0250, 0x0002),
+-	PCMCIA_DEVICE_MANF_CARD(0x026f, 0x030b),
+-	PCMCIA_DEVICE_MANF_CARD(0x0274, 0x1612),
+-	PCMCIA_DEVICE_MANF_CARD(0x0274, 0x1613),
+-	PCMCIA_DEVICE_MANF_CARD(0x028a, 0x0002),
+-	PCMCIA_DEVICE_MANF_CARD(0x02aa, 0x0002),
+-	PCMCIA_DEVICE_MANF_CARD(0x02d2, 0x0001),
+-	PCMCIA_DEVICE_MANF_CARD(0x50c2, 0x0001),
+-	PCMCIA_DEVICE_MANF_CARD(0x50c2, 0x7300),
+-/*	PCMCIA_DEVICE_MANF_CARD(0xc00f, 0x0000),    conflict with pcnet_cs */
+-	PCMCIA_DEVICE_MANF_CARD(0xc250, 0x0002),
+-	PCMCIA_DEVICE_MANF_CARD(0xd601, 0x0002),
+-	PCMCIA_DEVICE_MANF_CARD(0xd601, 0x0005),
+-	PCMCIA_DEVICE_MANF_CARD(0xd601, 0x0010),
+-	PCMCIA_DEVICE_MANF_CARD(0x0126, 0x0002),
+-	PCMCIA_DEVICE_MANF_CARD_PROD_ID1(0xd601, 0x0005, "ADLINK 345 CF",
+-					 0x2d858104),
+-	PCMCIA_DEVICE_MANF_CARD_PROD_ID1(0x0156, 0x0002, "INTERSIL",
+-					 0x74c5e40d),
+-	PCMCIA_DEVICE_MANF_CARD_PROD_ID1(0x0156, 0x0002, "Intersil",
+-					 0x4b801a17),
+-	PCMCIA_DEVICE_MANF_CARD_PROD_ID3(0x0156, 0x0002, "Version 01.02",
+-					 0x4b74baa0),
+-	PCMCIA_MFC_DEVICE_PROD_ID12(0, "SanDisk", "ConnectPlus",
+-				    0x7a954bd9, 0x74be00c6),
+-	PCMCIA_DEVICE_PROD_ID123(
+-		"Addtron", "AWP-100 Wireless PCMCIA", "Version 01.02",
+-		0xe6ec52ce, 0x08649af2, 0x4b74baa0),
+-	PCMCIA_DEVICE_PROD_ID123(
+-		"Canon", "Wireless LAN CF Card K30225", "Version 01.00",
+-		0x96ef6fe2, 0x263fcbab, 0xa57adb8c),
+-	PCMCIA_DEVICE_PROD_ID123(
+-		"D", "Link DWL-650 11Mbps WLAN Card", "Version 01.02",
+-		0x71b18589, 0xb6f1b0ab, 0x4b74baa0),
+-	PCMCIA_DEVICE_PROD_ID123(
+-		"Instant Wireless ", " Network PC CARD", "Version 01.02",
+-		0x11d901af, 0x6e9bd926, 0x4b74baa0),
+-	PCMCIA_DEVICE_PROD_ID123(
+-		"SMC", "SMC2632W", "Version 01.02",
+-		0xc4f8b18b, 0x474a1f2a, 0x4b74baa0),
+-	PCMCIA_DEVICE_PROD_ID12("BUFFALO", "WLI-CF-S11G", 
+-				0x2decece3, 0x82067c18),
+-	PCMCIA_DEVICE_PROD_ID12("Compaq", "WL200_11Mbps_Wireless_PCI_Card",
+-				0x54f7c49c, 0x15a75e5b),
+-	PCMCIA_DEVICE_PROD_ID12("INTERSIL", "HFA384x/IEEE",
+-				0x74c5e40d, 0xdb472a18),
+-	PCMCIA_DEVICE_PROD_ID12("Linksys", "Wireless CompactFlash Card",
+-				0x0733cc81, 0x0c52f395),
+-	PCMCIA_DEVICE_PROD_ID12(
+-		"ZoomAir 11Mbps High", "Rate wireless Networking",
+-		0x273fe3db, 0x32a1eaee),
+-	PCMCIA_DEVICE_PROD_ID12("NETGEAR MA401 Wireless PC", "Card",
+-		0xa37434e9, 0x9762e8f1),
+-	PCMCIA_DEVICE_PROD_ID123(
+-		"Pretec", "CompactWLAN Card 802.11b", "2.5",
+-		0x1cadd3e5, 0xe697636c, 0x7a5bfcf1),
+-	PCMCIA_DEVICE_PROD_ID123(
+-		"U.S. Robotics", "IEEE 802.11b PC-CARD", "Version 01.02",
+-		0xc7b8df9d, 0x1700d087, 0x4b74baa0),
+-	PCMCIA_DEVICE_PROD_ID123(
+-		"Allied Telesyn", "AT-WCL452 Wireless PCMCIA Radio",
+-		"Ver. 1.00",
+-		0x5cd01705, 0x4271660f, 0x9d08ee12),
+-	PCMCIA_DEVICE_PROD_ID123(
+-		"Wireless LAN" , "11Mbps PC Card", "Version 01.02",
+-		0x4b8870ff, 0x70e946d1, 0x4b74baa0),
+-	PCMCIA_DEVICE_PROD_ID3("HFA3863", 0x355cb092),
+-	PCMCIA_DEVICE_PROD_ID3("ISL37100P", 0x630d52b2),
+-	PCMCIA_DEVICE_PROD_ID3("ISL37101P-10", 0xdd97a26b),
+-	PCMCIA_DEVICE_PROD_ID3("ISL37300P", 0xc9049a39),
+-	PCMCIA_DEVICE_NULL
+-};
+-MODULE_DEVICE_TABLE(pcmcia, hostap_cs_ids);
+-
+-
+-static struct pcmcia_driver hostap_driver = {
+-	.name		= "hostap_cs",
+-	.probe		= hostap_cs_probe,
+-	.remove		= prism2_detach,
+-	.owner		= THIS_MODULE,
+-	.id_table	= hostap_cs_ids,
+-	.suspend	= hostap_cs_suspend,
+-	.resume		= hostap_cs_resume,
+-};
+-module_pcmcia_driver(hostap_driver);
+diff --git a/drivers/net/wireless/intersil/hostap/hostap_download.c b/drivers/net/wireless/intersil/hostap/hostap_download.c
+deleted file mode 100644
+index 3672291ced5c8..0000000000000
+--- a/drivers/net/wireless/intersil/hostap/hostap_download.c
++++ /dev/null
+@@ -1,811 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-static int prism2_enable_aux_port(struct net_device *dev, int enable)
+-{
+-	u16 val, reg;
+-	int i, tries;
+-	unsigned long flags;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (local->no_pri) {
+-		if (enable) {
+-			PDEBUG(DEBUG_EXTRA2, "%s: no PRI f/w - assuming Aux "
+-			       "port is already enabled\n", dev->name);
+-		}
+-		return 0;
+-	}
+-
+-	spin_lock_irqsave(&local->cmdlock, flags);
+-
+-	/* wait until busy bit is clear */
+-	tries = HFA384X_CMD_BUSY_TIMEOUT;
+-	while (HFA384X_INW(HFA384X_CMD_OFF) & HFA384X_CMD_BUSY && tries > 0) {
+-		tries--;
+-		udelay(1);
+-	}
+-	if (tries == 0) {
+-		reg = HFA384X_INW(HFA384X_CMD_OFF);
+-		spin_unlock_irqrestore(&local->cmdlock, flags);
+-		printk("%s: prism2_enable_aux_port - timeout - reg=0x%04x\n",
+-		       dev->name, reg);
+-		return -ETIMEDOUT;
+-	}
+-
+-	val = HFA384X_INW(HFA384X_CONTROL_OFF);
+-
+-	if (enable) {
+-		HFA384X_OUTW(HFA384X_AUX_MAGIC0, HFA384X_PARAM0_OFF);
+-		HFA384X_OUTW(HFA384X_AUX_MAGIC1, HFA384X_PARAM1_OFF);
+-		HFA384X_OUTW(HFA384X_AUX_MAGIC2, HFA384X_PARAM2_OFF);
+-
+-		if ((val & HFA384X_AUX_PORT_MASK) != HFA384X_AUX_PORT_DISABLED)
+-			printk("prism2_enable_aux_port: was not disabled!?\n");
+-		val &= ~HFA384X_AUX_PORT_MASK;
+-		val |= HFA384X_AUX_PORT_ENABLE;
+-	} else {
+-		HFA384X_OUTW(0, HFA384X_PARAM0_OFF);
+-		HFA384X_OUTW(0, HFA384X_PARAM1_OFF);
+-		HFA384X_OUTW(0, HFA384X_PARAM2_OFF);
+-
+-		if ((val & HFA384X_AUX_PORT_MASK) != HFA384X_AUX_PORT_ENABLED)
+-			printk("prism2_enable_aux_port: was not enabled!?\n");
+-		val &= ~HFA384X_AUX_PORT_MASK;
+-		val |= HFA384X_AUX_PORT_DISABLE;
+-	}
+-	HFA384X_OUTW(val, HFA384X_CONTROL_OFF);
+-
+-	udelay(5);
+-
+-	i = 10000;
+-	while (i > 0) {
+-		val = HFA384X_INW(HFA384X_CONTROL_OFF);
+-		val &= HFA384X_AUX_PORT_MASK;
+-
+-		if ((enable && val == HFA384X_AUX_PORT_ENABLED) ||
+-		    (!enable && val == HFA384X_AUX_PORT_DISABLED))
+-			break;
+-
+-		udelay(10);
+-		i--;
+-	}
+-
+-	spin_unlock_irqrestore(&local->cmdlock, flags);
+-
+-	if (i == 0) {
+-		printk("prism2_enable_aux_port(%d) timed out\n",
+-		       enable);
+-		return -ETIMEDOUT;
+-	}
+-
+-	return 0;
+-}
+-
+-
+-static int hfa384x_from_aux(struct net_device *dev, unsigned int addr, int len,
+-			    void *buf)
+-{
+-	u16 page, offset;
+-	if (addr & 1 || len & 1)
+-		return -1;
+-
+-	page = addr >> 7;
+-	offset = addr & 0x7f;
+-
+-	HFA384X_OUTW(page, HFA384X_AUXPAGE_OFF);
+-	HFA384X_OUTW(offset, HFA384X_AUXOFFSET_OFF);
+-
+-	udelay(5);
+-
+-#ifdef PRISM2_PCI
+-	{
+-		__le16 *pos = (__le16 *) buf;
+-		while (len > 0) {
+-			*pos++ = HFA384X_INW_DATA(HFA384X_AUXDATA_OFF);
+-			len -= 2;
+-		}
+-	}
+-#else /* PRISM2_PCI */
+-	HFA384X_INSW(HFA384X_AUXDATA_OFF, buf, len / 2);
+-#endif /* PRISM2_PCI */
+-
+-	return 0;
+-}
+-
+-
+-static int hfa384x_to_aux(struct net_device *dev, unsigned int addr, int len,
+-			  void *buf)
+-{
+-	u16 page, offset;
+-	if (addr & 1 || len & 1)
+-		return -1;
+-
+-	page = addr >> 7;
+-	offset = addr & 0x7f;
+-
+-	HFA384X_OUTW(page, HFA384X_AUXPAGE_OFF);
+-	HFA384X_OUTW(offset, HFA384X_AUXOFFSET_OFF);
+-
+-	udelay(5);
+-
+-#ifdef PRISM2_PCI
+-	{
+-		__le16 *pos = (__le16 *) buf;
+-		while (len > 0) {
+-			HFA384X_OUTW_DATA(*pos++, HFA384X_AUXDATA_OFF);
+-			len -= 2;
+-		}
+-	}
+-#else /* PRISM2_PCI */
+-	HFA384X_OUTSW(HFA384X_AUXDATA_OFF, buf, len / 2);
+-#endif /* PRISM2_PCI */
+-
+-	return 0;
+-}
+-
+-
+-static int prism2_pda_ok(u8 *buf)
+-{
+-	__le16 *pda = (__le16 *) buf;
+-	int pos;
+-	u16 len, pdr;
+-
+-	if (buf[0] == 0xff && buf[1] == 0x00 && buf[2] == 0xff &&
+-	    buf[3] == 0x00)
+-		return 0;
+-
+-	pos = 0;
+-	while (pos + 1 < PRISM2_PDA_SIZE / 2) {
+-		len = le16_to_cpu(pda[pos]);
+-		pdr = le16_to_cpu(pda[pos + 1]);
+-		if (len == 0 || pos + len > PRISM2_PDA_SIZE / 2)
+-			return 0;
+-
+-		if (pdr == 0x0000 && len == 2) {
+-			/* PDA end found */
+-			return 1;
+-		}
+-
+-		pos += len + 1;
+-	}
+-
+-	return 0;
+-}
+-
+-
+-#define prism2_download_aux_dump_npages 65536
+-
+-struct prism2_download_aux_dump {
+-	local_info_t *local;
+-	u16 page[0x80];
+-};
+-
+-static int prism2_download_aux_dump_proc_show(struct seq_file *m, void *v)
+-{
+-	struct prism2_download_aux_dump *ctx = m->private;
+-
+-	hfa384x_from_aux(ctx->local->dev, (unsigned long)v - 1, 0x80, ctx->page);
+-	seq_write(m, ctx->page, 0x80);
+-	return 0;
+-}
+-
+-static void *prism2_download_aux_dump_proc_start(struct seq_file *m, loff_t *_pos)
+-{
+-	struct prism2_download_aux_dump *ctx = m->private;
+-	prism2_enable_aux_port(ctx->local->dev, 1);
+-	if (*_pos >= prism2_download_aux_dump_npages)
+-		return NULL;
+-	return (void *)((unsigned long)*_pos + 1);
+-}
+-
+-static void *prism2_download_aux_dump_proc_next(struct seq_file *m, void *v, loff_t *_pos)
+-{
+-	++*_pos;
+-	if (*_pos >= prism2_download_aux_dump_npages)
+-		return NULL;
+-	return (void *)((unsigned long)*_pos + 1);
+-}
+-
+-static void prism2_download_aux_dump_proc_stop(struct seq_file *m, void *v)
+-{
+-	struct prism2_download_aux_dump *ctx = m->private;
+-	prism2_enable_aux_port(ctx->local->dev, 0);
+-}
+-
+-static const struct seq_operations prism2_download_aux_dump_proc_seqops = {
+-	.start	= prism2_download_aux_dump_proc_start,
+-	.next	= prism2_download_aux_dump_proc_next,
+-	.stop	= prism2_download_aux_dump_proc_stop,
+-	.show	= prism2_download_aux_dump_proc_show,
+-};
+-
+-static int prism2_download_aux_dump_proc_open(struct inode *inode, struct file *file)
+-{
+-	int ret = seq_open_private(file, &prism2_download_aux_dump_proc_seqops,
+-				   sizeof(struct prism2_download_aux_dump));
+-	if (ret == 0) {
+-		struct seq_file *m = file->private_data;
+-		m->private = pde_data(inode);
+-	}
+-	return ret;
+-}
+-
+-static const struct proc_ops prism2_download_aux_dump_proc_ops = {
+-	.proc_open		= prism2_download_aux_dump_proc_open,
+-	.proc_read		= seq_read,
+-	.proc_lseek		= seq_lseek,
+-	.proc_release		= seq_release_private,
+-};
+-
+-
+-static u8 * prism2_read_pda(struct net_device *dev)
+-{
+-	u8 *buf;
+-	int res, i, found = 0;
+-#define NUM_PDA_ADDRS 4
+-	unsigned int pda_addr[NUM_PDA_ADDRS] = {
+-		0x7f0000 /* others than HFA3841 */,
+-		0x3f0000 /* HFA3841 */,
+-		0x390000 /* apparently used in older cards */,
+-		0x7f0002 /* Intel PRO/Wireless 2011B (PCI) */,
+-	};
+-
+-	buf = kmalloc(PRISM2_PDA_SIZE, GFP_KERNEL);
+-	if (buf == NULL)
+-		return NULL;
+-
+-	/* Note: wlan card should be in initial state (just after init cmd)
+-	 * and no other operations should be performed concurrently. */
+-
+-	prism2_enable_aux_port(dev, 1);
+-
+-	for (i = 0; i < NUM_PDA_ADDRS; i++) {
+-		PDEBUG(DEBUG_EXTRA2, "%s: trying to read PDA from 0x%08x",
+-		       dev->name, pda_addr[i]);
+-		res = hfa384x_from_aux(dev, pda_addr[i], PRISM2_PDA_SIZE, buf);
+-		if (res)
+-			continue;
+-		if (res == 0 && prism2_pda_ok(buf)) {
+-			PDEBUG2(DEBUG_EXTRA2, ": OK\n");
+-			found = 1;
+-			break;
+-		} else {
+-			PDEBUG2(DEBUG_EXTRA2, ": failed\n");
+-		}
+-	}
+-
+-	prism2_enable_aux_port(dev, 0);
+-
+-	if (!found) {
+-		printk(KERN_DEBUG "%s: valid PDA not found\n", dev->name);
+-		kfree(buf);
+-		buf = NULL;
+-	}
+-
+-	return buf;
+-}
+-
+-
+-static int prism2_download_volatile(local_info_t *local,
+-				    struct prism2_download_data *param)
+-{
+-	struct net_device *dev = local->dev;
+-	int ret = 0, i;
+-	u16 param0, param1;
+-
+-	if (local->hw_downloading) {
+-		printk(KERN_WARNING "%s: Already downloading - aborting new "
+-		       "request\n", dev->name);
+-		return -1;
+-	}
+-
+-	local->hw_downloading = 1;
+-	if (local->pri_only) {
+-		hfa384x_disable_interrupts(dev);
+-	} else {
+-		prism2_hw_shutdown(dev, 0);
+-
+-		if (prism2_hw_init(dev, 0)) {
+-			printk(KERN_WARNING "%s: Could not initialize card for"
+-			       " download\n", dev->name);
+-			ret = -1;
+-			goto out;
+-		}
+-	}
+-
+-	if (prism2_enable_aux_port(dev, 1)) {
+-		printk(KERN_WARNING "%s: Could not enable AUX port\n",
+-		       dev->name);
+-		ret = -1;
+-		goto out;
+-	}
+-
+-	param0 = param->start_addr & 0xffff;
+-	param1 = param->start_addr >> 16;
+-
+-	HFA384X_OUTW(0, HFA384X_PARAM2_OFF);
+-	HFA384X_OUTW(param1, HFA384X_PARAM1_OFF);
+-	if (hfa384x_cmd_wait(dev, HFA384X_CMDCODE_DOWNLOAD |
+-			     (HFA384X_PROGMODE_ENABLE_VOLATILE << 8),
+-			     param0)) {
+-		printk(KERN_WARNING "%s: Download command execution failed\n",
+-		       dev->name);
+-		ret = -1;
+-		goto out;
+-	}
+-
+-	for (i = 0; i < param->num_areas; i++) {
+-		PDEBUG(DEBUG_EXTRA2, "%s: Writing %d bytes at 0x%08x\n",
+-		       dev->name, param->data[i].len, param->data[i].addr);
+-		if (hfa384x_to_aux(dev, param->data[i].addr,
+-				   param->data[i].len, param->data[i].data)) {
+-			printk(KERN_WARNING "%s: RAM download at 0x%08x "
+-			       "(len=%d) failed\n", dev->name,
+-			       param->data[i].addr, param->data[i].len);
+-			ret = -1;
+-			goto out;
+-		}
+-	}
+-
+-	HFA384X_OUTW(param1, HFA384X_PARAM1_OFF);
+-	HFA384X_OUTW(0, HFA384X_PARAM2_OFF);
+-	if (hfa384x_cmd_no_wait(dev, HFA384X_CMDCODE_DOWNLOAD |
+-				(HFA384X_PROGMODE_DISABLE << 8), param0)) {
+-		printk(KERN_WARNING "%s: Download command execution failed\n",
+-		       dev->name);
+-		ret = -1;
+-		goto out;
+-	}
+-	/* ProgMode disable causes the hardware to restart itself from the
+-	 * given starting address. Give hw some time and ACK command just in
+-	 * case restart did not happen. */
+-	mdelay(5);
+-	HFA384X_OUTW(HFA384X_EV_CMD, HFA384X_EVACK_OFF);
+-
+-	if (prism2_enable_aux_port(dev, 0)) {
+-		printk(KERN_DEBUG "%s: Disabling AUX port failed\n",
+-		       dev->name);
+-		/* continue anyway.. restart should have taken care of this */
+-	}
+-
+-	mdelay(5);
+-	local->hw_downloading = 0;
+-	if (prism2_hw_config(dev, 2)) {
+-		printk(KERN_WARNING "%s: Card configuration after RAM "
+-		       "download failed\n", dev->name);
+-		ret = -1;
+-		goto out;
+-	}
+-
+- out:
+-	local->hw_downloading = 0;
+-	return ret;
+-}
+-
+-
+-static int prism2_enable_genesis(local_info_t *local, int hcr)
+-{
+-	struct net_device *dev = local->dev;
+-	u8 initseq[4] = { 0x00, 0xe1, 0xa1, 0xff };
+-	u8 readbuf[4];
+-
+-	printk(KERN_DEBUG "%s: test Genesis mode with HCR 0x%02x\n",
+-	       dev->name, hcr);
+-	local->func->cor_sreset(local);
+-	hfa384x_to_aux(dev, 0x7e0038, sizeof(initseq), initseq);
+-	local->func->genesis_reset(local, hcr);
+-
+-	/* Readback test */
+-	hfa384x_from_aux(dev, 0x7e0038, sizeof(readbuf), readbuf);
+-	hfa384x_to_aux(dev, 0x7e0038, sizeof(initseq), initseq);
+-	hfa384x_from_aux(dev, 0x7e0038, sizeof(readbuf), readbuf);
+-
+-	if (memcmp(initseq, readbuf, sizeof(initseq)) == 0) {
+-		printk(KERN_DEBUG "Readback test succeeded, HCR 0x%02x\n",
+-		       hcr);
+-		return 0;
+-	} else {
+-		printk(KERN_DEBUG "Readback test failed, HCR 0x%02x write %4ph read %4ph\n",
+-		       hcr, initseq, readbuf);
+-		return 1;
+-	}
+-}
+-
+-
+-static int prism2_get_ram_size(local_info_t *local)
+-{
+-	int ret;
+-
+-	/* Try to enable genesis mode; 0x1F for x8 SRAM or 0x0F for x16 SRAM */
+-	if (prism2_enable_genesis(local, 0x1f) == 0)
+-		ret = 8;
+-	else if (prism2_enable_genesis(local, 0x0f) == 0)
+-		ret = 16;
+-	else
+-		ret = -1;
+-
+-	/* Disable genesis mode */
+-	local->func->genesis_reset(local, ret == 16 ? 0x07 : 0x17);
+-
+-	return ret;
+-}
+-
+-
+-static int prism2_download_genesis(local_info_t *local,
+-				   struct prism2_download_data *param)
+-{
+-	struct net_device *dev = local->dev;
+-	int ram16 = 0, i;
+-	int ret = 0;
+-
+-	if (local->hw_downloading) {
+-		printk(KERN_WARNING "%s: Already downloading - aborting new "
+-		       "request\n", dev->name);
+-		return -EBUSY;
+-	}
+-
+-	if (!local->func->genesis_reset || !local->func->cor_sreset) {
+-		printk(KERN_INFO "%s: Genesis mode downloading not supported "
+-		       "with this hwmodel\n", dev->name);
+-		return -EOPNOTSUPP;
+-	}
+-
+-	local->hw_downloading = 1;
+-
+-	if (prism2_enable_aux_port(dev, 1)) {
+-		printk(KERN_DEBUG "%s: failed to enable AUX port\n",
+-		       dev->name);
+-		ret = -EIO;
+-		goto out;
+-	}
+-
+-	if (local->sram_type == -1) {
+-		/* 0x1F for x8 SRAM or 0x0F for x16 SRAM */
+-		if (prism2_enable_genesis(local, 0x1f) == 0) {
+-			ram16 = 0;
+-			PDEBUG(DEBUG_EXTRA2, "%s: Genesis mode OK using x8 "
+-			       "SRAM\n", dev->name);
+-		} else if (prism2_enable_genesis(local, 0x0f) == 0) {
+-			ram16 = 1;
+-			PDEBUG(DEBUG_EXTRA2, "%s: Genesis mode OK using x16 "
+-			       "SRAM\n", dev->name);
+-		} else {
+-			printk(KERN_DEBUG "%s: Could not initiate genesis "
+-			       "mode\n", dev->name);
+-			ret = -EIO;
+-			goto out;
+-		}
+-	} else {
+-		if (prism2_enable_genesis(local, local->sram_type == 8 ?
+-					  0x1f : 0x0f)) {
+-			printk(KERN_DEBUG "%s: Failed to set Genesis "
+-			       "mode (sram_type=%d)\n", dev->name,
+-			       local->sram_type);
+-			ret = -EIO;
+-			goto out;
+-		}
+-		ram16 = local->sram_type != 8;
+-	}
+-
+-	for (i = 0; i < param->num_areas; i++) {
+-		PDEBUG(DEBUG_EXTRA2, "%s: Writing %d bytes at 0x%08x\n",
+-		       dev->name, param->data[i].len, param->data[i].addr);
+-		if (hfa384x_to_aux(dev, param->data[i].addr,
+-				   param->data[i].len, param->data[i].data)) {
+-			printk(KERN_WARNING "%s: RAM download at 0x%08x "
+-			       "(len=%d) failed\n", dev->name,
+-			       param->data[i].addr, param->data[i].len);
+-			ret = -EIO;
+-			goto out;
+-		}
+-	}
+-
+-	PDEBUG(DEBUG_EXTRA2, "Disable genesis mode\n");
+-	local->func->genesis_reset(local, ram16 ? 0x07 : 0x17);
+-	if (prism2_enable_aux_port(dev, 0)) {
+-		printk(KERN_DEBUG "%s: Failed to disable AUX port\n",
+-		       dev->name);
+-	}
+-
+-	mdelay(5);
+-	local->hw_downloading = 0;
+-
+-	PDEBUG(DEBUG_EXTRA2, "Trying to initialize card\n");
+-	/*
+-	 * Make sure the INIT command does not generate a command completion
+-	 * event by disabling interrupts.
+-	 */
+-	hfa384x_disable_interrupts(dev);
+-	if (prism2_hw_init(dev, 1)) {
+-		printk(KERN_DEBUG "%s: Initialization after genesis mode "
+-		       "download failed\n", dev->name);
+-		ret = -EIO;
+-		goto out;
+-	}
+-
+-	PDEBUG(DEBUG_EXTRA2, "Card initialized - running PRI only\n");
+-	if (prism2_hw_init2(dev, 1)) {
+-		printk(KERN_DEBUG "%s: Initialization(2) after genesis mode "
+-		       "download failed\n", dev->name);
+-		ret = -EIO;
+-		goto out;
+-	}
+-
+- out:
+-	local->hw_downloading = 0;
+-	return ret;
+-}
+-
+-
+-#ifdef PRISM2_NON_VOLATILE_DOWNLOAD
+-/* Note! Non-volatile downloading functionality has not yet been tested
+- * thoroughly and it may corrupt flash image and effectively kill the card that
+- * is being updated. You have been warned. */
+-
+-static inline int prism2_download_block(struct net_device *dev,
+-					u32 addr, u8 *data,
+-					u32 bufaddr, int rest_len)
+-{
+-	u16 param0, param1;
+-	int block_len;
+-
+-	block_len = rest_len < 4096 ? rest_len : 4096;
+-
+-	param0 = addr & 0xffff;
+-	param1 = addr >> 16;
+-
+-	HFA384X_OUTW(block_len, HFA384X_PARAM2_OFF);
+-	HFA384X_OUTW(param1, HFA384X_PARAM1_OFF);
+-
+-	if (hfa384x_cmd_wait(dev, HFA384X_CMDCODE_DOWNLOAD |
+-			     (HFA384X_PROGMODE_ENABLE_NON_VOLATILE << 8),
+-			     param0)) {
+-		printk(KERN_WARNING "%s: Flash download command execution "
+-		       "failed\n", dev->name);
+-		return -1;
+-	}
+-
+-	if (hfa384x_to_aux(dev, bufaddr, block_len, data)) {
+-		printk(KERN_WARNING "%s: flash download at 0x%08x "
+-		       "(len=%d) failed\n", dev->name, addr, block_len);
+-		return -1;
+-	}
+-
+-	HFA384X_OUTW(0, HFA384X_PARAM2_OFF);
+-	HFA384X_OUTW(0, HFA384X_PARAM1_OFF);
+-	if (hfa384x_cmd_wait(dev, HFA384X_CMDCODE_DOWNLOAD |
+-			     (HFA384X_PROGMODE_PROGRAM_NON_VOLATILE << 8),
+-			     0)) {
+-		printk(KERN_WARNING "%s: Flash write command execution "
+-		       "failed\n", dev->name);
+-		return -1;
+-	}
+-
+-	return block_len;
+-}
+-
+-
+-static int prism2_download_nonvolatile(local_info_t *local,
+-				       struct prism2_download_data *dl)
+-{
+-	struct net_device *dev = local->dev;
+-	int ret = 0, i;
+-	struct {
+-		__le16 page;
+-		__le16 offset;
+-		__le16 len;
+-	} dlbuffer;
+-	u32 bufaddr;
+-
+-	if (local->hw_downloading) {
+-		printk(KERN_WARNING "%s: Already downloading - aborting new "
+-		       "request\n", dev->name);
+-		return -1;
+-	}
+-
+-	ret = local->func->get_rid(dev, HFA384X_RID_DOWNLOADBUFFER,
+-				   &dlbuffer, 6, 0);
+-
+-	if (ret < 0) {
+-		printk(KERN_WARNING "%s: Could not read download buffer "
+-		       "parameters\n", dev->name);
+-		goto out;
+-	}
+-
+-	printk(KERN_DEBUG "Download buffer: %d bytes at 0x%04x:0x%04x\n",
+-	       le16_to_cpu(dlbuffer.len),
+-	       le16_to_cpu(dlbuffer.page),
+-	       le16_to_cpu(dlbuffer.offset));
+-
+-	bufaddr = (le16_to_cpu(dlbuffer.page) << 7) + le16_to_cpu(dlbuffer.offset);
+-
+-	local->hw_downloading = 1;
+-
+-	if (!local->pri_only) {
+-		prism2_hw_shutdown(dev, 0);
+-
+-		if (prism2_hw_init(dev, 0)) {
+-			printk(KERN_WARNING "%s: Could not initialize card for"
+-			       " download\n", dev->name);
+-			ret = -1;
+-			goto out;
+-		}
+-	}
+-
+-	hfa384x_disable_interrupts(dev);
+-
+-	if (prism2_enable_aux_port(dev, 1)) {
+-		printk(KERN_WARNING "%s: Could not enable AUX port\n",
+-		       dev->name);
+-		ret = -1;
+-		goto out;
+-	}
+-
+-	printk(KERN_DEBUG "%s: starting flash download\n", dev->name);
+-	for (i = 0; i < dl->num_areas; i++) {
+-		int rest_len = dl->data[i].len;
+-		int data_off = 0;
+-
+-		while (rest_len > 0) {
+-			int block_len;
+-
+-			block_len = prism2_download_block(
+-				dev, dl->data[i].addr + data_off,
+-				dl->data[i].data + data_off, bufaddr,
+-				rest_len);
+-
+-			if (block_len < 0) {
+-				ret = -1;
+-				goto out;
+-			}
+-
+-			rest_len -= block_len;
+-			data_off += block_len;
+-		}
+-	}
+-
+-	HFA384X_OUTW(0, HFA384X_PARAM1_OFF);
+-	HFA384X_OUTW(0, HFA384X_PARAM2_OFF);
+-	if (hfa384x_cmd_wait(dev, HFA384X_CMDCODE_DOWNLOAD |
+-				(HFA384X_PROGMODE_DISABLE << 8), 0)) {
+-		printk(KERN_WARNING "%s: Download command execution failed\n",
+-		       dev->name);
+-		ret = -1;
+-		goto out;
+-	}
+-
+-	if (prism2_enable_aux_port(dev, 0)) {
+-		printk(KERN_DEBUG "%s: Disabling AUX port failed\n",
+-		       dev->name);
+-		/* continue anyway.. restart should have taken care of this */
+-	}
+-
+-	mdelay(5);
+-
+-	local->func->hw_reset(dev);
+-	local->hw_downloading = 0;
+-	if (prism2_hw_config(dev, 2)) {
+-		printk(KERN_WARNING "%s: Card configuration after flash "
+-		       "download failed\n", dev->name);
+-		ret = -1;
+-	} else {
+-		printk(KERN_INFO "%s: Card initialized successfully after "
+-		       "flash download\n", dev->name);
+-	}
+-
+- out:
+-	local->hw_downloading = 0;
+-	return ret;
+-}
+-#endif /* PRISM2_NON_VOLATILE_DOWNLOAD */
+-
+-
+-static void prism2_download_free_data(struct prism2_download_data *dl)
+-{
+-	int i;
+-
+-	if (dl == NULL)
+-		return;
+-
+-	for (i = 0; i < dl->num_areas; i++)
+-		kfree(dl->data[i].data);
+-	kfree(dl);
+-}
+-
+-
+-static int prism2_download(local_info_t *local,
+-			   struct prism2_download_param *param)
+-{
+-	int ret = 0;
+-	int i;
+-	u32 total_len = 0;
+-	struct prism2_download_data *dl = NULL;
+-
+-	printk(KERN_DEBUG "prism2_download: dl_cmd=%d start_addr=0x%08x "
+-	       "num_areas=%d\n",
+-	       param->dl_cmd, param->start_addr, param->num_areas);
+-
+-	if (param->num_areas > 100) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
+-
+-	dl = kzalloc(sizeof(*dl) + param->num_areas *
+-		     sizeof(struct prism2_download_data_area), GFP_KERNEL);
+-	if (dl == NULL) {
+-		ret = -ENOMEM;
+-		goto out;
+-	}
+-	dl->dl_cmd = param->dl_cmd;
+-	dl->start_addr = param->start_addr;
+-	dl->num_areas = param->num_areas;
+-	for (i = 0; i < param->num_areas; i++) {
+-		PDEBUG(DEBUG_EXTRA2,
+-		       "  area %d: addr=0x%08x len=%d ptr=0x%p\n",
+-		       i, param->data[i].addr, param->data[i].len,
+-		       param->data[i].ptr);
+-
+-		dl->data[i].addr = param->data[i].addr;
+-		dl->data[i].len = param->data[i].len;
+-
+-		total_len += param->data[i].len;
+-		if (param->data[i].len > PRISM2_MAX_DOWNLOAD_AREA_LEN ||
+-		    total_len > PRISM2_MAX_DOWNLOAD_LEN) {
+-			ret = -E2BIG;
+-			goto out;
+-		}
+-
+-		dl->data[i].data = kmalloc(dl->data[i].len, GFP_KERNEL);
+-		if (dl->data[i].data == NULL) {
+-			ret = -ENOMEM;
+-			goto out;
+-		}
+-
+-		if (copy_from_user(dl->data[i].data, param->data[i].ptr,
+-				   param->data[i].len)) {
+-			ret = -EFAULT;
+-			goto out;
+-		}
+-	}
+-
+-	switch (param->dl_cmd) {
+-	case PRISM2_DOWNLOAD_VOLATILE:
+-	case PRISM2_DOWNLOAD_VOLATILE_PERSISTENT:
+-		ret = prism2_download_volatile(local, dl);
+-		break;
+-	case PRISM2_DOWNLOAD_VOLATILE_GENESIS:
+-	case PRISM2_DOWNLOAD_VOLATILE_GENESIS_PERSISTENT:
+-		ret = prism2_download_genesis(local, dl);
+-		break;
+-	case PRISM2_DOWNLOAD_NON_VOLATILE:
+-#ifdef PRISM2_NON_VOLATILE_DOWNLOAD
+-		ret = prism2_download_nonvolatile(local, dl);
+-#else /* PRISM2_NON_VOLATILE_DOWNLOAD */
+-		printk(KERN_INFO "%s: non-volatile downloading not enabled\n",
+-		       local->dev->name);
+-		ret = -EOPNOTSUPP;
+-#endif /* PRISM2_NON_VOLATILE_DOWNLOAD */
+-		break;
+-	default:
+-		printk(KERN_DEBUG "%s: unsupported download command %d\n",
+-		       local->dev->name, param->dl_cmd);
+-		ret = -EINVAL;
+-		break;
+-	}
+-
+- out:
+-	if (ret == 0 && dl &&
+-	    param->dl_cmd == PRISM2_DOWNLOAD_VOLATILE_GENESIS_PERSISTENT) {
+-		prism2_download_free_data(local->dl_pri);
+-		local->dl_pri = dl;
+-	} else if (ret == 0 && dl &&
+-		   param->dl_cmd == PRISM2_DOWNLOAD_VOLATILE_PERSISTENT) {
+-		prism2_download_free_data(local->dl_sec);
+-		local->dl_sec = dl;
+-	} else
+-		prism2_download_free_data(dl);
+-
+-	return ret;
+-}
+diff --git a/drivers/net/wireless/intersil/hostap/hostap_hw.c b/drivers/net/wireless/intersil/hostap/hostap_hw.c
+deleted file mode 100644
+index b74f4cb5d6d39..0000000000000
+--- a/drivers/net/wireless/intersil/hostap/hostap_hw.c
++++ /dev/null
+@@ -1,3387 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * Host AP (software wireless LAN access point) driver for
+- * Intersil Prism2/2.5/3.
+- *
+- * Copyright (c) 2001-2002, SSH Communications Security Corp and Jouni Malinen
+- * <j@w1.fi>
+- * Copyright (c) 2002-2005, Jouni Malinen <j@w1.fi>
+- *
+- * FIX:
+- * - there is currently no way of associating TX packets to correct wds device
+- *   when TX Exc/OK event occurs, so all tx_packets and some
+- *   tx_errors/tx_dropped are added to the main netdevice; using sw_support
+- *   field in txdesc might be used to fix this (using Alloc event to increment
+- *   tx_packets would need some further info in txfid table)
+- *
+- * Buffer Access Path (BAP) usage:
+- *   Prism2 cards have two separate BAPs for accessing the card memory. These
+- *   should allow concurrent access to two different frames and the driver
+- *   previously used BAP0 for sending data and BAP1 for receiving data.
+- *   However, there seems to be number of issues with concurrent access and at
+- *   least one know hardware bug in using BAP0 and BAP1 concurrently with PCI
+- *   Prism2.5. Therefore, the driver now only uses BAP0 for moving data between
+- *   host and card memories. BAP0 accesses are protected with local->baplock
+- *   (spin_lock_bh) to prevent concurrent use.
+- */
+-
+-
+-
+-#include <asm/delay.h>
+-#include <linux/uaccess.h>
+-
+-#include <linux/slab.h>
+-#include <linux/netdevice.h>
+-#include <linux/etherdevice.h>
+-#include <linux/proc_fs.h>
+-#include <linux/seq_file.h>
+-#include <linux/if_arp.h>
+-#include <linux/delay.h>
+-#include <linux/random.h>
+-#include <linux/wait.h>
+-#include <linux/sched/signal.h>
+-#include <linux/rtnetlink.h>
+-#include <linux/wireless.h>
+-#include <net/iw_handler.h>
+-#include <net/lib80211.h>
+-#include <asm/irq.h>
+-
+-#include "hostap_80211.h"
+-#include "hostap.h"
+-#include "hostap_ap.h"
+-
+-
+-/* #define final_version */
+-
+-static int mtu = 1500;
+-module_param(mtu, int, 0444);
+-MODULE_PARM_DESC(mtu, "Maximum transfer unit");
+-
+-static int channel[MAX_PARM_DEVICES] = { 3, DEF_INTS };
+-module_param_array(channel, int, NULL, 0444);
+-MODULE_PARM_DESC(channel, "Initial channel");
+-
+-static char essid[33] = "test";
+-module_param_string(essid, essid, sizeof(essid), 0444);
+-MODULE_PARM_DESC(essid, "Host AP's ESSID");
+-
+-static int iw_mode[MAX_PARM_DEVICES] = { IW_MODE_MASTER, DEF_INTS };
+-module_param_array(iw_mode, int, NULL, 0444);
+-MODULE_PARM_DESC(iw_mode, "Initial operation mode");
+-
+-static int beacon_int[MAX_PARM_DEVICES] = { 100, DEF_INTS };
+-module_param_array(beacon_int, int, NULL, 0444);
+-MODULE_PARM_DESC(beacon_int, "Beacon interval (1 = 1024 usec)");
+-
+-static int dtim_period[MAX_PARM_DEVICES] = { 1, DEF_INTS };
+-module_param_array(dtim_period, int, NULL, 0444);
+-MODULE_PARM_DESC(dtim_period, "DTIM period");
+-
+-static char dev_template[16] = "wlan%d";
+-module_param_string(dev_template, dev_template, sizeof(dev_template), 0444);
+-MODULE_PARM_DESC(dev_template, "Prefix for network device name (default: "
+-		 "wlan%d)");
+-
+-#ifdef final_version
+-#define EXTRA_EVENTS_WTERR 0
+-#else
+-/* check WTERR events (Wait Time-out) in development versions */
+-#define EXTRA_EVENTS_WTERR HFA384X_EV_WTERR
+-#endif
+-
+-/* Events that will be using BAP0 */
+-#define HFA384X_BAP0_EVENTS \
+-	(HFA384X_EV_TXEXC | HFA384X_EV_RX | HFA384X_EV_INFO | HFA384X_EV_TX)
+-
+-/* event mask, i.e., events that will result in an interrupt */
+-#define HFA384X_EVENT_MASK \
+-	(HFA384X_BAP0_EVENTS | HFA384X_EV_ALLOC | HFA384X_EV_INFDROP | \
+-	HFA384X_EV_CMD | HFA384X_EV_TICK | \
+-	EXTRA_EVENTS_WTERR)
+-
+-/* Default TX control flags: use 802.11 headers and request interrupt for
+- * failed transmits. Frames that request ACK callback, will add
+- * _TX_OK flag and _ALT_RTRY flag may be used to select different retry policy.
+- */
+-#define HFA384X_TX_CTRL_FLAGS \
+-	(HFA384X_TX_CTRL_802_11 | HFA384X_TX_CTRL_TX_EX)
+-
+-
+-/* ca. 1 usec */
+-#define HFA384X_CMD_BUSY_TIMEOUT 5000
+-#define HFA384X_BAP_BUSY_TIMEOUT 50000
+-
+-/* ca. 10 usec */
+-#define HFA384X_CMD_COMPL_TIMEOUT 20000
+-#define HFA384X_DL_COMPL_TIMEOUT 1000000
+-
+-/* Wait times for initialization; yield to other processes to avoid busy
+- * waiting for long time. */
+-#define HFA384X_INIT_TIMEOUT (HZ / 2) /* 500 ms */
+-#define HFA384X_ALLOC_COMPL_TIMEOUT (HZ / 20) /* 50 ms */
+-
+-
+-static void prism2_hw_reset(struct net_device *dev);
+-static void prism2_check_sta_fw_version(local_info_t *local);
+-
+-#ifdef PRISM2_DOWNLOAD_SUPPORT
+-/* hostap_download.c */
+-static const struct proc_ops prism2_download_aux_dump_proc_ops;
+-static u8 * prism2_read_pda(struct net_device *dev);
+-static int prism2_download(local_info_t *local,
+-			   struct prism2_download_param *param);
+-static void prism2_download_free_data(struct prism2_download_data *dl);
+-static int prism2_download_volatile(local_info_t *local,
+-				    struct prism2_download_data *param);
+-static int prism2_download_genesis(local_info_t *local,
+-				   struct prism2_download_data *param);
+-static int prism2_get_ram_size(local_info_t *local);
+-#endif /* PRISM2_DOWNLOAD_SUPPORT */
+-
+-
+-
+-
+-#ifndef final_version
+-/* magic value written to SWSUPPORT0 reg. for detecting whether card is still
+- * present */
+-#define HFA384X_MAGIC 0x8A32
+-#endif
+-
+-static void hfa384x_read_regs(struct net_device *dev,
+-			      struct hfa384x_regs *regs)
+-{
+-	regs->cmd = HFA384X_INW(HFA384X_CMD_OFF);
+-	regs->evstat = HFA384X_INW(HFA384X_EVSTAT_OFF);
+-	regs->offset0 = HFA384X_INW(HFA384X_OFFSET0_OFF);
+-	regs->offset1 = HFA384X_INW(HFA384X_OFFSET1_OFF);
+-	regs->swsupport0 = HFA384X_INW(HFA384X_SWSUPPORT0_OFF);
+-}
+-
+-
+-/**
+- * __hostap_cmd_queue_free - Free Prism2 command queue entry (private)
+- * @local: pointer to private Host AP driver data
+- * @entry: Prism2 command queue entry to be freed
+- * @del_req: request the entry to be removed
+- *
+- * Internal helper function for freeing Prism2 command queue entries.
+- * Caller must have acquired local->cmdlock before calling this function.
+- */
+-static inline void __hostap_cmd_queue_free(local_info_t *local,
+-					   struct hostap_cmd_queue *entry,
+-					   int del_req)
+-{
+-	if (del_req) {
+-		entry->del_req = 1;
+-		if (!list_empty(&entry->list)) {
+-			list_del_init(&entry->list);
+-			local->cmd_queue_len--;
+-		}
+-	}
+-
+-	if (refcount_dec_and_test(&entry->usecnt) && entry->del_req)
+-		kfree(entry);
+-}
+-
+-
+-/**
+- * hostap_cmd_queue_free - Free Prism2 command queue entry
+- * @local: pointer to private Host AP driver data
+- * @entry: Prism2 command queue entry to be freed
+- * @del_req: request the entry to be removed
+- *
+- * Free a Prism2 command queue entry.
+- */
+-static inline void hostap_cmd_queue_free(local_info_t *local,
+-					 struct hostap_cmd_queue *entry,
+-					 int del_req)
+-{
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&local->cmdlock, flags);
+-	__hostap_cmd_queue_free(local, entry, del_req);
+-	spin_unlock_irqrestore(&local->cmdlock, flags);
+-}
+-
+-
+-/**
+- * prism2_clear_cmd_queue - Free all pending Prism2 command queue entries
+- * @local: pointer to private Host AP driver data
+- */
+-static void prism2_clear_cmd_queue(local_info_t *local)
+-{
+-	struct list_head *ptr, *n;
+-	unsigned long flags;
+-	struct hostap_cmd_queue *entry;
+-
+-	spin_lock_irqsave(&local->cmdlock, flags);
+-	list_for_each_safe(ptr, n, &local->cmd_queue) {
+-		entry = list_entry(ptr, struct hostap_cmd_queue, list);
+-		refcount_inc(&entry->usecnt);
+-		printk(KERN_DEBUG "%s: removed pending cmd_queue entry "
+-		       "(type=%d, cmd=0x%04x, param0=0x%04x)\n",
+-		       local->dev->name, entry->type, entry->cmd,
+-		       entry->param0);
+-		__hostap_cmd_queue_free(local, entry, 1);
+-	}
+-	if (local->cmd_queue_len) {
+-		/* This should not happen; print debug message and clear
+-		 * queue length. */
+-		printk(KERN_DEBUG "%s: cmd_queue_len (%d) not zero after "
+-		       "flush\n", local->dev->name, local->cmd_queue_len);
+-		local->cmd_queue_len = 0;
+-	}
+-	spin_unlock_irqrestore(&local->cmdlock, flags);
+-}
+-
+-
+-/**
+- * hfa384x_cmd_issue - Issue a Prism2 command to the hardware
+- * @dev: pointer to net_device
+- * @entry: Prism2 command queue entry to be issued
+- */
+-static int hfa384x_cmd_issue(struct net_device *dev,
+-				    struct hostap_cmd_queue *entry)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int tries;
+-	u16 reg;
+-	unsigned long flags;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (local->func->card_present && !local->func->card_present(local))
+-		return -ENODEV;
+-
+-	if (entry->issued) {
+-		printk(KERN_DEBUG "%s: driver bug - re-issuing command @%p\n",
+-		       dev->name, entry);
+-	}
+-
+-	/* wait until busy bit is clear; this should always be clear since the
+-	 * commands are serialized */
+-	tries = HFA384X_CMD_BUSY_TIMEOUT;
+-	while (HFA384X_INW(HFA384X_CMD_OFF) & HFA384X_CMD_BUSY && tries > 0) {
+-		tries--;
+-		udelay(1);
+-	}
+-#ifndef final_version
+-	if (tries != HFA384X_CMD_BUSY_TIMEOUT) {
+-		prism2_io_debug_error(dev, 1);
+-		printk(KERN_DEBUG "%s: hfa384x_cmd_issue: cmd reg was busy "
+-		       "for %d usec\n", dev->name,
+-		       HFA384X_CMD_BUSY_TIMEOUT - tries);
+-	}
+-#endif
+-	if (tries == 0) {
+-		reg = HFA384X_INW(HFA384X_CMD_OFF);
+-		prism2_io_debug_error(dev, 2);
+-		printk(KERN_DEBUG "%s: hfa384x_cmd_issue - timeout - "
+-		       "reg=0x%04x\n", dev->name, reg);
+-		return -ETIMEDOUT;
+-	}
+-
+-	/* write command */
+-	spin_lock_irqsave(&local->cmdlock, flags);
+-	HFA384X_OUTW(entry->param0, HFA384X_PARAM0_OFF);
+-	HFA384X_OUTW(entry->param1, HFA384X_PARAM1_OFF);
+-	HFA384X_OUTW(entry->cmd, HFA384X_CMD_OFF);
+-	entry->issued = 1;
+-	spin_unlock_irqrestore(&local->cmdlock, flags);
+-
+-	return 0;
+-}
+-
+-
+-/**
+- * hfa384x_cmd - Issue a Prism2 command and wait (sleep) for completion
+- * @dev: pointer to net_device
+- * @cmd: Prism2 command code (HFA384X_CMD_CODE_*)
+- * @param0: value for Param0 register
+- * @param1: value for Param1 register (pointer; %NULL if not used)
+- * @resp0: pointer for Resp0 data or %NULL if Resp0 is not needed
+- *
+- * Issue given command (possibly after waiting in command queue) and sleep
+- * until the command is completed (or timed out or interrupted). This can be
+- * called only from user process context.
+- */
+-static int hfa384x_cmd(struct net_device *dev, u16 cmd, u16 param0,
+-		       u16 *param1, u16 *resp0)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int err, res, issue, issued = 0;
+-	unsigned long flags;
+-	struct hostap_cmd_queue *entry;
+-	DECLARE_WAITQUEUE(wait, current);
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (local->cmd_queue_len >= HOSTAP_CMD_QUEUE_MAX_LEN) {
+-		printk(KERN_DEBUG "%s: hfa384x_cmd: cmd_queue full\n",
+-		       dev->name);
+-		return -1;
+-	}
+-
+-	if (signal_pending(current))
+-		return -EINTR;
+-
+-	entry = kzalloc(sizeof(*entry), GFP_ATOMIC);
+-	if (entry == NULL)
+-		return -ENOMEM;
+-
+-	refcount_set(&entry->usecnt, 1);
+-	entry->type = CMD_SLEEP;
+-	entry->cmd = cmd;
+-	entry->param0 = param0;
+-	if (param1)
+-		entry->param1 = *param1;
+-	init_waitqueue_head(&entry->compl);
+-
+-	/* prepare to wait for command completion event, but do not sleep yet
+-	 */
+-	add_wait_queue(&entry->compl, &wait);
+-	set_current_state(TASK_INTERRUPTIBLE);
+-
+-	spin_lock_irqsave(&local->cmdlock, flags);
+-	issue = list_empty(&local->cmd_queue);
+-	if (issue)
+-		entry->issuing = 1;
+-	list_add_tail(&entry->list, &local->cmd_queue);
+-	local->cmd_queue_len++;
+-	spin_unlock_irqrestore(&local->cmdlock, flags);
+-
+-	err = 0;
+-	if (!issue)
+-		goto wait_completion;
+-
+-	if (signal_pending(current))
+-		err = -EINTR;
+-
+-	if (!err) {
+-		if (hfa384x_cmd_issue(dev, entry))
+-			err = -ETIMEDOUT;
+-		else
+-			issued = 1;
+-	}
+-
+- wait_completion:
+-	if (!err && entry->type != CMD_COMPLETED) {
+-		/* sleep until command is completed or timed out */
+-		res = schedule_timeout(2 * HZ);
+-	} else
+-		res = -1;
+-
+-	if (!err && signal_pending(current))
+-		err = -EINTR;
+-
+-	if (err && issued) {
+-		/* the command was issued, so a CmdCompl event should occur
+-		 * soon; however, there's a pending signal and
+-		 * schedule_timeout() would be interrupted; wait a short period
+-		 * of time to avoid removing entry from the list before
+-		 * CmdCompl event */
+-		udelay(300);
+-	}
+-
+-	set_current_state(TASK_RUNNING);
+-	remove_wait_queue(&entry->compl, &wait);
+-
+-	/* If entry->list is still in the list, it must be removed
+-	 * first and in this case prism2_cmd_ev() does not yet have
+-	 * local reference to it, and the data can be kfree()'d
+-	 * here. If the command completion event is still generated,
+-	 * it will be assigned to next (possibly) pending command, but
+-	 * the driver will reset the card anyway due to timeout
+-	 *
+-	 * If the entry is not in the list prism2_cmd_ev() has a local
+-	 * reference to it, but keeps cmdlock as long as the data is
+-	 * needed, so the data can be kfree()'d here. */
+-
+-	/* FIX: if the entry->list is in the list, it has not been completed
+-	 * yet, so removing it here is somewhat wrong.. this could cause
+-	 * references to freed memory and next list_del() causing NULL pointer
+-	 * dereference.. it would probably be better to leave the entry in the
+-	 * list and the list should be emptied during hw reset */
+-
+-	spin_lock_irqsave(&local->cmdlock, flags);
+-	if (!list_empty(&entry->list)) {
+-		printk(KERN_DEBUG "%s: hfa384x_cmd: entry still in list? "
+-		       "(entry=%p, type=%d, res=%d)\n", dev->name, entry,
+-		       entry->type, res);
+-		list_del_init(&entry->list);
+-		local->cmd_queue_len--;
+-	}
+-	spin_unlock_irqrestore(&local->cmdlock, flags);
+-
+-	if (err) {
+-		printk(KERN_DEBUG "%s: hfa384x_cmd: interrupted; err=%d\n",
+-		       dev->name, err);
+-		res = err;
+-		goto done;
+-	}
+-
+-	if (entry->type != CMD_COMPLETED) {
+-		u16 reg = HFA384X_INW(HFA384X_EVSTAT_OFF);
+-		printk(KERN_DEBUG "%s: hfa384x_cmd: command was not "
+-		       "completed (res=%d, entry=%p, type=%d, cmd=0x%04x, "
+-		       "param0=0x%04x, EVSTAT=%04x INTEN=%04x)\n", dev->name,
+-		       res, entry, entry->type, entry->cmd, entry->param0, reg,
+-		       HFA384X_INW(HFA384X_INTEN_OFF));
+-		if (reg & HFA384X_EV_CMD) {
+-			/* Command completion event is pending, but the
+-			 * interrupt was not delivered - probably an issue
+-			 * with pcmcia-cs configuration. */
+-			printk(KERN_WARNING "%s: interrupt delivery does not "
+-			       "seem to work\n", dev->name);
+-		}
+-		prism2_io_debug_error(dev, 3);
+-		res = -ETIMEDOUT;
+-		goto done;
+-	}
+-
+-	if (resp0 != NULL)
+-		*resp0 = entry->resp0;
+-#ifndef final_version
+-	if (entry->res) {
+-		printk(KERN_DEBUG "%s: CMD=0x%04x => res=0x%02x, "
+-		       "resp0=0x%04x\n",
+-		       dev->name, cmd, entry->res, entry->resp0);
+-	}
+-#endif /* final_version */
+-
+-	res = entry->res;
+- done:
+-	hostap_cmd_queue_free(local, entry, 1);
+-	return res;
+-}
+-
+-
+-/**
+- * hfa384x_cmd_callback - Issue a Prism2 command; callback when completed
+- * @dev: pointer to net_device
+- * @cmd: Prism2 command code (HFA384X_CMD_CODE_*)
+- * @param0: value for Param0 register
+- * @callback: command completion callback function (%NULL = no callback)
+- * @context: context data to be given to the callback function
+- *
+- * Issue given command (possibly after waiting in command queue) and use
+- * callback function to indicate command completion. This can be called both
+- * from user and interrupt context. The callback function will be called in
+- * hardware IRQ context. It can be %NULL, when no function is called when
+- * command is completed.
+- */
+-static int hfa384x_cmd_callback(struct net_device *dev, u16 cmd, u16 param0,
+-				void (*callback)(struct net_device *dev,
+-						 long context, u16 resp0,
+-						 u16 status),
+-				long context)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int issue, ret;
+-	unsigned long flags;
+-	struct hostap_cmd_queue *entry;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (local->cmd_queue_len >= HOSTAP_CMD_QUEUE_MAX_LEN + 2) {
+-		printk(KERN_DEBUG "%s: hfa384x_cmd: cmd_queue full\n",
+-		       dev->name);
+-		return -1;
+-	}
+-
+-	entry = kzalloc(sizeof(*entry), GFP_ATOMIC);
+-	if (entry == NULL)
+-		return -ENOMEM;
+-
+-	refcount_set(&entry->usecnt, 1);
+-	entry->type = CMD_CALLBACK;
+-	entry->cmd = cmd;
+-	entry->param0 = param0;
+-	entry->callback = callback;
+-	entry->context = context;
+-
+-	spin_lock_irqsave(&local->cmdlock, flags);
+-	issue = list_empty(&local->cmd_queue);
+-	if (issue)
+-		entry->issuing = 1;
+-	list_add_tail(&entry->list, &local->cmd_queue);
+-	local->cmd_queue_len++;
+-	spin_unlock_irqrestore(&local->cmdlock, flags);
+-
+-	if (issue && hfa384x_cmd_issue(dev, entry))
+-		ret = -ETIMEDOUT;
+-	else
+-		ret = 0;
+-
+-	hostap_cmd_queue_free(local, entry, ret);
+-
+-	return ret;
+-}
+-
+-
+-/**
+- * __hfa384x_cmd_no_wait - Issue a Prism2 command (private)
+- * @dev: pointer to net_device
+- * @cmd: Prism2 command code (HFA384X_CMD_CODE_*)
+- * @param0: value for Param0 register
+- * @io_debug_num: I/O debug error number
+- *
+- * Shared helper function for hfa384x_cmd_wait() and hfa384x_cmd_no_wait().
+- */
+-static int __hfa384x_cmd_no_wait(struct net_device *dev, u16 cmd, u16 param0,
+-				 int io_debug_num)
+-{
+-	int tries;
+-	u16 reg;
+-
+-	/* wait until busy bit is clear; this should always be clear since the
+-	 * commands are serialized */
+-	tries = HFA384X_CMD_BUSY_TIMEOUT;
+-	while (HFA384X_INW(HFA384X_CMD_OFF) & HFA384X_CMD_BUSY && tries > 0) {
+-		tries--;
+-		udelay(1);
+-	}
+-	if (tries == 0) {
+-		reg = HFA384X_INW(HFA384X_CMD_OFF);
+-		prism2_io_debug_error(dev, io_debug_num);
+-		printk(KERN_DEBUG "%s: __hfa384x_cmd_no_wait(%d) - timeout - "
+-		       "reg=0x%04x\n", dev->name, io_debug_num, reg);
+-		return -ETIMEDOUT;
+-	}
+-
+-	/* write command */
+-	HFA384X_OUTW(param0, HFA384X_PARAM0_OFF);
+-	HFA384X_OUTW(cmd, HFA384X_CMD_OFF);
+-
+-	return 0;
+-}
+-
+-
+-/**
+- * hfa384x_cmd_wait - Issue a Prism2 command and busy wait for completion
+- * @dev: pointer to net_device
+- * @cmd: Prism2 command code (HFA384X_CMD_CODE_*)
+- * @param0: value for Param0 register
+- */
+-static int hfa384x_cmd_wait(struct net_device *dev, u16 cmd, u16 param0)
+-{
+-	int res, tries;
+-	u16 reg;
+-
+-	res = __hfa384x_cmd_no_wait(dev, cmd, param0, 4);
+-	if (res)
+-		return res;
+-
+-        /* wait for command completion */
+-	if ((cmd & HFA384X_CMDCODE_MASK) == HFA384X_CMDCODE_DOWNLOAD)
+-		tries = HFA384X_DL_COMPL_TIMEOUT;
+-	else
+-		tries = HFA384X_CMD_COMPL_TIMEOUT;
+-
+-        while (!(HFA384X_INW(HFA384X_EVSTAT_OFF) & HFA384X_EV_CMD) &&
+-               tries > 0) {
+-                tries--;
+-                udelay(10);
+-        }
+-        if (tries == 0) {
+-                reg = HFA384X_INW(HFA384X_EVSTAT_OFF);
+-		prism2_io_debug_error(dev, 5);
+-                printk(KERN_DEBUG "%s: hfa384x_cmd_wait - timeout2 - "
+-		       "reg=0x%04x\n", dev->name, reg);
+-                return -ETIMEDOUT;
+-        }
+-
+-        res = (HFA384X_INW(HFA384X_STATUS_OFF) &
+-               (BIT(14) | BIT(13) | BIT(12) | BIT(11) | BIT(10) | BIT(9) |
+-                BIT(8))) >> 8;
+-#ifndef final_version
+-	if (res) {
+-		printk(KERN_DEBUG "%s: CMD=0x%04x => res=0x%02x\n",
+-		       dev->name, cmd, res);
+-	}
+-#endif
+-
+-	HFA384X_OUTW(HFA384X_EV_CMD, HFA384X_EVACK_OFF);
+-
+-	return res;
+-}
+-
+-
+-/**
+- * hfa384x_cmd_no_wait - Issue a Prism2 command; do not wait for completion
+- * @dev: pointer to net_device
+- * @cmd: Prism2 command code (HFA384X_CMD_CODE_*)
+- * @param0: value for Param0 register
+- */
+-static inline int hfa384x_cmd_no_wait(struct net_device *dev, u16 cmd,
+-				      u16 param0)
+-{
+-	return __hfa384x_cmd_no_wait(dev, cmd, param0, 6);
+-}
+-
+-
+-/**
+- * prism2_cmd_ev - Prism2 command completion event handler
+- * @dev: pointer to net_device
+- *
+- * Interrupt handler for command completion events. Called by the main
+- * interrupt handler in hardware IRQ context. Read Resp0 and status registers
+- * from the hardware and ACK the event. Depending on the issued command type
+- * either wake up the sleeping process that is waiting for command completion
+- * or call the callback function. Issue the next command, if one is pending.
+- */
+-static void prism2_cmd_ev(struct net_device *dev)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	struct hostap_cmd_queue *entry = NULL;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	spin_lock(&local->cmdlock);
+-	if (!list_empty(&local->cmd_queue)) {
+-		entry = list_entry(local->cmd_queue.next,
+-				   struct hostap_cmd_queue, list);
+-		refcount_inc(&entry->usecnt);
+-		list_del_init(&entry->list);
+-		local->cmd_queue_len--;
+-
+-		if (!entry->issued) {
+-			printk(KERN_DEBUG "%s: Command completion event, but "
+-			       "cmd not issued\n", dev->name);
+-			__hostap_cmd_queue_free(local, entry, 1);
+-			entry = NULL;
+-		}
+-	}
+-	spin_unlock(&local->cmdlock);
+-
+-	if (!entry) {
+-		HFA384X_OUTW(HFA384X_EV_CMD, HFA384X_EVACK_OFF);
+-		printk(KERN_DEBUG "%s: Command completion event, but no "
+-		       "pending commands\n", dev->name);
+-		return;
+-	}
+-
+-	entry->resp0 = HFA384X_INW(HFA384X_RESP0_OFF);
+-	entry->res = (HFA384X_INW(HFA384X_STATUS_OFF) &
+-		      (BIT(14) | BIT(13) | BIT(12) | BIT(11) | BIT(10) |
+-		       BIT(9) | BIT(8))) >> 8;
+-	HFA384X_OUTW(HFA384X_EV_CMD, HFA384X_EVACK_OFF);
+-
+-	/* TODO: rest of the CmdEv handling could be moved to tasklet */
+-	if (entry->type == CMD_SLEEP) {
+-		entry->type = CMD_COMPLETED;
+-		wake_up_interruptible(&entry->compl);
+-	} else if (entry->type == CMD_CALLBACK) {
+-		if (entry->callback)
+-			entry->callback(dev, entry->context, entry->resp0,
+-					entry->res);
+-	} else {
+-		printk(KERN_DEBUG "%s: Invalid command completion type %d\n",
+-		       dev->name, entry->type);
+-	}
+-	hostap_cmd_queue_free(local, entry, 1);
+-
+-	/* issue next command, if pending */
+-	entry = NULL;
+-	spin_lock(&local->cmdlock);
+-	if (!list_empty(&local->cmd_queue)) {
+-		entry = list_entry(local->cmd_queue.next,
+-				   struct hostap_cmd_queue, list);
+-		if (entry->issuing) {
+-			/* hfa384x_cmd() has already started issuing this
+-			 * command, so do not start here */
+-			entry = NULL;
+-		}
+-		if (entry)
+-			refcount_inc(&entry->usecnt);
+-	}
+-	spin_unlock(&local->cmdlock);
+-
+-	if (entry) {
+-		/* issue next command; if command issuing fails, remove the
+-		 * entry from cmd_queue */
+-		int res = hfa384x_cmd_issue(dev, entry);
+-		spin_lock(&local->cmdlock);
+-		__hostap_cmd_queue_free(local, entry, res);
+-		spin_unlock(&local->cmdlock);
+-	}
+-}
+-
+-
+-static int hfa384x_wait_offset(struct net_device *dev, u16 o_off)
+-{
+-	int tries = HFA384X_BAP_BUSY_TIMEOUT;
+-	int res = HFA384X_INW(o_off) & HFA384X_OFFSET_BUSY;
+-
+-	while (res && tries > 0) {
+-		tries--;
+-		udelay(1);
+-		res = HFA384X_INW(o_off) & HFA384X_OFFSET_BUSY;
+-	}
+-	return res;
+-}
+-
+-
+-/* Offset must be even */
+-static int hfa384x_setup_bap(struct net_device *dev, u16 bap, u16 id,
+-			     int offset)
+-{
+-	u16 o_off, s_off;
+-	int ret = 0;
+-
+-	if (offset % 2 || bap > 1)
+-		return -EINVAL;
+-
+-	if (bap == BAP1) {
+-		o_off = HFA384X_OFFSET1_OFF;
+-		s_off = HFA384X_SELECT1_OFF;
+-	} else {
+-		o_off = HFA384X_OFFSET0_OFF;
+-		s_off = HFA384X_SELECT0_OFF;
+-	}
+-
+-	if (hfa384x_wait_offset(dev, o_off)) {
+-		prism2_io_debug_error(dev, 7);
+-		printk(KERN_DEBUG "%s: hfa384x_setup_bap - timeout before\n",
+-		       dev->name);
+-		ret = -ETIMEDOUT;
+-		goto out;
+-	}
+-
+-	HFA384X_OUTW(id, s_off);
+-	HFA384X_OUTW(offset, o_off);
+-
+-	if (hfa384x_wait_offset(dev, o_off)) {
+-		prism2_io_debug_error(dev, 8);
+-		printk(KERN_DEBUG "%s: hfa384x_setup_bap - timeout after\n",
+-		       dev->name);
+-		ret = -ETIMEDOUT;
+-		goto out;
+-	}
+-#ifndef final_version
+-	if (HFA384X_INW(o_off) & HFA384X_OFFSET_ERR) {
+-		prism2_io_debug_error(dev, 9);
+-		printk(KERN_DEBUG "%s: hfa384x_setup_bap - offset error "
+-		       "(%d,0x04%x,%d); reg=0x%04x\n",
+-		       dev->name, bap, id, offset, HFA384X_INW(o_off));
+-		ret = -EINVAL;
+-	}
+-#endif
+-
+- out:
+-	return ret;
+-}
+-
+-
+-static int hfa384x_get_rid(struct net_device *dev, u16 rid, void *buf, int len,
+-			   int exact_len)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int res, rlen = 0;
+-	struct hfa384x_rid_hdr rec;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (local->no_pri) {
+-		printk(KERN_DEBUG "%s: cannot get RID %04x (len=%d) - no PRI "
+-		       "f/w\n", dev->name, rid, len);
+-		return -ENOTTY; /* Well.. not really correct, but return
+-				 * something unique enough.. */
+-	}
+-
+-	if ((local->func->card_present && !local->func->card_present(local)) ||
+-	    local->hw_downloading)
+-		return -ENODEV;
+-
+-	res = mutex_lock_interruptible(&local->rid_bap_mtx);
+-	if (res)
+-		return res;
+-
+-	res = hfa384x_cmd(dev, HFA384X_CMDCODE_ACCESS, rid, NULL, NULL);
+-	if (res) {
+-		printk(KERN_DEBUG "%s: hfa384x_get_rid: CMDCODE_ACCESS failed "
+-		       "(res=%d, rid=%04x, len=%d)\n",
+-		       dev->name, res, rid, len);
+-		mutex_unlock(&local->rid_bap_mtx);
+-		return res;
+-	}
+-
+-	spin_lock_bh(&local->baplock);
+-
+-	res = hfa384x_setup_bap(dev, BAP0, rid, 0);
+-	if (res)
+-		goto unlock;
+-
+-	res = hfa384x_from_bap(dev, BAP0, &rec, sizeof(rec));
+-	if (res)
+-		goto unlock;
+-
+-	if (le16_to_cpu(rec.len) == 0) {
+-		/* RID not available */
+-		res = -ENODATA;
+-		goto unlock;
+-	}
+-
+-	rlen = (le16_to_cpu(rec.len) - 1) * 2;
+-	if (exact_len && rlen != len) {
+-		printk(KERN_DEBUG "%s: hfa384x_get_rid - RID len mismatch: "
+-		       "rid=0x%04x, len=%d (expected %d)\n",
+-		       dev->name, rid, rlen, len);
+-		res = -ENODATA;
+-	}
+-
+-	res = hfa384x_from_bap(dev, BAP0, buf, len);
+-
+-unlock:
+-	spin_unlock_bh(&local->baplock);
+-	mutex_unlock(&local->rid_bap_mtx);
+-
+-	if (res) {
+-		if (res != -ENODATA)
+-			printk(KERN_DEBUG "%s: hfa384x_get_rid (rid=%04x, "
+-			       "len=%d) - failed - res=%d\n", dev->name, rid,
+-			       len, res);
+-		if (res == -ETIMEDOUT)
+-			prism2_hw_reset(dev);
+-		return res;
+-	}
+-
+-	return rlen;
+-}
+-
+-
+-static int hfa384x_set_rid(struct net_device *dev, u16 rid, void *buf, int len)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	struct hfa384x_rid_hdr rec;
+-	int res;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (local->no_pri) {
+-		printk(KERN_DEBUG "%s: cannot set RID %04x (len=%d) - no PRI "
+-		       "f/w\n", dev->name, rid, len);
+-		return -ENOTTY; /* Well.. not really correct, but return
+-				 * something unique enough.. */
+-	}
+-
+-	if ((local->func->card_present && !local->func->card_present(local)) ||
+-	    local->hw_downloading)
+-		return -ENODEV;
+-
+-	rec.rid = cpu_to_le16(rid);
+-	/* RID len in words and +1 for rec.rid */
+-	rec.len = cpu_to_le16(len / 2 + len % 2 + 1);
+-
+-	res = mutex_lock_interruptible(&local->rid_bap_mtx);
+-	if (res)
+-		return res;
+-
+-	spin_lock_bh(&local->baplock);
+-	res = hfa384x_setup_bap(dev, BAP0, rid, 0);
+-	if (!res)
+-		res = hfa384x_to_bap(dev, BAP0, &rec, sizeof(rec));
+-	if (!res)
+-		res = hfa384x_to_bap(dev, BAP0, buf, len);
+-	spin_unlock_bh(&local->baplock);
+-
+-	if (res) {
+-		printk(KERN_DEBUG "%s: hfa384x_set_rid (rid=%04x, len=%d) - "
+-		       "failed - res=%d\n", dev->name, rid, len, res);
+-		mutex_unlock(&local->rid_bap_mtx);
+-		return res;
+-	}
+-
+-	res = hfa384x_cmd(dev, HFA384X_CMDCODE_ACCESS_WRITE, rid, NULL, NULL);
+-	mutex_unlock(&local->rid_bap_mtx);
+-
+-	if (res) {
+-		printk(KERN_DEBUG "%s: hfa384x_set_rid: CMDCODE_ACCESS_WRITE "
+-		       "failed (res=%d, rid=%04x, len=%d)\n",
+-		       dev->name, res, rid, len);
+-
+-		if (res == -ETIMEDOUT)
+-			prism2_hw_reset(dev);
+-	}
+-
+-	return res;
+-}
+-
+-
+-static void hfa384x_disable_interrupts(struct net_device *dev)
+-{
+-	/* disable interrupts and clear event status */
+-	HFA384X_OUTW(0, HFA384X_INTEN_OFF);
+-	HFA384X_OUTW(0xffff, HFA384X_EVACK_OFF);
+-}
+-
+-
+-static void hfa384x_enable_interrupts(struct net_device *dev)
+-{
+-	/* ack pending events and enable interrupts from selected events */
+-	HFA384X_OUTW(0xffff, HFA384X_EVACK_OFF);
+-	HFA384X_OUTW(HFA384X_EVENT_MASK, HFA384X_INTEN_OFF);
+-}
+-
+-
+-static void hfa384x_events_no_bap0(struct net_device *dev)
+-{
+-	HFA384X_OUTW(HFA384X_EVENT_MASK & ~HFA384X_BAP0_EVENTS,
+-		     HFA384X_INTEN_OFF);
+-}
+-
+-
+-static void hfa384x_events_all(struct net_device *dev)
+-{
+-	HFA384X_OUTW(HFA384X_EVENT_MASK, HFA384X_INTEN_OFF);
+-}
+-
+-
+-static void hfa384x_events_only_cmd(struct net_device *dev)
+-{
+-	HFA384X_OUTW(HFA384X_EV_CMD, HFA384X_INTEN_OFF);
+-}
+-
+-
+-static u16 hfa384x_allocate_fid(struct net_device *dev, int len)
+-{
+-	u16 fid;
+-	unsigned long delay;
+-
+-	/* FIX: this could be replace with hfa384x_cmd() if the Alloc event
+-	 * below would be handled like CmdCompl event (sleep here, wake up from
+-	 * interrupt handler */
+-	if (hfa384x_cmd_wait(dev, HFA384X_CMDCODE_ALLOC, len)) {
+-		printk(KERN_DEBUG "%s: cannot allocate fid, len=%d\n",
+-		       dev->name, len);
+-		return 0xffff;
+-	}
+-
+-	delay = jiffies + HFA384X_ALLOC_COMPL_TIMEOUT;
+-	while (!(HFA384X_INW(HFA384X_EVSTAT_OFF) & HFA384X_EV_ALLOC) &&
+-	       time_before(jiffies, delay))
+-		yield();
+-	if (!(HFA384X_INW(HFA384X_EVSTAT_OFF) & HFA384X_EV_ALLOC)) {
+-		printk("%s: fid allocate, len=%d - timeout\n", dev->name, len);
+-		return 0xffff;
+-	}
+-
+-	fid = HFA384X_INW(HFA384X_ALLOCFID_OFF);
+-	HFA384X_OUTW(HFA384X_EV_ALLOC, HFA384X_EVACK_OFF);
+-
+-	return fid;
+-}
+-
+-
+-static int prism2_reset_port(struct net_device *dev)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int res;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (!local->dev_enabled)
+-		return 0;
+-
+-	res = hfa384x_cmd(dev, HFA384X_CMDCODE_DISABLE, 0,
+-			  NULL, NULL);
+-	if (res)
+-		printk(KERN_DEBUG "%s: reset port failed to disable port\n",
+-		       dev->name);
+-	else {
+-		res = hfa384x_cmd(dev, HFA384X_CMDCODE_ENABLE, 0,
+-				  NULL, NULL);
+-		if (res)
+-			printk(KERN_DEBUG "%s: reset port failed to enable "
+-			       "port\n", dev->name);
+-	}
+-
+-	/* It looks like at least some STA firmware versions reset
+-	 * fragmentation threshold back to 2346 after enable command. Restore
+-	 * the configured value, if it differs from this default. */
+-	if (local->fragm_threshold != 2346 &&
+-	    hostap_set_word(dev, HFA384X_RID_FRAGMENTATIONTHRESHOLD,
+-			    local->fragm_threshold)) {
+-		printk(KERN_DEBUG "%s: failed to restore fragmentation "
+-		       "threshold (%d) after Port0 enable\n",
+-		       dev->name, local->fragm_threshold);
+-	}
+-
+-	/* Some firmwares lose antenna selection settings on reset */
+-	(void) hostap_set_antsel(local);
+-
+-	return res;
+-}
+-
+-
+-static int prism2_get_version_info(struct net_device *dev, u16 rid,
+-				   const char *txt)
+-{
+-	struct hfa384x_comp_ident comp;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (local->no_pri) {
+-		/* PRI f/w not yet available - cannot read RIDs */
+-		return -1;
+-	}
+-	if (hfa384x_get_rid(dev, rid, &comp, sizeof(comp), 1) < 0) {
+-		printk(KERN_DEBUG "Could not get RID for component %s\n", txt);
+-		return -1;
+-	}
+-
+-	printk(KERN_INFO "%s: %s: id=0x%02x v%d.%d.%d\n", dev->name, txt,
+-	       __le16_to_cpu(comp.id), __le16_to_cpu(comp.major),
+-	       __le16_to_cpu(comp.minor), __le16_to_cpu(comp.variant));
+-	return 0;
+-}
+-
+-
+-static int prism2_setup_rids(struct net_device *dev)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	__le16 tmp;
+-	int ret = 0;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	hostap_set_word(dev, HFA384X_RID_TICKTIME, 2000);
+-
+-	if (!local->fw_ap) {
+-		u16 tmp1 = hostap_get_porttype(local);
+-		ret = hostap_set_word(dev, HFA384X_RID_CNFPORTTYPE, tmp1);
+-		if (ret) {
+-			printk("%s: Port type setting to %d failed\n",
+-			       dev->name, tmp1);
+-			goto fail;
+-		}
+-	}
+-
+-	/* Setting SSID to empty string seems to kill the card in Host AP mode
+-	 */
+-	if (local->iw_mode != IW_MODE_MASTER || local->essid[0] != '\0') {
+-		ret = hostap_set_string(dev, HFA384X_RID_CNFOWNSSID,
+-					local->essid);
+-		if (ret) {
+-			printk("%s: AP own SSID setting failed\n", dev->name);
+-			goto fail;
+-		}
+-	}
+-
+-	ret = hostap_set_word(dev, HFA384X_RID_CNFMAXDATALEN,
+-			      PRISM2_DATA_MAXLEN);
+-	if (ret) {
+-		printk("%s: MAC data length setting to %d failed\n",
+-		       dev->name, PRISM2_DATA_MAXLEN);
+-		goto fail;
+-	}
+-
+-	if (hfa384x_get_rid(dev, HFA384X_RID_CHANNELLIST, &tmp, 2, 1) < 0) {
+-		printk("%s: Channel list read failed\n", dev->name);
+-		ret = -EINVAL;
+-		goto fail;
+-	}
+-	local->channel_mask = le16_to_cpu(tmp);
+-
+-	if (local->channel < 1 || local->channel > 14 ||
+-	    !(local->channel_mask & (1 << (local->channel - 1)))) {
+-		printk(KERN_WARNING "%s: Channel setting out of range "
+-		       "(%d)!\n", dev->name, local->channel);
+-		ret = -EBUSY;
+-		goto fail;
+-	}
+-
+-	ret = hostap_set_word(dev, HFA384X_RID_CNFOWNCHANNEL, local->channel);
+-	if (ret) {
+-		printk("%s: Channel setting to %d failed\n",
+-		       dev->name, local->channel);
+-		goto fail;
+-	}
+-
+-	ret = hostap_set_word(dev, HFA384X_RID_CNFBEACONINT,
+-			      local->beacon_int);
+-	if (ret) {
+-		printk("%s: Beacon interval setting to %d failed\n",
+-		       dev->name, local->beacon_int);
+-		/* this may fail with Symbol/Lucent firmware */
+-		if (ret == -ETIMEDOUT)
+-			goto fail;
+-	}
+-
+-	ret = hostap_set_word(dev, HFA384X_RID_CNFOWNDTIMPERIOD,
+-			      local->dtim_period);
+-	if (ret) {
+-		printk("%s: DTIM period setting to %d failed\n",
+-		       dev->name, local->dtim_period);
+-		/* this may fail with Symbol/Lucent firmware */
+-		if (ret == -ETIMEDOUT)
+-			goto fail;
+-	}
+-
+-	ret = hostap_set_word(dev, HFA384X_RID_PROMISCUOUSMODE,
+-			      local->is_promisc);
+-	if (ret)
+-		printk(KERN_INFO "%s: Setting promiscuous mode (%d) failed\n",
+-		       dev->name, local->is_promisc);
+-
+-	if (!local->fw_ap) {
+-		ret = hostap_set_string(dev, HFA384X_RID_CNFDESIREDSSID,
+-					local->essid);
+-		if (ret) {
+-			printk("%s: Desired SSID setting failed\n", dev->name);
+-			goto fail;
+-		}
+-	}
+-
+-	/* Setup TXRateControl, defaults to allow use of 1, 2, 5.5, and
+-	 * 11 Mbps in automatic TX rate fallback and 1 and 2 Mbps as basic
+-	 * rates */
+-	if (local->tx_rate_control == 0) {
+-		local->tx_rate_control =
+-			HFA384X_RATES_1MBPS |
+-			HFA384X_RATES_2MBPS |
+-			HFA384X_RATES_5MBPS |
+-			HFA384X_RATES_11MBPS;
+-	}
+-	if (local->basic_rates == 0)
+-		local->basic_rates = HFA384X_RATES_1MBPS | HFA384X_RATES_2MBPS;
+-
+-	if (!local->fw_ap) {
+-		ret = hostap_set_word(dev, HFA384X_RID_TXRATECONTROL,
+-				      local->tx_rate_control);
+-		if (ret) {
+-			printk("%s: TXRateControl setting to %d failed\n",
+-			       dev->name, local->tx_rate_control);
+-			goto fail;
+-		}
+-
+-		ret = hostap_set_word(dev, HFA384X_RID_CNFSUPPORTEDRATES,
+-				      local->tx_rate_control);
+-		if (ret) {
+-			printk("%s: cnfSupportedRates setting to %d failed\n",
+-			       dev->name, local->tx_rate_control);
+-		}
+-
+-		ret = hostap_set_word(dev, HFA384X_RID_CNFBASICRATES,
+-				      local->basic_rates);
+-		if (ret) {
+-			printk("%s: cnfBasicRates setting to %d failed\n",
+-			       dev->name, local->basic_rates);
+-		}
+-
+-		ret = hostap_set_word(dev, HFA384X_RID_CREATEIBSS, 1);
+-		if (ret) {
+-			printk("%s: Create IBSS setting to 1 failed\n",
+-			       dev->name);
+-		}
+-	}
+-
+-	if (local->name_set)
+-		(void) hostap_set_string(dev, HFA384X_RID_CNFOWNNAME,
+-					 local->name);
+-
+-	if (hostap_set_encryption(local)) {
+-		printk(KERN_INFO "%s: could not configure encryption\n",
+-		       dev->name);
+-	}
+-
+-	(void) hostap_set_antsel(local);
+-
+-	if (hostap_set_roaming(local)) {
+-		printk(KERN_INFO "%s: could not set host roaming\n",
+-		       dev->name);
+-	}
+-
+-	if (local->sta_fw_ver >= PRISM2_FW_VER(1,6,3) &&
+-	    hostap_set_word(dev, HFA384X_RID_CNFENHSECURITY, local->enh_sec))
+-		printk(KERN_INFO "%s: cnfEnhSecurity setting to 0x%x failed\n",
+-		       dev->name, local->enh_sec);
+-
+-	/* 32-bit tallies were added in STA f/w 0.8.0, but they were apparently
+-	 * not working correctly (last seven counters report bogus values).
+-	 * This has been fixed in 0.8.2, so enable 32-bit tallies only
+-	 * beginning with that firmware version. Another bug fix for 32-bit
+-	 * tallies in 1.4.0; should 16-bit tallies be used for some other
+-	 * versions, too? */
+-	if (local->sta_fw_ver >= PRISM2_FW_VER(0,8,2)) {
+-		if (hostap_set_word(dev, HFA384X_RID_CNFTHIRTY2TALLY, 1)) {
+-			printk(KERN_INFO "%s: cnfThirty2Tally setting "
+-			       "failed\n", dev->name);
+-			local->tallies32 = 0;
+-		} else
+-			local->tallies32 = 1;
+-	} else
+-		local->tallies32 = 0;
+-
+-	hostap_set_auth_algs(local);
+-
+-	if (hostap_set_word(dev, HFA384X_RID_FRAGMENTATIONTHRESHOLD,
+-			    local->fragm_threshold)) {
+-		printk(KERN_INFO "%s: setting FragmentationThreshold to %d "
+-		       "failed\n", dev->name, local->fragm_threshold);
+-	}
+-
+-	if (hostap_set_word(dev, HFA384X_RID_RTSTHRESHOLD,
+-			    local->rts_threshold)) {
+-		printk(KERN_INFO "%s: setting RTSThreshold to %d failed\n",
+-		       dev->name, local->rts_threshold);
+-	}
+-
+-	if (local->manual_retry_count >= 0 &&
+-	    hostap_set_word(dev, HFA384X_RID_CNFALTRETRYCOUNT,
+-			    local->manual_retry_count)) {
+-		printk(KERN_INFO "%s: setting cnfAltRetryCount to %d failed\n",
+-		       dev->name, local->manual_retry_count);
+-	}
+-
+-	if (local->sta_fw_ver >= PRISM2_FW_VER(1,3,1) &&
+-	    hfa384x_get_rid(dev, HFA384X_RID_CNFDBMADJUST, &tmp, 2, 1) == 2) {
+-		local->rssi_to_dBm = le16_to_cpu(tmp);
+-	}
+-
+-	if (local->sta_fw_ver >= PRISM2_FW_VER(1,7,0) && local->wpa &&
+-	    hostap_set_word(dev, HFA384X_RID_SSNHANDLINGMODE, 1)) {
+-		printk(KERN_INFO "%s: setting ssnHandlingMode to 1 failed\n",
+-		       dev->name);
+-	}
+-
+-	if (local->sta_fw_ver >= PRISM2_FW_VER(1,7,0) && local->generic_elem &&
+-	    hfa384x_set_rid(dev, HFA384X_RID_GENERICELEMENT,
+-			    local->generic_elem, local->generic_elem_len)) {
+-		printk(KERN_INFO "%s: setting genericElement failed\n",
+-		       dev->name);
+-	}
+-
+- fail:
+-	return ret;
+-}
+-
+-
+-static int prism2_hw_init(struct net_device *dev, int initial)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int ret, first = 1;
+-	unsigned long start, delay;
+-
+-	PDEBUG(DEBUG_FLOW, "prism2_hw_init()\n");
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	clear_bit(HOSTAP_BITS_TRANSMIT, &local->bits);
+-
+- init:
+-	/* initialize HFA 384x */
+-	ret = hfa384x_cmd_no_wait(dev, HFA384X_CMDCODE_INIT, 0);
+-	if (ret) {
+-		printk(KERN_INFO "%s: first command failed - assuming card "
+-		       "does not have primary firmware\n", dev_info);
+-	}
+-
+-	if (first && (HFA384X_INW(HFA384X_EVSTAT_OFF) & HFA384X_EV_CMD)) {
+-		/* EvStat has Cmd bit set in some cases, so retry once if no
+-		 * wait was needed */
+-		HFA384X_OUTW(HFA384X_EV_CMD, HFA384X_EVACK_OFF);
+-		printk(KERN_DEBUG "%s: init command completed too quickly - "
+-		       "retrying\n", dev->name);
+-		first = 0;
+-		goto init;
+-	}
+-
+-	start = jiffies;
+-	delay = jiffies + HFA384X_INIT_TIMEOUT;
+-	while (!(HFA384X_INW(HFA384X_EVSTAT_OFF) & HFA384X_EV_CMD) &&
+-	       time_before(jiffies, delay))
+-		yield();
+-	if (!(HFA384X_INW(HFA384X_EVSTAT_OFF) & HFA384X_EV_CMD)) {
+-		printk(KERN_DEBUG "%s: assuming no Primary image in "
+-		       "flash - card initialization not completed\n",
+-		       dev_info);
+-		local->no_pri = 1;
+-#ifdef PRISM2_DOWNLOAD_SUPPORT
+-			if (local->sram_type == -1)
+-				local->sram_type = prism2_get_ram_size(local);
+-#endif /* PRISM2_DOWNLOAD_SUPPORT */
+-		return 1;
+-	}
+-	local->no_pri = 0;
+-	printk(KERN_DEBUG "prism2_hw_init: initialized in %lu ms\n",
+-	       (jiffies - start) * 1000 / HZ);
+-	HFA384X_OUTW(HFA384X_EV_CMD, HFA384X_EVACK_OFF);
+-	return 0;
+-}
+-
+-
+-static int prism2_hw_init2(struct net_device *dev, int initial)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int i;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-#ifdef PRISM2_DOWNLOAD_SUPPORT
+-	kfree(local->pda);
+-	if (local->no_pri)
+-		local->pda = NULL;
+-	else
+-		local->pda = prism2_read_pda(dev);
+-#endif /* PRISM2_DOWNLOAD_SUPPORT */
+-
+-	hfa384x_disable_interrupts(dev);
+-
+-#ifndef final_version
+-	HFA384X_OUTW(HFA384X_MAGIC, HFA384X_SWSUPPORT0_OFF);
+-	if (HFA384X_INW(HFA384X_SWSUPPORT0_OFF) != HFA384X_MAGIC) {
+-		printk("SWSUPPORT0 write/read failed: %04X != %04X\n",
+-		       HFA384X_INW(HFA384X_SWSUPPORT0_OFF), HFA384X_MAGIC);
+-		goto failed;
+-	}
+-#endif
+-
+-	if (initial || local->pri_only) {
+-		hfa384x_events_only_cmd(dev);
+-		/* get card version information */
+-		if (prism2_get_version_info(dev, HFA384X_RID_NICID, "NIC") ||
+-		    prism2_get_version_info(dev, HFA384X_RID_PRIID, "PRI")) {
+-			hfa384x_disable_interrupts(dev);
+-			goto failed;
+-		}
+-
+-		if (prism2_get_version_info(dev, HFA384X_RID_STAID, "STA")) {
+-			printk(KERN_DEBUG "%s: Failed to read STA f/w version "
+-			       "- only Primary f/w present\n", dev->name);
+-			local->pri_only = 1;
+-			return 0;
+-		}
+-		local->pri_only = 0;
+-		hfa384x_disable_interrupts(dev);
+-	}
+-
+-	/* FIX: could convert allocate_fid to use sleeping CmdCompl wait and
+-	 * enable interrupts before this. This would also require some sort of
+-	 * sleeping AllocEv waiting */
+-
+-	/* allocate TX FIDs */
+-	local->txfid_len = PRISM2_TXFID_LEN;
+-	for (i = 0; i < PRISM2_TXFID_COUNT; i++) {
+-		local->txfid[i] = hfa384x_allocate_fid(dev, local->txfid_len);
+-		if (local->txfid[i] == 0xffff && local->txfid_len > 1600) {
+-			local->txfid[i] = hfa384x_allocate_fid(dev, 1600);
+-			if (local->txfid[i] != 0xffff) {
+-				printk(KERN_DEBUG "%s: Using shorter TX FID "
+-				       "(1600 bytes)\n", dev->name);
+-				local->txfid_len = 1600;
+-			}
+-		}
+-		if (local->txfid[i] == 0xffff)
+-			goto failed;
+-		local->intransmitfid[i] = PRISM2_TXFID_EMPTY;
+-	}
+-
+-	hfa384x_events_only_cmd(dev);
+-
+-	if (initial) {
+-		u8 addr[ETH_ALEN] = {};
+-		struct list_head *ptr;
+-
+-		prism2_check_sta_fw_version(local);
+-
+-		if (hfa384x_get_rid(dev, HFA384X_RID_CNFOWNMACADDR,
+-				    addr, ETH_ALEN, 1) < 0) {
+-			printk("%s: could not get own MAC address\n",
+-			       dev->name);
+-		}
+-		eth_hw_addr_set(dev, addr);
+-		list_for_each(ptr, &local->hostap_interfaces) {
+-			iface = list_entry(ptr, struct hostap_interface, list);
+-			eth_hw_addr_inherit(iface->dev, dev);
+-		}
+-	} else if (local->fw_ap)
+-		prism2_check_sta_fw_version(local);
+-
+-	prism2_setup_rids(dev);
+-
+-	/* MAC is now configured, but port 0 is not yet enabled */
+-	return 0;
+-
+- failed:
+-	if (!local->no_pri)
+-		printk(KERN_WARNING "%s: Initialization failed\n", dev_info);
+-	return 1;
+-}
+-
+-
+-static int prism2_hw_enable(struct net_device *dev, int initial)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int was_resetting;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-	was_resetting = local->hw_resetting;
+-
+-	if (hfa384x_cmd(dev, HFA384X_CMDCODE_ENABLE, 0, NULL, NULL)) {
+-		printk("%s: MAC port 0 enabling failed\n", dev->name);
+-		return 1;
+-	}
+-
+-	local->hw_ready = 1;
+-	local->hw_reset_tries = 0;
+-	local->hw_resetting = 0;
+-	hfa384x_enable_interrupts(dev);
+-
+-	/* at least D-Link DWL-650 seems to require additional port reset
+-	 * before it starts acting as an AP, so reset port automatically
+-	 * here just in case */
+-	if (initial && prism2_reset_port(dev)) {
+-		printk("%s: MAC port 0 resetting failed\n", dev->name);
+-		return 1;
+-	}
+-
+-	if (was_resetting && netif_queue_stopped(dev)) {
+-		/* If hw_reset() was called during pending transmit, netif
+-		 * queue was stopped. Wake it up now since the wlan card has
+-		 * been resetted. */
+-		netif_wake_queue(dev);
+-	}
+-
+-	return 0;
+-}
+-
+-
+-static int prism2_hw_config(struct net_device *dev, int initial)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (local->hw_downloading)
+-		return 1;
+-
+-	if (prism2_hw_init(dev, initial)) {
+-		return local->no_pri ? 0 : 1;
+-	}
+-
+-	if (prism2_hw_init2(dev, initial))
+-		return 1;
+-
+-	/* Enable firmware if secondary image is loaded and at least one of the
+-	 * netdevices is up. */
+-	if (!local->pri_only &&
+-	    (initial == 0 || (initial == 2 && local->num_dev_open > 0))) {
+-		if (!local->dev_enabled)
+-			prism2_callback(local, PRISM2_CALLBACK_ENABLE);
+-		local->dev_enabled = 1;
+-		return prism2_hw_enable(dev, initial);
+-	}
+-
+-	return 0;
+-}
+-
+-
+-static void prism2_hw_shutdown(struct net_device *dev, int no_disable)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	/* Allow only command completion events during disable */
+-	hfa384x_events_only_cmd(dev);
+-
+-	local->hw_ready = 0;
+-	if (local->dev_enabled)
+-		prism2_callback(local, PRISM2_CALLBACK_DISABLE);
+-	local->dev_enabled = 0;
+-
+-	if (local->func->card_present && !local->func->card_present(local)) {
+-		printk(KERN_DEBUG "%s: card already removed or not configured "
+-		       "during shutdown\n", dev->name);
+-		return;
+-	}
+-
+-	if ((no_disable & HOSTAP_HW_NO_DISABLE) == 0 &&
+-	    hfa384x_cmd(dev, HFA384X_CMDCODE_DISABLE, 0, NULL, NULL))
+-		printk(KERN_WARNING "%s: Shutdown failed\n", dev_info);
+-
+-	hfa384x_disable_interrupts(dev);
+-
+-	if (no_disable & HOSTAP_HW_ENABLE_CMDCOMPL)
+-		hfa384x_events_only_cmd(dev);
+-	else
+-		prism2_clear_cmd_queue(local);
+-}
+-
+-
+-static void prism2_hw_reset(struct net_device *dev)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-
+-#if 0
+-	static long last_reset = 0;
+-
+-	/* do not reset card more than once per second to avoid ending up in a
+-	 * busy loop resetting the card */
+-	if (time_before_eq(jiffies, last_reset + HZ))
+-		return;
+-	last_reset = jiffies;
+-#endif
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (local->hw_downloading)
+-		return;
+-
+-	if (local->hw_resetting) {
+-		printk(KERN_WARNING "%s: %s: already resetting card - "
+-		       "ignoring reset request\n", dev_info, dev->name);
+-		return;
+-	}
+-
+-	local->hw_reset_tries++;
+-	if (local->hw_reset_tries > 10) {
+-		printk(KERN_WARNING "%s: too many reset tries, skipping\n",
+-		       dev->name);
+-		return;
+-	}
+-
+-	printk(KERN_WARNING "%s: %s: resetting card\n", dev_info, dev->name);
+-	hfa384x_disable_interrupts(dev);
+-	local->hw_resetting = 1;
+-	if (local->func->cor_sreset) {
+-		/* Host system seems to hang in some cases with high traffic
+-		 * load or shared interrupts during COR sreset. Disable shared
+-		 * interrupts during reset to avoid these crashes. COS sreset
+-		 * takes quite a long time, so it is unfortunate that this
+-		 * seems to be needed. Anyway, I do not know of any better way
+-		 * of avoiding the crash. */
+-		disable_irq(dev->irq);
+-		local->func->cor_sreset(local);
+-		enable_irq(dev->irq);
+-	}
+-	prism2_hw_shutdown(dev, 1);
+-	prism2_hw_config(dev, 0);
+-	local->hw_resetting = 0;
+-
+-#ifdef PRISM2_DOWNLOAD_SUPPORT
+-	if (local->dl_pri) {
+-		printk(KERN_DEBUG "%s: persistent download of primary "
+-		       "firmware\n", dev->name);
+-		if (prism2_download_genesis(local, local->dl_pri) < 0)
+-			printk(KERN_WARNING "%s: download (PRI) failed\n",
+-			       dev->name);
+-	}
+-
+-	if (local->dl_sec) {
+-		printk(KERN_DEBUG "%s: persistent download of secondary "
+-		       "firmware\n", dev->name);
+-		if (prism2_download_volatile(local, local->dl_sec) < 0)
+-			printk(KERN_WARNING "%s: download (SEC) failed\n",
+-			       dev->name);
+-	}
+-#endif /* PRISM2_DOWNLOAD_SUPPORT */
+-
+-	/* TODO: restore beacon TIM bits for STAs that have buffered frames */
+-}
+-
+-
+-static void prism2_schedule_reset(local_info_t *local)
+-{
+-	schedule_work(&local->reset_queue);
+-}
+-
+-
+-/* Called only as scheduled task after noticing card timeout in interrupt
+- * context */
+-static void handle_reset_queue(struct work_struct *work)
+-{
+-	local_info_t *local = container_of(work, local_info_t, reset_queue);
+-
+-	printk(KERN_DEBUG "%s: scheduled card reset\n", local->dev->name);
+-	prism2_hw_reset(local->dev);
+-
+-	if (netif_queue_stopped(local->dev)) {
+-		int i;
+-
+-		for (i = 0; i < PRISM2_TXFID_COUNT; i++)
+-			if (local->intransmitfid[i] == PRISM2_TXFID_EMPTY) {
+-				PDEBUG(DEBUG_EXTRA, "prism2_tx_timeout: "
+-				       "wake up queue\n");
+-				netif_wake_queue(local->dev);
+-				break;
+-			}
+-	}
+-}
+-
+-
+-static int prism2_get_txfid_idx(local_info_t *local)
+-{
+-	int idx, end;
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&local->txfidlock, flags);
+-	end = idx = local->next_txfid;
+-	do {
+-		if (local->intransmitfid[idx] == PRISM2_TXFID_EMPTY) {
+-			local->intransmitfid[idx] = PRISM2_TXFID_RESERVED;
+-			spin_unlock_irqrestore(&local->txfidlock, flags);
+-			return idx;
+-		}
+-		idx++;
+-		if (idx >= PRISM2_TXFID_COUNT)
+-			idx = 0;
+-	} while (idx != end);
+-	spin_unlock_irqrestore(&local->txfidlock, flags);
+-
+-	PDEBUG(DEBUG_EXTRA2, "prism2_get_txfid_idx: no room in txfid buf: "
+-	       "packet dropped\n");
+-	local->dev->stats.tx_dropped++;
+-
+-	return -1;
+-}
+-
+-
+-/* Called only from hardware IRQ */
+-static void prism2_transmit_cb(struct net_device *dev, long context,
+-			       u16 resp0, u16 res)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int idx = (int) context;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (res) {
+-		printk(KERN_DEBUG "%s: prism2_transmit_cb - res=0x%02x\n",
+-		       dev->name, res);
+-		return;
+-	}
+-
+-	if (idx < 0 || idx >= PRISM2_TXFID_COUNT) {
+-		printk(KERN_DEBUG "%s: prism2_transmit_cb called with invalid "
+-		       "idx=%d\n", dev->name, idx);
+-		return;
+-	}
+-
+-	if (!test_and_clear_bit(HOSTAP_BITS_TRANSMIT, &local->bits)) {
+-		printk(KERN_DEBUG "%s: driver bug: prism2_transmit_cb called "
+-		       "with no pending transmit\n", dev->name);
+-	}
+-
+-	if (netif_queue_stopped(dev)) {
+-		/* ready for next TX, so wake up queue that was stopped in
+-		 * prism2_transmit() */
+-		netif_wake_queue(dev);
+-	}
+-
+-	spin_lock(&local->txfidlock);
+-
+-	/* With reclaim, Resp0 contains new txfid for transmit; the old txfid
+-	 * will be automatically allocated for the next TX frame */
+-	local->intransmitfid[idx] = resp0;
+-
+-	PDEBUG(DEBUG_FID, "%s: prism2_transmit_cb: txfid[%d]=0x%04x, "
+-	       "resp0=0x%04x, transmit_txfid=0x%04x\n",
+-	       dev->name, idx, local->txfid[idx],
+-	       resp0, local->intransmitfid[local->next_txfid]);
+-
+-	idx++;
+-	if (idx >= PRISM2_TXFID_COUNT)
+-		idx = 0;
+-	local->next_txfid = idx;
+-
+-	/* check if all TX buffers are occupied */
+-	do {
+-		if (local->intransmitfid[idx] == PRISM2_TXFID_EMPTY) {
+-			spin_unlock(&local->txfidlock);
+-			return;
+-		}
+-		idx++;
+-		if (idx >= PRISM2_TXFID_COUNT)
+-			idx = 0;
+-	} while (idx != local->next_txfid);
+-	spin_unlock(&local->txfidlock);
+-
+-	/* no empty TX buffers, stop queue */
+-	netif_stop_queue(dev);
+-}
+-
+-
+-/* Called only from software IRQ if PCI bus master is not used (with bus master
+- * this can be called both from software and hardware IRQ) */
+-static int prism2_transmit(struct net_device *dev, int idx)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int res;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	/* The driver tries to stop netif queue so that there would not be
+-	 * more than one attempt to transmit frames going on; check that this
+-	 * is really the case */
+-
+-	if (test_and_set_bit(HOSTAP_BITS_TRANSMIT, &local->bits)) {
+-		printk(KERN_DEBUG "%s: driver bug - prism2_transmit() called "
+-		       "when previous TX was pending\n", dev->name);
+-		return -1;
+-	}
+-
+-	/* stop the queue for the time that transmit is pending */
+-	netif_stop_queue(dev);
+-
+-	/* transmit packet */
+-	res = hfa384x_cmd_callback(
+-		dev,
+-		HFA384X_CMDCODE_TRANSMIT | HFA384X_CMD_TX_RECLAIM,
+-		local->txfid[idx],
+-		prism2_transmit_cb, (long) idx);
+-
+-	if (res) {
+-		printk(KERN_DEBUG "%s: prism2_transmit: CMDCODE_TRANSMIT "
+-		       "failed (res=%d)\n", dev->name, res);
+-		dev->stats.tx_dropped++;
+-		netif_wake_queue(dev);
+-		return -1;
+-	}
+-	netif_trans_update(dev);
+-
+-	/* Since we did not wait for command completion, the card continues
+-	 * to process on the background and we will finish handling when
+-	 * command completion event is handled (prism2_cmd_ev() function) */
+-
+-	return 0;
+-}
+-
+-
+-/* Send IEEE 802.11 frame (convert the header into Prism2 TX descriptor and
+- * send the payload with this descriptor) */
+-/* Called only from software IRQ */
+-static int prism2_tx_80211(struct sk_buff *skb, struct net_device *dev)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	struct hfa384x_tx_frame txdesc;
+-	struct hostap_skb_tx_data *meta;
+-	int hdr_len, data_len, idx, res, ret = -1;
+-	u16 tx_control;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	meta = (struct hostap_skb_tx_data *) skb->cb;
+-
+-	prism2_callback(local, PRISM2_CALLBACK_TX_START);
+-
+-	if ((local->func->card_present && !local->func->card_present(local)) ||
+-	    !local->hw_ready || local->hw_downloading || local->pri_only) {
+-		if (net_ratelimit()) {
+-			printk(KERN_DEBUG "%s: prism2_tx_80211: hw not ready -"
+-			       " skipping\n", dev->name);
+-		}
+-		goto fail;
+-	}
+-
+-	memset(&txdesc, 0, sizeof(txdesc));
+-
+-	/* skb->data starts with txdesc->frame_control */
+-	hdr_len = sizeof(txdesc.header);
+-	BUILD_BUG_ON(hdr_len != 24);
+-	skb_copy_from_linear_data(skb, &txdesc.header, hdr_len);
+-	if (ieee80211_is_data(txdesc.frame_control) &&
+-	    ieee80211_has_a4(txdesc.frame_control) &&
+-	    skb->len >= 30) {
+-		/* Addr4 */
+-		skb_copy_from_linear_data_offset(skb, hdr_len, txdesc.addr4,
+-						 ETH_ALEN);
+-		hdr_len += ETH_ALEN;
+-	}
+-
+-	tx_control = local->tx_control;
+-	if (meta->tx_cb_idx) {
+-		tx_control |= HFA384X_TX_CTRL_TX_OK;
+-		txdesc.sw_support = cpu_to_le32(meta->tx_cb_idx);
+-	}
+-	txdesc.tx_control = cpu_to_le16(tx_control);
+-	txdesc.tx_rate = meta->rate;
+-
+-	data_len = skb->len - hdr_len;
+-	txdesc.data_len = cpu_to_le16(data_len);
+-	txdesc.len = cpu_to_be16(data_len);
+-
+-	idx = prism2_get_txfid_idx(local);
+-	if (idx < 0)
+-		goto fail;
+-
+-	if (local->frame_dump & PRISM2_DUMP_TX_HDR)
+-		hostap_dump_tx_header(dev->name, &txdesc);
+-
+-	spin_lock(&local->baplock);
+-	res = hfa384x_setup_bap(dev, BAP0, local->txfid[idx], 0);
+-
+-	if (!res)
+-		res = hfa384x_to_bap(dev, BAP0, &txdesc, sizeof(txdesc));
+-	if (!res)
+-		res = hfa384x_to_bap(dev, BAP0, skb->data + hdr_len,
+-				     skb->len - hdr_len);
+-	spin_unlock(&local->baplock);
+-
+-	if (!res)
+-		res = prism2_transmit(dev, idx);
+-	if (res) {
+-		printk(KERN_DEBUG "%s: prism2_tx_80211 - to BAP0 failed\n",
+-		       dev->name);
+-		local->intransmitfid[idx] = PRISM2_TXFID_EMPTY;
+-		schedule_work(&local->reset_queue);
+-		goto fail;
+-	}
+-
+-	ret = 0;
+-
+-fail:
+-	prism2_callback(local, PRISM2_CALLBACK_TX_END);
+-	return ret;
+-}
+-
+-
+-/* Some SMP systems have reported number of odd errors with hostap_pci. fid
+- * register has changed values between consecutive reads for an unknown reason.
+- * This should really not happen, so more debugging is needed. This test
+- * version is a bit slower, but it will detect most of such register changes
+- * and will try to get the correct fid eventually. */
+-#define EXTRA_FID_READ_TESTS
+-
+-static u16 prism2_read_fid_reg(struct net_device *dev, u16 reg)
+-{
+-#ifdef EXTRA_FID_READ_TESTS
+-	u16 val, val2, val3;
+-	int i;
+-
+-	for (i = 0; i < 10; i++) {
+-		val = HFA384X_INW(reg);
+-		val2 = HFA384X_INW(reg);
+-		val3 = HFA384X_INW(reg);
+-
+-		if (val == val2 && val == val3)
+-			return val;
+-
+-		printk(KERN_DEBUG "%s: detected fid change (try=%d, reg=%04x):"
+-		       " %04x %04x %04x\n",
+-		       dev->name, i, reg, val, val2, val3);
+-		if ((val == val2 || val == val3) && val != 0)
+-			return val;
+-		if (val2 == val3 && val2 != 0)
+-			return val2;
+-	}
+-	printk(KERN_WARNING "%s: Uhhuh.. could not read good fid from reg "
+-	       "%04x (%04x %04x %04x)\n", dev->name, reg, val, val2, val3);
+-	return val;
+-#else /* EXTRA_FID_READ_TESTS */
+-	return HFA384X_INW(reg);
+-#endif /* EXTRA_FID_READ_TESTS */
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static void prism2_rx(local_info_t *local)
+-{
+-	struct net_device *dev = local->dev;
+-	int res, rx_pending = 0;
+-	u16 len, hdr_len, rxfid, status, macport;
+-	struct hfa384x_rx_frame rxdesc;
+-	struct sk_buff *skb = NULL;
+-
+-	prism2_callback(local, PRISM2_CALLBACK_RX_START);
+-
+-	rxfid = prism2_read_fid_reg(dev, HFA384X_RXFID_OFF);
+-#ifndef final_version
+-	if (rxfid == 0) {
+-		rxfid = HFA384X_INW(HFA384X_RXFID_OFF);
+-		printk(KERN_DEBUG "prism2_rx: rxfid=0 (next 0x%04x)\n",
+-		       rxfid);
+-		if (rxfid == 0) {
+-			schedule_work(&local->reset_queue);
+-			goto rx_dropped;
+-		}
+-		/* try to continue with the new rxfid value */
+-	}
+-#endif
+-
+-	spin_lock(&local->baplock);
+-	res = hfa384x_setup_bap(dev, BAP0, rxfid, 0);
+-	if (!res)
+-		res = hfa384x_from_bap(dev, BAP0, &rxdesc, sizeof(rxdesc));
+-
+-	if (res) {
+-		spin_unlock(&local->baplock);
+-		printk(KERN_DEBUG "%s: copy from BAP0 failed %d\n", dev->name,
+-		       res);
+-		if (res == -ETIMEDOUT) {
+-			schedule_work(&local->reset_queue);
+-		}
+-		goto rx_dropped;
+-	}
+-
+-	len = le16_to_cpu(rxdesc.data_len);
+-	hdr_len = sizeof(rxdesc);
+-	status = le16_to_cpu(rxdesc.status);
+-	macport = (status >> 8) & 0x07;
+-
+-	/* Drop frames with too large reported payload length. Monitor mode
+-	 * seems to sometimes pass frames (e.g., ctrl::ack) with signed and
+-	 * negative value, so allow also values 65522 .. 65534 (-14 .. -2) for
+-	 * macport 7 */
+-	if (len > PRISM2_DATA_MAXLEN + 8 /* WEP */) {
+-		if (macport == 7 && local->iw_mode == IW_MODE_MONITOR) {
+-			if (len >= (u16) -14) {
+-				hdr_len -= 65535 - len;
+-				hdr_len--;
+-			}
+-			len = 0;
+-		} else {
+-			spin_unlock(&local->baplock);
+-			printk(KERN_DEBUG "%s: Received frame with invalid "
+-			       "length 0x%04x\n", dev->name, len);
+-			hostap_dump_rx_header(dev->name, &rxdesc);
+-			goto rx_dropped;
+-		}
+-	}
+-
+-	skb = dev_alloc_skb(len + hdr_len);
+-	if (!skb) {
+-		spin_unlock(&local->baplock);
+-		printk(KERN_DEBUG "%s: RX failed to allocate skb\n",
+-		       dev->name);
+-		goto rx_dropped;
+-	}
+-	skb->dev = dev;
+-	skb_put_data(skb, &rxdesc, hdr_len);
+-
+-	if (len > 0)
+-		res = hfa384x_from_bap(dev, BAP0, skb_put(skb, len), len);
+-	spin_unlock(&local->baplock);
+-	if (res) {
+-		printk(KERN_DEBUG "%s: RX failed to read "
+-		       "frame data\n", dev->name);
+-		goto rx_dropped;
+-	}
+-
+-	skb_queue_tail(&local->rx_list, skb);
+-	tasklet_schedule(&local->rx_tasklet);
+-
+- rx_exit:
+-	prism2_callback(local, PRISM2_CALLBACK_RX_END);
+-	if (!rx_pending) {
+-		HFA384X_OUTW(HFA384X_EV_RX, HFA384X_EVACK_OFF);
+-	}
+-
+-	return;
+-
+- rx_dropped:
+-	dev->stats.rx_dropped++;
+-	if (skb)
+-		dev_kfree_skb(skb);
+-	goto rx_exit;
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static void hostap_rx_skb(local_info_t *local, struct sk_buff *skb)
+-{
+-	struct hfa384x_rx_frame *rxdesc;
+-	struct net_device *dev = skb->dev;
+-	struct hostap_80211_rx_status stats;
+-	int hdrlen, rx_hdrlen;
+-
+-	rx_hdrlen = sizeof(*rxdesc);
+-	if (skb->len < sizeof(*rxdesc)) {
+-		/* Allow monitor mode to receive shorter frames */
+-		if (local->iw_mode == IW_MODE_MONITOR &&
+-		    skb->len >= sizeof(*rxdesc) - 30) {
+-			rx_hdrlen = skb->len;
+-		} else {
+-			dev_kfree_skb(skb);
+-			return;
+-		}
+-	}
+-
+-	rxdesc = (struct hfa384x_rx_frame *) skb->data;
+-
+-	if (local->frame_dump & PRISM2_DUMP_RX_HDR &&
+-	    skb->len >= sizeof(*rxdesc))
+-		hostap_dump_rx_header(dev->name, rxdesc);
+-
+-	if (le16_to_cpu(rxdesc->status) & HFA384X_RX_STATUS_FCSERR &&
+-	    (!local->monitor_allow_fcserr ||
+-	     local->iw_mode != IW_MODE_MONITOR))
+-		goto drop;
+-
+-	if (skb->len > PRISM2_DATA_MAXLEN) {
+-		printk(KERN_DEBUG "%s: RX: len(%d) > MAX(%d)\n",
+-		       dev->name, skb->len, PRISM2_DATA_MAXLEN);
+-		goto drop;
+-	}
+-
+-	stats.mac_time = le32_to_cpu(rxdesc->time);
+-	stats.signal = rxdesc->signal - local->rssi_to_dBm;
+-	stats.noise = rxdesc->silence - local->rssi_to_dBm;
+-	stats.rate = rxdesc->rate;
+-
+-	/* Convert Prism2 RX structure into IEEE 802.11 header */
+-	hdrlen = hostap_80211_get_hdrlen(rxdesc->frame_control);
+-	if (hdrlen > rx_hdrlen)
+-		hdrlen = rx_hdrlen;
+-
+-	memmove(skb_pull(skb, rx_hdrlen - hdrlen),
+-		&rxdesc->frame_control, hdrlen);
+-
+-	hostap_80211_rx(dev, skb, &stats);
+-	return;
+-
+- drop:
+-	dev_kfree_skb(skb);
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static void hostap_rx_tasklet(struct tasklet_struct *t)
+-{
+-	local_info_t *local = from_tasklet(local, t, rx_tasklet);
+-	struct sk_buff *skb;
+-
+-	while ((skb = skb_dequeue(&local->rx_list)) != NULL)
+-		hostap_rx_skb(local, skb);
+-}
+-
+-
+-/* Called only from hardware IRQ */
+-static void prism2_alloc_ev(struct net_device *dev)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int idx;
+-	u16 fid;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	fid = prism2_read_fid_reg(dev, HFA384X_ALLOCFID_OFF);
+-
+-	PDEBUG(DEBUG_FID, "FID: interrupt: ALLOC - fid=0x%04x\n", fid);
+-
+-	spin_lock(&local->txfidlock);
+-	idx = local->next_alloc;
+-
+-	do {
+-		if (local->txfid[idx] == fid) {
+-			PDEBUG(DEBUG_FID, "FID: found matching txfid[%d]\n",
+-			       idx);
+-
+-#ifndef final_version
+-			if (local->intransmitfid[idx] == PRISM2_TXFID_EMPTY)
+-				printk("Already released txfid found at idx "
+-				       "%d\n", idx);
+-			if (local->intransmitfid[idx] == PRISM2_TXFID_RESERVED)
+-				printk("Already reserved txfid found at idx "
+-				       "%d\n", idx);
+-#endif
+-			local->intransmitfid[idx] = PRISM2_TXFID_EMPTY;
+-			idx++;
+-			local->next_alloc = idx >= PRISM2_TXFID_COUNT ? 0 :
+-				idx;
+-
+-			if (!test_bit(HOSTAP_BITS_TRANSMIT, &local->bits) &&
+-			    netif_queue_stopped(dev))
+-				netif_wake_queue(dev);
+-
+-			spin_unlock(&local->txfidlock);
+-			return;
+-		}
+-
+-		idx++;
+-		if (idx >= PRISM2_TXFID_COUNT)
+-			idx = 0;
+-	} while (idx != local->next_alloc);
+-
+-	printk(KERN_WARNING "%s: could not find matching txfid (0x%04x, new "
+-	       "read 0x%04x) for alloc event\n", dev->name, fid,
+-	       HFA384X_INW(HFA384X_ALLOCFID_OFF));
+-	printk(KERN_DEBUG "TXFIDs:");
+-	for (idx = 0; idx < PRISM2_TXFID_COUNT; idx++)
+-		printk(" %04x[%04x]", local->txfid[idx],
+-		       local->intransmitfid[idx]);
+-	printk("\n");
+-	spin_unlock(&local->txfidlock);
+-
+-	/* FIX: should probably schedule reset; reference to one txfid was lost
+-	 * completely.. Bad things will happen if we run out of txfids
+-	 * Actually, this will cause netdev watchdog to notice TX timeout and
+-	 * then card reset after all txfids have been leaked. */
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static void hostap_tx_callback(local_info_t *local,
+-			       struct hfa384x_tx_frame *txdesc, int ok,
+-			       char *payload)
+-{
+-	u16 sw_support, hdrlen, len;
+-	struct sk_buff *skb;
+-	struct hostap_tx_callback_info *cb;
+-
+-	/* Make sure that frame was from us. */
+-	if (!ether_addr_equal(txdesc->addr2, local->dev->dev_addr)) {
+-		printk(KERN_DEBUG "%s: TX callback - foreign frame\n",
+-		       local->dev->name);
+-		return;
+-	}
+-
+-	sw_support = le32_to_cpu(txdesc->sw_support);
+-
+-	spin_lock(&local->lock);
+-	cb = local->tx_callback;
+-	while (cb != NULL && cb->idx != sw_support)
+-		cb = cb->next;
+-	spin_unlock(&local->lock);
+-
+-	if (cb == NULL) {
+-		printk(KERN_DEBUG "%s: could not find TX callback (idx %d)\n",
+-		       local->dev->name, sw_support);
+-		return;
+-	}
+-
+-	hdrlen = hostap_80211_get_hdrlen(txdesc->frame_control);
+-	len = le16_to_cpu(txdesc->data_len);
+-	skb = dev_alloc_skb(hdrlen + len);
+-	if (skb == NULL) {
+-		printk(KERN_DEBUG "%s: hostap_tx_callback failed to allocate "
+-		       "skb\n", local->dev->name);
+-		return;
+-	}
+-
+-	skb_put_data(skb, (void *)&txdesc->frame_control, hdrlen);
+-	if (payload)
+-		skb_put_data(skb, payload, len);
+-
+-	skb->dev = local->dev;
+-	skb_reset_mac_header(skb);
+-
+-	cb->func(skb, ok, cb->data);
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static int hostap_tx_compl_read(local_info_t *local, int error,
+-				struct hfa384x_tx_frame *txdesc,
+-				char **payload)
+-{
+-	u16 fid, len;
+-	int res, ret = 0;
+-	struct net_device *dev = local->dev;
+-
+-	fid = prism2_read_fid_reg(dev, HFA384X_TXCOMPLFID_OFF);
+-
+-	PDEBUG(DEBUG_FID, "interrupt: TX (err=%d) - fid=0x%04x\n", fid, error);
+-
+-	spin_lock(&local->baplock);
+-	res = hfa384x_setup_bap(dev, BAP0, fid, 0);
+-	if (!res)
+-		res = hfa384x_from_bap(dev, BAP0, txdesc, sizeof(*txdesc));
+-	if (res) {
+-		PDEBUG(DEBUG_EXTRA, "%s: TX (err=%d) - fid=0x%04x - could not "
+-		       "read txdesc\n", dev->name, error, fid);
+-		if (res == -ETIMEDOUT) {
+-			schedule_work(&local->reset_queue);
+-		}
+-		ret = -1;
+-		goto fail;
+-	}
+-	if (txdesc->sw_support) {
+-		len = le16_to_cpu(txdesc->data_len);
+-		if (len < PRISM2_DATA_MAXLEN) {
+-			*payload = kmalloc(len, GFP_ATOMIC);
+-			if (*payload == NULL ||
+-			    hfa384x_from_bap(dev, BAP0, *payload, len)) {
+-				PDEBUG(DEBUG_EXTRA, "%s: could not read TX "
+-				       "frame payload\n", dev->name);
+-				kfree(*payload);
+-				*payload = NULL;
+-				ret = -1;
+-				goto fail;
+-			}
+-		}
+-	}
+-
+- fail:
+-	spin_unlock(&local->baplock);
+-
+-	return ret;
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static void prism2_tx_ev(local_info_t *local)
+-{
+-	struct net_device *dev = local->dev;
+-	char *payload = NULL;
+-	struct hfa384x_tx_frame txdesc;
+-
+-	if (hostap_tx_compl_read(local, 0, &txdesc, &payload))
+-		goto fail;
+-
+-	if (local->frame_dump & PRISM2_DUMP_TX_HDR) {
+-		PDEBUG(DEBUG_EXTRA, "%s: TX - status=0x%04x "
+-		       "retry_count=%d tx_rate=%d seq_ctrl=%d "
+-		       "duration_id=%d\n",
+-		       dev->name, le16_to_cpu(txdesc.status),
+-		       txdesc.retry_count, txdesc.tx_rate,
+-		       le16_to_cpu(txdesc.seq_ctrl),
+-		       le16_to_cpu(txdesc.duration_id));
+-	}
+-
+-	if (txdesc.sw_support)
+-		hostap_tx_callback(local, &txdesc, 1, payload);
+-	kfree(payload);
+-
+- fail:
+-	HFA384X_OUTW(HFA384X_EV_TX, HFA384X_EVACK_OFF);
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static void hostap_sta_tx_exc_tasklet(struct tasklet_struct *t)
+-{
+-	local_info_t *local = from_tasklet(local, t, sta_tx_exc_tasklet);
+-	struct sk_buff *skb;
+-
+-	while ((skb = skb_dequeue(&local->sta_tx_exc_list)) != NULL) {
+-		struct hfa384x_tx_frame *txdesc =
+-			(struct hfa384x_tx_frame *) skb->data;
+-
+-		if (skb->len >= sizeof(*txdesc)) {
+-			/* Convert Prism2 RX structure into IEEE 802.11 header
+-			 */
+-			int hdrlen = hostap_80211_get_hdrlen(txdesc->frame_control);
+-			memmove(skb_pull(skb, sizeof(*txdesc) - hdrlen),
+-				&txdesc->frame_control, hdrlen);
+-
+-			hostap_handle_sta_tx_exc(local, skb);
+-		}
+-		dev_kfree_skb(skb);
+-	}
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static void prism2_txexc(local_info_t *local)
+-{
+-	struct net_device *dev = local->dev;
+-	u16 status, fc;
+-	int show_dump, res;
+-	char *payload = NULL;
+-	struct hfa384x_tx_frame txdesc;
+-
+-	show_dump = local->frame_dump & PRISM2_DUMP_TXEXC_HDR;
+-	dev->stats.tx_errors++;
+-
+-	res = hostap_tx_compl_read(local, 1, &txdesc, &payload);
+-	HFA384X_OUTW(HFA384X_EV_TXEXC, HFA384X_EVACK_OFF);
+-	if (res)
+-		return;
+-
+-	status = le16_to_cpu(txdesc.status);
+-
+-	/* We produce a TXDROP event only for retry or lifetime
+-	 * exceeded, because that's the only status that really mean
+-	 * that this particular node went away.
+-	 * Other errors means that *we* screwed up. - Jean II */
+-	if (status & (HFA384X_TX_STATUS_RETRYERR | HFA384X_TX_STATUS_AGEDERR))
+-	{
+-		union iwreq_data wrqu;
+-
+-		/* Copy 802.11 dest address. */
+-		memcpy(wrqu.addr.sa_data, txdesc.addr1, ETH_ALEN);
+-		wrqu.addr.sa_family = ARPHRD_ETHER;
+-		wireless_send_event(dev, IWEVTXDROP, &wrqu, NULL);
+-	} else
+-		show_dump = 1;
+-
+-	if (local->iw_mode == IW_MODE_MASTER ||
+-	    local->iw_mode == IW_MODE_REPEAT ||
+-	    local->wds_type & HOSTAP_WDS_AP_CLIENT) {
+-		struct sk_buff *skb;
+-		skb = dev_alloc_skb(sizeof(txdesc));
+-		if (skb) {
+-			skb_put_data(skb, &txdesc, sizeof(txdesc));
+-			skb_queue_tail(&local->sta_tx_exc_list, skb);
+-			tasklet_schedule(&local->sta_tx_exc_tasklet);
+-		}
+-	}
+-
+-	if (txdesc.sw_support)
+-		hostap_tx_callback(local, &txdesc, 0, payload);
+-	kfree(payload);
+-
+-	if (!show_dump)
+-		return;
+-
+-	PDEBUG(DEBUG_EXTRA, "%s: TXEXC - status=0x%04x (%s%s%s%s)"
+-	       " tx_control=%04x\n",
+-	       dev->name, status,
+-	       status & HFA384X_TX_STATUS_RETRYERR ? "[RetryErr]" : "",
+-	       status & HFA384X_TX_STATUS_AGEDERR ? "[AgedErr]" : "",
+-	       status & HFA384X_TX_STATUS_DISCON ? "[Discon]" : "",
+-	       status & HFA384X_TX_STATUS_FORMERR ? "[FormErr]" : "",
+-	       le16_to_cpu(txdesc.tx_control));
+-
+-	fc = le16_to_cpu(txdesc.frame_control);
+-	PDEBUG(DEBUG_EXTRA, "   retry_count=%d tx_rate=%d fc=0x%04x "
+-	       "(%s%s%s::%d%s%s)\n",
+-	       txdesc.retry_count, txdesc.tx_rate, fc,
+-	       ieee80211_is_mgmt(txdesc.frame_control) ? "Mgmt" : "",
+-	       ieee80211_is_ctl(txdesc.frame_control) ? "Ctrl" : "",
+-	       ieee80211_is_data(txdesc.frame_control) ? "Data" : "",
+-	       (fc & IEEE80211_FCTL_STYPE) >> 4,
+-	       ieee80211_has_tods(txdesc.frame_control) ? " ToDS" : "",
+-	       ieee80211_has_fromds(txdesc.frame_control) ? " FromDS" : "");
+-	PDEBUG(DEBUG_EXTRA, "   A1=%pM A2=%pM A3=%pM A4=%pM\n",
+-	       txdesc.addr1, txdesc.addr2,
+-	       txdesc.addr3, txdesc.addr4);
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static void hostap_info_tasklet(struct tasklet_struct *t)
+-{
+-	local_info_t *local = from_tasklet(local, t, info_tasklet);
+-	struct sk_buff *skb;
+-
+-	while ((skb = skb_dequeue(&local->info_list)) != NULL) {
+-		hostap_info_process(local, skb);
+-		dev_kfree_skb(skb);
+-	}
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static void prism2_info(local_info_t *local)
+-{
+-	struct net_device *dev = local->dev;
+-	u16 fid;
+-	int res, left;
+-	struct hfa384x_info_frame info;
+-	struct sk_buff *skb;
+-
+-	fid = HFA384X_INW(HFA384X_INFOFID_OFF);
+-
+-	spin_lock(&local->baplock);
+-	res = hfa384x_setup_bap(dev, BAP0, fid, 0);
+-	if (!res)
+-		res = hfa384x_from_bap(dev, BAP0, &info, sizeof(info));
+-	if (res) {
+-		spin_unlock(&local->baplock);
+-		printk(KERN_DEBUG "Could not get info frame (fid=0x%04x)\n",
+-		       fid);
+-		if (res == -ETIMEDOUT) {
+-			schedule_work(&local->reset_queue);
+-		}
+-		goto out;
+-	}
+-
+-	left = (le16_to_cpu(info.len) - 1) * 2;
+-
+-	if (info.len & cpu_to_le16(0x8000) || info.len == 0 || left > 2060) {
+-		/* data register seems to give 0x8000 in some error cases even
+-		 * though busy bit is not set in offset register;
+-		 * in addition, length must be at least 1 due to type field */
+-		spin_unlock(&local->baplock);
+-		printk(KERN_DEBUG "%s: Received info frame with invalid "
+-		       "length 0x%04x (type 0x%04x)\n", dev->name,
+-		       le16_to_cpu(info.len), le16_to_cpu(info.type));
+-		goto out;
+-	}
+-
+-	skb = dev_alloc_skb(sizeof(info) + left);
+-	if (skb == NULL) {
+-		spin_unlock(&local->baplock);
+-		printk(KERN_DEBUG "%s: Could not allocate skb for info "
+-		       "frame\n", dev->name);
+-		goto out;
+-	}
+-
+-	skb_put_data(skb, &info, sizeof(info));
+-	if (left > 0 && hfa384x_from_bap(dev, BAP0, skb_put(skb, left), left))
+-	{
+-		spin_unlock(&local->baplock);
+-		printk(KERN_WARNING "%s: Info frame read failed (fid=0x%04x, "
+-		       "len=0x%04x, type=0x%04x\n", dev->name, fid,
+-		       le16_to_cpu(info.len), le16_to_cpu(info.type));
+-		dev_kfree_skb(skb);
+-		goto out;
+-	}
+-	spin_unlock(&local->baplock);
+-
+-	skb_queue_tail(&local->info_list, skb);
+-	tasklet_schedule(&local->info_tasklet);
+-
+- out:
+-	HFA384X_OUTW(HFA384X_EV_INFO, HFA384X_EVACK_OFF);
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static void hostap_bap_tasklet(struct tasklet_struct *t)
+-{
+-	local_info_t *local = from_tasklet(local, t, bap_tasklet);
+-	struct net_device *dev = local->dev;
+-	u16 ev;
+-	int frames = 30;
+-
+-	if (local->func->card_present && !local->func->card_present(local))
+-		return;
+-
+-	set_bit(HOSTAP_BITS_BAP_TASKLET, &local->bits);
+-
+-	/* Process all pending BAP events without generating new interrupts
+-	 * for them */
+-	while (frames-- > 0) {
+-		ev = HFA384X_INW(HFA384X_EVSTAT_OFF);
+-		if (ev == 0xffff || !(ev & HFA384X_BAP0_EVENTS))
+-			break;
+-		if (ev & HFA384X_EV_RX)
+-			prism2_rx(local);
+-		if (ev & HFA384X_EV_INFO)
+-			prism2_info(local);
+-		if (ev & HFA384X_EV_TX)
+-			prism2_tx_ev(local);
+-		if (ev & HFA384X_EV_TXEXC)
+-			prism2_txexc(local);
+-	}
+-
+-	set_bit(HOSTAP_BITS_BAP_TASKLET2, &local->bits);
+-	clear_bit(HOSTAP_BITS_BAP_TASKLET, &local->bits);
+-
+-	/* Enable interrupts for new BAP events */
+-	hfa384x_events_all(dev);
+-	clear_bit(HOSTAP_BITS_BAP_TASKLET2, &local->bits);
+-}
+-
+-
+-/* Called only from hardware IRQ */
+-static void prism2_infdrop(struct net_device *dev)
+-{
+-	static unsigned long last_inquire = 0;
+-
+-	PDEBUG(DEBUG_EXTRA, "%s: INFDROP event\n", dev->name);
+-
+-	/* some firmware versions seem to get stuck with
+-	 * full CommTallies in high traffic load cases; every
+-	 * packet will then cause INFDROP event and CommTallies
+-	 * info frame will not be sent automatically. Try to
+-	 * get out of this state by inquiring CommTallies. */
+-	if (!last_inquire || time_after(jiffies, last_inquire + HZ)) {
+-		hfa384x_cmd_callback(dev, HFA384X_CMDCODE_INQUIRE,
+-				     HFA384X_INFO_COMMTALLIES, NULL, 0);
+-		last_inquire = jiffies;
+-	}
+-}
+-
+-
+-/* Called only from hardware IRQ */
+-static void prism2_ev_tick(struct net_device *dev)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	u16 evstat, inten;
+-	static int prev_stuck = 0;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (time_after(jiffies, local->last_tick_timer + 5 * HZ) &&
+-	    local->last_tick_timer) {
+-		evstat = HFA384X_INW(HFA384X_EVSTAT_OFF);
+-		inten = HFA384X_INW(HFA384X_INTEN_OFF);
+-		if (!prev_stuck) {
+-			printk(KERN_INFO "%s: SW TICK stuck? "
+-			       "bits=0x%lx EvStat=%04x IntEn=%04x\n",
+-			       dev->name, local->bits, evstat, inten);
+-		}
+-		local->sw_tick_stuck++;
+-		if ((evstat & HFA384X_BAP0_EVENTS) &&
+-		    (inten & HFA384X_BAP0_EVENTS)) {
+-			printk(KERN_INFO "%s: trying to recover from IRQ "
+-			       "hang\n", dev->name);
+-			hfa384x_events_no_bap0(dev);
+-		}
+-		prev_stuck = 1;
+-	} else
+-		prev_stuck = 0;
+-}
+-
+-
+-/* Called only from hardware IRQ */
+-static void prism2_check_magic(local_info_t *local)
+-{
+-	/* at least PCI Prism2.5 with bus mastering seems to sometimes
+-	 * return 0x0000 in SWSUPPORT0 for unknown reason, but re-reading the
+-	 * register once or twice seems to get the correct value.. PCI cards
+-	 * cannot anyway be removed during normal operation, so there is not
+-	 * really any need for this verification with them. */
+-
+-#ifndef PRISM2_PCI
+-#ifndef final_version
+-	static unsigned long last_magic_err = 0;
+-	struct net_device *dev = local->dev;
+-
+-	if (HFA384X_INW(HFA384X_SWSUPPORT0_OFF) != HFA384X_MAGIC) {
+-		if (!local->hw_ready)
+-			return;
+-		HFA384X_OUTW(0xffff, HFA384X_EVACK_OFF);
+-		if (time_after(jiffies, last_magic_err + 10 * HZ)) {
+-			printk("%s: Interrupt, but SWSUPPORT0 does not match: "
+-			       "%04X != %04X - card removed?\n", dev->name,
+-			       HFA384X_INW(HFA384X_SWSUPPORT0_OFF),
+-			       HFA384X_MAGIC);
+-			last_magic_err = jiffies;
+-		} else if (net_ratelimit()) {
+-			printk(KERN_DEBUG "%s: interrupt - SWSUPPORT0=%04x "
+-			       "MAGIC=%04x\n", dev->name,
+-			       HFA384X_INW(HFA384X_SWSUPPORT0_OFF),
+-			       HFA384X_MAGIC);
+-		}
+-		if (HFA384X_INW(HFA384X_SWSUPPORT0_OFF) != 0xffff)
+-			schedule_work(&local->reset_queue);
+-		return;
+-	}
+-#endif /* final_version */
+-#endif /* !PRISM2_PCI */
+-}
+-
+-
+-/* Called only from hardware IRQ */
+-static irqreturn_t prism2_interrupt(int irq, void *dev_id)
+-{
+-	struct net_device *dev = dev_id;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int events = 0;
+-	u16 ev;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	/* Detect early interrupt before driver is fully configured */
+-	spin_lock(&local->irq_init_lock);
+-	if (!dev->base_addr) {
+-		if (net_ratelimit()) {
+-			printk(KERN_DEBUG "%s: Interrupt, but dev not configured\n",
+-			       dev->name);
+-		}
+-		spin_unlock(&local->irq_init_lock);
+-		return IRQ_HANDLED;
+-	}
+-	spin_unlock(&local->irq_init_lock);
+-
+-	prism2_io_debug_add(dev, PRISM2_IO_DEBUG_CMD_INTERRUPT, 0, 0);
+-
+-	if (local->func->card_present && !local->func->card_present(local)) {
+-		if (net_ratelimit()) {
+-			printk(KERN_DEBUG "%s: Interrupt, but dev not OK\n",
+-			       dev->name);
+-		}
+-		return IRQ_HANDLED;
+-	}
+-
+-	prism2_check_magic(local);
+-
+-	for (;;) {
+-		ev = HFA384X_INW(HFA384X_EVSTAT_OFF);
+-		if (ev == 0xffff) {
+-			if (local->shutdown)
+-				return IRQ_HANDLED;
+-			HFA384X_OUTW(0xffff, HFA384X_EVACK_OFF);
+-			printk(KERN_DEBUG "%s: prism2_interrupt: ev=0xffff\n",
+-			       dev->name);
+-			return IRQ_HANDLED;
+-		}
+-
+-		ev &= HFA384X_INW(HFA384X_INTEN_OFF);
+-		if (ev == 0)
+-			break;
+-
+-		if (ev & HFA384X_EV_CMD) {
+-			prism2_cmd_ev(dev);
+-		}
+-
+-		/* Above events are needed even before hw is ready, but other
+-		 * events should be skipped during initialization. This may
+-		 * change for AllocEv if allocate_fid is implemented without
+-		 * busy waiting. */
+-		if (!local->hw_ready || local->hw_resetting ||
+-		    !local->dev_enabled) {
+-			ev = HFA384X_INW(HFA384X_EVSTAT_OFF);
+-			if (ev & HFA384X_EV_CMD)
+-				goto next_event;
+-			if ((ev & HFA384X_EVENT_MASK) == 0)
+-				return IRQ_HANDLED;
+-			if (local->dev_enabled && (ev & ~HFA384X_EV_TICK) &&
+-			    net_ratelimit()) {
+-				printk(KERN_DEBUG "%s: prism2_interrupt: hw "
+-				       "not ready; skipping events 0x%04x "
+-				       "(IntEn=0x%04x)%s%s%s\n",
+-				       dev->name, ev,
+-				       HFA384X_INW(HFA384X_INTEN_OFF),
+-				       !local->hw_ready ? " (!hw_ready)" : "",
+-				       local->hw_resetting ?
+-				       " (hw_resetting)" : "",
+-				       !local->dev_enabled ?
+-				       " (!dev_enabled)" : "");
+-			}
+-			HFA384X_OUTW(ev, HFA384X_EVACK_OFF);
+-			return IRQ_HANDLED;
+-		}
+-
+-		if (ev & HFA384X_EV_TICK) {
+-			prism2_ev_tick(dev);
+-			HFA384X_OUTW(HFA384X_EV_TICK, HFA384X_EVACK_OFF);
+-		}
+-
+-		if (ev & HFA384X_EV_ALLOC) {
+-			prism2_alloc_ev(dev);
+-			HFA384X_OUTW(HFA384X_EV_ALLOC, HFA384X_EVACK_OFF);
+-		}
+-
+-		/* Reading data from the card is quite time consuming, so do it
+-		 * in tasklets. TX, TXEXC, RX, and INFO events will be ACKed
+-		 * and unmasked after needed data has been read completely. */
+-		if (ev & HFA384X_BAP0_EVENTS) {
+-			hfa384x_events_no_bap0(dev);
+-			tasklet_schedule(&local->bap_tasklet);
+-		}
+-
+-#ifndef final_version
+-		if (ev & HFA384X_EV_WTERR) {
+-			PDEBUG(DEBUG_EXTRA, "%s: WTERR event\n", dev->name);
+-			HFA384X_OUTW(HFA384X_EV_WTERR, HFA384X_EVACK_OFF);
+-		}
+-#endif /* final_version */
+-
+-		if (ev & HFA384X_EV_INFDROP) {
+-			prism2_infdrop(dev);
+-			HFA384X_OUTW(HFA384X_EV_INFDROP, HFA384X_EVACK_OFF);
+-		}
+-
+-	next_event:
+-		events++;
+-		if (events >= PRISM2_MAX_INTERRUPT_EVENTS) {
+-			PDEBUG(DEBUG_EXTRA, "prism2_interrupt: >%d events "
+-			       "(EvStat=0x%04x)\n",
+-			       PRISM2_MAX_INTERRUPT_EVENTS,
+-			       HFA384X_INW(HFA384X_EVSTAT_OFF));
+-			break;
+-		}
+-	}
+-	prism2_io_debug_add(dev, PRISM2_IO_DEBUG_CMD_INTERRUPT, 0, 1);
+-	return IRQ_RETVAL(events);
+-}
+-
+-
+-static void prism2_check_sta_fw_version(local_info_t *local)
+-{
+-	struct hfa384x_comp_ident comp;
+-	int id, variant, major, minor;
+-
+-	if (hfa384x_get_rid(local->dev, HFA384X_RID_STAID,
+-			    &comp, sizeof(comp), 1) < 0)
+-		return;
+-
+-	local->fw_ap = 0;
+-	id = le16_to_cpu(comp.id);
+-	if (id != HFA384X_COMP_ID_STA) {
+-		if (id == HFA384X_COMP_ID_FW_AP)
+-			local->fw_ap = 1;
+-		return;
+-	}
+-
+-	major = __le16_to_cpu(comp.major);
+-	minor = __le16_to_cpu(comp.minor);
+-	variant = __le16_to_cpu(comp.variant);
+-	local->sta_fw_ver = PRISM2_FW_VER(major, minor, variant);
+-
+-	/* Station firmware versions before 1.4.x seem to have a bug in
+-	 * firmware-based WEP encryption when using Host AP mode, so use
+-	 * host_encrypt as a default for them. Firmware version 1.4.9 is the
+-	 * first one that has been seen to produce correct encryption, but the
+-	 * bug might be fixed before that (although, at least 1.4.2 is broken).
+-	 */
+-	local->fw_encrypt_ok = local->sta_fw_ver >= PRISM2_FW_VER(1,4,9);
+-
+-	if (local->iw_mode == IW_MODE_MASTER && !local->host_encrypt &&
+-	    !local->fw_encrypt_ok) {
+-		printk(KERN_DEBUG "%s: defaulting to host-based encryption as "
+-		       "a workaround for firmware bug in Host AP mode WEP\n",
+-		       local->dev->name);
+-		local->host_encrypt = 1;
+-	}
+-
+-	/* IEEE 802.11 standard compliant WDS frames (4 addresses) were broken
+-	 * in station firmware versions before 1.5.x. With these versions, the
+-	 * driver uses a workaround with bogus frame format (4th address after
+-	 * the payload). This is not compatible with other AP devices. Since
+-	 * the firmware bug is fixed in the latest station firmware versions,
+-	 * automatically enable standard compliant mode for cards using station
+-	 * firmware version 1.5.0 or newer. */
+-	if (local->sta_fw_ver >= PRISM2_FW_VER(1,5,0))
+-		local->wds_type |= HOSTAP_WDS_STANDARD_FRAME;
+-	else {
+-		printk(KERN_DEBUG "%s: defaulting to bogus WDS frame as a "
+-		       "workaround for firmware bug in Host AP mode WDS\n",
+-		       local->dev->name);
+-	}
+-
+-	hostap_check_sta_fw_version(local->ap, local->sta_fw_ver);
+-}
+-
+-
+-static void hostap_passive_scan(struct timer_list *t)
+-{
+-	local_info_t *local = from_timer(local, t, passive_scan_timer);
+-	struct net_device *dev = local->dev;
+-	u16 chan;
+-
+-	if (local->passive_scan_interval <= 0)
+-		return;
+-
+-	if (local->passive_scan_state == PASSIVE_SCAN_LISTEN) {
+-		int max_tries = 16;
+-
+-		/* Even though host system does not really know when the WLAN
+-		 * MAC is sending frames, try to avoid changing channels for
+-		 * passive scanning when a host-generated frame is being
+-		 * transmitted */
+-		if (test_bit(HOSTAP_BITS_TRANSMIT, &local->bits)) {
+-			printk(KERN_DEBUG "%s: passive scan detected pending "
+-			       "TX - delaying\n", dev->name);
+-			local->passive_scan_timer.expires = jiffies + HZ / 10;
+-			add_timer(&local->passive_scan_timer);
+-			return;
+-		}
+-
+-		do {
+-			local->passive_scan_channel++;
+-			if (local->passive_scan_channel > 14)
+-				local->passive_scan_channel = 1;
+-			max_tries--;
+-		} while (!(local->channel_mask &
+-			   (1 << (local->passive_scan_channel - 1))) &&
+-			 max_tries > 0);
+-
+-		if (max_tries == 0) {
+-			printk(KERN_INFO "%s: no allowed passive scan channels"
+-			       " found\n", dev->name);
+-			return;
+-		}
+-
+-		printk(KERN_DEBUG "%s: passive scan channel %d\n",
+-		       dev->name, local->passive_scan_channel);
+-		chan = local->passive_scan_channel;
+-		local->passive_scan_state = PASSIVE_SCAN_WAIT;
+-		local->passive_scan_timer.expires = jiffies + HZ / 10;
+-	} else {
+-		chan = local->channel;
+-		local->passive_scan_state = PASSIVE_SCAN_LISTEN;
+-		local->passive_scan_timer.expires = jiffies +
+-			local->passive_scan_interval * HZ;
+-	}
+-
+-	if (hfa384x_cmd_callback(dev, HFA384X_CMDCODE_TEST |
+-				 (HFA384X_TEST_CHANGE_CHANNEL << 8),
+-				 chan, NULL, 0))
+-		printk(KERN_ERR "%s: passive scan channel set %d "
+-		       "failed\n", dev->name, chan);
+-
+-	add_timer(&local->passive_scan_timer);
+-}
+-
+-
+-/* Called only as a scheduled task when communications quality values should
+- * be updated. */
+-static void handle_comms_qual_update(struct work_struct *work)
+-{
+-	local_info_t *local =
+-		container_of(work, local_info_t, comms_qual_update);
+-	prism2_update_comms_qual(local->dev);
+-}
+-
+-
+-/* Software watchdog - called as a timer. Hardware interrupt (Tick event) is
+- * used to monitor that local->last_tick_timer is being updated. If not,
+- * interrupt busy-loop is assumed and driver tries to recover by masking out
+- * some events. */
+-static void hostap_tick_timer(struct timer_list *t)
+-{
+-	static unsigned long last_inquire = 0;
+-	local_info_t *local = from_timer(local, t, tick_timer);
+-	local->last_tick_timer = jiffies;
+-
+-	/* Inquire CommTallies every 10 seconds to keep the statistics updated
+-	 * more often during low load and when using 32-bit tallies. */
+-	if ((!last_inquire || time_after(jiffies, last_inquire + 10 * HZ)) &&
+-	    !local->hw_downloading && local->hw_ready &&
+-	    !local->hw_resetting && local->dev_enabled) {
+-		hfa384x_cmd_callback(local->dev, HFA384X_CMDCODE_INQUIRE,
+-				     HFA384X_INFO_COMMTALLIES, NULL, 0);
+-		last_inquire = jiffies;
+-	}
+-
+-	if ((local->last_comms_qual_update == 0 ||
+-	     time_after(jiffies, local->last_comms_qual_update + 10 * HZ)) &&
+-	    (local->iw_mode == IW_MODE_INFRA ||
+-	     local->iw_mode == IW_MODE_ADHOC)) {
+-		schedule_work(&local->comms_qual_update);
+-	}
+-
+-	local->tick_timer.expires = jiffies + 2 * HZ;
+-	add_timer(&local->tick_timer);
+-}
+-
+-
+-#if !defined(PRISM2_NO_PROCFS_DEBUG) && defined(CONFIG_PROC_FS)
+-static u16 hfa384x_read_reg(struct net_device *dev, u16 reg)
+-{
+-	return HFA384X_INW(reg);
+-}
+-
+-static int prism2_registers_proc_show(struct seq_file *m, void *v)
+-{
+-	local_info_t *local = m->private;
+-
+-#define SHOW_REG(n) \
+-  seq_printf(m, #n "=%04x\n", hfa384x_read_reg(local->dev, HFA384X_##n##_OFF))
+-
+-	SHOW_REG(CMD);
+-	SHOW_REG(PARAM0);
+-	SHOW_REG(PARAM1);
+-	SHOW_REG(PARAM2);
+-	SHOW_REG(STATUS);
+-	SHOW_REG(RESP0);
+-	SHOW_REG(RESP1);
+-	SHOW_REG(RESP2);
+-	SHOW_REG(INFOFID);
+-	SHOW_REG(CONTROL);
+-	SHOW_REG(SELECT0);
+-	SHOW_REG(SELECT1);
+-	SHOW_REG(OFFSET0);
+-	SHOW_REG(OFFSET1);
+-	SHOW_REG(RXFID);
+-	SHOW_REG(ALLOCFID);
+-	SHOW_REG(TXCOMPLFID);
+-	SHOW_REG(SWSUPPORT0);
+-	SHOW_REG(SWSUPPORT1);
+-	SHOW_REG(SWSUPPORT2);
+-	SHOW_REG(EVSTAT);
+-	SHOW_REG(INTEN);
+-	SHOW_REG(EVACK);
+-	/* Do not read data registers, because they change the state of the
+-	 * MAC (offset += 2) */
+-	/* SHOW_REG(DATA0); */
+-	/* SHOW_REG(DATA1); */
+-	SHOW_REG(AUXPAGE);
+-	SHOW_REG(AUXOFFSET);
+-	/* SHOW_REG(AUXDATA); */
+-#ifdef PRISM2_PCI
+-	SHOW_REG(PCICOR);
+-	SHOW_REG(PCIHCR);
+-	SHOW_REG(PCI_M0_ADDRH);
+-	SHOW_REG(PCI_M0_ADDRL);
+-	SHOW_REG(PCI_M0_LEN);
+-	SHOW_REG(PCI_M0_CTL);
+-	SHOW_REG(PCI_STATUS);
+-	SHOW_REG(PCI_M1_ADDRH);
+-	SHOW_REG(PCI_M1_ADDRL);
+-	SHOW_REG(PCI_M1_LEN);
+-	SHOW_REG(PCI_M1_CTL);
+-#endif /* PRISM2_PCI */
+-
+-	return 0;
+-}
+-#endif
+-
+-struct set_tim_data {
+-	struct list_head list;
+-	int aid;
+-	int set;
+-};
+-
+-static int prism2_set_tim(struct net_device *dev, int aid, int set)
+-{
+-	struct list_head *ptr;
+-	struct set_tim_data *new_entry;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	new_entry = kzalloc(sizeof(*new_entry), GFP_ATOMIC);
+-	if (new_entry == NULL)
+-		return -ENOMEM;
+-
+-	new_entry->aid = aid;
+-	new_entry->set = set;
+-
+-	spin_lock_bh(&local->set_tim_lock);
+-	list_for_each(ptr, &local->set_tim_list) {
+-		struct set_tim_data *entry =
+-			list_entry(ptr, struct set_tim_data, list);
+-		if (entry->aid == aid) {
+-			PDEBUG(DEBUG_PS2, "%s: prism2_set_tim: aid=%d "
+-			       "set=%d ==> %d\n",
+-			       local->dev->name, aid, entry->set, set);
+-			entry->set = set;
+-			kfree(new_entry);
+-			new_entry = NULL;
+-			break;
+-		}
+-	}
+-	if (new_entry)
+-		list_add_tail(&new_entry->list, &local->set_tim_list);
+-	spin_unlock_bh(&local->set_tim_lock);
+-
+-	schedule_work(&local->set_tim_queue);
+-
+-	return 0;
+-}
+-
+-
+-static void handle_set_tim_queue(struct work_struct *work)
+-{
+-	local_info_t *local = container_of(work, local_info_t, set_tim_queue);
+-	struct set_tim_data *entry;
+-	u16 val;
+-
+-	for (;;) {
+-		entry = NULL;
+-		spin_lock_bh(&local->set_tim_lock);
+-		if (!list_empty(&local->set_tim_list)) {
+-			entry = list_entry(local->set_tim_list.next,
+-					   struct set_tim_data, list);
+-			list_del(&entry->list);
+-		}
+-		spin_unlock_bh(&local->set_tim_lock);
+-		if (!entry)
+-			break;
+-
+-		PDEBUG(DEBUG_PS2, "%s: handle_set_tim_queue: aid=%d set=%d\n",
+-		       local->dev->name, entry->aid, entry->set);
+-
+-		val = entry->aid;
+-		if (entry->set)
+-			val |= 0x8000;
+-		if (hostap_set_word(local->dev, HFA384X_RID_CNFTIMCTRL, val)) {
+-			printk(KERN_DEBUG "%s: set_tim failed (aid=%d "
+-			       "set=%d)\n",
+-			       local->dev->name, entry->aid, entry->set);
+-		}
+-
+-		kfree(entry);
+-	}
+-}
+-
+-
+-static void prism2_clear_set_tim_queue(local_info_t *local)
+-{
+-	struct list_head *ptr, *n;
+-
+-	list_for_each_safe(ptr, n, &local->set_tim_list) {
+-		struct set_tim_data *entry;
+-		entry = list_entry(ptr, struct set_tim_data, list);
+-		list_del(&entry->list);
+-		kfree(entry);
+-	}
+-}
+-
+-
+-/*
+- * HostAP uses two layers of net devices, where the inner
+- * layer gets called all the time from the outer layer.
+- * This is a natural nesting, which needs a split lock type.
+- */
+-static struct lock_class_key hostap_netdev_xmit_lock_key;
+-static struct lock_class_key hostap_netdev_addr_lock_key;
+-
+-static void prism2_set_lockdep_class_one(struct net_device *dev,
+-					 struct netdev_queue *txq,
+-					 void *_unused)
+-{
+-	lockdep_set_class(&txq->_xmit_lock,
+-			  &hostap_netdev_xmit_lock_key);
+-}
+-
+-static void prism2_set_lockdep_class(struct net_device *dev)
+-{
+-	lockdep_set_class(&dev->addr_list_lock,
+-			  &hostap_netdev_addr_lock_key);
+-	netdev_for_each_tx_queue(dev, prism2_set_lockdep_class_one, NULL);
+-}
+-
+-static struct net_device *
+-prism2_init_local_data(struct prism2_helper_functions *funcs, int card_idx,
+-		       struct device *sdev)
+-{
+-	struct net_device *dev;
+-	struct hostap_interface *iface;
+-	struct local_info *local;
+-	int len, i, ret;
+-
+-	if (funcs == NULL)
+-		return NULL;
+-
+-	len = strlen(dev_template);
+-	if (len >= IFNAMSIZ || strstr(dev_template, "%d") == NULL) {
+-		printk(KERN_WARNING "hostap: Invalid dev_template='%s'\n",
+-		       dev_template);
+-		return NULL;
+-	}
+-
+-	len = sizeof(struct hostap_interface) +
+-		3 + sizeof(struct local_info) +
+-		3 + sizeof(struct ap_data);
+-
+-	dev = alloc_etherdev(len);
+-	if (dev == NULL)
+-		return NULL;
+-
+-	iface = netdev_priv(dev);
+-	local = (struct local_info *) ((((long) (iface + 1)) + 3) & ~3);
+-	local->ap = (struct ap_data *) ((((long) (local + 1)) + 3) & ~3);
+-	local->dev = iface->dev = dev;
+-	iface->local = local;
+-	iface->type = HOSTAP_INTERFACE_MASTER;
+-	INIT_LIST_HEAD(&local->hostap_interfaces);
+-
+-	local->hw_module = THIS_MODULE;
+-
+-#ifdef PRISM2_IO_DEBUG
+-	local->io_debug_enabled = 1;
+-#endif /* PRISM2_IO_DEBUG */
+-
+-	local->func = funcs;
+-	local->func->cmd = hfa384x_cmd;
+-	local->func->read_regs = hfa384x_read_regs;
+-	local->func->get_rid = hfa384x_get_rid;
+-	local->func->set_rid = hfa384x_set_rid;
+-	local->func->hw_enable = prism2_hw_enable;
+-	local->func->hw_config = prism2_hw_config;
+-	local->func->hw_reset = prism2_hw_reset;
+-	local->func->hw_shutdown = prism2_hw_shutdown;
+-	local->func->reset_port = prism2_reset_port;
+-	local->func->schedule_reset = prism2_schedule_reset;
+-#ifdef PRISM2_DOWNLOAD_SUPPORT
+-	local->func->read_aux_proc_ops = &prism2_download_aux_dump_proc_ops;
+-	local->func->download = prism2_download;
+-#endif /* PRISM2_DOWNLOAD_SUPPORT */
+-	local->func->tx = prism2_tx_80211;
+-	local->func->set_tim = prism2_set_tim;
+-	local->func->need_tx_headroom = 0; /* no need to add txdesc in
+-					    * skb->data (FIX: maybe for DMA bus
+-					    * mastering? */
+-
+-	local->mtu = mtu;
+-
+-	rwlock_init(&local->iface_lock);
+-	spin_lock_init(&local->txfidlock);
+-	spin_lock_init(&local->cmdlock);
+-	spin_lock_init(&local->baplock);
+-	spin_lock_init(&local->lock);
+-	spin_lock_init(&local->irq_init_lock);
+-	mutex_init(&local->rid_bap_mtx);
+-
+-	if (card_idx < 0 || card_idx >= MAX_PARM_DEVICES)
+-		card_idx = 0;
+-	local->card_idx = card_idx;
+-
+-	len = strlen(essid);
+-	memcpy(local->essid, essid,
+-	       len > MAX_SSID_LEN ? MAX_SSID_LEN : len);
+-	local->essid[MAX_SSID_LEN] = '\0';
+-	i = GET_INT_PARM(iw_mode, card_idx);
+-	if ((i >= IW_MODE_ADHOC && i <= IW_MODE_REPEAT) ||
+-	    i == IW_MODE_MONITOR) {
+-		local->iw_mode = i;
+-	} else {
+-		printk(KERN_WARNING "prism2: Unknown iw_mode %d; using "
+-		       "IW_MODE_MASTER\n", i);
+-		local->iw_mode = IW_MODE_MASTER;
+-	}
+-	local->channel = GET_INT_PARM(channel, card_idx);
+-	local->beacon_int = GET_INT_PARM(beacon_int, card_idx);
+-	local->dtim_period = GET_INT_PARM(dtim_period, card_idx);
+-	local->wds_max_connections = 16;
+-	local->tx_control = HFA384X_TX_CTRL_FLAGS;
+-	local->manual_retry_count = -1;
+-	local->rts_threshold = 2347;
+-	local->fragm_threshold = 2346;
+-	local->rssi_to_dBm = 100; /* default; to be overriden by
+-				   * cnfDbmAdjust, if available */
+-	local->auth_algs = PRISM2_AUTH_OPEN | PRISM2_AUTH_SHARED_KEY;
+-	local->sram_type = -1;
+-	local->scan_channel_mask = 0xffff;
+-	local->monitor_type = PRISM2_MONITOR_RADIOTAP;
+-
+-	/* Initialize task queue structures */
+-	INIT_WORK(&local->reset_queue, handle_reset_queue);
+-	INIT_WORK(&local->set_multicast_list_queue,
+-		  hostap_set_multicast_list_queue);
+-
+-	INIT_WORK(&local->set_tim_queue, handle_set_tim_queue);
+-	INIT_LIST_HEAD(&local->set_tim_list);
+-	spin_lock_init(&local->set_tim_lock);
+-
+-	INIT_WORK(&local->comms_qual_update, handle_comms_qual_update);
+-
+-	/* Initialize tasklets for handling hardware IRQ related operations
+-	 * outside hw IRQ handler */
+-	tasklet_setup(&local->bap_tasklet, hostap_bap_tasklet);
+-	tasklet_setup(&local->info_tasklet, hostap_info_tasklet);
+-	hostap_info_init(local);
+-
+-	tasklet_setup(&local->rx_tasklet, hostap_rx_tasklet);
+-	skb_queue_head_init(&local->rx_list);
+-
+-	tasklet_setup(&local->sta_tx_exc_tasklet,
+-			    hostap_sta_tx_exc_tasklet);
+-	skb_queue_head_init(&local->sta_tx_exc_list);
+-
+-	INIT_LIST_HEAD(&local->cmd_queue);
+-	init_waitqueue_head(&local->hostscan_wq);
+-
+-	lib80211_crypt_info_init(&local->crypt_info, dev->name, &local->lock);
+-
+-	timer_setup(&local->passive_scan_timer, hostap_passive_scan, 0);
+-	timer_setup(&local->tick_timer, hostap_tick_timer, 0);
+-	local->tick_timer.expires = jiffies + 2 * HZ;
+-	add_timer(&local->tick_timer);
+-
+-	INIT_LIST_HEAD(&local->bss_list);
+-
+-	hostap_setup_dev(dev, local, HOSTAP_INTERFACE_MASTER);
+-
+-	dev->type = ARPHRD_IEEE80211;
+-	dev->header_ops = &hostap_80211_ops;
+-
+-	rtnl_lock();
+-	ret = dev_alloc_name(dev, "wifi%d");
+-	SET_NETDEV_DEV(dev, sdev);
+-	if (ret >= 0)
+-		ret = register_netdevice(dev);
+-
+-	prism2_set_lockdep_class(dev);
+-	rtnl_unlock();
+-	if (ret < 0) {
+-		printk(KERN_WARNING "%s: register netdevice failed!\n",
+-		       dev_info);
+-		goto fail;
+-	}
+-	printk(KERN_INFO "%s: Registered netdevice %s\n", dev_info, dev->name);
+-
+-	hostap_init_data(local);
+-	return dev;
+-
+- fail:
+-	free_netdev(dev);
+-	return NULL;
+-}
+-
+-
+-static int hostap_hw_ready(struct net_device *dev)
+-{
+-	struct hostap_interface *iface;
+-	struct local_info *local;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-	local->ddev = hostap_add_interface(local, HOSTAP_INTERFACE_MAIN, 0,
+-					   "", dev_template);
+-
+-	if (local->ddev) {
+-		if (local->iw_mode == IW_MODE_INFRA ||
+-		    local->iw_mode == IW_MODE_ADHOC) {
+-			netif_carrier_off(local->dev);
+-			netif_carrier_off(local->ddev);
+-		}
+-		hostap_init_proc(local);
+-#ifndef PRISM2_NO_PROCFS_DEBUG
+-		proc_create_single_data("registers", 0, local->proc,
+-				 prism2_registers_proc_show, local);
+-#endif /* PRISM2_NO_PROCFS_DEBUG */
+-		hostap_init_ap_proc(local);
+-		return 0;
+-	}
+-
+-	return -1;
+-}
+-
+-
+-static void prism2_free_local_data(struct net_device *dev)
+-{
+-	struct hostap_tx_callback_info *tx_cb, *tx_cb_prev;
+-	int i;
+-	struct hostap_interface *iface;
+-	struct local_info *local;
+-	struct list_head *ptr, *n;
+-
+-	if (dev == NULL)
+-		return;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	/* Unregister all netdevs before freeing local data. */
+-	list_for_each_safe(ptr, n, &local->hostap_interfaces) {
+-		iface = list_entry(ptr, struct hostap_interface, list);
+-		if (iface->type == HOSTAP_INTERFACE_MASTER) {
+-			/* special handling for this interface below */
+-			continue;
+-		}
+-		hostap_remove_interface(iface->dev, 0, 1);
+-	}
+-
+-	unregister_netdev(local->dev);
+-
+-	flush_work(&local->reset_queue);
+-	flush_work(&local->set_multicast_list_queue);
+-	flush_work(&local->set_tim_queue);
+-#ifndef PRISM2_NO_STATION_MODES
+-	flush_work(&local->info_queue);
+-#endif
+-	flush_work(&local->comms_qual_update);
+-
+-	lib80211_crypt_info_free(&local->crypt_info);
+-
+-	if (timer_pending(&local->passive_scan_timer))
+-		del_timer(&local->passive_scan_timer);
+-
+-	if (timer_pending(&local->tick_timer))
+-		del_timer(&local->tick_timer);
+-
+-	prism2_clear_cmd_queue(local);
+-
+-	skb_queue_purge(&local->info_list);
+-	skb_queue_purge(&local->rx_list);
+-	skb_queue_purge(&local->sta_tx_exc_list);
+-
+-	if (local->dev_enabled)
+-		prism2_callback(local, PRISM2_CALLBACK_DISABLE);
+-
+-	if (local->ap != NULL)
+-		hostap_free_data(local->ap);
+-
+-#ifndef PRISM2_NO_PROCFS_DEBUG
+-	if (local->proc != NULL)
+-		remove_proc_entry("registers", local->proc);
+-#endif /* PRISM2_NO_PROCFS_DEBUG */
+-	hostap_remove_proc(local);
+-
+-	tx_cb = local->tx_callback;
+-	while (tx_cb != NULL) {
+-		tx_cb_prev = tx_cb;
+-		tx_cb = tx_cb->next;
+-		kfree(tx_cb_prev);
+-	}
+-
+-	hostap_set_hostapd(local, 0, 0);
+-	hostap_set_hostapd_sta(local, 0, 0);
+-
+-	for (i = 0; i < PRISM2_FRAG_CACHE_LEN; i++) {
+-		if (local->frag_cache[i].skb != NULL)
+-			dev_kfree_skb(local->frag_cache[i].skb);
+-	}
+-
+-#ifdef PRISM2_DOWNLOAD_SUPPORT
+-	prism2_download_free_data(local->dl_pri);
+-	prism2_download_free_data(local->dl_sec);
+-#endif /* PRISM2_DOWNLOAD_SUPPORT */
+-
+-	prism2_clear_set_tim_queue(local);
+-
+-	list_for_each_safe(ptr, n, &local->bss_list) {
+-		struct hostap_bss_info *bss =
+-			list_entry(ptr, struct hostap_bss_info, list);
+-		kfree(bss);
+-	}
+-
+-	kfree(local->pda);
+-	kfree(local->last_scan_results);
+-	kfree(local->generic_elem);
+-
+-	free_netdev(local->dev);
+-}
+-
+-
+-#if defined(PRISM2_PCI) || defined(PRISM2_PCCARD)
+-static void __maybe_unused prism2_suspend(struct net_device *dev)
+-{
+-	struct hostap_interface *iface;
+-	struct local_info *local;
+-	union iwreq_data wrqu;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	/* Send disconnect event, e.g., to trigger reassociation after resume
+-	 * if wpa_supplicant is used. */
+-	memset(&wrqu, 0, sizeof(wrqu));
+-	wrqu.ap_addr.sa_family = ARPHRD_ETHER;
+-	wireless_send_event(local->dev, SIOCGIWAP, &wrqu, NULL);
+-
+-	/* Disable hardware and firmware */
+-	prism2_hw_shutdown(dev, 0);
+-}
+-#endif /* PRISM2_PCI || PRISM2_PCCARD */
+-
+-
+-/* These might at some point be compiled separately and used as separate
+- * kernel modules or linked into one */
+-#ifdef PRISM2_DOWNLOAD_SUPPORT
+-#include "hostap_download.c"
+-#endif /* PRISM2_DOWNLOAD_SUPPORT */
+-
+-#ifdef PRISM2_CALLBACK
+-/* External hostap_callback.c file can be used to, e.g., blink activity led.
+- * This can use platform specific code and must define prism2_callback()
+- * function (if PRISM2_CALLBACK is not defined, these function calls are not
+- * used. */
+-#include "hostap_callback.c"
+-#endif /* PRISM2_CALLBACK */
+diff --git a/drivers/net/wireless/intersil/hostap/hostap_info.c b/drivers/net/wireless/intersil/hostap/hostap_info.c
+deleted file mode 100644
+index da8c30f10d923..0000000000000
+--- a/drivers/net/wireless/intersil/hostap/hostap_info.c
++++ /dev/null
+@@ -1,509 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/* Host AP driver Info Frame processing (part of hostap.o module) */
+-
+-#include <linux/if_arp.h>
+-#include <linux/sched.h>
+-#include <linux/slab.h>
+-#include <linux/export.h>
+-#include <linux/etherdevice.h>
+-#include "hostap_wlan.h"
+-#include "hostap.h"
+-#include "hostap_ap.h"
+-
+-/* Called only as a tasklet (software IRQ) */
+-static void prism2_info_commtallies16(local_info_t *local, unsigned char *buf,
+-				      int left)
+-{
+-	struct hfa384x_comm_tallies *tallies;
+-
+-	if (left < sizeof(struct hfa384x_comm_tallies)) {
+-		printk(KERN_DEBUG "%s: too short (len=%d) commtallies "
+-		       "info frame\n", local->dev->name, left);
+-		return;
+-	}
+-
+-	tallies = (struct hfa384x_comm_tallies *) buf;
+-#define ADD_COMM_TALLIES(name) \
+-local->comm_tallies.name += le16_to_cpu(tallies->name)
+-	ADD_COMM_TALLIES(tx_unicast_frames);
+-	ADD_COMM_TALLIES(tx_multicast_frames);
+-	ADD_COMM_TALLIES(tx_fragments);
+-	ADD_COMM_TALLIES(tx_unicast_octets);
+-	ADD_COMM_TALLIES(tx_multicast_octets);
+-	ADD_COMM_TALLIES(tx_deferred_transmissions);
+-	ADD_COMM_TALLIES(tx_single_retry_frames);
+-	ADD_COMM_TALLIES(tx_multiple_retry_frames);
+-	ADD_COMM_TALLIES(tx_retry_limit_exceeded);
+-	ADD_COMM_TALLIES(tx_discards);
+-	ADD_COMM_TALLIES(rx_unicast_frames);
+-	ADD_COMM_TALLIES(rx_multicast_frames);
+-	ADD_COMM_TALLIES(rx_fragments);
+-	ADD_COMM_TALLIES(rx_unicast_octets);
+-	ADD_COMM_TALLIES(rx_multicast_octets);
+-	ADD_COMM_TALLIES(rx_fcs_errors);
+-	ADD_COMM_TALLIES(rx_discards_no_buffer);
+-	ADD_COMM_TALLIES(tx_discards_wrong_sa);
+-	ADD_COMM_TALLIES(rx_discards_wep_undecryptable);
+-	ADD_COMM_TALLIES(rx_message_in_msg_fragments);
+-	ADD_COMM_TALLIES(rx_message_in_bad_msg_fragments);
+-#undef ADD_COMM_TALLIES
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static void prism2_info_commtallies32(local_info_t *local, unsigned char *buf,
+-				      int left)
+-{
+-	struct hfa384x_comm_tallies32 *tallies;
+-
+-	if (left < sizeof(struct hfa384x_comm_tallies32)) {
+-		printk(KERN_DEBUG "%s: too short (len=%d) commtallies32 "
+-		       "info frame\n", local->dev->name, left);
+-		return;
+-	}
+-
+-	tallies = (struct hfa384x_comm_tallies32 *) buf;
+-#define ADD_COMM_TALLIES(name) \
+-local->comm_tallies.name += le32_to_cpu(tallies->name)
+-	ADD_COMM_TALLIES(tx_unicast_frames);
+-	ADD_COMM_TALLIES(tx_multicast_frames);
+-	ADD_COMM_TALLIES(tx_fragments);
+-	ADD_COMM_TALLIES(tx_unicast_octets);
+-	ADD_COMM_TALLIES(tx_multicast_octets);
+-	ADD_COMM_TALLIES(tx_deferred_transmissions);
+-	ADD_COMM_TALLIES(tx_single_retry_frames);
+-	ADD_COMM_TALLIES(tx_multiple_retry_frames);
+-	ADD_COMM_TALLIES(tx_retry_limit_exceeded);
+-	ADD_COMM_TALLIES(tx_discards);
+-	ADD_COMM_TALLIES(rx_unicast_frames);
+-	ADD_COMM_TALLIES(rx_multicast_frames);
+-	ADD_COMM_TALLIES(rx_fragments);
+-	ADD_COMM_TALLIES(rx_unicast_octets);
+-	ADD_COMM_TALLIES(rx_multicast_octets);
+-	ADD_COMM_TALLIES(rx_fcs_errors);
+-	ADD_COMM_TALLIES(rx_discards_no_buffer);
+-	ADD_COMM_TALLIES(tx_discards_wrong_sa);
+-	ADD_COMM_TALLIES(rx_discards_wep_undecryptable);
+-	ADD_COMM_TALLIES(rx_message_in_msg_fragments);
+-	ADD_COMM_TALLIES(rx_message_in_bad_msg_fragments);
+-#undef ADD_COMM_TALLIES
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static void prism2_info_commtallies(local_info_t *local, unsigned char *buf,
+-				    int left)
+-{
+-	if (local->tallies32)
+-		prism2_info_commtallies32(local, buf, left);
+-	else
+-		prism2_info_commtallies16(local, buf, left);
+-}
+-
+-
+-#ifndef PRISM2_NO_STATION_MODES
+-#ifndef PRISM2_NO_DEBUG
+-static const char* hfa384x_linkstatus_str(u16 linkstatus)
+-{
+-	switch (linkstatus) {
+-	case HFA384X_LINKSTATUS_CONNECTED:
+-		return "Connected";
+-	case HFA384X_LINKSTATUS_DISCONNECTED:
+-		return "Disconnected";
+-	case HFA384X_LINKSTATUS_AP_CHANGE:
+-		return "Access point change";
+-	case HFA384X_LINKSTATUS_AP_OUT_OF_RANGE:
+-		return "Access point out of range";
+-	case HFA384X_LINKSTATUS_AP_IN_RANGE:
+-		return "Access point in range";
+-	case HFA384X_LINKSTATUS_ASSOC_FAILED:
+-		return "Association failed";
+-	default:
+-		return "Unknown";
+-	}
+-}
+-#endif /* PRISM2_NO_DEBUG */
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static void prism2_info_linkstatus(local_info_t *local, unsigned char *buf,
+-				    int left)
+-{
+-	u16 val;
+-	int non_sta_mode;
+-
+-	/* Alloc new JoinRequests to occur since LinkStatus for the previous
+-	 * has been received */
+-	local->last_join_time = 0;
+-
+-	if (left != 2) {
+-		printk(KERN_DEBUG "%s: invalid linkstatus info frame "
+-		       "length %d\n", local->dev->name, left);
+-		return;
+-	}
+-
+-	non_sta_mode = local->iw_mode == IW_MODE_MASTER ||
+-		local->iw_mode == IW_MODE_REPEAT ||
+-		local->iw_mode == IW_MODE_MONITOR;
+-
+-	val = buf[0] | (buf[1] << 8);
+-	if (!non_sta_mode || val != HFA384X_LINKSTATUS_DISCONNECTED) {
+-		PDEBUG(DEBUG_EXTRA, "%s: LinkStatus=%d (%s)\n",
+-		       local->dev->name, val, hfa384x_linkstatus_str(val));
+-	}
+-
+-	if (non_sta_mode) {
+-		netif_carrier_on(local->dev);
+-		netif_carrier_on(local->ddev);
+-		return;
+-	}
+-
+-	/* Get current BSSID later in scheduled task */
+-	set_bit(PRISM2_INFO_PENDING_LINKSTATUS, &local->pending_info);
+-	local->prev_link_status = val;
+-	schedule_work(&local->info_queue);
+-}
+-
+-
+-static void prism2_host_roaming(local_info_t *local)
+-{
+-	struct hfa384x_join_request req;
+-	struct net_device *dev = local->dev;
+-	struct hfa384x_hostscan_result *selected, *entry;
+-	int i;
+-	unsigned long flags;
+-
+-	if (local->last_join_time &&
+-	    time_before(jiffies, local->last_join_time + 10 * HZ)) {
+-		PDEBUG(DEBUG_EXTRA, "%s: last join request has not yet been "
+-		       "completed - waiting for it before issuing new one\n",
+-		       dev->name);
+-		return;
+-	}
+-
+-	/* ScanResults are sorted: first ESS results in decreasing signal
+-	 * quality then IBSS results in similar order.
+-	 * Trivial roaming policy: just select the first entry.
+-	 * This could probably be improved by adding hysteresis to limit
+-	 * number of handoffs, etc.
+-	 *
+-	 * Could do periodic RID_SCANREQUEST or Inquire F101 to get new
+-	 * ScanResults */
+-	spin_lock_irqsave(&local->lock, flags);
+-	if (local->last_scan_results == NULL ||
+-	    local->last_scan_results_count == 0) {
+-		spin_unlock_irqrestore(&local->lock, flags);
+-		PDEBUG(DEBUG_EXTRA, "%s: no scan results for host roaming\n",
+-		       dev->name);
+-		return;
+-	}
+-
+-	selected = &local->last_scan_results[0];
+-
+-	if (local->preferred_ap[0] || local->preferred_ap[1] ||
+-	    local->preferred_ap[2] || local->preferred_ap[3] ||
+-	    local->preferred_ap[4] || local->preferred_ap[5]) {
+-		/* Try to find preferred AP */
+-		PDEBUG(DEBUG_EXTRA, "%s: Preferred AP BSSID %pM\n",
+-		       dev->name, local->preferred_ap);
+-		for (i = 0; i < local->last_scan_results_count; i++) {
+-			entry = &local->last_scan_results[i];
+-			if (memcmp(local->preferred_ap, entry->bssid, 6) == 0)
+-			{
+-				PDEBUG(DEBUG_EXTRA, "%s: using preferred AP "
+-				       "selection\n", dev->name);
+-				selected = entry;
+-				break;
+-			}
+-		}
+-	}
+-
+-	memcpy(req.bssid, selected->bssid, ETH_ALEN);
+-	req.channel = selected->chid;
+-	spin_unlock_irqrestore(&local->lock, flags);
+-
+-	PDEBUG(DEBUG_EXTRA, "%s: JoinRequest: BSSID=%pM"
+-	       " channel=%d\n",
+-	       dev->name, req.bssid, le16_to_cpu(req.channel));
+-	if (local->func->set_rid(dev, HFA384X_RID_JOINREQUEST, &req,
+-				 sizeof(req))) {
+-		printk(KERN_DEBUG "%s: JoinRequest failed\n", dev->name);
+-	}
+-	local->last_join_time = jiffies;
+-}
+-
+-
+-static void hostap_report_scan_complete(local_info_t *local)
+-{
+-	union iwreq_data wrqu;
+-
+-	/* Inform user space about new scan results (just empty event,
+-	 * SIOCGIWSCAN can be used to fetch data */
+-	wrqu.data.length = 0;
+-	wrqu.data.flags = 0;
+-	wireless_send_event(local->dev, SIOCGIWSCAN, &wrqu, NULL);
+-
+-	/* Allow SIOCGIWSCAN handling to occur since we have received
+-	 * scanning result */
+-	local->scan_timestamp = 0;
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static void prism2_info_scanresults(local_info_t *local, unsigned char *buf,
+-				    int left)
+-{
+-	u16 *pos;
+-	int new_count, i;
+-	unsigned long flags;
+-	struct hfa384x_scan_result *res;
+-	struct hfa384x_hostscan_result *results, *prev;
+-
+-	if (left < 4) {
+-		printk(KERN_DEBUG "%s: invalid scanresult info frame "
+-		       "length %d\n", local->dev->name, left);
+-		return;
+-	}
+-
+-	pos = (u16 *) buf;
+-	pos++;
+-	pos++;
+-	left -= 4;
+-
+-	new_count = left / sizeof(struct hfa384x_scan_result);
+-	results = kmalloc_array(new_count,
+-				sizeof(struct hfa384x_hostscan_result),
+-				GFP_ATOMIC);
+-	if (results == NULL)
+-		return;
+-
+-	/* Convert to hostscan result format. */
+-	res = (struct hfa384x_scan_result *) pos;
+-	for (i = 0; i < new_count; i++) {
+-		memcpy(&results[i], &res[i],
+-		       sizeof(struct hfa384x_scan_result));
+-		results[i].atim = 0;
+-	}
+-
+-	spin_lock_irqsave(&local->lock, flags);
+-	local->last_scan_type = PRISM2_SCAN;
+-	prev = local->last_scan_results;
+-	local->last_scan_results = results;
+-	local->last_scan_results_count = new_count;
+-	spin_unlock_irqrestore(&local->lock, flags);
+-	kfree(prev);
+-
+-	hostap_report_scan_complete(local);
+-
+-	/* Perform rest of ScanResults handling later in scheduled task */
+-	set_bit(PRISM2_INFO_PENDING_SCANRESULTS, &local->pending_info);
+-	schedule_work(&local->info_queue);
+-}
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-static void prism2_info_hostscanresults(local_info_t *local,
+-					unsigned char *buf, int left)
+-{
+-	int i, result_size, copy_len, new_count;
+-	struct hfa384x_hostscan_result *results, *prev;
+-	unsigned long flags;
+-	__le16 *pos;
+-	u8 *ptr;
+-
+-	wake_up_interruptible(&local->hostscan_wq);
+-
+-	if (left < 4) {
+-		printk(KERN_DEBUG "%s: invalid hostscanresult info frame "
+-		       "length %d\n", local->dev->name, left);
+-		return;
+-	}
+-
+-	pos = (__le16 *) buf;
+-	copy_len = result_size = le16_to_cpu(*pos);
+-	if (result_size == 0) {
+-		printk(KERN_DEBUG "%s: invalid result_size (0) in "
+-		       "hostscanresults\n", local->dev->name);
+-		return;
+-	}
+-	if (copy_len > sizeof(struct hfa384x_hostscan_result))
+-		copy_len = sizeof(struct hfa384x_hostscan_result);
+-
+-	pos++;
+-	pos++;
+-	left -= 4;
+-	ptr = (u8 *) pos;
+-
+-	new_count = left / result_size;
+-	results = kcalloc(new_count, sizeof(struct hfa384x_hostscan_result),
+-			  GFP_ATOMIC);
+-	if (results == NULL)
+-		return;
+-
+-	for (i = 0; i < new_count; i++) {
+-		memcpy(&results[i], ptr, copy_len);
+-		ptr += result_size;
+-		left -= result_size;
+-	}
+-
+-	if (left) {
+-		printk(KERN_DEBUG "%s: short HostScan result entry (%d/%d)\n",
+-		       local->dev->name, left, result_size);
+-	}
+-
+-	spin_lock_irqsave(&local->lock, flags);
+-	local->last_scan_type = PRISM2_HOSTSCAN;
+-	prev = local->last_scan_results;
+-	local->last_scan_results = results;
+-	local->last_scan_results_count = new_count;
+-	spin_unlock_irqrestore(&local->lock, flags);
+-	kfree(prev);
+-
+-	hostap_report_scan_complete(local);
+-}
+-#endif /* PRISM2_NO_STATION_MODES */
+-
+-
+-/* Called only as a tasklet (software IRQ) */
+-void hostap_info_process(local_info_t *local, struct sk_buff *skb)
+-{
+-	struct hfa384x_info_frame *info;
+-	unsigned char *buf;
+-	int left;
+-#ifndef PRISM2_NO_DEBUG
+-	int i;
+-#endif /* PRISM2_NO_DEBUG */
+-
+-	info = (struct hfa384x_info_frame *) skb->data;
+-	buf = skb->data + sizeof(*info);
+-	left = skb->len - sizeof(*info);
+-
+-	switch (le16_to_cpu(info->type)) {
+-	case HFA384X_INFO_COMMTALLIES:
+-		prism2_info_commtallies(local, buf, left);
+-		break;
+-
+-#ifndef PRISM2_NO_STATION_MODES
+-	case HFA384X_INFO_LINKSTATUS:
+-		prism2_info_linkstatus(local, buf, left);
+-		break;
+-
+-	case HFA384X_INFO_SCANRESULTS:
+-		prism2_info_scanresults(local, buf, left);
+-		break;
+-
+-	case HFA384X_INFO_HOSTSCANRESULTS:
+-		prism2_info_hostscanresults(local, buf, left);
+-		break;
+-#endif /* PRISM2_NO_STATION_MODES */
+-
+-#ifndef PRISM2_NO_DEBUG
+-	default:
+-		PDEBUG(DEBUG_EXTRA, "%s: INFO - len=%d type=0x%04x\n",
+-		       local->dev->name, le16_to_cpu(info->len),
+-		       le16_to_cpu(info->type));
+-		PDEBUG(DEBUG_EXTRA, "Unknown info frame:");
+-		for (i = 0; i < (left < 100 ? left : 100); i++)
+-			PDEBUG2(DEBUG_EXTRA, " %02x", buf[i]);
+-		PDEBUG2(DEBUG_EXTRA, "\n");
+-		break;
+-#endif /* PRISM2_NO_DEBUG */
+-	}
+-}
+-
+-
+-#ifndef PRISM2_NO_STATION_MODES
+-static void handle_info_queue_linkstatus(local_info_t *local)
+-{
+-	int val = local->prev_link_status;
+-	int connected;
+-	union iwreq_data wrqu;
+-
+-	connected =
+-		val == HFA384X_LINKSTATUS_CONNECTED ||
+-		val == HFA384X_LINKSTATUS_AP_CHANGE ||
+-		val == HFA384X_LINKSTATUS_AP_IN_RANGE;
+-
+-	if (local->func->get_rid(local->dev, HFA384X_RID_CURRENTBSSID,
+-				 local->bssid, ETH_ALEN, 1) < 0) {
+-		printk(KERN_DEBUG "%s: could not read CURRENTBSSID after "
+-		       "LinkStatus event\n", local->dev->name);
+-	} else {
+-		PDEBUG(DEBUG_EXTRA, "%s: LinkStatus: BSSID=%pM\n",
+-		       local->dev->name,
+-		       (unsigned char *) local->bssid);
+-		if (local->wds_type & HOSTAP_WDS_AP_CLIENT)
+-			hostap_add_sta(local->ap, local->bssid);
+-	}
+-
+-	/* Get BSSID if we have a valid AP address */
+-	if (connected) {
+-		netif_carrier_on(local->dev);
+-		netif_carrier_on(local->ddev);
+-		memcpy(wrqu.ap_addr.sa_data, local->bssid, ETH_ALEN);
+-	} else {
+-		netif_carrier_off(local->dev);
+-		netif_carrier_off(local->ddev);
+-		eth_zero_addr(wrqu.ap_addr.sa_data);
+-	}
+-	wrqu.ap_addr.sa_family = ARPHRD_ETHER;
+-
+-	/*
+-	 * Filter out sequential disconnect events in order not to cause a
+-	 * flood of SIOCGIWAP events that have a race condition with EAPOL
+-	 * frames and can confuse wpa_supplicant about the current association
+-	 * status.
+-	 */
+-	if (connected || local->prev_linkstatus_connected)
+-		wireless_send_event(local->dev, SIOCGIWAP, &wrqu, NULL);
+-	local->prev_linkstatus_connected = connected;
+-}
+-
+-
+-static void handle_info_queue_scanresults(local_info_t *local)
+-{
+-	if (local->host_roaming == 1 && local->iw_mode == IW_MODE_INFRA)
+-		prism2_host_roaming(local);
+-
+-	if (local->host_roaming == 2 && local->iw_mode == IW_MODE_INFRA &&
+-	    !is_zero_ether_addr(local->preferred_ap)) {
+-		/*
+-		 * Firmware seems to be getting into odd state in host_roaming
+-		 * mode 2 when hostscan is used without join command, so try
+-		 * to fix this by re-joining the current AP. This does not
+-		 * actually trigger a new association if the current AP is
+-		 * still in the scan results.
+-		 */
+-		prism2_host_roaming(local);
+-	}
+-}
+-
+-
+-/* Called only as scheduled task after receiving info frames (used to avoid
+- * pending too much time in HW IRQ handler). */
+-static void handle_info_queue(struct work_struct *work)
+-{
+-	local_info_t *local = container_of(work, local_info_t, info_queue);
+-
+-	if (test_and_clear_bit(PRISM2_INFO_PENDING_LINKSTATUS,
+-			       &local->pending_info))
+-		handle_info_queue_linkstatus(local);
+-
+-	if (test_and_clear_bit(PRISM2_INFO_PENDING_SCANRESULTS,
+-			       &local->pending_info))
+-		handle_info_queue_scanresults(local);
+-}
+-#endif /* PRISM2_NO_STATION_MODES */
+-
+-
+-void hostap_info_init(local_info_t *local)
+-{
+-	skb_queue_head_init(&local->info_list);
+-#ifndef PRISM2_NO_STATION_MODES
+-	INIT_WORK(&local->info_queue, handle_info_queue);
+-#endif /* PRISM2_NO_STATION_MODES */
+-}
+-
+-
+-EXPORT_SYMBOL(hostap_info_init);
+-EXPORT_SYMBOL(hostap_info_process);
+diff --git a/drivers/net/wireless/intersil/hostap/hostap_ioctl.c b/drivers/net/wireless/intersil/hostap/hostap_ioctl.c
+deleted file mode 100644
+index b4adfc190ae87..0000000000000
+--- a/drivers/net/wireless/intersil/hostap/hostap_ioctl.c
++++ /dev/null
+@@ -1,4075 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/* ioctl() (mostly Linux Wireless Extensions) routines for Host AP driver */
+-
+-#include <linux/slab.h>
+-#include <linux/types.h>
+-#include <linux/sched/signal.h>
+-#include <linux/ethtool.h>
+-#include <linux/if_arp.h>
+-#include <linux/module.h>
+-#include <linux/etherdevice.h>
+-#include <net/lib80211.h>
+-
+-#include "hostap_wlan.h"
+-#include "hostap.h"
+-#include "hostap_ap.h"
+-
+-static struct iw_statistics *hostap_get_wireless_stats(struct net_device *dev)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	struct iw_statistics *wstats;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	/* Why are we doing that ? Jean II */
+-	if (iface->type != HOSTAP_INTERFACE_MAIN)
+-		return NULL;
+-
+-	wstats = &local->wstats;
+-
+-	wstats->status = 0;
+-	wstats->discard.code =
+-		local->comm_tallies.rx_discards_wep_undecryptable;
+-	wstats->discard.misc =
+-		local->comm_tallies.rx_fcs_errors +
+-		local->comm_tallies.rx_discards_no_buffer +
+-		local->comm_tallies.tx_discards_wrong_sa;
+-
+-	wstats->discard.retries =
+-		local->comm_tallies.tx_retry_limit_exceeded;
+-	wstats->discard.fragment =
+-		local->comm_tallies.rx_message_in_bad_msg_fragments;
+-
+-	if (local->iw_mode != IW_MODE_MASTER &&
+-	    local->iw_mode != IW_MODE_REPEAT) {
+-
+-		if (prism2_update_comms_qual(dev) == 0)
+-			wstats->qual.updated = IW_QUAL_ALL_UPDATED |
+-				IW_QUAL_DBM;
+-
+-		wstats->qual.qual = local->comms_qual;
+-		wstats->qual.level = local->avg_signal;
+-		wstats->qual.noise = local->avg_noise;
+-	} else {
+-		wstats->qual.qual = 0;
+-		wstats->qual.level = 0;
+-		wstats->qual.noise = 0;
+-		wstats->qual.updated = IW_QUAL_ALL_INVALID;
+-	}
+-
+-	return wstats;
+-}
+-
+-
+-static int prism2_get_datarates(struct net_device *dev, u8 *rates)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	u8 buf[12];
+-	int len;
+-	u16 val;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	len = local->func->get_rid(dev, HFA384X_RID_SUPPORTEDDATARATES, buf,
+-				   sizeof(buf), 0);
+-	if (len < 2)
+-		return 0;
+-
+-	val = le16_to_cpu(*(__le16 *) buf); /* string length */
+-
+-	if (len - 2 < val || val > 10)
+-		return 0;
+-
+-	memcpy(rates, buf + 2, val);
+-	return val;
+-}
+-
+-
+-static int prism2_get_name(struct net_device *dev,
+-			   struct iw_request_info *info,
+-			   union iwreq_data *wrqu, char *extra)
+-{
+-	u8 rates[10];
+-	int len, i, over2 = 0;
+-
+-	len = prism2_get_datarates(dev, rates);
+-
+-	for (i = 0; i < len; i++) {
+-		if (rates[i] == 0x0b || rates[i] == 0x16) {
+-			over2 = 1;
+-			break;
+-		}
+-	}
+-
+-	strcpy(wrqu->name, over2 ? "IEEE 802.11b" : "IEEE 802.11-DS");
+-
+-	return 0;
+-}
+-
+-
+-static int prism2_ioctl_siwencode(struct net_device *dev,
+-				  struct iw_request_info *info,
+-				  union iwreq_data *wrqu, char *keybuf)
+-{
+-	struct iw_point *erq = &wrqu->encoding;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int i;
+-	struct lib80211_crypt_data **crypt;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	i = erq->flags & IW_ENCODE_INDEX;
+-	if (i < 1 || i > 4)
+-		i = local->crypt_info.tx_keyidx;
+-	else
+-		i--;
+-	if (i < 0 || i >= WEP_KEYS)
+-		return -EINVAL;
+-
+-	crypt = &local->crypt_info.crypt[i];
+-
+-	if (erq->flags & IW_ENCODE_DISABLED) {
+-		if (*crypt)
+-			lib80211_crypt_delayed_deinit(&local->crypt_info, crypt);
+-		goto done;
+-	}
+-
+-	if (*crypt != NULL && (*crypt)->ops != NULL &&
+-	    strcmp((*crypt)->ops->name, "WEP") != 0) {
+-		/* changing to use WEP; deinit previously used algorithm */
+-		lib80211_crypt_delayed_deinit(&local->crypt_info, crypt);
+-	}
+-
+-	if (*crypt == NULL) {
+-		struct lib80211_crypt_data *new_crypt;
+-
+-		/* take WEP into use */
+-		new_crypt = kzalloc(sizeof(struct lib80211_crypt_data),
+-				GFP_KERNEL);
+-		if (new_crypt == NULL)
+-			return -ENOMEM;
+-		new_crypt->ops = lib80211_get_crypto_ops("WEP");
+-		if (!new_crypt->ops) {
+-			request_module("lib80211_crypt_wep");
+-			new_crypt->ops = lib80211_get_crypto_ops("WEP");
+-		}
+-		if (new_crypt->ops && try_module_get(new_crypt->ops->owner))
+-			new_crypt->priv = new_crypt->ops->init(i);
+-		if (!new_crypt->ops || !new_crypt->priv) {
+-			kfree(new_crypt);
+-			new_crypt = NULL;
+-
+-			printk(KERN_WARNING "%s: could not initialize WEP: "
+-			       "load module hostap_crypt_wep.o\n",
+-			       dev->name);
+-			return -EOPNOTSUPP;
+-		}
+-		*crypt = new_crypt;
+-	}
+-
+-	if (erq->length > 0) {
+-		int len = erq->length <= 5 ? 5 : 13;
+-		int first = 1, j;
+-		if (len > erq->length)
+-			memset(keybuf + erq->length, 0, len - erq->length);
+-		(*crypt)->ops->set_key(keybuf, len, NULL, (*crypt)->priv);
+-		for (j = 0; j < WEP_KEYS; j++) {
+-			if (j != i && local->crypt_info.crypt[j]) {
+-				first = 0;
+-				break;
+-			}
+-		}
+-		if (first)
+-			local->crypt_info.tx_keyidx = i;
+-	} else {
+-		/* No key data - just set the default TX key index */
+-		local->crypt_info.tx_keyidx = i;
+-	}
+-
+- done:
+-	local->open_wep = erq->flags & IW_ENCODE_OPEN;
+-
+-	if (hostap_set_encryption(local)) {
+-		printk(KERN_DEBUG "%s: set_encryption failed\n", dev->name);
+-		return -EINVAL;
+-	}
+-
+-	/* Do not reset port0 if card is in Managed mode since resetting will
+-	 * generate new IEEE 802.11 authentication which may end up in looping
+-	 * with IEEE 802.1X. Prism2 documentation seem to require port reset
+-	 * after WEP configuration. However, keys are apparently changed at
+-	 * least in Managed mode. */
+-	if (local->iw_mode != IW_MODE_INFRA && local->func->reset_port(dev)) {
+-		printk(KERN_DEBUG "%s: reset_port failed\n", dev->name);
+-		return -EINVAL;
+-	}
+-
+-	return 0;
+-}
+-
+-
+-static int prism2_ioctl_giwencode(struct net_device *dev,
+-				  struct iw_request_info *info,
+-				  union iwreq_data *wrqu, char *key)
+-{
+-	struct iw_point *erq = &wrqu->encoding;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int i, len;
+-	u16 val;
+-	struct lib80211_crypt_data *crypt;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	i = erq->flags & IW_ENCODE_INDEX;
+-	if (i < 1 || i > 4)
+-		i = local->crypt_info.tx_keyidx;
+-	else
+-		i--;
+-	if (i < 0 || i >= WEP_KEYS)
+-		return -EINVAL;
+-
+-	crypt = local->crypt_info.crypt[i];
+-	erq->flags = i + 1;
+-
+-	if (crypt == NULL || crypt->ops == NULL) {
+-		erq->length = 0;
+-		erq->flags |= IW_ENCODE_DISABLED;
+-		return 0;
+-	}
+-
+-	if (strcmp(crypt->ops->name, "WEP") != 0) {
+-		/* only WEP is supported with wireless extensions, so just
+-		 * report that encryption is used */
+-		erq->length = 0;
+-		erq->flags |= IW_ENCODE_ENABLED;
+-		return 0;
+-	}
+-
+-	/* Reads from HFA384X_RID_CNFDEFAULTKEY* return bogus values, so show
+-	 * the keys from driver buffer */
+-	len = crypt->ops->get_key(key, WEP_KEY_LEN, NULL, crypt->priv);
+-	erq->length = (len >= 0 ? len : 0);
+-
+-	if (local->func->get_rid(dev, HFA384X_RID_CNFWEPFLAGS, &val, 2, 1) < 0)
+-	{
+-		printk("CNFWEPFLAGS reading failed\n");
+-		return -EOPNOTSUPP;
+-	}
+-	le16_to_cpus(&val);
+-	if (val & HFA384X_WEPFLAGS_PRIVACYINVOKED)
+-		erq->flags |= IW_ENCODE_ENABLED;
+-	else
+-		erq->flags |= IW_ENCODE_DISABLED;
+-	if (val & HFA384X_WEPFLAGS_EXCLUDEUNENCRYPTED)
+-		erq->flags |= IW_ENCODE_RESTRICTED;
+-	else
+-		erq->flags |= IW_ENCODE_OPEN;
+-
+-	return 0;
+-}
+-
+-
+-static int hostap_set_rate(struct net_device *dev)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int ret, basic_rates;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	basic_rates = local->basic_rates & local->tx_rate_control;
+-	if (!basic_rates || basic_rates != local->basic_rates) {
+-		printk(KERN_INFO "%s: updating basic rate set automatically "
+-		       "to match with the new supported rate set\n",
+-		       dev->name);
+-		if (!basic_rates)
+-			basic_rates = local->tx_rate_control;
+-
+-		local->basic_rates = basic_rates;
+-		if (hostap_set_word(dev, HFA384X_RID_CNFBASICRATES,
+-				    basic_rates))
+-			printk(KERN_WARNING "%s: failed to set "
+-			       "cnfBasicRates\n", dev->name);
+-	}
+-
+-	ret = (hostap_set_word(dev, HFA384X_RID_TXRATECONTROL,
+-			       local->tx_rate_control) ||
+-	       hostap_set_word(dev, HFA384X_RID_CNFSUPPORTEDRATES,
+-			       local->tx_rate_control) ||
+-	       local->func->reset_port(dev));
+-
+-	if (ret) {
+-		printk(KERN_WARNING "%s: TXRateControl/cnfSupportedRates "
+-		       "setting to 0x%x failed\n",
+-		       dev->name, local->tx_rate_control);
+-	}
+-
+-	/* Update TX rate configuration for all STAs based on new operational
+-	 * rate set. */
+-	hostap_update_rates(local);
+-
+-	return ret;
+-}
+-
+-
+-static int prism2_ioctl_siwrate(struct net_device *dev,
+-				struct iw_request_info *info,
+-				union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_param *rrq = &wrqu->bitrate;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (rrq->fixed) {
+-		switch (rrq->value) {
+-		case 11000000:
+-			local->tx_rate_control = HFA384X_RATES_11MBPS;
+-			break;
+-		case 5500000:
+-			local->tx_rate_control = HFA384X_RATES_5MBPS;
+-			break;
+-		case 2000000:
+-			local->tx_rate_control = HFA384X_RATES_2MBPS;
+-			break;
+-		case 1000000:
+-			local->tx_rate_control = HFA384X_RATES_1MBPS;
+-			break;
+-		default:
+-			local->tx_rate_control = HFA384X_RATES_1MBPS |
+-				HFA384X_RATES_2MBPS | HFA384X_RATES_5MBPS |
+-				HFA384X_RATES_11MBPS;
+-			break;
+-		}
+-	} else {
+-		switch (rrq->value) {
+-		case 11000000:
+-			local->tx_rate_control = HFA384X_RATES_1MBPS |
+-				HFA384X_RATES_2MBPS | HFA384X_RATES_5MBPS |
+-				HFA384X_RATES_11MBPS;
+-			break;
+-		case 5500000:
+-			local->tx_rate_control = HFA384X_RATES_1MBPS |
+-				HFA384X_RATES_2MBPS | HFA384X_RATES_5MBPS;
+-			break;
+-		case 2000000:
+-			local->tx_rate_control = HFA384X_RATES_1MBPS |
+-				HFA384X_RATES_2MBPS;
+-			break;
+-		case 1000000:
+-			local->tx_rate_control = HFA384X_RATES_1MBPS;
+-			break;
+-		default:
+-			local->tx_rate_control = HFA384X_RATES_1MBPS |
+-				HFA384X_RATES_2MBPS | HFA384X_RATES_5MBPS |
+-				HFA384X_RATES_11MBPS;
+-			break;
+-		}
+-	}
+-
+-	return hostap_set_rate(dev);
+-}
+-
+-
+-static int prism2_ioctl_giwrate(struct net_device *dev,
+-				struct iw_request_info *info,
+-				union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_param *rrq = &wrqu->bitrate;
+-	u16 val;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int ret = 0;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (local->func->get_rid(dev, HFA384X_RID_TXRATECONTROL, &val, 2, 1) <
+-	    0)
+-		return -EINVAL;
+-
+-	if ((val & 0x1) && (val > 1))
+-		rrq->fixed = 0;
+-	else
+-		rrq->fixed = 1;
+-
+-	if (local->iw_mode == IW_MODE_MASTER && local->ap != NULL &&
+-	    !local->fw_tx_rate_control) {
+-		/* HFA384X_RID_CURRENTTXRATE seems to always be 2 Mbps in
+-		 * Host AP mode, so use the recorded TX rate of the last sent
+-		 * frame */
+-		rrq->value = local->ap->last_tx_rate > 0 ?
+-			local->ap->last_tx_rate * 100000 : 11000000;
+-		return 0;
+-	}
+-
+-	if (local->func->get_rid(dev, HFA384X_RID_CURRENTTXRATE, &val, 2, 1) <
+-	    0)
+-		return -EINVAL;
+-
+-	switch (val) {
+-	case HFA384X_RATES_1MBPS:
+-		rrq->value = 1000000;
+-		break;
+-	case HFA384X_RATES_2MBPS:
+-		rrq->value = 2000000;
+-		break;
+-	case HFA384X_RATES_5MBPS:
+-		rrq->value = 5500000;
+-		break;
+-	case HFA384X_RATES_11MBPS:
+-		rrq->value = 11000000;
+-		break;
+-	default:
+-		/* should not happen */
+-		rrq->value = 11000000;
+-		ret = -EINVAL;
+-		break;
+-	}
+-
+-	return ret;
+-}
+-
+-
+-static int prism2_ioctl_siwsens(struct net_device *dev,
+-				struct iw_request_info *info,
+-				union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_param *sens = &wrqu->sens;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	/* Set the desired AP density */
+-	if (sens->value < 1 || sens->value > 3)
+-		return -EINVAL;
+-
+-	if (hostap_set_word(dev, HFA384X_RID_CNFSYSTEMSCALE, sens->value) ||
+-	    local->func->reset_port(dev))
+-		return -EINVAL;
+-
+-	return 0;
+-}
+-
+-static int prism2_ioctl_giwsens(struct net_device *dev,
+-				struct iw_request_info *info,
+-				union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_param *sens = &wrqu->sens;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	__le16 val;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	/* Get the current AP density */
+-	if (local->func->get_rid(dev, HFA384X_RID_CNFSYSTEMSCALE, &val, 2, 1) <
+-	    0)
+-		return -EINVAL;
+-
+-	sens->value = le16_to_cpu(val);
+-	sens->fixed = 1;
+-
+-	return 0;
+-}
+-
+-
+-/* Deprecated in new wireless extension API */
+-static int prism2_ioctl_giwaplist(struct net_device *dev,
+-				  struct iw_request_info *info,
+-				  union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_point *data = &wrqu->data;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	struct sockaddr *addr;
+-	struct iw_quality *qual;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (local->iw_mode != IW_MODE_MASTER) {
+-		printk(KERN_DEBUG "SIOCGIWAPLIST is currently only supported "
+-		       "in Host AP mode\n");
+-		data->length = 0;
+-		return -EOPNOTSUPP;
+-	}
+-
+-	addr = kmalloc_array(IW_MAX_AP, sizeof(struct sockaddr), GFP_KERNEL);
+-	qual = kmalloc_array(IW_MAX_AP, sizeof(struct iw_quality), GFP_KERNEL);
+-	if (addr == NULL || qual == NULL) {
+-		kfree(addr);
+-		kfree(qual);
+-		data->length = 0;
+-		return -ENOMEM;
+-	}
+-
+-	data->length = prism2_ap_get_sta_qual(local, addr, qual, IW_MAX_AP, 1);
+-
+-	memcpy(extra, addr, sizeof(struct sockaddr) * data->length);
+-	data->flags = 1; /* has quality information */
+-	memcpy(extra + sizeof(struct sockaddr) * data->length, qual,
+-	       sizeof(struct iw_quality) * data->length);
+-
+-	kfree(addr);
+-	kfree(qual);
+-	return 0;
+-}
+-
+-
+-static int prism2_ioctl_siwrts(struct net_device *dev,
+-			       struct iw_request_info *info,
+-			       union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_param *rts = &wrqu->rts;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	__le16 val;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (rts->disabled)
+-		val = cpu_to_le16(2347);
+-	else if (rts->value < 0 || rts->value > 2347)
+-		return -EINVAL;
+-	else
+-		val = cpu_to_le16(rts->value);
+-
+-	if (local->func->set_rid(dev, HFA384X_RID_RTSTHRESHOLD, &val, 2) ||
+-	    local->func->reset_port(dev))
+-		return -EINVAL;
+-
+-	local->rts_threshold = rts->value;
+-
+-	return 0;
+-}
+-
+-static int prism2_ioctl_giwrts(struct net_device *dev,
+-			       struct iw_request_info *info,
+-			       union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_param *rts = &wrqu->rts;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	__le16 val;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (local->func->get_rid(dev, HFA384X_RID_RTSTHRESHOLD, &val, 2, 1) <
+-	    0)
+-		return -EINVAL;
+-
+-	rts->value = le16_to_cpu(val);
+-	rts->disabled = (rts->value == 2347);
+-	rts->fixed = 1;
+-
+-	return 0;
+-}
+-
+-
+-static int prism2_ioctl_siwfrag(struct net_device *dev,
+-				struct iw_request_info *info,
+-				union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_param *rts = &wrqu->rts;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	__le16 val;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (rts->disabled)
+-		val = cpu_to_le16(2346);
+-	else if (rts->value < 256 || rts->value > 2346)
+-		return -EINVAL;
+-	else
+-		val = cpu_to_le16(rts->value & ~0x1); /* even numbers only */
+-
+-	local->fragm_threshold = rts->value & ~0x1;
+-	if (local->func->set_rid(dev, HFA384X_RID_FRAGMENTATIONTHRESHOLD, &val,
+-				 2)
+-	    || local->func->reset_port(dev))
+-		return -EINVAL;
+-
+-	return 0;
+-}
+-
+-static int prism2_ioctl_giwfrag(struct net_device *dev,
+-				struct iw_request_info *info,
+-				union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_param *rts = &wrqu->rts;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	__le16 val;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (local->func->get_rid(dev, HFA384X_RID_FRAGMENTATIONTHRESHOLD,
+-				 &val, 2, 1) < 0)
+-		return -EINVAL;
+-
+-	rts->value = le16_to_cpu(val);
+-	rts->disabled = (rts->value == 2346);
+-	rts->fixed = 1;
+-
+-	return 0;
+-}
+-
+-
+-#ifndef PRISM2_NO_STATION_MODES
+-static int hostap_join_ap(struct net_device *dev)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	struct hfa384x_join_request req;
+-	unsigned long flags;
+-	int i;
+-	struct hfa384x_hostscan_result *entry;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	memcpy(req.bssid, local->preferred_ap, ETH_ALEN);
+-	req.channel = 0;
+-
+-	spin_lock_irqsave(&local->lock, flags);
+-	for (i = 0; i < local->last_scan_results_count; i++) {
+-		if (!local->last_scan_results)
+-			break;
+-		entry = &local->last_scan_results[i];
+-		if (ether_addr_equal(local->preferred_ap, entry->bssid)) {
+-			req.channel = entry->chid;
+-			break;
+-		}
+-	}
+-	spin_unlock_irqrestore(&local->lock, flags);
+-
+-	if (local->func->set_rid(dev, HFA384X_RID_JOINREQUEST, &req,
+-				 sizeof(req))) {
+-		printk(KERN_DEBUG "%s: JoinRequest %pM failed\n",
+-		       dev->name, local->preferred_ap);
+-		return -1;
+-	}
+-
+-	printk(KERN_DEBUG "%s: Trying to join BSSID %pM\n",
+-	       dev->name, local->preferred_ap);
+-
+-	return 0;
+-}
+-#endif /* PRISM2_NO_STATION_MODES */
+-
+-
+-static int prism2_ioctl_siwap(struct net_device *dev,
+-			      struct iw_request_info *info,
+-			      union iwreq_data *wrqu, char *extra)
+-{
+-	struct sockaddr *ap_addr = &wrqu->ap_addr;
+-#ifdef PRISM2_NO_STATION_MODES
+-	return -EOPNOTSUPP;
+-#else /* PRISM2_NO_STATION_MODES */
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	memcpy(local->preferred_ap, &ap_addr->sa_data, ETH_ALEN);
+-
+-	if (local->host_roaming == 1 && local->iw_mode == IW_MODE_INFRA) {
+-		struct hfa384x_scan_request scan_req;
+-		memset(&scan_req, 0, sizeof(scan_req));
+-		scan_req.channel_list = cpu_to_le16(0x3fff);
+-		scan_req.txrate = cpu_to_le16(HFA384X_RATES_1MBPS);
+-		if (local->func->set_rid(dev, HFA384X_RID_SCANREQUEST,
+-					 &scan_req, sizeof(scan_req))) {
+-			printk(KERN_DEBUG "%s: ScanResults request failed - "
+-			       "preferred AP delayed to next unsolicited "
+-			       "scan\n", dev->name);
+-		}
+-	} else if (local->host_roaming == 2 &&
+-		   local->iw_mode == IW_MODE_INFRA) {
+-		if (hostap_join_ap(dev))
+-			return -EINVAL;
+-	} else {
+-		printk(KERN_DEBUG "%s: Preferred AP (SIOCSIWAP) is used only "
+-		       "in Managed mode when host_roaming is enabled\n",
+-		       dev->name);
+-	}
+-
+-	return 0;
+-#endif /* PRISM2_NO_STATION_MODES */
+-}
+-
+-static int prism2_ioctl_giwap(struct net_device *dev,
+-			      struct iw_request_info *info,
+-			      union iwreq_data *wrqu, char *extra)
+-{
+-	struct sockaddr *ap_addr = &wrqu->ap_addr;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	ap_addr->sa_family = ARPHRD_ETHER;
+-	switch (iface->type) {
+-	case HOSTAP_INTERFACE_AP:
+-		memcpy(&ap_addr->sa_data, dev->dev_addr, ETH_ALEN);
+-		break;
+-	case HOSTAP_INTERFACE_STA:
+-		memcpy(&ap_addr->sa_data, local->assoc_ap_addr, ETH_ALEN);
+-		break;
+-	case HOSTAP_INTERFACE_WDS:
+-		memcpy(&ap_addr->sa_data, iface->u.wds.remote_addr, ETH_ALEN);
+-		break;
+-	default:
+-		if (local->func->get_rid(dev, HFA384X_RID_CURRENTBSSID,
+-					 &ap_addr->sa_data, ETH_ALEN, 1) < 0)
+-			return -EOPNOTSUPP;
+-
+-		/* local->bssid is also updated in LinkStatus handler when in
+-		 * station mode */
+-		memcpy(local->bssid, &ap_addr->sa_data, ETH_ALEN);
+-		break;
+-	}
+-
+-	return 0;
+-}
+-
+-
+-static int prism2_ioctl_siwnickn(struct net_device *dev,
+-				 struct iw_request_info *info,
+-				 union iwreq_data *wrqu, char *nickname)
+-{
+-	struct iw_point *data = &wrqu->data;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	memset(local->name, 0, sizeof(local->name));
+-	memcpy(local->name, nickname, data->length);
+-	local->name_set = 1;
+-
+-	if (hostap_set_string(dev, HFA384X_RID_CNFOWNNAME, local->name) ||
+-	    local->func->reset_port(dev))
+-		return -EINVAL;
+-
+-	return 0;
+-}
+-
+-static int prism2_ioctl_giwnickn(struct net_device *dev,
+-				 struct iw_request_info *info,
+-				 union iwreq_data *wrqu, char *nickname)
+-{
+-	struct iw_point *data = &wrqu->data;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int len;
+-	char name[MAX_NAME_LEN + 3];
+-	u16 val;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	len = local->func->get_rid(dev, HFA384X_RID_CNFOWNNAME,
+-				   &name, MAX_NAME_LEN + 2, 0);
+-	val = le16_to_cpu(*(__le16 *) name);
+-	if (len > MAX_NAME_LEN + 2 || len < 0 || val > MAX_NAME_LEN)
+-		return -EOPNOTSUPP;
+-
+-	name[val + 2] = '\0';
+-	data->length = val + 1;
+-	memcpy(nickname, name + 2, val + 1);
+-
+-	return 0;
+-}
+-
+-
+-static int prism2_ioctl_siwfreq(struct net_device *dev,
+-				struct iw_request_info *info,
+-				union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_freq *freq = &wrqu->freq;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	/* freq => chan. */
+-	if (freq->e == 1 &&
+-	    freq->m / 100000 >= freq_list[0] &&
+-	    freq->m / 100000 <= freq_list[FREQ_COUNT - 1]) {
+-		int ch;
+-		int fr = freq->m / 100000;
+-		for (ch = 0; ch < FREQ_COUNT; ch++) {
+-			if (fr == freq_list[ch]) {
+-				freq->e = 0;
+-				freq->m = ch + 1;
+-				break;
+-			}
+-		}
+-	}
+-
+-	if (freq->e != 0 || freq->m < 1 || freq->m > FREQ_COUNT ||
+-	    !(local->channel_mask & (1 << (freq->m - 1))))
+-		return -EINVAL;
+-
+-	local->channel = freq->m; /* channel is used in prism2_setup_rids() */
+-	if (hostap_set_word(dev, HFA384X_RID_CNFOWNCHANNEL, local->channel) ||
+-	    local->func->reset_port(dev))
+-		return -EINVAL;
+-
+-	return 0;
+-}
+-
+-static int prism2_ioctl_giwfreq(struct net_device *dev,
+-				struct iw_request_info *info,
+-				union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_freq *freq = &wrqu->freq;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	u16 val;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (local->func->get_rid(dev, HFA384X_RID_CURRENTCHANNEL, &val, 2, 1) <
+-	    0)
+-		return -EINVAL;
+-
+-	le16_to_cpus(&val);
+-	if (val < 1 || val > FREQ_COUNT)
+-		return -EINVAL;
+-
+-	freq->m = freq_list[val - 1] * 100000;
+-	freq->e = 1;
+-
+-	return 0;
+-}
+-
+-
+-static void hostap_monitor_set_type(local_info_t *local)
+-{
+-	struct net_device *dev = local->ddev;
+-
+-	if (dev == NULL)
+-		return;
+-
+-	if (local->monitor_type == PRISM2_MONITOR_PRISM ||
+-	    local->monitor_type == PRISM2_MONITOR_CAPHDR) {
+-		dev->type = ARPHRD_IEEE80211_PRISM;
+-	} else if (local->monitor_type == PRISM2_MONITOR_RADIOTAP) {
+-		dev->type = ARPHRD_IEEE80211_RADIOTAP;
+-	} else {
+-		dev->type = ARPHRD_IEEE80211;
+-	}
+-}
+-
+-
+-static int prism2_ioctl_siwessid(struct net_device *dev,
+-				 struct iw_request_info *info,
+-				 union iwreq_data *wrqu, char *ssid)
+-{
+-	struct iw_point *data = &wrqu->data;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (iface->type == HOSTAP_INTERFACE_WDS)
+-		return -EOPNOTSUPP;
+-
+-	if (data->flags == 0)
+-		ssid[0] = '\0'; /* ANY */
+-
+-	if (local->iw_mode == IW_MODE_MASTER && ssid[0] == '\0') {
+-		/* Setting SSID to empty string seems to kill the card in
+-		 * Host AP mode */
+-		printk(KERN_DEBUG "%s: Host AP mode does not support "
+-		       "'Any' essid\n", dev->name);
+-		return -EINVAL;
+-	}
+-
+-	memcpy(local->essid, ssid, data->length);
+-	local->essid[data->length] = '\0';
+-
+-	if ((!local->fw_ap &&
+-	     hostap_set_string(dev, HFA384X_RID_CNFDESIREDSSID, local->essid))
+-	    || hostap_set_string(dev, HFA384X_RID_CNFOWNSSID, local->essid) ||
+-	    local->func->reset_port(dev))
+-		return -EINVAL;
+-
+-	return 0;
+-}
+-
+-static int prism2_ioctl_giwessid(struct net_device *dev,
+-				 struct iw_request_info *info,
+-				 union iwreq_data *wrqu, char *essid)
+-{
+-	struct iw_point *data = &wrqu->data;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	u16 val;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (iface->type == HOSTAP_INTERFACE_WDS)
+-		return -EOPNOTSUPP;
+-
+-	data->flags = 1; /* active */
+-	if (local->iw_mode == IW_MODE_MASTER) {
+-		data->length = strlen(local->essid);
+-		memcpy(essid, local->essid, IW_ESSID_MAX_SIZE);
+-	} else {
+-		int len;
+-		char ssid[MAX_SSID_LEN + 2];
+-		memset(ssid, 0, sizeof(ssid));
+-		len = local->func->get_rid(dev, HFA384X_RID_CURRENTSSID,
+-					   &ssid, MAX_SSID_LEN + 2, 0);
+-		val = le16_to_cpu(*(__le16 *) ssid);
+-		if (len > MAX_SSID_LEN + 2 || len < 0 || val > MAX_SSID_LEN) {
+-			return -EOPNOTSUPP;
+-		}
+-		data->length = val;
+-		memcpy(essid, ssid + 2, IW_ESSID_MAX_SIZE);
+-	}
+-
+-	return 0;
+-}
+-
+-
+-static int prism2_ioctl_giwrange(struct net_device *dev,
+-				 struct iw_request_info *info,
+-				 union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_point *data = &wrqu->data;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	struct iw_range *range = (struct iw_range *) extra;
+-	u8 rates[10];
+-	u16 val;
+-	int i, len, over2;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	data->length = sizeof(struct iw_range);
+-	memset(range, 0, sizeof(struct iw_range));
+-
+-	/* TODO: could fill num_txpower and txpower array with
+-	 * something; however, there are 128 different values.. */
+-
+-	range->txpower_capa = IW_TXPOW_DBM;
+-
+-	if (local->iw_mode == IW_MODE_INFRA || local->iw_mode == IW_MODE_ADHOC)
+-	{
+-		range->min_pmp = 1 * 1024;
+-		range->max_pmp = 65535 * 1024;
+-		range->min_pmt = 1 * 1024;
+-		range->max_pmt = 1000 * 1024;
+-		range->pmp_flags = IW_POWER_PERIOD;
+-		range->pmt_flags = IW_POWER_TIMEOUT;
+-		range->pm_capa = IW_POWER_PERIOD | IW_POWER_TIMEOUT |
+-			IW_POWER_UNICAST_R | IW_POWER_ALL_R;
+-	}
+-
+-	range->we_version_compiled = WIRELESS_EXT;
+-	range->we_version_source = 18;
+-
+-	range->retry_capa = IW_RETRY_LIMIT;
+-	range->retry_flags = IW_RETRY_LIMIT;
+-	range->min_retry = 0;
+-	range->max_retry = 255;
+-
+-	range->num_channels = FREQ_COUNT;
+-
+-	val = 0;
+-	for (i = 0; i < FREQ_COUNT; i++) {
+-		if (local->channel_mask & (1 << i)) {
+-			range->freq[val].i = i + 1;
+-			range->freq[val].m = freq_list[i] * 100000;
+-			range->freq[val].e = 1;
+-			val++;
+-		}
+-		if (val == IW_MAX_FREQUENCIES)
+-			break;
+-	}
+-	range->num_frequency = val;
+-
+-	if (local->sta_fw_ver >= PRISM2_FW_VER(1,3,1)) {
+-		range->max_qual.qual = 70; /* what is correct max? This was not
+-					    * documented exactly. At least
+-					    * 69 has been observed. */
+-		range->max_qual.level = 0; /* dB */
+-		range->max_qual.noise = 0; /* dB */
+-
+-		/* What would be suitable values for "average/typical" qual? */
+-		range->avg_qual.qual = 20;
+-		range->avg_qual.level = -60;
+-		range->avg_qual.noise = -95;
+-	} else {
+-		range->max_qual.qual = 92; /* 0 .. 92 */
+-		range->max_qual.level = 154; /* 27 .. 154 */
+-		range->max_qual.noise = 154; /* 27 .. 154 */
+-	}
+-	range->sensitivity = 3;
+-
+-	range->max_encoding_tokens = WEP_KEYS;
+-	range->num_encoding_sizes = 2;
+-	range->encoding_size[0] = 5;
+-	range->encoding_size[1] = 13;
+-
+-	over2 = 0;
+-	len = prism2_get_datarates(dev, rates);
+-	range->num_bitrates = 0;
+-	for (i = 0; i < len; i++) {
+-		if (range->num_bitrates < IW_MAX_BITRATES) {
+-			range->bitrate[range->num_bitrates] =
+-				rates[i] * 500000;
+-			range->num_bitrates++;
+-		}
+-		if (rates[i] == 0x0b || rates[i] == 0x16)
+-			over2 = 1;
+-	}
+-	/* estimated maximum TCP throughput values (bps) */
+-	range->throughput = over2 ? 5500000 : 1500000;
+-
+-	range->min_rts = 0;
+-	range->max_rts = 2347;
+-	range->min_frag = 256;
+-	range->max_frag = 2346;
+-
+-	/* Event capability (kernel + driver) */
+-	range->event_capa[0] = (IW_EVENT_CAPA_K_0 |
+-				IW_EVENT_CAPA_MASK(SIOCGIWTHRSPY) |
+-				IW_EVENT_CAPA_MASK(SIOCGIWAP) |
+-				IW_EVENT_CAPA_MASK(SIOCGIWSCAN));
+-	range->event_capa[1] = IW_EVENT_CAPA_K_1;
+-	range->event_capa[4] = (IW_EVENT_CAPA_MASK(IWEVTXDROP) |
+-				IW_EVENT_CAPA_MASK(IWEVCUSTOM) |
+-				IW_EVENT_CAPA_MASK(IWEVREGISTERED) |
+-				IW_EVENT_CAPA_MASK(IWEVEXPIRED));
+-
+-	range->enc_capa = IW_ENC_CAPA_WPA | IW_ENC_CAPA_WPA2 |
+-		IW_ENC_CAPA_CIPHER_TKIP | IW_ENC_CAPA_CIPHER_CCMP;
+-
+-	if (local->sta_fw_ver >= PRISM2_FW_VER(1,3,1))
+-		range->scan_capa = IW_SCAN_CAPA_ESSID;
+-
+-	return 0;
+-}
+-
+-
+-static int hostap_monitor_mode_enable(local_info_t *local)
+-{
+-	struct net_device *dev = local->dev;
+-
+-	printk(KERN_DEBUG "Enabling monitor mode\n");
+-	hostap_monitor_set_type(local);
+-
+-	if (hostap_set_word(dev, HFA384X_RID_CNFPORTTYPE,
+-			    HFA384X_PORTTYPE_PSEUDO_IBSS)) {
+-		printk(KERN_DEBUG "Port type setting for monitor mode "
+-		       "failed\n");
+-		return -EOPNOTSUPP;
+-	}
+-
+-	/* Host decrypt is needed to get the IV and ICV fields;
+-	 * however, monitor mode seems to remove WEP flag from frame
+-	 * control field */
+-	if (hostap_set_word(dev, HFA384X_RID_CNFWEPFLAGS,
+-			    HFA384X_WEPFLAGS_HOSTENCRYPT |
+-			    HFA384X_WEPFLAGS_HOSTDECRYPT)) {
+-		printk(KERN_DEBUG "WEP flags setting failed\n");
+-		return -EOPNOTSUPP;
+-	}
+-
+-	if (local->func->reset_port(dev) ||
+-	    local->func->cmd(dev, HFA384X_CMDCODE_TEST |
+-			     (HFA384X_TEST_MONITOR << 8),
+-			     0, NULL, NULL)) {
+-		printk(KERN_DEBUG "Setting monitor mode failed\n");
+-		return -EOPNOTSUPP;
+-	}
+-
+-	return 0;
+-}
+-
+-
+-static int hostap_monitor_mode_disable(local_info_t *local)
+-{
+-	struct net_device *dev = local->ddev;
+-
+-	if (dev == NULL)
+-		return -1;
+-
+-	printk(KERN_DEBUG "%s: Disabling monitor mode\n", dev->name);
+-	dev->type = ARPHRD_ETHER;
+-
+-	if (local->func->cmd(dev, HFA384X_CMDCODE_TEST |
+-			     (HFA384X_TEST_STOP << 8),
+-			     0, NULL, NULL))
+-		return -1;
+-	return hostap_set_encryption(local);
+-}
+-
+-
+-static int prism2_ioctl_siwmode(struct net_device *dev,
+-				struct iw_request_info *info,
+-				union iwreq_data *wrqu, char *extra)
+-{
+-	__u32 *mode = &wrqu->mode;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int double_reset = 0;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (*mode != IW_MODE_ADHOC && *mode != IW_MODE_INFRA &&
+-	    *mode != IW_MODE_MASTER && *mode != IW_MODE_REPEAT &&
+-	    *mode != IW_MODE_MONITOR)
+-		return -EOPNOTSUPP;
+-
+-#ifdef PRISM2_NO_STATION_MODES
+-	if (*mode == IW_MODE_ADHOC || *mode == IW_MODE_INFRA)
+-		return -EOPNOTSUPP;
+-#endif /* PRISM2_NO_STATION_MODES */
+-
+-	if (*mode == local->iw_mode)
+-		return 0;
+-
+-	if (*mode == IW_MODE_MASTER && local->essid[0] == '\0') {
+-		printk(KERN_WARNING "%s: empty SSID not allowed in Master "
+-		       "mode\n", dev->name);
+-		return -EINVAL;
+-	}
+-
+-	if (local->iw_mode == IW_MODE_MONITOR)
+-		hostap_monitor_mode_disable(local);
+-
+-	if ((local->iw_mode == IW_MODE_ADHOC ||
+-	     local->iw_mode == IW_MODE_MONITOR) && *mode == IW_MODE_MASTER) {
+-		/* There seems to be a firmware bug in at least STA f/w v1.5.6
+-		 * that leaves beacon frames to use IBSS type when moving from
+-		 * IBSS to Host AP mode. Doing double Port0 reset seems to be
+-		 * enough to workaround this. */
+-		double_reset = 1;
+-	}
+-
+-	printk(KERN_DEBUG "prism2: %s: operating mode changed "
+-	       "%d -> %d\n", dev->name, local->iw_mode, *mode);
+-	local->iw_mode = *mode;
+-
+-	if (local->iw_mode == IW_MODE_MONITOR)
+-		hostap_monitor_mode_enable(local);
+-	else if (local->iw_mode == IW_MODE_MASTER && !local->host_encrypt &&
+-		 !local->fw_encrypt_ok) {
+-		printk(KERN_DEBUG "%s: defaulting to host-based encryption as "
+-		       "a workaround for firmware bug in Host AP mode WEP\n",
+-		       dev->name);
+-		local->host_encrypt = 1;
+-	}
+-
+-	if (hostap_set_word(dev, HFA384X_RID_CNFPORTTYPE,
+-			    hostap_get_porttype(local)))
+-		return -EOPNOTSUPP;
+-
+-	if (local->func->reset_port(dev))
+-		return -EINVAL;
+-	if (double_reset && local->func->reset_port(dev))
+-		return -EINVAL;
+-
+-	if (local->iw_mode != IW_MODE_INFRA && local->iw_mode != IW_MODE_ADHOC)
+-	{
+-		/* netif_carrier is used only in client modes for now, so make
+-		 * sure carrier is on when moving to non-client modes. */
+-		netif_carrier_on(local->dev);
+-		netif_carrier_on(local->ddev);
+-	}
+-	return 0;
+-}
+-
+-
+-static int prism2_ioctl_giwmode(struct net_device *dev,
+-				struct iw_request_info *info,
+-				union iwreq_data *wrqu, char *extra)
+-{
+-	__u32 *mode = &wrqu->mode;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	switch (iface->type) {
+-	case HOSTAP_INTERFACE_STA:
+-		*mode = IW_MODE_INFRA;
+-		break;
+-	case HOSTAP_INTERFACE_WDS:
+-		*mode = IW_MODE_REPEAT;
+-		break;
+-	default:
+-		*mode = local->iw_mode;
+-		break;
+-	}
+-	return 0;
+-}
+-
+-
+-static int prism2_ioctl_siwpower(struct net_device *dev,
+-				 struct iw_request_info *info,
+-				 union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_param *wrq = &wrqu->power;
+-#ifdef PRISM2_NO_STATION_MODES
+-	return -EOPNOTSUPP;
+-#else /* PRISM2_NO_STATION_MODES */
+-	int ret = 0;
+-
+-	if (wrq->disabled)
+-		return hostap_set_word(dev, HFA384X_RID_CNFPMENABLED, 0);
+-
+-	switch (wrq->flags & IW_POWER_MODE) {
+-	case IW_POWER_UNICAST_R:
+-		ret = hostap_set_word(dev, HFA384X_RID_CNFMULTICASTRECEIVE, 0);
+-		if (ret)
+-			return ret;
+-		ret = hostap_set_word(dev, HFA384X_RID_CNFPMENABLED, 1);
+-		if (ret)
+-			return ret;
+-		break;
+-	case IW_POWER_ALL_R:
+-		ret = hostap_set_word(dev, HFA384X_RID_CNFMULTICASTRECEIVE, 1);
+-		if (ret)
+-			return ret;
+-		ret = hostap_set_word(dev, HFA384X_RID_CNFPMENABLED, 1);
+-		if (ret)
+-			return ret;
+-		break;
+-	case IW_POWER_ON:
+-		break;
+-	default:
+-		return -EINVAL;
+-	}
+-
+-	if (wrq->flags & IW_POWER_TIMEOUT) {
+-		ret = hostap_set_word(dev, HFA384X_RID_CNFPMENABLED, 1);
+-		if (ret)
+-			return ret;
+-		ret = hostap_set_word(dev, HFA384X_RID_CNFPMHOLDOVERDURATION,
+-				      wrq->value / 1024);
+-		if (ret)
+-			return ret;
+-	}
+-	if (wrq->flags & IW_POWER_PERIOD) {
+-		ret = hostap_set_word(dev, HFA384X_RID_CNFPMENABLED, 1);
+-		if (ret)
+-			return ret;
+-		ret = hostap_set_word(dev, HFA384X_RID_CNFMAXSLEEPDURATION,
+-				      wrq->value / 1024);
+-		if (ret)
+-			return ret;
+-	}
+-
+-	return ret;
+-#endif /* PRISM2_NO_STATION_MODES */
+-}
+-
+-
+-static int prism2_ioctl_giwpower(struct net_device *dev,
+-				 struct iw_request_info *info,
+-				 union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_param *rrq = &wrqu->power;
+-#ifdef PRISM2_NO_STATION_MODES
+-	return -EOPNOTSUPP;
+-#else /* PRISM2_NO_STATION_MODES */
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	__le16 enable, mcast;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (local->func->get_rid(dev, HFA384X_RID_CNFPMENABLED, &enable, 2, 1)
+-	    < 0)
+-		return -EINVAL;
+-
+-	if (!le16_to_cpu(enable)) {
+-		rrq->disabled = 1;
+-		return 0;
+-	}
+-
+-	rrq->disabled = 0;
+-
+-	if ((rrq->flags & IW_POWER_TYPE) == IW_POWER_TIMEOUT) {
+-		__le16 timeout;
+-		if (local->func->get_rid(dev,
+-					 HFA384X_RID_CNFPMHOLDOVERDURATION,
+-					 &timeout, 2, 1) < 0)
+-			return -EINVAL;
+-
+-		rrq->flags = IW_POWER_TIMEOUT;
+-		rrq->value = le16_to_cpu(timeout) * 1024;
+-	} else {
+-		__le16 period;
+-		if (local->func->get_rid(dev, HFA384X_RID_CNFMAXSLEEPDURATION,
+-					 &period, 2, 1) < 0)
+-			return -EINVAL;
+-
+-		rrq->flags = IW_POWER_PERIOD;
+-		rrq->value = le16_to_cpu(period) * 1024;
+-	}
+-
+-	if (local->func->get_rid(dev, HFA384X_RID_CNFMULTICASTRECEIVE, &mcast,
+-				 2, 1) < 0)
+-		return -EINVAL;
+-
+-	if (le16_to_cpu(mcast))
+-		rrq->flags |= IW_POWER_ALL_R;
+-	else
+-		rrq->flags |= IW_POWER_UNICAST_R;
+-
+-	return 0;
+-#endif /* PRISM2_NO_STATION_MODES */
+-}
+-
+-
+-static int prism2_ioctl_siwretry(struct net_device *dev,
+-				 struct iw_request_info *info,
+-				 union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_param *rrq = &wrqu->retry;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (rrq->disabled)
+-		return -EINVAL;
+-
+-	/* setting retry limits is not supported with the current station
+-	 * firmware code; simulate this with alternative retry count for now */
+-	if (rrq->flags == IW_RETRY_LIMIT) {
+-		if (rrq->value < 0) {
+-			/* disable manual retry count setting and use firmware
+-			 * defaults */
+-			local->manual_retry_count = -1;
+-			local->tx_control &= ~HFA384X_TX_CTRL_ALT_RTRY;
+-		} else {
+-			if (hostap_set_word(dev, HFA384X_RID_CNFALTRETRYCOUNT,
+-					    rrq->value)) {
+-				printk(KERN_DEBUG "%s: Alternate retry count "
+-				       "setting to %d failed\n",
+-				       dev->name, rrq->value);
+-				return -EOPNOTSUPP;
+-			}
+-
+-			local->manual_retry_count = rrq->value;
+-			local->tx_control |= HFA384X_TX_CTRL_ALT_RTRY;
+-		}
+-		return 0;
+-	}
+-
+-	return -EOPNOTSUPP;
+-
+-#if 0
+-	/* what could be done, if firmware would support this.. */
+-
+-	if (rrq->flags & IW_RETRY_LIMIT) {
+-		if (rrq->flags & IW_RETRY_LONG)
+-			HFA384X_RID_LONGRETRYLIMIT = rrq->value;
+-		else if (rrq->flags & IW_RETRY_SHORT)
+-			HFA384X_RID_SHORTRETRYLIMIT = rrq->value;
+-		else {
+-			HFA384X_RID_LONGRETRYLIMIT = rrq->value;
+-			HFA384X_RID_SHORTRETRYLIMIT = rrq->value;
+-		}
+-
+-	}
+-
+-	if (rrq->flags & IW_RETRY_LIFETIME) {
+-		HFA384X_RID_MAXTRANSMITLIFETIME = rrq->value / 1024;
+-	}
+-
+-	return 0;
+-#endif /* 0 */
+-}
+-
+-static int prism2_ioctl_giwretry(struct net_device *dev,
+-				 struct iw_request_info *info,
+-				 union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_param *rrq = &wrqu->retry;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	__le16 shortretry, longretry, lifetime, altretry;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (local->func->get_rid(dev, HFA384X_RID_SHORTRETRYLIMIT, &shortretry,
+-				 2, 1) < 0 ||
+-	    local->func->get_rid(dev, HFA384X_RID_LONGRETRYLIMIT, &longretry,
+-				 2, 1) < 0 ||
+-	    local->func->get_rid(dev, HFA384X_RID_MAXTRANSMITLIFETIME,
+-				 &lifetime, 2, 1) < 0)
+-		return -EINVAL;
+-
+-	rrq->disabled = 0;
+-
+-	if ((rrq->flags & IW_RETRY_TYPE) == IW_RETRY_LIFETIME) {
+-		rrq->flags = IW_RETRY_LIFETIME;
+-		rrq->value = le16_to_cpu(lifetime) * 1024;
+-	} else {
+-		if (local->manual_retry_count >= 0) {
+-			rrq->flags = IW_RETRY_LIMIT;
+-			if (local->func->get_rid(dev,
+-						 HFA384X_RID_CNFALTRETRYCOUNT,
+-						 &altretry, 2, 1) >= 0)
+-				rrq->value = le16_to_cpu(altretry);
+-			else
+-				rrq->value = local->manual_retry_count;
+-		} else if ((rrq->flags & IW_RETRY_LONG)) {
+-			rrq->flags = IW_RETRY_LIMIT | IW_RETRY_LONG;
+-			rrq->value = le16_to_cpu(longretry);
+-		} else {
+-			rrq->flags = IW_RETRY_LIMIT;
+-			rrq->value = le16_to_cpu(shortretry);
+-			if (shortretry != longretry)
+-				rrq->flags |= IW_RETRY_SHORT;
+-		}
+-	}
+-	return 0;
+-}
+-
+-
+-/* Note! This TX power controlling is experimental and should not be used in
+- * production use. It just sets raw power register and does not use any kind of
+- * feedback information from the measured TX power (CR58). This is now
+- * commented out to make sure that it is not used by accident. TX power
+- * configuration will be enabled again after proper algorithm using feedback
+- * has been implemented. */
+-
+-#ifdef RAW_TXPOWER_SETTING
+-/* Map HFA386x's CR31 to and from dBm with some sort of ad hoc mapping..
+- * This version assumes following mapping:
+- * CR31 is 7-bit value with -64 to +63 range.
+- * -64 is mapped into +20dBm and +63 into -43dBm.
+- * This is certainly not an exact mapping for every card, but at least
+- * increasing dBm value should correspond to increasing TX power.
+- */
+-
+-static int prism2_txpower_hfa386x_to_dBm(u16 val)
+-{
+-	signed char tmp;
+-
+-	if (val > 255)
+-		val = 255;
+-
+-	tmp = val;
+-	tmp >>= 2;
+-
+-	return -12 - tmp;
+-}
+-
+-static u16 prism2_txpower_dBm_to_hfa386x(int val)
+-{
+-	signed char tmp;
+-
+-	if (val > 20)
+-		return 128;
+-	else if (val < -43)
+-		return 127;
+-
+-	tmp = val;
+-	tmp = -12 - tmp;
+-	tmp <<= 2;
+-
+-	return (unsigned char) tmp;
+-}
+-#endif /* RAW_TXPOWER_SETTING */
+-
+-
+-static int prism2_ioctl_siwtxpow(struct net_device *dev,
+-				 struct iw_request_info *info,
+-				 union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_param *rrq = &wrqu->txpower;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-#ifdef RAW_TXPOWER_SETTING
+-	char *tmp;
+-#endif
+-	u16 val;
+-	int ret = 0;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (rrq->disabled) {
+-		if (local->txpower_type != PRISM2_TXPOWER_OFF) {
+-			val = 0xff; /* use all standby and sleep modes */
+-			ret = local->func->cmd(dev, HFA384X_CMDCODE_WRITEMIF,
+-					       HFA386X_CR_A_D_TEST_MODES2,
+-					       &val, NULL);
+-			printk(KERN_DEBUG "%s: Turning radio off: %s\n",
+-			       dev->name, ret ? "failed" : "OK");
+-			local->txpower_type = PRISM2_TXPOWER_OFF;
+-		}
+-		return (ret ? -EOPNOTSUPP : 0);
+-	}
+-
+-	if (local->txpower_type == PRISM2_TXPOWER_OFF) {
+-		val = 0; /* disable all standby and sleep modes */
+-		ret = local->func->cmd(dev, HFA384X_CMDCODE_WRITEMIF,
+-				       HFA386X_CR_A_D_TEST_MODES2, &val, NULL);
+-		printk(KERN_DEBUG "%s: Turning radio on: %s\n",
+-		       dev->name, ret ? "failed" : "OK");
+-		local->txpower_type = PRISM2_TXPOWER_UNKNOWN;
+-	}
+-
+-#ifdef RAW_TXPOWER_SETTING
+-	if (!rrq->fixed && local->txpower_type != PRISM2_TXPOWER_AUTO) {
+-		printk(KERN_DEBUG "Setting ALC on\n");
+-		val = HFA384X_TEST_CFG_BIT_ALC;
+-		local->func->cmd(dev, HFA384X_CMDCODE_TEST |
+-				 (HFA384X_TEST_CFG_BITS << 8), 1, &val, NULL);
+-		local->txpower_type = PRISM2_TXPOWER_AUTO;
+-		return 0;
+-	}
+-
+-	if (local->txpower_type != PRISM2_TXPOWER_FIXED) {
+-		printk(KERN_DEBUG "Setting ALC off\n");
+-		val = HFA384X_TEST_CFG_BIT_ALC;
+-		local->func->cmd(dev, HFA384X_CMDCODE_TEST |
+-				 (HFA384X_TEST_CFG_BITS << 8), 0, &val, NULL);
+-			local->txpower_type = PRISM2_TXPOWER_FIXED;
+-	}
+-
+-	if (rrq->flags == IW_TXPOW_DBM)
+-		tmp = "dBm";
+-	else if (rrq->flags == IW_TXPOW_MWATT)
+-		tmp = "mW";
+-	else
+-		tmp = "UNKNOWN";
+-	printk(KERN_DEBUG "Setting TX power to %d %s\n", rrq->value, tmp);
+-
+-	if (rrq->flags != IW_TXPOW_DBM) {
+-		printk("SIOCSIWTXPOW with mW is not supported; use dBm\n");
+-		return -EOPNOTSUPP;
+-	}
+-
+-	local->txpower = rrq->value;
+-	val = prism2_txpower_dBm_to_hfa386x(local->txpower);
+-	if (local->func->cmd(dev, HFA384X_CMDCODE_WRITEMIF,
+-			     HFA386X_CR_MANUAL_TX_POWER, &val, NULL))
+-		ret = -EOPNOTSUPP;
+-#else /* RAW_TXPOWER_SETTING */
+-	if (rrq->fixed)
+-		ret = -EOPNOTSUPP;
+-#endif /* RAW_TXPOWER_SETTING */
+-
+-	return ret;
+-}
+-
+-static int prism2_ioctl_giwtxpow(struct net_device *dev,
+-				 struct iw_request_info *info,
+-				 union iwreq_data *wrqu, char *extra)
+-{
+-#ifdef RAW_TXPOWER_SETTING
+-	struct iw_param *rrq = &wrqu->txpower;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	u16 resp0;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	rrq->flags = IW_TXPOW_DBM;
+-	rrq->disabled = 0;
+-	rrq->fixed = 0;
+-
+-	if (local->txpower_type == PRISM2_TXPOWER_AUTO) {
+-		if (local->func->cmd(dev, HFA384X_CMDCODE_READMIF,
+-				     HFA386X_CR_MANUAL_TX_POWER,
+-				     NULL, &resp0) == 0) {
+-			rrq->value = prism2_txpower_hfa386x_to_dBm(resp0);
+-		} else {
+-			/* Could not get real txpower; guess 15 dBm */
+-			rrq->value = 15;
+-		}
+-	} else if (local->txpower_type == PRISM2_TXPOWER_OFF) {
+-		rrq->value = 0;
+-		rrq->disabled = 1;
+-	} else if (local->txpower_type == PRISM2_TXPOWER_FIXED) {
+-		rrq->value = local->txpower;
+-		rrq->fixed = 1;
+-	} else {
+-		printk("SIOCGIWTXPOW - unknown txpower_type=%d\n",
+-		       local->txpower_type);
+-	}
+-	return 0;
+-#else /* RAW_TXPOWER_SETTING */
+-	return -EOPNOTSUPP;
+-#endif /* RAW_TXPOWER_SETTING */
+-}
+-
+-
+-#ifndef PRISM2_NO_STATION_MODES
+-
+-/* HostScan request works with and without host_roaming mode. In addition, it
+- * does not break current association. However, it requires newer station
+- * firmware version (>= 1.3.1) than scan request. */
+-static int prism2_request_hostscan(struct net_device *dev,
+-				   u8 *ssid, u8 ssid_len)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	struct hfa384x_hostscan_request scan_req;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	memset(&scan_req, 0, sizeof(scan_req));
+-	scan_req.channel_list = cpu_to_le16(local->channel_mask &
+-					    local->scan_channel_mask);
+-	scan_req.txrate = cpu_to_le16(HFA384X_RATES_1MBPS);
+-	if (ssid) {
+-		if (ssid_len > 32)
+-			return -EINVAL;
+-		scan_req.target_ssid_len = cpu_to_le16(ssid_len);
+-		memcpy(scan_req.target_ssid, ssid, ssid_len);
+-	}
+-
+-	if (local->func->set_rid(dev, HFA384X_RID_HOSTSCAN, &scan_req,
+-				 sizeof(scan_req))) {
+-		printk(KERN_DEBUG "%s: HOSTSCAN failed\n", dev->name);
+-		return -EINVAL;
+-	}
+-	return 0;
+-}
+-
+-
+-static int prism2_request_scan(struct net_device *dev)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	struct hfa384x_scan_request scan_req;
+-	int ret = 0;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	memset(&scan_req, 0, sizeof(scan_req));
+-	scan_req.channel_list = cpu_to_le16(local->channel_mask &
+-					    local->scan_channel_mask);
+-	scan_req.txrate = cpu_to_le16(HFA384X_RATES_1MBPS);
+-
+-	/* FIX:
+-	 * It seems to be enough to set roaming mode for a short moment to
+-	 * host-based and then setup scanrequest data and return the mode to
+-	 * firmware-based.
+-	 *
+-	 * Master mode would need to drop to Managed mode for a short while
+-	 * to make scanning work.. Or sweep through the different channels and
+-	 * use passive scan based on beacons. */
+-
+-	if (!local->host_roaming)
+-		hostap_set_word(dev, HFA384X_RID_CNFROAMINGMODE,
+-				HFA384X_ROAMING_HOST);
+-
+-	if (local->func->set_rid(dev, HFA384X_RID_SCANREQUEST, &scan_req,
+-				 sizeof(scan_req))) {
+-		printk(KERN_DEBUG "SCANREQUEST failed\n");
+-		ret = -EINVAL;
+-	}
+-
+-	if (!local->host_roaming)
+-		hostap_set_word(dev, HFA384X_RID_CNFROAMINGMODE,
+-				HFA384X_ROAMING_FIRMWARE);
+-
+-	return ret;
+-}
+-
+-#else /* !PRISM2_NO_STATION_MODES */
+-
+-static inline int prism2_request_hostscan(struct net_device *dev,
+-					  u8 *ssid, u8 ssid_len)
+-{
+-	return -EOPNOTSUPP;
+-}
+-
+-
+-static inline int prism2_request_scan(struct net_device *dev)
+-{
+-	return -EOPNOTSUPP;
+-}
+-
+-#endif /* !PRISM2_NO_STATION_MODES */
+-
+-
+-static int prism2_ioctl_siwscan(struct net_device *dev,
+-				struct iw_request_info *info,
+-				union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_point *data = &wrqu->data;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int ret;
+-	u8 *ssid = NULL, ssid_len = 0;
+-	struct iw_scan_req *req = (struct iw_scan_req *) extra;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (data->length < sizeof(struct iw_scan_req))
+-		req = NULL;
+-
+-	if (local->iw_mode == IW_MODE_MASTER) {
+-		/* In master mode, we just return the results of our local
+-		 * tables, so we don't need to start anything...
+-		 * Jean II */
+-		data->length = 0;
+-		return 0;
+-	}
+-
+-	if (!local->dev_enabled)
+-		return -ENETDOWN;
+-
+-	if (req && data->flags & IW_SCAN_THIS_ESSID) {
+-		ssid = req->essid;
+-		ssid_len = req->essid_len;
+-
+-		if (ssid_len &&
+-		    ((local->iw_mode != IW_MODE_INFRA &&
+-		      local->iw_mode != IW_MODE_ADHOC) ||
+-		     (local->sta_fw_ver < PRISM2_FW_VER(1,3,1))))
+-			return -EOPNOTSUPP;
+-	}
+-
+-	if (local->sta_fw_ver >= PRISM2_FW_VER(1,3,1))
+-		ret = prism2_request_hostscan(dev, ssid, ssid_len);
+-	else
+-		ret = prism2_request_scan(dev);
+-
+-	if (ret == 0)
+-		local->scan_timestamp = jiffies;
+-
+-	/* Could inquire F101, F103 or wait for SIOCGIWSCAN and read RID */
+-
+-	return ret;
+-}
+-
+-
+-#ifndef PRISM2_NO_STATION_MODES
+-static char * __prism2_translate_scan(local_info_t *local,
+-				      struct iw_request_info *info,
+-				      struct hfa384x_hostscan_result *scan,
+-				      struct hostap_bss_info *bss,
+-				      char *current_ev, char *end_buf)
+-{
+-	int i, chan;
+-	struct iw_event iwe;
+-	char *current_val;
+-	u16 capabilities;
+-	u8 *pos;
+-	u8 *ssid, *bssid;
+-	size_t ssid_len;
+-	char *buf;
+-
+-	if (bss) {
+-		ssid = bss->ssid;
+-		ssid_len = bss->ssid_len;
+-		bssid = bss->bssid;
+-	} else {
+-		ssid = scan->ssid;
+-		ssid_len = le16_to_cpu(scan->ssid_len);
+-		bssid = scan->bssid;
+-	}
+-	if (ssid_len > 32)
+-		ssid_len = 32;
+-
+-	/* First entry *MUST* be the AP MAC address */
+-	memset(&iwe, 0, sizeof(iwe));
+-	iwe.cmd = SIOCGIWAP;
+-	iwe.u.ap_addr.sa_family = ARPHRD_ETHER;
+-	memcpy(iwe.u.ap_addr.sa_data, bssid, ETH_ALEN);
+-	current_ev = iwe_stream_add_event(info, current_ev, end_buf, &iwe,
+-					  IW_EV_ADDR_LEN);
+-
+-	/* Other entries will be displayed in the order we give them */
+-
+-	memset(&iwe, 0, sizeof(iwe));
+-	iwe.cmd = SIOCGIWESSID;
+-	iwe.u.data.length = ssid_len;
+-	iwe.u.data.flags = 1;
+-	current_ev = iwe_stream_add_point(info, current_ev, end_buf,
+-					  &iwe, ssid);
+-
+-	memset(&iwe, 0, sizeof(iwe));
+-	iwe.cmd = SIOCGIWMODE;
+-	if (bss) {
+-		capabilities = bss->capab_info;
+-	} else {
+-		capabilities = le16_to_cpu(scan->capability);
+-	}
+-	if (capabilities & (WLAN_CAPABILITY_ESS |
+-			    WLAN_CAPABILITY_IBSS)) {
+-		if (capabilities & WLAN_CAPABILITY_ESS)
+-			iwe.u.mode = IW_MODE_MASTER;
+-		else
+-			iwe.u.mode = IW_MODE_ADHOC;
+-		current_ev = iwe_stream_add_event(info, current_ev, end_buf,
+-						  &iwe, IW_EV_UINT_LEN);
+-	}
+-
+-	memset(&iwe, 0, sizeof(iwe));
+-	iwe.cmd = SIOCGIWFREQ;
+-	if (scan) {
+-		chan = le16_to_cpu(scan->chid);
+-	} else if (bss) {
+-		chan = bss->chan;
+-	} else {
+-		chan = 0;
+-	}
+-
+-	if (chan > 0) {
+-		iwe.u.freq.m = freq_list[chan - 1] * 100000;
+-		iwe.u.freq.e = 1;
+-		current_ev = iwe_stream_add_event(info, current_ev, end_buf,
+-						  &iwe, IW_EV_FREQ_LEN);
+-	}
+-
+-	if (scan) {
+-		memset(&iwe, 0, sizeof(iwe));
+-		iwe.cmd = IWEVQUAL;
+-		if (local->last_scan_type == PRISM2_HOSTSCAN) {
+-			iwe.u.qual.level = le16_to_cpu(scan->sl);
+-			iwe.u.qual.noise = le16_to_cpu(scan->anl);
+-		} else {
+-			iwe.u.qual.level =
+-				HFA384X_LEVEL_TO_dBm(le16_to_cpu(scan->sl));
+-			iwe.u.qual.noise =
+-				HFA384X_LEVEL_TO_dBm(le16_to_cpu(scan->anl));
+-		}
+-		iwe.u.qual.updated = IW_QUAL_LEVEL_UPDATED
+-			| IW_QUAL_NOISE_UPDATED
+-			| IW_QUAL_QUAL_INVALID
+-			| IW_QUAL_DBM;
+-		current_ev = iwe_stream_add_event(info, current_ev, end_buf,
+-						  &iwe, IW_EV_QUAL_LEN);
+-	}
+-
+-	memset(&iwe, 0, sizeof(iwe));
+-	iwe.cmd = SIOCGIWENCODE;
+-	if (capabilities & WLAN_CAPABILITY_PRIVACY)
+-		iwe.u.data.flags = IW_ENCODE_ENABLED | IW_ENCODE_NOKEY;
+-	else
+-		iwe.u.data.flags = IW_ENCODE_DISABLED;
+-	iwe.u.data.length = 0;
+-	current_ev = iwe_stream_add_point(info, current_ev, end_buf, &iwe, "");
+-
+-	/* TODO: add SuppRates into BSS table */
+-	if (scan) {
+-		memset(&iwe, 0, sizeof(iwe));
+-		iwe.cmd = SIOCGIWRATE;
+-		current_val = current_ev + iwe_stream_lcp_len(info);
+-		pos = scan->sup_rates;
+-		for (i = 0; i < sizeof(scan->sup_rates); i++) {
+-			if (pos[i] == 0)
+-				break;
+-			/* Bit rate given in 500 kb/s units (+ 0x80) */
+-			iwe.u.bitrate.value = ((pos[i] & 0x7f) * 500000);
+-			current_val = iwe_stream_add_value(
+-				info, current_ev, current_val, end_buf, &iwe,
+-				IW_EV_PARAM_LEN);
+-		}
+-		/* Check if we added any event */
+-		if ((current_val - current_ev) > iwe_stream_lcp_len(info))
+-			current_ev = current_val;
+-	}
+-
+-	/* TODO: add BeaconInt,resp_rate,atim into BSS table */
+-	buf = kmalloc(MAX_WPA_IE_LEN * 2 + 30, GFP_ATOMIC);
+-	if (buf && scan) {
+-		memset(&iwe, 0, sizeof(iwe));
+-		iwe.cmd = IWEVCUSTOM;
+-		sprintf(buf, "bcn_int=%d", le16_to_cpu(scan->beacon_interval));
+-		iwe.u.data.length = strlen(buf);
+-		current_ev = iwe_stream_add_point(info, current_ev, end_buf,
+-						  &iwe, buf);
+-
+-		memset(&iwe, 0, sizeof(iwe));
+-		iwe.cmd = IWEVCUSTOM;
+-		sprintf(buf, "resp_rate=%d", le16_to_cpu(scan->rate));
+-		iwe.u.data.length = strlen(buf);
+-		current_ev = iwe_stream_add_point(info, current_ev, end_buf,
+-						  &iwe, buf);
+-
+-		if (local->last_scan_type == PRISM2_HOSTSCAN &&
+-		    (capabilities & WLAN_CAPABILITY_IBSS)) {
+-			memset(&iwe, 0, sizeof(iwe));
+-			iwe.cmd = IWEVCUSTOM;
+-			sprintf(buf, "atim=%d", le16_to_cpu(scan->atim));
+-			iwe.u.data.length = strlen(buf);
+-			current_ev = iwe_stream_add_point(info, current_ev,
+-							  end_buf, &iwe, buf);
+-		}
+-	}
+-	kfree(buf);
+-
+-	if (bss && bss->wpa_ie_len > 0 && bss->wpa_ie_len <= MAX_WPA_IE_LEN) {
+-		memset(&iwe, 0, sizeof(iwe));
+-		iwe.cmd = IWEVGENIE;
+-		iwe.u.data.length = bss->wpa_ie_len;
+-		current_ev = iwe_stream_add_point(info, current_ev, end_buf,
+-						  &iwe, bss->wpa_ie);
+-	}
+-
+-	if (bss && bss->rsn_ie_len > 0 && bss->rsn_ie_len <= MAX_WPA_IE_LEN) {
+-		memset(&iwe, 0, sizeof(iwe));
+-		iwe.cmd = IWEVGENIE;
+-		iwe.u.data.length = bss->rsn_ie_len;
+-		current_ev = iwe_stream_add_point(info, current_ev, end_buf,
+-						  &iwe, bss->rsn_ie);
+-	}
+-
+-	return current_ev;
+-}
+-
+-
+-/* Translate scan data returned from the card to a card independent
+- * format that the Wireless Tools will understand - Jean II */
+-static inline int prism2_translate_scan(local_info_t *local,
+-					struct iw_request_info *info,
+-					char *buffer, int buflen)
+-{
+-	struct hfa384x_hostscan_result *scan;
+-	int entry;
+-	char *current_ev = buffer;
+-	char *end_buf = buffer + buflen;
+-	struct list_head *ptr;
+-
+-	spin_lock_bh(&local->lock);
+-
+-	list_for_each(ptr, &local->bss_list) {
+-		struct hostap_bss_info *bss;
+-		bss = list_entry(ptr, struct hostap_bss_info, list);
+-		bss->included = 0;
+-	}
+-
+-	for (entry = 0; entry < local->last_scan_results_count; entry++) {
+-		int found = 0;
+-		scan = &local->last_scan_results[entry];
+-
+-		/* Report every SSID if the AP is using multiple SSIDs. If no
+-		 * BSS record is found (e.g., when WPA mode is disabled),
+-		 * report the AP once. */
+-		list_for_each(ptr, &local->bss_list) {
+-			struct hostap_bss_info *bss;
+-			bss = list_entry(ptr, struct hostap_bss_info, list);
+-			if (ether_addr_equal(bss->bssid, scan->bssid)) {
+-				bss->included = 1;
+-				current_ev = __prism2_translate_scan(
+-					local, info, scan, bss, current_ev,
+-					end_buf);
+-				found++;
+-			}
+-		}
+-		if (!found) {
+-			current_ev = __prism2_translate_scan(
+-				local, info, scan, NULL, current_ev, end_buf);
+-		}
+-		/* Check if there is space for one more entry */
+-		if ((end_buf - current_ev) <= IW_EV_ADDR_LEN) {
+-			/* Ask user space to try again with a bigger buffer */
+-			spin_unlock_bh(&local->lock);
+-			return -E2BIG;
+-		}
+-	}
+-
+-	/* Prism2 firmware has limits (32 at least in some versions) for number
+-	 * of BSSes in scan results. Extend this limit by using local BSS list.
+-	 */
+-	list_for_each(ptr, &local->bss_list) {
+-		struct hostap_bss_info *bss;
+-		bss = list_entry(ptr, struct hostap_bss_info, list);
+-		if (bss->included)
+-			continue;
+-		current_ev = __prism2_translate_scan(local, info, NULL, bss,
+-						     current_ev, end_buf);
+-		/* Check if there is space for one more entry */
+-		if ((end_buf - current_ev) <= IW_EV_ADDR_LEN) {
+-			/* Ask user space to try again with a bigger buffer */
+-			spin_unlock_bh(&local->lock);
+-			return -E2BIG;
+-		}
+-	}
+-
+-	spin_unlock_bh(&local->lock);
+-
+-	return current_ev - buffer;
+-}
+-#endif /* PRISM2_NO_STATION_MODES */
+-
+-
+-static inline int prism2_ioctl_giwscan_sta(struct net_device *dev,
+-					   struct iw_request_info *info,
+-					   struct iw_point *data, char *extra)
+-{
+-#ifdef PRISM2_NO_STATION_MODES
+-	return -EOPNOTSUPP;
+-#else /* PRISM2_NO_STATION_MODES */
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int res;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	/* Wait until the scan is finished. We can probably do better
+-	 * than that - Jean II */
+-	if (local->scan_timestamp &&
+-	    time_before(jiffies, local->scan_timestamp + 3 * HZ)) {
+-		/* Important note : we don't want to block the caller
+-		 * until results are ready for various reasons.
+-		 * First, managing wait queues is complex and racy
+-		 * (there may be multiple simultaneous callers).
+-		 * Second, we grab some rtnetlink lock before coming
+-		 * here (in dev_ioctl()).
+-		 * Third, the caller can wait on the Wireless Event
+-		 * - Jean II */
+-		return -EAGAIN;
+-	}
+-	local->scan_timestamp = 0;
+-
+-	res = prism2_translate_scan(local, info, extra, data->length);
+-
+-	if (res >= 0) {
+-		data->length = res;
+-		return 0;
+-	} else {
+-		data->length = 0;
+-		return res;
+-	}
+-#endif /* PRISM2_NO_STATION_MODES */
+-}
+-
+-
+-static int prism2_ioctl_giwscan(struct net_device *dev,
+-				struct iw_request_info *info,
+-				union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_point *data = &wrqu->data;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int res;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (local->iw_mode == IW_MODE_MASTER) {
+-		/* In MASTER mode, it doesn't make sense to go around
+-		 * scanning the frequencies and make the stations we serve
+-		 * wait when what the user is really interested about is the
+-		 * list of stations and access points we are talking to.
+-		 * So, just extract results from our cache...
+-		 * Jean II */
+-
+-		/* Translate to WE format */
+-		res = prism2_ap_translate_scan(dev, info, extra);
+-		if (res >= 0) {
+-			printk(KERN_DEBUG "Scan result translation succeeded "
+-			       "(length=%d)\n", res);
+-			data->length = res;
+-			return 0;
+-		} else {
+-			printk(KERN_DEBUG
+-			       "Scan result translation failed (res=%d)\n",
+-			       res);
+-			data->length = 0;
+-			return res;
+-		}
+-	} else {
+-		/* Station mode */
+-		return prism2_ioctl_giwscan_sta(dev, info, data, extra);
+-	}
+-}
+-
+-
+-static const struct iw_priv_args prism2_priv[] = {
+-	{ PRISM2_IOCTL_MONITOR,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "monitor" },
+-	{ PRISM2_IOCTL_READMIF,
+-	  IW_PRIV_TYPE_BYTE | IW_PRIV_SIZE_FIXED | 1,
+-	  IW_PRIV_TYPE_BYTE | IW_PRIV_SIZE_FIXED | 1, "readmif" },
+-	{ PRISM2_IOCTL_WRITEMIF,
+-	  IW_PRIV_TYPE_BYTE | IW_PRIV_SIZE_FIXED | 2, 0, "writemif" },
+-	{ PRISM2_IOCTL_RESET,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "reset" },
+-	{ PRISM2_IOCTL_INQUIRE,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "inquire" },
+-	{ PRISM2_IOCTL_SET_RID_WORD,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 2, 0, "set_rid_word" },
+-	{ PRISM2_IOCTL_MACCMD,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "maccmd" },
+-	{ PRISM2_IOCTL_WDS_ADD,
+-	  IW_PRIV_TYPE_ADDR | IW_PRIV_SIZE_FIXED | 1, 0, "wds_add" },
+-	{ PRISM2_IOCTL_WDS_DEL,
+-	  IW_PRIV_TYPE_ADDR | IW_PRIV_SIZE_FIXED | 1, 0, "wds_del" },
+-	{ PRISM2_IOCTL_ADDMAC,
+-	  IW_PRIV_TYPE_ADDR | IW_PRIV_SIZE_FIXED | 1, 0, "addmac" },
+-	{ PRISM2_IOCTL_DELMAC,
+-	  IW_PRIV_TYPE_ADDR | IW_PRIV_SIZE_FIXED | 1, 0, "delmac" },
+-	{ PRISM2_IOCTL_KICKMAC,
+-	  IW_PRIV_TYPE_ADDR | IW_PRIV_SIZE_FIXED | 1, 0, "kickmac" },
+-	/* --- raw access to sub-ioctls --- */
+-	{ PRISM2_IOCTL_PRISM2_PARAM,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 2, 0, "prism2_param" },
+-	{ PRISM2_IOCTL_GET_PRISM2_PARAM,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getprism2_param" },
+-	/* --- sub-ioctls handlers --- */
+-	{ PRISM2_IOCTL_PRISM2_PARAM,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "" },
+-	{ PRISM2_IOCTL_GET_PRISM2_PARAM,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "" },
+-	/* --- sub-ioctls definitions --- */
+-	{ PRISM2_PARAM_TXRATECTRL,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "txratectrl" },
+-	{ PRISM2_PARAM_TXRATECTRL,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "gettxratectrl" },
+-	{ PRISM2_PARAM_BEACON_INT,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "beacon_int" },
+-	{ PRISM2_PARAM_BEACON_INT,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getbeacon_int" },
+-#ifndef PRISM2_NO_STATION_MODES
+-	{ PRISM2_PARAM_PSEUDO_IBSS,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "pseudo_ibss" },
+-	{ PRISM2_PARAM_PSEUDO_IBSS,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getpseudo_ibss" },
+-#endif /* PRISM2_NO_STATION_MODES */
+-	{ PRISM2_PARAM_ALC,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "alc" },
+-	{ PRISM2_PARAM_ALC,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getalc" },
+-	{ PRISM2_PARAM_DUMP,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "dump" },
+-	{ PRISM2_PARAM_DUMP,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getdump" },
+-	{ PRISM2_PARAM_OTHER_AP_POLICY,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "other_ap_policy" },
+-	{ PRISM2_PARAM_OTHER_AP_POLICY,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getother_ap_pol" },
+-	{ PRISM2_PARAM_AP_MAX_INACTIVITY,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "max_inactivity" },
+-	{ PRISM2_PARAM_AP_MAX_INACTIVITY,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getmax_inactivi" },
+-	{ PRISM2_PARAM_AP_BRIDGE_PACKETS,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "bridge_packets" },
+-	{ PRISM2_PARAM_AP_BRIDGE_PACKETS,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getbridge_packe" },
+-	{ PRISM2_PARAM_DTIM_PERIOD,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "dtim_period" },
+-	{ PRISM2_PARAM_DTIM_PERIOD,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getdtim_period" },
+-	{ PRISM2_PARAM_AP_NULLFUNC_ACK,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "nullfunc_ack" },
+-	{ PRISM2_PARAM_AP_NULLFUNC_ACK,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getnullfunc_ack" },
+-	{ PRISM2_PARAM_MAX_WDS,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "max_wds" },
+-	{ PRISM2_PARAM_MAX_WDS,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getmax_wds" },
+-	{ PRISM2_PARAM_AP_AUTOM_AP_WDS,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "autom_ap_wds" },
+-	{ PRISM2_PARAM_AP_AUTOM_AP_WDS,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getautom_ap_wds" },
+-	{ PRISM2_PARAM_AP_AUTH_ALGS,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "ap_auth_algs" },
+-	{ PRISM2_PARAM_AP_AUTH_ALGS,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getap_auth_algs" },
+-	{ PRISM2_PARAM_MONITOR_ALLOW_FCSERR,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "allow_fcserr" },
+-	{ PRISM2_PARAM_MONITOR_ALLOW_FCSERR,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getallow_fcserr" },
+-	{ PRISM2_PARAM_HOST_ENCRYPT,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "host_encrypt" },
+-	{ PRISM2_PARAM_HOST_ENCRYPT,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "gethost_encrypt" },
+-	{ PRISM2_PARAM_HOST_DECRYPT,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "host_decrypt" },
+-	{ PRISM2_PARAM_HOST_DECRYPT,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "gethost_decrypt" },
+-#ifndef PRISM2_NO_STATION_MODES
+-	{ PRISM2_PARAM_HOST_ROAMING,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "host_roaming" },
+-	{ PRISM2_PARAM_HOST_ROAMING,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "gethost_roaming" },
+-#endif /* PRISM2_NO_STATION_MODES */
+-	{ PRISM2_PARAM_BCRX_STA_KEY,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "bcrx_sta_key" },
+-	{ PRISM2_PARAM_BCRX_STA_KEY,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getbcrx_sta_key" },
+-	{ PRISM2_PARAM_IEEE_802_1X,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "ieee_802_1x" },
+-	{ PRISM2_PARAM_IEEE_802_1X,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getieee_802_1x" },
+-	{ PRISM2_PARAM_ANTSEL_TX,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "antsel_tx" },
+-	{ PRISM2_PARAM_ANTSEL_TX,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getantsel_tx" },
+-	{ PRISM2_PARAM_ANTSEL_RX,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "antsel_rx" },
+-	{ PRISM2_PARAM_ANTSEL_RX,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getantsel_rx" },
+-	{ PRISM2_PARAM_MONITOR_TYPE,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "monitor_type" },
+-	{ PRISM2_PARAM_MONITOR_TYPE,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getmonitor_type" },
+-	{ PRISM2_PARAM_WDS_TYPE,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "wds_type" },
+-	{ PRISM2_PARAM_WDS_TYPE,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getwds_type" },
+-	{ PRISM2_PARAM_HOSTSCAN,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "hostscan" },
+-	{ PRISM2_PARAM_HOSTSCAN,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "gethostscan" },
+-	{ PRISM2_PARAM_AP_SCAN,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "ap_scan" },
+-	{ PRISM2_PARAM_AP_SCAN,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getap_scan" },
+-	{ PRISM2_PARAM_ENH_SEC,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "enh_sec" },
+-	{ PRISM2_PARAM_ENH_SEC,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getenh_sec" },
+-#ifdef PRISM2_IO_DEBUG
+-	{ PRISM2_PARAM_IO_DEBUG,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "io_debug" },
+-	{ PRISM2_PARAM_IO_DEBUG,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getio_debug" },
+-#endif /* PRISM2_IO_DEBUG */
+-	{ PRISM2_PARAM_BASIC_RATES,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "basic_rates" },
+-	{ PRISM2_PARAM_BASIC_RATES,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getbasic_rates" },
+-	{ PRISM2_PARAM_OPER_RATES,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "oper_rates" },
+-	{ PRISM2_PARAM_OPER_RATES,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getoper_rates" },
+-	{ PRISM2_PARAM_HOSTAPD,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "hostapd" },
+-	{ PRISM2_PARAM_HOSTAPD,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "gethostapd" },
+-	{ PRISM2_PARAM_HOSTAPD_STA,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "hostapd_sta" },
+-	{ PRISM2_PARAM_HOSTAPD_STA,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "gethostapd_sta" },
+-	{ PRISM2_PARAM_WPA,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "wpa" },
+-	{ PRISM2_PARAM_WPA,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getwpa" },
+-	{ PRISM2_PARAM_PRIVACY_INVOKED,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "privacy_invoked" },
+-	{ PRISM2_PARAM_PRIVACY_INVOKED,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getprivacy_invo" },
+-	{ PRISM2_PARAM_TKIP_COUNTERMEASURES,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "tkip_countermea" },
+-	{ PRISM2_PARAM_TKIP_COUNTERMEASURES,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "gettkip_counter" },
+-	{ PRISM2_PARAM_DROP_UNENCRYPTED,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "drop_unencrypte" },
+-	{ PRISM2_PARAM_DROP_UNENCRYPTED,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getdrop_unencry" },
+-	{ PRISM2_PARAM_SCAN_CHANNEL_MASK,
+-	  IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "scan_channels" },
+-	{ PRISM2_PARAM_SCAN_CHANNEL_MASK,
+-	  0, IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, "getscan_channel" },
+-};
+-
+-
+-static int prism2_ioctl_priv_inquire(struct net_device *dev, int *i)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (local->func->cmd(dev, HFA384X_CMDCODE_INQUIRE, *i, NULL, NULL))
+-		return -EOPNOTSUPP;
+-
+-	return 0;
+-}
+-
+-
+-static int prism2_ioctl_priv_prism2_param(struct net_device *dev,
+-					  struct iw_request_info *info,
+-					  union iwreq_data *uwrq, char *extra)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int *i = (int *) extra;
+-	int param = *i;
+-	int value = *(i + 1);
+-	int ret = 0;
+-	u16 val;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	switch (param) {
+-	case PRISM2_PARAM_TXRATECTRL:
+-		local->fw_tx_rate_control = value;
+-		break;
+-
+-	case PRISM2_PARAM_BEACON_INT:
+-		if (hostap_set_word(dev, HFA384X_RID_CNFBEACONINT, value) ||
+-		    local->func->reset_port(dev))
+-			ret = -EINVAL;
+-		else
+-			local->beacon_int = value;
+-		break;
+-
+-#ifndef PRISM2_NO_STATION_MODES
+-	case PRISM2_PARAM_PSEUDO_IBSS:
+-		if (value == local->pseudo_adhoc)
+-			break;
+-
+-		if (value != 0 && value != 1) {
+-			ret = -EINVAL;
+-			break;
+-		}
+-
+-		printk(KERN_DEBUG "prism2: %s: pseudo IBSS change %d -> %d\n",
+-		       dev->name, local->pseudo_adhoc, value);
+-		local->pseudo_adhoc = value;
+-		if (local->iw_mode != IW_MODE_ADHOC)
+-			break;
+-
+-		if (hostap_set_word(dev, HFA384X_RID_CNFPORTTYPE,
+-				    hostap_get_porttype(local))) {
+-			ret = -EOPNOTSUPP;
+-			break;
+-		}
+-
+-		if (local->func->reset_port(dev))
+-			ret = -EINVAL;
+-		break;
+-#endif /* PRISM2_NO_STATION_MODES */
+-
+-	case PRISM2_PARAM_ALC:
+-		printk(KERN_DEBUG "%s: %s ALC\n", dev->name,
+-		       value == 0 ? "Disabling" : "Enabling");
+-		val = HFA384X_TEST_CFG_BIT_ALC;
+-		local->func->cmd(dev, HFA384X_CMDCODE_TEST |
+-				 (HFA384X_TEST_CFG_BITS << 8),
+-				 value == 0 ? 0 : 1, &val, NULL);
+-		break;
+-
+-	case PRISM2_PARAM_DUMP:
+-		local->frame_dump = value;
+-		break;
+-
+-	case PRISM2_PARAM_OTHER_AP_POLICY:
+-		if (value < 0 || value > 3) {
+-			ret = -EINVAL;
+-			break;
+-		}
+-		if (local->ap != NULL)
+-			local->ap->ap_policy = value;
+-		break;
+-
+-	case PRISM2_PARAM_AP_MAX_INACTIVITY:
+-		if (value < 0 || value > 7 * 24 * 60 * 60) {
+-			ret = -EINVAL;
+-			break;
+-		}
+-		if (local->ap != NULL)
+-			local->ap->max_inactivity = value * HZ;
+-		break;
+-
+-	case PRISM2_PARAM_AP_BRIDGE_PACKETS:
+-		if (local->ap != NULL)
+-			local->ap->bridge_packets = value;
+-		break;
+-
+-	case PRISM2_PARAM_DTIM_PERIOD:
+-		if (value < 0 || value > 65535) {
+-			ret = -EINVAL;
+-			break;
+-		}
+-		if (hostap_set_word(dev, HFA384X_RID_CNFOWNDTIMPERIOD, value)
+-		    || local->func->reset_port(dev))
+-			ret = -EINVAL;
+-		else
+-			local->dtim_period = value;
+-		break;
+-
+-	case PRISM2_PARAM_AP_NULLFUNC_ACK:
+-		if (local->ap != NULL)
+-			local->ap->nullfunc_ack = value;
+-		break;
+-
+-	case PRISM2_PARAM_MAX_WDS:
+-		local->wds_max_connections = value;
+-		break;
+-
+-	case PRISM2_PARAM_AP_AUTOM_AP_WDS:
+-		if (local->ap != NULL) {
+-			if (!local->ap->autom_ap_wds && value) {
+-				/* add WDS link to all APs in STA table */
+-				hostap_add_wds_links(local);
+-			}
+-			local->ap->autom_ap_wds = value;
+-		}
+-		break;
+-
+-	case PRISM2_PARAM_AP_AUTH_ALGS:
+-		local->auth_algs = value;
+-		if (hostap_set_auth_algs(local))
+-			ret = -EINVAL;
+-		break;
+-
+-	case PRISM2_PARAM_MONITOR_ALLOW_FCSERR:
+-		local->monitor_allow_fcserr = value;
+-		break;
+-
+-	case PRISM2_PARAM_HOST_ENCRYPT:
+-		local->host_encrypt = value;
+-		if (hostap_set_encryption(local) ||
+-		    local->func->reset_port(dev))
+-			ret = -EINVAL;
+-		break;
+-
+-	case PRISM2_PARAM_HOST_DECRYPT:
+-		local->host_decrypt = value;
+-		if (hostap_set_encryption(local) ||
+-		    local->func->reset_port(dev))
+-			ret = -EINVAL;
+-		break;
+-
+-#ifndef PRISM2_NO_STATION_MODES
+-	case PRISM2_PARAM_HOST_ROAMING:
+-		if (value < 0 || value > 2) {
+-			ret = -EINVAL;
+-			break;
+-		}
+-		local->host_roaming = value;
+-		if (hostap_set_roaming(local) || local->func->reset_port(dev))
+-			ret = -EINVAL;
+-		break;
+-#endif /* PRISM2_NO_STATION_MODES */
+-
+-	case PRISM2_PARAM_BCRX_STA_KEY:
+-		local->bcrx_sta_key = value;
+-		break;
+-
+-	case PRISM2_PARAM_IEEE_802_1X:
+-		local->ieee_802_1x = value;
+-		break;
+-
+-	case PRISM2_PARAM_ANTSEL_TX:
+-		if (value < 0 || value > HOSTAP_ANTSEL_HIGH) {
+-			ret = -EINVAL;
+-			break;
+-		}
+-		local->antsel_tx = value;
+-		hostap_set_antsel(local);
+-		break;
+-
+-	case PRISM2_PARAM_ANTSEL_RX:
+-		if (value < 0 || value > HOSTAP_ANTSEL_HIGH) {
+-			ret = -EINVAL;
+-			break;
+-		}
+-		local->antsel_rx = value;
+-		hostap_set_antsel(local);
+-		break;
+-
+-	case PRISM2_PARAM_MONITOR_TYPE:
+-		if (value != PRISM2_MONITOR_80211 &&
+-		    value != PRISM2_MONITOR_CAPHDR &&
+-		    value != PRISM2_MONITOR_PRISM &&
+-		    value != PRISM2_MONITOR_RADIOTAP) {
+-			ret = -EINVAL;
+-			break;
+-		}
+-		local->monitor_type = value;
+-		if (local->iw_mode == IW_MODE_MONITOR)
+-			hostap_monitor_set_type(local);
+-		break;
+-
+-	case PRISM2_PARAM_WDS_TYPE:
+-		local->wds_type = value;
+-		break;
+-
+-	case PRISM2_PARAM_HOSTSCAN:
+-	{
+-		struct hfa384x_hostscan_request scan_req;
+-		u16 rate;
+-
+-		memset(&scan_req, 0, sizeof(scan_req));
+-		scan_req.channel_list = cpu_to_le16(0x3fff);
+-		switch (value) {
+-		case 1: rate = HFA384X_RATES_1MBPS; break;
+-		case 2: rate = HFA384X_RATES_2MBPS; break;
+-		case 3: rate = HFA384X_RATES_5MBPS; break;
+-		case 4: rate = HFA384X_RATES_11MBPS; break;
+-		default: rate = HFA384X_RATES_1MBPS; break;
+-		}
+-		scan_req.txrate = cpu_to_le16(rate);
+-		/* leave SSID empty to accept all SSIDs */
+-
+-		if (local->iw_mode == IW_MODE_MASTER) {
+-			if (hostap_set_word(dev, HFA384X_RID_CNFPORTTYPE,
+-					    HFA384X_PORTTYPE_BSS) ||
+-			    local->func->reset_port(dev))
+-				printk(KERN_DEBUG "Leaving Host AP mode "
+-				       "for HostScan failed\n");
+-		}
+-
+-		if (local->func->set_rid(dev, HFA384X_RID_HOSTSCAN, &scan_req,
+-					 sizeof(scan_req))) {
+-			printk(KERN_DEBUG "HOSTSCAN failed\n");
+-			ret = -EINVAL;
+-		}
+-		if (local->iw_mode == IW_MODE_MASTER) {
+-			wait_queue_entry_t __wait;
+-			init_waitqueue_entry(&__wait, current);
+-			add_wait_queue(&local->hostscan_wq, &__wait);
+-			set_current_state(TASK_INTERRUPTIBLE);
+-			schedule_timeout(HZ);
+-			if (signal_pending(current))
+-				ret = -EINTR;
+-			set_current_state(TASK_RUNNING);
+-			remove_wait_queue(&local->hostscan_wq, &__wait);
+-
+-			if (hostap_set_word(dev, HFA384X_RID_CNFPORTTYPE,
+-					    HFA384X_PORTTYPE_HOSTAP) ||
+-			    local->func->reset_port(dev))
+-				printk(KERN_DEBUG "Returning to Host AP mode "
+-				       "after HostScan failed\n");
+-		}
+-		break;
+-	}
+-
+-	case PRISM2_PARAM_AP_SCAN:
+-		local->passive_scan_interval = value;
+-		if (timer_pending(&local->passive_scan_timer))
+-			del_timer(&local->passive_scan_timer);
+-		if (value > 0 && value < INT_MAX / HZ) {
+-			local->passive_scan_timer.expires = jiffies +
+-				local->passive_scan_interval * HZ;
+-			add_timer(&local->passive_scan_timer);
+-		}
+-		break;
+-
+-	case PRISM2_PARAM_ENH_SEC:
+-		if (value < 0 || value > 3) {
+-			ret = -EINVAL;
+-			break;
+-		}
+-		local->enh_sec = value;
+-		if (hostap_set_word(dev, HFA384X_RID_CNFENHSECURITY,
+-				    local->enh_sec) ||
+-		    local->func->reset_port(dev)) {
+-			printk(KERN_INFO "%s: cnfEnhSecurity requires STA f/w "
+-			       "1.6.3 or newer\n", dev->name);
+-			ret = -EOPNOTSUPP;
+-		}
+-		break;
+-
+-#ifdef PRISM2_IO_DEBUG
+-	case PRISM2_PARAM_IO_DEBUG:
+-		local->io_debug_enabled = value;
+-		break;
+-#endif /* PRISM2_IO_DEBUG */
+-
+-	case PRISM2_PARAM_BASIC_RATES:
+-		if ((value & local->tx_rate_control) != value || value == 0) {
+-			printk(KERN_INFO "%s: invalid basic rate set - basic "
+-			       "rates must be in supported rate set\n",
+-			       dev->name);
+-			ret = -EINVAL;
+-			break;
+-		}
+-		local->basic_rates = value;
+-		if (hostap_set_word(dev, HFA384X_RID_CNFBASICRATES,
+-				    local->basic_rates) ||
+-		    local->func->reset_port(dev))
+-			ret = -EINVAL;
+-		break;
+-
+-	case PRISM2_PARAM_OPER_RATES:
+-		local->tx_rate_control = value;
+-		if (hostap_set_rate(dev))
+-			ret = -EINVAL;
+-		break;
+-
+-	case PRISM2_PARAM_HOSTAPD:
+-		ret = hostap_set_hostapd(local, value, 1);
+-		break;
+-
+-	case PRISM2_PARAM_HOSTAPD_STA:
+-		ret = hostap_set_hostapd_sta(local, value, 1);
+-		break;
+-
+-	case PRISM2_PARAM_WPA:
+-		local->wpa = value;
+-		if (local->sta_fw_ver < PRISM2_FW_VER(1,7,0))
+-			ret = -EOPNOTSUPP;
+-		else if (hostap_set_word(dev, HFA384X_RID_SSNHANDLINGMODE,
+-					 value ? 1 : 0))
+-			ret = -EINVAL;
+-		break;
+-
+-	case PRISM2_PARAM_PRIVACY_INVOKED:
+-		local->privacy_invoked = value;
+-		if (hostap_set_encryption(local) ||
+-		    local->func->reset_port(dev))
+-			ret = -EINVAL;
+-		break;
+-
+-	case PRISM2_PARAM_TKIP_COUNTERMEASURES:
+-		local->tkip_countermeasures = value;
+-		break;
+-
+-	case PRISM2_PARAM_DROP_UNENCRYPTED:
+-		local->drop_unencrypted = value;
+-		break;
+-
+-	case PRISM2_PARAM_SCAN_CHANNEL_MASK:
+-		local->scan_channel_mask = value;
+-		break;
+-
+-	default:
+-		printk(KERN_DEBUG "%s: prism2_param: unknown param %d\n",
+-		       dev->name, param);
+-		ret = -EOPNOTSUPP;
+-		break;
+-	}
+-
+-	return ret;
+-}
+-
+-
+-static int prism2_ioctl_priv_get_prism2_param(struct net_device *dev,
+-					      struct iw_request_info *info,
+-					      union iwreq_data *wrqu, char *extra)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int *param = (int *) extra;
+-	int ret = 0;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	switch (*param) {
+-	case PRISM2_PARAM_TXRATECTRL:
+-		*param = local->fw_tx_rate_control;
+-		break;
+-
+-	case PRISM2_PARAM_BEACON_INT:
+-		*param = local->beacon_int;
+-		break;
+-
+-	case PRISM2_PARAM_PSEUDO_IBSS:
+-		*param = local->pseudo_adhoc;
+-		break;
+-
+-	case PRISM2_PARAM_ALC:
+-		ret = -EOPNOTSUPP; /* FIX */
+-		break;
+-
+-	case PRISM2_PARAM_DUMP:
+-		*param = local->frame_dump;
+-		break;
+-
+-	case PRISM2_PARAM_OTHER_AP_POLICY:
+-		if (local->ap != NULL)
+-			*param = local->ap->ap_policy;
+-		else
+-			ret = -EOPNOTSUPP;
+-		break;
+-
+-	case PRISM2_PARAM_AP_MAX_INACTIVITY:
+-		if (local->ap != NULL)
+-			*param = local->ap->max_inactivity / HZ;
+-		else
+-			ret = -EOPNOTSUPP;
+-		break;
+-
+-	case PRISM2_PARAM_AP_BRIDGE_PACKETS:
+-		if (local->ap != NULL)
+-			*param = local->ap->bridge_packets;
+-		else
+-			ret = -EOPNOTSUPP;
+-		break;
+-
+-	case PRISM2_PARAM_DTIM_PERIOD:
+-		*param = local->dtim_period;
+-		break;
+-
+-	case PRISM2_PARAM_AP_NULLFUNC_ACK:
+-		if (local->ap != NULL)
+-			*param = local->ap->nullfunc_ack;
+-		else
+-			ret = -EOPNOTSUPP;
+-		break;
+-
+-	case PRISM2_PARAM_MAX_WDS:
+-		*param = local->wds_max_connections;
+-		break;
+-
+-	case PRISM2_PARAM_AP_AUTOM_AP_WDS:
+-		if (local->ap != NULL)
+-			*param = local->ap->autom_ap_wds;
+-		else
+-			ret = -EOPNOTSUPP;
+-		break;
+-
+-	case PRISM2_PARAM_AP_AUTH_ALGS:
+-		*param = local->auth_algs;
+-		break;
+-
+-	case PRISM2_PARAM_MONITOR_ALLOW_FCSERR:
+-		*param = local->monitor_allow_fcserr;
+-		break;
+-
+-	case PRISM2_PARAM_HOST_ENCRYPT:
+-		*param = local->host_encrypt;
+-		break;
+-
+-	case PRISM2_PARAM_HOST_DECRYPT:
+-		*param = local->host_decrypt;
+-		break;
+-
+-	case PRISM2_PARAM_HOST_ROAMING:
+-		*param = local->host_roaming;
+-		break;
+-
+-	case PRISM2_PARAM_BCRX_STA_KEY:
+-		*param = local->bcrx_sta_key;
+-		break;
+-
+-	case PRISM2_PARAM_IEEE_802_1X:
+-		*param = local->ieee_802_1x;
+-		break;
+-
+-	case PRISM2_PARAM_ANTSEL_TX:
+-		*param = local->antsel_tx;
+-		break;
+-
+-	case PRISM2_PARAM_ANTSEL_RX:
+-		*param = local->antsel_rx;
+-		break;
+-
+-	case PRISM2_PARAM_MONITOR_TYPE:
+-		*param = local->monitor_type;
+-		break;
+-
+-	case PRISM2_PARAM_WDS_TYPE:
+-		*param = local->wds_type;
+-		break;
+-
+-	case PRISM2_PARAM_HOSTSCAN:
+-		ret = -EOPNOTSUPP;
+-		break;
+-
+-	case PRISM2_PARAM_AP_SCAN:
+-		*param = local->passive_scan_interval;
+-		break;
+-
+-	case PRISM2_PARAM_ENH_SEC:
+-		*param = local->enh_sec;
+-		break;
+-
+-#ifdef PRISM2_IO_DEBUG
+-	case PRISM2_PARAM_IO_DEBUG:
+-		*param = local->io_debug_enabled;
+-		break;
+-#endif /* PRISM2_IO_DEBUG */
+-
+-	case PRISM2_PARAM_BASIC_RATES:
+-		*param = local->basic_rates;
+-		break;
+-
+-	case PRISM2_PARAM_OPER_RATES:
+-		*param = local->tx_rate_control;
+-		break;
+-
+-	case PRISM2_PARAM_HOSTAPD:
+-		*param = local->hostapd;
+-		break;
+-
+-	case PRISM2_PARAM_HOSTAPD_STA:
+-		*param = local->hostapd_sta;
+-		break;
+-
+-	case PRISM2_PARAM_WPA:
+-		if (local->sta_fw_ver < PRISM2_FW_VER(1,7,0))
+-			ret = -EOPNOTSUPP;
+-		*param = local->wpa;
+-		break;
+-
+-	case PRISM2_PARAM_PRIVACY_INVOKED:
+-		*param = local->privacy_invoked;
+-		break;
+-
+-	case PRISM2_PARAM_TKIP_COUNTERMEASURES:
+-		*param = local->tkip_countermeasures;
+-		break;
+-
+-	case PRISM2_PARAM_DROP_UNENCRYPTED:
+-		*param = local->drop_unencrypted;
+-		break;
+-
+-	case PRISM2_PARAM_SCAN_CHANNEL_MASK:
+-		*param = local->scan_channel_mask;
+-		break;
+-
+-	default:
+-		printk(KERN_DEBUG "%s: get_prism2_param: unknown param %d\n",
+-		       dev->name, *param);
+-		ret = -EOPNOTSUPP;
+-		break;
+-	}
+-
+-	return ret;
+-}
+-
+-
+-static int prism2_ioctl_priv_readmif(struct net_device *dev,
+-				     struct iw_request_info *info,
+-				     union iwreq_data *wrqu, char *extra)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	u16 resp0;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (local->func->cmd(dev, HFA384X_CMDCODE_READMIF, *extra, NULL,
+-			     &resp0))
+-		return -EOPNOTSUPP;
+-	else
+-		*extra = resp0;
+-
+-	return 0;
+-}
+-
+-
+-static int prism2_ioctl_priv_writemif(struct net_device *dev,
+-				      struct iw_request_info *info,
+-				      union iwreq_data *wrqu, char *extra)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	u16 cr, val;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	cr = *extra;
+-	val = *(extra + 1);
+-	if (local->func->cmd(dev, HFA384X_CMDCODE_WRITEMIF, cr, &val, NULL))
+-		return -EOPNOTSUPP;
+-
+-	return 0;
+-}
+-
+-
+-static int prism2_ioctl_priv_monitor(struct net_device *dev, int *i)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int ret = 0;
+-	union iwreq_data wrqu;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	printk(KERN_DEBUG "%s: process %d (%s) used deprecated iwpriv monitor "
+-	       "- update software to use iwconfig mode monitor\n",
+-	       dev->name, task_pid_nr(current), current->comm);
+-
+-	/* Backward compatibility code - this can be removed at some point */
+-
+-	if (*i == 0) {
+-		/* Disable monitor mode - old mode was not saved, so go to
+-		 * Master mode */
+-		wrqu.mode = IW_MODE_MASTER;
+-		ret = prism2_ioctl_siwmode(dev, NULL, &wrqu, NULL);
+-	} else if (*i == 1) {
+-		/* netlink socket mode is not supported anymore since it did
+-		 * not separate different devices from each other and was not
+-		 * best method for delivering large amount of packets to
+-		 * user space */
+-		ret = -EOPNOTSUPP;
+-	} else if (*i == 2 || *i == 3) {
+-		switch (*i) {
+-		case 2:
+-			local->monitor_type = PRISM2_MONITOR_80211;
+-			break;
+-		case 3:
+-			local->monitor_type = PRISM2_MONITOR_PRISM;
+-			break;
+-		}
+-		wrqu.mode = IW_MODE_MONITOR;
+-		ret = prism2_ioctl_siwmode(dev, NULL, &wrqu, NULL);
+-		hostap_monitor_mode_enable(local);
+-	} else
+-		ret = -EINVAL;
+-
+-	return ret;
+-}
+-
+-
+-static int prism2_ioctl_priv_reset(struct net_device *dev, int *i)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	printk(KERN_DEBUG "%s: manual reset request(%d)\n", dev->name, *i);
+-	switch (*i) {
+-	case 0:
+-		/* Disable and enable card */
+-		local->func->hw_shutdown(dev, 1);
+-		local->func->hw_config(dev, 0);
+-		break;
+-
+-	case 1:
+-		/* COR sreset */
+-		local->func->hw_reset(dev);
+-		break;
+-
+-	case 2:
+-		/* Disable and enable port 0 */
+-		local->func->reset_port(dev);
+-		break;
+-
+-	case 3:
+-		prism2_sta_deauth(local, WLAN_REASON_DEAUTH_LEAVING);
+-		if (local->func->cmd(dev, HFA384X_CMDCODE_DISABLE, 0, NULL,
+-				     NULL))
+-			return -EINVAL;
+-		break;
+-
+-	case 4:
+-		if (local->func->cmd(dev, HFA384X_CMDCODE_ENABLE, 0, NULL,
+-				     NULL))
+-			return -EINVAL;
+-		break;
+-
+-	default:
+-		printk(KERN_DEBUG "Unknown reset request %d\n", *i);
+-		return -EOPNOTSUPP;
+-	}
+-
+-	return 0;
+-}
+-
+-
+-static int prism2_ioctl_priv_set_rid_word(struct net_device *dev, int *i)
+-{
+-	int rid = *i;
+-	int value = *(i + 1);
+-
+-	printk(KERN_DEBUG "%s: Set RID[0x%X] = %d\n", dev->name, rid, value);
+-
+-	if (hostap_set_word(dev, rid, value))
+-		return -EINVAL;
+-
+-	return 0;
+-}
+-
+-
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-static int ap_mac_cmd_ioctl(local_info_t *local, int *cmd)
+-{
+-	int ret = 0;
+-
+-	switch (*cmd) {
+-	case AP_MAC_CMD_POLICY_OPEN:
+-		local->ap->mac_restrictions.policy = MAC_POLICY_OPEN;
+-		break;
+-	case AP_MAC_CMD_POLICY_ALLOW:
+-		local->ap->mac_restrictions.policy = MAC_POLICY_ALLOW;
+-		break;
+-	case AP_MAC_CMD_POLICY_DENY:
+-		local->ap->mac_restrictions.policy = MAC_POLICY_DENY;
+-		break;
+-	case AP_MAC_CMD_FLUSH:
+-		ap_control_flush_macs(&local->ap->mac_restrictions);
+-		break;
+-	case AP_MAC_CMD_KICKALL:
+-		ap_control_kickall(local->ap);
+-		hostap_deauth_all_stas(local->dev, local->ap, 0);
+-		break;
+-	default:
+-		ret = -EOPNOTSUPP;
+-		break;
+-	}
+-
+-	return ret;
+-}
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-
+-
+-#ifdef PRISM2_DOWNLOAD_SUPPORT
+-static int prism2_ioctl_priv_download(local_info_t *local, struct iw_point *p)
+-{
+-	struct prism2_download_param *param;
+-	int ret = 0;
+-
+-	if (p->length < sizeof(struct prism2_download_param) ||
+-	    p->length > 1024 || !p->pointer)
+-		return -EINVAL;
+-
+-	param = memdup_user(p->pointer, p->length);
+-	if (IS_ERR(param)) {
+-		return PTR_ERR(param);
+-	}
+-
+-	if (p->length < sizeof(struct prism2_download_param) +
+-	    param->num_areas * sizeof(struct prism2_download_area)) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
+-
+-	ret = local->func->download(local, param);
+-
+- out:
+-	kfree(param);
+-	return ret;
+-}
+-#endif /* PRISM2_DOWNLOAD_SUPPORT */
+-
+-
+-static int prism2_set_genericelement(struct net_device *dev, u8 *elem,
+-				     size_t len)
+-{
+-	struct hostap_interface *iface = netdev_priv(dev);
+-	local_info_t *local = iface->local;
+-	u8 *buf;
+-
+-	/*
+-	 * Add 16-bit length in the beginning of the buffer because Prism2 RID
+-	 * includes it.
+-	 */
+-	buf = kmalloc(len + 2, GFP_KERNEL);
+-	if (buf == NULL)
+-		return -ENOMEM;
+-
+-	*((__le16 *) buf) = cpu_to_le16(len);
+-	memcpy(buf + 2, elem, len);
+-
+-	kfree(local->generic_elem);
+-	local->generic_elem = buf;
+-	local->generic_elem_len = len + 2;
+-
+-	return local->func->set_rid(local->dev, HFA384X_RID_GENERICELEMENT,
+-				    buf, len + 2);
+-}
+-
+-
+-static int prism2_ioctl_siwauth(struct net_device *dev,
+-				struct iw_request_info *info,
+-				union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_param *data = &wrqu->param;
+-	struct hostap_interface *iface = netdev_priv(dev);
+-	local_info_t *local = iface->local;
+-
+-	switch (data->flags & IW_AUTH_INDEX) {
+-	case IW_AUTH_WPA_VERSION:
+-	case IW_AUTH_CIPHER_PAIRWISE:
+-	case IW_AUTH_CIPHER_GROUP:
+-	case IW_AUTH_KEY_MGMT:
+-		/*
+-		 * Host AP driver does not use these parameters and allows
+-		 * wpa_supplicant to control them internally.
+-		 */
+-		break;
+-	case IW_AUTH_TKIP_COUNTERMEASURES:
+-		local->tkip_countermeasures = data->value;
+-		break;
+-	case IW_AUTH_DROP_UNENCRYPTED:
+-		local->drop_unencrypted = data->value;
+-		break;
+-	case IW_AUTH_80211_AUTH_ALG:
+-		local->auth_algs = data->value;
+-		break;
+-	case IW_AUTH_WPA_ENABLED:
+-		if (data->value == 0) {
+-			local->wpa = 0;
+-			if (local->sta_fw_ver < PRISM2_FW_VER(1,7,0))
+-				break;
+-			prism2_set_genericelement(dev, "", 0);
+-			local->host_roaming = 0;
+-			local->privacy_invoked = 0;
+-			if (hostap_set_word(dev, HFA384X_RID_SSNHANDLINGMODE,
+-					    0) ||
+-			    hostap_set_roaming(local) ||
+-			    hostap_set_encryption(local) ||
+-			    local->func->reset_port(dev))
+-				return -EINVAL;
+-			break;
+-		}
+-		if (local->sta_fw_ver < PRISM2_FW_VER(1,7,0))
+-			return -EOPNOTSUPP;
+-		local->host_roaming = 2;
+-		local->privacy_invoked = 1;
+-		local->wpa = 1;
+-		if (hostap_set_word(dev, HFA384X_RID_SSNHANDLINGMODE, 1) ||
+-		    hostap_set_roaming(local) ||
+-		    hostap_set_encryption(local) ||
+-		    local->func->reset_port(dev))
+-			return -EINVAL;
+-		break;
+-	case IW_AUTH_RX_UNENCRYPTED_EAPOL:
+-		local->ieee_802_1x = data->value;
+-		break;
+-	case IW_AUTH_PRIVACY_INVOKED:
+-		local->privacy_invoked = data->value;
+-		break;
+-	default:
+-		return -EOPNOTSUPP;
+-	}
+-	return 0;
+-}
+-
+-
+-static int prism2_ioctl_giwauth(struct net_device *dev,
+-				struct iw_request_info *info,
+-				union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_param *data = &wrqu->param;
+-	struct hostap_interface *iface = netdev_priv(dev);
+-	local_info_t *local = iface->local;
+-
+-	switch (data->flags & IW_AUTH_INDEX) {
+-	case IW_AUTH_WPA_VERSION:
+-	case IW_AUTH_CIPHER_PAIRWISE:
+-	case IW_AUTH_CIPHER_GROUP:
+-	case IW_AUTH_KEY_MGMT:
+-		/*
+-		 * Host AP driver does not use these parameters and allows
+-		 * wpa_supplicant to control them internally.
+-		 */
+-		return -EOPNOTSUPP;
+-	case IW_AUTH_TKIP_COUNTERMEASURES:
+-		data->value = local->tkip_countermeasures;
+-		break;
+-	case IW_AUTH_DROP_UNENCRYPTED:
+-		data->value = local->drop_unencrypted;
+-		break;
+-	case IW_AUTH_80211_AUTH_ALG:
+-		data->value = local->auth_algs;
+-		break;
+-	case IW_AUTH_WPA_ENABLED:
+-		data->value = local->wpa;
+-		break;
+-	case IW_AUTH_RX_UNENCRYPTED_EAPOL:
+-		data->value = local->ieee_802_1x;
+-		break;
+-	default:
+-		return -EOPNOTSUPP;
+-	}
+-	return 0;
+-}
+-
+-
+-static int prism2_ioctl_siwencodeext(struct net_device *dev,
+-				     struct iw_request_info *info,
+-				     union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_point *erq = &wrqu->encoding;
+-	struct hostap_interface *iface = netdev_priv(dev);
+-	local_info_t *local = iface->local;
+-	struct iw_encode_ext *ext = (struct iw_encode_ext *) extra;
+-	int i, ret = 0;
+-	struct lib80211_crypto_ops *ops;
+-	struct lib80211_crypt_data **crypt;
+-	void *sta_ptr;
+-	u8 *addr;
+-	const char *alg, *module;
+-
+-	i = erq->flags & IW_ENCODE_INDEX;
+-	if (i > WEP_KEYS)
+-		return -EINVAL;
+-	if (i < 1 || i > WEP_KEYS)
+-		i = local->crypt_info.tx_keyidx;
+-	else
+-		i--;
+-	if (i < 0 || i >= WEP_KEYS)
+-		return -EINVAL;
+-
+-	addr = ext->addr.sa_data;
+-	if (is_broadcast_ether_addr(addr)) {
+-		sta_ptr = NULL;
+-		crypt = &local->crypt_info.crypt[i];
+-	} else {
+-		if (i != 0)
+-			return -EINVAL;
+-		sta_ptr = ap_crypt_get_ptrs(local->ap, addr, 0, &crypt);
+-		if (sta_ptr == NULL) {
+-			if (local->iw_mode == IW_MODE_INFRA) {
+-				/*
+-				 * TODO: add STA entry for the current AP so
+-				 * that unicast key can be used. For now, this
+-				 * is emulated by using default key idx 0.
+-				 */
+-				i = 0;
+-				crypt = &local->crypt_info.crypt[i];
+-			} else
+-				return -EINVAL;
+-		}
+-	}
+-
+-	if ((erq->flags & IW_ENCODE_DISABLED) ||
+-	    ext->alg == IW_ENCODE_ALG_NONE) {
+-		if (*crypt)
+-			lib80211_crypt_delayed_deinit(&local->crypt_info, crypt);
+-		goto done;
+-	}
+-
+-	switch (ext->alg) {
+-	case IW_ENCODE_ALG_WEP:
+-		alg = "WEP";
+-		module = "lib80211_crypt_wep";
+-		break;
+-	case IW_ENCODE_ALG_TKIP:
+-		alg = "TKIP";
+-		module = "lib80211_crypt_tkip";
+-		break;
+-	case IW_ENCODE_ALG_CCMP:
+-		alg = "CCMP";
+-		module = "lib80211_crypt_ccmp";
+-		break;
+-	default:
+-		printk(KERN_DEBUG "%s: unsupported algorithm %d\n",
+-		       local->dev->name, ext->alg);
+-		ret = -EOPNOTSUPP;
+-		goto done;
+-	}
+-
+-	ops = lib80211_get_crypto_ops(alg);
+-	if (ops == NULL) {
+-		request_module(module);
+-		ops = lib80211_get_crypto_ops(alg);
+-	}
+-	if (ops == NULL) {
+-		printk(KERN_DEBUG "%s: unknown crypto alg '%s'\n",
+-		       local->dev->name, alg);
+-		ret = -EOPNOTSUPP;
+-		goto done;
+-	}
+-
+-	if (sta_ptr || ext->alg != IW_ENCODE_ALG_WEP) {
+-		/*
+-		 * Per station encryption and other than WEP algorithms
+-		 * require host-based encryption, so force them on
+-		 * automatically.
+-		 */
+-		local->host_decrypt = local->host_encrypt = 1;
+-	}
+-
+-	if (*crypt == NULL || (*crypt)->ops != ops) {
+-		struct lib80211_crypt_data *new_crypt;
+-
+-		lib80211_crypt_delayed_deinit(&local->crypt_info, crypt);
+-
+-		new_crypt = kzalloc(sizeof(struct lib80211_crypt_data),
+-				GFP_KERNEL);
+-		if (new_crypt == NULL) {
+-			ret = -ENOMEM;
+-			goto done;
+-		}
+-		new_crypt->ops = ops;
+-		if (new_crypt->ops && try_module_get(new_crypt->ops->owner))
+-			new_crypt->priv = new_crypt->ops->init(i);
+-		if (new_crypt->priv == NULL) {
+-			kfree(new_crypt);
+-			ret = -EINVAL;
+-			goto done;
+-		}
+-
+-		*crypt = new_crypt;
+-	}
+-
+-	/*
+-	 * TODO: if ext_flags does not have IW_ENCODE_EXT_RX_SEQ_VALID, the
+-	 * existing seq# should not be changed.
+-	 * TODO: if ext_flags has IW_ENCODE_EXT_TX_SEQ_VALID, next TX seq#
+-	 * should be changed to something else than zero.
+-	 */
+-	if ((!(ext->ext_flags & IW_ENCODE_EXT_SET_TX_KEY) || ext->key_len > 0)
+-	    && (*crypt)->ops->set_key &&
+-	    (*crypt)->ops->set_key(ext->key, ext->key_len, ext->rx_seq,
+-				   (*crypt)->priv) < 0) {
+-		printk(KERN_DEBUG "%s: key setting failed\n",
+-		       local->dev->name);
+-		ret = -EINVAL;
+-		goto done;
+-	}
+-
+-	if (ext->ext_flags & IW_ENCODE_EXT_SET_TX_KEY) {
+-		if (!sta_ptr)
+-			local->crypt_info.tx_keyidx = i;
+-	}
+-
+-
+-	if (sta_ptr == NULL && ext->key_len > 0) {
+-		int first = 1, j;
+-		for (j = 0; j < WEP_KEYS; j++) {
+-			if (j != i && local->crypt_info.crypt[j]) {
+-				first = 0;
+-				break;
+-			}
+-		}
+-		if (first)
+-			local->crypt_info.tx_keyidx = i;
+-	}
+-
+- done:
+-	if (sta_ptr)
+-		hostap_handle_sta_release(sta_ptr);
+-
+-	local->open_wep = erq->flags & IW_ENCODE_OPEN;
+-
+-	/*
+-	 * Do not reset port0 if card is in Managed mode since resetting will
+-	 * generate new IEEE 802.11 authentication which may end up in looping
+-	 * with IEEE 802.1X. Prism2 documentation seem to require port reset
+-	 * after WEP configuration. However, keys are apparently changed at
+-	 * least in Managed mode.
+-	 */
+-	if (ret == 0 &&
+-	    (hostap_set_encryption(local) ||
+-	     (local->iw_mode != IW_MODE_INFRA &&
+-	      local->func->reset_port(local->dev))))
+-		ret = -EINVAL;
+-
+-	return ret;
+-}
+-
+-
+-static int prism2_ioctl_giwencodeext(struct net_device *dev,
+-				     struct iw_request_info *info,
+-				     union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_point *erq = &wrqu->encoding;
+-	struct hostap_interface *iface = netdev_priv(dev);
+-	local_info_t *local = iface->local;
+-	struct lib80211_crypt_data **crypt;
+-	void *sta_ptr;
+-	int max_key_len, i;
+-	struct iw_encode_ext *ext = (struct iw_encode_ext *) extra;
+-	u8 *addr;
+-
+-	max_key_len = erq->length - sizeof(*ext);
+-	if (max_key_len < 0)
+-		return -EINVAL;
+-
+-	i = erq->flags & IW_ENCODE_INDEX;
+-	if (i < 1 || i > WEP_KEYS)
+-		i = local->crypt_info.tx_keyidx;
+-	else
+-		i--;
+-
+-	addr = ext->addr.sa_data;
+-	if (is_broadcast_ether_addr(addr)) {
+-		sta_ptr = NULL;
+-		crypt = &local->crypt_info.crypt[i];
+-	} else {
+-		i = 0;
+-		sta_ptr = ap_crypt_get_ptrs(local->ap, addr, 0, &crypt);
+-		if (sta_ptr == NULL)
+-			return -EINVAL;
+-	}
+-	erq->flags = i + 1;
+-	memset(ext, 0, sizeof(*ext));
+-
+-	if (*crypt == NULL || (*crypt)->ops == NULL) {
+-		ext->alg = IW_ENCODE_ALG_NONE;
+-		ext->key_len = 0;
+-		erq->flags |= IW_ENCODE_DISABLED;
+-	} else {
+-		if (strcmp((*crypt)->ops->name, "WEP") == 0)
+-			ext->alg = IW_ENCODE_ALG_WEP;
+-		else if (strcmp((*crypt)->ops->name, "TKIP") == 0)
+-			ext->alg = IW_ENCODE_ALG_TKIP;
+-		else if (strcmp((*crypt)->ops->name, "CCMP") == 0)
+-			ext->alg = IW_ENCODE_ALG_CCMP;
+-		else
+-			return -EINVAL;
+-
+-		if ((*crypt)->ops->get_key) {
+-			ext->key_len =
+-				(*crypt)->ops->get_key(ext->key,
+-						       max_key_len,
+-						       ext->tx_seq,
+-						       (*crypt)->priv);
+-			if (ext->key_len &&
+-			    (ext->alg == IW_ENCODE_ALG_TKIP ||
+-			     ext->alg == IW_ENCODE_ALG_CCMP))
+-				ext->ext_flags |= IW_ENCODE_EXT_TX_SEQ_VALID;
+-		}
+-	}
+-
+-	if (sta_ptr)
+-		hostap_handle_sta_release(sta_ptr);
+-
+-	return 0;
+-}
+-
+-
+-static int prism2_ioctl_set_encryption(local_info_t *local,
+-				       struct prism2_hostapd_param *param,
+-				       int param_len)
+-{
+-	int ret = 0;
+-	struct lib80211_crypto_ops *ops;
+-	struct lib80211_crypt_data **crypt;
+-	void *sta_ptr;
+-
+-	param->u.crypt.err = 0;
+-	param->u.crypt.alg[HOSTAP_CRYPT_ALG_NAME_LEN - 1] = '\0';
+-
+-	if (param_len !=
+-	    (int) ((char *) param->u.crypt.key - (char *) param) +
+-	    param->u.crypt.key_len)
+-		return -EINVAL;
+-
+-	if (is_broadcast_ether_addr(param->sta_addr)) {
+-		if (param->u.crypt.idx >= WEP_KEYS)
+-			return -EINVAL;
+-		sta_ptr = NULL;
+-		crypt = &local->crypt_info.crypt[param->u.crypt.idx];
+-	} else {
+-		if (param->u.crypt.idx)
+-			return -EINVAL;
+-		sta_ptr = ap_crypt_get_ptrs(
+-			local->ap, param->sta_addr,
+-			(param->u.crypt.flags & HOSTAP_CRYPT_FLAG_PERMANENT),
+-			&crypt);
+-
+-		if (sta_ptr == NULL) {
+-			param->u.crypt.err = HOSTAP_CRYPT_ERR_UNKNOWN_ADDR;
+-			return -EINVAL;
+-		}
+-	}
+-
+-	if (strcmp(param->u.crypt.alg, "none") == 0) {
+-		if (crypt)
+-			lib80211_crypt_delayed_deinit(&local->crypt_info, crypt);
+-		goto done;
+-	}
+-
+-	ops = lib80211_get_crypto_ops(param->u.crypt.alg);
+-	if (ops == NULL && strcmp(param->u.crypt.alg, "WEP") == 0) {
+-		request_module("lib80211_crypt_wep");
+-		ops = lib80211_get_crypto_ops(param->u.crypt.alg);
+-	} else if (ops == NULL && strcmp(param->u.crypt.alg, "TKIP") == 0) {
+-		request_module("lib80211_crypt_tkip");
+-		ops = lib80211_get_crypto_ops(param->u.crypt.alg);
+-	} else if (ops == NULL && strcmp(param->u.crypt.alg, "CCMP") == 0) {
+-		request_module("lib80211_crypt_ccmp");
+-		ops = lib80211_get_crypto_ops(param->u.crypt.alg);
+-	}
+-	if (ops == NULL) {
+-		printk(KERN_DEBUG "%s: unknown crypto alg '%s'\n",
+-		       local->dev->name, param->u.crypt.alg);
+-		param->u.crypt.err = HOSTAP_CRYPT_ERR_UNKNOWN_ALG;
+-		ret = -EINVAL;
+-		goto done;
+-	}
+-
+-	/* station based encryption and other than WEP algorithms require
+-	 * host-based encryption, so force them on automatically */
+-	local->host_decrypt = local->host_encrypt = 1;
+-
+-	if (*crypt == NULL || (*crypt)->ops != ops) {
+-		struct lib80211_crypt_data *new_crypt;
+-
+-		lib80211_crypt_delayed_deinit(&local->crypt_info, crypt);
+-
+-		new_crypt = kzalloc(sizeof(struct lib80211_crypt_data),
+-				GFP_KERNEL);
+-		if (new_crypt == NULL) {
+-			ret = -ENOMEM;
+-			goto done;
+-		}
+-		new_crypt->ops = ops;
+-		new_crypt->priv = new_crypt->ops->init(param->u.crypt.idx);
+-		if (new_crypt->priv == NULL) {
+-			kfree(new_crypt);
+-			param->u.crypt.err =
+-				HOSTAP_CRYPT_ERR_CRYPT_INIT_FAILED;
+-			ret = -EINVAL;
+-			goto done;
+-		}
+-
+-		*crypt = new_crypt;
+-	}
+-
+-	if ((!(param->u.crypt.flags & HOSTAP_CRYPT_FLAG_SET_TX_KEY) ||
+-	     param->u.crypt.key_len > 0) && (*crypt)->ops->set_key &&
+-	    (*crypt)->ops->set_key(param->u.crypt.key,
+-				   param->u.crypt.key_len, param->u.crypt.seq,
+-				   (*crypt)->priv) < 0) {
+-		printk(KERN_DEBUG "%s: key setting failed\n",
+-		       local->dev->name);
+-		param->u.crypt.err = HOSTAP_CRYPT_ERR_KEY_SET_FAILED;
+-		ret = -EINVAL;
+-		goto done;
+-	}
+-
+-	if (param->u.crypt.flags & HOSTAP_CRYPT_FLAG_SET_TX_KEY) {
+-		if (!sta_ptr)
+-			local->crypt_info.tx_keyidx = param->u.crypt.idx;
+-		else if (param->u.crypt.idx) {
+-			printk(KERN_DEBUG "%s: TX key idx setting failed\n",
+-			       local->dev->name);
+-			param->u.crypt.err =
+-				HOSTAP_CRYPT_ERR_TX_KEY_SET_FAILED;
+-			ret = -EINVAL;
+-			goto done;
+-		}
+-	}
+-
+- done:
+-	if (sta_ptr)
+-		hostap_handle_sta_release(sta_ptr);
+-
+-	/* Do not reset port0 if card is in Managed mode since resetting will
+-	 * generate new IEEE 802.11 authentication which may end up in looping
+-	 * with IEEE 802.1X. Prism2 documentation seem to require port reset
+-	 * after WEP configuration. However, keys are apparently changed at
+-	 * least in Managed mode. */
+-	if (ret == 0 &&
+-	    (hostap_set_encryption(local) ||
+-	     (local->iw_mode != IW_MODE_INFRA &&
+-	      local->func->reset_port(local->dev)))) {
+-		param->u.crypt.err = HOSTAP_CRYPT_ERR_CARD_CONF_FAILED;
+-		return -EINVAL;
+-	}
+-
+-	return ret;
+-}
+-
+-
+-static int prism2_ioctl_get_encryption(local_info_t *local,
+-				       struct prism2_hostapd_param *param,
+-				       int param_len)
+-{
+-	struct lib80211_crypt_data **crypt;
+-	void *sta_ptr;
+-	int max_key_len;
+-
+-	param->u.crypt.err = 0;
+-
+-	max_key_len = param_len -
+-		(int) ((char *) param->u.crypt.key - (char *) param);
+-	if (max_key_len < 0)
+-		return -EINVAL;
+-
+-	if (is_broadcast_ether_addr(param->sta_addr)) {
+-		sta_ptr = NULL;
+-		if (param->u.crypt.idx >= WEP_KEYS)
+-			param->u.crypt.idx = local->crypt_info.tx_keyidx;
+-		crypt = &local->crypt_info.crypt[param->u.crypt.idx];
+-	} else {
+-		param->u.crypt.idx = 0;
+-		sta_ptr = ap_crypt_get_ptrs(local->ap, param->sta_addr, 0,
+-					    &crypt);
+-
+-		if (sta_ptr == NULL) {
+-			param->u.crypt.err = HOSTAP_CRYPT_ERR_UNKNOWN_ADDR;
+-			return -EINVAL;
+-		}
+-	}
+-
+-	if (*crypt == NULL || (*crypt)->ops == NULL) {
+-		memcpy(param->u.crypt.alg, "none", 5);
+-		param->u.crypt.key_len = 0;
+-		param->u.crypt.idx = 0xff;
+-	} else {
+-		strscpy(param->u.crypt.alg, (*crypt)->ops->name,
+-			HOSTAP_CRYPT_ALG_NAME_LEN);
+-		param->u.crypt.key_len = 0;
+-
+-		memset(param->u.crypt.seq, 0, 8);
+-		if ((*crypt)->ops->get_key) {
+-			param->u.crypt.key_len =
+-				(*crypt)->ops->get_key(param->u.crypt.key,
+-						       max_key_len,
+-						       param->u.crypt.seq,
+-						       (*crypt)->priv);
+-		}
+-	}
+-
+-	if (sta_ptr)
+-		hostap_handle_sta_release(sta_ptr);
+-
+-	return 0;
+-}
+-
+-
+-static int prism2_ioctl_get_rid(local_info_t *local,
+-				struct prism2_hostapd_param *param,
+-				int param_len)
+-{
+-	int max_len, res;
+-
+-	max_len = param_len - PRISM2_HOSTAPD_RID_HDR_LEN;
+-	if (max_len < 0)
+-		return -EINVAL;
+-
+-	res = local->func->get_rid(local->dev, param->u.rid.rid,
+-				   param->u.rid.data, param->u.rid.len, 0);
+-	if (res >= 0) {
+-		param->u.rid.len = res;
+-		return 0;
+-	}
+-
+-	return res;
+-}
+-
+-
+-static int prism2_ioctl_set_rid(local_info_t *local,
+-				struct prism2_hostapd_param *param,
+-				int param_len)
+-{
+-	int max_len;
+-
+-	max_len = param_len - PRISM2_HOSTAPD_RID_HDR_LEN;
+-	if (max_len < 0 || max_len < param->u.rid.len)
+-		return -EINVAL;
+-
+-	return local->func->set_rid(local->dev, param->u.rid.rid,
+-				    param->u.rid.data, param->u.rid.len);
+-}
+-
+-
+-static int prism2_ioctl_set_assoc_ap_addr(local_info_t *local,
+-					  struct prism2_hostapd_param *param,
+-					  int param_len)
+-{
+-	printk(KERN_DEBUG "%ssta: associated as client with AP %pM\n",
+-	       local->dev->name, param->sta_addr);
+-	memcpy(local->assoc_ap_addr, param->sta_addr, ETH_ALEN);
+-	return 0;
+-}
+-
+-
+-static int prism2_ioctl_siwgenie(struct net_device *dev,
+-				 struct iw_request_info *info,
+-				 union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_point *data = &wrqu->data;
+-	return prism2_set_genericelement(dev, extra, data->length);
+-}
+-
+-
+-static int prism2_ioctl_giwgenie(struct net_device *dev,
+-				 struct iw_request_info *info,
+-				 union iwreq_data *wrqu, char *extra)
+-{
+-	struct iw_point *data = &wrqu->data;
+-	struct hostap_interface *iface = netdev_priv(dev);
+-	local_info_t *local = iface->local;
+-	int len = local->generic_elem_len - 2;
+-
+-	if (len <= 0 || local->generic_elem == NULL) {
+-		data->length = 0;
+-		return 0;
+-	}
+-
+-	if (data->length < len)
+-		return -E2BIG;
+-
+-	data->length = len;
+-	memcpy(extra, local->generic_elem + 2, len);
+-
+-	return 0;
+-}
+-
+-
+-static int prism2_ioctl_set_generic_element(local_info_t *local,
+-					    struct prism2_hostapd_param *param,
+-					    int param_len)
+-{
+-	int max_len, len;
+-
+-	len = param->u.generic_elem.len;
+-	max_len = param_len - PRISM2_HOSTAPD_GENERIC_ELEMENT_HDR_LEN;
+-	if (max_len < 0 || max_len < len)
+-		return -EINVAL;
+-
+-	return prism2_set_genericelement(local->dev,
+-					 param->u.generic_elem.data, len);
+-}
+-
+-
+-static int prism2_ioctl_siwmlme(struct net_device *dev,
+-				struct iw_request_info *info,
+-				union iwreq_data *wrqu, char *extra)
+-{
+-	struct hostap_interface *iface = netdev_priv(dev);
+-	local_info_t *local = iface->local;
+-	struct iw_mlme *mlme = (struct iw_mlme *) extra;
+-	__le16 reason;
+-
+-	reason = cpu_to_le16(mlme->reason_code);
+-
+-	switch (mlme->cmd) {
+-	case IW_MLME_DEAUTH:
+-		return prism2_sta_send_mgmt(local, mlme->addr.sa_data,
+-					    IEEE80211_STYPE_DEAUTH,
+-					    (u8 *) &reason, 2);
+-	case IW_MLME_DISASSOC:
+-		return prism2_sta_send_mgmt(local, mlme->addr.sa_data,
+-					    IEEE80211_STYPE_DISASSOC,
+-					    (u8 *) &reason, 2);
+-	default:
+-		return -EOPNOTSUPP;
+-	}
+-}
+-
+-
+-static int prism2_ioctl_mlme(local_info_t *local,
+-			     struct prism2_hostapd_param *param)
+-{
+-	__le16 reason;
+-
+-	reason = cpu_to_le16(param->u.mlme.reason_code);
+-	switch (param->u.mlme.cmd) {
+-	case MLME_STA_DEAUTH:
+-		return prism2_sta_send_mgmt(local, param->sta_addr,
+-					    IEEE80211_STYPE_DEAUTH,
+-					    (u8 *) &reason, 2);
+-	case MLME_STA_DISASSOC:
+-		return prism2_sta_send_mgmt(local, param->sta_addr,
+-					    IEEE80211_STYPE_DISASSOC,
+-					    (u8 *) &reason, 2);
+-	default:
+-		return -EOPNOTSUPP;
+-	}
+-}
+-
+-
+-static int prism2_ioctl_scan_req(local_info_t *local,
+-				 struct prism2_hostapd_param *param)
+-{
+-#ifndef PRISM2_NO_STATION_MODES
+-	if ((local->iw_mode != IW_MODE_INFRA &&
+-	     local->iw_mode != IW_MODE_ADHOC) ||
+-	    (local->sta_fw_ver < PRISM2_FW_VER(1,3,1)))
+-		return -EOPNOTSUPP;
+-
+-	if (!local->dev_enabled)
+-		return -ENETDOWN;
+-
+-	return prism2_request_hostscan(local->dev, param->u.scan_req.ssid,
+-				       param->u.scan_req.ssid_len);
+-#else /* PRISM2_NO_STATION_MODES */
+-	return -EOPNOTSUPP;
+-#endif /* PRISM2_NO_STATION_MODES */
+-}
+-
+-
+-static int prism2_ioctl_priv_hostapd(local_info_t *local, struct iw_point *p)
+-{
+-	struct prism2_hostapd_param *param;
+-	int ret = 0;
+-	int ap_ioctl = 0;
+-
+-	if (p->length < sizeof(struct prism2_hostapd_param) ||
+-	    p->length > PRISM2_HOSTAPD_MAX_BUF_SIZE || !p->pointer)
+-		return -EINVAL;
+-
+-	param = memdup_user(p->pointer, p->length);
+-	if (IS_ERR(param)) {
+-		return PTR_ERR(param);
+-	}
+-
+-	switch (param->cmd) {
+-	case PRISM2_SET_ENCRYPTION:
+-		ret = prism2_ioctl_set_encryption(local, param, p->length);
+-		break;
+-	case PRISM2_GET_ENCRYPTION:
+-		ret = prism2_ioctl_get_encryption(local, param, p->length);
+-		break;
+-	case PRISM2_HOSTAPD_GET_RID:
+-		ret = prism2_ioctl_get_rid(local, param, p->length);
+-		break;
+-	case PRISM2_HOSTAPD_SET_RID:
+-		ret = prism2_ioctl_set_rid(local, param, p->length);
+-		break;
+-	case PRISM2_HOSTAPD_SET_ASSOC_AP_ADDR:
+-		ret = prism2_ioctl_set_assoc_ap_addr(local, param, p->length);
+-		break;
+-	case PRISM2_HOSTAPD_SET_GENERIC_ELEMENT:
+-		ret = prism2_ioctl_set_generic_element(local, param,
+-						       p->length);
+-		break;
+-	case PRISM2_HOSTAPD_MLME:
+-		ret = prism2_ioctl_mlme(local, param);
+-		break;
+-	case PRISM2_HOSTAPD_SCAN_REQ:
+-		ret = prism2_ioctl_scan_req(local, param);
+-		break;
+-	default:
+-		ret = prism2_hostapd(local->ap, param);
+-		ap_ioctl = 1;
+-		break;
+-	}
+-
+-	if (ret == 1 || !ap_ioctl) {
+-		if (copy_to_user(p->pointer, param, p->length)) {
+-			ret = -EFAULT;
+-			goto out;
+-		} else if (ap_ioctl)
+-			ret = 0;
+-	}
+-
+- out:
+-	kfree(param);
+-	return ret;
+-}
+-
+-
+-static void prism2_get_drvinfo(struct net_device *dev,
+-			       struct ethtool_drvinfo *info)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	strscpy(info->driver, "hostap", sizeof(info->driver));
+-	snprintf(info->fw_version, sizeof(info->fw_version),
+-		 "%d.%d.%d", (local->sta_fw_ver >> 16) & 0xff,
+-		 (local->sta_fw_ver >> 8) & 0xff,
+-		 local->sta_fw_ver & 0xff);
+-}
+-
+-const struct ethtool_ops prism2_ethtool_ops = {
+-	.get_drvinfo = prism2_get_drvinfo
+-};
+-
+-
+-/* Structures to export the Wireless Handlers */
+-
+-static const iw_handler prism2_handler[] =
+-{
+-	IW_HANDLER(SIOCGIWNAME,		prism2_get_name),
+-	IW_HANDLER(SIOCSIWFREQ,		prism2_ioctl_siwfreq),
+-	IW_HANDLER(SIOCGIWFREQ,		prism2_ioctl_giwfreq),
+-	IW_HANDLER(SIOCSIWMODE,		prism2_ioctl_siwmode),
+-	IW_HANDLER(SIOCGIWMODE,		prism2_ioctl_giwmode),
+-	IW_HANDLER(SIOCSIWSENS,		prism2_ioctl_siwsens),
+-	IW_HANDLER(SIOCGIWSENS,		prism2_ioctl_giwsens),
+-	IW_HANDLER(SIOCGIWRANGE,	prism2_ioctl_giwrange),
+-	IW_HANDLER(SIOCSIWSPY,		iw_handler_set_spy),
+-	IW_HANDLER(SIOCGIWSPY,		iw_handler_get_spy),
+-	IW_HANDLER(SIOCSIWTHRSPY,	iw_handler_set_thrspy),
+-	IW_HANDLER(SIOCGIWTHRSPY,	iw_handler_get_thrspy),
+-	IW_HANDLER(SIOCSIWAP,		prism2_ioctl_siwap),
+-	IW_HANDLER(SIOCGIWAP,		prism2_ioctl_giwap),
+-	IW_HANDLER(SIOCSIWMLME,		prism2_ioctl_siwmlme),
+-	IW_HANDLER(SIOCGIWAPLIST,       prism2_ioctl_giwaplist),
+-	IW_HANDLER(SIOCSIWSCAN,		prism2_ioctl_siwscan),
+-	IW_HANDLER(SIOCGIWSCAN,		prism2_ioctl_giwscan),
+-	IW_HANDLER(SIOCSIWESSID,        prism2_ioctl_siwessid),
+-	IW_HANDLER(SIOCGIWESSID,        prism2_ioctl_giwessid),
+-	IW_HANDLER(SIOCSIWNICKN,        prism2_ioctl_siwnickn),
+-	IW_HANDLER(SIOCGIWNICKN,        prism2_ioctl_giwnickn),
+-	IW_HANDLER(SIOCSIWRATE,		prism2_ioctl_siwrate),
+-	IW_HANDLER(SIOCGIWRATE,		prism2_ioctl_giwrate),
+-	IW_HANDLER(SIOCSIWRTS,		prism2_ioctl_siwrts),
+-	IW_HANDLER(SIOCGIWRTS,		prism2_ioctl_giwrts),
+-	IW_HANDLER(SIOCSIWFRAG,		prism2_ioctl_siwfrag),
+-	IW_HANDLER(SIOCGIWFRAG,		prism2_ioctl_giwfrag),
+-	IW_HANDLER(SIOCSIWTXPOW,        prism2_ioctl_siwtxpow),
+-	IW_HANDLER(SIOCGIWTXPOW,        prism2_ioctl_giwtxpow),
+-	IW_HANDLER(SIOCSIWRETRY,        prism2_ioctl_siwretry),
+-	IW_HANDLER(SIOCGIWRETRY,        prism2_ioctl_giwretry),
+-	IW_HANDLER(SIOCSIWENCODE,       prism2_ioctl_siwencode),
+-	IW_HANDLER(SIOCGIWENCODE,       prism2_ioctl_giwencode),
+-	IW_HANDLER(SIOCSIWPOWER,        prism2_ioctl_siwpower),
+-	IW_HANDLER(SIOCGIWPOWER,        prism2_ioctl_giwpower),
+-	IW_HANDLER(SIOCSIWGENIE,        prism2_ioctl_siwgenie),
+-	IW_HANDLER(SIOCGIWGENIE,        prism2_ioctl_giwgenie),
+-	IW_HANDLER(SIOCSIWAUTH,		prism2_ioctl_siwauth),
+-	IW_HANDLER(SIOCGIWAUTH,		prism2_ioctl_giwauth),
+-	IW_HANDLER(SIOCSIWENCODEEXT,    prism2_ioctl_siwencodeext),
+-	IW_HANDLER(SIOCGIWENCODEEXT,    prism2_ioctl_giwencodeext),
+-};
+-
+-static const iw_handler prism2_private_handler[] =
+-{						/* SIOCIWFIRSTPRIV + */
+-	prism2_ioctl_priv_prism2_param,		/* 0 */
+-	prism2_ioctl_priv_get_prism2_param,	/* 1 */
+-	prism2_ioctl_priv_writemif,		/* 2 */
+-	prism2_ioctl_priv_readmif,		/* 3 */
+-};
+-
+-const struct iw_handler_def hostap_iw_handler_def =
+-{
+-	.num_standard	= ARRAY_SIZE(prism2_handler),
+-	.num_private	= ARRAY_SIZE(prism2_private_handler),
+-	.num_private_args = ARRAY_SIZE(prism2_priv),
+-	.standard	= prism2_handler,
+-	.private	= prism2_private_handler,
+-	.private_args	= (struct iw_priv_args *) prism2_priv,
+-	.get_wireless_stats = hostap_get_wireless_stats,
+-};
+-
+-/* Private ioctls (iwpriv) that have not yet been converted
+- * into new wireless extensions API */
+-int hostap_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
+-{
+-	struct iwreq *wrq = (struct iwreq *) ifr;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int ret = 0;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	switch (cmd) {
+-	case PRISM2_IOCTL_INQUIRE:
+-		if (!capable(CAP_NET_ADMIN)) ret = -EPERM;
+-		else ret = prism2_ioctl_priv_inquire(dev, (int *) wrq->u.name);
+-		break;
+-
+-	case PRISM2_IOCTL_MONITOR:
+-		if (!capable(CAP_NET_ADMIN)) ret = -EPERM;
+-		else ret = prism2_ioctl_priv_monitor(dev, (int *) wrq->u.name);
+-		break;
+-
+-	case PRISM2_IOCTL_RESET:
+-		if (!capable(CAP_NET_ADMIN)) ret = -EPERM;
+-		else ret = prism2_ioctl_priv_reset(dev, (int *) wrq->u.name);
+-		break;
+-
+-	case PRISM2_IOCTL_WDS_ADD:
+-		if (!capable(CAP_NET_ADMIN)) ret = -EPERM;
+-		else ret = prism2_wds_add(local, wrq->u.ap_addr.sa_data, 1);
+-		break;
+-
+-	case PRISM2_IOCTL_WDS_DEL:
+-		if (!capable(CAP_NET_ADMIN)) ret = -EPERM;
+-		else ret = prism2_wds_del(local, wrq->u.ap_addr.sa_data, 1, 0);
+-		break;
+-
+-	case PRISM2_IOCTL_SET_RID_WORD:
+-		if (!capable(CAP_NET_ADMIN)) ret = -EPERM;
+-		else ret = prism2_ioctl_priv_set_rid_word(dev,
+-							  (int *) wrq->u.name);
+-		break;
+-
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-	case PRISM2_IOCTL_MACCMD:
+-		if (!capable(CAP_NET_ADMIN)) ret = -EPERM;
+-		else ret = ap_mac_cmd_ioctl(local, (int *) wrq->u.name);
+-		break;
+-
+-	case PRISM2_IOCTL_ADDMAC:
+-		if (!capable(CAP_NET_ADMIN)) ret = -EPERM;
+-		else ret = ap_control_add_mac(&local->ap->mac_restrictions,
+-					      wrq->u.ap_addr.sa_data);
+-		break;
+-	case PRISM2_IOCTL_DELMAC:
+-		if (!capable(CAP_NET_ADMIN)) ret = -EPERM;
+-		else ret = ap_control_del_mac(&local->ap->mac_restrictions,
+-					      wrq->u.ap_addr.sa_data);
+-		break;
+-	case PRISM2_IOCTL_KICKMAC:
+-		if (!capable(CAP_NET_ADMIN)) ret = -EPERM;
+-		else ret = ap_control_kick_mac(local->ap, local->dev,
+-					       wrq->u.ap_addr.sa_data);
+-		break;
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-	default:
+-		ret = -EOPNOTSUPP;
+-		break;
+-	}
+-
+-	return ret;
+-}
+-
+-/* Private ioctls that are not used with iwpriv;
+- * in SIOCDEVPRIVATE range */
+-int hostap_siocdevprivate(struct net_device *dev, struct ifreq *ifr,
+-			  void __user *data, int cmd)
+-{
+-	struct iwreq *wrq = (struct iwreq *)ifr;
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int ret = 0;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (in_compat_syscall()) /* not implemented yet */
+-		return -EOPNOTSUPP;
+-
+-	switch (cmd) {
+-#ifdef PRISM2_DOWNLOAD_SUPPORT
+-	case PRISM2_IOCTL_DOWNLOAD:
+-		if (!capable(CAP_NET_ADMIN)) ret = -EPERM;
+-		else ret = prism2_ioctl_priv_download(local, &wrq->u.data);
+-		break;
+-#endif /* PRISM2_DOWNLOAD_SUPPORT */
+-
+-	case PRISM2_IOCTL_HOSTAPD:
+-		if (!capable(CAP_NET_ADMIN)) ret = -EPERM;
+-		else ret = prism2_ioctl_priv_hostapd(local, &wrq->u.data);
+-		break;
+-
+-	default:
+-		ret = -EOPNOTSUPP;
+-		break;
+-	}
+-
+-	return ret;
+-}
+diff --git a/drivers/net/wireless/intersil/hostap/hostap_main.c b/drivers/net/wireless/intersil/hostap/hostap_main.c
+deleted file mode 100644
+index 787f685e70b49..0000000000000
+--- a/drivers/net/wireless/intersil/hostap/hostap_main.c
++++ /dev/null
+@@ -1,1126 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * Host AP (software wireless LAN access point) driver for
+- * Intersil Prism2/2.5/3 - hostap.o module, common routines
+- *
+- * Copyright (c) 2001-2002, SSH Communications Security Corp and Jouni Malinen
+- * <j@w1.fi>
+- * Copyright (c) 2002-2005, Jouni Malinen <j@w1.fi>
+- */
+-
+-#include <linux/module.h>
+-#include <linux/init.h>
+-#include <linux/slab.h>
+-#include <linux/proc_fs.h>
+-#include <linux/if_arp.h>
+-#include <linux/delay.h>
+-#include <linux/random.h>
+-#include <linux/workqueue.h>
+-#include <linux/kmod.h>
+-#include <linux/rtnetlink.h>
+-#include <linux/wireless.h>
+-#include <linux/etherdevice.h>
+-#include <net/net_namespace.h>
+-#include <net/iw_handler.h>
+-#include <net/lib80211.h>
+-#include <linux/uaccess.h>
+-
+-#include "hostap_wlan.h"
+-#include "hostap_80211.h"
+-#include "hostap_ap.h"
+-#include "hostap.h"
+-
+-MODULE_AUTHOR("Jouni Malinen");
+-MODULE_DESCRIPTION("Host AP common routines");
+-MODULE_LICENSE("GPL");
+-
+-#define TX_TIMEOUT (2 * HZ)
+-
+-#define PRISM2_MAX_FRAME_SIZE 2304
+-#define PRISM2_MIN_MTU 256
+-/* FIX: */
+-#define PRISM2_MAX_MTU (PRISM2_MAX_FRAME_SIZE - (6 /* LLC */ + 8 /* WEP */))
+-
+-
+-struct net_device * hostap_add_interface(struct local_info *local,
+-					 int type, int rtnl_locked,
+-					 const char *prefix,
+-					 const char *name)
+-{
+-	struct net_device *dev, *mdev;
+-	struct hostap_interface *iface;
+-	int ret;
+-
+-	dev = alloc_etherdev(sizeof(struct hostap_interface));
+-	if (dev == NULL)
+-		return NULL;
+-
+-	iface = netdev_priv(dev);
+-	iface->dev = dev;
+-	iface->local = local;
+-	iface->type = type;
+-	list_add(&iface->list, &local->hostap_interfaces);
+-
+-	mdev = local->dev;
+-	eth_hw_addr_inherit(dev, mdev);
+-	dev->base_addr = mdev->base_addr;
+-	dev->irq = mdev->irq;
+-	dev->mem_start = mdev->mem_start;
+-	dev->mem_end = mdev->mem_end;
+-
+-	hostap_setup_dev(dev, local, type);
+-	dev->needs_free_netdev = true;
+-
+-	sprintf(dev->name, "%s%s", prefix, name);
+-	if (!rtnl_locked)
+-		rtnl_lock();
+-
+-	SET_NETDEV_DEV(dev, mdev->dev.parent);
+-	ret = register_netdevice(dev);
+-
+-	if (!rtnl_locked)
+-		rtnl_unlock();
+-
+-	if (ret < 0) {
+-		printk(KERN_WARNING "%s: failed to add new netdevice!\n",
+-		       dev->name);
+-		free_netdev(dev);
+-		return NULL;
+-	}
+-
+-	printk(KERN_DEBUG "%s: registered netdevice %s\n",
+-	       mdev->name, dev->name);
+-
+-	return dev;
+-}
+-
+-
+-void hostap_remove_interface(struct net_device *dev, int rtnl_locked,
+-			     int remove_from_list)
+-{
+-	struct hostap_interface *iface;
+-
+-	if (!dev)
+-		return;
+-
+-	iface = netdev_priv(dev);
+-
+-	if (remove_from_list) {
+-		list_del(&iface->list);
+-	}
+-
+-	if (dev == iface->local->ddev)
+-		iface->local->ddev = NULL;
+-	else if (dev == iface->local->apdev)
+-		iface->local->apdev = NULL;
+-	else if (dev == iface->local->stadev)
+-		iface->local->stadev = NULL;
+-
+-	if (rtnl_locked)
+-		unregister_netdevice(dev);
+-	else
+-		unregister_netdev(dev);
+-
+-	/* 'dev->needs_free_netdev = true' implies device data, including
+-	 * private data, will be freed when the device is removed */
+-}
+-
+-
+-static inline int prism2_wds_special_addr(u8 *addr)
+-{
+-	if (addr[0] || addr[1] || addr[2] || addr[3] || addr[4] || addr[5])
+-		return 0;
+-
+-	return 1;
+-}
+-
+-
+-int prism2_wds_add(local_info_t *local, u8 *remote_addr,
+-		   int rtnl_locked)
+-{
+-	struct net_device *dev;
+-	struct list_head *ptr;
+-	struct hostap_interface *iface, *empty, *match;
+-
+-	empty = match = NULL;
+-	read_lock_bh(&local->iface_lock);
+-	list_for_each(ptr, &local->hostap_interfaces) {
+-		iface = list_entry(ptr, struct hostap_interface, list);
+-		if (iface->type != HOSTAP_INTERFACE_WDS)
+-			continue;
+-
+-		if (prism2_wds_special_addr(iface->u.wds.remote_addr))
+-			empty = iface;
+-		else if (ether_addr_equal(iface->u.wds.remote_addr, remote_addr)) {
+-			match = iface;
+-			break;
+-		}
+-	}
+-	if (!match && empty && !prism2_wds_special_addr(remote_addr)) {
+-		/* take pre-allocated entry into use */
+-		memcpy(empty->u.wds.remote_addr, remote_addr, ETH_ALEN);
+-		read_unlock_bh(&local->iface_lock);
+-		printk(KERN_DEBUG "%s: using pre-allocated WDS netdevice %s\n",
+-		       local->dev->name, empty->dev->name);
+-		return 0;
+-	}
+-	read_unlock_bh(&local->iface_lock);
+-
+-	if (!prism2_wds_special_addr(remote_addr)) {
+-		if (match)
+-			return -EEXIST;
+-		hostap_add_sta(local->ap, remote_addr);
+-	}
+-
+-	if (local->wds_connections >= local->wds_max_connections)
+-		return -ENOBUFS;
+-
+-	/* verify that there is room for wds# postfix in the interface name */
+-	if (strlen(local->dev->name) >= IFNAMSIZ - 5) {
+-		printk(KERN_DEBUG "'%s' too long base device name\n",
+-		       local->dev->name);
+-		return -EINVAL;
+-	}
+-
+-	dev = hostap_add_interface(local, HOSTAP_INTERFACE_WDS, rtnl_locked,
+-				   local->ddev->name, "wds%d");
+-	if (dev == NULL)
+-		return -ENOMEM;
+-
+-	iface = netdev_priv(dev);
+-	memcpy(iface->u.wds.remote_addr, remote_addr, ETH_ALEN);
+-
+-	local->wds_connections++;
+-
+-	return 0;
+-}
+-
+-
+-int prism2_wds_del(local_info_t *local, u8 *remote_addr,
+-		   int rtnl_locked, int do_not_remove)
+-{
+-	unsigned long flags;
+-	struct list_head *ptr;
+-	struct hostap_interface *iface, *selected = NULL;
+-
+-	write_lock_irqsave(&local->iface_lock, flags);
+-	list_for_each(ptr, &local->hostap_interfaces) {
+-		iface = list_entry(ptr, struct hostap_interface, list);
+-		if (iface->type != HOSTAP_INTERFACE_WDS)
+-			continue;
+-
+-		if (ether_addr_equal(iface->u.wds.remote_addr, remote_addr)) {
+-			selected = iface;
+-			break;
+-		}
+-	}
+-	if (selected && !do_not_remove)
+-		list_del(&selected->list);
+-	write_unlock_irqrestore(&local->iface_lock, flags);
+-
+-	if (selected) {
+-		if (do_not_remove)
+-			eth_zero_addr(selected->u.wds.remote_addr);
+-		else {
+-			hostap_remove_interface(selected->dev, rtnl_locked, 0);
+-			local->wds_connections--;
+-		}
+-	}
+-
+-	return selected ? 0 : -ENODEV;
+-}
+-
+-
+-u16 hostap_tx_callback_register(local_info_t *local,
+-				void (*func)(struct sk_buff *, int ok, void *),
+-				void *data)
+-{
+-	unsigned long flags;
+-	struct hostap_tx_callback_info *entry;
+-
+-	entry = kmalloc(sizeof(*entry), GFP_KERNEL);
+-	if (entry == NULL)
+-		return 0;
+-
+-	entry->func = func;
+-	entry->data = data;
+-
+-	spin_lock_irqsave(&local->lock, flags);
+-	entry->idx = local->tx_callback ? local->tx_callback->idx + 1 : 1;
+-	entry->next = local->tx_callback;
+-	local->tx_callback = entry;
+-	spin_unlock_irqrestore(&local->lock, flags);
+-
+-	return entry->idx;
+-}
+-
+-
+-int hostap_tx_callback_unregister(local_info_t *local, u16 idx)
+-{
+-	unsigned long flags;
+-	struct hostap_tx_callback_info *cb, *prev = NULL;
+-
+-	spin_lock_irqsave(&local->lock, flags);
+-	cb = local->tx_callback;
+-	while (cb != NULL && cb->idx != idx) {
+-		prev = cb;
+-		cb = cb->next;
+-	}
+-	if (cb) {
+-		if (prev == NULL)
+-			local->tx_callback = cb->next;
+-		else
+-			prev->next = cb->next;
+-		kfree(cb);
+-	}
+-	spin_unlock_irqrestore(&local->lock, flags);
+-
+-	return cb ? 0 : -1;
+-}
+-
+-
+-/* val is in host byte order */
+-int hostap_set_word(struct net_device *dev, int rid, u16 val)
+-{
+-	struct hostap_interface *iface;
+-	__le16 tmp = cpu_to_le16(val);
+-	iface = netdev_priv(dev);
+-	return iface->local->func->set_rid(dev, rid, &tmp, 2);
+-}
+-
+-
+-int hostap_set_string(struct net_device *dev, int rid, const char *val)
+-{
+-	struct hostap_interface *iface;
+-	char buf[MAX_SSID_LEN + 2];
+-	int len;
+-
+-	iface = netdev_priv(dev);
+-	len = strlen(val);
+-	if (len > MAX_SSID_LEN)
+-		return -1;
+-	memset(buf, 0, sizeof(buf));
+-	buf[0] = len; /* little endian 16 bit word */
+-	memcpy(buf + 2, val, len);
+-
+-	return iface->local->func->set_rid(dev, rid, &buf, MAX_SSID_LEN + 2);
+-}
+-
+-
+-u16 hostap_get_porttype(local_info_t *local)
+-{
+-	if (local->iw_mode == IW_MODE_ADHOC && local->pseudo_adhoc)
+-		return HFA384X_PORTTYPE_PSEUDO_IBSS;
+-	if (local->iw_mode == IW_MODE_ADHOC)
+-		return HFA384X_PORTTYPE_IBSS;
+-	if (local->iw_mode == IW_MODE_INFRA)
+-		return HFA384X_PORTTYPE_BSS;
+-	if (local->iw_mode == IW_MODE_REPEAT)
+-		return HFA384X_PORTTYPE_WDS;
+-	if (local->iw_mode == IW_MODE_MONITOR)
+-		return HFA384X_PORTTYPE_PSEUDO_IBSS;
+-	return HFA384X_PORTTYPE_HOSTAP;
+-}
+-
+-
+-int hostap_set_encryption(local_info_t *local)
+-{
+-	u16 val, old_val;
+-	int i, keylen, len, idx;
+-	char keybuf[WEP_KEY_LEN + 1];
+-	enum { NONE, WEP, OTHER } encrypt_type;
+-
+-	idx = local->crypt_info.tx_keyidx;
+-	if (local->crypt_info.crypt[idx] == NULL ||
+-	    local->crypt_info.crypt[idx]->ops == NULL)
+-		encrypt_type = NONE;
+-	else if (strcmp(local->crypt_info.crypt[idx]->ops->name, "WEP") == 0)
+-		encrypt_type = WEP;
+-	else
+-		encrypt_type = OTHER;
+-
+-	if (local->func->get_rid(local->dev, HFA384X_RID_CNFWEPFLAGS, &val, 2,
+-				 1) < 0) {
+-		printk(KERN_DEBUG "Could not read current WEP flags.\n");
+-		goto fail;
+-	}
+-	le16_to_cpus(&val);
+-	old_val = val;
+-
+-	if (encrypt_type != NONE || local->privacy_invoked)
+-		val |= HFA384X_WEPFLAGS_PRIVACYINVOKED;
+-	else
+-		val &= ~HFA384X_WEPFLAGS_PRIVACYINVOKED;
+-
+-	if (local->open_wep || encrypt_type == NONE ||
+-	    ((local->ieee_802_1x || local->wpa) && local->host_decrypt))
+-		val &= ~HFA384X_WEPFLAGS_EXCLUDEUNENCRYPTED;
+-	else
+-		val |= HFA384X_WEPFLAGS_EXCLUDEUNENCRYPTED;
+-
+-	if ((encrypt_type != NONE || local->privacy_invoked) &&
+-	    (encrypt_type == OTHER || local->host_encrypt))
+-		val |= HFA384X_WEPFLAGS_HOSTENCRYPT;
+-	else
+-		val &= ~HFA384X_WEPFLAGS_HOSTENCRYPT;
+-	if ((encrypt_type != NONE || local->privacy_invoked) &&
+-	    (encrypt_type == OTHER || local->host_decrypt))
+-		val |= HFA384X_WEPFLAGS_HOSTDECRYPT;
+-	else
+-		val &= ~HFA384X_WEPFLAGS_HOSTDECRYPT;
+-
+-	if (val != old_val &&
+-	    hostap_set_word(local->dev, HFA384X_RID_CNFWEPFLAGS, val)) {
+-		printk(KERN_DEBUG "Could not write new WEP flags (0x%x)\n",
+-		       val);
+-		goto fail;
+-	}
+-
+-	if (encrypt_type != WEP)
+-		return 0;
+-
+-	/* 104-bit support seems to require that all the keys are set to the
+-	 * same keylen */
+-	keylen = 6; /* first 5 octets */
+-	len = local->crypt_info.crypt[idx]->ops->get_key(keybuf, sizeof(keybuf), NULL,
+-							   local->crypt_info.crypt[idx]->priv);
+-	if (idx >= 0 && idx < WEP_KEYS && len > 5)
+-		keylen = WEP_KEY_LEN + 1; /* first 13 octets */
+-
+-	for (i = 0; i < WEP_KEYS; i++) {
+-		memset(keybuf, 0, sizeof(keybuf));
+-		if (local->crypt_info.crypt[i]) {
+-			(void) local->crypt_info.crypt[i]->ops->get_key(
+-				keybuf, sizeof(keybuf),
+-				NULL, local->crypt_info.crypt[i]->priv);
+-		}
+-		if (local->func->set_rid(local->dev,
+-					 HFA384X_RID_CNFDEFAULTKEY0 + i,
+-					 keybuf, keylen)) {
+-			printk(KERN_DEBUG "Could not set key %d (len=%d)\n",
+-			       i, keylen);
+-			goto fail;
+-		}
+-	}
+-	if (hostap_set_word(local->dev, HFA384X_RID_CNFWEPDEFAULTKEYID, idx)) {
+-		printk(KERN_DEBUG "Could not set default keyid %d\n", idx);
+-		goto fail;
+-	}
+-
+-	return 0;
+-
+- fail:
+-	printk(KERN_DEBUG "%s: encryption setup failed\n", local->dev->name);
+-	return -1;
+-}
+-
+-
+-int hostap_set_antsel(local_info_t *local)
+-{
+-	u16 val;
+-	int ret = 0;
+-
+-	if (local->antsel_tx != HOSTAP_ANTSEL_DO_NOT_TOUCH &&
+-	    local->func->cmd(local->dev, HFA384X_CMDCODE_READMIF,
+-			     HFA386X_CR_TX_CONFIGURE,
+-			     NULL, &val) == 0) {
+-		val &= ~(BIT(2) | BIT(1));
+-		switch (local->antsel_tx) {
+-		case HOSTAP_ANTSEL_DIVERSITY:
+-			val |= BIT(1);
+-			break;
+-		case HOSTAP_ANTSEL_LOW:
+-			break;
+-		case HOSTAP_ANTSEL_HIGH:
+-			val |= BIT(2);
+-			break;
+-		}
+-
+-		if (local->func->cmd(local->dev, HFA384X_CMDCODE_WRITEMIF,
+-				     HFA386X_CR_TX_CONFIGURE, &val, NULL)) {
+-			printk(KERN_INFO "%s: setting TX AntSel failed\n",
+-			       local->dev->name);
+-			ret = -1;
+-		}
+-	}
+-
+-	if (local->antsel_rx != HOSTAP_ANTSEL_DO_NOT_TOUCH &&
+-	    local->func->cmd(local->dev, HFA384X_CMDCODE_READMIF,
+-			     HFA386X_CR_RX_CONFIGURE,
+-			     NULL, &val) == 0) {
+-		val &= ~(BIT(1) | BIT(0));
+-		switch (local->antsel_rx) {
+-		case HOSTAP_ANTSEL_DIVERSITY:
+-			break;
+-		case HOSTAP_ANTSEL_LOW:
+-			val |= BIT(0);
+-			break;
+-		case HOSTAP_ANTSEL_HIGH:
+-			val |= BIT(0) | BIT(1);
+-			break;
+-		}
+-
+-		if (local->func->cmd(local->dev, HFA384X_CMDCODE_WRITEMIF,
+-				     HFA386X_CR_RX_CONFIGURE, &val, NULL)) {
+-			printk(KERN_INFO "%s: setting RX AntSel failed\n",
+-			       local->dev->name);
+-			ret = -1;
+-		}
+-	}
+-
+-	return ret;
+-}
+-
+-
+-int hostap_set_roaming(local_info_t *local)
+-{
+-	u16 val;
+-
+-	switch (local->host_roaming) {
+-	case 1:
+-		val = HFA384X_ROAMING_HOST;
+-		break;
+-	case 2:
+-		val = HFA384X_ROAMING_DISABLED;
+-		break;
+-	case 0:
+-	default:
+-		val = HFA384X_ROAMING_FIRMWARE;
+-		break;
+-	}
+-
+-	return hostap_set_word(local->dev, HFA384X_RID_CNFROAMINGMODE, val);
+-}
+-
+-
+-int hostap_set_auth_algs(local_info_t *local)
+-{
+-	int val = local->auth_algs;
+-	/* At least STA f/w v0.6.2 seems to have issues with cnfAuthentication
+-	 * set to include both Open and Shared Key flags. It tries to use
+-	 * Shared Key authentication in that case even if WEP keys are not
+-	 * configured.. STA f/w v0.7.6 is able to handle such configuration,
+-	 * but it is unknown when this was fixed between 0.6.2 .. 0.7.6. */
+-	if (local->sta_fw_ver < PRISM2_FW_VER(0,7,0) &&
+-	    val != PRISM2_AUTH_OPEN && val != PRISM2_AUTH_SHARED_KEY)
+-		val = PRISM2_AUTH_OPEN;
+-
+-	if (hostap_set_word(local->dev, HFA384X_RID_CNFAUTHENTICATION, val)) {
+-		printk(KERN_INFO "%s: cnfAuthentication setting to 0x%x "
+-		       "failed\n", local->dev->name, local->auth_algs);
+-		return -EINVAL;
+-	}
+-
+-	return 0;
+-}
+-
+-
+-void hostap_dump_rx_header(const char *name, const struct hfa384x_rx_frame *rx)
+-{
+-	u16 status, fc;
+-
+-	status = __le16_to_cpu(rx->status);
+-
+-	printk(KERN_DEBUG "%s: RX status=0x%04x (port=%d, type=%d, "
+-	       "fcserr=%d) silence=%d signal=%d rate=%d rxflow=%d; "
+-	       "jiffies=%ld\n",
+-	       name, status, (status >> 8) & 0x07, status >> 13, status & 1,
+-	       rx->silence, rx->signal, rx->rate, rx->rxflow, jiffies);
+-
+-	fc = __le16_to_cpu(rx->frame_control);
+-	printk(KERN_DEBUG "   FC=0x%04x (type=%d:%d) dur=0x%04x seq=0x%04x "
+-	       "data_len=%d%s%s\n",
+-	       fc, (fc & IEEE80211_FCTL_FTYPE) >> 2,
+-	       (fc & IEEE80211_FCTL_STYPE) >> 4,
+-	       __le16_to_cpu(rx->duration_id), __le16_to_cpu(rx->seq_ctrl),
+-	       __le16_to_cpu(rx->data_len),
+-	       fc & IEEE80211_FCTL_TODS ? " [ToDS]" : "",
+-	       fc & IEEE80211_FCTL_FROMDS ? " [FromDS]" : "");
+-
+-	printk(KERN_DEBUG "   A1=%pM A2=%pM A3=%pM A4=%pM\n",
+-	       rx->addr1, rx->addr2, rx->addr3, rx->addr4);
+-
+-	printk(KERN_DEBUG "   dst=%pM src=%pM len=%d\n",
+-	       rx->dst_addr, rx->src_addr,
+-	       __be16_to_cpu(rx->len));
+-}
+-
+-
+-void hostap_dump_tx_header(const char *name, const struct hfa384x_tx_frame *tx)
+-{
+-	u16 fc;
+-
+-	printk(KERN_DEBUG "%s: TX status=0x%04x retry_count=%d tx_rate=%d "
+-	       "tx_control=0x%04x; jiffies=%ld\n",
+-	       name, __le16_to_cpu(tx->status), tx->retry_count, tx->tx_rate,
+-	       __le16_to_cpu(tx->tx_control), jiffies);
+-
+-	fc = __le16_to_cpu(tx->frame_control);
+-	printk(KERN_DEBUG "   FC=0x%04x (type=%d:%d) dur=0x%04x seq=0x%04x "
+-	       "data_len=%d%s%s\n",
+-	       fc, (fc & IEEE80211_FCTL_FTYPE) >> 2,
+-	       (fc & IEEE80211_FCTL_STYPE) >> 4,
+-	       __le16_to_cpu(tx->duration_id), __le16_to_cpu(tx->seq_ctrl),
+-	       __le16_to_cpu(tx->data_len),
+-	       fc & IEEE80211_FCTL_TODS ? " [ToDS]" : "",
+-	       fc & IEEE80211_FCTL_FROMDS ? " [FromDS]" : "");
+-
+-	printk(KERN_DEBUG "   A1=%pM A2=%pM A3=%pM A4=%pM\n",
+-	       tx->addr1, tx->addr2, tx->addr3, tx->addr4);
+-
+-	printk(KERN_DEBUG "   dst=%pM src=%pM len=%d\n",
+-	       tx->dst_addr, tx->src_addr,
+-	       __be16_to_cpu(tx->len));
+-}
+-
+-
+-static int hostap_80211_header_parse(const struct sk_buff *skb,
+-				     unsigned char *haddr)
+-{
+-	memcpy(haddr, skb_mac_header(skb) + 10, ETH_ALEN); /* addr2 */
+-	return ETH_ALEN;
+-}
+-
+-
+-int hostap_80211_get_hdrlen(__le16 fc)
+-{
+-	if (ieee80211_is_data(fc) && ieee80211_has_a4 (fc))
+-		return 30; /* Addr4 */
+-	else if (ieee80211_is_cts(fc) || ieee80211_is_ack(fc))
+-		return 10;
+-	else if (ieee80211_is_ctl(fc))
+-		return 16;
+-
+-	return 24;
+-}
+-
+-
+-static int prism2_close(struct net_device *dev)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-
+-	PDEBUG(DEBUG_FLOW, "%s: prism2_close\n", dev->name);
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (dev == local->ddev) {
+-		prism2_sta_deauth(local, WLAN_REASON_DEAUTH_LEAVING);
+-	}
+-#ifndef PRISM2_NO_KERNEL_IEEE80211_MGMT
+-	if (!local->hostapd && dev == local->dev &&
+-	    (!local->func->card_present || local->func->card_present(local)) &&
+-	    local->hw_ready && local->ap && local->iw_mode == IW_MODE_MASTER)
+-		hostap_deauth_all_stas(dev, local->ap, 1);
+-#endif /* PRISM2_NO_KERNEL_IEEE80211_MGMT */
+-
+-	if (dev == local->dev) {
+-		local->func->hw_shutdown(dev, HOSTAP_HW_ENABLE_CMDCOMPL);
+-	}
+-
+-	if (netif_running(dev)) {
+-		netif_stop_queue(dev);
+-		netif_device_detach(dev);
+-	}
+-
+-	cancel_work_sync(&local->reset_queue);
+-	cancel_work_sync(&local->set_multicast_list_queue);
+-	cancel_work_sync(&local->set_tim_queue);
+-#ifndef PRISM2_NO_STATION_MODES
+-	cancel_work_sync(&local->info_queue);
+-#endif
+-	cancel_work_sync(&local->comms_qual_update);
+-
+-	module_put(local->hw_module);
+-
+-	local->num_dev_open--;
+-
+-	if (dev != local->dev && local->dev->flags & IFF_UP &&
+-	    local->master_dev_auto_open && local->num_dev_open == 1) {
+-		/* Close master radio interface automatically if it was also
+-		 * opened automatically and we are now closing the last
+-		 * remaining non-master device. */
+-		dev_close(local->dev);
+-	}
+-
+-	return 0;
+-}
+-
+-
+-static int prism2_open(struct net_device *dev)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-
+-	PDEBUG(DEBUG_FLOW, "%s: prism2_open\n", dev->name);
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (local->no_pri) {
+-		printk(KERN_DEBUG "%s: could not set interface UP - no PRI "
+-		       "f/w\n", dev->name);
+-		return -ENODEV;
+-	}
+-
+-	if ((local->func->card_present && !local->func->card_present(local)) ||
+-	    local->hw_downloading)
+-		return -ENODEV;
+-
+-	if (!try_module_get(local->hw_module))
+-		return -ENODEV;
+-	local->num_dev_open++;
+-
+-	if (!local->dev_enabled && local->func->hw_enable(dev, 1)) {
+-		printk(KERN_WARNING "%s: could not enable MAC port\n",
+-		       dev->name);
+-		prism2_close(dev);
+-		return -ENODEV;
+-	}
+-	if (!local->dev_enabled)
+-		prism2_callback(local, PRISM2_CALLBACK_ENABLE);
+-	local->dev_enabled = 1;
+-
+-	if (dev != local->dev && !(local->dev->flags & IFF_UP)) {
+-		/* Master radio interface is needed for all operation, so open
+-		 * it automatically when any virtual net_device is opened. */
+-		local->master_dev_auto_open = 1;
+-		dev_open(local->dev, NULL);
+-	}
+-
+-	netif_device_attach(dev);
+-	netif_start_queue(dev);
+-
+-	return 0;
+-}
+-
+-
+-static int prism2_set_mac_address(struct net_device *dev, void *p)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	struct list_head *ptr;
+-	struct sockaddr *addr = p;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	if (local->func->set_rid(dev, HFA384X_RID_CNFOWNMACADDR, addr->sa_data,
+-				 ETH_ALEN) < 0 || local->func->reset_port(dev))
+-		return -EINVAL;
+-
+-	read_lock_bh(&local->iface_lock);
+-	list_for_each(ptr, &local->hostap_interfaces) {
+-		iface = list_entry(ptr, struct hostap_interface, list);
+-		eth_hw_addr_set(iface->dev, addr->sa_data);
+-	}
+-	eth_hw_addr_set(local->dev, addr->sa_data);
+-	read_unlock_bh(&local->iface_lock);
+-
+-	return 0;
+-}
+-
+-
+-/* TODO: to be further implemented as soon as Prism2 fully supports
+- *       GroupAddresses and correct documentation is available */
+-void hostap_set_multicast_list_queue(struct work_struct *work)
+-{
+-	local_info_t *local =
+-		container_of(work, local_info_t, set_multicast_list_queue);
+-	struct net_device *dev = local->dev;
+-
+-	if (hostap_set_word(dev, HFA384X_RID_PROMISCUOUSMODE,
+-			    local->is_promisc)) {
+-		printk(KERN_INFO "%s: %sabling promiscuous mode failed\n",
+-		       dev->name, local->is_promisc ? "en" : "dis");
+-	}
+-}
+-
+-
+-static void hostap_set_multicast_list(struct net_device *dev)
+-{
+-#if 0
+-	/* FIX: promiscuous mode seems to be causing a lot of problems with
+-	 * some station firmware versions (FCSErr frames, invalid MACPort, etc.
+-	 * corrupted incoming frames). This code is now commented out while the
+-	 * problems are investigated. */
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-	if ((dev->flags & IFF_ALLMULTI) || (dev->flags & IFF_PROMISC)) {
+-		local->is_promisc = 1;
+-	} else {
+-		local->is_promisc = 0;
+-	}
+-
+-	schedule_work(&local->set_multicast_list_queue);
+-#endif
+-}
+-
+-
+-static void prism2_tx_timeout(struct net_device *dev, unsigned int txqueue)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	struct hfa384x_regs regs;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	printk(KERN_WARNING "%s Tx timed out! Resetting card\n", dev->name);
+-	netif_stop_queue(local->dev);
+-
+-	local->func->read_regs(dev, &regs);
+-	printk(KERN_DEBUG "%s: CMD=%04x EVSTAT=%04x "
+-	       "OFFSET0=%04x OFFSET1=%04x SWSUPPORT0=%04x\n",
+-	       dev->name, regs.cmd, regs.evstat, regs.offset0, regs.offset1,
+-	       regs.swsupport0);
+-
+-	local->func->schedule_reset(local);
+-}
+-
+-const struct header_ops hostap_80211_ops = {
+-	.create		= eth_header,
+-	.cache		= eth_header_cache,
+-	.cache_update	= eth_header_cache_update,
+-	.parse		= hostap_80211_header_parse,
+-};
+-EXPORT_SYMBOL(hostap_80211_ops);
+-
+-
+-static const struct net_device_ops hostap_netdev_ops = {
+-	.ndo_start_xmit		= hostap_data_start_xmit,
+-
+-	.ndo_open		= prism2_open,
+-	.ndo_stop		= prism2_close,
+-	.ndo_do_ioctl		= hostap_ioctl,
+-	.ndo_siocdevprivate	= hostap_siocdevprivate,
+-	.ndo_set_mac_address	= prism2_set_mac_address,
+-	.ndo_set_rx_mode	= hostap_set_multicast_list,
+-	.ndo_tx_timeout 	= prism2_tx_timeout,
+-	.ndo_validate_addr	= eth_validate_addr,
+-};
+-
+-static const struct net_device_ops hostap_mgmt_netdev_ops = {
+-	.ndo_start_xmit		= hostap_mgmt_start_xmit,
+-
+-	.ndo_open		= prism2_open,
+-	.ndo_stop		= prism2_close,
+-	.ndo_do_ioctl		= hostap_ioctl,
+-	.ndo_siocdevprivate	= hostap_siocdevprivate,
+-	.ndo_set_mac_address	= prism2_set_mac_address,
+-	.ndo_set_rx_mode	= hostap_set_multicast_list,
+-	.ndo_tx_timeout 	= prism2_tx_timeout,
+-	.ndo_validate_addr	= eth_validate_addr,
+-};
+-
+-static const struct net_device_ops hostap_master_ops = {
+-	.ndo_start_xmit 	= hostap_master_start_xmit,
+-
+-	.ndo_open		= prism2_open,
+-	.ndo_stop		= prism2_close,
+-	.ndo_do_ioctl		= hostap_ioctl,
+-	.ndo_siocdevprivate	= hostap_siocdevprivate,
+-	.ndo_set_mac_address	= prism2_set_mac_address,
+-	.ndo_set_rx_mode	= hostap_set_multicast_list,
+-	.ndo_tx_timeout 	= prism2_tx_timeout,
+-	.ndo_validate_addr	= eth_validate_addr,
+-};
+-
+-void hostap_setup_dev(struct net_device *dev, local_info_t *local,
+-		      int type)
+-{
+-	struct hostap_interface *iface;
+-
+-	iface = netdev_priv(dev);
+-	ether_setup(dev);
+-	dev->min_mtu = PRISM2_MIN_MTU;
+-	dev->max_mtu = PRISM2_MAX_MTU;
+-	dev->priv_flags &= ~IFF_TX_SKB_SHARING;
+-
+-	/* kernel callbacks */
+-	if (iface) {
+-		/* Currently, we point to the proper spy_data only on
+-		 * the main_dev. This could be fixed. Jean II */
+-		iface->wireless_data.spy_data = &iface->spy_data;
+-		dev->wireless_data = &iface->wireless_data;
+-	}
+-	dev->wireless_handlers = &hostap_iw_handler_def;
+-	dev->watchdog_timeo = TX_TIMEOUT;
+-
+-	switch(type) {
+-	case HOSTAP_INTERFACE_AP:
+-		dev->priv_flags |= IFF_NO_QUEUE;	/* use main radio device queue */
+-		dev->netdev_ops = &hostap_mgmt_netdev_ops;
+-		dev->type = ARPHRD_IEEE80211;
+-		dev->header_ops = &hostap_80211_ops;
+-		break;
+-	case HOSTAP_INTERFACE_MASTER:
+-		dev->netdev_ops = &hostap_master_ops;
+-		break;
+-	default:
+-		dev->priv_flags |= IFF_NO_QUEUE;	/* use main radio device queue */
+-		dev->netdev_ops = &hostap_netdev_ops;
+-	}
+-
+-	dev->mtu = local->mtu;
+-
+-
+-	dev->ethtool_ops = &prism2_ethtool_ops;
+-
+-}
+-
+-static int hostap_enable_hostapd(local_info_t *local, int rtnl_locked)
+-{
+-	struct net_device *dev = local->dev;
+-
+-	if (local->apdev)
+-		return -EEXIST;
+-
+-	printk(KERN_DEBUG "%s: enabling hostapd mode\n", dev->name);
+-
+-	local->apdev = hostap_add_interface(local, HOSTAP_INTERFACE_AP,
+-					    rtnl_locked, local->ddev->name,
+-					    "ap");
+-	if (local->apdev == NULL)
+-		return -ENOMEM;
+-
+-	return 0;
+-}
+-
+-
+-static int hostap_disable_hostapd(local_info_t *local, int rtnl_locked)
+-{
+-	struct net_device *dev = local->dev;
+-
+-	printk(KERN_DEBUG "%s: disabling hostapd mode\n", dev->name);
+-
+-	hostap_remove_interface(local->apdev, rtnl_locked, 1);
+-	local->apdev = NULL;
+-
+-	return 0;
+-}
+-
+-
+-static int hostap_enable_hostapd_sta(local_info_t *local, int rtnl_locked)
+-{
+-	struct net_device *dev = local->dev;
+-
+-	if (local->stadev)
+-		return -EEXIST;
+-
+-	printk(KERN_DEBUG "%s: enabling hostapd STA mode\n", dev->name);
+-
+-	local->stadev = hostap_add_interface(local, HOSTAP_INTERFACE_STA,
+-					     rtnl_locked, local->ddev->name,
+-					     "sta");
+-	if (local->stadev == NULL)
+-		return -ENOMEM;
+-
+-	return 0;
+-}
+-
+-
+-static int hostap_disable_hostapd_sta(local_info_t *local, int rtnl_locked)
+-{
+-	struct net_device *dev = local->dev;
+-
+-	printk(KERN_DEBUG "%s: disabling hostapd mode\n", dev->name);
+-
+-	hostap_remove_interface(local->stadev, rtnl_locked, 1);
+-	local->stadev = NULL;
+-
+-	return 0;
+-}
+-
+-
+-int hostap_set_hostapd(local_info_t *local, int val, int rtnl_locked)
+-{
+-	int ret;
+-
+-	if (val < 0 || val > 1)
+-		return -EINVAL;
+-
+-	if (local->hostapd == val)
+-		return 0;
+-
+-	if (val) {
+-		ret = hostap_enable_hostapd(local, rtnl_locked);
+-		if (ret == 0)
+-			local->hostapd = 1;
+-	} else {
+-		local->hostapd = 0;
+-		ret = hostap_disable_hostapd(local, rtnl_locked);
+-		if (ret != 0)
+-			local->hostapd = 1;
+-	}
+-
+-	return ret;
+-}
+-
+-
+-int hostap_set_hostapd_sta(local_info_t *local, int val, int rtnl_locked)
+-{
+-	int ret;
+-
+-	if (val < 0 || val > 1)
+-		return -EINVAL;
+-
+-	if (local->hostapd_sta == val)
+-		return 0;
+-
+-	if (val) {
+-		ret = hostap_enable_hostapd_sta(local, rtnl_locked);
+-		if (ret == 0)
+-			local->hostapd_sta = 1;
+-	} else {
+-		local->hostapd_sta = 0;
+-		ret = hostap_disable_hostapd_sta(local, rtnl_locked);
+-		if (ret != 0)
+-			local->hostapd_sta = 1;
+-	}
+-
+-
+-	return ret;
+-}
+-
+-
+-int prism2_update_comms_qual(struct net_device *dev)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	int ret = 0;
+-	struct hfa384x_comms_quality sq;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-	if (!local->sta_fw_ver)
+-		ret = -1;
+-	else if (local->sta_fw_ver >= PRISM2_FW_VER(1,3,1)) {
+-		if (local->func->get_rid(local->dev,
+-					 HFA384X_RID_DBMCOMMSQUALITY,
+-					 &sq, sizeof(sq), 1) >= 0) {
+-			local->comms_qual = (s16) le16_to_cpu(sq.comm_qual);
+-			local->avg_signal = (s16) le16_to_cpu(sq.signal_level);
+-			local->avg_noise = (s16) le16_to_cpu(sq.noise_level);
+-			local->last_comms_qual_update = jiffies;
+-		} else
+-			ret = -1;
+-	} else {
+-		if (local->func->get_rid(local->dev, HFA384X_RID_COMMSQUALITY,
+-					 &sq, sizeof(sq), 1) >= 0) {
+-			local->comms_qual = le16_to_cpu(sq.comm_qual);
+-			local->avg_signal = HFA384X_LEVEL_TO_dBm(
+-				le16_to_cpu(sq.signal_level));
+-			local->avg_noise = HFA384X_LEVEL_TO_dBm(
+-				le16_to_cpu(sq.noise_level));
+-			local->last_comms_qual_update = jiffies;
+-		} else
+-			ret = -1;
+-	}
+-
+-	return ret;
+-}
+-
+-
+-int prism2_sta_send_mgmt(local_info_t *local, u8 *dst, u16 stype,
+-			 u8 *body, size_t bodylen)
+-{
+-	struct sk_buff *skb;
+-	struct hostap_ieee80211_mgmt *mgmt;
+-	struct hostap_skb_tx_data *meta;
+-	struct net_device *dev = local->dev;
+-
+-	skb = dev_alloc_skb(IEEE80211_MGMT_HDR_LEN + bodylen);
+-	if (skb == NULL)
+-		return -ENOMEM;
+-
+-	mgmt = skb_put_zero(skb, IEEE80211_MGMT_HDR_LEN);
+-	mgmt->frame_control = cpu_to_le16(IEEE80211_FTYPE_MGMT | stype);
+-	memcpy(mgmt->da, dst, ETH_ALEN);
+-	memcpy(mgmt->sa, dev->dev_addr, ETH_ALEN);
+-	memcpy(mgmt->bssid, dst, ETH_ALEN);
+-	if (body)
+-		skb_put_data(skb, body, bodylen);
+-
+-	meta = (struct hostap_skb_tx_data *) skb->cb;
+-	memset(meta, 0, sizeof(*meta));
+-	meta->magic = HOSTAP_SKB_TX_DATA_MAGIC;
+-	meta->iface = netdev_priv(dev);
+-
+-	skb->dev = dev;
+-	skb_reset_mac_header(skb);
+-	skb_reset_network_header(skb);
+-	dev_queue_xmit(skb);
+-
+-	return 0;
+-}
+-
+-
+-int prism2_sta_deauth(local_info_t *local, u16 reason)
+-{
+-	union iwreq_data wrqu;
+-	int ret;
+-	__le16 val = cpu_to_le16(reason);
+-
+-	if (local->iw_mode != IW_MODE_INFRA ||
+-	    is_zero_ether_addr(local->bssid) ||
+-	    ether_addr_equal(local->bssid, "\x44\x44\x44\x44\x44\x44"))
+-		return 0;
+-
+-	ret = prism2_sta_send_mgmt(local, local->bssid, IEEE80211_STYPE_DEAUTH,
+-				   (u8 *) &val, 2);
+-	eth_zero_addr(wrqu.ap_addr.sa_data);
+-	wireless_send_event(local->dev, SIOCGIWAP, &wrqu, NULL);
+-	return ret;
+-}
+-
+-
+-struct proc_dir_entry *hostap_proc;
+-
+-static int __init hostap_init(void)
+-{
+-	if (init_net.proc_net != NULL) {
+-		hostap_proc = proc_mkdir("hostap", init_net.proc_net);
+-		if (!hostap_proc)
+-			printk(KERN_WARNING "Failed to mkdir "
+-			       "/proc/net/hostap\n");
+-	} else
+-		hostap_proc = NULL;
+-
+-	return 0;
+-}
+-
+-
+-static void __exit hostap_exit(void)
+-{
+-	if (hostap_proc != NULL) {
+-		hostap_proc = NULL;
+-		remove_proc_entry("hostap", init_net.proc_net);
+-	}
+-}
+-
+-
+-EXPORT_SYMBOL(hostap_set_word);
+-EXPORT_SYMBOL(hostap_set_string);
+-EXPORT_SYMBOL(hostap_get_porttype);
+-EXPORT_SYMBOL(hostap_set_encryption);
+-EXPORT_SYMBOL(hostap_set_antsel);
+-EXPORT_SYMBOL(hostap_set_roaming);
+-EXPORT_SYMBOL(hostap_set_auth_algs);
+-EXPORT_SYMBOL(hostap_dump_rx_header);
+-EXPORT_SYMBOL(hostap_dump_tx_header);
+-EXPORT_SYMBOL(hostap_80211_get_hdrlen);
+-EXPORT_SYMBOL(hostap_setup_dev);
+-EXPORT_SYMBOL(hostap_set_multicast_list_queue);
+-EXPORT_SYMBOL(hostap_set_hostapd);
+-EXPORT_SYMBOL(hostap_set_hostapd_sta);
+-EXPORT_SYMBOL(hostap_add_interface);
+-EXPORT_SYMBOL(hostap_remove_interface);
+-EXPORT_SYMBOL(prism2_update_comms_qual);
+-
+-module_init(hostap_init);
+-module_exit(hostap_exit);
+diff --git a/drivers/net/wireless/intersil/hostap/hostap_pci.c b/drivers/net/wireless/intersil/hostap/hostap_pci.c
+deleted file mode 100644
+index 52d77506effd2..0000000000000
+--- a/drivers/net/wireless/intersil/hostap/hostap_pci.c
++++ /dev/null
+@@ -1,445 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-#define PRISM2_PCI
+-
+-/* Host AP driver's support for Intersil Prism2.5 PCI cards is based on
+- * driver patches from Reyk Floeter <reyk@vantronix.net> and
+- * Andy Warner <andyw@pobox.com> */
+-
+-#include <linux/module.h>
+-#include <linux/if.h>
+-#include <linux/skbuff.h>
+-#include <linux/netdevice.h>
+-#include <linux/slab.h>
+-#include <linux/workqueue.h>
+-#include <linux/wireless.h>
+-#include <net/iw_handler.h>
+-
+-#include <linux/ioport.h>
+-#include <linux/pci.h>
+-#include <asm/io.h>
+-
+-#include "hostap_wlan.h"
+-
+-
+-static char *dev_info = "hostap_pci";
+-
+-
+-MODULE_AUTHOR("Jouni Malinen");
+-MODULE_DESCRIPTION("Support for Intersil Prism2.5-based 802.11 wireless LAN "
+-		   "PCI cards.");
+-MODULE_LICENSE("GPL");
+-
+-
+-/* struct local_info::hw_priv */
+-struct hostap_pci_priv {
+-	void __iomem *mem_start;
+-};
+-
+-
+-/* FIX: do we need mb/wmb/rmb with memory operations? */
+-
+-
+-static const struct pci_device_id prism2_pci_id_table[] = {
+-	/* Intersil Prism3 ISL3872 11Mb/s WLAN Controller */
+-	{ 0x1260, 0x3872, PCI_ANY_ID, PCI_ANY_ID },
+-	/* Intersil Prism2.5 ISL3874 11Mb/s WLAN Controller */
+-	{ 0x1260, 0x3873, PCI_ANY_ID, PCI_ANY_ID },
+-	/* Samsung MagicLAN SWL-2210P */
+-	{ 0x167d, 0xa000, PCI_ANY_ID, PCI_ANY_ID },
+-	{ 0 }
+-};
+-
+-
+-#ifdef PRISM2_IO_DEBUG
+-
+-static inline void hfa384x_outb_debug(struct net_device *dev, int a, u8 v)
+-{
+-	struct hostap_interface *iface;
+-	struct hostap_pci_priv *hw_priv;
+-	local_info_t *local;
+-	unsigned long flags;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-	hw_priv = local->hw_priv;
+-
+-	spin_lock_irqsave(&local->lock, flags);
+-	prism2_io_debug_add(dev, PRISM2_IO_DEBUG_CMD_OUTB, a, v);
+-	writeb(v, hw_priv->mem_start + a);
+-	spin_unlock_irqrestore(&local->lock, flags);
+-}
+-
+-static inline u8 hfa384x_inb_debug(struct net_device *dev, int a)
+-{
+-	struct hostap_interface *iface;
+-	struct hostap_pci_priv *hw_priv;
+-	local_info_t *local;
+-	unsigned long flags;
+-	u8 v;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-	hw_priv = local->hw_priv;
+-
+-	spin_lock_irqsave(&local->lock, flags);
+-	v = readb(hw_priv->mem_start + a);
+-	prism2_io_debug_add(dev, PRISM2_IO_DEBUG_CMD_INB, a, v);
+-	spin_unlock_irqrestore(&local->lock, flags);
+-	return v;
+-}
+-
+-static inline void hfa384x_outw_debug(struct net_device *dev, int a, u16 v)
+-{
+-	struct hostap_interface *iface;
+-	struct hostap_pci_priv *hw_priv;
+-	local_info_t *local;
+-	unsigned long flags;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-	hw_priv = local->hw_priv;
+-
+-	spin_lock_irqsave(&local->lock, flags);
+-	prism2_io_debug_add(dev, PRISM2_IO_DEBUG_CMD_OUTW, a, v);
+-	writew(v, hw_priv->mem_start + a);
+-	spin_unlock_irqrestore(&local->lock, flags);
+-}
+-
+-static inline u16 hfa384x_inw_debug(struct net_device *dev, int a)
+-{
+-	struct hostap_interface *iface;
+-	struct hostap_pci_priv *hw_priv;
+-	local_info_t *local;
+-	unsigned long flags;
+-	u16 v;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-	hw_priv = local->hw_priv;
+-
+-	spin_lock_irqsave(&local->lock, flags);
+-	v = readw(hw_priv->mem_start + a);
+-	prism2_io_debug_add(dev, PRISM2_IO_DEBUG_CMD_INW, a, v);
+-	spin_unlock_irqrestore(&local->lock, flags);
+-	return v;
+-}
+-
+-#define HFA384X_OUTB(v,a) hfa384x_outb_debug(dev, (a), (v))
+-#define HFA384X_INB(a) hfa384x_inb_debug(dev, (a))
+-#define HFA384X_OUTW(v,a) hfa384x_outw_debug(dev, (a), (v))
+-#define HFA384X_INW(a) hfa384x_inw_debug(dev, (a))
+-#define HFA384X_OUTW_DATA(v,a) hfa384x_outw_debug(dev, (a), le16_to_cpu((v)))
+-#define HFA384X_INW_DATA(a) cpu_to_le16(hfa384x_inw_debug(dev, (a)))
+-
+-#else /* PRISM2_IO_DEBUG */
+-
+-static inline void hfa384x_outb(struct net_device *dev, int a, u8 v)
+-{
+-	struct hostap_interface *iface;
+-	struct hostap_pci_priv *hw_priv;
+-	iface = netdev_priv(dev);
+-	hw_priv = iface->local->hw_priv;
+-	writeb(v, hw_priv->mem_start + a);
+-}
+-
+-static inline u8 hfa384x_inb(struct net_device *dev, int a)
+-{
+-	struct hostap_interface *iface;
+-	struct hostap_pci_priv *hw_priv;
+-	iface = netdev_priv(dev);
+-	hw_priv = iface->local->hw_priv;
+-	return readb(hw_priv->mem_start + a);
+-}
+-
+-static inline void hfa384x_outw(struct net_device *dev, int a, u16 v)
+-{
+-	struct hostap_interface *iface;
+-	struct hostap_pci_priv *hw_priv;
+-	iface = netdev_priv(dev);
+-	hw_priv = iface->local->hw_priv;
+-	writew(v, hw_priv->mem_start + a);
+-}
+-
+-static inline u16 hfa384x_inw(struct net_device *dev, int a)
+-{
+-	struct hostap_interface *iface;
+-	struct hostap_pci_priv *hw_priv;
+-	iface = netdev_priv(dev);
+-	hw_priv = iface->local->hw_priv;
+-	return readw(hw_priv->mem_start + a);
+-}
+-
+-#define HFA384X_OUTB(v,a) hfa384x_outb(dev, (a), (v))
+-#define HFA384X_INB(a) hfa384x_inb(dev, (a))
+-#define HFA384X_OUTW(v,a) hfa384x_outw(dev, (a), (v))
+-#define HFA384X_INW(a) hfa384x_inw(dev, (a))
+-#define HFA384X_OUTW_DATA(v,a) hfa384x_outw(dev, (a), le16_to_cpu((v)))
+-#define HFA384X_INW_DATA(a) cpu_to_le16(hfa384x_inw(dev, (a)))
+-
+-#endif /* PRISM2_IO_DEBUG */
+-
+-
+-static int hfa384x_from_bap(struct net_device *dev, u16 bap, void *buf,
+-			    int len)
+-{
+-	u16 d_off;
+-	__le16 *pos;
+-
+-	d_off = (bap == 1) ? HFA384X_DATA1_OFF : HFA384X_DATA0_OFF;
+-	pos = (__le16 *) buf;
+-
+-	for ( ; len > 1; len -= 2)
+-		*pos++ = HFA384X_INW_DATA(d_off);
+-
+-	if (len & 1)
+-		*((char *) pos) = HFA384X_INB(d_off);
+-
+-	return 0;
+-}
+-
+-
+-static int hfa384x_to_bap(struct net_device *dev, u16 bap, void *buf, int len)
+-{
+-	u16 d_off;
+-	__le16 *pos;
+-
+-	d_off = (bap == 1) ? HFA384X_DATA1_OFF : HFA384X_DATA0_OFF;
+-	pos = (__le16 *) buf;
+-
+-	for ( ; len > 1; len -= 2)
+-		HFA384X_OUTW_DATA(*pos++, d_off);
+-
+-	if (len & 1)
+-		HFA384X_OUTB(*((char *) pos), d_off);
+-
+-	return 0;
+-}
+-
+-
+-/* FIX: This might change at some point.. */
+-#include "hostap_hw.c"
+-
+-static void prism2_pci_cor_sreset(local_info_t *local)
+-{
+-	struct net_device *dev = local->dev;
+-	u16 reg;
+-
+-	reg = HFA384X_INB(HFA384X_PCICOR_OFF);
+-	printk(KERN_DEBUG "%s: Original COR value: 0x%0x\n", dev->name, reg);
+-
+-	/* linux-wlan-ng uses extremely long hold and settle times for
+-	 * COR sreset. A comment in the driver code mentions that the long
+-	 * delays appear to be necessary. However, at least IBM 22P6901 seems
+-	 * to work fine with shorter delays.
+-	 *
+-	 * Longer delays can be configured by uncommenting following line: */
+-/* #define PRISM2_PCI_USE_LONG_DELAYS */
+-
+-#ifdef PRISM2_PCI_USE_LONG_DELAYS
+-	int i;
+-
+-	HFA384X_OUTW(reg | 0x0080, HFA384X_PCICOR_OFF);
+-	mdelay(250);
+-
+-	HFA384X_OUTW(reg & ~0x0080, HFA384X_PCICOR_OFF);
+-	mdelay(500);
+-
+-	/* Wait for f/w to complete initialization (CMD:BUSY == 0) */
+-	i = 2000000 / 10;
+-	while ((HFA384X_INW(HFA384X_CMD_OFF) & HFA384X_CMD_BUSY) && --i)
+-		udelay(10);
+-
+-#else /* PRISM2_PCI_USE_LONG_DELAYS */
+-
+-	HFA384X_OUTW(reg | 0x0080, HFA384X_PCICOR_OFF);
+-	mdelay(2);
+-	HFA384X_OUTW(reg & ~0x0080, HFA384X_PCICOR_OFF);
+-	mdelay(2);
+-
+-#endif /* PRISM2_PCI_USE_LONG_DELAYS */
+-
+-	if (HFA384X_INW(HFA384X_CMD_OFF) & HFA384X_CMD_BUSY) {
+-		printk(KERN_DEBUG "%s: COR sreset timeout\n", dev->name);
+-	}
+-}
+-
+-
+-static void prism2_pci_genesis_reset(local_info_t *local, int hcr)
+-{
+-	struct net_device *dev = local->dev;
+-
+-	HFA384X_OUTW(0x00C5, HFA384X_PCICOR_OFF);
+-	mdelay(10);
+-	HFA384X_OUTW(hcr, HFA384X_PCIHCR_OFF);
+-	mdelay(10);
+-	HFA384X_OUTW(0x0045, HFA384X_PCICOR_OFF);
+-	mdelay(10);
+-}
+-
+-
+-static struct prism2_helper_functions prism2_pci_funcs =
+-{
+-	.card_present	= NULL,
+-	.cor_sreset	= prism2_pci_cor_sreset,
+-	.genesis_reset	= prism2_pci_genesis_reset,
+-	.hw_type	= HOSTAP_HW_PCI,
+-};
+-
+-
+-static int prism2_pci_probe(struct pci_dev *pdev,
+-			    const struct pci_device_id *id)
+-{
+-	unsigned long phymem;
+-	void __iomem *mem = NULL;
+-	local_info_t *local = NULL;
+-	struct net_device *dev = NULL;
+-	static int cards_found /* = 0 */;
+-	int irq_registered = 0;
+-	struct hostap_interface *iface;
+-	struct hostap_pci_priv *hw_priv;
+-
+-	hw_priv = kzalloc(sizeof(*hw_priv), GFP_KERNEL);
+-	if (hw_priv == NULL)
+-		return -ENOMEM;
+-
+-	if (pci_enable_device(pdev))
+-		goto err_out_free;
+-
+-	phymem = pci_resource_start(pdev, 0);
+-
+-	if (!request_mem_region(phymem, pci_resource_len(pdev, 0), "Prism2")) {
+-		printk(KERN_ERR "prism2: Cannot reserve PCI memory region\n");
+-		goto err_out_disable;
+-	}
+-
+-	mem = pci_ioremap_bar(pdev, 0);
+-	if (mem == NULL) {
+-		printk(KERN_ERR "prism2: Cannot remap PCI memory region\n") ;
+-		goto fail;
+-	}
+-
+-	dev = prism2_init_local_data(&prism2_pci_funcs, cards_found,
+-				     &pdev->dev);
+-	if (dev == NULL)
+-		goto fail;
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-	local->hw_priv = hw_priv;
+-	cards_found++;
+-
+-        dev->irq = pdev->irq;
+-        hw_priv->mem_start = mem;
+-	dev->base_addr = (unsigned long) mem;
+-
+-	prism2_pci_cor_sreset(local);
+-
+-	pci_set_drvdata(pdev, dev);
+-
+-	if (request_irq(dev->irq, prism2_interrupt, IRQF_SHARED, dev->name,
+-			dev)) {
+-		printk(KERN_WARNING "%s: request_irq failed\n", dev->name);
+-		goto fail;
+-	} else
+-		irq_registered = 1;
+-
+-	if (!local->pri_only && prism2_hw_config(dev, 1)) {
+-		printk(KERN_DEBUG "%s: hardware initialization failed\n",
+-		       dev_info);
+-		goto fail;
+-	}
+-
+-	printk(KERN_INFO "%s: Intersil Prism2.5 PCI: "
+-	       "mem=0x%lx, irq=%d\n", dev->name, phymem, dev->irq);
+-
+-	return hostap_hw_ready(dev);
+-
+- fail:
+-	if (irq_registered && dev)
+-		free_irq(dev->irq, dev);
+-
+-	if (mem)
+-		iounmap(mem);
+-
+-	release_mem_region(phymem, pci_resource_len(pdev, 0));
+-
+- err_out_disable:
+-	pci_disable_device(pdev);
+-	prism2_free_local_data(dev);
+-
+- err_out_free:
+-	kfree(hw_priv);
+-
+-	return -ENODEV;
+-}
+-
+-
+-static void prism2_pci_remove(struct pci_dev *pdev)
+-{
+-	struct net_device *dev;
+-	struct hostap_interface *iface;
+-	void __iomem *mem_start;
+-	struct hostap_pci_priv *hw_priv;
+-
+-	dev = pci_get_drvdata(pdev);
+-	iface = netdev_priv(dev);
+-	hw_priv = iface->local->hw_priv;
+-
+-	/* Reset the hardware, and ensure interrupts are disabled. */
+-	prism2_pci_cor_sreset(iface->local);
+-	hfa384x_disable_interrupts(dev);
+-
+-	if (dev->irq)
+-		free_irq(dev->irq, dev);
+-
+-	mem_start = hw_priv->mem_start;
+-	prism2_free_local_data(dev);
+-	kfree(hw_priv);
+-
+-	iounmap(mem_start);
+-
+-	release_mem_region(pci_resource_start(pdev, 0),
+-			   pci_resource_len(pdev, 0));
+-	pci_disable_device(pdev);
+-}
+-
+-static int __maybe_unused prism2_pci_suspend(struct device *dev_d)
+-{
+-	struct net_device *dev = dev_get_drvdata(dev_d);
+-
+-	if (netif_running(dev)) {
+-		netif_stop_queue(dev);
+-		netif_device_detach(dev);
+-	}
+-	prism2_suspend(dev);
+-
+-	return 0;
+-}
+-
+-static int __maybe_unused prism2_pci_resume(struct device *dev_d)
+-{
+-	struct net_device *dev = dev_get_drvdata(dev_d);
+-
+-	prism2_hw_config(dev, 0);
+-	if (netif_running(dev)) {
+-		netif_device_attach(dev);
+-		netif_start_queue(dev);
+-	}
+-
+-	return 0;
+-}
+-
+-MODULE_DEVICE_TABLE(pci, prism2_pci_id_table);
+-
+-static SIMPLE_DEV_PM_OPS(prism2_pci_pm_ops,
+-			 prism2_pci_suspend,
+-			 prism2_pci_resume);
+-
+-static struct pci_driver prism2_pci_driver = {
+-	.name		= "hostap_pci",
+-	.id_table	= prism2_pci_id_table,
+-	.probe		= prism2_pci_probe,
+-	.remove		= prism2_pci_remove,
+-	.driver.pm	= &prism2_pci_pm_ops,
+-};
+-
+-module_pci_driver(prism2_pci_driver);
+diff --git a/drivers/net/wireless/intersil/hostap/hostap_plx.c b/drivers/net/wireless/intersil/hostap/hostap_plx.c
+deleted file mode 100644
+index 58247290fcbc4..0000000000000
+--- a/drivers/net/wireless/intersil/hostap/hostap_plx.c
++++ /dev/null
+@@ -1,617 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-#define PRISM2_PLX
+-
+-/* Host AP driver's support for PC Cards on PCI adapters using PLX9052 is
+- * based on:
+- * - Host AP driver patch from james@madingley.org
+- * - linux-wlan-ng driver, Copyright (C) AbsoluteValue Systems, Inc.
+- */
+-
+-
+-#include <linux/module.h>
+-#include <linux/if.h>
+-#include <linux/skbuff.h>
+-#include <linux/netdevice.h>
+-#include <linux/slab.h>
+-#include <linux/workqueue.h>
+-#include <linux/wireless.h>
+-#include <net/iw_handler.h>
+-
+-#include <linux/ioport.h>
+-#include <linux/pci.h>
+-#include <asm/io.h>
+-
+-#include "hostap_wlan.h"
+-
+-
+-static char *dev_info = "hostap_plx";
+-
+-
+-MODULE_AUTHOR("Jouni Malinen");
+-MODULE_DESCRIPTION("Support for Intersil Prism2-based 802.11 wireless LAN "
+-		   "cards (PLX).");
+-MODULE_LICENSE("GPL");
+-
+-
+-static int ignore_cis;
+-module_param(ignore_cis, int, 0444);
+-MODULE_PARM_DESC(ignore_cis, "Do not verify manfid information in CIS");
+-
+-
+-/* struct local_info::hw_priv */
+-struct hostap_plx_priv {
+-	void __iomem *attr_mem;
+-	unsigned int cor_offset;
+-};
+-
+-
+-#define PLX_MIN_ATTR_LEN 512	/* at least 2 x 256 is needed for CIS */
+-#define COR_SRESET       0x80
+-#define COR_LEVLREQ      0x40
+-#define COR_ENABLE_FUNC  0x01
+-/* PCI Configuration Registers */
+-#define PLX_PCIIPR       0x3d   /* PCI Interrupt Pin */
+-/* Local Configuration Registers */
+-#define PLX_INTCSR       0x4c   /* Interrupt Control/Status Register */
+-#define PLX_INTCSR_PCI_INTEN BIT(6) /* PCI Interrupt Enable */
+-#define PLX_CNTRL        0x50
+-#define PLX_CNTRL_SERIAL_EEPROM_PRESENT BIT(28)
+-
+-
+-#define PLXDEV(vendor,dev,str) { vendor, dev, PCI_ANY_ID, PCI_ANY_ID }
+-
+-static const struct pci_device_id prism2_plx_id_table[] = {
+-	PLXDEV(0x10b7, 0x7770, "3Com AirConnect PCI 777A"),
+-	PLXDEV(0x111a, 0x1023, "Siemens SpeedStream SS1023"),
+-	PLXDEV(0x126c, 0x8030, "Nortel emobility"),
+-	PLXDEV(0x1562, 0x0001, "Symbol LA-4123"),
+-	PLXDEV(0x1385, 0x4100, "Netgear MA301"),
+-	PLXDEV(0x15e8, 0x0130, "National Datacomm NCP130 (PLX9052)"),
+-	PLXDEV(0x15e8, 0x0131, "National Datacomm NCP130 (TMD7160)"),
+-	PLXDEV(0x1638, 0x1100, "Eumitcom WL11000"),
+-	PLXDEV(0x16ab, 0x1100, "Global Sun Tech GL24110P"),
+-	PLXDEV(0x16ab, 0x1101, "Global Sun Tech GL24110P (?)"),
+-	PLXDEV(0x16ab, 0x1102, "Linksys WPC11 with WDT11"),
+-	PLXDEV(0x16ab, 0x1103, "Longshine 8031"),
+-	PLXDEV(0x16ec, 0x3685, "US Robotics USR2415"),
+-	PLXDEV(0xec80, 0xec00, "Belkin F5D6000"),
+-	{ 0 }
+-};
+-
+-
+-/* Array of known Prism2/2.5 PC Card manufactured ids. If your card's manfid
+- * is not listed here, you will need to add it here to get the driver
+- * initialized. */
+-static struct prism2_plx_manfid {
+-	u16 manfid1, manfid2;
+-} prism2_plx_known_manfids[] = {
+-	{ 0x000b, 0x7110 } /* D-Link DWL-650 Rev. P1 */,
+-	{ 0x000b, 0x7300 } /* Philips 802.11b WLAN PCMCIA */,
+-	{ 0x0101, 0x0777 } /* 3Com AirConnect PCI 777A */,
+-	{ 0x0126, 0x8000 } /* Proxim RangeLAN */,
+-	{ 0x0138, 0x0002 } /* Compaq WL100 */,
+-	{ 0x0156, 0x0002 } /* Intersil Prism II Ref. Design (and others) */,
+-	{ 0x026f, 0x030b } /* Buffalo WLI-CF-S11G */,
+-	{ 0x0274, 0x1612 } /* Linksys WPC11 Ver 2.5 */,
+-	{ 0x0274, 0x1613 } /* Linksys WPC11 Ver 3 */,
+-	{ 0x028a, 0x0002 } /* D-Link DRC-650 */,
+-	{ 0x0250, 0x0002 } /* Samsung SWL2000-N */,
+-	{ 0xc250, 0x0002 } /* EMTAC A2424i */,
+-	{ 0xd601, 0x0002 } /* Z-Com XI300 */,
+-	{ 0xd601, 0x0005 } /* Zcomax XI-325H 200mW */,
+-	{ 0, 0}
+-};
+-
+-
+-#ifdef PRISM2_IO_DEBUG
+-
+-static inline void hfa384x_outb_debug(struct net_device *dev, int a, u8 v)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	unsigned long flags;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	spin_lock_irqsave(&local->lock, flags);
+-	prism2_io_debug_add(dev, PRISM2_IO_DEBUG_CMD_OUTB, a, v);
+-	outb(v, dev->base_addr + a);
+-	spin_unlock_irqrestore(&local->lock, flags);
+-}
+-
+-static inline u8 hfa384x_inb_debug(struct net_device *dev, int a)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	unsigned long flags;
+-	u8 v;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	spin_lock_irqsave(&local->lock, flags);
+-	v = inb(dev->base_addr + a);
+-	prism2_io_debug_add(dev, PRISM2_IO_DEBUG_CMD_INB, a, v);
+-	spin_unlock_irqrestore(&local->lock, flags);
+-	return v;
+-}
+-
+-static inline void hfa384x_outw_debug(struct net_device *dev, int a, u16 v)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	unsigned long flags;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	spin_lock_irqsave(&local->lock, flags);
+-	prism2_io_debug_add(dev, PRISM2_IO_DEBUG_CMD_OUTW, a, v);
+-	outw(v, dev->base_addr + a);
+-	spin_unlock_irqrestore(&local->lock, flags);
+-}
+-
+-static inline u16 hfa384x_inw_debug(struct net_device *dev, int a)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	unsigned long flags;
+-	u16 v;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	spin_lock_irqsave(&local->lock, flags);
+-	v = inw(dev->base_addr + a);
+-	prism2_io_debug_add(dev, PRISM2_IO_DEBUG_CMD_INW, a, v);
+-	spin_unlock_irqrestore(&local->lock, flags);
+-	return v;
+-}
+-
+-static inline void hfa384x_outsw_debug(struct net_device *dev, int a,
+-				       u8 *buf, int wc)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	unsigned long flags;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	spin_lock_irqsave(&local->lock, flags);
+-	prism2_io_debug_add(dev, PRISM2_IO_DEBUG_CMD_OUTSW, a, wc);
+-	outsw(dev->base_addr + a, buf, wc);
+-	spin_unlock_irqrestore(&local->lock, flags);
+-}
+-
+-static inline void hfa384x_insw_debug(struct net_device *dev, int a,
+-				      u8 *buf, int wc)
+-{
+-	struct hostap_interface *iface;
+-	local_info_t *local;
+-	unsigned long flags;
+-
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-
+-	spin_lock_irqsave(&local->lock, flags);
+-	prism2_io_debug_add(dev, PRISM2_IO_DEBUG_CMD_INSW, a, wc);
+-	insw(dev->base_addr + a, buf, wc);
+-	spin_unlock_irqrestore(&local->lock, flags);
+-}
+-
+-#define HFA384X_OUTB(v,a) hfa384x_outb_debug(dev, (a), (v))
+-#define HFA384X_INB(a) hfa384x_inb_debug(dev, (a))
+-#define HFA384X_OUTW(v,a) hfa384x_outw_debug(dev, (a), (v))
+-#define HFA384X_INW(a) hfa384x_inw_debug(dev, (a))
+-#define HFA384X_OUTSW(a, buf, wc) hfa384x_outsw_debug(dev, (a), (buf), (wc))
+-#define HFA384X_INSW(a, buf, wc) hfa384x_insw_debug(dev, (a), (buf), (wc))
+-
+-#else /* PRISM2_IO_DEBUG */
+-
+-#define HFA384X_OUTB(v,a) outb((v), dev->base_addr + (a))
+-#define HFA384X_INB(a) inb(dev->base_addr + (a))
+-#define HFA384X_OUTW(v,a) outw((v), dev->base_addr + (a))
+-#define HFA384X_INW(a) inw(dev->base_addr + (a))
+-#define HFA384X_INSW(a, buf, wc) insw(dev->base_addr + (a), buf, wc)
+-#define HFA384X_OUTSW(a, buf, wc) outsw(dev->base_addr + (a), buf, wc)
+-
+-#endif /* PRISM2_IO_DEBUG */
+-
+-
+-static int hfa384x_from_bap(struct net_device *dev, u16 bap, void *buf,
+-			    int len)
+-{
+-	u16 d_off;
+-	u16 *pos;
+-
+-	d_off = (bap == 1) ? HFA384X_DATA1_OFF : HFA384X_DATA0_OFF;
+-	pos = (u16 *) buf;
+-
+-	if (len / 2)
+-		HFA384X_INSW(d_off, buf, len / 2);
+-	pos += len / 2;
+-
+-	if (len & 1)
+-		*((char *) pos) = HFA384X_INB(d_off);
+-
+-	return 0;
+-}
+-
+-
+-static int hfa384x_to_bap(struct net_device *dev, u16 bap, void *buf, int len)
+-{
+-	u16 d_off;
+-	u16 *pos;
+-
+-	d_off = (bap == 1) ? HFA384X_DATA1_OFF : HFA384X_DATA0_OFF;
+-	pos = (u16 *) buf;
+-
+-	if (len / 2)
+-		HFA384X_OUTSW(d_off, buf, len / 2);
+-	pos += len / 2;
+-
+-	if (len & 1)
+-		HFA384X_OUTB(*((char *) pos), d_off);
+-
+-	return 0;
+-}
+-
+-
+-/* FIX: This might change at some point.. */
+-#include "hostap_hw.c"
+-
+-
+-static void prism2_plx_cor_sreset(local_info_t *local)
+-{
+-	unsigned char corsave;
+-	struct hostap_plx_priv *hw_priv = local->hw_priv;
+-
+-	printk(KERN_DEBUG "%s: Doing reset via direct COR access.\n",
+-	       dev_info);
+-
+-	/* Set sreset bit of COR and clear it after hold time */
+-
+-	if (hw_priv->attr_mem == NULL) {
+-		/* TMD7160 - COR at card's first I/O addr */
+-		corsave = inb(hw_priv->cor_offset);
+-		outb(corsave | COR_SRESET, hw_priv->cor_offset);
+-		mdelay(2);
+-		outb(corsave & ~COR_SRESET, hw_priv->cor_offset);
+-		mdelay(2);
+-	} else {
+-		/* PLX9052 */
+-		corsave = readb(hw_priv->attr_mem + hw_priv->cor_offset);
+-		writeb(corsave | COR_SRESET,
+-		       hw_priv->attr_mem + hw_priv->cor_offset);
+-		mdelay(2);
+-		writeb(corsave & ~COR_SRESET,
+-		       hw_priv->attr_mem + hw_priv->cor_offset);
+-		mdelay(2);
+-	}
+-}
+-
+-
+-static void prism2_plx_genesis_reset(local_info_t *local, int hcr)
+-{
+-	unsigned char corsave;
+-	struct hostap_plx_priv *hw_priv = local->hw_priv;
+-
+-	if (hw_priv->attr_mem == NULL) {
+-		/* TMD7160 - COR at card's first I/O addr */
+-		corsave = inb(hw_priv->cor_offset);
+-		outb(corsave | COR_SRESET, hw_priv->cor_offset);
+-		mdelay(10);
+-		outb(hcr, hw_priv->cor_offset + 2);
+-		mdelay(10);
+-		outb(corsave & ~COR_SRESET, hw_priv->cor_offset);
+-		mdelay(10);
+-	} else {
+-		/* PLX9052 */
+-		corsave = readb(hw_priv->attr_mem + hw_priv->cor_offset);
+-		writeb(corsave | COR_SRESET,
+-		       hw_priv->attr_mem + hw_priv->cor_offset);
+-		mdelay(10);
+-		writeb(hcr, hw_priv->attr_mem + hw_priv->cor_offset + 2);
+-		mdelay(10);
+-		writeb(corsave & ~COR_SRESET,
+-		       hw_priv->attr_mem + hw_priv->cor_offset);
+-		mdelay(10);
+-	}
+-}
+-
+-
+-static struct prism2_helper_functions prism2_plx_funcs =
+-{
+-	.card_present	= NULL,
+-	.cor_sreset	= prism2_plx_cor_sreset,
+-	.genesis_reset	= prism2_plx_genesis_reset,
+-	.hw_type	= HOSTAP_HW_PLX,
+-};
+-
+-
+-static int prism2_plx_check_cis(void __iomem *attr_mem, int attr_len,
+-				unsigned int *cor_offset,
+-				unsigned int *cor_index)
+-{
+-#define CISTPL_CONFIG 0x1A
+-#define CISTPL_MANFID 0x20
+-#define CISTPL_END 0xFF
+-#define CIS_MAX_LEN 256
+-	u8 *cis;
+-	int i, pos;
+-	unsigned int rmsz, rasz, manfid1, manfid2;
+-	struct prism2_plx_manfid *manfid;
+-
+-	cis = kmalloc(CIS_MAX_LEN, GFP_KERNEL);
+-	if (cis == NULL)
+-		return -ENOMEM;
+-
+-	/* read CIS; it is in even offsets in the beginning of attr_mem */
+-	for (i = 0; i < CIS_MAX_LEN; i++)
+-		cis[i] = readb(attr_mem + 2 * i);
+-	printk(KERN_DEBUG "%s: CIS: %6ph ...\n", dev_info, cis);
+-
+-	/* set reasonable defaults for Prism2 cards just in case CIS parsing
+-	 * fails */
+-	*cor_offset = 0x3e0;
+-	*cor_index = 0x01;
+-	manfid1 = manfid2 = 0;
+-
+-	pos = 0;
+-	while (pos < CIS_MAX_LEN - 1 && cis[pos] != CISTPL_END) {
+-		if (pos + 2 + cis[pos + 1] > CIS_MAX_LEN)
+-			goto cis_error;
+-
+-		switch (cis[pos]) {
+-		case CISTPL_CONFIG:
+-			if (cis[pos + 1] < 2)
+-				goto cis_error;
+-			rmsz = (cis[pos + 2] & 0x3c) >> 2;
+-			rasz = cis[pos + 2] & 0x03;
+-			if (4 + rasz + rmsz > cis[pos + 1])
+-				goto cis_error;
+-			*cor_index = cis[pos + 3] & 0x3F;
+-			*cor_offset = 0;
+-			for (i = 0; i <= rasz; i++)
+-				*cor_offset += cis[pos + 4 + i] << (8 * i);
+-			printk(KERN_DEBUG "%s: cor_index=0x%x "
+-			       "cor_offset=0x%x\n", dev_info,
+-			       *cor_index, *cor_offset);
+-			if (*cor_offset > attr_len) {
+-				printk(KERN_ERR "%s: COR offset not within "
+-				       "attr_mem\n", dev_info);
+-				kfree(cis);
+-				return -1;
+-			}
+-			break;
+-
+-		case CISTPL_MANFID:
+-			if (cis[pos + 1] < 4)
+-				goto cis_error;
+-			manfid1 = cis[pos + 2] + (cis[pos + 3] << 8);
+-			manfid2 = cis[pos + 4] + (cis[pos + 5] << 8);
+-			printk(KERN_DEBUG "%s: manfid=0x%04x, 0x%04x\n",
+-			       dev_info, manfid1, manfid2);
+-			break;
+-		}
+-
+-		pos += cis[pos + 1] + 2;
+-	}
+-
+-	if (pos >= CIS_MAX_LEN || cis[pos] != CISTPL_END)
+-		goto cis_error;
+-
+-	for (manfid = prism2_plx_known_manfids; manfid->manfid1 != 0; manfid++)
+-		if (manfid1 == manfid->manfid1 && manfid2 == manfid->manfid2) {
+-			kfree(cis);
+-			return 0;
+-		}
+-
+-	printk(KERN_INFO "%s: unknown manfid 0x%04x, 0x%04x - assuming this is"
+-	       " not supported card\n", dev_info, manfid1, manfid2);
+-	goto fail;
+-
+- cis_error:
+-	printk(KERN_WARNING "%s: invalid CIS data\n", dev_info);
+-
+- fail:
+-	kfree(cis);
+-	if (ignore_cis) {
+-		printk(KERN_INFO "%s: ignore_cis parameter set - ignoring "
+-		       "errors during CIS verification\n", dev_info);
+-		return 0;
+-	}
+-	return -1;
+-}
+-
+-
+-static int prism2_plx_probe(struct pci_dev *pdev,
+-			    const struct pci_device_id *id)
+-{
+-	unsigned int pccard_ioaddr, plx_ioaddr;
+-	unsigned long pccard_attr_mem;
+-	unsigned int pccard_attr_len;
+-	void __iomem *attr_mem = NULL;
+-	unsigned int cor_offset = 0, cor_index = 0;
+-	u32 reg;
+-	local_info_t *local = NULL;
+-	struct net_device *dev = NULL;
+-	struct hostap_interface *iface;
+-	static int cards_found /* = 0 */;
+-	int irq_registered = 0;
+-	int tmd7160;
+-	struct hostap_plx_priv *hw_priv;
+-
+-	hw_priv = kzalloc(sizeof(*hw_priv), GFP_KERNEL);
+-	if (hw_priv == NULL)
+-		return -ENOMEM;
+-
+-	if (pci_enable_device(pdev))
+-		goto err_out_free;
+-
+-	/* National Datacomm NCP130 based on TMD7160, not PLX9052. */
+-	tmd7160 = (pdev->vendor == 0x15e8) && (pdev->device == 0x0131);
+-
+-	plx_ioaddr = pci_resource_start(pdev, 1);
+-	pccard_ioaddr = pci_resource_start(pdev, tmd7160 ? 2 : 3);
+-
+-	if (tmd7160) {
+-		/* TMD7160 */
+-		attr_mem = NULL; /* no access to PC Card attribute memory */
+-
+-		printk(KERN_INFO "TMD7160 PCI/PCMCIA adapter: io=0x%x, "
+-		       "irq=%d, pccard_io=0x%x\n",
+-		       plx_ioaddr, pdev->irq, pccard_ioaddr);
+-
+-		cor_offset = plx_ioaddr;
+-		cor_index = 0x04;
+-
+-		outb(cor_index | COR_LEVLREQ | COR_ENABLE_FUNC, plx_ioaddr);
+-		mdelay(1);
+-		reg = inb(plx_ioaddr);
+-		if (reg != (cor_index | COR_LEVLREQ | COR_ENABLE_FUNC)) {
+-			printk(KERN_ERR "%s: Error setting COR (expected="
+-			       "0x%02x, was=0x%02x)\n", dev_info,
+-			       cor_index | COR_LEVLREQ | COR_ENABLE_FUNC, reg);
+-			goto fail;
+-		}
+-	} else {
+-		/* PLX9052 */
+-		pccard_attr_mem = pci_resource_start(pdev, 2);
+-		pccard_attr_len = pci_resource_len(pdev, 2);
+-		if (pccard_attr_len < PLX_MIN_ATTR_LEN)
+-			goto fail;
+-
+-
+-		attr_mem = ioremap(pccard_attr_mem, pccard_attr_len);
+-		if (attr_mem == NULL) {
+-			printk(KERN_ERR "%s: cannot remap attr_mem\n",
+-			       dev_info);
+-			goto fail;
+-		}
+-
+-		printk(KERN_INFO "PLX9052 PCI/PCMCIA adapter: "
+-		       "mem=0x%lx, plx_io=0x%x, irq=%d, pccard_io=0x%x\n",
+-		       pccard_attr_mem, plx_ioaddr, pdev->irq, pccard_ioaddr);
+-
+-		if (prism2_plx_check_cis(attr_mem, pccard_attr_len,
+-					 &cor_offset, &cor_index)) {
+-			printk(KERN_INFO "Unknown PC Card CIS - not a "
+-			       "Prism2/2.5 card?\n");
+-			goto fail;
+-		}
+-
+-		printk(KERN_DEBUG "Prism2/2.5 PC Card detected in PLX9052 "
+-		       "adapter\n");
+-
+-		/* Write COR to enable PC Card */
+-		writeb(cor_index | COR_LEVLREQ | COR_ENABLE_FUNC,
+-		       attr_mem + cor_offset);
+-
+-		/* Enable PCI interrupts if they are not already enabled */
+-		reg = inl(plx_ioaddr + PLX_INTCSR);
+-		printk(KERN_DEBUG "PLX_INTCSR=0x%x\n", reg);
+-		if (!(reg & PLX_INTCSR_PCI_INTEN)) {
+-			outl(reg | PLX_INTCSR_PCI_INTEN,
+-			     plx_ioaddr + PLX_INTCSR);
+-			if (!(inl(plx_ioaddr + PLX_INTCSR) &
+-			      PLX_INTCSR_PCI_INTEN)) {
+-				printk(KERN_WARNING "%s: Could not enable "
+-				       "Local Interrupts\n", dev_info);
+-				goto fail;
+-			}
+-		}
+-
+-		reg = inl(plx_ioaddr + PLX_CNTRL);
+-		printk(KERN_DEBUG "PLX_CNTRL=0x%x (Serial EEPROM "
+-		       "present=%d)\n",
+-		       reg, (reg & PLX_CNTRL_SERIAL_EEPROM_PRESENT) != 0);
+-		/* should set PLX_PCIIPR to 0x01 (INTA#) if Serial EEPROM is
+-		 * not present; but are there really such cards in use(?) */
+-	}
+-
+-	dev = prism2_init_local_data(&prism2_plx_funcs, cards_found,
+-				     &pdev->dev);
+-	if (dev == NULL)
+-		goto fail;
+-	iface = netdev_priv(dev);
+-	local = iface->local;
+-	local->hw_priv = hw_priv;
+-	cards_found++;
+-
+-	dev->irq = pdev->irq;
+-	dev->base_addr = pccard_ioaddr;
+-	hw_priv->attr_mem = attr_mem;
+-	hw_priv->cor_offset = cor_offset;
+-
+-	pci_set_drvdata(pdev, dev);
+-
+-	if (request_irq(dev->irq, prism2_interrupt, IRQF_SHARED, dev->name,
+-			dev)) {
+-		printk(KERN_WARNING "%s: request_irq failed\n", dev->name);
+-		goto fail;
+-	} else
+-		irq_registered = 1;
+-
+-	if (prism2_hw_config(dev, 1)) {
+-		printk(KERN_DEBUG "%s: hardware initialization failed\n",
+-		       dev_info);
+-		goto fail;
+-	}
+-
+-	return hostap_hw_ready(dev);
+-
+- fail:
+-	if (irq_registered && dev)
+-		free_irq(dev->irq, dev);
+-
+-	if (attr_mem)
+-		iounmap(attr_mem);
+-
+-	pci_disable_device(pdev);
+-	prism2_free_local_data(dev);
+-
+- err_out_free:
+-	kfree(hw_priv);
+-
+-	return -ENODEV;
+-}
+-
+-
+-static void prism2_plx_remove(struct pci_dev *pdev)
+-{
+-	struct net_device *dev;
+-	struct hostap_interface *iface;
+-	struct hostap_plx_priv *hw_priv;
+-
+-	dev = pci_get_drvdata(pdev);
+-	iface = netdev_priv(dev);
+-	hw_priv = iface->local->hw_priv;
+-
+-	/* Reset the hardware, and ensure interrupts are disabled. */
+-	prism2_plx_cor_sreset(iface->local);
+-	hfa384x_disable_interrupts(dev);
+-
+-	if (hw_priv->attr_mem)
+-		iounmap(hw_priv->attr_mem);
+-	if (dev->irq)
+-		free_irq(dev->irq, dev);
+-
+-	prism2_free_local_data(dev);
+-	kfree(hw_priv);
+-	pci_disable_device(pdev);
+-}
+-
+-
+-MODULE_DEVICE_TABLE(pci, prism2_plx_id_table);
+-
+-static struct pci_driver prism2_plx_driver = {
+-	.name		= "hostap_plx",
+-	.id_table	= prism2_plx_id_table,
+-	.probe		= prism2_plx_probe,
+-	.remove		= prism2_plx_remove,
+-};
+-
+-module_pci_driver(prism2_plx_driver);
+diff --git a/drivers/net/wireless/intersil/hostap/hostap_proc.c b/drivers/net/wireless/intersil/hostap/hostap_proc.c
+deleted file mode 100644
+index 61f68786056f4..0000000000000
+--- a/drivers/net/wireless/intersil/hostap/hostap_proc.c
++++ /dev/null
+@@ -1,411 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/* /proc routines for Host AP driver */
+-
+-#include <linux/types.h>
+-#include <linux/proc_fs.h>
+-#include <linux/export.h>
+-#include <net/lib80211.h>
+-
+-#include "hostap_wlan.h"
+-#include "hostap.h"
+-
+-#define PROC_LIMIT (PAGE_SIZE - 80)
+-
+-#if !defined(PRISM2_NO_PROCFS_DEBUG) && defined(CONFIG_PROC_FS)
+-static int prism2_debug_proc_show(struct seq_file *m, void *v)
+-{
+-	local_info_t *local = m->private;
+-	int i;
+-
+-	seq_printf(m, "next_txfid=%d next_alloc=%d\n",
+-		   local->next_txfid, local->next_alloc);
+-	for (i = 0; i < PRISM2_TXFID_COUNT; i++)
+-		seq_printf(m, "FID: tx=%04X intransmit=%04X\n",
+-			   local->txfid[i], local->intransmitfid[i]);
+-	seq_printf(m, "FW TX rate control: %d\n", local->fw_tx_rate_control);
+-	seq_printf(m, "beacon_int=%d\n", local->beacon_int);
+-	seq_printf(m, "dtim_period=%d\n", local->dtim_period);
+-	seq_printf(m, "wds_max_connections=%d\n", local->wds_max_connections);
+-	seq_printf(m, "dev_enabled=%d\n", local->dev_enabled);
+-	seq_printf(m, "sw_tick_stuck=%d\n", local->sw_tick_stuck);
+-	for (i = 0; i < WEP_KEYS; i++) {
+-		if (local->crypt_info.crypt[i] &&
+-		    local->crypt_info.crypt[i]->ops) {
+-			seq_printf(m, "crypt[%d]=%s\n", i,
+-				   local->crypt_info.crypt[i]->ops->name);
+-		}
+-	}
+-	seq_printf(m, "pri_only=%d\n", local->pri_only);
+-	seq_printf(m, "pci=%d\n", local->func->hw_type == HOSTAP_HW_PCI);
+-	seq_printf(m, "sram_type=%d\n", local->sram_type);
+-	seq_printf(m, "no_pri=%d\n", local->no_pri);
+-
+-	return 0;
+-}
+-#endif
+-
+-#ifdef CONFIG_PROC_FS
+-static int prism2_stats_proc_show(struct seq_file *m, void *v)
+-{
+-	local_info_t *local = m->private;
+-	struct comm_tallies_sums *sums = &local->comm_tallies;
+-
+-	seq_printf(m, "TxUnicastFrames=%u\n", sums->tx_unicast_frames);
+-	seq_printf(m, "TxMulticastframes=%u\n", sums->tx_multicast_frames);
+-	seq_printf(m, "TxFragments=%u\n", sums->tx_fragments);
+-	seq_printf(m, "TxUnicastOctets=%u\n", sums->tx_unicast_octets);
+-	seq_printf(m, "TxMulticastOctets=%u\n", sums->tx_multicast_octets);
+-	seq_printf(m, "TxDeferredTransmissions=%u\n",
+-		   sums->tx_deferred_transmissions);
+-	seq_printf(m, "TxSingleRetryFrames=%u\n", sums->tx_single_retry_frames);
+-	seq_printf(m, "TxMultipleRetryFrames=%u\n",
+-		   sums->tx_multiple_retry_frames);
+-	seq_printf(m, "TxRetryLimitExceeded=%u\n",
+-		   sums->tx_retry_limit_exceeded);
+-	seq_printf(m, "TxDiscards=%u\n", sums->tx_discards);
+-	seq_printf(m, "RxUnicastFrames=%u\n", sums->rx_unicast_frames);
+-	seq_printf(m, "RxMulticastFrames=%u\n", sums->rx_multicast_frames);
+-	seq_printf(m, "RxFragments=%u\n", sums->rx_fragments);
+-	seq_printf(m, "RxUnicastOctets=%u\n", sums->rx_unicast_octets);
+-	seq_printf(m, "RxMulticastOctets=%u\n", sums->rx_multicast_octets);
+-	seq_printf(m, "RxFCSErrors=%u\n", sums->rx_fcs_errors);
+-	seq_printf(m, "RxDiscardsNoBuffer=%u\n", sums->rx_discards_no_buffer);
+-	seq_printf(m, "TxDiscardsWrongSA=%u\n", sums->tx_discards_wrong_sa);
+-	seq_printf(m, "RxDiscardsWEPUndecryptable=%u\n",
+-		   sums->rx_discards_wep_undecryptable);
+-	seq_printf(m, "RxMessageInMsgFragments=%u\n",
+-		   sums->rx_message_in_msg_fragments);
+-	seq_printf(m, "RxMessageInBadMsgFragments=%u\n",
+-		   sums->rx_message_in_bad_msg_fragments);
+-	/* FIX: this may grow too long for one page(?) */
+-
+-	return 0;
+-}
+-#endif
+-
+-static int prism2_wds_proc_show(struct seq_file *m, void *v)
+-{
+-	struct list_head *ptr = v;
+-	struct hostap_interface *iface;
+-
+-	iface = list_entry(ptr, struct hostap_interface, list);
+-	if (iface->type == HOSTAP_INTERFACE_WDS)
+-		seq_printf(m, "%s\t%pM\n",
+-			   iface->dev->name, iface->u.wds.remote_addr);
+-	return 0;
+-}
+-
+-static void *prism2_wds_proc_start(struct seq_file *m, loff_t *_pos)
+-{
+-	local_info_t *local = pde_data(file_inode(m->file));
+-	read_lock_bh(&local->iface_lock);
+-	return seq_list_start(&local->hostap_interfaces, *_pos);
+-}
+-
+-static void *prism2_wds_proc_next(struct seq_file *m, void *v, loff_t *_pos)
+-{
+-	local_info_t *local = pde_data(file_inode(m->file));
+-	return seq_list_next(v, &local->hostap_interfaces, _pos);
+-}
+-
+-static void prism2_wds_proc_stop(struct seq_file *m, void *v)
+-{
+-	local_info_t *local = pde_data(file_inode(m->file));
+-	read_unlock_bh(&local->iface_lock);
+-}
+-
+-static const struct seq_operations prism2_wds_proc_seqops = {
+-	.start	= prism2_wds_proc_start,
+-	.next	= prism2_wds_proc_next,
+-	.stop	= prism2_wds_proc_stop,
+-	.show	= prism2_wds_proc_show,
+-};
+-
+-static int prism2_bss_list_proc_show(struct seq_file *m, void *v)
+-{
+-	local_info_t *local = pde_data(file_inode(m->file));
+-	struct list_head *ptr = v;
+-	struct hostap_bss_info *bss;
+-
+-	if (ptr == &local->bss_list) {
+-		seq_printf(m, "#BSSID\tlast_update\tcount\tcapab_info\tSSID(txt)\t"
+-			   "SSID(hex)\tWPA IE\n");
+-		return 0;
+-	}
+-
+-	bss = list_entry(ptr, struct hostap_bss_info, list);
+-	seq_printf(m, "%pM\t%lu\t%u\t0x%x\t",
+-		   bss->bssid, bss->last_update,
+-		   bss->count, bss->capab_info);
+-
+-	seq_printf(m, "%*pE", (int)bss->ssid_len, bss->ssid);
+-
+-	seq_putc(m, '\t');
+-	seq_printf(m, "%*phN", (int)bss->ssid_len, bss->ssid);
+-	seq_putc(m, '\t');
+-	seq_printf(m, "%*phN", (int)bss->wpa_ie_len, bss->wpa_ie);
+-	seq_putc(m, '\n');
+-	return 0;
+-}
+-
+-static void *prism2_bss_list_proc_start(struct seq_file *m, loff_t *_pos)
+-	__acquires(&local->lock)
+-{
+-	local_info_t *local = pde_data(file_inode(m->file));
+-	spin_lock_bh(&local->lock);
+-	return seq_list_start_head(&local->bss_list, *_pos);
+-}
+-
+-static void *prism2_bss_list_proc_next(struct seq_file *m, void *v, loff_t *_pos)
+-{
+-	local_info_t *local = pde_data(file_inode(m->file));
+-	return seq_list_next(v, &local->bss_list, _pos);
+-}
+-
+-static void prism2_bss_list_proc_stop(struct seq_file *m, void *v)
+-	__releases(&local->lock)
+-{
+-	local_info_t *local = pde_data(file_inode(m->file));
+-	spin_unlock_bh(&local->lock);
+-}
+-
+-static const struct seq_operations prism2_bss_list_proc_seqops = {
+-	.start	= prism2_bss_list_proc_start,
+-	.next	= prism2_bss_list_proc_next,
+-	.stop	= prism2_bss_list_proc_stop,
+-	.show	= prism2_bss_list_proc_show,
+-};
+-
+-#ifdef CONFIG_PROC_FS
+-static int prism2_crypt_proc_show(struct seq_file *m, void *v)
+-{
+-	local_info_t *local = m->private;
+-	int i;
+-
+-	seq_printf(m, "tx_keyidx=%d\n", local->crypt_info.tx_keyidx);
+-	for (i = 0; i < WEP_KEYS; i++) {
+-		if (local->crypt_info.crypt[i] &&
+-		    local->crypt_info.crypt[i]->ops &&
+-		    local->crypt_info.crypt[i]->ops->print_stats) {
+-			local->crypt_info.crypt[i]->ops->print_stats(
+-				m, local->crypt_info.crypt[i]->priv);
+-		}
+-	}
+-	return 0;
+-}
+-#endif
+-
+-static ssize_t prism2_pda_proc_read(struct file *file, char __user *buf,
+-				    size_t count, loff_t *_pos)
+-{
+-	local_info_t *local = pde_data(file_inode(file));
+-	size_t off;
+-
+-	if (local->pda == NULL || *_pos >= PRISM2_PDA_SIZE)
+-		return 0;
+-
+-	off = *_pos;
+-	if (count > PRISM2_PDA_SIZE - off)
+-		count = PRISM2_PDA_SIZE - off;
+-	if (copy_to_user(buf, local->pda + off, count) != 0)
+-		return -EFAULT;
+-	*_pos += count;
+-	return count;
+-}
+-
+-static const struct proc_ops prism2_pda_proc_ops = {
+-	.proc_read	= prism2_pda_proc_read,
+-	.proc_lseek	= generic_file_llseek,
+-};
+-
+-
+-static ssize_t prism2_aux_dump_proc_no_read(struct file *file, char __user *buf,
+-					    size_t bufsize, loff_t *_pos)
+-{
+-	return 0;
+-}
+-
+-static const struct proc_ops prism2_aux_dump_proc_ops = {
+-	.proc_read	= prism2_aux_dump_proc_no_read,
+-	.proc_lseek	= default_llseek,
+-};
+-
+-
+-#ifdef PRISM2_IO_DEBUG
+-static int prism2_io_debug_proc_read(char *page, char **start, off_t off,
+-				     int count, int *eof, void *data)
+-{
+-	local_info_t *local = (local_info_t *) data;
+-	int head = local->io_debug_head;
+-	int start_bytes, left, copy;
+-
+-	if (off + count > PRISM2_IO_DEBUG_SIZE * 4) {
+-		*eof = 1;
+-		if (off >= PRISM2_IO_DEBUG_SIZE * 4)
+-			return 0;
+-		count = PRISM2_IO_DEBUG_SIZE * 4 - off;
+-	}
+-
+-	start_bytes = (PRISM2_IO_DEBUG_SIZE - head) * 4;
+-	left = count;
+-
+-	if (off < start_bytes) {
+-		copy = start_bytes - off;
+-		if (copy > count)
+-			copy = count;
+-		memcpy(page, ((u8 *) &local->io_debug[head]) + off, copy);
+-		left -= copy;
+-		if (left > 0)
+-			memcpy(&page[copy], local->io_debug, left);
+-	} else {
+-		memcpy(page, ((u8 *) local->io_debug) + (off - start_bytes),
+-		       left);
+-	}
+-
+-	*start = page;
+-
+-	return count;
+-}
+-#endif /* PRISM2_IO_DEBUG */
+-
+-
+-#ifndef PRISM2_NO_STATION_MODES
+-static int prism2_scan_results_proc_show(struct seq_file *m, void *v)
+-{
+-	local_info_t *local = pde_data(file_inode(m->file));
+-	unsigned long entry;
+-	int i, len;
+-	struct hfa384x_hostscan_result *scanres;
+-	u8 *p;
+-
+-	if (v == SEQ_START_TOKEN) {
+-		seq_printf(m,
+-			   "CHID ANL SL BcnInt Capab Rate BSSID ATIM SupRates SSID\n");
+-		return 0;
+-	}
+-
+-	entry = (unsigned long)v - 2;
+-	scanres = &local->last_scan_results[entry];
+-
+-	seq_printf(m, "%d %d %d %d 0x%02x %d %pM %d ",
+-		   le16_to_cpu(scanres->chid),
+-		   (s16) le16_to_cpu(scanres->anl),
+-		   (s16) le16_to_cpu(scanres->sl),
+-		   le16_to_cpu(scanres->beacon_interval),
+-		   le16_to_cpu(scanres->capability),
+-		   le16_to_cpu(scanres->rate),
+-		   scanres->bssid,
+-		   le16_to_cpu(scanres->atim));
+-
+-	p = scanres->sup_rates;
+-	for (i = 0; i < sizeof(scanres->sup_rates); i++) {
+-		if (p[i] == 0)
+-			break;
+-		seq_printf(m, "<%02x>", p[i]);
+-	}
+-	seq_putc(m, ' ');
+-
+-	p = scanres->ssid;
+-	len = le16_to_cpu(scanres->ssid_len);
+-	if (len > 32)
+-		len = 32;
+-	for (i = 0; i < len; i++) {
+-		unsigned char c = p[i];
+-		if (c >= 32 && c < 127)
+-			seq_putc(m, c);
+-		else
+-			seq_printf(m, "<%02x>", c);
+-	}
+-	seq_putc(m, '\n');
+-	return 0;
+-}
+-
+-static void *prism2_scan_results_proc_start(struct seq_file *m, loff_t *_pos)
+-{
+-	local_info_t *local = pde_data(file_inode(m->file));
+-	spin_lock_bh(&local->lock);
+-
+-	/* We have a header (pos 0) + N results to show (pos 1...N) */
+-	if (*_pos > local->last_scan_results_count)
+-		return NULL;
+-	return (void *)(unsigned long)(*_pos + 1); /* 0 would be EOF */
+-}
+-
+-static void *prism2_scan_results_proc_next(struct seq_file *m, void *v, loff_t *_pos)
+-{
+-	local_info_t *local = pde_data(file_inode(m->file));
+-
+-	++*_pos;
+-	if (*_pos > local->last_scan_results_count)
+-		return NULL;
+-	return (void *)(unsigned long)(*_pos + 1); /* 0 would be EOF */
+-}
+-
+-static void prism2_scan_results_proc_stop(struct seq_file *m, void *v)
+-{
+-	local_info_t *local = pde_data(file_inode(m->file));
+-	spin_unlock_bh(&local->lock);
+-}
+-
+-static const struct seq_operations prism2_scan_results_proc_seqops = {
+-	.start	= prism2_scan_results_proc_start,
+-	.next	= prism2_scan_results_proc_next,
+-	.stop	= prism2_scan_results_proc_stop,
+-	.show	= prism2_scan_results_proc_show,
+-};
+-#endif /* PRISM2_NO_STATION_MODES */
+-
+-
+-void hostap_init_proc(local_info_t *local)
+-{
+-	local->proc = NULL;
+-
+-	if (hostap_proc == NULL) {
+-		printk(KERN_WARNING "%s: hostap proc directory not created\n",
+-		       local->dev->name);
+-		return;
+-	}
+-
+-	local->proc = proc_mkdir(local->ddev->name, hostap_proc);
+-	if (local->proc == NULL) {
+-		printk(KERN_INFO "/proc/net/hostap/%s creation failed\n",
+-		       local->ddev->name);
+-		return;
+-	}
+-
+-#ifndef PRISM2_NO_PROCFS_DEBUG
+-	proc_create_single_data("debug", 0, local->proc,
+-			prism2_debug_proc_show, local);
+-#endif /* PRISM2_NO_PROCFS_DEBUG */
+-	proc_create_single_data("stats", 0, local->proc, prism2_stats_proc_show,
+-			local);
+-	proc_create_seq_data("wds", 0, local->proc,
+-			&prism2_wds_proc_seqops, local);
+-	proc_create_data("pda", 0, local->proc,
+-			 &prism2_pda_proc_ops, local);
+-	proc_create_data("aux_dump", 0, local->proc,
+-			 local->func->read_aux_proc_ops ?: &prism2_aux_dump_proc_ops,
+-			 local);
+-	proc_create_seq_data("bss_list", 0, local->proc,
+-			&prism2_bss_list_proc_seqops, local);
+-	proc_create_single_data("crypt", 0, local->proc, prism2_crypt_proc_show,
+-		local);
+-#ifdef PRISM2_IO_DEBUG
+-	proc_create_single_data("io_debug", 0, local->proc,
+-			prism2_debug_proc_show, local);
+-#endif /* PRISM2_IO_DEBUG */
+-#ifndef PRISM2_NO_STATION_MODES
+-	proc_create_seq_data("scan_results", 0, local->proc,
+-			&prism2_scan_results_proc_seqops, local);
+-#endif /* PRISM2_NO_STATION_MODES */
+-}
+-
+-
+-void hostap_remove_proc(local_info_t *local)
+-{
+-	proc_remove(local->proc);
+-}
+-
+-
+-EXPORT_SYMBOL(hostap_init_proc);
+-EXPORT_SYMBOL(hostap_remove_proc);
+diff --git a/drivers/net/wireless/intersil/hostap/hostap_wlan.h b/drivers/net/wireless/intersil/hostap/hostap_wlan.h
+deleted file mode 100644
+index c25cd21d18bd9..0000000000000
+--- a/drivers/net/wireless/intersil/hostap/hostap_wlan.h
++++ /dev/null
+@@ -1,1051 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef HOSTAP_WLAN_H
+-#define HOSTAP_WLAN_H
+-
+-#include <linux/interrupt.h>
+-#include <linux/wireless.h>
+-#include <linux/netdevice.h>
+-#include <linux/etherdevice.h>
+-#include <linux/mutex.h>
+-#include <linux/refcount.h>
+-#include <net/iw_handler.h>
+-#include <net/ieee80211_radiotap.h>
+-#include <net/lib80211.h>
+-
+-#include "hostap_config.h"
+-#include "hostap_common.h"
+-
+-#define MAX_PARM_DEVICES 8
+-#define PARM_MIN_MAX "1-" __MODULE_STRING(MAX_PARM_DEVICES)
+-#define DEF_INTS -1, -1, -1, -1, -1, -1, -1
+-#define GET_INT_PARM(var,idx) var[var[idx] < 0 ? 0 : idx]
+-
+-
+-/* Specific skb->protocol value that indicates that the packet already contains
+- * txdesc header.
+- * FIX: This might need own value that would be allocated especially for Prism2
+- * txdesc; ETH_P_CONTROL is commented as "Card specific control frames".
+- * However, these skb's should have only minimal path in the kernel side since
+- * prism2_send_mgmt() sends these with dev_queue_xmit() to prism2_tx(). */
+-#define ETH_P_HOSTAP ETH_P_CONTROL
+-
+-/* ARPHRD_IEEE80211_PRISM uses a bloated version of Prism2 RX frame header
+- * (from linux-wlan-ng) */
+-struct linux_wlan_ng_val {
+-	u32 did;
+-	u16 status, len;
+-	u32 data;
+-} __packed;
+-
+-struct linux_wlan_ng_prism_hdr {
+-	u32 msgcode, msglen;
+-	char devname[16];
+-	struct linux_wlan_ng_val hosttime, mactime, channel, rssi, sq, signal,
+-		noise, rate, istx, frmlen;
+-} __packed;
+-
+-struct linux_wlan_ng_cap_hdr {
+-	__be32 version;
+-	__be32 length;
+-	__be64 mactime;
+-	__be64 hosttime;
+-	__be32 phytype;
+-	__be32 channel;
+-	__be32 datarate;
+-	__be32 antenna;
+-	__be32 priority;
+-	__be32 ssi_type;
+-	__be32 ssi_signal;
+-	__be32 ssi_noise;
+-	__be32 preamble;
+-	__be32 encoding;
+-} __packed;
+-
+-struct hostap_radiotap_rx {
+-	struct ieee80211_radiotap_header hdr;
+-	__le64 tsft;
+-	u8 rate;
+-	u8 padding;
+-	__le16 chan_freq;
+-	__le16 chan_flags;
+-	s8 dbm_antsignal;
+-	s8 dbm_antnoise;
+-} __packed;
+-
+-#define LWNG_CAP_DID_BASE   (4 | (1 << 6)) /* section 4, group 1 */
+-#define LWNG_CAPHDR_VERSION 0x80211001
+-
+-struct hfa384x_rx_frame {
+-	/* HFA384X RX frame descriptor */
+-	__le16 status; /* HFA384X_RX_STATUS_ flags */
+-	__le32 time; /* timestamp, 1 microsecond resolution */
+-	u8 silence; /* 27 .. 154; seems to be 0 */
+-	u8 signal; /* 27 .. 154 */
+-	u8 rate; /* 10, 20, 55, or 110 */
+-	u8 rxflow;
+-	__le32 reserved;
+-
+-	/* 802.11 */
+-	__le16 frame_control;
+-	__le16 duration_id;
+-	u8 addr1[ETH_ALEN];
+-	u8 addr2[ETH_ALEN];
+-	u8 addr3[ETH_ALEN];
+-	__le16 seq_ctrl;
+-	u8 addr4[ETH_ALEN];
+-	__le16 data_len;
+-
+-	/* 802.3 */
+-	u8 dst_addr[ETH_ALEN];
+-	u8 src_addr[ETH_ALEN];
+-	__be16 len;
+-
+-	/* followed by frame data; max 2304 bytes */
+-} __packed;
+-
+-
+-struct hfa384x_tx_frame {
+-	/* HFA384X TX frame descriptor */
+-	__le16 status; /* HFA384X_TX_STATUS_ flags */
+-	__le16 reserved1;
+-	__le16 reserved2;
+-	__le32 sw_support;
+-	u8 retry_count; /* not yet implemented */
+-	u8 tx_rate; /* Host AP only; 0 = firmware, or 10, 20, 55, 110 */
+-	__le16 tx_control; /* HFA384X_TX_CTRL_ flags */
+-
+-	/* 802.11 */
+-	struct_group(header,
+-		__le16 frame_control; /* parts not used */
+-		__le16 duration_id;
+-		u8 addr1[ETH_ALEN];
+-		u8 addr2[ETH_ALEN]; /* filled by firmware */
+-		u8 addr3[ETH_ALEN];
+-		__le16 seq_ctrl; /* filled by firmware */
+-	);
+-	u8 addr4[ETH_ALEN];
+-	__le16 data_len;
+-
+-	/* 802.3 */
+-	u8 dst_addr[ETH_ALEN];
+-	u8 src_addr[ETH_ALEN];
+-	__be16 len;
+-
+-	/* followed by frame data; max 2304 bytes */
+-} __packed;
+-
+-
+-struct hfa384x_rid_hdr
+-{
+-	__le16 len;
+-	__le16 rid;
+-} __packed;
+-
+-
+-/* Macro for converting signal levels (range 27 .. 154) to wireless ext
+- * dBm value with some accuracy */
+-#define HFA384X_LEVEL_TO_dBm(v) 0x100 + (v) * 100 / 255 - 100
+-
+-#define HFA384X_LEVEL_TO_dBm_sign(v) (v) * 100 / 255 - 100
+-
+-struct hfa384x_scan_request {
+-	__le16 channel_list;
+-	__le16 txrate; /* HFA384X_RATES_* */
+-} __packed;
+-
+-struct hfa384x_hostscan_request {
+-	__le16 channel_list;
+-	__le16 txrate;
+-	__le16 target_ssid_len;
+-	u8 target_ssid[32];
+-} __packed;
+-
+-struct hfa384x_join_request {
+-	u8 bssid[ETH_ALEN];
+-	__le16 channel;
+-} __packed;
+-
+-struct hfa384x_info_frame {
+-	__le16 len;
+-	__le16 type;
+-} __packed;
+-
+-struct hfa384x_comm_tallies {
+-	__le16 tx_unicast_frames;
+-	__le16 tx_multicast_frames;
+-	__le16 tx_fragments;
+-	__le16 tx_unicast_octets;
+-	__le16 tx_multicast_octets;
+-	__le16 tx_deferred_transmissions;
+-	__le16 tx_single_retry_frames;
+-	__le16 tx_multiple_retry_frames;
+-	__le16 tx_retry_limit_exceeded;
+-	__le16 tx_discards;
+-	__le16 rx_unicast_frames;
+-	__le16 rx_multicast_frames;
+-	__le16 rx_fragments;
+-	__le16 rx_unicast_octets;
+-	__le16 rx_multicast_octets;
+-	__le16 rx_fcs_errors;
+-	__le16 rx_discards_no_buffer;
+-	__le16 tx_discards_wrong_sa;
+-	__le16 rx_discards_wep_undecryptable;
+-	__le16 rx_message_in_msg_fragments;
+-	__le16 rx_message_in_bad_msg_fragments;
+-} __packed;
+-
+-struct hfa384x_comm_tallies32 {
+-	__le32 tx_unicast_frames;
+-	__le32 tx_multicast_frames;
+-	__le32 tx_fragments;
+-	__le32 tx_unicast_octets;
+-	__le32 tx_multicast_octets;
+-	__le32 tx_deferred_transmissions;
+-	__le32 tx_single_retry_frames;
+-	__le32 tx_multiple_retry_frames;
+-	__le32 tx_retry_limit_exceeded;
+-	__le32 tx_discards;
+-	__le32 rx_unicast_frames;
+-	__le32 rx_multicast_frames;
+-	__le32 rx_fragments;
+-	__le32 rx_unicast_octets;
+-	__le32 rx_multicast_octets;
+-	__le32 rx_fcs_errors;
+-	__le32 rx_discards_no_buffer;
+-	__le32 tx_discards_wrong_sa;
+-	__le32 rx_discards_wep_undecryptable;
+-	__le32 rx_message_in_msg_fragments;
+-	__le32 rx_message_in_bad_msg_fragments;
+-} __packed;
+-
+-struct hfa384x_scan_result_hdr {
+-	__le16 reserved;
+-	__le16 scan_reason;
+-#define HFA384X_SCAN_IN_PROGRESS 0 /* no results available yet */
+-#define HFA384X_SCAN_HOST_INITIATED 1
+-#define HFA384X_SCAN_FIRMWARE_INITIATED 2
+-#define HFA384X_SCAN_INQUIRY_FROM_HOST 3
+-} __packed;
+-
+-#define HFA384X_SCAN_MAX_RESULTS 32
+-
+-struct hfa384x_scan_result {
+-	__le16 chid;
+-	__le16 anl;
+-	__le16 sl;
+-	u8 bssid[ETH_ALEN];
+-	__le16 beacon_interval;
+-	__le16 capability;
+-	__le16 ssid_len;
+-	u8 ssid[32];
+-	u8 sup_rates[10];
+-	__le16 rate;
+-} __packed;
+-
+-struct hfa384x_hostscan_result {
+-	__le16 chid;
+-	__le16 anl;
+-	__le16 sl;
+-	u8 bssid[ETH_ALEN];
+-	__le16 beacon_interval;
+-	__le16 capability;
+-	__le16 ssid_len;
+-	u8 ssid[32];
+-	u8 sup_rates[10];
+-	__le16 rate;
+-	__le16 atim;
+-} __packed;
+-
+-struct comm_tallies_sums {
+-	unsigned int tx_unicast_frames;
+-	unsigned int tx_multicast_frames;
+-	unsigned int tx_fragments;
+-	unsigned int tx_unicast_octets;
+-	unsigned int tx_multicast_octets;
+-	unsigned int tx_deferred_transmissions;
+-	unsigned int tx_single_retry_frames;
+-	unsigned int tx_multiple_retry_frames;
+-	unsigned int tx_retry_limit_exceeded;
+-	unsigned int tx_discards;
+-	unsigned int rx_unicast_frames;
+-	unsigned int rx_multicast_frames;
+-	unsigned int rx_fragments;
+-	unsigned int rx_unicast_octets;
+-	unsigned int rx_multicast_octets;
+-	unsigned int rx_fcs_errors;
+-	unsigned int rx_discards_no_buffer;
+-	unsigned int tx_discards_wrong_sa;
+-	unsigned int rx_discards_wep_undecryptable;
+-	unsigned int rx_message_in_msg_fragments;
+-	unsigned int rx_message_in_bad_msg_fragments;
+-};
+-
+-
+-struct hfa384x_regs {
+-	u16 cmd;
+-	u16 evstat;
+-	u16 offset0;
+-	u16 offset1;
+-	u16 swsupport0;
+-};
+-
+-
+-#if defined(PRISM2_PCCARD) || defined(PRISM2_PLX)
+-/* I/O ports for HFA384X Controller access */
+-#define HFA384X_CMD_OFF 0x00
+-#define HFA384X_PARAM0_OFF 0x02
+-#define HFA384X_PARAM1_OFF 0x04
+-#define HFA384X_PARAM2_OFF 0x06
+-#define HFA384X_STATUS_OFF 0x08
+-#define HFA384X_RESP0_OFF 0x0A
+-#define HFA384X_RESP1_OFF 0x0C
+-#define HFA384X_RESP2_OFF 0x0E
+-#define HFA384X_INFOFID_OFF 0x10
+-#define HFA384X_CONTROL_OFF 0x14
+-#define HFA384X_SELECT0_OFF 0x18
+-#define HFA384X_SELECT1_OFF 0x1A
+-#define HFA384X_OFFSET0_OFF 0x1C
+-#define HFA384X_OFFSET1_OFF 0x1E
+-#define HFA384X_RXFID_OFF 0x20
+-#define HFA384X_ALLOCFID_OFF 0x22
+-#define HFA384X_TXCOMPLFID_OFF 0x24
+-#define HFA384X_SWSUPPORT0_OFF 0x28
+-#define HFA384X_SWSUPPORT1_OFF 0x2A
+-#define HFA384X_SWSUPPORT2_OFF 0x2C
+-#define HFA384X_EVSTAT_OFF 0x30
+-#define HFA384X_INTEN_OFF 0x32
+-#define HFA384X_EVACK_OFF 0x34
+-#define HFA384X_DATA0_OFF 0x36
+-#define HFA384X_DATA1_OFF 0x38
+-#define HFA384X_AUXPAGE_OFF 0x3A
+-#define HFA384X_AUXOFFSET_OFF 0x3C
+-#define HFA384X_AUXDATA_OFF 0x3E
+-#endif /* PRISM2_PCCARD || PRISM2_PLX */
+-
+-#ifdef PRISM2_PCI
+-/* Memory addresses for ISL3874 controller access */
+-#define HFA384X_CMD_OFF 0x00
+-#define HFA384X_PARAM0_OFF 0x04
+-#define HFA384X_PARAM1_OFF 0x08
+-#define HFA384X_PARAM2_OFF 0x0C
+-#define HFA384X_STATUS_OFF 0x10
+-#define HFA384X_RESP0_OFF 0x14
+-#define HFA384X_RESP1_OFF 0x18
+-#define HFA384X_RESP2_OFF 0x1C
+-#define HFA384X_INFOFID_OFF 0x20
+-#define HFA384X_CONTROL_OFF 0x28
+-#define HFA384X_SELECT0_OFF 0x30
+-#define HFA384X_SELECT1_OFF 0x34
+-#define HFA384X_OFFSET0_OFF 0x38
+-#define HFA384X_OFFSET1_OFF 0x3C
+-#define HFA384X_RXFID_OFF 0x40
+-#define HFA384X_ALLOCFID_OFF 0x44
+-#define HFA384X_TXCOMPLFID_OFF 0x48
+-#define HFA384X_PCICOR_OFF 0x4C
+-#define HFA384X_SWSUPPORT0_OFF 0x50
+-#define HFA384X_SWSUPPORT1_OFF 0x54
+-#define HFA384X_SWSUPPORT2_OFF 0x58
+-#define HFA384X_PCIHCR_OFF 0x5C
+-#define HFA384X_EVSTAT_OFF 0x60
+-#define HFA384X_INTEN_OFF 0x64
+-#define HFA384X_EVACK_OFF 0x68
+-#define HFA384X_DATA0_OFF 0x6C
+-#define HFA384X_DATA1_OFF 0x70
+-#define HFA384X_AUXPAGE_OFF 0x74
+-#define HFA384X_AUXOFFSET_OFF 0x78
+-#define HFA384X_AUXDATA_OFF 0x7C
+-#define HFA384X_PCI_M0_ADDRH_OFF 0x80
+-#define HFA384X_PCI_M0_ADDRL_OFF 0x84
+-#define HFA384X_PCI_M0_LEN_OFF 0x88
+-#define HFA384X_PCI_M0_CTL_OFF 0x8C
+-#define HFA384X_PCI_STATUS_OFF 0x98
+-#define HFA384X_PCI_M1_ADDRH_OFF 0xA0
+-#define HFA384X_PCI_M1_ADDRL_OFF 0xA4
+-#define HFA384X_PCI_M1_LEN_OFF 0xA8
+-#define HFA384X_PCI_M1_CTL_OFF 0xAC
+-
+-/* PCI bus master control bits (these are undocumented; based on guessing and
+- * experimenting..) */
+-#define HFA384X_PCI_CTL_FROM_BAP (BIT(5) | BIT(1) | BIT(0))
+-#define HFA384X_PCI_CTL_TO_BAP (BIT(5) | BIT(0))
+-
+-#endif /* PRISM2_PCI */
+-
+-
+-/* Command codes for CMD reg. */
+-#define HFA384X_CMDCODE_INIT 0x00
+-#define HFA384X_CMDCODE_ENABLE 0x01
+-#define HFA384X_CMDCODE_DISABLE 0x02
+-#define HFA384X_CMDCODE_ALLOC 0x0A
+-#define HFA384X_CMDCODE_TRANSMIT 0x0B
+-#define HFA384X_CMDCODE_INQUIRE 0x11
+-#define HFA384X_CMDCODE_ACCESS 0x21
+-#define HFA384X_CMDCODE_ACCESS_WRITE (0x21 | BIT(8))
+-#define HFA384X_CMDCODE_DOWNLOAD 0x22
+-#define HFA384X_CMDCODE_READMIF 0x30
+-#define HFA384X_CMDCODE_WRITEMIF 0x31
+-#define HFA384X_CMDCODE_TEST 0x38
+-
+-#define HFA384X_CMDCODE_MASK 0x3F
+-
+-/* Test mode operations */
+-#define HFA384X_TEST_CHANGE_CHANNEL 0x08
+-#define HFA384X_TEST_MONITOR 0x0B
+-#define HFA384X_TEST_STOP 0x0F
+-#define HFA384X_TEST_CFG_BITS 0x15
+-#define HFA384X_TEST_CFG_BIT_ALC BIT(3)
+-
+-#define HFA384X_CMD_BUSY BIT(15)
+-
+-#define HFA384X_CMD_TX_RECLAIM BIT(8)
+-
+-#define HFA384X_OFFSET_ERR BIT(14)
+-#define HFA384X_OFFSET_BUSY BIT(15)
+-
+-
+-/* ProgMode for download command */
+-#define HFA384X_PROGMODE_DISABLE 0
+-#define HFA384X_PROGMODE_ENABLE_VOLATILE 1
+-#define HFA384X_PROGMODE_ENABLE_NON_VOLATILE 2
+-#define HFA384X_PROGMODE_PROGRAM_NON_VOLATILE 3
+-
+-#define HFA384X_AUX_MAGIC0 0xfe01
+-#define HFA384X_AUX_MAGIC1 0xdc23
+-#define HFA384X_AUX_MAGIC2 0xba45
+-
+-#define HFA384X_AUX_PORT_DISABLED 0
+-#define HFA384X_AUX_PORT_DISABLE BIT(14)
+-#define HFA384X_AUX_PORT_ENABLE BIT(15)
+-#define HFA384X_AUX_PORT_ENABLED (BIT(14) | BIT(15))
+-#define HFA384X_AUX_PORT_MASK (BIT(14) | BIT(15))
+-
+-#define PRISM2_PDA_SIZE 1024
+-
+-
+-/* Events; EvStat, Interrupt mask (IntEn), and acknowledge bits (EvAck) */
+-#define HFA384X_EV_TICK BIT(15)
+-#define HFA384X_EV_WTERR BIT(14)
+-#define HFA384X_EV_INFDROP BIT(13)
+-#ifdef PRISM2_PCI
+-#define HFA384X_EV_PCI_M1 BIT(9)
+-#define HFA384X_EV_PCI_M0 BIT(8)
+-#endif /* PRISM2_PCI */
+-#define HFA384X_EV_INFO BIT(7)
+-#define HFA384X_EV_DTIM BIT(5)
+-#define HFA384X_EV_CMD BIT(4)
+-#define HFA384X_EV_ALLOC BIT(3)
+-#define HFA384X_EV_TXEXC BIT(2)
+-#define HFA384X_EV_TX BIT(1)
+-#define HFA384X_EV_RX BIT(0)
+-
+-
+-/* HFA384X Information frames */
+-#define HFA384X_INFO_HANDOVERADDR 0xF000 /* AP f/w ? */
+-#define HFA384X_INFO_HANDOVERDEAUTHADDR 0xF001 /* AP f/w 1.3.7 */
+-#define HFA384X_INFO_COMMTALLIES 0xF100
+-#define HFA384X_INFO_SCANRESULTS 0xF101
+-#define HFA384X_INFO_CHANNELINFORESULTS 0xF102 /* AP f/w only */
+-#define HFA384X_INFO_HOSTSCANRESULTS 0xF103
+-#define HFA384X_INFO_LINKSTATUS 0xF200
+-#define HFA384X_INFO_ASSOCSTATUS 0xF201 /* ? */
+-#define HFA384X_INFO_AUTHREQ 0xF202 /* ? */
+-#define HFA384X_INFO_PSUSERCNT 0xF203 /* ? */
+-#define HFA384X_INFO_KEYIDCHANGED 0xF204 /* ? */
+-
+-enum { HFA384X_LINKSTATUS_CONNECTED = 1,
+-       HFA384X_LINKSTATUS_DISCONNECTED = 2,
+-       HFA384X_LINKSTATUS_AP_CHANGE = 3,
+-       HFA384X_LINKSTATUS_AP_OUT_OF_RANGE = 4,
+-       HFA384X_LINKSTATUS_AP_IN_RANGE = 5,
+-       HFA384X_LINKSTATUS_ASSOC_FAILED = 6 };
+-
+-enum { HFA384X_PORTTYPE_BSS = 1, HFA384X_PORTTYPE_WDS = 2,
+-       HFA384X_PORTTYPE_PSEUDO_IBSS = 3, HFA384X_PORTTYPE_IBSS = 0,
+-       HFA384X_PORTTYPE_HOSTAP = 6 };
+-
+-#define HFA384X_RATES_1MBPS BIT(0)
+-#define HFA384X_RATES_2MBPS BIT(1)
+-#define HFA384X_RATES_5MBPS BIT(2)
+-#define HFA384X_RATES_11MBPS BIT(3)
+-
+-#define HFA384X_ROAMING_FIRMWARE 1
+-#define HFA384X_ROAMING_HOST 2
+-#define HFA384X_ROAMING_DISABLED 3
+-
+-#define HFA384X_WEPFLAGS_PRIVACYINVOKED BIT(0)
+-#define HFA384X_WEPFLAGS_EXCLUDEUNENCRYPTED BIT(1)
+-#define HFA384X_WEPFLAGS_HOSTENCRYPT BIT(4)
+-#define HFA384X_WEPFLAGS_HOSTDECRYPT BIT(7)
+-
+-#define HFA384X_RX_STATUS_MSGTYPE (BIT(15) | BIT(14) | BIT(13))
+-#define HFA384X_RX_STATUS_PCF BIT(12)
+-#define HFA384X_RX_STATUS_MACPORT (BIT(10) | BIT(9) | BIT(8))
+-#define HFA384X_RX_STATUS_UNDECR BIT(1)
+-#define HFA384X_RX_STATUS_FCSERR BIT(0)
+-
+-#define HFA384X_RX_STATUS_GET_MSGTYPE(s) \
+-(((s) & HFA384X_RX_STATUS_MSGTYPE) >> 13)
+-#define HFA384X_RX_STATUS_GET_MACPORT(s) \
+-(((s) & HFA384X_RX_STATUS_MACPORT) >> 8)
+-
+-enum { HFA384X_RX_MSGTYPE_NORMAL = 0, HFA384X_RX_MSGTYPE_RFC1042 = 1,
+-       HFA384X_RX_MSGTYPE_BRIDGETUNNEL = 2, HFA384X_RX_MSGTYPE_MGMT = 4 };
+-
+-
+-#define HFA384X_TX_CTRL_ALT_RTRY BIT(5)
+-#define HFA384X_TX_CTRL_802_11 BIT(3)
+-#define HFA384X_TX_CTRL_802_3 0
+-#define HFA384X_TX_CTRL_TX_EX BIT(2)
+-#define HFA384X_TX_CTRL_TX_OK BIT(1)
+-
+-#define HFA384X_TX_STATUS_RETRYERR BIT(0)
+-#define HFA384X_TX_STATUS_AGEDERR BIT(1)
+-#define HFA384X_TX_STATUS_DISCON BIT(2)
+-#define HFA384X_TX_STATUS_FORMERR BIT(3)
+-
+-/* HFA3861/3863 (BBP) Control Registers */
+-#define HFA386X_CR_TX_CONFIGURE 0x12 /* CR9 */
+-#define HFA386X_CR_RX_CONFIGURE 0x14 /* CR10 */
+-#define HFA386X_CR_A_D_TEST_MODES2 0x1A /* CR13 */
+-#define HFA386X_CR_MANUAL_TX_POWER 0x3E /* CR31 */
+-#define HFA386X_CR_MEASURED_TX_POWER 0x74 /* CR58 */
+-
+-
+-#ifdef __KERNEL__
+-
+-#define PRISM2_TXFID_COUNT 8
+-#define PRISM2_DATA_MAXLEN 2304
+-#define PRISM2_TXFID_LEN (PRISM2_DATA_MAXLEN + sizeof(struct hfa384x_tx_frame))
+-#define PRISM2_TXFID_EMPTY 0xffff
+-#define PRISM2_TXFID_RESERVED 0xfffe
+-#define PRISM2_DUMMY_FID 0xffff
+-#define MAX_SSID_LEN 32
+-#define MAX_NAME_LEN 32 /* this is assumed to be equal to MAX_SSID_LEN */
+-
+-#define PRISM2_DUMP_RX_HDR BIT(0)
+-#define PRISM2_DUMP_TX_HDR BIT(1)
+-#define PRISM2_DUMP_TXEXC_HDR BIT(2)
+-
+-struct hostap_tx_callback_info {
+-	u16 idx;
+-	void (*func)(struct sk_buff *, int ok, void *);
+-	void *data;
+-	struct hostap_tx_callback_info *next;
+-};
+-
+-
+-/* IEEE 802.11 requires that STA supports concurrent reception of at least
+- * three fragmented frames. This define can be increased to support more
+- * concurrent frames, but it should be noted that each entry can consume about
+- * 2 kB of RAM and increasing cache size will slow down frame reassembly. */
+-#define PRISM2_FRAG_CACHE_LEN 4
+-
+-struct prism2_frag_entry {
+-	unsigned long first_frag_time;
+-	unsigned int seq;
+-	unsigned int last_frag;
+-	struct sk_buff *skb;
+-	u8 src_addr[ETH_ALEN];
+-	u8 dst_addr[ETH_ALEN];
+-};
+-
+-
+-struct hostap_cmd_queue {
+-	struct list_head list;
+-	wait_queue_head_t compl;
+-	volatile enum { CMD_SLEEP, CMD_CALLBACK, CMD_COMPLETED } type;
+-	void (*callback)(struct net_device *dev, long context, u16 resp0,
+-			 u16 res);
+-	long context;
+-	u16 cmd, param0, param1;
+-	u16 resp0, res;
+-	volatile int issued, issuing;
+-
+-	refcount_t usecnt;
+-	int del_req;
+-};
+-
+-/* options for hw_shutdown */
+-#define HOSTAP_HW_NO_DISABLE BIT(0)
+-#define HOSTAP_HW_ENABLE_CMDCOMPL BIT(1)
+-
+-typedef struct local_info local_info_t;
+-
+-struct prism2_helper_functions {
+-	/* these functions are defined in hardware model specific files
+-	 * (hostap_{cs,plx,pci}.c */
+-	int (*card_present)(local_info_t *local);
+-	void (*cor_sreset)(local_info_t *local);
+-	void (*genesis_reset)(local_info_t *local, int hcr);
+-
+-	/* the following functions are from hostap_hw.c, but they may have some
+-	 * hardware model specific code */
+-
+-	/* FIX: low-level commands like cmd might disappear at some point to
+-	 * make it easier to change them if needed (e.g., cmd would be replaced
+-	 * with write_mif/read_mif/testcmd/inquire); at least get_rid and
+-	 * set_rid might move to hostap_{cs,plx,pci}.c */
+-	int (*cmd)(struct net_device *dev, u16 cmd, u16 param0, u16 *param1,
+-		   u16 *resp0);
+-	void (*read_regs)(struct net_device *dev, struct hfa384x_regs *regs);
+-	int (*get_rid)(struct net_device *dev, u16 rid, void *buf, int len,
+-		       int exact_len);
+-	int (*set_rid)(struct net_device *dev, u16 rid, void *buf, int len);
+-	int (*hw_enable)(struct net_device *dev, int initial);
+-	int (*hw_config)(struct net_device *dev, int initial);
+-	void (*hw_reset)(struct net_device *dev);
+-	void (*hw_shutdown)(struct net_device *dev, int no_disable);
+-	int (*reset_port)(struct net_device *dev);
+-	void (*schedule_reset)(local_info_t *local);
+-	int (*download)(local_info_t *local,
+-			struct prism2_download_param *param);
+-	int (*tx)(struct sk_buff *skb, struct net_device *dev);
+-	int (*set_tim)(struct net_device *dev, int aid, int set);
+-	const struct proc_ops *read_aux_proc_ops;
+-
+-	int need_tx_headroom; /* number of bytes of headroom needed before
+-			       * IEEE 802.11 header */
+-	enum { HOSTAP_HW_PCCARD, HOSTAP_HW_PLX, HOSTAP_HW_PCI } hw_type;
+-};
+-
+-
+-struct prism2_download_data {
+-	u32 dl_cmd;
+-	u32 start_addr;
+-	u32 num_areas;
+-	struct prism2_download_data_area {
+-		u32 addr; /* wlan card address */
+-		u32 len;
+-		u8 *data; /* allocated data */
+-	} data[];
+-};
+-
+-
+-#define HOSTAP_MAX_BSS_COUNT 64
+-#define MAX_WPA_IE_LEN 64
+-
+-struct hostap_bss_info {
+-	struct list_head list;
+-	unsigned long last_update;
+-	unsigned int count;
+-	u8 bssid[ETH_ALEN];
+-	u16 capab_info;
+-	u8 ssid[32];
+-	size_t ssid_len;
+-	u8 wpa_ie[MAX_WPA_IE_LEN];
+-	size_t wpa_ie_len;
+-	u8 rsn_ie[MAX_WPA_IE_LEN];
+-	size_t rsn_ie_len;
+-	int chan;
+-	int included;
+-};
+-
+-
+-/* Per radio private Host AP data - shared by all net devices interfaces used
+- * by each radio (wlan#, wlan#ap, wlan#sta, WDS).
+- * ((struct hostap_interface *) netdev_priv(dev))->local points to this
+- * structure. */
+-struct local_info {
+-	struct module *hw_module;
+-	int card_idx;
+-	int dev_enabled;
+-	int master_dev_auto_open; /* was master device opened automatically */
+-	int num_dev_open; /* number of open devices */
+-	struct net_device *dev; /* master radio device */
+-	struct net_device *ddev; /* main data device */
+-	struct list_head hostap_interfaces; /* Host AP interface list (contains
+-					     * struct hostap_interface entries)
+-					     */
+-	rwlock_t iface_lock; /* hostap_interfaces read lock; use write lock
+-			      * when removing entries from the list.
+-			      * TX and RX paths can use read lock. */
+-	spinlock_t cmdlock, baplock, lock, irq_init_lock;
+-	struct mutex rid_bap_mtx;
+-	u16 infofid; /* MAC buffer id for info frame */
+-	/* txfid, intransmitfid, next_txtid, and next_alloc are protected by
+-	 * txfidlock */
+-	spinlock_t txfidlock;
+-	int txfid_len; /* length of allocated TX buffers */
+-	u16 txfid[PRISM2_TXFID_COUNT]; /* buffer IDs for TX frames */
+-	/* buffer IDs for intransmit frames or PRISM2_TXFID_EMPTY if
+-	 * corresponding txfid is free for next TX frame */
+-	u16 intransmitfid[PRISM2_TXFID_COUNT];
+-	int next_txfid; /* index to the next txfid to be checked for
+-			 * availability */
+-	int next_alloc; /* index to the next intransmitfid to be checked for
+-			 * allocation events */
+-
+-	/* bitfield for atomic bitops */
+-#define HOSTAP_BITS_TRANSMIT 0
+-#define HOSTAP_BITS_BAP_TASKLET 1
+-#define HOSTAP_BITS_BAP_TASKLET2 2
+-	unsigned long bits;
+-
+-	struct ap_data *ap;
+-
+-	char essid[MAX_SSID_LEN + 1];
+-	char name[MAX_NAME_LEN + 1];
+-	int name_set;
+-	u16 channel_mask; /* mask of allowed channels */
+-	u16 scan_channel_mask; /* mask of channels to be scanned */
+-	struct comm_tallies_sums comm_tallies;
+-	struct proc_dir_entry *proc;
+-	int iw_mode; /* operating mode (IW_MODE_*) */
+-	int pseudo_adhoc; /* 0: IW_MODE_ADHOC is real 802.11 compliant IBSS
+-			   * 1: IW_MODE_ADHOC is "pseudo IBSS" */
+-	char bssid[ETH_ALEN];
+-	int channel;
+-	int beacon_int;
+-	int dtim_period;
+-	int mtu;
+-	int frame_dump; /* dump RX/TX frame headers, PRISM2_DUMP_ flags */
+-	int fw_tx_rate_control;
+-	u16 tx_rate_control;
+-	u16 basic_rates;
+-	int hw_resetting;
+-	int hw_ready;
+-	int hw_reset_tries; /* how many times reset has been tried */
+-	int hw_downloading;
+-	int shutdown;
+-	int pri_only;
+-	int no_pri; /* no PRI f/w present */
+-	int sram_type; /* 8 = x8 SRAM, 16 = x16 SRAM, -1 = unknown */
+-
+-	enum {
+-		PRISM2_TXPOWER_AUTO = 0, PRISM2_TXPOWER_OFF,
+-		PRISM2_TXPOWER_FIXED, PRISM2_TXPOWER_UNKNOWN
+-	} txpower_type;
+-	int txpower; /* if txpower_type == PRISM2_TXPOWER_FIXED */
+-
+-	/* command queue for hfa384x_cmd(); protected with cmdlock */
+-	struct list_head cmd_queue;
+-	/* max_len for cmd_queue; in addition, cmd_callback can use two
+-	 * additional entries to prevent sleeping commands from stopping
+-	 * transmits */
+-#define HOSTAP_CMD_QUEUE_MAX_LEN 16
+-	int cmd_queue_len; /* number of entries in cmd_queue */
+-
+-	/* if card timeout is detected in interrupt context, reset_queue is
+-	 * used to schedule card reseting to be done in user context */
+-	struct work_struct reset_queue;
+-
+-	/* For scheduling a change of the promiscuous mode RID */
+-	int is_promisc;
+-	struct work_struct set_multicast_list_queue;
+-
+-	struct work_struct set_tim_queue;
+-	struct list_head set_tim_list;
+-	spinlock_t set_tim_lock;
+-
+-	int wds_max_connections;
+-	int wds_connections;
+-#define HOSTAP_WDS_BROADCAST_RA BIT(0)
+-#define HOSTAP_WDS_AP_CLIENT BIT(1)
+-#define HOSTAP_WDS_STANDARD_FRAME BIT(2)
+-	u32 wds_type;
+-	u16 tx_control; /* flags to be used in TX description */
+-	int manual_retry_count; /* -1 = use f/w default; otherwise retry count
+-				 * to be used with all frames */
+-
+-	struct iw_statistics wstats;
+-	unsigned long scan_timestamp; /* Time started to scan */
+-	enum {
+-		PRISM2_MONITOR_80211 = 0, PRISM2_MONITOR_PRISM = 1,
+-		PRISM2_MONITOR_CAPHDR = 2, PRISM2_MONITOR_RADIOTAP = 3
+-	} monitor_type;
+-	int monitor_allow_fcserr;
+-
+-	int hostapd; /* whether user space daemon, hostapd, is used for AP
+-		      * management */
+-	int hostapd_sta; /* whether hostapd is used with an extra STA interface
+-			  */
+-	struct net_device *apdev;
+-	struct net_device_stats apdevstats;
+-
+-	char assoc_ap_addr[ETH_ALEN];
+-	struct net_device *stadev;
+-	struct net_device_stats stadevstats;
+-
+-#define WEP_KEYS 4
+-#define WEP_KEY_LEN 13
+-	struct lib80211_crypt_info crypt_info;
+-
+-	int open_wep; /* allow unencrypted frames */
+-	int host_encrypt;
+-	int host_decrypt;
+-	int privacy_invoked; /* force privacy invoked flag even if no keys are
+-			      * configured */
+-	int fw_encrypt_ok; /* whether firmware-based WEP encrypt is working
+-			    * in Host AP mode (STA f/w 1.4.9 or newer) */
+-	int bcrx_sta_key; /* use individual keys to override default keys even
+-			   * with RX of broad/multicast frames */
+-
+-	struct prism2_frag_entry frag_cache[PRISM2_FRAG_CACHE_LEN];
+-	unsigned int frag_next_idx;
+-
+-	int ieee_802_1x; /* is IEEE 802.1X used */
+-
+-	int antsel_tx, antsel_rx;
+-	int rts_threshold; /* dot11RTSThreshold */
+-	int fragm_threshold; /* dot11FragmentationThreshold */
+-	int auth_algs; /* PRISM2_AUTH_ flags */
+-
+-	int enh_sec; /* cnfEnhSecurity options (broadcast SSID hide/ignore) */
+-	int tallies32; /* 32-bit tallies in use */
+-
+-	struct prism2_helper_functions *func;
+-
+-	u8 *pda;
+-	int fw_ap;
+-#define PRISM2_FW_VER(major, minor, variant) \
+-(((major) << 16) | ((minor) << 8) | variant)
+-	u32 sta_fw_ver;
+-
+-	/* Tasklets for handling hardware IRQ related operations outside hw IRQ
+-	 * handler */
+-	struct tasklet_struct bap_tasklet;
+-
+-	struct tasklet_struct info_tasklet;
+-	struct sk_buff_head info_list; /* info frames as skb's for
+-					* info_tasklet */
+-
+-	struct hostap_tx_callback_info *tx_callback; /* registered TX callbacks
+-						      */
+-
+-	struct tasklet_struct rx_tasklet;
+-	struct sk_buff_head rx_list;
+-
+-	struct tasklet_struct sta_tx_exc_tasklet;
+-	struct sk_buff_head sta_tx_exc_list;
+-
+-	int host_roaming;
+-	unsigned long last_join_time; /* time of last JoinRequest */
+-	struct hfa384x_hostscan_result *last_scan_results;
+-	int last_scan_results_count;
+-	enum { PRISM2_SCAN, PRISM2_HOSTSCAN } last_scan_type;
+-	struct work_struct info_queue;
+-	unsigned long pending_info; /* bit field of pending info_queue items */
+-#define PRISM2_INFO_PENDING_LINKSTATUS 0
+-#define PRISM2_INFO_PENDING_SCANRESULTS 1
+-	int prev_link_status; /* previous received LinkStatus info */
+-	int prev_linkstatus_connected;
+-	u8 preferred_ap[ETH_ALEN]; /* use this AP if possible */
+-
+-#ifdef PRISM2_CALLBACK
+-	void *callback_data; /* Can be used in callbacks; e.g., allocate
+-			      * on enable event and free on disable event.
+-			      * Host AP driver code does not touch this. */
+-#endif /* PRISM2_CALLBACK */
+-
+-	wait_queue_head_t hostscan_wq;
+-
+-	/* Passive scan in Host AP mode */
+-	struct timer_list passive_scan_timer;
+-	int passive_scan_interval; /* in seconds, 0 = disabled */
+-	int passive_scan_channel;
+-	enum { PASSIVE_SCAN_WAIT, PASSIVE_SCAN_LISTEN } passive_scan_state;
+-
+-	struct timer_list tick_timer;
+-	unsigned long last_tick_timer;
+-	unsigned int sw_tick_stuck;
+-
+-	/* commsQuality / dBmCommsQuality data from periodic polling; only
+-	 * valid for Managed and Ad-hoc modes */
+-	unsigned long last_comms_qual_update;
+-	int comms_qual; /* in some odd unit.. */
+-	int avg_signal; /* in dB (note: negative) */
+-	int avg_noise; /* in dB (note: negative) */
+-	struct work_struct comms_qual_update;
+-
+-	/* RSSI to dBm adjustment (for RX descriptor fields) */
+-	int rssi_to_dBm; /* subtract from RSSI to get approximate dBm value */
+-
+-	/* BSS list / protected by local->lock */
+-	struct list_head bss_list;
+-	int num_bss_info;
+-	int wpa; /* WPA support enabled */
+-	int tkip_countermeasures;
+-	int drop_unencrypted;
+-	/* Generic IEEE 802.11 info element to be added to
+-	 * ProbeResp/Beacon/(Re)AssocReq */
+-	u8 *generic_elem;
+-	size_t generic_elem_len;
+-
+-#ifdef PRISM2_DOWNLOAD_SUPPORT
+-	/* Persistent volatile download data */
+-	struct prism2_download_data *dl_pri;
+-	struct prism2_download_data *dl_sec;
+-#endif /* PRISM2_DOWNLOAD_SUPPORT */
+-
+-#ifdef PRISM2_IO_DEBUG
+-#define PRISM2_IO_DEBUG_SIZE 10000
+-	u32 io_debug[PRISM2_IO_DEBUG_SIZE];
+-	int io_debug_head;
+-	int io_debug_enabled;
+-#endif /* PRISM2_IO_DEBUG */
+-
+-	/* Pointer to hardware model specific (cs,pci,plx) private data. */
+-	void *hw_priv;
+-};
+-
+-
+-/* Per interface private Host AP data
+- * Allocated for each net device that Host AP uses (wlan#, wlan#ap, wlan#sta,
+- * WDS) and netdev_priv(dev) points to this structure. */
+-struct hostap_interface {
+-	struct list_head list; /* list entry in Host AP interface list */
+-	struct net_device *dev; /* pointer to this device */
+-	struct local_info *local; /* pointer to shared private data */
+-	struct net_device_stats stats;
+-	struct iw_spy_data spy_data; /* iwspy support */
+-	struct iw_public_data wireless_data;
+-
+-	enum {
+-		HOSTAP_INTERFACE_MASTER,
+-		HOSTAP_INTERFACE_MAIN,
+-		HOSTAP_INTERFACE_AP,
+-		HOSTAP_INTERFACE_STA,
+-		HOSTAP_INTERFACE_WDS,
+-	} type;
+-
+-	union {
+-		struct hostap_interface_wds {
+-			u8 remote_addr[ETH_ALEN];
+-		} wds;
+-	} u;
+-};
+-
+-
+-#define HOSTAP_SKB_TX_DATA_MAGIC 0xf08a36a2
+-
+-/*
+- * TX meta data - stored in skb->cb buffer, so this must not be increased over
+- * the 48-byte limit.
+- * THE PADDING THIS STARTS WITH IS A HORRIBLE HACK THAT SHOULD NOT LIVE
+- * TO SEE THE DAY.
+- */
+-struct hostap_skb_tx_data {
+-	unsigned int __padding_for_default_qdiscs;
+-	u32 magic; /* HOSTAP_SKB_TX_DATA_MAGIC */
+-	u8 rate; /* transmit rate */
+-#define HOSTAP_TX_FLAGS_WDS BIT(0)
+-#define HOSTAP_TX_FLAGS_BUFFERED_FRAME BIT(1)
+-#define HOSTAP_TX_FLAGS_ADD_MOREDATA BIT(2)
+-	u8 flags; /* HOSTAP_TX_FLAGS_* */
+-	u16 tx_cb_idx;
+-	struct hostap_interface *iface;
+-	unsigned long jiffies; /* queueing timestamp */
+-	unsigned short ethertype;
+-};
+-
+-
+-#ifndef PRISM2_NO_DEBUG
+-
+-#define DEBUG_FID BIT(0)
+-#define DEBUG_PS BIT(1)
+-#define DEBUG_FLOW BIT(2)
+-#define DEBUG_AP BIT(3)
+-#define DEBUG_HW BIT(4)
+-#define DEBUG_EXTRA BIT(5)
+-#define DEBUG_EXTRA2 BIT(6)
+-#define DEBUG_PS2 BIT(7)
+-#define DEBUG_MASK (DEBUG_PS | DEBUG_AP | DEBUG_HW | DEBUG_EXTRA)
+-#define PDEBUG(n, args...) \
+-do { if ((n) & DEBUG_MASK) printk(KERN_DEBUG args); } while (0)
+-#define PDEBUG2(n, args...) \
+-do { if ((n) & DEBUG_MASK) printk(args); } while (0)
+-
+-#else /* PRISM2_NO_DEBUG */
+-
+-#define PDEBUG(n, args...)
+-#define PDEBUG2(n, args...)
+-
+-#endif /* PRISM2_NO_DEBUG */
+-
+-enum { BAP0 = 0, BAP1 = 1 };
+-
+-#define PRISM2_IO_DEBUG_CMD_INB 0
+-#define PRISM2_IO_DEBUG_CMD_INW 1
+-#define PRISM2_IO_DEBUG_CMD_INSW 2
+-#define PRISM2_IO_DEBUG_CMD_OUTB 3
+-#define PRISM2_IO_DEBUG_CMD_OUTW 4
+-#define PRISM2_IO_DEBUG_CMD_OUTSW 5
+-#define PRISM2_IO_DEBUG_CMD_ERROR 6
+-#define PRISM2_IO_DEBUG_CMD_INTERRUPT 7
+-
+-#ifdef PRISM2_IO_DEBUG
+-
+-#define PRISM2_IO_DEBUG_ENTRY(cmd, reg, value) \
+-(((cmd) << 24) | ((reg) << 16) | value)
+-
+-static inline void prism2_io_debug_add(struct net_device *dev, int cmd,
+-				       int reg, int value)
+-{
+-	struct hostap_interface *iface = netdev_priv(dev);
+-	local_info_t *local = iface->local;
+-
+-	if (!local->io_debug_enabled)
+-		return;
+-
+-	local->io_debug[local->io_debug_head] =	jiffies & 0xffffffff;
+-	if (++local->io_debug_head >= PRISM2_IO_DEBUG_SIZE)
+-		local->io_debug_head = 0;
+-	local->io_debug[local->io_debug_head] =
+-		PRISM2_IO_DEBUG_ENTRY(cmd, reg, value);
+-	if (++local->io_debug_head >= PRISM2_IO_DEBUG_SIZE)
+-		local->io_debug_head = 0;
+-}
+-
+-
+-static inline void prism2_io_debug_error(struct net_device *dev, int err)
+-{
+-	struct hostap_interface *iface = netdev_priv(dev);
+-	local_info_t *local = iface->local;
+-	unsigned long flags;
+-
+-	if (!local->io_debug_enabled)
+-		return;
+-
+-	spin_lock_irqsave(&local->lock, flags);
+-	prism2_io_debug_add(dev, PRISM2_IO_DEBUG_CMD_ERROR, 0, err);
+-	if (local->io_debug_enabled == 1) {
+-		local->io_debug_enabled = 0;
+-		printk(KERN_DEBUG "%s: I/O debug stopped\n", dev->name);
+-	}
+-	spin_unlock_irqrestore(&local->lock, flags);
+-}
+-
+-#else /* PRISM2_IO_DEBUG */
+-
+-static inline void prism2_io_debug_add(struct net_device *dev, int cmd,
+-				       int reg, int value)
+-{
+-}
+-
+-static inline void prism2_io_debug_error(struct net_device *dev, int err)
+-{
+-}
+-
+-#endif /* PRISM2_IO_DEBUG */
+-
+-
+-#ifdef PRISM2_CALLBACK
+-enum {
+-	/* Called when card is enabled */
+-	PRISM2_CALLBACK_ENABLE,
+-
+-	/* Called when card is disabled */
+-	PRISM2_CALLBACK_DISABLE,
+-
+-	/* Called when RX/TX starts/ends */
+-	PRISM2_CALLBACK_RX_START, PRISM2_CALLBACK_RX_END,
+-	PRISM2_CALLBACK_TX_START, PRISM2_CALLBACK_TX_END
+-};
+-void prism2_callback(local_info_t *local, int event);
+-#else /* PRISM2_CALLBACK */
+-#define prism2_callback(d, e) do { } while (0)
+-#endif /* PRISM2_CALLBACK */
+-
+-#endif /* __KERNEL__ */
+-
+-#endif /* HOSTAP_WLAN_H */
+-- 
+2.39.2
+
