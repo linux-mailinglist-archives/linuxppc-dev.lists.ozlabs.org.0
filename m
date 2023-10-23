@@ -2,59 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0C2B7D2A0B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Oct 2023 08:14:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 992E57D2B3F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Oct 2023 09:27:24 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YpFJHuxc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JmzlZuOn;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SDPzF61C4z3cSN
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Oct 2023 17:14:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SDRbZ3dtDz3bX1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Oct 2023 18:27:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YpFJHuxc;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JmzlZuOn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SDRZc2Z0wz2yTy
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Oct 2023 18:26:32 +1100 (AEDT)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4SDRZW2Y2pz4wxX
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Oct 2023 18:26:27 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4SDRZW2KTLz4wx5; Mon, 23 Oct 2023 18:26:27 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JmzlZuOn;
+	dkim-atps=neutral
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adityag@linux.ibm.com; receiver=ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SDPxT6cfcz2y1l
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Oct 2023 17:12:45 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698041566; x=1729577566;
-  h=date:from:to:cc:subject:message-id;
-  bh=TNDyo9mCZ5lSJfRZrvE/yjVaKCSq5p8Zhlb64CjJlSo=;
-  b=YpFJHuxcjEZINkGpqNsnbzRwubK4goOVvGf3wAaT8jTz2h+N6+yxafW/
-   Y8N89NlPv1/CabpwL91a33KbCgdIpDO5ehqUQEiUeKeT80t7jzFl5RoxZ
-   5Ylf4EG5JKCGrg+V/u/ZMInEYRetfbprPu51Km900myo0h4lrYu7Un5pA
-   0qGK9Ve2Swd79hb4EENYZHBfOy5TfJYltfoYJr3o1QZ/15Nzcx01iRmQM
-   GIPa34a2D5104ELr6XA6cfHWXMzarjCc5OAjcC4geTvV54MzCs85wvw3E
-   /jT36U+MY4t2SPk+TPLhlDTF4hBGjCitmV72xYTNXhWj9NO8gbVoTew8N
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10871"; a="383974459"
-X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; 
-   d="scan'208";a="383974459"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2023 23:12:36 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10871"; a="901701052"
-X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; 
-   d="scan'208";a="901701052"
-Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 22 Oct 2023 23:10:18 -0700
-Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1quoAz-0006dC-0h;
-	Mon, 23 Oct 2023 06:12:33 +0000
-Date: Mon, 23 Oct 2023 14:12:26 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- 5e69d465457215225178b3003d70e556c6c42ea0
-Message-ID: <202310231423.4f9PShWk-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4SDRZV5FqVz4wp0;
+	Mon, 23 Oct 2023 18:26:26 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39N79xxC011430;
+	Mon, 23 Oct 2023 07:26:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=ccBHDWyCvwXZBrHAKJEzmNZW84/H3UyjB+MNW6GS8XA=;
+ b=JmzlZuOn1yAMC1WgbXjau8Iu/nR2p8u24qrvcq0/9fLRWaVjD9VL9jUw85vEGIdlqbuu
+ T2rYHoNFpg+oTlEtd8A24GVlu04xxr3++kI0CvG4ZYmx8hi3+Zeb81bjooAdIPy+Gw7c
+ rUXVoVfAgi/icKJJhmcfJINPuIOHMGxQZF5fMeIhXqQwG60LnUTna8LnlL1WczMXAPFR
+ 842gw8VMydjWfud15P/0XqaLuWf0otBhaXQmFS4G3p2L34orQWqVyxO+a9BLSbOv0f1B
+ wNgS9+FE+A3sxXTef4egziw6Cv4/YFgpAQTyiLdSF8wjhODRYTMrgildvCVT6J4ZIKZU Rg== 
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3twm6trfk5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Oct 2023 07:26:22 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39N6P1fp010305;
+	Mon, 23 Oct 2023 07:26:22 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tvsby7af3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Oct 2023 07:26:22 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39N7QJip3146302
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 23 Oct 2023 07:26:19 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 22D092004B;
+	Mon, 23 Oct 2023 07:26:19 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8C1F220040;
+	Mon, 23 Oct 2023 07:26:16 +0000 (GMT)
+Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com.com (unknown [9.171.56.200])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 23 Oct 2023 07:26:16 +0000 (GMT)
+From: Aditya Gupta <adityag@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH] ppc64: add mmu information to vmcoreinfo
+Date: Mon, 23 Oct 2023 12:56:12 +0530
+Message-ID: <20231023072612.50874-1-adityag@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: K7trIJ5VJIfXGMI2cQ9XNJ-Dgd8-gVTS
+X-Proofpoint-ORIG-GUID: K7trIJ5VJIfXGMI2cQ9XNJ-Dgd8-gVTS
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-23_04,2023-10-19_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 suspectscore=0
+ impostorscore=0 priorityscore=1501 spamscore=0 adultscore=0
+ lowpriorityscore=0 clxscore=1011 mlxscore=0 mlxlogscore=903 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310170001 definitions=main-2310230065
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,173 +103,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Sachin Sant <sachinp@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
-branch HEAD: 5e69d465457215225178b3003d70e556c6c42ea0  Documentation/powerpc: update fadump implementation details
+Since below commit, address mapping for vmemmap has changed for Radix
+MMU, where address mapping is stored in kernel page table itself,
+instead of earlier used 'vmemmap_list'.
 
-elapsed time: 1694m
+    commit 368a0590d954 ("powerpc/book3s64/vmemmap: switch radix to use
+    a different vmemmap handling function")
 
-configs tested: 150
-configs skipped: 2
+Hence with upstream kernel, in case of Radix MMU, makedumpfile fails to do
+address translation for vmemmap addresses, as it depended on vmemmap_list,
+which can now be empty.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+While fixing the address translation in makedumpfile, it was identified
+that currently makedumpfile cannot distinguish between Hash MMU and
+Radix MMU, unless VMLINUX is passed with -x flag to makedumpfile.
+And hence fails to assign offsets and shifts correctly (such as in L4 to
+PGDIR offset calculation in makedumpfile).
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20231022   gcc  
-arc                   randconfig-001-20231023   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                         at91_dt_defconfig   gcc  
-arm                                 defconfig   gcc  
-arm                   randconfig-001-20231023   gcc  
-arm64                            allmodconfig   gcc  
-arm64                             allnoconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20231023   gcc  
-i386         buildonly-randconfig-002-20231023   gcc  
-i386         buildonly-randconfig-003-20231023   gcc  
-i386         buildonly-randconfig-004-20231023   gcc  
-i386         buildonly-randconfig-005-20231023   gcc  
-i386         buildonly-randconfig-006-20231023   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                  randconfig-001-20231023   gcc  
-i386                  randconfig-002-20231023   gcc  
-i386                  randconfig-003-20231023   gcc  
-i386                  randconfig-004-20231023   gcc  
-i386                  randconfig-005-20231023   gcc  
-i386                  randconfig-006-20231023   gcc  
-i386                  randconfig-011-20231023   gcc  
-i386                  randconfig-012-20231023   gcc  
-i386                  randconfig-013-20231023   gcc  
-i386                  randconfig-014-20231023   gcc  
-i386                  randconfig-015-20231023   gcc  
-i386                  randconfig-016-20231023   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20231022   gcc  
-loongarch             randconfig-001-20231023   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                       m5208evb_defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                    maltaup_xpa_defconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   gcc  
-powerpc                     ep8248e_defconfig   gcc  
-powerpc                      makalu_defconfig   gcc  
-powerpc                 mpc8313_rdb_defconfig   clang
-powerpc                    sam440ep_defconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv             nommu_k210_sdcard_defconfig   gcc  
-riscv                 randconfig-001-20231023   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                  randconfig-001-20231023   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                 randconfig-001-20231023   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-001-20231023   gcc  
-x86_64       buildonly-randconfig-002-20231023   gcc  
-x86_64       buildonly-randconfig-003-20231023   gcc  
-x86_64       buildonly-randconfig-004-20231023   gcc  
-x86_64       buildonly-randconfig-005-20231023   gcc  
-x86_64       buildonly-randconfig-006-20231023   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64                randconfig-001-20231023   gcc  
-x86_64                randconfig-002-20231023   gcc  
-x86_64                randconfig-003-20231023   gcc  
-x86_64                randconfig-004-20231023   gcc  
-x86_64                randconfig-005-20231023   gcc  
-x86_64                randconfig-006-20231023   gcc  
-x86_64                randconfig-011-20231023   gcc  
-x86_64                randconfig-012-20231023   gcc  
-x86_64                randconfig-013-20231023   gcc  
-x86_64                randconfig-014-20231023   gcc  
-x86_64                randconfig-015-20231023   gcc  
-x86_64                randconfig-016-20231023   gcc  
-x86_64                randconfig-071-20231023   gcc  
-x86_64                randconfig-072-20231023   gcc  
-x86_64                randconfig-073-20231023   gcc  
-x86_64                randconfig-074-20231023   gcc  
-x86_64                randconfig-075-20231023   gcc  
-x86_64                randconfig-076-20231023   gcc  
-x86_64                           rhel-8.3-bpf   gcc  
-x86_64                         rhel-8.3-kunit   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                            allnoconfig   gcc  
-xtensa                           allyesconfig   gcc  
-xtensa                  nommu_kc705_defconfig   gcc  
+For getting the MMU, makedumpfile uses `cur_cpu_spec.mmu_features`.
 
+Add `cur_cpu_spec` symbol and offset of `mmu_features` in the
+`cpu_spec` struct, to VMCOREINFO, so that makedumpfile can assign the
+offsets correctly, without needing a VMLINUX.
+
+Also, even along with `cur_cpu_spec->mmu_features` makedumpfile has to
+depend on the 'MMU_FTR_TYPE_RADIX' flag in mmu_features, implying kernel
+developers need to be cautious of changes to 'MMU_FTR_*' defines.
+
+A more stable approach was suggested in the below thread by contributors:
+https://lore.kernel.org/linuxppc-dev/20230920105706.853626-1-adityag@linux.ibm.com/
+
+The suggestion was to add whether 'RADIX_MMU' is enabled in vmcoreinfo
+
+This patch also implements the suggestion, by adding 'RADIX_MMU' in
+vmcoreinfo, which makedumpfile can use to get whether the crashed system
+had RADIX MMU (in which case 'NUMBER(RADIX_MMU)=1') or not (in which
+case 'NUMBER(RADIX_MMU)=0')
+
+Fixes: 368a0590d954 ("powerpc/book3s64/vmemmap: switch radix to use a different vmemmap handling function")
+Reported-by: Sachin Sant <sachinp@linux.ibm.com>
+Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+---
+ arch/powerpc/kexec/core.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
+index de64c7962991..005269ac3244 100644
+--- a/arch/powerpc/kexec/core.c
++++ b/arch/powerpc/kexec/core.c
+@@ -74,6 +74,9 @@ void arch_crash_save_vmcoreinfo(void)
+ 	VMCOREINFO_STRUCT_SIZE(mmu_psize_def);
+ 	VMCOREINFO_OFFSET(mmu_psize_def, shift);
+ #endif
++	VMCOREINFO_SYMBOL(cur_cpu_spec);
++	VMCOREINFO_OFFSET(cpu_spec, mmu_features);
++	vmcoreinfo_append_str("NUMBER(RADIX_MMU)=%d\n", early_radix_enabled());
+ 	vmcoreinfo_append_str("KERNELOFFSET=%lx\n", kaslr_offset());
+ }
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.41.0
+
