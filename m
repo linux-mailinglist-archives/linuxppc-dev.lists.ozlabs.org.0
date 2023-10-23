@@ -1,59 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B461C7D2A06
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Oct 2023 08:13:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0C2B7D2A0B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Oct 2023 08:14:19 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=deJlaO4G;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YpFJHuxc;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SDPyK5n9jz3cSq
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Oct 2023 17:13:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SDPzF61C4z3cSN
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Oct 2023 17:14:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=deJlaO4G;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YpFJHuxc;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SDPxS2wjPz2y1l
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Oct 2023 17:12:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SDPxT6cfcz2y1l
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Oct 2023 17:12:45 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698041564; x=1729577564;
+  t=1698041566; x=1729577566;
   h=date:from:to:cc:subject:message-id;
-  bh=0LJJr+e2NMcX2ofaFmy56UZAqmZw0ttctC1vuKsQKLk=;
-  b=deJlaO4GddokH4vOofCV84W0wM8JLsVzvXKiFSCaDKA8nGl0uip8X6Je
-   RbaMn+EAxMtw/4LoCIOk8xVcLSkRP+0AYkvquMVXmSngIHXKbAJgadkJB
-   2LAJ+MPxw2B/b1eEYE3nmFSLgb+KUMWmOWZJ93ddfjp87vQZVmdbBnyev
-   bC3J6+oZG1hv/w6QjkCTTQxXWJc4/4Zzj34Rfy5hwRhnb8Edsvjwxe8GT
-   CzmESgej75G/O7XXnXmUyxlo6HCzEjWFnRQL5wPft75h1KgUN4Q+EHNly
-   +HtCi4QTOHsmHJmmZAhlppjM12WQ+Q6oKjRNzDNux04/K9wEPcusC8V8C
+  bh=TNDyo9mCZ5lSJfRZrvE/yjVaKCSq5p8Zhlb64CjJlSo=;
+  b=YpFJHuxcjEZINkGpqNsnbzRwubK4goOVvGf3wAaT8jTz2h+N6+yxafW/
+   Y8N89NlPv1/CabpwL91a33KbCgdIpDO5ehqUQEiUeKeT80t7jzFl5RoxZ
+   5Ylf4EG5JKCGrg+V/u/ZMInEYRetfbprPu51Km900myo0h4lrYu7Un5pA
+   0qGK9Ve2Swd79hb4EENYZHBfOy5TfJYltfoYJr3o1QZ/15Nzcx01iRmQM
+   GIPa34a2D5104ELr6XA6cfHWXMzarjCc5OAjcC4geTvV54MzCs85wvw3E
+   /jT36U+MY4t2SPk+TPLhlDTF4hBGjCitmV72xYTNXhWj9NO8gbVoTew8N
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10871"; a="383974457"
+X-IronPort-AV: E=McAfee;i="6600,9927,10871"; a="383974459"
 X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; 
-   d="scan'208";a="383974457"
+   d="scan'208";a="383974459"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
   by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2023 23:12:36 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10871"; a="901701050"
+X-IronPort-AV: E=McAfee;i="6600,9927,10871"; a="901701052"
 X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; 
-   d="scan'208";a="901701050"
+   d="scan'208";a="901701052"
 Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
   by fmsmga001.fm.intel.com with ESMTP; 22 Oct 2023 23:10:18 -0700
 Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1quoAz-0006d3-0G;
+	id 1quoAz-0006dC-0h;
 	Mon, 23 Oct 2023 06:12:33 +0000
-Date: Mon, 23 Oct 2023 14:11:38 +0800
+Date: Mon, 23 Oct 2023 14:12:26 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS
- 1c7b4bc375c2a235e3dcb53c46111883df838e42
-Message-ID: <202310231435.o5LoVHHu-lkp@intel.com>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ 5e69d465457215225178b3003d70e556c6c42ea0
+Message-ID: <202310231423.4f9PShWk-lkp@intel.com>
 User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -70,12 +70,12 @@ Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-branch HEAD: 1c7b4bc375c2a235e3dcb53c46111883df838e42  Merge branch fixes into next
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: 5e69d465457215225178b3003d70e556c6c42ea0  Documentation/powerpc: update fadump implementation details
 
-elapsed time: 1693m
+elapsed time: 1694m
 
-configs tested: 145
+configs tested: 150
 configs skipped: 2
 
 The following configs have been built successfully.
@@ -94,6 +94,7 @@ arc                   randconfig-001-20231023   gcc
 arm                              allmodconfig   gcc  
 arm                               allnoconfig   gcc  
 arm                              allyesconfig   gcc  
+arm                         at91_dt_defconfig   gcc  
 arm                                 defconfig   gcc  
 arm                   randconfig-001-20231023   gcc  
 arm64                            allmodconfig   gcc  
@@ -137,6 +138,7 @@ m68k                             allmodconfig   gcc
 m68k                              allnoconfig   gcc  
 m68k                             allyesconfig   gcc  
 m68k                                defconfig   gcc  
+m68k                       m5208evb_defconfig   gcc  
 microblaze                       allmodconfig   gcc  
 microblaze                        allnoconfig   gcc  
 microblaze                       allyesconfig   gcc  
@@ -144,6 +146,7 @@ microblaze                          defconfig   gcc
 mips                             allmodconfig   gcc  
 mips                              allnoconfig   gcc  
 mips                             allyesconfig   gcc  
+mips                    maltaup_xpa_defconfig   gcc  
 nios2                            allmodconfig   gcc  
 nios2                             allnoconfig   gcc  
 nios2                            allyesconfig   gcc  
@@ -163,6 +166,7 @@ powerpc                          allyesconfig   gcc
 powerpc                     ep8248e_defconfig   gcc  
 powerpc                      makalu_defconfig   gcc  
 powerpc                 mpc8313_rdb_defconfig   clang
+powerpc                    sam440ep_defconfig   gcc  
 riscv                            allmodconfig   gcc  
 riscv                             allnoconfig   gcc  
 riscv                            allyesconfig   gcc  
@@ -227,6 +231,7 @@ x86_64                          rhel-8.3-rust   clang
 x86_64                               rhel-8.3   gcc  
 xtensa                            allnoconfig   gcc  
 xtensa                           allyesconfig   gcc  
+xtensa                  nommu_kc705_defconfig   gcc  
 
 -- 
 0-DAY CI Kernel Test Service
