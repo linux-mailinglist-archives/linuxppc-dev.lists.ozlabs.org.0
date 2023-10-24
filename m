@@ -2,87 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D0F87D542C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Oct 2023 16:38:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 324CD7D5804
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Oct 2023 18:21:30 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hLeZcbf9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=O9UDW4eY;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SFF640LHVz3cN4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Oct 2023 01:38:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SFHPN0nZwz3cSK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Oct 2023 03:21:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hLeZcbf9;
+	dkim=pass (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=O9UDW4eY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sigma-star.at (client-ip=2a00:1450:4864:20::531; helo=mail-ed1-x531.google.com; envelope-from=david@sigma-star.at; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SFF5B0Gljz2xpd
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Oct 2023 01:37:17 +1100 (AEDT)
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39OEPMXS019888;
-	Tue, 24 Oct 2023 14:36:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=WpY1biqPF84OgOTiznFBUuSH0gs7DxZ7U517/l1xF6M=;
- b=hLeZcbf9niDLPkYzM5g+f6Qh+7IbE68YtkiifZHyyzmTNaAsk4hUsCy0wrPjdCq24qtk
- ZFbcPx687PI4m2ZIjqJjyJyFtd458Xqj/6GlUV8wV05wThyDLsqwHpP7/dEr672x/zNf
- qntb/5WZx+JLVuhp33yKTPhF7cI+blFrt7sGgRLrznAzWlET4btGHtd4SHEFrFMhuuUv
- iaFdkiEgtnHzJcjqxUqXjUPGp4fkleHR8U7VJ5/WsuhweAO3msFwjJV0W53sOUQmaNB9
- e7r4Dw/1GL4b3Kcb2pDHFZD0rOxr3dVQSpFM8lJ/CQ+WJ8TpM++kPoHFY8Z0LRQNPnC8 eQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3txfnu8pch-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Oct 2023 14:36:58 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39OEQLLb022593;
-	Tue, 24 Oct 2023 14:36:58 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3txfnu8pc4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Oct 2023 14:36:58 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39ODPEcn010284;
-	Tue, 24 Oct 2023 14:36:57 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tvsbyg60m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Oct 2023 14:36:57 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39OEavxd23265836
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 24 Oct 2023 14:36:57 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2C37058054;
-	Tue, 24 Oct 2023 14:36:57 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 55C1A5805A;
-	Tue, 24 Oct 2023 14:36:54 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.43.60.100])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 24 Oct 2023 14:36:53 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu
-Subject: [PATCH v2] powerpc/mm: Avoid calling arch_enter/leave_lazy_mmu() in set_ptes
-Date: Tue, 24 Oct 2023 20:06:04 +0530
-Message-ID: <20231024143604.16749-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SFHNS1l5Bz2xpx
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Oct 2023 03:20:38 +1100 (AEDT)
+Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-53e04b17132so7285526a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Oct 2023 09:20:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sigma-star.at; s=google; t=1698164431; x=1698769231; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TRO+xCDaQbDKnIXJCwBi3Y2yF65udPG/2rEKc0aYwBQ=;
+        b=O9UDW4eYBQT+wLa2X0LbSh4BhyBYyezPC0ZixvsPFbu8X8k8s1HHPhNUN0nPQqALQd
+         Ee21K22V/KuLDTZWSv9RpNgK8D4PTPaKtP+rZ+78KPpfdwqPGErVwjlMCx3Ykyd6CoCH
+         49NyALfHnkW1i5ABFm6opM0OKxp7rjoIwe1MobheEAR0KIX/39jgfPZzi/GOBud/uii5
+         JPZ5Gpjy+8p/LKc/eBb58NuSwqcDgTmzNKs4YIO5KL0VpOoSfYVA2fmYsN5r72TZ68w2
+         6FbMUmr2yTD+JEBwe0ZCglBnu5AZiMv083Xa4xexs0uP7Cbje33wbVwOCbnf+YobfFi9
+         Bojw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698164431; x=1698769231;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TRO+xCDaQbDKnIXJCwBi3Y2yF65udPG/2rEKc0aYwBQ=;
+        b=N2+oiPZE9zI8+kkDdJKspOzhTmSt0+ZlweNjL+E/TSisSZL+CVCV/BVC+lbXdOYrf2
+         PAmdxHDK1d0XEv0JaUGVbpQ89Gox7LtQf1KrkSRyjH/3kymlxobAOG638T+iBdu1pkUa
+         yNwpe/2tyVjCg8v0caa2KgqcVrB9SoCpGjaIbGgA5zmNqrauSrsIMNuFblvjzlYigpTw
+         5IVQnOfrYlf7OvF1RoS8W4MQ5hco+BcazpLfpGiH19ZSo8NBdAFO2ttD896v9wLabKyP
+         Zvy3r89SYPlx7bmMhtgfWewaPUL+DO0tNjhnfc5VMeuuXIfj+k0DE+BZV01XcC/I+kbM
+         M+dQ==
+X-Gm-Message-State: AOJu0Yw0//aZTkreOgxQjjgspfVtuRzucwFmcTedu6PvjaC3+baa59IR
+	3t+0ycbZ7eb2UMFKmZWlw04wZA==
+X-Google-Smtp-Source: AGHT+IEIk3iJ6GCsHRYMeMdo8uw1QNTL6gntpg/5SaGUAZHqkqQekLyT81Tgpt8fo9diZdiabupYpQ==
+X-Received: by 2002:a17:907:c0d:b0:9be:8693:66bb with SMTP id ga13-20020a1709070c0d00b009be869366bbmr9625930ejc.59.1698164431055;
+        Tue, 24 Oct 2023 09:20:31 -0700 (PDT)
+Received: from localhost (clnet-p106-198.ikbnet.co.at. [83.175.106.198])
+        by smtp.gmail.com with UTF8SMTPSA id cw11-20020a170906c78b00b009add084a00csm8489556ejb.36.2023.10.24.09.20.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Oct 2023 09:20:30 -0700 (PDT)
+From: David Gstir <david@sigma-star.at>
+To: Mimi Zohar <zohar@linux.ibm.com>,
+	James Bottomley <jejb@linux.ibm.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH v4 0/5] DCP as trusted keys backend
+Date: Tue, 24 Oct 2023 18:20:14 +0200
+Message-ID: <20231024162024.51260-1-david@sigma-star.at>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ZNIHQ-ezz6ES3oDEhYqnAm0ssmQ8MFeH
-X-Proofpoint-ORIG-GUID: WMN2SV16PpZrDSHRzQ_poATNIyypGT2H
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-24_14,2023-10-24_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
- adultscore=0 mlxlogscore=999 mlxscore=0 lowpriorityscore=0 clxscore=1015
- priorityscore=1501 phishscore=0 suspectscore=0 spamscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310170001
- definitions=main-2310240125
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,106 +79,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, willy@infradead.org
+Cc: David Gstir <david@sigma-star.at>, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org, Fabio Estevam <festevam@gmail.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Paul Moore <paul@paul-moore.com>, Jonathan Corbet <corbet@lwn.net>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, James Morris <jmorris@namei.org>, NXP Linux Team <linux-imx@nxp.com>, "Serge E. Hallyn" <serge@hallyn.com>, "Paul E. McKenney" <paulmck@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, sigma star Kernel Team <upstream+dcp@sigma-star.at>, "Steven Rostedt \(Google\)" <rostedt@goodmis.org>, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, linux-security-module@vger.kernel.org, linux-crypto@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>, Tejun Heo <tj@kernel.org>, linux-integrity@vger.kernel.
+ org, Shawn Guo <shawnguo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With commit 9fee28baa601 ("powerpc: implement the new page table range
-API") we added set_ptes to powerpc architecture. The implementation
-included calling arch_enter/leave_lazy_mmu() calls.
+This is a revival of the previous patch set submitted by Richard Weinberger:
+https://lore.kernel.org/linux-integrity/20210614201620.30451-1-richard@nod.at/
 
-The patch removes the usage of arch_enter/leave_lazy_mmu() because
-set_pte is not supposed to be used when updating a pte entry. Powerpc
-architecture uses this rule to skip the expensive tlb invalidate which
-is not needed when you are setting up the pte for the first time. See
-commit 56eecdb912b5 ("mm: Use ptep/pmdp_set_numa() for updating
-_PAGE_NUMA bit") for more details
+v3 is here:
+https://lore.kernel.org/keyrings/20230918141826.8139-1-david@sigma-star.at/
 
-The patch also makes sure we are not using the interface to update a
-valid/present pte entry by adding VM_WARN_ON check all the ptes we
-are setting up. Furthermore, we add a comment to set_pte_filter to
-clarify it can only update folio-related flags and cannot filter
-pfn specific details in pte filtering.
+v3 -> v4:
+- Split changes on MAINTAINERS and documentation into dedicated patches
+- Use more concise wording in commit messages as suggested by Jarkko Sakkinen
+v2 -> v3:
+- Addressed review comments from Jarkko Sakkinen
+v1 -> v2:
+- Revive and rebase to latest version
+- Include review comments from Ahmad Fatoum
 
-Removal of arch_enter/leave_lazy_mmu() also will avoid nesting of
-these functions that are not supported. For ex:
+The Data CoProcessor (DCP) is an IP core built into many NXP SoCs such
+as i.mx6ull.
 
-remap_pte_range()
-  -> arch_enter_lazy_mmu()
-  -> set_ptes()
-      -> arch_enter_lazy_mmu()
-      -> arch_leave_lazy_mmu()
-  -> arch_leave_lazy_mmu()
+Similar to the CAAM engine used in more powerful SoCs, DCP can AES-
+encrypt/decrypt user data using a unique, never-disclosed,
+device-specific key. Unlike CAAM though, it cannot directly wrap and
+unwrap blobs in hardware. As DCP offers only the bare minimum feature
+set and a blob mechanism needs aid from software. A blob in this case
+is a piece of sensitive data (e.g. a key) that is encrypted and
+authenticated using the device-specific key so that unwrapping can only
+be done on the hardware where the blob was wrapped.
 
-Fixes: 9fee28baa601 ("powerpc: implement the new page table range API")
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/mm/pgtable.c | 32 ++++++++++++++++++++++----------
- 1 file changed, 22 insertions(+), 10 deletions(-)
+This patch series adds a DCP based, trusted-key backend and is similar
+in spirit to the one by Ahmad Fatoum [0] that does the same for CAAM.
+It is of interest for similar use cases as the CAAM patch set, but for
+lower end devices, where CAAM is not available.
 
-diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-index 3ba9fe411604..4d69bfb9bc11 100644
---- a/arch/powerpc/mm/pgtable.c
-+++ b/arch/powerpc/mm/pgtable.c
-@@ -104,6 +104,8 @@ static pte_t set_pte_filter_hash(pte_t pte) { return pte; }
- /* Embedded type MMU with HW exec support. This is a bit more complicated
-  * as we don't have two bits to spare for _PAGE_EXEC and _PAGE_HWEXEC so
-  * instead we "filter out" the exec permission for non clean pages.
-+ *
-+ * This is also called once for the folio. So only work with folio->flags here.
-  */
- static inline pte_t set_pte_filter(pte_t pte)
- {
-@@ -190,29 +192,39 @@ static pte_t set_access_flags_filter(pte_t pte, struct vm_area_struct *vma,
- void set_ptes(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
- 		pte_t pte, unsigned int nr)
- {
--	/*
--	 * Make sure hardware valid bit is not set. We don't do
--	 * tlb flush for this update.
--	 */
--	VM_WARN_ON(pte_hw_valid(*ptep) && !pte_protnone(*ptep));
- 
- 	/* Note: mm->context.id might not yet have been assigned as
- 	 * this context might not have been activated yet when this
--	 * is called.
-+	 * is called. Filter the pte value and use the filtered value
-+	 * to setup all the ptes in the range.
- 	 */
- 	pte = set_pte_filter(pte);
- 
--	/* Perform the setting of the PTE */
--	arch_enter_lazy_mmu_mode();
-+	/*
-+	 * We don't need to call arch_enter/leave_lazy_mmu_mode()
-+	 * because we expect set_ptes to be only be used on not present
-+	 * and not hw_valid ptes. Hence there is no translation cache flush
-+	 * involved that need to be batched.
-+	 */
- 	for (;;) {
-+
-+		/*
-+		 * Make sure hardware valid bit is not set. We don't do
-+		 * tlb flush for this update.
-+		 */
-+		VM_WARN_ON(pte_hw_valid(*ptep) && !pte_protnone(*ptep));
-+
-+		/* Perform the setting of the PTE */
- 		__set_pte_at(mm, addr, ptep, pte, 0);
- 		if (--nr == 0)
- 			break;
- 		ptep++;
--		pte = __pte(pte_val(pte) + (1UL << PTE_RPN_SHIFT));
- 		addr += PAGE_SIZE;
-+		/*
-+		 * increment the pfn.
-+		 */
-+		pte = pfn_pte(pte_pfn(pte) + 1, pte_pgprot((pte)));
- 	}
--	arch_leave_lazy_mmu_mode();
- }
- 
- void unmap_kernel_page(unsigned long va)
+Because constructing and parsing the blob has to happen in software,
+we needed to decide on a blob format and chose the following:
+
+struct dcp_blob_fmt {
+	__u8 fmt_version;
+	__u8 blob_key[AES_KEYSIZE_128];
+	__u8 nonce[AES_KEYSIZE_128];
+	__le32 payload_len;
+	__u8 payload[];
+} __packed;
+
+The `fmt_version` is currently 1.
+
+The encrypted key is stored in the payload area. It is AES-128-GCM
+encrypted using `blob_key` and `nonce`, GCM auth tag is attached at
+the end of the payload (`payload_len` does not include the size of
+the auth tag).
+
+The `blob_key` itself is encrypted in AES-128-ECB mode by DCP using
+the OTP or UNIQUE device key. A new `blob_key` and `nonce` are generated
+randomly, when sealing/exporting the DCP blob.
+
+This patchset was tested with dm-crypt on an i.MX6ULL board.
+
+[0] https://lore.kernel.org/keyrings/20220513145705.2080323-1-a.fatoum@pengutronix.de/
+
+David Gstir (5):
+  crypto: mxs-dcp: Add support for hardware-bound keys
+  KEYS: trusted: Introduce NXP DCP-backed trusted keys
+  MAINTAINERS: add entry for DCP-based trusted keys
+  docs: document DCP-backed trusted keys kernel params
+  docs: trusted-encrypted: add DCP as new trust source
+
+ .../admin-guide/kernel-parameters.txt         |  13 +
+ .../security/keys/trusted-encrypted.rst       |  85 +++++
+ MAINTAINERS                                   |   9 +
+ drivers/crypto/mxs-dcp.c                      | 104 +++++-
+ include/keys/trusted_dcp.h                    |  11 +
+ include/soc/fsl/dcp.h                         |  17 +
+ security/keys/trusted-keys/Kconfig            |   9 +-
+ security/keys/trusted-keys/Makefile           |   2 +
+ security/keys/trusted-keys/trusted_core.c     |   6 +-
+ security/keys/trusted-keys/trusted_dcp.c      | 311 ++++++++++++++++++
+ 10 files changed, 554 insertions(+), 13 deletions(-)
+ create mode 100644 include/keys/trusted_dcp.h
+ create mode 100644 include/soc/fsl/dcp.h
+ create mode 100644 security/keys/trusted-keys/trusted_dcp.c
+
 -- 
-2.41.0
+2.35.3
 
