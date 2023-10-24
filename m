@@ -1,50 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C4127D4F36
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Oct 2023 13:50:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0FB47D502C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Oct 2023 14:45:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=G7VO1jY9;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F02pSPDz;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F02pSPDz;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SF9Nb66KVz3c3g
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Oct 2023 22:50:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SFBcT5b18z3cVM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Oct 2023 23:45:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=G7VO1jY9;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F02pSPDz;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F02pSPDz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SF9MF4k0Rz3c2V
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Oct 2023 22:49:13 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 4D72A60AF5;
-	Tue, 24 Oct 2023 11:49:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9814BC433C7;
-	Tue, 24 Oct 2023 11:49:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1698148151;
-	bh=uh6RlcQOJqCtwoPx6bpVBQRNY8pg0lrU9IJZFhh7PEw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=G7VO1jY9L7EzpqVKAqjNTgM/s3KzuvR3NII5/ARtXJ01+rQjwseAjGBJHl2d/2CMo
-	 VP7Wh5w6oIF5VM26sja1Py01hRiJCr/KYolxi6HY67qLj8manZmTra7FilufaisCqz
-	 ZaFXVSoKP2xRdERtmO7+v7wTeXNfmigj+i1FkcY8=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] ocxl: make ocxl_class constant
-Date: Tue, 24 Oct 2023 13:49:04 +0200
-Message-ID: <2023102403-squirt-defraud-6c0c@gregkh>
-X-Mailer: git-send-email 2.42.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SFBbZ0KPjz30MY
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Oct 2023 23:44:56 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1698151492;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CODKCtH5hmSRh9bBGyaKTVCZDnlLHU54pzgVooF1R0k=;
+	b=F02pSPDzD8zYJhjZJlNK60xAxei/U3U6vHHCfH1cRTb5VqgrFK1jnUWNKdG0rxYDO8l5pY
+	agiIDWWqWLNCutEU4JgN49rls0AkTBWeBgNAoCwUFBx9ZRvvWglgeCg96r33aEfxH3szv7
+	GCIf94UrSewDDd9SAE8R7yCXDgXtyu4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1698151492;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CODKCtH5hmSRh9bBGyaKTVCZDnlLHU54pzgVooF1R0k=;
+	b=F02pSPDzD8zYJhjZJlNK60xAxei/U3U6vHHCfH1cRTb5VqgrFK1jnUWNKdG0rxYDO8l5pY
+	agiIDWWqWLNCutEU4JgN49rls0AkTBWeBgNAoCwUFBx9ZRvvWglgeCg96r33aEfxH3szv7
+	GCIf94UrSewDDd9SAE8R7yCXDgXtyu4=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-596-tcJAmO1PPUKcVk6oYnFHmw-1; Tue, 24 Oct 2023 08:44:41 -0400
+X-MC-Unique: tcJAmO1PPUKcVk6oYnFHmw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 74E253C0F435;
+	Tue, 24 Oct 2023 12:44:40 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.15])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 6C6822026D4C;
+	Tue, 24 Oct 2023 12:44:39 +0000 (UTC)
+Date: Tue, 24 Oct 2023 20:44:36 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH 1/2] kexec: fix KEXEC_FILE dependencies
+Message-ID: <ZTe8NOgAjvKDA6z0@MiWiFi-R3L-srv>
+References: <20231023110308.1202042-1-arnd@kernel.org>
 MIME-Version: 1.0
-Lines: 91
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2567; i=gregkh@linuxfoundation.org; h=from:subject:message-id; bh=uh6RlcQOJqCtwoPx6bpVBQRNY8pg0lrU9IJZFhh7PEw=; b=owGbwMvMwCRo6H6F97bub03G02pJDKnm6/V9V2cmnqvPEg3YH/AuOlh0hcCi02eXp/POWp9ks i/edoZdRywLgyATg6yYIsuXbTxH91ccUvQytD0NM4eVCWQIAxenAEyEbS3DgsVvJlccXNnz64ee /YOVX+1SGCNX3mWYySgjU3RdRfXNoSI/zblcm/f/MuVvBwA=
-X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp; fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231023110308.1202042-1-arnd@kernel.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,99 +77,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Frederic Barrat <fbarrat@linux.ibm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, Andrew Donnellan <ajd@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org, eric_devolder@yahoo.com, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, Vivek Goyal <vgoyal@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that the driver core allows for struct class to be in read-only
-memory, we should make all 'class' structures declared at build time
-placing them into read-only memory, instead of having to be dynamically
-allocated at runtime.
+Just add people and mailing list to CC since I didn't find this mail in
+my box, just drag it via 'b4 am'.
 
-Cc: Frederic Barrat <fbarrat@linux.ibm.com>
-Cc: Andrew Donnellan <ajd@linux.ibm.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/misc/ocxl/file.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+On 10/23/23 at 01:01pm, Arnd Bergmann wrote:
+......
+> ---
+>  arch/powerpc/Kconfig | 4 ++--
+>  arch/riscv/Kconfig   | 4 +---
+>  arch/s390/Kconfig    | 4 ++--
+>  arch/x86/Kconfig     | 4 ++--
+>  kernel/Kconfig.kexec | 1 +
+>  5 files changed, 8 insertions(+), 9 deletions(-)
+> 
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index d5d5388973ac7..4640cee33f123 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -607,10 +607,10 @@ config ARCH_SUPPORTS_KEXEC
+>  	def_bool PPC_BOOK3S || PPC_E500 || (44x && !SMP)
+>  
+>  config ARCH_SUPPORTS_KEXEC_FILE
+> -	def_bool PPC64 && CRYPTO=y && CRYPTO_SHA256=y
+> +	def_bool PPC64
+>  
+>  config ARCH_SUPPORTS_KEXEC_PURGATORY
+> -	def_bool KEXEC_FILE
+> +	def_bool y
+>  
+>  config ARCH_SELECTS_KEXEC_FILE
+>  	def_bool y
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index 25474f8c12b79..f571bad2d22d0 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -687,9 +687,7 @@ config ARCH_SELECTS_KEXEC_FILE
+>  	select KEXEC_ELF
+>  
+>  config ARCH_SUPPORTS_KEXEC_PURGATORY
+> -	def_bool KEXEC_FILE
+> -	depends on CRYPTO=y
+> -	depends on CRYPTO_SHA256=y
+> +	def_bool y
+>  
+>  config ARCH_SUPPORTS_CRASH_DUMP
+>  	def_bool y
+> diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+> index b0d67ac8695f9..ec77106af4137 100644
+> --- a/arch/s390/Kconfig
+> +++ b/arch/s390/Kconfig
+> @@ -253,13 +253,13 @@ config ARCH_SUPPORTS_KEXEC
+>  	def_bool y
+>  
+>  config ARCH_SUPPORTS_KEXEC_FILE
+> -	def_bool CRYPTO && CRYPTO_SHA256 && CRYPTO_SHA256_S390
+> +	def_bool y
+>  
+>  config ARCH_SUPPORTS_KEXEC_SIG
+>  	def_bool MODULE_SIG_FORMAT
+>  
+>  config ARCH_SUPPORTS_KEXEC_PURGATORY
+> -	def_bool KEXEC_FILE
+> +	def_bool y
+>  
+>  config ARCH_SUPPORTS_CRASH_DUMP
+>  	def_bool y
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 94efde80ebf35..f9975b15ccd57 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -2073,7 +2073,7 @@ config ARCH_SUPPORTS_KEXEC
+>  	def_bool y
+>  
+>  config ARCH_SUPPORTS_KEXEC_FILE
+> -	def_bool X86_64 && CRYPTO && CRYPTO_SHA256
+> +	def_bool X86_64
+>  
+>  config ARCH_SELECTS_KEXEC_FILE
+>  	def_bool y
+> @@ -2081,7 +2081,7 @@ config ARCH_SELECTS_KEXEC_FILE
+>  	select HAVE_IMA_KEXEC if IMA
+>  
+>  config ARCH_SUPPORTS_KEXEC_PURGATORY
+> -	def_bool KEXEC_FILE
+> +	def_bool y
+>  
+>  config ARCH_SUPPORTS_KEXEC_SIG
+>  	def_bool y
+> diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
+> index 7aff28ded2f48..bfc636d64ff2b 100644
+> --- a/kernel/Kconfig.kexec
+> +++ b/kernel/Kconfig.kexec
+> @@ -36,6 +36,7 @@ config KEXEC
+>  config KEXEC_FILE
+>  	bool "Enable kexec file based system call"
+>  	depends on ARCH_SUPPORTS_KEXEC_FILE
+> +	depends on CRYPTO_SHA256=y || !ARCH_SUPPORTS_KEXEC_PURGATORY
 
-diff --git a/drivers/misc/ocxl/file.c b/drivers/misc/ocxl/file.c
-index 6e63f060e4cc..ac69b7f361f5 100644
---- a/drivers/misc/ocxl/file.c
-+++ b/drivers/misc/ocxl/file.c
-@@ -14,7 +14,6 @@
- #define OCXL_NUM_MINORS 256 /* Total to reserve */
- 
- static dev_t ocxl_dev;
--static struct class *ocxl_class;
- static DEFINE_MUTEX(minors_idr_lock);
- static struct idr minors_idr;
- 
-@@ -509,6 +508,16 @@ static void ocxl_file_make_invisible(struct ocxl_file_info *info)
- 	cdev_del(&info->cdev);
- }
- 
-+static char *ocxl_devnode(const struct device *dev, umode_t *mode)
-+{
-+	return kasprintf(GFP_KERNEL, "ocxl/%s", dev_name(dev));
-+}
-+
-+static const struct class ocxl_class = {
-+	.name =		"ocxl",
-+	.devnode =	ocxl_devnode,
-+};
-+
- int ocxl_file_register_afu(struct ocxl_afu *afu)
- {
- 	int minor;
-@@ -529,7 +538,7 @@ int ocxl_file_register_afu(struct ocxl_afu *afu)
- 
- 	info->dev.parent = &fn->dev;
- 	info->dev.devt = MKDEV(MAJOR(ocxl_dev), minor);
--	info->dev.class = ocxl_class;
-+	info->dev.class = &ocxl_class;
- 	info->dev.release = info_release;
- 
- 	info->afu = afu;
-@@ -584,11 +593,6 @@ void ocxl_file_unregister_afu(struct ocxl_afu *afu)
- 	device_unregister(&info->dev);
- }
- 
--static char *ocxl_devnode(const struct device *dev, umode_t *mode)
--{
--	return kasprintf(GFP_KERNEL, "ocxl/%s", dev_name(dev));
--}
--
- int ocxl_file_init(void)
- {
- 	int rc;
-@@ -601,20 +605,19 @@ int ocxl_file_init(void)
- 		return rc;
- 	}
- 
--	ocxl_class = class_create("ocxl");
--	if (IS_ERR(ocxl_class)) {
-+	rc = class_register(&ocxl_class);
-+	if (rc) {
- 		pr_err("Unable to create ocxl class\n");
- 		unregister_chrdev_region(ocxl_dev, OCXL_NUM_MINORS);
--		return PTR_ERR(ocxl_class);
-+		return rc;
- 	}
- 
--	ocxl_class->devnode = ocxl_devnode;
- 	return 0;
- }
- 
- void ocxl_file_exit(void)
- {
--	class_destroy(ocxl_class);
-+	class_unregister(&ocxl_class);
- 	unregister_chrdev_region(ocxl_dev, OCXL_NUM_MINORS);
- 	idr_destroy(&minors_idr);
- }
--- 
-2.42.0
+I am not sure if the logic is correct. In theory, kexec_file code
+utilizes purgatory to verify the checksum digested during kernel loading
+when try to jump to the kernel. That means kexec_file depends on
+purgatory, but not contrary?
+
+With these changes, we can achieve the goal to avoid building issue,
+whereas the code logic becomes confusing. E.g people could disable
+CONFIG_KEXEC_FILE, but still get purgatory code built in which is
+totally useless.
+
+Not sure if I think too much over this.
+
+>  	select KEXEC_CORE
+>  	help
+>  	  This is new version of kexec system call. This system call is
+> -- 
+> 2.39.2
 
