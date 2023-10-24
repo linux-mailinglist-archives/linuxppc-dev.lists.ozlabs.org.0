@@ -1,88 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 287BA7D480C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Oct 2023 09:10:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC2D17D4C63
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Oct 2023 11:31:25 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=Iq4nMqJF;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=GrXfpeE3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Dby9AI0p;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SF39r6WMtz3cSv
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Oct 2023 18:10:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SF6JB5jgSz3cSS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Oct 2023 20:31:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=Iq4nMqJF;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=GrXfpeE3;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Dby9AI0p;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.28; helo=out4-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=kvalo@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SF38v3bvRz2y1l
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Oct 2023 18:09:50 +1100 (AEDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.nyi.internal (Postfix) with ESMTP id 9C7A65C021E;
-	Tue, 24 Oct 2023 03:09:47 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Tue, 24 Oct 2023 03:09:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm2; t=1698131387; x=1698217787; bh=VA
-	PNQYkTt0iwP9E8BmBBBQ+AGuWLrzjahGWfYfAXDTU=; b=Iq4nMqJFt+QLEijmKe
-	DhAWakAxAABCKSDqfnaR7YZKp4C6NkJZ7ND4rULfLCcWRIEj58zanM9wGS2zfa9Y
-	zigc9N6twVfBtoHb/7q4T963hfjST3MCVZ69hA4FycedX/nr9jIzsex4nucM165b
-	8S8lq3MNfxN8fNi8+2PM3PuPa6UGG93xLRMvbARixKI5IKAQRtgmx3clr8nTEZSt
-	+g1ZXJDAC6vM+1+xWssNnwtYQ6mtYd/Chgcy92evrvdUNiEnzAkCM50GbexM/Zyf
-	X+w5MwhnYlmccfEa/uRh05Yi8KNQhavZRGBkeCTeru9JfgYC3qFr4kJkJzvnsDXD
-	BRyQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm3; t=1698131387; x=1698217787; bh=VAPNQYkTt0iwP
-	9E8BmBBBQ+AGuWLrzjahGWfYfAXDTU=; b=GrXfpeE3r3mgoKD0ZLFpG4MFcGkPs
-	64U5UZhK0ca0Gplz9Bo7SHqhv+yZmBg+COuY1I1hzcwBcVJ/jeWSVRTdCHCPzh29
-	Kf/ZA6fC4x18y/S770OfsOykJYvIHKs348pkPCngIVeSm+SxUEDlFqXWvmPKzfPr
-	19nTjJuvTXn2bftghg3s2Br7hXIAZlt3TGJDuL+Nj+kgVCpLaTtCWjaNDShU+YBP
-	SFyHmxcYrpUUGVEcf5ijCNaA2AE2zpUSLSeaiQUURwLVEtCLsUeltQzwAFp3jhBR
-	MJQCUQUBSM+v/yfA32pWu79lRI9MEuCNPnLIOA0EbWWMz1KsiIL/sN9uA==
-X-ME-Sender: <xms:um03ZWPcUaARydLqvs68I6lWKmGM1lbzSfWN9_Lu9NVM9N2EJ_ZYLQ>
-    <xme:um03ZU_kFRyvhhqgqIPu6p9yGytDuavIAk75-G3JSaDMBvupJxjGRMXhgGgr0AFpv
-    c3RSw_wD2oszbOt7r4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrkeejgdduudefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepvefhffeltdegheeffffhtdegvdehjedtgfekueevgfduffettedtkeekueef
-    hedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
-    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:um03ZdSHpZIMBHo6YJ0_yJY7RCmTPHB9QDYVFmh_XfY1vkLCmcXWMQ>
-    <xmx:um03ZWu51nw9UtGXRtOtrGUEjeKyLRGpza2YE-MJX8GsFuL-HgwbYg>
-    <xmx:um03ZefY6gYyhDw_MtxykWTZxyR5xK8QSZlz4O1_b9SxIPPOQV6z3g>
-    <xmx:u203ZYFkf9pGyGvQPIRJAR1V8T0paAznFA4dDWl74L2MPtnR-nhSGw>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id DE6A7B60089; Tue, 24 Oct 2023 03:09:45 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-1048-g9229b632c5-fm-20231019.001-g9229b632
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SF6HM1Zjtz2xqH
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Oct 2023 20:30:39 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id D61BC62ADE;
+	Tue, 24 Oct 2023 09:30:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EABCC433C8;
+	Tue, 24 Oct 2023 09:30:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1698139836;
+	bh=CB0uZasGotH3WSQ2XD6CQGludeAGY3f8w17TrzekeQU=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=Dby9AI0p83lKR7U5CCjg2W7DpqRQqyb59zNfumlkY8ts8VHFwcff/XFzqbRKMY55Q
+	 RPEGb17YmlSQo+XND8ZEqC7yXRo+6kDE9s3zllgDm+XX6xUwEB5Z4wXMl+4sx4O02e
+	 HlDNnlnAG9UftAcKGoZHxSGp4zKOqPsYGiLTNoVQbiaXrsshmAYMv0FyYHYIOOaS0K
+	 FNXQGox4XxUgAWUtTfAGwv5zHAnOri9VwXtnN3WXrk66gXQ6NM2RfYSYo+eyHFUIRd
+	 CbCvNJqEy1WbUgxeM336II3ysCBIN6XpQjlNUkpd2/EQUjF31mxQmi6Kk7gjMRduMv
+	 TE0I45NGqEfNA==
+From: Kalle Valo <kvalo@kernel.org>
+To: Stefan Lippers-Hollmann <s.l-h@gmx.de>
+Subject: Re: [PATCH 10/10] [RFC] wifi: remove ipw2100/ipw2200 drivers
+References: <20231023131953.2876682-1-arnd@kernel.org>
+	<20231023131953.2876682-11-arnd@kernel.org>
+	<20231024014302.0a0b79b0@mir>
+Date: Tue, 24 Oct 2023 12:30:29 +0300
+In-Reply-To: <20231024014302.0a0b79b0@mir> (Stefan Lippers-Hollmann's message
+	of "Tue, 24 Oct 2023 01:43:02 +0200")
+Message-ID: <875y2wz7t6.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Message-Id: <b771991b-46fe-4eab-bcad-2325acf90d80@app.fastmail.com>
-In-Reply-To: <ZTdDy8ScUPxJOBHs@MiWiFi-R3L-srv>
-References: <20231023110308.1202042-1-arnd@kernel.org>
- <20231023110308.1202042-2-arnd@kernel.org> <ZTdALtO2rN4FaneC@MiWiFi-R3L-srv>
- <ZTdDy8ScUPxJOBHs@MiWiFi-R3L-srv>
-Date: Tue, 24 Oct 2023 09:09:25 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Baoquan He" <bhe@redhat.com>, "Arnd Bergmann" <arnd@kernel.org>
-Subject: Re: [PATCH 2/2] kexec: select CRYPTO from KEXEC_FILE instead of depending on
- it
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -95,76 +61,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Eric DeVolder <eric.devolder@oracle.com>, Ard Biesheuvel <ardb@kernel.org>, Costa Shulyupin <costa.shul@redhat.com>, linux-s390@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, x86@kernel.org, Ingo Molnar <mingo@redhat.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Vivek Goyal <vgoyal@redhat.com>, Sven Schnelle <svens@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, Hari Bathini <hbathini@linux.ibm.com>, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, linux-crypto@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-de
- v@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, Jeff Johnson <quic_jjohnson@quicinc.com>, Pavel Machek <pavel@ucw.cz>, Gregory Greenman <gregory.greenman@intel.com>, Stanislaw Gruszka <stf_xl@wp.pl>, linux-staging@lists.linux.dev, Linux Wireless <ilw@linux.intel.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Jakub Kicinski <kuba@kernel.org>, Stanislav Yakovlev <stas.yakovlev@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Nicolas Ferre <nicolas.ferre@microchip.com>, linux-arm-kernel@lists.infradead.org, Arnd Bergmann <arnd@kernel.org>, Geoff Levand <geoff@infradead.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "David
+ S . Miller" <davem@davemloft.net>, Larry Finger <Larry.Finger@lwfinger.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Oct 24, 2023, at 06:10, Baoquan He wrote:
-> On 10/24/23 at 11:55am, Baoquan He wrote:
->> On 10/23/23 at 01:01pm, Arnd Bergmann wrote:
->> > From: Arnd Bergmann <arnd@arndb.de>
->> > 
->> > All other users of crypto code use 'select' instead of 'depends on',
->> > so do the same thing with KEXEC_FILE for consistency.
->> > 
->> > In practice this makes very little difference as kernels with kexec
->> > support are very likely to also include some other feature that already
->> > selects both crypto and crypto_sha256, but being consistent here helps
->> > for usability as well as to avoid potential circular dependencies.
->> > 
->> > This reverts the dependency back to what it was originally before commit
->> > 74ca317c26a3f ("kexec: create a new config option CONFIG_KEXEC_FILE for
->> > new syscall"), which changed changed it with the comment "This should
->>                        ~~~~~~~~~~~~~~ typo
->> > be safer as "select" is not recursive", but that appears to have been
->> > done in error, as "select" is indeed recursive, and there are no other
->> > dependencies that prevent CRYPTO_SHA256 from being selected here.
->> > 
->> > Fixes: 74ca317c26a3f ("kexec: create a new config option CONFIG_KEXEC_FILE for new syscall")
->> > Cc: Herbert Xu <herbert@gondor.apana.org.au>
->> > Cc: "David S. Miller" <davem@davemloft.net>
->> > Cc: linux-crypto@vger.kernel.org
->> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->> > ---
->> >  kernel/Kconfig.kexec | 3 ++-
->> >  1 file changed, 2 insertions(+), 1 deletion(-)
->> 
->> LGTM,
->> 
->> Acked-by: Baoquan He <bhe@redhat.com>
+Stefan Lippers-Hollmann <s.l-h@gmx.de> writes:
+
+> On 2023-10-23, Arnd Bergmann wrote:
+>> From: Arnd Bergmann <arnd@arndb.de>
+>>
+>> These two drivers were used for the earliest "Centrino" branded Intel
+>> laptops during the late 32-bit Pentium-M era, roughly 2003 to 2005, which
+>> probably makes it the most modern platform that still uses the wireless
+>> extension interface instead of cfg80211. Unlike the other drivers that
+>> are suggested for removal, this one is still officially maintained.
+>>
+>> According to Johannes Berg, there was an effort to finish the move away
+>> from wext in the past, but the last evidence of this that I could find
+>> is from commit a3caa99e6c68f ("libipw: initiate cfg80211 API conversion
+>> (v2)") in 2009.
+>>
+>> Link: https://lore.kernel.org/all/87fs2fgals.fsf@kernel.org/
+>> Cc: Stanislav Yakovlev <stas.yakovlev@gmail.com>
+>> Cc: Linux Wireless <ilw@linux.intel.com>
+>> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>> ---
+>> I'm not convinced this should be in the same set of drivers as the
+>> rest, since this is clearly less obsolete than the other hardware
+>> that I would remove support for.
 >
-> Sorry, the patch 1/2 is not sent to me and kexec mailing list, so I
-> didn't get the intention of the entire patchset. I need hold the ack
-> until I read the patch 1. I have some concerns about patch 1 if I didn't
-> misunderstand it. Will come back later when patch 1 reviewing is
-> finished.
+> These have indeed been very common back in the day, I'm still using
+> a 2003-vintage 1.5 GHz Pentium-M 'Banias' Acer Travelmate 292LMi
+> notebook using ipw2200 (and have two spare ipw2200 mini-PCI cards).
+> Works still fine using v6.5.8-rc1 and WPA2PSK/ CCMP (sadly it does
+> not do WPA3) and I do use it semi-regularly (running the latest
+> stable- or stable-rc kernel of the day).
+>
+> While it would be nice to replace it with an ath5k based card (to
+> get WPA3 support), the card isn't that easy to reach in the notebook,
+> so it would be sad to see this go.
 
-Sorry about missing you on Cc. If anyone else is looking for the
-patch, it's archived at
-https://lore.kernel.org/lkml/20231023110308.1202042-1-arnd@kernel.org/
+Wow, I'm very surprised that ipw2200 still works after 20 years. Thanks
+for the report, I think it's best that we still keep the ipw2x00 driver
+in the kernel.
 
-The idea of patch 1 was only to address the build regression on
-x86, so I was hoping that part would be uncontroversial. I split
-out patch 2/2 since that is intended to actually change the behavior,
-hopefully for the better.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-I introduced a new regression on riscv that Conor Dooley found, and
-that should already be fixed now. It looks like we may need a similar
-change on s390
-
---- a/arch/s390/Kbuild
-+++ b/arch/s390/Kbuild
-@@ -7,7 +7,7 @@ obj-$(CONFIG_S390_HYPFS)        += hypfs/
- obj-$(CONFIG_APPLDATA_BASE)    += appldata/
- obj-y                          += net/
- obj-$(CONFIG_PCI)              += pci/
--obj-$(CONFIG_ARCH_SUPPORTS_KEXEC_PURGATORY) += purgatory/
-+obj-$(CONFIG_KEXEC_FILE)       += purgatory/
- 
- # for cleaning
- subdir- += boot tools
-
-but I haven't tested that, and I'll wait for your reply then.
-
-    Arnd
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
