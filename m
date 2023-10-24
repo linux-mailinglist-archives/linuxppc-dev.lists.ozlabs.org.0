@@ -2,54 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC2D17D4C63
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Oct 2023 11:31:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BF297D4ECA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Oct 2023 13:28:25 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Dby9AI0p;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=pSfiarvd;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SF6JB5jgSz3cSS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Oct 2023 20:31:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SF8vC24WFz3cTN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Oct 2023 22:28:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Dby9AI0p;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=pSfiarvd;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=kvalo@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SF6HM1Zjtz2xqH
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Oct 2023 20:30:39 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id D61BC62ADE;
-	Tue, 24 Oct 2023 09:30:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EABCC433C8;
-	Tue, 24 Oct 2023 09:30:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1698139836;
-	bh=CB0uZasGotH3WSQ2XD6CQGludeAGY3f8w17TrzekeQU=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=Dby9AI0p83lKR7U5CCjg2W7DpqRQqyb59zNfumlkY8ts8VHFwcff/XFzqbRKMY55Q
-	 RPEGb17YmlSQo+XND8ZEqC7yXRo+6kDE9s3zllgDm+XX6xUwEB5Z4wXMl+4sx4O02e
-	 HlDNnlnAG9UftAcKGoZHxSGp4zKOqPsYGiLTNoVQbiaXrsshmAYMv0FyYHYIOOaS0K
-	 FNXQGox4XxUgAWUtTfAGwv5zHAnOri9VwXtnN3WXrk66gXQ6NM2RfYSYo+eyHFUIRd
-	 CbCvNJqEy1WbUgxeM336II3ysCBIN6XpQjlNUkpd2/EQUjF31mxQmi6Kk7gjMRduMv
-	 TE0I45NGqEfNA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Stefan Lippers-Hollmann <s.l-h@gmx.de>
-Subject: Re: [PATCH 10/10] [RFC] wifi: remove ipw2100/ipw2200 drivers
-References: <20231023131953.2876682-1-arnd@kernel.org>
-	<20231023131953.2876682-11-arnd@kernel.org>
-	<20231024014302.0a0b79b0@mir>
-Date: Tue, 24 Oct 2023 12:30:29 +0300
-In-Reply-To: <20231024014302.0a0b79b0@mir> (Stefan Lippers-Hollmann's message
-	of "Tue, 24 Oct 2023 01:43:02 +0200")
-Message-ID: <875y2wz7t6.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SF8tL2PTtz2xpm
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Oct 2023 22:27:38 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1698146850;
+	bh=0rawQQDsSy5ZDyzyLXWe5qhkYDUtYtrPO+EcrEoTcco=;
+	h=From:To:Subject:Date:From;
+	b=pSfiarvdJ/RgOHEzHMO/vYJ580dIMQKg/zNRsbarrROsJkHGJyR6fxeEXqiZsrw/L
+	 mwiYqYr4OSlxzvv+OchF3WTaco6QbdyjUzSgLJZGYxA23pr9+ZrfU10KKLHepThIcV
+	 uVMNvGFmLy/4POTQa7xN//bxFvgIe3qW0hfYGHYuxZ7VzjuTwz0jCmnumMhMzQubvC
+	 zuclh45bqmZNutM+fjl7ykcI5VJ8GISXzyaU4MC7zmKbcqjK47CA5/isNhQQ2LKIjp
+	 hivSXq6Qju8rT6j9SRbiiSMvemO53gzEc7dRjDvJDLXZvDCg91MYqZT+Zp1UNymaEO
+	 UAWtdthvqL/YA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SF8tB4yVYz4x3D;
+	Tue, 24 Oct 2023 22:27:30 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc/configs/64s: Enable CONFIG_MEM_SOFT_DIRTY
+Date: Tue, 24 Oct 2023 22:27:25 +1100
+Message-ID: <20231024112726.1819795-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,52 +56,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, Jeff Johnson <quic_jjohnson@quicinc.com>, Pavel Machek <pavel@ucw.cz>, Gregory Greenman <gregory.greenman@intel.com>, Stanislaw Gruszka <stf_xl@wp.pl>, linux-staging@lists.linux.dev, Linux Wireless <ilw@linux.intel.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Jakub Kicinski <kuba@kernel.org>, Stanislav Yakovlev <stas.yakovlev@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Nicolas Ferre <nicolas.ferre@microchip.com>, linux-arm-kernel@lists.infradead.org, Arnd Bergmann <arnd@kernel.org>, Geoff Levand <geoff@infradead.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "David
- S . Miller" <davem@davemloft.net>, Larry Finger <Larry.Finger@lwfinger.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Stefan Lippers-Hollmann <s.l-h@gmx.de> writes:
+Enable CONFIG_MEM_SOFT_DIRTY to get some test coverage. Distros enable
+it, and it has been broken previously. See commit 66b2ca086210
+("powerpc/64s/radix: Fix soft dirty tracking").
 
-> On 2023-10-23, Arnd Bergmann wrote:
->> From: Arnd Bergmann <arnd@arndb.de>
->>
->> These two drivers were used for the earliest "Centrino" branded Intel
->> laptops during the late 32-bit Pentium-M era, roughly 2003 to 2005, which
->> probably makes it the most modern platform that still uses the wireless
->> extension interface instead of cfg80211. Unlike the other drivers that
->> are suggested for removal, this one is still officially maintained.
->>
->> According to Johannes Berg, there was an effort to finish the move away
->> from wext in the past, but the last evidence of this that I could find
->> is from commit a3caa99e6c68f ("libipw: initiate cfg80211 API conversion
->> (v2)") in 2009.
->>
->> Link: https://lore.kernel.org/all/87fs2fgals.fsf@kernel.org/
->> Cc: Stanislav Yakovlev <stas.yakovlev@gmail.com>
->> Cc: Linux Wireless <ilw@linux.intel.com>
->> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->> ---
->> I'm not convinced this should be in the same set of drivers as the
->> rest, since this is clearly less obsolete than the other hardware
->> that I would remove support for.
->
-> These have indeed been very common back in the day, I'm still using
-> a 2003-vintage 1.5 GHz Pentium-M 'Banias' Acer Travelmate 292LMi
-> notebook using ipw2200 (and have two spare ipw2200 mini-PCI cards).
-> Works still fine using v6.5.8-rc1 and WPA2PSK/ CCMP (sadly it does
-> not do WPA3) and I do use it semi-regularly (running the latest
-> stable- or stable-rc kernel of the day).
->
-> While it would be nice to replace it with an ath5k based card (to
-> get WPA3 support), the card isn't that easy to reach in the notebook,
-> so it would be sad to see this go.
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/configs/ppc64_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Wow, I'm very surprised that ipw2200 still works after 20 years. Thanks
-for the report, I think it's best that we still keep the ipw2x00 driver
-in the kernel.
-
+diff --git a/arch/powerpc/configs/ppc64_defconfig b/arch/powerpc/configs/ppc64_defconfig
+index 6e7b9e8fd225..544a65fda77b 100644
+--- a/arch/powerpc/configs/ppc64_defconfig
++++ b/arch/powerpc/configs/ppc64_defconfig
+@@ -92,6 +92,7 @@ CONFIG_MEMORY_HOTPLUG=y
+ CONFIG_MEMORY_HOTREMOVE=y
+ CONFIG_KSM=y
+ CONFIG_TRANSPARENT_HUGEPAGE=y
++CONFIG_MEM_SOFT_DIRTY=y
+ CONFIG_ZONE_DEVICE=y
+ CONFIG_NET=y
+ CONFIG_PACKET=y
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.41.0
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
