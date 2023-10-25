@@ -1,32 +1,31 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36B4F7D6866
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Oct 2023 12:25:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF8007D6892
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Oct 2023 12:32:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SFlSR1CBNz3cVx
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Oct 2023 21:25:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SFlck4tz5z3cVX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Oct 2023 21:32:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=903v=gh=xs4all.nl=hverkuil@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=srs0=903v=gh=xs4all.nl=hverkuil@kernel.org; receiver=lists.ozlabs.org)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SFlRv4qGlz3bbW
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Oct 2023 21:25:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SFlcF3KHLz2xHT
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Oct 2023 21:32:29 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 9921561E23;
-	Wed, 25 Oct 2023 10:25:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09288C433C8;
-	Wed, 25 Oct 2023 10:25:07 +0000 (UTC)
-Message-ID: <0e2e072d-3d21-4d60-9cc7-95b9b5b44ed4@xs4all.nl>
-Date: Wed, 25 Oct 2023 12:25:06 +0200
+	by ams.source.kernel.org (Postfix) with ESMTP id D5B2BB82DA0;
+	Wed, 25 Oct 2023 10:32:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2AA1C433C7;
+	Wed, 25 Oct 2023 10:32:21 +0000 (UTC)
+Message-ID: <539d4f48-8c52-4b85-a0b3-ccd4039e299f@xs4all.nl>
+Date: Wed, 25 Oct 2023 12:32:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v7 06/13] media: uapi: Add V4L2_CAP_AUDIO_M2M
- capability flag
+Subject: Re: [RFC PATCH v7 09/13] media: uapi: Add V4L2_CTRL_CLASS_M2M_AUDIO
 Content-Language: en-US, nl
 To: Shengjiu Wang <shengjiu.wang@nxp.com>, sakari.ailus@iki.fi,
  tfiga@chromium.org, m.szyprowski@samsung.com, mchehab@kernel.org,
@@ -36,7 +35,7 @@ To: Shengjiu Wang <shengjiu.wang@nxp.com>, sakari.ailus@iki.fi,
  perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org,
  linuxppc-dev@lists.ozlabs.org
 References: <1697794232-2607-1-git-send-email-shengjiu.wang@nxp.com>
- <1697794232-2607-7-git-send-email-shengjiu.wang@nxp.com>
+ <1697794232-2607-10-git-send-email-shengjiu.wang@nxp.com>
 From: Hans Verkuil <hverkuil@xs4all.nl>
 Autocrypt: addr=hverkuil@xs4all.nl; keydata=
  xsFNBFQ84W0BEAC7EF1iL4s3tY8cRTVkJT/297h0Hz0ypA+ByVM4CdU9sN6ua/YoFlr9k0K4
@@ -81,7 +80,7 @@ Autocrypt: addr=hverkuil@xs4all.nl; keydata=
  gYmkrmv0duG1FStpY+IIQn1TOkuXrciTVfZY1cZD0aVxwlxXBnUNZZNslldvXFtndxR0SFat
  sflovhDxKyhFwXOP0Rv8H378/+14TaykknRBIKEc0+lcr+EMOSUR5eg4aURb8Gc3Uc7fgQ6q
  UssTXzHPyj1hAyDpfu8DzAwlh4kKFTodxSsKAjI45SLjadSc94/5Gy8645Y1KgBzBPTH7Q==
-In-Reply-To: <1697794232-2607-7-git-send-email-shengjiu.wang@nxp.com>
+In-Reply-To: <1697794232-2607-10-git-send-email-shengjiu.wang@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -99,60 +98,122 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 20/10/2023 11:30, Shengjiu Wang wrote:
-> V4L2_CAP_AUDIO_M2M is similar to V4L2_CAP_VIDEO_M2M flag.
-> 
-> It is used for audio memory to memory case.
+> The Audio M2M class includes controls for audio memory-to-memory
+> use cases. The controls can be used for audio codecs, audio
+> preprocessing, audio postprocessing.
 > 
 > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 > ---
->  Documentation/userspace-api/media/v4l/vidioc-querycap.rst    | 3 +++
->  Documentation/userspace-api/media/videodev2.h.rst.exceptions | 1 +
->  include/uapi/linux/videodev2.h                               | 1 +
->  3 files changed, 5 insertions(+)
+>  .../userspace-api/media/v4l/common.rst        |  1 +
+>  .../media/v4l/ext-ctrls-audio-m2m.rst         | 21 +++++++++++++++++++
+>  .../media/v4l/vidioc-g-ext-ctrls.rst          |  4 ++++
+>  drivers/media/v4l2-core/v4l2-ctrls-defs.c     |  4 ++++
+>  include/uapi/linux/v4l2-controls.h            |  4 ++++
+>  5 files changed, 34 insertions(+)
+>  create mode 100644 Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
 > 
-> diff --git a/Documentation/userspace-api/media/v4l/vidioc-querycap.rst b/Documentation/userspace-api/media/v4l/vidioc-querycap.rst
-> index 6c57b8428356..0b3cefefc86b 100644
-> --- a/Documentation/userspace-api/media/v4l/vidioc-querycap.rst
-> +++ b/Documentation/userspace-api/media/v4l/vidioc-querycap.rst
-> @@ -259,6 +259,9 @@ specification the ioctl returns an ``EINVAL`` error code.
->          video topology configuration, including which I/O entity is routed to
->          the input/output, is configured by userspace via the Media Controller.
->          See :ref:`media_controller`.
-> +    * - ``V4L2_CAP_AUDIO_M2M``
-> +      - 0x40000000
-> +      - The device supports the audio Memory-To-Memory interface.
->      * - ``V4L2_CAP_DEVICE_CAPS``
->        - 0x80000000
->        - The driver fills the ``device_caps`` field. This capability can
-> diff --git a/Documentation/userspace-api/media/videodev2.h.rst.exceptions b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
-> index 3e58aac4ef0b..da6d0b8e4c2c 100644
-> --- a/Documentation/userspace-api/media/videodev2.h.rst.exceptions
-> +++ b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
-> @@ -197,6 +197,7 @@ replace define V4L2_CAP_META_OUTPUT device-capabilities
->  replace define V4L2_CAP_DEVICE_CAPS device-capabilities
->  replace define V4L2_CAP_TOUCH device-capabilities
->  replace define V4L2_CAP_IO_MC device-capabilities
-> +replace define V4L2_CAP_AUDIO_M2M device-capabilities
+> diff --git a/Documentation/userspace-api/media/v4l/common.rst b/Documentation/userspace-api/media/v4l/common.rst
+> index ea0435182e44..d5366e96a596 100644
+> --- a/Documentation/userspace-api/media/v4l/common.rst
+> +++ b/Documentation/userspace-api/media/v4l/common.rst
+> @@ -52,6 +52,7 @@ applicable to all devices.
+>      ext-ctrls-fm-rx
+>      ext-ctrls-detect
+>      ext-ctrls-colorimetry
+> +    ext-ctrls-audio-m2m
+>      fourcc
+>      format
+>      planar-apis
+> diff --git a/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst b/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
+> new file mode 100644
+> index 000000000000..82d2ecedbfee
+> --- /dev/null
+> +++ b/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
+> @@ -0,0 +1,21 @@
+> +.. SPDX-License-Identifier: GFDL-1.1-no-invariants-or-later
+> +
+> +.. _audiom2m-controls:
+> +
+> +***************************
+> +Audio M2M Control Reference
+> +***************************
+> +
+> +The Audio M2M class includes controls for audio memory-to-memory
+> +use cases. The controls can be used for audio codecs, audio
+> +preprocessing, audio postprocessing.
+> +
+> +Audio M2M Control IDs
+> +-----------------------
+> +
+> +.. _audiom2m-control-id:
+> +
+> +``V4L2_CID_M2M_AUDIO_CLASS (class)``
+> +    The Audio M2M class descriptor. Calling
+> +    :ref:`VIDIOC_QUERYCTRL` for this control will
+> +    return a description of this control class.
+> diff --git a/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst b/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
+> index f9f73530a6be..e8475f9fd2cf 100644
+> --- a/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
+> +++ b/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
+> @@ -480,6 +480,10 @@ still cause this situation.
+>        - 0xa50000
+>        - The class containing colorimetry controls. These controls are
+>  	described in :ref:`colorimetry-controls`.
+> +    * - ``V4L2_CTRL_CLASS_M2M_AUDIO``
+> +      - 0xa60000
+> +      - The class containing audio m2m controls. These controls are
+> +	described in :ref:`audiom2m-controls`.
 >  
->  # V4L2 pix flags
->  replace define V4L2_PIX_FMT_PRIV_MAGIC :c:type:`v4l2_pix_format`
-> diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
-> index c3d4e490ce7c..d5da76607101 100644
-> --- a/include/uapi/linux/videodev2.h
-> +++ b/include/uapi/linux/videodev2.h
-> @@ -508,6 +508,7 @@ struct v4l2_capability {
->  #define V4L2_CAP_TOUCH                  0x10000000  /* Is a touch device */
+>  Return Value
+>  ============
+> diff --git a/drivers/media/v4l2-core/v4l2-ctrls-defs.c b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+> index 8696eb1cdd61..2a85ea3dc92f 100644
+> --- a/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+> +++ b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+> @@ -1242,6 +1242,9 @@ const char *v4l2_ctrl_get_name(u32 id)
+>  	case V4L2_CID_COLORIMETRY_CLASS:	return "Colorimetry Controls";
+>  	case V4L2_CID_COLORIMETRY_HDR10_CLL_INFO:		return "HDR10 Content Light Info";
+>  	case V4L2_CID_COLORIMETRY_HDR10_MASTERING_DISPLAY:	return "HDR10 Mastering Display";
+> +
+> +	/* Audio M2M controls */
+> +	case V4L2_CID_M2M_AUDIO_CLASS:  return "Audio M2M Controls";
+>  	default:
+>  		return NULL;
+>  	}
+> @@ -1451,6 +1454,7 @@ void v4l2_ctrl_fill(u32 id, const char **name, enum v4l2_ctrl_type *type,
+>  	case V4L2_CID_DETECT_CLASS:
+>  	case V4L2_CID_CODEC_STATELESS_CLASS:
+>  	case V4L2_CID_COLORIMETRY_CLASS:
+> +	case V4L2_CID_M2M_AUDIO_CLASS:
+>  		*type = V4L2_CTRL_TYPE_CTRL_CLASS;
+>  		/* You can neither read nor write these */
+>  		*flags |= V4L2_CTRL_FLAG_READ_ONLY | V4L2_CTRL_FLAG_WRITE_ONLY;
+> diff --git a/include/uapi/linux/v4l2-controls.h b/include/uapi/linux/v4l2-controls.h
+> index 68db66d4aae8..eb0f0a76f867 100644
+> --- a/include/uapi/linux/v4l2-controls.h
+> +++ b/include/uapi/linux/v4l2-controls.h
+> @@ -30,6 +30,7 @@
+>  #define V4L2_CTRL_CLASS_DETECT		0x00a30000	/* Detection controls */
+>  #define V4L2_CTRL_CLASS_CODEC_STATELESS 0x00a40000	/* Stateless codecs controls */
+>  #define V4L2_CTRL_CLASS_COLORIMETRY	0x00a50000	/* Colorimetry controls */
+> +#define V4L2_CTRL_CLASS_M2M_AUDIO	0x00a60000	/* Audio M2M controls */
 >  
->  #define V4L2_CAP_IO_MC			0x20000000  /* Is input/output controlled by the media controller */
-> +#define V4L2_CAP_AUDIO_M2M              0x40000000  /* audio memory to memory */
+>  /* User-class control IDs */
+>  
+> @@ -3494,4 +3495,7 @@ struct v4l2_ctrl_av1_film_grain {
+>  #define V4L2_CID_MPEG_MFC51_BASE        V4L2_CID_CODEC_MFC51_BASE
+>  #endif
+>  
+> +#define V4L2_CID_M2M_AUDIO_CLASS_BASE  (V4L2_CTRL_CLASS_M2M_AUDIO | 0x900)
+> +#define V4L2_CID_M2M_AUDIO_CLASS       (V4L2_CTRL_CLASS_M2M_AUDIO | 1)
+> +
 
-Let's pick 0x00000008 for this to fill up a hole in the caps.
+This should be moved up to before the #ifndef __KERNEL__. Those backwards compatibility
+defines have to remain at the end of the header.
 
 Regards,
 
 	Hans
 
->  
->  #define V4L2_CAP_DEVICE_CAPS            0x80000000  /* sets device capabilities field */
->  
+>  #endif
 
