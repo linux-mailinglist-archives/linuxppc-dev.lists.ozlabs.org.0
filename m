@@ -2,39 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A0567D77C4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 00:24:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32DA37D77CE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 00:25:39 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=VojGS1Pp;
+	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=ZZ1auFEM;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SG3PD0Qypz3clc
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 09:24:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SG3R515pcz3vmn
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 09:25:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=VojGS1Pp;
+	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=ZZ1auFEM;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=salutedevices.com (client-ip=37.18.73.165; helo=mx1.sberdevices.ru; envelope-from=gnstark@salutedevices.com; receiver=lists.ozlabs.org)
 Received: from mx1.sberdevices.ru (mx1.sberdevices.ru [37.18.73.165])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SFqBR3mycz2xwH
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SFqBR3xfnz3bxL
 	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Oct 2023 00:13:51 +1100 (AEDT)
 Received: from p-infra-ksmg-sc-msk01 (localhost [127.0.0.1])
-	by mx1.sberdevices.ru (Postfix) with ESMTP id B5F61100044;
+	by mx1.sberdevices.ru (Postfix) with ESMTP id DF1B0100045;
 	Wed, 25 Oct 2023 16:07:44 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru B5F61100044
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru DF1B0100045
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
 	s=mail; t=1698239264;
-	bh=bfmNKLq7qXt685RQkGWfdj7Fq3sNLbKBr4vZ23mFyMU=;
+	bh=X7h6QnvXdm+wS50Idwxv0nNdXJ9bCTp96VnMyQNCCwg=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=VojGS1PppsDkwWGmglY1Afhu5vYAKIYEUkEHdbS8F1mzDQmnEWIJJKLEu5ge1jdKk
-	 jz9GjXWVhsKYUqVgkk6ZU7SYg50fwdfLaZXmNuSgalrOibjjfWCRjsm5h3w79k5g+K
-	 FkHvvweEIoiTlvnLeuBmY15fp2mg/5t0cZjCIGg1P5myRI1ECi7Tk1xgdjgZfMqet9
-	 +BMue/7yrY0AhX84Oeroa+AVJdiOZXgAkAfkkqDrom4iyT3QHAc5ZKlvXVgulumCHC
-	 uq87G1cFwo3PxrvrAITB6YhIM4rzluhSPzcX0+N8HSBESMawpUffI+Vl6R/xHdP+/C
-	 ztSeq+Vm0XV5Q==
+	b=ZZ1auFEMuagcIDSYOZM/p5o94oG1+t8GC7IJ14Leiu0ddlm09XDkHDT3TgDXNQ00q
+	 XOLfr/sfvTfSzhqe8LZwosH/6Q6VrYqXH/o2mZT/rnaUi51g0pdkx9oncCeHeFQFEz
+	 BgLrj2isnzciMZFHXWL+qQMrGstMnQnT0eG1B32GvApOH47JEHQnBvleUyUVan2XUH
+	 6nkEpdI9Qx3KEYgpUqBIFtLZyeLS2fMReyNVPP5IwWgmkuediQZHa+k0s44PqvSGK4
+	 2m4j3UQDR3nqY6WRjdqSM7W9+XAiRfoAdXRNgwbijhbg4sYDOWHznKjCAW7B0csw1z
+	 fXEjPXLAQDgOw==
 Received: from p-i-exch-sc-m01.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
@@ -48,9 +48,9 @@ From: George Stark <gnstark@salutedevices.com>
 To: <pavel@ucw.cz>, <lee@kernel.org>, <vadimp@nvidia.com>,
 	<mpe@ellerman.id.au>, <npiggin@gmail.com>, <christophe.leroy@csgroup.eu>,
 	<gnstark@salutedevices.com>
-Subject: [PATCH 2/8] leds: nic78bx: explicitly unregister LEDs at module's shutdown
-Date: Wed, 25 Oct 2023 16:07:31 +0300
-Message-ID: <20231025130737.2015468-3-gnstark@salutedevices.com>
+Subject: [PATCH 3/8] leds: an30259a: explicitly unregister LEDs at module's shutdown
+Date: Wed, 25 Oct 2023 16:07:32 +0300
+Message-ID: <20231025130737.2015468-4-gnstark@salutedevices.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231025130737.2015468-1-gnstark@salutedevices.com>
 References: <20231025130737.2015468-1-gnstark@salutedevices.com>
@@ -100,24 +100,24 @@ So explicitly unregister LEDs at module shutdown.
 
 Signed-off-by: George Stark <gnstark@salutedevices.com>
 ---
- drivers/leds/leds-nic78bx.c | 4 ++++
+ drivers/leds/leds-an30259a.c | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/drivers/leds/leds-nic78bx.c b/drivers/leds/leds-nic78bx.c
-index f196f52eec1e..12b70fcad37f 100644
---- a/drivers/leds/leds-nic78bx.c
-+++ b/drivers/leds/leds-nic78bx.c
-@@ -170,6 +170,10 @@ static int nic78bx_probe(struct platform_device *pdev)
- static int nic78bx_remove(struct platform_device *pdev)
+diff --git a/drivers/leds/leds-an30259a.c b/drivers/leds/leds-an30259a.c
+index 24b1041213c2..4209a407d802 100644
+--- a/drivers/leds/leds-an30259a.c
++++ b/drivers/leds/leds-an30259a.c
+@@ -324,6 +324,10 @@ static int an30259a_probe(struct i2c_client *client)
+ static void an30259a_remove(struct i2c_client *client)
  {
- 	struct nic78bx_led_data *led_data = platform_get_drvdata(pdev);
+ 	struct an30259a *chip = i2c_get_clientdata(client);
 +	int i;
 +
-+	for (i = 0; i < ARRAY_SIZE(nic78bx_leds); i++)
-+		devm_led_classdev_unregister(&pdev->dev, &nic78bx_leds[i].cdev);
++	for (i = 0; i < chip->num_leds; i++)
++		devm_led_classdev_unregister(&client->dev, &chip->leds[i].cdev);
  
- 	/* Lock LED register */
- 	outb(NIC78BX_LOCK_VALUE,
+ 	mutex_destroy(&chip->mutex);
+ }
 -- 
 2.38.4
 
