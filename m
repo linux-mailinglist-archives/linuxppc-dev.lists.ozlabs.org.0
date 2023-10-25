@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DEDD7D7280
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Oct 2023 19:41:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD2B7D72A8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Oct 2023 19:50:30 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hrrZD3Ya;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nadt9RxL;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SFx6z0lvqz3c8L
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 04:41:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SFxKc3Srjz3cST
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 04:50:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hrrZD3Ya;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nadt9RxL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SFx664ZzYz2xXP
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Oct 2023 04:40:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SFxJh1TPDz2xYt
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Oct 2023 04:49:40 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 2C33DCE2803;
-	Wed, 25 Oct 2023 17:40:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0BECC433C8;
-	Wed, 25 Oct 2023 17:40:19 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTP id DFF4FB81B3E;
+	Wed, 25 Oct 2023 17:49:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A26C433C8;
+	Wed, 25 Oct 2023 17:49:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1698255626;
-	bh=vowI2I62ibmckfqS1BgsmGmzvGGzK48iOcs0vXDIj9o=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=hrrZD3YaKFG3WBXkYLbm7jYNKJBa04fRbCGoe3D/K3LG8t8zMnWNsGnXu44/TXr6W
-	 XdE54VqBFQPnpj8cixVjGYzwGgFex+KrvYPQKU58ryTRbw6MU8902YuWNTXrFYp3+h
-	 bhJ7NqAlAP2omqduFtpZF1QtumtB/xhkkBjyjXf8voavmR2I+myq7XSP07c12bSnBx
-	 3XMYb8Ql3VBuUXpyEb/CTbkINIp5PVxXpBdoXgeTAcAM7tb0TNSqeW1uc6jF8LBtD0
-	 44etvTgFq99q5a3CcGI2T/Ltjis3Q1JIR5Q3ii5d2MTsZWKqd7fPTH6rcsKflO/bfr
-	 LK5epcBcKa3cQ==
+	s=k20201202; t=1698256173;
+	bh=CeyTBZs2xeQb0TaJ5m+PpCM8nU28HSwaY1ik5tYD5o0=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=nadt9RxLEqdHQTzPCvB13pBQ1Ju+RhH3NuQ+TT+dsOEsLlKYWgzWmdZbyM7HjHxsG
+	 R7PqnTwS5jDxcU0LCHA15oW67sHKbxeTFWDFsZkNjS6wPoDme83JMnIAkPZg+iMOiG
+	 gvM89z6zDpLOCUhfgShobVv5NtRtt4igElnNjJJ596qVQ+FJAdlCIlJVfWw15kw+fH
+	 f5I8rbfwXSh5SoR2cWdwEa/TzVEJcmGZb6bAlUNACxoItcxlsz1b14qIJ0v05LDXT/
+	 /IOHbguBYqKOkVKZvQ+XVSmfCas70j1oqYv3vTtDp6JapFQpKWQ/rNR8apP0znKWAp
+	 pOMIzfudAr/HA==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 25 Oct 2023 20:40:17 +0300
-Message-Id: <CWHPDGHI9EJK.WMPDVUJUR67I@suppilovahvero>
-Subject: Re: [PATCH v4 1/5] crypto: mxs-dcp: Add support for hardware-bound
+Date: Wed, 25 Oct 2023 20:49:24 +0300
+Message-Id: <CWHPKFQIGWPM.B6IBLPXVBR1E@suppilovahvero>
+Subject: Re: [PATCH v4 2/5] KEYS: trusted: Introduce NXP DCP-backed trusted
  keys
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
 To: "David Gstir" <david@sigma-star.at>, "Mimi Zohar" <zohar@linux.ibm.com>,
@@ -50,8 +50,8 @@ To: "David Gstir" <david@sigma-star.at>, "Mimi Zohar" <zohar@linux.ibm.com>,
  <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>
 X-Mailer: aerc 0.15.2
 References: <20231024162024.51260-1-david@sigma-star.at>
- <20231024162024.51260-2-david@sigma-star.at>
-In-Reply-To: <20231024162024.51260-2-david@sigma-star.at>
+ <20231024162024.51260-3-david@sigma-star.at>
+In-Reply-To: <20231024162024.51260-3-david@sigma-star.at>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,27 +73,51 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Tue Oct 24, 2023 at 7:20 PM EEST, David Gstir wrote:
-> DCP is capable of performing AES with two hardware-bound keys:
+> DCP (Data Co-Processor) is the little brother of NXP's CAAM IP.
+> Beside of accelerated crypto operations, it also offers support for
+> hardware-bound keys. Using this feature it is possible to implement a blo=
+b
+> mechanism similar to what CAAM offers. Unlike on CAAM, constructing and
+> parsing the blob has to happen in software (i.e. the kernel).
 >
-> - The one-time programmable (OTP) key which is burnt via on-chip fuses
-> - The unique key (UK) which is derived from the OTP key
+> The software-based blob format used by DCP trusted keys encrypts
+> the payload using AES-128-GCM with a freshly generated random key and non=
+ce.
+> The random key itself is AES-128-ECB encrypted using the DCP unique
+> or OTP key.
 >
-> In addition to the two hardware-bound keys, DCP also supports
-> storing keys in 4 dedicated key slots within its secure memory area
-> (internal SRAM).
+> The DCP trusted key blob format is:
+> /*
+>  * struct dcp_blob_fmt - DCP BLOB format.
+>  *
+>  * @fmt_version: Format version, currently being %1
+>  * @blob_key: Random AES 128 key which is used to encrypt @payload,
+>  *            @blob_key itself is encrypted with OTP or UNIQUE device key=
+ in
+>  *            AES-128-ECB mode by DCP.
+>  * @nonce: Random nonce used for @payload encryption.
+>  * @payload_len: Length of the plain text @payload.
+>  * @payload: The payload itself, encrypted using AES-128-GCM and @blob_ke=
+y,
+>  *           GCM auth tag of size AES_BLOCK_SIZE is attached at the end o=
+f it.
+>  *
+>  * The total size of a DCP BLOB is sizeof(struct dcp_blob_fmt) + @payload=
+_len +
+>  * AES_BLOCK_SIZE.
+>  */
+> struct dcp_blob_fmt {
+> 	__u8 fmt_version;
+> 	__u8 blob_key[AES_KEYSIZE_128];
+> 	__u8 nonce[AES_KEYSIZE_128];
+> 	__le32 payload_len;
+> 	__u8 payload[];
+> } __packed;
 >
-> These keys are not stored in main memory and are therefore
-> not directly accessible by the operating system. To use them
-> for AES operations, a one-byte key reference has to supplied
-> with the DCP operation descriptor in the control register.
->
-> This adds support for using any of these 6 keys through the crypto API
-> via their key reference after they have been set up. The main purpose
-> is to add support for DCP-backed trusted keys. Other use cases are
-> possible too (see similar existing paes implementations), but these
-> should carefully be evaluated as e.g. enabling AF_ALG will give
-> userspace full access to use keys. In scenarios with untrustworthy
-> userspace, this will enable en-/decryption oracles.
+> By default the unique key is used. It is also possible to use the
+> OTP key. While the unique key should be unique it is not documented how
+> this key is derived. Therefore selection the OTP key is supported as
+> well via the use_otp_key module parameter.
 >
 > Co-developed-by: Richard Weinberger <richard@nod.at>
 > Signed-off-by: Richard Weinberger <richard@nod.at>
@@ -101,247 +125,76 @@ On Tue Oct 24, 2023 at 7:20 PM EEST, David Gstir wrote:
 > Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
 > Signed-off-by: David Gstir <david@sigma-star.at>
 > ---
->  drivers/crypto/mxs-dcp.c | 104 ++++++++++++++++++++++++++++++++++-----
->  include/soc/fsl/dcp.h    |  17 +++++++
->  2 files changed, 110 insertions(+), 11 deletions(-)
->  create mode 100644 include/soc/fsl/dcp.h
+>  include/keys/trusted_dcp.h                |  11 +
+>  security/keys/trusted-keys/Kconfig        |   9 +-
+>  security/keys/trusted-keys/Makefile       |   2 +
+>  security/keys/trusted-keys/trusted_core.c |   6 +-
+>  security/keys/trusted-keys/trusted_dcp.c  | 311 ++++++++++++++++++++++
+>  5 files changed, 337 insertions(+), 2 deletions(-)
+>  create mode 100644 include/keys/trusted_dcp.h
+>  create mode 100644 security/keys/trusted-keys/trusted_dcp.c
 >
-> diff --git a/drivers/crypto/mxs-dcp.c b/drivers/crypto/mxs-dcp.c
-> index f6b7bce0e656..2dc664fb2faf 100644
-> --- a/drivers/crypto/mxs-dcp.c
-> +++ b/drivers/crypto/mxs-dcp.c
-> @@ -15,6 +15,7 @@
->  #include <linux/platform_device.h>
->  #include <linux/stmp_device.h>
->  #include <linux/clk.h>
-> +#include <soc/fsl/dcp.h>
-> =20
->  #include <crypto/aes.h>
->  #include <crypto/sha1.h>
-> @@ -101,6 +102,7 @@ struct dcp_async_ctx {
->  	struct crypto_skcipher		*fallback;
->  	unsigned int			key_len;
->  	uint8_t				key[AES_KEYSIZE_128];
-> +	bool				key_referenced;
->  };
-> =20
->  struct dcp_aes_req_ctx {
-> @@ -155,6 +157,7 @@ static struct dcp *global_sdcp;
->  #define MXS_DCP_CONTROL0_HASH_TERM		(1 << 13)
->  #define MXS_DCP_CONTROL0_HASH_INIT		(1 << 12)
->  #define MXS_DCP_CONTROL0_PAYLOAD_KEY		(1 << 11)
-> +#define MXS_DCP_CONTROL0_OTP_KEY		(1 << 10)
->  #define MXS_DCP_CONTROL0_CIPHER_ENCRYPT		(1 << 8)
->  #define MXS_DCP_CONTROL0_CIPHER_INIT		(1 << 9)
->  #define MXS_DCP_CONTROL0_ENABLE_HASH		(1 << 6)
-> @@ -168,6 +171,8 @@ static struct dcp *global_sdcp;
->  #define MXS_DCP_CONTROL1_CIPHER_MODE_ECB	(0 << 4)
->  #define MXS_DCP_CONTROL1_CIPHER_SELECT_AES128	(0 << 0)
-> =20
-> +#define MXS_DCP_CONTROL1_KEY_SELECT_SHIFT	8
-> +
->  static int mxs_dcp_start_dma(struct dcp_async_ctx *actx)
->  {
->  	int dma_err;
-> @@ -224,13 +229,16 @@ static int mxs_dcp_run_aes(struct dcp_async_ctx *ac=
-tx,
->  	struct dcp *sdcp =3D global_sdcp;
->  	struct dcp_dma_desc *desc =3D &sdcp->coh->desc[actx->chan];
->  	struct dcp_aes_req_ctx *rctx =3D skcipher_request_ctx(req);
-> +	bool key_referenced =3D actx->key_referenced;
->  	int ret;
-> =20
-> -	key_phys =3D dma_map_single(sdcp->dev, sdcp->coh->aes_key,
-> -				  2 * AES_KEYSIZE_128, DMA_TO_DEVICE);
-> -	ret =3D dma_mapping_error(sdcp->dev, key_phys);
-> -	if (ret)
-> -		return ret;
-> +	if (!key_referenced) {
-> +		key_phys =3D dma_map_single(sdcp->dev, sdcp->coh->aes_key,
-> +					  2 * AES_KEYSIZE_128, DMA_TO_DEVICE);
-> +		ret =3D dma_mapping_error(sdcp->dev, key_phys);
-> +		if (ret)
-> +			return ret;
-> +	}
-> =20
->  	src_phys =3D dma_map_single(sdcp->dev, sdcp->coh->aes_in_buf,
->  				  DCP_BUF_SZ, DMA_TO_DEVICE);
-> @@ -255,8 +263,12 @@ static int mxs_dcp_run_aes(struct dcp_async_ctx *act=
-x,
->  		    MXS_DCP_CONTROL0_INTERRUPT |
->  		    MXS_DCP_CONTROL0_ENABLE_CIPHER;
-> =20
-> -	/* Payload contains the key. */
-> -	desc->control0 |=3D MXS_DCP_CONTROL0_PAYLOAD_KEY;
-> +	if (key_referenced)
-> +		/* Set OTP key bit to select the key via KEY_SELECT. */
-> +		desc->control0 |=3D MXS_DCP_CONTROL0_OTP_KEY;
-> +	else
-> +		/* Payload contains the key. */
-> +		desc->control0 |=3D MXS_DCP_CONTROL0_PAYLOAD_KEY;
-> =20
->  	if (rctx->enc)
->  		desc->control0 |=3D MXS_DCP_CONTROL0_CIPHER_ENCRYPT;
-> @@ -270,6 +282,9 @@ static int mxs_dcp_run_aes(struct dcp_async_ctx *actx=
-,
->  	else
->  		desc->control1 |=3D MXS_DCP_CONTROL1_CIPHER_MODE_CBC;
-> =20
-> +	if (key_referenced)
-> +		desc->control1 |=3D sdcp->coh->aes_key[0] << MXS_DCP_CONTROL1_KEY_SELE=
-CT_SHIFT;
-> +
->  	desc->next_cmd_addr =3D 0;
->  	desc->source =3D src_phys;
->  	desc->destination =3D dst_phys;
-> @@ -284,9 +299,9 @@ static int mxs_dcp_run_aes(struct dcp_async_ctx *actx=
-,
->  err_dst:
->  	dma_unmap_single(sdcp->dev, src_phys, DCP_BUF_SZ, DMA_TO_DEVICE);
->  err_src:
-> -	dma_unmap_single(sdcp->dev, key_phys, 2 * AES_KEYSIZE_128,
-> -			 DMA_TO_DEVICE);
-> -
-> +	if (!key_referenced)
-> +		dma_unmap_single(sdcp->dev, key_phys, 2 * AES_KEYSIZE_128,
-> +				 DMA_TO_DEVICE);
->  	return ret;
->  }
-> =20
-> @@ -453,7 +468,7 @@ static int mxs_dcp_aes_enqueue(struct skcipher_reques=
-t *req, int enc, int ecb)
->  	struct dcp_aes_req_ctx *rctx =3D skcipher_request_ctx(req);
->  	int ret;
-> =20
-> -	if (unlikely(actx->key_len !=3D AES_KEYSIZE_128))
-> +	if (unlikely(actx->key_len !=3D AES_KEYSIZE_128 && !actx->key_reference=
-d))
->  		return mxs_dcp_block_fallback(req, enc);
-> =20
->  	rctx->enc =3D enc;
-> @@ -500,6 +515,7 @@ static int mxs_dcp_aes_setkey(struct crypto_skcipher =
-*tfm, const u8 *key,
->  	 * there can still be an operation in progress.
->  	 */
->  	actx->key_len =3D len;
-> +	actx->key_referenced =3D false;
->  	if (len =3D=3D AES_KEYSIZE_128) {
->  		memcpy(actx->key, key, len);
->  		return 0;
-> @@ -516,6 +532,32 @@ static int mxs_dcp_aes_setkey(struct crypto_skcipher=
- *tfm, const u8 *key,
->  	return crypto_skcipher_setkey(actx->fallback, key, len);
->  }
-> =20
-> +static int mxs_dcp_aes_setrefkey(struct crypto_skcipher *tfm, const u8 *=
-key,
-> +				 unsigned int len)
-> +{
-> +	struct dcp_async_ctx *actx =3D crypto_skcipher_ctx(tfm);
-> +
-> +	if (len !=3D DCP_PAES_KEYSIZE)
-> +		return -EINVAL;
-> +
-> +	switch (key[0]) {
-> +	case DCP_PAES_KEY_SLOT0:
-> +	case DCP_PAES_KEY_SLOT1:
-> +	case DCP_PAES_KEY_SLOT2:
-> +	case DCP_PAES_KEY_SLOT3:
-> +	case DCP_PAES_KEY_UNIQUE:
-> +	case DCP_PAES_KEY_OTP:
-> +		memcpy(actx->key, key, len);
-> +		actx->key_len =3D len;
-> +		actx->key_referenced =3D true;
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  static int mxs_dcp_aes_fallback_init_tfm(struct crypto_skcipher *tfm)
->  {
->  	const char *name =3D crypto_tfm_alg_name(crypto_skcipher_tfm(tfm));
-> @@ -539,6 +581,13 @@ static void mxs_dcp_aes_fallback_exit_tfm(struct cry=
-pto_skcipher *tfm)
->  	crypto_free_skcipher(actx->fallback);
->  }
-> =20
-> +static int mxs_dcp_paes_init_tfm(struct crypto_skcipher *tfm)
-> +{
-> +	crypto_skcipher_set_reqsize(tfm, sizeof(struct dcp_aes_req_ctx));
-> +
-> +	return 0;
-> +}
-> +
->  /*
->   * Hashing (SHA1/SHA256)
->   */
-> @@ -889,6 +938,39 @@ static struct skcipher_alg dcp_aes_algs[] =3D {
->  		.ivsize			=3D AES_BLOCK_SIZE,
->  		.init			=3D mxs_dcp_aes_fallback_init_tfm,
->  		.exit			=3D mxs_dcp_aes_fallback_exit_tfm,
-> +	}, {
-> +		.base.cra_name		=3D "ecb(paes)",
-> +		.base.cra_driver_name	=3D "ecb-paes-dcp",
-> +		.base.cra_priority	=3D 401,
-> +		.base.cra_alignmask	=3D 15,
-> +		.base.cra_flags		=3D CRYPTO_ALG_ASYNC | CRYPTO_ALG_INTERNAL,
-> +		.base.cra_blocksize	=3D AES_BLOCK_SIZE,
-> +		.base.cra_ctxsize	=3D sizeof(struct dcp_async_ctx),
-> +		.base.cra_module	=3D THIS_MODULE,
-> +
-> +		.min_keysize		=3D DCP_PAES_KEYSIZE,
-> +		.max_keysize		=3D DCP_PAES_KEYSIZE,
-> +		.setkey			=3D mxs_dcp_aes_setrefkey,
-> +		.encrypt		=3D mxs_dcp_aes_ecb_encrypt,
-> +		.decrypt		=3D mxs_dcp_aes_ecb_decrypt,
-> +		.init			=3D mxs_dcp_paes_init_tfm,
-> +	}, {
-> +		.base.cra_name		=3D "cbc(paes)",
-> +		.base.cra_driver_name	=3D "cbc-paes-dcp",
-> +		.base.cra_priority	=3D 401,
-> +		.base.cra_alignmask	=3D 15,
-> +		.base.cra_flags		=3D CRYPTO_ALG_ASYNC | CRYPTO_ALG_INTERNAL,
-> +		.base.cra_blocksize	=3D AES_BLOCK_SIZE,
-> +		.base.cra_ctxsize	=3D sizeof(struct dcp_async_ctx),
-> +		.base.cra_module	=3D THIS_MODULE,
-> +
-> +		.min_keysize		=3D DCP_PAES_KEYSIZE,
-> +		.max_keysize		=3D DCP_PAES_KEYSIZE,
-> +		.setkey			=3D mxs_dcp_aes_setrefkey,
-> +		.encrypt		=3D mxs_dcp_aes_cbc_encrypt,
-> +		.decrypt		=3D mxs_dcp_aes_cbc_decrypt,
-> +		.ivsize			=3D AES_BLOCK_SIZE,
-> +		.init			=3D mxs_dcp_paes_init_tfm,
->  	},
->  };
-> =20
-> diff --git a/include/soc/fsl/dcp.h b/include/soc/fsl/dcp.h
+> diff --git a/include/keys/trusted_dcp.h b/include/keys/trusted_dcp.h
 > new file mode 100644
-> index 000000000000..cda89e260c46
+> index 000000000000..9aaa42075b40
 > --- /dev/null
-> +++ b/include/soc/fsl/dcp.h
-> @@ -0,0 +1,17 @@
+> +++ b/include/keys/trusted_dcp.h
+> @@ -0,0 +1,11 @@
 > +/* SPDX-License-Identifier: GPL-2.0-only */
 > +/*
 > + * Copyright (C) 2021 sigma star gmbh
 > + */
 > +
-> +#ifndef MXS_DCP_H
-> +#define MXS_DCP_H
+> +#ifndef TRUSTED_DCP_H
+> +#define TRUSTED_DCP_H
 > +
-> +#define DCP_PAES_KEYSIZE 1
-> +#define DCP_PAES_KEY_SLOT0 0x00
-> +#define DCP_PAES_KEY_SLOT1 0x01
-> +#define DCP_PAES_KEY_SLOT2 0x02
-> +#define DCP_PAES_KEY_SLOT3 0x03
-> +#define DCP_PAES_KEY_UNIQUE 0xfe
-> +#define DCP_PAES_KEY_OTP 0xff
+> +extern struct trusted_key_ops dcp_trusted_key_ops;
 > +
-> +#endif /* MXS_DCP_H */
+> +#endif
+> diff --git a/security/keys/trusted-keys/Kconfig b/security/keys/trusted-k=
+eys/Kconfig
+> index dbfdd8536468..c6b80b7e5c78 100644
+> --- a/security/keys/trusted-keys/Kconfig
+> +++ b/security/keys/trusted-keys/Kconfig
+> @@ -33,6 +33,13 @@ config TRUSTED_KEYS_CAAM
+>  	  Enable use of NXP's Cryptographic Accelerator and Assurance Module
+>  	  (CAAM) as trusted key backend.
+> =20
+> -if !TRUSTED_KEYS_TPM && !TRUSTED_KEYS_TEE && !TRUSTED_KEYS_CAAM
+> +config TRUSTED_KEYS_DCP
+> +	bool "DCP-based trusted keys"
+> +	depends on CRYPTO_DEV_MXS_DCP >=3D TRUSTED_KEYS
+> +	default y
+> +	help
+> +	  Enable use of NXP's DCP (Data Co-Processor) as trusted key backend.
+> +
+> +if !TRUSTED_KEYS_TPM && !TRUSTED_KEYS_TEE && !TRUSTED_KEYS_CAAM && !TRUS=
+TED_KEYS_DCP
 
-For me this looks quite reasonable.
+This does not scale tbh.
+
+I'd suggest to add additional patch before adding the new key type,
+which clears this up a little bit.
+
+First:
+
+config HAVE_TRUSTED_KEYS
+	bool
+
+And then following this pattern to all trusted key types:
+
+config TRUSTED_KEYS_DCP
+	bool "DCP-based trusted keys"
+	depends on CRYPTO_DEV_MXS_DCP >=3D TRUSTED_KEYS
+	default y
+	select HAVE_TRUSTED_KEYS
+	help
+	  Enable use of NXP's DCP (Data Co-Processor) as trusted key backend.
+
+And finally:
+
+if !HAVE_TRUSTED_KEYS
+	comment "No trust source selected!"
+endif
 
 BR, Jarkko
