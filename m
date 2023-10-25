@@ -2,39 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F23F7D77CB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 00:24:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A0567D77C4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 00:24:02 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=EmYuRvSh;
+	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=VojGS1Pp;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SG3Q82hq1z3dWn
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 09:24:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SG3PD0Qypz3clc
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 09:24:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=EmYuRvSh;
+	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=VojGS1Pp;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=salutedevices.com (client-ip=37.18.73.165; helo=mx1.sberdevices.ru; envelope-from=gnstark@salutedevices.com; receiver=lists.ozlabs.org)
 Received: from mx1.sberdevices.ru (mx1.sberdevices.ru [37.18.73.165])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SFqBR3y07z3c1L
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SFqBR3mycz2xwH
 	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Oct 2023 00:13:51 +1100 (AEDT)
 Received: from p-infra-ksmg-sc-msk01 (localhost [127.0.0.1])
-	by mx1.sberdevices.ru (Postfix) with ESMTP id 8E872100043;
+	by mx1.sberdevices.ru (Postfix) with ESMTP id B5F61100044;
 	Wed, 25 Oct 2023 16:07:44 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 8E872100043
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru B5F61100044
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
 	s=mail; t=1698239264;
-	bh=QI0eEMit4cRAk0dzmRcmJgiC5EDe0H7Kqy7+mSGTVrU=;
+	bh=bfmNKLq7qXt685RQkGWfdj7Fq3sNLbKBr4vZ23mFyMU=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=EmYuRvSh8MROTQg+CWmVIV3ikaw4wqLxA7YespJ51Vt90wv4OJBBVdF+A5bM2O+Ba
-	 xt2+No1w8iIhvvbU5n2TEQAIQYAcJMnAhYhjOx9JLMTz+KvRmWNDTkFhsIVeHS15FX
-	 kFcvkjVZyJdhPO7MLDC+1DlRcdY/ab9UH9b07OjAxJzT7FcihnWqKC7njeuiOZiu0s
-	 dGG9otRgt3xpTKhii8rk7Hf5c2WpFtWR7RloZynI1NYjVRB0QniDtYs6JssC4m75SN
-	 DP+ROqDLgC3vJW3qJrzHnHAvhngpAEgcn8eKIZ5x08gylzWBzvkkVv713uOWrfqwHr
-	 Z1G9FXd3eeORw==
+	b=VojGS1PppsDkwWGmglY1Afhu5vYAKIYEUkEHdbS8F1mzDQmnEWIJJKLEu5ge1jdKk
+	 jz9GjXWVhsKYUqVgkk6ZU7SYg50fwdfLaZXmNuSgalrOibjjfWCRjsm5h3w79k5g+K
+	 FkHvvweEIoiTlvnLeuBmY15fp2mg/5t0cZjCIGg1P5myRI1ECi7Tk1xgdjgZfMqet9
+	 +BMue/7yrY0AhX84Oeroa+AVJdiOZXgAkAfkkqDrom4iyT3QHAc5ZKlvXVgulumCHC
+	 uq87G1cFwo3PxrvrAITB6YhIM4rzluhSPzcX0+N8HSBESMawpUffI+Vl6R/xHdP+/C
+	 ztSeq+Vm0XV5Q==
 Received: from p-i-exch-sc-m01.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
@@ -48,9 +48,9 @@ From: George Stark <gnstark@salutedevices.com>
 To: <pavel@ucw.cz>, <lee@kernel.org>, <vadimp@nvidia.com>,
 	<mpe@ellerman.id.au>, <npiggin@gmail.com>, <christophe.leroy@csgroup.eu>,
 	<gnstark@salutedevices.com>
-Subject: [PATCH 1/8] leds: powernv: explicitly unregister LEDs at module's shutdown
-Date: Wed, 25 Oct 2023 16:07:30 +0300
-Message-ID: <20231025130737.2015468-2-gnstark@salutedevices.com>
+Subject: [PATCH 2/8] leds: nic78bx: explicitly unregister LEDs at module's shutdown
+Date: Wed, 25 Oct 2023 16:07:31 +0300
+Message-ID: <20231025130737.2015468-3-gnstark@salutedevices.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231025130737.2015468-1-gnstark@salutedevices.com>
 References: <20231025130737.2015468-1-gnstark@salutedevices.com>
@@ -100,35 +100,24 @@ So explicitly unregister LEDs at module shutdown.
 
 Signed-off-by: George Stark <gnstark@salutedevices.com>
 ---
- drivers/leds/leds-powernv.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/leds/leds-nic78bx.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/leds/leds-powernv.c b/drivers/leds/leds-powernv.c
-index 743e2cdd0891..7c7f696c8265 100644
---- a/drivers/leds/leds-powernv.c
-+++ b/drivers/leds/leds-powernv.c
-@@ -302,7 +302,12 @@ static int powernv_led_probe(struct platform_device *pdev)
- 
- 	platform_set_drvdata(pdev, powernv_led_common);
- 
-+	if (!devres_open_group(&pdev->dev, priv, GFP_KERNEL))
-+		return -ENOMEM;
-+
- 	rc = powernv_led_classdev(pdev, led_node, powernv_led_common);
-+	if (rc)
-+		devres_remove_group(dev, priv);
- out:
- 	of_node_put(led_node);
- 	return rc;
-@@ -313,6 +318,8 @@ static int powernv_led_remove(struct platform_device *pdev)
+diff --git a/drivers/leds/leds-nic78bx.c b/drivers/leds/leds-nic78bx.c
+index f196f52eec1e..12b70fcad37f 100644
+--- a/drivers/leds/leds-nic78bx.c
++++ b/drivers/leds/leds-nic78bx.c
+@@ -170,6 +170,10 @@ static int nic78bx_probe(struct platform_device *pdev)
+ static int nic78bx_remove(struct platform_device *pdev)
  {
- 	struct powernv_led_common *powernv_led_common;
- 
-+	devres_release_group(&pdev->dev, powernv_led_common);
+ 	struct nic78bx_led_data *led_data = platform_get_drvdata(pdev);
++	int i;
 +
- 	/* Disable LED operation */
- 	powernv_led_common = platform_get_drvdata(pdev);
- 	powernv_led_common->led_disabled = true;
++	for (i = 0; i < ARRAY_SIZE(nic78bx_leds); i++)
++		devm_led_classdev_unregister(&pdev->dev, &nic78bx_leds[i].cdev);
+ 
+ 	/* Lock LED register */
+ 	outb(NIC78BX_LOCK_VALUE,
 -- 
 2.38.4
 
