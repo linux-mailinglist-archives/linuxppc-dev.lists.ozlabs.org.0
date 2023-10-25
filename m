@@ -1,85 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDCDB7D64BD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Oct 2023 10:18:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27A667D64CC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Oct 2023 10:20:50 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YzkJeEBv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gGEd1imB;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SFhd66cr3z3cHF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Oct 2023 19:18:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SFhhJ0KxRz3cRh
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Oct 2023 19:20:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YzkJeEBv;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gGEd1imB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SFhc91LnBz30dt
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Oct 2023 19:17:12 +1100 (AEDT)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39P89Wq1018370;
-	Wed, 25 Oct 2023 08:17:06 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SFhgP5cbYz2xQJ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Oct 2023 19:20:01 +1100 (AEDT)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39P8CFuP028224;
+	Wed, 25 Oct 2023 08:19:56 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=A2uw3UuwQ8KCnit9kWh7BpC0c08GN8NdE77ZiNSkcaw=;
- b=YzkJeEBvUYMiE+OsFXUPniookCZGQVfluunI0YKTwQMn826NWAHKAjhwO3xNyWYskxg7
- 2hjjn2LpnSh3R55dDLNj93miD50dLS9UyBdQuEuItZGT5wpfQ7RI1q6rOYQu826m8J2M
- Ze8vrUfbvN55zbPwlpIlyBx0knv4bnh/g4aMyePwi2lYk0K10EF1JtFBFR6DsmujJjra
- gNZQCdoNU4/bfDS94W2Ygw4eczLtp1E7m3vPlPrVz0w54MVCzXI5Em9TJvbKSPvxF+BZ
- B1grGPhqX5WOe2y0H3h2sMfs2NAIxyDcWGEb574ezscIO1uhIrNygiD+QLatvavCGzQr YA== 
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3txy8u0fur-1
+ bh=8fyN1XSY3iCzycp1u1WIJ7TbJh+QRJ4JC+EH0GTwq6A=;
+ b=gGEd1imBRlYBLjZWM4WWitsIvM7HE4nBnDRuC7pKeW4XsiLjLfrM+Q4pxokDwVlVc59s
+ Lk1A348Mh9V+rWj8jrocKOnOLqQf3MoZBpvnb3/B8Ua43Mst8KheDWYj4QTGUMTsuF/H
+ UlgLxpXXOkvc0NNl2XM1fVJV4/ED9wdL5uf54Y7C7YSbRN/ZE/f4OtOTGjDcHoEgkMpq
+ jyfGXqR77NDQ38e6ddxhehWVfo1ZasA3T6g7MJnjGeFqgMpcl+90ZlJx7qcmpkmX6KtI
+ +c9jjJFs/DRgVel5OEJOYQM9MLG7UtJkpbGaZQc4wlde2AZGbsTS0IHEwyAO1rCYqJac CQ== 
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3txya3r8d3-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Oct 2023 08:17:03 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39P73fTs010290;
-	Wed, 25 Oct 2023 08:16:58 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tvsbynepy-1
+	Wed, 25 Oct 2023 08:19:55 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39P5wqWk024403;
+	Wed, 25 Oct 2023 08:19:55 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tvu6k4wkj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Oct 2023 08:16:58 +0000
+	Wed, 25 Oct 2023 08:19:54 +0000
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39P8Gubb18940600
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39P8JrmZ21430838
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 25 Oct 2023 08:16:56 GMT
+	Wed, 25 Oct 2023 08:19:53 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 184EF20043;
-	Wed, 25 Oct 2023 08:16:56 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 317C52004B;
+	Wed, 25 Oct 2023 08:19:53 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B330B20040;
-	Wed, 25 Oct 2023 08:16:55 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id C83B920040;
+	Wed, 25 Oct 2023 08:19:52 +0000 (GMT)
 Received: from [9.171.32.46] (unknown [9.171.32.46])
 	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 25 Oct 2023 08:16:55 +0000 (GMT)
-Message-ID: <9573ec63-a8d6-4c69-a70b-9095838d521d@linux.ibm.com>
-Date: Wed, 25 Oct 2023 10:16:55 +0200
+	Wed, 25 Oct 2023 08:19:52 +0000 (GMT)
+Message-ID: <9cdba213-d6cf-427e-abd3-a0e1e1b39299@linux.ibm.com>
+Date: Wed, 25 Oct 2023 10:19:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] cxl: make cxl_class constant
+Subject: Re: [PATCH] ocxl: make ocxl_class constant
+Content-Language: en-US
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linuxppc-dev@lists.ozlabs.org
-References: <2023102434-haiku-uphill-0c11@gregkh>
-Content-Language: en-US
+References: <2023102403-squirt-defraud-6c0c@gregkh>
 From: Frederic Barrat <fbarrat@linux.ibm.com>
-In-Reply-To: <2023102434-haiku-uphill-0c11@gregkh>
+In-Reply-To: <2023102403-squirt-defraud-6c0c@gregkh>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: DNlKNOt5L6DbWH-N_5lNSx63TUppcBK4
-X-Proofpoint-GUID: DNlKNOt5L6DbWH-N_5lNSx63TUppcBK4
+X-Proofpoint-GUID: dNcJmMaG1T2GK9C19kaa-ksAv4XOWZdv
+X-Proofpoint-ORIG-GUID: dNcJmMaG1T2GK9C19kaa-ksAv4XOWZdv
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-10-25_01,2023-10-24_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1011
- mlxscore=0 bulkscore=0 spamscore=0 priorityscore=1501 adultscore=0
- lowpriorityscore=0 mlxlogscore=963 suspectscore=0 malwarescore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ phishscore=0 adultscore=0 clxscore=1015 impostorscore=0 malwarescore=0
+ spamscore=0 lowpriorityscore=0 suspectscore=0 priorityscore=1501
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2310170001 definitions=main-2310250070
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -98,7 +98,7 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 
 
-On 24/10/2023 13:48, Greg Kroah-Hartman wrote:
+On 24/10/2023 13:49, Greg Kroah-Hartman wrote:
 > Now that the driver core allows for struct class to be in read-only
 > memory, we should make all 'class' structures declared at build time
 > placing them into read-only memory, instead of having to be dynamically
@@ -112,85 +112,87 @@ On 24/10/2023 13:48, Greg Kroah-Hartman wrote:
 > ---
 
 Thanks!
+
 Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
    Fred
 
 
->   drivers/misc/cxl/file.c | 21 ++++++++++-----------
->   1 file changed, 10 insertions(+), 11 deletions(-)
+>   drivers/misc/ocxl/file.c | 27 +++++++++++++++------------
+>   1 file changed, 15 insertions(+), 12 deletions(-)
 > 
-> diff --git a/drivers/misc/cxl/file.c b/drivers/misc/cxl/file.c
-> index 144d1f2d78ce..012e11b959bc 100644
-> --- a/drivers/misc/cxl/file.c
-> +++ b/drivers/misc/cxl/file.c
-> @@ -38,8 +38,6 @@
+> diff --git a/drivers/misc/ocxl/file.c b/drivers/misc/ocxl/file.c
+> index 6e63f060e4cc..ac69b7f361f5 100644
+> --- a/drivers/misc/ocxl/file.c
+> +++ b/drivers/misc/ocxl/file.c
+> @@ -14,7 +14,6 @@
+>   #define OCXL_NUM_MINORS 256 /* Total to reserve */
 >   
->   static dev_t cxl_dev;
+>   static dev_t ocxl_dev;
+> -static struct class *ocxl_class;
+>   static DEFINE_MUTEX(minors_idr_lock);
+>   static struct idr minors_idr;
 >   
-> -static struct class *cxl_class;
-> -
->   static int __afu_open(struct inode *inode, struct file *file, bool master)
->   {
->   	struct cxl *adapter;
-> @@ -559,7 +557,10 @@ static char *cxl_devnode(const struct device *dev, umode_t *mode)
->   	return kasprintf(GFP_KERNEL, "cxl/%s", dev_name(dev));
+> @@ -509,6 +508,16 @@ static void ocxl_file_make_invisible(struct ocxl_file_info *info)
+>   	cdev_del(&info->cdev);
 >   }
 >   
-> -extern struct class *cxl_class;
-> +static const struct class cxl_class = {
-> +	.name =		"cxl",
-> +	.devnode =	cxl_devnode,
+> +static char *ocxl_devnode(const struct device *dev, umode_t *mode)
+> +{
+> +	return kasprintf(GFP_KERNEL, "ocxl/%s", dev_name(dev));
+> +}
+> +
+> +static const struct class ocxl_class = {
+> +	.name =		"ocxl",
+> +	.devnode =	ocxl_devnode,
 > +};
+> +
+>   int ocxl_file_register_afu(struct ocxl_afu *afu)
+>   {
+>   	int minor;
+> @@ -529,7 +538,7 @@ int ocxl_file_register_afu(struct ocxl_afu *afu)
 >   
->   static int cxl_add_chardev(struct cxl_afu *afu, dev_t devt, struct cdev *cdev,
->   			   struct device **chardev, char *postfix, char *desc,
-> @@ -575,7 +576,7 @@ static int cxl_add_chardev(struct cxl_afu *afu, dev_t devt, struct cdev *cdev,
+>   	info->dev.parent = &fn->dev;
+>   	info->dev.devt = MKDEV(MAJOR(ocxl_dev), minor);
+> -	info->dev.class = ocxl_class;
+> +	info->dev.class = &ocxl_class;
+>   	info->dev.release = info_release;
+>   
+>   	info->afu = afu;
+> @@ -584,11 +593,6 @@ void ocxl_file_unregister_afu(struct ocxl_afu *afu)
+>   	device_unregister(&info->dev);
+>   }
+>   
+> -static char *ocxl_devnode(const struct device *dev, umode_t *mode)
+> -{
+> -	return kasprintf(GFP_KERNEL, "ocxl/%s", dev_name(dev));
+> -}
+> -
+>   int ocxl_file_init(void)
+>   {
+>   	int rc;
+> @@ -601,20 +605,19 @@ int ocxl_file_init(void)
 >   		return rc;
 >   	}
 >   
-> -	dev = device_create(cxl_class, &afu->dev, devt, afu,
-> +	dev = device_create(&cxl_class, &afu->dev, devt, afu,
->   			"afu%i.%i%s", afu->adapter->adapter_num, afu->slice, postfix);
->   	if (IS_ERR(dev)) {
->   		rc = PTR_ERR(dev);
-> @@ -633,14 +634,14 @@ void cxl_chardev_afu_remove(struct cxl_afu *afu)
+> -	ocxl_class = class_create("ocxl");
+> -	if (IS_ERR(ocxl_class)) {
+> +	rc = class_register(&ocxl_class);
+> +	if (rc) {
+>   		pr_err("Unable to create ocxl class\n");
+>   		unregister_chrdev_region(ocxl_dev, OCXL_NUM_MINORS);
+> -		return PTR_ERR(ocxl_class);
+> +		return rc;
+>   	}
 >   
->   int cxl_register_afu(struct cxl_afu *afu)
->   {
-> -	afu->dev.class = cxl_class;
-> +	afu->dev.class = &cxl_class;
->   
->   	return device_register(&afu->dev);
+> -	ocxl_class->devnode = ocxl_devnode;
+>   	return 0;
 >   }
 >   
->   int cxl_register_adapter(struct cxl *adapter)
+>   void ocxl_file_exit(void)
 >   {
-> -	adapter->dev.class = cxl_class;
-> +	adapter->dev.class = &cxl_class;
->   
->   	/*
->   	 * Future: When we support dynamically reprogramming the PSL & AFU we
-> @@ -678,13 +679,11 @@ int __init cxl_file_init(void)
->   
->   	pr_devel("CXL device allocated, MAJOR %i\n", MAJOR(cxl_dev));
->   
-> -	cxl_class = class_create("cxl");
-> -	if (IS_ERR(cxl_class)) {
-> +	rc = class_register(&cxl_class);
-> +	if (rc) {
->   		pr_err("Unable to create CXL class\n");
-> -		rc = PTR_ERR(cxl_class);
->   		goto err;
->   	}
-> -	cxl_class->devnode = cxl_devnode;
->   
->   	return 0;
->   
-> @@ -696,5 +695,5 @@ int __init cxl_file_init(void)
->   void cxl_file_exit(void)
->   {
->   	unregister_chrdev_region(cxl_dev, CXL_NUM_MINORS);
-> -	class_destroy(cxl_class);
-> +	class_unregister(&cxl_class);
+> -	class_destroy(ocxl_class);
+> +	class_unregister(&ocxl_class);
+>   	unregister_chrdev_region(ocxl_dev, OCXL_NUM_MINORS);
+>   	idr_destroy(&minors_idr);
 >   }
