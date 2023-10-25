@@ -2,51 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E6DA7D77DA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 00:30:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E8FD7D785F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 01:08:48 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ScRxfxyO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KpLMDOIa;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SG3X61v60z3dJX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 09:29:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SG4Nt3jhXz3cPk
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 10:08:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ScRxfxyO;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KpLMDOIa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::633; helo=mail-ej1-x633.google.com; envelope-from=philipp.g.hortmann@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SG3WH3YKFz30f8
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Oct 2023 09:29:15 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 84764CE3BAC;
-	Wed, 25 Oct 2023 22:29:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9BBC433C8;
-	Wed, 25 Oct 2023 22:29:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1698272950;
-	bh=r8HUSzqlDaMXESjFK5gUvBK0xrbNT7QU9T8BuJ2OzII=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=ScRxfxyOl3tHVsD6fcTjCUOXcJ82TGdMgHNFaT8XUzABQQmc7KAwIHjiDemvM1Ltp
-	 3c7ntN/s0aJuOF+oHuy7Ug+81FFDjFKBZsYXfZThcn9GlltAA2YBfl83yqpwpf2IYx
-	 lniZnXD8Q6eXIDByEPPrzjdxRFo/eHlC7gdA7BbQIfZmejEo4sofUelzGjEnF2ywcy
-	 lO3qL+/XHITIDaEFdQLL2EmSW+bLzD4bTyIzstq3npT+bEsiSgm/6HQjh42TkOHhC/
-	 S4l8V8BUosFGsXqR2VS3+TeiKiFlBRyZUQ96ZyhdxGwPnrVCjNqDkVB5qxtj9Oawqk
-	 qAwEVaHlu6gcg==
-Date: Wed, 25 Oct 2023 17:29:08 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Subject: Re: [PATCH v6 1/3] PCI/AER: Factor out interrupt toggling into
- helpers
-Message-ID: <20231025222908.GA1770972@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SG3xX06lpz30gF
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Oct 2023 09:48:29 +1100 (AEDT)
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-9cc6c92d1e9so7577766b.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Oct 2023 15:48:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698274101; x=1698878901; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=h1Wtmp4jaolI15oZgo//tqFOl12QGRnI6l3LLvFOdIo=;
+        b=KpLMDOIaD4eRBqk2wJU76JM+ETyJzz9GRUjDQpZGq2Yd2jmXbJXP9lOksOg8EdAvyx
+         fa0+it89cmq+MNQaacVeVfv/fmyGzytVBXgv72IKdfooFRo+M4grXFq7i4T1AVshO1yK
+         UqI5gWTH0ZGJpJ+zIWSNSd77e8QD4M9JuWkg9Q2p2/Qe+hpNpPD3EDWo3+O0MmH/8+s6
+         aX3tWHPUjgj+/4wF46qCCwtIBF6CcERTeAbXidu7j7OG8uR/iNCP5KGVUyaLVnFSCrDo
+         mFIuSnTAMxNEXYhZyK7/652z1qcm1QUUY/QJOEyCFy3FVCkj4nV89rdB2SS9rU2y0FSW
+         kHLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698274101; x=1698878901;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=h1Wtmp4jaolI15oZgo//tqFOl12QGRnI6l3LLvFOdIo=;
+        b=p2EQHiEDoCYN44JvzCG+3t3yvD7hQFYzn+mFY6MWsECZBb1Vk5A8Bu2v6TfwZNCogI
+         ra+uxuHTdflM745EDzzFkaTF8BS8faY9Joc3fIZ6ZbKVZ2jxsDKc5MWFaZQWtNPRp8k5
+         qQOjxzbIxUZy6qHaHcesFKSMXtfcABB2iUGBBqaa/knBXmyX1JM6WC6kE4NW7Xl1Dc9E
+         kYgd29XhBXMsSa76sRYNg/Zuy0Hcxxq1l4PtxPxFZVReHcvylH3smER9WYyLLS17S9kn
+         TuVWQ8NbBGOwDHFYh0ByKy15bXjZPE4jJcfT7r6Q8Y4PfPq7+6DIIQfeEN2eKdZn5tlY
+         p5uA==
+X-Gm-Message-State: AOJu0Yxf8HrHaO4YAlA4lzb+ZB9vPsrqIOCARu1d6eVROZqMem21/LLn
+	k7T9+1QwCPWkRcDpd3NyxkI=
+X-Google-Smtp-Source: AGHT+IGZysA7t84XKVRzSA8XE25oFrQWSh3/UAeHsseDmefuOjgMHv8S1Go5CrpHtdDA4m4jNf1AlA==
+X-Received: by 2002:a17:906:21b:b0:9ce:c4f4:5f97 with SMTP id 27-20020a170906021b00b009cec4f45f97mr243735ejd.1.1698274100762;
+        Wed, 25 Oct 2023 15:48:20 -0700 (PDT)
+Received: from [192.168.0.103] (p579356c7.dip0.t-ipconnect.de. [87.147.86.199])
+        by smtp.gmail.com with ESMTPSA id 26-20020a170906011a00b009ae69c303aasm10545728eje.137.2023.10.25.15.48.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Oct 2023 15:48:20 -0700 (PDT)
+Message-ID: <c608f328-387e-431b-b3c2-4b8fa0c4f11f@gmail.com>
+Date: Thu, 26 Oct 2023 00:48:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230512000014.118942-1-kai.heng.feng@canonical.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 10/10] [RFC] wifi: remove ipw2100/ipw2200 drivers
+Content-Language: en-US
+To: Witold Baryluk <witold.baryluk@gmail.com>, arnd@kernel.org
+References: <CAEGMnwo6RFqADPO5FRkRUNL=GfV6DY8UuwgsypEYOD3LTnXdJg@mail.gmail.com>
+From: Philipp Hortmann <philipp.g.hortmann@gmail.com>
+In-Reply-To: <CAEGMnwo6RFqADPO5FRkRUNL=GfV6DY8UuwgsypEYOD3LTnXdJg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Mailman-Approved-At: Thu, 26 Oct 2023 10:07:16 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,112 +81,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sathyanarayanan.kuppuswamy@linux.intel.com, mika.westerberg@linux.intel.com, linux-pci@vger.kernel.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-kernel@vger.kernel.org, koba.ko@canonical.com, Oliver O'Halloran <oohall@gmail.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org
+Cc: alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org, pavel@ucw.cz, gregory.greenman@intel.com, stf_xl@wp.pl, linux-staging@lists.linux.dev, ilw@linux.intel.com, geert@linux-m68k.org, kuba@kernel.org, stas.yakovlev@gmail.com, arnd@arndb.de, kvalo@kernel.org, nicolas.ferre@microchip.com, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, geoff@infradead.org, gregkh@linuxfoundation.org, linux-wireless@vger.kernel.org, claudiu.beznea@tuxon.dev, johannes@sipsolutions.net, quic_jjohnson@quicinc.com, davem@davemloft.net, Larry.Finger@lwfinger.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 12, 2023 at 08:00:12AM +0800, Kai-Heng Feng wrote:
-> There are many places that enable and disable AER interrupt, so move
-> them into helpers.
-> 
-> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+On 10/26/23 00:27, Witold Baryluk wrote:
+> I might be interested in modernizing the driver, but I have no idea how 
+> much effort it would be (in terms of changed fraction of code). 20k LOC 
+> is neither small or big, and not obvious (a lot of it would be 
+> unchanged), if it is a week of work, or months of work.
 
-I applied this patch (only 1/3) to pci/aer for v6.7.
+Hi Witold,
 
-I'm not clear on the others yet, so let's look at those again after
-v6.7-rc1.  It seemed like there's still a question about disabling
-interrupts when we're going to D3hot.
+I am trying to do this with rtl8192e.
+One possibility is to take the following patch series as a starting point:
+https://yhbt.net/lore/all/1414604649-9105-1-git-send-email-tvboxspy@gmail.com/
 
->  drivers/pci/pcie/aer.c | 45 +++++++++++++++++++++++++-----------------
->  1 file changed, 27 insertions(+), 18 deletions(-)
-> 
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index f6c24ded134c..1420e1f27105 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -1227,6 +1227,28 @@ static irqreturn_t aer_irq(int irq, void *context)
->  	return IRQ_WAKE_THREAD;
->  }
->  
-> +static void aer_enable_irq(struct pci_dev *pdev)
-> +{
-> +	int aer = pdev->aer_cap;
-> +	u32 reg32;
-> +
-> +	/* Enable Root Port's interrupt in response to error messages */
-> +	pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, &reg32);
-> +	reg32 |= ROOT_PORT_INTR_ON_MESG_MASK;
-> +	pci_write_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, reg32);
-> +}
-> +
-> +static void aer_disable_irq(struct pci_dev *pdev)
-> +{
-> +	int aer = pdev->aer_cap;
-> +	u32 reg32;
-> +
-> +	/* Disable Root's interrupt in response to error messages */
-> +	pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, &reg32);
-> +	reg32 &= ~ROOT_PORT_INTR_ON_MESG_MASK;
-> +	pci_write_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, reg32);
-> +}
-> +
->  /**
->   * aer_enable_rootport - enable Root Port's interrupts when receiving messages
->   * @rpc: pointer to a Root Port data structure
-> @@ -1256,10 +1278,7 @@ static void aer_enable_rootport(struct aer_rpc *rpc)
->  	pci_read_config_dword(pdev, aer + PCI_ERR_UNCOR_STATUS, &reg32);
->  	pci_write_config_dword(pdev, aer + PCI_ERR_UNCOR_STATUS, reg32);
->  
-> -	/* Enable Root Port's interrupt in response to error messages */
-> -	pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, &reg32);
-> -	reg32 |= ROOT_PORT_INTR_ON_MESG_MASK;
-> -	pci_write_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, reg32);
-> +	aer_enable_irq(pdev);
->  }
->  
->  /**
-> @@ -1274,10 +1293,7 @@ static void aer_disable_rootport(struct aer_rpc *rpc)
->  	int aer = pdev->aer_cap;
->  	u32 reg32;
->  
-> -	/* Disable Root's interrupt in response to error messages */
-> -	pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, &reg32);
-> -	reg32 &= ~ROOT_PORT_INTR_ON_MESG_MASK;
-> -	pci_write_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, reg32);
-> +	aer_disable_irq(pdev);
->  
->  	/* Clear Root's error status reg */
->  	pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_STATUS, &reg32);
-> @@ -1372,12 +1388,8 @@ static pci_ers_result_t aer_root_reset(struct pci_dev *dev)
->  	 */
->  	aer = root ? root->aer_cap : 0;
->  
-> -	if ((host->native_aer || pcie_ports_native) && aer) {
-> -		/* Disable Root's interrupt in response to error messages */
-> -		pci_read_config_dword(root, aer + PCI_ERR_ROOT_COMMAND, &reg32);
-> -		reg32 &= ~ROOT_PORT_INTR_ON_MESG_MASK;
-> -		pci_write_config_dword(root, aer + PCI_ERR_ROOT_COMMAND, reg32);
-> -	}
-> +	if ((host->native_aer || pcie_ports_native) && aer)
-> +		aer_disable_irq(root);
->  
->  	if (type == PCI_EXP_TYPE_RC_EC || type == PCI_EXP_TYPE_RC_END) {
->  		rc = pcie_reset_flr(dev, PCI_RESET_DO_RESET);
-> @@ -1396,10 +1408,7 @@ static pci_ers_result_t aer_root_reset(struct pci_dev *dev)
->  		pci_read_config_dword(root, aer + PCI_ERR_ROOT_STATUS, &reg32);
->  		pci_write_config_dword(root, aer + PCI_ERR_ROOT_STATUS, reg32);
->  
-> -		/* Enable Root Port's interrupt in response to error messages */
-> -		pci_read_config_dword(root, aer + PCI_ERR_ROOT_COMMAND, &reg32);
-> -		reg32 |= ROOT_PORT_INTR_ON_MESG_MASK;
-> -		pci_write_config_dword(root, aer + PCI_ERR_ROOT_COMMAND, reg32);
-> +		aer_enable_irq(root);
->  	}
->  
->  	return rc ? PCI_ERS_RESULT_DISCONNECT : PCI_ERS_RESULT_RECOVERED;
-> -- 
-> 2.34.1
-> 
+For me as a beginner and hobbyist this is a huge task. I am happy when I 
+can finish it until next summer.
+
+In case of questions feel free to ask.
+
+Bye Philipp
+
