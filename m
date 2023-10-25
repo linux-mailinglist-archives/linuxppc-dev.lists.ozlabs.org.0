@@ -1,74 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EDF77D67B5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Oct 2023 11:59:09 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Gpbc8vga;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Gpbc8vga;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36B4F7D6866
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Oct 2023 12:25:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SFksl1ybJz3cSS
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Oct 2023 20:59:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SFlSR1CBNz3cVx
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Oct 2023 21:25:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Gpbc8vga;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Gpbc8vga;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=903v=gh=xs4all.nl=hverkuil@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SFkrs5l8Mz3bWQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Oct 2023 20:58:20 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1698227896;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hY1uTHtPvGX6qPxYPyCytvqtD0NKbkwvoAm0a0RsVuk=;
-	b=Gpbc8vgahVbhL3Si2W6Ytukt5ZjWSRSUHIoPokEZRfHxgBWc5XASSzywrdZEa7rb055eHI
-	XNrJ7XB7NxKFyUDT0XsxJGXP4xfImd55ZYE1osFXx3u6Rjf/qG6IyLyhnIMayEFszQuYLT
-	jXHFnFoMvA8dHwmc/d9K+iIowksHBnI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1698227896;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hY1uTHtPvGX6qPxYPyCytvqtD0NKbkwvoAm0a0RsVuk=;
-	b=Gpbc8vgahVbhL3Si2W6Ytukt5ZjWSRSUHIoPokEZRfHxgBWc5XASSzywrdZEa7rb055eHI
-	XNrJ7XB7NxKFyUDT0XsxJGXP4xfImd55ZYE1osFXx3u6Rjf/qG6IyLyhnIMayEFszQuYLT
-	jXHFnFoMvA8dHwmc/d9K+iIowksHBnI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-347-4ArESoOsO4WzaKRFgFR3qQ-1; Wed,
- 25 Oct 2023 05:58:14 -0400
-X-MC-Unique: 4ArESoOsO4WzaKRFgFR3qQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0F3B73C0E237;
-	Wed, 25 Oct 2023 09:58:14 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.53])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 0ADFA40C6F79;
-	Wed, 25 Oct 2023 09:58:12 +0000 (UTC)
-Date: Wed, 25 Oct 2023 17:58:10 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Arnd Bergmann <arnd@arndb.de>, eric_devolder@yahoo.com
-Subject: Re: [PATCH 1/2] kexec: fix KEXEC_FILE dependencies
-Message-ID: <ZTjmsku919U6u6wt@MiWiFi-R3L-srv>
-References: <20231023110308.1202042-1-arnd@kernel.org>
- <ZTe8NOgAjvKDA6z0@MiWiFi-R3L-srv>
- <b71034f4-5cdc-44e0-b72f-1a8ffae0593e@app.fastmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SFlRv4qGlz3bbW
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Oct 2023 21:25:15 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 9921561E23;
+	Wed, 25 Oct 2023 10:25:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09288C433C8;
+	Wed, 25 Oct 2023 10:25:07 +0000 (UTC)
+Message-ID: <0e2e072d-3d21-4d60-9cc7-95b9b5b44ed4@xs4all.nl>
+Date: Wed, 25 Oct 2023 12:25:06 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b71034f4-5cdc-44e0-b72f-1a8ffae0593e@app.fastmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v7 06/13] media: uapi: Add V4L2_CAP_AUDIO_M2M
+ capability flag
+Content-Language: en-US, nl
+To: Shengjiu Wang <shengjiu.wang@nxp.com>, sakari.ailus@iki.fi,
+ tfiga@chromium.org, m.szyprowski@samsung.com, mchehab@kernel.org,
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+ shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com,
+ nicoleotsuka@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
+ perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org,
+ linuxppc-dev@lists.ozlabs.org
+References: <1697794232-2607-1-git-send-email-shengjiu.wang@nxp.com>
+ <1697794232-2607-7-git-send-email-shengjiu.wang@nxp.com>
+From: Hans Verkuil <hverkuil@xs4all.nl>
+Autocrypt: addr=hverkuil@xs4all.nl; keydata=
+ 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
+In-Reply-To: <1697794232-2607-7-git-send-email-shengjiu.wang@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,134 +95,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, Vivek Goyal <vgoyal@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/24/23 at 03:17pm, Arnd Bergmann wrote:
-> On Tue, Oct 24, 2023, at 14:44, Baoquan He wrote:
-> > Just add people and mailing list to CC since I didn't find this mail in
-> > my box, just drag it via 'b4 am'.
-> >
-> > On 10/23/23 at 01:01pm, Arnd Bergmann wrote:
-> > ......
+On 20/10/2023 11:30, Shengjiu Wang wrote:
+> V4L2_CAP_AUDIO_M2M is similar to V4L2_CAP_VIDEO_M2M flag.
 > 
-> >> diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
-> >> index 7aff28ded2f48..bfc636d64ff2b 100644
-> >> --- a/kernel/Kconfig.kexec
-> >> +++ b/kernel/Kconfig.kexec
-> >> @@ -36,6 +36,7 @@ config KEXEC
-> >>  config KEXEC_FILE
-> >>  	bool "Enable kexec file based system call"
-> >>  	depends on ARCH_SUPPORTS_KEXEC_FILE
-> >> +	depends on CRYPTO_SHA256=y || !ARCH_SUPPORTS_KEXEC_PURGATORY
-> >
-> > I am not sure if the logic is correct. In theory, kexec_file code
-> > utilizes purgatory to verify the checksum digested during kernel loading
-> > when try to jump to the kernel. That means kexec_file depends on
-> > purgatory, but not contrary?
+> It is used for audio memory to memory case.
 > 
-> The expression I wrote is a bit confusing, but I think this just
-> keeps the existing behavior:
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> ---
+>  Documentation/userspace-api/media/v4l/vidioc-querycap.rst    | 3 +++
+>  Documentation/userspace-api/media/videodev2.h.rst.exceptions | 1 +
+>  include/uapi/linux/videodev2.h                               | 1 +
+>  3 files changed, 5 insertions(+)
 > 
-> - on architectures that select ARCH_SUPPORTS_KEXEC_PURGATORY
->   (powerpc, riscv, s390 and x86), we also require CRYPTO_SHA256
->   to be built-in.
-> - on architectures that do not have ARCH_SUPPORTS_KEXEC_PURGATORY
->   (arm64 and parisc), CRYPTO_SHA256 is not used and can be disabled
->   or =m.
-> 
-> Since ARCH_SUPPORTS_KEXEC_PURGATORY is a 'bool' symbol, it could
-> be written as
-> 
-> depends on (ARCH_SUPPORTS_KEXEC_PURGATORY && CRYPTO_SHA256=y) \
->            || !ARCH_SUPPORTS_KEXEC_PURGATORY
-
-Yes, this seems to be clearer to me. Thanks.
-
-> 
-> if you find that clearer. I see that the second patch
-> actually gets this wrong, it should actually do
-> 
-> select CRYPTO if ARCH_SUPPORTS_KEXEC_PURGATORY
-> select CRYPTO_SHA256 if ARCH_SUPPORTS_KEXEC_PURGATORY
-
-Yeah, makes sense to me.
-
-Hi Eric,
-
-Do you have comment about these?
-
-> 
-> > With these changes, we can achieve the goal to avoid building issue,
-> > whereas the code logic becomes confusing. E.g people could disable
-> > CONFIG_KEXEC_FILE, but still get purgatory code built in which is
-> > totally useless.
-> >
-> > Not sure if I think too much over this.
-> 
-> I see your point here, and I would suggest changing the
-> CONFIG_ARCH_SUPPORTS_KEXEC_PURGATORY symbol to just indicate
-> the availability of the purgatory code for the arch, rather
-> than actually controlling the code itself. I already mentioned
-> this for s390, but riscv would need the same thing on top.
-> 
-> I think the change below should address your concern.
-> 
->      Arnd
-> 
-> diff --git a/arch/riscv/kernel/elf_kexec.c b/arch/riscv/kernel/elf_kexec.c
-> index e60fbd8660c4..3ac341d296db 100644
-> --- a/arch/riscv/kernel/elf_kexec.c
-> +++ b/arch/riscv/kernel/elf_kexec.c
-> @@ -266,7 +266,7 @@ static void *elf_kexec_load(struct kimage *image, char *kernel_buf,
->                 cmdline = modified_cmdline;
->         }
+> diff --git a/Documentation/userspace-api/media/v4l/vidioc-querycap.rst b/Documentation/userspace-api/media/v4l/vidioc-querycap.rst
+> index 6c57b8428356..0b3cefefc86b 100644
+> --- a/Documentation/userspace-api/media/v4l/vidioc-querycap.rst
+> +++ b/Documentation/userspace-api/media/v4l/vidioc-querycap.rst
+> @@ -259,6 +259,9 @@ specification the ioctl returns an ``EINVAL`` error code.
+>          video topology configuration, including which I/O entity is routed to
+>          the input/output, is configured by userspace via the Media Controller.
+>          See :ref:`media_controller`.
+> +    * - ``V4L2_CAP_AUDIO_M2M``
+> +      - 0x40000000
+> +      - The device supports the audio Memory-To-Memory interface.
+>      * - ``V4L2_CAP_DEVICE_CAPS``
+>        - 0x80000000
+>        - The driver fills the ``device_caps`` field. This capability can
+> diff --git a/Documentation/userspace-api/media/videodev2.h.rst.exceptions b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
+> index 3e58aac4ef0b..da6d0b8e4c2c 100644
+> --- a/Documentation/userspace-api/media/videodev2.h.rst.exceptions
+> +++ b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
+> @@ -197,6 +197,7 @@ replace define V4L2_CAP_META_OUTPUT device-capabilities
+>  replace define V4L2_CAP_DEVICE_CAPS device-capabilities
+>  replace define V4L2_CAP_TOUCH device-capabilities
+>  replace define V4L2_CAP_IO_MC device-capabilities
+> +replace define V4L2_CAP_AUDIO_M2M device-capabilities
 >  
-> -#ifdef CONFIG_ARCH_SUPPORTS_KEXEC_PURGATORY
-> +#ifdef CONFIG_KEXEC_FILE
->         /* Add purgatory to the image */
->         kbuf.top_down = true;
->         kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
-> @@ -280,7 +280,7 @@ static void *elf_kexec_load(struct kimage *image, char *kernel_buf,
->                                              sizeof(kernel_start), 0);
->         if (ret)
->                 pr_err("Error update purgatory ret=%d\n", ret);
-> -#endif /* CONFIG_ARCH_SUPPORTS_KEXEC_PURGATORY */
-> +#endif /* CONFIG_KEXEC_FILE */
+>  # V4L2 pix flags
+>  replace define V4L2_PIX_FMT_PRIV_MAGIC :c:type:`v4l2_pix_format`
+> diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
+> index c3d4e490ce7c..d5da76607101 100644
+> --- a/include/uapi/linux/videodev2.h
+> +++ b/include/uapi/linux/videodev2.h
+> @@ -508,6 +508,7 @@ struct v4l2_capability {
+>  #define V4L2_CAP_TOUCH                  0x10000000  /* Is a touch device */
+>  
+>  #define V4L2_CAP_IO_MC			0x20000000  /* Is input/output controlled by the media controller */
+> +#define V4L2_CAP_AUDIO_M2M              0x40000000  /* audio memory to memory */
 
-If so, we don't need the CONFIG_KEXEC_FILE ifdeffery because the
-file elf_kexec.c relied on CONFIG_KEXEC_FILE enabling to build in.
-We can just remove the "#ifdef CONFIG_KEXEC_FILE..#endif" as x86 does.
+Let's pick 0x00000008 for this to fill up a hole in the caps.
+
+Regards,
+
+	Hans
 
 >  
->         /* Add the initrd to the image */
->         if (initrd != NULL) {
-> diff --git a/arch/riscv/Kbuild b/arch/riscv/Kbuild
-> index d25ad1c19f88..ab181d187c23 100644
-> --- a/arch/riscv/Kbuild
-> +++ b/arch/riscv/Kbuild
-> @@ -5,7 +5,7 @@ obj-$(CONFIG_BUILTIN_DTB) += boot/dts/
->  obj-y += errata/
->  obj-$(CONFIG_KVM) += kvm/
+>  #define V4L2_CAP_DEVICE_CAPS            0x80000000  /* sets device capabilities field */
 >  
-> -obj-$(CONFIG_ARCH_SUPPORTS_KEXEC_PURGATORY) += purgatory/
-> +obj-$(CONFIG_KEXEC_FILE) += purgatory/
->  
->  # for cleaning
->  subdir- += boot
-> diff --git a/arch/s390/Kbuild b/arch/s390/Kbuild
-> index a5d3503b353c..361aa01dbd49 100644
-> --- a/arch/s390/Kbuild
-> +++ b/arch/s390/Kbuild
-> @@ -7,7 +7,7 @@ obj-$(CONFIG_S390_HYPFS)        += hypfs/
->  obj-$(CONFIG_APPLDATA_BASE)    += appldata/
->  obj-y                          += net/
->  obj-$(CONFIG_PCI)              += pci/
-> -obj-$(CONFIG_ARCH_SUPPORTS_KEXEC_PURGATORY) += purgatory/
-> +obj-$(CONFIG_KEXEC_FILE)       += purgatory/
->  
->  # for cleaning
->  subdir- += boot tools
-> 
 
