@@ -2,56 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD9A7D87EC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 19:59:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3FAC7D8811
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 20:12:22 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=U6650vGa;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SGYTK146jz3cbB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 04:59:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SGYmN3zvTz3cVP
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 05:12:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.161.50; helo=mail-oo1-f50.google.com; envelope-from=robherring2@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=U6650vGa;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SGYSn1Q3fz300g
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Oct 2023 04:58:47 +1100 (AEDT)
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-586a516755aso586993eaf.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Oct 2023 10:58:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698343124; x=1698947924;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8z1yGiJBBI9AoK8qoFUV3Ia7kjAwo9PR+/1kimU+UtM=;
-        b=eALLInabW4ZxynloMImgHW3nt+nEbziY4zJ3yTmdAPJBcR/UwOCxcXnzQkHnwDlUg1
-         NpRGHE6j0KNVOcJ/1xTszRs6XwYil6s2US0Iuz7roQjDvFIHKbgXMwwEka3MwG4qKniu
-         90D8aLAzXgIQr8vsDVS92rE1l7qyX0hU+QF2EQTUeKEVe/XC3IE0e8US6UBbp6sM/qgx
-         HvYzv3VDKnYfDib9DyEiM0DTJUDmOR4mygJuOJE2B9idsF3o4Hl7RuoM37DRLooMmxap
-         OjDntZB2MFyckb7dkpXeGB7I9BZFm2g2TychcGzGaF0qhYU/jlGMftoYywXeebD8zk6O
-         c72g==
-X-Gm-Message-State: AOJu0YybDC7j/2OhssOrH7TuCsI0oNH52HlNgjJ/giNkJnDgBMjRmAJu
-	lOyNs2+34joDxNOW0xmUcA==
-X-Google-Smtp-Source: AGHT+IHr9EOYODQ6j0BtriylyMdcCEFd57N1ORR/U0SxrpWPOj4Kh9FB988mGZIYTgeXUar4RzptMg==
-X-Received: by 2002:a05:6870:10d4:b0:1e9:eb35:c548 with SMTP id 20-20020a05687010d400b001e9eb35c548mr313657oar.6.1698343124249;
-        Thu, 26 Oct 2023 10:58:44 -0700 (PDT)
-Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id v24-20020a056830141800b006ce3241a7fasm2740604otp.72.2023.10.26.10.58.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Oct 2023 10:58:43 -0700 (PDT)
-Received: (nullmailer pid 4107072 invoked by uid 1000);
-	Thu, 26 Oct 2023 17:58:42 -0000
-Date: Thu, 26 Oct 2023 12:58:42 -0500
-From: Rob Herring <robh@kernel.org>
-To: Chancel Liu <chancel.liu@nxp.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SGYlZ4ckpz300g
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Oct 2023 05:11:38 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 073FCCE40EF;
+	Thu, 26 Oct 2023 18:11:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3752C433C7;
+	Thu, 26 Oct 2023 18:11:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1698343892;
+	bh=zAjZWYKj0X+TeoQ8BBUh2QjPiWJbCoaFCclLInGxZek=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=U6650vGaeoBL/T54vbOKjzWtko9dk+h0R1MRIYz11PbdSkogb6xFPRiNUfo7EzXOr
+	 Q4I5i0hMEFOGmmQSfsw3zDJ4mYwr+L0P/nHEhLY62GKkZSQYDHIL7EPte9QdinP5yY
+	 Y9gCtybfrCmHL58tFSzbUrRFW5c001TDKk1JbbN/wzFR72hvhcPu0zKhRn3jiSZNUf
+	 zB1wTIh6r4NQOo78uyain9fwBDPQvK0xSwQK6sgmBgDFz0BhSrUk5h38sl7W/oCNp3
+	 y1ONym/aUFm4xmqDN8OkS1qxTnDbStIzmds5C81nr1kFbI5Q3TGunJRfSan9Se01CE
+	 SsIKvsAPQ2ERw==
+Date: Thu, 26 Oct 2023 19:11:22 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Rob Herring <robh@kernel.org>
 Subject: Re: [PATCH v4 1/2] ASoC: dt-bindings: sound-card-common: List sound
  widgets ignoring system suspend
-Message-ID: <20231026175842.GA4101469-robh@kernel.org>
+Message-ID: <3242e162-bb0d-441c-af29-7c08e1f67d1f@sirena.org.uk>
 References: <20231023020718.1276000-1-chancel.liu@nxp.com>
+ <20231026175842.GA4101469-robh@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="HTcFwXshOgNI0QFq"
 Content-Disposition: inline
-In-Reply-To: <20231023020718.1276000-1-chancel.liu@nxp.com>
+In-Reply-To: <20231026175842.GA4101469-robh@kernel.org>
+X-Cookie: I'm also against BODY-SURFING!!
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,19 +62,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, conor+dt@kernel.org, linuxppc-dev@lists.ozlabs.org, kernel@pengutronix.de, alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com, festevam@gmail.com, s.hauer@pengutronix.de, tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz, nicoleotsuka@gmail.com, broonie@kernel.org, linux-arm-kernel@lists.infradead.org, krzysztof.kozlowski+dt@linaro.org, shawnguo@kernel.org, shengjiu.wang@gmail.com, linux-kernel@vger.kernel.org
+Cc: devicetree@vger.kernel.org, conor+dt@kernel.org, linuxppc-dev@lists.ozlabs.org, kernel@pengutronix.de, alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com, festevam@gmail.com, s.hauer@pengutronix.de, tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz, nicoleotsuka@gmail.com, Chancel Liu <chancel.liu@nxp.com>, linux-arm-kernel@lists.infradead.org, krzysztof.kozlowski+dt@linaro.org, shawnguo@kernel.org, shengjiu.wang@gmail.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 23, 2023 at 10:07:17AM +0800, Chancel Liu wrote:
-> Add a property to list audio sound widgets which are marked ignoring
-> system suspend. Paths between these endpoints are still active over
-> suspend of the main application processor that the current operating
-> system is running.
 
-Perhaps it would be better to define components used for low power 
-audio rather than the OS mode that gets used. Isn't LPA just audio 
-handling that doesn't require the OS CPU to be involved? So the state of 
-the CPU is kind of orthogonal.
+--HTcFwXshOgNI0QFq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Rob
+On Thu, Oct 26, 2023 at 12:58:42PM -0500, Rob Herring wrote:
+> On Mon, Oct 23, 2023 at 10:07:17AM +0800, Chancel Liu wrote:
+
+> > Add a property to list audio sound widgets which are marked ignoring
+> > system suspend. Paths between these endpoints are still active over
+> > suspend of the main application processor that the current operating
+> > system is running.
+
+> Perhaps it would be better to define components used for low power=20
+> audio rather than the OS mode that gets used. Isn't LPA just audio=20
+> handling that doesn't require the OS CPU to be involved? So the state of=
+=20
+> the CPU is kind of orthogonal.
+
+Not really - you can have bypass paths that don't touch the AP but which
+will have the power cut if the AP goes into suspend and it can be a
+system integration decision which components that will be true for.
+Often it's an inflexible PMIC/MCU setup managing the lowest system power
+states.  The pure low power audio bit we should already be able to
+figure out.
+
+--HTcFwXshOgNI0QFq
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmU6q8kACgkQJNaLcl1U
+h9AzFQgAhv1kIvshMwNbebl4YEDMqA368X4czYNC+zO/doeKPvpLr3ox2HGnTWmR
+Nyf4K8yUD5JQDrNir/c/SYLXWQAr4sq5vnn2MyQw3z3LP8TBxG3NM7AiKqEqxQEj
+QDIfhI8Izt/86k0FnoS8WVOwK5wbcM8b+HJ3bdo7/b1oA00dVVc3f1dCAHQZHz+U
+w+zHZGAY4BBW8gw3tFbGNvNW5AEQUDCHKZbUDECM+PXDVLAUFKrpEz4uho7A4Bq2
+LzyGissKaKgzmNDlwvw7yoMEMa51n5nwYCbUSM7B1OmFqYapFpZ+w18Dzqi0KDsS
+Eto0aoVQorOv0Qf3Y0rPwaHwhcW3yg==
+=z+Ib
+-----END PGP SIGNATURE-----
+
+--HTcFwXshOgNI0QFq--
