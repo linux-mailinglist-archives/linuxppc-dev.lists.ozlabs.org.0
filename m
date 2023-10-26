@@ -2,61 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96E087D7B3B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 05:28:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A33477D7B49
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 05:33:38 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qIM0paD8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G40hBwjo;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SGB8t3ryYz3bwL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 14:28:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SGBGS3qn5z3c13
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 14:33:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qIM0paD8;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G40hBwjo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=lists.ozlabs.org)
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SGB4G278qz2ydN
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SGB4H1Gmtz2ytj
 	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Oct 2023 14:24:46 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 8A87962395;
+	by ams.source.kernel.org (Postfix) with ESMTP id DC267B83417;
 	Thu, 26 Oct 2023 03:24:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A006DC43395;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B2B74C43397;
 	Thu, 26 Oct 2023 03:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1698290682;
-	bh=fVsoNIFmHb26yy627o2S7FC4AgX8gAK1PIIXZ9CWg4g=;
+	bh=Fbq3d5SfOCCfGirHcaJp6imDPaQZA/Wd12BpsFjKol4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=qIM0paD8FyEig6oo4XHO6gQ2mCKVxYOUQ74+afk91SCCmtqkTYJt/UkWlGKqnF0C8
-	 Cpapy39WrEJXHSHAfGHVO4q/599gwT7UCzlcelRRGzMAcoaHFGymfLThR+u2AEybV7
-	 hYrhbDIzcjMurJjJ+EPVHe2St8EOIKXLBxf2+GRhjSTp9doPbwWjbYC2bF1JneGO6i
-	 MKvsq0wgZLSadwXXcn5A3lw1uSoB082gU+LU9FCuzHO2Mpie0ixvszqNqS9PsGWAFs
-	 JbZdW2DwVZZtbMvSJ8MPglZW2YOMugkinG7trKmZUzR+KsVGOoapeFqCirP9iASByw
-	 A6D9n486Qutig==
+	b=G40hBwjo/6i0ZfkueH2ZkXnRIFrIgRgvP0WXfeodEhl01ZJSldo+5o211a5DjHVQD
+	 myGB9IyKI6j38YUBwq4ViyKmsfYxZ6GENMpBmZWANWysBIVolcd/sg1/GpPz0sSeNw
+	 9ZFiU/nj7NUhYnqbHPm8btMbqsU1nXlvq8qBdnh5IzsXY9WuGiIwmtTvrzD+HJ1Agf
+	 qfIueUHqM8WJ77eBdkiTHLtXtidbE+qvTEUqQKxcGmQpgirIF7QXD9iOVtv0oxb46V
+	 XGRXxDRR+NdUqIYtCpy72dMKho+v74qeAIKSSmF1ZvzgTIcCcMxz3tbuf5x0lqYOTB
+	 aTUbs4pxzT4Fg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E5BCC25B47;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F049C0032E;
 	Thu, 26 Oct 2023 03:24:42 +0000 (UTC)
 From: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
-Date: Wed, 25 Oct 2023 22:24:23 -0500
-Subject: [PATCH v3 09/10] powerpc/selftests: Add test for papr-vpd
+Date: Wed, 25 Oct 2023 22:24:24 -0500
+Subject: [PATCH v3 10/10] powerpc/selftests: Add test for papr-sysparm
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id:  <20231025-papr-sys_rtas-vs-lockdown-v3-9-5eb04559e7d8@linux.ibm.com>
+Message-Id:  <20231025-papr-sys_rtas-vs-lockdown-v3-10-5eb04559e7d8@linux.ibm.com>
 References:  <20231025-papr-sys_rtas-vs-lockdown-v3-0-5eb04559e7d8@linux.ibm.com>
 In-Reply-To:  <20231025-papr-sys_rtas-vs-lockdown-v3-0-5eb04559e7d8@linux.ibm.com>
 To: Michael Ellerman <mpe@ellerman.id.au>, 
  Nicholas Piggin <npiggin@gmail.com>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1698290680; l=10584;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1698290680; l=5975;
  i=nathanl@linux.ibm.com; s=20230817; h=from:subject:message-id;
- bh=9aHWz0aWxbu7TXz6Q2SfxJz9QLl1HnWYCGoU/dvG2jc=;
- b=nOK7teeFFwa3ZRVN9grSiJikGtJ1HmXmNGKX+kN9ME4IKYJv1zF95gKVFjjmrx1cqjVVEBAis
- fsYrbcZmd4iBXQh9aJ7bqrP7Mv9vsdonc7a129rnLyqRIRJFCYWyzGn
+ bh=Gud1aDPXi5gwBA6uWmnVHj9xhhAyFG01m+C6FGtJFX0=;
+ b=j5gWXi55uoWp7YTJPhsV9mGXu79S+md/DUzFbcwAjD9itQc8kgOAh0Q29Y5tqBHkCIvJgh3po
+ 4Vax12ft56sCFgs90yI/xdRYJXjuSrKdHR8xic/+m3a5t8XqYvK5RZB
 X-Developer-Key: i=nathanl@linux.ibm.com; a=ed25519;
  pk=jPDF44RvT+9DGFOH3NGoIu1xN9dF+82pjdpnKjXfoJ0=
 X-Endpoint-Received:  by B4 Relay for nathanl@linux.ibm.com/20230817 with auth_id=78
@@ -79,99 +79,78 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Nathan Lynch <nathanl@linux.ibm.com>
 
-Add selftests for /dev/papr-vpd, exercising the common expected use
-cases:
+Consistently testing system parameter access is a bit difficult by
+nature -- the set of parameters available depends on the model and
+system configuration, and updating a parameter should be considered a
+destructive operation reserved for the admin.
 
-* Retrieve all VPD by passing an empty location code.
-* Retrieve the "system VPD" by passing a location code derived from DT
-  root node properties, as done by the vpdupdate command.
-
-The tests also verify that certain intended properties of the driver
-hold:
-
-* Passing an unterminated location code to PAPR_VPD_CREATE_HANDLE gets
-  EINVAL.
-* Passing a NULL location code pointer to PAPR_VPD_CREATE_HANDLE gets
-  EFAULT.
-* Closing the device node without first issuing a
-  PAPR_VPD_CREATE_HANDLE command to it succeeds.
-* Releasing a handle without first consuming any data from it
-  succeeds.
-* Re-reading the contents of a handle returns the same data as the
-  first time.
-
-Some minimal validation of the returned data is performed.
-
-The tests are skipped on systems where the papr-vpd driver does not
-initialize, making this useful only on PowerVM LPARs at this point.
+So we validate some of the error paths and retrieve the SPLPAR
+characteristics string, but not much else.
 
 Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 ---
  tools/testing/selftests/powerpc/Makefile           |   1 +
- .../testing/selftests/powerpc/papr_vpd/.gitignore  |   1 +
- tools/testing/selftests/powerpc/papr_vpd/Makefile  |  12 +
- .../testing/selftests/powerpc/papr_vpd/papr_vpd.c  | 352 +++++++++++++++++++++
- 4 files changed, 366 insertions(+)
+ .../selftests/powerpc/papr_sysparm/.gitignore      |   1 +
+ .../selftests/powerpc/papr_sysparm/Makefile        |  12 ++
+ .../selftests/powerpc/papr_sysparm/papr_sysparm.c  | 164 +++++++++++++++++++++
+ 4 files changed, 178 insertions(+)
 
 diff --git a/tools/testing/selftests/powerpc/Makefile b/tools/testing/selftests/powerpc/Makefile
-index 7ea42fa02eab..05fc68d446c2 100644
+index 05fc68d446c2..c376151982c4 100644
 --- a/tools/testing/selftests/powerpc/Makefile
 +++ b/tools/testing/selftests/powerpc/Makefile
-@@ -32,6 +32,7 @@ SUB_DIRS = alignment		\
- 	   vphn         \
+@@ -33,6 +33,7 @@ SUB_DIRS = alignment		\
  	   math		\
  	   papr_attributes	\
-+	   papr_vpd		\
+ 	   papr_vpd		\
++	   papr_sysparm		\
  	   ptrace	\
  	   security	\
  	   mce
-diff --git a/tools/testing/selftests/powerpc/papr_vpd/.gitignore b/tools/testing/selftests/powerpc/papr_vpd/.gitignore
+diff --git a/tools/testing/selftests/powerpc/papr_sysparm/.gitignore b/tools/testing/selftests/powerpc/papr_sysparm/.gitignore
 new file mode 100644
-index 000000000000..49285031a656
+index 000000000000..f2a69bf59d40
 --- /dev/null
-+++ b/tools/testing/selftests/powerpc/papr_vpd/.gitignore
++++ b/tools/testing/selftests/powerpc/papr_sysparm/.gitignore
 @@ -0,0 +1 @@
-+/papr_vpd
-diff --git a/tools/testing/selftests/powerpc/papr_vpd/Makefile b/tools/testing/selftests/powerpc/papr_vpd/Makefile
++/papr_sysparm
+diff --git a/tools/testing/selftests/powerpc/papr_sysparm/Makefile b/tools/testing/selftests/powerpc/papr_sysparm/Makefile
 new file mode 100644
-index 000000000000..06b719703bfd
+index 000000000000..7f79e437634a
 --- /dev/null
-+++ b/tools/testing/selftests/powerpc/papr_vpd/Makefile
++++ b/tools/testing/selftests/powerpc/papr_sysparm/Makefile
 @@ -0,0 +1,12 @@
 +# SPDX-License-Identifier: GPL-2.0
 +noarg:
 +	$(MAKE) -C ../
 +
-+TEST_GEN_PROGS := papr_vpd
++TEST_GEN_PROGS := papr_sysparm
 +
 +top_srcdir = ../../../../..
 +include ../../lib.mk
 +
 +$(TEST_GEN_PROGS): ../harness.c ../utils.c
 +
-+$(OUTPUT)/papr_vpd: CFLAGS += $(KHDR_INCLUDES)
-diff --git a/tools/testing/selftests/powerpc/papr_vpd/papr_vpd.c b/tools/testing/selftests/powerpc/papr_vpd/papr_vpd.c
++$(OUTPUT)/papr_sysparm: CFLAGS += $(KHDR_INCLUDES)
+diff --git a/tools/testing/selftests/powerpc/papr_sysparm/papr_sysparm.c b/tools/testing/selftests/powerpc/papr_sysparm/papr_sysparm.c
 new file mode 100644
-index 000000000000..98cbb9109ee6
+index 000000000000..fc25c03e8bc7
 --- /dev/null
-+++ b/tools/testing/selftests/powerpc/papr_vpd/papr_vpd.c
-@@ -0,0 +1,352 @@
++++ b/tools/testing/selftests/powerpc/papr_sysparm/papr_sysparm.c
+@@ -0,0 +1,164 @@
 +// SPDX-License-Identifier: GPL-2.0-only
-+#define _GNU_SOURCE
 +#include <errno.h>
 +#include <fcntl.h>
 +#include <stdlib.h>
-+#include <string.h>
 +#include <sys/ioctl.h>
 +#include <unistd.h>
-+
-+#include <asm/papr-vpd.h>
++#include <asm/papr-sysparm.h>
 +
 +#include "utils.h"
 +
-+#define DEVPATH "/dev/papr-vpd"
++#define DEVPATH "/dev/papr-sysparm"
 +
-+static int dev_papr_vpd_open_close(void)
++static int open_close(void)
 +{
 +	const int devfd = open(DEVPATH, O_RDONLY);
 +
@@ -184,314 +163,129 @@ index 000000000000..98cbb9109ee6
 +	return 0;
 +}
 +
-+static int dev_papr_vpd_get_handle_all(void)
++static int get_splpar(void)
 +{
++	struct papr_sysparm_io_block sp = {
++		.parameter = 20, // SPLPAR characteristics
++	};
 +	const int devfd = open(DEVPATH, O_RDONLY);
-+	struct papr_location_code lc = { .str = "", };
-+	off_t size;
-+	int fd;
 +
 +	SKIP_IF_MSG(devfd < 0 && errno == ENOENT,
 +		    DEVPATH " not present");
 +
 +	FAIL_IF(devfd < 0);
-+
-+	errno = 0;
-+	fd = ioctl(devfd, PAPR_VPD_IOC_CREATE_HANDLE, &lc);
-+	FAIL_IF(errno != 0);
-+	FAIL_IF(fd < 0);
-+
++	FAIL_IF(ioctl(devfd, PAPR_SYSPARM_IOC_GET, &sp) != 0);
++	FAIL_IF(sp.length == 0);
++	FAIL_IF(sp.length > sizeof(sp.data));
 +	FAIL_IF(close(devfd) != 0);
-+
-+	size = lseek(fd, 0, SEEK_END);
-+	FAIL_IF(size <= 0);
-+
-+	void *buf = malloc((size_t)size);
-+	FAIL_IF(!buf);
-+
-+	ssize_t consumed = pread(fd, buf, size, 0);
-+	FAIL_IF(consumed != size);
-+
-+	/* Ensure EOF */
-+	FAIL_IF(read(fd, buf, size) != 0);
-+	FAIL_IF(close(fd));
-+
-+	/* Verify that the buffer looks like VPD */
-+	static const char needle[] = "System VPD";
-+	FAIL_IF(!memmem(buf, size, needle, strlen(needle)));
 +
 +	return 0;
 +}
 +
-+static int dev_papr_vpd_get_handle_byte_at_a_time(void)
++static int get_bad_parameter(void)
 +{
++	struct papr_sysparm_io_block sp = {
++		.parameter = UINT32_MAX, // there are only ~60 specified parameters
++	};
 +	const int devfd = open(DEVPATH, O_RDONLY);
-+	struct papr_location_code lc = { .str = "", };
-+	int fd;
 +
 +	SKIP_IF_MSG(devfd < 0 && errno == ENOENT,
 +		    DEVPATH " not present");
 +
 +	FAIL_IF(devfd < 0);
 +
-+	errno = 0;
-+	fd = ioctl(devfd, PAPR_VPD_IOC_CREATE_HANDLE, &lc);
-+	FAIL_IF(errno != 0);
-+	FAIL_IF(fd < 0);
++	// Ensure expected error
++	FAIL_IF(ioctl(devfd, PAPR_SYSPARM_IOC_GET, &sp) != -1);
++	FAIL_IF(errno != EOPNOTSUPP);
++
++	// Ensure the buffer is unchanged
++	FAIL_IF(sp.length != 0);
++	for (size_t i = 0; i < ARRAY_SIZE(sp.data); ++i)
++		FAIL_IF(sp.data[i] != 0);
 +
 +	FAIL_IF(close(devfd) != 0);
-+
-+	size_t consumed = 0;
-+	while (1) {
-+		ssize_t res;
-+		char c;
-+
-+		errno = 0;
-+		res = read(fd, &c, sizeof(c));
-+		FAIL_IF(res > sizeof(c));
-+		FAIL_IF(res < 0);
-+		FAIL_IF(errno != 0);
-+		consumed += res;
-+		if (res == 0)
-+			break;
-+	}
-+
-+	FAIL_IF(consumed != lseek(fd, 0, SEEK_END));
-+
-+	FAIL_IF(close(fd));
 +
 +	return 0;
 +}
 +
-+
-+static int dev_papr_vpd_unterm_loc_code(void)
++static int check_efault_common(unsigned long cmd)
 +{
 +	const int devfd = open(DEVPATH, O_RDONLY);
-+	struct papr_location_code lc = {};
-+	int fd;
 +
 +	SKIP_IF_MSG(devfd < 0 && errno == ENOENT,
 +		    DEVPATH " not present");
 +
 +	FAIL_IF(devfd < 0);
 +
-+	/*
-+	 * Place a non-null byte in every element of loc_code; the
-+	 * driver should reject this input.
-+	 */
-+	memset(lc.str, 'x', ARRAY_SIZE(lc.str));
-+
-+	errno = 0;
-+	fd = ioctl(devfd, PAPR_VPD_IOC_CREATE_HANDLE, &lc);
-+	FAIL_IF(fd != -1);
-+	FAIL_IF(errno != EINVAL);
-+
-+	FAIL_IF(close(devfd) != 0);
-+	return 0;
-+}
-+
-+static int dev_papr_vpd_null_handle(void)
-+{
-+	const int devfd = open(DEVPATH, O_RDONLY);
-+	int rc;
-+
-+	SKIP_IF_MSG(devfd < 0 && errno == ENOENT,
-+		    DEVPATH " not present");
-+
-+	FAIL_IF(devfd < 0);
-+
-+	errno = 0;
-+	rc = ioctl(devfd, PAPR_VPD_IOC_CREATE_HANDLE, NULL);
-+	FAIL_IF(rc != -1);
++	// Ensure expected error
++	FAIL_IF(ioctl(devfd, cmd, NULL) != -1);
 +	FAIL_IF(errno != EFAULT);
 +
 +	FAIL_IF(close(devfd) != 0);
++
 +	return 0;
 +}
 +
-+static int papr_vpd_close_handle_without_reading(void)
++static int check_efault_get(void)
 +{
++	return check_efault_common(PAPR_SYSPARM_IOC_GET);
++}
++
++static int check_efault_set(void)
++{
++	return check_efault_common(PAPR_SYSPARM_IOC_SET);
++}
++
++static int set_hmc0(void)
++{
++	struct papr_sysparm_io_block sp = {
++		.parameter = 0, // HMC0, not a settable parameter
++	};
 +	const int devfd = open(DEVPATH, O_RDONLY);
-+	struct papr_location_code lc;
-+	int fd;
 +
 +	SKIP_IF_MSG(devfd < 0 && errno == ENOENT,
 +		    DEVPATH " not present");
 +
 +	FAIL_IF(devfd < 0);
 +
-+	errno = 0;
-+	fd = ioctl(devfd, PAPR_VPD_IOC_CREATE_HANDLE, &lc);
-+	FAIL_IF(errno != 0);
-+	FAIL_IF(fd < 0);
-+
-+	/* close the handle without reading it */
-+	FAIL_IF(close(fd) != 0);
++	// Ensure expected error
++	FAIL_IF(ioctl(devfd, PAPR_SYSPARM_IOC_SET, &sp) != -1);
++	FAIL_IF(errno != EPERM);
 +
 +	FAIL_IF(close(devfd) != 0);
-+	return 0;
-+}
-+
-+static int papr_vpd_reread(void)
-+{
-+	const int devfd = open(DEVPATH, O_RDONLY);
-+	struct papr_location_code lc = { .str = "", };
-+	int fd;
-+
-+	SKIP_IF_MSG(devfd < 0 && errno == ENOENT,
-+		    DEVPATH " not present");
-+
-+	FAIL_IF(devfd < 0);
-+
-+	errno = 0;
-+	fd = ioctl(devfd, PAPR_VPD_IOC_CREATE_HANDLE, &lc);
-+	FAIL_IF(errno != 0);
-+	FAIL_IF(fd < 0);
-+
-+	FAIL_IF(close(devfd) != 0);
-+
-+	const off_t size = lseek(fd, 0, SEEK_END);
-+	FAIL_IF(size <= 0);
-+
-+	char *bufs[2];
-+
-+	for (size_t i = 0; i < ARRAY_SIZE(bufs); ++i) {
-+		bufs[i] = malloc(size);
-+		FAIL_IF(!bufs[i]);
-+		ssize_t consumed = pread(fd, bufs[i], size, 0);
-+		FAIL_IF(consumed != size);
-+	}
-+
-+	FAIL_IF(memcmp(bufs[0], bufs[1], size));
-+
-+	FAIL_IF(close(fd) != 0);
 +
 +	return 0;
 +}
 +
-+static int get_system_loc_code(struct papr_location_code *lc)
-+{
-+	static const char system_id_path[] = "/sys/firmware/devicetree/base/system-id";
-+	static const char model_path[] = "/sys/firmware/devicetree/base/model";
-+	char *system_id;
-+	char *model;
-+	int err = -1;
-+
-+	if (read_file_alloc(model_path, &model, NULL))
-+		return err;
-+
-+	if (read_file_alloc(system_id_path, &system_id, NULL))
-+		goto free_model;
-+
-+	char *mtm;
-+	int sscanf_ret = sscanf(model, "IBM,%ms", &mtm);
-+	if (sscanf_ret != 1)
-+		goto free_system_id;
-+
-+	char *plant_and_seq;
-+	if (sscanf(system_id, "IBM,%*c%*c%ms", &plant_and_seq) != 1)
-+		goto free_mtm;
-+	/*
-+	 * Replace - with . to build location code.
-+	 */
-+	char *sep = strchr(mtm, '-');
-+	if (!sep)
-+		goto free_mtm;
-+	else
-+		*sep = '.';
-+
-+	snprintf(lc->str, sizeof(lc->str),
-+		 "U%s.%s", mtm, plant_and_seq);
-+	err = 0;
-+
-+	free(plant_and_seq);
-+free_mtm:
-+	free(mtm);
-+free_system_id:
-+	free(system_id);
-+free_model:
-+	free(model);
-+	return err;
-+}
-+
-+static int papr_vpd_system_loc_code(void)
-+{
-+	struct papr_location_code lc;
-+	const int devfd = open(DEVPATH, O_RDONLY);
-+	off_t size;
-+	int fd;
-+
-+	SKIP_IF_MSG(get_system_loc_code(&lc),
-+		    "Cannot determine system location code");
-+	SKIP_IF_MSG(devfd < 0 && errno == ENOENT,
-+		    DEVPATH " not present");
-+
-+	FAIL_IF(devfd < 0);
-+
-+	errno = 0;
-+	fd = ioctl(devfd, PAPR_VPD_IOC_CREATE_HANDLE, &lc);
-+	FAIL_IF(errno != 0);
-+	FAIL_IF(fd < 0);
-+
-+	FAIL_IF(close(devfd) != 0);
-+
-+	size = lseek(fd, 0, SEEK_END);
-+	FAIL_IF(size <= 0);
-+
-+	void *buf = malloc((size_t)size);
-+	FAIL_IF(!buf);
-+
-+	ssize_t consumed = pread(fd, buf, size, 0);
-+	FAIL_IF(consumed != size);
-+
-+	/* Ensure EOF */
-+	FAIL_IF(read(fd, buf, size) != 0);
-+	FAIL_IF(close(fd));
-+
-+	/* Verify that the buffer looks like VPD */
-+	static const char needle[] = "System VPD";
-+	FAIL_IF(!memmem(buf, size, needle, strlen(needle)));
-+
-+	return 0;
-+}
-+
-+struct vpd_test {
++struct sysparm_test {
 +	int (*function)(void);
 +	const char *description;
 +};
 +
-+static const struct vpd_test vpd_tests[] = {
++static const struct sysparm_test sysparm_tests[] = {
 +	{
-+		.function = dev_papr_vpd_open_close,
-+		.description = "open/close " DEVPATH,
++		.function = open_close,
++		.description = "open and close " DEVPATH " without issuing commands",
 +	},
 +	{
-+		.function = dev_papr_vpd_unterm_loc_code,
-+		.description = "ensure EINVAL on unterminated location code",
++		.function = get_splpar,
++		.description = "retrieve SPLPAR characteristics",
 +	},
 +	{
-+		.function = dev_papr_vpd_null_handle,
-+		.description = "ensure EFAULT on bad handle addr",
++		.function = get_bad_parameter,
++		.description = "verify EOPNOTSUPP for known-bad parameter",
 +	},
 +	{
-+		.function = dev_papr_vpd_get_handle_all,
-+		.description = "get handle for all VPD"
++		.function = check_efault_get,
++		.description = "PAPR_SYSPARM_IOC_GET returns EFAULT on bad address",
 +	},
 +	{
-+		.function = papr_vpd_close_handle_without_reading,
-+		.description = "close handle without consuming VPD"
++		.function = check_efault_set,
++		.description = "PAPR_SYSPARM_IOC_SET returns EFAULT on bad address",
 +	},
 +	{
-+		.function = dev_papr_vpd_get_handle_byte_at_a_time,
-+		.description = "read all VPD one byte at a time"
-+	},
-+	{
-+		.function = papr_vpd_reread,
-+		.description = "ensure re-read yields same results"
-+	},
-+	{
-+		.function = papr_vpd_system_loc_code,
-+		.description = "get handle for system VPD"
++		.function = set_hmc0,
++		.description = "ensure EPERM on attempt to update HMC0",
 +	},
 +};
 +
@@ -499,8 +293,8 @@ index 000000000000..98cbb9109ee6
 +{
 +	size_t fails = 0;
 +
-+	for (size_t i = 0; i < ARRAY_SIZE(vpd_tests); ++i) {
-+		const struct vpd_test *t = &vpd_tests[i];
++	for (size_t i = 0; i < ARRAY_SIZE(sysparm_tests); ++i) {
++		const struct sysparm_test *t = &sysparm_tests[i];
 +
 +		if (test_harness(t->function, t->description))
 +			++fails;
