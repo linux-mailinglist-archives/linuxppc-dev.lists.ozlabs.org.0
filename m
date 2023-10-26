@@ -2,87 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9113D7D8094
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 12:20:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55EE07D8097
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 12:21:36 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Siofr+M6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EWwuFy0C;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SGMJG3fqbz3bx0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 21:20:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SGMKB1cSvz3cWd
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Oct 2023 21:21:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Siofr+M6;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EWwuFy0C;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SGMHK2XHnz2ytJ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Oct 2023 21:19:56 +1100 (AEDT)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39QAHVtV032428;
-	Thu, 26 Oct 2023 10:19:40 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SGMHK2wnhz300g
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Oct 2023 21:19:57 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39QAF9f3023246;
+	Thu, 26 Oct 2023 10:19:38 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=n9gjFqsBWsmBy4mOUJ1TsaGzVb1LxD6lsba8tEZdEYE=;
- b=Siofr+M6uNqtWpAiS1LiYmvzsoERrW7JXEvvPmru9j0xSiLYhn5fS/NWUK9MmdM8VtFB
- 1/O8tFJk7vTF3zi2OOEkPaw8l39bvyPy/lsaZUvn1C025TehpTM35h/vc8ddDjc7KgH6
- 9uHd7R2e9EPHi1zUrW76BfYAo/V1FSp0RY6CuaET5lcY/sI63crytVfBvnhkMribmOnS
- /0mndvcfz0NtN3S0fXY+medXVKkmy6C6C5uVsD2hTp6LwoBIdQqpZFbLEhE3YShZWVP1
- ETvsB8egmcZORezcg2011b1OG88VYJasQkO4fwCVgirwY+XW20hX0kSLywfz5vm1wsqq PA== 
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=ovM917uH+87OQ0k9Dg80qKD8TwUEd4qrT2eob+aCDVU=;
+ b=EWwuFy0Ctcj4OV6v/Z8tDzN/6zqFqh3f0JC/N44x6eG3GpXeGRb7Ck04bmk2J0h6Jwi2
+ u8KQPDo+WDExkPIyQfQgy3PubSEHoSdyWDdi6GaK3jxMyub7NcMV9McZGsx8QC9nSbg5
+ KcY0gwNDuM8zAQZJpP3GA697mUbsEeb7GKegUb9cVHfArzpSJffsCosBIni/JjXX28rY
+ ZsT41VbFUhjz2E4L0DkWMiSVr+eCIwwFdQX3JHU2lNnJ6PFtDe8faXPhKPhC420EXstA
+ MgJcacgnL9oehpFfX+Fu5tgf7DV0BEnRTIU66zrqtdUL0TVhQbCNVjNsaAUabyI+9EjV Dw== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3typ7q05s3-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3typ6qg3xy-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Oct 2023 10:19:39 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39QAHt5B002113;
-	Thu, 26 Oct 2023 10:19:39 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3typ7q05gv-1
+	Thu, 26 Oct 2023 10:19:37 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39QAFGC6024458;
+	Thu, 26 Oct 2023 10:19:37 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3typ6qg3xk-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Oct 2023 10:19:38 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39Q8JXkU010218;
-	Thu, 26 Oct 2023 10:19:33 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tvsbywj6m-1
+	Thu, 26 Oct 2023 10:19:37 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39QAFijh024403;
+	Thu, 26 Oct 2023 10:19:36 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tvu6kd137-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Oct 2023 10:19:33 +0000
+	Thu, 26 Oct 2023 10:19:36 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39QAJVN011600430
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39QAJYnv15008352
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 26 Oct 2023 10:19:31 GMT
+	Thu, 26 Oct 2023 10:19:34 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5680E2007C;
-	Thu, 26 Oct 2023 10:19:31 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 96EDC20063;
+	Thu, 26 Oct 2023 10:19:34 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0ED4920063;
-	Thu, 26 Oct 2023 10:19:29 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 39FE62007C;
+	Thu, 26 Oct 2023 10:19:32 +0000 (GMT)
 Received: from sapthagiri.in.ibm.com (unknown [9.109.198.113])
 	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 26 Oct 2023 10:19:28 +0000 (GMT)
+	Thu, 26 Oct 2023 10:19:32 +0000 (GMT)
 From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v3 0/5] powerpc/smp: Topology and shared processor optimizations
-Date: Thu, 26 Oct 2023 15:48:35 +0530
-Message-ID: <20231026101843.56784-1-srikar@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v3 1/5] powerpc/smp: Enable Asym packing for cores on shared processor
+Date: Thu, 26 Oct 2023 15:48:36 +0530
+Message-ID: <20231026101843.56784-2-srikar@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.41.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: X1WE97JUtTu6wonjl0KV-_Lpchqd-iwk
-X-Proofpoint-ORIG-GUID: k0T5He0QHbCm8uZRCzr6yNY5I6U2rERh
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+In-Reply-To: <20231026101843.56784-1-srikar@linux.vnet.ibm.com>
+References: <20231026101843.56784-1-srikar@linux.vnet.ibm.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: b1_Afhd855bKBcsXoZutgBbOx5d4_kg0
+X-Proofpoint-ORIG-GUID: aL2h6E4vKUQo0rgGMIpbgHT8PY5JSp1Z
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-26_08,2023-10-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
- lowpriorityscore=0 priorityscore=1501 suspectscore=0 clxscore=1015
- bulkscore=0 malwarescore=0 spamscore=0 impostorscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310170001 definitions=main-2310260087
+ definitions=2023-10-26_07,2023-10-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
+ priorityscore=1501 impostorscore=0 mlxlogscore=999 adultscore=0
+ suspectscore=0 malwarescore=0 clxscore=1011 bulkscore=0 spamscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310170001 definitions=main-2310260086
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,177 +97,120 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Valentin Schneider <vschneid@redhat.com>, Srikar Dronamraju <srikar@linux.vnet.ibm.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Peter Zijlstra \(Intel\)" <peterz@infradead.org>, "ndesaulniers@google.com" <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Rohan McLure <rmclure@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, Valentin Schneider <vschneid@redhat.com>, Srikar Dronamraju <srikar@linux.vnet.ibm.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Peter Zijlstra \(Intel\)" <peterz@infradead.org>, "ndesaulniers@google.com" <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Rohan McLure <rmclure@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PowerVM systems configured in shared processors mode have some unique
-challenges. Some device-tree properties will be missing on a shared
-processor. Hence some sched domains may not make sense for shared processor
-systems.
+If there are shared processor LPARs, underlying Hypervisor can have more
+virtual cores to handle than actual physical cores.
 
-Most shared processor systems are over-provisioned. Underlying PowerVM
-Hypervisor would schedule at a Big Core granularity. The most recent power
-processors support two almost independent cores. In a lightly loaded
-condition, it helps the overall system performance if we pack to lesser
-number of Big Cores.
+Starting with Power 9, a big core (aka SMT8 core) has 2 nearly
+independent thread groups. On a shared processors LPARs, it helps to
+pack threads to lesser number of cores so that the overall system
+performance and utilization improves. PowerVM schedules at a big core
+level. Hence packing to fewer cores helps.
 
-System Configuration
-type=Shared mode=Uncapped smt=8 lcpu=96 mem=1066409344 kB cpus=96 ent=64.00
-So *64 Entitled cores/ 96 Virtual processor* Scenario
+For example: Lets says there are two 8-core Shared LPARs that are
+actually sharing a 8 Core shared physical pool, each running 8 threads
+each. Then Consolidating 8 threads to 4 cores on each LPAR would help
+them to perform better. This is because each of the LPAR will get
+100% time to run applications and there will no switching required by
+the Hypervisor.
 
-lscpu
-Architecture:                       ppc64le
-Byte Order:                         Little Endian
-CPU(s):                             768
-On-line CPU(s) list:                0-767
-Model name:                         POWER10 (architected), altivec supported
-Model:                              2.0 (pvr 0080 0200)
-Thread(s) per core:                 8
-Core(s) per socket:                 16
-Socket(s):                          6
-Hypervisor vendor:                  pHyp
-Virtualization type:                para
-L1d cache:                          6 MiB (192 instances)
-L1i cache:                          9 MiB (192 instances)
-NUMA node(s):                       6
-NUMA node0 CPU(s):                  0-7,32-39,80-87,128-135,176-183,224-231,272-279,320-327,368-375,416-423,464-471,512-519,560-567,608-615,656-663,704-711,752-759
-NUMA node1 CPU(s):                  8-15,40-47,88-95,136-143,184-191,232-239,280-287,328-335,376-383,424-431,472-479,520-527,568-575,616-623,664-671,712-719,760-767
-NUMA node4 CPU(s):                  64-71,112-119,160-167,208-215,256-263,304-311,352-359,400-407,448-455,496-503,544-551,592-599,640-647,688-695,736-743
-NUMA node5 CPU(s):                  16-23,48-55,96-103,144-151,192-199,240-247,288-295,336-343,384-391,432-439,480-487,528-535,576-583,624-631,672-679,720-727
-NUMA node6 CPU(s):                  72-79,120-127,168-175,216-223,264-271,312-319,360-367,408-415,456-463,504-511,552-559,600-607,648-655,696-703,744-751
-NUMA node7 CPU(s):                  24-31,56-63,104-111,152-159,200-207,248-255,296-303,344-351,392-399,440-447,488-495,536-543,584-591,632-639,680-687,728-735
+To achieve this, enable SD_ASYM_PACKING flag at CACHE, MC and DIE level
+when the system is running in shared processor mode and has big cores.
 
-ebizzy -t 32 -S 200 (5 iterations) Records per second. (Higher is better)
-Kernel     N  Min      Max      Median   Avg        Stddev     %Change
-6.6.0-rc3  5  3840178  4059268  3978042  3973936.6  84264.456
-+patch     5  3768393  3927901  3874994  3854046    71532.926  -3.01692
+Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+---
+Changelog:
+v1->v2: Using Jump label instead of a variable.
+v2 -> v3:
+- Handle comments on commit message (Michael Ellerman)
+- Rework using existing cpu_has_features static key (Michael Ellerman)
+- Added a comment on why we do asym_packing at core (Peter Zijlstra)
 
->From lparstat (when the workload stabilized)
-Kernel     %user  %sys  %wait  %idle  physc  %entc  lbusy  app    vcsw       phint
-6.6.0-rc3  4.16   0.00  0.00   95.84  26.06  40.72  4.16   69.88  276906989  578
-+patch     4.16   0.00  0.00   95.83  17.70  27.66  4.17   78.26  70436663   119
+ arch/powerpc/kernel/smp.c | 32 ++++++++++++++++++++++++--------
+ 1 file changed, 24 insertions(+), 8 deletions(-)
 
-ebizzy -t 128 -S 200 (5 iterations) Records per second. (Higher is better)
-Kernel     N Min      Max      Median   Avg        Stddev     %Change
-6.6.0-rc3  5 5520692  5981856  5717709  5727053.2  176093.2
-+patch     5 5305888  6259610  5854590  5843311    375917.03  2.02998
-
->From lparstat (when the workload stabilized)
-Kernel     %user  %sys  %wait  %idle  physc  %entc  lbusy  app    vcsw       phint
-6.6.0-rc3  16.66  0.00  0.00   83.33  45.49  71.08  16.67  50.50  288778533  581
-+patch     16.65  0.00  0.00   83.35  30.15  47.11  16.65  65.76  85196150   133
-
-ebizzy -t 512 -S 200 (5 iterations) Records per second. (Higher is better)
-Kernel     N  Min       Max       Median    Avg       Stddev     %Change
-6.6.0-rc3  5  19563921  20049955  19701510  19728733  198295.18
-+patch     5  19455992  20176445  19718427  19832017  304094.05  0.523521
-
->From lparstat (when the workload stabilized)
-%Kernel     user  %sys  %wait  %idle  physc  %entc   lbusy  app   vcsw       phint
-66.6.0-rc3  6.44  0.01  0.00   33.55  94.14  147.09  66.45  1.33  313345175  621
-6+patch     6.44  0.01  0.00   33.55  94.15  147.11  66.45  1.33  109193889  309
-
-System Configuration
-type=Shared mode=Uncapped smt=8 lcpu=40 mem=1067539392 kB cpus=96 ent=40.00
-So *40 Entitled cores/ 40 Virtual processor* Scenario
-
-lscpu
-Architecture:                       ppc64le
-Byte Order:                         Little Endian
-CPU(s):                             320
-On-line CPU(s) list:                0-319
-Model name:                         POWER10 (architected), altivec supported
-Model:                              2.0 (pvr 0080 0200)
-Thread(s) per core:                 8
-Core(s) per socket:                 10
-Socket(s):                          4
-Hypervisor vendor:                  pHyp
-Virtualization type:                para
-L1d cache:                          2.5 MiB (80 instances)
-L1i cache:                          3.8 MiB (80 instances)
-NUMA node(s):                       4
-NUMA node0 CPU(s):                  0-7,32-39,64-71,96-103,128-135,160-167,192-199,224-231,256-263,288-295
-NUMA node1 CPU(s):                  8-15,40-47,72-79,104-111,136-143,168-175,200-207,232-239,264-271,296-303
-NUMA node4 CPU(s):                  16-23,48-55,80-87,112-119,144-151,176-183,208-215,240-247,272-279,304-311
-NUMA node5 CPU(s):                  24-31,56-63,88-95,120-127,152-159,184-191,216-223,248-255,280-287,312-319
-
-ebizzy -t 32 -S 200 (5 iterations) Records per second. (Higher is better)
-Kernel     N   Min      Max      Median   Avg        Stddev     %Change
-6.6.0-rc3  5   3535518  3864532  3745967  3704233.2  130216.76
-+patch     5   3608385  3708026  3649379  3651596.6  37862.163  -1.42099
-
-%Kernel    user   %sys  %wait  %idle  physc  %entc  lbusy  app    vcsw     phint
-6.6.0-rc3  10.00  0.01  0.00   89.99  22.98  57.45  10.01  41.01  1135139  262
-+patch     10.00  0.00  0.00   90.00  16.95  42.37  10.00  47.05  925561   19
-
-ebizzy -t 64 -S 200 (5 iterations) Records per second. (Higher is better)
-Kernel     N   Min      Max      Median   Avg        Stddev     %Change
-6.6.0-rc3  5   4434984  4957281  4548786  4591298.2  211770.2
-+patch     5   4461115  4835167  4544716  4607795.8  151474.85  0.359323
-
-%Kernel    user   %sys  %wait  %idle  physc  %entc  lbusy  app    vcsw     phint
-6.6.0-rc3  20.01  0.00  0.00   79.99  38.22  95.55  20.01  25.77  1287553  265
-+patch     19.99  0.00  0.00   80.01  25.55  63.88  19.99  38.44  1077341  20
-
-ebizzy -t 256 -S 200 (5 iterations) Records per second. (Higher is better)
-Kernel     N   Min      Max      Median   Avg        Stddev     %Change
-6.6.0-rc3  5   8850648  8982659  8951911  8936869.2  52278.031
-+patch     5   8751038  9060510  8981409  8942268.4  117070.6   0.0604149
-
-%Kernel    user   %sys  %wait  %idle  physc  %entc   lbusy  app    vcsw     phint
-6.6.0-rc3  80.02  0.01  0.01   19.96  40.00  100.00  80.03  24.00  1597665  276
-+patch     80.02  0.01  0.01   19.96  40.00  100.00  80.03  23.99  1383921  63
-
-Observation:
-We are able to see Improvement in ebizzy throughput even with lesser
-core utilization (almost half the core utilization) in low utilization
-scenarios while still retaining throughput in mid and higher utilization
-scenarios.
-Note: The numbers are with Uncapped + no-noise case. In the Capped and/or
-noise case, due to contention on the Cores, the numbers are expected to
-further improve.
-
-Note: The numbers included (powerpc/paravirt: Improve vcpu_is_preempted)
-http://lore.kernel.org/all/20231019091452.95260-1-srikar@linux.vnet.ibm.com/
-and (sched/fair: Enable group_asym_packing in find_idlest_group)
-https://lore.kernel.org/all/20231018155036.2314342-1-srikar@linux.vnet.ibm.com/
-
-Changelog
-v1 (https://lore.kernel.org/all/20230830105244.62477-1-srikar@linux.vnet.ibm.com) -> v2:
-1. Last two patches were added in this version
-2. This version uses static keys
-v2 (https://lore.kernel.org/all/20231018163751.2423181-1-srikar@linux.vnet.ibm.com) ->v3:
-1. Handle comments from Peter Zijlstra / Michael Ellerman
-2. Use __ro_after_init attribute instead of read_mostly
-3. Use cpu_has_feature static_key instead of a new one.
-4. Build topology dynamically patch added to this patchset.
-
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: linux-kernel@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: "ndesaulniers@google.com" <ndesaulniers@google.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Cc: Rohan McLure <rmclure@linux.ibm.com>
-Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Valentin Schneider <vschneid@redhat.com>
-
-Srikar Dronamraju (5):
-  powerpc/smp: Enable Asym packing for cores on shared processor
-  powerpc/smp: Disable MC domain for shared processor
-  powerpc/smp: Add __ro_after_init attribute
-  powerpc/smp: Avoid asym packing within thread_group of a core
-  powerpc/smp: Dynamically build Powerpc topology
-
- arch/powerpc/kernel/smp.c | 136 +++++++++++++++++++++-----------------
- 1 file changed, 76 insertions(+), 60 deletions(-)
-
-
-base-commit: 4d121328397f83465b6c1f60c5fad93bda9bc90e
+diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+index 5826f5108a12..dbf0a584804b 100644
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -988,18 +988,22 @@ static int __init init_thread_group_cache_map(int cpu, int cache_property)
+ }
+ 
+ static bool shared_caches;
++/*
++ * On shared processor LPARs scheduled on a big core (which has two or more
++ * independent thread groups per core), prefer lower numbered CPUs, so
++ * that workload consolidates to lesser number of cores.
++ */
++static __ro_after_init DEFINE_STATIC_KEY_FALSE(splpar_asym_pack);
+ 
+ #ifdef CONFIG_SCHED_SMT
+ /* cpumask of CPUs with asymmetric SMT dependency */
+ static int powerpc_smt_flags(void)
+ {
+-	int flags = SD_SHARE_CPUCAPACITY | SD_SHARE_PKG_RESOURCES;
++	if (cpu_has_feature(CPU_FTR_ASYM_SMT) ||
++			static_branch_unlikely(&splpar_asym_pack))
++		return SD_SHARE_CPUCAPACITY | SD_SHARE_PKG_RESOURCES | SD_ASYM_PACKING;
+ 
+-	if (cpu_has_feature(CPU_FTR_ASYM_SMT)) {
+-		printk_once(KERN_INFO "Enabling Asymmetric SMT scheduling\n");
+-		flags |= SD_ASYM_PACKING;
+-	}
+-	return flags;
++	return SD_SHARE_CPUCAPACITY | SD_SHARE_PKG_RESOURCES;
+ }
+ #endif
+ 
+@@ -1011,9 +1015,20 @@ static int powerpc_smt_flags(void)
+  */
+ static int powerpc_shared_cache_flags(void)
+ {
++	if (static_branch_unlikely(&splpar_asym_pack))
++		return SD_SHARE_PKG_RESOURCES | SD_ASYM_PACKING;
++
+ 	return SD_SHARE_PKG_RESOURCES;
+ }
+ 
++static int powerpc_shared_proc_flags(void)
++{
++	if (static_branch_unlikely(&splpar_asym_pack))
++		return SD_ASYM_PACKING;
++
++	return 0;
++}
++
+ /*
+  * We can't just pass cpu_l2_cache_mask() directly because
+  * returns a non-const pointer and the compiler barfs on that.
+@@ -1050,8 +1065,8 @@ static struct sched_domain_topology_level powerpc_topology[] = {
+ 	{ cpu_smt_mask, powerpc_smt_flags, SD_INIT_NAME(SMT) },
+ #endif
+ 	{ shared_cache_mask, powerpc_shared_cache_flags, SD_INIT_NAME(CACHE) },
+-	{ cpu_mc_mask, SD_INIT_NAME(MC) },
+-	{ cpu_cpu_mask, SD_INIT_NAME(DIE) },
++	{ cpu_mc_mask, powerpc_shared_proc_flags, SD_INIT_NAME(MC) },
++	{ cpu_cpu_mask, powerpc_shared_proc_flags, SD_INIT_NAME(DIE) },
+ 	{ NULL, },
+ };
+ 
+@@ -1686,7 +1701,13 @@ static void __init fixup_topology(void)
+ {
+ 	int i;
+ 
++	if (is_shared_processor() && has_big_cores)
++		static_branch_enable(&splpar_asym_pack);
++
+ #ifdef CONFIG_SCHED_SMT
++	if (cpu_has_feature(CPU_FTR_ASYM_SMT))
++		pr_info_once("Enabling Asymmetric SMT scheduling\n");
++
+ 	if (has_big_cores) {
+ 		pr_info("Big cores detected but using small core scheduling\n");
+ 		powerpc_topology[smt_idx].mask = smallcore_smt_mask;
 -- 
 2.31.1
 
