@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75C2A7D94D2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 12:10:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A47E7D9511
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 12:19:38 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ReDZGBiq;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=W0dEmyCA;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SGz222dTSz3dB5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 21:10:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SGzDS2pJ9z3vsL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 21:19:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ReDZGBiq;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=W0dEmyCA;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SGyzN0PVXz3c13
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Oct 2023 21:08:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SGyzW42dnz3cFg
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Oct 2023 21:08:23 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1698401295;
-	bh=KDsvzW99/6MUtGF6A21Q7TspVKEYplpYhiBKkLhuJJg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=ReDZGBiqj633/pzOOlM4lkGwCG9ptpwWu94S2VSgVoSY2hyRmmNkg7rORzvefRW7p
-	 lpr3nZeOEXP9QcUPhYqHPxCpwI6ArMXdGMjXEL9zzxZdiHs8Xi5lL2ZoRaVo6VRq4j
-	 SjrYJNh/S81DbsZVPUNpGlv0p5fGWp0rszRJMz/7erRmi4qWGsuYI1FLuFl5xyE6vX
-	 e+3FITbfdPMnD57hakXPvDDoliTygMJkcO/chbkxzFN3u6K8iRzkjPkP6BLyWvNKiZ
-	 lzVXmztc9FyORTqhzGQjHfy8nUHVcTQHMDF44rYvhZqlsqJn0QFY3tqI//1+fGDP+V
-	 hBhK33dpxUr0Q==
+	s=201909; t=1698401303;
+	bh=2CsgfLf/pUsCN6SDik5dlYFqiH+Yzws7m8cz/m9JN9M=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=W0dEmyCALN9U1BXXzLNC6zKQj20AYyhqZAfdqCMzha5Ns6D9nT4sIG/7VJUKLutYf
+	 SOKelr0KHRTtxTYrZ/LGLW8zRQNly5jCkg8r05eqk4BrQh5Xa+rMPmfu8TqHJohVz8
+	 OkRwXVZxnaQbAkDss30preYIh/5MH+SKS7WIhpiZQ8GegnT7pjTwa2gBMrDRidgh7h
+	 lionJaIev0AaUxtX8QXl3177fXmkR8XwOdvUalSNX/DcG+O+MSqAnNPnyaqmqZMFps
+	 MgXqdbRd6ahstZzaqkubRQzSh1ubg2G6ZifTq2yvuVUEtW438ZvmcWrWuBi6Cn6Jg3
+	 lpNu93mTF86ew==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SGyzM6KZyz4xWS;
-	Fri, 27 Oct 2023 21:08:15 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SGyzW2tmgz4xVZ;
+	Fri, 27 Oct 2023 21:08:23 +1100 (AEDT)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-In-Reply-To: <20230309134831.Nz12nqsU@linutronix.de>
-References: <20230309134831.Nz12nqsU@linutronix.de>
-Subject: Re: [PATCH] powerpc/imc-pmu: Use the correct spinlock initializer.
-Message-Id: <169840079680.2701453.3088502811732499350.b4-ty@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org, Nick Child <nnac123@linux.ibm.com>
+In-Reply-To: <20230314164442.124929-1-nnac123@linux.ibm.com>
+References: <20230314164442.124929-1-nnac123@linux.ibm.com>
+Subject: Re: [RFC PATCH v1] powerpc: Add version to install filenames
+Message-Id: <169840079682.2701453.5693040205919300565.b4-ty@ellerman.id.au>
 Date: Fri, 27 Oct 2023 20:59:56 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -58,23 +58,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>, Kajol Jain <kjain@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 09 Mar 2023 14:48:31 +0100, Sebastian Andrzej Siewior wrote:
-> The macro __SPIN_LOCK_INITIALIZER() is implementation specific. Users
-> that desire to initialize a spinlock in a struct must use
-> __SPIN_LOCK_UNLOCKED().
+On Tue, 14 Mar 2023 11:44:42 -0500, Nick Child wrote:
+> Rather than replacing the versionless vmlinux and System.map files,
+> copy to files with the version info appended.
 > 
-> Use __SPIN_LOCK_UNLOCKED() for the spinlock_t in imc_global_refc.
-> 
+> Additionally, since executing the script is a last resort option,
+> inform the user about the missing `installkernel` command and the
+> location of the installation.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/imc-pmu: Use the correct spinlock initializer.
-      https://git.kernel.org/powerpc/c/007240d59c11f87ac4f6cfc6a1d116630b6b634c
+[1/1] powerpc: Add version to install filenames
+      https://git.kernel.org/powerpc/c/269d79fb30f6b2419b8a67d99d8bdf58ced44d72
 
 cheers
