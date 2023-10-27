@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B23F7D950A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 12:18:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E5EB7D94EC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 12:14:44 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=AsGi1Ekn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=jQzILde5;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SGzCX5rz0z3w5W
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 21:18:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SGz6p11Cvz3vfN
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 21:14:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=AsGi1Ekn;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=jQzILde5;
 	dkim-atps=neutral
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SGyzV0pDzz3cQg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Oct 2023 21:08:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SGyzR1nw2z3cFh
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Oct 2023 21:08:19 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1698401302;
-	bh=YCnHLjZS5iqqL1xwbw3wcU/USe/DpI7JqW6ENB606lw=;
+	s=201909; t=1698401299;
+	bh=0tSupoaXw3PNm+1ssTFm6jQxgNKdnFhV/B2IybUSobA=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=AsGi1EknhHfUohD7asqMWGTBjq2CEzgBEL9mwyhxg9MSkCl9ceYy26YIJjvN7er0r
-	 BQ78glD/e+jlnmvnXaoq/2sRyjHuzGdzvCh5aqDOM+PoMoa4R+XnRhgm34yykjliiQ
-	 Gfh+So5UIfBgmZqHR5NriVk50qcrsNR77uySIice7GNqML1NaZ4/s7K8XS/AGavA98
-	 CnV6bGDCZbuhG8DraP/RoQ/37Nhk4BEenAf/mPcobu5jrBUYkWjonWfs5Clr6W8+0X
-	 4m9Ihl6cZu6XWoVR9RdxF1wLF+Yf1kyScQ6CgGkv4yITNPdgRpKmQyvJdkYqbWQuOa
-	 a4cQ31j4Rrldg==
+	b=jQzILde5pelxgGYr760bO3cfAdt+bZ7Ta907VVMaUe4oT5X9nX+HJlckc9Y0OzbzP
+	 YnO2eH/U1i4M9q5jcX9ha4A6bY3JZdaLKhf5tBrNK1g1Yv8eCXDVT4iGkoURtoM/IC
+	 KIFs/XBpb7HmmKEDYZtcA1oi4Jypgh2qiaFCjtZh5SkpEa1ABy2Ul+Nx8N8yNpq5iB
+	 tpThaHfnLs7N9Jhh+R/Pc6lfYN+ek3YKlmuF8r2fWKYfNfeQV8s1QaDptFeKNhLtDf
+	 8EKSSqN9VAMzsPiETBkpfbWXnQcC0P23vgLs8xDqZj/pgcBpmOIvA3W1hZTGFXDXhZ
+	 tDBLeYbijpsJQ==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SGyzT6WZ5z4xWr;
-	Fri, 27 Oct 2023 21:08:21 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SGyzR0XgGz4xWf;
+	Fri, 27 Oct 2023 21:08:19 +1100 (AEDT)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20230824064210.907266-1-mpe@ellerman.id.au>
-References: <20230824064210.907266-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc: Hide empty pt_regs at base of the stack
-Message-Id: <169840079675.2701453.445573032040396883.b4-ty@ellerman.id.au>
+To: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+In-Reply-To: <20231003030802.47914-1-gbatra@linux.vnet.ibm.com>
+References: <20231003030802.47914-1-gbatra@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2] powerpc/pseries/iommu: enable_ddw incorrectly returns direct mapping for SR-IOV device
+Message-Id: <169840079678.2701453.14213017318168478377.b4-ty@ellerman.id.au>
 Date: Fri, 27 Oct 2023 20:59:56 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -58,24 +58,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: joel@jms.id.au, npiggin@gmail.com
+Cc: brking@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org, gjoyce@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 24 Aug 2023 16:42:10 +1000, Michael Ellerman wrote:
-> A thread started via eg. user_mode_thread() runs in the kernel to begin
-> with and then may later return to userspace. While it's running in the
-> kernel it has a pt_regs at the base of its kernel stack, but that
-> pt_regs is all zeroes.
+On Mon, 02 Oct 2023 22:08:02 -0500, Gaurav Batra wrote:
+> When a device is initialized, the driver invokes dma_supported() twice -
+> first for streaming mappings followed by coherent mappings. For an
+> SR-IOV device, default window is deleted and DDW created. With vPMEM
+> enabled, TCE mappings are dynamically created for both vPMEM and SR-IOV
+> device.  There are no direct mappings.
 > 
-> If the thread oopses in that state, it leads to an ugly stack trace with
-> a big block of zero GPRs, as reported by Joel:
+> First time when dma_supported() is called with 64 bit mask, DDW is created
+> and marked as dynamic window. The second time dma_supported() is called,
+> enable_ddw() finds existing window for the device and incorrectly returns
+> it as "direct mapping".
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc: Hide empty pt_regs at base of the stack
-      https://git.kernel.org/powerpc/c/d45c4b48dafb5820e5cc267ff9a6d7784d13a43c
+[1/1] powerpc/pseries/iommu: enable_ddw incorrectly returns direct mapping for SR-IOV device
+      https://git.kernel.org/powerpc/c/3bf983e4e93ce8e6d69e9d63f52a66ec0856672e
 
 cheers
