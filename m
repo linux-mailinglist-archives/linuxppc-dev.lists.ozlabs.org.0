@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 209147DA0D1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 20:45:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF06B7DA0DF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 20:46:45 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=4e97wqTz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=XxU2awYL;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SHBSf6fGkz3wGn
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Oct 2023 05:45:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SHBTb45scz6sMN
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Oct 2023 05:46:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=4e97wqTz;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=XxU2awYL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3fga8zqykddclxtgcvzhhzex.vhfebgnqiiv-wxoeblml.hsetul.hkz@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=3gqa8zqykddooawjfyckkcha.ykihejqtlly-zarheopo.kvhwxo.knc@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SH9yd127Qz3cW7
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Oct 2023 05:23:21 +1100 (AEDT)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-da0c7d27fb0so1329288276.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Oct 2023 11:23:21 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SH9yg2crcz3cb6
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Oct 2023 05:23:23 +1100 (AEDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-5afe220cadeso6523357b3.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Oct 2023 11:23:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1698430999; x=1699035799; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1698431001; x=1699035801; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=yVf4MoQ+pgFottQ0gtqF7KbCgtXqLOOMhwiDUmO9tI4=;
-        b=4e97wqTzbz3803wCgmneZfjibr6oz1ENy8WZK6lnhoPaHOsMv0snP7c+GQ2xjlfncf
-         5NC0jen8rOwc+0atyU0MjXgbnOSZVikjB6pcBLEHt95e97n40nI+ek26WLflKFO1RXsQ
-         PDuTPBhPhC12JYWUKOZEuhzEflyMxNHoAiUa7nzSUnbgfzbBQ/bjYVD6lkv+W7xQqGus
-         4ZJPcXzujonQeWwAD4qqIjTGDHz+xA6ibA6TmVLaaoC2ZtkjhzWkx+QQlGQazYuIwuoU
-         xtK4qCQOtEZR0BXRUjrJ4u5+LlKUO46Lf4ksizMURznMjlG5XUBKB7ShkwjX2WWSzE95
-         LO+Q==
+        bh=Xz8kt0PqFUxEdWsVGTpKhvh/0bAOqOlDGpUeOhSMn4Y=;
+        b=XxU2awYLCp4XrBi/zHFj180eBFQB2bhLjMivTLDVACIPeXA1n+8CcaXZTHrG3w9Hm7
+         BMAqs+kUH9DVYYBU0vuzQa19U4tBzhcC2s39J87X2257BBsLzSoj3iOk9vovtnbgJMAR
+         JVFxNzk3dxI6HyT9MHU8D41INZqY22gkxc2rXVuXAcltipzklSw5lA3Rms5HnDez7OE6
+         IMh64CsNEy6Fa3OYTLuqVfF47FOrh+0as/c1nNhkRQKptfnlD6I1D/JXN4x+NUQ1rJvn
+         5+P5FvnEfA6s4jObR72NSpmxtlA91WNhjeDfv2g1pXkJDMnyy1N4OyK/cz9mP473kLnb
+         Fr5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698430999; x=1699035799;
+        d=1e100.net; s=20230601; t=1698431001; x=1699035801;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=yVf4MoQ+pgFottQ0gtqF7KbCgtXqLOOMhwiDUmO9tI4=;
-        b=op8LLXgWG4ukTv/dAx+E7cDuQi2TKZ6CT38QzWuwWcKdyrNsT2PMtmE9Rzknyo+fqs
-         zTYy6SATFtZOzaJLrjPmasN2XHbOLv6ilLiOA77HEKUNa7MB5Us454cM4AuErXQbaMaB
-         GfHoseLGFXNJSO8PyUXlA0X/7ePignTfVfl0raX83/++g2ODcI41A4Y9iYa9kkIdzBZN
-         9BVHtR4gAQOUmXVkGbmrdk5WuPajLpOac/veNxNs61w3Gzh/N7jxbySBcezvKEbgO0rH
-         zc9PbMvSG2sIHQuaERa6lSvjL0lNAmMDvIcGiqZxxhiuDjtwPq/+8DpvuuuxkAfeVRpz
-         XDtQ==
-X-Gm-Message-State: AOJu0YznvRIVsuwBevtNscMsLnh9wG5W72yi11guDVCbsSANy9hQVEMm
-	RkM+lHc/t2MYPXag8Cp7Qc8QZ9/idQA=
-X-Google-Smtp-Source: AGHT+IG9XwjMpXerybQ74hZWKPyWlQIkLL60UP7vz/JRGdDaUmVGZC9suFSomOjVdAtgwjkxyK2jTqS148U=
+        bh=Xz8kt0PqFUxEdWsVGTpKhvh/0bAOqOlDGpUeOhSMn4Y=;
+        b=it+80grTdHXDo8nxVZiIT9lQYE7U7LGQvvzb9K7oLX4x/N9pH0IDXJslcaZiTvVMaF
+         Sk78JcOyz5DqQaqGz6QAT3IJsGhsc6uAK9hISDLMvkLBevv2u5TVRpX/BnnE3/5e7J4k
+         7FiNYoJ+fANGZpY9cMIG8+XiRtY3yF10WG+fU1PNOfusqUGgy7s48lQS/o/wCQUdaCyl
+         atkbJCZDJ2HwYq7WZx5YNX26c2D++X0fFZUEWS6sJ6xnV5Y3n7ezOAGSSVY3WUCwQZMj
+         3BFda9eEStWh7JvFSq1QK0Rm6gL3EG6UrLTlpmHF+UgWDVG4g2EFKinkIFen6yd/4BBG
+         dbYQ==
+X-Gm-Message-State: AOJu0Yw90Jb3gEVxdRWQrsFQEYGRkOl1kVKzJo5d+mh3F87QskjRZqAJ
+	/tEma1eu52hetlHGDxPq5xxt7ap8AqI=
+X-Google-Smtp-Source: AGHT+IElp9q5EmMXm2ScJmYLrQOoQHqoyljn7k2kapIAuiZd/nyrTEs2J8MXUI1aCi13+9HebXd80A1xuUo=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a25:2fce:0:b0:d9a:f3dc:7d19 with SMTP id
- v197-20020a252fce000000b00d9af3dc7d19mr60503ybv.11.1698430998960; Fri, 27 Oct
- 2023 11:23:18 -0700 (PDT)
-Date: Fri, 27 Oct 2023 11:22:09 -0700
+ (user=seanjc job=sendgmr) by 2002:a0d:e653:0:b0:5a7:be10:461d with SMTP id
+ p80-20020a0de653000000b005a7be10461dmr68754ywe.2.1698431001067; Fri, 27 Oct
+ 2023 11:23:21 -0700 (PDT)
+Date: Fri, 27 Oct 2023 11:22:10 -0700
 In-Reply-To: <20231027182217.3615211-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20231027182217.3615211-1-seanjc@google.com>
 X-Mailer: git-send-email 2.42.0.820.g83a721a137-goog
-Message-ID: <20231027182217.3615211-28-seanjc@google.com>
-Subject: [PATCH v13 27/35] KVM: selftests: Add helpers to convert guest memory
- b/w private and shared
+Message-ID: <20231027182217.3615211-29-seanjc@google.com>
+Subject: [PATCH v13 28/35] KVM: selftests: Add helpers to do
+ KVM_HC_MAP_GPA_RANGE hypercalls (x86)
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oliver.upton@linux.dev>, Huacai Chen <chenhuacai@kernel.org>, 
@@ -90,120 +90,51 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Vishal Annapurve <vannapurve@google.com>
 
-Add helpers to convert memory between private and shared via KVM's
-memory attributes, as well as helpers to free/allocate guest_memfd memory
-via fallocate().  Userspace, i.e. tests, is NOT required to do fallocate()
-when converting memory, as the attributes are the single source of true.
-Provide allocate() helpers so that tests can mimic a userspace that frees
-private memory on conversion, e.g. to prioritize memory usage over
-performance.
+Add helpers for x86 guests to invoke the KVM_HC_MAP_GPA_RANGE hypercall,
+which KVM will forward to userspace and thus can be used by tests to
+coordinate private<=>shared conversions between host userspace code and
+guest code.
 
 Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-Co-developed-by: Sean Christopherson <seanjc@google.com>
+[sean: drop shared/private helpers (let tests specify flags)]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- .../selftests/kvm/include/kvm_util_base.h     | 48 +++++++++++++++++++
- tools/testing/selftests/kvm/lib/kvm_util.c    | 28 +++++++++++
- 2 files changed, 76 insertions(+)
+ .../selftests/kvm/include/x86_64/processor.h      | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/include/kvm_util_base.h b/tools/testing/selftests/kvm/include/kvm_util_base.h
-index 9f861182c02a..1441fca6c273 100644
---- a/tools/testing/selftests/kvm/include/kvm_util_base.h
-+++ b/tools/testing/selftests/kvm/include/kvm_util_base.h
-@@ -333,6 +333,54 @@ static inline void vm_enable_cap(struct kvm_vm *vm, uint32_t cap, uint64_t arg0)
- 	vm_ioctl(vm, KVM_ENABLE_CAP, &enable_cap);
- }
+diff --git a/tools/testing/selftests/kvm/include/x86_64/processor.h b/tools/testing/selftests/kvm/include/x86_64/processor.h
+index 25bc61dac5fb..a84863503fcb 100644
+--- a/tools/testing/selftests/kvm/include/x86_64/processor.h
++++ b/tools/testing/selftests/kvm/include/x86_64/processor.h
+@@ -15,6 +15,7 @@
+ #include <asm/msr-index.h>
+ #include <asm/prctl.h>
  
-+static inline void vm_set_memory_attributes(struct kvm_vm *vm, uint64_t gpa,
-+					    uint64_t size, uint64_t attributes)
-+{
-+	struct kvm_memory_attributes attr = {
-+		.attributes = attributes,
-+		.address = gpa,
-+		.size = size,
-+		.flags = 0,
-+	};
-+
-+	/*
-+	 * KVM_SET_MEMORY_ATTRIBUTES overwrites _all_ attributes.  These flows
-+	 * need significant enhancements to support multiple attributes.
-+	 */
-+	TEST_ASSERT(!attributes || attributes == KVM_MEMORY_ATTRIBUTE_PRIVATE,
-+		    "Update me to support multiple attributes!");
-+
-+	vm_ioctl(vm, KVM_SET_MEMORY_ATTRIBUTES, &attr);
-+}
-+
-+
-+static inline void vm_mem_set_private(struct kvm_vm *vm, uint64_t gpa,
-+				      uint64_t size)
-+{
-+	vm_set_memory_attributes(vm, gpa, size, KVM_MEMORY_ATTRIBUTE_PRIVATE);
-+}
-+
-+static inline void vm_mem_set_shared(struct kvm_vm *vm, uint64_t gpa,
-+				     uint64_t size)
-+{
-+	vm_set_memory_attributes(vm, gpa, size, 0);
-+}
-+
-+void vm_guest_mem_fallocate(struct kvm_vm *vm, uint64_t gpa, uint64_t size,
-+			    bool punch_hole);
-+
-+static inline void vm_guest_mem_punch_hole(struct kvm_vm *vm, uint64_t gpa,
-+					   uint64_t size)
-+{
-+	vm_guest_mem_fallocate(vm, gpa, size, true);
-+}
-+
-+static inline void vm_guest_mem_allocate(struct kvm_vm *vm, uint64_t gpa,
-+					 uint64_t size)
-+{
-+	vm_guest_mem_fallocate(vm, gpa, size, false);
-+}
-+
- void vm_enable_dirty_ring(struct kvm_vm *vm, uint32_t ring_size);
- const char *vm_guest_mode_string(uint32_t i);
++#include <linux/kvm_para.h>
+ #include <linux/stringify.h>
  
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index 45050f54701a..a140aee8d0f5 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -1176,6 +1176,34 @@ void vm_mem_region_delete(struct kvm_vm *vm, uint32_t slot)
- 	__vm_mem_region_delete(vm, memslot2region(vm, slot), true);
- }
+ #include "../kvm_util.h"
+@@ -1194,6 +1195,20 @@ uint64_t kvm_hypercall(uint64_t nr, uint64_t a0, uint64_t a1, uint64_t a2,
+ uint64_t __xen_hypercall(uint64_t nr, uint64_t a0, void *a1);
+ void xen_hypercall(uint64_t nr, uint64_t a0, void *a1);
  
-+void vm_guest_mem_fallocate(struct kvm_vm *vm, uint64_t base, uint64_t size,
-+			    bool punch_hole)
++static inline uint64_t __kvm_hypercall_map_gpa_range(uint64_t gpa,
++						     uint64_t size, uint64_t flags)
 +{
-+	const int mode = FALLOC_FL_KEEP_SIZE | (punch_hole ? FALLOC_FL_PUNCH_HOLE : 0);
-+	struct userspace_mem_region *region;
-+	uint64_t end = base + size;
-+	uint64_t gpa, len;
-+	off_t fd_offset;
-+	int ret;
-+
-+	for (gpa = base; gpa < end; gpa += len) {
-+		uint64_t offset;
-+
-+		region = userspace_mem_region_find(vm, gpa, gpa);
-+		TEST_ASSERT(region && region->region.flags & KVM_MEM_PRIVATE,
-+			    "Private memory region not found for GPA 0x%lx", gpa);
-+
-+		offset = (gpa - region->region.guest_phys_addr);
-+		fd_offset = region->region.guest_memfd_offset + offset;
-+		len = min_t(uint64_t, end - gpa, region->region.memory_size - offset);
-+
-+		ret = fallocate(region->region.guest_memfd, mode, fd_offset, len);
-+		TEST_ASSERT(!ret, "fallocate() failed to %s at %lx (len = %lu), fd = %d, mode = %x, offset = %lx\n",
-+			    punch_hole ? "punch hole" : "allocate", gpa, len,
-+			    region->region.guest_memfd, mode, fd_offset);
-+	}
++	return kvm_hypercall(KVM_HC_MAP_GPA_RANGE, gpa, size >> PAGE_SHIFT, flags, 0);
 +}
 +
- /* Returns the size of a vCPU's kvm_run structure. */
- static int vcpu_mmap_sz(void)
- {
++static inline void kvm_hypercall_map_gpa_range(uint64_t gpa, uint64_t size,
++					       uint64_t flags)
++{
++	uint64_t ret = __kvm_hypercall_map_gpa_range(gpa, size, flags);
++
++	GUEST_ASSERT(!ret);
++}
++
+ void __vm_xsave_require_permission(uint64_t xfeature, const char *name);
+ 
+ #define vm_xsave_require_permission(xfeature)	\
 -- 
 2.42.0.820.g83a721a137-goog
 
