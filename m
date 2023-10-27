@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A15477D9507
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 12:17:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 993347D94F2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 12:15:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VJiq8279;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YO5gxL38;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SGzBT3wvvz3dJm
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 21:17:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SGz7k3g2kz3dBb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 21:15:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VJiq8279;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YO5gxL38;
 	dkim-atps=neutral
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SGyzT4FDvz3cQH
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Oct 2023 21:08:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SGyzR5lLzz3cBs
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Oct 2023 21:08:19 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1698401301;
-	bh=FC7+h/MMImsoh32pZqwqSJlj4+oAhJfsLfQ4WI0iOMA=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=VJiq827950XnrpbuGLaDaTEcbGj9x9VsNZvxqUuWYMcv0O+6Mg9aPi8QDuPb7AooI
-	 nP+h7Z/Anx7eofbABQNMaUDVsdHF9Lf4wGo3Jz68yUrrEva2h1vEVFPoke+qwM4Thy
-	 MoYDlDOTRSI144GT4XR2aqWvoUpIkMjdvzslUgDiYs8EaZMDzsr4Pk5Dq7FryrpRvB
-	 2B/CdMcwXWD1xLR8X9rOwZ3lzCjmPhFCeWhnHcdrYOQe/etsO6FD0LhgAT3vGA7cEf
-	 j+XcTslxOLEhth//rfzYNca7b9fV3qwCceFzl9qgIKnU+sNovhNvpH1cTMJhN8coxI
-	 Pq+J0Jqw+q+5w==
+	s=201909; t=1698401299;
+	bh=wa47dCtcQs44moWk2lsxVoZdStalKmDAfrWkT77feWw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=YO5gxL388sSTdl5pvgLOrLwtlnka+vv9JxzYL+wo/+mQWA+yqCuVVxteAuUybwMBw
+	 lzM44SL0dbq0ANJl6GsgsPO86U56+aMFA6VeIdeT8u2VoAmUbWmATmYRYdlZ7Tnkci
+	 LvOphnPy2C1FP/79AG3NeQmc44fOTR3pt3XbR0Nr+QLwKQ0GQt7NQlqu/GgsGSGdmz
+	 c5e7yZqI3h6464Opg6JydMP5FkuLcs7ULeVRKVf5FWM7vGBONN/8uC4lKOZ0hs8PW3
+	 sHv9wb1zur/2lI8D/W8FuJCkluxKcpaVeh7ID4eQj26L84Q8QRSffILnG046MXbSr/
+	 h7Yfwtniwdekw==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SGyzT3523z4xWq;
-	Fri, 27 Oct 2023 21:08:21 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SGyzR4T4vz4xWk;
+	Fri, 27 Oct 2023 21:08:19 +1100 (AEDT)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20231023092319.1507325-1-mpe@ellerman.id.au>
-References: <20231023092319.1507325-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/32s: Implement local_flush_tlb_page_psize()
-Message-Id: <169840079686.2701453.11411354355592178144.b4-ty@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org, Haren Myneni <haren@linux.ibm.com>
+In-Reply-To: <20231019215033.1335251-1-haren@linux.ibm.com>
+References: <20231019215033.1335251-1-haren@linux.ibm.com>
+Subject: Re: [PATCH v2] powerpc/vas: Limit open window failure messages in log bufffer
+Message-Id: <169840079679.2701453.11822597239103827980.b4-ty@ellerman.id.au>
 Date: Fri, 27 Oct 2023 20:59:56 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -58,23 +58,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: nathanl@linux.ibm.com, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 23 Oct 2023 20:23:19 +1100, Michael Ellerman wrote:
-> There's a single call to local_flush_tlb_page_psize() in the code
-> patching code. That call is never executed on 32-bit Book3S,
-> because it's guarded by mm_patch_enabled() which is essentially a
-> radix_enabled() check, which is always false on 32s.
-> 
-> However depending on how the optimiser sees things it may still trip
-> over the BUILD_BUG() in the 32s stub of local_flush_tlb_page_psize().
+On Thu, 19 Oct 2023 14:50:33 -0700, Haren Myneni wrote:
+> The VAS open window call prints error message and returns -EBUSY
+> after the migration suspend event initiated and until the resume
+> event completed on the destination system. It can cause the log
+> buffer filled with these error messages if the user space issues
+> continuous open window calls.  Similar case even for DLPAR CPU
+> remove event when no credits are available until the credits are
+> freed or with the other DLPAR CPU add event.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/32s: Implement local_flush_tlb_page_psize()
-      https://git.kernel.org/powerpc/c/aad26d3b6af13c055b1d05dd253d2484551bde55
+[1/1] powerpc/vas: Limit open window failure messages in log bufffer
+      https://git.kernel.org/powerpc/c/73b25505ce043b561028e5571d84dc82aa53c2b4
 
 cheers
