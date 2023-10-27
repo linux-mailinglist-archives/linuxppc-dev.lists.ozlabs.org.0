@@ -1,67 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A2F87DA05E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 20:26:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F3CE7DA063
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 20:27:26 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=GDTSVZ1E;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ZPw9TfWl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SHB2L70pjz3cb6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Oct 2023 05:26:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SHB3J0Tbrz3dKd
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Oct 2023 05:27:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=GDTSVZ1E;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ZPw9TfWl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=36f87zqykdao2okxtmqyyqvo.mywvsx47zzm-no5vs232.y9vkl2.y1q@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=36_87zqykdaw4qmzvos00sxq.o0yxuz6911o-pq7xu454.0bxmn4.03s@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SH9xl5fgWz3bwX
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Oct 2023 05:22:35 +1100 (AEDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-da040c021aeso1764221276.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Oct 2023 11:22:35 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SH9xp4qslz3bwX
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Oct 2023 05:22:38 +1100 (AEDT)
+Received: by mail-pl1-x64a.google.com with SMTP id d9443c01a7336-1cc252cbde2so6358845ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Oct 2023 11:22:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1698430953; x=1699035753; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1698430955; x=1699035755; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=QjG+iTAl+MysAoCDX0shLrWGCG7e9aCGlo9+qs2tVnE=;
-        b=GDTSVZ1EhAozOQsEYdB9H2B6aGGYkngy1OOzZScR5xGlbkkAr4gP9wGf1ruR0b9NS/
-         f2DrgWA8gUzQfNT+9b5JI8j20VT6rdi6wft1haqYFPOFX3Ng/U/FCXaPDy/NVCKVgRGZ
-         gHhqrmoatrq+UNACrTw2G2Y5wS7NPptV8IK2XIUWQkYYdsrhymFVsdwlFW8Bpbxfpz0U
-         T+smshHcsA/yGmdDWdx1uTADqAGdMQUxAMfl12ZrY3qsT7rLYPFEUBP3sF6eOQnL6ugI
-         vefGTCpzHoIEJ/Rzzv4dqiRrpUNKPp2adZTGF5cV5IXNgJ50paqniOFAfWZjFsfyfrbo
-         Pg1w==
+        bh=JgU06SXMv6nm3bYLetCIh2Atkw0AeiFtLr3TWBcGDvg=;
+        b=ZPw9TfWlzf9Sg0SZRH9O1euAHGCGeg9ldSJq08P/riPOxqpWDSf0eyfAM4YG0j8yQE
+         yYSavQqHNGXXRgHcivpJLgGYD9xRr1QSvkUmFvtkBFJw65vklhMHW8Ih4LpTEeazGLNS
+         ZtR7dWsI1qFU743iDN+KmqDL/ZLQlQLqJcgnTUehCE2JRjyMefUB4TR4j6kUsQdeWU2K
+         NrwqreAabg26B2/PaOKg5/93RlL/NxhG04JiCdzvuQVs2yClEqhZC11eodm+hHL1V5e+
+         8U9AquE1JNSQeoC+sKVxUAyLkHvzuvrzUOmqGs09/LiCYfkljx/HwW5OXNwk+koANwgL
+         cXeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698430953; x=1699035753;
+        d=1e100.net; s=20230601; t=1698430955; x=1699035755;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=QjG+iTAl+MysAoCDX0shLrWGCG7e9aCGlo9+qs2tVnE=;
-        b=YHrNH3J+MSi88xEQao1sn9RHlRfZUZmpB8E3tGB836hLrWz+Fu9oat96E9tPwLaMXf
-         rg7vd8W/M7JgoGwzyRDnRQYUu6+gPkCBduBtaV+IqQ+p1CFhKj2JMq1opGc/xwFgZZbk
-         9NwgBLEWNRao2mMt5wXsNFRsPlBEeGGQ8wc7PVtQLi1lkHCIyBI8UwQjoqKus3b0LiQP
-         zuOZWC7vVV9pvnXlt9iEMlGlcKHWc9E1v9K7WhVkzozkKRbEvEIShzZA/SNkeCgTPZU7
-         1tr1uzFJpcs5/fb5nXexzdM3hlgRQ6zWAy6oq7vUdNtOg8YTYwaBrColgZnXIU1uctIV
-         uGxg==
-X-Gm-Message-State: AOJu0Yw/LjwppTMmoht9NzblzX9g8HGz2cSfyU1JN+ms2p0UrPJw2/aT
-	5GNWV+a4GK5JcNnXeRX8QFg/Baypij0=
-X-Google-Smtp-Source: AGHT+IFjdgmBdyxBQ0zr6Phdzdc3NhfRHFKE/+Wea1IZiVOT7T4IBQHOPkTpo2hU6PU86u42a7hH74NJYwo=
+        bh=JgU06SXMv6nm3bYLetCIh2Atkw0AeiFtLr3TWBcGDvg=;
+        b=BzTR5S8nYvc86QekAlxuKns1nm6ds4sl6TqF3HB1pRPEkATG+s+pfLOccq5hNiN+t4
+         5EPMhxjhuV+saAcM/DViH8iFmT9O4C8HHYqiH0vN8uizaijJN6dlEsU/WDWrS3nsJUHA
+         A6t2jQGxjIrmby0LmPgpkAjCMrEJi75ij5p4k6zX1l0+LTKsWU6s9kwtKnM6SA+dXmAN
+         c400FMrs+adOd13QjpzNPAbxwDYJGENHqTx/M7CeCLNsGmAAFItb9JrEwzLJfBxC9kMH
+         pyXX7kBT2A2ABs7uhzJeH9DMHXlLxNbX+jjOQh21YD0Sno3RpskkdXN3f0ubds40sqDv
+         p9dg==
+X-Gm-Message-State: AOJu0YxfdDdRKs5eXSc5XQFQ+uISmig74WHqAPk78zuaavxeZZ+uK8/+
+	W39PT5JWtbF7NV+FFjb3aud/WyfjD1w=
+X-Google-Smtp-Source: AGHT+IGtvUvxtvF0vLnhcz0wuwQy/3Gylfgr5sP9pToido+ZyPcnNi9qskOerQDKma1HuMTn89KXKiciq2s=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6902:1083:b0:da0:567d:f819 with SMTP id
- v3-20020a056902108300b00da0567df819mr78680ybu.10.1698430953673; Fri, 27 Oct
- 2023 11:22:33 -0700 (PDT)
-Date: Fri, 27 Oct 2023 11:21:46 -0700
+ (user=seanjc job=sendgmr) by 2002:a17:902:c144:b0:1cc:281a:8463 with SMTP id
+ 4-20020a170902c14400b001cc281a8463mr32525plj.7.1698430955693; Fri, 27 Oct
+ 2023 11:22:35 -0700 (PDT)
+Date: Fri, 27 Oct 2023 11:21:47 -0700
 In-Reply-To: <20231027182217.3615211-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20231027182217.3615211-1-seanjc@google.com>
 X-Mailer: git-send-email 2.42.0.820.g83a721a137-goog
-Message-ID: <20231027182217.3615211-5-seanjc@google.com>
-Subject: [PATCH v13 04/35] KVM: WARN if there are dangling MMU invalidations
- at VM destruction
+Message-ID: <20231027182217.3615211-6-seanjc@google.com>
+Subject: [PATCH v13 05/35] KVM: PPC: Drop dead code related to KVM_ARCH_WANT_MMU_NOTIFIER
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oliver.upton@linux.dev>, Huacai Chen <chenhuacai@kernel.org>, 
@@ -88,43 +87,51 @@ Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add an assertion that there are no in-progress MMU invalidations when a
-VM is being destroyed, with the exception of the scenario where KVM
-unregisters its MMU notifier between an .invalidate_range_start() call and
-the corresponding .invalidate_range_end().
+Assert that both KVM_ARCH_WANT_MMU_NOTIFIER and CONFIG_MMU_NOTIFIER are
+defined when KVM is enabled, and return '1' unconditionally for the
+CONFIG_KVM_BOOK3S_HV_POSSIBLE=n path.  All flavors of PPC support for KVM
+select MMU_NOTIFIER, and KVM_ARCH_WANT_MMU_NOTIFIER is unconditionally
+defined by arch/powerpc/include/asm/kvm_host.h.
 
-KVM can't detect unpaired calls from the mmu_notifier due to the above
-exception waiver, but the assertion can detect KVM bugs, e.g. such as the
-bug that *almost* escaped initial guest_memfd development.
+Effectively dropping use of KVM_ARCH_WANT_MMU_NOTIFIER will simplify a
+future cleanup to turn KVM_ARCH_WANT_MMU_NOTIFIER into a Kconfig, i.e.
+will allow combining all of the
 
-Link: https://lore.kernel.org/all/e397d30c-c6af-e68f-d18e-b4e3739c5389@linux.intel.com
+  #if defined(CONFIG_MMU_NOTIFIER) && defined(KVM_ARCH_WANT_MMU_NOTIFIER)
+
+checks into a single
+
+  #ifdef CONFIG_KVM_GENERIC_MMU_NOTIFIER
+
+without having to worry about PPC's "bare" usage of
+KVM_ARCH_WANT_MMU_NOTIFIER.
+
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- virt/kvm/kvm_main.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ arch/powerpc/kvm/powerpc.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 1a577a25de47..4dba682586ee 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -1356,9 +1356,16 @@ static void kvm_destroy_vm(struct kvm *kvm)
- 	 * No threads can be waiting in kvm_swap_active_memslots() as the
- 	 * last reference on KVM has been dropped, but freeing
- 	 * memslots would deadlock without this manual intervention.
-+	 *
-+	 * If the count isn't unbalanced, i.e. KVM did NOT unregister its MMU
-+	 * notifier between a start() and end(), then there shouldn't be any
-+	 * in-progress invalidations.
- 	 */
- 	WARN_ON(rcuwait_active(&kvm->mn_memslots_update_rcuwait));
--	kvm->mn_active_invalidate_count = 0;
-+	if (kvm->mn_active_invalidate_count)
-+		kvm->mn_active_invalidate_count = 0;
-+	else
-+		WARN_ON(kvm->mmu_invalidate_in_progress);
- #else
- 	kvm_flush_shadow_all(kvm);
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index 7197c8256668..b0a512ede764 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -632,12 +632,13 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+ 		break;
  #endif
+ 	case KVM_CAP_SYNC_MMU:
++#if !defined(CONFIG_MMU_NOTIFIER) || !defined(KVM_ARCH_WANT_MMU_NOTIFIER)
++		BUILD_BUG();
++#endif
+ #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
+ 		r = hv_enabled;
+-#elif defined(KVM_ARCH_WANT_MMU_NOTIFIER)
+-		r = 1;
+ #else
+-		r = 0;
++		r = 1;
+ #endif
+ 		break;
+ #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
 -- 
 2.42.0.820.g83a721a137-goog
 
