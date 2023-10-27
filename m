@@ -1,66 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E7B67DA087
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 20:32:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53CE37DA08E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 20:33:21 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Vad2CTbw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=NXyhnqlY;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SHB916HX1z3vjh
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Oct 2023 05:32:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SHBB715Nvz3cW5
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Oct 2023 05:33:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Vad2CTbw;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=NXyhnqlY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=39_87zqykdbgg2yb704cc492.0ca96bildd0-12j96ghg.cn9yzg.cf4@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=3-f87zqykdboi40d926ee6b4.2ecb8dknff2-34lb8iji.epb01i.eh6@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SH9y06x4jz3cHf
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Oct 2023 05:22:48 +1100 (AEDT)
-Received: by mail-pl1-x649.google.com with SMTP id d9443c01a7336-1cc1ddb34ccso9088495ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Oct 2023 11:22:48 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SH9y332N7z3cM7
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Oct 2023 05:22:51 +1100 (AEDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-5a7b9e83b70so22724387b3.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Oct 2023 11:22:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1698430967; x=1699035767; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1698430969; x=1699035769; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=fLrd3AGy66HdihfPmI58EyyG3FCGELBv0TZMEZAIG4Y=;
-        b=Vad2CTbwIZ32PrdPT7P7TZYGdw40OgvBnCZsVr4m+TsJKVXedmYA3brRMrRCd0L3mi
-         +BQaiZoLEh6iMmwZenmxMxf4N1cdSzNj2ZMrA8/luOoE2ytpZAJB6B+TpEI2dYytIFNz
-         +84QjgyUwLN7irCb/diaOdyXppPXUnDfV5fJts/TBY+7JOSv7AZsb5v80IDkl5QLUjZb
-         2t+wldtCVorb24b1Y0TpxQciu6JrSTufAFBlrujXDe4AoM74nv3JbYDjv+kwpah2Asvv
-         GuqCFEpcU0RoI7rQwUxH76McVh0shBmkzcXC2XRQX88yESglqmIdkSDYidA+CRqr+aku
-         iOBw==
+        bh=MfwjFnr1wNHEBMs743caMc0qlRTo5HMEnN08vNH/OXQ=;
+        b=NXyhnqlY4zR494mez0JalUA/bILz46/wf6ChabngdJJYGcdFe1xh675dAkmMLEuD6f
+         /Bs6D23nmrXgFUe4xk1HYQ5dPlSdzlvtwceELFrnSZNnvLnn+mRz2Esrl7EWm+CPt3HZ
+         Hq8E0gV/Kw1sMEVlWE3dURUmC3T40jg8iuaqsKTHF3gScn9zZsQtYjhmb9327kbR4+rz
+         iqWxTaZcGbYm4LuiUoh68NjHzJcfSwZrddJoUf2xOmVy+rSazCxMX59D6jmh969YkWZU
+         1pd+/Uqull5wZRA5KXtjyOmTui9jGtR1Y/o1smWpMmwAqe1DfbphLH2vWMpzAVm/LfaJ
+         EeYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698430967; x=1699035767;
+        d=1e100.net; s=20230601; t=1698430969; x=1699035769;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=fLrd3AGy66HdihfPmI58EyyG3FCGELBv0TZMEZAIG4Y=;
-        b=GcSuKaSH7e07AAyMcstalGV6j6KYk75zCWFHINcEsVqLtUg9eyzpiLnJv7G/pqzZXR
-         OlnJz6ALKXwGkE4NfdNXNsrn59AHfkapNfc8a9GscpaAQrp7Mk8tvAfG+cZ1kFpVwU2h
-         vrfK1E+wuj9F5tQ7SQ6T9ooTgH1Nh2jM/ySyd45+ZWDEJ7JGM7NJXPpsTdlq6evVpv5n
-         IV3f3i1/WxC0MrT33kMgzdNOaPPI/PSo80mkWrLBqIQazgMm5bquA8GTGruoDVMzr/VF
-         2p8nr4l6UfS6k+65tPHAlEffLlcVx0fisWqeB2odFv6kge34nn6gA/n3V2ONzqLGgzgu
-         13DQ==
-X-Gm-Message-State: AOJu0YxBKfyO75Lpu21AK1PnpSKoi5Y9qnv0x8ska+ggMkIGuxsUKAQF
-	N6+tCgK/dFX6T4801KsA8msIk23Hb/Y=
-X-Google-Smtp-Source: AGHT+IFw7CMiVxkdfLmPKgztX5f1RnQlL4BTlZlVKLxMz6aRVtHUrQY578kvMdkjnRTl6BBw2VS25sQYIRo=
+        bh=MfwjFnr1wNHEBMs743caMc0qlRTo5HMEnN08vNH/OXQ=;
+        b=TtP/e6Q35LKGcEVrJZwFWtdnh6UFJFOn9qZFP6nqknI7ri7KpcefMg9Eq6DUrr3IdS
+         5yRyEBlDyGmTCrHyvFsmqQ0AWdBNvH749RKzajFIg9ehs6BXRnygsuLDuNePq1aHaQ3E
+         pjLtnYH/1+NGnJ4jZsJ288KL4RgCxrLBH7CAs7Q1cSCABitb8DF32rlbZHXHqAg6qUbr
+         8zNyve7F/MnSZBNqT0GUSdmbopvOPiHDypwpC51o069ZazIuigz392P6Us4HW5PBkFG6
+         FYT/9vZWFbg0dr93fa3aMHKMrjimbQMvuOz1zWBoHwSrSuJpKHGJTLzUvvtog3doYC2A
+         wryQ==
+X-Gm-Message-State: AOJu0Yy4EThG+JrWApe3SPsqhyijapy4BfVWcn5S1Sh6tLJ5h8hwId2s
+	1GJHnfwzBvJQQF+FPsW/rwao2cCucvM=
+X-Google-Smtp-Source: AGHT+IHtw6A7NuD1zDZw/j7xBoNpID5PTLHCLxD7YeudY/tlgoiYGQdJN9iuOebDV/xY0oQ2kV5qeLUK06Q=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:902:ee14:b0:1ca:b952:f5fa with SMTP id
- z20-20020a170902ee1400b001cab952f5famr63161plb.5.1698430967325; Fri, 27 Oct
- 2023 11:22:47 -0700 (PDT)
-Date: Fri, 27 Oct 2023 11:21:53 -0700
+ (user=seanjc job=sendgmr) by 2002:a0d:ca0f:0:b0:59b:e663:23b0 with SMTP id
+ m15-20020a0dca0f000000b0059be66323b0mr102868ywd.4.1698430969394; Fri, 27 Oct
+ 2023 11:22:49 -0700 (PDT)
+Date: Fri, 27 Oct 2023 11:21:54 -0700
 In-Reply-To: <20231027182217.3615211-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20231027182217.3615211-1-seanjc@google.com>
 X-Mailer: git-send-email 2.42.0.820.g83a721a137-goog
-Message-ID: <20231027182217.3615211-12-seanjc@google.com>
-Subject: [PATCH v13 11/35] KVM: Drop .on_unlock() mmu_notifier hook
+Message-ID: <20231027182217.3615211-13-seanjc@google.com>
+Subject: [PATCH v13 12/35] KVM: Prepare for handling only shared mappings in
+ mmu_notifier events
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oliver.upton@linux.dev>, Huacai Chen <chenhuacai@kernel.org>, 
@@ -87,98 +88,53 @@ Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Drop the .on_unlock() mmu_notifer hook now that it's no longer used for
-notifying arch code that memory has been reclaimed.  Adding .on_unlock()
-and invoking it *after* dropping mmu_lock was a terrible idea, as doing so
-resulted in .on_lock() and .on_unlock() having divergent and asymmetric
-behavior, and set future developers up for failure, i.e. all but asked for
-bugs where KVM relied on using .on_unlock() to try to run a callback while
-holding mmu_lock.
+Add flags to "struct kvm_gfn_range" to let notifier events target only
+shared and only private mappings, and write up the existing mmu_notifier
+events to be shared-only (private memory is never associated with a
+userspace virtual address, i.e. can't be reached via mmu_notifiers).
 
-Opportunistically add a lockdep assertion in kvm_mmu_invalidate_end() to
-guard against future bugs of this nature.
+Add two flags so that KVM can handle the three possibilities (shared,
+private, and shared+private) without needing something like a tri-state
+enum.
 
-Reported-by: Isaku Yamahata <isaku.yamahata@intel.com>
-Link: https://lore.kernel.org/all/20230802203119.GB2021422@ls.amr.corp.intel.com
+Link: https://lore.kernel.org/all/ZJX0hk+KpQP0KUyB@google.com
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- virt/kvm/kvm_main.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ include/linux/kvm_host.h | 2 ++
+ virt/kvm/kvm_main.c      | 7 +++++++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 2bc04c8ae1f4..cb9376833c18 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -544,7 +544,6 @@ static inline struct kvm *mmu_notifier_to_kvm(struct mmu_notifier *mn)
- typedef bool (*gfn_handler_t)(struct kvm *kvm, struct kvm_gfn_range *range);
- 
- typedef void (*on_lock_fn_t)(struct kvm *kvm);
--typedef void (*on_unlock_fn_t)(struct kvm *kvm);
- 
- struct kvm_mmu_notifier_range {
- 	/*
-@@ -556,7 +555,6 @@ struct kvm_mmu_notifier_range {
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 96aa930536b1..89c1a991a3b8 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -263,6 +263,8 @@ struct kvm_gfn_range {
+ 	gfn_t start;
+ 	gfn_t end;
  	union kvm_mmu_notifier_arg arg;
- 	gfn_handler_t handler;
- 	on_lock_fn_t on_lock;
--	on_unlock_fn_t on_unlock;
- 	bool flush_on_ret;
++	bool only_private;
++	bool only_shared;
  	bool may_block;
  };
-@@ -663,11 +661,8 @@ static __always_inline kvm_mn_ret_t __kvm_handle_hva_range(struct kvm *kvm,
- 	if (range->flush_on_ret && r.ret)
- 		kvm_flush_remote_tlbs(kvm);
- 
--	if (r.found_memslot) {
-+	if (r.found_memslot)
- 		KVM_MMU_UNLOCK(kvm);
--		if (!IS_KVM_NULL_FN(range->on_unlock))
--			range->on_unlock(kvm);
--	}
- 
- 	srcu_read_unlock(&kvm->srcu, idx);
- 
-@@ -687,7 +682,6 @@ static __always_inline int kvm_handle_hva_range(struct mmu_notifier *mn,
- 		.arg		= arg,
- 		.handler	= handler,
- 		.on_lock	= (void *)kvm_null_fn,
--		.on_unlock	= (void *)kvm_null_fn,
- 		.flush_on_ret	= true,
- 		.may_block	= false,
- 	};
-@@ -706,7 +700,6 @@ static __always_inline int kvm_handle_hva_range_no_flush(struct mmu_notifier *mn
- 		.end		= end,
- 		.handler	= handler,
- 		.on_lock	= (void *)kvm_null_fn,
--		.on_unlock	= (void *)kvm_null_fn,
- 		.flush_on_ret	= false,
- 		.may_block	= false,
- 	};
-@@ -813,7 +806,6 @@ static int kvm_mmu_notifier_invalidate_range_start(struct mmu_notifier *mn,
- 		.end		= range->end,
- 		.handler	= kvm_mmu_unmap_gfn_range,
- 		.on_lock	= kvm_mmu_invalidate_begin,
--		.on_unlock	= (void *)kvm_null_fn,
- 		.flush_on_ret	= true,
- 		.may_block	= mmu_notifier_range_blockable(range),
- 	};
-@@ -858,6 +850,8 @@ static int kvm_mmu_notifier_invalidate_range_start(struct mmu_notifier *mn,
- 
- void kvm_mmu_invalidate_end(struct kvm *kvm)
- {
-+	lockdep_assert_held_write(&kvm->mmu_lock);
+ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range);
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index cb9376833c18..302ccb87b4c1 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -635,6 +635,13 @@ static __always_inline kvm_mn_ret_t __kvm_handle_hva_range(struct kvm *kvm,
+ 			 * the second or later invocation of the handler).
+ 			 */
+ 			gfn_range.arg = range->arg;
 +
- 	/*
- 	 * This sequence increase will notify the kvm page fault that
- 	 * the page that is going to be mapped in the spte could have
-@@ -889,7 +883,6 @@ static void kvm_mmu_notifier_invalidate_range_end(struct mmu_notifier *mn,
- 		.end		= range->end,
- 		.handler	= (void *)kvm_null_fn,
- 		.on_lock	= kvm_mmu_invalidate_end,
--		.on_unlock	= (void *)kvm_null_fn,
- 		.flush_on_ret	= false,
- 		.may_block	= mmu_notifier_range_blockable(range),
- 	};
++			/*
++			 * HVA-based notifications aren't relevant to private
++			 * mappings as they don't have a userspace mapping.
++			 */
++			gfn_range.only_private = false;
++			gfn_range.only_shared = true;
+ 			gfn_range.may_block = range->may_block;
+ 
+ 			/*
 -- 
 2.42.0.820.g83a721a137-goog
 
