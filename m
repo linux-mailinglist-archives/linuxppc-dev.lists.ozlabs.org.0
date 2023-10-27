@@ -1,54 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98DEE7D957E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 12:48:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55ACF7D9599
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 12:51:23 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=R7an/BvX;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=NrR/QzVX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SGzsL3lgDz3cTD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 21:48:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SGzx520jmz3cZd
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 21:51:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=R7an/BvX;
-	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SGzrV34Ttz3c4M
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Oct 2023 21:47:22 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1698403640;
-	bh=scnewICwos28uY3w6B5+AVxL28jk/U3U4erXzZ/w740=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=R7an/BvXmk6zHAjf/zZOxIofIyozCb1FFKCl2wait4uupeZxCA6t6WNDOgPydtEgu
-	 fw35hyN4ijQkAjQN3zd8HMNak0z/OlLE1qjSkib/ZIHRHG1N52q1NLMb8fKVr1i6fa
-	 yW4yMlLU19dHKRnNRO86oqzyaT0Y3xOWP/6LbFmgLG4vUO+/P+9xrtNMuXvJz3/cYo
-	 EQVS4L821yQBt/F6cxmmLBUdwRPSN2k98FUtP4RKxQ7raeqA7fGVqedpEbAKroSubd
-	 w0Igv8+qlkcRuGotBM1woCbYmVIyefNCjGsyWZ8m+oHSxZOV2jS8Qv2awIvqsG9jQV
-	 9VdioeV2QEzKw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SGzrR6ZLyz4wcj;
-	Fri, 27 Oct 2023 21:47:19 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Frederic Barrat
- <fbarrat@linux.ibm.com>
-Subject: Re: [PATCH] cxl: make cxl_class constant
-In-Reply-To: <2023102533-anyway-bullish-75be@gregkh>
-References: <2023102434-haiku-uphill-0c11@gregkh>
- <9573ec63-a8d6-4c69-a70b-9095838d521d@linux.ibm.com>
- <2023102533-anyway-bullish-75be@gregkh>
-Date: Fri, 27 Oct 2023 21:47:16 +1100
-Message-ID: <8734xwuytn.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SGzw61Tllz3c4M
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Oct 2023 21:50:27 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=XPVaQuB38LROMPcFzxpv9kuEMxyfwgF6VESkqwfKulg=; b=NrR/QzVXR13J9OJfVGVkitEG/y
+	b5xrPBftzCBX8P7lbcBl7Jfr13UglFWNhHMD5yzgD0bzBtqZEWkeTlqLCosU4AKmHJHdXmF3v2Mij
+	ElpA9vKe/o70wqwVrDic9Xj88rB2Dffdxedb2KiBulxRbtbQ1DNo5ZJnMXIRRRvcuWuBiNh+6xr1u
+	prwGwW2fIQURhfSxxQgQ9wf4Ozm67pl4/Yez6sQd24HRVi2tbiV9orUnK4LXT3usyG9TWvyHzZuWW
+	AsUmTys5vDaGLdBY677asV+JgGNqWjZGQ2csi0ODe4veD3kRnZdjjrsmx0zWTq62bKbpg2Wo5Q+/u
+	6du/jmIA==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1qwKPs-002xVk-8E; Fri, 27 Oct 2023 10:50:12 +0000
+Date: Fri, 27 Oct 2023 11:50:12 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v2] powerpc/mm: Avoid calling arch_enter/leave_lazy_mmu()
+ in set_ptes
+Message-ID: <ZTuV5GJ52IZE7mxu@casper.infradead.org>
+References: <20231024143604.16749-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231024143604.16749-1-aneesh.kumar@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,31 +53,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, Andrew Donnellan <ajd@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
-> On Wed, Oct 25, 2023 at 10:16:55AM +0200, Frederic Barrat wrote:
->> On 24/10/2023 13:48, Greg Kroah-Hartman wrote:
->> > Now that the driver core allows for struct class to be in read-only
->> > memory, we should make all 'class' structures declared at build time
->> > placing them into read-only memory, instead of having to be dynamically
->> > allocated at runtime.
->> > 
->> > Cc: Frederic Barrat <fbarrat@linux.ibm.com>
->> > Cc: Andrew Donnellan <ajd@linux.ibm.com>
->> > Cc: Arnd Bergmann <arnd@arndb.de>
->> > Cc: linuxppc-dev@lists.ozlabs.org
->> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->> > ---
->> 
->> Thanks!
->> Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
->
-> Thanks for the review of these, I'll take them through my char/misc tree
-> now.
+On Tue, Oct 24, 2023 at 08:06:04PM +0530, Aneesh Kumar K.V wrote:
+>  		ptep++;
+> -		pte = __pte(pte_val(pte) + (1UL << PTE_RPN_SHIFT));
+>  		addr += PAGE_SIZE;
+> +		/*
+> +		 * increment the pfn.
+> +		 */
+> +		pte = pfn_pte(pte_pfn(pte) + 1, pte_pgprot((pte)));
 
-Ack.
-
-cheers
+when i looked at this, it generated shit code.  did you check?
+why did you bother changing this?
