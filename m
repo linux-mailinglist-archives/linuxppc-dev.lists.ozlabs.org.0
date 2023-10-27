@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D933D7D94D9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 12:11:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CF857D94E4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 12:13:56 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=i8BMO8t6;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=HsM795jW;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SGz2x5YZ9z3d8t
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 21:11:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SGz5t0W6xz3vlM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 21:13:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=i8BMO8t6;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=HsM795jW;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SGyzN740dz3bx0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Oct 2023 21:08:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SGyzQ5qvhz3cCH
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Oct 2023 21:08:18 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1698401296;
-	bh=30OBHWUfyQHjnBWbrlGeUaI2WXMNAW9Re3MJ+2tSPpc=;
+	s=201909; t=1698401298;
+	bh=SPAGDpDz2k/2kguqhl8Z+gROPqCD/5aODXVh/os0Cbc=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=i8BMO8t6Y4KHqTx8aUV5Zw4npGWR8icDA0Xv/4pqRaVRUM03VA16MiLOb78fabd3C
-	 AiKl8545U4Tepu0sA+VFzcWMD+xuN9/a7cZUWexLo2Izbu9sGvj53Ad5n8deRgubs2
-	 vKE2jyhylRvMPvluSCFHjt/H8z7dNm/MN6U5lA86pmpiWo7ZjYBL6ld9xZwkIgzHzl
-	 elosUl/zMPN5EfPwD9QLl29qPlMLGuBLfR8+PUSkntuXDhS6xwytpFctYPPNQZoHis
-	 A+pnoAvAoo5JPFPQiy6HGIYbQGs3MnF0EGFYMI9x4GhbLqcwdg3rzvnuyEu3ODysto
-	 4XJeiC5kSdKTg==
+	b=HsM795jWPXFnOnk0M1FPzOceaIeclRS7j+TcuJss3VixbC04tSeLgjThN7oHVcDLi
+	 TvW6YzJOFCT1sRaPssBNOI3ddyGhtpM0acR40OeGby66ZXLP20pDvbs86B8DCVbvaA
+	 KR7r730jGpBM6AQGUts2roI91Xp56sasQmAcDC6VMRTEY2vRvtJ+R+MtZwzJKmxvkP
+	 529z1y4d4/lNQt16aSpoPWpDOKd7tdlDq3mevSGWTy/zXXIaqOuyceWb24Jv13eimZ
+	 BoPkuUk3LkXnYOPrPmq5X1BhthZe33jH6Yz14YkFKnvCOAJNu4JsQTGg1LewmFb2yl
+	 dvaM6WSsNGgTQ==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SGyzN2hTPz4xVb;
-	Fri, 27 Oct 2023 21:08:16 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SGyzQ1RzFz4xWb;
+	Fri, 27 Oct 2023 21:08:18 +1100 (AEDT)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <e88b154eaf2efd9ff177d472d3411dcdec8ff4f5.1696675567.git.christophe.leroy@csgroup.eu>
-References: <e88b154eaf2efd9ff177d472d3411dcdec8ff4f5.1696675567.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/code-patching: Perform hwsync in __patch_instruction() in case of failure
-Message-Id: <169840079684.2701453.17093858702248932899.b4-ty@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Stephen Rothwell <sfr@canb.auug.org.au>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Minjie Du <duminjie@vivo.com>
+In-Reply-To: <20230717092648.9752-1-duminjie@vivo.com>
+References: <20230717092648.9752-1-duminjie@vivo.com>
+Subject: Re: [PATCH v1] powerpc/pseries: use kfree_sensitive() in plpks_gen_password()
+Message-Id: <169840079685.2701453.1853260380342531870.b4-ty@ellerman.id.au>
 Date: Fri, 27 Oct 2023 20:59:56 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -58,23 +58,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Christopher M . Riedl" <cmr@bluescreens.de>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Hari Bathini <hbathini@linux.ibm.com>
+Cc: opensource.kernel@vivo.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 07 Oct 2023 12:46:19 +0200, Christophe Leroy wrote:
-> Commit c28c15b6d28a ("powerpc/code-patching: Use temporary mm for
-> Radix MMU") added a hwsync for when __patch_instruction() fails,
-> we results in a quite odd unbalanced logic.
+On Mon, 17 Jul 2023 17:26:48 +0800, Minjie Du wrote:
+> password might contain private information, so better use
+> kfree_sensitive to free it.
+> In plpks_gen_password() use kfree_sensitive().
 > 
-> Instead of calling mb() when __patch_instruction() returns an error,
-> call mb() in the __patch_instruction()'s error path directly.
 > 
-> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/code-patching: Perform hwsync in __patch_instruction() in case of failure
-      https://git.kernel.org/powerpc/c/74726fda9fe306f848088ef73ec266cae0470d5b
+[1/1] powerpc/pseries: use kfree_sensitive() in plpks_gen_password()
+      https://git.kernel.org/powerpc/c/ca2b746d5f91a37f01baedff54b9315a50ee617d
 
 cheers
