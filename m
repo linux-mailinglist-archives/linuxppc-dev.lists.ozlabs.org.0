@@ -1,67 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C8387DA0C5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 20:43:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACEC97DA0C6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 20:44:19 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=NbOIG73+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=0itj1v9M;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SHBPs6bTSz6s9j
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Oct 2023 05:43:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SHBQn3fCsz3vtm
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Oct 2023 05:44:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=NbOIG73+;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=0itj1v9M;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3eqa8zqykddigsobxquccuzs.qcazwbilddq-rsjzwghg.cnzopg.cfu@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3ega8zqykddmhtpcyrvddvat.rdbaxcjmeer-stkaxhih.doapqh.dgv@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
 Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SH9yW0bWHz3cRh
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Oct 2023 05:23:14 +1100 (AEDT)
-Received: by mail-pl1-x649.google.com with SMTP id d9443c01a7336-1cc20955634so8191425ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Oct 2023 11:23:14 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SH9yX3rM6z3cZC
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Oct 2023 05:23:16 +1100 (AEDT)
+Received: by mail-pl1-x649.google.com with SMTP id d9443c01a7336-1c9f973d319so23495585ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Oct 2023 11:23:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1698430993; x=1699035793; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1698430995; x=1699035795; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=+S4AiipPfUUKpJ2ruaZ4ElxK7cYS7w8+XYANZ6GAwNM=;
-        b=NbOIG73+e91zj1fHeAyLDdatPDiAmYMSg/7p4BJvzZgGJLo8ayr88nbnhNZC+So9pT
-         xTbztUPrVRJWuLJSHz9UwqhEE1eIhR2hRTPTJdlVHXMhdOOzIxTBTnk+NzEQ5Z6ZZ7Qc
-         ulJPG9Q1EpwC5qi/2nKDs3bGvNCgx8KvIVvrhWc7LUmOnlazqL8698yaIbgqAPSr1f/r
-         Hc5E/Fh8QupJvTLWYTaaqO1y9UniUmYGWFqUEM2AOORWtKzbRktZflZsiJ+wyqrdaW6v
-         RCYh9oeK6kHa4ZQb+fibkm1Zj4QZVIBu3vexo4ktUVwdWwTTPw2ZjUmdk5OYB0V1E66v
-         kheQ==
+        bh=ZNZtzA/linIp+2GMXA1XUg0X+u1GFwKPof82zA2ctug=;
+        b=0itj1v9M9+6+iGSuJNRatamKwDqV+RpOhehW7vMQNkfAOWP9o9TmzGcKufOblTbDaj
+         Dc9f72d3l4H22OT8fQQ9zMAyO6wUXg0eiakb5VBOuINPue3HLICKr7UazpJZ4obg0i4O
+         gvaPQ5bF2MNKwlJZKwdPe0LYL9+jrb3C6ARdWOppORnTze4L4ky+Z3gz6zR0xEuAQHtG
+         IQb9Hvb33loUFqKN5WbMp5xigfTmfkCMK6bwAtfJOo+zb8mAr5CL20dSJokJv0bZ6YOr
+         Y1jQXhMWkEOqI7qriDBo7fFQC9Ump70Hn479dybWueFL1QwwQORbR4MuJe13HT1voOD7
+         zfcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698430993; x=1699035793;
+        d=1e100.net; s=20230601; t=1698430995; x=1699035795;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+S4AiipPfUUKpJ2ruaZ4ElxK7cYS7w8+XYANZ6GAwNM=;
-        b=kFz+cgJ1A4rzfp3WpghOnbLARLfpTVMzf/7v4xQV1JB4KNeyFYvmw+Ij9o1whSdQgD
-         l/lwU4pUu5fv2pMIpRd+kw0bhT947kLyefq9tggyNBv2b1rEwfY+6U3iSp6uYXkYsSvW
-         wVrnNqylAFQvLEchejzrkXcsE9eJHav0apT2k5dbUAiGt48TrxnZRY2m/yF7vOkj5eY+
-         2J9C0dLVWWCcoyT9El0XdwfLJ4gxMckfnKp8dQix9yOYSPzpHALk69OOEwmEwSH5PWd2
-         AflbvzZ3rm+jIzQCxTI2p6t9aupmZfSYcyiY1NYLrVBRLGRrEy+SjdDDgBvf1Y0Rj55a
-         kaSQ==
-X-Gm-Message-State: AOJu0YwHRT+Wr5+i5kNmDJshpcd9mxtlfttcq3+d4sDYoBQi/OW89g+x
-	BKs+LXOUuEqh4WFfcpWqUalIfeTCTpc=
-X-Google-Smtp-Source: AGHT+IEqIkKuv5DX25uHuP2fYVc0fUSbsifhQGdV1yLQ889bX1DKci/qdjsCIFlDcD5dVWlFtax8M8nrsME=
+        bh=ZNZtzA/linIp+2GMXA1XUg0X+u1GFwKPof82zA2ctug=;
+        b=K/VXUzg7qKBG4nudrCg3LKF6PIv4E+9iri6vOA12usedHYeil9mripTotN4eM2xwDX
+         dKDBRo6dEFcbJbavXCL54ZXDtyGa9TS2Z2vvnNuYHkl2fErQtcULeFJ+2ujd1YFW3ufv
+         NiM7lsMWeiS69S1JZggz6d1ZztRsLVjSw+4xvRrP70zziwqo/2uUma9ZacS5A+IXI38l
+         Z2yJyBOju9In61uLEDOlCi2xMIJnZNgddRJQG+g/BOG6NopONuPCsRzkbT6/fdiIN8wL
+         zIxgBUU0kmOzd+z6dEXNIR4LuaHEmYI4xPz1ahocW1lAHVTs2y2Xx4QQmTOmK5DGWePt
+         McXg==
+X-Gm-Message-State: AOJu0Yz7KopF56XUWXQsvkSelSnJZwT7xYxmDto71c6b9Vtvt8KDvnm5
+	JJ3EeAYdM3EBXB6qEzsGcFKPqZQORZI=
+X-Google-Smtp-Source: AGHT+IFgEK+vNYv/vNHgA3JkDytYkMCwP8RspbM7NAIhoWJ8dWWtLUmat77zU+/1XadLWoCAT7TkthpzXqU=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:903:4296:b0:1c9:e3ea:750d with SMTP id
- ju22-20020a170903429600b001c9e3ea750dmr58852plb.11.1698430993223; Fri, 27 Oct
- 2023 11:23:13 -0700 (PDT)
-Date: Fri, 27 Oct 2023 11:22:06 -0700
+ (user=seanjc job=sendgmr) by 2002:a17:902:f809:b0:1cc:2a6f:ab91 with SMTP id
+ ix9-20020a170902f80900b001cc2a6fab91mr26127plb.0.1698430994917; Fri, 27 Oct
+ 2023 11:23:14 -0700 (PDT)
+Date: Fri, 27 Oct 2023 11:22:07 -0700
 In-Reply-To: <20231027182217.3615211-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20231027182217.3615211-1-seanjc@google.com>
 X-Mailer: git-send-email 2.42.0.820.g83a721a137-goog
-Message-ID: <20231027182217.3615211-25-seanjc@google.com>
-Subject: [PATCH v13 24/35] KVM: selftests: Drop unused kvm_userspace_memory_region_find()
- helper
+Message-ID: <20231027182217.3615211-26-seanjc@google.com>
+Subject: [PATCH v13 25/35] KVM: selftests: Convert lib's mem regions to KVM_SET_USER_MEMORY_REGION2
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oliver.upton@linux.dev>, Huacai Chen <chenhuacai@kernel.org>, 
@@ -88,72 +87,92 @@ Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Drop kvm_userspace_memory_region_find(), it's unused and a terrible API
-(probably why it's unused).  If anything outside of kvm_util.c needs to
-get at the memslot, userspace_mem_region_find() can be exposed to give
-others full access to all memory region/slot information.
+Use KVM_SET_USER_MEMORY_REGION2 throughout KVM's selftests library so that
+support for guest private memory can be added without needing an entirely
+separate set of helpers.
+
+Note, this obviously makes selftests backwards-incompatible with older KVM
+versions from this point forward.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- .../selftests/kvm/include/kvm_util_base.h     |  4 ---
- tools/testing/selftests/kvm/lib/kvm_util.c    | 29 -------------------
- 2 files changed, 33 deletions(-)
+ .../selftests/kvm/include/kvm_util_base.h     |  2 +-
+ tools/testing/selftests/kvm/lib/kvm_util.c    | 19 ++++++++++---------
+ 2 files changed, 11 insertions(+), 10 deletions(-)
 
 diff --git a/tools/testing/selftests/kvm/include/kvm_util_base.h b/tools/testing/selftests/kvm/include/kvm_util_base.h
-index a18db6a7b3cf..967eaaeacd75 100644
+index 967eaaeacd75..9f144841c2ee 100644
 --- a/tools/testing/selftests/kvm/include/kvm_util_base.h
 +++ b/tools/testing/selftests/kvm/include/kvm_util_base.h
-@@ -776,10 +776,6 @@ vm_adjust_num_guest_pages(enum vm_guest_mode mode, unsigned int num_guest_pages)
- 	return n;
- }
+@@ -44,7 +44,7 @@ typedef uint64_t vm_paddr_t; /* Virtual Machine (Guest) physical address */
+ typedef uint64_t vm_vaddr_t; /* Virtual Machine (Guest) virtual address */
  
--struct kvm_userspace_memory_region *
--kvm_userspace_memory_region_find(struct kvm_vm *vm, uint64_t start,
--				 uint64_t end);
--
- #define sync_global_to_guest(vm, g) ({				\
- 	typeof(g) *_p = addr_gva2hva(vm, (vm_vaddr_t)&(g));	\
- 	memcpy(_p, &(g), sizeof(g));				\
+ struct userspace_mem_region {
+-	struct kvm_userspace_memory_region region;
++	struct kvm_userspace_memory_region2 region;
+ 	struct sparsebit *unused_phy_pages;
+ 	int fd;
+ 	off_t offset;
 diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index 7a8af1821f5d..f09295d56c23 100644
+index f09295d56c23..3676b37bea38 100644
 --- a/tools/testing/selftests/kvm/lib/kvm_util.c
 +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -590,35 +590,6 @@ userspace_mem_region_find(struct kvm_vm *vm, uint64_t start, uint64_t end)
- 	return NULL;
+@@ -453,8 +453,9 @@ void kvm_vm_restart(struct kvm_vm *vmp)
+ 		vm_create_irqchip(vmp);
+ 
+ 	hash_for_each(vmp->regions.slot_hash, ctr, region, slot_node) {
+-		int ret = ioctl(vmp->fd, KVM_SET_USER_MEMORY_REGION, &region->region);
+-		TEST_ASSERT(ret == 0, "KVM_SET_USER_MEMORY_REGION IOCTL failed,\n"
++		int ret = ioctl(vmp->fd, KVM_SET_USER_MEMORY_REGION2, &region->region);
++
++		TEST_ASSERT(ret == 0, "KVM_SET_USER_MEMORY_REGION2 IOCTL failed,\n"
+ 			    "  rc: %i errno: %i\n"
+ 			    "  slot: %u flags: 0x%x\n"
+ 			    "  guest_phys_addr: 0x%llx size: 0x%llx",
+@@ -657,7 +658,7 @@ static void __vm_mem_region_delete(struct kvm_vm *vm,
+ 	}
+ 
+ 	region->region.memory_size = 0;
+-	vm_ioctl(vm, KVM_SET_USER_MEMORY_REGION, &region->region);
++	vm_ioctl(vm, KVM_SET_USER_MEMORY_REGION2, &region->region);
+ 
+ 	sparsebit_free(&region->unused_phy_pages);
+ 	ret = munmap(region->mmap_start, region->mmap_size);
+@@ -1014,8 +1015,8 @@ void vm_userspace_mem_region_add(struct kvm_vm *vm,
+ 	region->region.guest_phys_addr = guest_paddr;
+ 	region->region.memory_size = npages * vm->page_size;
+ 	region->region.userspace_addr = (uintptr_t) region->host_mem;
+-	ret = __vm_ioctl(vm, KVM_SET_USER_MEMORY_REGION, &region->region);
+-	TEST_ASSERT(ret == 0, "KVM_SET_USER_MEMORY_REGION IOCTL failed,\n"
++	ret = __vm_ioctl(vm, KVM_SET_USER_MEMORY_REGION2, &region->region);
++	TEST_ASSERT(ret == 0, "KVM_SET_USER_MEMORY_REGION2 IOCTL failed,\n"
+ 		"  rc: %i errno: %i\n"
+ 		"  slot: %u flags: 0x%x\n"
+ 		"  guest_phys_addr: 0x%lx size: 0x%lx",
+@@ -1097,9 +1098,9 @@ void vm_mem_region_set_flags(struct kvm_vm *vm, uint32_t slot, uint32_t flags)
+ 
+ 	region->region.flags = flags;
+ 
+-	ret = __vm_ioctl(vm, KVM_SET_USER_MEMORY_REGION, &region->region);
++	ret = __vm_ioctl(vm, KVM_SET_USER_MEMORY_REGION2, &region->region);
+ 
+-	TEST_ASSERT(ret == 0, "KVM_SET_USER_MEMORY_REGION IOCTL failed,\n"
++	TEST_ASSERT(ret == 0, "KVM_SET_USER_MEMORY_REGION2 IOCTL failed,\n"
+ 		"  rc: %i errno: %i slot: %u flags: 0x%x",
+ 		ret, errno, slot, flags);
  }
+@@ -1127,9 +1128,9 @@ void vm_mem_region_move(struct kvm_vm *vm, uint32_t slot, uint64_t new_gpa)
  
--/*
-- * KVM Userspace Memory Region Find
-- *
-- * Input Args:
-- *   vm - Virtual Machine
-- *   start - Starting VM physical address
-- *   end - Ending VM physical address, inclusive.
-- *
-- * Output Args: None
-- *
-- * Return:
-- *   Pointer to overlapping region, NULL if no such region.
-- *
-- * Public interface to userspace_mem_region_find. Allows tests to look up
-- * the memslot datastructure for a given range of guest physical memory.
-- */
--struct kvm_userspace_memory_region *
--kvm_userspace_memory_region_find(struct kvm_vm *vm, uint64_t start,
--				 uint64_t end)
--{
--	struct userspace_mem_region *region;
--
--	region = userspace_mem_region_find(vm, start, end);
--	if (!region)
--		return NULL;
--
--	return &region->region;
--}
--
- __weak void vcpu_arch_free(struct kvm_vcpu *vcpu)
- {
+ 	region->region.guest_phys_addr = new_gpa;
  
+-	ret = __vm_ioctl(vm, KVM_SET_USER_MEMORY_REGION, &region->region);
++	ret = __vm_ioctl(vm, KVM_SET_USER_MEMORY_REGION2, &region->region);
+ 
+-	TEST_ASSERT(!ret, "KVM_SET_USER_MEMORY_REGION failed\n"
++	TEST_ASSERT(!ret, "KVM_SET_USER_MEMORY_REGION2 failed\n"
+ 		    "ret: %i errno: %i slot: %u new_gpa: 0x%lx",
+ 		    ret, errno, slot, new_gpa);
+ }
 -- 
 2.42.0.820.g83a721a137-goog
 
