@@ -1,75 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE707DA10D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Oct 2023 20:53:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F4647DA94B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Oct 2023 22:33:34 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=z0DQBcLn;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=P8Hr6qyl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SHBd05c2Kz3vtn
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Oct 2023 05:53:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SHrpN2wjVz3bx0
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Oct 2023 07:33:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=z0DQBcLn;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=P8Hr6qyl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3jwa8zqykdeg2okxtmqyyqvo.mywvsx47zzm-no5vs232.y9vkl2.y1q@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SH9yx0lMDz3ckP
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Oct 2023 05:23:36 +1100 (AEDT)
-Received: by mail-pl1-x649.google.com with SMTP id d9443c01a7336-1cc1ddb34ccso9093565ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Oct 2023 11:23:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1698431015; x=1699035815; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=srZUoBPWZiKpBpFDSV5l36Sp6ql4zJFMGAxv8lh5kbY=;
-        b=z0DQBcLniGK+5qdrO93dszPFntsvC3ec1+x+AATZmvyBnE/QOw30vkvuj4/VewgIG8
-         DuD8PfI81mOa2zR34XuGO/PhX/LQ6rbwiff80Wkpui310KZy1NOsXvwFLrI19uMDQ67y
-         wQyUfq9KlTXUwuK/BnQeNN/zhkuIKG/hkEeULwbSnwP196mXelVShzsannra3WbW5ZNu
-         LE9NhHgbismBnyPAlDZGjDBKX90HuRVcojdXYuNuX1rlUC8koYtkNQLGpaKgq9KlzwWj
-         pOZl+KKCbW1E7Xp6PPKk+nrVTr1KeBvRTYDHBhUBlOQ4hU76IooGIuNYTpXwtFX979m3
-         LkUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698431015; x=1699035815;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=srZUoBPWZiKpBpFDSV5l36Sp6ql4zJFMGAxv8lh5kbY=;
-        b=DmtYYAto/tLdKrFY7zVfFF7BjoVzqto3+9Scv/Yw4lVUEyjXSEXdC7wqCkl98PqpvZ
-         sE0Buf+raHbgs6xzscnA8hA4EMUv/hYWJaylyy71riPI5sRz+bisWaHPiPgwSD8uehBn
-         Jmxo8zQyNP1xYSqRDB5mBWserY/MrMjjJrvAMWt09vIShMFw/44Dug1HhZ5DNllqeeWD
-         wqzNgwQy6LNpkjbzt6dGnh5FOlitY9j04WW/cx/vE/q6nCB6Dbv0jmx3AuTabdfkooK1
-         1T/kr2jdwgSHLQOk+QOBs1Ixfu9+0JhT/zi2ZwGBjhH732ql4dRtZ4EYij84sRVajMRN
-         A46g==
-X-Gm-Message-State: AOJu0YzB/xulKtT99vUjG86ZwA2OBkt8mSC90gSfXSPdC6DuzStmKnXl
-	DJrhUhgeAbCRJ7IBEa2feMCAl7x8APg=
-X-Google-Smtp-Source: AGHT+IGsD3GBqEIwxpRuMZy6ZOrqAgR6Um5/oe2tLnBOXdqBPG31+kuimftnouCNE0Glk06NnY7NvSmeibY=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:903:442:b0:1cc:1e05:e0e7 with SMTP id
- iw2-20020a170903044200b001cc1e05e0e7mr49290plb.2.1698431015053; Fri, 27 Oct
- 2023 11:23:35 -0700 (PDT)
-Date: Fri, 27 Oct 2023 11:22:17 -0700
-In-Reply-To: <20231027182217.3615211-1-seanjc@google.com>
-Mime-Version: 1.0
-References: <20231027182217.3615211-1-seanjc@google.com>
-X-Mailer: git-send-email 2.42.0.820.g83a721a137-goog
-Message-ID: <20231027182217.3615211-36-seanjc@google.com>
-Subject: [PATCH v13 35/35] KVM: selftests: Test KVM exit behavior for private memory/access
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oliver.upton@linux.dev>, Huacai Chen <chenhuacai@kernel.org>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Anup Patel <anup@brainfault.org>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Sean Christopherson <seanjc@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SHrnS56ZMz3bX1
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Oct 2023 07:32:42 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698525164; x=1730061164;
+  h=date:from:to:cc:subject:message-id;
+  bh=7QPEtaK74u/PL24zM23n3i021aEzTIfGL9KGqX4qdZs=;
+  b=P8Hr6qyl4yjd51te4WGbExWB57GZQ8Rrr/pAkr6btPBcZFxxmgbZ0glP
+   IQIEA2gQ+NxKOdWV8Mt1G2RMH0O8Un0T4WakAL77lH3wl0AEHZC+MfWeA
+   o/jHkiK3Tl1ce35xGWfki17G28WZEnEBSsuY0VEDcn5S99Qy4oNChX8Jm
+   WrM0b1fwFhq+UWHKdgJnqRhGgUj73Isgm4UDxKcDCSrB/hRu0F6zmNS+M
+   GX98XzcqaQobsTFuLgEKcUyKf5I9omLnkspo7+vXsoxV5ecoQeh7T0hXV
+   toBwnQIV4eK4jP8Wa0MUwLG/uIh9TitBOCJJsxfaSxjZuneETWLP6PD6T
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10877"; a="419030019"
+X-IronPort-AV: E=Sophos;i="6.03,259,1694761200"; 
+   d="scan'208";a="419030019"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2023 13:32:38 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10877"; a="850562647"
+X-IronPort-AV: E=Sophos;i="6.03,259,1694761200"; 
+   d="scan'208";a="850562647"
+Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 28 Oct 2023 13:32:37 -0700
+Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qwpz1-000C3F-05;
+	Sat, 28 Oct 2023 20:32:35 +0000
+Date: Sun, 29 Oct 2023 04:31:54 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD REGRESSION
+ d369da17dce8aba8ec8303026b8bc827fd0cd8d2
+Message-ID: <202310290450.LD6Dpe2U-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,173 +66,217 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Xiaoyao Li <xiaoyao.li@intel.com>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, linux-arm-kernel@lists.infradead.org, Maciej Szmigiero <mail@maciej.szmigiero.name>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, David Matlack <dmatlack@google.com>, Vlastimil Babka <vbabka@suse.cz>, =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>, Isaku Yamahata <isaku.yamahata@intel.com>, Quentin Perret <qperret@google.com>, kvmarm@lists.linux.dev, linux-mips@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>, Yu Zhang <yu.c.zhang@linux.intel.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, linux-fsdevel@vger.kernel.org, Liam Merwick <liam.merwick@oracle.com>, Vishal Annapurve
-  <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Xu Yilun <yilun.xu@intel.com>, Anish Moorthy <amoorthy@google.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Ackerley Tng <ackerleytng@google.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: d369da17dce8aba8ec8303026b8bc827fd0cd8d2  Automatic merge of 'next' into merge (2023-10-27 18:30)
 
-"Testing private access when memslot gets deleted" tests the behavior
-of KVM when a private memslot gets deleted while the VM is using the
-private memslot. When KVM looks up the deleted (slot = NULL) memslot,
-KVM should exit to userspace with KVM_EXIT_MEMORY_FAULT.
+Error/Warning ids grouped by kconfigs:
 
-In the second test, upon a private access to non-private memslot, KVM
-should also exit to userspace with KVM_EXIT_MEMORY_FAULT.
+gcc_recent_errors
+`-- sh-allmodconfig
+    |-- sh4-linux-gcc:internal-compiler-error:Segmentation-fault-signal-terminated-program-cc1
+    |-- standard-input:Error:expected-symbol-name
+    `-- standard-input:Error:pcrel-too-far
 
-Intentionally don't take a requirement on KVM_CAP_GUEST_MEMFD,
-KVM_CAP_MEMORY_FAULT_INFO, KVM_MEMORY_ATTRIBUTE_PRIVATE, etc., as it's a
-KVM bug to advertise KVM_X86_SW_PROTECTED_VM without its prerequisites.
+elapsed time: 2148m
 
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-[sean: call out the similarities with set_memory_region_test]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- tools/testing/selftests/kvm/Makefile          |   1 +
- .../kvm/x86_64/private_mem_kvm_exits_test.c   | 120 ++++++++++++++++++
- 2 files changed, 121 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/x86_64/private_mem_kvm_exits_test.c
+configs tested: 188
+configs skipped: 2
 
-diff --git a/tools/testing/selftests/kvm/Makefile b/tools/testing/selftests/kvm/Makefile
-index 2b1ef809d73a..f7fdd8244547 100644
---- a/tools/testing/selftests/kvm/Makefile
-+++ b/tools/testing/selftests/kvm/Makefile
-@@ -82,6 +82,7 @@ TEST_GEN_PROGS_x86_64 += x86_64/nested_exceptions_test
- TEST_GEN_PROGS_x86_64 += x86_64/platform_info_test
- TEST_GEN_PROGS_x86_64 += x86_64/pmu_event_filter_test
- TEST_GEN_PROGS_x86_64 += x86_64/private_mem_conversions_test
-+TEST_GEN_PROGS_x86_64 += x86_64/private_mem_kvm_exits_test
- TEST_GEN_PROGS_x86_64 += x86_64/set_boot_cpu_id
- TEST_GEN_PROGS_x86_64 += x86_64/set_sregs_test
- TEST_GEN_PROGS_x86_64 += x86_64/smaller_maxphyaddr_emulation_test
-diff --git a/tools/testing/selftests/kvm/x86_64/private_mem_kvm_exits_test.c b/tools/testing/selftests/kvm/x86_64/private_mem_kvm_exits_test.c
-new file mode 100644
-index 000000000000..7f7ca4475745
---- /dev/null
-+++ b/tools/testing/selftests/kvm/x86_64/private_mem_kvm_exits_test.c
-@@ -0,0 +1,120 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (C) 2022, Google LLC.
-+ */
-+#include <linux/kvm.h>
-+#include <pthread.h>
-+#include <stdint.h>
-+
-+#include "kvm_util.h"
-+#include "processor.h"
-+#include "test_util.h"
-+
-+/* Arbitrarily selected to avoid overlaps with anything else */
-+#define EXITS_TEST_GVA 0xc0000000
-+#define EXITS_TEST_GPA EXITS_TEST_GVA
-+#define EXITS_TEST_NPAGES 1
-+#define EXITS_TEST_SIZE (EXITS_TEST_NPAGES * PAGE_SIZE)
-+#define EXITS_TEST_SLOT 10
-+
-+static uint64_t guest_repeatedly_read(void)
-+{
-+	volatile uint64_t value;
-+
-+	while (true)
-+		value = *((uint64_t *) EXITS_TEST_GVA);
-+
-+	return value;
-+}
-+
-+static uint32_t run_vcpu_get_exit_reason(struct kvm_vcpu *vcpu)
-+{
-+	int r;
-+
-+	r = _vcpu_run(vcpu);
-+	if (r) {
-+		TEST_ASSERT(errno == EFAULT, KVM_IOCTL_ERROR(KVM_RUN, r));
-+		TEST_ASSERT_EQ(vcpu->run->exit_reason, KVM_EXIT_MEMORY_FAULT);
-+	}
-+	return vcpu->run->exit_reason;
-+}
-+
-+const struct vm_shape protected_vm_shape = {
-+	.mode = VM_MODE_DEFAULT,
-+	.type = KVM_X86_SW_PROTECTED_VM,
-+};
-+
-+static void test_private_access_memslot_deleted(void)
-+{
-+	struct kvm_vm *vm;
-+	struct kvm_vcpu *vcpu;
-+	pthread_t vm_thread;
-+	void *thread_return;
-+	uint32_t exit_reason;
-+
-+	vm = vm_create_shape_with_one_vcpu(protected_vm_shape, &vcpu,
-+					   guest_repeatedly_read);
-+
-+	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS,
-+				    EXITS_TEST_GPA, EXITS_TEST_SLOT,
-+				    EXITS_TEST_NPAGES,
-+				    KVM_MEM_PRIVATE);
-+
-+	virt_map(vm, EXITS_TEST_GVA, EXITS_TEST_GPA, EXITS_TEST_NPAGES);
-+
-+	/* Request to access page privately */
-+	vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
-+
-+	pthread_create(&vm_thread, NULL,
-+		       (void *(*)(void *))run_vcpu_get_exit_reason,
-+		       (void *)vcpu);
-+
-+	vm_mem_region_delete(vm, EXITS_TEST_SLOT);
-+
-+	pthread_join(vm_thread, &thread_return);
-+	exit_reason = (uint32_t)(uint64_t)thread_return;
-+
-+	TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
-+	TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
-+	TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
-+	TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
-+
-+	kvm_vm_free(vm);
-+}
-+
-+static void test_private_access_memslot_not_private(void)
-+{
-+	struct kvm_vm *vm;
-+	struct kvm_vcpu *vcpu;
-+	uint32_t exit_reason;
-+
-+	vm = vm_create_shape_with_one_vcpu(protected_vm_shape, &vcpu,
-+					   guest_repeatedly_read);
-+
-+	/* Add a non-private memslot (flags = 0) */
-+	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS,
-+				    EXITS_TEST_GPA, EXITS_TEST_SLOT,
-+				    EXITS_TEST_NPAGES, 0);
-+
-+	virt_map(vm, EXITS_TEST_GVA, EXITS_TEST_GPA, EXITS_TEST_NPAGES);
-+
-+	/* Request to access page privately */
-+	vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
-+
-+	exit_reason = run_vcpu_get_exit_reason(vcpu);
-+
-+	TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
-+	TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
-+	TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
-+	TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
-+
-+	kvm_vm_free(vm);
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM));
-+
-+	test_private_access_memslot_deleted();
-+	test_private_access_memslot_not_private();
-+}
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                          axs101_defconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20231027   gcc  
+arc                   randconfig-001-20231028   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                         assabet_defconfig   gcc  
+arm                         at91_dt_defconfig   gcc  
+arm                                 defconfig   gcc  
+arm                      integrator_defconfig   gcc  
+arm                          pxa910_defconfig   gcc  
+arm                   randconfig-001-20231027   gcc  
+arm                   randconfig-001-20231028   gcc  
+arm                         vf610m4_defconfig   gcc  
+arm64                            allmodconfig   gcc  
+arm64                             allnoconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20231027   gcc  
+i386         buildonly-randconfig-001-20231028   gcc  
+i386         buildonly-randconfig-002-20231027   gcc  
+i386         buildonly-randconfig-002-20231028   gcc  
+i386         buildonly-randconfig-003-20231027   gcc  
+i386         buildonly-randconfig-003-20231028   gcc  
+i386         buildonly-randconfig-004-20231027   gcc  
+i386         buildonly-randconfig-004-20231028   gcc  
+i386         buildonly-randconfig-005-20231027   gcc  
+i386         buildonly-randconfig-005-20231028   gcc  
+i386         buildonly-randconfig-006-20231027   gcc  
+i386         buildonly-randconfig-006-20231028   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20231027   gcc  
+i386                  randconfig-001-20231028   gcc  
+i386                  randconfig-002-20231027   gcc  
+i386                  randconfig-002-20231028   gcc  
+i386                  randconfig-003-20231027   gcc  
+i386                  randconfig-003-20231028   gcc  
+i386                  randconfig-004-20231027   gcc  
+i386                  randconfig-004-20231028   gcc  
+i386                  randconfig-005-20231027   gcc  
+i386                  randconfig-005-20231028   gcc  
+i386                  randconfig-006-20231027   gcc  
+i386                  randconfig-006-20231028   gcc  
+i386                  randconfig-011-20231027   gcc  
+i386                  randconfig-011-20231028   gcc  
+i386                  randconfig-012-20231027   gcc  
+i386                  randconfig-012-20231028   gcc  
+i386                  randconfig-013-20231027   gcc  
+i386                  randconfig-013-20231028   gcc  
+i386                  randconfig-014-20231027   gcc  
+i386                  randconfig-014-20231028   gcc  
+i386                  randconfig-015-20231027   gcc  
+i386                  randconfig-015-20231028   gcc  
+i386                  randconfig-016-20231027   gcc  
+i386                  randconfig-016-20231028   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20231027   gcc  
+loongarch             randconfig-001-20231028   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                        stmark2_defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                        bcm63xx_defconfig   clang
+mips                       bmips_be_defconfig   gcc  
+mips                           rs90_defconfig   clang
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+openrisc                       virt_defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   gcc  
+powerpc                      chrp32_defconfig   gcc  
+powerpc                 mpc834x_itx_defconfig   gcc  
+powerpc               mpc834x_itxgp_defconfig   clang
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                    nommu_virt_defconfig   clang
+riscv                 randconfig-001-20231027   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20231027   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                         ap325rxa_defconfig   gcc  
+sh                                  defconfig   gcc  
+sh                             espt_defconfig   gcc  
+sh                          rsk7269_defconfig   gcc  
+sh                      rts7751r2d1_defconfig   gcc  
+sh                             sh03_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                 randconfig-001-20231027   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-001-20231027   gcc  
+x86_64       buildonly-randconfig-001-20231028   gcc  
+x86_64       buildonly-randconfig-002-20231027   gcc  
+x86_64       buildonly-randconfig-002-20231028   gcc  
+x86_64       buildonly-randconfig-003-20231027   gcc  
+x86_64       buildonly-randconfig-003-20231028   gcc  
+x86_64       buildonly-randconfig-004-20231027   gcc  
+x86_64       buildonly-randconfig-004-20231028   gcc  
+x86_64       buildonly-randconfig-005-20231027   gcc  
+x86_64       buildonly-randconfig-005-20231028   gcc  
+x86_64       buildonly-randconfig-006-20231027   gcc  
+x86_64       buildonly-randconfig-006-20231028   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20231027   gcc  
+x86_64                randconfig-001-20231028   gcc  
+x86_64                randconfig-002-20231027   gcc  
+x86_64                randconfig-002-20231028   gcc  
+x86_64                randconfig-003-20231027   gcc  
+x86_64                randconfig-003-20231028   gcc  
+x86_64                randconfig-004-20231027   gcc  
+x86_64                randconfig-004-20231028   gcc  
+x86_64                randconfig-005-20231027   gcc  
+x86_64                randconfig-005-20231028   gcc  
+x86_64                randconfig-006-20231027   gcc  
+x86_64                randconfig-006-20231028   gcc  
+x86_64                randconfig-011-20231027   gcc  
+x86_64                randconfig-012-20231027   gcc  
+x86_64                randconfig-013-20231027   gcc  
+x86_64                randconfig-014-20231027   gcc  
+x86_64                randconfig-015-20231027   gcc  
+x86_64                randconfig-016-20231027   gcc  
+x86_64                randconfig-071-20231027   gcc  
+x86_64                randconfig-072-20231027   gcc  
+x86_64                randconfig-073-20231027   gcc  
+x86_64                randconfig-074-20231027   gcc  
+x86_64                randconfig-075-20231027   gcc  
+x86_64                randconfig-076-20231027   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                       common_defconfig   gcc  
+
 -- 
-2.42.0.820.g83a721a137-goog
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
