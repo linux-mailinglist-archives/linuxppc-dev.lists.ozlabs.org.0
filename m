@@ -1,60 +1,104 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F4647DA94B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Oct 2023 22:33:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5A4C7DAC7D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Oct 2023 13:46:07 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=P8Hr6qyl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ter9VCQ2;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SHrpN2wjVz3bx0
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Oct 2023 07:33:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SJGNY3TVQz3d8J
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Oct 2023 23:46:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=P8Hr6qyl;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ter9VCQ2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SJGJF6YQ3z3cQM
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Oct 2023 23:42:21 +1100 (AEDT)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4SJGJF64vTz4x1v
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Oct 2023 23:42:21 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4SJGJF62DHz4xPQ; Sun, 29 Oct 2023 23:42:21 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ter9VCQ2;
+	dkim-atps=neutral
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SHrnS56ZMz3bX1
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Oct 2023 07:32:42 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698525164; x=1730061164;
-  h=date:from:to:cc:subject:message-id;
-  bh=7QPEtaK74u/PL24zM23n3i021aEzTIfGL9KGqX4qdZs=;
-  b=P8Hr6qyl4yjd51te4WGbExWB57GZQ8Rrr/pAkr6btPBcZFxxmgbZ0glP
-   IQIEA2gQ+NxKOdWV8Mt1G2RMH0O8Un0T4WakAL77lH3wl0AEHZC+MfWeA
-   o/jHkiK3Tl1ce35xGWfki17G28WZEnEBSsuY0VEDcn5S99Qy4oNChX8Jm
-   WrM0b1fwFhq+UWHKdgJnqRhGgUj73Isgm4UDxKcDCSrB/hRu0F6zmNS+M
-   GX98XzcqaQobsTFuLgEKcUyKf5I9omLnkspo7+vXsoxV5ecoQeh7T0hXV
-   toBwnQIV4eK4jP8Wa0MUwLG/uIh9TitBOCJJsxfaSxjZuneETWLP6PD6T
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10877"; a="419030019"
-X-IronPort-AV: E=Sophos;i="6.03,259,1694761200"; 
-   d="scan'208";a="419030019"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2023 13:32:38 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10877"; a="850562647"
-X-IronPort-AV: E=Sophos;i="6.03,259,1694761200"; 
-   d="scan'208";a="850562647"
-Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 28 Oct 2023 13:32:37 -0700
-Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1qwpz1-000C3F-05;
-	Sat, 28 Oct 2023 20:32:35 +0000
-Date: Sun, 29 Oct 2023 04:31:54 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD REGRESSION
- d369da17dce8aba8ec8303026b8bc827fd0cd8d2
-Message-ID: <202310290450.LD6Dpe2U-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4SJGJF3620z4x1v
+	for <linuxppc-dev@ozlabs.org>; Sun, 29 Oct 2023 23:42:21 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39TAii70005973;
+	Sun, 29 Oct 2023 12:41:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=iMHpsGc+lOrRQ7rqu7pmcwsi60uw582Vnw10KqNp5PU=;
+ b=Ter9VCQ2/t0OD+1q+GRl5tMVM+c43Uw/bC2a2akysnke4Cu9MBeOWpQ7nkWeV/dBUxZY
+ RqReJONB39y9OS6Cg12ucNxqXl6/9vO1ZMKB2/ywK20Ab27LIE504fKuT3aLq70SDvHc
+ EXDO/x4fP9T2HcAACu5oRU7RKMPTCsR+Zss1E17dNmcYXHTMr8flmPplbQq5Cg420aYq
+ +iEYYcGpWtN0ukX1MLn5LnKrvE+Zb+mffIm4qv6aPH2mxKhlCwDFo5Mw2dBiIyeSMyn8
+ xyoE6cN4gjeA36ZxYMbilN9DPHXbeyHSLu/z3h+HdsVmZwbqaV9VAGqN5HTj8RpSrVMb 3Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u1nwdhp3h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 29 Oct 2023 12:41:03 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39TCf2Mo029912;
+	Sun, 29 Oct 2023 12:41:02 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u1nwdhp32-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 29 Oct 2023 12:41:02 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39TBjhB8007685;
+	Sun, 29 Oct 2023 12:41:01 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3u1dmn2u9g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 29 Oct 2023 12:41:01 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39TCekuI6488706
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 29 Oct 2023 12:40:46 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B095220040;
+	Sun, 29 Oct 2023 12:40:46 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 800BD2004D;
+	Sun, 29 Oct 2023 12:40:41 +0000 (GMT)
+Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.43.28.154])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Sun, 29 Oct 2023 12:40:41 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH v12 0/6] powerpc/crash: Kernel handling of CPU and memory hotplug
+Date: Sun, 29 Oct 2023 18:10:33 +0530
+Message-ID: <20231029124039.6158-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: L34HlLaH_ThOBz6zdHDYTRyE1QDgaLmD
+X-Proofpoint-ORIG-GUID: cFwU9Ph3IO6blLz83zGDz89aK2xhQJFX
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-28_24,2023-10-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ mlxlogscore=999 mlxscore=0 clxscore=1015 priorityscore=1501 spamscore=0
+ bulkscore=0 phishscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310240000 definitions=main-2310290108
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,217 +110,196 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: David Hildenbrand <david@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, Mimi Zohar <zohar@linux.ibm.com>, Eric DeVolder <eric.devolder@oracle.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Valentin Schneider <vschneid@redhat.com>, Baoquan He <bhe@redhat.com>, x86@kernel.org, Laurent Dufour <laurent.dufour@fr.ibm.com>, Dave Young <dyoung@redhat.com>, Vivek Goyal <vgoyal@redhat.com>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, Hari Bathini <hbathini@linux.ibm.com>, Oscar Salvador <osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, kexec@lists.infradead.org, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Akhil Raj <lf32.dev@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: d369da17dce8aba8ec8303026b8bc827fd0cd8d2  Automatic merge of 'next' into merge (2023-10-27 18:30)
+Commit 247262756121 ("crash: add generic infrastructure for crash
+hotplug support") added a generic infrastructure that allows
+architectures to selectively update the kdump image component during CPU
+or memory add/remove events within the kernel itself.
 
-Error/Warning ids grouped by kconfigs:
+This patch series adds crash hotplug handler for PowerPC and enable
+support to update the kdump image on CPU/Memory add/remove events.
 
-gcc_recent_errors
-`-- sh-allmodconfig
-    |-- sh4-linux-gcc:internal-compiler-error:Segmentation-fault-signal-terminated-program-cc1
-    |-- standard-input:Error:expected-symbol-name
-    `-- standard-input:Error:pcrel-too-far
+Among the 6 patches in this series, the first three patches make changes
+to the generic crash hotplug handler to assist PowerPC in adding support
+for this feature. The last three patches add support for this feature.
 
-elapsed time: 2148m
+The following section outlines the problem addressed by this patch
+series, along with the current solution, its shortcomings, and the
+proposed resolution.
 
-configs tested: 188
-configs skipped: 2
+Problem:
+========
+Due to CPU/Memory hotplug or online/offline events the elfcorehdr
+(which describes the CPUs and memory of the crashed kernel) and FDT
+(Flattened Device Tree) of kdump image becomes outdated. Consequently,
+attempting dump collection with an outdated elfcorehdr or FDT can lead
+to failed or inaccurate dump collection.
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                          axs101_defconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20231027   gcc  
-arc                   randconfig-001-20231028   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                         assabet_defconfig   gcc  
-arm                         at91_dt_defconfig   gcc  
-arm                                 defconfig   gcc  
-arm                      integrator_defconfig   gcc  
-arm                          pxa910_defconfig   gcc  
-arm                   randconfig-001-20231027   gcc  
-arm                   randconfig-001-20231028   gcc  
-arm                         vf610m4_defconfig   gcc  
-arm64                            allmodconfig   gcc  
-arm64                             allnoconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20231027   gcc  
-i386         buildonly-randconfig-001-20231028   gcc  
-i386         buildonly-randconfig-002-20231027   gcc  
-i386         buildonly-randconfig-002-20231028   gcc  
-i386         buildonly-randconfig-003-20231027   gcc  
-i386         buildonly-randconfig-003-20231028   gcc  
-i386         buildonly-randconfig-004-20231027   gcc  
-i386         buildonly-randconfig-004-20231028   gcc  
-i386         buildonly-randconfig-005-20231027   gcc  
-i386         buildonly-randconfig-005-20231028   gcc  
-i386         buildonly-randconfig-006-20231027   gcc  
-i386         buildonly-randconfig-006-20231028   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                  randconfig-001-20231027   gcc  
-i386                  randconfig-001-20231028   gcc  
-i386                  randconfig-002-20231027   gcc  
-i386                  randconfig-002-20231028   gcc  
-i386                  randconfig-003-20231027   gcc  
-i386                  randconfig-003-20231028   gcc  
-i386                  randconfig-004-20231027   gcc  
-i386                  randconfig-004-20231028   gcc  
-i386                  randconfig-005-20231027   gcc  
-i386                  randconfig-005-20231028   gcc  
-i386                  randconfig-006-20231027   gcc  
-i386                  randconfig-006-20231028   gcc  
-i386                  randconfig-011-20231027   gcc  
-i386                  randconfig-011-20231028   gcc  
-i386                  randconfig-012-20231027   gcc  
-i386                  randconfig-012-20231028   gcc  
-i386                  randconfig-013-20231027   gcc  
-i386                  randconfig-013-20231028   gcc  
-i386                  randconfig-014-20231027   gcc  
-i386                  randconfig-014-20231028   gcc  
-i386                  randconfig-015-20231027   gcc  
-i386                  randconfig-015-20231028   gcc  
-i386                  randconfig-016-20231027   gcc  
-i386                  randconfig-016-20231028   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20231027   gcc  
-loongarch             randconfig-001-20231028   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                        stmark2_defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                        bcm63xx_defconfig   clang
-mips                       bmips_be_defconfig   gcc  
-mips                           rs90_defconfig   clang
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-openrisc                       virt_defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   gcc  
-powerpc                      chrp32_defconfig   gcc  
-powerpc                 mpc834x_itx_defconfig   gcc  
-powerpc               mpc834x_itxgp_defconfig   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                    nommu_virt_defconfig   clang
-riscv                 randconfig-001-20231027   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                  randconfig-001-20231027   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                         ap325rxa_defconfig   gcc  
-sh                                  defconfig   gcc  
-sh                             espt_defconfig   gcc  
-sh                          rsk7269_defconfig   gcc  
-sh                      rts7751r2d1_defconfig   gcc  
-sh                             sh03_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                 randconfig-001-20231027   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-001-20231027   gcc  
-x86_64       buildonly-randconfig-001-20231028   gcc  
-x86_64       buildonly-randconfig-002-20231027   gcc  
-x86_64       buildonly-randconfig-002-20231028   gcc  
-x86_64       buildonly-randconfig-003-20231027   gcc  
-x86_64       buildonly-randconfig-003-20231028   gcc  
-x86_64       buildonly-randconfig-004-20231027   gcc  
-x86_64       buildonly-randconfig-004-20231028   gcc  
-x86_64       buildonly-randconfig-005-20231027   gcc  
-x86_64       buildonly-randconfig-005-20231028   gcc  
-x86_64       buildonly-randconfig-006-20231027   gcc  
-x86_64       buildonly-randconfig-006-20231028   gcc  
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20231027   gcc  
-x86_64                randconfig-001-20231028   gcc  
-x86_64                randconfig-002-20231027   gcc  
-x86_64                randconfig-002-20231028   gcc  
-x86_64                randconfig-003-20231027   gcc  
-x86_64                randconfig-003-20231028   gcc  
-x86_64                randconfig-004-20231027   gcc  
-x86_64                randconfig-004-20231028   gcc  
-x86_64                randconfig-005-20231027   gcc  
-x86_64                randconfig-005-20231028   gcc  
-x86_64                randconfig-006-20231027   gcc  
-x86_64                randconfig-006-20231028   gcc  
-x86_64                randconfig-011-20231027   gcc  
-x86_64                randconfig-012-20231027   gcc  
-x86_64                randconfig-013-20231027   gcc  
-x86_64                randconfig-014-20231027   gcc  
-x86_64                randconfig-015-20231027   gcc  
-x86_64                randconfig-016-20231027   gcc  
-x86_64                randconfig-071-20231027   gcc  
-x86_64                randconfig-072-20231027   gcc  
-x86_64                randconfig-073-20231027   gcc  
-x86_64                randconfig-074-20231027   gcc  
-x86_64                randconfig-075-20231027   gcc  
-x86_64                randconfig-076-20231027   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                       common_defconfig   gcc  
+Going forward CPU hotplug or online/offlice events are referred as
+CPU/Memory add/remvoe events.
+
+Existing solution and its shortcoming:
+======================================
+The current solution to address the above issue involves monitoring the
+CPU/memory add/remove events in userspace using udev rules and whenever
+there are changes in CPU and memory resources, the entire kdump image
+is loaded again. The kdump image includes kernel, initrd, elfcorehdr,
+FDT, purgatory. Given that only elfcorehdr and FDT get outdated due to
+CPU/Memory add/remove events, reloading the entire kdump image is
+inefficient. More importantly, kdump remains inactive for a substantial
+amount of time until the kdump reload completes.
+
+Proposed solution:
+==================
+Instead of initiating a full kdump image reload from userspace on
+CPU/Memory hotplug and online/offline events, the proposed solution aims
+to update only the necessary kdump image component within the kernel
+itself.
+
+Git tree for testing:
+=====================
+Git tree rebased on top of v6.6-rc7:
+https://github.com/sourabhjains/linux/tree/kdump-in-kernel-crash-update
+
+To realize this feature, the kdump udev rule must be updated. On RHEL,
+add the following two lines at the top of the
+"/usr/lib/udev/rules.d/98-kexec.rules" file.
+
+SUBSYSTEM=="cpu", ATTRS{crash_hotplug}=="1", GOTO="kdump_reload_end"
+SUBSYSTEM=="memory", ATTRS{crash_hotplug}=="1", GOTO="kdump_reload_end"
+
+With the above change to the kdump udev rule, kdump reload is avoided
+during CPU/Memory add/remove events if this feature is enabled in the
+kernel.
+
+Note: only kexec_file_load syscall will work. For kexec_load minor changes
+are required in kexec tool.
+
+Changelog:
+----------
+
+v12:
+  - A patch to add new kexec flags to support this feature on kexec_load
+    system call
+  - Change in the way this feature is advertise to userspace for both
+    kexec_load syscall
+  - Rebase to v6.6-rc7
+
+v11:
+  - Rebase to v6.4-rc6
+  - The patch that introduced CONFIG_CRASH_HOTPLUG for PowerPC has been
+    removed. The config is now part of common configuration:
+    https://lore.kernel.org/all/87ilbpflsk.fsf@mail.lhotse/
+
+v10:
+  - Drop the patch that adds fdt_index attribute to struct kimage_arch
+    Find the fdt segment index when needed.
+  - Added more details into commits messages.
+  - Rebased onto 6.3.0-rc5
+
+v9:
+  - Removed patch to prepare elfcorehdr crash notes for possible CPUs.
+    The patch is moved to generic patch series that introduces generic
+    infrastructure for in kernel crash update.
+  - Removed patch to pass the hotplug action type to the arch crash
+    hotplug handler function. The generic patch series has introduced
+    the hotplug action type in kimage struct.
+  - Add detail commit message for better understanding.
+
+v8:
+  - Restrict fdt_index initialization to machine_kexec_post_load
+    it work for both kexec_load and kexec_file_load.[3/8] Laurent Dufour
+
+  - Updated the logic to find the number of offline core. [6/8]
+
+  - Changed the logic to find the elfcore program header to accommodate
+    future memory ranges due memory hotplug events. [8/8]
+
+v7
+  - added a new config to configure this feature
+  - pass hotplug action type to arch specific handler
+
+v6
+  - Added crash memory hotplug support
+
+v5:
+  - Replace COFNIG_CRASH_HOTPLUG with CONFIG_HOTPLUG_CPU.
+  - Move fdt segment identification for kexec_load case to load path
+    instead of crash hotplug handler
+  - Keep new attribute defined under kimage_arch to track FDT segment
+    under CONFIG_HOTPLUG_CPU config.
+
+v4:
+  - Update the logic to find the additional space needed for hotadd CPUs
+    post kexec load. Refer "[RFC v4 PATCH 4/5] powerpc/crash hp: add crash
+    hotplug support for kexec_file_load" patch to know more about the
+    change.
+  - Fix a couple of typo.
+  - Replace pr_err to pr_info_once to warn user about memory hotplug
+    support.
+  - In crash hotplug handle exit the for loop if FDT segment is found.
+
+v3
+  - Move fdt_index and fdt_index_vaild variables to kimage_arch struct.
+  - Rebase patche on top of
+    https://lore.kernel.org/lkml/20220303162725.49640-1-eric.devolder@oracle.com/
+  - Fixed warning reported by checpatch script
+
+v2:
+  - Use generic hotplug handler introduced by
+    https://lore.kernel.org/lkml/20220209195706.51522-1-eric.devolder@oracle.com/
+    a significant change from v1.
+
+
+Cc: Akhil Raj <lf32.dev@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Eric DeVolder <eric.devolder@oracle.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Hari Bathini <hbathini@linux.ibm.com>
+Cc: Laurent Dufour <laurent.dufour@fr.ibm.com>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Mimi Zohar <zohar@linux.ibm.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Valentin Schneider <vschneid@redhat.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
+Cc: kexec@lists.infradead.org
+Cc: x86@kernel.org
+
+Sourabh Jain (6):
+  crash: forward memory_notify arg to arch crash hotplug handler
+  crash: make CPU and Memory hotplug support reporting flexible
+  crash: add a new kexec flag for FDT update
+  powerpc/kexec: turn some static helper functions public
+  powerpc: add crash CPU hotplug support
+  powerpc: add crash memory hotplug support
+
+ arch/powerpc/Kconfig                    |   4 +
+ arch/powerpc/include/asm/kexec.h        |  25 ++
+ arch/powerpc/include/asm/kexec_ranges.h |   1 +
+ arch/powerpc/kexec/core_64.c            | 368 ++++++++++++++++++++++++
+ arch/powerpc/kexec/elf_64.c             |  12 +-
+ arch/powerpc/kexec/file_load_64.c       | 210 +++-----------
+ arch/powerpc/kexec/ranges.c             |  85 ++++++
+ arch/x86/include/asm/kexec.h            |  10 +-
+ arch/x86/kernel/crash.c                 |  23 +-
+ include/linux/kexec.h                   |  21 +-
+ include/uapi/linux/kexec.h              |   1 +
+ kernel/crash_core.c                     |  37 ++-
+ kernel/kexec.c                          |   2 +
+ 13 files changed, 601 insertions(+), 198 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.41.0
+
