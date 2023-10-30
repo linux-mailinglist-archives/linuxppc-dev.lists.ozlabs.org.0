@@ -1,86 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 265137DBEFB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Oct 2023 18:31:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 600AC7DBF01
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Oct 2023 18:32:52 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JLlV0JrB;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JLlV0JrB;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UW9IFWg+;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UW9IFWg+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SK0gv07Rpz3cZd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Oct 2023 04:31:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SK0hy206Sz3cSY
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Oct 2023 04:32:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JLlV0JrB;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JLlV0JrB;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UW9IFWg+;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UW9IFWg+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SK0g11DHVz3c82
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Oct 2023 04:31:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SK0h16jVqz3cVr
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Oct 2023 04:32:01 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1698687065;
+	s=mimecast20190719; t=1698687119;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=kzSwq3LcsIGB4kJ8y5dDYKXfNxy9k2vONtVBXrysXxs=;
-	b=JLlV0JrBIkm/Otq+p15CS+8W+GDQ/Y0fumjAQKT6LXdCybSZa1r4KzNTM87InHAct3l7xo
-	NKYPrf+4t0Dhy4jY1kCVuSRGpc/XHSrA7yf9BehB56mGrD5w4rSa/HTf9MQUo7JEfhgYWK
-	EPcdiAiezIZQ7KzmwEQ7Qzkc12STRm4=
+	bh=3g1TVhpzsOzzHHVoXez8JAaDO7pX06gUTyU2b4+L2DI=;
+	b=UW9IFWg+mirR4VcbYwnpWdE6LgyvcCFK7+T+cnOpm9XYLp6qCAb1Gm2Mkmrmv/nrgjG7Ko
+	sNyfceqCTGtDV6J2klJA6XhPdWsT2Y/u975ND6Wvv4WK0/LbRL6a614rISQGq1+Wh1bc8N
+	qBNNM4izfK4ilOPzKamARfqjTO9nka8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1698687065;
+	s=mimecast20190719; t=1698687119;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=kzSwq3LcsIGB4kJ8y5dDYKXfNxy9k2vONtVBXrysXxs=;
-	b=JLlV0JrBIkm/Otq+p15CS+8W+GDQ/Y0fumjAQKT6LXdCybSZa1r4KzNTM87InHAct3l7xo
-	NKYPrf+4t0Dhy4jY1kCVuSRGpc/XHSrA7yf9BehB56mGrD5w4rSa/HTf9MQUo7JEfhgYWK
-	EPcdiAiezIZQ7KzmwEQ7Qzkc12STRm4=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=3g1TVhpzsOzzHHVoXez8JAaDO7pX06gUTyU2b4+L2DI=;
+	b=UW9IFWg+mirR4VcbYwnpWdE6LgyvcCFK7+T+cnOpm9XYLp6qCAb1Gm2Mkmrmv/nrgjG7Ko
+	sNyfceqCTGtDV6J2klJA6XhPdWsT2Y/u975ND6Wvv4WK0/LbRL6a614rISQGq1+Wh1bc8N
+	qBNNM4izfK4ilOPzKamARfqjTO9nka8=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-515-6Y_542w8PIq8Uwhgo0itOg-1; Mon, 30 Oct 2023 13:30:57 -0400
-X-MC-Unique: 6Y_542w8PIq8Uwhgo0itOg-1
-Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-2c5161838d8so50558371fa.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Oct 2023 10:30:56 -0700 (PDT)
+ us-mta-622-A2zXT5-6MZ2oO5x-uPPc6Q-1; Mon, 30 Oct 2023 13:31:57 -0400
+X-MC-Unique: A2zXT5-6MZ2oO5x-uPPc6Q-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-408508aa81cso35299965e9.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Oct 2023 10:31:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698687055; x=1699291855;
+        d=1e100.net; s=20230601; t=1698687115; x=1699291915;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kzSwq3LcsIGB4kJ8y5dDYKXfNxy9k2vONtVBXrysXxs=;
-        b=QhM3ghous2nMjG3sfksffgPReVPYfp5FkbEXrdmPifdwn0LpwXud86lG5cHAnsdUV/
-         6rXl6H7vi5KWa0W/xUyDnXoCiFNZl2jciIFBdLiCHIc2bcdHtXW3fg2ZQqGoVXsFq6q9
-         adwYgFJCMperV0QFEdJQS9F2XBM5MDgbmfXq3qnfTBJP0t+eKF2cFR1NHHFbXtF4LrmS
-         MOTx3vyTMFsrlRm8vjxi/qf0bL0j6oiu99hMmFbQtiE4zr1AKltk+phN7b3FLA/7HIaL
-         nd4LKiko6LwE87ZfvLf+yN3XgqONR6H9yVB3CH+hhq34wCzV5QT3aA35xQEKGl+bl5dE
-         ztMw==
-X-Gm-Message-State: AOJu0YyUN0MFoPa2GhN3+dR2/Pi1fvkArdmIG0+AFAMQA5vqnUb7foqY
-	dNmh6Rn0lA/VF7ugkfbIZU+uwQjfDhqIQpoApPEIOEwHD+2Odhw9N4Spx7wI520qQG4v3VFAm3N
-	rOOwKuvYGcBW7l3fz3lltef13Lw==
-X-Received: by 2002:a2e:b808:0:b0:2c5:27ca:478b with SMTP id u8-20020a2eb808000000b002c527ca478bmr8146995ljo.7.1698687055752;
-        Mon, 30 Oct 2023 10:30:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHWh1xQ5I0MM3/Iy74fEIwMqL5ViQAp87aWrH8OcVXHaW0K+XK2JilNTh4OuPe9Hz3C4viW2A==
-X-Received: by 2002:a2e:b808:0:b0:2c5:27ca:478b with SMTP id u8-20020a2eb808000000b002c527ca478bmr8146970ljo.7.1698687055317;
-        Mon, 30 Oct 2023 10:30:55 -0700 (PDT)
+        bh=3g1TVhpzsOzzHHVoXez8JAaDO7pX06gUTyU2b4+L2DI=;
+        b=oAazyyLX6h70ojZCi18RNhmR8gszVtjqUuGjuRwRDBSBcbmhMnefRPCb6KQ5cOKEaX
+         woy6uMkAYIwKJ3Dhi64fVlWtw3xv7PPnwjNI4PQ7H4th6TuO+5ZKDGzBDoEE1i0+i1md
+         rcQEg7j2Jn389tNSgb3ooI2+PRyB+jyjZuuEpzqrqnGBAcy9HILZal1HZzNKZhw9pa/H
+         F+rHCWX9lG29XKstAjKOaKLiLvDvUvH9hoNDV9KOobdFXmL+rhgwEOKWtbv+rX1blSLS
+         Csut1LD0EV6jyOxuUPdEhxE3140T4Vjwep56c+S3cCVWvCM9ldt38LDrSSrFTmxP4Qr0
+         GiVw==
+X-Gm-Message-State: AOJu0YxuAzN11yr+io9pH6PLauvU7jwsn6VbKfR9N5Q1tQYW/IuVJG+X
+	GAGcYpqNkHwULTdn7HxHyoP+i9MDohfHBskdldEDocgW4H3rtPJmPcvbURrve1C50QDMCgiFOds
+	Y87mr1G0EMlrkwSR0kAsKTOvl6t/0SWLU/w==
+X-Received: by 2002:a05:600c:3b13:b0:405:3455:567e with SMTP id m19-20020a05600c3b1300b004053455567emr8489610wms.5.1698687115237;
+        Mon, 30 Oct 2023 10:31:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFOw2pwrz3emhHHPGzRcEZaKdyXE5ETYrjkl0hP08/axAOlUIY6MyqVTu78CJe3u248QTKzww==
+X-Received: by 2002:a05:600c:3b13:b0:405:3455:567e with SMTP id m19-20020a05600c3b1300b004053455567emr8489569wms.5.1698687114826;
+        Mon, 30 Oct 2023 10:31:54 -0700 (PDT)
 Received: from [192.168.1.174] ([151.81.68.207])
-        by smtp.googlemail.com with ESMTPSA id c5-20020a05600c0a4500b004094d4292aesm449246wmq.18.2023.10.30.10.30.52
+        by smtp.googlemail.com with ESMTPSA id c5-20020a05600c0a4500b004094d4292aesm449246wmq.18.2023.10.30.10.31.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Oct 2023 10:30:54 -0700 (PDT)
-Message-ID: <50cf2a74-5702-4b7a-8bbc-7f9b5d56b4d1@redhat.com>
-Date: Mon, 30 Oct 2023 18:30:51 +0100
+        Mon, 30 Oct 2023 10:31:54 -0700 (PDT)
+Message-ID: <0731604e-8692-4c51-9427-78b4c629f9e9@redhat.com>
+Date: Mon, 30 Oct 2023 18:31:50 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 15/35] fs: Export anon_inode_getfile_secure() for use
- by KVM
+Subject: Re: [PATCH v13 18/35] KVM: x86: "Reset" vcpu->run->exit_reason early
+ in KVM_RUN
 To: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
  Oliver Upton <oliver.upton@linux.dev>, Huacai Chen <chenhuacai@kernel.org>,
  Michael Ellerman <mpe@ellerman.id.au>, Anup Patel <anup@brainfault.org>,
@@ -91,7 +91,7 @@ To: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Andrew Morton <akpm@linux-foundation.org>
 References: <20231027182217.3615211-1-seanjc@google.com>
- <20231027182217.3615211-16-seanjc@google.com>
+ <20231027182217.3615211-19-seanjc@google.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
 Autocrypt: addr=pbonzini@redhat.com; keydata=
  xsEhBFRCcBIBDqDGsz4K0zZun3jh+U6Z9wNGLKQ0kSFyjN38gMqU1SfP+TUNQepFHb/Gc0E2
@@ -128,7 +128,7 @@ Autocrypt: addr=pbonzini@redhat.com; keydata=
  JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
  dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
  b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <20231027182217.3615211-16-seanjc@google.com>
+In-Reply-To: <20231027182217.3615211-19-seanjc@google.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -150,19 +150,52 @@ Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/27/23 20:21, Sean Christopherson wrote:
-> Export anon_inode_getfile_secure() so that it can be used by KVM to 
-> create and manage file-based guest memory without need a fullblow 
-
-without introducing a full-blown
-
-Otherwise,
+On 10/27/23 20:22, Sean Christopherson wrote:
+> Initialize run->exit_reason to KVM_EXIT_UNKNOWN early in KVM_RUN to reduce
+> the probability of exiting to userspace with a stale run->exit_reason that
+> *appears* to be valid.
+> 
+> To support fd-based guest memory (guest memory without a corresponding
+> userspace virtual address), KVM will exit to userspace for various memory
+> related errors, which userspace *may* be able to resolve, instead of using
+> e.g. BUS_MCEERR_AR.  And in the more distant future, KVM will also likely
+> utilize the same functionality to let userspace "intercept" and handle
+> memory faults when the userspace mapping is missing, i.e. when fast gup()
+> fails.
+> 
+> Because many of KVM's internal APIs related to guest memory use '0' to
+> indicate "success, continue on" and not "exit to userspace", reporting
+> memory faults/errors to userspace will set run->exit_reason and
+> corresponding fields in the run structure fields in conjunction with a
+> a non-zero, negative return code, e.g. -EFAULT or -EHWPOISON.  And because
+> KVM already returns  -EFAULT in many paths, there's a relatively high
+> probability that KVM could return -EFAULT without setting run->exit_reason,
+> in which case reporting KVM_EXIT_UNKNOWN is much better than reporting
+> whatever exit reason happened to be in the run structure.
+> 
+> Note, KVM must wait until after run->immediate_exit is serviced to
+> sanitize run->exit_reason as KVM's ABI is that run->exit_reason is
+> preserved across KVM_RUN when run->immediate_exit is true.
+> 
+> Link: https://lore.kernel.org/all/20230908222905.1321305-1-amoorthy@google.com
+> Link: https://lore.kernel.org/all/ZFFbwOXZ5uI%2Fgdaf@google.com
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>   arch/x86/kvm/x86.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index ee3cd8c3c0ef..f41dbb1465a0 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -10963,6 +10963,7 @@ static int vcpu_run(struct kvm_vcpu *vcpu)
+>   {
+>   	int r;
+>   
+> +	vcpu->run->exit_reason = KVM_EXIT_UNKNOWN;
+>   	vcpu->arch.l1tf_flush_l1d = true;
+>   
+>   	for (;;) {
 
 Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
-
-Paolo
-
-> filesystem. The "standard" anon_inode_getfd() doesn't work for KVM's use 
-> case as KVM needs a unique inode for each file, e.g. to be able to 
-> independently manage the size and lifecycle of a given file.
 
