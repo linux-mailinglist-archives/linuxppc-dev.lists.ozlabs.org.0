@@ -2,83 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66E977DBA6F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Oct 2023 14:17:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04DF27DBD88
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Oct 2023 17:11:43 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WeO0gDMg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=W32ZIfAp;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SJv2W2Cvzz3cRj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Oct 2023 00:17:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SJyvJ6Tg7z3cb6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Oct 2023 03:11:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WeO0gDMg;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=W32ZIfAp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3idu_zqykdgqugcpleiqqing.eqonkpwzrre-fgxnkuvu.qbncdu.qti@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SJv1d518Dz30hn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Oct 2023 00:16:53 +1100 (AEDT)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39UDB2hV020561
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Oct 2023 13:16:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=O6+pgK7/B0b7vXi0p2yuS8Ih92N+s0HlzSlyWgOf/mU=;
- b=WeO0gDMgtY78dgblm/k5bcXGgMnqB9qT0InQO9fd3gi2iDEg9xLOvF+Ht44avOXK3g/8
- NLnjPI+TPRhxqrscgxqaSD98RMGgC+jw/awVcbhzZjUhL4UWA4bhHMYpYAZboiTCMye7
- vqThFNM/9uGw7Av/aRgolobsflBzJ1ITNK0AGCjZPqBJnv1q9RzJgckjWn0SDMWRE0qg
- v5/EmdWQgQ1GpitTum+vpgNELVMzLWp0vj60YxxV7rGNStkjxmeMZOou36d3DfvPAv4Y
- Vdmmx64yhwlEZypH1NGPQ1J1pkB/p4hgbBxqdj5M4sXqMeLe3iy3jM3ghxy8tihHyfN7 7Q== 
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u2d5288u1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Oct 2023 13:16:49 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39UBQABL020321
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Oct 2023 13:16:48 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3u1d0y9dej-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Oct 2023 13:16:48 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39UDGk8B26477126
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 30 Oct 2023 13:16:47 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D1A7B5804B;
-	Mon, 30 Oct 2023 13:16:46 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8174B58063;
-	Mon, 30 Oct 2023 13:16:45 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.43.51.133])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 30 Oct 2023 13:16:45 +0000 (GMT)
-X-Mailer: emacs 29.1 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Benjamin Gray <bgray@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 02/12] powerpc/pseries: Restructure hvc_get_chars()
- endianness
-In-Reply-To: <20231011053711.93427-3-bgray@linux.ibm.com>
-References: <20231011053711.93427-1-bgray@linux.ibm.com>
- <20231011053711.93427-3-bgray@linux.ibm.com>
-Date: Mon, 30 Oct 2023 18:46:43 +0530
-Message-ID: <87bkcg9rno.fsf@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: S-9Fw9KZLmVQBkghmVLpvf_uOeyjg1Oj
-X-Proofpoint-ORIG-GUID: S-9Fw9KZLmVQBkghmVLpvf_uOeyjg1Oj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-30_10,2023-10-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- impostorscore=0 mlxlogscore=999 adultscore=0 clxscore=1015 spamscore=0
- mlxscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0
- priorityscore=1501 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2310240000 definitions=main-2310300101
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SJytR34b7z2xqp
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Oct 2023 03:10:53 +1100 (AEDT)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-da033914f7cso3990933276.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Oct 2023 09:10:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1698682249; x=1699287049; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3/eJ4eIlm/QBKFGigGc88HjjNKR0Bxic1+CMFaJ9ygg=;
+        b=W32ZIfApkxl6emJTjs+meBoDMF/VTfA9jKsoJCqXzzDBBdK6g/u8axvtfC14izkwXp
+         ISXNrUv/Jz2qrMquD7uqcieMAP2Se0PyPXI+VyJZCb0uCFLolVfJa/W8U8YeAJEYIzfX
+         PpkZszS/7lVjsYaNTU4vqnty4Q6yAx5s83I3yZnav2GH18e9g72+tqERcY+so1vDHiqr
+         FdZSVTWywPczyPc4eUb3si9x+p1CV+KMJwqVrHorsE3ZJM8P5qMKKEl3ykIaQPL0Gi5t
+         xaXyf/6yIzSisB6b6FMPyMxF4pfYlkqdTGOSCNSfshP7IauZeUQlEh1IH+O6iEp7vGM4
+         YDSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698682249; x=1699287049;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3/eJ4eIlm/QBKFGigGc88HjjNKR0Bxic1+CMFaJ9ygg=;
+        b=GD68pblgtvNAOjbEwEsKd4fSuAXWF+6n2jBcCuoR4V/4QMqiu71CCjNXKmpyuErstj
+         JJaEMpBIF2sxv4wAKYERs+WvArONit2hJp9w9IXlnvk4XOg1PwOnJJg3sReUSbumz0a4
+         2e9w7YBr6VNLcQeNTAm8jtxsUcRu+8qPd0mSJ/gkB69CytR8Vn0fRJS4TdtLP7NrUvA1
+         7cSreyR5cXkjTYZ+nNBYg+0fCmjBFIdMTaw6SazeKD8+HZ8SPPkArIIJ35den+RfKH6Q
+         cOcMc4Zzj4SAkBww203p1dmtySF1eyP6sV9k+5PYWUWCKuirtm573YgcH8ZZqYXYZyz/
+         Vc+w==
+X-Gm-Message-State: AOJu0Yyl7a6yXZ+06JkCxJeICMyqEONh6Q3moHcdMeLe9zpK/x+egl0C
+	vestiDO4CE3K8rDABUUsvM5JUky5KhY=
+X-Google-Smtp-Source: AGHT+IG/nj4LaX3JPzHZqsehR5FWhArOOi7E0ApKeqEkunCLK98IonUlxUU55c5VBDsNlZFSGb1icvfnahw=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a05:6902:1083:b0:d9a:c3b8:4274 with SMTP id
+ v3-20020a056902108300b00d9ac3b84274mr243782ybu.7.1698682249642; Mon, 30 Oct
+ 2023 09:10:49 -0700 (PDT)
+Date: Mon, 30 Oct 2023 16:10:48 +0000
+In-Reply-To: <ZT9lQ9c7Bik6FIpw@chao-email>
+Mime-Version: 1.0
+References: <20231027182217.3615211-1-seanjc@google.com> <20231027182217.3615211-14-seanjc@google.com>
+ <ZT9lQ9c7Bik6FIpw@chao-email>
+Message-ID: <ZT_ViJOW1p4TN_fI@google.com>
+Subject: Re: [PATCH v13 13/35] KVM: Introduce per-page memory attributes
+From: Sean Christopherson <seanjc@google.com>
+To: Chao Gao <chao.gao@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,67 +74,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Benjamin Gray <bgray@linux.ibm.com>
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Vlastimil Babka <vbabka@suse.cz>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, Isaku Yamahata <isaku.yamahata@intel.com>, Christian Brauner <brauner@kernel.org>, Quentin Perret <qperret@google.com>, L
+ iam Merwick <liam.merwick@oracle.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, David Matlack <dmatlack@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Xu Yilun <yilun.xu@intel.com>, Anish Moorthy <amoorthy@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Benjamin Gray <bgray@linux.ibm.com> writes:
+On Mon, Oct 30, 2023, Chao Gao wrote:
+> On Fri, Oct 27, 2023 at 11:21:55AM -0700, Sean Christopherson wrote:
+> >From: Chao Peng <chao.p.peng@linux.intel.com>
+> >
+> >In confidential computing usages, whether a page is private or shared is
+> >necessary information for KVM to perform operations like page fault
+> >handling, page zapping etc. There are other potential use cases for
+> >per-page memory attributes, e.g. to make memory read-only (or no-exec,
+> >or exec-only, etc.) without having to modify memslots.
+> >
+> >Introduce two ioctls (advertised by KVM_CAP_MEMORY_ATTRIBUTES) to allow
+> >userspace to operate on the per-page memory attributes.
+> >  - KVM_SET_MEMORY_ATTRIBUTES to set the per-page memory attributes to
+> >    a guest memory range.
+> 
+> >  - KVM_GET_SUPPORTED_MEMORY_ATTRIBUTES to return the KVM supported
+> >    memory attributes.
+> 
+> This ioctl() is already removed. So, the changelog is out-of-date and needs
+> an update.
 
-> Sparse reports an endian mismatch in hvc_get_chars().
->
-> At first it seemed like the retbuf should be __be64[], but actually
-> retbuf holds serialized registers returned by the hypervisor call, so
-> it's correctly CPU endian typed.
->
-> Instead, it is the be64_to_cpu() that's misleading. The intent is to do
-> a byte swap on a little endian CPU. The swap is required because we
-> wanted to store the register values to memory without 'swapping' bytes,
-> so that the high order byte of the first register is the first byte
-> in the result buffer.
->
-> In diagram form, on a LE CPU with the letters representing the return
-> string bytes:
->
->     (register bytes) A B C D E F G H   I J K L M N O P
->   (retbuf mem bytes) H G F E D C B A   P O N M L K J I
-> (buf/lbuf mem bytes) A B C D E F G H   I J K L M N O P
->
-> So retbuf stores the registers in CPU endian, and buf always stores in
-> big endian.
->
-> So replace the byte swap function with cpu_to_be64() and cast lbuf as an
-> array of __be64 to match the semantics closer.
->
-> Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
-> ---
->  arch/powerpc/platforms/pseries/hvconsole.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/powerpc/platforms/pseries/hvconsole.c b/arch/powerpc/platforms/pseries/hvconsole.c
-> index 1ac52963e08b..647718a15e78 100644
-> --- a/arch/powerpc/platforms/pseries/hvconsole.c
-> +++ b/arch/powerpc/platforms/pseries/hvconsole.c
-> @@ -29,11 +29,11 @@ int hvc_get_chars(uint32_t vtermno, char *buf, int count)
->  {
->  	long ret;
->  	unsigned long retbuf[PLPAR_HCALL_BUFSIZE];
-> -	unsigned long *lbuf = (unsigned long *)buf;
-> +	__be64 *lbuf = (__be64 __force *)buf;
->  
->  	ret = plpar_hcall(H_GET_TERM_CHAR, retbuf, vtermno);
-> -	lbuf[0] = be64_to_cpu(retbuf[1]);
-> -	lbuf[1] = be64_to_cpu(retbuf[2]);
-> +	lbuf[0] = cpu_to_be64(retbuf[1]);
-> +	lbuf[1] = cpu_to_be64(retbuf[2]);
->  
->  	if (ret == H_SUCCESS)
->  		return retbuf[0];
->
+Doh, I lost track of this and the fixup for KVM_CAP_MEMORY_ATTRIBUTES below.
 
-There is no functionality change in this patch. It is clarifying the
-details that it expect the buf to have the big-endian format and retbuf
-contains native endian format.
+> >+:Capability: KVM_CAP_MEMORY_ATTRIBUTES
+> >+:Architectures: x86
+> >+:Type: vm ioctl
+> >+:Parameters: struct kvm_memory_attributes(in)
+> 
+> 					   ^ add one space here?
 
-Not sure why this was not picked.
+Ah, yeah, that does appear to be the standard.
+> 
+> 
+> >+static bool kvm_pre_set_memory_attributes(struct kvm *kvm,
+> >+					  struct kvm_gfn_range *range)
+> >+{
+> >+	/*
+> >+	 * Unconditionally add the range to the invalidation set, regardless of
+> >+	 * whether or not the arch callback actually needs to zap SPTEs.  E.g.
+> >+	 * if KVM supports RWX attributes in the future and the attributes are
+> >+	 * going from R=>RW, zapping isn't strictly necessary.  Unconditionally
+> >+	 * adding the range allows KVM to require that MMU invalidations add at
+> >+	 * least one range between begin() and end(), e.g. allows KVM to detect
+> >+	 * bugs where the add() is missed.  Rexlaing the rule *might* be safe,
+> 
+> 					    ^^^^^^^^ Relaxing
+> 
+> >@@ -4640,6 +4850,17 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
+> > 	case KVM_CAP_BINARY_STATS_FD:
+> > 	case KVM_CAP_SYSTEM_EVENT_DATA:
+> > 		return 1;
+> >+#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+> >+	case KVM_CAP_MEMORY_ATTRIBUTES:
+> >+		u64 attrs = kvm_supported_mem_attributes(kvm);
+> >+
+> >+		r = -EFAULT;
+> >+		if (copy_to_user(argp, &attrs, sizeof(attrs)))
+> >+			goto out;
+> >+		r = 0;
+> >+		break;
+> 
+> This cannot work, e.g., no @argp in this function and is fixed by a later commit:
+> 
+> 	fcbef1e5e5d2 ("KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memory")
 
-Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+I'll post a fixup patch for all of these, thanks much!
