@@ -1,63 +1,139 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DEF77DBDCF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Oct 2023 17:27:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 831FC7DBDD3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Oct 2023 17:28:49 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Rxq0OUiV;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PzDdow5/;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PzDdow5/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SJzFz2ZxBz3cW7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Oct 2023 03:27:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SJzH3328Kz3cQj
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Oct 2023 03:28:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Rxq0OUiV;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PzDdow5/;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PzDdow5/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SJzF539c9z2yN8
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Oct 2023 03:27:05 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id BAB1160B33
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Oct 2023 16:27:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C969C433CC
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Oct 2023 16:27:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1698683222;
-	bh=EhkKNngUQNbFcyqQ0JE73xgCCt67m/WrBqvUp8zSB8M=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Rxq0OUiVhGvEvUTP4+DZhVXhhfKxvQf0ybhfzd7+/5OBmskwzS9z5gKqRX5XzYLS6
-	 k62r71Uvvyg3kGGCCTO4sLhe07ix4CSL4nGtA15i4lO0zMmb+aUxXfieL/mW6cx3uz
-	 vzf/7uifEwRi4DPneEOMvdDsEFR6QkZBhE8Q5R+sn2MFxBHJvBdKTV1wDM5x7tguwl
-	 TdOPnekBAGtpV6lq0LdVJriCKuJLFWjho9aAZpLd5NPh2cIJdYVdURGNuzgLTnOBz+
-	 ZCd1fIRSgqiLu9H1FhsfPiMO6cjqsw2hqDz3KnmqYO7c+/MYZ5wYnMnVwrzNfFgoJU
-	 2dBbZA3IVxRMA==
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-507a62d4788so7111185e87.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Oct 2023 09:27:02 -0700 (PDT)
-X-Gm-Message-State: AOJu0YxaeIcWBr0RaQHFRjrN2mPkTGBHfzqDYZoXb+pAlMb+WAN4bjaH
-	htPHoqy3F2fLNndpF3G8uT9tPC8gW7pyfgJ0TQ==
-X-Google-Smtp-Source: AGHT+IF5zHYs7vQJ85FKme3sDrgJWcT2F+8Etvi0m8ptOud26W/x21H+QA1KvtesBLW1W68PJ2Kt8twUnRJf3ZS29as=
-X-Received: by 2002:ac2:521b:0:b0:507:f0f2:57bd with SMTP id
- a27-20020ac2521b000000b00507f0f257bdmr6882239lfl.66.1698683220637; Mon, 30
- Oct 2023 09:27:00 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SJzG94mTMz3c2G
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Oct 2023 03:28:01 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1698683277;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=QJRzUGi0crPAdF+PsGr4fd82XBsUf26/RqsTLoK6Cc8=;
+	b=PzDdow5/Wb2YXgvu5Iime0LPp5xVYoWEfI6LnNKBDrY+fgcjqDnTNtER1Q/TyOIzW17SX3
+	Yav9ta0/6t1/oXJAQge7v3G2ijuel5JQUxYw7eI0+amUFBm1xBuQwrlMh5bz2aY0AVsbs4
+	MgBsNJZedzOvLJQo+UJjGD6yqyCJ4sk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1698683277;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=QJRzUGi0crPAdF+PsGr4fd82XBsUf26/RqsTLoK6Cc8=;
+	b=PzDdow5/Wb2YXgvu5Iime0LPp5xVYoWEfI6LnNKBDrY+fgcjqDnTNtER1Q/TyOIzW17SX3
+	Yav9ta0/6t1/oXJAQge7v3G2ijuel5JQUxYw7eI0+amUFBm1xBuQwrlMh5bz2aY0AVsbs4
+	MgBsNJZedzOvLJQo+UJjGD6yqyCJ4sk=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-380-1f3cIob7NZG8iz9Gz3Z3XQ-1; Mon, 30 Oct 2023 12:27:56 -0400
+X-MC-Unique: 1f3cIob7NZG8iz9Gz3Z3XQ-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-408374a3d6bso32602045e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Oct 2023 09:27:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698683275; x=1699288075;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QJRzUGi0crPAdF+PsGr4fd82XBsUf26/RqsTLoK6Cc8=;
+        b=ZEmBJQBwG8MmHVouYwKWrMQMw7EXVHH/F8iz+PE1QKZODd/jkhwWGsAuruJvaBs9ua
+         FYAxzXYlq8Y3dWm3zkbUf6Qr5CaWw9ktnw0VDLStrdgDdN882NXqk4Gvw8hdZsoGnwGA
+         L7btQC3W72WYIDJKM8JGPoIwN8mOG3/nx59Jcgejt8CDa/kH14SFaP8cjwq3vPgNOe03
+         ukZQBvY0BMFfvoQNzV1zxuq99yodFi5zgb3zfgCit0QYOi6+Q229Ze0/xg6HngnUzGIV
+         wXo/zTBvoo41H5A6LP56QR8J2OvQ5i0tM1+7QDdsBHuJtKiJv0S+RIal7db4YSjTSqN/
+         Dmzg==
+X-Gm-Message-State: AOJu0Yy+Xy8bf+NrcI6/OAnftaRpIWKLqZWf8J0qAHAn6AjEa23bzmTj
+	8+bIuIOeFBofFUIFo13jm9wVifZgebp9vnXYV0i7dA4ObuLuHORC6hG73qO36Lwn1s+RCgr65mh
+	pm3Cu+2fdBLFmPJUcQEJayFtvaw==
+X-Received: by 2002:a05:600c:5204:b0:408:3f61:cb4f with SMTP id fb4-20020a05600c520400b004083f61cb4fmr7847787wmb.23.1698683274959;
+        Mon, 30 Oct 2023 09:27:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHfa0KyfT9rBRGOGCePk10CmFCQx85iYerXM1uRezmX93sdvp3R2tcV7yoRdLLu5R9pLdpikw==
+X-Received: by 2002:a05:600c:5204:b0:408:3f61:cb4f with SMTP id fb4-20020a05600c520400b004083f61cb4fmr7847757wmb.23.1698683274613;
+        Mon, 30 Oct 2023 09:27:54 -0700 (PDT)
+Received: from [192.168.1.174] ([151.81.68.207])
+        by smtp.googlemail.com with ESMTPSA id u18-20020a05600c19d200b00401b242e2e6sm13160177wmq.47.2023.10.30.09.27.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 30 Oct 2023 09:27:53 -0700 (PDT)
+Message-ID: <ac502d11-1fe8-45ec-bb91-02c94dbcd16d@redhat.com>
+Date: Mon, 30 Oct 2023 17:27:47 +0100
 MIME-Version: 1.0
-References: <20231018233815.34a0417f@yea>
-In-Reply-To: <20231018233815.34a0417f@yea>
-From: Rob Herring <robh@kernel.org>
-Date: Mon, 30 Oct 2023 11:26:48 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+qcc7ERmGAywp=7oGT=XGoBsMO839_jtzxeNcCN-dS_A@mail.gmail.com>
-Message-ID: <CAL_Jsq+qcc7ERmGAywp=7oGT=XGoBsMO839_jtzxeNcCN-dS_A@mail.gmail.com>
-Subject: Re: Several kmemleak reports + "refcount_t: underflow;
- use-after-free" at boot when OF_UNITTEST + OF_OVERLAY is set (Kernel
- v6.6-rc6, PowerMac G5 11,2)
-To: Erhard Furtner <erhard_f@mailbox.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 02/35] KVM: Assert that mmu_invalidate_in_progress
+ *never* goes negative
+To: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
+ Oliver Upton <oliver.upton@linux.dev>, Huacai Chen <chenhuacai@kernel.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Anup Patel <anup@brainfault.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <20231027182217.3615211-1-seanjc@google.com>
+ <20231027182217.3615211-3-seanjc@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <20231027182217.3615211-3-seanjc@google.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,43 +145,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Xiaoyao Li <xiaoyao.li@intel.com>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, linux-arm-kernel@lists.infradead.org, Maciej Szmigiero <mail@maciej.szmigiero.name>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, David Matlack <dmatlack@google.com>, Vlastimil Babka <vbabka@suse.cz>, =?UTF-8?B?TWlja2HDq2wgU2FsYcO8?= =?UTF-8?Q?n?= <mic@digikod.net>, Isaku Yamahata <isaku.yamahata@intel.com>, Quentin Perret <qperret@google.com>, kvmarm@lists.linux.dev, linux-mips@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>, Yu Zhang <yu.c.zhang@linux.intel.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, linux-fsdevel@vger.kernel.org, Liam Merwick <liam.merwick@oracle.com>, Vishal A
+ nnapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Xu Yilun <yilun.xu@intel.com>, Anish Moorthy <amoorthy@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 18, 2023 at 4:38=E2=80=AFPM Erhard Furtner <erhard_f@mailbox.or=
-g> wrote:
->
-> Greetings!
->
-> Getting this at every boot on my G5 with kernel v6.6-rc6 with OF_UNITTEST=
- and OF_OVERLAY selected:
->
-> [...]
-> ### dt-test ### EXPECT \ : OF: ERROR: of_node_release() detected bad
-> of_node_put() on /testcase-data/refcount-node ### dt-test ### pass
-> of_unittest_lifecycle():3189 OF: ERROR: of_node_release() detected bad
-> of_node_put() on /testcase-data/refcount-node ### dt-test ### EXPECT / : =
-OF:
-> ERROR: of_node_release() detected bad of_node_put() on
-> /testcase-data/refcount-node ### dt-test ### EXPECT \ : ------------[ cut=
- here
-> ]------------ ### dt-test ### EXPECT \ : WARNING: <<all>> ### dt-test ###
-> EXPECT \ : refcount_t: underflow; use-after-free. ### dt-test ### EXPECT =
-\ :
+On 10/27/23 20:21, Sean Christopherson wrote:
+> Move the assertion on the in-progress invalidation count from the primary
+> MMU's notifier path to KVM's common notification path, i.e. assert that
+> the count doesn't go negative even when the invalidation is coming from
+> KVM itself.
+> 
+> Opportunistically convert the assertion to a KVM_BUG_ON(), i.e. kill only
+> the affected VM, not the entire kernel.  A corrupted count is fatal to the
+> VM, e.g. the non-zero (negative) count will cause mmu_invalidate_retry()
+> to block any and all attempts to install new mappings.  But it's far from
+> guaranteed that an end() without a start() is fatal or even problematic to
+> anything other than the target VM, e.g. the underlying bug could simply be
+> a duplicate call to end().  And it's much more likely that a missed
+> invalidation, i.e. a potential use-after-free, would manifest as no
+> notification whatsoever, not an end() without a start().
 
-The test tells you to expect a use-after-free...
+Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
 
-> ---[ end trace <<int>> ]--- ### dt-test ### pass of_unittest_lifecycle():=
-3209
-> ------------[ cut here ]------------
-> refcount_t: underflow; use-after-free.
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>   virt/kvm/kvm_main.c | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 0524933856d4..5a97e6c7d9c2 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -833,6 +833,7 @@ void kvm_mmu_invalidate_end(struct kvm *kvm, unsigned long start,
+>   	 * in conjunction with the smp_rmb in mmu_invalidate_retry().
+>   	 */
+>   	kvm->mmu_invalidate_in_progress--;
+> +	KVM_BUG_ON(kvm->mmu_invalidate_in_progress < 0, kvm);
+>   }
+>   
+>   static void kvm_mmu_notifier_invalidate_range_end(struct mmu_notifier *mn,
+> @@ -863,8 +864,6 @@ static void kvm_mmu_notifier_invalidate_range_end(struct mmu_notifier *mn,
+>   	 */
+>   	if (wake)
+>   		rcuwait_wake_up(&kvm->mn_memslots_update_rcuwait);
+> -
+> -	BUG_ON(kvm->mmu_invalidate_in_progress < 0);
+>   }
+>   
+>   static int kvm_mmu_notifier_clear_flush_young(struct mmu_notifier *mn,
 
-Then you get a use-after-free. Looks like it is working as designed.
-
-I believe it's the same with kmemleak.
-
-Note that running DT unittests also taints the kernel. That's because
-they are not meant to be run on a production system.
-
-Rob
