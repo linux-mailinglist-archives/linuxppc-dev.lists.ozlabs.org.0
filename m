@@ -1,85 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65F1A7DBEB2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Oct 2023 18:20:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD827DBEBB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Oct 2023 18:22:39 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TKYOW1SI;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TKYOW1SI;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WxgMtpz0;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WxgMtpz0;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SK0R32VXJz3cWF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Oct 2023 04:20:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SK0T93nX9z3cTZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Oct 2023 04:22:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TKYOW1SI;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TKYOW1SI;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WxgMtpz0;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WxgMtpz0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SK0Q55nBTz3cBH
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Oct 2023 04:19:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SK0SK1vh9z2xYY
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Oct 2023 04:21:53 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1698686384;
+	s=mimecast20190719; t=1698686510;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Rk1z/nbke87TeFl+NzbMTW3BKeJ5hl7Q8glGeyBEAiE=;
-	b=TKYOW1SIOwbhI+IDe9SIcZ3ob6hfhrhuZmjBR/tD3Dupm4pQfyCxdQoU4ZiQHQ6gmkLfm5
-	8PfIrTLqX13BRiSGvztun2HhZi3eslwNo5dl5x1BdX2ZoOtjrdSO0vmZDaKu2rfgvCscCW
-	WE5XifoT7Kbk4OkOAkwQ3teQ3+wSd+o=
+	bh=boXyb+7L5Zlgo2abx5zbreDpGqLqBIK3j4ToQmqyh+g=;
+	b=WxgMtpz00VdTloW+G9HI3Fz0QNXY5J2RsW82aH5r2OkEVddgEO7HlqfsLNs9kMmtpc7A//
+	k20ZgtlOkOtyJqaLxU13+RstBDGeYAlbdZOyAW0Xl3ElCzvVfb6ov/GpKYR5ZzeSZjrXpJ
+	uCbq7fl8OyZsTTZAWdibB8NhiJGWLQw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1698686384;
+	s=mimecast20190719; t=1698686510;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Rk1z/nbke87TeFl+NzbMTW3BKeJ5hl7Q8glGeyBEAiE=;
-	b=TKYOW1SIOwbhI+IDe9SIcZ3ob6hfhrhuZmjBR/tD3Dupm4pQfyCxdQoU4ZiQHQ6gmkLfm5
-	8PfIrTLqX13BRiSGvztun2HhZi3eslwNo5dl5x1BdX2ZoOtjrdSO0vmZDaKu2rfgvCscCW
-	WE5XifoT7Kbk4OkOAkwQ3teQ3+wSd+o=
+	bh=boXyb+7L5Zlgo2abx5zbreDpGqLqBIK3j4ToQmqyh+g=;
+	b=WxgMtpz00VdTloW+G9HI3Fz0QNXY5J2RsW82aH5r2OkEVddgEO7HlqfsLNs9kMmtpc7A//
+	k20ZgtlOkOtyJqaLxU13+RstBDGeYAlbdZOyAW0Xl3ElCzvVfb6ov/GpKYR5ZzeSZjrXpJ
+	uCbq7fl8OyZsTTZAWdibB8NhiJGWLQw=
 Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
  [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-586-W3ziMzMoPeucYKqe-H_mig-1; Mon, 30 Oct 2023 13:18:49 -0400
-X-MC-Unique: W3ziMzMoPeucYKqe-H_mig-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4094d1e52daso1487115e9.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Oct 2023 10:18:37 -0700 (PDT)
+ us-mta-515-c-9sSJ8BOTigvSqZBpFD3w-1; Mon, 30 Oct 2023 13:21:48 -0400
+X-MC-Unique: c-9sSJ8BOTigvSqZBpFD3w-1
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4084d08235fso36112595e9.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Oct 2023 10:21:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698686315; x=1699291115;
+        d=1e100.net; s=20230601; t=1698686507; x=1699291307;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Rk1z/nbke87TeFl+NzbMTW3BKeJ5hl7Q8glGeyBEAiE=;
-        b=LGMzugsiVTfW7Vr9NTd5Ph+/KwdfOpjJHEF3hBWZDkYoqHYS3Gj+Ov0xD5AK9qae1N
-         J3rnvjobY4GitCQFip1SSDVB+FvgEbBCQieGI2yYGDtBgG1TOT/ubZ4Z1IxCiDqWYI+h
-         2YCFwAW8cjg+NkhxdrzHZtpvyzqWyjqlc4SNuGCoE76aXzesvRAuAEJWs8VOvUbKua9Z
-         NXx2cMGqdi9IANThxQ4Vc1+CAmvl+TUTxV0qv6x3EdYs1w3QVFVioQzhObRrwd/kWcRy
-         FjeWznT7URe1PS9nBk93tZ7skvpZPkHBggP914ZerdW1qdbO7OXi7N/w2L/5H0fT2E5l
-         pSjw==
-X-Gm-Message-State: AOJu0Yy0Akg82h5TprTmfGTX06IAyD8Vmf3W/1W37Z4QfuP1/Ls3cApr
-	kHufqRzjM67wmkQBby3wdMeM1v+L8SP27Zw/4YTpjnSw2RbLZPyyd6R9bUP/Pv6WD14zffIYDLQ
-	8maCwe5Hz01u27O2DavQOTX05gg==
-X-Received: by 2002:a05:600c:3512:b0:408:3e7a:82ea with SMTP id h18-20020a05600c351200b004083e7a82eamr9347587wmq.1.1698686315467;
-        Mon, 30 Oct 2023 10:18:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE2IYd31Kg1xsjAW7zrsQp03VV1LrLjkoWwzBfM1QTMJAHwovsXW/3FoijWAFrYv3Vz5FidRg==
-X-Received: by 2002:a05:600c:3512:b0:408:3e7a:82ea with SMTP id h18-20020a05600c351200b004083e7a82eamr9347545wmq.1.1698686315114;
-        Mon, 30 Oct 2023 10:18:35 -0700 (PDT)
+        bh=boXyb+7L5Zlgo2abx5zbreDpGqLqBIK3j4ToQmqyh+g=;
+        b=SYgp5CGixS8lThRbwqjlqqgzGnhqCrAeigCFGDEqtA/rHxqTKZsajQ/o8q5tMiLRuh
+         bpYnOLZ8CjdUtOWDsD4ULjj5DzyfGvaLzKdM/6h5t1s4aq8GcVme/N24gE9BHjmzAXB5
+         FGxvzvyU7MYFi/k5Op5LgzIRfY8miqwWfldw45lHxcl09M5fevJohdx3YCdzBnJzFwNN
+         it7tlTzkyGYiR+KyELuA52O4GVjrfa6AzrOd4ubQh3OvQFSSI1Y9/bgz+xoV2bIuh52G
+         T+oz1bmgENpwnHT7HHsm5d6nJFSH/Q0UvlvGt2ARDDQWsJZfL/CgWcDShkT+oA3j9cdM
+         v/sg==
+X-Gm-Message-State: AOJu0YyqgKuhMqqCDMbwUKqfE1ZsdpLG7tPV8Rg5PrPJk5jwLupGN3gR
+	XtQVDgR+0+LTiWA9S1tZKHTd8N3mWnWC2UA1uY4HCRYilHQDDxeX0TRpxjYCGEDzM7z/glDNoOw
+	BzEdKg3xsmX44tbfEtNTIVW9b6A==
+X-Received: by 2002:a05:600c:548c:b0:401:be70:53b6 with SMTP id iv12-20020a05600c548c00b00401be7053b6mr9028875wmb.15.1698686507261;
+        Mon, 30 Oct 2023 10:21:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE5I9OwLPDhwwdBq05u6PEcpXrmwFdGU+aFTRWkhJj3tDNeJuJ2HVg1bUTUoaNx9gtt3fCykA==
+X-Received: by 2002:a05:600c:548c:b0:401:be70:53b6 with SMTP id iv12-20020a05600c548c00b00401be7053b6mr9028817wmb.15.1698686506934;
+        Mon, 30 Oct 2023 10:21:46 -0700 (PDT)
 Received: from [192.168.1.174] ([151.81.68.207])
-        by smtp.googlemail.com with ESMTPSA id l16-20020adffe90000000b003198a9d758dsm4171497wrr.78.2023.10.30.10.18.29
+        by smtp.googlemail.com with ESMTPSA id c5-20020a05600c0a4500b004094d4292aesm430163wmq.18.2023.10.30.10.21.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Oct 2023 10:18:34 -0700 (PDT)
-Message-ID: <22789e20-1a4a-48af-99ad-3e88c18dd231@redhat.com>
-Date: Mon, 30 Oct 2023 18:18:26 +0100
+        Mon, 30 Oct 2023 10:21:46 -0700 (PDT)
+Message-ID: <077cec97-7920-4d20-8bd3-fe07ab8bcc29@redhat.com>
+Date: Mon, 30 Oct 2023 18:21:33 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 11/35] KVM: Drop .on_unlock() mmu_notifier hook
+Subject: Re: [PATCH v13 12/35] KVM: Prepare for handling only shared mappings
+ in mmu_notifier events
 To: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
  Oliver Upton <oliver.upton@linux.dev>, Huacai Chen <chenhuacai@kernel.org>,
  Michael Ellerman <mpe@ellerman.id.au>, Anup Patel <anup@brainfault.org>,
@@ -90,7 +91,7 @@ To: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Andrew Morton <akpm@linux-foundation.org>
 References: <20231027182217.3615211-1-seanjc@google.com>
- <20231027182217.3615211-12-seanjc@google.com>
+ <20231027182217.3615211-13-seanjc@google.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
 Autocrypt: addr=pbonzini@redhat.com; keydata=
  xsEhBFRCcBIBDqDGsz4K0zZun3jh+U6Z9wNGLKQ0kSFyjN38gMqU1SfP+TUNQepFHb/Gc0E2
@@ -127,7 +128,7 @@ Autocrypt: addr=pbonzini@redhat.com; keydata=
  JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
  dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
  b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <20231027182217.3615211-12-seanjc@google.com>
+In-Reply-To: <20231027182217.3615211-13-seanjc@google.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -150,26 +151,27 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 10/27/23 20:21, Sean Christopherson wrote:
-> Drop the .on_unlock() mmu_notifer hook now that it's no longer used for
-> notifying arch code that memory has been reclaimed.  Adding .on_unlock()
-> and invoking it *after* dropping mmu_lock was a terrible idea, as doing so
-> resulted in .on_lock() and .on_unlock() having divergent and asymmetric
-> behavior, and set future developers up for failure, i.e. all but asked for
-> bugs where KVM relied on using .on_unlock() to try to run a callback while
-> holding mmu_lock.
-> 
-> Opportunistically add a lockdep assertion in kvm_mmu_invalidate_end() to
-> guard against future bugs of this nature.
+> @@ -635,6 +635,13 @@ static __always_inline kvm_mn_ret_t __kvm_handle_hva_range(struct kvm *kvm,
+>  			 * the second or later invocation of the handler).
+>  			 */
+>  			gfn_range.arg = range->arg;
+> +
+> +			/*
+> +			 * HVA-based notifications aren't relevant to private
+> +			 * mappings as they don't have a userspace mapping.
 
-This is what David suggested to do in patch 3, FWIW.
+It's confusing who "they" is.  Maybe
 
-Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+	 * HVA-based notifications provide a userspace address,
+	 * and as such are only relevant for shared mappings.
 
 Paolo
 
-> Reported-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> Link: https://lore.kernel.org/all/20230802203119.GB2021422@ls.amr.corp.intel.com
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
+> +			 */
+> +			gfn_range.only_private = false;
+> +			gfn_range.only_shared = true;
+>  			gfn_range.may_block = range->may_block;
+>  
+>  			/*
 
 
