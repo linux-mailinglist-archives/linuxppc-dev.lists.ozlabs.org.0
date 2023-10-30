@@ -1,86 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F039C7DBF08
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Oct 2023 18:35:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 530057DBF1A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Oct 2023 18:37:07 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aX7D2XIn;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aX7D2XIn;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IcA+ZLnp;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=eeu/+agt;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SK0lb66w3z3cgQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Oct 2023 04:35:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SK0ns1Txcz3d9H
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Oct 2023 04:37:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aX7D2XIn;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aX7D2XIn;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IcA+ZLnp;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=eeu/+agt;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SK0kk11C1z3cCv
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Oct 2023 04:34:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SK0my3FZ2z3c82
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Oct 2023 04:36:17 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1698687259;
+	s=mimecast20190719; t=1698687374;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=5fMqrw+qFhssxj8qhYVvLd8lvq+1o5oZc/SrI7TORTQ=;
-	b=aX7D2XInE3im0lFLJxafHhkRtxARBOstcwsapG6x2d3JTjdZ3VqRgF0QpSfg56C02KacZm
-	pb94k/ApH88eR4CYWHB9oRFIR3J+MFC9TQn4exSyFBvSUT5ZHAh3WI0BQYEa+5TwsVLdAa
-	uL16pDRgM8OREsxchxcUaW0idqhlPcs=
+	bh=3jYLwfXXzRbH81zwo7MCV6nGPuDVHVRPsAgIWckITik=;
+	b=IcA+ZLnpKQJpkCRGDeb33JEkCn0qNxsf+T38lWM+J1FdtxfUv3d9OgweJu6+CVjKyNkrdb
+	xFUFoD42L/cV+VNMIP9EugPeJNCCu6ePeotPp/6SdlzGexxjJrJaQcjpo4kSnAW0weezRq
+	9i8t5ffjdsjeJr6mTv6hFVPs4mNBzpg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1698687259;
+	s=mimecast20190719; t=1698687375;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=5fMqrw+qFhssxj8qhYVvLd8lvq+1o5oZc/SrI7TORTQ=;
-	b=aX7D2XInE3im0lFLJxafHhkRtxARBOstcwsapG6x2d3JTjdZ3VqRgF0QpSfg56C02KacZm
-	pb94k/ApH88eR4CYWHB9oRFIR3J+MFC9TQn4exSyFBvSUT5ZHAh3WI0BQYEa+5TwsVLdAa
-	uL16pDRgM8OREsxchxcUaW0idqhlPcs=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=3jYLwfXXzRbH81zwo7MCV6nGPuDVHVRPsAgIWckITik=;
+	b=eeu/+agtVUsyRXLB+XbcjB6eA3j3tlsoM/IbuaFzBnEWfCjHpEbn1yC4jO7ggAfW5bveVN
+	nrnmBM4B3jyzuY74jSil/t2z3oEqfUzdPreqAvSVBa4m9smfsoeR0pM76DQHyRg2JCyDW0
+	VFIOkgu00H2azFqdCwV15Qv4biLT3qw=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-80-z6WIu68QMfeCPGpM2x9LRw-1; Mon, 30 Oct 2023 13:34:18 -0400
-X-MC-Unique: z6WIu68QMfeCPGpM2x9LRw-1
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-32de95ec119so2466410f8f.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Oct 2023 10:34:17 -0700 (PDT)
+ us-mta-161-vtsyHbCdOeKpbdcu3HylAA-1; Mon, 30 Oct 2023 13:36:13 -0400
+X-MC-Unique: vtsyHbCdOeKpbdcu3HylAA-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-32db43129c6so2646936f8f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Oct 2023 10:36:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698687256; x=1699292056;
+        d=1e100.net; s=20230601; t=1698687372; x=1699292172;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5fMqrw+qFhssxj8qhYVvLd8lvq+1o5oZc/SrI7TORTQ=;
-        b=NGmmF6dix/T22SzGzvVN63YjKe3MhZPhRFCyIxiBvxlLlMiQchYbxRBTm86cgKmL9W
-         RQviBflldmt+DqYrWFWmutKBL07KfQt/9wV88wRSwuT0vjex826izpe+Mj1m4li4sNiJ
-         4FM/6foDkeTOR/ve8x5Qfl9vfMxAatUexIR/J4IHaoI9OumoHjTXtE/EHMS5a4bnFAEF
-         FD079t/B9PYCejWzePbLnbN2b3UcfEqjwG1m/P8Dk7lJGHS9KPJhwlaq+dkn0KkjQ41W
-         PIrNOZZtbprS6Z2082FHb/9YGToI0Xknt3HXkAbg5tnbsaAqTZ4ohrOhz3+1THmHdKMS
-         tAHQ==
-X-Gm-Message-State: AOJu0YylsYD0TnuKlVUUhy9h5IVudwePkHY88F0KkGvRiamA4CkNT0cl
-	uNXSqVNbp3Tfmzt7oOAq64Y/0k4Ur8TrhpGe7wZuMrBrL4ZKk64GUdI5CyHBMecc/nVbnYzlyxw
-	Zv8NxuKROhlpWqlJKQ0YezKxkFQ==
-X-Received: by 2002:a5d:674c:0:b0:32d:bc7d:c431 with SMTP id l12-20020a5d674c000000b0032dbc7dc431mr8595498wrw.1.1698687256659;
-        Mon, 30 Oct 2023 10:34:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGoSwHjCgF60i9p5iHFG+4s/5oKx7xoJBSRpuzoczO/1s/n65Z43CGXqwQnwC+DGZUjQ2L04A==
-X-Received: by 2002:a5d:674c:0:b0:32d:bc7d:c431 with SMTP id l12-20020a5d674c000000b0032dbc7dc431mr8595455wrw.1.1698687256340;
-        Mon, 30 Oct 2023 10:34:16 -0700 (PDT)
+        bh=3jYLwfXXzRbH81zwo7MCV6nGPuDVHVRPsAgIWckITik=;
+        b=eLksEHw2vT5Epl4XHFCnbf8U3ISCWJ53KnrTD6mLUxr52UDpHWCwmpOzU5YiY6CqN0
+         x9fcMaIHapKzpTpqlh7XE3pJEGlzUEcu3+u9VaZ3JBaHBJ7gsJMWj1fcZHE8x1M/SDUf
+         7uFXH+9snaHAFQTvuIu5kaCBWfZRVacE68bIm/25huW5HrH6kK8H+y+SmHrFsyeOY64J
+         u2ZlTrmyiTj9v/gqpPkTLC6dzhgGPiG2dNMWTOhCFZ+eO0LYsjueGWJoWobwrG7EPFS6
+         dEYriQPOpjMN5VcvfaSvNH4KgaLu4dF7HpEGRJq9c9xtz+z3eLqD5n+0IWbDZkqOlZtf
+         ZCXw==
+X-Gm-Message-State: AOJu0YzwJvelbSmL+eApCqETMqDdiCh01rjzEO4SgOA6TXjV2o0u6XJN
+	XlMiK0CY3PCHIbki9NzgNqgekm/9e6y2Ify5q24f2dhqCMV4EuRJkYF3R7lUK+LPHc20J7hD9D4
+	LtFXBEKDYSr58IQQFpdqPyaDIrQ==
+X-Received: by 2002:adf:ec4f:0:b0:32d:8357:42dd with SMTP id w15-20020adfec4f000000b0032d835742ddmr6883247wrn.68.1698687371989;
+        Mon, 30 Oct 2023 10:36:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEboAELdFqaoOZREgnEhsC/lbRki6/0Jdh0l66f6RUru0wLk22AqSmUMVbSPZpU1ZFwEkh2hA==
+X-Received: by 2002:adf:ec4f:0:b0:32d:8357:42dd with SMTP id w15-20020adfec4f000000b0032d835742ddmr6883233wrn.68.1698687371568;
+        Mon, 30 Oct 2023 10:36:11 -0700 (PDT)
 Received: from [192.168.1.174] ([151.81.68.207])
-        by smtp.googlemail.com with ESMTPSA id o26-20020a5d58da000000b0032d2489a399sm8695806wrf.49.2023.10.30.10.34.13
+        by smtp.googlemail.com with ESMTPSA id p14-20020a5d68ce000000b003253523d767sm8703507wrw.109.2023.10.30.10.36.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Oct 2023 10:34:15 -0700 (PDT)
-Message-ID: <9bc69994-c98f-48e4-b956-08a8d98a6e6d@redhat.com>
-Date: Mon, 30 Oct 2023 18:34:12 +0100
+        Mon, 30 Oct 2023 10:36:10 -0700 (PDT)
+Message-ID: <a56e499f-c91c-45da-b404-444c22b2df24@redhat.com>
+Date: Mon, 30 Oct 2023 18:36:07 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 22/35] KVM: Allow arch code to track number of memslot
- address spaces per VM
+Subject: Re: [PATCH v13 23/35] KVM: x86: Add support for "protected VMs" that
+ can utilize private memory
 To: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
  Oliver Upton <oliver.upton@linux.dev>, Huacai Chen <chenhuacai@kernel.org>,
  Michael Ellerman <mpe@ellerman.id.au>, Anup Patel <anup@brainfault.org>,
@@ -91,7 +91,7 @@ To: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Andrew Morton <akpm@linux-foundation.org>
 References: <20231027182217.3615211-1-seanjc@google.com>
- <20231027182217.3615211-23-seanjc@google.com>
+ <20231027182217.3615211-24-seanjc@google.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
 Autocrypt: addr=pbonzini@redhat.com; keydata=
  xsEhBFRCcBIBDqDGsz4K0zZun3jh+U6Z9wNGLKQ0kSFyjN38gMqU1SfP+TUNQepFHb/Gc0E2
@@ -128,7 +128,7 @@ Autocrypt: addr=pbonzini@redhat.com; keydata=
  JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
  dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
  b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <20231027182217.3615211-23-seanjc@google.com>
+In-Reply-To: <20231027182217.3615211-24-seanjc@google.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -151,15 +151,35 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 10/27/23 20:22, Sean Christopherson wrote:
-> Let x86 track the number of address spaces on a per-VM basis so that KVM
-> can disallow SMM memslots for confidential VMs.  Confidentials VMs are
-> fundamentally incompatible with emulating SMM, which as the name suggests
-> requires being able to read and write guest memory and register state.
+> Add a new x86 VM type, KVM_X86_SW_PROTECTED_VM, to serve as a development
+> and testing vehicle for Confidential (CoCo) VMs, and potentially to even
+> become a "real" product in the distant future, e.g. a la pKVM.
 > 
-> Disallowing SMM will simplify support for guest private memory, as KVM
-> will not need to worry about tracking memory attributes for multiple
-> address spaces (SMM is the only "non-default" address space across all
-> architectures).
+> The private memory support in KVM x86 is aimed at AMD's SEV-SNP and
+> Intel's TDX, but those technologies are extremely complex (understatement),
+> difficult to debug, don't support running as nested guests, and require
+> hardware that's isn't universally accessible.  I.e. relying SEV-SNP or TDX
+> for maintaining guest private memory isn't a realistic option.
+> 
+> At the very least, KVM_X86_SW_PROTECTED_VM will enable a variety of
+> selftests for guest_memfd and private memory support without requiring
+> unique hardware.
+> 
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
 Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+
+with one nit:
+
+> +---------------------
+> +
+> +:Capability: KVM_CAP_MEMORY_ATTRIBUTES
+> +:Architectures: x86
+> +:Type: system ioctl
+> +
+> +This capability returns a bitmap of support VM types.  The 1-setting of bit @n
+
+s/support/supported/
+
+Paolo
 
