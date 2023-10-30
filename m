@@ -1,69 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 263767DB1E0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Oct 2023 02:57:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E59547DB3CC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Oct 2023 08:02:04 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=HM1YQFjc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fyer+0uy;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SJbxf6zgyz3cSd
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Oct 2023 12:57:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SJkj6516Bz3cP3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Oct 2023 18:02:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=HM1YQFjc;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fyer+0uy;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033; helo=mail-pj1-x1033.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SJbwm618kz2xpm
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Oct 2023 12:56:38 +1100 (AEDT)
-Received: by mail-pj1-x1033.google.com with SMTP id 98e67ed59e1d1-28010522882so1552320a91.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Oct 2023 18:56:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698630994; x=1699235794; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sXRLwnyvcfy6jE/MUWoW/Yby9B0gy2TfIvcPthNvb0k=;
-        b=HM1YQFjcRORI+OLJt1lAbZVALKyPiVTiy0ROwcRt1Wm6TguFtLe1VT0UNZNnLLIkkd
-         c4Pv75SvuglgAHvRVIc4Ib074RrYft+0JCLrGt0vAYn2MjWRK136rop2wTrc1SiHB4Yt
-         IJETA5vEtJBqi6LwftXDNOL93bVApxKo7b1P9XkXXXDIvAQP5ktUEgkUwP5fe4gz9yOh
-         iIAzIzvZ7dwcGUejfm7tM054Jba6EIHScF3DWOMZjG7ZxjQ2wwIAbnx5Xv0sIOjcXaRm
-         UxmaZjMThP52SLtwpzx15nz/Gd3m9oY2URDFADylLm8UvBcBm+3+Hhfqrb7QoepkLxyG
-         RtdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698630994; x=1699235794;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sXRLwnyvcfy6jE/MUWoW/Yby9B0gy2TfIvcPthNvb0k=;
-        b=Q0ji98LAp6Kjr1wJ2WJ0MTojpmdgaTP5CyPt84WKB0wToLBcRQt91Z48PXdcug77Nw
-         YTZ0D7B4M3sQR4iXkEw06v4g0vQWpYqFSFTKnUBmj/Z1zMTZ58/BFmMbUw8Lh0koAjKq
-         g7+LeeltHLc7wWv7qqXERhJaboHN3nAPYM4j7CrXiT8dGD57P+PN+zYDAKUHvQpmd6OL
-         z3PBxPvCgiR8LIqH6klZ7F2W7FG8KVBUwm+NjY/5uzzx1DwtjaD9c4PZIoMWxX/WDrhC
-         +xWHtzqDqAjof+VQP6nSyljeSMlc30+YkvRdychk2u5AjGzNLFkKGcYJal+i9qIm7Prf
-         8uYw==
-X-Gm-Message-State: AOJu0YyVJhhP2qE9hMoivjVLeFB/MarAJk2TMHzdPF8V6+kQ35DsBj0I
-	66iVdtIBDNmT1cWO3/zdhSGIWbWvLC1cLXJFcWM=
-X-Google-Smtp-Source: AGHT+IGAB1+4aLMMfdrAGAJeVPLx3vXyPUzK5aU43XjGbCGprf4okqXxvQKJ4QuTuO9/Vq869iPZgyjlym6LTFzzngQ=
-X-Received: by 2002:a17:90a:357:b0:27d:5964:4eec with SMTP id
- 23-20020a17090a035700b0027d59644eecmr5885791pjf.1.1698630993867; Sun, 29 Oct
- 2023 18:56:33 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SJkhH2xBlz307y
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Oct 2023 18:01:19 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id E4CE8CE12E4;
+	Mon, 30 Oct 2023 07:01:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B1CC433C7;
+	Mon, 30 Oct 2023 07:01:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1698649274;
+	bh=EmJn7V2xcCxlebppxaDAhU12OFutDZWRBy0vMaSrWuA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fyer+0uyv1jhu2jxdwK+n1O2/sIgGI7ezOwxQC871hHJ3Cd/JKl9lBlO3pXltUpO2
+	 tybWUbFkw8nG3yYnKj5NWsk/KsMeh5cYt2Zf06cFoE4cK0SwwSOQ0meQsCZJmwrLES
+	 ZjfIwnoeXu/25/54cCJrG0ThSOL/VsSYVOr1W/9QTaMgDvrgblTvcHPZrDSbxEy8fw
+	 AT95UrDI+b348FRlIe6JpCkizTZtGaE3kNe+nAOZWv5ZyGWJevSARlVxf0OsNjI/Uk
+	 BM7kNTKVl9T3dS3d/hE9ctd5XEbBUeRh4TuIA6DuyqF/4ni+SgBncpCAAQy/vXTAcB
+	 87xr+yc2RIXWg==
+Date: Mon, 30 Oct 2023 09:00:53 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v3 04/13] mm/execmem, arch: convert remaining overrides
+ of module_alloc to execmem
+Message-ID: <20231030070053.GL2824@kernel.org>
+References: <20230918072955.2507221-1-rppt@kernel.org>
+ <20230918072955.2507221-5-rppt@kernel.org>
+ <20231023171420.GA4041@willie-the-truck>
+ <20231026085800.GK2824@kernel.org>
+ <20231026102438.GA6924@willie-the-truck>
 MIME-Version: 1.0
-References: <1698402948-10618-1-git-send-email-shengjiu.wang@nxp.com> <c1cfa3e0-6e5d-4e1d-b6e0-4d1045196a11@xs4all.nl>
-In-Reply-To: <c1cfa3e0-6e5d-4e1d-b6e0-4d1045196a11@xs4all.nl>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Mon, 30 Oct 2023 09:56:22 +0800
-Message-ID: <CAA+D8AOCujL-eD2-chqHAW7UN7UmLrO6CWRd7d6wTCPP8=VyfA@mail.gmail.com>
-Subject: Re: [RFC PATCH v8 00/13] Add audio support in v4l2 framework
-To: Hans Verkuil <hverkuil@xs4all.nl>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231026102438.GA6924@willie-the-truck>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,167 +63,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, nicoleotsuka@gmail.com, linuxppc-dev@lists.ozlabs.org, broonie@kernel.org, sakari.ailus@iki.fi, perex@perex.cz, mchehab@kernel.org, festevam@gmail.com, m.szyprowski@samsung.com
+Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Song Liu <song@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Puranjay Mohan <puranjay12@gmail.com>, linux-mm@kvack.org, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, =?iso-8859-1?Q?Bj=F6rn_
+ T=F6pel?= <bjorn@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, linux-modules@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 27, 2023 at 7:18=E2=80=AFPM Hans Verkuil <hverkuil@xs4all.nl> w=
-rote:
->
-> Hi Shengjiu,
->
-> Is there a reason why this series is still marked RFC?
->
-> Just wondering about that.
+On Thu, Oct 26, 2023 at 11:24:39AM +0100, Will Deacon wrote:
+> On Thu, Oct 26, 2023 at 11:58:00AM +0300, Mike Rapoport wrote:
+> > On Mon, Oct 23, 2023 at 06:14:20PM +0100, Will Deacon wrote:
+> > > On Mon, Sep 18, 2023 at 10:29:46AM +0300, Mike Rapoport wrote:
+> > > > diff --git a/arch/arm64/kernel/module.c b/arch/arm64/kernel/module.c
+> > > > index dd851297596e..cd6320de1c54 100644
+> > > > --- a/arch/arm64/kernel/module.c
+> > > > +++ b/arch/arm64/kernel/module.c
 
-In the very beginning I started this series with RFC, So
-I still use RFC now...
+...
 
-Best regards
-Wang shengjiu
->
-> Regards,
->
->         Hans
->
-> On 27/10/2023 12:35, Shengjiu Wang wrote:
-> > Audio signal processing also has the requirement for memory to
-> > memory similar as Video.
-> >
-> > This asrc memory to memory (memory ->asrc->memory) case is a non
-> > real time use case.
-> >
-> > User fills the input buffer to the asrc module, after conversion, then =
-asrc
-> > sends back the output buffer to user. So it is not a traditional ALSA p=
-layback
-> > and capture case.
-> >
-> > It is a specific use case,  there is no reference in current kernel.
-> > v4l2 memory to memory is the closed implementation,  v4l2 current
-> > support video, image, radio, tuner, touch devices, so it is not
-> > complicated to add support for this specific audio case.
-> >
-> > Because we had implemented the "memory -> asrc ->i2s device-> codec"
-> > use case in ALSA.  Now the "memory->asrc->memory" needs
-> > to reuse the code in asrc driver, so the first 3 patches is for refinin=
-g
-> > the code to make it can be shared by the "memory->asrc->memory"
-> > driver.
-> >
-> > The main change is in the v4l2 side, A /dev/vl4-audioX will be created,
-> > user applications only use the ioctl of v4l2 framework.
-> >
-> > Other change is to add memory to memory support for two kinds of i.MX A=
-SRC
-> > module.
-> >
-> > changes in v8:
-> > - refine V4L2_CAP_AUDIO_M2M to be 0x00000008
-> > - update doc for FIXED_POINT
-> > - address comments for imx-asrc
-> >
-> > changes in v7:
-> > - add acked-by from Mark
-> > - separate commit for fixed point, m2m audio class, audio rate controls
-> > - use INTEGER_MENU for rate,  FIXED_POINT for rate offset
-> > - remove used fmts
-> > - address other comments for Hans
-> >
-> > changes in v6:
-> > - use m2m_prepare/m2m_unprepare/m2m_start/m2m_stop to replace
-> >   m2m_start_part_one/m2m_stop_part_one, m2m_start_part_two/m2m_stop_par=
-t_two.
-> > - change V4L2_CTRL_TYPE_ASRC_RATE to V4L2_CTRL_TYPE_FIXED_POINT
-> > - fix warning by kernel test rebot
-> > - remove some unused format V4L2_AUDIO_FMT_XX
-> > - Get SNDRV_PCM_FORMAT from V4L2_AUDIO_FMT in driver.
-> > - rename audm2m to viaudm2m.
-> >
-> > changes in v5:
-> > - remove V4L2_AUDIO_FMT_LPCM
-> > - define audio pixel format like V4L2_AUDIO_FMT_S8...
-> > - remove rate and format in struct v4l2_audio_format.
-> > - Add V4L2_CID_ASRC_SOURCE_RATE and V4L2_CID_ASRC_DEST_RATE controls
-> > - updata document accordingly.
-> >
-> > changes in v4:
-> > - update document style
-> > - separate V4L2_AUDIO_FMT_LPCM and V4L2_CAP_AUDIO_M2M in separate commi=
-t
-> >
-> > changes in v3:
-> > - Modify documents for adding audio m2m support
-> > - Add audio virtual m2m driver
-> > - Defined V4L2_AUDIO_FMT_LPCM format type for audio.
-> > - Defined V4L2_CAP_AUDIO_M2M capability type for audio m2m case.
-> > - with modification in v4l-utils, pass v4l2-compliance test.
-> >
-> > changes in v2:
-> > - decouple the implementation in v4l2 and ALSA
-> > - implement the memory to memory driver as a platfrom driver
-> >   and move it to driver/media
-> > - move fsl_asrc_common.h to include/sound folder
-> >
-> > Shengjiu Wang (13):
-> >   ASoC: fsl_asrc: define functions for memory to memory usage
-> >   ASoC: fsl_easrc: define functions for memory to memory usage
-> >   ASoC: fsl_asrc: move fsl_asrc_common.h to include/sound
-> >   ASoC: fsl_asrc: register m2m platform device
-> >   ASoC: fsl_easrc: register m2m platform device
-> >   media: uapi: Add V4L2_CAP_AUDIO_M2M capability flag
-> >   media: v4l2: Add audio capture and output support
-> >   media: uapi: Define audio sample format fourcc type
-> >   media: uapi: Add V4L2_CTRL_CLASS_M2M_AUDIO
-> >   media: uapi: Add V4L2_CTRL_TYPE_FIXED_POINT
-> >   media: uapi: Add audio rate controls support
-> >   media: imx-asrc: Add memory to memory driver
-> >   media: vim2m_audio: add virtual driver for audio memory to memory
-> >
-> >  .../userspace-api/media/v4l/buffer.rst        |    6 +
-> >  .../userspace-api/media/v4l/common.rst        |    1 +
-> >  .../media/v4l/dev-audio-mem2mem.rst           |   71 +
-> >  .../userspace-api/media/v4l/devices.rst       |    1 +
-> >  .../media/v4l/ext-ctrls-audio-m2m.rst         |   41 +
-> >  .../userspace-api/media/v4l/pixfmt-audio.rst  |   87 ++
-> >  .../userspace-api/media/v4l/pixfmt.rst        |    1 +
-> >  .../media/v4l/vidioc-enum-fmt.rst             |    2 +
-> >  .../media/v4l/vidioc-g-ext-ctrls.rst          |   17 +-
-> >  .../userspace-api/media/v4l/vidioc-g-fmt.rst  |    4 +
-> >  .../media/v4l/vidioc-querycap.rst             |    3 +
-> >  .../media/v4l/vidioc-queryctrl.rst            |    9 +-
-> >  .../media/videodev2.h.rst.exceptions          |    4 +
-> >  .../media/common/videobuf2/videobuf2-v4l2.c   |    4 +
-> >  drivers/media/platform/nxp/Kconfig            |   12 +
-> >  drivers/media/platform/nxp/Makefile           |    1 +
-> >  drivers/media/platform/nxp/imx-asrc.c         | 1186 +++++++++++++++++
-> >  drivers/media/test-drivers/Kconfig            |    9 +
-> >  drivers/media/test-drivers/Makefile           |    1 +
-> >  drivers/media/test-drivers/vim2m_audio.c      |  680 ++++++++++
-> >  drivers/media/v4l2-core/v4l2-ctrls-api.c      |    5 +-
-> >  drivers/media/v4l2-core/v4l2-ctrls-core.c     |    2 +
-> >  drivers/media/v4l2-core/v4l2-ctrls-defs.c     |   16 +
-> >  drivers/media/v4l2-core/v4l2-dev.c            |   17 +
-> >  drivers/media/v4l2-core/v4l2-ioctl.c          |   66 +
-> >  include/media/v4l2-dev.h                      |    2 +
-> >  include/media/v4l2-ioctl.h                    |   34 +
-> >  .../fsl =3D> include/sound}/fsl_asrc_common.h   |   60 +
-> >  include/uapi/linux/v4l2-controls.h            |    9 +
-> >  include/uapi/linux/videodev2.h                |   42 +
-> >  sound/soc/fsl/fsl_asrc.c                      |  144 ++
-> >  sound/soc/fsl/fsl_asrc.h                      |    4 +-
-> >  sound/soc/fsl/fsl_asrc_dma.c                  |    2 +-
-> >  sound/soc/fsl/fsl_easrc.c                     |  233 ++++
-> >  sound/soc/fsl/fsl_easrc.h                     |    6 +-
-> >  35 files changed, 2771 insertions(+), 11 deletions(-)
-> >  create mode 100644 Documentation/userspace-api/media/v4l/dev-audio-mem=
-2mem.rst
-> >  create mode 100644 Documentation/userspace-api/media/v4l/ext-ctrls-aud=
-io-m2m.rst
-> >  create mode 100644 Documentation/userspace-api/media/v4l/pixfmt-audio.=
-rst
-> >  create mode 100644 drivers/media/platform/nxp/imx-asrc.c
-> >  create mode 100644 drivers/media/test-drivers/vim2m_audio.c
-> >  rename {sound/soc/fsl =3D> include/sound}/fsl_asrc_common.h (60%)
-> >
->
+> > > > -	if (module_direct_base) {
+> > > > -		p = __vmalloc_node_range(size, MODULE_ALIGN,
+> > > > -					 module_direct_base,
+> > > > -					 module_direct_base + SZ_128M,
+> > > > -					 GFP_KERNEL | __GFP_NOWARN,
+> > > > -					 PAGE_KERNEL, 0, NUMA_NO_NODE,
+> > > > -					 __builtin_return_address(0));
+> > > > -	}
+> > > > +	module_init_limits();
+> > > 
+> > > Hmm, this used to be run from subsys_initcall(), but now you're running
+> > > it _really_ early, before random_init(), so randomization of the module
+> > > space is no longer going to be very random if we don't have early entropy
+> > > from the firmware or the CPU, which is likely to be the case on most SoCs.
+> > 
+> > Well, it will be as random as KASLR. Won't that be enough?
+> 
+> I don't think that's true -- we have the 'kaslr-seed' property for KASLR,
+> but I'm not seeing anything like that for the module randomisation and I
+> also don't see why we need to set these limits so early.
+
+x86 needs execmem initialized before ftrace_init() so I thought it would be
+best to setup execmem along with most of MM in mm_core_init().
+
+I'll move execmem initialization for !x86 to a later point, say
+core_initcall.
+ 
+> Will
+
+-- 
+Sincerely yours,
+Mike.
