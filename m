@@ -1,53 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 733EF7DC918
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Oct 2023 10:09:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E322D7DCA81
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Oct 2023 11:16:14 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VblEe006;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GSZjLDZg;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SKPT72s7Tz3cWD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Oct 2023 20:08:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SKQyh670Kz3cVF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Oct 2023 21:16:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VblEe006;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GSZjLDZg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=kvalo@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SKPSC0XsKz2yVN
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Oct 2023 20:08:10 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 229A860E09;
-	Tue, 31 Oct 2023 09:08:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84EEBC433C8;
-	Tue, 31 Oct 2023 09:08:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1698743286;
-	bh=feIBOznLOh65axwYyiiYpq9McN8nBddJCuTkou94EY8=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=VblEe006dkOhHKFV8lXYkjBoV+/BKggu8KsI5kMIAb2Q1426nw4dRAAVoYwb69UEw
-	 G4GLrarHQQVvZuXCYCZpQm3MzyKeWeBmJjvlgQ6PMCq7xr4I4hB0HHfGshV2oZUG15
-	 X6DMTAU3M/qqtSGFor+HnXWdZfMMByBst6bHmnUyfk/boW/rAygCoryItoD82ouGdQ
-	 F5rgczw5G1IKtPxgez4yKfn8OvhBZ5q4umOXcv+za1DnTK33HU98GoVwOWr045jrBq
-	 m/rH+Oca3fkh8qYaRN6iMziupF3suM3KgYmJZfX4wsLpF+TVmwMsBaFclHecefyoKM
-	 WMmuIxn5gT6Nw==
-From: Kalle Valo <kvalo@kernel.org>
-To: Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH 00/10] Remove obsolete and orphaned wifi drivers
-References: <20231023131953.2876682-1-arnd@kernel.org>
-Date: Tue, 31 Oct 2023 11:08:00 +0200
-In-Reply-To: <20231023131953.2876682-1-arnd@kernel.org> (Arnd Bergmann's
-	message of "Mon, 23 Oct 2023 15:19:42 +0200")
-Message-ID: <874ji7w45r.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SKQxq2F0sz2xTP
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Oct 2023 21:15:26 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39VAAu37002468;
+	Tue, 31 Oct 2023 10:15:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=OJUS+9KjTbdR5em9rRihDJVrcjq7setQKbZNTOU4ovA=;
+ b=GSZjLDZgf+JqpIo8P7Q3l59QzXHlc/Rf2tJ0fqIjixkZluDmN50X6uv+nG1KmS3+mF7m
+ Ck72vhiYAHjlksW4im0WwMZai5zXXdeQDbpJ3hy0rzIlZFDJp4tmrpRBNgei37OJmQ+x
+ is0yLUYvLS5K4NKZmowq4lHM3H6Zp9ASG05rRNC7CzkoynUJWtyeN/oIyzq1/ftKZBwK
+ V7gzQ1CrYERIGWjsvJNp1URzG1uniW1x5JlThyP3c3aMK/tsrwGrbmCe42IpveC6oavC
+ XnopMi5rHGjs0hJ4d4P2MQSTOQsIkMQenetb08RWuV6JUht3qJYnzGzaZ1YtITkGqikR /Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u2xtksqwt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 31 Oct 2023 10:15:17 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39VABtuj007412;
+	Tue, 31 Oct 2023 10:15:17 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u2xtksqw1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 31 Oct 2023 10:15:16 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39V8Ireu011544;
+	Tue, 31 Oct 2023 10:15:15 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3u1e4kqdve-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 31 Oct 2023 10:15:15 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39VAFEYw6554338
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 31 Oct 2023 10:15:14 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8D0C85805A;
+	Tue, 31 Oct 2023 10:15:14 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4F0345805C;
+	Tue, 31 Oct 2023 10:15:12 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.109.212.144])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 31 Oct 2023 10:15:11 +0000 (GMT)
+X-Mailer: emacs 29.1 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 29/37] powerpc/nohash: Replace pte_user() by pte_read()
+In-Reply-To: <72cbb5be595e9ef884140def73815ed0b0b37010.1695659959.git.christophe.leroy@csgroup.eu>
+References: <cover.1695659959.git.christophe.leroy@csgroup.eu>
+ <72cbb5be595e9ef884140def73815ed0b0b37010.1695659959.git.christophe.leroy@csgroup.eu>
+Date: Tue, 31 Oct 2023 15:45:10 +0530
+Message-ID: <877cn39jyp.fsf@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: JCYExBOwiSDD9TKMNTt1BCt2ouAey2KB
+X-Proofpoint-ORIG-GUID: ZcNCFHo4s6xeuPC-l20x3XEboXBzRwct
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-30_13,2023-10-31_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ impostorscore=0 priorityscore=1501 bulkscore=0 mlxscore=0
+ lowpriorityscore=0 adultscore=0 phishscore=0 clxscore=1011 suspectscore=0
+ spamscore=0 mlxlogscore=405 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2310240000 definitions=main-2310310080
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,72 +98,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stanislaw Gruszka <stf_xl@wp.pl>, Alexandre Belloni <alexandre.belloni@bootlin.com>, linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, Geoff Levand <geoff@infradead.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-wireless@vger.kernel.org, Claudiu Beznea <claudiu.beznea@tuxon.dev>, Nicolas Ferre <nicolas.ferre@microchip.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Pavel Machek <pavel@ucw.cz>, Gregory Greenman <gregory.greenman@intel.com>, Jakub Kicinski <kuba@kernel.org>, Johannes Berg <johannes@sipsolutions.net>, Jeff Johnson <quic_jjohnson@quicinc.com>, "David S . Miller" <davem@davemloft.net>, linux-arm-kernel@lists.infradead.org, Larry Finger <Larry.Finger@lwfinger.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Arnd Bergmann <arnd@kernel.org> writes:
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
 
-> From: Arnd Bergmann <arnd@arndb.de>
+> pte_user() is now only used in pte_access_permitted() to check
+> access on vmas. User flag is cleared to make a page unreadable.
 >
-> As discussed previously, a lot of the older wifi drivers are likely
-> entirely unused, Though we can't know for sure.
+> So rename it pte_read() and remove pte_user() which isn't used
+> anymore.
 >
-> As suggested by both Greg and Jakub, let's remove the ones that look
-> are most likely to have no users left and also get in the way of the
-> wext cleanup. If anyone is still using any of these, we can revert the
-> driver removal individually.
+> For the time being it checks _PAGE_USER but in the near futur
+> all plateforms will be converted to _PAGE_READ so lets support
+> both for now.
 >
-> I would suggest merging these for net-next after 6.7-rc1 is out, to give
-> them the maximum amount of time for users to speak up before a release
-> comes out.
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  arch/powerpc/include/asm/nohash/32/pte-8xx.h |  7 -------
+>  arch/powerpc/include/asm/nohash/pgtable.h    | 13 +++++++------
+>  arch/powerpc/mm/ioremap.c                    |  4 ----
+>  3 files changed, 7 insertions(+), 17 deletions(-)
 >
-> This kills off all pcmcia wifi drivers, and all wext users in
-> drivers/net/wireless, but not the ps3-gelic-wireless driver in
-> drivers/net/ethernet, or the staging drivers.
+> diff --git a/arch/powerpc/include/asm/nohash/32/pte-8xx.h b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+> index 62c965a4511a..1ee38befd29a 100644
+> --- a/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+> +++ b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+> @@ -112,13 +112,6 @@ static inline pte_t pte_mkwrite_novma(pte_t pte)
+>  
+>  #define pte_mkwrite_novma pte_mkwrite_novma
+>  
+> -static inline bool pte_user(pte_t pte)
+> -{
+> -	return !(pte_val(pte) & _PAGE_SH);
+> -}
+> -
+> -#define pte_user pte_user
+> -
+>  static inline pte_t pte_mkhuge(pte_t pte)
+>  {
+>  	return __pte(pte_val(pte) | _PAGE_SPS | _PAGE_HUGE);
+> diff --git a/arch/powerpc/include/asm/nohash/pgtable.h b/arch/powerpc/include/asm/nohash/pgtable.h
+> index ee677162f9e6..aba56fe3b1c6 100644
+> --- a/arch/powerpc/include/asm/nohash/pgtable.h
+> +++ b/arch/powerpc/include/asm/nohash/pgtable.h
+> @@ -160,9 +160,6 @@ static inline int pte_write(pte_t pte)
+>  	return pte_val(pte) & _PAGE_WRITE;
+>  }
+>  #endif
+> -#ifndef pte_read
+> -static inline int pte_read(pte_t pte)		{ return 1; }
+> -#endif
+>  static inline int pte_dirty(pte_t pte)		{ return pte_val(pte) & _PAGE_DIRTY; }
+>  static inline int pte_special(pte_t pte)	{ return pte_val(pte) & _PAGE_SPECIAL; }
+>  static inline int pte_none(pte_t pte)		{ return (pte_val(pte) & ~_PTE_NONE_MASK) == 0; }
+> @@ -190,10 +187,14 @@ static inline int pte_young(pte_t pte)
+>   * and PTE_64BIT, PAGE_KERNEL_X contains _PAGE_BAP_SR which is also in
+>   * _PAGE_USER.  Need to explicitly match _PAGE_BAP_UR bit in that case too.
+>   */
+> -#ifndef pte_user
+> -static inline bool pte_user(pte_t pte)
+> +#ifndef pte_read
+> +static inline bool pte_read(pte_t pte)
+>  {
+> +#ifdef _PAGE_READ
+> +	return (pte_val(pte) & _PAGE_READ) == _PAGE_READ;
+> +#else
+>  	return (pte_val(pte) & _PAGE_USER) == _PAGE_USER;
+> +#endif
+>  }
+>  #endif
+>  
+> @@ -208,7 +209,7 @@ static inline bool pte_access_permitted(pte_t pte, bool write)
+>  	 * A read-only access is controlled by _PAGE_USER bit.
+>  	 * We have _PAGE_READ set for WRITE and EXECUTE
+>  	 */
+> -	if (!pte_present(pte) || !pte_user(pte) || !pte_read(pte))
+> +	if (!pte_present(pte) || !pte_read(pte))
+>  		return false;
+>  
+>  	if (write && !pte_write(pte))
+> diff --git a/arch/powerpc/mm/ioremap.c b/arch/powerpc/mm/ioremap.c
+> index 7823c38f09de..7b0afcabd89f 100644
+> --- a/arch/powerpc/mm/ioremap.c
+> +++ b/arch/powerpc/mm/ioremap.c
+> @@ -50,10 +50,6 @@ void __iomem *ioremap_prot(phys_addr_t addr, size_t size, unsigned long flags)
+>  	if (pte_write(pte))
+>  		pte = pte_mkdirty(pte);
+>  
+> -	/* we don't want to let _PAGE_USER leak out */
+> -	if (WARN_ON(pte_user(pte)))
+> -		return NULL;
 >
-> In staging, rtl8192u was already removed in the meantime, while rtl8712
-> and rtl8192e are apparently still used.  I have not been able to find
-> out whether ks7010 is still in use.
->
-> 	Arnd
->
-> Link: https://lore.kernel.org/lkml/20231011080955.1beeb010@kernel.org/
->
->
-> Arnd Bergmann (10):
->   wifi: libertas: drop 16-bit PCMCIA support
->   wifi: atmel: remove wext style at76c50x drivers
->   wifi: remove orphaned cisco/aironet driver
->   wifi: remove obsolete hostap driver
->   wifi: remove orphaned zd1201 driver
->   wifi: remove orphaned orinoco driver
->   wifi: remove orphaned ray_cs driver
->   wifi: remove orphaned wl3501 driver
->   wifi: remove orphaned rndis_wlan driver
->   [RFC] wifi: remove ipw2100/ipw2200 drivers
 
-I manually applied these 9 to wireless-next:
+This check is still valid right? I understand that we want to remove
+_PAGE_USER. But then loosing this check is ok? 
 
-4b478bf6bdd8 wifi: libertas: drop 16-bit PCMCIA support
-77e49bec6414 wifi: atmel: remove wext style at76c50x drivers
-6853c70ba5ed wifi: remove orphaned cisco/aironet driver
-d0172d5f7576 wifi: remove obsolete hostap driver
-757a46c2a7a9 wifi: remove orphaned zd1201 driver
-1535d5962d79 wifi: remove orphaned orinoco driver
-6b9dbaff83d6 wifi: remove orphaned ray_cs driver
-238349207cd3 wifi: remove orphaned wl3501 driver
-bec95598b24a wifi: remove orphaned rndis_wlan driver
-
-I dropped this patch as we got several reports about people using the
-driver:
-
-[RFC] wifi: remove ipw2100/ipw2200 drivers
-
-The patches are queued for v6.8. Arnd, thanks a lot for cleaning this
-up!
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> -
+>  	if (iowa_is_active())
+>  		return iowa_ioremap(addr, size, pte_pgprot(pte), caller);
+>  	return __ioremap_caller(addr, size, pte_pgprot(pte), caller);
+> -- 
+> 2.41.0
