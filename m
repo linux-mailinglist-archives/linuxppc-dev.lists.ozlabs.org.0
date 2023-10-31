@@ -1,71 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 732197DD278
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Oct 2023 17:45:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 078297DD296
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Oct 2023 17:47:58 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d7deQcQ8;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=jAk6krK1;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SKbbl2BBmz3cb7
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Nov 2023 03:45:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SKbfg29wvz3cVw
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Nov 2023 03:47:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d7deQcQ8;
+	dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=jAk6krK1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=mailbox.org (client-ip=2001:67c:2050:0:465::101; helo=mout-p-101.mailbox.org; envelope-from=erhard_f@mailbox.org; receiver=lists.ozlabs.org)
+Received: from mout-p-101.mailbox.org (unknown [IPv6:2001:67c:2050:0:465::101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SKbZw1YNQz3cBQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Nov 2023 03:44:40 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 906EBCE09AC
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Oct 2023 16:44:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CE058C433C9
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Oct 2023 16:44:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1698770676;
-	bh=frWl6Y08U3lyhcOtnXZDf9vhg/uF8FSJCgpLXO2DdSc=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=d7deQcQ8aFyGWjWveOAXKvob877U+yssvlfYdGruRjK3n6CnT+FB3Yug4LnnK+dF7
-	 cgHfpz4q8zelixRGZe6kaHGEbLUccocml/27Yg0nMnmvLAknIiuNRE42AqgyRDBZM4
-	 4MXYYINNU4dYdIm7n56iP4LmchlPOUdtcSyPz+14mJoCIvh/NGFD15mJ/T9hiHQAgx
-	 uobOJPDoTNKEN/NIBWCtM8lXtliKIuzfRPBBC7ek4m2J0eAgMhRKqxHcoMRcc2oAfv
-	 sva99+TmgDwzj1+9NOTEUWeIHVZyfKFXEYJrvUeKl099vJL0RgPemMqGz+Cktx55A6
-	 4ROMGXqnY/1bA==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id AEF3CC4332E; Tue, 31 Oct 2023 16:44:36 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 206203] kmemleak reports various leaks in drivers/of/unittest.c
-Date: Tue, 31 Oct 2023 16:44:36 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: RESOLVED
-X-Bugzilla-Resolution: OBSOLETE
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_status resolution
-Message-ID: <bug-206203-206035-ldmVaqqqpu@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-206203-206035@https.bugzilla.kernel.org/>
-References: <bug-206203-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SKbdm31MQz3c9y
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Nov 2023 03:47:04 +1100 (AEDT)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4SKbdQ0pBlz9sv4;
+	Tue, 31 Oct 2023 17:46:50 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1698770810;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yihRMXS9Xj/0hzDgGosoo7nHHoo+fzWfdjHSJ7McyWg=;
+	b=jAk6krK1etp6CL4GPKbxQLQkldqsCwSaSKVB7vqAvz/nGxdbhdt9VC4BFGdFPS1/Kg00xU
+	VUurTftgmufw7pt8ly2KqaFFgXmlkmQ3QBOBpGWLFfb3eeL+lOtx5X6NsX/fjpZQzAijHO
+	vTDxu7S+BSIa1n1fVkQh7krQ12WGCnFsgXTPtu7+YVmqlMetNDKVXovoeH05WUazpSP366
+	pIMGanE9/Hx1GCiVfjwtqUPFD8O1BWRlcwBxcb3jimsp/4LpTkIviUYTpLJKJxEpYFHbLW
+	mp2DhqQeK20dGDKd5UaxjbRa51Xcw9GgRWK0eQ4ELljWQTPvDj2bDfDZEk4Qxg==
+Date: Tue, 31 Oct 2023 17:46:46 +0100
+From: Erhard Furtner <erhard_f@mailbox.org>
+To: Rob Herring <robh@kernel.org>
+Subject: Re: Several kmemleak reports + "refcount_t: underflow;
+ use-after-free" at boot when OF_UNITTEST + OF_OVERLAY is set (Kernel
+ v6.6-rc6, PowerMac G5 11,2)
+Message-ID: <20231031174646.3d4e1447@yea>
+In-Reply-To: <CAL_Jsq+qcc7ERmGAywp=7oGT=XGoBsMO839_jtzxeNcCN-dS_A@mail.gmail.com>
+References: <20231018233815.34a0417f@yea>
+	<CAL_Jsq+qcc7ERmGAywp=7oGT=XGoBsMO839_jtzxeNcCN-dS_A@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-META: rdurhbjwzek9i9igtcoy6nd9d711ztgu
+X-MBO-RS-ID: ebe9b306ae8c2338259
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,24 +66,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D206203
+On Mon, 30 Oct 2023 11:26:48 -0500
+Rob Herring <robh@kernel.org> wrote:
 
-Erhard F. (erhard_f@mailbox.org) changed:
+> The test tells you to expect a use-after-free...
+> 
+> > ---[ end trace <<int>> ]--- ### dt-test ### pass of_unittest_lifecycle():3209
+> > ------------[ cut here ]------------
+> > refcount_t: underflow; use-after-free.  
+> 
+> Then you get a use-after-free. Looks like it is working as designed.
+> 
+> I believe it's the same with kmemleak.
+> 
+> Note that running DT unittests also taints the kernel. That's because
+> they are not meant to be run on a production system.
+> 
+> Rob
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-             Status|REOPENED                    |RESOLVED
-         Resolution|---                         |OBSOLETE
+My bad, did not realize this is actually intended behaviour... Sorry for the noise!
 
---- Comment #26 from Erhard F. (erhard_f@mailbox.org) ---
-Closed in favour of:
-https://lore.kernel.org/all/20231018233815.34a0417f@yea/#r
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+Regards,
+Erhard
