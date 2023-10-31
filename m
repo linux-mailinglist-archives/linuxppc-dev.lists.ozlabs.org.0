@@ -1,73 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF6C57DC876
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Oct 2023 09:36:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 733EF7DC918
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Oct 2023 10:09:01 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IT+OTK47;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VblEe006;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SKNlN5Rg4z3cRK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Oct 2023 19:36:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SKPT72s7Tz3cWD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Oct 2023 20:08:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IT+OTK47;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VblEe006;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mgamail.intel.com; envelope-from=xiaoyao.li@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=kvalo@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SKNkT2NB9z2xqH
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Oct 2023 19:35:26 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698741329; x=1730277329;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=P66Mu8Qvvs1bSZcrJh1IrkuvvxdPz+TRpT/cX8K5jyg=;
-  b=IT+OTK47fGAwzj5rTk899SHz4iDuqOE/aPOTvH8Dv92c1/lU8wtIS2FT
-   Jjs08J0uXY95RPJjM1yTI5KqTJVwdYoP0Z3JuNcpJh33paPXmbMKUhBRB
-   rewfxD51Y9O0Wxa51Gmd8jbUtHDiIBmUFFJbUiUgz6i5S9QvAsPJRZTHK
-   sVqG0LE/+EZtRk/sXzRCVKgasSwh3ez2+BEwRMe4pqB/Phf2F7sdlHyNT
-   mwNjf0wMGHn6Xzx1PiwgKWlI64SHi/uYfmRYDxGI94XMjaq6DncZ9Ha8e
-   9slErFg/P5mVi4BOY7UtGe6N/dKko6im7nNr/HUHj5cd7msfglJzNKB2x
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10879"; a="474479550"
-X-IronPort-AV: E=Sophos;i="6.03,265,1694761200"; 
-   d="scan'208";a="474479550"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2023 01:35:23 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10879"; a="795488444"
-X-IronPort-AV: E=Sophos;i="6.03,265,1694761200"; 
-   d="scan'208";a="795488444"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.9.145]) ([10.93.9.145])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2023 01:35:11 -0700
-Message-ID: <7c0844d8-6f97-4904-a140-abeabeb552c1@intel.com>
-Date: Tue, 31 Oct 2023 16:35:08 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SKPSC0XsKz2yVN
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Oct 2023 20:08:10 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 229A860E09;
+	Tue, 31 Oct 2023 09:08:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84EEBC433C8;
+	Tue, 31 Oct 2023 09:08:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1698743286;
+	bh=feIBOznLOh65axwYyiiYpq9McN8nBddJCuTkou94EY8=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=VblEe006dkOhHKFV8lXYkjBoV+/BKggu8KsI5kMIAb2Q1426nw4dRAAVoYwb69UEw
+	 G4GLrarHQQVvZuXCYCZpQm3MzyKeWeBmJjvlgQ6PMCq7xr4I4hB0HHfGshV2oZUG15
+	 X6DMTAU3M/qqtSGFor+HnXWdZfMMByBst6bHmnUyfk/boW/rAygCoryItoD82ouGdQ
+	 F5rgczw5G1IKtPxgez4yKfn8OvhBZ5q4umOXcv+za1DnTK33HU98GoVwOWr045jrBq
+	 m/rH+Oca3fkh8qYaRN6iMziupF3suM3KgYmJZfX4wsLpF+TVmwMsBaFclHecefyoKM
+	 WMmuIxn5gT6Nw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Subject: Re: [PATCH 00/10] Remove obsolete and orphaned wifi drivers
+References: <20231023131953.2876682-1-arnd@kernel.org>
+Date: Tue, 31 Oct 2023 11:08:00 +0200
+In-Reply-To: <20231023131953.2876682-1-arnd@kernel.org> (Arnd Bergmann's
+	message of "Mon, 23 Oct 2023 15:19:42 +0200")
+Message-ID: <874ji7w45r.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 17/35] KVM: Add transparent hugepage support for
- dedicated guest memory
-Content-Language: en-US
-To: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>,
- Oliver Upton <oliver.upton@linux.dev>, Huacai Chen <chenhuacai@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Anup Patel <anup@brainfault.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <20231027182217.3615211-1-seanjc@google.com>
- <20231027182217.3615211-18-seanjc@google.com>
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20231027182217.3615211-18-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,27 +59,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, linux-arm-kernel@lists.infradead.org, Maciej Szmigiero <mail@maciej.szmigiero.name>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, David Matlack <dmatlack@google.com>, Vlastimil Babka <vbabka@suse.cz>, =?UTF-8?B?TWlja2HDq2wgU2FsYcO8?= =?UTF-8?Q?n?= <mic@digikod.net>, Isaku Yamahata <isaku.yamahata@intel.com>, Quentin Perret <qperret@google.com>, kvmarm@lists.linux.dev, linux-mips@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>, Yu Zhang <yu.c.zhang@linux.intel.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, linux-fsdevel@vger.kernel.org, Liam Merwick <liam.merwick@oracle.com>, Vishal Annapurve <vannapurve@google.com>, l
- inuxppc-dev@lists.ozlabs.org, Xu Yilun <yilun.xu@intel.com>, Anish Moorthy <amoorthy@google.com>
+Cc: Stanislaw Gruszka <stf_xl@wp.pl>, Alexandre Belloni <alexandre.belloni@bootlin.com>, linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, Geoff Levand <geoff@infradead.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-wireless@vger.kernel.org, Claudiu Beznea <claudiu.beznea@tuxon.dev>, Nicolas Ferre <nicolas.ferre@microchip.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Pavel Machek <pavel@ucw.cz>, Gregory Greenman <gregory.greenman@intel.com>, Jakub Kicinski <kuba@kernel.org>, Johannes Berg <johannes@sipsolutions.net>, Jeff Johnson <quic_jjohnson@quicinc.com>, "David S . Miller" <davem@davemloft.net>, linux-arm-kernel@lists.infradead.org, Larry Finger <Larry.Finger@lwfinger.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/28/2023 2:21 AM, Sean Christopherson wrote:
-> Extended guest_memfd to allow backing guest memory with transparent 
-> hugepages. Require userspace to opt-in via a flag even though there's no 
-> known/anticipated use case for forcing small pages as THP is optional, 
-> i.e. to avoid ending up in a situation where userspace is unaware that 
-> KVM can't provide hugepages.
+Arnd Bergmann <arnd@kernel.org> writes:
 
-Personally, it seems not so "transparent" if requiring userspace to opt-in.
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> As discussed previously, a lot of the older wifi drivers are likely
+> entirely unused, Though we can't know for sure.
+>
+> As suggested by both Greg and Jakub, let's remove the ones that look
+> are most likely to have no users left and also get in the way of the
+> wext cleanup. If anyone is still using any of these, we can revert the
+> driver removal individually.
+>
+> I would suggest merging these for net-next after 6.7-rc1 is out, to give
+> them the maximum amount of time for users to speak up before a release
+> comes out.
+>
+> This kills off all pcmcia wifi drivers, and all wext users in
+> drivers/net/wireless, but not the ps3-gelic-wireless driver in
+> drivers/net/ethernet, or the staging drivers.
+>
+> In staging, rtl8192u was already removed in the meantime, while rtl8712
+> and rtl8192e are apparently still used.  I have not been able to find
+> out whether ks7010 is still in use.
+>
+> 	Arnd
+>
+> Link: https://lore.kernel.org/lkml/20231011080955.1beeb010@kernel.org/
+>
+>
+> Arnd Bergmann (10):
+>   wifi: libertas: drop 16-bit PCMCIA support
+>   wifi: atmel: remove wext style at76c50x drivers
+>   wifi: remove orphaned cisco/aironet driver
+>   wifi: remove obsolete hostap driver
+>   wifi: remove orphaned zd1201 driver
+>   wifi: remove orphaned orinoco driver
+>   wifi: remove orphaned ray_cs driver
+>   wifi: remove orphaned wl3501 driver
+>   wifi: remove orphaned rndis_wlan driver
+>   [RFC] wifi: remove ipw2100/ipw2200 drivers
 
-People need to 1) check if the kernel built with TRANSPARENT_HUGEPAGE 
-support, or check is the sysfs of transparent hugepage exists; 2)get the 
-maximum support hugepage size 3) ensure the size satisfies the 
-alignment; before opt-in it.
+I manually applied these 9 to wireless-next:
 
-Even simpler, userspace can blindly try to create guest memfd with 
-transparent hugapage flag. If getting error, fallback to create without 
-the transparent hugepage flag.
+4b478bf6bdd8 wifi: libertas: drop 16-bit PCMCIA support
+77e49bec6414 wifi: atmel: remove wext style at76c50x drivers
+6853c70ba5ed wifi: remove orphaned cisco/aironet driver
+d0172d5f7576 wifi: remove obsolete hostap driver
+757a46c2a7a9 wifi: remove orphaned zd1201 driver
+1535d5962d79 wifi: remove orphaned orinoco driver
+6b9dbaff83d6 wifi: remove orphaned ray_cs driver
+238349207cd3 wifi: remove orphaned wl3501 driver
+bec95598b24a wifi: remove orphaned rndis_wlan driver
 
-However, it doesn't look transparent to me.
+I dropped this patch as we got several reports about people using the
+driver:
+
+[RFC] wifi: remove ipw2100/ipw2200 drivers
+
+The patches are queued for v6.8. Arnd, thanks a lot for cleaning this
+up!
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
