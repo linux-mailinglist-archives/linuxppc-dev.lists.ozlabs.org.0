@@ -1,68 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 990037DE572
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Nov 2023 18:37:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27D597DE7BC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Nov 2023 22:56:39 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=KF63XbBN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ig0q777y;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SLDjd3wp8z3cTT
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Nov 2023 04:37:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SLLSP0LNyz2ykC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Nov 2023 08:56:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=KF63XbBN;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ig0q777y;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=3syxczqykdayykgtpimuumrk.iusrot03vvi-jk1royzy.u5rghy.uxm@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3zmlczqykddmhtpcyrvddvat.rdbaxcjmeer-stkaxhih.doapqh.dgv@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SLDhk2DqDz2xqH
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Nov 2023 04:36:52 +1100 (AEDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-da03ef6fc30so5047276.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Nov 2023 10:36:52 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SLLRY42Fjz2xPb
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Nov 2023 08:55:51 +1100 (AEDT)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-da04fb79246so290033276.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Nov 2023 14:55:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1698860210; x=1699465010; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1698875748; x=1699480548; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Aa5pPv4/g+I3C3eNDgudVhrFstr6S8Xmtwrf0OlljDI=;
-        b=KF63XbBNyBeFoxA9ahqEkDM2XPg7vs3nkktkVRtyAScvCj4RBMgzGNqKbq/LJeuquC
-         pmNjssciaOSs659CT4IYAtg11oclMCNcaCiCGE+K07dNuGgcEZ+Ouo7KAOTDSCTn//o3
-         uDRBhP4nVp8WPlMso6uNqoKaQwhdPC6nscVJRW+3NIGtFWcSZK7d89PPS3sxoYJ/5wew
-         u05tzgez0I5uXp+4T5NkqiXLyV6702DnJDOrf1N1XvkCTF2g6wRyBeMujy15Drg+SfG3
-         81KwT3Jo7KAn9EJHDUxEGpw/LnrjeokOdhQgUwD3BMfpUkNZQWp6rcnfRWREcqu/ECFc
-         9RRw==
+        bh=PcqXHpLnYUoCfOstmB/gusaSnz1wSaaIZvticgi9YrM=;
+        b=ig0q777ypHYle7BsYh1IBx32A3XxOrL6cxNpe4M2GF4AemUdQJRs6+/g4qiRoaHRK4
+         7Xj8hV4d4MipHiACmp07gJ90L5mNLFuxyiKyXTX5mkMaQV8p9boSqeuOxBFDW25iZ+Lu
+         ea4WBVD3/Jk/QYsvfnCJ1t6ovuIJi4U21lxs7SvYMz3bGrgiEF8I+eRv/wIiYJBr2AXV
+         Et0CKt/A4SJKIsQwkeQnSTWMXuvajZFWK3uDCQYPxtT4nxRTQU7GjHmUra/vNrPYntFz
+         wPJqw4+9OOhZIpdue8ggyj9ID5Vtxadkbr77YuT3eJqeuf47ubA8mJPtZOZeImtWExJ4
+         pZ1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698860210; x=1699465010;
+        d=1e100.net; s=20230601; t=1698875748; x=1699480548;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Aa5pPv4/g+I3C3eNDgudVhrFstr6S8Xmtwrf0OlljDI=;
-        b=Z5dYE2pgIaby9F8Adb92QlAAggtCVQgcwtVvr5eA1jlBsel5cabfqTv/1jyJbLn89/
-         xmVwWGPdZG//Zdq7SWfa4OqIrhJFoP0rd5fmI6sEOHB3u3zJxGejJbuomjfAYLOj79BL
-         u/+MKL9goTaobcroPpK8tOhXJBlqp3MRohzb6BXwyYRcrikvvDL/C+nn3G37fogy0zb2
-         jauJlS6NMSYzvgNkItuWr7/lWw5gdaY9CL93Pt81zhTOj/VSKVnKiSfi9Axqv9SVRiW8
-         HE/cH2SGLWVS1J/llnWOzbYuhAS0bv+aXM2vEkNMnYU7N4lZXMp86VXYIqlOuWq+RvsL
-         Gfpg==
-X-Gm-Message-State: AOJu0YykZfjrF9/sBvb2CjN6gOLZv25R4VATWRb1gpgLY9wPYRvZMjaN
-	pJyPTYHulmFjCQhWtHSGSXgQfWYKDp0=
-X-Google-Smtp-Source: AGHT+IG/a6Sj0mASs5/8PEJQnR69sSphX+9SHKWYEjRPOLGEF4l6c52AgzjYtmdhHr7JL68mzkGP7JI8NEg=
+        bh=PcqXHpLnYUoCfOstmB/gusaSnz1wSaaIZvticgi9YrM=;
+        b=MqQKARBI//vYFXmyNdEBh3PQsUJ+MmtoJahqpGZipSFyIsqDguy+JblnWh6FLkTRw1
+         g1oKTJFTeAzizqID3BWgAotoCpmi//FqC3G+NREBELMIH0YqDP5HoPr4t7Jg+zb3+l2n
+         u8F+X26r1GQS+kHTG/PNga23XxqD9yl/lrnhzx2YcJ9jZ9WrI3K2GNRczVDB81R+qZxy
+         oqGWtWpumXiAyCqizwwLlRfS/avzz/Pt5qz+B0Wm1L8s7P4GfXkyGwyHRUYoqyNjJ5Ky
+         PiAPgEVEJC+7q4E8yhkwn8i+3LRVFUYAH5yk7lKAeqYyikMsumrM3OxxGqQXx9/sUKP8
+         DZ1Q==
+X-Gm-Message-State: AOJu0Yw93ySjJhMlGnlIzjDk7pwwvq2XuX/FkgsGpJq1SKv+KgXfyeNG
+	t7XE6jQHwyO0MyK34nJWNzYcaIAeZQg=
+X-Google-Smtp-Source: AGHT+IE2sMY2tsOG0bVHgm+pvNoyezNqlGkOo8OmSBoeRdI+YDBZP5bgBr5ffHZ4bVc102IwBIrDYpGpUa8=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6902:168c:b0:da0:3e46:8ba5 with SMTP id
- bx12-20020a056902168c00b00da03e468ba5mr304342ybb.8.1698860209654; Wed, 01 Nov
- 2023 10:36:49 -0700 (PDT)
-Date: Wed, 1 Nov 2023 10:36:48 -0700
-In-Reply-To: <482bfea6f54ea1bb7d1ad75e03541d0ba0e5be6f.camel@intel.com>
+ (user=seanjc job=sendgmr) by 2002:a05:6902:1083:b0:d9a:c3b8:4274 with SMTP id
+ v3-20020a056902108300b00d9ac3b84274mr405001ybu.7.1698875748263; Wed, 01 Nov
+ 2023 14:55:48 -0700 (PDT)
+Date: Wed, 1 Nov 2023 14:55:46 -0700
+In-Reply-To: <CA+EHjTwTT9cFzYTtwT43nLJS01Sgt0NqzUgKAnfo2fiV3tEvXg@mail.gmail.com>
 Mime-Version: 1.0
-References: <20231027182217.3615211-1-seanjc@google.com> <20231027182217.3615211-10-seanjc@google.com>
- <482bfea6f54ea1bb7d1ad75e03541d0ba0e5be6f.camel@intel.com>
-Message-ID: <ZUKMsOdg3N9wmEzy@google.com>
-Subject: Re: [PATCH v13 09/35] KVM: Add KVM_EXIT_MEMORY_FAULT exit to report
- faults to userspace
+References: <20231027182217.3615211-1-seanjc@google.com> <20231027182217.3615211-17-seanjc@google.com>
+ <CA+EHjTzj4drYKONVOLP19DYpJ4O8kSXcFzw2AKier1QdcFKx_Q@mail.gmail.com>
+ <ZUF8A5KpwpA6IKUH@google.com> <CA+EHjTwTT9cFzYTtwT43nLJS01Sgt0NqzUgKAnfo2fiV3tEvXg@mail.gmail.com>
+Message-ID: <ZULJYg5cf1UrNq3e@google.com>
+Subject: Re: [PATCH v13 16/35] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
+ guest-specific backing memory
 From: Sean Christopherson <seanjc@google.com>
-To: Kai Huang <kai.huang@intel.com>
+To: Fuad Tabba <tabba@google.com>
 Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -75,81 +76,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "david@redhat.com" <david@redhat.com>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>, "chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "isaku.yamahata@gmail.com" <isaku.yamahata@gmail.com>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, "willy@infradead.org" <willy@infradead.org>, Wei W Wang <wei.w.wang@intel.com>, "vbabka@suse.cz" <vbabka@suse.cz>, "yu.c.zhang@linux.intel.com" <yu.c.zhang@linux.intel.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "mail@maciej.szmigiero.name" <mail@maciej.szmigiero.name>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, "michael.roth@amd.com" <michael.roth@amd.com>, "ackerleytng@google.com" <ackerleyt
- ng@google.com>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "paul.walmsley@sifive.com" <paul.walmsley@sifive.com>, "mic@digikod.net" <mic@digikod.net>, "tabba@google.com" <tabba@google.com>, Isaku Yamahata <isaku.yamahata@intel.com>, "brauner@kernel.org" <brauner@kernel.org>, "qperret@google.com" <qperret@google.com>, "anup@brainfault.org" <anup@brainfault.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>, "dmatlack@google.com" <dmatlack@google.com>, "jarkko@kernel.org" <jarkko@kernel.org>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "amoorthy@google.com" <amoorthy@google.com>, "kvm-riscv@lists.infradead.org" <kvm-riscv@lists.infradead.org>, "maz@kernel.org" <maz@kernel.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "liam.merwick@oracle.com" <liam.merwick@oracle.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, "linuxppc-dev@list
- s.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Yilun Xu <yilun.xu@intel.com>, "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Vlastimil Babka <vbabka@suse.cz>, Yu Zhang <yu.c.zhang@linux.intel.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, Isaku Yamahata <isaku.yamahata@intel.com>, Christian Brauner <brauner@kernel.org>, Quentin Perret <qperret@google.com>, Liam Merwick <liam.merwick@oracl
+ e.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, David Matlack <dmatlack@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Xu Yilun <yilun.xu@intel.com>, Anish Moorthy <amoorthy@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 01, 2023, Kai Huang wrote:
+On Wed, Nov 01, 2023, Fuad Tabba wrote:
+> > > > @@ -1034,6 +1034,9 @@ static void kvm_destroy_dirty_bitmap(struct kvm_memory_slot *memslot)
+> > > >  /* This does not remove the slot from struct kvm_memslots data structures */
+> > > >  static void kvm_free_memslot(struct kvm *kvm, struct kvm_memory_slot *slot)
+> > > >  {
+> > > > +       if (slot->flags & KVM_MEM_PRIVATE)
+> > > > +               kvm_gmem_unbind(slot);
+> > > > +
+> > >
+> > > Should this be called after kvm_arch_free_memslot()? Arch-specific ode
+> > > might need some of the data before the unbinding, something I thought
+> > > might be necessary at one point for the pKVM port when deleting a
+> > > memslot, but realized later that kvm_invalidate_memslot() ->
+> > > kvm_arch_guest_memory_reclaimed() was the more logical place for it.
+> > > Also, since that seems to be the pattern for arch-specific handlers in
+> > > KVM.
+> >
+> > Maybe?  But only if we can about symmetry between the allocation and free paths
+> > I really don't think kvm_arch_free_memslot() should be doing anything beyond a
+> > "pure" free.  E.g. kvm_arch_free_memslot() is also called after moving a memslot,
+> > which hopefully we never actually have to allow for guest_memfd, but any code in
+> > kvm_arch_free_memslot() would bring about "what if" questions regarding memslot
+> > movement.  I.e. the API is intended to be a "free arch metadata associated with
+> > the memslot".
+> >
+> > Out of curiosity, what does pKVM need to do at kvm_arch_guest_memory_reclaimed()?
 > 
-> > +7.34 KVM_CAP_MEMORY_FAULT_INFO
-> > +------------------------------
-> > +
-> > +:Architectures: x86
-> > +:Returns: Informational only, -EINVAL on direct KVM_ENABLE_CAP.
-> > +
-> > +The presence of this capability indicates that KVM_RUN will fill
-> > +kvm_run.memory_fault if KVM cannot resolve a guest page fault VM-Exit, e.g. if
-> > +there is a valid memslot but no backing VMA for the corresponding host virtual
-> > +address.
-> > +
-> > +The information in kvm_run.memory_fault is valid if and only if KVM_RUN returns
-> > +an error with errno=EFAULT or errno=EHWPOISON *and* kvm_run.exit_reason is set
-> > +to KVM_EXIT_MEMORY_FAULT.
+> It's about the host reclaiming ownership of guest memory when tearing
+> down a protected guest. In pKVM, we currently teardown the guest and
+> reclaim its memory when kvm_arch_destroy_vm() is called. The problem
+> with guestmem is that kvm_gmem_unbind() could get called before that
+> happens, after which the host might try to access the unbound guest
+> memory. Since the host hasn't reclaimed ownership of the guest memory
+> from hyp, hilarity ensues (it crashes).
 > 
-> IIUC returning -EFAULT or whatever -errno is sort of KVM internal
-> implementation.
+> Initially, I hooked reclaim guest memory to kvm_free_memslot(), but
+> then I needed to move the unbind later in the function. I realized
+> later that kvm_arch_guest_memory_reclaimed() gets called earlier (at
+> the right time), and is more aptly named.
 
-The errno that is returned to userspace is ABI.  In KVM, it's a _very_ poorly
-defined ABI for the vast majority of ioctls(), but it's still technically ABI.
-KVM gets away with being cavalier with errno because the vast majority of errors
-are considered fatal by userespace, i.e. in most cases, userspace simply doesn't
-care about the exact errno.
+Aha!  I suspected that might be the case.
 
-A good example is KVM_RUN with -EINTR; if KVM were to return something other than
--EINTR on a pending signal or vcpu->run->immediate_exit, userspace would fall over.
+TDX and SNP also need to solve the same problem of "reclaiming" memory before it
+can be safely accessed by the host.  The plan is to add an arch hook (or two?)
+into guest_memfd that is invoked when memory is freed from guest_memfd.
 
-> Is it better to relax the validity of kvm_run.memory_fault when
-> KVM_RUN returns any -errno?
+Hooking kvm_arch_guest_memory_reclaimed() isn't completely correct as deleting a
+memslot doesn't *guarantee* that guest memory is actually reclaimed (which reminds
+me, we need to figure out a better name for that thing before introducing
+kvm_arch_gmem_invalidate()).
 
-Not unless there's a need to do so, and if there is then we can update the
-documentation accordingly.  If KVM's ABI is that kvm_run.memory_fault is valid
-for any errno, then KVM would need to purge kvm_run.exit_reason super early in
-KVM_RUN, e.g. to prevent an -EINTR return due to immediate_exit from being
-misinterpreted as KVM_EXIT_MEMORY_FAULT.  And purging exit_reason super early is
-subtly tricky because KVM's (again, poorly documented) ABI is that *some* exit
-reasons are preserved across KVM_RUN with vcpu->run->immediate_exit (or with a
-pending signal).
+The effective false positives aren't fatal for the current usage because the hook
+is used only for x86 SEV guests to flush caches.  An unnecessary flush can cause
+performance issues, but it doesn't affect correctness. For TDX and SNP, and IIUC
+pKVM, false positives are fatal because KVM could assign memory back to the host
+that is still owned by guest_memfd.
 
-https://lore.kernel.org/all/ZFFbwOXZ5uI%2Fgdaf@google.com
+E.g. a misbehaving userspace could prematurely delete a memslot.  And the more
+fun example is intrahost migration, where the plan is to allow pointing multiple
+guest_memfd files at a single guest_memfd inode:
+https://lore.kernel.org/all/cover.1691446946.git.ackerleytng@google.com
 
-> [...]
-> 
-> 
-> > --- a/include/linux/kvm_host.h
-> > +++ b/include/linux/kvm_host.h
-> > @@ -2327,4 +2327,15 @@ static inline void kvm_account_pgtable_pages(void *virt, int nr)
-> >  /* Max number of entries allowed for each kvm dirty ring */
-> >  #define  KVM_DIRTY_RING_MAX_ENTRIES  65536
-> >  
-> > +static inline void kvm_prepare_memory_fault_exit(struct kvm_vcpu *vcpu,
-> > +						 gpa_t gpa, gpa_t size)
-> > +{
-> > +	vcpu->run->exit_reason = KVM_EXIT_MEMORY_FAULT;
-> > +	vcpu->run->memory_fault.gpa = gpa;
-> > +	vcpu->run->memory_fault.size = size;
-> > +
-> > +	/* Flags are not (yet) defined or communicated to userspace. */
-> > +	vcpu->run->memory_fault.flags = 0;
-> > +}
-> > +
-> 
-> KVM_CAP_MEMORY_FAULT_INFO is x86 only, is it better to put this function to
-> <asm/kvm_host.h>?
+There was a lot of discussion for this, but it's scattered all over the place.
+The TL;DR is is that the inode will represent physical memory, and a file will
+represent a given "struct kvm" instance's view of that memory.  And so the memory
+isn't reclaimed until the inode is truncated/punched.
 
-I'd prefer to keep it in generic code, as it's highly likely to end up there
-sooner than later.  There's a known use case for ARM (exit to userspace on missing
-userspace mapping[*]), and I'm guessing pKVM (also ARM) will also utilize this API.
-
-[*] https://lore.kernel.org/all/20230908222905.1321305-8-amoorthy@google.com
+I _think_ this reflects the most recent plan from the guest_memfd side:
+https://lore.kernel.org/all/1233d749211c08d51f9ca5d427938d47f008af1f.1689893403.git.isaku.yamahata@intel.com
