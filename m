@@ -2,168 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 428227DEB45
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Nov 2023 04:18:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A9A77DEC68
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Nov 2023 06:40:45 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kGopdLRu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SUOr56gu;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SLTc51Cy6z3cXd
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Nov 2023 14:18:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SLXlv35tHz3cTS
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Nov 2023 16:40:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kGopdLRu;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SUOr56gu;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mgamail.intel.com; envelope-from=kai.huang@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SLTb81wG2z3bv3
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Nov 2023 14:17:37 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698895076; x=1730431076;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=4Lk/L4/BLcelwM4VhmXR9LEkLksp6ecUesdhMoTNJW0=;
-  b=kGopdLRuN0lpB/aAPHtot8ugY8VAHYEBFY3h8C+ggOkgeT7cnaTWXPO+
-   qIrlV9ADhhEtmrfLsTTgozGbXBlxuSUe6Rb6QqN1QfXf0icLuK71Mj/Pn
-   NMUiuNT9vWCYsGX6V7kgQbrqIjXYcq6bF72+hfcUtLYWoO82a1tqIwojH
-   vGGgDNeEHkgImxrlqYQdoVaE/qaGKdPfXCbGliGKX2wPSWbnw4HKuykXi
-   FRHyBNj5a955Ozc/08nE9r5UDiaGPmwJHAd+bvS6Pljv1J9BH64CjYEUU
-   ATJMmueiMp9h6Lv/towpbXYZEzYWUJfomivNyo8ilGEYHOESV9rC94Hqf
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10881"; a="452924970"
-X-IronPort-AV: E=Sophos;i="6.03,270,1694761200"; 
-   d="scan'208";a="452924970"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2023 20:17:21 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10881"; a="761149696"
-X-IronPort-AV: E=Sophos;i="6.03,270,1694761200"; 
-   d="scan'208";a="761149696"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by orsmga002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 01 Nov 2023 20:17:20 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Wed, 1 Nov 2023 20:17:20 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Wed, 1 Nov 2023 20:17:20 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34 via Frontend Transport; Wed, 1 Nov 2023 20:17:20 -0700
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.168)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.34; Wed, 1 Nov 2023 20:17:20 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZCbVd2rIVqhrAZ1S64g4aGiIXvIHACf7FBRqE5HzwcQJudcz/cVQtNGylsYbllvvPUtcMNpExnK3E3qkwaeRxxoqEY01l4sonb2rWmeGhraGm+Y/w435YoD2XuiVMsvGRh091iCahx3QvV2gpl6dtgLbtjRqrhKJtxHqrynMtBo+OPmLbQGVvTlkQyPlnkUSLIMSRPj+NG9cKaxumMTiLEFC0rJDkmeDsShrjr/5oeL96d/3ljd06vGPYDEHaugjELsUfq682kquEkPAR8trU8QU1nIqQ7TAqewRfHm1ueEAMWtZ1FjmrWWPykfyAFKqGP8xnUu+rowjn40mmccopg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4Lk/L4/BLcelwM4VhmXR9LEkLksp6ecUesdhMoTNJW0=;
- b=P/ZiguKKrMPR4xNrSz3Z6U5HxnLIkUUdzmo83fEJYukhnbl0gD42S0q5e2LPRz+udWjjkeOnHVkHpouDl/w5hddjs7mqvRTMOtGQNWf2/ckvQcwKr753zkIyG1yjeqql6rgjqA4IukQRn6ODQ2P16w3zO5cQL3JdaLkqRNriCpJdhTVz8RtixwuAkQ9u36rQy6HigoFEYSjaRbTTReXcJ9eV2keeNXJphzlDT4PGNVtsjNYLMzoU8fNXSx982BsWf7u60vjS6ylkfSRXPgb1WxaZ6uDkaXkQeLAkH093sE1Oj8rw2rAz4XuCwaZOA8lgu0zW43tAkGCoc9muYH+pLQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BL1PR11MB5978.namprd11.prod.outlook.com (2603:10b6:208:385::18)
- by CO1PR11MB5010.namprd11.prod.outlook.com (2603:10b6:303:93::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.19; Thu, 2 Nov
- 2023 03:17:12 +0000
-Received: from BL1PR11MB5978.namprd11.prod.outlook.com
- ([fe80::5d1:aa22:7c98:f3c6]) by BL1PR11MB5978.namprd11.prod.outlook.com
- ([fe80::5d1:aa22:7c98:f3c6%6]) with mapi id 15.20.6954.019; Thu, 2 Nov 2023
- 03:17:12 +0000
-From: "Huang, Kai" <kai.huang@intel.com>
-To: "Christopherson,, Sean" <seanjc@google.com>
-Subject: Re: [PATCH v13 09/35] KVM: Add KVM_EXIT_MEMORY_FAULT exit to report
- faults to userspace
-Thread-Topic: [PATCH v13 09/35] KVM: Add KVM_EXIT_MEMORY_FAULT exit to report
- faults to userspace
-Thread-Index: AQHaCQKnsgoTcbnsvUKkAITO6oVjaLBlURAAgABw5QCAAKIkgA==
-Date: Thu, 2 Nov 2023 03:17:12 +0000
-Message-ID: <64e3764e36ba7a00d94cc7db1dea1ef06b620aaf.camel@intel.com>
-References: <20231027182217.3615211-1-seanjc@google.com>
-	 <20231027182217.3615211-10-seanjc@google.com>
-	 <482bfea6f54ea1bb7d1ad75e03541d0ba0e5be6f.camel@intel.com>
-	 <ZUKMsOdg3N9wmEzy@google.com>
-In-Reply-To: <ZUKMsOdg3N9wmEzy@google.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.48.4 (3.48.4-1.fc38) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL1PR11MB5978:EE_|CO1PR11MB5010:EE_
-x-ms-office365-filtering-correlation-id: 47e48193-2c2d-418e-8bdc-08dbdb5234cb
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: EfDoU1c8UDpiyCZy9LV6Qq2LSKxb7qcrspO0WyQeYfc9EqZFq/LXIvB32jeN9XS1hheIHy+tDSOrraKRtKXqQIgoe2R/KoA6VG9SMFDe7zfVl0izmyoZYitImgZEGi5Rhh3/QIKl8ABHneq5jMTGcM35u1Ijzd64+2RHwF97QtiyOmWjZs+xOt3Y0jnQ2DeDIdeCx5BuAlz1k9UB+5U/z6bjPDZNDKu7I+pFjUajfXeCgyCtFf0YRzNx1/v3kYwjnWNmOk12Pb2idlfCBPLJFMGljy46xdq1qOFToDb9hroJcPkS+lPDoUuxyOJOIGnOJ2igLWxHjb1Ng9hFFVBmWOceYe5MCsq9G20OdLBZd/IfRpjMB40am/PjcDTqTWYZklXO82BuCu1exptwPsLI/6Wd9tDvOSgGfLmMTYBvnxvU9rNkcfRzGzJpbqvQ94FBYOultw3jUz2XN4Two45Oh9fE78MRQ7SsenqgAHIp4d3u0NMLqEyUO+vb/JJkQCSF9qajU0j7bTDoBYuOQYeM8sOYlCIGhluGx7yCbJ6MuQK3alKLsQ1kbNz8R/fy80p3748HdAOK4P4UcHErtjQDg9HhV2pVFmOfdyTCFwUjLzw=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR11MB5978.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(39860400002)(136003)(346002)(376002)(396003)(230922051799003)(64100799003)(451199024)(1800799009)(186009)(6506007)(26005)(6512007)(2616005)(38100700002)(122000001)(36756003)(86362001)(38070700009)(83380400001)(82960400001)(7406005)(66946007)(4326008)(8676002)(8936002)(7416002)(5660300002)(76116006)(316002)(66446008)(91956017)(2906002)(66476007)(64756008)(66556008)(6916009)(54906003)(71200400001)(966005)(6486002)(41300700001)(478600001);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?QkoyeFNCNitYWHczeGV2L0Z6bDM5a2hkUWJmYk5nVTBjYTc1alA4eDc5Q3ND?=
- =?utf-8?B?cVhNOTRYM1d1NnFvRzJnbEdmTVVBWmRMdStqQ0JIa2ZlbHp5RnRFVTlzdEw3?=
- =?utf-8?B?NDdISlFuL2RhWHBKdnZHcFg5UGtveGFscWR1Q2FxZFd3cVMwY0ltbXd4dEFH?=
- =?utf-8?B?THg1U0RkUHNXUVNscnNic3RmaWgrODNoTHN6RUhjaU1RQWU5V0xlemVLc1Ru?=
- =?utf-8?B?ZFpsQVVRVkNzTDNuK0NXMVRxMi9hZmxCdHNTemU4SXRSVktteDA5SkJzbnp4?=
- =?utf-8?B?Z0RzdDJndThQVC9BcGYrMzRRVGQycFBkYmJOWU4xaHpucW40SDQ2QWhxTito?=
- =?utf-8?B?NTRXMXl5eXRDSHdqMkMwbG5YY25RSFFBMEcvUlFFSzBubDBsejdrZ1lDYlky?=
- =?utf-8?B?aDNUZnJFRU5mWXl6TlhkaHlpTzNqMzgraS9tdUVDbGZtNFk1aVlXUkJTUFdW?=
- =?utf-8?B?MEJjR0t3bzNKcDhxbkZ6bGZDQjFzVTlRSk9zT3lITTIwSklJZmxqVm9GRUhm?=
- =?utf-8?B?S1RUYjhTaWtNcUNxTEF2eURuT0Y2NTVHQnNjNVJtd3VrNlhTenRXb3owSWpp?=
- =?utf-8?B?djlSUWRVNjUxSXVDM2ZwdDh2OUFhMzBtYUszMzZvRlZhY2RybTRyUlNsWFV6?=
- =?utf-8?B?ZVc5STRaSzlsQjNrV1ljS00ra0k3ajJLazd1d05heUhjWks2V0xCMEFlS0Np?=
- =?utf-8?B?UlhPVjJsZzZIeDc3SmhwZThGaWFNMW16dVlyLzc1TXR3VmJZclphTEdFQ1hB?=
- =?utf-8?B?alJTYW9pZ1MvOUpxYVdremlLdFAySDQveE94citEV0tGWUVybXZCMHJSbnc1?=
- =?utf-8?B?alJjT2NxdUFiWjhVOXJKRTQ5TmY2ZVJkOVZPUng2K0h2UWMxMzNETVVxWGRY?=
- =?utf-8?B?ekRRbHMvMWZCMFFlUUN4UWR6THhzV1Nvb09RMFg3TnZNSVJPNXVhUFhhTUZC?=
- =?utf-8?B?YVBNcENDdktXTG5UTHRFaWFuRlpxSjVCT0ZhOE83ZjFtRG9rQnV5amtsRzZB?=
- =?utf-8?B?bVhYRDQ0cmdTS0F6Q1pEamZJb2xIbExCOFZodHdGekVuNmsyS1Bhekcwc3Fv?=
- =?utf-8?B?UTd6YnVJWTkvL205TVZxYW1CMGloT0ZabnM4My9iYXQ5NkRNbERUcFkxQ1N1?=
- =?utf-8?B?UXlUeEgrNkZONXo3Z1ZDUGNzVnQvQUYxNmZVbUd5SEs0c2JDaXVuTzN0UWlu?=
- =?utf-8?B?d3JiSHVxWnM5dkN1VG0wYXVPc1dESVk2TXBKM0JSczNOMlpFUzJ1TFAwb1NK?=
- =?utf-8?B?VndUV216enJwam9wdVhmVTloVEZIcEM0Y2prOEVicjhYUXJNcXFrUWplb3lo?=
- =?utf-8?B?c3JleXJPTm1CeWVzMU1adVFzcFl5YkFYTHN1aENjQTFWVEZUYkJQdUhQTXRC?=
- =?utf-8?B?TXhaTzNQMnpxWGNhNnNPbGNtZFhUanZURWhNZCs4VGI1cW1zb2hUYjk3bGpR?=
- =?utf-8?B?WUljYWJBdzJHUmNZd0F1S1RhQVdSaXdNUGNEMW43eFliZ0VncDdwaHl1dTdm?=
- =?utf-8?B?bDkwY3ZNUzJOUWI3Tk9ZYU83N2cxL09IOEk1R3UvVHFNb2E0NUhYMGRTdGc5?=
- =?utf-8?B?YVBlSTN6c21LWTNTTGgvYlordldHNnVFUEg2Z0JTRFRVM0lIRmE2SzErcGlT?=
- =?utf-8?B?bko2ZmROckNGcGY1dkZLaktEYUxqaHUzNHpiUkdXUTY3ZDZHSG13U2l5TUJt?=
- =?utf-8?B?WTdvN3ZUTGxSUGY1QWxiaHI1RGo3ZXdOZlR1V25rV0M1aWpjUlgyRldSRSth?=
- =?utf-8?B?NXdXVElERzJxMTVDTGF4NkEvc1lYVExycGc2ZG1aQ2JkeVhDLzZWUzBRSXV2?=
- =?utf-8?B?bjg2dW1scUNscG5TZ2p6bmp6cStaRWp5ZVkzV0JNRlI4K3FBUlhaRUtBakg3?=
- =?utf-8?B?dTdxWVZsdElOUXlCbnMxcFFabEJxdmorNDFYL2dvYzRPYTJjVTlLc2p6bnJO?=
- =?utf-8?B?Tm4xRW93bE4weVppNnpLZW5CZ0ozRzU3aEYvT3RWbE9PdVU1b3BDNmE4SzFh?=
- =?utf-8?B?WlpGVStqZjUyQjhzZEtDK1VoYnhyTG91c1pDRnF6WDVLNXczRXFtUnlVRThV?=
- =?utf-8?B?bVJFdTVvYnhrYzNsTGYwUFVLcjhpdkVJQTRkSVFCQkVZc0o3QWhwWDNjUkJD?=
- =?utf-8?B?ZnQ5eVBqOExmUzhxWDFncDFpUGN3cmw5NkMvK3RLM0N4REtNY2xvTjhvSDYz?=
- =?utf-8?B?MHc9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <0861DBF72B07F54483DC2732B6675773@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SLXl046jBz3bwL
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Nov 2023 16:39:55 +1100 (AEDT)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3A25HmAZ005798;
+	Thu, 2 Nov 2023 05:39:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=RBgfinWgMqkBKLBLRAm2sM9PdeO8ipbYJS1DdXhVd4U=;
+ b=SUOr56gu2KYgrcjW1mQ0h8+mWU/SmNlghR0I6pFb/V29srMinlpA7y5wmPKAEQoDTRpi
+ mZTR1TlKXm3vapJFbcG/pFFXubkIOCm6nkXwlycuzGFXO3ASX6CNnwnmJ7qBc4Dp2jdY
+ wZonlWbbN9A4HHRfJk3IK3hBQDibBBUtVcQ3DMwjF5QLlPS7ofvCY7CHqI0tpVh+POHV
+ xdYKgKwc4O4uxThbY+B55mO5W4IxYnZ/PqJrEBpG4pxFT6FE41lCSd8YzEwJRK673ceH
+ iIBfkZKc/ncUeBKB6PIJy+/j7WnkxkCL/Ay58Q3OTbvu6IN9pd9T9EDyIsCc8DFGA4+0 0A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u45g80eyc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Nov 2023 05:39:43 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3A25PGFr022619;
+	Thu, 2 Nov 2023 05:39:43 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u45g80exx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Nov 2023 05:39:42 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3A22ZEvt031452;
+	Thu, 2 Nov 2023 05:39:41 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3u1fb2bvy5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Nov 2023 05:39:41 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3A25df3S25297436
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 2 Nov 2023 05:39:41 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6070458057;
+	Thu,  2 Nov 2023 05:39:41 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 388BB58059;
+	Thu,  2 Nov 2023 05:39:39 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.109.212.144])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  2 Nov 2023 05:39:38 +0000 (GMT)
+X-Mailer: emacs 29.1 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 37/37] powerpc: Support execute-only on all powerpc
+In-Reply-To: <4283ea9cbef9ff2fbee468904800e1962bc8fc18.1695659959.git.christophe.leroy@csgroup.eu>
+References: <cover.1695659959.git.christophe.leroy@csgroup.eu>
+ <4283ea9cbef9ff2fbee468904800e1962bc8fc18.1695659959.git.christophe.leroy@csgroup.eu>
+Date: Thu, 02 Nov 2023 11:09:37 +0530
+Message-ID: <874ji4af3a.fsf@linux.ibm.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5978.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 47e48193-2c2d-418e-8bdc-08dbdb5234cb
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Nov 2023 03:17:12.2131
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: aCKU5CTD/JyZJ9aM+C2h/3lLgEPHhYDBNL2xeIN09mQb/VX+vhWQDqcDJmZJn78t+HDC58/X5duEH/NYuTUYLg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB5010
-X-OriginatorOrg: intel.com
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 9577bBYKCj9KXZKm1Qv7MUoJ15OaEDsU
+X-Proofpoint-GUID: txbHpqEf3uG5z7b5bRkUePHFJToqarF1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-01_23,2023-11-01_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
+ clxscore=1011 priorityscore=1501 mlxlogscore=999 impostorscore=0
+ bulkscore=0 malwarescore=0 lowpriorityscore=0 adultscore=0 phishscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310240000 definitions=main-2311020043
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -175,61 +98,231 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "david@redhat.com" <david@redhat.com>, "paul.walmsley@sifive.com" <paul.walmsley@sifive.com>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "mic@digikod.net" <mic@digikod.net>, "chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "isaku.yamahata@gmail.com" <isaku.yamahata@gmail.com>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "Li, Xiaoyao" <xiaoyao.li@intel.com>, "willy@infradead.org" <willy@infradead.org>, "Wang, Wei W" <wei.w.wang@intel.com>, "vbabka@suse.cz" <vbabka@suse.cz>, "yu.c.zhang@linux.intel.com" <yu.c.zhang@linux.intel.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "mail@maciej.szmigiero.name" <mail@maciej.szmigiero.name>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, "michael.roth@amd.com" <michael.roth@amd.com>, "ackerleytng@google.com" <ackerle
- ytng@google.com>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "liam.merwick@oracle.com" <liam.merwick@oracle.com>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, "tabba@google.com" <tabba@google.com>, "Yamahata, Isaku" <isaku.yamahata@intel.com>, "brauner@kernel.org" <brauner@kernel.org>, "qperret@google.com" <qperret@google.com>, "anup@brainfault.org" <anup@brainfault.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>, "dmatlack@google.com" <dmatlack@google.com>, "jarkko@kernel.org" <jarkko@kernel.org>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>, "kvm-riscv@lists.infradead.org" <kvm-riscv@lists.infradead.org>, "maz@kernel.org" <maz@kernel.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "Annapurve, Vishal" <vannap
- urve@google.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "Xu, Yilun" <yilun.xu@intel.com>, "amoorthy@google.com" <amoorthy@google.com>
+Cc: Kees Cook <keescook@chromium.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Russell Currey <ruscur@russell.cc>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gV2VkLCAyMDIzLTExLTAxIGF0IDEwOjM2IC0wNzAwLCBTZWFuIENocmlzdG9waGVyc29uIHdy
-b3RlOg0KPiBPbiBXZWQsIE5vdiAwMSwgMjAyMywgS2FpIEh1YW5nIHdyb3RlOg0KPiA+IA0KPiA+
-ID4gKzcuMzQgS1ZNX0NBUF9NRU1PUllfRkFVTFRfSU5GTw0KPiA+ID4gKy0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLQ0KPiA+ID4gKw0KPiA+ID4gKzpBcmNoaXRlY3R1cmVzOiB4ODYNCj4g
-PiA+ICs6UmV0dXJuczogSW5mb3JtYXRpb25hbCBvbmx5LCAtRUlOVkFMIG9uIGRpcmVjdCBLVk1f
-RU5BQkxFX0NBUC4NCj4gPiA+ICsNCj4gPiA+ICtUaGUgcHJlc2VuY2Ugb2YgdGhpcyBjYXBhYmls
-aXR5IGluZGljYXRlcyB0aGF0IEtWTV9SVU4gd2lsbCBmaWxsDQo+ID4gPiAra3ZtX3J1bi5tZW1v
-cnlfZmF1bHQgaWYgS1ZNIGNhbm5vdCByZXNvbHZlIGEgZ3Vlc3QgcGFnZSBmYXVsdCBWTS1FeGl0
-LCBlLmcuIGlmDQo+ID4gPiArdGhlcmUgaXMgYSB2YWxpZCBtZW1zbG90IGJ1dCBubyBiYWNraW5n
-IFZNQSBmb3IgdGhlIGNvcnJlc3BvbmRpbmcgaG9zdCB2aXJ0dWFsDQo+ID4gPiArYWRkcmVzcy4N
-Cj4gPiA+ICsNCj4gPiA+ICtUaGUgaW5mb3JtYXRpb24gaW4ga3ZtX3J1bi5tZW1vcnlfZmF1bHQg
-aXMgdmFsaWQgaWYgYW5kIG9ubHkgaWYgS1ZNX1JVTiByZXR1cm5zDQo+ID4gPiArYW4gZXJyb3Ig
-d2l0aCBlcnJubz1FRkFVTFQgb3IgZXJybm89RUhXUE9JU09OICphbmQqIGt2bV9ydW4uZXhpdF9y
-ZWFzb24gaXMgc2V0DQo+ID4gPiArdG8gS1ZNX0VYSVRfTUVNT1JZX0ZBVUxULg0KPiA+IA0KPiA+
-IElJVUMgcmV0dXJuaW5nIC1FRkFVTFQgb3Igd2hhdGV2ZXIgLWVycm5vIGlzIHNvcnQgb2YgS1ZN
-IGludGVybmFsDQo+ID4gaW1wbGVtZW50YXRpb24uDQo+IA0KPiBUaGUgZXJybm8gdGhhdCBpcyBy
-ZXR1cm5lZCB0byB1c2Vyc3BhY2UgaXMgQUJJLiAgSW4gS1ZNLCBpdCdzIGEgX3ZlcnlfIHBvb3Js
-eQ0KPiBkZWZpbmVkIEFCSSBmb3IgdGhlIHZhc3QgbWFqb3JpdHkgb2YgaW9jdGxzKCksIGJ1dCBp
-dCdzIHN0aWxsIHRlY2huaWNhbGx5IEFCSS4NCj4gS1ZNIGdldHMgYXdheSB3aXRoIGJlaW5nIGNh
-dmFsaWVyIHdpdGggZXJybm8gYmVjYXVzZSB0aGUgdmFzdCBtYWpvcml0eSBvZiBlcnJvcnMNCj4g
-YXJlIGNvbnNpZGVyZWQgZmF0YWwgYnkgdXNlcmVzcGFjZSwgaS5lLiBpbiBtb3N0IGNhc2VzLCB1
-c2Vyc3BhY2Ugc2ltcGx5IGRvZXNuJ3QNCj4gY2FyZSBhYm91dCB0aGUgZXhhY3QgZXJybm8uDQo+
-IA0KPiBBIGdvb2QgZXhhbXBsZSBpcyBLVk1fUlVOIHdpdGggLUVJTlRSOyBpZiBLVk0gd2VyZSB0
-byByZXR1cm4gc29tZXRoaW5nIG90aGVyIHRoYW4NCj4gLUVJTlRSIG9uIGEgcGVuZGluZyBzaWdu
-YWwgb3IgdmNwdS0+cnVuLT5pbW1lZGlhdGVfZXhpdCwgdXNlcnNwYWNlIHdvdWxkIGZhbGwgb3Zl
-ci4NCj4gDQo+ID4gSXMgaXQgYmV0dGVyIHRvIHJlbGF4IHRoZSB2YWxpZGl0eSBvZiBrdm1fcnVu
-Lm1lbW9yeV9mYXVsdCB3aGVuDQo+ID4gS1ZNX1JVTiByZXR1cm5zIGFueSAtZXJybm8/DQo+IA0K
-PiBOb3QgdW5sZXNzIHRoZXJlJ3MgYSBuZWVkIHRvIGRvIHNvLCBhbmQgaWYgdGhlcmUgaXMgdGhl
-biB3ZSBjYW4gdXBkYXRlIHRoZQ0KPiBkb2N1bWVudGF0aW9uIGFjY29yZGluZ2x5LiAgSWYgS1ZN
-J3MgQUJJIGlzIHRoYXQga3ZtX3J1bi5tZW1vcnlfZmF1bHQgaXMgdmFsaWQNCj4gZm9yIGFueSBl
-cnJubywgdGhlbiBLVk0gd291bGQgbmVlZCB0byBwdXJnZSBrdm1fcnVuLmV4aXRfcmVhc29uIHN1
-cGVyIGVhcmx5IGluDQo+IEtWTV9SVU4sIGUuZy4gdG8gcHJldmVudCBhbiAtRUlOVFIgcmV0dXJu
-IGR1ZSB0byBpbW1lZGlhdGVfZXhpdCBmcm9tIGJlaW5nDQo+IG1pc2ludGVycHJldGVkIGFzIEtW
-TV9FWElUX01FTU9SWV9GQVVMVC4gIEFuZCBwdXJnaW5nIGV4aXRfcmVhc29uIHN1cGVyIGVhcmx5
-IGlzDQo+IHN1YnRseSB0cmlja3kgYmVjYXVzZSBLVk0ncyAoYWdhaW4sIHBvb3JseSBkb2N1bWVu
-dGVkKSBBQkkgaXMgdGhhdCAqc29tZSogZXhpdA0KPiByZWFzb25zIGFyZSBwcmVzZXJ2ZWQgYWNy
-b3NzIEtWTV9SVU4gd2l0aCB2Y3B1LT5ydW4tPmltbWVkaWF0ZV9leGl0IChvciB3aXRoIGENCj4g
-cGVuZGluZyBzaWduYWwpLg0KPiANCj4gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvYWxsL1pGRmJ3
-T1haNXVJJTJGZ2RhZkBnb29nbGUuY29tDQo+IA0KPiANCg0KQWdyZWVkIHdpdGggbm90IHRvIHJl
-bGF4IHRvIGFueSBlcnJuby4gIEhvd2V2ZXIgdXNpbmcgLUVGQVVMVCBhcyBwYXJ0IG9mIEFCSQ0K
-ZGVmaW5pdGlvbiBzZWVtcyBhIGxpdHRsZSBiaXQgZGFuZ2Vyb3VzLCBlLmcuLCBzb21lb25lIGNv
-dWxkIGFjY2lkZW50YWxseSBvcg0KbWlzdGFrZW5seSByZXR1cm4gLUVGQVVMVCBpbiBLVk1fUlVO
-IGF0IGVhcmx5IHRpbWUgYW5kL29yIGluIGEgY29tcGxldGVseQ0KZGlmZmVyZW50IGNvZGUgcGF0
-aCwgZXRjLiDCoC1FSU5UUiBoYXMgd2VsbCBkZWZpbmVkIG1lYW5pbmcsIGJ1dCAtRUZBVUxUICh3
-aGljaA0KaXMgIkJhZCBhZGRyZXNzIikgc2VlbXMgZG9lc24ndCBidXQgSSBhbSBub3Qgc3VyZSBl
-aXRoZXIuIDotKQ0KDQpPbmUgZXhhbXBsZSBpcywgZm9yIGJhY2tpbmcgVk1BIHdpdGggVk1fSU8g
-fCBWTV9QRk5NQVAsIGh2YV90b19wZm4oKSByZXR1cm5zDQpLVk1fUEZOX0VSUl9GQVVMVCB3aGVu
-IHRoZSBrZXJuZWwgY2Fubm90IGdldCBhIHZhbGlkIFBGTiAoZS5nLiB3aGVuIFNHWCB2ZXBjDQpm
-YXVsdCBoYW5kbGVyIGZhaWxlZCB0byBhbGxvY2F0ZSBFUEMpIGFuZCBrdm1faGFuZGxlX2Vycm9y
-X3BmbigpIHdpbGwganVzdA0KcmV0dXJuIC1FRkFVTFQuICBJZiBrdm1fcnVuLmV4aXRfcmVhc29u
-IGlzbid0IHB1cmdlZCBlYXJseSB0aGVuIGlzIGl0IHBvc3NpYmxlDQp0byBoYXZlIHNvbWUgaXNz
-dWUgaGVyZT8NCg0KDQo=
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+
+> Introduce PAGE_EXECONLY_X macro which provides exec-only rights.
+> The _X may be seen as redundant with the EXECONLY but it helps
+> keep consistancy, all macros having the EXEC right have _X.
+>
+> And put it next to PAGE_NONE as PAGE_EXECONLY_X is
+> somehow PAGE_NONE + EXEC just like all other SOMETHING_X are
+> just SOMETHING + EXEC.
+>
+> On book3s/64 PAGE_EXECONLY becomes PAGE_READONLY_X.
+>
+> On book3s/64, as PAGE_EXECONLY is only valid for Radix add
+> VM_READ flag in vm_get_page_prot() for non-Radix.
+>
+> And update access_error() so that a non exec fault on a VM_EXEC only
+> mapping is always invalid, even when the underlying layer don't
+> always generate a fault for that.
+>
+> For 8xx, set PAGE_EXECONLY_X as _PAGE_NA | _PAGE_EXEC.
+> For others, only set it as just _PAGE_EXEC
+>
+> With that change, 8xx, e500 and 44x fully honor execute-only
+> protection.
+>
+> On 40x that is a partial implementation of execute-only. The
+> implementation won't be complete because once a TLB has been loaded
+> via the Instruction TLB miss handler, it will be possible to read
+> the page. But at least it can't be read unless it is executed first.
+>
+> On 603 MMU, TLB missed are handled by SW and there are separate
+> DTLB and ITLB. Execute-only is therefore now supported by not loading
+> DTLB when read access is not permitted.
+>
+> On hash (604) MMU it is more tricky because hash table is common to
+> load/store and execute. Nevertheless it is still possible to check
+> whether _PAGE_READ is set before loading hash table for a load/store
+> access. At least it can't be read unless it is executed first.
+>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Russell Currey <ruscur@russell.cc>
+> Cc: Kees Cook <keescook@chromium.org>
+> ---
+>  arch/powerpc/include/asm/book3s/32/pgtable.h |  2 +-
+>  arch/powerpc/include/asm/book3s/64/pgtable.h |  4 +---
+>  arch/powerpc/include/asm/nohash/32/pte-8xx.h |  1 +
+>  arch/powerpc/include/asm/nohash/pgtable.h    |  2 +-
+>  arch/powerpc/include/asm/nohash/pte-e500.h   |  1 +
+>  arch/powerpc/include/asm/pgtable-masks.h     |  2 ++
+>  arch/powerpc/mm/book3s64/pgtable.c           | 10 ++++------
+>  arch/powerpc/mm/fault.c                      |  9 +++++----
+>  arch/powerpc/mm/pgtable.c                    |  4 ++--
+>  9 files changed, 18 insertions(+), 17 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/include/asm/book3s/32/pgtable.h
+> index 244621c88510..52971ee30717 100644
+> --- a/arch/powerpc/include/asm/book3s/32/pgtable.h
+> +++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
+> @@ -425,7 +425,7 @@ static inline bool pte_access_permitted(pte_t pte, bool write)
+>  {
+>  	/*
+>  	 * A read-only access is controlled by _PAGE_READ bit.
+> -	 * We have _PAGE_READ set for WRITE and EXECUTE
+> +	 * We have _PAGE_READ set for WRITE
+>  	 */
+>  	if (!pte_present(pte) || !pte_read(pte))
+>  		return false; 
+>
+
+Should this now be updated to check for EXEC bit ? 
+
+> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+> index 0fd12bdc7b5e..751b01227e36 100644
+> --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
+> +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+> @@ -18,6 +18,7 @@
+>  #define _PAGE_WRITE		0x00002 /* write access allowed */
+>  #define _PAGE_READ		0x00004	/* read access allowed */
+>  #define _PAGE_NA		_PAGE_PRIVILEGED
+> +#define _PAGE_NAX		_PAGE_EXEC
+>  #define _PAGE_RO		_PAGE_READ
+>  #define _PAGE_ROX		(_PAGE_READ | _PAGE_EXEC)
+>  #define _PAGE_RW		(_PAGE_READ | _PAGE_WRITE)
+> @@ -141,9 +142,6 @@
+>  
+>  #include <asm/pgtable-masks.h>
+>  
+> -/* Radix only, Hash uses PAGE_READONLY_X + execute-only pkey instead */
+> -#define PAGE_EXECONLY	__pgprot(_PAGE_BASE | _PAGE_EXEC)
+> -
+>  /* Permission masks used for kernel mappings */
+>  #define PAGE_KERNEL	__pgprot(_PAGE_BASE | _PAGE_KERNEL_RW)
+>  #define PAGE_KERNEL_NC	__pgprot(_PAGE_BASE_NC | _PAGE_KERNEL_RW | _PAGE_TOLERANT)
+> diff --git a/arch/powerpc/include/asm/nohash/32/pte-8xx.h b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+> index 1ee38befd29a..137dc3c84e45 100644
+> --- a/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+> +++ b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+> @@ -48,6 +48,7 @@
+>  
+>  #define _PAGE_HUGE	0x0800	/* Copied to L1 PS bit 29 */
+>  
+> +#define _PAGE_NAX	(_PAGE_NA | _PAGE_EXEC)
+>  #define _PAGE_ROX	(_PAGE_RO | _PAGE_EXEC)
+>  #define _PAGE_RW	0
+>  #define _PAGE_RWX	_PAGE_EXEC
+> diff --git a/arch/powerpc/include/asm/nohash/pgtable.h b/arch/powerpc/include/asm/nohash/pgtable.h
+> index f922c84b23eb..a50be1de9f83 100644
+> --- a/arch/powerpc/include/asm/nohash/pgtable.h
+> +++ b/arch/powerpc/include/asm/nohash/pgtable.h
+> @@ -203,7 +203,7 @@ static inline bool pte_access_permitted(pte_t pte, bool write)
+>  {
+>  	/*
+>  	 * A read-only access is controlled by _PAGE_READ bit.
+> -	 * We have _PAGE_READ set for WRITE and EXECUTE
+> +	 * We have _PAGE_READ set for WRITE
+>  	 */
+>  	if (!pte_present(pte) || !pte_read(pte))
+>  		return false;
+>
+
+
+Same here. if so I guess book3s/64 also will need an update?
+
+> diff --git a/arch/powerpc/include/asm/nohash/pte-e500.h b/arch/powerpc/include/asm/nohash/pte-e500.h
+> index 31d2c3ea7df8..f516f0b5b7a8 100644
+> --- a/arch/powerpc/include/asm/nohash/pte-e500.h
+> +++ b/arch/powerpc/include/asm/nohash/pte-e500.h
+> @@ -57,6 +57,7 @@
+>  #define _PAGE_KERNEL_ROX	(_PAGE_BAP_SR | _PAGE_BAP_SX)
+>  
+>  #define _PAGE_NA	0
+> +#define _PAGE_NAX	_PAGE_BAP_UX
+>  #define _PAGE_RO	_PAGE_READ
+>  #define _PAGE_ROX	(_PAGE_READ | _PAGE_BAP_UX)
+>  #define _PAGE_RW	(_PAGE_READ | _PAGE_WRITE)
+> diff --git a/arch/powerpc/include/asm/pgtable-masks.h b/arch/powerpc/include/asm/pgtable-masks.h
+> index 808a3b9e8fc0..6e8e2db26a5a 100644
+> --- a/arch/powerpc/include/asm/pgtable-masks.h
+> +++ b/arch/powerpc/include/asm/pgtable-masks.h
+> @@ -4,6 +4,7 @@
+>  
+>  #ifndef _PAGE_NA
+>  #define _PAGE_NA	0
+> +#define _PAGE_NAX	_PAGE_EXEC
+>  #define _PAGE_RO	_PAGE_READ
+>  #define _PAGE_ROX	(_PAGE_READ | _PAGE_EXEC)
+>  #define _PAGE_RW	(_PAGE_READ | _PAGE_WRITE)
+> @@ -20,6 +21,7 @@
+>  
+>  /* Permission masks used to generate the __P and __S table */
+>  #define PAGE_NONE	__pgprot(_PAGE_BASE | _PAGE_NA)
+> +#define PAGE_EXECONLY_X	__pgprot(_PAGE_BASE | _PAGE_NAX)
+>  #define PAGE_SHARED	__pgprot(_PAGE_BASE | _PAGE_RW)
+>  #define PAGE_SHARED_X	__pgprot(_PAGE_BASE | _PAGE_RWX)
+>  #define PAGE_COPY	__pgprot(_PAGE_BASE | _PAGE_RO)
+> diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+> index 8f8a62d3ff4d..be229290a6a7 100644
+> --- a/arch/powerpc/mm/book3s64/pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/pgtable.c
+> @@ -635,12 +635,10 @@ pgprot_t vm_get_page_prot(unsigned long vm_flags)
+>  	unsigned long prot;
+>  
+>  	/* Radix supports execute-only, but protection_map maps X -> RX */
+> -	if (radix_enabled() && ((vm_flags & VM_ACCESS_FLAGS) == VM_EXEC)) {
+> -		prot = pgprot_val(PAGE_EXECONLY);
+> -	} else {
+> -		prot = pgprot_val(protection_map[vm_flags &
+> -						 (VM_ACCESS_FLAGS | VM_SHARED)]);
+> -	}
+> +	if (!radix_enabled() && ((vm_flags & VM_ACCESS_FLAGS) == VM_EXEC))
+> +		vm_flags |= VM_READ;
+> +
+> +	prot = pgprot_val(protection_map[vm_flags & (VM_ACCESS_FLAGS | VM_SHARED)]);
+>  
+>  	if (vm_flags & VM_SAO)
+>  		prot |= _PAGE_SAO;
+> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+> index b1723094d464..9e49ede2bc1c 100644
+> --- a/arch/powerpc/mm/fault.c
+> +++ b/arch/powerpc/mm/fault.c
+> @@ -266,14 +266,15 @@ static bool access_error(bool is_write, bool is_exec, struct vm_area_struct *vma
+>  	}
+>  
+>  	/*
+> -	 * VM_READ, VM_WRITE and VM_EXEC all imply read permissions, as
+> -	 * defined in protection_map[].  Read faults can only be caused by
+> -	 * a PROT_NONE mapping, or with a PROT_EXEC-only mapping on Radix.
+> +	 * VM_READ, VM_WRITE and VM_EXEC may imply read permissions, as
+> +	 * defined in protection_map[].  In that case Read faults can only be
+> +	 * caused by a PROT_NONE mapping. However a non exec access on a
+> +	 * VM_EXEC only mapping is invalid anyway, so report it as such.
+>  	 */
+>  	if (unlikely(!vma_is_accessible(vma)))
+>  		return true;
+>  
+> -	if (unlikely(radix_enabled() && ((vma->vm_flags & VM_ACCESS_FLAGS) == VM_EXEC)))
+> +	if ((vma->vm_flags & VM_ACCESS_FLAGS) == VM_EXEC)
+>  		return true;
+>  
+>  	/*
+> diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
+> index 781a68c69c2f..79508c1d15d7 100644
+> --- a/arch/powerpc/mm/pgtable.c
+> +++ b/arch/powerpc/mm/pgtable.c
+> @@ -492,7 +492,7 @@ const pgprot_t protection_map[16] = {
+>  	[VM_READ]					= PAGE_READONLY,
+>  	[VM_WRITE]					= PAGE_COPY,
+>  	[VM_WRITE | VM_READ]				= PAGE_COPY,
+> -	[VM_EXEC]					= PAGE_READONLY_X,
+> +	[VM_EXEC]					= PAGE_EXECONLY_X,
+>  	[VM_EXEC | VM_READ]				= PAGE_READONLY_X,
+>  	[VM_EXEC | VM_WRITE]				= PAGE_COPY_X,
+>  	[VM_EXEC | VM_WRITE | VM_READ]			= PAGE_COPY_X,
+> @@ -500,7 +500,7 @@ const pgprot_t protection_map[16] = {
+>  	[VM_SHARED | VM_READ]				= PAGE_READONLY,
+>  	[VM_SHARED | VM_WRITE]				= PAGE_SHARED,
+>  	[VM_SHARED | VM_WRITE | VM_READ]		= PAGE_SHARED,
+> -	[VM_SHARED | VM_EXEC]				= PAGE_READONLY_X,
+> +	[VM_SHARED | VM_EXEC]				= PAGE_EXECONLY_X,
+>  	[VM_SHARED | VM_EXEC | VM_READ]			= PAGE_READONLY_X,
+>  	[VM_SHARED | VM_EXEC | VM_WRITE]		= PAGE_SHARED_X,
+>  	[VM_SHARED | VM_EXEC | VM_WRITE | VM_READ]	= PAGE_SHARED_X
+> -- 
+> 2.41.0
