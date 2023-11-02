@@ -2,72 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBC877DF7A5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Nov 2023 17:29:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B2447DF831
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Nov 2023 17:59:13 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=12CUdRVX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=TncAICxe;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SLq8n66ggz3cZm
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Nov 2023 03:29:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SLqpl1tM0z3ckc
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Nov 2023 03:59:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=12CUdRVX;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=TncAICxe;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::32c; helo=mail-wm1-x32c.google.com; envelope-from=dmatlack@google.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::235; helo=mail-oi1-x235.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SLq7w2wWWz2xdZ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Nov 2023 03:28:59 +1100 (AEDT)
-Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-4084e49a5e5so10012355e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Nov 2023 09:28:59 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SLqnr1mJQz3cVr
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Nov 2023 03:58:21 +1100 (AEDT)
+Received: by mail-oi1-x235.google.com with SMTP id 5614622812f47-3b5714439b3so649707b6e.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Nov 2023 09:58:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1698942533; x=1699547333; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=20owt2l3/cxGLzLA2xbevoL+xSQuNASMB596X3+ow7c=;
-        b=12CUdRVXKRJaxSe+5do0ag1e6ErxhrQ7BcBQJZ78xyJnckTqtWEyWZL1Nh3LKsJeOm
-         IaHdxY2VeRToMPv+KkNW+1PYk38IUO+zcyPnTLQ5A+IkK9mCIJL16PJ0YP/uqsj5sUIG
-         hxtgg83K1O5VqBR7oONrqnjQDuUIP2ED3g0RvYvxrbowcRQM+7r6PvgMl69Byop/Z9rF
-         zeO34wAMJZzMr/RXwxirqHX8mA/wh8Z3YdgcvpIwJbE8JAahXWwCKTF2NMxJ1B0Enla5
-         WezxoyjrIQi18I9F6pQjziJBvKMVDzIcRCucrwDx9SXdTmZeu/XGz27Ze95gYHD5EEMX
-         bUVA==
+        d=linaro.org; s=google; t=1698944299; x=1699549099; darn=lists.ozlabs.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=DfyS21pSAaN9Ul5DPXfGOsxbkU+EJCrhzTnYRsGJibU=;
+        b=TncAICxeuz4KO+ZiuEFXTDGmDtEg9Go5hq20plVja9WJIRWVTMC0jBBhvDHebaO9fA
+         qgsSOfOVBjJUnUzt/sOc0zS0hC6V/tZ44gUHdB5wXhPpNDafdEl7x3Coqjj8jxKEa8RB
+         rd62o8eGN+mzOcPSNDPkUyKJwdWK1nm+lr8qiUaXMvcqSFYl86f0xTThv7t1F+52TIyS
+         PmSaDMXdN26Pldeitbx1Zb44FpryQJs/SmdjD6DlmZb15jTsbXBaqI/UKpTEPK64Ut1f
+         0he1GmrjMrG49I+ou/DJuS+YO/BvG5lnQhyO3hi1azPwrACXA+eBs6TqfwQCScBQVgxc
+         q9Gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698942533; x=1699547333;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=20owt2l3/cxGLzLA2xbevoL+xSQuNASMB596X3+ow7c=;
-        b=nwdWrLnFA4pwDo3xHaQP2qYosFdQT4aqLA1cUMIICZErI8bWVd+db6Eif7oXyUdL2A
-         ZvEFxZNYGmkjUe1ny2lG0LAx6BVNpe5/Owi6p7DScWGQE6nm6fAf50wb7jVA5Lj4SpGc
-         H4hR8sNJr3KeqLvZ8ziJf+oQpUSAhSDsUdo1Vplzsc4kSaRLl2tQ8ITDTqFWTdE5breI
-         Qy3bXtHHfIw753KGgqjS9Vbv81ckZNJIyr2ffQwR8zfR6i5A2qFQo5hQjjaOMKir8yuI
-         5Z2Kx8fJH1/XuIp3Q4Yn1vBSk8fbD2cnOtwm3OuZufwAdeMFPLKrhp8yino/i8z7iHY4
-         kgLg==
-X-Gm-Message-State: AOJu0YyWoo3p6ZKHq5noKmjc5JCgRS2mSMGtOTL461QqXgpg/MZg6IIr
-	ZOFscDLM+Jfwn0/zxayU2Qql1dVDPLXoiNSNrNKsVA==
-X-Google-Smtp-Source: AGHT+IGzC+UPQWsYSxEKly7WToGYHThIxdsAXI0NVkPIoloyom3O4LGBjzNagfuu2dI4j91jKOVPOWF7c1N4gZ20sPc=
-X-Received: by 2002:a5d:4b51:0:b0:32d:8e54:29f6 with SMTP id
- w17-20020a5d4b51000000b0032d8e5429f6mr14415276wrs.47.1698942532901; Thu, 02
- Nov 2023 09:28:52 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1698944299; x=1699549099;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DfyS21pSAaN9Ul5DPXfGOsxbkU+EJCrhzTnYRsGJibU=;
+        b=FHPWSmLRy2JvA8U9oRb/HFnXr9OX0E3072u9fY0E1qsVBhT5kW1TikqTVQaEl1gxr+
+         0aVgGg5cBQAeX/ndm6cGb2fAVPcUnNKk36GcKka8rinbWP+nXXmhmXG3Z6Mr2p6KTeZD
+         x3tjacULwB4nyyJg4iTgNgFtYoWDT2iydTZGVtddl1SmUIveVieKrjhMDKz1F1/TaarJ
+         5vCB0YtTzetUSZ+oFSTN21L3jiP2hsZUBbJ6ESqEvTFMhEbPwVeUzaS7p9Tvvvkj3tsI
+         mt++qDLTxMrdNxN2Do/vq1kZwW6XhLEivHRPKK6BPnUOF96JZlG3TIfE9HVZH3kzA7UZ
+         4x2g==
+X-Gm-Message-State: AOJu0YyAsVYdF93uXHOK9KvUrLcxYARA0ucu+eyEKZMx51d5iv0AFtIJ
+	07IbsBgk4OYXXIG5pBrQcY0S
+X-Google-Smtp-Source: AGHT+IGcPZMPmb6P3crHIYT6MoFFJH19w/pybMCanZfpyJq0eFqq7TsGozYLDzAec+P33O2PTiZXzg==
+X-Received: by 2002:a05:6808:209f:b0:3ad:fe8d:dfae with SMTP id s31-20020a056808209f00b003adfe8ddfaemr20056494oiw.57.1698944298897;
+        Thu, 02 Nov 2023 09:58:18 -0700 (PDT)
+Received: from thinkpad ([117.217.189.228])
+        by smtp.gmail.com with ESMTPSA id z26-20020a05620a08da00b0077263636a95sm89742qkz.93.2023.11.02.09.58.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Nov 2023 09:58:18 -0700 (PDT)
+Date: Thu, 2 Nov 2023 22:28:08 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 1/4] PCI: layerscape: Add function pointer for
+ exit_from_l2()
+Message-ID: <20231102165808.GC20943@thinkpad>
+References: <20231017193145.3198380-1-Frank.Li@nxp.com>
+ <20231017193145.3198380-2-Frank.Li@nxp.com>
 MIME-Version: 1.0
-References: <20231027182217.3615211-1-seanjc@google.com> <20231027182217.3615211-17-seanjc@google.com>
- <ZUFGRyQEuWj4RJS0@google.com> <ZUFzZf-YmCRYP6qo@google.com>
- <CALzav=d9eXZfK=op7A=UftbpuPpUbxqV6CmkqqxxBNuNsUU4nw@mail.gmail.com>
- <6642c379-1023-4716-904f-4bbf076744c2@redhat.com> <ZUPIXt1XzZrriswG@google.com>
-In-Reply-To: <ZUPIXt1XzZrriswG@google.com>
-From: David Matlack <dmatlack@google.com>
-Date: Thu, 2 Nov 2023 09:28:23 -0700
-Message-ID: <CALzav=eaVc5rzmHwnQr7aotyTKi9Agdte7NAL0NvBeE+f6zYoA@mail.gmail.com>
-Subject: Re: [PATCH v13 16/35] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
- guest-specific backing memory
-To: Sean Christopherson <seanjc@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231017193145.3198380-2-Frank.Li@nxp.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,62 +81,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Vlastimil Babka <vbabka@suse.cz>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, Isaku Yamahata <isaku.yamahata@intel.com>, Christian Brauner <brauner@kernel.org>, Quentin Perret <qperret@google.com>, L
- iam Merwick <liam.merwick@oracle.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Jarkko Sakkinen <jarkko@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Xu Yilun <yilun.xu@intel.com>, Anish Moorthy <amoorthy@google.com>
+Cc: imx@lists.linux.dev, kw@linux.com, linux-pci@vger.kernel.org, lpieralisi@kernel.org, linux-kernel@vger.kernel.org, minghuan.Lian@nxp.com, mingkai.hu@nxp.com, roy.zang@nxp.com, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org, robh@kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Nov 2, 2023 at 9:03=E2=80=AFAM Sean Christopherson <seanjc@google.c=
-om> wrote:
->
-> On Thu, Nov 02, 2023, Paolo Bonzini wrote:
-> > On 10/31/23 23:39, David Matlack wrote:
-> > > > > Maybe can you sketch out how you see this proposal being extensib=
-le to
-> > > > > using guest_memfd for shared mappings?
-> > > > For in-place conversions, e.g. pKVM, no additional guest_memfd is n=
-eeded.  What's
-> > > > missing there is the ability to (safely) mmap() guest_memfd, e.g. K=
-VM needs to
-> > > > ensure there are no outstanding references when converting back to =
-private.
-> > > >
-> > > > For TDX/SNP, assuming we don't find a performant and robust way to =
-do in-place
-> > > > conversions, a second fd+offset pair would be needed.
-> > > Is there a way to support non-in-place conversions within a single gu=
-est_memfd?
-> >
-> > For TDX/SNP, you could have a hook from KVM_SET_MEMORY_ATTRIBUTES to gu=
-est
-> > memory.  The hook would invalidate now-private parts if they have a VMA=
-,
-> > causing a SIGSEGV/EFAULT if the host touches them.
-> >
-> > It would forbid mappings from multiple gfns to a single offset of the
-> > guest_memfd, because then the shared vs. private attribute would be tie=
-d to
-> > the offset.  This should not be a problem; for example, in the case of =
-SNP,
-> > the RMP already requires a single mapping from host physical address to
-> > guest physical address.
->
-> I don't see how this can work.  It's not a M:1 scenario (where M is multi=
-ple gfns),
-> it's a 1:N scenario (wheren N is multiple offsets).  The *gfn* doesn't ch=
-ange on
-> a conversion, what needs to change to do non-in-place conversion is the p=
-fn, which
-> is effectively the guest_memfd+offset pair.
->
-> So yes, we *could* support non-in-place conversions within a single guest=
-_memfd,
-> but it would require a second offset,
+On Tue, Oct 17, 2023 at 03:31:42PM -0400, Frank Li wrote:
+> Since difference SoCs require different sequence for exiting L2, let's add
+> a separate "exit_from_l2()" callback. This callback can be used to execute
+> SoC specific sequence.
+> 
 
-Why can't KVM free the existing page at guest_memfd+offset and
-allocate a new one when doing non-in-place conversions?
+I missed the fact that this patch honors the return value of the callback (which
+was ignored previously). So this should be added to the description as well.
 
-> at which point it makes sense to add a
-> second file descriptor as well.  Userspace could still use a single guest=
-_memfd
-> instance, i.e. pass in the same file descriptor but different offsets.
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+With that,
+
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+
+- Mani
+
+> ---
+> 
+> Notes:
+>     Change from v2 to v3
+>     - fixed according to mani's feedback
+>       1. update commit message
+>       2. move dw_pcie_host_ops to next patch
+>       3. check return value from exit_from_l2()
+>     Change from v1 to v2
+>     - change subject 'a' to 'A'
+>     
+>     Change from v1 to v2
+>     - change subject 'a' to 'A'
+> 
+>  drivers/pci/controller/dwc/pci-layerscape.c | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
+> index 37956e09c65bd..aea89926bcc4f 100644
+> --- a/drivers/pci/controller/dwc/pci-layerscape.c
+> +++ b/drivers/pci/controller/dwc/pci-layerscape.c
+> @@ -39,6 +39,7 @@
+>  
+>  struct ls_pcie_drvdata {
+>  	const u32 pf_off;
+> +	int (*exit_from_l2)(struct dw_pcie_rp *pp);
+>  	bool pm_support;
+>  };
+>  
+> @@ -125,7 +126,7 @@ static void ls_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
+>  		dev_err(pcie->pci->dev, "PME_Turn_off timeout\n");
+>  }
+>  
+> -static void ls_pcie_exit_from_l2(struct dw_pcie_rp *pp)
+> +static int ls_pcie_exit_from_l2(struct dw_pcie_rp *pp)
+>  {
+>  	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+>  	struct ls_pcie *pcie = to_ls_pcie(pci);
+> @@ -150,6 +151,8 @@ static void ls_pcie_exit_from_l2(struct dw_pcie_rp *pp)
+>  				 10000);
+>  	if (ret)
+>  		dev_err(pcie->pci->dev, "L2 exit timeout\n");
+> +
+> +	return ret;
+>  }
+>  
+>  static int ls_pcie_host_init(struct dw_pcie_rp *pp)
+> @@ -180,6 +183,7 @@ static const struct ls_pcie_drvdata ls1021a_drvdata = {
+>  static const struct ls_pcie_drvdata layerscape_drvdata = {
+>  	.pf_off = 0xc0000,
+>  	.pm_support = true,
+> +	.exit_from_l2 = ls_pcie_exit_from_l2,
+>  };
+>  
+>  static const struct of_device_id ls_pcie_of_match[] = {
+> @@ -247,11 +251,14 @@ static int ls_pcie_suspend_noirq(struct device *dev)
+>  static int ls_pcie_resume_noirq(struct device *dev)
+>  {
+>  	struct ls_pcie *pcie = dev_get_drvdata(dev);
+> +	int ret;
+>  
+>  	if (!pcie->drvdata->pm_support)
+>  		return 0;
+>  
+> -	ls_pcie_exit_from_l2(&pcie->pci->pp);
+> +	ret = pcie->drvdata->exit_from_l2(&pcie->pci->pp);
+> +	if (ret)
+> +		return ret;
+>  
+>  	return dw_pcie_resume_noirq(pcie->pci);
+>  }
+> -- 
+> 2.34.1
+> 
+
+-- 
+மணிவண்ணன் சதாசிவம்
