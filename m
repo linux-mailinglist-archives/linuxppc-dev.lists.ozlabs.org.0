@@ -2,93 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52BFE7DF0D4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Nov 2023 12:04:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBACD7DF100
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Nov 2023 12:15:12 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q7sseUwt;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q7sseUwt;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BGkGkZhE;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BGkGkZhE;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SLgxY1SDXz3cWd
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Nov 2023 22:04:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SLh9p56Jpz3cV4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Nov 2023 22:15:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q7sseUwt;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q7sseUwt;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BGkGkZhE;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BGkGkZhE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SLgwh67t8z2ys9
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Nov 2023 22:03:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SLh8x6kk4z3cRF
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Nov 2023 22:14:24 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1698923025;
+	s=mimecast20190719; t=1698923661;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=o+sUvKh0Fq9LjCXdXIyTK4b/elLQxFDSaWn4T3QHjyo=;
-	b=Q7sseUwtWEEI0egtOu8UQU3mCkNiq7VM/SJXS6Q575qofflvGnxctjBcnccBX7o/sJJFVf
-	dCEv8xdgMtfhkKKf9Rz1F+upuvMRLoBzGyvndsLT5HJfZcc5p/FJakVkHLU8+Jwf/KcaCY
-	W4PxzFg+IZ+4UW1vC2jByOrmig+yFPg=
+	bh=nE+jpziewfIiESFBa36vSQ59b0yur6c77ORQ4q4A4TQ=;
+	b=BGkGkZhEea8X/g+ANS76f66e1l5SkkM50iNFWIIihBz5ntUJHbfFuhwWh30mk91gvnjjpH
+	c8V2nJ8zW9MvWcUrGPXZwR5q3QRP80g9kFbZuOu96X5nWgR8bDYpEenezzw+Zl4yWxeKJh
+	XuXsdQfVztkd4rhuMNX0hvuHiJJq2N8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1698923025;
+	s=mimecast20190719; t=1698923661;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=o+sUvKh0Fq9LjCXdXIyTK4b/elLQxFDSaWn4T3QHjyo=;
-	b=Q7sseUwtWEEI0egtOu8UQU3mCkNiq7VM/SJXS6Q575qofflvGnxctjBcnccBX7o/sJJFVf
-	dCEv8xdgMtfhkKKf9Rz1F+upuvMRLoBzGyvndsLT5HJfZcc5p/FJakVkHLU8+Jwf/KcaCY
-	W4PxzFg+IZ+4UW1vC2jByOrmig+yFPg=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=nE+jpziewfIiESFBa36vSQ59b0yur6c77ORQ4q4A4TQ=;
+	b=BGkGkZhEea8X/g+ANS76f66e1l5SkkM50iNFWIIihBz5ntUJHbfFuhwWh30mk91gvnjjpH
+	c8V2nJ8zW9MvWcUrGPXZwR5q3QRP80g9kFbZuOu96X5nWgR8bDYpEenezzw+Zl4yWxeKJh
+	XuXsdQfVztkd4rhuMNX0hvuHiJJq2N8=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-106-bQCIdv_hOw6bXpwC0qG-Gg-1; Thu, 02 Nov 2023 07:03:44 -0400
-X-MC-Unique: bQCIdv_hOw6bXpwC0qG-Gg-1
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-9d2ab03a586so54296166b.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Nov 2023 04:03:44 -0700 (PDT)
+ us-mta-679-MVuvMGXdPFqvVpBGzE7_eg-1; Thu, 02 Nov 2023 07:14:19 -0400
+X-MC-Unique: MVuvMGXdPFqvVpBGzE7_eg-1
+Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-53e02a0ebfdso605803a12.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Nov 2023 04:14:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698923023; x=1699527823;
+        d=1e100.net; s=20230601; t=1698923658; x=1699528458;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=o+sUvKh0Fq9LjCXdXIyTK4b/elLQxFDSaWn4T3QHjyo=;
-        b=fQ56Na5x4kltIO11d/UsP/f9nLO1VyNTt9wyp82uRSrqqjjrTC4tCP2vF3DAgE3dlb
-         wY1g1IivDBs0D6/0y0gc7LpxbcMIE6LMt9QHaU/HmpvPAqw1hebh0r7eJCSf9JAnez51
-         WLg4csXl1eTkRJVFJA4XTRtiZ+M5xcBql6lLQZu/oef1oWhFExmWm8RHQD6xbGlSgkXM
-         k56RAkGgkU+0nxSRz0sjtdebghU2KCk70XcBhEfvgA18OSXMJ+DaXXpKFJPr5osDXTTh
-         U1XNW8qQ5eAr5X4Q+OPSF8XeCqbuwFN7kh6lbyx0zPbbMcK1vgqmwcJBd7ZQgg/LN/9y
-         s5RQ==
-X-Gm-Message-State: AOJu0YyAwpac5flsl5JaeUeZdtNGB7OYrnMhiBgKaXzIyQSLsQ4NqNVj
-	rcISOfV8kkkSqeskTlGvuuWh+4H/B7KQT69g9svb52rz3ZxzQ5EyNcvIYXbeyLCHB06SuJLOkz5
-	cPkUMJXyi3K694FX3wLdQDWpq+A==
-X-Received: by 2002:a17:907:7b99:b0:9be:30c2:b8fd with SMTP id ne25-20020a1709077b9900b009be30c2b8fdmr4830867ejc.66.1698923023221;
-        Thu, 02 Nov 2023 04:03:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGAextU6brGleAr873WsCzugduD1+qH+WMku84F2ppJAKPGqD6aYcxwyzrmazywVumiiQ5fXg==
-X-Received: by 2002:a17:907:7b99:b0:9be:30c2:b8fd with SMTP id ne25-20020a1709077b9900b009be30c2b8fdmr4830827ejc.66.1698923022777;
-        Thu, 02 Nov 2023 04:03:42 -0700 (PDT)
+        bh=nE+jpziewfIiESFBa36vSQ59b0yur6c77ORQ4q4A4TQ=;
+        b=ES690R9KsVcHFh4gqSRkPJuDpuOkjx0MgxNmcamV04KBOXALxqMFkraQVJHVAyeVEN
+         fcGolcYmLebRvONSYuXor08JSIoEEKQdgWScXC45ScUuczD1P8mV4+QcOpguUHllHyAw
+         EcY7s9n1ajuZUIivd+rJmGMSPwkPFoqn0WeiePNvJn9iLOGLQruBWY3G19zRwQCHhnxG
+         HKcPRxZoRXZDOFdCXPlWhArKjaI6segJsPmggLKJ/odmRd7QCziHcfsVKw0sucnw6BYg
+         7dyFypuBpoEHI2y7dryJ5aLrO2256b4otN7pYBOJN3xxAXpmw5wQvT09cdmthJfA1k2C
+         38PA==
+X-Gm-Message-State: AOJu0Yy+XgtEJO5rLv3w4aPdomWM/At6vOuov2v577a5rb3CRZTV8yBJ
+	MBXpILg9N0VH5IoF73zCtmQsWNOYTksB8hvkzKtpCwcwZyIiLTC1yqx1wWfvwEb18UzxzUUrLyy
+	v/3OVPo8iBNRM1d96h+bTl8welA==
+X-Received: by 2002:a05:6402:d6b:b0:541:29c8:959b with SMTP id ec43-20020a0564020d6b00b0054129c8959bmr12074288edb.39.1698923658434;
+        Thu, 02 Nov 2023 04:14:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEXhppfRa15KEqVY2rnJoTwoiSC4PZM5XqKpBQUyQg58A1nLwAa47Vx7RLL9LFOmphAlpAU2Q==
+X-Received: by 2002:a05:6402:d6b:b0:541:29c8:959b with SMTP id ec43-20020a0564020d6b00b0054129c8959bmr12074247edb.39.1698923658101;
+        Thu, 02 Nov 2023 04:14:18 -0700 (PDT)
 Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89? ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
-        by smtp.googlemail.com with ESMTPSA id hk22-20020a170906c9d600b0099cb0a7098dsm1010698ejb.19.2023.11.02.04.03.39
+        by smtp.googlemail.com with ESMTPSA id r25-20020a50c019000000b00537666d307csm2257960edb.32.2023.11.02.04.14.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Nov 2023 04:03:42 -0700 (PDT)
-Message-ID: <496b78bb-ad12-4eed-a62c-8c2fd725ec61@redhat.com>
-Date: Thu, 2 Nov 2023 12:03:39 +0100
+        Thu, 02 Nov 2023 04:14:17 -0700 (PDT)
+Message-ID: <cbd46f04-c53b-4d22-9730-76f2ace141d9@redhat.com>
+Date: Thu, 2 Nov 2023 12:14:13 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 09/35] KVM: Add KVM_EXIT_MEMORY_FAULT exit to report
- faults to userspace
-To: "Huang, Kai" <kai.huang@intel.com>,
- "Christopherson,, Sean" <seanjc@google.com>
+Subject: Re: [PATCH v13 12/35] KVM: Prepare for handling only shared mappings
+ in mmu_notifier events
+To: Binbin Wu <binbin.wu@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>
 References: <20231027182217.3615211-1-seanjc@google.com>
- <20231027182217.3615211-10-seanjc@google.com>
- <482bfea6f54ea1bb7d1ad75e03541d0ba0e5be6f.camel@intel.com>
- <ZUKMsOdg3N9wmEzy@google.com>
- <64e3764e36ba7a00d94cc7db1dea1ef06b620aaf.camel@intel.com>
- <32cb71700aedcbd1f65276cf44a601760ffc364b.camel@intel.com>
+ <20231027182217.3615211-13-seanjc@google.com>
+ <9963b77c-3a38-4f89-b21e-48d0fdda8f53@linux.intel.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
 Autocrypt: addr=pbonzini@redhat.com; keydata=
  xsEhBFRCcBIBDqDGsz4K0zZun3jh+U6Z9wNGLKQ0kSFyjN38gMqU1SfP+TUNQepFHb/Gc0E2
@@ -125,7 +122,7 @@ Autocrypt: addr=pbonzini@redhat.com; keydata=
  JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
  dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
  b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <32cb71700aedcbd1f65276cf44a601760ffc364b.camel@intel.com>
+In-Reply-To: <9963b77c-3a38-4f89-b21e-48d0fdda8f53@linux.intel.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -142,45 +139,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "david@redhat.com" <david@redhat.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "mic@digikod.net" <mic@digikod.net>, "chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "isaku.yamahata@gmail.com" <isaku.yamahata@gmail.com>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "Li, Xiaoyao" <xiaoyao.li@intel.com>, "willy@infradead.org" <willy@infradead.org>, "Wang, Wei W" <wei.w.wang@intel.com>, "vbabka@suse.cz" <vbabka@suse.cz>, "yu.c.zhang@linux.intel.com" <yu.c.zhang@linux.intel.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "mail@maciej.szmigiero.name" <mail@maciej.szmigiero.name>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, "michael.roth@amd.com" <michael.roth@amd.com>, "ackerleytng@google.com" <ackerleytng@google.com>, "viro@zeniv.linux.org.uk" <viro@z
- eniv.linux.org.uk>, "paul.walmsley@sifive.com" <paul.walmsley@sifive.com>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, "tabba@google.com" <tabba@google.com>, "Yamahata, Isaku" <isaku.yamahata@intel.com>, "brauner@kernel.org" <brauner@kernel.org>, "qperret@google.com" <qperret@google.com>, "anup@brainfault.org" <anup@brainfault.org>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>, "dmatlack@google.com" <dmatlack@google.com>, "jarkko@kernel.org" <jarkko@kernel.org>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>, "kvm-riscv@lists.infradead.org" <kvm-riscv@lists.infradead.org>, "maz@kernel.org" <maz@kernel.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "liam.merwick@oracle.com" <liam.merwick@oracle.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "Annapurve, Vishal" <vannapurve@google.com>, "linuxppc-dev@lists.ozlabs.
- org" <linuxppc-dev@lists.ozlabs.org>, "Xu, Yilun" <yilun.xu@intel.com>, "amoorthy@google.com" <amoorthy@google.com>
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Vlastimil Babka <vbabka@suse.cz>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, =?UTF-8?B?TWlja2HDq2wgU2FsYcO8?= =?UTF-8?Q?n?= <mic@digikod.net>, Isaku Yamahata <isaku.yamahata@intel.com>, Christian Brauner <brauner@kernel.org>, Quentin Perret <qperret@goog
+ le.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, David Matlack <dmatlack@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Liam Merwick <liam.merwick@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Xu Yilun <yilun.xu@intel.com>, Anish Moorthy <amoorthy@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/2/23 10:35, Huang, Kai wrote:
-> IIUC KVM can already handle the case of poisoned
-> page by sending signal to user app: 
+On 11/2/23 06:59, Binbin Wu wrote:
 > 
-> 	static int kvm_handle_error_pfn(struct kvm_vcpu *vcpu, 
-> 			struct kvm_page_fault *fault)                                               
-> 	{       
-> 		...
-> 
->        		if (fault->pfn == KVM_PFN_ERR_HWPOISON) {
->               		kvm_send_hwpoison_signal(fault->slot, fault->gfn);
->                 	return RET_PF_RETRY;                                          
->         	}
-> 	}
+>> Add flags to "struct kvm_gfn_range" to let notifier events target
+>> only shared and only private mappings, and write up the existing
+>> mmu_notifier events to be shared-only (private memory is never
+>> associated with a userspace virtual address, i.e. can't be reached
+>> via mmu_notifiers).
+>> 
+>> Add two flags so that KVM can handle the three possibilities
+>> (shared, private, and shared+private) without needing something
+>> like a tri-state enum.
+>
+> I see the two flags are set/cleared in __kvm_handle_hva_range() in
+> this patch and kvm_handle_gfn_range() from the later patch 13/35, but
+> I didn't see they are used/read in this patch series if I didn't miss
+> anything.  How are they supposed to be used in KVM?
 
-EHWPOISON is not implemented by this series, so it should be left out of 
-the documentation.
-
-
-> Currently as mentioned above when
-> vepc fault handler cannot allocate EPC page KVM returns -EFAULT to Qemu, and
-> Qemu prints ...
-> 
-> 	...: Bad address
-> 	<dump guest cpu registers>
-> 
-> ... which is nonsense.
-> 
-> If we can use memory_fault.flags (or is 'fault_reason' a better name?) to carry
-> a specific value for EPC to let Qemu know and Qemu can then do more reasonable
-> things.
-
-Yes, that's a good idea that can be implemented on top.
+They are going to be used by SNP/TDX patches.
 
 Paolo
 
