@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 099487DF47E
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Nov 2023 15:03:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 829A77DF4C4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Nov 2023 15:18:15 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Q08cb9XB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=3JxrC37o;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SLlvb6sp6z3cW3
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Nov 2023 01:03:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SLmF13HrCz3clH
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Nov 2023 01:18:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Q08cb9XB;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=3JxrC37o;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::733; helo=mail-qk1-x733.google.com; envelope-from=tabba@google.com; receiver=lists.ozlabs.org)
-Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::f35; helo=mail-qv1-xf35.google.com; envelope-from=tabba@google.com; receiver=lists.ozlabs.org)
+Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com [IPv6:2607:f8b0:4864:20::f35])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SLlth2pbXz2xYt
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Nov 2023 01:02:19 +1100 (AEDT)
-Received: by mail-qk1-x733.google.com with SMTP id af79cd13be357-7781bc3783fso57933985a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Nov 2023 07:02:19 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SLmDB3tNvz3bT8
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Nov 2023 01:17:29 +1100 (AEDT)
+Received: by mail-qv1-xf35.google.com with SMTP id 6a1803df08f44-66d190a8f87so5753166d6.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Nov 2023 07:17:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1698933735; x=1699538535; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1698934645; x=1699539445; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=U02Q7Uz9N3AbuVAnly2/lx/zX8zq9jlSHWgyTKq7w1o=;
-        b=Q08cb9XBplC+AVmRNr9xkA6JBAtF8xfd4VVN3BElW35Di6M71olJ+fu8eYFCYQT9wx
-         c1IRyXc3BnQNf3smdnBiINB9mQaMN/MgSckyqbkSJrUdITT3ONZ7cqLdCPzRZkdjjYh9
-         na+r8xhH4qMN7BZL/V0mStOeWFjdSNv9ZbjFw01Qtt45jozbWLaSMp6euM/Ii15C/mGU
-         X4NpP5Ba4Iak+2GHFB8ArkdPY0Ae3Apb7L1wgEQ0aJopQes3CUOekg72pJkemhrNn/ZB
-         Wn7kb+OwXnzKglqAcwVF0NgM8e2MkCK5wz2G3Qmk47jDJIw2/5zTjhR0Sp67nkxLfWZZ
-         PoUg==
+        bh=c7O2KSplInLsDb19B+zn/jm8iaKKD/NZ+yWSezVEL04=;
+        b=3JxrC37om4Jtv1KU7zRFkmXb6g3Ej/GkGAS29vgge7AuLcJGrOTe0j1JW3GpxDCMt2
+         gMxh5HDHQdcWNCB2WjUl2Z/FjU6soMRwz6p4RCH2Evw7YQo66rK3lnpNE/KFLNSLOrUX
+         SOdgX0Osx4lrJ65y4Ztvy6qyO1OxULbzNxZh1FdKnGOK9vzXqIwbl0t0pv1N702hJCMK
+         RYRa7AkTdaMJwzvk2JkKMRSNCPBIbEjVRuO2ApAGIgdCUufdNwEx7l0r9WYzb/ACHNsp
+         4YS7nZrMltwUePDTIS6gqnpMyenbmMA56qpQWJcBsiwnVHkyn9rxv6li+m4MR/JZZFnh
+         r+Hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698933735; x=1699538535;
+        d=1e100.net; s=20230601; t=1698934645; x=1699539445;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=U02Q7Uz9N3AbuVAnly2/lx/zX8zq9jlSHWgyTKq7w1o=;
-        b=fJEeZp4dDpPt3u8GPMcqxupQfSM5+sYbanL1OhtuLJb5QBzPPHNWn0No4O7m25KaVh
-         wFRqKBl0X1pi2zLxsHLjiOvRf5ztR2GrW9XXLEkuPCEtMNUTaLzTsTKm0FP5/BB4W8db
-         /UlDawTo2soxM60M0/Md9YCHH6Vo6HTvuIEiQlSSLrhqJop+e7gVIb41QnHuwJgfGzbF
-         BCsddIokw4oo7bgWsF+qZ1S3bToLNlGd0O99JznmlrsQH1pSk3qU74V7VKLw0fwAeuzM
-         WxjnBP1DhHeLAq5xfmSbECmxBfWOQ8UZtf64oMeGXnYsOxbDQtLZkNmrGkMC+A1Fj4KF
-         3G3Q==
-X-Gm-Message-State: AOJu0YyHtufkskMN0Ke5ZdKiolARCIYL/+PyHpwUdAKtoQd2n1epuBzy
-	VUjFKIt8o+SRE4rj6/G5YOWFIyy9JFM9qy7ibbfm3Q==
-X-Google-Smtp-Source: AGHT+IFvNZeWhAvz2uQajFEXI2VcBpwz2QgnpWebvg+MWTN/rWHt/IyUj1LF075258r9rR5adzICFKMJ4AWj6dfus40=
-X-Received: by 2002:ad4:5c47:0:b0:66d:62b7:53f4 with SMTP id
- a7-20020ad45c47000000b0066d62b753f4mr28124932qva.45.1698933735448; Thu, 02
- Nov 2023 07:02:15 -0700 (PDT)
+        bh=c7O2KSplInLsDb19B+zn/jm8iaKKD/NZ+yWSezVEL04=;
+        b=fYXL2DoTui6ebu8jmFM8SgkQlAEe4aPNLwRVSjVbx40BSxPFiedqwMF2b7XwJt5e1S
+         D+R9LFbhfaUcgD2uB95ss1PVhdxeRCWPu+YldDDYAB/gwe0wNCsL2iYClENFAExSR03M
+         4KnF5auBzBGI2Ge4NtiWUr4qW//cTikP+eXAB2ZU6PKMUYMSvJIaIp2I+J68rx6mALPD
+         QKWivAI66Lvvrb1wkLT2nLsBkly+YrZs6wxX+qJv1Mj6o2G/1DND75J33toJyjiIS6jl
+         paX8cRGsFHHW4TJ0e74e4EG0rdg4qMdvqeKu7zNEIbTjOe57Vfm1lEImhcd8eT4U21Nr
+         JwCg==
+X-Gm-Message-State: AOJu0YyKWPu3vqwxbCbv0w2IuZu/s7lacvh70QCA1qQlmj0bwngoG+L4
+	NkJNb8EhVvWI6oHsi/hXueXOzQ4nhBIWF5HCmKDJPg==
+X-Google-Smtp-Source: AGHT+IGAosxm/0woyiCy5wtpQ5hw9PNiMnNT8Y+nXK7zRiDLlPKvw69895suNy2q5wz5DwPz9Dn0X+ha5Vtg4tVBUZc=
+X-Received: by 2002:a05:6214:d88:b0:66d:3a0f:97a with SMTP id
+ e8-20020a0562140d8800b0066d3a0f097amr20020837qve.6.1698934645120; Thu, 02 Nov
+ 2023 07:17:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231027182217.3615211-1-seanjc@google.com> <20231027182217.3615211-13-seanjc@google.com>
-In-Reply-To: <20231027182217.3615211-13-seanjc@google.com>
+References: <20231027182217.3615211-1-seanjc@google.com> <20231027182217.3615211-19-seanjc@google.com>
+In-Reply-To: <20231027182217.3615211-19-seanjc@google.com>
 From: Fuad Tabba <tabba@google.com>
-Date: Thu, 2 Nov 2023 14:01:39 +0000
-Message-ID: <CA+EHjTyAU9XZ3OgqXjmAKh-BKsLrH_8QtnJihQxF4fhk8WPSYg@mail.gmail.com>
-Subject: Re: [PATCH v13 12/35] KVM: Prepare for handling only shared mappings
- in mmu_notifier events
+Date: Thu, 2 Nov 2023 14:16:49 +0000
+Message-ID: <CA+EHjTwXdntKGMjb8Zj1M3iVVN5NX6iLwbzJjE72j_eVczTQYw@mail.gmail.com>
+Subject: Re: [PATCH v13 18/35] KVM: x86: "Reset" vcpu->run->exit_reason early
+ in KVM_RUN
 To: Sean Christopherson <seanjc@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -81,74 +81,67 @@ Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
-
-On Fri, Oct 27, 2023 at 7:22=E2=80=AFPM Sean Christopherson <seanjc@google.=
+On Fri, Oct 27, 2023 at 7:23=E2=80=AFPM Sean Christopherson <seanjc@google.=
 com> wrote:
 >
-> Add flags to "struct kvm_gfn_range" to let notifier events target only
-> shared and only private mappings, and write up the existing mmu_notifier
-> events to be shared-only (private memory is never associated with a
-> userspace virtual address, i.e. can't be reached via mmu_notifiers).
+> Initialize run->exit_reason to KVM_EXIT_UNKNOWN early in KVM_RUN to reduc=
+e
+> the probability of exiting to userspace with a stale run->exit_reason tha=
+t
+> *appears* to be valid.
 >
-> Add two flags so that KVM can handle the three possibilities (shared,
-> private, and shared+private) without needing something like a tri-state
-> enum.
+> To support fd-based guest memory (guest memory without a corresponding
+> userspace virtual address), KVM will exit to userspace for various memory
+> related errors, which userspace *may* be able to resolve, instead of usin=
+g
+> e.g. BUS_MCEERR_AR.  And in the more distant future, KVM will also likely
+> utilize the same functionality to let userspace "intercept" and handle
+> memory faults when the userspace mapping is missing, i.e. when fast gup()
+> fails.
 >
-> Link: https://lore.kernel.org/all/ZJX0hk+KpQP0KUyB@google.com
+> Because many of KVM's internal APIs related to guest memory use '0' to
+> indicate "success, continue on" and not "exit to userspace", reporting
+> memory faults/errors to userspace will set run->exit_reason and
+> corresponding fields in the run structure fields in conjunction with a
+> a non-zero, negative return code, e.g. -EFAULT or -EHWPOISON.  And becaus=
+e
+> KVM already returns  -EFAULT in many paths, there's a relatively high
+> probability that KVM could return -EFAULT without setting run->exit_reaso=
+n,
+> in which case reporting KVM_EXIT_UNKNOWN is much better than reporting
+> whatever exit reason happened to be in the run structure.
+>
+> Note, KVM must wait until after run->immediate_exit is serviced to
+> sanitize run->exit_reason as KVM's ABI is that run->exit_reason is
+> preserved across KVM_RUN when run->immediate_exit is true.
+>
+> Link: https://lore.kernel.org/all/20230908222905.1321305-1-amoorthy@googl=
+e.com
+> Link: https://lore.kernel.org/all/ZFFbwOXZ5uI%2Fgdaf@google.com
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 > ---
->  include/linux/kvm_host.h | 2 ++
->  virt/kvm/kvm_main.c      | 7 +++++++
->  2 files changed, 9 insertions(+)
->
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 96aa930536b1..89c1a991a3b8 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -263,6 +263,8 @@ struct kvm_gfn_range {
->         gfn_t start;
->         gfn_t end;
->         union kvm_mmu_notifier_arg arg;
-> +       bool only_private;
-> +       bool only_shared;
 
-If these flags aren't used in this patch series, should this patch be
-moved to the other series?
-
-Also, if shared+private is a possibility, doesn't the prefix "only_"
-confuse things a bit? I.e., what is shared+private, is it when both
-are 0 or when both are 1? I assume it's the former (both are 0), but
-it might be clearer.
+Reviewed-by: Fuad Tabba <tabba@google.com>
+Tested-by: Fuad Tabba <tabba@google.com>
 
 Cheers,
 /fuad
 
->         bool may_block;
->  };
->  bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range);
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index cb9376833c18..302ccb87b4c1 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -635,6 +635,13 @@ static __always_inline kvm_mn_ret_t __kvm_handle_hva=
-_range(struct kvm *kvm,
->                          * the second or later invocation of the handler)=
-.
->                          */
->                         gfn_range.arg =3D range->arg;
-> +
-> +                       /*
-> +                        * HVA-based notifications aren't relevant to pri=
-vate
-> +                        * mappings as they don't have a userspace mappin=
-g.
-> +                        */
-> +                       gfn_range.only_private =3D false;
-> +                       gfn_range.only_shared =3D true;
->                         gfn_range.may_block =3D range->may_block;
+>  arch/x86/kvm/x86.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
->                         /*
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index ee3cd8c3c0ef..f41dbb1465a0 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -10963,6 +10963,7 @@ static int vcpu_run(struct kvm_vcpu *vcpu)
+>  {
+>         int r;
+>
+> +       vcpu->run->exit_reason =3D KVM_EXIT_UNKNOWN;
+>         vcpu->arch.l1tf_flush_l1d =3D true;
+>
+>         for (;;) {
 > --
 > 2.42.0.820.g83a721a137-goog
 >
