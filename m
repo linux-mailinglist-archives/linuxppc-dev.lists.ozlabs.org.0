@@ -2,66 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07C077DF465
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Nov 2023 14:56:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E9407DF468
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Nov 2023 14:57:22 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=PDOjyPRt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=NOTRZb/Z;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SLlly6cLXz3cm7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Nov 2023 00:56:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SLlmv6pJYz3dFB
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Nov 2023 00:57:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=PDOjyPRt;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=NOTRZb/Z;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::a36; helo=mail-vk1-xa36.google.com; envelope-from=tabba@google.com; receiver=lists.ozlabs.org)
-Received: from mail-vk1-xa36.google.com (mail-vk1-xa36.google.com [IPv6:2607:f8b0:4864:20::a36])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::f2f; helo=mail-qv1-xf2f.google.com; envelope-from=tabba@google.com; receiver=lists.ozlabs.org)
+Received: from mail-qv1-xf2f.google.com (mail-qv1-xf2f.google.com [IPv6:2607:f8b0:4864:20::f2f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SLll32V98z2xQD
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Nov 2023 00:55:43 +1100 (AEDT)
-Received: by mail-vk1-xa36.google.com with SMTP id 71dfb90a1353d-49618e09f16so404013e0c.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Nov 2023 06:55:43 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SLllq25Lsz3ckc
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Nov 2023 00:56:23 +1100 (AEDT)
+Received: by mail-qv1-xf2f.google.com with SMTP id 6a1803df08f44-66d0760cd20so8297786d6.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Nov 2023 06:56:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1698933339; x=1699538139; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1698933379; x=1699538179; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4Yb/48Ns1tpOy5twJOpAhL4i1qPmUF1LLO7pfzUXbus=;
-        b=PDOjyPRt0eOgTHW+iXUKm0civsur+/93dynfwkNxJ6p6aa/wtIsKUJ2e2GwgpJPS/F
-         9xuaT3YOSQsXDb5vi1XaDPQwLgqyjP4IMVBdHvvsv4n19gw/IoOWw5DYYbewiI3XuxTe
-         M+S24zh7JbjyT8l56BkcjL1Hvv/BUJLRkbIdfWZXEYLh7lKmpS+xMtrYbaVUCJZsO0Hc
-         S5wm0sK5Cy6dFrRvrR5+CJhkKN+3AvQL9y1XIlHS6ovsvq0b/4O2UWZKgyYl8+zWSFs7
-         IqWAhMnMG4q7eKRAGKbMKpqGUI7arBFWWhQT9AUZCX6f3YV4yaKtwbu1W0g7wrHgUXjK
-         oLrg==
+        bh=LWVbaemD/Qn2/IvLfOB52rG+LgMP2W3NogibJrZTMZ4=;
+        b=NOTRZb/ZREph+WrRayT+V1jPRUpqzk4l7ZX925LL7jgCeJTdvdKxn5y2Feu162mGOD
+         s3wHUiNJx9QndxsclW5KOF6mDlhMy0UjE22ULvcHfLvgLBNqzgs8aSMn2sA+ZRzTjsuy
+         1Ukl3de0CM8S8KgWFBS4NRY21ol4++JtIfKSaxWX9TR0vHAh5Aa0ewMRg3aP52NfFOCN
+         xBIGqUf4G9rUpu6hfDu8H1Z/YJpjMYKWVjf+dabUqHYggSFN4xftDC0FOJB5/8ou/XzP
+         3jQRH7udhduxmtfhUek5iDXSPG1/Y+E62HmyZ+Lep9clrbYxyxr7ZumWgTMG/Np3daXC
+         sMtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698933339; x=1699538139;
+        d=1e100.net; s=20230601; t=1698933379; x=1699538179;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=4Yb/48Ns1tpOy5twJOpAhL4i1qPmUF1LLO7pfzUXbus=;
-        b=N31rkEEMUsI5GTwgT3EtwGyd6yr0dy7tNAE9tBa/r4KsgvoDMV1/X9M14VOwFh1sks
-         Rf21+YIToy1DXw8xf+AjAYiXwZytaSFJuu71dlFWZY1bl4FzkOdi51VRxNzl2nmU0ATx
-         aqkoE2rPCtlw/86rNyIeNpjG2nlbxbHZLEEGSQ+Eu7e7GCddENPwy13Jk9SSK6N23Vva
-         tcZ18dqTdja7RjBwHSuE8z7Htfo7LZiCrwCzS//ns7ogZ11RC16HR6yjB6/F+ieM+YMi
-         rRK6CHVmHTPH7VJgswz3t1jDbWcQJXrax16hno4g0MpTZtJX5y08RmycuYhAcS2wn7Vw
-         nDOw==
-X-Gm-Message-State: AOJu0Yyd5GwgUVpuuPu84ARbmy7E5+CQh2KRlhu/+Jk2KjDG2L7E4dM/
-	calOSygrX8IlQh4L/yuvA8FW/P/+3G8KBUFlpJUT7Q==
-X-Google-Smtp-Source: AGHT+IHGemWDnkL7WTN8LWokDsgbdlhg4M3963xhuFMSCwbYM702stLA5BFN7Yk4qTk9o3bsEJ0EqjHFUXiDw4OizcA=
-X-Received: by 2002:a1f:984f:0:b0:49d:a52a:4421 with SMTP id
- a76-20020a1f984f000000b0049da52a4421mr16094320vke.4.1698933338782; Thu, 02
- Nov 2023 06:55:38 -0700 (PDT)
+        bh=LWVbaemD/Qn2/IvLfOB52rG+LgMP2W3NogibJrZTMZ4=;
+        b=nCCX4KgcEFl3w9PzF0ebiKfIBMwCb+AI1uRzzvWYLLHopVpsF916wmTkIfO7P4Xto4
+         9Bp1mfjiLPNRXEd3+GQU0q3norY9hrWKi5OaC5Nn/mRRNK4fTGnr7O/uYQRS/KkiTneL
+         i7/WKluGLC0sjc3KGPLQBCyndZ4GA89r/wWyZP3nwEGHu7/30sIsNsH1IuNgluFR9CZE
+         KR2yejexWXMktwXoSojGQe44ZZFO1NmedYjbXjBATd2zNdO93vSaTw+A9qwWiOnkyYa7
+         sf2xPQzWMsuSa9nqnO82ZEjyDwDAFkZ9fgn+oPS3mHldmvVUpSAf1mCQUjbwUiOxutSl
+         pdrA==
+X-Gm-Message-State: AOJu0YybaIkYCyBaDYLYUXOgHhWHatGrw6aT2eBXB4jNQUMvHRBYIVHH
+	Rd+2WALb906MLfUk7wWdVvRrU68IiM6HMksfqlFfrw==
+X-Google-Smtp-Source: AGHT+IFRO7nq4nst6JF9hgQLfpXFHnQOjyBS3ejG9W5aUngaZEoEMY927pDB5PiH0nPNP2AZTqWUqRKAOoKphwpYQM4=
+X-Received: by 2002:a05:6214:27ce:b0:66f:b9ef:9636 with SMTP id
+ ge14-20020a05621427ce00b0066fb9ef9636mr10883504qvb.32.1698933378923; Thu, 02
+ Nov 2023 06:56:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231027182217.3615211-1-seanjc@google.com> <20231027182217.3615211-11-seanjc@google.com>
-In-Reply-To: <20231027182217.3615211-11-seanjc@google.com>
+References: <20231027182217.3615211-1-seanjc@google.com> <20231027182217.3615211-12-seanjc@google.com>
+In-Reply-To: <20231027182217.3615211-12-seanjc@google.com>
 From: Fuad Tabba <tabba@google.com>
-Date: Thu, 2 Nov 2023 13:55:03 +0000
-Message-ID: <CA+EHjTx4dQwU3CWzoib_x1tgw66HCtBEiGW_7E8yZxttem6+vw@mail.gmail.com>
-Subject: Re: [PATCH v13 10/35] KVM: Add a dedicated mmu_notifier flag for
- reclaiming freed memory
+Date: Thu, 2 Nov 2023 13:55:42 +0000
+Message-ID: <CA+EHjTzz2PftRAFU9pQaE1D=E3hwBDCDQpJ69O6r5akdAs0Exw@mail.gmail.com>
+Subject: Re: [PATCH v13 11/35] KVM: Drop .on_unlock() mmu_notifier hook
 To: Sean Christopherson <seanjc@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -84,18 +83,23 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 On Fri, Oct 27, 2023 at 7:22=E2=80=AFPM Sean Christopherson <seanjc@google.=
 com> wrote:
 >
-> Handle AMD SEV's kvm_arch_guest_memory_reclaimed() hook by having
-> __kvm_handle_hva_range() return whether or not an overlapping memslot
-> was found, i.e. mmu_lock was acquired.  Using the .on_unlock() hook
-> works, but kvm_arch_guest_memory_reclaimed() needs to run after dropping
-> mmu_lock, which makes .on_lock() and .on_unlock() asymmetrical.
+> Drop the .on_unlock() mmu_notifer hook now that it's no longer used for
+> notifying arch code that memory has been reclaimed.  Adding .on_unlock()
+> and invoking it *after* dropping mmu_lock was a terrible idea, as doing s=
+o
+> resulted in .on_lock() and .on_unlock() having divergent and asymmetric
+> behavior, and set future developers up for failure, i.e. all but asked fo=
+r
+> bugs where KVM relied on using .on_unlock() to try to run a callback whil=
+e
+> holding mmu_lock.
 >
-> Use a small struct to return the tuple of the notifier-specific return,
-> plus whether or not overlap was found.  Because the iteration helpers are
-> __always_inlined, practically speaking, the struct will never actually be
-> returned from a function call (not to mention the size of the struct will
-> be two bytes in practice).
+> Opportunistically add a lockdep assertion in kvm_mmu_invalidate_end() to
+> guard against future bugs of this nature.
 >
+> Reported-by: Isaku Yamahata <isaku.yamahata@intel.com>
+> Link: https://lore.kernel.org/all/20230802203119.GB2021422@ls.amr.corp.in=
+tel.com
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 > ---
 
@@ -105,170 +109,91 @@ Tested-by: Fuad Tabba <tabba@google.com>
 Cheers,
 /fuad
 
-
->  virt/kvm/kvm_main.c | 53 +++++++++++++++++++++++++++++++--------------
->  1 file changed, 37 insertions(+), 16 deletions(-)
+>  virt/kvm/kvm_main.c | 13 +++----------
+>  1 file changed, 3 insertions(+), 10 deletions(-)
 >
 > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 3f5b7c2c5327..2bc04c8ae1f4 100644
+> index 2bc04c8ae1f4..cb9376833c18 100644
 > --- a/virt/kvm/kvm_main.c
 > +++ b/virt/kvm/kvm_main.c
-> @@ -561,6 +561,19 @@ struct kvm_mmu_notifier_range {
+> @@ -544,7 +544,6 @@ static inline struct kvm *mmu_notifier_to_kvm(struct =
+mmu_notifier *mn)
+>  typedef bool (*gfn_handler_t)(struct kvm *kvm, struct kvm_gfn_range *ran=
+ge);
+>
+>  typedef void (*on_lock_fn_t)(struct kvm *kvm);
+> -typedef void (*on_unlock_fn_t)(struct kvm *kvm);
+>
+>  struct kvm_mmu_notifier_range {
+>         /*
+> @@ -556,7 +555,6 @@ struct kvm_mmu_notifier_range {
+>         union kvm_mmu_notifier_arg arg;
+>         gfn_handler_t handler;
+>         on_lock_fn_t on_lock;
+> -       on_unlock_fn_t on_unlock;
+>         bool flush_on_ret;
 >         bool may_block;
 >  };
->
-> +/*
-> + * The inner-most helper returns a tuple containing the return value fro=
-m the
-> + * arch- and action-specific handler, plus a flag indicating whether or =
-not at
-> + * least one memslot was found, i.e. if the handler found guest memory.
-> + *
-> + * Note, most notifiers are averse to booleans, so even though KVM track=
-s the
-> + * return from arch code as a bool, outer helpers will cast it to an int=
-. :-(
-> + */
-> +typedef struct kvm_mmu_notifier_return {
-> +       bool ret;
-> +       bool found_memslot;
-> +} kvm_mn_ret_t;
-> +
->  /*
->   * Use a dedicated stub instead of NULL to indicate that there is no cal=
-lback
->   * function/handler.  The compiler technically can't guarantee that a re=
-al
-> @@ -582,22 +595,25 @@ static const union kvm_mmu_notifier_arg KVM_MMU_NOT=
-IFIER_NO_ARG;
->              node;                                                       =
-    \
->              node =3D interval_tree_iter_next(node, start, last))      \
->
-> -static __always_inline int __kvm_handle_hva_range(struct kvm *kvm,
-> -                                                 const struct kvm_mmu_no=
-tifier_range *range)
-> +static __always_inline kvm_mn_ret_t __kvm_handle_hva_range(struct kvm *k=
-vm,
-> +                                                          const struct k=
-vm_mmu_notifier_range *range)
->  {
-> -       bool ret =3D false, locked =3D false;
-> +       struct kvm_mmu_notifier_return r =3D {
-> +               .ret =3D false,
-> +               .found_memslot =3D false,
-> +       };
->         struct kvm_gfn_range gfn_range;
->         struct kvm_memory_slot *slot;
->         struct kvm_memslots *slots;
->         int i, idx;
->
->         if (WARN_ON_ONCE(range->end <=3D range->start))
-> -               return 0;
-> +               return r;
->
->         /* A null handler is allowed if and only if on_lock() is provided=
-. */
->         if (WARN_ON_ONCE(IS_KVM_NULL_FN(range->on_lock) &&
->                          IS_KVM_NULL_FN(range->handler)))
-> -               return 0;
-> +               return r;
->
->         idx =3D srcu_read_lock(&kvm->srcu);
->
-> @@ -631,8 +647,8 @@ static __always_inline int __kvm_handle_hva_range(str=
-uct kvm *kvm,
->                         gfn_range.end =3D hva_to_gfn_memslot(hva_end + PA=
-GE_SIZE - 1, slot);
->                         gfn_range.slot =3D slot;
->
-> -                       if (!locked) {
-> -                               locked =3D true;
-> +                       if (!r.found_memslot) {
-> +                               r.found_memslot =3D true;
->                                 KVM_MMU_LOCK(kvm);
->                                 if (!IS_KVM_NULL_FN(range->on_lock))
->                                         range->on_lock(kvm);
-> @@ -640,14 +656,14 @@ static __always_inline int __kvm_handle_hva_range(s=
-truct kvm *kvm,
->                                 if (IS_KVM_NULL_FN(range->handler))
->                                         break;
->                         }
-> -                       ret |=3D range->handler(kvm, &gfn_range);
-> +                       r.ret |=3D range->handler(kvm, &gfn_range);
->                 }
->         }
->
-> -       if (range->flush_on_ret && ret)
-> +       if (range->flush_on_ret && r.ret)
+> @@ -663,11 +661,8 @@ static __always_inline kvm_mn_ret_t __kvm_handle_hva=
+_range(struct kvm *kvm,
+>         if (range->flush_on_ret && r.ret)
 >                 kvm_flush_remote_tlbs(kvm);
 >
-> -       if (locked) {
-> +       if (r.found_memslot) {
+> -       if (r.found_memslot) {
+> +       if (r.found_memslot)
 >                 KVM_MMU_UNLOCK(kvm);
->                 if (!IS_KVM_NULL_FN(range->on_unlock))
->                         range->on_unlock(kvm);
-> @@ -655,8 +671,7 @@ static __always_inline int __kvm_handle_hva_range(str=
-uct kvm *kvm,
+> -               if (!IS_KVM_NULL_FN(range->on_unlock))
+> -                       range->on_unlock(kvm);
+> -       }
 >
 >         srcu_read_unlock(&kvm->srcu, idx);
 >
-> -       /* The notifiers are averse to booleans. :-( */
-> -       return (int)ret;
-> +       return r;
->  }
->
->  static __always_inline int kvm_handle_hva_range(struct mmu_notifier *mn,
-> @@ -677,7 +692,7 @@ static __always_inline int kvm_handle_hva_range(struc=
+> @@ -687,7 +682,6 @@ static __always_inline int kvm_handle_hva_range(struc=
 t mmu_notifier *mn,
+>                 .arg            =3D arg,
+>                 .handler        =3D handler,
+>                 .on_lock        =3D (void *)kvm_null_fn,
+> -               .on_unlock      =3D (void *)kvm_null_fn,
+>                 .flush_on_ret   =3D true,
 >                 .may_block      =3D false,
 >         };
->
-> -       return __kvm_handle_hva_range(kvm, &range);
-> +       return __kvm_handle_hva_range(kvm, &range).ret;
->  }
->
->  static __always_inline int kvm_handle_hva_range_no_flush(struct mmu_noti=
-fier *mn,
-> @@ -696,7 +711,7 @@ static __always_inline int kvm_handle_hva_range_no_fl=
+> @@ -706,7 +700,6 @@ static __always_inline int kvm_handle_hva_range_no_fl=
 ush(struct mmu_notifier *mn
+>                 .end            =3D end,
+>                 .handler        =3D handler,
+>                 .on_lock        =3D (void *)kvm_null_fn,
+> -               .on_unlock      =3D (void *)kvm_null_fn,
+>                 .flush_on_ret   =3D false,
 >                 .may_block      =3D false,
 >         };
->
-> -       return __kvm_handle_hva_range(kvm, &range);
-> +       return __kvm_handle_hva_range(kvm, &range).ret;
->  }
->
->  static bool kvm_change_spte_gfn(struct kvm *kvm, struct kvm_gfn_range *r=
-ange)
-> @@ -798,7 +813,7 @@ static int kvm_mmu_notifier_invalidate_range_start(st=
+> @@ -813,7 +806,6 @@ static int kvm_mmu_notifier_invalidate_range_start(st=
 ruct mmu_notifier *mn,
 >                 .end            =3D range->end,
 >                 .handler        =3D kvm_mmu_unmap_gfn_range,
 >                 .on_lock        =3D kvm_mmu_invalidate_begin,
-> -               .on_unlock      =3D kvm_arch_guest_memory_reclaimed,
-> +               .on_unlock      =3D (void *)kvm_null_fn,
+> -               .on_unlock      =3D (void *)kvm_null_fn,
 >                 .flush_on_ret   =3D true,
 >                 .may_block      =3D mmu_notifier_range_blockable(range),
 >         };
-> @@ -830,7 +845,13 @@ static int kvm_mmu_notifier_invalidate_range_start(s=
-truct mmu_notifier *mn,
->         gfn_to_pfn_cache_invalidate_start(kvm, range->start, range->end,
->                                           hva_range.may_block);
+> @@ -858,6 +850,8 @@ static int kvm_mmu_notifier_invalidate_range_start(st=
+ruct mmu_notifier *mn,
 >
-> -       __kvm_handle_hva_range(kvm, &hva_range);
-> +       /*
-> +        * If one or more memslots were found and thus zapped, notify arc=
-h code
-> +        * that guest memory has been reclaimed.  This needs to be done *=
-after*
-> +        * dropping mmu_lock, as x86's reclaim path is slooooow.
-> +        */
-> +       if (__kvm_handle_hva_range(kvm, &hva_range).found_memslot)
-> +               kvm_arch_guest_memory_reclaimed(kvm);
->
->         return 0;
->  }
+>  void kvm_mmu_invalidate_end(struct kvm *kvm)
+>  {
+> +       lockdep_assert_held_write(&kvm->mmu_lock);
+> +
+>         /*
+>          * This sequence increase will notify the kvm page fault that
+>          * the page that is going to be mapped in the spte could have
+> @@ -889,7 +883,6 @@ static void kvm_mmu_notifier_invalidate_range_end(str=
+uct mmu_notifier *mn,
+>                 .end            =3D range->end,
+>                 .handler        =3D (void *)kvm_null_fn,
+>                 .on_lock        =3D kvm_mmu_invalidate_end,
+> -               .on_unlock      =3D (void *)kvm_null_fn,
+>                 .flush_on_ret   =3D false,
+>                 .may_block      =3D mmu_notifier_range_blockable(range),
+>         };
 > --
 > 2.42.0.820.g83a721a137-goog
 >
