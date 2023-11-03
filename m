@@ -2,173 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B68D07DFA05
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Nov 2023 19:36:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 810EB7DFE83
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Nov 2023 05:11:35 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PCOleFPY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=h6jRt2oX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SLsyz2ySLz3dDk
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Nov 2023 05:36:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SM6kY3CMsz3dBG
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Nov 2023 15:11:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PCOleFPY;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=h6jRt2oX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mgamail.intel.com; envelope-from=kai.huang@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.120; helo=mgamail.intel.com; envelope-from=yilun.xu@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SLsy11FMFz2xLW
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Nov 2023 05:35:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SM6jd3c8Xz30P3
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Nov 2023 15:10:43 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698950137; x=1730486137;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=4oJXWL25r8xbMStnOC6PXzlKG7Q1Fs8jN08h1AzJKmk=;
-  b=PCOleFPYJSDGqMjHsW6Vde79CfX7jAl3z8Vi8B663tLWvsTyhm5V9jqg
-   kuhXWGj4vTDyzJHoeOuP4TzNRRe6Xlj8wefQZFa99r91elWCBFhAyJwhq
-   2x5QifFPazqQjXL3GIWczO3f6C7i3Rrk84Av2ffg9c6PSY001IHjI/b/A
-   K4R+PkpG1PTcPZVPGaxkCsi+X+FWK2xTsR8DmB7ElIRxBasQq4p6PWvl8
-   5Im7IKncu6HUfiZVtCm8NJUuqyimZKPBaj9l5+Nok6LspNqgZXap5khlE
-   VXEHqgdKhiQjvAcafLcbCxRTV4TUsq4sUeZdJmtKa2zmP0DGbHb8sYnjl
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10882"; a="368990421"
-X-IronPort-AV: E=Sophos;i="6.03,272,1694761200"; 
-   d="scan'208";a="368990421"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2023 11:35:30 -0700
+  t=1698984646; x=1730520646;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=juHXPhfl2UOyfQDlVnje9FjGKXxO1moD004mEr2wKcQ=;
+  b=h6jRt2oXgSHkI1OFqV/XMViw6HMRBY/IZVD2LFK8PS2azzktfvpG0yDq
+   AupxRVXSTG375Cn2ZglJVE4QrtzmwSir+pBGYMd8FRV059hRLVxLS51uh
+   svHCZOMicuT5XA7QIwk6BFbDfeE0xGMulS4gdQsLoj8P+WrOvqV/Sk/9b
+   L7ilnei4ge7PNAqrvxbRK0pUdXrleIrC3Gwuzku4tWQVD2eAs2FhMC7wP
+   lpYfBdk6PzfQRYkARQQtfNGLP0h11jD8fyze4aFpZ0VLz8++hh5mgTdFJ
+   cO2iyepk1/tmU796Jbn/GnWkBtBeky9IDaHxs2U7qEALfZPuKM1sk2mtz
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10882"; a="387762868"
+X-IronPort-AV: E=Sophos;i="6.03,273,1694761200"; 
+   d="scan'208";a="387762868"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2023 21:10:37 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10882"; a="1092816011"
-X-IronPort-AV: E=Sophos;i="6.03,272,1694761200"; 
-   d="scan'208";a="1092816011"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
-  by fmsmga005.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 02 Nov 2023 11:35:29 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Thu, 2 Nov 2023 11:35:25 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Thu, 2 Nov 2023 11:35:24 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34 via Frontend Transport; Thu, 2 Nov 2023 11:35:24 -0700
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.169)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.34; Thu, 2 Nov 2023 11:35:23 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=m4e8qDAxJmTBl78NqRbCoIXqMGxbah7WG7icyWf9KAb8AuKeiZgiItED81qLL8xqXQWC1NrVEnMWK3PMxaBoF4MYPsQC+LoICbksOEoeipxb8xoniXLrSLLyccx8whWqvFC/NDMqw4hka+Gz1s19/BaO0DgMNT6rI4jc8LoQ8+/AJXd3XHwuLkYVbsfxFxU2E04Yizotn+7MTP/3hs4hBVZZJN4+zR6zvvlh2tjiCWzDGSvxOqyymcJGz3n2qF6LiSV8AfRN+2CROq1fk4cbAP5UV11+EfJ4JlIIz354x4uOjJXWJx2RJLWOyfpADqSCDE5VsVTCdiqy+FJp2IwTsQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4oJXWL25r8xbMStnOC6PXzlKG7Q1Fs8jN08h1AzJKmk=;
- b=BOrLXBUhR6oh02CrBAOGFE4IS93T7CLhdoGnAG7s8WAEwNb928Bh23UdQ9kj/NTOf/XLe0m7DNrpGFwfa9jGp8D2yErjM9rDICAHS+Aa0DeSE5W1urhnvN5gH/tJLzWnprWlg63s7lrjTiMhV0/pgwc4dOiCdx+TrLYjRGDMkwOj5ETOi/s9etCcTOd3VJYqKzb3NeKYtqbbP6Ks2gi0luZ7lBJhpwUYX73SdTrQp8zwZeWXjrI20Orf9o5ei6I8YUQed6LgvKX5ZzSVzCibPF9PsnOSnEdRB3SeUh2c03xSHU/4Psjt6sqvn/E+YYJLNXMg30nNqfa4nlimq6WHMA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BL1PR11MB5978.namprd11.prod.outlook.com (2603:10b6:208:385::18)
- by PH7PR11MB8569.namprd11.prod.outlook.com (2603:10b6:510:304::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.19; Thu, 2 Nov
- 2023 18:35:21 +0000
-Received: from BL1PR11MB5978.namprd11.prod.outlook.com
- ([fe80::5d1:aa22:7c98:f3c6]) by BL1PR11MB5978.namprd11.prod.outlook.com
- ([fe80::5d1:aa22:7c98:f3c6%6]) with mapi id 15.20.6954.019; Thu, 2 Nov 2023
- 18:35:21 +0000
-From: "Huang, Kai" <kai.huang@intel.com>
-To: "pbonzini@redhat.com" <pbonzini@redhat.com>, "Christopherson,, Sean"
-	<seanjc@google.com>
+X-IronPort-AV: E=McAfee;i="6600,9927,10882"; a="1008694807"
+X-IronPort-AV: E=Sophos;i="6.03,273,1694761200"; 
+   d="scan'208";a="1008694807"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmsmga006.fm.intel.com with ESMTP; 02 Nov 2023 21:10:28 -0700
+Date: Fri, 3 Nov 2023 12:09:01 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Sean Christopherson <seanjc@google.com>
 Subject: Re: [PATCH v13 09/35] KVM: Add KVM_EXIT_MEMORY_FAULT exit to report
  faults to userspace
-Thread-Topic: [PATCH v13 09/35] KVM: Add KVM_EXIT_MEMORY_FAULT exit to report
- faults to userspace
-Thread-Index: AQHaCQKnsgoTcbnsvUKkAITO6oVjaLBlURAAgABw5QCAAKIkgIAAabmAgAAYoICAAE6SAIAAL52A
-Date: Thu, 2 Nov 2023 18:35:20 +0000
-Message-ID: <55672e5b0ff9855e609654b6565f610dbffa56fd.camel@intel.com>
+Message-ID: <ZURyXWhZDSCBnMV1@yilunxu-OptiPlex-7050>
 References: <20231027182217.3615211-1-seanjc@google.com>
-	 <20231027182217.3615211-10-seanjc@google.com>
-	 <482bfea6f54ea1bb7d1ad75e03541d0ba0e5be6f.camel@intel.com>
-	 <ZUKMsOdg3N9wmEzy@google.com>
-	 <64e3764e36ba7a00d94cc7db1dea1ef06b620aaf.camel@intel.com>
-	 <32cb71700aedcbd1f65276cf44a601760ffc364b.camel@intel.com>
-	 <496b78bb-ad12-4eed-a62c-8c2fd725ec61@redhat.com>
-	 <ZUPD9NWF4eOXqeiA@google.com>
-In-Reply-To: <ZUPD9NWF4eOXqeiA@google.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.48.4 (3.48.4-1.fc38) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL1PR11MB5978:EE_|PH7PR11MB8569:EE_
-x-ms-office365-filtering-correlation-id: 6c262d30-ad01-4b01-2c8d-08dbdbd2783f
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: j3uZNaCZvdCzNMGqtDN0+rdpxIFRVPBLxF/CjG7lG3Xa+Ui5Qjvnb7mGmqYkfkUfyivZW+FLFZkviN8A3igp1+DycPu8dvuuuOb2Orinl+cRyimwNUxKZAjczWuuzX5vIMSc+ekupO+eruVbg1rJ6jwUlPReD/G7aJ4gs4CjthiMjg1T3cTu6qoZ35dyIi8Xvr9SbeHqkySHmZPDJ+5sgDcMuz9ulqVRSiAhgtT8I6jU3WOsiWM9tyzzoK92mm24z2jW4Qor5OzxPv7Q/hXAA/kfycLLH2b2de0frtXQm0bubrOKilvNHUsopOEWp+XvL3ZRH70pX1S3YN9N1dFGU5zg7/BPMOXnA9FMmX/0NIpco58O9poYbfMJgLIjSbhrNvCSaYnqrdRxvl9H/EfghP4OUcxMvPVLUjAWy11jZ1UJKB/fiWpWh1UoG0YwrPAV2QKVKn0vnWPyWyHSjCZrE8ur4PPL2iYI2O5qgrx+X/7nrDqny3kHixg3nFjPsDZlDRiKOM4uNFGBDyCitTzf0U0KOCJaU4HJaj17W5IBd2d8l5L+qHSj4xe5p1j83Kee0BMlsmPKS//4hLDsiPc3JrQ9ZDqv7QcMgQu+nl3tIeDBg5/y6n8Aqafd4MPbYQ1d
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR11MB5978.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(396003)(136003)(39860400002)(376002)(346002)(230922051799003)(1800799009)(451199024)(186009)(64100799003)(53546011)(8936002)(6486002)(4744005)(41300700001)(7406005)(7416002)(82960400001)(5660300002)(2906002)(86362001)(122000001)(64756008)(6512007)(2616005)(71200400001)(110136005)(4326008)(38100700002)(8676002)(91956017)(26005)(66446008)(66476007)(66556008)(66946007)(6506007)(316002)(54906003)(478600001)(76116006)(36756003)(38070700009);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Q1k4ekpoMlF3UnM1bGtXNGtqdG0vQkxsR1lNSEdXdjVHVFY4cE10ZFlXc2Vp?=
- =?utf-8?B?ZlhmSkRkRmUxVlpUdjhqaXYxRmM4K3VRcXRkMGhpNHF5TnZ6UjFzQVFCL3Vo?=
- =?utf-8?B?MDk0Zi9mOW1rK2VJVy94ZHRJR3ZreWE5L1VNNVVsT3NRRlhSTGNDRE9WcHVU?=
- =?utf-8?B?UVIva3h1cHRiRWlaT09TclBrS2ZYRmVIK1NGWHZZa2NkTnpWWDFLTldoa1hx?=
- =?utf-8?B?djdLWUNlWHA5bTkzMW9oV2hOZGpuUmE3UlY0R2ltbnVvdnNIa1ZOTW13Znpk?=
- =?utf-8?B?M0hkS0tsNFY4d2dpQ3lWRkJjblNZRVRIQ0k4SXJOVlFzdCt0S2IrbVpCWlFO?=
- =?utf-8?B?TTQrYmhHRmt1ZjZXdE9ISnZUaHhlYVNsUlJwQUprSDI2VGx5WXlXVnJDOFRO?=
- =?utf-8?B?RXI4SjBlZXN6cUxYTkJYeDVxcnZHNHpRdnczZ21NYVg3UE0xL0dlTjUzVDJo?=
- =?utf-8?B?eTJIY0g5K1FkOXNOUHpXQlhsUllxYUxLaC8rc2l0TWg3ZkV0U1N6QUtOVVho?=
- =?utf-8?B?Q2Z5cE5zTi9TdlEyb3RBQ3FhazhBME1GRjV2bG5tMnlHa3ZmYTZzbGUzc0tO?=
- =?utf-8?B?UHRkeGxSd2tVNll1QW5jMVFzQ1o1N3l5Rlp3ZnhFVVFhZ3JMbEpBRHZZTkhI?=
- =?utf-8?B?emkweEp3UmhaYVZTZHpsVHF3L2xEUUN4Y092bXFOZTEwdHpOczhBd2V3TnhQ?=
- =?utf-8?B?Mk96TGZwRWxVSEVoU3ZuaVd1S0VZOXRHNnNTcHM2Mi9pYTJsV09hb0RGSDlv?=
- =?utf-8?B?SGhKV1lOdmRpUEwzYytoYzFubGwvR1lnUHUvRmxwNVBuL2dYbkFELy9aY3Js?=
- =?utf-8?B?WGNjLzN6dUlUcmprRlFnN0VWM1Fxb0lkZTFuWWhyR0M5Ymx4RE1xcGludU1E?=
- =?utf-8?B?bU9Pd1NNR3R0K1RIc3V1akdVbGRJcitaOVk5bFhRb21yKzBXYjAyd2srclZk?=
- =?utf-8?B?OVg2RGc3cVJHc1pJUk5halRQMlhadjFDQlNNUXY5VnhZbndsc2Nid0JBQlZX?=
- =?utf-8?B?WFBDTnV3ZnlSSHE0SnF1VVV5L25NZ3g1L1pXNEk3VDRBNjQ0VnJKM1gvY0tF?=
- =?utf-8?B?TFRCa2NrN1BCMzIrdVpNOStzWGpLTWNHdE1YNG1hZTU4UmpKQTdSMGIyTlBi?=
- =?utf-8?B?KzBDRGRhV1hjSzE0U0FIcFNZOXRrc3Y5UjFsN2x3emw5T1pobmlhaHpGeXUz?=
- =?utf-8?B?NEYwNHFZSi81UkpVaUlrSWRUc3VzQlRvZkZpWUd5eHhncThsK0lLK1Mwbm9M?=
- =?utf-8?B?VHFYK3ZPdVFxNkVINjBXTFJFSlJuVk0vSnhzeXFPM2dxOS8wY1g3dThiaENW?=
- =?utf-8?B?VldsaU5JckVxdG1ndENOSGhhNmdDQXZIejFta2FGa3hCeWs4N1BsTjU0cXp3?=
- =?utf-8?B?WTR6VDNtNjEwWXdMdS94aEdsSnEwemtTYy95MU80M01Rbk5qYTNzVE5nMzRT?=
- =?utf-8?B?M1hIb3RNRzdMSWRKTXd0ZVNwSkxQREVaREo3byt3VndmTlZ4VnVyNkRKWGow?=
- =?utf-8?B?RUlFb1haVVdVaWphL2hPVnliRDNtaVlXU1F3cjd4YjVxMWxzZFUwZkhiNW02?=
- =?utf-8?B?UEtkY1RHSVBYOUVVZG5hU0lIZWowTmpXeHFxTFY3a0IvamxDTWI2UFMzR0VX?=
- =?utf-8?B?a3hZV25hOVRQQXdBT1YxcGordjBOVkJNbFczdDlOVjE5dnZwY3Y5S1dTVjZJ?=
- =?utf-8?B?OTBjQjRNMjh4cmtHUmI4VnRzL0x1bncxdUFPQXNjeFYrNk9ZUTFOUkpFTVJK?=
- =?utf-8?B?WUFqaFo2eUNRcFN1TFBKSnJHWWc0QTI2ZHFjdVRIYnJQMGsxU0wyTWVVR2Jh?=
- =?utf-8?B?M3ltckwxL2VWUWZLaW5EZVNtN1hBczVyVGFFTmY1TGE1cjFyUHlqUlUzeC9W?=
- =?utf-8?B?b0trOGdnMXpSZm9pOVdHT3JhSlh6OFhORERxV3pGZVNSeTVmbTlMb0VxZUtW?=
- =?utf-8?B?ZkIvTkxvandDWmpUbnIwY0o3aVgrUlhWMXQwWWkvL0pRMG5EVmJoSUdPZ2c2?=
- =?utf-8?B?S2FTQjRhRkpPdUZVdzBFS0RSQmlCakJXZ0k0SGhFeEdjZGJLdlBIZmllbXZQ?=
- =?utf-8?B?UXRQam84RUpEY3R6a2pVbFc3cUw3bUpSa0VTcm8xdVZpWXl0bnFaV3oxQnZH?=
- =?utf-8?B?VUo2MUJpWDkveUtRUFFqenNNTWY5d2lGd2xoWi9obUNUK0ZkYThBaDdQVzVu?=
- =?utf-8?B?Y1E9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <74FDCC177320F944ACB608818902ED2B@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ <20231027182217.3615211-10-seanjc@google.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5978.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6c262d30-ad01-4b01-2c8d-08dbdbd2783f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Nov 2023 18:35:20.9909
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: zUiB7sjiAJFWGCDvsC2fya89WUgLrQktgTA54FTIl+YS0tOPPjSCxLxojusYR00iLQv/Q+nyMtHF2qCDVBV86Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB8569
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231027182217.3615211-10-seanjc@google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -180,22 +68,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "david@redhat.com" <david@redhat.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "mic@digikod.net" <mic@digikod.net>, "chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "isaku.yamahata@gmail.com" <isaku.yamahata@gmail.com>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "Li, Xiaoyao" <xiaoyao.li@intel.com>, "willy@infradead.org" <willy@infradead.org>, "Wang, Wei W" <wei.w.wang@intel.com>, "vbabka@suse.cz" <vbabka@suse.cz>, "yu.c.zhang@linux.intel.com" <yu.c.zhang@linux.intel.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "mail@maciej.szmigiero.name" <mail@maciej.szmigiero.name>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, "michael.roth@amd.com" <michael.roth@amd.com>, "ackerleytng@google.com" <ackerleytng@google.com>, "viro@zeniv.linux.org.uk" <viro@z
- eniv.linux.org.uk>, "paul.walmsley@sifive.com" <paul.walmsley@sifive.com>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, "tabba@google.com" <tabba@google.com>, "Yamahata, Isaku" <isaku.yamahata@intel.com>, "brauner@kernel.org" <brauner@kernel.org>, "qperret@google.com" <qperret@google.com>, "anup@brainfault.org" <anup@brainfault.org>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>, "dmatlack@google.com" <dmatlack@google.com>, "jarkko@kernel.org" <jarkko@kernel.org>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>, "kvm-riscv@lists.infradead.org" <kvm-riscv@lists.infradead.org>, "maz@kernel.org" <maz@kernel.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "liam.merwick@oracle.com" <liam.merwick@oracle.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "Annapurve, Vishal" <vannapurve@google.com>, "linuxppc-dev@lists.ozlabs.
- org" <linuxppc-dev@lists.ozlabs.org>, "Xu, Yilun" <yilun.xu@intel.com>, "amoorthy@google.com" <amoorthy@google.com>
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Vlastimil Babka <vbabka@suse.cz>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, Isaku Yamahata <isaku.yamahata@intel.com>, Christian Brauner <brauner@kernel.org>, Quentin Perret <qperret@google.com>, L
+ iam Merwick <liam.merwick@oracle.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, David Matlack <dmatlack@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Xu Yilun <yilun.xu@intel.com>, Anish Moorthy <amoorthy@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gVGh1LCAyMDIzLTExLTAyIGF0IDA4OjQ0IC0wNzAwLCBTZWFuIENocmlzdG9waGVyc29uIHdy
-b3RlOgo+IE9uIFRodSwgTm92IDAyLCAyMDIzLCBQYW9sbyBCb256aW5pIHdyb3RlOgo+ID4gT24g
-MTEvMi8yMyAxMDozNSwgSHVhbmcsIEthaSB3cm90ZToKPiA+ID4gSUlVQyBLVk0gY2FuIGFscmVh
-ZHkgaGFuZGxlIHRoZSBjYXNlIG9mIHBvaXNvbmVkCj4gPiA+IHBhZ2UgYnkgc2VuZGluZyBzaWdu
-YWwgdG8gdXNlciBhcHA6Cj4gPiA+IAo+ID4gPiDCoAlzdGF0aWMgaW50IGt2bV9oYW5kbGVfZXJy
-b3JfcGZuKHN0cnVjdCBrdm1fdmNwdSAqdmNwdSzCoAkJCXN0cnVjdAo+ID4gPiBrdm1fcGFnZV9m
-YXVsdCAqZmF1bHQpwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoAl7Cj4gPiA+
-IMKgCQkuLi4KPiA+ID4gCj4gPiA+IMKgwqDCoMKgwqDCoMKgwqAJCWlmIChmYXVsdC0+cGZuID09
-IEtWTV9QRk5fRVJSX0hXUE9JU09OKSB7Cj4gPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoAkJa3ZtX3NlbmRfaHdwb2lzb25fc2lnbmFsKGZhdWx0LT5zbG90LCBmYXVsdC0+Z2ZuKTsK
-PiAKPiBObywgdGhpcyBkb2Vzbid0IHdvcmssIGJlY2F1c2UgdGhhdCBzaWduYWxzIHRoZSBob3N0
-IHZpcnR1YWwgYWRkcmVzcwoKQWgsIHJpZ2h0IDotKQo=
+On Fri, Oct 27, 2023 at 11:21:51AM -0700, Sean Christopherson wrote:
+> --- a/Documentation/virt/kvm/api.rst
+> +++ b/Documentation/virt/kvm/api.rst
+> @@ -6723,6 +6723,26 @@ array field represents return values. The userspace should update the return
+>  values of SBI call before resuming the VCPU. For more details on RISC-V SBI
+>  spec refer, https://github.com/riscv/riscv-sbi-doc.
+>  
+> +::
+> +
+> +		/* KVM_EXIT_MEMORY_FAULT */
+> +		struct {
+> +			__u64 flags;
+> +			__u64 gpa;
+> +			__u64 size;
+> +		} memory;
+                  ^
+
+Should update to "memory_fault" to align with other places.
+
+[...]
+
+> @@ -520,6 +521,12 @@ struct kvm_run {
+>  #define KVM_NOTIFY_CONTEXT_INVALID	(1 << 0)
+>  			__u32 flags;
+>  		} notify;
+> +		/* KVM_EXIT_MEMORY_FAULT */
+> +		struct {
+> +			__u64 flags;
+> +			__u64 gpa;
+> +			__u64 size;
+> +		} memory_fault;
+>  		/* Fix the size of the union. */
+>  		char padding[256];
+>  	};
+
+Thanks,
+Yilun
+
+> 
