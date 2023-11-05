@@ -2,59 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 555AA7E0F25
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Nov 2023 12:40:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AD967E1381
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Nov 2023 14:05:38 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OVbpvbhI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cBhCx8Bj;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SMwdx1n9xz3cnr
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Nov 2023 22:40:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SNZTr2KFyz3cTY
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Nov 2023 00:05:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OVbpvbhI;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cBhCx8Bj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.120; helo=mgamail.intel.com; envelope-from=yilun.xu@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SMwd15VgXz2yst
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Nov 2023 22:39:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SNZSw2J1Sz2xrD
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Nov 2023 00:04:46 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1699097974; x=1730633974;
-  h=date:from:to:cc:subject:message-id;
-  bh=SAZoWk2PYsq7h9I5PMCDG87F9Jp1/DqSYYmJxey3JSU=;
-  b=OVbpvbhIzKC9ZiFZQj4qErGSZLfZYUfjyOLtwWggNCaAw2sL9C67/IEk
-   hK9vw6fm6HrPibH8OOx2jciwsGVpxKpuW05Ho/xWey4BA8aqPoh79n+75
-   1yRr4xP2p6NEIHSvqZ1WmWZu96EwRIagW7b8bgoATPoHUftwcvrIJmhl1
-   gzDnTyXaiCjCLSn6sgoLn6Hr5aavKBFmswHQ6dFszT124+ZmGTnENV11G
-   qZD4gO8oFhycop6C/76QPCJEIDb3utH3C/eMllF1uwBnCCPd6yviN2pI5
-   b0pd3Vq9Qfv1JnUtfQWRlNwVIbq3kT5FEhvSluznnBKUU63gZ0uOTxPBw
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10883"; a="475313752"
-X-IronPort-AV: E=Sophos;i="6.03,276,1694761200"; 
-   d="scan'208";a="475313752"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2023 04:39:09 -0700
+  t=1699189488; x=1730725488;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=mFE9c4kKSFVvQT9y1x5f+rwwI1//UOO/ul+Hvls5bPM=;
+  b=cBhCx8Bj4EJYfwx62CQFoZ+L6r8uaibPqwLDLKkfywDgQAqinwwPSZRe
+   IbOfmAWJxECXIgsuSwzCx9+BYHsnS1B8DBBJsuf+l7oWZNMUV7/3NUusL
+   JYrMtOVGr2Iq2yqOAzIOJj3ExEKNOcCIqKgad9QBuTRXwRugd6a+KElts
+   aGtlOqxG/y/LT2UK8+d3hjWDmQSMBzz9Z+L6PBX7v1W0XkjgxZ5QOg1h/
+   cCdhwZ9SlPTSTgMMCYepgkpOcV6xub12e2k71S/iPptsVdWIfgtASLtWy
+   hsWiLVZcdikhNZE8QFxIstFkUHym30aDnk1DJi3WkMuj4ZCU6jWo5lrfa
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10884"; a="388033733"
+X-IronPort-AV: E=Sophos;i="6.03,279,1694761200"; 
+   d="scan'208";a="388033733"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2023 05:04:11 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10883"; a="885456240"
-X-IronPort-AV: E=Sophos;i="6.03,276,1694761200"; 
-   d="scan'208";a="885456240"
-Received: from lkp-server01.sh.intel.com (HELO 17d9e85e5079) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 04 Nov 2023 04:39:08 -0700
-Received: from kbuild by 17d9e85e5079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1qzEza-0004C4-06;
-	Sat, 04 Nov 2023 11:39:06 +0000
-Date: Sat, 04 Nov 2023 19:38:16 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS
- 303d77a6e1707498f09c9d8ee91b1dc07ca315a5
-Message-ID: <202311041914.a54UntuE-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+X-IronPort-AV: E=Sophos;i="6.03,279,1694761200"; 
+   d="scan'208";a="10206430"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa001.fm.intel.com with ESMTP; 05 Nov 2023 05:04:02 -0800
+Date: Sun, 5 Nov 2023 21:02:32 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH v13 20/35] KVM: x86/mmu: Handle page fault for private
+ memory
+Message-ID: <ZUeSaAKRemlSRQpO@yilunxu-OptiPlex-7050>
+References: <20231027182217.3615211-1-seanjc@google.com>
+ <20231027182217.3615211-21-seanjc@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231027182217.3615211-21-seanjc@google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,246 +67,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Vlastimil Babka <vbabka@suse.cz>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, Isaku Yamahata <isaku.yamahata@intel.com>, Christian Brauner <brauner@kernel.org>, Quentin Perret <qperret@google.com>, L
+ iam Merwick <liam.merwick@oracle.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, David Matlack <dmatlack@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Xu Yilun <yilun.xu@intel.com>, Anish Moorthy <amoorthy@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-branch HEAD: 303d77a6e1707498f09c9d8ee91b1dc07ca315a5  Merge branch 'topic/ppc-kvm' into next
+> +static void kvm_mmu_prepare_memory_fault_exit(struct kvm_vcpu *vcpu,
+> +					      struct kvm_page_fault *fault)
+> +{
+> +	kvm_prepare_memory_fault_exit(vcpu, fault->gfn << PAGE_SHIFT,
+> +				      PAGE_SIZE, fault->write, fault->exec,
+> +				      fault->is_private);
+> +}
+> +
+> +static int kvm_faultin_pfn_private(struct kvm_vcpu *vcpu,
+> +				   struct kvm_page_fault *fault)
+> +{
+> +	int max_order, r;
+> +
+> +	if (!kvm_slot_can_be_private(fault->slot)) {
+> +		kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
+> +		return -EFAULT;
+> +	}
+> +
+> +	r = kvm_gmem_get_pfn(vcpu->kvm, fault->slot, fault->gfn, &fault->pfn,
+> +			     &max_order);
+> +	if (r) {
+> +		kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
+> +		return r;
 
-elapsed time: 1779m
+Why report KVM_EXIT_MEMORY_FAULT here? even with a ret != -EFAULT? This is
+different from the decription where KVM_EXIT_MEMORY_FAULT is introduced:
 
-configs tested: 223
-configs skipped: 2
+  KVM_EXIT_MEMORY_FAULT will be used to report memory faults that appear to
+  be implicit conversions.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+  To allow for future possibilities where KVM reports KVM_EXIT_MEMORY_FAULT
+  and fills run->memory_fault on _any_ unresolved fault, KVM returns
+  "-EFAULT"
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                     haps_hs_smp_defconfig   gcc  
-arc                        nsim_700_defconfig   gcc  
-arc                   randconfig-001-20231103   gcc  
-arc                   randconfig-001-20231104   gcc  
-arc                   randconfig-002-20231103   gcc  
-arc                   randconfig-002-20231104   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                          collie_defconfig   clang
-arm                                 defconfig   gcc  
-arm                            mps2_defconfig   gcc  
-arm                           omap1_defconfig   clang
-arm                       omap2plus_defconfig   gcc  
-arm                         orion5x_defconfig   clang
-arm                   randconfig-001-20231104   gcc  
-arm                   randconfig-002-20231104   gcc  
-arm                   randconfig-003-20231104   gcc  
-arm                   randconfig-004-20231104   gcc  
-arm64                            allmodconfig   gcc  
-arm64                             allnoconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20231104   gcc  
-arm64                 randconfig-002-20231104   gcc  
-arm64                 randconfig-003-20231104   gcc  
-arm64                 randconfig-004-20231104   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20231103   gcc  
-csky                  randconfig-001-20231104   gcc  
-csky                  randconfig-002-20231103   gcc  
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20231103   gcc  
-i386         buildonly-randconfig-001-20231104   gcc  
-i386         buildonly-randconfig-002-20231103   gcc  
-i386         buildonly-randconfig-002-20231104   gcc  
-i386         buildonly-randconfig-003-20231103   gcc  
-i386         buildonly-randconfig-003-20231104   gcc  
-i386         buildonly-randconfig-004-20231103   gcc  
-i386         buildonly-randconfig-004-20231104   gcc  
-i386         buildonly-randconfig-005-20231103   gcc  
-i386         buildonly-randconfig-005-20231104   gcc  
-i386         buildonly-randconfig-006-20231103   gcc  
-i386         buildonly-randconfig-006-20231104   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                  randconfig-001-20231103   gcc  
-i386                  randconfig-001-20231104   gcc  
-i386                  randconfig-002-20231103   gcc  
-i386                  randconfig-002-20231104   gcc  
-i386                  randconfig-003-20231103   gcc  
-i386                  randconfig-003-20231104   gcc  
-i386                  randconfig-004-20231103   gcc  
-i386                  randconfig-004-20231104   gcc  
-i386                  randconfig-005-20231103   gcc  
-i386                  randconfig-005-20231104   gcc  
-i386                  randconfig-006-20231103   gcc  
-i386                  randconfig-006-20231104   gcc  
-i386                  randconfig-011-20231104   gcc  
-i386                  randconfig-012-20231104   gcc  
-i386                  randconfig-013-20231104   gcc  
-i386                  randconfig-014-20231104   gcc  
-i386                  randconfig-015-20231104   gcc  
-i386                  randconfig-016-20231104   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20231103   gcc  
-loongarch             randconfig-001-20231104   gcc  
-loongarch             randconfig-002-20231103   gcc  
-loongarch             randconfig-002-20231104   gcc  
-m68k                             alldefconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                        m5272c3_defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20231103   gcc  
-nios2                 randconfig-001-20231104   gcc  
-nios2                 randconfig-002-20231103   gcc  
-nios2                 randconfig-002-20231104   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20231103   gcc  
-parisc                randconfig-001-20231104   gcc  
-parisc                randconfig-002-20231103   gcc  
-parisc                randconfig-002-20231104   gcc  
-parisc64                         alldefconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   gcc  
-powerpc                       ebony_defconfig   clang
-powerpc                      mgcoge_defconfig   gcc  
-powerpc                     mpc83xx_defconfig   gcc  
-powerpc               randconfig-001-20231103   gcc  
-powerpc               randconfig-001-20231104   gcc  
-powerpc               randconfig-002-20231103   gcc  
-powerpc               randconfig-002-20231104   gcc  
-powerpc               randconfig-003-20231103   gcc  
-powerpc               randconfig-003-20231104   gcc  
-powerpc64             randconfig-001-20231103   gcc  
-powerpc64             randconfig-001-20231104   gcc  
-powerpc64             randconfig-002-20231103   gcc  
-powerpc64             randconfig-002-20231104   gcc  
-powerpc64             randconfig-003-20231103   gcc  
-powerpc64             randconfig-003-20231104   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv             nommu_k210_sdcard_defconfig   gcc  
-riscv                 randconfig-001-20231103   gcc  
-riscv                 randconfig-001-20231104   gcc  
-riscv                 randconfig-002-20231103   gcc  
-riscv                 randconfig-002-20231104   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                  randconfig-001-20231103   gcc  
-s390                  randconfig-001-20231104   gcc  
-s390                  randconfig-002-20231103   gcc  
-s390                  randconfig-002-20231104   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                          r7780mp_defconfig   gcc  
-sh                    randconfig-001-20231104   gcc  
-sh                    randconfig-002-20231104   gcc  
-sh                            titan_defconfig   gcc  
-sh                              ul2_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                 randconfig-001-20231104   gcc  
-sparc                 randconfig-002-20231104   gcc  
-sparc64                          alldefconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20231104   gcc  
-sparc64               randconfig-002-20231104   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20231104   gcc  
-um                    randconfig-002-20231104   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-001-20231104   gcc  
-x86_64       buildonly-randconfig-002-20231104   gcc  
-x86_64       buildonly-randconfig-003-20231104   gcc  
-x86_64       buildonly-randconfig-004-20231104   gcc  
-x86_64       buildonly-randconfig-005-20231104   gcc  
-x86_64       buildonly-randconfig-006-20231104   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64                randconfig-001-20231104   gcc  
-x86_64                randconfig-002-20231104   gcc  
-x86_64                randconfig-003-20231104   gcc  
-x86_64                randconfig-004-20231104   gcc  
-x86_64                randconfig-005-20231104   gcc  
-x86_64                randconfig-006-20231104   gcc  
-x86_64                randconfig-011-20231104   gcc  
-x86_64                randconfig-012-20231104   gcc  
-x86_64                randconfig-013-20231104   gcc  
-x86_64                randconfig-014-20231104   gcc  
-x86_64                randconfig-015-20231104   gcc  
-x86_64                randconfig-016-20231104   gcc  
-x86_64                randconfig-071-20231104   gcc  
-x86_64                randconfig-072-20231104   gcc  
-x86_64                randconfig-073-20231104   gcc  
-x86_64                randconfig-074-20231104   gcc  
-x86_64                randconfig-075-20231104   gcc  
-x86_64                randconfig-076-20231104   gcc  
-x86_64                           rhel-8.3-bpf   gcc  
-x86_64                          rhel-8.3-func   gcc  
-x86_64                    rhel-8.3-kselftests   gcc  
-x86_64                         rhel-8.3-kunit   gcc  
-x86_64                           rhel-8.3-ltp   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                            allnoconfig   gcc  
-xtensa                           allyesconfig   gcc  
-xtensa                randconfig-001-20231104   gcc  
-xtensa                randconfig-002-20231104   gcc  
+Thanks,
+Yilun
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> +	}
+> +
+> +	fault->max_level = min(kvm_max_level_for_order(max_order),
+> +			       fault->max_level);
+> +	fault->map_writable = !(fault->slot->flags & KVM_MEM_READONLY);
+> +
+> +	return RET_PF_CONTINUE;
+> +}
