@@ -2,68 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3062F7E28F0
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Nov 2023 16:44:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 695247E292E
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Nov 2023 16:56:57 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=kgJoDXVa;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=pOqN6VSU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SPFyR6vkCz3cSd
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 02:44:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SPGF32GGhz3bvB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 02:56:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=kgJoDXVa;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=pOqN6VSU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3mgljzqykdamvhdqmfjrrjoh.frpolqx0ssf-ghyolvwv.r2odev.ruj@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3lqxjzqykdaqwierngksskpi.gsqpmry1ttg-hizpmwxw.s3pefw.svk@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SPFxc5DR3z2ytV
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Nov 2023 02:43:30 +1100 (AEDT)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5a839b31a0dso94195147b3.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Nov 2023 07:43:30 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SPGDB4sMTz3bPM
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Nov 2023 02:56:08 +1100 (AEDT)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-da033914f7cso5367554276.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Nov 2023 07:56:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1699285403; x=1699890203; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ABS8rPoBy1ITQ62kUEvxWovIfmSWeQOAvNCpebOJLoI=;
-        b=kgJoDXVaOjpDAuNUOcsSyit47AvHaodq7dcwn4QYtal5Swy4/VqjPbkgxp72Lptdiz
-         5tyJt6O7CdcJCbB+kUxXUjt3li3cjUACnr+uoP6HKylKh9wmQobZQNkK4CHpJfNdvfxC
-         dloNaGM7aF3UotcKjnMr28YNB3SFQm1QHx903eRK2i1cZ9FfVTvlLMKRYywBUk5auoE6
-         K9MJB2F0xQeHeSLDWMYwR6oB0nYxlWzNjZ/CPqR9tY+JopCI4yYLlsdAuKQvEMNP9cjW
-         tN+UHHtYGSatKEEv1e7y5gh4nTgz/ZXMCoxk+dh3kG7bQloAo8nJql3BW6lM3artZ5Mt
-         p1yg==
+        d=google.com; s=20230601; t=1699286165; x=1699890965; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2j2Mtk4lW9HEtWavGEnwteIJF5J/7dhiq9rSq3IBx+E=;
+        b=pOqN6VSUX09VIQ5IUUaiz2qmR7DTB5m4CJIhTpFsNHd2zQmJSRbu8UTqfgSw6Y6VPM
+         eJylUDpkR8ERTrZKzWfACNCpqhFA0TVEOlwTmsweA+64BF7xsAMoUL1/quRcmqKm2EGi
+         mwLZZ+pLHL8+zggHQLuHGPz26ItUNfn74+ZhPZ4lN5Mmb4CA0HSFnUEpBYVOlJIYi+JZ
+         Zj0A7AMKUTnScMFzzrGVWULOuXc7YfZ9CJE7Lf0xX1f5Tvc/bcebyeLi+RMND458WXzp
+         dacHuWL4ufN9dr4TyBqTL0jGmzYOgRqisnXH2gupbGROeRIqguseLyVQA3/wstN8wm/v
+         xMGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699285403; x=1699890203;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ABS8rPoBy1ITQ62kUEvxWovIfmSWeQOAvNCpebOJLoI=;
-        b=tEmsKLwNJHkvYiN1T0P73lcCiBPFwq7ZLzqVfOuvyRrhE+/3komim1pYOH1ZhomPUu
-         PNw/QkJayP55dpMmqiIsVkKm/VsmfSXVJOVt2dxMUdj7s+TjdLMEz0J9sNeS9n8diB+X
-         D/GYgwmIdIO/nj7FxFs/vLwJ8SfzzFkaOJwMSCLkoIy+8ZsQktiayhFZS1ItMFuskq92
-         jgrZtc4O25cMzuqPUiaOM20yhliHd+1TivGhiR5gRs2T8HiBYik8dUdwTyC3pcBn4kKl
-         XUi+yWH0Mf9edGiDGwVrTo5T25pWS1CEIfcmP2YCmaLeGvdncRo8Taz10i7p5JgM0qNH
-         f6Xg==
-X-Gm-Message-State: AOJu0YwM/nKD/lPf4Bp6r1YSAf6zCzcdyc9kZzp3ki7GkxQb0TTDnRld
-	OORqcfoanfJy0CQb869P8hpM+nVnMwA=
-X-Google-Smtp-Source: AGHT+IFZU6oilNAmMp5GLulg+dwoZ1zspXQbywwTDejvG8kP1K7yDCwH0QkLRrw/RyNVPmFev9uMuH6PQSU=
+        d=1e100.net; s=20230601; t=1699286165; x=1699890965;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=2j2Mtk4lW9HEtWavGEnwteIJF5J/7dhiq9rSq3IBx+E=;
+        b=DPiMmcl/3NYRSJsm2pRb2GZkBhuFd0ht6plPnljjOSSefTn42xFGJpE+pr2dfIg5EQ
+         Dw2PX1lh18wfkgvhSgaDlGVQXHunfTJWtyCf3EcRO8P0AxGryPrw71WYZlYeLCqDYUTy
+         HY0RKmts/VFzaOWmqQWHyhlSF8kNMaToesG3JYu5VAfQ2UP4bgcrrRTKNURPF/adbgBe
+         M42HoTPN3b8ypnxlkcugRQBvPjT8TJuTo9lJnNCSCBXg9mXOrHtuPVgao6hGxeDTf1Hb
+         /qQo5Hbvb62HbZ6sS5LMj3hBy/ei9OewuWN990ejMg6l4IlZ+RrMjlhKJ6q0BR9lYurm
+         XdHg==
+X-Gm-Message-State: AOJu0YyC1LoxjWp+grR9zH1U4FweYloV5+sIwZuxKvAMm3jJk/jcIluy
+	eohCTYahsH7iX5nxho454Jhl1C7fp7E=
+X-Google-Smtp-Source: AGHT+IERk2b/M7d3G4J3vDGzrJ+T8jAsirv4bBIzvQT8OzuTMUe5AwPvC/SZu8YyGY6aMLoBT08jDOLmS/Y=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a25:ce94:0:b0:da0:3bea:cdc7 with SMTP id
- x142-20020a25ce94000000b00da03beacdc7mr527390ybe.2.1699285402751; Mon, 06 Nov
- 2023 07:43:22 -0800 (PST)
-Date: Mon, 6 Nov 2023 07:43:07 -0800
-In-Reply-To: <ZUYcb6no9ADYytrx@yilunxu-OptiPlex-7050>
+ (user=seanjc job=sendgmr) by 2002:a05:6902:1083:b0:d9a:c3b8:4274 with SMTP id
+ v3-20020a056902108300b00d9ac3b84274mr683795ybu.7.1699286165114; Mon, 06 Nov
+ 2023 07:56:05 -0800 (PST)
+Date: Mon, 6 Nov 2023 07:56:03 -0800
+In-Reply-To: <ZUjqJjz0Epf7ii8F@yilunxu-OptiPlex-7050>
 Mime-Version: 1.0
-References: <20231027182217.3615211-1-seanjc@google.com> <20231027182217.3615211-17-seanjc@google.com>
- <ZUYcb6no9ADYytrx@yilunxu-OptiPlex-7050>
-Message-ID: <ZUkJiwp8VHY0ICab@google.com>
-Subject: Re: [PATCH v13 16/35] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
- guest-specific backing memory
+References: <20231027182217.3615211-1-seanjc@google.com> <20231027182217.3615211-21-seanjc@google.com>
+ <ZUeSaAKRemlSRQpO@yilunxu-OptiPlex-7050> <CABgObfb1Wf2ptitGhJPM6VcmkCG9haMoQj2BsttjeoV=9F0O9Q@mail.gmail.com>
+ <ZUjqJjz0Epf7ii8F@yilunxu-OptiPlex-7050>
+Message-ID: <ZUkMk6b6vZe2ANkK@google.com>
+Subject: Re: [PATCH v13 20/35] KVM: x86/mmu: Handle page fault for private memory
 From: Sean Christopherson <seanjc@google.com>
 To: Xu Yilun <yilun.xu@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,57 +83,93 @@ Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Nov 04, 2023, Xu Yilun wrote:
-> > +KVM_SET_USER_MEMORY_REGION2 is an extension to KVM_SET_USER_MEMORY_REGION that
-> > +allows mapping guest_memfd memory into a guest.  All fields shared with
-> > +KVM_SET_USER_MEMORY_REGION identically.  Userspace can set KVM_MEM_PRIVATE in
-> > +flags to have KVM bind the memory region to a given guest_memfd range of
-> > +[guest_memfd_offset, guest_memfd_offset + memory_size].  The target guest_memfd
->                                                         ^
-> The range end should be exclusive, is it?
+On Mon, Nov 06, 2023, Xu Yilun wrote:
+> On Sun, Nov 05, 2023 at 05:19:36PM +0100, Paolo Bonzini wrote:
+> > On Sun, Nov 5, 2023 at 2:04=E2=80=AFPM Xu Yilun <yilun.xu@linux.intel.c=
+om> wrote:
+> > >
+> > > > +static void kvm_mmu_prepare_memory_fault_exit(struct kvm_vcpu *vcp=
+u,
+> > > > +                                           struct kvm_page_fault *=
+fault)
+> > > > +{
+> > > > +     kvm_prepare_memory_fault_exit(vcpu, fault->gfn << PAGE_SHIFT,
+> > > > +                                   PAGE_SIZE, fault->write, fault-=
+>exec,
+> > > > +                                   fault->is_private);
+> > > > +}
+> > > > +
+> > > > +static int kvm_faultin_pfn_private(struct kvm_vcpu *vcpu,
+> > > > +                                struct kvm_page_fault *fault)
+> > > > +{
+> > > > +     int max_order, r;
+> > > > +
+> > > > +     if (!kvm_slot_can_be_private(fault->slot)) {
+> > > > +             kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
+> > > > +             return -EFAULT;
+> > > > +     }
+> > > > +
+> > > > +     r =3D kvm_gmem_get_pfn(vcpu->kvm, fault->slot, fault->gfn, &f=
+ault->pfn,
+> > > > +                          &max_order);
+> > > > +     if (r) {
+> > > > +             kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
+> > > > +             return r;
+> > >
+> > > Why report KVM_EXIT_MEMORY_FAULT here? even with a ret !=3D -EFAULT?
+> >=20
+> > The cases are EFAULT, EHWPOISON (which can report
+> > KVM_EXIT_MEMORY_FAULT) and ENOMEM. I think it's fine
+> > that even -ENOMEM can return KVM_EXIT_MEMORY_FAULT,
+> > and it doesn't violate the documentation.  The docs tell you "what
+> > can you do if error if EFAULT or EHWPOISON?"; they don't
+> > exclude that other errnos result in KVM_EXIT_MEMORY_FAULT,
+> > it's just that you're not supposed to look at it
+>=20
+> Thanks, it's OK for ENOMEM + KVM_EXIT_MEMORY_FAULT.
+>=20
+> Another concern is, now 3 places to report EFAULT + KVM_EXIT_MEMORY_FAULT=
+:
+>=20
+>   if (!kvm_slot_can_be_private(fault->slot)) {
+> 	kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
+> 	return -EFAULT;
+>   }
+>=20
+>   file =3D kvm_gmem_get_file(slot);
+>   if (!file)
+> 	return -EFAULT;
+>=20
+>   if (fault->is_private !=3D kvm_mem_is_private(vcpu->kvm, fault->gfn)) {
+> 	kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
+> 	return -EFAULT;
+>   }
+>=20
+> They are different cases, and seems userspace should handle them
+> differently, but not enough information to distinguish them.
 
-Yes, that should be a ')', not a ']'.
+For the first, the memory_fault exit will inform userspace that the guest w=
+ants
+to map memory as private, and userspace will see that the memslot isn't con=
+figured
+to support private mappings.  Userspace may not even need to query memslots=
+, e.g.
+if the gfn in question has been enumerated to the guest as something that c=
+an only
+be mapped shared.
 
-> > +static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
-> > +{
-> > +	const char *anon_name = "[kvm-gmem]";
-> > +	struct kvm_gmem *gmem;
-> > +	struct inode *inode;
-> > +	struct file *file;
-> > +	int fd, err;
-> > +
-> > +	fd = get_unused_fd_flags(0);
-> > +	if (fd < 0)
-> > +		return fd;
-> > +
-> > +	gmem = kzalloc(sizeof(*gmem), GFP_KERNEL);
-> > +	if (!gmem) {
-> > +		err = -ENOMEM;
-> > +		goto err_fd;
-> > +	}
-> > +
-> > +	/*
-> > +	 * Use the so called "secure" variant, which creates a unique inode
-> > +	 * instead of reusing a single inode.  Each guest_memfd instance needs
-> > +	 * its own inode to track the size, flags, etc.
-> > +	 */
-> > +	file = anon_inode_getfile_secure(anon_name, &kvm_gmem_fops, gmem,
-> > +					 O_RDWR, NULL);
-> > +	if (IS_ERR(file)) {
-> > +		err = PTR_ERR(file);
-> > +		goto err_gmem;
-> > +	}
-> > +
-> > +	file->f_flags |= O_LARGEFILE;
-> > +
-> > +	inode = file->f_inode;
-> > +	WARN_ON(file->f_mapping != inode->i_mapping);
-> 
-> Just curious, why should we check the mapping fields which is garanteed in
-> other subsystem?
+For the second (no valid guest_memfd file), userspace put the last referenc=
+e to
+the guest_memfd file without informing the guest or creating a memslot.  Th=
+at's
+firmly a userspace bug.
 
-Mostly to document the behavior.  The vast majority of folks that read this code
-will be KVM developers, not file systems developers, and will likely have no clue
-about the relationship between f_mapping and i_mapping.  And in the extremely
-unlikely scenario that anon_inode_getfile_secure() no longer sets f_mapping, a
-WARN detects the issue whereas a comment does not.
+For the third and last, userspace will see that the guest is requesting a p=
+rivate
+mapping but the gfn is configured for shared mappings.
+
+In all cases, userspace has the necessary information to resolve the issue,=
+ where
+"resolving the issue" may mean terminating the guest.  If userspace isn't t=
+racking
+memslots or the private attribute, then userspace has far bigger problems.
