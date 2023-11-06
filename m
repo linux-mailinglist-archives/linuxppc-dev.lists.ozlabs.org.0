@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 458437E2047
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Nov 2023 12:45:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E66F17E204C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Nov 2023 12:46:31 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=YVPACWQ+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=q4dv2Y+V;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SP8gB0yszz3cY0
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Nov 2023 22:45:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SP8h56BsTz3dBl
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Nov 2023 22:46:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=YVPACWQ+;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=q4dv2Y+V;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::112c; helo=mail-yw1-x112c.google.com; envelope-from=tabba@google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::f2f; helo=mail-qv1-xf2f.google.com; envelope-from=tabba@google.com; receiver=lists.ozlabs.org)
+Received: from mail-qv1-xf2f.google.com (mail-qv1-xf2f.google.com [IPv6:2607:f8b0:4864:20::f2f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SP8fJ62QWz2xQK
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Nov 2023 22:44:56 +1100 (AEDT)
-Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-5a822f96aedso52096977b3.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Nov 2023 03:44:56 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SP8fs6Rtgz3cTF
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Nov 2023 22:45:25 +1100 (AEDT)
+Received: by mail-qv1-xf2f.google.com with SMTP id 6a1803df08f44-66d0f945893so36014236d6.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Nov 2023 03:45:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1699271092; x=1699875892; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1699271123; x=1699875923; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DX7ek6JbnQBP3kmz+KR8GNUYI0kM1PtX+UUHfn3vax8=;
-        b=YVPACWQ+j9M02pcyw4QkBBax2wW+RNIkTM/QwCKS+vEczLN5eD8Ys6dI6L4cTJvIEe
-         +KiHpd6JqavGaUs9wvezwH92fM4RGtvHLNxXJH8njz8PdkefR1M4ThPq5n65HB+TDGWS
-         WD5FiPKykV4jYFP/A38nfkux5fs4FPOHn3QP5RufGhvOyNkKjgXPOQeqR6D3/rbnwyQm
-         Baq3+1Qo2HKQ5KMS6txUt1JpIL6NYbR34IOpWUf1H9OkzM6wkOBbneq4ie+226/EKC4F
-         L+7uoym93mDtL91bYowjSoBvrEijtGXddVPB5S4dBoM0hnaJnEDw7gRW2IvIGnlGbzi0
-         YS2A==
+        bh=A3+w7KiTzzQhCpJeg/0ek2R61CW1ssLM/7mTLxlOjqg=;
+        b=q4dv2Y+VSldPTpjFemcSkXljyciNHXZTS9t006xap8qvq7L8tqYVoqPuwUMUlNveDp
+         iTzHXa8y2iTTBGD43ldUKKT8gHjFEJShIGMsFcUf+fVZpyNOKNo8piJFiT83oRYNVTm7
+         Fap7fQs+jptZ7H5rSQSd+9JCacnb5mTnShNmwjjbPhZmlha+6pwkb6HQgCPZqT5ZozS/
+         dVLeV8HYUxsT6Aue3QzCmlJ2NLXR//QtWJX2FDtMUqMbY08dD8aOF2PLDo1eBfZ7keRz
+         nROL2CUnMzpDPlNEeRMuqPRX51OMe8VvL0ezor7Xks/c99rXM1pBAHSfxfFYj8ukOPcX
+         Bd5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699271092; x=1699875892;
+        d=1e100.net; s=20230601; t=1699271123; x=1699875923;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DX7ek6JbnQBP3kmz+KR8GNUYI0kM1PtX+UUHfn3vax8=;
-        b=Va1/31/6j+2FPl4Y3D11gQWZ/ksUBShpllX2S8yuNeKNSgvO073JZXKDgS+gDao3N8
-         w+tpw6QNoccPOwfjZcwnBneD6WTLEgMZDTOq3fi7VItfI+ZcpXr2eO3XB3STbT2jVi7n
-         oy6uX8KtHNL+A/Dk1+yG2NGAmbenlwL8MmxYnb0+wjUf8eXtZD8pfjKDlhtg36feoytK
-         7tnoXommkV6rF4zexp0eCJm72N3uwuYaPhtXuV6rJkKSSs3x/Ba7Sf31YLrEPuelygJw
-         D6eAEJyfVHSxaytTuGwciIU275IdCxTmebvPn/WlDzC6boEsBmTuYiIKFEq+hUgmK6yg
-         yRtw==
-X-Gm-Message-State: AOJu0YwiyzjHVAsa0G+ZFXvTIG2kB4Ok8PEIaypErJgHdx8IjSNhVmIE
-	1GsxwnPhTGO1VkpIPNYK6/TYlgjtpY1ndPTdkrE8PA==
-X-Google-Smtp-Source: AGHT+IERnN25ZpQWhSoveHYhjH1bHINt0TuAVLiTz7wZcF5ueihZgXoSAZV3dV6i7b/f23cd983VPNMQFTyQCDpDsN0=
-X-Received: by 2002:a0d:ccc5:0:b0:5a7:e4fe:ea3 with SMTP id
- o188-20020a0dccc5000000b005a7e4fe0ea3mr10768851ywd.22.1699271092440; Mon, 06
- Nov 2023 03:44:52 -0800 (PST)
+        bh=A3+w7KiTzzQhCpJeg/0ek2R61CW1ssLM/7mTLxlOjqg=;
+        b=otMYAvacvXsCEuqsFrzbYQ5/7GJJErOEs8uHWWQgJElz04o/xNpoQZvZLKg/DX3VGU
+         mZNC8li6nxu1ImDbBTsCowsjb3NMR+c6yeFsQDUh+RfeMrtS6yljr2dh0aGA2cfw805+
+         ZEXaSElxBH2+xZQKYm/Cn5NepiWbBo+tKitkTDBYErRLqv+6E7KHjZVeCHx7G/u6s++O
+         bi/PpfD52f0Taf9N6soup8n5YLf/DlO/UfiSfKw4mLMPNd/bZiIPijHgxzIk0Ucoo+nN
+         ITYPgIvjka/nfP+p3Th3eHiwYg5H585Zv70yUAUxhbXC9dzOJeIzufryNSLpiH+uFCS/
+         JVBA==
+X-Gm-Message-State: AOJu0YwzVp2NyC/pgnA9DuhOTuSdIrvKgv81vzSX+la1Oq0/vFxgkWCv
+	DNmfOdT2fkZOKBGTg6xjrVXTiFscZ9qLjuBgnvARDA==
+X-Google-Smtp-Source: AGHT+IEl8/TeQ8yyhv97l+6UdWpd06zPBShx21QRSHFWAyL7jvCOyQqirpZN3XS/gBNGYYwpqQ32Yp/yP3xLHN3ZnjE=
+X-Received: by 2002:a05:6214:252f:b0:66d:13c2:1c31 with SMTP id
+ gg15-20020a056214252f00b0066d13c21c31mr13196146qvb.24.1699271123298; Mon, 06
+ Nov 2023 03:45:23 -0800 (PST)
 MIME-Version: 1.0
-References: <20231105163040.14904-1-pbonzini@redhat.com> <20231105163040.14904-27-pbonzini@redhat.com>
-In-Reply-To: <20231105163040.14904-27-pbonzini@redhat.com>
+References: <20231105163040.14904-1-pbonzini@redhat.com> <20231105163040.14904-29-pbonzini@redhat.com>
+In-Reply-To: <20231105163040.14904-29-pbonzini@redhat.com>
 From: Fuad Tabba <tabba@google.com>
-Date: Mon, 6 Nov 2023 11:44:16 +0000
-Message-ID: <CA+EHjTymGLsfHvdP4fPOFWTtaRwbtbCOBZ0XOC3gsX+nYm-cZQ@mail.gmail.com>
-Subject: Re: [PATCH 26/34] KVM: selftests: Add helpers to do
- KVM_HC_MAP_GPA_RANGE hypercalls (x86)
+Date: Mon, 6 Nov 2023 11:44:47 +0000
+Message-ID: <CA+EHjTyxH9JNL67Kz0y90CjrP_HMhmePav7qukJvMOcJrk81pg@mail.gmail.com>
+Subject: Re: [PATCH 28/34] KVM: selftests: Add GUEST_SYNC[1-6] macros for
+ synchronizing more data
 To: Paolo Bonzini <pbonzini@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -84,17 +84,14 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 On Sun, Nov 5, 2023 at 4:34=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com> =
 wrote:
 >
-> From: Vishal Annapurve <vannapurve@google.com>
+> From: Sean Christopherson <seanjc@google.com>
 >
-> Add helpers for x86 guests to invoke the KVM_HC_MAP_GPA_RANGE hypercall,
-> which KVM will forward to userspace and thus can be used by tests to
-> coordinate private<=3D>shared conversions between host userspace code and
-> guest code.
+> Add GUEST_SYNC[1-6]() so that tests can pass the maximum amount of
+> information supported via ucall(), without needing to resort to shared
+> memory.
 >
-> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-> [sean: drop shared/private helpers (let tests specify flags)]
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Message-Id: <20231027182217.3615211-29-seanjc@google.com>
+> Message-Id: <20231027182217.3615211-31-seanjc@google.com>
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
 
@@ -104,47 +101,37 @@ Tested-by: Fuad Tabba <tabba@google.com>
 Cheers,
 /fuad
 
->  .../selftests/kvm/include/x86_64/processor.h      | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
+>  tools/testing/selftests/kvm/include/ucall_common.h | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
 >
-> diff --git a/tools/testing/selftests/kvm/include/x86_64/processor.h b/too=
-ls/testing/selftests/kvm/include/x86_64/processor.h
-> index 25bc61dac5fb..a84863503fcb 100644
-> --- a/tools/testing/selftests/kvm/include/x86_64/processor.h
-> +++ b/tools/testing/selftests/kvm/include/x86_64/processor.h
-> @@ -15,6 +15,7 @@
->  #include <asm/msr-index.h>
->  #include <asm/prctl.h>
->
-> +#include <linux/kvm_para.h>
->  #include <linux/stringify.h>
->
->  #include "../kvm_util.h"
-> @@ -1194,6 +1195,20 @@ uint64_t kvm_hypercall(uint64_t nr, uint64_t a0, u=
-int64_t a1, uint64_t a2,
->  uint64_t __xen_hypercall(uint64_t nr, uint64_t a0, void *a1);
->  void xen_hypercall(uint64_t nr, uint64_t a0, void *a1);
->
-> +static inline uint64_t __kvm_hypercall_map_gpa_range(uint64_t gpa,
-> +                                                    uint64_t size, uint6=
-4_t flags)
-> +{
-> +       return kvm_hypercall(KVM_HC_MAP_GPA_RANGE, gpa, size >> PAGE_SHIF=
-T, flags, 0);
-> +}
+> diff --git a/tools/testing/selftests/kvm/include/ucall_common.h b/tools/t=
+esting/selftests/kvm/include/ucall_common.h
+> index ce33d306c2cb..0fb472a5a058 100644
+> --- a/tools/testing/selftests/kvm/include/ucall_common.h
+> +++ b/tools/testing/selftests/kvm/include/ucall_common.h
+> @@ -52,6 +52,17 @@ int ucall_nr_pages_required(uint64_t page_size);
+>  #define GUEST_SYNC_ARGS(stage, arg1, arg2, arg3, arg4) \
+>                                 ucall(UCALL_SYNC, 6, "hello", stage, arg1=
+, arg2, arg3, arg4)
+>  #define GUEST_SYNC(stage)      ucall(UCALL_SYNC, 2, "hello", stage)
+> +#define GUEST_SYNC1(arg0)      ucall(UCALL_SYNC, 1, arg0)
+> +#define GUEST_SYNC2(arg0, arg1)        ucall(UCALL_SYNC, 2, arg0, arg1)
+> +#define GUEST_SYNC3(arg0, arg1, arg2) \
+> +                               ucall(UCALL_SYNC, 3, arg0, arg1, arg2)
+> +#define GUEST_SYNC4(arg0, arg1, arg2, arg3) \
+> +                               ucall(UCALL_SYNC, 4, arg0, arg1, arg2, ar=
+g3)
+> +#define GUEST_SYNC5(arg0, arg1, arg2, arg3, arg4) \
+> +                               ucall(UCALL_SYNC, 5, arg0, arg1, arg2, ar=
+g3, arg4)
+> +#define GUEST_SYNC6(arg0, arg1, arg2, arg3, arg4, arg5) \
+> +                               ucall(UCALL_SYNC, 6, arg0, arg1, arg2, ar=
+g3, arg4, arg5)
 > +
-> +static inline void kvm_hypercall_map_gpa_range(uint64_t gpa, uint64_t si=
-ze,
-> +                                              uint64_t flags)
-> +{
-> +       uint64_t ret =3D __kvm_hypercall_map_gpa_range(gpa, size, flags);
-> +
-> +       GUEST_ASSERT(!ret);
-> +}
-> +
->  void __vm_xsave_require_permission(uint64_t xfeature, const char *name);
+>  #define GUEST_PRINTF(_fmt, _args...) ucall_fmt(UCALL_PRINTF, _fmt, ##_ar=
+gs)
+>  #define GUEST_DONE()           ucall(UCALL_DONE, 0)
 >
->  #define vm_xsave_require_permission(xfeature)  \
 > --
 > 2.39.1
 >
