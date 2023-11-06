@@ -2,66 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4EF57E1F00
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Nov 2023 11:55:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 993DE7E1F1D
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Nov 2023 12:02:00 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=cYnAO/9Z;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=tam9ceyR;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SP7Yk4b6Bz3c5L
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Nov 2023 21:55:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SP7hk3FsSz3cPK
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Nov 2023 22:01:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=cYnAO/9Z;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=tam9ceyR;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::f2f; helo=mail-qv1-xf2f.google.com; envelope-from=tabba@google.com; receiver=lists.ozlabs.org)
-Received: from mail-qv1-xf2f.google.com (mail-qv1-xf2f.google.com [IPv6:2607:f8b0:4864:20::f2f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::f31; helo=mail-qv1-xf31.google.com; envelope-from=tabba@google.com; receiver=lists.ozlabs.org)
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SP7Xt3N9Cz30PJ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Nov 2023 21:55:10 +1100 (AEDT)
-Received: by mail-qv1-xf2f.google.com with SMTP id 6a1803df08f44-66d87554434so31003006d6.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Nov 2023 02:55:10 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SP7gv0jlMz2xQH
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Nov 2023 22:01:13 +1100 (AEDT)
+Received: by mail-qv1-xf31.google.com with SMTP id 6a1803df08f44-66d24ccc6f2so44900936d6.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Nov 2023 03:01:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1699268106; x=1699872906; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1699268470; x=1699873270; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PHBvDRtRAEwaxL1lSliJcpIEY0ugq80CfKQxFJAL4q0=;
-        b=cYnAO/9Z04fGQHv4NR6fjO331sp0Dd6zP91C2HWZfDpljOeO09c1DpDTO7A79BOHTk
-         byR9WiLuZceOSwQibu/59JfDHn9T+HI+RUN5B6FPITW4Eg8CAONXbqQwzXGmrLVxLnyY
-         DP8I5p2nl+bjel2pJy7Pv6q64hxB88mzq+dK6UMUgraYMKpuPVxU9mRTYlSCOo/axXYY
-         EwJBuMbXRqzTVJsIjH8K61vUGw2nSpjXBDoj1CJQrSfMEX1T7V57lu+v05b1cDCZnVCT
-         DNfnzzlqBcqclokYmvxJzDeI7ldlvwkPGKZpddJlH8caRYaRnkzab+bPBt56ok7anQYc
-         8/CQ==
+        bh=Y/jW8kMjXgRuIy1M2h5sLyMjeudj06HAL2YGYnbzqYU=;
+        b=tam9ceyR+AaInUdbgS5qQN94rcxtsGR7dDme2cXPgBbMd3IB16o1ewtLLXd071IzLg
+         WghdWWpflH4Y8txbPTPBwK9tksP+kmtHb2zs4hmfZ+pYY3gxuHmvVYH+NQuYnl0R4Es3
+         YcDC9R8ETnrShIsm6QUdoeS9K3D2N59YKIFZrQKbXtaRJKefJHIG4Qw51+uIN7OJAv1E
+         39hpw0LBKaqLwuEBJ1AgJayb1IN+HfXiahzVIOje5doiosbGz7sQEB7U4JIXIkBYLMjE
+         ZuLiW802DhySssTglDXi+ag86A4DS5lD/3chnWQM+qUneAY3LfdFJsNZAi/q54SZmNu2
+         xJbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699268106; x=1699872906;
+        d=1e100.net; s=20230601; t=1699268470; x=1699873270;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PHBvDRtRAEwaxL1lSliJcpIEY0ugq80CfKQxFJAL4q0=;
-        b=dTiTiZfWWyJ5UgvHRvpi/ye6f/zEIUU2dNF1CZVwdKlY87r2/C2KZiUumv6DAOBR/k
-         /JFmBZejn8YiGFBl9HesBcI09dcxi/CkvCQTmlbq8BEBDKbapcp9hAZE5+usRG3Dixc9
-         p2JJMeE336TwvlhHI6DDCRFTzkQiuKRdizAYXy+wQhsGVanj/89XNYYX423PF9rlnBtx
-         XGl0GcIoib66c61SGsSctbvR0QCyRveGprmtLpW4vZJw88ieKLR0Ep3MiyPui5/xowoh
-         k9afKklGBe/4Du6kI2F/LXsyqb6mr1hqmTiBom7TH6ENT7XvnbEeRyXpfSOv/yUS5f5T
-         n6xA==
-X-Gm-Message-State: AOJu0Yzch/hNnj9H98lq1F2wSNxY6IS1e3jYdfIsL6zhBxGeHevUYHe8
-	QuNnEY7MmYe0V9z8iB0z/No3Rq7WxZ1vT8PKoUeTLw==
-X-Google-Smtp-Source: AGHT+IHQA77T0g4ukNLcN7qAXFDRTk2DUmoX/u+9pcfa/KbWWZJ9Bol7j14XEdBbYSqTk4yOjgLv7gDTy2y1jUp9r+w=
-X-Received: by 2002:ad4:5ce3:0:b0:66d:5b50:44d with SMTP id
- iv3-20020ad45ce3000000b0066d5b50044dmr43103399qvb.57.1699268106185; Mon, 06
- Nov 2023 02:55:06 -0800 (PST)
+        bh=Y/jW8kMjXgRuIy1M2h5sLyMjeudj06HAL2YGYnbzqYU=;
+        b=WkAgiNc5f2TtKsYXDoVQ5hHST9emaxtd35/awXKUmHL18QVTnqJiq2ZC73NWRaWasp
+         PiwwMFwW2Il4jVCBUfzeELHGzPyfWeSpUsOtxjch8mV9qMdNz884GK7jleH4phYyGDwX
+         WyCCd259HrVU0l+Qrb5XiMYkZyqfmikjwMVZ0yO3TnCihGYSnYwh8JfAzYnWAWsOTDwW
+         dT3vJcwK9bRc8OVsj/nYSHGtDLPH8SXYP6XwiAfH6994LfCd8gVo5rlsT0h0Vrv46afk
+         h/2pxKW04ubb8uuG0/D2ZzlrJ9q2khsF4qwVYBa6+viFNllA6LuN0TRnJ7ZjHjrXkJGz
+         UaQg==
+X-Gm-Message-State: AOJu0YznDvDZ+05FDIxBKPSFlY0uKKajVtkQFdTw+AvozWDixwulADZN
+	O2UENN4tGUYkmXCayS4odjOY2LwLfS1aHIve1KUTrQ==
+X-Google-Smtp-Source: AGHT+IFa+nDsKAaimQq1Ix7n3hwLXHpTpfQZZDdbj5Z1OOw4/lGGeIsJrAK++Ef2UwD8IUCAFdqUvFrr7OPKx30gqD8=
+X-Received: by 2002:ad4:5ccc:0:b0:66d:593f:9a4c with SMTP id
+ iu12-20020ad45ccc000000b0066d593f9a4cmr16991977qvb.2.1699268469649; Mon, 06
+ Nov 2023 03:01:09 -0800 (PST)
 MIME-Version: 1.0
-References: <20231105163040.14904-1-pbonzini@redhat.com> <20231105163040.14904-19-pbonzini@redhat.com>
-In-Reply-To: <20231105163040.14904-19-pbonzini@redhat.com>
+References: <20231027182217.3615211-1-seanjc@google.com> <20231027182217.3615211-24-seanjc@google.com>
+In-Reply-To: <20231027182217.3615211-24-seanjc@google.com>
 From: Fuad Tabba <tabba@google.com>
-Date: Mon, 6 Nov 2023 10:54:30 +0000
-Message-ID: <CA+EHjTxPuAxdRZMpGCRjKbiuPOsQqoCs5LFQV8kRPvdh0emzwA@mail.gmail.com>
-Subject: Re: [PATCH 18/34] KVM: x86/mmu: Handle page fault for private memory
-To: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 6 Nov 2023 11:00:33 +0000
+Message-ID: <CA+EHjTwN8BP+7hDveRyx0d+D3CmQN05kHEpLdi2q27jYBuFzAw@mail.gmail.com>
+Subject: Re: [PATCH v13 23/35] KVM: x86: Add support for "protected VMs" that
+ can utilize private memory
+To: Sean Christopherson <seanjc@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -75,343 +76,285 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Vlastimil Babka <vbabka@suse.cz>, Yu Zhang <yu.c.zhang@linux.intel.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, Isaku Yamahata <isaku.yamahata@intel.com>, Christian Brauner <brauner@kernel.org>, Quentin Perret <qperret@google.com>, Sean Christopherson <seanjc@goog
- le.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, David Matlack <dmatlack@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Liam Merwick <liam.merwick@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Xu Yilun <yilun.xu@intel.com>, Anish Moorthy <amoorthy@google.com>
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Vlastimil Babka <vbabka@suse.cz>, Yu Zhang <yu.c.zhang@linux.intel.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, Isaku Yamahata <isaku.yamahata@intel.com>, Christian Brauner <brauner@kernel.org>, Quentin Perret <qperret@google.com>, Liam Merwick <liam.merwick@oracl
+ e.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, David Matlack <dmatlack@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Xu Yilun <yilun.xu@intel.com>, Anish Moorthy <amoorthy@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Hi,
 
-On Sun, Nov 5, 2023 at 4:33=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com> =
-wrote:
->
-> From: Chao Peng <chao.p.peng@linux.intel.com>
->
-> Add support for resolving page faults on guest private memory for VMs
-> that differentiate between "shared" and "private" memory.  For such VMs,
-> KVM_MEM_PRIVATE memslots can include both fd-based private memory and
 
-KVM_MEM_PRIVATE  -> KVM_MEM_GUEST_MEMFD
+On Fri, Oct 27, 2023 at 7:23=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> Add a new x86 VM type, KVM_X86_SW_PROTECTED_VM, to serve as a development
+> and testing vehicle for Confidential (CoCo) VMs, and potentially to even
+> become a "real" product in the distant future, e.g. a la pKVM.
+>
+> The private memory support in KVM x86 is aimed at AMD's SEV-SNP and
+> Intel's TDX, but those technologies are extremely complex (understatement=
+),
+> difficult to debug, don't support running as nested guests, and require
+> hardware that's isn't universally accessible.  I.e. relying SEV-SNP or TD=
+X
+
+nit: "that isn't"
+
+Reviewed-by: Fuad Tabba <tabba@google.com>
+Tested-by: Fuad Tabba <tabba@google.com>
 
 Cheers,
 /fuad
 
-> hva-based shared memory, and KVM needs to map in the "correct" variant,
-> i.e. KVM needs to map the gfn shared/private as appropriate based on the
-> current state of the gfn's KVM_MEMORY_ATTRIBUTE_PRIVATE flag.
+> for maintaining guest private memory isn't a realistic option.
 >
-> For AMD's SEV-SNP and Intel's TDX, the guest effectively gets to request
-> shared vs. private via a bit in the guest page tables, i.e. what the gues=
-t
-> wants may conflict with the current memory attributes.  To support such
-> "implicit" conversion requests, exit to user with KVM_EXIT_MEMORY_FAULT
-> to forward the request to userspace.  Add a new flag for memory faults,
-> KVM_MEMORY_EXIT_FLAG_PRIVATE, to communicate whether the guest wants to
-> map memory as shared vs. private.
+> At the very least, KVM_X86_SW_PROTECTED_VM will enable a variety of
+> selftests for guest_memfd and private memory support without requiring
+> unique hardware.
 >
-> Like KVM_MEMORY_ATTRIBUTE_PRIVATE, use bit 3 for flagging private memory
-> so that KVM can use bits 0-2 for capturing RWX behavior if/when userspace
-> needs such information, e.g. a likely user of KVM_EXIT_MEMORY_FAULT is to
-> exit on missing mappings when handling guest page fault VM-Exits.  In
-> that case, userspace will want to know RWX information in order to
-> correctly/precisely resolve the fault.
->
-> Note, private memory *must* be backed by guest_memfd, i.e. shared mapping=
-s
-> always come from the host userspace page tables, and private mappings
-> always come from a guest_memfd instance.
->
-> Co-developed-by: Yu Zhang <yu.c.zhang@linux.intel.com>
-> Signed-off-by: Yu Zhang <yu.c.zhang@linux.intel.com>
-> Signed-off-by: Chao Peng <chao.p.peng@linux.intel.com>
-> Co-developed-by: Sean Christopherson <seanjc@google.com>
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Tested-by: Fuad Tabba <tabba@google.com>
-> Message-Id: <20231027182217.3615211-21-seanjc@google.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->  Documentation/virt/kvm/api.rst  |   8 ++-
->  arch/x86/kvm/mmu/mmu.c          | 101 ++++++++++++++++++++++++++++++--
->  arch/x86/kvm/mmu/mmu_internal.h |   1 +
->  include/linux/kvm_host.h        |   8 ++-
->  include/uapi/linux/kvm.h        |   1 +
->  5 files changed, 110 insertions(+), 9 deletions(-)
+>  Documentation/virt/kvm/api.rst  | 32 ++++++++++++++++++++++++++++++++
+>  arch/x86/include/asm/kvm_host.h | 15 +++++++++------
+>  arch/x86/include/uapi/asm/kvm.h |  3 +++
+>  arch/x86/kvm/Kconfig            | 12 ++++++++++++
+>  arch/x86/kvm/mmu/mmu_internal.h |  1 +
+>  arch/x86/kvm/x86.c              | 16 +++++++++++++++-
+>  include/uapi/linux/kvm.h        |  1 +
+>  virt/kvm/Kconfig                |  5 +++++
+>  8 files changed, 78 insertions(+), 7 deletions(-)
 >
 > diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.=
 rst
-> index 6d681f45969e..4a9a291380ad 100644
+> index 38dc1fda4f45..00029436ac5b 100644
 > --- a/Documentation/virt/kvm/api.rst
 > +++ b/Documentation/virt/kvm/api.rst
-> @@ -6953,6 +6953,7 @@ spec refer, https://github.com/riscv/riscv-sbi-doc.
+> @@ -147,10 +147,29 @@ described as 'basic' will be available.
+>  The new VM has no virtual cpus and no memory.
+>  You probably want to use 0 as machine type.
 >
->                 /* KVM_EXIT_MEMORY_FAULT */
->                 struct {
-> +  #define KVM_MEMORY_EXIT_FLAG_PRIVATE (1ULL << 3)
->                         __u64 flags;
->                         __u64 gpa;
->                         __u64 size;
-> @@ -6961,8 +6962,11 @@ spec refer, https://github.com/riscv/riscv-sbi-doc=
-.
->  KVM_EXIT_MEMORY_FAULT indicates the vCPU has encountered a memory fault =
-that
->  could not be resolved by KVM.  The 'gpa' and 'size' (in bytes) describe =
-the
->  guest physical address range [gpa, gpa + size) of the fault.  The 'flags=
-' field
-> -describes properties of the faulting access that are likely pertinent.
-> -Currently, no flags are defined.
-> +describes properties of the faulting access that are likely pertinent:
+> +X86:
+> +^^^^
 > +
-> + - KVM_MEMORY_EXIT_FLAG_PRIVATE - When set, indicates the memory fault o=
-ccurred
-> +   on a private memory access.  When clear, indicates the fault occurred=
- on a
-> +   shared access.
+> +Supported X86 VM types can be queried via KVM_CAP_VM_TYPES.
+> +
+> +S390:
+> +^^^^^
+> +
+>  In order to create user controlled virtual machines on S390, check
+>  KVM_CAP_S390_UCONTROL and use the flag KVM_VM_S390_UCONTROL as
+>  privileged user (CAP_SYS_ADMIN).
 >
->  Note!  KVM_EXIT_MEMORY_FAULT is unique among all KVM exit reasons in tha=
-t it
->  accompanies a return code of '-1', not '0'!  errno will always be set to=
- EFAULT
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index f5c6b0643645..754a5aaebee5 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-> @@ -3147,9 +3147,9 @@ static int host_pfn_mapping_level(struct kvm *kvm, =
-gfn_t gfn,
->         return level;
->  }
+> +MIPS:
+> +^^^^^
+> +
+> +To use hardware assisted virtualization on MIPS (VZ ASE) rather than
+> +the default trap & emulate implementation (which changes the virtual
+> +memory layout to fit in user mode), check KVM_CAP_MIPS_VZ and use the
+> +flag KVM_VM_MIPS_VZ.
+> +
+> +ARM64:
+> +^^^^^^
+> +
+>  On arm64, the physical address size for a VM (IPA Size limit) is limited
+>  to 40bits by default. The limit can be configured if the host supports t=
+he
+>  extension KVM_CAP_ARM_VM_IPA_SIZE. When supported, use
+> @@ -8650,6 +8669,19 @@ block sizes is exposed in KVM_CAP_ARM_SUPPORTED_BL=
+OCK_SIZES as a
+>  64-bit bitmap (each bit describing a block size). The default value is
+>  0, to disable the eager page splitting.
 >
-> -int kvm_mmu_max_mapping_level(struct kvm *kvm,
-> -                             const struct kvm_memory_slot *slot, gfn_t g=
-fn,
-> -                             int max_level)
-> +static int __kvm_mmu_max_mapping_level(struct kvm *kvm,
-> +                                      const struct kvm_memory_slot *slot=
-,
-> +                                      gfn_t gfn, int max_level, bool is_=
-private)
+> +8.41 KVM_CAP_VM_TYPES
+> +---------------------
+> +
+> +:Capability: KVM_CAP_MEMORY_ATTRIBUTES
+> +:Architectures: x86
+> +:Type: system ioctl
+> +
+> +This capability returns a bitmap of support VM types.  The 1-setting of =
+bit @n
+> +means the VM type with value @n is supported.  Possible values of @n are=
+::
+> +
+> +  #define KVM_X86_DEFAULT_VM   0
+> +  #define KVM_X86_SW_PROTECTED_VM      1
+> +
+>  9. Known KVM API problems
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+>
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_h=
+ost.h
+> index f9e8d5642069..dff10051e9b6 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1244,6 +1244,7 @@ enum kvm_apicv_inhibit {
+>  };
+>
+>  struct kvm_arch {
+> +       unsigned long vm_type;
+>         unsigned long n_used_mmu_pages;
+>         unsigned long n_requested_mmu_pages;
+>         unsigned long n_max_mmu_pages;
+> @@ -2077,6 +2078,12 @@ void kvm_mmu_new_pgd(struct kvm_vcpu *vcpu, gpa_t =
+new_pgd);
+>  void kvm_configure_mmu(bool enable_tdp, int tdp_forced_root_level,
+>                        int tdp_max_root_level, int tdp_huge_page_level);
+>
+> +#ifdef CONFIG_KVM_PRIVATE_MEM
+> +#define kvm_arch_has_private_mem(kvm) ((kvm)->arch.vm_type !=3D KVM_X86_=
+DEFAULT_VM)
+> +#else
+> +#define kvm_arch_has_private_mem(kvm) false
+> +#endif
+> +
+>  static inline u16 kvm_read_ldt(void)
 >  {
->         struct kvm_lpage_info *linfo;
->         int host_level;
-> @@ -3161,6 +3161,9 @@ int kvm_mmu_max_mapping_level(struct kvm *kvm,
->                         break;
->         }
+>         u16 ldt;
+> @@ -2125,14 +2132,10 @@ enum {
+>  #define HF_SMM_INSIDE_NMI_MASK (1 << 2)
 >
-> +       if (is_private)
-> +               return max_level;
-> +
->         if (max_level =3D=3D PG_LEVEL_4K)
->                 return PG_LEVEL_4K;
+>  # define KVM_MAX_NR_ADDRESS_SPACES     2
+> +/* SMM is currently unsupported for guests with private memory. */
+> +# define kvm_arch_nr_memslot_as_ids(kvm) (kvm_arch_has_private_mem(kvm) =
+? 1 : 2)
+>  # define kvm_arch_vcpu_memslots_id(vcpu) ((vcpu)->arch.hflags & HF_SMM_M=
+ASK ? 1 : 0)
+>  # define kvm_memslots_for_spte_role(kvm, role) __kvm_memslots(kvm, (role=
+).smm)
+> -
+> -static inline int kvm_arch_nr_memslot_as_ids(struct kvm *kvm)
+> -{
+> -       return KVM_MAX_NR_ADDRESS_SPACES;
+> -}
+> -
+>  #else
+>  # define kvm_memslots_for_spte_role(kvm, role) __kvm_memslots(kvm, 0)
+>  #endif
+> diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/=
+kvm.h
+> index 1a6a1f987949..a448d0964fc0 100644
+> --- a/arch/x86/include/uapi/asm/kvm.h
+> +++ b/arch/x86/include/uapi/asm/kvm.h
+> @@ -562,4 +562,7 @@ struct kvm_pmu_event_filter {
+>  /* x86-specific KVM_EXIT_HYPERCALL flags. */
+>  #define KVM_EXIT_HYPERCALL_LONG_MODE   BIT(0)
 >
-> @@ -3168,6 +3171,16 @@ int kvm_mmu_max_mapping_level(struct kvm *kvm,
->         return min(host_level, max_level);
->  }
+> +#define KVM_X86_DEFAULT_VM     0
+> +#define KVM_X86_SW_PROTECTED_VM        1
+> +
+>  #endif /* _ASM_X86_KVM_H */
+> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+> index 091b74599c22..8452ed0228cb 100644
+> --- a/arch/x86/kvm/Kconfig
+> +++ b/arch/x86/kvm/Kconfig
+> @@ -77,6 +77,18 @@ config KVM_WERROR
 >
-> +int kvm_mmu_max_mapping_level(struct kvm *kvm,
-> +                             const struct kvm_memory_slot *slot, gfn_t g=
-fn,
-> +                             int max_level)
-> +{
-> +       bool is_private =3D kvm_slot_can_be_private(slot) &&
-> +                         kvm_mem_is_private(kvm, gfn);
-> +
-> +       return __kvm_mmu_max_mapping_level(kvm, slot, gfn, max_level, is_=
-private);
-> +}
-> +
->  void kvm_mmu_hugepage_adjust(struct kvm_vcpu *vcpu, struct kvm_page_faul=
-t *fault)
->  {
->         struct kvm_memory_slot *slot =3D fault->slot;
-> @@ -3188,8 +3201,9 @@ void kvm_mmu_hugepage_adjust(struct kvm_vcpu *vcpu,=
- struct kvm_page_fault *fault
->          * Enforce the iTLB multihit workaround after capturing the reque=
-sted
->          * level, which will be used to do precise, accurate accounting.
->          */
-> -       fault->req_level =3D kvm_mmu_max_mapping_level(vcpu->kvm, slot,
-> -                                                    fault->gfn, fault->m=
-ax_level);
-> +       fault->req_level =3D __kvm_mmu_max_mapping_level(vcpu->kvm, slot,
-> +                                                      fault->gfn, fault-=
->max_level,
-> +                                                      fault->is_private)=
-;
->         if (fault->req_level =3D=3D PG_LEVEL_4K || fault->huge_page_disal=
-lowed)
->                 return;
+>           If in doubt, say "N".
 >
-> @@ -4269,6 +4283,55 @@ void kvm_arch_async_page_ready(struct kvm_vcpu *vc=
-pu, struct kvm_async_pf *work)
->         kvm_mmu_do_page_fault(vcpu, work->cr2_or_gpa, 0, true, NULL);
->  }
->
-> +static inline u8 kvm_max_level_for_order(int order)
-> +{
-> +       BUILD_BUG_ON(KVM_MAX_HUGEPAGE_LEVEL > PG_LEVEL_1G);
+> +config KVM_SW_PROTECTED_VM
+> +       bool "Enable support for KVM software-protected VMs"
+> +       depends on EXPERT
+> +       depends on X86_64
+> +       select KVM_GENERIC_PRIVATE_MEM
+> +       help
+> +         Enable support for KVM software-protected VMs.  Currently "prot=
+ected"
+> +         means the VM can be backed with memory provided by
+> +         KVM_CREATE_GUEST_MEMFD.
 > +
-> +       KVM_MMU_WARN_ON(order !=3D KVM_HPAGE_GFN_SHIFT(PG_LEVEL_1G) &&
-> +                       order !=3D KVM_HPAGE_GFN_SHIFT(PG_LEVEL_2M) &&
-> +                       order !=3D KVM_HPAGE_GFN_SHIFT(PG_LEVEL_4K));
+> +         If unsure, say "N".
 > +
-> +       if (order >=3D KVM_HPAGE_GFN_SHIFT(PG_LEVEL_1G))
-> +               return PG_LEVEL_1G;
-> +
-> +       if (order >=3D KVM_HPAGE_GFN_SHIFT(PG_LEVEL_2M))
-> +               return PG_LEVEL_2M;
-> +
-> +       return PG_LEVEL_4K;
-> +}
-> +
-> +static void kvm_mmu_prepare_memory_fault_exit(struct kvm_vcpu *vcpu,
-> +                                             struct kvm_page_fault *faul=
-t)
-> +{
-> +       kvm_prepare_memory_fault_exit(vcpu, fault->gfn << PAGE_SHIFT,
-> +                                     PAGE_SIZE, fault->write, fault->exe=
-c,
-> +                                     fault->is_private);
-> +}
-> +
-> +static int kvm_faultin_pfn_private(struct kvm_vcpu *vcpu,
-> +                                  struct kvm_page_fault *fault)
-> +{
-> +       int max_order, r;
-> +
-> +       if (!kvm_slot_can_be_private(fault->slot)) {
-> +               kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
-> +               return -EFAULT;
-> +       }
-> +
-> +       r =3D kvm_gmem_get_pfn(vcpu->kvm, fault->slot, fault->gfn, &fault=
-->pfn,
-> +                            &max_order);
-> +       if (r) {
-> +               kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
-> +               return r;
-> +       }
-> +
-> +       fault->max_level =3D min(kvm_max_level_for_order(max_order),
-> +                              fault->max_level);
-> +       fault->map_writable =3D !(fault->slot->flags & KVM_MEM_READONLY);
-> +
-> +       return RET_PF_CONTINUE;
-> +}
-> +
->  static int __kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_faul=
-t *fault)
->  {
->         struct kvm_memory_slot *slot =3D fault->slot;
-> @@ -4301,6 +4364,14 @@ static int __kvm_faultin_pfn(struct kvm_vcpu *vcpu=
-, struct kvm_page_fault *fault
->                         return RET_PF_EMULATE;
->         }
->
-> +       if (fault->is_private !=3D kvm_mem_is_private(vcpu->kvm, fault->g=
-fn)) {
-> +               kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
-> +               return -EFAULT;
-> +       }
-> +
-> +       if (fault->is_private)
-> +               return kvm_faultin_pfn_private(vcpu, fault);
-> +
->         async =3D false;
->         fault->pfn =3D __gfn_to_pfn_memslot(slot, fault->gfn, false, fals=
-e, &async,
->                                           fault->write, &fault->map_writa=
-ble,
-> @@ -7188,6 +7259,26 @@ void kvm_mmu_pre_destroy_vm(struct kvm *kvm)
->  }
->
->  #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
-> +bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
-> +                                       struct kvm_gfn_range *range)
-> +{
-> +       /*
-> +        * Zap SPTEs even if the slot can't be mapped PRIVATE.  KVM x86 o=
-nly
-> +        * supports KVM_MEMORY_ATTRIBUTE_PRIVATE, and so it *seems* like =
-KVM
-> +        * can simply ignore such slots.  But if userspace is making memo=
-ry
-> +        * PRIVATE, then KVM must prevent the guest from accessing the me=
-mory
-> +        * as shared.  And if userspace is making memory SHARED and this =
-point
-> +        * is reached, then at least one page within the range was previo=
-usly
-> +        * PRIVATE, i.e. the slot's possible hugepage ranges are changing=
-.
-> +        * Zapping SPTEs in this case ensures KVM will reassess whether o=
-r not
-> +        * a hugepage can be used for affected ranges.
-> +        */
-> +       if (WARN_ON_ONCE(!kvm_arch_has_private_mem(kvm)))
-> +               return false;
-> +
-> +       return kvm_unmap_gfn_range(kvm, range);
-> +}
-> +
->  static bool hugepage_test_mixed(struct kvm_memory_slot *slot, gfn_t gfn,
->                                 int level)
->  {
+>  config KVM_INTEL
+>         tristate "KVM for Intel (and compatible) processors support"
+>         depends on KVM && IA32_FEAT_CTL
 > diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_inter=
 nal.h
-> index decc1f153669..86c7cb692786 100644
+> index 86c7cb692786..b66a7d47e0e4 100644
 > --- a/arch/x86/kvm/mmu/mmu_internal.h
 > +++ b/arch/x86/kvm/mmu/mmu_internal.h
-> @@ -201,6 +201,7 @@ struct kvm_page_fault {
+> @@ -297,6 +297,7 @@ static inline int kvm_mmu_do_page_fault(struct kvm_vc=
+pu *vcpu, gpa_t cr2_or_gpa,
+>                 .max_level =3D KVM_MAX_HUGEPAGE_LEVEL,
+>                 .req_level =3D PG_LEVEL_4K,
+>                 .goal_level =3D PG_LEVEL_4K,
+> +               .is_private =3D kvm_mem_is_private(vcpu->kvm, cr2_or_gpa =
+>> PAGE_SHIFT),
+>         };
+>         int r;
 >
->         /* Derived from mmu and global state.  */
->         const bool is_tdp;
-> +       const bool is_private;
->         const bool nx_huge_page_workaround_enabled;
->
->         /*
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index a6de526c0426..67dfd4d79529 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -2357,14 +2357,18 @@ static inline void kvm_account_pgtable_pages(void=
- *virt, int nr)
->  #define  KVM_DIRTY_RING_MAX_ENTRIES  65536
->
->  static inline void kvm_prepare_memory_fault_exit(struct kvm_vcpu *vcpu,
-> -                                                gpa_t gpa, gpa_t size)
-> +                                                gpa_t gpa, gpa_t size,
-> +                                                bool is_write, bool is_e=
-xec,
-> +                                                bool is_private)
->  {
->         vcpu->run->exit_reason =3D KVM_EXIT_MEMORY_FAULT;
->         vcpu->run->memory_fault.gpa =3D gpa;
->         vcpu->run->memory_fault.size =3D size;
->
-> -       /* Flags are not (yet) defined or communicated to userspace. */
-> +       /* RWX flags are not (yet) defined or communicated to userspace. =
-*/
->         vcpu->run->memory_fault.flags =3D 0;
-> +       if (is_private)
-> +               vcpu->run->memory_fault.flags |=3D KVM_MEMORY_EXIT_FLAG_P=
-RIVATE;
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index c4d17727b199..e3eb608b6692 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -4441,6 +4441,13 @@ static int kvm_ioctl_get_supported_hv_cpuid(struct=
+ kvm_vcpu *vcpu,
+>         return 0;
 >  }
 >
->  #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+> +static bool kvm_is_vm_type_supported(unsigned long type)
+> +{
+> +       return type =3D=3D KVM_X86_DEFAULT_VM ||
+> +              (type =3D=3D KVM_X86_SW_PROTECTED_VM &&
+> +               IS_ENABLED(CONFIG_KVM_SW_PROTECTED_VM) && tdp_enabled);
+> +}
+> +
+>  int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+>  {
+>         int r =3D 0;
+> @@ -4632,6 +4639,11 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, =
+long ext)
+>         case KVM_CAP_X86_NOTIFY_VMEXIT:
+>                 r =3D kvm_caps.has_notify_vmexit;
+>                 break;
+> +       case KVM_CAP_VM_TYPES:
+> +               r =3D BIT(KVM_X86_DEFAULT_VM);
+> +               if (kvm_is_vm_type_supported(KVM_X86_SW_PROTECTED_VM))
+> +                       r |=3D BIT(KVM_X86_SW_PROTECTED_VM);
+> +               break;
+>         default:
+>                 break;
+>         }
+> @@ -12314,9 +12326,11 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned l=
+ong type)
+>         int ret;
+>         unsigned long flags;
+>
+> -       if (type)
+> +       if (!kvm_is_vm_type_supported(type))
+>                 return -EINVAL;
+>
+> +       kvm->arch.vm_type =3D type;
+> +
+>         ret =3D kvm_page_track_init(kvm);
+>         if (ret)
+>                 goto out;
 > diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> index 2802d10aa88c..8eb10f560c69 100644
+> index 29e9eb51dec9..5b5820d19e71 100644
 > --- a/include/uapi/linux/kvm.h
 > +++ b/include/uapi/linux/kvm.h
-> @@ -535,6 +535,7 @@ struct kvm_run {
->                 } notify;
->                 /* KVM_EXIT_MEMORY_FAULT */
->                 struct {
-> +#define KVM_MEMORY_EXIT_FLAG_PRIVATE   (1ULL << 3)
->                         __u64 flags;
->                         __u64 gpa;
->                         __u64 size;
-> --
-> 2.39.1
+> @@ -1218,6 +1218,7 @@ struct kvm_ppc_resize_hpt {
+>  #define KVM_CAP_MEMORY_FAULT_INFO 231
+>  #define KVM_CAP_MEMORY_ATTRIBUTES 232
+>  #define KVM_CAP_GUEST_MEMFD 233
+> +#define KVM_CAP_VM_TYPES 234
 >
+>  #ifdef KVM_CAP_IRQ_ROUTING
+>
+> diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
+> index 08afef022db9..2c964586aa14 100644
+> --- a/virt/kvm/Kconfig
+> +++ b/virt/kvm/Kconfig
+> @@ -104,3 +104,8 @@ config KVM_GENERIC_MEMORY_ATTRIBUTES
+>  config KVM_PRIVATE_MEM
+>         select XARRAY_MULTI
+>         bool
+> +
+> +config KVM_GENERIC_PRIVATE_MEM
+> +       select KVM_GENERIC_MEMORY_ATTRIBUTES
+> +       select KVM_PRIVATE_MEM
+> +       bool
+> --
+> 2.42.0.820.g83a721a137-goog
 >
