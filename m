@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF6117E2997
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Nov 2023 17:18:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC467E29AB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Nov 2023 17:26:15 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=TXUVjutU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=lRYMIDBO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SPGk24p90z3cBr
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 03:18:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SPGts1gFjz3cTF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 03:26:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=TXUVjutU;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=lRYMIDBO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::f2a; helo=mail-qv1-xf2a.google.com; envelope-from=tabba@google.com; receiver=lists.ozlabs.org)
-Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::229; helo=mail-oi1-x229.google.com; envelope-from=tabba@google.com; receiver=lists.ozlabs.org)
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SPGj91HzSz3bT8
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Nov 2023 03:17:48 +1100 (AEDT)
-Received: by mail-qv1-xf2a.google.com with SMTP id 6a1803df08f44-66d13ac2796so30033106d6.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Nov 2023 08:17:48 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SPGsv4Y5Jz3bWH
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Nov 2023 03:25:22 +1100 (AEDT)
+Received: by mail-oi1-x229.google.com with SMTP id 5614622812f47-3b3f55e1bbbso3000898b6e.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Nov 2023 08:25:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1699287466; x=1699892266; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1699287918; x=1699892718; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lUV8zKIdpTV0f8ZMhx633GQ2l+XRSBNMcsvYJoEfTx4=;
-        b=TXUVjutUBQkdKjQeNbZmHoQTjTY5dthXwXoTIQjZ28wgT6QyInUEmAhwrdtxiYJXBW
-         wEIVRLhmcAiIOHQBWLCMc2KtyhzhWnF3dPa1Uagk4rY6pzG7S/2IR16trtbY/uywAHkM
-         smYbMJxTzHzv6E/FTrnaVN7GlBVL5Vfi4S3IAYAvihNGMffBi5trN+mrFrr5Je+ItyPP
-         hkzfQ8YiRQdytUuZWNAjFBiW8sTHBDYH5NDCCGEVkvRVjqEGcuS2ffUs2LM6/7hmOLSy
-         eUX+LkgO8+WtrXbs4QOufIcMkfCkJdXPPCH1276mzxzY97fv1WyTtAzRjUnOmvQm+0CD
-         gEsA==
+        bh=5xnGb8Sp7Bw2ldCk3b7+mm/bKINtcTCgeZ/KDZ+GW64=;
+        b=lRYMIDBOpZyljFO2RvNThLgD5wNa3HOuESobzjPSVYXrazoAy44Qh7oocUFwsC8P1s
+         dxCjBIjMpIq4wQHkSvuYdo3rxIjn1W/3DqYDOYteiqurXv6dh206OB1ex9oP/kIBeA4S
+         amfILxb0nrJfh9r2wkAQjMDiK0HwfRSIDwC25diJsSaH8isSY8M+9zuDZ1wGmxs2KLvN
+         FINnn2r2JmoVxJsUKumMzDWHU7GvXcdVBbtH1XTG1XQuOYzjx/sRDmNVZwTxi6Ce9VPA
+         zlwxRjs9FrX4f0vxVXUK6+1HY7X288l1RRBEZf0ZkPlksAC5FjNelM5VLa6gXFUawLhZ
+         E6YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699287466; x=1699892266;
+        d=1e100.net; s=20230601; t=1699287918; x=1699892718;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lUV8zKIdpTV0f8ZMhx633GQ2l+XRSBNMcsvYJoEfTx4=;
-        b=hD2c3zlvxl5t5UjBCUU9zJ2BAqVoDoWLjjVTBpUXI//PMpYuhfn67pWx0PSnV2ZJj6
-         49D5C3/y0zenBLm0kwaQBylzY2UeBboMonhaYT1YhU1twcl0CztTqLwoAHFhRrCfhi8A
-         GStGXzCwJNctPK63GoIi5wNLMVDLB+rZHbM0KT5AXv8xon28gM8Ry+bvY79hUAeOaUpq
-         tuQOPEI5YHn9/HAzwrEL2v7D/26DmUwJaW+jY4HF7KkTbjXcHkpZIFZJBdU/cytIzNBY
-         IQa23xXtW3K+adZp5kzWagtFGAkJmbbq0yfudoKQRVlZUYPmi/YL9vsU4OfU/KLqwpvL
-         Jehg==
-X-Gm-Message-State: AOJu0Yz+7YslaL/McOMSvH//Wg5iL182596HX/42RTDMfwej3YdvGMw3
-	GIoho/vTymvXwyxuNOn6DOOKLPUilfi0TJe0mErneQ==
-X-Google-Smtp-Source: AGHT+IFFqaeUa+zb1fqYMH2SBG8qERPcG1V2EKOvlLONFWJF+9JT7SC3ACnaIHdf6fX4zUtKFZJjWCRYHGHhXFDqHvM=
-X-Received: by 2002:ad4:5c83:0:b0:670:9f8d:f7be with SMTP id
- o3-20020ad45c83000000b006709f8df7bemr44676404qvh.13.1699287465633; Mon, 06
- Nov 2023 08:17:45 -0800 (PST)
+        bh=5xnGb8Sp7Bw2ldCk3b7+mm/bKINtcTCgeZ/KDZ+GW64=;
+        b=uPhbeLP6qyOcYsu35nzQkepE9jewwIvcAqFV7OClFO/T1KEQfM9yh/pCneQegRAicX
+         LnB9QmfwiS35f2FTUXMAn48MRXAl/hz8hYIps5S2KtDgbb21Hbwxoauk8YDRrbcbkuuX
+         bJOvpGLVPDWz8AldwPFz5NFETlMttUXtHc0Gon6CFdpDM6JHRJei1gLNna4GtW5SLMpL
+         JuRtuChWp5ILzBKkdD8Kj8TCAwLdxw1NY2ZutvZxZKef3foxmaiQG1PG6nZUcChdcI36
+         oJY36fzOdQJaZiFVngeXpYDF5qzGEwkFaVzjRmz+i/S/voCP5KUMxxyh5Ze6G48KtZ/T
+         OEoQ==
+X-Gm-Message-State: AOJu0Yw5AxXYetXdMejBabsJbEfMpfvqtj+UzHKqBp25XbDZUUHLk+sf
+	N31ttwLmd6gZ1jlhquja7jzOTUH8DdysNZ4dgoMpJQ==
+X-Google-Smtp-Source: AGHT+IEz2M905daE9adgBPAvjj9bLaNYp4EiTefEe+KnfTT86zKFKrzhkzHGJH5RS/f9fNDUudL2BwXAULrnwcO9LCk=
+X-Received: by 2002:a05:6808:28c:b0:3af:a107:cf68 with SMTP id
+ z12-20020a056808028c00b003afa107cf68mr28980109oic.40.1699287918292; Mon, 06
+ Nov 2023 08:25:18 -0800 (PST)
 MIME-Version: 1.0
-References: <20231105163040.14904-1-pbonzini@redhat.com> <20231105163040.14904-28-pbonzini@redhat.com>
- <CA+EHjTxz-e_JKYTtEjjYJTXmpvizRXe8EUbhY2E7bwFjkkHVFw@mail.gmail.com> <ZUkOgdTMbH40XFGE@google.com>
-In-Reply-To: <ZUkOgdTMbH40XFGE@google.com>
+References: <20231105163040.14904-1-pbonzini@redhat.com> <20231105163040.14904-26-pbonzini@redhat.com>
+ <CA+EHjTxy6TWM3oBG0Q6v5090XTrs+M8_m5=6Z2E1P-HyTkrGWg@mail.gmail.com> <ZUkQjW-yMnLfD7XW@google.com>
+In-Reply-To: <ZUkQjW-yMnLfD7XW@google.com>
 From: Fuad Tabba <tabba@google.com>
-Date: Mon, 6 Nov 2023 16:17:09 +0000
-Message-ID: <CA+EHjTzc4zwN1atU1mSnbi3Lvb0c83MATQSk1uSWxae2iKi0aw@mail.gmail.com>
-Subject: Re: [PATCH 27/34] KVM: selftests: Introduce VM "shape" to allow tests
- to specify the VM type
+Date: Mon, 6 Nov 2023 16:24:42 +0000
+Message-ID: <CA+EHjTw8Om6DGatxGhLJHpUb4RY_ma1pidd=mYxTQseE7vDB4A@mail.gmail.com>
+Subject: Re: [PATCH 25/34] KVM: selftests: Add helpers to convert guest memory
+ b/w private and shared
 To: Sean Christopherson <seanjc@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -82,57 +82,47 @@ Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 6, 2023 at 4:04=E2=80=AFPM Sean Christopherson <seanjc@google.c=
+On Mon, Nov 6, 2023 at 4:13=E2=80=AFPM Sean Christopherson <seanjc@google.c=
 om> wrote:
 >
 > On Mon, Nov 06, 2023, Fuad Tabba wrote:
 > > On Sun, Nov 5, 2023 at 4:34=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.c=
 om> wrote:
-> > >
-> > > From: Sean Christopherson <seanjc@google.com>
-> > >
-> > > Add a "vm_shape" structure to encapsulate the selftests-defined "mode=
-",
-> > > along with the KVM-defined "type" for use when creating a new VM.  "m=
-ode"
-> > > tracks physical and virtual address properties, as well as the prefer=
-red
-> > > backing memory type, while "type" corresponds to the VM type.
-> > >
-> > > Taking the VM type will allow adding tests for KVM_CREATE_GUEST_MEMFD=
-,
-> > > a.k.a. guest private memory, without needing an entirely separate set=
- of
-> > > helpers.  Guest private memory is effectively usable only by confiden=
-tial
-> > > VM types, and it's expected that x86 will double down and require uni=
-que
-> > > VM types for TDX and SNP guests.
-> > >
-> > > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > > Message-Id: <20231027182217.3615211-30-seanjc@google.com>
-> > > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> > > ---
+> > > +void vm_guest_mem_fallocate(struct kvm_vm *vm, uint64_t base, uint64=
+_t size,
+> > > +                           bool punch_hole)
+> > > +{
+> > > +       const int mode =3D FALLOC_FL_KEEP_SIZE | (punch_hole ? FALLOC=
+_FL_PUNCH_HOLE : 0);
+> > > +       struct userspace_mem_region *region;
+> > > +       uint64_t end =3D base + size;
+> > > +       uint64_t gpa, len;
+> > > +       off_t fd_offset;
+> > > +       int ret;
+> > > +
+> > > +       for (gpa =3D base; gpa < end; gpa +=3D len) {
+> > > +               uint64_t offset;
+> > > +
+> > > +               region =3D userspace_mem_region_find(vm, gpa, gpa);
+> > > +               TEST_ASSERT(region && region->region.flags & KVM_MEM_=
+GUEST_MEMFD,
+> > > +                           "Private memory region not found for GPA =
+0x%lx", gpa);
+> > > +
+> > > +               offset =3D (gpa - region->region.guest_phys_addr);
 > >
-> > nit: as in a prior selftest commit messages, references in the commit
-> > message to guest _private_ memory. Should these be changed to just
-> > guest memory?
+> > nit: why the parentheses?
 >
-> Hmm, no, "private" is mostly appropriate here.  At this point in time, on=
-ly x86
-> supports KVM_CREATE_GUEST_MEMFD, and x86 only supports it for private mem=
-ory.
-> And the purpose of letting x86 selftests specify KVM_X86_SW_PROTECTED_VM,=
- i.e.
-> the reason this patch exists, is purely to get private memory.
+> I simply forgot to remove them when I changed the function to support spa=
+nning
+> multiple memslots, i.e. when the code went from this
 >
-> Maybe tweak the second paragraph to this?
+>         fd_offset =3D region->region.gmem_offset +
+>                     (gpa - region->region.guest_phys_addr);
 >
-> Taking the VM type will allow adding tests for KVM_CREATE_GUEST_MEMFD
-> without needing an entirely separate set of helpers.  At this time,
-> guest_memfd is effectively usable only by confidential VM types in the
-> form of guest private memory, and it's expected that x86 will double down
-> and require unique VM types for TDX and SNP guests.
+> to what you see above.
 
-sgtm
+I wasn't actually expecting an answer, but I literally _did_ ask for it :)
+
+Thanks,
 /fuad
