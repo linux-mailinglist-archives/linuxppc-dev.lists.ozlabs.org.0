@@ -2,52 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29A067E16E4
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Nov 2023 22:45:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAA557E1925
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Nov 2023 04:20:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SNp1j16y0z3dFr
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Nov 2023 08:45:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SNxSJ4wq0z3cb1
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Nov 2023 14:20:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=lists.ozlabs.org)
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SNp0j0PSsz2yDY
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Nov 2023 08:44:35 +1100 (AEDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1qzkun-0005cE-Oi; Sun, 05 Nov 2023 22:44:17 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1qzkum-006sXR-8l; Sun, 05 Nov 2023 22:44:16 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1qzkul-00DHxh-Vg; Sun, 05 Nov 2023 22:44:15 +0100
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH 2/2] tty: hvc: hvc_opal: Convert to platform remove callback returning void
-Date: Sun,  5 Nov 2023 22:44:09 +0100
-Message-ID: <20231105214406.3765906-6-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231105214406.3765906-4-u.kleine-koenig@pengutronix.de>
-References: <20231105214406.3765906-4-u.kleine-koenig@pengutronix.de>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 598 seconds by postgrey-1.37 at boromir; Mon, 06 Nov 2023 14:20:07 AEDT
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SNxRq1hgFz30Q4
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Nov 2023 14:20:05 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 791E3C15;
+	Sun,  5 Nov 2023 19:10:16 -0800 (PST)
+Received: from [10.162.41.8] (a077893.blr.arm.com [10.162.41.8])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E226E3F64C;
+	Sun,  5 Nov 2023 19:09:29 -0800 (PST)
+Message-ID: <dc5a1072-0c2b-4f49-8a5f-de3dcfb8c06e@arm.com>
+Date: Mon, 6 Nov 2023 08:39:26 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: mm/debug_vm_pgtable.c:860 warning triggered
+To: "Daniel Walker (danielwa)" <danielwa@cisco.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <ZUV+W9bwUBjahL15@goliath>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <ZUV+W9bwUBjahL15@goliath>
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1774; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=aRh+VlrD93eVwb3Ts9Sdsvnv4r85WYOj6jpzvcDjK9w=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlSAypRG5HDLrTaATjjj2FscK4Eor8te3H9iIjE lJfnUmMmMqJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZUgMqQAKCRCPgPtYfRL+ To21B/4sLgK1LpZERifG0P5EwL/zjUngw9OA63nUq3ZV2/pGLdvcQyAVWt5+X9pwnJs7/hPbI24 2T45zpauXqTT2KTEt/QyC+DdaalLvPCdvrSJYollV6B6qNxY6NdkwAY2DhNGYX8Sd36OJMAZMy7 Dyk4ewPY3xxL+d8iLSMuiBI414HbnLdfEUQDKC97xsPuu43tto1X9hl/rNhBqtqdk4U1NpXjt5j DI9oni1FBIlT0a/MnbZsz8k9/QAI+sRcEYu+3FAFnZkoZtzxgStbJJX2TRuMi9/Y6qTWf91PkiG ZurJ2t2hfaZTNWXsKhtHWP/srqY072ZgXgMcu9uP78bqW65K
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,56 +46,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel@pengutronix.de, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, linux-serial@vger.kernel.org
+Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>, "David Beazley \(dbeazley\)" <dbeazley@cisco.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "xe-linux-external\(mailer list\)" <xe-linux-external@cisco.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
+Hello Daniel,
 
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new(), which already returns void. Eventually after all drivers
-are converted, .remove_new() will be renamed to .remove().
+This test just ensures that PFN is preserved during pte <--> swap pte transformations
+, and the warning here seems to have been caused by powerpc platform specific helpers
+and/or its pte_t representation. Adding powerpc folks and platform mailing list here.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+- Anshuman
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/tty/hvc/hvc_opal.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/tty/hvc/hvc_opal.c b/drivers/tty/hvc/hvc_opal.c
-index 8995b253cf90..2cdf66e395cc 100644
---- a/drivers/tty/hvc/hvc_opal.c
-+++ b/drivers/tty/hvc/hvc_opal.c
-@@ -232,7 +232,7 @@ static int hvc_opal_probe(struct platform_device *dev)
- 	return 0;
- }
- 
--static int hvc_opal_remove(struct platform_device *dev)
-+static void hvc_opal_remove(struct platform_device *dev)
- {
- 	struct hvc_struct *hp = dev_get_drvdata(&dev->dev);
- 	int termno;
-@@ -242,13 +242,11 @@ static int hvc_opal_remove(struct platform_device *dev)
- 	if (hvc_opal_privs[termno] != &hvc_opal_boot_priv)
- 		kfree(hvc_opal_privs[termno]);
- 	hvc_opal_privs[termno] = NULL;
--
--	return 0;
- }
- 
- static struct platform_driver hvc_opal_driver = {
- 	.probe		= hvc_opal_probe,
--	.remove		= hvc_opal_remove,
-+	.remove_new	= hvc_opal_remove,
- 	.driver		= {
- 		.name	= hvc_opal_name,
- 		.of_match_table	= hvc_opal_match,
--- 
-2.42.0
-
+On 11/4/23 04:42, Daniel Walker (danielwa) wrote:
+> 
+> Hi,
+> 
+> This warning has triggered on our powerpc equipment.
+> 
+> debug_vm_pgtable: [debug_vm_pgtable         ]: Validating architecture page table helpers
+> ------------[ cut here ]------------
+> WARNING: CPU: 0 PID: 1 at mm/debug_vm_pgtable.c:860 0xc1012190
+> Modules linked in:
+> CPU: 0 PID: 1 Comm: swapper Not tainted 6.6.0 #14
+> Hardware name: MPC8544DS e500v2 0x80210030 MPC8544 DS
+> NIP:  c1012190 LR: c101216c CTR: 00000000
+> REGS: c145bc70 TRAP: 0700   Not tainted  (6.6.0)
+> MSR:  00029000 <CE,EE,ME>  CR: 48000248  XER: 00000000
+> 
+> GPR00: c1012094 c145bd60 c1498000 c145bd6c 0000003c 00000000 7cffffff 00000001 
+> GPR08: efa2d000 00000000 00000000 2d589a6c 88000248 00000000 c000343c 00000000 
+> GPR16: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 c10000d8 
+> GPR24: 00000000 00000000 00000000 00000000 00000000 00000200 fffffffc 7cffffff 
+> Call Trace:
+> [c145bd60] [c1012094] 0xc1012094 (unreliable)
+> [c145be30] [c0003044] 0xc0003044
+> [c145bea0] [c1000ea0] 0xc1000ea0
+> [c145bee0] [c0003460] 0xc0003460
+> [c145bf00] [c0011224] 0xc0011224
+> --- interrupt: 0 at 0x00000000
+> NIP:  00000000 LR: 00000000 CTR: 00000000
+> REGS: c145bf10 TRAP: 0000   Not tainted  (6.6.0)
+> MSR:  00000000 <>  CR: 00000000  XER: 00000000
+> 
+> GPR00: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+> GPR08: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+> GPR16: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+> GPR24: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+> --- interrupt: 0
+> Code: 3861000c 38a00000 4b10a235 8121000c 7c1f4800 41820008 0fe00000 8121006c 7d29e378 5529463e 7c1d4840 41820008 <0fe00000> 81410080 2c0affff 41820058 
+> ---[ end trace 0000000000000000 ]---
+> 
+> This appears to be the following code,
+> 
+>  850 
+>  851 static void __init pte_swap_tests(struct pgtable_debug_args *args)
+>  852 {
+>  853         swp_entry_t swp;
+>  854         pte_t pte;
+>  855 
+>  856         pr_debug("Validating PTE swap\n");
+>  857         pte = pfn_pte(args->fixed_pte_pfn, args->page_prot);
+>  858         swp = __pte_to_swp_entry(pte);
+>  859         pte = __swp_entry_to_pte(swp);
+>  860         WARN_ON(args->fixed_pte_pfn != pte_pfn(pte));
+>  861 }
+>  862 
+> 
+> 
+> This only happens in powerpc with the following config options enabled,
+> 
+> CONFIG_PTE_64BIT=y
+> CONFIG_PHYS_64BIT=y
+> 
+> These options can increase the pte_t type to 64bits, which swp_entry_t remains unsigned
+> long which is 32 bits on there systems. This warning appears to have triggered since the
+> inclusion of CONFIG_DEBUG_VM_PGTABLE support for powerpc.
+> 
+> To reproduce the issue you can use the attached config to build a powerpc kernel. Then
+> boot with QEMU using the following command line.
+> 
+> qemu-system-ppc -M mpc8544ds -kernel ../powerpc/vmlinux -append "console=ttyS0" -nographic
+> 
+> Please CC me on any fixes in the future.
+> 
+> Thanks,
+> 
+> Daniel
+> 
