@@ -1,70 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECEBF7E1E33
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Nov 2023 11:25:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EC137E1E97
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Nov 2023 11:40:47 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=JBWfd3s5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=QeCMYlBS;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SP6tR5zZdz3cTF
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Nov 2023 21:25:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SP7DF0Nkzz3cBr
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Nov 2023 21:40:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=JBWfd3s5;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=QeCMYlBS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::82a; helo=mail-qt1-x82a.google.com; envelope-from=tabba@google.com; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b29; helo=mail-yb1-xb29.google.com; envelope-from=tabba@google.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SP6sX6m0Gz2ytV
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Nov 2023 21:24:31 +1100 (AEDT)
-Received: by mail-qt1-x82a.google.com with SMTP id d75a77b69052e-41cd4cc515fso30081351cf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Nov 2023 02:24:31 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SP7CL3nS6z3bT8
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Nov 2023 21:39:57 +1100 (AEDT)
+Received: by mail-yb1-xb29.google.com with SMTP id 3f1490d57ef6-d852b28ec3bso4588913276.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Nov 2023 02:39:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1699266263; x=1699871063; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Jx7pzo9zslWgjVRljunAjs24sdVG2mkanbp0iYdFwaI=;
-        b=JBWfd3s5Iye7HiBZT0iZRULXOW27ZJe7LQp9cL7Lo0FbZtc+BFJsLlHpESUBvcj7wG
-         ADyzB4bGhwTpxW5wWZ1snoaJxO5KunIB1bFyb9a8jI/bbRKy+iGdAFpoiZqRTccBT1Gv
-         Kr/1g3DJJW2Nk+Qd4RZm5gxBxC0Yv2O7c2M/kzoZRU14Q0cNmaTWNgCClcDsKanMXKYF
-         JA1sHhaprelW7E/Wp9isy9fJjfR9AYZlQYQ3RRWvmxNsFIg6EOgFHpjwkqyewJYbUwie
-         oEXhRJZWljeftMmfjyRpEHIJICnMrUp4+gc8KYSXqWc2R+qYdYwXs86lLtvMo0/sxRpe
-         Nhhg==
+        d=google.com; s=20230601; t=1699267193; x=1699871993; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=IP7Ako7Zwt1UjgwHJt9bCrv1N1+7f/8KEsqclU/31Lo=;
+        b=QeCMYlBS2RFfL+rt2jW0gns1E1f3XldwI378RBXfgWVMQNyJkK0vCr+Fw7fA8o7dtS
+         SIa0C1KH2g3k5W9MWJYYvEZ5TuSNL41BplC3T3etg0oxDl2+uxkmzuKNYnyPgwsCbx8n
+         MxvDaUx6mIHGEZEDjlcpFCleoyI9qp3Y2s9Qi1llQfoiKL+DDRuxXTe/vUzjiShs21PZ
+         h7gqSQRJX7qpNncYTRkqNt9AYRP3bSc/ye7H24cBJuEGBlWT96WrCGOSFnx0rmoG4HdR
+         al9j3o0WS3Drz0GyG6ClmJ0SZPq7+gL3Dw/A7QW5WjEDQet9GRpK8F++nQ8jaxccTeS4
+         pwcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699266263; x=1699871063;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Jx7pzo9zslWgjVRljunAjs24sdVG2mkanbp0iYdFwaI=;
-        b=mCQoI+GlOomENW6UrAAD3iY4/iX22st5FX/3NbpLilaWI5+uWzny1yuyHw8Js4FeWZ
-         a+Z7rOJ73OG7/oTp66pTvYAQfvvU6x5meHWcL2/5dgq452MzQbzt+nxytHcI1qnQQB0p
-         3WteALPXfKV90MIYpDQeXFSyQ6XB/M/2YhxOdHUm/4ucXoW9HF92OFVFszL48DDAWYGy
-         VGcx3zwR524uuhl4tsOY8IP5XC73JqRgAHuy2yLWMf5f1rrqC+v4cPTkzdDEvNVAU8qI
-         RsauUU5qd6CvAWL4XJt0ypAfAaq3RbBp6nkjtKFkmuaiJ9oNc40uueefkikKvZ6kE9j/
-         t2cA==
-X-Gm-Message-State: AOJu0YwrNvVwnpSX4ZeoK9JLiCfwO338BVzadjrOlcGcYT+c7jIqGwYe
-	3WDGrvCFYpB53PY3eFTPcQdB4Ig5bE1crIUeatCuqw==
-X-Google-Smtp-Source: AGHT+IGxqUy2TkFSF/6DzAsvotrbwxLeZiINpO4wtvkCRKfv4JWO0abdv88fQIT6HNBLh2pi2NT5y8KzEPnGx9OmZnQ=
-X-Received: by 2002:ad4:5aa3:0:b0:66d:bc21:814c with SMTP id
- u3-20020ad45aa3000000b0066dbc21814cmr37429526qvg.65.1699266262770; Mon, 06
- Nov 2023 02:24:22 -0800 (PST)
+        d=1e100.net; s=20230601; t=1699267193; x=1699871993;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IP7Ako7Zwt1UjgwHJt9bCrv1N1+7f/8KEsqclU/31Lo=;
+        b=i8cherqXyB/Oy1fwjptrQECtsi94zgPSptbjfZA/3FoEb8keb+eBIkFLH0ZKJPsFyp
+         GPrYpTOYn9W0FgPNU6k6iOJny+WFBdAMcBT1oEGwrMwIkXlj9CANSZI5hQf2Wcr9g1ES
+         dQRpqC1rXGakpCEHzaXjVedCZWuZtx49Ye3Z2UtEpR/z+V3NFdz/F61UwyVEhffuNUM+
+         p8OHatkpbk3pSJYMv6R3YsDAwob8Yvews3j/qo4YX38ICnrqdo9uX/T9e9TCcs4TylDV
+         0dmwcsJIKv7c6BzgUEFcInuV9vGLRh7wjYb9uMinSaHqrRY8JkfoSoLoPii2FecWoQeW
+         xx0g==
+X-Gm-Message-State: AOJu0YysPUMLeIoWbRjvcidfOWBMEhWX/Q0bRila1OQwR6/ur5rhsmpV
+	i9XgCm9L+Q2UUlfGSglyANPKxKPGnoAprQOnswWpbA==
+X-Google-Smtp-Source: AGHT+IF3rzQ5LOrId/XYQctH9B6CwyxTW0O3KUw3PMrr+bssM8YhYBIXogRP/nz1I462+uCjwm0FcVpnK+jerK57G6Q=
+X-Received: by 2002:a25:e753:0:b0:d89:aa7e:aed9 with SMTP id
+ e80-20020a25e753000000b00d89aa7eaed9mr25948223ybh.23.1699267193428; Mon, 06
+ Nov 2023 02:39:53 -0800 (PST)
 MIME-Version: 1.0
-References: <20231105163040.14904-1-pbonzini@redhat.com> <20231105163040.14904-10-pbonzini@redhat.com>
-In-Reply-To: <20231105163040.14904-10-pbonzini@redhat.com>
+References: <20231105163040.14904-1-pbonzini@redhat.com> <20231105163040.14904-13-pbonzini@redhat.com>
+In-Reply-To: <20231105163040.14904-13-pbonzini@redhat.com>
 From: Fuad Tabba <tabba@google.com>
-Date: Mon, 6 Nov 2023 10:23:46 +0000
-Message-ID: <CA+EHjTz5F14ULr0ji0-Xq+gAHMZo7EV8tA4KRTkp0pPzZ1dcng@mail.gmail.com>
-Subject: Re: [PATCH 09/34] KVM: Add KVM_EXIT_MEMORY_FAULT exit to report
- faults to userspace
+Date: Mon, 6 Nov 2023 10:39:17 +0000
+Message-ID: <CA+EHjTxCv7oHQbT-M76Q+rXdN26hCYUtD8FAORw8PSLP+P-JVQ@mail.gmail.com>
+Subject: Re: [PATCH 12/34] KVM: Introduce per-page memory attributes
 To: Paolo Bonzini <pbonzini@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,222 +78,357 @@ Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Nov 5, 2023 at 4:32=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com> =
-wrote:
->
-> From: Chao Peng <chao.p.peng@linux.intel.com>
->
-> Add a new KVM exit type to allow userspace to handle memory faults that
-> KVM cannot resolve, but that userspace *may* be able to handle (without
-> terminating the guest).
->
-> KVM will initially use KVM_EXIT_MEMORY_FAULT to report implicit
-> conversions between private and shared memory.  With guest private memory=
-,
-> there will be two kind of memory conversions:
->
->   - explicit conversion: happens when the guest explicitly calls into KVM
->     to map a range (as private or shared)
->
->   - implicit conversion: happens when the guest attempts to access a gfn
->     that is configured in the "wrong" state (private vs. shared)
->
-> On x86 (first architecture to support guest private memory), explicit
-> conversions will be reported via KVM_EXIT_HYPERCALL+KVM_HC_MAP_GPA_RANGE,
-> but reporting KVM_EXIT_HYPERCALL for implicit conversions is undesriable
-> as there is (obviously) no hypercall, and there is no guarantee that the
-> guest actually intends to convert between private and shared, i.e. what
-> KVM thinks is an implicit conversion "request" could actually be the
-> result of a guest code bug.
->
-> KVM_EXIT_MEMORY_FAULT will be used to report memory faults that appear to
-> be implicit conversions.
->
-> Note!  To allow for future possibilities where KVM reports
-> KVM_EXIT_MEMORY_FAULT and fills run->memory_fault on _any_ unresolved
-> fault, KVM returns "-EFAULT" (-1 with errno =3D=3D EFAULT from userspace'=
-s
-> perspective), not '0'!  Due to historical baggage within KVM, exiting to
-> userspace with '0' from deep callstacks, e.g. in emulation paths, is
-> infeasible as doing so would require a near-complete overhaul of KVM,
-> whereas KVM already propagates -errno return codes to userspace even when
-> the -errno originated in a low level helper.
->
-> Report the gpa+size instead of a single gfn even though the initial usage
-> is expected to always report single pages.  It's entirely possible, likel=
-y
-> even, that KVM will someday support sub-page granularity faults, e.g.
-> Intel's sub-page protection feature allows for additional protections at
-> 128-byte granularity.
->
-> Link: https://lore.kernel.org/all/20230908222905.1321305-5-amoorthy@googl=
-e.com
-> Link: https://lore.kernel.org/all/ZQ3AmLO2SYv3DszH@google.com
-> Cc: Anish Moorthy <amoorthy@google.com>
-> Cc: David Matlack <dmatlack@google.com>
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Co-developed-by: Yu Zhang <yu.c.zhang@linux.intel.com>
-> Signed-off-by: Yu Zhang <yu.c.zhang@linux.intel.com>
-> Signed-off-by: Chao Peng <chao.p.peng@linux.intel.com>
-> Co-developed-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
-> Message-Id: <20231027182217.3615211-10-seanjc@google.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
+Hi,
 
+...
+
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 96aa930536b1..68a144cb7dbc 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -256,6 +256,7 @@ int kvm_async_pf_wakeup_all(struct kvm_vcpu *vcpu);
+>  #ifdef CONFIG_KVM_GENERIC_MMU_NOTIFIER
+>  union kvm_mmu_notifier_arg {
+>         pte_t pte;
+> +       unsigned long attributes;
+>  };
+>
+>  struct kvm_gfn_range {
+> @@ -806,6 +807,10 @@ struct kvm {
+>
+>  #ifdef CONFIG_HAVE_KVM_PM_NOTIFIER
+>         struct notifier_block pm_notifier;
+> +#endif
+> +#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+> +       /* Protected by slots_locks (for writes) and RCU (for reads) */
+
+slots_locks -> slots_lock
+
+Otherwise,
 Reviewed-by: Fuad Tabba <tabba@google.com>
 Tested-by: Fuad Tabba <tabba@google.com>
 
 Cheers,
 /fuad
 
->  Documentation/virt/kvm/api.rst | 41 ++++++++++++++++++++++++++++++++++
->  arch/x86/kvm/x86.c             |  1 +
->  include/linux/kvm_host.h       | 11 +++++++++
->  include/uapi/linux/kvm.h       |  8 +++++++
->  4 files changed, 61 insertions(+)
+> +       struct xarray mem_attr_array;
+>  #endif
+>         char stats_id[KVM_STATS_NAME_SIZE];
+>  };
+> @@ -2338,4 +2343,18 @@ static inline void kvm_prepare_memory_fault_exit(struct kvm_vcpu *vcpu,
+>         vcpu->run->memory_fault.flags = 0;
+>  }
 >
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.=
-rst
-> index bdea1423c5f8..481fb0e2ce90 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-> @@ -6846,6 +6846,26 @@ array field represents return values. The userspac=
-e should update the return
->  values of SBI call before resuming the VCPU. For more details on RISC-V =
-SBI
->  spec refer, https://github.com/riscv/riscv-sbi-doc.
->
-> +::
-> +
-> +               /* KVM_EXIT_MEMORY_FAULT */
-> +               struct {
-> +                       __u64 flags;
-> +                       __u64 gpa;
-> +                       __u64 size;
-> +               } memory_fault;
-> +
-> +KVM_EXIT_MEMORY_FAULT indicates the vCPU has encountered a memory fault =
-that
-> +could not be resolved by KVM.  The 'gpa' and 'size' (in bytes) describe =
-the
-> +guest physical address range [gpa, gpa + size) of the fault.  The 'flags=
-' field
-> +describes properties of the faulting access that are likely pertinent.
-> +Currently, no flags are defined.
-> +
-> +Note!  KVM_EXIT_MEMORY_FAULT is unique among all KVM exit reasons in tha=
-t it
-> +accompanies a return code of '-1', not '0'!  errno will always be set to=
- EFAULT
-> +or EHWPOISON when KVM exits with KVM_EXIT_MEMORY_FAULT, userspace should=
- assume
-> +kvm_run.exit_reason is stale/undefined for all other error numbers.
-> +
->  ::
->
->      /* KVM_EXIT_NOTIFY */
-> @@ -7880,6 +7900,27 @@ This capability is aimed to mitigate the threat th=
-at malicious VMs can
->  cause CPU stuck (due to event windows don't open up) and make the CPU
->  unavailable to host or other VMs.
->
-> +7.34 KVM_CAP_MEMORY_FAULT_INFO
-> +------------------------------
-> +
-> +:Architectures: x86
-> +:Returns: Informational only, -EINVAL on direct KVM_ENABLE_CAP.
-> +
-> +The presence of this capability indicates that KVM_RUN will fill
-> +kvm_run.memory_fault if KVM cannot resolve a guest page fault VM-Exit, e=
-.g. if
-> +there is a valid memslot but no backing VMA for the corresponding host v=
-irtual
-> +address.
-> +
-> +The information in kvm_run.memory_fault is valid if and only if KVM_RUN =
-returns
-> +an error with errno=3DEFAULT or errno=3DEHWPOISON *and* kvm_run.exit_rea=
-son is set
-> +to KVM_EXIT_MEMORY_FAULT.
-> +
-> +Note: Userspaces which attempt to resolve memory faults so that they can=
- retry
-> +KVM_RUN are encouraged to guard against repeatedly receiving the same
-> +error/annotated fault.
-> +
-> +See KVM_EXIT_MEMORY_FAULT for more information.
-> +
->  8. Other capabilities.
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 7b389f27dffc..8f9d8939b63b 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -4625,6 +4625,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, l=
-ong ext)
->         case KVM_CAP_ENABLE_CAP:
->         case KVM_CAP_VM_DISABLE_NX_HUGE_PAGES:
->         case KVM_CAP_IRQFD_RESAMPLE:
-> +       case KVM_CAP_MEMORY_FAULT_INFO:
->                 r =3D 1;
->                 break;
->         case KVM_CAP_EXIT_HYPERCALL:
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 4e741ff27af3..96aa930536b1 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -2327,4 +2327,15 @@ static inline void kvm_account_pgtable_pages(void =
-*virt, int nr)
->  /* Max number of entries allowed for each kvm dirty ring */
->  #define  KVM_DIRTY_RING_MAX_ENTRIES  65536
->
-> +static inline void kvm_prepare_memory_fault_exit(struct kvm_vcpu *vcpu,
-> +                                                gpa_t gpa, gpa_t size)
+> +#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+> +static inline unsigned long kvm_get_memory_attributes(struct kvm *kvm, gfn_t gfn)
 > +{
-> +       vcpu->run->exit_reason =3D KVM_EXIT_MEMORY_FAULT;
-> +       vcpu->run->memory_fault.gpa =3D gpa;
-> +       vcpu->run->memory_fault.size =3D size;
-> +
-> +       /* Flags are not (yet) defined or communicated to userspace. */
-> +       vcpu->run->memory_fault.flags =3D 0;
+> +       return xa_to_value(xa_load(&kvm->mem_attr_array, gfn));
 > +}
+> +
+> +bool kvm_range_has_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
+> +                                    unsigned long attrs);
+> +bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
+> +                                       struct kvm_gfn_range *range);
+> +bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
+> +                                        struct kvm_gfn_range *range);
+> +#endif /* CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES */
 > +
 >  #endif
 > diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> index 308cc70bd6ab..59010a685007 100644
+> index 59010a685007..e8d167e54980 100644
 > --- a/include/uapi/linux/kvm.h
 > +++ b/include/uapi/linux/kvm.h
-> @@ -275,6 +275,7 @@ struct kvm_xen_exit {
->  #define KVM_EXIT_RISCV_CSR        36
->  #define KVM_EXIT_NOTIFY           37
->  #define KVM_EXIT_LOONGARCH_IOCSR  38
-> +#define KVM_EXIT_MEMORY_FAULT     39
->
->  /* For KVM_EXIT_INTERNAL_ERROR */
->  /* Emulate instruction failed. */
-> @@ -528,6 +529,12 @@ struct kvm_run {
->  #define KVM_NOTIFY_CONTEXT_INVALID     (1 << 0)
->                         __u32 flags;
->                 } notify;
-> +               /* KVM_EXIT_MEMORY_FAULT */
-> +               struct {
-> +                       __u64 flags;
-> +                       __u64 gpa;
-> +                       __u64 size;
-> +               } memory_fault;
->                 /* Fix the size of the union. */
->                 char padding[256];
->         };
-> @@ -1212,6 +1219,7 @@ struct kvm_ppc_resize_hpt {
->  #define KVM_CAP_ARM_SUPPORTED_BLOCK_SIZES 229
+> @@ -1220,6 +1220,7 @@ struct kvm_ppc_resize_hpt {
 >  #define KVM_CAP_ARM_SUPPORTED_REG_MASK_RANGES 230
 >  #define KVM_CAP_USER_MEMORY2 231
-> +#define KVM_CAP_MEMORY_FAULT_INFO 232
+>  #define KVM_CAP_MEMORY_FAULT_INFO 232
+> +#define KVM_CAP_MEMORY_ATTRIBUTES 233
 >
 >  #ifdef KVM_CAP_IRQ_ROUTING
+>
+> @@ -2288,4 +2289,16 @@ struct kvm_s390_zpci_op {
+>  /* flags for kvm_s390_zpci_op->u.reg_aen.flags */
+>  #define KVM_S390_ZPCIOP_REGAEN_HOST    (1 << 0)
+>
+> +/* Available with KVM_CAP_MEMORY_ATTRIBUTES */
+> +#define KVM_SET_MEMORY_ATTRIBUTES              _IOW(KVMIO,  0xd2, struct kvm_memory_attributes)
+> +
+> +struct kvm_memory_attributes {
+> +       __u64 address;
+> +       __u64 size;
+> +       __u64 attributes;
+> +       __u64 flags;
+> +};
+> +
+> +#define KVM_MEMORY_ATTRIBUTE_PRIVATE           (1ULL << 3)
+> +
+>  #endif /* __LINUX_KVM_H */
+> diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
+> index ecae2914c97e..5bd7fcaf9089 100644
+> --- a/virt/kvm/Kconfig
+> +++ b/virt/kvm/Kconfig
+> @@ -96,3 +96,7 @@ config KVM_GENERIC_HARDWARE_ENABLING
+>  config KVM_GENERIC_MMU_NOTIFIER
+>         select MMU_NOTIFIER
+>         bool
+> +
+> +config KVM_GENERIC_MEMORY_ATTRIBUTES
+> +       select KVM_GENERIC_MMU_NOTIFIER
+> +       bool
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 7f3291dec7a6..f1a575d39b3b 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -1211,6 +1211,9 @@ static struct kvm *kvm_create_vm(unsigned long type, const char *fdname)
+>         spin_lock_init(&kvm->mn_invalidate_lock);
+>         rcuwait_init(&kvm->mn_memslots_update_rcuwait);
+>         xa_init(&kvm->vcpu_array);
+> +#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+> +       xa_init(&kvm->mem_attr_array);
+> +#endif
+>
+>         INIT_LIST_HEAD(&kvm->gpc_list);
+>         spin_lock_init(&kvm->gpc_lock);
+> @@ -1391,6 +1394,9 @@ static void kvm_destroy_vm(struct kvm *kvm)
+>         }
+>         cleanup_srcu_struct(&kvm->irq_srcu);
+>         cleanup_srcu_struct(&kvm->srcu);
+> +#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+> +       xa_destroy(&kvm->mem_attr_array);
+> +#endif
+>         kvm_arch_free_vm(kvm);
+>         preempt_notifier_dec();
+>         hardware_disable_all();
+> @@ -2397,6 +2403,200 @@ static int kvm_vm_ioctl_clear_dirty_log(struct kvm *kvm,
+>  }
+>  #endif /* CONFIG_KVM_GENERIC_DIRTYLOG_READ_PROTECT */
+>
+> +#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+> +/*
+> + * Returns true if _all_ gfns in the range [@start, @end) have attributes
+> + * matching @attrs.
+> + */
+> +bool kvm_range_has_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
+> +                                    unsigned long attrs)
+> +{
+> +       XA_STATE(xas, &kvm->mem_attr_array, start);
+> +       unsigned long index;
+> +       bool has_attrs;
+> +       void *entry;
+> +
+> +       rcu_read_lock();
+> +
+> +       if (!attrs) {
+> +               has_attrs = !xas_find(&xas, end - 1);
+> +               goto out;
+> +       }
+> +
+> +       has_attrs = true;
+> +       for (index = start; index < end; index++) {
+> +               do {
+> +                       entry = xas_next(&xas);
+> +               } while (xas_retry(&xas, entry));
+> +
+> +               if (xas.xa_index != index || xa_to_value(entry) != attrs) {
+> +                       has_attrs = false;
+> +                       break;
+> +               }
+> +       }
+> +
+> +out:
+> +       rcu_read_unlock();
+> +       return has_attrs;
+> +}
+> +
+> +static u64 kvm_supported_mem_attributes(struct kvm *kvm)
+> +{
+> +       if (!kvm)
+> +               return KVM_MEMORY_ATTRIBUTE_PRIVATE;
+> +
+> +       return 0;
+> +}
+> +
+> +static __always_inline void kvm_handle_gfn_range(struct kvm *kvm,
+> +                                                struct kvm_mmu_notifier_range *range)
+> +{
+> +       struct kvm_gfn_range gfn_range;
+> +       struct kvm_memory_slot *slot;
+> +       struct kvm_memslots *slots;
+> +       struct kvm_memslot_iter iter;
+> +       bool found_memslot = false;
+> +       bool ret = false;
+> +       int i;
+> +
+> +       gfn_range.arg = range->arg;
+> +       gfn_range.may_block = range->may_block;
+> +
+> +       for (i = 0; i < KVM_ADDRESS_SPACE_NUM; i++) {
+> +               slots = __kvm_memslots(kvm, i);
+> +
+> +               kvm_for_each_memslot_in_gfn_range(&iter, slots, range->start, range->end) {
+> +                       slot = iter.slot;
+> +                       gfn_range.slot = slot;
+> +
+> +                       gfn_range.start = max(range->start, slot->base_gfn);
+> +                       gfn_range.end = min(range->end, slot->base_gfn + slot->npages);
+> +                       if (gfn_range.start >= gfn_range.end)
+> +                               continue;
+> +
+> +                       if (!found_memslot) {
+> +                               found_memslot = true;
+> +                               KVM_MMU_LOCK(kvm);
+> +                               if (!IS_KVM_NULL_FN(range->on_lock))
+> +                                       range->on_lock(kvm);
+> +                       }
+> +
+> +                       ret |= range->handler(kvm, &gfn_range);
+> +               }
+> +       }
+> +
+> +       if (range->flush_on_ret && ret)
+> +               kvm_flush_remote_tlbs(kvm);
+> +
+> +       if (found_memslot)
+> +               KVM_MMU_UNLOCK(kvm);
+> +}
+> +
+> +static bool kvm_pre_set_memory_attributes(struct kvm *kvm,
+> +                                         struct kvm_gfn_range *range)
+> +{
+> +       /*
+> +        * Unconditionally add the range to the invalidation set, regardless of
+> +        * whether or not the arch callback actually needs to zap SPTEs.  E.g.
+> +        * if KVM supports RWX attributes in the future and the attributes are
+> +        * going from R=>RW, zapping isn't strictly necessary.  Unconditionally
+> +        * adding the range allows KVM to require that MMU invalidations add at
+> +        * least one range between begin() and end(), e.g. allows KVM to detect
+> +        * bugs where the add() is missed.  Relaxing the rule *might* be safe,
+> +        * but it's not obvious that allowing new mappings while the attributes
+> +        * are in flux is desirable or worth the complexity.
+> +        */
+> +       kvm_mmu_invalidate_range_add(kvm, range->start, range->end);
+> +
+> +       return kvm_arch_pre_set_memory_attributes(kvm, range);
+> +}
+> +
+> +/* Set @attributes for the gfn range [@start, @end). */
+> +static int kvm_vm_set_mem_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
+> +                                    unsigned long attributes)
+> +{
+> +       struct kvm_mmu_notifier_range pre_set_range = {
+> +               .start = start,
+> +               .end = end,
+> +               .handler = kvm_pre_set_memory_attributes,
+> +               .on_lock = kvm_mmu_invalidate_begin,
+> +               .flush_on_ret = true,
+> +               .may_block = true,
+> +       };
+> +       struct kvm_mmu_notifier_range post_set_range = {
+> +               .start = start,
+> +               .end = end,
+> +               .arg.attributes = attributes,
+> +               .handler = kvm_arch_post_set_memory_attributes,
+> +               .on_lock = kvm_mmu_invalidate_end,
+> +               .may_block = true,
+> +       };
+> +       unsigned long i;
+> +       void *entry;
+> +       int r = 0;
+> +
+> +       entry = attributes ? xa_mk_value(attributes) : NULL;
+> +
+> +       mutex_lock(&kvm->slots_lock);
+> +
+> +       /* Nothing to do if the entire range as the desired attributes. */
+> +       if (kvm_range_has_memory_attributes(kvm, start, end, attributes))
+> +               goto out_unlock;
+> +
+> +       /*
+> +        * Reserve memory ahead of time to avoid having to deal with failures
+> +        * partway through setting the new attributes.
+> +        */
+> +       for (i = start; i < end; i++) {
+> +               r = xa_reserve(&kvm->mem_attr_array, i, GFP_KERNEL_ACCOUNT);
+> +               if (r)
+> +                       goto out_unlock;
+> +       }
+> +
+> +       kvm_handle_gfn_range(kvm, &pre_set_range);
+> +
+> +       for (i = start; i < end; i++) {
+> +               r = xa_err(xa_store(&kvm->mem_attr_array, i, entry,
+> +                                   GFP_KERNEL_ACCOUNT));
+> +               KVM_BUG_ON(r, kvm);
+> +       }
+> +
+> +       kvm_handle_gfn_range(kvm, &post_set_range);
+> +
+> +out_unlock:
+> +       mutex_unlock(&kvm->slots_lock);
+> +
+> +       return r;
+> +}
+> +static int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
+> +                                          struct kvm_memory_attributes *attrs)
+> +{
+> +       gfn_t start, end;
+> +
+> +       /* flags is currently not used. */
+> +       if (attrs->flags)
+> +               return -EINVAL;
+> +       if (attrs->attributes & ~kvm_supported_mem_attributes(kvm))
+> +               return -EINVAL;
+> +       if (attrs->size == 0 || attrs->address + attrs->size < attrs->address)
+> +               return -EINVAL;
+> +       if (!PAGE_ALIGNED(attrs->address) || !PAGE_ALIGNED(attrs->size))
+> +               return -EINVAL;
+> +
+> +       start = attrs->address >> PAGE_SHIFT;
+> +       end = (attrs->address + attrs->size) >> PAGE_SHIFT;
+> +
+> +       /*
+> +        * xarray tracks data using "unsigned long", and as a result so does
+> +        * KVM.  For simplicity, supports generic attributes only on 64-bit
+> +        * architectures.
+> +        */
+> +       BUILD_BUG_ON(sizeof(attrs->attributes) != sizeof(unsigned long));
+> +
+> +       return kvm_vm_set_mem_attributes(kvm, start, end, attrs->attributes);
+> +}
+> +#endif /* CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES */
+> +
+>  struct kvm_memory_slot *gfn_to_memslot(struct kvm *kvm, gfn_t gfn)
+>  {
+>         return __gfn_to_memslot(kvm_memslots(kvm), gfn);
+> @@ -4641,6 +4841,10 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
+>         case KVM_CAP_BINARY_STATS_FD:
+>         case KVM_CAP_SYSTEM_EVENT_DATA:
+>                 return 1;
+> +#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+> +       case KVM_CAP_MEMORY_ATTRIBUTES:
+> +               return kvm_supported_mem_attributes(kvm);
+> +#endif
+>         default:
+>                 break;
+>         }
+> @@ -5034,6 +5238,18 @@ static long kvm_vm_ioctl(struct file *filp,
+>                 break;
+>         }
+>  #endif /* CONFIG_HAVE_KVM_IRQ_ROUTING */
+> +#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+> +       case KVM_SET_MEMORY_ATTRIBUTES: {
+> +               struct kvm_memory_attributes attrs;
+> +
+> +               r = -EFAULT;
+> +               if (copy_from_user(&attrs, argp, sizeof(attrs)))
+> +                       goto out;
+> +
+> +               r = kvm_vm_ioctl_set_mem_attributes(kvm, &attrs);
+> +               break;
+> +       }
+> +#endif /* CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES */
+>         case KVM_CREATE_DEVICE: {
+>                 struct kvm_create_device cd;
 >
 > --
 > 2.39.1
