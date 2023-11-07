@@ -1,59 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94E847E3A36
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 11:45:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39A7E7E3BA5
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 13:08:22 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EfHMKmIU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=I1pkrHzS;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SPlHW3T5Fz3cVR
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 21:45:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SPn6r13jRz3cNt
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 23:08:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EfHMKmIU;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=I1pkrHzS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SPlGg3cZmz2xdh
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Nov 2023 21:44:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SPn601PxTz30fD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Nov 2023 23:07:36 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 3E35061161;
-	Tue,  7 Nov 2023 10:44:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF0EC433C7;
-	Tue,  7 Nov 2023 10:44:50 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTP id AB5B8B8168C;
+	Tue,  7 Nov 2023 12:07:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 192C8C433CA;
+	Tue,  7 Nov 2023 12:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1699353896;
-	bh=6KvSSAyHzV1t/xzun1oJg0AqCmYPNZNoG1yjrk+2N5g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EfHMKmIUi7LClGqSTR82uTGSALdsGhooGkAQNBOKzdAx9XrKCS32CwP6rRNlINeJp
-	 fTBcOh2CbrNgz5T9wN8X4IfDIz30xCLXq2htrhQAdC3JQhS9flLyk/+pf5MtKIc1uc
-	 JGySGdYEdfIvLpVTQJXhgpJr9YrJTitMM+csMdn+xILBQI2oGOVjB/sYO87FSSlzde
-	 FSNahA1CtFFCQyIxON1Z1I4OewRIeg1rULpA/yqisw7axPef9I0RY6dTvW/rbObEf0
-	 ODLYbBKyXYy654yF6yL9+/nSFia7MKf5WBhUfT/JXvT2gH/1if2QXy5oq+hmLNVTje
-	 IOMZOtUYIwdeQ==
-Date: Tue, 7 Nov 2023 10:44:47 +0000
-From: Will Deacon <will@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v3 04/13] mm/execmem, arch: convert remaining overrides
- of module_alloc to execmem
-Message-ID: <20231107104446.GA19133@willie-the-truck>
-References: <20230918072955.2507221-1-rppt@kernel.org>
- <20230918072955.2507221-5-rppt@kernel.org>
- <20231023171420.GA4041@willie-the-truck>
- <20231026085800.GK2824@kernel.org>
- <20231026102438.GA6924@willie-the-truck>
- <20231030070053.GL2824@kernel.org>
+	s=k20201202; t=1699358851;
+	bh=IRBKkKgv5aR88byIZ6Re2E0UvtxYIrRtCbz9MOSX40g=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=I1pkrHzSP0vFV+JJD7NtKgcQPP+JjC9OWdPQkkPv2aKVjBigVIqzt6l1e43229GIT
+	 H7Se785jE467lbpE+MdZ6Q2blOlTpr15gpRjfziVNnThWWV6wYUmXwSj7otTtAJYOb
+	 o/dskAUygHHRHznqO8hrFFYNbP6m826dZPjFOBlKmGqO5YBogbeJcgunGxq/X48iq9
+	 ssTd2FpWukR3sPHY1ggpLSrKYFRTuCCONX2NIvBD/NSxr5LTyuF3adIRWHBkIY+dOl
+	 ptwap3F/V/oNIR7JdMDlYzCUey1n0E2KlRxrnp8twiWJRU10xk3oNSGzll/w6Xq37o
+	 S4nYtGmhAZIOQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 11/31] ACPI: APEI: Fix AER info corruption when error status data has multiple sections
+Date: Tue,  7 Nov 2023 07:05:58 -0500
+Message-ID: <20231107120704.3756327-11-sashal@kernel.org>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231107120704.3756327-1-sashal@kernel.org>
+References: <20231107120704.3756327-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231030070053.GL2824@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,50 +62,138 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Song Liu <song@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Puranjay Mohan <puranjay12@gmail.com>, linux-mm@kvack.org, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, =?iso-8859-1?Q?Bj=F6rn_
- T=F6pel?= <bjorn@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, linux-modules@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>, linmiaohe@huawei.com, tony.luck@intel.com, rafael@kernel.org, linux-pci@vger.kernel.org, kvalo@kernel.org, "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, mahesh@linux.ibm.com, rostedt@goodmis.org, robert.moore@intel.com, linux-acpi@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, acpica-devel@lists.linuxfoundation.org, leoyang.li@nxp.com, linuxppc-dev@lists.ozlabs.org, Shiju Jose <shiju.jose@huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 30, 2023 at 09:00:53AM +0200, Mike Rapoport wrote:
-> On Thu, Oct 26, 2023 at 11:24:39AM +0100, Will Deacon wrote:
-> > On Thu, Oct 26, 2023 at 11:58:00AM +0300, Mike Rapoport wrote:
-> > > On Mon, Oct 23, 2023 at 06:14:20PM +0100, Will Deacon wrote:
-> > > > On Mon, Sep 18, 2023 at 10:29:46AM +0300, Mike Rapoport wrote:
-> > > > > diff --git a/arch/arm64/kernel/module.c b/arch/arm64/kernel/module.c
-> > > > > index dd851297596e..cd6320de1c54 100644
-> > > > > --- a/arch/arm64/kernel/module.c
-> > > > > +++ b/arch/arm64/kernel/module.c
-> 
-> ...
-> 
-> > > > > -	if (module_direct_base) {
-> > > > > -		p = __vmalloc_node_range(size, MODULE_ALIGN,
-> > > > > -					 module_direct_base,
-> > > > > -					 module_direct_base + SZ_128M,
-> > > > > -					 GFP_KERNEL | __GFP_NOWARN,
-> > > > > -					 PAGE_KERNEL, 0, NUMA_NO_NODE,
-> > > > > -					 __builtin_return_address(0));
-> > > > > -	}
-> > > > > +	module_init_limits();
-> > > > 
-> > > > Hmm, this used to be run from subsys_initcall(), but now you're running
-> > > > it _really_ early, before random_init(), so randomization of the module
-> > > > space is no longer going to be very random if we don't have early entropy
-> > > > from the firmware or the CPU, which is likely to be the case on most SoCs.
-> > > 
-> > > Well, it will be as random as KASLR. Won't that be enough?
-> > 
-> > I don't think that's true -- we have the 'kaslr-seed' property for KASLR,
-> > but I'm not seeing anything like that for the module randomisation and I
-> > also don't see why we need to set these limits so early.
-> 
-> x86 needs execmem initialized before ftrace_init() so I thought it would be
-> best to setup execmem along with most of MM in mm_core_init().
-> 
-> I'll move execmem initialization for !x86 to a later point, say
-> core_initcall.
+From: Shiju Jose <shiju.jose@huawei.com>
 
-Thanks, Mike.
+[ Upstream commit e2abc47a5a1a9f641e7cacdca643fdd40729bf6e ]
 
-Will
+ghes_handle_aer() passes AER data to the PCI core for logging and
+recovery by calling aer_recover_queue() with a pointer to struct
+aer_capability_regs.
+
+The problem was that aer_recover_queue() queues the pointer directly
+without copying the aer_capability_regs data.  The pointer was to
+the ghes->estatus buffer, which could be reused before
+aer_recover_work_func() reads the data.
+
+To avoid this problem, allocate a new aer_capability_regs structure
+from the ghes_estatus_pool, copy the AER data from the ghes->estatus
+buffer into it, pass a pointer to the new struct to
+aer_recover_queue(), and free it after aer_recover_work_func() has
+processed it.
+
+Reported-by: Bjorn Helgaas <helgaas@kernel.org>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+[ rjw: Subject edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/acpi/apei/ghes.c | 23 ++++++++++++++++++++++-
+ drivers/pci/pcie/aer.c   | 10 ++++++++++
+ include/acpi/ghes.h      |  4 ++++
+ 3 files changed, 36 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index ef59d6ea16da0..63ad0541db381 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -209,6 +209,20 @@ int ghes_estatus_pool_init(unsigned int num_ghes)
+ 	return -ENOMEM;
+ }
+ 
++/**
++ * ghes_estatus_pool_region_free - free previously allocated memory
++ *				   from the ghes_estatus_pool.
++ * @addr: address of memory to free.
++ * @size: size of memory to free.
++ *
++ * Returns none.
++ */
++void ghes_estatus_pool_region_free(unsigned long addr, u32 size)
++{
++	gen_pool_free(ghes_estatus_pool, addr, size);
++}
++EXPORT_SYMBOL_GPL(ghes_estatus_pool_region_free);
++
+ static int map_gen_v2(struct ghes *ghes)
+ {
+ 	return apei_map_generic_address(&ghes->generic_v2->read_ack_register);
+@@ -564,6 +578,7 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
+ 	    pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO) {
+ 		unsigned int devfn;
+ 		int aer_severity;
++		u8 *aer_info;
+ 
+ 		devfn = PCI_DEVFN(pcie_err->device_id.device,
+ 				  pcie_err->device_id.function);
+@@ -577,11 +592,17 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
+ 		if (gdata->flags & CPER_SEC_RESET)
+ 			aer_severity = AER_FATAL;
+ 
++		aer_info = (void *)gen_pool_alloc(ghes_estatus_pool,
++						  sizeof(struct aer_capability_regs));
++		if (!aer_info)
++			return;
++		memcpy(aer_info, pcie_err->aer_info, sizeof(struct aer_capability_regs));
++
+ 		aer_recover_queue(pcie_err->device_id.segment,
+ 				  pcie_err->device_id.bus,
+ 				  devfn, aer_severity,
+ 				  (struct aer_capability_regs *)
+-				  pcie_err->aer_info);
++				  aer_info);
+ 	}
+ #endif
+ }
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index 9c8fd69ae5ad8..40d84cb0c601e 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -29,6 +29,7 @@
+ #include <linux/kfifo.h>
+ #include <linux/slab.h>
+ #include <acpi/apei.h>
++#include <acpi/ghes.h>
+ #include <ras/ras_event.h>
+ 
+ #include "../pci.h"
+@@ -997,6 +998,15 @@ static void aer_recover_work_func(struct work_struct *work)
+ 			continue;
+ 		}
+ 		cper_print_aer(pdev, entry.severity, entry.regs);
++		/*
++		 * Memory for aer_capability_regs(entry.regs) is being allocated from the
++		 * ghes_estatus_pool to protect it from overwriting when multiple sections
++		 * are present in the error status. Thus free the same after processing
++		 * the data.
++		 */
++		ghes_estatus_pool_region_free((unsigned long)entry.regs,
++					      sizeof(struct aer_capability_regs));
++
+ 		if (entry.severity == AER_NONFATAL)
+ 			pcie_do_recovery(pdev, pci_channel_io_normal,
+ 					 aer_root_reset);
+diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
+index 3c8bba9f1114a..be1dd4c1a9174 100644
+--- a/include/acpi/ghes.h
++++ b/include/acpi/ghes.h
+@@ -73,8 +73,12 @@ int ghes_register_vendor_record_notifier(struct notifier_block *nb);
+ void ghes_unregister_vendor_record_notifier(struct notifier_block *nb);
+ 
+ struct list_head *ghes_get_devices(void);
++
++void ghes_estatus_pool_region_free(unsigned long addr, u32 size);
+ #else
+ static inline struct list_head *ghes_get_devices(void) { return NULL; }
++
++static inline void ghes_estatus_pool_region_free(unsigned long addr, u32 size) { return; }
+ #endif
+ 
+ int ghes_estatus_pool_init(unsigned int num_ghes);
+-- 
+2.42.0
+
