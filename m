@@ -2,92 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E9F7E36C9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 09:38:00 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=cgxvWzSU;
-	dkim=fail reason="signature verification failed" header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=yQz1d1ZE;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F26A7E37FE
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 10:41:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SPhS65Vxzz3cSJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 19:37:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SPjsg2vplz3ckN
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 20:41:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=cgxvWzSU;
-	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=yQz1d1ZE;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p02-ob.smtp.rzone.de (client-ip=85.215.255.84; helo=mo4-p02-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.84])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=srs0=ghx7=gu=xs4all.nl=hverkuil@kernel.org; receiver=lists.ozlabs.org)
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SPhRC1DWBz2ygx
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Nov 2023 19:37:08 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1699346215; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=eGd6C/hj4YT811t2TQkv3EZ9dMQK1sMajvhgVSs1Jiy+KQXVyrd6jI/sKF9GgcnaY2
-    /pfyF9TPPjEoq/llAJY18XMmrCBColowrMQzkEJr4Tw0v7TtUg2bUpEtPQCAWIX376Z6
-    5dcG7ncFrPIfgfvlkBsjBGF7XAohKiWEwfqIiku1Uom2vOOoJtxvKwByK2p/PNOk1Vkm
-    m0ocE8ArtgzTVHVnMxOFjq/mo87QTpjxsv+t3kzLUyVtdASA60qg2k77r6ZOQr11krR1
-    GroL3455bhJb5AbwxqjBkZMtzlqWVuS0M7J2AzgqGIAGOTYQxZC2EE+E9e9xHO40gcLX
-    MxPA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1699346215;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=/yTWXyUwphUHVWA8POMnJ2lhlu4tJMAoRMEae1MuHgg=;
-    b=ts7rLXfeObIwW1Ts6ODlT/qXFJy1FvTmEiGcoLHOUWx5mE5XUM4eJnrUzt8z4wiNGC
-    vdIUNdSVgig22sECRUfqgby2kkYMo4zLqtTCYaunwa7SbhfHSl56eN2YU/4UcUXAuMX+
-    Od+Kqn5sra34SBx/1jEi8CAFovJq3P73g+HiBXs+Qybn/8mlPCC8uDcPP+TrMZgbpWBf
-    X5OA8oEj4gvFZz3yRxeY649kRxxqXQZvw9B0XX4Yn/qtZ8w5tgi5XIwFUoskPcIDvlxX
-    /IJtVeYQ9Lq3O8qfYLOTm3cpSbpf31eBBpOwqRUzTtt49JQDNi/wLr5NUeFJIX2sXMwq
-    intw==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1699346215;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=/yTWXyUwphUHVWA8POMnJ2lhlu4tJMAoRMEae1MuHgg=;
-    b=cgxvWzSUmopRe20J6qWL9wbOvL5189L2Uh5hdCn4BqNxoi5BPuBmr9TxQ0TmkF7eFl
-    kG3ZIchjkHcYfK+SIJDZL38v5vxNwmMVaqNmaBa4K3aiB1G5tSnR1jjRQhQ2PoarJ8VR
-    DAvSbAKWbeZxrGXCrMNYaK5nCFvu9OfRrSJRMngX4R/5UEYviSKFCIbyUTkO9fxtcts4
-    g+NxEu9n3c8gTfGtmFVTwxg0/EASZfU3NBbPGZDktRna1hM+uOtRIUFzYjqz9HysrAAW
-    dGXLXw7EKCjnpFmZTqplIPKJNYZt0XvqLkvMQAsdTxgpdZvQxy9/5PzFNIrk2ejfUmiY
-    klqQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1699346215;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=/yTWXyUwphUHVWA8POMnJ2lhlu4tJMAoRMEae1MuHgg=;
-    b=yQz1d1ZEYB3ykKjgCFGA53xQoPxQMZkyYSED0fB8r1BU9FX1Q23n4Y41R5PRcB46nk
-    4eahEG0qym5HI8dysJAw==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBfi4XXBswJY1yyhzarNQiH/eoGCtrCBurDxRVOQ=="
-Received: from [IPV6:2a02:8109:8984:5d00:1c81:233f:a78d:3268]
-    by smtp.strato.de (RZmta 49.9.1 AUTH)
-    with ESMTPSA id m61756zA78aty6v
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Tue, 7 Nov 2023 09:36:55 +0100 (CET)
-Message-ID: <0d89bcd0-9b68-4c0a-acd8-2c7532e62f6d@xenosoft.de>
-Date: Tue, 7 Nov 2023 09:36:54 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SPjs717cvz2yQL
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Nov 2023 20:41:15 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by ams.source.kernel.org (Postfix) with ESMTP id D8C3CB811E3;
+	Tue,  7 Nov 2023 09:41:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE9CC433C7;
+	Tue,  7 Nov 2023 09:41:05 +0000 (UTC)
+Message-ID: <0db3d822-9bfa-4efc-bf9d-3ae218b6815d@xs4all.nl>
+Date: Tue, 7 Nov 2023 10:41:04 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Fbdev issue after the drm updates 'drm-next-2023-10-31-1'
-Content-Language: de-DE
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-To: Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
- =?UTF-8?Q?Michel_D=C3=A4nzer?= <michel@daenzer.net>, airlied@gmail.com
-References: <a1d9e09b-f533-5e2c-7a13-af96647e1a71@embeddedor.com>
- <10D1983F-33EF-46C3-976E-463D1CB5A6E9@xenosoft.de>
- <9bb5fcbd-daf5-1669-b3e7-b8624b3c36f9@xenosoft.de>
- <c47fba21-3ae9-4021-9f4a-09c2670ebdbc@xenosoft.de>
-In-Reply-To: <c47fba21-3ae9-4021-9f4a-09c2670ebdbc@xenosoft.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: Re: [RFC PATCH v8 13/13] media: vim2m_audio: add virtual driver for
+ audio memory to memory
+Content-Language: en-US, nl
+From: Hans Verkuil <hverkuil@xs4all.nl>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>, sakari.ailus@iki.fi,
+ tfiga@chromium.org, m.szyprowski@samsung.com, mchehab@kernel.org,
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+ shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com,
+ nicoleotsuka@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
+ perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org,
+ linuxppc-dev@lists.ozlabs.org
+References: <1698402948-10618-1-git-send-email-shengjiu.wang@nxp.com>
+ <1698402948-10618-14-git-send-email-shengjiu.wang@nxp.com>
+ <c7daf33d-9d6d-499e-b477-35176dbaca38@xs4all.nl>
+Autocrypt: addr=hverkuil@xs4all.nl; keydata=
+ xsFNBFQ84W0BEAC7EF1iL4s3tY8cRTVkJT/297h0Hz0ypA+ByVM4CdU9sN6ua/YoFlr9k0K4
+ BFUlg7JzJoUuRbKxkYb8mmqOe722j7N3HO8+ofnio5cAP5W0WwDpM0kM84BeHU0aPSTsWiGR
+ yw55SOK2JBSq7hueotWLfJLobMWhQii0Zd83hGT9SIt9uHaHjgwmtTH7MSTIiaY6N14nw2Ud
+ C6Uykc1va0Wqqc2ov5ihgk/2k2SKa02ookQI3e79laOrbZl5BOXNKR9LguuOZdX4XYR3Zi6/
+ BsJ7pVCK9xkiVf8svlEl94IHb+sa1KrlgGv3fn5xgzDw8Z222TfFceDL/2EzUyTdWc4GaPMC
+ E/c1B4UOle6ZHg02+I8tZicjzj5+yffv1lB5A1btG+AmoZrgf0X2O1B96fqgHx8w9PIpVERN
+ YsmkfxvhfP3MO3oHh8UY1OLKdlKamMneCLk2up1Zlli347KMjHAVjBAiy8qOguKF9k7HOjif
+ JCLYTkggrRiEiE1xg4tblBNj8WGyKH+u/hwwwBqCd/Px2HvhAsJQ7DwuuB3vBAp845BJYUU3
+ 06kRihFqbO0vEt4QmcQDcbWINeZ2zX5TK7QQ91ldHdqJn6MhXulPKcM8tCkdD8YNXXKyKqNl
+ UVqXnarz8m2JCbHgjEkUlAJCNd6m3pfESLZwSWsLYL49R5yxIwARAQABzSFIYW5zIFZlcmt1
+ aWwgPGh2ZXJrdWlsQHhzNGFsbC5ubD7CwZUEEwECACgFAlQ84W0CGwMFCRLMAwAGCwkIBwMC
+ BhUIAgkKCwQWAgMBAh4BAheAACEJEL0tYUhmFDtMFiEEBSzee8IVBTtonxvKvS1hSGYUO0wT
+ 7w//frEmPBAwu3OdvAk9VDkH7X+7RcFpiuUcJxs3Xl6jpaA+SdwtZra6W1uMrs2RW8eXXiq/
+ 80HXJtYnal1Y8MKUBoUVhT/+5+KcMyfVQK3VFRHnNxCmC9HZV+qdyxAGwIscUd4hSlweuU6L
+ 6tI7Dls6NzKRSTFbbGNZCRgl8OrF01TBH+CZrcFIoDgpcJA5Pw84mxo+wd2BZjPA4TNyq1od
+ +slSRbDqFug1EqQaMVtUOdgaUgdlmjV0+GfBHoyCGedDE0knv+tRb8v5gNgv7M3hJO3Nrl+O
+ OJVoiW0G6OWVyq92NNCKJeDy8XCB1yHCKpBd4evO2bkJNV9xcgHtLrVqozqxZAiCRKN1elWF
+ 1fyG8KNquqItYedUr+wZZacqW+uzpVr9pZmUqpVCk9s92fzTzDZcGAxnyqkaO2QTgdhPJT2m
+ wpG2UwIKzzi13tmwakY7OAbXm76bGWVZCO3QTHVnNV8ku9wgeMc/ZGSLUT8hMDZlwEsW7u/D
+ qt+NlTKiOIQsSW7u7h3SFm7sMQo03X/taK9PJhS2BhhgnXg8mOa6U+yNaJy+eU0Lf5hEUiDC
+ vDOI5x++LD3pdrJVr/6ZB0Qg3/YzZ0dk+phQ+KlP6HyeO4LG662toMbFbeLcBjcC/ceEclII
+ 90QNEFSZKM6NVloM+NaZRYVO3ApxWkFu+1mrVTXOwU0EVDzhbQEQANzLiI6gHkIhBQKeQaYs
+ p2SSqF9c++9LOy5x6nbQ4s0X3oTKaMGfBZuiKkkU6NnHCSa0Az5ScRWLaRGu1PzjgcVwzl5O
+ sDawR1BtOG/XoPRNB2351PRp++W8TWo2viYYY0uJHKFHML+ku9q0P+NkdTzFGJLP+hn7x0RT
+ DMbhKTHO3H2xJz5TXNE9zTJuIfGAz3ShDpijvzYieY330BzZYfpgvCllDVM5E4XgfF4F/N90
+ wWKu50fMA01ufwu+99GEwTFVG2az5T9SXd7vfSgRSkzXy7hcnxj4IhOfM6Ts85/BjMeIpeqy
+ TDdsuetBgX9DMMWxMWl7BLeiMzMGrfkJ4tvlof0sVjurXibTibZyfyGR2ricg8iTbHyFaAzX
+ 2uFVoZaPxrp7udDfQ96sfz0hesF9Zi8d7NnNnMYbUmUtaS083L/l2EDKvCIkhSjd48XF+aO8
+ VhrCfbXWpGRaLcY/gxi2TXRYG9xCa7PINgz9SyO34sL6TeFPSZn4bPQV5O1j85Dj4jBecB1k
+ z2arzwlWWKMZUbR04HTeAuuvYvCKEMnfW3ABzdonh70QdqJbpQGfAF2p4/iCETKWuqefiOYn
+ pR8PqoQA1DYv3t7y9DIN5Jw/8Oj5wOeEybw6vTMB0rrnx+JaXvxeHSlFzHiD6il/ChDDkJ9J
+ /ejCHUQIl40wLSDRABEBAAHCwXwEGAECAA8FAlQ84W0CGwwFCRLMAwAAIQkQvS1hSGYUO0wW
+ IQQFLN57whUFO2ifG8q9LWFIZhQ7TA1WD/9yxJvQrpf6LcNrr8uMlQWCg2iz2q1LGt1Itkuu
+ KaavEF9nqHmoqhSfZeAIKAPn6xuYbGxXDrpN7dXCOH92fscLodZqZtK5FtbLvO572EPfxneY
+ UT7JzDc/5LT9cFFugTMOhq1BG62vUm/F6V91+unyp4dRlyryAeqEuISykhvjZCVHk/woaMZv
+ c1Dm4Uvkv0Ilelt3Pb9J7zhcx6sm5T7v16VceF96jG61bnJ2GFS+QZerZp3PY27XgtPxRxYj
+ AmFUeF486PHx/2Yi4u1rQpIpC5inPxIgR1+ZFvQrAV36SvLFfuMhyCAxV6WBlQc85ArOiQZB
+ Wm7L0repwr7zEJFEkdy8C81WRhMdPvHkAIh3RoY1SGcdB7rB3wCzfYkAuCBqaF7Zgfw8xkad
+ KEiQTexRbM1sc/I8ACpla3N26SfQwrfg6V7TIoweP0RwDrcf5PVvwSWsRQp2LxFCkwnCXOra
+ gYmkrmv0duG1FStpY+IIQn1TOkuXrciTVfZY1cZD0aVxwlxXBnUNZZNslldvXFtndxR0SFat
+ sflovhDxKyhFwXOP0Rv8H378/+14TaykknRBIKEc0+lcr+EMOSUR5eg4aURb8Gc3Uc7fgQ6q
+ UssTXzHPyj1hAyDpfu8DzAwlh4kKFTodxSsKAjI45SLjadSc94/5Gy8645Y1KgBzBPTH7Q==
+In-Reply-To: <c7daf33d-9d6d-499e-b477-35176dbaca38@xs4all.nl>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,37 +96,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "R.T.Dickinson" <rtd2@xtra.co.nz>, mad skateman <madskateman@gmail.com>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+On 06/11/2023 14:58, Hans Verkuil wrote:
+> On 27/10/2023 12:35, Shengjiu Wang wrote:
+>> Audio memory to memory virtual driver use video memory to memory
+>> virtual driver vim2m.c as example. The main difference is
+>> device type is VFL_TYPE_AUDIO and device cap type is V4L2_CAP_AUDIO_M2M.
+>>
+>> The device_run function is a dummy function, which is simply
+>> copy the data from input buffer to output buffer.
+> 
+> I started work on the v4l-utils part of this, using this driver.
+> 
+> I noticed that this driver doesn't expose the V4L2_CID_M2M_AUDIO_SOURCE/SINK_RATE
+> controls, and it really should, otherwise it is not representative of this
+> type of device.
+> 
+> It is enough to start with just a single fixed rate listed for each control.
+> 
+> It would be even nicer if you can have two rates such as 24000 and 48000 and
+> do the actual rate conversion, i.e. dropping every other sample or duplicating
+> each sample depending on whether you're halving or doubling the rate. That
+> should be easy to implement, and it makes this driver much more realistic.
 
-I have found out that fbdev no longer works with virtio-gpu-pci and 
-virtio-vga. It is not a problem with the penguin logos.
+Update: I have finished the v4l-utils update (I'll post a patch for that later).
 
-Could you please check fbdev in QEMU virtual machines with 
-virtio-gpu-pci and virtio-vga graphics?
+But while testing I noticed that this driver does not set up the sequence number
+and it doesn't copy the timestamp. So the patch below needs to be applied.
 
-Many thanks in advance,
+Just squash it together with your patch. Note that you need to do the same for
+your alsa driver.
 
-Christian
+Also, please rename the source name from vim2m_audio.c to vim2m-audio.c. That is
+consistent with the naming elsewhere in test-drivers.
 
+I also want to have support for the MEDIA_CONTROLLER here. See vim2m, search for
+CONFIG_MEDIA_CONTROLLER. Both in this test driver and also in your audio driver.
 
-On 02 November 2023 at 03:45 pm, Christian Zigotzky wrote:
-> Hello,
->
-> There is a fbdev issue with the virtio-gpu-pci and virtio-vga. (The 
-> penguins are not displayed at boot time)
->
-> Error message:  [    0.889302] virtio-pci 0000:00:02.0: [drm] *ERROR* 
-> fbdev: Failed to setup generic emulation (ret=-2)
->
-> The kernel 6.6 final doesn't have this issue.
->
-> Please check the fbdev changes in the drm updates 
-> 'drm-next-2023-10-31-1'.
->
-> Thanks,
-> Christian
+This will require adding a new media entity (MEDIA_ENT_F_PROC_AUDIO_RESAMPLER?).
+And you also need to add a new MEDIA_INTF_T_V4L_AUDIO interface type that will be
+used by v4l2_m2m_register_media_controller(). That function can check vdev->vfl_type
+to see if it needs to use MEDIA_INTF_T_V4L_VIDEO or MEDIA_INTF_T_V4L_AUDIO.
+Remember to update the documentation as well!
+
+The reason for using the media controller here is that it turns out to be very useful
+for application to detect what sort of m2m device it is dealing with: it has proven
+it worth for video codecs, and I think it should be standard for new m2m devices, and
+especially for a completely new type of m2m device.
+
+Regards,
+
+	Hans
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+---
+diff --git a/drivers/media/test-drivers/vim2m_audio.c b/drivers/media/test-drivers/vim2m_audio.c
+index 2134e8338417..e8aa2bb0aa77 100644
+--- a/drivers/media/test-drivers/vim2m_audio.c
++++ b/drivers/media/test-drivers/vim2m_audio.c
+@@ -62,6 +62,7 @@ struct audm2m_q_data {
+ 	unsigned int		channels;
+ 	unsigned int		buffersize;
+ 	u32			fourcc;
++	unsigned int		sequence;
+ };
+
+ enum {
+@@ -170,6 +171,9 @@ static void device_run(void *priv)
+
+ 	src_buf = v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
+ 	dst_buf = v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
++	src_buf->sequence = q_data_src->sequence++;
++	dst_buf->sequence = q_data_dst->sequence++;
++	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, false);
+
+ 	v4l2_m2m_buf_done(src_buf, VB2_BUF_STATE_DONE);
+ 	v4l2_m2m_buf_done(dst_buf, VB2_BUF_STATE_DONE);
+@@ -423,6 +427,15 @@ static void audm2m_buf_queue(struct vb2_buffer *vb)
+ 	v4l2_m2m_buf_queue(ctx->fh.m2m_ctx, vbuf);
+ }
+
++static int audm2m_start_streaming(struct vb2_queue *q, unsigned int count)
++{
++	struct audm2m_ctx *ctx = vb2_get_drv_priv(q);
++	struct audm2m_q_data *q_data = get_q_data(ctx, q->type);
++
++	q_data->sequence = 0;
++	return 0;
++}
++
+ static void audm2m_stop_streaming(struct vb2_queue *q)
+ {
+ 	struct audm2m_ctx *ctx = vb2_get_drv_priv(q);
+@@ -442,6 +455,7 @@ static void audm2m_stop_streaming(struct vb2_queue *q)
+ static const struct vb2_ops audm2m_qops = {
+ 	.queue_setup	 = audm2m_queue_setup,
+ 	.buf_queue	 = audm2m_buf_queue,
++	.start_streaming  = audm2m_start_streaming,
+ 	.stop_streaming  = audm2m_stop_streaming,
+ 	.wait_prepare	 = vb2_ops_wait_prepare,
+ 	.wait_finish	 = vb2_ops_wait_finish,
 
