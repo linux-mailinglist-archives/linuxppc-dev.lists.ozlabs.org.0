@@ -1,69 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD2917E3FB1
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 14:08:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91F917E401D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 14:35:30 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=zEk9ZeKc;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ndwJHnCB;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SPpSW4t7Vz3cR4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Nov 2023 00:08:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SPq3N3Hytz3cQH
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Nov 2023 00:35:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=zEk9ZeKc;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ndwJHnCB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::32d; helo=mail-ot1-x32d.google.com; envelope-from=tabba@google.com; receiver=lists.ozlabs.org)
-Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SPpRg5M30z3c1B
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Nov 2023 00:07:58 +1100 (AEDT)
-Received: by mail-ot1-x32d.google.com with SMTP id 46e09a7af769-6ce37d0f1a9so3497963a34.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Nov 2023 05:07:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1699362475; x=1699967275; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7VRoxoxM3bk/ddMYA7RkVxhIt7sN32CxDfhJasXbdTQ=;
-        b=zEk9ZeKcpZIVQPaJQvJLpc1+wBc6v4axUqcMy+BUfzdudTVJJxjUgzFIUPQfUUsxPL
-         HdHqYU7JxAxe6TYeZpyWxAJsHMeImPms1cJ3DXVZf99dFUji+BhNByz9VuNtFcGp6hMB
-         F1E6vsTdZ/clpNs5fu6K3Frv7EdHj71QI6HLYqifCNFzCNnBZhmjsm5nDy9F1HSmJB0a
-         v5qVsuUM85CinmfxsdK/kRbeykHp3eT62lyltoYvHwEmThPwZp58sTcJvS5jAdjQos8i
-         IpCvYJOZzxHUR3TEcQTwAdxB6kNzv1s2RsQ33AKoNZCYGslKYkogQyZd3wZYJ2oPWJ7y
-         SWpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699362475; x=1699967275;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7VRoxoxM3bk/ddMYA7RkVxhIt7sN32CxDfhJasXbdTQ=;
-        b=pdrKLEhSnWDwWvZZJm55QdQScy8ziEd/ru8cSYqXz+jg7TRuzeT4xDZD8MQ25UmR5J
-         3+O0YGI6UVVYqfFO7/UeLevPI6STfnIfYcoHqY6Oo0sC/er5T+MuVN2iu55NrnH3Q+3V
-         t14QvmWuvnyqjTzcBeSHRQWcnllKxaKQYDjUSYdfEGQTCCfPQMnLzh/P7QZYbXDtZR5E
-         b88V6J2Qy0kjTaegml0g3GFK1t8tgvPG6YtVrng3YZI4ls6NLWu1mSUE0GV+tLL00pFa
-         cZDJD2mgtuED+r42zToqu20IPZMwTzfRrymOmIld/RPBOQTSFNy/pfPzFHJoyIATEv6b
-         ktPA==
-X-Gm-Message-State: AOJu0YyBrajelTabVKiisMTyoregtSj5JqMoCQVkW6UIatB21o8w3E/c
-	wGCYQ4/ehbaZ6A38nMN9tmH8bD8LnJdzgvcxmjF1XQ==
-X-Google-Smtp-Source: AGHT+IEc/OoLKiW5UzIza8k0AJcg/cvGrUiQc/SGatsr9amhK5Gck/VoGoIGcZKiRYhIoVxvQmPBVV/w9nNgSokWHaw=
-X-Received: by 2002:a05:6871:3227:b0:1ef:ace4:f360 with SMTP id
- mo39-20020a056871322700b001eface4f360mr2023903oac.17.1699362474620; Tue, 07
- Nov 2023 05:07:54 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SPq2S4h0Yz30fD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Nov 2023 00:34:39 +1100 (AEDT)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3A7DMfdV027040;
+	Tue, 7 Nov 2023 13:34:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=v3QkukCicnhLUxBi0c5Ls5rlqn8O3DTToO3Z55A5kTg=;
+ b=ndwJHnCByIlKDBCsND4tEU4L2U5WwVHFB46dqPkWGs/dZQxf8JE0vJSy+XstM71CbYF7
+ ntaI6QZlrCLJAK31/Bt1WigP6C2yCRm/3UKWsYTd/LZ1SZE8rnQ/mlJjW73FSxzHjNLA
+ c+oYrxpzrcfRGiW4MCMYUgnNOQ27FZH0BNe2aR4CpccN9SxiXiEK0LryeZ4TOhpWk7/r
+ fNF6IucoiJh/MBQhjKYvoqtEqg2lcCILmeeWEH93yacnCbngBoFN1s9BTSLu4mMFHN1S
+ WyTNuUONMoxKTdOjbf5DV7o/WHLrS3P6NWTQ2jfoF3Fp2pBAy4oytcd/ezrAq7cExpMS 4Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u7p2k8aaa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Nov 2023 13:34:29 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3A7DNrkS030005;
+	Tue, 7 Nov 2023 13:34:28 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u7p2k8a9c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Nov 2023 13:34:28 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3A7C1kbU012794;
+	Tue, 7 Nov 2023 13:34:27 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3u609ss3tn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Nov 2023 13:34:27 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3A7DYQpx21562090
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 7 Nov 2023 13:34:27 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A77945805C;
+	Tue,  7 Nov 2023 13:34:26 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6BBCC5805A;
+	Tue,  7 Nov 2023 13:34:24 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.43.45.200])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  7 Nov 2023 13:34:24 +0000 (GMT)
+X-Mailer: emacs 29.1 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 29/37] powerpc/nohash: Replace pte_user() by pte_read()
+In-Reply-To: <02c4b724-f503-31ea-eb77-4b3cd6776fd8@csgroup.eu>
+References: <cover.1695659959.git.christophe.leroy@csgroup.eu>
+ <72cbb5be595e9ef884140def73815ed0b0b37010.1695659959.git.christophe.leroy@csgroup.eu>
+ <877cn39jyp.fsf@linux.ibm.com>
+ <02c4b724-f503-31ea-eb77-4b3cd6776fd8@csgroup.eu>
+Date: Tue, 07 Nov 2023 19:04:22 +0530
+Message-ID: <87zfzpznz5.fsf@linux.ibm.com>
 MIME-Version: 1.0
-References: <20231105163040.14904-1-pbonzini@redhat.com> <20231105163040.14904-33-pbonzini@redhat.com>
-In-Reply-To: <20231105163040.14904-33-pbonzini@redhat.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Tue, 7 Nov 2023 13:07:18 +0000
-Message-ID: <CA+EHjTxMK2G3WSQsjPA5zn94+a91HsoaWXx8tz1TTGuq1tVZ5Q@mail.gmail.com>
-Subject: Re: [PATCH 32/34] KVM: selftests: Add basic selftest for guest_memfd()
-To: Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: _yXYOuy1iDNyTTaHU1L3JHzj4hQSRrwv
+X-Proofpoint-ORIG-GUID: Dw-1ecWryLezBGYYr4IUtTKLD0JgQSOV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-07_04,2023-11-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=526
+ priorityscore=1501 spamscore=0 lowpriorityscore=0 impostorscore=0
+ malwarescore=0 phishscore=0 suspectscore=0 clxscore=1015 mlxscore=0
+ adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310240000 definitions=main-2311070112
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,302 +102,211 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Vlastimil Babka <vbabka@suse.cz>, Yu Zhang <yu.c.zhang@linux.intel.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, Isaku Yamahata <isaku.yamahata@intel.com>, Christian Brauner <brauner@kernel.org>, Quentin Perret <qperret@google.com>, Sean Christopherson <seanjc@goog
- le.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, David Matlack <dmatlack@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Liam Merwick <liam.merwick@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Xu Yilun <yilun.xu@intel.com>, Anish Moorthy <amoorthy@google.com>
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
 
-On Sun, Nov 5, 2023 at 4:35=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com> =
-wrote:
+> Le 31/10/2023 =C3=A0 11:15, Aneesh Kumar K.V a =C3=A9crit=C2=A0:
+>> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>>=20
+>>> pte_user() is now only used in pte_access_permitted() to check
+>>> access on vmas. User flag is cleared to make a page unreadable.
+>>>
+>>> So rename it pte_read() and remove pte_user() which isn't used
+>>> anymore.
+>>>
+>>> For the time being it checks _PAGE_USER but in the near futur
+>>> all plateforms will be converted to _PAGE_READ so lets support
+>>> both for now.
+>>>
+>>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>>> ---
+>>>   arch/powerpc/include/asm/nohash/32/pte-8xx.h |  7 -------
+>>>   arch/powerpc/include/asm/nohash/pgtable.h    | 13 +++++++------
+>>>   arch/powerpc/mm/ioremap.c                    |  4 ----
+>>>   3 files changed, 7 insertions(+), 17 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/include/asm/nohash/32/pte-8xx.h b/arch/powerp=
+c/include/asm/nohash/32/pte-8xx.h
+>>> index 62c965a4511a..1ee38befd29a 100644
+>>> --- a/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+>>> +++ b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+>>> @@ -112,13 +112,6 @@ static inline pte_t pte_mkwrite_novma(pte_t pte)
+>>>=20=20=20
+>>>   #define pte_mkwrite_novma pte_mkwrite_novma
+>>>=20=20=20
+>>> -static inline bool pte_user(pte_t pte)
+>>> -{
+>>> -	return !(pte_val(pte) & _PAGE_SH);
+>>> -}
+>>> -
+>>> -#define pte_user pte_user
+>>> -
+>>>   static inline pte_t pte_mkhuge(pte_t pte)
+>>>   {
+>>>   	return __pte(pte_val(pte) | _PAGE_SPS | _PAGE_HUGE);
+>>> diff --git a/arch/powerpc/include/asm/nohash/pgtable.h b/arch/powerpc/i=
+nclude/asm/nohash/pgtable.h
+>>> index ee677162f9e6..aba56fe3b1c6 100644
+>>> --- a/arch/powerpc/include/asm/nohash/pgtable.h
+>>> +++ b/arch/powerpc/include/asm/nohash/pgtable.h
+>>> @@ -160,9 +160,6 @@ static inline int pte_write(pte_t pte)
+>>>   	return pte_val(pte) & _PAGE_WRITE;
+>>>   }
+>>>   #endif
+>>> -#ifndef pte_read
+>>> -static inline int pte_read(pte_t pte)		{ return 1; }
+>>> -#endif
+>>>   static inline int pte_dirty(pte_t pte)		{ return pte_val(pte) & _PAGE=
+_DIRTY; }
+>>>   static inline int pte_special(pte_t pte)	{ return pte_val(pte) & _PAG=
+E_SPECIAL; }
+>>>   static inline int pte_none(pte_t pte)		{ return (pte_val(pte) & ~_PTE=
+_NONE_MASK) =3D=3D 0; }
+>>> @@ -190,10 +187,14 @@ static inline int pte_young(pte_t pte)
+>>>    * and PTE_64BIT, PAGE_KERNEL_X contains _PAGE_BAP_SR which is also in
+>>>    * _PAGE_USER.  Need to explicitly match _PAGE_BAP_UR bit in that cas=
+e too.
+>>>    */
+>>> -#ifndef pte_user
+>>> -static inline bool pte_user(pte_t pte)
+>>> +#ifndef pte_read
+>>> +static inline bool pte_read(pte_t pte)
+>>>   {
+>>> +#ifdef _PAGE_READ
+>>> +	return (pte_val(pte) & _PAGE_READ) =3D=3D _PAGE_READ;
+>>> +#else
+>>>   	return (pte_val(pte) & _PAGE_USER) =3D=3D _PAGE_USER;
+>>> +#endif
+>>>   }
+>>>   #endif
+>>>=20=20=20
+>>> @@ -208,7 +209,7 @@ static inline bool pte_access_permitted(pte_t pte, =
+bool write)
+>>>   	 * A read-only access is controlled by _PAGE_USER bit.
+>>>   	 * We have _PAGE_READ set for WRITE and EXECUTE
+>>>   	 */
+>>> -	if (!pte_present(pte) || !pte_user(pte) || !pte_read(pte))
+>>> +	if (!pte_present(pte) || !pte_read(pte))
+>>>   		return false;
+>>>=20=20=20
+>>>   	if (write && !pte_write(pte))
+>>> diff --git a/arch/powerpc/mm/ioremap.c b/arch/powerpc/mm/ioremap.c
+>>> index 7823c38f09de..7b0afcabd89f 100644
+>>> --- a/arch/powerpc/mm/ioremap.c
+>>> +++ b/arch/powerpc/mm/ioremap.c
+>>> @@ -50,10 +50,6 @@ void __iomem *ioremap_prot(phys_addr_t addr, size_t =
+size, unsigned long flags)
+>>>   	if (pte_write(pte))
+>>>   		pte =3D pte_mkdirty(pte);
+>>>=20=20=20
+>>> -	/* we don't want to let _PAGE_USER leak out */
+>>> -	if (WARN_ON(pte_user(pte)))
+>>> -		return NULL;
+>>>
+>>=20
+>> This check is still valid right? I understand that we want to remove
+>> _PAGE_USER. But then loosing this check is ok?
 >
-> From: Chao Peng <chao.p.peng@linux.intel.com>
+> Well, we may have to think about it for book3s/64. For all others=20
+> _PAGE_USER is gone and replaced by a check of addresses versus TASK_SIZE.
 >
-> Add a selftest to verify the basic functionality of guest_memfd():
+> As ioremap() will map into vmalloc space that address is necesserally=20
+> correct.
+>=20
 >
-> + file descriptor created with the guest_memfd() ioctl does not allow
->   read/write/mmap operations
-> + file size and block size as returned from fstat are as expected
-> + fallocate on the fd checks that offset/length on
->   fallocate(FALLOC_FL_PUNCH_HOLE) should be page aligned
-> + invalid inputs (misaligned size, invalid flags) are rejected
-> + file size and inode are unique (the innocuous-sounding
->   anon_inode_getfile() backs all files with a single inode...)
->
-> Signed-off-by: Chao Peng <chao.p.peng@linux.intel.com>
-> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> Co-developed-by: Paolo Bonzini <pbonzini@redhat.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> Co-developed-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Message-Id: <20231027182217.3615211-35-seanjc@google.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  tools/testing/selftests/kvm/Makefile          |   1 +
->  .../testing/selftests/kvm/guest_memfd_test.c  | 206 ++++++++++++++++++
->  2 files changed, 207 insertions(+)
->  create mode 100644 tools/testing/selftests/kvm/guest_memfd_test.c
->
-> diff --git a/tools/testing/selftests/kvm/Makefile b/tools/testing/selftes=
-ts/kvm/Makefile
-> index ecdea5e7afa8..fd3b30a4ca7b 100644
-> --- a/tools/testing/selftests/kvm/Makefile
-> +++ b/tools/testing/selftests/kvm/Makefile
-> @@ -134,6 +134,7 @@ TEST_GEN_PROGS_x86_64 +=3D access_tracking_perf_test
->  TEST_GEN_PROGS_x86_64 +=3D demand_paging_test
->  TEST_GEN_PROGS_x86_64 +=3D dirty_log_test
->  TEST_GEN_PROGS_x86_64 +=3D dirty_log_perf_test
-> +TEST_GEN_PROGS_x86_64 +=3D guest_memfd_test
->  TEST_GEN_PROGS_x86_64 +=3D guest_print_test
->  TEST_GEN_PROGS_x86_64 +=3D hardware_disable_test
->  TEST_GEN_PROGS_x86_64 +=3D kvm_create_max_vcpus
-> diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testi=
-ng/selftests/kvm/guest_memfd_test.c
-> new file mode 100644
-> index 000000000000..ea0ae7e25330
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-> @@ -0,0 +1,206 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright Intel Corporation, 2023
-> + *
-> + * Author: Chao Peng <chao.p.peng@linux.intel.com>
-> + */
-> +
-> +#define _GNU_SOURCE
-> +#include "test_util.h"
-> +#include "kvm_util_base.h"
-> +#include <linux/bitmap.h>
-> +#include <linux/falloc.h>
-> +#include <sys/mman.h>
-> +#include <sys/types.h>
-> +#include <sys/stat.h>
-> +
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <unistd.h>
-> +#include <errno.h>
-> +#include <stdio.h>
-> +#include <fcntl.h>
 
-The include ordering should be fixed. Otherwise,
+We are adding the pte flags check not the map addr check there. Something l=
+ike this?
 
-Reviewed-by: Fuad Tabba <tabba@google.com>
-Tested-by: Fuad Tabba <tabba@google.com>
-
-Cheers,
-/fuad
-
-
-> +
-> +static void test_file_read_write(int fd)
-> +{
-> +       char buf[64];
-> +
-> +       TEST_ASSERT(read(fd, buf, sizeof(buf)) < 0,
-> +                   "read on a guest_mem fd should fail");
-> +       TEST_ASSERT(write(fd, buf, sizeof(buf)) < 0,
-> +                   "write on a guest_mem fd should fail");
-> +       TEST_ASSERT(pread(fd, buf, sizeof(buf), 0) < 0,
-> +                   "pread on a guest_mem fd should fail");
-> +       TEST_ASSERT(pwrite(fd, buf, sizeof(buf), 0) < 0,
-> +                   "pwrite on a guest_mem fd should fail");
-> +}
-> +
-> +static void test_mmap(int fd, size_t page_size)
-> +{
-> +       char *mem;
-> +
-> +       mem =3D mmap(NULL, page_size, PROT_READ | PROT_WRITE, MAP_SHARED,=
- fd, 0);
-> +       TEST_ASSERT_EQ(mem, MAP_FAILED);
-> +}
-> +
-> +static void test_file_size(int fd, size_t page_size, size_t total_size)
-> +{
-> +       struct stat sb;
-> +       int ret;
-> +
-> +       ret =3D fstat(fd, &sb);
-> +       TEST_ASSERT(!ret, "fstat should succeed");
-> +       TEST_ASSERT_EQ(sb.st_size, total_size);
-> +       TEST_ASSERT_EQ(sb.st_blksize, page_size);
-> +}
-> +
-> +static void test_fallocate(int fd, size_t page_size, size_t total_size)
-> +{
-> +       int ret;
-> +
-> +       ret =3D fallocate(fd, FALLOC_FL_KEEP_SIZE, 0, total_size);
-> +       TEST_ASSERT(!ret, "fallocate with aligned offset and size should =
-succeed");
-> +
-> +       ret =3D fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE,
-> +                       page_size - 1, page_size);
-> +       TEST_ASSERT(ret, "fallocate with unaligned offset should fail");
-> +
-> +       ret =3D fallocate(fd, FALLOC_FL_KEEP_SIZE, total_size, page_size)=
-;
-> +       TEST_ASSERT(ret, "fallocate beginning at total_size should fail")=
-;
-> +
-> +       ret =3D fallocate(fd, FALLOC_FL_KEEP_SIZE, total_size + page_size=
-, page_size);
-> +       TEST_ASSERT(ret, "fallocate beginning after total_size should fai=
-l");
-> +
-> +       ret =3D fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE,
-> +                       total_size, page_size);
-> +       TEST_ASSERT(!ret, "fallocate(PUNCH_HOLE) at total_size should suc=
-ceed");
-> +
-> +       ret =3D fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE,
-> +                       total_size + page_size, page_size);
-> +       TEST_ASSERT(!ret, "fallocate(PUNCH_HOLE) after total_size should =
-succeed");
-> +
-> +       ret =3D fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE,
-> +                       page_size, page_size - 1);
-> +       TEST_ASSERT(ret, "fallocate with unaligned size should fail");
-> +
-> +       ret =3D fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE,
-> +                       page_size, page_size);
-> +       TEST_ASSERT(!ret, "fallocate(PUNCH_HOLE) with aligned offset and =
-size should succeed");
-> +
-> +       ret =3D fallocate(fd, FALLOC_FL_KEEP_SIZE, page_size, page_size);
-> +       TEST_ASSERT(!ret, "fallocate to restore punched hole should succe=
-ed");
-> +}
-> +
-> +static void test_invalid_punch_hole(int fd, size_t page_size, size_t tot=
-al_size)
-> +{
-> +       struct {
-> +               off_t offset;
-> +               off_t len;
-> +       } testcases[] =3D {
-> +               {0, 1},
-> +               {0, page_size - 1},
-> +               {0, page_size + 1},
-> +
-> +               {1, 1},
-> +               {1, page_size - 1},
-> +               {1, page_size},
-> +               {1, page_size + 1},
-> +
-> +               {page_size, 1},
-> +               {page_size, page_size - 1},
-> +               {page_size, page_size + 1},
-> +       };
-> +       int ret, i;
-> +
-> +       for (i =3D 0; i < ARRAY_SIZE(testcases); i++) {
-> +               ret =3D fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUN=
-CH_HOLE,
-> +                               testcases[i].offset, testcases[i].len);
-> +               TEST_ASSERT(ret =3D=3D -1 && errno =3D=3D EINVAL,
-> +                           "PUNCH_HOLE with !PAGE_SIZE offset (%lx) and/=
-or length (%lx) should fail",
-> +                           testcases[i].offset, testcases[i].len);
-> +       }
-> +}
-> +
-> +static void test_create_guest_memfd_invalid(struct kvm_vm *vm)
-> +{
-> +       size_t page_size =3D getpagesize();
-> +       uint64_t flag;
-> +       size_t size;
-> +       int fd;
-> +
-> +       for (size =3D 1; size < page_size; size++) {
-> +               fd =3D __vm_create_guest_memfd(vm, size, 0);
-> +               TEST_ASSERT(fd =3D=3D -1 && errno =3D=3D EINVAL,
-> +                           "guest_memfd() with non-page-aligned page siz=
-e '0x%lx' should fail with EINVAL",
-> +                           size);
-> +       }
-> +
-> +       for (flag =3D 1; flag; flag <<=3D 1) {
-> +               uint64_t bit;
-> +
-> +               fd =3D __vm_create_guest_memfd(vm, page_size, flag);
-> +               TEST_ASSERT(fd =3D=3D -1 && errno =3D=3D EINVAL,
-> +                           "guest_memfd() with flag '0x%lx' should fail =
-with EINVAL",
-> +                           flag);
-> +
-> +               for_each_set_bit(bit, &valid_flags, 64) {
-> +                       fd =3D __vm_create_guest_memfd(vm, page_size, fla=
-g | BIT_ULL(bit));
-> +                       TEST_ASSERT(fd =3D=3D -1 && errno =3D=3D EINVAL,
-> +                                   "guest_memfd() with flags '0x%llx' sh=
-ould fail with EINVAL",
-> +                                   flag | BIT_ULL(bit));
-> +               }
-> +       }
-> +}
-> +
-> +static void test_create_guest_memfd_multiple(struct kvm_vm *vm)
-> +{
-> +       int fd1, fd2, ret;
-> +       struct stat st1, st2;
-> +
-> +       fd1 =3D __vm_create_guest_memfd(vm, 4096, 0);
-> +       TEST_ASSERT(fd1 !=3D -1, "memfd creation should succeed");
-> +
-> +       ret =3D fstat(fd1, &st1);
-> +       TEST_ASSERT(ret !=3D -1, "memfd fstat should succeed");
-> +       TEST_ASSERT(st1.st_size =3D=3D 4096, "memfd st_size should match =
-requested size");
-> +
-> +       fd2 =3D __vm_create_guest_memfd(vm, 8192, 0);
-> +       TEST_ASSERT(fd2 !=3D -1, "memfd creation should succeed");
-> +
-> +       ret =3D fstat(fd2, &st2);
-> +       TEST_ASSERT(ret !=3D -1, "memfd fstat should succeed");
-> +       TEST_ASSERT(st2.st_size =3D=3D 8192, "second memfd st_size should=
- match requested size");
-> +
-> +       ret =3D fstat(fd1, &st1);
-> +       TEST_ASSERT(ret !=3D -1, "memfd fstat should succeed");
-> +       TEST_ASSERT(st1.st_size =3D=3D 4096, "first memfd st_size should =
-still match requested size");
-> +       TEST_ASSERT(st1.st_ino !=3D st2.st_ino, "different memfd should h=
-ave different inode numbers");
-> +}
-> +
-> +int main(int argc, char *argv[])
-> +{
-> +       size_t page_size;
-> +       size_t total_size;
-> +       int fd;
-> +       struct kvm_vm *vm;
-> +
-> +       TEST_REQUIRE(kvm_has_cap(KVM_CAP_GUEST_MEMFD));
-> +
-> +       page_size =3D getpagesize();
-> +       total_size =3D page_size * 4;
-> +
-> +       vm =3D vm_create_barebones();
-> +
-> +       test_create_guest_memfd_invalid(vm);
-> +       test_create_guest_memfd_multiple(vm);
-> +
-> +       fd =3D vm_create_guest_memfd(vm, total_size, 0);
-> +
-> +       test_file_read_write(fd);
-> +       test_mmap(fd, page_size);
-> +       test_file_size(fd, page_size, total_size);
-> +       test_fallocate(fd, page_size, total_size);
-> +       test_invalid_punch_hole(fd, page_size, total_size);
-> +
-> +       close(fd);
-> +}
-> --
-> 2.39.1
->
->
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/in=
+clude/asm/book3s/64/pgtable.h
+index 7c7de7b56df0..b053b86e0069 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -1462,5 +1462,11 @@ static inline bool pud_is_leaf(pud_t pud)
+ 	return !!(pud_raw(pud) & cpu_to_be64(_PAGE_PTE));
+ }
+=20
++#define arch_ioremap_valid_pte arch_ioremap_valid_pte
++static inline bool arch_ioremap_valid_pte(pte_t pte)
++{
++	return !!(pte_raw(pte) & cpu_to_be64(_PAGE_PRIVILEGED));
++}
++
+ #endif /* __ASSEMBLY__ */
+ #endif /* _ASM_POWERPC_BOOK3S_64_PGTABLE_H_ */
+diff --git a/arch/powerpc/include/asm/nohash/32/pte-8xx.h b/arch/powerpc/in=
+clude/asm/nohash/32/pte-8xx.h
+index 137dc3c84e45..7b23d2543528 100644
+--- a/arch/powerpc/include/asm/nohash/32/pte-8xx.h
++++ b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+@@ -223,5 +223,11 @@ static inline pte_t ptep_get(pte_t *ptep)
+=20
+ #endif
+=20
++#define arch_ioremap_valid_pte arch_ioremap_valid_pte
++static inline bool arch_ioremap_valid_pte(pte_t pte)
++{
++	return !!(pte_val(pte) & (_PAGE_SH))
++}
++
+ #endif /* __KERNEL__ */
+ #endif /*  _ASM_POWERPC_NOHASH_32_PTE_8xx_H */
+diff --git a/arch/powerpc/include/asm/nohash/pte-e500.h b/arch/powerpc/incl=
+ude/asm/nohash/pte-e500.h
+index f516f0b5b7a8..d31274178aa6 100644
+--- a/arch/powerpc/include/asm/nohash/pte-e500.h
++++ b/arch/powerpc/include/asm/nohash/pte-e500.h
+@@ -105,6 +105,13 @@ static inline pte_t pte_mkexec(pte_t pte)
+ }
+ #define pte_mkexec pte_mkexec
+=20
++#define arch_ioremap_valid_pte arch_ioremap_valid_pte
++static inline bool arch_ioremap_valid_pte(pte_t pte)
++{
++	return !(pte_val(pte) & (_PAGE_BAP_UR | _PAGE_BAP_UW | _PAGE_BAP_UX))
++}
++
++
+ #endif /* __ASSEMBLY__ */
+=20
+ #endif /* __KERNEL__ */
+diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/=
+pgtable.h
+index 2bfb7dd3b49e..417abe5dcbd8 100644
+--- a/arch/powerpc/include/asm/pgtable.h
++++ b/arch/powerpc/include/asm/pgtable.h
+@@ -231,6 +231,13 @@ static inline bool arch_supports_memmap_on_memory(unsi=
+gned long vmemmap_size)
+=20
+ #endif /* CONFIG_PPC64 */
+=20
++#ifndef arch_ioremap_valid_pte
++static inline book arch_ioremap_valid_pte(pte_t pte)
++{
++	return true;
++}
++#endif
++
+ #endif /* __ASSEMBLY__ */
+=20
+ #endif /* _ASM_POWERPC_PGTABLE_H */
+diff --git a/arch/powerpc/mm/ioremap.c b/arch/powerpc/mm/ioremap.c
+index 7b0afcabd89f..1a39e698c3d4 100644
+--- a/arch/powerpc/mm/ioremap.c
++++ b/arch/powerpc/mm/ioremap.c
+@@ -50,6 +50,9 @@ void __iomem *ioremap_prot(phys_addr_t addr, size_t size,=
+ unsigned long flags)
+ 	if (pte_write(pte))
+ 		pte =3D pte_mkdirty(pte);
+=20
++	if (WARN_ON(!arch_ioremap_valid_pte(pte)))
++		return NULL;
++
+ 	if (iowa_is_active())
+ 		return iowa_ioremap(addr, size, pte_pgprot(pte), caller);
+ 	return __ioremap_caller(addr, size, pte_pgprot(pte), caller);
+=20
