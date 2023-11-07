@@ -2,55 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD2B87E3BE0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 13:10:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 799387E3F50
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 13:55:38 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fyUucl5G;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=1jUCN1tq;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SPn9R4hCKz3cZ9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 23:10:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SPp9N2n7Mz3cNQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 23:55:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fyUucl5G;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=1jUCN1tq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::f2e; helo=mail-qv1-xf2e.google.com; envelope-from=tabba@google.com; receiver=lists.ozlabs.org)
+Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com [IPv6:2607:f8b0:4864:20::f2e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SPn8b5kj1z2yGF
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Nov 2023 23:09:51 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id 3B9A6B8167C;
-	Tue,  7 Nov 2023 12:09:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D43C433C9;
-	Tue,  7 Nov 2023 12:09:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1699358988;
-	bh=oxL5q+LXqa/6GFIBeO17c/ibc8JlajUX3kY8hpeFTeY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fyUucl5GudI/RK99/s4VSeHFGoNQPD744fDd8rJFScAVW/8YtKU9LoZ5SWtXLP6zd
-	 A/d4DaN65wJilgzw4JTcYGooQ/X6kj+chN3GuEfK3WiozO7ZMzPQN4nIowefRQPPTg
-	 hoEWzDCF9fHh5mMbtYmN6OsEx8s8OrsjcqaNzSdOyAojqGmHQC4YUJwllzl9WwfqqO
-	 DTgojUQGc++qcaXXygseUo9qcq0SuEXaWQLG5/TyobWExir/+vdp0MPDeMlHD6C+KY
-	 PIOy7x6tavB5phbboaxznU1OnDxXlcrE0Y9S5naPEz7rKsMPcNSf29Q7Y4077JMXmq
-	 grnOLQFaVV87g==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.5 11/30] ACPI: APEI: Fix AER info corruption when error status data has multiple sections
-Date: Tue,  7 Nov 2023 07:08:26 -0500
-Message-ID: <20231107120922.3757126-11-sashal@kernel.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231107120922.3757126-1-sashal@kernel.org>
-References: <20231107120922.3757126-1-sashal@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SPp8X3XvNz3bxZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Nov 2023 23:54:51 +1100 (AEDT)
+Received: by mail-qv1-xf2e.google.com with SMTP id 6a1803df08f44-67131800219so38590416d6.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Nov 2023 04:54:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1699361687; x=1699966487; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FuFbqjfsVCp34XchBGKV0CWjcihho4T2q4FA5kjS7eU=;
+        b=1jUCN1tqmLwlkXM0IeWT0amOyDit022icDotDLW7cW1sJNnSGbawweYUGOeMgjNp02
+         BiHnMjn7dAhN2qocKEKL8rFt7bMsQJ+CJxO7VMKJ8LopASlDLAHasIqdsfNaeaCT4uJ1
+         ZMc/WPjQjLr9OGcj7IEjGZq4U83gREHenOluXvKp41hksEbeXDAKGMZJv6pmP87uLYkr
+         ZVMjK4WfhALNcN9cEvV8l+pcrD4RJm0dv6QZcrnRk/NNHUwKcdRzvnBpkb9IcEvTcDsN
+         JX0m9cN/ztIl/Acbs18CtM9CqRb6yYok3H+4wEN//0va58J3PXAs1HBkdWhbgrRTJG6u
+         ke9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699361687; x=1699966487;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FuFbqjfsVCp34XchBGKV0CWjcihho4T2q4FA5kjS7eU=;
+        b=Vh7i8KoYcUesajawOEVGEak25TqU//LrHI5bHN+pdIkQiY7HkGK51oE68ozyAqGczZ
+         vZwo3Fz18G90XO4IllGO11Ztz6qPqexc0gq0RJ6J83tW9Lazcyz3eTL4DHoBhnP6TWIS
+         EO2E/jDNyutFSBxwuIbitAs20ZPp87Jp9Dxt41FR5MjVdPjeXDnHDOtK3Z1obi5ScG3n
+         y3aNlZHL4CDYiPWdXkWGILGKi669IGPeHpIrbAYKxBQTUoettmDdNEOzGgftckbzeMZl
+         eInwioUXAADCBrPrMmhmyeuE7xufrjabNdFBsa28UskU/fyQJvSNXXlZ1g+Qo9Qy8GnM
+         4Juw==
+X-Gm-Message-State: AOJu0Yziswe7ZhGml/+z896L3WJtGgTKOhUn3/zSyubWzzi7aalcJt3A
+	dLoa1gJ6lJVdvNS9mS5BV/YYg0adzUyLiwrjvuNjmg==
+X-Google-Smtp-Source: AGHT+IHS9JUkEkC/BybEMf4UmdGXo/DmXLNK4bOT/jrKIAqRMkLyM4gXD6uMK1OzLS09666PL8dXekXtndn5vIwFZqQ=
+X-Received: by 2002:a05:6214:260c:b0:66f:bb36:9a51 with SMTP id
+ gu12-20020a056214260c00b0066fbb369a51mr33614248qvb.36.1699361687221; Tue, 07
+ Nov 2023 04:54:47 -0800 (PST)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.5.10
-Content-Transfer-Encoding: 8bit
+References: <20231105163040.14904-1-pbonzini@redhat.com> <20231105163040.14904-31-pbonzini@redhat.com>
+In-Reply-To: <20231105163040.14904-31-pbonzini@redhat.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Tue, 7 Nov 2023 12:54:10 +0000
+Message-ID: <CA+EHjTyZoLLv1nRfCEY4nHrbHadphn37jw3OPS17x1dAm_YUxA@mail.gmail.com>
+Subject: Re: [PATCH 30/34] KVM: selftests: Add KVM_SET_USER_MEMORY_REGION2 helper
+To: Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,138 +75,116 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linmiaohe@huawei.com, tony.luck@intel.com, rafael@kernel.org, linux-pci@vger.kernel.org, leoyang.li@nxp.com, "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, mahesh@linux.ibm.com, rostedt@goodmis.org, robert.moore@intel.com, linux-acpi@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, acpica-devel@lists.linuxfoundation.org, pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org, Shiju Jose <shiju.jose@huawei.com>
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Vlastimil Babka <vbabka@suse.cz>, Yu Zhang <yu.c.zhang@linux.intel.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, Isaku Yamahata <isaku.yamahata@intel.com>, Christian Brauner <brauner@kernel.org>, Quentin Perret <qperret@google.com>, Sean Christopherson <seanjc@goog
+ le.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, David Matlack <dmatlack@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Liam Merwick <liam.merwick@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Xu Yilun <yilun.xu@intel.com>, Anish Moorthy <amoorthy@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Shiju Jose <shiju.jose@huawei.com>
+On Sun, Nov 5, 2023 at 4:34=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com> =
+wrote:
+>
+> From: Chao Peng <chao.p.peng@linux.intel.com>
+>
+> Add helpers to invoke KVM_SET_USER_MEMORY_REGION2 directly so that tests
+> can validate of features that are unique to "version 2" of "set user
+> memory region", e.g. do negative testing on gmem_fd and gmem_offset.
+>
+> Provide a raw version as well as an assert-success version to reduce
+> the amount of boilerplate code need for basic usage.
+>
+> Signed-off-by: Chao Peng <chao.p.peng@linux.intel.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Message-Id: <20231027182217.3615211-33-seanjc@google.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
 
-[ Upstream commit e2abc47a5a1a9f641e7cacdca643fdd40729bf6e ]
+Reviewed-by: Fuad Tabba <tabba@google.com>
+Tested-by: Fuad Tabba <tabba@google.com>
 
-ghes_handle_aer() passes AER data to the PCI core for logging and
-recovery by calling aer_recover_queue() with a pointer to struct
-aer_capability_regs.
+Cheers,
+/fuad
 
-The problem was that aer_recover_queue() queues the pointer directly
-without copying the aer_capability_regs data.  The pointer was to
-the ghes->estatus buffer, which could be reused before
-aer_recover_work_func() reads the data.
-
-To avoid this problem, allocate a new aer_capability_regs structure
-from the ghes_estatus_pool, copy the AER data from the ghes->estatus
-buffer into it, pass a pointer to the new struct to
-aer_recover_queue(), and free it after aer_recover_work_func() has
-processed it.
-
-Reported-by: Bjorn Helgaas <helgaas@kernel.org>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
-[ rjw: Subject edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/acpi/apei/ghes.c | 23 ++++++++++++++++++++++-
- drivers/pci/pcie/aer.c   | 10 ++++++++++
- include/acpi/ghes.h      |  4 ++++
- 3 files changed, 36 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index ef59d6ea16da0..63ad0541db381 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -209,6 +209,20 @@ int ghes_estatus_pool_init(unsigned int num_ghes)
- 	return -ENOMEM;
- }
- 
-+/**
-+ * ghes_estatus_pool_region_free - free previously allocated memory
-+ *				   from the ghes_estatus_pool.
-+ * @addr: address of memory to free.
-+ * @size: size of memory to free.
-+ *
-+ * Returns none.
-+ */
-+void ghes_estatus_pool_region_free(unsigned long addr, u32 size)
-+{
-+	gen_pool_free(ghes_estatus_pool, addr, size);
-+}
-+EXPORT_SYMBOL_GPL(ghes_estatus_pool_region_free);
-+
- static int map_gen_v2(struct ghes *ghes)
- {
- 	return apei_map_generic_address(&ghes->generic_v2->read_ack_register);
-@@ -564,6 +578,7 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
- 	    pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO) {
- 		unsigned int devfn;
- 		int aer_severity;
-+		u8 *aer_info;
- 
- 		devfn = PCI_DEVFN(pcie_err->device_id.device,
- 				  pcie_err->device_id.function);
-@@ -577,11 +592,17 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
- 		if (gdata->flags & CPER_SEC_RESET)
- 			aer_severity = AER_FATAL;
- 
-+		aer_info = (void *)gen_pool_alloc(ghes_estatus_pool,
-+						  sizeof(struct aer_capability_regs));
-+		if (!aer_info)
-+			return;
-+		memcpy(aer_info, pcie_err->aer_info, sizeof(struct aer_capability_regs));
-+
- 		aer_recover_queue(pcie_err->device_id.segment,
- 				  pcie_err->device_id.bus,
- 				  devfn, aer_severity,
- 				  (struct aer_capability_regs *)
--				  pcie_err->aer_info);
-+				  aer_info);
- 	}
- #endif
- }
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index f6c24ded134cd..67025ee2b7454 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -29,6 +29,7 @@
- #include <linux/kfifo.h>
- #include <linux/slab.h>
- #include <acpi/apei.h>
-+#include <acpi/ghes.h>
- #include <ras/ras_event.h>
- 
- #include "../pci.h"
-@@ -1010,6 +1011,15 @@ static void aer_recover_work_func(struct work_struct *work)
- 			continue;
- 		}
- 		cper_print_aer(pdev, entry.severity, entry.regs);
-+		/*
-+		 * Memory for aer_capability_regs(entry.regs) is being allocated from the
-+		 * ghes_estatus_pool to protect it from overwriting when multiple sections
-+		 * are present in the error status. Thus free the same after processing
-+		 * the data.
-+		 */
-+		ghes_estatus_pool_region_free((unsigned long)entry.regs,
-+					      sizeof(struct aer_capability_regs));
-+
- 		if (entry.severity == AER_NONFATAL)
- 			pcie_do_recovery(pdev, pci_channel_io_normal,
- 					 aer_root_reset);
-diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
-index 3c8bba9f1114a..be1dd4c1a9174 100644
---- a/include/acpi/ghes.h
-+++ b/include/acpi/ghes.h
-@@ -73,8 +73,12 @@ int ghes_register_vendor_record_notifier(struct notifier_block *nb);
- void ghes_unregister_vendor_record_notifier(struct notifier_block *nb);
- 
- struct list_head *ghes_get_devices(void);
-+
-+void ghes_estatus_pool_region_free(unsigned long addr, u32 size);
- #else
- static inline struct list_head *ghes_get_devices(void) { return NULL; }
-+
-+static inline void ghes_estatus_pool_region_free(unsigned long addr, u32 size) { return; }
- #endif
- 
- int ghes_estatus_pool_init(unsigned int num_ghes);
--- 
-2.42.0
-
+>  .../selftests/kvm/include/kvm_util_base.h     |  7 +++++
+>  tools/testing/selftests/kvm/lib/kvm_util.c    | 29 +++++++++++++++++++
+>  2 files changed, 36 insertions(+)
+>
+> diff --git a/tools/testing/selftests/kvm/include/kvm_util_base.h b/tools/=
+testing/selftests/kvm/include/kvm_util_base.h
+> index 157508c071f3..8ec122f5fcc8 100644
+> --- a/tools/testing/selftests/kvm/include/kvm_util_base.h
+> +++ b/tools/testing/selftests/kvm/include/kvm_util_base.h
+> @@ -522,6 +522,13 @@ void vm_set_user_memory_region(struct kvm_vm *vm, ui=
+nt32_t slot, uint32_t flags,
+>                                uint64_t gpa, uint64_t size, void *hva);
+>  int __vm_set_user_memory_region(struct kvm_vm *vm, uint32_t slot, uint32=
+_t flags,
+>                                 uint64_t gpa, uint64_t size, void *hva);
+> +void vm_set_user_memory_region2(struct kvm_vm *vm, uint32_t slot, uint32=
+_t flags,
+> +                               uint64_t gpa, uint64_t size, void *hva,
+> +                               uint32_t guest_memfd, uint64_t guest_memf=
+d_offset);
+> +int __vm_set_user_memory_region2(struct kvm_vm *vm, uint32_t slot, uint3=
+2_t flags,
+> +                                uint64_t gpa, uint64_t size, void *hva,
+> +                                uint32_t guest_memfd, uint64_t guest_mem=
+fd_offset);
+> +
+>  void vm_userspace_mem_region_add(struct kvm_vm *vm,
+>         enum vm_mem_backing_src_type src_type,
+>         uint64_t guest_paddr, uint32_t slot, uint64_t npages,
+> diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/s=
+elftests/kvm/lib/kvm_util.c
+> index 1c74310f1d44..d05d95cc3693 100644
+> --- a/tools/testing/selftests/kvm/lib/kvm_util.c
+> +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+> @@ -873,6 +873,35 @@ void vm_set_user_memory_region(struct kvm_vm *vm, ui=
+nt32_t slot, uint32_t flags,
+>                     errno, strerror(errno));
+>  }
+>
+> +int __vm_set_user_memory_region2(struct kvm_vm *vm, uint32_t slot, uint3=
+2_t flags,
+> +                                uint64_t gpa, uint64_t size, void *hva,
+> +                                uint32_t guest_memfd, uint64_t guest_mem=
+fd_offset)
+> +{
+> +       struct kvm_userspace_memory_region2 region =3D {
+> +               .slot =3D slot,
+> +               .flags =3D flags,
+> +               .guest_phys_addr =3D gpa,
+> +               .memory_size =3D size,
+> +               .userspace_addr =3D (uintptr_t)hva,
+> +               .guest_memfd =3D guest_memfd,
+> +               .guest_memfd_offset =3D guest_memfd_offset,
+> +       };
+> +
+> +       return ioctl(vm->fd, KVM_SET_USER_MEMORY_REGION2, &region);
+> +}
+> +
+> +void vm_set_user_memory_region2(struct kvm_vm *vm, uint32_t slot, uint32=
+_t flags,
+> +                               uint64_t gpa, uint64_t size, void *hva,
+> +                               uint32_t guest_memfd, uint64_t guest_memf=
+d_offset)
+> +{
+> +       int ret =3D __vm_set_user_memory_region2(vm, slot, flags, gpa, si=
+ze, hva,
+> +                                              guest_memfd, guest_memfd_o=
+ffset);
+> +
+> +       TEST_ASSERT(!ret, "KVM_SET_USER_MEMORY_REGION2 failed, errno =3D =
+%d (%s)",
+> +                   errno, strerror(errno));
+> +}
+> +
+> +
+>  /* FIXME: This thing needs to be ripped apart and rewritten. */
+>  void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type=
+,
+>                 uint64_t guest_paddr, uint32_t slot, uint64_t npages,
+> --
+> 2.39.1
+>
+>
