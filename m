@@ -1,55 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76F5C7E43CE
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 16:48:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FDBD7E4421
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 16:49:56 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tUpjoh2K;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bYUYDU5O;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SPt0W2xRWz3cT3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Nov 2023 02:48:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SPt2V3Wnrz3cBV
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Nov 2023 02:49:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tUpjoh2K;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bYUYDU5O;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SPszc4QGTz2yGW
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Nov 2023 02:47:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SPt1f39n4z2ym1
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Nov 2023 02:49:10 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 5D2AACE0EB5;
-	Tue,  7 Nov 2023 15:47:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DC1C433C9;
-	Tue,  7 Nov 2023 15:47:18 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id D0B1361262;
+	Tue,  7 Nov 2023 15:49:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A15CC433CD;
+	Tue,  7 Nov 2023 15:49:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1699372039;
+	s=k20201202; t=1699372146;
 	bh=2eJWaj7sdAhujQRhioQWuiiySmkvxaVJpU1wNr6VJeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tUpjoh2KipFCc6FSZ+kpCl0SphWgmii0tQYDAR1QFXnfXjt8c3uNvWmlFyJQNDG/f
-	 dmr4ExZbJfhzOnHCUMqn5WNJ5F3rSj5mYM5BpX4/76zdfv5kmNa+rdSUQC40xhF70G
-	 XrYefuxiexoKRfhcjugLoMdAB1C2ZUQ2Dhm3++91Jz5q1DpSf1ej1XPvXoskQMA6Oi
-	 4hif1LqGPU/25JbIeiOJJOYmHehugHeGi1txtkpmLdcl+4n+GPnpnrBKX4Ub6bRqwQ
-	 z51DPSkLMHxkKl+3zkB3hyvbESX9d1OHRrRc963HQ1oeaRzkBxOtvGWtWXtqnSqZX3
-	 JjqCpAFQet4UA==
+	b=bYUYDU5OmFHM9b+nagSZJbO/4kIVs7QRi1I5I7qGNES9qQD88CBBXY7ZBblogI2tq
+	 iSC+IVjHUMN+kn+wfylUwpWXC6kcpIfM/Hvx7o9RsIt3dDC6PPSqWhlzR65VEiR1Da
+	 z8g0M+/KZxji1NDDUsLDVjUXpf6u5rvEsnqtGp8P+MjqvfpljsXL+95ykJosJAQ2bt
+	 kLi25deMsPfPafBzoxLPD1zQ80YBgeQOxhqlzT5P/EqqEyWjf+UZN/SoHisM1VyCux
+	 4f0aa/8vqi2BmuF7MGh/ViQ13xL9yaALi3aYQShFpSFrWFvFA9bClrXUVamtTjPsuS
+	 NWyOH2tBdm4mQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 11/36] scsi: ibmvfc: Remove BUG_ON in the case of an empty event pool
-Date: Tue,  7 Nov 2023 10:45:53 -0500
-Message-ID: <20231107154654.3765336-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.5 09/34] scsi: ibmvfc: Remove BUG_ON in the case of an empty event pool
+Date: Tue,  7 Nov 2023 10:47:49 -0500
+Message-ID: <20231107154846.3766119-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231107154654.3765336-1-sashal@kernel.org>
-References: <20231107154654.3765336-1-sashal@kernel.org>
+In-Reply-To: <20231107154846.3766119-1-sashal@kernel.org>
+References: <20231107154846.3766119-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6
+X-stable-base: Linux 6.5.10
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
