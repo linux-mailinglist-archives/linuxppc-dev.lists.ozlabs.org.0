@@ -2,95 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C44D7E354F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 07:39:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1207F7E3552
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 07:41:38 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=feZuL1Jv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hVwyoP4W;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SPdqg3rC8z3cVb
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 17:39:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SPdsq6rRrz3clf
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Nov 2023 17:41:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=feZuL1Jv;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hVwyoP4W;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SPdpm4qSWz2yVR
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Nov 2023 17:38:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SPds03ccMz2yGF
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Nov 2023 17:40:52 +1100 (AEDT)
 Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3A75mMDv015538;
-	Tue, 7 Nov 2023 06:38:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type : subject :
- from : in-reply-to : date : cc : message-id : references : to :
- content-transfer-encoding : mime-version; s=pp1;
- bh=iGmgARu5sd64vt4eF+2Hdgiq5iln0SDA8QR5/xWExTA=;
- b=feZuL1JvQrHMVxrkeet3HL1fQ9mIMGxx02w9vx9eHO2dRC4qtf+n+nBINwevI+qTZCRp
- MWSggvdyKZ0GT4zGnGsrSZG1JNAj7V3CrZLLrvJKrrIGwHE94BVG64GgH/L/UDRnQRuA
- 1FzPI4eldbbL0zva6euj6rykjagEYa7+26zdIJfzdu9mRF7IUDEO/ex4UUdJ43RPSrhT
- s95iXh33XGgxygn2tCBNjVzlHhl8480fnWCZytyrm9P6pvuk0j37kV3gTzCCXMhIgs7V
- xTOhKoKm2qcZpraL8o/cWf7jBW9nHDJ2L7cmv+tNdNwAXR70iNgO65Qqm4SJYq7L2qAf mQ== 
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3A75k52I013027;
+	Tue, 7 Nov 2023 06:40:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=6C/v6rQHg/9I4yaRM1JmVftWkqQhX4jlMllgyR5Cznk=;
+ b=hVwyoP4WWE4crJAUpdwpVH8nc5PVi39b7z8Uj3t3rruMXtCWEeXdddHLU2wTRsQjg7kV
+ SHOTF08Un0QE8zhyUFYjHVUNVbiDhqgVTu/BHZf6pRzA8cERvX4kGgmwr0gbiPZqn1s+
+ NxP10qYpP0Zh8HslmwXt99QL69MUoijtOrCP+GCVtHl0pMU/sHACoUwa2BkWtNytoHss
+ fdPhQPKWUQx/uNKfmrAS4E/VgN2TL4oJqrBHI9tnIdYgoIXdY7IsUdZl17Xmouy5g4k7
+ HuM20J68K8oNp2UWCOCjz1/NRpaeK3dHH4SeWHX+E8fs7vgFL2rRm/+bJKYn1mIHGbdO ug== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u7eh4kfh2-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u7eh4kkc9-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Nov 2023 06:38:45 +0000
+	Tue, 07 Nov 2023 06:40:44 +0000
 Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3A75nkVB023560;
-	Tue, 7 Nov 2023 06:38:44 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u7eh4kfam-1
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3A75rKUT003941;
+	Tue, 7 Nov 2023 06:40:44 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u7eh4kkbe-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Nov 2023 06:38:44 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3A75QiLR028237;
-	Tue, 7 Nov 2023 06:38:42 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3u62gjxed6-1
+	Tue, 07 Nov 2023 06:40:44 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3A75uaxa017004;
+	Tue, 7 Nov 2023 06:40:43 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3u6301p8n0-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Nov 2023 06:38:42 +0000
+	Tue, 07 Nov 2023 06:40:43 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3A76cdJJ7537256
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3A76eeus14353040
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 7 Nov 2023 06:38:39 GMT
+	Tue, 7 Nov 2023 06:40:40 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4ECFB2004B;
-	Tue,  7 Nov 2023 06:38:39 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 58D252004B;
+	Tue,  7 Nov 2023 06:40:40 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4AB8020040;
-	Tue,  7 Nov 2023 06:38:37 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 90D0520063;
+	Tue,  7 Nov 2023 06:40:38 +0000 (GMT)
 Received: from smtpclient.apple (unknown [9.43.91.239])
 	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue,  7 Nov 2023 06:38:37 +0000 (GMT)
+	Tue,  7 Nov 2023 06:40:38 +0000 (GMT)
 Content-Type: text/plain;
-	charset=utf-8
-Subject: Re: [PATCH 1/3] perf tests test_arm_coresight: Fix the shellcheck
- warning in latest test_arm_coresight.sh
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.700.6\))
+Subject: Re: [PATCH V3] tools/perf: Add perf binary dependent rule for
+ shellcheck log in Makefile.perf
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <ZUleKdUrbR9oFVW4@kernel.org>
-Date: Tue, 7 Nov 2023 12:08:25 +0530
-Message-Id: <8DEA17FB-DC0B-41F9-800D-4B74371F4849@linux.vnet.ibm.com>
-References: <20230929041133.95355-1-atrajeev@linux.vnet.ibm.com>
- <20230929041133.95355-2-atrajeev@linux.vnet.ibm.com>
- <552cbde4-6077-d5a4-251e-6c77786e1b31@arm.com>
- <3AFF6660-5A0E-4028-BA5A-D18CBAC8E1A4@linux.vnet.ibm.com>
- <ZUleKdUrbR9oFVW4@kernel.org>
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
+In-Reply-To: <3a9164b4-9ff2-82a1-6339-3a1fdd91dc47@arm.com>
+Date: Tue, 7 Nov 2023 12:10:26 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <7DDE9ADD-D022-4818-82AE-1F724054ADE6@linux.vnet.ibm.com>
+References: <20231013073641.99934-1-atrajeev@linux.vnet.ibm.com>
+ <3a9164b4-9ff2-82a1-6339-3a1fdd91dc47@arm.com>
+To: James Clark <james.clark@arm.com>
 X-Mailer: Apple Mail (2.3731.700.6)
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: b47DWhhZN7FaRQ3k4UTneSd_AShfyHS5
-X-Proofpoint-ORIG-GUID: nW7HYgKPOKHzDFDhGWjvtP7jmwlegyfd
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
-MIME-Version: 1.0
+X-Proofpoint-GUID: yCT7XSGLWJMe2ZOxOvVyFOWWxC84Phd-
+X-Proofpoint-ORIG-GUID: R30587Y_5AqsufGEZx7m-bqcpMhBNG6f
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-11-06_15,2023-11-02_03,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
  malwarescore=0 bulkscore=0 priorityscore=1501 phishscore=0 adultscore=0
- suspectscore=0 impostorscore=0 clxscore=1011 spamscore=0 mlxlogscore=999
+ suspectscore=0 impostorscore=0 clxscore=1015 spamscore=0 mlxlogscore=999
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310240000
  definitions=main-2311070053
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -104,105 +100,149 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, "coresight@lists.linaro.org" <coresight@lists.linaro.org>, Adrian Hunter <adrian.hunter@intel.com>, linux-perf-users <linux-perf-users@vger.kernel.org>, James Clark <james.clark@arm.com>, Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: irogers@google.com, Madhavan Srinivasan <maddy@linux.ibm.com>, kjain@linux.ibm.com, adrian.hunter@intel.com, acme@kernel.org, linux-perf-users <linux-perf-users@vger.kernel.org>, jolsa@kernel.org, namhyung@kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-> On 07-Nov-2023, at 3:14 AM, Arnaldo Carvalho de Melo <acme@kernel.org> wr=
-ote:
+> On 23-Oct-2023, at 4:14 PM, James Clark <james.clark@arm.com> wrote:
 >=20
-> Em Thu, Oct 05, 2023 at 02:24:15PM +0530, Athira Rajeev escreveu:
->>> On 05-Oct-2023, at 1:50 PM, James Clark <james.clark@arm.com> wrote:
->>> On 29/09/2023 05:11, Athira Rajeev wrote:
->>>> Running shellcheck on tests/shell/test_arm_coresight.sh
->>>> throws below warnings:
->>>>=20
->>>> In tests/shell/test_arm_coresight.sh line 15:
->>>> cs_etm_path=3D$(find  /sys/bus/event_source/devices/cs_etm/ -name cpu*=
- -print -quit)
->>>>                 ^--^ SC2061: Quote the parameter to -name so the shell=
- won't interpret it.
->>>>=20
->>>> In tests/shell/test_arm_coresight.sh line 20:
->>>> if [ $archhver -eq 5 -a "$(printf "0x%X\n" $archpart)" =3D "0xA13" ] ;=
- then
->>>>                             ^-- SC2166: Prefer [ p ] && [ q ] as [ p -=
-a q ] is not well defined
->>>>=20
->>>> This warning is observed after commit:
->>>> "commit bb350847965d ("perf test: Update cs_etm testcase for Arm ETE")"
->>>>=20
->>>> Fixed this issue by using quoting 'cpu*' for SC2061 and
->>>> using "&&" in line number 20 for SC2166 warning
->>>>=20
->>>> Fixes: bb350847965d ("perf test: Update cs_etm testcase for Arm ETE")
->>>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->>>> ---
->>>> tools/perf/tests/shell/test_arm_coresight.sh | 4 ++--
->>>> 1 file changed, 2 insertions(+), 2 deletions(-)
->>>>=20
->>>> diff --git a/tools/perf/tests/shell/test_arm_coresight.sh b/tools/perf=
-/tests/shell/test_arm_coresight.sh
->>>> index fe78c4626e45..f2115dfa24a5 100755
->>>> --- a/tools/perf/tests/shell/test_arm_coresight.sh
->>>> +++ b/tools/perf/tests/shell/test_arm_coresight.sh
->>>> @@ -12,12 +12,12 @@
->>>> glb_err=3D0
->>>>=20
->>>> cs_etm_dev_name() {
->>>> - cs_etm_path=3D$(find  /sys/bus/event_source/devices/cs_etm/ -name cp=
-u* -print -quit)
->>>> + cs_etm_path=3D$(find  /sys/bus/event_source/devices/cs_etm/ -name 'c=
-pu*' -print -quit)
->>>> trcdevarch=3D$(cat ${cs_etm_path}/mgmt/trcdevarch)
->>>> archhver=3D$((($trcdevarch >> 12) & 0xf))
->>>> archpart=3D$(($trcdevarch & 0xfff))
->>>>=20
->>>> - if [ $archhver -eq 5 -a "$(printf "0x%X\n" $archpart)" =3D "0xA13" ]=
- ; then
->>>> + if [ $archhver -eq 5 ] && [ "$(printf "0x%X\n" $archpart)" =3D "0xA1=
-3" ] ; then
->>>> echo "ete"
->>>> else
->>>> echo "etm"
->>>=20
->>>=20
->>> Reviewed-by: James Clark <james.clark@arm.com>
 >=20
-> Some are not applying, even after b4 picking up v2
 >=20
-> Total patches: 3
-> ---
-> Cover: ./v2_20231013_atrajeev_fix_for_shellcheck_issues_with_latest_scrip=
-ts_in_tests_shell.cover
-> Link: https://lore.kernel.org/r/20231013073021.99794-1-atrajeev@linux.vne=
-t.ibm.com
-> Base: not specified
->       git am ./v2_20231013_atrajeev_fix_for_shellcheck_issues_with_latest=
-_scripts_in_tests_shell.mbx
-> =E2=AC=A2[acme@toolbox perf-tools-next]$        git am ./v2_20231013_atra=
-jeev_fix_for_shellcheck_issues_with_latest_scripts_in_tests_shell.mbx
-> Applying: tools/perf/tests Ignore the shellcheck SC2046 warning in lock_c=
-ontention
-> error: patch failed: tools/perf/tests/shell/lock_contention.sh:33
-> error: tools/perf/tests/shell/lock_contention.sh: patch does not apply
-> Patch failed at 0001 tools/perf/tests Ignore the shellcheck SC2046 warnin=
-g in lock_contention
-> hint: Use 'git am --show-current-patch=3Ddiff' to see the failed patch
-> When you have resolved this problem, run "git am --continue".
-> If you prefer to skip this patch, run "git am --skip" instead.
-> To restore the original branch and stop patching, run "git am --abort".
-> =E2=AC=A2[acme@toolbox perf-tools-next]$ git am --abort
-> =E2=AC=A2[acme@toolbox perf-tools-next]$
+> On 13/10/2023 08:36, Athira Rajeev wrote:
+>> Add rule in new Makefile "tests/Makefile.tests" for running
+>> shellcheck on shell test scripts. This automates below shellcheck
+>> into the build.
+>>=20
+>> $ for F in $(find tests/shell/ -perm -o=3Dx -name '*.sh'); do =
+shellcheck -S warning $F; done
+>>=20
+>> Condition for shellcheck is added in Makefile.perf to avoid build
+>> breakage in the absence of shellcheck binary. Update Makefile.perf
+>> to contain new rule for "SHELLCHECK_TEST" which is for making
+>> shellcheck test as a dependency on perf binary. Added
+>> "tests/Makefile.tests" to run shellcheck on shellscripts in
+>> tests/shell. The make rule "SHLLCHECK_RUN" ensures that, every
+>> time during make, shellcheck will be run only on modified files
+>> during subsequent invocations. By this, if any newly added shell
+>> scripts or fixes in existing scripts breaks coding/formatting
+>> style, it will get captured during the perf build.
+>>=20
+>> Example build failure with present scripts in tests/shell:
+>>=20
+>> INSTALL libsubcmd_headers
+>> INSTALL libperf_headers
+>> INSTALL libapi_headers
+>> INSTALL libsymbol_headers
+>> INSTALL libbpf_headers
+>> make[3]: *** =
+[/root/athira/namhyung/perf-tools-next/tools/perf/tests/Makefile.tests:17:=
+ output/tests/shell/record_sideband.dep] Error 1
+>> make[3]: *** Waiting for unfinished jobs....
+>> make[3]: *** =
+[/root/athira/namhyung/perf-tools-next/tools/perf/tests/Makefile.tests:17:=
+ output/tests/shell/test_arm_coresight.dep] Error 1
+>> make[3]: *** =
+[/root/athira/namhyung/perf-tools-next/tools/perf/tests/Makefile.tests:17:=
+ output/tests/shell/lock_contention.dep] Error 1
+>> make[2]: *** [Makefile.perf:675: SHELLCHECK_TEST] Error 2
+>> make[1]: *** [Makefile.perf:238: sub-make] Error 2
+>> make: *** [Makefile:70: all] Error 2
+>>=20
+>> After this, for testing, changed "tests/shell/record.sh" to
+>> break shellcheck format. In the next make run, it is
+>> also captured:
+>>=20
+>> make[3]: *** =
+[/root/athira/namhyung/perf-tools-next/tools/perf/tests/Makefile.tests:17:=
+ output/tests/shell/record_sideband.dep] Error 1
+>> make[3]: *** Waiting for unfinished jobs....
+>> make[3]: *** =
+[/root/athira/namhyung/perf-tools-next/tools/perf/tests/Makefile.tests:17:=
+ output/tests/shell/record.dep] Error 1
+>> make[3]: *** =
+[/root/athira/namhyung/perf-tools-next/tools/perf/tests/Makefile.tests:17:=
+ output/tests/shell/test_arm_coresight.dep] Error 1
+>> make[3]: *** =
+[/root/athira/namhyung/perf-tools-next/tools/perf/tests/Makefile.tests:17:=
+ output/tests/shell/lock_contention.dep] Error 1
+>> make[2]: *** [Makefile.perf:675: SHELLCHECK_TEST] Error 2
+>> make[1]: *** [Makefile.perf:238: sub-make] Error 2
+>> make: *** [Makefile:70: all] Error 2
+>>=20
+>> The exact failure log can be found in:
+>> output/tests/shell/record.dep.log file
+>>=20
+>=20
+> Hi Athira,
+>=20
+> Having the reason for a hard failure put into a log file rather than =
+the
+> console output is very non standard. I'm not sure what the reason for
+> this is.
+>=20
+> The log filename isn't even listed in the output so how would anyone
+> know what went wrong?
+>=20
+> Can we just have it so that the failure is printed in the make output
+> like any other build error.
 
-Hi Arnaldo
+Sure James, Thanks for looking into and sharing the review comment.
+I will address the change in V4
 
-The patch is picked up : https://lore.kernel.org/all/169757198796.167943.10=
-552920255799914362.b4-ty@kernel.org/ .
-Thanks for looking into.
+>=20
+> [...]
+>=20
+>> +output/%.dep: %.sh | $(DIRS)
+>> + $(call rule_mkdir)
+>> + $(eval input_file :=3D $(subst output/,./,$(patsubst %.dep, %.sh, =
+$@)))
+>> + $(Q)$(call frecho-cmd,test)@shellcheck -S warning ${input_file} 1> =
+$@.log && ([[ ! -s $@.log ]])
+>=20
+> [[ ]] is a bash extension, but the build system seems to use /bin/sh =
+so
+> you get this error depending on your distro:
+>=20
+>  tools/perf/tests/Makefile.tests:17: output/tests/shell
+>      /record+probe_libc_inet_pton.dep] Error 127
+>  /bin/sh: 1: [[: not found
+>=20
+> Changing it to [ ] fixes it
+
+Ok, will make the change in next version
+
+>=20
+>> + $(Q)$(call frecho-cmd,test)@touch $@
+>=20
+> Touching the source file in the build system doesn't feel right, =
+surely
+> this could be open to all kinds of parallel build race conditions or
+> version controll issues.
+>=20
+> Isn't the output of the rule the .log file, so just a normal make rule
+> based on those two files work? Then if the .log file is older than the
+> source file, the shellcheck is re-run, otherwise not? It feels like =
+the
+> .dep file would then also be unecessary.
+
+Ok, I will fix this.
+>=20
+> The .dep lines in the make output are a bit confusing because they're
+> not in the source tree so it's not clear to an outsider what that make
+> output is for.
+>=20
+> Other than that, it does seem to work ok for me.
+Thanks for the review. I will post V4 with all the changes
 
 Athira
+>=20
+>> + $(Q)$(call frecho-cmd,test)@rm -rf $@.log
+>> +$(DIRS):
+>> + @mkdir -p $@
+>> +
+>> +clean:
+>> + @rm -rf output
 
 
