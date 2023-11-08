@@ -2,49 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E2627E603D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Nov 2023 22:55:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04CF87E603E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Nov 2023 22:56:23 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rEbp+ATJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F6AhSnx+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SQf5w3qgwz3dRS
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Nov 2023 08:55:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SQf6r6QKKz3w7g
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Nov 2023 08:56:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rEbp+ATJ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F6AhSnx+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SQQHl4F9gz3cLQ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Nov 2023 00:03:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SQQJ22cnBz3cN4
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Nov 2023 00:03:30 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id 10F00B81C66;
-	Wed,  8 Nov 2023 13:03:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA9AC433C9;
-	Wed,  8 Nov 2023 13:02:58 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 4AD94CE109D;
+	Wed,  8 Nov 2023 13:03:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC83DC433C7;
+	Wed,  8 Nov 2023 13:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1699448592;
-	bh=8u/is9yGIjCKvKH616JPDZxQp4kevRf+hbF66shzciw=;
+	s=k20201202; t=1699448606;
+	bh=XewRPhT99Y03FufuA1LV3jWgAM7RX4SOby0kMRaZJ00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rEbp+ATJ8TL9tb/LlyZhDPrzGSoac6GqEtllIoknZuh3HS0PBjJ7Uq/p/fm1nXndd
-	 5z95k+15Z7EVhKI2k5WFN6+zT6Dcx9LlXxtd8jGTglWA4ZtuBnSsS18mrcef8iCZsu
-	 ZdGdKwnX74k42PjMs3bX54mFIVVH+UaUx6HnTk2bpX6YvZuyIqNVw1i69bKcDM+kx8
-	 0QhbxPOnkVCFn+1IoJLaaDxqLtMx+o9VlbUNRag9/FUeK+64zJfYk6BL3buGhjE4FE
-	 mVN9tNfFpgp0GOm3gK9WgCB6E7ONWa5a1WiaxBVRuDniK5TMae0M2X3SRFJE7qtIKk
-	 B7Fo7+w6HCt9A==
+	b=F6AhSnx+JWlw/8aCyGuswz0ZSYRQQSqJRkHGnHr5S62t5ovgeEl+lS12mVwd0pI3v
+	 Y+zAfCc5Nwlj0WYsOzdr9Eq32HI2RaGNa5FoSbN540gr3uvPV1TZcTv+GlOu0j4OlX
+	 qQTuDh0rNCJDIvSp4M8ZAM1Uva7F1HAj0lc/VmGLlwkw4IOfnudYpGOw5ziVke/2C2
+	 EkqHoTH8HohJ7VesdbcjVmGBhmSwgBIKuUYp0yqIOB51SEVlTxt8dhwKGCxaiCszkk
+	 BDDHzx12psT4hLvJdj1i+E8GUr/I3O6cE0KFRK815kGRZDuoEtduHrZrokFoYKTJqo
+	 JHKLDDVnaInUA==
 From: Arnd Bergmann <arnd@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	linux-kernel@vger.kernel.org,
 	Masahiro Yamada <masahiroy@kernel.org>,
 	linux-kbuild@vger.kernel.org
-Subject: [PATCH 17/22] powerpc: ps3: move udbg_shutdown_ps3gelic prototype
-Date: Wed,  8 Nov 2023 13:58:38 +0100
-Message-Id: <20231108125843.3806765-18-arnd@kernel.org>
+Subject: [PATCH 18/22] powerpc: pasemi: mark pas_shutdown() static
+Date: Wed,  8 Nov 2023 13:58:39 +0100
+Message-Id: <20231108125843.3806765-19-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231108125843.3806765-1-arnd@kernel.org>
 References: <20231108125843.3806765-1-arnd@kernel.org>
@@ -70,64 +70,30 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-Allmodconfig kernels produce a missing-prototypes warning:
+Allmodconfig builds show a warning about one function that is accidentally
+marked global:
 
-arch/powerpc/platforms/ps3/gelic_udbg.c:239:6: error: no previous prototype for 'udbg_shutdown_ps3gelic' [-Werror=missing-prototypes]
+arch/powerpc/platforms/pasemi/setup.c:67:6: error: no previous prototype for 'pas_shutdown' [-Werror=missing-prototypes]
 
-Move the declaration from a local header to asm/ps3.h where it can be
-seen from both the caller and the definition.
-
+Fixes: 656fdf3ad8e0 ("powerpc/pasemi: Add Nemo board device init code.")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/powerpc/include/asm/ps3.h               | 6 ++++++
- arch/powerpc/platforms/ps3/gelic_udbg.c      | 1 +
- drivers/net/ethernet/toshiba/ps3_gelic_net.h | 6 ------
- 3 files changed, 7 insertions(+), 6 deletions(-)
+ arch/powerpc/platforms/pasemi/setup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/ps3.h b/arch/powerpc/include/asm/ps3.h
-index a5f36546a052..d13d8fdc3411 100644
---- a/arch/powerpc/include/asm/ps3.h
-+++ b/arch/powerpc/include/asm/ps3.h
-@@ -514,4 +514,10 @@ u64 ps3_get_spe_id(void *arg);
- 
- void ps3_early_mm_init(void);
- 
-+#ifdef CONFIG_PPC_EARLY_DEBUG_PS3GELIC
-+void udbg_shutdown_ps3gelic(void);
-+#else
-+static inline void udbg_shutdown_ps3gelic(void) {}
-+#endif
-+
- #endif
-diff --git a/arch/powerpc/platforms/ps3/gelic_udbg.c b/arch/powerpc/platforms/ps3/gelic_udbg.c
-index 6b298010fd84..a5202c18c236 100644
---- a/arch/powerpc/platforms/ps3/gelic_udbg.c
-+++ b/arch/powerpc/platforms/ps3/gelic_udbg.c
-@@ -14,6 +14,7 @@
- #include <linux/ip.h>
- #include <linux/udp.h>
- 
-+#include <asm/ps3.h>
- #include <asm/io.h>
- #include <asm/udbg.h>
- #include <asm/lv1call.h>
-diff --git a/drivers/net/ethernet/toshiba/ps3_gelic_net.h b/drivers/net/ethernet/toshiba/ps3_gelic_net.h
-index 0d98defb011e..0ec7412febc7 100644
---- a/drivers/net/ethernet/toshiba/ps3_gelic_net.h
-+++ b/drivers/net/ethernet/toshiba/ps3_gelic_net.h
-@@ -346,12 +346,6 @@ static inline void *port_priv(struct gelic_port *port)
- 	return port->priv;
+diff --git a/arch/powerpc/platforms/pasemi/setup.c b/arch/powerpc/platforms/pasemi/setup.c
+index ef985ba2bf21..0761d98e5be3 100644
+--- a/arch/powerpc/platforms/pasemi/setup.c
++++ b/arch/powerpc/platforms/pasemi/setup.c
+@@ -64,7 +64,7 @@ static void __noreturn pas_restart(char *cmd)
  }
  
--#ifdef CONFIG_PPC_EARLY_DEBUG_PS3GELIC
--void udbg_shutdown_ps3gelic(void);
--#else
--static inline void udbg_shutdown_ps3gelic(void) {}
--#endif
--
- int gelic_card_set_irq_mask(struct gelic_card *card, u64 mask);
- /* shared netdev ops */
- void gelic_card_up(struct gelic_card *card);
+ #ifdef CONFIG_PPC_PASEMI_NEMO
+-void pas_shutdown(void)
++static void pas_shutdown(void)
+ {
+ 	/* Set the PLD bit that makes the SB600 think the power button is being pressed */
+ 	void __iomem *pld_map = ioremap(0xf5000000,4096);
 -- 
 2.39.2
 
