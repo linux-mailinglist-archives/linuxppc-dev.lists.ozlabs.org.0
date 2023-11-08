@@ -1,50 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D2C97E6041
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Nov 2023 22:57:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7FBA7E6045
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Nov 2023 22:57:58 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fB+20slf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DBJ5jR4C;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SQf7n04Htz3vnx
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Nov 2023 08:57:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SQf8h44XBz3wDs
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Nov 2023 08:57:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fB+20slf;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DBJ5jR4C;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SQQJJ2KFNz3cNH
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Nov 2023 00:03:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SQQJY3y4xz3cNQ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Nov 2023 00:03:57 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 58272CE10D3;
-	Wed,  8 Nov 2023 13:03:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7383C433CD;
-	Wed,  8 Nov 2023 13:03:26 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTP id 0587EB81C6B;
+	Wed,  8 Nov 2023 13:03:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62C9C433B6;
+	Wed,  8 Nov 2023 13:03:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1699448620;
-	bh=bnImJ/ObQ6B/nPGCBESa5sKS25GC8i0wwxIop7YcLiQ=;
+	s=k20201202; t=1699448634;
+	bh=f7fNKO5gnWJA/d4ZFMRTEakv5+W/QOqilqMHW6JFmn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fB+20slfPiqKAzspVuOp7lysgQWfK95LP/RKlxiC8AEKx8BhFN4kkk4QP6uLjjcZa
-	 wj1ifWdy+iqHN8jUfTP7LMVixMNQzf+PdxJ5aRFwn8+sF8x5oxrMJ+cw7Tf1SY6evs
-	 aTHloPIblEvwjvbG5tJspyjJPZMcOELbwuprmNsKC8br0ev0EeD+X5Pv+YyMMBcX7a
-	 fT29jHc3T0fxWzZcbGd7mitVkS7vZsG9opCG70PpS8kj6ljhs3UbNxZWIByHhdYChg
-	 /Twm4eSdr3h6kTuBlQTn9xPE9UHRMNkG+6odLROmc+7rhVe0JD5IS0bLdAqqjskcMv
-	 HeN+BJ0kN316g==
+	b=DBJ5jR4CXtPbJPYGq5r5xOFK0mCJWbOQOLyr3aUZajjqm4iLO0JsvUKUO0uN+hUJe
+	 Msij0+2zs+jlyWA/41ZMIpSg/OOLqS9wyqGkpDKqxxZeodHNCH+//AzBMyQlzRQ4K3
+	 7vkTtk3yfTrs5D2GEKfRiTYosKYtejRV4Z5eqoQ2wuHtMIflJUm0yDGmV6pBS19TOS
+	 2Ez2H9AYDV2mhlQ/YZ2KYGXkuQQZFFbFW2mzc4LfBS4S4LMUXzPxTWZ+3A/rp0/+V5
+	 eF8Sn8vPAZf/juaHTFs3VeqE1LtKB2kpkk8oTSn5Tr/GceC5v9b2j4wWO5bmgoEaVk
+	 3OcTg1l38QHTg==
 From: Arnd Bergmann <arnd@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	linux-kernel@vger.kernel.org,
 	Masahiro Yamada <masahiroy@kernel.org>,
 	linux-kbuild@vger.kernel.org
-Subject: [PATCH 19/22] powerpc: powermac: mark smp_psurge_{give,take}_timebase static
-Date: Wed,  8 Nov 2023 13:58:40 +0100
-Message-Id: <20231108125843.3806765-20-arnd@kernel.org>
+Subject: [PATCH 20/22] usb: fsl-mph-dr-of: mark fsl_usb2_mpc5121_init() static
+Date: Wed,  8 Nov 2023 13:58:41 +0100
+Message-Id: <20231108125843.3806765-21-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231108125843.3806765-1-arnd@kernel.org>
 References: <20231108125843.3806765-1-arnd@kernel.org>
@@ -70,43 +70,29 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-These functions are only called locally and should be static like the
-other corresponding functions are:
+This function is only called locally and should always have been static:
 
-arch/powerpc/platforms/powermac/smp.c:416:13: error: no previous prototype for 'smp_psurge_take_timebase' [-Werror=missing-prototypes]
-  416 | void __init smp_psurge_take_timebase(void)
-      |             ^~~~~~~~~~~~~~~~~~~~~~~~
-arch/powerpc/platforms/powermac/smp.c:432:13: error: no previous prototype for 'smp_psurge_give_timebase' [-Werror=missing-prototypes]
-  432 | void __init smp_psurge_give_timebase(void)
-      |             ^~~~~~~~~~~~~~~~~~~~~~~~
+drivers/usb/host/fsl-mph-dr-of.c:291:5: error: no previous prototype for 'fsl_usb2_mpc5121_init' [-Werror=missing-prototypes]
 
+Fixes: 230f7ede6c2f ("USB: add USB EHCI support for MPC5121 SoC")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/powerpc/platforms/powermac/smp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/host/fsl-mph-dr-of.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/powermac/smp.c b/arch/powerpc/platforms/powermac/smp.c
-index c83d1e14077e..15644be31990 100644
---- a/arch/powerpc/platforms/powermac/smp.c
-+++ b/arch/powerpc/platforms/powermac/smp.c
-@@ -413,7 +413,7 @@ static void __init smp_psurge_setup_cpu(int cpu_nr)
- 		printk(KERN_ERR "Couldn't get primary IPI interrupt");
- }
+diff --git a/drivers/usb/host/fsl-mph-dr-of.c b/drivers/usb/host/fsl-mph-dr-of.c
+index 8508d37a2aff..6cdc3d805c32 100644
+--- a/drivers/usb/host/fsl-mph-dr-of.c
++++ b/drivers/usb/host/fsl-mph-dr-of.c
+@@ -288,7 +288,7 @@ static void fsl_usb2_mph_dr_of_remove(struct platform_device *ofdev)
+ #define PHYCTRL_LSFE		(1 << 1)	/* Line State Filter Enable */
+ #define PHYCTRL_PXE		(1 << 0)	/* PHY oscillator enable */
  
--void __init smp_psurge_take_timebase(void)
-+static void __init smp_psurge_take_timebase(void)
+-int fsl_usb2_mpc5121_init(struct platform_device *pdev)
++static int fsl_usb2_mpc5121_init(struct platform_device *pdev)
  {
- 	if (psurge_type != PSURGE_DUAL)
- 		return;
-@@ -429,7 +429,7 @@ void __init smp_psurge_take_timebase(void)
- 	set_dec(tb_ticks_per_jiffy/2);
- }
- 
--void __init smp_psurge_give_timebase(void)
-+static void __init smp_psurge_give_timebase(void)
- {
- 	/* Nothing to do here */
- }
+ 	struct fsl_usb2_platform_data *pdata = dev_get_platdata(&pdev->dev);
+ 	struct clk *clk;
 -- 
 2.39.2
 
