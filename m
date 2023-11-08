@@ -2,49 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE4B57E6021
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Nov 2023 22:46:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F2037E6028
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Nov 2023 22:47:35 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HyUdTwUX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IVsQ8P2d;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SQdvn5C5sz3vjQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Nov 2023 08:46:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SQdwj36tmz3dRs
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Nov 2023 08:47:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HyUdTwUX;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IVsQ8P2d;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SQQDg44QCz3bfK
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Nov 2023 00:00:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SQQDz0h7Hz3bsP
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Nov 2023 00:00:51 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 3F15ACE109D;
-	Wed,  8 Nov 2023 13:00:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE3C9C43395;
-	Wed,  8 Nov 2023 13:00:16 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 9D321CE10D2;
+	Wed,  8 Nov 2023 13:00:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32BFC433C7;
+	Wed,  8 Nov 2023 13:00:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1699448431;
-	bh=K9YdPzoARD4njnEo80jUrY+DZkb+0aAdqYzClA8UgAI=;
+	s=k20201202; t=1699448446;
+	bh=AsWQYHzG9sipb7sEr1JLntaPFi93f1pC9EyAKGQfMYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HyUdTwUXtZOlnyvxdNKc+kj+jb0JvSjpSyNuNfinD/hOMX3R5j5WCRvrkFeKCIoaK
-	 dck1LhuXouzgxrjEZ+GfXmwACWuIHu7Z5T4tv5Ur3mBUern292mV3o4hHeM6goJmTl
-	 07hDeR7Iqhwa3/f+qzmGQajf1dFdpx/z/q8jYxJI4nnayQSqsNQMlgpL0fthML/+e1
-	 RUA1p/Ek88IwoPkFfFrEZT9/Y2MOyc8v/2srZE3JErq77d73XQLbdWL9p5SFFwRzqp
-	 V4Zk/JhktD/mAeNqOSIIMV3pGJDyvfJKmq7usGaEaG4ltRDerYT+4+zq3kRGWGhqoG
-	 rX6LOl910Dk3Q==
+	b=IVsQ8P2dntVCqOp290JiIjSeAiJc+VMO2pw8M5wXect2MBBRk+jOoldL7GU96ZMeA
+	 HuTE9Cemzwdgusy0jqMNAGrkZljxwDe/bga3g2m7k9eEuDPGq3KBsmaI6dmPkl/wlE
+	 2sJ8x5zpsds68NNoBAImql8aGu/sRESukQSJx2yQtofDYlD6qoDUcqJIsRbgMEAgD5
+	 pBWkZwSHNGyEjrYKkBLIDiDk/X/C6tnjuGAPAvyQxIP+Clu91AntgrZdhbNIFgmOBm
+	 NDqic6B3ehDAmy+JcPX7W+ZFcv2EJF1l6Qv/grGtIBAqxH+1Q7icIKEapV1+6GP4HA
+	 hAP9sw3MNsZDA==
 From: Arnd Bergmann <arnd@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	linux-kernel@vger.kernel.org,
 	Masahiro Yamada <masahiroy@kernel.org>,
 	linux-kbuild@vger.kernel.org
-Subject: [PATCH 06/22] [RESEND] stackleak: add declarations for global functions
-Date: Wed,  8 Nov 2023 13:58:27 +0100
-Message-Id: <20231108125843.3806765-7-arnd@kernel.org>
+Subject: [PATCH 07/22] [RESEND] sched: fair: move unused stub functions to header
+Date: Wed,  8 Nov 2023 13:58:28 +0100
+Message-Id: <20231108125843.3806765-8-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231108125843.3806765-1-arnd@kernel.org>
 References: <20231108125843.3806765-1-arnd@kernel.org>
@@ -70,45 +70,82 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-With -Wmissing-prototypes enabled, the stackleak code produces a couple of
-warnings that have no declarations because they are only called from assembler:
+These four functions have a normal definition for CONFIG_FAIR_GROUP_SCHED,
+and empty one that is only referenced when FAIR_GROUP_SCHED is disabled
+but CGROUP_SCHED is still enabled. If both are turned off, the functions
+are still defined but the misisng prototype causes a W=1 warning:
 
-stackleak.c:127:25: error: no previous prototype for 'stackleak_erase' [-Werror=missing-prototypes]
-stackleak.c:139:25: error: no previous prototype for 'stackleak_erase_on_task_stack' [-Werror=missing-prototypes]
-stackleak.c:151:25: error: no previous prototype for 'stackleak_erase_off_task_stack' [-Werror=missing-prototypes]
-stackleak.c:159:49: error: no previous prototype for 'stackleak_track_stack' [-Werror=missing-prototypes]
+kernel/sched/fair.c:12544:6: error: no previous prototype for 'free_fair_sched_group'
+kernel/sched/fair.c:12546:5: error: no previous prototype for 'alloc_fair_sched_group'
+kernel/sched/fair.c:12553:6: error: no previous prototype for 'online_fair_sched_group'
+kernel/sched/fair.c:12555:6: error: no previous prototype for 'unregister_fair_sched_group'
 
-Add declarations to the stackleak header to shut up the warnings.
+Move the alternatives into the header as static inline functions with
+the correct combination of #ifdef checks to avoid the warning without
+adding even more complexity.
 
+[A different patch with the same description got applied by accident
+ and was later reverted, but the original patch is still missing]
+
+Fixes: 7aa55f2a5902 ("sched/fair: Move unused stub functions to header")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- include/linux/stackleak.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+A patch with the same commit log has
+---
+ kernel/sched/fair.c  | 13 -------------
+ kernel/sched/sched.h | 11 +++++++++++
+ 2 files changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/include/linux/stackleak.h b/include/linux/stackleak.h
-index c36e7a3b45e7..3be2cb564710 100644
---- a/include/linux/stackleak.h
-+++ b/include/linux/stackleak.h
-@@ -14,6 +14,7 @@
- 
- #ifdef CONFIG_GCC_PLUGIN_STACKLEAK
- #include <asm/stacktrace.h>
-+#include <linux/linkage.h>
- 
- /*
-  * The lowest address on tsk's stack which we can plausibly erase.
-@@ -76,6 +77,11 @@ static inline void stackleak_task_init(struct task_struct *t)
- # endif
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 2048138ce54b..82b82fa1d81b 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -12927,19 +12927,6 @@ int sched_group_set_idle(struct task_group *tg, long idle)
+ 	return 0;
  }
  
-+asmlinkage void noinstr stackleak_erase(void);
-+asmlinkage void noinstr stackleak_erase_on_task_stack(void);
-+asmlinkage void noinstr stackleak_erase_off_task_stack(void);
-+void __no_caller_saved_registers noinstr stackleak_track_stack(void);
+-#else /* CONFIG_FAIR_GROUP_SCHED */
+-
+-void free_fair_sched_group(struct task_group *tg) { }
+-
+-int alloc_fair_sched_group(struct task_group *tg, struct task_group *parent)
+-{
+-	return 1;
+-}
+-
+-void online_fair_sched_group(struct task_group *tg) { }
+-
+-void unregister_fair_sched_group(struct task_group *tg) { }
+-
+ #endif /* CONFIG_FAIR_GROUP_SCHED */
+ 
+ 
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 2e5a95486a42..8f5df5250b8d 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -436,10 +436,21 @@ static inline int walk_tg_tree(tg_visitor down, tg_visitor up, void *data)
+ 
+ extern int tg_nop(struct task_group *tg, void *data);
+ 
++#ifdef CONFIG_FAIR_GROUP_SCHED
+ extern void free_fair_sched_group(struct task_group *tg);
+ extern int alloc_fair_sched_group(struct task_group *tg, struct task_group *parent);
+ extern void online_fair_sched_group(struct task_group *tg);
+ extern void unregister_fair_sched_group(struct task_group *tg);
++#else
++static inline void free_fair_sched_group(struct task_group *tg) { }
++static inline int alloc_fair_sched_group(struct task_group *tg, struct task_group *parent)
++{
++       return 1;
++}
++static inline void online_fair_sched_group(struct task_group *tg) { }
++static inline void unregister_fair_sched_group(struct task_group *tg) { }
++#endif
 +
- #else /* !CONFIG_GCC_PLUGIN_STACKLEAK */
- static inline void stackleak_task_init(struct task_struct *t) { }
- #endif
+ extern void init_tg_cfs_entry(struct task_group *tg, struct cfs_rq *cfs_rq,
+ 			struct sched_entity *se, int cpu,
+ 			struct sched_entity *parent);
 -- 
 2.39.2
 
