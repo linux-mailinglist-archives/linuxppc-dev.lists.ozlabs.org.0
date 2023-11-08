@@ -1,50 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7FBA7E6045
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Nov 2023 22:57:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36D157E6046
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Nov 2023 22:58:46 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DBJ5jR4C;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jM23eUv5;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SQf8h44XBz3wDs
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Nov 2023 08:57:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SQf9c0nBsz3wHs
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Nov 2023 08:58:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DBJ5jR4C;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jM23eUv5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SQQJY3y4xz3cNQ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Nov 2023 00:03:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SQQJp3S1wz3cNT
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Nov 2023 00:04:10 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id 0587EB81C6B;
-	Wed,  8 Nov 2023 13:03:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62C9C433B6;
-	Wed,  8 Nov 2023 13:03:40 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 93B61615E7;
+	Wed,  8 Nov 2023 13:04:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D51A7C4339A;
+	Wed,  8 Nov 2023 13:03:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1699448634;
-	bh=f7fNKO5gnWJA/d4ZFMRTEakv5+W/QOqilqMHW6JFmn4=;
+	s=k20201202; t=1699448648;
+	bh=Nx8Vn2zgScg8dIFdjbuCnuMwcXn8NC4yH/1zIRuXFKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DBJ5jR4CXtPbJPYGq5r5xOFK0mCJWbOQOLyr3aUZajjqm4iLO0JsvUKUO0uN+hUJe
-	 Msij0+2zs+jlyWA/41ZMIpSg/OOLqS9wyqGkpDKqxxZeodHNCH+//AzBMyQlzRQ4K3
-	 7vkTtk3yfTrs5D2GEKfRiTYosKYtejRV4Z5eqoQ2wuHtMIflJUm0yDGmV6pBS19TOS
-	 2Ez2H9AYDV2mhlQ/YZ2KYGXkuQQZFFbFW2mzc4LfBS4S4LMUXzPxTWZ+3A/rp0/+V5
-	 eF8Sn8vPAZf/juaHTFs3VeqE1LtKB2kpkk8oTSn5Tr/GceC5v9b2j4wWO5bmgoEaVk
-	 3OcTg1l38QHTg==
+	b=jM23eUv5FMlKZU6BTGV1ePPaE3RTcAWRXDzcXAcjOqA/ZqCE81ar4bVn2a2r75AKm
+	 jflHQH/BYiBETTY3g9IoyJRr+2hYEdyLCZV96oyvyWq2ogp98/QmGboBx7Dt00jY3G
+	 T2yyCpZ97F+U44qiklj3/qmthIoQi+rfc2I6iwn29l6Yx1Aa4hEPyXCWRNDvKN7BVm
+	 RRHAmCXQIZv6jYLGfTgwkeOX1UsnUHrOOm9LQLQaG/WsU1PiIR54QxRx9rzy3qyX5I
+	 LvmxOxUIQrgDSPyInQ9FstpMGLBcD5o3qVnRy4F0RrfTjaf20bD3r98NBPFpzpVdby
+	 bdKtp2p5lyJ8Q==
 From: Arnd Bergmann <arnd@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	linux-kernel@vger.kernel.org,
 	Masahiro Yamada <masahiroy@kernel.org>,
 	linux-kbuild@vger.kernel.org
-Subject: [PATCH 20/22] usb: fsl-mph-dr-of: mark fsl_usb2_mpc5121_init() static
-Date: Wed,  8 Nov 2023 13:58:41 +0100
-Message-Id: <20231108125843.3806765-21-arnd@kernel.org>
+Subject: [PATCH 21/22] fbdev/fsl-diu-fb: mark wr_reg_wa() static
+Date: Wed,  8 Nov 2023 13:58:42 +0100
+Message-Id: <20231108125843.3806765-22-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231108125843.3806765-1-arnd@kernel.org>
 References: <20231108125843.3806765-1-arnd@kernel.org>
@@ -70,29 +70,30 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-This function is only called locally and should always have been static:
+wr_reg_wa() is not an appropriate name for a global function, and doesn't need
+to be global anyway, so mark it static and avoid the warning:
 
-drivers/usb/host/fsl-mph-dr-of.c:291:5: error: no previous prototype for 'fsl_usb2_mpc5121_init' [-Werror=missing-prototypes]
+drivers/video/fbdev/fsl-diu-fb.c:493:6: error: no previous prototype for 'wr_reg_wa' [-Werror=missing-prototypes]
 
-Fixes: 230f7ede6c2f ("USB: add USB EHCI support for MPC5121 SoC")
+Fixes: 0d9dab39fbbe ("powerpc/5121: fsl-diu-fb: fix issue with re-enabling DIU area descriptor")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- drivers/usb/host/fsl-mph-dr-of.c | 2 +-
+ drivers/video/fbdev/fsl-diu-fb.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/fsl-mph-dr-of.c b/drivers/usb/host/fsl-mph-dr-of.c
-index 8508d37a2aff..6cdc3d805c32 100644
---- a/drivers/usb/host/fsl-mph-dr-of.c
-+++ b/drivers/usb/host/fsl-mph-dr-of.c
-@@ -288,7 +288,7 @@ static void fsl_usb2_mph_dr_of_remove(struct platform_device *ofdev)
- #define PHYCTRL_LSFE		(1 << 1)	/* Line State Filter Enable */
- #define PHYCTRL_PXE		(1 << 0)	/* PHY oscillator enable */
- 
--int fsl_usb2_mpc5121_init(struct platform_device *pdev)
-+static int fsl_usb2_mpc5121_init(struct platform_device *pdev)
+diff --git a/drivers/video/fbdev/fsl-diu-fb.c b/drivers/video/fbdev/fsl-diu-fb.c
+index 7fbd9f069ac2..0bced82fa494 100644
+--- a/drivers/video/fbdev/fsl-diu-fb.c
++++ b/drivers/video/fbdev/fsl-diu-fb.c
+@@ -490,7 +490,7 @@ static enum fsl_diu_monitor_port fsl_diu_name_to_port(const char *s)
+  * Workaround for failed writing desc register of planes.
+  * Needed with MPC5121 DIU rev 2.0 silicon.
+  */
+-void wr_reg_wa(u32 *reg, u32 val)
++static void wr_reg_wa(u32 *reg, u32 val)
  {
- 	struct fsl_usb2_platform_data *pdata = dev_get_platdata(&pdev->dev);
- 	struct clk *clk;
+ 	do {
+ 		out_be32(reg, val);
 -- 
 2.39.2
 
