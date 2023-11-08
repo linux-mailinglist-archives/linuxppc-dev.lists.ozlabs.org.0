@@ -1,60 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 232557E5F4D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Nov 2023 21:39:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A77A27E604E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Nov 2023 23:05:20 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Y4718RXG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=32beSgpe;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=kjlV4oVb;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SQcQH0SP0z3cTN
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Nov 2023 07:39:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SQfKB4DSfz3vmQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Nov 2023 09:05:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Y4718RXG;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=32beSgpe;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=kjlV4oVb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.230; helo=new4-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from new4-smtp.messagingengine.com (new4-smtp.messagingengine.com [66.111.4.230])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SQcPP2h1yz3c56
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Nov 2023 07:38:46 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1699475929; x=1731011929;
-  h=date:from:to:cc:subject:message-id;
-  bh=T9T9y16utYLFSgf4og6lhGRvo4S0o6WQDuJcCY3w3P4=;
-  b=Y4718RXGV9LIscLPToafGHBGvxVCv3b546p7DFj67tsUHt3OUIi7aukP
-   d+5n8MP8thtkrbT9QREjhJ7b9nPoFJXjmbTTeXD5Oueq/YafhqpgGgH0j
-   nP1YSdHHsS4B8ETUyPWH0iprxH8PFAVUatOEJJqJpVCrTyVIjHJeOdMXK
-   DjXwUN9u45eiSati/UVA0xgSaMWKExL0fVc1qxZgaEdDZ2y1KRTx/ro7I
-   Jva03tKpPfNWom5lk5QABfnrKRq04LR+hzUCQk7wATJNRJnYOB6wAbflb
-   Aephm9ub9mfr0Upc48pFxpGBbKI4qWl4A9Jq+K5v9Y/EXIEVlzD2l9a2S
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="456349700"
-X-IronPort-AV: E=Sophos;i="6.03,287,1694761200"; 
-   d="scan'208";a="456349700"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2023 12:38:43 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10888"; a="936625671"
-X-IronPort-AV: E=Sophos;i="6.03,287,1694761200"; 
-   d="scan'208";a="936625671"
-Received: from lkp-server01.sh.intel.com (HELO 17d9e85e5079) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 08 Nov 2023 12:38:41 -0800
-Received: from kbuild by 17d9e85e5079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1r0pJv-0008Am-1K;
-	Wed, 08 Nov 2023 20:38:39 +0000
-Date: Thu, 09 Nov 2023 04:38:16 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD REGRESSION
- 11121f9bdf3d1f7a04a87381df18587b9fe8f908
-Message-ID: <202311090408.FMZEwgT7-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SQd2m1lFtz2yGF
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Nov 2023 08:07:43 +1100 (AEDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailnew.nyi.internal (Postfix) with ESMTP id 15DEC5808D9;
+	Wed,  8 Nov 2023 16:07:40 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Wed, 08 Nov 2023 16:07:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:sender:subject:subject:to:to; s=fm3; t=
+	1699477660; x=1699484860; bh=D9PBCL8QJKdjrKS2aPJfuUQXeRbWRMeFHOK
+	ckMk8fx4=; b=32beSgpe4JW/41MI9lwE9Ijo4clBZDCZcdz5W29GlXfmeBdloGs
+	Pj6zClFpI3rBEASL5bt2BJ0z9kSHXoRmNM9S3ZUV9IpU6H2SlzHeojjwyK38ubdm
+	rc5I6AbHQO428z+GTudTpXj84wN1iHyD5B4xrh7Xg9+/lOsXO8mWGmiOw0oEtT95
+	59tIeWQXJ0PMlmbTe9oPGJNjvuF2Q00g7Aup3KvWuYCehPghEdVuK62ANt1RCDNX
+	P59SJAJQv8a5rR+mmaJ00cjQiQKIVXVSq/NkJ5Ceh2lpGohzfDFoxucwi0IF29D/
+	556O8j5asu9BGmdizp+cE+MTUaFBWLNaDZw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
+	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1699477660; x=1699484860; bh=D9PBCL8QJKdjrKS2aPJfuUQXeRbWRMeFHOK
+	ckMk8fx4=; b=kjlV4oVb2NP4EXVJD0KYm4LTALqMkDnrU92/a5IM2DxqbQWjsi+
+	IwdXxoSa3WEs4VZrlHH4JbCKkIL0G8Pwij1126xSe7hG/IMqOBcu3RQxvqgsEHsb
+	pcFM0Ua1NE3OwtwEsNMc4jlmhSYjBeK+x0Ed/W7Rlf03UIZVqr2B+d0ryicP7Tub
+	QSkOlA0efMsPA3XcbslixipIgl/+8P6M15YEgB0c0t6f8ouEUKSI2KL0MYB9RUr3
+	hoiEAHdJCFrsG/Y/a3llxHIutnrnDvRz3cIbj7RF5co+2MINYEdgACq/D/uqzlpo
+	r0L8iW3NWB7AxkztwyKFHjpLOPBdYiLEhJA==
+X-ME-Sender: <xms:m_hLZQw4_GjcfbThT_vbWtFC1jg247Lu0E-xxAcura-dvGHI0kyRtw>
+    <xme:m_hLZUTBxKjGHnkabv1F9oTzwRz5Y87A_Eif-kfMyvanmifw9H6wOpvDuy8X5HtkK
+    Zp2U-M3JmHcVR-PhU4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudduledgudegfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedf
+    tehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrf
+    grthhtvghrnhepgeefjeehvdelvdffieejieejiedvvdfhleeivdelveehjeelteegudek
+    tdfgjeevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    eprghrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:m_hLZSW6ebv1Nls-lv6APr_ihVG7HATMnEZKUQ2lPJN14ImeSnqatA>
+    <xmx:m_hLZejrECVMz1a28xI-eZZXTwB4qMex3E04bXgkhXhjxa6Uy3_eWg>
+    <xmx:m_hLZSCmSuJkW1zFZoPx2zdR5BRKPmHS1VpT2dl_7ti0xOUBuc0gGw>
+    <xmx:nPhLZa5R9gGZF0aG1bP9Mvi7bGv6CIQdVEBpyyHzpDHDqjyICYNx-Q>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 48539B60089; Wed,  8 Nov 2023 16:07:39 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-1108-g3a29173c6d-fm-20231031.005-g3a29173c
+MIME-Version: 1.0
+Message-Id: <e7753f82-c3de-48fc-955d-59773222aaa9@app.fastmail.com>
+In-Reply-To:  <CAMuHMdXgdn_cMq0YeqPu3sUeM5cEYbCoodxu8XwCGiRJ-vFsyw@mail.gmail.com>
+References: <20231108125843.3806765-1-arnd@kernel.org>
+ <20231108125843.3806765-11-arnd@kernel.org>
+ <CAMuHMdXgdn_cMq0YeqPu3sUeM5cEYbCoodxu8XwCGiRJ-vFsyw@mail.gmail.com>
+Date: Wed, 08 Nov 2023 22:07:18 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Geert Uytterhoeven" <geert@linux-m68k.org>,
+ "Arnd Bergmann" <arnd@kernel.org>
+Subject: Re: [PATCH 10/22] microblaze: include linux/cpu.h for trap_init() prototype
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Mailman-Approved-At: Thu, 09 Nov 2023 08:41:16 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,191 +98,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Juri Lelli <juri.lelli@redhat.com>, linux-fbdev@vger.kernel.org, x86@kernel.org, loongarch@lists.linux.dev, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, Netdev <netdev@vger.kernel.org>, guoren <guoren@kernel.org>, Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>, Helge Deller <deller@gmx.de>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Vincenzo Frascino <vincenzo.frascino@arm.com>, Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-s390@vger.kernel.org, Vincent Guittot <vincent.guittot@linaro.org>, Masahiro Yamada <masahiroy@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, Greg Ungerer <gerg@linux-m68k.org>, "linux-bcachefs@vger.kernel.org" <linux-bcachefs@vger.kernel.org>, Ingo Molnar <mingo@redhat.com>, V
+ ineet Gupta <vgupta@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org, linux-trace-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>, linux-kbuild@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, Nathan Chancellor <nathan@kernel.org>, linux-m68k@lists.linux-m68k.org, "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, Steven Rostedt <rostedt@goodmis.org>, Andy Lutomirski <luto@kernel.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Timur Tabi <timur@kernel.org>, Geoff Levand <geoff@infradead.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Kent Over
+ street <kent.overstreet@linux.dev>, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Sudip Mukherjee <sudipm.mukherjee@gmail.com>, Dinh Nguyen <dinguyen@kernel.org>, linux-usb@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Masami Hiramatsu <mhiramat@kernel.org>, linux-alpha@vger.kernel.org, linux-mtd@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>, David Woodhouse <dwmw2@infradead.org>, "David S . Miller" <davem@davemloft.net>, Alexander Viro <viro@zeniv.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 11121f9bdf3d1f7a04a87381df18587b9fe8f908  Automatic merge of 'master' into merge (2023-11-07 22:10)
+On Wed, Nov 8, 2023, at 21:42, Geert Uytterhoeven wrote:
+>
+> On Wed, Nov 8, 2023 at 2:01=E2=80=AFPM Arnd Bergmann <arnd@kernel.org>=
+ wrote:
+>> From: Arnd Bergmann <arnd@arndb.de>
+>>
+>> Microblaze runs into a single -Wmissing-prototypes warning when that =
+is
+>> enabled:
+>>
+>> arch/microblaze/kernel/traps.c:21:6: warning: no previous prototype f=
+or 'trap_init' [-Wmissing-prototypes]
+>>
+>> Include the right header to avoid this.
+>>
+>> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>
+> Thanks for your patch!
+>
+>>  arch/alpha/kernel/traps.c      | 1 +
+>>  arch/csky/include/asm/traps.h  | 2 --
+>>  arch/csky/kernel/traps.c       | 1 +
+>>  arch/m68k/coldfire/vectors.c   | 3 +--
+>>  arch/m68k/coldfire/vectors.h   | 3 ---
+>
+> Ah, so this is where the m68k changes listed in the cover letter are
+> hiding ;-)
+>
+>>  arch/microblaze/kernel/traps.c | 1 +
+>>  arch/sparc/kernel/traps_32.c   | 1 +
+>>  arch/sparc/kernel/traps_64.c   | 1 +
+>>  arch/x86/include/asm/traps.h   | 1 -
+>>  arch/x86/kernel/traps.c        | 1 +
+>>  10 files changed, 7 insertions(+), 8 deletions(-)
+>>  delete mode 100644 arch/m68k/coldfire/vectors.h
+>
+> Obviously the non-microblaze changes should be spun off in separate
+> patches.
 
-Error/Warning ids grouped by kconfigs:
+I messed up one of my rebases here and accidentally sent
+the wrong changelog text. My intention was to have the
+combined patch but with this text:
 
-gcc_recent_errors
-|-- sh-allmodconfig
-|   |-- sh4-linux-gcc:internal-compiler-error:Segmentation-fault-signal-terminated-program-cc1
-|   |-- standard-input:Error:expected-symbol-name
-|   `-- standard-input:Error:pcrel-too-far
-`-- sh-allyesconfig
-    |-- sh4-linux-gcc:internal-compiler-error:Segmentation-fault-signal-terminated-program-cc1
-    |-- standard-input:Error:expected-symbol-name
-    `-- standard-input:Error:pcrel-too-far
+    arch: include linux/cpu.h for trap_init() prototype
+   =20
+    some architectures run into a -Wmissing-prototypes warning
+    for trap_init()
+   =20
+    arch/microblaze/kernel/traps.c:21:6: warning: no previous prototype =
+for 'trap_init' [-Wmissing-prototypes]
+   =20
+    Include the right header to avoid this consistently, removing
+    the extra declarations on m68k and x86 that were added as local
+    workarounds already.
+   =20
+    Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-elapsed time: 1916m
 
-configs tested: 159
-configs skipped: 2
+I made the same mistake with the "arch: add do_page_fault prototypes"
+patch that was missing an explanation.
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20231108   gcc  
-arc                   randconfig-002-20231108   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                   randconfig-001-20231108   gcc  
-arm                   randconfig-002-20231108   gcc  
-arm                   randconfig-003-20231108   gcc  
-arm                   randconfig-004-20231108   gcc  
-arm64                            allmodconfig   gcc  
-arm64                             allnoconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20231108   gcc  
-arm64                 randconfig-002-20231108   gcc  
-arm64                 randconfig-003-20231108   gcc  
-arm64                 randconfig-004-20231108   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20231108   gcc  
-csky                  randconfig-002-20231108   gcc  
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20231108   gcc  
-i386         buildonly-randconfig-002-20231108   gcc  
-i386         buildonly-randconfig-003-20231108   gcc  
-i386         buildonly-randconfig-004-20231108   gcc  
-i386         buildonly-randconfig-005-20231108   gcc  
-i386         buildonly-randconfig-006-20231108   gcc  
-i386                                defconfig   gcc  
-i386                  randconfig-001-20231108   gcc  
-i386                  randconfig-002-20231108   gcc  
-i386                  randconfig-003-20231108   gcc  
-i386                  randconfig-004-20231108   gcc  
-i386                  randconfig-005-20231108   gcc  
-i386                  randconfig-006-20231108   gcc  
-i386                  randconfig-011-20231108   gcc  
-i386                  randconfig-012-20231108   gcc  
-i386                  randconfig-013-20231108   gcc  
-i386                  randconfig-014-20231108   gcc  
-i386                  randconfig-015-20231108   gcc  
-i386                  randconfig-016-20231108   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20231108   gcc  
-loongarch             randconfig-002-20231108   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20231108   gcc  
-nios2                 randconfig-002-20231108   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20231108   gcc  
-parisc                randconfig-002-20231108   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   gcc  
-powerpc               randconfig-001-20231108   gcc  
-powerpc               randconfig-002-20231108   gcc  
-powerpc               randconfig-003-20231108   gcc  
-powerpc64             randconfig-001-20231108   gcc  
-powerpc64             randconfig-002-20231108   gcc  
-powerpc64             randconfig-003-20231108   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                 randconfig-001-20231108   gcc  
-riscv                 randconfig-002-20231108   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                  randconfig-001-20231108   gcc  
-s390                  randconfig-002-20231108   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                    randconfig-001-20231108   gcc  
-sh                    randconfig-002-20231108   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                 randconfig-001-20231108   gcc  
-sparc                 randconfig-002-20231108   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20231108   gcc  
-sparc64               randconfig-002-20231108   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20231108   gcc  
-um                    randconfig-002-20231108   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-001-20231108   gcc  
-x86_64       buildonly-randconfig-002-20231108   gcc  
-x86_64       buildonly-randconfig-003-20231108   gcc  
-x86_64       buildonly-randconfig-004-20231108   gcc  
-x86_64       buildonly-randconfig-005-20231108   gcc  
-x86_64       buildonly-randconfig-006-20231108   gcc  
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20231108   gcc  
-x86_64                randconfig-002-20231108   gcc  
-x86_64                randconfig-003-20231108   gcc  
-x86_64                randconfig-004-20231108   gcc  
-x86_64                randconfig-005-20231108   gcc  
-x86_64                randconfig-006-20231108   gcc  
-x86_64                randconfig-011-20231108   gcc  
-x86_64                randconfig-012-20231108   gcc  
-x86_64                randconfig-013-20231108   gcc  
-x86_64                randconfig-014-20231108   gcc  
-x86_64                randconfig-015-20231108   gcc  
-x86_64                randconfig-016-20231108   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                randconfig-001-20231108   gcc  
-xtensa                randconfig-002-20231108   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+      Arnd
