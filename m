@@ -2,63 +2,128 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF4927E529E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Nov 2023 10:25:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DD707E559B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Nov 2023 12:34:47 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PvduQcNu;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=ctB0tYqJ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SQKSH4TGHz3cTT
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Nov 2023 20:25:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SQNKd3n33z3cTx
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Nov 2023 22:34:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PvduQcNu;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=ctB0tYqJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::623; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20623.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e19::623])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SQKRQ4MhFz30MQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Nov 2023 20:24:32 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1699435474; x=1730971474;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+ozbvOh9QgkXzArne3BozOuyXZ3IFbp01ExHHqvSLCA=;
-  b=PvduQcNuIyqAxhzuMsozCDDfFLNy23MSVcIz3WOxrNplR0KlcTaDYgVr
-   +7jsASNpxzEzDCNH9sWHec0WDZIDO+Dh68NNNW/utz9IqzG6QcGTsHnfZ
-   IpK531R7W5SdbgwXTPOjTt5Dq4LFldX8K37zw+fsexIghQowaV1ljUugp
-   ezwGq/iLaMSbipdywK2AdquZLXL68ptCvN/qWoX4iY0Cr9BtVf9XKwW91
-   XQahSeyr9+8N0P4LFjnRPAdQzIU0Gr+Ljj5d0zQo+JmGDeOg/ilXgNNef
-   gFu6HrokrUCnoou3bGVCSOufu0U6JIVFj7AQB/Cf2qhlFpAIHmFhNQT5d
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10887"; a="389534239"
-X-IronPort-AV: E=Sophos;i="6.03,285,1694761200"; 
-   d="scan'208";a="389534239"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2023 01:24:27 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10887"; a="880142456"
-X-IronPort-AV: E=Sophos;i="6.03,285,1694761200"; 
-   d="scan'208";a="880142456"
-Received: from lkp-server01.sh.intel.com (HELO 17d9e85e5079) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 08 Nov 2023 01:24:25 -0800
-Received: from kbuild by 17d9e85e5079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1r0enP-0007qe-1V;
-	Wed, 08 Nov 2023 09:24:23 +0000
-Date: Wed, 8 Nov 2023 17:24:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Yuanjun Gong <ruc_gongyuanjun@163.com>, tyreld@linux.ibm.com
-Subject: Re: [PATCH v2 1/1] powerpc: fix a memory leak
-Message-ID: <202311081645.j68Cla77-lkp@intel.com>
-References: <20230915020559.3396566-1-ruc_gongyuanjun@163.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SQNJk3WpCz3c1C
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Nov 2023 22:33:57 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bKYAMO1VFrvuGMqRp4MEAi7p1/0QKVdZSKOwVW9QQ5rr/PAwUME3/xmIx2uuMmT76s2Npyw4U2o7dqCVMlmB8zMmjtLgawe4Rsqd18x9ZeKHurQDaRE5qK+Aoc93OqWOH651u3QyhaaNw9EfaCzsffczNHSpJYD9uJVgXZ9ty3dDsbKLDhHoubPDalb+SCMXPFfHlUZXbiOZB9qV6OGqQhdpIaefYj6YqPYlTbudN3Jqf8tIp4rfpetSBV0Bxmki2Yvdjj9DwYGOG91iW5iMZ9cBYnkjigw1UsghSHLIQ2+uN8CM4xQ1VoKcHlxI22Zjzl0nDOaz8weGYWlRijEtTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VMOBGQFU8IqU41V+7aFU/aj6YNiGlG0TKrRLuu6+vRU=;
+ b=eLdC2eVElyR0dPaobWg7Md4+1kXaFVJn6qqFDZ7j0DLULkCK4ZtpqVCdD1Tvy/4dxLgNLgR+PvmeAel3fPDPQHIyy2ceAOqZuIPxjwLBGtLb7V66NuNlottttSM7BSteJQ0Zsm4J2Ger8FTruHuPH0bQ8ZVos8WzG1czX+uLkUEmd/KqyOOGzNw8kIrDiMfrN/pPelf1Pe88HSCl0tsEnc67KhL8uEuUNdGnH3uAYffx+dU/JgA5h/xJEsJ/JwHS79EMIeHqS3VPveR4g39I/xi+mfUm6Z6WljQlI8yne7G13e9DUch1Hc1kmQ4yzyRsInqVWIRmwld9k478LYPGOQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VMOBGQFU8IqU41V+7aFU/aj6YNiGlG0TKrRLuu6+vRU=;
+ b=ctB0tYqJz3zHPmVpEvgcskyWT1dq11sfdw6hcG7/QbzAu4Qk2ihiiS95ZYYWVz8E53um5xsRpeVxm0K2rAcEl9iHbgKEzN/gL9I8aGQ3blrfa8IOo0LumO8dVp/dgcLCnvbe2Zq7/uIUdAlDFMAIEInYA1eRItpKxvaspxGne8TnIa62uJeEP/Fq/29T9TYd9mRRLfE95XArqMv45k6tvEFAS8HSS5AuPS5OvweULSVg5g9dFyTvZDu5WrK1eKWpnO3VNVZW3YA3JgNFquWJP9caHHLxOlVR7PrRtMg7pT2hJR+C9sjk/zs8J4VPTda620UM8aDovzXTHyX1NXRCmA==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MR1P264MB2948.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:3d::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.18; Wed, 8 Nov
+ 2023 11:33:37 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::5bfe:e2f2:6d89:8d97]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::5bfe:e2f2:6d89:8d97%3]) with mapi id 15.20.6977.018; Wed, 8 Nov 2023
+ 11:33:37 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Pratyush Brahma <quic_pbrahma@quicinc.com>, "danielwa@cisco.com"
+	<danielwa@cisco.com>
+Subject: Re: [PATCH 1/4] add generic builtin command line
+Thread-Topic: [PATCH 1/4] add generic builtin command line
+Thread-Index: AQHZcUhJzils+7kRSECmbWEaEeT8Tq8vr4oAgR86pgCAIqITgA==
+Date: Wed, 8 Nov 2023 11:33:37 +0000
+Message-ID: <3d127abf-abdc-02e3-7c8b-a39b901ea641@csgroup.eu>
+References: <20230417162415.GF1391488@zorba>
+ <4c420081-fe57-d036-ded7-2899c13738ee@quicinc.com>
+In-Reply-To: <4c420081-fe57-d036-ded7-2899c13738ee@quicinc.com>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|MR1P264MB2948:EE_
+x-ms-office365-filtering-correlation-id: 9c5d09e7-3d5f-49a5-c71e-08dbe04e8cb9
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  9MR0zfgOFFZxGP7NMX+7ivv255W0YhT/CaZpSAUioCHe7EMdNdSstpJgmI4v5dccbFCUTQoSl8E5yeosIg/7zfNratnYQ7TRKBX3L3yGIqw4Z6mXlUmq16UZKJk4cosqo6iOXtd+VXZQdU4cuW776BtSoaaBnaAgILpJaBdek9VcmJpbLbzVZLAXDtB6Z/bOJ+TUS2PPbYAni+ZBI+5Wsalk86teCaQYeevnoB8/H2zchTTdYVqe2y+Vyp3dvpqqFgGSr5h++Pr0Ou/7NYiOEWvEtouN7G99chKqVSxO27QWEDKESe0LbH7P8mgvoQCWb2chGb3I1lMTIzUtjksiW8CWUZt9XB112lwH6kaDuREpYwPxDiw5qxmde/ViVjiVvzzUnhsR5etfAl8TNZsKsisdTXPkUzNSxCbRssHC8jH0U6ZbaqdvSAMcpKqk4V2kGTkCAOT2cdBxZKA8epR2VibXpPRevMOD2NphdkV/XPUTRrANEt5sgivwH3KNEMDF7hyuU58wfw5KFih1ErHtsAv3GY3pz6U94ISRA9of3laRAmex+wFfDy5KUHk3Hnvmoz5zcYrAcQfhw3k9TnzLKYZ/52PQoq+Ilg/qdKmlOac8KlJwMLeQ/HvdCsxf69we9cJW//1nXEwGnDI+KTsZ6P2xSAZ3ziYmSogRCx4lBVlrCpxbHgFBT2xD8S79NEK0
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(366004)(136003)(396003)(376002)(39850400004)(346002)(230922051799003)(186009)(451199024)(64100799003)(1800799009)(66446008)(66946007)(66556008)(66476007)(76116006)(64756008)(54906003)(91956017)(110136005)(36756003)(6506007)(6512007)(26005)(66574015)(38070700009)(31696002)(38100700002)(83380400001)(122000001)(71200400001)(86362001)(966005)(6486002)(478600001)(41300700001)(5660300002)(8676002)(8936002)(4326008)(44832011)(2616005)(31686004)(7416002)(2906002)(316002)(41533002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?Rks1L2d3a0FPU1M5cW9ROHhNRHRFT281aitpOEFmVGhiRmpuSW5wK0pZZFNU?=
+ =?utf-8?B?RmljZS8yZmQ1NG5ENTliQ0ttT3NVY0JsaTI4VTlsSkVFTUFYSlNHaHY5a0Vh?=
+ =?utf-8?B?cEpQbzNJMDUyTS9hQWVTZS9xVnNlRXVWd2YwMjB2YzQvRGhrK3Y3RHZ4YkRJ?=
+ =?utf-8?B?QjZqbHdUK2c4YUNNUFUraEVQcS8weHVUekhHY3I2NDNuclk4NzJaakFzdzl4?=
+ =?utf-8?B?bWdqc25Kc2twdmovNkpiRU9Vc3FsNEZ2ckJQdDZUOWlKVXZ4d1dHK1lwM0FD?=
+ =?utf-8?B?MWJjUUtKRjlILy9mOVJjVldqeGRRUjZGQ1FXd3Y1bEIzaGFrazZRRGJyYkZ1?=
+ =?utf-8?B?RjFSdWFtUEZtYzZZc0Zra3ljNUt0THF1ejJNZzlpM2pEWnA1Zmd5eVlvdHc3?=
+ =?utf-8?B?ZmlvQXZpWkZndldlZm5NaXBzWGxwd3dTVFMwTWVoWkFYOW01UWxKWFNhRzlE?=
+ =?utf-8?B?NG4xODBUYWxXYWpkS255VkhHcVp1SUxkOEx1bXB0YTBBSUlOTzltcnBlRnVq?=
+ =?utf-8?B?RzIrdGdlT0dLMzNkc2ZNbk1Tdzg3YXREekx6QVZRVWlmOUNNeHg4Wk1jM3la?=
+ =?utf-8?B?bTdobUMzWVUvTTFzaENQb1pJTWV3RUFQTU02ZzFVZGNJR3pvdTYwVGp5elh3?=
+ =?utf-8?B?K2p4NzdvMjFaNW9iWVhyaVdoRHBmUjl5OW8vK3VtUzFjb3ZOMzZ1QlJHb2tp?=
+ =?utf-8?B?YVV2ZUxwbU5Hd2lHNHFQYXNsYUV2cjkrWXRPRlc3YkJoSUVTNUw5dkV3cUM3?=
+ =?utf-8?B?Q2UrOEFNdEhjYkM4RmlHSnp0S0dGaXZyMHE2TjdQdTdRbkJsaWxzYVpFbkNh?=
+ =?utf-8?B?Z0FnaVhTc3VhUFpnOGxGN0o3bndVNUtoRi9xMHAyaXhZKzUrRXFzUVJLK1pK?=
+ =?utf-8?B?eXdrZjc2WXBMeml3SFQxNGt4NTBlQVpvbWdXZi9kNkJpbFF4MTJPN1I5ajFN?=
+ =?utf-8?B?RDZqUFA3U2dQNmQ5cDczSmF1RE1CVFdmdWYrRWFpNnNLckJuSFJqblNMRXgw?=
+ =?utf-8?B?VmJ5Rjg4eG5EaHp0RGlVdTA3NVR0ZGRJZ0pWZkIwKzc4ZUdudHJEbm8vMDV3?=
+ =?utf-8?B?ZkxERVdhN3N5QlEwenZ0ZG5TUUhnbzliWHhzcXFQVW9hcHFmUFk5YWFJQzVW?=
+ =?utf-8?B?Vm5IODJ3QmR3NmxGTzRjK0NOajMzSnhpRjJuaDNybS81MlJlTW1tNnFBelh6?=
+ =?utf-8?B?ME1TVkNRSTEwZDlrWXNkTDRidGZhcE5Pdk1oQ0MrTzNaWCsrR2JNMmoxakZZ?=
+ =?utf-8?B?YVBHNTYvWWpwcjI0MW81NFFpcENHODJXdzBRL2VxRE04eTE3blpkUDBFcVdU?=
+ =?utf-8?B?SUx5L2cvMXBCMHEwc1RRN1BIQ2plSGc5aThmM29KT3d0eXBYWGNCaU9vT0VX?=
+ =?utf-8?B?blFEeWYrVUxBLzhDL2tYVDFZQVV6VFpJaG9lN2xKNmhyUEtScmkxYzlOdTJD?=
+ =?utf-8?B?L2JadDFScnplTDRnaEVLNXlMZ3ZkVjhPVUlXdHAyQ1RGbFI5cmplNW1ZTXND?=
+ =?utf-8?B?UTY2bFVPMFlCNE11WGtRMDhTN0daSW5HOVBqZ21ObitwdzRqeXNGT2ErdWor?=
+ =?utf-8?B?ckhTbVZuY3ZzWUpNbktaVElHOGdWWjlOc2ZKWHp2REYvR09xNUF3QS9acXM5?=
+ =?utf-8?B?SVB3NFp5bmo2S09NUGV5MzByRjRyY0xneThXM25HQXQwZ3RQQ2tTQXBVcGs2?=
+ =?utf-8?B?ODdKWndqN0JKbzdyeWlvQkR4eWN1dUpmbm0yUForL3VaQ1JqSkd0c0hGUXBw?=
+ =?utf-8?B?a250TWFhK0pxMXBOVm90bzlNYkJKbWNpQjVSY29vdWJ1RUNmc0R6ODJzTTNu?=
+ =?utf-8?B?OXh2Ukk1SDVzZk9oMVhIb3p0ZGxRZFZQR0JYajY0MFl4Nmx5SEs2ckxWcE10?=
+ =?utf-8?B?UWhnYWNCZ2cybXc2anJtVzNTaitONnV3bVIrMnB3dFVKbzZkU1ROQzJkcVpj?=
+ =?utf-8?B?MWZmQWNrd1FhbzFINDg3YSs2ZmpNbHlDRC9sV2F6WWo1RDdNMlRQZTEwRzNk?=
+ =?utf-8?B?bUZLL3lnWGJIVXhrdHNja3BTT2JJYWwwR211WEZmeEJQN3RvaG0zN0FRL2Na?=
+ =?utf-8?B?SjRIcWNjMUhpaUtYdE5uTlNYM1lycVFkcDJ6eDBXb051Zi9GMjViTHcrQzV3?=
+ =?utf-8?Q?AWRx9AaAjTeg0ifDoLgSUTGNf?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <7E328B8B291FD942A12659F54970B605@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230915020559.3396566-1-ruc_gongyuanjun@163.com>
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c5d09e7-3d5f-49a5-c71e-08dbe04e8cb9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Nov 2023 11:33:37.5826
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ZhHTFEZXFqWopYl77X/yCxbKTogGhCkal4YEixIOokL6ptBAhZ/Qam20oAHnmGnLJyDm6qD2HOClS18LlNDVQz28lM/HgTEOL9PjsO8IV3Y=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR1P264MB2948
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,173 +135,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: llvm@lists.linux.dev, linux-kernel@vger.kernel.org, Yuanjun Gong <ruc_gongyuanjun@163.com>, npiggin@gmail.com, oe-kbuild-all@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
+Cc: Pavan Kondeti <quic_pkondeti@quicinc.com>, "tomas.mudrunka@gmail.com" <tomas.mudrunka@gmail.com>, "quic_vjitta@quicinc.com" <quic_vjitta@quicinc.com>, "xe-linux-external@cisco.com" <xe-linux-external@cisco.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "robh+dt@kernel.org" <robh+dt@kernel.org>, "quic_guptap@quicinc.com" <quic_guptap@quicinc.com>, "maksym.kokhan@globallogic.com" <maksym.kokhan@globallogic.com>, "dwalker@fifo99.com" <dwalker@fifo99.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Yuanjun,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on linus/master]
-[also build test ERROR on v6.6 next-20231108]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Yuanjun-Gong/powerpc-fix-a-memory-leak/20230915-100832
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20230915020559.3396566-1-ruc_gongyuanjun%40163.com
-patch subject: [PATCH v2 1/1] powerpc: fix a memory leak
-config: powerpc-allyesconfig (https://download.01.org/0day-ci/archive/20231108/202311081645.j68Cla77-lkp@intel.com/config)
-compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project.git 4a5ac14ee968ff0ad5d2cc1ffa0299048db4c88a)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231108/202311081645.j68Cla77-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202311081645.j68Cla77-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> arch/powerpc/platforms/powernv/vas.c:105:15: error: expected ';' after expression
-     105 |                 rc = -ENODEV
-         |                             ^
-         |                             ;
-   1 error generated.
-
-
-vim +105 arch/powerpc/platforms/powernv/vas.c
-
-    49	
-    50	static int init_vas_instance(struct platform_device *pdev)
-    51	{
-    52		struct device_node *dn = pdev->dev.of_node;
-    53		struct vas_instance *vinst;
-    54		struct xive_irq_data *xd;
-    55		uint32_t chipid, hwirq;
-    56		struct resource *res;
-    57		int rc, cpu, vasid;
-    58	
-    59		rc = of_property_read_u32(dn, "ibm,vas-id", &vasid);
-    60		if (rc) {
-    61			pr_err("No ibm,vas-id property for %s?\n", pdev->name);
-    62			return -ENODEV;
-    63		}
-    64	
-    65		rc = of_property_read_u32(dn, "ibm,chip-id", &chipid);
-    66		if (rc) {
-    67			pr_err("No ibm,chip-id property for %s?\n", pdev->name);
-    68			return -ENODEV;
-    69		}
-    70	
-    71		if (pdev->num_resources != 4) {
-    72			pr_err("Unexpected DT configuration for [%s, %d]\n",
-    73					pdev->name, vasid);
-    74			return -ENODEV;
-    75		}
-    76	
-    77		vinst = kzalloc(sizeof(*vinst), GFP_KERNEL);
-    78		if (!vinst)
-    79			return -ENOMEM;
-    80	
-    81		vinst->name = kasprintf(GFP_KERNEL, "vas-%d", vasid);
-    82		if (!vinst->name) {
-    83			kfree(vinst);
-    84			return -ENOMEM;
-    85		}
-    86	
-    87		INIT_LIST_HEAD(&vinst->node);
-    88		ida_init(&vinst->ida);
-    89		mutex_init(&vinst->mutex);
-    90		vinst->vas_id = vasid;
-    91		vinst->pdev = pdev;
-    92	
-    93		res = &pdev->resource[0];
-    94		vinst->hvwc_bar_start = res->start;
-    95	
-    96		res = &pdev->resource[1];
-    97		vinst->uwc_bar_start = res->start;
-    98	
-    99		res = &pdev->resource[2];
-   100		vinst->paste_base_addr = res->start;
-   101	
-   102		res = &pdev->resource[3];
-   103		if (res->end > 62) {
-   104			pr_err("Bad 'paste_win_id_shift' in DT, %llx\n", res->end);
- > 105			rc = -ENODEV
-   106			goto free_vinst;
-   107		}
-   108	
-   109		vinst->paste_win_id_shift = 63 - res->end;
-   110	
-   111		hwirq = xive_native_alloc_irq_on_chip(chipid);
-   112		if (!hwirq) {
-   113			pr_err("Inst%d: Unable to allocate global irq for chip %d\n",
-   114					vinst->vas_id, chipid);
-   115			rc = -ENOENT;
-   116			goto free_vinst;
-   117		}
-   118	
-   119		vinst->virq = irq_create_mapping(NULL, hwirq);
-   120		if (!vinst->virq) {
-   121			pr_err("Inst%d: Unable to map global irq %d\n",
-   122					vinst->vas_id, hwirq);
-   123			rc = -EINVAL;
-   124			goto free_vinst;
-   125		}
-   126	
-   127		xd = irq_get_handler_data(vinst->virq);
-   128		if (!xd) {
-   129			pr_err("Inst%d: Invalid virq %d\n",
-   130					vinst->vas_id, vinst->virq);
-   131			rc = -EINVAL;
-   132			goto free_vinst;
-   133		}
-   134	
-   135		vinst->irq_port = xd->trig_page;
-   136		pr_devel("Initialized instance [%s, %d] paste_base 0x%llx paste_win_id_shift 0x%llx IRQ %d Port 0x%llx\n",
-   137				pdev->name, vasid, vinst->paste_base_addr,
-   138				vinst->paste_win_id_shift, vinst->virq,
-   139				vinst->irq_port);
-   140	
-   141		for_each_possible_cpu(cpu) {
-   142			if (cpu_to_chip_id(cpu) == of_get_ibm_chip_id(dn))
-   143				per_cpu(cpu_vas_id, cpu) = vasid;
-   144		}
-   145	
-   146		mutex_lock(&vas_mutex);
-   147		list_add(&vinst->node, &vas_instances);
-   148		mutex_unlock(&vas_mutex);
-   149	
-   150		spin_lock_init(&vinst->fault_lock);
-   151		/*
-   152		 * IRQ and fault handling setup is needed only for user space
-   153		 * send windows.
-   154		 */
-   155		if (vinst->virq) {
-   156			rc = vas_irq_fault_window_setup(vinst);
-   157			/*
-   158			 * Fault window is used only for user space send windows.
-   159			 * So if vinst->virq is NULL, tx_win_open returns -ENODEV
-   160			 * for user space.
-   161			 */
-   162			if (rc)
-   163				vinst->virq = 0;
-   164		}
-   165	
-   166		vas_instance_init_dbgdir(vinst);
-   167	
-   168		dev_set_drvdata(&pdev->dev, vinst);
-   169	
-   170		return 0;
-   171	
-   172	free_vinst:
-   173		kfree(vinst->name);
-   174		kfree(vinst);
-   175		return rc;
-   176	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+SGkgUHJhdHl1c2gsDQoNCkxlIDE3LzEwLzIwMjMgw6AgMTI6NDAsIFByYXR5dXNoIEJyYWhtYSBh
+IMOpY3JpdMKgOg0KPiBIaSBEYW5pZWwNCj4gDQo+IFdlIGhhdmUgYSB1c2VjYXNlIHdoaWNoIHJl
+cXVpcmVzIHRoaXMgcGF0Y2ggbmVjZXNzYXJpbHkuIEZvciBhbmRyb2lkDQo+IHVzZWNhc2VzLCB3
+ZSBoYXZlIHR3byBkaWZmZXJlbnQgYnVpbGQgdmFyaWFudHMNCj4gZGlmZmVyZW50aWF0ZWQgYnkg
+ZGVmY29uZmlncyAtIHByb2R1Y3Rpb24gYW5kIGRlYnVnLiBIb3dldmVyLCB3ZSBvbmx5DQo+IGhh
+dmUgYSBzaW5nbGUgZHRzIGZvciBib3RoIHRoZXNlIHZhcmlhbnRzLg0KPiANCj4gDQo+IFdlIHdh
+bnQgdG8gZW5hYmxlIGNlcnRhaW4gZmVhdHVyZXMgbGlrZSBwYWdlIG93bmVyIGFuZCBzbHViIGRl
+YnVnIHdoaWNoDQo+IHJlcXVpcmUgY21kbGluZSBwYXJhbXMgaW4gYWRkaXRpb24gdG8NCj4gdGhl
+aXIgcmVzcGVjdGl2ZSBjb25maWdzIHRvIGJlIGVuYWJsZWQuIEVuYWJsaW5nIHBhZ2Vfb3duZXIg
+YW5kDQo+IHNsdWJfZGVidWcgb3B0aW9ucyBpbiBkdHMgZmlsZSBlbmFibGVzIGl0IGZvciBib3Ro
+DQo+IHByb2R1Y3Rpb24gYW5kIGRlYnVnIHZhcmlhbnRzLiBUaGVzZSBmZWF0dXJlcyBoYXZlIHNp
+Z25pZmljYW50IG1lbW9yeQ0KPiBvdmVyaGVhZCB3aGljaCBhcmUgdW5kZXNpcmFibGUgZm9yDQo+
+IG91ciBwcm9kdWN0aW9uIGVudmlyb25tZW50LiBIb3dldmVyLCB0aGVzZSBhcmUgbmVjZXNzYXJ5
+IGZvciBkZWJ1Zw0KPiBlbnZpcm9ubWVudCB0byBlbmFibGUgaW50ZXJuYWwgdGVzdGluZyBhbmQg
+ZGVidWcuDQo+IEN1cnJlbnRseSwgYW5kcm9pZCB1c2VzIG91dC1vZi10cmVlIGNvbmZpZ3MgbGlr
+ZSBDT05GSUdfQ01ETElORV9FWFRFTkQNCj4gdG8gZG8gc28gaW4gZ2tpX2RlZmNvbmZpZyBbMV0u
+DQo+IE9uZSBvcHRpb24gaXMgdG8gdXNlIENNRExJTkVfRk9SQ0Ugb3B0aW9uIHdoaWNoIHdvdWxk
+IGVuYWJsZSB0aGVzZQ0KPiBjbWRsaW5lIHBhcmFtcyBidXQgdGhpcyBkaXNhYmxlcyB0aGUgYm9v
+dGxvYWRlciB0byBhZGQNCj4gYW55IGFkZGl0aW9uYWwgY21kbGluZSBwYXJhbXMgd2hpY2ggbWF5
+IGJlIG5lY2Vzc2FyeS4NCj4gDQo+IA0KPiBGb3Igc3VjaCBhIHVzZWNhc2UsIHRoZSBDT05GSUdf
+Q01ETElORV9QUkVQRU5EIHNlZW1zIHRvIGJlIHF1aXRlIHVzZWZ1bA0KPiBhcyBpdCB3b3VsZCBo
+ZWxwIHRvIHN0aXRjaCBib290bG9hZGVyDQo+IGFuZCB0aGUgZGVzaXJlZCBidWlsZCB2YXJpYW50
+J3MgY29uZmlncyB0b2dldGhlci4gQ2FuIHlvdSBwbGVhc2UgaGVscCB0bw0KPiBtZXJnZSB0aGlz
+IHBhdGNoPw0KDQpBcyBmYXIgYXMgSSByZW1lbWJlciwgRGFuaWVsJ3MgcHJvcG9zYWwgaGFkIHNv
+bWUgd2Vha25lc3NlcyB0aGF0IHdlcmUgDQpuZXZlciBhZGRyZXNzZWQuIEF0IHRoYXQgdGltZSBJ
+IHByb3Bvc2VkIGFuIGFsdGVybmF0aXZlIHNlcmllcyB0aGF0IHdhcyANCmFkZHJlc3NpbmcgbW9z
+dCB3ZWFrbmVzc2VzLCBhbmQgbXkgc2VyaWVzIHdhcyBjb25zaWRlcmVkIG1vcmUgbWF0dXJlIA0K
+dGhhdCBEYW5pZWwncyBvbmUgYnkgc2V2ZXJhbCBtYWludGFpbmVycy4gQnV0IEkgbmV2ZXIgZ290
+IGVub3VnaCANCmZlZWRiYWNrIG9uIGl0IGluIG9yZGVyIHRvIGZpbmFsaXNlIGFuZCBtZXJnZSBp
+dC4NCg0KQ291bGQgeW91IGhhdmUgYSBsb29rIGF0IGl0IGFuZCB0ZWxsIGlmIGl0IGZpdHMgeW91
+ciBuZWVkID8gU2VlIA0KaHR0cHM6Ly9wYXRjaHdvcmsub3psYWJzLm9yZy9wcm9qZWN0L2xpbnV4
+cHBjLWRldi9saXN0Lz9zdGF0ZT0qJnNlcmllcz0yMzcxNTgNCg0KSWYgaXQgZG9lcywgSSBjYW4g
+dGhlbiByZWJhc2UgaXQgb24gbGF0ZXN0IGtlcm5lbCBhbmQgcmVzdGFydCANCmRpc2N1c3Npb25z
+IGluIG9yZGVyIHRvIGdldCBpdCBtZXJnZWQuDQoNClRoYW5rcw0KQ2hyaXN0b3BoZQ0KDQoNCg0K
+PiANCj4gDQo+IFsxXQ0KPiBodHRwczovL2FuZHJvaWQuZ29vZ2xlc291cmNlLmNvbS9rZXJuZWwv
+Y29tbW9uLysvcmVmcy9oZWFkcy9hbmRyb2lkMTQtNi4xLWx0cy9hcmNoL2FybTY0L2NvbmZpZ3Mv
+Z2tpX2RlZmNvbmZpZyM2Mg0KPiANCg==
