@@ -2,49 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04CF87E603E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Nov 2023 22:56:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D2C97E6041
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Nov 2023 22:57:11 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F6AhSnx+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fB+20slf;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SQf6r6QKKz3w7g
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Nov 2023 08:56:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SQf7n04Htz3vnx
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Nov 2023 08:57:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F6AhSnx+;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fB+20slf;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
 Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SQQJ22cnBz3cN4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Nov 2023 00:03:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SQQJJ2KFNz3cNH
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Nov 2023 00:03:44 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 4AD94CE109D;
-	Wed,  8 Nov 2023 13:03:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC83DC433C7;
-	Wed,  8 Nov 2023 13:03:12 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 58272CE10D3;
+	Wed,  8 Nov 2023 13:03:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7383C433CD;
+	Wed,  8 Nov 2023 13:03:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1699448606;
-	bh=XewRPhT99Y03FufuA1LV3jWgAM7RX4SOby0kMRaZJ00=;
+	s=k20201202; t=1699448620;
+	bh=bnImJ/ObQ6B/nPGCBESa5sKS25GC8i0wwxIop7YcLiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F6AhSnx+JWlw/8aCyGuswz0ZSYRQQSqJRkHGnHr5S62t5ovgeEl+lS12mVwd0pI3v
-	 Y+zAfCc5Nwlj0WYsOzdr9Eq32HI2RaGNa5FoSbN540gr3uvPV1TZcTv+GlOu0j4OlX
-	 qQTuDh0rNCJDIvSp4M8ZAM1Uva7F1HAj0lc/VmGLlwkw4IOfnudYpGOw5ziVke/2C2
-	 EkqHoTH8HohJ7VesdbcjVmGBhmSwgBIKuUYp0yqIOB51SEVlTxt8dhwKGCxaiCszkk
-	 BDDHzx12psT4hLvJdj1i+E8GUr/I3O6cE0KFRK815kGRZDuoEtduHrZrokFoYKTJqo
-	 JHKLDDVnaInUA==
+	b=fB+20slfPiqKAzspVuOp7lysgQWfK95LP/RKlxiC8AEKx8BhFN4kkk4QP6uLjjcZa
+	 wj1ifWdy+iqHN8jUfTP7LMVixMNQzf+PdxJ5aRFwn8+sF8x5oxrMJ+cw7Tf1SY6evs
+	 aTHloPIblEvwjvbG5tJspyjJPZMcOELbwuprmNsKC8br0ev0EeD+X5Pv+YyMMBcX7a
+	 fT29jHc3T0fxWzZcbGd7mitVkS7vZsG9opCG70PpS8kj6ljhs3UbNxZWIByHhdYChg
+	 /Twm4eSdr3h6kTuBlQTn9xPE9UHRMNkG+6odLROmc+7rhVe0JD5IS0bLdAqqjskcMv
+	 HeN+BJ0kN316g==
 From: Arnd Bergmann <arnd@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	linux-kernel@vger.kernel.org,
 	Masahiro Yamada <masahiroy@kernel.org>,
 	linux-kbuild@vger.kernel.org
-Subject: [PATCH 18/22] powerpc: pasemi: mark pas_shutdown() static
-Date: Wed,  8 Nov 2023 13:58:39 +0100
-Message-Id: <20231108125843.3806765-19-arnd@kernel.org>
+Subject: [PATCH 19/22] powerpc: powermac: mark smp_psurge_{give,take}_timebase static
+Date: Wed,  8 Nov 2023 13:58:40 +0100
+Message-Id: <20231108125843.3806765-20-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231108125843.3806765-1-arnd@kernel.org>
 References: <20231108125843.3806765-1-arnd@kernel.org>
@@ -70,30 +70,43 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-Allmodconfig builds show a warning about one function that is accidentally
-marked global:
+These functions are only called locally and should be static like the
+other corresponding functions are:
 
-arch/powerpc/platforms/pasemi/setup.c:67:6: error: no previous prototype for 'pas_shutdown' [-Werror=missing-prototypes]
+arch/powerpc/platforms/powermac/smp.c:416:13: error: no previous prototype for 'smp_psurge_take_timebase' [-Werror=missing-prototypes]
+  416 | void __init smp_psurge_take_timebase(void)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~
+arch/powerpc/platforms/powermac/smp.c:432:13: error: no previous prototype for 'smp_psurge_give_timebase' [-Werror=missing-prototypes]
+  432 | void __init smp_psurge_give_timebase(void)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~
 
-Fixes: 656fdf3ad8e0 ("powerpc/pasemi: Add Nemo board device init code.")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/powerpc/platforms/pasemi/setup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/platforms/powermac/smp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pasemi/setup.c b/arch/powerpc/platforms/pasemi/setup.c
-index ef985ba2bf21..0761d98e5be3 100644
---- a/arch/powerpc/platforms/pasemi/setup.c
-+++ b/arch/powerpc/platforms/pasemi/setup.c
-@@ -64,7 +64,7 @@ static void __noreturn pas_restart(char *cmd)
+diff --git a/arch/powerpc/platforms/powermac/smp.c b/arch/powerpc/platforms/powermac/smp.c
+index c83d1e14077e..15644be31990 100644
+--- a/arch/powerpc/platforms/powermac/smp.c
++++ b/arch/powerpc/platforms/powermac/smp.c
+@@ -413,7 +413,7 @@ static void __init smp_psurge_setup_cpu(int cpu_nr)
+ 		printk(KERN_ERR "Couldn't get primary IPI interrupt");
  }
  
- #ifdef CONFIG_PPC_PASEMI_NEMO
--void pas_shutdown(void)
-+static void pas_shutdown(void)
+-void __init smp_psurge_take_timebase(void)
++static void __init smp_psurge_take_timebase(void)
  {
- 	/* Set the PLD bit that makes the SB600 think the power button is being pressed */
- 	void __iomem *pld_map = ioremap(0xf5000000,4096);
+ 	if (psurge_type != PSURGE_DUAL)
+ 		return;
+@@ -429,7 +429,7 @@ void __init smp_psurge_take_timebase(void)
+ 	set_dec(tb_ticks_per_jiffy/2);
+ }
+ 
+-void __init smp_psurge_give_timebase(void)
++static void __init smp_psurge_give_timebase(void)
+ {
+ 	/* Nothing to do here */
+ }
 -- 
 2.39.2
 
