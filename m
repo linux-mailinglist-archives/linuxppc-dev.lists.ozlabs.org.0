@@ -1,49 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D39777E6244
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Nov 2023 03:36:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2155F7E61BA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Nov 2023 02:09:29 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=DRVx43nS;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SQmL15tL9z3cWF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Nov 2023 13:36:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SQkPg0B1gz3cVH
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Nov 2023 12:09:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=chengzhihao1@huawei.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 941 seconds by postgrey-1.37 at boromir; Thu, 09 Nov 2023 12:24:34 AEDT
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=DRVx43nS;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::c30; helo=mail-oo1-xc30.google.com; envelope-from=amoorthy@google.com; receiver=lists.ozlabs.org)
+Received: from mail-oo1-xc30.google.com (mail-oo1-xc30.google.com [IPv6:2607:f8b0:4864:20::c30])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SQkl60HrSz2yVZ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Nov 2023 12:24:29 +1100 (AEDT)
-Received: from kwepemm000013.china.huawei.com (unknown [172.30.72.53])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4SQkN45Xx2zfb3S;
-	Thu,  9 Nov 2023 09:08:04 +0800 (CST)
-Received: from [10.174.178.46] (10.174.178.46) by
- kwepemm000013.china.huawei.com (7.193.23.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Thu, 9 Nov 2023 09:07:44 +0800
-Subject: Re: [PATCH 02/22] [RESEND^2] jffs2: mark
- __jffs2_dbg_superblock_counts() static
-To: Arnd Bergmann <arnd@kernel.org>, Andrew Morton
-	<akpm@linux-foundation.org>, <linux-kernel@vger.kernel.org>, Masahiro Yamada
-	<masahiroy@kernel.org>, <linux-kbuild@vger.kernel.org>
-References: <20231108125843.3806765-1-arnd@kernel.org>
- <20231108125843.3806765-3-arnd@kernel.org>
-From: Zhihao Cheng <chengzhihao1@huawei.com>
-Message-ID: <cf3724db-e130-01f2-c41e-f2f1e88fc1a8@huawei.com>
-Date: Thu, 9 Nov 2023 09:07:44 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SQkNn0sM8z2yst
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Nov 2023 12:08:40 +1100 (AEDT)
+Received: by mail-oo1-xc30.google.com with SMTP id 006d021491bc7-587b1231dbeso165026eaf.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Nov 2023 17:08:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1699492117; x=1700096917; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7QtjMEn3JvZfL2+9Ot0aHfDjSbnUMOfTRHsLPFnN/cE=;
+        b=DRVx43nSAGOYKUFg7Y4CLQSkWSyy1HJePG026Xoz30FfGO/750xippUrd03ZLze/d1
+         vcmTrL1LksJUHjjpgSlJybNvEhOeDY2VP5QWI6AyWZf34mOyml81UOznZaxeEo/ktOKU
+         qDLRYMBtMAohczjDERhlTs6oCclWKRRGPwTccHqg4ORPu0Lhh+qDm+dLvQJHL9PoY9y4
+         rhTwGnITLt05S3ukkdMtXzoPlpf36wMMG1cHcsz+NsOf/UBlmRlbOTl8E2EpP6MWGnzz
+         xfBJTtbYbJbRxaG5krSgDZO3OmJWgPCNc07/1VuI4r7SyT3klh3gANziysrxtGcuorcs
+         XvVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699492117; x=1700096917;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7QtjMEn3JvZfL2+9Ot0aHfDjSbnUMOfTRHsLPFnN/cE=;
+        b=RbuJlbMHSLngk6g0aVRs1EMTIG5qBpdtpL2bxlCwMZbp76zHl5A3iDlzq81lCqmNVF
+         ehYdXcwfL2KxtVkFnf89XExHM3DYDbIayegvX0g8Lt0NEkudiEqQsxfgjxAUusq6F3Pn
+         PgrHr0giMfWCTB7SALUrjLbemepNEOSFXRFqkxU7IAJaB39i4awwQI/SUbjj+9z43BZl
+         ZxQT5sPdrL0xN2aCtifnbB2adeAKBeeYInYWO5eotZaGTSNgUnHFtOKy1vV1UQQAXiAl
+         mt4urZuApR6E0AVRV9smfkbHcEWhKsimX7IKRVzibQHT3NqkZcfYzWNhchgjX5HQ0qdJ
+         AXYw==
+X-Gm-Message-State: AOJu0Yyn9sZizdxLr3HlXWAShecGSr0QEIZnX8PNok8BwIeOqOzPrX5b
+	0oqBaE4ntifiZUr1Z8Cbz18IW5r+CRuXBbNPmW//WQ==
+X-Google-Smtp-Source: AGHT+IFaOEA03XuxazKl3zVOaUpDe2bAHjHbEU9NUIQA9ZcNh5LArgqxcn+4MTtdSbfjNu4oRqbtO3sH2+Wygyf9VBk=
+X-Received: by 2002:a4a:e088:0:b0:587:873d:7e2c with SMTP id
+ w8-20020a4ae088000000b00587873d7e2cmr3411182oos.1.1699492116891; Wed, 08 Nov
+ 2023 17:08:36 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20231108125843.3806765-3-arnd@kernel.org>
-Content-Type: text/plain; charset="gbk"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.46]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemm000013.china.huawei.com (7.193.23.81)
-X-CFilter-Loop: Reflected
-X-Mailman-Approved-At: Thu, 09 Nov 2023 13:36:01 +1100
+References: <20231105163040.14904-1-pbonzini@redhat.com> <20231105163040.14904-35-pbonzini@redhat.com>
+In-Reply-To: <20231105163040.14904-35-pbonzini@redhat.com>
+From: Anish Moorthy <amoorthy@google.com>
+Date: Wed, 8 Nov 2023 17:08:01 -0800
+Message-ID: <CAF7b7mpmuYLTY6OQfRRoOryfO-2e1ZumQ6SCQDHHPD5XFyhFTQ@mail.gmail.com>
+Subject: Re: [PATCH 34/34] KVM: selftests: Add a memory region subtest to
+ validate invalid flags
+To: Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,24 +76,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Juri Lelli <juri.lelli@redhat.com>, linux-fbdev@vger.kernel.org, x86@kernel.org, loongarch@lists.linux.dev, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, dri-devel@lists.freedesktop.org, netdev@vger.kernel.org, Guo Ren <guoren@kernel.org>, Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Vincenzo Frascino <vincenzo.frascino@arm.com>, Will Deacon <will@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-s390@vger.kernel.org, Vincent Guittot <vincent.guittot@linaro.org>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, Ard Biesheuvel <ardb@kernel.org>, linux-bcachefs@vger.kernel.org, Tudor Ambarus <tudor.ambarus@linaro.org>, Ingo Molnar <mingo@redhat.com>, Vineet Gupta <vgupta@kernel.org>, "Naveen
- N. Rao" <naveen.n.rao@linux.ibm.com>, Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org, linux-trace-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>, =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, Nathan Chancellor <nathan@kernel.org>, linux-m68k@lists.linux-m68k.org, linux-csky@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, Andy Lutomirski <luto@kernel.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Timur Tabi <timur@kernel.org>, Geoff Levand <geoff@infradead.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Kent Overstreet <kent.overstreet@linux.dev>, Nick Desaulniers <ndesaulniers@goog
- le.com>, linux-mips@vger.kernel.org, Sudip Mukherjee <sudipm.mukherjee@gmail.com>, Dinh Nguyen <dinguyen@kernel.org>, linux-usb@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Masami Hiramatsu <mhiramat@kernel.org>, linux-alpha@vger.kernel.org, linux-mtd@lists.infradead.org, David Woodhouse <dwmw2@infradead.org>, "David S. Miller" <davem@davemloft.net>, Al Viro <viro@zeniv.linux.org.uk>
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Vlastimil Babka <vbabka@suse.cz>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, Isaku Yamahata <isaku.yamahata@intel.com>, Christian Brauner <brauner@kernel.org>, Quentin Perret <qperret@google.com>, S
+ ean Christopherson <seanjc@google.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, David Matlack <dmatlack@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Liam Merwick <liam.merwick@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Xu Yilun <yilun.xu@intel.com>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-ÔÚ 2023/11/8 20:58, Arnd Bergmann Ð´µÀ:
-> From: Arnd Bergmann <arnd@arndb.de>
+Applying [1] and [2] reveals that this also breaks non-x86 builds- the
+MEM_REGION_GPA/SLOT definitions are guarded behind an #ifdef
+__x86_64__, while the usages introduced here aren't.
+
+Should
+
+On Sun, Nov 5, 2023 at 8:35=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.com> =
+wrote:
 >
-> This function is only called locally and does not need to be
-> global. Since there is no external prototype, gcc warns about
-> the non-static definition:
->
-> fs/jffs2/debug.c:160:6: error: no previous prototype for '__jffs2_dbg_superblock_counts' [-Werror=missing-prototypes]
->
-> Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->   fs/jffs2/debug.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+> +       test_invalid_memory_region_flags();
+
+be #ifdef'd, perhaps? I'm not quite sure what the intent is.
+
+Side note: I wasn't able to get [2] to apply by copy-pasting the diff
+and trying "git apply", and that was after checking out the relevant
+commit. Eventually I just did it manually. If anyone can successfully
+apply it, please let me know what you did so I can see what I was
+doing wrong :)
+
+[1] https://lore.kernel.org/kvm/20231108233723.3380042-1-amoorthy@google.co=
+m/
+[2] https://lore.kernel.org/kvm/affca7a8-116e-4b0f-9edf-6cdc05ba65ca@redhat=
+.com/
