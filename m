@@ -1,52 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 485CD7E88E6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Nov 2023 04:14:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BED987E7D27
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Nov 2023 15:50:38 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=N3RzrTPU;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SS15D3HHwz3dBY
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Nov 2023 14:14:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SRhZh52LTz3cYV
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Nov 2023 01:50:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=lists.ozlabs.org)
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=N3RzrTPU;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SRdnb0QkFz3cNY
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Nov 2023 23:44:49 +1100 (AEDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1r1Qqm-0008RY-G3; Fri, 10 Nov 2023 13:43:04 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1r1Qqd-0081VE-CM; Fri, 10 Nov 2023 13:42:55 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1r1Qqd-00Gimy-0Z; Fri, 10 Nov 2023 13:42:55 +0100
-Date: Fri, 10 Nov 2023 13:41:23 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH 04/22] [RESEND] time: make sysfs_get_uname() function
- visible in header
-Message-ID: <20231110124123.5mado2cc5vnywqfx@pengutronix.de>
-References: <20231108125843.3806765-1-arnd@kernel.org>
- <20231108125843.3806765-5-arnd@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SRhYn6Q81z3cG6
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Nov 2023 01:49:49 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AAEgeHR023896;
+	Fri, 10 Nov 2023 14:49:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-type; s=pp1;
+ bh=8EgQILAIzxCVrDZs6HD2DIpTAOE0C30qR5bidQWM848=;
+ b=N3RzrTPUy0oDABHEdtVrwu/vaiSttxBKTbW9ypBQRSGpih6Y06EaR2t7JEAUyAuUU+ix
+ CJolZrp5w38F4nAfi3L1ZrCk383Wf7jQbByn36luegBz2T5TtY7PgdSNGjs169Cb+h9G
+ dsHou35QoERRG7/45IvmchhKw9OiYJdn44eBnXduWmSLz+S5c+htsKJlnhxrHKZTgNSa
+ tYHB2gkDgEAKmypr57y/jRTpBXWKKAx2L0QIz0UtUngrogv+iXEBZ5gb5hWl/CNHQUb7
+ 6wWRCEtUiT5Nejj+zN3tlYC081NaxISv/5HjkMRdWeiP7i9Iu+AC2mxZWuycyYOP+/z0 4Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u9ph3r6cq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 10 Nov 2023 14:49:33 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AAEhI8J029268;
+	Fri, 10 Nov 2023 14:49:32 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u9ph3r6c3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 10 Nov 2023 14:49:32 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3AAE0uEi003431;
+	Fri, 10 Nov 2023 14:49:31 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3u7w22bfx8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 10 Nov 2023 14:49:31 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3AAEnUFf6554222
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 10 Nov 2023 14:49:31 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 929F558051;
+	Fri, 10 Nov 2023 14:49:30 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EDE105805A;
+	Fri, 10 Nov 2023 14:49:27 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.43.3.89])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 10 Nov 2023 14:49:27 +0000 (GMT)
+X-Mailer: emacs 29.1 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+        Jason Gunthorpe <jgg@nvidia.com>, David Hildenbrand <david@redhat.com>,
+        akpm@linux-foundation.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: get_user_pages() and EXEC_ONLY mapping.
+Date: Fri, 10 Nov 2023 20:19:23 +0530
+Message-ID: <87bkc1oe8c.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ljpauxr7qypfgjtq"
-Content-Disposition: inline
-In-Reply-To: <20231108125843.3806765-5-arnd@kernel.org>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
-X-Mailman-Approved-At: Sat, 11 Nov 2023 14:14:16 +1100
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: h6iFfAsG-ZU_npkoCH6EsMix9gfG4l19
+X-Proofpoint-ORIG-GUID: Wsorie0BiqKyNeoiLVGcjmznJSoa1yB7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-10_12,2023-11-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=299
+ suspectscore=0 adultscore=0 priorityscore=1501 phishscore=0 clxscore=1011
+ mlxscore=0 malwarescore=0 impostorscore=0 spamscore=0 lowpriorityscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311100122
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,59 +96,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Juri Lelli <juri.lelli@redhat.com>, linux-fbdev@vger.kernel.org, x86@kernel.org, loongarch@lists.linux.dev, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, netdev@vger.kernel.org, Guo Ren <guoren@kernel.org>, Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>, Helge Deller <deller@gmx.de>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Vincenzo Frascino <vincenzo.frascino@arm.com>, Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-s390@vger.kernel.org, Vincent Guittot <vincent.guittot@linaro.org>, Masahiro Yamada <masahiroy@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, Greg Ungerer <gerg@linux-m68k.org>, linux-bcachefs@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, Vineet Gupta <vgupta@kernel.org>, "Naveen N.
-  Rao" <naveen.n.rao@linux.ibm.com>, Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org, linux-trace-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, linux-kbuild@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Steven Rostedt <rostedt@goodmis.org>, Nathan Chancellor <nathan@kernel.org>, linux-m68k@lists.linux-m68k.org, linux-csky@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Andy Lutomirski <luto@kernel.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Timur Tabi <timur@kernel.org>, Geoff Levand <geoff@infradead.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Kent Overstreet <kent.overstreet@linux.dev>, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, S
- udip Mukherjee <sudipm.mukherjee@gmail.com>, Dinh Nguyen <dinguyen@kernel.org>, linux-usb@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Masami Hiramatsu <mhiramat@kernel.org>, linux-alpha@vger.kernel.org, linux-mtd@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>, David Woodhouse <dwmw2@infradead.org>, "David S. Miller" <davem@davemloft.net>, Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---ljpauxr7qypfgjtq
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hello,
 
-Hello Arnd,
+Some architectures can now support EXEC_ONLY mappings and I am wondering
+what get_user_pages() on those addresses should return. Earlier
+PROT_EXEC implied PROT_READ and pte_access_permitted() returned true for
+that. But arm64 does have this explicit comment that says
 
-On Wed, Nov 08, 2023 at 01:58:25PM +0100, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
->=20
-> This function is defined globally in clocksource.c and used conditionally
-> in clockevent.c, which the declaration hidden when clockevent support
+ /*
+ * p??_access_permitted() is true for valid user mappings (PTE_USER
+ * bit set, subject to the write permission check). For execute-only
+ * mappings, like PROT_EXEC with EPAN (both PTE_USER and PTE_UXN bits
+ * not set) must return false. PROT_NONE mappings do not have the
+ * PTE_VALID bit set.
+ */
 
-s/which/with/ ?
+Is that correct? We should be able to get struct page for PROT_EXEC
+mappings?
 
-> is disabled. This causes a harmless warning in the definition:
->=20
-> kernel/time/clocksource.c:1324:9: warning: no previous prototype for 'sys=
-fs_get_uname' [-Wmissing-prototypes]
->  1324 | ssize_t sysfs_get_uname(const char *buf, char *dst, size_t cnt)
->=20
-> Move the declaration out of the #ifdef so it is always visible.
->=20
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-
-Other than that:
-
-Reviewed-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---ljpauxr7qypfgjtq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmVOJO4ACgkQj4D7WH0S
-/k65EAf/UjDsSsmivHFeg9uWSJLPICzRXZuL3swrSrbDypaI8PuJaX8767ZWsiYT
-oDeWDpXzpAvyvz7WUCuFkRJIytR6EpscoR2t39XsflnxAYmcgYmiBDesY/A6xtuZ
-k2ZldHp9NVszzJP3PiXQ8JOcEFA1LEc08SjHzEz4F6QAsno6WZD/do4yBIU+ikEg
-57Rbk4CJghGfXhgOAmwcWrN91qOFQwhPpKHHDgFfYSZ3zLo+f6H9hSUkzOuLGDhx
-zbK1UnRCuRi3iiJlIqS2LzaSySmRQ9tsbtjk9aQx7+GqdGprHajLMikxQ13xn8jh
-U+F4kOqRAwsIV6i5/GUFGEGtLnMsSQ==
-=9raj
------END PGP SIGNATURE-----
-
---ljpauxr7qypfgjtq--
+-aneesh
