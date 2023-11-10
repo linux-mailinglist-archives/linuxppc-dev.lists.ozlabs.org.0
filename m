@@ -1,29 +1,29 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CEF37E7960
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Nov 2023 07:33:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEA587E7964
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Nov 2023 07:33:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SRTXh0Y25z3wCW
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Nov 2023 17:33:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SRTYB5T1dz3wFh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Nov 2023 17:33:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SRTQx73fQz3cZq
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Nov 2023 17:28:09 +1100 (AEDT)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 6EB9C1A1C9E;
-	Fri, 10 Nov 2023 07:28:07 +0100 (CET)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SRTQz1LQWz3cVb
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Nov 2023 17:28:11 +1100 (AEDT)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 9C0FF200B17;
+	Fri, 10 Nov 2023 07:28:08 +0100 (CET)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 16FCB1A1C90;
-	Fri, 10 Nov 2023 07:28:07 +0100 (CET)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 37F1F200AF3;
+	Fri, 10 Nov 2023 07:28:08 +0100 (CET)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 26C6D183AD44;
-	Fri, 10 Nov 2023 14:28:05 +0800 (+08)
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 99C5A183AD50;
+	Fri, 10 Nov 2023 14:28:06 +0800 (+08)
 From: Shengjiu Wang <shengjiu.wang@nxp.com>
 To: hverkuil@xs4all.nl,
 	sakari.ailus@iki.fi,
@@ -42,9 +42,9 @@ To: hverkuil@xs4all.nl,
 	tiwai@suse.com,
 	alsa-devel@alsa-project.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v9 10/15] media: uapi: Add V4L2_CTRL_TYPE_FIXED_POINT
-Date: Fri, 10 Nov 2023 13:48:04 +0800
-Message-Id: <1699595289-25773-11-git-send-email-shengjiu.wang@nxp.com>
+Subject: [PATCH v9 11/15] media: uapi: Add audio rate controls support
+Date: Fri, 10 Nov 2023 13:48:05 +0800
+Message-Id: <1699595289-25773-12-git-send-email-shengjiu.wang@nxp.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1699595289-25773-1-git-send-email-shengjiu.wang@nxp.com>
 References: <1699595289-25773-1-git-send-email-shengjiu.wang@nxp.com>
@@ -63,154 +63,93 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fixed point controls are used by the user to configure
-a fixed point value in 64bits, which Q31.32 format.
+Add V4L2_CID_M2M_AUDIO_SOURCE_RATE and V4L2_CID_M2M_AUDIO_DEST_RATE
+new IDs for rate control.
+
+Add V4L2_CID_M2M_AUDIO_SOURCE_RATE_OFFSET and
+V4L2_CID_M2M_AUDIO_DEST_RATE_OFFSET for clock drift.
 
 Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 ---
- .../userspace-api/media/v4l/vidioc-g-ext-ctrls.rst  | 13 +++++++------
- .../userspace-api/media/v4l/vidioc-queryctrl.rst    |  9 ++++++++-
- .../userspace-api/media/videodev2.h.rst.exceptions  |  1 +
- drivers/media/v4l2-core/v4l2-ctrls-api.c            |  5 ++++-
- drivers/media/v4l2-core/v4l2-ctrls-core.c           |  2 ++
- include/uapi/linux/videodev2.h                      |  1 +
- 6 files changed, 23 insertions(+), 8 deletions(-)
+ .../media/v4l/ext-ctrls-audio-m2m.rst         | 20 +++++++++++++++++++
+ drivers/media/v4l2-core/v4l2-ctrls-defs.c     | 12 +++++++++++
+ include/uapi/linux/v4l2-controls.h            |  5 +++++
+ 3 files changed, 37 insertions(+)
 
-diff --git a/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst b/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
-index e8475f9fd2cf..e7e5d78dc11e 100644
---- a/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
-+++ b/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
-@@ -162,13 +162,13 @@ still cause this situation.
-     * - __s32
-       - ``value``
-       - New value or current value. Valid if this control is not of type
--	``V4L2_CTRL_TYPE_INTEGER64`` and ``V4L2_CTRL_FLAG_HAS_PAYLOAD`` is
--	not set.
-+	``V4L2_CTRL_TYPE_INTEGER64``, ``V4L2_CTRL_TYPE_FIXED_POINT`` and
-+	``V4L2_CTRL_FLAG_HAS_PAYLOAD`` is not set.
-     * - __s64
-       - ``value64``
-       - New value or current value. Valid if this control is of type
--	``V4L2_CTRL_TYPE_INTEGER64`` and ``V4L2_CTRL_FLAG_HAS_PAYLOAD`` is
--	not set.
-+	``V4L2_CTRL_TYPE_INTEGER64``, ``V4L2_CTRL_TYPE_FIXED_POINT`` and
-+	``V4L2_CTRL_FLAG_HAS_PAYLOAD`` is not set.
-     * - char *
-       - ``string``
-       - A pointer to a string. Valid if this control is of type
-@@ -193,8 +193,9 @@ still cause this situation.
-     * - __s64 *
-       - ``p_s64``
-       - A pointer to a matrix control of signed 64-bit values. Valid if
--        this control is of type ``V4L2_CTRL_TYPE_INTEGER64`` and
--        ``V4L2_CTRL_FLAG_HAS_PAYLOAD`` is set.
-+        this control is of type ``V4L2_CTRL_TYPE_INTEGER64``,
-+        ``V4L2_CTRL_TYPE_FIXED_POINT`` and ``V4L2_CTRL_FLAG_HAS_PAYLOAD``
-+        is set.
-     * - struct :c:type:`v4l2_area` *
-       - ``p_area``
-       - A pointer to a struct :c:type:`v4l2_area`. Valid if this control is
-diff --git a/Documentation/userspace-api/media/v4l/vidioc-queryctrl.rst b/Documentation/userspace-api/media/v4l/vidioc-queryctrl.rst
-index 4d38acafe8e1..f3995ec57044 100644
---- a/Documentation/userspace-api/media/v4l/vidioc-queryctrl.rst
-+++ b/Documentation/userspace-api/media/v4l/vidioc-queryctrl.rst
-@@ -235,7 +235,8 @@ See also the examples in :ref:`control`.
-       - ``default_value``
-       - The default value of a ``V4L2_CTRL_TYPE_INTEGER``, ``_INTEGER64``,
- 	``_BOOLEAN``, ``_BITMASK``, ``_MENU``, ``_INTEGER_MENU``, ``_U8``
--	or ``_U16`` control. Not valid for other types of controls.
-+	``_FIXED_POINT`` or ``_U16`` control. Not valid for other types of
-+	controls.
+diff --git a/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst b/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
+index 82d2ecedbfee..a3c06fbb91b9 100644
+--- a/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
++++ b/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
+@@ -19,3 +19,23 @@ Audio M2M Control IDs
+     The Audio M2M class descriptor. Calling
+     :ref:`VIDIOC_QUERYCTRL` for this control will
+     return a description of this control class.
++
++.. _v4l2-audio-asrc:
++
++``V4L2_CID_M2M_AUDIO_SOURCE_RATE (integer menu)``
++    Sets the audio source sample rate, unit is Hz
++
++``V4L2_CID_M2M_AUDIO_DEST_RATE (integer menu)``
++    Sets the audio destination sample rate, unit is Hz
++
++``V4L2_CID_M2M_AUDIO_SOURCE_RATE_OFFSET (fixed point)``
++    Sets the offset from the audio source sample rate, unit is Hz.
++    The offset compensates for any clock drift. The actual source audio sample
++    rate is the ideal source audio sample rate from
++    ``V4L2_CID_M2M_AUDIO_SOURCE_RATE`` plus this fixed point offset.
++
++``V4L2_CID_M2M_AUDIO_DEST_RATE_OFFSET (fixed point)``
++    Sets the offset from the audio dest sample rate, unit is Hz.
++    The offset compensates for any clock drift. The actual dest audio sample
++    rate is the ideal source audio sample rate from
++    ``V4L2_CID_M2M_AUDIO_DEST_RATE`` plus this fixed point offset.
+diff --git a/drivers/media/v4l2-core/v4l2-ctrls-defs.c b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+index 2a85ea3dc92f..b695cbdd1f6e 100644
+--- a/drivers/media/v4l2-core/v4l2-ctrls-defs.c
++++ b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+@@ -1245,6 +1245,10 @@ const char *v4l2_ctrl_get_name(u32 id)
  
- 	.. note::
- 
-@@ -549,6 +550,12 @@ See also the examples in :ref:`control`.
-       - n/a
-       - A struct :c:type:`v4l2_ctrl_av1_film_grain`, containing AV1 Film Grain
-         parameters for stateless video decoders.
-+    * - ``V4L2_CTRL_TYPE_FIXED_POINT``
-+      - any
-+      - any
-+      - any
-+      - A 64-bit integer valued control, containing parameter which is
-+        Q31.32 format.
- 
- .. raw:: latex
- 
-diff --git a/Documentation/userspace-api/media/videodev2.h.rst.exceptions b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
-index e61152bb80d1..2faa5a2015eb 100644
---- a/Documentation/userspace-api/media/videodev2.h.rst.exceptions
-+++ b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
-@@ -167,6 +167,7 @@ replace symbol V4L2_CTRL_TYPE_AV1_SEQUENCE :c:type:`v4l2_ctrl_type`
- replace symbol V4L2_CTRL_TYPE_AV1_TILE_GROUP_ENTRY :c:type:`v4l2_ctrl_type`
- replace symbol V4L2_CTRL_TYPE_AV1_FRAME :c:type:`v4l2_ctrl_type`
- replace symbol V4L2_CTRL_TYPE_AV1_FILM_GRAIN :c:type:`v4l2_ctrl_type`
-+replace symbol V4L2_CTRL_TYPE_FIXED_POINT :c:type:`v4l2_ctrl_type`
- 
- # V4L2 capability defines
- replace define V4L2_CAP_VIDEO_CAPTURE device-capabilities
-diff --git a/drivers/media/v4l2-core/v4l2-ctrls-api.c b/drivers/media/v4l2-core/v4l2-ctrls-api.c
-index 002ea6588edf..e6a0fb8d6791 100644
---- a/drivers/media/v4l2-core/v4l2-ctrls-api.c
-+++ b/drivers/media/v4l2-core/v4l2-ctrls-api.c
-@@ -57,6 +57,7 @@ static int ptr_to_user(struct v4l2_ext_control *c,
- 		return copy_to_user(c->string, ptr.p_char, len + 1) ?
- 		       -EFAULT : 0;
- 	case V4L2_CTRL_TYPE_INTEGER64:
-+	case V4L2_CTRL_TYPE_FIXED_POINT:
- 		c->value64 = *ptr.p_s64;
- 		break;
+ 	/* Audio M2M controls */
+ 	case V4L2_CID_M2M_AUDIO_CLASS:  return "Audio M2M Controls";
++	case V4L2_CID_M2M_AUDIO_SOURCE_RATE:	return "Audio Source Sample Rate";
++	case V4L2_CID_M2M_AUDIO_DEST_RATE:	return "Audio Dest Sample Rate";
++	case V4L2_CID_M2M_AUDIO_SOURCE_RATE_OFFSET:	return "Audio Source Sample Rate Offset";
++	case V4L2_CID_M2M_AUDIO_DEST_RATE_OFFSET:	return "Audio Dest Sample Rate Offset";
  	default:
-@@ -132,6 +133,7 @@ static int user_to_new(struct v4l2_ext_control *c, struct v4l2_ctrl *ctrl)
- 
- 	switch (ctrl->type) {
- 	case V4L2_CTRL_TYPE_INTEGER64:
-+	case V4L2_CTRL_TYPE_FIXED_POINT:
- 		*ctrl->p_new.p_s64 = c->value64;
+ 		return NULL;
+ 	}
+@@ -1606,6 +1610,14 @@ void v4l2_ctrl_fill(u32 id, const char **name, enum v4l2_ctrl_type *type,
+ 	case V4L2_CID_COLORIMETRY_HDR10_MASTERING_DISPLAY:
+ 		*type = V4L2_CTRL_TYPE_HDR10_MASTERING_DISPLAY;
  		break;
- 	case V4L2_CTRL_TYPE_STRING:
-@@ -540,7 +542,8 @@ static int validate_ctrls(struct v4l2_ext_controls *cs,
- 		 */
- 		if (ctrl->is_ptr)
- 			continue;
--		if (ctrl->type == V4L2_CTRL_TYPE_INTEGER64)
-+		if (ctrl->type == V4L2_CTRL_TYPE_INTEGER64 ||
-+		    ctrl->type == V4L2_CTRL_TYPE_FIXED_POINT)
- 			p_new.p_s64 = &cs->controls[i].value64;
- 		else
- 			p_new.p_s32 = &cs->controls[i].value;
-diff --git a/drivers/media/v4l2-core/v4l2-ctrls-core.c b/drivers/media/v4l2-core/v4l2-ctrls-core.c
-index a662fb60f73f..9d50df0d9874 100644
---- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
-+++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
-@@ -1187,6 +1187,7 @@ static int std_validate_elem(const struct v4l2_ctrl *ctrl, u32 idx,
- 	case V4L2_CTRL_TYPE_INTEGER:
- 		return ROUND_TO_RANGE(ptr.p_s32[idx], u32, ctrl);
- 	case V4L2_CTRL_TYPE_INTEGER64:
-+	case V4L2_CTRL_TYPE_FIXED_POINT:
- 		/*
- 		 * We can't use the ROUND_TO_RANGE define here due to
- 		 * the u64 divide that needs special care.
-@@ -1779,6 +1780,7 @@ static struct v4l2_ctrl *v4l2_ctrl_new(struct v4l2_ctrl_handler *hdl,
- 	/* Prefill elem_size for all types handled by std_type_ops */
- 	switch ((u32)type) {
- 	case V4L2_CTRL_TYPE_INTEGER64:
-+	case V4L2_CTRL_TYPE_FIXED_POINT:
- 		elem_size = sizeof(s64);
++	case V4L2_CID_M2M_AUDIO_SOURCE_RATE:
++	case V4L2_CID_M2M_AUDIO_DEST_RATE:
++		*type = V4L2_CTRL_TYPE_INTEGER_MENU;
++		break;
++	case V4L2_CID_M2M_AUDIO_SOURCE_RATE_OFFSET:
++	case V4L2_CID_M2M_AUDIO_DEST_RATE_OFFSET:
++		*type = V4L2_CTRL_TYPE_FIXED_POINT;
++		break;
+ 	default:
+ 		*type = V4L2_CTRL_TYPE_INTEGER;
  		break;
- 	case V4L2_CTRL_TYPE_STRING:
-diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
-index cf8c44595a1d..9482ac66a675 100644
---- a/include/uapi/linux/videodev2.h
-+++ b/include/uapi/linux/videodev2.h
-@@ -1903,6 +1903,7 @@ enum v4l2_ctrl_type {
- 	V4L2_CTRL_TYPE_STRING        = 7,
- 	V4L2_CTRL_TYPE_BITMASK       = 8,
- 	V4L2_CTRL_TYPE_INTEGER_MENU  = 9,
-+	V4L2_CTRL_TYPE_FIXED_POINT   = 10,
+diff --git a/include/uapi/linux/v4l2-controls.h b/include/uapi/linux/v4l2-controls.h
+index 7d318065a33d..493b59f20a35 100644
+--- a/include/uapi/linux/v4l2-controls.h
++++ b/include/uapi/linux/v4l2-controls.h
+@@ -3489,6 +3489,11 @@ struct v4l2_ctrl_av1_film_grain {
+ #define V4L2_CID_M2M_AUDIO_CLASS_BASE  (V4L2_CTRL_CLASS_M2M_AUDIO | 0x900)
+ #define V4L2_CID_M2M_AUDIO_CLASS       (V4L2_CTRL_CLASS_M2M_AUDIO | 1)
  
- 	/* Compound types are >= 0x0100 */
- 	V4L2_CTRL_COMPOUND_TYPES     = 0x0100,
++#define V4L2_CID_M2M_AUDIO_SOURCE_RATE	(V4L2_CID_M2M_AUDIO_CLASS_BASE + 0)
++#define V4L2_CID_M2M_AUDIO_DEST_RATE	(V4L2_CID_M2M_AUDIO_CLASS_BASE + 1)
++#define V4L2_CID_M2M_AUDIO_SOURCE_RATE_OFFSET	(V4L2_CID_M2M_AUDIO_CLASS_BASE + 2)
++#define V4L2_CID_M2M_AUDIO_DEST_RATE_OFFSET	(V4L2_CID_M2M_AUDIO_CLASS_BASE + 3)
++
+ /* MPEG-compression definitions kept for backwards compatibility */
+ #ifndef __KERNEL__
+ #define V4L2_CTRL_CLASS_MPEG            V4L2_CTRL_CLASS_CODEC
 -- 
 2.34.1
 
