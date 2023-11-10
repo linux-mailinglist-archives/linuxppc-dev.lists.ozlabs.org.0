@@ -1,69 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D1657E8118
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Nov 2023 19:23:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C6477E865B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Nov 2023 00:16:56 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=k1akDEfa;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Fe3JK7im;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SRnJr2wStz3cZm
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Nov 2023 05:23:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SRvpt3Kzhz3d8B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Nov 2023 10:16:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=k1akDEfa;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Fe3JK7im;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=3bhvozqykdfkj51ea37ff7c5.3fdc9elogg3-45mc9jkj.fqc12j.fi7@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SRnHv2vvBz30fD
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Nov 2023 05:23:05 +1100 (AEDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-5b02ed0f886so31980747b3.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Nov 2023 10:23:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1699640581; x=1700245381; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/u2JG0fndtvz5StB0AokXkOquj7NpP7M8gj3x0QBG2E=;
-        b=k1akDEfaYOrqvKjGdfeCoiInVnqlLSoe9ZpTfAyvjtdQVV0RVTfQUCnrCi222J0iUw
-         ie5DdCAQhl+WL01Nj32jh0QyB3VoSE95PIRHuCY9eklKQDqPoEMj5WteRLIA3LvlR0+w
-         yiaKQ5cQtmg7nvOFLgqf0n4Y/QX9aAL0N7FPPdjTCR4bzNFMDr73O44fQlIYR4YS7Xcu
-         qlPFMU8dwUiOjMPuQzK9J2JhIpY0lPXGB9Ma8rpS8nU/daDsBD26HjTK8iJi6ShTp482
-         TjSmuLlTKIGF2freWcXaf646ZQEGJNmzrjOB396UXSE/FDEBFKM0e3rUnhL9Xjcw9V0Z
-         1xJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699640581; x=1700245381;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/u2JG0fndtvz5StB0AokXkOquj7NpP7M8gj3x0QBG2E=;
-        b=juGpjG0whjO01Y8Cqju48fTrMjvhbeACXOYzpx2bFLRWip/at0YhP7aGQ/MrQgpIyo
-         bXZDJ8rg4lhUX8pHE57/Lx2CiTKi6ThZP6ZmTfpfAJoeWF/ptLmcij6U2ekoOCxo9mAX
-         6EpUM1N2wxc+rf1CEwiOmRiTqNweZYOeUojAmgaPfiEvIBNUhYSOdzvLrUMNj7SCx2UN
-         nMK9rtp+nrRz0BsjSHmJZpwMYEpO3ky7BKqNc2TjFV/AO+Aka+YFJq2lOlJMhwOJ3Kfy
-         5xi4k5Ic7jzg1n+uyINpwueMtvpCWS/dwOnrj6f3nwtumDfCZzqDrt8y8DlZ3chjyk7w
-         IQSA==
-X-Gm-Message-State: AOJu0Yw7xhj/isUDZLps8ieJey4JH56QyiHE7HAEVBu+KYHQF2jgWJ8o
-	AYcJRBrACfYK0mqlE7WB6b/RlPrIPsA=
-X-Google-Smtp-Source: AGHT+IFilgu1/Q1EZiEoL3sTFYKCQfnhtgAeMBBAfAGcs6DHfZF6Y3nZ5EepLJy80XYZ0ZRT2keQkzxRdJY=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a81:ef0c:0:b0:5be:ae71:d70a with SMTP id
- o12-20020a81ef0c000000b005beae71d70amr242444ywm.4.1699640580898; Fri, 10 Nov
- 2023 10:23:00 -0800 (PST)
-Date: Fri, 10 Nov 2023 10:22:59 -0800
-In-Reply-To: <956d8ee3-8b63-4a2d-b0c4-c0d3d74a0f6f@intel.com>
-Mime-Version: 1.0
-References: <20231105163040.14904-1-pbonzini@redhat.com> <20231105163040.14904-16-pbonzini@redhat.com>
- <956d8ee3-8b63-4a2d-b0c4-c0d3d74a0f6f@intel.com>
-Message-ID: <ZU51A3U6E3aZXayC@google.com>
-Subject: Re: [PATCH 15/34] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
- guest-specific backing memory
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SRvp143Sdz2xqq
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Nov 2023 10:16:06 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1699658169; x=1731194169;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5dPcMFlaiWQAP/PNdkSWmTyVFd2Uq4xlZs9J5OOdZWs=;
+  b=Fe3JK7imfRJmm/oPLQKjwLQcJjLSrExAXpQI3IcVXj8Mk9kAs96Iw73m
+   rlrXRgKrvRETcmS4GVtyVVbbmUF5vckytDKBRkRumT4zi0Go2uUw97GcN
+   MCyhHccGCo963ZOkpmUxv4NQQNKwYRAGYyJEZpSmxBDhM0g3bV6ew0bNw
+   mdOlcFTEOBidB6WrOnrAZ+0dvbpAzC1TOh+4OGxFDJwhFaVb1M7niTSLD
+   uHtw1JzYHehi8cyrpRBchfdGBn4kfOOPKrzJ502xeRvpblNtwFStta6ca
+   PPRR3HVpFp0RaDjgJtiuSFyOctUN4vhMQqjcL93tiU7CyHa1huolQXWiQ
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10890"; a="454543729"
+X-IronPort-AV: E=Sophos;i="6.03,293,1694761200"; 
+   d="scan'208";a="454543729"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2023 15:16:02 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10890"; a="1011052062"
+X-IronPort-AV: E=Sophos;i="6.03,293,1694761200"; 
+   d="scan'208";a="1011052062"
+Received: from lkp-server01.sh.intel.com (HELO 17d9e85e5079) ([10.239.97.150])
+  by fmsmga006.fm.intel.com with ESMTP; 10 Nov 2023 15:15:56 -0800
+Received: from kbuild by 17d9e85e5079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1r1ajC-000A0S-1g;
+	Fri, 10 Nov 2023 23:15:54 +0000
+Date: Sat, 11 Nov 2023 07:14:54 +0800
+From: kernel test robot <lkp@intel.com>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>, hverkuil@xs4all.nl,
+	sakari.ailus@iki.fi, tfiga@chromium.org, m.szyprowski@samsung.com,
+	mchehab@kernel.org, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com, festevam@gmail.com, nicoleotsuka@gmail.com,
+	lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz,
+	tiwai@suse.com, alsa-devel@alsa-project.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v9 12/15] media: uapi: Declare interface types for Audio
+Message-ID: <202311110751.SQ7aHnyx-lkp@intel.com>
+References: <1699595289-25773-13-git-send-email-shengjiu.wang@nxp.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1699595289-25773-13-git-send-email-shengjiu.wang@nxp.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,99 +77,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Vlastimil Babka <vbabka@suse.cz>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, Isaku Yamahata <isaku.yamahata@intel.com>, Christian Brauner <brauner@kernel.org>, Quentin Perret <qperret@google.com>, Liam Merwick <liam.merwick@oracle.co
- m>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, David Matlack <dmatlack@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Xu Yilun <yilun.xu@intel.com>, Anish Moorthy <amoorthy@google.com>
+Cc: oe-kbuild-all@lists.linux.dev
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Nov 10, 2023, Xiaoyao Li wrote:
-> On 11/6/2023 12:30 AM, Paolo Bonzini wrote:
-> > diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> > index 68a144cb7dbc..a6de526c0426 100644
-> > --- a/include/linux/kvm_host.h
-> > +++ b/include/linux/kvm_host.h
-> > @@ -589,8 +589,20 @@ struct kvm_memory_slot {
-> >   	u32 flags;
-> >   	short id;
-> >   	u16 as_id;
-> > +
-> > +#ifdef CONFIG_KVM_PRIVATE_MEM
-> > +	struct {
-> > +		struct file __rcu *file;
-> > +		pgoff_t pgoff;
-> > +	} gmem;
-> > +#endif
-> >   };
-> > +static inline bool kvm_slot_can_be_private(const struct kvm_memory_slot *slot)
-> > +{
-> > +	return slot && (slot->flags & KVM_MEM_GUEST_MEMFD);
-> > +}
-> > +
-> 
-> maybe we can move this block and ...
-> 
-> <snip>
-> 
-> > @@ -2355,6 +2379,30 @@ bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
-> >   					struct kvm_gfn_range *range);
-> >   bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
-> >   					 struct kvm_gfn_range *range);
-> > +
-> > +static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
-> > +{
-> > +	return IS_ENABLED(CONFIG_KVM_PRIVATE_MEM) &&
-> > +	       kvm_get_memory_attributes(kvm, gfn) & KVM_MEMORY_ATTRIBUTE_PRIVATE;
-> > +}
-> > +#else
-> > +static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
-> > +{
-> > +	return false;
-> > +}
-> >   #endif /* CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES */
-> 
-> this block to Patch 18?
+Hi Shengjiu,
 
-It would work, but my vote is to keep them here to minimize the changes to common
-KVM code in the x86 enabling.  It's not a strong preference though.  Of course,
-at this point, fiddling with this sort of thing is probably a bad idea in terms
-of landing guest_memfd.
+kernel test robot noticed the following build warnings:
 
-> > @@ -4844,6 +4875,10 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
-> >   #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
-> >   	case KVM_CAP_MEMORY_ATTRIBUTES:
-> >   		return kvm_supported_mem_attributes(kvm);
-> > +#endif
-> > +#ifdef CONFIG_KVM_PRIVATE_MEM
-> > +	case KVM_CAP_GUEST_MEMFD:
-> > +		return !kvm || kvm_arch_has_private_mem(kvm);
-> >   #endif
-> >   	default:
-> >   		break;
-> > @@ -5277,6 +5312,18 @@ static long kvm_vm_ioctl(struct file *filp,
-> >   	case KVM_GET_STATS_FD:
-> >   		r = kvm_vm_ioctl_get_stats_fd(kvm);
-> >   		break;
-> > +#ifdef CONFIG_KVM_PRIVATE_MEM
-> > +	case KVM_CREATE_GUEST_MEMFD: {
-> > +		struct kvm_create_guest_memfd guest_memfd;
-> 
-> Do we need a guard of below?
-> 
-> 		r = -EINVAL;
-> 		if (!kvm_arch_has_private_mem(kvm))
-> 			goto out;
+[auto build test WARNING on media-tree/master]
+[also build test WARNING on broonie-sound/for-next tiwai-sound/for-next tiwai-sound/for-linus linus/master v6.6 next-20231110]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Argh, yeah, that's weird since KVM_CAP_GUEST_MEMFD says "not supported" if the
-VM doesn't support private memory.
+url:    https://github.com/intel-lab-lkp/linux/commits/Shengjiu-Wang/ASoC-fsl_asrc-define-functions-for-memory-to-memory-usage/20231110-143635
+base:   git://linuxtv.org/media_tree.git master
+patch link:    https://lore.kernel.org/r/1699595289-25773-13-git-send-email-shengjiu.wang%40nxp.com
+patch subject: [PATCH v9 12/15] media: uapi: Declare interface types for Audio
+reproduce: (https://download.01.org/0day-ci/archive/20231111/202311110751.SQ7aHnyx-lkp@intel.com/reproduce)
 
-Enforcing that would break guest_memfd_test.c though.  And having to create a
-"special" VM just to test basic guest_memfd functionality would be quite
-annoying.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202311110751.SQ7aHnyx-lkp@intel.com/
 
-So my vote is to do:
+All warnings (new ones prefixed by >>):
 
-	case KVM_CAP_GUEST_MEMFD:
-		return IS_ENABLED(CONFIG_KVM_PRIVATE_MEM);
+>> Documentation/output/media.h.rst:6: WARNING: undefined label: media-intf-t-v4l-audio (if the link has no caption the label must precede a section header)
 
-There's no harm to KVM if userspace creates a file it can't use, and at some
-point KVM will hopefully support guest_memfd irrespective of private memory.
+vim +6 Documentation/output/media.h.rst
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
