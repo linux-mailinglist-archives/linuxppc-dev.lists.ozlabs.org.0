@@ -2,85 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E92C77E76BF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Nov 2023 02:42:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 323997E76C7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Nov 2023 02:46:00 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=jJPFmxSb;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=lFUuMo+I;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SRM5b66hzz3cWH
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Nov 2023 12:42:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SRM9L0Zg9z3dC0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Nov 2023 12:45:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=jJPFmxSb;
+	dkim=pass (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=lFUuMo+I;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cisco.com (client-ip=173.37.86.76; helo=rcdn-iport-5.cisco.com; envelope-from=danielwa@cisco.com; receiver=lists.ozlabs.org)
-Received: from rcdn-iport-5.cisco.com (rcdn-iport-5.cisco.com [173.37.86.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cisco.com (client-ip=173.37.86.75; helo=rcdn-iport-4.cisco.com; envelope-from=danielwa@cisco.com; receiver=lists.ozlabs.org)
+Received: from rcdn-iport-4.cisco.com (rcdn-iport-4.cisco.com [173.37.86.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SRM1w23Vsz3cHT
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Nov 2023 12:39:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SRM1z5dGtz3c2k
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Nov 2023 12:39:35 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=@cisco.com; l=6396; q=dns/txt; s=iport;
-  t=1699580372; x=1700789972;
+  d=cisco.com; i=@cisco.com; l=4126; q=dns/txt; s=iport;
+  t=1699580376; x=1700789976;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=18cNsTNuiRDR0CKbESUnPHmzPvgXjxbhXvQdZpLLd3E=;
-  b=jJPFmxSbS8TGTke58aPBjycXJg2mh04+ndS8OsPk213/XuTGblx74JCi
-   euyeL7pWY5fYFXkbyCKWeXkNff9YxsAXl9e1pNmNk3TnCv0CM2h1FNfhA
-   O2fEvyEiEXNnZIQnef0N87hOdpV2cPfORSP+T1a9g5PC0KmlKPb8ojySy
-   s=;
-X-CSE-ConnectionGUID: D0vmuO0vRjqFrfnxF9Eo0g==
-X-CSE-MsgGUID: 4eBf7R0bRICauPeKld8sbw==
-X-IPAS-Result: =?us-ascii?q?A0ANAABsiE1lmJtdJa1aHAEBAQEBAQcBARIBAQQEAQGBe?=
- =?us-ascii?q?wcBAQsBhAdASIxviUKeAYElA1YPAQEBD0QEAQGFBgKHJgImNAkOAQIEAQEBA?=
- =?us-ascii?q?QMCAwEBAQEBAQECAQEFAQEBAgEHBBQBAQEBAQEBAR4ZBQ4QJ4V1hk0DAycLA?=
- =?us-ascii?q?UYQUVcGARKCfoJfA61YgXkzgQGzKIFoGIEwAYxDgR6ENScbgUlEgRWBO4Iti?=
- =?us-ascii?q?wYEiSUHMoIig1KNS39HWhYdAwcDVikQKwcELSIGCRQtIwZRBBcRJAkTEj4Eg?=
- =?us-ascii?q?WOBUQp/Pw8OEYI/IgIHNjYZSIJbFUAERnYQKgQUF4ESbhsVHjcREhcNAwh0H?=
- =?us-ascii?q?QIRIzwDBQMEMwoSDQshBRRCA0IGSQsDAhoFAwMEgTYFDR4CEC0nAwMTTQIQF?=
- =?us-ascii?q?AM7AwMGAwsxAzBVRAxRA28fGhwJPA8MHwIbHg0nKAI1QwMRBRICFgMkGQRFA?=
- =?us-ascii?q?wkDBwVJQAMLGA1IESw1Bg4bBj9zB6FVPVIwGwKCVZIoFQcCAZFSgTGdX4E3h?=
- =?us-ascii?q?BeBX5wkgwYaM6oDmD8gonCFQYFjOoFbMxoIGxWDIlIZD44sDQmTEgFdIzI7A?=
- =?us-ascii?q?gcLAQEDCYZLhH8BAQ?=
-IronPort-Data: A9a23:rhVaWawIuIS5buo7e6l6t+flwSrEfRIJ4+MujC+fZmUNrF6WrkUOz
- mFJXjvUbPeCMGD3fItwO4qw80IHvJbVyIJiGwo9pFhgHilAwSbn6Xt1DatR0we6dJCroJdPt
- p1GAjX4BJlpCCea/lH0auSJQUBUjcmgXqD7BPPPJhd/TAplTDZJoR94kobVuKYw6TSCK13L4
- YiaT/H3Ygf/gGctazpMsspvlTs21BjMkGJA1rABTagjUG/2zxE9EJ8ZLKetGHr0KqE88jmSH
- rurIBmRpws1zj91Yj+Xuu+Tnn4iHtY+CTOzZk9+AMBOtPTtShsaic7XPNJEAateZq7gc9pZk
- L2hvrToIesl0zGldOk1C3Fl/y9C0aJu1OfZJGWY6dKpzVToaXXq09s/IUZuMthNkgp3KTkmG
- f0wMjsBaFWIgPi7he79Qeh3jcNlJ87uVG8dkig/lneCUrB3GtaaHviiCdxwhF/cguhCFPDfa
- s4GYBJkbQ/LZFtEPVJ/5JcWxbz13iChL2QHwL6TjfY6yWaM9lR76pnGOcftd/+OSZVOlFnN8
- woq+EygUk1Fa7Rz0wGt9nOqm/+Kni7hXo8WPKO3++Qsg1CJwGEXThoMWjOTpfi/l177VtxeA
- 1Ib9zBorqUo8kGvCN7nUHWQqWSItDYfVsBWHul87xuCooLQ4gCEFnAcRXtNZcIOsM4tWSds0
- U2NltnyQzt1v9W9TXOb66fRqDKqIgALImIYIywJVw0I55/kuo5bpgKfEP5gHbSzg9mzHiv/q
- xiRoSE4wbwVgcMRzKK91UvKiDXqrZ/MJiYp4QDeRSSg8w9jeYimbqSn7FHa6bBLK4PxZkCcv
- XMzg8KE5eALBLmUiS2GQeMGWrqu4p6tOT7EhHZrHp8853Gj/GOlcYlM4TZ4YkBzPa4sdTbvY
- ULXkQxQ4YdeOHa0bKR3JZm4DYEk16HmHtX+XfeSZdMIf4MZXBWA9iFGZkOK2W3p1k82nskXM
- peBcN2wCm4aBOJjwSCxVs8WyrAxwT0mg27OLbjkzhCj+bmTfniYTfECKlTmUwwixLmPrAOQ+
- NFFOo7WjR5eS+b5JCLQ9Ob/MGzmM1AXXY7ztusPaNSBOyR8FmcxJa78xusuLtkNc7tuqs/E+
- XS0W0l9wVX5hGHaJQjiVpyFQO6xNXqYhS9mVRHALWpEyFB4PtnytPZ3m48fOOh4pLY6nJaYW
- tFcI53YasmjXAgr7Nj0UHUQhJZpeBLujgWUMm/5JjM+ZJVnAQfO/7cInzcDFgFQUkJbVuNn/
- tVMMz83p7JfG2yO6+6KMJqSI6uZ5yR1pQ6LdxKgziNvUEvt6pN2DCf6k+U6JcoBQT2amGrLi
- lvKX0tI/raRy2PQzDUvrf7dx2tOO7Umdne240GHhVpLHXCApzH6kdMovBigJ2yHCgsYB5lOl
- c0Mn62jb5XrbX5BspF3FP5w3Lki6t70z4K2PSw6dEgnm2+DU+s6SlHfhJEnnvQUmtdx51DsM
- mrRoYYyBFl8EJ6/eLLnDFB7Pr3rODB9smS60MnZ122jv38voOrYARkCV/RO4QQERIZI3Eoe6
- b9JkKYrB8aX03LG7v7uYvhoylmx
-IronPort-HdrOrdr: A9a23:EhAwAKCsAXGH8yrlHemX55DYdb4zR+YMi2TDGXocdfUzSL39qy
- nAppomPHPP4gr5HUtQ+uxoW5PwJE80i6QV3WB5B97LNzUO+lHYTr2KhrGM/9SPIUDDH8dmpM
- BdmtBFaOEZyTNB/L/HCM7SKadH/OW6
-X-Talos-CUID: 9a23:t/nNLm6e/652txrJltss2BYKH90CKmPnzm7+OUG+GUg4ZbrNRgrF
-X-Talos-MUID: =?us-ascii?q?9a23=3A0eoxMg12us+7xDL05uML/17/9DUjv6mEBh83yZ8?=
- =?us-ascii?q?8muKNKBR9GDOR3C+9Xdpy?=
+  bh=XQfpZaDuXlcOMYdjdqSlNlugSI0rTVR45ET5BA9fTo8=;
+  b=lFUuMo+Ia+0rAqSWEuY4ezvKOAbVLn1jcm9CcQ80MSkBQ5HfKt84BUtL
+   06QzxGLlnyeh/hxN/Uml3iJ4s0rp3JPN48S4cSfH1TlGqA2DjTJSYGw5/
+   yZ4ttss2guSY1wlC1jz7iWdFLwztBugcO+radYdYrUuviqQ+lVu9FCltz
+   g=;
+X-CSE-ConnectionGUID: opm4U75yQ5qWqlXpJd47ng==
+X-CSE-MsgGUID: keBfZVW7R96+J9PTUrvyaw==
+X-IPAS-Result: =?us-ascii?q?A0ANAADbh01lmJtdJa1aHAEBAQEBAQcBARIBAQQEAQGBe?=
+ =?us-ascii?q?wcBAQsBhAdASIxviUKLX5IigSUDVg8BAQEPRAQBAYUGAocmAiY0CQ4BAgQBA?=
+ =?us-ascii?q?QEBAwIDAQEBAQEBAQIBAQUBAQECAQcEFAEBAQEBAQEBHhkFEA4nhXWGTQMDM?=
+ =?us-ascii?q?gE4DhBRITYGARKCfoIrAzEDrVeCLIEBsjENaoFoGIEwAYdthFaBHoQ1JxuBS?=
+ =?us-ascii?q?USCUIItgh+IZwSJJQcygiKDUo1Lf0daFh0DBwNWKRArBwQtIgYJFC0jBlEEF?=
+ =?us-ascii?q?xEkCRMSPgSBY4FRCn8/Dw4Rgj8iAj02GUiCWxVABEZ2ECoEFBeBEm4bFR43E?=
+ =?us-ascii?q?RIXDQMIdB0CESM8AwUDBDMKEg0LIQUUQgNCBkkLAwIaBQMDBIE2BQ0eAhAtJ?=
+ =?us-ascii?q?wMDE00CEBQDOwMDBgMLMQMwVUQMUQNvHxocCTwPDB8CGx4NJygCNUMDEQUSA?=
+ =?us-ascii?q?hYDJBkERQMJAwcFSUADCxgNSBEsNQYOGwY/cwehVAF1GQEKJQGBVYEdkkcHg?=
+ =?us-ascii?q?xWONp9Yb4QXgV+ZN4VzGjOqA5g/IJE6lneBYzqBWzMaCBsVgyJSGQ+OLA0Jk?=
+ =?us-ascii?q?xIBXSMyOwIHCwEBAwmLSgEB?=
+IronPort-Data: A9a23:oFFen6P54cIn6nXvrR0FkMFynXyQoLVcMsEvi/4bfWQNrUpx3zEOm
+ zYXXjuHb6uOZDP2Kowjaoq28RhXup/Xm99nSXM5pCpnJ55oRWUpJjg4wmPYZX76whjrFRo/h
+ ykmQoCdaphyFjmF/kvF3oHJ9RFUzbuPSqf3FNnKMyVwQR4MYCo6gHqPocZh6mJTqYb/W1jlV
+ e/a+ZWFYwb8gmYsawr41orawP9RlKWq0N8nlgRWicBj5Df2i3QTBZQDEqC9R1OQrl58R7PSq
+ 07rldlVz0uBl/sfIorNfoXTLiXmdoXv0T2m0RK6bUQNbi9q/UTe2o5jXBYVhNw+Zz+hx7idw
+ /0V3XC8pJtA0qDkwIwgvxdk/y5WOrVDpIKYfGmG7NWs1kn2a1ngn6poAxRjVWEY0r4f7WBm7
+ /cULnUGaQqOwr7wy7OgQe4qjcMmRCXpFNpA4Tc7kneIVrB/HM2rr6bivbe02B88j8ZPEPLBb
+ uISaCFka1LLZBgn1lI/Uclizbfy2SinG9FegFGYj6QF3VeM9l0vk5q8COboYMKbTNoAyy50o
+ UqfrzimXXn2Lue3zTuD72LpheLVmy7/cJwdGaf+9fNwhlCXgGsJB3U+T0agpfC/zES/X9VBL
+ Eg89S8nrKx0/0uuJvH9RxSQsm+YuQRaUN1Ve8U24R+AjKrd5R2UAEAATzhceJonstM7QXoh0
+ Vrht9nxLTVrsbCTGTSR+9+8qDK0Ni89N2IOZSYYCwAC5rHLvI43njrLT9B+DLSyiNzlXz39q
+ xiOrS4jl60LhosH2ruT+VHcnynqoYrNRwQuoALNUQqN6gJ/eZ7gYo2w8nDF4vtaaoWUVF+Mu
+ D4Dgcf2xPBeU7mOmTaLTeFLG6umj96ePTTax1dpE5Q77DOr02WudocW6zZ7TG91NcMNYnnsf
+ UPJpAVS7bdcOXKrael8ZIfZI903zKPXDd7/X/DRZ/JXf5l6dQmMuippYCa41mP1lWAokKciK
+ dKVdtuqAX8GCKNhij2sSI813bYtxy067WzSQIj2yxm50LGeImWcT/ILKlKIZeEi56TCqwyT7
+ s03H9GNwRV3U+DkZCTTt4kJIjgiJnghBIvqrNRXe6iHLxBhCUkqEPDLxq45PYF494xKl+PM1
+ nKwQElVzBz4n3KvFOmRQmpoZLWqVpFloDdneyctJl2vnXMkZO5D8ZvzabMwZbx7ybM+3McpV
+ sYcf/WYIPgTFTLIrmF1gYbGkKRucxGihASrNiWjYSQic5MIe+Av0oK6FucI3HRTZhdbpffSs
+ JX7iVyGGctrqxBKSZeJOKj2njtdqFBEwLoqN3YkNOW/b6kFzWSHAzb6gvlyKMYWJFCfgDCbz
+ A2RRxwfoIEhQrPZEvGX2choTK/wToOS+3a2+UGHsd5a0gGGpgKeLXdoCrrgQNwkfDqcFF+eT
+ etU1ergF/YMgUxHtYFxe54yk/Nvuoaz+eMKlVs4dJkuU7hNIu05SpVh9ZcX3pChOpcF0edLc
+ hvVo4IDaenh1D3NSgJLemLJkdhvJdlNymWNspzZ0W3x5TR8+/KcQF5OMhyX4BGx35MrWL7JN
+ dwJ4ZZMgyTm00JCGo/f3kh8qT/WRlReCPpPi33vKNKx4ubd4gscMcW05+6fyMznVuigxWFze
+ W/M2Pqd1+gMrqcAGlJqfUXwMSNmrcxmkHh3IJUqfjxlRvKtaicL4SBs
+IronPort-HdrOrdr: A9a23:Q6j4cqM5yUMLHMBcTvqjsMiBIKoaSvp037Dk7SxMoHtuA6ilfq
+ +V8sjzuSWftN9VYgBCpTniAtjkfZqjz/9ICOAqVN/IYOClghrLEGgI1+TfKlPbdhEW39Qtsp
+ uIC5IfNDU1ZmIK9PoTJ2KDYrAd/OU=
+X-Talos-CUID: 9a23:SrpMfG37Hfq4oOBx6DfY/rxfHdggLkCCkWbpflaHEGJZUJ+ZFQCW9/Yx
+X-Talos-MUID: 9a23:9KHXXQuRrMWoa/bens2nhzxIOvVW3PuUWR5Os8Q+h/SeKz15JGLI
 X-IronPort-Anti-Spam-Filtered: true
 X-IronPort-AV: E=Sophos;i="6.03,291,1694736000"; 
-   d="scan'208";a="135016417"
+   d="scan'208";a="134982790"
 Received: from rcdn-core-4.cisco.com ([173.37.93.155])
-  by rcdn-iport-5.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2023 01:38:30 +0000
+  by rcdn-iport-4.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2023 01:38:32 +0000
 Received: from goliath.lan ([10.25.128.169])
-	by rcdn-core-4.cisco.com (8.15.2/8.15.2) with ESMTP id 3AA1cHVL011466;
-	Fri, 10 Nov 2023 01:38:29 GMT
+	by rcdn-core-4.cisco.com (8.15.2/8.15.2) with ESMTP id 3AA1cHVM011466;
+	Fri, 10 Nov 2023 01:38:30 GMT
 From: Daniel Walker <danielwa@cisco.com>
 To: Will Deacon <will@kernel.org>,
         Christophe Leroy <christophe.leroy@csgroup.eu>,
@@ -90,10 +90,14 @@ To: Will Deacon <will@kernel.org>,
         Pratyush Brahma <quic_pbrahma@quicinc.com>,
         Tomas Mudrunka <tomas.mudrunka@gmail.com>,
         Sean Anderson <sean.anderson@seco.com>, x86@kernel.org,
-        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 5/8] drivers: firmware: efi: libstub: enable generic commandline
-Date: Thu,  9 Nov 2023 17:38:09 -0800
-Message-Id: <20231110013817.2378507-6-danielwa@cisco.com>
+        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>
+Subject: [PATCH 6/8] CMDLINE: x86: convert to generic builtin command line
+Date: Thu,  9 Nov 2023 17:38:10 -0800
+Message-Id: <20231110013817.2378507-7-danielwa@cisco.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231110013817.2378507-1-danielwa@cisco.com>
 References: <20231110013817.2378507-1-danielwa@cisco.com>
@@ -113,193 +117,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, xe-linux-external@cisco.com
+Cc: linux-kernel@vger.kernel.org, Ruslan Ruslichenko <rruslich@cisco.com>, Ruslan Bilovol <ruslan.bilovol@gmail.com>, xe-linux-external@cisco.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This adds code to handle the generic command line changes.
-The efi code appears that it doesn't benefit as much from this design
-as it could.
-
-For example, if you had a prepend command line with "nokaslr" then
-you might be helpful to re-enable it in the boot loader or dts,
-but there appears to be no way to re-enable kaslr or some of the
-other options.
-
-The efi command line handling is incorrect. x86 and arm have an append
-system however the efi code prepends the command line.
-
-For example, you could have a non-upgradable bios which sends
-
-efi=disable_early_pci_dma
-
-This hypothetically could have been set because early pci dma caused
-issues on early versions of the product.
-
-Then later the early pci dma was made to work and the company desired
-to start using it. To override the bios you could set the CONFIG_CMDLINE
-to,
-
-efi=no_disable_early_pci_dma
-
-then parsing would normally start with the bios command line, then move
-to the CONFIG_CMDLINE and you would end up with early pci dma turned on.
-
-however, current efi code keeps early pci dma off because the bios
-arguments always override the built in.
-
-Per my reading this is different from the main body of x86, arm, and
-arm64.
-
-The generic command line provides both append and prepend, so it
-alleviates this issue if it's used. However not all architectures use
-it.
-
-It would be desirable to allow the efi stub to have it's builtin command
-line to be modified after compile, but I don't see a feasible way to do
-that currently.
+This updates the x86 code to use the CONFIG_GENERIC_CMDLINE
+option.
 
 Cc: xe-linux-external@cisco.com
+Signed-off-by: Ruslan Ruslichenko <rruslich@cisco.com>
+Signed-off-by: Ruslan Bilovol <ruslan.bilovol@gmail.com>
 Signed-off-by: Daniel Walker <danielwa@cisco.com>
 ---
- .../firmware/efi/libstub/efi-stub-helper.c    | 29 +++++++++++++++++++
- drivers/firmware/efi/libstub/efi-stub.c       |  9 ++++++
- drivers/firmware/efi/libstub/efistub.h        |  1 +
- drivers/firmware/efi/libstub/x86-stub.c       | 14 +++++++--
- 4 files changed, 51 insertions(+), 2 deletions(-)
+ arch/x86/Kconfig        | 44 +----------------------------------------
+ arch/x86/kernel/setup.c | 18 ++---------------
+ 2 files changed, 3 insertions(+), 59 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-index bfa30625f5d0..952fa2cdff51 100644
---- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-+++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-@@ -11,6 +11,7 @@
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 66bfabae8814..390ffaa743df 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -145,6 +145,7 @@ config X86
+ 	select EDAC_SUPPORT
+ 	select GENERIC_CLOCKEVENTS_BROADCAST	if X86_64 || (X86_32 && X86_LOCAL_APIC)
+ 	select GENERIC_CLOCKEVENTS_MIN_ADJUST
++	select GENERIC_CMDLINE
+ 	select GENERIC_CMOS_UPDATE
+ 	select GENERIC_CPU_AUTOPROBE
+ 	select GENERIC_CPU_VULNERABILITIES
+@@ -2309,49 +2310,6 @@ choice
  
- #include <linux/efi.h>
- #include <linux/kernel.h>
+ endchoice
+ 
+-config CMDLINE_BOOL
+-	bool "Built-in kernel command line"
+-	help
+-	  Allow for specifying boot arguments to the kernel at
+-	  build time.  On some systems (e.g. embedded ones), it is
+-	  necessary or convenient to provide some or all of the
+-	  kernel boot arguments with the kernel itself (that is,
+-	  to not rely on the boot loader to provide them.)
+-
+-	  To compile command line arguments into the kernel,
+-	  set this option to 'Y', then fill in the
+-	  boot arguments in CONFIG_CMDLINE.
+-
+-	  Systems with fully functional boot loaders (i.e. non-embedded)
+-	  should leave this option set to 'N'.
+-
+-config CMDLINE
+-	string "Built-in kernel command string"
+-	depends on CMDLINE_BOOL
+-	default ""
+-	help
+-	  Enter arguments here that should be compiled into the kernel
+-	  image and used at boot time.  If the boot loader provides a
+-	  command line at boot time, it is appended to this string to
+-	  form the full kernel command line, when the system boots.
+-
+-	  However, you can use the CONFIG_CMDLINE_OVERRIDE option to
+-	  change this behavior.
+-
+-	  In most cases, the command line (whether built-in or provided
+-	  by the boot loader) should specify the device for the root
+-	  file system.
+-
+-config CMDLINE_OVERRIDE
+-	bool "Built-in command line overrides boot loader arguments"
+-	depends on CMDLINE_BOOL && CMDLINE != ""
+-	help
+-	  Set this option to 'Y' to have the kernel ignore the boot loader
+-	  command line, and use ONLY the built-in command line.
+-
+-	  This is used to work around broken boot loaders.  This should
+-	  be set to 'N' under normal conditions.
+-
+ config MODIFY_LDT_SYSCALL
+ 	bool "Enable the LDT (local descriptor table)" if EXPERT
+ 	default y
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index b098b1fa2470..bd025c003f32 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -55,6 +55,7 @@
+ #include <asm/unwind.h>
+ #include <asm/vsyscall.h>
+ #include <linux/vmalloc.h>
 +#include <linux/cmdline.h>
- #include <asm/efi.h>
- #include <asm/setup.h>
  
-@@ -29,6 +30,34 @@ bool __pure __efi_soft_reserve_enabled(void)
- 	return !efi_nosoftreserve;
- }
+ /*
+  * max_low_pfn_mapped: highest directly mapped pfn < 4 GB
+@@ -162,9 +163,6 @@ unsigned long saved_video_mode;
+ #define RAMDISK_LOAD_FLAG		0x4000
  
-+/**
-+ * efi_handle_cmdline() - handle adding in built-in parts of the command line
-+ * @cmdline:	kernel command line
-+ *
-+ * Add in the generic parts of the commandline and start the parsing of the
-+ * command line.
-+ *
-+ * Return:	status code
-+ */
-+efi_status_t efi_handle_builtin_cmdline(char const *cmdline)
-+{
-+	efi_status_t status = EFI_SUCCESS;
-+
-+	if (sizeof(CMDLINE_STATIC_PREPEND) > 1)
-+		status |= efi_parse_options(CMDLINE_STATIC_PREPEND);
-+
-+	if (!IS_ENABLED(CONFIG_CMDLINE_OVERRIDE))
-+		status |= efi_parse_options(cmdline);
-+
-+	if (sizeof(CMDLINE_STATIC_APPEND) > 1)
-+		status |= efi_parse_options(CMDLINE_STATIC_APPEND);
-+
-+	if (status != EFI_SUCCESS)
-+		efi_err("Failed to parse options\n");
-+
-+	return status;
-+}
-+
- /**
-  * efi_parse_options() - Parse EFI command line options
-  * @cmdline:	kernel command line
-diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
-index f9c1e8a2bd1d..770abe95c0ee 100644
---- a/drivers/firmware/efi/libstub/efi-stub.c
-+++ b/drivers/firmware/efi/libstub/efi-stub.c
-@@ -127,6 +127,14 @@ efi_status_t efi_handle_cmdline(efi_loaded_image_t *image, char **cmdline_ptr)
- 		return EFI_OUT_OF_RESOURCES;
- 	}
+ static char __initdata command_line[COMMAND_LINE_SIZE];
+-#ifdef CONFIG_CMDLINE_BOOL
+-static char __initdata builtin_cmdline[COMMAND_LINE_SIZE] = CONFIG_CMDLINE;
+-#endif
  
-+#ifdef CONFIG_GENERIC_CMDLINE
-+	status = efi_handle_builtin_cmdline(cmdline);
-+	if (status != EFI_SUCCESS) {
-+		goto fail_free_cmdline;
-+	}
-+#endif
-+
-+#ifdef CONFIG_CMDLINE
- 	if (IS_ENABLED(CONFIG_CMDLINE_EXTEND) ||
- 	    IS_ENABLED(CONFIG_CMDLINE_FORCE) ||
- 	    cmdline_size == 0) {
-@@ -144,6 +152,7 @@ efi_status_t efi_handle_cmdline(efi_loaded_image_t *image, char **cmdline_ptr)
- 			goto fail_free_cmdline;
- 		}
- 	}
-+#endif
+ #if defined(CONFIG_EDD) || defined(CONFIG_EDD_MODULE)
+ struct edd edd;
+@@ -959,19 +957,7 @@ void __init setup_arch(char **cmdline_p)
+ 	bss_resource.start = __pa_symbol(__bss_start);
+ 	bss_resource.end = __pa_symbol(__bss_stop)-1;
  
- 	*cmdline_ptr = cmdline;
- 	return EFI_SUCCESS;
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index 212687c30d79..1ac6631905c5 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -996,6 +996,7 @@ efi_status_t efi_relocate_kernel(unsigned long *image_addr,
- 				 unsigned long alignment,
- 				 unsigned long min_addr);
+-#ifdef CONFIG_CMDLINE_BOOL
+-#ifdef CONFIG_CMDLINE_OVERRIDE
+-	strscpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
+-#else
+-	if (builtin_cmdline[0]) {
+-		/* append boot loader cmdline to builtin */
+-		strlcat(builtin_cmdline, " ", COMMAND_LINE_SIZE);
+-		strlcat(builtin_cmdline, boot_command_line, COMMAND_LINE_SIZE);
+-		strscpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
+-	}
+-#endif
+-#endif
+-
++	cmdline_add_builtin(boot_command_line);
+ 	strscpy(command_line, boot_command_line, COMMAND_LINE_SIZE);
+ 	*cmdline_p = command_line;
  
-+efi_status_t efi_handle_builtin_cmdline(char const *cmdline);
- efi_status_t efi_parse_options(char const *cmdline);
- 
- void efi_parse_option_graphics(char *option);
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 9d5df683f882..273a8a9c8bbb 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -847,6 +847,8 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
- 	struct setup_header *hdr = &boot_params->hdr;
- 	const struct linux_efi_initrd *initrd = NULL;
- 	unsigned long kernel_entry;
-+	unsigned long cmdline_paddr = ((u64)hdr->cmd_line_ptr |
-+				       ((u64)boot_params->ext_cmd_line_ptr << 32));
- 	efi_status_t status;
- 
- 	boot_params_pointer = boot_params;
-@@ -877,6 +879,14 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
- 		goto fail;
- 	}
- 
-+#ifdef CONFIG_GENERIC_CMDLINE
-+	status = efi_handle_builtin_cmdline((char *)cmdline_paddr);
-+	if (status != EFI_SUCCESS) {
-+		efi_err("Failed to parse options\n");
-+		goto fail;
-+	}
-+#else /* CONFIG_GENERIC_CMDLINE */
-+
- #ifdef CONFIG_CMDLINE_BOOL
- 	status = efi_parse_options(CONFIG_CMDLINE);
- 	if (status != EFI_SUCCESS) {
-@@ -885,8 +895,6 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
- 	}
- #endif
- 	if (!IS_ENABLED(CONFIG_CMDLINE_OVERRIDE)) {
--		unsigned long cmdline_paddr = ((u64)hdr->cmd_line_ptr |
--					       ((u64)boot_params->ext_cmd_line_ptr << 32));
- 		status = efi_parse_options((char *)cmdline_paddr);
- 		if (status != EFI_SUCCESS) {
- 			efi_err("Failed to parse options\n");
-@@ -894,6 +902,8 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
- 		}
- 	}
- 
-+#endif
-+
- 	status = efi_decompress_kernel(&kernel_entry);
- 	if (status != EFI_SUCCESS) {
- 		efi_err("Failed to decompress kernel\n");
 -- 
 2.39.2
 
