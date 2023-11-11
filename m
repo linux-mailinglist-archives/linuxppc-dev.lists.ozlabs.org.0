@@ -2,73 +2,101 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B285A7E8816
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Nov 2023 03:08:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D9C07E89CA
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Nov 2023 09:17:29 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=LTwQuqf2;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BjaNatcW;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SRzcx4Xcyz3clB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Nov 2023 13:08:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SS7pY3JMRz3cbN
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Nov 2023 19:17:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=LTwQuqf2;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BjaNatcW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=bagasdotme@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SRzc43Yb7z2yhT
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Nov 2023 13:07:46 +1100 (AEDT)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-6b20a48522fso2394234b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Nov 2023 18:07:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699668462; x=1700273262; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=us4PH3hYSKV8M14QXIBOyvA+4JqUtwc0XH3JtG4nmDY=;
-        b=LTwQuqf2hJbhl2H9gl9hLJL5R/bdTUKaAe6rnrhwbK9aMelAds1Z4NozIXq23vbZiF
-         uCBL6lwp54IpG1uBXYoKMuEkHc2+7fW8LWXHvQYYdPlN0N3jlDCYqmCNfyI5dNAMg8V3
-         KTtlb4VCjKnIiuDOVofKEB57uUomFSdpnq/E4DYAjdxU/Ce6Mo9A4OJh6aDS8PatQcqg
-         VqdhDRSmoO3QNAYOeImUCRdzyOfQJrTMbuYnPZmyS4YlR0/sEnN30jgFKYiHGx2jWF/d
-         t1TfBPApC/B2GFrbVAeiqhjKBZDwmQXpd9NFnLKE93p3FqVnLhm5Wu5JhTKj3WT68lEE
-         h6zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699668462; x=1700273262;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=us4PH3hYSKV8M14QXIBOyvA+4JqUtwc0XH3JtG4nmDY=;
-        b=qH7MR/zX30piBx0wIT/gopgHoaZX3iEKHdNZMOwMVGN4FySqPCeFoxJLX78VRMCBZg
-         olsFwSjw3hL2DhSPV71AHPbhs0XaTOD1oiD1sxbDtjEeCNXBf6nxkBdNkn4oE83PDAaj
-         5BcQV9k1SpvRk7TAPfEmo+Ud/NXp543gERttMSqvRC1uvtgrQtKYM4N+gTW2+vBl1+A0
-         Ozmbnjp897Myf/A/piosMzukujwx3+AheB4J69TZ1L9uMf154a6HjPNOAQSNlwq20uK1
-         0w9kEYfPKtHfV07KRfDubJhyFfqbpv9VUrLvnmDwIZsiQZb3i3swNNAs7/+VQwGtttWo
-         udzw==
-X-Gm-Message-State: AOJu0YyV3wjE1E13OwUS7IgtwpfzEypGK3tAzP5VcwMnlJsXMIqoIqWA
-	vvo/RfIRbVTpr/+9OcdNVuI=
-X-Google-Smtp-Source: AGHT+IHNBBW3BK8jyaoUi7xXcxcZdBpSdb0qc7l3zTckarw97gd+X2tbBj1Oc1EwReuZ3Rk530zP9g==
-X-Received: by 2002:a05:6a20:ce83:b0:131:b3fa:eaaa with SMTP id if3-20020a056a20ce8300b00131b3faeaaamr588855pzb.61.1699668462452;
-        Fri, 10 Nov 2023 18:07:42 -0800 (PST)
-Received: from [192.168.0.106] ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id 13-20020a170902c20d00b001a9b29b6759sm308895pll.183.2023.11.10.18.07.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Nov 2023 18:07:41 -0800 (PST)
-Message-ID: <60585667-70ca-4ace-8d8f-dbdd8d4428a6@gmail.com>
-Date: Sat, 11 Nov 2023 09:07:35 +0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SS7nf1WJKz30fm
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Nov 2023 19:16:38 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 9F374608C1;
+	Sat, 11 Nov 2023 08:16:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A37C433C8;
+	Sat, 11 Nov 2023 08:16:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1699690594;
+	bh=CfBn0ztwBcbAQ+Aptc89/YJJxdrHTqXSPn8w7Fsv678=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=BjaNatcW2RPEQ+GVpd14LiyS5SMDN0geyfUrcLXy7MKzGTni/7xjM91PXkUci9+L1
+	 BqmOzzrU53xt4scjZ8+LEaZRyItjTnp4hQKJtIADuv5PbUznepUN4TtLRVPc1cdg88
+	 FgZfIgmS78NS3R6SqgYj5LfaBw/iAshm85YrtR1allkESxd7cIeGbaiImAVRy5WMU1
+	 dG4QjhUVBSTiJMzpr5qhzam0mO/mk011tlbBTD0TPQR39vPMbqr2lWYRVyZhWXDg3S
+	 IskPEYD3daON9ay0mjYUEdSxJZyvGaYHabaxDevrcmsWaO2U7j2zgigJL8qhNyy3vi
+	 VzIDoWvNZKleA==
+Message-ID: <70821f4c-d0f8-4a35-b664-0823bf430816@kernel.org>
+Date: Sat, 11 Nov 2023 09:16:26 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 14/15] media: imx-asrc: Add memory to memory driver
 Content-Language: en-US
-To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux Wireless <linux-wireless@vger.kernel.org>,
- Linux PCI <linux-pci@vger.kernel.org>,
- Linux PowerPC <linuxppc-dev@lists.ozlabs.org>
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: Fwd: The PCIe AER error flood between PCIe bridge and Realtek's
- RTL8723BE makes system hang
+To: Shengjiu Wang <shengjiu.wang@nxp.com>, hverkuil@xs4all.nl,
+ sakari.ailus@iki.fi, tfiga@chromium.org, m.szyprowski@samsung.com,
+ mchehab@kernel.org, linux-media@vger.kernel.org,
+ linux-kernel@vger.kernel.org, shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, nicoleotsuka@gmail.com, lgirdwood@gmail.com,
+ broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
+ alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org
+References: <1699595289-25773-1-git-send-email-shengjiu.wang@nxp.com>
+ <1699595289-25773-15-git-send-email-shengjiu.wang@nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <1699595289-25773-15-git-send-email-shengjiu.wang@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -82,79 +110,222 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Ping-Ke Shih <pkshih@realtek.com>, Oliver O'Halloran <oohall@gmail.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Jian-Hong Pan <jhp@endlessos.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+On 10/11/2023 06:48, Shengjiu Wang wrote:
+> +static int asrc_m2m_probe(struct platform_device *pdev)
+> +{
+> +	struct fsl_asrc_m2m_pdata *data = pdev->dev.platform_data;
+> +	struct device *dev = &pdev->dev;
+> +	struct asrc_m2m *m2m;
+> +	int ret;
+> +
+> +	m2m = devm_kzalloc(dev, sizeof(struct asrc_m2m), GFP_KERNEL);
 
-I notice a bug report on Bugzilla [1]. Quoting from it:
+sizeof(*)
 
-> We have an ASUS X555UQ laptop equipped with Intel i7-6500U CPU and Realtek RTL8723BE PCIe Wireless adapter.
-> 
-> We tested it with kernel 6.6.  System keeps showing AER error message flood, even hangs up, until rtl8723be's ASPM is disabled.
-> 
-> kernel: pcieport 0000:00:1c.5: PCIe Bus Error: severity=Corrected, type=Physical Layer, (Receiver ID)
-> kernel: pcieport 0000:00:1c.5:   device [8086:9d15] error status/mask=00000001/00002000
-> kernel: pcieport 0000:00:1c.5:    [ 0] RxErr                  (First)
-> kernel: pcieport 0000:00:1c.5: AER: Corrected error received: 0000:00:1c.5
-> kernel: pcieport 0000:00:1c.5: AER: can't find device of ID00e5
-> kernel: pcieport 0000:00:1c.5: AER: Corrected error received: 0000:00:1c.5
-> kernel: pcieport 0000:00:1c.5: AER: can't find device of ID00e5
-> kernel: pcieport 0000:00:1c.5: AER: Multiple Corrected error received: 0000:00:1c.5
-> kernel: pcieport 0000:00:1c.5: AER: can't find device of ID00e5
-> 
-> Here is the PCI tree:
-> $ lspci -tv
-> -[0000:00]-+-00.0  Intel Corporation Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor Host Bridge/DRAM Registers
->            +-02.0  Intel Corporation Skylake GT2 [HD Graphics 520]
->            +-04.0  Intel Corporation Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor Thermal Subsystem
->            +-14.0  Intel Corporation Sunrise Point-LP USB 3.0 xHCI Controller
->            +-14.2  Intel Corporation Sunrise Point-LP Thermal subsystem
->            +-15.0  Intel Corporation Sunrise Point-LP Serial IO I2C Controller #0
->            +-15.1  Intel Corporation Sunrise Point-LP Serial IO I2C Controller #1
->            +-16.0  Intel Corporation Sunrise Point-LP CSME HECI #1
->            +-17.0  Intel Corporation Sunrise Point-LP SATA Controller [AHCI mode]
->            +-1c.0-[01]----00.0  NVIDIA Corporation GM108M [GeForce 940MX]
->            +-1c.4-[02]----00.0  Realtek Semiconductor Co., Ltd. RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller
->            +-1c.5-[03]----00.0  Realtek Semiconductor Co., Ltd. RTL8723BE PCIe Wireless Network Adapter
->            +-1f.0  Intel Corporation Sunrise Point-LP LPC Controller
->            +-1f.2  Intel Corporation Sunrise Point-LP PMC
->            +-1f.3  Intel Corporation Sunrise Point-LP HD Audio
->            \-1f.4  Intel Corporation Sunrise Point-LP SMBus
+> +	if (!m2m)
+> +		return -ENOMEM;
+> +
+> +	m2m->pdata = *data;
+> +	m2m->pdev = pdev;
+> +
+> +	ret = v4l2_device_register(dev, &m2m->v4l2_dev);
+> +	if (ret) {
+> +		dev_err(dev, "failed to register v4l2 device\n");
+> +		goto err_register;
+> +	}
+> +
+> +	m2m->m2m_dev = v4l2_m2m_init(&asrc_m2m_ops);
+> +	if (IS_ERR(m2m->m2m_dev)) {
+> +		dev_err(dev, "failed to register v4l2 device\n");
 
-And then the reporter found that it was ASPM bug:
+Why aren't you using dev_err_probe() at all?
 
-> Notice a long time ago discussion mail: Dmesg filled with "AER: Corrected error received" [1]
-> 
-> So, I force write 1 to clear Receiver Error Status bit of Correctable Error Status Register, like
-> 
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index 9c8fd69ae5ad..39faedd2ec8e 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -1141,8 +1160,9 @@ static void aer_isr_one_error(struct aer_rpc *rpc,
->                         e_info.multi_error_valid = 0;
->                 aer_print_port_info(pdev, &e_info);
->  
-> -               if (find_source_device(pdev, &e_info))
-> -                       aer_process_err_devices(&e_info);
-> +               //if (find_source_device(pdev, &e_info))
-> +               //      aer_process_err_devices(&e_info);
-> +               pci_write_config_dword(pdev, pdev->aer_cap + PCI_ERR_COR_STATUS, 0x1);
->         }
->  
->         if (e_src->status & PCI_ERR_ROOT_UNCOR_RCV) {
-> 
-> Then, system should clear the error right away.  However, system still get the AER flood ...
-> 
-> Seems that we still have to disable rtl8723be's ASPM.
+> +		ret = PTR_ERR(m2m->m2m_dev);
+> +		goto err_m2m;
+> +	}
+> +
+> +	m2m->dec_vdev = video_device_alloc();
+> +	if (!m2m->dec_vdev) {
+> +		dev_err(dev, "failed to register v4l2 device\n");
 
-See Bugzilla for the full thread and attached full kernel logs.
+Why do you print errors on ENOMEM?
 
-Thanks.
+Did you run coccinelle?
 
-[1]: https://bugzilla.kernel.org/show_bug.cgi?id=218127
+> +		ret = -ENOMEM;
+> +		goto err_vdev_alloc;
+> +	}
+> +
+> +	mutex_init(&m2m->mlock);
+> +
+> +	m2m->dec_vdev->fops = &asrc_m2m_fops;
+> +	m2m->dec_vdev->ioctl_ops = &asrc_m2m_ioctl_ops;
+> +	m2m->dec_vdev->minor = -1;
+> +	m2m->dec_vdev->release = video_device_release;
+> +	m2m->dec_vdev->lock = &m2m->mlock; /* lock for ioctl serialization */
+> +	m2m->dec_vdev->v4l2_dev = &m2m->v4l2_dev;
+> +	m2m->dec_vdev->vfl_dir = VFL_DIR_M2M;
+> +	m2m->dec_vdev->device_caps = V4L2_CAP_STREAMING | V4L2_CAP_AUDIO_M2M;
+> +
+> +#ifdef CONFIG_MEDIA_CONTROLLER
+> +	m2m->mdev.dev = &pdev->dev;
+> +	strscpy(m2m->mdev.model, M2M_DRV_NAME, sizeof(m2m->mdev.model));
+> +	snprintf(m2m->mdev.bus_info, sizeof(m2m->mdev.bus_info),
+> +		 "platform:%s", M2M_DRV_NAME);
+> +	media_device_init(&m2m->mdev);
+> +	m2m->mdev.ops = &asrc_m2m_media_ops;
+> +	m2m->v4l2_dev.mdev = &m2m->mdev;
+> +#endif
+> +
+> +	ret = video_register_device(m2m->dec_vdev, VFL_TYPE_AUDIO, -1);
+> +	if (ret) {
+> +		dev_err(dev, "failed to register video device\n");
+> +		goto err_vdev_register;
+> +	}
+> +
+> +#ifdef CONFIG_MEDIA_CONTROLLER
+> +	ret = v4l2_m2m_register_media_controller(m2m->m2m_dev, m2m->dec_vdev,
+> +						 MEDIA_ENT_F_PROC_AUDIO_RESAMPLER);
+> +	if (ret) {
+> +		dev_err(dev, "Failed to init mem2mem media controller\n");
+> +		goto error_v4l2;
+> +	}
+> +
+> +	ret = media_device_register(&m2m->mdev);
+> +	if (ret) {
+> +		dev_err(dev, "Failed to register mem2mem media device\n");
+> +		goto error_m2m_mc;
+> +	}
+> +#endif
+> +
+> +	video_set_drvdata(m2m->dec_vdev, m2m);
+> +	platform_set_drvdata(pdev, m2m);
+> +	pm_runtime_enable(&pdev->dev);
+> +
+> +	return 0;
+> +
+> +#ifdef CONFIG_MEDIA_CONTROLLER
+> +error_m2m_mc:
+> +	v4l2_m2m_unregister_media_controller(m2m->m2m_dev);
+> +#endif
+> +error_v4l2:
+> +	video_unregister_device(m2m->dec_vdev);
+> +err_vdev_register:
+> +	video_device_release(m2m->dec_vdev);
+> +err_vdev_alloc:
+> +	v4l2_m2m_release(m2m->m2m_dev);
+> +err_m2m:
+> +	v4l2_device_unregister(&m2m->v4l2_dev);
+> +err_register:
+> +	return ret;
+> +}
+> +
+> +static void asrc_m2m_remove(struct platform_device *pdev)
+> +{
+> +	struct asrc_m2m *m2m = platform_get_drvdata(pdev);
+> +
+> +	pm_runtime_disable(&pdev->dev);
+> +#ifdef CONFIG_MEDIA_CONTROLLER
+> +	media_device_unregister(&m2m->mdev);
+> +	v4l2_m2m_unregister_media_controller(m2m->m2m_dev);
+> +#endif
+> +	video_unregister_device(m2m->dec_vdev);
+> +	video_device_release(m2m->dec_vdev);
+> +	v4l2_m2m_release(m2m->m2m_dev);
+> +	v4l2_device_unregister(&m2m->v4l2_dev);
+> +}
+> +
+> +#ifdef CONFIG_PM_SLEEP
+> +/* suspend callback for m2m */
+> +static int asrc_m2m_suspend(struct device *dev)
+> +{
+> +	struct asrc_m2m *m2m = dev_get_drvdata(dev);
+> +	struct fsl_asrc *asrc = m2m->pdata.asrc;
+> +	struct fsl_asrc_pair *pair;
+> +	unsigned long lock_flags;
+> +	int i;
+> +
+> +	for (i = 0; i < PAIR_CTX_NUM; i++) {
+> +		spin_lock_irqsave(&asrc->lock, lock_flags);
+> +		pair = asrc->pair[i];
+> +		if (!pair || !pair->req_pair) {
+> +			spin_unlock_irqrestore(&asrc->lock, lock_flags);
+> +			continue;
+> +		}
+> +		if (!completion_done(&pair->complete[V4L_OUT])) {
+> +			if (pair->dma_chan[V4L_OUT])
+> +				dmaengine_terminate_all(pair->dma_chan[V4L_OUT]);
+> +			asrc_input_dma_callback((void *)pair);
+> +		}
+> +		if (!completion_done(&pair->complete[V4L_CAP])) {
+> +			if (pair->dma_chan[V4L_CAP])
+> +				dmaengine_terminate_all(pair->dma_chan[V4L_CAP]);
+> +			asrc_output_dma_callback((void *)pair);
+> +		}
+> +
+> +		if (asrc->m2m_pair_suspend)
+> +			asrc->m2m_pair_suspend(pair);
+> +
+> +		spin_unlock_irqrestore(&asrc->lock, lock_flags);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int asrc_m2m_resume(struct device *dev)
+> +{
+> +	struct asrc_m2m *m2m = dev_get_drvdata(dev);
+> +	struct fsl_asrc *asrc = m2m->pdata.asrc;
+> +	struct fsl_asrc_pair *pair;
+> +	unsigned long lock_flags;
+> +	int i;
+> +
+> +	for (i = 0; i < PAIR_CTX_NUM; i++) {
+> +		spin_lock_irqsave(&asrc->lock, lock_flags);
+> +		pair = asrc->pair[i];
+> +		if (!pair || !pair->req_pair) {
+> +			spin_unlock_irqrestore(&asrc->lock, lock_flags);
+> +			continue;
+> +		}
+> +		if (asrc->m2m_pair_resume)
+> +			asrc->m2m_pair_resume(pair);
+> +
+> +		spin_unlock_irqrestore(&asrc->lock, lock_flags);
+> +	}
+> +
+> +	return 0;
+> +}
+> +#endif
+> +
+> +static const struct dev_pm_ops asrc_m2m_pm_ops = {
+> +	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(asrc_m2m_suspend,
+> +				      asrc_m2m_resume)
+> +};
+> +
+> +static struct platform_driver asrc_m2m_driver = {
+> +	.probe  = asrc_m2m_probe,
+> +	.remove_new = asrc_m2m_remove,
+> +	.driver = {
+> +		.name = M2M_DRV_NAME,
+> +		.pm = &asrc_m2m_pm_ops,
+> +	},
+> +};
+> +module_platform_driver(asrc_m2m_driver);
+> +
+> +MODULE_DESCRIPTION("Freescale ASRC M2M driver");
+> +MODULE_ALIAS("platform:" M2M_DRV_NAME);
 
--- 
-An old man doll... just what I always wanted! - Clara
+You should not need MODULE_ALIAS() in normal cases. If you need it,
+usually it means your device ID table is wrong (e.g. misses either
+entries or MODULE_DEVICE_TABLE()). MODULE_ALIAS() is not a substitute
+for incomplete ID table.
+
+
+> +MODULE_LICENSE("GPL");
+
+Best regards,
+Krzysztof
+
