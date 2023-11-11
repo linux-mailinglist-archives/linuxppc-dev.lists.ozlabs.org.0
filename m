@@ -1,72 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EABE7E8A63
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Nov 2023 11:54:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D2D87E8C6E
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Nov 2023 21:03:19 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=AG0Luxic;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=R4RIFVbE;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SSCHq70hHz3cW1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Nov 2023 21:54:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SSRT121pRz3cXy
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Nov 2023 07:03:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=AG0Luxic;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=R4RIFVbE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::336; helo=mail-wm1-x336.google.com; envelope-from=colin.i.king@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SSCGz28kcz307y
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Nov 2023 21:53:44 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1699700027; x=1731236027;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=sri7pyPfJ1jGdWG8uOtu4Dd/45elvMuxlAnl70MkOjI=;
-  b=AG0LuxicLN+H3DqQNDJ3tWvOlrPzKVo6dYNXcelI1MHHDWWq8HmXOqs5
-   vSHgaYBVaFiXJunpiu4UhsYmoeF2opzhGUv9YsFVeYc5qmrkwGxxyyr+h
-   EqnHJljdaM0CD6bRghA7MUW4nMIZuBpSj2w5rST7OHtgp8rtN7KM0wBWr
-   mXGAowNs7GOjFXgK8uetVrMjRgj8RG3mmEzv7ZfE4EKJKSANmt1eGl+Xk
-   1wJf6PZl7JXpwhR86mgbAKBGcBhp3aSjm+Lnhs+AldUxXIM5BUDYIMOYo
-   sgAb/AELgU+4JRuH4QiSr9enIDC9gJ1Q/gk8zWzUjpk/BWAb0tEsT720P
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10890"; a="394172435"
-X-IronPort-AV: E=Sophos;i="6.03,294,1694761200"; 
-   d="scan'208";a="394172435"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2023 02:53:39 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10890"; a="767505053"
-X-IronPort-AV: E=Sophos;i="6.03,294,1694761200"; 
-   d="scan'208";a="767505053"
-Received: from lkp-server01.sh.intel.com (HELO 17d9e85e5079) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 11 Nov 2023 02:53:34 -0800
-Received: from kbuild by 17d9e85e5079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1r1lcK-000AO6-1a;
-	Sat, 11 Nov 2023 10:53:32 +0000
-Date: Sat, 11 Nov 2023 18:52:53 +0800
-From: kernel test robot <lkp@intel.com>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>, hverkuil@xs4all.nl,
-	sakari.ailus@iki.fi, tfiga@chromium.org, m.szyprowski@samsung.com,
-	mchehab@kernel.org, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com, festevam@gmail.com, nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz,
-	tiwai@suse.com, alsa-devel@alsa-project.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v9 13/15] media: uapi: Add an entity type for audio
- resampler
-Message-ID: <202311111844.o3EWWxvk-lkp@intel.com>
-References: <1699595289-25773-14-git-send-email-shengjiu.wang@nxp.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SSRS81vdyz2yDD
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Nov 2023 07:02:30 +1100 (AEDT)
+Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-40859c464daso24621605e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Nov 2023 12:02:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699732943; x=1700337743; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ux3JnOkDtQtFFiSSmtfisW2bjV3FX8kEYn9loFMjrbU=;
+        b=R4RIFVbE7of277Ni7Jw1AWJpuNjBzFG/7YdkzG5nr91nenJTLHSGr2QcaAgiiLZUX7
+         Cupi9eX4Gbd1QoVTQC+IPcrlGzvvGElgPz18RH2KQHIHfKO0VnTaC01YsuYFlhe5Yjnl
+         xdb/dxyLvD08529fOMfOanOmugYVlDrINGok+5hSt3h78XDf2Ish77IqQxLMFac9rRh3
+         JM/sxwjn/jyXAdN0om++/qMXkJ4IwBmZfoBoPjTRbF5x16jNMcwaRKbAHTk+uqdomVZj
+         wSNVN7XC+a9QvspSTN5taWFZYuITwJx5bzpBNKJ7UGWqWZt9yH9yBDrkho6PnLc9Bjag
+         t3VA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699732943; x=1700337743;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ux3JnOkDtQtFFiSSmtfisW2bjV3FX8kEYn9loFMjrbU=;
+        b=pEY8GFxRKdKAl0qNUst49E55dacvkMh1ZRqAyczK2GjV/OIdXH74XHxmpt9OytU37C
+         CHCZrf+SrupuCIqv/Cd7CGlc9vPKsyTbYSUfGvXliYTxAaw3KIkIVxBV2iVSHgRKCd3Y
+         CFKHRtCHgZW5G9Tuzr/nJP/8XLjPp2kiHwMN+4igqKOfvXA2U5r2369JHEFAnNawhY3+
+         lc+htokmYwgsLC+9U86aSHMfexzKcLDTrwm2gU7i1IFL2peeTUfanFHNpsD9IZf/qJyS
+         7eYCOGqNUFfyABFNfsnENHIQMBea7R/+uK/tiR2U+PpcvlYeU3lj6fHyYMeTnvUHORiH
+         aNAA==
+X-Gm-Message-State: AOJu0Yzi4GXc2NH0iUdGgPE567A21GxEQ6YOGcKG+3EUkkhuPxl6KQIj
+	tN3g1hNLpll+OBswhW/T2Ks=
+X-Google-Smtp-Source: AGHT+IGtegBIMkINKygpu/FywbEpt/rU4mDYId2ckUhjyq7MIoNRe3aAfbMCExoD7jPrCWGbz7pEqA==
+X-Received: by 2002:a05:600c:3543:b0:401:b204:3b97 with SMTP id i3-20020a05600c354300b00401b2043b97mr2234114wmq.4.1699732943216;
+        Sat, 11 Nov 2023 12:02:23 -0800 (PST)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id r9-20020a05600c320900b00407b93d8085sm8652755wmp.27.2023.11.11.12.02.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 11 Nov 2023 12:02:22 -0800 (PST)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Roy Pledge <Roy.Pledge@nxp.com>,
+	Li Yang <leoyang.li@nxp.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH][next] soc: fsl: dpio: remove redundant assignment to pointer p
+Date: Sat, 11 Nov 2023 20:02:21 +0000
+Message-Id: <20231111200221.338612-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1699595289-25773-14-git-send-email-shengjiu.wang@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,37 +79,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: oe-kbuild-all@lists.linux.dev
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Shengjiu,
+The pointer p is being assigned a value that is never read, the assignment
+is redundant and can be removed. Cleans up clang scan build warning:
 
-kernel test robot noticed the following build warnings:
+drivers/soc/fsl/dpio/qbman-portal.c:662:3: warning: Value stored to 'p'
+is never read [deadcode.DeadStores]
 
-[auto build test WARNING on media-tree/master]
-[also build test WARNING on broonie-sound/for-next tiwai-sound/for-next tiwai-sound/for-linus linus/master v6.6 next-20231110]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/soc/fsl/dpio/qbman-portal.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Shengjiu-Wang/ASoC-fsl_asrc-define-functions-for-memory-to-memory-usage/20231110-143635
-base:   git://linuxtv.org/media_tree.git master
-patch link:    https://lore.kernel.org/r/1699595289-25773-14-git-send-email-shengjiu.wang%40nxp.com
-patch subject: [PATCH v9 13/15] media: uapi: Add an entity type for audio resampler
-reproduce: (https://download.01.org/0day-ci/archive/20231111/202311111844.o3EWWxvk-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202311111844.o3EWWxvk-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> Documentation/output/media.h.rst:6: WARNING: undefined label: media-ent-f-proc-audio-resampler (if the link has no caption the label must precede a section header)
-
-vim +6 Documentation/output/media.h.rst
-
+diff --git a/drivers/soc/fsl/dpio/qbman-portal.c b/drivers/soc/fsl/dpio/qbman-portal.c
+index 0a3fb6c115f4..c2fa5c981edc 100644
+--- a/drivers/soc/fsl/dpio/qbman-portal.c
++++ b/drivers/soc/fsl/dpio/qbman-portal.c
+@@ -659,7 +659,6 @@ int qbman_swp_enqueue_multiple_direct(struct qbman_swp *s,
+ 
+ 	if (!s->eqcr.available) {
+ 		eqcr_ci = s->eqcr.ci;
+-		p = s->addr_cena + QBMAN_CENA_SWP_EQCR_CI;
+ 		s->eqcr.ci = qbman_read_register(s, QBMAN_CINH_SWP_EQCR_CI);
+ 		s->eqcr.ci &= full_mask;
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.39.2
+
