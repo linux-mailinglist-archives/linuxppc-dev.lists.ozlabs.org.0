@@ -1,60 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FC767E9132
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Nov 2023 15:30:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E3F57E923A
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Nov 2023 20:19:08 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PkZEmc1v;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gZ8PEmJN;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SSw2M22Vwz3cTY
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Nov 2023 01:30:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ST2RZ2p5rz3cPK
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Nov 2023 06:19:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PkZEmc1v;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gZ8PEmJN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.8; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SSw1Q5c71z2xgp
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Nov 2023 01:29:28 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1699799371; x=1731335371;
-  h=date:from:to:cc:subject:message-id;
-  bh=RKAZ9QZXbu0yh3Xwbqe1OkQAyvC4lax9l0LuuDiGZfM=;
-  b=PkZEmc1vRgElvwtUxs0ZpzC44XNMD10pQDRXyc9ahuHDEu4MDwyP2Z9w
-   K1QFds+Il9J+lBg4i759mUXsgDCcpYxelDDZi5up/Uh3GbSiIzBMF3Krl
-   plnM1+AmUvPp7qZhrUuJssy29HFK/WFZl5Lu075gQxYRD6jZv62s8TQZ5
-   uHBEBvDEp8ljlvVpTNdSREPtjUvuPeFO7aI/pk9UBVs2ok7DEWC/mdDPE
-   WolGCe783xdqiCKBvdA6GI0jLPoaPR0s962enHPDKynzPjkVn5nJCPPbk
-   EyilLqfVDBuz2u6brMc/iiYBrcMz0efgxWtFgOtD4kxvIOj9imqodFkcJ
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10891"; a="3362271"
-X-IronPort-AV: E=Sophos;i="6.03,297,1694761200"; 
-   d="scan'208";a="3362271"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2023 06:29:25 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10891"; a="757591634"
-X-IronPort-AV: E=Sophos;i="6.03,297,1694761200"; 
-   d="scan'208";a="757591634"
-Received: from lkp-server01.sh.intel.com (HELO 17d9e85e5079) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 12 Nov 2023 06:29:23 -0800
-Received: from kbuild by 17d9e85e5079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1r2BSj-000BCc-0f;
-	Sun, 12 Nov 2023 14:29:21 +0000
-Date: Sun, 12 Nov 2023 22:28:55 +0800
-From: kernel test robot <lkp@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ST2Qk3jMGz2yGF
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Nov 2023 06:18:22 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 0588560C51;
+	Sun, 12 Nov 2023 19:18:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C8B28C433C8;
+	Sun, 12 Nov 2023 19:18:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1699816698;
+	bh=/TZ7o3tk8rEPaAr6JQ4CmQpUUUJ7GHwPC7nP40qSa18=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=gZ8PEmJNrnJH0Sf9jhGqfGN8fR27zEx48t3G9Pko8dVD93RKxuZ2RlVZWxaG/+dhf
+	 ah5ohHYrn4WyDmHgV3cqqCk0XVHSgA7anUes9qGe8lCn2y3yZmFU1pcVMwV3HozqQ/
+	 Npr7DYLz0f0m7Mss6PJ7gm8R7v+CKsbkkfP71rGTucxVw/lGRjSVitS9ljCs+DfXH+
+	 nR2gaLa9XFpVe48Ep0K2/BupFECiMV93AidE3SQ/0cacnCDTpltkWjenDclXDZpJ0T
+	 A+qJjqCZ/yMLO0vnYADBYEg3c1b/ldznC0dWwTG2oPmERCGCehpk8I89vnMY2qew/O
+	 duTKZM/Gkhrhw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id B4527EAB08C;
+	Sun, 12 Nov 2023 19:18:18 +0000 (UTC)
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.7-2 tag
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <878r73930n.fsf@mail.lhotse>
+References: <878r73930n.fsf@mail.lhotse>
+X-PR-Tracked-List-Id: Linux on PowerPC Developers Mail List <linuxppc-dev.lists.ozlabs.org>
+X-PR-Tracked-Message-Id: <878r73930n.fsf@mail.lhotse>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.7-2
+X-PR-Tracked-Commit-Id: 644b6025bcaff59737270d812c70302f5a8d4a8f
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 5dd2020f335a7a60c154375a168791a2b87f35b5
+Message-Id: <169981669873.29349.4673474762245267399.pr-tracker-bot@kernel.org>
+Date: Sun, 12 Nov 2023 19:18:18 +0000
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD REGRESSION
- 275f51172646ac48f0c4e690c72183084fd996d1
-Message-ID: <202311122253.paQCEfqs-lkp@intel.com>
-User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,113 +65,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: nathanl@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, tzimmermann@suse.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 275f51172646ac48f0c4e690c72183084fd996d1  Automatic merge of 'master' into merge (2023-11-12 11:39)
+The pull request you sent on Sun, 12 Nov 2023 12:25:12 +1100:
 
-Error/Warning ids grouped by kconfigs:
+> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.7-2
 
-gcc_recent_errors
-|-- sh-allmodconfig
-|   |-- sh4-linux-gcc:internal-compiler-error:Segmentation-fault-signal-terminated-program-cc1
-|   |-- standard-input:Error:expected-symbol-name
-|   `-- standard-input:Error:pcrel-too-far
-`-- sh-allyesconfig
-    |-- sh4-linux-gcc:internal-compiler-error:Segmentation-fault-signal-terminated-program-cc1
-    |-- standard-input:Error:expected-symbol-name
-    `-- standard-input:Error:pcrel-too-far
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/5dd2020f335a7a60c154375a168791a2b87f35b5
 
-elapsed time: 735m
-
-configs tested: 81
-configs skipped: 2
-
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386                                defconfig   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                              allnoconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
+Thank you!
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
