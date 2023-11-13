@@ -1,73 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9263A7E9A5C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Nov 2023 11:35:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEEF47E9A89
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Nov 2023 11:49:06 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=V0AWk5qb;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=ideasonboard.com header.i=@ideasonboard.com header.a=rsa-sha256 header.s=mail header.b=iLwdtlyj;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4STQn333kzz3cbB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Nov 2023 21:35:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4STR4c5sgwz3cgM
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Nov 2023 21:49:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=V0AWk5qb;
+	dkim=pass (1024-bit key; unprotected) header.d=ideasonboard.com header.i=@ideasonboard.com header.a=rsa-sha256 header.s=mail header.b=iLwdtlyj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::22e; helo=mail-lj1-x22e.google.com; envelope-from=fancer.lancer@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ideasonboard.com (client-ip=213.167.242.64; helo=perceval.ideasonboard.com; envelope-from=laurent.pinchart@ideasonboard.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 342 seconds by postgrey-1.37 at boromir; Mon, 13 Nov 2023 21:48:19 AEDT
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4STQm86ZQdz3cNT
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Nov 2023 21:34:47 +1100 (AEDT)
-Received: by mail-lj1-x22e.google.com with SMTP id 38308e7fff4ca-2c504a5e1deso58447181fa.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Nov 2023 02:34:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699871683; x=1700476483; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=W8fr/etXthyoBBr7x9PlLJIdae8wlo624Fg8eK+QwQI=;
-        b=V0AWk5qbRR9rUrO6DSWfxB5YPpacoF6oRTaV+40nwQcQqWeJe3VUhGGl6ijdUpnPfm
-         gM5W3UTm1t4gij8Ue262iTSgz+c3AHXqC7zSIq7r0pN1MjwajhN7LTg6tFIWmm7vq5tZ
-         inzbIDRrUX3GtYicivL5ituuVBmlzfiH2j5yztEdGPtqsjUjKTkxG6iIJZn8h5syEUK3
-         s+bW//6wHZib+V3EkNVBYbML5kIe12DVPHfcByvDIjbDqKKw4FbttI5d6DxeAsFGqX0V
-         xtFI1QdTkGhaEQhy5t8iVYmyWyIuO3noOU/ixxyNuAjLm2CtL5ewvPyDJJTjwHFqrOwh
-         6N3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699871683; x=1700476483;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=W8fr/etXthyoBBr7x9PlLJIdae8wlo624Fg8eK+QwQI=;
-        b=NuLArWMpeHmJOoBUvAvkl5cyOCWzyJEqAp1cUBfvxDjgWRIVPEzgyYk2STaBA0OWek
-         hMRL5o06+hTXzPtOH8Pu/Dh3oQbLaf+8ysoEySIP6dqnuYhtq3f+u4qUOeaRsCQ4rU9b
-         BRtb8loFnokvq8+e58wM0T64xTuhYGHqdLeOA04dVwYhjQiUO7/A2AHYarbO3IGJ1gCW
-         ww0RAyqX2sDbG0WSb10kdHSZEoTNdUf8wfsYrSPRMSpA3U3RKjTZlxjAvIH6pl2Fodlb
-         8qKS3Op0JiTNeyz6LDuqXKDM5BsucnG5ThAg4FQKRFw/t1v835pfmw7l3xU3S5Zy6CxV
-         qLTw==
-X-Gm-Message-State: AOJu0YzQYO5gGiKZUXVDF2gIwN9QaQXHcpk2FMso7ySMDiG563d/8uCv
-	mQBkjVu1Vj/TJaEnAplGfXQ=
-X-Google-Smtp-Source: AGHT+IF9Abl2GVkQa7AiqNVi9FuPFCCvA7GvKvkG/t14gyAZj1I3fRjMYxmfrFDqvrP9xb+5Vsu2gw==
-X-Received: by 2002:a05:651c:310:b0:2c0:20e3:990f with SMTP id a16-20020a05651c031000b002c020e3990fmr3728099ljp.10.1699871682723;
-        Mon, 13 Nov 2023 02:34:42 -0800 (PST)
-Received: from mobilestation ([178.176.56.174])
-        by smtp.gmail.com with ESMTPSA id b23-20020a2e9897000000b002b9f03729e2sm935533ljj.36.2023.11.13.02.34.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Nov 2023 02:34:42 -0800 (PST)
-Date: Mon, 13 Nov 2023 13:34:39 +0300
-From: Serge Semin <fancer.lancer@gmail.com>
-To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Subject: Re: [PATCH 2/3] PCI: dwc: Rename to .get_dbi_offset in struct
- dw_pcie_ep_ops
-Message-ID: <hlhjm7vhh3pmhvxfwprjnjfd3sdmyfdknv4iv4zhgppuyzktoj@jwaeyxxweyuo>
-References: <20231113013300.2132152-1-yoshihiro.shimoda.uh@renesas.com>
- <20231113013300.2132152-3-yoshihiro.shimoda.uh@renesas.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4STR3l2Dslz3c5L
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Nov 2023 21:48:19 +1100 (AEDT)
+Received: from pendragon.ideasonboard.com (213-243-189-158.bb.dnainternet.fi [213.243.189.158])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id E34D510A;
+	Mon, 13 Nov 2023 11:42:06 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1699872127;
+	bh=6ihvpfxog/JlU6xFHC7s7/xfpVvhabzUKotPpV7QC2s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iLwdtlyjr9XaJgEq3GIS+tAqup/UOKkw9CD7xt6h7DwcFk2Jy6GcqzMIv8i5b2nty
+	 YDM0eBQ9g6LgQ3Uiy6swYxkGgEHz9eKBgmI5tn7c0CpqziSP7wwwZNlU1vRvfyJlZM
+	 e9cfogzJJnOl+xLA4frg+PnYkyippD2ByhKc6H38=
+Date: Mon, 13 Nov 2023 12:42:38 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Hans Verkuil <hverkuil@xs4all.nl>
+Subject: Re: [PATCH v9 10/15] media: uapi: Add V4L2_CTRL_TYPE_FIXED_POINT
+Message-ID: <20231113104238.GA13981@pendragon.ideasonboard.com>
+References: <1699595289-25773-1-git-send-email-shengjiu.wang@nxp.com>
+ <1699595289-25773-11-git-send-email-shengjiu.wang@nxp.com>
+ <4cd6b593-2376-4cbc-a7c8-d3eb36a2f7a0@xs4all.nl>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231113013300.2132152-3-yoshihiro.shimoda.uh@renesas.com>
+In-Reply-To: <4cd6b593-2376-4cbc-a7c8-d3eb36a2f7a0@xs4all.nl>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,387 +56,181 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kw@linux.com, robh@kernel.org, gustavo.pimentel@synopsys.com, lpieralisi@kernel.org, mani@kernel.org, linux-pci@vger.kernel.org, roy.zang@nxp.com, linux-renesas-soc@vger.kernel.org, minghuan.Lian@nxp.com, jingoohan1@gmail.com, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org, mingkai.hu@nxp.com, marek.vasut+renesas@gmail.com
+Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, nicoleotsuka@gmail.com, linuxppc-dev@lists.ozlabs.org, broonie@kernel.org, sakari.ailus@iki.fi, festevam@gmail.com, perex@perex.cz, mchehab@kernel.org, shengjiu.wang@gmail.com, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 13, 2023 at 10:32:59AM +0900, Yoshihiro Shimoda wrote:
-> Since meaning of .func_conf_select is difficult to understand,
-> rename it to .get_dbi_offset.
-
-This change looks good. Thanks.
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-
-There are redundant initializers will have been left after this patch
-is applied, but it will be naturally fixed in the next patch.
-
--Serge(y)
-
+On Mon, Nov 13, 2023 at 11:29:09AM +0100, Hans Verkuil wrote:
+> Hi Shengjiu,
 > 
-> Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-> ---
->  .../pci/controller/dwc/pci-layerscape-ep.c    |   5 +-
->  .../pci/controller/dwc/pcie-designware-ep.c   | 108 +++++++++---------
->  drivers/pci/controller/dwc/pcie-designware.h  |   2 +-
->  drivers/pci/controller/dwc/pcie-rcar-gen4.c   |   4 +-
->  4 files changed, 59 insertions(+), 60 deletions(-)
+> On 10/11/2023 06:48, Shengjiu Wang wrote:
+> > Fixed point controls are used by the user to configure
+> > a fixed point value in 64bits, which Q31.32 format.
+> > 
+> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 > 
-> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> index 4e4b687ef508..961ff1b719a1 100644
-> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> @@ -184,8 +184,7 @@ static int ls_pcie_ep_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
->  	}
->  }
->  
-> -static unsigned int ls_pcie_ep_func_conf_select(struct dw_pcie_ep *ep,
-> -						u8 func_no)
-> +static unsigned int ls_pcie_ep_get_dbi_offset(struct dw_pcie_ep *ep, u8 func_no)
->  {
->  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
->  	struct ls_pcie_ep *pcie = to_ls_pcie_ep(pci);
-> @@ -198,7 +197,7 @@ static const struct dw_pcie_ep_ops ls_pcie_ep_ops = {
->  	.init = ls_pcie_ep_init,
->  	.raise_irq = ls_pcie_ep_raise_irq,
->  	.get_features = ls_pcie_ep_get_features,
-> -	.func_conf_select = ls_pcie_ep_func_conf_select,
-> +	.get_dbi_offset = ls_pcie_ep_get_dbi_offset,
->  };
->  
->  static const struct ls_pcie_ep_drvdata ls1_ep_drvdata = {
-> diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> index ea99a97ce504..1100671db887 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> @@ -43,14 +43,14 @@ dw_pcie_ep_get_func_from_ep(struct dw_pcie_ep *ep, u8 func_no)
->  	return NULL;
->  }
->  
-> -static unsigned int dw_pcie_ep_func_select(struct dw_pcie_ep *ep, u8 func_no)
-> +static unsigned int dw_pcie_ep_get_dbi_offset(struct dw_pcie_ep *ep, u8 func_no)
->  {
-> -	unsigned int func_offset = 0;
-> +	unsigned int dbi_offset = 0;
->  
-> -	if (ep->ops->func_conf_select)
-> -		func_offset = ep->ops->func_conf_select(ep, func_no);
-> +	if (ep->ops->get_dbi_offset)
-> +		dbi_offset = ep->ops->get_dbi_offset(ep, func_no);
->  
-> -	return func_offset;
-> +	return dbi_offset;
->  }
->  
->  static unsigned int dw_pcie_ep_get_dbi2_offset(struct dw_pcie_ep *ep, u8 func_no)
-> @@ -59,8 +59,8 @@ static unsigned int dw_pcie_ep_get_dbi2_offset(struct dw_pcie_ep *ep, u8 func_no
->  
->  	if (ep->ops->get_dbi2_offset)
->  		dbi2_offset = ep->ops->get_dbi2_offset(ep, func_no);
-> -	else if (ep->ops->func_conf_select)     /* for backward compatibility */
-> -		dbi2_offset = ep->ops->func_conf_select(ep, func_no);
-> +	else if (ep->ops->get_dbi_offset)     /* for backward compatibility */
-> +		dbi2_offset = ep->ops->get_dbi_offset(ep, func_no);
->  
->  	return dbi2_offset;
->  }
-> @@ -68,14 +68,14 @@ static unsigned int dw_pcie_ep_get_dbi2_offset(struct dw_pcie_ep *ep, u8 func_no
->  static void __dw_pcie_ep_reset_bar(struct dw_pcie *pci, u8 func_no,
->  				   enum pci_barno bar, int flags)
->  {
-> -	unsigned int func_offset, dbi2_offset;
-> +	unsigned int dbi_offset, dbi2_offset;
->  	struct dw_pcie_ep *ep = &pci->ep;
->  	u32 reg, reg_dbi2;
->  
-> -	func_offset = dw_pcie_ep_func_select(ep, func_no);
-> +	dbi_offset = dw_pcie_ep_get_dbi_offset(ep, func_no);
->  	dbi2_offset = dw_pcie_ep_get_dbi2_offset(ep, func_no);
->  
-> -	reg = func_offset + PCI_BASE_ADDRESS_0 + (4 * bar);
-> +	reg = dbi_offset + PCI_BASE_ADDRESS_0 + (4 * bar);
->  	reg_dbi2 = dbi2_offset + PCI_BASE_ADDRESS_0 + (4 * bar);
->  	dw_pcie_dbi_ro_wr_en(pci);
->  	dw_pcie_writel_dbi2(pci, reg_dbi2, 0x0);
-> @@ -102,16 +102,16 @@ static u8 __dw_pcie_ep_find_next_cap(struct dw_pcie_ep *ep, u8 func_no,
->  		u8 cap_ptr, u8 cap)
->  {
->  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-> -	unsigned int func_offset = 0;
-> +	unsigned int dbi_offset = 0;
->  	u8 cap_id, next_cap_ptr;
->  	u16 reg;
->  
->  	if (!cap_ptr)
->  		return 0;
->  
-> -	func_offset = dw_pcie_ep_func_select(ep, func_no);
-> +	dbi_offset = dw_pcie_ep_get_dbi_offset(ep, func_no);
->  
-> -	reg = dw_pcie_readw_dbi(pci, func_offset + cap_ptr);
-> +	reg = dw_pcie_readw_dbi(pci, dbi_offset + cap_ptr);
->  	cap_id = (reg & 0x00ff);
->  
->  	if (cap_id > PCI_CAP_ID_MAX)
-> @@ -127,13 +127,13 @@ static u8 __dw_pcie_ep_find_next_cap(struct dw_pcie_ep *ep, u8 func_no,
->  static u8 dw_pcie_ep_find_capability(struct dw_pcie_ep *ep, u8 func_no, u8 cap)
->  {
->  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-> -	unsigned int func_offset = 0;
-> +	unsigned int dbi_offset = 0;
->  	u8 next_cap_ptr;
->  	u16 reg;
->  
-> -	func_offset = dw_pcie_ep_func_select(ep, func_no);
-> +	dbi_offset = dw_pcie_ep_get_dbi_offset(ep, func_no);
->  
-> -	reg = dw_pcie_readw_dbi(pci, func_offset + PCI_CAPABILITY_LIST);
-> +	reg = dw_pcie_readw_dbi(pci, dbi_offset + PCI_CAPABILITY_LIST);
->  	next_cap_ptr = (reg & 0x00ff);
->  
->  	return __dw_pcie_ep_find_next_cap(ep, func_no, next_cap_ptr, cap);
-> @@ -144,23 +144,23 @@ static int dw_pcie_ep_write_header(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
->  {
->  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
->  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-> -	unsigned int func_offset = 0;
-> +	unsigned int dbi_offset = 0;
->  
-> -	func_offset = dw_pcie_ep_func_select(ep, func_no);
-> +	dbi_offset = dw_pcie_ep_get_dbi_offset(ep, func_no);
->  
->  	dw_pcie_dbi_ro_wr_en(pci);
-> -	dw_pcie_writew_dbi(pci, func_offset + PCI_VENDOR_ID, hdr->vendorid);
-> -	dw_pcie_writew_dbi(pci, func_offset + PCI_DEVICE_ID, hdr->deviceid);
-> -	dw_pcie_writeb_dbi(pci, func_offset + PCI_REVISION_ID, hdr->revid);
-> -	dw_pcie_writeb_dbi(pci, func_offset + PCI_CLASS_PROG, hdr->progif_code);
-> -	dw_pcie_writew_dbi(pci, func_offset + PCI_CLASS_DEVICE,
-> +	dw_pcie_writew_dbi(pci, dbi_offset + PCI_VENDOR_ID, hdr->vendorid);
-> +	dw_pcie_writew_dbi(pci, dbi_offset + PCI_DEVICE_ID, hdr->deviceid);
-> +	dw_pcie_writeb_dbi(pci, dbi_offset + PCI_REVISION_ID, hdr->revid);
-> +	dw_pcie_writeb_dbi(pci, dbi_offset + PCI_CLASS_PROG, hdr->progif_code);
-> +	dw_pcie_writew_dbi(pci, dbi_offset + PCI_CLASS_DEVICE,
->  			   hdr->subclass_code | hdr->baseclass_code << 8);
-> -	dw_pcie_writeb_dbi(pci, func_offset + PCI_CACHE_LINE_SIZE,
-> +	dw_pcie_writeb_dbi(pci, dbi_offset + PCI_CACHE_LINE_SIZE,
->  			   hdr->cache_line_size);
-> -	dw_pcie_writew_dbi(pci, func_offset + PCI_SUBSYSTEM_VENDOR_ID,
-> +	dw_pcie_writew_dbi(pci, dbi_offset + PCI_SUBSYSTEM_VENDOR_ID,
->  			   hdr->subsys_vendor_id);
-> -	dw_pcie_writew_dbi(pci, func_offset + PCI_SUBSYSTEM_ID, hdr->subsys_id);
-> -	dw_pcie_writeb_dbi(pci, func_offset + PCI_INTERRUPT_PIN,
-> +	dw_pcie_writew_dbi(pci, dbi_offset + PCI_SUBSYSTEM_ID, hdr->subsys_id);
-> +	dw_pcie_writeb_dbi(pci, dbi_offset + PCI_INTERRUPT_PIN,
->  			   hdr->interrupt_pin);
->  	dw_pcie_dbi_ro_wr_dis(pci);
->  
-> @@ -243,17 +243,17 @@ static int dw_pcie_ep_set_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
->  {
->  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
->  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-> -	unsigned int func_offset, dbi2_offset;
-> +	unsigned int dbi_offset, dbi2_offset;
->  	enum pci_barno bar = epf_bar->barno;
->  	size_t size = epf_bar->size;
->  	int flags = epf_bar->flags;
->  	u32 reg, reg_dbi2;
->  	int ret, type;
->  
-> -	func_offset = dw_pcie_ep_func_select(ep, func_no);
-> +	dbi_offset = dw_pcie_ep_get_dbi_offset(ep, func_no);
->  	dbi2_offset = dw_pcie_ep_get_dbi2_offset(ep, func_no);
->  
-> -	reg = PCI_BASE_ADDRESS_0 + (4 * bar) + func_offset;
-> +	reg = PCI_BASE_ADDRESS_0 + (4 * bar) + dbi_offset;
->  	reg_dbi2 = PCI_BASE_ADDRESS_0 + (4 * bar) + dbi2_offset;
->  
->  	if (!(flags & PCI_BASE_ADDRESS_SPACE))
-> @@ -337,16 +337,16 @@ static int dw_pcie_ep_get_msi(struct pci_epc *epc, u8 func_no, u8 vfunc_no)
->  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
->  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
->  	u32 val, reg;
-> -	unsigned int func_offset = 0;
-> +	unsigned int dbi_offset = 0;
->  	struct dw_pcie_ep_func *ep_func;
->  
->  	ep_func = dw_pcie_ep_get_func_from_ep(ep, func_no);
->  	if (!ep_func || !ep_func->msi_cap)
->  		return -EINVAL;
->  
-> -	func_offset = dw_pcie_ep_func_select(ep, func_no);
-> +	dbi_offset = dw_pcie_ep_get_dbi_offset(ep, func_no);
->  
-> -	reg = ep_func->msi_cap + func_offset + PCI_MSI_FLAGS;
-> +	reg = ep_func->msi_cap + dbi_offset + PCI_MSI_FLAGS;
->  	val = dw_pcie_readw_dbi(pci, reg);
->  	if (!(val & PCI_MSI_FLAGS_ENABLE))
->  		return -EINVAL;
-> @@ -362,16 +362,16 @@ static int dw_pcie_ep_set_msi(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
->  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
->  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
->  	u32 val, reg;
-> -	unsigned int func_offset = 0;
-> +	unsigned int dbi_offset = 0;
->  	struct dw_pcie_ep_func *ep_func;
->  
->  	ep_func = dw_pcie_ep_get_func_from_ep(ep, func_no);
->  	if (!ep_func || !ep_func->msi_cap)
->  		return -EINVAL;
->  
-> -	func_offset = dw_pcie_ep_func_select(ep, func_no);
-> +	dbi_offset = dw_pcie_ep_get_dbi_offset(ep, func_no);
->  
-> -	reg = ep_func->msi_cap + func_offset + PCI_MSI_FLAGS;
-> +	reg = ep_func->msi_cap + dbi_offset + PCI_MSI_FLAGS;
->  	val = dw_pcie_readw_dbi(pci, reg);
->  	val &= ~PCI_MSI_FLAGS_QMASK;
->  	val |= FIELD_PREP(PCI_MSI_FLAGS_QMASK, interrupts);
-> @@ -387,16 +387,16 @@ static int dw_pcie_ep_get_msix(struct pci_epc *epc, u8 func_no, u8 vfunc_no)
->  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
->  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
->  	u32 val, reg;
-> -	unsigned int func_offset = 0;
-> +	unsigned int dbi_offset = 0;
->  	struct dw_pcie_ep_func *ep_func;
->  
->  	ep_func = dw_pcie_ep_get_func_from_ep(ep, func_no);
->  	if (!ep_func || !ep_func->msix_cap)
->  		return -EINVAL;
->  
-> -	func_offset = dw_pcie_ep_func_select(ep, func_no);
-> +	dbi_offset = dw_pcie_ep_get_dbi_offset(ep, func_no);
->  
-> -	reg = ep_func->msix_cap + func_offset + PCI_MSIX_FLAGS;
-> +	reg = ep_func->msix_cap + dbi_offset + PCI_MSIX_FLAGS;
->  	val = dw_pcie_readw_dbi(pci, reg);
->  	if (!(val & PCI_MSIX_FLAGS_ENABLE))
->  		return -EINVAL;
-> @@ -412,7 +412,7 @@ static int dw_pcie_ep_set_msix(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
->  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
->  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
->  	u32 val, reg;
-> -	unsigned int func_offset = 0;
-> +	unsigned int dbi_offset = 0;
->  	struct dw_pcie_ep_func *ep_func;
->  
->  	ep_func = dw_pcie_ep_get_func_from_ep(ep, func_no);
-> @@ -421,19 +421,19 @@ static int dw_pcie_ep_set_msix(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
->  
->  	dw_pcie_dbi_ro_wr_en(pci);
->  
-> -	func_offset = dw_pcie_ep_func_select(ep, func_no);
-> +	dbi_offset = dw_pcie_ep_get_dbi_offset(ep, func_no);
->  
-> -	reg = ep_func->msix_cap + func_offset + PCI_MSIX_FLAGS;
-> +	reg = ep_func->msix_cap + dbi_offset + PCI_MSIX_FLAGS;
->  	val = dw_pcie_readw_dbi(pci, reg);
->  	val &= ~PCI_MSIX_FLAGS_QSIZE;
->  	val |= interrupts;
->  	dw_pcie_writew_dbi(pci, reg, val);
->  
-> -	reg = ep_func->msix_cap + func_offset + PCI_MSIX_TABLE;
-> +	reg = ep_func->msix_cap + dbi_offset + PCI_MSIX_TABLE;
->  	val = offset | bir;
->  	dw_pcie_writel_dbi(pci, reg, val);
->  
-> -	reg = ep_func->msix_cap + func_offset + PCI_MSIX_PBA;
-> +	reg = ep_func->msix_cap + dbi_offset + PCI_MSIX_PBA;
->  	val = (offset + (interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
->  	dw_pcie_writel_dbi(pci, reg, val);
->  
-> @@ -514,7 +514,7 @@ int dw_pcie_ep_raise_msi_irq(struct dw_pcie_ep *ep, u8 func_no,
->  	struct dw_pcie_ep_func *ep_func;
->  	struct pci_epc *epc = ep->epc;
->  	unsigned int aligned_offset;
-> -	unsigned int func_offset = 0;
-> +	unsigned int dbi_offset = 0;
->  	u16 msg_ctrl, msg_data;
->  	u32 msg_addr_lower, msg_addr_upper, reg;
->  	u64 msg_addr;
-> @@ -525,22 +525,22 @@ int dw_pcie_ep_raise_msi_irq(struct dw_pcie_ep *ep, u8 func_no,
->  	if (!ep_func || !ep_func->msi_cap)
->  		return -EINVAL;
->  
-> -	func_offset = dw_pcie_ep_func_select(ep, func_no);
-> +	dbi_offset = dw_pcie_ep_get_dbi_offset(ep, func_no);
->  
->  	/* Raise MSI per the PCI Local Bus Specification Revision 3.0, 6.8.1. */
-> -	reg = ep_func->msi_cap + func_offset + PCI_MSI_FLAGS;
-> +	reg = ep_func->msi_cap + dbi_offset + PCI_MSI_FLAGS;
->  	msg_ctrl = dw_pcie_readw_dbi(pci, reg);
->  	has_upper = !!(msg_ctrl & PCI_MSI_FLAGS_64BIT);
-> -	reg = ep_func->msi_cap + func_offset + PCI_MSI_ADDRESS_LO;
-> +	reg = ep_func->msi_cap + dbi_offset + PCI_MSI_ADDRESS_LO;
->  	msg_addr_lower = dw_pcie_readl_dbi(pci, reg);
->  	if (has_upper) {
-> -		reg = ep_func->msi_cap + func_offset + PCI_MSI_ADDRESS_HI;
-> +		reg = ep_func->msi_cap + dbi_offset + PCI_MSI_ADDRESS_HI;
->  		msg_addr_upper = dw_pcie_readl_dbi(pci, reg);
-> -		reg = ep_func->msi_cap + func_offset + PCI_MSI_DATA_64;
-> +		reg = ep_func->msi_cap + dbi_offset + PCI_MSI_DATA_64;
->  		msg_data = dw_pcie_readw_dbi(pci, reg);
->  	} else {
->  		msg_addr_upper = 0;
-> -		reg = ep_func->msi_cap + func_offset + PCI_MSI_DATA_32;
-> +		reg = ep_func->msi_cap + dbi_offset + PCI_MSI_DATA_32;
->  		msg_data = dw_pcie_readw_dbi(pci, reg);
->  	}
->  	aligned_offset = msg_addr_lower & (epc->mem->window.page_size - 1);
-> @@ -585,7 +585,7 @@ int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
->  	struct dw_pcie_ep_func *ep_func;
->  	struct pci_epf_msix_tbl *msix_tbl;
->  	struct pci_epc *epc = ep->epc;
-> -	unsigned int func_offset = 0;
-> +	unsigned int dbi_offset = 0;
->  	u32 reg, msg_data, vec_ctrl;
->  	unsigned int aligned_offset;
->  	u32 tbl_offset;
-> @@ -597,9 +597,9 @@ int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
->  	if (!ep_func || !ep_func->msix_cap)
->  		return -EINVAL;
->  
-> -	func_offset = dw_pcie_ep_func_select(ep, func_no);
-> +	dbi_offset = dw_pcie_ep_get_dbi_offset(ep, func_no);
->  
-> -	reg = ep_func->msix_cap + func_offset + PCI_MSIX_TABLE;
-> +	reg = ep_func->msix_cap + dbi_offset + PCI_MSIX_TABLE;
->  	tbl_offset = dw_pcie_readl_dbi(pci, reg);
->  	bir = FIELD_GET(PCI_MSIX_TABLE_BIR, tbl_offset);
->  	tbl_offset &= PCI_MSIX_TABLE_OFFSET;
-> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-> index cad0e4c24e11..485ce52b2416 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware.h
-> +++ b/drivers/pci/controller/dwc/pcie-designware.h
-> @@ -344,7 +344,7 @@ struct dw_pcie_ep_ops {
->  	 * return a 0, and implement code in callback function of platform
->  	 * driver.
->  	 */
-> -	unsigned int (*func_conf_select)(struct dw_pcie_ep *ep, u8 func_no);
-> +	unsigned int (*get_dbi_offset)(struct dw_pcie_ep *ep, u8 func_no);
->  	unsigned int (*get_dbi2_offset)(struct dw_pcie_ep *ep, u8 func_no);
->  };
->  
-> diff --git a/drivers/pci/controller/dwc/pcie-rcar-gen4.c b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-> index 2b7e0f213fb2..8ef03d249001 100644
-> --- a/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-> +++ b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-> @@ -394,7 +394,7 @@ rcar_gen4_pcie_ep_get_features(struct dw_pcie_ep *ep)
->  	return &rcar_gen4_pcie_epc_features;
->  }
->  
-> -static unsigned int rcar_gen4_pcie_ep_func_conf_select(struct dw_pcie_ep *ep,
-> +static unsigned int rcar_gen4_pcie_ep_get_dbi_offset(struct dw_pcie_ep *ep,
->  						       u8 func_no)
->  {
->  	return func_no * RCAR_GEN4_PCIE_EP_FUNC_DBI_OFFSET;
-> @@ -412,7 +412,7 @@ static const struct dw_pcie_ep_ops pcie_ep_ops = {
->  	.deinit = rcar_gen4_pcie_ep_deinit,
->  	.raise_irq = rcar_gen4_pcie_ep_raise_irq,
->  	.get_features = rcar_gen4_pcie_ep_get_features,
-> -	.func_conf_select = rcar_gen4_pcie_ep_func_conf_select,
-> +	.get_dbi_offset = rcar_gen4_pcie_ep_get_dbi_offset,
->  	.get_dbi2_offset = rcar_gen4_pcie_ep_get_dbi2_offset,
->  };
->  
-> -- 
-> 2.34.1
+> This patch adds a new control type. This is something that also needs to be
+> tested by v4l2-compliance, and for that we need to add support for this to
+> one of the media test-drivers. The best place for that is the vivid driver,
+> since that has already a bunch of test controls for other control types.
 > 
+> See e.g. VIVID_CID_INTEGER64 in vivid-ctrls.c.
+> 
+> Can you add a patch adding a fixed point test control to vivid?
+
+I don't think V4L2_CTRL_TYPE_FIXED_POINT is a good idea. This seems to
+relate more to units than control types. We have lots of fixed-point
+values in controls already, using the 32-bit and 64-bit integer control
+types. They use various locations for the decimal point, depending on
+the control. If we want to make this more explicit to users, we should
+work on adding unit support to the V4L2 controls.
+
+> > ---
+> >  .../userspace-api/media/v4l/vidioc-g-ext-ctrls.rst  | 13 +++++++------
+> >  .../userspace-api/media/v4l/vidioc-queryctrl.rst    |  9 ++++++++-
+> >  .../userspace-api/media/videodev2.h.rst.exceptions  |  1 +
+> >  drivers/media/v4l2-core/v4l2-ctrls-api.c            |  5 ++++-
+> >  drivers/media/v4l2-core/v4l2-ctrls-core.c           |  2 ++
+> >  include/uapi/linux/videodev2.h                      |  1 +
+> >  6 files changed, 23 insertions(+), 8 deletions(-)
+> > 
+> > diff --git a/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst b/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
+> > index e8475f9fd2cf..e7e5d78dc11e 100644
+> > --- a/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
+> > +++ b/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
+> > @@ -162,13 +162,13 @@ still cause this situation.
+> >      * - __s32
+> >        - ``value``
+> >        - New value or current value. Valid if this control is not of type
+> > -	``V4L2_CTRL_TYPE_INTEGER64`` and ``V4L2_CTRL_FLAG_HAS_PAYLOAD`` is
+> > -	not set.
+> > +	``V4L2_CTRL_TYPE_INTEGER64``, ``V4L2_CTRL_TYPE_FIXED_POINT`` and
+> > +	``V4L2_CTRL_FLAG_HAS_PAYLOAD`` is not set.
+> >      * - __s64
+> >        - ``value64``
+> >        - New value or current value. Valid if this control is of type
+> > -	``V4L2_CTRL_TYPE_INTEGER64`` and ``V4L2_CTRL_FLAG_HAS_PAYLOAD`` is
+> > -	not set.
+> > +	``V4L2_CTRL_TYPE_INTEGER64``, ``V4L2_CTRL_TYPE_FIXED_POINT`` and
+> > +	``V4L2_CTRL_FLAG_HAS_PAYLOAD`` is not set.
+> >      * - char *
+> >        - ``string``
+> >        - A pointer to a string. Valid if this control is of type
+> > @@ -193,8 +193,9 @@ still cause this situation.
+> >      * - __s64 *
+> >        - ``p_s64``
+> >        - A pointer to a matrix control of signed 64-bit values. Valid if
+> > -        this control is of type ``V4L2_CTRL_TYPE_INTEGER64`` and
+> > -        ``V4L2_CTRL_FLAG_HAS_PAYLOAD`` is set.
+> > +        this control is of type ``V4L2_CTRL_TYPE_INTEGER64``,
+> > +        ``V4L2_CTRL_TYPE_FIXED_POINT`` and ``V4L2_CTRL_FLAG_HAS_PAYLOAD``
+> > +        is set.
+> >      * - struct :c:type:`v4l2_area` *
+> >        - ``p_area``
+> >        - A pointer to a struct :c:type:`v4l2_area`. Valid if this control is
+> > diff --git a/Documentation/userspace-api/media/v4l/vidioc-queryctrl.rst b/Documentation/userspace-api/media/v4l/vidioc-queryctrl.rst
+> > index 4d38acafe8e1..f3995ec57044 100644
+> > --- a/Documentation/userspace-api/media/v4l/vidioc-queryctrl.rst
+> > +++ b/Documentation/userspace-api/media/v4l/vidioc-queryctrl.rst
+> > @@ -235,7 +235,8 @@ See also the examples in :ref:`control`.
+> >        - ``default_value``
+> >        - The default value of a ``V4L2_CTRL_TYPE_INTEGER``, ``_INTEGER64``,
+> >  	``_BOOLEAN``, ``_BITMASK``, ``_MENU``, ``_INTEGER_MENU``, ``_U8``
+> > -	or ``_U16`` control. Not valid for other types of controls.
+> > +	``_FIXED_POINT`` or ``_U16`` control. Not valid for other types of
+> > +	controls.
+> >  
+> >  	.. note::
+> >  
+> > @@ -549,6 +550,12 @@ See also the examples in :ref:`control`.
+> >        - n/a
+> >        - A struct :c:type:`v4l2_ctrl_av1_film_grain`, containing AV1 Film Grain
+> >          parameters for stateless video decoders.
+> > +    * - ``V4L2_CTRL_TYPE_FIXED_POINT``
+> > +      - any
+> > +      - any
+> > +      - any
+> > +      - A 64-bit integer valued control, containing parameter which is
+> > +        Q31.32 format.
+> >  
+> >  .. raw:: latex
+> >  
+> > diff --git a/Documentation/userspace-api/media/videodev2.h.rst.exceptions b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
+> > index e61152bb80d1..2faa5a2015eb 100644
+> > --- a/Documentation/userspace-api/media/videodev2.h.rst.exceptions
+> > +++ b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
+> > @@ -167,6 +167,7 @@ replace symbol V4L2_CTRL_TYPE_AV1_SEQUENCE :c:type:`v4l2_ctrl_type`
+> >  replace symbol V4L2_CTRL_TYPE_AV1_TILE_GROUP_ENTRY :c:type:`v4l2_ctrl_type`
+> >  replace symbol V4L2_CTRL_TYPE_AV1_FRAME :c:type:`v4l2_ctrl_type`
+> >  replace symbol V4L2_CTRL_TYPE_AV1_FILM_GRAIN :c:type:`v4l2_ctrl_type`
+> > +replace symbol V4L2_CTRL_TYPE_FIXED_POINT :c:type:`v4l2_ctrl_type`
+> >  
+> >  # V4L2 capability defines
+> >  replace define V4L2_CAP_VIDEO_CAPTURE device-capabilities
+> > diff --git a/drivers/media/v4l2-core/v4l2-ctrls-api.c b/drivers/media/v4l2-core/v4l2-ctrls-api.c
+> > index 002ea6588edf..e6a0fb8d6791 100644
+> > --- a/drivers/media/v4l2-core/v4l2-ctrls-api.c
+> > +++ b/drivers/media/v4l2-core/v4l2-ctrls-api.c
+> > @@ -57,6 +57,7 @@ static int ptr_to_user(struct v4l2_ext_control *c,
+> >  		return copy_to_user(c->string, ptr.p_char, len + 1) ?
+> >  		       -EFAULT : 0;
+> >  	case V4L2_CTRL_TYPE_INTEGER64:
+> > +	case V4L2_CTRL_TYPE_FIXED_POINT:
+> >  		c->value64 = *ptr.p_s64;
+> >  		break;
+> >  	default:
+> > @@ -132,6 +133,7 @@ static int user_to_new(struct v4l2_ext_control *c, struct v4l2_ctrl *ctrl)
+> >  
+> >  	switch (ctrl->type) {
+> >  	case V4L2_CTRL_TYPE_INTEGER64:
+> > +	case V4L2_CTRL_TYPE_FIXED_POINT:
+> >  		*ctrl->p_new.p_s64 = c->value64;
+> >  		break;
+> >  	case V4L2_CTRL_TYPE_STRING:
+> > @@ -540,7 +542,8 @@ static int validate_ctrls(struct v4l2_ext_controls *cs,
+> >  		 */
+> >  		if (ctrl->is_ptr)
+> >  			continue;
+> > -		if (ctrl->type == V4L2_CTRL_TYPE_INTEGER64)
+> > +		if (ctrl->type == V4L2_CTRL_TYPE_INTEGER64 ||
+> > +		    ctrl->type == V4L2_CTRL_TYPE_FIXED_POINT)
+> >  			p_new.p_s64 = &cs->controls[i].value64;
+> >  		else
+> >  			p_new.p_s32 = &cs->controls[i].value;
+> > diff --git a/drivers/media/v4l2-core/v4l2-ctrls-core.c b/drivers/media/v4l2-core/v4l2-ctrls-core.c
+> > index a662fb60f73f..9d50df0d9874 100644
+> > --- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
+> > +++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
+> > @@ -1187,6 +1187,7 @@ static int std_validate_elem(const struct v4l2_ctrl *ctrl, u32 idx,
+> >  	case V4L2_CTRL_TYPE_INTEGER:
+> >  		return ROUND_TO_RANGE(ptr.p_s32[idx], u32, ctrl);
+> >  	case V4L2_CTRL_TYPE_INTEGER64:
+> > +	case V4L2_CTRL_TYPE_FIXED_POINT:
+> >  		/*
+> >  		 * We can't use the ROUND_TO_RANGE define here due to
+> >  		 * the u64 divide that needs special care.
+> > @@ -1779,6 +1780,7 @@ static struct v4l2_ctrl *v4l2_ctrl_new(struct v4l2_ctrl_handler *hdl,
+> >  	/* Prefill elem_size for all types handled by std_type_ops */
+> >  	switch ((u32)type) {
+> >  	case V4L2_CTRL_TYPE_INTEGER64:
+> > +	case V4L2_CTRL_TYPE_FIXED_POINT:
+> >  		elem_size = sizeof(s64);
+> >  		break;
+> >  	case V4L2_CTRL_TYPE_STRING:
+> > diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
+> > index cf8c44595a1d..9482ac66a675 100644
+> > --- a/include/uapi/linux/videodev2.h
+> > +++ b/include/uapi/linux/videodev2.h
+> > @@ -1903,6 +1903,7 @@ enum v4l2_ctrl_type {
+> >  	V4L2_CTRL_TYPE_STRING        = 7,
+> >  	V4L2_CTRL_TYPE_BITMASK       = 8,
+> >  	V4L2_CTRL_TYPE_INTEGER_MENU  = 9,
+> > +	V4L2_CTRL_TYPE_FIXED_POINT   = 10,
+> >  
+> >  	/* Compound types are >= 0x0100 */
+> >  	V4L2_CTRL_COMPOUND_TYPES     = 0x0100,
+
+-- 
+Regards,
+
+Laurent Pinchart
