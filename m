@@ -1,42 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 364CD7E99E1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Nov 2023 11:12:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C4407E99DB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Nov 2023 11:09:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4STQGN3y3sz3cX3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Nov 2023 21:12:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4STQCK27yJz3d9s
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Nov 2023 21:09:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux-m68k.org (client-ip=195.130.137.80; helo=riemann.telenet-ops.be; envelope-from=geert@linux-m68k.org; receiver=lists.ozlabs.org)
-X-Greylist: delayed 579 seconds by postgrey-1.37 at boromir; Mon, 13 Nov 2023 21:12:03 AEDT
-Received: from riemann.telenet-ops.be (riemann.telenet-ops.be [195.130.137.80])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.214.169; helo=mail-pl1-f169.google.com; envelope-from=kswilczynski@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4STQFv4mHHz2xTR
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Nov 2023 21:12:02 +1100 (AEDT)
-Received: from albert.telenet-ops.be (albert.telenet-ops.be [IPv6:2a02:1800:110:4::f00:1a])
-	by riemann.telenet-ops.be (Postfix) with ESMTPS id 4STQ2V2ycgz4wykQ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Nov 2023 11:02:10 +0100 (CET)
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:e81:b3d6:4f11:ac28])
-	by albert.telenet-ops.be with bizsmtp
-	id 9m292B0030WpEYl06m29vw; Mon, 13 Nov 2023 11:02:09 +0100
-Received: from geert (helo=localhost)
-	by ramsan.of.borg with local-esmtp (Exim 4.95)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1r2Tlh-009BsO-30;
-	Mon, 13 Nov 2023 11:02:09 +0100
-Date: Mon, 13 Nov 2023 11:02:09 +0100 (CET)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: linux-kernel@vger.kernel.org
-Subject: Re: Build regressions/improvements in v6.7-rc1
-In-Reply-To: <20231113093630.4164101-1-geert@linux-m68k.org>
-Message-ID: <60ca157e-6eff-d12c-9dc0-8aeab125edda@linux-m68k.org>
-References: <CAHk-=whuO0zmuxp_yorYFWdcrALpqjRPhWkmEy+7wcCnnDcPNA@mail.gmail.com> <20231113093630.4164101-1-geert@linux-m68k.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4STQBq1Vg0z3cF1
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Nov 2023 21:09:21 +1100 (AEDT)
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-1ce1603f5cdso8561835ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Nov 2023 02:09:21 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699870156; x=1700474956;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KtssXOhT1IjkLH8DCwvrp9grDBN4NL0H2Di/o5vivrg=;
+        b=s7iuiBV1tpApbj6WGzKjcxgh+X0A1YFWtc3rTRBbVDXltkSDNksUjjpO2JXU0XN9Sv
+         mn+cSEnKh1J62MT8Ig9INxCpyQMoyK6iZbdZok1tYqayqd89yIblLqiRUt6MIovQjrPG
+         co6KZ8YlSyg8wY3t3mDUKS3gjJSHUVeFS3/ZeoBHG+58lEaCYI8q94J/Mb7zIpuS7Brv
+         YMst3ay3iPyfu42Vmj8QhOjP0A3KdnQWeHEC5lQntfQVPAzJrHG79GsCPsuilDf/CGeq
+         Gg5HI9uT7+DWOWqXmIM5YHAoNfGt6KpTmhNqNGdq9IPLqpu/llysq2GI5ctXwn8WS2AA
+         kixg==
+X-Gm-Message-State: AOJu0YxlTGIzQuCRl3xNTTSHKKNgUIbI3MtNVz9t8aGmFm63jUsYv06V
+	Mq9hLLM9m8RPTY27lgPcWf4=
+X-Google-Smtp-Source: AGHT+IGj6vUeUwfKU7nKXujpx369C8OQBBOgD1h6Il4RG1NldEGkeXRi0upURBkbSxn6ENkTD/+7LA==
+X-Received: by 2002:a17:902:e552:b0:1ca:a290:4c0c with SMTP id n18-20020a170902e55200b001caa2904c0cmr5440330plf.16.1699870155884;
+        Mon, 13 Nov 2023 02:09:15 -0800 (PST)
+Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
+        by smtp.gmail.com with ESMTPSA id o6-20020a170902d4c600b001cc56354cc8sm3741846plg.62.2023.11.13.02.09.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Nov 2023 02:09:15 -0800 (PST)
+Date: Mon, 13 Nov 2023 19:09:14 +0900
+From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Subject: Re: [PATCH 0/3] PCI: dwc: Improve code readability
+Message-ID: <20231113100914.GB1583963@rocinante>
+References: <20231113013300.2132152-1-yoshihiro.shimoda.uh@renesas.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231113013300.2132152-1-yoshihiro.shimoda.uh@renesas.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,67 +60,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-sh@vger.kernel.org, Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>, linuxppc-dev@lists.ozlabs.org, linux-edac@vger.kernel.org, Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>
+Cc: robh@kernel.org, mani@kernel.org, gustavo.pimentel@synopsys.com, lpieralisi@kernel.org, linux-pci@vger.kernel.org, roy.zang@nxp.com, linux-renesas-soc@vger.kernel.org, minghuan.Lian@nxp.com, jingoohan1@gmail.com, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org, mingkai.hu@nxp.com, marek.vasut+renesas@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 13 Nov 2023, Geert Uytterhoeven wrote:
-> Below is the list of build error/warning regressions/improvements in
-> v6.7-rc1[1] compared to v6.6[2].
->
-> Summarized:
->  - build errors: +20/-7
->  - build warnings: +24/-8
->
-> Note that there may be false regressions, as some logs are incomplete.
-> Still, they're build errors/warnings.
->
-> Happy fixing! ;-)
->
-> Thanks to the linux-next team for providing the build service.
->
-> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/b85ea95d086471afb4ad062012a4d73cd328fa86/ (238 out of 239 configs)
-> [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/ffc253263a1375a65fa6c9f62a893e9767fbebfa/ (all 239 configs)
->
->
-> *** ERRORS ***
->
-> 20 error regressions:
->  + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_654' declared with attribute error: FIELD_PREP: value too large for the field:  => 435:38
+Hi Yoshihiro!
 
-powerpc-gcc5/powerpc-allyesconfig
-drivers/edac/versal_edac.c: In function 'mc_probe':
-num_chans = FIELD_PREP(XDDR_REG_CONFIG0_NUM_CHANS_MASK, regval);
+> This patch series is based on the latest pci.git / next branch.
+[...]
 
->  + {standard input}: Error: displacement to undefined symbol .L100 overflows 8-bit field :  => 588
->  + {standard input}: Error: displacement to undefined symbol .L104 overflows 8-bit field :  => 588
->  + {standard input}: Error: displacement to undefined symbol .L105 overflows 8-bit field :  => 593
->  + {standard input}: Error: displacement to undefined symbol .L134 overflows 8-bit field :  => 598
->  + {standard input}: Error: displacement to undefined symbol .L72 overflows 12-bit field:  => 589
->  + {standard input}: Error: displacement to undefined symbol .L73 overflows 8-bit field :  => 580
->  + {standard input}: Error: displacement to undefined symbol .L75 overflows 12-bit field:  => 586, 589, 606
->  + {standard input}: Error: displacement to undefined symbol .L76 overflows 8-bit field :  => 577, 580
->  + {standard input}: Error: displacement to undefined symbol .L77 overflows 8-bit field : 582 => 607, 585
->  + {standard input}: Error: displacement to undefined symbol .L78 overflows 8-bit field :  => 610
->  + {standard input}: Error: displacement to undefined symbol .L80 overflows 8-bit field :  => 607, 601
->  + {standard input}: Error: displacement to undefined symbol .L81 overflows 8-bit field : 606 => 604, 610
->  + {standard input}: Error: displacement to undefined symbol .L96 overflows 12-bit field:  => 602
->  + {standard input}: Error: displacement to undefined symbol .L97 overflows 12-bit field:  => 607
->  + {standard input}: Error: displacement to undefined symbol .L98 overflows 12-bit field:  => 602
->  + {standard input}: Error: invalid operands for opcode:  => 612
->  + {standard input}: Error: missing operand:  => 612
->  + {standard input}: Error: pcrel too far: 601, 598, 604, 577, 595, 574 => 590, 598, 599, 577, 596, 569, 604, 610, 572, 593
->  + {standard input}: Error: unknown pseudo-op: `.l':  => 609
+Thank you for following up to tidy things up!  Much appreciated.
 
-sh4-gcc1[123]/sh-all{mod,yes}config ICE
+Now, while you are looking at things, can you also take care about the following:
 
-Gr{oetje,eeting}s,
+  drivers/pci/controller/dwc/pcie-rcar-gen4.c:439:15: warning: cast to smaller integer type 'enum dw_pcie_device_mode' from 'const void *' [-Wvoid-pointer-to-enum-cast]
 
- 						Geert
+This requires adding structs for each data member of the of_device_id type.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Some examples from other drivers:
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
- 							    -- Linus Torvalds
+  - https://elixir.bootlin.com/linux/v6.6.1/source/drivers/pci/controller/dwc/pcie-tegra194.c#L2440
+  - https://elixir.bootlin.com/linux/v6.6.1/source/drivers/pci/controller/dwc/pci-keystone.c#L1074
+
+Thank you! :)
+
+	Krzysztof
