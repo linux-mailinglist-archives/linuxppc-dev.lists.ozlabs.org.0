@@ -1,99 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F8137E98D5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Nov 2023 10:23:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A83A87E9950
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Nov 2023 10:46:27 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ERFtAi0H;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=PC5YoXrU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QggBEpo+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4STP9l45V6z3cSV
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Nov 2023 20:23:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4STPhK4cN2z3cLl
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Nov 2023 20:46:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ERFtAi0H;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=PC5YoXrU;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QggBEpo+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::22f; helo=mail-oi1-x22f.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4STP8w00Qcz3c4M
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Nov 2023 20:22:39 +1100 (AEDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C0B4721900;
-	Mon, 13 Nov 2023 09:22:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1699867356; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=D3Jfk6wPDPn61d9SkNQs0RWFcu0gEIcj0L1gosyNYP8=;
-	b=ERFtAi0H+/DmiIIYjA+Bg4Dqa4ttdxaixobGeq6zAd8e+voDaBuTYYHh5mShTHIydQhYDO
-	BhFcwI5MgzxmaiPz4c610/cjl7TD0zbozg0vkTGoSHKBIS6XiSOHus9Z3cm/EXoHv3uFMr
-	tQTYZ6bZatOp7TGSp8ez0Y/9Ot7gCRU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1699867356;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=D3Jfk6wPDPn61d9SkNQs0RWFcu0gEIcj0L1gosyNYP8=;
-	b=PC5YoXrUjX6g/jXM/N5NHV/AtDbhH4BfCbejheLebBTK6Ge4VnlGBOz0UYqdOwNIsJHxfc
-	+iLd84dtD/q1/YBQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 3FD2B13398;
-	Mon, 13 Nov 2023 09:22:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id Dta+DNzqUWVjCwAAMHmgww
-	(envelope-from <tzimmermann@suse.de>); Mon, 13 Nov 2023 09:22:36 +0000
-Message-ID: <ba7e407c-d091-410d-92a5-19ec25224bd2@suse.de>
-Date: Mon, 13 Nov 2023 10:22:35 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: (subset) [PATCH v5 0/5] ppc, fbdev: Clean up fbdev mmap helper
-To: Michael Ellerman <patch-notifications@ellerman.id.au>
-References: <20230922080636.26762-1-tzimmermann@suse.de>
- <169984352204.1887074.16685503842131763450.b4-ty@ellerman.id.au>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <169984352204.1887074.16685503842131763450.b4-ty@ellerman.id.au>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------bhtCdMnClY6lSHNIfviMvszc"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4STPgS6rnjz2xFn
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Nov 2023 20:45:40 +1100 (AEDT)
+Received: by mail-oi1-x22f.google.com with SMTP id 5614622812f47-3b2f28caab9so2652928b6e.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Nov 2023 01:45:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699868735; x=1700473535; darn=lists.ozlabs.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DH0+6wLGxWwjy472SttpQ7v+g/1+3nWfcjmEcwBuwzw=;
+        b=QggBEpo+TFOrN+1x6VLPDKa44iDayqfl/kUdXCJgASCHPZx1Ha6S9AwqA0NP3VJvj5
+         Z02Lqc0Yr+xYtXTzYOK9A90ByWq5Ms9UJIna9sbjtvagwE4FmF0vN2qBvHtZYSbEHMJM
+         /c1c0idHBa3J8Z+KjKGNKh4DM0Uuk2z811xSlouGxszlqVdhoTbaPpuqO33izaPi+xyI
+         cUIjBjhxylqrqF9+sCcHIxUIofDovy2P/6S48a5PR08Q5e5QAO8xsvXNWpFYJah4gmxQ
+         3kCq9Va/LPPK8sh2P49wi0OYYjkXKScGWoyA+O/gvQxK+MNbZuCBDeco0be4Gcm47lWc
+         f6Ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699868735; x=1700473535;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=DH0+6wLGxWwjy472SttpQ7v+g/1+3nWfcjmEcwBuwzw=;
+        b=n888fTnnlyhhdQCawZJ03+PI+1uOjdYWE7Y69OVwqlSNBtjHf9JxDBFTkJX29MjmZQ
+         LcmLX5KpElVLNmO8Gk1JTp4ZHQAfBmIs/BOSBF2CLMPq0ZRvauMVelMMV4aHFN+4+Gns
+         ZT1Y7mD+FriNNx2YuU0QyMPMz7JyERYOsy0jDYtTuzFIDrKnHrFGeBCE5WiCWaHtJ1Gi
+         AATKU0B8XOVAvTWP2PjhQPNIVZuPllHTWoPrp1POYlPc3QYn68c+VVJWEeGysz/SGRti
+         k7IVdypR31wKDsYieRWcsnoz8OEbTtYcLnMqwGeNkTPrUxoDj+tZy0aVSPj30WNBiLlh
+         qlNA==
+X-Gm-Message-State: AOJu0YzSnO1pgXb4KpIZAQYeIXM1VxWeyHGCoti00lTZUTJzHrimZZ6u
+	+ETZMoQXvbntuOhXzPzJ1gg=
+X-Google-Smtp-Source: AGHT+IHOUOR//3wC59eMz6lgRIfMMJu55sBtkT65NSJmHTGq2jczN/Y6uSp9M3V/RXvztWc5sOVOLw==
+X-Received: by 2002:a05:6808:1a18:b0:3ab:74a2:ab2b with SMTP id bk24-20020a0568081a1800b003ab74a2ab2bmr9435372oib.48.1699868734521;
+        Mon, 13 Nov 2023 01:45:34 -0800 (PST)
+Received: from localhost (121-44-82-40.tpgi.com.au. [121.44.82.40])
+        by smtp.gmail.com with ESMTPSA id fh8-20020a056a00390800b006c03fa6300dsm3523184pfb.117.2023.11.13.01.45.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Nov 2023 01:45:33 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 13 Nov 2023 19:45:27 +1000
+Message-Id: <CWXL68T68A18.BZ8WHB15ZU2Y@wheely>
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ "Michael Ellerman" <mpe@ellerman.id.au>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Jiri Slaby" <jirislaby@kernel.org>
+Subject: Re: [PATCH 1/2] tty: hvc: Make hvc_remove() return no value
+X-Mailer: aerc 0.15.2
+References: <20231105214406.3765906-4-u.kleine-koenig@pengutronix.de>
+ <20231105214406.3765906-5-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20231105214406.3765906-5-u.kleine-koenig@pengutronix.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,76 +82,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org
+Cc: linuxppc-dev@lists.ozlabs.org, kernel@pengutronix.de, linux-serial@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------bhtCdMnClY6lSHNIfviMvszc
-Content-Type: multipart/mixed; boundary="------------ZnC76XYWWYK1mLFHw8ZmTwef";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Michael Ellerman <patch-notifications@ellerman.id.au>
-Cc: linux-arch@vger.kernel.org, linux-fbdev@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org
-Message-ID: <ba7e407c-d091-410d-92a5-19ec25224bd2@suse.de>
-Subject: Re: (subset) [PATCH v5 0/5] ppc, fbdev: Clean up fbdev mmap helper
-References: <20230922080636.26762-1-tzimmermann@suse.de>
- <169984352204.1887074.16685503842131763450.b4-ty@ellerman.id.au>
-In-Reply-To: <169984352204.1887074.16685503842131763450.b4-ty@ellerman.id.au>
+On Mon Nov 6, 2023 at 7:44 AM AEST, Uwe Kleine-K=C3=B6nig wrote:
+> The function hvc_remove() returns zero unconditionally. Make it return
+> void instead to make it obvious that the caller doesn't need to do any
+> error handling. Accordingly drop the error handling from
+> hvc_opal_remove().
+>
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
 
---------------ZnC76XYWWYK1mLFHw8ZmTwef
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+IIUC these are functionally no change, just tidying and removing
+dead code? Unless I'm mistaken, then
 
-DQoNCkFtIDEzLjExLjIzIHVtIDAzOjQ1IHNjaHJpZWIgTWljaGFlbCBFbGxlcm1hbjoNCj4g
-T24gRnJpLCAyMiBTZXAgMjAyMyAxMDowNDo1NCArMDIwMCwgVGhvbWFzIFppbW1lcm1hbm4g
-d3JvdGU6DQo+PiBDbGVhbiB1cCBhbmQgcmVuYW1lIGZiX3BncHJvdGVjdCgpIHRvIHdvcmsg
-d2l0aG91dCBzdHJ1Y3QgZmlsZS4gVGhlbg0KPj4gcmVmYWN0b3IgdGhlIGltcGxlbWVudGF0
-aW9uIGZvciBQb3dlclBDLiBUaGlzIGNoYW5nZSBoYXMgYmVlbiBkaXNjdXNzZWQNCj4+IGF0
-IFsxXSBpbiB0aGUgY29udGV4dCBvZiByZWZhY3RvcmluZyBmYmRldidzIG1tYXAgY29kZS4N
-Cj4+DQo+PiBUaGUgZmlyc3QgdHdvIHBhdGNoZXMgdXBkYXRlIGZiZGV2IGFuZCByZXBsYWNl
-IGZiZGV2J3MgZmJfcGdwcm90ZWN0KCkNCj4+IHdpdGggcGdwcm90X2ZyYW1lYnVmZmVyKCkg
-b24gYWxsIGFyY2hpdGVjdHVyZXMuIFRoZSBuZXcgaGVscGVyJ3Mgc3RyZWFtLQ0KPj4gbGlu
-ZWQgaW50ZXJmYWNlIGVuYWJsZXMgbW9yZSByZWZhY3RvcmluZyB3aXRoaW4gZmJkZXYncyBt
-bWFwDQo+PiBpbXBsZW1lbnRhdGlvbi4NCj4+DQo+PiBbLi4uXQ0KPiANCj4gUGF0Y2hlcyAz
-LTUgYXBwbGllZCB0byBwb3dlcnBjL2ZpeGVzLg0KPiANCj4gWzMvNV0gYXJjaC9wb3dlcnBj
-OiBSZW1vdmUgdHJhaWxpbmcgd2hpdGVzcGFjZXMNCj4gICAgICAgIGh0dHBzOi8vZ2l0Lmtl
-cm5lbC5vcmcvcG93ZXJwYy9jLzMyMjk0OGMzMTk4Y2Y4MGU3YzEwZDk1M2RkYWQyNGViZDg1
-NzU3Y2QNCj4gWzQvNV0gYXJjaC9wb3dlcnBjOiBSZW1vdmUgZmlsZSBwYXJhbWV0ZXIgZnJv
-bSBwaHlzX21lbV9hY2Nlc3NfcHJvdCBjb2RlDQo+ICAgICAgICBodHRwczovL2dpdC5rZXJu
-ZWwub3JnL3Bvd2VycGMvYy8xZjkyYTg0NGMzNWU0ODNjMDBiYWI4YTdiN2QzOWM1NTVlZTc5
-OWQ4DQo+IFs1LzVdIGFyY2gvcG93ZXJwYzogQ2FsbCBpbnRlcm5hbCBfX3BoeXNfbWVtX2Fj
-Y2Vzc19wcm90KCkgaW4gZmJkZXYgY29kZQ0KPiAgICAgICAgaHR0cHM6Ly9naXQua2VybmVs
-Lm9yZy9wb3dlcnBjL2MvZGVlYmU1ZjYwN2Q3ZjcyZjgzYzQxMTYzMTkxYWQwYzFjNDM1NjM4
-NQ0KDQpHcmVhdCwgdGhhbmtzIGEgbG90IQ0KDQo+IA0KPiBjaGVlcnMNCg0KLS0gDQpUaG9t
-YXMgWmltbWVybWFubg0KR3JhcGhpY3MgRHJpdmVyIERldmVsb3Blcg0KU1VTRSBTb2Z0d2Fy
-ZSBTb2x1dGlvbnMgR2VybWFueSBHbWJIDQpGcmFua2Vuc3RyYXNzZSAxNDYsIDkwNDYxIE51
-ZXJuYmVyZywgR2VybWFueQ0KR0Y6IEl2byBUb3RldiwgQW5kcmV3IE15ZXJzLCBBbmRyZXcg
-TWNEb25hbGQsIEJvdWRpZW4gTW9lcm1hbg0KSFJCIDM2ODA5IChBRyBOdWVybmJlcmcpDQo=
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
+> ---
+>  drivers/tty/hvc/hvc_console.c |  3 +--
+>  drivers/tty/hvc/hvc_console.h |  2 +-
+>  drivers/tty/hvc/hvc_opal.c    | 15 +++++++--------
+>  3 files changed, 9 insertions(+), 11 deletions(-)
+>
+> diff --git a/drivers/tty/hvc/hvc_console.c b/drivers/tty/hvc/hvc_console.=
+c
+> index 959fae54ca39..57f5c37125e6 100644
+> --- a/drivers/tty/hvc/hvc_console.c
+> +++ b/drivers/tty/hvc/hvc_console.c
+> @@ -976,7 +976,7 @@ struct hvc_struct *hvc_alloc(uint32_t vtermno, int da=
+ta,
+>  }
+>  EXPORT_SYMBOL_GPL(hvc_alloc);
+> =20
+> -int hvc_remove(struct hvc_struct *hp)
+> +void hvc_remove(struct hvc_struct *hp)
+>  {
+>  	unsigned long flags;
+>  	struct tty_struct *tty;
+> @@ -1010,7 +1010,6 @@ int hvc_remove(struct hvc_struct *hp)
+>  		tty_vhangup(tty);
+>  		tty_kref_put(tty);
+>  	}
+> -	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(hvc_remove);
+> =20
+> diff --git a/drivers/tty/hvc/hvc_console.h b/drivers/tty/hvc/hvc_console.=
+h
+> index 9668f821db01..78f7543511f1 100644
+> --- a/drivers/tty/hvc/hvc_console.h
+> +++ b/drivers/tty/hvc/hvc_console.h
+> @@ -77,7 +77,7 @@ extern int hvc_instantiate(uint32_t vtermno, int index,
+>  extern struct hvc_struct * hvc_alloc(uint32_t vtermno, int data,
+>  				     const struct hv_ops *ops, int outbuf_size);
+>  /* remove a vterm from hvc tty operation (module_exit or hotplug remove)=
+ */
+> -extern int hvc_remove(struct hvc_struct *hp);
+> +extern void hvc_remove(struct hvc_struct *hp);
+> =20
+>  /* data available */
+>  int hvc_poll(struct hvc_struct *hp);
+> diff --git a/drivers/tty/hvc/hvc_opal.c b/drivers/tty/hvc/hvc_opal.c
+> index 992e199e0ea8..8995b253cf90 100644
+> --- a/drivers/tty/hvc/hvc_opal.c
+> +++ b/drivers/tty/hvc/hvc_opal.c
+> @@ -235,16 +235,15 @@ static int hvc_opal_probe(struct platform_device *d=
+ev)
+>  static int hvc_opal_remove(struct platform_device *dev)
+>  {
+>  	struct hvc_struct *hp =3D dev_get_drvdata(&dev->dev);
+> -	int rc, termno;
+> +	int termno;
+> =20
+>  	termno =3D hp->vtermno;
+> -	rc =3D hvc_remove(hp);
+> -	if (rc =3D=3D 0) {
+> -		if (hvc_opal_privs[termno] !=3D &hvc_opal_boot_priv)
+> -			kfree(hvc_opal_privs[termno]);
+> -		hvc_opal_privs[termno] =3D NULL;
+> -	}
+> -	return rc;
+> +	hvc_remove(hp);
+> +	if (hvc_opal_privs[termno] !=3D &hvc_opal_boot_priv)
+> +		kfree(hvc_opal_privs[termno]);
+> +	hvc_opal_privs[termno] =3D NULL;
+> +
+> +	return 0;
+>  }
+> =20
+>  static struct platform_driver hvc_opal_driver =3D {
 
---------------ZnC76XYWWYK1mLFHw8ZmTwef--
-
---------------bhtCdMnClY6lSHNIfviMvszc
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmVR6tsFAwAAAAAACgkQlh/E3EQov+Db
-+Q//VC9xdTxmoG7kkH+AyylOR0zi9TCw9c4m+AppLVu16/wmZST6snqAPRBzoXQDrPXOyWaLujR8
-1bKd+/5KUf07wboA5UOV+6z4DMOC7E0eGAwWsfYvgpPML4y5mD1UWeRoSqXuHGNiVeQoDavIgK91
-PPck79Iio2/66zBh9P9/0QSHvJGKGcsuLVSd6ACxtgp+ADNdperGmT+7gAoqEoOeUiA5OhvVGv1l
-3Juv91vCU7x5bgCsfvr0p3BXGAdWBG0B2eGiUhdtNM1dBdxWXn8zbvgMxkyCImceZkgJebZDvuLO
-psEzobD5NvsM41DAQEpxLshhL8Eq+6/No9c0oUhmLcN7BDgagRanlJXRRSnMSIx8kvLAOs4YvcZ2
-5sR+UAIx6NM7fQhdq4CoGCE05Ff/s571qRlDB8TaTnb9l4+ooLYWcM3wtEqJSO9RdD98orMiE5H1
-1APxpQwq+Mg+oEM3/QprJSCu68Iu9I8E8ArjugGP7eRw83sN/VJM7EB3NrDgZ3/V0znFCSb11JP1
-WAjoF0X09yHMivD91jm+pVeNcM5TLOTC0Fv11VZHbDMtaLSpwGi4Pn6fyFVrFHLvotckv70TFRvz
-rqNzZtQjManvzCGFBQVtNIWGXZgi7eWiK8mWsyFHOcYhhlw2646Bdoi81E93egf9QvWJXQV7MxvK
-epo=
-=KjZf
------END PGP SIGNATURE-----
-
---------------bhtCdMnClY6lSHNIfviMvszc--
