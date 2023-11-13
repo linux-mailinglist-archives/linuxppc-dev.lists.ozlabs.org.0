@@ -1,51 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89AEC7E9992
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Nov 2023 10:58:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 364CD7E99E1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Nov 2023 11:12:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4STPy53Ycgz3dBb
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Nov 2023 20:58:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4STQGN3y3sz3cX3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Nov 2023 21:12:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=lists.ozlabs.org)
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux-m68k.org (client-ip=195.130.137.80; helo=riemann.telenet-ops.be; envelope-from=geert@linux-m68k.org; receiver=lists.ozlabs.org)
+X-Greylist: delayed 579 seconds by postgrey-1.37 at boromir; Mon, 13 Nov 2023 21:12:03 AEDT
+Received: from riemann.telenet-ops.be (riemann.telenet-ops.be [195.130.137.80])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4STPxY48VNz2xqq
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Nov 2023 20:57:50 +1100 (AEDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1r2ThD-0002FP-LY; Mon, 13 Nov 2023 10:57:31 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1r2ThC-008her-Uf; Mon, 13 Nov 2023 10:57:30 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1r2ThC-000e8G-LG; Mon, 13 Nov 2023 10:57:30 +0100
-Date: Mon, 13 Nov 2023 10:57:30 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 1/2] tty: hvc: Make hvc_remove() return no value
-Message-ID: <20231113095730.uein5ix7eduqvboq@pengutronix.de>
-References: <20231105214406.3765906-4-u.kleine-koenig@pengutronix.de>
- <20231105214406.3765906-5-u.kleine-koenig@pengutronix.de>
- <CWXL68T68A18.BZ8WHB15ZU2Y@wheely>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4STQFv4mHHz2xTR
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Nov 2023 21:12:02 +1100 (AEDT)
+Received: from albert.telenet-ops.be (albert.telenet-ops.be [IPv6:2a02:1800:110:4::f00:1a])
+	by riemann.telenet-ops.be (Postfix) with ESMTPS id 4STQ2V2ycgz4wykQ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Nov 2023 11:02:10 +0100 (CET)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:e81:b3d6:4f11:ac28])
+	by albert.telenet-ops.be with bizsmtp
+	id 9m292B0030WpEYl06m29vw; Mon, 13 Nov 2023 11:02:09 +0100
+Received: from geert (helo=localhost)
+	by ramsan.of.borg with local-esmtp (Exim 4.95)
+	(envelope-from <geert@linux-m68k.org>)
+	id 1r2Tlh-009BsO-30;
+	Mon, 13 Nov 2023 11:02:09 +0100
+Date: Mon, 13 Nov 2023 11:02:09 +0100 (CET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: linux-kernel@vger.kernel.org
+Subject: Re: Build regressions/improvements in v6.7-rc1
+In-Reply-To: <20231113093630.4164101-1-geert@linux-m68k.org>
+Message-ID: <60ca157e-6eff-d12c-9dc0-8aeab125edda@linux-m68k.org>
+References: <CAHk-=whuO0zmuxp_yorYFWdcrALpqjRPhWkmEy+7wcCnnDcPNA@mail.gmail.com> <20231113093630.4164101-1-geert@linux-m68k.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="e57ttq5xm22amhut"
-Content-Disposition: inline
-In-Reply-To: <CWXL68T68A18.BZ8WHB15ZU2Y@wheely>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset=US-ASCII; format=flowed
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,65 +48,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-serial@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kernel@pengutronix.de, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>
+Cc: linux-sh@vger.kernel.org, Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>, linuxppc-dev@lists.ozlabs.org, linux-edac@vger.kernel.org, Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, 13 Nov 2023, Geert Uytterhoeven wrote:
+> Below is the list of build error/warning regressions/improvements in
+> v6.7-rc1[1] compared to v6.6[2].
+>
+> Summarized:
+>  - build errors: +20/-7
+>  - build warnings: +24/-8
+>
+> Note that there may be false regressions, as some logs are incomplete.
+> Still, they're build errors/warnings.
+>
+> Happy fixing! ;-)
+>
+> Thanks to the linux-next team for providing the build service.
+>
+> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/b85ea95d086471afb4ad062012a4d73cd328fa86/ (238 out of 239 configs)
+> [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/ffc253263a1375a65fa6c9f62a893e9767fbebfa/ (all 239 configs)
+>
+>
+> *** ERRORS ***
+>
+> 20 error regressions:
+>  + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_654' declared with attribute error: FIELD_PREP: value too large for the field:  => 435:38
 
---e57ttq5xm22amhut
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+powerpc-gcc5/powerpc-allyesconfig
+drivers/edac/versal_edac.c: In function 'mc_probe':
+num_chans = FIELD_PREP(XDDR_REG_CONFIG0_NUM_CHANS_MASK, regval);
 
-On Mon, Nov 13, 2023 at 07:45:27PM +1000, Nicholas Piggin wrote:
-> On Mon Nov 6, 2023 at 7:44 AM AEST, Uwe Kleine-K=F6nig wrote:
-> > The function hvc_remove() returns zero unconditionally. Make it return
-> > void instead to make it obvious that the caller doesn't need to do any
-> > error handling. Accordingly drop the error handling from
-> > hvc_opal_remove().
-> >
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
->=20
-> IIUC these are functionally no change, just tidying and removing
-> dead code?
+>  + {standard input}: Error: displacement to undefined symbol .L100 overflows 8-bit field :  => 588
+>  + {standard input}: Error: displacement to undefined symbol .L104 overflows 8-bit field :  => 588
+>  + {standard input}: Error: displacement to undefined symbol .L105 overflows 8-bit field :  => 593
+>  + {standard input}: Error: displacement to undefined symbol .L134 overflows 8-bit field :  => 598
+>  + {standard input}: Error: displacement to undefined symbol .L72 overflows 12-bit field:  => 589
+>  + {standard input}: Error: displacement to undefined symbol .L73 overflows 8-bit field :  => 580
+>  + {standard input}: Error: displacement to undefined symbol .L75 overflows 12-bit field:  => 586, 589, 606
+>  + {standard input}: Error: displacement to undefined symbol .L76 overflows 8-bit field :  => 577, 580
+>  + {standard input}: Error: displacement to undefined symbol .L77 overflows 8-bit field : 582 => 607, 585
+>  + {standard input}: Error: displacement to undefined symbol .L78 overflows 8-bit field :  => 610
+>  + {standard input}: Error: displacement to undefined symbol .L80 overflows 8-bit field :  => 607, 601
+>  + {standard input}: Error: displacement to undefined symbol .L81 overflows 8-bit field : 606 => 604, 610
+>  + {standard input}: Error: displacement to undefined symbol .L96 overflows 12-bit field:  => 602
+>  + {standard input}: Error: displacement to undefined symbol .L97 overflows 12-bit field:  => 607
+>  + {standard input}: Error: displacement to undefined symbol .L98 overflows 12-bit field:  => 602
+>  + {standard input}: Error: invalid operands for opcode:  => 612
+>  + {standard input}: Error: missing operand:  => 612
+>  + {standard input}: Error: pcrel too far: 601, 598, 604, 577, 595, 574 => 590, 598, 599, 577, 596, 569, 604, 610, 572, 593
+>  + {standard input}: Error: unknown pseudo-op: `.l':  => 609
 
-In case this isn't only a rethorical question: There is indeed no
-change in behaviour. hvc_remove() returned always zero, so
+sh4-gcc1[123]/sh-all{mod,yes}config ICE
 
-	rc =3D hvc_remove(hp);
-	if (rc =3D=3D 0) {
-		... some code not changing rc ...
-	}
-	... some more code not changing rc ...
-	return rc
+Gr{oetje,eeting}s,
 
-can be simplified to
+ 						Geert
 
-	hvc_remove(hp);
-	... some code not changing rc ...
-	... some more code not changing rc ...
-	return 0;
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---e57ttq5xm22amhut
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmVR8wkACgkQj4D7WH0S
-/k6j1AgAiALJm4H/iiU3yfW9SEfUmYZS+axaeMjy9V8y2YO/HhvKYOaoAHaAOv0p
-8rbM2Dls5ordKi6T97/J1vsOayAFKcFO83pGG/kHUL2DBez1vWrN+Qx/v9FdPx5F
-aEUjNvhVqV7ZLD9KzAMJ5j4378sdFkaeRpPdgrkJiWz3JOFbavSMb55DXX0XUWcU
-cAz3aPrM/pbUzehaKzKGPyBwhwa4bvkYR77CVAAlmhCt682rftVYTZhKYGMyN9vX
-iJVaXIK+lRW9F34zWi+OHBAtXknjAoOpCOKC7azxgpnwD52NI7AzxXNxcb+8vnoE
-KduZ2Imc7+bzLOePlVNKIZGu+SoFeg==
-=SkF9
------END PGP SIGNATURE-----
-
---e57ttq5xm22amhut--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+ 							    -- Linus Torvalds
