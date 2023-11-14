@@ -1,74 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F60D7EB3EA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Nov 2023 16:40:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA6337EB444
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Nov 2023 16:57:18 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q+eL74Vs;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=c21hk7fo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Q5avGCXT;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SV9VS2Tb7z3vtP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 02:40:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SV9sl5gyGz3dBt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 02:57:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q+eL74Vs;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=c21hk7fo;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Q5avGCXT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SV9N94c92z3dLl
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Nov 2023 02:35:05 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1699976102;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CfaOCzpQNXPNdiOU6+O8brbk3lbOzOfrbuJX1VTIoz4=;
-	b=Q+eL74VsM6Tmt/e4KPpN7ZO9yByOZZQASyB2wLcY9Qa1q37MqkwiKQmTOusImwMHpNoaND
-	cOyUFr46B6EfzIhXYdOCtjXijoTeJWIvVGfXXf3zDa0v+9zNsenWoRluwfz6MnCmNAvrBc
-	XGxL9idFHKkpRPfBkxH2qn2lI/kniXU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1699976103;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CfaOCzpQNXPNdiOU6+O8brbk3lbOzOfrbuJX1VTIoz4=;
-	b=c21hk7fo2WBbHoZ0wvxo+e5a4ltBn07ChdMnbqR01ZL7i2fKllJ3CiftBjZy8BAqjaQcCk
-	7XTikOVFZocqyF8fylAwJ4+TBvEKer7L0ZQmaTb3LfVpSav8wewJ6nv4yTnIj1A0cjKWpY
-	gY/XB/X3oOh4lfGSNW9AecWcdMHiOo8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-62-AhpM6uI5MrejJ0TU97gRjg-1; Tue, 14 Nov 2023 10:34:23 -0500
-X-MC-Unique: AhpM6uI5MrejJ0TU97gRjg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 038751022EE4;
-	Tue, 14 Nov 2023 15:33:26 +0000 (UTC)
-Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.112.231])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id DBC7A1C060B0;
-	Tue, 14 Nov 2023 15:33:22 +0000 (UTC)
-From: Baoquan He <bhe@redhat.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH 7/7] kexec_file, parisc: print out debugging message if required
-Date: Tue, 14 Nov 2023 23:32:53 +0800
-Message-ID: <20231114153253.241262-8-bhe@redhat.com>
-In-Reply-To: <20231114153253.241262-1-bhe@redhat.com>
-References: <20231114153253.241262-1-bhe@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SV9rt2H9Tz2yVG
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Nov 2023 02:56:29 +1100 (AEDT)
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AEFggi7008159;
+	Tue, 14 Nov 2023 15:56:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : reply-to : references : mime-version : content-type
+ : in-reply-to; s=pp1; bh=YLb/ytjwOAf1kAB5jgoYszAQwRYlUTzi/Da/EFG41p0=;
+ b=Q5avGCXTPkEHo+0or/HTjq3a1uSOzhsxBtgXiw/kJnukWTibdmPd7CTvR/6VGKuk8+r6
+ jDEp3+K4okws0Cxh6aNPZmpUdAkKclh/gMdpf5ZgeD7yrpMBIMGiDUm1q7ml0DmKIIEI
+ GJoNfIghi/oBe6mlXq3h4+BCyCm0ApYb+ZnYPA4PV6psXGvuaRid6pQn8jKRE6KSlOop
+ JGNzXHfXCqyOYf4Duony6Ko3AU7waeICyusV/GuH3swjJdhto761hCKMrUfhwmPI9YkN
+ xJ5SDd7UoHBcU/rC347jdZkI0y/SKIYbNIpR21X9RdD0qH7CjUNlwJeyhyKcDbXNuDau WA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ucbs4gjfj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Nov 2023 15:56:17 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AEFh1op010629;
+	Tue, 14 Nov 2023 15:56:17 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ucbs4gjd2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Nov 2023 15:56:17 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3AEE6Jvs011397;
+	Tue, 14 Nov 2023 15:56:14 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3uapn1gced-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Nov 2023 15:56:14 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3AEFuC5q16908880
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 14 Nov 2023 15:56:12 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5D06E20040;
+	Tue, 14 Nov 2023 15:56:12 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2B4CA20043;
+	Tue, 14 Nov 2023 15:56:11 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Tue, 14 Nov 2023 15:56:10 +0000 (GMT)
+Date: Tue, 14 Nov 2023 21:26:10 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/sched: Cleanup vcpu_is_preempted()
+Message-ID: <20231114155610.GS2194132@linux.vnet.ibm.com>
+References: <20231114071219.198222-1-aneesh.kumar@linux.ibm.com>
+ <20231114094622.GR2194132@linux.vnet.ibm.com>
+ <b21c7dc2-cdfa-45f2-b799-18aaa7297b46@linux.ibm.com>
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <b21c7dc2-cdfa-45f2-b799-18aaa7297b46@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: oQhIF2F5XXmlB3_4CkPSXAWuu1095Bbp
+X-Proofpoint-ORIG-GUID: P3DyFbOesgabKMw5Q3IFW58Mkd4dGjfu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-14_16,2023-11-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
+ suspectscore=0 spamscore=0 impostorscore=0 adultscore=0 lowpriorityscore=0
+ clxscore=1015 malwarescore=0 mlxlogscore=568 priorityscore=1501
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311140123
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,49 +97,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Baoquan He <bhe@redhat.com>, linux-parisc@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Replace pr_debug() with the newly added kexec_dprintk() in kexec_file
-loading related codes.
+* Aneesh Kumar K V <aneesh.kumar@linux.ibm.com> [2023-11-14 15:45:35]:
 
-Signed-off-by: Baoquan He <bhe@redhat.com>
----
- arch/parisc/kernel/kexec_file.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> On 11/14/23 3:16 PM, Srikar Dronamraju wrote:
+> > * Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com> [2023-11-14 12:42:19]:
+> > 
+> >> No functional change in this patch. A helper is added to find if
+> >> vcpu is dispatched by hypervisor. Use that instead of opencoding.
+> >> Also clarify some of the comments.
+> >>
+> > 
+> > If we are introducing vcpu_is_dispatched, we should remove 
+> > yield_count_of() and use vcpu_is_dispatched everwhere
+> > 
+> > No point in having yield_count_of() and vcpu_is_dispatched, since
+> > yield_count_of() is only used to check if we are running in OS or not.
+> > 
+> 
+> We do
+> 
+> yield_count = yield_count_of(owner);
+> yield_to_preempted(owner, yield_count);
 
-diff --git a/arch/parisc/kernel/kexec_file.c b/arch/parisc/kernel/kexec_file.c
-index 8c534204f0fd..011545898da7 100644
---- a/arch/parisc/kernel/kexec_file.c
-+++ b/arch/parisc/kernel/kexec_file.c
-@@ -38,7 +38,7 @@ static void *elf_load(struct kimage *image, char *kernel_buf,
- 	for (i = 0; i < image->nr_segments; i++)
- 		image->segment[i].mem = __pa(image->segment[i].mem);
- 
--	pr_debug("Loaded the kernel at 0x%lx, entry at 0x%lx\n",
-+	kexec_dprintk("Loaded the kernel at 0x%lx, entry at 0x%lx\n",
- 		 kernel_load_addr, image->start);
- 
- 	if (initrd != NULL) {
-@@ -51,7 +51,7 @@ static void *elf_load(struct kimage *image, char *kernel_buf,
- 		if (ret)
- 			goto out;
- 
--		pr_debug("Loaded initrd at 0x%lx\n", kbuf.mem);
-+		kexec_dprintk("Loaded initrd at 0x%lx\n", kbuf.mem);
- 		image->arch.initrd_start = kbuf.mem;
- 		image->arch.initrd_end = kbuf.mem + initrd_len;
- 	}
-@@ -68,7 +68,7 @@ static void *elf_load(struct kimage *image, char *kernel_buf,
- 		if (ret)
- 			goto out;
- 
--		pr_debug("Loaded cmdline at 0x%lx\n", kbuf.mem);
-+		kexec_dprintk("Loaded cmdline at 0x%lx\n", kbuf.mem);
- 		image->arch.cmdline = kbuf.mem;
- 	}
- out:
+yield_to_preempted is defined just below yield_count_of() and we are anyway
+passing the CPU, so we dont have to pass yield_count to yield_to_preempted
+
+
 -- 
-2.41.0
-
+Thanks and Regards
+Srikar Dronamraju
