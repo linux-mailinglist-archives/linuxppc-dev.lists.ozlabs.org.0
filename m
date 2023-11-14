@@ -2,85 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 561147EB05A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Nov 2023 13:54:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CE027EB3D6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Nov 2023 16:35:14 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fPdQbc9r;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ax3lt7JX;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ax3lt7JX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SV5qL1hZZz3dKH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Nov 2023 23:54:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SV9NJ2nkDz3dLb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 02:35:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fPdQbc9r;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ax3lt7JX;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ax3lt7JX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SV5ns42nnz3c8c
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Nov 2023 23:53:37 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AECnlvZ010404;
-	Tue, 14 Nov 2023 12:53:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=gzmPHP5+AikoPZlCBtMFvyPrlGgPzEAv5aI027qNKbs=;
- b=fPdQbc9r9HMuuZRB6sgpINUzqaFFXeraO7IuM7P5Y+4xHvwlMuC3zsawXuPjc+hsq3Dd
- jlpV8PXz5nTMqrq4VKrDfxfQtFEFjyHH1R9o4Flr+mA0G1O/ZM2cFR4V3OUcLqAbnkM+
- kDm/6IyuuQa3qwkOgMo76asfBZnVcTzcVb4kE0iS47MsDHnEKP+ArH0nhs+wMQ8qpaty
- t2rJl2igZrO9+1b383Rjn1fd/pXZ7Ype9QcHPPzo53GNdtFHQFlzsLesZ9kVFpOJlyQy
- EMHWbNpwKJ9l5NlYo6ndgR7cBcH2Ic7/XUutSLtJQR11HtcnCvXWWDRYGW+j3gBdTNRV jg== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uc8ws0n65-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Nov 2023 12:53:29 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3AEBS9mj011650;
-	Tue, 14 Nov 2023 12:53:26 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uanekfp61-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Nov 2023 12:53:26 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3AECrOJ456754522
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 14 Nov 2023 12:53:24 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4E16820043;
-	Tue, 14 Nov 2023 12:53:24 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C1EC220040;
-	Tue, 14 Nov 2023 12:53:23 +0000 (GMT)
-Received: from [9.144.146.189] (unknown [9.144.146.189])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 14 Nov 2023 12:53:23 +0000 (GMT)
-Message-ID: <50ffec17-62be-4f67-a8d9-3c503c7b8a34@linux.ibm.com>
-Date: Tue, 14 Nov 2023 13:53:23 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SV9LQ3dn5z2ydW
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Nov 2023 02:33:33 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1699976006;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=/+dElhLP1quyzdQBmNveEGvmbZDs+wXRqJTs6dmoqmk=;
+	b=Ax3lt7JXmvX26rpnEUyN1IIslC838EBUkF9fQG7ohAdZt++YiITQNCfOnMMtp1p933DI1W
+	m+ZUUiZNw8IVitU34yGc5lvDpSpxu9yZjIvvJXPJ1gvVptapfq/NucMKa8QEyAdCHoGyzv
+	foegjJQzjnoQwf0Xioh+F1OznOwG0dI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1699976006;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=/+dElhLP1quyzdQBmNveEGvmbZDs+wXRqJTs6dmoqmk=;
+	b=Ax3lt7JXmvX26rpnEUyN1IIslC838EBUkF9fQG7ohAdZt++YiITQNCfOnMMtp1p933DI1W
+	m+ZUUiZNw8IVitU34yGc5lvDpSpxu9yZjIvvJXPJ1gvVptapfq/NucMKa8QEyAdCHoGyzv
+	foegjJQzjnoQwf0Xioh+F1OznOwG0dI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-85-N9Dy5BYSNKe1LYvnmcJoug-1; Tue, 14 Nov 2023 10:33:22 -0500
+X-MC-Unique: N9Dy5BYSNKe1LYvnmcJoug-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CB809103B81C;
+	Tue, 14 Nov 2023 15:32:59 +0000 (UTC)
+Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.112.231])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id A09871C060AE;
+	Tue, 14 Nov 2023 15:32:56 +0000 (UTC)
+From: Baoquan He <bhe@redhat.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH 0/7] kexec_file: print out debugging message if required
+Date: Tue, 14 Nov 2023 23:32:46 +0800
+Message-ID: <20231114153253.241262-1-bhe@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] misc: ocxl: link: Remove unnecessary (void*) conversions
-Content-Language: en-US
-To: Li zeming <zeming@nfschina.com>, ajd@linux.ibm.com, arnd@arndb.de,
-        gregkh@linuxfoundation.org
-References: <20231113014533.11064-1-zeming@nfschina.com>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-In-Reply-To: <20231113014533.11064-1-zeming@nfschina.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: z8Fe1F9dz_sw7wI14e_NqaCYT0mvCvVE
-X-Proofpoint-ORIG-GUID: z8Fe1F9dz_sw7wI14e_NqaCYT0mvCvVE
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-14_12,2023-11-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- bulkscore=0 priorityscore=1501 mlxscore=0 phishscore=0 malwarescore=0
- clxscore=1015 suspectscore=0 adultscore=0 mlxlogscore=822 spamscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311140100
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,91 +76,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Baoquan He <bhe@redhat.com>, linux-parisc@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Currently, specifying '-d' will print a lot of debugging information
+about kexec/kdump loading with kexec_load interface.
 
+However, kexec_file_load prints nothing even though '-d' is specified.
+It's very inconvenient to debug or analyze the kexec/kdump loading when
+something wrong happened with kexec/kdump itself or develper want to
+check the kexec/kdump loading.
 
-On 13/11/2023 02:45, Li zeming wrote:
-> The link pointer does not need to cast the type.
-> 
-> Signed-off-by: Li zeming <zeming@nfschina.com>
-> ---
+In this patchset, a kexec_file flag is KEXEC_FILE_DEBUG added and checked
+in code. If it's passed in, debugging message of kexec_file code will be
+printed out and can be seen from console and dmesg. Otherwise, the
+debugging message is printed via pr_debug().
 
+Note:
+=====
+1) The code in kexec-tools utility also need be changed to support
+passing KEXEC_FILE_DEBUG to kernel when 'kexec -s -d' is specified.
+The patch link is here:
+=========
+[PATCH] kexec_file: add kexec_file flag to support debug printing
+http://lists.infradead.org/pipermail/kexec/2023-November/028505.html
 
-Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
+2) s390 also has kexec_file code, while I am not sure what debugging
+information is necessary. So leave it to s390 dev to add if they think
+it's needed.
 
-   Fred
+Test:
+======
+I did testing on x86_64 and arm64. On x86_64, the printed messages look
+like below:
+--------------------------------------------------------------
+kexec measurement buffer for the loaded kernel at 0x207fffe000.
+Loaded purgatory at 0x207fff9000
+Loaded boot_param, command line and misc at 0x207fff3000 bufsz=0x1180 memsz=0x1180
+Loaded 64bit kernel at 0x207c000000 bufsz=0xc88200 memsz=0x3c4a000
+Loaded initrd at 0x2079e79000 bufsz=0x2186280 memsz=0x2186280
+Final command line is: root=/dev/mapper/fedora_intel--knightslanding--lb--02-root ro rd.lvm.lv=fedora_intel-knightslanding-lb-02/root console=ttyS0,115200N81 crashkernel=256M
+E820 memmap:
+0000000000000000-000000000009a3ff (1)
+000000000009a400-000000000009ffff (2)
+00000000000e0000-00000000000fffff (2)
+0000000000100000-000000006ff83fff (1)
+000000006ff84000-000000007ac50fff (2)
+......
+000000207fff6150-000000207fff615f (128)
+000000207fff6160-000000207fff714f (1)
+000000207fff7150-000000207fff715f (128)
+000000207fff7160-000000207fff814f (1)
+000000207fff8150-000000207fff815f (128)
+000000207fff8160-000000207fffffff (1)
+nr_segments = 5
+segment[0]: buf=0x000000004e5ece74 bufsz=0x211 mem=0x207fffe000 memsz=0x1000
+segment[1]: buf=0x000000009e871498 bufsz=0x4000 mem=0x207fff9000 memsz=0x5000
+segment[2]: buf=0x00000000d879f1fe bufsz=0x1180 mem=0x207fff3000 memsz=0x2000
+segment[3]: buf=0x000000001101cd86 bufsz=0xc88200 mem=0x207c000000 memsz=0x3c4a000
+segment[4]: buf=0x00000000c6e38ac7 bufsz=0x2186280 mem=0x2079e79000 memsz=0x2187000
+kexec_file_load: type:0, start:0x207fff91a0 head:0x109e004002 flags:0x8
+---------------------------------------------------------------------------
 
+Baoquan He (7):
+  kexec_file: add kexec_file flag to control debug printing
+  kexec_file: print out debugging message if required
+  kexec_file, x86: print out debugging message if required
+  kexec_file, arm64: print out debugging message if required
+  kexec_file, ricv: print out debugging message if required
+  kexec_file, power: print out debugging message if required
+  kexec_file, parisc: print out debugging message if required
 
->   drivers/misc/ocxl/link.c | 14 +++++++-------
->   1 file changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/misc/ocxl/link.c b/drivers/misc/ocxl/link.c
-> index c06c699c0e7b1..03402203cacdb 100644
-> --- a/drivers/misc/ocxl/link.c
-> +++ b/drivers/misc/ocxl/link.c
-> @@ -188,7 +188,7 @@ static void xsl_fault_handler_bh(struct work_struct *fault_work)
->   
->   static irqreturn_t xsl_fault_handler(int irq, void *data)
->   {
-> -	struct ocxl_link *link = (struct ocxl_link *) data;
-> +	struct ocxl_link *link = data;
->   	struct spa *spa = link->spa;
->   	u64 dsisr, dar, pe_handle;
->   	struct pe_data *pe_data;
-> @@ -483,7 +483,7 @@ static void release_xsl(struct kref *ref)
->   
->   void ocxl_link_release(struct pci_dev *dev, void *link_handle)
->   {
-> -	struct ocxl_link *link = (struct ocxl_link *) link_handle;
-> +	struct ocxl_link *link = link_handle;
->   
->   	mutex_lock(&links_list_lock);
->   	kref_put(&link->ref, release_xsl);
-> @@ -540,7 +540,7 @@ int ocxl_link_add_pe(void *link_handle, int pasid, u32 pidr, u32 tidr,
->   		void (*xsl_err_cb)(void *data, u64 addr, u64 dsisr),
->   		void *xsl_err_data)
->   {
-> -	struct ocxl_link *link = (struct ocxl_link *) link_handle;
-> +	struct ocxl_link *link = link_handle;
->   	struct spa *spa = link->spa;
->   	struct ocxl_process_element *pe;
->   	int pe_handle, rc = 0;
-> @@ -630,7 +630,7 @@ EXPORT_SYMBOL_GPL(ocxl_link_add_pe);
->   
->   int ocxl_link_update_pe(void *link_handle, int pasid, __u16 tid)
->   {
-> -	struct ocxl_link *link = (struct ocxl_link *) link_handle;
-> +	struct ocxl_link *link = link_handle;
->   	struct spa *spa = link->spa;
->   	struct ocxl_process_element *pe;
->   	int pe_handle, rc;
-> @@ -666,7 +666,7 @@ int ocxl_link_update_pe(void *link_handle, int pasid, __u16 tid)
->   
->   int ocxl_link_remove_pe(void *link_handle, int pasid)
->   {
-> -	struct ocxl_link *link = (struct ocxl_link *) link_handle;
-> +	struct ocxl_link *link = link_handle;
->   	struct spa *spa = link->spa;
->   	struct ocxl_process_element *pe;
->   	struct pe_data *pe_data;
-> @@ -752,7 +752,7 @@ EXPORT_SYMBOL_GPL(ocxl_link_remove_pe);
->   
->   int ocxl_link_irq_alloc(void *link_handle, int *hw_irq)
->   {
-> -	struct ocxl_link *link = (struct ocxl_link *) link_handle;
-> +	struct ocxl_link *link = link_handle;
->   	int irq;
->   
->   	if (atomic_dec_if_positive(&link->irq_available) < 0)
-> @@ -771,7 +771,7 @@ EXPORT_SYMBOL_GPL(ocxl_link_irq_alloc);
->   
->   void ocxl_link_free_irq(void *link_handle, int hw_irq)
->   {
-> -	struct ocxl_link *link = (struct ocxl_link *) link_handle;
-> +	struct ocxl_link *link = link_handle;
->   
->   	xive_native_free_irq(hw_irq);
->   	atomic_inc(&link->irq_available);
+ arch/arm64/kernel/kexec_image.c        |  2 +-
+ arch/arm64/kernel/machine_kexec.c      | 24 ++++++------------------
+ arch/arm64/kernel/machine_kexec_file.c |  6 +++---
+ arch/parisc/kernel/kexec_file.c        |  6 +++---
+ arch/powerpc/kexec/elf_64.c            |  8 ++++----
+ arch/powerpc/kexec/file_load_64.c      | 14 +++++++-------
+ arch/riscv/kernel/elf_kexec.c          |  9 +++++----
+ arch/riscv/kernel/machine_kexec.c      | 26 --------------------------
+ arch/x86/kernel/crash.c                |  2 +-
+ arch/x86/kernel/kexec-bzimage64.c      | 23 ++++++++++++++---------
+ include/linux/kexec.h                  | 14 +++++++++++++-
+ include/uapi/linux/kexec.h             |  1 +
+ kernel/crash_core.c                    |  3 ++-
+ kernel/kexec_file.c                    | 12 +++++++++++-
+ security/integrity/ima/ima_kexec.c     |  2 +-
+ 15 files changed, 72 insertions(+), 80 deletions(-)
+
+-- 
+2.41.0
+
