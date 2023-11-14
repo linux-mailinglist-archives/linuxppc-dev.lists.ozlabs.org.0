@@ -1,63 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 158B17EB582
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Nov 2023 18:27:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFA8C7EB57E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Nov 2023 18:26:08 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=e1crluyj;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lOsBQRC2;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SVCtH6x8pz3cdV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 04:27:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SVCrG4Dl9z3dSl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 04:26:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=e1crluyj;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lOsBQRC2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=lists.ozlabs.org)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SVCmQ1tf7z3bT8
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Nov 2023 04:22:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SVCmN4jFNz30fM
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Nov 2023 04:22:44 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id 09C66B8163C;
+	by ams.source.kernel.org (Postfix) with ESMTP id 1FF6DB81637;
 	Tue, 14 Nov 2023 17:22:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5E50CC433C9;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6D9EAC433CA;
 	Tue, 14 Nov 2023 17:22:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1699982561;
-	bh=ZLJTGr1hINH/9KcIuL9KqapOBOkoy27BscHYYShS01E=;
+	bh=rzl4kEf5FcYNvVnk5Smgj39eAPoxpt+bfYjrj/5bK6M=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=e1crluyj5+Fqs8C0WY7fYxLrRbIEuov202pZh+asyMuy4vF0+2Z4oCYAtpPYvYW9s
-	 DuWcOMn2Y6myMHo3Dka16NRJnAZA2045CZHjEOd6KfMKq+ESk2vDDWjzuexPtrRP4j
-	 39IEc6FJ+sZX5EVqi5XufMR0JBLjZzr4sqOhmEPy9g0ezBJJvGQ1QZ7kOij5xIO5A7
-	 7Kue4K7isNmDJ+MthF0IT39z9VaNZW4y1I6Vm06LZoAID/g70y+A2W1PE0ZGtvlJZZ
-	 0NgnT/H52rU/uc+tdgRuUjP8EyuGsRzqremxuE005KnunaENNq0iwaMjZbd+VAKvNP
-	 MTn6ucm3iD0AA==
+	b=lOsBQRC20MnJGGZp9TJAImd0oMCAH9jMcqQwXI1Cqhae8FgdCTuCR+re6lsYslRDK
+	 4IvpkfrCpf1hB1bWssN8V9MBvouOcIezDcHYdeGISXDKB3iUDKMhtLkIfUO6QSNRKH
+	 0zK0fIYmKY2/uhz6iGztGqZqIM7yem6IcvwuoM8gs/UbtpDE60IkSo+A1aPZoFVV0l
+	 8ontJ9xO4YhL6mFB5yFX1jHdERJ2LVuXeNB8yXDGKbxwARF56PpILh1i1GePenj8PT
+	 Pos9KKjro4xc8xNYvBBEZjxsQ4eAFxCmb8eq5CWVYINcIUH/Ielza+L4K4cCkjR4ag
+	 m+NNaext8yyzA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 45078C072A2;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 587E8C4332F;
 	Tue, 14 Nov 2023 17:22:41 +0000 (UTC)
 From: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
-Date: Tue, 14 Nov 2023 11:22:26 -0600
-Subject: [PATCH v2 2/5] powerpc/rtas: Remove unused rtas_service_present()
+Date: Tue, 14 Nov 2023 11:22:27 -0600
+Subject: [PATCH v2 3/5] powerpc/rtas: Move post_mobility_fixup()
+ declaration to pseries
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231114-rtas-trivial-v2-2-59cbab208d57@linux.ibm.com>
+Message-Id: <20231114-rtas-trivial-v2-3-59cbab208d57@linux.ibm.com>
 References: <20231114-rtas-trivial-v2-0-59cbab208d57@linux.ibm.com>
 In-Reply-To: <20231114-rtas-trivial-v2-0-59cbab208d57@linux.ibm.com>
 To: Michael Ellerman <mpe@ellerman.id.au>, 
  Nicholas Piggin <npiggin@gmail.com>, 
  Christophe Leroy <christophe.leroy@csgroup.eu>
 X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1699982560; l=1479;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1699982560; l=2032;
  i=nathanl@linux.ibm.com; s=20230817; h=from:subject:message-id;
- bh=DZvLOdDIHUxKijnpi1Z0q0XnG4VEsIXvpzPh6vLb/O4=;
- b=h433Y0fJzxRdKhuzImCBja7o3vGzkAYEMEk9+L1f8QGBnGxIWgySZTi5d0AKeY50Myh0kfGQK
- olqeyKMGcPMAjA/XMxWjxp/9qJLGOLh1P5igu1S9t7shX50JaN8zPxK
+ bh=h/8tPPiIjitb/+VzF8lSVFUByA0wcuUdyaagJFN8WDE=;
+ b=LSylu9PpeBUy6NL2msK8eRE5i8/qz8eg8QtQdPhfRHzRfVK2DQC4fA5i2ID6PGDj3zrtyhyY8
+ 7OKrbEW7wl4Bpl37cnIrctHNhSryb92SjHJnSxPDh5DsYY8JtKTPJaf
 X-Developer-Key: i=nathanl@linux.ibm.com; a=ed25519;
  pk=jPDF44RvT+9DGFOH3NGoIu1xN9dF+82pjdpnKjXfoJ0=
 X-Endpoint-Received:  by B4 Relay for nathanl@linux.ibm.com/20230817 with auth_id=78
@@ -80,45 +81,53 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Nathan Lynch <nathanl@linux.ibm.com>
 
-rtas_service_present() has no more users.
-
-rtas_function_implemented() is now the appropriate API for determining
-whether a given RTAS function is available to call.
+This is a pseries-specific function declaration that doesn't belong in
+rtas.h. Move it to the pseries platform code and adjust
+pseries/suspend.c accordingly.
 
 Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 ---
- arch/powerpc/include/asm/rtas.h | 1 -
- arch/powerpc/kernel/rtas.c      | 5 -----
- 2 files changed, 6 deletions(-)
+ arch/powerpc/include/asm/rtas.h          | 1 -
+ arch/powerpc/platforms/pseries/pseries.h | 1 +
+ arch/powerpc/platforms/pseries/suspend.c | 1 +
+ 3 files changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
-index 3bf7f0a4b07e..c6568a647cd0 100644
+index c6568a647cd0..2365668fc13e 100644
 --- a/arch/powerpc/include/asm/rtas.h
 +++ b/arch/powerpc/include/asm/rtas.h
-@@ -409,7 +409,6 @@ static inline bool rtas_function_implemented(const rtas_fn_handle_t handle)
- 	return rtas_function_token(handle) != RTAS_UNKNOWN_SERVICE;
- }
- extern int rtas_token(const char *service);
--extern int rtas_service_present(const char *service);
- extern int rtas_call(int token, int, int, int *, ...);
- void rtas_call_unlocked(struct rtas_args *args, int token, int nargs,
- 			int nret, ...);
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index eddc031c4b95..b5b340a91157 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -900,11 +900,6 @@ int rtas_token(const char *service)
- }
- EXPORT_SYMBOL_GPL(rtas_token);
+@@ -444,7 +444,6 @@ extern void pSeries_log_error(char *buf, unsigned int err_type, int fatal);
+ #ifdef CONFIG_PPC_PSERIES
+ extern time64_t last_rtas_event;
+ extern int clobbering_unread_rtas_event(void);
+-extern void post_mobility_fixup(void);
+ int rtas_syscall_dispatch_ibm_suspend_me(u64 handle);
+ #else
+ static inline int clobbering_unread_rtas_event(void) { return 0; }
+diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/platforms/pseries/pseries.h
+index 8376f03f932a..1c2d736f600d 100644
+--- a/arch/powerpc/platforms/pseries/pseries.h
++++ b/arch/powerpc/platforms/pseries/pseries.h
+@@ -55,6 +55,7 @@ extern int dlpar_detach_node(struct device_node *);
+ extern int dlpar_acquire_drc(u32 drc_index);
+ extern int dlpar_release_drc(u32 drc_index);
+ extern int dlpar_unisolate_drc(u32 drc_index);
++void post_mobility_fixup(void);
  
--int rtas_service_present(const char *service)
--{
--	return rtas_token(service) != RTAS_UNKNOWN_SERVICE;
--}
--
- #ifdef CONFIG_RTAS_ERROR_LOGGING
+ void queue_hotplug_event(struct pseries_hp_errorlog *hp_errlog);
+ int handle_dlpar_errorlog(struct pseries_hp_errorlog *hp_errlog);
+diff --git a/arch/powerpc/platforms/pseries/suspend.c b/arch/powerpc/platforms/pseries/suspend.c
+index 5c43435472cc..382003dfdb9a 100644
+--- a/arch/powerpc/platforms/pseries/suspend.c
++++ b/arch/powerpc/platforms/pseries/suspend.c
+@@ -13,6 +13,7 @@
+ #include <asm/mmu.h>
+ #include <asm/rtas.h>
+ #include <asm/topology.h>
++#include "pseries.h"
  
- static u32 rtas_error_log_max __ro_after_init = RTAS_ERROR_LOG_MAX;
+ static struct device suspend_dev;
+ 
 
 -- 
 2.41.0
