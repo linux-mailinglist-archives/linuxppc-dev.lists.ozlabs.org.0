@@ -2,96 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ACF17EAF83
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Nov 2023 12:51:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D2057EAD41
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Nov 2023 10:47:26 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=rCL7ggrb;
-	dkim=fail reason="signature verification failed" header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=wuUZV4Zb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=keqDA3ma;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SV4Ps3Yymz2yhT
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Nov 2023 22:51:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SV1g02LPNz3cNH
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Nov 2023 20:47:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=rCL7ggrb;
-	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=wuUZV4Zb;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=keqDA3ma;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.52; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.52])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SV1d41dKYz2xKQ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Nov 2023 20:45:42 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1699955121; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=oUZHu9iE3MTMP74eroBFI32PCxX0MwUphyyK34IjmM1i+Fd1z5sHQqT5zFFnktJKc1
-    6mPeTLdFV0Gl4KPhTUf3gfTFBNoGCYYJWyz+u2Z0adtT+1K0R07nrE6JDhWr91sJHbPd
-    s3v2Xrx45VqKuym4Mtk14tQ7z9KLJAjtgCmDhLfjr7S741mLG+nAs8Ao7hx+wkzAvjEB
-    pTenU/GZxub8cTWu0qjF1yS72z9Mn41L86gyqgnxUEqZVfjM4+JXCkwfhzD2+PyUKwWA
-    KM8dAG46s5uVvMdJFLfKNMpNiOFm6jKxJmuSVziaQm1+GfnDvn/EeLmvHkZA18y5+KTT
-    wYKg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1699955121;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=b7HB0jBajeaA5BfhxFNAl9BTTJLtYJJvNImSGj9VvcQ=;
-    b=lnRAjKVMKMaIEq8gcPjgD7r8qT29FmJpKekqF6y4lYZ959Mg0oK0nGgJhlz4CDTj+4
-    WMuEdDU0K9SQsA+d6QTZ1bCguguIdpH7b2QJEyGwR5/pVFMYXc0PC10SjyuqlJ5iyKUD
-    JCfHcSALr2XacLoEHLLlyTwsskCPV3IcjtZM+OPzFM2lo5MAOZ3rFL/oEE4QAHU4w8fJ
-    zYqqQ+fFxuobBxZ4Vps2f4xZ68AO6XUwUQ+Hs/aigAnMwyv+9uoLzlk9PlyYRvtlvjyp
-    ohtM4a5r/CszyJ9iQoFNks/XbdqS6iHe/X/QJCfWMi3BEfYFbfBuak6TrJX9SxIVyJre
-    jciw==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1699955121;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=b7HB0jBajeaA5BfhxFNAl9BTTJLtYJJvNImSGj9VvcQ=;
-    b=rCL7ggrbNUM3YD1PdroxjFNvNuM4AjIgvGa4Eo/sr7JkgN8A3A/PLF+u607L51d3ep
-    ybXqNXBo/gK6Qys4VGstc7Ww0JaVesn5rOKT3ipSn43vwkjT1rTNfDyfANvdIf3Qrm3y
-    hfTnrQCb3DSHJg+yTC5zuHjpq31wRtYqY5lS4d0jncc5j35er3Mjf6IaYEePEpzaaZIq
-    V8NqY5HV2ZFdyMWId74z92q7VCGa4LHA++Hz8CqwkzkgbQnss2yB5wefX3DoZIUVvrru
-    d7NaK3JnS8u6759FgBNzRHwHgFucl3G5stiXARrCFpT5eyND2/c5ZK7S71Jpfb/vyeKl
-    4qqg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1699955121;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=b7HB0jBajeaA5BfhxFNAl9BTTJLtYJJvNImSGj9VvcQ=;
-    b=wuUZV4Zbz2EOkUfefaWF+iEkrZr5uaA0JM6TbzqyOF14Je5bc598CI/4yOOd3LgjmO
-    g/Zu2QcW5JNPav2HMlCA==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBfi4XXBswJY0nyspvHBW+bMFpsqR8Nd7C0p+pAA=="
-Received: from [IPV6:2a02:8109:8984:5d00:dc13:526a:ee52:d26e]
-    by smtp.strato.de (RZmta 49.9.1 AUTH)
-    with ESMTPSA id Y0b8e9zAE9jK4NO
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Tue, 14 Nov 2023 10:45:20 +0100 (CET)
-Content-Type: multipart/alternative;
- boundary="------------hEBARUboc0LJupBCdRXDbinK"
-Message-ID: <fee4eb69-97ea-4b02-9e36-0962ebe3faa9@xenosoft.de>
-Date: Tue, 14 Nov 2023 10:45:19 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SV1f52yNvz30MQ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Nov 2023 20:46:36 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AE8qEBh019144;
+	Tue, 14 Nov 2023 09:46:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : reply-to : references : mime-version : content-type
+ : in-reply-to; s=pp1; bh=A3g5ZH5HtHeQ68WTJ7KqJ6F2l0j1q6OQ9tLUIow1AAc=;
+ b=keqDA3mauEV4jBsudy6qu5YXhOpjFUXnPEg+Kvh0086Mb9EKFf/MNcShmOiqVmWUf8pZ
+ qEePHeG4H0yLpG2FmwfsVWPT3ZD2wMvwKnFDiMCdz1jcC+6ZL2lXNYCLBXD8mlxF5FxL
+ 9dKRDJ+TQJ55bAGCbmmGmeYCr42KpPBa0CWR3RfF15MFkpm5nqSKQ3tegYuUhVF2Mf8y
+ kyj3ZG4+22BJwpwQTxsPGUGMfgfzpiEuVzX0qof2yOEHDnYaOc/KSchy4No1QNSknk+G
+ 1fwtPhkJdjydHZ6r2zyzZpAOaKRz1guHTWSzkm1Ho2Biott8TUk/2usLhgonhl43fo6O IQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uc5rthc75-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Nov 2023 09:46:27 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AE9eEkQ022056;
+	Tue, 14 Nov 2023 09:46:27 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uc5rthc6u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Nov 2023 09:46:27 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3AE8UeQL011022;
+	Tue, 14 Nov 2023 09:46:26 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3uapn1ecx4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Nov 2023 09:46:26 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3AE9kO8x6554164
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 14 Nov 2023 09:46:24 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ACC5F20043;
+	Tue, 14 Nov 2023 09:46:24 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7718220040;
+	Tue, 14 Nov 2023 09:46:23 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Tue, 14 Nov 2023 09:46:23 +0000 (GMT)
+Date: Tue, 14 Nov 2023 15:16:22 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/sched: Cleanup vcpu_is_preempted()
+Message-ID: <20231114094622.GR2194132@linux.vnet.ibm.com>
+References: <20231114071219.198222-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Fbdev issue after the drm updates 'drm-next-2023-10-31-1'
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-References: <a1d9e09b-f533-5e2c-7a13-af96647e1a71@embeddedor.com>
- <10D1983F-33EF-46C3-976E-463D1CB5A6E9@xenosoft.de>
- <9bb5fcbd-daf5-1669-b3e7-b8624b3c36f9@xenosoft.de>
- <c47fba21-3ae9-4021-9f4a-09c2670ebdbc@xenosoft.de>
- <0d89bcd0-9b68-4c0a-acd8-2c7532e62f6d@xenosoft.de>
- <6530cea3-4507-454e-bc36-a6970c8e7578@xenosoft.de>
- <CAMuHMdU-8Fu55C2zu_XxmG8n5paOQYfqNA84JNvXo4c87D-kFw@mail.gmail.com>
-Content-Language: de-DE
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-In-Reply-To: <CAMuHMdU-8Fu55C2zu_XxmG8n5paOQYfqNA84JNvXo4c87D-kFw@mail.gmail.com>
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Tue, 14 Nov 2023 22:50:28 +1100
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20231114071219.198222-1-aneesh.kumar@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Nvf0-bul-VK9uGPcd-79YTIVNvSSXSNZ
+X-Proofpoint-ORIG-GUID: HRs9or1SEHIZK3ZVNhe9IggTVcfZG-XH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-14_08,2023-11-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ spamscore=0 impostorscore=0 mlxscore=0 clxscore=1015 bulkscore=0
+ suspectscore=0 adultscore=0 phishscore=0 priorityscore=1501
+ mlxlogscore=917 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311060000 definitions=main-2311140076
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,197 +95,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>, Thomas Zimmermann <tzimmermann@suse.de>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, =?UTF-8?Q?Michel_D=C3=A4nzer?= <michel@daenzer.net>, Maling list - DRI developers <dri-devel@lists.freedesktop.org>, mad skateman <madskateman@gmail.com>, airlied@gmail.com, deller@gmx.de, Christian Zigotzky <info@xenosoft.de>
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
---------------hEBARUboc0LJupBCdRXDbinK
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+* Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com> [2023-11-14 12:42:19]:
 
-On 13 November 2023 at 01:48 pm, Geert Uytterhoeven wrote:
-> Thanks for your report!
-> I can confirm there is no graphics output with m68k/virt, and
-> bisected this to my own commit 6ae2ff23aa43a0c4 ("drm/client: Convert
-> drm_client_buffer_addfb() to drm_mode_addfb2()"), ouch...
->
-> It turns out the old call to drm_mode_addfb() caused a translation
-> from a fourcc to a bpp/depth pair to a _different_ fourcc, due to the
-> quirk processing in drm_driver_legacy_fb_format().
-> I.e. on m68k/virt, the original requested format was XR24, which was
-> translated to BX24. The former doesn't work, the latter works.
->
-> The following (gmail-whitespace-damaged) patch fixed the issue for me:
->
-> --- a/drivers/gpu/drm/drm_client.c
-> +++ b/drivers/gpu/drm/drm_client.c
-> @@ -400,6 +400,16 @@ static int drm_client_buffer_addfb(struct
-> drm_client_buffer *buffer,
->
->          fb_req.width = width;
->          fb_req.height = height;
-> +       if (client->dev->mode_config.quirk_addfb_prefer_host_byte_order) {
-> +               if (format == DRM_FORMAT_XRGB8888)
-> +                       format = DRM_FORMAT_HOST_XRGB8888;
-> +               if (format == DRM_FORMAT_ARGB8888)
-> +                       format = DRM_FORMAT_HOST_ARGB8888;
-> +               if (format == DRM_FORMAT_RGB565)
-> +                       format = DRM_FORMAT_HOST_RGB565;
-> +               if (format == DRM_FORMAT_XRGB1555)
-> +                       format = DRM_FORMAT_HOST_XRGB1555;
-> +       }
->          fb_req.pixel_format = format;
->          fb_req.handles[0] = handle;
->          fb_req.pitches[0] = buffer->pitch;
->
-> However, I don't think we want to sprinkle more of these
-> translations around... So perhaps we should (re)add a call to
-> drm_driver_legacy_fb_format() to drm_client_buffer_addfb()?
->
-> Second, as I doubt you are using a big-endian system, you are probably
-> running into a slightly different issue.
->
-> Oh wait, you did CC linuxppc-dev, so perhaps you are running on a
-> big-endian machine?
->
-> If not, please add
->
->      pr_info("%s: format = %p4cc\n", __func__, &format);
->
-> to drivers/gpu/drm/drm_client.c:drm_client_buffer_addfb(), and,
-> after reverting commit 6ae2ff23aa43a0c4, add
->
->      pr_info("%s: bpp %u/depth %u => r.pixel_format = %p4cc\n",
-> __func__, or->bpp, or->depth, &r.pixel_format);
->
-> to drivers/gpu/drm/drm_framebuffer.c:drm_mode_addfb(), so we know the
-> translation in your case?
->
-> Thanks!
->
-> Gr{oetje,eeting}s,
->
->                          Geert
->
->
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 --geert@linux-m68k.org
->
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
->                                  -- Linus Torvalds
-Geert,
+> No functional change in this patch. A helper is added to find if
+> vcpu is dispatched by hypervisor. Use that instead of opencoding.
+> Also clarify some of the comments.
+> 
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/paravirt.h | 33 ++++++++++++++++++++++-------
+>  1 file changed, 25 insertions(+), 8 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/asm/paravirt.h
+> index ac4279208d63..b78b82d66057 100644
+> --- a/arch/powerpc/include/asm/paravirt.h
+> +++ b/arch/powerpc/include/asm/paravirt.h
+> @@ -76,6 +76,17 @@ static inline bool is_vcpu_idle(int vcpu)
+>  {
+>  	return lppaca_of(vcpu).idle;
+>  }
+> +
+> +static inline bool vcpu_is_dispatched(int vcpu)
+> +{
+> +	/*
+> +	 * This is the yield_count.  An "odd" value (low bit on) means that
+> +	 * the processor is yielded (either because of an OS yield or a
+> +	 * hypervisor preempt).  An even value implies that the processor is
+> +	 * currently executing.
+> +	 */
+> +	return (!(yield_count_of(vcpu) & 1));
+> +}
+>  #else
+>  static inline bool is_shared_processor(void)
+>  {
+> @@ -109,6 +120,10 @@ static inline bool is_vcpu_idle(int vcpu)
+>  {
+>  	return false;
+>  }
+> +static inline bool vcpu_is_dispatched(int vcpu)
+> +{
+> +	return true;
+> +}
+>  #endif
 
-Your patch works! :-) Thanks a lot!
+If we are introducing vcpu_is_dispatched, we should remove 
+yield_count_of() and use vcpu_is_dispatched everwhere
 
-I tested it with the virtio-vga and with the virtio-gpu-pci device in a 
-virtual ppce500 QEMU/KVM HV machine with an e5500 CPU today.
+No point in having yield_count_of() and vcpu_is_dispatched, since
+yield_count_of() is only used to check if we are running in OS or not.
 
-Tested-by: Christian Zigotzky <chzigotzky@xenosoft.de>
-
-Cheers,
-Christian
---------------hEBARUboc0LJupBCdRXDbinK
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <div class="moz-cite-prefix">On 13 November 2023 at 01:48 pm, Geert
-      Uytterhoeven wrote:<br>
-    </div>
-    <blockquote type="cite"
-cite="mid:CAMuHMdU-8Fu55C2zu_XxmG8n5paOQYfqNA84JNvXo4c87D-kFw@mail.gmail.com"><span
-      style="white-space: pre-wrap">Thanks for your report!</span>
-      <pre class="moz-quote-pre" wrap="">
-I can confirm there is no graphics output with m68k/virt, and
-bisected this to my own commit 6ae2ff23aa43a0c4 ("drm/client: Convert
-drm_client_buffer_addfb() to drm_mode_addfb2()"), ouch...
-
-It turns out the old call to drm_mode_addfb() caused a translation
-from a fourcc to a bpp/depth pair to a _different_ fourcc, due to the
-quirk processing in drm_driver_legacy_fb_format().
-I.e. on m68k/virt, the original requested format was XR24, which was
-translated to BX24. The former doesn't work, the latter works.
-
-The following (gmail-whitespace-damaged) patch fixed the issue for me:
-
---- a/drivers/gpu/drm/drm_client.c
-+++ b/drivers/gpu/drm/drm_client.c
-@@ -400,6 +400,16 @@ static int drm_client_buffer_addfb(struct
-drm_client_buffer *buffer,
-
-        fb_req.width = width;
-        fb_req.height = height;
-+       if (client-&gt;dev-&gt;mode_config.quirk_addfb_prefer_host_byte_order) {
-+               if (format == DRM_FORMAT_XRGB8888)
-+                       format = DRM_FORMAT_HOST_XRGB8888;
-+               if (format == DRM_FORMAT_ARGB8888)
-+                       format = DRM_FORMAT_HOST_ARGB8888;
-+               if (format == DRM_FORMAT_RGB565)
-+                       format = DRM_FORMAT_HOST_RGB565;
-+               if (format == DRM_FORMAT_XRGB1555)
-+                       format = DRM_FORMAT_HOST_XRGB1555;
-+       }
-        fb_req.pixel_format = format;
-        fb_req.handles[0] = handle;
-        fb_req.pitches[0] = buffer-&gt;pitch;
-
-However, I don't think we want to sprinkle more of these
-translations around... So perhaps we should (re)add a call to
-drm_driver_legacy_fb_format() to drm_client_buffer_addfb()?
-
-Second, as I doubt you are using a big-endian system, you are probably
-running into a slightly different issue.
-
-Oh wait, you did CC linuxppc-dev, so perhaps you are running on a
-big-endian machine?
-
-If not, please add
-
-    pr_info("%s: format = %p4cc\n", __func__, &amp;format);
-
-to drivers/gpu/drm/drm_client.c:drm_client_buffer_addfb(), and,
-after reverting commit 6ae2ff23aa43a0c4, add
-
-    pr_info("%s: bpp %u/depth %u =&gt; r.pixel_format = %p4cc\n",
-__func__, or-&gt;bpp, or-&gt;depth, &amp;r.pixel_format);
-
-to drivers/gpu/drm/drm_framebuffer.c:drm_mode_addfb(), so we know the
-translation in your case?
-
-Thanks!
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- <a class="moz-txt-link-abbreviated" href="mailto:geert@linux-m68k.org">geert@linux-m68k.org</a>
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
-</pre>
-    </blockquote>
-    Geert,<br>
-    <br>
-    Your patch works! :-) Thanks a lot!<br>
-    <br>
-    I tested it with the virtio-vga and with the virtio-gpu-pci device
-    in a virtual ppce500 QEMU/KVM HV machine with an e5500 CPU today.<br>
-    <br>
-    Tested-by: Christian Zigotzky <a class="moz-txt-link-rfc2396E" href="mailto:chzigotzky@xenosoft.de">&lt;chzigotzky@xenosoft.de&gt;</a><br>
-    <br>
-    Cheers,<br>
-    Christian<br>
-  </body>
-</html>
-
---------------hEBARUboc0LJupBCdRXDbinK--
+-- 
+Thanks and Regards
+Srikar Dronamraju
