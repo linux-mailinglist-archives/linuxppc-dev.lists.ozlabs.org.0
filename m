@@ -1,40 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FB2B7EC614
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 15:44:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3DE07EC624
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 15:46:07 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=UoRE3pgn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=KrcrEFY8;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SVmCJ31lcz3dXS
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Nov 2023 01:44:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SVmF95p3cz3dX6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Nov 2023 01:46:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=UoRE3pgn;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=KrcrEFY8;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::229; helo=relay9-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
 Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SVm6h2b7Nz30LM
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SVm6h41J2z3cLQ
 	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Nov 2023 01:40:28 +1100 (AEDT)
-Received: by mail.gandi.net (Postfix) with ESMTPA id 71F58FF821;
-	Wed, 15 Nov 2023 14:40:22 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 19E93FF80D;
+	Wed, 15 Nov 2023 14:40:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1700059224;
+	t=1700059225;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rx/A9HozqIkWV5W2yFN73CmDEmfw3GEllA7rLxW9iPs=;
-	b=UoRE3pgnFvM/eapkN04PwCY6VyDvs8DL6wdIX90ECoJ5obdWsYu/IY/skKaQ2Y28ut3Q+g
-	m3rP0CaPyac/TzU1k4FN8sdEpuXvwQmvsEFznH01zr52g17w+IcDJ1D27T2vodvd826EmA
-	5ZweP+WIqf1wFA2bxCawY3kp6qH7YvKt3nq1T4rrtlBkzAVPmJ9J97tpAX/J68nqhmd+hO
-	HW3L2W4fTZm+MjgahkNv9T0/cUU1h2QHWNxMKqb+EU5i77fHkvoq8z0u9+sGcOLGVG+jjB
-	hIeveSH1GVcJlmtA6mWc9O6KFMSa+xKYnMotPghHSTk+fMQnGEy0hJ8hjhmAlQ==
+	bh=Iw0he/eMliW08eqoSvHMYrNGnDe+h1GkLIEhwTKgW3w=;
+	b=KrcrEFY8b8jyP7vnep/tWcobGg6jopjOKj1ItdyzONrXzwnWM9YuoRMJpIkUJQWYI0YDaB
+	w+x+FA/dWBbyTuxz5vyA6cSqwf83Isg7QquoZl90OHA+OhfACg70un0l5U6KRNCxPXUOWK
+	KAD7j5358qHpASqkKW5y5xjia6bcwdXlGsTcahxCg8JeDLxB+glNyr7KM4iB9OZyTWZcD8
+	kVGHspd447eTqCFEwMvD5tIiMYLuiya0NZAUOb6/73jZGo6XgsNtOxDHGIYrj6tTHFFgYQ
+	3NR+FTVJDvbVXvOGzn3SUIH+uaif7g28iU7qyG3UZqNguY3ei/S2zvRHF6Nwkw==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Herve Codina <herve.codina@bootlin.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -59,9 +59,9 @@ To: Herve Codina <herve.codina@bootlin.com>,
 	Nicolin Chen <nicoleotsuka@gmail.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v9 05/27] soc: fsl: cpm1: qmc: Remove inline function specifiers
-Date: Wed, 15 Nov 2023 15:39:41 +0100
-Message-ID: <20231115144007.478111-6-herve.codina@bootlin.com>
+Subject: [PATCH v9 06/27] soc: fsl: cpm1: qmc: Add support for child devices
+Date: Wed, 15 Nov 2023 15:39:42 +0100
+Message-ID: <20231115144007.478111-7-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231115144007.478111-1-herve.codina@bootlin.com>
 References: <20231115144007.478111-1-herve.codina@bootlin.com>
@@ -83,68 +83,179 @@ Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, Thomas Petazzoni <t
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The inline function specifier is present on some functions but it is
-better to let the compiler decide inlining or not these functions.
+QMC child devices support is needed to avoid orphan DT nodes that use a
+simple DT phandle to reference a QMC channel.
 
-Remove inline specifiers.
+Allow to instantiate child devices and also extend the API to get the
+qmc_chan using a child device.
 
-Fixes: 3178d58e0b97 ("soc: fsl: cpm1: Add support for QMC")
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Suggested-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- drivers/soc/fsl/qe/qmc.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/soc/fsl/qe/qmc.c | 91 +++++++++++++++++++++++++++++++---------
+ include/soc/fsl/qe/qmc.h |  2 +
+ 2 files changed, 73 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
-index 4b4832d93c9b..27f2f16deac9 100644
+index 27f2f16deac9..e716f13669a0 100644
 --- a/drivers/soc/fsl/qe/qmc.c
 +++ b/drivers/soc/fsl/qe/qmc.c
-@@ -218,37 +218,37 @@ struct qmc {
- 	struct qmc_chan *chans[64];
+@@ -1425,8 +1425,16 @@ static int qmc_probe(struct platform_device *pdev)
+ 
+ 	platform_set_drvdata(pdev, qmc);
+ 
++	/* Populate channel related devices */
++	ret = devm_of_platform_populate(qmc->dev);
++	if (ret)
++		goto err_disable_txrx;
++
+ 	return 0;
+ 
++err_disable_txrx:
++	qmc_setbits32(qmc->scc_regs + SCC_GSMRL, 0);
++
+ err_disable_intr:
+ 	qmc_write16(qmc->scc_regs + SCC_SCCM, 0);
+ 
+@@ -1465,26 +1473,16 @@ static struct platform_driver qmc_driver = {
  };
+ module_platform_driver(qmc_driver);
  
--static inline void qmc_write16(void __iomem *addr, u16 val)
-+static void qmc_write16(void __iomem *addr, u16 val)
+-struct qmc_chan *qmc_chan_get_byphandle(struct device_node *np, const char *phandle_name)
++static struct qmc_chan *qmc_chan_get_from_qmc(struct device_node *qmc_np, unsigned int chan_index)
  {
- 	iowrite16be(val, addr);
- }
+-	struct of_phandle_args out_args;
+ 	struct platform_device *pdev;
+ 	struct qmc_chan *qmc_chan;
+ 	struct qmc *qmc;
+-	int ret;
  
--static inline u16 qmc_read16(void __iomem *addr)
-+static u16 qmc_read16(void __iomem *addr)
- {
- 	return ioread16be(addr);
- }
+-	ret = of_parse_phandle_with_fixed_args(np, phandle_name, 1, 0,
+-					       &out_args);
+-	if (ret < 0)
+-		return ERR_PTR(ret);
+-
+-	if (!of_match_node(qmc_driver.driver.of_match_table, out_args.np)) {
+-		of_node_put(out_args.np);
++	if (!of_match_node(qmc_driver.driver.of_match_table, qmc_np))
+ 		return ERR_PTR(-EINVAL);
+-	}
  
--static inline void qmc_setbits16(void __iomem *addr, u16 set)
-+static void qmc_setbits16(void __iomem *addr, u16 set)
- {
- 	qmc_write16(addr, qmc_read16(addr) | set);
- }
+-	pdev = of_find_device_by_node(out_args.np);
+-	of_node_put(out_args.np);
++	pdev = of_find_device_by_node(qmc_np);
+ 	if (!pdev)
+ 		return ERR_PTR(-ENODEV);
  
--static inline void qmc_clrbits16(void __iomem *addr, u16 clr)
-+static void qmc_clrbits16(void __iomem *addr, u16 clr)
- {
- 	qmc_write16(addr, qmc_read16(addr) & ~clr);
- }
+@@ -1494,17 +1492,12 @@ struct qmc_chan *qmc_chan_get_byphandle(struct device_node *np, const char *phan
+ 		return ERR_PTR(-EPROBE_DEFER);
+ 	}
  
--static inline void qmc_write32(void __iomem *addr, u32 val)
-+static void qmc_write32(void __iomem *addr, u32 val)
- {
- 	iowrite32be(val, addr);
- }
+-	if (out_args.args_count != 1) {
++	if (chan_index >= ARRAY_SIZE(qmc->chans)) {
+ 		platform_device_put(pdev);
+ 		return ERR_PTR(-EINVAL);
+ 	}
  
--static inline u32 qmc_read32(void __iomem *addr)
-+static u32 qmc_read32(void __iomem *addr)
- {
- 	return ioread32be(addr);
- }
+-	if (out_args.args[0] >= ARRAY_SIZE(qmc->chans)) {
+-		platform_device_put(pdev);
+-		return ERR_PTR(-EINVAL);
+-	}
+-
+-	qmc_chan = qmc->chans[out_args.args[0]];
++	qmc_chan = qmc->chans[chan_index];
+ 	if (!qmc_chan) {
+ 		platform_device_put(pdev);
+ 		return ERR_PTR(-ENOENT);
+@@ -1512,8 +1505,44 @@ struct qmc_chan *qmc_chan_get_byphandle(struct device_node *np, const char *phan
  
--static inline void qmc_setbits32(void __iomem *addr, u32 set)
-+static void qmc_setbits32(void __iomem *addr, u32 set)
- {
- 	qmc_write32(addr, qmc_read32(addr) | set);
+ 	return qmc_chan;
  }
++
++struct qmc_chan *qmc_chan_get_byphandle(struct device_node *np, const char *phandle_name)
++{
++	struct of_phandle_args out_args;
++	struct qmc_chan *qmc_chan;
++	int ret;
++
++	ret = of_parse_phandle_with_fixed_args(np, phandle_name, 1, 0,
++					       &out_args);
++	if (ret < 0)
++		return ERR_PTR(ret);
++
++	if (out_args.args_count != 1) {
++		of_node_put(out_args.np);
++		return ERR_PTR(-EINVAL);
++	}
++
++	qmc_chan = qmc_chan_get_from_qmc(out_args.np, out_args.args[0]);
++	of_node_put(out_args.np);
++	return qmc_chan;
++}
+ EXPORT_SYMBOL(qmc_chan_get_byphandle);
+ 
++struct qmc_chan *qmc_chan_get_bychild(struct device_node *np)
++{
++	struct device_node *qmc_np;
++	u32 chan_index;
++	int ret;
++
++	qmc_np = np->parent;
++	ret = of_property_read_u32(np, "reg", &chan_index);
++	if (ret)
++		return ERR_PTR(-EINVAL);
++
++	return qmc_chan_get_from_qmc(qmc_np, chan_index);
++}
++EXPORT_SYMBOL(qmc_chan_get_bychild);
++
+ void qmc_chan_put(struct qmc_chan *chan)
+ {
+ 	put_device(chan->qmc->dev);
+@@ -1550,6 +1579,28 @@ struct qmc_chan *devm_qmc_chan_get_byphandle(struct device *dev,
+ }
+ EXPORT_SYMBOL(devm_qmc_chan_get_byphandle);
+ 
++struct qmc_chan *devm_qmc_chan_get_bychild(struct device *dev,
++					   struct device_node *np)
++{
++	struct qmc_chan *qmc_chan;
++	struct qmc_chan **dr;
++
++	dr = devres_alloc(devm_qmc_chan_release, sizeof(*dr), GFP_KERNEL);
++	if (!dr)
++		return ERR_PTR(-ENOMEM);
++
++	qmc_chan = qmc_chan_get_bychild(np);
++	if (!IS_ERR(qmc_chan)) {
++		*dr = qmc_chan;
++		devres_add(dev, dr);
++	} else {
++		devres_free(dr);
++	}
++
++	return qmc_chan;
++}
++EXPORT_SYMBOL(devm_qmc_chan_get_bychild);
++
+ MODULE_AUTHOR("Herve Codina <herve.codina@bootlin.com>");
+ MODULE_DESCRIPTION("CPM QMC driver");
+ MODULE_LICENSE("GPL");
+diff --git a/include/soc/fsl/qe/qmc.h b/include/soc/fsl/qe/qmc.h
+index 6f1d6cebc9fe..166484bb4294 100644
+--- a/include/soc/fsl/qe/qmc.h
++++ b/include/soc/fsl/qe/qmc.h
+@@ -17,9 +17,11 @@ struct device;
+ struct qmc_chan;
+ 
+ struct qmc_chan *qmc_chan_get_byphandle(struct device_node *np, const char *phandle_name);
++struct qmc_chan *qmc_chan_get_bychild(struct device_node *np);
+ void qmc_chan_put(struct qmc_chan *chan);
+ struct qmc_chan *devm_qmc_chan_get_byphandle(struct device *dev, struct device_node *np,
+ 					     const char *phandle_name);
++struct qmc_chan *devm_qmc_chan_get_bychild(struct device *dev, struct device_node *np);
+ 
+ enum qmc_mode {
+ 	QMC_TRANSPARENT,
 -- 
 2.41.0
 
