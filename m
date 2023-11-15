@@ -2,99 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 195407EBCA8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 05:45:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F127EBCC9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 06:32:54 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oBF6AWMe;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oImSohtO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SVVwf6dfkz2yLr
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 15:45:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SVWyr0fYVz3d88
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 16:32:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oBF6AWMe;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oImSohtO;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SVVvl36TKz3cBs
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Nov 2023 15:45:07 +1100 (AEDT)
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4SVVvh1Vz5z4xDB
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Nov 2023 15:45:04 +1100 (AEDT)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4SVVvh1RLgz4xFR; Wed, 15 Nov 2023 15:45:04 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oBF6AWMe;
-	dkim-atps=neutral
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4SVVvg3NwGz4xDB
-	for <linuxppc-dev@ozlabs.org>; Wed, 15 Nov 2023 15:45:02 +1100 (AEDT)
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AF47ffN009909
-	for <linuxppc-dev@ozlabs.org>; Wed, 15 Nov 2023 04:44:59 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SVWxz3DMTz2xrD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Nov 2023 16:32:06 +1100 (AEDT)
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AF5OfXI005999;
+	Wed, 15 Nov 2023 05:31:34 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=xoeGNuODI4Ks4WurHDLSdYhufxULclt9O233cWq8dls=;
- b=oBF6AWMeqG47s+A5VNJoCB/O26bc8DyT6E/lLuHelWMfR8Sag8rKZx9G9IxYQgc+m5nG
- r38O3gptkOTkGzX/WuQqHATwSGRsJlkX61yNOYHG0DB+QTiCuG18CmMvv+eFjKj/H2lq
- YXb07sohRZCzOlEBJZdqxClqfhFTdIjkOgKdPeI0qbzTHW1qFFt6TUVdVvvr1vWgI4ka
- bPmJMnfyJdhVKza22Y1cFRSBSajRB2lZXBbIV0DddYmma7p4Mdl/0txeEfq/xkUQgZkM
- SahcmVnjzkx78ZZDlRq8KIHe6TXBFczuprmI9Cn9VdVpb26WjVSOXIo7fVINrKqGAaQ1 sA== 
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ucppggvrn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@ozlabs.org>; Wed, 15 Nov 2023 04:44:58 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3AF4eA5J029435
-	for <linuxppc-dev@ozlabs.org>; Wed, 15 Nov 2023 04:44:58 GMT
+ content-type; s=pp1; bh=GJ+xyw9eti00D2f4thO4SOwJTmfGeFzimTog69Oh4DE=;
+ b=oImSohtO3WpXb+BCViAf1PLYNv/+NGgucymKFS7Z2T55zK9SC+leLdB1+SdXZR2NI1cm
+ Rp8irn3nyrqLf6JHruhE/QjSiDofbyTfK90DqjKZwBycuiErBGQDdkvyKC4RMw2DAH2G
+ Kk2oecEjlccEQV/pQG6ttVOpZOvCNIsdG63LU2uOY9hpimtb9htof4dBl0YGn/BvnKSZ
+ jcNhwtl6GqRFo/KGuzLP2ySASMTw3bDGWlOk2BjX1LyZT42pTrDDked8STr2VmmXZ7K0
+ lpvaB89iksRJ7NQACxqAMV07BPS+za5yaolmuHrapq/H03pLhByyIDP6ePJtLcQ9JNz7 xg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ucqtfr4ew-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Nov 2023 05:31:33 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AF5P4gA006549;
+	Wed, 15 Nov 2023 05:31:32 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ucqtfr4dd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Nov 2023 05:31:32 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3AF4aT2x024387;
+	Wed, 15 Nov 2023 05:27:16 GMT
 Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3uapn1mckg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@ozlabs.org>; Wed, 15 Nov 2023 04:44:58 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3AF4iuDc22610566
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uamxnd1nm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Nov 2023 05:27:16 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3AF5RGZK8979098
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 15 Nov 2023 04:44:56 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5406658057;
-	Wed, 15 Nov 2023 04:44:56 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8A5BE58058;
-	Wed, 15 Nov 2023 04:44:54 +0000 (GMT)
+	Wed, 15 Nov 2023 05:27:16 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3D3A658055;
+	Wed, 15 Nov 2023 05:27:16 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 310EE5804B;
+	Wed, 15 Nov 2023 05:27:11 +0000 (GMT)
 Received: from skywalker.linux.ibm.com (unknown [9.43.109.250])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 15 Nov 2023 04:44:54 +0000 (GMT)
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 15 Nov 2023 05:27:10 +0000 (GMT)
 X-Mailer: emacs 29.1 (via feedmail 11-beta-1 I)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@ozlabs.org
-Subject: Re: [PATCH v5 1/3] powerpc: make fadump resilient with memory
- add/remove events
-In-Reply-To: <20231029124548.12198-2-sourabhjain@linux.ibm.com>
-References: <20231029124548.12198-1-sourabhjain@linux.ibm.com>
- <20231029124548.12198-2-sourabhjain@linux.ibm.com>
-Date: Wed, 15 Nov 2023 10:14:00 +0530
-Message-ID: <871qcr1v8v.fsf@linux.ibm.com>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v4 1/5] powerpc/smp: Enable Asym packing for cores on
+ shared processor
+In-Reply-To: <20231109054938.26589-2-srikar@linux.vnet.ibm.com>
+References: <20231109054938.26589-1-srikar@linux.vnet.ibm.com>
+ <20231109054938.26589-2-srikar@linux.vnet.ibm.com>
+Date: Wed, 15 Nov 2023 10:57:08 +0530
+Message-ID: <87y1ezzivn.fsf@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: BopNmo4y3WLiYYJUvt84dqJrdggftOaY
-X-Proofpoint-GUID: BopNmo4y3WLiYYJUvt84dqJrdggftOaY
+X-Proofpoint-GUID: P9S993U8EmsbsdPVPDifF6fIIErNdZdN
+X-Proofpoint-ORIG-GUID: 4iz3V3JE1RwOAw2t7jShDz8OuzhJVCYj
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-15_02,2023-11-14_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
- clxscore=1011 mlxlogscore=544 suspectscore=0 lowpriorityscore=0
- malwarescore=0 priorityscore=1501 phishscore=0 impostorscore=0 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311150035
+ definitions=2023-11-15_03,2023-11-14_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ spamscore=0 suspectscore=0 mlxlogscore=865 priorityscore=1501 bulkscore=0
+ clxscore=1011 phishscore=0 malwarescore=0 impostorscore=0 mlxscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311150040
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,69 +100,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Aditya Gupta <adityag@linux.ibm.com>, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, Valentin Schneider <vschneid@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, Srikar Dronamraju <srikar@linux.vnet.ibm.com>, "Paul E. McKenney" <paulmck@kernel.org>, Peter Zijlstra <peterz@infradead.org>, "ndesaulniers@google.com" <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Rohan McLure <rmclure@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Josh Poimboeuf <jpoimboe@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sourabh Jain <sourabhjain@linux.ibm.com> writes:
+Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
 
-....
-
-> diff --git a/arch/powerpc/include/asm/fadump-internal.h b/arch/powerpc/include/asm/fadump-internal.h
-> index 27f9e11eda28..7be3d8894520 100644
-> --- a/arch/powerpc/include/asm/fadump-internal.h
-> +++ b/arch/powerpc/include/asm/fadump-internal.h
-> @@ -42,7 +42,25 @@ static inline u64 fadump_str_to_u64(const char *str)
->  
->  #define FADUMP_CPU_UNKNOWN		(~((u32)0))
->  
-> -#define FADUMP_CRASH_INFO_MAGIC		fadump_str_to_u64("FADMPINF")
-> +/*
-> + * The introduction of new fields in the fadump crash info header has
-> + * led to a change in the magic key, from `FADMPINF` to `FADMPSIG`.
-> + * This alteration ensures backward compatibility, enabling the kernel
-> + * with the updated fadump crash info to handle kernel dumps from older
-> + * kernels.
-> + *
-> + * To prevent the need for further changes to the magic number in the
-> + * event of future modifications to the fadump header, a version field
-> + * has been introduced to track the fadump crash info header version.
-> + *
-> + * Historically, there was no connection between the magic number and
-> + * the fadump crash info header version. However, moving forward, the
-> + * `FADMPINF` magic number in header will be treated as version 0, while
-> + * the `FADMPSIG` magic number in header will include a version field to
-> + * determine its version.
-> + */
-> +#define FADUMP_CRASH_INFO_MAGIC		fadump_str_to_u64("FADMPSIG")
-> +#define FADUMP_VERSION			1
+> If there are shared processor LPARs, underlying Hypervisor can have more
+> virtual cores to handle than actual physical cores.
+>
+> Starting with Power 9, a big core (aka SMT8 core) has 2 nearly
+> independent thread groups. On a shared processors LPARs, it helps to
+> pack threads to lesser number of cores so that the overall system
+> performance and utilization improves. PowerVM schedules at a big core
+> level. Hence packing to fewer cores helps.
+>
+> For example: Lets says there are two 8-core Shared LPARs that are
+> actually sharing a 8 Core shared physical pool, each running 8 threads
+> each. Then Consolidating 8 threads to 4 cores on each LPAR would help
+> them to perform better. This is because each of the LPAR will get
+> 100% time to run applications and there will no switching required by
+> the Hypervisor.
 >
 
-Can we keep the old magic details as
+Will this patch consolidate things to first 8 threads or just the one
+Big core? /me continues to look at other patches and wonder whether 4/5
+should come before this? 
 
-#define FADUMP_CRASH_INFO_MAGIC_OLD		fadump_str_to_u64("FADMPINF")
-#define FADUMP_CRASH_INFO_MAGIC		fadump_str_to_u64("FADMPSIG")
 
-Also considering the struct need not be backward compatible, can we just
-do
+>
+> To achieve this, enable SD_ASYM_PACKING flag at CACHE, MC and DIE level
+> when the system is running in shared processor mode and has big cores.
+>
+> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 
-struct fadump_crash_info_header {
-	u64		magic_number;
-	u32		crashing_cpu;
-	u64		elfcorehdr_addr;
-	u64		elfcorehdr_size;
-	u64		vmcoreinfo_raddr;
-	u64		vmcoreinfo_size;
-	struct pt_regs	regs;
-	struct cpumask	cpu_mask;
-};
-
-static inline bool fadump_compatible(struct fadump_crash_info_header
-*fdh)
-{
-	return (fdh->magic_number == FADUMP_CRASH_INFO_MAGIC)
-}
-
-and fail fadump if we find it not compatible?
 
 -aneesh
