@@ -2,87 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1E2A7EC204
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 13:17:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10EC77EC2F7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 13:52:13 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=S6ePzITb;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YTsG5Xcf;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YTsG5Xcf;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SVhxg3xGPz3cQj
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 23:17:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SVjjk71tSz3d9K
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 23:52:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=S6ePzITb;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YTsG5Xcf;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YTsG5Xcf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SVhwp3X5jz2xpp
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Nov 2023 23:16:42 +1100 (AEDT)
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AFCGJZr010266
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Nov 2023 12:16:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=hDE/VhpY8s9BaFiX3hwOsVJUpd2qDPbKmWtszRR8mp0=;
- b=S6ePzITbKMx7hkbwcA9LrwOOdU4N2HOFFDTBDYsYTIRJf1zWtTxuSimqSBnMrvADRYDw
- E4lue9OP8sQzbJy4p9E3++i8s2XbjDuJiBprPMbcD9DSYpWfAhP236fuNmLBhVpae2Q2
- JmKCJlDBLN9sRWGjg6ssHPYJIFDJhYFI0ZeczWPA/gcybawalz5yaLqV91raJYH1esim
- b1lrwNf2+o6mUJlcQKc6EqmY6dKtklrLQfD274mMx1bXU8alZJZFW2Ud/PJNVl4k9u9w
- vknjps+yiX1YhP3q5LpXUOicrZeCQMT5GznLjaGdcLgafPjbRM8LglbQhLnC/ylnbZLW 9A== 
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ucwub00av-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Nov 2023 12:16:37 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3AFAiLdg023945
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Nov 2023 12:16:37 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uamayf7aq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Nov 2023 12:16:37 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3AFCGYZP52167026
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 15 Nov 2023 12:16:34 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0869420040;
-	Wed, 15 Nov 2023 12:16:34 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7EF5820043;
-	Wed, 15 Nov 2023 12:16:33 +0000 (GMT)
-Received: from [9.43.109.250] (unknown [9.43.109.250])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 15 Nov 2023 12:16:33 +0000 (GMT)
-Message-ID: <c3594f58-c7a4-4265-a38e-c97b08169b61@linux.ibm.com>
-Date: Wed, 15 Nov 2023 17:46:32 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SVjhp6J2Sz2ygx
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Nov 2023 23:51:21 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1700052677;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ehFjwhsPPcv7nimSjR09jzg4Dqe1DEZTTTAxghtYd8o=;
+	b=YTsG5XcfEscwzs5ctzrn03yX0IllafFUejib94DrmGuXtLweDkHSoy04rSaRZ4v6ukIWpi
+	imGEXpemHDw+UsEAs6S//i4A+z1WJ+f53JikO0T5oj9fNzXhSbUUpVbofmtsnOvvS2s8x7
+	8pWfA7ZDwJzmGnqcM5tXouwNyMuL7n4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1700052677;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ehFjwhsPPcv7nimSjR09jzg4Dqe1DEZTTTAxghtYd8o=;
+	b=YTsG5XcfEscwzs5ctzrn03yX0IllafFUejib94DrmGuXtLweDkHSoy04rSaRZ4v6ukIWpi
+	imGEXpemHDw+UsEAs6S//i4A+z1WJ+f53JikO0T5oj9fNzXhSbUUpVbofmtsnOvvS2s8x7
+	8pWfA7ZDwJzmGnqcM5tXouwNyMuL7n4=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-378-LR_rUWiCNDKtUhiOdXXDbA-1; Wed,
+ 15 Nov 2023 07:51:13 -0500
+X-MC-Unique: LR_rUWiCNDKtUhiOdXXDbA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9AB1C1C068CA;
+	Wed, 15 Nov 2023 12:51:10 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.9])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id E5CD41121307;
+	Wed, 15 Nov 2023 12:51:09 +0000 (UTC)
+Date: Wed, 15 Nov 2023 20:51:06 +0800
+From: Baoquan He <bhe@redhat.com>
+To: linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/7] kexec_file: add kexec_file flag to control debug
+ printing
+Message-ID: <ZVS+usu5jCveUIiv@MiWiFi-R3L-srv>
+References: <20231114153253.241262-1-bhe@redhat.com>
+ <20231114153253.241262-2-bhe@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc: Restrict ARCH_HIBERNATION_POSSIBLE to supported
- configurations
-Content-Language: en-US
-To: Vishal Chourasia <vishalc@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <20231114082046.6018-1-vishalc@linux.ibm.com>
- <87sf57zbcd.fsf@linux.ibm.com>
- <ecc9d34a-4960-4540-802e-d35ee4f5259b@linux.ibm.com>
-From: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
-In-Reply-To: <ecc9d34a-4960-4540-802e-d35ee4f5259b@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: SM_rwIk9odG3n5T834vRmwXLMV6QSUti
-X-Proofpoint-GUID: SM_rwIk9odG3n5T834vRmwXLMV6QSUti
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-15_10,2023-11-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- mlxlogscore=914 impostorscore=0 phishscore=0 adultscore=0 mlxscore=0
- clxscore=1015 bulkscore=0 lowpriorityscore=0 suspectscore=0 spamscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311150094
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231114153253.241262-2-bhe@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,94 +80,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-parisc@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/15/23 5:23 PM, Vishal Chourasia wrote:
-> 
-> On 15/11/23 1:39 pm, Aneesh Kumar K.V wrote:
->> Vishal Chourasia <vishalc@linux.ibm.com> writes:
->>
->>> This patch modifies the ARCH_HIBERNATION_POSSIBLE option to ensure that it
->>> correctly depends on these PowerPC configurations being enabled. As a result,
->>> it prevents the HOTPLUG_CPU from being selected when the required dependencies
->>> are not satisfied.
->>>
->>> This change aligns the dependency tree with the expected hardware support for
->>> CPU hot-plugging under PowerPC architectures, ensuring that the kernel
->>> configuration steps do not lead to inconsistent states.
->>>
->>> Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
->>> ---
->>> During the configuration process with 'make randconfig' followed by
->>> 'make olddefconfig', we observed a warning indicating an unmet direct
->>> dependency for the HOTPLUG_CPU option. The dependency in question relates to
->>> various PowerPC configurations (PPC_PSERIES, PPC_PMAC, PPC_POWERNV,
->>> FSL_SOC_BOOKE) which were not enabled, yet the HOTPLUG_CPU was being
->>> erroneously selected due to an implicit assumption by the PM_SLEEP_SMP option.
->>> This misalignment in dependencies could potentially lead to inconsistent kernel
->>> configuration states, especially when considering the necessary hardware
->>> support for CPU hot-plugging on PowerPC platforms. The patch aims to correct
->>> this by ensuring that ARCH_HIBERNATION_POSSIBLE is contingent upon the
->>> appropriate PowerPC configurations being active.
->>>
->>> steps to reproduce (before applying the patch):
->>>
->>> Run 'make pseries_le_defconfig'
->>> Run 'make menuconfig'
->>> Enable hibernation [ Kernel options -> Hibernation (aka 'suspend to disk') ] 
->>> Disable [ Platform support -> IBM PowerNV (Non-Virtualized) platform support ]
->>> Disable [ Platform support -> IBM pSeries & new (POWER5-based) iSeries ]
->>> Enable SMP [ Processor support -> Symmetric multi-processing support ]
->>> Save the config
->>> Run 'make olddefconfig'
->>>
->>>  arch/powerpc/Kconfig | 5 +++--
->>>  1 file changed, 3 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
->>> index 6f105ee4f3cf..bf99ff9869f6 100644
->>> --- a/arch/powerpc/Kconfig
->>> +++ b/arch/powerpc/Kconfig
->>> @@ -380,8 +380,9 @@ config DEFAULT_UIMAGE
->>>  	  Used to allow a board to specify it wants a uImage built by default
->>>  
->>>  config ARCH_HIBERNATION_POSSIBLE
->>> -	bool
->>> -	default y
->>> +	def_bool y
->>> +	depends on PPC_PSERIES || \
->>> +		PPC_PMAC || PPC_POWERNV || FSL_SOC_BOOKE
->>>  
->>>  config ARCH_SUSPEND_POSSIBLE
->>>  	def_bool y
->>>
->> I am wondering whether it should be switched to using select from
->> config PPC? 
-> 
-> selecting ARCH_HIBERNATION_POSSIBLE based on value of config PPC
-> will not guarantee config PPC_PSERIES being set
-> 
-> PPC_PSERIES can be set to N, even when config PPC is set.
-> 
-> grep -A 5 -i "config ppc_pseries" arch/powerpc/platforms/pseries/Kconfig
-> config PPC_PSERIES
->         depends on PPC64 && PPC_BOOK3S
->         bool "IBM pSeries & new (POWER5-based) iSeries"
->         select HAVE_PCSPKR_PLATFORM
->         select MPIC
->         select OF_DYNAMIC
-> 
+When specifying 'kexec -c -d', kexec_load interface will print loading
+information, e.g the regions where kernel/initrd/purgatory/cmdline
+are put, the memmap passed to 2nd kernel taken as system RAM ranges,
+and printing all contents of struct kexec_segment, etc. These are
+very helpful for analyzing or positioning what's happening when
+kexec/kdump itself failed. The debugging printing for kexec_load
+interface is made in user space utility kexec-tools.
 
-modified   arch/powerpc/Kconfig
-@@ -156,6 +156,7 @@ config PPC
- 	select ARCH_HAS_UACCESS_FLUSHCACHE
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
-+	select ARCH_HIBERNATION_POSSIBLE	if (PPC_PSERIES || PPC_PMAC || PPC_POWERNV || FSL_SOC_BOOKE)
- 	select ARCH_KEEP_MEMBLOCK
- 	select ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE	if PPC_RADIX_MMU
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
+Whereas, with kexec_file_load interface, 'kexec -s -d' print nothing.
+Because kexec_file code is mostly implemented in kernel space, and the
+debugging printing functionality is missed. It's not convenient when
+debugging kexec/kdump loading and jumping with kexec_file_load
+interface.
 
+Now add KEXEC_FILE_DEBUG to kexec_file flag to control the debugging
+message printing. And add global variable kexec_file_dbg_print and
+macro kexec_dprintk() to facilitate the printing.
 
--aneesh
+This is a preparation, later kexec_dprintk() will be used to replace the
+existing pr_debug(). Once 'kexec -s -d' is specified, it will print out
+kexec/kdump loading information at KERN_INFO level. If '-d' is not
+specified, it regresses to print message at KERN_DEBUG level.
+
+Signed-off-by: Baoquan He <bhe@redhat.com>
+---
+v1->v2:
+- Rewrite the kexec_dprintk() macro as Joe suggested to reduce kernel
+  text size.
+
+ include/linux/kexec.h      | 10 +++++++++-
+ include/uapi/linux/kexec.h |  1 +
+ kernel/kexec_file.c        |  5 +++++
+ 3 files changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/include/linux/kexec.h b/include/linux/kexec.h
+index 8227455192b7..66997efe36f1 100644
+--- a/include/linux/kexec.h
++++ b/include/linux/kexec.h
+@@ -264,6 +264,14 @@ arch_kexec_apply_relocations(struct purgatory_info *pi, Elf_Shdr *section,
+ 	return -ENOEXEC;
+ }
+ #endif
++
++extern bool kexec_file_dbg_print;
++
++#define kexec_dprintk(fmt, ...)					\
++	printk("%s" fmt,					\
++	       kexec_file_dbg_print ? KERN_INFO : KERN_DEBUG,	\
++	       ##__VA_ARGS__)
++
+ #endif /* CONFIG_KEXEC_FILE */
+ 
+ #ifdef CONFIG_KEXEC_ELF
+@@ -403,7 +411,7 @@ bool kexec_load_permitted(int kexec_image_type);
+ 
+ /* List of defined/legal kexec file flags */
+ #define KEXEC_FILE_FLAGS	(KEXEC_FILE_UNLOAD | KEXEC_FILE_ON_CRASH | \
+-				 KEXEC_FILE_NO_INITRAMFS)
++				 KEXEC_FILE_NO_INITRAMFS | KEXEC_FILE_DEBUG)
+ 
+ /* flag to track if kexec reboot is in progress */
+ extern bool kexec_in_progress;
+diff --git a/include/uapi/linux/kexec.h b/include/uapi/linux/kexec.h
+index 01766dd839b0..c17bb096ea68 100644
+--- a/include/uapi/linux/kexec.h
++++ b/include/uapi/linux/kexec.h
+@@ -25,6 +25,7 @@
+ #define KEXEC_FILE_UNLOAD	0x00000001
+ #define KEXEC_FILE_ON_CRASH	0x00000002
+ #define KEXEC_FILE_NO_INITRAMFS	0x00000004
++#define KEXEC_FILE_DEBUG	0x00000008
+ 
+ /* These values match the ELF architecture values.
+  * Unless there is a good reason that should continue to be the case.
+diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+index f9a419cd22d4..4c35500ae40a 100644
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -38,6 +38,8 @@ void set_kexec_sig_enforced(void)
+ }
+ #endif
+ 
++bool kexec_file_dbg_print;
++
+ static int kexec_calculate_store_digests(struct kimage *image);
+ 
+ /* Maximum size in bytes for kernel/initrd files. */
+@@ -123,6 +125,8 @@ void kimage_file_post_load_cleanup(struct kimage *image)
+ 	 */
+ 	kfree(image->image_loader_data);
+ 	image->image_loader_data = NULL;
++
++	kexec_file_dbg_print = false;
+ }
+ 
+ #ifdef CONFIG_KEXEC_SIG
+@@ -278,6 +282,7 @@ kimage_file_alloc_init(struct kimage **rimage, int kernel_fd,
+ 	if (!image)
+ 		return -ENOMEM;
+ 
++	kexec_file_dbg_print = !!(flags & KEXEC_FILE_DEBUG);
+ 	image->file_mode = 1;
+ 
+ 	if (kexec_on_panic) {
+-- 
+2.41.0
+
