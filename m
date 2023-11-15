@@ -2,39 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 543357EC63B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 15:48:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E96137EC647
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 15:49:31 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=mgVCAJ61;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=MqAj7FG/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SVmJ91bp3z3vk1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Nov 2023 01:48:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SVmK55z2mz3vXV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Nov 2023 01:49:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=mgVCAJ61;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=MqAj7FG/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::229; helo=relay9-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::229])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.199; helo=relay9-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SVm6n103pz3cVg
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Nov 2023 01:40:32 +1100 (AEDT)
-Received: by mail.gandi.net (Postfix) with ESMTPA id 1ED09FF806;
-	Wed, 15 Nov 2023 14:40:29 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SVm6p5hWcz3cSd
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Nov 2023 01:40:34 +1100 (AEDT)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 98427FF80A;
+	Wed, 15 Nov 2023 14:40:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1700059230;
+	t=1700059232;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=daBaX2nOfcBqffmMooshUw4wUFqmDO5ms4CR0skya7c=;
-	b=mgVCAJ61AqFQIr6QF7RiXK3F6Cxg5EMIeCpU6X2gv8ZzhZmf98Hg4ERhvuQ3K26IuhY77O
-	ZruaKb44yCnT5dcdR29YFri3+bibE1spS21Q+X9SzqZ1QhqjgDBi84ke0p3FCw7tB25YNZ
-	qcJTZSUFwHHGl99GQhxK8xtPF+mP+F5YT0stnRyunVL5lunl/bvmdfHntKHrq2kbqlSA/U
-	B2jIPrMT8dwvUbH86ASqO9+aswVHDF+Rg2rxfIM5b6Ss97DvO9NOMAahArp09mAlXiz0Cr
-	SP32UQ4h4Wtn7oK6KDKOo/i6GvA8jGgeRkU2LI41x0V9omEijgzNrFT8RGQihg==
+	bh=UnNVtqzsvx8YN/aPRFQJh5hnsijIRzsSo6ed0hY90ck=;
+	b=MqAj7FG/dmRTWMkX8g74Grca6pT6vwiTj62/voktD4dTBfTO+FxuAaer6V0WOb9pQ6MvU9
+	i0sxL8NXfJP53T5twP777mI3hv+87Cz+xatfrbwchxTXiAnyza2U6yI18KxJrRl+1yU0N4
+	xmdCUzEv3UzfFsGNdtelBhrQM6ZoBSM4QKiTnSFlRRFNibTImAC/01mDcdVPUu21t5IeDT
+	Sf3SUn+JmHEWVcUrpBiDanoM2MbkN6dmfzsWpu9bjrCSdYwPTVpHDcfHx1v0nTr/WSHfMT
+	LxnKWTxERqIHGVTUDiKbJD2ODacvZQxy/vanRtui+2OPwMN+zap/7nt/m+yPXw==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Herve Codina <herve.codina@bootlin.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -59,9 +59,9 @@ To: Herve Codina <herve.codina@bootlin.com>,
 	Nicolin Chen <nicoleotsuka@gmail.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v9 09/27] soc: fsl: cpm1: qmc: Introduce available timeslots masks
-Date: Wed, 15 Nov 2023 15:39:45 +0100
-Message-ID: <20231115144007.478111-10-herve.codina@bootlin.com>
+Subject: [PATCH v9 10/27] soc: fsl: cpm1: qmc: Rename qmc_setup_tsa* to qmc_init_tsa*
+Date: Wed, 15 Nov 2023 15:39:46 +0100
+Message-ID: <20231115144007.478111-11-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231115144007.478111-1-herve.codina@bootlin.com>
 References: <20231115144007.478111-1-herve.codina@bootlin.com>
@@ -83,54 +83,74 @@ Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, Thomas Petazzoni <t
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Available timeslots masks define timeslots available for the related
-channel. These timeslots are defined by the QMC binding.
-
-Timeslots used are initialized to available timeslots but can be a
-subset of available timeslots.
-This prepares the dynamic timeslots management (ie. changing timeslots
-at runtime).
+qmc_setup_tsa* are called once at initialisation.
+They initialize the QMC TSA table.
+In order to introduce setup function later on for dynamic timeslots
+management, rename the function to avoid later confusion.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- drivers/soc/fsl/qe/qmc.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/soc/fsl/qe/qmc.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
-index e716f13669a0..0413e25d4c67 100644
+index 0413e25d4c67..e3f2afb8fa4d 100644
 --- a/drivers/soc/fsl/qe/qmc.c
 +++ b/drivers/soc/fsl/qe/qmc.c
-@@ -177,7 +177,9 @@ struct qmc_chan {
- 	struct qmc *qmc;
- 	void __iomem *s_param;
- 	enum qmc_mode mode;
-+	u64	tx_ts_mask_avail;
- 	u64	tx_ts_mask;
-+	u64	rx_ts_mask_avail;
- 	u64	rx_ts_mask;
- 	bool is_reverse_data;
+@@ -919,7 +919,7 @@ static int qmc_of_parse_chans(struct qmc *qmc, struct device_node *np)
+ 	return qmc_check_chans(qmc);
+ }
  
-@@ -875,7 +877,8 @@ static int qmc_of_parse_chans(struct qmc *qmc, struct device_node *np)
- 			of_node_put(chan_np);
- 			return ret;
- 		}
--		chan->tx_ts_mask = ts_mask;
-+		chan->tx_ts_mask_avail = ts_mask;
-+		chan->tx_ts_mask = chan->tx_ts_mask_avail;
+-static int qmc_setup_tsa_64rxtx(struct qmc *qmc, const struct tsa_serial_info *info)
++static int qmc_init_tsa_64rxtx(struct qmc *qmc, const struct tsa_serial_info *info)
+ {
+ 	struct qmc_chan *chan;
+ 	unsigned int i;
+@@ -961,7 +961,7 @@ static int qmc_setup_tsa_64rxtx(struct qmc *qmc, const struct tsa_serial_info *i
+ 	return 0;
+ }
  
- 		ret = of_property_read_u64(chan_np, "fsl,rx-ts-mask", &ts_mask);
- 		if (ret) {
-@@ -884,7 +887,8 @@ static int qmc_of_parse_chans(struct qmc *qmc, struct device_node *np)
- 			of_node_put(chan_np);
- 			return ret;
- 		}
--		chan->rx_ts_mask = ts_mask;
-+		chan->rx_ts_mask_avail = ts_mask;
-+		chan->rx_ts_mask = chan->rx_ts_mask_avail;
+-static int qmc_setup_tsa_32rx_32tx(struct qmc *qmc, const struct tsa_serial_info *info)
++static int qmc_init_tsa_32rx_32tx(struct qmc *qmc, const struct tsa_serial_info *info)
+ {
+ 	struct qmc_chan *chan;
+ 	unsigned int i;
+@@ -1019,7 +1019,7 @@ static int qmc_setup_tsa_32rx_32tx(struct qmc *qmc, const struct tsa_serial_info
+ 	return 0;
+ }
  
- 		mode = "transparent";
- 		ret = of_property_read_string(chan_np, "fsl,operational-mode", &mode);
+-static int qmc_setup_tsa(struct qmc *qmc)
++static int qmc_init_tsa(struct qmc *qmc)
+ {
+ 	struct tsa_serial_info info;
+ 	int ret;
+@@ -1030,12 +1030,12 @@ static int qmc_setup_tsa(struct qmc *qmc)
+ 		return ret;
+ 
+ 	/*
+-	 * Setup one common 64 entries table or two 32 entries (one for Tx and
+-	 * one for Tx) according to assigned TS numbers.
++	 * Initialize one common 64 entries table or two 32 entries (one for Tx
++	 * and one for Tx) according to assigned TS numbers.
+ 	 */
+ 	return ((info.nb_tx_ts > 32) || (info.nb_rx_ts > 32)) ?
+-		qmc_setup_tsa_64rxtx(qmc, &info) :
+-		qmc_setup_tsa_32rx_32tx(qmc, &info);
++		qmc_init_tsa_64rxtx(qmc, &info) :
++		qmc_init_tsa_32rx_32tx(qmc, &info);
+ }
+ 
+ static int qmc_setup_chan_trnsync(struct qmc *qmc, struct qmc_chan *chan)
+@@ -1391,7 +1391,7 @@ static int qmc_probe(struct platform_device *pdev)
+ 	qmc_write32(qmc->scc_pram + QMC_GBL_C_MASK32, 0xDEBB20E3);
+ 	qmc_write16(qmc->scc_pram + QMC_GBL_C_MASK16, 0xF0B8);
+ 
+-	ret = qmc_setup_tsa(qmc);
++	ret = qmc_init_tsa(qmc);
+ 	if (ret)
+ 		goto err_tsa_serial_disconnect;
+ 
 -- 
 2.41.0
 
