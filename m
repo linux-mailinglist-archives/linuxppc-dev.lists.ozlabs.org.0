@@ -1,78 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01F497ED629
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 22:40:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 643A67ED62A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 22:41:05 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=FRdilk6A;
+	dkim=fail reason="signature verification failed" (4096-bit key; unprotected) header.d=matoro.tk header.i=@matoro.tk header.a=rsa-sha256 header.s=20230917 header.b=Yd71bm3F;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SVxR06MwZz3dFm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Nov 2023 08:40:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SVxRz20Fnz3dK0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Nov 2023 08:41:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=FRdilk6A;
+	dkim=pass (4096-bit key; unprotected) header.d=matoro.tk header.i=@matoro.tk header.a=rsa-sha256 header.s=20230917 header.b=Yd71bm3F;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--mmaurer.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=3krvvzqckdnggg4ol8laiiaf8.6igfchorjj6-78pfcmnm.itf45m.ila@flex--mmaurer.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SVstC4S4rz3c4M
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Nov 2023 06:00:01 +1100 (AEDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-daf702bde7eso4964724276.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Nov 2023 11:00:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1700074794; x=1700679594; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qmcer6lC4M3sVp5hzPP8TVTi+lzihM8StX6tq1rvRlw=;
-        b=FRdilk6AAwmryFm5X1oVlD+DhCCPS0rlQ8wnGin7Twkfz6AuP5yuicXxy072SN2Dg3
-         i5SvJaZDE0vSqW6SO+uxEshjocbcsS9D/UL92BVQWaca3y44u4+J31pWfp9dPX4LEGzB
-         z5Y20k7uJVE2/7cyDgFUQFLkaeSk+JbbirVeUU+IVSX+j2KvlZx8UAfAP6vOMqvvp25d
-         hoqOr8iE+vlILuG+xMtzxiCj3xeV6t7o4gSGcgZYXceSltEyEtLz7HcnTbkMTA6qW0oS
-         9ryp8FsOp52CpRCw1t7FhxF/UIs8eAP7SDm6soMopMrxB1JPWsENuavlTbziBFvMC5OI
-         pF7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700074794; x=1700679594;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qmcer6lC4M3sVp5hzPP8TVTi+lzihM8StX6tq1rvRlw=;
-        b=kRhj9RbQ2s9NV7YOIN5ZcJncPFXDRZ9JF/mh9M11oOVdeVLrd+Fqasv8NsFKJbheO3
-         UIHw13UNl0UiUb9hwQbB4pwNbVHvMQMNkJHaySgl2HXAvJMZHevux3Lbn0RemaSDc9RG
-         SiQEwHq48NykvZt8E6PDuFdm6HDy3zl8AGyCfcJZ/9vlbMFX9rbJIID1ysa64vikDCIP
-         be/jQ6rkwHSQoIqVfSbAyS38D66x1NohRfVy39FJ1i/PmToxrYH+MZj9GFDJ7kfgMwT6
-         WnpylRHO/xDPDe4ZuPVQGFzmJ3vczrVuAcssq+lgxqLqiQIQxnTHbna1W+bXtGgPG6dW
-         hMew==
-X-Gm-Message-State: AOJu0YyQXm6XOQhRb1hNdqERE+aC3Kb9pmd1zkZUwb4Zq7dmE/nVUqcg
-	p5Gb+LRprNRWrPpRv9S51h+nF1hrDEFb
-X-Google-Smtp-Source: AGHT+IHERGA7zRpPfbLXEqdgyK4LyKKZECDv5ROgnQkI8SyPb13F+RZ2TBOoN1DR45atLajBKyBsyY0c+xc6
-X-Received: from anyblade.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:1791])
- (user=mmaurer job=sendgmr) by 2002:a25:ab65:0:b0:da3:723b:b2a4 with SMTP id
- u92-20020a25ab65000000b00da3723bb2a4mr304318ybi.7.1700074793576; Wed, 15 Nov
- 2023 10:59:53 -0800 (PST)
-Date: Wed, 15 Nov 2023 18:50:10 +0000
-In-Reply-To: <20231115185858.2110875-1-mmaurer@google.com>
-Mime-Version: 1.0
-References: <20231115185858.2110875-1-mmaurer@google.com>
-X-Mailer: git-send-email 2.43.0.rc0.421.g78406f8d94-goog
-Message-ID: <20231115185858.2110875-3-mmaurer@google.com>
-Subject: [PATCH 2/3] modpost: Extended modversion support
-From: Matthew Maurer <mmaurer@google.com>
-To: gary@garyguo.net, masahiroy@kernel.org, 
-	Michael Ellerman <mpe@ellerman.id.au>, Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Nicholas Piggin <npiggin@gmail.com>, Josh Poimboeuf <jpoimboe@kernel.org>, Song Liu <song@kernel.org>, 
-	Petr Mladek <pmladek@suse.com>, Matthew Maurer <mmaurer@google.com>, Naveen N Rao <naveen@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, 
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Randy Dunlap <rdunlap@infradead.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"=?UTF-8?q?Marc=20Aur=C3=A8le=20La=20France?=" <tsi@tuyoix.net>
-Content-Type: text/plain; charset="UTF-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SVtR41gSKz2yN3
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Nov 2023 06:25:04 +1100 (AEDT)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4SVtQt0XLBz4xW7
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Nov 2023 06:24:54 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4SVtQt0F7Nz4xkb; Thu, 16 Nov 2023 06:24:54 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=matoro.tk
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (4096-bit key; unprotected) header.d=matoro.tk header.i=@matoro.tk header.a=rsa-sha256 header.s=20230917 header.b=Yd71bm3F;
+	dkim-atps=neutral
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=matoro.tk (client-ip=2600:1700:4b10:9d80::2; helo=matoro.tk; envelope-from=matoro_mailinglist_kernel@matoro.tk; receiver=ozlabs.org)
+X-Greylist: delayed 915 seconds by postgrey-1.37 at gandalf; Thu, 16 Nov 2023 06:24:51 AEDT
+Received: from matoro.tk (unknown [IPv6:2600:1700:4b10:9d80::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4SVtQq6zS0z4xW7
+	for <linuxppc-dev@ozlabs.org>; Thu, 16 Nov 2023 06:24:51 +1100 (AEDT)
+DKIM-Signature: a=rsa-sha256; bh=scTWPdh+Xr0dakDshO4hmH/K639BIG+hiSqTX1sEJE0=;
+ c=relaxed/relaxed; d=matoro.tk;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
+ i=@matoro.tk; s=20230917; t=1700075246; v=1; x=1700507246;
+ b=Yd71bm3FwsAGTqyAhYBR5hrP4lkP/qIVi+6XJgKUSJhKYv44VA5Ig8PcmO0QgOs4wR3NgVSJ
+ 6nIQQ4/vDC9eVTguw+yTkV++AJsfy0pY+4bTUoew/oFQuxcLz2HR4f6jFvOim8XITLeEyXwZZye
+ LZPjrevBaxPFiVyzt2BdEFFqNF8zdWmXU1xaZ9juHlBSUoxnrDHv30CD4uxnTGrlNFSzHIk/45v
+ QuSF8Tygsn1gblTuepMDx3oQlJL55ert1BjWqwASlVLZuM43a72RSTFwA+bCZpd+Kt28wM6BjX2
+ XfS165+sl51zjoS+JAqBAKnzKjsfwZ42YQ6rzV4zaQqJUHSBTNMV1COF8W9Cs4CVLZ4XEkBipcx
+ IGA3Eit/mCExYL1HGzow0KVrV1judAcTMzFsuyhEOHS3tzE9bxZePA4VIqpN8udVGQP1SMgZ/Di
+ 2WVOdUR+a4/X0z9B2QeEjiESfrRQ2nUBzXpSat6wxCvUASXUE6tnRxrdJnsbUo3itTpzldE6YVO
+ qso42+0MeswI9zboWQYnXrrJQFXiu8/3HW5l+lxbAoXIeMKJ+kiaHTtsBwlMtMuzrf3TThdM5Tu
+ lsnID9LEOxXh5hfYeZ0tTeWu03Isfz5kSuDjTUhi4kUR8nwau8U0GG0K7THgBxlP3AC1l9j7iOL
+ PSP1W+kbvO8=
+Received: by matoro.tk (envelope-sender
+ <matoro_mailinglist_kernel@matoro.tk>) with ESMTPS id d5aa818a; Wed, 15 Nov
+ 2023 14:07:26 -0500
+MIME-Version: 1.0
+Date: Wed, 15 Nov 2023 14:07:26 -0500
+From: matoro <matoro_mailinglist_kernel@matoro.tk>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v2] powernv/opal-prd: Silence memcpy() run-time false
+ positive warnings
+In-Reply-To: <87r0o4d1kp.fsf@mail.lhotse>
+References: <168870663097.1448934.17365533203887616941.stgit@jupiter>
+ <CACPK8XdP5keaUsP3cNY601P=uhDU_jj47rhies5QOojbU5ZSAw@mail.gmail.com>
+ <87r0o4d1kp.fsf@mail.lhotse>
+Message-ID: <422e5ac024b35573a9babb723b2f08e9@matoro.tk>
+X-Sender: matoro_mailinglist_kernel@matoro.tk
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 X-Mailman-Approved-At: Thu, 16 Nov 2023 08:39:29 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -85,297 +83,136 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, Nicolas Schier <nicolas@fjasle.eu>, rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, Alice Ryhl <aliceryhl@google.com>, linux-modules@vger.kernel.org, Benno Lossin <benno.lossin@proton.me>, linuxppc-dev@lists.ozlabs.org, Ard Biesheuvel <ardb@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Andreas Hindborg <a.hindborg@samsung.com>
+Cc: linuxppc-dev <linuxppc-dev@ozlabs.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Jordan Niethe <jniethe5@gmail.com>, Joel Stanley <joel@jms.id.au>, Mahesh Salgaonkar <mahesh@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Adds a new format for modversions which stores each field in a separate
-elf section. This initially adds support for variable length names, but
-could later be used to add additional fields to modversions in a
-backwards compatible way if needed.
+On 2023-08-15 06:47, Michael Ellerman wrote:
+> Joel Stanley <joel@jms.id.au> writes:
+>> On Fri, 7 Jul 2023 at 05:11, Mahesh Salgaonkar <mahesh@linux.ibm.com> 
+>> wrote:
+>>> 
+>>> opal_prd_msg_notifier extracts the opal prd message size from the message
+>>> header and uses it for allocating opal_prd_msg_queue_item that includes
+>>> the correct message size to be copied. However, while running under
+>>> CONFIG_FORTIFY_SOURCE=y, it triggers following run-time warning:
+>>> 
+>>> [ 6458.234352] memcpy: detected field-spanning write (size 32) of single 
+>>> field "&item->msg" at arch/powerpc/platforms/powernv/opal-prd.c:355 (size 
+>>> 4)
+>>> [ 6458.234390] WARNING: CPU: 9 PID: 660 at 
+>>> arch/powerpc/platforms/powernv/opal-prd.c:355 
+>>> opal_prd_msg_notifier+0x174/0x188 [opal_prd]
+>>> [...]
+>>> [ 6458.234709] NIP [c00800000e0c0e6c] opal_prd_msg_notifier+0x174/0x188 
+>>> [opal_prd]
+>>> [ 6458.234723] LR [c00800000e0c0e68] opal_prd_msg_notifier+0x170/0x188 
+>>> [opal_prd]
+>>> [ 6458.234736] Call Trace:
+>>> [ 6458.234742] [c0000002acb23c10] [c00800000e0c0e68] 
+>>> opal_prd_msg_notifier+0x170/0x188 [opal_prd] (unreliable)
+>>> [ 6458.234759] [c0000002acb23ca0] [c00000000019ccc0] 
+>>> notifier_call_chain+0xc0/0x1b0
+>>> [ 6458.234774] [c0000002acb23d00] [c00000000019ceac] 
+>>> atomic_notifier_call_chain+0x2c/0x40
+>>> [ 6458.234788] [c0000002acb23d20] [c0000000000d69b4] 
+>>> opal_message_notify+0xf4/0x2c0
+>>> [...]
+>>> 
+>>> Split the copy to avoid false positive run-time warning.
+>>> 
+>>> Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+>>> Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+>> 
+>> I hit this on a box running the Ubuntu 6.2.0-27-generic kernel.
+>> 
+>> Do we plan on merging this fix?
+> 
+> I thought it was papering over the issue rather than fixing the root
+> cause.
+> 
+> I'll send a new version, as soon as I can work out how to trigger that
+> code path.
+> 
+> cheers
 
-Adding support for variable length names makes it possible to enable
-MODVERSIONS and RUST at the same time.
+Hi, I see this was still not accepted.  I was able to trigger this simply by 
+starting the opal-prd userspace daemon.
+Restarting the service does not re-trigger the warning, however.
 
-Signed-off-by: Matthew Maurer <mmaurer@google.com>
----
- arch/powerpc/kernel/module_64.c | 24 +++++++++-
- init/Kconfig                    |  1 -
- kernel/module/internal.h        | 16 ++++++-
- kernel/module/main.c            |  9 +++-
- kernel/module/version.c         | 77 +++++++++++++++++++++++++++++++++
- scripts/mod/modpost.c           | 33 ++++++++++++--
- 6 files changed, 151 insertions(+), 9 deletions(-)
-
-diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
-index 7112adc597a8..2582353a2048 100644
---- a/arch/powerpc/kernel/module_64.c
-+++ b/arch/powerpc/kernel/module_64.c
-@@ -355,6 +355,24 @@ static void dedotify_versions(struct modversion_info *vers,
- 		}
- }
- 
-+static void dedotify_ext_version_names(char *str_seq, unsigned long size)
-+{
-+	unsigned long out = 0;
-+	unsigned long in;
-+	char last = '\0';
-+
-+	for (in = 0; in < size; in++) {
-+		if (last == '\0')
-+			/* Skip all leading dots */
-+			if (str_seq[in] == '.')
-+				continue;
-+		last = str_seq[in];
-+		str_seq[out++] = last;
-+	}
-+	/* Zero the trailing portion of the names table for robustness */
-+	bzero(&str_seq[out], size - out);
-+}
-+
- /*
-  * Undefined symbols which refer to .funcname, hack to funcname. Make .TOC.
-  * seem to be defined (value set later).
-@@ -424,10 +442,12 @@ int module_frob_arch_sections(Elf64_Ehdr *hdr,
- 			me->arch.toc_section = i;
- 			if (sechdrs[i].sh_addralign < 8)
- 				sechdrs[i].sh_addralign = 8;
--		}
--		else if (strcmp(secstrings+sechdrs[i].sh_name,"__versions")==0)
-+		} else if (strcmp(secstrings + sechdrs[i].sh_name, "__versions") == 0)
- 			dedotify_versions((void *)hdr + sechdrs[i].sh_offset,
- 					  sechdrs[i].sh_size);
-+		else if (strcmp(secstrings + sechdrs[i].sh_name, "__version_ext_names") == 0)
-+			dedotify_ext_version_names((void *)hdr + sechdrs[i].sh_offset,
-+						   sechdrs[i].sh_size);
- 
- 		if (sechdrs[i].sh_type == SHT_SYMTAB)
- 			dedotify((void *)hdr + sechdrs[i].sh_offset,
-diff --git a/init/Kconfig b/init/Kconfig
-index 9ffb103fc927..6cac5b4db8f6 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1885,7 +1885,6 @@ config RUST
- 	bool "Rust support"
- 	depends on HAVE_RUST
- 	depends on RUST_IS_AVAILABLE
--	depends on !MODVERSIONS
- 	depends on !GCC_PLUGINS
- 	depends on !RANDSTRUCT
- 	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
-diff --git a/kernel/module/internal.h b/kernel/module/internal.h
-index c8b7b4dcf782..0c188c96a045 100644
---- a/kernel/module/internal.h
-+++ b/kernel/module/internal.h
-@@ -80,7 +80,7 @@ struct load_info {
- 	unsigned int used_pages;
- #endif
- 	struct {
--		unsigned int sym, str, mod, vers, info, pcpu;
-+		unsigned int sym, str, mod, vers, info, pcpu, vers_ext_crc, vers_ext_name;
- 	} index;
- };
- 
-@@ -384,6 +384,20 @@ void module_layout(struct module *mod, struct modversion_info *ver, struct kerne
- 		   struct kernel_symbol *ks, struct tracepoint * const *tp);
- int check_modstruct_version(const struct load_info *info, struct module *mod);
- int same_magic(const char *amagic, const char *bmagic, bool has_crcs);
-+struct modversion_info_ext_s32 {
-+	const s32 *value;
-+	const s32 *end;
-+};
-+struct modversion_info_ext_string {
-+	const char *value;
-+	const char *end;
-+};
-+struct modversion_info_ext {
-+	struct modversion_info_ext_s32 crc;
-+	struct modversion_info_ext_string name;
-+};
-+ssize_t modversion_ext_start(const struct load_info *info, struct modversion_info_ext *ver);
-+int modversion_ext_advance(struct modversion_info_ext *ver);
- #else /* !CONFIG_MODVERSIONS */
- static inline int check_version(const struct load_info *info,
- 				const char *symname,
-diff --git a/kernel/module/main.c b/kernel/module/main.c
-index 98fedfdb8db5..e69b2ae46161 100644
---- a/kernel/module/main.c
-+++ b/kernel/module/main.c
-@@ -1886,10 +1886,15 @@ static int elf_validity_cache_copy(struct load_info *info, int flags)
- 	if (!info->name)
- 		info->name = info->mod->name;
- 
--	if (flags & MODULE_INIT_IGNORE_MODVERSIONS)
-+	if (flags & MODULE_INIT_IGNORE_MODVERSIONS) {
- 		info->index.vers = 0; /* Pretend no __versions section! */
--	else
-+		info->index.vers_ext_crc = 0;
-+		info->index.vers_ext_name = 0;
-+	} else {
- 		info->index.vers = find_sec(info, "__versions");
-+		info->index.vers_ext_crc = find_sec(info, "__version_ext_crcs");
-+		info->index.vers_ext_name = find_sec(info, "__version_ext_names");
-+	}
- 
- 	info->index.pcpu = find_pcpusec(info);
- 
-diff --git a/kernel/module/version.c b/kernel/module/version.c
-index 53f43ac5a73e..93d97dad8c77 100644
---- a/kernel/module/version.c
-+++ b/kernel/module/version.c
-@@ -19,11 +19,28 @@ int check_version(const struct load_info *info,
- 	unsigned int versindex = info->index.vers;
- 	unsigned int i, num_versions;
- 	struct modversion_info *versions;
-+	struct modversion_info_ext version_ext;
- 
- 	/* Exporting module didn't supply crcs?  OK, we're already tainted. */
- 	if (!crc)
- 		return 1;
- 
-+	/* If we have extended version info, rely on it */
-+	if (modversion_ext_start(info, &version_ext) >= 0) {
-+		do {
-+			if (strncmp(version_ext.name.value, symname,
-+				    version_ext.name.end - version_ext.name.value) != 0)
-+				continue;
-+
-+			if (*version_ext.crc.value == *crc)
-+				return 1;
-+			pr_debug("Found checksum %X vs module %X\n",
-+				 *crc, *version_ext.crc.value);
-+			goto bad_version;
-+		} while (modversion_ext_advance(&version_ext) == 0);
-+		goto broken_toolchain;
-+	}
-+
- 	/* No versions at all?  modprobe --force does this. */
- 	if (versindex == 0)
- 		return try_to_force_load(mod, symname) == 0;
-@@ -46,6 +63,7 @@ int check_version(const struct load_info *info,
- 		goto bad_version;
- 	}
- 
-+broken_toolchain:
- 	/* Broken toolchain. Warn once, then let it go.. */
- 	pr_warn_once("%s: no symbol version for %s\n", info->name, symname);
- 	return 1;
-@@ -87,6 +105,65 @@ int same_magic(const char *amagic, const char *bmagic,
- 	return strcmp(amagic, bmagic) == 0;
- }
- 
-+#define MODVERSION_FIELD_START(sec, field) \
-+	field.value = (typeof(field.value))sec.sh_addr; \
-+	field.end = field.value + sec.sh_size
-+
-+ssize_t modversion_ext_start(const struct load_info *info,
-+			     struct modversion_info_ext *start)
-+{
-+	unsigned int crc_idx = info->index.vers_ext_crc;
-+	unsigned int name_idx = info->index.vers_ext_name;
-+	Elf_Shdr *sechdrs = info->sechdrs;
-+
-+	// Both of these fields are needed for this to be useful
-+	// Any future fields should be initialized to NULL if absent.
-+	if ((crc_idx == 0) || (name_idx == 0))
-+		return -EINVAL;
-+
-+	MODVERSION_FIELD_START(sechdrs[crc_idx], start->crc);
-+	MODVERSION_FIELD_START(sechdrs[name_idx], start->name);
-+
-+	return (start->crc.end - start->crc.value) / sizeof(*start->crc.value);
-+}
-+
-+static int modversion_ext_s32_advance(struct modversion_info_ext_s32 *field)
-+{
-+	if (!field->value)
-+		return 0;
-+	if (field->value >= field->end)
-+		return -EINVAL;
-+	field->value++;
-+	return 0;
-+}
-+
-+static int modversion_ext_string_advance(struct modversion_info_ext_string *s)
-+{
-+	if (!s->value)
-+		return 0;
-+	if (s->value >= s->end)
-+		return -EINVAL;
-+	s->value += strnlen(s->value, s->end - s->value - 1) + 1;
-+	if (s->value >= s->end)
-+		return -EINVAL;
-+	return 0;
-+}
-+
-+int modversion_ext_advance(struct modversion_info_ext *start)
-+{
-+	int ret;
-+
-+	ret = modversion_ext_s32_advance(&start->crc);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = modversion_ext_string_advance(&start->name);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
- /*
-  * Generate the signature for all relevant module structures here.
-  * If these change, we don't want to try to parse the module.
-diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-index 973b5e5ae2dd..884860c2e833 100644
---- a/scripts/mod/modpost.c
-+++ b/scripts/mod/modpost.c
-@@ -1910,15 +1910,42 @@ static void add_versions(struct buffer *b, struct module *mod)
- 			continue;
- 		}
- 		if (strlen(s->name) >= MODULE_NAME_LEN) {
--			error("too long symbol \"%s\" [%s.ko]\n",
--			      s->name, mod->name);
--			break;
-+			/* this symbol will only be in the extended info */
-+			continue;
- 		}
- 		buf_printf(b, "\t{ %#8x, \"%s\" },\n",
- 			   s->crc, s->name);
- 	}
- 
- 	buf_printf(b, "};\n");
-+
-+	buf_printf(b, "static const s32 ____version_ext_crcs[]\n");
-+	buf_printf(b, "__used __section(\"__version_ext_crcs\") = {\n");
-+	list_for_each_entry(s, &mod->unresolved_symbols, list) {
-+		if (!s->module)
-+			continue;
-+		if (!s->crc_valid) {
-+			// We already warned on this when producing the legacy
-+			// modversions table.
-+			continue;
-+		}
-+		buf_printf(b, "\t%#8x,\n", s->crc);
-+	}
-+	buf_printf(b, "};\n");
-+
-+	buf_printf(b, "static const char ____version_ext_names[]\n");
-+	buf_printf(b, "__used __section(\"__version_ext_names\") =\n");
-+	list_for_each_entry(s, &mod->unresolved_symbols, list) {
-+		if (!s->module)
-+			continue;
-+		if (!s->crc_valid) {
-+			// We already warned on this when producing the legacy
-+			// modversions table.
-+			continue;
-+		}
-+		buf_printf(b, "\t\"%s\\0\"\n", s->name);
-+	}
-+	buf_printf(b, ";\n");
- }
- 
- static void add_depends(struct buffer *b, struct module *mod)
--- 
-2.43.0.rc0.421.g78406f8d94-goog
-
+[Wed Nov 15 14:01:06 2023] i2c_dev: i2c /dev entries driver
+[Wed Nov 15 14:01:07 2023] ------------[ cut here ]------------
+[Wed Nov 15 14:01:07 2023] memcpy: detected field-spanning write (size 32) of 
+single field "&item->msg" at arch/powerpc/platforms/powernv/opal-prd.c:355 
+(size 4)
+[Wed Nov 15 14:01:07 2023] WARNING: CPU: 5 PID: 379 at 
+arch/powerpc/platforms/powernv/opal-prd.c:355 0xc008000000640b1c
+[Wed Nov 15 14:01:07 2023] Modules linked in: i2c_dev loop vhost_net vhost 
+vhost_iotlb tap kvm_hv kvm bridge rpcsec_gss_krb5 auth_rpcgss tun nfsv4 
+dns_resolver nfs lockd grace sunrpc fscache netfs cfg80211 rfkill 8021q garp 
+mrp stp llc nft_masq nft_chain_nat nft_reject_inet nf_reject_ipv4 
+nf_reject_ipv6 nft_reject nft_ct binfmt_misc nbd wireguard 
+libcurve25519_generic ip6_udp_tunnel udp_tunnel nft_nat nf_tables nfnetlink 
+nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 at24 ast i2c_algo_bit 
+drm_shmem_helper joydev ftdi_sio crct10dif_vpmsum onboard_usb_hub ofpart 
+drm_kms_helper ipmi_powernv rtc_opal ipmi_devintf powernv_flash 
+ipmi_msghandler mtd opal_prd i2c_opal vmx_crypto nvme crc32c_vpmsum tg3 
+nvme_core ixgbe nvme_common mdio
+[Wed Nov 15 14:01:07 2023] CPU: 5 PID: 379 Comm: kopald Not tainted 
+6.5.9-gentoo-dist #1
+[Wed Nov 15 14:01:07 2023] Hardware name: T2P9S01 REV 1.01 POWER9 0x4e1203 
+opal:skiboot-9858186 PowerNV
+[Wed Nov 15 14:01:07 2023] NIP:  c008000000640b1c LR: c008000000640b18 CTR: 
+0000000000000000
+[Wed Nov 15 14:01:07 2023] REGS: c00000000e2339b0 TRAP: 0700   Not tainted  
+(6.5.9-gentoo-dist)
+[Wed Nov 15 14:01:07 2023] MSR:  9000000000021033 <SF,HV,ME,IR,DR,RI,LE>  CR: 
+44002222  XER: 00000000
+[Wed Nov 15 14:01:07 2023] CFAR: c000000000152b10 IRQMASK: 1
+                            GPR00: c008000000640b18 c00000000e233c50 
+c008000000668100 0000000000000086
+                            GPR04: 00000000ffff7fff c00000000e233a10 
+c00000000e233a08 0000001ef74d0000
+                            GPR08: 0000000000000027 c000001ef9626d10 
+0000000000000001 0000000044002222
+                            GPR12: 20646c6569662065 c000001fff7fb400 
+c0000000001900e8 c00000000e919540
+                            GPR16: 0000000000000000 0000000000000000 
+0000000000000000 0000000000000000
+                            GPR20: 0000000000000000 0000000000000000 
+0000000000000000 0000000000000000
+                            GPR24: c00000000e959de0 0000000000000006 
+0000000000000000 c008000000660290
+                            GPR28: c000000007498410 0000000000000020 
+c00000000e959de8 c000000007498400
+[Wed Nov 15 14:01:07 2023] NIP [c008000000640b1c] 0xc008000000640b1c
+[Wed Nov 15 14:01:07 2023] LR [c008000000640b18] 0xc008000000640b18
+[Wed Nov 15 14:01:07 2023] Call Trace:
+[Wed Nov 15 14:01:07 2023] [c00000000e233c50] [c008000000640b18] 
+0xc008000000640b18 (unreliable)
+[Wed Nov 15 14:01:07 2023] [c00000000e233cd0] [c000000000192dd0] 
+notifier_call_chain+0xc0/0x1b0
+[Wed Nov 15 14:01:07 2023] [c00000000e233d30] [c000000000192eec] 
+atomic_notifier_call_chain+0x2c/0x40
+[Wed Nov 15 14:01:07 2023] [c00000000e233d50] [c0000000000cec44] 
+opal_message_notify+0xf4/0x2a0
+[Wed Nov 15 14:01:07 2023] [c00000000e233de0] [c000000000206d58] 
+__handle_irq_event_percpu+0x78/0x240
+[Wed Nov 15 14:01:07 2023] [c00000000e233e70] [c000000000207034] 
+handle_irq_event+0x74/0x140
+[Wed Nov 15 14:01:07 2023] [c00000000e233ea0] [c00000000020e9bc] 
+handle_level_irq+0xdc/0x270
+[Wed Nov 15 14:01:07 2023] [c00000000e233ed0] [c000000000204fb8] 
+generic_handle_domain_irq+0x48/0x70
+[Wed Nov 15 14:01:07 2023] [c00000000e233ef0] [c0000000000d6f38] 
+opal_handle_events+0xb8/0x140
+[Wed Nov 15 14:01:07 2023] [c00000000e233f50] [c0000000000ce514] 
+kopald+0x84/0x110
+[Wed Nov 15 14:01:07 2023] [c00000000e233f90] [c000000000190218] 
+kthread+0x138/0x140
+[Wed Nov 15 14:01:07 2023] [c00000000e233fe0] [c00000000000ded8] 
+start_kernel_thread+0x14/0x18
+[Wed Nov 15 14:01:07 2023] Code: 2c0a0000 4082ff48 3ca20000 e8a58050 3c620000 
+e8638058 39400001 38c00004 7fa4eb78 99490000 480004c5 e8410018 <0fe00000> 
+4bffff18 3860fff4 4bffff8c
+[Wed Nov 15 14:01:07 2023] ---[ end trace 0000000000000000 ]---
