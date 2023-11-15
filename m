@@ -2,81 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3A867EBEDB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 09:52:21 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=k+aCBsOc;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id B856B7EBF36
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 10:13:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SVcNz41vDz3cV2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 19:52:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SVcsf5B8Nz3d8B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 20:13:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=k+aCBsOc;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2a00:1450:4864:20::130; helo=mail-lf1-x130.google.com; envelope-from=tfiga@chromium.org; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=96pf=g4=xs4all.nl=hverkuil@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SVcN61KdJz3bbW
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Nov 2023 19:51:32 +1100 (AEDT)
-Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-507975d34e8so9355519e87.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Nov 2023 00:51:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1700038280; x=1700643080; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ScG462Pjz3S9RYPZZUWzsM/PrLDXDWNPoYbAht/FuJE=;
-        b=k+aCBsOcj1Kb4jgyTRx6OfXbZaBdRDN/r818WbdExHID0WP6smIOnooAmI7Y0wXqLe
-         50V5OHiz2KCsgJLVKQfuL3rL9ccuB5aE2jh48TPnRQLt+rYKlxwZ0JLcu0Ju2+E7unxM
-         gah09TKkmNPi/ZrL0HtYGLvXez7PUz7vwO5kE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700038280; x=1700643080;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ScG462Pjz3S9RYPZZUWzsM/PrLDXDWNPoYbAht/FuJE=;
-        b=EWiJSA9fyVzQGxhJta0MNEMqNqMC3dr5ep5esbXeNiAD4H8ZYP1xOlsTaeclOUwji2
-         9rSGlRVWUMdpremUSp6RU+GvjbPM0W7dSrsFMKuj0pOJlcrICUc4NBqAnSWEbdnBZ3xA
-         cvOziLyvxl3A9fs1vgeXETrdCud35MUQJ5yGtgVPNKAtjnqANPYxOqkri/XwUgbB0Yb6
-         2L6rJcdafEhKUbRMhTk7cIW7V2XPwHj2vlTaNOwpm8fUW1/pHifa2QHQR4LlqUk4OxhJ
-         0kl+Com+T3IFKNs+EWTFMRNCQn7k6W9EV6hi/3/gfIRr4MqrQdPjXTEEyumGxWow0DcG
-         gT7g==
-X-Gm-Message-State: AOJu0YzNERkAab8p7DzLFiUheWlUO3xV7d6y3pHVgUcVhKaUfxkEI3g0
-	JVdEVi1+iNFSqh0d96zSFQ0ktqtCN1TySvaaOEyYzau2
-X-Google-Smtp-Source: AGHT+IG3TpHYdUIgDsbz7VzhYRgnUg6EtPiu8feJAse2wWc6ucx2kEl4HLmNSbgckTdNG9LbcGlAJw==
-X-Received: by 2002:ac2:464f:0:b0:509:4d7a:ab05 with SMTP id s15-20020ac2464f000000b005094d7aab05mr8313246lfo.11.1700038280300;
-        Wed, 15 Nov 2023 00:51:20 -0800 (PST)
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com. [209.85.208.173])
-        by smtp.gmail.com with ESMTPSA id m22-20020a0565120a9600b0050a3e7e718dsm1583154lfu.189.2023.11.15.00.51.20
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Nov 2023 00:51:20 -0800 (PST)
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2c85a5776a0so5866321fa.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Nov 2023 00:51:20 -0800 (PST)
-X-Received: by 2002:a5d:45cb:0:b0:31f:f9a9:a742 with SMTP id
- b11-20020a5d45cb000000b0031ff9a9a742mr7969100wrs.23.1700037927479; Wed, 15
- Nov 2023 00:45:27 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SVcs76hKvz2xm3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Nov 2023 20:13:15 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id E0756614FD;
+	Wed, 15 Nov 2023 09:13:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D517DC433C8;
+	Wed, 15 Nov 2023 09:13:07 +0000 (UTC)
+Message-ID: <22df79da-eece-4b9a-b452-b36cba2b4711@xs4all.nl>
+Date: Wed, 15 Nov 2023 10:13:05 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 10/15] media: uapi: Add V4L2_CTRL_TYPE_FIXED_POINT
+Content-Language: en-US, nl
+To: Tomasz Figa <tfiga@chromium.org>
 References: <1699595289-25773-1-git-send-email-shengjiu.wang@nxp.com>
  <1699595289-25773-11-git-send-email-shengjiu.wang@nxp.com>
- <4cd6b593-2376-4cbc-a7c8-d3eb36a2f7a0@xs4all.nl> <20231113104238.GA13981@pendragon.ideasonboard.com>
- <6a3e7eb9-505c-4cfb-8a86-a8947a2e44d5@xs4all.nl> <20231113110754.GB24338@pendragon.ideasonboard.com>
- <3e898664-cbfc-4892-9765-37b66891643b@xs4all.nl> <ZVIIc-fi32ZxIi-p@valkosipuli.retiisi.eu>
- <20231113114357.GD24338@pendragon.ideasonboard.com> <da6efe14-c00d-4bf4-bf61-dd4ed39c5c60@xs4all.nl>
- <20231113124412.GA18974@pendragon.ideasonboard.com> <b35601f7-8bb2-4317-a8f7-6fbf81572943@xs4all.nl>
-In-Reply-To: <b35601f7-8bb2-4317-a8f7-6fbf81572943@xs4all.nl>
-From: Tomasz Figa <tfiga@chromium.org>
-Date: Wed, 15 Nov 2023 17:45:07 +0900
-X-Gmail-Original-Message-ID: <CAAFQd5CjnvDh1t9N+xbnQD4HuJoYwA0gtKUQPCy-6EF=Oy-rGA@mail.gmail.com>
-Message-ID: <CAAFQd5CjnvDh1t9N+xbnQD4HuJoYwA0gtKUQPCy-6EF=Oy-rGA@mail.gmail.com>
-Subject: Re: [PATCH v9 10/15] media: uapi: Add V4L2_CTRL_TYPE_FIXED_POINT
-To: Hans Verkuil <hverkuil@xs4all.nl>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <4cd6b593-2376-4cbc-a7c8-d3eb36a2f7a0@xs4all.nl>
+ <20231113104238.GA13981@pendragon.ideasonboard.com>
+ <6a3e7eb9-505c-4cfb-8a86-a8947a2e44d5@xs4all.nl>
+ <20231113110754.GB24338@pendragon.ideasonboard.com>
+ <3e898664-cbfc-4892-9765-37b66891643b@xs4all.nl>
+ <ZVIIc-fi32ZxIi-p@valkosipuli.retiisi.eu>
+ <20231113114357.GD24338@pendragon.ideasonboard.com>
+ <da6efe14-c00d-4bf4-bf61-dd4ed39c5c60@xs4all.nl>
+ <20231113124412.GA18974@pendragon.ideasonboard.com>
+ <b35601f7-8bb2-4317-a8f7-6fbf81572943@xs4all.nl>
+ <CAAFQd5CjnvDh1t9N+xbnQD4HuJoYwA0gtKUQPCy-6EF=Oy-rGA@mail.gmail.com>
+From: Hans Verkuil <hverkuil@xs4all.nl>
+Autocrypt: addr=hverkuil@xs4all.nl; keydata=
+ xsFNBFQ84W0BEAC7EF1iL4s3tY8cRTVkJT/297h0Hz0ypA+ByVM4CdU9sN6ua/YoFlr9k0K4
+ BFUlg7JzJoUuRbKxkYb8mmqOe722j7N3HO8+ofnio5cAP5W0WwDpM0kM84BeHU0aPSTsWiGR
+ yw55SOK2JBSq7hueotWLfJLobMWhQii0Zd83hGT9SIt9uHaHjgwmtTH7MSTIiaY6N14nw2Ud
+ C6Uykc1va0Wqqc2ov5ihgk/2k2SKa02ookQI3e79laOrbZl5BOXNKR9LguuOZdX4XYR3Zi6/
+ BsJ7pVCK9xkiVf8svlEl94IHb+sa1KrlgGv3fn5xgzDw8Z222TfFceDL/2EzUyTdWc4GaPMC
+ E/c1B4UOle6ZHg02+I8tZicjzj5+yffv1lB5A1btG+AmoZrgf0X2O1B96fqgHx8w9PIpVERN
+ YsmkfxvhfP3MO3oHh8UY1OLKdlKamMneCLk2up1Zlli347KMjHAVjBAiy8qOguKF9k7HOjif
+ JCLYTkggrRiEiE1xg4tblBNj8WGyKH+u/hwwwBqCd/Px2HvhAsJQ7DwuuB3vBAp845BJYUU3
+ 06kRihFqbO0vEt4QmcQDcbWINeZ2zX5TK7QQ91ldHdqJn6MhXulPKcM8tCkdD8YNXXKyKqNl
+ UVqXnarz8m2JCbHgjEkUlAJCNd6m3pfESLZwSWsLYL49R5yxIwARAQABzSFIYW5zIFZlcmt1
+ aWwgPGh2ZXJrdWlsQHhzNGFsbC5ubD7CwZUEEwECACgFAlQ84W0CGwMFCRLMAwAGCwkIBwMC
+ BhUIAgkKCwQWAgMBAh4BAheAACEJEL0tYUhmFDtMFiEEBSzee8IVBTtonxvKvS1hSGYUO0wT
+ 7w//frEmPBAwu3OdvAk9VDkH7X+7RcFpiuUcJxs3Xl6jpaA+SdwtZra6W1uMrs2RW8eXXiq/
+ 80HXJtYnal1Y8MKUBoUVhT/+5+KcMyfVQK3VFRHnNxCmC9HZV+qdyxAGwIscUd4hSlweuU6L
+ 6tI7Dls6NzKRSTFbbGNZCRgl8OrF01TBH+CZrcFIoDgpcJA5Pw84mxo+wd2BZjPA4TNyq1od
+ +slSRbDqFug1EqQaMVtUOdgaUgdlmjV0+GfBHoyCGedDE0knv+tRb8v5gNgv7M3hJO3Nrl+O
+ OJVoiW0G6OWVyq92NNCKJeDy8XCB1yHCKpBd4evO2bkJNV9xcgHtLrVqozqxZAiCRKN1elWF
+ 1fyG8KNquqItYedUr+wZZacqW+uzpVr9pZmUqpVCk9s92fzTzDZcGAxnyqkaO2QTgdhPJT2m
+ wpG2UwIKzzi13tmwakY7OAbXm76bGWVZCO3QTHVnNV8ku9wgeMc/ZGSLUT8hMDZlwEsW7u/D
+ qt+NlTKiOIQsSW7u7h3SFm7sMQo03X/taK9PJhS2BhhgnXg8mOa6U+yNaJy+eU0Lf5hEUiDC
+ vDOI5x++LD3pdrJVr/6ZB0Qg3/YzZ0dk+phQ+KlP6HyeO4LG662toMbFbeLcBjcC/ceEclII
+ 90QNEFSZKM6NVloM+NaZRYVO3ApxWkFu+1mrVTXOwU0EVDzhbQEQANzLiI6gHkIhBQKeQaYs
+ p2SSqF9c++9LOy5x6nbQ4s0X3oTKaMGfBZuiKkkU6NnHCSa0Az5ScRWLaRGu1PzjgcVwzl5O
+ sDawR1BtOG/XoPRNB2351PRp++W8TWo2viYYY0uJHKFHML+ku9q0P+NkdTzFGJLP+hn7x0RT
+ DMbhKTHO3H2xJz5TXNE9zTJuIfGAz3ShDpijvzYieY330BzZYfpgvCllDVM5E4XgfF4F/N90
+ wWKu50fMA01ufwu+99GEwTFVG2az5T9SXd7vfSgRSkzXy7hcnxj4IhOfM6Ts85/BjMeIpeqy
+ TDdsuetBgX9DMMWxMWl7BLeiMzMGrfkJ4tvlof0sVjurXibTibZyfyGR2ricg8iTbHyFaAzX
+ 2uFVoZaPxrp7udDfQ96sfz0hesF9Zi8d7NnNnMYbUmUtaS083L/l2EDKvCIkhSjd48XF+aO8
+ VhrCfbXWpGRaLcY/gxi2TXRYG9xCa7PINgz9SyO34sL6TeFPSZn4bPQV5O1j85Dj4jBecB1k
+ z2arzwlWWKMZUbR04HTeAuuvYvCKEMnfW3ABzdonh70QdqJbpQGfAF2p4/iCETKWuqefiOYn
+ pR8PqoQA1DYv3t7y9DIN5Jw/8Oj5wOeEybw6vTMB0rrnx+JaXvxeHSlFzHiD6il/ChDDkJ9J
+ /ejCHUQIl40wLSDRABEBAAHCwXwEGAECAA8FAlQ84W0CGwwFCRLMAwAAIQkQvS1hSGYUO0wW
+ IQQFLN57whUFO2ifG8q9LWFIZhQ7TA1WD/9yxJvQrpf6LcNrr8uMlQWCg2iz2q1LGt1Itkuu
+ KaavEF9nqHmoqhSfZeAIKAPn6xuYbGxXDrpN7dXCOH92fscLodZqZtK5FtbLvO572EPfxneY
+ UT7JzDc/5LT9cFFugTMOhq1BG62vUm/F6V91+unyp4dRlyryAeqEuISykhvjZCVHk/woaMZv
+ c1Dm4Uvkv0Ilelt3Pb9J7zhcx6sm5T7v16VceF96jG61bnJ2GFS+QZerZp3PY27XgtPxRxYj
+ AmFUeF486PHx/2Yi4u1rQpIpC5inPxIgR1+ZFvQrAV36SvLFfuMhyCAxV6WBlQc85ArOiQZB
+ Wm7L0repwr7zEJFEkdy8C81WRhMdPvHkAIh3RoY1SGcdB7rB3wCzfYkAuCBqaF7Zgfw8xkad
+ KEiQTexRbM1sc/I8ACpla3N26SfQwrfg6V7TIoweP0RwDrcf5PVvwSWsRQp2LxFCkwnCXOra
+ gYmkrmv0duG1FStpY+IIQn1TOkuXrciTVfZY1cZD0aVxwlxXBnUNZZNslldvXFtndxR0SFat
+ sflovhDxKyhFwXOP0Rv8H378/+14TaykknRBIKEc0+lcr+EMOSUR5eg4aURb8Gc3Uc7fgQ6q
+ UssTXzHPyj1hAyDpfu8DzAwlh4kKFTodxSsKAjI45SLjadSc94/5Gy8645Y1KgBzBPTH7Q==
+In-Reply-To: <CAAFQd5CjnvDh1t9N+xbnQD4HuJoYwA0gtKUQPCy-6EF=Oy-rGA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,233 +103,196 @@ Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, Xiubo.Lee@gmail.
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 15, 2023 at 5:09=E2=80=AFPM Hans Verkuil <hverkuil@xs4all.nl> w=
-rote:
->
-> Hi Laurent,
->
-> On 13/11/2023 13:44, Laurent Pinchart wrote:
-> > Hi Hans,
-> >
-> > On Mon, Nov 13, 2023 at 01:05:12PM +0100, Hans Verkuil wrote:
-> >> On 13/11/2023 12:43, Laurent Pinchart wrote:
-> >>> On Mon, Nov 13, 2023 at 11:28:51AM +0000, Sakari Ailus wrote:
-> >>>> On Mon, Nov 13, 2023 at 12:24:14PM +0100, Hans Verkuil wrote:
-> >>>>> On 13/11/2023 12:07, Laurent Pinchart wrote:
-> >>>>>> On Mon, Nov 13, 2023 at 11:56:49AM +0100, Hans Verkuil wrote:
-> >>>>>>> On 13/11/2023 11:42, Laurent Pinchart wrote:
-> >>>>>>>> On Mon, Nov 13, 2023 at 11:29:09AM +0100, Hans Verkuil wrote:
-> >>>>>>>>> On 10/11/2023 06:48, Shengjiu Wang wrote:
-> >>>>>>>>>> Fixed point controls are used by the user to configure
-> >>>>>>>>>> a fixed point value in 64bits, which Q31.32 format.
-> >>>>>>>>>>
-> >>>>>>>>>> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> >>>>>>>>>
-> >>>>>>>>> This patch adds a new control type. This is something that also=
- needs to be
-> >>>>>>>>> tested by v4l2-compliance, and for that we need to add support =
-for this to
-> >>>>>>>>> one of the media test-drivers. The best place for that is the v=
-ivid driver,
-> >>>>>>>>> since that has already a bunch of test controls for other contr=
-ol types.
-> >>>>>>>>>
-> >>>>>>>>> See e.g. VIVID_CID_INTEGER64 in vivid-ctrls.c.
-> >>>>>>>>>
-> >>>>>>>>> Can you add a patch adding a fixed point test control to vivid?
-> >>>>>>>>
-> >>>>>>>> I don't think V4L2_CTRL_TYPE_FIXED_POINT is a good idea. This se=
-ems to
-> >>>>>>>> relate more to units than control types. We have lots of fixed-p=
-oint
-> >>>>>>>> values in controls already, using the 32-bit and 64-bit integer =
-control
-> >>>>>>>> types. They use various locations for the decimal point, dependi=
-ng on
-> >>>>>>>> the control. If we want to make this more explicit to users, we =
-should
-> >>>>>>>> work on adding unit support to the V4L2 controls.
-> >>>>>>>
-> >>>>>>> "Fixed Point" is not a unit, it's a type. 'Db', 'Hz' etc. are uni=
-ts.
-> >>>>>>
-> >>>>>> It's not a unit, but I think it's related to units. My point is th=
-at,
-> >>>>>> without units support, I don't see why we need a formal definition=
- of
-> >>>>>> fixed-point types, and why this series couldn't just use
-> >>>>>> VIVID_CID_INTEGER64. Drivers already interpret VIVID_CID_INTEGER64
-> >>>>>> values as they see fit.
-> >>>>>
-> >>>>> They do? That's new to me. A quick grep for V4L2_CTRL_TYPE_INTEGER6=
-4
-> >>>>> (I assume you meant that rather than VIVID_CID_INTEGER64) shows tha=
-t it
-> >>>
-> >>> Yes, I meant V4L2_CTRL_TYPE_INTEGER64. Too hasty copy & paste :-)
-> >>>
-> >>>>> is always interpreted as a 64 bit integer and nothing else. As it s=
-hould.
-> >>>
-> >>> The most common case for control handling in drivers is taking the
-> >>> integer value and converting it to a register value, using
-> >>> device-specific encoding of the register value. It can be a fixed-poi=
-nt
-> >>> format or something else, depending on the device. My point is that
-> >>> drivers routinely convert a "plain" integer to something else, and th=
-at
-> >>> has never been considered as a cause of concern. I don't see why it
-> >>> would be different in this series.
-> >>>
-> >>>>> And while we do not have support for units (other than the document=
-ation),
-> >>>>> we do have type support in the form of V4L2_CTRL_TYPE_*.
-> >>>>>
-> >>>>>>> A quick "git grep -i "fixed point" Documentation/userspace-api/me=
-dia/'
-> >>>>>>> only shows a single driver specific control (dw100.rst).
-> >>>>>>>
-> >>>>>>> I'm not aware of other controls in mainline that use fixed point.
-> >>>>>>
-> >>>>>> The analog gain control for sensors for instance.
-> >>>>>
-> >>>>> Not really. The documentation is super vague:
-> >>>>>
-> >>>>> V4L2_CID_ANALOGUE_GAIN (integer)
-> >>>>>
-> >>>>>   Analogue gain is gain affecting all colour components in the pixe=
-l matrix. The
-> >>>>>   gain operation is performed in the analogue domain before A/D con=
-version.
-> >>>>>
-> >>>>> And the integer is just a range. Internally it might map to some fi=
-xed
-> >>>>> point value, but userspace won't see that, it's hidden in the drive=
-r AFAICT.
-> >>>
-> >>> It's hidden so well that libcamera has a database of the sensor it
-> >>> supports, with formulas to map a real gain value to the
-> >>> V4L2_CID_ANALOGUE_GAIN control. The encoding of the integer value doe=
-s
-> >>> matter, and the kernel doesn't expose it. We may or may not consider
-> >>> that as a shortcoming of the V4L2 control API, but in any case it's t=
-he
-> >>> situation we have today.
-> >>>
-> >>>> I wonder if Laurent meant digital gain.
-> >>>
-> >>> No, I meant analog. It applies to digital gain too though.
-> >>>
-> >>>> Those are often Q numbers. The practice there has been that the defa=
-ult
-> >>>> value yields gain of 1.
-> >>>>
-> >>>> There are probably many other examples in controls where something b=
-eing
-> >>>> controlled isn't actually an integer while integer controls are stil=
-l being
-> >>>> used for the purpose.
-> >>>
-> >>> A good summary of my opinion :-)
-> >>
-> >> And that works fine as long as userspace doesn't need to know what the=
- value
-> >> actually means.
-> >>
-> >> That's not the case here. The control is really a fractional Hz value:
-> >>
-> >> +``V4L2_CID_M2M_AUDIO_SOURCE_RATE_OFFSET (fixed point)``
-> >> +    Sets the offset from the audio source sample rate, unit is Hz.
-> >> +    The offset compensates for any clock drift. The actual source aud=
-io sample
-> >> +    rate is the ideal source audio sample rate from
-> >> +    ``V4L2_CID_M2M_AUDIO_SOURCE_RATE`` plus this fixed point offset.
-> >
-> > I don't see why this would require a new type, you can use
-> > V4L2_CTRL_TYPE_INTEGER64, and document the control as containing
-> > fixed-point values in Q31.32 format.
->
-> Why would you want to do this? I can store a double in a long long int,
-> and just document that the variable is really a double, but why would you=
-?
->
-> The cost of adding a FIXED_POINT type is minimal, and having this type
-> makes it easy to work with fixed point controls (think about proper repor=
-ting
-> and setting of the value in v4l2-ctl and user applications in general tha=
-t
-> deal with controls).
+On 15/11/2023 09:45, Tomasz Figa wrote:
+> On Wed, Nov 15, 2023 at 5:09 PM Hans Verkuil <hverkuil@xs4all.nl> wrote:
+>>
+>> Hi Laurent,
+>>
+>> On 13/11/2023 13:44, Laurent Pinchart wrote:
+>>> Hi Hans,
+>>>
+>>> On Mon, Nov 13, 2023 at 01:05:12PM +0100, Hans Verkuil wrote:
+>>>> On 13/11/2023 12:43, Laurent Pinchart wrote:
+>>>>> On Mon, Nov 13, 2023 at 11:28:51AM +0000, Sakari Ailus wrote:
+>>>>>> On Mon, Nov 13, 2023 at 12:24:14PM +0100, Hans Verkuil wrote:
+>>>>>>> On 13/11/2023 12:07, Laurent Pinchart wrote:
+>>>>>>>> On Mon, Nov 13, 2023 at 11:56:49AM +0100, Hans Verkuil wrote:
+>>>>>>>>> On 13/11/2023 11:42, Laurent Pinchart wrote:
+>>>>>>>>>> On Mon, Nov 13, 2023 at 11:29:09AM +0100, Hans Verkuil wrote:
+>>>>>>>>>>> On 10/11/2023 06:48, Shengjiu Wang wrote:
+>>>>>>>>>>>> Fixed point controls are used by the user to configure
+>>>>>>>>>>>> a fixed point value in 64bits, which Q31.32 format.
+>>>>>>>>>>>>
+>>>>>>>>>>>> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+>>>>>>>>>>>
+>>>>>>>>>>> This patch adds a new control type. This is something that also needs to be
+>>>>>>>>>>> tested by v4l2-compliance, and for that we need to add support for this to
+>>>>>>>>>>> one of the media test-drivers. The best place for that is the vivid driver,
+>>>>>>>>>>> since that has already a bunch of test controls for other control types.
+>>>>>>>>>>>
+>>>>>>>>>>> See e.g. VIVID_CID_INTEGER64 in vivid-ctrls.c.
+>>>>>>>>>>>
+>>>>>>>>>>> Can you add a patch adding a fixed point test control to vivid?
+>>>>>>>>>>
+>>>>>>>>>> I don't think V4L2_CTRL_TYPE_FIXED_POINT is a good idea. This seems to
+>>>>>>>>>> relate more to units than control types. We have lots of fixed-point
+>>>>>>>>>> values in controls already, using the 32-bit and 64-bit integer control
+>>>>>>>>>> types. They use various locations for the decimal point, depending on
+>>>>>>>>>> the control. If we want to make this more explicit to users, we should
+>>>>>>>>>> work on adding unit support to the V4L2 controls.
+>>>>>>>>>
+>>>>>>>>> "Fixed Point" is not a unit, it's a type. 'Db', 'Hz' etc. are units.
+>>>>>>>>
+>>>>>>>> It's not a unit, but I think it's related to units. My point is that,
+>>>>>>>> without units support, I don't see why we need a formal definition of
+>>>>>>>> fixed-point types, and why this series couldn't just use
+>>>>>>>> VIVID_CID_INTEGER64. Drivers already interpret VIVID_CID_INTEGER64
+>>>>>>>> values as they see fit.
+>>>>>>>
+>>>>>>> They do? That's new to me. A quick grep for V4L2_CTRL_TYPE_INTEGER64
+>>>>>>> (I assume you meant that rather than VIVID_CID_INTEGER64) shows that it
+>>>>>
+>>>>> Yes, I meant V4L2_CTRL_TYPE_INTEGER64. Too hasty copy & paste :-)
+>>>>>
+>>>>>>> is always interpreted as a 64 bit integer and nothing else. As it should.
+>>>>>
+>>>>> The most common case for control handling in drivers is taking the
+>>>>> integer value and converting it to a register value, using
+>>>>> device-specific encoding of the register value. It can be a fixed-point
+>>>>> format or something else, depending on the device. My point is that
+>>>>> drivers routinely convert a "plain" integer to something else, and that
+>>>>> has never been considered as a cause of concern. I don't see why it
+>>>>> would be different in this series.
+>>>>>
+>>>>>>> And while we do not have support for units (other than the documentation),
+>>>>>>> we do have type support in the form of V4L2_CTRL_TYPE_*.
+>>>>>>>
+>>>>>>>>> A quick "git grep -i "fixed point" Documentation/userspace-api/media/'
+>>>>>>>>> only shows a single driver specific control (dw100.rst).
+>>>>>>>>>
+>>>>>>>>> I'm not aware of other controls in mainline that use fixed point.
+>>>>>>>>
+>>>>>>>> The analog gain control for sensors for instance.
+>>>>>>>
+>>>>>>> Not really. The documentation is super vague:
+>>>>>>>
+>>>>>>> V4L2_CID_ANALOGUE_GAIN (integer)
+>>>>>>>
+>>>>>>>   Analogue gain is gain affecting all colour components in the pixel matrix. The
+>>>>>>>   gain operation is performed in the analogue domain before A/D conversion.
+>>>>>>>
+>>>>>>> And the integer is just a range. Internally it might map to some fixed
+>>>>>>> point value, but userspace won't see that, it's hidden in the driver AFAICT.
+>>>>>
+>>>>> It's hidden so well that libcamera has a database of the sensor it
+>>>>> supports, with formulas to map a real gain value to the
+>>>>> V4L2_CID_ANALOGUE_GAIN control. The encoding of the integer value does
+>>>>> matter, and the kernel doesn't expose it. We may or may not consider
+>>>>> that as a shortcoming of the V4L2 control API, but in any case it's the
+>>>>> situation we have today.
+>>>>>
+>>>>>> I wonder if Laurent meant digital gain.
+>>>>>
+>>>>> No, I meant analog. It applies to digital gain too though.
+>>>>>
+>>>>>> Those are often Q numbers. The practice there has been that the default
+>>>>>> value yields gain of 1.
+>>>>>>
+>>>>>> There are probably many other examples in controls where something being
+>>>>>> controlled isn't actually an integer while integer controls are still being
+>>>>>> used for the purpose.
+>>>>>
+>>>>> A good summary of my opinion :-)
+>>>>
+>>>> And that works fine as long as userspace doesn't need to know what the value
+>>>> actually means.
+>>>>
+>>>> That's not the case here. The control is really a fractional Hz value:
+>>>>
+>>>> +``V4L2_CID_M2M_AUDIO_SOURCE_RATE_OFFSET (fixed point)``
+>>>> +    Sets the offset from the audio source sample rate, unit is Hz.
+>>>> +    The offset compensates for any clock drift. The actual source audio sample
+>>>> +    rate is the ideal source audio sample rate from
+>>>> +    ``V4L2_CID_M2M_AUDIO_SOURCE_RATE`` plus this fixed point offset.
+>>>
+>>> I don't see why this would require a new type, you can use
+>>> V4L2_CTRL_TYPE_INTEGER64, and document the control as containing
+>>> fixed-point values in Q31.32 format.
+>>
+>> Why would you want to do this? I can store a double in a long long int,
+>> and just document that the variable is really a double, but why would you?
+>>
+>> The cost of adding a FIXED_POINT type is minimal, and having this type
+>> makes it easy to work with fixed point controls (think about proper reporting
+>> and setting of the value in v4l2-ctl and user applications in general that
+>> deal with controls).
+> 
+> I can see one potential drawback of adding a new type - userspace
+> would have to be made aware of it, although arguably with brand new
+> controls, userspace would have to be aware of them anyway. Not sure if
+> we have some kind of userspace that can handle any controls purely
+> based on their type - if yes, they would not be able to handle the new
+> controls.
 
-I can see one potential drawback of adding a new type - userspace
-would have to be made aware of it, although arguably with brand new
-controls, userspace would have to be aware of them anyway. Not sure if
-we have some kind of userspace that can handle any controls purely
-based on their type - if yes, they would not be able to handle the new
-controls.
+The generic userspace apps are all in v4l-utils (v4l2-ctl/compliance, qv4l2),
+so that is not a problem. We add new types all the time, this is nothing
+new.
 
->
-> If this would add a thousand lines of complex code, then this would be a
-> consideration, but this is just a few lines.
->
-> Just to give an example, if you use 'v4l2-ctl -l' to list a int64 control
-> and it reports the value 13958643712, would you be able to see that that =
-is
-> really 3.25 in fixed point format? With the right type it would be printe=
-d
-> like that. Much easier to work work.
->
-> Regards,
->
->         Hans
->
-> >
-> >>>> Instead of this patch, I'd prefer to have a way to express the meani=
-ng of
-> >>>> the control value, be it a Q number or something else, and do that
-> >>>> independently of the type of the control.
-> >>
-> >> Huh? How is that different from the type of the control? You have inte=
-gers
-> >> (one type) and fixed point (another type).
-> >>
-> >> Or do you want a more general V4L2_CTRL_TYPE_ that specifies the N.M v=
-alues
-> >> explicitly?
-> >>
-> >> I think the main reason why we use integer controls for gain is that w=
-e
-> >> never had a fixed point control type and you could get away with that =
-in
-> >> user space for that particular use-case.
-> >>
-> >> Based on the V4L2_CID_NOTIFY_GAINS documentation the gain value can ty=
-pically
-> >> be calculated as (value / default_value),
-> >
-> > Typically, but not always. Some sensor have an exponential gain model,
-> > and some have weird gain representation, such as 1/x. That's getting ou=
-t
-> > of scope though.
-> >
-> >> but that won't work for a rate offset
-> >> control as above, or for e.g. CSC matrices for color converters.
-> >>
-> >>> Agreed.
-> >>>
-> >>>>> In the case of this particular series the control type is really a =
-fixed point
-> >>>>> value with a documented unit (Hz). It really is not something you w=
-ant to
-> >>>>> use type INTEGER64 for.
-> >>>>>
-> >>>>>>> Note that V4L2_CTRL_TYPE_FIXED_POINT is a Q31.32 format. By setti=
-ng
-> >>>>>>> min/max/step you can easily map that to just about any QN.M forma=
-t where
-> >>>>>>> N <=3D 31 and M <=3D 32.
-> >>>>>>>
-> >>>>>>> In the case of dw100 it is a bit different in that it is quite sp=
-ecialized
-> >>>>>>> and it had to fit in 16 bits.
-> >
->
+Regards,
+
+	Hans
+
+> 
+>>
+>> If this would add a thousand lines of complex code, then this would be a
+>> consideration, but this is just a few lines.
+>>
+>> Just to give an example, if you use 'v4l2-ctl -l' to list a int64 control
+>> and it reports the value 13958643712, would you be able to see that that is
+>> really 3.25 in fixed point format? With the right type it would be printed
+>> like that. Much easier to work work.
+>>
+>> Regards,
+>>
+>>         Hans
+>>
+>>>
+>>>>>> Instead of this patch, I'd prefer to have a way to express the meaning of
+>>>>>> the control value, be it a Q number or something else, and do that
+>>>>>> independently of the type of the control.
+>>>>
+>>>> Huh? How is that different from the type of the control? You have integers
+>>>> (one type) and fixed point (another type).
+>>>>
+>>>> Or do you want a more general V4L2_CTRL_TYPE_ that specifies the N.M values
+>>>> explicitly?
+>>>>
+>>>> I think the main reason why we use integer controls for gain is that we
+>>>> never had a fixed point control type and you could get away with that in
+>>>> user space for that particular use-case.
+>>>>
+>>>> Based on the V4L2_CID_NOTIFY_GAINS documentation the gain value can typically
+>>>> be calculated as (value / default_value),
+>>>
+>>> Typically, but not always. Some sensor have an exponential gain model,
+>>> and some have weird gain representation, such as 1/x. That's getting out
+>>> of scope though.
+>>>
+>>>> but that won't work for a rate offset
+>>>> control as above, or for e.g. CSC matrices for color converters.
+>>>>
+>>>>> Agreed.
+>>>>>
+>>>>>>> In the case of this particular series the control type is really a fixed point
+>>>>>>> value with a documented unit (Hz). It really is not something you want to
+>>>>>>> use type INTEGER64 for.
+>>>>>>>
+>>>>>>>>> Note that V4L2_CTRL_TYPE_FIXED_POINT is a Q31.32 format. By setting
+>>>>>>>>> min/max/step you can easily map that to just about any QN.M format where
+>>>>>>>>> N <= 31 and M <= 32.
+>>>>>>>>>
+>>>>>>>>> In the case of dw100 it is a bit different in that it is quite specialized
+>>>>>>>>> and it had to fit in 16 bits.
+>>>
+>>
+
