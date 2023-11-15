@@ -1,87 +1,103 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46A497EBF61
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 10:23:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A60127EC0BA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 11:31:49 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JlF0nPZe;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JlF0nPZe;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=vg2jJZyU;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=zXs+J3yX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SVd4W1Cx3z3cTH
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 20:23:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SVfbl3xzgz3c8r
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Nov 2023 21:31:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JlF0nPZe;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JlF0nPZe;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=vg2jJZyU;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=zXs+J3yX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=kraxel@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SVd3b2G8dz303d
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Nov 2023 20:22:17 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1700040134;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jB1CvYOkCkHMxZfFOkHOZeMADsl4bD5nT6AyVfy5BX0=;
-	b=JlF0nPZedbTLXuMnn4x3nVt54tNvbOD2uvv6ga5WxJrT+6jbT7FAG/nIjfkIWV663rnTLV
-	ZWUSrCl2GUOyRRs4weNKdmyKRvEq9I1JuCzJSVOyLrmUTUIIF5LvN1V9IwLTYK8Olrq2Ts
-	FecKbheFjTMG179gPB9JZc6pYu20qYU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1700040134;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jB1CvYOkCkHMxZfFOkHOZeMADsl4bD5nT6AyVfy5BX0=;
-	b=JlF0nPZedbTLXuMnn4x3nVt54tNvbOD2uvv6ga5WxJrT+6jbT7FAG/nIjfkIWV663rnTLV
-	ZWUSrCl2GUOyRRs4weNKdmyKRvEq9I1JuCzJSVOyLrmUTUIIF5LvN1V9IwLTYK8Olrq2Ts
-	FecKbheFjTMG179gPB9JZc6pYu20qYU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-553-t453yyLMMAmonuabQryWOQ-1; Wed, 15 Nov 2023 04:22:08 -0500
-X-MC-Unique: t453yyLMMAmonuabQryWOQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SVfYy2fqLz3cSy
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Nov 2023 21:30:14 +1100 (AEDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 43711185A782;
-	Wed, 15 Nov 2023 09:22:07 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.192.56])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 5FD5B2026D66;
-	Wed, 15 Nov 2023 09:22:06 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
-	id BBF81180AC06; Wed, 15 Nov 2023 10:22:04 +0100 (CET)
-Date: Wed, 15 Nov 2023 10:22:04 +0100
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: Fbdev issue after the drm updates 'drm-next-2023-10-31-1'
-Message-ID: <uxr4sf6kirv32tfbd6qjzxqd53zpoknjfa4ucr4zs5ktkks2re@spgj4j64raaa>
-References: <a1d9e09b-f533-5e2c-7a13-af96647e1a71@embeddedor.com>
- <10D1983F-33EF-46C3-976E-463D1CB5A6E9@xenosoft.de>
- <9bb5fcbd-daf5-1669-b3e7-b8624b3c36f9@xenosoft.de>
- <c47fba21-3ae9-4021-9f4a-09c2670ebdbc@xenosoft.de>
- <0d89bcd0-9b68-4c0a-acd8-2c7532e62f6d@xenosoft.de>
- <6530cea3-4507-454e-bc36-a6970c8e7578@xenosoft.de>
- <CAMuHMdU-8Fu55C2zu_XxmG8n5paOQYfqNA84JNvXo4c87D-kFw@mail.gmail.com>
- <fee4eb69-97ea-4b02-9e36-0962ebe3faa9@xenosoft.de>
- <CAMuHMdWu6Q3ew0m4xugjF_hgSt0RFFr+ccoBrSzt0FGLgtxJtA@mail.gmail.com>
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8DC9C22925;
+	Wed, 15 Nov 2023 10:29:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1700044199; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=y8huvw0CfJdRsg0JQChZJtqrnku7K/UCLM+iY6fW3yQ=;
+	b=vg2jJZyUy091Qi+bvkXXHS1CYkeqhmakWXohbSU4bwQFlHIT8mBSvt7gnkE3/XwDWInLbp
+	Kz11DBuX9NwEmTWMb8rW71aB/bJUiC3ECNrf0ywWe6awwAHjp85/cir4RaJ9DFObVadLD9
+	kcAl0FJp7K3KK8cIYUMFmZk9jYiw8+0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1700044199;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=y8huvw0CfJdRsg0JQChZJtqrnku7K/UCLM+iY6fW3yQ=;
+	b=zXs+J3yXTFq2rdyvOUNMY3UjxkHCuvriAekJ5yS0YV9RGYF0Sk1Og5GYxVZmEiBpR0LNAt
+	Wwt1Y+h7VIH0ToAQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5C41B13592;
+	Wed, 15 Nov 2023 10:29:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id kHuiFaedVGV+UAAAMHmgww
+	(envelope-from <tzimmermann@suse.de>); Wed, 15 Nov 2023 10:29:59 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: deller@gmx.de,
+	javierm@redhat.com
+Subject: [PATCH 18/32] fbdev/ps3fb: Set FBINFO_VIRTFB flag
+Date: Wed, 15 Nov 2023 11:19:23 +0100
+Message-ID: <20231115102954.7102-19-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231115102954.7102-1-tzimmermann@suse.de>
+References: <20231115102954.7102-1-tzimmermann@suse.de>
 MIME-Version: 1.0
-In-Reply-To: <CAMuHMdWu6Q3ew0m4xugjF_hgSt0RFFr+ccoBrSzt0FGLgtxJtA@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Level: 
+X-Spam-Score: -3.10
+X-Spamd-Result: default: False [-3.10 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 BAYES_HAM(-0.00)[17.28%];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 R_MISSING_CHARSET(2.50)[];
+	 REPLY(-4.00)[];
+	 BROKEN_CONTENT_TYPE(1.50)[];
+	 NEURAL_HAM_LONG(-3.00)[-1.000];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 NEURAL_HAM_SHORT(-1.00)[-1.000];
+	 RCPT_COUNT_SEVEN(0.00)[9];
+	 MID_CONTAINS_FROM(1.00)[];
+	 FREEMAIL_TO(0.00)[gmx.de,redhat.com];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,suse.de,ellerman.id.au,gmail.com,csgroup.eu,lists.ozlabs.org];
+	 RCVD_COUNT_TWO(0.00)[2];
+	 RCVD_TLS_ALL(0.00)[]
+X-Spam-Flag: NO
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,66 +109,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>, Thomas Zimmermann <tzimmermann@suse.de>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Michel =?utf-8?Q?D=C3=A4nzer?= <michel@daenzer.net>, virtualization@lists.linux.dev, Maling list - DRI developers <dri-devel@lists.freedesktop.org>, mad skateman <madskateman@gmail.com>, Christian Zigotzky <chzigotzky@xenosoft.de>, airlied@gmail.com, deller@gmx.de, Christian Zigotzky <info@xenosoft.de>
+Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, Nicholas Piggin <npiggin@gmail.com>, Thomas Zimmermann <tzimmermann@suse.de>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 15, 2023 at 09:33:28AM +0100, Geert Uytterhoeven wrote:
-> Hi Christian,
-> 
-> CC virtgpu
-> 
-> On Tue, Nov 14, 2023 at 10:45 AM Christian Zigotzky
-> <chzigotzky@xenosoft.de> wrote:
-> > On 13 November 2023 at 01:48 pm, Geert Uytterhoeven wrote:
-> > > I can confirm there is no graphics output with m68k/virt, and
-> 
-> Before the error message you reported:
-> 
->     virtio-mmio virtio-mmio.125: [drm] *ERROR* fbdev: Failed to setup
-> generic emulation (ret=-2)
-> 
-> it also prints:
-> 
->     virtio-mmio virtio-mmio.125: [drm] bpp/depth value of 32/24 not supported
->     virtio-mmio virtio-mmio.125: [drm] No compatible format found
-> 
-> Upon closer look, it turns out virtgpu is special in that its main
-> plane supports only a single format: DRM_FORMAT_HOST_XRGB8888, which
-> is XR24 on little-endian, and BX24 on big-endian.  I.e. on big-endian,
-> virtgpu does not support XR24.
+The ps3fb driver operates on system memory. Mark the framebuffer
+accordingly. Helpers operating on the framebuffer memory will test
+for the presence of this flag.
 
-Driver and device support both XR24 and BX24 on both little endian and
-big endian just fine.
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linuxppc-dev@lists.ozlabs.org
+---
+ drivers/video/fbdev/ps3fb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Problem is both fbdev interfaces and the ADDFB ioctl specify the format
-using bpp instead of fourcc, and advertising only one framebuffer format
--- in native byte order -- used to worked best, especially on bigendian
-machines.
-
-That was years ago though, IIRC predating the generic fbdev emulation,
-so maybe it's time to revisit that.  Changing it should be as simple as
-updating the format arrays:
-
---- a/drivers/gpu/drm/virtio/virtgpu_plane.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_plane.c
-@@ -30,11 +30,13 @@
- #include "virtgpu_drv.h"
+diff --git a/drivers/video/fbdev/ps3fb.c b/drivers/video/fbdev/ps3fb.c
+index 64d291d6b1532..de81ad3a5d1ed 100644
+--- a/drivers/video/fbdev/ps3fb.c
++++ b/drivers/video/fbdev/ps3fb.c
+@@ -1145,7 +1145,7 @@ static int ps3fb_probe(struct ps3_system_bus_device *dev)
+ 	info->fix.smem_len = ps3fb_videomemory.size - GPU_FB_START;
  
- static const uint32_t virtio_gpu_formats[] = {
--       DRM_FORMAT_HOST_XRGB8888,
-+       DRM_FORMAT_XRGB8888,
-+       DRM_FORMAT_BGRX8888,
- };
+ 	info->pseudo_palette = par->pseudo_palette;
+-	info->flags = FBINFO_READS_FAST |
++	info->flags = FBINFO_VIRTFB | FBINFO_READS_FAST |
+ 		      FBINFO_HWACCEL_XPAN | FBINFO_HWACCEL_YPAN;
  
- static const uint32_t virtio_gpu_cursor_formats[] = {
--       DRM_FORMAT_HOST_ARGB8888,
-+       DRM_FORMAT_ARGB8888,
-+       DRM_FORMAT_BGRA8888,
- };
- 
- uint32_t virtio_gpu_translate_format(uint32_t drm_fourcc)
-
-HTH,
-  Gerd
+ 	retval = fb_alloc_cmap(&info->cmap, 256, 0);
+-- 
+2.42.0
 
