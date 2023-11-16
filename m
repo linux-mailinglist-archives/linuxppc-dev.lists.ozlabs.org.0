@@ -1,67 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 957AD7EE89B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Nov 2023 22:01:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B9CC7EE957
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Nov 2023 23:37:15 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=HSanfYpl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qqzsyJdv;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SWXWk3czwz3dH2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Nov 2023 08:01:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SWZfK14plz3dHP
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Nov 2023 09:37:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=HSanfYpl;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qqzsyJdv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--ackerleytng.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=36ijwzqskdhkxzhboibvqkddlldib.zljifkrummz-absifpqp.lwixyp.lod@flex--ackerleytng.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SWXVn3gMzz2xHb
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Nov 2023 08:00:31 +1100 (AEDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-5a828bdcfbaso19435497b3.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Nov 2023 13:00:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1700168424; x=1700773224; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=pcg1jHOi88FLN7hCqkcZwcR8zkGGhGMDTBufXRqyOok=;
-        b=HSanfYplgogQX3mTVAH33kEJzVBVySwYQfEP7zgxDT1hlBEApCVYZn0sleMLCFsjw/
-         jRZEanIlYfcodf6dqibumq6R2hkCc+4QZ7Jj86KNDqZ1ofTSIU0IE32hLR8YAEsUP01k
-         lM+L5FFPgRPQby3038WxWd5GQW6/aAQ1bbOpsRcISF2ITIIOLFUqvocOLv5v3XhPrNzu
-         FUbRhE28g4ZR8CymOQ/EJaqaOUrt7HfGhXQ6zuf0FZCAH+2KsmIc7373ImkmDCTXBWfM
-         uuFbHWdvW7RM39RjmicLub2y6u918mUHbdcWjnBgcYichhCapwY5pq8Xe2fkZp5+GRGH
-         uXhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700168424; x=1700773224;
-        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pcg1jHOi88FLN7hCqkcZwcR8zkGGhGMDTBufXRqyOok=;
-        b=k4aI1gd2xstZmq6eHAD98NH5T5Rja7LHdaKG8xpLZCrMhOBcw3iWm8ZZqlh5p6m/+R
-         WJtFtLK6xQ02d4WpwAMv/qz5QVOdFFJb7C0YGyDurKtYC3/EfgEQhu1dKzkxhsPx+YkM
-         ozFGv7eAcvAyDtJ8k9bzaSpT2/vPriTv94SZT6sKRS/+XrQlIVaTBg3BcVuh1xcAvXgt
-         jloznWDwK+vETLACII4/x6ErA99df/Eblj7sTdmhqUNcFuA7zAkV2WivYTIOtF4clPkU
-         Z1GBweE5fnhQxG18IKLCAO47QCBNyAWG72uPjeC9WOWuX1DlwLcSl1GKsJSm7x7+oZNf
-         mc4A==
-X-Gm-Message-State: AOJu0YwhjgaPxkyOsvTM3JDS+VHS9b3HeSNFcvxfNubQcefF+p1hXRlh
-	Y1QXt0+nJGbTkB7vK2TUQrm1n3blnhkOdGCEpg==
-X-Google-Smtp-Source: AGHT+IERExc4D+qrt27go/xYBPrtoAORZdvfQFtSO07pMqMqSuTLQB8wBOPMZT1riqPUGW5/Jxx9EA2kvlBTv30QyA==
-X-Received: from ackerleytng-ctop.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:13f8])
- (user=ackerleytng job=sendgmr) by 2002:a25:7644:0:b0:da3:a4ae:1525 with SMTP
- id r65-20020a257644000000b00da3a4ae1525mr393167ybc.5.1700168424573; Thu, 16
- Nov 2023 13:00:24 -0800 (PST)
-Date: Thu, 16 Nov 2023 21:00:22 +0000
-In-Reply-To: <20231105163040.14904-33-pbonzini@redhat.com> (message from Paolo
- Bonzini on Sun,  5 Nov 2023 17:30:35 +0100)
-Mime-Version: 1.0
-Message-ID: <diqzfs15o1ll.fsf@ackerleytng-ctop.c.googlers.com>
-Subject: Re: [PATCH 32/34] KVM: selftests: Add basic selftest for guest_memfd()
-From: Ackerley Tng <ackerleytng@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SWZdP1VYQz307y
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Nov 2023 09:36:25 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1700174176;
+	bh=619MFD5HlhmkV/puC4bSDr4aMr+FQn2SRzvXZ6sYxCA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=qqzsyJdvolW2YxZYZTkG1448LfEOGc32lf7NLfOpJ4ZNfAp9kx/129Er+HjZ9qa8K
+	 8ulo7DqY0FVp4v4PeFelKFN5jAINfrY99qnLDJ6ZvPePwBnwdv4uJfIjdLxs3NFEn+
+	 kxoiPHccqBzNRzoWzdOzdjChPlXnC0LK+cBBkWubPvtRKntcwBBgac6bYdmPeDdC/Y
+	 0Jnbycu/HUsBrPIztK+A+YkOwvtmZwNOldya/uyYpAGPcEZyLpGdRws5ln02qDKdX+
+	 8rbJfLyusXmKnNxPcNivsRS6Bms7uS+bsNTBz+yRQTCBbWTgxBNj6omagizYaqM6q9
+	 95ctACmYwToaA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SWZdD3HDsz4xGQ;
+	Fri, 17 Nov 2023 09:36:16 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Kajol Jain <kjain@linux.ibm.com>
+Subject: Re: [PATCH 2/2] powerpc/hv-gpxi: Fix access permission of hv-gpci
+ interface files
+In-Reply-To: <20231116122033.160964-2-kjain@linux.ibm.com>
+References: <20231116122033.160964-1-kjain@linux.ibm.com>
+ <20231116122033.160964-2-kjain@linux.ibm.com>
+Date: Fri, 17 Nov 2023 09:36:11 +1100
+Message-ID: <87msvd72ck.fsf@mail.lhotse>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,60 +59,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, david@redhat.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, chao.p.peng@linux.intel.com, linux-riscv@lists.infradead.org, isaku.yamahata@gmail.com, maz@kernel.org, chenhuacai@kernel.org, xiaoyao.li@intel.com, willy@infradead.org, wei.w.wang@intel.com, tabba@google.com, yu.c.zhang@linux.intel.com, mail@maciej.szmigiero.name, aou@eecs.berkeley.edu, vbabka@suse.cz, michael.roth@amd.com, viro@zeniv.linux.org.uk, paul.walmsley@sifive.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, mic@digikod.net, isaku.yamahata@intel.com, brauner@kernel.org, qperret@google.com, seanjc@google.com, liam.merwick@oracle.com, linux-mips@vger.kernel.org, oliver.upton@linux.dev, dmatlack@google.com, jarkko@kernel.org, palmer@dabbelt.com, kirill.shutemov@linux.intel.com, kvm-riscv@lists.infradead.org, anup@brainfault.org, linux-fsdevel@vger.kernel.org, pbonzini@redhat.com, akpm@linux-foundation.org, vannapurve@google.com, linuxppc-dev@lists.ozlabs.org, yilun.xu
- @intel.com, amoorthy@google.com
+Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, Disha Goel <disgoel@linux.vnet.ibm.com>, maddy@linux.ibm.com, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Paolo Bonzini <pbonzini@redhat.com> writes:
+Kajol Jain <kjain@linux.ibm.com> writes:
+> Fix access permission of the hv-gpci topology information
+> interface files from 0444 to 0400 (admin read only).
 
-> <snip>
+Please explain why they should be 0400.
+
+Also typo in subject, "hv-gpxi".
+
+cheers
+
+> Fixes: 71f1c39647d8 ("powerpc/hv_gpci: Add sysfs file inside hv_gpci device to show processor bus topology information")
+> Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
+> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+> ---
+>  arch/powerpc/perf/hv-gpci.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> +static void test_create_guest_memfd_invalid(struct kvm_vm *vm)
-> +{
-> +	size_t page_size = getpagesize();
-> +	uint64_t flag;
-> +	size_t size;
-> +	int fd;
-> +
-> +	for (size = 1; size < page_size; size++) {
-> +		fd = __vm_create_guest_memfd(vm, size, 0);
-> +		TEST_ASSERT(fd == -1 && errno == EINVAL,
-> +			    "guest_memfd() with non-page-aligned page size '0x%lx' should fail with EINVAL",
-> +			    size);
-> +	}
-> +
-> +	for (flag = 1; flag; flag <<= 1) {
-
-Since transparent hugepage support is no longer officially part of this
-series, 
-
-> +		uint64_t bit;
-
-this declaration of bit can be removed.
-
-> +
-> +		fd = __vm_create_guest_memfd(vm, page_size, flag);
-> +		TEST_ASSERT(fd == -1 && errno == EINVAL,
-> +			    "guest_memfd() with flag '0x%lx' should fail with EINVAL",
-> +			    flag);
-> +
-
-This loop can also be removed,
-
-> +		for_each_set_bit(bit, &valid_flags, 64) {
-> +			fd = __vm_create_guest_memfd(vm, page_size, flag | BIT_ULL(bit));
-> +			TEST_ASSERT(fd == -1 && errno == EINVAL,
-> +				    "guest_memfd() with flags '0x%llx' should fail with EINVAL",
-> +				    flag | BIT_ULL(bit));
-> +		}
-
-otherwise this won't compile because valid_flags is not declared.
-
-These lines will have to be added back when adding transparent hugepage
-support.
-
-> +	}
-> +}
-
-Tested-by: Ackerley Tng <ackerleytng@google.com>
+> diff --git a/arch/powerpc/perf/hv-gpci.c b/arch/powerpc/perf/hv-gpci.c
+> index 27f18119fda1..303d160319e8 100644
+> --- a/arch/powerpc/perf/hv-gpci.c
+> +++ b/arch/powerpc/perf/hv-gpci.c
+> @@ -890,7 +890,7 @@ static struct device_attribute *sysinfo_device_attr_create(int
+>  			return NULL;
+>  
+>  		sysfs_attr_init(&attr->attr);
+> -		attr->attr.mode = 0444;
+> +		attr->attr.mode = 0400;
+>  
+>  		switch (sysinfo_interface_group_index) {
+>  		case INTERFACE_PROCESSOR_BUS_TOPOLOGY_ATTR:
+> -- 
+> 2.39.3
