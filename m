@@ -1,63 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBA107EECFD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Nov 2023 08:53:04 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=Oa/WUq8t;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 132BF7EED06
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Nov 2023 09:00:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SWpzf6M8qz3dHP
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Nov 2023 18:53:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SWq7s70Fqz3dKY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Nov 2023 19:00:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=Oa/WUq8t;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org)
-Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=43.155.80.173; helo=bg5.exmail.qq.com; envelope-from=ke.zhao@shingroup.cn; receiver=lists.ozlabs.org)
+X-Greylist: delayed 373 seconds by postgrey-1.37 at boromir; Fri, 17 Nov 2023 18:59:42 AEDT
+Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.155.80.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SWpyq5XyLz2ygZ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Nov 2023 18:52:19 +1100 (AEDT)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id EFD45828560D;
-	Fri, 17 Nov 2023 01:52:16 -0600 (CST)
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id csTujpRKOfYz; Fri, 17 Nov 2023 01:52:16 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id E8A3D828560E;
-	Fri, 17 Nov 2023 01:52:15 -0600 (CST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com E8A3D828560E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
-	t=1700207536; bh=0rnN6h2mNTm5iTtyCMLDfYTs5FY5p9Q1Laki8coC6KI=;
-	h=Date:From:To:Message-ID:MIME-Version;
-	b=Oa/WUq8tNdf37UazM/Jheo3RtAoYrKnw6IYnNCdep8fd9tJg1PtZr/RV83lv0If6E
-	 DeEaK9ONuXc/HdFn6ROEMT0AY7EpQAMrMGDWnJf7l7gp6T8HrQ+8m+kWIgIE/m/1yA
-	 Q+HrZDDqYzG19RHNFjpDGnmdS1xeKD3UCaqDwsVs=
-X-Virus-Scanned: amavisd-new at rptsys.com
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id RMf5PX25lU0p; Fri, 17 Nov 2023 01:52:15 -0600 (CST)
-Received: from vali.starlink.edu (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id B199C828560D;
-	Fri, 17 Nov 2023 01:52:15 -0600 (CST)
-Date: Fri, 17 Nov 2023 01:52:13 -0600 (CST)
-From: Timothy Pearson <tpearson@raptorengineering.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, npiggin <npiggin@gmail.com>
-Message-ID: <1643530872.47955154.1700207533570.JavaMail.zimbra@raptorengineeringinc.com>
-In-Reply-To: <480221078.47953493.1700206777956.JavaMail.zimbra@raptorengineeringinc.com>
-References: <1654757454.47202735.1699948827325.JavaMail.zimbra@raptorengineeringinc.com> <87pm0c7cr6.fsf@mail.lhotse> <480221078.47953493.1700206777956.JavaMail.zimbra@raptorengineeringinc.com>
-Subject: Re: [PATCH] powerpc: Fix data corruption on IPI
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SWq7L5wKnz3cBQ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Nov 2023 18:59:42 +1100 (AEDT)
+X-QQ-mid: bizesmtp88t1700207542tiadw1lg
+Received: from HX01040049.powercore.com.cn ( [121.8.34.183])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 17 Nov 2023 15:52:17 +0800 (CST)
+X-QQ-SSF: 01400000000000409000000A0000000
+X-QQ-FEAT: CR3LFp2JE4n7ku21/mYvIIQ5SpzgwTJQJy9ia+W2yMvgDWCJqk8SIZO2HV72T
+	soebgUlYxDzZ8T9R1juZePVonezYoxSx2shFCXGGE4lvABuDVrnxvENMHA0Z85kQsyPRfUh
+	A6j2zM5Eh9bXM/84+83SB2hOICcCjw4YO6bkvpzVnheWmOYFkPe+SeSr6QQmDShKV0Y+N9D
+	a70HSwCMTXlnXYWdrX6ISl1+r87E0aRdK5QkMtPm9+wMXTLDaWg7uFiElWGSnP+ejy/Fxcx
+	j5kAJsn+Jm/ywfa+4WypiyK4AAayLU+wXTb9Y/I6HCv6QokP8GUPofaNL2VlyR8KQLR2M5K
+	0YcMXa8IIIWOfRe/cojHSAfgKzpOJoxCgrSWuXaWjOsDi+0J/sMYMCV9b8xR1XrilkzY4Ff
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 3930165603340763718
+From: Zhao Ke <ke.zhao@shingroup.cn>
+To: mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	christophe.leroy@csgroup.eu,
+	fbarrat@linux.ibm.com,
+	ajd@linux.ibm.com,
+	arnd@arndb.de,
+	gregkh@linuxfoundation.org
+Subject: [PATCH] powerpc: Add PVN support for HeXin C2000 processor
+Date: Fri, 17 Nov 2023 15:52:15 +0800
+Message-Id: <20231117075215.647-1-ke.zhao@shingroup.cn>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: Zimbra 8.5.0_GA_3042 (ZimbraWebClient - GC119 (Linux)/8.5.0_GA_3042)
-Thread-Topic: powerpc: Fix data corruption on IPI
-Thread-Index: RFRnzI4NpnMaykN5PCyTT5cPLl40ZYj7r3em
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:shingroup.cn:qybglogicsvrsz:qybglogicsvrsz3a-0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,84 +56,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Zhao Ke <ke.zhao@shingroup.cn>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+HeXin Tech Co. has applied for a new PVN from the OpenPower Community
+for its new processor C2000. The OpenPower has assigned a new PVN
+and this newly assigned PVN is 0x0066, add pvr register related
+support for this PVN.
 
+Signed-off-by: Zhao Ke <ke.zhao@shingroup.cn>
+Link: https://discuss.openpower.foundation/t/how-to-get-a-new-pvr-for-processors-follow-power-isa/477/10
+---
+ arch/powerpc/include/asm/reg.h            |  1 +
+ arch/powerpc/kernel/cpu_specs_book3s_64.h | 15 +++++++++++++++
+ arch/powerpc/kvm/book3s_pr.c              |  1 +
+ arch/powerpc/mm/book3s64/pkeys.c          |  3 ++-
+ arch/powerpc/platforms/powernv/subcore.c  |  3 ++-
+ drivers/misc/cxl/cxl.h                    |  3 ++-
+ 6 files changed, 23 insertions(+), 3 deletions(-)
 
------ Original Message -----
-> From: "Timothy Pearson" <tpearson@raptorengineeringinc.com>
-> To: "Michael Ellerman" <mpe@ellerman.id.au>, "npiggin" <npiggin@gmail.com>
-> Cc: "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>
-> Sent: Friday, November 17, 2023 1:39:37 AM
-> Subject: Re: [PATCH] powerpc: Fix data corruption on IPI
+diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+index 4ae4ab9090a2..7fd09f25452d 100644
+--- a/arch/powerpc/include/asm/reg.h
++++ b/arch/powerpc/include/asm/reg.h
+@@ -1361,6 +1361,7 @@
+ #define PVR_POWER8E	0x004B
+ #define PVR_POWER8NVL	0x004C
+ #define PVR_POWER8	0x004D
++#define PVR_HX_C2000	0x0066
+ #define PVR_POWER9	0x004E
+ #define PVR_POWER10	0x0080
+ #define PVR_BE		0x0070
+diff --git a/arch/powerpc/kernel/cpu_specs_book3s_64.h b/arch/powerpc/kernel/cpu_specs_book3s_64.h
+index c370c1b804a9..4f604934da7c 100644
+--- a/arch/powerpc/kernel/cpu_specs_book3s_64.h
++++ b/arch/powerpc/kernel/cpu_specs_book3s_64.h
+@@ -238,6 +238,21 @@ static struct cpu_spec cpu_specs[] __initdata = {
+ 		.machine_check_early	= __machine_check_early_realmode_p8,
+ 		.platform		= "power8",
+ 	},
++	{	/* 2.07-compliant processor, HeXin C2000 processor */
++		.pvr_mask		= 0xffffffff,
++		.pvr_value		= 0x00660000,
++		.cpu_name		= "POWER8 (architected)",
++		.cpu_features		= CPU_FTRS_POWER8,
++		.cpu_user_features	= COMMON_USER_POWER8,
++		.cpu_user_features2	= COMMON_USER2_POWER8,
++		.mmu_features		= MMU_FTRS_POWER8,
++		.icache_bsize		= 128,
++		.dcache_bsize		= 128,
++		.cpu_setup		= __setup_cpu_power8,
++		.cpu_restore		= __restore_cpu_power8,
++		.machine_check_early	= __machine_check_early_realmode_p8,
++		.platform		= "power8",
++	},
+ 	{	/* 3.00-compliant processor, i.e. Power9 "architected" mode */
+ 		.pvr_mask		= 0xffffffff,
+ 		.pvr_value		= 0x0f000005,
+diff --git a/arch/powerpc/kvm/book3s_pr.c b/arch/powerpc/kvm/book3s_pr.c
+index 9118242063fb..5b92619a05fd 100644
+--- a/arch/powerpc/kvm/book3s_pr.c
++++ b/arch/powerpc/kvm/book3s_pr.c
+@@ -604,6 +604,7 @@ static void kvmppc_set_pvr_pr(struct kvm_vcpu *vcpu, u32 pvr)
+ 	case PVR_POWER8:
+ 	case PVR_POWER8E:
+ 	case PVR_POWER8NVL:
++	case PVR_HX_C2000:
+ 	case PVR_POWER9:
+ 		vcpu->arch.hflags |= BOOK3S_HFLAG_MULTI_PGSIZE |
+ 			BOOK3S_HFLAG_NEW_TLBIE;
+diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
+index 125733962033..c38f378e1942 100644
+--- a/arch/powerpc/mm/book3s64/pkeys.c
++++ b/arch/powerpc/mm/book3s64/pkeys.c
+@@ -89,7 +89,8 @@ static int __init scan_pkey_feature(void)
+ 			unsigned long pvr = mfspr(SPRN_PVR);
+ 
+ 			if (PVR_VER(pvr) == PVR_POWER8 || PVR_VER(pvr) == PVR_POWER8E ||
+-			    PVR_VER(pvr) == PVR_POWER8NVL || PVR_VER(pvr) == PVR_POWER9)
++			    PVR_VER(pvr) == PVR_POWER8NVL || PVR_VER(pvr) == PVR_POWER9 ||
++				PVR_VER(pvr) == PVR_HX_C2000)
+ 				pkeys_total = 32;
+ 		}
+ 	}
+diff --git a/arch/powerpc/platforms/powernv/subcore.c b/arch/powerpc/platforms/powernv/subcore.c
+index 191424468f10..58e7331e1e7e 100644
+--- a/arch/powerpc/platforms/powernv/subcore.c
++++ b/arch/powerpc/platforms/powernv/subcore.c
+@@ -425,7 +425,8 @@ static int subcore_init(void)
+ 
+ 	if (pvr_ver != PVR_POWER8 &&
+ 	    pvr_ver != PVR_POWER8E &&
+-	    pvr_ver != PVR_POWER8NVL)
++	    pvr_ver != PVR_POWER8NVL &&
++		pvr_ver != PVR_HX_C2000)
+ 		return 0;
+ 
+ 	/*
+diff --git a/drivers/misc/cxl/cxl.h b/drivers/misc/cxl/cxl.h
+index 0562071cdd4a..9ac2991b29c7 100644
+--- a/drivers/misc/cxl/cxl.h
++++ b/drivers/misc/cxl/cxl.h
+@@ -836,7 +836,8 @@ static inline bool cxl_is_power8(void)
+ {
+ 	if ((pvr_version_is(PVR_POWER8E)) ||
+ 	    (pvr_version_is(PVR_POWER8NVL)) ||
+-	    (pvr_version_is(PVR_POWER8)))
++	    (pvr_version_is(PVR_POWER8)) ||
++		(pvr_version_is(PVR_HX_C2000)))
+ 		return true;
+ 	return false;
+ }
+-- 
+2.34.1
 
-> ----- Original Message -----
->> From: "Michael Ellerman" <mpe@ellerman.id.au>
->> To: "Timothy Pearson" <tpearson@raptorengineering.com>, "linuxppc-dev"
->> <linuxppc-dev@lists.ozlabs.org>
->> Cc: "Jens Axboe" <axboe@kernel.dk>
->> Sent: Tuesday, November 14, 2023 6:14:37 AM
->> Subject: Re: [PATCH] powerpc: Fix data corruption on IPI
-> 
->> Hi Timothy,
->> 
->> Thanks for debugging this, but I'm unclear why this is helping because
->> we should already have a full barrier (hwsync) on both the sending and
->> receiving side.
->> 
->> More below.
-> 
-> I've spent another few days poking at this, and think I might finally have
-> something more solid in terms of what exactly is happening, but would like some
-> feedback on the concept / how best to fix the potential problem.
-> 
-> As background, there are several worker threads both in userspace and in kernel
-> mode.  Crucially, the main MariaDB data processing thread (the one that handles
-> tasks like flushing dirty pages to disk) always runs on the same core as the
-> io_uring kernel thread that picks up I/O worker creation requests and handles
-> them via create_worker_cb().
-> 
-> Changes in the ~5.12 era switched away from a delayed worker setup.  io_uring
-> currently sets up the new process with create_io_thread(), and immediately uses
-> an IPI to forcibly schedule the new process.  Because of the way the two
-> threads interact, the new process ends up grabbing the CPU from the running
-> MariaDB user thread; I've never seen it schedule on a different core.  If the
-> timing is right in this process, things get trampled on in userspace and the
-> database server either crashes or throws a corruption fault.
-> 
-> Through extensive debugging, I've narrowed this down to invalid state in the VSX
-> registers on return to the MariaDB user thread from the new kernel thread.  For
-> some reason, it seems we don't restore FP state on return from the PF_IO_WORKER
-> thread, and something in the kernel was busy writing new data to them.
-> 
-> A direct example I was able to observe is as follows:
-> 
-> xxspltd vs0,vs0,0      <-- vs0 now zeroed out
-> xori    r9,r9,1        <-- Presumably we switch to the new kernel thread here
-> due to the IPI
-> slwi    r9,r9,7        <-- On userspace thread resume, vs0 now contains the
-> value 0x820040000000000082004000
-> xxswapd vs8,vs0        <-- vs8 now has the wrong value
-> stxvd2x vs8,r3,r12     <-- userspace is now getting stepped on
-> stw     r9,116(r3)
-> stxvd2x vs8,r3,r0
-> ...
-> CRASH
-> 
-> This is a very difficult race to hit, but MariaDB naturally does repetitive
-> operations with VSX registers so it does eventually fail.  I ended up with a
-> tight loop around glibc operations that use VSX to trigger the failure reliably
-> enough to even understand what was going on.
-> 
-> As I am not as familiar with this part of the Linux kernel as with most other
-> areas, what is the expected save/restore path for the FP/VSX registers around
-> an IPI and associated forced thread switch?  If restore_math() is in the return
-> path, note that MSR_FP is set in regs->msr.
-> 
-> Second question: should we even be using the VSX registers at all in kernel
-> space?  Is this a side effect of io_uring interacting so closely with userspace
-> threads, or something else entirely?
-
-Thinking a bit more, a third option could be if we're restoring garbage into the registers by accident.  I know the I/O worker threads claim to use a "lightweight" version of kernel_clone(), and it'd be easy to have missed something important...
