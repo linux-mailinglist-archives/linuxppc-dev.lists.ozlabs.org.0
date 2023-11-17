@@ -2,72 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB7257EEE3C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Nov 2023 10:15:44 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FoAn9Lny;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=W72QoB7R;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 62DD17EEF45
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Nov 2023 10:52:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SWrq23xpgz2yD4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Nov 2023 20:15:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SWsdt2cG8z3dFw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Nov 2023 20:52:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FoAn9Lny;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=W72QoB7R;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gondor.apana.org.au (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1893 seconds by postgrey-1.37 at boromir; Fri, 17 Nov 2023 20:52:22 AEDT
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SWrpB1BFyz30LM
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Nov 2023 20:14:57 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1700212494;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=THEmzVaHiZNeIcTvImwINSr7vb3xKiQAOUmNcyEPO1U=;
-	b=FoAn9LnyjYNK3huaBUM1MopHpHUaxaZQZGLHgmvCykmzkP99jjKPjuoadCJaqKwoQdJfZq
-	Rn1Xs9W8wFCWB/cDYkI/8POs2e5/Sqle0P4KYNHAlfZDrYr3IrfFucoWdW3gPnXMbCGA9n
-	7Cgy+SmNX105kzelWmV1YXId0NdFeIA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1700212495;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=THEmzVaHiZNeIcTvImwINSr7vb3xKiQAOUmNcyEPO1U=;
-	b=W72QoB7RcmeYdkaDAlKH+JHlmb3DWITujJxc9qobMNUYa7RC5G7P3pfcClkIPE46enSWCs
-	SxQFVkQc7UbuCL0Ib0pHblxCvZLa6BI4bDHij+KoDKlhQWrPSRxztRwxPuQBXRgfz5mFrf
-	ou9++GkLb835oN3JCEktZu/D5nJcfUU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-124-hjMHbHTxMrW87-VsMRHqXw-1; Fri, 17 Nov 2023 04:14:51 -0500
-X-MC-Unique: hjMHbHTxMrW87-VsMRHqXw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 69AC2185A780;
-	Fri, 17 Nov 2023 09:14:50 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.24])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id B3EB92166B2A;
-	Fri, 17 Nov 2023 09:14:49 +0000 (UTC)
-Date: Fri, 17 Nov 2023 17:14:45 +0800
-From: Baoquan He <bhe@redhat.com>
-To: kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH 2/7] kexec_file: print out debugging message if required
-Message-ID: <ZVcvBft/T3cbRBWr@MiWiFi-R3L-srv>
-References: <20231114153253.241262-3-bhe@redhat.com>
- <202311160431.BXPc7NO9-lkp@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SWsdL0cv1z2yhT
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Nov 2023 20:52:22 +1100 (AEDT)
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
+	id 1r3v0v-000aCz-Kl; Fri, 17 Nov 2023 17:19:50 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 17 Nov 2023 17:19:57 +0800
+Date: Fri, 17 Nov 2023 17:19:57 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: David Gstir <david@sigma-star.at>
+Subject: Re: [PATCH v4 1/5] crypto: mxs-dcp: Add support for hardware-bound
+ keys
+Message-ID: <ZVcwPUEbu3Frp61X@gondor.apana.org.au>
+References: <20231024162024.51260-1-david@sigma-star.at>
+ <20231024162024.51260-2-david@sigma-star.at>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <202311160431.BXPc7NO9-lkp@intel.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+In-Reply-To: <20231024162024.51260-2-david@sigma-star.at>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,46 +44,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: llvm@lists.linux.dev, linux-parisc@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, oe-kbuild-all@lists.linux.dev, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org, Fabio Estevam <festevam@gmail.com>, linux-security-module@vger.kernel.org, Ahmad Fatoum <a.fatoum@pengutronix.de>, Paul Moore <paul@paul-moore.com>, Jonathan Corbet <corbet@lwn.net>, Richard Weinberger <richard@nod.at>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, James Morris <jmorris@namei.org>, NXP Linux Team <linux-imx@nxp.com>, James Bottomley <jejb@linux.ibm.com>, "Serge E. Hallyn" <serge@hallyn.com>, "Paul E. McKenney" <paulmck@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, sigma star Kernel Team <upstream+dcp@sigma-star.at>, "Steven Rostedt \(Google\)" <rostedt@goodmis.org>, David Oberhollenzer <david.oberhollenzer@sigma-star.at>, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, Jar
+ kko Sakkinen <jarkko@kernel.org>, linux-crypto@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>, Tejun Heo <tj@kernel.org>, linux-integrity@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
-
-On 11/16/23 at 05:04am, kernel test robot wrote:
-> Hi Baoquan,
+On Tue, Oct 24, 2023 at 06:20:15PM +0200, David Gstir wrote:
+> DCP is capable of performing AES with two hardware-bound keys:
 > 
-> kernel test robot noticed the following build errors:
+> - The one-time programmable (OTP) key which is burnt via on-chip fuses
+> - The unique key (UK) which is derived from the OTP key
 > 
-> [auto build test ERROR on arm64/for-next/core]
-> [also build test ERROR on tip/x86/core powerpc/next powerpc/fixes linus/master v6.7-rc1 next-20231115]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> In addition to the two hardware-bound keys, DCP also supports
+> storing keys in 4 dedicated key slots within its secure memory area
+> (internal SRAM).
 > 
-> url:    https://github.com/intel-lab-lkp/linux/commits/Baoquan-He/kexec_file-add-kexec_file-flag-to-control-debug-printing/20231114-234003
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-next/core
-> patch link:    https://lore.kernel.org/r/20231114153253.241262-3-bhe%40redhat.com
-> patch subject: [PATCH 2/7] kexec_file: print out debugging message if required
-> config: hexagon-comet_defconfig (https://download.01.org/0day-ci/archive/20231116/202311160431.BXPc7NO9-lkp@intel.com/config)
-> compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231116/202311160431.BXPc7NO9-lkp@intel.com/reproduce)
+> These keys are not stored in main memory and are therefore
+> not directly accessible by the operating system. To use them
+> for AES operations, a one-byte key reference has to supplied
+> with the DCP operation descriptor in the control register.
 > 
+> This adds support for using any of these 6 keys through the crypto API
+> via their key reference after they have been set up. The main purpose
+> is to add support for DCP-backed trusted keys. Other use cases are
+> possible too (see similar existing paes implementations), but these
+> should carefully be evaluated as e.g. enabling AF_ALG will give
+> userspace full access to use keys. In scenarios with untrustworthy
+> userspace, this will enable en-/decryption oracles.
+> 
+> Co-developed-by: Richard Weinberger <richard@nod.at>
+> Signed-off-by: Richard Weinberger <richard@nod.at>
+> Co-developed-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
+> Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
+> Signed-off-by: David Gstir <david@sigma-star.at>
+> ---
+>  drivers/crypto/mxs-dcp.c | 104 ++++++++++++++++++++++++++++++++++-----
+>  include/soc/fsl/dcp.h    |  17 +++++++
+>  2 files changed, 110 insertions(+), 11 deletions(-)
+>  create mode 100644 include/soc/fsl/dcp.h
 
-Thanks for reporting.
-
-I met below failure when following the steps of provided reproducer.
-Could anyone help check what's wrong with that?
-
-[root@~ linux]# COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang ~/bin/make.cross W=1 O=build_dir ARCH=hexagon olddefconfig
-Compiler will be installed in /root/0day
-lftpget -c https://cdn.kernel.org/pub/tools/llvm/files/
-get1: /pub/tools/llvm/files/: files/: Is a directory
-Failed to download https://cdn.kernel.org/pub/tools/llvm/files/
-clang crosstool install failed
-Install clang compiler failed
-setup_crosstool failed
-
-Thanks
-Baoquan
-
+Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
