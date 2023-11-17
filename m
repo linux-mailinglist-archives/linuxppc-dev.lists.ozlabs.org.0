@@ -1,58 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D7B07EE9F5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Nov 2023 00:23:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C62117EEA7C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Nov 2023 01:56:49 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=OIZTJb22;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SOUKBo4I;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SOUKBo4I;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SWbgx43qtz3cnK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Nov 2023 10:23:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SWdlM3GmTz3dHG
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Nov 2023 11:56:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=OIZTJb22;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SOUKBo4I;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SOUKBo4I;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SWbg41xQZz3cHP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Nov 2023 10:22:56 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1700176976;
-	bh=qCXGzKe5hz9TCx7qJ3emEY1OqsOOjksft6kw4VbwO0k=;
-	h=From:To:Subject:In-Reply-To:References:Date:From;
-	b=OIZTJb224dYLQqOuUrT5RIIczqDB2G64LIJjIFux6d4m2M/IaiirletCwdsof5oTC
-	 HM+G9JC2WCq2PmZEhsIDxYkol+/KkTNLMRkioHRh5muXPy78Y6dHZ1JpN1+vJUFDvH
-	 ei8IRk2J6mO/62oA0CsK7WgSzBUTdsHk5Ncy9jVQkCTqmcMq3647kXREiPHVmuDMpK
-	 6/8+6Z0LEb7rVOaHDNtM0Z38qZiCZj86ShvM0bpOK8cv/BBPWSRomHIFxoC3eOE44R
-	 0omdkyOBOV9dSQK1dCEGvasxLEwfW3bCdwXaGdD7b7ICW9OHgRIDDuFgkccU03bt7S
-	 sJLjVl32dZuOQ==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SWdkS3S4Cz2xrD
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Nov 2023 11:55:58 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1700182553;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4LapoxfhvOL55w/2dX60cKVAQiuf12D1o1P52tBY/F0=;
+	b=SOUKBo4IMF5rheHjr41HC+vwhGKRZXmDeVrBvJQUbSmVOG3dwI3le21OUoWRmIsM+ylaIH
+	0Exb3bhkwYciJVghT+x04l09HrMEE5pPXsDusTsmPZfUqGw/o8SXyH1jO8cunNxEtfIg6j
+	6wxwl8XikCMz8U+0OJsfV1GZHnGy5I0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1700182553;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4LapoxfhvOL55w/2dX60cKVAQiuf12D1o1P52tBY/F0=;
+	b=SOUKBo4IMF5rheHjr41HC+vwhGKRZXmDeVrBvJQUbSmVOG3dwI3le21OUoWRmIsM+ylaIH
+	0Exb3bhkwYciJVghT+x04l09HrMEE5pPXsDusTsmPZfUqGw/o8SXyH1jO8cunNxEtfIg6j
+	6wxwl8XikCMz8U+0OJsfV1GZHnGy5I0=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-392-hlErw1ZmNAuXtPqs3bx_HQ-1; Thu,
+ 16 Nov 2023 19:55:49 -0500
+X-MC-Unique: hlErw1ZmNAuXtPqs3bx_HQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SWbg40xWRz4x5M;
-	Fri, 17 Nov 2023 10:22:56 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Vishal Chourasia <vishalc@linux.ibm.com>, Aneesh Kumar K V
- <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc: Restrict ARCH_HIBERNATION_POSSIBLE to
- supported configurations
-In-Reply-To: <b7600012-0e7e-4b25-8d8c-1bffcc9c1461@linux.ibm.com>
-References: <20231114082046.6018-1-vishalc@linux.ibm.com>
- <87sf57zbcd.fsf@linux.ibm.com>
- <ecc9d34a-4960-4540-802e-d35ee4f5259b@linux.ibm.com>
- <c3594f58-c7a4-4265-a38e-c97b08169b61@linux.ibm.com>
- <b7600012-0e7e-4b25-8d8c-1bffcc9c1461@linux.ibm.com>
-Date: Fri, 17 Nov 2023 10:22:53 +1100
-Message-ID: <87jzqh706q.fsf@mail.lhotse>
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B851238149B2;
+	Fri, 17 Nov 2023 00:55:48 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.24])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id EF2591C060AE;
+	Fri, 17 Nov 2023 00:55:47 +0000 (UTC)
+Date: Fri, 17 Nov 2023 08:55:44 +0800
+From: Baoquan He <bhe@redhat.com>
+To: kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH 4/7] kexec_file, arm64: print out debugging message if
+ required
+Message-ID: <ZVa6EDP8EI2jWhQL@MiWiFi-R3L-srv>
+References: <20231114153253.241262-5-bhe@redhat.com>
+ <202311160022.QM6xJYSy-lkp@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202311160022.QM6xJYSy-lkp@intel.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,137 +80,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-parisc@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, oe-kbuild-all@lists.linux.dev, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Vishal Chourasia <vishalc@linux.ibm.com> writes:
-> On 15/11/23 5:46 pm, Aneesh Kumar K V wrote:
->> On 11/15/23 5:23 PM, Vishal Chourasia wrote:
->>> On 15/11/23 1:39 pm, Aneesh Kumar K.V wrote:
->>>> Vishal Chourasia <vishalc@linux.ibm.com> writes:
->>>>
->>>>> This patch modifies the ARCH_HIBERNATION_POSSIBLE option to ensure th=
-at it
->>>>> correctly depends on these PowerPC configurations being enabled. As a=
- result,
->>>>> it prevents the HOTPLUG_CPU from being selected when the required dep=
-endencies
->>>>> are not satisfied.
->>>>>
->>>>> This change aligns the dependency tree with the expected hardware sup=
-port for
->>>>> CPU hot-plugging under PowerPC architectures, ensuring that the kernel
->>>>> configuration steps do not lead to inconsistent states.
->>>>>
->>>>> Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
->>>>> ---
->>>>> During the configuration process with 'make randconfig' followed by
->>>>> 'make olddefconfig', we observed a warning indicating an unmet direct
->>>>> dependency for the HOTPLUG_CPU option. The dependency in question rel=
-ates to
->>>>> various PowerPC configurations (PPC_PSERIES, PPC_PMAC, PPC_POWERNV,
->>>>> FSL_SOC_BOOKE) which were not enabled, yet the HOTPLUG_CPU was being
->>>>> erroneously selected due to an implicit assumption by the PM_SLEEP_SM=
-P option.
->>>>> This misalignment in dependencies could potentially lead to inconsist=
-ent kernel
->>>>> configuration states, especially when considering the necessary hardw=
-are
->>>>> support for CPU hot-plugging on PowerPC platforms. The patch aims to =
-correct
->>>>> this by ensuring that ARCH_HIBERNATION_POSSIBLE is contingent upon the
->>>>> appropriate PowerPC configurations being active.
->>>>>
->>>>> steps to reproduce (before applying the patch):
->>>>>
->>>>> Run 'make pseries_le_defconfig'
->>>>> Run 'make menuconfig'
->>>>> Enable hibernation [ Kernel options -> Hibernation (aka 'suspend to d=
-isk') ]=20
->>>>> Disable [ Platform support -> IBM PowerNV (Non-Virtualized) platform =
-support ]
->>>>> Disable [ Platform support -> IBM pSeries & new (POWER5-based) iSerie=
-s ]
->>>>> Enable SMP [ Processor support -> Symmetric multi-processing support ]
->>>>> Save the config
->>>>> Run 'make olddefconfig'
->>>>>
->>>>>  arch/powerpc/Kconfig | 5 +++--
->>>>>  1 file changed, 3 insertions(+), 2 deletions(-)
->>>>>
->>>>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
->>>>> index 6f105ee4f3cf..bf99ff9869f6 100644
->>>>> --- a/arch/powerpc/Kconfig
->>>>> +++ b/arch/powerpc/Kconfig
->>>>> @@ -380,8 +380,9 @@ config DEFAULT_UIMAGE
->>>>>  	  Used to allow a board to specify it wants a uImage built by defau=
-lt
->>>>>=20=20
->>>>>  config ARCH_HIBERNATION_POSSIBLE
->>>>> -	bool
->>>>> -	default y
->>>>> +	def_bool y
->>>>> +	depends on PPC_PSERIES || \
->>>>> +		PPC_PMAC || PPC_POWERNV || FSL_SOC_BOOKE
->>>>>=20=20
->>>>>  config ARCH_SUSPEND_POSSIBLE
->>>>>  	def_bool y
->>>>>
->>>> I am wondering whether it should be switched to using select from
->>>> config PPC?=20
->>>>
->>>> selecting ARCH_HIBERNATION_POSSIBLE based on value of config PPC
->>>> will not guarantee config PPC_PSERIES being set
->>>>
->>>> PPC_PSERIES can be set to N, even when config PPC is set.
-> I understand what you meant before. Having ARCH_HIBERNATION_POSSIBLE unde=
-r config PPC makes more sense.
->>>> grep -A 5 -i "config ppc_pseries" arch/powerpc/platforms/pseries/Kconf=
-ig
->>>> config PPC_PSERIES
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on PPC64 && PPC_BOO=
-K3S
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool "IBM pSeries & new (PO=
-WER5-based) iSeries"
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select HAVE_PCSPKR_PLATFORM
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select MPIC
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select OF_DYNAMIC
->>>>
->> modified   arch/powerpc/Kconfig
->> @@ -156,6 +156,7 @@ config PPC
->>  	select ARCH_HAS_UACCESS_FLUSHCACHE
->>  	select ARCH_HAS_UBSAN_SANITIZE_ALL
->>  	select ARCH_HAVE_NMI_SAFE_CMPXCHG
->> +	select ARCH_HIBERNATION_POSSIBLE	if (PPC_PSERIES || PPC_PMAC || PPC_PO=
-WERNV || FSL_SOC_BOOKE)
->>  	select ARCH_KEEP_MEMBLOCK
->>  	select ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE	if PPC_RADIX_MMU
->>  	select ARCH_MIGHT_HAVE_PC_PARPORT
->
-> Though, even with these changes I was able to reproduce same warnings. (u=
-sing steps from above)
-> It's because one can enable HIBERNATION manually.
+On 11/16/23 at 12:58am, kernel test robot wrote:
+> Hi Baoquan,
+> 
+> kernel test robot noticed the following build warnings:
+> 
+> [auto build test WARNING on arm64/for-next/core]
+> [also build test WARNING on tip/x86/core powerpc/next powerpc/fixes linus/master v6.7-rc1 next-20231115]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Baoquan-He/kexec_file-add-kexec_file-flag-to-control-debug-printing/20231114-234003
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-next/core
+> patch link:    https://lore.kernel.org/r/20231114153253.241262-5-bhe%40redhat.com
+> patch subject: [PATCH 4/7] kexec_file, arm64: print out debugging message if required
+> config: arm64-randconfig-001-20231115 (https://download.01.org/0day-ci/archive/20231116/202311160022.QM6xJYSy-lkp@intel.com/config)
+> compiler: aarch64-linux-gcc (GCC) 13.2.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231116/202311160022.QM6xJYSy-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202311160022.QM6xJYSy-lkp@intel.com/
+> 
+> All warnings (new ones prefixed by >>):
+> 
+>    arch/arm64/kernel/machine_kexec.c: In function '_kexec_image_info':
+> >> arch/arm64/kernel/machine_kexec.c:35:23: warning: unused variable 'i' [-Wunused-variable]
+>       35 |         unsigned long i;
+>          |                       ^
 
-But how? You shouldn't be able to enable it manually, it depends on
-ARCH_HIBERNATION_POSSIBLE which shouldn't be enabled.
+Yes, this is an obvious one missed, will fix and update in new post,
+thanks.
 
-For the above to work you also need to make it default n, eg:
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 6f105ee4f3cf..dd2a9b938188 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -380,8 +380,7 @@ config DEFAULT_UIMAGE
-          Used to allow a board to specify it wants a uImage built by defau=
-lt
-
- config ARCH_HIBERNATION_POSSIBLE
--       bool
--       default y
-+       def_bool n
-
- config ARCH_SUSPEND_POSSIBLE
-        def_bool y
-
-
-cheers
