@@ -1,63 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C10DD7EED77
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Nov 2023 09:21:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BB587EED7A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Nov 2023 09:22:39 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=WQ4koCoG;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Zo403Blm;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Zo403Blm;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SWqcJ4cBjz3dGn
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Nov 2023 19:21:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SWqdn2LLtz3dBp
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Nov 2023 19:22:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=WQ4koCoG;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Zo403Blm;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Zo403Blm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org)
-Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SWqbR6prqz3cW7
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Nov 2023 19:20:35 +1100 (AEDT)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id 1C80D8285487;
-	Fri, 17 Nov 2023 02:20:33 -0600 (CST)
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id 0EeoU4GmYuSW; Fri, 17 Nov 2023 02:20:31 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id 7633982856FE;
-	Fri, 17 Nov 2023 02:20:31 -0600 (CST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com 7633982856FE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
-	t=1700209231; bh=7bxACYfqN6oT2jo1uNSgbErfMk/a6gxllWp3/tHezuQ=;
-	h=Date:From:To:Message-ID:MIME-Version;
-	b=WQ4koCoGoB3WDrfIcOdkGW5bUsdi2uIX7D2991PUZ9gNfy4zMqTFZriK1Bt5zmV9s
-	 ku7678Fjy5z32sTfidcTepyXKnWLQF3ljCynLplk9jJjnlM34RvRr+0bM2cicyhLlq
-	 duljzqXDImxCGmk0JAP9T6VtpTKCS7nEnioYhvTY=
-X-Virus-Scanned: amavisd-new at rptsys.com
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id NULY9P7cH-oi; Fri, 17 Nov 2023 02:20:31 -0600 (CST)
-Received: from vali.starlink.edu (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id 4961D8285487;
-	Fri, 17 Nov 2023 02:20:31 -0600 (CST)
-Date: Fri, 17 Nov 2023 02:20:29 -0600 (CST)
-From: Timothy Pearson <tpearson@raptorengineering.com>
-To: npiggin <npiggin@gmail.com>
-Message-ID: <868826327.47960095.1700209229200.JavaMail.zimbra@raptorengineeringinc.com>
-In-Reply-To: <CX0XGLS2M4KG.1WIPX82OSTTRT@wheely>
-References: <1654757454.47202735.1699948827325.JavaMail.zimbra@raptorengineeringinc.com> <87pm0c7cr6.fsf@mail.lhotse> <480221078.47953493.1700206777956.JavaMail.zimbra@raptorengineeringinc.com> <CX0XGLS2M4KG.1WIPX82OSTTRT@wheely>
-Subject: Re: [PATCH] powerpc: Fix data corruption on IPI
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SWqct5yZmz3bV7
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Nov 2023 19:21:49 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1700209307;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+0IPYUuB6y8LVS3V3YvRYrvE/Uj5v9lAZt6UYvZz0Qc=;
+	b=Zo403BlmNOq2tKx31F8fojKuozdo5keIKG3BaLbSWVCZSfrPDqRbQFI+Tqkh6PJD6hxdmL
+	T0/p2xDUnyoCuiA7dSJ9fzgdJdAeEotBHWQUXlzb337yn+4caeaDPi8iID+vggDdkPAN+G
+	siEf+wee82gmRqPKO9MJwNNZje4NJt8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1700209307;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+0IPYUuB6y8LVS3V3YvRYrvE/Uj5v9lAZt6UYvZz0Qc=;
+	b=Zo403BlmNOq2tKx31F8fojKuozdo5keIKG3BaLbSWVCZSfrPDqRbQFI+Tqkh6PJD6hxdmL
+	T0/p2xDUnyoCuiA7dSJ9fzgdJdAeEotBHWQUXlzb337yn+4caeaDPi8iID+vggDdkPAN+G
+	siEf+wee82gmRqPKO9MJwNNZje4NJt8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-692-N-nJ3rrvPGOCY0SbwiDEVQ-1; Fri, 17 Nov 2023 03:21:41 -0500
+X-MC-Unique: N-nJ3rrvPGOCY0SbwiDEVQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 40E1E832D60;
+	Fri, 17 Nov 2023 08:21:41 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.24])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 45D4240C6EB9;
+	Fri, 17 Nov 2023 08:21:39 +0000 (UTC)
+Date: Fri, 17 Nov 2023 16:21:37 +0800
+From: Baoquan He <bhe@redhat.com>
+To: kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH 2/7] kexec_file: print out debugging message if required
+Message-ID: <ZVcikWw9lYN9SucO@MiWiFi-R3L-srv>
+References: <20231114153253.241262-3-bhe@redhat.com>
+ <202311160502.jnu7b8KF-lkp@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: Zimbra 8.5.0_GA_3042 (ZimbraWebClient - GC119 (Linux)/8.5.0_GA_3042)
-Thread-Topic: powerpc: Fix data corruption on IPI
-Thread-Index: Tchr9wd/0jxg9/pWCcqZ96BI2SOpHQ==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202311160502.jnu7b8KF-lkp@intel.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,121 +79,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-parisc@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, oe-kbuild-all@lists.linux.dev, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 11/16/23 at 05:57am, kernel test robot wrote:
+> Hi Baoquan,
+> 
+> kernel test robot noticed the following build errors:
+> 
+> [auto build test ERROR on arm64/for-next/core]
+> [also build test ERROR on tip/x86/core powerpc/next powerpc/fixes linus/master v6.7-rc1 next-20231115]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Baoquan-He/kexec_file-add-kexec_file-flag-to-control-debug-printing/20231114-234003
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-next/core
+> patch link:    https://lore.kernel.org/r/20231114153253.241262-3-bhe%40redhat.com
+> patch subject: [PATCH 2/7] kexec_file: print out debugging message if required
+> config: x86_64-randconfig-002-20231115 (https://download.01.org/0day-ci/archive/20231116/202311160502.jnu7b8KF-lkp@intel.com/config)
+> compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231116/202311160502.jnu7b8KF-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202311160502.jnu7b8KF-lkp@intel.com/
+> 
+> All errors (new ones prefixed by >>):
+> 
+>    kernel/crash_core.c: In function 'crash_prepare_elf64_headers':
+> >> kernel/crash_core.c:412:17: error: implicit declaration of function 'kexec_dprintk'; did you mean '_dev_printk'? [-Werror=implicit-function-declaration]
+>      412 |                 kexec_dprintk("Crash PT_LOAD ELF header. phdr=%p vaddr=0x%llx, paddr=0x%llx, "
+>          |                 ^~~~~~~~~~~~~
+>          |                 _dev_printk
+>    cc1: some warnings being treated as errors
+> 
+> 
+> vim +412 kernel/crash_core.c
 
+Thanks for reporting this.
 
------ Original Message -----
-> From: "npiggin" <npiggin@gmail.com>
-> To: "Timothy Pearson" <tpearson@raptorengineering.com>, "Michael Ellerman" <mpe@ellerman.id.au>
-> Cc: "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>
-> Sent: Friday, November 17, 2023 2:01:12 AM
-> Subject: Re: [PATCH] powerpc: Fix data corruption on IPI
+Below code can fix it.
 
-> On Fri Nov 17, 2023 at 5:39 PM AEST, Timothy Pearson wrote:
->>
->>
->> ----- Original Message -----
->> > From: "Michael Ellerman" <mpe@ellerman.id.au>
->> > To: "Timothy Pearson" <tpearson@raptorengineering.com>, "linuxppc-dev"
->> > <linuxppc-dev@lists.ozlabs.org>
->> > Cc: "Jens Axboe" <axboe@kernel.dk>
->> > Sent: Tuesday, November 14, 2023 6:14:37 AM
->> > Subject: Re: [PATCH] powerpc: Fix data corruption on IPI
->>
->> > Hi Timothy,
->> > 
->> > Thanks for debugging this, but I'm unclear why this is helping because
->> > we should already have a full barrier (hwsync) on both the sending and
->> > receiving side.
->> > 
->> > More below.
->>
->> I've spent another few days poking at this, and think I might finally have
->> something more solid in terms of what exactly is happening, but would like some
->> feedback on the concept / how best to fix the potential problem.
->>
->> As background, there are several worker threads both in userspace and in kernel
->> mode.  Crucially, the main MariaDB data processing thread (the one that handles
->> tasks like flushing dirty pages to disk) always runs on the same core as the
->> io_uring kernel thread that picks up I/O worker creation requests and handles
->> them via create_worker_cb().
->>
->> Changes in the ~5.12 era switched away from a delayed worker setup.  io_uring
->> currently sets up the new process with create_io_thread(), and immediately uses
->> an IPI to forcibly schedule the new process.  Because of the way the two
->> threads interact, the new process ends up grabbing the CPU from the running
->> MariaDB user thread; I've never seen it schedule on a different core.  If the
->> timing is right in this process, things get trampled on in userspace and the
->> database server either crashes or throws a corruption fault.
->>
->> Through extensive debugging, I've narrowed this down to invalid state in the VSX
->> registers on return to the MariaDB user thread from the new kernel thread.  For
->> some reason, it seems we don't restore FP state on return from the PF_IO_WORKER
->> thread, and something in the kernel was busy writing new data to them.
->>
->> A direct example I was able to observe is as follows:
->>
->> xxspltd vs0,vs0,0      <-- vs0 now zeroed out
->> xori    r9,r9,1        <-- Presumably we switch to the new kernel thread here
->> due to the IPI
->> slwi    r9,r9,7        <-- On userspace thread resume, vs0 now contains the
->> value 0x820040000000000082004000
->> xxswapd vs8,vs0        <-- vs8 now has the wrong value
->> stxvd2x vs8,r3,r12     <-- userspace is now getting stepped on
->> stw     r9,116(r3)
->> stxvd2x vs8,r3,r0
->> ...
->> CRASH
-> 
-> Nice find, that looks pretty conclusive.
-> 
->> This is a very difficult race to hit, but MariaDB naturally does repetitive
->> operations with VSX registers so it does eventually fail.  I ended up with a
->> tight loop around glibc operations that use VSX to trigger the failure reliably
->> enough to even understand what was going on.
->>
->> As I am not as familiar with this part of the Linux kernel as with most other
->> areas, what is the expected save/restore path for the FP/VSX registers around
->> an IPI and associated forced thread switch?  If restore_math() is in the return
->> path, note that MSR_FP is set in regs->msr.
-> 
-> Context switching these FP/vec registers should be pretty robust in
-> general because it's not just io-uring that uses them. io-uring could
-> be using some uncommon kernel code that uses the registers incorrectly
-> though I guess.
-> 
->>
->> Second question: should we even be using the VSX registers at all in kernel
->> space?  Is this a side effect of io_uring interacting so closely with userspace
->> threads, or something else entirely?
->>
->> If I can get pointed somewhat in the right direction I'm ready to develop the
->> rest of the fix for this issue...just trying to avoid another several days of
->> slogging through the source to see what it's supposed to be doing in the first
->> place. :)
-> 
-> Kernel can use FP/VEC/VSX registers but it has to enable and disable
-> explicitly. Such kernel code also should not be preemptible.
-> 
-> enable|disable_kernel_fp|altivec|vsx().
-> 
-> Maybe try run the test with ppc_strict_facility_enable boot option to
-> start with.
-> 
-> If no luck with that, maybe put WARN_ON(preemptible()); checks also in
-> the disable_kernel_* functions.
-> 
-> You could also add an enable/disable counter for each, and make sure it
-> is balanced on context switch or kernel->userspace exit.
-> 
-> Thanks,
-> Nick
+crash_prepare_elf64_headers() could be used by kexec_load interface for
+cpu/memory hotplug updating elfcoreheader, or by kexec_file_load
+interface for elfcoreheader composing or updating. Only print out the
+debugging message about ELF core header when kexec_file_load interface
+is taken.
 
-Will do, thanks for the hints!
+diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+index 41001ffbaa99..1485fd7bb67f 100644
+--- a/kernel/crash_core.c
++++ b/kernel/crash_core.c
+@@ -551,10 +551,12 @@ int crash_prepare_elf64_headers(struct crash_mem *mem, int need_kernel_map,
+ 		phdr->p_filesz = phdr->p_memsz = mend - mstart + 1;
+ 		phdr->p_align = 0;
+ 		ehdr->e_phnum++;
++#ifdef CONFIG_KEXEC_FILE
+ 		kexec_dprintk("Crash PT_LOAD ELF header. phdr=%p vaddr=0x%llx, paddr=0x%llx, "
+ 			"sz=0x%llx e_phnum=%d p_offset=0x%llx\n",
+ 			phdr, phdr->p_vaddr, phdr->p_paddr, phdr->p_filesz,
+ 			ehdr->e_phnum, phdr->p_offset);
++#endif
+ 		phdr++;
+ 	}
 
-I had a debug idea just as I sent the earlier message, and was able to confirm the kernel is purposefully restoring the bad data in at least one spot in the thread's history, though curiously *not* right before everything goes off the rails.  I also dumped the entire kernel binary and confirmed it isn't touching the vs* registers, so overall this is leaning more toward a bad value being restored than kernel code inadvertently making use of the vector registers.
-
-An I missing anything other than do_restore_fp() that could touch the vs* registers around an interrupt-driven task switch?
