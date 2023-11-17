@@ -1,36 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 458017EF24F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Nov 2023 13:08:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64A757EF2C0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Nov 2023 13:38:15 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=ideasonboard.com header.i=@ideasonboard.com header.a=rsa-sha256 header.s=mail header.b=RGTr3apo;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SWwfK1r0hz3dBp
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Nov 2023 23:08:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SWxJj2P1Qz3dBq
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Nov 2023 23:38:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=srs0=p6zk=g6=xs4all.nl=hverkuil@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=ideasonboard.com header.i=@ideasonboard.com header.a=rsa-sha256 header.s=mail header.b=RGTr3apo;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ideasonboard.com (client-ip=213.167.242.64; helo=perceval.ideasonboard.com; envelope-from=laurent.pinchart@ideasonboard.com; receiver=lists.ozlabs.org)
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SWwdl6dHMz3cBQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Nov 2023 23:07:55 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id AAAC3CE2426;
-	Fri, 17 Nov 2023 12:07:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6799C433C7;
-	Fri, 17 Nov 2023 12:07:45 +0000 (UTC)
-Message-ID: <6badc94c-c414-40d7-a9d7-8b3fc86d8d98@xs4all.nl>
-Date: Fri, 17 Nov 2023 13:07:44 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SWxHp1g14z3cgl
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Nov 2023 23:37:26 +1100 (AEDT)
+Received: from pendragon.ideasonboard.com (213-243-189-158.bb.dnainternet.fi [213.243.189.158])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id A2FCD9B6;
+	Fri, 17 Nov 2023 13:36:51 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1700224611;
+	bh=nCM5mJDfTQep0lCcD7wOELb64Gk5Ed+Ry65bNeALoM8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RGTr3apoxK/eQC/H+CwQgQjqm00uvtopcrCS19GTaFDJh2gqLsfLzGv98VvqKcyuT
+	 hXuQZRAr8AAeCdqCG+KpYI91PJ0p1oiU0knHWs21KeUsfSwjexaL+19jAOvlKm9qJg
+	 ci9YXT1kdrKOZRMKGUOZKKE2GOs3OVHqlU006zTg=
+Date: Fri, 17 Nov 2023 14:37:24 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Tomasz Figa <tfiga@chromium.org>
 Subject: Re: [PATCH v9 10/15] media: uapi: Add V4L2_CTRL_TYPE_FIXED_POINT
-Content-Language: en-US, nl
-To: Shengjiu Wang <shengjiu.wang@gmail.com>
-References: <6a3e7eb9-505c-4cfb-8a86-a8947a2e44d5@xs4all.nl>
- <20231113110754.GB24338@pendragon.ideasonboard.com>
- <3e898664-cbfc-4892-9765-37b66891643b@xs4all.nl>
+Message-ID: <20231117123724.GJ21041@pendragon.ideasonboard.com>
+References: <3e898664-cbfc-4892-9765-37b66891643b@xs4all.nl>
  <ZVIIc-fi32ZxIi-p@valkosipuli.retiisi.eu>
  <20231113114357.GD24338@pendragon.ideasonboard.com>
  <da6efe14-c00d-4bf4-bf61-dd4ed39c5c60@xs4all.nl>
@@ -40,55 +47,11 @@ References: <6a3e7eb9-505c-4cfb-8a86-a8947a2e44d5@xs4all.nl>
  <a67491c0-4fdf-4472-852c-e75f5e1d67af@xs4all.nl>
  <20231115114931.GE13826@pendragon.ideasonboard.com>
  <CAAFQd5BkCR=tYvmfjkOeTnjnccmURt8kEtiRee9CYqcz+FGHfg@mail.gmail.com>
- <7626e0f8-ce31-469e-b49c-f2fba664756f@xs4all.nl>
- <CAA+D8ANb6A9eh=MQR9+7sZi5jet+7RSHt6TdZqPz5EK6pBs3mA@mail.gmail.com>
-From: Hans Verkuil <hverkuil@xs4all.nl>
-Autocrypt: addr=hverkuil@xs4all.nl; keydata=
- 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
-In-Reply-To: <CAA+D8ANb6A9eh=MQR9+7sZi5jet+7RSHt6TdZqPz5EK6pBs3mA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAFQd5BkCR=tYvmfjkOeTnjnccmURt8kEtiRee9CYqcz+FGHfg@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,298 +63,245 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Tomasz Figa <tfiga@chromium.org>, Xiubo.Lee@gmail.com, linuxppc-dev@lists.ozlabs.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-kernel@vger.kernel.org, lgirdwood@gmail.com, nicoleotsuka@gmail.com, broonie@kernel.org, Sakari Ailus <sakari.ailus@iki.fi>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, m.szyprowski@samsung.com, mchehab@kernel.org, festevam@gmail.com, perex@perex.cz, linux-media@vger.kernel.org
+Cc: nicoleotsuka@gmail.com, alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, Xiubo.Lee@gmail.com, festevam@gmail.com, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-kernel@vger.kernel.org, lgirdwood@gmail.com, Hans Verkuil <hverkuil@xs4all.nl>, broonie@kernel.org, Sakari Ailus <sakari.ailus@iki.fi>, m.szyprowski@samsung.com, mchehab@kernel.org, shengjiu.wang@gmail.com, perex@perex.cz, linux-media@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Here is an RFC patch adding support for 'fraction_bits'. It's lacking
-documentation, but it can be used for testing.
+Hi Tomasz,
 
-It was rather a pain logging fixed point number in a reasonable format,
-but I think it is OK.
+On Thu, Nov 16, 2023 at 04:31:41PM +0900, Tomasz Figa wrote:
+> On Wed, Nov 15, 2023 at 8:49 PM Laurent Pinchart wrote:
+> > On Wed, Nov 15, 2023 at 12:19:31PM +0100, Hans Verkuil wrote:
+> > > On 11/15/23 11:55, Laurent Pinchart wrote:
+> > > > On Wed, Nov 15, 2023 at 09:09:42AM +0100, Hans Verkuil wrote:
+> > > >> On 13/11/2023 13:44, Laurent Pinchart wrote:
+> > > >>> On Mon, Nov 13, 2023 at 01:05:12PM +0100, Hans Verkuil wrote:
+> > > >>>> On 13/11/2023 12:43, Laurent Pinchart wrote:
+> > > >>>>> On Mon, Nov 13, 2023 at 11:28:51AM +0000, Sakari Ailus wrote:
+> > > >>>>>> On Mon, Nov 13, 2023 at 12:24:14PM +0100, Hans Verkuil wrote:
+> > > >>>>>>> On 13/11/2023 12:07, Laurent Pinchart wrote:
+> > > >>>>>>>> On Mon, Nov 13, 2023 at 11:56:49AM +0100, Hans Verkuil wrote:
+> > > >>>>>>>>> On 13/11/2023 11:42, Laurent Pinchart wrote:
+> > > >>>>>>>>>> On Mon, Nov 13, 2023 at 11:29:09AM +0100, Hans Verkuil wrote:
+> > > >>>>>>>>>>> On 10/11/2023 06:48, Shengjiu Wang wrote:
+> > > >>>>>>>>>>>> Fixed point controls are used by the user to configure
+> > > >>>>>>>>>>>> a fixed point value in 64bits, which Q31.32 format.
+> > > >>>>>>>>>>>>
+> > > >>>>>>>>>>>> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > > >>>>>>>>>>>
+> > > >>>>>>>>>>> This patch adds a new control type. This is something that also needs to be
+> > > >>>>>>>>>>> tested by v4l2-compliance, and for that we need to add support for this to
+> > > >>>>>>>>>>> one of the media test-drivers. The best place for that is the vivid driver,
+> > > >>>>>>>>>>> since that has already a bunch of test controls for other control types.
+> > > >>>>>>>>>>>
+> > > >>>>>>>>>>> See e.g. VIVID_CID_INTEGER64 in vivid-ctrls.c.
+> > > >>>>>>>>>>>
+> > > >>>>>>>>>>> Can you add a patch adding a fixed point test control to vivid?
+> > > >>>>>>>>>>
+> > > >>>>>>>>>> I don't think V4L2_CTRL_TYPE_FIXED_POINT is a good idea. This seems to
+> > > >>>>>>>>>> relate more to units than control types. We have lots of fixed-point
+> > > >>>>>>>>>> values in controls already, using the 32-bit and 64-bit integer control
+> > > >>>>>>>>>> types. They use various locations for the decimal point, depending on
+> > > >>>>>>>>>> the control. If we want to make this more explicit to users, we should
+> > > >>>>>>>>>> work on adding unit support to the V4L2 controls.
+> > > >>>>>>>>>
+> > > >>>>>>>>> "Fixed Point" is not a unit, it's a type. 'Db', 'Hz' etc. are units.
+> > > >>>>>>>>
+> > > >>>>>>>> It's not a unit, but I think it's related to units. My point is that,
+> > > >>>>>>>> without units support, I don't see why we need a formal definition of
+> > > >>>>>>>> fixed-point types, and why this series couldn't just use
+> > > >>>>>>>> VIVID_CID_INTEGER64. Drivers already interpret VIVID_CID_INTEGER64
+> > > >>>>>>>> values as they see fit.
+> > > >>>>>>>
+> > > >>>>>>> They do? That's new to me. A quick grep for V4L2_CTRL_TYPE_INTEGER64
+> > > >>>>>>> (I assume you meant that rather than VIVID_CID_INTEGER64) shows that it
+> > > >>>>>
+> > > >>>>> Yes, I meant V4L2_CTRL_TYPE_INTEGER64. Too hasty copy & paste :-)
+> > > >>>>>
+> > > >>>>>>> is always interpreted as a 64 bit integer and nothing else. As it should.
+> > > >>>>>
+> > > >>>>> The most common case for control handling in drivers is taking the
+> > > >>>>> integer value and converting it to a register value, using
+> > > >>>>> device-specific encoding of the register value. It can be a fixed-point
+> > > >>>>> format or something else, depending on the device. My point is that
+> > > >>>>> drivers routinely convert a "plain" integer to something else, and that
+> > > >>>>> has never been considered as a cause of concern. I don't see why it
+> > > >>>>> would be different in this series.
+> > > >>>>>
+> > > >>>>>>> And while we do not have support for units (other than the documentation),
+> > > >>>>>>> we do have type support in the form of V4L2_CTRL_TYPE_*.
+> > > >>>>>>>
+> > > >>>>>>>>> A quick "git grep -i "fixed point" Documentation/userspace-api/media/'
+> > > >>>>>>>>> only shows a single driver specific control (dw100.rst).
+> > > >>>>>>>>>
+> > > >>>>>>>>> I'm not aware of other controls in mainline that use fixed point.
+> > > >>>>>>>>
+> > > >>>>>>>> The analog gain control for sensors for instance.
+> > > >>>>>>>
+> > > >>>>>>> Not really. The documentation is super vague:
+> > > >>>>>>>
+> > > >>>>>>> V4L2_CID_ANALOGUE_GAIN (integer)
+> > > >>>>>>>
+> > > >>>>>>>       Analogue gain is gain affecting all colour components in the pixel matrix. The
+> > > >>>>>>>       gain operation is performed in the analogue domain before A/D conversion.
+> > > >>>>>>>
+> > > >>>>>>> And the integer is just a range. Internally it might map to some fixed
+> > > >>>>>>> point value, but userspace won't see that, it's hidden in the driver AFAICT.
+> > > >>>>>
+> > > >>>>> It's hidden so well that libcamera has a database of the sensor it
+> > > >>>>> supports, with formulas to map a real gain value to the
+> > > >>>>> V4L2_CID_ANALOGUE_GAIN control. The encoding of the integer value does
+> > > >>>>> matter, and the kernel doesn't expose it. We may or may not consider
+> > > >>>>> that as a shortcoming of the V4L2 control API, but in any case it's the
+> > > >>>>> situation we have today.
+> > > >>>>>
+> > > >>>>>> I wonder if Laurent meant digital gain.
+> > > >>>>>
+> > > >>>>> No, I meant analog. It applies to digital gain too though.
+> > > >>>>>
+> > > >>>>>> Those are often Q numbers. The practice there has been that the default
+> > > >>>>>> value yields gain of 1.
+> > > >>>>>>
+> > > >>>>>> There are probably many other examples in controls where something being
+> > > >>>>>> controlled isn't actually an integer while integer controls are still being
+> > > >>>>>> used for the purpose.
+> > > >>>>>
+> > > >>>>> A good summary of my opinion :-)
+> > > >>>>
+> > > >>>> And that works fine as long as userspace doesn't need to know what the value
+> > > >>>> actually means.
+> > > >>>>
+> > > >>>> That's not the case here. The control is really a fractional Hz value:
+> > > >>>>
+> > > >>>> +``V4L2_CID_M2M_AUDIO_SOURCE_RATE_OFFSET (fixed point)``
+> > > >>>> +    Sets the offset from the audio source sample rate, unit is Hz.
+> > > >>>> +    The offset compensates for any clock drift. The actual source audio sample
+> > > >>>> +    rate is the ideal source audio sample rate from
+> > > >>>> +    ``V4L2_CID_M2M_AUDIO_SOURCE_RATE`` plus this fixed point offset.
+> > > >>>
+> > > >>> I don't see why this would require a new type, you can use
+> > > >>> V4L2_CTRL_TYPE_INTEGER64, and document the control as containing
+> > > >>> fixed-point values in Q31.32 format.
+> > > >>
+> > > >> Why would you want to do this? I can store a double in a long long int,
+> > > >> and just document that the variable is really a double, but why would you?
+> > > >
+> > > > I'm happy we have no floating point control types ;-)
+> > > >
+> > > >> The cost of adding a FIXED_POINT type is minimal, and having this type
+> > > >> makes it easy to work with fixed point controls (think about proper reporting
+> > > >> and setting of the value in v4l2-ctl and user applications in general that
+> > > >> deal with controls).
+> > > >
+> > > > The next thing you know is that someone will want a FIXED_POINT_Q15_16
+> > > > type as 64-bit would be too large to store in a large array. And then
+> > > > Q7.8. And Q3.12. And a bunch of other type. I really don't see what
+> > > > added value they bring compared to using the 32-bit and 64-bit integer
+> > > > types we already have. Every new type that is added adds complexity to
+> > > > userspace that will need to deal with the type.
+> > > >
+> > > >> If this would add a thousand lines of complex code, then this would be a
+> > > >> consideration, but this is just a few lines.
+> > > >>
+> > > >> Just to give an example, if you use 'v4l2-ctl -l' to list a int64 control
+> > > >> and it reports the value 13958643712, would you be able to see that that is
+> > > >> really 3.25 in fixed point format? With the right type it would be printed
+> > > >> like that. Much easier to work work.
+> > > >
+> > > > The same is true for analog gains, where x1.23 or +12dB is nicer to read
+> > > > than raw values. If we care about printing values in command line tools
+> > > > (which is nice to have, but certainly not the majority of use cases),
+> > > > then I would recommand working on units support for V4L2 controls, to
+> > > > convey how values are encoded, and in what unit they are expressed.
+> > >
+> > > So you prefer to have a way to specify the N value in QM.N as part
+> > > of the control information?
+> > >
+> > > E.g. add a '__u8 fraction_bits' field to structs v4l2_query_ext_ctrl
+> > > and v4l2_queryctrl. If 0, then it is an integer, otherwise it is the N
+> > > in QM.N.
+> > >
+> > > I can go along with that. This would be valid for INTEGER, INTEGER64,
+> > > U8, U16 and U32 controls (the last three are only used in control arrays).
+> >
+> > I think that would be nicer. Not only is it more flexible, but it also
+> > allows applications to ignore that information, and still operate on
+> > integer controls without any modification.
+> >
+> > > A better name for 'fraction_bits' is welcome, I took it from the wikipedia
+> > > article: https://en.wikipedia.org/wiki/Fixed-point_arithmetic
+> 
+> I like the idea and the name sounds fine to me too.
+> 
+> > > Reporting unit names is certainly possible, but should perhaps be done
+> > > with a separate ioctl? E.g. VIDIOC_QUERY_CTRL_UNIT. It is not typically
+> > > needed for applications, unless they need to report values. In theory
+> > > it can also be reported through VIDIOC_QUERY_EXT_CTRL by using, say,
+> > > 4 of the reserved fields for a 'char unit[16];' field. But I feel a
+> > > bit uncomfortable taking reserved fields for something that is rarely
+> > > needed.
+> >
+> > I would make the unit an enumerated integer value. If it's a string, it
+> > gets more difficult to operate on. Having to standardize a unit means
+> > that the unit will get reviewed.
+> 
+> What usage do we envision for units? Could one give some examples? My
+> impression is that we already defined most of the controls with
+> explicit units.
 
-In userspace (where you can use floating point) it is a lot easier:
+Many controls are defined with explicit units in the API specification.
+Drivers may or may not comply with that, and there's no way for
+applications to query unit-related information dynamically. As a result,
+we end up hardcoding in libcamera the unit and scale of the analogue
+gain control for each sensor. I'm not saying this necessarily has to
+change, but it would be one use case.
 
-printf("%.*g\n", fraction_bits, (double)v * (1.0 / (1ULL << fraction_bits)));
+Another use case would be to pretty-print values, but I don't think we
+should design the API with this use case as an important target. If I
+were to redesign the V4L2 control API, I would drop the control name,
+and certainly drop things like V4L2_CTRL_FLAG_SLIDER, and probably
+V4L2_CTRL_FLAG_GRABBED too. If there are valid use cases for units, then
+we can also use them for pretty-printing, but let's not add them
+otherwise.
 
-I decided to only expose fraction_bits in struct v4l2_query_ext_ctrl.
-I could add it to struct v4l2_queryctrl, but I did not think that was
-necessary. Other opinions are welcome.
+> > > >>>>>> Instead of this patch, I'd prefer to have a way to express the meaning of
+> > > >>>>>> the control value, be it a Q number or something else, and do that
+> > > >>>>>> independently of the type of the control.
+> > > >>>>
+> > > >>>> Huh? How is that different from the type of the control? You have integers
+> > > >>>> (one type) and fixed point (another type).
+> > > >>>>
+> > > >>>> Or do you want a more general V4L2_CTRL_TYPE_ that specifies the N.M values
+> > > >>>> explicitly?
+> > > >>>>
+> > > >>>> I think the main reason why we use integer controls for gain is that we
+> > > >>>> never had a fixed point control type and you could get away with that in
+> > > >>>> user space for that particular use-case.
+> > > >>>>
+> > > >>>> Based on the V4L2_CID_NOTIFY_GAINS documentation the gain value can typically
+> > > >>>> be calculated as (value / default_value),
+> > > >>>
+> > > >>> Typically, but not always. Some sensor have an exponential gain model,
+> > > >>> and some have weird gain representation, such as 1/x. That's getting out
+> > > >>> of scope though.
+> > > >>>
+> > > >>>> but that won't work for a rate offset
+> > > >>>> control as above, or for e.g. CSC matrices for color converters.
+> > > >>>>
+> > > >>>>> Agreed.
+> > > >>>>>
+> > > >>>>>>> In the case of this particular series the control type is really a fixed point
+> > > >>>>>>> value with a documented unit (Hz). It really is not something you want to
+> > > >>>>>>> use type INTEGER64 for.
+> > > >>>>>>>
+> > > >>>>>>>>> Note that V4L2_CTRL_TYPE_FIXED_POINT is a Q31.32 format. By setting
+> > > >>>>>>>>> min/max/step you can easily map that to just about any QN.M format where
+> > > >>>>>>>>> N <= 31 and M <= 32.
+> > > >>>>>>>>>
+> > > >>>>>>>>> In the case of dw100 it is a bit different in that it is quite specialized
+> > > >>>>>>>>> and it had to fit in 16 bits.
 
-In the meantime, let me know if this works for your patch series. If it
-does, then I can clean this up.
-
+-- 
 Regards,
 
-	Hans
-
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
----
- drivers/media/v4l2-core/v4l2-ctrls-api.c  |  1 +
- drivers/media/v4l2-core/v4l2-ctrls-core.c | 72 +++++++++++++++++++----
- include/media/v4l2-ctrls.h                |  7 ++-
- include/uapi/linux/videodev2.h            | 20 ++++++-
- 4 files changed, 85 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/media/v4l2-core/v4l2-ctrls-api.c b/drivers/media/v4l2-core/v4l2-ctrls-api.c
-index 002ea6588edf..3132df315b17 100644
---- a/drivers/media/v4l2-core/v4l2-ctrls-api.c
-+++ b/drivers/media/v4l2-core/v4l2-ctrls-api.c
-@@ -1101,6 +1101,7 @@ int v4l2_query_ext_ctrl(struct v4l2_ctrl_handler *hdl, struct v4l2_query_ext_ctr
- 	qc->elems = ctrl->elems;
- 	qc->nr_of_dims = ctrl->nr_of_dims;
- 	memcpy(qc->dims, ctrl->dims, qc->nr_of_dims * sizeof(qc->dims[0]));
-+	qc->fraction_bits = ctrl->fraction_bits;
- 	qc->minimum = ctrl->minimum;
- 	qc->maximum = ctrl->maximum;
- 	qc->default_value = ctrl->default_value;
-diff --git a/drivers/media/v4l2-core/v4l2-ctrls-core.c b/drivers/media/v4l2-core/v4l2-ctrls-core.c
-index a662fb60f73f..0e08a371af5c 100644
---- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
-+++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
-@@ -252,12 +252,42 @@ void v4l2_ctrl_type_op_init(const struct v4l2_ctrl *ctrl, u32 from_idx,
- }
- EXPORT_SYMBOL(v4l2_ctrl_type_op_init);
-
-+static void v4l2_ctrl_log_fp(s64 v, unsigned int fraction_bits)
-+{
-+	s64 i = v4l2_fp_integer(v, fraction_bits);
-+	s64 f = v4l2_fp_fraction(v, fraction_bits);
-+
-+	if (!f) {
-+		pr_cont("%lld", i);
-+	} else if (fraction_bits < 20) {
-+		u64 div = 1ULL << fraction_bits;
-+
-+		if (!i && f < 0)
-+			pr_cont("-%lld/%llu", -f, div);
-+		else if (!i)
-+			pr_cont("%lld/%llu", f, div);
-+		else if (i < 0 || f < 0)
-+			pr_cont("-%lld-%llu/%llu", -i, -f, div);
-+		else
-+			pr_cont("%lld+%llu/%llu", i, f, div);
-+	} else {
-+		if (!i && f < 0)
-+			pr_cont("-%lld/(2^%u)", -f, fraction_bits);
-+		else if (!i)
-+			pr_cont("%lld/(2^%u)", f, fraction_bits);
-+		else if (i < 0 || f < 0)
-+			pr_cont("-%lld-%llu/(2^%u)", -i, -f, fraction_bits);
-+		else
-+			pr_cont("%lld+%llu/(2^%u)", i, f, fraction_bits);
-+	}
-+}
-+
- void v4l2_ctrl_type_op_log(const struct v4l2_ctrl *ctrl)
- {
- 	union v4l2_ctrl_ptr ptr = ctrl->p_cur;
-
- 	if (ctrl->is_array) {
--		unsigned i;
-+		unsigned int i;
-
- 		for (i = 0; i < ctrl->nr_of_dims; i++)
- 			pr_cont("[%u]", ctrl->dims[i]);
-@@ -266,7 +296,10 @@ void v4l2_ctrl_type_op_log(const struct v4l2_ctrl *ctrl)
-
- 	switch (ctrl->type) {
- 	case V4L2_CTRL_TYPE_INTEGER:
--		pr_cont("%d", *ptr.p_s32);
-+		if (!ctrl->fraction_bits)
-+			pr_cont("%d", *ptr.p_s32);
-+		else
-+			v4l2_ctrl_log_fp(*ptr.p_s32, ctrl->fraction_bits);
- 		break;
- 	case V4L2_CTRL_TYPE_BOOLEAN:
- 		pr_cont("%s", *ptr.p_s32 ? "true" : "false");
-@@ -281,19 +314,31 @@ void v4l2_ctrl_type_op_log(const struct v4l2_ctrl *ctrl)
- 		pr_cont("0x%08x", *ptr.p_s32);
- 		break;
- 	case V4L2_CTRL_TYPE_INTEGER64:
--		pr_cont("%lld", *ptr.p_s64);
-+		if (!ctrl->fraction_bits)
-+			pr_cont("%lld", *ptr.p_s64);
-+		else
-+			v4l2_ctrl_log_fp(*ptr.p_s64, ctrl->fraction_bits);
- 		break;
- 	case V4L2_CTRL_TYPE_STRING:
- 		pr_cont("%s", ptr.p_char);
- 		break;
- 	case V4L2_CTRL_TYPE_U8:
--		pr_cont("%u", (unsigned)*ptr.p_u8);
-+		if (!ctrl->fraction_bits)
-+			pr_cont("%u", (unsigned int)*ptr.p_u8);
-+		else
-+			v4l2_ctrl_log_fp((unsigned int)*ptr.p_u8, ctrl->fraction_bits);
- 		break;
- 	case V4L2_CTRL_TYPE_U16:
--		pr_cont("%u", (unsigned)*ptr.p_u16);
-+		if (!ctrl->fraction_bits)
-+			pr_cont("%u", (unsigned int)*ptr.p_u16);
-+		else
-+			v4l2_ctrl_log_fp((unsigned int)*ptr.p_u16, ctrl->fraction_bits);
- 		break;
- 	case V4L2_CTRL_TYPE_U32:
--		pr_cont("%u", (unsigned)*ptr.p_u32);
-+		if (!ctrl->fraction_bits)
-+			pr_cont("%u", (unsigned int)*ptr.p_u32);
-+		else
-+			v4l2_ctrl_log_fp((unsigned int)*ptr.p_u32, ctrl->fraction_bits);
- 		break;
- 	case V4L2_CTRL_TYPE_H264_SPS:
- 		pr_cont("H264_SPS");
-@@ -1752,7 +1797,7 @@ static struct v4l2_ctrl *v4l2_ctrl_new(struct v4l2_ctrl_handler *hdl,
- 			u32 id, const char *name, enum v4l2_ctrl_type type,
- 			s64 min, s64 max, u64 step, s64 def,
- 			const u32 dims[V4L2_CTRL_MAX_DIMS], u32 elem_size,
--			u32 flags, const char * const *qmenu,
-+			u32 fraction_bits, u32 flags, const char * const *qmenu,
- 			const s64 *qmenu_int, const union v4l2_ctrl_ptr p_def,
- 			void *priv)
- {
-@@ -1939,6 +1984,7 @@ static struct v4l2_ctrl *v4l2_ctrl_new(struct v4l2_ctrl_handler *hdl,
- 	ctrl->name = name;
- 	ctrl->type = type;
- 	ctrl->flags = flags;
-+	ctrl->fraction_bits = fraction_bits;
- 	ctrl->minimum = min;
- 	ctrl->maximum = max;
- 	ctrl->step = step;
-@@ -2037,7 +2083,7 @@ struct v4l2_ctrl *v4l2_ctrl_new_custom(struct v4l2_ctrl_handler *hdl,
- 	ctrl = v4l2_ctrl_new(hdl, cfg->ops, cfg->type_ops, cfg->id, name,
- 			type, min, max,
- 			is_menu ? cfg->menu_skip_mask : step, def,
--			cfg->dims, cfg->elem_size,
-+			cfg->dims, cfg->elem_size, cfg->fraction_bits,
- 			flags, qmenu, qmenu_int, cfg->p_def, priv);
- 	if (ctrl)
- 		ctrl->is_private = cfg->is_private;
-@@ -2062,7 +2108,7 @@ struct v4l2_ctrl *v4l2_ctrl_new_std(struct v4l2_ctrl_handler *hdl,
- 		return NULL;
- 	}
- 	return v4l2_ctrl_new(hdl, ops, NULL, id, name, type,
--			     min, max, step, def, NULL, 0,
-+			     min, max, step, def, NULL, 0, 0,
- 			     flags, NULL, NULL, ptr_null, NULL);
- }
- EXPORT_SYMBOL(v4l2_ctrl_new_std);
-@@ -2095,7 +2141,7 @@ struct v4l2_ctrl *v4l2_ctrl_new_std_menu(struct v4l2_ctrl_handler *hdl,
- 		return NULL;
- 	}
- 	return v4l2_ctrl_new(hdl, ops, NULL, id, name, type,
--			     0, max, mask, def, NULL, 0,
-+			     0, max, mask, def, NULL, 0, 0,
- 			     flags, qmenu, qmenu_int, ptr_null, NULL);
- }
- EXPORT_SYMBOL(v4l2_ctrl_new_std_menu);
-@@ -2127,7 +2173,7 @@ struct v4l2_ctrl *v4l2_ctrl_new_std_menu_items(struct v4l2_ctrl_handler *hdl,
- 		return NULL;
- 	}
- 	return v4l2_ctrl_new(hdl, ops, NULL, id, name, type,
--			     0, max, mask, def, NULL, 0,
-+			     0, max, mask, def, NULL, 0, 0,
- 			     flags, qmenu, NULL, ptr_null, NULL);
-
- }
-@@ -2149,7 +2195,7 @@ struct v4l2_ctrl *v4l2_ctrl_new_std_compound(struct v4l2_ctrl_handler *hdl,
- 		return NULL;
- 	}
- 	return v4l2_ctrl_new(hdl, ops, NULL, id, name, type,
--			     min, max, step, def, NULL, 0,
-+			     min, max, step, def, NULL, 0, 0,
- 			     flags, NULL, NULL, p_def, NULL);
- }
- EXPORT_SYMBOL(v4l2_ctrl_new_std_compound);
-@@ -2173,7 +2219,7 @@ struct v4l2_ctrl *v4l2_ctrl_new_int_menu(struct v4l2_ctrl_handler *hdl,
- 		return NULL;
- 	}
- 	return v4l2_ctrl_new(hdl, ops, NULL, id, name, type,
--			     0, max, 0, def, NULL, 0,
-+			     0, max, 0, def, NULL, 0, 0,
- 			     flags, NULL, qmenu_int, ptr_null, NULL);
- }
- EXPORT_SYMBOL(v4l2_ctrl_new_int_menu);
-diff --git a/include/media/v4l2-ctrls.h b/include/media/v4l2-ctrls.h
-index 59679a42b3e7..c35514c5bf88 100644
---- a/include/media/v4l2-ctrls.h
-+++ b/include/media/v4l2-ctrls.h
-@@ -211,7 +211,8 @@ typedef void (*v4l2_ctrl_notify_fnc)(struct v4l2_ctrl *ctrl, void *priv);
-  *		except for dynamic arrays. In that case it is in the range of
-  *		1 to @p_array_alloc_elems.
-  * @dims:	The size of each dimension.
-- * @nr_of_dims:The number of dimensions in @dims.
-+ * @nr_of_dims: The number of dimensions in @dims.
-+ * @fraction_bits: The number of fraction bits for fixed point values.
-  * @menu_skip_mask: The control's skip mask for menu controls. This makes it
-  *		easy to skip menu items that are not valid. If bit X is set,
-  *		then menu item X is skipped. Of course, this only works for
-@@ -228,6 +229,7 @@ typedef void (*v4l2_ctrl_notify_fnc)(struct v4l2_ctrl *ctrl, void *priv);
-  *		:math:`ceil(\frac{maximum - minimum}{step}) + 1`.
-  *		Used only if the @type is %V4L2_CTRL_TYPE_INTEGER_MENU.
-  * @flags:	The control's flags.
-+ * @fraction_bits: The number of fraction bits for fixed point values.
-  * @priv:	The control's private pointer. For use by the driver. It is
-  *		untouched by the control framework. Note that this pointer is
-  *		not freed when the control is deleted. Should this be needed
-@@ -286,6 +288,7 @@ struct v4l2_ctrl {
- 	u32 new_elems;
- 	u32 dims[V4L2_CTRL_MAX_DIMS];
- 	u32 nr_of_dims;
-+	u32 fraction_bits;
- 	union {
- 		u64 step;
- 		u64 menu_skip_mask;
-@@ -426,6 +429,7 @@ struct v4l2_ctrl_handler {
-  * @dims:	The size of each dimension.
-  * @elem_size:	The size in bytes of the control.
-  * @flags:	The control's flags.
-+ * @fraction_bits: The number of fraction bits for fixed point values.
-  * @menu_skip_mask: The control's skip mask for menu controls. This makes it
-  *		easy to skip menu items that are not valid. If bit X is set,
-  *		then menu item X is skipped. Of course, this only works for
-@@ -455,6 +459,7 @@ struct v4l2_ctrl_config {
- 	u32 dims[V4L2_CTRL_MAX_DIMS];
- 	u32 elem_size;
- 	u32 flags;
-+	u32 fraction_bits;
- 	u64 menu_skip_mask;
- 	const char * const *qmenu;
- 	const s64 *qmenu_int;
-diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
-index c3d4e490ce7c..26ecac19722a 100644
---- a/include/uapi/linux/videodev2.h
-+++ b/include/uapi/linux/videodev2.h
-@@ -1944,9 +1944,27 @@ struct v4l2_query_ext_ctrl {
- 	__u32                elems;
- 	__u32                nr_of_dims;
- 	__u32                dims[V4L2_CTRL_MAX_DIMS];
--	__u32		     reserved[32];
-+	__u32                fraction_bits;
-+	__u32		     reserved[31];
- };
-
-+static inline __s64 v4l2_fp_compose(__s64 i, __s64 f, unsigned int fraction_bits)
-+{
-+	return (i << fraction_bits) + f;
-+}
-+
-+static inline __s64 v4l2_fp_integer(__s64 v, unsigned int fraction_bits)
-+{
-+	return v / (1LL << fraction_bits);
-+}
-+
-+static inline __s64 v4l2_fp_fraction(__s64 v, unsigned int fraction_bits)
-+{
-+	__u64 mask = (1ULL << fraction_bits) - 1;
-+
-+	return v < 0 ? -((-v) & mask) : (v & mask);
-+}
-+
- /*  Used in the VIDIOC_QUERYMENU ioctl for querying menu items */
- struct v4l2_querymenu {
- 	__u32		id;
--- 
-2.42.0
-
-
+Laurent Pinchart
