@@ -1,68 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5705A7F01E7
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Nov 2023 19:07:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B7D47F01E6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Nov 2023 19:06:14 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=mIgNg/Hf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=MScRFB3b;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SXhYd1xN7z3dLQ
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Nov 2023 05:07:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SXhXh25WNz3cVL
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Nov 2023 05:06:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=mIgNg/Hf;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=MScRFB3b;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::229; helo=mail-lj1-x229.google.com; envelope-from=hkallweit1@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::635; helo=mail-ej1-x635.google.com; envelope-from=hkallweit1@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SXhWk2KnWz3cCS
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Nov 2023 05:05:21 +1100 (AEDT)
-Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2c501bd6ff1so38029651fa.3
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SXhWk2ybpz3cJN
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Nov 2023 05:05:20 +1100 (AEDT)
+Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-9d10f94f70bso399772466b.3
         for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Nov 2023 10:05:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700330709; x=1700935509; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mu6uKqetedFX6br/8gaH2MKtwUbnJweRqllZD/aw3RQ=;
-        b=mIgNg/Hft/t/9cj3+48B+qtUu6YzaPON2r/1EzBGVVFERvlULQgHLAbakp3Wyz+jmA
-         JMZyO7fTgd3mL0+DSdE7AV1VLOur6ONsbIdOGQEfH4Ned4EPx55STGfqnVZKeD9KQJjF
-         C0sgXpu0jmk1opuhZDfMMRqdJ0zLkajthdjj48fYH6IIgqqFwYiEQrVDq0Df4FXM59Mi
-         ggdCIFYMm9iYUj0ZPH+sBrAV4WqDfooFU2zc/tN8YR5XnUXKOa46LtP8dPElxfisN9ag
-         guG90MLOlhBTGpTPCOj2DBZWyga4uONiEsc/GPGOpvJ/+dHzGuLGKBnO4Gwvu53Sx7xa
-         Lkwg==
+        d=gmail.com; s=20230601; t=1700330712; x=1700935512; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TvMhLdgxzmvHjkFyHLWsZZ7IOFCpPNkXdifeaawKQLI=;
+        b=MScRFB3biw2yf7Q+5QrxiK1UWa4LMcgC5q8ylMG9AA+y3F78arilOerCZxi+fDwk+X
+         fyOtxM42Sfrf31zO1ybhTZTUsbkWhW3X0EwUkUX2JQAs0U9Un/IoIMp8LtLgOAvQ/5M7
+         XIl1sWvejOPzvf8NOuacivP6Z0b0/5jBBxtJ4FIHhL9VMuS61FEYUHRqDKERWkD4Ro0f
+         L/orTPG7jlPfC49P3TvMQaEWfIJ+ZCvmcXcvy4QalpyliBDT+TAkLp6qjqJeImYbKBEM
+         fMVhzFPQIQLHI2nqJhPSCamYjvtOppstwpsFnVZMTXLHybbK3PAE+0ZUB0Q/90KLC2cJ
+         jijw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700330709; x=1700935509;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mu6uKqetedFX6br/8gaH2MKtwUbnJweRqllZD/aw3RQ=;
-        b=JtNjvP8uVCAv8G3/GMUcoGlKHNR/YHy5K4/2JSvsRw88lhaS9JnV/oRQlEU7HcPmGY
-         Du6vxOCL13Sck3VNbmVLMsnWIxfWb65ycxelfDNCoAf/h+n2EPymM+KWx9sQWFyLb2ru
-         a7qORl45mw1MKyNXMCIfbRhRkzeLLtzaLPAxBfKSaBbX2MXOg+m9bmM+ZloOdU3gbkgC
-         v59FXbdugSUOuX6d+91U2bneiqCeVdPb7haNVseCrt9k1K6CHJ73SIvK7/Mx58MHRviA
-         QE4h4+sjyV1FZdc+tvRxxKNx8Wc7qE2jM9+fi6p5Wj6QRysHbmv+zXfgB29ZG25I+ZSc
-         gg9A==
-X-Gm-Message-State: AOJu0YyVoi7fZZV/dWDp3Ytn4qApSvjatZNUzql7F84v2ldiCpleHs4k
-	M/t+y8DsfJD+P59/ivNAeD8=
-X-Google-Smtp-Source: AGHT+IHyeiAuLwBQ6RhMnfmUjm6ZpWN6lhi+Qcl6w/VI4MWj6Kf1RrN8easfjONwVJiPd/NUafO3dQ==
-X-Received: by 2002:a2e:9c84:0:b0:2c5:1ea4:4e99 with SMTP id x4-20020a2e9c84000000b002c51ea44e99mr2049253lji.48.1700330708944;
-        Sat, 18 Nov 2023 10:05:08 -0800 (PST)
+        d=1e100.net; s=20230601; t=1700330712; x=1700935512;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TvMhLdgxzmvHjkFyHLWsZZ7IOFCpPNkXdifeaawKQLI=;
+        b=D6g/EeFvLcsg9A1UGy8VhLLje+J5qdNXNMBonR5hk5u68TFlEV2BXUFyDk0V743vk1
+         dDH6UfF2pbtH5ELnrp62uhYjHCde921smu61FSgXpySeF+V29S5ePlppGB5y0Io6ZmzQ
+         rprBP/sRiVuJAxk4jRcu9HFuS1r7JkvsPqfPQsFCQHr2tDH58PS6dQRwKaVtNiktNk+8
+         OeRAuv5y+v8XbDb9LFlXXyn3NMKxWzinkCOSJLFWcORjNuQRxX/eNV5Z0oQciW1MTMso
+         ACZG2z5fZO4NyL2gu/W7e8JbKOCrd7KpW1veVwW5X+S0X8okSNWNVXeiRyY5++jikTyq
+         DXBg==
+X-Gm-Message-State: AOJu0Yxs4QGJKrzlfSSa817HrNyc9MzkodgNz1TxkYs6TMqRI8RLnhsV
+	nCenawmxj3Gc1OKdX0cXJx8=
+X-Google-Smtp-Source: AGHT+IGmY36vyE2njGaUXhkxvF2ffP5gHcb+uEcsV4u6HxS9Gv0SaqYqLLEs3KVtE4jvzvFYDygO7Q==
+X-Received: by 2002:a17:907:84d3:b0:9e3:ef19:7205 with SMTP id oh19-20020a17090784d300b009e3ef197205mr1849277ejc.3.1700330712142;
+        Sat, 18 Nov 2023 10:05:12 -0800 (PST)
 Received: from zotac.lan. (dynamic-2a01-0c22-77bf-8300-2223-08ff-fe18-0310.c22.pool.telefonica.de. [2a01:c22:77bf:8300:2223:8ff:fe18:310])
-        by smtp.gmail.com with ESMTPSA id m20-20020a1709062b9400b009f2c769b4ebsm2079456ejg.151.2023.11.18.10.05.08
+        by smtp.gmail.com with ESMTPSA id m20-20020a1709062b9400b009f2c769b4ebsm2079456ejg.151.2023.11.18.10.05.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Nov 2023 10:05:08 -0800 (PST)
+        Sat, 18 Nov 2023 10:05:11 -0800 (PST)
 From: Heiner Kallweit <hkallweit1@gmail.com>
 To: Wolfram Sang <wsa@kernel.org>,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 00/10] Don't let i2c adapters declare I2C_CLASS_SPD support if they support I2C_CLASS_HWMON
-Date: Sat, 18 Nov 2023 19:04:54 +0100
-Message-ID: <20231118180504.1785-1-hkallweit1@gmail.com>
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 03/10] drivers/i2c/busses/i2c-pasemi-pci.c: Don't let i2c adapters declare I2C_CLASS_SPD support if they support I2C_CLASS_HWMON
+Date: Sat, 18 Nov 2023 19:04:57 +0100
+Message-ID: <20231118180504.1785-4-hkallweit1@gmail.com>
 X-Mailer: git-send-email 2.42.1
+In-Reply-To: <20231118180504.1785-1-hkallweit1@gmail.com>
+References: <20231118180504.1785-1-hkallweit1@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -76,7 +79,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-media@vger.kernel.org, linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, greybus-dev@lists.linaro.org, linux-i2c@vger.kernel.org, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Andi Shyti <andi.shyti@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Heiner Kallweit <hkallweit1@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
@@ -91,32 +94,20 @@ Series was created supported by Coccinelle and its splitpatch.
 Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 
 ---
+ drivers/i2c/busses/i2c-pasemi-pci.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/i2c/busses/i2c-ali1535.c                  |    2 +-
- drivers/i2c/busses/i2c-ali1563.c                  |    2 +-
- drivers/i2c/busses/i2c-ali15x3.c                  |    2 +-
- drivers/i2c/busses/i2c-amd756.c                   |    2 +-
- drivers/i2c/busses/i2c-amd8111.c                  |    2 +-
- drivers/i2c/busses/i2c-elektor.c                  |    2 +-
- drivers/i2c/busses/i2c-gpio.c                     |    2 +-
- drivers/i2c/busses/i2c-ibm_iic.c                  |    2 +-
- drivers/i2c/busses/i2c-iop3xx.c                   |    2 +-
- drivers/i2c/busses/i2c-isch.c                     |    2 +-
- drivers/i2c/busses/i2c-kempld.c                   |    4 ++--
- drivers/i2c/busses/i2c-mlxcpld.c                  |    2 +-
- drivers/i2c/busses/i2c-nforce2.c                  |    2 +-
- drivers/i2c/busses/i2c-pasemi-pci.c               |    2 +-
- drivers/i2c/busses/i2c-piix4.c                    |    2 +-
- drivers/i2c/busses/i2c-scmi.c                     |    2 +-
- drivers/i2c/busses/i2c-sh7760.c                   |    2 +-
- drivers/i2c/busses/i2c-sibyte.c                   |    4 ++--
- drivers/i2c/busses/i2c-sis5595.c                  |    2 +-
- drivers/i2c/busses/i2c-sis630.c                   |    2 +-
- drivers/i2c/busses/i2c-sis96x.c                   |    2 +-
- drivers/i2c/busses/i2c-via.c                      |    2 +-
- drivers/i2c/busses/i2c-viapro.c                   |    2 +-
- drivers/i2c/busses/scx200_acb.c                   |    2 +-
- drivers/i2c/i2c-stub.c                            |    2 +-
- drivers/media/pci/netup_unidvb/netup_unidvb_i2c.c |    2 +-
- drivers/staging/greybus/i2c.c                     |    2 +-
- 27 files changed, 29 insertions(+), 29 deletions(-)
+diff --git a/drivers/i2c/busses/i2c-pasemi-pci.c b/drivers/i2c/busses/i2c-pasemi-pci.c
+index cfc89e04e..77f90c743 100644
+--- a/drivers/i2c/busses/i2c-pasemi-pci.c
++++ b/drivers/i2c/busses/i2c-pasemi-pci.c
+@@ -56,7 +56,7 @@ static int pasemi_smb_pci_probe(struct pci_dev *dev,
+ 	if (!smbus->ioaddr)
+ 		return -EBUSY;
+ 
+-	smbus->adapter.class = I2C_CLASS_HWMON | I2C_CLASS_SPD;
++	smbus->adapter.class = I2C_CLASS_HWMON;
+ 	error = pasemi_i2c_common_probe(smbus);
+ 	if (error)
+ 		return error;
+
