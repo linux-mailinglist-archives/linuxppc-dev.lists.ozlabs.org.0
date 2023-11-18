@@ -1,126 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 087AB7F032E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Nov 2023 23:51:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6347F7F03A7
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Nov 2023 00:46:01 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=eopRRE2Z;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SXpsW6kCvz3dTN
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Nov 2023 09:51:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SXr4l1q9Tz3cSp
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Nov 2023 10:45:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=omp.ru (client-ip=90.154.21.10; helo=mx01.omp.ru; envelope-from=s.shtylyov@omp.ru; receiver=lists.ozlabs.org)
-X-Greylist: delayed 914 seconds by postgrey-1.37 at boromir; Sun, 19 Nov 2023 06:21:53 AEDT
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=eopRRE2Z;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org)
+Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SXkD13VDwz3cGJ
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Nov 2023 06:21:51 +1100 (AEDT)
-Received: from [192.168.1.103] (31.173.87.19) by msexch01.omp.ru (10.188.4.12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Sat, 18 Nov
- 2023 22:06:15 +0300
-Subject: Re: [PATCH 00/34] biops: add atomig find_bit() operations
-To: Bart Van Assche <bvanassche@acm.org>, Yury Norov <yury.norov@gmail.com>,
-	<linux-kernel@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>, "H.
- Peter Anvin" <hpa@zytor.com>, "James E.J. Bottomley" <jejb@linux.ibm.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>, "Md. Haris Iqbal"
-	<haris.iqbal@ionos.com>, Akinobu Mita <akinobu.mita@gmail.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Bjorn Andersson <andersson@kernel.org>, Borislav
- Petkov <bp@alien8.de>, Chaitanya Kulkarni <kch@nvidia.com>, Christian Brauner
-	<brauner@kernel.org>, Damien Le Moal <damien.lemoal@opensource.wdc.com>, Dave
- Hansen <dave.hansen@linux.intel.com>, David Disseldorp <ddiss@suse.de>,
-	Edward Cree <ecree.xilinx@gmail.com>, Eric Dumazet <edumazet@google.com>,
-	Fenghua Yu <fenghua.yu@intel.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Gregory Greenman
-	<gregory.greenman@intel.com>, Hans Verkuil <hverkuil@xs4all.nl>, Hans de
- Goede <hdegoede@redhat.com>, Hugh Dickins <hughd@google.com>, Ingo Molnar
-	<mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>, Jaroslav Kysela
-	<perex@perex.cz>, Jason Gunthorpe <jgg@ziepe.ca>, Jens Axboe
-	<axboe@kernel.dk>, Jiri Pirko <jiri@resnulli.us>, Jiri Slaby
-	<jirislaby@kernel.org>, Kalle Valo <kvalo@kernel.org>, Karsten Graul
-	<kgraul@linux.ibm.com>, Karsten Keil <isdn@linux-pingi.de>, Kees Cook
-	<keescook@chromium.org>, Leon Romanovsky <leon@kernel.org>, Mark Rutland
-	<mark.rutland@arm.com>, Martin Habets <habetsm.xilinx@gmail.com>, Mauro
- Carvalho Chehab <mchehab@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Simek <monstr@monstr.eu>, Nicholas Piggin <npiggin@gmail.com>, Oliver
- Neukum <oneukum@suse.com>, Paolo Abeni <pabeni@redhat.com>, Paolo Bonzini
-	<pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Ping-Ke Shih
-	<pkshih@realtek.com>, Rich Felker <dalias@libc.org>, Rob Herring
-	<robh@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Sathya Prakash
- Veerichetty <sathya.prakash@broadcom.com>, Sean Christopherson
-	<seanjc@google.com>, Shuai Xue <xueshuai@linux.alibaba.com>, Stanislaw
- Gruszka <stf_xl@wp.pl>, Steven Rostedt <rostedt@goodmis.org>, Thomas
- Bogendoerfer <tsbogend@alpha.franken.de>, Thomas Gleixner
-	<tglx@linutronix.de>, Valentin Schneider <vschneid@redhat.com>, Vitaly
- Kuznetsov <vkuznets@redhat.com>, Wenjia Zhang <wenjia@linux.ibm.com>, Will
- Deacon <will@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>,
-	<GR-QLogic-Storage-Upstream@marvell.com>, <alsa-devel@alsa-project.org>,
-	<ath10k@lists.infradead.org>, <dmaengine@vger.kernel.org>,
-	<iommu@lists.linux.dev>, <kvm@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-arm-msm@vger.kernel.org>,
-	<linux-block@vger.kernel.org>, <linux-bluetooth@vger.kernel.org>,
-	<linux-hyperv@vger.kernel.org>, <linux-m68k@lists.linux-m68k.org>,
-	<linux-media@vger.kernel.org>, <linux-mips@vger.kernel.org>,
-	<linux-net-drivers@amd.com>, <linux-pci@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, <linux-s390@vger.kernel.org>,
-	<linux-scsi@vger.kernel.org>, <linux-serial@vger.kernel.org>,
-	<linux-sh@vger.kernel.org>, <linux-sound@vger.kernel.org>,
-	<linux-usb@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-	<linuxppc-dev@lists.ozlabs.org>, <mpi3mr-linuxdrv.pdl@broadcom.com>,
-	<netdev@vger.kernel.org>, <sparclinux@vger.kernel.org>, <x86@kernel.org>
-References: <20231118155105.25678-1-yury.norov@gmail.com>
- <792fc3d8-6834-48f8-9737-f1531459d245@acm.org>
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-Message-ID: <cb01a8af-d62b-27b4-f6fc-d1f3fbf676ee@omp.ru>
-Date: Sat, 18 Nov 2023 22:06:14 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SXr3q4dfdz3c5K
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Nov 2023 10:45:11 +1100 (AEDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id B135E8285568;
+	Sat, 18 Nov 2023 17:45:05 -0600 (CST)
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id H4Q0NQaDXTyH; Sat, 18 Nov 2023 17:45:04 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id 703038285587;
+	Sat, 18 Nov 2023 17:45:04 -0600 (CST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com 703038285587
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
+	t=1700351104; bh=Jmv6ei8sDB7kyzZzuc4PI29DECp/OLu91TC7QmfYuS0=;
+	h=Date:From:To:Message-ID:MIME-Version;
+	b=eopRRE2ZSMRNP7IPY5WhLOhHxCs8C42/CGO3DFjnbWS3HkkCgIattvl5XVYeA4TDR
+	 GVw78X/Iwr4DcXAKcY7yhQioDK/WNt8rmkKlgSlV1u8PRYqqWdurBVgb+1DE48F6Cl
+	 egVYk7Nu+XrEJu9g3foJrcoWkSolrirT1WmUEuPQ=
+X-Virus-Scanned: amavisd-new at rptsys.com
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id jGOo9hQpRgCd; Sat, 18 Nov 2023 17:45:04 -0600 (CST)
+Received: from vali.starlink.edu (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id F408F8285568;
+	Sat, 18 Nov 2023 17:45:03 -0600 (CST)
+Date: Sat, 18 Nov 2023 17:45:03 -0600 (CST)
+From: Timothy Pearson <tpearson@raptorengineering.com>
+To: Jens Axboe <axboe@kernel.dk>, regressions <regressions@lists.linux.dev>, 
+	Michael Ellerman <mpe@ellerman.id.au>, npiggin <npiggin@gmail.com>, 
+	christophe leroy <christophe.leroy@csgroup.eu>, 
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Message-ID: <1105090647.48374193.1700351103830.JavaMail.zimbra@raptorengineeringinc.com>
+Subject: [PATCH] powerpc: Don't clobber fr0/vs0 during fp|altivec register
+  save
 MIME-Version: 1.0
-In-Reply-To: <792fc3d8-6834-48f8-9737-f1531459d245@acm.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [31.173.87.19]
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.0.0, Database issued on: 11/18/2023 18:50:09
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 59
-X-KSE-AntiSpam-Info: Lua profiles 181454 [Nov 18 2023]
-X-KSE-AntiSpam-Info: Version: 6.0.0.2
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 543 543 1e3516af5cdd92079dfeb0e292c8747a62cb1ee4
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_arrow_text}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: {relay has no DNS name}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 31.173.87.19 in (user)
- b.barracudacentral.org}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 31.173.87.19 in (user) dbl.spamhaus.org}
-X-KSE-AntiSpam-Info: 	omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: ApMailHostAddress: 31.173.87.19
-X-KSE-AntiSpam-Info: {DNS response errors}
-X-KSE-AntiSpam-Info: Rate: 59
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 11/18/2023 18:54:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 11/18/2023 3:15:00 PM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-Mailman-Approved-At: Sun, 19 Nov 2023 09:48:14 +1100
+X-Mailer: Zimbra 8.5.0_GA_3042 (ZimbraWebClient - GC119 (Linux)/8.5.0_GA_3042)
+Thread-Index: oeYNf1lW+cBhY7HPI4V34psIc5Meaw==
+Thread-Topic: powerpc: Don't clobber fr0/vs0 during fp|altivec register save
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -132,22 +71,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jan Kara <jack@suse.cz>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, Matthew Wilcox <willy@infradead.org>, Alexey Klimov <klimov.linux@gmail.com>, Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Maxim Kuvyrkov <maxim.kuvyrkov@linaro.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/18/23 7:18 PM, Bart Van Assche wrote:
-[...]
->> Add helpers around test_and_{set,clear}_bit() that allow to search for
->> clear or set bits and flip them atomically.
-> 
-> There is a typo in the subject: shouldn't "atomig" be changed
-> into "atomic"?
+During floating point and vector save to thread data fr0/vs0 are clobbered
+by the FPSCR/VSCR store routine.  This leads to userspace register corruption
+and application data corruption / crash under the following rare condition:
 
-   And "biops" to "bitops"? :-)
+ * A userspace thread is executing with VSX/FP mode enabled
+ * The userspace thread is making active use of fr0 and/or vs0
+ * An IPI is taken in kernel mode, forcing the userspace thread to reschedule
+ * The userspace thread is interrupted by the IPI before accessing data it
+   previously stored in fr0/vs0
+ * The thread being switched in by the IPI has a pending signal
 
-> Thanks,
-> 
-> Bart.
+If these exact criteria are met, then the following sequence happens:
 
-MBR, Sergey
+ * The existing thread FP storage is still valid before the IPI, due to a
+   prior call to save_fpu() or store_fp_state().  Note that the current
+   fr0/vs0 registers have been clobbered, so the FP/VSX state in registers
+   is now invalid pending a call to restore_fp()/restore_altivec().
+ * IPI -- FP/VSX register state remains invalid
+ * interrupt_exit_user_prepare_main() calls do_notify_resume(),
+   due to the pending signal
+ * do_notify_resume() eventually calls save_fpu() via giveup_fpu(), which
+   merrily reads and saves the invalid FP/VSX state to thread local storage.
+ * interrupt_exit_user_prepare_main() calls restore_math(), writing the invalid
+   FP/VSX state back to registers.
+ * Execution is released to userspace, and the application crashes or corrupts
+   data.
+
+Without the pending signal, do_notify_resume() is never called, therefore the
+invalid register state does't matter as it is overwritten nearly immeediately
+by interrupt_exit_user_prepare_main() calling restore_math() before return
+to userspace.
+
+The combination of MariaDB and io_uring is especially good at triggering data
+corruption using the above sequence, see MariaDB bug MDEV-30728.
+
+Restore fr0/vs0 after FPSCR/VSCR store has completed for both the fp and
+altivec register save paths.
+
+Tested under QEMU in kvm mode, running on a Talos II workstation with dual
+POWER9 DD2.2 CPUs.
+
+Tested-by: Timothy Pearson <tpearson@raptorengineering.com>
+Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
+---
+ arch/powerpc/kernel/fpu.S    | 13 +++++++++++++
+ arch/powerpc/kernel/vector.S |  4 ++++
+ 2 files changed, 17 insertions(+)
+
+diff --git a/arch/powerpc/kernel/fpu.S b/arch/powerpc/kernel/fpu.S
+index 6a9acfb690c9..2f8f3f93cbb6 100644
+--- a/arch/powerpc/kernel/fpu.S
++++ b/arch/powerpc/kernel/fpu.S
+@@ -23,6 +23,15 @@
+ #include <asm/feature-fixups.h>
+ 
+ #ifdef CONFIG_VSX
++#define __REST_1FPVSR(n,c,base)						\
++BEGIN_FTR_SECTION							\
++	b	2f;							\
++END_FTR_SECTION_IFSET(CPU_FTR_VSX);					\
++	REST_FPR(n,base);						\
++	b	3f;							\
++2:	REST_VSR(n,c,base);						\
++3:
++
+ #define __REST_32FPVSRS(n,c,base)					\
+ BEGIN_FTR_SECTION							\
+ 	b	2f;							\
+@@ -41,9 +50,11 @@ END_FTR_SECTION_IFSET(CPU_FTR_VSX);					\
+ 2:	SAVE_32VSRS(n,c,base);						\
+ 3:
+ #else
++#define __REST_1FPVSR(n,b,base)		REST_FPR(n, base)
+ #define __REST_32FPVSRS(n,b,base)	REST_32FPRS(n, base)
+ #define __SAVE_32FPVSRS(n,b,base)	SAVE_32FPRS(n, base)
+ #endif
++#define REST_1FPVSR(n,c,base)   __REST_1FPVSR(n,__REG_##c,__REG_##base)
+ #define REST_32FPVSRS(n,c,base) __REST_32FPVSRS(n,__REG_##c,__REG_##base)
+ #define SAVE_32FPVSRS(n,c,base) __SAVE_32FPVSRS(n,__REG_##c,__REG_##base)
+ 
+@@ -67,6 +78,7 @@ _GLOBAL(store_fp_state)
+ 	SAVE_32FPVSRS(0, R4, R3)
+ 	mffs	fr0
+ 	stfd	fr0,FPSTATE_FPSCR(r3)
++	REST_1FPVSR(0, R4, R3)
+ 	blr
+ EXPORT_SYMBOL(store_fp_state)
+ 
+@@ -138,4 +150,5 @@ _GLOBAL(save_fpu)
+ 2:	SAVE_32FPVSRS(0, R4, R6)
+ 	mffs	fr0
+ 	stfd	fr0,FPSTATE_FPSCR(r6)
++	REST_1FPVSR(0, R4, R6)
+ 	blr
+diff --git a/arch/powerpc/kernel/vector.S b/arch/powerpc/kernel/vector.S
+index 4094e4c4c77a..8c63b05b421e 100644
+--- a/arch/powerpc/kernel/vector.S
++++ b/arch/powerpc/kernel/vector.S
+@@ -33,6 +33,8 @@ _GLOBAL(store_vr_state)
+ 	mfvscr	v0
+ 	li	r4, VRSTATE_VSCR
+ 	stvx	v0, r4, r3
++	li	r4, 0
++	lvx	v0, r4, r3
+ 	blr
+ EXPORT_SYMBOL(store_vr_state)
+ 
+@@ -109,6 +111,8 @@ _GLOBAL(save_altivec)
+ 	mfvscr	v0
+ 	li	r4,VRSTATE_VSCR
+ 	stvx	v0,r4,r7
++	li	r4,0
++	lvx	v0,r4,r7
+ 	blr
+ 
+ #ifdef CONFIG_VSX
+-- 
+2.39.2
