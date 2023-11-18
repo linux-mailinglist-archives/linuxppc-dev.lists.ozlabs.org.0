@@ -2,48 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7AA47F032A
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Nov 2023 23:50:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF90E7F032B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Nov 2023 23:50:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SXprT6ZVWz3dVy
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Nov 2023 09:50:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SXps051sKz3vf7
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Nov 2023 09:50:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.210.180; helo=mail-pf1-f180.google.com; envelope-from=bart.vanassche@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.214.173; helo=mail-pl1-f173.google.com; envelope-from=bart.vanassche@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SXf953VJKz2yLr
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Nov 2023 03:19:04 +1100 (AEDT)
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-6b77ab73c6fso2206015b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Nov 2023 08:19:04 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SXfGH6CM3z3cF4
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Nov 2023 03:23:35 +1100 (AEDT)
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1cf52e5e07eso2356735ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Nov 2023 08:23:35 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700324341; x=1700929141;
+        d=1e100.net; s=20230601; t=1700324612; x=1700929412;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JpJ9j3Rgf+MmL1x+LnpZ5rIj3NB2ZwiexLJ0+/VPyNs=;
-        b=d7ElO+cyW04LArxDV9ie9VHppvg0GD1agsTpJpArs50O8K2g5rOHouET0sxRzBS7/4
-         rNnWO8gev8oA5+EzweN6xkdnQw9AKI4Ht33350hkhc8K0A1rCdz9gXUlW5USQuaJVzPj
-         SCdMVQL4df+3d3+VZmqyRIdFVa5trZwA71Vx7/M41LxpK6gB9CjKJ85KQd2WlVefT4By
-         uO9qv/1Cssg+6pzLqHBwgy1NYn3Kkgc/+7Yb3WJLyZ/Bzu9+5DFJ8t00hQy/WQQaWxk+
-         FYBzlcpKD7hWz/htbryUEmAyJdmh1EGjcSAyozldmy50rHyhpX+jkjCTfWLPc3WwaF8N
-         Oolw==
-X-Gm-Message-State: AOJu0Yx91R5PvOj00B3YV0i5dip6fj6TIvxRp1Uu7+i+9ssldgLVoaFk
-	3Ucid06Rvs3xn+ibbvfbSB8=
-X-Google-Smtp-Source: AGHT+IF6DbzE+IGBVmgkkIXDBMasM05P7fXL7OHqGPwzqI5VVbby0wYg1pwoRaacJDugZHa97idotg==
-X-Received: by 2002:a05:6a20:4326:b0:187:e3a5:b35d with SMTP id h38-20020a056a20432600b00187e3a5b35dmr3138014pzk.13.1700324340672;
-        Sat, 18 Nov 2023 08:19:00 -0800 (PST)
+        bh=2erzZFOyxOrSdjM/KpGdx3oacnKwVcss5FA960Pxu5w=;
+        b=c+6m9oINikufr4e+/Rl509OocC1rO55myV8jmD0AxYc/6D32ANlStSNz9K4Jwi6bnT
+         6vnp7P0QX9SpkXR79ScT+QmKAX85WuPk9G5bn+fOVAHlFj/56me1K/NvpkNeC58MrHhL
+         ojIeKAfHkjY9N4b+2OuALWVWdd+yT9j+D09VDg8jw0EuN+mYHTDS5EbvvRdB11aA0l+e
+         yL5/bQc+fNVh5Lv6XvoLNQ9nNr0hISnDjB2kihPjhxnAUGLMm2Hue0YMXBY8c4Qogh3D
+         TcG+usBabaP/rkwVfFHScdX8Yc2enVb5DrNeJwFf16f38+meh6lHVWKGwnF0YeS5qJFq
+         Ewww==
+X-Gm-Message-State: AOJu0YyQ3Z2q6KI2hEcQ7FjJ1e407DClCEL9p5Yn4abeR7sXMP4f5sNC
+	JuFtXsbj86Ndozi3Is4wtqw=
+X-Google-Smtp-Source: AGHT+IFxNCOe1hV/UN7ql6AF5ylF4cLl3KjxD1pwBtnSiRvXE7Ae8L1R6+CdLXdA7EoHYLiLeUL3Gw==
+X-Received: by 2002:a17:902:6844:b0:1cf:5197:25ac with SMTP id f4-20020a170902684400b001cf519725acmr2006009pln.12.1700324611982;
+        Sat, 18 Nov 2023 08:23:31 -0800 (PST)
 Received: from ?IPV6:2601:647:4d7e:54f3:667:4981:ffa1:7be1? ([2601:647:4d7e:54f3:667:4981:ffa1:7be1])
-        by smtp.gmail.com with ESMTPSA id b9-20020a056a000a8900b006c7c6ae3755sm3179469pfl.80.2023.11.18.08.18.48
+        by smtp.gmail.com with ESMTPSA id u18-20020a170902e81200b001ce64bdfa19sm2051042plg.45.2023.11.18.08.23.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 18 Nov 2023 08:19:00 -0800 (PST)
-Message-ID: <792fc3d8-6834-48f8-9737-f1531459d245@acm.org>
-Date: Sat, 18 Nov 2023 08:18:46 -0800
+        Sat, 18 Nov 2023 08:23:31 -0800 (PST)
+Message-ID: <91a32cd2-903a-43df-8067-510c6c431ec7@acm.org>
+Date: Sat, 18 Nov 2023 08:23:20 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/34] biops: add atomig find_bit() operations
+Subject: Re: [PATCH 01/34] lib/find: add atomic find_bit() primitives
 Content-Language: en-US
 To: Yury Norov <yury.norov@gmail.com>, linux-kernel@vger.kernel.org,
  "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
@@ -100,8 +100,9 @@ To: Yury Norov <yury.norov@gmail.com>, linux-kernel@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, mpi3mr-linuxdrv.pdl@broadcom.com,
  netdev@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org
 References: <20231118155105.25678-1-yury.norov@gmail.com>
+ <20231118155105.25678-2-yury.norov@gmail.com>
 From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20231118155105.25678-1-yury.norov@gmail.com>
+In-Reply-To: <20231118155105.25678-2-yury.norov@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Mailman-Approved-At: Sun, 19 Nov 2023 09:48:14 +1100
@@ -124,8 +125,7 @@ On 11/18/23 07:50, Yury Norov wrote:
 > Add helpers around test_and_{set,clear}_bit() that allow to search for
 > clear or set bits and flip them atomically.
 
-There is a typo in the subject: shouldn't "atomig" be changed
-into "atomic"?
+Has it been considered to add kunit tests for the new functions?
 
 Thanks,
 
