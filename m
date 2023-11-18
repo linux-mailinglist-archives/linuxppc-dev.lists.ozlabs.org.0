@@ -2,74 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC767EFD8D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Nov 2023 04:44:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 836467EFDD7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Nov 2023 06:18:36 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=HrG4flpy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CaBME2UC;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SXKQT3pBPz3vn4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Nov 2023 14:44:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SXMVy2r9Sz3vjw
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Nov 2023 16:18:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=HrG4flpy;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CaBME2UC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2607:f8b0:4864:20::12c; helo=mail-il1-x12c.google.com; envelope-from=apatel@ventanamicro.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-x12c.google.com (mail-il1-x12c.google.com [IPv6:2607:f8b0:4864:20::12c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SXKK42mq2z3d9t
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Nov 2023 14:39:52 +1100 (AEDT)
-Received: by mail-il1-x12c.google.com with SMTP id e9e14a558f8ab-357ccaf982eso9334585ab.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Nov 2023 19:39:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1700278789; x=1700883589; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UwuJDohRQ3aqDyqXIkqqX8SciM39GRJg3jYARQ14u9s=;
-        b=HrG4flpyc0CtAM8ZGjTYesUDGowXkZsOn4r4I0yYDqU9s5FVbmEp810XP1qNPvlEMu
-         Vww9T4IjKNELt99p3k33zZ861RqhVsphmgrxHQS7IncM5aFqrlKwCrX9LMx42cMKKps4
-         DQDfVR0gXBNTxnRz9B4NpWomPfxEVfqrEcQg+hI01fmMVjW07LhM3pC3HPlpNeN8jm0O
-         Iv/suCbVsHGr2d6FJvEcq1U0kY4qpL9kQ3qgo6YLQ955O5vPcjZVwv4beCMXPDn0zsur
-         52jZ9jUrTqqOktKyNXvOoQmiY9i0F1yB/2G/UxZMKqB0kVSSTNSzm+bYggt91ff7sDca
-         NH0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700278789; x=1700883589;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UwuJDohRQ3aqDyqXIkqqX8SciM39GRJg3jYARQ14u9s=;
-        b=WzP1h3k1p1blfLBvYKUQiCij32De0T45+oTTAFTtrLq2w4n9qs4lZ5mZBIWo7v9QWN
-         UwNdSquhIpyxA+ufFM79/YQIeJqk9QirOsoSRCORD/hr+CMcZ01mG89BE+SGlDwVGjTl
-         epTUQ+nR5KVhd+moEA0vLm7672VSTHMlR2Xj2p7XE8dqkH1pYLUYMXd28OrRmw9vK+E0
-         nnUHtThi6nVVxXxk1SSJqyv+Dx8Fx3iwroVbnTmuURcJLdf4aIjTyUwcViA9CYETVOzA
-         lvlfccbjdlBmnmT977IPk/IiBKFYfj2XmN0Nk2nIFZ0rvMoRPiUaURdOTinzGcnaK0FE
-         nWpQ==
-X-Gm-Message-State: AOJu0YyP67SlsoDj22kLxCW7OHsk2f+zg/10eEDUCGvlGwVSxU2zRckv
-	tFDIAfkflHxHZmwCiNW4eL0I9w==
-X-Google-Smtp-Source: AGHT+IHOlKnIVZ4ksof0LCT4ATUyA4aQHrNLe3GwQ2oPH5iU/GU5vmFy/egl6dy1iF7ul/LCCaVvEg==
-X-Received: by 2002:a05:6e02:58f:b0:357:4a63:2ad2 with SMTP id c15-20020a056e02058f00b003574a632ad2mr1554139ils.21.1700278788781;
-        Fri, 17 Nov 2023 19:39:48 -0800 (PST)
-Received: from anup-ubuntu-vm.localdomain ([171.76.80.108])
-        by smtp.gmail.com with ESMTPSA id cz8-20020a17090ad44800b00280fcbbe774sm2053823pjb.10.2023.11.17.19.39.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Nov 2023 19:39:48 -0800 (PST)
-From: Anup Patel <apatel@ventanamicro.com>
-To: Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH v4 5/5] RISC-V: Enable SBI based earlycon support
-Date: Sat, 18 Nov 2023 09:08:59 +0530
-Message-Id: <20231118033859.726692-6-apatel@ventanamicro.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231118033859.726692-1-apatel@ventanamicro.com>
-References: <20231118033859.726692-1-apatel@ventanamicro.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SXMQR5pCpz3cSq
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Nov 2023 16:14:39 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id B9E20CE01DC;
+	Sat, 18 Nov 2023 05:14:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E7D29C433C8;
+	Sat, 18 Nov 2023 05:14:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1700284469;
+	bh=e9Ju/XtuI/yxX1VzJwg9mWUEi0MI6gctLUsH1iwDx2M=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=CaBME2UCYV6tMNSihTGNA8zTLAFkRfPQZQJqHQ8OKDnbkeGDf0PuSo/PpznINQ95N
+	 NeBV+U4Yn+X/ign7Xv+0HHpfCfXBcfSml4Fc3ojQJfmTiG0Mk74/OuWRJpBzzmuTM8
+	 lcvKHfcin6ZZhJv9eJmH3bLeNp8Qs0BfZcD3+okJWp8oLKDzcARbQP4l6WqNsSbg2r
+	 roV5gMeNKVP5jEgJCJXbSAZovo360XsaxSeImVh64qxe8nwLeoZzWewrVMOaj29NHr
+	 2DJVsctduA3gc0ZHSHWVUuNPfZVlC/0ofxNrqqT2RBchNi7ATgG855yQRISSPGwQkx
+	 /BVa7J1gq2qeQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C4888C2BB3F;
+	Sat, 18 Nov 2023 05:14:29 +0000 (UTC)
+From: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
+Subject: [PATCH v4 00/13] powerpc/pseries: New character devices for system
+ parameters and VPD
+Date: Fri, 17 Nov 2023 23:14:18 -0600
+Message-Id:  <20231117-papr-sys_rtas-vs-lockdown-v4-0-b794d8cb8502@linux.ibm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIACpIWGUC/4XO3UoDMRAF4FcpuTZlMtkkXa98DxHJz6wNtpslq
+ bGl7LubLSJSZL08A/Odc2WFcqTCHjdXlqnGEtPYQvewYX5vxzfiMbTMEFDCThg+2Snzcimv+WQ
+ Lr4Ufkn8P6XPkyqtOgQrO9Mja/5RpiOeb/fzS8j6WU8qXW1UVy/VbRVxRq+DAe4kapR+kN+7pE
+ MeP8za649an41K0KAJA/6dIK7UbnNaEdKcs+yr+bBIg5JqGTSMbQHgCYRD/0uQvDdWaJpumyEG
+ nVE8m7O61eZ6/APtvq6moAQAA
+To: Michael Ellerman <mpe@ellerman.id.au>, 
+ Nicholas Piggin <npiggin@gmail.com>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1700284468; l=5728;
+ i=nathanl@linux.ibm.com; s=20230817; h=from:subject:message-id;
+ bh=e9Ju/XtuI/yxX1VzJwg9mWUEi0MI6gctLUsH1iwDx2M=;
+ b=VCywQHhiFuxsjY7N6KShZ/0xNr+OKPSrjC8USbblum5X1IaS1GnE3/prhC5QyweMcV7oEq/cy
+ 1m6mAJWtzT2DXAYI9zp2fY8ru9eOsnxe+oHnQ76BmrKm64O/5dO2zgt
+X-Developer-Key: i=nathanl@linux.ibm.com; a=ed25519;
+ pk=jPDF44RvT+9DGFOH3NGoIu1xN9dF+82pjdpnKjXfoJ0=
+X-Endpoint-Received:  by B4 Relay for nathanl@linux.ibm.com/20230817 with auth_id=78
+X-Original-From: Nathan Lynch <nathanl@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,44 +76,125 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anup Patel <apatel@ventanamicro.com>, linux-kernel@vger.kernel.org, Conor Dooley <conor@kernel.org>, linux-serial@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Andrew Jones <ajones@ventanamicro.com>
+Reply-To: nathanl@linux.ibm.com
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, tyreld@linux.ibm.com, =?utf-8?q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org, gcwilson@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Let us enable SBI based earlycon support in defconfigs for both RV32
-and RV64 so that "earlycon=sbi" can be used again.
+Add character devices that expose PAPR-specific system parameters and
+VPD to user space.
 
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+The problem: important platform features are enabled on Linux VMs
+through the powerpc-specific rtas() syscall in combination with
+writeable mappings of /dev/mem. In typical usage, this is encapsulated
+behind APIs provided by the librtas library. This paradigm is
+incompatible with lockdown, which prohibits /dev/mem access. It also
+is too low-level in many cases: a single logical operation may require
+multiple sys_rtas() calls in succession to complete. This carries the
+risk that a process may exit while leaving an operation unfinished. It
+also means that callers must coordinate their use of the syscall for
+functions that cannot tolerate multiple concurrent clients, such as
+ibm,get-vpd.
+
+The solution presented here is to add a pair of small pseries-specific
+"drivers," one for VPD and one for system parameters. The new drivers
+expose these facilities to user space in ways that are compatible with
+lockdown and require no coordination between their clients.
+
+Since the ibm,get-vpd call sequence performed by the papr-vpd driver
+must be serialized against all other uses of the function, the series
+begins by adding some new APIs to the core RTAS support code for this
+purpose.
+
+Both drivers could potentially support poll() methods to notify
+clients of changes to parameters or VPD that happen due to partition
+migration and other events. But that should be safe to leave for
+later, assuming there's any interest.
+
+I have made changes to librtas to prefer the new interfaces and
+verified that existing clients work correctly with the new code. A
+draft PR for that work is here:
+
+https://github.com/ibm-power-utilities/librtas/pull/36
+
+The user-space ABI has not changed since v1 of this series.
+
+I expect to propose at least one more small driver in this style for
+platform dump retrieval in a separate submission in the future.
+
 ---
- arch/riscv/configs/defconfig      | 1 +
- arch/riscv/configs/rv32_defconfig | 1 +
- 2 files changed, 2 insertions(+)
+Changes in v4:
+- Fix latent issue in rtas_token_to_function() which causes boot-time
+  crashes.
+- More small preparatory changes: a function table iterator and
+  additional symbolic constants for RTAS function return values.
+- Use symbolic constants for ibm,get-vpd statuses in papr-vpd.c.
+- Add commentary to papr_vpd_ioc_create_handle() explaining choice to
+  retrieve all VPD at file handle creation time instead of deferring
+  it to the read handler.
+- Rebase on current powerpc/next.
+- Link to v3: https://lore.kernel.org/r/20231025-papr-sys_rtas-vs-lockdown-v3-0-5eb04559e7d8@linux.ibm.com
 
-diff --git a/arch/riscv/configs/defconfig b/arch/riscv/configs/defconfig
-index 905881282a7c..eaf34e871e30 100644
---- a/arch/riscv/configs/defconfig
-+++ b/arch/riscv/configs/defconfig
-@@ -149,6 +149,7 @@ CONFIG_SERIAL_8250_CONSOLE=y
- CONFIG_SERIAL_8250_DW=y
- CONFIG_SERIAL_OF_PLATFORM=y
- CONFIG_SERIAL_SH_SCI=y
-+CONFIG_SERIAL_EARLYCON_RISCV_SBI=y
- CONFIG_VIRTIO_CONSOLE=y
- CONFIG_HW_RANDOM=y
- CONFIG_HW_RANDOM_VIRTIO=y
-diff --git a/arch/riscv/configs/rv32_defconfig b/arch/riscv/configs/rv32_defconfig
-index 89b601e253a6..5721af39afd1 100644
---- a/arch/riscv/configs/rv32_defconfig
-+++ b/arch/riscv/configs/rv32_defconfig
-@@ -66,6 +66,7 @@ CONFIG_INPUT_MOUSEDEV=y
- CONFIG_SERIAL_8250=y
- CONFIG_SERIAL_8250_CONSOLE=y
- CONFIG_SERIAL_OF_PLATFORM=y
-+CONFIG_SERIAL_EARLYCON_RISCV_SBI=y
- CONFIG_VIRTIO_CONSOLE=y
- CONFIG_HW_RANDOM=y
- CONFIG_HW_RANDOM_VIRTIO=y
+Changes in v3:
+- Add new rtas_function_lock()/unlock() APIs and convert existing code
+  to use them.
+- Convert papr-vpd to use rtas_function_lock()/unlock() instead of
+  having sys_rtas() obtain a driver-private mutex.
+- Rebase on current powerpc/next.
+- Link to v2: https://lore.kernel.org/r/20231013-papr-sys_rtas-vs-lockdown-v2-0-ead01ce01722@linux.ibm.com
+
+Changes in v2:
+- Fix unused-but-set variable warning in papr-sysparm code.
+- Rebase on powerpc/next branch.
+- Link to v1: https://lore.kernel.org/r/20231006-papr-sys_rtas-vs-lockdown-v1-0-3a36bfb66e2e@linux.ibm.com
+
+Changes in v1 vs initial RFC:
+- Add papr-sysparm driver and tests.
+- Add a papr-miscdev.h uapi header.
+- Prevent sys_rtas() from interfering with papr-vpd call sequences.
+- Handle -4 ("VPD changed") status in papr-vpd.
+- Include string_helpers.h in papr-vpd.c, per Michal Suchánek
+- Link to RFC: https://lore.kernel.org/r/20230822-papr-sys_rtas-vs-lockdown-v1-0-932623cf3c7b@linux.ibm.com
+
+---
+Nathan Lynch (13):
+      powerpc/rtas: Add for_each_rtas_function() iterator
+      powerpc/rtas: Fall back to linear search on failed token->function lookup
+      powerpc/rtas: Add function return status constants
+      powerpc/rtas: Factor out function descriptor lookup
+      powerpc/rtas: Facilitate high-level call sequences
+      powerpc/rtas: Serialize firmware activation sequences
+      powerpc/rtas: Warn if per-function lock isn't held
+      powerpc/uapi: Export papr-miscdev.h header
+      powerpc/pseries: Add papr-vpd character driver for VPD retrieval
+      powerpc/pseries/papr-sysparm: Validate buffer object lengths
+      powerpc/pseries/papr-sysparm: Expose character device to user space
+      powerpc/selftests: Add test for papr-vpd
+      powerpc/selftests: Add test for papr-sysparm
+
+ Documentation/userspace-api/ioctl/ioctl-number.rst |   4 +
+ arch/powerpc/include/asm/papr-sysparm.h            |  17 +-
+ arch/powerpc/include/asm/rtas.h                    |  27 +-
+ arch/powerpc/include/uapi/asm/papr-miscdev.h       |   9 +
+ arch/powerpc/include/uapi/asm/papr-sysparm.h       |  58 +++
+ arch/powerpc/include/uapi/asm/papr-vpd.h           |  22 +
+ arch/powerpc/kernel/rtas.c                         | 182 +++++--
+ arch/powerpc/platforms/pseries/Makefile            |   1 +
+ arch/powerpc/platforms/pseries/papr-sysparm.c      | 201 +++++++-
+ arch/powerpc/platforms/pseries/papr-vpd.c          | 536 +++++++++++++++++++++
+ tools/testing/selftests/powerpc/Makefile           |   2 +
+ .../selftests/powerpc/papr_sysparm/.gitignore      |   1 +
+ .../selftests/powerpc/papr_sysparm/Makefile        |  12 +
+ .../selftests/powerpc/papr_sysparm/papr_sysparm.c  | 164 +++++++
+ .../testing/selftests/powerpc/papr_vpd/.gitignore  |   1 +
+ tools/testing/selftests/powerpc/papr_vpd/Makefile  |  12 +
+ .../testing/selftests/powerpc/papr_vpd/papr_vpd.c  | 352 ++++++++++++++
+ 17 files changed, 1556 insertions(+), 45 deletions(-)
+---
+base-commit: 707df298cbde200b939c70be2577b20775fe3345
+change-id: 20230817-papr-sys_rtas-vs-lockdown-5c54505db792
+
+Best regards,
 -- 
-2.34.1
+Nathan Lynch <nathanl@linux.ibm.com>
 
