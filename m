@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 401057EFD86
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Nov 2023 04:41:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29EA87EFD87
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Nov 2023 04:42:03 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=XtJZX2OI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=k1Lk11lM;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SXKLd1Ny4z3dH1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Nov 2023 14:41:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SXKMY07Pbz3dK1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Nov 2023 14:42:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=XtJZX2OI;
+	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=k1Lk11lM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2607:f8b0:4864:20::1033; helo=mail-pj1-x1033.google.com; envelope-from=apatel@ventanamicro.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2607:f8b0:4864:20::1035; helo=mail-pj1-x1035.google.com; envelope-from=apatel@ventanamicro.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SXKJq1R3qz30gn
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Nov 2023 14:39:38 +1100 (AEDT)
-Received: by mail-pj1-x1033.google.com with SMTP id 98e67ed59e1d1-27ff83feb29so2293772a91.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Nov 2023 19:39:38 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SXKJs48Hhz30gn
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Nov 2023 14:39:41 +1100 (AEDT)
+Received: by mail-pj1-x1035.google.com with SMTP id 98e67ed59e1d1-27ff83feb29so2293798a91.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Nov 2023 19:39:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1700278775; x=1700883575; darn=lists.ozlabs.org;
+        d=ventanamicro.com; s=google; t=1700278778; x=1700883578; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rUH3sN/jANNMbAvxiLE+FR6QScUT3piYF3Fp6n0y2EI=;
-        b=XtJZX2OIkNNgT0RprwQ7ba8cT00Xql9GhQ0wIQVgD8VZWOt9dNwsQXH68JJzk+r8xi
-         jmXZsMkiiRlHK1Cpu+eBIF6orWxyg9KuOpPWPd7E6/AOTnDOSpkvlRXljnK/JIkXqJ0u
-         i57Jd8l/hqk7DzvED5dt7eqG8XuM1YqhVzVsVOt4fbXrOosBqmkq0MbcmcJKGFhasJq2
-         dDNNfclgrjrU7ehxEx3zsBEZPv9Dev9bvy7JViafzRgsWoFYGGE34vy8iJWwEclK2RCr
-         HBwMnkr1ci+VoLce+I7+vZoqnUplsnrnuqfryVuKy1Zf7S4dAw7zreDrgzl1dOwnI/h9
-         A6VQ==
+        bh=lUknxwWYXkt9C2M9pb/Z3CUGPfJIBZQMgmHAhH/xaf8=;
+        b=k1Lk11lMepHYpMkNHCbQlaM/sFLjlgEyMguh8DkrFihvLcSnYahxXZlAzirgdWWTcK
+         myBeKtEh5ZNFlyUs1lpf/Ad4+aeU4X9O9sjmsIppppE44p0RDTPW0LGYtG+tbaw8EjoF
+         TC853aaAcpD1+fcVHhggbyqcr+NbkXOuN7/s7RL7KuoyiAb1CArR0AZsBVCJE86byE4B
+         PVG3yaASQ8ebKo6jwZPUgdKvV4CAZTmn21UMhmt23TNj26jGPR9jhMrTkZdKEgsVkoZ+
+         d3SsCBVNoeVKZNphGxXNJr724ketkx5MbjaKdG6sWPXiaqCMKHLA5Z3mViyhkTyJk8IF
+         5M+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700278775; x=1700883575;
+        d=1e100.net; s=20230601; t=1700278778; x=1700883578;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rUH3sN/jANNMbAvxiLE+FR6QScUT3piYF3Fp6n0y2EI=;
-        b=Z2lGH/KLHFmaNJFeOsTXlPGdbR5BpT2JhUoyU6LqPwFU/Frb+JG7GL/wZUuth9wzv1
-         56qRXrGwT8uwC6WmI1majP3hfs29IwblGzJyJwQVr3aUdLAeN0S4rYZiJrGHFjLhMxij
-         nddQKjaw+vw0hvLvGBgGkCfYmDlbdzUq6xdyxOCgmrZhoDn62kma2D9r34apVtj0RpWZ
-         Ihs4GO/iUU+i6RyAXeBwnk4qKnjPo3jifI1X08EEK1z93Dt5PNrcNyI0kifRwRcd+C8p
-         v/P0WS5z+wyWk9oJ3+mGsD2EIDkZq/d2Gis1+lIP8o0VUlHOq2nVEQ2Io+p8ZMKJVChr
-         Dhiw==
-X-Gm-Message-State: AOJu0YwYh2mlc1Hjp/kM1SyuLFrAGEX5HXM30Yk34kI0PiTWpdpfvfXO
-	DgbFj4Vk5BI56cjtRzUTaThJXw==
-X-Google-Smtp-Source: AGHT+IFL/vhOEv9SFr5vahVonbYDfe/rMF/KgPJfyv64wzi2WyOjQ+a4xtQ3OlsfO5O9XMpJ2UxSgA==
-X-Received: by 2002:a17:90b:3b45:b0:280:29cd:4802 with SMTP id ot5-20020a17090b3b4500b0028029cd4802mr1636773pjb.3.1700278774537;
-        Fri, 17 Nov 2023 19:39:34 -0800 (PST)
+        bh=lUknxwWYXkt9C2M9pb/Z3CUGPfJIBZQMgmHAhH/xaf8=;
+        b=DqDapmrtCoScluF82mtjghY683j/f5DIVbaGkA3H/tMbUsZtl5zttZBBCrDsLCMJtt
+         k0agHCKhAOUZgMzeh1BW0Yr5dE7ZOOT+q7fSx5VDzT0u8TWH/hkSnAqSDA/18+KbrlQH
+         YK0kaWWnR8V1mZitDLKNZMJugLzXTXYtBLPs7+uSINWhX3lOvTr3mpUz/cwUmLA0rUbO
+         ZEl75aUgbmOy50RreRH7zpQnZYDiMTIYRetVLnH89yKFxuIxqLby3Z6TFO5P063ahDrP
+         bUaPtDsp8vjVMcxh1N+NpYDKti//qRVtsHs4QH02BHgdgvDO9yPQA5jiW4FNQ+wZ2sr2
+         2lZg==
+X-Gm-Message-State: AOJu0YxEYZmUmj1VyJVq7nMQQmukFNIQlNW1LRDPyEHUcB/wq+8oOeYC
+	4GwOxWyQQsbS9FYv8fmfrfAVEg==
+X-Google-Smtp-Source: AGHT+IGETYioNALUjNhz6JIS+eO7DP/jwO69X1kH6NZN6oXPpq2gEGKYxgt01iCN0WIJkFYPAiCO9A==
+X-Received: by 2002:a17:90b:1e02:b0:27d:7887:ddc5 with SMTP id pg2-20020a17090b1e0200b0027d7887ddc5mr1729418pjb.32.1700278778017;
+        Fri, 17 Nov 2023 19:39:38 -0800 (PST)
 Received: from anup-ubuntu-vm.localdomain ([171.76.80.108])
-        by smtp.gmail.com with ESMTPSA id cz8-20020a17090ad44800b00280fcbbe774sm2053823pjb.10.2023.11.17.19.39.30
+        by smtp.gmail.com with ESMTPSA id cz8-20020a17090ad44800b00280fcbbe774sm2053823pjb.10.2023.11.17.19.39.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Nov 2023 19:39:33 -0800 (PST)
+        Fri, 17 Nov 2023 19:39:37 -0800 (PST)
 From: Anup Patel <apatel@ventanamicro.com>
 To: Palmer Dabbelt <palmer@dabbelt.com>,
 	Paul Walmsley <paul.walmsley@sifive.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH v4 1/5] RISC-V: Add stubs for sbi_console_putchar/getchar()
-Date: Sat, 18 Nov 2023 09:08:55 +0530
-Message-Id: <20231118033859.726692-2-apatel@ventanamicro.com>
+Subject: [PATCH v4 2/5] RISC-V: Add SBI debug console helper routines
+Date: Sat, 18 Nov 2023 09:08:56 +0530
+Message-Id: <20231118033859.726692-3-apatel@ventanamicro.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231118033859.726692-1-apatel@ventanamicro.com>
 References: <20231118033859.726692-1-apatel@ventanamicro.com>
@@ -85,34 +85,92 @@ Cc: Anup Patel <apatel@ventanamicro.com>, linux-kernel@vger.kernel.org, Conor Do
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The functions sbi_console_putchar() and sbi_console_getchar() are
-not defined when CONFIG_RISCV_SBI_V01 is disabled so let us add
-stub of these functions to avoid "#ifdef" on user side.
+Let us provide SBI debug console helper routines which can be
+shared by serial/earlycon-riscv-sbi.c and hvc/hvc_riscv_sbi.c.
 
 Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 ---
- arch/riscv/include/asm/sbi.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/riscv/include/asm/sbi.h |  5 +++++
+ arch/riscv/kernel/sbi.c      | 43 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 48 insertions(+)
 
 diff --git a/arch/riscv/include/asm/sbi.h b/arch/riscv/include/asm/sbi.h
-index 0892f4421bc4..66f3933c14f6 100644
+index 66f3933c14f6..ee7aef5f6233 100644
 --- a/arch/riscv/include/asm/sbi.h
 +++ b/arch/riscv/include/asm/sbi.h
-@@ -271,8 +271,13 @@ struct sbiret sbi_ecall(int ext, int fid, unsigned long arg0,
- 			unsigned long arg3, unsigned long arg4,
- 			unsigned long arg5);
+@@ -334,6 +334,11 @@ static inline unsigned long sbi_mk_version(unsigned long major,
+ }
  
-+#ifdef CONFIG_RISCV_SBI_V01
- void sbi_console_putchar(int ch);
- int sbi_console_getchar(void);
-+#else
-+static inline void sbi_console_putchar(int ch) { }
-+static inline int sbi_console_getchar(void) { return -ENOENT; }
-+#endif
- long sbi_get_mvendorid(void);
- long sbi_get_marchid(void);
- long sbi_get_mimpid(void);
+ int sbi_err_map_linux_errno(int err);
++
++extern bool sbi_debug_console_available;
++int sbi_debug_console_write(unsigned int num_bytes, phys_addr_t base_addr);
++int sbi_debug_console_read(unsigned int num_bytes, phys_addr_t base_addr);
++
+ #else /* CONFIG_RISCV_SBI */
+ static inline int sbi_remote_fence_i(const struct cpumask *cpu_mask) { return -1; }
+ static inline void sbi_init(void) {}
+diff --git a/arch/riscv/kernel/sbi.c b/arch/riscv/kernel/sbi.c
+index 5a62ed1da453..73a9c22c3945 100644
+--- a/arch/riscv/kernel/sbi.c
++++ b/arch/riscv/kernel/sbi.c
+@@ -571,6 +571,44 @@ long sbi_get_mimpid(void)
+ }
+ EXPORT_SYMBOL_GPL(sbi_get_mimpid);
+ 
++bool sbi_debug_console_available;
++
++int sbi_debug_console_write(unsigned int num_bytes, phys_addr_t base_addr)
++{
++	struct sbiret ret;
++
++	if (!sbi_debug_console_available)
++		return -EOPNOTSUPP;
++
++	if (IS_ENABLED(CONFIG_32BIT))
++		ret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE,
++				num_bytes, lower_32_bits(base_addr),
++				upper_32_bits(base_addr), 0, 0, 0);
++	else
++		ret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE,
++				num_bytes, base_addr, 0, 0, 0, 0);
++
++	return ret.error ? sbi_err_map_linux_errno(ret.error) : ret.value;
++}
++
++int sbi_debug_console_read(unsigned int num_bytes, phys_addr_t base_addr)
++{
++	struct sbiret ret;
++
++	if (!sbi_debug_console_available)
++		return -EOPNOTSUPP;
++
++	if (IS_ENABLED(CONFIG_32BIT))
++		ret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_READ,
++				num_bytes, lower_32_bits(base_addr),
++				upper_32_bits(base_addr), 0, 0, 0);
++	else
++		ret = sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_READ,
++				num_bytes, base_addr, 0, 0, 0, 0);
++
++	return ret.error ? sbi_err_map_linux_errno(ret.error) : ret.value;
++}
++
+ void __init sbi_init(void)
+ {
+ 	int ret;
+@@ -612,6 +650,11 @@ void __init sbi_init(void)
+ 			sbi_srst_reboot_nb.priority = 192;
+ 			register_restart_handler(&sbi_srst_reboot_nb);
+ 		}
++		if ((sbi_spec_version >= sbi_mk_version(2, 0)) &&
++		    (sbi_probe_extension(SBI_EXT_DBCN) > 0)) {
++			pr_info("SBI DBCN extension detected\n");
++			sbi_debug_console_available = true;
++		}
+ 	} else {
+ 		__sbi_set_timer = __sbi_set_timer_v01;
+ 		__sbi_send_ipi	= __sbi_send_ipi_v01;
 -- 
 2.34.1
 
