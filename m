@@ -2,70 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A7407EFE4E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Nov 2023 08:36:14 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=qgeWwczt;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 63FA17EFEE4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Nov 2023 11:29:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SXQYm3hg2z3vjs
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Nov 2023 18:36:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SXVQ52F1Xz3dGx
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Nov 2023 21:29:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=qgeWwczt;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--mmaurer.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=3ryhyzqckdcossgaxkxmuumrk.iusrotadvvi-jkbroyzy.ufrghy.uxm@flex--mmaurer.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=wangkefeng.wang@huawei.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1211 seconds by postgrey-1.37 at boromir; Sat, 18 Nov 2023 21:29:17 AEDT
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SXJP63l8hz2xwH
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Nov 2023 13:58:18 +1100 (AEDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-da07b5e6f75so3291477276.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Nov 2023 18:58:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1700276295; x=1700881095; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6470cZa62MbyzT9ybBeTXZeWGQJ3Ep0Ies1ZAhH/GQQ=;
-        b=qgeWwcztk7Rjyb856l7lL8r1kciTlhFjJjPuDOF6UvI99u+etRutVzpRvYzIOF/epk
-         tFx6Nm6ZOc2OyFvelaosXtEdT8vibsEmnVPPzjUQ9PvDB4Ul/VK+22bLy9anE2xBx/LQ
-         vNXeWQNtD4xH+AwnTUULulOMuANndcmevrt+3TNikUUc2+SCdTbsywTavPrMvXX84Y2e
-         6te3M1zb+JpaMqOAnf3/NOWA1VXMuQZRyPGiVgZ95aV/0XWl7wiI6dPxpawc3fyuvp0Z
-         Eu3RI6o82h8b/xO6SvcSW5efEeir8nfZBIBf1ETFpsgz40xktLI3qs3XD30AmJTmRtYm
-         vHZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700276295; x=1700881095;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6470cZa62MbyzT9ybBeTXZeWGQJ3Ep0Ies1ZAhH/GQQ=;
-        b=b4vf4gaXiNhJOYzdiWukqGccQn655EbqRwHfOimd/EcCLilUCEOXXnKgM9do6NVrlb
-         fAozwNtHrzas5Pcr/0Jqy5xfflhasoCV+2ESErIKCsC3/prSoYifnMpt/cnpnANypjM8
-         vOCks8Tg5kod7goWiz85KnNZjSRMNk3WOtJM0ziBReFbJjR5Lmyggi5F8HYzpcsPcwKM
-         azDEF77Hf5ER9ByhnpQyhLQFQfF4WfVU03MgkUYZDVstp/fU8kFXYxTcwWSbtoK9ZMcL
-         23iTh1NQw5zCRfCb9oXRr/gt+ekQqKMz1rogMHOD9RmAg7BHKxqhfOPXyaMdCWPC7ubA
-         9Qyw==
-X-Gm-Message-State: AOJu0YwRf62BTBLRGDCYOfTFkyBgEk4boTmwJoOg5KAGDnWIluiT66cH
-	0jUQ0CSiACi8DcWE4q/Q5QwZCMdz2xKm
-X-Google-Smtp-Source: AGHT+IE0p+YtnUfNXyViuu9ji/lc0sYzrwa5eOwzdtBv1fKlqv6arjeB7wtV3bdeWily94YGEBFtqUBG97qg
-X-Received: from anyblade.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:1791])
- (user=mmaurer job=sendgmr) by 2002:a5b:cc9:0:b0:da0:37e1:558e with SMTP id
- e9-20020a5b0cc9000000b00da037e1558emr26098ybr.6.1700276295405; Fri, 17 Nov
- 2023 18:58:15 -0800 (PST)
-Date: Sat, 18 Nov 2023 02:54:46 +0000
-In-Reply-To: <20231118025748.2778044-1-mmaurer@google.com>
-Mime-Version: 1.0
-References: <20231118025748.2778044-1-mmaurer@google.com>
-X-Mailer: git-send-email 2.43.0.rc0.421.g78406f8d94-goog
-Message-ID: <20231118025748.2778044-6-mmaurer@google.com>
-Subject: [PATCH v2 5/5] export_report: Use new version info format
-From: Matthew Maurer <mmaurer@google.com>
-To: Masahiro Yamada <masahiroy@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	Luis Chamberlain <mcgrof@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Sat, 18 Nov 2023 18:31:25 +1100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SXVPT4blZz3cFh
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Nov 2023 21:29:13 +1100 (AEDT)
+Received: from dggpemm100001.china.huawei.com (unknown [172.30.72.55])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4SXTrY6JprzMmjJ;
+	Sat, 18 Nov 2023 18:04:13 +0800 (CST)
+Received: from localhost.localdomain (10.175.112.125) by
+ dggpemm100001.china.huawei.com (7.185.36.93) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Sat, 18 Nov 2023 18:08:52 +0800
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+To: Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH] asm/io: remove unnecessary xlate_dev_mem_ptr() and unxlate_dev_mem_ptr()
+Date: Sat, 18 Nov 2023 18:08:27 +0800
+Message-ID: <20231118100827.1599422-1-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.27.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.175.112.125]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemm100001.china.huawei.com (7.185.36.93)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,65 +47,193 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicolas Schier <nicolas@fjasle.eu>, rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, Matthew Maurer <mmaurer@google.com>, Nathan Chancellor <nathan@kernel.org>, Laura Abbott <laura@labbott.name>, linuxppc-dev@lists.ozlabs.org, linux-modules@vger.kernel.org
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, "James
+ E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, sparclinux@vger.kernel.org, linux-arch@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-hexagon@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Stanislav Kinsburskii <stanislav.kinsburskii@gmail.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, linux-m68k@lists.linux-m68k.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The new version info format has a superset of symbols in the old format.
-Since this is a tool for in-tree modules, we don't need to parse the old
-one with this tool any longer.
+The asm-generic/io.h already has default definition, remove unnecessary
+arch's defination.
 
-Signed-off-by: Matthew Maurer <mmaurer@google.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Brian Cain <bcain@quicinc.com>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Stanislav Kinsburskii <stanislav.kinsburskii@gmail.com>
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 ---
- scripts/export_report.pl | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ arch/alpha/include/asm/io.h    | 6 ------
+ arch/arm/include/asm/io.h      | 6 ------
+ arch/hexagon/include/asm/io.h  | 6 ------
+ arch/m68k/include/asm/io_mm.h  | 6 ------
+ arch/mips/include/asm/io.h     | 7 -------
+ arch/parisc/include/asm/io.h   | 6 ------
+ arch/powerpc/include/asm/io.h  | 6 ------
+ arch/sh/include/asm/io.h       | 7 -------
+ arch/sparc/include/asm/io_64.h | 6 ------
+ 9 files changed, 56 deletions(-)
 
-diff --git a/scripts/export_report.pl b/scripts/export_report.pl
-index dcef915405f3..6a37df6f947f 100755
---- a/scripts/export_report.pl
-+++ b/scripts/export_report.pl
-@@ -114,31 +114,29 @@ foreach my $thismod (@allcfiles) {
- 	}
+diff --git a/arch/alpha/include/asm/io.h b/arch/alpha/include/asm/io.h
+index 7aeaf7c30a6f..5e5d21ebc584 100644
+--- a/arch/alpha/include/asm/io.h
++++ b/arch/alpha/include/asm/io.h
+@@ -651,12 +651,6 @@ extern void outsl (unsigned long port, const void *src, unsigned long count);
+ #endif
+ #define RTC_ALWAYS_BCD	0
  
- 	my $state=0;
-+	# State map:
-+	# 0 - Looking for names
-+	# 1 - Scanning names
-+	# 2 - Done
- 	while ( <$module> ) {
- 		chomp;
- 		if ($state == 0) {
--			$state = 1 if ($_ =~ /static const struct modversion_info/);
-+			$state = 1 if ($_ =~ /__used __section\("__version_ext_names"\)/);
- 			next;
- 		}
- 		if ($state == 1) {
--			$state = 2 if ($_ =~ /__used __section\("__versions"\)/);
--			next;
--		}
--		if ($state == 2) {
--			if ( $_ =~ /};/ ) {
--				$state = 3;
--				next;
--			}
--			if ( $_ !~ /0x[0-9a-f]+,/ ) {
-+			if ( $_ =~ /;/ ) {
-+				$state = 2;
- 				next;
- 			}
--			my $sym = (split /([,"])/,)[4];
-+			$_ =~ /"(.*)\\0"/;
-+			my $sym = $1;
- 			my ($module, $value, $symbol, $gpl) = @{$SYMBOL{$sym}};
- 			$SYMBOL{ $sym } =  [ $module, $value+1, $symbol, $gpl];
- 			push(@{$MODULE{$thismod}} , $sym);
- 		}
- 	}
--	if ($state != 3) {
-+	if ($state != 2) {
- 		warn "WARNING:$thismod is not built with CONFIG_MODVERSIONS enabled\n";
- 		$modversion_warnings++;
- 	}
+-/*
+- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
+- * access
+- */
+-#define xlate_dev_mem_ptr(p)	__va(p)
+-
+ /*
+  * These get provided from <asm-generic/iomap.h> since alpha does not
+  * select GENERIC_IOMAP.
+diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
+index 56b08ed6cc3b..1815748f5d2a 100644
+--- a/arch/arm/include/asm/io.h
++++ b/arch/arm/include/asm/io.h
+@@ -407,12 +407,6 @@ struct pci_dev;
+ #define pci_iounmap pci_iounmap
+ extern void pci_iounmap(struct pci_dev *dev, void __iomem *addr);
+ 
+-/*
+- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
+- * access
+- */
+-#define xlate_dev_mem_ptr(p)	__va(p)
+-
+ #include <asm-generic/io.h>
+ 
+ #ifdef CONFIG_MMU
+diff --git a/arch/hexagon/include/asm/io.h b/arch/hexagon/include/asm/io.h
+index e2b308e32a37..97d57751ce3b 100644
+--- a/arch/hexagon/include/asm/io.h
++++ b/arch/hexagon/include/asm/io.h
+@@ -58,12 +58,6 @@ static inline void *phys_to_virt(unsigned long address)
+ 	return __va(address);
+ }
+ 
+-/*
+- * convert a physical pointer to a virtual kernel pointer for
+- * /dev/mem access.
+- */
+-#define xlate_dev_mem_ptr(p)    __va(p)
+-
+ /*
+  * IO port access primitives.  Hexagon doesn't have special IO access
+  * instructions; all I/O is memory mapped.
+diff --git a/arch/m68k/include/asm/io_mm.h b/arch/m68k/include/asm/io_mm.h
+index 47525f2a57e1..090aec54b8fa 100644
+--- a/arch/m68k/include/asm/io_mm.h
++++ b/arch/m68k/include/asm/io_mm.h
+@@ -389,12 +389,6 @@ static inline void isa_delay(void)
+ 
+ #define __ARCH_HAS_NO_PAGE_ZERO_MAPPED		1
+ 
+-/*
+- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
+- * access
+- */
+-#define xlate_dev_mem_ptr(p)	__va(p)
+-
+ #define readb_relaxed(addr)	readb(addr)
+ #define readw_relaxed(addr)	readw(addr)
+ #define readl_relaxed(addr)	readl(addr)
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index 062dd4e6b954..2158ff302430 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -548,13 +548,6 @@ extern void (*_dma_cache_inv)(unsigned long start, unsigned long size);
+ #define csr_out32(v, a) (*(volatile u32 *)((unsigned long)(a) + __CSR_32_ADJUST) = (v))
+ #define csr_in32(a)    (*(volatile u32 *)((unsigned long)(a) + __CSR_32_ADJUST))
+ 
+-/*
+- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
+- * access
+- */
+-#define xlate_dev_mem_ptr(p)	__va(p)
+-#define unxlate_dev_mem_ptr(p, v) do { } while (0)
+-
+ void __ioread64_copy(void *to, const void __iomem *from, size_t count);
+ 
+ #endif /* _ASM_IO_H */
+diff --git a/arch/parisc/include/asm/io.h b/arch/parisc/include/asm/io.h
+index 366537042465..9c06cafb0e70 100644
+--- a/arch/parisc/include/asm/io.h
++++ b/arch/parisc/include/asm/io.h
+@@ -267,12 +267,6 @@ extern void iowrite64be(u64 val, void __iomem *addr);
+ #define iowrite16_rep iowrite16_rep
+ #define iowrite32_rep iowrite32_rep
+ 
+-/*
+- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
+- * access
+- */
+-#define xlate_dev_mem_ptr(p)	__va(p)
+-
+ extern int devmem_is_allowed(unsigned long pfn);
+ 
+ #include <asm-generic/io.h>
+diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
+index 5220274a6277..79421c285066 100644
+--- a/arch/powerpc/include/asm/io.h
++++ b/arch/powerpc/include/asm/io.h
+@@ -709,12 +709,6 @@ static inline void name at					\
+ #define memcpy_fromio memcpy_fromio
+ #define memcpy_toio memcpy_toio
+ 
+-/*
+- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
+- * access
+- */
+-#define xlate_dev_mem_ptr(p)	__va(p)
+-
+ /*
+  * We don't do relaxed operations yet, at least not with this semantic
+  */
+diff --git a/arch/sh/include/asm/io.h b/arch/sh/include/asm/io.h
+index ac521f287fa5..be7ac06423a9 100644
+--- a/arch/sh/include/asm/io.h
++++ b/arch/sh/include/asm/io.h
+@@ -304,13 +304,6 @@ unsigned long long poke_real_address_q(unsigned long long addr,
+ 
+ #define ioremap_uc	ioremap
+ 
+-/*
+- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
+- * access
+- */
+-#define xlate_dev_mem_ptr(p)	__va(p)
+-#define unxlate_dev_mem_ptr(p, v) do { } while (0)
+-
+ #include <asm-generic/io.h>
+ 
+ #define ARCH_HAS_VALID_PHYS_ADDR_RANGE
+diff --git a/arch/sparc/include/asm/io_64.h b/arch/sparc/include/asm/io_64.h
+index 9303270b22f3..75ae9bf3bb7b 100644
+--- a/arch/sparc/include/asm/io_64.h
++++ b/arch/sparc/include/asm/io_64.h
+@@ -470,12 +470,6 @@ static inline int sbus_can_burst64(void)
+ struct device;
+ void sbus_set_sbus64(struct device *, int);
+ 
+-/*
+- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
+- * access
+- */
+-#define xlate_dev_mem_ptr(p)	__va(p)
+-
+ #endif
+ 
+ #endif /* !(__SPARC64_IO_H) */
 -- 
-2.43.0.rc0.421.g78406f8d94-goog
+2.27.0
 
