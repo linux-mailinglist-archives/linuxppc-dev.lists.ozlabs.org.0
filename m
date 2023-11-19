@@ -2,63 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A1E7F03BE
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Nov 2023 01:13:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F0167F042D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Nov 2023 04:15:20 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=iBu1dRse;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Qrg/OA+2;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SXrhK4PsCz3cgl
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Nov 2023 11:13:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SXwkG1902z3d8n
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Nov 2023 14:15:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=iBu1dRse;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Qrg/OA+2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org)
-Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SXrgV39vJz3c1C
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Nov 2023 11:12:38 +1100 (AEDT)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id 397A58285466;
-	Sat, 18 Nov 2023 18:12:35 -0600 (CST)
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id CHdZQiFBsuP7; Sat, 18 Nov 2023 18:12:33 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id B406C8285668;
-	Sat, 18 Nov 2023 18:12:33 -0600 (CST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com B406C8285668
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
-	t=1700352753; bh=cQhhjS6xNH6UKIJZzLuNMh7AkouB2WwPHhgpxJ3IXmA=;
-	h=Date:From:To:Message-ID:MIME-Version;
-	b=iBu1dRsevPzzKyt60iXj0T+08g/rRFvEqoqOBTIgQIB4gXvO7lJaKmHia0Q3mJfkH
-	 C+AqxP2QVYvM59HjrM08ankG1mouEEGqMzVcfi0fHqS7LjqPp88yUuLI9hod031tOX
-	 MkIVv3QQ0ezT2lsYTDpVbcDQeq3V6SZoJp4EXF6k=
-X-Virus-Scanned: amavisd-new at rptsys.com
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id y3LmDgxkzOOs; Sat, 18 Nov 2023 18:12:33 -0600 (CST)
-Received: from vali.starlink.edu (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id 64B9D8285466;
-	Sat, 18 Nov 2023 18:12:33 -0600 (CST)
-Date: Sat, 18 Nov 2023 18:12:31 -0600 (CST)
-From: Timothy Pearson <tpearson@raptorengineering.com>
-To: Timothy Pearson <tpearson@raptorengineering.com>
-Message-ID: <2090370604.48379725.1700352751485.JavaMail.zimbra@raptorengineeringinc.com>
-In-Reply-To: <1105090647.48374193.1700351103830.JavaMail.zimbra@raptorengineeringinc.com>
-References: <1105090647.48374193.1700351103830.JavaMail.zimbra@raptorengineeringinc.com>
-Subject: Re: [PATCH] powerpc: Don't clobber fr0/vs0 during fp|altivec
- register  save
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SXwjL30lxz3c3H
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Nov 2023 14:14:27 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700363670; x=1731899670;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=DgMR+20joI22QFpxuYG34MFkzxuJ+eU5dAVuggNsAkY=;
+  b=Qrg/OA+2ZVh1wsVpjcilpECemO1mCENPy9eEIuN407hG+KNFdcU6+8SA
+   5imaMcM2mjHMCATGi4KFfaTqbrIVz/9pJ6mqHGmET798tzyMiJeOg/Fst
+   EHwHq4Lf+zwfq04d4JkeKWywkPWTDpyO/ruu8pAPhzpFBdc103hYnT60k
+   13xL6f/AttfAq2yYqBap6RxOWV0xUOVsxiccpdv0Jkxbe5EbrdJWyB8Sk
+   T4Rak/AqBhwwnBRWSh6Vt1xKPIiT+ZAQuIqJxJJhdjPYhD+NI7ewt7mn/
+   HGK5o7pMNp2C66WzwhY+qRCAwvWBZJ7W+Ksx7P/7i9dcr2d8Gc2FXNfjI
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10898"; a="370812192"
+X-IronPort-AV: E=Sophos;i="6.04,209,1695711600"; 
+   d="scan'208";a="370812192"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2023 19:14:21 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10898"; a="800823006"
+X-IronPort-AV: E=Sophos;i="6.04,209,1695711600"; 
+   d="scan'208";a="800823006"
+Received: from lkp-server02.sh.intel.com (HELO b8de5498638e) ([10.239.97.151])
+  by orsmga001.jf.intel.com with ESMTP; 18 Nov 2023 19:14:14 -0800
+Received: from kbuild by b8de5498638e with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1r4YGC-0004aP-0K;
+	Sun, 19 Nov 2023 03:14:12 +0000
+Date: Sun, 19 Nov 2023 11:13:56 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kefeng Wang <wangkefeng.wang@huawei.com>, Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH] asm/io: remove unnecessary xlate_dev_mem_ptr() and
+ unxlate_dev_mem_ptr()
+Message-ID: <202311191145.pppExJS6-lkp@intel.com>
+References: <20231118100827.1599422-1-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: Zimbra 8.5.0_GA_3042 (ZimbraWebClient - GC119 (Linux)/8.5.0_GA_3042)
-Thread-Topic: powerpc: Don't clobber fr0/vs0 during fp|altivec register save
-Thread-Index: oeYNf1lW+cBhY7HPI4V34psIc5MeawXcHduz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231118100827.1599422-1-wangkefeng.wang@huawei.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,139 +71,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>, regressions <regressions@lists.linux.dev>, npiggin <npiggin@gmail.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, llvm@lists.linux.dev, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, sparclinux@vger.kernel.org, linux-arch@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-hexagon@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Stanislav Kinsburskii <stanislav.kinsburskii@gmail.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, linux-m68k@lists.linux-m68k.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, oe-kbuild-all@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Kefeng,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on soc/for-next]
+[also build test ERROR on geert-m68k/for-next geert-m68k/for-linus deller-parisc/for-next powerpc/next powerpc/fixes linus/master v6.7-rc1 next-20231117]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Kefeng-Wang/asm-io-remove-unnecessary-xlate_dev_mem_ptr-and-unxlate_dev_mem_ptr/20231118-183038
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/soc/soc.git for-next
+patch link:    https://lore.kernel.org/r/20231118100827.1599422-1-wangkefeng.wang%40huawei.com
+patch subject: [PATCH] asm/io: remove unnecessary xlate_dev_mem_ptr() and unxlate_dev_mem_ptr()
+config: mips-mtx1_defconfig (https://download.01.org/0day-ci/archive/20231119/202311191145.pppExJS6-lkp@intel.com/config)
+compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231119/202311191145.pppExJS6-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202311191145.pppExJS6-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/char/mem.c:159:10: error: call to undeclared function 'xlate_dev_mem_ptr'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+                           ptr = xlate_dev_mem_ptr(p);
+                                 ^
+>> drivers/char/mem.c:159:8: error: incompatible integer to pointer conversion assigning to 'void *' from 'int' [-Wint-conversion]
+                           ptr = xlate_dev_mem_ptr(p);
+                               ^ ~~~~~~~~~~~~~~~~~~~~
+>> drivers/char/mem.c:164:4: error: call to undeclared function 'unxlate_dev_mem_ptr'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+                           unxlate_dev_mem_ptr(p, ptr);
+                           ^
+   drivers/char/mem.c:235:10: error: call to undeclared function 'xlate_dev_mem_ptr'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+                           ptr = xlate_dev_mem_ptr(p);
+                                 ^
+   drivers/char/mem.c:235:8: error: incompatible integer to pointer conversion assigning to 'void *' from 'int' [-Wint-conversion]
+                           ptr = xlate_dev_mem_ptr(p);
+                               ^ ~~~~~~~~~~~~~~~~~~~~
+   drivers/char/mem.c:243:4: error: call to undeclared function 'unxlate_dev_mem_ptr'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+                           unxlate_dev_mem_ptr(p, ptr);
+                           ^
+   6 errors generated.
 
 
------ Original Message -----
-> From: "Timothy Pearson" <tpearson@raptorengineering.com>
-> To: "Jens Axboe" <axboe@kernel.dk>, "regressions" <regressions@lists.linux.dev>, "Michael Ellerman"
-> <mpe@ellerman.id.au>, "npiggin" <npiggin@gmail.com>, "christophe leroy" <christophe.leroy@csgroup.eu>, "linuxppc-dev"
-> <linuxppc-dev@lists.ozlabs.org>
-> Sent: Saturday, November 18, 2023 5:45:03 PM
-> Subject: [PATCH] powerpc: Don't clobber fr0/vs0 during fp|altivec register  save
+vim +/xlate_dev_mem_ptr +159 drivers/char/mem.c
 
-> During floating point and vector save to thread data fr0/vs0 are clobbered
-> by the FPSCR/VSCR store routine.  This leads to userspace register corruption
-> and application data corruption / crash under the following rare condition:
-> 
-> * A userspace thread is executing with VSX/FP mode enabled
-> * The userspace thread is making active use of fr0 and/or vs0
-> * An IPI is taken in kernel mode, forcing the userspace thread to reschedule
-> * The userspace thread is interrupted by the IPI before accessing data it
->   previously stored in fr0/vs0
-> * The thread being switched in by the IPI has a pending signal
-> 
-> If these exact criteria are met, then the following sequence happens:
-> 
-> * The existing thread FP storage is still valid before the IPI, due to a
->   prior call to save_fpu() or store_fp_state().  Note that the current
->   fr0/vs0 registers have been clobbered, so the FP/VSX state in registers
->   is now invalid pending a call to restore_fp()/restore_altivec().
-> * IPI -- FP/VSX register state remains invalid
-> * interrupt_exit_user_prepare_main() calls do_notify_resume(),
->   due to the pending signal
-> * do_notify_resume() eventually calls save_fpu() via giveup_fpu(), which
->   merrily reads and saves the invalid FP/VSX state to thread local storage.
-> * interrupt_exit_user_prepare_main() calls restore_math(), writing the invalid
->   FP/VSX state back to registers.
-> * Execution is released to userspace, and the application crashes or corrupts
->   data.
-> 
-> Without the pending signal, do_notify_resume() is never called, therefore the
-> invalid register state does't matter as it is overwritten nearly immeediately
-> by interrupt_exit_user_prepare_main() calling restore_math() before return
-> to userspace.
-> 
-> The combination of MariaDB and io_uring is especially good at triggering data
-> corruption using the above sequence, see MariaDB bug MDEV-30728.
-> 
-> Restore fr0/vs0 after FPSCR/VSCR store has completed for both the fp and
-> altivec register save paths.
-> 
-> Tested under QEMU in kvm mode, running on a Talos II workstation with dual
-> POWER9 DD2.2 CPUs.
-> 
-> Tested-by: Timothy Pearson <tpearson@raptorengineering.com>
-> Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
-> ---
-> arch/powerpc/kernel/fpu.S    | 13 +++++++++++++
-> arch/powerpc/kernel/vector.S |  4 ++++
-> 2 files changed, 17 insertions(+)
-> 
-> diff --git a/arch/powerpc/kernel/fpu.S b/arch/powerpc/kernel/fpu.S
-> index 6a9acfb690c9..2f8f3f93cbb6 100644
-> --- a/arch/powerpc/kernel/fpu.S
-> +++ b/arch/powerpc/kernel/fpu.S
-> @@ -23,6 +23,15 @@
-> #include <asm/feature-fixups.h>
-> 
-> #ifdef CONFIG_VSX
-> +#define __REST_1FPVSR(n,c,base)						\
-> +BEGIN_FTR_SECTION							\
-> +	b	2f;							\
-> +END_FTR_SECTION_IFSET(CPU_FTR_VSX);					\
-> +	REST_FPR(n,base);						\
-> +	b	3f;							\
-> +2:	REST_VSR(n,c,base);						\
-> +3:
-> +
-> #define __REST_32FPVSRS(n,c,base)					\
-> BEGIN_FTR_SECTION							\
-> 	b	2f;							\
-> @@ -41,9 +50,11 @@ END_FTR_SECTION_IFSET(CPU_FTR_VSX);					\
-> 2:	SAVE_32VSRS(n,c,base);						\
-> 3:
-> #else
-> +#define __REST_1FPVSR(n,b,base)		REST_FPR(n, base)
-> #define __REST_32FPVSRS(n,b,base)	REST_32FPRS(n, base)
-> #define __SAVE_32FPVSRS(n,b,base)	SAVE_32FPRS(n, base)
-> #endif
-> +#define REST_1FPVSR(n,c,base)   __REST_1FPVSR(n,__REG_##c,__REG_##base)
-> #define REST_32FPVSRS(n,c,base) __REST_32FPVSRS(n,__REG_##c,__REG_##base)
-> #define SAVE_32FPVSRS(n,c,base) __SAVE_32FPVSRS(n,__REG_##c,__REG_##base)
-> 
-> @@ -67,6 +78,7 @@ _GLOBAL(store_fp_state)
-> 	SAVE_32FPVSRS(0, R4, R3)
-> 	mffs	fr0
-> 	stfd	fr0,FPSTATE_FPSCR(r3)
-> +	REST_1FPVSR(0, R4, R3)
-> 	blr
-> EXPORT_SYMBOL(store_fp_state)
-> 
-> @@ -138,4 +150,5 @@ _GLOBAL(save_fpu)
-> 2:	SAVE_32FPVSRS(0, R4, R6)
-> 	mffs	fr0
-> 	stfd	fr0,FPSTATE_FPSCR(r6)
-> +	REST_1FPVSR(0, R4, R6)
-> 	blr
-> diff --git a/arch/powerpc/kernel/vector.S b/arch/powerpc/kernel/vector.S
-> index 4094e4c4c77a..8c63b05b421e 100644
-> --- a/arch/powerpc/kernel/vector.S
-> +++ b/arch/powerpc/kernel/vector.S
-> @@ -33,6 +33,8 @@ _GLOBAL(store_vr_state)
-> 	mfvscr	v0
-> 	li	r4, VRSTATE_VSCR
-> 	stvx	v0, r4, r3
-> +	li	r4, 0
-> +	lvx	v0, r4, r3
-> 	blr
-> EXPORT_SYMBOL(store_vr_state)
-> 
-> @@ -109,6 +111,8 @@ _GLOBAL(save_altivec)
-> 	mfvscr	v0
-> 	li	r4,VRSTATE_VSCR
-> 	stvx	v0,r4,r7
-> +	li	r4,0
-> +	lvx	v0,r4,r7
-> 	blr
-> 
-> #ifdef CONFIG_VSX
-> --
-> 2.39.2
+^1da177e4c3f41 Linus Torvalds                2005-04-16  133  
+22ec1a2aea73b9 Kees Cook                     2017-12-01  134  	bounce = kmalloc(PAGE_SIZE, GFP_KERNEL);
+22ec1a2aea73b9 Kees Cook                     2017-12-01  135  	if (!bounce)
+22ec1a2aea73b9 Kees Cook                     2017-12-01  136  		return -ENOMEM;
+22ec1a2aea73b9 Kees Cook                     2017-12-01  137  
+^1da177e4c3f41 Linus Torvalds                2005-04-16  138  	while (count > 0) {
+fa29e97bb8c70f Wu Fengguang                  2009-12-14  139  		unsigned long remaining;
+b5b38200ebe548 Kees Cook                     2018-03-27  140  		int allowed, probe;
+fa29e97bb8c70f Wu Fengguang                  2009-12-14  141  
+f222318e9c3a31 Wu Fengguang                  2009-12-14  142  		sz = size_inside_page(p, count);
+^1da177e4c3f41 Linus Torvalds                2005-04-16  143  
+22ec1a2aea73b9 Kees Cook                     2017-12-01  144  		err = -EPERM;
+a4866aa812518e Kees Cook                     2017-04-05  145  		allowed = page_is_allowed(p >> PAGE_SHIFT);
+a4866aa812518e Kees Cook                     2017-04-05  146  		if (!allowed)
+22ec1a2aea73b9 Kees Cook                     2017-12-01  147  			goto failed;
+22ec1a2aea73b9 Kees Cook                     2017-12-01  148  
+22ec1a2aea73b9 Kees Cook                     2017-12-01  149  		err = -EFAULT;
+a4866aa812518e Kees Cook                     2017-04-05  150  		if (allowed == 2) {
+a4866aa812518e Kees Cook                     2017-04-05  151  			/* Show zeros for restricted memory. */
+a4866aa812518e Kees Cook                     2017-04-05  152  			remaining = clear_user(buf, sz);
+a4866aa812518e Kees Cook                     2017-04-05  153  		} else {
+^1da177e4c3f41 Linus Torvalds                2005-04-16  154  			/*
+a4866aa812518e Kees Cook                     2017-04-05  155  			 * On ia64 if a page has been mapped somewhere as
+a4866aa812518e Kees Cook                     2017-04-05  156  			 * uncached, then it must also be accessed uncached
+a4866aa812518e Kees Cook                     2017-04-05  157  			 * by the kernel or data corruption may occur.
+^1da177e4c3f41 Linus Torvalds                2005-04-16  158  			 */
+^1da177e4c3f41 Linus Torvalds                2005-04-16 @159  			ptr = xlate_dev_mem_ptr(p);
+e045fb2a988a9a venkatesh.pallipadi@intel.com 2008-03-18  160  			if (!ptr)
+22ec1a2aea73b9 Kees Cook                     2017-12-01  161  				goto failed;
+a4866aa812518e Kees Cook                     2017-04-05  162  
+fe557319aa06c2 Christoph Hellwig             2020-06-17  163  			probe = copy_from_kernel_nofault(bounce, ptr, sz);
+e045fb2a988a9a venkatesh.pallipadi@intel.com 2008-03-18 @164  			unxlate_dev_mem_ptr(p, ptr);
+b5b38200ebe548 Kees Cook                     2018-03-27  165  			if (probe)
+22ec1a2aea73b9 Kees Cook                     2017-12-01  166  				goto failed;
+22ec1a2aea73b9 Kees Cook                     2017-12-01  167  
+22ec1a2aea73b9 Kees Cook                     2017-12-01  168  			remaining = copy_to_user(buf, bounce, sz);
+a4866aa812518e Kees Cook                     2017-04-05  169  		}
+a4866aa812518e Kees Cook                     2017-04-05  170  
+fa29e97bb8c70f Wu Fengguang                  2009-12-14  171  		if (remaining)
+22ec1a2aea73b9 Kees Cook                     2017-12-01  172  			goto failed;
+e045fb2a988a9a venkatesh.pallipadi@intel.com 2008-03-18  173  
+^1da177e4c3f41 Linus Torvalds                2005-04-16  174  		buf += sz;
+^1da177e4c3f41 Linus Torvalds                2005-04-16  175  		p += sz;
+^1da177e4c3f41 Linus Torvalds                2005-04-16  176  		count -= sz;
+^1da177e4c3f41 Linus Torvalds                2005-04-16  177  		read += sz;
+8619e5bdeee8b2 Tetsuo Handa                  2019-08-26  178  		if (should_stop_iteration())
+8619e5bdeee8b2 Tetsuo Handa                  2019-08-26  179  			break;
+^1da177e4c3f41 Linus Torvalds                2005-04-16  180  	}
+22ec1a2aea73b9 Kees Cook                     2017-12-01  181  	kfree(bounce);
+^1da177e4c3f41 Linus Torvalds                2005-04-16  182  
+^1da177e4c3f41 Linus Torvalds                2005-04-16  183  	*ppos += read;
+^1da177e4c3f41 Linus Torvalds                2005-04-16  184  	return read;
+22ec1a2aea73b9 Kees Cook                     2017-12-01  185  
+22ec1a2aea73b9 Kees Cook                     2017-12-01  186  failed:
+22ec1a2aea73b9 Kees Cook                     2017-12-01  187  	kfree(bounce);
+22ec1a2aea73b9 Kees Cook                     2017-12-01  188  	return err;
+^1da177e4c3f41 Linus Torvalds                2005-04-16  189  }
+^1da177e4c3f41 Linus Torvalds                2005-04-16  190  
 
-Once this (or an equivalent) is merged upstream, I'll take the stable backport task.
-
-Thanks!
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
