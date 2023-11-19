@@ -2,64 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 071E47F071D
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Nov 2023 16:19:00 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=McNppLYS;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 75AE37F0885
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Nov 2023 20:42:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SYDnF6gp4z3cLv
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Nov 2023 02:18:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SYLdD3nc3z3dKX
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Nov 2023 06:42:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=McNppLYS;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org)
-Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.221.176; helo=mail-vk1-f176.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SYDmM0TNxz3c3H
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Nov 2023 02:18:10 +1100 (AEDT)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id 65CDF828587F;
-	Sun, 19 Nov 2023 09:18:07 -0600 (CST)
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id QXAYfM6e-bG7; Sun, 19 Nov 2023 09:18:05 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id 12160828596B;
-	Sun, 19 Nov 2023 09:18:05 -0600 (CST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com 12160828596B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
-	t=1700407085; bh=DfNhpWq+uQUbDfnLh5nfXGSF7RhZhtThB0PFEVqSlRc=;
-	h=Date:From:To:Message-ID:MIME-Version;
-	b=McNppLYSwyrfcwZD292FYWx1J8KnIyOOi9Z978sSpSzRCn0LnlqGLocmlCdknNl9C
-	 0yuC6gt3wxlbbVPB7JgsXLcFHpiLI0Xc3FXqELUzcqzLZCTMDGdtpDK+7dusDQLNZy
-	 ZMXEGS45AerS8lgBN0d3q1SN/3ay8L6kBHkivYDo=
-X-Virus-Scanned: amavisd-new at rptsys.com
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id qtnwUktYg1bG; Sun, 19 Nov 2023 09:18:04 -0600 (CST)
-Received: from vali.starlink.edu (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id D7F26828587F;
-	Sun, 19 Nov 2023 09:18:04 -0600 (CST)
-Date: Sun, 19 Nov 2023 09:18:02 -0600 (CST)
-From: Timothy Pearson <tpearson@raptorengineering.com>
-To: Jens Axboe <axboe@kernel.dk>, regressions <regressions@lists.linux.dev>, 
-	Michael Ellerman <mpe@ellerman.id.au>, npiggin <npiggin@gmail.com>, 
-	christophe leroy <christophe.leroy@csgroup.eu>, 
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Message-ID: <1921539696.48534988.1700407082933.JavaMail.zimbra@raptorengineeringinc.com>
-Subject: [PATCH v2] powerpc: Don't clobber fr0/vs0 during fp|altivec
- register  save
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SYLch3KQJz3bTt
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Nov 2023 06:41:54 +1100 (AEDT)
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-4ac28cab4efso1111553e0c.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Nov 2023 11:41:54 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700422910; x=1701027710;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=adTtj6Nuat+3kPZs0twhHhp0MgcrTsqJHcTyGQnaplM=;
+        b=oVsuO5HstUmtJhg1ctAIPEIlmHjqsY4xlz5YWmpR9HBJRcjLdf4xyGu73oHEpTZRNi
+         HKNpC16PBd2f27vNPMIKPriQJhmixnIxrVL0bL0nLDQpHUNUuKhdp3f3r7oK6WeEwQIH
+         F8MZdJD9O5lGkzIMqg0a80UaLdlLmmY5DtJC1bugvAXuytIy6RhbRAw6bugC37Q3SkTa
+         TMbqb4DmjiirMvFKRMchgYNo7b8XdPsm+n2YXqCoPf61QDEK/QUY2CxNvKCb64hnkfG6
+         4a+lS/ImanKOHKSLEHsTnOjY0B4HnskRPXstFQW/RS8QHrI+tfmSvSQMoPed9rUqtN6/
+         dLkQ==
+X-Gm-Message-State: AOJu0YzAW0e0WAmatyG1EFBoE3384YGyVHp532jsyBI3z8XWuD9jTSBk
+	W8as0C6E3wHf/C0CP4o6TkJFB2bQeXezAA==
+X-Google-Smtp-Source: AGHT+IETGYGRQ+MqaMKS5J1r5oGT9vYstvKQoT+LqHFPVMKcw9wDeoqcC1vZNxe/X5C3TdhF3YkCfA==
+X-Received: by 2002:a1f:4807:0:b0:4a4:680:bfad with SMTP id v7-20020a1f4807000000b004a40680bfadmr3367927vka.7.1700422909486;
+        Sun, 19 Nov 2023 11:41:49 -0800 (PST)
+Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com. [209.85.222.43])
+        by smtp.gmail.com with ESMTPSA id o9-20020a1f5a09000000b0049d4f588b1asm1021062vkb.49.2023.11.19.11.41.48
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 19 Nov 2023 11:41:48 -0800 (PST)
+Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-7c1a4a97144so959414241.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Nov 2023 11:41:48 -0800 (PST)
+X-Received: by 2002:a0d:e004:0:b0:5a8:207b:48d with SMTP id
+ j4-20020a0de004000000b005a8207b048dmr5075104ywe.11.1700422467692; Sun, 19 Nov
+ 2023 11:34:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: Zimbra 8.5.0_GA_3042 (ZimbraWebClient - GC119 (Linux)/8.5.0_GA_3042)
-Thread-Index: dVySrFh2MClWXpV/Kluttxze/2CBtQ==
-Thread-Topic: powerpc: Don't clobber fr0/vs0 during fp|altivec register save
+References: <20231118100827.1599422-1-wangkefeng.wang@huawei.com>
+In-Reply-To: <20231118100827.1599422-1-wangkefeng.wang@huawei.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Sun, 19 Nov 2023 20:34:16 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdU+MMiogx6TcBwxFL7AODZYhiAZpVHiafEBfnRsDaXTog@mail.gmail.com>
+Message-ID: <CAMuHMdU+MMiogx6TcBwxFL7AODZYhiAZpVHiafEBfnRsDaXTog@mail.gmail.com>
+Subject: Re: [PATCH] asm/io: remove unnecessary xlate_dev_mem_ptr() and unxlate_dev_mem_ptr()
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,122 +67,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, sparclinux@vger.kernel.org, linux-arch@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-hexagon@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Stanislav Kinsburskii <stanislav.kinsburskii@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, linux-m68k@lists.linux-m68k.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-During floating point and vector save to thread data fr0/vs0 are clobbered
-by the FPSCR/VSCR store routine.  This leads to userspace register corruption
-and application data corruption / crash under the following rare condition:
+On Sat, Nov 18, 2023 at 11:09=E2=80=AFAM Kefeng Wang <wangkefeng.wang@huawe=
+i.com> wrote:
+> The asm-generic/io.h already has default definition, remove unnecessary
+> arch's defination.
+>
+> Cc: Richard Henderson <richard.henderson@linaro.org>
+> Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: Brian Cain <bcain@quicinc.com>
+> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Stanislav Kinsburskii <stanislav.kinsburskii@gmail.com>
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 
- * A userspace thread is executing with VSX/FP mode enabled
- * The userspace thread is making active use of fr0 and/or vs0
- * An IPI is taken in kernel mode, forcing the userspace thread to reschedule
- * The userspace thread is interrupted by the IPI before accessing data it
-   previously stored in fr0/vs0
- * The thread being switched in by the IPI has a pending signal
+>  arch/m68k/include/asm/io_mm.h  | 6 ------
 
-If these exact criteria are met, then the following sequence happens:
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
- * The existing thread FP storage is still valid before the IPI, due to a
-   prior call to save_fpu() or store_fp_state().  Note that the current
-   fr0/vs0 registers have been clobbered, so the FP/VSX state in registers
-   is now invalid pending a call to restore_fp()/restore_altivec().
- * IPI -- FP/VSX register state remains invalid
- * interrupt_exit_user_prepare_main() calls do_notify_resume(),
-   due to the pending signal
- * do_notify_resume() eventually calls save_fpu() via giveup_fpu(), which
-   merrily reads and saves the invalid FP/VSX state to thread local storage.
- * interrupt_exit_user_prepare_main() calls restore_math(), writing the invalid
-   FP/VSX state back to registers.
- * Execution is released to userspace, and the application crashes or corrupts
-   data.
+>  arch/sh/include/asm/io.h       | 7 -------
 
-Without the pending signal, do_notify_resume() is never called, therefore the
-invalid register state does't matter as it is overwritten nearly immediately
-by interrupt_exit_user_prepare_main() calling restore_math() before return
-to userspace.
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Restore fr0/vs0 after FPSCR/VSCR store has completed for both the fp and
-altivec register save paths.
+> --- a/arch/mips/include/asm/io.h
+> +++ b/arch/mips/include/asm/io.h
+> @@ -548,13 +548,6 @@ extern void (*_dma_cache_inv)(unsigned long start, u=
+nsigned long size);
+>  #define csr_out32(v, a) (*(volatile u32 *)((unsigned long)(a) + __CSR_32=
+_ADJUST) =3D (v))
+>  #define csr_in32(a)    (*(volatile u32 *)((unsigned long)(a) + __CSR_32_=
+ADJUST))
+>
+> -/*
+> - * Convert a physical pointer to a virtual kernel pointer for /dev/mem
+> - * access
+> - */
+> -#define xlate_dev_mem_ptr(p)   __va(p)
+> -#define unxlate_dev_mem_ptr(p, v) do { } while (0)
+> -
+>  void __ioread64_copy(void *to, const void __iomem *from, size_t count);
 
-Tested under QEMU in kvm mode, running on a Talos II workstation with dual
-POWER9 DD2.2 CPUs.
+Missing #include <asm-generic/io.h>, according to the build bot report.
 
-Closes: https://lore.kernel.org/all/480932026.45576726.1699374859845.JavaMail.zimbra@raptorengineeringinc.com/
-Closes: https://lore.kernel.org/linuxppc-dev/480221078.47953493.1700206777956.JavaMail.zimbra@raptorengineeringinc.com/
-Tested-by: Timothy Pearson <tpearson@raptorengineering.com>
-Tested-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
----
- arch/powerpc/kernel/fpu.S    | 13 +++++++++++++
- arch/powerpc/kernel/vector.S |  2 ++
- 2 files changed, 15 insertions(+)
+>  #endif /* _ASM_IO_H */
 
-diff --git a/arch/powerpc/kernel/fpu.S b/arch/powerpc/kernel/fpu.S
-index 6a9acfb690c9..2f8f3f93cbb6 100644
---- a/arch/powerpc/kernel/fpu.S
-+++ b/arch/powerpc/kernel/fpu.S
-@@ -23,6 +23,15 @@
- #include <asm/feature-fixups.h>
- 
- #ifdef CONFIG_VSX
-+#define __REST_1FPVSR(n,c,base)						\
-+BEGIN_FTR_SECTION							\
-+	b	2f;							\
-+END_FTR_SECTION_IFSET(CPU_FTR_VSX);					\
-+	REST_FPR(n,base);						\
-+	b	3f;							\
-+2:	REST_VSR(n,c,base);						\
-+3:
-+
- #define __REST_32FPVSRS(n,c,base)					\
- BEGIN_FTR_SECTION							\
- 	b	2f;							\
-@@ -41,9 +50,11 @@ END_FTR_SECTION_IFSET(CPU_FTR_VSX);					\
- 2:	SAVE_32VSRS(n,c,base);						\
- 3:
- #else
-+#define __REST_1FPVSR(n,b,base)		REST_FPR(n, base)
- #define __REST_32FPVSRS(n,b,base)	REST_32FPRS(n, base)
- #define __SAVE_32FPVSRS(n,b,base)	SAVE_32FPRS(n, base)
- #endif
-+#define REST_1FPVSR(n,c,base)   __REST_1FPVSR(n,__REG_##c,__REG_##base)
- #define REST_32FPVSRS(n,c,base) __REST_32FPVSRS(n,__REG_##c,__REG_##base)
- #define SAVE_32FPVSRS(n,c,base) __SAVE_32FPVSRS(n,__REG_##c,__REG_##base)
- 
-@@ -67,6 +78,7 @@ _GLOBAL(store_fp_state)
- 	SAVE_32FPVSRS(0, R4, R3)
- 	mffs	fr0
- 	stfd	fr0,FPSTATE_FPSCR(r3)
-+	REST_1FPVSR(0, R4, R3)
- 	blr
- EXPORT_SYMBOL(store_fp_state)
- 
-@@ -138,4 +150,5 @@ _GLOBAL(save_fpu)
- 2:	SAVE_32FPVSRS(0, R4, R6)
- 	mffs	fr0
- 	stfd	fr0,FPSTATE_FPSCR(r6)
-+	REST_1FPVSR(0, R4, R6)
- 	blr
-diff --git a/arch/powerpc/kernel/vector.S b/arch/powerpc/kernel/vector.S
-index 4094e4c4c77a..80b3f6e476b6 100644
---- a/arch/powerpc/kernel/vector.S
-+++ b/arch/powerpc/kernel/vector.S
-@@ -33,6 +33,7 @@ _GLOBAL(store_vr_state)
- 	mfvscr	v0
- 	li	r4, VRSTATE_VSCR
- 	stvx	v0, r4, r3
-+	lvx	v0, 0, r3
- 	blr
- EXPORT_SYMBOL(store_vr_state)
- 
-@@ -109,6 +110,7 @@ _GLOBAL(save_altivec)
- 	mfvscr	v0
- 	li	r4,VRSTATE_VSCR
- 	stvx	v0,r4,r7
-+	lvx	v0,0,r7
- 	blr
- 
- #ifdef CONFIG_VSX
--- 
-2.39.2
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
