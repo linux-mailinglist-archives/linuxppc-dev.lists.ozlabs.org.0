@@ -1,79 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 764877F065E
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Nov 2023 14:23:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 071E47F071D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Nov 2023 16:19:00 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=wTl7R+FS;
+	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=McNppLYS;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SYBCq2wZbz3d8n
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Nov 2023 00:23:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SYDnF6gp4z3cLv
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Nov 2023 02:18:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=wTl7R+FS;
+	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=McNppLYS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::82e; helo=mail-qt1-x82e.google.com; envelope-from=axboe@kernel.dk; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com [IPv6:2607:f8b0:4864:20::82e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org)
+Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SYBBt47grz2xPc
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Nov 2023 00:22:29 +1100 (AEDT)
-Received: by mail-qt1-x82e.google.com with SMTP id d75a77b69052e-41cda37f697so9099491cf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Nov 2023 05:22:29 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SYDmM0TNxz3c3H
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Nov 2023 02:18:10 +1100 (AEDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id 65CDF828587F;
+	Sun, 19 Nov 2023 09:18:07 -0600 (CST)
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id QXAYfM6e-bG7; Sun, 19 Nov 2023 09:18:05 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id 12160828596B;
+	Sun, 19 Nov 2023 09:18:05 -0600 (CST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com 12160828596B
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1700400146; x=1701004946; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0Jnvh0uSqYJOA1ffl5+OCnqgORnNMLUa+bbdwsPJB8s=;
-        b=wTl7R+FS+jIdVnGC6CJe9iwqMlhJLSCugyLOb7yWWkrLsHjTuKwzlIS0eAw9NIKUyD
-         CVskYkCaBDMVUSxuiBwXJe8y2KiN7NcpYrMSMscNswQNS/LSFJHPyRxhteyLeAtjeRpH
-         ciS7jaV6kF+u8OgFsHjbHeRp1i5lb24pHIPs89Kl2OVzOUr/itoM+V5xOgScPmKhFpBv
-         4yBvCV5gz8R41MjuijXal33UJi2EDHEomQtqgGhZMIgDQ9EAowE5/4tuWlGLWhbTa8mT
-         ZgwM00J1Hh5cTpWxnppR8Zbq+XGt19uADKxFJi+u1EfGiBw1cWhNxOVnG9HinB4qA3PT
-         zu0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700400146; x=1701004946;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0Jnvh0uSqYJOA1ffl5+OCnqgORnNMLUa+bbdwsPJB8s=;
-        b=LTHOHTqnkGQAXhwmNcYkLYLaPrarFLSZHt4eHppnocb7n/srOApzF+3zxn/9d729Qk
-         lwgKDAIttJvxYM68bW/XzDEHJoJfbfmXfBhhKcvguLGKeOA3beRwxGfSm9+zMv1I8qL9
-         VKDdTzFCSkW00bjtXEK9p+eBSI/H6TG41K4u5BLwtnvmffo+Lf2LV9r6Zbzd0+yW2D5F
-         ynpOgerNfDtaRLXQYWIiDaCBnpeyJpmhsl27UmwT/YiAvB3vZN2eNdXMzJgjqGhwoFa5
-         /+OfKwF15mfU75a5uMe3y/VbX1gw8M2sbQFg6nvOUExjSnLydLT5NOCFZmbtijYzlyjG
-         1tBQ==
-X-Gm-Message-State: AOJu0Yy09t+6KXXlGz+RDal9KDKDeFx5MhoEK8F32k9NjqLrnfivoWZo
-	c2/p+Y0z/M17a3Ze5iUskBnBRwxvL0//hfJM1pX7hA==
-X-Google-Smtp-Source: AGHT+IGqpRKFev/H7sZu2yvuRrfS/qugUAQdcwysXY76mok/kgcwo5VNtQhAUKhXkSeHKyoj1apkOA==
-X-Received: by 2002:a05:6a00:4215:b0:68f:c8b3:3077 with SMTP id cd21-20020a056a00421500b0068fc8b33077mr3375219pfb.1.1700399692289;
-        Sun, 19 Nov 2023 05:14:52 -0800 (PST)
-Received: from [192.168.1.150] ([198.8.77.194])
-        by smtp.gmail.com with ESMTPSA id m12-20020a056a00080c00b006cb6fa32590sm1468349pfk.148.2023.11.19.05.14.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 19 Nov 2023 05:14:51 -0800 (PST)
-Message-ID: <42b9fdd7-2939-4ffc-8e18-4996948b19f7@kernel.dk>
-Date: Sun, 19 Nov 2023 06:14:50 -0700
+	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
+	t=1700407085; bh=DfNhpWq+uQUbDfnLh5nfXGSF7RhZhtThB0PFEVqSlRc=;
+	h=Date:From:To:Message-ID:MIME-Version;
+	b=McNppLYSwyrfcwZD292FYWx1J8KnIyOOi9Z978sSpSzRCn0LnlqGLocmlCdknNl9C
+	 0yuC6gt3wxlbbVPB7JgsXLcFHpiLI0Xc3FXqELUzcqzLZCTMDGdtpDK+7dusDQLNZy
+	 ZMXEGS45AerS8lgBN0d3q1SN/3ay8L6kBHkivYDo=
+X-Virus-Scanned: amavisd-new at rptsys.com
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id qtnwUktYg1bG; Sun, 19 Nov 2023 09:18:04 -0600 (CST)
+Received: from vali.starlink.edu (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id D7F26828587F;
+	Sun, 19 Nov 2023 09:18:04 -0600 (CST)
+Date: Sun, 19 Nov 2023 09:18:02 -0600 (CST)
+From: Timothy Pearson <tpearson@raptorengineering.com>
+To: Jens Axboe <axboe@kernel.dk>, regressions <regressions@lists.linux.dev>, 
+	Michael Ellerman <mpe@ellerman.id.au>, npiggin <npiggin@gmail.com>, 
+	christophe leroy <christophe.leroy@csgroup.eu>, 
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Message-ID: <1921539696.48534988.1700407082933.JavaMail.zimbra@raptorengineeringinc.com>
+Subject: [PATCH v2] powerpc: Don't clobber fr0/vs0 during fp|altivec
+ register  save
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc: Don't clobber fr0/vs0 during fp|altivec register
- save
-Content-Language: en-US
-To: Timothy Pearson <tpearson@raptorengineering.com>,
- regressions <regressions@lists.linux.dev>,
- Michael Ellerman <mpe@ellerman.id.au>, npiggin <npiggin@gmail.com>,
- christophe leroy <christophe.leroy@csgroup.eu>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-References: <1105090647.48374193.1700351103830.JavaMail.zimbra@raptorengineeringinc.com>
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <1105090647.48374193.1700351103830.JavaMail.zimbra@raptorengineeringinc.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
+X-Mailer: Zimbra 8.5.0_GA_3042 (ZimbraWebClient - GC119 (Linux)/8.5.0_GA_3042)
+Thread-Index: dVySrFh2MClWXpV/Kluttxze/2CBtQ==
+Thread-Topic: powerpc: Don't clobber fr0/vs0 during fp|altivec register save
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,43 +74,119 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/18/23 4:45 PM, Timothy Pearson wrote:
-> During floating point and vector save to thread data fr0/vs0 are clobbered
-> by the FPSCR/VSCR store routine.  This leads to userspace register corruption
-> and application data corruption / crash under the following rare condition:
-> 
->  * A userspace thread is executing with VSX/FP mode enabled
->  * The userspace thread is making active use of fr0 and/or vs0
->  * An IPI is taken in kernel mode, forcing the userspace thread to reschedule
->  * The userspace thread is interrupted by the IPI before accessing data it
->    previously stored in fr0/vs0
->  * The thread being switched in by the IPI has a pending signal
-> 
-> If these exact criteria are met, then the following sequence happens:
-> 
->  * The existing thread FP storage is still valid before the IPI, due to a
->    prior call to save_fpu() or store_fp_state().  Note that the current
->    fr0/vs0 registers have been clobbered, so the FP/VSX state in registers
->    is now invalid pending a call to restore_fp()/restore_altivec().
->  * IPI -- FP/VSX register state remains invalid
->  * interrupt_exit_user_prepare_main() calls do_notify_resume(),
->    due to the pending signal
->  * do_notify_resume() eventually calls save_fpu() via giveup_fpu(), which
->    merrily reads and saves the invalid FP/VSX state to thread local storage.
->  * interrupt_exit_user_prepare_main() calls restore_math(), writing the invalid
->    FP/VSX state back to registers.
->  * Execution is released to userspace, and the application crashes or corrupts
->    data.
+During floating point and vector save to thread data fr0/vs0 are clobbered
+by the FPSCR/VSCR store routine.  This leads to userspace register corruption
+and application data corruption / crash under the following rare condition:
 
-What an epic bug hunt! Hats off to you for seeing it through and getting
-to the bottom of it. Particularly difficult as the commit that made it
-easier to trigger was in no way related to where the actual bug was.
+ * A userspace thread is executing with VSX/FP mode enabled
+ * The userspace thread is making active use of fr0 and/or vs0
+ * An IPI is taken in kernel mode, forcing the userspace thread to reschedule
+ * The userspace thread is interrupted by the IPI before accessing data it
+   previously stored in fr0/vs0
+ * The thread being switched in by the IPI has a pending signal
 
-I ran this on the vm I have access to, and it survived 2x500 iterations.
-Happy to call that good:
+If these exact criteria are met, then the following sequence happens:
 
+ * The existing thread FP storage is still valid before the IPI, due to a
+   prior call to save_fpu() or store_fp_state().  Note that the current
+   fr0/vs0 registers have been clobbered, so the FP/VSX state in registers
+   is now invalid pending a call to restore_fp()/restore_altivec().
+ * IPI -- FP/VSX register state remains invalid
+ * interrupt_exit_user_prepare_main() calls do_notify_resume(),
+   due to the pending signal
+ * do_notify_resume() eventually calls save_fpu() via giveup_fpu(), which
+   merrily reads and saves the invalid FP/VSX state to thread local storage.
+ * interrupt_exit_user_prepare_main() calls restore_math(), writing the invalid
+   FP/VSX state back to registers.
+ * Execution is released to userspace, and the application crashes or corrupts
+   data.
+
+Without the pending signal, do_notify_resume() is never called, therefore the
+invalid register state does't matter as it is overwritten nearly immediately
+by interrupt_exit_user_prepare_main() calling restore_math() before return
+to userspace.
+
+Restore fr0/vs0 after FPSCR/VSCR store has completed for both the fp and
+altivec register save paths.
+
+Tested under QEMU in kvm mode, running on a Talos II workstation with dual
+POWER9 DD2.2 CPUs.
+
+Closes: https://lore.kernel.org/all/480932026.45576726.1699374859845.JavaMail.zimbra@raptorengineeringinc.com/
+Closes: https://lore.kernel.org/linuxppc-dev/480221078.47953493.1700206777956.JavaMail.zimbra@raptorengineeringinc.com/
+Tested-by: Timothy Pearson <tpearson@raptorengineering.com>
 Tested-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
+---
+ arch/powerpc/kernel/fpu.S    | 13 +++++++++++++
+ arch/powerpc/kernel/vector.S |  2 ++
+ 2 files changed, 15 insertions(+)
 
+diff --git a/arch/powerpc/kernel/fpu.S b/arch/powerpc/kernel/fpu.S
+index 6a9acfb690c9..2f8f3f93cbb6 100644
+--- a/arch/powerpc/kernel/fpu.S
++++ b/arch/powerpc/kernel/fpu.S
+@@ -23,6 +23,15 @@
+ #include <asm/feature-fixups.h>
+ 
+ #ifdef CONFIG_VSX
++#define __REST_1FPVSR(n,c,base)						\
++BEGIN_FTR_SECTION							\
++	b	2f;							\
++END_FTR_SECTION_IFSET(CPU_FTR_VSX);					\
++	REST_FPR(n,base);						\
++	b	3f;							\
++2:	REST_VSR(n,c,base);						\
++3:
++
+ #define __REST_32FPVSRS(n,c,base)					\
+ BEGIN_FTR_SECTION							\
+ 	b	2f;							\
+@@ -41,9 +50,11 @@ END_FTR_SECTION_IFSET(CPU_FTR_VSX);					\
+ 2:	SAVE_32VSRS(n,c,base);						\
+ 3:
+ #else
++#define __REST_1FPVSR(n,b,base)		REST_FPR(n, base)
+ #define __REST_32FPVSRS(n,b,base)	REST_32FPRS(n, base)
+ #define __SAVE_32FPVSRS(n,b,base)	SAVE_32FPRS(n, base)
+ #endif
++#define REST_1FPVSR(n,c,base)   __REST_1FPVSR(n,__REG_##c,__REG_##base)
+ #define REST_32FPVSRS(n,c,base) __REST_32FPVSRS(n,__REG_##c,__REG_##base)
+ #define SAVE_32FPVSRS(n,c,base) __SAVE_32FPVSRS(n,__REG_##c,__REG_##base)
+ 
+@@ -67,6 +78,7 @@ _GLOBAL(store_fp_state)
+ 	SAVE_32FPVSRS(0, R4, R3)
+ 	mffs	fr0
+ 	stfd	fr0,FPSTATE_FPSCR(r3)
++	REST_1FPVSR(0, R4, R3)
+ 	blr
+ EXPORT_SYMBOL(store_fp_state)
+ 
+@@ -138,4 +150,5 @@ _GLOBAL(save_fpu)
+ 2:	SAVE_32FPVSRS(0, R4, R6)
+ 	mffs	fr0
+ 	stfd	fr0,FPSTATE_FPSCR(r6)
++	REST_1FPVSR(0, R4, R6)
+ 	blr
+diff --git a/arch/powerpc/kernel/vector.S b/arch/powerpc/kernel/vector.S
+index 4094e4c4c77a..80b3f6e476b6 100644
+--- a/arch/powerpc/kernel/vector.S
++++ b/arch/powerpc/kernel/vector.S
+@@ -33,6 +33,7 @@ _GLOBAL(store_vr_state)
+ 	mfvscr	v0
+ 	li	r4, VRSTATE_VSCR
+ 	stvx	v0, r4, r3
++	lvx	v0, 0, r3
+ 	blr
+ EXPORT_SYMBOL(store_vr_state)
+ 
+@@ -109,6 +110,7 @@ _GLOBAL(save_altivec)
+ 	mfvscr	v0
+ 	li	r4,VRSTATE_VSCR
+ 	stvx	v0,r4,r7
++	lvx	v0,0,r7
+ 	blr
+ 
+ #ifdef CONFIG_VSX
 -- 
-Jens Axboe
-
+2.39.2
