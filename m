@@ -1,81 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA107F04C8
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Nov 2023 09:17:51 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RSyIVTHA;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AFF37F0578
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Nov 2023 11:45:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SY3RK2vH5z3cWB
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Nov 2023 19:17:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SY6kB6tSTz3dKX
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Nov 2023 21:45:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RSyIVTHA;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.221.47; helo=mail-wr1-f47.google.com; envelope-from=tanurelinux@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SY3QN36QKz2yG9
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Nov 2023 19:16:57 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700381820; x=1731917820;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0NkMhkkV+cUo97yEBokAzfARPMt+tQWy8S0Z8qalPik=;
-  b=RSyIVTHA9OAantQWYtS8tIUUsl53SxdKoIgu/Bwxww1QjEhvtaaWa7i6
-   uw2ulAiPYtw1aTJj+rBtsGnJ+ylUk7LtW166/zDbE7pvLzD8Y3wjaVuPI
-   9XALEjDvT52xz8f6Xxv2DJ5pcc4Ey/nrI0PZBjP+33HXODz2s5MZHkrOS
-   ZaJFf1fQKAUkb+dCNWO0ULGt0GYnkqemfK8Vl1unixtgRrzx5nMNyhswh
-   wcdT4v98qEm9Z/mcEkr7ndFCRN0XY5t4niarjcRgEGiAhvkjnImAx+j/r
-   9zFSJZtQrDn3eVjnwQFvd2HCTwzvrVRMkFVDmodNKpVdm4GoiMH59Y+uh
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10898"; a="381866525"
-X-IronPort-AV: E=Sophos;i="6.04,210,1695711600"; 
-   d="scan'208";a="381866525"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2023 00:16:51 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10898"; a="759536758"
-X-IronPort-AV: E=Sophos;i="6.04,210,1695711600"; 
-   d="scan'208";a="759536758"
-Received: from lkp-server02.sh.intel.com (HELO b8de5498638e) ([10.239.97.151])
-  by orsmga007.jf.intel.com with ESMTP; 19 Nov 2023 00:16:43 -0800
-Received: from kbuild by b8de5498638e with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1r4cyv-0004pL-1K;
-	Sun, 19 Nov 2023 08:16:41 +0000
-Date: Sun, 19 Nov 2023 16:16:33 +0800
-From: kernel test robot <lkp@intel.com>
-To: Herve Codina <herve.codina@bootlin.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Qiang Zhao <qiang.zhao@nxp.com>, Li Yang <leoyang.li@nxp.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SY6jj3dNvz3c5k
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Nov 2023 21:45:27 +1100 (AEDT)
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-332c09c0b0bso453646f8f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Nov 2023 02:45:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700390724; x=1700995524;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Uy7JYUOTRdSJldSNKwdRHiPwhZnAINoOplh1pqVKi5s=;
+        b=E+6L0Ml5MKn75lZW4Nvw+QvzNiaWwbpQXKpG1UCekOC5CN1uaBS4EY59Z+wFl//a8W
+         LlpIJgWfGYrW61dnxsqgR83WLbYXKCD408a+Jcyptl7Kj++4YIUcUgFdor7Wr7iZbjil
+         7p1m6tjcC6iSLeDrNr+HGbfN/1GxPzjCl4FBSWTYvDr+VWqaORzhV0XMC4CS2CNN0RPE
+         ZMBKFcfLdRzwDHaL4wWXq6jaV7Uy0rESNjSWlkSMVEoOD2ie1t77oW80QDElQppXYAir
+         8ZVGUjTtXX2pjhF7yrAWgVc8n4isqUlC4JrgS+m5TXixc/SqbMxDKwB5Y+XwxvEZVmTw
+         U6gg==
+X-Gm-Message-State: AOJu0Yxf/LLNtPMTAPWoZlVBhlhN6OJPMEx9Y0GemttBp612s/pOydfx
+	wApfPpwp1KPUQYC/EiPJAq0=
+X-Google-Smtp-Source: AGHT+IEC7OHQQ63+OIiNP/Y2msXT2JNv/AQECBNiGuXXWvbCMXs8Ertliu/zFXa6ljnqxG8GsPh0NQ==
+X-Received: by 2002:adf:d1c6:0:b0:332:c6be:f327 with SMTP id b6-20020adfd1c6000000b00332c6bef327mr127636wrd.61.1700390723581;
+        Sun, 19 Nov 2023 02:45:23 -0800 (PST)
+Received: from ryzen.lan (cpc87451-finc19-2-0-cust61.4-2.cable.virginm.net. [82.11.51.62])
+        by smtp.gmail.com with ESMTPSA id az30-20020adfe19e000000b00332c36b6563sm1502211wrb.101.2023.11.19.02.45.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Nov 2023 02:45:22 -0800 (PST)
+From: Lucas Tanure <tanure@linux.com>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
 	Nicolin Chen <nicoleotsuka@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Randy Dunlap <rdunlap@infradead.org>
-Subject: Re: [PATCH v9 23/27] net: wan: framer: Add support for the Lantiq
- PEF2256 framer
-Message-ID: <202311191651.ayfggTMD-lkp@intel.com>
-References: <20231115144007.478111-24-herve.codina@bootlin.com>
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>
+Subject: [PATCH] ASoC: fsl_mqs: Remove duplicate linux/of.h header
+Date: Sun, 19 Nov 2023 10:45:14 +0000
+Message-ID: <20231119104514.25536-1-tanure@linux.com>
+X-Mailer: git-send-email 2.42.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231115144007.478111-24-herve.codina@bootlin.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,40 +65,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, Paul Gazzillo <paul@pgazz.com>, Necip Fazil Yildiran <fazilyildiran@gmail.com>, oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Lucas Tanure <tanure@linux.com>, alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Herve,
+Remove linux/of.h as is included more than once.
+Reported by make includecheck.
 
-kernel test robot noticed the following build warnings:
+Signed-off-by: Lucas Tanure <tanure@linux.com>
+---
+ sound/soc/fsl/fsl_mqs.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-[auto build test WARNING on broonie-sound/for-next]
-[also build test WARNING on linusw-pinctrl/devel linusw-pinctrl/for-next robh/for-next linus/master v6.7-rc1 next-20231117]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Herve-Codina/soc-fsl-cpm1-tsa-Fix-__iomem-addresses-declaration/20231115-224517
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-patch link:    https://lore.kernel.org/r/20231115144007.478111-24-herve.codina%40bootlin.com
-patch subject: [PATCH v9 23/27] net: wan: framer: Add support for the Lantiq PEF2256 framer
-config: s390-kismet-CONFIG_MFD_CORE-CONFIG_FRAMER_PEF2256-0-0 (https://download.01.org/0day-ci/archive/20231119/202311191651.ayfggTMD-lkp@intel.com/config)
-reproduce: (https://download.01.org/0day-ci/archive/20231119/202311191651.ayfggTMD-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202311191651.ayfggTMD-lkp@intel.com/
-
-kismet warnings: (new ones prefixed by >>)
->> kismet: WARNING: unmet direct dependencies detected for MFD_CORE when selected by FRAMER_PEF2256
-   
-   WARNING: unmet direct dependencies detected for MFD_CORE
-     Depends on [n]: HAS_IOMEM [=n]
-     Selected by [y]:
-     - FRAMER_PEF2256 [=y] && NETDEVICES [=y] && WAN [=y] && FRAMER [=y] && OF [=y]
-
+diff --git a/sound/soc/fsl/fsl_mqs.c b/sound/soc/fsl/fsl_mqs.c
+index f2d74ec05cdf..86704ba5f6f0 100644
+--- a/sound/soc/fsl/fsl_mqs.c
++++ b/sound/soc/fsl/fsl_mqs.c
+@@ -10,7 +10,6 @@
+ #include <linux/moduleparam.h>
+ #include <linux/mfd/syscon.h>
+ #include <linux/mfd/syscon/imx6q-iomuxc-gpr.h>
+-#include <linux/of.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/of.h>
+ #include <linux/pm.h>
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.42.1
+
