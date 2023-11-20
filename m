@@ -2,43 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FF0B7F10B4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Nov 2023 11:46:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 778CA7F1DE8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Nov 2023 21:18:34 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IcSm+vWz;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SYkgr20Jqz3dLc
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Nov 2023 21:46:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SYzNS2WtSz3ccN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 07:18:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IcSm+vWz;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=aneesh.kumar@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SYkgL1cClz3c1L
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Nov 2023 21:45:32 +1100 (AEDT)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id C70501A0CB9;
-	Mon, 20 Nov 2023 11:45:28 +0100 (CET)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 907641A0C96;
-	Mon, 20 Nov 2023 11:45:28 +0100 (CET)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 11B72180222F;
-	Mon, 20 Nov 2023 18:45:27 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: nicoleotsuka@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	shengjiu.wang@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org
-Subject: [PATCH] ASoC: fsl_sai: Fix no frame sync clock issue on i.MX8MP
-Date: Mon, 20 Nov 2023 18:05:35 +0800
-Message-Id: <1700474735-3863-1-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SYg913Jg0z2xWJ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Nov 2023 19:07:33 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 4014960DD9;
+	Mon, 20 Nov 2023 08:07:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57818C433C7;
+	Mon, 20 Nov 2023 08:07:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1700467649;
+	bh=g6apXNUF5vgaqLhFLZm3KNG/cN0AMYXL6d/Xt0KI65I=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=IcSm+vWz5JnNGS18F720MOSOym7mtYIUzFjAjKpEAj5u0vXq2wSzNMso6Zjq+QmET
+	 3TbnvEipSNvR18DG1tleqt3SQ9WiU0r6rfT1pwmo2czaXZa58KD8k44sdfSEcKuRYk
+	 4yEJVb2Wbw9WArf4gK6st8qkDLV2FzQYJpoPNCax6RdjTXY9NuHHMWEEO8pdIc6lUm
+	 RYyuouwTWZpMgKbAKn/AOKQ5fDFBG0UyStql5GzoTBDGHK0RakYG1Ci7kOizyByJbL
+	 fsJhX/UQaR4s8EM3mbOOSjR9Masxac1WBlu5N+B9tUm7vBqPvaQGCZ3bXc4wMJMxYT
+	 3DdagtD2nSwHw==
+X-Mailer: emacs 29.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
+To: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v4 01/13] powerpc/rtas: Add for_each_rtas_function()
+ iterator
+In-Reply-To: <20231117-papr-sys_rtas-vs-lockdown-v4-1-b794d8cb8502@linux.ibm.com>
+References: <20231117-papr-sys_rtas-vs-lockdown-v4-0-b794d8cb8502@linux.ibm.com>
+ <20231117-papr-sys_rtas-vs-lockdown-v4-1-b794d8cb8502@linux.ibm.com>
+Date: Mon, 20 Nov 2023 13:37:06 +0530
+Message-ID: <87leaslufp.fsf@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Mailman-Approved-At: Tue, 21 Nov 2023 07:17:50 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,63 +63,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, tyreld@linux.ibm.com, Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org, gcwilson@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On i.MX8MP, when the TERE and FSD_MSTR enabled before configuring
-the word width, there will be no frame sync clock issue, because
-old word width impact the generation of frame sync.
+Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
+writes:
 
-TERE enabled earlier only for i.MX8MP case for the hardware limitation,
-So need to disable FSD_MSTR before configuring word width, then enable
-FSD_MSTR bit for this specific case.
+> From: Nathan Lynch <nathanl@linux.ibm.com>
+>
+> Add a convenience macro for iterating over every element of the
+> internal function table and convert the one site that can use it. An
+> additional user of the macro is anticipated in changes to follow.
+>
 
-Fixes: 3e4a82612998 ("ASoC: fsl_sai: MCLK bind with TX/RX enable bit")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- sound/soc/fsl/fsl_sai.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+Reviewed-by: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 79e7c6b98a75..32bbe5056a63 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -673,6 +673,20 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
- 			   FSL_SAI_CR3_TRCE_MASK,
- 			   FSL_SAI_CR3_TRCE((dl_cfg[dl_cfg_idx].mask[tx] & trce_mask)));
- 
-+	/*
-+	 * When the TERE and FSD_MSTR enabled before configuring the word width
-+	 * There will be no frame sync clock issue, because word width impact
-+	 * the generation of frame sync clock.
-+	 *
-+	 * TERE enabled earlier only for i.MX8MP case for the hardware limitation,
-+	 * We need to disable FSD_MSTR before configuring word width, then enable
-+	 * FSD_MSTR bit for this specific case.
-+	 */
-+	if (sai->soc_data->mclk_with_tere && sai->mclk_direction_output &&
-+	    !sai->is_consumer_mode)
-+		regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx, ofs),
-+				   FSL_SAI_CR4_FSD_MSTR, 0);
-+
- 	regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx, ofs),
- 			   FSL_SAI_CR4_SYWD_MASK | FSL_SAI_CR4_FRSZ_MASK |
- 			   FSL_SAI_CR4_CHMOD_MASK,
-@@ -680,6 +694,13 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
- 	regmap_update_bits(sai->regmap, FSL_SAI_xCR5(tx, ofs),
- 			   FSL_SAI_CR5_WNW_MASK | FSL_SAI_CR5_W0W_MASK |
- 			   FSL_SAI_CR5_FBT_MASK, val_cr5);
-+
-+	/* Enable FSD_MSTR after configuring word width */
-+	if (sai->soc_data->mclk_with_tere && sai->mclk_direction_output &&
-+	    !sai->is_consumer_mode)
-+		regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx, ofs),
-+				   FSL_SAI_CR4_FSD_MSTR, FSL_SAI_CR4_FSD_MSTR);
-+
- 	regmap_write(sai->regmap, FSL_SAI_xMR(tx),
- 		     ~0UL - ((1 << min(channels, slots)) - 1));
- 
--- 
-2.34.1
-
+> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+> ---
+>  arch/powerpc/kernel/rtas.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+> index eddc031c4b95..1ad1869e2e96 100644
+> --- a/arch/powerpc/kernel/rtas.c
+> +++ b/arch/powerpc/kernel/rtas.c
+> @@ -454,6 +454,11 @@ static struct rtas_function rtas_function_table[] __ro_after_init = {
+>  	},
+>  };
+>  
+> +#define for_each_rtas_function(funcp)                                       \
+> +	for (funcp = &rtas_function_table[0];                               \
+> +	     funcp < &rtas_function_table[ARRAY_SIZE(rtas_function_table)]; \
+> +	     ++funcp)
+> +
+>  /*
+>   * Nearly all RTAS calls need to be serialized. All uses of the
+>   * default rtas_args block must hold rtas_lock.
+> @@ -525,10 +530,10 @@ static DEFINE_XARRAY(rtas_token_to_function_xarray);
+>  
+>  static int __init rtas_token_to_function_xarray_init(void)
+>  {
+> +	const struct rtas_function *func;
+>  	int err = 0;
+>  
+> -	for (size_t i = 0; i < ARRAY_SIZE(rtas_function_table); ++i) {
+> -		const struct rtas_function *func = &rtas_function_table[i];
+> +	for_each_rtas_function(func) {
+>  		const s32 token = func->token;
+>  
+>  		if (token == RTAS_UNKNOWN_SERVICE)
+>
+> -- 
+> 2.41.0
