@@ -2,65 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B487F2189
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 00:41:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A2377F2162
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 00:24:56 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=CIg7RqXV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=H8jniV24;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SZ3tj1b6Fz3ck3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 10:41:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SZ3WT5p63z3clb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 10:24:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=CIg7RqXV;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=H8jniV24;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cloudflare.com (client-ip=2607:f8b0:4864:20::531; helo=mail-pg1-x531.google.com; envelope-from=ignat@cloudflare.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZ2pr6NT0z3bdG
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 09:53:08 +1100 (AEDT)
-Received: by mail-pg1-x531.google.com with SMTP id 41be03b00d2f7-5bdf5a025c1so3170405a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Nov 2023 14:53:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1700520783; x=1701125583; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=jj/vQll/FXoy8ynJ7Qc2odNrUXWiiF64P1hSHAKTnLo=;
-        b=CIg7RqXVuFz1+ylSBTdDewpUGnPrhwOTJkEwMkdxmCaizSNvG6UgdeqYKKXU/17lCP
-         BkR421CdhpBLkK9PJxNWGngPhRhB5tNPh0DGkN9CsvbcYgAK8pra78OcQsm/Y802Usqo
-         NLyXBsoaDf0WTFSnq1fu1tR+QwH6iZMFr4VYpOBHeNCswpI2Yt4x5Vi1CkSs+8oUbdMn
-         KbYPxQ5WncAbuBNLGmsDzvUVmBXWdBz2a/IZoiMNJgR44Au8PEFwzSD0esOZtRt0JA/+
-         EFGHCrN0hJde7NTMoW+2ZgfVFEEE8fgItXS7fKVJFl/i0GZOp/sgYPRbsnC7rZQ1Ds+6
-         C4Xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700520783; x=1701125583;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jj/vQll/FXoy8ynJ7Qc2odNrUXWiiF64P1hSHAKTnLo=;
-        b=XDrjsNreWmWlwhux3NBZCNLDVWdOrjWtlC0Tr2qY65TS7sYbFmm+b25Ka1TdISxB/X
-         zVK+xu6xwKmTpnpBhrunOv8h+vBnBfkm/vPrszk2Y6bbHa3WPMAaPAWzDb7Ok2E+4xI6
-         RYFIpxtyESBFocB0U+/P/2rqbZcdngyVkP/L2dYI4D1e7MxTerfS+ho8paT1BurkOf8V
-         Q0OX91LeWFF7rQXSomaaPewBtN3d3zShBZ99dfcbQ0Hgog/K9YDYpQ3uV96DaMxIKw1O
-         ul6rtYlqKhnW7jOS2MeJqp9wp1ArC1i+I/5Hhs81CLcihNvXHECWZ+st0XLYmivGWDsm
-         UtKQ==
-X-Gm-Message-State: AOJu0Yzm5wiJkaESi92q1Bof8+3cUlUEsxZ3YVR69C5nYVZgfnOsWJZz
-	wLUMggGIW6+wbPeyk/rzBdqCbLkosff69LvM3Q6Emg==
-X-Google-Smtp-Source: AGHT+IFZPPhV0R/g5zHGb3q3Uo9IH7rXXP80OMq0eithxekw9SzGz9ATfztUful4gMY68aa6sJe0kX0Yn689XQCOKAw=
-X-Received: by 2002:a17:90b:1a89:b0:27d:2364:44f6 with SMTP id
- ng9-20020a17090b1a8900b0027d236444f6mr7022804pjb.6.1700520783377; Mon, 20 Nov
- 2023 14:53:03 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZ3Vg0m8Xz2xdg
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 10:24:11 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by ams.source.kernel.org (Postfix) with ESMTP id 10D6BB81C11;
+	Mon, 20 Nov 2023 23:24:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F25B3C433C8;
+	Mon, 20 Nov 2023 23:24:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1700522644;
+	bh=67KEhLI0mEivJdbrkeCl+vFBBtgFo5YzYmUACDBON68=;
+	h=From:To:Cc:Subject:Date:From;
+	b=H8jniV24tZu68db9VGGm2q1zQTL4/mK90DWnFoovUtdjLOvX2sQaRAW9tq1BGVaOj
+	 7qX3z2eK3d6lvNNIKtJbLJ2Iw6euVJSNcBNlnv+gaQPgDbbDNXtCt6jA+iyW4IO6VF
+	 7m73afQT36H+vXmRCSH6nm2IjaNzTcC3ZhCVDkOaspknxf90tcCYnday6+8h5BfdBt
+	 wAl5D26oA/ehLsMMoHU5dV8CgCujZme+ru+sGtfkmjw6neS289tR8vbajgFjncYRxV
+	 JeGody4kjKgtnTgAbfwsz//Tmoq8zfFqKBbk7I1ak4r57jtbn+mag/3++tZF5bz1dT
+	 qAH0aq2JpD5mw==
+From: Masahiro Yamada <masahiroy@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc: add crtsavres.o to always-y instead of extra-y
+Date: Tue, 21 Nov 2023 08:23:32 +0900
+Message-Id: <20231120232332.4100288-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-From: Ignat Korchagin <ignat@cloudflare.com>
-Date: Mon, 20 Nov 2023 22:52:52 +0000
-Message-ID: <CALrw=nHpRQQaQTP_jZfREgrQEMpS8jBF8JQCv4ygqXycE-StaA@mail.gmail.com>
-Subject: Potential config regression after 89cde455 ("kexec: consolidate kexec
- and crash options into kernel/Kconfig.kexec")
-To: eric.devolder@oracle.com
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Tue, 21 Nov 2023 10:40:16 +1100
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,33 +59,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: chenhuacai@kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, catalin.marinas@arm.com, linus.walleij@linaro.org, dave.hansen@linux.intel.com, linux-mips@vger.kernel.org, James Bottomley <James.Bottomley@hansenpartnership.com>, dalias@libc.org, hpa@zytor.com, linux-riscv@lists.infradead.org, will@kernel.org, kernel@xen0n.name, tsi@tuyoix.net, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, rmk+kernel@armlinux.org.uk, paulmck@kernel.org, ysato@users.sourceforge.jp, kernel-team <kernel-team@cloudflare.com>, deller@gmx.de, x86@kernel.org, linux@armlinux.org.uk, paul.walmsley@sifive.com, Ingo Molnar <mingo@redhat.com>, geert@linux-m68k.org, hbathini@linux.ibm.com, samitolvanen@google.com, ojeda@kernel.org, juerg.haefliger@canonical.com, borntraeger@linux.ibm.com, frederic@kernel.org, arnd@arndb.de, mhiramat@kernel.org, Ard Biesheuvel <ardb@kernel.org>, thunder.leizhen@huawei.com, aou@eecs.berkeley.edu, keescook@chromium.org, go
- r@linux.ibm.com, anshuman.khandual@arm.com, hca@linux.ibm.com, xin3.li@intel.com, npiggin@gmail.com, konrad.wilk@oracle.com, linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, glaubitz@physik.fu-berlin.de, Thomas Gleixner <tglx@linutronix.de>, ziy@nvidia.com, linux-arm-kernel@lists.infradead.org, boris.ostrovsky@oracle.com, tsbogend@alpha.franken.de, sebastian.reichel@collabora.com, bhe@redhat.com, linux-parisc@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>, kirill.shutemov@linux.intel.com, ndesaulniers@google.com, linux-kernel <linux-kernel@vger.kernel.org>, sourabhjain@linux.ibm.com, palmer@dabbelt.com, svens@linux.ibm.com, tj@kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, masahiroy@kernel.org, rppt@kernel.org
+Cc: Tom Rix <trix@redhat.com>, Masahiro Yamada <masahiroy@kernel.org>, llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Good day!
+crtsavres.o is linked to modules. However, as explained in commit
+d0e628cd817f ("kbuild: doc: clarify the difference between extra-y
+and always-y"), 'make modules' does not build extra-y.
 
-We have recently started to evaluate Linux 6.6 and noticed that we
-cannot disable CONFIG_KEXEC anymore, but keep CONFIG_CRASH_DUMP
-enabled. It seems to be related to commit 89cde455 ("kexec:
-consolidate kexec and crash options into kernel/Kconfig.kexec"), where
-a CONFIG_KEXEC dependency was added to CONFIG_CRASH_DUMP.
+For example, the following command fails:
 
-In our current kernel (Linux 6.1) we only enable CONFIG_KEXEC_FILE
-with enforced signature check to support the kernel crash dumping
-functionality and would like to keep CONFIG_KEXEC disabled for
-security reasons [1].
+  $ make ARCH=powerpc LLVM=1 KBUILD_MODPOST_WARN=1 mrproper ps3_defconfig modules
+    [snip]
+    LD [M]  arch/powerpc/platforms/cell/spufs/spufs.ko
+  ld.lld: error: cannot open arch/powerpc/lib/crtsavres.o: No such file or directory
+  make[3]: *** [scripts/Makefile.modfinal:56: arch/powerpc/platforms/cell/spufs/spufs.ko] Error 1
+  make[2]: *** [Makefile:1844: modules] Error 2
+  make[1]: *** [/home/masahiro/workspace/linux-kbuild/Makefile:350: __build_one_by_one] Error 2
+  make: *** [Makefile:234: __sub-make] Error 2
 
-I was reading the long commit message, but the reason for adding
-CONFIG_KEXEC as a dependency for CONFIG_CRASH_DUMP evaded me. And I
-believe from the implementation perspective CONFIG_KEXEC_FILE should
-suffice here (as we successfully used it for crashdumps on Linux 6.1).
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
 
-Is there a reason for adding this dependency or is it just an
-oversight? Would some solution of requiring either CONFIG_KEXEC or
-CONFIG_KEXEC_FILE work here?
+ arch/powerpc/lib/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Ignat
+diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
+index 51ad0397c17a..6eac63e79a89 100644
+--- a/arch/powerpc/lib/Makefile
++++ b/arch/powerpc/lib/Makefile
+@@ -45,7 +45,7 @@ obj-$(CONFIG_FUNCTION_ERROR_INJECTION)	+= error-inject.o
+ # so it is only needed for modules, and only for older linkers which
+ # do not support --save-restore-funcs
+ ifndef CONFIG_LD_IS_BFD
+-extra-$(CONFIG_PPC64)	+= crtsavres.o
++always-$(CONFIG_PPC64)	+= crtsavres.o
+ endif
+ 
+ obj-$(CONFIG_PPC_BOOK3S_64) += copyuser_power7.o copypage_power7.o \
+-- 
+2.40.1
 
-[1]: https://mjg59.dreamwidth.org/28746.html
