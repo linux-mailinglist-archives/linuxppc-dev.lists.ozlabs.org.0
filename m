@@ -2,55 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 584A57F1FFA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Nov 2023 23:08:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56B487F2189
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 00:41:35 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iU6FAGtP;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=CIg7RqXV;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SZ1py1kCHz3ccS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 09:08:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SZ3tj1b6Fz3ck3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 10:41:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iU6FAGtP;
+	dkim=pass (2048-bit key; secure) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=CIg7RqXV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cloudflare.com (client-ip=2607:f8b0:4864:20::531; helo=mail-pg1-x531.google.com; envelope-from=ignat@cloudflare.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZ1p70npkz2xX4
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 09:07:27 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 349C6CE17B5;
-	Mon, 20 Nov 2023 22:07:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C49FBC433C7;
-	Mon, 20 Nov 2023 22:07:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700518042;
-	bh=VgevGQRE0DkW5gNXBJLRH1C9nvApnpFXwehmDOXU/q8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iU6FAGtPzvf4n9aM9W0QY4oudQh44SjSKBAI7GZnP37lx9b4Ur3Mj65H4PbTVlJe1
-	 K830TcCwVhF4na4SXXAjtuai+L+A4G0Z1VWcmlq7Rf5al1z2bgJiwIVL70UoAy60JP
-	 woqqwzLVJtmflPxfvt8pEjG9+CU6dhobQk6kSlU/BwIslM2g2r0yTlNK+lMPACTjuE
-	 SMPQGHtftu7E7I7YS2d/topBuO0JD4U+ptQ0vcLMCJUPTkZd4ECtI99oWD5qN1mrOF
-	 Em6PZDSrO8QmYMfZ0HBjZs5I19UKiw24kyVI9YIuY/WfdXmp8xYZmKtlBXOW1J85vA
-	 e4Go+Gv3eNASg==
-Date: Mon, 20 Nov 2023 22:07:15 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Chancel Liu <chancel.liu@nxp.com>
-Subject: Re: [PATCH v4 2/2] ASoC: imx-rpmsg: Force codec power on in low
- power audio mode
-Message-ID: <edd348ea-ef95-453a-9838-636769ab569f@sirena.org.uk>
-References: <20231023020718.1276000-1-chancel.liu@nxp.com>
- <20231023020718.1276000-2-chancel.liu@nxp.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZ2pr6NT0z3bdG
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 09:53:08 +1100 (AEDT)
+Received: by mail-pg1-x531.google.com with SMTP id 41be03b00d2f7-5bdf5a025c1so3170405a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Nov 2023 14:53:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1700520783; x=1701125583; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=jj/vQll/FXoy8ynJ7Qc2odNrUXWiiF64P1hSHAKTnLo=;
+        b=CIg7RqXVuFz1+ylSBTdDewpUGnPrhwOTJkEwMkdxmCaizSNvG6UgdeqYKKXU/17lCP
+         BkR421CdhpBLkK9PJxNWGngPhRhB5tNPh0DGkN9CsvbcYgAK8pra78OcQsm/Y802Usqo
+         NLyXBsoaDf0WTFSnq1fu1tR+QwH6iZMFr4VYpOBHeNCswpI2Yt4x5Vi1CkSs+8oUbdMn
+         KbYPxQ5WncAbuBNLGmsDzvUVmBXWdBz2a/IZoiMNJgR44Au8PEFwzSD0esOZtRt0JA/+
+         EFGHCrN0hJde7NTMoW+2ZgfVFEEE8fgItXS7fKVJFl/i0GZOp/sgYPRbsnC7rZQ1Ds+6
+         C4Xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700520783; x=1701125583;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jj/vQll/FXoy8ynJ7Qc2odNrUXWiiF64P1hSHAKTnLo=;
+        b=XDrjsNreWmWlwhux3NBZCNLDVWdOrjWtlC0Tr2qY65TS7sYbFmm+b25Ka1TdISxB/X
+         zVK+xu6xwKmTpnpBhrunOv8h+vBnBfkm/vPrszk2Y6bbHa3WPMAaPAWzDb7Ok2E+4xI6
+         RYFIpxtyESBFocB0U+/P/2rqbZcdngyVkP/L2dYI4D1e7MxTerfS+ho8paT1BurkOf8V
+         Q0OX91LeWFF7rQXSomaaPewBtN3d3zShBZ99dfcbQ0Hgog/K9YDYpQ3uV96DaMxIKw1O
+         ul6rtYlqKhnW7jOS2MeJqp9wp1ArC1i+I/5Hhs81CLcihNvXHECWZ+st0XLYmivGWDsm
+         UtKQ==
+X-Gm-Message-State: AOJu0Yzm5wiJkaESi92q1Bof8+3cUlUEsxZ3YVR69C5nYVZgfnOsWJZz
+	wLUMggGIW6+wbPeyk/rzBdqCbLkosff69LvM3Q6Emg==
+X-Google-Smtp-Source: AGHT+IFZPPhV0R/g5zHGb3q3Uo9IH7rXXP80OMq0eithxekw9SzGz9ATfztUful4gMY68aa6sJe0kX0Yn689XQCOKAw=
+X-Received: by 2002:a17:90b:1a89:b0:27d:2364:44f6 with SMTP id
+ ng9-20020a17090b1a8900b0027d236444f6mr7022804pjb.6.1700520783377; Mon, 20 Nov
+ 2023 14:53:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ys7+XtCcLmb6Czww"
-Content-Disposition: inline
-In-Reply-To: <20231023020718.1276000-2-chancel.liu@nxp.com>
-X-Cookie: The meek don't want it.
+From: Ignat Korchagin <ignat@cloudflare.com>
+Date: Mon, 20 Nov 2023 22:52:52 +0000
+Message-ID: <CALrw=nHpRQQaQTP_jZfREgrQEMpS8jBF8JQCv4ygqXycE-StaA@mail.gmail.com>
+Subject: Potential config regression after 89cde455 ("kexec: consolidate kexec
+ and crash options into kernel/Kconfig.kexec")
+To: eric.devolder@oracle.com
+Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Tue, 21 Nov 2023 10:40:16 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,63 +72,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, conor+dt@kernel.org, linuxppc-dev@lists.ozlabs.org, kernel@pengutronix.de, alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com, festevam@gmail.com, s.hauer@pengutronix.de, tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz, nicoleotsuka@gmail.com, robh+dt@kernel.org, linux-arm-kernel@lists.infradead.org, krzysztof.kozlowski+dt@linaro.org, shawnguo@kernel.org, shengjiu.wang@gmail.com, linux-kernel@vger.kernel.org
+Cc: chenhuacai@kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, catalin.marinas@arm.com, linus.walleij@linaro.org, dave.hansen@linux.intel.com, linux-mips@vger.kernel.org, James Bottomley <James.Bottomley@hansenpartnership.com>, dalias@libc.org, hpa@zytor.com, linux-riscv@lists.infradead.org, will@kernel.org, kernel@xen0n.name, tsi@tuyoix.net, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, rmk+kernel@armlinux.org.uk, paulmck@kernel.org, ysato@users.sourceforge.jp, kernel-team <kernel-team@cloudflare.com>, deller@gmx.de, x86@kernel.org, linux@armlinux.org.uk, paul.walmsley@sifive.com, Ingo Molnar <mingo@redhat.com>, geert@linux-m68k.org, hbathini@linux.ibm.com, samitolvanen@google.com, ojeda@kernel.org, juerg.haefliger@canonical.com, borntraeger@linux.ibm.com, frederic@kernel.org, arnd@arndb.de, mhiramat@kernel.org, Ard Biesheuvel <ardb@kernel.org>, thunder.leizhen@huawei.com, aou@eecs.berkeley.edu, keescook@chromium.org, go
+ r@linux.ibm.com, anshuman.khandual@arm.com, hca@linux.ibm.com, xin3.li@intel.com, npiggin@gmail.com, konrad.wilk@oracle.com, linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, glaubitz@physik.fu-berlin.de, Thomas Gleixner <tglx@linutronix.de>, ziy@nvidia.com, linux-arm-kernel@lists.infradead.org, boris.ostrovsky@oracle.com, tsbogend@alpha.franken.de, sebastian.reichel@collabora.com, bhe@redhat.com, linux-parisc@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>, kirill.shutemov@linux.intel.com, ndesaulniers@google.com, linux-kernel <linux-kernel@vger.kernel.org>, sourabhjain@linux.ibm.com, palmer@dabbelt.com, svens@linux.ibm.com, tj@kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, masahiroy@kernel.org, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Good day!
 
---ys7+XtCcLmb6Czww
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+We have recently started to evaluate Linux 6.6 and noticed that we
+cannot disable CONFIG_KEXEC anymore, but keep CONFIG_CRASH_DUMP
+enabled. It seems to be related to commit 89cde455 ("kexec:
+consolidate kexec and crash options into kernel/Kconfig.kexec"), where
+a CONFIG_KEXEC dependency was added to CONFIG_CRASH_DUMP.
 
-On Mon, Oct 23, 2023 at 10:07:18AM +0800, Chancel Liu wrote:
-> Low power audio mode requires binding codec still power on while Acore
-> enters into suspend so Mcore can continue playback music.
->=20
-> ASoC machine driver acquires DAPM endpoints through reading
-> "ignore-suspend-widgets" property from DT and then forces the path
-> between these endpoints ignoring suspend.
+In our current kernel (Linux 6.1) we only enable CONFIG_KEXEC_FILE
+with enforced signature check to support the kernel crash dumping
+functionality and would like to keep CONFIG_KEXEC disabled for
+security reasons [1].
 
-This breaks an x86 allmodconfig build:
+I was reading the long commit message, but the reason for adding
+CONFIG_KEXEC as a dependency for CONFIG_CRASH_DUMP evaded me. And I
+believe from the implementation perspective CONFIG_KEXEC_FILE should
+suffice here (as we successfully used it for crashdumps on Linux 6.1).
 
-/build/stage/linux/sound/soc/fsl/imx-rpmsg.c: In function =E2=80=98imx_rpms=
-g_late_probe=E2=80=99
-:
-/build/stage/linux/sound/soc/fsl/imx-rpmsg.c:60:46: error: implicit declara=
-tion=20
-of function =E2=80=98of_find_device_by_node=E2=80=99; did you mean =E2=80=
-=98of_find_i2c_device_by_node=E2=80=99?
- [-Werror=3Dimplicit-function-declaration]
-   60 |                                 codec_pdev =3D of_find_device_by_no=
-de(code
-c_np);
-      |                                              ^~~~~~~~~~~~~~~~~~~~~~
-      |                                              of_find_i2c_device_by_=
-node
-/build/stage/linux/sound/soc/fsl/imx-rpmsg.c:60:44: error: assignment to =
-=E2=80=98struct
- platform_device *=E2=80=99 from =E2=80=98int=E2=80=99 makes pointer from i=
-nteger without a cast [-Werro
-r=3Dint-conversion]
-   60 |                                 codec_pdev =3D of_find_device_by_no=
-de(codec_np);
-      |                                            ^
-cc1: all warnings being treated as errors
+Is there a reason for adding this dependency or is it just an
+oversight? Would some solution of requiring either CONFIG_KEXEC or
+CONFIG_KEXEC_FILE work here?
 
---ys7+XtCcLmb6Czww
-Content-Type: application/pgp-signature; name="signature.asc"
+Ignat
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmVb2JIACgkQJNaLcl1U
-h9D5Ygf/Ur0x116afGwToupSLPOlWheujkRjuYUrg95VQwQ3SkvnrgRzVCJ+GIst
-9GzXEnzHorx+Vw4NzSNtzA5TF94TOOf+9GuRz5LQrl5hUJFhOnF0lz+0FGrXbXNE
-yTD3a0tuYY7uSXyxFAZEszj3kHhUFZYg9SMAsJXVkpzej8rP7PiiJ2CyjnrkX0hY
-lt6a8UmWNeNDaxS/8PMAXsraltapBbMjgxKYUCrbRXG8eRwZuKM1FBUyTkk5rER3
-81ZfNxk2+8f5PDf9pX7mmjQXnPjDmumPU5HWn4Oz0cfEXeUG8xopxm50UwxLvhBk
-Jj4TQkMAEWCmlRaVVi8MKepQqzhNig==
-=sif7
------END PGP SIGNATURE-----
-
---ys7+XtCcLmb6Czww--
+[1]: https://mjg59.dreamwidth.org/28746.html
