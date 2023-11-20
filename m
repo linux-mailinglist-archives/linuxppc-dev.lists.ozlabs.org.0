@@ -2,53 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BA007F1DE9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Nov 2023 21:19:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E2347F1DED
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Nov 2023 21:20:10 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aCqghi4j;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=drfkBeZ7;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SYzPN3mNFz3cN3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 07:19:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SYzQJ12cTz3dK1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 07:20:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aCqghi4j;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=drfkBeZ7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=aneesh.kumar@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=aneesh.kumar@kernel.org; receiver=lists.ozlabs.org)
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SYg9j0J35z3cM5
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Nov 2023 19:08:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SYgB82rdzz2yMJ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Nov 2023 19:08:32 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 366D460F8C;
-	Mon, 20 Nov 2023 08:08:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4930EC433C9;
-	Mon, 20 Nov 2023 08:08:02 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTP id D3856B80957;
+	Mon, 20 Nov 2023 08:08:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A1BC433C7;
+	Mon, 20 Nov 2023 08:08:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700467686;
-	bh=mmRV9QZpg7A1c/LOpJuuV2xhWtZOmQacu/whLJikIxo=;
+	s=k20201202; t=1700467709;
+	bh=QMNsDP0c3wU0R8MGCChHFJcFNN26tGc7u8Q3eKjWako=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=aCqghi4jzNUhY1JhZbQ12B4TQCA0XKBNLqjTB8ePY9ZsAzWcJKHvAWNO/LOkC1H1F
-	 nr0UWsRVFbi+Uq4Th+DE4XmxI4riIteQrXrs6MXrA3y345mEkCDIekm+J/1kim9xwp
-	 aNoJEEGiKEP1gV4964mJUC69KuAv4uXXM/NNiTsJD1X1OAyf/O8H1GytTXtNDwAP5h
-	 wbBkB19nVUk85bG6QtwFSDY7U2r0qv03XbI7KggUlCSW5sjGjuZNILFHg3QAYUYYui
-	 dMOjP9Tmi4Q+0RYZj7R+G3wT/cyRCr9I7tFTUyX5a2ejoaS1AcmvM7JpPctbge7aKt
-	 eF6KFYALM6CYw==
+	b=drfkBeZ7knrJUUq+sDJcQCtTekQKqH0TgRnowvH+Ku96T8RpAr+xUWgKM6gzdlYUD
+	 ZPJSVmXi+9LkVwzlD2QarajyQ2x12WaoHLOpz2Uw+Zg4uq8BPnbr6QTllroN+d101+
+	 bYe9algddwme/e5/ZHJFdufT6d5+xTOG4Z+sELFJ5nWWi2wWsrXcHy74IaRxoIlkiM
+	 MUTcfsx5oCckRp41bLQe2CbFBsJnK6ysrpvYtgjDmp/zKFzm3XgP9zmYmFt8fmUWx+
+	 Eezn4jp4iUnejB/IRWMgyvdnhuk6+1MBuB+JnJGjGpCFy8lGTJl9L1qilqq8YQQTOQ
+	 T5RZ71iHTKerg==
 X-Mailer: emacs 29.1 (via feedmail 11-beta-1 I)
 From: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
 To: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 02/13] powerpc/rtas: Fall back to linear search on
- failed token->function lookup
-In-Reply-To: <20231117-papr-sys_rtas-vs-lockdown-v4-2-b794d8cb8502@linux.ibm.com>
+Subject: Re: [PATCH v4 03/13] powerpc/rtas: Add function return status
+ constants
+In-Reply-To: <20231117-papr-sys_rtas-vs-lockdown-v4-3-b794d8cb8502@linux.ibm.com>
 References: <20231117-papr-sys_rtas-vs-lockdown-v4-0-b794d8cb8502@linux.ibm.com>
- <20231117-papr-sys_rtas-vs-lockdown-v4-2-b794d8cb8502@linux.ibm.com>
-Date: Mon, 20 Nov 2023 13:37:59 +0530
-Message-ID: <87il5wlue8.fsf@kernel.org>
+ <20231117-papr-sys_rtas-vs-lockdown-v4-3-b794d8cb8502@linux.ibm.com>
+Date: Mon, 20 Nov 2023 13:38:21 +0530
+Message-ID: <87fs10ludm.fsf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Mailman-Approved-At: Tue, 21 Nov 2023 07:17:50 +1100
@@ -72,74 +72,55 @@ writes:
 
 > From: Nathan Lynch <nathanl@linux.ibm.com>
 >
-> Enabling any of the powerpc:rtas_* tracepoints at boot is likely to
-> result in an oops on RTAS platforms. For example, booting a QEMU
-> pseries model with 'trace_event=powerpc:rtas_input' in the command
-> line leads to:
->
->   BUG: Kernel NULL pointer dereference on read at 0x00000008
->   Oops: Kernel access of bad area, sig: 7 [#1]
->   NIP [c00000000004231c] do_enter_rtas+0x1bc/0x460
->   LR [c00000000004231c] do_enter_rtas+0x1bc/0x460
->   Call Trace:
->     do_enter_rtas+0x1bc/0x460 (unreliable)
->     rtas_call+0x22c/0x4a0
->     rtas_get_boot_time+0x80/0x14c
->     read_persistent_clock64+0x124/0x150
->     read_persistent_wall_and_boot_offset+0x28/0x58
->     timekeeping_init+0x70/0x348
->     start_kernel+0xa0c/0xc1c
->     start_here_common+0x1c/0x20
->
-> (This is preceded by a warning for the failed lookup in
-> rtas_token_to_function().)
->
-> This happens when __do_enter_rtas_trace() attempts a token to function
-> descriptor lookup before the xarray containing the mappings has been
-> set up.
->
-> Fall back to linear scan of the table if rtas_token_to_function_xarray
-> is empty.
+> Not all of the generic RTAS function statuses specified in PAPR have
+> symbolic constants and descriptions in rtas.h. Fix this, providing a
+> little more background, slightly updating the existing wording, and
+> improving the formatting.
 >
 
 Reviewed-by: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
 
 > Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-> Fixes: 24098f580e2b ("powerpc/rtas: add tracepoints around RTAS entry")
 > ---
->  arch/powerpc/kernel/rtas.c | 18 ++++++++++++++----
->  1 file changed, 14 insertions(+), 4 deletions(-)
+>  arch/powerpc/include/asm/rtas.h | 25 +++++++++++++++++++------
+>  1 file changed, 19 insertions(+), 6 deletions(-)
 >
-> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-> index 1ad1869e2e96..f0051881348a 100644
-> --- a/arch/powerpc/kernel/rtas.c
-> +++ b/arch/powerpc/kernel/rtas.c
-> @@ -557,11 +557,21 @@ static const struct rtas_function *rtas_token_to_function(s32 token)
->  		return NULL;
+> diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
+> index c697c3c74694..b73010583a8d 100644
+> --- a/arch/powerpc/include/asm/rtas.h
+> +++ b/arch/powerpc/include/asm/rtas.h
+> @@ -201,12 +201,25 @@ typedef struct {
+>  /* Memory set aside for sys_rtas to use with calls that need a work area. */
+>  #define RTAS_USER_REGION_SIZE (64 * 1024)
 >  
->  	func = xa_load(&rtas_token_to_function_xarray, token);
-> +	if (func)
-> +		return func;
-> +	/*
-> +	 * Fall back to linear scan in case the reverse mapping hasn't
-> +	 * been initialized yet.
-> +	 */
-> +	if (xa_empty(&rtas_token_to_function_xarray)) {
-> +		for_each_rtas_function(func) {
-> +			if (func->token == token)
-> +				return func;
-> +		}
-> +	}
+> -/* RTAS return status codes */
+> -#define RTAS_HARDWARE_ERROR	-1    /* Hardware Error */
+> -#define RTAS_BUSY		-2    /* RTAS Busy */
+> -#define RTAS_INVALID_PARAMETER	-3    /* Invalid indicator/domain/sensor etc. */
+> -#define RTAS_EXTENDED_DELAY_MIN	9900
+> -#define RTAS_EXTENDED_DELAY_MAX	9905
+> +/*
+> + * Common RTAS function return values, derived from the table "RTAS
+> + * Status Word Values" in PAPR+ 7.2.8: "Return Codes". If a function
+> + * can return a value in this table then generally it has the meaning
+> + * listed here. More extended commentary in the documentation for
+> + * rtas_call().
+> + *
+> + * RTAS functions may use negative and positive numbers not in this
+> + * set for function-specific error and success conditions,
+> + * respectively.
+> + */
+> +#define RTAS_SUCCESS                     0 /* Success. */
+> +#define RTAS_HARDWARE_ERROR             -1 /* Hardware or other unspecified error. */
+> +#define RTAS_BUSY                       -2 /* Retry immediately. */
+> +#define RTAS_INVALID_PARAMETER          -3 /* Invalid indicator/domain/sensor etc. */
+> +#define RTAS_UNEXPECTED_STATE_CHANGE    -7 /* Seems limited to EEH and slot reset. */
+> +#define RTAS_EXTENDED_DELAY_MIN       9900 /* Retry after delaying for ~1ms. */
+> +#define RTAS_EXTENDED_DELAY_MAX       9905 /* Retry after delaying for ~100s. */
+> +#define RTAS_ML_ISOLATION_ERROR      -9000 /* Multi-level isolation error. */
 >  
-> -	if (WARN_ONCE(!func, "unexpected failed lookup for token %d", token))
-> -		return NULL;
-> -
-> -	return func;
-> +	WARN_ONCE(true, "unexpected failed lookup for token %d", token);
-> +	return NULL;
->  }
->  
->  /* This is here deliberately so it's only used in this file */
+>  /* statuses specific to ibm,suspend-me */
+>  #define RTAS_SUSPEND_ABORTED     9000 /* Suspension aborted */
 >
 > -- 
 > 2.41.0
