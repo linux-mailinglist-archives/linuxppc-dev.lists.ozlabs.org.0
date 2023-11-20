@@ -1,53 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A2377F2162
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 00:24:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8153D7F2186
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 00:40:47 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=H8jniV24;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=mBgU9yMf;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SZ3WT5p63z3clb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 10:24:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SZ3sn3J1Tz3cW2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 10:40:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=H8jniV24;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=mBgU9yMf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZ3Vg0m8Xz2xdg
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 10:24:11 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id 10D6BB81C11;
-	Mon, 20 Nov 2023 23:24:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F25B3C433C8;
-	Mon, 20 Nov 2023 23:24:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700522644;
-	bh=67KEhLI0mEivJdbrkeCl+vFBBtgFo5YzYmUACDBON68=;
-	h=From:To:Cc:Subject:Date:From;
-	b=H8jniV24tZu68db9VGGm2q1zQTL4/mK90DWnFoovUtdjLOvX2sQaRAW9tq1BGVaOj
-	 7qX3z2eK3d6lvNNIKtJbLJ2Iw6euVJSNcBNlnv+gaQPgDbbDNXtCt6jA+iyW4IO6VF
-	 7m73afQT36H+vXmRCSH6nm2IjaNzTcC3ZhCVDkOaspknxf90tcCYnday6+8h5BfdBt
-	 wAl5D26oA/ehLsMMoHU5dV8CgCujZme+ru+sGtfkmjw6neS289tR8vbajgFjncYRxV
-	 JeGody4kjKgtnTgAbfwsz//Tmoq8zfFqKBbk7I1ak4r57jtbn+mag/3++tZF5bz1dT
-	 qAH0aq2JpD5mw==
-From: Masahiro Yamada <masahiroy@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc: add crtsavres.o to always-y instead of extra-y
-Date: Tue, 21 Nov 2023 08:23:32 +0900
-Message-Id: <20231120232332.4100288-1-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.40.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZ3rx0jNSz3bvB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 10:40:01 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1700523598;
+	bh=7QPI8VWUdEu12oGh43xGASH6N9c46ghh6+F90698EPk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=mBgU9yMf+frz1VCwrwrAQTWZKq+rpDynmWKDewvJIib145Ltkew3xZQ0ze9kad0IS
+	 tyI6IlB3AFEj/vKjZO5D+EfnyDP4BJI0NNyg9uqi9vQkRT+5ZcUqbCj6bTDoBmJA0k
+	 RXZxE9CumvDD8Kg+Rre/51WOy5caoFg2iN71bzTOxNp3vMYlXRQ961SE9YlyeFos59
+	 PJKA1Z42/IhHhmuzy45owZDvHv/mlFIa0HyHyIbwPvWw3OHVF20Io4WY1oXIw5sDbH
+	 jflZOD69CwG5KtssfvOnpvS2+h0s+XG3Qu3korfu2XRZ6HbJJclcynRCdWhtaVY3ny
+	 qSjOCL1LZ5yYg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SZ3rs440Qz4wd7;
+	Tue, 21 Nov 2023 10:39:57 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Timothy Pearson <tpearson@raptorengineering.com>
+Subject: Re: [PATCH v2] powerpc: Don't clobber fr0/vs0 during fp|altivec
+ register  save
+In-Reply-To: <439072392.48800901.1700498743840.JavaMail.zimbra@raptorengineeringinc.com>
+References: <1921539696.48534988.1700407082933.JavaMail.zimbra@raptorengineeringinc.com>
+ <877cmc7ve9.fsf@mail.lhotse>
+ <439072392.48800901.1700498743840.JavaMail.zimbra@raptorengineeringinc.com>
+Date: Tue, 21 Nov 2023 10:39:52 +1100
+Message-ID: <874jhg6lkn.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,44 +60,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tom Rix <trix@redhat.com>, Masahiro Yamada <masahiroy@kernel.org>, llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, regressions <regressions@lists.linux.dev>, npiggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-crtsavres.o is linked to modules. However, as explained in commit
-d0e628cd817f ("kbuild: doc: clarify the difference between extra-y
-and always-y"), 'make modules' does not build extra-y.
+Timothy Pearson <tpearson@raptorengineering.com> writes:
+> ----- Original Message -----
+>> From: "Michael Ellerman" <mpe@ellerman.id.au>
+...
+>> 
+>> But we now have a new path, because io-uring can call copy_process() via
+>> create_io_thread() from the signal handling path. That's OK if the signal is
+>> handled as we return from a syscall, but it's not OK if the signal is handled
+>> due to some other interrupt.
+>> 
+>> Which is:
+>> 
+>> interrupt_return_srr_user()
+>>  interrupt_exit_user_prepare()
+>>    interrupt_exit_user_prepare_main()
+>>      do_notify_resume()
+>>        get_signal()
+>>          task_work_run()
+>>            create_worker_cb()
+>>              create_io_worker()
+>>                copy_process()
+>>                  dup_task_struct()
+>>                    arch_dup_task_struct()
+>>                      flush_all_to_thread()
+>>                        save_all()
+>>                          if (tsk->thread.regs->msr & MSR_FP)
+>>                            save_fpu()
+>>                            # fr0 is clobbered and potentially live in userspace
+>> 
+>> 
+>> So tldr I think the corruption is only an issue since io-uring started doing
+>> the clone via signal, which I think matches the observed timeline of this bug
+>> appearing.
+>
+> I agree the corruption really only started showing up in earnest on
+> io_uring clone-via-signal, as this was confirmed several times in the
+> course of debugging.
 
-For example, the following command fails:
+Thanks.
 
-  $ make ARCH=powerpc LLVM=1 KBUILD_MODPOST_WARN=1 mrproper ps3_defconfig modules
-    [snip]
-    LD [M]  arch/powerpc/platforms/cell/spufs/spufs.ko
-  ld.lld: error: cannot open arch/powerpc/lib/crtsavres.o: No such file or directory
-  make[3]: *** [scripts/Makefile.modfinal:56: arch/powerpc/platforms/cell/spufs/spufs.ko] Error 1
-  make[2]: *** [Makefile:1844: modules] Error 2
-  make[1]: *** [/home/masahiro/workspace/linux-kbuild/Makefile:350: __build_one_by_one] Error 2
-  make: *** [Makefile:234: __sub-make] Error 2
+> Note as well that I may very well have a wrong call order in the
+> commit message, since I was relying on a couple of WARN_ON() macros I
+> inserted to check for a similar (but not identical) condition and
+> didn't spend much time getting new traces after identifying the root
+> cause.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
+Yep no worries. I'll reword it to incorporate the full path from my mail.
 
- arch/powerpc/lib/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> I went back and grabbed some real world system-wide stack traces, since I now know what to trigger on.  A typical example is:
+>
+> interrupt_return_srr_user()
+>  interrupt_exit_user_prepare()
+>   interrupt_exit_user_prepare_main()
+>    schedule()
+>     __schedule()
+>      __switch_to()
+>       giveup_all()
+>        # tsk->thread.regs->msr MSR_FP is still set here
+>        __giveup_fpu()
+>         save_fpu()
+>         # fr0 is clobbered and potentially live in userspace
 
-diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
-index 51ad0397c17a..6eac63e79a89 100644
---- a/arch/powerpc/lib/Makefile
-+++ b/arch/powerpc/lib/Makefile
-@@ -45,7 +45,7 @@ obj-$(CONFIG_FUNCTION_ERROR_INJECTION)	+= error-inject.o
- # so it is only needed for modules, and only for older linkers which
- # do not support --save-restore-funcs
- ifndef CONFIG_LD_IS_BFD
--extra-$(CONFIG_PPC64)	+= crtsavres.o
-+always-$(CONFIG_PPC64)	+= crtsavres.o
- endif
- 
- obj-$(CONFIG_PPC_BOOK3S_64) += copyuser_power7.o copypage_power7.o \
--- 
-2.40.1
+fr0 is not live there.
 
+__giveup_fpu() does roughly:
+
+	msr = tsk->thread.regs->msr;
+	msr &= ~(MSR_FP|MSR_FE0|MSR_FE1);
+        msr &= ~MSR_VSX;
+	tsk->thread.regs = msr;
+
+ie. it clears the FP etc. bits from the task's MSR. That means the FP
+state will be reloaded from the thread struct before the task is run again.
+
+Also on that path we're switching to another task, so we'll be reloading
+the other task's FP state before returning to userspace.
+
+So I don't see any bug there.
+
+There's only two places that call save_fpu() and skip the giveup logic,
+which is save_all() and kvmppc_save_user_regs().
+
+save_all() is only called via clone() so I think that's unable to
+actually cause visible register corruption as I described in my previous
+mail.
+
+I thought the KVM case was similar, as it's called via an ioctl, but
+I'll have to talk to Nick as his mail indicates otherwise.
+
+cheers
