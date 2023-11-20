@@ -2,39 +2,102 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 565F17F0B1A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Nov 2023 04:38:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5DFA7F0B29
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Nov 2023 04:57:46 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XB09eQku;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SYYBL1tldz3dHw
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Nov 2023 14:38:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SYYcm44Kwz3cP3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Nov 2023 14:57:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=wangkefeng.wang@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XB09eQku;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SYY9s3PFBz2xmC
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Nov 2023 14:37:52 +1100 (AEDT)
-Received: from dggpemm100001.china.huawei.com (unknown [172.30.72.56])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4SYY994bJrzWhb2;
-	Mon, 20 Nov 2023 11:37:17 +0800 (CST)
-Received: from localhost.localdomain (10.175.112.125) by
- dggpemm100001.china.huawei.com (7.185.36.93) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 20 Nov 2023 11:37:46 +0800
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH v2] asm/io: remove unnecessary xlate_dev_mem_ptr() and unxlate_dev_mem_ptr()
-Date: Mon, 20 Nov 2023 11:36:39 +0800
-Message-ID: <20231120033639.1789523-1-wangkefeng.wang@huawei.com>
-X-Mailer: git-send-email 2.27.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SYYbK431lz3cPS
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Nov 2023 14:56:29 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AK0IQNK012318;
+	Mon, 20 Nov 2023 03:56:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=PxbmNH0nnTzBbPZDFPXLtkxS4ze4PEk8QBY37coUodY=;
+ b=XB09eQkurEfk8OrL+HuHnTHzCMPBWmw/UD1BE7Ztgrp6iGaNiYz1cg4GzvG90KGuaLft
+ 1Wz1ARaSxQZVRNeX7ojU2qfPE+Sr+3oy1JoBrrWUFv+JG8XA8KVjX5mWkBWELuiCXFdB
+ pnCjJLrygXD6CYZNED7Rk2Zo13P8PcY6LAnbQDv2UEwVGaAbS7uBFwmnMEOVCrw/Y7fK
+ nhRuggjSV/Y0vTiXdqIXF62oEq4kLYT5tO7IwrVXL10GbGzXq2zFGpLCRL06gfc4acSV
+ pXpUitGKDjW0JI0FQnyKw0iMaPMqDkmk1EpHsHd0IweBhkSMZQjXUIJjNh/aoYlI0X/u cw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ufrd6qxsv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 20 Nov 2023 03:56:17 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AK2GEL8025517;
+	Mon, 20 Nov 2023 03:56:17 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ufrd6qxsm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 20 Nov 2023 03:56:17 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3AK1bKRC028317;
+	Mon, 20 Nov 2023 03:56:16 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uf8knepqp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 20 Nov 2023 03:56:16 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3AK3uEhc43909726
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 20 Nov 2023 03:56:14 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8A75820043;
+	Mon, 20 Nov 2023 03:56:14 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1564820040;
+	Mon, 20 Nov 2023 03:56:14 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 20 Nov 2023 03:56:14 +0000 (GMT)
+Received: from jarvis.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 52BA3600A7;
+	Mon, 20 Nov 2023 14:56:11 +1100 (AEDT)
+Message-ID: <60d0540b743f6795827334ebc66199efae032cbf.camel@linux.ibm.com>
+Subject: Re: [PATCH v2 1/5] powerpc/rtas: Drop declaration of undefined
+ call_rtas() function
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: nathanl@linux.ibm.com, Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas
+	Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>
+Date: Mon, 20 Nov 2023 14:56:02 +1100
+In-Reply-To: <20231114-rtas-trivial-v2-1-59cbab208d57@linux.ibm.com>
+References: <20231114-rtas-trivial-v2-0-59cbab208d57@linux.ibm.com>
+	 <20231114-rtas-trivial-v2-1-59cbab208d57@linux.ibm.com>
+Autocrypt: addr=ajd@linux.ibm.com; prefer-encrypt=mutual;
+ keydata=mDMEZPaWfhYJKwYBBAHaRw8BAQdAAuMUoxVRwqphnsFua1W+WBz6I2cIn0+Ox4YypJSdBJ+0MEFuZHJldyBEb25uZWxsYW4gKElCTSBzdHVmZikgPGFqZEBsaW51eC5pYm0uY29tPoiTBBMWCgA7FiEE01kE3s9shZVYLX1Aj1Qx8QRYRqAFAmT2ln4CGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQj1Qx8QRYRqAdswD8DhIh4trRQYiPe+7LaM7q+0+Thz+CwUJCW3UFOf0SEO0BAPNdsi7aVV+4Oah6nYzqzH5Zbs4Tz5RY+Vsf+DD/EzUKuDgEZPaWfhIKKwYBBAGXVQEFAQEHQLN9moJRqN8Zop/kcyIjga+2qzLoVaNAL6+4diGnlr1xAwEIB4h4BBgWCgAgFiEE01kE3s9shZVYLX1Aj1Qx8QRYRqAFAmT2ln4CGwwACgkQj1Qx8QRYRqCYkwD/W+gIP9kITfU4wnLtueFUThxA0T/LF49M7k31Qb8rPCwBALeEYAlX648lzjSA07pJB68Jt39FuUno444dSVmhYtoH
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.1 (3.50.1-1.fc39) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.175.112.125]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggpemm100001.china.huawei.com (7.185.36.93)
-X-CFilter-Loop: Reflected
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: OIXfQPZFI7tgT5x1LfCXudoQNhUbZbTN
+X-Proofpoint-GUID: xV8Kk57D8WBeFzOplQTk5zTnun5zZzKs
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-20_01,2023-11-17_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ clxscore=1011 lowpriorityscore=0 bulkscore=0 impostorscore=0 phishscore=0
+ suspectscore=0 adultscore=0 spamscore=0 mlxlogscore=878 malwarescore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311200027
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,180 +109,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Rich Felker <dalias@libc.org>, Geert Uytterhoeven <geert+renesas@glider.be>, linux-sh@vger.kernel.org, "James
- E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, sparclinux@vger.kernel.org, linux-arch@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-hexagon@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Stanislav Kinsburskii <stanislav.kinsburskii@gmail.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, linux-m68k@lists.linux-m68k.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The asm-generic/io.h already has default define, remove unnecessary
-arch's defination.
+On Tue, 2023-11-14 at 11:22 -0600, Nathan Lynch via B4 Relay wrote:
+> From: Nathan Lynch <nathanl@linux.ibm.com>
+>=20
+> The call_rtas() function has never been a part of arch/powerpc, and
+> its implementation was removed from arch/ppc by commit 0a26b1364f14
+> ("ppc: Remove CHRP, POWER3 and POWER4 support from arch/ppc").
+>=20
+> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Brian Cain <bcain@quicinc.com>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Stanislav Kinsburskii <stanislav.kinsburskii@gmail.com>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>		[m68k]
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>		[m68k]
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>	[sh]
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
----
-v2:
-- remove mips change, since it needs more extra works for enable
-  <asm-generic/io.h>
- arch/alpha/include/asm/io.h    | 6 ------
- arch/arm/include/asm/io.h      | 6 ------
- arch/hexagon/include/asm/io.h  | 6 ------
- arch/m68k/include/asm/io_mm.h  | 6 ------
- arch/parisc/include/asm/io.h   | 6 ------
- arch/powerpc/include/asm/io.h  | 6 ------
- arch/sh/include/asm/io.h       | 7 -------
- arch/sparc/include/asm/io_64.h | 6 ------
- 8 files changed, 49 deletions(-)
+grep confirms this.
 
-diff --git a/arch/alpha/include/asm/io.h b/arch/alpha/include/asm/io.h
-index 7aeaf7c30a6f..5e5d21ebc584 100644
---- a/arch/alpha/include/asm/io.h
-+++ b/arch/alpha/include/asm/io.h
-@@ -651,12 +651,6 @@ extern void outsl (unsigned long port, const void *src, unsigned long count);
- #endif
- #define RTC_ALWAYS_BCD	0
- 
--/*
-- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
-- * access
-- */
--#define xlate_dev_mem_ptr(p)	__va(p)
--
- /*
-  * These get provided from <asm-generic/iomap.h> since alpha does not
-  * select GENERIC_IOMAP.
-diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
-index 56b08ed6cc3b..1815748f5d2a 100644
---- a/arch/arm/include/asm/io.h
-+++ b/arch/arm/include/asm/io.h
-@@ -407,12 +407,6 @@ struct pci_dev;
- #define pci_iounmap pci_iounmap
- extern void pci_iounmap(struct pci_dev *dev, void __iomem *addr);
- 
--/*
-- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
-- * access
-- */
--#define xlate_dev_mem_ptr(p)	__va(p)
--
- #include <asm-generic/io.h>
- 
- #ifdef CONFIG_MMU
-diff --git a/arch/hexagon/include/asm/io.h b/arch/hexagon/include/asm/io.h
-index e2b308e32a37..97d57751ce3b 100644
---- a/arch/hexagon/include/asm/io.h
-+++ b/arch/hexagon/include/asm/io.h
-@@ -58,12 +58,6 @@ static inline void *phys_to_virt(unsigned long address)
- 	return __va(address);
- }
- 
--/*
-- * convert a physical pointer to a virtual kernel pointer for
-- * /dev/mem access.
-- */
--#define xlate_dev_mem_ptr(p)    __va(p)
--
- /*
-  * IO port access primitives.  Hexagon doesn't have special IO access
-  * instructions; all I/O is memory mapped.
-diff --git a/arch/m68k/include/asm/io_mm.h b/arch/m68k/include/asm/io_mm.h
-index 47525f2a57e1..090aec54b8fa 100644
---- a/arch/m68k/include/asm/io_mm.h
-+++ b/arch/m68k/include/asm/io_mm.h
-@@ -389,12 +389,6 @@ static inline void isa_delay(void)
- 
- #define __ARCH_HAS_NO_PAGE_ZERO_MAPPED		1
- 
--/*
-- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
-- * access
-- */
--#define xlate_dev_mem_ptr(p)	__va(p)
--
- #define readb_relaxed(addr)	readb(addr)
- #define readw_relaxed(addr)	readw(addr)
- #define readl_relaxed(addr)	readl(addr)
-diff --git a/arch/parisc/include/asm/io.h b/arch/parisc/include/asm/io.h
-index 366537042465..9c06cafb0e70 100644
---- a/arch/parisc/include/asm/io.h
-+++ b/arch/parisc/include/asm/io.h
-@@ -267,12 +267,6 @@ extern void iowrite64be(u64 val, void __iomem *addr);
- #define iowrite16_rep iowrite16_rep
- #define iowrite32_rep iowrite32_rep
- 
--/*
-- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
-- * access
-- */
--#define xlate_dev_mem_ptr(p)	__va(p)
--
- extern int devmem_is_allowed(unsigned long pfn);
- 
- #include <asm-generic/io.h>
-diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
-index 5220274a6277..79421c285066 100644
---- a/arch/powerpc/include/asm/io.h
-+++ b/arch/powerpc/include/asm/io.h
-@@ -709,12 +709,6 @@ static inline void name at					\
- #define memcpy_fromio memcpy_fromio
- #define memcpy_toio memcpy_toio
- 
--/*
-- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
-- * access
-- */
--#define xlate_dev_mem_ptr(p)	__va(p)
--
- /*
-  * We don't do relaxed operations yet, at least not with this semantic
-  */
-diff --git a/arch/sh/include/asm/io.h b/arch/sh/include/asm/io.h
-index ac521f287fa5..be7ac06423a9 100644
---- a/arch/sh/include/asm/io.h
-+++ b/arch/sh/include/asm/io.h
-@@ -304,13 +304,6 @@ unsigned long long poke_real_address_q(unsigned long long addr,
- 
- #define ioremap_uc	ioremap
- 
--/*
-- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
-- * access
-- */
--#define xlate_dev_mem_ptr(p)	__va(p)
--#define unxlate_dev_mem_ptr(p, v) do { } while (0)
--
- #include <asm-generic/io.h>
- 
- #define ARCH_HAS_VALID_PHYS_ADDR_RANGE
-diff --git a/arch/sparc/include/asm/io_64.h b/arch/sparc/include/asm/io_64.h
-index 9303270b22f3..75ae9bf3bb7b 100644
---- a/arch/sparc/include/asm/io_64.h
-+++ b/arch/sparc/include/asm/io_64.h
-@@ -470,12 +470,6 @@ static inline int sbus_can_burst64(void)
- struct device;
- void sbus_set_sbus64(struct device *, int);
- 
--/*
-- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
-- * access
-- */
--#define xlate_dev_mem_ptr(p)	__va(p)
--
- #endif
- 
- #endif /* !(__SPARC64_IO_H) */
--- 
-2.27.0
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
 
+> ---
+> =C2=A0arch/powerpc/include/asm/rtas.h | 2 --
+> =C2=A01 file changed, 2 deletions(-)
+>=20
+> diff --git a/arch/powerpc/include/asm/rtas.h
+> b/arch/powerpc/include/asm/rtas.h
+> index c697c3c74694..3bf7f0a4b07e 100644
+> --- a/arch/powerpc/include/asm/rtas.h
+> +++ b/arch/powerpc/include/asm/rtas.h
+> @@ -542,8 +542,6 @@ static inline void pSeries_coalesce_init(void) {
+> }
+> =C2=A0static inline void rtas_initialize(void) { }
+> =C2=A0#endif
+> =C2=A0
+> -extern int call_rtas(const char *, int, int, unsigned long *, ...);
+> -
+> =C2=A0#ifdef CONFIG_HV_PERF_CTRS
+> =C2=A0void read_24x7_sys_info(void);
+> =C2=A0#else
+>=20
+
+--=20
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
