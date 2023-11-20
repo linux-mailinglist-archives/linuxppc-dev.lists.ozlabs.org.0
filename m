@@ -2,56 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17FD47F1DF8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Nov 2023 21:23:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC57F7F1351
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Nov 2023 13:30:22 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=m7cZ1/Pt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=XwDOLLUr;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SYzV770twz3cZx
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 07:23:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SYn0D4mTgz3cW2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Nov 2023 23:30:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=m7cZ1/Pt;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=XwDOLLUr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=aneesh.kumar@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d29; helo=mail-io1-xd29.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SYgHy3HLVz2yV3
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Nov 2023 19:13:34 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 84D5160E33;
-	Mon, 20 Nov 2023 08:13:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19F46C433C8;
-	Mon, 20 Nov 2023 08:13:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700468011;
-	bh=ari9wo1XoYun0yaKy/tdlcuFpG5Hb73YARYEbigpow0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=m7cZ1/PtAIKryeYVcTq42sf/MhlONMsblo9pv71Jkv4YvDgI0kPuds8fiDHsHz8GO
-	 elCLSnO4WuAeTSXXdwWNLAjSXtJbDNnRRJekTyeCDczOXs/xuhB5h5UhUGqOflDILP
-	 DiQCPvVYOPRAnJPICcuGPVzUkPlVHPUnKf89TY6FHAvhwpDPdwzPwCifpoQOdybucj
-	 eRnCnL/q/V4RJmIncmLfK4E+urmpeHMclqtm5Z2vzUyC1BKdms10QBQ0kRdw13P8zW
-	 eUI3yHcMDbRTh4YGx/Nz8RURnFmKmWOl9YOR69pYBj/vrQCkiaFARarMyqAmTFxIBy
-	 TTrWCflpeex3A==
-X-Mailer: emacs 29.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
-To: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 07/13] powerpc/rtas: Warn if per-function lock isn't
- held
-In-Reply-To: <20231117-papr-sys_rtas-vs-lockdown-v4-7-b794d8cb8502@linux.ibm.com>
-References: <20231117-papr-sys_rtas-vs-lockdown-v4-0-b794d8cb8502@linux.ibm.com>
- <20231117-papr-sys_rtas-vs-lockdown-v4-7-b794d8cb8502@linux.ibm.com>
-Date: Mon, 20 Nov 2023 13:43:24 +0530
-Message-ID: <871qcklu57.fsf@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SYmzM0jC7z2yhZ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Nov 2023 23:29:34 +1100 (AEDT)
+Received: by mail-io1-xd29.google.com with SMTP id ca18e2360f4ac-7a92727934eso159225739f.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Nov 2023 04:29:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700483369; x=1701088169; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qj9gaId9xEkTbj+GKHFV9m1w8BlvLjGL5meXwVroxI0=;
+        b=XwDOLLUrYFfkT2z2RAZgh6v8/4yl0of9eA2m1VT262hAz7F+uzVeel6x8+06WN81Ye
+         ehW5OTdNVNbVupzSld2m2CV3DkvripuUM+7DRtRcEWxSi5sPQVZUbVbKF1GXQTOZ8OqQ
+         WwQ36YT18UcL8f2+B2FBZAuwi7MDybnVCz8g7aYywVpc0Us2QK/DBFiTMNHyVoZvZouh
+         1DX4cpk7n8fZtfijb+lMo02lKhjnJOmvsxz1dcEKdFELILIION6nOYLofzA+cv2H+Aej
+         Bx8rUOAxGbNqD+yMTHeIGBSylKRLlkZ+PDvV8/YfKVsSFOvy075lQMNa/e2+sRxLBxeF
+         Ae3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700483369; x=1701088169;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Qj9gaId9xEkTbj+GKHFV9m1w8BlvLjGL5meXwVroxI0=;
+        b=AAdabSskO+ZlacvLB4xXzggK6MWnd75F/rm5Nnt7SkYs/g69o9qTQ/YcVcXv8PPDws
+         7Sl9oGD3eLV5bWjpyYX96uSOmhKZquSTRajBZM+CPX39P7d9tfv1lrcKsmL1Vb0X90iX
+         woJ41v53sk0fKrqD0z5szUL/aMXKGQBm7revecJHq5ebhMoWE9kyaXOXmBVTPy1gxgD5
+         cT8zDKaQUwTxoBrFUxzwKU+Ddww60iuJRfYD5Bjk8aG+4I3QNZSs/nLYexfmxfRq13XD
+         tPYeeShRANA4CyFK2g8rEOhJI51mkir5+c0L4qNOvpg3/JkHDpM9Tw0bWDaQ26FsiD5t
+         v4Pg==
+X-Gm-Message-State: AOJu0YzLZdn/yt44tfngjgz75A5xwqS3kFAtOFe5i8xY4aPrjlMVeI0F
+	bx2CMAqzec8JUB3hQddO+ro=
+X-Google-Smtp-Source: AGHT+IHZZsyYedWaWMSYwWWXg7I2MCnNDE3YGQORTYXde6OKJ02OZBJot3h47lsTEMhcR70RVJH+kw==
+X-Received: by 2002:a92:c844:0:b0:35b:cca:a55f with SMTP id b4-20020a92c844000000b0035b0ccaa55fmr500989ilq.2.1700483369574;
+        Mon, 20 Nov 2023 04:29:29 -0800 (PST)
+Received: from wheely.local0.net (203-219-179-16.tpgi.com.au. [203.219.179.16])
+        by smtp.gmail.com with ESMTPSA id d13-20020a056a00244d00b00690fe1c928csm6047477pfj.147.2023.11.20.04.29.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Nov 2023 04:29:28 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: kvm@vger.kernel.org,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v4 0/4] KVM: selftests: add powerpc support
+Date: Mon, 20 Nov 2023 22:29:16 +1000
+Message-ID: <20231120122920.293076-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Mailman-Approved-At: Tue, 21 Nov 2023 07:17:50 +1100
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,73 +76,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, tyreld@linux.ibm.com, Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org, gcwilson@linux.ibm.com
+Cc: Sean Christopherson <seanjc@google.com>, linuxppc-dev@lists.ozlabs.org, Joel Stanley <joel@jms.id.au>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
-writes:
+This series adds initial KVM selftests support for powerpc
+(64-bit, BookS, radix MMU).
 
-> From: Nathan Lynch <nathanl@linux.ibm.com>
->
-> If the function descriptor has a populated lock member, then callers
-> are required to hold it across calls. Now that the firmware activation
-> sequence is appropriately guarded, we can warn when the requirement
-> isn't satisfied.
->
-> __do_enter_rtas_trace() gets reorganized a bit as a result of
-> performing the function descriptor lookup unconditionally now.
->
+Since v3:
+https://lore.kernel.org/linuxppc-dev/20230608032425.59796-1-npiggin@gmail.com/
+- Rebased to upstream (on top of Sean's ucall and guest assert
+  rework).
+- Drop powerpc specific tests for now, concentrate on base enablement.
+- Fix a bunch of bugs and issues including the ones noticed by Joel
+  in v3:
+- Work around powerpc's max VCPU ID complexity to fix test case failure.
+- Use TEST_REQUIRE for radix mode so hash hosts don't assert.
+- Pack page table "fragments" in pages (like Linux kernel does), which
+  fixes PTE memory consumption estimation and prevents the max memory
+  test from failing with no memory for page tables.
 
-Reviewed-by: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
+Since v2:
+- Added a couple of new tests (patch 5,6)
+- Make default page size match host page size.
+- Check for radix MMU capability.
+- Build a few more of the generic tests.
 
-> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-> ---
->  arch/powerpc/kernel/rtas.c | 21 +++++++++------------
->  1 file changed, 9 insertions(+), 12 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-> index e38ba05ad613..deb6289fcf9c 100644
-> --- a/arch/powerpc/kernel/rtas.c
-> +++ b/arch/powerpc/kernel/rtas.c
-> @@ -685,28 +685,25 @@ static void __do_enter_rtas(struct rtas_args *args)
->  
->  static void __do_enter_rtas_trace(struct rtas_args *args)
->  {
-> -	const char *name = NULL;
-> +	struct rtas_function *func = rtas_token_to_function(be32_to_cpu(args->token));
->  
-> -	if (args == &rtas_args)
-> -		lockdep_assert_held(&rtas_lock);
->  	/*
-> -	 * If the tracepoints that consume the function name aren't
-> -	 * active, avoid the lookup.
-> +	 * If there is a per-function lock, it must be held by the
-> +	 * caller.
->  	 */
-> -	if ((trace_rtas_input_enabled() || trace_rtas_output_enabled())) {
-> -		const s32 token = be32_to_cpu(args->token);
-> -		const struct rtas_function *func = rtas_token_to_function(token);
-> +	if (func->lock)
-> +		WARN_ON(!mutex_is_locked(func->lock));
->  
-> -		name = func->name;
-> -	}
-> +	if (args == &rtas_args)
-> +		lockdep_assert_held(&rtas_lock);
->  
-> -	trace_rtas_input(args, name);
-> +	trace_rtas_input(args, func->name);
->  	trace_rtas_ll_entry(args);
->  
->  	__do_enter_rtas(args);
->  
->  	trace_rtas_ll_exit(args);
-> -	trace_rtas_output(args, name);
-> +	trace_rtas_output(args, func->name);
->  }
->  
->  static void do_enter_rtas(struct rtas_args *args)
->
-> -- 
-> 2.41.0
+Since v1:
+- Update MAINTAINERS KVM PPC entry to include kvm selftests.
+- Fixes and cleanups from Sean's review including new patch 1.
+- Add 4K guest page support requiring new patch 2.
+
+Thanks,
+Nick
+
+Nicholas Piggin (4):
+  KVM: selftests: Move pgd_created check into virt_pgd_alloc
+  KVM: selftests: Add aligned guest physical page allocator
+  KVM: PPC: selftests: add support for powerpc
+  KVM: PPC: selftests: powerpc enable kvm_create_max_vcpus test
+
+ MAINTAINERS                                   |   2 +
+ tools/testing/selftests/kvm/Makefile          |  20 +
+ .../selftests/kvm/include/kvm_util_base.h     |  31 ++
+ .../selftests/kvm/include/powerpc/hcall.h     |  17 +
+ .../selftests/kvm/include/powerpc/ppc_asm.h   |  32 ++
+ .../selftests/kvm/include/powerpc/processor.h |  39 ++
+ .../selftests/kvm/include/powerpc/ucall.h     |  21 +
+ .../selftests/kvm/kvm_create_max_vcpus.c      |   9 +
+ .../selftests/kvm/lib/aarch64/processor.c     |   4 -
+ tools/testing/selftests/kvm/lib/guest_modes.c |  27 +-
+ tools/testing/selftests/kvm/lib/kvm_util.c    |  56 ++-
+ .../selftests/kvm/lib/powerpc/handlers.S      |  93 ++++
+ .../testing/selftests/kvm/lib/powerpc/hcall.c |  45 ++
+ .../selftests/kvm/lib/powerpc/processor.c     | 468 ++++++++++++++++++
+ .../testing/selftests/kvm/lib/powerpc/ucall.c |  21 +
+ .../selftests/kvm/lib/riscv/processor.c       |   4 -
+ .../selftests/kvm/lib/s390x/processor.c       |   4 -
+ .../selftests/kvm/lib/x86_64/processor.c      |   7 +-
+ tools/testing/selftests/kvm/powerpc/helpers.h |  46 ++
+ 19 files changed, 908 insertions(+), 38 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/include/powerpc/hcall.h
+ create mode 100644 tools/testing/selftests/kvm/include/powerpc/ppc_asm.h
+ create mode 100644 tools/testing/selftests/kvm/include/powerpc/processor.h
+ create mode 100644 tools/testing/selftests/kvm/include/powerpc/ucall.h
+ create mode 100644 tools/testing/selftests/kvm/lib/powerpc/handlers.S
+ create mode 100644 tools/testing/selftests/kvm/lib/powerpc/hcall.c
+ create mode 100644 tools/testing/selftests/kvm/lib/powerpc/processor.c
+ create mode 100644 tools/testing/selftests/kvm/lib/powerpc/ucall.c
+ create mode 100644 tools/testing/selftests/kvm/powerpc/helpers.h
+
+-- 
+2.42.0
+
