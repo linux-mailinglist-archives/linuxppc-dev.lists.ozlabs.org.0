@@ -2,74 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3320C7F26BD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 08:55:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 369967F26C0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 08:57:05 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TeGifHso;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=AqA1/fKJ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SZGr304hVz3c4R
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 18:54:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SZGtR0JlZz3dJZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 18:57:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TeGifHso;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=AqA1/fKJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035; helo=mail-pj1-x1035.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42a; helo=mail-pf1-x42a.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZGq71F6Mz3by8
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 18:54:10 +1100 (AEDT)
-Received: by mail-pj1-x1035.google.com with SMTP id 98e67ed59e1d1-2839cf9ea95so2340798a91.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Nov 2023 23:54:09 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZGsb6JTDz3byP
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 18:56:19 +1100 (AEDT)
+Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-6b1d1099a84so5007658b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Nov 2023 23:56:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700553248; x=1701158048; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1700553376; x=1701158176; darn=lists.ozlabs.org;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4GpGlzTpFmEmndUoQPeihmLydV+15ixLMOznzzwXxVQ=;
-        b=TeGifHsoIJfhKCfABUcnGOpuBA+9hBDapz+D3cWuNDAiiD+mo4/BU1YOXzSaHifJgn
-         Mu/R3ZMismpMRMQ8gsYM2wTfLVKyT8JxEOONbjVhKzxPsHkRTkBhpjH8GZ/pHlOa0vq6
-         FSYLGo/2xJk11rMJI0Uc2xGAt6K35HW8/WWm8R+CrZMXBUookZDhmxRPUwFX69fNmFxX
-         TkUwUOrrJLn14Y41bwhwtrGaqQbvDy5u4P1UVVwZg8obO1JMV7BExwVdfjIh4TPZa1oO
-         DSUMMfk4ia9YSFlPh6nToxVUyMcog4cGara+d+v8Yv8/i9v39E81s4Jl2n7bSfDZqrMa
-         XQwQ==
+        bh=xPkROMmbes+NoTwBo6+myJWaj5ksNAqKHgxIe4KqEts=;
+        b=AqA1/fKJYFKpvO60uq3tzfFxbL73WRA5qbTwNMQYYSlteMCVw8tAa0wkHb+aNoONEH
+         A1K5/GL7whCKvH0iQOq6cCzhfjOi36k9d0gBJJoxH9QedBKJVmVfdUjwznqF/a3ErwTf
+         y5YXpTlmaIy1W8pSl9Su3kuTHObtzqr3X9VGOeTGlcTyCJGrRETdHDvT0bPFBRXh89iK
+         zhHPena/TGOlDEthNzN43OZZIeSeoEQaoXubpFyWtSlEoDvfIGidQtp1dpifUQl+k+RO
+         danRI/169sg6vK97ZcRyN4jg0qOxdm+tOUk4PzB1bCkiFB9kCc94vAkRMIziIguYiaG6
+         Ljyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700553248; x=1701158048;
+        d=1e100.net; s=20230601; t=1700553376; x=1701158176;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=4GpGlzTpFmEmndUoQPeihmLydV+15ixLMOznzzwXxVQ=;
-        b=hVDtNBpDDPPuYCNUPgJruzfwFLVK9tizy3d8RsLhEjyfXzWp5ETIcB7AbkkTcyncQC
-         ymbEdKn2+CSLBrtPXqU6KSP9Y4ipZhZ722HUZc9MJ1KGeq+A969flD96qzRPv+TJR3O8
-         8lrN6+aRI9Zoioy0jOBJhO9J8Me3u3Cv3BVoiYvVdR1KLLBJAlFlP4QLMvFbUBiMOP61
-         pkGDAY6T90lCBUCsz7TttC6Y7PugSH/uLomzcCltLTVaLdeGrnBnDZCkH99DXA1KzOPw
-         rqDq403iOlzFw7C9ZAJnp+KDMjq5gSDjpG/R4FHSBinTmIHoq+mdydsScEfBIEaWQ7kY
-         B8ew==
-X-Gm-Message-State: AOJu0YzxyZKYhKhYktiohYXFdtq0gOdyON6Zm8eXUoBkIYVN7bzUzWYt
-	3CwDMN5nWnOjpsca+HFnq8U=
-X-Google-Smtp-Source: AGHT+IEDQQ1myxH37RT6l8dvllopvb4hWIXobKBKwtE4UQnTWaQheRNBKNiZafUW3ET0yW/moGJJfw==
-X-Received: by 2002:a17:90b:4f45:b0:27c:f016:49a2 with SMTP id pj5-20020a17090b4f4500b0027cf01649a2mr7784712pjb.7.1700553247587;
-        Mon, 20 Nov 2023 23:54:07 -0800 (PST)
+        bh=xPkROMmbes+NoTwBo6+myJWaj5ksNAqKHgxIe4KqEts=;
+        b=t1XkiVfXXPiZX7IWsetMGIFIaqStwhc3u2LeuHJjbluC98pjPpcEeGA30qy8bD9Ct5
+         hvRAYg1B0qPm50Zw6MPER6Pi5JNZMrleFKnEQwFMNAk66ropS9D3pxwsAsNlvwBb3w2J
+         decRYZeWOfxmsQH8g+wSlDEcM0U/xM0Tyitd4y2LRj48imJYuKpK8Oho/H9nvl1+RmfM
+         qjUoI5V3bTYDHsHCT0X5kKps1ICpOgVdW8I6gZv4FxsDyIoVZ+BJ0mMiivQqTJMSg8hA
+         O2/X3ORlN4eaQi/KKQieUEVEH4K+weH70RG3B3nTAOY0KHF0buQpNlEgFg6ZlV99IfMp
+         vGCg==
+X-Gm-Message-State: AOJu0YzedZTrdDmAFdsfp+cdqF/vz4E1oBtoAiUB6jO7si0V4BNE1i2g
+	SyQN+uJY/xLRnFrc2HVCPqU=
+X-Google-Smtp-Source: AGHT+IGOCLqAMv/TBcLtTqQ5OkM/wL3HZhsfigdHGhc8FOL3f0xgpNEsonSURDAai5Ll61v7nVXwZg==
+X-Received: by 2002:a05:6a20:8f14:b0:18a:e86f:f246 with SMTP id b20-20020a056a208f1400b0018ae86ff246mr990692pzk.10.1700553376311;
+        Mon, 20 Nov 2023 23:56:16 -0800 (PST)
 Received: from localhost (203-219-179-16.tpgi.com.au. [203.219.179.16])
-        by smtp.gmail.com with ESMTPSA id bg11-20020a1709028e8b00b001cc307bcdbdsm7216652plb.211.2023.11.20.23.54.04
+        by smtp.gmail.com with ESMTPSA id ju4-20020a170903428400b001cc3875e658sm7340245plb.303.2023.11.20.23.56.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Nov 2023 23:54:07 -0800 (PST)
+        Mon, 20 Nov 2023 23:56:16 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 21 Nov 2023 17:54:02 +1000
-Message-Id: <CX4BTAI45247.1FAQB8BD1J0H0@wheely>
+Date: Tue, 21 Nov 2023 17:56:10 +1000
+Message-Id: <CX4BUXJD624S.2U2UZ9M6H198U@wheely>
 Subject: Re: [PATCH v2] powerpc: Don't clobber fr0/vs0 during fp|altivec
  register  save
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "Timothy Pearson" <tpearson@raptorengineering.com>, "Michael Ellerman"
  <mpe@ellerman.id.au>
 X-Mailer: aerc 0.15.2
-References: <1921539696.48534988.1700407082933.JavaMail.zimbra@raptorengineeringinc.com> <877cmc7ve9.fsf@mail.lhotse> <439072392.48800901.1700498743840.JavaMail.zimbra@raptorengineeringinc.com> <874jhg6lkn.fsf@mail.lhotse> <1294229534.48922001.1700539832331.JavaMail.zimbra@raptorengineeringinc.com>
-In-Reply-To: <1294229534.48922001.1700539832331.JavaMail.zimbra@raptorengineeringinc.com>
+References: <1921539696.48534988.1700407082933.JavaMail.zimbra@raptorengineeringinc.com> <877cmc7ve9.fsf@mail.lhotse> <439072392.48800901.1700498743840.JavaMail.zimbra@raptorengineeringinc.com> <874jhg6lkn.fsf@mail.lhotse> <608737213.48890358.1700529837699.JavaMail.zimbra@raptorengineeringinc.com>
+In-Reply-To: <608737213.48890358.1700529837699.JavaMail.zimbra@raptorengineeringinc.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,7 +85,9 @@ Cc: Jens Axboe <axboe@kernel.dk>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue Nov 21, 2023 at 2:10 PM AEST, Timothy Pearson wrote:
+On Tue Nov 21, 2023 at 11:23 AM AEST, Timothy Pearson wrote:
+>
+>
 > ----- Original Message -----
 > > From: "Michael Ellerman" <mpe@ellerman.id.au>
 > > To: "Timothy Pearson" <tpearson@raptorengineering.com>
@@ -169,64 +171,87 @@ e I now
 > >>         # fr0 is clobbered and potentially live in userspace
 > >=20
 > > fr0 is not live there.
-> <snip>=20
+> >=20
+> > __giveup_fpu() does roughly:
+> >=20
+> >	msr =3D tsk->thread.regs->msr;
+> >	msr &=3D ~(MSR_FP|MSR_FE0|MSR_FE1);
+> >        msr &=3D ~MSR_VSX;
+> >	tsk->thread.regs =3D msr;
+> >=20
 > > ie. it clears the FP etc. bits from the task's MSR. That means the FP
 > > state will be reloaded from the thread struct before the task is run ag=
 ain.
+> >=20
+> > Also on that path we're switching to another task, so we'll be reloadin=
+g
+> > the other task's FP state before returning to userspace.
+> >=20
+> > So I don't see any bug there.
 >
-> So a little more detail on this, just to put it to rest properly vs. assu=
-ming hand analysis caught every possible pathway. :)
+> Yeah, you're right.  I was trying to get traces while doing something els=
+e, and didn't think that all the way through, sorry. :)  It's not going to =
+be super easy to get a real trace (I was triggering the WARN_ON() from of f=
+r0 getting set to to FPSCR), so let's just assume it's mainly the path you =
+manually found above and update the commit message accordingly.
 >
-> The debugging that generates this stack trace also verifies the following=
- in __giveup_fpu():
+> > There's only two places that call save_fpu() and skip the giveup logic,
+> > which is save_all() and kvmppc_save_user_regs().
 >
-> 1.) tsk->thread.fp_state.fpr doesn't contain the FPSCR contents prior to =
-calling save_fpu()
-> 2.) tsk->thread.fp_state.fpr contains the FPSCR contents directly after c=
-alling save_fpu()
-> 3.) MSR_FP is set both in the task struct and in the live MSR.
->
-> Only if all three conditions are met will it generate the trace.  This is=
- a generalization of the hack I used to find the problem in the first place=
-.
->
-> If the state will subsequently be reloaded from the thread struct, that m=
-eans we're reloading the registers from the thread struct that we just veri=
-fied was corrupted by the earlier save_fpu() call.  There are only two ways=
- I can see for that to be true -- one is if the registers were already clob=
-bered when giveup_all() was entered, and the other is if save_fpu() went ah=
-ead and clobbered them right here inside giveup_all().
->
-> To see which scenario we were dealing with, I added a bit more instrument=
-ation to dump the current register state if MSR_FP bit was already set in r=
-egisters (i.e. not dumping data from task struct, but using the live FPU re=
-gisters instead), and sure enough the registers are corrupt on entry, so so=
-mething else has already called save_fpu() before we even hit giveup_all() =
-in this call chain.
->
-> Unless I'm missing something, doesn't this effectively mean that anything=
- interrupting a task can hit this bug?  Or, put another way, I'm seeing sev=
-eral processes hit this exact call chain with the corrupt register going ba=
-ck out to userspace without io_uring even in the mix, so there seems to be =
-another pathway in play.  These traces are from a qemu guest, in case it ma=
-tters given the kvm path is possibly susceptible.
->
-> Just a few things to think about.  The FPU patch itself definitely resolv=
-es the problems; I used a sledgehammer approach *specifically* so that ther=
-e is no place for a rare call sequence we didn't consider to hit it again d=
-own the line. :)
+> Now that's interesting as well, since it might explain some issues I've s=
+een for years on a specific QEMU workload.  Once this is backported to stab=
+le I'll need to get the kernels updated on those boxes and see if the issue=
+s disappear...
 
-I don't think interrupts are supposed to use (or save) FP/VEC
-registers. So you're allowed to _take_ interrupts while FP/VEC
-are being saved or used, just not be preempted, block, or
-return to user. Hence all the preempt_disable() around these
-things.
+KVM issue is actually slightly different. You need this (lightly
+verified to solve issue so far).
 
-Not that we cover all these with warnings very well in the
-enable_kernel_* functions AFAIKS. We could add more checks.
-At least interrupts enabled would be good. balance and user
-exit checks should somewhat be covered by preempt count
-implicitly.
+---
 
-Thanks,
-Nick
+From c12fbed0e12207058282a2411da59b43b1f96c49 Mon Sep 17 00:00:00 2001
+From: Nicholas Piggin <npiggin@gmail.com>
+Date: Tue, 21 Nov 2023 17:03:55 +1000
+Subject: [PATCH] KVM: PPC: Book3S HV: Fix KVM_RUN ioctl clobbering FP/VEC
+ registers
+
+Before running a guest, the host process's FP/VEC registers are saved
+away like a context switch or a kernel use of those regs. The guest
+FP/VEC registers can then be loaded as needed. The host process
+registers would be restored lazily when it uses FP/VEC again.
+
+KVM HV did not do this correctly. The registers are saved in the
+thread struct, but the FP/VEC/VSX bits remain enabled in the user
+MSR, leading the kernel to think they are still valid. Even after
+they are clobbered by guest registers. This leads to the host
+process getting guest FP/VEC register values.
+
+KVM must be invoked by ioctl in this path, and almost certainly that
+means a C call to a wrapper function, but that still leaves real
+possibility of corruption in for non-volatile registers to cause
+problems for QEMU process.
+---
+ arch/powerpc/kernel/process.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index 392404688cec..9452a54d356c 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -1198,11 +1198,11 @@ void kvmppc_save_user_regs(void)
+=20
+ 	usermsr =3D current->thread.regs->msr;
+=20
++	/* Caller has enabled FP/VEC/VSX/TM in MSR */
+ 	if (usermsr & MSR_FP)
+-		save_fpu(current);
+-
++		__giveup_fpu(current);
+ 	if (usermsr & MSR_VEC)
+-		save_altivec(current);
++		__giveup_altivec(current);
+=20
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ 	if (usermsr & MSR_TM) {
+--=20
+2.42.0
+
