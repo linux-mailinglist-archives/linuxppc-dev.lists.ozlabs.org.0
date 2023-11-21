@@ -1,29 +1,29 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7326A7F2755
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 09:21:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC3FD7F275A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 09:22:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SZHQw2vrSz3w6B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 19:21:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SZHRQ4NVpz3wBn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 19:22:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
 Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZHLK0mfXz3cVS
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 19:17:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZHLL6vPGz3cT7
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 19:17:46 +1100 (AEDT)
 Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 89EB61A044B;
-	Tue, 21 Nov 2023 09:17:42 +0100 (CET)
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 602991A03F5;
+	Tue, 21 Nov 2023 09:17:44 +0100 (CET)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 272691A036B;
-	Tue, 21 Nov 2023 09:17:42 +0100 (CET)
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id F1ED31A036B;
+	Tue, 21 Nov 2023 09:17:43 +0100 (CET)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 8943D183ACAD;
-	Tue, 21 Nov 2023 16:17:40 +0800 (+08)
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 08CA71802201;
+	Tue, 21 Nov 2023 16:17:41 +0800 (+08)
 From: Shengjiu Wang <shengjiu.wang@nxp.com>
 To: hverkuil@xs4all.nl,
 	sakari.ailus@iki.fi,
@@ -42,9 +42,9 @@ To: hverkuil@xs4all.nl,
 	tiwai@suse.com,
 	alsa-devel@alsa-project.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v10 08/14] media: uapi: Define audio sample format fourcc type
-Date: Tue, 21 Nov 2023 15:37:29 +0800
-Message-Id: <1700552255-5364-9-git-send-email-shengjiu.wang@nxp.com>
+Subject: [PATCH v10 09/14] media: uapi: Add V4L2_CTRL_CLASS_M2M_AUDIO
+Date: Tue, 21 Nov 2023 15:37:30 +0800
+Message-Id: <1700552255-5364-10-git-send-email-shengjiu.wang@nxp.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1700552255-5364-1-git-send-email-shengjiu.wang@nxp.com>
 References: <1700552255-5364-1-git-send-email-shengjiu.wang@nxp.com>
@@ -63,184 +63,118 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The audio sample format definition is from alsa,
-the header file is include/uapi/sound/asound.h, but
-don't include this header file directly, because in
-user space, there is another copy in alsa-lib.
-There will be conflict in userspace for include
-videodev2.h & asound.h and asoundlib.h
-
-Here still use the fourcc format.
+The Audio M2M class includes controls for audio memory-to-memory
+use cases. The controls can be used for audio codecs, audio
+preprocessing, audio postprocessing.
 
 Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 ---
- .../userspace-api/media/v4l/pixfmt-audio.rst  | 87 +++++++++++++++++++
- .../userspace-api/media/v4l/pixfmt.rst        |  1 +
- drivers/media/v4l2-core/v4l2-ioctl.c          | 13 +++
- include/uapi/linux/videodev2.h                | 23 +++++
- 4 files changed, 124 insertions(+)
- create mode 100644 Documentation/userspace-api/media/v4l/pixfmt-audio.rst
+ .../userspace-api/media/v4l/common.rst        |  1 +
+ .../media/v4l/ext-ctrls-audio-m2m.rst         | 21 +++++++++++++++++++
+ .../media/v4l/vidioc-g-ext-ctrls.rst          |  4 ++++
+ drivers/media/v4l2-core/v4l2-ctrls-defs.c     |  4 ++++
+ include/uapi/linux/v4l2-controls.h            |  4 ++++
+ 5 files changed, 34 insertions(+)
+ create mode 100644 Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
 
-diff --git a/Documentation/userspace-api/media/v4l/pixfmt-audio.rst b/Documentation/userspace-api/media/v4l/pixfmt-audio.rst
+diff --git a/Documentation/userspace-api/media/v4l/common.rst b/Documentation/userspace-api/media/v4l/common.rst
+index ea0435182e44..d5366e96a596 100644
+--- a/Documentation/userspace-api/media/v4l/common.rst
++++ b/Documentation/userspace-api/media/v4l/common.rst
+@@ -52,6 +52,7 @@ applicable to all devices.
+     ext-ctrls-fm-rx
+     ext-ctrls-detect
+     ext-ctrls-colorimetry
++    ext-ctrls-audio-m2m
+     fourcc
+     format
+     planar-apis
+diff --git a/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst b/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
 new file mode 100644
-index 000000000000..04b4a7fbd8f4
+index 000000000000..82d2ecedbfee
 --- /dev/null
-+++ b/Documentation/userspace-api/media/v4l/pixfmt-audio.rst
-@@ -0,0 +1,87 @@
++++ b/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
+@@ -0,0 +1,21 @@
 +.. SPDX-License-Identifier: GFDL-1.1-no-invariants-or-later
 +
-+.. _pixfmt-audio:
++.. _audiom2m-controls:
 +
-+*************
-+Audio Formats
-+*************
++***************************
++Audio M2M Control Reference
++***************************
 +
-+These formats are used for :ref:`audiomem2mem` interface only.
++The Audio M2M class includes controls for audio memory-to-memory
++use cases. The controls can be used for audio codecs, audio
++preprocessing, audio postprocessing.
 +
-+.. tabularcolumns:: |p{5.8cm}|p{1.2cm}|p{10.3cm}|
++Audio M2M Control IDs
++-----------------------
 +
-+.. cssclass:: longtable
++.. _audiom2m-control-id:
 +
-+.. flat-table:: Audio Format
-+    :header-rows:  1
-+    :stub-columns: 0
-+    :widths:       3 1 4
-+
-+    * - Identifier
-+      - Code
-+      - Details
-+    * .. _V4L2-AUDIO-FMT-S8:
-+
-+      - ``V4L2_AUDIO_FMT_S8``
-+      - 'S8'
-+      - Corresponds to SNDRV_PCM_FORMAT_S8 in ALSA
-+    * .. _V4L2-AUDIO-FMT-S16-LE:
-+
-+      - ``V4L2_AUDIO_FMT_S16_LE``
-+      - 'S16_LE'
-+      - Corresponds to SNDRV_PCM_FORMAT_S16_LE in ALSA
-+    * .. _V4L2-AUDIO-FMT-U16-LE:
-+
-+      - ``V4L2_AUDIO_FMT_U16_LE``
-+      - 'U16_LE'
-+      - Corresponds to SNDRV_PCM_FORMAT_U16_LE in ALSA
-+    * .. _V4L2-AUDIO-FMT-S24-LE:
-+
-+      - ``V4L2_AUDIO_FMT_S24_LE``
-+      - 'S24_LE'
-+      - Corresponds to SNDRV_PCM_FORMAT_S24_LE in ALSA
-+    * .. _V4L2-AUDIO-FMT-U24-LE:
-+
-+      - ``V4L2_AUDIO_FMT_U24_LE``
-+      - 'U24_LE'
-+      - Corresponds to SNDRV_PCM_FORMAT_U24_LE in ALSA
-+    * .. _V4L2-AUDIO-FMT-S32-LE:
-+
-+      - ``V4L2_AUDIO_FMT_S32_LE``
-+      - 'S32_LE'
-+      - Corresponds to SNDRV_PCM_FORMAT_S32_LE in ALSA
-+    * .. _V4L2-AUDIO-FMT-U32-LE:
-+
-+      - ``V4L2_AUDIO_FMT_U32_LE``
-+      - 'U32_LE'
-+      - Corresponds to SNDRV_PCM_FORMAT_U32_LE in ALSA
-+    * .. _V4L2-AUDIO-FMT-FLOAT-LE:
-+
-+      - ``V4L2_AUDIO_FMT_FLOAT_LE``
-+      - 'FLOAT_LE'
-+      - Corresponds to SNDRV_PCM_FORMAT_FLOAT_LE in ALSA
-+    * .. _V4L2-AUDIO-FMT-IEC958-SUBFRAME-LE:
-+
-+      - ``V4L2_AUDIO_FMT_IEC958_SUBFRAME_LE``
-+      - 'IEC958_SUBFRAME_LE'
-+      - Corresponds to SNDRV_PCM_FORMAT_IEC958_SUBFRAME_LE in ALSA
-+    * .. _V4L2-AUDIO-FMT-S24-3LE:
-+
-+      - ``V4L2_AUDIO_FMT_S24_3LE``
-+      - 'S24_3LE'
-+      - Corresponds to SNDRV_PCM_FORMAT_S24_3LE in ALSA
-+    * .. _V4L2-AUDIO-FMT-U24-3LE:
-+
-+      - ``V4L2_AUDIO_FMT_U24_3LE``
-+      - 'U24_3LE'
-+      - Corresponds to SNDRV_PCM_FORMAT_U24_3LE in ALSA
-+    * .. _V4L2-AUDIO-FMT-S20-3LE:
-+
-+      - ``V4L2_AUDIO_FMT_S20_3LE``
-+      - 'S20_3LE'
-+      - Corresponds to SNDRV_PCM_FORMAT_S24_3LE in ALSA
-+    * .. _V4L2-AUDIO-FMT-U20-3LE:
-+
-+      - ``V4L2_AUDIO_FMT_U20_3LE``
-+      - 'U20_3LE'
-+      - Corresponds to SNDRV_PCM_FORMAT_U20_3LE in ALSA
-diff --git a/Documentation/userspace-api/media/v4l/pixfmt.rst b/Documentation/userspace-api/media/v4l/pixfmt.rst
-index 11dab4a90630..2eb6fdd3b43d 100644
---- a/Documentation/userspace-api/media/v4l/pixfmt.rst
-+++ b/Documentation/userspace-api/media/v4l/pixfmt.rst
-@@ -36,3 +36,4 @@ see also :ref:`VIDIOC_G_FBUF <VIDIOC_G_FBUF>`.)
-     colorspaces
-     colorspaces-defs
-     colorspaces-details
-+    pixfmt-audio
-diff --git a/drivers/media/v4l2-core/v4l2-ioctl.c b/drivers/media/v4l2-core/v4l2-ioctl.c
-index 1bb03794922a..c86633b82038 100644
---- a/drivers/media/v4l2-core/v4l2-ioctl.c
-+++ b/drivers/media/v4l2-core/v4l2-ioctl.c
-@@ -1471,6 +1471,19 @@ static void v4l_fill_fmtdesc(struct v4l2_fmtdesc *fmt)
- 	case V4L2_PIX_FMT_Y210:		descr = "10-bit YUYV Packed"; break;
- 	case V4L2_PIX_FMT_Y212:		descr = "12-bit YUYV Packed"; break;
- 	case V4L2_PIX_FMT_Y216:		descr = "16-bit YUYV Packed"; break;
-+	case V4L2_AUDIO_FMT_S8:		descr = "8-bit Signed"; break;
-+	case V4L2_AUDIO_FMT_S16_LE:	descr = "16-bit Signed LE"; break;
-+	case V4L2_AUDIO_FMT_U16_LE:		descr = "16-bit Unsigned LE"; break;
-+	case V4L2_AUDIO_FMT_S24_LE:		descr = "24(32)-bit Signed LE"; break;
-+	case V4L2_AUDIO_FMT_U24_LE:		descr = "24(32)-bit Unsigned LE"; break;
-+	case V4L2_AUDIO_FMT_S32_LE:		descr = "32-bit Signed LE"; break;
-+	case V4L2_AUDIO_FMT_U32_LE:		descr = "32-bit Unsigned LE"; break;
-+	case V4L2_AUDIO_FMT_FLOAT_LE:		descr = "32-bit Float LE"; break;
-+	case V4L2_AUDIO_FMT_IEC958_SUBFRAME_LE:	descr = "32-bit IEC958 LE"; break;
-+	case V4L2_AUDIO_FMT_S24_3LE:		descr = "24(24)-bit Signed LE"; break;
-+	case V4L2_AUDIO_FMT_U24_3LE:		descr = "24(24)-bit Unsigned LE"; break;
-+	case V4L2_AUDIO_FMT_S20_3LE:		descr = "20(24)-bit Signed LE"; break;
-+	case V4L2_AUDIO_FMT_U20_3LE:		descr = "20(24)-bit Unsigned LE"; break;
++``V4L2_CID_M2M_AUDIO_CLASS (class)``
++    The Audio M2M class descriptor. Calling
++    :ref:`VIDIOC_QUERYCTRL` for this control will
++    return a description of this control class.
+diff --git a/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst b/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
+index f9f73530a6be..e8475f9fd2cf 100644
+--- a/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
++++ b/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
+@@ -480,6 +480,10 @@ still cause this situation.
+       - 0xa50000
+       - The class containing colorimetry controls. These controls are
+ 	described in :ref:`colorimetry-controls`.
++    * - ``V4L2_CTRL_CLASS_M2M_AUDIO``
++      - 0xa60000
++      - The class containing audio m2m controls. These controls are
++	described in :ref:`audiom2m-controls`.
  
+ Return Value
+ ============
+diff --git a/drivers/media/v4l2-core/v4l2-ctrls-defs.c b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+index 8696eb1cdd61..2a85ea3dc92f 100644
+--- a/drivers/media/v4l2-core/v4l2-ctrls-defs.c
++++ b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+@@ -1242,6 +1242,9 @@ const char *v4l2_ctrl_get_name(u32 id)
+ 	case V4L2_CID_COLORIMETRY_CLASS:	return "Colorimetry Controls";
+ 	case V4L2_CID_COLORIMETRY_HDR10_CLL_INFO:		return "HDR10 Content Light Info";
+ 	case V4L2_CID_COLORIMETRY_HDR10_MASTERING_DISPLAY:	return "HDR10 Mastering Display";
++
++	/* Audio M2M controls */
++	case V4L2_CID_M2M_AUDIO_CLASS:  return "Audio M2M Controls";
  	default:
- 		/* Compressed formats */
-diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
-index e9958b9c9b06..86761910bda9 100644
---- a/include/uapi/linux/videodev2.h
-+++ b/include/uapi/linux/videodev2.h
-@@ -843,6 +843,29 @@ struct v4l2_pix_format {
- #define V4L2_META_FMT_RK_ISP1_PARAMS	v4l2_fourcc('R', 'K', '1', 'P') /* Rockchip ISP1 3A Parameters */
- #define V4L2_META_FMT_RK_ISP1_STAT_3A	v4l2_fourcc('R', 'K', '1', 'S') /* Rockchip ISP1 3A Statistics */
+ 		return NULL;
+ 	}
+@@ -1451,6 +1454,7 @@ void v4l2_ctrl_fill(u32 id, const char **name, enum v4l2_ctrl_type *type,
+ 	case V4L2_CID_DETECT_CLASS:
+ 	case V4L2_CID_CODEC_STATELESS_CLASS:
+ 	case V4L2_CID_COLORIMETRY_CLASS:
++	case V4L2_CID_M2M_AUDIO_CLASS:
+ 		*type = V4L2_CTRL_TYPE_CTRL_CLASS;
+ 		/* You can neither read nor write these */
+ 		*flags |= V4L2_CTRL_FLAG_READ_ONLY | V4L2_CTRL_FLAG_WRITE_ONLY;
+diff --git a/include/uapi/linux/v4l2-controls.h b/include/uapi/linux/v4l2-controls.h
+index 68db66d4aae8..7d318065a33d 100644
+--- a/include/uapi/linux/v4l2-controls.h
++++ b/include/uapi/linux/v4l2-controls.h
+@@ -30,6 +30,7 @@
+ #define V4L2_CTRL_CLASS_DETECT		0x00a30000	/* Detection controls */
+ #define V4L2_CTRL_CLASS_CODEC_STATELESS 0x00a40000	/* Stateless codecs controls */
+ #define V4L2_CTRL_CLASS_COLORIMETRY	0x00a50000	/* Colorimetry controls */
++#define V4L2_CTRL_CLASS_M2M_AUDIO	0x00a60000	/* Audio M2M controls */
  
-+/*
-+ * Audio-data formats
-+ * All these audio formats use a fourcc starting with 'AU'
-+ * followed by the SNDRV_PCM_FORMAT_ value from asound.h.
-+ */
-+#define V4L2_AUDIO_FMT_S8			v4l2_fourcc('A', 'U', '0', '0')
-+#define V4L2_AUDIO_FMT_S16_LE			v4l2_fourcc('A', 'U', '0', '2')
-+#define V4L2_AUDIO_FMT_U16_LE			v4l2_fourcc('A', 'U', '0', '4')
-+#define V4L2_AUDIO_FMT_S24_LE			v4l2_fourcc('A', 'U', '0', '6')
-+#define V4L2_AUDIO_FMT_U24_LE			v4l2_fourcc('A', 'U', '0', '8')
-+#define V4L2_AUDIO_FMT_S32_LE			v4l2_fourcc('A', 'U', '1', '0')
-+#define V4L2_AUDIO_FMT_U32_LE			v4l2_fourcc('A', 'U', '1', '2')
-+#define V4L2_AUDIO_FMT_FLOAT_LE			v4l2_fourcc('A', 'U', '1', '4')
-+#define V4L2_AUDIO_FMT_IEC958_SUBFRAME_LE	v4l2_fourcc('A', 'U', '1', '8')
-+#define V4L2_AUDIO_FMT_S24_3LE			v4l2_fourcc('A', 'U', '3', '2')
-+#define V4L2_AUDIO_FMT_U24_3LE			v4l2_fourcc('A', 'U', '3', '4')
-+#define V4L2_AUDIO_FMT_S20_3LE			v4l2_fourcc('A', 'U', '3', '6')
-+#define V4L2_AUDIO_FMT_U20_3LE			v4l2_fourcc('A', 'U', '3', '8')
-+
-+#define v4l2_fourcc_to_audfmt(fourcc)	\
-+	(__force snd_pcm_format_t)(((((fourcc) >> 16) & 0xff) - '0') * 10  \
-+				   + ((((fourcc) >> 24) & 0xff) - '0'))
-+
- /* priv field value to indicates that subsequent fields are valid. */
- #define V4L2_PIX_FMT_PRIV_MAGIC		0xfeedcafe
+ /* User-class control IDs */
  
+@@ -3485,6 +3486,9 @@ struct v4l2_ctrl_av1_film_grain {
+ 	__u8 reserved[4];
+ };
+ 
++#define V4L2_CID_M2M_AUDIO_CLASS_BASE  (V4L2_CTRL_CLASS_M2M_AUDIO | 0x900)
++#define V4L2_CID_M2M_AUDIO_CLASS       (V4L2_CTRL_CLASS_M2M_AUDIO | 1)
++
+ /* MPEG-compression definitions kept for backwards compatibility */
+ #ifndef __KERNEL__
+ #define V4L2_CTRL_CLASS_MPEG            V4L2_CTRL_CLASS_CODEC
 -- 
 2.34.1
 
