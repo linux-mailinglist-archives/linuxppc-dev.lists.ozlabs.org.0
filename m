@@ -2,39 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D08D57F2A35
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 11:21:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C19127F2BDE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 12:36:02 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=UzNpmr1v;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SZL5K5stMz3dHj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 21:21:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SZMl44bmrz3dJX
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 22:36:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=srs0=bnfp=hc=xs4all.nl=hverkuil@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=UzNpmr1v;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cloudflare.com (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=ignat@cloudflare.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZL4q70F1z3bsP
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 21:21:15 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 6B8BFCE119E;
-	Tue, 21 Nov 2023 10:21:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A9B6C433C8;
-	Tue, 21 Nov 2023 10:21:09 +0000 (UTC)
-Message-ID: <5256d62c-a501-41c3-bf0d-1e0d451930eb@xs4all.nl>
-Date: Tue, 21 Nov 2023 11:21:08 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZKFs4v8xz3cS3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 20:44:00 +1100 (AEDT)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1cf52e5e07eso17804195ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 01:44:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1700559837; x=1701164637; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zeX6LBtHobyx/lTsQiwAAEvgonswp+TnKesxqxWL11M=;
+        b=UzNpmr1vOEBDe6gSPpxAT2oSKSkTh6tGTzxj1IgE8Z8JDkuVFVd8EqMYhPUwPHxrk1
+         K0yP55pxrdLgEEQTk858fHLDgy3kz/8iPQlfkS9NIOGwj62Ool2IKcNg6/ckiPOuS3Mh
+         pQyQuiq5tijDLE0atJtBKl+1BM3tVAHaCExlGGiuqXYGuToHVhTdXznd14MRvfjjLXgb
+         xfHUM0+yk16zucqjlWc8+C9QXzsBiqWD4dFQLwVHQZnW+bFAUCKVUVumw1E3TygMt+lU
+         O6wJgB2hvwOBcBB8eg6zBMAVfxsf/lPcbjemFWCIeAl47f6MlKdGvyI9y6LaLPItL6Qu
+         HwbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700559837; x=1701164637;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zeX6LBtHobyx/lTsQiwAAEvgonswp+TnKesxqxWL11M=;
+        b=r/21vNuVCY0rQqVw3W/8rCl0cEmT0IkJqXIOrMCex3s0e6xtnsdhJWW79WCOlAZ5EO
+         f0VKH+BvZSIAIG0HiKaz7dJ45ybYINmHfliAm4ChW2J4B4K+Hu1Ir4MC1lGad2qAwQL3
+         NuRILuz8bTTfVl6wN0X8LYEzoSX3d1r9YPBzhi6vyWDCDD9IMBoq7wg0MNbVpMjGDxJO
+         prDM5cZthCZa8rdfBc5quexY/Q5MSPVXvoNks5wUeNYo9iSpX5+4hOEKWU3gTel2cimS
+         otYEjZXFZKg5KcUTX4FadXiIyIIBiwUCGrXkpRwxnipYEbcm8VjT0BQJkepSIN2nDQHK
+         +fDw==
+X-Gm-Message-State: AOJu0YzpDahCISO0w9feOGAaHuA3nj/NHVKm8cuTwBN8M0mtl2pG554c
+	6HKIDWzBnL81rGPxsqW6ClqXCNu4SyNqHJkZji74cg==
+X-Google-Smtp-Source: AGHT+IEcUNpIPdW1r2zWS/VP7g/MssGikpOuJYLZxDVK+bKJDUZATHNuI3hhP6xrYrzf7teMAwRZk2h/7jc/ROLL0jw=
+X-Received: by 2002:a17:90b:4d0a:b0:283:2d65:f231 with SMTP id
+ mw10-20020a17090b4d0a00b002832d65f231mr3047813pjb.22.1700559836764; Tue, 21
+ Nov 2023 01:43:56 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 00/14] Add audio support in v4l2 framework
-Content-Language: en-US
-To: Shengjiu Wang <shengjiu.wang@gmail.com>
-References: <1700552255-5364-1-git-send-email-shengjiu.wang@nxp.com>
- <71ce6d8b-90c2-4ef6-9883-129861dcab02@xs4all.nl>
- <CAA+D8ANvK5O2TXnjM_YqsHE8ycen9jrw_HXL+eJWtwJ_OZXeJA@mail.gmail.com>
-From: Hans Verkuil <hverkuil@xs4all.nl>
-In-Reply-To: <CAA+D8ANvK5O2TXnjM_YqsHE8ycen9jrw_HXL+eJWtwJ_OZXeJA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <CALrw=nHpRQQaQTP_jZfREgrQEMpS8jBF8JQCv4ygqXycE-StaA@mail.gmail.com>
+ <ZVwMzXxWkgonIAfc@MiWiFi-R3L-srv> <CALrw=nG8xsYw7XKyL_VMHtKiaBcQCKvC8UVp-C9-BdeN4A1Daw@mail.gmail.com>
+In-Reply-To: <CALrw=nG8xsYw7XKyL_VMHtKiaBcQCKvC8UVp-C9-BdeN4A1Daw@mail.gmail.com>
+From: Ignat Korchagin <ignat@cloudflare.com>
+Date: Tue, 21 Nov 2023 09:43:45 +0000
+Message-ID: <CALrw=nH-vcROja2W23rUKEEZMZhxsQiNB4P_ZZQ-XhPHAJGxrg@mail.gmail.com>
+Subject: Re: Potential config regression after 89cde455 ("kexec: consolidate
+ kexec and crash options into kernel/Kconfig.kexec")
+To: Baoquan He <bhe@redhat.com>, eric_devolder@yahoo.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailman-Approved-At: Tue, 21 Nov 2023 22:35:16 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,277 +78,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, nicoleotsuka@gmail.com, linuxppc-dev@lists.ozlabs.org, broonie@kernel.org, sakari.ailus@iki.fi, perex@perex.cz, mchehab@kernel.org, festevam@gmail.com, m.szyprowski@samsung.com
+Cc: chenhuacai@kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, catalin.marinas@arm.com, linus.walleij@linaro.org, dave.hansen@linux.intel.com, linux-mips@vger.kernel.org, James Bottomley <James.Bottomley@hansenpartnership.com>, dalias@libc.org, hpa@zytor.com, linux-riscv@lists.infradead.org, will@kernel.org, kernel@xen0n.name, tsi@tuyoix.net, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, rmk+kernel@armlinux.org.uk, paulmck@kernel.org, ysato@users.sourceforge.jp, kernel-team <kernel-team@cloudflare.com>, deller@gmx.de, x86@kernel.org, linux@armlinux.org.uk, paul.walmsley@sifive.com, Ingo Molnar <mingo@redhat.com>, geert@linux-m68k.org, hbathini@linux.ibm.com, samitolvanen@google.com, ojeda@kernel.org, juerg.haefliger@canonical.com, borntraeger@linux.ibm.com, frederic@kernel.org, arnd@arndb.de, mhiramat@kernel.org, Ard Biesheuvel <ardb@kernel.org>, thunder.leizhen@huawei.com, aou@eecs.berkeley.edu, keescook@chromium.org, go
+ r@linux.ibm.com, anshuman.khandual@arm.com, hca@linux.ibm.com, xin3.li@intel.com, npiggin@gmail.com, konrad.wilk@oracle.com, linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, glaubitz@physik.fu-berlin.de, Thomas Gleixner <tglx@linutronix.de>, ziy@nvidia.com, linux-arm-kernel@lists.infradead.org, boris.ostrovsky@oracle.com, tsbogend@alpha.franken.de, sebastian.reichel@collabora.com, linux-parisc@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>, kirill.shutemov@linux.intel.com, ndesaulniers@google.com, linux-kernel <linux-kernel@vger.kernel.org>, sourabhjain@linux.ibm.com, palmer@dabbelt.com, svens@linux.ibm.com, tj@kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, masahiroy@kernel.org, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/21/23 11:03, Shengjiu Wang wrote:
-> On Tue, Nov 21, 2023 at 5:22 PM Hans Verkuil <hverkuil@xs4all.nl> wrote:
->>
->> On 21/11/2023 08:37, Shengjiu Wang wrote:
->>> Audio signal processing also has the requirement for memory to
->>> memory similar as Video.
->>>
->>> This asrc memory to memory (memory ->asrc->memory) case is a non
->>> real time use case.
->>>
->>> User fills the input buffer to the asrc module, after conversion, then asrc
->>> sends back the output buffer to user. So it is not a traditional ALSA playback
->>> and capture case.
->>>
->>> It is a specific use case,  there is no reference in current kernel.
->>> v4l2 memory to memory is the closed implementation,  v4l2 current
->>> support video, image, radio, tuner, touch devices, so it is not
->>> complicated to add support for this specific audio case.
->>>
->>> Because we had implemented the "memory -> asrc ->i2s device-> codec"
->>> use case in ALSA.  Now the "memory->asrc->memory" needs
->>> to reuse the code in asrc driver, so the first 3 patches is for refining
->>> the code to make it can be shared by the "memory->asrc->memory"
->>> driver.
->>>
->>> The main change is in the v4l2 side, A /dev/vl4-audioX will be created,
->>> user applications only use the ioctl of v4l2 framework.
->>>
->>> Other change is to add memory to memory support for two kinds of i.MX ASRC
->>> module.
->>>
->>> changes in v10
->>> - remove FIXED_POINT type
->>> - change code base on media: v4l2-ctrls: add support for fraction_bits
->>> - fix issue reported by kernel test robot
->>> - remove module_alias
->>
->> Note that I still need a patch for vivid adding a fixed point test control.
->>
->> I think I want two controls: one INTEGER Q16 and one INTEGER64 Q63 (a nice
->> corner case).
->>
-> 
-> Not sure if we can do like this:
-> 
-> diff --git a/drivers/media/test-drivers/vivid/vivid-core.h
-> b/drivers/media/test-drivers/vivid/vivid-core.h
-> index cfb8e66083f6..def8cf6c30c1 100644
-> --- a/drivers/media/test-drivers/vivid/vivid-core.h
-> +++ b/drivers/media/test-drivers/vivid/vivid-core.h
-> @@ -222,6 +222,8 @@ struct vivid_dev {
->         struct v4l2_ctrl                *boolean;
->         struct v4l2_ctrl                *int32;
->         struct v4l2_ctrl                *int64;
-> +       struct v4l2_ctrl                *int32Q16;
+On Tue, Nov 21, 2023 at 7:53=E2=80=AFAM Ignat Korchagin <ignat@cloudflare.c=
+om> wrote:
+>
+> On Tue, Nov 21, 2023 at 1:50=E2=80=AFAM Baoquan He <bhe@redhat.com> wrote=
+:
+> >
+> > Eric DeVolder's Oracle mail address is not available anymore, add his
+> > current mail address he told me.
+>
+> Thank you!
+>
+> > On 11/20/23 at 10:52pm, Ignat Korchagin wrote:
+> > > Good day!
+> > >
+> > > We have recently started to evaluate Linux 6.6 and noticed that we
+> > > cannot disable CONFIG_KEXEC anymore, but keep CONFIG_CRASH_DUMP
+> > > enabled. It seems to be related to commit 89cde455 ("kexec:
+> > > consolidate kexec and crash options into kernel/Kconfig.kexec"), wher=
+e
+> > > a CONFIG_KEXEC dependency was added to CONFIG_CRASH_DUMP.
+> > >
+> > > In our current kernel (Linux 6.1) we only enable CONFIG_KEXEC_FILE
+> > > with enforced signature check to support the kernel crash dumping
+> > > functionality and would like to keep CONFIG_KEXEC disabled for
+> > > security reasons [1].
+> > >
+> > > I was reading the long commit message, but the reason for adding
+> > > CONFIG_KEXEC as a dependency for CONFIG_CRASH_DUMP evaded me. And I
+> > > believe from the implementation perspective CONFIG_KEXEC_FILE should
+> > > suffice here (as we successfully used it for crashdumps on Linux 6.1)=
+.
+> > >
+> > > Is there a reason for adding this dependency or is it just an
+> > > oversight? Would some solution of requiring either CONFIG_KEXEC or
+> > > CONFIG_KEXEC_FILE work here?
+> >
+> > I searched the patch history, found Eric didn't add the dependency on
+> > CONFIG_KEXEC at the beginning. Later a linux-next building failure with
+> > randconfig was reported, in there CONFIG_CRASH_DUMP enabled, while
+> > CONFIG_KEXEC is disabled. Finally Eric added the KEXEC dependency for
+> > CRASH_DUMP. Please see below link for more details:
+> >
+> > https://lore.kernel.org/all/3e8eecd1-a277-2cfb-690e-5de2eb7b988e@oracle=
+.com/T/#u
+>
+> Thank you for digging this up. However I'm still confused, because
+> this is exactly how we configure Linux 6.1 (although we do have
+> CONFIG_KEXEC_FILE enabled) and we don't have any problems. I believe
+> we did not investigate this issue properly.
 
-I would call this int32_q16. This to avoid checkpatch CamelCase warnings.
+I did some preliminary investigation for this. If I patch out the
+dependency on CONFIG_KEXEC the kernel builds just fine for x86
+(without CONFIG_CRASH_HOTPLUG - which is probably another issue) - so
+this was the previous behaviour. I can see that the reported error is
+for arm architecture and was able to reproduce it with a simple cross
+compiler in Debian. However, I think it is still somehow related to
+this patchset as the previous kernels (up to 6.5) build fine with just
+CONFIG_CRASH_DUMP and without CONFIG_KEXEC for arm as well. So even
+for arm it was introduced in 6.6.
 
-> +       struct v4l2_ctrl                *int64Q63;
+> > And besides, the newly added CONFIG_CRASH_HOTPLUG also needs
+> > CONFIG_KEXEC if the elfcorehdr is allowed to be manipulated when
+> > cpu/memory hotplug hapened.
+>
+> This still feels like a regression to me: any crash dump support
+> should be independent of KEXEC syscalls being present. While probably
+> the common case (including us) that the crashing kernel and recovery
+> kernel are the same, they don't have to be. We need kexec syscall in
+> the crashing kernel, but crashdump support in the recovery kernel (but
+> the recovery kernel not having the kexec syscalls should be totally
+> fine). If we do require some code definitions from kexec - at most we
+> should put them under CONFIG_KEXEC_CORE.
+>
+> > Thanks
+> > Baoquan
+> >
 
-ditto
-
->         struct v4l2_ctrl                *menu;
->         struct v4l2_ctrl                *string;
->         struct v4l2_ctrl                *bitmask;
-> diff --git a/drivers/media/test-drivers/vivid/vivid-ctrls.c
-> b/drivers/media/test-drivers/vivid/vivid-ctrls.c
-> index f2b20e25a7a4..c912b6776775 100644
-> --- a/drivers/media/test-drivers/vivid/vivid-ctrls.c
-> +++ b/drivers/media/test-drivers/vivid/vivid-ctrls.c
-> @@ -182,6 +182,28 @@ static const struct v4l2_ctrl_config vivid_ctrl_int64 = {
->         .step = 1,
->  };
-> 
-> +static const struct v4l2_ctrl_config vivid_ctrl_int32Q16 = {
-> +       .ops = &vivid_user_gen_ctrl_ops,
-> +       .id = VIVID_CID_INTEGER,
-
-You need to add new CIDs. E.g. VIVID_CID_INT_Q4_16.
-
-> +       .name = "Integer 32 Bits Q16",
-
-Q4.16
-
-> +       .type = V4L2_CTRL_TYPE_INTEGER,
-> +       .min = 0xffffffff80000000ULL,
-
-Let's make this a Q4.16 integer.
-
-I think it is worth adding this to the v4l2-ctrls.h header:
-
-#define v4l2_ctrl_fp_compose(i, f, fraction_bits) \
-	(((i) << fraction_bits) + (f))
-
-Then you can do:
-
-	.min = v4l2_ctrl_fp_compose(-16, 0),
-	.max = v4l2_ctrl_fp_compose(15, 0xffff),
-
-> +       .max = 0x7fffffff,
-> +       .step = 1,
-> +       .fraction_bits = 16,
-> +};
-> +
-> +static const struct v4l2_ctrl_config vivid_ctrl_int64Q63 = {
-> +       .ops = &vivid_user_gen_ctrl_ops,
-> +       .id = VIVID_CID_INTEGER64,
-> +       .name = "Integer 64 Bits Q63",
-> +       .type = V4L2_CTRL_TYPE_INTEGER64,
-> +       .min = 0x8000000000000000ULL,
-> +       .max = 0x7fffffffffffffffLL,
-
-	.min = v4l2_ctrl_fp_compose(-1, 0),
-	.max = v4l2_ctrl_fp_compose(0, LLONG_MAX),
-
-> +       .step = 1,
-> +       .fraction_bits = 63,
-> +};
-
-Looks good otherwise.
-
-The purpose is that v4l2-compliance can test such control types using a
-hw emulation driver like vivid.
-
-Regards,
-
-	Hans
-
-> +
->  static const struct v4l2_ctrl_config vivid_ctrl_u32_array = {
->         .ops = &vivid_user_gen_ctrl_ops,
->         .id = VIVID_CID_U32_ARRAY,
-> @@ -1670,6 +1692,8 @@ int vivid_create_controls(struct vivid_dev *dev,
-> bool show_ccs_cap,
->         dev->button = v4l2_ctrl_new_custom(hdl_user_gen,
-> &vivid_ctrl_button, NULL);
->         dev->int32 = v4l2_ctrl_new_custom(hdl_user_gen,
-> &vivid_ctrl_int32, NULL);
->         dev->int64 = v4l2_ctrl_new_custom(hdl_user_gen,
-> &vivid_ctrl_int64, NULL);
-> +       dev->int32Q16 = v4l2_ctrl_new_custom(hdl_user_gen,
-> &vivid_ctrl_int32Q16, NULL);
-> +       dev->int64Q63 = v4l2_ctrl_new_custom(hdl_user_gen,
-> &vivid_ctrl_int64Q63, NULL);
->         dev->boolean = v4l2_ctrl_new_custom(hdl_user_gen,
-> &vivid_ctrl_boolean, NULL);
->         dev->menu = v4l2_ctrl_new_custom(hdl_user_gen, &vivid_ctrl_menu, NULL);
->         dev->string = v4l2_ctrl_new_custom(hdl_user_gen,
-> &vivid_ctrl_string, NULL);
-> (END)
-> 
-> 
->> Regards,
->>
->>         Hans
->>
->>>
->>> changes in v9:
->>> - add MEDIA_ENT_F_PROC_AUDIO_RESAMPLER.
->>> - add MEDIA_INTF_T_V4L_AUDIO
->>> - add media controller support
->>> - refine the vim2m-audio to support 8k<->16k conversion.
->>>
->>> changes in v8:
->>> - refine V4L2_CAP_AUDIO_M2M to be 0x00000008
->>> - update doc for FIXED_POINT
->>> - address comments for imx-asrc
->>>
->>> changes in v7:
->>> - add acked-by from Mark
->>> - separate commit for fixed point, m2m audio class, audio rate controls
->>> - use INTEGER_MENU for rate,  FIXED_POINT for rate offset
->>> - remove used fmts
->>> - address other comments for Hans
->>>
->>> changes in v6:
->>> - use m2m_prepare/m2m_unprepare/m2m_start/m2m_stop to replace
->>>   m2m_start_part_one/m2m_stop_part_one, m2m_start_part_two/m2m_stop_part_two.
->>> - change V4L2_CTRL_TYPE_ASRC_RATE to V4L2_CTRL_TYPE_FIXED_POINT
->>> - fix warning by kernel test rebot
->>> - remove some unused format V4L2_AUDIO_FMT_XX
->>> - Get SNDRV_PCM_FORMAT from V4L2_AUDIO_FMT in driver.
->>> - rename audm2m to viaudm2m.
->>>
->>> changes in v5:
->>> - remove V4L2_AUDIO_FMT_LPCM
->>> - define audio pixel format like V4L2_AUDIO_FMT_S8...
->>> - remove rate and format in struct v4l2_audio_format.
->>> - Add V4L2_CID_ASRC_SOURCE_RATE and V4L2_CID_ASRC_DEST_RATE controls
->>> - updata document accordingly.
->>>
->>> changes in v4:
->>> - update document style
->>> - separate V4L2_AUDIO_FMT_LPCM and V4L2_CAP_AUDIO_M2M in separate commit
->>>
->>> changes in v3:
->>> - Modify documents for adding audio m2m support
->>> - Add audio virtual m2m driver
->>> - Defined V4L2_AUDIO_FMT_LPCM format type for audio.
->>> - Defined V4L2_CAP_AUDIO_M2M capability type for audio m2m case.
->>> - with modification in v4l-utils, pass v4l2-compliance test.
->>>
->>> changes in v2:
->>> - decouple the implementation in v4l2 and ALSA
->>> - implement the memory to memory driver as a platfrom driver
->>>   and move it to driver/media
->>> - move fsl_asrc_common.h to include/sound folder
->>>
->>> Shengjiu Wang (14):
->>>   ASoC: fsl_asrc: define functions for memory to memory usage
->>>   ASoC: fsl_easrc: define functions for memory to memory usage
->>>   ASoC: fsl_asrc: move fsl_asrc_common.h to include/sound
->>>   ASoC: fsl_asrc: register m2m platform device
->>>   ASoC: fsl_easrc: register m2m platform device
->>>   media: uapi: Add V4L2_CAP_AUDIO_M2M capability flag
->>>   media: v4l2: Add audio capture and output support
->>>   media: uapi: Define audio sample format fourcc type
->>>   media: uapi: Add V4L2_CTRL_CLASS_M2M_AUDIO
->>>   media: uapi: Add audio rate controls support
->>>   media: uapi: Declare interface types for Audio
->>>   media: uapi: Add an entity type for audio resampler
->>>   media: imx-asrc: Add memory to memory driver
->>>   media: vim2m-audio: add virtual driver for audio memory to memory
->>>
->>>  .../media/mediactl/media-types.rst            |   11 +
->>>  .../userspace-api/media/v4l/buffer.rst        |    6 +
->>>  .../userspace-api/media/v4l/common.rst        |    1 +
->>>  .../media/v4l/dev-audio-mem2mem.rst           |   71 +
->>>  .../userspace-api/media/v4l/devices.rst       |    1 +
->>>  .../media/v4l/ext-ctrls-audio-m2m.rst         |   41 +
->>>  .../userspace-api/media/v4l/pixfmt-audio.rst  |   87 ++
->>>  .../userspace-api/media/v4l/pixfmt.rst        |    1 +
->>>  .../media/v4l/vidioc-enum-fmt.rst             |    2 +
->>>  .../media/v4l/vidioc-g-ext-ctrls.rst          |    4 +
->>>  .../userspace-api/media/v4l/vidioc-g-fmt.rst  |    4 +
->>>  .../media/v4l/vidioc-querycap.rst             |    3 +
->>>  .../media/videodev2.h.rst.exceptions          |    3 +
->>>  .../media/common/videobuf2/videobuf2-v4l2.c   |    4 +
->>>  drivers/media/platform/nxp/Kconfig            |   13 +
->>>  drivers/media/platform/nxp/Makefile           |    1 +
->>>  drivers/media/platform/nxp/imx-asrc.c         | 1264 +++++++++++++++++
->>>  drivers/media/test-drivers/Kconfig            |   11 +
->>>  drivers/media/test-drivers/Makefile           |    1 +
->>>  drivers/media/test-drivers/vim2m-audio.c      |  799 +++++++++++
->>>  drivers/media/v4l2-core/v4l2-compat-ioctl32.c |    9 +
->>>  drivers/media/v4l2-core/v4l2-ctrls-defs.c     |   10 +
->>>  drivers/media/v4l2-core/v4l2-dev.c            |   21 +
->>>  drivers/media/v4l2-core/v4l2-ioctl.c          |   66 +
->>>  drivers/media/v4l2-core/v4l2-mem2mem.c        |   13 +-
->>>  include/media/v4l2-dev.h                      |    2 +
->>>  include/media/v4l2-ioctl.h                    |   34 +
->>>  .../fsl => include/sound}/fsl_asrc_common.h   |   60 +
->>>  include/uapi/linux/media.h                    |    2 +
->>>  include/uapi/linux/v4l2-controls.h            |    9 +
->>>  include/uapi/linux/videodev2.h                |   41 +
->>>  sound/soc/fsl/fsl_asrc.c                      |  144 ++
->>>  sound/soc/fsl/fsl_asrc.h                      |    4 +-
->>>  sound/soc/fsl/fsl_asrc_dma.c                  |    2 +-
->>>  sound/soc/fsl/fsl_easrc.c                     |  233 +++
->>>  sound/soc/fsl/fsl_easrc.h                     |    6 +-
->>>  36 files changed, 2977 insertions(+), 7 deletions(-)
->>>  create mode 100644 Documentation/userspace-api/media/v4l/dev-audio-mem2mem.rst
->>>  create mode 100644 Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
->>>  create mode 100644 Documentation/userspace-api/media/v4l/pixfmt-audio.rst
->>>  create mode 100644 drivers/media/platform/nxp/imx-asrc.c
->>>  create mode 100644 drivers/media/test-drivers/vim2m-audio.c
->>>  rename {sound/soc/fsl => include/sound}/fsl_asrc_common.h (60%)
->>>
->>
-
+Ignat
