@@ -1,73 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 470E77F39AA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 23:57:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C3187F3A50
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 00:36:51 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=G8bOLuu0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=L/2XfFWb;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SZfsw0qwXz3dBd
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 09:57:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SZgkn07dxz3clH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 10:36:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=G8bOLuu0;
+	dkim=pass (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=L/2XfFWb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=namhyung@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sifive.com (client-ip=2607:f8b0:4864:20::12b; helo=mail-il1-x12b.google.com; envelope-from=samuel.holland@sifive.com; receiver=lists.ozlabs.org)
+Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZfs40cy0z3c40
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 09:57:09 +1100 (AEDT)
-Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1cc29f39e7aso40274945ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 14:57:09 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZfPH2nhPz3c18
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 09:36:33 +1100 (AEDT)
+Received: by mail-il1-x12b.google.com with SMTP id e9e14a558f8ab-359d796abd6so764705ab.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 14:36:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700607427; x=1701212227; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8cHNQWLeaX3Eaeqr4KDeKVPWKASKTSj+iTYazvJzg+8=;
-        b=G8bOLuu03TBG0EdYk1S3eRVl9+8AgHdbGttDRGeZhOU9REoQQ7TTwgGYKabgNdJ5Aq
-         vnvAFR5XdwduLXiXeBwfF8KdpXRc8qXqNrcuOFvFYXEY2KO7JviDEMh/UYWufBrcRypd
-         NZjpXm+GnFKXJq9zOkA/y2kULdUAkTHi5bgc62aMwjpuA2+qWWb/zTiQZBmOB3KG3pUz
-         N+Lw5R3YhvpUK8yBSZRLdBLuO8hqqy3/BAuVdSjjyjnLr2gxY7dzyrs83wfYBth4mfzL
-         ophHUNNqQ9ndlIdsgJeUoNY9UsbLZo5bRDYj1SBANUpAtb7v84j+KATMo9+v31rrdk6U
-         8/Jg==
+        d=sifive.com; s=google; t=1700606187; x=1701210987; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Czx5VSw2pBO1b75rdOa8rP1Tn4/X67nT2FHShLEAAdk=;
+        b=L/2XfFWb5DbBTi1fxD7CMic3v19CCudXW0pYCQVCylZCxwgbmorcrewARD+My0KQPb
+         l3DG2Kvkq6NQhGAPzm4+xpbe3P29O4dzdjgvNSC8oIDNWmDLcuCWwkMnJ8lJ0z846R0R
+         FozH01nOm6l20Fj/JbDHsybnImUFDGLuQyz4Fe5ROcBFlp9KeNeWhG5tPMyOTGp6CGKI
+         rMAuVPTZd/y6SLYCLDF+13j8Y3QgFRTl7Z/fEhy4oyH7YkAuNPLx3DLZtsOJQuVgREnS
+         gPZEh92HMBT3VSZIVaaN58DGMW2YOMOIidwU7/J3NcbWkgq/JkqHpPUdVkvRTV3agBSA
+         PeFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700607427; x=1701212227;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=8cHNQWLeaX3Eaeqr4KDeKVPWKASKTSj+iTYazvJzg+8=;
-        b=eZNfYIZwR0BIW1r3IAPK7/p8ud5sBRekv0TyjL7nLaMzQ+CJzwL7JzxdwPtS1TQ7Gp
-         gg0syxysVvntQw+qiMcecLtu4ntiVwWosfyh6n/qeMsRmR4vElgwqyRIFQtfWRKMVEa1
-         BlWpfBetaH4U4u0R+Zzu1hLJY47h2XtlmR0FXV6edj/1SYYkmAxKk+HAvqb8IHTFY2W6
-         VrMN++bZmJ2WpFqY+v0EQWBvZVzHpMKjX7dLB/tgQqtnj9TovskD4HLbWwHtKgd5w4i/
-         nPyhvVKzEWcwYfr1izMDkaV2TVsIypqY6thgAjqHmC++/dbq4MF4iqENVwAJqRzDjly+
-         E3Lg==
-X-Gm-Message-State: AOJu0Yzhm5+aIHc1f/SZeKZ4J2q0fLobfg2SVMGewjblUkqX10HmlKY3
-	S+M8D6YkloMUMg5gkR0n46g=
-X-Google-Smtp-Source: AGHT+IEqnRZoF/phD6HSzSdY21h0h7tC1I39JtK6IEk90MbB3dit3i9hvRB+rV+MUJcHWL2zIOUb3w==
-X-Received: by 2002:a17:903:188:b0:1cf:5782:7c74 with SMTP id z8-20020a170903018800b001cf57827c74mr805479plg.7.1700607427036;
-        Tue, 21 Nov 2023 14:57:07 -0800 (PST)
-Received: from bangji.hsd1.ca.comcast.net ([2601:647:6780:42e0:7377:923f:1ff3:266d])
-        by smtp.gmail.com with ESMTPSA id m12-20020a1709026bcc00b001cc47c1c29csm8413189plt.84.2023.11.21.14.57.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Nov 2023 14:57:06 -0800 (PST)
-From: Namhyung Kim <namhyung@kernel.org>
-To: Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>
-Subject: [PATCH 12/14] tools/perf: Update tools's copy of powerpc syscall table
-Date: Tue, 21 Nov 2023 14:56:47 -0800
-Message-ID: <20231121225650.390246-12-namhyung@kernel.org>
-X-Mailer: git-send-email 2.43.0.rc1.413.gea7ed67945-goog
-In-Reply-To: <20231121225650.390246-1-namhyung@kernel.org>
-References: <20231121225650.390246-1-namhyung@kernel.org>
+        d=1e100.net; s=20230601; t=1700606187; x=1701210987;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Czx5VSw2pBO1b75rdOa8rP1Tn4/X67nT2FHShLEAAdk=;
+        b=Y+YNJzOvW/sHxHvwNPQI03/wdHPSkm5FukxVSkGkLDobrEQ7zrvAz9gtV7F+Xy7pFF
+         Jiqe/LdytFVqcAa8jcbtU+ReA5uCjoxLl9EDVBmhBRSrsvDarzQgrdllJRlXLikOmCui
+         I3OHg0fBoUX0wnlnR0ba72BpAHykj/2xX8IsLsbzc5DI8jsLcMHrulDuf10jkIodGhf2
+         P/WGuP7/rWAkl84+GHJrnlKjHCzYhENPG0jdY8/J5Rbsd4TrUaS1HcV42axD38RODRoA
+         wjM+xK9Mih6FN1Oyy+lEpiD6ckSucuNL7XL2SnRhrKcy3h4pAfcX5vtHM5OgpWR/jyzy
+         8uYA==
+X-Gm-Message-State: AOJu0YzEya5In4WDRCF3rIg/nqLUKVsVd8+gCFzc1fZA4vXBC3HjqbeY
+	mghu7f6GiMI6StoLiLhvYV66Bw==
+X-Google-Smtp-Source: AGHT+IGfRVAH/8cvT9hmm4Ha5Eu0JN6NTmiZ2ExPb4m6TDcyvIXswopr0JkqwntNsAW38gNPKGfKow==
+X-Received: by 2002:a92:cac2:0:b0:357:f72d:ad06 with SMTP id m2-20020a92cac2000000b00357f72dad06mr285038ilq.2.1700606186826;
+        Tue, 21 Nov 2023 14:36:26 -0800 (PST)
+Received: from ?IPV6:2605:a601:adae:4500:3d43:c8e2:1496:e620? ([2605:a601:adae:4500:3d43:c8e2:1496:e620])
+        by smtp.gmail.com with ESMTPSA id 8-20020a056e020ca800b0034aa175c9c3sm3434455ilg.87.2023.11.21.14.36.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Nov 2023 14:36:26 -0800 (PST)
+Message-ID: <70ff59ea-378c-4d53-899a-eafffcad22fd@sifive.com>
+Date: Tue, 21 Nov 2023 16:36:25 -0600
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/5] RISC-V: Add stubs for
+ sbi_console_putchar/getchar()
+Content-Language: en-US
+To: Anup Patel <apatel@ventanamicro.com>
+References: <20231118033859.726692-1-apatel@ventanamicro.com>
+ <20231118033859.726692-2-apatel@ventanamicro.com>
+From: Samuel Holland <samuel.holland@sifive.com>
+In-Reply-To: <20231118033859.726692-2-apatel@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailman-Approved-At: Wed, 22 Nov 2023 10:36:05 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,74 +83,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, Peter Zijlstra <peterz@infradead.org>, Adrian Hunter <adrian.hunter@intel.com>, Nicholas Piggin <npiggin@gmail.com>, LKML <linux-kernel@vger.kernel.org>, linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, Conor Dooley <conor@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-serial@vger.kernel.org, Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Andrew Jones <ajones@ventanamicro.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tldr; Just FYI, I'm carrying this on the perf tools tree.
+Hi Anup,
 
-Full explanation:
+On 2023-11-17 9:38 PM, Anup Patel wrote:
+> The functions sbi_console_putchar() and sbi_console_getchar() are
+> not defined when CONFIG_RISCV_SBI_V01 is disabled so let us add
+> stub of these functions to avoid "#ifdef" on user side.
+> 
+> Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+> ---
+>  arch/riscv/include/asm/sbi.h | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/arch/riscv/include/asm/sbi.h b/arch/riscv/include/asm/sbi.h
+> index 0892f4421bc4..66f3933c14f6 100644
+> --- a/arch/riscv/include/asm/sbi.h
+> +++ b/arch/riscv/include/asm/sbi.h
+> @@ -271,8 +271,13 @@ struct sbiret sbi_ecall(int ext, int fid, unsigned long arg0,
+>  			unsigned long arg3, unsigned long arg4,
+>  			unsigned long arg5);
+>  
+> +#ifdef CONFIG_RISCV_SBI_V01
+>  void sbi_console_putchar(int ch);
+>  int sbi_console_getchar(void);
+> +#else
+> +static inline void sbi_console_putchar(int ch) { }
+> +static inline int sbi_console_getchar(void) { return -ENOENT; }
 
-There used to be no copies, with tools/ code using kernel headers
-directly. From time to time tools/perf/ broke due to legitimate kernel
-hacking. At some point Linus complained about such direct usage. Then we
-adopted the current model.
+"The SBI call returns the byte on success, or -1 for failure."
 
-The way these headers are used in perf are not restricted to just
-including them to compile something.
+So -ENOENT is not really an appropriate value to return here.
 
-There are sometimes used in scripts that convert defines into string
-tables, etc, so some change may break one of these scripts, or new MSRs
-may use some different #define pattern, etc.
+Regards,
+Samuel
 
-E.g.:
-
-  $ ls -1 tools/perf/trace/beauty/*.sh | head -5
-  tools/perf/trace/beauty/arch_errno_names.sh
-  tools/perf/trace/beauty/drm_ioctl.sh
-  tools/perf/trace/beauty/fadvise.sh
-  tools/perf/trace/beauty/fsconfig.sh
-  tools/perf/trace/beauty/fsmount.sh
-  $
-  $ tools/perf/trace/beauty/fadvise.sh
-  static const char *fadvise_advices[] = {
-        [0] = "NORMAL",
-        [1] = "RANDOM",
-        [2] = "SEQUENTIAL",
-        [3] = "WILLNEED",
-        [4] = "DONTNEED",
-        [5] = "NOREUSE",
-  };
-  $
-
-The tools/perf/check-headers.sh script, part of the tools/ build
-process, points out changes in the original files.
-
-So its important not to touch the copies in tools/ when doing changes in
-the original kernel headers, that will be done later, when
-check-headers.sh inform about the change to the perf tools hackers.
-
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
----
- tools/perf/arch/powerpc/entry/syscalls/syscall.tbl | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl b/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
-index e1412519b4ad..7fab411378f2 100644
---- a/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
-+++ b/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
-@@ -539,3 +539,7 @@
- 450 	nospu	set_mempolicy_home_node		sys_set_mempolicy_home_node
- 451	common	cachestat			sys_cachestat
- 452	common	fchmodat2			sys_fchmodat2
-+453	common	map_shadow_stack		sys_ni_syscall
-+454	common	futex_wake			sys_futex_wake
-+455	common	futex_wait			sys_futex_wait
-+456	common	futex_requeue			sys_futex_requeue
--- 
-2.43.0.rc1.413.gea7ed67945-goog
+> +#endif
+>  long sbi_get_mvendorid(void);
+>  long sbi_get_marchid(void);
+>  long sbi_get_mimpid(void);
 
