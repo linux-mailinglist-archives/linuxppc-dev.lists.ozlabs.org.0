@@ -1,79 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BCF17F2BE1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 12:36:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 030FC7F2E2D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 14:20:22 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BrK97EPT;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BrK97EPT;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Wfuz47fA;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SZMm33JYtz3dTl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 22:36:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SZQ3R6NqFz3d9q
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 00:20:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BrK97EPT;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BrK97EPT;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Wfuz47fA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZKXm6C6Sz3cRJ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 20:56:55 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1700560611;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fPhHnmk39Y9ZPUQmNMZM/ZG0TQ3kydRNczl6JxMjmic=;
-	b=BrK97EPTcoWOIsSXhxD+pyl7+HZCnNyf8nTy31PodCOw8TujnJ9JNT/DRqpSgsWTBb0k/Z
-	7P5TB7Y7TKV5ORLyEnZA4w261ZgHufN3I/xyJu6eVRrHH6yYeg6sKfn/TV/C8qe55kImwU
-	iBhNTZqe7V707c+Lxm2mKS2Gze3F0Pc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1700560611;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fPhHnmk39Y9ZPUQmNMZM/ZG0TQ3kydRNczl6JxMjmic=;
-	b=BrK97EPTcoWOIsSXhxD+pyl7+HZCnNyf8nTy31PodCOw8TujnJ9JNT/DRqpSgsWTBb0k/Z
-	7P5TB7Y7TKV5ORLyEnZA4w261ZgHufN3I/xyJu6eVRrHH6yYeg6sKfn/TV/C8qe55kImwU
-	iBhNTZqe7V707c+Lxm2mKS2Gze3F0Pc=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-642-FAApqMXDNLKIjte47nBJcQ-1; Tue,
- 21 Nov 2023 04:56:47 -0500
-X-MC-Unique: FAApqMXDNLKIjte47nBJcQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C91B73813F30;
-	Tue, 21 Nov 2023 09:56:46 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.97])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id C61FF502A;
-	Tue, 21 Nov 2023 09:56:44 +0000 (UTC)
-Date: Tue, 21 Nov 2023 17:56:42 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Ignat Korchagin <ignat@cloudflare.com>
-Subject: Re: Potential config regression after 89cde455 ("kexec: consolidate
- kexec and crash options into kernel/Kconfig.kexec")
-Message-ID: <ZVx+2lfTckjv/kiq@MiWiFi-R3L-srv>
-References: <CALrw=nHpRQQaQTP_jZfREgrQEMpS8jBF8JQCv4ygqXycE-StaA@mail.gmail.com>
- <ZVwMzXxWkgonIAfc@MiWiFi-R3L-srv>
- <CALrw=nG8xsYw7XKyL_VMHtKiaBcQCKvC8UVp-C9-BdeN4A1Daw@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZQ2b3NnZz3cNQ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 00:19:35 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id BC63FCE1BB6;
+	Tue, 21 Nov 2023 13:19:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83650C433C8;
+	Tue, 21 Nov 2023 13:19:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1700572768;
+	bh=+zbYVpyoX77q+BR+PDZ9yD6AHd5Tt4UDqw9YHNJ+1ls=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Wfuz47fALq7hw0yMEVncCIzhGytK4r0e/+0iRQWb40neV80ynYcputp5Oi1rdiaEY
+	 NxWxVI5jvEvnuFMoYj4ALoq3lFqtfEGpiUDcESwzfQ2ZB5eTiXAO7fwL5xsYbPbozh
+	 eakgvRdPBshW8JiqX7me5wleUmTNlUlpNYpfAw/S8XM4atxe8HPHgzt8bzSBptrEI9
+	 Retz4vuWKxvDwKTaLDrBQwFmH6mOHcDb5SOrho7IpUtfCrBQ+MnYQKf+ftfei7JdG+
+	 jASMQukwtDwiv/SPcKkuOB9ytsB3SMcWG6GwMgfBUnDdaV5ii9WzH6vlweOXcyXcSP
+	 Az4I4lpjM1cxA==
+Date: Tue, 21 Nov 2023 18:42:35 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/lib: Avoid array bounds warnings in vec ops
+Message-ID: <i4zq3tg6gwaptnuoq2ainowffvkols2k5x7rads473zn55r27y@cvdy5yvkmj2p>
+References: <20231120235436.1569255-1-mpe@ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALrw=nG8xsYw7XKyL_VMHtKiaBcQCKvC8UVp-C9-BdeN4A1Daw@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-X-Mailman-Approved-At: Tue, 21 Nov 2023 22:35:16 +1100
+In-Reply-To: <20231120235436.1569255-1-mpe@ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,68 +59,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: chenhuacai@kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, catalin.marinas@arm.com, linus.walleij@linaro.org, dave.hansen@linux.intel.com, linux-mips@vger.kernel.org, James Bottomley <James.Bottomley@hansenpartnership.com>, dalias@libc.org, eric_devolder@yahoo.com, linux-riscv@lists.infradead.org, will@kernel.org, kernel@xen0n.name, tsi@tuyoix.net, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, rmk+kernel@armlinux.org.uk, hpa@zytor.com, paulmck@kernel.org, ysato@users.sourceforge.jp, kernel-team <kernel-team@cloudflare.com>, deller@gmx.de, x86@kernel.org, linux@armlinux.org.uk, paul.walmsley@sifive.com, Ingo Molnar <mingo@redhat.com>, geert@linux-m68k.org, hbathini@linux.ibm.com, samitolvanen@google.com, ojeda@kernel.org, juerg.haefliger@canonical.com, borntraeger@linux.ibm.com, frederic@kernel.org, arnd@arndb.de, mhiramat@kernel.org, Ard Biesheuvel <ardb@kernel.org>, thunder.leizhen@huawei.com, aou@eecs.berkeley.edu, 
- keescook@chromium.org, gor@linux.ibm.com, anshuman.khandual@arm.com, hca@linux.ibm.com, xin3.li@intel.com, npiggin@gmail.com, konrad.wilk@oracle.com, linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, glaubitz@physik.fu-berlin.de, Thomas Gleixner <tglx@linutronix.de>, ziy@nvidia.com, linux-arm-kernel@lists.infradead.org, boris.ostrovsky@oracle.com, tsbogend@alpha.franken.de, sebastian.reichel@collabora.com, linux-parisc@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>, kirill.shutemov@linux.intel.com, ndesaulniers@google.com, linux-kernel <linux-kernel@vger.kernel.org>, sourabhjain@linux.ibm.com, palmer@dabbelt.com, svens@linux.ibm.com, tj@kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, masahiroy@kernel.org, rppt@kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, gustavo@embeddedor.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/21/23 at 07:53am, Ignat Korchagin wrote:
-> On Tue, Nov 21, 2023 at 1:50 AM Baoquan He <bhe@redhat.com> wrote:
-> >
-> > Eric DeVolder's Oracle mail address is not available anymore, add his
-> > current mail address he told me.
-> 
-> Thank you!
-> 
-> > On 11/20/23 at 10:52pm, Ignat Korchagin wrote:
-> > > Good day!
-> > >
-> > > We have recently started to evaluate Linux 6.6 and noticed that we
-> > > cannot disable CONFIG_KEXEC anymore, but keep CONFIG_CRASH_DUMP
-> > > enabled. It seems to be related to commit 89cde455 ("kexec:
-> > > consolidate kexec and crash options into kernel/Kconfig.kexec"), where
-> > > a CONFIG_KEXEC dependency was added to CONFIG_CRASH_DUMP.
-> > >
-> > > In our current kernel (Linux 6.1) we only enable CONFIG_KEXEC_FILE
-> > > with enforced signature check to support the kernel crash dumping
-> > > functionality and would like to keep CONFIG_KEXEC disabled for
-> > > security reasons [1].
-> > >
-> > > I was reading the long commit message, but the reason for adding
-> > > CONFIG_KEXEC as a dependency for CONFIG_CRASH_DUMP evaded me. And I
-> > > believe from the implementation perspective CONFIG_KEXEC_FILE should
-> > > suffice here (as we successfully used it for crashdumps on Linux 6.1).
-> > >
-> > > Is there a reason for adding this dependency or is it just an
-> > > oversight? Would some solution of requiring either CONFIG_KEXEC or
-> > > CONFIG_KEXEC_FILE work here?
-> >
-> > I searched the patch history, found Eric didn't add the dependency on
-> > CONFIG_KEXEC at the beginning. Later a linux-next building failure with
-> > randconfig was reported, in there CONFIG_CRASH_DUMP enabled, while
-> > CONFIG_KEXEC is disabled. Finally Eric added the KEXEC dependency for
-> > CRASH_DUMP. Please see below link for more details:
-> >
-> > https://lore.kernel.org/all/3e8eecd1-a277-2cfb-690e-5de2eb7b988e@oracle.com/T/#u
-> 
-> Thank you for digging this up. However I'm still confused, because
-> this is exactly how we configure Linux 6.1 (although we do have
-> CONFIG_KEXEC_FILE enabled) and we don't have any problems. I believe
-> we did not investigate this issue properly.
-> 
-> > And besides, the newly added CONFIG_CRASH_HOTPLUG also needs
-> > CONFIG_KEXEC if the elfcorehdr is allowed to be manipulated when
-> > cpu/memory hotplug hapened.
-> 
-> This still feels like a regression to me: any crash dump support
-> should be independent of KEXEC syscalls being present. While probably
-> the common case (including us) that the crashing kernel and recovery
-> kernel are the same, they don't have to be. We need kexec syscall in
-> the crashing kernel, but crashdump support in the recovery kernel (but
-> the recovery kernel not having the kexec syscalls should be totally
-> fine). If we do require some code definitions from kexec - at most we
-> should put them under CONFIG_KEXEC_CORE.
+On Tue, Nov 21, 2023 at 10:54:36AM +1100, Michael Ellerman wrote:
+> Building with GCC 13 (which has -array-bounds enabled) there are several
 
-Hmm, I understand your concern. Will wait for Eric a while to see if he
-has any explannation or plan, otherwise I will check this.
+Thanks, gcc13 indeed helps reproduce the warnings.
+
+> warnings in sstep.c along the lines of:
+> 
+>   In function ‘do_byte_reverse’,
+>       inlined from ‘do_vec_load’ at arch/powerpc/lib/sstep.c:691:3,
+>       inlined from ‘emulate_loadstore’ at arch/powerpc/lib/sstep.c:3439:9:
+>   arch/powerpc/lib/sstep.c:289:23: error: array subscript 2 is outside array bounds of ‘u8[16]’ {aka ‘unsigned char[16]’} [-Werror=array-bounds=]
+>     289 |                 up[2] = byterev_8(up[1]);
+>         |                 ~~~~~~^~~~~~~~~~~~~~~~~~
+>   arch/powerpc/lib/sstep.c: In function ‘emulate_loadstore’:
+>   arch/powerpc/lib/sstep.c:681:11: note: at offset 16 into object ‘u’ of size 16
+>     681 |         } u = {};
+>         |           ^
+> 
+> do_byte_reverse() supports a size up to 32 bytes, but in these cases the
+> caller is only passing a 16 byte buffer. In practice there is no bug,
+> do_vec_load() is only called from the LOAD_VMX case in emulate_loadstore().
+> That in turn is only reached when analyse_instr() recognises VMX ops,
+> and in all cases the size is no greater than 16:
+> 
+>   $ git grep -w LOAD_VMX arch/powerpc/lib/sstep.c
+>   arch/powerpc/lib/sstep.c:                        op->type = MKOP(LOAD_VMX, 0, 1);
+>   arch/powerpc/lib/sstep.c:                        op->type = MKOP(LOAD_VMX, 0, 2);
+>   arch/powerpc/lib/sstep.c:                        op->type = MKOP(LOAD_VMX, 0, 4);
+>   arch/powerpc/lib/sstep.c:                        op->type = MKOP(LOAD_VMX, 0, 16);
+> 
+> Similarly for do_vec_store().
+> 
+> Although the warning is incorrect, the code would be safer if it clamped
+> the size from the caller to the known size of the buffer. Do that using
+> min_t().
+
+But, do_vec_load() and do_vec_store() assume that the maximum size is 16 
+(the address_ok() check as an example). So, should we be considering a 
+bigger hammer to help detect future incorrect use?
+
+Something like the below?
+
+diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+index a4ab8625061a..ac22136032b8 100644
+--- a/arch/powerpc/lib/sstep.c
++++ b/arch/powerpc/lib/sstep.c
+@@ -680,6 +680,9 @@ static nokprobe_inline int do_vec_load(int rn, unsigned long ea,
+                u8 b[sizeof(__vector128)];
+        } u = {};
+ 
++       if (WARN_ON_ONCE(size > sizeof(u)))
++               return -EINVAL;
++
+        if (!address_ok(regs, ea & ~0xfUL, 16))
+                return -EFAULT;
+        /* align to multiple of size */
+@@ -707,6 +710,9 @@ static nokprobe_inline int do_vec_store(int rn, unsigned long ea,
+                u8 b[sizeof(__vector128)];
+        } u;
+ 
++       if (WARN_ON_ONCE(size > sizeof(u)))
++               return -EINVAL;
++
+        if (!address_ok(regs, ea & ~0xfUL, 16))
+                return -EFAULT;
+        /* align to multiple of size */
+
+
+- Naveen
 
