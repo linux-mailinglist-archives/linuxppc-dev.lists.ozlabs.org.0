@@ -1,88 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 269847F21FE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 01:12:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A91A7F220A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 01:19:56 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=embeddedor.com header.i=@embeddedor.com header.a=rsa-sha256 header.s=default header.b=V6AbgRHt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=b2DpM135;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SZ4Z00LZlz3cZd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 11:12:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SZ4ky2CrWz3clc
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 11:19:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=embeddedor.com header.i=@embeddedor.com header.a=rsa-sha256 header.s=default header.b=V6AbgRHt;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=b2DpM135;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=embeddedor.com (client-ip=44.202.169.39; helo=omta040.useast.a.cloudfilter.net; envelope-from=gustavo@embeddedor.com; receiver=lists.ozlabs.org)
-Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::430; helo=mail-pf1-x430.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZ4Y51BZJz3bvB
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 11:11:19 +1100 (AEDT)
-Received: from eig-obgw-5010a.ext.cloudfilter.net ([10.0.29.199])
-	by cmsmtp with ESMTPS
-	id 5C3Zrpn3M6nOZ5EKnryowZ; Tue, 21 Nov 2023 00:09:45 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id 5EKlrcwbkhDny5EKmrV9tq; Tue, 21 Nov 2023 00:09:44 +0000
-X-Authority-Analysis: v=2.4 cv=fda+dmcF c=1 sm=1 tr=0 ts=655bf548
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=WzbPXH4gqzPVN0x6HrNMNA==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=BNY50KLci1gA:10 a=wYkD_t78qR0A:10 a=pGLkceISAAAA:8
- a=_Wotqz80AAAA:8 a=VwQbUJbxAAAA:8 a=mj1J1fUijU67ZuGb4usA:9 a=QEXdDO2ut3YA:10
- a=buJP51TR1BpY-zbLSsyS:22 a=AjGcO6oz07-iQ99wixmX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:To:Subject:MIME-Version:Date:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=9MpSC42MjHarTm+Fwj/hKjEo0Wz2iqqispl/88xKKck=; b=V6AbgRHtBmAoqI+XAeb2JGUGe3
-	BCi62XAn9IYkfWIC73pBTE8WCjlqx3AIfyiuVWCLq+/1oVm2V7Sq+GmGppagr9Biq8mJolhKBtQ/N
-	mQ1HQVJcJhOkKKdqOaUYX7QollYHBnZfLMHvXMRFOVm84MX/z7JpDzizkPR1jFe3pw0WTsjiTnC3c
-	8cfxeu57DxJKVsBNe/1m5lDYZt3c6z7AjZMH61u7Jtv3iYEKGVJ2RkZ6lgaG1uuRr7s9wrDIBqM98
-	hqwjfGAPWZUnRvjYCc6M1WrnYCbzLPq8HWiq70lNMzw6fwMS0ftv05yBAn4QTaRvHNb8FURsbD9Bq
-	TwUJXWRg==;
-Received: from 187-162-21-192.static.axtel.net ([187.162.21.192]:59538 helo=[192.168.15.10])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1r5EKl-000Hge-2F;
-	Mon, 20 Nov 2023 18:09:43 -0600
-Message-ID: <a4ffb451-ee0c-4888-8964-97cb5b59ad7a@embeddedor.com>
-Date: Mon, 20 Nov 2023 18:09:42 -0600
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc/lib: Avoid array bounds warnings in vec ops
-Content-Language: en-US
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-References: <20231120235436.1569255-1-mpe@ellerman.id.au>
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <20231120235436.1569255-1-mpe@ellerman.id.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - lists.ozlabs.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.21.192
-X-Source-L: No
-X-Exim-ID: 1r5EKl-000Hge-2F
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-21-192.static.axtel.net ([192.168.15.10]) [187.162.21.192]:59538
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 1
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfAaurAeMy8/XlgKZJh7D4LL11RsWv1LDwjlFH95aJt9KhApZkuTuo52Uoj81xfIWDZFv5vBrltdBWAmlGQTbszvIZx3hzl0ebba5ZKi2/7fz2xV6+YyZ
- OcEqH46/HFxVJ2Db+DWlxqZVZ48GrzTDT1XgvFPpgfs6CQjRhmOyl5XJ44uHD6xTHlB9zraLzi0a+7ACJRzRfUG6XZohg04Yf4gdew92CoN/pqZ90wEbFDxv
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZ4k41Hzqz3bvB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 11:19:06 +1100 (AEDT)
+Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-6cb66f23eddso1503447b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Nov 2023 16:19:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700525942; x=1701130742; darn=lists.ozlabs.org;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SN/OohZNMCwJlJlSuuwQc5xuwem9Qdkr9XpRThmJm6I=;
+        b=b2DpM135wUMxFCmp7ohRKvRlSYsIZsAXacRRy2Vv5hnoTx8s5yCWw7hi/gRFdI4+G1
+         5+F8RQybF4013Q64DWJhv+oPM37xM4tj7zlB01rEmn3awTRow0Aw8cwVt8OoDtsrRDgA
+         7M8JxWS+xyzVWrZ79HkJVneNOWQFquNvSm75UER39VnUpws+jtSvipx1dXRR7Ki1yB96
+         yNKiNteJc6i+jl/XdAmE/BtszViG+fFwPuYLjxMihyRYaT89tWdtwhtOEK4A6dLA78Jo
+         1iibxpfTssvPeeB6TaKsCD+m4pQCXZaRHvJXCV2XhNMD94KnGvgt6AbP1QAJaut6U9aM
+         E9bA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700525942; x=1701130742;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=SN/OohZNMCwJlJlSuuwQc5xuwem9Qdkr9XpRThmJm6I=;
+        b=UMDrtMcq/vAyyrPQyuyLgEtpoDwJ6uw4rODOmF/wN9wbVYzTgKBx7BkcByPHfS9q9E
+         ZZ5cf6zdbTZ6qZwc+KeyRv/EUHvB500NmYvnLZoBMS2HOEtfUvdlORpgagy43qjYeEXA
+         DHqtIiBz3GLSskdV69ZRtLHCA+nOpyzl2jWZtCYcSvNlwWgUtcnxKg56XMcXiEppdrdi
+         MtjHlSGTbYi0ye+UEwAAv7Rk68YldKJhJOOk2Zkgy2m7X6v1pQchbJZM6wsQa3QiepQm
+         jT538d7I5zNbSnstc7rgpUmpVSCedEnaNiWabxp4sIjHoLQsW4viHYd5ktMSeqJ0+CF7
+         AkaQ==
+X-Gm-Message-State: AOJu0YwaF9PLgoykiA/eIs43R6ePMMqcpi9TI4u4DNyyNLDwO+bMaKOz
+	aBJtXPQG0EQX5kjK/0BGpyA=
+X-Google-Smtp-Source: AGHT+IEwiTItc6jyfJ/YFTqZl2gcdBXk7tva5FECSW3MZ4Bo6L/H0RYYCzvhc7pnxGZO2bVNVrOMtg==
+X-Received: by 2002:a05:6a00:a88:b0:6c3:1b7d:dac9 with SMTP id b8-20020a056a000a8800b006c31b7ddac9mr7653602pfl.34.1700525942147;
+        Mon, 20 Nov 2023 16:19:02 -0800 (PST)
+Received: from localhost (203-219-179-16.tpgi.com.au. [203.219.179.16])
+        by smtp.gmail.com with ESMTPSA id u2-20020a631402000000b005b4b70738e5sm6686508pgl.8.2023.11.20.16.18.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Nov 2023 16:19:01 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 21 Nov 2023 10:18:52 +1000
+Message-Id: <CX424SO03Y1Q.2YCS9G1C3IAOW@wheely>
+To: "Timothy Pearson" <tpearson@raptorengineering.com>, "Michael Ellerman"
+ <mpe@ellerman.id.au>
+Subject: Re: [PATCH v2] powerpc: Don't clobber fr0/vs0 during fp|altivec
+ register  save
+From: "Nicholas Piggin" <npiggin@gmail.com>
+X-Mailer: aerc 0.15.2
+References: <1921539696.48534988.1700407082933.JavaMail.zimbra@raptorengineeringinc.com> <877cmc7ve9.fsf@mail.lhotse> <439072392.48800901.1700498743840.JavaMail.zimbra@raptorengineeringinc.com>
+In-Reply-To: <439072392.48800901.1700498743840.JavaMail.zimbra@raptorengineeringinc.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,81 +81,193 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Jens Axboe <axboe@kernel.dk>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, regressions <regressions@lists.linux.dev>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue Nov 21, 2023 at 2:45 AM AEST, Timothy Pearson wrote:
+>
+>
+> ----- Original Message -----
+> > From: "Michael Ellerman" <mpe@ellerman.id.au>
+> > To: "Timothy Pearson" <tpearson@raptorengineering.com>, "Jens Axboe" <a=
+xboe@kernel.dk>, "regressions"
+> > <regressions@lists.linux.dev>, "npiggin" <npiggin@gmail.com>, "christop=
+he leroy" <christophe.leroy@csgroup.eu>,
+> > "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>
+> > Sent: Monday, November 20, 2023 1:10:06 AM
+> > Subject: Re: [PATCH v2] powerpc: Don't clobber fr0/vs0 during fp|altive=
+c register  save
+>
+> > Hi Timothy,
+> >=20
+> > Great work debugging this. I think your fix is good, but I want to unde=
+rstand it
+> > a bit more to make sure I can explain why we haven't seen it outside of
+> > io-uring.
+> > If this can be triggered outside of io-uring then I have even more back=
+porting
+> > in my future :}
+> >=20
+> > Typically save_fpu() is called from __giveup_fpu() which saves the FP r=
+egs and
+> > also *turns off FP* in the tasks MSR, meaning the kernel will reload th=
+e FP regs
+> > from the thread struct before letting the task use FP again. So in that=
+ case
+> > save_fpu() is free to clobber fr0 because the FP regs no longer hold li=
+ve values
+> > for the task.
+> >=20
+> > There is another case though, which is the path via:
+> >  copy_process()
+> >    dup_task_struct()
+> >      arch_dup_task_struct()
+> >        flush_all_to_thread()
+> >          save_all()
+> >=20
+> > That path saves the FP regs but leaves them live. That's meant as an
+> > optimisation for a process that's using FP/VSX and then calls fork(), l=
+eaving
+> > the regs live means the parent process doesn't have to take a fault aft=
+er the
+> > fork to get its FP regs back.
+> >=20
+> > That path does clobber fr0, but fr0 is volatile across a syscall, and t=
+he only
+> > way to reach copy_process() from userspace is via a syscall. So in norm=
+al usage
+> > fr0 being clobbered across a syscall shouldn't cause data corruption.
+> >=20
+> > Even if we handle a signal on the return from the fork() syscall, the w=
+orst that
+> > happens is that the task's thread struct holds the clobbered fr0, but t=
+he task
+> > doesn't care (because fr0 is volatile across the syscall anyway).
+> >=20
+> > That path is something like:
+> >=20
+> > system_call_vectored_common()
+> >  system_call_exception()
+> >    sys_fork()
+> >      kernel_clone()
+> >        copy_process()
+> >          dup_task_struct()
+> >            arch_dup_task_struct()
+> >              flush_all_to_thread()
+> >                save_all()
+> >                  if (tsk->thread.regs->msr & MSR_FP)
+> >                    save_fpu()
+> >                    # does not clear MSR_FP from regs->msr
+> >  syscall_exit_prepare()
+> >    interrupt_exit_user_prepare_main()
+> >      do_notify_resume()
+> >        get_signal()
+> >        handle_rt_signal64()
+> >          prepare_setup_sigcontext()
+> >            flush_fp_to_thread()
+> >              if (tsk->thread.regs->msr & MSR_FP)
+> >                giveup_fpu()
+> >                  __giveup_fpu
+> >                    save_fpu()
+> >                    # clobbered fr0 is saved, but task considers it vola=
+tile
+> >                    # across syscall anyway
+> >=20
+> >=20
+> > But we now have a new path, because io-uring can call copy_process() vi=
+a
+> > create_io_thread() from the signal handling path. That's OK if the sign=
+al is
+> > handled as we return from a syscall, but it's not OK if the signal is h=
+andled
+> > due to some other interrupt.
+> >=20
+> > Which is:
+> >=20
+> > interrupt_return_srr_user()
+> >  interrupt_exit_user_prepare()
+> >    interrupt_exit_user_prepare_main()
+> >      do_notify_resume()
+> >        get_signal()
+> >          task_work_run()
+> >            create_worker_cb()
+> >              create_io_worker()
+> >                copy_process()
+> >                  dup_task_struct()
+> >                    arch_dup_task_struct()
+> >                      flush_all_to_thread()
+> >                        save_all()
+> >                          if (tsk->thread.regs->msr & MSR_FP)
+> >                            save_fpu()
+> >                            # fr0 is clobbered and potentially live in u=
+serspace
+> >=20
+> >=20
+> > So tldr I think the corruption is only an issue since io-uring started =
+doing
+> > the clone via signal, which I think matches the observed timeline of th=
+is bug
+> > appearing.
+>
+> I agree the corruption really only started showing up in earnest on io_ur=
+ing clone-via-signal, as this was confirmed several times in the course of =
+debugging.  Bear in mind however that we have seen very, very rare crashes =
+over several years in other tasks, and I am starting to think this bug migh=
+t be the root cause (see below).
+>
+> Note as well that I may very well have a wrong call order in the commit m=
+essage, since I was relying on a couple of WARN_ON() macros I inserted to c=
+heck for a similar (but not identical) condition and didn't spend much time=
+ getting new traces after identifying the root cause.
+>
+> I went back and grabbed some real world system-wide stack traces, since I=
+ now know what to trigger on.  A typical example is:
+>
+> interrupt_return_srr_user()
+>  interrupt_exit_user_prepare()
+>   interrupt_exit_user_prepare_main()
+>    schedule()
+>     __schedule()
+>      __switch_to()
+>       giveup_all()
+>        # tsk->thread.regs->msr MSR_FP is still set here
+>        __giveup_fpu()
+>         save_fpu()
+>         # fr0 is clobbered and potentially live in userspace
+>
+> This indicates that the pending signal is not actually required, it simpl=
+y makes triggering much more likely.  Both the pending signal and the _TIF_=
+NEED_RESCHED paths give up control and end up in the same overall position =
+of trigging down-call routines that assume the FPU state is valid.
 
+That seems probably true, but that's on the other side of the equation,
+I think? Because __giveup_fpu does clear MSR[FP] before any context
+switch or return to user is possile.
 
-On 11/20/23 17:54, Michael Ellerman wrote:
-> Building with GCC 13 (which has -array-bounds enabled) there are several
-> warnings in sstep.c along the lines of:
-> 
->    In function ‘do_byte_reverse’,
->        inlined from ‘do_vec_load’ at arch/powerpc/lib/sstep.c:691:3,
->        inlined from ‘emulate_loadstore’ at arch/powerpc/lib/sstep.c:3439:9:
->    arch/powerpc/lib/sstep.c:289:23: error: array subscript 2 is outside array bounds of ‘u8[16]’ {aka ‘unsigned char[16]’} [-Werror=array-bounds=]
->      289 |                 up[2] = byterev_8(up[1]);
->          |                 ~~~~~~^~~~~~~~~~~~~~~~~~
->    arch/powerpc/lib/sstep.c: In function ‘emulate_loadstore’:
->    arch/powerpc/lib/sstep.c:681:11: note: at offset 16 into object ‘u’ of size 16
->      681 |         } u = {};
->          |           ^
-> 
-> do_byte_reverse() supports a size up to 32 bytes, but in these cases the
-> caller is only passing a 16 byte buffer. In practice there is no bug,
-> do_vec_load() is only called from the LOAD_VMX case in emulate_loadstore().
-> That in turn is only reached when analyse_instr() recognises VMX ops,
-> and in all cases the size is no greater than 16:
-> 
->    $ git grep -w LOAD_VMX arch/powerpc/lib/sstep.c
->    arch/powerpc/lib/sstep.c:                        op->type = MKOP(LOAD_VMX, 0, 1);
->    arch/powerpc/lib/sstep.c:                        op->type = MKOP(LOAD_VMX, 0, 2);
->    arch/powerpc/lib/sstep.c:                        op->type = MKOP(LOAD_VMX, 0, 4);
->    arch/powerpc/lib/sstep.c:                        op->type = MKOP(LOAD_VMX, 0, 16);
-> 
-> Similarly for do_vec_store().
-> 
-> Although the warning is incorrect, the code would be safer if it clamped
-> the size from the caller to the known size of the buffer. Do that using
-> min_t().
-> 
-> Reported-by: Bagas Sanjaya <bagasdotme@gmail.com>
-> Reported-by: Jan-Benedict Glaw <jbglaw@lug-owl.de>
-> Reported-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+*After* we have clobbered fr0 without clearing MSR_FP from the user msr,
+then yes any context switch or return to user will cause uerspace to
+next run with a clobbered fr0. But getting to that fr0/msr state
+requires the flush_all_to_thread(), and that needs to be called in a
+path where user fr0 must not be clobbered. I don't see one other than
+io-uring yet.
 
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Build-tested-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+[ KVM via kvmppc_save_user_regs() (which is basically the same as
+flush_all_to_thread()) can do it. Not via the fr0 clobber in save_fpu,
+because this is called via a VCPU run ioctl, but KVM will later clobber
+all FP/VEC registers via running guest code. So we clobber non-volatile
+regs as well. This wouldn't be causing random corruption and crashes
+though, only possibly bugs in code that runs KVM guests. ]
 
-This indeed makes all those warnings go away. :)
+Thanks,
+Nick
 
-Thanks, Michael!
---
-Gustavo
+>
+> perl and bash seem to be affected to some degree, though current builds d=
+on't use enough VSX instructions rapidly enough to cause crashes with any s=
+ignificant probability.  That said, over many years of running POWER at dat=
+acenter scale I have seen enough random bash/perl crashes in the logs to re=
+cognize the pattern; I think this has been a low-grade issue for a long tim=
+e, but with an infantismally small chance of happening it was seen as rando=
+m noise / hardware issues / other rare bugs in various programs.
 
-> ---
->   arch/powerpc/lib/sstep.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-> index a4ab8625061a..a13f05cfc7db 100644
-> --- a/arch/powerpc/lib/sstep.c
-> +++ b/arch/powerpc/lib/sstep.c
-> @@ -688,7 +688,7 @@ static nokprobe_inline int do_vec_load(int rn, unsigned long ea,
->   	if (err)
->   		return err;
->   	if (unlikely(cross_endian))
-> -		do_byte_reverse(&u.b[ea & 0xf], size);
-> +		do_byte_reverse(&u.b[ea & 0xf], min_t(size_t, size, sizeof(u)));
->   	preempt_disable();
->   	if (regs->msr & MSR_VEC)
->   		put_vr(rn, &u.v);
-> @@ -719,7 +719,7 @@ static nokprobe_inline int do_vec_store(int rn, unsigned long ea,
->   		u.v = current->thread.vr_state.vr[rn];
->   	preempt_enable();
->   	if (unlikely(cross_endian))
-> -		do_byte_reverse(&u.b[ea & 0xf], size);
-> +		do_byte_reverse(&u.b[ea & 0xf], min_t(size_t, size, sizeof(u)));
->   	return copy_mem_out(&u.b[ea & 0xf], ea, size, regs);
->   }
->   #endif /* CONFIG_ALTIVEC */
