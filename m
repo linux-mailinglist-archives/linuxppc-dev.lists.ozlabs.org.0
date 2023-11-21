@@ -1,64 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFAEC7F2306
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 02:24:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22AF67F2427
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 03:41:20 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=WOqx1RsR;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=h35Vxiqr;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LMydwJ77;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SZ69r4r0Jz3d8N
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 12:24:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SZ7t60QF5z3dRf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 13:41:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=WOqx1RsR;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=h35Vxiqr;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LMydwJ77;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org)
-Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZ68y1BNZz3bYx
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 12:24:02 +1100 (AEDT)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id 42E178285669;
-	Mon, 20 Nov 2023 19:23:59 -0600 (CST)
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id sW56W62J5lEC; Mon, 20 Nov 2023 19:23:58 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id 13EC982857F6;
-	Mon, 20 Nov 2023 19:23:58 -0600 (CST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com 13EC982857F6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
-	t=1700529838; bh=6wgLgNL21hmd4mvVX7kKnn+P3JT1JuCUdVe5076o16I=;
-	h=Date:From:To:Message-ID:MIME-Version;
-	b=WOqx1RsRd2eSdqDmGhk/ipkOXilfUh9vP1yuskDKOv19yiE2aZP03UU/20EbsIoEL
-	 hZS6xgNhs4/wUw4+Jth5b/kn+BcdGFttMk7EEYiKAqQOQNnz7PocLK64kMX6ltmKf8
-	 z5mjw/AId8qyZFgWMpn7zI+9Y9VuMfoCdZJWclIU=
-X-Virus-Scanned: amavisd-new at rptsys.com
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id yShHFOYeSis1; Mon, 20 Nov 2023 19:23:57 -0600 (CST)
-Received: from vali.starlink.edu (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id D083A8285669;
-	Mon, 20 Nov 2023 19:23:57 -0600 (CST)
-Date: Mon, 20 Nov 2023 19:23:57 -0600 (CST)
-From: Timothy Pearson <tpearson@raptorengineering.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Message-ID: <608737213.48890358.1700529837699.JavaMail.zimbra@raptorengineeringinc.com>
-In-Reply-To: <874jhg6lkn.fsf@mail.lhotse>
-References: <1921539696.48534988.1700407082933.JavaMail.zimbra@raptorengineeringinc.com> <877cmc7ve9.fsf@mail.lhotse> <439072392.48800901.1700498743840.JavaMail.zimbra@raptorengineeringinc.com> <874jhg6lkn.fsf@mail.lhotse>
-Subject: Re: [PATCH v2] powerpc: Don't clobber fr0/vs0 during fp|altivec
- register  save
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZ6lR4gQwz3c40
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 12:50:25 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1700531418;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=y3Q3tLM9OGu607uvr6IkvxoBRGupiz4hQd2uNEc6wxU=;
+	b=h35Vxiqr1QITmJY7boN3uZO1bPYrOgJMJvd+9sbm8tZ47J8t72x9BolqdjlchhsEEzXaSc
+	EHQogQThJQNIqpBk0/VXB0ZaDI4uYCrl9PlsKDeXcgjUBGrYP+Ig+TBcgrlk7CpaV7owwd
+	Ptne/zjbqdKAgOgfQYItq3EcjBbF464=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1700531419;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=y3Q3tLM9OGu607uvr6IkvxoBRGupiz4hQd2uNEc6wxU=;
+	b=LMydwJ77HzqnvuhB0uOoJe6x5pRm+prgth80bodOs1zfwTkuVyK1KeV2X5BHPZO86yv/RM
+	8vuN8w1nKiW8LJSmmVi9OU9NXAsj0zj30xGk0QVXk8dMQY98Gk0NA9FhHUIE8x9RuA3rst
+	gcT29mmNUQm4lRQ3IFCSlt/pWxdASwE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-317-dGxeOKufP0OB-17nBSQkQA-1; Mon, 20 Nov 2023 20:50:15 -0500
+X-MC-Unique: dGxeOKufP0OB-17nBSQkQA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1F0F9811E7B;
+	Tue, 21 Nov 2023 01:50:14 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.97])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 2267D2026D4C;
+	Tue, 21 Nov 2023 01:50:10 +0000 (UTC)
+Date: Tue, 21 Nov 2023 09:50:05 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Ignat Korchagin <ignat@cloudflare.com>, eric_devolder@yahoo.com
+Subject: Re: Potential config regression after 89cde455 ("kexec: consolidate
+ kexec and crash options into kernel/Kconfig.kexec")
+Message-ID: <ZVwMzXxWkgonIAfc@MiWiFi-R3L-srv>
+References: <CALrw=nHpRQQaQTP_jZfREgrQEMpS8jBF8JQCv4ygqXycE-StaA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: Zimbra 8.5.0_GA_3042 (ZimbraWebClient - GC119 (Linux)/8.5.0_GA_3042)
-Thread-Topic: powerpc: Don't clobber fr0/vs0 during fp|altivec register save
-Thread-Index: 3JPZhG7uJ/dvg8ONaRi3ytoX/GuIYg==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CALrw=nHpRQQaQTP_jZfREgrQEMpS8jBF8JQCv4ygqXycE-StaA@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+X-Mailman-Approved-At: Tue, 21 Nov 2023 13:39:48 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,103 +80,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, regressions <regressions@lists.linux.dev>, npiggin <npiggin@gmail.com>
+Cc: chenhuacai@kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, catalin.marinas@arm.com, linus.walleij@linaro.org, dave.hansen@linux.intel.com, linux-mips@vger.kernel.org, James Bottomley <James.Bottomley@hansenpartnership.com>, dalias@libc.org, hpa@zytor.com, linux-riscv@lists.infradead.org, will@kernel.org, kernel@xen0n.name, tsi@tuyoix.net, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, rmk+kernel@armlinux.org.uk, paulmck@kernel.org, ysato@users.sourceforge.jp, kernel-team <kernel-team@cloudflare.com>, deller@gmx.de, x86@kernel.org, linux@armlinux.org.uk, paul.walmsley@sifive.com, Ingo Molnar <mingo@redhat.com>, geert@linux-m68k.org, hbathini@linux.ibm.com, samitolvanen@google.com, ojeda@kernel.org, juerg.haefliger@canonical.com, borntraeger@linux.ibm.com, frederic@kernel.org, arnd@arndb.de, mhiramat@kernel.org, Ard Biesheuvel <ardb@kernel.org>, thunder.leizhen@huawei.com, aou@eecs.berkeley.edu, keescook@chromium.org, go
+ r@linux.ibm.com, anshuman.khandual@arm.com, hca@linux.ibm.com, xin3.li@intel.com, npiggin@gmail.com, konrad.wilk@oracle.com, linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, glaubitz@physik.fu-berlin.de, Thomas Gleixner <tglx@linutronix.de>, ziy@nvidia.com, linux-arm-kernel@lists.infradead.org, boris.ostrovsky@oracle.com, tsbogend@alpha.franken.de, sebastian.reichel@collabora.com, linux-parisc@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>, kirill.shutemov@linux.intel.com, ndesaulniers@google.com, linux-kernel <linux-kernel@vger.kernel.org>, sourabhjain@linux.ibm.com, palmer@dabbelt.com, svens@linux.ibm.com, tj@kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, masahiroy@kernel.org, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Eric DeVolder's Oracle mail address is not available anymore, add his
+current mail address he told me. 
 
+On 11/20/23 at 10:52pm, Ignat Korchagin wrote:
+> Good day!
+> 
+> We have recently started to evaluate Linux 6.6 and noticed that we
+> cannot disable CONFIG_KEXEC anymore, but keep CONFIG_CRASH_DUMP
+> enabled. It seems to be related to commit 89cde455 ("kexec:
+> consolidate kexec and crash options into kernel/Kconfig.kexec"), where
+> a CONFIG_KEXEC dependency was added to CONFIG_CRASH_DUMP.
+> 
+> In our current kernel (Linux 6.1) we only enable CONFIG_KEXEC_FILE
+> with enforced signature check to support the kernel crash dumping
+> functionality and would like to keep CONFIG_KEXEC disabled for
+> security reasons [1].
+> 
+> I was reading the long commit message, but the reason for adding
+> CONFIG_KEXEC as a dependency for CONFIG_CRASH_DUMP evaded me. And I
+> believe from the implementation perspective CONFIG_KEXEC_FILE should
+> suffice here (as we successfully used it for crashdumps on Linux 6.1).
+> 
+> Is there a reason for adding this dependency or is it just an
+> oversight? Would some solution of requiring either CONFIG_KEXEC or
+> CONFIG_KEXEC_FILE work here?
 
------ Original Message -----
-> From: "Michael Ellerman" <mpe@ellerman.id.au>
-> To: "Timothy Pearson" <tpearson@raptorengineering.com>
-> Cc: "Jens Axboe" <axboe@kernel.dk>, "regressions" <regressions@lists.linux.dev>, "npiggin" <npiggin@gmail.com>,
-> "christophe leroy" <christophe.leroy@csgroup.eu>, "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>
-> Sent: Monday, November 20, 2023 5:39:52 PM
-> Subject: Re: [PATCH v2] powerpc: Don't clobber fr0/vs0 during fp|altivec register  save
+I searched the patch history, found Eric didn't add the dependency on
+CONFIG_KEXEC at the beginning. Later a linux-next building failure with
+randconfig was reported, in there CONFIG_CRASH_DUMP enabled, while
+CONFIG_KEXEC is disabled. Finally Eric added the KEXEC dependency for
+CRASH_DUMP. Please see below link for more details:
 
-> Timothy Pearson <tpearson@raptorengineering.com> writes:
->> ----- Original Message -----
->>> From: "Michael Ellerman" <mpe@ellerman.id.au>
-> ...
->>> 
->>> But we now have a new path, because io-uring can call copy_process() via
->>> create_io_thread() from the signal handling path. That's OK if the signal is
->>> handled as we return from a syscall, but it's not OK if the signal is handled
->>> due to some other interrupt.
->>> 
->>> Which is:
->>> 
->>> interrupt_return_srr_user()
->>>  interrupt_exit_user_prepare()
->>>    interrupt_exit_user_prepare_main()
->>>      do_notify_resume()
->>>        get_signal()
->>>          task_work_run()
->>>            create_worker_cb()
->>>              create_io_worker()
->>>                copy_process()
->>>                  dup_task_struct()
->>>                    arch_dup_task_struct()
->>>                      flush_all_to_thread()
->>>                        save_all()
->>>                          if (tsk->thread.regs->msr & MSR_FP)
->>>                            save_fpu()
->>>                            # fr0 is clobbered and potentially live in userspace
->>> 
->>> 
->>> So tldr I think the corruption is only an issue since io-uring started doing
->>> the clone via signal, which I think matches the observed timeline of this bug
->>> appearing.
->>
->> I agree the corruption really only started showing up in earnest on
->> io_uring clone-via-signal, as this was confirmed several times in the
->> course of debugging.
-> 
-> Thanks.
-> 
->> Note as well that I may very well have a wrong call order in the
->> commit message, since I was relying on a couple of WARN_ON() macros I
->> inserted to check for a similar (but not identical) condition and
->> didn't spend much time getting new traces after identifying the root
->> cause.
-> 
-> Yep no worries. I'll reword it to incorporate the full path from my mail.
-> 
->> I went back and grabbed some real world system-wide stack traces, since I now
->> know what to trigger on.  A typical example is:
->>
->> interrupt_return_srr_user()
->>  interrupt_exit_user_prepare()
->>   interrupt_exit_user_prepare_main()
->>    schedule()
->>     __schedule()
->>      __switch_to()
->>       giveup_all()
->>        # tsk->thread.regs->msr MSR_FP is still set here
->>        __giveup_fpu()
->>         save_fpu()
->>         # fr0 is clobbered and potentially live in userspace
-> 
-> fr0 is not live there.
-> 
-> __giveup_fpu() does roughly:
-> 
->	msr = tsk->thread.regs->msr;
->	msr &= ~(MSR_FP|MSR_FE0|MSR_FE1);
->        msr &= ~MSR_VSX;
->	tsk->thread.regs = msr;
-> 
-> ie. it clears the FP etc. bits from the task's MSR. That means the FP
-> state will be reloaded from the thread struct before the task is run again.
-> 
-> Also on that path we're switching to another task, so we'll be reloading
-> the other task's FP state before returning to userspace.
-> 
-> So I don't see any bug there.
+https://lore.kernel.org/all/3e8eecd1-a277-2cfb-690e-5de2eb7b988e@oracle.com/T/#u
 
-Yeah, you're right.  I was trying to get traces while doing something else, and didn't think that all the way through, sorry. :)  It's not going to be super easy to get a real trace (I was triggering the WARN_ON() from of fr0 getting set to to FPSCR), so let's just assume it's mainly the path you manually found above and update the commit message accordingly.
+And besides, the newly added CONFIG_CRASH_HOTPLUG also needs
+CONFIG_KEXEC if the elfcorehdr is allowed to be manipulated when
+cpu/memory hotplug hapened.
 
-> There's only two places that call save_fpu() and skip the giveup logic,
-> which is save_all() and kvmppc_save_user_regs().
+Thanks
+Baoquan
 
-Now that's interesting as well, since it might explain some issues I've seen for years on a specific QEMU workload.  Once this is backported to stable I'll need to get the kernels updated on those boxes and see if the issues disappear...
