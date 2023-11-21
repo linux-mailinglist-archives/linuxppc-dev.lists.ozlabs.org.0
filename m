@@ -1,69 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4619B7F2897
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 10:21:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5E607F289C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 10:21:53 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=OrgQS5jO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=y54Eeyqq;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SZJlL6mCCz3dBK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 20:21:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SZJmH5GS7z3dSC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 20:21:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=OrgQS5jO;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=y54Eeyqq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cloudflare.com (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=ignat@cloudflare.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2a00:1450:4864:20::129; helo=mail-lf1-x129.google.com; envelope-from=atishp@rivosinc.com; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZGq36DTvz3by8
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 18:54:06 +1100 (AEDT)
-Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-28396255b81so2874418a91.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Nov 2023 23:54:06 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZHQh73jvz3w4X
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 19:21:32 +1100 (AEDT)
+Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-50943ccbbaeso7425081e87.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 00:21:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1700553239; x=1701158039; darn=lists.ozlabs.org;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1700554882; x=1701159682; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=n94+xDIkUOqQeszLqyF1GvL8Xx0iP7KzdJ36tDGQoLY=;
-        b=OrgQS5jOoHCgXZJz+z//IXTj9AoWRZWOOMXU32Ecj6XQrZ+Z9TEOC+0EF0E5v9re3a
-         ug/pH13UVp18oashLAxlXXaiZuLKbu23mPSIaF6rQjX6eRhHAD6Jeo9e7XFH+FqHL2aJ
-         1kzL31nh9pV2UZksn/dcpkrlFB9ahGQ6OSaKy0tvPrGxEaas46R/7MdC2XbfLU9hnMnm
-         ucH9MXtMUXbPAlVshc3nY7y19AAyq9wQs9zmS8tV+kXyq1xGzNIOqcE7DTMm6/4CjS2B
-         WcSLWZ0w8vtssCG9seeIoOXnDUaZ+Wlz9HMt1DWcWZyZzm9jfJN8s/bXt+Hfh98lS12+
-         fjuA==
+        bh=eigScL5e5mup7Z3+ShdJXrR842NJQMOChPfOYWt/3l8=;
+        b=y54EeyqqMsn7PGMe+1d7KMGa8MeT6TGc6kf7W82uqXro2LkwREFXJAU6JEVUuVYdWO
+         ezGswI0id42TEBqJ1jlFF8ZAMYjR/iDTj/ojp8grOY+hdAsl+2pO8WhMHIhKTnztYzyH
+         RNpuEXINOnLEz/CL8fYAyhlz/dJn1qONLd3Z97ksrEYHWPKM6oHL6Xoau7LjGgDc7xQx
+         OKt+B0eLCaUnCmxs+JL7Pwk/9Xwl1aLijEnhUaxakS4i5fBVgrfBkCf9iFl3V+ef5ioC
+         ZXuPS5L7d//peCHwLG/I9yAbHsqgOwb1T1Cxk02aiZC4ViiD9kYMK9c5ePxs8SbjFwg+
+         3Iiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700553239; x=1701158039;
+        d=1e100.net; s=20230601; t=1700554882; x=1701159682;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=n94+xDIkUOqQeszLqyF1GvL8Xx0iP7KzdJ36tDGQoLY=;
-        b=oBvtdWb8zUjtn5DIynBcOAeIc317SXdmPPqBdNafrIGhsHcwSrLla30fSLLoBdoYTA
-         fxmCj+mX/Mlgxe48KsfEWV/iVRCtGz8CBk+yv+esyxfwyO9Rfu7SARLoPdYAMtK93lQ2
-         zvg2iMWDKUk3AwtLbGmcWgUD1ljAMqqncPcocS4VrAVI0lP0hmQEljrSBFcsG032z98F
-         pjBkIgT4KGDn7iWAJZqAWt/lrYZLZaM1c+tDWX7BFh2f5V78AHdeZF7nNG/r8jm3vCc+
-         yt+FMXmewFQHwJ8MV2gwY5NmpkeKtwSSfpwUBlOFsDlivX8NnvzUPMqs1iSkwAZd8qCg
-         wdnw==
-X-Gm-Message-State: AOJu0Yz7GRyZlrP9dBNWTTpuNZLeSOi/7tD7oVpKz8gZ2Kmqa/c+xeNx
-	hspSUejvB6SHBLtYkoWw+PeYiogoaIub0mie7+OeJA==
-X-Google-Smtp-Source: AGHT+IFEH3g7IKb8uSXGkQLcfDFQGeKgdMM5+Twg24L86I2m/VOT+I8Lea+NYKy/4gFSwZ3WTdUJVHHh1PwvYjXVr94=
-X-Received: by 2002:a17:90a:8b01:b0:280:f534:6b9c with SMTP id
- y1-20020a17090a8b0100b00280f5346b9cmr7974497pjn.21.1700553238477; Mon, 20 Nov
- 2023 23:53:58 -0800 (PST)
+        bh=eigScL5e5mup7Z3+ShdJXrR842NJQMOChPfOYWt/3l8=;
+        b=fmbqGyU3oxBxKbwwqoC0oeS+/sE2jyz38+UAjXlFkd3nOcZ9YS1Vt9LXKcuFJ2Gp3J
+         u/1a/cDUReEphBU427lPfJzGvuv07mHCZ//O+4WfXVUP78rXigYMH3vg/u90s1hA1XI8
+         v7gIJaTysCkXaTTr4U9QakIfjVSUFpSMoIMv9y0/FMLy2vzUGa7MZoib4Pfwt5o3r5Vw
+         l+/sjALL/iGYKgiCeGTehBndrFzQyGi5kckGlytGtXj+niFYPmr3gVbsPTKoC8tEmtRU
+         PiB1nbTtNZQyEAJEH7B7x/UndwKkx0TLc10A/FjRkpHRTHMkjcB/M89hkHnTFYaOlA4R
+         /Sfw==
+X-Gm-Message-State: AOJu0Yzlm60JJcVPlXN9kWgH8tiTGHmWLg0l6cAUEoy2ys2yzW4sGW1h
+	/0o3K05hgS2IiENqKWPcnQev6NyjwWZoozHQ25Cbbg==
+X-Google-Smtp-Source: AGHT+IGbr2XYSRwYN9sWNDSkKbTgz7fmIbWZKQo/3+nZwrm2DQiOQ819Z3adb6Rl/lF0tqkEzzFHe3gA2gKk/dP5AMM=
+X-Received: by 2002:a05:6512:398c:b0:50a:aa8d:1a60 with SMTP id
+ j12-20020a056512398c00b0050aaa8d1a60mr6848280lfu.48.1700554882341; Tue, 21
+ Nov 2023 00:21:22 -0800 (PST)
 MIME-Version: 1.0
-References: <CALrw=nHpRQQaQTP_jZfREgrQEMpS8jBF8JQCv4ygqXycE-StaA@mail.gmail.com>
- <ZVwMzXxWkgonIAfc@MiWiFi-R3L-srv>
-In-Reply-To: <ZVwMzXxWkgonIAfc@MiWiFi-R3L-srv>
-From: Ignat Korchagin <ignat@cloudflare.com>
-Date: Tue, 21 Nov 2023 07:53:47 +0000
-Message-ID: <CALrw=nG8xsYw7XKyL_VMHtKiaBcQCKvC8UVp-C9-BdeN4A1Daw@mail.gmail.com>
-Subject: Re: Potential config regression after 89cde455 ("kexec: consolidate
- kexec and crash options into kernel/Kconfig.kexec")
-To: Baoquan He <bhe@redhat.com>, eric_devolder@yahoo.com
+References: <20231118033859.726692-1-apatel@ventanamicro.com>
+ <20231118033859.726692-5-apatel@ventanamicro.com> <1dd7f7b4-d2ba-4216-ac3f-3552c2bee24b@kernel.org>
+In-Reply-To: <1dd7f7b4-d2ba-4216-ac3f-3552c2bee24b@kernel.org>
+From: Atish Kumar Patra <atishp@rivosinc.com>
+Date: Tue, 21 Nov 2023 00:21:11 -0800
+Message-ID: <CAHBxVyG-DK9cDqPedJcR2W2=LQFumQQ_0Z0UUdbbzgju7BaAtg@mail.gmail.com>
+Subject: Re: [PATCH v4 4/5] tty: Add SBI debug console support to HVC SBI driver
+To: Jiri Slaby <jirislaby@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Mailman-Approved-At: Tue, 21 Nov 2023 20:20:18 +1100
@@ -78,68 +77,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: chenhuacai@kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, catalin.marinas@arm.com, linus.walleij@linaro.org, dave.hansen@linux.intel.com, linux-mips@vger.kernel.org, James Bottomley <James.Bottomley@hansenpartnership.com>, dalias@libc.org, hpa@zytor.com, linux-riscv@lists.infradead.org, will@kernel.org, kernel@xen0n.name, tsi@tuyoix.net, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, rmk+kernel@armlinux.org.uk, paulmck@kernel.org, ysato@users.sourceforge.jp, kernel-team <kernel-team@cloudflare.com>, deller@gmx.de, x86@kernel.org, linux@armlinux.org.uk, paul.walmsley@sifive.com, Ingo Molnar <mingo@redhat.com>, geert@linux-m68k.org, hbathini@linux.ibm.com, samitolvanen@google.com, ojeda@kernel.org, juerg.haefliger@canonical.com, borntraeger@linux.ibm.com, frederic@kernel.org, arnd@arndb.de, mhiramat@kernel.org, Ard Biesheuvel <ardb@kernel.org>, thunder.leizhen@huawei.com, aou@eecs.berkeley.edu, keescook@chromium.org, go
- r@linux.ibm.com, anshuman.khandual@arm.com, hca@linux.ibm.com, xin3.li@intel.com, npiggin@gmail.com, konrad.wilk@oracle.com, linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, glaubitz@physik.fu-berlin.de, Thomas Gleixner <tglx@linutronix.de>, ziy@nvidia.com, linux-arm-kernel@lists.infradead.org, boris.ostrovsky@oracle.com, tsbogend@alpha.franken.de, sebastian.reichel@collabora.com, linux-parisc@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>, kirill.shutemov@linux.intel.com, ndesaulniers@google.com, linux-kernel <linux-kernel@vger.kernel.org>, sourabhjain@linux.ibm.com, palmer@dabbelt.com, svens@linux.ibm.com, tj@kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, masahiroy@kernel.org, rppt@kernel.org
+Cc: Anup Patel <apatel@ventanamicro.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, Conor Dooley <conor@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-serial@vger.kernel.org, Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Andrew Jones <ajones@ventanamicro.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 21, 2023 at 1:50=E2=80=AFAM Baoquan He <bhe@redhat.com> wrote:
+On Sun, Nov 19, 2023 at 11:16=E2=80=AFPM Jiri Slaby <jirislaby@kernel.org> =
+wrote:
 >
-> Eric DeVolder's Oracle mail address is not available anymore, add his
-> current mail address he told me.
-
-Thank you!
-
-> On 11/20/23 at 10:52pm, Ignat Korchagin wrote:
-> > Good day!
-> >
-> > We have recently started to evaluate Linux 6.6 and noticed that we
-> > cannot disable CONFIG_KEXEC anymore, but keep CONFIG_CRASH_DUMP
-> > enabled. It seems to be related to commit 89cde455 ("kexec:
-> > consolidate kexec and crash options into kernel/Kconfig.kexec"), where
-> > a CONFIG_KEXEC dependency was added to CONFIG_CRASH_DUMP.
-> >
-> > In our current kernel (Linux 6.1) we only enable CONFIG_KEXEC_FILE
-> > with enforced signature check to support the kernel crash dumping
-> > functionality and would like to keep CONFIG_KEXEC disabled for
-> > security reasons [1].
-> >
-> > I was reading the long commit message, but the reason for adding
-> > CONFIG_KEXEC as a dependency for CONFIG_CRASH_DUMP evaded me. And I
-> > believe from the implementation perspective CONFIG_KEXEC_FILE should
-> > suffice here (as we successfully used it for crashdumps on Linux 6.1).
-> >
-> > Is there a reason for adding this dependency or is it just an
-> > oversight? Would some solution of requiring either CONFIG_KEXEC or
-> > CONFIG_KEXEC_FILE work here?
+> On 18. 11. 23, 4:38, Anup Patel wrote:
+> > diff --git a/drivers/tty/hvc/hvc_riscv_sbi.c b/drivers/tty/hvc/hvc_risc=
+v_sbi.c
+> > index 31f53fa77e4a..697c981221b5 100644
+> > --- a/drivers/tty/hvc/hvc_riscv_sbi.c
+> > +++ b/drivers/tty/hvc/hvc_riscv_sbi.c
+> ...
+> > -static int __init hvc_sbi_console_init(void)
+> > +static int hvc_sbi_dbcn_tty_get(uint32_t vtermno, char *buf, int count=
+)
+> >   {
+> > -     hvc_instantiate(0, 0, &hvc_sbi_ops);
+> > +     phys_addr_t pa;
+> > +
+> > +     if (is_vmalloc_addr(buf)) {
 >
-> I searched the patch history, found Eric didn't add the dependency on
-> CONFIG_KEXEC at the beginning. Later a linux-next building failure with
-> randconfig was reported, in there CONFIG_CRASH_DUMP enabled, while
-> CONFIG_KEXEC is disabled. Finally Eric added the KEXEC dependency for
-> CRASH_DUMP. Please see below link for more details:
+> I wonder, where does this buf come from, so that you have to check for
+> vmalloc?
 >
-> https://lore.kernel.org/all/3e8eecd1-a277-2cfb-690e-5de2eb7b988e@oracle.c=
-om/T/#u
 
-Thank you for digging this up. However I'm still confused, because
-this is exactly how we configure Linux 6.1 (although we do have
-CONFIG_KEXEC_FILE enabled) and we don't have any problems. I believe
-we did not investigate this issue properly.
+When VMAP_STCK is enabled, stack allocation depends on the vmalloc.
+That's why we have to if the buf is allocated using vmalloc.
 
-> And besides, the newly added CONFIG_CRASH_HOTPLUG also needs
-> CONFIG_KEXEC if the elfcorehdr is allowed to be manipulated when
-> cpu/memory hotplug hapened.
-
-This still feels like a regression to me: any crash dump support
-should be independent of KEXEC syscalls being present. While probably
-the common case (including us) that the crashing kernel and recovery
-kernel are the same, they don't have to be. We need kexec syscall in
-the crashing kernel, but crashdump support in the recovery kernel (but
-the recovery kernel not having the kexec syscalls should be totally
-fine). If we do require some code definitions from kexec - at most we
-should put them under CONFIG_KEXEC_CORE.
-
-> Thanks
-> Baoquan
+> > +             pa =3D page_to_phys(vmalloc_to_page(buf)) + offset_in_pag=
+e(buf);
+> > +             if (PAGE_SIZE < (offset_in_page(buf) + count))
+>
+> Am I the only one who would prefer:
+>    if (count + offset_in_page(buf) > PAGE_SIZE)
+> ?
+>
+> > +                     count =3D PAGE_SIZE - offset_in_page(buf);
+> > +     } else {
+> > +             pa =3D __pa(buf);
+> > +     }
+> > +
+> > +     return sbi_debug_console_read(count, pa);
+> > +}
+>
+>
+> thanks,
+> --
+> js
+> suse labs
 >
