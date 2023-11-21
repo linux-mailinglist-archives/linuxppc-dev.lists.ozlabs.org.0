@@ -2,102 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F56D7F2781
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 09:32:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4619B7F2897
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 10:21:05 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=AlrrhHTS;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=nuR4x0VU;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=OrgQS5jO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SZHfn3n2Kz3dWF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 19:32:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SZJlL6mCCz3dBK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 20:21:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=AlrrhHTS;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=nuR4x0VU;
+	dkim=pass (2048-bit key; secure) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=OrgQS5jO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cloudflare.com (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=ignat@cloudflare.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZHdt0cwNz2xQ8
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 19:31:14 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out1.suse.de (Postfix) with ESMTP id E2E3E2197F;
-	Tue, 21 Nov 2023 08:31:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1700555463; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VICQCjc11sV2vtKMVzGh6AeAb5iLAJuyDhKvVYHH7O0=;
-	b=AlrrhHTSt3cOneCwmcAjRRlLOdkyywiYVP2AJEqBDdQEkDKGGgv2Wb9tLHNK2NbXYW+tOK
-	v6cwMtOpZgUPyQUF5cYL84BS6Jb6aY+uI6oTKs4tg1BOMWaUcO7Mo3rk1MxcJBmyU6Jho9
-	CvYOXaVNPVBWigtfbNt8zNbz+5xYbCg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1700555463;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VICQCjc11sV2vtKMVzGh6AeAb5iLAJuyDhKvVYHH7O0=;
-	b=nuR4x0VUVvuItg0pB0J8GI7UKruTSGjCd2l8KUy2I7fSCKcIvVbBWbSOkpDYliRV0hLDuH
-	fP0U2JJBMBuR4HBg==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id ED4A32C146;
-	Tue, 21 Nov 2023 08:31:02 +0000 (UTC)
-Date: Tue, 21 Nov 2023 09:31:01 +0100
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: nathanl@linux.ibm.com
-Subject: Re: [PATCH v4 09/13] powerpc/pseries: Add papr-vpd character driver
- for VPD retrieval
-Message-ID: <20231121083101.GK9696@kitsune.suse.cz>
-References: <20231117-papr-sys_rtas-vs-lockdown-v4-0-b794d8cb8502@linux.ibm.com>
- <20231117-papr-sys_rtas-vs-lockdown-v4-9-b794d8cb8502@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZGq36DTvz3by8
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 18:54:06 +1100 (AEDT)
+Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-28396255b81so2874418a91.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Nov 2023 23:54:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1700553239; x=1701158039; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n94+xDIkUOqQeszLqyF1GvL8Xx0iP7KzdJ36tDGQoLY=;
+        b=OrgQS5jOoHCgXZJz+z//IXTj9AoWRZWOOMXU32Ecj6XQrZ+Z9TEOC+0EF0E5v9re3a
+         ug/pH13UVp18oashLAxlXXaiZuLKbu23mPSIaF6rQjX6eRhHAD6Jeo9e7XFH+FqHL2aJ
+         1kzL31nh9pV2UZksn/dcpkrlFB9ahGQ6OSaKy0tvPrGxEaas46R/7MdC2XbfLU9hnMnm
+         ucH9MXtMUXbPAlVshc3nY7y19AAyq9wQs9zmS8tV+kXyq1xGzNIOqcE7DTMm6/4CjS2B
+         WcSLWZ0w8vtssCG9seeIoOXnDUaZ+Wlz9HMt1DWcWZyZzm9jfJN8s/bXt+Hfh98lS12+
+         fjuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700553239; x=1701158039;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=n94+xDIkUOqQeszLqyF1GvL8Xx0iP7KzdJ36tDGQoLY=;
+        b=oBvtdWb8zUjtn5DIynBcOAeIc317SXdmPPqBdNafrIGhsHcwSrLla30fSLLoBdoYTA
+         fxmCj+mX/Mlgxe48KsfEWV/iVRCtGz8CBk+yv+esyxfwyO9Rfu7SARLoPdYAMtK93lQ2
+         zvg2iMWDKUk3AwtLbGmcWgUD1ljAMqqncPcocS4VrAVI0lP0hmQEljrSBFcsG032z98F
+         pjBkIgT4KGDn7iWAJZqAWt/lrYZLZaM1c+tDWX7BFh2f5V78AHdeZF7nNG/r8jm3vCc+
+         yt+FMXmewFQHwJ8MV2gwY5NmpkeKtwSSfpwUBlOFsDlivX8NnvzUPMqs1iSkwAZd8qCg
+         wdnw==
+X-Gm-Message-State: AOJu0Yz7GRyZlrP9dBNWTTpuNZLeSOi/7tD7oVpKz8gZ2Kmqa/c+xeNx
+	hspSUejvB6SHBLtYkoWw+PeYiogoaIub0mie7+OeJA==
+X-Google-Smtp-Source: AGHT+IFEH3g7IKb8uSXGkQLcfDFQGeKgdMM5+Twg24L86I2m/VOT+I8Lea+NYKy/4gFSwZ3WTdUJVHHh1PwvYjXVr94=
+X-Received: by 2002:a17:90a:8b01:b0:280:f534:6b9c with SMTP id
+ y1-20020a17090a8b0100b00280f5346b9cmr7974497pjn.21.1700553238477; Mon, 20 Nov
+ 2023 23:53:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231117-papr-sys_rtas-vs-lockdown-v4-9-b794d8cb8502@linux.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Level: *************
-X-Spamd-Bar: +++++++++++++
-Authentication-Results: smtp-out1.suse.de;
-	dkim=none;
-	dmarc=none;
-	spf=softfail (smtp-out1.suse.de: 149.44.160.134 is neither permitted nor denied by domain of msuchanek@suse.de) smtp.mailfrom=msuchanek@suse.de
-X-Rspamd-Server: rspamd2
-X-Spamd-Result: default: False [13.91 / 50.00];
-	 ARC_NA(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 DMARC_NA(1.20)[suse.de];
-	 R_SPF_SOFTFAIL(4.60)[~all:c];
-	 RCPT_COUNT_FIVE(0.00)[6];
-	 RWL_MAILSPIKE_GOOD(-1.00)[149.44.160.134:from];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 MX_GOOD(-0.01)[];
-	 NEURAL_SPAM_LONG(3.50)[1.000];
-	 VIOLATED_DIRECT_SPF(3.50)[];
-	 NEURAL_SPAM_SHORT(2.92)[0.972];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 RCVD_NO_TLS_LAST(0.10)[];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 R_DKIM_NA(2.20)[];
-	 MIME_TRACE(0.00)[0:+];
-	 FREEMAIL_CC(0.00)[ellerman.id.au,gmail.com,lists.ozlabs.org,linux.ibm.com];
-	 RCVD_COUNT_TWO(0.00)[2];
-	 BAYES_HAM(-3.00)[100.00%]
-X-Spam-Score: 13.91
-X-Rspamd-Queue-Id: E2E3E2197F
-X-Spam-Flag: NO
+References: <CALrw=nHpRQQaQTP_jZfREgrQEMpS8jBF8JQCv4ygqXycE-StaA@mail.gmail.com>
+ <ZVwMzXxWkgonIAfc@MiWiFi-R3L-srv>
+In-Reply-To: <ZVwMzXxWkgonIAfc@MiWiFi-R3L-srv>
+From: Ignat Korchagin <ignat@cloudflare.com>
+Date: Tue, 21 Nov 2023 07:53:47 +0000
+Message-ID: <CALrw=nG8xsYw7XKyL_VMHtKiaBcQCKvC8UVp-C9-BdeN4A1Daw@mail.gmail.com>
+Subject: Re: Potential config regression after 89cde455 ("kexec: consolidate
+ kexec and crash options into kernel/Kconfig.kexec")
+To: Baoquan He <bhe@redhat.com>, eric_devolder@yahoo.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailman-Approved-At: Tue, 21 Nov 2023 20:20:18 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,286 +78,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gcwilson@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, tyreld@linux.ibm.com
+Cc: chenhuacai@kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, catalin.marinas@arm.com, linus.walleij@linaro.org, dave.hansen@linux.intel.com, linux-mips@vger.kernel.org, James Bottomley <James.Bottomley@hansenpartnership.com>, dalias@libc.org, hpa@zytor.com, linux-riscv@lists.infradead.org, will@kernel.org, kernel@xen0n.name, tsi@tuyoix.net, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, rmk+kernel@armlinux.org.uk, paulmck@kernel.org, ysato@users.sourceforge.jp, kernel-team <kernel-team@cloudflare.com>, deller@gmx.de, x86@kernel.org, linux@armlinux.org.uk, paul.walmsley@sifive.com, Ingo Molnar <mingo@redhat.com>, geert@linux-m68k.org, hbathini@linux.ibm.com, samitolvanen@google.com, ojeda@kernel.org, juerg.haefliger@canonical.com, borntraeger@linux.ibm.com, frederic@kernel.org, arnd@arndb.de, mhiramat@kernel.org, Ard Biesheuvel <ardb@kernel.org>, thunder.leizhen@huawei.com, aou@eecs.berkeley.edu, keescook@chromium.org, go
+ r@linux.ibm.com, anshuman.khandual@arm.com, hca@linux.ibm.com, xin3.li@intel.com, npiggin@gmail.com, konrad.wilk@oracle.com, linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, glaubitz@physik.fu-berlin.de, Thomas Gleixner <tglx@linutronix.de>, ziy@nvidia.com, linux-arm-kernel@lists.infradead.org, boris.ostrovsky@oracle.com, tsbogend@alpha.franken.de, sebastian.reichel@collabora.com, linux-parisc@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>, kirill.shutemov@linux.intel.com, ndesaulniers@google.com, linux-kernel <linux-kernel@vger.kernel.org>, sourabhjain@linux.ibm.com, palmer@dabbelt.com, svens@linux.ibm.com, tj@kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, masahiroy@kernel.org, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+On Tue, Nov 21, 2023 at 1:50=E2=80=AFAM Baoquan He <bhe@redhat.com> wrote:
+>
+> Eric DeVolder's Oracle mail address is not available anymore, add his
+> current mail address he told me.
 
-On Fri, Nov 17, 2023 at 11:14:27PM -0600, Nathan Lynch via B4 Relay wrote:
-> From: Nathan Lynch <nathanl@linux.ibm.com>
-> 
-> PowerVM LPARs may retrieve Vital Product Data (VPD) for system
-> components using the ibm,get-vpd RTAS function.
-> 
-> We can expose this to user space with a /dev/papr-vpd character
-> device, where the programming model is:
-> 
->   struct papr_location_code plc = { .str = "", }; /* obtain all VPD */
->   int devfd = open("/dev/papr-vpd", O_RDONLY);
->   int vpdfd = ioctl(devfd, PAPR_VPD_CREATE_HANDLE, &plc);
->   size_t size = lseek(vpdfd, 0, SEEK_END);
->   char *buf = malloc(size);
->   pread(devfd, buf, size, 0);
-> 
-> When a file descriptor is obtained from ioctl(PAPR_VPD_CREATE_HANDLE),
-> the file contains the result of a complete ibm,get-vpd sequence. The
-> file contents are immutable from the POV of user space. To get a new
-> view of the VPD, the client must create a new handle.
-> 
-> This design choice insulates user space from most of the complexities
-> that ibm,get-vpd brings:
-> 
-> * ibm,get-vpd must be called more than once to obtain complete
->   results.
-> 
-> * Only one ibm,get-vpd call sequence should be in progress at a time;
->   interleaved sequences will disrupt each other. Callers must have a
->   protocol for serializing their use of the function.
-> 
-> * A call sequence in progress may receive a "VPD changed, try again"
->   status, requiring the client to abandon the sequence and start
->   over.
-> 
-> The memory required for the VPD buffers seems acceptable, around 20KB
-> for all VPD on one of my systems. And the value of the
-> /rtas/ibm,vpd-size DT property (the estimated maximum size of VPD) is
-> consistently 300KB across various systems I've checked.
-> 
-> I've implemented support for this new ABI in the rtas_get_vpd()
-> function in librtas, which the vpdupdate command currently uses to
-> populate its VPD database. I've verified that an unmodified vpdupdate
-> binary generates an identical database when using a librtas.so that
-> prefers the new ABI.
-> 
-> Note that the driver needs to serialize its call sequences with legacy
-> sys_rtas(ibm,get-vpd) callers, so it exposes its internal lock for
-> sys_rtas.
-> 
-> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-> ---
->  Documentation/userspace-api/ioctl/ioctl-number.rst |   2 +
->  arch/powerpc/include/uapi/asm/papr-vpd.h           |  22 +
->  arch/powerpc/platforms/pseries/Makefile            |   1 +
->  arch/powerpc/platforms/pseries/papr-vpd.c          | 536 +++++++++++++++++++++
->  4 files changed, 561 insertions(+)
+Thank you!
 
-> diff --git a/arch/powerpc/platforms/pseries/Makefile b/arch/powerpc/platforms/pseries/Makefile
-> index 1476c5e4433c..f936962a2946 100644
-> --- a/arch/powerpc/platforms/pseries/Makefile
-> +++ b/arch/powerpc/platforms/pseries/Makefile
-> @@ -4,6 +4,7 @@ ccflags-$(CONFIG_PPC_PSERIES_DEBUG)	+= -DDEBUG
->  
->  obj-y			:= lpar.o hvCall.o nvram.o reconfig.o \
->  			   of_helpers.o rtas-work-area.o papr-sysparm.o \
-> +			   papr-vpd.o \
->  			   setup.o iommu.o event_sources.o ras.o \
->  			   firmware.o power.o dlpar.o mobility.o rng.o \
->  			   pci.o pci_dlpar.o eeh_pseries.o msi.o \
-> diff --git a/arch/powerpc/platforms/pseries/papr-vpd.c b/arch/powerpc/platforms/pseries/papr-vpd.c
-> new file mode 100644
-> index 000000000000..2bc52301a402
-> --- /dev/null
-> +++ b/arch/powerpc/platforms/pseries/papr-vpd.c
-> @@ -0,0 +1,536 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +
-> +#define pr_fmt(fmt) "papr-vpd: " fmt
-> +
-> +#include <linux/anon_inodes.h>
-> +#include <linux/build_bug.h>
-> +#include <linux/file.h>
-> +#include <linux/fs.h>
-> +#include <linux/init.h>
-> +#include <linux/kernel.h>
-> +#include <linux/miscdevice.h>
-> +#include <linux/slab.h>
-> +#include <linux/string.h>
-> +#include <linux/string_helpers.h>
-> +#include <asm/machdep.h>
-> +#include <asm/papr-vpd.h>
-> +#include <asm/rtas-work-area.h>
-> +#include <asm/rtas.h>
-> +#include <uapi/asm/papr-vpd.h>
-...
-> +/**
-> + * papr_vpd_retrieve() - Return the VPD for a location code.
-> + * @loc_code: Location code that defines the scope of VPD to return.
-> + *
-> + * Run VPD sequences against @loc_code until a blob is successfully
-> + * instantiated, or a hard error is encountered, or a fatal signal is
-> + * pending.
-> + *
-> + * Context: May sleep.
-> + * Return: A fully populated VPD blob when successful. Encoded error
-> + * pointer otherwise.
-> + */
-> +static const struct vpd_blob *papr_vpd_retrieve(const struct papr_location_code *loc_code)
-> +{
-> +	const struct vpd_blob *blob;
-> +
-> +	/*
-> +	 * EAGAIN means the sequence errored with a -4 (VPD changed)
-> +	 * status from ibm,get-vpd, and we should attempt a new
-> +	 * sequence. PAPR+ R1–7.3.20–5 indicates that this should be a
-> +	 * transient condition, not something that happens
-> +	 * continuously. But we'll stop trying on a fatal signal.
-> +	 */
-> +	do {
-> +		blob = papr_vpd_run_sequence(loc_code);
-> +		if (!IS_ERR(blob)) /* Success. */
-> +			break;
-> +		if (PTR_ERR(blob) != -EAGAIN) /* Hard error. */
-> +			break;
-> +		pr_info_ratelimited("VPD changed during retrieval, retrying\n");
-> +		cond_resched();
-> +	} while (!fatal_signal_pending(current));
+> On 11/20/23 at 10:52pm, Ignat Korchagin wrote:
+> > Good day!
+> >
+> > We have recently started to evaluate Linux 6.6 and noticed that we
+> > cannot disable CONFIG_KEXEC anymore, but keep CONFIG_CRASH_DUMP
+> > enabled. It seems to be related to commit 89cde455 ("kexec:
+> > consolidate kexec and crash options into kernel/Kconfig.kexec"), where
+> > a CONFIG_KEXEC dependency was added to CONFIG_CRASH_DUMP.
+> >
+> > In our current kernel (Linux 6.1) we only enable CONFIG_KEXEC_FILE
+> > with enforced signature check to support the kernel crash dumping
+> > functionality and would like to keep CONFIG_KEXEC disabled for
+> > security reasons [1].
+> >
+> > I was reading the long commit message, but the reason for adding
+> > CONFIG_KEXEC as a dependency for CONFIG_CRASH_DUMP evaded me. And I
+> > believe from the implementation perspective CONFIG_KEXEC_FILE should
+> > suffice here (as we successfully used it for crashdumps on Linux 6.1).
+> >
+> > Is there a reason for adding this dependency or is it just an
+> > oversight? Would some solution of requiring either CONFIG_KEXEC or
+> > CONFIG_KEXEC_FILE work here?
+>
+> I searched the patch history, found Eric didn't add the dependency on
+> CONFIG_KEXEC at the beginning. Later a linux-next building failure with
+> randconfig was reported, in there CONFIG_CRASH_DUMP enabled, while
+> CONFIG_KEXEC is disabled. Finally Eric added the KEXEC dependency for
+> CRASH_DUMP. Please see below link for more details:
+>
+> https://lore.kernel.org/all/3e8eecd1-a277-2cfb-690e-5de2eb7b988e@oracle.c=
+om/T/#u
 
-this is defined in linux/sched/signal.h which is not included.
+Thank you for digging this up. However I'm still confused, because
+this is exactly how we configure Linux 6.1 (although we do have
+CONFIG_KEXEC_FILE enabled) and we don't have any problems. I believe
+we did not investigate this issue properly.
 
-> +
-> +	return blob;
-> +}
-> +
-> +static ssize_t papr_vpd_handle_read(struct file *file, char __user *buf, size_t size, loff_t *off)
-> +{
-> +	const struct vpd_blob *blob = file->private_data;
-> +
-> +	/* bug: we should not instantiate a handle without any data attached. */
-> +	if (!vpd_blob_has_data(blob)) {
-> +		pr_err_once("handle without data\n");
-> +		return -EIO;
-> +	}
-> +
-> +	return simple_read_from_buffer(buf, size, off, blob->data, blob->len);
-> +}
-> +
-> +static int papr_vpd_handle_release(struct inode *inode, struct file *file)
-> +{
-> +	const struct vpd_blob *blob = file->private_data;
-> +
-> +	vpd_blob_free(blob);
-> +
-> +	return 0;
-> +}
-> +
-> +static loff_t papr_vpd_handle_seek(struct file *file, loff_t off, int whence)
-> +{
-> +	const struct vpd_blob *blob = file->private_data;
-> +
-> +	return fixed_size_llseek(file, off, whence, blob->len);
-> +}
-> +
-> +
-> +static const struct file_operations papr_vpd_handle_ops = {
-> +	.read = papr_vpd_handle_read,
-> +	.llseek = papr_vpd_handle_seek,
-> +	.release = papr_vpd_handle_release,
-> +};
-> +
-> +/**
-> + * papr_vpd_create_handle() - Create a fd-based handle for reading VPD.
-> + * @ulc: Location code in user memory; defines the scope of the VPD to
-> + *       retrieve.
-> + *
-> + * Handler for PAPR_VPD_IOC_CREATE_HANDLE ioctl command. Validates
-> + * @ulc and instantiates an immutable VPD "blob" for it. The blob is
-> + * attached to a file descriptor for reading by user space. The memory
-> + * backing the blob is freed when the file is released.
-> + *
-> + * The entire requested VPD is retrieved by this call and all
-> + * necessary RTAS interactions are performed before returning the fd
-> + * to user space. This keeps the read handler simple and ensures that
-> + * the kernel can prevent interleaving of ibm,get-vpd call sequences.
-> + *
-> + * Return: The installed fd number if successful, -ve errno otherwise.
-> + */
-> +static long papr_vpd_create_handle(struct papr_location_code __user *ulc)
-> +{
-> +	struct papr_location_code klc;
-> +	const struct vpd_blob *blob;
-> +	struct file *file;
-> +	long err;
-> +	int fd;
-> +
-> +	if (copy_from_user(&klc, ulc, sizeof(klc)))
-> +		return -EFAULT;
+> And besides, the newly added CONFIG_CRASH_HOTPLUG also needs
+> CONFIG_KEXEC if the elfcorehdr is allowed to be manipulated when
+> cpu/memory hotplug hapened.
 
-This is defined in linux/uaccess.h which is not included.
+This still feels like a regression to me: any crash dump support
+should be independent of KEXEC syscalls being present. While probably
+the common case (including us) that the crashing kernel and recovery
+kernel are the same, they don't have to be. We need kexec syscall in
+the crashing kernel, but crashdump support in the recovery kernel (but
+the recovery kernel not having the kexec syscalls should be totally
+fine). If we do require some code definitions from kexec - at most we
+should put them under CONFIG_KEXEC_CORE.
 
-Same for the sysparm driver.
-
-Tested-by: Michal Suchánek <msuchanek@suse.de>
-
-> +
-> +	if (!string_is_terminated(klc.str, ARRAY_SIZE(klc.str)))
-> +		return -EINVAL;
-> +
-> +	blob = papr_vpd_retrieve(&klc);
-> +	if (IS_ERR(blob))
-> +		return PTR_ERR(blob);
-> +
-> +	fd = get_unused_fd_flags(O_RDONLY | O_CLOEXEC);
-> +	if (fd < 0) {
-> +		err = fd;
-> +		goto free_blob;
-> +	}
-> +
-> +	file = anon_inode_getfile("[papr-vpd]", &papr_vpd_handle_ops,
-> +				  (void *)blob, O_RDONLY);
-> +	if (IS_ERR(file)) {
-> +		err = PTR_ERR(file);
-> +		goto put_fd;
-> +	}
-> +
-> +	file->f_mode |= FMODE_LSEEK | FMODE_PREAD;
-> +	fd_install(fd, file);
-> +	return fd;
-> +put_fd:
-> +	put_unused_fd(fd);
-> +free_blob:
-> +	vpd_blob_free(blob);
-> +	return err;
-> +}
-> +
-> +/*
-> + * Top-level ioctl handler for /dev/papr-vpd.
-> + */
-> +static long papr_vpd_dev_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
-> +{
-> +	void __user *argp = (__force void __user *)arg;
-> +	long ret;
-> +
-> +	switch (ioctl) {
-> +	case PAPR_VPD_IOC_CREATE_HANDLE:
-> +		ret = papr_vpd_create_handle(argp);
-> +		break;
-> +	default:
-> +		ret = -ENOIOCTLCMD;
-> +		break;
-> +	}
-> +	return ret;
-> +}
-> +
-> +static const struct file_operations papr_vpd_ops = {
-> +	.unlocked_ioctl = papr_vpd_dev_ioctl,
-> +};
-> +
-> +static struct miscdevice papr_vpd_dev = {
-> +	.minor = MISC_DYNAMIC_MINOR,
-> +	.name = "papr-vpd",
-> +	.fops = &papr_vpd_ops,
-> +};
-> +
-> +static __init int papr_vpd_init(void)
-> +{
-> +	if (!rtas_function_implemented(RTAS_FN_IBM_GET_VPD))
-> +		return -ENODEV;
-> +
-> +	return misc_register(&papr_vpd_dev);
-> +}
-> +machine_device_initcall(pseries, papr_vpd_init);
-> 
-> -- 
-> 2.41.0
-> 
+> Thanks
+> Baoquan
+>
