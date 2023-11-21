@@ -1,75 +1,103 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 369967F26C0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 08:57:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F56D7F2781
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 09:32:03 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=AqA1/fKJ;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=AlrrhHTS;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=nuR4x0VU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SZGtR0JlZz3dJZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 18:57:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SZHfn3n2Kz3dWF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 19:32:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=AqA1/fKJ;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=AlrrhHTS;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=nuR4x0VU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42a; helo=mail-pf1-x42a.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZGsb6JTDz3byP
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 18:56:19 +1100 (AEDT)
-Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-6b1d1099a84so5007658b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Nov 2023 23:56:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700553376; x=1701158176; darn=lists.ozlabs.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xPkROMmbes+NoTwBo6+myJWaj5ksNAqKHgxIe4KqEts=;
-        b=AqA1/fKJYFKpvO60uq3tzfFxbL73WRA5qbTwNMQYYSlteMCVw8tAa0wkHb+aNoONEH
-         A1K5/GL7whCKvH0iQOq6cCzhfjOi36k9d0gBJJoxH9QedBKJVmVfdUjwznqF/a3ErwTf
-         y5YXpTlmaIy1W8pSl9Su3kuTHObtzqr3X9VGOeTGlcTyCJGrRETdHDvT0bPFBRXh89iK
-         zhHPena/TGOlDEthNzN43OZZIeSeoEQaoXubpFyWtSlEoDvfIGidQtp1dpifUQl+k+RO
-         danRI/169sg6vK97ZcRyN4jg0qOxdm+tOUk4PzB1bCkiFB9kCc94vAkRMIziIguYiaG6
-         Ljyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700553376; x=1701158176;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=xPkROMmbes+NoTwBo6+myJWaj5ksNAqKHgxIe4KqEts=;
-        b=t1XkiVfXXPiZX7IWsetMGIFIaqStwhc3u2LeuHJjbluC98pjPpcEeGA30qy8bD9Ct5
-         hvRAYg1B0qPm50Zw6MPER6Pi5JNZMrleFKnEQwFMNAk66ropS9D3pxwsAsNlvwBb3w2J
-         decRYZeWOfxmsQH8g+wSlDEcM0U/xM0Tyitd4y2LRj48imJYuKpK8Oho/H9nvl1+RmfM
-         qjUoI5V3bTYDHsHCT0X5kKps1ICpOgVdW8I6gZv4FxsDyIoVZ+BJ0mMiivQqTJMSg8hA
-         O2/X3ORlN4eaQi/KKQieUEVEH4K+weH70RG3B3nTAOY0KHF0buQpNlEgFg6ZlV99IfMp
-         vGCg==
-X-Gm-Message-State: AOJu0YzedZTrdDmAFdsfp+cdqF/vz4E1oBtoAiUB6jO7si0V4BNE1i2g
-	SyQN+uJY/xLRnFrc2HVCPqU=
-X-Google-Smtp-Source: AGHT+IGOCLqAMv/TBcLtTqQ5OkM/wL3HZhsfigdHGhc8FOL3f0xgpNEsonSURDAai5Ll61v7nVXwZg==
-X-Received: by 2002:a05:6a20:8f14:b0:18a:e86f:f246 with SMTP id b20-20020a056a208f1400b0018ae86ff246mr990692pzk.10.1700553376311;
-        Mon, 20 Nov 2023 23:56:16 -0800 (PST)
-Received: from localhost (203-219-179-16.tpgi.com.au. [203.219.179.16])
-        by smtp.gmail.com with ESMTPSA id ju4-20020a170903428400b001cc3875e658sm7340245plb.303.2023.11.20.23.56.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Nov 2023 23:56:16 -0800 (PST)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 21 Nov 2023 17:56:10 +1000
-Message-Id: <CX4BUXJD624S.2U2UZ9M6H198U@wheely>
-Subject: Re: [PATCH v2] powerpc: Don't clobber fr0/vs0 during fp|altivec
- register  save
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Timothy Pearson" <tpearson@raptorengineering.com>, "Michael Ellerman"
- <mpe@ellerman.id.au>
-X-Mailer: aerc 0.15.2
-References: <1921539696.48534988.1700407082933.JavaMail.zimbra@raptorengineeringinc.com> <877cmc7ve9.fsf@mail.lhotse> <439072392.48800901.1700498743840.JavaMail.zimbra@raptorengineeringinc.com> <874jhg6lkn.fsf@mail.lhotse> <608737213.48890358.1700529837699.JavaMail.zimbra@raptorengineeringinc.com>
-In-Reply-To: <608737213.48890358.1700529837699.JavaMail.zimbra@raptorengineeringinc.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZHdt0cwNz2xQ8
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 19:31:14 +1100 (AEDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out1.suse.de (Postfix) with ESMTP id E2E3E2197F;
+	Tue, 21 Nov 2023 08:31:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1700555463; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VICQCjc11sV2vtKMVzGh6AeAb5iLAJuyDhKvVYHH7O0=;
+	b=AlrrhHTSt3cOneCwmcAjRRlLOdkyywiYVP2AJEqBDdQEkDKGGgv2Wb9tLHNK2NbXYW+tOK
+	v6cwMtOpZgUPyQUF5cYL84BS6Jb6aY+uI6oTKs4tg1BOMWaUcO7Mo3rk1MxcJBmyU6Jho9
+	CvYOXaVNPVBWigtfbNt8zNbz+5xYbCg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1700555463;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VICQCjc11sV2vtKMVzGh6AeAb5iLAJuyDhKvVYHH7O0=;
+	b=nuR4x0VUVvuItg0pB0J8GI7UKruTSGjCd2l8KUy2I7fSCKcIvVbBWbSOkpDYliRV0hLDuH
+	fP0U2JJBMBuR4HBg==
+Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by relay2.suse.de (Postfix) with ESMTPS id ED4A32C146;
+	Tue, 21 Nov 2023 08:31:02 +0000 (UTC)
+Date: Tue, 21 Nov 2023 09:31:01 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: nathanl@linux.ibm.com
+Subject: Re: [PATCH v4 09/13] powerpc/pseries: Add papr-vpd character driver
+ for VPD retrieval
+Message-ID: <20231121083101.GK9696@kitsune.suse.cz>
+References: <20231117-papr-sys_rtas-vs-lockdown-v4-0-b794d8cb8502@linux.ibm.com>
+ <20231117-papr-sys_rtas-vs-lockdown-v4-9-b794d8cb8502@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231117-papr-sys_rtas-vs-lockdown-v4-9-b794d8cb8502@linux.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Level: *************
+X-Spamd-Bar: +++++++++++++
+Authentication-Results: smtp-out1.suse.de;
+	dkim=none;
+	dmarc=none;
+	spf=softfail (smtp-out1.suse.de: 149.44.160.134 is neither permitted nor denied by domain of msuchanek@suse.de) smtp.mailfrom=msuchanek@suse.de
+X-Rspamd-Server: rspamd2
+X-Spamd-Result: default: False [13.91 / 50.00];
+	 ARC_NA(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 DMARC_NA(1.20)[suse.de];
+	 R_SPF_SOFTFAIL(4.60)[~all:c];
+	 RCPT_COUNT_FIVE(0.00)[6];
+	 RWL_MAILSPIKE_GOOD(-1.00)[149.44.160.134:from];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 MX_GOOD(-0.01)[];
+	 NEURAL_SPAM_LONG(3.50)[1.000];
+	 VIOLATED_DIRECT_SPF(3.50)[];
+	 NEURAL_SPAM_SHORT(2.92)[0.972];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 RCVD_NO_TLS_LAST(0.10)[];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 R_DKIM_NA(2.20)[];
+	 MIME_TRACE(0.00)[0:+];
+	 FREEMAIL_CC(0.00)[ellerman.id.au,gmail.com,lists.ozlabs.org,linux.ibm.com];
+	 RCVD_COUNT_TWO(0.00)[2];
+	 BAYES_HAM(-3.00)[100.00%]
+X-Spam-Score: 13.91
+X-Rspamd-Queue-Id: E2E3E2197F
+X-Spam-Flag: NO
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,177 +109,286 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, regressions <regressions@lists.linux.dev>
+Cc: gcwilson@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, tyreld@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue Nov 21, 2023 at 11:23 AM AEST, Timothy Pearson wrote:
->
->
-> ----- Original Message -----
-> > From: "Michael Ellerman" <mpe@ellerman.id.au>
-> > To: "Timothy Pearson" <tpearson@raptorengineering.com>
-> > Cc: "Jens Axboe" <axboe@kernel.dk>, "regressions" <regressions@lists.li=
-nux.dev>, "npiggin" <npiggin@gmail.com>,
-> > "christophe leroy" <christophe.leroy@csgroup.eu>, "linuxppc-dev" <linux=
-ppc-dev@lists.ozlabs.org>
-> > Sent: Monday, November 20, 2023 5:39:52 PM
-> > Subject: Re: [PATCH v2] powerpc: Don't clobber fr0/vs0 during fp|altive=
-c register  save
->
-> > Timothy Pearson <tpearson@raptorengineering.com> writes:
-> >> ----- Original Message -----
-> >>> From: "Michael Ellerman" <mpe@ellerman.id.au>
-> > ...
-> >>>=20
-> >>> But we now have a new path, because io-uring can call copy_process() =
-via
-> >>> create_io_thread() from the signal handling path. That's OK if the si=
-gnal is
-> >>> handled as we return from a syscall, but it's not OK if the signal is=
- handled
-> >>> due to some other interrupt.
-> >>>=20
-> >>> Which is:
-> >>>=20
-> >>> interrupt_return_srr_user()
-> >>>  interrupt_exit_user_prepare()
-> >>>    interrupt_exit_user_prepare_main()
-> >>>      do_notify_resume()
-> >>>        get_signal()
-> >>>          task_work_run()
-> >>>            create_worker_cb()
-> >>>              create_io_worker()
-> >>>                copy_process()
-> >>>                  dup_task_struct()
-> >>>                    arch_dup_task_struct()
-> >>>                      flush_all_to_thread()
-> >>>                        save_all()
-> >>>                          if (tsk->thread.regs->msr & MSR_FP)
-> >>>                            save_fpu()
-> >>>                            # fr0 is clobbered and potentially live in=
- userspace
-> >>>=20
-> >>>=20
-> >>> So tldr I think the corruption is only an issue since io-uring starte=
-d doing
-> >>> the clone via signal, which I think matches the observed timeline of =
-this bug
-> >>> appearing.
-> >>
-> >> I agree the corruption really only started showing up in earnest on
-> >> io_uring clone-via-signal, as this was confirmed several times in the
-> >> course of debugging.
-> >=20
-> > Thanks.
-> >=20
-> >> Note as well that I may very well have a wrong call order in the
-> >> commit message, since I was relying on a couple of WARN_ON() macros I
-> >> inserted to check for a similar (but not identical) condition and
-> >> didn't spend much time getting new traces after identifying the root
-> >> cause.
-> >=20
-> > Yep no worries. I'll reword it to incorporate the full path from my mai=
-l.
-> >=20
-> >> I went back and grabbed some real world system-wide stack traces, sinc=
-e I now
-> >> know what to trigger on.  A typical example is:
-> >>
-> >> interrupt_return_srr_user()
-> >>  interrupt_exit_user_prepare()
-> >>   interrupt_exit_user_prepare_main()
-> >>    schedule()
-> >>     __schedule()
-> >>      __switch_to()
-> >>       giveup_all()
-> >>        # tsk->thread.regs->msr MSR_FP is still set here
-> >>        __giveup_fpu()
-> >>         save_fpu()
-> >>         # fr0 is clobbered and potentially live in userspace
-> >=20
-> > fr0 is not live there.
-> >=20
-> > __giveup_fpu() does roughly:
-> >=20
-> >	msr =3D tsk->thread.regs->msr;
-> >	msr &=3D ~(MSR_FP|MSR_FE0|MSR_FE1);
-> >        msr &=3D ~MSR_VSX;
-> >	tsk->thread.regs =3D msr;
-> >=20
-> > ie. it clears the FP etc. bits from the task's MSR. That means the FP
-> > state will be reloaded from the thread struct before the task is run ag=
-ain.
-> >=20
-> > Also on that path we're switching to another task, so we'll be reloadin=
-g
-> > the other task's FP state before returning to userspace.
-> >=20
-> > So I don't see any bug there.
->
-> Yeah, you're right.  I was trying to get traces while doing something els=
-e, and didn't think that all the way through, sorry. :)  It's not going to =
-be super easy to get a real trace (I was triggering the WARN_ON() from of f=
-r0 getting set to to FPSCR), so let's just assume it's mainly the path you =
-manually found above and update the commit message accordingly.
->
-> > There's only two places that call save_fpu() and skip the giveup logic,
-> > which is save_all() and kvmppc_save_user_regs().
->
-> Now that's interesting as well, since it might explain some issues I've s=
-een for years on a specific QEMU workload.  Once this is backported to stab=
-le I'll need to get the kernels updated on those boxes and see if the issue=
-s disappear...
+Hello,
 
-KVM issue is actually slightly different. You need this (lightly
-verified to solve issue so far).
+On Fri, Nov 17, 2023 at 11:14:27PM -0600, Nathan Lynch via B4 Relay wrote:
+> From: Nathan Lynch <nathanl@linux.ibm.com>
+> 
+> PowerVM LPARs may retrieve Vital Product Data (VPD) for system
+> components using the ibm,get-vpd RTAS function.
+> 
+> We can expose this to user space with a /dev/papr-vpd character
+> device, where the programming model is:
+> 
+>   struct papr_location_code plc = { .str = "", }; /* obtain all VPD */
+>   int devfd = open("/dev/papr-vpd", O_RDONLY);
+>   int vpdfd = ioctl(devfd, PAPR_VPD_CREATE_HANDLE, &plc);
+>   size_t size = lseek(vpdfd, 0, SEEK_END);
+>   char *buf = malloc(size);
+>   pread(devfd, buf, size, 0);
+> 
+> When a file descriptor is obtained from ioctl(PAPR_VPD_CREATE_HANDLE),
+> the file contains the result of a complete ibm,get-vpd sequence. The
+> file contents are immutable from the POV of user space. To get a new
+> view of the VPD, the client must create a new handle.
+> 
+> This design choice insulates user space from most of the complexities
+> that ibm,get-vpd brings:
+> 
+> * ibm,get-vpd must be called more than once to obtain complete
+>   results.
+> 
+> * Only one ibm,get-vpd call sequence should be in progress at a time;
+>   interleaved sequences will disrupt each other. Callers must have a
+>   protocol for serializing their use of the function.
+> 
+> * A call sequence in progress may receive a "VPD changed, try again"
+>   status, requiring the client to abandon the sequence and start
+>   over.
+> 
+> The memory required for the VPD buffers seems acceptable, around 20KB
+> for all VPD on one of my systems. And the value of the
+> /rtas/ibm,vpd-size DT property (the estimated maximum size of VPD) is
+> consistently 300KB across various systems I've checked.
+> 
+> I've implemented support for this new ABI in the rtas_get_vpd()
+> function in librtas, which the vpdupdate command currently uses to
+> populate its VPD database. I've verified that an unmodified vpdupdate
+> binary generates an identical database when using a librtas.so that
+> prefers the new ABI.
+> 
+> Note that the driver needs to serialize its call sequences with legacy
+> sys_rtas(ibm,get-vpd) callers, so it exposes its internal lock for
+> sys_rtas.
+> 
+> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+> ---
+>  Documentation/userspace-api/ioctl/ioctl-number.rst |   2 +
+>  arch/powerpc/include/uapi/asm/papr-vpd.h           |  22 +
+>  arch/powerpc/platforms/pseries/Makefile            |   1 +
+>  arch/powerpc/platforms/pseries/papr-vpd.c          | 536 +++++++++++++++++++++
+>  4 files changed, 561 insertions(+)
 
----
+> diff --git a/arch/powerpc/platforms/pseries/Makefile b/arch/powerpc/platforms/pseries/Makefile
+> index 1476c5e4433c..f936962a2946 100644
+> --- a/arch/powerpc/platforms/pseries/Makefile
+> +++ b/arch/powerpc/platforms/pseries/Makefile
+> @@ -4,6 +4,7 @@ ccflags-$(CONFIG_PPC_PSERIES_DEBUG)	+= -DDEBUG
+>  
+>  obj-y			:= lpar.o hvCall.o nvram.o reconfig.o \
+>  			   of_helpers.o rtas-work-area.o papr-sysparm.o \
+> +			   papr-vpd.o \
+>  			   setup.o iommu.o event_sources.o ras.o \
+>  			   firmware.o power.o dlpar.o mobility.o rng.o \
+>  			   pci.o pci_dlpar.o eeh_pseries.o msi.o \
+> diff --git a/arch/powerpc/platforms/pseries/papr-vpd.c b/arch/powerpc/platforms/pseries/papr-vpd.c
+> new file mode 100644
+> index 000000000000..2bc52301a402
+> --- /dev/null
+> +++ b/arch/powerpc/platforms/pseries/papr-vpd.c
+> @@ -0,0 +1,536 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +
+> +#define pr_fmt(fmt) "papr-vpd: " fmt
+> +
+> +#include <linux/anon_inodes.h>
+> +#include <linux/build_bug.h>
+> +#include <linux/file.h>
+> +#include <linux/fs.h>
+> +#include <linux/init.h>
+> +#include <linux/kernel.h>
+> +#include <linux/miscdevice.h>
+> +#include <linux/slab.h>
+> +#include <linux/string.h>
+> +#include <linux/string_helpers.h>
+> +#include <asm/machdep.h>
+> +#include <asm/papr-vpd.h>
+> +#include <asm/rtas-work-area.h>
+> +#include <asm/rtas.h>
+> +#include <uapi/asm/papr-vpd.h>
+...
+> +/**
+> + * papr_vpd_retrieve() - Return the VPD for a location code.
+> + * @loc_code: Location code that defines the scope of VPD to return.
+> + *
+> + * Run VPD sequences against @loc_code until a blob is successfully
+> + * instantiated, or a hard error is encountered, or a fatal signal is
+> + * pending.
+> + *
+> + * Context: May sleep.
+> + * Return: A fully populated VPD blob when successful. Encoded error
+> + * pointer otherwise.
+> + */
+> +static const struct vpd_blob *papr_vpd_retrieve(const struct papr_location_code *loc_code)
+> +{
+> +	const struct vpd_blob *blob;
+> +
+> +	/*
+> +	 * EAGAIN means the sequence errored with a -4 (VPD changed)
+> +	 * status from ibm,get-vpd, and we should attempt a new
+> +	 * sequence. PAPR+ R1–7.3.20–5 indicates that this should be a
+> +	 * transient condition, not something that happens
+> +	 * continuously. But we'll stop trying on a fatal signal.
+> +	 */
+> +	do {
+> +		blob = papr_vpd_run_sequence(loc_code);
+> +		if (!IS_ERR(blob)) /* Success. */
+> +			break;
+> +		if (PTR_ERR(blob) != -EAGAIN) /* Hard error. */
+> +			break;
+> +		pr_info_ratelimited("VPD changed during retrieval, retrying\n");
+> +		cond_resched();
+> +	} while (!fatal_signal_pending(current));
 
-From c12fbed0e12207058282a2411da59b43b1f96c49 Mon Sep 17 00:00:00 2001
-From: Nicholas Piggin <npiggin@gmail.com>
-Date: Tue, 21 Nov 2023 17:03:55 +1000
-Subject: [PATCH] KVM: PPC: Book3S HV: Fix KVM_RUN ioctl clobbering FP/VEC
- registers
+this is defined in linux/sched/signal.h which is not included.
 
-Before running a guest, the host process's FP/VEC registers are saved
-away like a context switch or a kernel use of those regs. The guest
-FP/VEC registers can then be loaded as needed. The host process
-registers would be restored lazily when it uses FP/VEC again.
+> +
+> +	return blob;
+> +}
+> +
+> +static ssize_t papr_vpd_handle_read(struct file *file, char __user *buf, size_t size, loff_t *off)
+> +{
+> +	const struct vpd_blob *blob = file->private_data;
+> +
+> +	/* bug: we should not instantiate a handle without any data attached. */
+> +	if (!vpd_blob_has_data(blob)) {
+> +		pr_err_once("handle without data\n");
+> +		return -EIO;
+> +	}
+> +
+> +	return simple_read_from_buffer(buf, size, off, blob->data, blob->len);
+> +}
+> +
+> +static int papr_vpd_handle_release(struct inode *inode, struct file *file)
+> +{
+> +	const struct vpd_blob *blob = file->private_data;
+> +
+> +	vpd_blob_free(blob);
+> +
+> +	return 0;
+> +}
+> +
+> +static loff_t papr_vpd_handle_seek(struct file *file, loff_t off, int whence)
+> +{
+> +	const struct vpd_blob *blob = file->private_data;
+> +
+> +	return fixed_size_llseek(file, off, whence, blob->len);
+> +}
+> +
+> +
+> +static const struct file_operations papr_vpd_handle_ops = {
+> +	.read = papr_vpd_handle_read,
+> +	.llseek = papr_vpd_handle_seek,
+> +	.release = papr_vpd_handle_release,
+> +};
+> +
+> +/**
+> + * papr_vpd_create_handle() - Create a fd-based handle for reading VPD.
+> + * @ulc: Location code in user memory; defines the scope of the VPD to
+> + *       retrieve.
+> + *
+> + * Handler for PAPR_VPD_IOC_CREATE_HANDLE ioctl command. Validates
+> + * @ulc and instantiates an immutable VPD "blob" for it. The blob is
+> + * attached to a file descriptor for reading by user space. The memory
+> + * backing the blob is freed when the file is released.
+> + *
+> + * The entire requested VPD is retrieved by this call and all
+> + * necessary RTAS interactions are performed before returning the fd
+> + * to user space. This keeps the read handler simple and ensures that
+> + * the kernel can prevent interleaving of ibm,get-vpd call sequences.
+> + *
+> + * Return: The installed fd number if successful, -ve errno otherwise.
+> + */
+> +static long papr_vpd_create_handle(struct papr_location_code __user *ulc)
+> +{
+> +	struct papr_location_code klc;
+> +	const struct vpd_blob *blob;
+> +	struct file *file;
+> +	long err;
+> +	int fd;
+> +
+> +	if (copy_from_user(&klc, ulc, sizeof(klc)))
+> +		return -EFAULT;
 
-KVM HV did not do this correctly. The registers are saved in the
-thread struct, but the FP/VEC/VSX bits remain enabled in the user
-MSR, leading the kernel to think they are still valid. Even after
-they are clobbered by guest registers. This leads to the host
-process getting guest FP/VEC register values.
+This is defined in linux/uaccess.h which is not included.
 
-KVM must be invoked by ioctl in this path, and almost certainly that
-means a C call to a wrapper function, but that still leaves real
-possibility of corruption in for non-volatile registers to cause
-problems for QEMU process.
----
- arch/powerpc/kernel/process.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Same for the sysparm driver.
 
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 392404688cec..9452a54d356c 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -1198,11 +1198,11 @@ void kvmppc_save_user_regs(void)
-=20
- 	usermsr =3D current->thread.regs->msr;
-=20
-+	/* Caller has enabled FP/VEC/VSX/TM in MSR */
- 	if (usermsr & MSR_FP)
--		save_fpu(current);
--
-+		__giveup_fpu(current);
- 	if (usermsr & MSR_VEC)
--		save_altivec(current);
-+		__giveup_altivec(current);
-=20
- #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
- 	if (usermsr & MSR_TM) {
---=20
-2.42.0
+Tested-by: Michal Suchánek <msuchanek@suse.de>
 
+> +
+> +	if (!string_is_terminated(klc.str, ARRAY_SIZE(klc.str)))
+> +		return -EINVAL;
+> +
+> +	blob = papr_vpd_retrieve(&klc);
+> +	if (IS_ERR(blob))
+> +		return PTR_ERR(blob);
+> +
+> +	fd = get_unused_fd_flags(O_RDONLY | O_CLOEXEC);
+> +	if (fd < 0) {
+> +		err = fd;
+> +		goto free_blob;
+> +	}
+> +
+> +	file = anon_inode_getfile("[papr-vpd]", &papr_vpd_handle_ops,
+> +				  (void *)blob, O_RDONLY);
+> +	if (IS_ERR(file)) {
+> +		err = PTR_ERR(file);
+> +		goto put_fd;
+> +	}
+> +
+> +	file->f_mode |= FMODE_LSEEK | FMODE_PREAD;
+> +	fd_install(fd, file);
+> +	return fd;
+> +put_fd:
+> +	put_unused_fd(fd);
+> +free_blob:
+> +	vpd_blob_free(blob);
+> +	return err;
+> +}
+> +
+> +/*
+> + * Top-level ioctl handler for /dev/papr-vpd.
+> + */
+> +static long papr_vpd_dev_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
+> +{
+> +	void __user *argp = (__force void __user *)arg;
+> +	long ret;
+> +
+> +	switch (ioctl) {
+> +	case PAPR_VPD_IOC_CREATE_HANDLE:
+> +		ret = papr_vpd_create_handle(argp);
+> +		break;
+> +	default:
+> +		ret = -ENOIOCTLCMD;
+> +		break;
+> +	}
+> +	return ret;
+> +}
+> +
+> +static const struct file_operations papr_vpd_ops = {
+> +	.unlocked_ioctl = papr_vpd_dev_ioctl,
+> +};
+> +
+> +static struct miscdevice papr_vpd_dev = {
+> +	.minor = MISC_DYNAMIC_MINOR,
+> +	.name = "papr-vpd",
+> +	.fops = &papr_vpd_ops,
+> +};
+> +
+> +static __init int papr_vpd_init(void)
+> +{
+> +	if (!rtas_function_implemented(RTAS_FN_IBM_GET_VPD))
+> +		return -ENODEV;
+> +
+> +	return misc_register(&papr_vpd_dev);
+> +}
+> +machine_device_initcall(pseries, papr_vpd_init);
+> 
+> -- 
+> 2.41.0
+> 
