@@ -2,53 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8232F7F368B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 19:53:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 884147F3887
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Nov 2023 23:01:33 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=POVK2c2w;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=poue5VPW;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SZYRz32h0z3cbB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 05:53:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SZdcq3SYPz3cGb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 09:01:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=POVK2c2w;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=poue5VPW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gustavoars@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZYR571lJz3cZF
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 05:52:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZS672FQ9z3cT2
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 01:52:45 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id E9A9861A91;
-	Tue, 21 Nov 2023 18:52:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9422EC433C8;
-	Tue, 21 Nov 2023 18:52:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700592767;
-	bh=5RbPe9Jo0Kx3jw4qthF98qjBS4eZ7mQNCwFgjLRcjnI=;
-	h=Date:From:To:Cc:Subject:From;
-	b=POVK2c2wUB2WPyUQZ1NtanCPyJem4EWudfnE4UYZaZ0vaiCOrIS/HI8x2cXwXfwVb
-	 0MXJ8q+hnv02iCqaJQ2ZZkkJRfA4Q6dYuo6hON2+9iCHeYTYixTHVI5eWbDKuVF/JW
-	 41F0ZeT4rNZer1RONY+r6xxSrHp1QSPCU9ntqIptnX2hY4dAojK6ucWB1HMMb+qMpr
-	 rePbvv2uzJiY6cxlhubAa5tyRExehUcMwP/773+vC4QUvT4pB1iW5eGE6XPv2g7klm
-	 fvzObIfzE3FmkuqyX8hCfHdZmLwKsi36JJVYy8lez7sGa1w+cvvyRV+MMt+YNDgjqM
-	 xOSzs7obbDfUQ==
-Date: Tue, 21 Nov 2023 12:52:44 -0600
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To: Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH][next] powerpc/crypto: Avoid -Wstringop-overflow warnings
-Message-ID: <ZVz8fLtrYTz+YSjn@work>
+	by sin.source.kernel.org (Postfix) with ESMTP id 4FC25CE1BC6;
+	Tue, 21 Nov 2023 14:52:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 580D7C433C7;
+	Tue, 21 Nov 2023 14:52:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1700578360;
+	bh=dGYz6IxNOUY4NpvhlMLeIB3Xxc/hARJYIHJyki7wDHE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=poue5VPWyYd+HrTAPC2kL1JwV02FvsHlUJ1z3W9FXk/U2czUqklkcawHdmmtSEsoY
+	 IlPddu/gpJsZ1UpOPQIgrM7BkkvyXf2F3hIfHrb2U18/fsMMvTR4wCzYJDyNBuBtzP
+	 SpQfWPT1cgV1qEShQyzt0KdJxLEsOUDx610rqzSQ=
+Date: Tue, 21 Nov 2023 15:12:23 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Subject: Re: [PATCH 20/22] usb: fsl-mph-dr-of: mark fsl_usb2_mpc5121_init()
+ static
+Message-ID: <2023112114-cried-ramble-b3f9@gregkh>
+References: <20231108125843.3806765-1-arnd@kernel.org>
+ <20231108125843.3806765-21-arnd@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20231108125843.3806765-21-arnd@kernel.org>
+X-Mailman-Approved-At: Wed, 22 Nov 2023 09:00:49 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,54 +58,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hardening@vger.kernel.org, "Gustavo A. R. Silva" <gustavoars@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Juri Lelli <juri.lelli@redhat.com>, linux-fbdev@vger.kernel.org, x86@kernel.org, loongarch@lists.linux.dev, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, netdev@vger.kernel.org, Guo Ren <guoren@kernel.org>, Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>, Helge Deller <deller@gmx.de>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Vincenzo Frascino <vincenzo.frascino@arm.com>, Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-s390@vger.kernel.org, Vincent Guittot <vincent.guittot@linaro.org>, Masahiro Yamada <masahiroy@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, Greg Ungerer <gerg@linux-m68k.org>, linux-bcachefs@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, Vineet Gupta <vgupta@kernel.org>, "Naveen N.
+  Rao" <naveen.n.rao@linux.ibm.com>, Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org, linux-trace-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, linux-kbuild@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>, Steven Rostedt <rostedt@goodmis.org>, Nathan Chancellor <nathan@kernel.org>, linux-m68k@lists.linux-m68k.org, linux-csky@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Andy Lutomirski <luto@kernel.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Timur Tabi <timur@kernel.org>, Geoff Levand <geoff@infradead.org>, linuxppc-dev@lists.ozlabs.org, Kent Overstreet <kent.overstreet@linux.dev>, Nick Desaulniers <ndesaulniers@google.com>, linux-kern
+ el@vger.kernel.org, Sudip Mukherjee <sudipm.mukherjee@gmail.com>, Dinh Nguyen <dinguyen@kernel.org>, linux-usb@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Masami Hiramatsu <mhiramat@kernel.org>, linux-alpha@vger.kernel.org, linux-mtd@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>, David Woodhouse <dwmw2@infradead.org>, "David S. Miller" <davem@davemloft.net>, Al Viro <viro@zeniv.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The compiler doesn't know that `32` is an offset into the Hash table:
+On Wed, Nov 08, 2023 at 01:58:41PM +0100, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> This function is only called locally and should always have been static:
+> 
+> drivers/usb/host/fsl-mph-dr-of.c:291:5: error: no previous prototype for 'fsl_usb2_mpc5121_init' [-Werror=missing-prototypes]
+> 
+> Fixes: 230f7ede6c2f ("USB: add USB EHCI support for MPC5121 SoC")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
- 56 struct Hash_ctx {
- 57         u8 H[16];       /* subkey */
- 58         u8 Htable[256]; /* Xi, Hash table(offset 32) */
- 59 };
-
-So, it legitimately complains about a potential out-of-bounds issue
-if `256 bytes` are accessed in `htable` (this implies going
-`32 bytes` beyond the boundaries of `Htable`):
-
-arch/powerpc/crypto/aes-gcm-p10-glue.c: In function 'gcmp10_init':
-arch/powerpc/crypto/aes-gcm-p10-glue.c:120:9: error: 'gcm_init_htable' accessing 256 bytes in a region of size 224 [-Werror=stringop-overflow=]
-  120 |         gcm_init_htable(hash->Htable+32, hash->H);
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-arch/powerpc/crypto/aes-gcm-p10-glue.c:120:9: note: referencing argument 1 of type 'unsigned char[256]'
-arch/powerpc/crypto/aes-gcm-p10-glue.c:120:9: note: referencing argument 2 of type 'unsigned char[16]'
-arch/powerpc/crypto/aes-gcm-p10-glue.c:40:17: note: in a call to function 'gcm_init_htable'
-   40 | asmlinkage void gcm_init_htable(unsigned char htable[256], unsigned char Xi[16]);
-      |                 ^~~~~~~~~~~~~~~
-
-Address this by avoiding specifying the size of `htable` in the function
-prototype; and just for consistency, do the same for parameter `Xi`.
-
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Closes: https://lore.kernel.org/linux-next/20231121131903.68a37932@canb.auug.org.au/
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
- arch/powerpc/crypto/aes-gcm-p10-glue.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/crypto/aes-gcm-p10-glue.c b/arch/powerpc/crypto/aes-gcm-p10-glue.c
-index 4b6e899895e7..f62ee54076c0 100644
---- a/arch/powerpc/crypto/aes-gcm-p10-glue.c
-+++ b/arch/powerpc/crypto/aes-gcm-p10-glue.c
-@@ -37,7 +37,7 @@ asmlinkage void aes_p10_gcm_encrypt(u8 *in, u8 *out, size_t len,
- 				    void *rkey, u8 *iv, void *Xi);
- asmlinkage void aes_p10_gcm_decrypt(u8 *in, u8 *out, size_t len,
- 				    void *rkey, u8 *iv, void *Xi);
--asmlinkage void gcm_init_htable(unsigned char htable[256], unsigned char Xi[16]);
-+asmlinkage void gcm_init_htable(unsigned char htable[], unsigned char Xi[]);
- asmlinkage void gcm_ghash_p10(unsigned char *Xi, unsigned char *Htable,
- 		unsigned char *aad, unsigned int alen);
- 
--- 
-2.34.1
-
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
