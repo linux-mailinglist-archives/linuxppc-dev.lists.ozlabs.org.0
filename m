@@ -1,55 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 515CD7F471E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 13:55:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59ECD7F4759
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 14:05:19 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=XYRAWaNy;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oq4y0kD1;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sb1SL1cdcz3dLg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 23:55:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sb1gd1n8jz3dRT
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Nov 2023 00:05:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=XYRAWaNy;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oq4y0kD1;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sb1RV2xkpz2yN8
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 23:54:46 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1700657686;
-	bh=wuIXzags+RBlDsjUweIx70S2oQNg60ItGMTYwpyF8/M=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=XYRAWaNyY9Csde2AbWpecLjArnLsrn0AlVA79QjjWeODirREpWX314cVo3QIskZpN
-	 m51hJ686exSXsNpE9nVqalYXaeQBoAeGC2xByBScxxgOlln9d/b7gFhnRSRnlV47W0
-	 dEn7nCwXtKgxtNgyXWT/SWibxwhRvXSvf/0/OIL7vZH3/weJl0f+5S/jFLnaTGoNgJ
-	 SwdL1M1rDCZ/NN63LGyaiVfYsIl5Z2GyN6U3yuJiKFg7OUuVQeoHymsns06ydgG8Nt
-	 XdHE5k9dS7i02GUJxltb7eBdQeqe5XWjWbvaK+XqZUbgzkRlRvKqZQGvDcq/zC3Fw2
-	 kx54DpXN6r3xQ==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sb1RT54M1z4xWV;
-	Wed, 22 Nov 2023 23:54:45 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Masahiro Yamada <masahiroy@kernel.org>, "Aneesh Kumar K.V"
- <aneesh.kumar@kernel.org>
-Subject: Re: [PATCH] powerpc: add crtsavres.o to always-y instead of extra-y
-In-Reply-To: <CAK7LNAT-_07_h1_jG606VX0WjJq8dEW+C_4E0f28mjyqFnCWFw@mail.gmail.com>
-References: <20231120232332.4100288-1-masahiroy@kernel.org>
- <CX42TU4QHS1Z.A0UUHMDAMZOL@wheely> <87bkbnsa5r.fsf@kernel.org>
- <CAK7LNAT-_07_h1_jG606VX0WjJq8dEW+C_4E0f28mjyqFnCWFw@mail.gmail.com>
-Date: Wed, 22 Nov 2023 23:54:45 +1100
-Message-ID: <87a5r6j6cq.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sb1fk52yBz3bTt
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Nov 2023 00:04:30 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 7A920CE1C99;
+	Wed, 22 Nov 2023 13:04:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1A1C433C7;
+	Wed, 22 Nov 2023 13:04:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1700658262;
+	bh=3jkcxWimrEZabr5xOWfunfKQM+HkiFOaIiIDB9oGtf8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oq4y0kD1MP0WZ3I7hJVLlqsg+3tMaez8cDsAs1SxNnybAwLmMtb1JbhpCCvqQINen
+	 PW8EnPOGF1AqVZItlLGbvIBVWwQbhxmTs0RJwSAHIP3PwkAWawi2Fj4ZPfL0KMXsjD
+	 B7gUpGeuf4GB69tJH7U2c5ertejTZM+By9Eae0KwaPnQYUPTyh4PaItDxisCBWBQ/P
+	 ddSmIPUPErGERIkTGod5g2KZXZNYgklnCctERrOq2rgHJ+Kj74BM8jduXIVXgeUN/F
+	 d/4TdMMPkCKFA5jsADAahsqe/7NW2AKKaBKL9uFgrel0voPkLKPI08rV0CUXrJQMfq
+	 TIoihZiGPpTng==
+Date: Wed, 22 Nov 2023 18:26:00 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/lib: Avoid array bounds warnings in vec ops
+Message-ID: <ab6uj2olygi3edqkjn73kfxvx6igtxotkp3m35j4ikn3ztm2eg@ixkpj2f47ri2>
+References: <20231120235436.1569255-1-mpe@ellerman.id.au>
+ <i4zq3tg6gwaptnuoq2ainowffvkols2k5x7rads473zn55r27y@cvdy5yvkmj2p>
+ <87pm02jt2g.fsf@mail.lhotse>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87pm02jt2g.fsf@mail.lhotse>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,57 +61,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tom Rix <trix@redhat.com>, llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, gustavo@embeddedor.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Masahiro Yamada <masahiroy@kernel.org> writes:
-> On Tue, Nov 21, 2023 at 6:55=E2=80=AFPM Aneesh Kumar K.V
-> <aneesh.kumar@kernel.org> wrote:
->>
->> "Nicholas Piggin" <npiggin@gmail.com> writes:
->>
->> > On Tue Nov 21, 2023 at 9:23 AM AEST, Masahiro Yamada wrote:
->> >> crtsavres.o is linked to modules. However, as explained in commit
->> >> d0e628cd817f ("kbuild: doc: clarify the difference between extra-y
->> >> and always-y"), 'make modules' does not build extra-y.
->> >>
->> >> For example, the following command fails:
->> >>
->> >>   $ make ARCH=3Dpowerpc LLVM=3D1 KBUILD_MODPOST_WARN=3D1 mrproper ps3=
-_defconfig modules
->> >>     [snip]
->> >>     LD [M]  arch/powerpc/platforms/cell/spufs/spufs.ko
->> >>   ld.lld: error: cannot open arch/powerpc/lib/crtsavres.o: No such fi=
-le or directory
->> >>   make[3]: *** [scripts/Makefile.modfinal:56: arch/powerpc/platforms/=
-cell/spufs/spufs.ko] Error 1
->> >>   make[2]: *** [Makefile:1844: modules] Error 2
->> >>   make[1]: *** [/home/masahiro/workspace/linux-kbuild/Makefile:350: _=
-_build_one_by_one] Error 2
->> >>   make: *** [Makefile:234: __sub-make] Error 2
->> >>
->> >
->> > Thanks. Is this the correct Fixes tag?
->> >
->> > Fixes: d0e628cd817f ("powerpc/64: Do not link crtsavres.o in vmlinux")
->> >
->>
->> I am finding a different commit ID:
->>
->> commit baa25b571a168aff5a13bfdc973f1229e2b12b63
->> Author: Nicholas Piggin <npiggin@gmail.com>
->> Date:   Fri May 12 01:56:49 2017 +1000
->>
->>     powerpc/64: Do not link crtsavres.o in vmlinux
->>
->>     The 64-bit linker creates save/restore functions on demand with final
->>     links, so vmlinux does not require crtsavres.o.
->
-> Yeah, I think the correct tag is:
->
-> Fixes: baa25b571a16 ("powerpc/64: Do not link crtsavres.o in vmlinux")
+On Wed, Nov 22, 2023 at 03:44:07PM +1100, Michael Ellerman wrote:
+> Naveen N Rao <naveen@kernel.org> writes:
+> > On Tue, Nov 21, 2023 at 10:54:36AM +1100, Michael Ellerman wrote:
+> >> Building with GCC 13 (which has -array-bounds enabled) there are several
+> >
+> > Thanks, gcc13 indeed helps reproduce the warnings.
+> 
+> Actually that part is no longer true since 0da6e5fd6c37 ("gcc: disable
+> '-Warray-bounds' for gcc-13 too").
+> 
+> >> warnings in sstep.c along the lines of:
+> >> 
+> >>   In function ‘do_byte_reverse’,
+> >>       inlined from ‘do_vec_load’ at arch/powerpc/lib/sstep.c:691:3,
+> >>       inlined from ‘emulate_loadstore’ at arch/powerpc/lib/sstep.c:3439:9:
+> >>   arch/powerpc/lib/sstep.c:289:23: error: array subscript 2 is outside array bounds of ‘u8[16]’ {aka ‘unsigned char[16]’} [-Werror=array-bounds=]
+> >>     289 |                 up[2] = byterev_8(up[1]);
+> >>         |                 ~~~~~~^~~~~~~~~~~~~~~~~~
+> >>   arch/powerpc/lib/sstep.c: In function ‘emulate_loadstore’:
+> >>   arch/powerpc/lib/sstep.c:681:11: note: at offset 16 into object ‘u’ of size 16
+> >>     681 |         } u = {};
+> >>         |           ^
+> >> 
+> >> do_byte_reverse() supports a size up to 32 bytes, but in these cases the
+> >> caller is only passing a 16 byte buffer. In practice there is no bug,
+> >> do_vec_load() is only called from the LOAD_VMX case in emulate_loadstore().
+> >> That in turn is only reached when analyse_instr() recognises VMX ops,
+> >> and in all cases the size is no greater than 16:
+> >> 
+> >>   $ git grep -w LOAD_VMX arch/powerpc/lib/sstep.c
+> >>   arch/powerpc/lib/sstep.c:                        op->type = MKOP(LOAD_VMX, 0, 1);
+> >>   arch/powerpc/lib/sstep.c:                        op->type = MKOP(LOAD_VMX, 0, 2);
+> >>   arch/powerpc/lib/sstep.c:                        op->type = MKOP(LOAD_VMX, 0, 4);
+> >>   arch/powerpc/lib/sstep.c:                        op->type = MKOP(LOAD_VMX, 0, 16);
+> >> 
+> >> Similarly for do_vec_store().
+> >> 
+> >> Although the warning is incorrect, the code would be safer if it clamped
+> >> the size from the caller to the known size of the buffer. Do that using
+> >> min_t().
+> >
+> > But, do_vec_load() and do_vec_store() assume that the maximum size is 16 
+> > (the address_ok() check as an example). So, should we be considering a 
+> > bigger hammer to help detect future incorrect use?
+> 
+> Yeah true.
+> 
+> To be honest I don't know how paranoid we want to get, we could end up
+> putting WARN's all over the kernel :)
+> 
+> In this case I guess if the size is too large we overflow the buffer on
+> the kernel stack, so we should at least check the size.
+> 
+> But does it need a WARN? I'm not sure. If we had a case that was passing
+> a out-of-bound size hopefully we would notice in testing? :)
 
-Yep, I used that when applying.
+You're right, a simpler check should suffice. I will send an updated 
+patch.
 
-cheers
+Thanks,
+Naveen
+
