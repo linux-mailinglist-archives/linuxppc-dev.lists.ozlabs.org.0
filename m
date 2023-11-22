@@ -1,51 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70C57F3EDE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 08:27:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3FBB7F3F65
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 09:01:38 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=PCtBrTBv;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SZt9P4svVz3dVK
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 18:27:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SZtxD4SdLz3clb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 19:01:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=43.155.80.173; helo=bg5.exmail.qq.com; envelope-from=ke.zhao@shingroup.cn; receiver=lists.ozlabs.org)
-Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.155.80.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=PCtBrTBv;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+f356749d2870cc4c8790+7395+infradead.org+hch@bombadil.srs.infradead.org; receiver=lists.ozlabs.org)
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZt8v2CXpz3cDT
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 18:26:38 +1100 (AEDT)
-X-QQ-mid: bizesmtp90t1700637925tzulhvmw
-Received: from [127.0.0.1] ( [121.8.34.183])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 22 Nov 2023 15:25:23 +0800 (CST)
-X-QQ-SSF: 01400000000000409000000A0000000
-X-QQ-FEAT: 3M0okmaRx3gWbAZsppbqFXOgd+ASBlrd9OFaP+k9ueK1HKF7gWC1foXGe+EqS
-	5s6Lqk4gZyRfovsWbuSJZ6iEmY9Q/CaPZofkp99N4oOXlUK89nrxiSjyNQAgFazULJvGX7j
-	WNKx9qE+yZGk5Afi+kgu5gMhqPbVkXoE2DPLtYXbABX997agyfD7UySSnu67oRaaB6ExlVX
-	2oS0xrlmTAcMOPt/uR0/Vyv9jXSIIfqit/lEYZ9gUPAyXn/5bqIwe9I7NRDi+N2egMU3LTq
-	0iplZfUmlVo6VOWXkHddbWDdro4A/RdLH/uc4J5tu9zuSc0Lg0keAOuWdD+2ABk9RzXvnd0
-	VxQ2lGVdQaaHhztyAecc7vztzu4Ve7h6jy9E1cIKWok0n69pqWqlf090A7zV+Ue8lcHGPCh
-	JRbJJGS63Zc=
-X-QQ-GoodBg: 2
-X-BIZMAIL-ID: 9463445068661459453
-Message-ID: <52743BC52E07B486+dcb66331-0993-462b-ac03-6de69a3e1fac@shingroup.cn>
-Date: Wed, 22 Nov 2023 15:25:23 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZtwM0zkdz3c82
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 19:00:49 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=rG9CnI6rb1E9NFvnbYt1RG2l2gXTlO1XMx7PoiRe2Ec=; b=PCtBrTBvxv7SOp8UE5vFdvbfF0
+	P5NaPlXmpvqNViNINDPdipO0w9S7846a/jfPx/chfTBwwTwYjneEH25vRgUw635dBIYYVnMCDmiM6
+	OeTvKWjvS5RPTRtLFJM8VWWVC1A3xvPIQ+lpajb19q+Chh4kjK5j81FkX1DAOmUYdLz8CY2/xQjU/
+	eHO+ESOk90z7nvlFOUb/rkbJstkzzg3x3vrH7Vvfk96TWlMZ6TRu1MnpeRKEUoHL7WMK53ciD/Y6Q
+	bdvOGQ2aAG+0OYv9E7rZOWLEOZLfUmhAOJwT7XbQn2p/6gB5NGOg/D88uulBsscSZ7PfrfCGM1nAw
+	u/zzeo7A==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
+	id 1r5i9o-000z5V-1I;
+	Wed, 22 Nov 2023 08:00:24 +0000
+Date: Wed, 22 Nov 2023 00:00:24 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Peter Xu <peterx@redhat.com>
+Subject: Re: [PATCH RFC 06/12] mm/gup: Drop folio_fast_pin_allowed() in
+ hugepd processing
+Message-ID: <ZV21GCbG48nTLDzn@infradead.org>
+References: <20231116012908.392077-1-peterx@redhat.com>
+ <20231116012908.392077-7-peterx@redhat.com>
+ <ZVsYMMJpmFV2T/Zc@infradead.org>
+ <ZVzT5_3Zn-Y-6xth@x1n>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc: Add PVN support for HeXin C2000 processor
-To: Michael Ellerman <mpe@ellerman.id.au>, npiggin@gmail.com,
- christophe.leroy@csgroup.eu, fbarrat@linux.ibm.com, ajd@linux.ibm.com,
- arnd@arndb.de, gregkh@linuxfoundation.org
-References: <20231117075215.647-1-ke.zhao@shingroup.cn>
- <87sf4yk19w.fsf@mail.lhotse>
-Content-Language: en-US
-From: =?UTF-8?B?WmhhbyBLZSDotbUg5Y+v?= <ke.zhao@shingroup.cn>
-In-Reply-To: <87sf4yk19w.fsf@mail.lhotse>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:shingroup.cn:qybglogicsvrsz:qybglogicsvrsz3a-0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZVzT5_3Zn-Y-6xth@x1n>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,81 +61,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: luming.yu@shingroup.cn, kvm@vger.kernel.org, dawei.li@shingroup.cn, linux-kernel@vger.kernel.org, shenghui.qu@shingroup.cn, linuxppc-dev@lists.ozlabs.org
+Cc: Andrea Arcangeli <aarcange@redhat.com>, James Houghton <jthoughton@google.com>, Lorenzo Stoakes <lstoakes@gmail.com>, David Hildenbrand <david@redhat.com>, John Hubbard <jhubbard@nvidia.com>, Yang Shi <shy828301@gmail.com>, Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>, linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org, Mike Rapoport <rppt@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, "Kirill A . Shutemov" <kirill@shutemov.name>, Axel Rasmussen <axelrasmussen@google.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Vlastimil Babka <vbabka@suse.cz>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
+On Tue, Nov 21, 2023 at 10:59:35AM -0500, Peter Xu wrote:
+> > What prevents us from ever using hugepd with file mappings?  I think
+> > it would naturally fit in with how large folios for the pagecache work.
+> > 
+> > So keeping this check and generalizing it seems like the better idea to
+> > me.
+> 
+> But then it means we're still keeping that dead code for fast-gup even if
+> we know that fact..  Or do we have a plan to add that support very soon, so
+> this code will be destined to add back?
 
-On 2023/11/22 9:46, Michael Ellerman wrote:
-> Zhao Ke <ke.zhao@shingroup.cn> writes:
->> HeXin Tech Co. has applied for a new PVN from the OpenPower Community
->> for its new processor C2000. The OpenPower has assigned a new PVN
->> and this newly assigned PVN is 0x0066, add pvr register related
->> support for this PVN.
->>
->> Signed-off-by: Zhao Ke <ke.zhao@shingroup.cn>
->> Link: https://discuss.openpower.foundation/t/how-to-get-a-new-pvr-for-processors-follow-power-isa/477/10
->   
-> Hi Zhao Ke,
->
-> Thanks for the patch. Just a few questions.
->
-> Are you able to provide any further detail on the processor?
->
-> Your cputable entry claims that it's identical to the original Power8
-> core, can you comment at all on how true that is in practice?
+The question wasn't mean retorical - we support arbitrary power of two
+sized folios for the pagepage, what prevents us from using hugepd with
+them right now?
 
-Basically, we made lots of design change for the new processor.
+> The other option is I can always add a comment above gup_huge_pd()
+> explaining this special bit, so that when someone is adding hugepd support
+> to file large folios we'll hopefully not forget it?  But then that
+> generalization work will only happen when the code will be needed.
 
-For example:
-
-     1. redesign the interconnect of the fabric, from crossbar to mesh
-
-     2. redesign the memory subsystem, including the modification of L2 
-and L3 architecture
-
-     3. redesign the SMP bus
-
-     4. upgrade PCIe to gen5 and increase the number of lanes
-
-     5. upgrade ddr to DDR5, dimm direct connected, and the number of 
-channels
-
-     6. redesign the pervasive architecture, including debug/trace, 
-clock&power management, etc.
-
-
-> Unfortunately the kernel has some hard-coded knowledge of various
-> non-architected features, which are not controlled via the CPU table,
-> and are instead controlled by firmware. So you'll need to make sure you
-> set those correctly, see init_fw_feat_flags() for details.
-
-Thanks for telling me, we have a firmware team and we will work together
-
-on this.
-
-> One other comment below ...
->
->> diff --git a/arch/powerpc/kernel/cpu_specs_book3s_64.h b/arch/powerpc/kernel/cpu_specs_book3s_64.h
->> index c370c1b804a9..4f604934da7c 100644
->> --- a/arch/powerpc/kernel/cpu_specs_book3s_64.h
->> +++ b/arch/powerpc/kernel/cpu_specs_book3s_64.h
->> @@ -238,6 +238,21 @@ static struct cpu_spec cpu_specs[] __initdata = {
->>   		.machine_check_early	= __machine_check_early_realmode_p8,
->>   		.platform		= "power8",
->>   	},
->> +	{	/* 2.07-compliant processor, HeXin C2000 processor */
->> +		.pvr_mask		= 0xffffffff,
->> +		.pvr_value		= 0x00660000,
->> +		.cpu_name		= "POWER8 (architected)",
->   
-> Using "(architected)" here is not right. That's reserved for the
-> 0x0f00000x range of PVRs.
->
-> You should use "POWER8 (raw)", or you could actually use the marketing
-> name there if you want to, eg. "HeXin C2000" or whatever.
-I will update this asap.
-> cheers
->
+If dropping the check is the right thing for now (and I think the ppc
+maintainers and willy as the large folio guy might have a more useful
+opinions than I do), leaving a comment in would be very useful.
 
