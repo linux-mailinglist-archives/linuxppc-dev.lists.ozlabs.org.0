@@ -2,101 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B6147F4D80
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 17:56:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE21F7F4D97
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 17:57:30 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=I3VUEh0n;
-	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=HaijsBJy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UDMgvLwC;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sb6pb0znGz3dTN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Nov 2023 03:56:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sb6qX5jy0z3vtn
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Nov 2023 03:57:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=I3VUEh0n;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=HaijsBJy;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UDMgvLwC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=suse.cz (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=jack@suse.cz; receiver=lists.ozlabs.org)
-X-Greylist: delayed 77 seconds by postgrey-1.37 at boromir; Thu, 23 Nov 2023 02:06:47 AEDT
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mgamail.intel.com; envelope-from=jani.nikula@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sb4Mq6KP6z3cmW
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Nov 2023 02:06:47 +1100 (AEDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id C1BAC1F385;
-	Wed, 22 Nov 2023 15:06:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1700665603; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OrnR+VJ3e8KBiB9GJuzndO2GMUtaDExl7p2e9XDoJNY=;
-	b=I3VUEh0nmQg+RePNSu00a2BA3dlsre6v2YtGb07RjTtCKrjUi1ICIvIdzbKon9Yt4/fQBk
-	VJ9Wpf2K7cyzFS9zBCBUo6IIvILDDyL1bskUFqE+WQg5nj7WUeYGI/EZaADq7d9raLMLVq
-	j2J5KyiS0r9zuduA6j3dmaOBYhZXsr0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1700665603;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OrnR+VJ3e8KBiB9GJuzndO2GMUtaDExl7p2e9XDoJNY=;
-	b=HaijsBJyT5xIphmfAgcIDItAfIvsHToSSGgn6ij0vk97n2OBQT7+g9z+2+NA7fWsCj8Wob
-	+nqu+eTHutvkdWDA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B44C113467;
-	Wed, 22 Nov 2023 15:06:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id EEn8KwMZXmXdGgAAMHmgww
-	(envelope-from <jack@suse.cz>); Wed, 22 Nov 2023 15:06:43 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 4E863A07DC; Wed, 22 Nov 2023 16:06:43 +0100 (CET)
-Date: Wed, 22 Nov 2023 16:06:43 +0100
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH v2 4/4] eventfd: make eventfd_signal{_mask}() void
-Message-ID: <20231122150643.5b57p5yxhfuxa764@quack3>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sb4fn5pMCz3clH
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Nov 2023 02:19:42 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700666386; x=1732202386;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=nrNPcz4uYEQBP3pOrCUXcuO8X6G/FSLQKBhZfBz9dLY=;
+  b=UDMgvLwCI6f06Ge1Jwo2klU+QM+7+nT4a1LYN6xQICvPr8w2dDUNIVg5
+   zZobpXHvSx0R/5Wwy/LQFJA+trrzkYIllLs/Vmpz1UYgIQnagGDG5A97p
+   bDFnp/14YowlLTDU9q79hyPYFDbiOMKLTOVfUqsziiXB7891s4rNxax5l
+   LbrameL5h+T0VQD6DIIg4PrFDeuZXGEQdqjSsgvsJZ43Qswz1W22eGR1h
+   ikDzoPw/f8X+yX19D6nMc/YEMlKNOK0dMR9AnDP58j640FDCyNCX6ORoX
+   4gyuJFLt6IEQ0C+hnef9qMsnXxBP0X9lZApI81HvnzJoBcmZUHnAEIs1Z
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="390932785"
+X-IronPort-AV: E=Sophos;i="6.04,219,1695711600"; 
+   d="scan'208";a="390932785"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2023 07:19:32 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="833052538"
+X-IronPort-AV: E=Sophos;i="6.04,219,1695711600"; 
+   d="scan'208";a="833052538"
+Received: from tjquresh-mobl.ger.corp.intel.com (HELO localhost) ([10.252.41.76])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2023 07:19:09 -0800
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 2/4] eventfd: simplify eventfd_signal()
+In-Reply-To: <20231122-vfs-eventfd-signal-v2-2-bd549b14ce0c@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 References: <20231122-vfs-eventfd-signal-v2-0-bd549b14ce0c@kernel.org>
- <20231122-vfs-eventfd-signal-v2-4-bd549b14ce0c@kernel.org>
+ <20231122-vfs-eventfd-signal-v2-2-bd549b14ce0c@kernel.org>
+Date: Wed, 22 Nov 2023 17:19:06 +0200
+Message-ID: <877cm9n7dh.fsf@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231122-vfs-eventfd-signal-v2-4-bd549b14ce0c@kernel.org>
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: -6.30
-X-Spamd-Result: default: False [-6.30 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 RCVD_TLS_ALL(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%];
-	 TAGGED_RCPT(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 REPLY(-4.00)[];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 TO_MATCH_ENVRCPT_SOME(0.00)[];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 RCPT_COUNT_GT_50(0.00)[78];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 MID_RHS_NOT_FQDN(0.50)[];
-	 FREEMAIL_CC(0.00)[vger.kernel.org,lst.de,suse.cz,redhat.com,google.com,linutronix.de,alien8.de,linux.intel.com,kernel.org,infradead.org,xen.org,intel.com,gmail.com,ffwll.ch,ziepe.ca,linux.ibm.com,arndb.de,linuxfoundation.org,linux.alibaba.com,oss.nxp.com,kvack.org,cmpxchg.org,linux.dev,nvidia.com,lists.freedesktop.org,lists.ozlabs.org,lists.linux-foundation.org,kernel.dk];
-	 RCVD_COUNT_TWO(0.00)[2];
-	 SUSPICIOUS_RECIPS(1.50)[]
-X-Spam-Flag: NO
+Content-Type: text/plain
 X-Mailman-Approved-At: Thu, 23 Nov 2023 03:46:57 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -109,141 +68,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-aio@kvack.org, linux-s390@vger.kernel.org, linux-usb@vger.kernel.org, Jan Kara <jack@suse.cz>, Matthew Rosato <mjrosato@linux.ibm.com>, Paul Durrant <paul@xen.org>, Tom Rix <trix@redhat.com>, Jason Wang <jasowang@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org, Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org, Kirti Wankhede <kwankhede@nvidia.com>, netdev@vger.kernel.org, Jens Axboe <axboe@kernel.dk>, Vineeth Vijayan <vneethv@linux.ibm.com>, Diana Craciun <diana.craciun@oss.nxp.com>, Alexander Gordeev <agordeev@linux.ibm.com>, David Airlie <airlied@gmail.com>, Christoph Hellwig <hch@lst.de>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Alex Williamson <alex.williamson@redhat.com>, Vasily Gorbik <gor@linux.ibm.com>, Leon Romanovsky <leon@kernel.org>, Harald Freudenberger <freude@linux.ibm.com>, Fei Li <fei1.li@intel.com>, x86@kernel.org, Roman Gushchin <roman.gushchin@linux.dev>, Halil Pasic <pasic@linux.ibm.com>, Jason Gunthorpe <jgg@z
- iepe.ca>, Ingo Molnar <mingo@redhat.com>, intel-gfx@lists.freedesktop.org, Christian Borntraeger <borntraeger@linux.ibm.com>, linux-fpga@vger.kernel.org, Zhi Wang <zhi.a.wang@intel.com>, Wu Hao <hao.wu@intel.com>, Jason Herne <jjherne@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Shakeel Butt <shakeelb@google.com>, Heiko Carstens <hca@linux.ibm.com>, Johannes Weiner <hannes@cmpxchg.org>, linuxppc-dev@lists.ozlabs.org, Zhenyu Wang <zhenyuw@linux.intel.com>, Frederic Barrat <fbarrat@linux.ibm.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, Borislav Petkov <bp@alien8.de>, Jani Nikula <jani.nikula@linux.intel.com>, kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, cgroups@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, virtualization@lists.linux-foundation.org, intel-gvt-dev@lists.freedesktop.org, io-uring@vger.kernel.org, Tony Krowiak <akrowiak@linux
- .ibm.com>, Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, Pavel Begunkov <asml.silence@gmail.com>, Eric Auger <eric.auger@redhat.com>, Sean Christopherson <seanjc@google.com>, Oded Gabbay <ogabbay@kernel.org>, Muchun Song <muchun.song@linux.dev>, Peter Oberparleiter <oberpar@linux.ibm.com>, linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, Benjamin LaHaise <bcrl@kvack.org>, "Michael S. Tsirkin" <mst@redhat.com>, Sven Schnelle <svens@linux.ibm.com>, Daniel Vetter <daniel@ffwll.ch>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-fsdevel@vger.kernel.org, Moritz Fischer <mdf@kernel.org>, Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Xu Yilun <yilun.xu@intel.com>
+Cc: linux-aio@kvack.org, linux-usb@vger.kernel.org, Jan Kara <jack@suse.cz>, Matthew Rosato <mjrosato@linux.ibm.com>, Paul Durrant <paul@xen.org>, Tom Rix <trix@redhat.com>, Jason Wang <jasowang@redhat.com>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, dri-devel@lists.freedesktop.org, Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org, Kirti Wankhede <kwankhede@nvidia.com>, Paolo Bonzini <pbonzini@redhat.com>, Jens Axboe <axboe@kernel.dk>, Vineeth Vijayan <vneethv@linux.ibm.com>, Diana Craciun <diana.craciun@oss.nxp.com>, netdev@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, David Airlie <airlied@gmail.com>, Christoph Hellwig <hch@lst.de>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Shakeel Butt <shakeelb@google.com>, Vasily Gorbik <gor@linux.ibm.com>, Leon Romanovsky <leon@kernel.org>, Harald Freudenberger <freude@linux.ibm.com>, Fei Li <fei1.li@intel.com>, x86@kernel.org, Roman Gushchin <roman.gushchin@linux.dev>, Halil Pasic <pasic@linux.ibm.com>, Jason Gunthorpe
+  <jgg@ziepe.ca>, Ingo Molnar <mingo@redhat.com>, intel-gfx@lists.freedesktop.org, Christian Borntraeger <borntraeger@linux.ibm.com>, linux-fpga@vger.kernel.org, Zhi Wang <zhi.a.wang@intel.com>, Wu Hao <hao.wu@intel.com>, Jason Herne <jjherne@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Johannes Weiner <hannes@cmpxchg.org>, linuxppc-dev@lists.ozlabs.org, Zhenyu Wang <zhenyuw@linux.intel.com>, Eric Auger <eric.auger@redhat.com>, Alex Williamson <alex.williamson@redhat.com>, Moritz Fischer <mdf@kernel.org>, kvm@vger.kernel.org, Rodrigo Vivi <rodrigo.vivi@intel.com>, cgroups@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, virtualization@lists.linux-foundation.org, intel-gvt-dev@lists.freedesktop.org, io-uring@vger.kernel.org, Tony Krowiak <akrowiak@linux.ibm.com>, Tvrtko Ursulin <tvrtko.ursulin@linux
+ .intel.com>, Christian Brauner <brauner@kernel.org>, Pavel Begunkov <asml.silence@gmail.com>, Sean Christopherson <seanjc@google.com>, Oded Gabbay <ogabbay@kernel.org>, Muchun Song <muchun.song@linux.dev>, Peter Oberparleiter <oberpar@linux.ibm.com>, linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, Benjamin LaHaise <bcrl@kvack.org>, "Michael S. Tsirkin" <mst@redhat.com>, Sven Schnelle <svens@linux.ibm.com>, Daniel Vetter <daniel@ffwll.ch>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Frederic Barrat <fbarrat@linux.ibm.com>, Borislav Petkov <bp@alien8.de>, Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Xu Yilun <yilun.xu@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed 22-11-23 13:48:25, Christian Brauner wrote:
-> No caller care about the return value.
-> 
-> Signed-off-by: Christian Brauner <brauner@kernel.org>
-
-Yup. Feel free to add:
-
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
->  fs/eventfd.c            | 40 +++++++++++++++-------------------------
->  include/linux/eventfd.h | 16 +++++++---------
->  2 files changed, 22 insertions(+), 34 deletions(-)
-> 
+On Wed, 22 Nov 2023, Christian Brauner <brauner@kernel.org> wrote:
 > diff --git a/fs/eventfd.c b/fs/eventfd.c
-> index a9a6de920fb4..13be2fb7fc96 100644
+> index 33a918f9566c..dc9e01053235 100644
 > --- a/fs/eventfd.c
 > +++ b/fs/eventfd.c
-> @@ -43,10 +43,19 @@ struct eventfd_ctx {
->  	int id;
->  };
->  
-> -__u64 eventfd_signal_mask(struct eventfd_ctx *ctx, __poll_t mask)
-> +/**
-> + * eventfd_signal - Adds @n to the eventfd counter.
-> + * @ctx: [in] Pointer to the eventfd context.
-> + * @mask: [in] poll mask
-> + *
-> + * This function is supposed to be called by the kernel in paths that do not
-> + * allow sleeping. In this function we allow the counter to reach the ULLONG_MAX
-> + * value, and we signal this as overflow condition by returning a EPOLLERR
-> + * to poll(2).
-> + */
-> +void eventfd_signal_mask(struct eventfd_ctx *ctx, __poll_t mask)
+> @@ -74,20 +74,17 @@ __u64 eventfd_signal_mask(struct eventfd_ctx *ctx, __u64 n, __poll_t mask)
+>  /**
+>   * eventfd_signal - Adds @n to the eventfd counter.
+
+This still refers to @n here, and in patch 4.
+
+BR,
+Jani.
+
+>   * @ctx: [in] Pointer to the eventfd context.
+> - * @n: [in] Value of the counter to be added to the eventfd internal counter.
+> - *          The value cannot be negative.
+>   *
+>   * This function is supposed to be called by the kernel in paths that do not
+>   * allow sleeping. In this function we allow the counter to reach the ULLONG_MAX
+>   * value, and we signal this as overflow condition by returning a EPOLLERR
+>   * to poll(2).
+>   *
+> - * Returns the amount by which the counter was incremented.  This will be less
+> - * than @n if the counter has overflowed.
+> + * Returns the amount by which the counter was incremented.
+>   */
+> -__u64 eventfd_signal(struct eventfd_ctx *ctx, __u64 n)
+> +__u64 eventfd_signal(struct eventfd_ctx *ctx)
 >  {
->  	unsigned long flags;
-> -	__u64 n = 1;
->  
->  	/*
->  	 * Deadlock or stack overflow issues can happen if we recurse here
-> @@ -57,37 +66,18 @@ __u64 eventfd_signal_mask(struct eventfd_ctx *ctx, __poll_t mask)
->  	 * safe context.
->  	 */
->  	if (WARN_ON_ONCE(current->in_eventfd))
-> -		return 0;
-> +		return;
->  
->  	spin_lock_irqsave(&ctx->wqh.lock, flags);
->  	current->in_eventfd = 1;
-> -	if (ULLONG_MAX - ctx->count < n)
-> -		n = ULLONG_MAX - ctx->count;
-> -	ctx->count += n;
-> +	if (ctx->count < ULLONG_MAX)
-> +		ctx->count++;
->  	if (waitqueue_active(&ctx->wqh))
->  		wake_up_locked_poll(&ctx->wqh, EPOLLIN | mask);
->  	current->in_eventfd = 0;
->  	spin_unlock_irqrestore(&ctx->wqh.lock, flags);
-> -
-> -	return n == 1;
-> -}
-> -
-> -/**
-> - * eventfd_signal - Adds @n to the eventfd counter.
-> - * @ctx: [in] Pointer to the eventfd context.
-> - *
-> - * This function is supposed to be called by the kernel in paths that do not
-> - * allow sleeping. In this function we allow the counter to reach the ULLONG_MAX
-> - * value, and we signal this as overflow condition by returning a EPOLLERR
-> - * to poll(2).
-> - *
-> - * Returns the amount by which the counter was incremented.
-> - */
-> -__u64 eventfd_signal(struct eventfd_ctx *ctx)
-> -{
-> -	return eventfd_signal_mask(ctx, 0);
+> -	return eventfd_signal_mask(ctx, n, 0);
+> +	return eventfd_signal_mask(ctx, 1, 0);
 >  }
-> -EXPORT_SYMBOL_GPL(eventfd_signal);
-> +EXPORT_SYMBOL_GPL(eventfd_signal_mask);
+>  EXPORT_SYMBOL_GPL(eventfd_signal);
 >  
->  static void eventfd_free_ctx(struct eventfd_ctx *ctx)
->  {
-> diff --git a/include/linux/eventfd.h b/include/linux/eventfd.h
-> index 4f8aac7eb62a..fea7c4eb01d6 100644
-> --- a/include/linux/eventfd.h
-> +++ b/include/linux/eventfd.h
-> @@ -35,8 +35,7 @@ void eventfd_ctx_put(struct eventfd_ctx *ctx);
->  struct file *eventfd_fget(int fd);
->  struct eventfd_ctx *eventfd_ctx_fdget(int fd);
->  struct eventfd_ctx *eventfd_ctx_fileget(struct file *file);
-> -__u64 eventfd_signal(struct eventfd_ctx *ctx);
-> -__u64 eventfd_signal_mask(struct eventfd_ctx *ctx, __poll_t mask);
-> +void eventfd_signal_mask(struct eventfd_ctx *ctx, __poll_t mask);
->  int eventfd_ctx_remove_wait_queue(struct eventfd_ctx *ctx, wait_queue_entry_t *wait,
->  				  __u64 *cnt);
->  void eventfd_ctx_do_read(struct eventfd_ctx *ctx, __u64 *cnt);
-> @@ -58,14 +57,8 @@ static inline struct eventfd_ctx *eventfd_ctx_fdget(int fd)
->  	return ERR_PTR(-ENOSYS);
->  }
->  
-> -static inline int eventfd_signal(struct eventfd_ctx *ctx)
-> +static inline void eventfd_signal_mask(struct eventfd_ctx *ctx, unsigned mask)
->  {
-> -	return -ENOSYS;
-> -}
-> -
-> -static inline int eventfd_signal_mask(struct eventfd_ctx *ctx, unsigned mask)
-> -{
-> -	return -ENOSYS;
->  }
->  
->  static inline void eventfd_ctx_put(struct eventfd_ctx *ctx)
-> @@ -91,5 +84,10 @@ static inline void eventfd_ctx_do_read(struct eventfd_ctx *ctx, __u64 *cnt)
->  
->  #endif
->  
-> +static inline void eventfd_signal(struct eventfd_ctx *ctx)
-> +{
-> +	eventfd_signal_mask(ctx, 0);
-> +}
-> +
->  #endif /* _LINUX_EVENTFD_H */
->  
-> 
-> -- 
-> 2.42.0
-> 
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Jani Nikula, Intel
