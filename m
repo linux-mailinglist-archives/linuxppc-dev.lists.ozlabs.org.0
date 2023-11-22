@@ -1,54 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3FBB7F3F65
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 09:01:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D08E87F406E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 09:42:59 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=PCtBrTBv;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=IkSrqbab;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SZtxD4SdLz3clb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 19:01:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SZvrx5LKnz3dWv
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 19:42:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=PCtBrTBv;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=IkSrqbab;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+f356749d2870cc4c8790+7395+infradead.org+hch@bombadil.srs.infradead.org; receiver=lists.ozlabs.org)
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZtwM0zkdz3c82
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 19:00:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZvpS5K1Kz3dBK
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 19:40:48 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
 	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=rG9CnI6rb1E9NFvnbYt1RG2l2gXTlO1XMx7PoiRe2Ec=; b=PCtBrTBvxv7SOp8UE5vFdvbfF0
-	P5NaPlXmpvqNViNINDPdipO0w9S7846a/jfPx/chfTBwwTwYjneEH25vRgUw635dBIYYVnMCDmiM6
-	OeTvKWjvS5RPTRtLFJM8VWWVC1A3xvPIQ+lpajb19q+Chh4kjK5j81FkX1DAOmUYdLz8CY2/xQjU/
-	eHO+ESOk90z7nvlFOUb/rkbJstkzzg3x3vrH7Vvfk96TWlMZ6TRu1MnpeRKEUoHL7WMK53ciD/Y6Q
-	bdvOGQ2aAG+0OYv9E7rZOWLEOZLfUmhAOJwT7XbQn2p/6gB5NGOg/D88uulBsscSZ7PfrfCGM1nAw
-	u/zzeo7A==;
+	bh=D5blU8RG7wrWZ9Dq/ESX/eAs3vI1C5+aiUl11b64TJI=; b=IkSrqbabsxJtFB+ZQhe2j8K6x6
+	gmah3bew0TPP0ysiQgpNZUFrCqPuz5lHJ+SRgg6OImxizgLz7xojou4jvO85FIqRpS8QO0tAUdKHE
+	rA4Uw6YYjcm+0HTujZSCoMbzEXPyjWNDQi5h4dJLM9wM/Ln2IYZXZY/WTR+WxIMJhILJ9DeeFlb8z
+	Sh9AFZK843MfY4JIxtlkW0I9zICdKW+ntXEodBFLQaC6YNvuXWjW87h+UB/TmK1UMAkUGI6VTa+3d
+	vVnSMTFNScSJr0L8JDnsTrn8iTyZqAK/m1GbJ6lYvAbf33DcWE787BrnJDz6876cmhrbYs26CtV3T
+	0kSji68g==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5i9o-000z5V-1I;
-	Wed, 22 Nov 2023 08:00:24 +0000
-Date: Wed, 22 Nov 2023 00:00:24 -0800
+	id 1r5imd-0015Nr-35;
+	Wed, 22 Nov 2023 08:40:31 +0000
+Date: Wed, 22 Nov 2023 00:40:31 -0800
 From: Christoph Hellwig <hch@infradead.org>
-To: Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH RFC 06/12] mm/gup: Drop folio_fast_pin_allowed() in
- hugepd processing
-Message-ID: <ZV21GCbG48nTLDzn@infradead.org>
-References: <20231116012908.392077-1-peterx@redhat.com>
- <20231116012908.392077-7-peterx@redhat.com>
- <ZVsYMMJpmFV2T/Zc@infradead.org>
- <ZVzT5_3Zn-Y-6xth@x1n>
+To: Samuel Holland <samuel.holland@sifive.com>
+Subject: Re: [PATCH 3/3] drm/amd/display: Support DRM_AMD_DC_FP on RISC-V
+Message-ID: <ZV2+f/yu3C6xTVqn@infradead.org>
+References: <20231122030621.3759313-1-samuel.holland@sifive.com>
+ <20231122030621.3759313-4-samuel.holland@sifive.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZVzT5_3Zn-Y-6xth@x1n>
+In-Reply-To: <20231122030621.3759313-4-samuel.holland@sifive.com>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -61,31 +58,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrea Arcangeli <aarcange@redhat.com>, James Houghton <jthoughton@google.com>, Lorenzo Stoakes <lstoakes@gmail.com>, David Hildenbrand <david@redhat.com>, John Hubbard <jhubbard@nvidia.com>, Yang Shi <shy828301@gmail.com>, Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>, linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org, Mike Rapoport <rppt@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, "Kirill A . Shutemov" <kirill@shutemov.name>, Axel Rasmussen <axelrasmussen@google.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Vlastimil Babka <vbabka@suse.cz>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, dri-devel@lists.freedesktop.org, linux-riscv@lists.infradead.org, David Airlie <airlied@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>, amd-gfx@lists.freedesktop.org, Harry Wentland <harry.wentland@amd.com>, Nicolas Schier <nicolas@fjasle.eu>, Will Deacon <will@kernel.org>, linux-kbuild@vger.kernel.org, Leo Li <sunpeng.li@amd.com>, Nathan Chancellor <nathan@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, linux-arm-kernel@lists.infradead.org, Pan Xinhui <Xinhui.Pan@amd.com>, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Daniel Vetter <daniel@ffwll.ch>, Alex Deucher <alexander.deucher@amd.com>, linuxppc-dev@lists.ozlabs.org, Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 21, 2023 at 10:59:35AM -0500, Peter Xu wrote:
-> > What prevents us from ever using hugepd with file mappings?  I think
-> > it would naturally fit in with how large folios for the pagecache work.
-> > 
-> > So keeping this check and generalizing it seems like the better idea to
-> > me.
-> 
-> But then it means we're still keeping that dead code for fast-gup even if
-> we know that fact..  Or do we have a plan to add that support very soon, so
-> this code will be destined to add back?
+> -	select DRM_AMD_DC_FP if (X86 || LOONGARCH || (PPC64 && ALTIVEC) || (ARM64 && KERNEL_MODE_NEON && !CC_IS_CLANG))
+> +	select DRM_AMD_DC_FP if ARM64 && KERNEL_MODE_NEON && !CC_IS_CLANG
+> +	select DRM_AMD_DC_FP if PPC64 && ALTIVEC
+> +	select DRM_AMD_DC_FP if RISCV && FPU
+> +	select DRM_AMD_DC_FP if LOONGARCH || X86
 
-The question wasn't mean retorical - we support arbitrary power of two
-sized folios for the pagepage, what prevents us from using hugepd with
-them right now?
+This really is a mess.  Can you add a ARCH_HAS_KERNEL_FPU_SUPPORT
+symbol that all architetures that have it select instead, and them
+make DRM_AMD_DC_FP depend on it?
 
-> The other option is I can always add a comment above gup_huge_pd()
-> explaining this special bit, so that when someone is adding hugepd support
-> to file large folios we'll hopefully not forget it?  But then that
-> generalization work will only happen when the code will be needed.
+> -#if defined(CONFIG_X86) || defined(CONFIG_LOONGARCH)
+> +#if defined(CONFIG_X86) || defined(CONFIG_LOONGARCH) || defined(CONFIG_RISCV)
+>  		kernel_fpu_begin();
+>  #elif defined(CONFIG_PPC64)
+>  		if (cpu_has_feature(CPU_FTR_VSX_COMP))
+> @@ -122,7 +124,7 @@ void dc_fpu_end(const char *function_name, const int line)
+>  
+>  	depth = __this_cpu_dec_return(fpu_recursion_depth);
+>  	if (depth == 0) {
+> -#if defined(CONFIG_X86) || defined(CONFIG_LOONGARCH)
+> +#if defined(CONFIG_X86) || defined(CONFIG_LOONGARCH) || defined(CONFIG_RISCV)
+>  		kernel_fpu_end();
+>  #elif defined(CONFIG_PPC64)
+>  		if (cpu_has_feature(CPU_FTR_VSX_COMP))
 
-If dropping the check is the right thing for now (and I think the ppc
-maintainers and willy as the large folio guy might have a more useful
-opinions than I do), leaving a comment in would be very useful.
+And then this mess can go away.  We'll need to decide if we want to
+cover all the in-kernel vector support as part of it, which would
+seem reasonable to me, or have a separate generic kernel_vector_begin
+with it's own option.
 
+> diff --git a/drivers/gpu/drm/amd/display/dc/dml/Makefile b/drivers/gpu/drm/amd/display/dc/dml/Makefile
+> index ea7d60f9a9b4..5c8f840ef323 100644
+> --- a/drivers/gpu/drm/amd/display/dc/dml/Makefile
+> +++ b/drivers/gpu/drm/amd/display/dc/dml/Makefile
+> @@ -43,6 +43,12 @@ dml_ccflags := -mfpu=64
+>  dml_rcflags := -msoft-float
+>  endif
+>  
+> +ifdef CONFIG_RISCV
+> +include $(srctree)/arch/riscv/Makefile.isa
+> +# Remove V from the ISA string, like in arch/riscv/Makefile, but keep F and D.
+> +dml_ccflags := -march=$(shell echo $(riscv-march-y) | sed -E 's/(rv32ima|rv64ima)([^v_]*)v?/\1\2/')
+> +endif
+> +
+>  ifdef CONFIG_CC_IS_GCC
+>  ifneq ($(call gcc-min-version, 70100),y)
+>  IS_OLD_GCC = 1
+
+And this is again not really something we should be doing.
+Instead we need a generic way in Kconfig to enable FPU support
+for an object file or set of, that the arch support can hook
+into.
+
+Btw, I'm also really worried about folks using the FPU instructions
+outside the kernel_fpu_begin/end windows in general (not directly
+related to the RISC-V support).  Can we have objecttool checks
+for that similar to only allowing the unsafe uaccess in the
+uaccess begin/end pairs?
