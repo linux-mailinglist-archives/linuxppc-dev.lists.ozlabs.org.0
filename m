@@ -2,71 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C3917F4D25
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 17:48:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85EFB7F4D2F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 17:49:20 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=FnqR3YgM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Tc/2BAOy;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sb6dB0Y04z3dBG
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Nov 2023 03:48:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sb6f636Sdz3dS9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Nov 2023 03:49:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=FnqR3YgM;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Tc/2BAOy;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cloudflare.com (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=ignat@cloudflare.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZxHs1bKWz301f
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 20:47:52 +1100 (AEDT)
-Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1ce627400f6so37962445ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 01:47:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1700646466; x=1701251266; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NnfP4RJbON+lj35IXs9J/yXXOpNJWed6Pm5g2c+cjNg=;
-        b=FnqR3YgMqYfke4oGOACfMl6E3Ruhf4yXG5v+y5Bx4u8dAz7DAcD5mrPDeP4eKaf63R
-         Owoq5pOnLicaqoD4Vfex5+zUUO7w1MfEMlpAPZE8Fn6FBosgnKedlLZuLko2syNuwWus
-         m5MS5TmTFmgft7SacXzmdCoR4mJaxeMVIjBTCLVvtEq4mJyPkH9Zbo6V9Y4DuXM18yZz
-         YnKhXjwJU9pMvLw88xs4k2xOEIxS98FjwpKsumtf/qMFOxMpKDPqkHXA4cMjkf4C/LLJ
-         cWwzhZHYDKD95OH4Fjheabd0H+nZsuJ2ozOLhXNmrgcoHH6xUj6Dik3gkTKKi3+F5ykg
-         A5Vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700646466; x=1701251266;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NnfP4RJbON+lj35IXs9J/yXXOpNJWed6Pm5g2c+cjNg=;
-        b=b620RO60+GJZRUXOWs5xb68X61krmBogp6hTmdHzld1uputmlQKCkzqg8hmbArsaA0
-         O/ISI7PEAc+zVqqqPx4bs3X3a7V23jgUZTQFZkQ9PpNck/7krsqNTjk6mG4WvU3gQqSB
-         3cpfjFG+JEEVL5sj+/K4be6zWP3llORf0i9K47rfVXQChk6nDznVHXWUjUqBZmq2hQJY
-         kQpo3bYuYoltRKmbr8YAEZQM854f2urzRcFhsLEJ09zxY44b0ua5A95kxkV4wR3y7+TI
-         JkYpUmi/hZIU9mVgA2SI5QI27CSdFFtIe3begxfnjTEK4FJeGVOUtA2o6KKo0gPFOYv6
-         bLQg==
-X-Gm-Message-State: AOJu0YwpIUwPvWoOOQz28HYwg1607S7iNy6cOUeCtNfvXG2E0l/TOMkP
-	o8OZlzo7IKgqkeUEAMje91trCcB18vz5rd0kYQgKoA==
-X-Google-Smtp-Source: AGHT+IEoe5dhUWpYOgp49hInJ/tXkDzht17Dpr4KVAZ7DyJBSpmejqoRh7l88C3hHutZlPs8wlq5Gnw1rhenR1f8+40=
-X-Received: by 2002:a17:90b:1d04:b0:27d:5946:5e2c with SMTP id
- on4-20020a17090b1d0400b0027d59465e2cmr1934810pjb.12.1700646466036; Wed, 22
- Nov 2023 01:47:46 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sb1K03xTvz30fM
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 23:49:08 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id BE99B61DC6;
+	Wed, 22 Nov 2023 12:49:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B8AC433C7;
+	Wed, 22 Nov 2023 12:48:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1700657341;
+	bh=6OXBSUL+nsBWDSWY/Q2r+0obUk1WW2944LvuwrKFOOg=;
+	h=From:Subject:Date:To:Cc:From;
+	b=Tc/2BAOyq/CL424TPKJ+8ok4iD2CSlMj4gj7I88R2wR3SRpoXrwpPP4CcDv0rCy4Q
+	 imtDsj4NMmiBNZozdVII4r1Tu0lKWkktCHU3pI4LzAIFYMYIaMFpbulm6tUMVwguK4
+	 qTlrJ2u4/DeMIiXbQyzfXkH/WxJG3G65JVkRZ5lf6r4VzUJTQXH/UjyJJ0V5cZAl2s
+	 w/spDO6VPLhtfPliBsbbdWVAXUjht3ojtCQDl0LfCWNNwph8Zdy7ZX7mLHL0no3jWG
+	 z8IdhyFNF5VEPzmpKIFkxea1CvPQqUVZAxIi/ByG3Lv1c90SwdjDEIcrL99R5YQgIg
+	 fP3gmG5BvwYWQ==
+From: Christian Brauner <brauner@kernel.org>
+Subject: [PATCH v2 0/4] eventfd: simplify signal helpers
+Date: Wed, 22 Nov 2023 13:48:21 +0100
+Message-Id: <20231122-vfs-eventfd-signal-v2-0-bd549b14ce0c@kernel.org>
 MIME-Version: 1.0
-References: <CALrw=nHpRQQaQTP_jZfREgrQEMpS8jBF8JQCv4ygqXycE-StaA@mail.gmail.com>
- <ZVwMzXxWkgonIAfc@MiWiFi-R3L-srv> <CALrw=nG8xsYw7XKyL_VMHtKiaBcQCKvC8UVp-C9-BdeN4A1Daw@mail.gmail.com>
- <CALrw=nH-vcROja2W23rUKEEZMZhxsQiNB4P_ZZQ-XhPHAJGxrg@mail.gmail.com> <ZV3LKVOokpx2WvKp@MiWiFi-R3L-srv>
-In-Reply-To: <ZV3LKVOokpx2WvKp@MiWiFi-R3L-srv>
-From: Ignat Korchagin <ignat@cloudflare.com>
-Date: Wed, 22 Nov 2023 09:47:34 +0000
-Message-ID: <CALrw=nGadgbwuNAFacatz-agpGn9NvtgaCUXu73MzAzZq07k-g@mail.gmail.com>
-Subject: Re: Potential config regression after 89cde455 ("kexec: consolidate
- kexec and crash options into kernel/Kconfig.kexec")
-To: Baoquan He <bhe@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJX4XWUC/32OTQ6CMBBGr0K6dkhbYpu48h6GRX8GaMRiZkijI
+ dzdwgFcvsV737cJRkrI4tZsgrAkTkuuoC+NCJPLI0KKlYWWupNWdVAGBiyY1yECpzG7GaSXURn
+ rosEgqvgmHNLnjD76yt4xgieXw3SkXo5XpLaY1gIFdRhT4nWh7/miqMP7O1gUSLBDdCZco1ba3
+ 59IGed2oVH0+77/ALQAWw7XAAAA
+To: linux-fsdevel@vger.kernel.org
+X-Mailer: b4 0.13-dev-26615
+X-Developer-Signature: v=1; a=openpgp-sha256; l=564; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=6OXBSUL+nsBWDSWY/Q2r+0obUk1WW2944LvuwrKFOOg=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaTG/lhzPFmKbc7Vgs4lut/eP1hw9bOuxtyeI9s4tYwWe
+ yZZxby53lHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRf4IM/8NUuv3TH0hJOWz8
+ c65PTujVFLaLGrq6vFP/9yxi7X77UInhf0113erTobU10gp/tt37unHeHp8P0ZHTLq5c7sWdN//
+ 2D04A
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Mailman-Approved-At: Thu, 23 Nov 2023 03:46:57 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -79,143 +70,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: chenhuacai@kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, catalin.marinas@arm.com, linus.walleij@linaro.org, dave.hansen@linux.intel.com, linux-mips@vger.kernel.org, James Bottomley <James.Bottomley@hansenpartnership.com>, dalias@libc.org, eric_devolder@yahoo.com, linux-riscv@lists.infradead.org, will@kernel.org, kernel@xen0n.name, tsi@tuyoix.net, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, rmk+kernel@armlinux.org.uk, hpa@zytor.com, paulmck@kernel.org, ysato@users.sourceforge.jp, kernel-team <kernel-team@cloudflare.com>, deller@gmx.de, x86@kernel.org, linux@armlinux.org.uk, paul.walmsley@sifive.com, Ingo Molnar <mingo@redhat.com>, geert@linux-m68k.org, hbathini@linux.ibm.com, samitolvanen@google.com, ojeda@kernel.org, juerg.haefliger@canonical.com, borntraeger@linux.ibm.com, frederic@kernel.org, arnd@arndb.de, mhiramat@kernel.org, Ard Biesheuvel <ardb@kernel.org>, thunder.leizhen@huawei.com, aou@eecs.berkeley.edu, 
- keescook@chromium.org, gor@linux.ibm.com, anshuman.khandual@arm.com, hca@linux.ibm.com, xin3.li@intel.com, npiggin@gmail.com, konrad.wilk@oracle.com, linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, glaubitz@physik.fu-berlin.de, Thomas Gleixner <tglx@linutronix.de>, ziy@nvidia.com, linux-arm-kernel@lists.infradead.org, boris.ostrovsky@oracle.com, tsbogend@alpha.franken.de, sebastian.reichel@collabora.com, linux-parisc@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>, kirill.shutemov@linux.intel.com, ndesaulniers@google.com, linux-kernel <linux-kernel@vger.kernel.org>, sourabhjain@linux.ibm.com, palmer@dabbelt.com, svens@linux.ibm.com, tj@kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, masahiroy@kernel.org, rppt@kernel.org
+Cc: linux-aio@kvack.org, linux-usb@vger.kernel.org, Jan Kara <jack@suse.cz>, Matthew Rosato <mjrosato@linux.ibm.com>, Paul Durrant <paul@xen.org>, Tom Rix <trix@redhat.com>, Jason Wang <jasowang@redhat.com>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, dri-devel@lists.freedesktop.org, Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org, Kirti Wankhede <kwankhede@nvidia.com>, Paolo Bonzini <pbonzini@redhat.com>, Jens Axboe <axboe@kernel.dk>, Vineeth Vijayan <vneethv@linux.ibm.com>, Diana Craciun <diana.craciun@oss.nxp.com>, netdev@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, David Airlie <airlied@gmail.com>, Christoph Hellwig <hch@lst.de>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Shakeel Butt <shakeelb@google.com>, Vasily Gorbik <gor@linux.ibm.com>, Leon Romanovsky <leon@kernel.org>, Harald Freudenberger <freude@linux.ibm.com>, Fei Li <fei1.li@intel.com>, x86@kernel.org, Roman Gushchin <roman.gushchin@linux.dev>, Halil Pasic <pasic@linux.ibm.com>, Jason Gunthorpe
+  <jgg@ziepe.ca>, Ingo Molnar <mingo@redhat.com>, intel-gfx@lists.freedesktop.org, Christian Borntraeger <borntraeger@linux.ibm.com>, linux-fpga@vger.kernel.org, Zhi Wang <zhi.a.wang@intel.com>, Wu Hao <hao.wu@intel.com>, Jason Herne <jjherne@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Johannes Weiner <hannes@cmpxchg.org>, linuxppc-dev@lists.ozlabs.org, Zhenyu Wang <zhenyuw@linux.intel.com>, Eric Auger <eric.auger@redhat.com>, Alex Williamson <alex.williamson@redhat.com>, Moritz Fischer <mdf@kernel.org>, Jani Nikula <jani.nikula@linux.intel.com>, kvm@vger.kernel.org, Rodrigo Vivi <rodrigo.vivi@intel.com>, cgroups@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, virtualization@lists.linux-foundation.org, intel-gvt-dev@lists.freedesktop.org, io-uring@vger.kernel.org, Tony Krowiak <akrowiak@linux.ibm
+ .com>, Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, Christian Brauner <brauner@kernel.org>, Pavel Begunkov <asml.silence@gmail.com>, Sean Christopherson <seanjc@google.com>, Oded Gabbay <ogabbay@kernel.org>, Muchun Song <muchun.song@linux.dev>, Peter Oberparleiter <oberpar@linux.ibm.com>, linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, Benjamin LaHaise <bcrl@kvack.org>, "Michael S. Tsirkin" <mst@redhat.com>, Sven Schnelle <svens@linux.ibm.com>, Daniel Vetter <daniel@ffwll.ch>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Frederic Barrat <fbarrat@linux.ibm.com>, Borislav Petkov <bp@alien8.de>, Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Xu Yilun <yilun.xu@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 22, 2023 at 9:34=E2=80=AFAM Baoquan He <bhe@redhat.com> wrote:
->
-> On 11/21/23 at 09:43am, Ignat Korchagin wrote:
-> > On Tue, Nov 21, 2023 at 7:53=E2=80=AFAM Ignat Korchagin <ignat@cloudfla=
-re.com> wrote:
-> > >
-> > > On Tue, Nov 21, 2023 at 1:50=E2=80=AFAM Baoquan He <bhe@redhat.com> w=
-rote:
-> > > >
-> > > > Eric DeVolder's Oracle mail address is not available anymore, add h=
-is
-> > > > current mail address he told me.
-> > >
-> > > Thank you!
-> > >
-> > > > On 11/20/23 at 10:52pm, Ignat Korchagin wrote:
-> > > > > Good day!
-> > > > >
-> > > > > We have recently started to evaluate Linux 6.6 and noticed that w=
-e
-> > > > > cannot disable CONFIG_KEXEC anymore, but keep CONFIG_CRASH_DUMP
-> > > > > enabled. It seems to be related to commit 89cde455 ("kexec:
-> > > > > consolidate kexec and crash options into kernel/Kconfig.kexec"), =
-where
-> > > > > a CONFIG_KEXEC dependency was added to CONFIG_CRASH_DUMP.
-> > > > >
-> > > > > In our current kernel (Linux 6.1) we only enable CONFIG_KEXEC_FIL=
-E
-> > > > > with enforced signature check to support the kernel crash dumping
-> > > > > functionality and would like to keep CONFIG_KEXEC disabled for
-> > > > > security reasons [1].
-> > > > >
-> > > > > I was reading the long commit message, but the reason for adding
-> > > > > CONFIG_KEXEC as a dependency for CONFIG_CRASH_DUMP evaded me. And=
- I
-> > > > > believe from the implementation perspective CONFIG_KEXEC_FILE sho=
-uld
-> > > > > suffice here (as we successfully used it for crashdumps on Linux =
-6.1).
-> > > > >
-> > > > > Is there a reason for adding this dependency or is it just an
-> > > > > oversight? Would some solution of requiring either CONFIG_KEXEC o=
-r
-> > > > > CONFIG_KEXEC_FILE work here?
-> > > >
-> > > > I searched the patch history, found Eric didn't add the dependency =
-on
-> > > > CONFIG_KEXEC at the beginning. Later a linux-next building failure =
-with
-> > > > randconfig was reported, in there CONFIG_CRASH_DUMP enabled, while
-> > > > CONFIG_KEXEC is disabled. Finally Eric added the KEXEC dependency f=
-or
-> > > > CRASH_DUMP. Please see below link for more details:
-> > > >
-> > > > https://lore.kernel.org/all/3e8eecd1-a277-2cfb-690e-5de2eb7b988e@or=
-acle.com/T/#u
-> > >
-> > > Thank you for digging this up. However I'm still confused, because
-> > > this is exactly how we configure Linux 6.1 (although we do have
-> > > CONFIG_KEXEC_FILE enabled) and we don't have any problems. I believe
-> > > we did not investigate this issue properly.
-> >
-> > I did some preliminary investigation for this. If I patch out the
-> > dependency on CONFIG_KEXEC the kernel builds just fine for x86
-> > (without CONFIG_CRASH_HOTPLUG - which is probably another issue) - so
-> > this was the previous behaviour. I can see that the reported error is
-> > for arm architecture and was able to reproduce it with a simple cross
-> > compiler in Debian. However, I think it is still somehow related to
-> > this patchset as the previous kernels (up to 6.5) build fine with just
-> > CONFIG_CRASH_DUMP and without CONFIG_KEXEC for arm as well. So even
-> > for arm it was introduced in 6.6.
->
-> Thanks for the information.
->
-> I haven't run the reproducer of issue reported on Eric's old patchset,
-> while checkout to kernel 6.1, only s390 selected KEXEC for CRASH_DUMP
-> already. And with the ARM building breakage, the simplest idea is
-> to select KEXEC only for ARM or S390 CRASH_DUMP. I plan to try the
-> reproducer later. If you have any idea or draft patch, please feel free
-> to post.
+Hey everyone,
 
-The thing is - before 6.6 even ARM did not require KEXEC for
-CRASH_DUMP (at least to successfully compile), so I think we should
-understand what changed first before adding a dependency for ARM. I'll
-try to investigate more, if I have time.
+This simplifies the eventfd_signal() and eventfd_signal_mask() helpers
+significantly. They can be made void and not take any unnecessary
+arguments.
 
-> diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
-> index 7aff28ded2f4..382dcd8d7a9d 100644
-> --- a/kernel/Kconfig.kexec
-> +++ b/kernel/Kconfig.kexec
-> @@ -97,7 +97,7 @@ config CRASH_DUMP
->         depends on ARCH_SUPPORTS_KEXEC
->         select CRASH_CORE
->         select KEXEC_CORE
-> -       select KEXEC
-> +       select KEXEC if (ARM || S390)
->
->
-> arch/s390/Kconfig in kernel 6.1:
-> config CRASH_DUMP
->         bool "kernel crash dumps"
->         select KEXEC
->         help
->           Generate crash dump after being started by kexec.
->           Crash dump kernels are loaded in the main kernel with kexec-too=
-ls
->           into a specially reserved region and then later executed after
->           a crash by kdump/kexec.
->           Refer to <file:Documentation/s390/zfcpdump.rst> for more detail=
-s on this.
->           This option also enables s390 zfcpdump.
->           See also <file:Documentation/s390/zfcpdump.rst>
->
-> >
-> > > > And besides, the newly added CONFIG_CRASH_HOTPLUG also needs
-> > > > CONFIG_KEXEC if the elfcorehdr is allowed to be manipulated when
-> > > > cpu/memory hotplug hapened.
-> > >
-> > > This still feels like a regression to me: any crash dump support
-> > > should be independent of KEXEC syscalls being present. While probably
-> > > the common case (including us) that the crashing kernel and recovery
-> > > kernel are the same, they don't have to be. We need kexec syscall in
-> > > the crashing kernel, but crashdump support in the recovery kernel (bu=
-t
-> > > the recovery kernel not having the kexec syscalls should be totally
-> > > fine). If we do require some code definitions from kexec - at most we
-> > > should put them under CONFIG_KEXEC_CORE.
-> > >
-> > > > Thanks
-> > > > Baoquan
-> > > >
-> >
-> > Ignat
-> >
->
+I've added a few more simplifications based on Sean's suggestion.
+
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+
+Changes in v2:
+- further simplify helpers
+- Link to v1: https://lore.kernel.org/r/20230713-vfs-eventfd-signal-v1-0-7fda6c5d212b@kernel.org
+
+---
+
+
+
+---
+base-commit: b85ea95d086471afb4ad062012a4d73cd328fa86
+change-id: 20230713-vfs-eventfd-signal-0b0d167ad6ec
+
