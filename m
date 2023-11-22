@@ -1,53 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 774D77F3B78
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 02:48:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B94287F3C18
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 03:59:17 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=aio2GqOd;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=HRvFlRsn;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SZkfw0zxhz3dJ0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 12:48:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SZmDM4t1vz3cbl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 13:59:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=aio2GqOd;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=HRvFlRsn;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52f; helo=mail-pg1-x52f.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZkf52FtXz307V
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 12:47:57 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1700617671;
-	bh=+HHlh6rPcGUnKW8ceaHbkKWRA/p99wmeiArQFNzZvO8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=aio2GqOdZ0h4bAiFX1GZwLHcBo0BjvuIQMUllBXrVntKvFTB9+CzBP1JEK9hO4+Zw
-	 pxxaBtf1UT6ZwYEWwnsSi2jxknguTJB/vrQJ3RkUhSaUt4GIOdcJKAQsQXL72qyuI3
-	 jdHSWcWRTzx0SUzG/jmwBGmrvrVkReWcFdJ2vVYhPBxR1LmGlhgv8suoAzxqbbRQbY
-	 G0rq2dBQbqZjCTy/uZw8rieyqVTbBbts9MBZpGghPtyFwsGE4sZDEkh666Z0UmBetw
-	 iUpaGp2FL73xeDnYkljvOJwLR243Kw9+fxkfpUq5cN7kHABqbhpp9YhGgxi4jRf4g6
-	 eFEsNUgA/k9Mg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SZkdy2pWTz4x7q;
-	Wed, 22 Nov 2023 12:47:49 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Zhao Ke <ke.zhao@shingroup.cn>, npiggin@gmail.com,
- christophe.leroy@csgroup.eu, fbarrat@linux.ibm.com, ajd@linux.ibm.com,
- arnd@arndb.de, gregkh@linuxfoundation.org
-Subject: Re: [PATCH] powerpc: Add PVN support for HeXin C2000 processor
-In-Reply-To: <20231117075215.647-1-ke.zhao@shingroup.cn>
-References: <20231117075215.647-1-ke.zhao@shingroup.cn>
-Date: Wed, 22 Nov 2023 12:46:51 +1100
-Message-ID: <87sf4yk19w.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZmCS6Kmpz3cS3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 13:58:27 +1100 (AEDT)
+Received: by mail-pg1-x52f.google.com with SMTP id 41be03b00d2f7-5b9a456798eso3837738a12.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 18:58:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700621899; x=1701226699; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IYM0Oaw3kRxzOyoQ/EbAwwAuiWC84244ywU20mM17lo=;
+        b=HRvFlRsnnAXcs4dC6wXlAMQOH4H0JAaCxPua7F+Qm9xPaUjKGaaoTpdQYbz+1SpaT8
+         lN5OPakH7MnxUoqCAAfEUV7pz9dU0Gzw8IgeU0ZPZnZtdy6H9mqzJ5bTaidF/bw0IwhC
+         x+Ht0wDbhV1Kha23GAhn1TB/fTy2kMfSgvmd+EUGJydCATGHBxFV2qqFF63N0uU7bg5f
+         xV7D/h6RsHJtrcIhjGd/rTsgMwYzxWCmpRwl/OEsIDbv3Lf9k8/0wusDp0mO33AMMHe8
+         SGsjlsz71xOzA93xYy0CufuAA0eHpsGCoD08DC7gLDUWnQFOz+J4husRz6aBFJFJjco9
+         WsaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700621899; x=1701226699;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IYM0Oaw3kRxzOyoQ/EbAwwAuiWC84244ywU20mM17lo=;
+        b=QVbLLX1EQqE0p0L4wDqhd0bXaAiw91AjmaYzFf+gfe2KOflgLK0h3hiejj+4Cs8fQy
+         MHJP+9rIn6vMrOc7gXlvhbRJs4bJYb/aJQjqqlqQ5oZWqSD+M/PKGoS0oGj6XRujfsVy
+         ianS74Uy2ab1ifx012+nrA0VagWyXqUGCnTgKrl4cH2vQM0rZRsyvmLr1/D3hSeJ1BT7
+         /mNfe09Go2Lc5M0g3akvj84ejJL49mcMxaWy25O0qHRU5+o3kMBi31ypGwPZAcoEdM2b
+         ptX5Qrmj6jxeSW+6LwkRKoQX82ttRIjhmRmjKVky6ivK6t5eQwxoJxxKuwhlmaPGsaMy
+         8Igg==
+X-Gm-Message-State: AOJu0YzdyvRv8/HvxJUPKs6+wbqE1jqeAuSkGEzihKWVyCnegPpFDRaA
+	L+uqDIawTT2kU2Bamr42p9/VvHtuN6g=
+X-Google-Smtp-Source: AGHT+IEcqc/s2w/ZBALwv0dgeVaxc4fKN+qst8zGiW5r33dir6akhkAdzmg5zMkUt2NBkLwD3Bv2xA==
+X-Received: by 2002:a05:6a21:788f:b0:187:ae36:74c with SMTP id bf15-20020a056a21788f00b00187ae36074cmr1021859pzc.62.1700621899252;
+        Tue, 21 Nov 2023 18:58:19 -0800 (PST)
+Received: from wheely.local0.net (60-240-124-93.tpgi.com.au. [60.240.124.93])
+        by smtp.gmail.com with ESMTPSA id c5-20020a170903234500b001cf5ceade80sm4805533plh.1.2023.11.21.18.58.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Nov 2023 18:58:18 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] KVM: PPC: Book3S HV: Fix KVM_RUN clobbering FP/VEC user registers
+Date: Wed, 22 Nov 2023 12:58:11 +1000
+Message-ID: <20231122025811.2973-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,52 +75,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Zhao Ke <ke.zhao@shingroup.cn>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: Timothy Pearson <tpearson@raptorengineering.com>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Zhao Ke <ke.zhao@shingroup.cn> writes:
-> HeXin Tech Co. has applied for a new PVN from the OpenPower Community
-> for its new processor C2000. The OpenPower has assigned a new PVN
-> and this newly assigned PVN is 0x0066, add pvr register related
-> support for this PVN.
->
-> Signed-off-by: Zhao Ke <ke.zhao@shingroup.cn>
-> Link: https://discuss.openpower.foundation/t/how-to-get-a-new-pvr-for-processors-follow-power-isa/477/10
+Before running a guest, the host process (e.g., QEMU) FP/VEC registers
+are saved if they were being used, similarly to when the kernel uses FP
+registers. The guest values are then be loaded into regs, and the host
+process registers will be restored lazily when it uses FP/VEC.
+
+KVM HV has a bug here: the host process registers do get saved, but the
+user MSR bits remain enabled, which indicates the registers are valid
+for the process. After they are clobbered by running the guest, this
+valid indication causes the host process to take on the FP/VEC regiter
+values of the guest.
+
+Fixes: de2a20aa7237b ("powerpc: Prepare for splitting giveup_{fpu, altivec, vsx} in two")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/kernel/process.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index 392404688cec..9452a54d356c 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -1198,11 +1198,11 @@ void kvmppc_save_user_regs(void)
  
-Hi Zhao Ke,
-
-Thanks for the patch. Just a few questions.
-
-Are you able to provide any further detail on the processor?
-
-Your cputable entry claims that it's identical to the original Power8
-core, can you comment at all on how true that is in practice?
-
-Unfortunately the kernel has some hard-coded knowledge of various
-non-architected features, which are not controlled via the CPU table,
-and are instead controlled by firmware. So you'll need to make sure you
-set those correctly, see init_fw_feat_flags() for details.
-
-One other comment below ...
-
-> diff --git a/arch/powerpc/kernel/cpu_specs_book3s_64.h b/arch/powerpc/kernel/cpu_specs_book3s_64.h
-> index c370c1b804a9..4f604934da7c 100644
-> --- a/arch/powerpc/kernel/cpu_specs_book3s_64.h
-> +++ b/arch/powerpc/kernel/cpu_specs_book3s_64.h
-> @@ -238,6 +238,21 @@ static struct cpu_spec cpu_specs[] __initdata = {
->  		.machine_check_early	= __machine_check_early_realmode_p8,
->  		.platform		= "power8",
->  	},
-> +	{	/* 2.07-compliant processor, HeXin C2000 processor */
-> +		.pvr_mask		= 0xffffffff,
-> +		.pvr_value		= 0x00660000,
-> +		.cpu_name		= "POWER8 (architected)",
+ 	usermsr = current->thread.regs->msr;
  
-Using "(architected)" here is not right. That's reserved for the
-0x0f00000x range of PVRs.
++	/* Caller has enabled FP/VEC/VSX/TM in MSR */
+ 	if (usermsr & MSR_FP)
+-		save_fpu(current);
+-
++		__giveup_fpu(current);
+ 	if (usermsr & MSR_VEC)
+-		save_altivec(current);
++		__giveup_altivec(current);
+ 
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ 	if (usermsr & MSR_TM) {
+-- 
+2.42.0
 
-You should use "POWER8 (raw)", or you could actually use the marketing
-name there if you want to, eg. "HeXin C2000" or whatever.
-
-cheers
