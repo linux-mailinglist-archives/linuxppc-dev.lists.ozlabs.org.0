@@ -2,49 +2,30 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B51E17F4311
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 11:02:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1B557F4124
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 10:04:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SZxdC55t5z3dC1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 21:02:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SZwKV5640z3dSl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 20:04:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=chentao@kylinos.cn; receiver=lists.ozlabs.org)
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=47.90.199.5; helo=out199-5.us.a.mail.aliyun.com; envelope-from=jiapeng.chong@linux.alibaba.com; receiver=lists.ozlabs.org)
+Received: from out199-5.us.a.mail.aliyun.com (out199-5.us.a.mail.aliyun.com [47.90.199.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZxcf16j7z3cVS
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 21:02:24 +1100 (AEDT)
-X-UUID: 0f1fd2d019e44d1bad0c33f66457bf12-20231122
-X-CID-O-RULE: Release_Ham
-X-CID-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.32,REQID:41be7148-6f9a-4034-96b3-d81abd902688,IP:10,
-	URL:0,TC:0,Content:-5,EDM:25,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,AC
-	TION:release,TS:15
-X-CID-INFO: VERSION:1.1.32,REQID:41be7148-6f9a-4034-96b3-d81abd902688,IP:10,UR
-	L:0,TC:0,Content:-5,EDM:25,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:15
-X-CID-META: VersionHash:5f78ec9,CLOUDID:6bbdae95-10ce-4e4b-85c2-c9b5229ff92b,B
-	ulkID:23112217003121VE4392,BulkQuantity:0,Recheck:0,SF:66|38|24|17|19|44|1
-	02,TC:nil,Content:0,EDM:5,IP:-2,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL
-	:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI,TF_CID_SPAM_SNR
-X-UUID: 0f1fd2d019e44d1bad0c33f66457bf12-20231122
-X-User: chentao@kylinos.cn
-Received: from vt.. [(116.128.244.171)] by mailgw
-	(envelope-from <chentao@kylinos.cn>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1086186215; Wed, 22 Nov 2023 17:00:29 +0800
-From: Kunwu Chan <chentao@kylinos.cn>
-To: mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	christophe.leroy@csgroup.eu
-Subject: [PATCH] powerpc/mm: Fix null-pointer dereference in pgtable_cache_add
-Date: Wed, 22 Nov 2023 17:00:26 +0800
-Message-Id: <20231122090026.11728-1-chentao@kylinos.cn>
-X-Mailer: git-send-email 2.34.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZwK13p3mz3bT8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 20:03:46 +1100 (AEDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045192;MF=jiapeng.chong@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0VwvWK8u_1700643793;
+Received: from localhost(mailfrom:jiapeng.chong@linux.alibaba.com fp:SMTPD_---0VwvWK8u_1700643793)
+          by smtp.aliyun-inc.com;
+          Wed, 22 Nov 2023 17:03:19 +0800
+From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc: Use ARRAY_SIZE for array length
+Date: Wed, 22 Nov 2023 17:03:12 +0800
+Message-Id: <20231122090312.114679-1-jiapeng.chong@linux.alibaba.com>
+X-Mailer: git-send-email 2.20.1.7.g153144c
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -58,32 +39,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Kunwu Chan <chentao@kylinos.cn>, kunwu.chan@hotmail.com
+Cc: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>, Abaci Robot <abaci@linux.alibaba.com>, linux-kernel@vger.kernel.org, npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure. Ensure the allocation was successful
-by checking the pointer validity.
+Use of macro ARRAY_SIZE to calculate array size minimizes
+the redundant code and improves code reusability.
 
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+./arch/powerpc/xmon/ppc-opc.c:957:67-68: WARNING: Use ARRAY_SIZE.
+
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=7612
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 ---
- arch/powerpc/mm/init-common.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/xmon/ppc-opc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
-index 119ef491f797..0884fc601c46 100644
---- a/arch/powerpc/mm/init-common.c
-+++ b/arch/powerpc/mm/init-common.c
-@@ -139,6 +139,8 @@ void pgtable_cache_add(unsigned int shift)
+diff --git a/arch/powerpc/xmon/ppc-opc.c b/arch/powerpc/xmon/ppc-opc.c
+index 0774d711453e..d409d6113f82 100644
+--- a/arch/powerpc/xmon/ppc-opc.c
++++ b/arch/powerpc/xmon/ppc-opc.c
+@@ -954,8 +954,7 @@ const struct powerpc_operand powerpc_operands[] =
+   { 0xff, 11, NULL, NULL, PPC_OPERAND_SIGNOPT },
+ };
  
- 	align = max_t(unsigned long, align, minalign);
- 	name = kasprintf(GFP_KERNEL, "pgtable-2^%d", shift);
-+	if (!name)
-+		return;
- 	new = kmem_cache_create(name, table_size, align, 0, ctor(shift));
- 	if (!new)
- 		panic("Could not allocate pgtable cache for order %d", shift);
+-const unsigned int num_powerpc_operands = (sizeof (powerpc_operands)
+-					   / sizeof (powerpc_operands[0]));
++const unsigned int num_powerpc_operands = ARRAY_SIZE(powerpc_operands);
+ 
+ /* The functions used to insert and extract complicated operands.  */
+ 
 -- 
-2.34.1
+2.20.1.7.g153144c
 
