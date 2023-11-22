@@ -2,66 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B94287F3C18
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 03:59:17 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=HRvFlRsn;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 10A4A7F3C32
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 04:08:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SZmDM4t1vz3cbl
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 13:59:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SZmR660JJz3dLb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 14:08:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=HRvFlRsn;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52f; helo=mail-pg1-x52f.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=chentao@kylinos.cn; receiver=lists.ozlabs.org)
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZmCS6Kmpz3cS3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 13:58:27 +1100 (AEDT)
-Received: by mail-pg1-x52f.google.com with SMTP id 41be03b00d2f7-5b9a456798eso3837738a12.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Nov 2023 18:58:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700621899; x=1701226699; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IYM0Oaw3kRxzOyoQ/EbAwwAuiWC84244ywU20mM17lo=;
-        b=HRvFlRsnnAXcs4dC6wXlAMQOH4H0JAaCxPua7F+Qm9xPaUjKGaaoTpdQYbz+1SpaT8
-         lN5OPakH7MnxUoqCAAfEUV7pz9dU0Gzw8IgeU0ZPZnZtdy6H9mqzJ5bTaidF/bw0IwhC
-         x+Ht0wDbhV1Kha23GAhn1TB/fTy2kMfSgvmd+EUGJydCATGHBxFV2qqFF63N0uU7bg5f
-         xV7D/h6RsHJtrcIhjGd/rTsgMwYzxWCmpRwl/OEsIDbv3Lf9k8/0wusDp0mO33AMMHe8
-         SGsjlsz71xOzA93xYy0CufuAA0eHpsGCoD08DC7gLDUWnQFOz+J4husRz6aBFJFJjco9
-         WsaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700621899; x=1701226699;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IYM0Oaw3kRxzOyoQ/EbAwwAuiWC84244ywU20mM17lo=;
-        b=QVbLLX1EQqE0p0L4wDqhd0bXaAiw91AjmaYzFf+gfe2KOflgLK0h3hiejj+4Cs8fQy
-         MHJP+9rIn6vMrOc7gXlvhbRJs4bJYb/aJQjqqlqQ5oZWqSD+M/PKGoS0oGj6XRujfsVy
-         ianS74Uy2ab1ifx012+nrA0VagWyXqUGCnTgKrl4cH2vQM0rZRsyvmLr1/D3hSeJ1BT7
-         /mNfe09Go2Lc5M0g3akvj84ejJL49mcMxaWy25O0qHRU5+o3kMBi31ypGwPZAcoEdM2b
-         ptX5Qrmj6jxeSW+6LwkRKoQX82ttRIjhmRmjKVky6ivK6t5eQwxoJxxKuwhlmaPGsaMy
-         8Igg==
-X-Gm-Message-State: AOJu0YzdyvRv8/HvxJUPKs6+wbqE1jqeAuSkGEzihKWVyCnegPpFDRaA
-	L+uqDIawTT2kU2Bamr42p9/VvHtuN6g=
-X-Google-Smtp-Source: AGHT+IEcqc/s2w/ZBALwv0dgeVaxc4fKN+qst8zGiW5r33dir6akhkAdzmg5zMkUt2NBkLwD3Bv2xA==
-X-Received: by 2002:a05:6a21:788f:b0:187:ae36:74c with SMTP id bf15-20020a056a21788f00b00187ae36074cmr1021859pzc.62.1700621899252;
-        Tue, 21 Nov 2023 18:58:19 -0800 (PST)
-Received: from wheely.local0.net (60-240-124-93.tpgi.com.au. [60.240.124.93])
-        by smtp.gmail.com with ESMTPSA id c5-20020a170903234500b001cf5ceade80sm4805533plh.1.2023.11.21.18.58.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Nov 2023 18:58:18 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] KVM: PPC: Book3S HV: Fix KVM_RUN clobbering FP/VEC user registers
-Date: Wed, 22 Nov 2023 12:58:11 +1000
-Message-ID: <20231122025811.2973-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.42.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZmQc1LDFz3c5S
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 14:08:07 +1100 (AEDT)
+X-UUID: a4e6c0f784494b56be348641d86a6d27-20231122
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.32,REQID:c4bf72c6-3e97-4eeb-bf1f-d158a650c0b5,IP:5,U
+	RL:0,TC:0,Content:-5,EDM:25,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACT
+	ION:release,TS:10
+X-CID-INFO: VERSION:1.1.32,REQID:c4bf72c6-3e97-4eeb-bf1f-d158a650c0b5,IP:5,URL
+	:0,TC:0,Content:-5,EDM:25,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:10
+X-CID-META: VersionHash:5f78ec9,CLOUDID:56ad5560-c89d-4129-91cb-8ebfae4653fc,B
+	ulkID:231122110658PRRQZRZN,BulkQuantity:0,Recheck:0,SF:38|24|17|19|44|66|1
+	02,TC:nil,Content:0,EDM:5,IP:-2,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL
+	:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_FSD,TF_CID_SPAM_FSI,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS
+X-UUID: a4e6c0f784494b56be348641d86a6d27-20231122
+X-User: chentao@kylinos.cn
+Received: from vt.. [(116.128.244.169)] by mailgw
+	(envelope-from <chentao@kylinos.cn>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 544081539; Wed, 22 Nov 2023 11:06:56 +0800
+From: Kunwu Chan <chentao@kylinos.cn>
+To: mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	christophe.leroy@csgroup.eu,
+	robh@kernel.org
+Subject: [PATCH] powerpc/xics: Check return value of kasprintf in icp_native_map_one_cpu
+Date: Wed, 22 Nov 2023 11:06:51 +0800
+Message-Id: <20231122030651.3818-1-chentao@kylinos.cn>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -75,46 +58,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Timothy Pearson <tpearson@raptorengineering.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Kunwu Chan <chentao@kylinos.cn>, kunwu.chan@hotmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Before running a guest, the host process (e.g., QEMU) FP/VEC registers
-are saved if they were being used, similarly to when the kernel uses FP
-registers. The guest values are then be loaded into regs, and the host
-process registers will be restored lazily when it uses FP/VEC.
+kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure. Ensure the allocation was successful
+by checking the pointer validity.
 
-KVM HV has a bug here: the host process registers do get saved, but the
-user MSR bits remain enabled, which indicates the registers are valid
-for the process. After they are clobbered by running the guest, this
-valid indication causes the host process to take on the FP/VEC regiter
-values of the guest.
-
-Fixes: de2a20aa7237b ("powerpc: Prepare for splitting giveup_{fpu, altivec, vsx} in two")
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
 ---
- arch/powerpc/kernel/process.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/powerpc/sysdev/xics/icp-native.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 392404688cec..9452a54d356c 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -1198,11 +1198,11 @@ void kvmppc_save_user_regs(void)
+diff --git a/arch/powerpc/sysdev/xics/icp-native.c b/arch/powerpc/sysdev/xics/icp-native.c
+index f6ec6dba92dc..700b67476a7d 100644
+--- a/arch/powerpc/sysdev/xics/icp-native.c
++++ b/arch/powerpc/sysdev/xics/icp-native.c
+@@ -236,6 +236,8 @@ static int __init icp_native_map_one_cpu(int hw_id, unsigned long addr,
+ 	rname = kasprintf(GFP_KERNEL, "CPU %d [0x%x] Interrupt Presentation",
+ 			  cpu, hw_id);
  
- 	usermsr = current->thread.regs->msr;
- 
-+	/* Caller has enabled FP/VEC/VSX/TM in MSR */
- 	if (usermsr & MSR_FP)
--		save_fpu(current);
--
-+		__giveup_fpu(current);
- 	if (usermsr & MSR_VEC)
--		save_altivec(current);
-+		__giveup_altivec(current);
- 
- #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
- 	if (usermsr & MSR_TM) {
++	if (!rname)
++		return -ENOMEM;
+ 	if (!request_mem_region(addr, size, rname)) {
+ 		pr_warn("icp_native: Could not reserve ICP MMIO for CPU %d, interrupt server #0x%x\n",
+ 			cpu, hw_id);
 -- 
-2.42.0
+2.34.1
 
