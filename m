@@ -2,28 +2,28 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01F957F3F80
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 09:04:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2DDD7F3F9A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 09:05:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SZv0R6wMLz3cR8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 19:04:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SZv1S5WkNz3vgn
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 19:05:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZv000Jtxz3c82
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZv000jq6z3cS3
 	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 19:03:59 +1100 (AEDT)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 7EBDC1A1662;
-	Wed, 22 Nov 2023 09:03:54 +0100 (CET)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 07D2520173C;
+	Wed, 22 Nov 2023 09:03:56 +0100 (CET)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 1A1DE1A1672;
-	Wed, 22 Nov 2023 09:03:54 +0100 (CET)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 9487B2011A5;
+	Wed, 22 Nov 2023 09:03:55 +0100 (CET)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 2149B181D0E2;
-	Wed, 22 Nov 2023 16:03:52 +0800 (+08)
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 976CF1834870;
+	Wed, 22 Nov 2023 16:03:53 +0800 (+08)
 From: Shengjiu Wang <shengjiu.wang@nxp.com>
 To: hverkuil@xs4all.nl,
 	sakari.ailus@iki.fi,
@@ -42,10 +42,12 @@ To: hverkuil@xs4all.nl,
 	tiwai@suse.com,
 	alsa-devel@alsa-project.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v11 00/15] Add audio support in v4l2 framework
-Date: Wed, 22 Nov 2023 15:23:43 +0800
-Message-Id: <1700637838-6743-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: [PATCH v11 01/15] ASoC: fsl_asrc: define functions for memory to memory usage
+Date: Wed, 22 Nov 2023 15:23:44 +0800
+Message-Id: <1700637838-6743-2-git-send-email-shengjiu.wang@nxp.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1700637838-6743-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1700637838-6743-1-git-send-email-shengjiu.wang@nxp.com>
 X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -61,158 +63,254 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Audio signal processing also has the requirement for memory to
-memory similar as Video.
+ASRC can be used on memory to memory case, define several
+functions for m2m usage.
 
-This asrc memory to memory (memory ->asrc->memory) case is a non
-real time use case.
+m2m_prepare: prepare for the start step
+m2m_start: the start step
+m2m_unprepare: unprepare for stop step, optional
+m2m_stop: stop step
+m2m_check_format: check format is supported or not
+m2m_calc_out_len: calculate output length according to input length
+m2m_get_maxburst: burst size for dma
+m2m_pair_suspend: suspend function of pair, optional.
+m2m_pair_resume: resume function of pair
+get_output_fifo_size: get remaining data size in FIFO
 
-User fills the input buffer to the asrc module, after conversion, then asrc
-sends back the output buffer to user. So it is not a traditional ALSA playback
-and capture case.
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Acked-by: Mark Brown <broonie@kernel.org>
+---
+ sound/soc/fsl/fsl_asrc.c        | 126 ++++++++++++++++++++++++++++++++
+ sound/soc/fsl/fsl_asrc.h        |   2 +
+ sound/soc/fsl/fsl_asrc_common.h |  37 ++++++++++
+ 3 files changed, 165 insertions(+)
 
-It is a specific use case,  there is no reference in current kernel.
-v4l2 memory to memory is the closed implementation,  v4l2 current
-support video, image, radio, tuner, touch devices, so it is not
-complicated to add support for this specific audio case.
-
-Because we had implemented the "memory -> asrc ->i2s device-> codec"
-use case in ALSA.  Now the "memory->asrc->memory" needs
-to reuse the code in asrc driver, so the first 3 patches is for refining
-the code to make it can be shared by the "memory->asrc->memory"
-driver.
-
-The main change is in the v4l2 side, A /dev/vl4-audioX will be created,
-user applications only use the ioctl of v4l2 framework.
-
-Other change is to add memory to memory support for two kinds of i.MX ASRC
-module.
-
-changes in v11
-- add add-fixed-point-test-controls in vivid.
-- add v4l2_ctrl_fp_compose() helper function for min and max
-
-changes in v10
-- remove FIXED_POINT type
-- change code base on media: v4l2-ctrls: add support for fraction_bits
-- fix issue reported by kernel test robot
-- remove module_alias
-
-changes in v9:
-- add MEDIA_ENT_F_PROC_AUDIO_RESAMPLER.
-- add MEDIA_INTF_T_V4L_AUDIO
-- add media controller support
-- refine the vim2m-audio to support 8k<->16k conversion.
-
-changes in v8:
-- refine V4L2_CAP_AUDIO_M2M to be 0x00000008
-- update doc for FIXED_POINT
-- address comments for imx-asrc
-
-changes in v7:
-- add acked-by from Mark
-- separate commit for fixed point, m2m audio class, audio rate controls
-- use INTEGER_MENU for rate,  FIXED_POINT for rate offset
-- remove used fmts
-- address other comments for Hans
-
-changes in v6:
-- use m2m_prepare/m2m_unprepare/m2m_start/m2m_stop to replace
-  m2m_start_part_one/m2m_stop_part_one, m2m_start_part_two/m2m_stop_part_two.
-- change V4L2_CTRL_TYPE_ASRC_RATE to V4L2_CTRL_TYPE_FIXED_POINT
-- fix warning by kernel test rebot
-- remove some unused format V4L2_AUDIO_FMT_XX
-- Get SNDRV_PCM_FORMAT from V4L2_AUDIO_FMT in driver.
-- rename audm2m to viaudm2m.
-
-changes in v5:
-- remove V4L2_AUDIO_FMT_LPCM
-- define audio pixel format like V4L2_AUDIO_FMT_S8...
-- remove rate and format in struct v4l2_audio_format.
-- Add V4L2_CID_ASRC_SOURCE_RATE and V4L2_CID_ASRC_DEST_RATE controls
-- updata document accordingly.
-
-changes in v4:
-- update document style
-- separate V4L2_AUDIO_FMT_LPCM and V4L2_CAP_AUDIO_M2M in separate commit
-
-changes in v3:
-- Modify documents for adding audio m2m support
-- Add audio virtual m2m driver
-- Defined V4L2_AUDIO_FMT_LPCM format type for audio.
-- Defined V4L2_CAP_AUDIO_M2M capability type for audio m2m case.
-- with modification in v4l-utils, pass v4l2-compliance test.
-
-changes in v2:
-- decouple the implementation in v4l2 and ALSA
-- implement the memory to memory driver as a platfrom driver
-  and move it to driver/media
-- move fsl_asrc_common.h to include/sound folder
-
-Shengjiu Wang (15):
-  ASoC: fsl_asrc: define functions for memory to memory usage
-  ASoC: fsl_easrc: define functions for memory to memory usage
-  ASoC: fsl_asrc: move fsl_asrc_common.h to include/sound
-  ASoC: fsl_asrc: register m2m platform device
-  ASoC: fsl_easrc: register m2m platform device
-  media: uapi: Add V4L2_CAP_AUDIO_M2M capability flag
-  media: v4l2: Add audio capture and output support
-  media: uapi: Define audio sample format fourcc type
-  media: uapi: Add V4L2_CTRL_CLASS_M2M_AUDIO
-  media: uapi: Add audio rate controls support
-  media: uapi: Declare interface types for Audio
-  media: uapi: Add an entity type for audio resampler
-  media: vivid: add fixed point test controls
-  media: imx-asrc: Add memory to memory driver
-  media: vim2m-audio: add virtual driver for audio memory to memory
-
- .../media/mediactl/media-types.rst            |   11 +
- .../userspace-api/media/v4l/buffer.rst        |    6 +
- .../userspace-api/media/v4l/common.rst        |    1 +
- .../media/v4l/dev-audio-mem2mem.rst           |   71 +
- .../userspace-api/media/v4l/devices.rst       |    1 +
- .../media/v4l/ext-ctrls-audio-m2m.rst         |   41 +
- .../userspace-api/media/v4l/pixfmt-audio.rst  |   87 ++
- .../userspace-api/media/v4l/pixfmt.rst        |    1 +
- .../media/v4l/vidioc-enum-fmt.rst             |    2 +
- .../media/v4l/vidioc-g-ext-ctrls.rst          |    4 +
- .../userspace-api/media/v4l/vidioc-g-fmt.rst  |    4 +
- .../media/v4l/vidioc-querycap.rst             |    3 +
- .../media/videodev2.h.rst.exceptions          |    3 +
- .../media/common/videobuf2/videobuf2-v4l2.c   |    4 +
- drivers/media/platform/nxp/Kconfig            |   13 +
- drivers/media/platform/nxp/Makefile           |    1 +
- drivers/media/platform/nxp/imx-asrc.c         | 1264 +++++++++++++++++
- drivers/media/test-drivers/Kconfig            |   11 +
- drivers/media/test-drivers/Makefile           |    1 +
- drivers/media/test-drivers/vim2m-audio.c      |  799 +++++++++++
- drivers/media/test-drivers/vivid/vivid-core.h |    2 +
- .../media/test-drivers/vivid/vivid-ctrls.c    |   26 +
- drivers/media/v4l2-core/v4l2-compat-ioctl32.c |    9 +
- drivers/media/v4l2-core/v4l2-ctrls-defs.c     |   10 +
- drivers/media/v4l2-core/v4l2-dev.c            |   21 +
- drivers/media/v4l2-core/v4l2-ioctl.c          |   66 +
- drivers/media/v4l2-core/v4l2-mem2mem.c        |   13 +-
- include/media/v4l2-ctrls.h                    |    3 +
- include/media/v4l2-dev.h                      |    2 +
- include/media/v4l2-ioctl.h                    |   34 +
- .../fsl => include/sound}/fsl_asrc_common.h   |   60 +
- include/uapi/linux/media.h                    |    2 +
- include/uapi/linux/v4l2-controls.h            |    9 +
- include/uapi/linux/videodev2.h                |   41 +
- sound/soc/fsl/fsl_asrc.c                      |  144 ++
- sound/soc/fsl/fsl_asrc.h                      |    4 +-
- sound/soc/fsl/fsl_asrc_dma.c                  |    2 +-
- sound/soc/fsl/fsl_easrc.c                     |  233 +++
- sound/soc/fsl/fsl_easrc.h                     |    6 +-
- 39 files changed, 3008 insertions(+), 7 deletions(-)
- create mode 100644 Documentation/userspace-api/media/v4l/dev-audio-mem2mem.rst
- create mode 100644 Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
- create mode 100644 Documentation/userspace-api/media/v4l/pixfmt-audio.rst
- create mode 100644 drivers/media/platform/nxp/imx-asrc.c
- create mode 100644 drivers/media/test-drivers/vim2m-audio.c
- rename {sound/soc/fsl => include/sound}/fsl_asrc_common.h (60%)
-
+diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
+index b793263291dc..7d8643ee0ba0 100644
+--- a/sound/soc/fsl/fsl_asrc.c
++++ b/sound/soc/fsl/fsl_asrc.c
+@@ -1063,6 +1063,124 @@ static int fsl_asrc_get_fifo_addr(u8 dir, enum asrc_pair_index index)
+ 	return REG_ASRDx(dir, index);
+ }
+ 
++/* Get sample numbers in FIFO */
++static unsigned int fsl_asrc_get_output_fifo_size(struct fsl_asrc_pair *pair)
++{
++	struct fsl_asrc *asrc = pair->asrc;
++	enum asrc_pair_index index = pair->index;
++	u32 val;
++
++	regmap_read(asrc->regmap, REG_ASRFST(index), &val);
++
++	val &= ASRFSTi_OUTPUT_FIFO_MASK;
++
++	return val >> ASRFSTi_OUTPUT_FIFO_SHIFT;
++}
++
++static int fsl_asrc_m2m_prepare(struct fsl_asrc_pair *pair)
++{
++	struct fsl_asrc_pair_priv *pair_priv = pair->private;
++	struct fsl_asrc *asrc = pair->asrc;
++	struct device *dev = &asrc->pdev->dev;
++	struct asrc_config config;
++	int ret;
++
++	/* fill config */
++	config.pair = pair->index;
++	config.channel_num = pair->channels;
++	config.input_sample_rate = pair->rate[IN];
++	config.output_sample_rate = pair->rate[OUT];
++	config.input_format = pair->sample_format[IN];
++	config.output_format = pair->sample_format[OUT];
++	config.inclk = INCLK_NONE;
++	config.outclk = OUTCLK_ASRCK1_CLK;
++
++	pair_priv->config = &config;
++	ret = fsl_asrc_config_pair(pair, true);
++	if (ret) {
++		dev_err(dev, "failed to config pair: %d\n", ret);
++		return ret;
++	}
++
++	pair->first_convert = 1;
++
++	return 0;
++}
++
++static int fsl_asrc_m2m_start(struct fsl_asrc_pair *pair)
++{
++	if (pair->first_convert) {
++		fsl_asrc_start_pair(pair);
++		pair->first_convert = 0;
++	}
++	/*
++	 * Clear DMA request during the stall state of ASRC:
++	 * During STALL state, the remaining in input fifo would never be
++	 * smaller than the input threshold while the output fifo would not
++	 * be bigger than output one. Thus the DMA request would be cleared.
++	 */
++	fsl_asrc_set_watermarks(pair, ASRC_FIFO_THRESHOLD_MIN,
++				ASRC_FIFO_THRESHOLD_MAX);
++
++	/* Update the real input threshold to raise DMA request */
++	fsl_asrc_set_watermarks(pair, ASRC_M2M_INPUTFIFO_WML,
++				ASRC_M2M_OUTPUTFIFO_WML);
++
++	return 0;
++}
++
++static int fsl_asrc_m2m_stop(struct fsl_asrc_pair *pair)
++{
++	if (!pair->first_convert) {
++		fsl_asrc_stop_pair(pair);
++		pair->first_convert = 1;
++	}
++
++	return 0;
++}
++
++/* calculate capture data length according to output data length and sample rate */
++static int fsl_asrc_m2m_calc_out_len(struct fsl_asrc_pair *pair, int input_buffer_length)
++{
++	unsigned int in_width, out_width;
++	unsigned int channels = pair->channels;
++	unsigned int in_samples, out_samples;
++	unsigned int out_length;
++
++	in_width = snd_pcm_format_physical_width(pair->sample_format[IN]) / 8;
++	out_width = snd_pcm_format_physical_width(pair->sample_format[OUT]) / 8;
++
++	in_samples = input_buffer_length / in_width / channels;
++	out_samples = pair->rate[OUT] * in_samples / pair->rate[IN];
++	out_length = (out_samples - ASRC_OUTPUT_LAST_SAMPLE) * out_width * channels;
++
++	return out_length;
++}
++
++static int fsl_asrc_m2m_get_maxburst(u8 dir, struct fsl_asrc_pair *pair)
++{
++	struct fsl_asrc *asrc = pair->asrc;
++	struct fsl_asrc_priv *asrc_priv = asrc->private;
++	int wml = (dir == IN) ? ASRC_M2M_INPUTFIFO_WML : ASRC_M2M_OUTPUTFIFO_WML;
++
++	if (!asrc_priv->soc->use_edma)
++		return wml * pair->channels;
++	else
++		return 1;
++}
++
++static int fsl_asrc_m2m_pair_resume(struct fsl_asrc_pair *pair)
++{
++	struct fsl_asrc *asrc = pair->asrc;
++	int i;
++
++	for (i = 0; i < pair->channels * 4; i++)
++		regmap_write(asrc->regmap, REG_ASRDI(pair->index), 0);
++
++	pair->first_convert = 1;
++	return 0;
++}
++
+ static int fsl_asrc_runtime_resume(struct device *dev);
+ static int fsl_asrc_runtime_suspend(struct device *dev);
+ 
+@@ -1147,6 +1265,14 @@ static int fsl_asrc_probe(struct platform_device *pdev)
+ 	asrc->get_fifo_addr = fsl_asrc_get_fifo_addr;
+ 	asrc->pair_priv_size = sizeof(struct fsl_asrc_pair_priv);
+ 
++	asrc->m2m_prepare = fsl_asrc_m2m_prepare;
++	asrc->m2m_start = fsl_asrc_m2m_start;
++	asrc->m2m_stop = fsl_asrc_m2m_stop;
++	asrc->get_output_fifo_size = fsl_asrc_get_output_fifo_size;
++	asrc->m2m_calc_out_len = fsl_asrc_m2m_calc_out_len;
++	asrc->m2m_get_maxburst = fsl_asrc_m2m_get_maxburst;
++	asrc->m2m_pair_resume = fsl_asrc_m2m_pair_resume;
++
+ 	if (of_device_is_compatible(np, "fsl,imx35-asrc")) {
+ 		asrc_priv->clk_map[IN] = input_clk_map_imx35;
+ 		asrc_priv->clk_map[OUT] = output_clk_map_imx35;
+diff --git a/sound/soc/fsl/fsl_asrc.h b/sound/soc/fsl/fsl_asrc.h
+index 86d2422ad606..1c492eb237f5 100644
+--- a/sound/soc/fsl/fsl_asrc.h
++++ b/sound/soc/fsl/fsl_asrc.h
+@@ -12,6 +12,8 @@
+ 
+ #include  "fsl_asrc_common.h"
+ 
++#define ASRC_M2M_INPUTFIFO_WML		0x4
++#define ASRC_M2M_OUTPUTFIFO_WML		0x2
+ #define ASRC_DMA_BUFFER_NUM		2
+ #define ASRC_INPUTFIFO_THRESHOLD	32
+ #define ASRC_OUTPUTFIFO_THRESHOLD	32
+diff --git a/sound/soc/fsl/fsl_asrc_common.h b/sound/soc/fsl/fsl_asrc_common.h
+index 7e1c13ca37f1..3b53d366182f 100644
+--- a/sound/soc/fsl/fsl_asrc_common.h
++++ b/sound/soc/fsl/fsl_asrc_common.h
+@@ -34,6 +34,12 @@ enum asrc_pair_index {
+  * @pos: hardware pointer position
+  * @req_dma_chan: flag to release dev_to_dev chan
+  * @private: pair private area
++ * @complete: dma task complete
++ * @sample_format: format of m2m
++ * @rate: rate of m2m
++ * @buf_len: buffer length of m2m
++ * @first_convert: start of conversion
++ * @req_pair: flag for request pair
+  */
+ struct fsl_asrc_pair {
+ 	struct fsl_asrc *asrc;
+@@ -49,6 +55,14 @@ struct fsl_asrc_pair {
+ 	bool req_dma_chan;
+ 
+ 	void *private;
++
++	/* used for m2m */
++	struct completion complete[2];
++	snd_pcm_format_t sample_format[2];
++	unsigned int rate[2];
++	unsigned int buf_len[2];
++	unsigned int first_convert;
++	bool req_pair;
+ };
+ 
+ /**
+@@ -72,6 +86,16 @@ struct fsl_asrc_pair {
+  * @request_pair: function pointer
+  * @release_pair: function pointer
+  * @get_fifo_addr: function pointer
++ * @m2m_prepare: function pointer
++ * @m2m_start: function pointer
++ * @m2m_unprepare: function pointer
++ * @m2m_stop: function pointer
++ * @m2m_calc_out_len: function pointer
++ * @m2m_get_maxburst: function pointer
++ * @m2m_pair_suspend: function pointer
++ * @m2m_pair_resume: function pointer
++ * @m2m_set_ratio_mod: function pointer
++ * @get_output_fifo_size: function pointer
+  * @pair_priv_size: size of pair private struct.
+  * @private: private data structure
+  */
+@@ -97,6 +121,19 @@ struct fsl_asrc {
+ 	int (*request_pair)(int channels, struct fsl_asrc_pair *pair);
+ 	void (*release_pair)(struct fsl_asrc_pair *pair);
+ 	int (*get_fifo_addr)(u8 dir, enum asrc_pair_index index);
++
++	int (*m2m_prepare)(struct fsl_asrc_pair *pair);
++	int (*m2m_start)(struct fsl_asrc_pair *pair);
++	int (*m2m_unprepare)(struct fsl_asrc_pair *pair);
++	int (*m2m_stop)(struct fsl_asrc_pair *pair);
++
++	int (*m2m_calc_out_len)(struct fsl_asrc_pair *pair, int input_buffer_length);
++	int (*m2m_get_maxburst)(u8 dir, struct fsl_asrc_pair *pair);
++	int (*m2m_pair_suspend)(struct fsl_asrc_pair *pair);
++	int (*m2m_pair_resume)(struct fsl_asrc_pair *pair);
++	int (*m2m_set_ratio_mod)(struct fsl_asrc_pair *pair, int val);
++
++	unsigned int (*get_output_fifo_size)(struct fsl_asrc_pair *pair);
+ 	size_t pair_priv_size;
+ 
+ 	void *private;
 -- 
 2.34.1
 
