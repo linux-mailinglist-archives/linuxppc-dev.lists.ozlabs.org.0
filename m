@@ -2,55 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 834ED7F3D16
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 06:02:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C63EA7F3D1A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 06:06:29 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YogX3JWO;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Ea4FzsOX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SZpyk32knz3dL1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 16:02:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SZq374rY8z3dRb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 16:06:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YogX3JWO;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Ea4FzsOX;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (unknown [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZpxv0Ns9z3bvB
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 16:01:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZq2K0LYjz2yD4
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 16:05:45 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1700629314;
-	bh=cnv4HPjqzpENgSwb6uKQtFMG29qppfeUnvFNRoTLgL0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=YogX3JWOhSw5uZggo5VoYNmRhvjL8UEBdsqPezIoy7PJ+trAgLaMfMJs8byrttGCR
-	 taH/aP/aqTwAsrEhaMUx7N+eG51Ves5Mz12AtHGR8kGJ3+jQ2eV9K5RpF/lFQIAgWx
-	 XwlXSVNwBejFErkFRBYnW/zxGfE48on1DDTfDMXdeMlhuiswDvqpTDRqQt0iANRZ8M
-	 zU5aTHtRkC6S4A1UHdKohYl1b6sIXunJ6ZvricfU8x2pNex6H1vd2LEtjm6WbXOjK5
-	 rX4upN14k9Nt8TwL9fMBYdQJIt/Uxy2anQtmpEV6O/HNz+w+nKIw40CwvAoFaWtOyB
-	 oEMqJMXhDzGGg==
+	s=201909; t=1700629534;
+	bh=jDSBfZj7B7+VITpr7wIswGw2H7lq86/8qc+86Sye4y4=;
+	h=From:To:Subject:In-Reply-To:References:Date:From;
+	b=Ea4FzsOXiO6i0vps/kg9uohUtjigkwuMg/NuUSZEeXKHAm8ASV6z5qTRuw4sU+K5p
+	 TA8Ug7q06EqtvdSx4xTXkExNYmStDGWrH57uE0BAnkVOjKJ7xaqQ9HGcxW2dnIxJLe
+	 9wxyFBQ3W/h3cj0nrgGvy4YF9IuYvHdQ4xMnQGvxNKcbkQnymt+brjSD06OTcipeKF
+	 Yh1GCklyOfXeGHIfakngYa3+18iPLN9rX3ncGht3Xj+CYQ+x7V4/GtPB1waLqGai/+
+	 /E7K7ywD5uSjyKVNA1ggWvTbVxQ21I1+tVZIajyDiRm/meUmZMJIXvR9nJ4LGzMuuO
+	 4AmvXREzLfw0g==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SZpxr3Ynvz4xNG;
-	Wed, 22 Nov 2023 16:01:51 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SZq266FrHz4xDB;
+	Wed, 22 Nov 2023 16:05:34 +1100 (AEDT)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Timothy Pearson <tpearson@raptorengineering.com>
-Subject: Re: [PATCH v2] powerpc: Don't clobber fr0/vs0 during fp|altivec
- register  save
-In-Reply-To: <1294229534.48922001.1700539832331.JavaMail.zimbra@raptorengineeringinc.com>
-References: <1921539696.48534988.1700407082933.JavaMail.zimbra@raptorengineeringinc.com>
- <877cmc7ve9.fsf@mail.lhotse>
- <439072392.48800901.1700498743840.JavaMail.zimbra@raptorengineeringinc.com>
- <874jhg6lkn.fsf@mail.lhotse>
- <1294229534.48922001.1700539832331.JavaMail.zimbra@raptorengineeringinc.com>
-Date: Wed, 22 Nov 2023 16:01:50 +1100
-Message-ID: <87leaqjs8x.fsf@mail.lhotse>
+To: Vishal Chourasia <vishalc@linux.ibm.com>, Aneesh Kumar K V
+ <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc: Restrict ARCH_HIBERNATION_POSSIBLE to
+ supported configurations
+In-Reply-To: <9aaee6eb-a9a7-4945-8678-192868430b84@linux.ibm.com>
+References: <20231114082046.6018-1-vishalc@linux.ibm.com>
+ <87sf57zbcd.fsf@linux.ibm.com>
+ <ecc9d34a-4960-4540-802e-d35ee4f5259b@linux.ibm.com>
+ <c3594f58-c7a4-4265-a38e-c97b08169b61@linux.ibm.com>
+ <b7600012-0e7e-4b25-8d8c-1bffcc9c1461@linux.ibm.com>
+ <87jzqh706q.fsf@mail.lhotse>
+ <9aaee6eb-a9a7-4945-8678-192868430b84@linux.ibm.com>
+Date: Wed, 22 Nov 2023 16:05:34 +1100
+Message-ID: <87il5ujs2p.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,42 +66,230 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, regressions <regressions@lists.linux.dev>, npiggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Timothy Pearson <tpearson@raptorengineering.com> writes:
+Vishal Chourasia <vishalc@linux.ibm.com> writes:
+> On 17/11/23 4:52 am, Michael Ellerman wrote:
+>> Vishal Chourasia <vishalc@linux.ibm.com> writes:
+>>> On 15/11/23 5:46 pm, Aneesh Kumar K V wrote:
+>>>> On 11/15/23 5:23 PM, Vishal Chourasia wrote:
+>>>>> On 15/11/23 1:39 pm, Aneesh Kumar K.V wrote:
+>>>>>> Vishal Chourasia <vishalc@linux.ibm.com> writes:
+>>>>>>
+>>>>>>> This patch modifies the ARCH_HIBERNATION_POSSIBLE option to ensure =
+that it
+>>>>>>> correctly depends on these PowerPC configurations being enabled. As=
+ a result,
+>>>>>>> it prevents the HOTPLUG_CPU from being selected when the required d=
+ependencies
+>>>>>>> are not satisfied.
+>>>>>>>
+>>>>>>> This change aligns the dependency tree with the expected hardware s=
+upport for
+>>>>>>> CPU hot-plugging under PowerPC architectures, ensuring that the ker=
+nel
+>>>>>>> configuration steps do not lead to inconsistent states.
+>>>>>>>
+>>>>>>> Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
+>>>>>>> ---
+>>>>>>> During the configuration process with 'make randconfig' followed by
+>>>>>>> 'make olddefconfig', we observed a warning indicating an unmet dire=
+ct
+>>>>>>> dependency for the HOTPLUG_CPU option. The dependency in question r=
+elates to
+>>>>>>> various PowerPC configurations (PPC_PSERIES, PPC_PMAC, PPC_POWERNV,
+>>>>>>> FSL_SOC_BOOKE) which were not enabled, yet the HOTPLUG_CPU was bein=
+gDuring the configuration process with 'make randconfig' followed by
+>>>>>>> 'make olddefconfig', we observed a warning indicating an unmet dire=
+ct
+>>>>>>> dependency for the HOTPLUG_CPU option. The dependency in question r=
+elates to
+>>>>>>> various PowerPC configurations (PPC_PSERIES, PPC_PMAC, PPC_POWERNV,
+>>>>>>> FSL_SOC_BOOKE) which were not enabled, yet the HOTPLUG_CPU was being
+>>>>>>> erroneously selected due to an implicit assumption by the PM_SLEEP_=
+SMP option.
+>>>>>>> This misalignment in dependencies could potentially lead to inconsi=
+stent kernel
+>>>>>>> configuration states, especially when considering the necessary har=
+dware
+>>>>>>> support for CPU hot-plugging on PowerPC platforms. The patch aims t=
+o correct
+>>>>>>> this by ensuring that ARCH_HIBERNATION_POSSIBLE is contingent upon =
+the
+>>>>>>> appropriate PowerPC configurations being active.
+>>>>>>>
+>>>>>>> steps to reproduce (before applying the patch):
+>>>>>>>
+>>>>>>> Run 'make pseries_le_defconfig'
+>>>>>>> Run 'make menuconfig'
+>>>>>>> Enable hibernation [ Kernel options -> Hibernation (aka 'suspend to=
+ disk') ]=20
+>>>>>>> Disable [ Platform support -> IBM PowerNV (Non-Virtualized) platfor=
+m support ]
+>>>>>>> Disable [ Platform support -> IBM pSeries & new (POWER5-based) iSer=
+ies ]
+>>>>>>> Enable SMP [ Processor support -> Symmetric multi-processing suppor=
+t ]
+>>>>>>> Save the config
+>>>>>>> Run 'make olddefconfig'
+>>>>>>> erroneously selected due to an implicit assumption by the PM_SLEEP_=
+SMP option.
+>>>>>>> This misalignment in dependencies could potentially lead to inconsi=
+stent kernel
+>>>>>>> configuration states, especially when considering the necessary har=
+dware
+>>>>>>> support for CPU hot-plugging on PowerPC platforms. The patch aims t=
+o correct
+>>>>>>> this by ensuring that ARCH_HIBERNATION_POSSIBLE is contingent upon =
+the
+>>>>>>> appropriate PowerPC configurations being active.
+>>>>>>>
+>>>>>>> steps to reproduce (before applying the patch):
+>>>>>>>
+>>>>>>> Run 'make pseries_le_defconfig'
+>>>>>>> Run 'make menuconfig'
+>>>>>>> Enable hibernation [ Kernel options -> Hibernation (aka 'suspend to=
+ disk') ]=20
+>>>>>>> Disable [ Platform support -> IBM PowerNV (Non-Virtualized) platfor=
+m support ]
+>>>>>>> Disable [ Platform support -> IBM pSeries & new (POWER5-based) iSer=
+ies ]
+>>>>>>> Enable SMP [ Processor support -> Symmetric multi-processing suppor=
+t ]
+>>>>>>> Save the config
+>>>>>>> Run 'make olddefconfig'
+>>>>>>>
+>>>>>>>  arch/powerpc/Kconfig | 5 +++--
+>>>>>>>  1 file changed, 3 insertions(+), 2 deletions(-)
+>>>>>>>
+>>>>>>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+>>>>>>> index 6f105ee4f3cf..bf99ff9869f6 100644
+>>>>>>> --- a/arch/powerpc/Kconfig
+>>>>>>> +++ b/arch/powerpc/Kconfig
+>>>>>>> @@ -380,8 +380,9 @@ config DEFAULT_UIMAGE
+>>>>>>>  	  Used to allow a board to specify it wants a uImage built by def=
+ault
+>>>>>>>=20=20
+>>>>>>>  config ARCH_HIBERNATION_POSSIBLE
+>>>>>>> -	bool
+>>>>>>> -	default y
+>>>>>>> +	def_bool y
+>>>>>>> +	depends on PPC_PSERIES || \
+>>>>>>> +		PPC_PMAC || PPC_POWERNV || FSL_SOC_BOOKE
+>>>>>>>=20=20
+>>>>>>>  config ARCH_SUSPEND_POSSIBLE
+>>>>>>>  	def_bool y
+>>>>>>>
+>>>>>> I am wondering whether it should be switched to using select from
+>>>>>> config PPC?=20
+>>>>>>
+>>>>>> selecting ARCH_HIBERNATION_POSSIBLE based on value of config PPC
+>>>>>> will not guarantee config PPC_PSERIES being set
+>>>>>>
+>>>>>> PPC_PSERIES can be set to N, even when config PPC is set.
+>>> I understand what you meant before. Having ARCH_HIBERNATION_POSSIBLE un=
+der config PPC makes more sense.
+>>>>>> grep -A 5 -i "config ppc_pseries" arch/powerpc/platforms/pseries/Kco=
+nfig
+>>>>>> config PPC_PSERIES
+>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on PPC64 && PPC_B=
+OOK3S
+>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool "IBM pSeries & new (=
+POWER5-based) iSeries"
+>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select HAVE_PCSPKR_PLATFO=
+RM
+>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select MPIC
+>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select OF_DYNAMIC
+>>>>>>
+>>>> modified   arch/powerpc/Kconfig
+>>>> @@ -156,6 +156,7 @@ config PPC
+>>>>  	select ARCH_HAS_UACCESS_FLUSHCACHE
+>>>>  	select ARCH_HAS_UBSAN_SANITIZE_ALL
+>>>>  	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+>>>> +	select ARCH_HIBERNATION_POSSIBLE	if (PPC_PSERIES || PPC_PMAC || PPC_=
+POWERNV || FSL_SOC_BOOKE)
+>>>>  	select ARCH_KEEP_MEMBLOCK
+>>>>  	select ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE	if PPC_RADIX_MMU
+>>>>  	select ARCH_MIGHT_HAVE_PC_PARPORT
+>>> Though, even with these changes I was able to reproduce same warnings. =
+(using steps from above)
+>>> It's because one can enable HIBERNATION manually.
+>> But how? You shouldn't be able to enable it manually, it depends on
+>> ARCH_HIBERNATION_POSSIBLE which shouldn't be enabled.
+>>
+>> For the above to work you also need to make it default n, eg:
+>>
+>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+>> index 6f105ee4f3cf..dd2a9b938188 100644
+>> --- a/arch/powerpc/Kconfig
+>> +++ b/arch/powerpc/Kconfig
+>> @@ -380,8 +380,7 @@ config DEFAULT_UIMAGE
+>>           Used to allow a board to specify it wants a uImage built by de=
+fault
+>>
+>>  config ARCH_HIBERNATION_POSSIBLE
+>> -       bool
+>> -       default y
+>> +       def_bool n
+>>
+>>  config ARCH_SUSPEND_POSSIBLE
+>>         def_bool y
 >
-...
+> Ran make randconfig bunch of times.
 >
-> So a little more detail on this, just to put it to rest properly vs.
-> assuming hand analysis caught every possible pathway. :)
+> # make KCONFIG_SEED=3D0x97C94A3C randconfig
+> make[1]: Entering directory ''
+> =C2=A0 GEN=C2=A0=C2=A0=C2=A0=C2=A0 Makefile
+> KCONFIG_SEED=3D0x97C94A3C
 >
-> The debugging that generates this stack trace also verifies the following in __giveup_fpu():
+> WARNING: unmet direct dependencies detected for HOTPLUG_CPU
+> =C2=A0 Depends on [n]: SMP [=3Dy] && (PPC_PSERIES [=3Dn] || PPC_PMAC [=3D=
+n] ||
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 PPC_POWERNV [=3Dn] || FSL_SOC_BOOKE [=3Dn])
+> =C2=A0 Selected by [y]:
+> =C2=A0 - PM_SLEEP_SMP [=3Dy] && SMP [=3Dy] && (ARCH_SUSPEND_POSSIBLE [=3D=
+y]
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 || ARCH_HIB=
+ERNATION_POSSIBLE [=3Dn]) && PM_SLEEP [=3Dy]
+> #
+> # configuration written to .config
+> #
+> make[1]: Leaving directory ''
 >
-> 1.) tsk->thread.fp_state.fpr doesn't contain the FPSCR contents prior to calling save_fpu()
-> 2.) tsk->thread.fp_state.fpr contains the FPSCR contents directly after calling save_fpu()
-> 3.) MSR_FP is set both in the task struct and in the live MSR.
+> As per my understanding,
 >
-> Only if all three conditions are met will it generate the trace.  This
-> is a generalization of the hack I used to find the problem in the
-> first place.
+> "Depends on" clause of the config HOTPLUG_CPU as CPU hotplugging is only
+> available for SMP systems and is only available for following power platf=
+orms
+> (PPC_PSERIES || PPC_PMAC || PPC_POWERNV=C2=A0 || FSL_SOC_BOOKE)
 >
-> If the state will subsequently be reloaded from the thread struct,
-> that means we're reloading the registers from the thread struct that
-> we just verified was corrupted by the earlier save_fpu() call.  There
-> are only two ways I can see for that to be true -- one is if the
-> registers were already clobbered when giveup_all() was entered, and
-> the other is if save_fpu() went ahead and clobbered them right here
-> inside giveup_all().
+> Also, config HOTPLUG_CPU=C2=A0 is being selected by config PM_SLEEP_SMP
+> config PM_SLEEP_SMP
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 def_bool y
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on SMP
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on ARCH_SUSPEND_POSSIB=
+LE || ARCH_HIBERNATION_POSSIBLE
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on PM_SLEEP
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select HOTPLUG_CPU <----- Here
 >
-> To see which scenario we were dealing with, I added a bit more
-> instrumentation to dump the current register state if MSR_FP bit was
-> already set in registers (i.e. not dumping data from task struct, but
-> using the live FPU registers instead), and sure enough the registers
-> are corrupt on entry, so something else has already called save_fpu()
-> before we even hit giveup_all() in this call chain.
+> Power management functionality depends and vary upon arch (and in powerpc=
+ case, platforms)
+> supporting suspend/hibernation
+>
+> There are some platforms which support suspend and hence ARCH_SUSPEND_POS=
+SIBLE
+> is set, leading to PM_SLEEP_SMP being set, and ultimately, config HOTPLUG=
+_CPU gets set.
+> But, CPU hotplug is not supported for such platform and hence the conflic=
+t.
 
-Can you share the debug patch you're using?
+Yeah. We need to restrict ARCH_SUSPEND_POSSIBLE in a similar way to
+ARCH_HIBERNATION_POSSIBLE.
 
 cheers
