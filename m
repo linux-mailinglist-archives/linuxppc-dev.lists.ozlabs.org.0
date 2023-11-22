@@ -2,52 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E584B7F3CFA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 05:44:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 834ED7F3D16
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 06:02:40 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=KgVeuHwZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YogX3JWO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SZpZH5nrJz3dKJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 15:44:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SZpyk32knz3dL1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 16:02:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=KgVeuHwZ;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YogX3JWO;
 	dkim-atps=neutral
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZpYS0WTjz3cRt
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 15:44:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SZpxv0Ns9z3bvB
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 16:01:55 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1700628250;
-	bh=JZ81iXnEsPMLSslmP87FQmq3s2GbIRjMkMphLBxuqOM=;
+	s=201909; t=1700629314;
+	bh=cnv4HPjqzpENgSwb6uKQtFMG29qppfeUnvFNRoTLgL0=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=KgVeuHwZbOrQ/ovgo3Ge006FxWEyRwWOZtDKUJmRZeyvk6xO7n5isRcw+JRnm3E7e
-	 DOEo/LgMAnKtZ9XTElqt+ScPDsc7PsVixUqPO3NEEQLKBAtzZcxyKPEpEyiKD2KPHe
-	 l8Zq1mIiKO1a0mxjfDs1Mh5IUp/pXAW4OrMJzhMoAQUw9iy+uh35GkiytX/Ec444mQ
-	 DwYtprMYgtQ4PhxCHwmy/LUFPULUn0lZdZQqSvs50CX9o/Y3GkojzZNO4SXgUiBz1p
-	 bv9agTOs3FjESDV3v2ABnSZYPg1t+gwVV1Wyq4l0hrnpj/FXeZnd1Rvg1Uf/jD+8kc
-	 DCafiiRqd3rsw==
+	b=YogX3JWOhSw5uZggo5VoYNmRhvjL8UEBdsqPezIoy7PJ+trAgLaMfMJs8byrttGCR
+	 taH/aP/aqTwAsrEhaMUx7N+eG51Ves5Mz12AtHGR8kGJ3+jQ2eV9K5RpF/lFQIAgWx
+	 XwlXSVNwBejFErkFRBYnW/zxGfE48on1DDTfDMXdeMlhuiswDvqpTDRqQt0iANRZ8M
+	 zU5aTHtRkC6S4A1UHdKohYl1b6sIXunJ6ZvricfU8x2pNex6H1vd2LEtjm6WbXOjK5
+	 rX4upN14k9Nt8TwL9fMBYdQJIt/Uxy2anQtmpEV6O/HNz+w+nKIw40CwvAoFaWtOyB
+	 oEMqJMXhDzGGg==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SZpYQ4Blkz4xDB;
-	Wed, 22 Nov 2023 15:44:10 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SZpxr3Ynvz4xNG;
+	Wed, 22 Nov 2023 16:01:51 +1100 (AEDT)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Naveen N Rao <naveen@kernel.org>
-Subject: Re: [PATCH] powerpc/lib: Avoid array bounds warnings in vec ops
-In-Reply-To: <i4zq3tg6gwaptnuoq2ainowffvkols2k5x7rads473zn55r27y@cvdy5yvkmj2p>
-References: <20231120235436.1569255-1-mpe@ellerman.id.au>
- <i4zq3tg6gwaptnuoq2ainowffvkols2k5x7rads473zn55r27y@cvdy5yvkmj2p>
-Date: Wed, 22 Nov 2023 15:44:07 +1100
-Message-ID: <87pm02jt2g.fsf@mail.lhotse>
+To: Timothy Pearson <tpearson@raptorengineering.com>
+Subject: Re: [PATCH v2] powerpc: Don't clobber fr0/vs0 during fp|altivec
+ register  save
+In-Reply-To: <1294229534.48922001.1700539832331.JavaMail.zimbra@raptorengineeringinc.com>
+References: <1921539696.48534988.1700407082933.JavaMail.zimbra@raptorengineeringinc.com>
+ <877cmc7ve9.fsf@mail.lhotse>
+ <439072392.48800901.1700498743840.JavaMail.zimbra@raptorengineeringinc.com>
+ <874jhg6lkn.fsf@mail.lhotse>
+ <1294229534.48922001.1700539832331.JavaMail.zimbra@raptorengineeringinc.com>
+Date: Wed, 22 Nov 2023 16:01:50 +1100
+Message-ID: <87leaqjs8x.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,105 +62,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, gustavo@embeddedor.com
+Cc: Jens Axboe <axboe@kernel.dk>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, regressions <regressions@lists.linux.dev>, npiggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Naveen N Rao <naveen@kernel.org> writes:
-> On Tue, Nov 21, 2023 at 10:54:36AM +1100, Michael Ellerman wrote:
->> Building with GCC 13 (which has -array-bounds enabled) there are several
+Timothy Pearson <tpearson@raptorengineering.com> writes:
 >
-> Thanks, gcc13 indeed helps reproduce the warnings.
-
-Actually that part is no longer true since 0da6e5fd6c37 ("gcc: disable
-'-Warray-bounds' for gcc-13 too").
-
->> warnings in sstep.c along the lines of:
->>=20
->>   In function =E2=80=98do_byte_reverse=E2=80=99,
->>       inlined from =E2=80=98do_vec_load=E2=80=99 at arch/powerpc/lib/sst=
-ep.c:691:3,
->>       inlined from =E2=80=98emulate_loadstore=E2=80=99 at arch/powerpc/l=
-ib/sstep.c:3439:9:
->>   arch/powerpc/lib/sstep.c:289:23: error: array subscript 2 is outside a=
-rray bounds of =E2=80=98u8[16]=E2=80=99 {aka =E2=80=98unsigned char[16]=E2=
-=80=99} [-Werror=3Darray-bounds=3D]
->>     289 |                 up[2] =3D byterev_8(up[1]);
->>         |                 ~~~~~~^~~~~~~~~~~~~~~~~~
->>   arch/powerpc/lib/sstep.c: In function =E2=80=98emulate_loadstore=E2=80=
-=99:
->>   arch/powerpc/lib/sstep.c:681:11: note: at offset 16 into object =E2=80=
-=98u=E2=80=99 of size 16
->>     681 |         } u =3D {};
->>         |           ^
->>=20
->> do_byte_reverse() supports a size up to 32 bytes, but in these cases the
->> caller is only passing a 16 byte buffer. In practice there is no bug,
->> do_vec_load() is only called from the LOAD_VMX case in emulate_loadstore=
-().
->> That in turn is only reached when analyse_instr() recognises VMX ops,
->> and in all cases the size is no greater than 16:
->>=20
->>   $ git grep -w LOAD_VMX arch/powerpc/lib/sstep.c
->>   arch/powerpc/lib/sstep.c:                        op->type =3D MKOP(LOA=
-D_VMX, 0, 1);
->>   arch/powerpc/lib/sstep.c:                        op->type =3D MKOP(LOA=
-D_VMX, 0, 2);
->>   arch/powerpc/lib/sstep.c:                        op->type =3D MKOP(LOA=
-D_VMX, 0, 4);
->>   arch/powerpc/lib/sstep.c:                        op->type =3D MKOP(LOA=
-D_VMX, 0, 16);
->>=20
->> Similarly for do_vec_store().
->>=20
->> Although the warning is incorrect, the code would be safer if it clamped
->> the size from the caller to the known size of the buffer. Do that using
->> min_t().
+...
 >
-> But, do_vec_load() and do_vec_store() assume that the maximum size is 16=
-=20
-> (the address_ok() check as an example). So, should we be considering a=20
-> bigger hammer to help detect future incorrect use?
+> So a little more detail on this, just to put it to rest properly vs.
+> assuming hand analysis caught every possible pathway. :)
+>
+> The debugging that generates this stack trace also verifies the following in __giveup_fpu():
+>
+> 1.) tsk->thread.fp_state.fpr doesn't contain the FPSCR contents prior to calling save_fpu()
+> 2.) tsk->thread.fp_state.fpr contains the FPSCR contents directly after calling save_fpu()
+> 3.) MSR_FP is set both in the task struct and in the live MSR.
+>
+> Only if all three conditions are met will it generate the trace.  This
+> is a generalization of the hack I used to find the problem in the
+> first place.
+>
+> If the state will subsequently be reloaded from the thread struct,
+> that means we're reloading the registers from the thread struct that
+> we just verified was corrupted by the earlier save_fpu() call.  There
+> are only two ways I can see for that to be true -- one is if the
+> registers were already clobbered when giveup_all() was entered, and
+> the other is if save_fpu() went ahead and clobbered them right here
+> inside giveup_all().
+>
+> To see which scenario we were dealing with, I added a bit more
+> instrumentation to dump the current register state if MSR_FP bit was
+> already set in registers (i.e. not dumping data from task struct, but
+> using the live FPU registers instead), and sure enough the registers
+> are corrupt on entry, so something else has already called save_fpu()
+> before we even hit giveup_all() in this call chain.
 
-Yeah true.
-
-To be honest I don't know how paranoid we want to get, we could end up
-putting WARN's all over the kernel :)
-
-In this case I guess if the size is too large we overflow the buffer on
-the kernel stack, so we should at least check the size.
-
-But does it need a WARN? I'm not sure. If we had a case that was passing
-a out-of-bound size hopefully we would notice in testing? :)
+Can you share the debug patch you're using?
 
 cheers
-
-> diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-> index a4ab8625061a..ac22136032b8 100644
-> --- a/arch/powerpc/lib/sstep.c
-> +++ b/arch/powerpc/lib/sstep.c
-> @@ -680,6 +680,9 @@ static nokprobe_inline int do_vec_load(int rn, unsign=
-ed long ea,
->                 u8 b[sizeof(__vector128)];
->         } u =3D {};
->=20=20
-> +       if (WARN_ON_ONCE(size > sizeof(u)))
-> +               return -EINVAL;
-> +
->         if (!address_ok(regs, ea & ~0xfUL, 16))
->                 return -EFAULT;
->         /* align to multiple of size */
-> @@ -707,6 +710,9 @@ static nokprobe_inline int do_vec_store(int rn, unsig=
-ned long ea,
->                 u8 b[sizeof(__vector128)];
->         } u;
->=20=20
-> +       if (WARN_ON_ONCE(size > sizeof(u)))
-> +               return -EINVAL;
-> +
->         if (!address_ok(regs, ea & ~0xfUL, 16))
->                 return -EFAULT;
->         /* align to multiple of size */
->
->
-> - Naveen
