@@ -2,90 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9DB57F6294
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Nov 2023 16:20:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 835C07F6335
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Nov 2023 16:42:23 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=embeddedor.com header.i=@embeddedor.com header.a=rsa-sha256 header.s=default header.b=UNpDTejU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZDDf/GUU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sbhd44qWLz3dk2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 02:20:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sbj6P2tkbz3dLG
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 02:42:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=embeddedor.com header.i=@embeddedor.com header.a=rsa-sha256 header.s=default header.b=UNpDTejU;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZDDf/GUU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=embeddedor.com (client-ip=44.202.169.37; helo=omta038.useast.a.cloudfilter.net; envelope-from=gustavo@embeddedor.com; receiver=lists.ozlabs.org)
-Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sbhc92Q10z3dL4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Nov 2023 02:19:35 +1100 (AEDT)
-Received: from eig-obgw-6010a.ext.cloudfilter.net ([10.0.30.248])
-	by cmsmtp with ESMTPS
-	id 62kur0OgrWcCI6BSorzZ35; Thu, 23 Nov 2023 15:17:58 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id 6BSmr9RCk8vT06BSmrwmMS; Thu, 23 Nov 2023 15:17:56 +0000
-X-Authority-Analysis: v=2.4 cv=ffi+dmcF c=1 sm=1 tr=0 ts=655f6d24
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=yGeM7+xMb5a5VK1DGQx1ew==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=BNY50KLci1gA:10 a=wYkD_t78qR0A:10 a=VwQbUJbxAAAA:8
- a=voM4FWlXAAAA:8 a=Z-Vhp2_sRgHxayNbR2cA:9 a=QEXdDO2ut3YA:10 a=S5ubAB1OdGcA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=IC2XNlieTeVoXbcui8wp:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=DfoX0Dt0luLgH9VYNQaGBNqfL1ZfpE45KJwTEoR2wsE=; b=UNpDTejUMIHRskqqYblHEVbLLr
-	KV0qB31HmvsqgAjuXBsuYPBHaz/sqVwukLQB4/iXbX4ic+YzE2qM4Uodl2KkBykeaQ3+L/FmcxpRm
-	K22sSLS6TqEoI+Hngu28fDMTNzsD2IvW2aYgBXnstLXpzln4Pn7PUUlBy3CYINQ8vaDLIx5FKeFyH
-	gbHvdQ/lLh6qRKtOzV1royE79WtYz19A87IQigEQhUurJe+3V6M9hvgFRJyINSJWaXpHqBgVL7+6q
-	4kHRGTyEyYsaSzk1mhvfrcW7C2zUjz2+XlMvJYBWXstC63hvGcRgGwbfSM6KDXfuTlX7Yebf2+MUB
-	R2aC94Og==;
-Received: from 187.184.157.122.cable.dyn.cableonline.com.mx ([187.184.157.122]:25973 helo=[192.168.0.25])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1r6BSl-001fV9-2k;
-	Thu, 23 Nov 2023 09:17:55 -0600
-Message-ID: <c7fb16c0-ce17-465e-8624-2ee39b545a11@embeddedor.com>
-Date: Thu, 23 Nov 2023 09:17:54 -0600
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sbj5X1lJMz3cF1
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Nov 2023 02:41:36 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by ams.source.kernel.org (Postfix) with ESMTP id 7FEDCB82DAB;
+	Thu, 23 Nov 2023 15:41:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D54C433C8;
+	Thu, 23 Nov 2023 15:41:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1700754089;
+	bh=wYo7fAMqhxFyBFMQMLKccEbNB96HsajO4uuHMmp53Og=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZDDf/GUUb7F28lHZof2kZ/ExvVGLi3nSeT3k5MbpJeP7J0VRZNmeH0n0637NQXiJB
+	 hXe8WuNM4qKqZGi8AinuhXcYMqOENZ9/wzckFUhv+cEJRM4/HmSMMksK/WN6Dy5Ma8
+	 crPwiGQ3GaiSK00zr+Kr3EpqT8dPwQzDEBl05EUafOfTas5YObKWcowYE6HhNzwKX4
+	 gyZ7Z+k9Vr2SNTiHif5d2ZK3xPjSD8Mo/PvaRTgwaABEKoQRtpYp2i3PjOPpa3mV3f
+	 8LRmCGmlgs78DL4EGWUkJDk7QoF8PY4psFMdIZKb0OGYKJMHSvVD3m8M16G4YVYpCF
+	 3WbWtHvt69uMQ==
+Date: Thu, 23 Nov 2023 08:41:27 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: "bhe@redhat.com" <bhe@redhat.com>
+Subject: Re: [PATCH 2/7] kexec_file: print out debugging message if required
+Message-ID: <20231123154127.GA3487126@dev-arch.thelio-3990X>
+References: <20231114153253.241262-3-bhe@redhat.com>
+ <202311160431.BXPc7NO9-lkp@intel.com>
+ <ZVcvBft/T3cbRBWr@MiWiFi-R3L-srv>
+ <39ccb4fda795a76996cf6d1c3b25909692358211.camel@intel.com>
+ <ZVdyLdAzgNBXfjiW@MiWiFi-R3L-srv>
+ <ZV9YYEK4L160ECQ+@MiWiFi-R3L-srv>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc/lib: Avoid array bounds warnings in vec ops
-Content-Language: en-US
-To: Naveen N Rao <naveen@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>
-References: <20231120235436.1569255-1-mpe@ellerman.id.au>
- <i4zq3tg6gwaptnuoq2ainowffvkols2k5x7rads473zn55r27y@cvdy5yvkmj2p>
- <87pm02jt2g.fsf@mail.lhotse>
- <ab6uj2olygi3edqkjn73kfxvx6igtxotkp3m35j4ikn3ztm2eg@ixkpj2f47ri2>
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <ab6uj2olygi3edqkjn73kfxvx6igtxotkp3m35j4ikn3ztm2eg@ixkpj2f47ri2>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - lists.ozlabs.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.184.157.122
-X-Source-L: No
-X-Exim-ID: 1r6BSl-001fV9-2k
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187.184.157.122.cable.dyn.cableonline.com.mx ([192.168.0.25]) [187.184.157.122]:25973
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 1
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfLtmy4BmxhzlUWSGM0Wmhmv60krh1qEHMlVnwGJc5olA9m5OkNNlaYAwQci3TKjCx8lS4p5Hu/qFuNdaFYk0uMBQUHDWFLogALp/Ls/XejGqbb2cCq5L
- tOQOU32jO0yG/bsf0Bqrb3b1tTguelobLrRuCgR49l2XPQBBrNq7aWe+Gnl873c/CZJzlWwCTF5nMtp9H0HqVbjxFaT+K3Gq6EylH3QH9VvN3e3L9g9xhDc/
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZV9YYEK4L160ECQ+@MiWiFi-R3L-srv>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,32 +64,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: "llvm@lists.linux.dev" <llvm@lists.linux.dev>, "Liu, Yujie" <yujie.liu@intel.com>, lkp <lkp@intel.com>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, "kexec@lists.infradead.org" <kexec@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "oe-kbuild-all@lists.linux.dev" <oe-kbuild-all@lists.linux.dev>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
->> To be honest I don't know how paranoid we want to get, we could end up
->> putting WARN's all over the kernel :)
->>
->> In this case I guess if the size is too large we overflow the buffer on
->> the kernel stack, so we should at least check the size.
->>
->> But does it need a WARN? I'm not sure. If we had a case that was passing
->> a out-of-bound size hopefully we would notice in testing? :)
+On Thu, Nov 23, 2023 at 09:49:20PM +0800, bhe@redhat.com wrote:
+> On 11/17/23 at 10:01pm, Baoquan He wrote:
+> > On 11/17/23 at 09:37am, Liu, Yujie wrote:
+> > > Hi Baoquan,
+> > > 
+> > > On Fri, 2023-11-17 at 17:14 +0800, Baoquan He wrote:
+> > > > Hi,
+> > > > 
+> > > > On 11/16/23 at 05:04am, kernel test robot wrote:
+> > > > > Hi Baoquan,
+> > > > > 
+> > > > > kernel test robot noticed the following build errors:
+> > > > > 
+> > > > > [auto build test ERROR on arm64/for-next/core]
+> > > > > [also build test ERROR on tip/x86/core powerpc/next powerpc/fixes linus/master v6.7-rc1 next-20231115]
+> > > > > [If your patch is applied to the wrong git tree, kindly drop us a note.
+> > > > > And when submitting patch, we suggest to use '--base' as documented in
+> > > > > https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> > > > > 
+> > > > > url:    https://github.com/intel-lab-lkp/linux/commits/Baoquan-He/kexec_file-add-kexec_file-flag-to-control-debug-printing/20231114-234003
+> > > > > base:   https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-next/core
+> > > > > patch link:    https://lore.kernel.org/r/20231114153253.241262-3-bhe%40redhat.com
+> > > > > patch subject: [PATCH 2/7] kexec_file: print out debugging message if required
+> > > > > config: hexagon-comet_defconfig (https://download.01.org/0day-ci/archive/20231116/202311160431.BXPc7NO9-lkp@intel.com/config)
+> > > > > compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
+> > > > > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231116/202311160431.BXPc7NO9-lkp@intel.com/reproduce)
+> > > > > 
+> > > > 
+> > > > Thanks for reporting.
+> > > > 
+> > > > I met below failure when following the steps of provided reproducer.
+> > > > Could anyone help check what's wrong with that?
+> > > 
+> > > Sorry this seems to be a bug in the reproducer. Could you please change
+> > > the compiler parameter to "COMPILER=clang-16" and rerun the command? We
+> > > will fix the issue ASAP.
 > 
-> You're right, a simpler check should suffice. I will send an updated
-> patch.
+> Any update for the reproducer? I would like to post v2 with the fix. I
+> doubt it's the same issue as another report on this patch, while not
+> quite sure.
 
-This[1] patch indeed also makes those -Wstringop-overflow warnings go away. :)
+Shouldn't you be able to run
 
-I'm not subscribed to the list but here are my
+  $ COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang-16 ~/bin/make.cross W=1 O=build_dir ARCH=hexagon SHELL=/bin/bash kernel/
 
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Build-tested-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+after the command you just ran to reproduce this now? It is
+essentially the same fix that they mention above but for the second
+invocation of make.cross.
 
-Thank you guys!
---
-Gustavo
+You can also not even bother with the wrapper altogether if you have the
+compiler installed in the default path that they provide (W=1 is not
+necessary to reproduce this issue):
 
-[1] https://lists.ozlabs.org/pipermail/linuxppc-dev/2023-November/265936.html
+  $ mkdir -p build_dir
+  $ curl -LSso build_dir/.config https://download.01.org/0day-ci/archive/20231116/202311160431.BXPc7NO9-lkp@intel.com/config
+  $ make -skj"$(nproc)" ARCH=hexagon LLVM=$HOME/0day/llvm-16.0.6-x86_64/bin/ O=build_dir olddefconfig kernel/crash_core.o
+  ...
+  kernel/crash_core.c:554:3: error: call to undeclared function 'kexec_dprintk'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+                  kexec_dprintk("Crash PT_LOAD ELF header. phdr=%p vaddr=0x%llx, paddr=0x%llx, "
+                  ^
+  1 error generated.
+
+> > Here you are. Thanks for your quick response.
+> > ------------------------------
+> > [root@~ linux]# COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang-16 ~/bin/make.cross W=1 O=build_dir ARCH=hexagon olddefconfig
+> > Compiler will be installed in /root/0day
+> > lftpget -c https://cdn.kernel.org/pub/tools/llvm/files/./llvm-16.0.6-x86_64.tar.xz
+> > /root/linux                                                                             
+> > tar Jxf /root/0day/./llvm-16.0.6-x86_64.tar.xz -C /root/0day
+> > PATH=/root/0day/llvm-16.0.6-x86_64/bin:/root/.local/bin:/root/bin:/usr/lib64/ccache:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
+> > make --keep-going LLVM=1 CROSS_COMPILE=hexagon-linux- LLVM_IAS=1 --jobs=128 KCFLAGS=-Warray-bounds -Wundef -fstrict-flex-arrays=3 -funsigned-char -Wenum-conversion W=1 O=build_dir ARCH=hexagon olddefconfig
+> > make[1]: Entering directory '/root/linux/build_dir'
+> >   GEN     Makefile
+> >   HOSTCC  scripts/basic/fixdep
+> >   HOSTCC  scripts/kconfig/conf.o
+> >   HOSTCC  scripts/kconfig/confdata.o
+> >   HOSTCC  scripts/kconfig/expr.o
+> >   HOSTCC  scripts/kconfig/lexer.lex.o
+> >   HOSTCC  scripts/kconfig/menu.o
+> >   HOSTCC  scripts/kconfig/parser.tab.o
+> >   HOSTCC  scripts/kconfig/preprocess.o
+> >   HOSTCC  scripts/kconfig/symbol.o
+> >   HOSTCC  scripts/kconfig/util.o
+> >   HOSTLD  scripts/kconfig/conf
+> > #
+> > # configuration written to .config
+> > #
+> > make[1]: Leaving directory '/root/linux/build_dir'
+> > 
+> > > 
+> > > > [root@~ linux]# COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang ~/bin/make.cross W=1 O=build_dir ARCH=hexagon olddefconfig
+> > > > Compiler will be installed in /root/0day
+> > > > lftpget -c https://cdn.kernel.org/pub/tools/llvm/files/
+> > > > get1: /pub/tools/llvm/files/: files/: Is a directory
+> > > > Failed to download https://cdn.kernel.org/pub/tools/llvm/files/
+> > > > clang crosstool install failed
+> > > > Install clang compiler failed
+> > > > setup_crosstool failed
+> > > 
+> > > 
+> > 
+> 
+> 
