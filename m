@@ -2,88 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF89F7F6382
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Nov 2023 17:03:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DA7F7F63AE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Nov 2023 17:11:01 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lPwBy9Q/;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HM7aL4Ud;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HM7aL4Ud;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sbjb15YLMz3dXD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 03:03:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SbjlR29pcz3vXF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 03:10:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lPwBy9Q/;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HM7aL4Ud;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HM7aL4Ud;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SbjZ568gCz307y
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Nov 2023 03:02:53 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3ANFDGY9031479;
-	Thu, 23 Nov 2023 16:02:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=/8E3R4qB+2Ocl8gKsDwWtGE7wtpS6K8bEXv21sMEQ08=;
- b=lPwBy9Q/oYZexdyJMbBp6ozcKW3gSWbKj1NDzsm8dA0frhEmFUsMk2HsRSW3ySEV6vzz
- iL4T3N8rkP02xvcaZDrUFCuo40gXKMqujIRazEAIZ8lWdnRBirbipTfTw0uhFvh2dD+m
- WvF9wZ0nY413Ce/E9QvJzDQ7pntWU713oRvWUXxXbjp+G/JEw42RMHc9DgP5oUV6Noae
- 1R9HYfo1TaoMCSIJZDbPL2DS2ClHb8na1eb4CVJhV7ruurQEQSryuvK+viLlQ8K02+KI
- ptTT2CdXdILZ9O9fiCBjFx4Ppvk2cO6D8/eNC5SO2Ve0Y5jj1D6grS/+wbO74bP5ebN0 0A== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uj969hc9k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Nov 2023 16:02:41 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3ANFaHkx005133;
-	Thu, 23 Nov 2023 16:02:40 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uj969hc9b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Nov 2023 16:02:40 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3ANFmv05027396;
-	Thu, 23 Nov 2023 16:02:39 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ufaa2fh6k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Nov 2023 16:02:39 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3ANG2aBs32244106
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Nov 2023 16:02:37 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C83B920043;
-	Thu, 23 Nov 2023 16:02:36 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 865DE20040;
-	Thu, 23 Nov 2023 16:02:34 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.43.34.234])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 23 Nov 2023 16:02:34 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
-        irogers@google.com, james.clark@arm.com, namhyung@kernel.org
-Subject: [PATCH V4] tools/perf: Add perf binary dependent rule for shellcheck log in Makefile.perf
-Date: Thu, 23 Nov 2023 21:32:32 +0530
-Message-Id: <20231123160232.94253-1-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.35.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Cak6NshRaNKzi7r_88Db7rAAIO4q6KCO
-X-Proofpoint-ORIG-GUID: n8aBrsG83dpLRs2DU_MPKjL_p9XFjrLB
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SbjkZ49RKz3cb0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Nov 2023 03:10:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1700755805;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lyyvUshat2fP97k91On5bJICBhysTXujJ3DjXRepMqQ=;
+	b=HM7aL4UdaJPN9kzsTjsx5lIWD5RI+bdsfJ8UVtsa8f+UdCQWXZAvDCN7gCK6wA1arHTo7u
+	O6dUWlo0lBbECk7axSFZGdDzO9ElZQdu5z4VIXojQHSMjySUtMxvU15bCUadoSWD9adxdL
+	GhOUaWj24Drwyw90iMUzhifIUqJt0J0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1700755805;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lyyvUshat2fP97k91On5bJICBhysTXujJ3DjXRepMqQ=;
+	b=HM7aL4UdaJPN9kzsTjsx5lIWD5RI+bdsfJ8UVtsa8f+UdCQWXZAvDCN7gCK6wA1arHTo7u
+	O6dUWlo0lBbECk7axSFZGdDzO9ElZQdu5z4VIXojQHSMjySUtMxvU15bCUadoSWD9adxdL
+	GhOUaWj24Drwyw90iMUzhifIUqJt0J0=
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com
+ [209.85.161.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-548-_VKkPCBZNK-WvWGXH9SDYA-1; Thu, 23 Nov 2023 11:10:03 -0500
+X-MC-Unique: _VKkPCBZNK-WvWGXH9SDYA-1
+Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-58737e284f4so175285eaf.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Nov 2023 08:10:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700755803; x=1701360603;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lyyvUshat2fP97k91On5bJICBhysTXujJ3DjXRepMqQ=;
+        b=LzxO2Fe79DJNQAB5OaK94k8KWy4a8xa4LD24J9TM5MjjwHCX0XNTvZI7bfSa3OAb68
+         Z37JQtFkjsSVwBUfJFq0OqOYgG0xvu7FaTE5dvOjlpujIfESXi43QVpU8WYnlhy+RUDH
+         1UvNzJgq4r8/CGtxmd0TKwZ0SqBg4kCzg20XICN46G2u6cO7RlHPW4S3YVQ8ZCDca6oB
+         0wjZqNfJHenucnnBreWBLeDQa7db+Aba1bEl5GFNlTl8Oh4vRbEvAXxreEbg9EFX1GHq
+         jNYfyyyow7QdxE6DyShUDtzfaczT4tRwex5UTgytMy+LgDRaXCMlWa5g8T34c1mlg4x6
+         ZiVQ==
+X-Gm-Message-State: AOJu0YxVLlot2TMMBHU/4nMN8ShjfpARLmSHzQmMlXqO/A7mp1HYeVp1
+	smhwHgJDoT9P0fa0fSCHi+jEg74AFPnHROBPKLdqWlvGx2PJQofj95KN7EkVaoeEywL3xghWQTb
+	mobX36HGuPn0WWNn/Sy2FJIYlzg==
+X-Received: by 2002:a05:6820:e83:b0:58c:ec4c:fcac with SMTP id em3-20020a0568200e8300b0058cec4cfcacmr101165oob.0.1700755803129;
+        Thu, 23 Nov 2023 08:10:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEmNivlTtEAEu+zMS1dFz7ndggAjtVDuraohs+wBqkFwHApZkIGKcw15xm/6f8/7NUn+ypweg==
+X-Received: by 2002:a05:6820:e83:b0:58c:ec4c:fcac with SMTP id em3-20020a0568200e8300b0058cec4cfcacmr101137oob.0.1700755802907;
+        Thu, 23 Nov 2023 08:10:02 -0800 (PST)
+Received: from x1n (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com. [99.254.121.117])
+        by smtp.gmail.com with ESMTPSA id a24-20020a0ca998000000b00677a12f11bcsm625712qvb.24.2023.11.23.08.10.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Nov 2023 08:10:02 -0800 (PST)
+Date: Thu, 23 Nov 2023 11:10:00 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Christoph Hellwig <hch@infradead.org>
+Subject: Re: [PATCH RFC 06/12] mm/gup: Drop folio_fast_pin_allowed() in
+ hugepd processing
+Message-ID: <ZV95WMqoZzchrcBY@x1n>
+References: <20231116012908.392077-1-peterx@redhat.com>
+ <20231116012908.392077-7-peterx@redhat.com>
+ <ZVsYMMJpmFV2T/Zc@infradead.org>
+ <ZVzT5_3Zn-Y-6xth@x1n>
+ <ZV21GCbG48nTLDzn@infradead.org>
+ <ZV4co7wcI-_wK91F@x1n>
+ <ZV79jpaeiiN2tGm/@infradead.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-23_12,2023-11-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
- suspectscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0 adultscore=0
- mlxscore=0 priorityscore=1501 clxscore=1015 phishscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311230117
+In-Reply-To: <ZV79jpaeiiN2tGm/@infradead.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,221 +103,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Andrea Arcangeli <aarcange@redhat.com>, James Houghton <jthoughton@google.com>, Lorenzo Stoakes <lstoakes@gmail.com>, David Hildenbrand <david@redhat.com>, John Hubbard <jhubbard@nvidia.com>, Yang Shi <shy828301@gmail.com>, Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>, linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, Mike Rapoport <rppt@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, "Kirill A . Shutemov" <kirill@shutemov.name>, Axel Rasmussen <axelrasmussen@google.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Vlastimil Babka <vbabka@suse.cz>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add rule in new Makefile "tests/Makefile.tests" for running
-shellcheck on shell test scripts. This automates below shellcheck
-into the build.
+On Wed, Nov 22, 2023 at 11:21:50PM -0800, Christoph Hellwig wrote:
+> That alone sounds like a good reason to not bother.  So unless more
+> qualified people have a different opinion I'm fine with this patch
+> as long as you leave a comment in place, and ammend the commit message
+> with some of the very useful information from your mail.
 
-	$ for F in $(find tests/shell/ -perm -o=x -name '*.sh'); do shellcheck -S warning $F; done
+Will do, thanks.
 
-Condition for shellcheck is added in Makefile.perf to avoid build
-breakage in the absence of shellcheck binary. Update Makefile.perf
-to contain new rule for "SHELLCHECK_TEST" which is for making
-shellcheck test as a dependency on perf binary.
+This is what I will squash into the same patch in the new version, as the
+current plan:
 
-Added "tests/Makefile.tests" to run shellcheck on shellscripts in
-tests/shell. The make rule "SHLLCHECK_RUN" ensures that, every
-time during make, shellcheck will be run only on modified files
-during subsequent invocations. By this, if any newly added shell
-scripts or fixes in existing scripts breaks coding/formatting
-style, it will get captured during the perf build.
++/*
++ * NOTE: currently hugepd is only used in hugetlbfs file systems on Power,
++ * which does not have issue with folio writeback against GUP updates.
++ * When hugepd will be extended to support non-hugetlbfs or even anonymous
++ * memory, we need to do extra check as what we do with most of the other
++ * folios. See writable_file_mapping_allowed() and folio_fast_pin_allowed()
++ * for more information.
++ */
+static int gup_huge_pd(hugepd_t hugepd, unsigned long addr,
+                unsigned int pdshift, unsigned long end, unsigned int flags,
+                struct page **pages, int *nr)
 
-Example build failure by modifying probe_vfs_getname.sh in tests/shell:
-
-	In tests/shell/probe_vfs_getname.sh line 8:
-	. $(dirname $0)/lib/probe.sh
-	  ^-----------^ SC2046 (warning): Quote this to prevent word splitting.
-
-	For more information:
-	  https://www.shellcheck.net/wiki/SC2046 -- Quote this to prevent word splitt...
-	make[3]: *** [/root/athira/perf-tools-next/tools/perf/tests/Makefile.tests:18: tests/shell/.probe_vfs_getname.sh.shellcheck_log] Error 1
-	make[2]: *** [Makefile.perf:686: SHELLCHECK_TEST] Error 2
-	make[2]: *** Waiting for unfinished jobs....
-	make[1]: *** [Makefile.perf:244: sub-make] Error 2
-	make: *** [Makefile:70: all] Error 2
-
-Here, like other files which gets created during
-compilation (ex: .builtin-bench.o.cmd or .perf.o.cmd ),
-create .shellcheck_log also as a hidden file.
-Example: tests/shell/.probe_vfs_getname.sh.shellcheck_log
-shellcheck is re-run if any of the script gets modified
-based on its dependency of this log file.
-
-After this, for testing, changed "tests/shell/trace+probe_vfs_getname.sh" to
-break shellcheck format. In the next make run, it is
-also captured:
-
-	In tests/shell/probe_vfs_getname.sh line 8:
-	. $(dirname $0)/lib/probe.sh
-	  ^-----------^ SC2046 (warning): Quote this to prevent word splitting.
-
-	For more information:
-	  https://www.shellcheck.net/wiki/SC2046 -- Quote this to prevent word splitt...
-	make[3]: *** [/root/athira/perf-tools-next/tools/perf/tests/Makefile.tests:18: tests/shell/.probe_vfs_getname.sh.shellcheck_log] Error 1
-	make[3]: *** Waiting for unfinished jobs....
-
-	In tests/shell/trace+probe_vfs_getname.sh line 14:
-	. $(dirname $0)/lib/probe.sh
-	  ^-----------^ SC2046 (warning): Quote this to prevent word splitting.
-
-	For more information:
-	  https://www.shellcheck.net/wiki/SC2046 -- Quote this to prevent word splitt...
-	make[3]: *** [/root/athira/perf-tools-next/tools/perf/tests/Makefile.tests:18: tests/shell/.trace+probe_vfs_getname.sh.shellcheck_log] Error 1
-	make[2]: *** [Makefile.perf:686: SHELLCHECK_TEST] Error 2
-	make[2]: *** Waiting for unfinished jobs....
-	make[1]: *** [Makefile.perf:244: sub-make] Error 2
-	make: *** [Makefile:70: all] Error 2
-
-Failure log can be found in the stdout of make itself.
-
-This is reported at build time. To be able to go ahead with
-the build or disable shellcheck even though it is known that
-some test is broken, add a "NO_SHELLCHECK" option. Example:
-
-  make NO_SHELLCHECK=1
-
-	  INSTALL libsubcmd_headers
-	  INSTALL libsymbol_headers
-	  INSTALL libapi_headers
-	  INSTALL libperf_headers
-	  INSTALL libbpf_headers
-	  LINK    perf
-
-Note:
-This is tested on RHEL and also SLES. Use below check:
-"$(shell which shellcheck 2> /dev/null)" to look for presence
-of shellcheck binary. The approach "shell command -v" is not
-used here. In some of the distros(RHEL), command is available
-as executable file (/usr/bin/command). But in some distros(SLES),
-it is a shell builtin and not available as executable file.
-
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
----
-changelog:
-v3 -> v4:
-Addressed review comments from James Clark.
-- Made the shellcheck errors to be reported in make output
-  itself during make like any other build error.
-- Removed creating .dep files. Instead use the log file
-to determine whether shellcheck has to be re-run when
-there is a change in source file.
-- Change log file to have suffix as shellcheck_log so
-as to differentiate it from test execution log.
-- Also like other files which gets created during
-compilation, example, .builtin-bench.o.cmd or .perf.o.cmd,
-create .shellcheck_log as hidden file.
-Example: tests/shell/.buildid.sh.shellcheck_log
-- Initial version used "command -v shellcheck" to check
-presence of shellcheck. But while testing SLES, hit an
-issue with using "command". In RHEL, /usr/bin/command
-is available as part of bash rpm
-# rpm -qf /usr/bin/command 
-bash-5.1.8-6.el9_1.ppc64le
-
-But in SLES ( tested in SLES 15 SP4 ), this is not
-available as an executable file, instead it is only
-a shell builtin. This resulted in below fail:
-make[2]: command: Command not found
-
-So use "which shellcheck" to check for presence of
-shellcheck binary
-
-v2 -> v3:
-Add option "NO_SHELLCHECK". This will allow to go ahead
-with the build or disable shellcheck even though it is
-known that some test is broken
-
-v1 -> v2:
-Version1 had shellcheck in feature check which is not
-required since shellcheck is already a binary. Presence
-of binary can be checked using:
-$(shell command -v shellcheck)
-Addressed these changes as suggested by Namhyung in V2
-Feature test logic is removed in V2. Also added example
-for build breakage when shellcheck fails in commit message
-
- tools/perf/Makefile.perf        | 21 ++++++++++++++++++++-
- tools/perf/tests/Makefile.tests | 22 ++++++++++++++++++++++
- 2 files changed, 42 insertions(+), 1 deletion(-)
- create mode 100644 tools/perf/tests/Makefile.tests
-
-diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
-index d80dcaa5a1e3..824cbc0af7d7 100644
---- a/tools/perf/Makefile.perf
-+++ b/tools/perf/Makefile.perf
-@@ -134,6 +134,8 @@ include ../scripts/utilities.mak
- #	x86 instruction decoder - new instructions test
- #
- # Define GEN_VMLINUX_H to generate vmlinux.h from the BTF.
-+#
-+# Define NO_SHELLCHECK if you do not want to run shellcheck during build
- 
- # As per kernel Makefile, avoid funny character set dependencies
- unexport LC_ALL
-@@ -671,7 +673,23 @@ $(PERF_IN): prepare FORCE
- $(PMU_EVENTS_IN): FORCE prepare
- 	$(Q)$(MAKE) -f $(srctree)/tools/build/Makefile.build dir=pmu-events obj=pmu-events
- 
--$(OUTPUT)perf: $(PERFLIBS) $(PERF_IN) $(PMU_EVENTS_IN)
-+# Runs shellcheck on perf test shell scripts
-+
-+SHELLCHECK := $(shell which shellcheck 2> /dev/null)
-+
-+ifeq ($(NO_SHELLCHECK),1)
-+SHELLCHECK :=
-+endif
-+
-+ifneq ($(SHELLCHECK),)
-+SHELLCHECK_TEST: FORCE prepare
-+	$(Q)$(MAKE) -f $(srctree)/tools/perf/tests/Makefile.tests
-+else
-+SHELLCHECK_TEST:
-+	@:
-+endif
-+
-+$(OUTPUT)perf: $(PERFLIBS) $(PERF_IN) $(PMU_EVENTS_IN) SHELLCHECK_TEST
- 	$(QUIET_LINK)$(CC) $(CFLAGS) $(LDFLAGS) \
- 		$(PERF_IN) $(PMU_EVENTS_IN) $(LIBS) -o $@
- 
-@@ -1134,6 +1152,7 @@ bpf-skel-clean:
- 	$(call QUIET_CLEAN, bpf-skel) $(RM) -r $(SKEL_TMP_OUT) $(SKELETONS)
- 
- clean:: $(LIBAPI)-clean $(LIBBPF)-clean $(LIBSUBCMD)-clean $(LIBSYMBOL)-clean $(LIBPERF)-clean fixdep-clean python-clean bpf-skel-clean tests-coresight-targets-clean
-+	$(Q)$(MAKE) -f $(srctree)/tools/perf/tests/Makefile.tests clean
- 	$(call QUIET_CLEAN, core-objs)  $(RM) $(LIBPERF_A) $(OUTPUT)perf-archive $(OUTPUT)perf-iostat $(LANG_BINDINGS)
- 	$(Q)find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '\.*.cmd' -delete -o -name '\.*.d' -delete
- 	$(Q)$(RM) $(OUTPUT).config-detected
-diff --git a/tools/perf/tests/Makefile.tests b/tools/perf/tests/Makefile.tests
-new file mode 100644
-index 000000000000..fdaca5f7a946
---- /dev/null
-+++ b/tools/perf/tests/Makefile.tests
-@@ -0,0 +1,22 @@
-+# SPDX-License-Identifier: GPL-2.0
-+# Athira Rajeev <atrajeev@linux.vnet.ibm.com>, 2023
-+
-+PROGS := $(shell find tests/shell -perm -o=x -type f -name '*.sh')
-+FILE_NAME := $(notdir $(PROGS))
-+FILE_NAME := $(FILE_NAME:%=.%)
-+LOGS := $(join $(dir $(PROGS)),$(FILE_NAME))
-+LOGS := $(LOGS:%=%.shellcheck_log)
-+
-+.PHONY: all
-+all: SHELLCHECK_RUN
-+	@:
-+
-+SHELLCHECK_RUN: $(LOGS)
-+
-+.%.shellcheck_log: %
-+	$(call rule_mkdir)
-+	$(Q)$(call frecho-cmd,test)@shellcheck -S warning "$<" > $@ || (cat $@ && rm $@ && false)
-+
-+clean:
-+	$(eval log_files := $(shell find . -name '.*.shellcheck_log'))
-+	@rm -rf $(log_files)
 -- 
-2.35.3
+Peter Xu
 
