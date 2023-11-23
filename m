@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4439E7F5CA4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Nov 2023 11:40:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F5D27F5CB6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Nov 2023 11:44:33 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=OqE876f3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=Hqk4olzZ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SbZQ51NJtz3dWj
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Nov 2023 21:40:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SbZVl0QjNz3dV4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Nov 2023 21:44:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=OqE876f3;
+	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=Hqk4olzZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2607:f8b0:4864:20::52b; helo=mail-pg1-x52b.google.com; envelope-from=apatel@ventanamicro.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2607:f8b0:4864:20::530; helo=mail-pg1-x530.google.com; envelope-from=apatel@ventanamicro.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SbZPG3FRGz2xqp
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Nov 2023 21:39:46 +1100 (AEDT)
-Received: by mail-pg1-x52b.google.com with SMTP id 41be03b00d2f7-5bdfbd69bd5so1353283a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Nov 2023 02:39:46 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SbZTv084Rz3bTN
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Nov 2023 21:43:46 +1100 (AEDT)
+Received: by mail-pg1-x530.google.com with SMTP id 41be03b00d2f7-5bd306f86a8so526159a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Nov 2023 02:43:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1700735984; x=1701340784; darn=lists.ozlabs.org;
+        d=ventanamicro.com; s=google; t=1700736222; x=1701341022; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FQ5cHR9g9Ex7S7K/JEODWQbh9BgcOaeTZEBwA4kKzCg=;
-        b=OqE876f3+RuUEcrVeNAwBYb732JEJLaUwEByRs2MAhJTN4RVz4qiVdkp50MRPVY04S
-         UPTjOpsvI8FUnluQQ8/OgGUo66ZeaiwIj03nBsAKthMupEGWRrx9XEzgpKJeqgg3pb8N
-         SCbmulDQRfqVzmbY/hL/iTy1iVsa93WSoyqzdPzWD9kIc3XRyoJLU872OZNPoqUaf7tK
-         R2P6dq0IIS9H6dm/guhse8dhtVpKWPHmSBRiZK5uzv0/czu7a/QPwhov9px+3klpFIu5
-         gUOYvZIcIbwRu6UqsgAN+DxqXP/nIVq0TGT6+mkqj+TZ69wQRBmd2vW3wwbP2sp46ojU
-         iySQ==
+        bh=6sXx1tqGc4gio/QqB9Zb7ckRSF4i2cZOS4lFJoNm/Vo=;
+        b=Hqk4olzZFk5jkOpC0Q6DqucP1kWR2ja5RjrfYSrz8n4mvQNt4JNP9z6lmmZGX7+f9/
+         wHfkf8moEUsfKsFeGNWce/CWGPvj80RK7bDPKquGDckjtwSpxxrNhDe7XJTD+yK+MN1d
+         nFTmGM9bKWd2l7s5re326fddZH9lqfhctUTtJOTuecbx3F5wpZ0wI/s3MJKOGfd5RhJ4
+         Nr21lnf1h8qlb1CPJntmL96CmpIc6C6LmaAhGih8nPP27t1ZnXYw/G697Pi4tIniCWju
+         avof9uODWkHcLTzsdZwA1AnOVfCvYlYZfC4rEout46mb9bVEvbMim89sx4fHyufJJ30v
+         u7jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700735984; x=1701340784;
+        d=1e100.net; s=20230601; t=1700736222; x=1701341022;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FQ5cHR9g9Ex7S7K/JEODWQbh9BgcOaeTZEBwA4kKzCg=;
-        b=SD37SrI21OEs3VtsmAa3fCvSopYpVDtbZnhfB2KvSY0EIBO3IrmBT38HpAiDycwv+9
-         siClT/ChauAmE0PS7pYIGjgV2UgDbQOApQq/l338VFNuITChIlaEDrDqFSgcCesl0nia
-         gjfBiwemAFfjHV3acQ5hB9Ih13IoeP1jr/M2C3av24Oy6XBz2TMbEruNWf3rD5XPAXNB
-         +PnipcXrwK1SaUAGvI0lfme5O36mjrHKyZgVFjHA5ltKbCyIQAw8cKp67k+ghau/jdKq
-         f4A9YkzKeP0ODEQJfFb26Qjw88RpSxBTbW/PoAOERzP7krcnOMLGjboMDX/CuN22GeZ7
-         p+7w==
-X-Gm-Message-State: AOJu0Yxm7TvKn8+23ZRXl6DrhwRid2z81e9ip5AAk0BpPv4/fO6wMzSn
-	ddyGCtW0GMEY8XIM+25tpm3VXo+VSZIEuax/QwhbLg==
-X-Google-Smtp-Source: AGHT+IG99YAMevSp0jGufV7mXYc4HBJFz0NMYVlrsS8HZwf7nEtTjYohwnzETeJL+MEJrNZlmD9vq5lOCr8swdpaVqw=
-X-Received: by 2002:a17:90a:bf0b:b0:280:47ba:767a with SMTP id
- c11-20020a17090abf0b00b0028047ba767amr3176568pjs.16.1700735984411; Thu, 23
- Nov 2023 02:39:44 -0800 (PST)
+        bh=6sXx1tqGc4gio/QqB9Zb7ckRSF4i2cZOS4lFJoNm/Vo=;
+        b=UVXK4jmR+l359j9RRwnBaUgj1uuPVxAZprySucJxdXdBBcRAgnVN8Tz3p+n4Jhuufb
+         NNS49uP8xyt3mN3PwNauJTfxuNsQOBWJqjaN/Ci6pZKJ22aYmsxElYR1ec4BbDmf5sPz
+         waScBJyqg+veWZUwBUP7WIme3giTwANS3qHJJRGpBGj7Tdffm/Jn1iFxO4d5ZpftLbSS
+         9N6OtU80siDyacxMz709+cfZrZo+yFHW0+s5DKzOncX/nRVvFDr3EHCG7eFZ0s2rpcWa
+         zA5jEGDyWbejK2zQEuWeoqvoE4v+imTKhEnhzQdzo+Z7S5YPfbX/BHD64ELE4RuZhFQJ
+         KS5Q==
+X-Gm-Message-State: AOJu0Yx61JcoZqDCmS8lQiRvBsQcfyYOw7PO0Mea0Pxwimqe+IIlC4SG
+	WE2G44hZXAIAJ7ymUIeEidg7y1nKM5OdX2Ss9X/oyQ==
+X-Google-Smtp-Source: AGHT+IGQemXED5MdhPDs8hDtb2L/rF6Iac2SFIvvm1TlJvtt3KBDFlw9g5du469cf44grjodKd7ZU/U/xKDe/AsrzAY=
+X-Received: by 2002:a05:6a21:9982:b0:189:11e8:6237 with SMTP id
+ ve2-20020a056a21998200b0018911e86237mr5725421pzb.51.1700736221598; Thu, 23
+ Nov 2023 02:43:41 -0800 (PST)
 MIME-Version: 1.0
 References: <20231118033859.726692-1-apatel@ventanamicro.com>
- <20231118033859.726692-6-apatel@ventanamicro.com> <fb72e212-711e-4be9-9b92-89b2dc121476@sifive.com>
-In-Reply-To: <fb72e212-711e-4be9-9b92-89b2dc121476@sifive.com>
+ <20231118033859.726692-4-apatel@ventanamicro.com> <8c0f4eba-1923-4686-b07b-1f3b78b298e9@sifive.com>
+In-Reply-To: <8c0f4eba-1923-4686-b07b-1f3b78b298e9@sifive.com>
 From: Anup Patel <apatel@ventanamicro.com>
-Date: Thu, 23 Nov 2023 16:09:32 +0530
-Message-ID: <CAK9=C2W+Rb85Dm+sN=PXgN3wpbJFrvctBvC-Coi1Q_TsvthWYA@mail.gmail.com>
-Subject: Re: [PATCH v4 5/5] RISC-V: Enable SBI based earlycon support
+Date: Thu, 23 Nov 2023 16:13:29 +0530
+Message-ID: <CAK9=C2U7gD2DC+zTGvSb+6uhmA=Y-nL2Mpn8tbp8R81g_6ruEA@mail.gmail.com>
+Subject: Re: [PATCH v4 3/5] tty/serial: Add RISC-V SBI debug console based earlycon
 To: Samuel Holland <samuel.holland@sifive.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -80,60 +80,99 @@ Cc: Jiri Slaby <jirislaby@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundatio
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 22, 2023 at 4:18=E2=80=AFAM Samuel Holland
+On Wed, Nov 22, 2023 at 4:11=E2=80=AFAM Samuel Holland
 <samuel.holland@sifive.com> wrote:
 >
 > Hi Anup,
 >
 > On 2023-11-17 9:38 PM, Anup Patel wrote:
-> > Let us enable SBI based earlycon support in defconfigs for both RV32
-> > and RV64 so that "earlycon=3Dsbi" can be used again.
+> > We extend the existing RISC-V SBI earlycon support to use the new
+> > RISC-V SBI debug console extension.
 > >
 > > Signed-off-by: Anup Patel <apatel@ventanamicro.com>
 > > Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 > > ---
-> >  arch/riscv/configs/defconfig      | 1 +
-> >  arch/riscv/configs/rv32_defconfig | 1 +
-> >  2 files changed, 2 insertions(+)
+> >  drivers/tty/serial/Kconfig              |  2 +-
+> >  drivers/tty/serial/earlycon-riscv-sbi.c | 24 ++++++++++++++++++++----
+> >  2 files changed, 21 insertions(+), 5 deletions(-)
 > >
-> > diff --git a/arch/riscv/configs/defconfig b/arch/riscv/configs/defconfi=
-g
-> > index 905881282a7c..eaf34e871e30 100644
-> > --- a/arch/riscv/configs/defconfig
-> > +++ b/arch/riscv/configs/defconfig
-> > @@ -149,6 +149,7 @@ CONFIG_SERIAL_8250_CONSOLE=3Dy
-> >  CONFIG_SERIAL_8250_DW=3Dy
-> >  CONFIG_SERIAL_OF_PLATFORM=3Dy
-> >  CONFIG_SERIAL_SH_SCI=3Dy
-> > +CONFIG_SERIAL_EARLYCON_RISCV_SBI=3Dy
-> >  CONFIG_VIRTIO_CONSOLE=3Dy
-> >  CONFIG_HW_RANDOM=3Dy
-> >  CONFIG_HW_RANDOM_VIRTIO=3Dy
-> > diff --git a/arch/riscv/configs/rv32_defconfig b/arch/riscv/configs/rv3=
-2_defconfig
-> > index 89b601e253a6..5721af39afd1 100644
-> > --- a/arch/riscv/configs/rv32_defconfig
-> > +++ b/arch/riscv/configs/rv32_defconfig
+> > diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig
+> > index 732c893c8d16..1f2594b8ab9d 100644
+> > --- a/drivers/tty/serial/Kconfig
+> > +++ b/drivers/tty/serial/Kconfig
+> > @@ -87,7 +87,7 @@ config SERIAL_EARLYCON_SEMIHOST
+> >
+> >  config SERIAL_EARLYCON_RISCV_SBI
+> >       bool "Early console using RISC-V SBI"
+> > -     depends on RISCV_SBI_V01
+> > +     depends on RISCV_SBI
+> >       select SERIAL_CORE
+> >       select SERIAL_CORE_CONSOLE
+> >       select SERIAL_EARLYCON
+> > diff --git a/drivers/tty/serial/earlycon-riscv-sbi.c b/drivers/tty/seri=
+al/earlycon-riscv-sbi.c
+> > index 27afb0b74ea7..5351e1e31f45 100644
+> > --- a/drivers/tty/serial/earlycon-riscv-sbi.c
+> > +++ b/drivers/tty/serial/earlycon-riscv-sbi.c
+> > @@ -15,17 +15,33 @@ static void sbi_putc(struct uart_port *port, unsign=
+ed char c)
+> >       sbi_console_putchar(c);
+> >  }
+> >
+> > -static void sbi_console_write(struct console *con,
+> > -                           const char *s, unsigned n)
+> > +static void sbi_0_1_console_write(struct console *con,
+> > +                               const char *s, unsigned int n)
+> >  {
+> >       struct earlycon_device *dev =3D con->data;
+> >       uart_console_write(&dev->port, s, n, sbi_putc);
+> >  }
+> >
+> > +static void sbi_dbcn_console_write(struct console *con,
+> > +                                const char *s, unsigned int n)
+> > +{
+> > +     sbi_debug_console_write(n, __pa(s));
 >
-> This file isn't used anymore since 72f045d19f25 ("riscv: Fixup difference=
- with
-> defconfig"), so there's no need to update it. I'll send a patch deleting =
-it.
+> This only works for strings in the linear mapping or the kernel mapping (=
+not
+> vmalloc, which includes the stack). So I don't think we can use __pa() he=
+re.
 
-Okay, I will drop the changes in rv32_defconfig.
+In which case, we need extend sbi_debug_console_write() to
+do the va-to-pa conversion for both earlycon-riscv-sbi.c and
+hvc_riscv_sbi.c
+
+>
+> > +}
+> > +
+> >  static int __init early_sbi_setup(struct earlycon_device *device,
+> >                                 const char *opt)
+> >  {
+> > -     device->con->write =3D sbi_console_write;
+> > -     return 0;
+> > +     int ret =3D 0;
+> > +
+> > +     if (sbi_debug_console_available) {
+> > +             device->con->write =3D sbi_dbcn_console_write;
+> > +     } else {
+> > +             if (IS_ENABLED(CONFIG_RISCV_SBI_V01))
+>
+> "else if", no need for the extra block/indentation.
+
+Okay, I will update.
 
 >
 > Regards,
 > Samuel
 >
-> > @@ -66,6 +66,7 @@ CONFIG_INPUT_MOUSEDEV=3Dy
-> >  CONFIG_SERIAL_8250=3Dy
-> >  CONFIG_SERIAL_8250_CONSOLE=3Dy
-> >  CONFIG_SERIAL_OF_PLATFORM=3Dy
-> > +CONFIG_SERIAL_EARLYCON_RISCV_SBI=3Dy
-> >  CONFIG_VIRTIO_CONSOLE=3Dy
-> >  CONFIG_HW_RANDOM=3Dy
-> >  CONFIG_HW_RANDOM_VIRTIO=3Dy
+> > +                     device->con->write =3D sbi_0_1_console_write;
+> > +             else
+> > +                     ret =3D -ENODEV;
+> > +     }
+> > +
+> > +     return ret;
+> >  }
+> >  EARLYCON_DECLARE(sbi, early_sbi_setup);
 >
 
 Regards,
