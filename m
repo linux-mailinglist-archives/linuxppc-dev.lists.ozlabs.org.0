@@ -1,120 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D50527F5954
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Nov 2023 08:35:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6940D7F5AC6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Nov 2023 10:06:50 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=JxBIAbFs;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=gZxE875+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SbVJ35k6pz3dVl
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Nov 2023 18:34:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SbXL01j5Gz3dTJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Nov 2023 20:06:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=JxBIAbFs;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=gZxE875+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::433; helo=mail-wr1-x433.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SbVHB6Hx4z3bTN
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Nov 2023 18:34:12 +1100 (AEDT)
-Received: by mail-wr1-x433.google.com with SMTP id ffacd0b85a97d-332d2b6a84cso388733f8f.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 23:34:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700724845; x=1701329645; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kgvXBNohR8MD/S64tYYRwwaWovhCkn1lBTqKUGMvwT8=;
-        b=JxBIAbFsaDbPnRMeQ08avuJy5PGnn2IgP2Srtjn2K+LIGcVBzD5odlZzPcvibufTZM
-         uEK3P02E2/Qc7TB0jPZlZReq5ARY6sUEwst4A61uDnt/gT7i9m6+zx0U1hVghWJs3sZa
-         evb0L7CCJBHuV1EnUGv8eK+Ujc43ePyKY7XCuGFqYqoLT5tYAH/j1P4+bfHq0mw5zvZa
-         ie45IoIYeZGMgrBRSV5GDPLYJ33U57zn8rnWqowqf/flO+a35Qh1iDQNydPa8tkvMPBt
-         Rd7EBz955yhJmgzqHZEkYxAVzTq3TjpRORNHthpmq4BMIDGGd5MBv1F9LSBExqaTETBw
-         7IXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700724845; x=1701329645;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kgvXBNohR8MD/S64tYYRwwaWovhCkn1lBTqKUGMvwT8=;
-        b=VD61/P8BjxIWi7GzdGKBQf52Bs0/lsbeiQA+nxi5RznaQwtneE4CSwg5ghsoath9zL
-         S/r6fYVKhfM4PWptCr7Z3tD63hh0E7u27hEnKyNeKgGFC2GckNB4z/1xCeAcO+XMRdxl
-         +w8BjLI8m25sRG+DTLnQCubyLVpQiH85jKf1kcPvHC1iYbLM9+BT7cg3N/iKs4D2G/ul
-         KFyqh19HDzQ03ZxvdfzL4T21Wgp3rgxszh6gOWk/9fxABfvYGfhA5q96jeGoKHixTHME
-         /oqPOi/86dPliKbI0WqqD/ecEg4iCLCrKr0TJkM2afA11KAtWGk2bQjAc4i3ocQWz5Wa
-         /iSg==
-X-Gm-Message-State: AOJu0Yw2YnYeSvr/LmqYdeABrETZjqwVYYFymqxYvJx7t/VpyipGBR/h
-	Z3YeuCS3GEQIOeSjhCTgdk9ggg==
-X-Google-Smtp-Source: AGHT+IFTOfaEnZdLiKBndm03/NjhvxA52DVLcb1rEzd4jhT3Upz0/FMw8gWwhZpL1l+RJrwkHmBcbw==
-X-Received: by 2002:a5d:610a:0:b0:332:cada:84a with SMTP id v10-20020a5d610a000000b00332cada084amr2906072wrt.61.1700724845714;
-        Wed, 22 Nov 2023 23:34:05 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.218.100])
-        by smtp.gmail.com with ESMTPSA id d11-20020adfa40b000000b003142e438e8csm816828wra.26.2023.11.22.23.34.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Nov 2023 23:34:05 -0800 (PST)
-Message-ID: <8428006e-322b-4a2d-b298-71d997e74343@linaro.org>
-Date: Thu, 23 Nov 2023 08:34:04 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SbXK546JKz3cDk
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Nov 2023 20:06:00 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by ams.source.kernel.org (Postfix) with ESMTP id 7FFD0B829FE;
+	Thu, 23 Nov 2023 09:05:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C291C433C8;
+	Thu, 23 Nov 2023 09:05:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1700730355;
+	bh=Lcd150vAerjkaRvtY0bS83Rte9WRMhTnKhCGePr/mKY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gZxE875+pb5Kx5SdnUy+1qJggwnPSULnHJZNmnyyWU1tZnEKd6+k+CLcxMCdL2SZI
+	 dNU/1oTl+LESlR5MxF2sNxJ8zA+4gVVwUx3CVe6jBu7kI5fW4yMj35sj4acE7tqxMN
+	 KaG2fJSM6oZZxOlC9JU9HsL7YAfrbLxHWJYBYuJ4=
+Date: Thu, 23 Nov 2023 09:05:52 +0000
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Matthew Maurer <mmaurer@google.com>
+Subject: Re: [PATCH v2 0/5] MODVERSIONS + RUST Redux
+Message-ID: <2023112314-tubby-eligibly-007a@gregkh>
+References: <20231118025748.2778044-1-mmaurer@google.com>
+ <CAK7LNAQt8fy5+vSwpd1aXfzjzeZ5hiyW7EW9SW7pbG2eTJZAOA@mail.gmail.com>
+ <CAGSQo00hyCTVsqHtrzKBBPvuH38z5yRm_4jzdi00C0RV+8APwQ@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dt-bindings: fsl,dpaa2-console: drop unneeded quotes
-Content-Language: en-US
-To: Rob Herring <robh@kernel.org>, Li Yang <leoyang.li@nxp.com>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>
-References: <20231122224419.2809361-1-robh@kernel.org>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231122224419.2809361-1-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGSQo00hyCTVsqHtrzKBBPvuH38z5yRm_4jzdi00C0RV+8APwQ@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -126,20 +57,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: Nicolas Schier <nicolas@fjasle.eu>, rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, Masahiro Yamada <masahiroy@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, Laura Abbott <laura@labbott.name>, linuxppc-dev@lists.ozlabs.org, linux-modules@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 22/11/2023 23:44, Rob Herring wrote:
-> Drop unneeded quotes over simple string values to fix a soon to be
-> enabled yamllint warning:
-> 
->   [error] string value is redundantly quoted with any quotes (quoted-strings)
-> 
-> Signed-off-by: Rob Herring <robh@kernel.org>
+On Wed, Nov 22, 2023 at 01:04:09PM -0800, Matthew Maurer wrote:
+> > So, even if you enable CONFIG_MODVERSIONS,
+> > nothing is checked for Rust.
+> > Genksyms computes a CRC from "int foo", and
+> > the module subsystem confirms it is a "int"
+> > variable.
+> >
+> > We know this check always succeeds.
+> >
+> > Why is this useful?
+> The reason this is immediately useful is that it allows us to have Rust
+> in use with a kernel where C modules are able to benefit from MODVERSIONS
+> checking. The check would effectively be a no-op for now, as you have correctly
+> determined, but we could refine it to make it more restrictive later.
+> Since the
+> existing C approach errs on the side of "it could work" rather than "it will
+> work", I thought being more permissive was the correct initial solution.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+But it's just providing "fake" information to the CRC checker, which
+means that the guarantee of a ABI check is not true at all.
 
-Best regards,
-Krzysztof
+So the ask for the user of "ensure that the ABI checking is correct" is
+being circumvented here, and any change in the rust side can not be
+detected at all.
 
+The kernel is a "whole", either an option works for it, or it doesn't,
+and you are splitting that guarantee here by saying "modversions will
+only work for a portion of the kernel, not the whole thing" which is
+going to cause problems for when people expect it to actually work
+properly.
+
+So, I'd strongly recommend fixing this for the rust code if you wish to
+allow modversions to be enabled at all.
+
+> With regards to future directions that likely won't work for loosening it:
+> Unfortunately, the .rmeta format itself is not stable, so I wouldn't want to
+> teach genksyms to open it up and split out the pieces for specific functions.
+> Extending genksyms to parse Rust would also not solve the situation -
+> layouts are allowed to differ across compiler versions or even (in rare
+> cases) seemingly unrelated code changes.
+
+What do you mean by "layout" here?  Yes, the crcs can be different
+across compiler versions and seemingly unrelated code changes (genksyms
+is VERY fragile) but that's ok, that's not what you are checking here.
+You want to know if the rust function signature changes or not from the
+last time you built the code, with the same compiler and options, that's
+all you are verifying.
+
+> Future directions that might work for loosening it:
+> * Generating crcs from debuginfo + compiler + flags
+> * Adding a feature to the rust compiler to dump this information. This
+> is likely to
+>   get pushback because Rust's current stance is that there is no ability to load
+>   object code built against a different library.
+
+Why not parse the function signature like we do for C?
+
+> Would setting up Rust symbols so that they have a crc built out of .rmeta be
+> sufficient for you to consider this useful? If not, can you help me understand
+> what level of precision would be required?
+
+What exactly does .rmeta have to do with the function signature?  That's
+all you care about here.
+
+thanks,
+
+greg k-h
