@@ -1,54 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC6487F539F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Nov 2023 23:44:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 883047F553D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Nov 2023 01:22:57 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NrtdkBBs;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SbGXS4q5Dz3dLB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Nov 2023 09:44:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SbJjW2b9Rz3dLZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Nov 2023 11:22:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.166.175; helo=mail-il1-f175.google.com; envelope-from=robherring2@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-f175.google.com (mail-il1-f175.google.com [209.85.166.175])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NrtdkBBs;
+	dkim-atps=neutral
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SbGWw72V5z3c8L
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Nov 2023 09:44:28 +1100 (AEDT)
-Received: by mail-il1-f175.google.com with SMTP id e9e14a558f8ab-35942cb9ef4so913175ab.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Nov 2023 14:44:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700693062; x=1701297862;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=O2Wb9fqX5wGIqyOWlMFehAorYquofRBtljUq7UG2Sxs=;
-        b=hcpXPOTraPoc0wLrgHl46avZ+TiT1ehjKHbwSUbQSd/Kpzq8DThsdXREyd93iJKLmA
-         M9syVyGJzN2fLeBHiU9JvLYi/85+oQbPHaHlOTRI/eySBMbEkIRPZU5Ac3L/MP/L7F4L
-         HESOnnxqLoELGioKWzwwKYnQfggxjJkSXHPKYaaBgw6tSwB/6K8gMTqQWi7pJ+BrmcYc
-         LbZeY6OF/H3xnBGKlUlsQoKRAD9m25wKqf/Sj2+CX612YJ5dHyRftUSPneByVB2DZW3K
-         JjutW+MuxkzSoMapiB5myy8CmqynMbipDyaTeNHpHON+oSreQCwbf7Vy6PasrQrHkvbb
-         /Oew==
-X-Gm-Message-State: AOJu0Ywgn96h43MA6wwPlSFuOy2nY5hyEzzkXoGC5uhnKocDXvhwFXxg
-	9ictGkyvII72qgPQ4XtoLA==
-X-Google-Smtp-Source: AGHT+IGFm0+j6e3UUQrpEurWryCYqQBPZdAFwcs+dwxaPeUhVSu7HXz3MZ7wxMS2VPJ2uEwMCVqw5g==
-X-Received: by 2002:a92:c26c:0:b0:35b:2216:5c80 with SMTP id h12-20020a92c26c000000b0035b22165c80mr5377162ild.23.1700693062511;
-        Wed, 22 Nov 2023 14:44:22 -0800 (PST)
-Received: from herring.priv ([64.188.179.252])
-        by smtp.gmail.com with ESMTPSA id bl9-20020a056e0232c900b0035aa4b0d786sm179029ilb.25.2023.11.22.14.44.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Nov 2023 14:44:21 -0800 (PST)
-Received: (nullmailer pid 2809435 invoked by uid 1000);
-	Wed, 22 Nov 2023 22:44:20 -0000
-From: Rob Herring <robh@kernel.org>
-To: Li Yang <leoyang.li@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>
-Subject: [PATCH] dt-bindings: fsl,dpaa2-console: drop unneeded quotes
-Date: Wed, 22 Nov 2023 15:44:19 -0700
-Message-ID: <20231122224419.2809361-1-robh@kernel.org>
-X-Mailer: git-send-email 2.42.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SbJhf1ztSz3cZr
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Nov 2023 11:22:10 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1700698930;
+	bh=M5GDyE4zSQHOMo2VmEGb9eJcwSsa+CIf5IyoPYCZygg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=NrtdkBBs015WyelROXUBRNgCnLIY6y49tPIx5poCTLUzO6lSBg0XPb09wKF0e9ls8
+	 3HRRMFU+c496ylfCFx8L0CsJ0Bqw8zQvgEdN7LAYDlyvX7lcYoilEDVIX+ZKWKG+BD
+	 9lobJYHa2i9iecS6QXHAf0rOhx4mqUjyrlb0Ff3evLSLFa0dM1aZ/k2dBIc+5v577Z
+	 DSUXn5/q04RF7KyPazlXG3sW3EeCZTV85iBJa+SciiMYz+C4241fXmm3OnLuklz61n
+	 Avp0X4UQ5uo/MejgVOB932Vz1GNvmB1TUWBca7fMR7gcSLO8EGTV/QrZbTEIbCizyj
+	 0zJF4jegbfWhA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SbJhc08sZz4x1p;
+	Thu, 23 Nov 2023 11:22:07 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 2/2] ASoC: cs4270: Remove unused codec
+In-Reply-To: <ZV3pIb1p52CFNsSl@finisterre.sirena.org.uk>
+References: <20231122062712.2250426-1-mpe@ellerman.id.au>
+ <20231122062712.2250426-2-mpe@ellerman.id.au>
+ <ZV3pIb1p52CFNsSl@finisterre.sirena.org.uk>
+Date: Thu, 23 Nov 2023 11:22:07 +1100
+Message-ID: <877cm9s4i8.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,33 +59,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com, shengjiu.wang@gmail.com, tiwai@suse.com, linuxppc-dev@lists.ozlabs.org, linux-sound@vger.kernel.org, david.rhodes@cirrus.com, nicoleotsuka@gmail.com, paul.gortmaker@windriver.com, rf@opensource.cirrus.com, patches@opensource.cirrus.com, perex@perex.cz, james.schulman@cirrus.com, festevam@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Drop unneeded quotes over simple string values to fix a soon to be
-enabled yamllint warning:
+Mark Brown <broonie@kernel.org> writes:
+> On Wed, Nov 22, 2023 at 05:27:12PM +1100, Michael Ellerman wrote:
+>> The only driver to enable SND_SOC_CS4270 was SND_SOC_MPC8610_HPCD, which
+>> was dropped in the preceding commit. Remove the codec as unused.
+>
+> There's no real overhead from having extra drivers and we do have
+> generic drivers that people can attach CODECs to.
 
-  [error] string value is redundantly quoted with any quotes (quoted-strings)
+OK. I have no idea how sound works, I was just cleaning things up. So
+whatever you think is best.
 
-Signed-off-by: Rob Herring <robh@kernel.org>
----
- Documentation/devicetree/bindings/misc/fsl,dpaa2-console.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/Documentation/devicetree/bindings/misc/fsl,dpaa2-console.yaml b/Documentation/devicetree/bindings/misc/fsl,dpaa2-console.yaml
-index 8cc951feb7df..59b83ea5e05e 100644
---- a/Documentation/devicetree/bindings/misc/fsl,dpaa2-console.yaml
-+++ b/Documentation/devicetree/bindings/misc/fsl,dpaa2-console.yaml
-@@ -12,7 +12,7 @@ maintainers:
- 
- properties:
-   compatible:
--    const: "fsl,dpaa2-console"
-+    const: fsl,dpaa2-console
- 
-   reg:
-     maxItems: 1
--- 
-2.42.0
-
+cheers
