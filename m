@@ -1,97 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA7F7F63AE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Nov 2023 17:11:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 547A17F64A5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Nov 2023 18:01:03 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HM7aL4Ud;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HM7aL4Ud;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MtCQPBEX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SbjlR29pcz3vXF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 03:10:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sbks921MJz3dTk
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 04:01:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HM7aL4Ud;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HM7aL4Ud;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MtCQPBEX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SbjkZ49RKz3cb0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Nov 2023 03:10:12 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1700755805;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lyyvUshat2fP97k91On5bJICBhysTXujJ3DjXRepMqQ=;
-	b=HM7aL4UdaJPN9kzsTjsx5lIWD5RI+bdsfJ8UVtsa8f+UdCQWXZAvDCN7gCK6wA1arHTo7u
-	O6dUWlo0lBbECk7axSFZGdDzO9ElZQdu5z4VIXojQHSMjySUtMxvU15bCUadoSWD9adxdL
-	GhOUaWj24Drwyw90iMUzhifIUqJt0J0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1700755805;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lyyvUshat2fP97k91On5bJICBhysTXujJ3DjXRepMqQ=;
-	b=HM7aL4UdaJPN9kzsTjsx5lIWD5RI+bdsfJ8UVtsa8f+UdCQWXZAvDCN7gCK6wA1arHTo7u
-	O6dUWlo0lBbECk7axSFZGdDzO9ElZQdu5z4VIXojQHSMjySUtMxvU15bCUadoSWD9adxdL
-	GhOUaWj24Drwyw90iMUzhifIUqJt0J0=
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com
- [209.85.161.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-548-_VKkPCBZNK-WvWGXH9SDYA-1; Thu, 23 Nov 2023 11:10:03 -0500
-X-MC-Unique: _VKkPCBZNK-WvWGXH9SDYA-1
-Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-58737e284f4so175285eaf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Nov 2023 08:10:03 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700755803; x=1701360603;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lyyvUshat2fP97k91On5bJICBhysTXujJ3DjXRepMqQ=;
-        b=LzxO2Fe79DJNQAB5OaK94k8KWy4a8xa4LD24J9TM5MjjwHCX0XNTvZI7bfSa3OAb68
-         Z37JQtFkjsSVwBUfJFq0OqOYgG0xvu7FaTE5dvOjlpujIfESXi43QVpU8WYnlhy+RUDH
-         1UvNzJgq4r8/CGtxmd0TKwZ0SqBg4kCzg20XICN46G2u6cO7RlHPW4S3YVQ8ZCDca6oB
-         0wjZqNfJHenucnnBreWBLeDQa7db+Aba1bEl5GFNlTl8Oh4vRbEvAXxreEbg9EFX1GHq
-         jNYfyyyow7QdxE6DyShUDtzfaczT4tRwex5UTgytMy+LgDRaXCMlWa5g8T34c1mlg4x6
-         ZiVQ==
-X-Gm-Message-State: AOJu0YxVLlot2TMMBHU/4nMN8ShjfpARLmSHzQmMlXqO/A7mp1HYeVp1
-	smhwHgJDoT9P0fa0fSCHi+jEg74AFPnHROBPKLdqWlvGx2PJQofj95KN7EkVaoeEywL3xghWQTb
-	mobX36HGuPn0WWNn/Sy2FJIYlzg==
-X-Received: by 2002:a05:6820:e83:b0:58c:ec4c:fcac with SMTP id em3-20020a0568200e8300b0058cec4cfcacmr101165oob.0.1700755803129;
-        Thu, 23 Nov 2023 08:10:03 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEmNivlTtEAEu+zMS1dFz7ndggAjtVDuraohs+wBqkFwHApZkIGKcw15xm/6f8/7NUn+ypweg==
-X-Received: by 2002:a05:6820:e83:b0:58c:ec4c:fcac with SMTP id em3-20020a0568200e8300b0058cec4cfcacmr101137oob.0.1700755802907;
-        Thu, 23 Nov 2023 08:10:02 -0800 (PST)
-Received: from x1n (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com. [99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id a24-20020a0ca998000000b00677a12f11bcsm625712qvb.24.2023.11.23.08.10.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Nov 2023 08:10:02 -0800 (PST)
-Date: Thu, 23 Nov 2023 11:10:00 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Christoph Hellwig <hch@infradead.org>
-Subject: Re: [PATCH RFC 06/12] mm/gup: Drop folio_fast_pin_allowed() in
- hugepd processing
-Message-ID: <ZV95WMqoZzchrcBY@x1n>
-References: <20231116012908.392077-1-peterx@redhat.com>
- <20231116012908.392077-7-peterx@redhat.com>
- <ZVsYMMJpmFV2T/Zc@infradead.org>
- <ZVzT5_3Zn-Y-6xth@x1n>
- <ZV21GCbG48nTLDzn@infradead.org>
- <ZV4co7wcI-_wK91F@x1n>
- <ZV79jpaeiiN2tGm/@infradead.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SbkrH6G6pz3dHf
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Nov 2023 04:00:15 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id CD4C962272;
+	Thu, 23 Nov 2023 17:00:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15857C433CC;
+	Thu, 23 Nov 2023 17:00:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1700758811;
+	bh=8F/jiguRcq32VOINzefmDyYIkXt/3k3NK5/RQR1wYU0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=MtCQPBEXWTX4xUsNeYiJze7scCumxb+pLoonCyIRI3n/ioJzllWZCfbTm679Z2sxX
+	 KSA/OIwXxihNsDYi5Tw8H+l7+2FnI0exz8p3+aDp/ZCcqWyK2WGR0VRKyiuMgGLdQ6
+	 MKe4G90ieENhC5dz5UVGt8ezJ72xxQHe2Sk82kBZcDvDY8XEMWkrgtBpav1ePSDfOH
+	 30lmj1nMaq4fA0VJLGrPHFNXsv95i5MbNcKDnwvG4C0jOmX4xm458D68Z6PEuf1vXl
+	 mWjeZPv/Xo2xWEhFc8GMXsJPfXtYP/jrAU3hcPKeYRSCmxbkeK7lYzbTQz8H10G6wJ
+	 vc7V4ZGJIRHHQ==
+From: Mark Brown <broonie@kernel.org>
+To: nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
+ shengjiu.wang@gmail.com, lgirdwood@gmail.com, perex@perex.cz, 
+ tiwai@suse.com, alsa-devel@alsa-project.org, 
+ Shengjiu Wang <shengjiu.wang@nxp.com>
+In-Reply-To: <1700702093-8008-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1700702093-8008-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH] ASoC: fsl_xcvr: refine the requested phy clock
+ frequency
+Message-Id: <170075880893.2448402.4841454362054924374.b4-ty@kernel.org>
+Date: Thu, 23 Nov 2023 17:00:08 +0000
 MIME-Version: 1.0
-In-Reply-To: <ZV79jpaeiiN2tGm/@infradead.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-0438c
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,33 +63,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrea Arcangeli <aarcange@redhat.com>, James Houghton <jthoughton@google.com>, Lorenzo Stoakes <lstoakes@gmail.com>, David Hildenbrand <david@redhat.com>, John Hubbard <jhubbard@nvidia.com>, Yang Shi <shy828301@gmail.com>, Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>, linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, Mike Rapoport <rppt@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, "Kirill A . Shutemov" <kirill@shutemov.name>, Axel Rasmussen <axelrasmussen@google.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Vlastimil Babka <vbabka@suse.cz>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 22, 2023 at 11:21:50PM -0800, Christoph Hellwig wrote:
-> That alone sounds like a good reason to not bother.  So unless more
-> qualified people have a different opinion I'm fine with this patch
-> as long as you leave a comment in place, and ammend the commit message
-> with some of the very useful information from your mail.
+On Thu, 23 Nov 2023 09:14:53 +0800, Shengjiu Wang wrote:
+> As the input phy clock frequency will divided by 2 by default
+> on i.MX8MP with the implementation of clk-imx8mp-audiomix driver,
+> So the requested frequency need to be updated.
+> 
+> The relation of phy clock is:
+>     sai_pll_ref_sel
+>        sai_pll
+>           sai_pll_bypass
+>              sai_pll_out
+>                 sai_pll_out_div2
+>                    earc_phy_cg
+> 
+> [...]
 
-Will do, thanks.
+Applied to
 
-This is what I will squash into the same patch in the new version, as the
-current plan:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-+/*
-+ * NOTE: currently hugepd is only used in hugetlbfs file systems on Power,
-+ * which does not have issue with folio writeback against GUP updates.
-+ * When hugepd will be extended to support non-hugetlbfs or even anonymous
-+ * memory, we need to do extra check as what we do with most of the other
-+ * folios. See writable_file_mapping_allowed() and folio_fast_pin_allowed()
-+ * for more information.
-+ */
-static int gup_huge_pd(hugepd_t hugepd, unsigned long addr,
-                unsigned int pdshift, unsigned long end, unsigned int flags,
-                struct page **pages, int *nr)
+Thanks!
 
--- 
-Peter Xu
+[1/1] ASoC: fsl_xcvr: refine the requested phy clock frequency
+      commit: 347ecf29a68cc8958fbcbd26ef410d07fe9d82f4
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
