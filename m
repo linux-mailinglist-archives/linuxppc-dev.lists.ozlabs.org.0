@@ -1,41 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF00C7F6F1C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 10:07:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E098E7F6F2E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 10:11:54 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VpsGIyDl;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sc8JR65CBz3vcn
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 20:07:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sc8PN5lFrz3dTM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 20:11:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sc8HQ70ZKz3dW4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Nov 2023 20:06:40 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B74521063;
-	Fri, 24 Nov 2023 01:06:52 -0800 (PST)
-Received: from [10.57.71.2] (unknown [10.57.71.2])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 64DC23F73F;
-	Fri, 24 Nov 2023 01:06:03 -0800 (PST)
-Message-ID: <510adc26-9aed-4745-8807-dba071fadbbe@arm.com>
-Date: Fri, 24 Nov 2023 09:06:01 +0000
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VpsGIyDl;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 65 seconds by postgrey-1.37 at boromir; Fri, 24 Nov 2023 20:11:03 AEDT
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sc8NR4fhqz2xQ8
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Nov 2023 20:11:02 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700817064; x=1732353064;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=dtKj/F4zR1OSHuWZtC50tt8Q6NyZniZKExIQR3zPCac=;
+  b=VpsGIyDlk7GH8iW16K+6uro3hMkpr/k+SDMBRgrKa81uADEjp8OiIvW8
+   StLflq/kXt5CPnyJ0sUlJ/aXc3KMcRQKuTGcPMBX/5s6dHF9ATLYLhjA5
+   L6BeCTvwGmOg9nLhUC/VH5xhYecYg9ITtyN3jlAtukSGSrFG7oOPswrrT
+   aG4VEdYGPlpAioF7+qlJBs4jEbjIYbB6lbY2SrYEWAHOglJ+7DqoZ1vSG
+   IU9V4vEOjujzqPAxJsh4uIevlOE/oVlUUXqYpeJJDsoNktSQ/4hkVWspJ
+   GA+E0Zw1CespdglJPkgx1pM6TjA2SDg7qClwZWl166hJd4TjTk/f/kNrJ
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="11066446"
+X-IronPort-AV: E=Sophos;i="6.04,223,1695711600"; 
+   d="scan'208";a="11066446"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2023 01:09:39 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="885220552"
+X-IronPort-AV: E=Sophos;i="6.04,223,1695711600"; 
+   d="scan'208";a="885220552"
+Received: from mvlasov-mobl1.ger.corp.intel.com (HELO localhost) ([10.251.220.89])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2023 01:09:35 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 2/6] powerpc/fsl-pci: Use PCI_HEADER_TYPE_MASK instead of literal
+Date: Fri, 24 Nov 2023 11:09:14 +0200
+Message-Id: <20231124090919.23687-2-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20231124090919.23687-1-ilpo.jarvinen@linux.intel.com>
+References: <20231124090919.23687-1-ilpo.jarvinen@linux.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 06/12] mm/gup: Drop folio_fast_pin_allowed() in hugepd
- processing
-Content-Language: en-GB
-To: Peter Xu <peterx@redhat.com>
-References: <20231116012908.392077-1-peterx@redhat.com>
- <20231116012908.392077-7-peterx@redhat.com> <ZVsYMMJpmFV2T/Zc@infradead.org>
- <ZVzT5_3Zn-Y-6xth@x1n> <ZV21GCbG48nTLDzn@infradead.org>
- <ZV90JcnQ1RGud/0R@casper.infradead.org> <ZV-KQ0e0y9BTsHGv@x1n>
- <d2313c1d-1e50-49b7-bed7-840431af799a@arm.com> <ZV-sJsdFfXiCkylv@x1n>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <ZV-sJsdFfXiCkylv@x1n>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,66 +72,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrea Arcangeli <aarcange@redhat.com>, James Houghton <jthoughton@google.com>, Lorenzo Stoakes <lstoakes@gmail.com>, David Hildenbrand <david@redhat.com>, John Hubbard <jhubbard@nvidia.com>, Yang Shi <shy828301@gmail.com>, Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>, linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org, Mike Rapoport <rppt@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, "Kirill A . Shutemov" <kirill@shutemov.name>, Axel Rasmussen <axelrasmussen@google.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Vlastimil Babka <vbabka@suse.cz>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 23/11/2023 19:46, Peter Xu wrote:
-> On Thu, Nov 23, 2023 at 07:11:19PM +0000, Ryan Roberts wrote:
->> Hi,
->>
->> I'm not sure I've 100% understood the crossover between this series and my work
->> to support arm64's contpte mappings generally for anonymous and file-backed memory.
-> 
-> No worry, there's no confliction.  If you worked on that it's only be
-> something nice on top.  Also, I'm curious if you have performance numbers,
+Replace 0x7f literals with PCI_HEADER_TYPE_MASK.
 
-I have perf numbers for high level use cases (kernel compilation and Speedometer
-Java Script benchmarks) at
-https://lore.kernel.org/linux-arm-kernel/20230622144210.2623299-1-ryan.roberts@arm.com/
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+---
+ arch/powerpc/sysdev/fsl_pci.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I don't have any micro-benchmarks for GUP though, if that's your question. Is
-there an easy-to-use test I can run to get some numbers? I'd be happy to try it out.
-
-> because I'm going to do some test for hugetlb cont_ptes (which is only the
-> current plan), and if you got those it'll be a great baseline for me,
-> because it should be similar in you case even though the goal is slightly
-> different.
-> 
->>
->> My approach is to transparently use contpte mappings when core-mm request pte
->> mappings that meet the requirements; and its all based around intercepting the
->> normal (non-hugetlb) helpers (e.g. set_ptes(), ptep_get() and friends). There is
->> no semantic change to the core-mm. See [1]. It relies on 1) the page cache using
->> large folios and 2) my "small-sized THP" series which starts using arbitrary
->> sized large folios for anonymous memory [2].
->>
->> If I've understood this conversation correctly there is an object called hugepd,
->> which today is only supported by powerpc, but which could allow the core-mm to
->> control the mapping granularity? I can see some value in exposing that control
->> to core-mm in the (very) long term.
-> 
-> For me it's needed immediately, because hugetlb_follow_page_mask() will be
-> gone after the last patch.
-> 
->>
->> [1] https://lore.kernel.org/all/20231115163018.1303287-1-ryan.roberts@arm.com/
->> [2] https://lore.kernel.org/linux-mm/20231115132734.931023-1-ryan.roberts@arm.com/
-> 
-> AFAICT you haven't yet worked on gup then, after I glimpsed the above
-> series.
-
-No, I haven't touched GUP at all. The approach is fully inside the arm64 arch
-code (except 1 patch to core-mm which enables an optimization). So as far as GUP
-and the rest of the core-mm is concerned, there are still only page-sized ptes
-and they can all be iterated over and accessed as normal.
-
-> 
-> It's a matter of whether one follow_page_mask() call can fetch more than
-> one page* for a cont_pte entry on aarch64 for a large non-hugetlb folio
-> (and if this series lands, it'll be the same to hugetlb or non-hugetlb).
-> Now the current code can only fetch one page I think.
-> 
-> Thanks,
-> 
+diff --git a/arch/powerpc/sysdev/fsl_pci.c b/arch/powerpc/sysdev/fsl_pci.c
+index 3868483fbe29..ef7707ea0db7 100644
+--- a/arch/powerpc/sysdev/fsl_pci.c
++++ b/arch/powerpc/sysdev/fsl_pci.c
+@@ -54,7 +54,7 @@ static void quirk_fsl_pcie_early(struct pci_dev *dev)
+ 
+ 	/* if we aren't in host mode don't bother */
+ 	pci_read_config_byte(dev, PCI_HEADER_TYPE, &hdr_type);
+-	if ((hdr_type & 0x7f) != PCI_HEADER_TYPE_BRIDGE)
++	if ((hdr_type & PCI_HEADER_TYPE_MASK) != PCI_HEADER_TYPE_BRIDGE)
+ 		return;
+ 
+ 	dev->class = PCI_CLASS_BRIDGE_PCI_NORMAL;
+@@ -581,7 +581,7 @@ static int fsl_add_bridge(struct platform_device *pdev, int is_primary)
+ 		hose->ops = &fsl_indirect_pcie_ops;
+ 		/* For PCIE read HEADER_TYPE to identify controller mode */
+ 		early_read_config_byte(hose, 0, 0, PCI_HEADER_TYPE, &hdr_type);
+-		if ((hdr_type & 0x7f) != PCI_HEADER_TYPE_BRIDGE)
++		if ((hdr_type & PCI_HEADER_TYPE_MASK) != PCI_HEADER_TYPE_BRIDGE)
+ 			goto no_bridge;
+ 
+ 	} else {
+-- 
+2.30.2
 
