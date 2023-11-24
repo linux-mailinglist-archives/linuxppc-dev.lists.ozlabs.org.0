@@ -1,101 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD8317F7CB4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 19:17:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 593067F85B4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 22:58:44 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dD4IIHKq;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iM0F7nrg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cgJMC0Yj;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ScNW55N8mz3vXM
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Nov 2023 05:17:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ScTQB1fjnz3vX7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Nov 2023 08:58:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dD4IIHKq;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iM0F7nrg;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cgJMC0Yj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ScNVB45GNz3dBh
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Nov 2023 05:16:49 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1700849803;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eg/pahNY1sda15m0S5y8qWCWFh+lk9Yndlzoe9hnA8c=;
-	b=dD4IIHKq4IQR88d+2rojN0vcNAzaVVPApCjRYOwNfj7/Vh40nqVZZOTlUXUHILtky9fn/s
-	z6hzgWQlqivZKZCb8Ui8ltCBrXatOKK0MRKwIvOaXZvmaVoUI15WJyM9X0UMDoAknoRod4
-	/DfxGq5A3qDOaxHn7Nf9fqtzLYT6KcQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1700849804;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eg/pahNY1sda15m0S5y8qWCWFh+lk9Yndlzoe9hnA8c=;
-	b=iM0F7nrgd2O7h6dt3+LKH3qYG6HukdT9kuxK1XSMCjBWl/0wX0O4MAxuXvfDs5AHe34E9r
-	iu3knx4iUYkdimUAVpc3Tm/LntKebW2e5KOb0BO99FkNUyolsNtquMFCkcSoTpKccL4C32
-	x4rogdqFQjRF67ZbUA6WYlSULZ35Km0=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-532-tNEZiY-3Oe68XPgAs2Apag-1; Fri, 24 Nov 2023 13:16:40 -0500
-X-MC-Unique: tNEZiY-3Oe68XPgAs2Apag-1
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-679d8383224so5649236d6.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Nov 2023 10:16:40 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700849799; x=1701454599;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eg/pahNY1sda15m0S5y8qWCWFh+lk9Yndlzoe9hnA8c=;
-        b=VmnoGiZQ+IjHPq7okR/YgRjzQJJmhInE4qeWHrea34rDOyBZFjEow0esY1J6vyzIj5
-         AEnysRvJF7ML1HeINu4sLjSB7rnOZ8YjcukxSnJzG3eOpf3y/tNZTveo2Xii/CKv1FMU
-         WF0P0Fb66Rhc6UFXU/Z3Lv3pjzt70xqQNV4AYHbJMTw89hdJFN74KNODfs6Vc7AIaD1h
-         rqKXoR8+aAW8VAlbKDIOOz2xS6I1mJwRA/B3bljcmD+qJYCpeal1R2/gFvGJWugCOVSe
-         odn5HHoVvX4L0PKSCUi5Y+/Ayhj9SURmnUqXMnxlso97J4dMschdPN+pNlMoX0MeMY4S
-         GY+g==
-X-Gm-Message-State: AOJu0YzVTxj/Ty5Hxzfhpzafr0ds9WBjThfbkxDpfpe+UK3t9JtI+w3f
-	6jHx/jeMnsD5Us3AB1WYFzOBXBfE8u288km4Y6w3S+UjurhqVjBRclSWIJwjWhpmx8IcY00WzwM
-	wd80JsfiBdTLZtVVuYkGj6ysHQA==
-X-Received: by 2002:a05:6214:2f02:b0:67a:1458:aacd with SMTP id od2-20020a0562142f0200b0067a1458aacdmr3565269qvb.1.1700849799547;
-        Fri, 24 Nov 2023 10:16:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEJ43dGQneaoWsZVvBliGQZdzl2B0g+563xfr5Uv9AkDlwk6RFuauEFWEn1YHQGStxmMuIbQg==
-X-Received: by 2002:a05:6214:2f02:b0:67a:1458:aacd with SMTP id od2-20020a0562142f0200b0067a1458aacdmr3565222qvb.1.1700849799109;
-        Fri, 24 Nov 2023 10:16:39 -0800 (PST)
-Received: from x1n (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com. [99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id cp4-20020ad44ae4000000b0067a154df4cesm747802qvb.70.2023.11.24.10.16.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Nov 2023 10:16:38 -0800 (PST)
-Date: Fri, 24 Nov 2023 13:16:35 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH RFC 06/12] mm/gup: Drop folio_fast_pin_allowed() in
- hugepd processing
-Message-ID: <ZWDog_cz66g38d0I@x1n>
-References: <20231116012908.392077-1-peterx@redhat.com>
- <20231116012908.392077-7-peterx@redhat.com>
- <ZVsYMMJpmFV2T/Zc@infradead.org>
- <ZVzT5_3Zn-Y-6xth@x1n>
- <ZV21GCbG48nTLDzn@infradead.org>
- <ZV4co7wcI-_wK91F@x1n>
- <57be0ed0-f1d7-4583-9a5f-3ed7deb0ea97@csgroup.eu>
- <ZV-p7haI5SmIYACs@x1n>
- <1a1cbd2c-ef59-4b73-bffc-a375bf81243c@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sc6YZ2QbWz3vd2
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Nov 2023 18:48:50 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id EFEBDCE11EA;
+	Fri, 24 Nov 2023 07:48:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96C4BC433C7;
+	Fri, 24 Nov 2023 07:48:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1700812116;
+	bh=wuXwn6H3IYOQTJYurH/LAKoS23w/GwU7ryzU1+Vs8b4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=cgJMC0Yj3JRcUDF8O8XpdEdYA/5STjclZLwUWXfVMJwJnFCmcyrJDVup7Rscs2p84
+	 1lIevByzmjhiYL9n/DPGwW0r1qVsQ45xdWW1cCKjcoubJ/Np/IRSX/dXnPPAZi1lyB
+	 ETOprEE5xY+akdxk7DWnyVkIziLf3Nu7PWCfTmFB985JDwr0PPgc9yJ4BLOQhlh8Nx
+	 7J3VH6h2rRYlPJhbqQ9tIol8mM/LtKts+YBDNQd03tji9lqn5ZFKRzSp7zz5eJxPSA
+	 m4YJmobEWMvUVEr6S2NJRsz4v9jSzMIYOHwn/4yZmgFOE0FpvuIzzDTt4O8YISu59u
+	 jwN2CAG1O1gvw==
+From: Christian Brauner <brauner@kernel.org>
+To: linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH v2 0/4] eventfd: simplify signal helpers
+Date: Fri, 24 Nov 2023 08:47:57 +0100
+Message-ID: <20231124-traurig-halunken-6defdd66e8f2@brauner>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231122-vfs-eventfd-signal-v2-0-bd549b14ce0c@kernel.org>
+References: <20231122-vfs-eventfd-signal-v2-0-bd549b14ce0c@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <1a1cbd2c-ef59-4b73-bffc-a375bf81243c@csgroup.eu>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1378; i=brauner@kernel.org; h=from:subject:message-id; bh=wuXwn6H3IYOQTJYurH/LAKoS23w/GwU7ryzU1+Vs8b4=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaQmhOr8Nb88ObVn73mvUyobyi/8m/y5yi2fL80o6/sb9 3cTN/yd21HKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCR7iBGhq1L7YSDDTVSee+x X1xccNDei/91c9MuqdqsiYtj7lg17WdkWCP3faH/qkmK79OnL3ut4/Vo+e0nB564XJ5mY6ruNdX 4JgMA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Sat, 25 Nov 2023 08:57:59 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,89 +63,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrea Arcangeli <aarcange@redhat.com>, James Houghton <jthoughton@google.com>, Lorenzo Stoakes <lstoakes@gmail.com>, David Hildenbrand <david@redhat.com>, John Hubbard <jhubbard@nvidia.com>, Yang Shi <shy828301@gmail.com>, Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, Mike Rapoport <rppt@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, "Kirill A . Shutemov" <kirill@shutemov.name>, Axel Rasmussen <axelrasmussen@google.com>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Vlastimil Babka <vbabka@suse.cz>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: linux-aio@kvack.org, linux-usb@vger.kernel.org, Jan Kara <jack@suse.cz>, Matthew Rosato <mjrosato@linux.ibm.com>, Paul Durrant <paul@xen.org>, Tom Rix <trix@redhat.com>, Jason Wang <jasowang@redhat.com>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, dri-devel@lists.freedesktop.org, Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org, Kirti Wankhede <kwankhede@nvidia.com>, Paolo Bonzini <pbonzini@redhat.com>, Jens Axboe <axboe@kernel.dk>, Vineeth Vijayan <vneethv@linux.ibm.com>, Diana Craciun <diana.craciun@oss.nxp.com>, netdev@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, David Airlie <airlied@gmail.com>, Christoph Hellwig <hch@lst.de>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Shakeel Butt <shakeelb@google.com>, Vasily Gorbik <gor@linux.ibm.com>, Leon Romanovsky <leon@kernel.org>, Harald Freudenberger <freude@linux.ibm.com>, Fei Li <fei1.li@intel.com>, x86@kernel.org, Roman Gushchin <roman.gushchin@linux.dev>, Halil Pasic <pasic@linux.ibm.com>, Jason Gunthorpe
+  <jgg@ziepe.ca>, Ingo Molnar <mingo@redhat.com>, intel-gfx@lists.freedesktop.org, Christian Borntraeger <borntraeger@linux.ibm.com>, linux-fpga@vger.kernel.org, Zhi Wang <zhi.a.wang@intel.com>, Wu Hao <hao.wu@intel.com>, Jason Herne <jjherne@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Johannes Weiner <hannes@cmpxchg.org>, linuxppc-dev@lists.ozlabs.org, Zhenyu Wang <zhenyuw@linux.intel.com>, Eric Auger <eric.auger@redhat.com>, Alex Williamson <alex.williamson@redhat.com>, Moritz Fischer <mdf@kernel.org>, Jani Nikula <jani.nikula@linux.intel.com>, kvm@vger.kernel.org, Rodrigo Vivi <rodrigo.vivi@intel.com>, cgroups@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, virtualization@lists.linux-foundation.org, intel-gvt-dev@lists.freedesktop.org, io-uring@vger.kernel.org, Tony Krowiak <akrowiak@linux.ibm
+ .com>, Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, Pavel Begunkov <asml.silence@gmail.com>, Sean Christopherson <seanjc@google.com>, Oded Gabbay <ogabbay@kernel.org>, Muchun Song <muchun.song@linux.dev>, Peter Oberparleiter <oberpar@linux.ibm.com>, linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, Benjamin LaHaise <bcrl@kvack.org>, "Michael S. Tsirkin" <mst@redhat.com>, Sven Schnelle <svens@linux.ibm.com>, Daniel Vetter <daniel@ffwll.ch>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Frederic Barrat <fbarrat@linux.ibm.com>, Borislav Petkov <bp@alien8.de>, Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Xu Yilun <yilun.xu@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi, Christophe, Michael, Aneesh,
-
-[I'll reply altogether here]
-
-On Fri, Nov 24, 2023 at 07:03:11AM +0000, Christophe Leroy wrote:
-> I added that code with commit e17eae2b8399 ("mm: pagewalk: fix walk for 
-> hugepage tables") because I was getting crazy displays when dumping 
-> /sys/kernel/debug/pagetables
+On Wed, 22 Nov 2023 13:48:21 +0100, Christian Brauner wrote:
+> Hey everyone,
 > 
-> Huge pages can be used for many thing.
+> This simplifies the eventfd_signal() and eventfd_signal_mask() helpers
+> significantly. They can be made void and not take any unnecessary
+> arguments.
 > 
-> On powerpc 8xx, there are 4 possible page size: 4k, 16k, 512k and 8M.
-> Each PGD entry addresses 4M areas, so hugepd is used for anything using 
-> 8M pages. Could have used regular page tables instead, but it is not 
-> worth allocating a 4k table when the HW will only read first entry.
+> I've added a few more simplifications based on Sean's suggestion.
 > 
-> At the time being, linear memory mapping is performed with 8M pages, so 
-> ptdump_walk_pgd() will walk into huge page directories.
-> 
-> Also, huge pages can be used in vmalloc() and in vmap(). At the time 
-> being we support 512k pages there on the 8xx. 8M pages will be supported 
-> once vmalloc() and vmap() support hugepd, as explained in commit 
-> a6a8f7c4aa7e ("powerpc/8xx: add support for huge pages on VMAP and VMALLOC")
-> 
-> So yes as a conclusion hugepd is used outside hugetlbfs, hope it 
-> clarifies things.
+> [...]
 
-Yes it does, thanks a lot for all of your replies.
+Applied to the vfs.misc branch of the vfs/vfs.git tree.
+Patches in the vfs.misc branch should appear in linux-next soon.
 
-So I think this is what I missed: on Freescale ppc 8xx there's a special
-hugepd_populate_kernel() defined to install kernel pgtables for hugepd.
-Obviously I didn't check further than hugepd_populate() when I first
-looked, and stopped at the first instance of hugepd_populate() definition
-on the 64 bits ppc.
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-For this specific patch: I suppose the change is still all fine to reuse
-the fast-gup function, because it is still true when there's a VMA present
-(GUP applies only to user mappings, nothing like KASAN should ever pop up).
-So AFAIU it's still true that hugepd is only used in hugetlb pages in this
-case even for Freescale 8xx, and nothing should yet explode.  So maybe I
-can still keep the code changes.
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-However the comment at least definitely needs fixing (that I'm going to add
-some, which hch requested and I agree), that is not yet in the patch I
-posted here but I'll refine them locally.
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-For the whole work: the purpose of it is to start merging hugetlb pgtable
-processing with generic mm.  That is my take of previous lsfmm discussions
-in the community on how we should move forward with hugetlb in the future,
-to avoid code duplications against generic mm.  Hugetlb is kind of blocked
-on adding new (especially, large) features in general because of such
-complexity.  This is all about that, but a small step towards it.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.misc
 
-I see that it seems a trend to make hugepd more general.  Christophe's fix
-on dump pgtable is exactly what I would also look for if keep going.  I
-hope that's the right way to go.
-
-I'll also need to think more on how this will affect my plan, currently it
-seems all fine: I won't ever try to change any kernel mapping specific
-code. I suppose any hugetlbfs based test should still cover all codes I
-will touch on hugepd.  Then it should just work for kernel mappings on
-Freescales; it'll be great if e.g. Christophe can help me double check that
-if the series can stablize in a few versions.  If any of you have any hint
-on testing it'll be more than welcomed, either specific test case or hints;
-currently I'm still at a phase looking for a valid ppc systems - QEMU tcg
-ppc64 emulation on x86 is slow enough to let me give up already.
-
-Considering hugepd's specialty in ppc and the possibility that I'll break
-it, there's yet another option which is I only apply the new logic into
-archs with !ARCH_HAS_HUGEPD.  It'll make my life easier, but that also
-means even if my attempt would work out anything new will by default rule
-ppc out.  And we'll have a bunch of "#ifdef ARCH_HAS_HUGEPD" in generic
-code, which is not preferred either.  For gup, it might be relatively easy
-when comparing to the rest. I'm still hesitating for the long term plan.
-
-Please let me know if you have any thoughts on any of above.
-
-Thanks!
-
--- 
-Peter Xu
-
+[1/4] i915: make inject_virtual_interrupt() void
+      https://git.kernel.org/vfs/vfs/c/858848719210
+[2/4] eventfd: simplify eventfd_signal()
+      https://git.kernel.org/vfs/vfs/c/ded0f31f825f
+[3/4] eventfd: simplify eventfd_signal_mask()
+      https://git.kernel.org/vfs/vfs/c/45ee1c990e88
+[4/4] eventfd: make eventfd_signal{_mask}() void
+      https://git.kernel.org/vfs/vfs/c/37d5d473e749
