@@ -2,74 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0DBD7F68FB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Nov 2023 23:26:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5288A7F69A6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 01:02:57 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=HJ/x96Wd;
+	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=EXoSXWK6;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sbt4R6DT9z3vjJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 09:26:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SbwCz1PGSz3dKJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 11:02:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=HJ/x96Wd;
+	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=EXoSXWK6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::42b; helo=mail-pf1-x42b.google.com; envelope-from=axboe@kernel.dk; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org)
+Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SbpSn0MbHz3cVm
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Nov 2023 06:43:33 +1100 (AEDT)
-Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-6c48fad2f6dso206956b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Nov 2023 11:43:33 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SbwC53FzRz30gH
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Nov 2023 11:02:07 +1100 (AEDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id 94F218285966;
+	Thu, 23 Nov 2023 18:02:01 -0600 (CST)
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id kqmcTUHYpmAi; Thu, 23 Nov 2023 18:02:00 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id DD04D82858B9;
+	Thu, 23 Nov 2023 18:01:59 -0600 (CST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com DD04D82858B9
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1700768610; x=1701373410; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WpkzZHg09ad7VkHOnG/quo/T41ONjJ1411UTG4haLXU=;
-        b=HJ/x96WdZ8atySxxHNI2zxgfXZOKvmhsUTGxHpk4SmMIPZdD/DpckGgMt3PZmeWfmY
-         urfXKGdGndoEogc45+9ZAcEyHDq+nISAhQl3jvxeNOW5XTGtNzK14ZZxpCvqKtI3hKtw
-         mV+JrHSIvvE+h6hxvz/8G87TGPIhEwwwPL/H9KioXuI+A5aGPEuomR+H+i7+8svBnNdl
-         n8GzZfwCaIzyXWL77HYN958GwlL9MlyVSsV4UKcnw3OvYfEfLDTr7bX1xgoRENr3f8ge
-         hDwLJ24Z6stDFWez3Cfv0VmkIAKSaRgjYecFIUFgIZBBEp52KVmwLiIcaiQ/lSOCTjRp
-         luaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700768610; x=1701373410;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WpkzZHg09ad7VkHOnG/quo/T41ONjJ1411UTG4haLXU=;
-        b=pzuq8ZCvqO6FyjZDLKPc6hO8X+iZ3Wz3heMmfL27laMm9Sd+pvKTTfikA2dB+kKwFL
-         OR1b8L81SuTX5hLdKFOUrsW8cd0m5PXJFpfTGZgu0R2Fqk6R14eRAf14XESCVp7oiyZe
-         JbpPMX9605cGkiPtVRhgTs5xSXLVzy6ZXCsdtjw1zTk1HSFJdlMWN8z92ljKpvDuBFWf
-         w7VFZp3Tpd/qMQNw7tmV/UXEayWwacrvIruU4wdwT6BHST/put4OmrGk/t6O0IqkQJJH
-         8EzDamygKuRS8IhEoKcsML5Va6ujvUrIspyQLPxJumL08w9izx0vmQXAj93VGoEEAlBZ
-         6ZFg==
-X-Gm-Message-State: AOJu0YzFo8w5XYsp1facTfKGWHBEq1hDin7cxvTqjfElfJuc7/28AGOK
-	wT8W+8aLb+EZAUY3y6tQCPVBng==
-X-Google-Smtp-Source: AGHT+IEPG4J941SLrpY4uC/ri/G2ja2akCNdtY4pHEKeo+HpcNnwpEYC41wSse9D2H40uEI86qohgw==
-X-Received: by 2002:a05:6a00:9381:b0:6bc:ff89:a2fc with SMTP id ka1-20020a056a00938100b006bcff89a2fcmr544106pfb.2.1700768610318;
-        Thu, 23 Nov 2023 11:43:30 -0800 (PST)
-Received: from [192.168.1.150] ([198.8.77.194])
-        by smtp.gmail.com with ESMTPSA id n17-20020a056a0007d100b006cb65cfde6dsm1567524pfu.200.2023.11.23.11.43.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Nov 2023 11:43:29 -0800 (PST)
-Message-ID: <cb41cf91-1c75-4edc-b00f-59763344b15c@kernel.dk>
-Date: Thu, 23 Nov 2023 12:43:23 -0700
+	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
+	t=1700784119; bh=/K0ePnwT7psehnvpRKRvGH9Y4HoskzplRLF3gGUpSm0=;
+	h=Date:From:To:Message-ID:MIME-Version;
+	b=EXoSXWK6iK2gwCKGFdnGd9tcgSIxBGrxzGS06yervCph79PJ04K9AK+QL6Y/ib8vT
+	 l/ilJaeCB2dt0CY4yBw4Kqgx2qN3lH73QFDq+iQD6Gx6I/qSt+/qtTo7vDEmzxBcW9
+	 EwHeB5kgeCbjIWQqfzHOcuPpapi6DkMaHvd5Q9JU=
+X-Virus-Scanned: amavisd-new at rptsys.com
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id e81alOH2KJ3J; Thu, 23 Nov 2023 18:01:59 -0600 (CST)
+Received: from vali.starlink.edu (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id 9D9F082858A9;
+	Thu, 23 Nov 2023 18:01:59 -0600 (CST)
+Date: Thu, 23 Nov 2023 18:01:59 -0600 (CST)
+From: Timothy Pearson <tpearson@raptorengineering.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Message-ID: <1340817182.49635143.1700784119445.JavaMail.zimbra@raptorengineeringinc.com>
+In-Reply-To: <87leaqjs8x.fsf@mail.lhotse>
+References: <1921539696.48534988.1700407082933.JavaMail.zimbra@raptorengineeringinc.com> <877cmc7ve9.fsf@mail.lhotse> <439072392.48800901.1700498743840.JavaMail.zimbra@raptorengineeringinc.com> <874jhg6lkn.fsf@mail.lhotse> <1294229534.48922001.1700539832331.JavaMail.zimbra@raptorengineeringinc.com> <87leaqjs8x.fsf@mail.lhotse>
+Subject: Re: [PATCH v2] powerpc: Don't clobber fr0/vs0 during fp|altivec
+ register  save
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/4] eventfd: simplify signal helpers
-Content-Language: en-US
-To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
-References: <20231122-vfs-eventfd-signal-v2-0-bd549b14ce0c@kernel.org>
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20231122-vfs-eventfd-signal-v2-0-bd549b14ce0c@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Fri, 24 Nov 2023 09:22:20 +1100
+X-Mailer: Zimbra 8.5.0_GA_3042 (ZimbraWebClient - GC119 (Linux)/8.5.0_GA_3042)
+Thread-Topic: powerpc: Don't clobber fr0/vs0 during fp|altivec register save
+Thread-Index: OkyGhBWE6ESNaH7+hHk9xkTdc0AVjQ==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,32 +70,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-aio@kvack.org, linux-usb@vger.kernel.org, Jan Kara <jack@suse.cz>, Matthew Rosato <mjrosato@linux.ibm.com>, Paul Durrant <paul@xen.org>, Tom Rix <trix@redhat.com>, Jason Wang <jasowang@redhat.com>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, dri-devel@lists.freedesktop.org, Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org, Kirti Wankhede <kwankhede@nvidia.com>, Paolo Bonzini <pbonzini@redhat.com>, Vineeth Vijayan <vneethv@linux.ibm.com>, Diana Craciun <diana.craciun@oss.nxp.com>, netdev@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, David Airlie <airlied@gmail.com>, Christoph Hellwig <hch@lst.de>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Shakeel Butt <shakeelb@google.com>, Vasily Gorbik <gor@linux.ibm.com>, Leon Romanovsky <leon@kernel.org>, Harald Freudenberger <freude@linux.ibm.com>, Fei Li <fei1.li@intel.com>, x86@kernel.org, Roman Gushchin <roman.gushchin@linux.dev>, Halil Pasic <pasic@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>, Ingo Molnar <
- mingo@redhat.com>, intel-gfx@lists.freedesktop.org, Christian Borntraeger <borntraeger@linux.ibm.com>, linux-fpga@vger.kernel.org, Zhi Wang <zhi.a.wang@intel.com>, Wu Hao <hao.wu@intel.com>, Jason Herne <jjherne@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Johannes Weiner <hannes@cmpxchg.org>, linuxppc-dev@lists.ozlabs.org, Zhenyu Wang <zhenyuw@linux.intel.com>, Eric Auger <eric.auger@redhat.com>, Alex Williamson <alex.williamson@redhat.com>, Moritz Fischer <mdf@kernel.org>, Jani Nikula <jani.nikula@linux.intel.com>, kvm@vger.kernel.org, Rodrigo Vivi <rodrigo.vivi@intel.com>, cgroups@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, virtualization@lists.linux-foundation.org, intel-gvt-dev@lists.freedesktop.org, io-uring@vger.kernel.org, Tony Krowiak <akrowiak@linux.ibm.com>, Tvrtko Ursulin <tvrtko.
- ursulin@linux.intel.com>, Pavel Begunkov <asml.silence@gmail.com>, Sean Christopherson <seanjc@google.com>, Oded Gabbay <ogabbay@kernel.org>, Muchun Song <muchun.song@linux.dev>, Peter Oberparleiter <oberpar@linux.ibm.com>, linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, Benjamin LaHaise <bcrl@kvack.org>, "Michael S. Tsirkin" <mst@redhat.com>, Sven Schnelle <svens@linux.ibm.com>, Daniel Vetter <daniel@ffwll.ch>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Frederic Barrat <fbarrat@linux.ibm.com>, Borislav Petkov <bp@alien8.de>, Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Xu Yilun <yilun.xu@intel.com>
+Cc: Jens Axboe <axboe@kernel.dk>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, regressions <regressions@lists.linux.dev>, npiggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/22/23 5:48 AM, Christian Brauner wrote:
-> Hey everyone,
-> 
-> This simplifies the eventfd_signal() and eventfd_signal_mask() helpers
-> significantly. They can be made void and not take any unnecessary
-> arguments.
-> 
-> I've added a few more simplifications based on Sean's suggestion.
-> 
-> Signed-off-by: Christian Brauner <brauner@kernel.org>
-> 
-> Changes in v2:
-> - further simplify helpers
-> - Link to v1: https://lore.kernel.org/r/20230713-vfs-eventfd-signal-v1-0-7fda6c5d212b@kernel.org
 
-Only oddity I spotted was the kerneldoc, which someone else already
-brought up.
 
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
+----- Original Message -----
+> From: "Michael Ellerman" <mpe@ellerman.id.au>
+> To: "Timothy Pearson" <tpearson@raptorengineering.com>
+> Cc: "Jens Axboe" <axboe@kernel.dk>, "regressions" <regressions@lists.linux.dev>, "npiggin" <npiggin@gmail.com>,
+> "christophe leroy" <christophe.leroy@csgroup.eu>, "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>
+> Sent: Tuesday, November 21, 2023 11:01:50 PM
+> Subject: Re: [PATCH v2] powerpc: Don't clobber fr0/vs0 during fp|altivec register  save
 
--- 
-Jens Axboe
+> Timothy Pearson <tpearson@raptorengineering.com> writes:
+>>
+> ...
+>>
+>> So a little more detail on this, just to put it to rest properly vs.
+>> assuming hand analysis caught every possible pathway. :)
+>>
+>> The debugging that generates this stack trace also verifies the following in
+>> __giveup_fpu():
+>>
+>> 1.) tsk->thread.fp_state.fpr doesn't contain the FPSCR contents prior to calling
+>> save_fpu()
+>> 2.) tsk->thread.fp_state.fpr contains the FPSCR contents directly after calling
+>> save_fpu()
+>> 3.) MSR_FP is set both in the task struct and in the live MSR.
+>>
+>> Only if all three conditions are met will it generate the trace.  This
+>> is a generalization of the hack I used to find the problem in the
+>> first place.
+>>
+>> If the state will subsequently be reloaded from the thread struct,
+>> that means we're reloading the registers from the thread struct that
+>> we just verified was corrupted by the earlier save_fpu() call.  There
+>> are only two ways I can see for that to be true -- one is if the
+>> registers were already clobbered when giveup_all() was entered, and
+>> the other is if save_fpu() went ahead and clobbered them right here
+>> inside giveup_all().
+>>
+>> To see which scenario we were dealing with, I added a bit more
+>> instrumentation to dump the current register state if MSR_FP bit was
+>> already set in registers (i.e. not dumping data from task struct, but
+>> using the live FPU registers instead), and sure enough the registers
+>> are corrupt on entry, so something else has already called save_fpu()
+>> before we even hit giveup_all() in this call chain.
+> 
+> Can you share the debug patch you're using?
+> 
+> cheers
 
+Sure, here you go.  Note that with my FPU patch there is no WARN_ON hit, at least in my testing, so it isn't userspace purposefully loading the fr0/vs0 register with the FPSCR.
+
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index 392404688cec..bde57dc3262a 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -154,7 +154,49 @@ static void __giveup_fpu(struct task_struct *tsk)
+ {
+ 	unsigned long msr;
+ 
++	// DEBUGGING
++	uint64_t prev_fpr0 = *(((uint64_t*)(&tsk->thread.fp_state.fpr[0]))+0);
++	uint64_t prev_fpr1 = *(((uint64_t*)(&tsk->thread.fp_state.fpr[0]))+1);
++	struct thread_fp_state debug_fp_state;
++	unsigned long currentmsr = mfmsr();
++
++	if (currentmsr & MSR_FP) {
++		store_fp_state(&debug_fp_state);
++		load_fp_state(&debug_fp_state);
++	}
++
+ 	save_fpu(tsk);
++
++	// DEBUGGING
++	if (tsk->thread.regs->msr & MSR_FP) {
++		if (((*(((uint64_t*)(&tsk->thread.fp_state.fpr[0]))+0) == 0x82004000) && (prev_fpr0 != 0x82004000))
++		 || ((*(((uint64_t*)(&tsk->thread.fp_state.fpr[0]))+1) == 0x82004000) && (prev_fpr1 != 0x82004000)))
++		{
++			WARN_ON(1);
++
++			printk("[TS %lld] In __giveup_fpu() for process [comm: '%s'  pid %d tid %d], before save current "
++			"fp0: 0x%016llx/%016llx fp1: 0x%016llx/%016llx fp8: 0x%016llx/%016llx fp9: 0x%016llx/%016llx"
++			" msr: 0x%016lx (FP %d VSX %d EE %d) on core %d\n",
++			ktime_get_boottime_ns(), current->comm, current->pid, current->tgid,
++			*(((uint64_t*)(&debug_fp_state.fpr[0]))+0), *(((uint64_t*)(&debug_fp_state.fpr[0]))+1),
++			*(((uint64_t*)(&debug_fp_state.fpr[1]))+0), *(((uint64_t*)(&debug_fp_state.fpr[1]))+1),
++			*(((uint64_t*)(&debug_fp_state.fpr[8]))+0), *(((uint64_t*)(&debug_fp_state.fpr[8]))+1),
++			*(((uint64_t*)(&tsk->thread.fp_state.fpr[9]))+0), *(((uint64_t*)(&tsk->thread.fp_state.fpr[9]))+1),
++			currentmsr, !!(currentmsr & MSR_FP), !!(currentmsr & MSR_VSX), !!(currentmsr & MSR_EE), raw_smp_processor_id());
++
++			printk("[TS %lld] In __giveup_fpu() for process [comm: '%s'  pid %d tid %d], after save saved "
++			"fp0: 0x%016llx/%016llx fp1: 0x%016llx/%016llx fp8: 0x%016llx/%016llx fp9: 0x%016llx/%016llx"
++			" msr: 0x%016lx (FP %d VSX %d EE %d) on core %d\n",
++			ktime_get_boottime_ns(), current->comm, current->pid, current->tgid,
++			*(((uint64_t*)(&tsk->thread.fp_state.fpr[0]))+0), *(((uint64_t*)(&tsk->thread.fp_state.fpr[0]))+1),
++			*(((uint64_t*)(&tsk->thread.fp_state.fpr[1]))+0), *(((uint64_t*)(&tsk->thread.fp_state.fpr[1]))+1),
++			*(((uint64_t*)(&tsk->thread.fp_state.fpr[8]))+0), *(((uint64_t*)(&tsk->thread.fp_state.fpr[8]))+1),
++			*(((uint64_t*)(&tsk->thread.fp_state.fpr[9]))+0), *(((uint64_t*)(&tsk->thread.fp_state.fpr[9]))+1),
++			tsk->thread.regs->msr, !!(tsk->thread.regs->msr & MSR_FP), !!(tsk->thread.regs->msr & MSR_VSX), !!(tsk->thread.regs->msr & MSR_EE), raw_smp_processor_id());
++		}
++	}
++
++
+ 	msr = tsk->thread.regs->msr;
+ 	msr &= ~(MSR_FP|MSR_FE0|MSR_FE1);
+ 	if (cpu_has_feature(CPU_FTR_VSX))
