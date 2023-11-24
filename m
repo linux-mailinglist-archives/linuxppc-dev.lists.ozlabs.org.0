@@ -1,52 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C816E7F6ABF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 03:40:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A51867F6AF2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 04:37:45 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=H8OQ2a6a;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hc1br1zr;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hc1br1zr;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sbzk55FgVz3dWj
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 13:40:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sc0zq4Hw0z3vbw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 14:37:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=H8OQ2a6a;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hc1br1zr;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hc1br1zr;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SbzjF17qmz2yhZ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Nov 2023 13:40:01 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1700793600;
-	bh=WFqN7XdFHW/NhVtUbPjSXPK5v0o8fzBgXb/161VbErM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=H8OQ2a6aBxRkz/RG1wM0NXFPJnvYDSXO1kf//aLmHe6Cil3PfQXbUWBJs36e0VXwQ
-	 UQLyVnZQYY62EGQSwfwfGMhhBYQSRBEgjqEflGyD8J49dkiMy6i3pmDD/mJnOL7bu/
-	 My9i2VjDbqPkUE7e1G4QK98XzJr/2TGljk/wbh1A8FxOyXUMcz42v6jC1ckebwPwNs
-	 7NM04dXdGvuop4cHsV/yUDIj1eEc4Vtm/Eey1EQfOJj7mHmNdK3xKaLktdZort1p1T
-	 4Tz6kOHG1zKfo0y7le3dv+PJaQheFMWpcZ+X/vuILb6zVJhTpowxy2qPQ1j4eb46Go
-	 3TlAMWKGLPTrg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sc0yx0C4vz3dDP
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Nov 2023 14:36:55 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1700797013;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=4OuucJ11Un3/k9dB60BV2a/JEawpVCHCUahMTYq35GY=;
+	b=hc1br1zr1tJyTZ9IvsWa6taj+5wfuABEF0MwH4WUGTwNUqNnHdomGfO9eUL5oa3YTj4u3c
+	jheeRPHB3GG+8bkqfhrPCKZZgqqjP1mjr5bmf6xNhKRaX5x93vRxFq23r4ADoEVmzv/qBW
+	vkt+OO1BbADz7fwx6OkyQuu3+D5vn2Q=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1700797013;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=4OuucJ11Un3/k9dB60BV2a/JEawpVCHCUahMTYq35GY=;
+	b=hc1br1zr1tJyTZ9IvsWa6taj+5wfuABEF0MwH4WUGTwNUqNnHdomGfO9eUL5oa3YTj4u3c
+	jheeRPHB3GG+8bkqfhrPCKZZgqqjP1mjr5bmf6xNhKRaX5x93vRxFq23r4ADoEVmzv/qBW
+	vkt+OO1BbADz7fwx6OkyQuu3+D5vn2Q=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-388-p_DngC43MZ68jacs4F77zw-1; Thu, 23 Nov 2023 22:36:50 -0500
+X-MC-Unique: p_DngC43MZ68jacs4F77zw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SbzjD3tc4z4wqN;
-	Fri, 24 Nov 2023 13:40:00 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Vishal Chourasia <vishalc@linux.ibm.com>, aneesh.kumar@kernel.org
-Subject: Re: [PATCH v3] powerpc: Adjust config HOTPLUG_CPU dependency
-In-Reply-To: <20231122101040.231850-1-vishalc@linux.ibm.com>
-References: <3fe72686-5b89-41e4-b760-d6353b426d81@kernel.org>
- <20231122101040.231850-1-vishalc@linux.ibm.com>
-Date: Fri, 24 Nov 2023 13:39:53 +1100
-Message-ID: <87v89rri12.fsf@mail.lhotse>
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A2FF1811E7B;
+	Fri, 24 Nov 2023 03:36:49 +0000 (UTC)
+Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.112.8])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id C0D89492BE7;
+	Fri, 24 Nov 2023 03:36:44 +0000 (UTC)
+From: Baoquan He <bhe@redhat.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/7] kexec_file: print out debugging message if required
+Date: Fri, 24 Nov 2023 11:36:35 +0800
+Message-ID: <20231124033642.520686-1-bhe@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,147 +76,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com, vishalc@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, srikar@linux.vnet.ibm.com
+Cc: yujie.liu@intel.com, Baoquan He <bhe@redhat.com>, linux-parisc@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, nathan@kernel.org, joe@perches.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Vishal,
+Currently, specifying '-d' will print a lot of debugging information
+about kexec/kdump loading with kexec_load interface.
 
-I think our wires got crossed here somewhere :)
+However, kexec_file_load prints nothing even though '-d' is specified.
+It's very inconvenient to debug or analyze the kexec/kdump loading when
+something wrong happened with kexec/kdump itself or develper want to
+check the kexec/kdump loading.
 
-Vishal Chourasia <vishalc@linux.ibm.com> writes:
-> Changed HOTPLUG_CPU dependency to SMP and either ARCH_HIBERNATION_POSSIBLE or
-> ARCH_SUSPEND_POSSIBLE, aligning with systems' suspend/hibernation capabilities.
-> This update link CPU hotplugging more logically with platforms' capabilities.
->
-> configs ARCH_HIBERNATION_POSSIBLE and ARCH_SUSPEND_POSSIBLE are now selected
-> only if required platform dependencies are met.
->
-> Reported-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-> Suggested-by: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
-> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-> Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
->
-> v2: https://lore.kernel.org/all/20231122092303.223719-1-vishalc@linux.ibm.com
-> v1: https://lore.kernel.org/all/20231114082046.6018-1-vishalc@linux.ibm.com
-> ---
-> During the configuration process with 'make randconfig' followed by
-> 'make olddefconfig', we observed a warning indicating an unmet direct
-> dependency for the HOTPLUG_CPU option. The dependency in question relates to
-> various PowerPC configurations (PPC_PSERIES, PPC_PMAC, PPC_POWERNV,
-> FSL_SOC_BOOKE) which were not enabled, yet the HOTPLUG_CPU was being
-> erroneously selected due to an implicit assumption by the PM_SLEEP_SMP option.
-> This misalignment in dependencies could potentially lead to inconsistent kernel
-> configuration states, especially when considering the necessary hardware
-> support for CPU hot-plugging on PowerPC platforms. The patch aims to correct
-> this by ensuring that ARCH_HIBERNATION_POSSIBLE is contingent upon the
-> appropriate PowerPC configurations being active.
->
-> steps to reproduce (before applying the patch):
->
-> Run 'make pseries_le_defconfig'
-> Run 'make menuconfig'
-> Enable hibernation [ Kernel options -> Hibernation (aka 'suspend to disk') ] 
-> Disable [ Platform support -> IBM PowerNV (Non-Virtualized) platform support ]
-> Disable [ Platform support -> IBM pSeries & new (POWER5-based) iSeries ]
-> Enable SMP [ Processor support -> Symmetric multi-processing support ]
-> Save the config
-> Run 'make olddefconfig'
->
->  arch/powerpc/Kconfig | 11 ++++-------
->  1 file changed, 4 insertions(+), 7 deletions(-)
->
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 6f105ee4f3cf..87c8134da3da 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -166,6 +167,7 @@ config PPC
->  	select ARCH_STACKWALK
->  	select ARCH_SUPPORTS_ATOMIC_RMW
->  	select ARCH_SUPPORTS_DEBUG_PAGEALLOC	if PPC_BOOK3S || PPC_8xx || 40x
-> +	select ARCH_SUSPEND_POSSIBLE            if (ADB_PMU || PPC_EFIKA || PPC_LITE5200 || PPC_83xx || (PPC_85xx && !PPC_E500MC) || PPC_86xx || PPC_PSERIES || 44x || 40x)
+In this patchset, a kexec_file flag is KEXEC_FILE_DEBUG added and checked
+in code. If it's passed in, debugging message of kexec_file code will be
+printed out and can be seen from console and dmesg. Otherwise, the
+debugging message is printed via pr_debug().
 
-I know Aneesh suggested moving symbols to under PPC, but I think this is
-too big and complicated to be under PPC.
+Note:
+****
+=====
+1) The code in kexec-tools utility also need be changed to support
+passing KEXEC_FILE_DEBUG to kernel when 'kexec -s -d' is specified.
+The patch link is here:
+=========
+[PATCH] kexec_file: add kexec_file flag to support debug printing
+http://lists.infradead.org/pipermail/kexec/2023-November/028505.html
 
-> @@ -381,13 +383,9 @@ config DEFAULT_UIMAGE
->  
->  config ARCH_HIBERNATION_POSSIBLE
->  	bool
-> -	default y
->  config ARCH_SUSPEND_POSSIBLE
-> -	def_bool y
-> -	depends on ADB_PMU || PPC_EFIKA || PPC_LITE5200 || PPC_83xx || \
-> -		   (PPC_85xx && !PPC_E500MC) || PPC_86xx || PPC_PSERIES \
-> -		   || 44x || 40x
-> +	bool
->  
->  config ARCH_SUSPEND_NONZERO_CPU
->  	def_bool y
-> @@ -568,8 +566,7 @@ config ARCH_USING_PATCHABLE_FUNCTION_ENTRY
->  
->  config HOTPLUG_CPU
->  	bool "Support for enabling/disabling CPUs"
-> -	depends on SMP && (PPC_PSERIES || \
-> -		PPC_PMAC || PPC_POWERNV || FSL_SOC_BOOKE)
-> +	depends on SMP && (ARCH_HIBERNATION_POSSIBLE || ARCH_SUSPEND_POSSIBLE)
+2) s390 also has kexec_file code, while I am not sure what debugging
+information is necessary. So leave it to s390 developer.
 
-It's good to fix these warnings, but IMHO the result is that the
-dependencies are now backward.
+Test:
+****
+====
+Testing was done in v1 on x86_64 and arm64. On x86_64, the printed
+messages look like below:
+--------------------------------------------------------------
+kexec measurement buffer for the loaded kernel at 0x207fffe000.
+Loaded purgatory at 0x207fff9000
+Loaded boot_param, command line and misc at 0x207fff3000 bufsz=0x1180 memsz=0x1180
+Loaded 64bit kernel at 0x207c000000 bufsz=0xc88200 memsz=0x3c4a000
+Loaded initrd at 0x2079e79000 bufsz=0x2186280 memsz=0x2186280
+Final command line is: root=/dev/mapper/fedora_intel--knightslanding--lb--02-root ro
+rd.lvm.lv=fedora_intel-knightslanding-lb-02/root console=ttyS0,115200N81 crashkernel=256M
+E820 memmap:
+0000000000000000-000000000009a3ff (1)
+000000000009a400-000000000009ffff (2)
+00000000000e0000-00000000000fffff (2)
+0000000000100000-000000006ff83fff (1)
+000000006ff84000-000000007ac50fff (2)
+......
+000000207fff6150-000000207fff615f (128)
+000000207fff6160-000000207fff714f (1)
+000000207fff7150-000000207fff715f (128)
+000000207fff7160-000000207fff814f (1)
+000000207fff8150-000000207fff815f (128)
+000000207fff8160-000000207fffffff (1)
+nr_segments = 5
+segment[0]: buf=0x000000004e5ece74 bufsz=0x211 mem=0x207fffe000 memsz=0x1000
+segment[1]: buf=0x000000009e871498 bufsz=0x4000 mem=0x207fff9000 memsz=0x5000
+segment[2]: buf=0x00000000d879f1fe bufsz=0x1180 mem=0x207fff3000 memsz=0x2000
+segment[3]: buf=0x000000001101cd86 bufsz=0xc88200 mem=0x207c000000 memsz=0x3c4a000
+segment[4]: buf=0x00000000c6e38ac7 bufsz=0x2186280 mem=0x2079e79000 memsz=0x2187000
+kexec_file_load: type:0, start:0x207fff91a0 head:0x109e004002 flags:0x8
+---------------------------------------------------------------------------
 
-HOTPLUG_CPU should retain its original dependency list. It's easier to
-reason directly about "what platforms support CPU hotplug?", oh it's
-pseries/powernv/powermac/85xx, because they implement cpu_disable().
+History:
+********
+=========
+v1->v2:
+- Take the new format of kexec_dprintk() suggested by Joe which can
+  reduce kernel text size.
+- Fix building error of patch 2 in kernel/crash_core.c reported by LKP.
+- Fix building warning on arm64 in patch 4 reported by LKP.
 
-If there's some dependency from suspend/hibernate on CPU hotplug, then
-those symbols (suspend/hibernate) should depend on something to do with
-CPU hotplug.
+Baoquan He (7):
+  kexec_file: add kexec_file flag to control debug printing
+  kexec_file: print out debugging message if required
+  kexec_file, x86: print out debugging message if required
+  kexec_file, arm64: print out debugging message if required
+  kexec_file, ricv: print out debugging message if required
+  kexec_file, power: print out debugging message if required
+  kexec_file, parisc: print out debugging message if required
 
-Can you try the patch below?
+ arch/arm64/kernel/kexec_image.c        |  2 +-
+ arch/arm64/kernel/machine_kexec.c      | 26 ++++++--------------------
+ arch/arm64/kernel/machine_kexec_file.c |  6 +++---
+ arch/parisc/kernel/kexec_file.c        |  6 +++---
+ arch/powerpc/kexec/elf_64.c            |  8 ++++----
+ arch/powerpc/kexec/file_load_64.c      | 14 +++++++-------
+ arch/riscv/kernel/elf_kexec.c          |  9 +++++----
+ arch/riscv/kernel/machine_kexec.c      | 26 --------------------------
+ arch/x86/kernel/crash.c                |  2 +-
+ arch/x86/kernel/kexec-bzimage64.c      | 23 ++++++++++++++---------
+ include/linux/kexec.h                  | 10 +++++++++-
+ include/uapi/linux/kexec.h             |  1 +
+ kernel/crash_core.c                    |  5 ++++-
+ kernel/kexec_file.c                    | 12 +++++++++++-
+ security/integrity/ima/ima_kexec.c     |  2 +-
+ 15 files changed, 70 insertions(+), 82 deletions(-)
 
-Though, going back to your original reproduction case, that kernel is
-configured for Book3S 64, but with no platforms enabled, which is a
-non-sensical configuration (it can't boot on any actual machines). So
-possibly the real root cause is that, and we should find some way to
-block creating a config that has no platforms enabled.
-
-cheers
-
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 6f105ee4f3cf..9fe656a17017 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -380,11 +380,12 @@ config DEFAULT_UIMAGE
- 	  Used to allow a board to specify it wants a uImage built by default
- 
- config ARCH_HIBERNATION_POSSIBLE
--	bool
--	default y
-+	def_bool y
-+	depends on !SMP || HAVE_HOTPLUG_CPU
- 
- config ARCH_SUSPEND_POSSIBLE
- 	def_bool y
-+	depends on !SMP || HAVE_HOTPLUG_CPU
- 	depends on ADB_PMU || PPC_EFIKA || PPC_LITE5200 || PPC_83xx || \
- 		   (PPC_85xx && !PPC_E500MC) || PPC_86xx || PPC_PSERIES \
- 		   || 44x || 40x
-@@ -566,10 +567,14 @@ config ARCH_USING_PATCHABLE_FUNCTION_ENTRY
- 	def_bool $(success,$(srctree)/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh $(CC) -mlittle-endian) if PPC64 && CPU_LITTLE_ENDIAN
- 	def_bool $(success,$(srctree)/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh $(CC) -mbig-endian) if PPC64 && CPU_BIG_ENDIAN
- 
-+config HAVE_HOTPLUG_CPU
-+	def_bool y
-+	depends on SMP
-+	depends on PPC_PSERIES || PPC_PMAC || PPC_POWERNV || FSL_SOC_BOOKE
-+
- config HOTPLUG_CPU
- 	bool "Support for enabling/disabling CPUs"
--	depends on SMP && (PPC_PSERIES || \
--		PPC_PMAC || PPC_POWERNV || FSL_SOC_BOOKE)
-+	depends on HAVE_HOTPLUG_CPU
- 	help
- 	  Say Y here to be able to disable and re-enable individual
- 	  CPUs at runtime on SMP machines.
+-- 
+2.41.0
 
