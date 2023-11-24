@@ -1,66 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 623447F77DC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 16:32:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EF0E7F77DA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 16:31:34 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NHoOVBik;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=LnGa35cd;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ScJrL2L5Vz3vc5
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Nov 2023 02:32:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ScJqR3JPcz3vdG
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Nov 2023 02:31:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NHoOVBik;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=LnGa35cd;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.8; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 74 seconds by postgrey-1.37 at boromir; Sat, 25 Nov 2023 02:30:51 AEDT
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::333; helo=mail-ot1-x333.google.com; envelope-from=andy.shevchenko@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ScJpg5bGMz3dRQ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Nov 2023 02:30:49 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700839854; x=1732375854;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4wTXc2+Rb7ZmdlIioZQrrzZMpLjREbdeuncO3pZy9no=;
-  b=NHoOVBikD7769qLgOLYf4e7bYeHjFodVWKA1y71rgGlX0uyokf9wbaFg
-   EURwYRUlzZrsec1oLHZSW9C8ZcuUVEjeXhpew+VqJcwawfTLdiB87/z1S
-   lMANqrxPWHCeVdvSNqDausJrwpYjZJG1tZqRet6PyTNPe3eewAiNhHtQN
-   Pj+0yumy3HNRB1cj098RfkfBJw9PeMr+OfsYX/VOVGqtAWRDLaATPr59K
-   v9feQQQqZLCBjLMBIDTBRGg6VAMcyOhu9NsnYyG/rAtUa59cdaH77xJ08
-   oYijE2n3Tf3keanESq0ZPAzn24FJivA+2HcDfjn3U7dDYcDVMAAlVU1EW
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10904"; a="5593276"
-X-IronPort-AV: E=Sophos;i="6.04,224,1695711600"; 
-   d="scan'208";a="5593276"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2023 07:29:03 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10904"; a="885299714"
-X-IronPort-AV: E=Sophos;i="6.04,224,1695711600"; 
-   d="scan'208";a="885299714"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2023 07:29:00 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1r6Y6z-0000000Gkp5-1wGf;
-	Fri, 24 Nov 2023 17:28:57 +0200
-Date: Fri, 24 Nov 2023 17:28:57 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: George Stark <gnstark@salutedevices.com>
-Subject: Re: [PATCH 0/8] devm_led_classdev_register() usage problem
-Message-ID: <ZWDBOfpsC5AVT8bX@smile.fi.intel.com>
-References: <20231025130737.2015468-1-gnstark@salutedevices.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ScJpX5SXDz3cS3
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Nov 2023 02:30:44 +1100 (AEDT)
+Received: by mail-ot1-x333.google.com with SMTP id 46e09a7af769-6d64c1155a8so1265628a34.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Nov 2023 07:30:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700839838; x=1701444638; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p615f7LAIDV1MfWlNjaOHn4LpR2INIwWiYXMET+eRR0=;
+        b=LnGa35cduycvXemW59fUYpBZOnuw+RZdhDdYbFVoD1QxGKiR2wuqEY33WEdnf/VFGP
+         VHwodutZ1gK4iFdw8IsjajQdBmDKpr/GLwq0TQbW0BMAqQB6f0BH5wNl8DMo+W9gS6AD
+         LF/zWUEDlViWnzlSeZd1j3/XZKGjLNVbmV284iNQVFbbSq7aTBHY4IpuDBCE8xEEcrkp
+         hyW2qUKdoOTwpFS+0U0ur8GTwfHQYOSb7jgH0yxYj3UqWjqMs2JZkHqDDQS5AKoUPiaw
+         Z2NtcMK7NhmIgHlSaLYtWyr0vQDSUUZeFDYOu1T4Gf/10Teuqcw6+E45iYvr7ORuRazk
+         vBQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700839838; x=1701444638;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=p615f7LAIDV1MfWlNjaOHn4LpR2INIwWiYXMET+eRR0=;
+        b=uY71o2t2o5/G+IOySXu28QZRc+5q4V1TjCG/5YztsMCDAlATfTIvwGCQ2sABxG3VKP
+         spvGN2nYrTcTCbuuTq5suRk6Qa6uakVipgUcn8he2MP6EeiRwgmAm4oLsA1lOwjaoFYu
+         EJzfkL7uRmzZZqRicuLK1meyXLe5oHw/kAG2Zz4B/6siK/h/Zvuqcomwe4Zp1oIH5Eff
+         artZR7wl1Jmt5yWnnWQXvrBsDCMVLIg5e1JcAUOE+IZiem6xA+5TbK6R1jrUt6j2G5pC
+         q9xK63gDU/vKijduuQY7TrDjP4bBCEdrMxupeEBf0wSaoJ0i0Nyrou9h/kJs/vTrrNoQ
+         ge7w==
+X-Gm-Message-State: AOJu0YxGcQ8eqMJmf2ku96RKlQXVnYRWF+RAJznj49vXpBduywCAvgjm
+	+mLQDZppYslk/qTOVnQoV7/RU2zPKDDhlLTIIxw=
+X-Google-Smtp-Source: AGHT+IFpl1LhfXbivJZHjzdRTqOJQ24OGD0LYHzdPZE88GRJFvGGbVZxiUVjs6DZh16KaOvIRQpWMJvuXmwQO/NLcOI=
+X-Received: by 2002:a05:6830:45:b0:6c4:cdce:5de8 with SMTP id
+ d5-20020a056830004500b006c4cdce5de8mr3506711otp.26.1700839837786; Fri, 24 Nov
+ 2023 07:30:37 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231025130737.2015468-1-gnstark@salutedevices.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20231025130737.2015468-1-gnstark@salutedevices.com> <8704539b-ed3b-44e6-aa82-586e2f895e2b@salutedevices.com>
+In-Reply-To: <8704539b-ed3b-44e6-aa82-586e2f895e2b@salutedevices.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Fri, 24 Nov 2023 17:30:01 +0200
+Message-ID: <CAHp75VcF3Y1MwJPY7jk274b3UWe7KWGFTYCppjC5fu7Ppf5XDQ@mail.gmail.com>
+Subject: Re: [PATCH 0/8] devm_led_classdev_register() usage problem
+To: George Stark <gnstark@salutedevices.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,73 +79,20 @@ Cc: vadimp@nvidia.com, lee@kernel.org, linux-kernel@vger.kernel.org, npiggin@gma
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 25, 2023 at 04:07:29PM +0300, George Stark wrote:
-> Lots of drivers use devm_led_classdev_register() to register their led objects
-> and let the kernel free those leds at the driver's remove stage.
-> It can lead to a problem due to led_classdev_unregister()
-> implementation calls led_set_brightness() to turn off the led.
-> led_set_brightness() may call one of the module's brightness_set callbacks.
-> If that callback uses module's resources allocated without using devm funcs()
-> then those resources will be already freed at module's remove() callback and
-> we may have use-after-free situation.
-> 
-> Here is an example:
-> 
-> module_probe()
-> {
->     devm_led_classdev_register(module_brightness_set_cb);
->     mutex_init(&mutex);
-> }
-> 
-> module_brightness_set_cb()
-> {
->     mutex_lock(&mutex);
->     do_set_brightness();
->     mutex_unlock(&mutex);
-> }
-> 
-> module_remove()
-> {
->     mutex_destroy(&mutex);
-> }
-> 
-> at rmmod:
-> module_remove()
->     ->mutex_destroy(&mutex);
-> devres_release_all()
->     ->led_classdev_unregister();
->         ->led_set_brightness();
->             ->module_brightness_set_cb();
->                  ->mutex_lock(&mutex);  /* use-after-free */
-> 
-> I think it's an architectural issue and should be discussed thoroughly.
-> Some thoughts about fixing it as a start:
-> 1) drivers can use devm_led_classdev_unregister() to explicitly free leds before
-> dependend resources are freed. devm_led_classdev_register() remains being useful
-> to simplify probe implementation.
-> As a proof of concept I examined all drivers from drivers/leds and prepared
-> patches where it's needed. Sometimes it was not as clean as just calling
-> devm_led_classdev_unregister() because several drivers do not track
-> their leds object at all - they can call devm_led_classdev_register() and drop the
-> returned pointer. In that case I used devres group API.
-> 
-> Drivers outside drivers/leds should be checked too after discussion.
-> 
-> 2) remove led_set_brightness from led_classdev_unregister() and force the drivers
-> to turn leds off at shutdown. May be add check that led's brightness is 0
-> at led_classdev_unregister() and put a warning to dmesg if it's not.
-> Actually in many cases it doesn't really need to turn off the leds manually one-by-one
-> if driver shutdowns whole led controller. For the last case to disable the warning
-> new flag can be brought in e.g LED_AUTO_OFF_AT_SHUTDOWN (similar to LED_RETAIN_AT_SHUTDOWN).
+On Sat, Nov 4, 2023 at 9:17=E2=80=AFAM George Stark <gnstark@salutedevices.=
+com> wrote:
+>
+> Hello Andy
+>
+> Could you please take a look at this patch series?
+>
+> I've just found your post on habr about devres API misusing and I think
+> this is just another case.
 
-NAK.
+Just had a look, sorry for the delay.
+By quickly reading it seems to be a wrong approach (or wrong end to
+start solving the issue from).
 
-Just fix the drivers by wrapping mutex_destroy() into devm, There are many
-doing so. You may be brave enough to introduce devm_mutex_init() somewhere
-in include/linux/device*
-
--- 
+--=20
 With Best Regards,
 Andy Shevchenko
-
-
