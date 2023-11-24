@@ -2,87 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A93DC7F6F1A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 10:07:08 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aHdqsr+K;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id DF00C7F6F1C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 10:07:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sc8Ht436lz3dWX
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 20:07:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sc8JR65CBz3vcn
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 20:07:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aHdqsr+K;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sc8H33RQsz2xVW
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Nov 2023 20:06:22 +1100 (AEDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AO7rKsb029749;
-	Fri, 24 Nov 2023 09:06:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type : subject :
- from : in-reply-to : date : cc : message-id : references : to :
- content-transfer-encoding : mime-version; s=pp1;
- bh=jg7Acu0qXCgdmZdYuWujUaPje8+3yKNJxdKXn/nRGZ4=;
- b=aHdqsr+KxrbcJfXs7vsbravmkD1E/QWxlX44+NgSaN7dziJPkUqUgSt4Ig0KOBdzmOq7
- ACt+j2nDOLCpArTTA09tJhPbcbxt6XxTsyuIa8FrzEWXVMnkX3GFZZKd0zRspGGmuHK4
- dpW1Ulc9RK+qJtwNYKPzvbWUL1+QUkF8S36xe74Al0FvYTeNgTbo1Y5RjMMLNmRQRE2a
- GEPyXKnaeZNP1bh6IZSoiGD2bJEFZHTAhqXzUBnTv/I8nGpL+egagSE0B1tbVjb5eQGY
- aZCWdHYamYRHIuEFL9UVLbdo1b97R86qRW926/IAcDOBnc4LdvKEhMuOpI2LWbq8pFQO tQ== 
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ujqtv9xcw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Nov 2023 09:06:07 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3AO6Iw0v017522;
-	Fri, 24 Nov 2023 09:06:06 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3uf9tkv922-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Nov 2023 09:06:06 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3AO965MR21365410
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 24 Nov 2023 09:06:05 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2816C20040;
-	Fri, 24 Nov 2023 09:06:05 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 368742004B;
-	Fri, 24 Nov 2023 09:06:04 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.42.177])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 24 Nov 2023 09:06:04 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Subject: Re: [powerpc] Lockups seen during/just after boot (bisected)
-From: Sachin Sant <sachinp@linux.ibm.com>
-In-Reply-To: <d9631191-2805-d531-41a8-7152d9f72fa6@suse.cz>
-Date: Fri, 24 Nov 2023 14:35:53 +0530
-Message-Id: <0CF12B3F-CD7B-455A-BFC7-827F9392ECB5@linux.ibm.com>
-References: <5F8DAEC7-E815-40A5-AD4A-B01296F5165F@linux.ibm.com>
- <8e000449-1e11-43be-87f5-f1826e296c39@bytedance.com>
- <d9631191-2805-d531-41a8-7152d9f72fa6@suse.cz>
-To: Vlastimil Babka <vbabka@suse.cz>
-X-Mailer: Apple Mail (2.3774.200.91.1.1)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: zvBxB7iso_10vjb6uN_uhXV12MgrDjMo
-X-Proofpoint-GUID: zvBxB7iso_10vjb6uN_uhXV12MgrDjMo
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sc8HQ70ZKz3dW4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Nov 2023 20:06:40 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B74521063;
+	Fri, 24 Nov 2023 01:06:52 -0800 (PST)
+Received: from [10.57.71.2] (unknown [10.57.71.2])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 64DC23F73F;
+	Fri, 24 Nov 2023 01:06:03 -0800 (PST)
+Message-ID: <510adc26-9aed-4745-8807-dba071fadbbe@arm.com>
+Date: Fri, 24 Nov 2023 09:06:01 +0000
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-23_15,2023-11-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- impostorscore=0 clxscore=1015 phishscore=0 spamscore=0 adultscore=0
- bulkscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
- mlxlogscore=475 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311240070
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 06/12] mm/gup: Drop folio_fast_pin_allowed() in hugepd
+ processing
+Content-Language: en-GB
+To: Peter Xu <peterx@redhat.com>
+References: <20231116012908.392077-1-peterx@redhat.com>
+ <20231116012908.392077-7-peterx@redhat.com> <ZVsYMMJpmFV2T/Zc@infradead.org>
+ <ZVzT5_3Zn-Y-6xth@x1n> <ZV21GCbG48nTLDzn@infradead.org>
+ <ZV90JcnQ1RGud/0R@casper.infradead.org> <ZV-KQ0e0y9BTsHGv@x1n>
+ <d2313c1d-1e50-49b7-bed7-840431af799a@arm.com> <ZV-sJsdFfXiCkylv@x1n>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <ZV-sJsdFfXiCkylv@x1n>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,31 +47,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Chengming Zhou <zhouchengming@bytedance.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>, James Houghton <jthoughton@google.com>, Lorenzo Stoakes <lstoakes@gmail.com>, David Hildenbrand <david@redhat.com>, John Hubbard <jhubbard@nvidia.com>, Yang Shi <shy828301@gmail.com>, Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>, linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org, Mike Rapoport <rppt@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, "Kirill A . Shutemov" <kirill@shutemov.name>, Axel Rasmussen <axelrasmussen@google.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Vlastimil Babka <vbabka@suse.cz>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 23/11/2023 19:46, Peter Xu wrote:
+> On Thu, Nov 23, 2023 at 07:11:19PM +0000, Ryan Roberts wrote:
+>> Hi,
+>>
+>> I'm not sure I've 100% understood the crossover between this series and my work
+>> to support arm64's contpte mappings generally for anonymous and file-backed memory.
+> 
+> No worry, there's no confliction.  If you worked on that it's only be
+> something nice on top.  Also, I'm curious if you have performance numbers,
 
-> On 24-Nov-2023, at 2:25=E2=80=AFPM, Vlastimil Babka <vbabka@suse.cz> wrot=
-e:
->=20
-> On 11/23/23 15:35, Chengming Zhou wrote:
->> On 2023/11/23 19:27, Sachin Sant wrote:
->>> While booting recent -next kernel on IBM Power server, I have observed =
-lockups
->>> either during boot or just after.
->>>=20
->>> [ 3631.015775] watchdog: CPU 3 self-detected hard LOCKUP @ __update_fre=
-elist_slow+0x74/0x90
->>=20
->> Sorry, the bug can be fixed by this patch from Vlastimil Babka:
->>=20
->> https://lore.kernel.org/all/83ff4b9e-94f1-8b35-1233-3dd414ea4dfe@suse.cz/
->=20
-> The current -next should be fixed, the fix was folded to the preparatory
-> commit, which is now:
->=20
+I have perf numbers for high level use cases (kernel compilation and Speedometer
+Java Script benchmarks) at
+https://lore.kernel.org/linux-arm-kernel/20230622144210.2623299-1-ryan.roberts@arm.com/
 
-Thanks. Yes the problem is fixed with today=E2=80=99s next.
+I don't have any micro-benchmarks for GUP though, if that's your question. Is
+there an easy-to-use test I can run to get some numbers? I'd be happy to try it out.
 
-- Sachin
+> because I'm going to do some test for hugetlb cont_ptes (which is only the
+> current plan), and if you got those it'll be a great baseline for me,
+> because it should be similar in you case even though the goal is slightly
+> different.
+> 
+>>
+>> My approach is to transparently use contpte mappings when core-mm request pte
+>> mappings that meet the requirements; and its all based around intercepting the
+>> normal (non-hugetlb) helpers (e.g. set_ptes(), ptep_get() and friends). There is
+>> no semantic change to the core-mm. See [1]. It relies on 1) the page cache using
+>> large folios and 2) my "small-sized THP" series which starts using arbitrary
+>> sized large folios for anonymous memory [2].
+>>
+>> If I've understood this conversation correctly there is an object called hugepd,
+>> which today is only supported by powerpc, but which could allow the core-mm to
+>> control the mapping granularity? I can see some value in exposing that control
+>> to core-mm in the (very) long term.
+> 
+> For me it's needed immediately, because hugetlb_follow_page_mask() will be
+> gone after the last patch.
+> 
+>>
+>> [1] https://lore.kernel.org/all/20231115163018.1303287-1-ryan.roberts@arm.com/
+>> [2] https://lore.kernel.org/linux-mm/20231115132734.931023-1-ryan.roberts@arm.com/
+> 
+> AFAICT you haven't yet worked on gup then, after I glimpsed the above
+> series.
+
+No, I haven't touched GUP at all. The approach is fully inside the arm64 arch
+code (except 1 patch to core-mm which enables an optimization). So as far as GUP
+and the rest of the core-mm is concerned, there are still only page-sized ptes
+and they can all be iterated over and accessed as normal.
+
+> 
+> It's a matter of whether one follow_page_mask() call can fetch more than
+> one page* for a cont_pte entry on aarch64 for a large non-hugetlb folio
+> (and if this series lands, it'll be the same to hugetlb or non-hugetlb).
+> Now the current code can only fetch one page I think.
+> 
+> Thanks,
+> 
+
