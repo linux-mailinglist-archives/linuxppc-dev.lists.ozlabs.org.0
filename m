@@ -1,87 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D0FA7F858C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 22:43:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F18257F86C0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Nov 2023 00:36:47 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dpaunlgI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=UiE6y+V9;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ScT4b6jG5z3dK5
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Nov 2023 08:43:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ScWbK0dRrz3vc8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Nov 2023 10:36:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dpaunlgI;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=UiE6y+V9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vishalc@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62d; helo=mail-pl1-x62d.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ScT3h5zKHz3c18
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Nov 2023 08:42:40 +1100 (AEDT)
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AOLFgmU031455;
-	Fri, 24 Nov 2023 21:42:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=4fKUVoqmH8tzAw6rOlAIKbHiOQlCQ31UrUgqhhVqUuY=;
- b=dpaunlgIAScKVBIOr9WLUW+AAccA9UfTJTkHp5CfdxVK1qOoz5I+6PTrBe1txn3O2I3+
- hpdiV7hSnKxiN97lU4QJtynGB3dzDvHmI+QxfP01cWSx21kJaLm/ExMhs7C/2uxkRFuZ
- aDzGLS46IKqFDyesMgLrvFTGC+Ma7wr0ettlsHr8sxBJlSPEcRjLaQ2b0DdYnNZr3cin
- K0Xo8PaFTLD7NQ8HRAYKCruDjwaxPlmWn7wq4GSFK/Wl8+wFavZhz1zhVXFkH7JALcn1
- yJ1VJWW/gC9rE3JV0xB55b+UlF1Gd4ahFtLF5Ie9DkRZBtvVoqzyFx1JzWEPjgWo9SxF dA== 
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uk3d0gp8m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Nov 2023 21:42:29 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3AOIn8lD001389;
-	Fri, 24 Nov 2023 21:42:28 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ufaa2qqku-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Nov 2023 21:42:28 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3AOLgS3632768542
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 24 Nov 2023 21:42:28 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DF49E5805D;
-	Fri, 24 Nov 2023 21:42:27 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E78E258054;
-	Fri, 24 Nov 2023 21:42:25 +0000 (GMT)
-Received: from [9.171.45.188] (unknown [9.171.45.188])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 24 Nov 2023 21:42:25 +0000 (GMT)
-Message-ID: <ed69a370-a61f-4108-82bd-44895007991a@linux.ibm.com>
-Date: Sat, 25 Nov 2023 03:12:24 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] powerpc: Adjust config HOTPLUG_CPU dependency
-Content-Language: en-US
-To: Michael Ellerman <mpe@ellerman.id.au>, aneesh.kumar@kernel.org
-References: <3fe72686-5b89-41e4-b760-d6353b426d81@kernel.org>
- <20231122101040.231850-1-vishalc@linux.ibm.com> <87v89rri12.fsf@mail.lhotse>
-From: Vishal Chourasia <vishalc@linux.ibm.com>
-In-Reply-To: <87v89rri12.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ScWZR1B0jz3cTX
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Nov 2023 10:35:57 +1100 (AEDT)
+Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1cfabcbda7bso4846715ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Nov 2023 15:35:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700868950; x=1701473750; darn=lists.ozlabs.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8rCTuOTZLjqU1EAi1Ot/Eoexb0bjF9zepY/pVrUGWrc=;
+        b=UiE6y+V90iIUaJJ/8yOqpMX1zz8SYoNl3MYiG+PSorMa2CYmn9GIth8JEjV8bJyItK
+         +3Y06hY5aiUIwiOOSZ8qf2jp4u7APTjNwErM9lH6Zyjiff2ab9WsN+yDi9okW8BWuXY5
+         906IwPG9zP9f8OwWmyhE7j3Pf9yZKHPkRytWZ2w5gRpybAQ36B4iJSw7/wG+UNyVM7ub
+         10LNOT5VdocHZPFGcsfsk5gjAUe55eSNioBmLRtzZbHtdqNP0EGmh5m4EYQ1qym6SoB+
+         WHwil5IKnKwp9q5ofFY3kZICoq5gskX2992NHVqebzYthC//rqpdN/c+2WSG35+Ji/SY
+         I2Bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700868950; x=1701473750;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=8rCTuOTZLjqU1EAi1Ot/Eoexb0bjF9zepY/pVrUGWrc=;
+        b=cquBCtFm2WmhlxiLEbdavAuDP1/gu2CeNh1gAQUxp2X25dCOi3vVo7sKWCspNmrrO0
+         JcpHzag05G9yBDO3bg2p7IQxv2wqbsBS1zdfQiACFeepJdpstqS8tTsiOwo1IkbL3ucT
+         qIvYYgFWVKzcJwP3jICaQEj2hZvxbnMRFHrLmfJVzqaDsvrauyv0Jm64EpmsqUOZjEGl
+         lZfUQRl70oHqC8ufHXnG1ZmS51zOHmjT7SWn2PvwTxNbmADC2M4HqXqpoFw89ReMA4ol
+         5kU+IP+XTawKcc4Pbnf4IROCp0zUsUEMV7+6IpscMkfAbtjqaYnYOD1Y1Y7I/ChXYOSo
+         q+Zg==
+X-Gm-Message-State: AOJu0YyHjkCe/WYNX+qwsXhxoVnhhgz0B6TImQj25HOVSfZPS/issPYV
+	alAr8oJHwxtiKC295Q0EvKE=
+X-Google-Smtp-Source: AGHT+IHAQJ2ELJ94l1wPHi56ly0865tGTj4Uqv/dSxGe9cSb6rmoKUkYL5F50RyySSQjayJuQ7H48A==
+X-Received: by 2002:a17:902:868c:b0:1ce:b83f:bd0c with SMTP id g12-20020a170902868c00b001ceb83fbd0cmr8557698plo.7.1700868949824;
+        Fri, 24 Nov 2023 15:35:49 -0800 (PST)
+Received: from localhost (121-44-66-27.tpgi.com.au. [121.44.66.27])
+        by smtp.gmail.com with ESMTPSA id gx1-20020a17090b124100b0027e289ac436sm3453860pjb.8.2023.11.24.15.35.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Nov 2023 15:35:49 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: vJOu3XKggRnP0yDFEa8eJbWu6hs3cPSc
-X-Proofpoint-GUID: vJOu3XKggRnP0yDFEa8eJbWu6hs3cPSc
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
-MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-24_09,2023-11-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- clxscore=1015 mlxscore=0 bulkscore=0 phishscore=0 suspectscore=0
- mlxlogscore=999 spamscore=0 lowpriorityscore=0 adultscore=0
- impostorscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2311060000 definitions=main-2311240169
+Date: Sat, 25 Nov 2023 09:35:41 +1000
+Message-Id: <CX7FPX15PN0F.W7PEA51B0KD6@wheely>
+Subject: Re: [PATCH v1] powerpc: Add PVN support for HeXin C2000 processor
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Zhao Ke" <ke.zhao@shingroup.cn>, <mpe@ellerman.id.au>,
+ <christophe.leroy@csgroup.eu>, <fbarrat@linux.ibm.com>,
+ <ajd@linux.ibm.com>, <arnd@arndb.de>, <gregkh@linuxfoundation.org>
+X-Mailer: aerc 0.15.2
+References: <20231123093611.98313-1-ke.zhao@shingroup.cn>
+In-Reply-To: <20231123093611.98313-1-ke.zhao@shingroup.cn>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,220 +81,150 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, srikar@linux.vnet.ibm.com
+Cc: luming.yu@shingroup.cn, kvm@vger.kernel.org, dawei.li@shingroup.cn, linux-kernel@vger.kernel.org, shenghui.qu@shingroup.cn, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 24/11/23 8:09 am, Michael Ellerman wrote:
-> Hi Vishal,
-> 
-> I think our wires got crossed here somewhere :)
-> 
-> Vishal Chourasia <vishalc@linux.ibm.com> writes:
->> Changed HOTPLUG_CPU dependency to SMP and either ARCH_HIBERNATION_POSSIBLE or
->> ARCH_SUSPEND_POSSIBLE, aligning with systems' suspend/hibernation capabilities.
->> This update link CPU hotplugging more logically with platforms' capabilities.
->>
->> configs ARCH_HIBERNATION_POSSIBLE and ARCH_SUSPEND_POSSIBLE are now selected
->> only if required platform dependencies are met.
->>
->> Reported-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
->> Suggested-by: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
->> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
->> Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
->>
->> v2: https://lore.kernel.org/all/20231122092303.223719-1-vishalc@linux.ibm.com
->> v1: https://lore.kernel.org/all/20231114082046.6018-1-vishalc@linux.ibm.com
->> ---
->> During the configuration process with 'make randconfig' followed by
->> 'make olddefconfig', we observed a warning indicating an unmet direct
->> dependency for the HOTPLUG_CPU option. The dependency in question relates to
->> various PowerPC configurations (PPC_PSERIES, PPC_PMAC, PPC_POWERNV,
->> FSL_SOC_BOOKE) which were not enabled, yet the HOTPLUG_CPU was being
->> erroneously selected due to an implicit assumption by the PM_SLEEP_SMP option.
->> This misalignment in dependencies could potentially lead to inconsistent kernel
->> configuration states, especially when considering the necessary hardware
->> support for CPU hot-plugging on PowerPC platforms. The patch aims to correct
->> this by ensuring that ARCH_HIBERNATION_POSSIBLE is contingent upon the
->> appropriate PowerPC configurations being active.
->>
->> steps to reproduce (before applying the patch):
->>
->> Run 'make pseries_le_defconfig'
->> Run 'make menuconfig'
->> Enable hibernation [ Kernel options -> Hibernation (aka 'suspend to disk') ] 
->> Disable [ Platform support -> IBM PowerNV (Non-Virtualized) platform support ]
->> Disable [ Platform support -> IBM pSeries & new (POWER5-based) iSeries ]
->> Enable SMP [ Processor support -> Symmetric multi-processing support ]
->> Save the config
->> Run 'make olddefconfig'
->>
->>  arch/powerpc/Kconfig | 11 ++++-------
->>  1 file changed, 4 insertions(+), 7 deletions(-)
->>
->> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
->> index 6f105ee4f3cf..87c8134da3da 100644
->> --- a/arch/powerpc/Kconfig
->> +++ b/arch/powerpc/Kconfig
->> @@ -166,6 +167,7 @@ config PPC
->>  	select ARCH_STACKWALK
->>  	select ARCH_SUPPORTS_ATOMIC_RMW
->>  	select ARCH_SUPPORTS_DEBUG_PAGEALLOC	if PPC_BOOK3S || PPC_8xx || 40x
->> +	select ARCH_SUSPEND_POSSIBLE            if (ADB_PMU || PPC_EFIKA || PPC_LITE5200 || PPC_83xx || (PPC_85xx && !PPC_E500MC) || PPC_86xx || PPC_PSERIES || 44x || 40x)
-> 
-> I know Aneesh suggested moving symbols to under PPC, but I think this is
-> too big and complicated to be under PPC.
-> 
->> @@ -381,13 +383,9 @@ config DEFAULT_UIMAGE
->>  
->>  config ARCH_HIBERNATION_POSSIBLE
->>  	bool
->> -	default y
->>  config ARCH_SUSPEND_POSSIBLE
->> -	def_bool y
->> -	depends on ADB_PMU || PPC_EFIKA || PPC_LITE5200 || PPC_83xx || \
->> -		   (PPC_85xx && !PPC_E500MC) || PPC_86xx || PPC_PSERIES \
->> -		   || 44x || 40x
->> +	bool
->>  
->>  config ARCH_SUSPEND_NONZERO_CPU
->>  	def_bool y
->> @@ -568,8 +566,7 @@ config ARCH_USING_PATCHABLE_FUNCTION_ENTRY
->>  
->>  config HOTPLUG_CPU
->>  	bool "Support for enabling/disabling CPUs"
->> -	depends on SMP && (PPC_PSERIES || \
->> -		PPC_PMAC || PPC_POWERNV || FSL_SOC_BOOKE)
->> +	depends on SMP && (ARCH_HIBERNATION_POSSIBLE || ARCH_SUSPEND_POSSIBLE)
-> 
-> It's good to fix these warnings, but IMHO the result is that the
-> dependencies are now backward.
-> 
-> HOTPLUG_CPU should retain its original dependency list. It's easier to
-> reason directly about "what platforms support CPU hotplug?", oh it's
-> pseries/powernv/powermac/85xx, because they implement cpu_disable().
-> 
-> If there's some dependency from suspend/hibernate on CPU hotplug, then
-> those symbols (suspend/hibernate) should depend on something to do with
-> CPU hotplug.
-> 
-> Can you try the patch below?
-> 
-> Though, going back to your original reproduction case, that kernel is
-> configured for Book3S 64, but with no platforms enabled, which is a
-> non-sensical configuration (it can't boot on any actual machines). So
-> possibly the real root cause is that, and we should find some way to
-> block creating a config that has no platforms enabled.
-> 
-> cheers
-> 
-> 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 6f105ee4f3cf..9fe656a17017 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -380,11 +380,12 @@ config DEFAULT_UIMAGE
->  	  Used to allow a board to specify it wants a uImage built by default
->  
->  config ARCH_HIBERNATION_POSSIBLE
-> -	bool
-> -	default y
-> +	def_bool y
-> +	depends on !SMP || HAVE_HOTPLUG_CPU
->  
->  config ARCH_SUSPEND_POSSIBLE
->  	def_bool y
-> +	depends on !SMP || HAVE_HOTPLUG_CPU
->  	depends on ADB_PMU || PPC_EFIKA || PPC_LITE5200 || PPC_83xx || \
->  		   (PPC_85xx && !PPC_E500MC) || PPC_86xx || PPC_PSERIES \
->  		   || 44x || 40x
-> @@ -566,10 +567,14 @@ config ARCH_USING_PATCHABLE_FUNCTION_ENTRY
->  	def_bool $(success,$(srctree)/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh $(CC) -mlittle-endian) if PPC64 && CPU_LITTLE_ENDIAN
->  	def_bool $(success,$(srctree)/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh $(CC) -mbig-endian) if PPC64 && CPU_BIG_ENDIAN
->  
-> +config HAVE_HOTPLUG_CPU
-> +	def_bool y
-> +	depends on SMP
-> +	depends on PPC_PSERIES || PPC_PMAC || PPC_POWERNV || FSL_SOC_BOOKE
-> +
->  config HOTPLUG_CPU
->  	bool "Support for enabling/disabling CPUs"
-> -	depends on SMP && (PPC_PSERIES || \
-> -		PPC_PMAC || PPC_POWERNV || FSL_SOC_BOOKE)
-> +	depends on HAVE_HOTPLUG_CPU
->  	help
->  	  Say Y here to be able to disable and re-enable individual
->  	  CPUs at runtime on SMP machines.
-> 
-Tried and it works. No warnings to be seen.
+On Thu Nov 23, 2023 at 7:36 PM AEST, Zhao Ke wrote:
+> HeXin Tech Co. has applied for a new PVN from the OpenPower Community
+> for its new processor C2000. The OpenPower has assigned a new PVN
+> and this newly assigned PVN is 0x0066, add pvr register related
+> support for this PVN.
+>
+> Signed-off-by: Zhao Ke <ke.zhao@shingroup.cn>
+> Link: https://discuss.openpower.foundation/t/how-to-get-a-new-pvr-for-pro=
+cessors-follow-power-isa/477/10
+> ---
+> 	v0 -> v1:
+> 	- Fix .cpu_name with the correct description
+> ---
+> ---
+>  arch/powerpc/include/asm/reg.h            |  1 +
+>  arch/powerpc/kernel/cpu_specs_book3s_64.h | 15 +++++++++++++++
+>  arch/powerpc/kvm/book3s_pr.c              |  1 +
+>  arch/powerpc/mm/book3s64/pkeys.c          |  3 ++-
+>  arch/powerpc/platforms/powernv/subcore.c  |  3 ++-
+>  drivers/misc/cxl/cxl.h                    |  3 ++-
+>  6 files changed, 23 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/re=
+g.h
+> index 4ae4ab9090a2..7fd09f25452d 100644
+> --- a/arch/powerpc/include/asm/reg.h
+> +++ b/arch/powerpc/include/asm/reg.h
+> @@ -1361,6 +1361,7 @@
+>  #define PVR_POWER8E	0x004B
+>  #define PVR_POWER8NVL	0x004C
+>  #define PVR_POWER8	0x004D
+> +#define PVR_HX_C2000	0x0066
+>  #define PVR_POWER9	0x004E
+>  #define PVR_POWER10	0x0080
+>  #define PVR_BE		0x0070
+> diff --git a/arch/powerpc/kernel/cpu_specs_book3s_64.h b/arch/powerpc/ker=
+nel/cpu_specs_book3s_64.h
+> index c370c1b804a9..367c9f6d9be5 100644
+> --- a/arch/powerpc/kernel/cpu_specs_book3s_64.h
+> +++ b/arch/powerpc/kernel/cpu_specs_book3s_64.h
+> @@ -238,6 +238,21 @@ static struct cpu_spec cpu_specs[] __initdata =3D {
+>  		.machine_check_early	=3D __machine_check_early_realmode_p8,
+>  		.platform		=3D "power8",
+>  	},
+> +	{	/* 2.07-compliant processor, HeXin C2000 processor */
+> +		.pvr_mask		=3D 0xffffffff,
+> +		.pvr_value		=3D 0x00660000,
+> +		.cpu_name		=3D "POWER8 (raw)",
 
-But, consider this scenario
+If this is a raw mode, it should go with the raw POWER8 entry.
+The raw vs architected entries are already out of order with
+POWER6, but we should fix that too.
 
- SMP [=y]
- CONFIG_PPC64 [=y]
- PPC_BOOK3S_32 [=y]
- CONFIG_CPU_BIG_ENDIAN [=y]
- PPC_MPC52xx [=y]
- PPC_EFIKA [=y]
+You may want your PVR mask to follow the other raw examples too,
+but it depends on how you foresee PVR being used. Using 0xffff0000
+allows you to increment the low part of the PVR and existing
+kernels will continue to match it. You can then add a specific
+match for the older version if you need to add special handling
+for it (e.g., see how POWER9 is handled).
 
-With above config setting in place, config hotplug_cpu will be set to 'N' based
-on your patch. And, If we consider current way of things, config hotplug_cpu
-will be set to 'Y'
+Do you want .cpu_name to be "POWER8 (raw)"? You could call it
+"HX-C2000", as Michael suggested earlier.
 
-Below patch fixes the warning by making arch_hibernation_possible depend upon
-all of the necessary platforms and extends the dependency of hotplug_cpu on
-arch_suspend_possible
+> +		.cpu_features		=3D CPU_FTRS_POWER8,
+> +		.cpu_user_features	=3D COMMON_USER_POWER8,
+> +		.cpu_user_features2	=3D COMMON_USER2_POWER8,
+> +		.mmu_features		=3D MMU_FTRS_POWER8,
+> +		.icache_bsize		=3D 128,
+> +		.dcache_bsize		=3D 128,
+> +		.cpu_setup		=3D __setup_cpu_power8,
+> +		.cpu_restore		=3D __restore_cpu_power8,
+> +		.machine_check_early	=3D __machine_check_early_realmode_p8,
+> +		.platform		=3D "power8",
+> +	},
+>  	{	/* 3.00-compliant processor, i.e. Power9 "architected" mode */
+>  		.pvr_mask		=3D 0xffffffff,
+>  		.pvr_value		=3D 0x0f000005,
+> diff --git a/arch/powerpc/kvm/book3s_pr.c b/arch/powerpc/kvm/book3s_pr.c
+> index 9118242063fb..5b92619a05fd 100644
+> --- a/arch/powerpc/kvm/book3s_pr.c
+> +++ b/arch/powerpc/kvm/book3s_pr.c
+> @@ -604,6 +604,7 @@ static void kvmppc_set_pvr_pr(struct kvm_vcpu *vcpu, =
+u32 pvr)
+>  	case PVR_POWER8:
+>  	case PVR_POWER8E:
+>  	case PVR_POWER8NVL:
+> +	case PVR_HX_C2000:
+>  	case PVR_POWER9:
+>  		vcpu->arch.hflags |=3D BOOK3S_HFLAG_MULTI_PGSIZE |
+>  			BOOK3S_HFLAG_NEW_TLBIE;
+> diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/=
+pkeys.c
+> index 125733962033..c38f378e1942 100644
+> --- a/arch/powerpc/mm/book3s64/pkeys.c
+> +++ b/arch/powerpc/mm/book3s64/pkeys.c
+> @@ -89,7 +89,8 @@ static int __init scan_pkey_feature(void)
+>  			unsigned long pvr =3D mfspr(SPRN_PVR);
+> =20
+>  			if (PVR_VER(pvr) =3D=3D PVR_POWER8 || PVR_VER(pvr) =3D=3D PVR_POWER8E=
+ ||
+> -			    PVR_VER(pvr) =3D=3D PVR_POWER8NVL || PVR_VER(pvr) =3D=3D PVR_POWE=
+R9)
+> +			    PVR_VER(pvr) =3D=3D PVR_POWER8NVL || PVR_VER(pvr) =3D=3D PVR_POWE=
+R9 ||
+> +				PVR_VER(pvr) =3D=3D PVR_HX_C2000)
+>  				pkeys_total =3D 32;
+>  		}
+>  	}
+> diff --git a/arch/powerpc/platforms/powernv/subcore.c b/arch/powerpc/plat=
+forms/powernv/subcore.c
+> index 191424468f10..58e7331e1e7e 100644
+> --- a/arch/powerpc/platforms/powernv/subcore.c
+> +++ b/arch/powerpc/platforms/powernv/subcore.c
+> @@ -425,7 +425,8 @@ static int subcore_init(void)
+> =20
+>  	if (pvr_ver !=3D PVR_POWER8 &&
+>  	    pvr_ver !=3D PVR_POWER8E &&
+> -	    pvr_ver !=3D PVR_POWER8NVL)
+> +	    pvr_ver !=3D PVR_POWER8NVL &&
+> +		pvr_ver !=3D PVR_HX_C2000)
+>  		return 0;
+> =20
+>  	/*
+> diff --git a/drivers/misc/cxl/cxl.h b/drivers/misc/cxl/cxl.h
+> index 0562071cdd4a..9ac2991b29c7 100644
+> --- a/drivers/misc/cxl/cxl.h
+> +++ b/drivers/misc/cxl/cxl.h
+> @@ -836,7 +836,8 @@ static inline bool cxl_is_power8(void)
+>  {
+>  	if ((pvr_version_is(PVR_POWER8E)) ||
+>  	    (pvr_version_is(PVR_POWER8NVL)) ||
+> -	    (pvr_version_is(PVR_POWER8)))
+> +	    (pvr_version_is(PVR_POWER8)) ||
+> +		(pvr_version_is(PVR_HX_C2000)))
+>  		return true;
+>  	return false;
+>  }
 
+These should follow the same alignment pattern as the other lines.
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 6f105ee4f3cf..13e32494bbf1 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -380,8 +380,8 @@ config DEFAULT_UIMAGE
-          Used to allow a board to specify it wants a uImage built by default
-
- config ARCH_HIBERNATION_POSSIBLE
--       bool
--       default y
-+       def_bool y
-+       depends on PPC_PSERIES || PPC_PMAC || PPC_POWERNV || FSL_SOC_BOOKE
-
- config ARCH_SUSPEND_POSSIBLE
-        def_bool y
-@@ -566,10 +566,14 @@ config ARCH_USING_PATCHABLE_FUNCTION_ENTRY
-        def_bool
-$(success,$(srctree)/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh
-$(CC) -mlittle-endian) if PPC64 && CPU_LITTLE_ENDIAN
-        def_bool
-$(success,$(srctree)/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh
-$(CC) -mbig-endian) if PPC64 && CPU_BIG_ENDIAN
-
-+config HAVE_HOTPLUG_CPU
-+       def_bool y
-+       depends on SMP
-+       depends on ARCH_HIBERNATION_POSSIBLE || ARCH_SUSPEND_POSSIBLE
-+
- config HOTPLUG_CPU
-        bool "Support for enabling/disabling CPUs"
--       depends on SMP && (PPC_PSERIES || \
--               PPC_PMAC || PPC_POWERNV || FSL_SOC_BOOKE)
-+       depends on HAVE_HOTPLUG_CPU
-        help
-          Say Y here to be able to disable and re-enable individual
-          CPUs at runtime on SMP machines.
-
-
-What is the "correct value" of config HOTPLUG_CPU (Y/N) given the config
-settings (from above)? I am finding it hard to justify N over Y. Can you explain
-a bit more?
-
-Your patch produces N, where as the patch i have provided in this mail would
-sets it to Y.
-
-does cpu hotplug code path calls into suspend code logic for any
-platforms upon which arch_suspend_possible config depends.. ex. PPC_EFIKA, etc.
-
-
-
-
+Thanks,
+Nick
 
