@@ -2,51 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B92137F6E48
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 09:35:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87CB37F6E9F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 09:42:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sc7bX6MGFz3vh9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 19:35:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sc7ky3V3Gz3vcx
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 19:42:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 586 seconds by postgrey-1.37 at boromir; Fri, 24 Nov 2023 19:35:09 AEDT
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sc7b12dGzz3dJq
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Nov 2023 19:35:08 +1100 (AEDT)
-Received: from relay2.suse.de (unknown [149.44.160.134])
-	by smtp-out1.suse.de (Postfix) with ESMTP id A666221BFA;
-	Fri, 24 Nov 2023 08:25:17 +0000 (UTC)
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=43.154.197.177; helo=bg5.exmail.qq.com; envelope-from=ke.zhao@shingroup.cn; receiver=lists.ozlabs.org)
+Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.154.197.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id B16FD2C142;
-	Fri, 24 Nov 2023 08:25:13 +0000 (UTC)
-Date: Fri, 24 Nov 2023 09:25:12 +0100
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [RFC] UBUNTU: [Config] y2038: Disable COMPAT and
- COMPAT_32BIT_TIME on ppc64le
-Message-ID: <20231124082512.GW9696@kitsune.suse.cz>
-References: <20231124002042.1741578-1-dimitri.ledkov@canonical.com>
- <87sf4vrbl3.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sc7jq3y2bz3dTr
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Nov 2023 19:41:03 +1100 (AEDT)
+X-QQ-mid: bizesmtp75t1700815181tn312kbv
+Received: from [127.0.0.1] ( [125.94.202.196])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 24 Nov 2023 16:39:39 +0800 (CST)
+X-QQ-SSF: 01400000000000B0B000000A0000000
+X-QQ-FEAT: 7YFKcddXagjsJLt4wZABMUUDAYXCRnXo8g21GUIbQbqARChcnMawpeCfxN5Fh
+	FAL082/zTRzsvaYPmnb+ltvg7D100sX+qcklM2YJd+L8vMbcjpY9OqL2eOqhW1p8Cvdc6+S
+	n3X0wLAhgXvnScdmZmMjoMswETTFn/mVftkuT6WEGmZxAeP176I2oNHLa56qSaBNY2zkPnV
+	LG/ekKJr+W8uKDUe2TsrZtHezH3aWd6GKL0a1CrjhNx7iIrqc9e/TJPwUWvJ+S/sGB+QBnN
+	+VOvetNSVcAibP8cry0np7W6aAPaNzNIzGK3LUZ0PIax9d30jQgBbSUxYORpDCQMzSpElHf
+	oBn4V0aQ3rzyd4jviheIVNYpbQbGapXJhrdHfQNsxs4A+bcu9hddYlMiC3/u3vCkz4UNtbs
+	2bdxPaOa/uyDJUbaeEZ7rw==
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 14761653264302342047
+Message-ID: <F19DC40ACB796694+78dfb71e-a2db-473d-a9fc-fa35c5e61a27@shingroup.cn>
+Date: Fri, 24 Nov 2023 16:39:39 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87sf4vrbl3.fsf@mail.lhotse>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Level: 
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Rspamd-Server: rspamd2
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	 REPLY(-4.00)[]
-X-Spam-Score: -4.00
-X-Rspamd-Queue-Id: A666221BFA
-X-Spam-Flag: NO
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] powerpc: Add PVN support for HeXin C2000 processor
+To: Michael Ellerman <mpe@ellerman.id.au>, gregkh@linuxfoundation.org
+References: <20231123093611.98313-1-ke.zhao@shingroup.cn>
+ <2023112317-ebook-dreamless-0cfe@gregkh> <871qcgspf8.fsf@mail.lhotse>
+Content-Language: en-US
+From: =?UTF-8?B?WmhhbyBLZSDotbUg5Y+v?= <ke.zhao@shingroup.cn>
+In-Reply-To: <871qcgspf8.fsf@mail.lhotse>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:shingroup.cn:qybglogicsvrsz:qybglogicsvrsz3a-0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,28 +55,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Dimitri John Ledkov <dimitri.ledkov@canonical.com>
+Cc: luming.yu@shingroup.cn, ajd@linux.ibm.com, arnd@arndb.de, dawei.li@shingroup.cn, linux-kernel@vger.kernel.org, shenghui.qu@shingroup.cn, npiggin@gmail.com, kvm@vger.kernel.org, fbarrat@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Nov 24, 2023 at 03:59:04PM +1100, Michael Ellerman wrote:
-> Dimitri John Ledkov <dimitri.ledkov@canonical.com> writes:
-> > BugLink: https://bugs.launchpad.net/bugs/2038587
-> >
-> > ppc64le is exclusively little endian and 64-bit, thus there is no need
-> > for COMPAT_32BIT_TIME, nor COMPAT.
-> 
-> To be pedantic, the ppc64le kernel does support running 32-bit little
-> endian userspace in compat mode (CONFIG_COMPAT=y). It's a distro choice
-> as to whether you support COMPAT. Notably there are two other major
-> distros that don't support COMPAT for ppc64le, and the set of 32-bit LE
-> software is effectively empty.
+Hi Michael and Greg,
 
-I have seen software that does not work when compiled 64bit so it would
-build 32bit binary even on ppc64le and abuse the compat layer to run.
+On 2023/11/23 19:02, Michael Ellerman wrote:
+> Greg KH <gregkh@linuxfoundation.org> writes:
+>> On Thu, Nov 23, 2023 at 05:36:11PM +0800, Zhao Ke wrote:
+>>> HeXin Tech Co. has applied for a new PVN from the OpenPower Community
+>>> for its new processor C2000. The OpenPower has assigned a new PVN
+>>> and this newly assigned PVN is 0x0066, add pvr register related
+>>> support for this PVN.
+>>>
+>>> Signed-off-by: Zhao Ke <ke.zhao@shingroup.cn>
+>>> Link: https://discuss.openpower.foundation/t/how-to-get-a-new-pvr-for-processors-follow-power-isa/477/10
+>>> ---
+>>> 	v0 -> v1:
+>>> 	- Fix .cpu_name with the correct description
+>>> ---
+>>> ---
+>>>   arch/powerpc/include/asm/reg.h            |  1 +
+>>>   arch/powerpc/kernel/cpu_specs_book3s_64.h | 15 +++++++++++++++
+>>>   arch/powerpc/kvm/book3s_pr.c              |  1 +
+>>>   arch/powerpc/mm/book3s64/pkeys.c          |  3 ++-
+>>>   arch/powerpc/platforms/powernv/subcore.c  |  3 ++-
+>>>   drivers/misc/cxl/cxl.h                    |  3 ++-
+>>>   6 files changed, 23 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+>>> index 4ae4ab9090a2..7fd09f25452d 100644
+>>> --- a/arch/powerpc/include/asm/reg.h
+>>> +++ b/arch/powerpc/include/asm/reg.h
+>>> @@ -1361,6 +1361,7 @@
+>>>   #define PVR_POWER8E	0x004B
+>>>   #define PVR_POWER8NVL	0x004C
+>>>   #define PVR_POWER8	0x004D
+>>> +#define PVR_HX_C2000	0x0066
+>>>   #define PVR_POWER9	0x004E
+>>>   #define PVR_POWER10	0x0080
+>>>   #define PVR_BE		0x0070
+>> Why is this not in sorted order?
+> It's semantically sorted :D
+> ie. HX_C2000 is most similar to POWER8, but is newer than it.
+Yes. This is what I mean. If you prefer to sort in another order, please 
+tell me and I will update this.
+>
+> PVR_BE is out of place, I'll fix that.
+>
+> cheers
+>
 
-It quite rare, though.
-
-Thanks
-
-Michal
