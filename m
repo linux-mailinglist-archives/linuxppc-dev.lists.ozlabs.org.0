@@ -1,75 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 597F67F6CAD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 08:15:28 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=dOhgPsu8;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA0D57F6CB1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 08:17:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sc5q21vDWz3vvn
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 18:15:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sc5sH4xdmz3vg0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Nov 2023 18:17:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=dOhgPsu8;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2607:f8b0:4864:20::329; helo=mail-ot1-x329.google.com; envelope-from=apatel@ventanamicro.com; receiver=lists.ozlabs.org)
-Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=perches.com (client-ip=216.40.44.12; helo=relay.hostedemail.com; envelope-from=joe@perches.com; receiver=lists.ozlabs.org)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sc5jg5NMlz3dK8
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Nov 2023 18:10:47 +1100 (AEDT)
-Received: by mail-ot1-x329.google.com with SMTP id 46e09a7af769-6ce322b62aeso833761a34.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Nov 2023 23:10:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1700809845; x=1701414645; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9bsP20n9g/LbbgzyTFqfc2H9X3ZVkLkHm6HS5kmWZpw=;
-        b=dOhgPsu885GZTFxvA4rUOUBPyWecEV0+GOqSncDcFea0Kpg0UUzUeTT1a8jborlypZ
-         BcCVNTgae2UvoM1nFPXHa9pUSbZI2eY7/JRy7XoYFSzWZuYP4i/T8jsOEZ7d3LJblHeM
-         VCVby+TYTSacRcLUIcCzN/DEG1pmDSb34XSlW4HUzJElRDpbsgVGNoXIgP6bbDshTdRa
-         eB8Y+TyOv0fUtptsbZdIo2ZiTuSaw4VDrRGzGtb5qcQPMhLbgqaYbbXJ3Gm2ZMrwpDNq
-         MJydR5QBIIvgGBOKSipnXh+5XR16NbJwc1HQJuws1BbpOK8Qb3Xb+y8VOhefmgo3UzLs
-         d3Wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700809845; x=1701414645;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9bsP20n9g/LbbgzyTFqfc2H9X3ZVkLkHm6HS5kmWZpw=;
-        b=U0nUeTIw3ekdfTQ2YdfBBOvXVYCwt09mb1T0uUpS0XiMDHy1IWpFuNhCmIiclQ1cWS
-         QKQLQqg+M9yZyufH4zh8B9zNCYlUtPe8eNedVMDqVIdGSR1navUZ/Y4qTdkrprQQgS9P
-         lLv2A7+YvHS2rnYclhPgwc+0uoJV5nsH59FG9kopeRqKD1h61QAKhPH6+E8dmMnu4Iq9
-         CzJDXzwohudMzdys+OmmUeegsRvl9RzKOCIpfhF1E4Ix9pHatpwPqtI6EmtLcYAo6lpb
-         CUl0WiQoBO4LbxWKddO7l8sIqi2N1W9VfjGpyhIvyjOAS3YLFvV1+Y50CDOaSk1x1lnL
-         UbOQ==
-X-Gm-Message-State: AOJu0Yw4hH6Tveu1um/PB+woTHSFl2Up0dGQD8ygTQfzost8HFTZys/l
-	NXiHHvMxQ1tnR30w3mTmAFdxYw==
-X-Google-Smtp-Source: AGHT+IGGDyExhQ3zRmOy5VYh2TdS7wOyXrHh9UCot+XT8qVfR5TFj+v/PJ24bsMRy6r+bIsB3Xrfng==
-X-Received: by 2002:a05:6830:18f1:b0:6ce:4035:b801 with SMTP id d17-20020a05683018f100b006ce4035b801mr2096169otf.13.1700809844751;
-        Thu, 23 Nov 2023 23:10:44 -0800 (PST)
-Received: from localhost.localdomain ([106.51.83.242])
-        by smtp.gmail.com with ESMTPSA id e5-20020a9d7305000000b006c61c098d38sm435532otk.21.2023.11.23.23.10.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Nov 2023 23:10:44 -0800 (PST)
-From: Anup Patel <apatel@ventanamicro.com>
-To: Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH v5 5/5] RISC-V: Enable SBI based earlycon support
-Date: Fri, 24 Nov 2023 12:39:05 +0530
-Message-Id: <20231124070905.1043092-6-apatel@ventanamicro.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231124070905.1043092-1-apatel@ventanamicro.com>
-References: <20231124070905.1043092-1-apatel@ventanamicro.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sc5rq28DSz2xmC
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Nov 2023 18:16:57 +1100 (AEDT)
+Received: from omf01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6CC5C409CB;
+	Fri, 24 Nov 2023 07:16:50 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf01.hostedemail.com (Postfix) with ESMTPA id 8CAE160009;
+	Fri, 24 Nov 2023 07:16:47 +0000 (UTC)
+Message-ID: <971ed2ceaeeba882d2b4c39015ee5ae5db3f5e82.camel@perches.com>
+Subject: Re: [PATCH v2 2/7] kexec_file: print out debugging message if
+ required
+From: Joe Perches <joe@perches.com>
+To: Baoquan He <bhe@redhat.com>, linux-kernel@vger.kernel.org
+Date: Thu, 23 Nov 2023 23:16:46 -0800
+In-Reply-To: <20231124033642.520686-3-bhe@redhat.com>
+References: <20231124033642.520686-1-bhe@redhat.com>
+	 <20231124033642.520686-3-bhe@redhat.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 8CAE160009
+X-Spam-Status: No, score=-3.42
+X-Stat-Signature: r4oqtahenar8h64oxpqpoeo1n6zbhmda
+X-Rspamd-Server: rspamout08
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX19c0OHTlDrKhb/Xt6M9rvhAh1ufC3tVTnk=
+X-HE-Tag: 1700810207-170549
+X-HE-Meta: U2FsdGVkX1+zlhNkZ9x3SOlShl6+X96epMaKjfHehHKyBsMtcvgR7F6Ii1tgURKZMXTJ4v77gzWxOCKJjrZ32dyx27aEd7KJtn+JaKan9d1JoOg5vx5spjNriOlsrJsAsKTNWoXgbsaaF0Aw9htJa6iNVZZnaP/omO8ddnk/a1hUgTJ/UY7dIv6hTgWYnyt0dTxqhxdXpQIY0i9zYhv989Np0jXyZefmSBvNLtvm6dtRPbiigZYQ2nQLsoXdSGX2/vxVXndB66Niab3Fp1e04lrREsrM7se2cR96ydP7F6f9OXdC0ttkSA5n1SXD5cD7
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,31 +53,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anup Patel <apatel@ventanamicro.com>, linux-kernel@vger.kernel.org, Conor Dooley <conor@kernel.org>, linux-serial@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Andrew Jones <ajones@ventanamicro.com>
+Cc: yujie.liu@intel.com, linux-parisc@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, nathan@kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Let us enable SBI based earlycon support in defconfig for both RV32
-and RV64 so that "earlycon=sbi" can be used again.
+On Fri, 2023-11-24 at 11:36 +0800, Baoquan He wrote:
+> Replace pr_debug() with the newly added kexec_dprintk() in kexec_file
+> loading related codes.
 
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
----
- arch/riscv/configs/defconfig | 1 +
- 1 file changed, 1 insertion(+)
+trivia for pr_debug -> kexec_dprintk conversions for
+the entire patch set:
 
-diff --git a/arch/riscv/configs/defconfig b/arch/riscv/configs/defconfig
-index 905881282a7c..eaf34e871e30 100644
---- a/arch/riscv/configs/defconfig
-+++ b/arch/riscv/configs/defconfig
-@@ -149,6 +149,7 @@ CONFIG_SERIAL_8250_CONSOLE=y
- CONFIG_SERIAL_8250_DW=y
- CONFIG_SERIAL_OF_PLATFORM=y
- CONFIG_SERIAL_SH_SCI=y
-+CONFIG_SERIAL_EARLYCON_RISCV_SBI=y
- CONFIG_VIRTIO_CONSOLE=y
- CONFIG_HW_RANDOM=y
- CONFIG_HW_RANDOM_VIRTIO=y
--- 
-2.34.1
+> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+[]
+> @@ -551,9 +551,12 @@ int crash_prepare_elf64_headers(struct crash_mem *me=
+m, int need_kernel_map,
+>  		phdr->p_filesz =3D phdr->p_memsz =3D mend - mstart + 1;
+>  		phdr->p_align =3D 0;
+>  		ehdr->e_phnum++;
+> -		pr_debug("Crash PT_LOAD ELF header. phdr=3D%p vaddr=3D0x%llx, paddr=3D=
+0x%llx, sz=3D0x%llx e_phnum=3D%d p_offset=3D0x%llx\n",
+> +#ifdef CONFIG_KEXEC_FILE
+> +		kexec_dprintk("Crash PT_LOAD ELF header. phdr=3D%p vaddr=3D0x%llx, pad=
+dr=3D0x%llx, "
+> +			"sz=3D0x%llx e_phnum=3D%d p_offset=3D0x%llx\n",
+>  			phdr, phdr->p_vaddr, phdr->p_paddr, phdr->p_filesz,
+>  			ehdr->e_phnum, phdr->p_offset);
+
+It's good form to rewrap continuation lines to the open parenthesis
+
+> diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+[]
+> @@ -389,11 +391,12 @@ SYSCALL_DEFINE5(kexec_file_load, int, kernel_fd, in=
+t, initrd_fd,
+>  	if (ret)
+>  		goto out;
+> =20
+> +	kexec_dprintk("nr_segments =3D %lu\n", image->nr_segments);
+>  	for (i =3D 0; i < image->nr_segments; i++) {
+>  		struct kexec_segment *ksegment;
+> =20
+>  		ksegment =3D &image->segment[i];
+> -		pr_debug("Loading segment %d: buf=3D0x%p bufsz=3D0x%zx mem=3D0x%lx mem=
+sz=3D0x%zx\n",
+> +		kexec_dprintk("segment[%d]: buf=3D0x%p bufsz=3D0x%zx mem=3D0x%lx memsz=
+=3D0x%zx\n",
+>  			 i, ksegment->buf, ksegment->bufsz, ksegment->mem,
+>  			 ksegment->memsz);
+
+here too etc...
 
