@@ -1,54 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C22FB7F97D9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 04:09:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BD407F9806
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 04:49:52 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=tq93Kuo3;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SdrD65RMDz3cgQ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 14:09:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sds6Q0gC8z3c1L
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 14:49:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=chentao@kylinos.cn; receiver=lists.ozlabs.org)
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=tq93Kuo3;
+	dkim-atps=neutral
+Received: from gandalf.ozlabs.org (unknown [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SdrCZ3Chzz30gn
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Nov 2023 14:09:12 +1100 (AEDT)
-X-UUID: ab177453d9a64d5b996565e266e7b673-20231127
-X-CID-O-RULE: Release_Ham
-X-CID-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.33,REQID:202d0179-3c35-4f16-b54c-6fd7f955c23f,IP:5,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-10
-X-CID-INFO: VERSION:1.1.33,REQID:202d0179-3c35-4f16-b54c-6fd7f955c23f,IP:5,URL
-	:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:-10
-X-CID-META: VersionHash:364b77b,CLOUDID:92291973-1bd3-4f48-b671-ada88705968c,B
-	ulkID:231127110800C9NNALHY,BulkQuantity:0,Recheck:0,SF:66|38|24|17|19|44|1
-	02,TC:nil,Content:0,EDM:-3,IP:-2,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,CO
-	L:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_FSD,TF_CID_SPAM_FSI,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS
-X-UUID: ab177453d9a64d5b996565e266e7b673-20231127
-X-User: chentao@kylinos.cn
-Received: from vt.. [(116.128.244.169)] by mailgw
-	(envelope-from <chentao@kylinos.cn>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 418691976; Mon, 27 Nov 2023 11:07:58 +0800
-From: Kunwu Chan <chentao@kylinos.cn>
-To: mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	christophe.leroy@csgroup.eu,
-	benh@kernel.crashing.org,
-	rmclure@linux.ibm.com
-Subject: [PATCH] powerpc/powernv: Add a null pointer check in opal_event_init
-Date: Mon, 27 Nov 2023 11:07:55 +0800
-Message-Id: <20231127030755.1546750-1-chentao@kylinos.cn>
-X-Mailer: git-send-email 2.34.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sds5X256xz30fM
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Nov 2023 14:49:04 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1701056933;
+	bh=xDZKSlzh1/UCfSWZwMAP6iEXsWt5FFryCFfldIgRDvM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=tq93Kuo33izvLI6GbhYWWx5Ia6NAAoD3hBp9dEPcUCYATgIfb9agy/7CueloQpLu3
+	 gHrLDRCrAebicnW4a+sFrH9U0rjM9jOgirIPng00QJD7JlfXMPC8LVt2KGV4rtZziu
+	 /MyP/uaZy2XREwjPURXMecVh/lIETFw4KrVpknXPLoPVRZyDrzv3eAsQ2PucYbX8WS
+	 lHbLA9tiG6FMRAOBm0zmpYMUPAc1itaGiR4A7aoRVg1h0pBU9lLA1bI1uVTslL5RQh
+	 MFVzulnEAitK6bDbE3vNqo8lfVd2Z4/V/kAF2XcqsmSu6XHG4BBcN+PlIu3ZAV+LRA
+	 7D7yIe3iAv17Q==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sds5K2g9nz4wbr;
+	Mon, 27 Nov 2023 14:48:53 +1100 (AEDT)
+Date: Mon, 27 Nov 2023 14:48:52 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: linux-next: build failure after merge of the mm tree
+Message-ID: <20231127144852.069b2e7e@canb.auug.org.au>
+In-Reply-To: <20231127132809.45c2b398@canb.auug.org.au>
+References: <20231127132809.45c2b398@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="Sig_/1OxpgZpOL2DDzmvOW3C.v.M";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,32 +58,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Kunwu Chan <chentao@kylinos.cn>, kunwu.chan@hotmail.com
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
+--Sig_/1OxpgZpOL2DDzmvOW3C.v.M
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: 2717a33d6074 ("powerpc/opal-irqchip: Use interrupt names if present")
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
----
- arch/powerpc/platforms/powernv/opal-irqchip.c | 2 ++
- 1 file changed, 2 insertions(+)
+Hi all,
 
-diff --git a/arch/powerpc/platforms/powernv/opal-irqchip.c b/arch/powerpc/platforms/powernv/opal-irqchip.c
-index f9a7001dacb7..56a1f7ce78d2 100644
---- a/arch/powerpc/platforms/powernv/opal-irqchip.c
-+++ b/arch/powerpc/platforms/powernv/opal-irqchip.c
-@@ -275,6 +275,8 @@ int __init opal_event_init(void)
- 		else
- 			name = kasprintf(GFP_KERNEL, "opal");
- 
-+		if (!name)
-+			continue;
- 		/* Install interrupt handler */
- 		rc = request_irq(r->start, opal_interrupt, r->flags & IRQD_TRIGGER_MASK,
- 				 name, NULL);
--- 
-2.34.1
+Just cc'ing the PowerPC guys to see if my fix is sensible.
 
+On Mon, 27 Nov 2023 13:28:09 +1100 Stephen Rothwell <sfr@canb.auug.org.au> =
+wrote:
+>
+> After merging the mm tree, today's linux-next build (powerpc64
+> allnoconfig) failed like this:
+>=20
+> arch/powerpc/mm/book3s64/pgtable.c:557:5: error: no previous prototype fo=
+r 'pmd_move_must_withdraw' [-Werror=3Dmissing-prototypes]
+>   557 | int pmd_move_must_withdraw(struct spinlock *new_pmd_ptl,
+>       |     ^~~~~~~~~~~~~~~~~~~~~~
+> cc1: all warnings being treated as errors
+>=20
+> Caused by commit
+>=20
+>   c6345dfa6e3e ("Makefile.extrawarn: turn on missing-prototypes globally")
+>=20
+> I have added the following patch for today (which could be applied to
+> the mm or powerpc trees):
+>=20
+> From 194805b44c11b4c0aa28bdcdc0bb0d82acef394c Mon Sep 17 00:00:00 2001
+> From: Stephen Rothwell <sfr@canb.auug.org.au>
+> Date: Mon, 27 Nov 2023 13:08:57 +1100
+> Subject: [PATCH] powerpc: pmd_move_must_withdraw() is only needed for
+>  CONFIG_TRANSPARENT_HUGEPAGE
+>=20
+> Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> ---
+>  arch/powerpc/mm/book3s64/pgtable.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>=20
+> diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s6=
+4/pgtable.c
+> index be229290a6a7..3438ab72c346 100644
+> --- a/arch/powerpc/mm/book3s64/pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/pgtable.c
+> @@ -542,6 +542,7 @@ void ptep_modify_prot_commit(struct vm_area_struct *v=
+ma, unsigned long addr,
+>  	set_pte_at(vma->vm_mm, addr, ptep, pte);
+>  }
+> =20
+> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>  /*
+>   * For hash translation mode, we use the deposited table to store hash s=
+lot
+>   * information and they are stored at PTRS_PER_PMD offset from related p=
+md
+> @@ -563,6 +564,7 @@ int pmd_move_must_withdraw(struct spinlock *new_pmd_p=
+tl,
+> =20
+>  	return true;
+>  }
+> +#endif
+> =20
+>  /*
+>   * Does the CPU support tlbie?
+> --=20
+> 2.40.1
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/1OxpgZpOL2DDzmvOW3C.v.M
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmVkEaQACgkQAVBC80lX
+0Gx3Uwf/eggLiBT0CMRtGTvKcImnVpzRYOstDC8af1O5yiQc2pfZeP1h5aG+DXTw
+eT/PR/kTiL3zK9pywiKe3a2wJu0UN/QZinW/7Mk/xJf3L8JHGUu+fyAaVjBKqjm9
+Ze+PH6AACdmi84DkTzOKmkLZR7AauuyKyuDbltPMrga6zsex0/shCRHRxjs3aGQu
+x+4eeWsjx2Pf24kUHrQ8f44+5cJZ+A9Vjzh99cJvycepd3GJEoTohBEPoda0NFCD
+xIGHUDC1B/dNuxzaGYkYy6jqYWtk/cjJOI/I3KvzYubPQwr3m7OVhe4EI11IyvSR
+kpoHYFK6c3LJ3LNWRf5SWFs3mS6+gA==
+=N35d
+-----END PGP SIGNATURE-----
+
+--Sig_/1OxpgZpOL2DDzmvOW3C.v.M--
