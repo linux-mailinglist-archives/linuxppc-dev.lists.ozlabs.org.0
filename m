@@ -1,56 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 094BD7FA859
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 18:52:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBE237FA90C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 19:40:13 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=Hc56b9w4;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SfCpl4Bk6z3cj7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Nov 2023 04:52:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SfDsl2Fz4z3cVF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Nov 2023 05:40:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.53; helo=mail-oa1-f53.google.com; envelope-from=robherring2@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=Hc56b9w4;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org)
+Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SfCpH5lz1z3cPk
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Nov 2023 04:52:06 +1100 (AEDT)
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-1efabc436e4so3047016fac.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Nov 2023 09:52:06 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701107522; x=1701712322;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1qP2c9CN5CjrhkwDV0xgvtW5t/xJO6d0tsdDX2eLr8w=;
-        b=q5h35j0SwCnPo823LGJY1svSBaZJ4B+j8MHvB91zQOzabbpRlBk3SZqLzR27nrhvW0
-         +PEqPAHNy//aiSLOoop8OUJJv2PgjwwzUqbYBkLJyiqpy5o/44qxnW41o5LTIHkKWQSU
-         CMs1QdoxqE3ZQNExQFUxHu5Xjgp1taazvYjKVLJBsTURHcMCSbA/UoyPEHCZAOg6FbZd
-         yWrkKB++4yvd3SKSzp2oaBw2P+KgRIVudWD0zsP2WVwi15KqWw4Qwk0SsOPhgDjUtQsb
-         NbO3sVVyJ3RogQQXVwD9eESdyC4vdFxiJMZgV/mudiiSMbRpYnnlIBWdiW6KYop9APLz
-         hoZQ==
-X-Gm-Message-State: AOJu0Yw+TlMrrWAxU8X/+beOqgo93JoWyfkKWL1gEmwCpqlnInTD0c3f
-	vwx31zorltb0zP0WewYunQ==
-X-Google-Smtp-Source: AGHT+IG19I5lae8dWTQhpITCeP9FKx74DPu+CfRsHG/iq0HJR8akTbrvzMlAP81KjFrZih4SR+NR/A==
-X-Received: by 2002:a05:6870:d85:b0:1f4:daf6:78cc with SMTP id mj5-20020a0568700d8500b001f4daf678ccmr15957254oab.31.1701107521903;
-        Mon, 27 Nov 2023 09:52:01 -0800 (PST)
-Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id z19-20020a056870515300b001efce0658e6sm2436211oak.39.2023.11.27.09.52.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Nov 2023 09:52:01 -0800 (PST)
-Received: (nullmailer pid 1854610 invoked by uid 1000);
-	Mon, 27 Nov 2023 17:52:00 -0000
-Date: Mon, 27 Nov 2023 11:52:00 -0600
-From: Rob Herring <robh@kernel.org>
-To: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH] dt-bindings: fsl,dpaa2-console: drop unneeded quotes
-Message-ID: <170110751966.1854443.5792070352001940257.robh@kernel.org>
-References: <20231122224419.2809361-1-robh@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SfDrr3kbSz3c1L
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Nov 2023 05:39:23 +1100 (AEDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id B5D9182853F9;
+	Mon, 27 Nov 2023 12:39:17 -0600 (CST)
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id HtmLQvd4iRqn; Mon, 27 Nov 2023 12:39:17 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id DEC328285877;
+	Mon, 27 Nov 2023 12:39:16 -0600 (CST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com DEC328285877
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
+	t=1701110356; bh=xzRtKEXNSZXRxueeraHHFnjhN1dbr0ogCssrNQclvqo=;
+	h=Date:From:To:Message-ID:MIME-Version;
+	b=Hc56b9w4Txk34dZBAnTXub8aqBoaEbB1TRcKoKAEXfV4gLtGv0Swab12d/6RAhK1H
+	 cCGuxVDe930FNnYBdZ0Pw3CiN7F9FYD6dDeFfpHu5EYzYnFj4CAG3uVs24iS1w0mbz
+	 FqR15phex2Ok1QAN7UQQ4/uQQJpjaYER0LEKp7wQ=
+X-Virus-Scanned: amavisd-new at rptsys.com
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id Sl2aoHRTI7dG; Mon, 27 Nov 2023 12:39:16 -0600 (CST)
+Received: from vali.starlink.edu (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id ABAB282853F9;
+	Mon, 27 Nov 2023 12:39:16 -0600 (CST)
+Date: Mon, 27 Nov 2023 12:39:14 -0600 (CST)
+From: Timothy Pearson <tpearson@raptorengineering.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Message-ID: <1276384468.50536225.1701110354677.JavaMail.zimbra@raptorengineeringinc.com>
+In-Reply-To: <1340817182.49635143.1700784119445.JavaMail.zimbra@raptorengineeringinc.com>
+References: <1921539696.48534988.1700407082933.JavaMail.zimbra@raptorengineeringinc.com> <877cmc7ve9.fsf@mail.lhotse> <439072392.48800901.1700498743840.JavaMail.zimbra@raptorengineeringinc.com> <874jhg6lkn.fsf@mail.lhotse> <1294229534.48922001.1700539832331.JavaMail.zimbra@raptorengineeringinc.com> <87leaqjs8x.fsf@mail.lhotse> <1340817182.49635143.1700784119445.JavaMail.zimbra@raptorengineeringinc.com>
+Subject: Re: [PATCH v2] powerpc: Don't clobber fr0/vs0 during fp|altivec
+ register  save
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231122224419.2809361-1-robh@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: Zimbra 8.5.0_GA_3042 (ZimbraWebClient - GC119 (Linux)/8.5.0_GA_3042)
+Thread-Topic: powerpc: Don't clobber fr0/vs0 during fp|altivec register save
+Thread-Index: OkyGhBWE6ESNaH7+hHk9xkTdc0AVjZlU0+oQ
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,22 +70,10 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Jens Axboe <axboe@kernel.dk>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, regressions <regressions@lists.linux.dev>, npiggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Just wanted to check back and see if this patch was going to be queued up soon?  We're still having to work around / advertise the data destruction issues the underlying bug is causing on e.g. Debian Stable.
 
-On Wed, 22 Nov 2023 15:44:19 -0700, Rob Herring wrote:
-> Drop unneeded quotes over simple string values to fix a soon to be
-> enabled yamllint warning:
-> 
->   [error] string value is redundantly quoted with any quotes (quoted-strings)
-> 
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->  Documentation/devicetree/bindings/misc/fsl,dpaa2-console.yaml | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-
-Applied, thanks!
-
+Thanks!
