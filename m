@@ -2,94 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77AEB7F98EA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 06:50:52 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=o9QLWt9Y;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 99B097F9915
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 07:06:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sdvp22hd0z3clc
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 16:50:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sdw7s3rHkz3cTp
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 17:06:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=o9QLWt9Y;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=chentao@kylinos.cn; receiver=lists.ozlabs.org)
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SdvlC4sPdz3c5P
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Nov 2023 16:48:23 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AR5i3dZ006009;
-	Mon, 27 Nov 2023 05:48:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=59mcf6fBIdwg2SNCF1lVg0EMHsi0wmSPoX0uIzmPuCA=;
- b=o9QLWt9Y7mtb0x6f+vTEhgaTN6JXiv3nMfvHUPuSzz8DscefESQnDMOca8WfU8bDe3O3
- V+b7H3baePbfvQobK8IF+SnfWIv74ul70/C17FSMbBqC46JurrKDNxIpjKN0+KEF3An2
- xJ+rvNwE8cFpbz1N8my2PlSGd7rk5qIbeUSJyQ4csWyB2hitMeAvEl7Ay+vDONh9yFvb
- rbxP9mp6SAAXvDFN27EsWdeVeS+9s3mOm+sKyCG/c0uDn1VR/5nBRScZJdvPm8LGw6Zs
- BUsnU4uw7qqdz4nZ04e/Ru+gtcPh9f/sWH229ic8gZfdyDJemtIaJvu/dTtbME0V4WCB xQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3umgdp5gr2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Nov 2023 05:48:09 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AR5TgLv030732;
-	Mon, 27 Nov 2023 05:48:08 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3umgdp5gqn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Nov 2023 05:48:08 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3AR44AZO007618;
-	Mon, 27 Nov 2023 05:48:07 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ukwfjp8qt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Nov 2023 05:48:07 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3AR5m6CK26542574
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Nov 2023 05:48:06 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0FE6F20148;
-	Mon, 27 Nov 2023 05:48:06 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 97F1C20147;
-	Mon, 27 Nov 2023 05:48:05 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 27 Nov 2023 05:48:05 +0000 (GMT)
-Received: from socotra.ibm.com (unknown [9.177.95.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 733956030B;
-	Mon, 27 Nov 2023 16:48:00 +1100 (AEDT)
-From: Rohan McLure <rmclure@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 3/3] powerpc/64: Only warn for kuap locked when KCSAN not present
-Date: Mon, 27 Nov 2023 16:46:47 +1100
-Message-ID: <20231127054648.1205221-4-rmclure@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231127054648.1205221-2-rmclure@linux.ibm.com>
-References: <20231127054648.1205221-2-rmclure@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sdw7M57Kzz3cQj
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Nov 2023 17:05:46 +1100 (AEDT)
+X-UUID: 50653da09a4049dabfe9bd44e81faa93-20231127
+X-CID-O-RULE: Release_Ham
+X-CID-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.33,REQID:a18912e7-1bc6-4131-9ae6-0bcf38ce7786,IP:5,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-10
+X-CID-INFO: VERSION:1.1.33,REQID:a18912e7-1bc6-4131-9ae6-0bcf38ce7786,IP:5,URL
+	:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:-10
+X-CID-META: VersionHash:364b77b,CLOUDID:7390d895-10ce-4e4b-85c2-c9b5229ff92b,B
+	ulkID:231124231739FMC8SLUD,BulkQuantity:3,Recheck:0,SF:19|44|64|66|38|24|1
+	7|102,TC:nil,Content:0,EDM:-3,IP:-2,URL:1,File:nil,Bulk:40,QS:nil,BEC:nil,
+	COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_FSI,TF_CID_SPAM_ULS,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,
+	TF_CID_SPAM_FSD
+X-UUID: 50653da09a4049dabfe9bd44e81faa93-20231127
+X-User: chentao@kylinos.cn
+Received: from [172.20.15.254] [(116.128.244.169)] by mailgw
+	(envelope-from <chentao@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1917675565; Mon, 27 Nov 2023 14:04:31 +0800
+Message-ID: <9d871364-7baa-4daf-8b0c-3fbfbede6fdb@kylinos.cn>
+Date: Mon, 27 Nov 2023 14:04:24 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc/mm: Fix null-pointer dereference in
+ pgtable_cache_add
+Content-Language: en-US
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
+ "npiggin@gmail.com" <npiggin@gmail.com>
+References: <20231122090026.11728-1-chentao@kylinos.cn>
+ <32077b74-7335-4f4d-8858-c53c820150d0@csgroup.eu>
+From: Kunwu Chan <chentao@kylinos.cn>
+In-Reply-To: <32077b74-7335-4f4d-8858-c53c820150d0@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Ob1PPKjzai-ynY2apSI49XHBzrbCYK4f
-X-Proofpoint-ORIG-GUID: _vhaxRz7zwe2naOyqdpSkhWYC0QjeC6T
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-27_03,2023-11-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
- lowpriorityscore=0 bulkscore=0 mlxscore=0 spamscore=0 phishscore=0
- mlxlogscore=697 impostorscore=0 malwarescore=0 suspectscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311270039
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,41 +65,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: elver@google.com, arnd@arndb.de, gautam@linux.ibm.com, Rohan McLure <rmclure@linux.ibm.com>, npiggin@gmail.com, will@kernel.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kunwu.chan@hotmail.com" <kunwu.chan@hotmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Arbitrary instrumented locations, including syscall handlers, can call
-arch_local_irq_restore() transitively when KCSAN is enabled, and in turn
-also replay_soft_interrupts_irqrestore(). The precondition on entry to
-this routine that is checked is that KUAP is enabled (user access
-prohibited). Failure to meet this condition only triggers a warning
-however, and afterwards KUAP is enabled anyway. That is, KUAP being
-disabled on entry is in fact permissable, but not possible on an
-uninstrumented kernel.
+Hi Christophe,
 
-Disable this assertion only when KCSAN is enabled.
+Thanks for your reply.
+It's my bad. According your reply, i read the code in 
+sysfs_do_create_link_sd.There is a null pointer check indeed.
 
-Suggested-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
----
- arch/powerpc/kernel/irq_64.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+My intention was to check null pointer after memory allocation.
+Whether we can add a comment here for someone like me, the null pointer 
+check is no need here?
 
-diff --git a/arch/powerpc/kernel/irq_64.c b/arch/powerpc/kernel/irq_64.c
-index 938e66829eae..1b7e8ebb052a 100644
---- a/arch/powerpc/kernel/irq_64.c
-+++ b/arch/powerpc/kernel/irq_64.c
-@@ -189,7 +189,8 @@ static inline __no_kcsan void replay_soft_interrupts_irqrestore(void)
- 	 * and re-locking AMR but we shouldn't get here in the first place,
- 	 * hence the warning.
- 	 */
--	kuap_assert_locked();
-+	if (!IS_ENABLED(CONFIG_KCSAN))
-+		kuap_assert_locked();
- 
- 	if (kuap_state != AMR_KUAP_BLOCKED)
- 		set_kuap(AMR_KUAP_BLOCKED);
--- 
-2.43.0
+Thanks,
+Kunwu
 
+On 2023/11/24 23:17, Christophe Leroy wrote:
+> 
+> 
+> Le 22/11/2023 à 10:00, Kunwu Chan a écrit :
+>> [Vous ne recevez pas souvent de courriers de chentao@kylinos.cn. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+>>
+>> kasprintf() returns a pointer to dynamically allocated memory
+>> which can be NULL upon failure. Ensure the allocation was successful
+>> by checking the pointer validity.
+> 
+> Are you sure this is needed ? Did you check what happens what name is NULL ?
+> 
+> If I followed stuff correctly, I end up in function
+> sysfs_do_create_link_sd() which already handles the NULL name case which
+> a big hammer warning.
+> 
+>>
+>> Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+>> ---
+>>    arch/powerpc/mm/init-common.c | 2 ++
+>>    1 file changed, 2 insertions(+)
+>>
+>> diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
+>> index 119ef491f797..0884fc601c46 100644
+>> --- a/arch/powerpc/mm/init-common.c
+>> +++ b/arch/powerpc/mm/init-common.c
+>> @@ -139,6 +139,8 @@ void pgtable_cache_add(unsigned int shift)
+>>
+>>           align = max_t(unsigned long, align, minalign);
+>>           name = kasprintf(GFP_KERNEL, "pgtable-2^%d", shift);
+>> +       if (!name)
+>> +               return;
+>>           new = kmem_cache_create(name, table_size, align, 0, ctor(shift));
+>>           if (!new)
+>>                   panic("Could not allocate pgtable cache for order %d", shift);
+>> --
+>> 2.34.1
+>>
