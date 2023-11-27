@@ -1,50 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C89417F980F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 04:57:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C22FB7F97D9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 04:09:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SdsH95JY7z3cjf
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 14:57:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SdrD65RMDz3cgQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 14:09:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=43.155.80.173; helo=bg5.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
-X-Greylist: delayed 387 seconds by postgrey-1.37 at boromir; Mon, 27 Nov 2023 13:40:13 AEDT
-Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.155.80.173])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=chentao@kylinos.cn; receiver=lists.ozlabs.org)
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SdqZ556vrz30gH
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Nov 2023 13:40:13 +1100 (AEDT)
-X-QQ-mid: bizesmtp64t1701052377tsjca7qc
-Received: from HX09040029.powercore.com.cn ( [58.34.117.194])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 27 Nov 2023 10:32:54 +0800 (CST)
-X-QQ-SSF: 01400000000000103000000A0000000
-X-QQ-FEAT: CR3LFp2JE4lYlGZyt7s4Y2ErgzYu/i1VV9Xrg9Ot17hS0sZN4+BeicMF5VMkA
-	boSUhErVjzKfj68SY7KvmYQK8jxsKVFlnBTCI3e22iIVQvlcW2rrQlLjCk8yr3kzLTWQo6T
-	vDf5Aj5EOOJvaG8Hdm8w3iPApU+5vxAAH3875ZjfDTYId9QIkZ2JxD4FTXes+KKPv7TC6XQ
-	AU6ysOaOytRKx9ugXKYWzO3vOE57p4XEFGeMgqQXnMcTGcArtGhFLtcIthhszqd2buHvppz
-	QP3gxDvuvOXwTp7HVmQyScJeC7S7MRGEEbO/4WGZuU5PpMniuixJqr59OlQ0V/CZPMvglOu
-	4yXyTHUDW4w0mERxPsra1GFbQxbe9MOMEuOHvBrzY+YDxp+f+HIa5lr8k7Ae6aM+zSPZJZx
-	8GgbSAZFwgYIumQhd6tgHQ==
-X-QQ-GoodBg: 2
-X-BIZMAIL-ID: 16950061229270955396
-From: Luming Yu <luming.yu@shingroup.cn>
-To: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	mpe@ellerman.id.au,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SdrCZ3Chzz30gn
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Nov 2023 14:09:12 +1100 (AEDT)
+X-UUID: ab177453d9a64d5b996565e266e7b673-20231127
+X-CID-O-RULE: Release_Ham
+X-CID-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.33,REQID:202d0179-3c35-4f16-b54c-6fd7f955c23f,IP:5,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-10
+X-CID-INFO: VERSION:1.1.33,REQID:202d0179-3c35-4f16-b54c-6fd7f955c23f,IP:5,URL
+	:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:-10
+X-CID-META: VersionHash:364b77b,CLOUDID:92291973-1bd3-4f48-b671-ada88705968c,B
+	ulkID:231127110800C9NNALHY,BulkQuantity:0,Recheck:0,SF:66|38|24|17|19|44|1
+	02,TC:nil,Content:0,EDM:-3,IP:-2,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,CO
+	L:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_FSD,TF_CID_SPAM_FSI,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS
+X-UUID: ab177453d9a64d5b996565e266e7b673-20231127
+X-User: chentao@kylinos.cn
+Received: from vt.. [(116.128.244.169)] by mailgw
+	(envelope-from <chentao@kylinos.cn>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 418691976; Mon, 27 Nov 2023 11:07:58 +0800
+From: Kunwu Chan <chentao@kylinos.cn>
+To: mpe@ellerman.id.au,
 	npiggin@gmail.com,
-	christophe.leroy@csgroup.eu
-Subject: [PATCH] powerpc/powernv/pci: Do setup dev PE in pnv_pci_enable_device_hook
-Date: Mon, 27 Nov 2023 10:32:39 +0800
-Message-ID: <041F99FBF8A508A2+20231127023239.4157-1-luming.yu@shingroup.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	christophe.leroy@csgroup.eu,
+	benh@kernel.crashing.org,
+	rmclure@linux.ibm.com
+Subject: [PATCH] powerpc/powernv: Add a null pointer check in opal_event_init
+Date: Mon, 27 Nov 2023 11:07:55 +0800
+Message-Id: <20231127030755.1546750-1-chentao@kylinos.cn>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz5a-1
-X-Mailman-Approved-At: Mon, 27 Nov 2023 14:57:01 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,55 +60,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: shenghui.qu@shingroup.cn, Luming Yu <luming.yu@shingroup.cn>, dawei.li@shingroup.cn, ke.zhao@shingroup.cn, luming.yu@gmail.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Kunwu Chan <chentao@kylinos.cn>, kunwu.chan@hotmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-after hot remove a pcie deivce with pci_dn having pnp_php driver attached,
-pci rescan with echo 1 > /sys/bus/pci/rescan could fail with error
-message like:
-pci 0020:0e:00.0: BAR 0: assigned [mem 0x3fe801820000-0x3fe80182ffff
-64bit]
-nvme nvme1: pci function 0020:0e:00.0
-nvme 0020:0e:00.0 pci_enable_device() blocked, no PE assigned.
+kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure.
 
-It appears that the pci_dn object is reused with only pe_number
-clobbered in the case. And a simple call to pnv_ioda_setup_dev_PE should
-get PE number back and solve the problem.
-
-Signed-off-by: Luming Yu <luming.yu@shingroup.cn>
+Fixes: 2717a33d6074 ("powerpc/opal-irqchip: Use interrupt names if present")
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
 ---
- arch/powerpc/platforms/powernv/pci-ioda.c     |  11 +-
- drivers/gpu/drm/nouveau/nvkm/subdev/i2c/aux.c | 215 ------------------
- drivers/gpu/drm/nouveau/nvkm/subdev/i2c/aux.h |  46 ----
- include/soc/arc/aux.h                         |  59 -----
- 4 files changed, 9 insertions(+), 322 deletions(-)
- delete mode 100644 drivers/gpu/drm/nouveau/nvkm/subdev/i2c/aux.c
- delete mode 100644 drivers/gpu/drm/nouveau/nvkm/subdev/i2c/aux.h
- delete mode 100644 include/soc/arc/aux.h
+ arch/powerpc/platforms/powernv/opal-irqchip.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index 28fac4770073..9d7add79ee3d 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -2325,11 +2325,18 @@ static resource_size_t pnv_pci_default_alignment(void)
- static bool pnv_pci_enable_device_hook(struct pci_dev *dev)
- {
- 	struct pci_dn *pdn;
-+	struct pnv_ioda_pe *pe;
+diff --git a/arch/powerpc/platforms/powernv/opal-irqchip.c b/arch/powerpc/platforms/powernv/opal-irqchip.c
+index f9a7001dacb7..56a1f7ce78d2 100644
+--- a/arch/powerpc/platforms/powernv/opal-irqchip.c
++++ b/arch/powerpc/platforms/powernv/opal-irqchip.c
+@@ -275,6 +275,8 @@ int __init opal_event_init(void)
+ 		else
+ 			name = kasprintf(GFP_KERNEL, "opal");
  
- 	pdn = pci_get_pdn(dev);
--	if (!pdn || pdn->pe_number == IODA_INVALID_PE) {
--		pci_err(dev, "pci_enable_device() blocked, no PE assigned.\n");
-+	if (!pdn)
- 		return false;
-+
-+	if (pdn->pe_number == IODA_INVALID_PE) {
-+		pe = pnv_ioda_setup_dev_PE(dev);
-+		if (!pe) {
-+			pci_err(dev, "pci_enable_device() blocked, no PE assigned.\n");
-+			return false;
-+		}
- 	}
- 
- 	return true;
++		if (!name)
++			continue;
+ 		/* Install interrupt handler */
+ 		rc = request_irq(r->start, opal_interrupt, r->flags & IRQD_TRIGGER_MASK,
+ 				 name, NULL);
+-- 
+2.34.1
+
