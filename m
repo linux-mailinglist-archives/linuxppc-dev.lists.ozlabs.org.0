@@ -1,55 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 462D57F9D7B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 11:28:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 989617F9E15
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 12:02:00 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OFFL9zxn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=QkIUe72q;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sf1yf5G80z3cVs
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 21:28:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sf2j16kn9z3cVd
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 22:01:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OFFL9zxn;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=QkIUe72q;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sf1xk55hFz2yGv
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Nov 2023 21:27:54 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 4C832CE0FDF;
-	Mon, 27 Nov 2023 10:27:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F719C433C7;
-	Mon, 27 Nov 2023 10:27:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701080870;
-	bh=mqtFeeqGki//5Nb3R143+AqRimwbXXJttWageC3NiuU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OFFL9zxnJAnhIv2QZsihLuUq6mKSrEU3HutEewWqBmC8wj4Ey9kZH08HHHrY0s6OK
-	 zJZxiyeDHaSXmt6RujDPBPT7LJnhuRH9OJliQMqLiUJp4RCXcxAYeyVDXQO0JCd49W
-	 1/eL8pYNWxbPBunN/ikK7aPYUr/nI0d2EHTOaXGxw2yoz6PMFwt1FvDvVsUmkD09L5
-	 u2TWtfr0bZ6oFm5a37f1YH5il4ot9Gs6cja1OS1Y66a9X9mqmQfbz9s3dTyGaD1cz1
-	 MOYYUotox20liwe8wOlhOdEtPTGsk7EHvqPuaSiHrypK3q+f/CrUaOAa1Ia9Vk/I6a
-	 nuBmvgv0yHIYQ==
-Date: Mon, 27 Nov 2023 11:27:43 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [linus:master] [file] 0ede61d858: will-it-scale.per_thread_ops
- -2.9% regression
-Message-ID: <20231127-kirschen-dissens-b511900fa85a@brauner>
-References: <202311201406.2022ca3f-oliver.sang@intel.com>
- <CAHk-=wjMKONPsXAJ=yJuPBEAx6HdYRkYE8TdYVBvpm3=x_EnCw@mail.gmail.com>
- <CAHk-=wiCJtLbFWNURB34b9a_R_unaH3CiMRXfkR0-iihB_z68A@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sf2h8217hz2xX4
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Nov 2023 22:01:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1701082862;
+	bh=EpDIq0TRM3BRRgVZPPMTRFEoR5Q/FkolWUXiEN2dtlk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=QkIUe72qFjWBb4ulKtgfKRQnxT3Tey0HpxiczAVjNXpPGqJJFaTAEeJn4rvf++2x1
+	 VRqUd76cLw2f5MSiaVJXhHfUHjTi9KkEo88DF0oo1zJt0nNYVfGOBJkpEPMuPOB7aR
+	 3Quif89NCJOC440f8nwbsoO3Xem5s+NxIOlq0okj6JKYwn/UPMyObVgvl0m6NlZG+P
+	 /WoX0ZvIw8jMS7uqbA4/wrP/TtG2eNdibbHd5+WZWsBRFscJakr0mmewcVB1du4piz
+	 vx7lcG4MT6IiXJG8rs6iMEYTV2tkF/QENdTOPbvReVjY+Nir/TsP4GdhcSAOa03HmR
+	 om9Cs9V0kD3eQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sf2gx6D9rz4xFR;
+	Mon, 27 Nov 2023 22:01:01 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Stephen Rothwell <sfr@canb.auug.org.au>, Greg KH <greg@kroah.com>
+Subject: Re: linux-next: manual merge of the tty tree with the powerpc tree
+In-Reply-To: <20231127114904.77f7efb6@canb.auug.org.au>
+References: <20231127114904.77f7efb6@canb.auug.org.au>
+Date: Mon, 27 Nov 2023 22:00:58 +1100
+Message-ID: <877cm34g0l.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wiCJtLbFWNURB34b9a_R_unaH3CiMRXfkR0-iihB_z68A@mail.gmail.com>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,27 +57,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: feng.tang@intel.com, lkp@intel.com, Jann Horn <jannh@google.com>, intel-gfx@lists.freedesktop.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, fengwei.yin@intel.com, gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, kernel test robot <oliver.sang@intel.com>, ying.huang@intel.com, oe-lkp@lists.linux.dev, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> So that nobody else would waste any time on this, attached is a new
-> attempt. This time actually tested *after* the changes.
+Stephen Rothwell <sfr@canb.auug.org.au> writes:
+> Hi all,
+>
+> Today's linux-next merge of the tty tree got a conflict in:
+>
+>   drivers/tty/hvc/hvc_console.h
+>
+> between commit:
+>
+>   c9e38dc90e1c ("tty: hvc: Make hvc_remove() return no value")
+>
+> from the powerpc tree and commit:
+>
+>   7f30c19caf94 ("tty: hvc: Make hvc_remove() return no value")
+>
+> from the tty tree.
+>
+> These are slightly different versions of the same patch.
 
-So I've picked up your patch (vfs.misc). It's clever alright so thanks
-for the comments in there otherwise I would've stared at this for far
-too long.
+I'll drop it from my tree.
 
-It's a little unpleasant because of the cast-orama going on before we
-check the file pointer but I don't see that it's in any way wrong. And
-given how focussed people are with __fget_* performance I think it might
-even be the right thing to do.
-
-But the cleverness means we have the same logic slightly differently
-twice. Not too bad ofc but not too nice either especially because that
-rcu lookup is pretty complicated already.
-
-A few days ago I did just write a long explanatory off-list email to
-someone who had questions about this and who is fairly experienced so
-we're not making it easy on people. But performance or simplicity; one
-can't necessarily always have both.
+cheers
