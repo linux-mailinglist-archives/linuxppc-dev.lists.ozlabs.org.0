@@ -1,95 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC3317F9F37
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 13:03:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E5D7F9FD1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 13:42:43 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ep4482iO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gt3M4qJ7;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sf43g1plyz3ckk
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 23:03:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sf4xD45hVz3cWd
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 23:42:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ep4482iO;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gt3M4qJ7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=disgoel@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.8; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sf42l3dMGz3cJN
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Nov 2023 23:02:22 +1100 (AEDT)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3ARBk3o2013180;
-	Mon, 27 Nov 2023 12:02:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=qUzFEhPn70J4CgXFRu3istZbtk83B+/MorkvH5PO9iE=;
- b=ep4482iOSu/wW8Yc8PUQNwqTBXyX6VopuoCBS+/QmYMS03zYUZCFYdgVvEdxZZ6yaLkC
- wn8LTN7CohQQX8pPIyqee90rODi0JA7s5tvrcoTOKa7e2AU5wRLT39QlrJRLAaIAZNb5
- W2eqrpF4rgOFLkBdosrMF5GUp+KmvkpFdN7nlYEVfyXPBZ6Rfu4jlPaDTRk8usPKc3Kt
- 0gs4Hr30YTmI6aVcG1VLJL60yuEjMqRfsIe8Opg98S3eM2hc+gvhxnv5htFzhw6K4/RZ
- STtK2j1Bw63PPgGWFotawimkzAoAMwz18GrTPGoCeUbz7faaKmuQzGMUcr3xGdPChO2l Pw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ukrbbb0p7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Nov 2023 12:02:09 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3ARBkDBP013994;
-	Mon, 27 Nov 2023 12:02:08 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ukrbbb0nw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Nov 2023 12:02:08 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3ARBYZ6m011082;
-	Mon, 27 Nov 2023 12:02:07 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ukwy1fy4r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Nov 2023 12:02:07 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3ARC24Fg11207240
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Nov 2023 12:02:04 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ACFAC20040;
-	Mon, 27 Nov 2023 12:02:04 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EB2BC2004E;
-	Mon, 27 Nov 2023 12:02:01 +0000 (GMT)
-Received: from [9.43.15.114] (unknown [9.43.15.114])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 27 Nov 2023 12:02:01 +0000 (GMT)
-Message-ID: <92bbba90-c7e4-43de-98dc-497ca323eacc@linux.ibm.com>
-Date: Mon, 27 Nov 2023 17:32:00 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sf4wK1qXBz2ygx
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Nov 2023 23:41:50 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1701088914; x=1732624914;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=v3n/pRVGJN+BSoahXNcOeH95ditBSNEnKGtGNzh0jZc=;
+  b=gt3M4qJ71i8gcWl39fZ2wnf390Y2cpolxF5B/hlCVilwbCOHPuoST6Gg
+   KIKUQfjipSSk6rb1djJZnMM7arzyX0iabfZNUFfDAzJGBQKI8mTE85zo2
+   QmTMJPht/20ykRPAMGfmJORp26ggmnJKTMKELxihzTxgraDVRIhf1Wean
+   fhJL68FxvTjvfuiIxXYSa1dPmU/19Is6ciIF+xrlPipK/xms8xzB6e0xv
+   mFs0+oX+NHELmz2NbjKynpQ29SZYpHlD+KPYM2lDYGEcJioHF5hthcojd
+   JvJd5FII4sjueYt56IsCsptFUp1Gob8qJVjizkRWeYmjKT1y09WjswE8l
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10906"; a="5883170"
+X-IronPort-AV: E=Sophos;i="6.04,230,1695711600"; 
+   d="scan'208";a="5883170"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2023 04:41:43 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10906"; a="802625987"
+X-IronPort-AV: E=Sophos;i="6.04,230,1695711600"; 
+   d="scan'208";a="802625987"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2023 04:41:39 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1r7avg-0000000HTOL-0Mob;
+	Mon, 27 Nov 2023 14:41:36 +0200
+Date: Mon, 27 Nov 2023 14:41:35 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: George Stark <gnstark@salutedevices.com>
+Subject: Re: [PATCH 0/8] devm_led_classdev_register() usage problem
+Message-ID: <ZWSOfya16XoCfy5H@smile.fi.intel.com>
+References: <20231025130737.2015468-1-gnstark@salutedevices.com>
+ <ZWDBOfpsC5AVT8bX@smile.fi.intel.com>
+ <13cd5524-0d40-4f07-b542-002b79b37533@salutedevices.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] perf vendor events: Update datasource event name to fix
- duplicate events
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, acme@kernel.org,
-        jolsa@kernel.org, adrian.hunter@intel.com, irogers@google.com,
-        james.clark@arm.com, namhyung@kernel.org
-References: <20231123160110.94090-1-atrajeev@linux.vnet.ibm.com>
-Content-Language: en-GB
-From: Disha Goel <disgoel@linux.ibm.com>
-In-Reply-To: <20231123160110.94090-1-atrajeev@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: YHE9b4sl5yw4eRmBBROA7V3jaGLBxAeP
-X-Proofpoint-GUID: 5oIl70ZNfC0Xf7RIKW0POau_wkqXS47f
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-27_09,2023-11-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- impostorscore=0 mlxlogscore=999 clxscore=1011 phishscore=0
- lowpriorityscore=0 malwarescore=0 adultscore=0 priorityscore=1501
- mlxscore=0 spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2311060000 definitions=main-2311270082
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <13cd5524-0d40-4f07-b542-002b79b37533@salutedevices.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,108 +73,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-perf-users@vger.kernel.org, kjain@linux.ibm.com, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, disgoel@linux.vnet.ibm.com
+Cc: "jic23@kernel.org" <jic23@kernel.org>, kernel@salutedevices.com, vadimp@nvidia.com, lee@kernel.org, linux-kernel@vger.kernel.org, npiggin@gmail.com, pavel@ucw.cz, linuxppc-dev@lists.ozlabs.org, linux-leds@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 23/11/23 9:31 pm, Athira Rajeev wrote:
+On Sat, Nov 25, 2023 at 03:47:41AM +0300, George Stark wrote:
+> On 11/24/23 18:28, Andy Shevchenko wrote:
+> > On Wed, Oct 25, 2023 at 04:07:29PM +0300, George Stark wrote:
+> > > Lots of drivers use devm_led_classdev_register() to register their led objects
+> > > and let the kernel free those leds at the driver's remove stage.
+> > > It can lead to a problem due to led_classdev_unregister()
+> > > implementation calls led_set_brightness() to turn off the led.
+> > > led_set_brightness() may call one of the module's brightness_set callbacks.
+> > > If that callback uses module's resources allocated without using devm funcs()
+> > > then those resources will be already freed at module's remove() callback and
+> > > we may have use-after-free situation.
+> > > 
+> > > Here is an example:
+> > > 
+> > > module_probe()
+> > > {
+> > >      devm_led_classdev_register(module_brightness_set_cb);
+> > >      mutex_init(&mutex);
+> > > }
+> > > 
+> > > module_brightness_set_cb()
+> > > {
+> > >      mutex_lock(&mutex);
+> > >      do_set_brightness();
+> > >      mutex_unlock(&mutex);
+> > > }
+> > > 
+> > > module_remove()
+> > > {
+> > >      mutex_destroy(&mutex);
+> > > }
+> > > 
+> > > at rmmod:
+> > > module_remove()
+> > >      ->mutex_destroy(&mutex);
+> > > devres_release_all()
+> > >      ->led_classdev_unregister();
+> > >          ->led_set_brightness();
+> > >              ->module_brightness_set_cb();
+> > >                   ->mutex_lock(&mutex);  /* use-after-free */
+> > > 
+> > > I think it's an architectural issue and should be discussed thoroughly.
+> > > Some thoughts about fixing it as a start:
+> > > 1) drivers can use devm_led_classdev_unregister() to explicitly free leds before
+> > > dependend resources are freed. devm_led_classdev_register() remains being useful
+> > > to simplify probe implementation.
+> > > As a proof of concept I examined all drivers from drivers/leds and prepared
+> > > patches where it's needed. Sometimes it was not as clean as just calling
+> > > devm_led_classdev_unregister() because several drivers do not track
+> > > their leds object at all - they can call devm_led_classdev_register() and drop the
+> > > returned pointer. In that case I used devres group API.
+> > > 
+> > > Drivers outside drivers/leds should be checked too after discussion.
+> > > 
+> > > 2) remove led_set_brightness from led_classdev_unregister() and force the drivers
+> > > to turn leds off at shutdown. May be add check that led's brightness is 0
+> > > at led_classdev_unregister() and put a warning to dmesg if it's not.
+> > > Actually in many cases it doesn't really need to turn off the leds manually one-by-one
+> > > if driver shutdowns whole led controller. For the last case to disable the warning
+> > > new flag can be brought in e.g LED_AUTO_OFF_AT_SHUTDOWN (similar to LED_RETAIN_AT_SHUTDOWN).
+> > 
+> > NAK.
+> > 
+> > Just fix the drivers by wrapping mutex_destroy() into devm, There are many
+> > doing so. You may be brave enough to introduce devm_mutex_init() somewhere
+> > in include/linux/device*
+> 
+> Just one thing about mutex_destroy(). It seems like there's no single
+> opinion on should it be called in 100% cases e.g. in remove() paths.
+> For example in iio subsystem Jonathan suggests it can be dropped in simple
+> cases: https://www.spinics.net/lists/linux-iio/msg73423.html
+> 
+> So the question is can we just drop mutex_destroy() in module's remove()
+> callback here if that mutex is needed for devm subsequent callbacks?
 
-> Running "perf list" on powerpc fails with segfault
-> as below:
->
->     ./perf list
->     Segmentation fault (core dumped)
->
-> This happens because of duplicate events in the json list.
-> The powerpc Json event list contains some event with same
-> event name, but different event code. They are:
-> - PM_INST_FROM_L3MISS (Present in datasource and frontend)
-> - PM_MRK_DATA_FROM_L2MISS (Present in datasource and marked)
-> - PM_MRK_INST_FROM_L3MISS (Present in datasource and marked)
-> - PM_MRK_DATA_FROM_L3MISS (Present in datasource and marked)
->
-> pmu_events_table__num_events uses the value from
-> table_pmu->num_entries which includes duplicate events as
-> well. This causes issue during "perf list" and results in
-> segmentation fault.
->
-> Since both event codes are valid, append _DSRC to the Data
-> Source events (datasource.json), so that they would have a
-> unique name. Also add PM_DATA_FROM_L2MISS_DSRC and
-> PM_DATA_FROM_L3MISS_DSRC events. With the fix, perf list
-> works as expected.
->
-> Fixes: fc1435807533 ("perf vendor events power10: Update JSON/events")
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+mutex_destroy() makes sense when debugging mutexes. It's harmless to drop,
+but will make life harder to one who is trying to debug something there...
 
-I have tested the patch on Power10 machine. Perf list works correctly without any segfault now.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-	# ./perf list
 
-	List of pre-defined events (to be used in -e or -M):
-
-	  branch-instructions OR branches                    [Hardware event]
-	  branch-misses                                      [Hardware event]
-
-Tested-by: Disha Goel <disgoel@linux.ibm.com>
-
-> ---
->   .../arch/powerpc/power10/datasource.json       | 18 ++++++++++++++----
->   1 file changed, 14 insertions(+), 4 deletions(-)
->
-> diff --git a/tools/perf/pmu-events/arch/powerpc/power10/datasource.json b/tools/perf/pmu-events/arch/powerpc/power10/datasource.json
-> index 6b0356f2d301..0eeaaf1a95b8 100644
-> --- a/tools/perf/pmu-events/arch/powerpc/power10/datasource.json
-> +++ b/tools/perf/pmu-events/arch/powerpc/power10/datasource.json
-> @@ -99,6 +99,11 @@
->       "EventName": "PM_INST_FROM_L2MISS",
->       "BriefDescription": "The processor's instruction cache was reloaded from a source beyond the local core's L2 due to a demand miss."
->     },
-> +  {
-> +    "EventCode": "0x0003C0000000C040",
-> +    "EventName": "PM_DATA_FROM_L2MISS_DSRC",
-> +    "BriefDescription": "The processor's L1 data cache was reloaded from a source beyond the local core's L2 due to a demand miss."
-> +  },
->     {
->       "EventCode": "0x000380000010C040",
->       "EventName": "PM_INST_FROM_L2MISS_ALL",
-> @@ -161,9 +166,14 @@
->     },
->     {
->       "EventCode": "0x000780000000C040",
-> -    "EventName": "PM_INST_FROM_L3MISS",
-> +    "EventName": "PM_INST_FROM_L3MISS_DSRC",
->       "BriefDescription": "The processor's instruction cache was reloaded from beyond the local core's L3 due to a demand miss."
->     },
-> +  {
-> +    "EventCode": "0x0007C0000000C040",
-> +    "EventName": "PM_DATA_FROM_L3MISS_DSRC",
-> +    "BriefDescription": "The processor's L1 data cache was reloaded from beyond the local core's L3 due to a demand miss."
-> +  },
->     {
->       "EventCode": "0x000780000010C040",
->       "EventName": "PM_INST_FROM_L3MISS_ALL",
-> @@ -981,7 +991,7 @@
->     },
->     {
->       "EventCode": "0x0003C0000000C142",
-> -    "EventName": "PM_MRK_DATA_FROM_L2MISS",
-> +    "EventName": "PM_MRK_DATA_FROM_L2MISS_DSRC",
->       "BriefDescription": "The processor's L1 data cache was reloaded from a source beyond the local core's L2 due to a demand miss for a marked instruction."
->     },
->     {
-> @@ -1046,12 +1056,12 @@
->     },
->     {
->       "EventCode": "0x000780000000C142",
-> -    "EventName": "PM_MRK_INST_FROM_L3MISS",
-> +    "EventName": "PM_MRK_INST_FROM_L3MISS_DSRC",
->       "BriefDescription": "The processor's instruction cache was reloaded from beyond the local core's L3 due to a demand miss for a marked instruction."
->     },
->     {
->       "EventCode": "0x0007C0000000C142",
-> -    "EventName": "PM_MRK_DATA_FROM_L3MISS",
-> +    "EventName": "PM_MRK_DATA_FROM_L3MISS_DSRC",
->       "BriefDescription": "The processor's L1 data cache was reloaded from beyond the local core's L3 due to a demand miss for a marked instruction."
->     },
->     {
