@@ -2,94 +2,94 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5901C7F98E9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 06:49:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77AEB7F98EA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 06:50:52 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EZ4p4q9O;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=o9QLWt9Y;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sdvmy21Xdz3cjr
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 16:49:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sdvp22hd0z3clc
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 16:50:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EZ4p4q9O;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=o9QLWt9Y;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sdvl65nLnz3cPS
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Nov 2023 16:48:18 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AR4EJ2o026488;
-	Mon, 27 Nov 2023 05:48:04 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SdvlC4sPdz3c5P
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Nov 2023 16:48:23 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AR5i3dZ006009;
+	Mon, 27 Nov 2023 05:48:09 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=3VE38AC5lEeJn5iGZ7XVpsGdiGnZ/I2b116TDYXiRzc=;
- b=EZ4p4q9OlkrlP1aXdPMcHuTtghxoyzDi0QgwkMh95XcTwqOmUXXusLWC3PELu9UJV+8U
- C9OdDVQPxmiwg/hUqYc+vAtigaEGmN3VAQFkdyDtgoW8skGEhZVC5WGH7Vdb49N42mnb
- WOtBhomCj9Xl9eAzl2ecXAsn9Dl8u1UuNptjTn/WKNnHqer/Ze7jw5Bk3MLExhmZfXX1
- 5w2fR0YPV1l3RkRdJkzRdKGoqewJKmNP+2on3/5x3auPy5PqGDKrYSugkCmq3a/BRZL3
- c74dA8PEq8Rw6C7PaDtRy995Ktm/GhZtOlSBH2tbVjpghlm9+EfRCdR6jhOyNVbBQQ3k Nw== 
+ bh=59mcf6fBIdwg2SNCF1lVg0EMHsi0wmSPoX0uIzmPuCA=;
+ b=o9QLWt9Y7mtb0x6f+vTEhgaTN6JXiv3nMfvHUPuSzz8DscefESQnDMOca8WfU8bDe3O3
+ V+b7H3baePbfvQobK8IF+SnfWIv74ul70/C17FSMbBqC46JurrKDNxIpjKN0+KEF3An2
+ xJ+rvNwE8cFpbz1N8my2PlSGd7rk5qIbeUSJyQ4csWyB2hitMeAvEl7Ay+vDONh9yFvb
+ rbxP9mp6SAAXvDFN27EsWdeVeS+9s3mOm+sKyCG/c0uDn1VR/5nBRScZJdvPm8LGw6Zs
+ BUsnU4uw7qqdz4nZ04e/Ru+gtcPh9f/sWH229ic8gZfdyDJemtIaJvu/dTtbME0V4WCB xQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3umgaq5hnt-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3umgdp5gr2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Nov 2023 05:48:03 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AR5m36i015367;
-	Mon, 27 Nov 2023 05:48:03 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3umgaq5hn3-1
+	Mon, 27 Nov 2023 05:48:09 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AR5TgLv030732;
+	Mon, 27 Nov 2023 05:48:08 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3umgdp5gqn-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Nov 2023 05:48:03 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3AR44Fic013738;
-	Mon, 27 Nov 2023 05:48:01 GMT
+	Mon, 27 Nov 2023 05:48:08 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3AR44AZO007618;
+	Mon, 27 Nov 2023 05:48:07 GMT
 Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ukvrk6fqk-1
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ukwfjp8qt-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Nov 2023 05:48:01 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3AR5lxst19267876
+	Mon, 27 Nov 2023 05:48:07 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3AR5m6CK26542574
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Nov 2023 05:47:59 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C2ACF200FA;
-	Mon, 27 Nov 2023 05:47:59 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 56B55200F8;
-	Mon, 27 Nov 2023 05:47:59 +0000 (GMT)
+	Mon, 27 Nov 2023 05:48:06 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0FE6F20148;
+	Mon, 27 Nov 2023 05:48:06 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 97F1C20147;
+	Mon, 27 Nov 2023 05:48:05 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 27 Nov 2023 05:47:59 +0000 (GMT)
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 27 Nov 2023 05:48:05 +0000 (GMT)
 Received: from socotra.ibm.com (unknown [9.177.95.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 32B376015D;
-	Mon, 27 Nov 2023 16:47:53 +1100 (AEDT)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 733956030B;
+	Mon, 27 Nov 2023 16:48:00 +1100 (AEDT)
 From: Rohan McLure <rmclure@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/3] powerpc: Apply __always_inline to interrupt_{enter,exit}_prepare()
-Date: Mon, 27 Nov 2023 16:46:46 +1100
-Message-ID: <20231127054648.1205221-3-rmclure@linux.ibm.com>
+Subject: [PATCH 3/3] powerpc/64: Only warn for kuap locked when KCSAN not present
+Date: Mon, 27 Nov 2023 16:46:47 +1100
+Message-ID: <20231127054648.1205221-4-rmclure@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231127054648.1205221-2-rmclure@linux.ibm.com>
 References: <20231127054648.1205221-2-rmclure@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: _suFl8FwfnV6oG2IIciQIXbdD8BXY50c
-X-Proofpoint-ORIG-GUID: LUEPU4xvJP3sZYnMRIAicHmF1HPAg_ht
+X-Proofpoint-GUID: Ob1PPKjzai-ynY2apSI49XHBzrbCYK4f
+X-Proofpoint-ORIG-GUID: _vhaxRz7zwe2naOyqdpSkhWYC0QjeC6T
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-11-27_03,2023-11-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=1 malwarescore=0 bulkscore=0
- mlxlogscore=195 phishscore=0 lowpriorityscore=0 spamscore=1 adultscore=0
- mlxscore=1 priorityscore=1501 impostorscore=0 clxscore=1015 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311060000
- definitions=main-2311270039
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
+ lowpriorityscore=0 bulkscore=0 mlxscore=0 spamscore=0 phishscore=0
+ mlxlogscore=697 impostorscore=0 malwarescore=0 suspectscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311270039
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,73 +105,37 @@ Cc: elver@google.com, arnd@arndb.de, gautam@linux.ibm.com, Rohan McLure <rmclure
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In keeping with the advice given by Documentation/core-api/entry.rst,
-entry and exit handlers for interrupts should not be instrumented.
-Guarantee that the interrupt_{enter,exit}_prepare() routines are inlined
-so that they will inheret instrumentation from their caller.
+Arbitrary instrumented locations, including syscall handlers, can call
+arch_local_irq_restore() transitively when KCSAN is enabled, and in turn
+also replay_soft_interrupts_irqrestore(). The precondition on entry to
+this routine that is checked is that KUAP is enabled (user access
+prohibited). Failure to meet this condition only triggers a warning
+however, and afterwards KUAP is enabled anyway. That is, KUAP being
+disabled on entry is in fact permissable, but not possible on an
+uninstrumented kernel.
 
-KCSAN kernels were observed to compile without inlining these routines,
-which would lead to grief on NMI handlers.
+Disable this assertion only when KCSAN is enabled.
 
+Suggested-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
 ---
- arch/powerpc/include/asm/interrupt.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/powerpc/kernel/irq_64.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
-index a4196ab1d016..5f9be87c01ca 100644
---- a/arch/powerpc/include/asm/interrupt.h
-+++ b/arch/powerpc/include/asm/interrupt.h
-@@ -150,7 +150,7 @@ static inline void booke_restore_dbcr0(void)
- #endif
- }
+diff --git a/arch/powerpc/kernel/irq_64.c b/arch/powerpc/kernel/irq_64.c
+index 938e66829eae..1b7e8ebb052a 100644
+--- a/arch/powerpc/kernel/irq_64.c
++++ b/arch/powerpc/kernel/irq_64.c
+@@ -189,7 +189,8 @@ static inline __no_kcsan void replay_soft_interrupts_irqrestore(void)
+ 	 * and re-locking AMR but we shouldn't get here in the first place,
+ 	 * hence the warning.
+ 	 */
+-	kuap_assert_locked();
++	if (!IS_ENABLED(CONFIG_KCSAN))
++		kuap_assert_locked();
  
--static inline void interrupt_enter_prepare(struct pt_regs *regs)
-+static __always_inline void interrupt_enter_prepare(struct pt_regs *regs)
- {
- #ifdef CONFIG_PPC64
- 	irq_soft_mask_set(IRQS_ALL_DISABLED);
-@@ -215,11 +215,11 @@ static inline void interrupt_enter_prepare(struct pt_regs *regs)
-  * However interrupt_nmi_exit_prepare does return directly to regs, because
-  * NMIs do not do "exit work" or replay soft-masked interrupts.
-  */
--static inline void interrupt_exit_prepare(struct pt_regs *regs)
-+static __always_inline void interrupt_exit_prepare(struct pt_regs *regs)
- {
- }
- 
--static inline void interrupt_async_enter_prepare(struct pt_regs *regs)
-+static __always_inline void interrupt_async_enter_prepare(struct pt_regs *regs)
- {
- #ifdef CONFIG_PPC64
- 	/* Ensure interrupt_enter_prepare does not enable MSR[EE] */
-@@ -238,7 +238,7 @@ static inline void interrupt_async_enter_prepare(struct pt_regs *regs)
- 	irq_enter();
- }
- 
--static inline void interrupt_async_exit_prepare(struct pt_regs *regs)
-+static __always_inline void interrupt_async_exit_prepare(struct pt_regs *regs)
- {
- 	/*
- 	 * Adjust at exit so the main handler sees the true NIA. This must
-@@ -278,7 +278,7 @@ static inline bool nmi_disables_ftrace(struct pt_regs *regs)
- 	return true;
- }
- 
--static inline void interrupt_nmi_enter_prepare(struct pt_regs *regs, struct interrupt_nmi_state *state)
-+static __always_inline void interrupt_nmi_enter_prepare(struct pt_regs *regs, struct interrupt_nmi_state *state)
- {
- #ifdef CONFIG_PPC64
- 	state->irq_soft_mask = local_paca->irq_soft_mask;
-@@ -340,7 +340,7 @@ static inline void interrupt_nmi_enter_prepare(struct pt_regs *regs, struct inte
- 	nmi_enter();
- }
- 
--static inline void interrupt_nmi_exit_prepare(struct pt_regs *regs, struct interrupt_nmi_state *state)
-+static __always_inline void interrupt_nmi_exit_prepare(struct pt_regs *regs, struct interrupt_nmi_state *state)
- {
- 	if (mfmsr() & MSR_DR) {
- 		// nmi_exit if relocations are on
+ 	if (kuap_state != AMR_KUAP_BLOCKED)
+ 		set_kuap(AMR_KUAP_BLOCKED);
 -- 
 2.43.0
 
