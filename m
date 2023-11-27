@@ -1,87 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 173037F9C12
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 09:49:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC917F9C18
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 09:49:49 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZmXO14n7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hF5W+B5w;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SdzlZ6FSnz3cRt
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 19:48:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SdzmV3W6nz3cbN
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 19:49:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZmXO14n7;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hF5W+B5w;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sdzkh56WLz3bcJ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Nov 2023 19:48:11 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AR71t71020032;
-	Mon, 27 Nov 2023 08:48:02 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sdzkq4gV8z3cRc
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Nov 2023 19:48:19 +1100 (AEDT)
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AR8VDOM006414;
+	Mon, 27 Nov 2023 08:48:12 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=eVNkdqNxZfot6iLTh8wftJAbMJwzWE74W3gGr4ce6Zw=;
- b=ZmXO14n7pk0TQF+zmcVYMrhQ+n5O3Es6vGAkdF3N5VGHCf31ZgyKyZQltChxejklnbQ6
- ZbMZP9/BY5i8HpDxEPPM1de4tdaistawcriv2mKD7ySWKIIbSEcOlaVuSw41DuKo34Cj
- YKdqKzu1u3CLym6Xu40FfPVfKOinw2k+hbpOwCviUaJ/Oanfe4FBAQKEe/P9DcWJ+AHJ
- 8uX0P32chdFUchsVSm3T6kroJFar9Hwgfh6qwHzO+bzeP5xUfgIbMUqyYJ3V4UtEy8iQ
- jDyY5xp/HDOfW+7NDxTR7LkyZ0t8j3TeB3bf6KCpzLdkb1RYba14hZotr6ssM1dQdweH IA== 
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=PfZxBf6wR2R4ADxozYp7GNjCmy9ZjASv4l7LlxFZ15E=;
+ b=hF5W+B5wwlCmSy30nPx26jIZyFJ+CJlMVW5Axoz2f9LVfE/hrfCzmAyHhZ5Zv+CcxaFe
+ 5mj1YtzAsH/VaWbvsBNTrNkI8uYyW46CFjwRhg09oUdzJ5HBoU5FcLSBARRF+ZgE3uZr
+ u2KaRB9LxrZ07Cr/4fp9Fx8bAB1c2EmvvKn+Irhu+CcYPbERahqSHmQ3me4sXJkhyUzj
+ 2HUZ+nXQrD1x9Ns22wp4wofHBYoh6ocr/nsXgFkXbiJ41XM2jolg1k1zjujyIunJVmGK
+ LW8R6ttKCCN4qAaPAeVblMaGTmmMyuIylPgoIgbjkPY4NDyYegnPw/HgwH3g3ZIw5DIa XQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3umgdp9r7x-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ukrje69sx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Nov 2023 08:48:02 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AR70XCJ021157;
-	Mon, 27 Nov 2023 08:48:01 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3umgdp9r7m-1
+	Mon, 27 Nov 2023 08:48:12 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AR8V9Ks005889;
+	Mon, 27 Nov 2023 08:48:11 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ukrje69sj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Nov 2023 08:48:01 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3AR8JJhV016824;
-	Mon, 27 Nov 2023 08:48:01 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ukv8n7crj-1
+	Mon, 27 Nov 2023 08:48:11 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3AR8JKw9010948;
+	Mon, 27 Nov 2023 08:48:10 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ukwy1ewav-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Nov 2023 08:48:01 +0000
+	Mon, 27 Nov 2023 08:48:10 +0000
 Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3AR8lxjX22282810
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3AR8m72N18088490
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Nov 2023 08:47:59 GMT
+	Mon, 27 Nov 2023 08:48:07 GMT
 Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0348058067;
-	Mon, 27 Nov 2023 08:47:59 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 7CAB458067;
+	Mon, 27 Nov 2023 08:48:07 +0000 (GMT)
 Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 75B3D58063;
-	Mon, 27 Nov 2023 08:47:57 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id A4E0B58068;
+	Mon, 27 Nov 2023 08:48:05 +0000 (GMT)
 Received: from localhost.ibm.com (unknown [9.67.85.162])
 	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 27 Nov 2023 08:47:57 +0000 (GMT)
+	Mon, 27 Nov 2023 08:48:05 +0000 (GMT)
 From: Haren Myneni <haren@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 1/2] powerpc/rtas: Create rtas_busy_sleep function
-Date: Mon, 27 Nov 2023 00:47:52 -0800
-Message-Id: <20231127084753.3827119-1-haren@linux.ibm.com>
+Subject: [PATCH 2/2] powerpc/pseries/vas: Call rtas_busy_sleep() to support HCALL delay
+Date: Mon, 27 Nov 2023 00:47:53 -0800
+Message-Id: <20231127084753.3827119-2-haren@linux.ibm.com>
 X-Mailer: git-send-email 2.26.3
+In-Reply-To: <20231127084753.3827119-1-haren@linux.ibm.com>
+References: <20231127084753.3827119-1-haren@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: _urwV5v4ajwv6aM0JQp9R3ZEmUBJmvT7
-X-Proofpoint-ORIG-GUID: _-pyf34rryJYMe3Zj1Z94-9xOXPCN1NU
+X-Proofpoint-GUID: J79H1_C6t6pT_yRFNC6eKXujayb17n9z
+X-Proofpoint-ORIG-GUID: QvP6McD7xkCfibYflL7T_aBvEtEZJjpQ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-11-27_07,2023-11-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
- lowpriorityscore=0 bulkscore=0 mlxscore=0 spamscore=0 phishscore=0
- mlxlogscore=916 impostorscore=0 malwarescore=0 suspectscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311270060
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ priorityscore=1501 lowpriorityscore=0 impostorscore=0 clxscore=1015
+ mlxlogscore=934 spamscore=0 bulkscore=0 mlxscore=0 phishscore=0
+ adultscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311060000 definitions=main-2311270061
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,109 +100,50 @@ Cc: nathanl@linux.ibm.com, Haren Myneni <haren@linux.ibm.com>, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Move the RTAS delay sleep code to new rtas_busy_sleep(). It can
-be called from HCALL delay code that needs to support both usleep()
-or msleep() depends on delay value.
+VAS allocate, modify and deallocate HCALLs returns
+H_LONG_BUSY_ORDER_1_MSEC or H_LONG_BUSY_ORDER_10_MSEC for busy
+delay and expects OS to reissue HCALL after that delay. But using
+msleep() will often sleep at least 20 msecs even though the
+hypervisor expects to reissue these HCALLs after 1 or 10msecs.
+It might cause these HCALLs takes longer when multiple threads
+issue open or close VAS windows simultaneously.
+
+So instead of using msleep(), call rtas_busy_sleep() which uses
+usleep_range() if the delay is <= 20msecs.
 
 Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+Suggested-by: Nathan Lynch <nathanl@linux.ibm.com>
 ---
- arch/powerpc/include/asm/rtas.h |  1 +
- arch/powerpc/kernel/rtas.c      | 56 ++++++++++++++++++---------------
- 2 files changed, 32 insertions(+), 25 deletions(-)
+ arch/powerpc/platforms/pseries/vas.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
-index c697c3c74694..b389351a0045 100644
---- a/arch/powerpc/include/asm/rtas.h
-+++ b/arch/powerpc/include/asm/rtas.h
-@@ -435,6 +435,7 @@ extern void rtas_get_rtc_time(struct rtc_time *rtc_time);
- extern int rtas_set_rtc_time(struct rtc_time *rtc_time);
+diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
+index 71d52a670d95..c0ffdfc51f96 100644
+--- a/arch/powerpc/platforms/pseries/vas.c
++++ b/arch/powerpc/platforms/pseries/vas.c
+@@ -18,6 +18,7 @@
+ #include <asm/plpar_wrappers.h>
+ #include <asm/firmware.h>
+ #include <asm/vphn.h>
++#include <asm/rtas.h>
+ #include <asm/vas.h>
+ #include "vas.h"
  
- extern unsigned int rtas_busy_delay_time(int status);
-+extern void rtas_busy_sleep(int value);
- bool rtas_busy_delay(int status);
- 
- extern int early_init_dt_scan_rtas(unsigned long node,
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index eddc031c4b95..aa0bd7c4dcf1 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -1250,6 +1250,36 @@ static bool __init rtas_busy_delay_early(int status)
- 	return retry;
- }
- 
-+void rtas_busy_sleep(int value)
-+{
-+	unsigned int ms;
-+
-+	ms = rtas_busy_delay_time(value);
-+	/*
-+	 * The extended delay hint can be as high as 100 seconds.
-+	 * Surely any function returning such a status is either
-+	 * buggy or isn't going to be significantly slowed by us
-+	 * polling at 1HZ. Clamp the sleep time to one second.
-+	 */
-+	ms = clamp(ms, 1U, 1000U);
-+	/*
-+	 * The delay hint is an order-of-magnitude suggestion, not
-+	 * a minimum. It is fine, possibly even advantageous, for
-+	 * us to pause for less time than hinted. For small values,
-+	 * use usleep_range() to ensure we don't sleep much longer
-+	 * than actually needed.
-+	 *
-+	 * See Documentation/timers/timers-howto.rst for
-+	 * explanation of the threshold used here. In effect we use
-+	 * usleep_range() for 9900 and 9901, msleep() for
-+	 * 9902-9905.
-+	 */
-+	if (ms <= 20)
-+		usleep_range(ms * 100, ms * 1000);
-+	else
-+		msleep(ms);
-+}
-+
- /**
-  * rtas_busy_delay() - helper for RTAS busy and extended delay statuses
-  *
-@@ -1270,7 +1300,6 @@ static bool __init rtas_busy_delay_early(int status)
-  */
- bool __ref rtas_busy_delay(int status)
+@@ -38,7 +39,13 @@ static long hcall_return_busy_check(long rc)
  {
--	unsigned int ms;
- 	bool ret;
- 
- 	/*
-@@ -1282,30 +1311,7 @@ bool __ref rtas_busy_delay(int status)
- 	switch (status) {
- 	case RTAS_EXTENDED_DELAY_MIN...RTAS_EXTENDED_DELAY_MAX:
- 		ret = true;
--		ms = rtas_busy_delay_time(status);
--		/*
--		 * The extended delay hint can be as high as 100 seconds.
--		 * Surely any function returning such a status is either
--		 * buggy or isn't going to be significantly slowed by us
--		 * polling at 1HZ. Clamp the sleep time to one second.
--		 */
--		ms = clamp(ms, 1U, 1000U);
--		/*
--		 * The delay hint is an order-of-magnitude suggestion, not
--		 * a minimum. It is fine, possibly even advantageous, for
--		 * us to pause for less time than hinted. For small values,
--		 * use usleep_range() to ensure we don't sleep much longer
--		 * than actually needed.
--		 *
--		 * See Documentation/timers/timers-howto.rst for
--		 * explanation of the threshold used here. In effect we use
--		 * usleep_range() for 9900 and 9901, msleep() for
--		 * 9902-9905.
--		 */
--		if (ms <= 20)
--			usleep_range(ms * 100, ms * 1000);
--		else
--			msleep(ms);
-+		rtas_busy_sleep(status);
- 		break;
- 	case RTAS_BUSY:
- 		ret = true;
+ 	/* Check if we are stalled for some time */
+ 	if (H_IS_LONG_BUSY(rc)) {
+-		msleep(get_longbusy_msecs(rc));
++		/*
++		 * Allocate, Modify and Deallocate HCALLs can return
++		 * H_LONG_BUSY_ORDER_1_MSEC or H_LONG_BUSY_ORDER_10_MSEC
++		 * and expects OS to reissue HCALL after 1msec or
++		 * 10msecs.
++		 */
++		rtas_busy_sleep(rc);
+ 		rc = H_BUSY;
+ 	} else if (rc == H_BUSY) {
+ 		cond_resched();
 -- 
 2.26.3
 
