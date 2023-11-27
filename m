@@ -1,50 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68FF37F96F2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 01:58:11 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=lUHZ3bBD;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C89417F980F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 04:57:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SdnJK2Hylz3cSM
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 11:58:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SdsH95JY7z3cjf
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Nov 2023 14:57:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=lUHZ3bBD;
-	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=43.155.80.173; helo=bg5.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
+X-Greylist: delayed 387 seconds by postgrey-1.37 at boromir; Mon, 27 Nov 2023 13:40:13 AEDT
+Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.155.80.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SdnHV1xHrz30hn
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Nov 2023 11:57:26 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=201702; t=1701046640;
-	bh=II8fvvTebl5wXTs9nSR8kOFZ05zYuS72F34TwSUPL8E=;
-	h=Date:From:To:Cc:Subject:From;
-	b=lUHZ3bBDN9SyBT9RxrRmmb5xKgA5u3W/HxOjN7dV3h5gKREjzFw7FV5CcAAmi5mL6
-	 oBEJ+ExvTmjv8trXTlZ62ktp7lk7+geue9gK1AD8MtHuj1jwoVEyI8BMDKYH9q0+kn
-	 dYO2VVD3zKem4/1EBz/RbPf3r37N3a7SeqBKsLACBV4NF9oOqk9D3uK+20KANh6NlY
-	 KjPuvOzLD1/qiSRDGRbnu0xRWf5tfSR+SSkm3FH/S2Eg8EWBpXdh1torwUDyJlWKO7
-	 yiEFdXBwf0FOXSIBuAskyTUTY8sx+1rsgfSNWvUBlZUSsTxAENWDcRt6c243QtqdN+
-	 J+2YjIe/b1w5A==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SdnHM6p67z4wcJ;
-	Mon, 27 Nov 2023 11:57:19 +1100 (AEDT)
-Date: Mon, 27 Nov 2023 11:57:18 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Greg KH <greg@kroah.com>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: linux-next: duplicate patch in the tty tree
-Message-ID: <20231127115718.7ad1701c@canb.auug.org.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SdqZ556vrz30gH
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Nov 2023 13:40:13 +1100 (AEDT)
+X-QQ-mid: bizesmtp64t1701052377tsjca7qc
+Received: from HX09040029.powercore.com.cn ( [58.34.117.194])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 27 Nov 2023 10:32:54 +0800 (CST)
+X-QQ-SSF: 01400000000000103000000A0000000
+X-QQ-FEAT: CR3LFp2JE4lYlGZyt7s4Y2ErgzYu/i1VV9Xrg9Ot17hS0sZN4+BeicMF5VMkA
+	boSUhErVjzKfj68SY7KvmYQK8jxsKVFlnBTCI3e22iIVQvlcW2rrQlLjCk8yr3kzLTWQo6T
+	vDf5Aj5EOOJvaG8Hdm8w3iPApU+5vxAAH3875ZjfDTYId9QIkZ2JxD4FTXes+KKPv7TC6XQ
+	AU6ysOaOytRKx9ugXKYWzO3vOE57p4XEFGeMgqQXnMcTGcArtGhFLtcIthhszqd2buHvppz
+	QP3gxDvuvOXwTp7HVmQyScJeC7S7MRGEEbO/4WGZuU5PpMniuixJqr59OlQ0V/CZPMvglOu
+	4yXyTHUDW4w0mERxPsra1GFbQxbe9MOMEuOHvBrzY+YDxp+f+HIa5lr8k7Ae6aM+zSPZJZx
+	8GgbSAZFwgYIumQhd6tgHQ==
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 16950061229270955396
+From: Luming Yu <luming.yu@shingroup.cn>
+To: linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	christophe.leroy@csgroup.eu
+Subject: [PATCH] powerpc/powernv/pci: Do setup dev PE in pnv_pci_enable_device_hook
+Date: Mon, 27 Nov 2023 10:32:39 +0800
+Message-ID: <041F99FBF8A508A2+20231127023239.4157-1-luming.yu@shingroup.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/oQAv.DhzXwzFCqvxo+6.wSk";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz5a-1
+X-Mailman-Approved-At: Mon, 27 Nov 2023 14:57:01 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,47 +56,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>
+Cc: shenghui.qu@shingroup.cn, Luming Yu <luming.yu@shingroup.cn>, dawei.li@shingroup.cn, ke.zhao@shingroup.cn, luming.yu@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/oQAv.DhzXwzFCqvxo+6.wSk
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+after hot remove a pcie deivce with pci_dn having pnp_php driver attached,
+pci rescan with echo 1 > /sys/bus/pci/rescan could fail with error
+message like:
+pci 0020:0e:00.0: BAR 0: assigned [mem 0x3fe801820000-0x3fe80182ffff
+64bit]
+nvme nvme1: pci function 0020:0e:00.0
+nvme 0020:0e:00.0 pci_enable_device() blocked, no PE assigned.
 
-Hi all,
+It appears that the pci_dn object is reused with only pe_number
+clobbered in the case. And a simple call to pnv_ioda_setup_dev_PE should
+get PE number back and solve the problem.
 
-The following commit is also in the powerpc tree as a different commit
-(but the same patch):
+Signed-off-by: Luming Yu <luming.yu@shingroup.cn>
+---
+ arch/powerpc/platforms/powernv/pci-ioda.c     |  11 +-
+ drivers/gpu/drm/nouveau/nvkm/subdev/i2c/aux.c | 215 ------------------
+ drivers/gpu/drm/nouveau/nvkm/subdev/i2c/aux.h |  46 ----
+ include/soc/arc/aux.h                         |  59 -----
+ 4 files changed, 9 insertions(+), 322 deletions(-)
+ delete mode 100644 drivers/gpu/drm/nouveau/nvkm/subdev/i2c/aux.c
+ delete mode 100644 drivers/gpu/drm/nouveau/nvkm/subdev/i2c/aux.h
+ delete mode 100644 include/soc/arc/aux.h
 
-  aa46b225ebbf ("tty: hvc: hvc_opal: Convert to platform remove callback re=
-turning void")
-
-This is commit
-
-  f99c0e0d0859 ("tty: hvc: hvc_opal: Convert to platform remove callback re=
-turning void")
-
-in the powerpc tree.
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/oQAv.DhzXwzFCqvxo+6.wSk
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmVj6W4ACgkQAVBC80lX
-0Gy1/wf/ULmxrjVr+fgWd9sVztutaB0Ip1E1fEfjkOmSIrkxpttpKAzRlgE52fPj
-lDZH50AEXW1NyH62UgTNZ2qa4nXvDopQqPvmC9Bne7yo6tcabdDZ9bk67W6bnrH3
-92w0gea8whfiDiivrnxAd+wQ7YMDuIA870f7DS0AIax6/lj8JLaJTPGBNgyUtDIy
-tyPGNo4auCrIiynAjiRqT3l7MYjLkjT3goAsgnJwNbMqTv7mCirAutum2DVHUHDG
-ZRvUR06zoZUXs/Q1isAhgZU/Ltv/BFTXSnZOlC2MX6/MorbY/Lt954tGoTZJpXZJ
-+Y1jyZuRLwIisfPrt8qmyIVfaxqVLw==
-=5e0j
------END PGP SIGNATURE-----
-
---Sig_/oQAv.DhzXwzFCqvxo+6.wSk--
+diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+index 28fac4770073..9d7add79ee3d 100644
+--- a/arch/powerpc/platforms/powernv/pci-ioda.c
++++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+@@ -2325,11 +2325,18 @@ static resource_size_t pnv_pci_default_alignment(void)
+ static bool pnv_pci_enable_device_hook(struct pci_dev *dev)
+ {
+ 	struct pci_dn *pdn;
++	struct pnv_ioda_pe *pe;
+ 
+ 	pdn = pci_get_pdn(dev);
+-	if (!pdn || pdn->pe_number == IODA_INVALID_PE) {
+-		pci_err(dev, "pci_enable_device() blocked, no PE assigned.\n");
++	if (!pdn)
+ 		return false;
++
++	if (pdn->pe_number == IODA_INVALID_PE) {
++		pe = pnv_ioda_setup_dev_PE(dev);
++		if (!pe) {
++			pci_err(dev, "pci_enable_device() blocked, no PE assigned.\n");
++			return false;
++		}
+ 	}
+ 
+ 	return true;
