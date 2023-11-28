@@ -1,47 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02D557FBB8B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Nov 2023 14:28:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECCB87FBB8D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Nov 2023 14:29:32 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=nMhXuo5c;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=WuE5bBit;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sfjvt3RB1z3cW7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 00:28:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sfjwp3HKSz3dH8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 00:29:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=nMhXuo5c;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=WuE5bBit;
 	dkim-atps=neutral
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sfjv34d4Lz2yVh
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Nov 2023 00:27:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sfjv40xsgz2yVh
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Nov 2023 00:28:00 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1701178079;
-	bh=oZx4p5c1czKmkPHmDwhbX+TPujCNhITYCoO/TJfqgUo=;
+	s=201909; t=1701178080;
+	bh=ZM5a4CnGOTbqA/Q5wr3KDgfvN/S4jBWQH+ArmSLmqMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nMhXuo5c982g+D9HXA4/PZsPRl3m40m13x2DqJBlLdcvSrj4VeX9elOGcT3Zk5fDc
-	 DCtCHb+4IgKFs1HDUNeXzsVqSKahO1XPHH5yE22tHTsrCoFketM98EubDGrTkIpRSb
-	 7QBpOhaPBZRsrdvLJua61kwZEio85hH5TWsGOu9MilOuRd9GZvEr7YYXk1+YMCX7R8
-	 0yYGmg9M166HkqDYf89fyhGg1Q9IFaJr8NUXAFNZ855TidMcDH/1tjpMR6SlFWNmJ7
-	 JKf6e0GJ41tTzpUC/XqQdig+lXgefAX3yDTAkB+7kxdIDrPXuOBJ1xe9XLY8p+eRPn
-	 3pzx3g5ePaJdA==
+	b=WuE5bBitTIiDdB8125hcVsnSC1KRLR9HhN6T8lgeC7BlqzkEBnd/gR6NmY0J4OEn4
+	 7WMrKTwBJE5SFZdcPx/wJqSm0Q3aS43TKAuP5uOX8+njuG+RX27idY4cERjLkyW8s2
+	 w7lcaPO8D33lNU1faCDk6VIO0k//ymYuN4K4NlS0EKgKwiVwRmuuPlsbgrpomV2mGM
+	 jsmCKNtq4hfrCGBG+cWK0cOCPPGF1f7Vuw24oyeAAso7ZDPG0Akb3QCXOpYTyi03Zc
+	 1xw7524PgKyzDCdhAURxwp/B6oiwBbxqhxLYoifwTvECsjiInW2fGfOT43QLw/Egk8
+	 O0pso8yhFWbMw==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sfjv33RqZz4x2N;
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sfjv36rdBz4x2V;
 	Wed, 29 Nov 2023 00:27:59 +1100 (AEDT)
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH 2/5] selftests/powerpc: Check all FPRs in fpu_preempt
-Date: Wed, 29 Nov 2023 00:27:45 +1100
-Message-ID: <20231128132748.1990179-2-mpe@ellerman.id.au>
+Subject: [PATCH 3/5] selftests/powerpc: Generate better bit patterns for FPU tests
+Date: Wed, 29 Nov 2023 00:27:46 +1100
+Message-ID: <20231128132748.1990179-3-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231128132748.1990179-1-mpe@ellerman.id.au>
 References: <20231128132748.1990179-1-mpe@ellerman.id.au>
@@ -62,128 +62,94 @@ Cc: tpearson@raptorengineering.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There's a selftest that checks FPRs aren't corrupted by preemption, or
-just process scheduling. However it only checks the non-volatile FPRs,
-meaning corruption of the volatile FPRs could go undetected.
+The fpu_preempt test randomly initialises an array of doubles to try and
+detect FPU register corruption.
 
-The check_fpu function it calls is used by several other tests, so for
-now add a new routine to check all the FPRs. Increase the size of the
-array of FPRs to 32, and initialise them all with random values.
+However the values it generates do not occupy the full range of values
+possible in the 64-bit double, meaning some partial register corruption
+could go undetected.
+
+Without getting too carried away, add some better initialisation to
+generate values that occupy more bits.
+
+Sample values before:
+
+  f0             902677510               (raw 0x41cae6e203000000)
+  f1             325217596               (raw 0x41b3626d3c000000)
+  f2             1856578300              (raw 0x41dbaa48bf000000)
+  f3             1247189984              (raw 0x41d295a6f8000000)
+
+And after:
+
+  f0             1.1078153481413311e-09  (raw 0x3e13083932805cc2)
+  f1             1.0576648474801922e+17  (raw 0x43777c20eb88c261)
+  f2             -6.6245033413594075e-10 (raw 0xbe06c2f989facae9)
+  f3             3.0085988827156291e+18  (raw 0x43c4e0585f2df37b)
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- .../testing/selftests/powerpc/math/fpu_asm.S  | 41 +++++++++++++++++--
- .../selftests/powerpc/math/fpu_preempt.c      | 15 +++----
- 2 files changed, 43 insertions(+), 13 deletions(-)
+ tools/testing/selftests/powerpc/math/fpu.h    | 25 +++++++++++++++++++
+ .../selftests/powerpc/math/fpu_preempt.c      |  6 ++---
+ 2 files changed, 27 insertions(+), 4 deletions(-)
+ create mode 100644 tools/testing/selftests/powerpc/math/fpu.h
 
-diff --git a/tools/testing/selftests/powerpc/math/fpu_asm.S b/tools/testing/selftests/powerpc/math/fpu_asm.S
-index 9dc0c158f871..051392ad3ce7 100644
---- a/tools/testing/selftests/powerpc/math/fpu_asm.S
-+++ b/tools/testing/selftests/powerpc/math/fpu_asm.S
-@@ -66,6 +66,40 @@ FUNC_START(check_fpu)
- 	li	r3,0 # Success!!!
- 1:	blr
- 
+diff --git a/tools/testing/selftests/powerpc/math/fpu.h b/tools/testing/selftests/powerpc/math/fpu.h
+new file mode 100644
+index 000000000000..a8ad0d42604e
+--- /dev/null
++++ b/tools/testing/selftests/powerpc/math/fpu.h
+@@ -0,0 +1,25 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * Copyright 2023, Michael Ellerman, IBM Corporation.
++ */
 +
-+// int check_all_fprs(double darray[32])
-+FUNC_START(check_all_fprs)
-+	PUSH_BASIC_STACK(8)
-+	mr	r4, r3	// r4 = darray
-+	li	r3, 1	// prepare for failure
++#ifndef _SELFTESTS_POWERPC_FPU_H
++#define _SELFTESTS_POWERPC_FPU_H
 +
-+	stfd	f31, STACK_FRAME_LOCAL(0, 0)(sp) // backup f31
++static inline void randomise_darray(double *darray, int num)
++{
++	long val;
 +
-+	// Check regs f0-f30, using f31 as scratch
-+	.set i, 0
-+	.rept 31
-+	lfd	f31, (8 * i)(r4)	// load expected value
-+	fcmpu	cr0, i, f31		// compare
-+	bne	cr0, 1f			// bail if mismatch
-+	.set i, i + 1
-+	.endr
++	for (int i = 0; i < num; i++) {
++		val = random();
++		if (val & 1)
++			val *= -1;
 +
-+	lfd	f31, STACK_FRAME_LOCAL(0, 0)(sp) // reload f31
-+	stfd	f30, STACK_FRAME_LOCAL(0, 0)(sp) // backup f30
++		if (val & 2)
++			darray[i] = 1.0 / val;
++		else
++			darray[i] = val * val;
++	}
++}
 +
-+	lfd	f30, (8 * 31)(r4)	// load expected value of f31
-+	fcmpu	cr0, f30, f31		// compare
-+	bne	cr0, 1f			// bail if mismatch
-+
-+	lfd	f30, STACK_FRAME_LOCAL(0, 0)(sp) // reload f30
-+
-+	// Success
-+	li	r3, 0
-+
-+1:	POP_BASIC_STACK(8)
-+	blr
-+FUNC_END(check_all_fprs)
-+
- FUNC_START(test_fpu)
- 	# r3 holds pointer to where to put the result of fork
- 	# r4 holds pointer to the pid
-@@ -104,8 +138,8 @@ FUNC_START(preempt_fpu)
- 	std r4,STACK_FRAME_PARAM(1)(sp) # int *threads_starting
- 	std r5,STACK_FRAME_PARAM(2)(sp) # int *running
- 
--	bl load_fpu
--	nop
-+	// Load FPRs with expected values
-+	OP_REGS lfd, 8, 0, 31, r3
- 
- 	sync
- 	# Atomic DEC
-@@ -116,8 +150,7 @@ FUNC_START(preempt_fpu)
- 	bne- 1b
- 
- 2:	ld r3,STACK_FRAME_PARAM(0)(sp)
--	bl check_fpu
--	nop
-+	bl check_all_fprs
- 	cmpdi r3,0
- 	bne 3f
- 	ld r4,STACK_FRAME_PARAM(2)(sp)
++#endif /* _SELFTESTS_POWERPC_FPU_H */
 diff --git a/tools/testing/selftests/powerpc/math/fpu_preempt.c b/tools/testing/selftests/powerpc/math/fpu_preempt.c
-index 3e5b5663d244..24b5abacccdc 100644
+index 24b5abacccdc..97dff3690136 100644
 --- a/tools/testing/selftests/powerpc/math/fpu_preempt.c
 +++ b/tools/testing/selftests/powerpc/math/fpu_preempt.c
-@@ -1,13 +1,12 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
- /*
-  * Copyright 2015, Cyril Bur, IBM Corp.
-+ * Copyright 2023, Michael Ellerman, IBM Corp.
-  *
-  * This test attempts to see if the FPU registers change across preemption.
-- * Two things should be noted here a) The check_fpu function in asm only checks
-- * the non volatile registers as it is reused from the syscall test b) There is
-- * no way to be sure preemption happened so this test just uses many threads
-- * and a long wait. As such, a successful test doesn't mean much but a failure
-- * is bad.
-+ * There is no way to be sure preemption happened so this test just uses many
-+ * threads and a long wait. As such, a successful test doesn't mean much but
-+ * a failure is bad.
-  */
+@@ -19,6 +19,7 @@
+ #include <pthread.h>
  
- #include <stdio.h>
-@@ -30,9 +29,7 @@
- #define THREAD_FACTOR 8
+ #include "utils.h"
++#include "fpu.h"
  
- 
--__thread double darray[] = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0,
--		     1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0,
--		     2.1};
-+__thread double darray[32];
- 
- int threads_starting;
- int running;
-@@ -45,7 +42,7 @@ void *preempt_fpu_c(void *p)
- 	int i;
+ /* Time to wait for workers to get preempted (seconds) */
+ #define PREEMPT_TIME 20
+@@ -39,12 +40,9 @@ extern int preempt_fpu(double *darray, int *threads_starting, int *running);
+ void *preempt_fpu_c(void *p)
+ {
+ 	long rc;
+-	int i;
  
  	srand(pthread_self());
--	for (i = 0; i < 21; i++)
-+	for (i = 0; i < ARRAY_SIZE(darray); i++)
- 		darray[i] = rand();
- 
+-	for (i = 0; i < ARRAY_SIZE(darray); i++)
+-		darray[i] = rand();
+-
++	randomise_darray(darray, ARRAY_SIZE(darray));
  	rc = preempt_fpu(darray, &threads_starting, &running);
+ 
+ 	return (void *)rc;
 -- 
 2.41.0
 
