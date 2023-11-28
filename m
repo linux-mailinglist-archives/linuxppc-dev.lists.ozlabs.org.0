@@ -2,39 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E37F97FBC93
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Nov 2023 15:19:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2DA77FBC98
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Nov 2023 15:20:03 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=F3uMowcK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=oBJ1HyQR;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sfl282fvzz3dSq
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 01:19:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sfl352sl8z3cGW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 01:20:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=F3uMowcK;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=oBJ1HyQR;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.195; helo=relay3-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
 Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sfknx42xbz3cWP
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Nov 2023 01:08:37 +1100 (AEDT)
-Received: by mail.gandi.net (Postfix) with ESMTPA id F01FC60008;
-	Tue, 28 Nov 2023 14:08:33 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sfkny5K4dz3cZG
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Nov 2023 01:08:38 +1100 (AEDT)
+Received: by mail.gandi.net (Postfix) with ESMTPA id E4C5A60006;
+	Tue, 28 Nov 2023 14:08:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1701180514;
+	t=1701180515;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JWHgBlygVL1LuwsPq3d724YHN4EBk4wsLUMnSb1bhgA=;
-	b=F3uMowcK+/y8P7goYwCcRSJE2Sc3uNGVzLqcbAcWjXgDLr86uJ7HFkGvKkZItiIp+jqwwY
-	GM6NOmmokiNm5Y+6LVfKwz8uBhFAqw4IpZaHWS5t7iAdlVJZRtKkffmm6AuSGfbaxgMR63
-	XaurN86rbLaP+DCfrXHrsalgYyWukCmmxDM8wVvpySWNtuTp6XsXgfLyYdy3Ntu7vej2wz
-	SEX67rSuwYaul/MJK92eadRsEj5jimSKkytOXkpZva9bwMkn3oEpCmN6YH/nG7DdxPz8Ho
-	L7q18qwcqY2cFjPSbGe4/YO9lpKMKt7vw1got0aBi1fg0JubocyuMR3rGJPolw==
+	bh=Dt8E2D4ZnskziNqA8VgLYvP0cEsUOjj8FKYX1alFvDY=;
+	b=oBJ1HyQRXrLan+tGpeNHGICi4a7exxCy4rXkYTEsNTBCkmfjDg4BJS6WiYZAwEVcUBLbvw
+	sV1DGVNyLlckoltG51O8qRm4RraB0W0vk2EL31rRKGsfI6CktEttrOgeR2+9F1L7Vmeu4E
+	Go9RLNP0hlp3yp4JgDB7/qYWVib9ovSGCUUz0nnevBOKjwCFUxTB5PkfXKB40crGjTfmtP
+	Oj9rQgDs+bXsclqeoty0rgKNyBBkE1PLg9Fva1j3JuNr2s9ACAr5AUIfLKXH06gkMO4mOy
+	xyxYd43q/KBhBgi4l8s+sljl++GHcu25albRhMQOyQhwoTizrGDf5ZA+hNvfuA==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Herve Codina <herve.codina@bootlin.com>,
 	Qiang Zhao <qiang.zhao@nxp.com>,
@@ -49,9 +49,9 @@ To: Herve Codina <herve.codina@bootlin.com>,
 	Jaroslav Kysela <perex@perex.cz>,
 	Takashi Iwai <tiwai@suse.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 12/17] soc: fsl: cpm1: qmc: Add support for disabling channel TSA entries
-Date: Tue, 28 Nov 2023 15:08:11 +0100
-Message-ID: <20231128140818.261541-13-herve.codina@bootlin.com>
+Subject: [PATCH 13/17] soc: fsl: cpm1: qmc: Split Tx and Rx TSA entries setup
+Date: Tue, 28 Nov 2023 15:08:12 +0100
+Message-ID: <20231128140818.261541-14-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231128140818.261541-1-herve.codina@bootlin.com>
 References: <20231128140818.261541-1-herve.codina@bootlin.com>
@@ -73,93 +73,103 @@ Cc: alsa-devel@alsa-project.org, Arnd Bergmann <arnd@arndb.de>, linux-kernel@vge
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In order to allow runtime timeslot route changes, disabling channel TSA
-entries needs to be supported.
+The Tx and Rx entries for a given channel are set in one function.
 
-Add support for this new feature.
+In order to modify Rx entries and Tx entries independently of one other,
+split this function in one for the Rx part and one for the Tx part.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- drivers/soc/fsl/qe/qmc.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ drivers/soc/fsl/qe/qmc.c | 49 ++++++++++++++++++++++++++++------------
+ 1 file changed, 35 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
-index 8d71e63d0f21..c1318fad296b 100644
+index c1318fad296b..5ca4120779f8 100644
 --- a/drivers/soc/fsl/qe/qmc.c
 +++ b/drivers/soc/fsl/qe/qmc.c
-@@ -567,7 +567,8 @@ static void qmc_chan_read_done(struct qmc_chan *chan)
- 	spin_unlock_irqrestore(&chan->rx_lock, flags);
- }
- 
--static int qmc_chan_setup_tsa_64rxtx(struct qmc_chan *chan, const struct tsa_serial_info *info)
-+static int qmc_chan_setup_tsa_64rxtx(struct qmc_chan *chan, const struct tsa_serial_info *info,
-+				     bool enable)
- {
- 	unsigned int i;
- 	u16 curr;
-@@ -603,13 +604,14 @@ static int qmc_chan_setup_tsa_64rxtx(struct qmc_chan *chan, const struct tsa_ser
- 			continue;
- 
- 		qmc_clrsetbits16(chan->qmc->scc_pram + QMC_GBL_TSATRX + (i * 2),
--				 ~QMC_TSA_WRAP, val);
-+				 ~QMC_TSA_WRAP, enable ? val : 0x0000);
- 	}
- 
+@@ -610,14 +610,14 @@ static int qmc_chan_setup_tsa_64rxtx(struct qmc_chan *chan, const struct tsa_ser
  	return 0;
  }
  
--static int qmc_chan_setup_tsa_32rx_32tx(struct qmc_chan *chan, const struct tsa_serial_info *info)
-+static int qmc_chan_setup_tsa_32rx_32tx(struct qmc_chan *chan, const struct tsa_serial_info *info,
-+					bool enable)
+-static int qmc_chan_setup_tsa_32rx_32tx(struct qmc_chan *chan, const struct tsa_serial_info *info,
+-					bool enable)
++static int qmc_chan_setup_tsa_32rx(struct qmc_chan *chan, const struct tsa_serial_info *info,
++				   bool enable)
  {
  	unsigned int i;
  	u16 curr;
-@@ -650,7 +652,7 @@ static int qmc_chan_setup_tsa_32rx_32tx(struct qmc_chan *chan, const struct tsa_
- 			continue;
+ 	u16 val;
  
- 		qmc_clrsetbits16(chan->qmc->scc_pram + QMC_GBL_TSATRX + (i * 2),
--				 ~QMC_TSA_WRAP, val);
-+				 ~QMC_TSA_WRAP, enable ? val : 0x0000);
+-	/* Use a Tx 32 entries table and a Rx 32 entries table */
++	/* Use a Rx 32 entries table */
+ 
+ 	val = QMC_TSA_VALID | QMC_TSA_MASK | QMC_TSA_CHANNEL(chan->id);
+ 
+@@ -633,6 +633,30 @@ static int qmc_chan_setup_tsa_32rx_32tx(struct qmc_chan *chan, const struct tsa_
+ 			return -EBUSY;
+ 		}
  	}
++
++	/* Set entries based on Rx stuff */
++	for (i = 0; i < info->nb_rx_ts; i++) {
++		if (!(chan->rx_ts_mask & (((u64)1) << i)))
++			continue;
++
++		qmc_clrsetbits16(chan->qmc->scc_pram + QMC_GBL_TSATRX + (i * 2),
++				 ~QMC_TSA_WRAP, enable ? val : 0x0000);
++	}
++
++	return 0;
++}
++
++static int qmc_chan_setup_tsa_32tx(struct qmc_chan *chan, const struct tsa_serial_info *info,
++				   bool enable)
++{
++	unsigned int i;
++	u16 curr;
++	u16 val;
++
++	/* Use a Tx 32 entries table */
++
++	val = QMC_TSA_VALID | QMC_TSA_MASK | QMC_TSA_CHANNEL(chan->id);
++
+ 	/* Check entries based on Tx stuff */
+ 	for (i = 0; i < info->nb_tx_ts; i++) {
+ 		if (!(chan->tx_ts_mask & (((u64)1) << i)))
+@@ -646,14 +670,6 @@ static int qmc_chan_setup_tsa_32rx_32tx(struct qmc_chan *chan, const struct tsa_
+ 		}
+ 	}
+ 
+-	/* Set entries based on Rx stuff */
+-	for (i = 0; i < info->nb_rx_ts; i++) {
+-		if (!(chan->rx_ts_mask & (((u64)1) << i)))
+-			continue;
+-
+-		qmc_clrsetbits16(chan->qmc->scc_pram + QMC_GBL_TSATRX + (i * 2),
+-				 ~QMC_TSA_WRAP, enable ? val : 0x0000);
+-	}
  	/* Set entries based on Tx stuff */
  	for (i = 0; i < info->nb_tx_ts; i++) {
-@@ -658,13 +660,13 @@ static int qmc_chan_setup_tsa_32rx_32tx(struct qmc_chan *chan, const struct tsa_
- 			continue;
- 
- 		qmc_clrsetbits16(chan->qmc->scc_pram + QMC_GBL_TSATTX + (i * 2),
--				 ~QMC_TSA_WRAP, val);
-+				 ~QMC_TSA_WRAP, enable ? val : 0x0000);
- 	}
- 
- 	return 0;
- }
- 
--static int qmc_chan_setup_tsa(struct qmc_chan *chan)
-+static int qmc_chan_setup_tsa(struct qmc_chan *chan, bool enable)
- {
- 	struct tsa_serial_info info;
- 	int ret;
-@@ -679,8 +681,8 @@ static int qmc_chan_setup_tsa(struct qmc_chan *chan)
+ 		if (!(chan->tx_ts_mask & (((u64)1) << i)))
+@@ -680,9 +696,14 @@ static int qmc_chan_setup_tsa(struct qmc_chan *chan, bool enable)
+ 	 * Setup one common 64 entries table or two 32 entries (one for Tx
  	 * and one for Tx) according to assigned TS numbers.
  	 */
- 	return ((info.nb_tx_ts > 32) || (info.nb_rx_ts > 32)) ?
--		qmc_chan_setup_tsa_64rxtx(chan, &info) :
--		qmc_chan_setup_tsa_32rx_32tx(chan, &info);
-+		qmc_chan_setup_tsa_64rxtx(chan, &info, enable) :
-+		qmc_chan_setup_tsa_32rx_32tx(chan, &info, enable);
+-	return ((info.nb_tx_ts > 32) || (info.nb_rx_ts > 32)) ?
+-		qmc_chan_setup_tsa_64rxtx(chan, &info, enable) :
+-		qmc_chan_setup_tsa_32rx_32tx(chan, &info, enable);
++	if (info.nb_tx_ts > 32 || info.nb_rx_ts > 32)
++		return qmc_chan_setup_tsa_64rxtx(chan, &info, enable);
++
++	ret = qmc_chan_setup_tsa_32rx(chan, &info, enable);
++	if (ret)
++		return ret;
++
++	return qmc_chan_setup_tsa_32tx(chan, &info, enable);
  }
  
  static int qmc_chan_command(struct qmc_chan *chan, u8 qmc_opcode)
-@@ -1146,7 +1148,7 @@ static int qmc_setup_chan(struct qmc *qmc, struct qmc_chan *chan)
- 
- 	chan->qmc = qmc;
- 
--	ret = qmc_chan_setup_tsa(chan);
-+	ret = qmc_chan_setup_tsa(chan, true);
- 	if (ret)
- 		return ret;
- 
 -- 
 2.42.0
 
