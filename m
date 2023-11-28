@@ -2,55 +2,94 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D710B7FB4A9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Nov 2023 09:45:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B4C07FB66E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Nov 2023 10:58:39 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=JZhu92Wi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=S2yGqvQb;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SfbdK2WXHz3cWP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Nov 2023 19:45:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SfdFS3rdPz3cZx
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Nov 2023 20:58:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=JZhu92Wi;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=S2yGqvQb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=disgoel@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SfbcS2Cllz3c2H
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Nov 2023 19:44:54 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id ABC4CCE19D9;
-	Tue, 28 Nov 2023 08:44:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 675D7C433C7;
-	Tue, 28 Nov 2023 08:44:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701161091;
-	bh=dTDQKOZmcNc1e9sHybD4UiRvu3mNjp8M42tvMHpJpRk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JZhu92WixaQwi/Qx/kebN6h+UCySkmrbrTHsFWprEHwTG48AWwb+lKHjxCv5dHJ4w
-	 chWAyGqkaHdvhuli7lTrwZjVYpY6SwMCIPjBYpSNQGdyGyAWyRnyweGFm4Hmi6ClqS
-	 za0SQHyPEvcQEzSTCDO92+FemmEAAM+/XPyzHj1w=
-Date: Tue, 28 Nov 2023 08:44:47 +0000
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Matthew Maurer <mmaurer@google.com>
-Subject: Re: [PATCH v2 0/5] MODVERSIONS + RUST Redux
-Message-ID: <2023112837-jailbreak-carport-ba09@gregkh>
-References: <20231118025748.2778044-1-mmaurer@google.com>
- <CAK7LNAQt8fy5+vSwpd1aXfzjzeZ5hiyW7EW9SW7pbG2eTJZAOA@mail.gmail.com>
- <CAGSQo00hyCTVsqHtrzKBBPvuH38z5yRm_4jzdi00C0RV+8APwQ@mail.gmail.com>
- <2023112314-tubby-eligibly-007a@gregkh>
- <CAK7LNAT-OcaCi6tqPRgZxPXOV6u+YbaO_0RxtfmrVXPzdrio0Q@mail.gmail.com>
- <2023112312-certified-substance-007c@gregkh>
- <CAGSQo005hRiUZdeppCifDqG9zFDJRwahpBLE4x7-MyfJscn7tQ@mail.gmail.com>
- <2023112824-dispatch-wooing-39de@gregkh>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SfdDY0dz8z2xTP
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Nov 2023 20:57:48 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AS9Gj7f003630;
+	Tue, 28 Nov 2023 09:57:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=7jUGS79GrITfbXHrcU7OagHlPGs9BNxTKWekoksnEHI=;
+ b=S2yGqvQbzSTdRzcghATRGw8y454MmfTMsjx4r9Bt5FGcIc3I7gG9t/UEEvQNqFk2iqUy
+ ZtdXvD+jer+MYfjfppp7uESItHxi8p5iXaP+Jd3RutOgoRWiWDBaz8ar9NukyvyGTolM
+ xTPKb7LJ9dL1q0YHdtYokOAId4wy8SCBrp9XONlt/y33iltwvvFShHsJYAfGlrE9cMO3
+ Dxqk2fl0uLzNIiT43gqAfzDpHrDEHxPFA7kUk/AkZTfWRnHMJRwkaCGlsxCud5u/dtMR
+ Fv69eKg6X0g6I3WbXByZKzFF9wS2lD9UOyzPgeZe9N7XFmLf/CRwMIV0jpwu8/Gkv5pf 0w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3unc2c3mtw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Nov 2023 09:57:35 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AS9lIWZ026168;
+	Tue, 28 Nov 2023 09:57:35 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3unc2c3mtg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Nov 2023 09:57:35 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3AS7QRJq028303;
+	Tue, 28 Nov 2023 09:57:34 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ukv8netra-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Nov 2023 09:57:34 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3AS9vVf666781506
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 28 Nov 2023 09:57:31 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F278820040;
+	Tue, 28 Nov 2023 09:57:30 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DD84A20043;
+	Tue, 28 Nov 2023 09:57:28 +0000 (GMT)
+Received: from [9.109.253.209] (unknown [9.109.253.209])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 28 Nov 2023 09:57:28 +0000 (GMT)
+Message-ID: <3cb4af55-dd0d-4491-9a29-8440aa2c191e@linux.ibm.com>
+Date: Tue, 28 Nov 2023 15:27:28 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2023112824-dispatch-wooing-39de@gregkh>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] perf test record+probe_libc_inet_pton: Fix call chain
+ match on powerpc
+Content-Language: en-GB
+To: Likhitha Korrapati <likhitha@linux.ibm.com>, acme@kernel.org,
+        jolsa@kernel.org, adrian.hunter@intel.com, irogers@google.com,
+        james.clark@arm.com, namhyung@kernel.org
+References: <20231126070914.175332-1-likhitha@linux.ibm.com>
+From: Disha Goel <disgoel@linux.ibm.com>
+In-Reply-To: <20231126070914.175332-1-likhitha@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: ICX9SIi3BZIlS8oSpPhrwVDQXkrV88c1
+X-Proofpoint-GUID: CfbSkdKsrM8pYb88Dhqujd-QpLKjpgAY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-28_08,2023-11-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
+ spamscore=0 lowpriorityscore=0 mlxlogscore=999 adultscore=0 malwarescore=0
+ phishscore=0 priorityscore=1501 mlxscore=0 suspectscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311060000
+ definitions=main-2311280077
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,143 +101,160 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicolas Schier <nicolas@fjasle.eu>, rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, Masahiro Yamada <masahiroy@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, Laura Abbott <laura@labbott.name>, linuxppc-dev@lists.ozlabs.org, linux-modules@vger.kernel.org
+Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 28, 2023 at 08:05:26AM +0000, Greg KH wrote:
-> On Mon, Nov 27, 2023 at 11:27:07AM -0800, Matthew Maurer wrote:
-> > > > >
-> > > > > > With regards to future directions that likely won't work for loosening it:
-> > > > > > Unfortunately, the .rmeta format itself is not stable, so I wouldn't want to
-> > > > > > teach genksyms to open it up and split out the pieces for specific functions.
-> > > > > > Extending genksyms to parse Rust would also not solve the situation -
-> > > > > > layouts are allowed to differ across compiler versions or even (in rare
-> > > > > > cases) seemingly unrelated code changes.
-> > > > >
-> > > > > What do you mean by "layout" here?  Yes, the crcs can be different
-> > > > > across compiler versions and seemingly unrelated code changes (genksyms
-> > > > > is VERY fragile) but that's ok, that's not what you are checking here.
-> > > > > You want to know if the rust function signature changes or not from the
-> > > > > last time you built the code, with the same compiler and options, that's
-> > > > > all you are verifying.
-> > What I mean by layout here is that if you write in Rust:
-> > struct Foo {
-> >   x: i32,
-> >   y: i32,
-> > }
-> > it is not guaranteed to have the same layout across different compilations, even
-> > within the same compiler. See
-> > https://doc.rust-lang.org/reference/type-layout.html#the-rust-representation
-> 
-> Then you are going to have big problems, sorry.
-> 
-> > Specifically, the compiler is allowed to arbitrarily insert padding,
-> > reorder fields, etc.
-> > on the same code as long as the overall alignment of the struct and individual
-> > alignment of the fields remains correct and non-overlapping.
-> > 
-> > This means the compiler is *explicitly* allowed to, for example, permute x and y
-> > as an optimization. In the above example this is unlikely, but if you
-> > instead consider
-> > struct Bar {
-> >   x: i8,
-> >   y: i64,
-> >   z: i8,
-> > }
-> > It's easy to see why the compiler might decide to structure this as
-> > y,x,z to reduce the
-> > size of the struct. Those optimization decisions may be affected by
-> > any other part of
-> > the code, PGO, etc.
-> 
-> Then you all need to figure out some way to determine how the compiler
-> layed out the structure after it compiled/optimized it and be able to
-> compare it to previous builds (or just generate a crc based on the
-> layout it chose.)
-> 
-> > > > > > Future directions that might work for loosening it:
-> > > > > > * Generating crcs from debuginfo + compiler + flags
-> > > > > > * Adding a feature to the rust compiler to dump this information. This
-> > > > > > is likely to
-> > > > > >   get pushback because Rust's current stance is that there is no ability to load
-> > > > > >   object code built against a different library.
-> > > > >
-> > > > > Why not parse the function signature like we do for C?
-> > Because the function signature is insufficient to check the ABI, see above.
-> > > > >
-> > > > > > Would setting up Rust symbols so that they have a crc built out of .rmeta be
-> > > > > > sufficient for you to consider this useful? If not, can you help me understand
-> > > > > > what level of precision would be required?
-> > > > >
-> > > > > What exactly does .rmeta have to do with the function signature?  That's
-> > > > > all you care about here.
-> > The .rmeta file contains the decisions the compiler made about layout
-> > in the crate
-> > you're interfacing with. For example, the choice to encode Bar
-> > with a yxz field order would be written into the .rmeta file.
-> 
-> Ok, then yes, can you parse the .rmeta file to get that information?
-> 
-> > > > rmeta is generated per crate.
-> > > >
-> > > > CRC is computed per symbol.
-> > > >
-> > > > They have different granularity.
-> > > > It is weird to refuse a module for incompatibility
-> > > > of a symbol that it is not using at all.
-> > >
-> > > I agree, this should be on a per-symbol basis, so the Rust
-> > > infrastructure in the kernel needs to be fixed up to support this
-> > > properly, not just ignored like this patchset does.
-> > I agree there is a divergence here, I tried to point it out so that it
-> > wouldn't be
-> > a surprise later. The .rmeta file itself (which is the only way we
-> > could know that
-> > the ABI actually matches, because layout decisions are in there) is an unstable
-> > format, which is why I would be reluctant to try to parse it and find only the
-> > relevant portions to hash. This isn't just a "technically unstable"
-> > format, but one
-> > in which the compiler essentially just serializes out relevant internal data
-> > structures, so any parser for it will involve significant alterations
-> > on compiler
-> > updates, which doesn't seem like a good plan.
-> > >
-> > > thanks,
-> > >
-> > > greg k-h
-> > Given the above additional information, would you be interested in a patchset
-> > which either:
-> > 
-> > A. Computes the CRC off the Rust type signature, knowing the compiler is
-> > allowed to change the ABI based on information not contained in the CRC.
-> 
-> No.
-> 
-> > B. Uses the CRC of the .rmeta file, knowing, as was pointed out, that this
-> > effectively contains the ABI of every symbol in the compilation unit, as well
-> > as inline functions and polymorphic functions.
-> 
-> No.
-> 
-> > If neither of these works, we likely can't turn on MODVERSIONS+RUST until
-> > further work is done upstream in the compiler to export some of this data in
-> > an at least semi-stable fashion.
-> 
-> Looks like you need something a bit more fine-grained, as pointed out
-> above.  why not parse the structure/function information in the .rmeta
-> file?  Is the format of that file not stable?
+On 26/11/23 12:39 pm, Likhitha Korrapati wrote:
 
-Or, step back and figure something else out that can detect the
-structure and function signatures of rust code and determine a way to
-notice when they change.  That's the goal here, you need to notice when
-the code changes, perhaps just use libabigail as that will work on the
-dwarf output?
+> The perf test "probe libc's inet_pton & backtrace it with ping" fails on
+> powerpc as below:
+>
+> root@xxx perf]# perf test -v "probe libc's inet_pton & backtrace it with
+> ping"
+>   85: probe libc's inet_pton & backtrace it with ping                 :
+> --- start ---
+> test child forked, pid 96028
+> ping 96056 [002] 127271.101961: probe_libc:inet_pton: (7fffa1779a60)
+> 7fffa1779a60 __GI___inet_pton+0x0
+> (/usr/lib64/glibc-hwcaps/power10/libc.so.6)
+> 7fffa172a73c getaddrinfo+0x121c
+> (/usr/lib64/glibc-hwcaps/power10/libc.so.6)
+> FAIL: expected backtrace entry
+> "gaih_inet.*\+0x[[:xdigit:]]+[[:space:]]\(/usr/lib64/glibc-hwcaps/power10/libc.so.6\)$"
+> got "7fffa172a73c getaddrinfo+0x121c
+> (/usr/lib64/glibc-hwcaps/power10/libc.so.6)"
+> test child finished with -1
+> ---- end ----
+> probe libc's inet_pton & backtrace it with ping: FAILED!
+>
+> This test installs a probe on libc's inet_pton function, which will use
+> uprobes and then uses perf trace on a ping to localhost. It gets 3
+> levels deep backtrace and checks whether it is what we expected or not.
+>
+> The test started failing from RHEL 9.4 where as it works in previous
+> distro version (RHEL 9.2). Test expects gaih_inet function to be part of
+> backtrace. But in the glibc version (2.34-86) which is part of distro
+> where it fails, this function is missing and hence the test is failing.
+>
+>  From nm and ping command output we can confirm that gaih_inet function
+> is not present in the expected backtrace for glibc version glibc-2.34-86
+>
+> [root@xxx perf]# nm /usr/lib64/glibc-hwcaps/power10/libc.so.6 | grep gaih_inet
+> 00000000001273e0 t gaih_inet_serv
+> 00000000001cd8d8 r gaih_inet_typeproto
+>
+> [root@xxx perf]# perf script -i /tmp/perf.data.6E8
+> ping  104048 [000] 128582.508976: probe_libc:inet_pton: (7fff83779a60)
+>              7fff83779a60 __GI___inet_pton+0x0
+> (/usr/lib64/glibc-hwcaps/power10/libc.so.6)
+>              7fff8372a73c getaddrinfo+0x121c
+> (/usr/lib64/glibc-hwcaps/power10/libc.so.6)
+>                 11dc73534 [unknown] (/usr/bin/ping)
+>              7fff8362a8c4 __libc_start_call_main+0x84
+> (/usr/lib64/glibc-hwcaps/power10/libc.so.6)
+>
+> FAIL: expected backtrace entry
+> "gaih_inet.*\+0x[[:xdigit:]]+[[:space:]]\(/usr/lib64/glibc-hwcaps/power10/libc.so.6\)$"
+> got "7fff9d52a73c getaddrinfo+0x121c
+> (/usr/lib64/glibc-hwcaps/power10/libc.so.6)"
+>
+> With version glibc-2.34-60 gaih_inet function is present as part of the
+> expected backtrace. So we cannot just remove the gaih_inet function from
+> the backtrace.
+>
+> [root@xxx perf]# nm /usr/lib64/glibc-hwcaps/power10/libc.so.6 | grep gaih_inet
+> 0000000000130490 t gaih_inet.constprop.0
+> 000000000012e830 t gaih_inet_serv
+> 00000000001d45e4 r gaih_inet_typeproto
+>
+> [root@xxx perf]# ./perf script -i /tmp/perf.data.b6S
+> ping   67906 [000] 22699.591699: probe_libc:inet_pton_3: (7fffbdd80820)
+>              7fffbdd80820 __GI___inet_pton+0x0
+> (/usr/lib64/glibc-hwcaps/power10/libc.so.6)
+>              7fffbdd31160 gaih_inet.constprop.0+0xcd0
+> (/usr/lib64/glibc-hwcaps/power10/libc.so.6)
+>              7fffbdd31c7c getaddrinfo+0x14c
+> (/usr/lib64/glibc-hwcaps/power10/libc.so.6)
+>                 1140d3558 [unknown] (/usr/bin/ping)
+>
+> This patch solves this issue by doing a conditional skip. If there is a
+> gaih_inet function present in the libc then it will be added to the
+> expected backtrace else the function will be skipped from being added
+> to the expected backtrace.
+>
+> Output with the patch
+>
+> [root@xxx perf]# ./perf test -v "probe libc's inet_pton & backtrace it
+> with ping"
+>   83: probe libc's inet_pton & backtrace it with ping                 :
+> --- start ---
+> test child forked, pid 102662
+> ping 102692 [000] 127935.549973: probe_libc:inet_pton: (7fff93379a60)
+> 7fff93379a60 __GI___inet_pton+0x0
+> (/usr/lib64/glibc-hwcaps/power10/libc.so.6)
+> 7fff9332a73c getaddrinfo+0x121c
+> (/usr/lib64/glibc-hwcaps/power10/libc.so.6)
+> 11ef03534 [unknown] (/usr/bin/ping)
+> test child finished with 0
+> ---- end ----
+> probe libc's inet_pton & backtrace it with ping: Ok
+>
+> Signed-off-by: Likhitha Korrapati <likhitha@linux.ibm.com>
+> Reported-by: Disha Goel <disgoel@linux.ibm.com>
 
-Note, libabigail will miss things that the crc checker does not miss
-(and the opposite is true as well) which is why some groups (i.e.
-Android) use both on their kernel to ensure that nothing slips by.
+Thanks for the fix patch.
+I have tested on a Power10 machine, "probe libc's inet_pton & backtrace it with ping"
+perf test passes with the patch applied.
 
-thanks,
+Output where gaih_inet function is not present
 
-greg k-h
+	# perf test -v "probe libc's inet_pton & backtrace it with ping"
+	 85: probe libc's inet_pton & backtrace it with ping                 :
+	--- start ---
+	test child forked, pid 4622
+	ping 4652 [011] 58.987631: probe_libc:inet_pton: (7fff91b79a60)
+	7fff91b79a60 __GI___inet_pton+0x0 (/usr/lib64/glibc-hwcaps/power10/libc.so.6)
+	7fff91b2a73c getaddrinfo+0x121c (/usr/lib64/glibc-hwcaps/power10/libc.so.6)
+	119e53534 [unknown] (/usr/bin/ping)
+	test child finished with 0
+	---- end ----
+	probe libc's inet_pton & backtrace it with ping: Ok
+
+Output where gaih_inet function is present
+
+	# ./perf test -v "probe libc's inet_pton & backtrace it with ping"
+	 83: probe libc's inet_pton & backtrace it with ping                 :
+	--- start ---
+	test child forked, pid 84831
+	ping 84861 [000] 79056.019971: probe_libc:inet_pton: (7fff957631e8)
+	7fff957631e8 __GI___inet_pton+0x8 (/usr/lib64/glibc-hwcaps/power9/libc-2.28.so)
+	7fff95718760 gaih_inet.constprop.6+0xa90 (/usr/lib64/glibc-hwcaps/power9/libc-2.28.so)
+	7fff95719974 getaddrinfo+0x164 (/usr/lib64/glibc-hwcaps/power9/libc-2.28.so)
+	122e732a4 [unknown] (/usr/bin/ping)
+	test child finished with 0
+	---- end ----
+	probe libc's inet_pton & backtrace it with ping: Ok
+
+Tested-by: Disha Goel <disgoel@linux.ibm.com>
+
+> ---
+>   tools/perf/tests/shell/record+probe_libc_inet_pton.sh | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/tools/perf/tests/shell/record+probe_libc_inet_pton.sh b/tools/perf/tests/shell/record+probe_libc_inet_pton.sh
+> index eebeea6bdc76..72c65570db37 100755
+> --- a/tools/perf/tests/shell/record+probe_libc_inet_pton.sh
+> +++ b/tools/perf/tests/shell/record+probe_libc_inet_pton.sh
+> @@ -45,7 +45,10 @@ trace_libc_inet_pton_backtrace() {
+>   		;;
+>   	ppc64|ppc64le)
+>   		eventattr='max-stack=4'
+> -		echo "gaih_inet.*\+0x[[:xdigit:]]+[[:space:]]\($libc\)$" >> $expected
+> +		# Add gaih_inet to expected backtrace only if it is part of libc.
+> +		if nm $libc | grep -F -q gaih_inet.; then
+> +			echo "gaih_inet.*\+0x[[:xdigit:]]+[[:space:]]\($libc\)$" >> $expected
+> +		fi
+>   		echo "getaddrinfo\+0x[[:xdigit:]]+[[:space:]]\($libc\)$" >> $expected
+>   		echo ".*(\+0x[[:xdigit:]]+|\[unknown\])[[:space:]]\(.*/bin/ping.*\)$" >> $expected
+>   		;;
