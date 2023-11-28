@@ -2,56 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 486607FBEA3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Nov 2023 16:53:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F7D87FBF1C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Nov 2023 17:22:08 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qhCM0efN;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dpuRx357;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sfn6t5Pzdz3cZx
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 02:53:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sfnlx6Z84z3d95
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 03:22:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qhCM0efN;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dpuRx357;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sfn6274xYz2ygX
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Nov 2023 02:52:42 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id 7A7D2B810A8;
-	Tue, 28 Nov 2023 15:52:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B3AC433C7;
-	Tue, 28 Nov 2023 15:52:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701186757;
-	bh=W49ajMFtN9aTN86Tnl430idPA/txjACjmrkpyxn3DE8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qhCM0efNQ55/CadBsgmu3A+z7I663gGmRlop+aHtsSVP3W3KCJxS4fFnJj2rO9RpG
-	 y+R924PIXTrR+evJd3GTxqaL5irmDkrqNbRWw9SV1YHNS71I8J/El1OHEQtPkEIRyr
-	 Afc1O5Xcnr2agGFbz1OiKZ75NeDBlttGNDF5zEkddR7IRkSJ/bYJXRhvwXvYTDouWl
-	 WOc9GyV32DURezCRx7CTi+a6DGNmgsBWfsB2RHkt8xIdcAxiZzDkyVQICDB2vFML3C
-	 hmh8wYtpto+fz3KlsQeu2I/pmzyU/Po0vKVV7MZySBCX95gqixVMLw42/5bpJlCqj3
-	 T2wz5oaTTY4Gw==
-Date: Tue, 28 Nov 2023 16:52:31 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [linus:master] [file] 0ede61d858: will-it-scale.per_thread_ops
- -2.9% regression
-Message-ID: <20231128-serpentinen-sinnieren-e186ea8742e9@brauner>
-References: <202311201406.2022ca3f-oliver.sang@intel.com>
- <CAHk-=wjMKONPsXAJ=yJuPBEAx6HdYRkYE8TdYVBvpm3=x_EnCw@mail.gmail.com>
- <CAHk-=wiCJtLbFWNURB34b9a_R_unaH3CiMRXfkR0-iihB_z68A@mail.gmail.com>
- <20231127-kirschen-dissens-b511900fa85a@brauner>
- <CAHk-=wgwpzgoSYU9Ob+MRyFuHRow4s5J099=DsCo1hGT=bkCtw@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sfnl61vRxz30Q4
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Nov 2023 03:21:21 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3ASG9gmY026138;
+	Tue, 28 Nov 2023 16:21:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=XCgPeKVfVZAY27MO6wcKdrhgvAV+AxkGCBsi7/v/0ms=;
+ b=dpuRx357iSEB27Ln81ZREfvKlypQfDEMp5FhW+yWvW+yxZa84X3pTSAHKUlcBbc2+r8o
+ VjHIxBbnpIyKVVELy5MnKNaqfPn2OhfCG2dB/CdlRQ+qFvPZIY37M6F1D+wemVVoEUaF
+ wDztrUjTLVOfC1a73QzfgU9DIgfWJQQBnc1IvWLMxH5DMChIIngcnHbAevhC6KcaPuAF
+ joWXJoydZz6FixUtVoQiFe9flFdnZaXe4nmz28ls/qqKfEBiODyJ55TWeqOFj+cLhgEF
+ uXdo6qaZLEUSa8H4dUVS5/2Yyi6fOHcFDezOTM6h6oCUb4Y6cz1yQxOlhBUmEtUjA3hP 9g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3unkfrre2m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Nov 2023 16:21:04 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3ASGA0mb027745;
+	Tue, 28 Nov 2023 16:21:03 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3unkfrre05-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Nov 2023 16:21:03 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3ASFxDbl012208;
+	Tue, 28 Nov 2023 16:16:20 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ukvrkgpy2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Nov 2023 16:16:20 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3ASGGIYm4588150
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 28 Nov 2023 16:16:19 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D452858052;
+	Tue, 28 Nov 2023 16:16:18 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 944285805E;
+	Tue, 28 Nov 2023 16:16:18 +0000 (GMT)
+Received: from localhost (unknown [9.61.20.55])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 28 Nov 2023 16:16:18 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: "Aneesh Kumar K.V (IBM)" <aneesh.kumar@kernel.org>,
+        Nathan Lynch via B4
+ Relay <devnull+nathanl.linux.ibm.com@kernel.org>,
+        Michael Ellerman
+ <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v4 06/13] powerpc/rtas: Serialize firmware activation
+ sequences
+In-Reply-To: <875y1lev8p.fsf@kernel.org>
+References: <20231117-papr-sys_rtas-vs-lockdown-v4-0-b794d8cb8502@linux.ibm.com>
+ <20231117-papr-sys_rtas-vs-lockdown-v4-6-b794d8cb8502@linux.ibm.com>
+ <874jhglu6x.fsf@kernel.org>
+ <87zfyx28rf.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+ <875y1lev8p.fsf@kernel.org>
+Date: Tue, 28 Nov 2023 10:16:17 -0600
+Message-ID: <87r0k926r2.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wgwpzgoSYU9Ob+MRyFuHRow4s5J099=DsCo1hGT=bkCtw@mail.gmail.com>
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: i-rHkknuluw73nxFZH-IQ74_w34IrcZc
+X-Proofpoint-ORIG-GUID: ADCbHtMgF6rvX33zu9Pp9qCNQyzmO0ol
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-28_18,2023-11-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
+ malwarescore=0 suspectscore=0 adultscore=0 phishscore=0 spamscore=0
+ priorityscore=1501 impostorscore=0 bulkscore=0 lowpriorityscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311280130
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,45 +104,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: feng.tang@intel.com, lkp@intel.com, Jann Horn <jannh@google.com>, intel-gfx@lists.freedesktop.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, fengwei.yin@intel.com, gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org, kernel test robot <oliver.sang@intel.com>, ying.huang@intel.com, oe-lkp@lists.linux.dev, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: tyreld@linux.ibm.com, Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org, gcwilson@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 27, 2023 at 09:10:54AM -0800, Linus Torvalds wrote:
-> On Mon, 27 Nov 2023 at 02:27, Christian Brauner <brauner@kernel.org> wrote:
-> >
-> > So I've picked up your patch (vfs.misc). It's clever alright so thanks
-> > for the comments in there otherwise I would've stared at this for far
-> > too long.
-> 
-> Note that I should probably have commented on one other thing: that
-> whole "just load from fd[0] is always safe, because the fd[] array
-> always exists".
+"Aneesh Kumar K.V (IBM)" <aneesh.kumar@kernel.org> writes:
 
-I added a comment to that effect in the code.
+> Nathan Lynch <nathanl@linux.ibm.com> writes:
+>
+>> "Aneesh Kumar K.V (IBM)" <aneesh.kumar@kernel.org> writes:
+>>> Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
+>>> writes:
+>>>
+>>>>
+>>>> Use the function lock API to prevent interleaving call sequences of
+>>>> the ibm,activate-firmware RTAS function, which typically requires
+>>>> multiple calls to complete the update. While the spec does not
+>>>> specifically prohibit interleaved sequences, there's almost certainly
+>>>> no advantage to allowing them.
+>>>>
+>>>
+>>> Can we document what is the equivalent thing the userspace does?
+>>
+>> I'm not sure what we would document.
+>>
+>> As best I can tell, the activate_firmware command in powerpc-utils does
+>> not make any effort to protect its use of the ibm,activate-firmware RTAS
+>> function. The command is not intended to be run manually and I guess
+>> it's relying on the platform's management console to serialize its
+>> invocations.
+>>
+>> drmgr (also from powerpc-utils) has some dead code for LPM that calls
+>> ibm,activate-firmware; it should probably be removed. The command uses a
+>> lock file to serialize all of its executions.
+>>
+>> Something that could happen with interleaved ibm,activate-firmware
+>> sequences is something like this:
+>>
+>> 1. Process A initiates an ibm,activate-firmware sequence and receives a
+>>    "retry" status (-2/990x).
+>> 2. Process B calls ibm,activate-firmware and receives the "done" status
+>>    (0), concluding the sequence A began.
+>> 3. Process A, unaware of B, calls ibm,activate-firmware again,
+>>    inadvertently beginning a new sequence.
+>>
+>
+> So this patch won't protect us against a parallel userspace
+> invocation.
 
-> 
-> IOW, that whole "load and mask" thing only works when you know the
-> array exists at all.
-> 
-> Doing that "just mask the index" wouldn't be valid if "size = 0" is an
-> option and might mean that we don't have an array at all (ie if "->fd"
-> itself could be NULL.
-> 
-> But we never have a completely empty file descriptor array, and
-> fdp->fd is never NULL.  At a minimum 'max_fds' is NR_OPEN_DEFAULT.
-> 
-> (The whole 'tsk->files' could be NULL, but only for kernel threads or
-> when exiting, so fget_task() will check for *that*, but it's a
-> separate thing)
+It does protect in-kernel sequences from disruption by sys_rtas-based
+sequences. Patch 5/13 "Facilitate high-level call sequences" makes it so
+sys_rtas-based invocations of ibm,activate-firmware acquire
+rtas_ibm_activate_firmware_lock.
 
-Yep.
+> We can add static bool call_in_progress to track the ongoing
+> ibm,activate-firmware call from userspace?
 
-> 
-> So that's why it's safe to *entirely* remove the whole
-> 
->                 if (unlikely(fd >= fdt->max_fds))
-> 
-> test, and do it *all* with just "mask the index, and mask the resulting load".
+We can't reliably maintain any such state in the kernel. A user of
+sys_rtas could exit with a sequence in progress, or it could simply
+decline to complete a sequence it has initiated for any reason. This is
+one of the fundamental problems with directly exposing more complex RTAS
+functions to user space.
 
-Yep.
+> My only concern is we are adding locks to protect against parallel
+> calls in the kernel, but at the same time, we ignore any userspace
+> call regarding the same. We should at least document this if this is
+> not important to be fixed.
+
+It's not accurate to say we're ignoring user space calls. Patch 5/13
+makes it so that sys_rtas(ibm,activate-firmware) will serialize on the
+same lock used here.
