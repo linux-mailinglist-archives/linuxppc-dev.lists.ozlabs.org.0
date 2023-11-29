@@ -1,68 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C56127FCCD9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 03:22:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 719AD7FCD05
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 03:41:10 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=BTxwXjeD;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Csb1yRjQ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sg34p29rhz3cbt
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 13:22:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sg3VC6yj3z3dF0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 13:41:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=BTxwXjeD;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Csb1yRjQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3okbmzqykdeuzlhuqjnvvnsl.jvtspu14wwj-kl2spz0z.v6shiz.vyn@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sg33x1pfQz30Jy
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Nov 2023 13:21:47 +1100 (AEDT)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5c994880223so92988147b3.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Nov 2023 18:21:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1701224505; x=1701829305; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mJUgPg47d4/pgx8Qlc5dU8QTKw0KSk/PtK3yQegaG7g=;
-        b=BTxwXjeDYMh9a2HsTo5bUHnTY2AmYXF7EMAANFyB8AhPHVWEkO4xHK1wKABhFPxYDm
-         5EuPe17T2nVqFx+NYSWLg0D9GccN0ZC5YuSR/9sjmKntvwBqOOAvvawnMF2OOzCanUZA
-         dPLUfX20PPVwKcVrs2F4FbWXm7Vf+7W0Y1dYZQYyu4pW+uXJ1dWKFAoSPMlNS/OPnJ7b
-         gFh7qHqpNwKm1oSnRG4Zpk0CXGfJdmbV3xVeublIpkVH4NkkqhDQ+MWeuctCicuhCoiY
-         ydJLJJJ/6iTK+FjwhAZQGUS02dyTf+7NUvcZqCcs5Ewyfu9Ekbdhk+pFogT0cEqf8bEr
-         1ROQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701224505; x=1701829305;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mJUgPg47d4/pgx8Qlc5dU8QTKw0KSk/PtK3yQegaG7g=;
-        b=KHZIVvAm9+uc3Gd6uIIOhJtAbPr2+MbzcoiK9rlUfI+Wu3NsD4VRoy2bsJ9dg1ncJy
-         u8YrKo7JuEQC1xYV9w28Nci/TkrCxvB+anrfGcxt6xzFBh3MXUwWUCL/6Ls1fY4pD10S
-         /WZArXr7EjrnKx+woigPFTKmVdY8Kzw0wSF5bRgMMbo5ftKZ2fU2Vdp13KbNwJDEu3YQ
-         euqwSQ9By5uAingfjx1mbYBA8KybXrYTuGUrtc6qtUt6yLTqvlhlcxDUe5836L/ZF/dr
-         ArTAvV2smN/LsvuZ14aZelpyOd9960lQ+k0Crp3KunVWEgDq6VibD5+eH3FwaAZDFAPr
-         VVNA==
-X-Gm-Message-State: AOJu0Yx69mw7oz0ZeOkbjYGCNrCdGKegkyd3zY6Vz54PfyS4XgDH26D6
-	ac2F2KuXG+mCMcnh7ZP+jGyPh6NO6Pg=
-X-Google-Smtp-Source: AGHT+IEzvdnB4YF3ag5ypaUivwQ+a/1gSiOiue26Vf+Kzl2dkVc1+0BYVi7jXds4GjyyxEfKmNI6Cd+a9DA=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a81:ff05:0:b0:5cd:c47d:d89a with SMTP id
- k5-20020a81ff05000000b005cdc47dd89amr593254ywn.2.1701224504362; Tue, 28 Nov
- 2023 18:21:44 -0800 (PST)
-Date: Tue, 28 Nov 2023 18:21:42 -0800
-In-Reply-To: <87edgy87ig.fsf@mail.lhotse>
-Mime-Version: 1.0
-References: <0-v1-08396538817d+13c5-vfio_kvm_kconfig_jgg@nvidia.com> <87edgy87ig.fsf@mail.lhotse>
-Message-ID: <ZWagNsu1XQIqk5z9@google.com>
-Subject: Re: Ping? Re: [PATCH rc] kvm: Prevent compiling virt/kvm/vfio.c
- unless VFIO is selected
-From: Sean Christopherson <seanjc@google.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="us-ascii"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sg3TK09V9z30Jy
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Nov 2023 13:40:20 +1100 (AEDT)
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AT2e6Mt031956;
+	Wed, 29 Nov 2023 02:40:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=nqCG7j/J4pJbLzcTt4B1E9hBta0qIlSr8rI9u1P5MPE=;
+ b=Csb1yRjQDF7OYnl+POuM8+yQnJ0vRB+3xnwPkgraEXvLv9D1zTQfKKINe35ciRBgW+Y9
+ r7QBq+VvvHyNvopqmqwbK5jvDJgGUPKX8LwSe6rg4RI5jl8xLwZ/bhwU128qVzofzJum
+ NgGoU5PLeoRlLcXZ7u+qsqVXE51ElEqmzN5DJJBKid+QHf1k1/SXQfvo9mJpkYCVC7Cz
+ 67gWJUxvEwcIX3JvY0SYpH4G83iJQiYYcv9jknTMCOvzbtICGYES+1feCMo52UCPWaBo
+ 1jPrQjHAW+47bv76ZVeOAQypslL+5MfQLxNxpUXjVlHfWuwrSWmtJWIB5ke8bkcNLya4 +w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3unvexr9xs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Nov 2023 02:40:08 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AT2e82S032186;
+	Wed, 29 Nov 2023 02:40:08 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3unvexr9wh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Nov 2023 02:40:06 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3AT1sJqs031072;
+	Wed, 29 Nov 2023 02:37:24 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3uku8t4qnn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Nov 2023 02:37:24 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3AT2bN9830409422
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 29 Nov 2023 02:37:23 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 416535805F;
+	Wed, 29 Nov 2023 02:37:23 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1E8895805C;
+	Wed, 29 Nov 2023 02:37:23 +0000 (GMT)
+Received: from localhost (unknown [9.61.20.55])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 29 Nov 2023 02:37:23 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+        Nathan Lynch via B4 Relay
+ <devnull+nathanl.linux.ibm.com@kernel.org>,
+        Nicholas Piggin
+ <npiggin@gmail.com>
+Subject: Re: [PATCH v4 05/13] powerpc/rtas: Facilitate high-level call
+ sequences
+In-Reply-To: <87jzq12ts4.fsf@mail.lhotse>
+References: <20231117-papr-sys_rtas-vs-lockdown-v4-0-b794d8cb8502@linux.ibm.com>
+ <20231117-papr-sys_rtas-vs-lockdown-v4-5-b794d8cb8502@linux.ibm.com>
+ <87jzq12ts4.fsf@mail.lhotse>
+Date: Tue, 28 Nov 2023 20:37:22 -0600
+Message-ID: <87h6l51dzx.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: PCqUb4kTQNdc7UBbyaeJJ2R9P8aEA30U
+X-Proofpoint-ORIG-GUID: AIr8_d7G83vIqHCQVxwdxfBcVHvzrDtO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-28_27,2023-11-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ suspectscore=0 bulkscore=0 mlxscore=0 phishscore=0 spamscore=0
+ mlxlogscore=697 adultscore=0 malwarescore=0 clxscore=1015 impostorscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311290018
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,71 +103,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, x86@kernel.org, Ingo Molnar <mingo@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, Zenghui Yu <yuzenghui@huawei.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, Sven Schnelle <svens@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- linuxppc-dev@lists.ozlabs.org
+Cc: tyreld@linux.ibm.com, Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org, gcwilson@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Nov 10, 2023, Michael Ellerman wrote:
-> Jason Gunthorpe <jgg@nvidia.com> writes:
-> > There are a bunch of reported randconfig failures now because of this,
-> > something like:
-> >
-> >>> arch/powerpc/kvm/../../../virt/kvm/vfio.c:89:7: warning: attribute declaration must precede definition [-Wignored-attributes]
-> >            fn = symbol_get(vfio_file_iommu_group);
-> >                 ^
-> >    include/linux/module.h:805:60: note: expanded from macro 'symbol_get'
-> >    #define symbol_get(x) ({ extern typeof(x) x __attribute__((weak,visibility("hidden"))); &(x); })
-> >
-> > It happens because the arch forces KVM_VFIO without knowing if VFIO is
-> > even enabled.
-> 
-> This is still breaking some builds. Can we get this fix in please?
-> 
-> cheers
-> 
-> > Split the kconfig so the arch selects the usual HAVE_KVM_ARCH_VFIO and
-> > then KVM_VFIO is only enabled if the arch wants it and VFIO is turned on.
+Michael Ellerman <mpe@ellerman.id.au> writes:
+> Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
+> writes:
+>> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+>> index 1fc0b3fffdd1..52f2242d0c28 100644
+>> --- a/arch/powerpc/kernel/rtas.c
+>> +++ b/arch/powerpc/kernel/rtas.c
+>> @@ -196,6 +224,12 @@ static struct rtas_function rtas_function_table[] _=
+_ro_after_init =3D {
+>>  			.buf_idx1 =3D 1, .size_idx1 =3D -1,
+>>  			.buf_idx2 =3D -1, .size_idx2 =3D -1,
+>>  		},
+>> +		/*
+>> +		 * PAPR+ R1=E2=80=937.3.19=E2=80=933 is explicit that the OS must not
+>
+> When you cite PAPR+ can you please include the version number?
+>
+> That's a general comment on this patch and in some other places in the
+> series too.
 
-Heh, so I was trying to figure out why things like vfio_file_set_kvm() aren't
-problematic, i.e. why the existing mess didn't cause failures.  I can't repro the
-warning (requires clang-16?), but IIUC the reason only the group code is problematic
-is that vfio.h creates a stub for vfio_file_iommu_group() and thus there's no symbol,
-whereas vfio.h declares vfio_file_set_kvm() unconditionally.
-
-Because KVM is doing symbol_get() and not taking a direct dependency, the lack of
-an exported symbol doesn't cause problems, i.e. simply declaring the symbol makes
-the compiler happy.
-
-Given that the vfio_file_iommu_group() stub shouldn't exist (KVM is the only user,
-and so if I'm correct the stub is worthless), what about this as a temporary "fix"?
-
-I'm 100% on-board with fixing KVM properly, my motivation is purely to minimize
-the total amount of churn.  E.g. if this works, then the only extra churn is to
-move the declaration of vfio_file_iommu_group() back under the #if, versus having
-to churn all of the KVM Kconfigs twice (once now, and again for the full cleanup).
-
-diff --git a/include/linux/vfio.h b/include/linux/vfio.h
-index 454e9295970c..a65b2513f8cd 100644
---- a/include/linux/vfio.h
-+++ b/include/linux/vfio.h
-@@ -289,16 +289,12 @@ void vfio_combine_iova_ranges(struct rb_root_cached *root, u32 cur_nodes,
- /*
-  * External user API
-  */
--#if IS_ENABLED(CONFIG_VFIO_GROUP)
- struct iommu_group *vfio_file_iommu_group(struct file *file);
-+
-+#if IS_ENABLED(CONFIG_VFIO_GROUP)
- bool vfio_file_is_group(struct file *file);
- bool vfio_file_has_dev(struct file *file, struct vfio_device *device);
- #else
--static inline struct iommu_group *vfio_file_iommu_group(struct file *file)
--{
--       return NULL;
--}
--
- static inline bool vfio_file_is_group(struct file *file)
- {
-        return false;
-
+OK. I assume v2.13 is fine even though most of the citations refer to
+passages that significantly predate that version.
