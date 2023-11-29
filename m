@@ -2,46 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF1197FD7D3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 14:21:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA9177FD7F5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 14:23:47 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=jP+FQJcU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=BJSzTYw/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SgKhy2Xrwz3dSf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Nov 2023 00:21:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SgKlj33VPz3clY
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Nov 2023 00:23:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=jP+FQJcU;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=BJSzTYw/;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SgKg859rbz3cWs
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Nov 2023 00:19:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SgKgL5bFLz3d8x
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Nov 2023 00:19:58 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1701263988;
-	bh=pPH9vlEbtDSzlhunReOlH3NqC609B+YljB8JndroG/M=;
+	s=201909; t=1701263989;
+	bh=ood126AEmPXN2ZgrJ4jy6sUKjnSBWzxHaRg6mSEzgjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jP+FQJcUTrLqzHuz3w33YFCrrQ9tO27NPcCrt2Fmq7SKA3c6IZuFgUfEZT0hZBRrg
-	 urGdkDXWWJFaictxb4Jpmy8jw9XStPmk+uJIBlls+G5MgAFxsbXI8Nvh/RvICpG7M+
-	 D0/8WaS+3XD057S8iUthXXo/jZFtopwkQ0+aeeQshA55m/6so8fa4C9gXYi+17F+k4
-	 H+mLr7rgaijahtORkA+bPR0/rKStIZ5tqnDjwmbj75xiZbXVV2uRuEmb01WtE0a01r
-	 GxzH9aZR632DGcCei9OoidHLHx1LNkki7w350CDb2D69XU+NRA9CWQm0T3fQX6/jbL
-	 BtLJduBSJ+BnQ==
+	b=BJSzTYw/eR/ITrJa2TUxd4flMiHqt1Cq9NOm2Y+WRHYgTtpEpkC0VNRnIO6ieXc/c
+	 3147zof5yCXU+WojThSqKAg/BDho4i8ZY1tJZH+pYTiL7yDe5QtUCzzg2f8OThzBQu
+	 0f4QTPwENsS7ECQs+oaHws4aBQSA4S/iSPbP+3phNa8z0aLlgfOaiSSANuv4btH9jb
+	 4c0m6mmrzl0K9wdvm7G0ApmtijlhU8KSTQuJXUTb8100iaFQsX+9ARnD2AgEn1HVbN
+	 VYNe9PvBjjW/G9eFcSA6RhWtHAdFVMMMm0CzW9hkrJHhH7CX1Cn24mT/QuGfij9UdB
+	 E4hPvMywBMy/Q==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SgKg83tHYz4wcM;
-	Thu, 30 Nov 2023 00:19:48 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SgKg90c5Bz4xSy;
+	Thu, 30 Nov 2023 00:19:49 +1100 (AEDT)
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH 2/5] powerpc/512x:  Make pdm360ng_init() static
-Date: Thu, 30 Nov 2023 00:19:16 +1100
-Message-ID: <20231129131919.2528517-2-mpe@ellerman.id.au>
+Subject: [PATCH 3/5] powerpc/512x: Fix missing prototype warnings
+Date: Thu, 30 Nov 2023 00:19:17 +1100
+Message-ID: <20231129131919.2528517-3-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231129131919.2528517-1-mpe@ellerman.id.au>
 References: <20231129131919.2528517-1-mpe@ellerman.id.au>
@@ -63,32 +63,36 @@ Cc: arnd@arndb.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The mpc512x_defconfig config fails with:
+The mpc512x_defconfig build fails with:
 
-  arch/powerpc/platforms/512x/pdm360ng.c:104:13: error: no previous prototype for ‘pdm360ng_init’ [-Werror=missing-prototypes]
-  104 | void __init pdm360ng_init(void)
-      |             ^~~~~~~~~~~~~
+  arch/powerpc/platforms/512x/mpc5121_ads_cpld.c:142:1: error: no previous prototype for ‘mpc5121_ads_cpld_map’ [-Werror=missing-prototypes]
+  142 | mpc5121_ads_cpld_map(void)
+      | ^~~~~~~~~~~~~~~~~~~~
+  arch/powerpc/platforms/512x/mpc5121_ads_cpld.c:157:1: error: no previous prototype for ‘mpc5121_ads_cpld_pic_init’ [-Werror=missing-prototypes]
+  157 | mpc5121_ads_cpld_pic_init(void)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~
 
-Fix it by making pdm360ng_init() static.
+There are prototypes for these functions but the header they are in is
+not included by mpc5121_ads_cpld.c. Include it to fix the build error.
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/platforms/512x/pdm360ng.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/platforms/512x/mpc5121_ads_cpld.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/platforms/512x/pdm360ng.c b/arch/powerpc/platforms/512x/pdm360ng.c
-index ce51cfeeb066..8bbbf78bb42b 100644
---- a/arch/powerpc/platforms/512x/pdm360ng.c
-+++ b/arch/powerpc/platforms/512x/pdm360ng.c
-@@ -101,7 +101,7 @@ static inline void __init pdm360ng_touchscreen_init(void)
- }
- #endif /* CONFIG_TOUCHSCREEN_ADS7846 */
+diff --git a/arch/powerpc/platforms/512x/mpc5121_ads_cpld.c b/arch/powerpc/platforms/512x/mpc5121_ads_cpld.c
+index 6f08d07aee3b..e995eb30bf09 100644
+--- a/arch/powerpc/platforms/512x/mpc5121_ads_cpld.c
++++ b/arch/powerpc/platforms/512x/mpc5121_ads_cpld.c
+@@ -17,6 +17,8 @@
+ #include <linux/of_address.h>
+ #include <linux/of_irq.h>
  
--void __init pdm360ng_init(void)
-+static void __init pdm360ng_init(void)
- {
- 	mpc512x_init();
- 	pdm360ng_touchscreen_init();
++#include "mpc5121_ads.h"
++
+ static struct device_node *cpld_pic_node;
+ static struct irq_domain *cpld_pic_host;
+ 
 -- 
 2.41.0
 
