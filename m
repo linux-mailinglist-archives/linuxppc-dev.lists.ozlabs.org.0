@@ -2,93 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 673747FD8FD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 15:10:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28A907FDF59
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 19:32:02 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=hibmqUm9;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=y5DWYflc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=eIbAU6S9;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SgLnX6Z81z3cC7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Nov 2023 01:10:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SgSbM4jkxz3dRZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Nov 2023 05:31:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=hibmqUm9;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=y5DWYflc;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=eIbAU6S9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.26; helo=out2-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=3ainnzqykdd8tfbokdhpphmf.dpnmjovyqqd-efwmjtut.p0mbct.psh@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SgLmj1dwyz3c5j
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Nov 2023 01:09:41 +1100 (AEDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.nyi.internal (Postfix) with ESMTP id 4087C5C0190;
-	Wed, 29 Nov 2023 09:09:39 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Wed, 29 Nov 2023 09:09:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm3; t=1701266979; x=1701353379; bh=+q
-	u+qeNh3+1C6ZkG6XZRXQVSJWWMjxNHbgHk/fpruJc=; b=hibmqUm9vmYkMuw/R1
-	w6/buezUiY/Et9DQD6vpIa6GC3RJ34uL4xlPVxydIzzwDxBXzvqajOxoR66/NQTU
-	VZ8MFgwDKVTZD+5XGeZsLFcx9K0cTFHhw5eL5tE53Vhe585pmrB5O6DpmjZtgL/e
-	nsRyflwAYTiO+8jx/ENkSmevCHfXdPN2UFCR6gGlPzVsLqMd9equ4Cm7eG/k8Mj0
-	EoiWmJAOH8MdJ+/C0O3oY7rayWuZdzviQp5fFtFSSWB2DN+wN0CXkj2E1mGMNOoh
-	bFYqXzvA8xFLawC2xat8x/TxLc4HNFomdKjTfRIKM5gTBApXthpX7GK20pJIzISo
-	sA9g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1701266979; x=1701353379; bh=+qu+qeNh3+1C6
-	ZkG6XZRXQVSJWWMjxNHbgHk/fpruJc=; b=y5DWYflcwlq4zKSOYBTE0QIf91ADt
-	QGHs0XfIYrShCW3l4VJvRol0IYFdDpMgJpLHQ+jT0sRJ2l6FK53qX05yshg0S/qj
-	VZrr29kYdj3WqYyP+v97xBvr8TvL57XYrBhBfM4pPpn5P5ste4lWSg1F6d837V3t
-	ZrRKwr5XXl0WPTabwGo3RnMf0qb61IaywgEqNlwaOm66wPeu/tPH59huIGXh7qpM
-	UoH/vZbW81ZVZiMKgt3GhhdCfW3JrMujx0CkxZ07jG5iYK+g4TzLvknNmEx5mYmh
-	4HenuxS6kgh45VC2mY9xabtBPvRn+13pg/5YUFDwDEmB5J2cI88ZdIALg==
-X-ME-Sender: <xms:IkZnZcp5E_Sm0ufACYRUf9SBPFhT0DCb_h1ue8UcWSsVsQri2uw9lg>
-    <xme:IkZnZSpz5CXX3CPFkdU9S1FisB-duf8ITBW9eVm3LEMxwLD_p0yDfUZrWptJ7Zd7L
-    3WfGqH3UbeD46TGd0M>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudeihedgiedtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepvefhffeltdegheeffffhtdegvdehjedtgfekueevgfduffettedtkeekueef
-    hedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
-    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:IkZnZRMd1e_tBwyFZo3UuVugRX1LPMzo9GT3elLRN_LJfE9tGtrgWA>
-    <xmx:IkZnZT7fQyJgtgr9NBu2hStpJr36QhX9VzN6cYJUchE4aTh0KYU4Aw>
-    <xmx:IkZnZb6F415No54jHkEAOnqp19Ap2uita_bOFWLtlDsGqgCDJ8dHqw>
-    <xmx:I0ZnZap-7LZiMVr8P20vvkQfOI5l2Sw0-rigAPxA4RiAyDXWalKsCw>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id B4A21B6008D; Wed, 29 Nov 2023 09:09:38 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-1234-gac66594aae-fm-20231122.001-gac66594a
-MIME-Version: 1.0
-Message-Id: <81e78cb7-ec97-4cec-ac3a-674e296af93b@app.fastmail.com>
-In-Reply-To: <20231128140818.261541-1-herve.codina@bootlin.com>
-References: <20231128140818.261541-1-herve.codina@bootlin.com>
-Date: Wed, 29 Nov 2023 15:09:17 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Herve Codina" <herve.codina@bootlin.com>,
- "Qiang Zhao" <qiang.zhao@nxp.com>, "Leo Li" <leoyang.li@nxp.com>,
- "Jakub Kicinski" <kuba@kernel.org>,
- "Shengjiu Wang" <shengjiu.wang@gmail.com>, "Xiubo Li" <Xiubo.Lee@gmail.com>,
- "Fabio Estevam" <festevam@gmail.com>,
- "Nicolin Chen" <nicoleotsuka@gmail.com>,
- "Liam Girdwood" <lgirdwood@gmail.com>, "Mark Brown" <broonie@kernel.org>,
- "Jaroslav Kysela" <perex@perex.cz>, "Takashi Iwai" <tiwai@suse.com>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH 00/17] Prepare the PowerQUICC QMC and TSA for the HDLC QMC driver
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SgSZQ4JPPz3cmw
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Nov 2023 05:31:08 +1100 (AEDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-5d1b431fa7bso1079587b3.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Nov 2023 10:31:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1701282665; x=1701887465; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=c1rLIdwfJP37garEzWHrWFHBXDQvp3tQ1Ff7Pa+0bvQ=;
+        b=eIbAU6S90EqlCKoTBjdeejiManA+bdgwwnHKtfU/IzNA6VqzlYKYs6oqJLCQ0ayDtX
+         +p+sG0uVg6dgXUoECGeZZJSBPkIm6LesvdEYED82IdHY9KOmYdNWBnNsoz94664ISSQy
+         4yJao3hsgzDX7x9qCxYoWjxYmzqSVWxGTsvY7b1HThUN9Xdhz/KeBxc1Iwp++SXsQatQ
+         DKpBwp+SkWn2uaro4L6mOB5Wr/DupsK34Zo0nXV1ECDMBQp9kyrihm/qEVmbX7+yhjcH
+         bJWpZBr6f1JG0zkGwZg1xY28Q0c2O8Mjme89eCjDX4GKfEQAyBL0oMkwdQCNjLAWrkCZ
+         Jk3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701282665; x=1701887465;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=c1rLIdwfJP37garEzWHrWFHBXDQvp3tQ1Ff7Pa+0bvQ=;
+        b=vGtPfiPEZ3R0ATTYm+TEvt4s6xXDYdT4fBzNjEhKwG2o1mzc88CkGDoffooUuOAmuT
+         4cV1jHwJgpZrJmFT0KdRg32iD/1Khh5CxEnXH8UET/KSI0yIIzATcXZTPvVNFIfU2xAZ
+         gmlv8G08ppmgrEdOw0gvZ9yAPPwDwI+ggu156Ph6UTed3p1Quwybnl5jovXsmYoQgU0o
+         yWKqFfTI18ZRluov7WdP9etMgx24WSJOmgIAbIEzux19uAmdxpvBlFUNS93C4cxRuRs6
+         JMXiuQ87WWiV9zB6A72El57tEUjucYz1gcNBqyNjqb3GLs2Xzm+l6qTk3yeCEeCb8eld
+         Llxw==
+X-Gm-Message-State: AOJu0YyZr3XHzyOa8kwr8xVSl9lcCi0ntl796a1hrMHZCo18s00lU931
+	aESVjsZ9/hS7BhUSOADauN9WChL3TMU=
+X-Google-Smtp-Source: AGHT+IHxpKv+Onni3jsljSwKzH8uXIhuxnoTBESUxuFhb+PRCSSwYQqIrFh/Htrp8TEW9pXbXT6mJDicqaY=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a05:690c:480d:b0:5ce:a88:8436 with SMTP id
+ hc13-20020a05690c480d00b005ce0a888436mr522497ywb.10.1701282664859; Wed, 29
+ Nov 2023 10:31:04 -0800 (PST)
+Date: Wed, 29 Nov 2023 10:31:03 -0800
+In-Reply-To: <20231129124821.GU436702@nvidia.com>
+Mime-Version: 1.0
+References: <0-v1-08396538817d+13c5-vfio_kvm_kconfig_jgg@nvidia.com>
+ <87edgy87ig.fsf@mail.lhotse> <ZWagNsu1XQIqk5z9@google.com> <20231129124821.GU436702@nvidia.com>
+Message-ID: <ZWeDZ76VkRMbHEGl@google.com>
+Subject: Re: Ping? Re: [PATCH rc] kvm: Prevent compiling virt/kvm/vfio.c
+ unless VFIO is selected
+From: Sean Christopherson <seanjc@google.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,48 +75,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arm-kernel@lists.infradead.org, alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>, x86@kernel.org, Ingo Molnar <mingo@redhat.com>, Zenghui Yu <yuzenghui@huawei.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, Sven Schnelle <svens@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 28, 2023, at 15:07, Herve Codina wrote:
-> Hi,
->
-> This series updates PowerQUICC QMC and TSA drivers to prepare the
-> support for the QMC HDLC driver.
->
-> Patches were previously sent as part of a full feature series:
-> "Add support for QMC HDLC, framer infrastructure and PEF2256 framer" [1]
->
-> The full feature series reached the v9 iteration.
-> The v1 was sent the 07/25/2023 followed by the other iterations
-> (07/26/2023, 08/09/2023, 08/18/2023, 09/12/2023, 09/22/2023, 09/28/2023,
-> 10/11/23, 11/15/2023) and was ready to be merged in its v8.
->   https://lore.kernel.org/linux-kernel/20231025123215.5caca7d4@kernel.org/
->
-> The lack of feedback from the Freescale SoC and the Quicc Engine
-> maintainers (i.e. drivers/soc/fsl/qe/ to which the QMC and TSA drivers
-> belong) blocks the entire full feature series.
-> These patches are fixes and improvements to TSA and QMC drivers.
-> These drivers were previously acked by Li Yang but without any feedback
-> from Li Yang nor Qiang Zhao the series cannot move forward.
->
-> In order to ease the review/merge, the full feature series has been
-> split and this series contains patches related to the PowerQUICC SoC
-> part (QMC and TSA).
->  - Perform some fixes (patches 1 to 5)
->  - Add support for child devices (patch 6)
->  - Add QMC dynamic timeslot support (patches 7 to 17)
->
-> From the original full feature series, a patches extraction without any
-> modification was done.
+On Wed, Nov 29, 2023, Jason Gunthorpe wrote:
+> On Tue, Nov 28, 2023 at 06:21:42PM -0800, Sean Christopherson wrote:
+> > diff --git a/include/linux/vfio.h b/include/linux/vfio.h
+> > index 454e9295970c..a65b2513f8cd 100644
+> > --- a/include/linux/vfio.h
+> > +++ b/include/linux/vfio.h
+> > @@ -289,16 +289,12 @@ void vfio_combine_iova_ranges(struct rb_root_cached *root, u32 cur_nodes,
+> >  /*
+> >   * External user API
+> >   */
+> > -#if IS_ENABLED(CONFIG_VFIO_GROUP)
+> >  struct iommu_group *vfio_file_iommu_group(struct file *file);
+> > +
+> > +#if IS_ENABLED(CONFIG_VFIO_GROUP)
+> >  bool vfio_file_is_group(struct file *file);
+> >  bool vfio_file_has_dev(struct file *file, struct vfio_device *device);
+> >  #else
+> > -static inline struct iommu_group *vfio_file_iommu_group(struct file *file)
+> > -{
+> > -       return NULL;
+> > -}
+> > -
+> >  static inline bool vfio_file_is_group(struct file *file)
+> >  {
+> >         return false;
+> > 
+> 
+> So you symbol get on a symbol that can never be defined? Still says to
+> me the kconfig needs fixing :|
 
-I took a rough look at the entire series and only have a few
-minor comments to one patch, otherwise it looks fine to me.
+Yeah, I completely agree, and if KVM didn't already rely on this horrific
+behavior and there wasn't a more complete overhaul in-flight, I wouldn't suggest
+this.
 
-I would still prefer for Li Yang to merge the patches and
-send the pull request to soc@kernel.org, but if this also
-gets stalled because of lack of feedback and there are no
-objections to the content, you can send a PR there yourself.
-
-     Arnd
+I'll send the KVM Kconfig/Makefile cleanups from my "Hide KVM internals from others"
+series separately (which is still the bulk of the series) so as to prioritize
+getting the cleanups landed.
