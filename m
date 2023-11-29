@@ -2,52 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 699A37FD2FB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 10:39:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C69B7FD428
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 11:31:57 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=myoOwtYn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=XFbldcw8;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SgDnP6Q5Zz3dFx
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 20:39:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SgFxQ5vF2z3d8N
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 21:31:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=myoOwtYn;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=XFbldcw8;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::52a; helo=mail-ed1-x52a.google.com; envelope-from=salvatore.bonaccorso@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SgDmb4P8wz2yQL
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Nov 2023 20:39:11 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1701250743;
-	bh=vsrPdG817FSeXCk8MleL83TvHrXPh57pIp04z21H6/U=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=myoOwtYnCMYNkSic9zkY8PttdYTgpbf4PL7ltVmiCcjFDDHamvpvFsbPNb5ijDUmL
-	 /TpbvQtdmVfVWR+njBWEGRP92NjOV5+MZQaX+tT89yOGy8xnklIfEunWGvAO7qhC8O
-	 gT3a7LpOh5roXxVSpgc34BoYlbs1qN2ZqeqB+tkQi/cq/vRGIdQ6gtBxxE68+B6k4i
-	 bYNiLeavOIdFfO73cqyMi9+84hbh5vDQJZlxxEqHgEVKoICfhApON15kYD+5UgsOr+
-	 89EIItQ+H6NgAGLE4Ijuygow0sOrow+YyHqye6OErP4sEbng//26tIroIU1W0W/3dG
-	 Dt/Jm7l9QS0Ow==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SgDmP5ZxZz4xSy;
-	Wed, 29 Nov 2023 20:39:01 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Sean Christopherson <seanjc@google.com>
-Subject: Re: Ping? Re: [PATCH rc] kvm: Prevent compiling virt/kvm/vfio.c
- unless VFIO is selected
-In-Reply-To: <ZWagNsu1XQIqk5z9@google.com>
-References: <0-v1-08396538817d+13c5-vfio_kvm_kconfig_jgg@nvidia.com>
- <87edgy87ig.fsf@mail.lhotse> <ZWagNsu1XQIqk5z9@google.com>
-Date: Wed, 29 Nov 2023 20:38:54 +1100
-Message-ID: <875y1k3nm9.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SgFwZ655Rz3c4s
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Nov 2023 21:31:09 +1100 (AEDT)
+Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-549070a04baso8765587a12.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Nov 2023 02:31:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701253859; x=1701858659; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3lAncjJSOOjZiNADXqbSSNgxD1Kx8XP10IMElfbL+LY=;
+        b=XFbldcw8eKW5WumanE2iIpxa5X+kxoHh8AV+iLg2SonxhV93Lx59H7lCOaSH04CQox
+         VPZ3bJDZEHUZ8CJZOvw7wGkileLNhMPHmdpQws+5pXkaUAy+Twh2Ozh3f4+3n2+TlQad
+         ioej9EofrS17rSHPuaFrkUDLJrMelp8YkGV6R1HWSO7SQ7UyS8lyKp6JbjLVGORKXoan
+         NZmpNO+e4SvT0QEwCABK5FjYOzZ2Vx1HX2BDm1UUm2yXmZcnkkzwNJXRgDi4tXiaJki8
+         DGqGiawbw+FZcHF/kAyHCjCU75DW0B1MVZ4VPaqwN+yv8Gn9drnA1JzVcbN7wIIrqheU
+         UP1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701253859; x=1701858659;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3lAncjJSOOjZiNADXqbSSNgxD1Kx8XP10IMElfbL+LY=;
+        b=k8jl6EPgMYs7YB7lHo/DdO44T6+bIvS/n+ka1H2nMdtzZeZCPpEvW+oaIMuc8KXSzV
+         cssuUpO3HSw1hWnx+gEaVu9shtrDrUQ8kXNr7PhRiTLJQODd+uZSYW/LVZ5BSjSdneYH
+         0U2XmWvtEQdx8E8cfoss4FGY0BeZWMkORdL8Eyid2QHK1Ph6HzHYSBlmQsKZ4waBOv3x
+         nBn9eF22uGgRWPmb/pjxssSDXEgoDcphOO9yY/lUWi8AswO5t/0XV0sgAcoJVPlMxecr
+         5GB5yfqgBuD9F0dNLV5qGY7D4mO4c9yWzzbupqUjosF9kPqfxnpcOVfMiAZkWlsmmSNE
+         9WGQ==
+X-Gm-Message-State: AOJu0YzBcAbfHmNl6HMe7u5U26hjlM7u9KysEs/2Yt15KmSs7R4gAm8m
+	421am0xncB2rGSObE9hpGeY=
+X-Google-Smtp-Source: AGHT+IGptUIWmZYcaDGodMJ/aJUrATc3/axoxHWWr7FC5K0fVtF61tB+rOJdv9N5WVOF8xPpsKYW6A==
+X-Received: by 2002:a05:6402:220d:b0:54a:f8d9:8023 with SMTP id cq13-20020a056402220d00b0054af8d98023mr11645670edb.37.1701253859154;
+        Wed, 29 Nov 2023 02:30:59 -0800 (PST)
+Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
+        by smtp.gmail.com with ESMTPSA id h14-20020aa7c94e000000b00548a57d4f7bsm7241144edt.36.2023.11.29.02.30.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Nov 2023 02:30:58 -0800 (PST)
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 1BE49BE2DE0; Wed, 29 Nov 2023 11:30:58 +0100 (CET)
+Date: Wed, 29 Nov 2023 11:30:58 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Jens Axboe <axboe@kernel.dk>
+Subject: Re: [PATCH] powerpc: Don't clobber fr0/vs0 during fp|altivec
+ register save
+Message-ID: <ZWcS4uBOUefxZAQY@eldamar.lan>
+References: <1105090647.48374193.1700351103830.JavaMail.zimbra@raptorengineeringinc.com>
+ <42b9fdd7-2939-4ffc-8e18-4996948b19f7@kernel.dk>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <42b9fdd7-2939-4ffc-8e18-4996948b19f7@kernel.dk>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,93 +82,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, x86@kernel.org, Ingo Molnar <mingo@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, Zenghui Yu <yuzenghui@huawei.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, Sven Schnelle <svens@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- linuxppc-dev@lists.ozlabs.org
+Cc: regressions <regressions@lists.linux.dev>, Timothy Pearson <tpearson@raptorengineering.com>, npiggin <npiggin@gmail.com>, stable@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sean Christopherson <seanjc@google.com> writes:
-> On Fri, Nov 10, 2023, Michael Ellerman wrote:
->> Jason Gunthorpe <jgg@nvidia.com> writes:
->> > There are a bunch of reported randconfig failures now because of this,
->> > something like:
->> >
->> >>> arch/powerpc/kvm/../../../virt/kvm/vfio.c:89:7: warning: attribute declaration must precede definition [-Wignored-attributes]
->> >            fn = symbol_get(vfio_file_iommu_group);
->> >                 ^
->> >    include/linux/module.h:805:60: note: expanded from macro 'symbol_get'
->> >    #define symbol_get(x) ({ extern typeof(x) x __attribute__((weak,visibility("hidden"))); &(x); })
->> >
->> > It happens because the arch forces KVM_VFIO without knowing if VFIO is
->> > even enabled.
->> 
->> This is still breaking some builds. Can we get this fix in please?
->> 
->> cheers
->> 
->> > Split the kconfig so the arch selects the usual HAVE_KVM_ARCH_VFIO and
->> > then KVM_VFIO is only enabled if the arch wants it and VFIO is turned on.
->
-> Heh, so I was trying to figure out why things like vfio_file_set_kvm() aren't
-> problematic, i.e. why the existing mess didn't cause failures.  I can't repro the
-> warning (requires clang-16?), but IIUC the reason only the group code is problematic
-> is that vfio.h creates a stub for vfio_file_iommu_group() and thus there's no symbol,
-> whereas vfio.h declares vfio_file_set_kvm() unconditionally.
+Hi,
 
-That warning I'm unsure about.
+On Sun, Nov 19, 2023 at 06:14:50AM -0700, Jens Axboe wrote:
+> On 11/18/23 4:45 PM, Timothy Pearson wrote:
+> > During floating point and vector save to thread data fr0/vs0 are clobbered
+> > by the FPSCR/VSCR store routine.  This leads to userspace register corruption
+> > and application data corruption / crash under the following rare condition:
+> > 
+> >  * A userspace thread is executing with VSX/FP mode enabled
+> >  * The userspace thread is making active use of fr0 and/or vs0
+> >  * An IPI is taken in kernel mode, forcing the userspace thread to reschedule
+> >  * The userspace thread is interrupted by the IPI before accessing data it
+> >    previously stored in fr0/vs0
+> >  * The thread being switched in by the IPI has a pending signal
+> > 
+> > If these exact criteria are met, then the following sequence happens:
+> > 
+> >  * The existing thread FP storage is still valid before the IPI, due to a
+> >    prior call to save_fpu() or store_fp_state().  Note that the current
+> >    fr0/vs0 registers have been clobbered, so the FP/VSX state in registers
+> >    is now invalid pending a call to restore_fp()/restore_altivec().
+> >  * IPI -- FP/VSX register state remains invalid
+> >  * interrupt_exit_user_prepare_main() calls do_notify_resume(),
+> >    due to the pending signal
+> >  * do_notify_resume() eventually calls save_fpu() via giveup_fpu(), which
+> >    merrily reads and saves the invalid FP/VSX state to thread local storage.
+> >  * interrupt_exit_user_prepare_main() calls restore_math(), writing the invalid
+> >    FP/VSX state back to registers.
+> >  * Execution is released to userspace, and the application crashes or corrupts
+> >    data.
+> 
+> What an epic bug hunt! Hats off to you for seeing it through and getting
+> to the bottom of it. Particularly difficult as the commit that made it
+> easier to trigger was in no way related to where the actual bug was.
+> 
+> I ran this on the vm I have access to, and it survived 2x500 iterations.
+> Happy to call that good:
+> 
+> Tested-by: Jens Axboe <axboe@kernel.dk>
 
-But the final report linked in Jason's mail shows a different one:
+Thanks to all involved!
 
-   In file included from arch/powerpc/kvm/../../../virt/kvm/vfio.c:17:
-   include/linux/vfio.h: In function 'kvm_vfio_file_iommu_group':
-   include/linux/vfio.h:294:35: error: weak declaration of 'vfio_file_iommu_group' being applied to a already existing, static definition
-     294 | static inline struct iommu_group *vfio_file_iommu_group(struct file *file)
-         |                                   ^~~~~~~~~~~~~~~~~~~~~
+Is this going to land soon in mainline so it can be picked as well for
+the affected stable trees?
 
-Which is simple to reproduce, just build ppc64le_defconfig and then turn
-off CONFIG_MODULES (I'm using GCC 13, the report is for GCC 12).
-
-> Because KVM is doing symbol_get() and not taking a direct dependency, the lack of
-> an exported symbol doesn't cause problems, i.e. simply declaring the symbol makes
-> the compiler happy.
->
-> Given that the vfio_file_iommu_group() stub shouldn't exist (KVM is the only user,
-> and so if I'm correct the stub is worthless), what about this as a temporary "fix"?
->
-> I'm 100% on-board with fixing KVM properly, my motivation is purely to minimize
-> the total amount of churn.  E.g. if this works, then the only extra churn is to
-> move the declaration of vfio_file_iommu_group() back under the #if, versus having
-> to churn all of the KVM Kconfigs twice (once now, and again for the full cleanup).
-
-Fine by me.
-
-> diff --git a/include/linux/vfio.h b/include/linux/vfio.h
-> index 454e9295970c..a65b2513f8cd 100644
-> --- a/include/linux/vfio.h
-> +++ b/include/linux/vfio.h
-> @@ -289,16 +289,12 @@ void vfio_combine_iova_ranges(struct rb_root_cached *root, u32 cur_nodes,
->  /*
->   * External user API
->   */
-> -#if IS_ENABLED(CONFIG_VFIO_GROUP)
->  struct iommu_group *vfio_file_iommu_group(struct file *file);
-> +
-> +#if IS_ENABLED(CONFIG_VFIO_GROUP)
->  bool vfio_file_is_group(struct file *file);
->  bool vfio_file_has_dev(struct file *file, struct vfio_device *device);
->  #else
-> -static inline struct iommu_group *vfio_file_iommu_group(struct file *file)
-> -{
-> -       return NULL;
-> -}
-> -
->  static inline bool vfio_file_is_group(struct file *file)
->  {
->         return false;
-
-That fixes the build for me.
-
-Tested-by: Michael Ellerman <mpe@ellerman.id.au>
-
-
-cheers
+Regards,
+Salvatore
