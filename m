@@ -2,52 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 334E87FD7E5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 14:23:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D66F67FD7F8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 14:24:35 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Yl/YC+X0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=fts1g4mc;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SgKkn4qYzz3d8R
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Nov 2023 00:22:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SgKmd2PZnz3vcy
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Nov 2023 00:24:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Yl/YC+X0;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=fts1g4mc;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SgKgB2L5bz3cNQ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Nov 2023 00:19:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SgKh96X9qz3d8y
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Nov 2023 00:20:41 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1701263990;
-	bh=/bB1Nks5KtPyb0Yhho+sDeYW04/1u6lOjRMxvsJxA3g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yl/YC+X0dgfuGl1etK9BXo7mN4RGEpOmeqXiruA+jCHJZvJyxuVvO5BIIV2lqR7j6
-	 CFncTVjjOXRc+vISBHvHalPNk0+Gd/Vkq/7CE+dNH0Kw7o11ufY9/RFSQWBJEVDD69
-	 SDBRbDKgRCgGiZSkr+NpJb9VnnMV+pYogzH9SGB89tO8QvtF257JfpFhN+E3ZiVQiE
-	 eFENigcnZE68akED0jZt0zzK7DKSiDcczFs1pev7jpAxEltffuJJW11zbJpxzUr9JJ
-	 cAE7SlWNPnOKE0CQeAyGZ3xhhbSFjKzt3F922fMnKODDj2jTu8/gFN02GunrR1QHPW
-	 JqPdikuj9kAUA==
+	s=201909; t=1701264041;
+	bh=OKAi9zgo4g/bQmTQBdSLrAuecjEinmMfHE8kTBND2a4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=fts1g4mcy4taQ5OHfOyhbSUVs1VaZeepZzt/j252B/6z2thNSOWbTMrW4blrtMRLD
+	 /61egxE82F1NBJmTzR44XvykIn11Tc8rG1CSoiAxOpLoShN93wrVpl4WdCm1C6MFr0
+	 yJG2u/WYaLk5ayZuhO0TcB8JF+du+4JaVqUqFNN12wEmfx6N0q+kYrGu4lht3j9Vky
+	 mwuGKJVHIvQbMZY+xqGdzAm94IF/Uoo+x6sIfaZ9vAT6muBfcJkGRztj5lPZraHnA9
+	 TNkFCzIzDs0vCyqzZzlkHgL4EhMTyoYD1DVd04NAtqkG5IiM8yfm9HP4/1XWAgAimX
+	 Efe/nAtm9uYsA==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SgKgB12nRz4xVR;
-	Thu, 30 Nov 2023 00:19:50 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SgKh91f3Hz4x5q;
+	Thu, 30 Nov 2023 00:20:41 +1100 (AEDT)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH 5/5] powerpc/64s: Fix CONFIG_NUMA=n build
-Date: Thu, 30 Nov 2023 00:19:19 +1100
-Message-ID: <20231129131919.2528517-5-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231129131919.2528517-1-mpe@ellerman.id.au>
-References: <20231129131919.2528517-1-mpe@ellerman.id.au>
+To: Nathan Lynch <nathanl@linux.ibm.com>, Nathan Lynch via B4 Relay
+ <devnull+nathanl.linux.ibm.com@kernel.org>, Nicholas Piggin
+ <npiggin@gmail.com>
+Subject: Re: [PATCH v4 05/13] powerpc/rtas: Facilitate high-level call
+ sequences
+In-Reply-To: <87jzq11nsj.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+References: <20231117-papr-sys_rtas-vs-lockdown-v4-0-b794d8cb8502@linux.ibm.com>
+ <20231117-papr-sys_rtas-vs-lockdown-v4-5-b794d8cb8502@linux.ibm.com>
+ <87sf4p33zg.fsf@mail.lhotse>
+ <87jzq11nsj.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+Date: Thu, 30 Nov 2023 00:20:40 +1100
+Message-ID: <874jh43dcn.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,58 +63,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: arnd@arndb.de
+Cc: tyreld@linux.ibm.com, Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org, gcwilson@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With CONFIG_NUMA=n the build fails with:
+Nathan Lynch <nathanl@linux.ibm.com> writes:
+> Michael Ellerman <mpe@ellerman.id.au> writes:
+>
+>> Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
+>> writes:
+>>> From: Nathan Lynch <nathanl@linux.ibm.com>
+>>>
+>>> On RTAS platforms there is a general restriction that the OS must not
+>>> enter RTAS on more than one CPU at a time. This low-level
+>>> serialization requirement is satisfied by holding a spin
+>>> lock (rtas_lock) across most RTAS function invocations.
+>> ...
+>>> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+>>> index 1fc0b3fffdd1..52f2242d0c28 100644
+>>> --- a/arch/powerpc/kernel/rtas.c
+>>> +++ b/arch/powerpc/kernel/rtas.c
+>>> @@ -581,6 +652,28 @@ static const struct rtas_function *rtas_token_to_function(s32 token)
+>>>  	return NULL;
+>>>  }
+>>>  
+>>> +static void __rtas_function_lock(struct rtas_function *func)
+>>> +{
+>>> +	if (func && func->lock)
+>>> +		mutex_lock(func->lock);
+>>> +}
+>>
+>> This is obviously going to defeat most static analysis tools.
+>
+> I guess it's not that obvious to me :-) Is it because the mutex_lock()
+> is conditional? I'll improve this if it's possible.
 
-  arch/powerpc/mm/book3s64/pgtable.c:275:15: error: no previous prototype for ‘create_section_mapping’ [-Werror=missing-prototypes]
-  275 | int __meminit create_section_mapping(unsigned long start, unsigned long end,
-      |               ^~~~~~~~~~~~~~~~~~~~~~
+Well maybe I'm not giving modern static analysis tools enough credit :)
 
-That happens because the prototype for create_section_mapping() is in
-asm/mmzone.h, but asm/mmzone.h is only included by linux/mmzone.h
-when CONFIG_NUMA=y.
+But what I mean that it's not easy to reason about what the function
+does in isolation. ie. all you can say is that it may or may not lock a
+mutex, and you can't say which mutex.
 
-In fact the prototype is only needed by arch/powerpc/mm code, so move
-the prototype into arch/powerpc/mm/mmu_decl.h, which also fixes the
-build error.
+>> I assume lockdep is OK with it though?
+>
+> Seems to be, yes.
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/include/asm/mmzone.h | 5 -----
- arch/powerpc/mm/mmu_decl.h        | 5 +++++
- 2 files changed, 5 insertions(+), 5 deletions(-)
+OK.
 
-diff --git a/arch/powerpc/include/asm/mmzone.h b/arch/powerpc/include/asm/mmzone.h
-index 4c6c6dbd182f..4740ca230d36 100644
---- a/arch/powerpc/include/asm/mmzone.h
-+++ b/arch/powerpc/include/asm/mmzone.h
-@@ -46,10 +46,5 @@ u64 memory_hotplug_max(void);
- #define __HAVE_ARCH_RESERVED_KERNEL_PAGES
- #endif
- 
--#ifdef CONFIG_MEMORY_HOTPLUG
--extern int create_section_mapping(unsigned long start, unsigned long end,
--				  int nid, pgprot_t prot);
--#endif
--
- #endif /* __KERNEL__ */
- #endif /* _ASM_MMZONE_H_ */
-diff --git a/arch/powerpc/mm/mmu_decl.h b/arch/powerpc/mm/mmu_decl.h
-index 7f9ff0640124..72341b9fb552 100644
---- a/arch/powerpc/mm/mmu_decl.h
-+++ b/arch/powerpc/mm/mmu_decl.h
-@@ -181,3 +181,8 @@ static inline bool debug_pagealloc_enabled_or_kfence(void)
- {
- 	return IS_ENABLED(CONFIG_KFENCE) || debug_pagealloc_enabled();
- }
-+
-+#ifdef CONFIG_MEMORY_HOTPLUG
-+int create_section_mapping(unsigned long start, unsigned long end,
-+			   int nid, pgprot_t prot);
-+#endif
--- 
-2.41.0
-
+cheers
