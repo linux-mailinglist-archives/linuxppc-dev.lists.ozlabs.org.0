@@ -1,87 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DE5A7FD028
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 08:55:37 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LpjwnEYp;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E1C27FD041
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 09:00:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SgBT24Pnbz3cmg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 18:55:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SgBb360Rtz3cnZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 19:00:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LpjwnEYp;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=43.154.197.177; helo=bg5.exmail.qq.com; envelope-from=ke.zhao@shingroup.cn; receiver=lists.ozlabs.org)
+Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.154.197.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SgBS52zqTz3bPM
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Nov 2023 18:54:44 +1100 (AEDT)
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AT7ekYC010735;
-	Wed, 29 Nov 2023 07:54:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=HkQYPhSY+RkifVIDMjF8u6aVyPbm4tjqjaSbHdZFFH4=;
- b=LpjwnEYp1joUcmZl99Vk1JZXfWAqOa/JRwAmgmy58whCz+eVsbG4oMS27Xov+EShIkbc
- IzUpVUUDVVblMWhwJgPBH4vOIN3BzT46dJSPLIWwvPIvSpNYhvik8C5RbWYFQJ+FlTuo
- w57hTztnz/9oCD5fKOOc+BRcE6NyqK7ZOjhHDFyAiHRkBGuipjwSmsHyhdyUdNp2WmvZ
- bU4NWpAjCRkv9uPXMNNXdK7231AMYk96JwLzWXcplOMGVbO81POAnuigDBoAlC6x4B1Y
- 583aIfU5fwOhw26qZg6QiUnKqhRodLjYqM7mmJHr0D1HOMzFLKza/D0iQkppOBgmc8h8 IQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3up1470bh9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 Nov 2023 07:54:33 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AT7l5nX029839;
-	Wed, 29 Nov 2023 07:54:33 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3up1470bh4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 Nov 2023 07:54:33 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3AT50ig6004955;
-	Wed, 29 Nov 2023 07:54:32 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ukwfk5g5d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 Nov 2023 07:54:32 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3AT7sT9K9896452
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 29 Nov 2023 07:54:29 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1621C58058;
-	Wed, 29 Nov 2023 07:54:29 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5E95158059;
-	Wed, 29 Nov 2023 07:54:27 +0000 (GMT)
-Received: from localhost.ibm.com (unknown [9.67.85.162])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 29 Nov 2023 07:54:27 +0000 (GMT)
-From: Haren Myneni <haren@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2] powerpc/pseries/vas: Use usleep_range() to support HCALL delay
-Date: Tue, 28 Nov 2023 23:54:24 -0800
-Message-Id: <20231129075424.240653-1-haren@linux.ibm.com>
-X-Mailer: git-send-email 2.26.3
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SgBZV4PyJz3bcJ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Nov 2023 19:00:17 +1100 (AEDT)
+X-QQ-mid: bizesmtp64t1701244736ta8gixpe
+Received: from HX01040049.powercore.com.cn ( [125.94.202.196])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 29 Nov 2023 15:58:49 +0800 (CST)
+X-QQ-SSF: 01400000000000708000000A0000000
+X-QQ-FEAT: gBprNiU+WNeRCxd1mFC0ek6Tr9pLWM0mTZ8midTMAGSwDIo4FTOPE7P8jVK5u
+	+jS+f0RV5CzN/+0yORbfyySXnusFmiK22mABedLLcYzyGgYY1frZEeKnDSQl8zoRdx90QJy
+	G/zOe6wfeheY/JSBeS+SmYGCxZbkSJiYeEiOkibXu9AaKfnYNSd1J1SqscQdVLaFoTCA9zN
+	9atgjRdl4GsXTkWfml6gExxq80YpEp/8gdZoGjwNktkdkCZumWt9uN3nEUQR7BV4w2x6Jh/
+	mf0OcdUJoF4M7awpTHrY26mXg61djVAzY/+1VZVZq0WhonU6SAilF4v3uT/9rDfTcR/FFNy
+	HF+Gvi4Z452yTWE5KoCxtLfp6j8ZTNwd9Qc0tkxi3r0bu7Gwd66E2IHEsFZsHIUX9Dd6g+2
+	Xiks/CqNkxmvGl6iz5vOGnr6Rlpn7cwC
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 3565711899021422489
+From: Zhao Ke <ke.zhao@shingroup.cn>
+To: mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	christophe.leroy@csgroup.eu,
+	fbarrat@linux.ibm.com,
+	ajd@linux.ibm.com,
+	arnd@arndb.de,
+	gregkh@linuxfoundation.org
+Subject: [PATCH v2] powerpc: Add PVN support for HeXin C2000 processor
+Date: Wed, 29 Nov 2023 15:58:45 +0800
+Message-Id: <20231129075845.57976-1-ke.zhao@shingroup.cn>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: cq_noAvu7cYe5gnwgKSl-ePGg1WvsBIE
-X-Proofpoint-GUID: Ydu7Dtnga_CxtokRFYGbeig81kgOk2SX
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-29_05,2023-11-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
- bulkscore=0 impostorscore=0 lowpriorityscore=0 mlxscore=0 adultscore=0
- spamscore=0 priorityscore=1501 malwarescore=0 phishscore=0 mlxlogscore=982
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311060000
- definitions=main-2311290057
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:shingroup.cn:qybglogicsvrsz:qybglogicsvrsz3a-0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,69 +56,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, Haren Myneni <haren@linux.ibm.com>, npiggin@gmail.com
+Cc: luming.yu@shingroup.cn, Zhao Ke <ke.zhao@shingroup.cn>, kvm@vger.kernel.org, dawei.li@shingroup.cn, linux-kernel@vger.kernel.org, shenghui.qu@shingroup.cn, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-VAS allocate, modify and deallocate HCALLs returns
-H_LONG_BUSY_ORDER_1_MSEC or H_LONG_BUSY_ORDER_10_MSEC for busy
-delay and expects OS to reissue HCALL after that delay. But using
-msleep() will often sleep at least 20 msecs even though the
-hypervisor expects to reissue these HCALLs after 1 or 10msecs.
-It might cause these HCALLs takes longer when multiple threads
-issue open or close VAS windows simultaneously.
+HeXin Tech Co. has applied for a new PVN from the OpenPower Community
+for its new processor C2000. The OpenPower has assigned a new PVN
+and this newly assigned PVN is 0x0066, add pvr register related
+support for this PVN.
 
-So instead of msleep(), use usleep_range() to ensure sleep with
-the expected value before issuing HCALL again.
-
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-Suggested-by: Nathan Lynch <nathanl@linux.ibm.com>
-
+Signed-off-by: Zhao Ke <ke.zhao@shingroup.cn>
+Link: https://discuss.openpower.foundation/t/how-to-get-a-new-pvr-for-processors-follow-power-isa/477/10
 ---
-v1 -> v2:
-- Use usleep_range instead of using RTAS sleep routine as
-  suggested by Nathan
+	v1 -> v2:
+	- Fix pvr_mask and cpu_name
+	- Fix alignment pattern to match other lines
+	v0 -> v1:
+	- Fix .cpu_name with the correct description
 ---
- arch/powerpc/platforms/pseries/vas.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+---
+ arch/powerpc/include/asm/reg.h            |  1 +
+ arch/powerpc/kernel/cpu_specs_book3s_64.h | 15 +++++++++++++++
+ arch/powerpc/kvm/book3s_pr.c              |  1 +
+ arch/powerpc/mm/book3s64/pkeys.c          |  3 ++-
+ arch/powerpc/platforms/powernv/subcore.c  |  3 ++-
+ drivers/misc/cxl/cxl.h                    |  3 ++-
+ 6 files changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
-index 71d52a670d95..bade4402741f 100644
---- a/arch/powerpc/platforms/pseries/vas.c
-+++ b/arch/powerpc/platforms/pseries/vas.c
-@@ -36,9 +36,31 @@ static bool migration_in_progress;
+diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+index 4ae4ab9090a2..7fd09f25452d 100644
+--- a/arch/powerpc/include/asm/reg.h
++++ b/arch/powerpc/include/asm/reg.h
+@@ -1361,6 +1361,7 @@
+ #define PVR_POWER8E	0x004B
+ #define PVR_POWER8NVL	0x004C
+ #define PVR_POWER8	0x004D
++#define PVR_HX_C2000	0x0066
+ #define PVR_POWER9	0x004E
+ #define PVR_POWER10	0x0080
+ #define PVR_BE		0x0070
+diff --git a/arch/powerpc/kernel/cpu_specs_book3s_64.h b/arch/powerpc/kernel/cpu_specs_book3s_64.h
+index c370c1b804a9..3ff9757df4c0 100644
+--- a/arch/powerpc/kernel/cpu_specs_book3s_64.h
++++ b/arch/powerpc/kernel/cpu_specs_book3s_64.h
+@@ -238,6 +238,21 @@ static struct cpu_spec cpu_specs[] __initdata = {
+ 		.machine_check_early	= __machine_check_early_realmode_p8,
+ 		.platform		= "power8",
+ 	},
++	{	/* 2.07-compliant processor, HeXin C2000 processor */
++		.pvr_mask		= 0xffff0000,
++		.pvr_value		= 0x00660000,
++		.cpu_name		= "HX-C2000",
++		.cpu_features		= CPU_FTRS_POWER8,
++		.cpu_user_features	= COMMON_USER_POWER8,
++		.cpu_user_features2	= COMMON_USER2_POWER8,
++		.mmu_features		= MMU_FTRS_POWER8,
++		.icache_bsize		= 128,
++		.dcache_bsize		= 128,
++		.cpu_setup		= __setup_cpu_power8,
++		.cpu_restore		= __restore_cpu_power8,
++		.machine_check_early	= __machine_check_early_realmode_p8,
++		.platform		= "power8",
++	},
+ 	{	/* 3.00-compliant processor, i.e. Power9 "architected" mode */
+ 		.pvr_mask		= 0xffffffff,
+ 		.pvr_value		= 0x0f000005,
+diff --git a/arch/powerpc/kvm/book3s_pr.c b/arch/powerpc/kvm/book3s_pr.c
+index 9118242063fb..5b92619a05fd 100644
+--- a/arch/powerpc/kvm/book3s_pr.c
++++ b/arch/powerpc/kvm/book3s_pr.c
+@@ -604,6 +604,7 @@ static void kvmppc_set_pvr_pr(struct kvm_vcpu *vcpu, u32 pvr)
+ 	case PVR_POWER8:
+ 	case PVR_POWER8E:
+ 	case PVR_POWER8NVL:
++	case PVR_HX_C2000:
+ 	case PVR_POWER9:
+ 		vcpu->arch.hflags |= BOOK3S_HFLAG_MULTI_PGSIZE |
+ 			BOOK3S_HFLAG_NEW_TLBIE;
+diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
+index 125733962033..a974baf8f327 100644
+--- a/arch/powerpc/mm/book3s64/pkeys.c
++++ b/arch/powerpc/mm/book3s64/pkeys.c
+@@ -89,7 +89,8 @@ static int __init scan_pkey_feature(void)
+ 			unsigned long pvr = mfspr(SPRN_PVR);
  
- static long hcall_return_busy_check(long rc)
+ 			if (PVR_VER(pvr) == PVR_POWER8 || PVR_VER(pvr) == PVR_POWER8E ||
+-			    PVR_VER(pvr) == PVR_POWER8NVL || PVR_VER(pvr) == PVR_POWER9)
++			    PVR_VER(pvr) == PVR_POWER8NVL || PVR_VER(pvr) == PVR_POWER9 ||
++			    PVR_VER(pvr) == PVR_HX_C2000)
+ 				pkeys_total = 32;
+ 		}
+ 	}
+diff --git a/arch/powerpc/platforms/powernv/subcore.c b/arch/powerpc/platforms/powernv/subcore.c
+index 191424468f10..393e747541fb 100644
+--- a/arch/powerpc/platforms/powernv/subcore.c
++++ b/arch/powerpc/platforms/powernv/subcore.c
+@@ -425,7 +425,8 @@ static int subcore_init(void)
+ 
+ 	if (pvr_ver != PVR_POWER8 &&
+ 	    pvr_ver != PVR_POWER8E &&
+-	    pvr_ver != PVR_POWER8NVL)
++	    pvr_ver != PVR_POWER8NVL &&
++	    pvr_ver != PVR_HX_C2000)
+ 		return 0;
+ 
+ 	/*
+diff --git a/drivers/misc/cxl/cxl.h b/drivers/misc/cxl/cxl.h
+index 0562071cdd4a..6ad0ab892675 100644
+--- a/drivers/misc/cxl/cxl.h
++++ b/drivers/misc/cxl/cxl.h
+@@ -836,7 +836,8 @@ static inline bool cxl_is_power8(void)
  {
-+	unsigned int ms;
-+
- 	/* Check if we are stalled for some time */
- 	if (H_IS_LONG_BUSY(rc)) {
--		msleep(get_longbusy_msecs(rc));
-+		ms = get_longbusy_msecs(rc);
-+		/*
-+		 * Allocate, Modify and Deallocate HCALLs returns
-+		 * H_LONG_BUSY_ORDER_1_MSEC or H_LONG_BUSY_ORDER_10_MSEC
-+		 * for the long delay. So the delay should always be 1
-+		 * or 10msecs, but sleeps 1msec in case if the long
-+		 * delay is > H_LONG_BUSY_ORDER_10_MSEC.
-+		 */
-+		if (ms > 10)
-+			ms = 1;
-+
-+		/*
-+		 * msleep() will often sleep at least 20 msecs even
-+		 * though the hypervisor expects to reissue these
-+		 * HCALLs after 1 or 10msecs. So use usleep_range()
-+		 * to sleep with the expected value.
-+		 *
-+		 * See Documentation/timers/timers-howto.rst on using
-+		 * the value range in usleep_range().
-+		 */
-+		usleep_range(ms * 100, ms * 1000);
- 		rc = H_BUSY;
- 	} else if (rc == H_BUSY) {
- 		cond_resched();
+ 	if ((pvr_version_is(PVR_POWER8E)) ||
+ 	    (pvr_version_is(PVR_POWER8NVL)) ||
+-	    (pvr_version_is(PVR_POWER8)))
++	    (pvr_version_is(PVR_POWER8)) ||
++	    (pvr_version_is(PVR_HX_C2000)))
+ 		return true;
+ 	return false;
+ }
 -- 
-2.26.3
-
+2.34.1
