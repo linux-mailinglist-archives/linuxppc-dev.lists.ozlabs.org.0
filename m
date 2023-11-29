@@ -1,57 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCB187FCD51
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 04:14:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BC837FCD56
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 04:17:14 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YHqSObXH;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=LVO2fAkl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sg4F62fDQz3c5L
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 14:14:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sg4Hr08Clz3cgd
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 14:17:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YHqSObXH;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=LVO2fAkl;
 	dkim-atps=neutral
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sg4DH2jr7z30GC
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Nov 2023 14:14:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sg4H164PYz2xPc
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Nov 2023 14:16:29 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1701227637;
-	bh=WD8CN6B6PA5ETWaC+DpobWhgPX0ZYgDfpvqgwCszJGs=;
+	s=201909; t=1701227789;
+	bh=P6NMf+VvgB97nCVv666GoPJLTcDHDnUS3MQEtLq/VWI=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=YHqSObXHNt7WR5FVCK8/aiXq+5A4GybseEoweq9ShLioy7eAq1hR595Bh8b2jUEsv
-	 KJHsuOm4T+Ie6uuY3VUWhJqn4H7qEdxyetgfUvUAOOn8zPq8D9kEQXhk9Haxbn3B0w
-	 ymEwc5gl2xRBy4XszLSFZU/eRyJBj9RB49FU/4DET7sZ22Ux8coLZd39LrIJPVFKRS
-	 9bKl0lKuTQpo2w5zL6T3HPpN0XWjzD2UhmTP7eFP8pniw2KOBGCV6AR0Czb6P7wpzA
-	 VPogKElP394U3I4asWohY9hiNcbzuJI8YljPgjglR75zhjA6MTFKSMzSwK8KMA8kWb
-	 bXdp8GZMyHbvg==
+	b=LVO2fAklKbeuqG8H5zivTr1JhCjOjYm+wD23TrWTz0wfsBaqaOamDo+HhLGR4MyXt
+	 zEMCI1RVHiRCF7RdxV7suzyvZHfm1Lz+HFDsdxY+HsJVJ1h9v6HmXLJsasvE3z1ct3
+	 2tps9JRAzS78LODJf0vPrVKVUklukm0ZnWC8l0MlgGTqUGykx5rFDxcMiYtAd5H+89
+	 DKbU0WVzPnOa1nLWWJlugLgqrnk590wrdgqvpl1kolRD+obStjlrhzufMUZOGHcLgD
+	 e2JCS/xPN9HYUywhwltRxpqt0AtPn7oRxYkE3T7uqSyJuqeDdXxJtMbMn1BU+NpvWv
+	 O2zkt5Ja2Msxg==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sg4D50B0Pz4wc8;
-	Wed, 29 Nov 2023 14:13:56 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sg4H14sMMz4wdD;
+	Wed, 29 Nov 2023 14:16:29 +1100 (AEDT)
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: Nathan Lynch <nathanl@linux.ibm.com>, Nathan Lynch via B4 Relay
  <devnull+nathanl.linux.ibm.com@kernel.org>, Nicholas Piggin
  <npiggin@gmail.com>
-Subject: Re: [PATCH v4 09/13] powerpc/pseries: Add papr-vpd character driver
- for VPD retrieval
-In-Reply-To: <87edg91dso.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+Subject: Re: [PATCH v4 05/13] powerpc/rtas: Facilitate high-level call
+ sequences
+In-Reply-To: <87h6l51dzx.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
 References: <20231117-papr-sys_rtas-vs-lockdown-v4-0-b794d8cb8502@linux.ibm.com>
- <20231117-papr-sys_rtas-vs-lockdown-v4-9-b794d8cb8502@linux.ibm.com>
- <87msux2tyj.fsf@mail.lhotse>
- <87edg91dso.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
-Date: Wed, 29 Nov 2023 14:13:43 +1100
-Message-ID: <87h6l52qvs.fsf@mail.lhotse>
+ <20231117-papr-sys_rtas-vs-lockdown-v4-5-b794d8cb8502@linux.ibm.com>
+ <87jzq12ts4.fsf@mail.lhotse>
+ <87h6l51dzx.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+Date: Wed, 29 Nov 2023 14:16:29 +1100
+Message-ID: <87edg92qr6.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,41 +70,35 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 Nathan Lynch <nathanl@linux.ibm.com> writes:
 > Michael Ellerman <mpe@ellerman.id.au> writes:
->
 >> Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
 >> writes:
->>> From: Nathan Lynch <nathanl@linux.ibm.com>
->>>
->>> PowerVM LPARs may retrieve Vital Product Data (VPD) for system
->>> components using the ibm,get-vpd RTAS function.
->> ...
->>>
->>> diff --git a/Documentation/userspace-api/ioctl/ioctl-number.rst b/Documentation/userspace-api/ioctl/ioctl-number.rst
->>> index 4ea5b837399a..a950545bf7cd 100644
->>> --- a/Documentation/userspace-api/ioctl/ioctl-number.rst
->>> +++ b/Documentation/userspace-api/ioctl/ioctl-number.rst
->>> @@ -349,6 +349,8 @@ Code  Seq#    Include File                                           Comments
->>>                                                                       <mailto:vgo@ratio.de>
->>>  0xB1  00-1F                                                          PPPoX
->>>                                                                       <mailto:mostrows@styx.uwaterloo.ca>
->>> +0xB2  00     arch/powerpc/include/uapi/asm/papr-vpd.h                powerpc/pseries VPD API
->>> +                                                                     <mailto:linuxppc-dev>
->>  
->> This hunk should probably go in the previous patch.
+>>> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+>>> index 1fc0b3fffdd1..52f2242d0c28 100644
+>>> --- a/arch/powerpc/kernel/rtas.c
+>>> +++ b/arch/powerpc/kernel/rtas.c
+>>> @@ -196,6 +224,12 @@ static struct rtas_function rtas_function_table[] =
+__ro_after_init =3D {
+>>>  			.buf_idx1 =3D 1, .size_idx1 =3D -1,
+>>>  			.buf_idx2 =3D -1, .size_idx2 =3D -1,
+>>>  		},
+>>> +		/*
+>>> +		 * PAPR+ R1=E2=80=937.3.19=E2=80=933 is explicit that the OS must not
+>>
+>> When you cite PAPR+ can you please include the version number?
+>>
+>> That's a general comment on this patch and in some other places in the
+>> series too.
 >
-> The papr-sysparm driver (patch 11/13 "powerpc/pseries/papr-sysparm:
-> Expose character device to user space") also adds a line to
-> ioctl-number.rst. Are you saying all the additions to ioctl-number.rst
-> should be contained in a single patch?
+> OK. I assume v2.13 is fine even though most of the citations refer to
+> passages that significantly predate that version.
 
-No.
+Yeah whatever version you are referring to.
 
-I just meant that the previous patch is where we initially expose the
-0xB2 value via uapi, which is the point of no return. So preferably the
-documentation is updated by or before that point to reflect that the
-0xB2 value is now reserved.
+It just means if there's ever confusion about what's in the kernel
+comments vs the then current version of PAPR, we can go back and refer
+to the exact version you were using.
 
-The change log of that patch also talks about allocating a value from
-the ioctl-number table, but then doesn't update the table.
+It also avoids confusion vs LoPAPR, which is simliar but has some
+differently numbered chapters.
 
 cheers
