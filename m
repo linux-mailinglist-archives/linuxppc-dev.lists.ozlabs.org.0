@@ -1,53 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C3697FCC2E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 02:09:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87AB27FCC4B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 02:24:59 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=MWXJgvfH;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=oCG4vxwq;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sg1ST621rz3dBg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 12:09:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sg1pK0Rnhz3cfy
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 12:24:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=MWXJgvfH;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=oCG4vxwq;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sg1Rd4Qp1z3bx0
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Nov 2023 12:08:45 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1701220117;
-	bh=wBhFEZBwpVw/gHKTxfsy5vdBLb+lUAIAkOZ/hGhamxQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=MWXJgvfHJxliQBJkiXNpdWXvsPfgqvLUynOOGsEPC+D7Yi1QuhXmEfN+kMXE7CeG7
-	 KnPLpSF4ktvj+swOi0eXMpV/JO1cOaCu70SgnmZ8sRPdkmwRTP+6c3PYp1RRDfS1aI
-	 /Qyed0XlK0zbrTl1rKGgGQlvJkFIIT1uj0OlZuWStkm3ERSzHE+9MPvz9pHYv+y6bL
-	 ZvL8fKh8T9mdNYOURZY5yfMY091t0Keiq7Of77u0caHbvFejdKjKjmS8usdJQR0PAT
-	 RNrBCTf6vm0roULx2/sPjSw7fGhWapxX3X5zPrngGsycCbNCpABsFyYlJ3A2ocQU/A
-	 yCVTJdjqXrT8g==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sg1nQ62Lrz2yps
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Nov 2023 12:24:10 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1701221048;
+	bh=QFeXnaUEntX6sP5PG4BuqjYMFylnyscfrlT0xNz8UpM=;
+	h=Date:From:To:Cc:Subject:From;
+	b=oCG4vxwqncgmdGMjTZONLfbuI5aFzjaMonWMZjwsp3EOZ0VYpdbkl7D/7HDH7V+6W
+	 JUU8ERnXEAJYUfgMqsnCIwiHXhmzhfox/OXxZxb5+Js5URZJ2QfdUG62sJdKFtyoGF
+	 0YwJooY+jdZk4DfoRqQaGOBLhTLPK8S64jfqYPHEOhJXMvkF/EuVZbV2IllXfXy++W
+	 CEjxLbd++OmZkCalBMe9c3uyABTDK+GHtYRZWPb3XAo1xHlXucyFJn9sB2jMwKi6ad
+	 SjxnrVQYHe+92VvDkN09Hd1HMRBXqFS3xUDyuwSR8qZtmZp99vN9e6BmNXkY7PR4Gz
+	 Fu8/f19T8qyEA==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sg1RT02Gtz4wxY;
-	Wed, 29 Nov 2023 12:08:36 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 13/13] powerpc/selftests: Add test for papr-sysparm
-In-Reply-To: <20231117-papr-sys_rtas-vs-lockdown-v4-13-b794d8cb8502@linux.ibm.com>
-References: <20231117-papr-sys_rtas-vs-lockdown-v4-0-b794d8cb8502@linux.ibm.com>
- <20231117-papr-sys_rtas-vs-lockdown-v4-13-b794d8cb8502@linux.ibm.com>
-Date: Wed, 29 Nov 2023 12:08:33 +1100
-Message-ID: <87plzt2woe.fsf@mail.lhotse>
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sg1nM1lbQz4wcX;
+	Wed, 29 Nov 2023 12:24:06 +1100 (AEDT)
+Date: Wed, 29 Nov 2023 12:24:05 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Greg KH <greg@kroah.com>, Arnd Bergmann <arnd@arndb.de>, Michael
+ Ellerman <mpe@ellerman.id.au>
+Subject: linux-next: duplicate patches in the char-misc tree
+Message-ID: <20231129122405.27a5e54a@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; boundary="Sig_/KaQD./.8r_dPiczMNRr44Tg";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,85 +57,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, tyreld@linux.ibm.com, Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org, gcwilson@linux.ibm.com
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
-writes:
-> From: Nathan Lynch <nathanl@linux.ibm.com>
->
-> Consistently testing system parameter access is a bit difficult by
-> nature -- the set of parameters available depends on the model and
-> system configuration, and updating a parameter should be considered a
-> destructive operation reserved for the admin.
-...
-> diff --git a/tools/testing/selftests/powerpc/papr_sysparm/papr_sysparm.c b/tools/testing/selftests/powerpc/papr_sysparm/papr_sysparm.c
-> new file mode 100644
-> index 000000000000..fc25c03e8bc7
-> --- /dev/null
-> +++ b/tools/testing/selftests/powerpc/papr_sysparm/papr_sysparm.c
-> @@ -0,0 +1,164 @@
-...
-> +static int set_hmc0(void)
-> +{
-> +	struct papr_sysparm_io_block sp = {
-> +		.parameter = 0, // HMC0, not a settable parameter
-> +	};
-> +	const int devfd = open(DEVPATH, O_RDONLY);
-> +
-> +	SKIP_IF_MSG(devfd < 0 && errno == ENOENT,
-> +		    DEVPATH " not present");
-> +
-> +	FAIL_IF(devfd < 0);
-> +
-> +	// Ensure expected error
-> +	FAIL_IF(ioctl(devfd, PAPR_SYSPARM_IOC_SET, &sp) != -1);
-> +	FAIL_IF(errno != EPERM);
-> +
-> +	FAIL_IF(close(devfd) != 0);
-> +
-> +	return 0;
-> +}
+--Sig_/KaQD./.8r_dPiczMNRr44Tg
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-This one fails when run with qemu/KVM.
+Hi all,
 
-# selftests: powerpc: papr_sysparm
-# test: open and close /dev/papr-sysparm without issuing commands
-# tags: git_version:v6.7-rc2-35-g41ada9f713ae
-# success: open and close /dev/papr-sysparm without issuing commands
-# test: retrieve SPLPAR characteristics
-# tags: git_version:v6.7-rc2-35-g41ada9f713ae
-# success: retrieve SPLPAR characteristics
-# test: verify EOPNOTSUPP for known-bad parameter
-# tags: git_version:v6.7-rc2-35-g41ada9f713ae
-# success: verify EOPNOTSUPP for known-bad parameter
-# test: PAPR_SYSPARM_IOC_GET returns EFAULT on bad address
-# tags: git_version:v6.7-rc2-35-g41ada9f713ae
-# success: PAPR_SYSPARM_IOC_GET returns EFAULT on bad address
-# test: PAPR_SYSPARM_IOC_SET returns EFAULT on bad address
-# tags: git_version:v6.7-rc2-35-g41ada9f713ae
-# success: PAPR_SYSPARM_IOC_SET returns EFAULT on bad address
-# test: ensure EPERM on attempt to update HMC0
-# tags: git_version:v6.7-rc2-35-g41ada9f713ae
-# [FAIL] Test FAILED on line 113
-# failure: ensure EPERM on attempt to update HMC0
+The following commits are also in the powerpc tree as different commits
+(but the same patches):
 
-It's returning EOPNOTSUPP.
+  bc1183a63057 ("misc: ocxl: main: Remove unnecessary =E2=80=980=E2=80=99 v=
+alues from rc")
+  29eb0dc7bd1e ("misc: ocxl: link: Remove unnecessary (void*) conversions")
+  0e425d703c30 ("misc: ocxl: afu_irq: Remove unnecessary (void*) conversion=
+s")
+  62df29a542f9 ("misc: ocxl: context: Remove unnecessary (void*) conversion=
+s")
 
-Something like below would work to fix it.
+These are commits
 
-cheers
+  29685ea5754f ("misc: ocxl: main: Remove unnecessary =E2=80=980=E2=80=99 v=
+alues from rc")
+  220f3ced8e42 ("misc: ocxl: link: Remove unnecessary (void*) conversions")
+  84ba5d3675e2 ("misc: ocxl: afu_irq: Remove unnecessary (void*) conversion=
+s")
+  82d30723d58f ("misc: ocxl: context: Remove unnecessary (void*) conversion=
+s")
 
-diff --git a/tools/testing/selftests/powerpc/papr_sysparm/papr_sysparm.c b/tools/testing/selftests/powerpc/papr_sysparm/papr_sysparm.c
-index fc25c03e8bc7..9d4850c25aed 100644
---- a/tools/testing/selftests/powerpc/papr_sysparm/papr_sysparm.c
-+++ b/tools/testing/selftests/powerpc/papr_sysparm/papr_sysparm.c
-@@ -110,6 +110,7 @@ static int set_hmc0(void)
+in the powerpc tree.
 
-        // Ensure expected error
-        FAIL_IF(ioctl(devfd, PAPR_SYSPARM_IOC_SET, &sp) != -1);
-+       SKIP_IF_MSG(errno == EOPNOTSUPP, "operation not supported");
-        FAIL_IF(errno != EPERM);
+--=20
+Cheers,
+Stephen Rothwell
 
-        FAIL_IF(close(devfd) != 0);
+--Sig_/KaQD./.8r_dPiczMNRr44Tg
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmVmkrUACgkQAVBC80lX
+0Gy7rAf+L57K1PG/ZKUrhjtQoptSZBtEuopxNd5wmdeSNpwwjHpzGZaN3+dFezNX
+o+ow6HdZ+5LDWM05IKRObZoEsqksqasPTRHuN9rx/+S+tTfICiyulZ/zOIwYjYlr
+YR7pJelrlWtQcsq5vuPNbayFWKL4NC+WrtT2o/mHdHB8+A5zyqngcgrZIgMWzJaW
+F5OVfP8vwpajmm7q7qdAp8DYYulNvgK9jyhkLGNUqyX18dlANkh1wRkEcYIuO48w
+EU7KZDGkJnvhLc3VTSRu6/iX7owSIfmR5irkR6M6gzqtj32eIuCOgQODd0tAlif3
+uQDUs7mksdZnkpRnir+de1yeZztGIA==
+=awk6
+-----END PGP SIGNATURE-----
+
+--Sig_/KaQD./.8r_dPiczMNRr44Tg--
