@@ -2,111 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C6197FE247
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 22:49:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C74E7FE24A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Nov 2023 22:49:50 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=hbTT5bX7;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BjlOCoal;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BjlOCoal;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SgXyg5PcCz3vqX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Nov 2023 08:48:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SgXzb71MYz3vwR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Nov 2023 08:49:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=hbTT5bX7;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BjlOCoal;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BjlOCoal;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:fe13::60a; helo=eur02-am0-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
-Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2060a.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe13::60a])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=alex.williamson@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SgXt24T03z2ygZ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Nov 2023 08:44:58 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aUUHLCV5PuaKAt1oXAfC1Wss9pmZ9l+VCIHLovmTN7ECCZkaYbh+stcq2ABY9sAZ+RUwXxyccVzodfMFDcFkTsn09XWNoopepd4kakmx4Qms1I/IMJZYC9D6N/AvRPm/p/nPYP1gteO2TupUsFdz7r7yvx1wWP5UrY/bPmvyChLnsTSVWp4c128XXh7ZONgocwwv8gIHtDVlO1YEsmWyY589wC6wZsiRXeG0fZUwxmUYyZqJW8KRVE5SoJrYv6voZibd/nUcKCVejxeb0Qi8a5PnbhfSTNGR1wlixfMQmdv5VKrN3eWL4UbCkkUSLhqVDZvqG3xdOo38LEFTyROXyw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ENi4BObm6hUCle7hG/sI3aKr4l0G5+aghdecNzdpGvo=;
- b=PFmuJHF3hTHwvkBOgywxkwvOcyTVAf0lS5MHFA3KOCCyFZ6Uhx1enBzkZzzdbSpVlgHNdQ07W3oC0vF9FD3+1cIFJPxQZWGUJUxONVgW6sVRt1Fy+nnXBFMzvi1mCDp50skJ8qomYUllTmu93CSU5rV2xbH1jt9FQJ4BaQfgBwv4X8KYYIBAkiSASAEU6DXni1V6h3t51yhGWl2cuKAYAAxi/vlKSegSdznbYh2LCIcfXjmhMWGGFoGhuv+fppdunYWHrYEmW7CghWGnNjCvHLmGkDWX1uw4+Ud81aBArj3bF1eSLp4y7pydPRpSjZIk9tRjfOlmDFxGhz3jjM7pew==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ENi4BObm6hUCle7hG/sI3aKr4l0G5+aghdecNzdpGvo=;
- b=hbTT5bX7nkzs1wAy1C43UBLOjw3jbThwpiD5C+1YmWC/JNlCCGXkWJu9a4hSwqyOR3HijoeC5CdsqqhhPNQxIwKs/0cjwnR+nmKDNOYA6YAQO36M1i6f8C2IjZzqvv/K852Uesa5caA4Ax9J6O6tt2ev96+TWUjqRN+Ng6CNyb4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by DBAPR04MB7416.eurprd04.prod.outlook.com (2603:10a6:10:1b3::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.11; Wed, 29 Nov
- 2023 21:44:44 +0000
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::95f5:5118:258f:ee40]) by AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::95f5:5118:258f:ee40%6]) with mapi id 15.20.7046.015; Wed, 29 Nov 2023
- 21:44:44 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: manivannan.sadhasivam@linaro.org
-Subject: [PATCH v4 4/4] PCI: layerscape: Add suspend/resume for ls1043a
-Date: Wed, 29 Nov 2023 16:44:12 -0500
-Message-Id: <20231129214412.327633-5-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231129214412.327633-1-Frank.Li@nxp.com>
-References: <20231129214412.327633-1-Frank.Li@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR13CA0136.namprd13.prod.outlook.com
- (2603:10b6:a03:2c6::21) To AM6PR04MB4838.eurprd04.prod.outlook.com
- (2603:10a6:20b:4::16)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SgXts0Ljlz3cmw
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Nov 2023 08:45:39 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1701294335;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=s3xWVWUZPbk5MGMDQz7HZH6VD2zILEgQvXP9r7AbwIo=;
+	b=BjlOCoalbkn4jGICPqxsb8roiqjhVmlCLbZKEPtnUC1od5fig3mKiIA9djw1ofGrX9scXy
+	Org9HuR6pwwn5vZWDZkrMV+KIwXKeHHlrvUtdhZRECqym1EPQ9h+kXyOVEb6XLsKU83pC7
+	VCS70UlFhfr/obzUbQjDngQAOkM0d7k=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1701294335;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=s3xWVWUZPbk5MGMDQz7HZH6VD2zILEgQvXP9r7AbwIo=;
+	b=BjlOCoalbkn4jGICPqxsb8roiqjhVmlCLbZKEPtnUC1od5fig3mKiIA9djw1ofGrX9scXy
+	Org9HuR6pwwn5vZWDZkrMV+KIwXKeHHlrvUtdhZRECqym1EPQ9h+kXyOVEb6XLsKU83pC7
+	VCS70UlFhfr/obzUbQjDngQAOkM0d7k=
+Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com
+ [209.85.161.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-303-TICnx8CXNumPO9pzPMblHA-1; Wed, 29 Nov 2023 16:45:33 -0500
+X-MC-Unique: TICnx8CXNumPO9pzPMblHA-1
+Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-58a91cf3f97so336567eaf.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Nov 2023 13:45:33 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701294333; x=1701899133;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=s3xWVWUZPbk5MGMDQz7HZH6VD2zILEgQvXP9r7AbwIo=;
+        b=gXWlg4fx2JvuDSy59G6X0+onqHM/ElUqslQGIhOJ+lFZJWquOjbgDhtJ+Vbn+9gNEX
+         n+vUj/KYONZdVHgqddB802YLEX9JLRODwKpLa2/e282pCt+DyIQU4myJWZkJRYYtalx1
+         veNpvZvLQnQpHH/iCfD8EMz3o0z+5goVHIYui/NpQbHmbMaa4ycQcHtzkpEV12VV+bqN
+         Z/hPyxKRzJDTlFmYGuif2fcoQV+myK99Rfn5PhvEGS5qbHD4HXvgly7ktLvtH5+2uZJD
+         KHxK6hKsAyFcD3cZXw651ZXMSb5iFR07k7FDHof3f8pn1CvIkpESLBNpCnn9tqcPb9jp
+         poAw==
+X-Gm-Message-State: AOJu0YxWYGk4isfIBlsgjlMhCm15ZWRCEvBuWQ+CDraFMvX4N+MCCwlL
+	goqsaUC85MC73SukB0hviiX0vhRQTqsrPb5O5EtlCn2a4MxzvUlsDBRMN5YMzRQOO5yQ4V0ZfLD
+	/cjlIMQiFnkbXBiCZZB5VGG04oA==
+X-Received: by 2002:a05:6820:513:b0:58d:6217:795e with SMTP id m19-20020a056820051300b0058d6217795emr19629102ooj.8.1701294333000;
+        Wed, 29 Nov 2023 13:45:33 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFiX/Tvc+toAwd/tY9Rv762mlPV5wQvlo/Dm5/DrBUxi70aCrX/U4468O+1d5CLlBkm80dRJw==
+X-Received: by 2002:a05:6820:513:b0:58d:6217:795e with SMTP id m19-20020a056820051300b0058d6217795emr19629065ooj.8.1701294332763;
+        Wed, 29 Nov 2023 13:45:32 -0800 (PST)
+Received: from redhat.com ([38.15.60.12])
+        by smtp.gmail.com with ESMTPSA id u38-20020a4a8c29000000b0057bb326cad4sm2486047ooj.33.2023.11.29.13.45.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Nov 2023 13:45:32 -0800 (PST)
+Date: Wed, 29 Nov 2023 14:45:30 -0700
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Sean Christopherson <seanjc@google.com>
+Subject: Re: Ping? Re: [PATCH rc] kvm: Prevent compiling virt/kvm/vfio.c
+ unless VFIO is selected
+Message-ID: <20231129144530.16c18552.alex.williamson@redhat.com>
+In-Reply-To: <ZWeDZ76VkRMbHEGl@google.com>
+References: <0-v1-08396538817d+13c5-vfio_kvm_kconfig_jgg@nvidia.com>
+	<87edgy87ig.fsf@mail.lhotse>
+	<ZWagNsu1XQIqk5z9@google.com>
+	<20231129124821.GU436702@nvidia.com>
+	<ZWeDZ76VkRMbHEGl@google.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DBAPR04MB7416:EE_
-X-MS-Office365-Filtering-Correlation-Id: 120f70b8-0948-486f-8230-08dbf1246699
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	l0qj56seLC49at42ZaRsH+bXm2MFtjulInLki67JV5yK6jYH0lMmOt+K0OoMXXbqlUBtiJVBy2Z2406CjsGt5cn06gSxqGbb8TZoc1TOmekkutucN83NBxBIAKWyiuwJ1wSzqAOeIhFT9NDZOXw4jluDWIz/jNTto6lCSrZDgWE1ShJKvItA+0DLND+92ss9z32GlhC+163YZ9EQd3ICTBv9ba8484zz2xyaUFGVUT1woa1DuSvZz7DMDwfzgHKWPo/Yqj3X4C1ljyQ1bltHesYobz/Mau9fhLxdgND6trC1io79Xu6iUnx2Z207sK04Uzrkk0al3pOFEFe4I8z51+XPdPOSVizsHYOVFKmd0Q1jj9deWBi5aEvTtVRU+9Gx9/naPydKXl9kPho2qi9pzWK6oWHVjS9bm4BwZ8xJ3/dVdgesPHXbJlW9r5HRq2HAq/K43Ac1EMKNMyeTkfjysme9z4y7l4mM1CtBZRNyjHHd5IdnGcyYwWpI1XKj+OQXaluCyoQaLJhOP2RGsPAVN36OEDmlS+Bn/PPyFtI0s04p0+oN6f+SFAi1geJAo7L6gQxXdKW7fhB1eIRKvMlSXtttVfdB7qlHUvktzqH5mxi58AlNdkSRSZc2lvsTtBfdV6H9HcEwWLF0fM8wHCozaw==
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(366004)(39860400002)(376002)(136003)(396003)(230922051799003)(1800799012)(186009)(451199024)(64100799003)(83380400001)(26005)(41300700001)(8936002)(8676002)(36756003)(478600001)(6486002)(316002)(86362001)(4326008)(6666004)(38350700005)(38100700002)(202311291699003)(1076003)(2616005)(6512007)(15650500001)(52116002)(66476007)(6916009)(66556008)(66946007)(2906002)(5660300002)(7416002)(6506007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?kNZvkY6D0WUb3GEAGFwtxIMo5lWLFN/XWWmeXHR4ce+FPq8n7jgKxFLODjiO?=
- =?us-ascii?Q?HO7XgpSSgBiuIkuCT/0V6gdHqroQ53Dn423odSpF/4S+gRRUtmHg916rWloT?=
- =?us-ascii?Q?pRYcnb/iT59+xko5E0yE/apAPPYhZDRPk6zQt3ALomrA4sl8jLjq33K7/cuf?=
- =?us-ascii?Q?g8k4sq1MCa76qiJJrSTemzERCIeEeAg7fuWj5a80nqFJC23ohFNJ5LM8V/3h?=
- =?us-ascii?Q?L9j52JMN6VwrbQnUTqeaWZpXnop5gFM4DOIkD9wvPsk6+0+mGzcQQQm1F7NY?=
- =?us-ascii?Q?ElExAolhOvsbPXm6niRS0uy7dzUOhzlzTzvG7wl4Y/dv0kgUT8SPyWJ/VXoF?=
- =?us-ascii?Q?l0UwSxExiDAWhdaxFNsst8m0dcQlNifMiuPW8cNlHuTXUTiz7doMcMIIuGzJ?=
- =?us-ascii?Q?tQBY4X4DrgUuEF5uDnknPUznAOtF6q1FjlXiQs/Sfp7ZVXb20sY8LgD51p1b?=
- =?us-ascii?Q?XIjVs3t3vm1480LQcim0v/Y/ba/wIAKP/jZZj11+ZX+63v0rvJnfxAuRCZmz?=
- =?us-ascii?Q?Lq73oUFgKfVb0dNzRAop//2VD8iG9MVbvwiogHWXj89rdaIYk4c39GpFxO+J?=
- =?us-ascii?Q?RgZ/ZPKS6dCQL8VG5EQYqBUXf/EKc0GJpWAiW/h6dm7L1Xpzcpqed6blbLro?=
- =?us-ascii?Q?QWIybsmL6+JjaYL9Q23/cNkacCsEv5RKkM9FgUjTRM6TJykYxF6WtJlfjdW8?=
- =?us-ascii?Q?rNOw9yAtAJGVr5Oe9T+J4vq4W6mOmeLTjs4XXuZ+1111K7oXZgaGZIpIYivj?=
- =?us-ascii?Q?wU8rR61TNZ4w0qJNTib5jUwG9ec9ljoqzFWT54ejnCxjy6A4VJMGghU4Z64V?=
- =?us-ascii?Q?9gNIro6SR9MinedCMTkFtv8U/YwqotEiPaoqEwgY4ZUaNcGcPdtpnwM+L2N0?=
- =?us-ascii?Q?eWnf5Sx/TFkd3HmLswOH+wR3sjn5y4Di3dncWc76VwFMW0N8gseVZwISCJA+?=
- =?us-ascii?Q?jdQvBhbEUlFWxd38Qd/9WxlG3SqwLVpIGvRM97XCPJnL5AQj0AsYu3E5EDBG?=
- =?us-ascii?Q?3/3MAd0pjkRkExluWWctSWV9fuHI4hM9TqjN7XaAkq2dydwt4alrfOtrLZfB?=
- =?us-ascii?Q?2L05nAHcCrBh7uE01NgkwC/xFf0bhPp85/ZFYE8jKwvBGxWkACuEcTCG1HdD?=
- =?us-ascii?Q?cOnMSnnc+IHoyiQoNKdTgAsclNLL1xfDrr5fVXP882wOlcW2TPnD0GOOgq4x?=
- =?us-ascii?Q?BjDfY5BjgbFMiYFbfyLl2I+dnPaytGQbR7rs4rLAU1YuqW2mly4CeYlyb/C3?=
- =?us-ascii?Q?DYGrz6GAVcCog4WnMAoAmzl1B7TdyNHPhU21EliQOzdBOWjdmcEID+74lLmf?=
- =?us-ascii?Q?/F3VOq/cKQg7aEaWtsDmVpb0X5p+cmWk9ZzuZ9+x/FqNHquGXHxx8A0n+Fpn?=
- =?us-ascii?Q?79ym9DKpE06G7J1CxlvutuqmkRKQPXVG0NfpTZQU3bvIaX+Ryq/GGAr+G7dE?=
- =?us-ascii?Q?DrEdC9OvZHGi3kRxJaSfwEzQwLvuDSSujZ5iHKmXBGehrcjxqGAfPNbaEMES?=
- =?us-ascii?Q?GPK8bACBgJe3CXLtRtzXnLuq/6zm5/GY3+8ezWDsjqim/kysLbcYx4pAs2mE?=
- =?us-ascii?Q?G+hXmc2/+PBf5gnDidU=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 120f70b8-0948-486f-8230-08dbf1246699
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Nov 2023 21:44:44.7864
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: voDQ3O9v9pgZu8BNm+qpB0oJNKiiE3jMn//dnOK7nPpiUkhU9I6Bb9y7C/ybrMkL1s/gvD0LXI0HqUf9Om6wqw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7416
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -118,133 +104,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: imx@lists.linux.dev, kw@linux.com, linux-pci@vger.kernel.org, lpieralisi@kernel.org, Frank.Li@nxp.com, linux-kernel@vger.kernel.org, minghuan.Lian@nxp.com, mingkai.hu@nxp.com, roy.zang@nxp.com, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org, robh@kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>, x86@kernel.org, Ingo Molnar <mingo@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, Zenghui Yu <yuzenghui@huawei.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, Sven Schnelle <svens@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In the suspend path, PME_Turn_Off message is sent to the endpoint to
-transition the link to L2/L3_Ready state. In this SoC, there is no way to
-check if the controller has received the PME_To_Ack from the endpoint or
-not. So to be on the safer side, the driver just waits for
-PCIE_PME_TO_L2_TIMEOUT_US before asserting the SoC specific PMXMTTURNOFF
-bit to complete the PME_Turn_Off handshake. This link would then enter
-L2/L3 state depending on the VAUX supply.
+On Wed, 29 Nov 2023 10:31:03 -0800
+Sean Christopherson <seanjc@google.com> wrote:
 
-In the resume path, the link is brought back from L2 to L0 by doing a
-software reset.
+> On Wed, Nov 29, 2023, Jason Gunthorpe wrote:
+> > On Tue, Nov 28, 2023 at 06:21:42PM -0800, Sean Christopherson wrote:  
+> > > diff --git a/include/linux/vfio.h b/include/linux/vfio.h
+> > > index 454e9295970c..a65b2513f8cd 100644
+> > > --- a/include/linux/vfio.h
+> > > +++ b/include/linux/vfio.h
+> > > @@ -289,16 +289,12 @@ void vfio_combine_iova_ranges(struct rb_root_cached *root, u32 cur_nodes,
+> > >  /*
+> > >   * External user API
+> > >   */
+> > > -#if IS_ENABLED(CONFIG_VFIO_GROUP)
+> > >  struct iommu_group *vfio_file_iommu_group(struct file *file);
+> > > +
+> > > +#if IS_ENABLED(CONFIG_VFIO_GROUP)
+> > >  bool vfio_file_is_group(struct file *file);
+> > >  bool vfio_file_has_dev(struct file *file, struct vfio_device *device);
+> > >  #else
+> > > -static inline struct iommu_group *vfio_file_iommu_group(struct file *file)
+> > > -{
+> > > -       return NULL;
+> > > -}
+> > > -
+> > >  static inline bool vfio_file_is_group(struct file *file)
+> > >  {
+> > >         return false;
+> > >   
+> > 
+> > So you symbol get on a symbol that can never be defined? Still says to
+> > me the kconfig needs fixing :|  
+> 
+> Yeah, I completely agree, and if KVM didn't already rely on this horrific
+> behavior and there wasn't a more complete overhaul in-flight, I wouldn't suggest
+> this.
+> 
+> I'll send the KVM Kconfig/Makefile cleanups from my "Hide KVM internals from others"
+> series separately (which is still the bulk of the series) so as to prioritize
+> getting the cleanups landed.
+> 
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
+Seems we have agreement and confirmation of the fix above as an
+interim, do you want to post it formally and I can pick it up for
+v6.7-rc?  Thanks,
 
-Notes:
-    Change from v3 to v4
-    - Call scfg_pcie_send_turnoff_msg() shared with ls1021a
-    - update commit message
-    
-    Change from v2 to v3
-    - Remove ls_pcie_lut_readl(writel) function
-    
-    Change from v1 to v2
-    - Update subject 'a' to 'A'
-
- drivers/pci/controller/dwc/pci-layerscape.c | 63 ++++++++++++++++++++-
- 1 file changed, 62 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
-index 590e07bb27002..d39700b3afaaa 100644
---- a/drivers/pci/controller/dwc/pci-layerscape.c
-+++ b/drivers/pci/controller/dwc/pci-layerscape.c
-@@ -41,6 +41,15 @@
- #define SCFG_PEXSFTRSTCR	0x190
- #define PEXSR(idx)		BIT(idx)
- 
-+/* LS1043A PEX PME control register */
-+#define SCFG_PEXPMECR		0x144
-+#define PEXPME(idx)		BIT(31 - (idx) * 4)
-+
-+/* LS1043A PEX LUT debug register */
-+#define LS_PCIE_LDBG	0x7fc
-+#define LDBG_SR		BIT(30)
-+#define LDBG_WE		BIT(31)
-+
- #define PCIE_IATU_NUM		6
- 
- struct ls_pcie_drvdata {
-@@ -225,6 +234,45 @@ static int ls1021a_pcie_exit_from_l2(struct dw_pcie_rp *pp)
- 	return scfg_pcie_exit_from_l2(pcie->scfg, SCFG_PEXSFTRSTCR, PEXSR(pcie->index));
- }
- 
-+static void ls1043a_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
-+{
-+	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-+	struct ls_pcie *pcie = to_ls_pcie(pci);
-+
-+	scfg_pcie_send_turnoff_msg(pcie->scfg, SCFG_PEXPMECR, PEXPME(pcie->index));
-+}
-+
-+static int ls1043a_pcie_exit_from_l2(struct dw_pcie_rp *pp)
-+{
-+	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-+	struct ls_pcie *pcie = to_ls_pcie(pci);
-+	u32 val;
-+
-+	/*
-+	 * Only way let PEX module exit L2 is do a software reset.
-+	 * LDBG_WE: allows the user to have write access to the PEXDBG[SR] for both setting and
-+	 *	    clearing the soft reset on the PEX module.
-+	 * LDBG_SR: When SR is set to 1, the PEX module enters soft reset.
-+	 */
-+	val = ls_pcie_pf_lut_readl(pcie, LS_PCIE_LDBG);
-+	val |= LDBG_WE;
-+	ls_pcie_pf_lut_writel(pcie, LS_PCIE_LDBG, val);
-+
-+	val = ls_pcie_pf_lut_readl(pcie, LS_PCIE_LDBG);
-+	val |= LDBG_SR;
-+	ls_pcie_pf_lut_writel(pcie, LS_PCIE_LDBG, val);
-+
-+	val = ls_pcie_pf_lut_readl(pcie, LS_PCIE_LDBG);
-+	val &= ~LDBG_SR;
-+	ls_pcie_pf_lut_writel(pcie, LS_PCIE_LDBG, val);
-+
-+	val = ls_pcie_pf_lut_readl(pcie, LS_PCIE_LDBG);
-+	val &= ~LDBG_WE;
-+	ls_pcie_pf_lut_writel(pcie, LS_PCIE_LDBG, val);
-+
-+	return 0;
-+}
-+
- static const struct dw_pcie_host_ops ls_pcie_host_ops = {
- 	.host_init = ls_pcie_host_init,
- 	.pme_turn_off = ls_pcie_send_turnoff_msg,
-@@ -242,6 +290,19 @@ static const struct ls_pcie_drvdata ls1021a_drvdata = {
- 	.exit_from_l2 = ls1021a_pcie_exit_from_l2,
- };
- 
-+static const struct dw_pcie_host_ops ls1043a_pcie_host_ops = {
-+	.host_init = ls_pcie_host_init,
-+	.pme_turn_off = ls1043a_pcie_send_turnoff_msg,
-+};
-+
-+static const struct ls_pcie_drvdata ls1043a_drvdata = {
-+	.pf_lut_off = 0x10000,
-+	.pm_support = true,
-+	.scfg_support = true,
-+	.ops = &ls1043a_pcie_host_ops,
-+	.exit_from_l2 = ls1043a_pcie_exit_from_l2,
-+};
-+
- static const struct ls_pcie_drvdata layerscape_drvdata = {
- 	.pf_lut_off = 0xc0000,
- 	.pm_support = true,
-@@ -252,7 +313,7 @@ static const struct of_device_id ls_pcie_of_match[] = {
- 	{ .compatible = "fsl,ls1012a-pcie", .data = &layerscape_drvdata },
- 	{ .compatible = "fsl,ls1021a-pcie", .data = &ls1021a_drvdata },
- 	{ .compatible = "fsl,ls1028a-pcie", .data = &layerscape_drvdata },
--	{ .compatible = "fsl,ls1043a-pcie", .data = &ls1021a_drvdata },
-+	{ .compatible = "fsl,ls1043a-pcie", .data = &ls1043a_drvdata },
- 	{ .compatible = "fsl,ls1046a-pcie", .data = &layerscape_drvdata },
- 	{ .compatible = "fsl,ls2080a-pcie", .data = &layerscape_drvdata },
- 	{ .compatible = "fsl,ls2085a-pcie", .data = &layerscape_drvdata },
--- 
-2.34.1
+Alex
 
