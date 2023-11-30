@@ -1,36 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1607F7FEE4E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Nov 2023 12:55:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FF3D7FEE38
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Nov 2023 12:46:19 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=EWMaHBFB;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sgvlw4NwMz3dWK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Nov 2023 22:55:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SgvXm6420z3cZm
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Nov 2023 22:46:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sgt0B3kggz2y1Y
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Nov 2023 21:36:23 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D8A511042;
-	Thu, 30 Nov 2023 02:36:34 -0800 (PST)
-Received: from raptor (unknown [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 840DA3F6C4;
-	Thu, 30 Nov 2023 02:35:46 -0800 (PST)
-Date: Thu, 30 Nov 2023 10:35:43 +0000
-From: Alexandru Elisei <alexandru.elisei@arm.com>
-To: Shaoqin Huang <shahuang@redhat.com>
-Subject: Re: [kvm-unit-tests PATCH v1 00/18] arm/arm64: Rework cache
- maintenance at boot
-Message-ID: <ZWhlf7ZLTZIZ3qcQ@raptor>
-References: <20231130090722.2897974-1-shahuang@redhat.com>
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=EWMaHBFB;
+	dkim-atps=neutral
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SgvW470XLz30P0
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Nov 2023 22:44:48 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1701344683;
+	bh=uhCKMH/E7HlRqQvA7J6MIVjjEUPc4u8OoyMwluizoyU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=EWMaHBFBPoJaWWrGo3iucLIU9E2eju5XulV/fxAfbOU23TqtRfsUUPKlUG/hI3uT6
+	 0lgAsx4Tcww+SETdtARD2DMtsJFUo7EW9FO1ul1Fa+1c4PsT1AnCz9ucFSRociXqL9
+	 AqZeJ54nEdIW67/basNTpaUz2Gdu9T5HlBIWM5CKJhImwLjvx7HC1K5PY1aUWdpNVW
+	 BvjawHLpy0LKWMbm9h75CzF0zjVLn6Luw8ccfI48lBKKFZcrRw++WfI9ofSuibasnT
+	 o/4iBeh0ytv4ZDb+tLw/mYRKKbIlthK6cUBXTFEi5mFh758B6sLzFWBhHRrvRn0kbW
+	 isK6ibnIAGeZg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SgvVz2CRtz4xkN;
+	Thu, 30 Nov 2023 22:44:43 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH 1/2] powerpc/mm: Fix build failures due to arch_reserved_kernel_pages()
+Date: Thu, 30 Nov 2023 22:44:32 +1100
+Message-ID: <20231130114433.3053544-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231130090722.2897974-1-shahuang@redhat.com>
-X-Mailman-Approved-At: Thu, 30 Nov 2023 22:53:06 +1100
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,152 +57,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, Nico Boehr <nrb@linux.ibm.com>, kvm@vger.kernel.org, Andrew Jones <andrew.jones@linux.dev>, Nikos Nikoleris <nikos.nikoleris@arm.com>, Eric Auger <eric.auger@redhat.com>, Nadav Amit <namit@vmware.com>, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, David Woodhouse <dwmw@amazon.co.uk>
+Cc: arnd@arndb.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+With NUMA=n and FA_DUMP=y or PRESERVE_FA_DUMP=y the build fails with:
 
-Thank you so much for reviving this, much appreciated.
+  arch/powerpc/kernel/fadump.c:1739:22: error: no previous prototype for ‘arch_reserved_kernel_pages’ [-Werror=missing-prototypes]
+  1739 | unsigned long __init arch_reserved_kernel_pages(void)
+       |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~
 
-I wanted to let you know that I definitely plan to review the series as
-soon as possible, unfortunately I don't believe I won't be able to do that
-for at least 2 weeks.
+The prototype for arch_reserved_kernel_pages() is in include/linux/mm.h,
+but it's guarded by __HAVE_ARCH_RESERVED_KERNEL_PAGES. The powerpc
+headers define __HAVE_ARCH_RESERVED_KERNEL_PAGES in asm/mmzone.h, which
+is not included into the generic headers when NUMA=n.
 
-Thanks,
-Alex
+Move the definition of __HAVE_ARCH_RESERVED_KERNEL_PAGES into asm/mmu.h
+which is included regardless of NUMA=n.
 
-On Thu, Nov 30, 2023 at 04:07:02AM -0500, Shaoqin Huang wrote:
-> Hi,
-> 
-> I'm posting Alexandru's patch set[1] rebased on the latest branch with the
-> conflicts being resolved. No big changes compare to its original code.
-> 
-> As this version 1 of this series was posted one years ago, I would first let you
-> recall it, what's the intention of this series and what this series do. You can
-> view it by click the link[2] and view the cover-letter.
-> 
-> Since when writing the series[1], the efi support for arm64[3] hasn't been
-> merged into the kvm-unit-tests, but now the efi support for arm64 has been
-> merged. Directly rebase the series[1] onto the latest branch will break the efi
-> tests. This is mainly because the Patch #15 ("arm/arm64: Enable the MMU early")
-> moves the mmu_enable() out of the setup_mmu(), which causes the efi test will
-> not enable the mmu. So I do a small change in the efi_mem_init() which makes the
-> efi test also enable the MMU early, and make it works.
-> 
-> And another change should be noticed is in the Patch #17 ("arm/arm64: Perform
-> dcache maintenance"). In the efi_mem_init(), it will disable the mmu, and build
-> a new pagetable and re-enable the mmu, if the asm_mmu_disable clean and
-> invalidate the data caches for entire memory, we don't need to care the dcache
-> and after mmu disabled, we use the mmu_setup_early() to re-enable the mmu, which
-> takes care all the cache maintenance. But the situation changes since the Patch
-> #18 ("arm/arm64: Rework the cache maintenance in asm_mmu_disable") only clean
-> and invalidate the data caches for the stack memory area. So we need to clean
-> and invalidate the data caches manually before disable the mmu, I'm not
-> confident about current cache maintenance at the efi setup patch, so I ask for
-> your help to review it if it's right or not.
-> 
-> And I also drop one patch ("s390: Do not use the physical allocator") from[1]
-> since this cause s390 test to fail.
-> 
-> This series may include bug, so I really appreciate your review to improve this
-> series together.
-> 
-> You can get the code from:
-> 
-> $ git clone https://gitlab.com/shahuang/kvm-unit-tests.git \
-> 	-b arm-arm64-rework-cache-maintenance-at-boot-v1
-> 
-> [1] https://gitlab.arm.com/linux-arm/kvm-unit-tests-ae/-/tree/arm-arm64-rework-cache-maintenance-at-boot-v2-wip2
-> [2] https://lore.kernel.org/all/20220809091558.14379-1-alexandru.elisei@arm.com/
-> [3] https://patchwork.kernel.org/project/kvm/cover/20230530160924.82158-1-nikos.nikoleris@arm.com/
-> 
-> Changelog:
-> ----------
-> RFC->v1:
->   - Gathered Reviewed-by tags.
->   - Various changes to commit messages and comments to hopefully make the code
->     easier to understand.
->   - Patches #8 ("lib/alloc_phys: Expand documentation with usage and limitations")
->     are new.
->   - Folded patch "arm: page.h: Add missing libcflat.h include" into #17
->     ("arm/arm64: Perform dcache maintenance at boot").
->   - Reordered the series to group patches that touch aproximately the same code
->     together - the patches that change the physical allocator are now first,
->     followed come the patches that change how the secondaries are brought online.
->   - Fixed several nasty bugs where the r4 register was being clobbered in the arm
->     assembly.
->   - Unmap the early UART address if the DTB address does not match the early
->     address.
->   - Added dcache maintenance when a page table is modified with the MMU disabled.
->   - Moved the cache maintenance when disabling the MMU to be executed before the
->     MMU is disabled.
->   - Rebase it on lasted branch which efi support has been merged.
->   - Make the efi test also enable MMU early.
->   - Add cache maintenance on efi setup path especially before mmu_disable.
-> 
-> RFC: https://lore.kernel.org/all/20220809091558.14379-1-alexandru.elisei@arm.com/
-> 
-> Alexandru Elisei (18):
->   Makefile: Define __ASSEMBLY__ for assembly files
->   powerpc: Replace the physical allocator with the page allocator
->   lib/alloc_phys: Initialize align_min
->   lib/alloc_phys: Consolidate allocate functions into memalign_early()
->   lib/alloc_phys: Remove locking
->   lib/alloc_phys: Remove allocation accounting
->   lib/alloc_phys: Add callback to perform cache maintenance
->   lib/alloc_phys: Expand documentation with usage and limitations
->   arm/arm64: Zero secondary CPUs' stack
->   arm/arm64: Allocate secondaries' stack using the page allocator
->   arm/arm64: assembler.h: Replace size with end address for
->     dcache_by_line_op
->   arm/arm64: Add C functions for doing cache maintenance
->   arm/arm64: Configure secondaries' stack before enabling the MMU
->   arm/arm64: Use pgd_alloc() to allocate mmu_idmap
->   arm/arm64: Enable the MMU early
->   arm/arm64: Map the UART when creating the translation tables
->   arm/arm64: Perform dcache maintenance at boot
->   arm/arm64: Rework the cache maintenance in asm_mmu_disable
-> 
->  Makefile                   |   5 +-
->  arm/Makefile.arm           |   4 +-
->  arm/Makefile.arm64         |   4 +-
->  arm/Makefile.common        |   6 +-
->  arm/cstart.S               |  71 +++++++++++++++------
->  arm/cstart64.S             |  76 +++++++++++++++++------
->  lib/alloc_phys.c           | 122 ++++++++++++-------------------------
->  lib/alloc_phys.h           |  28 ++++++---
->  lib/arm/asm/assembler.h    |  15 ++---
->  lib/arm/asm/cacheflush.h   |   1 +
->  lib/arm/asm/mmu-api.h      |   1 +
->  lib/arm/asm/mmu.h          |   6 --
->  lib/arm/asm/page.h         |   2 +
->  lib/arm/asm/pgtable.h      |  39 ++++++++++--
->  lib/arm/asm/thread_info.h  |   3 +-
->  lib/arm/cache.S            |  89 +++++++++++++++++++++++++++
->  lib/arm/io.c               |  31 ++++++++++
->  lib/arm/io.h               |   3 +
->  lib/arm/mmu.c              |  37 ++++++++---
->  lib/arm/processor.c        |   1 -
->  lib/arm/setup.c            |  82 +++++++++++++++++++++----
->  lib/arm/smp.c              |   5 ++
->  lib/arm64/asm/assembler.h  |  11 ++--
->  lib/arm64/asm/cacheflush.h |  37 +++++++++++
->  lib/arm64/asm/mmu.h        |   5 --
->  lib/arm64/asm/pgtable.h    |  50 +++++++++++++--
->  lib/arm64/cache.S          |  85 ++++++++++++++++++++++++++
->  lib/arm64/processor.c      |   1 -
->  lib/devicetree.c           |   2 +-
->  lib/powerpc/setup.c        |   9 ++-
->  powerpc/Makefile.common    |   1 +
->  powerpc/cstart64.S         |   1 -
->  powerpc/spapr_hcall.c      |   5 +-
->  33 files changed, 642 insertions(+), 196 deletions(-)
->  create mode 100644 lib/arm/asm/cacheflush.h
->  create mode 100644 lib/arm/cache.S
->  create mode 100644 lib/arm64/asm/cacheflush.h
->  create mode 100644 lib/arm64/cache.S
-> 
-> -- 
-> 2.40.1
-> 
+Additionally the ifdef around __HAVE_ARCH_RESERVED_KERNEL_PAGES needs to
+also check for CONFIG_PRESERVE_FA_DUMP.
+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/include/asm/mmu.h    | 4 ++++
+ arch/powerpc/include/asm/mmzone.h | 3 ---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
+index 52cc25864a1b..d8b7e246a32f 100644
+--- a/arch/powerpc/include/asm/mmu.h
++++ b/arch/powerpc/include/asm/mmu.h
+@@ -412,5 +412,9 @@ extern void *abatron_pteptrs[2];
+ #include <asm/nohash/mmu.h>
+ #endif
+ 
++#if defined(CONFIG_FA_DUMP) || defined(CONFIG_PRESERVE_FA_DUMP)
++#define __HAVE_ARCH_RESERVED_KERNEL_PAGES
++#endif
++
+ #endif /* __KERNEL__ */
+ #endif /* _ASM_POWERPC_MMU_H_ */
+diff --git a/arch/powerpc/include/asm/mmzone.h b/arch/powerpc/include/asm/mmzone.h
+index 4740ca230d36..da827d2d0866 100644
+--- a/arch/powerpc/include/asm/mmzone.h
++++ b/arch/powerpc/include/asm/mmzone.h
+@@ -42,9 +42,6 @@ u64 memory_hotplug_max(void);
+ #else
+ #define memory_hotplug_max() memblock_end_of_DRAM()
+ #endif /* CONFIG_NUMA */
+-#ifdef CONFIG_FA_DUMP
+-#define __HAVE_ARCH_RESERVED_KERNEL_PAGES
+-#endif
+ 
+ #endif /* __KERNEL__ */
+ #endif /* _ASM_MMZONE_H_ */
+-- 
+2.41.0
+
