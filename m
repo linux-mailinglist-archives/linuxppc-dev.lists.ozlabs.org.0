@@ -1,74 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A6E37FE765
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Nov 2023 03:46:54 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gG1yt5Q/;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JV6eKMXe;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D74327FE76D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Nov 2023 03:53:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SggZM5ZVcz3vcL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Nov 2023 13:46:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SggjW2zbdz3cTm
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Nov 2023 13:53:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gG1yt5Q/;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JV6eKMXe;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=perches.com (client-ip=216.40.44.12; helo=relay.hostedemail.com; envelope-from=joe@perches.com; receiver=lists.ozlabs.org)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SggRF6Q5vz3cSQ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Nov 2023 13:40:41 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1701312038;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8a+ellwCh/3V8BzkRuEVvsJ+8hxsTW4N92KLuW+8EyQ=;
-	b=gG1yt5Q/x86eLMfj9jgHOotgn9e68G/DAKtzf+qQ1kN8HSQduKMyZBAaBagF3t5rPQrNM/
-	oWI9H46Ky96dyEV7n2zvKKlD5byStcxeyjQGljuoNLp+6J48c9bao37kF8C6569x8NcTNp
-	KlpPBVL+qQe2/IToc1oSnpQMWfyPfQM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1701312039;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8a+ellwCh/3V8BzkRuEVvsJ+8hxsTW4N92KLuW+8EyQ=;
-	b=JV6eKMXeG2BPA7eV2KY9W42KN1GhsoWVPbRUAk1kBHfCehpG710uRhm/ZyxbCe9CMKG5sS
-	FFIN3GBE2x03bwEJ9XSnCW8QMFA6r8dmwpFfD4go4qfmrUgpmfYYc9nLx2Y+aWNZgWMJWw
-	3W1huWwiTQCeKni+z0nrWeOe7j6VBW0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-xuchx3FxNBWjFxjNJEU3Uw-1; Wed, 29 Nov 2023 21:40:35 -0500
-X-MC-Unique: xuchx3FxNBWjFxjNJEU3Uw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A2D01185A783;
-	Thu, 30 Nov 2023 02:40:34 +0000 (UTC)
-Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.113.121])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 963822026D4C;
-	Thu, 30 Nov 2023 02:40:30 +0000 (UTC)
-From: Baoquan He <bhe@redhat.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v3 7/7] kexec_file, parisc: print out debugging message if required
-Date: Thu, 30 Nov 2023 10:39:55 +0800
-Message-ID: <20231130023955.5257-8-bhe@redhat.com>
-In-Reply-To: <20231130023955.5257-1-bhe@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sgghz6hVvz2xqq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Nov 2023 13:52:33 +1100 (AEDT)
+Received: from omf05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0CD43406F7;
+	Thu, 30 Nov 2023 02:52:28 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf05.hostedemail.com (Postfix) with ESMTPA id 2F8892000D;
+	Thu, 30 Nov 2023 02:52:25 +0000 (UTC)
+Message-ID: <81c62af671ebbfad61dd46aa056050a56bf535a2.camel@perches.com>
+Subject: Re: [PATCH v3 2/7] kexec_file: print out debugging message if
+ required
+From: Joe Perches <joe@perches.com>
+To: Baoquan He <bhe@redhat.com>, linux-kernel@vger.kernel.org
+Date: Wed, 29 Nov 2023 18:52:24 -0800
+In-Reply-To: <20231130023955.5257-3-bhe@redhat.com>
 References: <20231130023955.5257-1-bhe@redhat.com>
+	 <20231130023955.5257-3-bhe@redhat.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+X-Rspamd-Queue-Id: 2F8892000D
+X-Stat-Signature: gwk7qi3h7jx8h1ywf1jic8xo76gqerwm
+X-Spam-Status: No, score=-3.82
+X-Rspamd-Server: rspamout01
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX19dPUefOesSFHLQCs3wqOW/oGlv3aC7z+4=
+X-HE-Tag: 1701312745-366478
+X-HE-Meta: U2FsdGVkX18k/ADXByHc+CtueZc2/kIRg2iYeavR6SwxdbkG44laEheGJWfEZEWXVPPjQNlGsgWVgExQ2v2SkjkkfNjpPwEMSuNPMyCDovT0AEEC3qeJ3Q3CanYRUyaIkLf9UCVzbPHogNji1emX5sy1KMlEpsNMU2L1IT5Ygh0f8/d2RbC7l5Zlkk01sF8weznUFCSh7sTGbvtjt1bjs0D9vOhDdBlZRMDNhbUzmGZ+P97DoYPvnsvnrduPVTPJ/denAd96V06q4DDxaFl1zt06dspwDHAATuNX205GsU5+pYEk/u0vlxrjfS1T3iX3
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,51 +53,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Baoquan He <bhe@redhat.com>, linux-parisc@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, nathan@kernel.org, joe@perches.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org
+Cc: linux-parisc@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, nathan@kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Replace pr_debug() with the newly added kexec_dprintk() in kexec_file
-loading related codes.
+On Thu, 2023-11-30 at 10:39 +0800, Baoquan He wrote:
+> Replace pr_debug() with the newly added kexec_dprintk() in kexec_file
+> loading related codes.
 
-Signed-off-by: Baoquan He <bhe@redhat.com>
----
- arch/parisc/kernel/kexec_file.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+trivia:
 
-diff --git a/arch/parisc/kernel/kexec_file.c b/arch/parisc/kernel/kexec_file.c
-index 8c534204f0fd..3fc82130b6c3 100644
---- a/arch/parisc/kernel/kexec_file.c
-+++ b/arch/parisc/kernel/kexec_file.c
-@@ -38,8 +38,8 @@ static void *elf_load(struct kimage *image, char *kernel_buf,
- 	for (i = 0; i < image->nr_segments; i++)
- 		image->segment[i].mem = __pa(image->segment[i].mem);
- 
--	pr_debug("Loaded the kernel at 0x%lx, entry at 0x%lx\n",
--		 kernel_load_addr, image->start);
-+	kexec_dprintk("Loaded the kernel at 0x%lx, entry at 0x%lx\n",
-+		      kernel_load_addr, image->start);
- 
- 	if (initrd != NULL) {
- 		kbuf.buffer = initrd;
-@@ -51,7 +51,7 @@ static void *elf_load(struct kimage *image, char *kernel_buf,
- 		if (ret)
- 			goto out;
- 
--		pr_debug("Loaded initrd at 0x%lx\n", kbuf.mem);
-+		kexec_dprintk("Loaded initrd at 0x%lx\n", kbuf.mem);
- 		image->arch.initrd_start = kbuf.mem;
- 		image->arch.initrd_end = kbuf.mem + initrd_len;
- 	}
-@@ -68,7 +68,7 @@ static void *elf_load(struct kimage *image, char *kernel_buf,
- 		if (ret)
- 			goto out;
- 
--		pr_debug("Loaded cmdline at 0x%lx\n", kbuf.mem);
-+		kexec_dprintk("Loaded cmdline at 0x%lx\n", kbuf.mem);
- 		image->arch.cmdline = kbuf.mem;
- 	}
- out:
--- 
-2.41.0
+> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+[]
+> @@ -551,9 +551,12 @@ int crash_prepare_elf64_headers(struct crash_mem *me=
+m, int need_kernel_map,
+>  		phdr->p_filesz =3D phdr->p_memsz =3D mend - mstart + 1;
+>  		phdr->p_align =3D 0;
+>  		ehdr->e_phnum++;
+> -		pr_debug("Crash PT_LOAD ELF header. phdr=3D%p vaddr=3D0x%llx, paddr=3D=
+0x%llx, sz=3D0x%llx e_phnum=3D%d p_offset=3D0x%llx\n",
+> -			phdr, phdr->p_vaddr, phdr->p_paddr, phdr->p_filesz,
+> -			ehdr->e_phnum, phdr->p_offset);
+> +#ifdef CONFIG_KEXEC_FILE
+> +		kexec_dprintk("Crash PT_LOAD ELF header. phdr=3D%p vaddr=3D0x%llx, pad=
+dr=3D0x%llx, "
+> +			      "sz=3D0x%llx e_phnum=3D%d p_offset=3D0x%llx\n",
+> +			      phdr, phdr->p_vaddr, phdr->p_paddr, phdr->p_filesz,
+> +			      ehdr->e_phnum, phdr->p_offset);
+> +#endif
+
+Perhaps run checkpatch and coalesce the format string.
 
