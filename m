@@ -1,98 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B4367FFDBD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Nov 2023 22:42:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D43757FFE4F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Nov 2023 23:05:29 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HLDY7dQ9;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=jEncOMNK;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sh8mx6rSPz3bsP
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Dec 2023 08:42:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sh9HC2XcDz2ys9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Dec 2023 09:05:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HLDY7dQ9;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=jEncOMNK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sh8m62w4rz2yhZ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Dec 2023 08:41:57 +1100 (AEDT)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AULMUSA027240;
-	Thu, 30 Nov 2023 21:41:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=LtJX81h4v4DPTFlKRUBP6jS2SLzhVB7KrAz6hj/jaSA=;
- b=HLDY7dQ9alkVESLqi3b3lRjtb2iGrkFwKGEXu7HU3EubCi22AOW8Wxws2kJSUOf/PFGg
- SdHLSqx3X4nmNxszE5gBQPuI7RnGzo0CyfTnxyQNwGE0j7Gr6KbkJiOzlSHEaxuuFDjT
- PEnwdudywfeSGQnkNXiv25AfNzh0qQ589w7TOECRWpSV8c2gAgxUaH0ZNCCjUJmsynic
- MKDCRopV4axdjD7BGE5ciN1utixT3wwKnGYt+y4Zs0Rv9rpCe9F0DEYZ+IhqOGeJQ6io
- KStioZxwJQ5JSPVXxW9pR81mjsuzg+FY49RAVm7iZhtg/mLQDRAQ0+Kt4vsTj1HATSxO 5g== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uq28d8f3y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Nov 2023 21:41:45 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AULNtDu031412;
-	Thu, 30 Nov 2023 21:41:45 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uq28d8evu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Nov 2023 21:41:44 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3AUJfjrf012763;
-	Thu, 30 Nov 2023 21:41:35 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3uku8thbh8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Nov 2023 21:41:35 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3AULfYNP22872694
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 30 Nov 2023 21:41:35 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D1C2758058;
-	Thu, 30 Nov 2023 21:41:34 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C1D7558057;
-	Thu, 30 Nov 2023 21:41:34 +0000 (GMT)
-Received: from localhost (unknown [9.41.178.242])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 30 Nov 2023 21:41:34 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-        Nathan Lynch via B4 Relay
- <devnull+nathanl.linux.ibm.com@kernel.org>,
-        Nicholas Piggin
- <npiggin@gmail.com>
-Subject: Re: [PATCH v4 05/13] powerpc/rtas: Facilitate high-level call
- sequences
-In-Reply-To: <877clz14ii.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
-References: <20231117-papr-sys_rtas-vs-lockdown-v4-0-b794d8cb8502@linux.ibm.com>
- <20231117-papr-sys_rtas-vs-lockdown-v4-5-b794d8cb8502@linux.ibm.com>
- <87sf4p33zg.fsf@mail.lhotse>
- <87jzq11nsj.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
- <874jh43dcn.fsf@mail.lhotse>
- <877clz14ii.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
-Date: Thu, 30 Nov 2023 15:41:34 -0600
-Message-ID: <874jh22a29.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sh9GK03sxz2yD6
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Dec 2023 09:04:41 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1701381880;
+	bh=ZihOGHfcGL6IPblR8lpNHXKjLfhDSV+YMLeb5Lb4EXU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=jEncOMNKVJSLImHusypGjPZzbfg5EmNUruYT8vz/AqndZ0vEsf+aL7RFsRQtP7kcV
+	 0ulLgfKITqepuGJhI1dxVuVOfSc6lkoOErzjqdz4WGOJmaPyX2+e33uhBDsTR2y7JG
+	 8/HaXZD3m4lyiYJGnTvk2pG7v+pQxIV8/OuSd7Hx23k818U/zEZ4pyZYu+YUYqpLd1
+	 XPexA34WHfA2Yv6Be0BMkXiqrE2whR5nVG7yMmCcMyRhiyHd0mlW5zp0OM1T7w+deR
+	 0eFdoJ1Wd7pauSqcI3vqxlcfAmjHoRqsHYibX89iX7VznsCRa86U2lI6Q6JkJX3ELj
+	 hwY+ALStXeijQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sh9GH5tcSz4wx7;
+	Fri,  1 Dec 2023 09:04:39 +1100 (AEDT)
+Date: Fri, 1 Dec 2023 09:04:39 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: linux-next: build failure after merge of the mm tree
+Message-ID: <20231201090439.7ae92c13@canb.auug.org.au>
+In-Reply-To: <20231127144852.069b2e7e@canb.auug.org.au>
+References: <20231127132809.45c2b398@canb.auug.org.au>
+	<20231127144852.069b2e7e@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: v2C_gjbX9sI8xy8eUDvFMgv2yV-O9pC1
-X-Proofpoint-GUID: bNcwo0uIJHRZpRCWjrwQCXcob42erNFm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-30_22,2023-11-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
- suspectscore=0 bulkscore=0 impostorscore=0 phishscore=0 spamscore=0
- lowpriorityscore=0 priorityscore=1501 mlxlogscore=579 adultscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311300158
+Content-Type: multipart/signed; boundary="Sig_/mftAfNUiKPZGOFgp0y=in45";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,18 +59,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com, Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org, gcwilson@linux.ibm.com
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nathan Lynch <nathanl@linux.ibm.com> writes:
-> Alternatively, sys_rtas() could be refactored into locking and
-> non-locking paths, e.g.
->
-> static long __do_sys_rtas(struct rtas_function *func)
-> {
-> 	// [ ... acquire rtas_lock, enter RTAS, fetch any error etc ... ]
-> }
+--Sig_/mftAfNUiKPZGOFgp0y=in45
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Of course this conflicts with the code generated by SYSCALL_DEFINE1(rtas), so
-a different function name would be needed here.
+Hi all,
+
+On Mon, 27 Nov 2023 14:48:52 +1100 Stephen Rothwell <sfr@canb.auug.org.au> =
+wrote:
+>=20
+> Just cc'ing the PowerPC guys to see if my fix is sensible.
+>=20
+> On Mon, 27 Nov 2023 13:28:09 +1100 Stephen Rothwell <sfr@canb.auug.org.au=
+> wrote:
+> >
+> > After merging the mm tree, today's linux-next build (powerpc64
+> > allnoconfig) failed like this:
+> >=20
+> > arch/powerpc/mm/book3s64/pgtable.c:557:5: error: no previous prototype =
+for 'pmd_move_must_withdraw' [-Werror=3Dmissing-prototypes]
+> >   557 | int pmd_move_must_withdraw(struct spinlock *new_pmd_ptl,
+> >       |     ^~~~~~~~~~~~~~~~~~~~~~
+> > cc1: all warnings being treated as errors
+> >=20
+> > Caused by commit
+> >=20
+> >   c6345dfa6e3e ("Makefile.extrawarn: turn on missing-prototypes globall=
+y")
+> >=20
+> > I have added the following patch for today (which could be applied to
+> > the mm or powerpc trees):
+> >=20
+> > From 194805b44c11b4c0aa28bdcdc0bb0d82acef394c Mon Sep 17 00:00:00 2001
+> > From: Stephen Rothwell <sfr@canb.auug.org.au>
+> > Date: Mon, 27 Nov 2023 13:08:57 +1100
+> > Subject: [PATCH] powerpc: pmd_move_must_withdraw() is only needed for
+> >  CONFIG_TRANSPARENT_HUGEPAGE
+> >=20
+> > Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> > ---
+> >  arch/powerpc/mm/book3s64/pgtable.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >=20
+> > diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3=
+s64/pgtable.c
+> > index be229290a6a7..3438ab72c346 100644
+> > --- a/arch/powerpc/mm/book3s64/pgtable.c
+> > +++ b/arch/powerpc/mm/book3s64/pgtable.c
+> > @@ -542,6 +542,7 @@ void ptep_modify_prot_commit(struct vm_area_struct =
+*vma, unsigned long addr,
+> >  	set_pte_at(vma->vm_mm, addr, ptep, pte);
+> >  }
+> > =20
+> > +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> >  /*
+> >   * For hash translation mode, we use the deposited table to store hash=
+ slot
+> >   * information and they are stored at PTRS_PER_PMD offset from related=
+ pmd
+> > @@ -563,6 +564,7 @@ int pmd_move_must_withdraw(struct spinlock *new_pmd=
+_ptl,
+> > =20
+> >  	return true;
+> >  }
+> > +#endif
+> > =20
+> >  /*
+> >   * Does the CPU support tlbie?
+> > --=20
+> > 2.40.1 =20
+
+I am still carrying this patch (it should probably go into the mm
+tree).  Is someone going to pick it up (assuming it is correct)?
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/mftAfNUiKPZGOFgp0y=in45
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmVpBvcACgkQAVBC80lX
+0GydrAf9GN954MjHMtmQr8oDfEmXP34v1XDb6cN03i1NEMNhX1K0QIBor+LlMZKx
+OZg9WsMzA5OqCViRJHFD3vi6ZTmy8Z4bQPsXuUqz5/l+v4XC9nGP7x8GcPvdhktG
+j3y9FFpY5EyPTTEUYoApw9WdXjaFIMYwZGyzfYXnVS0rj3BY47YmTx757ndCXhgc
+GnlOMV6eQXgV+mxwo5lg96O8GVeBYVShREmDOiVbOgOiRm1Moe8CL9JLFDn5tDW2
+tfqsFl4X/S+y5iYdTdrPqjJuVkDGnLqPSRNogDHW2K6ZacV0shaFVhHd2pTfJqTN
+KmZ1QNG1L7moZcoA8XIAJcIUC8TQIg==
+=JUuX
+-----END PGP SIGNATURE-----
+
+--Sig_/mftAfNUiKPZGOFgp0y=in45--
