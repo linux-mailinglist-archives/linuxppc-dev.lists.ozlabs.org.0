@@ -2,51 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98AE77FE67C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Nov 2023 03:08:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11C687FE725
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Nov 2023 03:41:01 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=QUU4St7E;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MaPioE6K;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MaPioE6K;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sgfkb6ZMTz3cbQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Nov 2023 13:08:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SggRZ3nwXz3cdV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Nov 2023 13:40:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=QUU4St7E;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MaPioE6K;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MaPioE6K;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sgfjm2GTBz2xVW
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Nov 2023 13:08:12 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1701310082;
-	bh=aN/xoZpS6LqQUoIKhHtH74g454pmPRHktKkj0ZPwnjY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=QUU4St7EnPkQF4axR/KI/4fEjrKRhwhoKBu2jJ7Qd+sVQJScYL0Zz3XYv08ak8bOy
-	 VBeketPPCTsG5cL7SrUmoRVne/ooBkOw6da4l8TZLBl/3qH2R/Xqh95GIC33E2k5Rl
-	 Q0wPdH6ArnhK/lFRQY1qG6gAaHIo1YeKYbIrvJYyov0sW5JgDO2RzM6WCu77Wtm180
-	 hdaAM+TSb4ltXWlxHdXStUB68CDtKoIIZ4u1UzmZSMfw5quKyP6JxJZWQ2LGIqzQjt
-	 NnTUclag/jDSY6HsBFzj56usPcrTLT8kHriwpkzSJWJ8SSOBsfenRrgQ+AyFehBMId
-	 t+2RmdSq+qdXg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SggQh3ngMz2xm3
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Nov 2023 13:40:10 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1701312007;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=43cVse7FyBfta6ylIl8/Jaxzg+CDWjfxBFsiH7/CgfU=;
+	b=MaPioE6KIcrK1vVHg9C6APaUOWpsHCLjFV5GEFp80+GZQfZvF+3EyjV5LyZsQ87cR+rzVt
+	iO2tE1Dpbk4SjYSxPXC0ME1EQ4rxSkPpX79vVX63wRAFKbf7tlL5H6g5yQ5SnaZJ3Se7Tl
+	cKTIGWYLfEA67r0HyroQr208luGTyOk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1701312007;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=43cVse7FyBfta6ylIl8/Jaxzg+CDWjfxBFsiH7/CgfU=;
+	b=MaPioE6KIcrK1vVHg9C6APaUOWpsHCLjFV5GEFp80+GZQfZvF+3EyjV5LyZsQ87cR+rzVt
+	iO2tE1Dpbk4SjYSxPXC0ME1EQ4rxSkPpX79vVX63wRAFKbf7tlL5H6g5yQ5SnaZJ3Se7Tl
+	cKTIGWYLfEA67r0HyroQr208luGTyOk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-93-ZYiLOUwaOiC_hh7Jr__MlA-1; Wed, 29 Nov 2023 21:40:02 -0500
+X-MC-Unique: ZYiLOUwaOiC_hh7Jr__MlA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SgfjZ3YZ0z4x5q;
-	Thu, 30 Nov 2023 13:08:02 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2] powerpc/pseries/vas: Use usleep_range() to support
- HCALL delay
-In-Reply-To: <20231129075424.240653-1-haren@linux.ibm.com>
-References: <20231129075424.240653-1-haren@linux.ibm.com>
-Date: Thu, 30 Nov 2023 13:07:59 +1100
-Message-ID: <871qc82dts.fsf@mail.lhotse>
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F0AB9101A54C;
+	Thu, 30 Nov 2023 02:40:01 +0000 (UTC)
+Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.113.121])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id DBFF32026D4C;
+	Thu, 30 Nov 2023 02:39:57 +0000 (UTC)
+From: Baoquan He <bhe@redhat.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/7] kexec_file: print out debugging message if required
+Date: Thu, 30 Nov 2023 10:39:48 +0800
+Message-ID: <20231130023955.5257-1-bhe@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,90 +76,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, Haren Myneni <haren@linux.ibm.com>, npiggin@gmail.com
+Cc: Baoquan He <bhe@redhat.com>, linux-parisc@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, nathan@kernel.org, joe@perches.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Haren Myneni <haren@linux.ibm.com> writes:
-> VAS allocate, modify and deallocate HCALLs returns
-> H_LONG_BUSY_ORDER_1_MSEC or H_LONG_BUSY_ORDER_10_MSEC for busy
-> delay and expects OS to reissue HCALL after that delay. But using
-> msleep() will often sleep at least 20 msecs even though the
-> hypervisor expects to reissue these HCALLs after 1 or 10msecs.
-> It might cause these HCALLs takes longer when multiple threads
-> issue open or close VAS windows simultaneously.
->
-> So instead of msleep(), use usleep_range() to ensure sleep with
-> the expected value before issuing HCALL again.
->
-> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-> Suggested-by: Nathan Lynch <nathanl@linux.ibm.com>
->
-> ---
-> v1 -> v2:
-> - Use usleep_range instead of using RTAS sleep routine as
->   suggested by Nathan
-> ---
->  arch/powerpc/platforms/pseries/vas.c | 24 +++++++++++++++++++++++-
->  1 file changed, 23 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
-> index 71d52a670d95..bade4402741f 100644
-> --- a/arch/powerpc/platforms/pseries/vas.c
-> +++ b/arch/powerpc/platforms/pseries/vas.c
-> @@ -36,9 +36,31 @@ static bool migration_in_progress;
->  
->  static long hcall_return_busy_check(long rc)
->  {
-> +	unsigned int ms;
-> +
->  	/* Check if we are stalled for some time */
->  	if (H_IS_LONG_BUSY(rc)) {
-> -		msleep(get_longbusy_msecs(rc));
-> +		ms = get_longbusy_msecs(rc);
-> +		/*
-> +		 * Allocate, Modify and Deallocate HCALLs returns
-> +		 * H_LONG_BUSY_ORDER_1_MSEC or H_LONG_BUSY_ORDER_10_MSEC
-> +		 * for the long delay. So the delay should always be 1
-> +		 * or 10msecs, but sleeps 1msec in case if the long
-> +		 * delay is > H_LONG_BUSY_ORDER_10_MSEC.
-> +		 */
-> +		if (ms > 10)
-> +			ms = 1;
- 
-I don't understand this. The hypervisor asked you to sleep for more than
-10 milliseconds, so instead you sleep for 1?
+Currently, specifying '-d' on kexec command will print a lot of debugging
+informationabout kexec/kdump loading with kexec_load interface.
 
-I can understand that we don't want to usleep() for the longer durations
-that could be returned, but so shouldn't the code be using msleep() for
-those values?
+However, kexec_file_load prints nothing even though '-d' is specified.
+It's very inconvenient to debug or analyze the kexec/kdump loading when
+something wrong happened with kexec/kdump itself or develper want to
+check the kexec/kdump loading.
 
-Sleeping for a very short duration definitely seems wrong.
+In this patchset, a kexec_file flag is KEXEC_FILE_DEBUG added and checked
+in code. If it's passed in, debugging message of kexec_file code will be
+printed out and can be seen from console and dmesg. Otherwise, the
+debugging message is printed like beofre when pr_debug() is taken.
 
+Note:
+****
+=====
+1) The code in kexec-tools utility also need be changed to support
+passing KEXEC_FILE_DEBUG to kernel when 'kexec -s -d' is specified.
+The patch link is here:
+=========
+[PATCH] kexec_file: add kexec_file flag to support debug printing
+http://lists.infradead.org/pipermail/kexec/2023-November/028505.html
 
-> +		/*
-> +		 * msleep() will often sleep at least 20 msecs even
-> +		 * though the hypervisor expects to reissue these
- 
-That makes it sound like the hypervisor is reissuing the hcalls.
+2) s390 also has kexec_file code, while I am not sure what debugging
+information is necessary. So leave it to s390 developer.
 
-Better would be "the hypervisor suggests the kernel should reissue the
-hcall after ...".
+Test:
+****
+====
+Testing was done in v1 on x86_64 and arm64. For v3, tested on x86_64
+again. And on x86_64, the printed messages look like below:
+--------------------------------------------------------------
+kexec measurement buffer for the loaded kernel at 0x207fffe000.
+Loaded purgatory at 0x207fff9000
+Loaded boot_param, command line and misc at 0x207fff3000 bufsz=0x1180 memsz=0x1180
+Loaded 64bit kernel at 0x207c000000 bufsz=0xc88200 memsz=0x3c4a000
+Loaded initrd at 0x2079e79000 bufsz=0x2186280 memsz=0x2186280
+Final command line is: root=/dev/mapper/fedora_intel--knightslanding--lb--02-root ro
+rd.lvm.lv=fedora_intel-knightslanding-lb-02/root console=ttyS0,115200N81 crashkernel=256M
+E820 memmap:
+0000000000000000-000000000009a3ff (1)
+000000000009a400-000000000009ffff (2)
+00000000000e0000-00000000000fffff (2)
+0000000000100000-000000006ff83fff (1)
+000000006ff84000-000000007ac50fff (2)
+......
+000000207fff6150-000000207fff615f (128)
+000000207fff6160-000000207fff714f (1)
+000000207fff7150-000000207fff715f (128)
+000000207fff7160-000000207fff814f (1)
+000000207fff8150-000000207fff815f (128)
+000000207fff8160-000000207fffffff (1)
+nr_segments = 5
+segment[0]: buf=0x000000004e5ece74 bufsz=0x211 mem=0x207fffe000 memsz=0x1000
+segment[1]: buf=0x000000009e871498 bufsz=0x4000 mem=0x207fff9000 memsz=0x5000
+segment[2]: buf=0x00000000d879f1fe bufsz=0x1180 mem=0x207fff3000 memsz=0x2000
+segment[3]: buf=0x000000001101cd86 bufsz=0xc88200 mem=0x207c000000 memsz=0x3c4a000
+segment[4]: buf=0x00000000c6e38ac7 bufsz=0x2186280 mem=0x2079e79000 memsz=0x2187000
+kexec_file_load: type:0, start:0x207fff91a0 head:0x109e004002 flags:0x8
+---------------------------------------------------------------------------
 
-> +		 * HCALLs after 1 or 10msecs. So use usleep_range()
-> +		 * to sleep with the expected value.
-> +		 *
-> +		 * See Documentation/timers/timers-howto.rst on using
-> +		 * the value range in usleep_range().
-> +		 */
-> +		usleep_range(ms * 100, ms * 1000);
+History:
+********
+=========
+v2->v3:
+- Adjust all the indentation of continuation line to the open parenthesis
+  for all kexec_dprintk() call sites. Thank Joe to point this out.
+- Fix the LKP report that macro kexec_dprintk() is invalid when
+  CONFIG_KEXEC=Y, CONFIG_KEXEC_FILE=n, CONFIG_CRASH_DUMP=y.
 
-If ms == 1, then that's 100 usecs, which is not 1 millisecond?
+v1->v2:
+- Take the new format of kexec_dprintk() suggested by Joe which can
+  reduce kernel text size.
+- Fix building error of patch 2 in kernel/crash_core.c reported by LKP.
+- Fix building warning on arm64 in patch 4 reported by LKP.
 
-Please use USEC_PER_MSEC.
+Baoquan He (7):
+  kexec_file: add kexec_file flag to control debug printing
+  kexec_file: print out debugging message if required
+  kexec_file, x86: print out debugging message if required
+  kexec_file, arm64: print out debugging message if required
+  kexec_file, ricv: print out debugging message if required
+  kexec_file, power: print out debugging message if required
+  kexec_file, parisc: print out debugging message if required
 
->  		rc = H_BUSY;
->  	} else if (rc == H_BUSY) {
->  		cond_resched();
+ arch/arm64/kernel/kexec_image.c        |  6 +++---
+ arch/arm64/kernel/machine_kexec.c      | 26 ++++++--------------------
+ arch/arm64/kernel/machine_kexec_file.c | 12 ++++++------
+ arch/parisc/kernel/kexec_file.c        |  8 ++++----
+ arch/powerpc/kexec/elf_64.c            |  8 ++++----
+ arch/powerpc/kexec/file_load_64.c      | 18 +++++++++---------
+ arch/riscv/kernel/elf_kexec.c          | 11 ++++++-----
+ arch/riscv/kernel/machine_kexec.c      | 26 --------------------------
+ arch/x86/kernel/crash.c                |  4 ++--
+ arch/x86/kernel/kexec-bzimage64.c      | 23 ++++++++++++++---------
+ include/linux/kexec.h                  |  9 ++++++++-
+ include/uapi/linux/kexec.h             |  1 +
+ kernel/crash_core.c                    |  9 ++++++---
+ kernel/kexec_core.c                    |  2 ++
+ kernel/kexec_file.c                    | 14 +++++++++++---
+ security/integrity/ima/ima_kexec.c     |  4 ++--
+ 16 files changed, 84 insertions(+), 97 deletions(-)
 
-cheers
+-- 
+2.41.0
+
