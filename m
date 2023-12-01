@@ -1,92 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E28F6800C4C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Dec 2023 14:37:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06AEC800C49
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Dec 2023 14:36:08 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bnfJsY3K;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=orgAuGSX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ShYys2rnMz3dJg
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Dec 2023 00:37:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ShYx13dXKz3vqP
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Dec 2023 00:36:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bnfJsY3K;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=orgAuGSX;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ShYsj3SNxz3vk6
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Dec 2023 00:33:13 +1100 (AEDT)
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3B1DM178009911;
-	Fri, 1 Dec 2023 13:33:06 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ShYrG10Rfz3vfR
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Dec 2023 00:31:57 +1100 (AEDT)
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3B1DRSMW002351;
+	Fri, 1 Dec 2023 13:31:50 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=VjgXqS/kBjD2g7EPDogOf1muMe4VYhRCx0aiMHeFe1g=;
- b=bnfJsY3KCippl0MoP50GgpwZ5xeIQT5erNe9Gmixw+2om4R+eavxUyL5XBRcmmDyXBUH
- zE8lnrK4lw9LOsin24yeqsdVXNhpjXJKYpM6ZpdZ1towphrZAPqNApqeS98xnMZTMPSt
- 1CXsfr3bcYR7irJucs04JJvcm3Kf12B6MIKdUa8d9OzsJbVxvVHR6kTMB3sNZ4skpCLs
- 7gc65r6yooZYzCWsLIhDQoGRe6aMokIEBJ6Q9Dl5+q03tkpKx3MVlJv/jAnNapidIySo
- +urf3M7V8cq4q4Cc5Cv+6FES46TSIiEbWAztX3iOHSGYP2Y3cp+XvxNzyH7BChggI14Q 8Q== 
+ bh=tPQP1B7Rs46uEMXocI245+eClgoW4erBlOchtLxnHns=;
+ b=orgAuGSXMlmOQdukqiKOnlFKOxagIrqBW/sY3GA9Bpk+NZIR1icHNKtC/RtIGggmo701
+ 2mNavmepm1Ghm3h033WpFHNt2lV10cR8g6fnq1KS3aH6anxma7QLU04quXFEDf55/eFn
+ lwYibgOERJfwBjcdRjXzZgQh0wVDSf/eFFYFGC462ekT2+Sheq+5Xe/tQMhesF6IFTRI
+ bkr85OIGzAwlRxDuuthUT48WngSCChaOOYEXctTeK0GU9rYrrdrIPL3pbc07Fj3B/4gC
+ w2+uClmY9ML1VOxahyIXeCLJ0lCkWK+sEAJgSzTHBwblGLaoauKHbTFwM/NxNk8198Ib Pw== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uqgad0agx-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uqgcqr4tq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Dec 2023 13:33:06 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B1DMiJr012212;
-	Fri, 1 Dec 2023 13:33:05 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uqgad0ae8-5
+	Fri, 01 Dec 2023 13:31:50 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B1DT0Oi008587;
+	Fri, 1 Dec 2023 13:31:49 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uqgcqr4sf-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Dec 2023 13:33:05 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3B1AXpdl031675;
-	Fri, 1 Dec 2023 13:27:24 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ukun05dn7-1
+	Fri, 01 Dec 2023 13:31:49 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3B1AY1fZ020448;
+	Fri, 1 Dec 2023 13:27:30 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ukvrm52yx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Dec 2023 13:27:24 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3B1DRLKL42926426
+	Fri, 01 Dec 2023 13:27:30 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3B1DRQ8926149536
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 1 Dec 2023 13:27:21 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 908722004D;
-	Fri,  1 Dec 2023 13:27:21 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B112C20040;
-	Fri,  1 Dec 2023 13:27:17 +0000 (GMT)
+	Fri, 1 Dec 2023 13:27:26 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4D51220040;
+	Fri,  1 Dec 2023 13:27:26 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9A24D20043;
+	Fri,  1 Dec 2023 13:27:22 +0000 (GMT)
 Received: from vaibhav?linux.ibm.com (unknown [9.171.33.138])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Fri,  1 Dec 2023 13:27:17 +0000 (GMT)
-Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Fri, 01 Dec 2023 18:57:16 +0530
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Fri,  1 Dec 2023 13:27:22 +0000 (GMT)
+Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Fri, 01 Dec 2023 18:57:21 +0530
 From: Vaibhav Jain <vaibhav@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
         kvm-ppc@vger.kernel.org
-Subject: [PATCH 11/12] KVM: PPC: Reduce reliance on analyse_instr() in mmio emulation
-Date: Fri,  1 Dec 2023 18:56:16 +0530
-Message-ID: <20231201132618.555031-12-vaibhav@linux.ibm.com>
+Subject: [PATCH 12/12] KVM: PPC: Book3S HV nestedv2: Do not cancel pending decrementer exception
+Date: Fri,  1 Dec 2023 18:56:17 +0530
+Message-ID: <20231201132618.555031-13-vaibhav@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231201132618.555031-1-vaibhav@linux.ibm.com>
 References: <20231201132618.555031-1-vaibhav@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Yln3g9ZR4DLMeYCHsxD3FO9n7F_PigO0
-X-Proofpoint-ORIG-GUID: Or9SMVsvDHNDgHKuTIVV7rI9OjVdvR_3
+X-Proofpoint-GUID: WVajB8kqc2AABsFzp7QCx3rBoju0YPp5
+X-Proofpoint-ORIG-GUID: 2dHyFuBFDcjndRv4bN73b6FdisHMmF_a
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-12-01_11,2023-11-30_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- priorityscore=1501 clxscore=1015 phishscore=0 lowpriorityscore=0
- impostorscore=0 mlxlogscore=664 suspectscore=0 mlxscore=0 malwarescore=0
- adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2312010092
+ lowpriorityscore=0 adultscore=0 impostorscore=0 suspectscore=0
+ phishscore=0 clxscore=1015 mlxscore=0 bulkscore=0 mlxlogscore=725
+ priorityscore=1501 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311060000 definitions=main-2312010092
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,113 +104,31 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Jordan Niethe <jniethe5@gmail.com>
 
-Commit 709236039964 ("KVM: PPC: Reimplement non-SIMD LOAD/STORE
-instruction mmio emulation with analyse_instr() input") and
-commit 2b33cb585f94 ("KVM: PPC: Reimplement LOAD_FP/STORE_FP instruction
-mmio emulation with analyse_instr() input") made
-kvmppc_emulate_loadstore() use the results from analyse_instr() for
-instruction emulation. In particular the effective address from
-analyse_instr() is used for UPDATE type instructions and fact that
-op.val is all ready endian corrected is used in the STORE case.
+In the nestedv2 case, if there is a pending decrementer exception, the
+L1 must get the L2's timebase from the L0 to see if the exception should
+be cancelled. This adds the overhead of a H_GUEST_GET_STATE call to the
+likely case in which the decrementer should not be cancelled.
 
-However, these changes now have some negative implications for the
-nestedv2 case.  For analyse_instr() to determine the correct effective
-address, the GPRs must be loaded from the L0. This is not needed as
-vcpu->arch.vaddr_accessed is already set. Change back to using
-vcpu->arch.vaddr_accessed.
-
-In the STORE case, use kvmppc_get_gpr() value instead of the op.val.
-kvmppc_get_gpr() will reload from the L0 if needed in the nestedv2 case.
-This means if a byte reversal is needed must now be passed to
-kvmppc_handle_store() like in the kvmppc_handle_load() case.
-
-This means the call to kvmhv_nestedv2_reload_ptregs() can be avoided as
-there is no concern about op.val being stale. Drop the call to
-kvmhv_nestedv2_mark_dirty_ptregs() as without the call to
-kvmhv_nestedv2_reload_ptregs(), stale state could be marked as valid.
-
-This is fine as the required marking things dirty is already handled for
-the UPDATE case by the call to kvmppc_set_gpr(). For LOADs, it is
-handled in kvmppc_complete_mmio_load(). This is called either directly
-in __kvmppc_handle_load() if the load can be handled in KVM, or on the
-next kvm_arch_vcpu_ioctl_run() if an exit was required.
+Avoid this logic for the nestedv2 case.
 
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
- arch/powerpc/kvm/emulate_loadstore.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kvm/emulate_loadstore.c b/arch/powerpc/kvm/emulate_loadstore.c
-index 077fd88a0b68..ec60c7979718 100644
---- a/arch/powerpc/kvm/emulate_loadstore.c
-+++ b/arch/powerpc/kvm/emulate_loadstore.c
-@@ -93,7 +93,6 @@ int kvmppc_emulate_loadstore(struct kvm_vcpu *vcpu)
- 
- 	emulated = EMULATE_FAIL;
- 	vcpu->arch.regs.msr = kvmppc_get_msr(vcpu);
--	kvmhv_nestedv2_reload_ptregs(vcpu, &vcpu->arch.regs);
- 	if (analyse_instr(&op, &vcpu->arch.regs, inst) == 0) {
- 		int type = op.type & INSTR_TYPE_MASK;
- 		int size = GETSIZE(op.type);
-@@ -112,7 +111,7 @@ int kvmppc_emulate_loadstore(struct kvm_vcpu *vcpu)
- 						op.reg, size, !instr_byte_swap);
- 
- 			if ((op.type & UPDATE) && (emulated != EMULATE_FAIL))
--				kvmppc_set_gpr(vcpu, op.update_reg, op.ea);
-+				kvmppc_set_gpr(vcpu, op.update_reg, vcpu->arch.vaddr_accessed);
- 
- 			break;
- 		}
-@@ -132,7 +131,7 @@ int kvmppc_emulate_loadstore(struct kvm_vcpu *vcpu)
- 					     KVM_MMIO_REG_FPR|op.reg, size, 1);
- 
- 			if ((op.type & UPDATE) && (emulated != EMULATE_FAIL))
--				kvmppc_set_gpr(vcpu, op.update_reg, op.ea);
-+				kvmppc_set_gpr(vcpu, op.update_reg, vcpu->arch.vaddr_accessed);
- 
- 			break;
- #endif
-@@ -224,16 +223,17 @@ int kvmppc_emulate_loadstore(struct kvm_vcpu *vcpu)
- 			break;
- 		}
- #endif
--		case STORE:
--			/* if need byte reverse, op.val has been reversed by
--			 * analyse_instr().
--			 */
--			emulated = kvmppc_handle_store(vcpu, op.val, size, 1);
-+		case STORE: {
-+			int instr_byte_swap = op.type & BYTEREV;
-+
-+			emulated = kvmppc_handle_store(vcpu, kvmppc_get_gpr(vcpu, op.reg),
-+						       size, !instr_byte_swap);
- 
- 			if ((op.type & UPDATE) && (emulated != EMULATE_FAIL))
--				kvmppc_set_gpr(vcpu, op.update_reg, op.ea);
-+				kvmppc_set_gpr(vcpu, op.update_reg, vcpu->arch.vaddr_accessed);
- 
- 			break;
-+		}
- #ifdef CONFIG_PPC_FPU
- 		case STORE_FP:
- 			if (kvmppc_check_fp_disabled(vcpu))
-@@ -254,7 +254,7 @@ int kvmppc_emulate_loadstore(struct kvm_vcpu *vcpu)
- 					kvmppc_get_fpr(vcpu, op.reg), size, 1);
- 
- 			if ((op.type & UPDATE) && (emulated != EMULATE_FAIL))
--				kvmppc_set_gpr(vcpu, op.update_reg, op.ea);
-+				kvmppc_set_gpr(vcpu, op.update_reg, vcpu->arch.vaddr_accessed);
- 
- 			break;
- #endif
-@@ -358,7 +358,6 @@ int kvmppc_emulate_loadstore(struct kvm_vcpu *vcpu)
- 	}
- 
- 	trace_kvm_ppc_instr(ppc_inst_val(inst), kvmppc_get_pc(vcpu), emulated);
--	kvmhv_nestedv2_mark_dirty_ptregs(vcpu, &vcpu->arch.regs);
- 
- 	/* Advance past emulated instruction. */
- 	if (emulated != EMULATE_FAIL)
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 2ee3f2478570..e48126a59ba7 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -4834,7 +4834,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	 * entering a nested guest in which case the decrementer is now owned
+ 	 * by L2 and the L1 decrementer is provided in hdec_expires
+ 	 */
+-	if (kvmppc_core_pending_dec(vcpu) &&
++	if (!kvmhv_is_nestedv2() && kvmppc_core_pending_dec(vcpu) &&
+ 			((tb < kvmppc_dec_expires_host_tb(vcpu)) ||
+ 			 (trap == BOOK3S_INTERRUPT_SYSCALL &&
+ 			  kvmppc_get_gpr(vcpu, 3) == H_ENTER_NESTED)))
 -- 
 2.42.0
 
