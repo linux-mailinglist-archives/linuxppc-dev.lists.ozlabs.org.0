@@ -2,55 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 658BC80060E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Dec 2023 09:42:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4580E800754
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Dec 2023 10:42:04 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=J7QCZVt+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IIfeYu5L;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ShRQ56SKDz3dH4
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Dec 2023 19:42:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ShSkx5Z1Pz3cQq
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Dec 2023 20:42:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=J7QCZVt+;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IIfeYu5L;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.199; helo=relay9-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ShRP525yTz3dBb
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Dec 2023 19:41:27 +1100 (AEDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 94FC0FF803;
-	Fri,  1 Dec 2023 08:41:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1701420080;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3amwn1NJ1mTvbaM/76zfWCSHxT3BcZtBq0Slk1BBD5E=;
-	b=J7QCZVt+qjfwtn4lkc+mRKNeWj9I7dyMQkTqCg6x3AxFrGxn6riCQlAAga7XqY3H0z4dvu
-	ci6RBDDq+M64+xHcIAs+E/WwFUr1GUd8Qxu/bemppUt4V/OsVaPTk0/hdKzS/zo+6W2pnC
-	27mFsOf9kA8DYdEMd4Dc93UdyLYS+PBJKdMVWFceH4fBUGeZSjQu5k9kTiHCgZXnqJqgrd
-	UrXofxxypUS8Cc8+DrGRBiQ9mSKLll4xZvTwLqG4qChEGQvL5xAWBn5ntVeSWnutUArT0v
-	aO4tKPgmuoj8ar/84F+YLKMMChuXD7iPKna1YgaZglNaMO8yzRZGvrUA0m169w==
-Date: Fri, 1 Dec 2023 09:41:16 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: "Arnd Bergmann" <arnd@arndb.de>
-Subject: Re: [PATCH 15/17] soc: fsl: cpm1: qmc: Handle timeslot entries at
- channel start() and stop()
-Message-ID: <20231201094116.65956f60@bootlin.com>
-In-Reply-To: <46d0248d-c322-4856-8e9e-6468ac1b7a02@app.fastmail.com>
-References: <20231128140818.261541-1-herve.codina@bootlin.com>
-	<20231128140818.261541-16-herve.codina@bootlin.com>
-	<46d0248d-c322-4856-8e9e-6468ac1b7a02@app.fastmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ShSk66YY6z3cF4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Dec 2023 20:41:18 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1701423678;
+	bh=SCXwSfrAxD/vcI+luNSFDB5IfnqNmy8gsBQXv6JPB3w=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=IIfeYu5L/5RzK2f/xIVe9akYSPr9OUtIDCqF0ZSWukqAoxSbGvI47Q/IMUaFCc5NX
+	 eR0adi7iztkf7mgm/uta3inz5/CWd/gu+euafba3GosMPRgAuIf+MHDBOWn574T1m6
+	 PjCMFpmeKFP4y0D2qWqpIjaaAdVksQf4SK2EngcfmtagQ472NxbKD9ofpGm7ssHsXN
+	 4pDDGQsscGpo0FjRxRFNGMAu5QKkFlmzJfpiaREE4EP7sP+tKswZAMF7WsFSdcefnw
+	 dFCIRPMk7U2ojLzveYhueAfmIcBFapD5wEBdvAzBe7rqBptKMbPNXcD/enUkqJ/sRr
+	 tkny6rYrj9JMA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4ShSk61ydCz4xVP;
+	Fri,  1 Dec 2023 20:41:18 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Justin Stitt <justinstitt@google.com>, Tyrel Datwyler
+ <tyreld@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Christophe
+ Leroy <christophe.leroy@csgroup.eu>, "James E.J. Bottomley"
+ <jejb@linux.ibm.com>, "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: Re: [PATCH] scsi: ibmvscsi: replace deprecated strncpy with strscpy
+In-Reply-To: <20231030-strncpy-drivers-scsi-ibmvscsi-ibmvscsi-c-v1-1-f8b06ae9e3d5@google.com>
+References: <20231030-strncpy-drivers-scsi-ibmvscsi-ibmvscsi-c-v1-1-f8b06ae9e3d5@google.com>
+Date: Fri, 01 Dec 2023 20:41:10 +1100
+Message-ID: <87jzpy1cqx.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,64 +60,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Leo Li <leoyang.li@nxp.com>, Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Jakub
- Kicinski <kuba@kernel.org>, Jaroslav Kysela <perex@perex.cz>, Shengjiu Wang <shengjiu.wang@gmail.com>, linux-arm-kernel@lists.infradead.org, Qiang Zhao <qiang.zhao@nxp.com>
+Cc: Justin Stitt <justinstitt@google.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org, linux-hardening@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Arnd,
+Justin Stitt <justinstitt@google.com> writes:
+> strncpy() is deprecated for use on NUL-terminated destination strings
+> [1] and as such we should prefer more robust and less ambiguous string
+> interfaces.
+>
+> We expect partition_name to be NUL-terminated based on its usage with
+> format strings:
+> |       dev_info(hostdata->dev, "host srp version: %s, "
+> |                "host partition %s (%d), OS %d, max io %u\n",
+> |                hostdata->madapter_info.srp_version,
+> |                hostdata->madapter_info.partition_name,
+> |                be32_to_cpu(hostdata->madapter_info.partition_number),
+> |                be32_to_cpu(hostdata->madapter_info.os_type),
+> |                be32_to_cpu(hostdata->madapter_info.port_max_txu[0]));
+> ...
+> |       len = snprintf(buf, PAGE_SIZE, "%s\n",
+> |                hostdata->madapter_info.partition_name);
+>
+> Moreover, NUL-padding is not required as madapter_info is explicitly
+> memset to 0:
+> |       memset(&hostdata->madapter_info, 0x00,
+> |                       sizeof(hostdata->madapter_info));
+>
+> Considering the above, a suitable replacement is `strscpy` [2] due to
+> the fact that it guarantees NUL-termination on the destination buffer
+> without unnecessarily NUL-padding.
+>
+> Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
+> Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html [2]
+> Link: https://github.com/KSPP/linux/issues/90
+> Cc: linux-hardening@vger.kernel.org
+> Signed-off-by: Justin Stitt <justinstitt@google.com>
+> ---
+> Note: build-tested only.
 
-On Wed, 29 Nov 2023 15:03:02 +0100
-"Arnd Bergmann" <arnd@arndb.de> wrote:
+I gave it a quick boot, no issues.
 
-> On Tue, Nov 28, 2023, at 15:08, Herve Codina wrote:
-> > @@ -272,6 +274,8 @@ int qmc_chan_get_info(struct qmc_chan *chan, struct 
-> > qmc_chan_info *info)
-> >  	if (ret)
-> >  		return ret;
-> > 
-> > +	spin_lock_irqsave(&chan->ts_lock, flags);
-> > +
-> >  	info->mode = chan->mode;
-> >  	info->rx_fs_rate = tsa_info.rx_fs_rate;
-> >  	info->rx_bit_rate = tsa_info.rx_bit_rate;
-> > @@ -280,6 +284,8 @@ int qmc_chan_get_info(struct qmc_chan *chan, struct 
-> > qmc_chan_info *info)
-> >  	info->tx_bit_rate = tsa_info.tx_bit_rate;
-> >  	info->nb_rx_ts = hweight64(chan->rx_ts_mask);
-> > 
-> > +	spin_unlock_irqrestore(&chan->ts_lock, flags);
-> > +
-> >  	return 0;
-> >  }  
-> 
-> I would normally use spin_lock_irq() instead of spin_lock_irqsave()
-> in functions that are only called outside of atomic context.
+Tested-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-I would prefer to keep spin_lock_irqsave() here.
-This function is part of the API and so, its quite difficult to ensure
-that all calls (current and future) will be done outside of an atomic
-context.
-
-> 
-> > +static int qmc_chan_start_rx(struct qmc_chan *chan);
-> > +
-> >  int qmc_chan_stop(struct qmc_chan *chan, int direction)
-> >  {  
-> ... 
-> > -static void qmc_chan_start_rx(struct qmc_chan *chan)
-> > +static int qmc_setup_chan_trnsync(struct qmc *qmc, struct qmc_chan *chan);
-> > +
-> > +static int qmc_chan_start_rx(struct qmc_chan *chan)
-> >  {  
-> 
-> Can you reorder the static functions in a way that avoids the
-> forward declarations?
-
-Yes, sure.
-I will do that in the next iteration.
-
-Thanks for the review,
-
-Best regards,
-Hervé
+cheers
