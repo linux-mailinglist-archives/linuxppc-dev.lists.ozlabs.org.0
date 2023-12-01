@@ -1,35 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D1C6800801
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Dec 2023 11:13:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D52BC800812
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Dec 2023 11:18:13 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=mKl4ghrw;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ShTRT4WQ2z3dT1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Dec 2023 21:13:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ShTXg2Np3z3dH8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Dec 2023 21:18:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gondor.apana.org.au (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org)
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=mKl4ghrw;
+	dkim-atps=neutral
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ShTQm4kxbz3dBl
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Dec 2023 21:13:02 +1100 (AEDT)
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-	id 1r90Vp-005hmD-EH; Fri, 01 Dec 2023 18:12:46 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 01 Dec 2023 18:12:54 +0800
-Date: Fri, 1 Dec 2023 18:12:54 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Subject: Re: [PATCH][next] powerpc/crypto: Avoid -Wstringop-overflow warnings
-Message-ID: <ZWmxpmuBcAhsE1wf@gondor.apana.org.au>
-References: <ZVz8fLtrYTz+YSjn@work>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ShTWs5GTLz2xFn
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Dec 2023 21:17:29 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1701425849;
+	bh=YDM8Y22Uw3soCEiLjFGP0Xjxg56+a/qHQ3QYMLfaxoE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=mKl4ghrwdTD6YFAkhXpZeZdIY2tCvyKxhBS6fo49iNZ4/yKioR44Z+o5TfeX1/Dsv
+	 usslLBDHOt6xZVpfmF8cmIAlKMQUO4V++8Ss0t57au0Vw1PQ2Zq/EBt2weHaAPjqgy
+	 xUSirzcFpSWd7CisXNd+/ZoNtcn1VWPAsh/fYE6pjvdpTRDQKe5b0Ev7gCcp3v6FB1
+	 BopG7o9YpZRvFKlriWcDZO8S+qd2Dft8vxs8rm4eHm21ZL14vEKt+qcW/NBRYJF2gd
+	 G28DH3F1jjhsYIylMA+kTlNn6AjtePeS5lnvLzwLGNICWyYxgyLQfNFXvfU/AlnJKX
+	 GknLhUEvHBVsQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4ShTWs2kLFz4wx5;
+	Fri,  1 Dec 2023 21:17:29 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Kunwu Chan <chentao@kylinos.cn>, npiggin@gmail.com,
+ christophe.leroy@csgroup.eu
+Subject: Re: [PATCH v2] powerpc/mm: Fix null-pointer dereference in
+ pgtable_cache_add
+In-Reply-To: <20231130090953.2322490-1-chentao@kylinos.cn>
+References: <20231130090953.2322490-1-chentao@kylinos.cn>
+Date: Fri, 01 Dec 2023 21:17:28 +1100
+Message-ID: <87cyvq1b2f.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZVz8fLtrYTz+YSjn@work>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,44 +59,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, linux-crypto@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Kunwu Chan <chentao@kylinos.cn>, kunwu.chan@hotmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 21, 2023 at 12:52:44PM -0600, Gustavo A. R. Silva wrote:
-> The compiler doesn't know that `32` is an offset into the Hash table:
-> 
->  56 struct Hash_ctx {
->  57         u8 H[16];       /* subkey */
->  58         u8 Htable[256]; /* Xi, Hash table(offset 32) */
->  59 };
-> 
-> So, it legitimately complains about a potential out-of-bounds issue
-> if `256 bytes` are accessed in `htable` (this implies going
-> `32 bytes` beyond the boundaries of `Htable`):
-> 
-> arch/powerpc/crypto/aes-gcm-p10-glue.c: In function 'gcmp10_init':
-> arch/powerpc/crypto/aes-gcm-p10-glue.c:120:9: error: 'gcm_init_htable' accessing 256 bytes in a region of size 224 [-Werror=stringop-overflow=]
->   120 |         gcm_init_htable(hash->Htable+32, hash->H);
->       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> arch/powerpc/crypto/aes-gcm-p10-glue.c:120:9: note: referencing argument 1 of type 'unsigned char[256]'
-> arch/powerpc/crypto/aes-gcm-p10-glue.c:120:9: note: referencing argument 2 of type 'unsigned char[16]'
-> arch/powerpc/crypto/aes-gcm-p10-glue.c:40:17: note: in a call to function 'gcm_init_htable'
->    40 | asmlinkage void gcm_init_htable(unsigned char htable[256], unsigned char Xi[16]);
->       |                 ^~~~~~~~~~~~~~~
-> 
-> Address this by avoiding specifying the size of `htable` in the function
-> prototype; and just for consistency, do the same for parameter `Xi`.
-> 
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Closes: https://lore.kernel.org/linux-next/20231121131903.68a37932@canb.auug.org.au/
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Kunwu Chan <chentao@kylinos.cn> writes:
+> kasprintf() returns a pointer to dynamically allocated memory
+> which can be NULL upon failure. Ensure the allocation was successful
+> by checking the pointer validity.
+>
+> Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+> Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
 > ---
->  arch/powerpc/crypto/aes-gcm-p10-glue.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> v2: Use "panic" instead of "return"
+> ---
+>  arch/powerpc/mm/init-common.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
+> index 119ef491f797..9788950b33f5 100644
+> --- a/arch/powerpc/mm/init-common.c
+> +++ b/arch/powerpc/mm/init-common.c
+> @@ -139,6 +139,8 @@ void pgtable_cache_add(unsigned int shift)
+>  
+>  	align = max_t(unsigned long, align, minalign);
+>  	name = kasprintf(GFP_KERNEL, "pgtable-2^%d", shift);
+> +	if (!name)
+> +		panic("Failed to allocate memory for order %d", shift);
+>  	new = kmem_cache_create(name, table_size, align, 0, ctor(shift));
+>  	if (!new)
+>  		panic("Could not allocate pgtable cache for order %d", shift);
 
-Patch applied.  Thanks.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+It would be nice to avoid two calls to panic. Can you reorganise the
+logic so that there's only one? Initialising new to NULL might help.
+
+cheers
