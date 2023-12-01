@@ -1,92 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7251B800C18
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Dec 2023 14:30:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C203800C26
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Dec 2023 14:31:56 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pJCQzc3x;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UXje27QD;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ShYpB6fBYz3dRB
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Dec 2023 00:30:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ShYr94bZ7z3vfc
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Dec 2023 00:31:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pJCQzc3x;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UXje27QD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ShYkn2ktMz3cXb
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Dec 2023 00:27:13 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3B1DH0pI021666;
-	Fri, 1 Dec 2023 13:27:03 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ShYkt5YGzz3ckN
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Dec 2023 00:27:18 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3B1D0Vwu013825;
+	Fri, 1 Dec 2023 13:27:08 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=aDdxgOaL6Dh9EnxgVQBm9wHGLz4pIRePc5u5G3CgdEo=;
- b=pJCQzc3xGiIdn9fBnipbTKViujQV7+IYnNIbSfuX/vaNYYO0JCf3JgZdJIFH+9F1Ws1k
- r89tziirdk6ZgszxUaKuCUfvZJVA8jDdwjCWg7Rn1lC5zVqdlskoN7ERaaqHgChuG2XQ
- SoNrJP0TSB2Z6zCLoXQ3NosSz3AMpC3j/iY8KDm3NHhgtP/NxYufpRyC/uL4+r1u4zU7
- 42bwZAuiWNR9myoj6nZEblrJqqwoUMXGTUlwKsGNKhNX2UUVRT7Fv/U5CfeRPh2XOx7+
- NJNsD6TX4tp14+bhhMxfsy2w2LFCStHlULJMTyKBU9vb2b55Xsn5uZjej1u5t65LsOoN BA== 
+ bh=G8DN0o+pS342ovmB0cLLGGQTGUTz9ve8djaW1DkLab4=;
+ b=UXje27QD0IzXyviuQDMWjfX3SYtZCkfelYsK1QrHtGPdxKFyr1SJGmm4qk8qMgtlnzAz
+ /qLe5OGMWvQxGfy61T5I2SbgdkD+WvdnYWfa2pfkGR/BGk8tOiQr2kfCBejfgJJC2tyc
+ cOiUuzmPb5wuDQOLgGZdzxZJYCE8bvTBzDkBfrqoBUZsM7/lCm0lE46qsdiVll8XxO2V
+ zefHY1TgAZIpVqWzanwuuTRMjfeHx4MGtiUFxgpIHZFeGldSArGlBbJv5B/h7j7JkVEB
+ GGMZamaPlkG8iif93u2xx+fcEqldV7CoSWO4ZOsFXoIe0HJPfui8ZGRlG/U2252P5GgW Nw== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uqg828aeu-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uqfsc99en-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Dec 2023 13:27:02 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B1DHvDv024701;
-	Fri, 1 Dec 2023 13:27:02 GMT
+	Fri, 01 Dec 2023 13:27:08 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B1DR795019981;
+	Fri, 1 Dec 2023 13:27:07 GMT
 Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uqg828ae2-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uqfsc99dp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Dec 2023 13:27:01 +0000
+	Fri, 01 Dec 2023 13:27:07 +0000
 Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3B1AY2Qg020465;
-	Fri, 1 Dec 2023 13:27:00 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ukvrm52uj-1
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3B1AY0mo020443;
+	Fri, 1 Dec 2023 13:27:05 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ukvrm52v2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Dec 2023 13:27:00 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3B1DQvST43909826
+	Fri, 01 Dec 2023 13:27:05 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3B1DR2lY56426758
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 1 Dec 2023 13:26:57 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6E8CC2004B;
-	Fri,  1 Dec 2023 13:26:57 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A7BA620040;
-	Fri,  1 Dec 2023 13:26:53 +0000 (GMT)
+	Fri, 1 Dec 2023 13:27:02 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4B3B320043;
+	Fri,  1 Dec 2023 13:27:02 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 846C520040;
+	Fri,  1 Dec 2023 13:26:58 +0000 (GMT)
 Received: from vaibhav?linux.ibm.com (unknown [9.171.33.138])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Fri,  1 Dec 2023 13:26:53 +0000 (GMT)
-Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Fri, 01 Dec 2023 18:56:52 +0530
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Fri,  1 Dec 2023 13:26:58 +0000 (GMT)
+Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Fri, 01 Dec 2023 18:56:57 +0530
 From: Vaibhav Jain <vaibhav@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
         kvm-ppc@vger.kernel.org
-Subject: [PATCH 06/12] KVM: PPC: Book3S HV: Handle pending exceptions on guest entry with MSR_EE
-Date: Fri,  1 Dec 2023 18:56:11 +0530
-Message-ID: <20231201132618.555031-7-vaibhav@linux.ibm.com>
+Subject: [PATCH 07/12] KVM: PPC: Book3S HV nestedv2: Do not inject certain interrupts
+Date: Fri,  1 Dec 2023 18:56:12 +0530
+Message-ID: <20231201132618.555031-8-vaibhav@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231201132618.555031-1-vaibhav@linux.ibm.com>
 References: <20231201132618.555031-1-vaibhav@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: WKVBC-1BHXhVu40T7NgS8du2Ep_eukLe
-X-Proofpoint-ORIG-GUID: yS3HZe4JdsuOHbK25QuCJYWbKZo6XCat
+X-Proofpoint-GUID: pBnaP7NnwDhzmiods1L8ZGKq2uR_xHon
+X-Proofpoint-ORIG-GUID: QldL5K1FzT6tswdHGvMoSpj30lWvWjjf
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-12-01_11,2023-11-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- clxscore=1015 phishscore=0 mlxlogscore=736 suspectscore=0 malwarescore=0
- spamscore=0 adultscore=0 bulkscore=0 mlxscore=0 impostorscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2312010092
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
+ spamscore=0 bulkscore=0 lowpriorityscore=0 mlxlogscore=643 clxscore=1015
+ impostorscore=0 malwarescore=0 priorityscore=1501 adultscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2312010091
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,54 +102,39 @@ Cc: mikey@neuling.org, sbhat@linux.ibm.com, amachhiw@linux.vnet.ibm.com, Jordan 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Jordan Niethe <jniethe5@gmail.com>
 
-Commit 026728dc5d41 ("KVM: PPC: Book3S HV P9: Inject pending xive
-interrupts at guest entry") changed guest entry so that if external
-interrupts are enabled, BOOK3S_IRQPRIO_EXTERNAL is not tested for. Test
-for this regardless of MSR_EE.
+There is no need to inject an external interrupt in
+kvmppc_book3s_irqprio_deliver() as the test for BOOK3S_IRQPRIO_EXTERNAL
+in kvmhv_run_single_vcpu() before guest entry will raise LPCR_MER if
+needed. There is also no need to inject the decrementer interrupt as
+this will be raised within the L2 if needed. Avoiding these injections
+reduces H_GUEST_GET_STATE hcalls by the L1.
 
-For an L1 host, do not inject an interrupt, but always
-use LPCR_MER. If the L0 desires it can inject an interrupt.
-
-Fixes: 026728dc5d41 ("KVM: PPC: Book3S HV P9: Inject pending xive interrupts at guest entry")
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-[jpn: use kvmpcc_get_msr(), write commit message]
+Suggested-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ arch/powerpc/kvm/book3s.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 6d1f0bca27aa..4dc6a928073f 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -4738,13 +4738,19 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+diff --git a/arch/powerpc/kvm/book3s.c b/arch/powerpc/kvm/book3s.c
+index 6cd20ab9e94e..8acec144120e 100644
+--- a/arch/powerpc/kvm/book3s.c
++++ b/arch/powerpc/kvm/book3s.c
+@@ -302,11 +302,11 @@ static int kvmppc_book3s_irqprio_deliver(struct kvm_vcpu *vcpu,
  
- 	if (!nested) {
- 		kvmppc_core_prepare_to_enter(vcpu);
--		if (__kvmppc_get_msr_hv(vcpu) & MSR_EE) {
--			if (xive_interrupt_pending(vcpu))
-+		if (test_bit(BOOK3S_IRQPRIO_EXTERNAL,
-+			     &vcpu->arch.pending_exceptions) ||
-+		    xive_interrupt_pending(vcpu)) {
-+			/*
-+			 * For nested HV, don't synthesize but always pass MER,
-+			 * the L0 will be able to optimise that more
-+			 * effectively than manipulating registers directly.
-+			 */
-+			if (!kvmhv_on_pseries() && (__kvmppc_get_msr_hv(vcpu) & MSR_EE))
- 				kvmppc_inject_interrupt_hv(vcpu,
--						BOOK3S_INTERRUPT_EXTERNAL, 0);
--		} else if (test_bit(BOOK3S_IRQPRIO_EXTERNAL,
--			     &vcpu->arch.pending_exceptions)) {
--			lpcr |= LPCR_MER;
-+							   BOOK3S_INTERRUPT_EXTERNAL, 0);
-+			else
-+				lpcr |= LPCR_MER;
- 		}
- 	} else if (vcpu->arch.pending_exceptions ||
- 		   vcpu->arch.doorbell_request ||
+ 	switch (priority) {
+ 	case BOOK3S_IRQPRIO_DECREMENTER:
+-		deliver = (kvmppc_get_msr(vcpu) & MSR_EE) && !crit;
++		deliver = !kvmhv_is_nestedv2() && (kvmppc_get_msr(vcpu) & MSR_EE) && !crit;
+ 		vec = BOOK3S_INTERRUPT_DECREMENTER;
+ 		break;
+ 	case BOOK3S_IRQPRIO_EXTERNAL:
+-		deliver = (kvmppc_get_msr(vcpu) & MSR_EE) && !crit;
++		deliver = !kvmhv_is_nestedv2() && (kvmppc_get_msr(vcpu) & MSR_EE) && !crit;
+ 		vec = BOOK3S_INTERRUPT_EXTERNAL;
+ 		break;
+ 	case BOOK3S_IRQPRIO_SYSTEM_RESET:
 -- 
 2.42.0
 
