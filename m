@@ -1,54 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4580E800754
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Dec 2023 10:42:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00DE88007DD
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Dec 2023 11:06:12 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IIfeYu5L;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=eAn8nvOE;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ShSkx5Z1Pz3cQq
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Dec 2023 20:42:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ShTGp3lJwz3cb8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Dec 2023 21:06:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IIfeYu5L;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=eAn8nvOE;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ShSk66YY6z3cF4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Dec 2023 20:41:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ShTG03D3Lz3cQr
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Dec 2023 21:05:28 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1701423678;
-	bh=SCXwSfrAxD/vcI+luNSFDB5IfnqNmy8gsBQXv6JPB3w=;
+	s=201909; t=1701425128;
+	bh=rD0Q2JtqLmxLGcQ5kFbdo28Ztc0iDfwANN2XmR6g+3M=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=IIfeYu5L/5RzK2f/xIVe9akYSPr9OUtIDCqF0ZSWukqAoxSbGvI47Q/IMUaFCc5NX
-	 eR0adi7iztkf7mgm/uta3inz5/CWd/gu+euafba3GosMPRgAuIf+MHDBOWn574T1m6
-	 PjCMFpmeKFP4y0D2qWqpIjaaAdVksQf4SK2EngcfmtagQ472NxbKD9ofpGm7ssHsXN
-	 4pDDGQsscGpo0FjRxRFNGMAu5QKkFlmzJfpiaREE4EP7sP+tKswZAMF7WsFSdcefnw
-	 dFCIRPMk7U2ojLzveYhueAfmIcBFapD5wEBdvAzBe7rqBptKMbPNXcD/enUkqJ/sRr
-	 tkny6rYrj9JMA==
+	b=eAn8nvOEtf4oRn0uEn73Lk/GwS3yDVGpQ8/mvs2O6nLMUYFjXH4J44FhkqXTIISV5
+	 5DY8IfI56H23EQHDQHkokqXWvhfAG0S29I0jxZS6lcGzNWsAyQTV6tPzTUiQqLsFcc
+	 W5N2yzELChQkUO+G9n2AOMOF93P03hsfK4Wapk1VCflPzvcfnItY6HVK807nsF5pMT
+	 btEB/KSkZ4xTvfknvbw3NCD1oJLYQb1eMSUsCAyded2NwBh161gclFSwgljnblquF1
+	 195cV8z8RGcoGoPlodVoAPkM9hQieU/lZVkDW/ioV++aq10LL6DxTlOWCMnqgsee62
+	 /qhEL8JDoaeDw==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4ShSk61ydCz4xVP;
-	Fri,  1 Dec 2023 20:41:18 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4ShTG020FJz4xVK;
+	Fri,  1 Dec 2023 21:05:28 +1100 (AEDT)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Justin Stitt <justinstitt@google.com>, Tyrel Datwyler
- <tyreld@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Christophe
- Leroy <christophe.leroy@csgroup.eu>, "James E.J. Bottomley"
- <jejb@linux.ibm.com>, "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: Re: [PATCH] scsi: ibmvscsi: replace deprecated strncpy with strscpy
-In-Reply-To: <20231030-strncpy-drivers-scsi-ibmvscsi-ibmvscsi-c-v1-1-f8b06ae9e3d5@google.com>
-References: <20231030-strncpy-drivers-scsi-ibmvscsi-ibmvscsi-c-v1-1-f8b06ae9e3d5@google.com>
-Date: Fri, 01 Dec 2023 20:41:10 +1100
-Message-ID: <87jzpy1cqx.fsf@mail.lhotse>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH] powerpc/irq: Allow softirq to hardirq stack transition
+In-Reply-To: <77e18f24-7f06-4d91-b57c-af8837be0420@csgroup.eu>
+References: <20231130125045.3080961-1-mpe@ellerman.id.au>
+ <77e18f24-7f06-4d91-b57c-af8837be0420@csgroup.eu>
+Date: Fri, 01 Dec 2023 21:05:27 +1100
+Message-ID: <87fs0m1bmg.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,47 +60,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Justin Stitt <justinstitt@google.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org, linux-hardening@vger.kernel.org
+Cc: "npiggin@gmail.com" <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Justin Stitt <justinstitt@google.com> writes:
-> strncpy() is deprecated for use on NUL-terminated destination strings
-> [1] and as such we should prefer more robust and less ambiguous string
-> interfaces.
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 30/11/2023 =C3=A0 13:50, Michael Ellerman a =C3=A9crit=C2=A0:
+>> Allow a transition from the softirq stack to the hardirq stack when
+>> handling a hardirq. Doing so means a hardirq received while deep in
+>> softirq processing is less likely to cause a stack overflow of the
+>> softirq stack.
+>>=20
+>> Previously it wasn't safe to do so because irq_exit() (which initiates
+>> softirq processing) was called on the hardirq stack.
+>>=20
+>> That was changed in commit 1b1b6a6f4cc0 ("powerpc: handle irq_enter/
+>> irq_exit in interrupt handler wrappers") and 1346d00e1bdf ("powerpc:
+>> Don't select HAVE_IRQ_EXIT_ON_IRQ_STACK").
+>>=20
+>> The allowed transitions are now:
+>>   - process stack -> hardirq stack
+>>   - process stack -> softirq stack
+>>   - process stack -> softirq stack -> hardirq stack
 >
-> We expect partition_name to be NUL-terminated based on its usage with
-> format strings:
-> |       dev_info(hostdata->dev, "host srp version: %s, "
-> |                "host partition %s (%d), OS %d, max io %u\n",
-> |                hostdata->madapter_info.srp_version,
-> |                hostdata->madapter_info.partition_name,
-> |                be32_to_cpu(hostdata->madapter_info.partition_number),
-> |                be32_to_cpu(hostdata->madapter_info.os_type),
-> |                be32_to_cpu(hostdata->madapter_info.port_max_txu[0]));
-> ...
-> |       len = snprintf(buf, PAGE_SIZE, "%s\n",
-> |                hostdata->madapter_info.partition_name);
->
-> Moreover, NUL-padding is not required as madapter_info is explicitly
-> memset to 0:
-> |       memset(&hostdata->madapter_info, 0x00,
-> |                       sizeof(hostdata->madapter_info));
->
-> Considering the above, a suitable replacement is `strscpy` [2] due to
-> the fact that it guarantees NUL-termination on the destination buffer
-> without unnecessarily NUL-padding.
->
-> Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
-> Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html [2]
-> Link: https://github.com/KSPP/linux/issues/90
-> Cc: linux-hardening@vger.kernel.org
-> Signed-off-by: Justin Stitt <justinstitt@google.com>
-> ---
-> Note: build-tested only.
+> It means you don't like my patch=20
+> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/6cd9d8bb2258d8b51=
+999c2584eac74423d2b5e29.1657203774.git.christophe.leroy@csgroup.eu/=20
+> ?
 
-I gave it a quick boot, no issues.
+I did like your patch :)
 
-Tested-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+But then we got reports of folks hitting stack overflow in some distro
+kernels, and in at least some cases it was a hardirq coming in during
+softirq handling and overflowing the softirq stack.
+
+> I never got any feedback.
+
+Sorry, not enough hours in the day.
 
 cheers
