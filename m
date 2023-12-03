@@ -1,81 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 045B4802467
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Dec 2023 15:09:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08DBD802546
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Dec 2023 16:58:51 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=hqjPPVTS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ft9lYhSE;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SjpZ13bnQz3dHC
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 01:08:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sjs0m3WCDz3cVb
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 02:58:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=hqjPPVTS;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ft9lYhSE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::834; helo=mail-qt1-x834.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SjpY442Q0z2xdq
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Dec 2023 01:08:06 +1100 (AEDT)
-Received: by mail-qt1-x834.google.com with SMTP id d75a77b69052e-425430fe8d1so10985961cf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 03 Dec 2023 06:08:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1701612478; x=1702217278; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CiMNgzFr7xNUwBtnhCHdgoiuX87pimcKNL7aMsL6fgY=;
-        b=hqjPPVTS4fWXKgcHOk6iNqLVwYcjiZQC1l2Fri0VXRazz8uynZbbK9aNjivR+Rv1st
-         VB24VbfIpx488BAic6tFDbJwTjgXghcUJFxXwWsTwXFG5/LA87sHPiPpUq4seBWuHA8L
-         pao3aQQraLng2Q3AeyaysholBOAVvCKU1x9RHn0RG6Xd0gOg+H0O3+RDJq2KAeOFufJ0
-         OcLYqwCo0Tmr6DyLqaFFZDmJYRG81rIB0yLMsDzhpMn/QG9qToey3iyxnlOZF0ZMUUUC
-         dwuUDGQTjsTLRFEfhclMrB7/goBiX02QcIMHWYrrTYyJI91QHNOL1hkALXOmugCBRkeg
-         N7lQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701612478; x=1702217278;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CiMNgzFr7xNUwBtnhCHdgoiuX87pimcKNL7aMsL6fgY=;
-        b=eeQBhm3G2MFkDzmFGJRRiB+4oYCFi7vCcey1NnJUGOB0fovH4Hp66+0HJfl6B3vLxc
-         9SXp1yIyNV+qV61Xk0dE9Miy9smxuktalH+N6ExNcaFiLb6vDHqvWwl24nvibu33UKm9
-         vq2tS/ikyClS1kzF32GO2duGLPWkOp1EY2hn4pn/KfUe3GVDqZTVpF0saDbsZ4ISlfVd
-         fAzVyihLgIuMSIVl5zRIDkfoJwA+HSHJOXPHABetKVzlif2fqRszNYWiBZyP4j3TZQcr
-         rYVpmmT9+B25/xd4mRHo+c1CWX/zqXH0sD/3Z1GomlBchRzfCO6k2HWqR/TMPGSoZj6j
-         aZmQ==
-X-Gm-Message-State: AOJu0YwA5UX+xo6hBiB8J2D58P14sXW37yEM664ba2DikiVPDbZa4Ur4
-	aEJ517JMLKLMX5tT1CFNm171Fw==
-X-Google-Smtp-Source: AGHT+IHLblrSR9v9mU82kXzYVsIygmNXeBVbxztP2WE72q1qjIUsHC92qYjoWB74bCqvYp2tHSpE/Q==
-X-Received: by 2002:a05:622a:7148:b0:423:e4f1:4958 with SMTP id jc8-20020a05622a714800b00423e4f14958mr3926493qtb.56.1701612477906;
-        Sun, 03 Dec 2023 06:07:57 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-134-23-187.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.134.23.187])
-        by smtp.gmail.com with ESMTPSA id z9-20020ac87109000000b00419c40a0d70sm3402958qto.54.2023.12.03.06.07.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 Dec 2023 06:07:56 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.95)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1r9n8W-009HdE-5C;
-	Sun, 03 Dec 2023 10:07:56 -0400
-Date: Sun, 3 Dec 2023 10:07:56 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH 05/26] vfio: KVM: Pass get/put helpers from KVM to VFIO,
- don't do circular lookup
-Message-ID: <20231203140756.GI1489931@ziepe.ca>
-References: <20230916003118.2540661-1-seanjc@google.com>
- <20230916003118.2540661-6-seanjc@google.com>
- <20230918152110.GI13795@ziepe.ca>
- <ZQhxpesyXeG+qbS6@google.com>
- <20230918160258.GL13795@ziepe.ca>
- <ZWp_q1w01NCZi8KX@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZWp_q1w01NCZi8KX@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sjrzt43T8z2xdZ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Dec 2023 02:58:01 +1100 (AEDT)
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3B3FnJnZ013228;
+	Sun, 3 Dec 2023 15:57:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=vKaGm7QJ9nav5z665Ne/IH5TvrJIH+yELaWQ7TG3J9Q=;
+ b=ft9lYhSEVmhf9AqnWcT0os/R9K5VuFM/ss+EWlBZU4o0EV0hZsI9mwB5orgyaKGHFcDw
+ yVcMLYlp5ZxskxXq3HC66RB1gjVZuMmrYsXPPnJE+2vXVy36qqg5kE1DSov+SLt41Fez
+ imX5SaWODRtmJ0o4X/GlXsy29vZ+4MB5QVMyLc6Efx3ITVgnauEF7AWOZ7qoCzfp3JtF
+ Vse/iXIdmMHYEDEDTpTNcF9Cc6h4m5PJCphlYEjLOVHKa9UjL3k01DRrkoMEXVNqf6LZ
+ WZm6v+UEEL665lsFMU561tPTpQj/+na0GAx8uYxC4EwSSoFfiGb5V3dMWcNf7VBvF0xD tA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3urvnbg3dk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 03 Dec 2023 15:57:43 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B3Fq4pQ018262;
+	Sun, 3 Dec 2023 15:57:43 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3urvnbg3dc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 03 Dec 2023 15:57:43 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3B3EYAsC018283;
+	Sun, 3 Dec 2023 15:57:42 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3urh4k2w31-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 03 Dec 2023 15:57:42 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3B3FvdEq8389122
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 3 Dec 2023 15:57:39 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 874E32004B;
+	Sun,  3 Dec 2023 15:57:39 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8E74820040;
+	Sun,  3 Dec 2023 15:57:37 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.33.217])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Sun,  3 Dec 2023 15:57:37 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.200.91.1.1\))
+Subject: Re: [PATCH] perf vendor events: Update datasource event name to fix
+ duplicate events
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <5293CFEC-6578-477B-86C2-40A50EBA144B@linux.vnet.ibm.com>
+Date: Sun, 3 Dec 2023 21:27:25 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <87E3CA3F-77D0-4A99-8575-C85544D207E1@linux.vnet.ibm.com>
+References: <20231123160110.94090-1-atrajeev@linux.vnet.ibm.com>
+ <92bbba90-c7e4-43de-98dc-497ca323eacc@linux.ibm.com>
+ <5293CFEC-6578-477B-86C2-40A50EBA144B@linux.vnet.ibm.com>
+To: Disha Goel <disgoel@linux.ibm.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>, James Clark <james.clark@arm.com>,
+        Ian Rogers <irogers@google.com>
+X-Mailer: Apple Mail (2.3774.200.91.1.1)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: UG0BQ9M0w6Rv6vypBDuNdbLL__R4K-Lw
+X-Proofpoint-ORIG-GUID: lVWXUXhvqRsDol9RfywWGYH8ipK8KYaH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-03_14,2023-11-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 spamscore=0
+ clxscore=1015 priorityscore=1501 malwarescore=0 phishscore=0
+ impostorscore=0 mlxscore=0 lowpriorityscore=0 adultscore=0 suspectscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2312030127
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,20 +104,146 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>, Harald Freudenberger <freude@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Halil Pasic <pasic@linux.ibm.com>, Andrew Thornton <andrewth@google.com>, Ingo Molnar <mingo@redhat.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Jason Herne <jjherne@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Venkatesh Srinivas <venkateshs@chromium.org>, Heiko Carstens <hca@linux.ibm.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, Alex Williamson <alex.williamson@redhat.com>, Borislav Petkov <bp@alien8.de>, And
- y Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Tony Krowiak <akrowiak@linux.ibm.com>, Anish Ghulati <aghulati@google.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, linux-perf-users@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, linux-perf-users <linux-perf-users@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Dec 01, 2023 at 04:51:55PM -0800, Sean Christopherson wrote:
 
-> There's one more wrinkle: this patch is buggy in that it doesn't ensure the liveliness
-> of KVM-the-module, i.e. nothing prevents userspace from unloading kvm.ko while VFIO
-> still holds a reference to a kvm structure, and so invoking ->put_kvm() could jump
-> into freed code.  To fix that, KVM would also need to pass along a module pointer :-(
 
-Maybe we should be refcounting the struct file not the struct kvm?
+> On 29-Nov-2023, at 10:51=E2=80=AFAM, Athira Rajeev =
+<atrajeev@linux.vnet.ibm.com> wrote:
+>=20
+>=20
+>=20
+>> On 27-Nov-2023, at 5:32=E2=80=AFPM, Disha Goel =
+<disgoel@linux.ibm.com> wrote:
+>>=20
+>> On 23/11/23 9:31 pm, Athira Rajeev wrote:
+>>=20
+>>> Running "perf list" on powerpc fails with segfault
+>>> as below:
+>>>=20
+>>>   ./perf list
+>>>   Segmentation fault (core dumped)
+>>>=20
+>>> This happens because of duplicate events in the json list.
+>>> The powerpc Json event list contains some event with same
+>>> event name, but different event code. They are:
+>>> - PM_INST_FROM_L3MISS (Present in datasource and frontend)
+>>> - PM_MRK_DATA_FROM_L2MISS (Present in datasource and marked)
+>>> - PM_MRK_INST_FROM_L3MISS (Present in datasource and marked)
+>>> - PM_MRK_DATA_FROM_L3MISS (Present in datasource and marked)
+>>>=20
+>>> pmu_events_table__num_events uses the value from
+>>> table_pmu->num_entries which includes duplicate events as
+>>> well. This causes issue during "perf list" and results in
+>>> segmentation fault.
+>>>=20
+>>> Since both event codes are valid, append _DSRC to the Data
+>>> Source events (datasource.json), so that they would have a
+>>> unique name. Also add PM_DATA_FROM_L2MISS_DSRC and
+>>> PM_DATA_FROM_L3MISS_DSRC events. With the fix, perf list
+>>> works as expected.
+>>>=20
+>>> Fixes: fc1435807533 ("perf vendor events power10: Update =
+JSON/events")
+>>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>>=20
+>> I have tested the patch on Power10 machine. Perf list works correctly =
+without any segfault now.
+>>=20
+>> # ./perf list
+>>=20
+>> List of pre-defined events (to be used in -e or -M):
+>>=20
+>>  branch-instructions OR branches                    [Hardware event]
+>>  branch-misses                                      [Hardware event]
+>>=20
+>> Tested-by: Disha Goel <disgoel@linux.ibm.com>
+>>=20
+>=20
+> Thanks Disha for testing
+>=20
+> Athira
+Hi Arnaldo,
 
-Then we don't need special helpers and it keeps the module alive correctly.
+Can we get this pulled in if the patch looks good ?
 
-Jason
+Thanks
+Athira
+
+>>> ---
+>>> .../arch/powerpc/power10/datasource.json       | 18 =
+++++++++++++++----
+>>> 1 file changed, 14 insertions(+), 4 deletions(-)
+>>>=20
+>>> diff --git =
+a/tools/perf/pmu-events/arch/powerpc/power10/datasource.json =
+b/tools/perf/pmu-events/arch/powerpc/power10/datasource.json
+>>> index 6b0356f2d301..0eeaaf1a95b8 100644
+>>> --- a/tools/perf/pmu-events/arch/powerpc/power10/datasource.json
+>>> +++ b/tools/perf/pmu-events/arch/powerpc/power10/datasource.json
+>>> @@ -99,6 +99,11 @@
+>>>     "EventName": "PM_INST_FROM_L2MISS",
+>>>     "BriefDescription": "The processor's instruction cache was =
+reloaded from a source beyond the local core's L2 due to a demand miss."
+>>>   },
+>>> +  {
+>>> +    "EventCode": "0x0003C0000000C040",
+>>> +    "EventName": "PM_DATA_FROM_L2MISS_DSRC",
+>>> +    "BriefDescription": "The processor's L1 data cache was reloaded =
+from a source beyond the local core's L2 due to a demand miss."
+>>> +  },
+>>>   {
+>>>     "EventCode": "0x000380000010C040",
+>>>     "EventName": "PM_INST_FROM_L2MISS_ALL",
+>>> @@ -161,9 +166,14 @@
+>>>   },
+>>>   {
+>>>     "EventCode": "0x000780000000C040",
+>>> -    "EventName": "PM_INST_FROM_L3MISS",
+>>> +    "EventName": "PM_INST_FROM_L3MISS_DSRC",
+>>>     "BriefDescription": "The processor's instruction cache was =
+reloaded from beyond the local core's L3 due to a demand miss."
+>>>   },
+>>> +  {
+>>> +    "EventCode": "0x0007C0000000C040",
+>>> +    "EventName": "PM_DATA_FROM_L3MISS_DSRC",
+>>> +    "BriefDescription": "The processor's L1 data cache was reloaded =
+from beyond the local core's L3 due to a demand miss."
+>>> +  },
+>>>   {
+>>>     "EventCode": "0x000780000010C040",
+>>>     "EventName": "PM_INST_FROM_L3MISS_ALL",
+>>> @@ -981,7 +991,7 @@
+>>>   },
+>>>   {
+>>>     "EventCode": "0x0003C0000000C142",
+>>> -    "EventName": "PM_MRK_DATA_FROM_L2MISS",
+>>> +    "EventName": "PM_MRK_DATA_FROM_L2MISS_DSRC",
+>>>     "BriefDescription": "The processor's L1 data cache was reloaded =
+from a source beyond the local core's L2 due to a demand miss for a =
+marked instruction."
+>>>   },
+>>>   {
+>>> @@ -1046,12 +1056,12 @@
+>>>   },
+>>>   {
+>>>     "EventCode": "0x000780000000C142",
+>>> -    "EventName": "PM_MRK_INST_FROM_L3MISS",
+>>> +    "EventName": "PM_MRK_INST_FROM_L3MISS_DSRC",
+>>>     "BriefDescription": "The processor's instruction cache was =
+reloaded from beyond the local core's L3 due to a demand miss for a =
+marked instruction."
+>>>   },
+>>>   {
+>>>     "EventCode": "0x0007C0000000C142",
+>>> -    "EventName": "PM_MRK_DATA_FROM_L3MISS",
+>>> +    "EventName": "PM_MRK_DATA_FROM_L3MISS_DSRC",
+>>>     "BriefDescription": "The processor's L1 data cache was reloaded =
+from beyond the local core's L3 due to a demand miss for a marked =
+instruction."
+>>>   },
+>>>   {
+
+
