@@ -1,98 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08DBD802546
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Dec 2023 16:58:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43FF08026E7
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Dec 2023 20:34:29 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ft9lYhSE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=D6ggIepk;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sjs0m3WCDz3cVb
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 02:58:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SjxnZ5LY2z3cQT
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 06:34:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ft9lYhSE;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=D6ggIepk;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::112b; helo=mail-yw1-x112b.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sjrzt43T8z2xdZ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Dec 2023 02:58:01 +1100 (AEDT)
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3B3FnJnZ013228;
-	Sun, 3 Dec 2023 15:57:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=vKaGm7QJ9nav5z665Ne/IH5TvrJIH+yELaWQ7TG3J9Q=;
- b=ft9lYhSEVmhf9AqnWcT0os/R9K5VuFM/ss+EWlBZU4o0EV0hZsI9mwB5orgyaKGHFcDw
- yVcMLYlp5ZxskxXq3HC66RB1gjVZuMmrYsXPPnJE+2vXVy36qqg5kE1DSov+SLt41Fez
- imX5SaWODRtmJ0o4X/GlXsy29vZ+4MB5QVMyLc6Efx3ITVgnauEF7AWOZ7qoCzfp3JtF
- Vse/iXIdmMHYEDEDTpTNcF9Cc6h4m5PJCphlYEjLOVHKa9UjL3k01DRrkoMEXVNqf6LZ
- WZm6v+UEEL665lsFMU561tPTpQj/+na0GAx8uYxC4EwSSoFfiGb5V3dMWcNf7VBvF0xD tA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3urvnbg3dk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 03 Dec 2023 15:57:43 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B3Fq4pQ018262;
-	Sun, 3 Dec 2023 15:57:43 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3urvnbg3dc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 03 Dec 2023 15:57:43 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3B3EYAsC018283;
-	Sun, 3 Dec 2023 15:57:42 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3urh4k2w31-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 03 Dec 2023 15:57:42 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3B3FvdEq8389122
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 3 Dec 2023 15:57:39 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 874E32004B;
-	Sun,  3 Dec 2023 15:57:39 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8E74820040;
-	Sun,  3 Dec 2023 15:57:37 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.33.217])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Sun,  3 Dec 2023 15:57:37 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.200.91.1.1\))
-Subject: Re: [PATCH] perf vendor events: Update datasource event name to fix
- duplicate events
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <5293CFEC-6578-477B-86C2-40A50EBA144B@linux.vnet.ibm.com>
-Date: Sun, 3 Dec 2023 21:27:25 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <87E3CA3F-77D0-4A99-8575-C85544D207E1@linux.vnet.ibm.com>
-References: <20231123160110.94090-1-atrajeev@linux.vnet.ibm.com>
- <92bbba90-c7e4-43de-98dc-497ca323eacc@linux.ibm.com>
- <5293CFEC-6578-477B-86C2-40A50EBA144B@linux.vnet.ibm.com>
-To: Disha Goel <disgoel@linux.ibm.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>, James Clark <james.clark@arm.com>,
-        Ian Rogers <irogers@google.com>
-X-Mailer: Apple Mail (2.3774.200.91.1.1)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: UG0BQ9M0w6Rv6vypBDuNdbLL__R4K-Lw
-X-Proofpoint-ORIG-GUID: lVWXUXhvqRsDol9RfywWGYH8ipK8KYaH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-03_14,2023-11-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 spamscore=0
- clxscore=1015 priorityscore=1501 malwarescore=0 phishscore=0
- impostorscore=0 mlxscore=0 lowpriorityscore=0 adultscore=0 suspectscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2312030127
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sjxmm4qD7z2yhZ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Dec 2023 06:33:44 +1100 (AEDT)
+Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-5cece20f006so44068587b3.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 03 Dec 2023 11:33:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701632021; x=1702236821; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cRG7J1XhtxmqjKk8mPyX2ntR1/BM7lRJBdNSI5UPjng=;
+        b=D6ggIepka8Q/kX1pR1mvWH7Va5pheIkvoQrTWTGod0uioiuej5rZT3cU8VmDTdMY+f
+         qTrztcWWZjMFyLgTS2TuWRrVLSMt0QcyNUzGugZJPd5VAHiOXxT44CcMTJrp5akpZ/7L
+         a3oyqcWrwRcqSAh897s/+V8NGlzsBzErcuJ1+seXmiRzA3nyETlI0jsGKIfF4/J/C0o4
+         4CT93sHeFljEGmXlDSI37jR7hvKhP9nEUbTvFji9g7VeDX+kieexEkrswn/grQSph+0d
+         CyLmOI1jVdmVeBSWeUMpEks+HH+zG4T3brD3rMvnWE9a2xmYnVx9tds47Ot7R168+nZe
+         ylwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701632021; x=1702236821;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cRG7J1XhtxmqjKk8mPyX2ntR1/BM7lRJBdNSI5UPjng=;
+        b=PB1xVcKvSMcpguLFZSXIRdlS1fcydGfg5ZSjLhsOwb+wus+EQBHdglKlDLRfWGKhiz
+         /aLJDBxJqh/t5pLhX27ju2HZGh4Rc8jrxSjA6kYTmRWcx7UCkLesge9TceJG4v1aOiAu
+         5MWr7r91CE/vkyPPDXfsMf34vlTDZXP+LnqueAoH2FVU53rIDhAk4ci2n5pECNuviYzq
+         hDW9y5gD1gHF0Lzdtgm02UWR7UbQSoIPqwS/9bK9eGQ9BhhQV7nr8p7bDEDC0OaU/Otz
+         FN78NftWlHxZDzfMuc4N0nNLyOI8GVctCBSQim/d+u8ui+ywdRvpgGS1oAorTrOcu8RN
+         Ylfw==
+X-Gm-Message-State: AOJu0YytBGl+MJqKP6rBLRFG2KcqtPgSn9uw51EO3VmjL4fEKACa7B9h
+	LySP1+HRdeF7PlRufhlqUuE=
+X-Google-Smtp-Source: AGHT+IH/zAr/IRLH41uf8GyRu75RL5p41k4FNgdJhjBLXJc/pBGsG9eMP2VGrFV3emuPx11G2UwLSw==
+X-Received: by 2002:a5b:bce:0:b0:db5:42eb:3efd with SMTP id c14-20020a5b0bce000000b00db542eb3efdmr2164135ybr.2.1701632020812;
+        Sun, 03 Dec 2023 11:33:40 -0800 (PST)
+Received: from localhost ([2601:344:8301:57f0:cb98:c3e:57c:8191])
+        by smtp.gmail.com with ESMTPSA id 132-20020a25028a000000b00d7497467d36sm1820247ybc.45.2023.12.03.11.33.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 03 Dec 2023 11:33:39 -0800 (PST)
+From: Yury Norov <yury.norov@gmail.com>
+To: linux-kernel@vger.kernel.org,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Yury Norov <yury.norov@gmail.com>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 18/35] powerpc: use atomic find_bit() API where appropriate
+Date: Sun,  3 Dec 2023 11:32:50 -0800
+Message-Id: <20231203193307.542794-17-yury.norov@gmail.com>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20231203193307.542794-1-yury.norov@gmail.com>
+References: <20231203192422.539300-1-yury.norov@gmail.com>
+ <20231203193307.542794-1-yury.norov@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,146 +85,146 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, linux-perf-users <linux-perf-users@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Sergey Shtylyov <s.shtylyov@omp.ru>, Jan Kara <jack@suse.cz>, Bart Van Assche <bvanassche@acm.org>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, Matthew Wilcox <willy@infradead.org>, Alexey Klimov <klimov.linux@gmail.com>, Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Maxim Kuvyrkov <maxim.kuvyrkov@linaro.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Use find_and_{set,clear}_bit() where appropriate and simplify the logic.
 
+Signed-off-by: Yury Norov <yury.norov@gmail.com>
+---
+ arch/powerpc/mm/book3s32/mmu_context.c     | 10 ++---
+ arch/powerpc/platforms/pasemi/dma_lib.c    | 45 +++++-----------------
+ arch/powerpc/platforms/powernv/pci-sriov.c | 12 ++----
+ 3 files changed, 17 insertions(+), 50 deletions(-)
 
-> On 29-Nov-2023, at 10:51=E2=80=AFAM, Athira Rajeev =
-<atrajeev@linux.vnet.ibm.com> wrote:
->=20
->=20
->=20
->> On 27-Nov-2023, at 5:32=E2=80=AFPM, Disha Goel =
-<disgoel@linux.ibm.com> wrote:
->>=20
->> On 23/11/23 9:31 pm, Athira Rajeev wrote:
->>=20
->>> Running "perf list" on powerpc fails with segfault
->>> as below:
->>>=20
->>>   ./perf list
->>>   Segmentation fault (core dumped)
->>>=20
->>> This happens because of duplicate events in the json list.
->>> The powerpc Json event list contains some event with same
->>> event name, but different event code. They are:
->>> - PM_INST_FROM_L3MISS (Present in datasource and frontend)
->>> - PM_MRK_DATA_FROM_L2MISS (Present in datasource and marked)
->>> - PM_MRK_INST_FROM_L3MISS (Present in datasource and marked)
->>> - PM_MRK_DATA_FROM_L3MISS (Present in datasource and marked)
->>>=20
->>> pmu_events_table__num_events uses the value from
->>> table_pmu->num_entries which includes duplicate events as
->>> well. This causes issue during "perf list" and results in
->>> segmentation fault.
->>>=20
->>> Since both event codes are valid, append _DSRC to the Data
->>> Source events (datasource.json), so that they would have a
->>> unique name. Also add PM_DATA_FROM_L2MISS_DSRC and
->>> PM_DATA_FROM_L3MISS_DSRC events. With the fix, perf list
->>> works as expected.
->>>=20
->>> Fixes: fc1435807533 ("perf vendor events power10: Update =
-JSON/events")
->>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->>=20
->> I have tested the patch on Power10 machine. Perf list works correctly =
-without any segfault now.
->>=20
->> # ./perf list
->>=20
->> List of pre-defined events (to be used in -e or -M):
->>=20
->>  branch-instructions OR branches                    [Hardware event]
->>  branch-misses                                      [Hardware event]
->>=20
->> Tested-by: Disha Goel <disgoel@linux.ibm.com>
->>=20
->=20
-> Thanks Disha for testing
->=20
-> Athira
-Hi Arnaldo,
-
-Can we get this pulled in if the patch looks good ?
-
-Thanks
-Athira
-
->>> ---
->>> .../arch/powerpc/power10/datasource.json       | 18 =
-++++++++++++++----
->>> 1 file changed, 14 insertions(+), 4 deletions(-)
->>>=20
->>> diff --git =
-a/tools/perf/pmu-events/arch/powerpc/power10/datasource.json =
-b/tools/perf/pmu-events/arch/powerpc/power10/datasource.json
->>> index 6b0356f2d301..0eeaaf1a95b8 100644
->>> --- a/tools/perf/pmu-events/arch/powerpc/power10/datasource.json
->>> +++ b/tools/perf/pmu-events/arch/powerpc/power10/datasource.json
->>> @@ -99,6 +99,11 @@
->>>     "EventName": "PM_INST_FROM_L2MISS",
->>>     "BriefDescription": "The processor's instruction cache was =
-reloaded from a source beyond the local core's L2 due to a demand miss."
->>>   },
->>> +  {
->>> +    "EventCode": "0x0003C0000000C040",
->>> +    "EventName": "PM_DATA_FROM_L2MISS_DSRC",
->>> +    "BriefDescription": "The processor's L1 data cache was reloaded =
-from a source beyond the local core's L2 due to a demand miss."
->>> +  },
->>>   {
->>>     "EventCode": "0x000380000010C040",
->>>     "EventName": "PM_INST_FROM_L2MISS_ALL",
->>> @@ -161,9 +166,14 @@
->>>   },
->>>   {
->>>     "EventCode": "0x000780000000C040",
->>> -    "EventName": "PM_INST_FROM_L3MISS",
->>> +    "EventName": "PM_INST_FROM_L3MISS_DSRC",
->>>     "BriefDescription": "The processor's instruction cache was =
-reloaded from beyond the local core's L3 due to a demand miss."
->>>   },
->>> +  {
->>> +    "EventCode": "0x0007C0000000C040",
->>> +    "EventName": "PM_DATA_FROM_L3MISS_DSRC",
->>> +    "BriefDescription": "The processor's L1 data cache was reloaded =
-from beyond the local core's L3 due to a demand miss."
->>> +  },
->>>   {
->>>     "EventCode": "0x000780000010C040",
->>>     "EventName": "PM_INST_FROM_L3MISS_ALL",
->>> @@ -981,7 +991,7 @@
->>>   },
->>>   {
->>>     "EventCode": "0x0003C0000000C142",
->>> -    "EventName": "PM_MRK_DATA_FROM_L2MISS",
->>> +    "EventName": "PM_MRK_DATA_FROM_L2MISS_DSRC",
->>>     "BriefDescription": "The processor's L1 data cache was reloaded =
-from a source beyond the local core's L2 due to a demand miss for a =
-marked instruction."
->>>   },
->>>   {
->>> @@ -1046,12 +1056,12 @@
->>>   },
->>>   {
->>>     "EventCode": "0x000780000000C142",
->>> -    "EventName": "PM_MRK_INST_FROM_L3MISS",
->>> +    "EventName": "PM_MRK_INST_FROM_L3MISS_DSRC",
->>>     "BriefDescription": "The processor's instruction cache was =
-reloaded from beyond the local core's L3 due to a demand miss for a =
-marked instruction."
->>>   },
->>>   {
->>>     "EventCode": "0x0007C0000000C142",
->>> -    "EventName": "PM_MRK_DATA_FROM_L3MISS",
->>> +    "EventName": "PM_MRK_DATA_FROM_L3MISS_DSRC",
->>>     "BriefDescription": "The processor's L1 data cache was reloaded =
-from beyond the local core's L3 due to a demand miss for a marked =
-instruction."
->>>   },
->>>   {
-
+diff --git a/arch/powerpc/mm/book3s32/mmu_context.c b/arch/powerpc/mm/book3s32/mmu_context.c
+index 1922f9a6b058..7db19f173c2e 100644
+--- a/arch/powerpc/mm/book3s32/mmu_context.c
++++ b/arch/powerpc/mm/book3s32/mmu_context.c
+@@ -50,13 +50,11 @@ static unsigned long context_map[LAST_CONTEXT / BITS_PER_LONG + 1];
+ 
+ unsigned long __init_new_context(void)
+ {
+-	unsigned long ctx = next_mmu_context;
++	unsigned long ctx;
+ 
+-	while (test_and_set_bit(ctx, context_map)) {
+-		ctx = find_next_zero_bit(context_map, LAST_CONTEXT+1, ctx);
+-		if (ctx > LAST_CONTEXT)
+-			ctx = 0;
+-	}
++	ctx = find_and_set_next_bit(context_map, LAST_CONTEXT + 1, next_mmu_context);
++	if (ctx > LAST_CONTEXT)
++		ctx = 0;
+ 	next_mmu_context = (ctx + 1) & LAST_CONTEXT;
+ 
+ 	return ctx;
+diff --git a/arch/powerpc/platforms/pasemi/dma_lib.c b/arch/powerpc/platforms/pasemi/dma_lib.c
+index 1be1f18f6f09..906dabee0132 100644
+--- a/arch/powerpc/platforms/pasemi/dma_lib.c
++++ b/arch/powerpc/platforms/pasemi/dma_lib.c
+@@ -118,14 +118,9 @@ static int pasemi_alloc_tx_chan(enum pasemi_dmachan_type type)
+ 		limit = MAX_TXCH;
+ 		break;
+ 	}
+-retry:
+-	bit = find_next_bit(txch_free, MAX_TXCH, start);
+-	if (bit >= limit)
+-		return -ENOSPC;
+-	if (!test_and_clear_bit(bit, txch_free))
+-		goto retry;
+-
+-	return bit;
++
++	bit = find_and_clear_next_bit(txch_free, MAX_TXCH, start);
++	return bit < limit ? bit : -ENOSPC;
+ }
+ 
+ static void pasemi_free_tx_chan(int chan)
+@@ -136,15 +131,9 @@ static void pasemi_free_tx_chan(int chan)
+ 
+ static int pasemi_alloc_rx_chan(void)
+ {
+-	int bit;
+-retry:
+-	bit = find_first_bit(rxch_free, MAX_RXCH);
+-	if (bit >= MAX_TXCH)
+-		return -ENOSPC;
+-	if (!test_and_clear_bit(bit, rxch_free))
+-		goto retry;
+-
+-	return bit;
++	int bit = find_and_clear_bit(rxch_free, MAX_RXCH);
++
++	return bit < MAX_TXCH ? bit : -ENOSPC;
+ }
+ 
+ static void pasemi_free_rx_chan(int chan)
+@@ -374,16 +363,9 @@ EXPORT_SYMBOL(pasemi_dma_free_buf);
+  */
+ int pasemi_dma_alloc_flag(void)
+ {
+-	int bit;
++	int bit = find_and_clear_bit(flags_free, MAX_FLAGS);
+ 
+-retry:
+-	bit = find_first_bit(flags_free, MAX_FLAGS);
+-	if (bit >= MAX_FLAGS)
+-		return -ENOSPC;
+-	if (!test_and_clear_bit(bit, flags_free))
+-		goto retry;
+-
+-	return bit;
++	return bit < MAX_FLAGS ? bit : -ENOSPC;
+ }
+ EXPORT_SYMBOL(pasemi_dma_alloc_flag);
+ 
+@@ -439,16 +421,9 @@ EXPORT_SYMBOL(pasemi_dma_clear_flag);
+  */
+ int pasemi_dma_alloc_fun(void)
+ {
+-	int bit;
+-
+-retry:
+-	bit = find_first_bit(fun_free, MAX_FLAGS);
+-	if (bit >= MAX_FLAGS)
+-		return -ENOSPC;
+-	if (!test_and_clear_bit(bit, fun_free))
+-		goto retry;
++	int bit = find_and_clear_bit(fun_free, MAX_FLAGS);
+ 
+-	return bit;
++	return bit < MAX_FLAGS ? bit : -ENOSPC;
+ }
+ EXPORT_SYMBOL(pasemi_dma_alloc_fun);
+ 
+diff --git a/arch/powerpc/platforms/powernv/pci-sriov.c b/arch/powerpc/platforms/powernv/pci-sriov.c
+index 59882da3e742..640e387e6d83 100644
+--- a/arch/powerpc/platforms/powernv/pci-sriov.c
++++ b/arch/powerpc/platforms/powernv/pci-sriov.c
+@@ -397,18 +397,12 @@ static int64_t pnv_ioda_map_m64_single(struct pnv_phb *phb,
+ 
+ static int pnv_pci_alloc_m64_bar(struct pnv_phb *phb, struct pnv_iov_data *iov)
+ {
+-	int win;
++	int win = find_and_set_bit(&phb->ioda.m64_bar_alloc, phb->ioda.m64_bar_idx + 1);
+ 
+-	do {
+-		win = find_next_zero_bit(&phb->ioda.m64_bar_alloc,
+-				phb->ioda.m64_bar_idx + 1, 0);
+-
+-		if (win >= phb->ioda.m64_bar_idx + 1)
+-			return -1;
+-	} while (test_and_set_bit(win, &phb->ioda.m64_bar_alloc));
++	if (win >= phb->ioda.m64_bar_idx + 1)
++		return -1;
+ 
+ 	set_bit(win, iov->used_m64_bar_mask);
+-
+ 	return win;
+ }
+ 
+-- 
+2.40.1
 
