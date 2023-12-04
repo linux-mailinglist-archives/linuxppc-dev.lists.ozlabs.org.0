@@ -2,73 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FEF180313B
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 12:04:50 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=N1jdoU35;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 57B3780314F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 12:12:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SkLR34CfBz3cZt
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 22:04:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SkLc06CJbz3dFx
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 22:12:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=N1jdoU35;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::f2a; helo=mail-qv1-xf2a.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SkLQD4hDPz2xYY
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Dec 2023 22:04:04 +1100 (AEDT)
-Received: by mail-qv1-xf2a.google.com with SMTP id 6a1803df08f44-67aa3b62c35so18523756d6.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Dec 2023 03:04:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1701687841; x=1702292641; darn=lists.ozlabs.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=swbDV6YHNPw6cNT5rrUA42erB6Nky2n0v5A5UtdMoss=;
-        b=N1jdoU356zm2h5PPSa0k9pm38+mKOAFvW8Aa7NVQMM5rp7nGcT484hBrymcXSK4cFa
-         1aqpf9BicOAIckAR/QC+NPAGCSpMhERkjE1vcs/YDjdridhddH+zJ+uVShSEYvYT76n2
-         VeNaKRwtoVrSvlYQqOXb8m4O8B0KrHMmPO81M4KPgJoFw7Q0MA7P+K8T+QLzfNt4raw8
-         b9JakGlZyIO1ZBViYAKBQg+j3U9hiOTdtwPX+8jQy+lvbJVZqfH/2T+pkqgc+IT9LMHS
-         13zXJAPg2+0FbsM7KMoCF6sK8kKh17L1oSnKlGu5mAT2P95qB8TVRQuPm1KpOy4RVJPK
-         BXdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701687841; x=1702292641;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=swbDV6YHNPw6cNT5rrUA42erB6Nky2n0v5A5UtdMoss=;
-        b=PKUpWeReqKMuKyUS4MzATD4/+cywHAzvL3X4Ruc6KCxIZ/wvlNx7GColj+l9YeY+SI
-         pUUrd+FLrRkySlceG2gOnaVj3XF+/5lPnywbArXQfB0qY0oqRC2EsgocuTKGdgtFx2Y/
-         FrBFnQTWVMilBB5nr0ebbCthR3ekLBF86SYuFDkta/dWXL0L2Pu9TTqdUATpA3bWJ26i
-         ZyBu5SGca4GT44DhLozz+dtXMGepjjsyJpKlj8wkiTy7UuthghInsGQHXMB6lwCJjtkP
-         AjNKuXKnYKT6iH8VInHuev2MW+QFZuFRKwjMol6ceUxnlDNudx5U2jlCcnwG47B4ezqW
-         03gw==
-X-Gm-Message-State: AOJu0Yx83YcuGplr5gIQmmUNYPuLzt2TuU6CthKzwNH9zGdTYkgiNV7q
-	SGSQcJ11bGaOu+Auf86U6cdp
-X-Google-Smtp-Source: AGHT+IEgXLrF2rPbXYX2KHUUrMiPsTUsWl8BAdec3IVSKfGCgd1GC+GpFcUTXWfC1rG8OjStFT63Sg==
-X-Received: by 2002:a05:6214:847:b0:67a:b372:721c with SMTP id dg7-20020a056214084700b0067ab372721cmr3864545qvb.34.1701687840504;
-        Mon, 04 Dec 2023 03:04:00 -0800 (PST)
-Received: from thinkpad ([117.213.101.240])
-        by smtp.gmail.com with ESMTPSA id z6-20020a0cf006000000b0067a17c8696esm2572644qvk.82.2023.12.04.03.03.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Dec 2023 03:04:00 -0800 (PST)
-Date: Mon, 4 Dec 2023 16:33:50 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v5 4/4] PCI: layerscape: Add suspend/resume for ls1043a
-Message-ID: <20231204110350.GD35383@thinkpad>
-References: <20231201161712.1645987-1-Frank.Li@nxp.com>
- <20231201161712.1645987-5-Frank.Li@nxp.com>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SkLbT3SlRz3c8r
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Dec 2023 22:12:02 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8F63E152B;
+	Mon,  4 Dec 2023 03:12:17 -0800 (PST)
+Received: from [10.57.73.130] (unknown [10.57.73.130])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6CCCE3F6C4;
+	Mon,  4 Dec 2023 03:11:27 -0800 (PST)
+Message-ID: <01aad92f-b1e0-4f31-b905-8b1c2012ebab@arm.com>
+Date: Mon, 4 Dec 2023 11:11:26 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 06/12] mm/gup: Drop folio_fast_pin_allowed() in hugepd
+ processing
+Content-Language: en-GB
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Peter Xu <peterx@redhat.com>
+References: <20231116012908.392077-7-peterx@redhat.com>
+ <ZVsYMMJpmFV2T/Zc@infradead.org> <ZVzT5_3Zn-Y-6xth@x1n>
+ <ZV21GCbG48nTLDzn@infradead.org> <ZV90JcnQ1RGud/0R@casper.infradead.org>
+ <ZV-KQ0e0y9BTsHGv@x1n> <d2313c1d-1e50-49b7-bed7-840431af799a@arm.com>
+ <ZV-sJsdFfXiCkylv@x1n> <510adc26-9aed-4745-8807-dba071fadbbe@arm.com>
+ <ZWDKV0XNjplc_vUP@x1n> <ZWj_EgljG3NwS5r1@x1n>
+ <283da12c-14f1-4255-b3c4-ab933f3373c4@csgroup.eu>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <283da12c-14f1-4255-b3c4-ab933f3373c4@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231201161712.1645987-5-Frank.Li@nxp.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,149 +50,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: imx@lists.linux.dev, kw@linux.com, linux-pci@vger.kernel.org, lpieralisi@kernel.org, linux-kernel@vger.kernel.org, minghuan.Lian@nxp.com, mingkai.hu@nxp.com, roy.zang@nxp.com, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org, robh@kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: Andrea Arcangeli <aarcange@redhat.com>, James Houghton <jthoughton@google.com>, Lorenzo Stoakes <lstoakes@gmail.com>, David Hildenbrand <david@redhat.com>, John Hubbard <jhubbard@nvidia.com>, Yang Shi <shy828301@gmail.com>, Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, Mike Rapoport <rppt@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, "Kirill A . Shutemov" <kirill@shutemov.name>, Axel Rasmussen <axelrasmussen@google.com>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Vlastimil Babka <vbabka@suse.cz>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Dec 01, 2023 at 11:17:12AM -0500, Frank Li wrote:
-> Add suspend/resume support for Layerscape LS1043a.
+On 03/12/2023 13:33, Christophe Leroy wrote:
 > 
-> In the suspend path, PME_Turn_Off message is sent to the endpoint to
-> transition the link to L2/L3_Ready state. In this SoC, there is no way to
-> check if the controller has received the PME_To_Ack from the endpoint or
-> not. So to be on the safer side, the driver just waits for
-> PCIE_PME_TO_L2_TIMEOUT_US before asserting the SoC specific PMXMTTURNOFF
-> bit to complete the PME_Turn_Off handshake. Then the link would enter L2/L3
-> state depending on the VAUX supply.
 > 
-> In the resume path, the link is brought back from L2 to L0 by doing a
-> software reset.
+> Le 30/11/2023 à 22:30, Peter Xu a écrit :
+>> On Fri, Nov 24, 2023 at 11:07:51AM -0500, Peter Xu wrote:
+>>> On Fri, Nov 24, 2023 at 09:06:01AM +0000, Ryan Roberts wrote:
+>>>> I don't have any micro-benchmarks for GUP though, if that's your question. Is
+>>>> there an easy-to-use test I can run to get some numbers? I'd be happy to try it out.
+>>>
+>>> Thanks Ryan.  Then nothing is needed to be tested if gup is not yet touched
+>>> from your side, afaict.  I'll see whether I can provide some rough numbers
+>>> instead in the next post (I'll probably only be able to test it in a VM,
+>>> though, but hopefully that should still reflect mostly the truth).
+>>
+>> An update: I finished a round of 64K cont_pte test, in the slow gup micro
+>> benchmark I see ~15% perf degrade with this patchset applied on a VM on top
+>> of Apple M1.
+>>
+>> Frankly that's even less than I expected, considering not only how slow gup
+>> THP used to be, but also on the fact that that's a tight loop over slow
+>> gup, which in normal cases shouldn't happen: "present" ptes normally goes
+>> to fast-gup, while !present goes into a fault following it.  I assume
+>> that's why nobody cared slow gup for THP before.  I think adding cont_pte
+>> support shouldn't be very hard, but that will include making cont_pte idea
+>> global just for arm64 and riscv Svnapot.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Is there any documentation on what cont_pte is ? I have always wondered 
+> if it could also fit powerpc 8xx need ?
 
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+pte_cont() (and pte_mkcont() and pte_mknoncont()) test and manipulte the
+"contiguous bit" in the arm64 PTE entries. Those helpers are arm64-specific
+(AFAIK). The contiguous bit is a hint to the HW to tell it that a block of PTEs
+are mapping a physically contiguous and naturally aligned piece of memory. The
+HW can use this to coalesce entries in the TLB. When using 4K base pages, the
+contpte size is 64K (16 PTEs). For 16K base pages, its 2M (128 PTEs) and for 64K
+base pages, its 2M (32 PTEs).
 
-- Mani
+> 
+> On powerpc, for 16k pages, we have to define 4 consecutive PTEs. All 4 
+> PTE are flagged with the SPS bit telling it's a 16k pages, but for TLB 
+> misses the HW needs one entrie for each 4k fragment.
 
-> ---
-> 
-> Notes:
->     Change from v4 to v5
->     - update commit message
->     - use comments
->     /* Reset the PEX wrapper to bring the link out of L2 */
->     
->     Change from v3 to v4
->     - Call scfg_pcie_send_turnoff_msg() shared with ls1021a
->     - update commit message
->     
->     Change from v2 to v3
->     - Remove ls_pcie_lut_readl(writel) function
->     
->     Change from v1 to v2
->     - Update subject 'a' to 'A'
-> 
->  drivers/pci/controller/dwc/pci-layerscape.c | 63 ++++++++++++++++++++-
->  1 file changed, 62 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
-> index a9151e98fde6f..715365e91f8ef 100644
-> --- a/drivers/pci/controller/dwc/pci-layerscape.c
-> +++ b/drivers/pci/controller/dwc/pci-layerscape.c
-> @@ -41,6 +41,15 @@
->  #define SCFG_PEXSFTRSTCR	0x190
->  #define PEXSR(idx)		BIT(idx)
->  
-> +/* LS1043A PEX PME control register */
-> +#define SCFG_PEXPMECR		0x144
-> +#define PEXPME(idx)		BIT(31 - (idx) * 4)
-> +
-> +/* LS1043A PEX LUT debug register */
-> +#define LS_PCIE_LDBG	0x7fc
-> +#define LDBG_SR		BIT(30)
-> +#define LDBG_WE		BIT(31)
-> +
->  #define PCIE_IATU_NUM		6
->  
->  struct ls_pcie_drvdata {
-> @@ -224,6 +233,45 @@ static int ls1021a_pcie_exit_from_l2(struct dw_pcie_rp *pp)
->  	return scfg_pcie_exit_from_l2(pcie->scfg, SCFG_PEXSFTRSTCR, PEXSR(pcie->index));
->  }
->  
-> +static void ls1043a_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
-> +{
-> +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> +	struct ls_pcie *pcie = to_ls_pcie(pci);
-> +
-> +	scfg_pcie_send_turnoff_msg(pcie->scfg, SCFG_PEXPMECR, PEXPME(pcie->index));
-> +}
-> +
-> +static int ls1043a_pcie_exit_from_l2(struct dw_pcie_rp *pp)
-> +{
-> +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> +	struct ls_pcie *pcie = to_ls_pcie(pci);
-> +	u32 val;
-> +
-> +	/*
-> +	 * Reset the PEX wrapper to bring the link out of L2.
-> +	 * LDBG_WE: allows the user to have write access to the PEXDBG[SR] for both setting and
-> +	 *	    clearing the soft reset on the PEX module.
-> +	 * LDBG_SR: When SR is set to 1, the PEX module enters soft reset.
-> +	 */
-> +	val = ls_pcie_pf_lut_readl(pcie, LS_PCIE_LDBG);
-> +	val |= LDBG_WE;
-> +	ls_pcie_pf_lut_writel(pcie, LS_PCIE_LDBG, val);
-> +
-> +	val = ls_pcie_pf_lut_readl(pcie, LS_PCIE_LDBG);
-> +	val |= LDBG_SR;
-> +	ls_pcie_pf_lut_writel(pcie, LS_PCIE_LDBG, val);
-> +
-> +	val = ls_pcie_pf_lut_readl(pcie, LS_PCIE_LDBG);
-> +	val &= ~LDBG_SR;
-> +	ls_pcie_pf_lut_writel(pcie, LS_PCIE_LDBG, val);
-> +
-> +	val = ls_pcie_pf_lut_readl(pcie, LS_PCIE_LDBG);
-> +	val &= ~LDBG_WE;
-> +	ls_pcie_pf_lut_writel(pcie, LS_PCIE_LDBG, val);
-> +
-> +	return 0;
-> +}
-> +
->  static const struct dw_pcie_host_ops ls_pcie_host_ops = {
->  	.host_init = ls_pcie_host_init,
->  	.pme_turn_off = ls_pcie_send_turnoff_msg,
-> @@ -241,6 +289,19 @@ static const struct ls_pcie_drvdata ls1021a_drvdata = {
->  	.exit_from_l2 = ls1021a_pcie_exit_from_l2,
->  };
->  
-> +static const struct dw_pcie_host_ops ls1043a_pcie_host_ops = {
-> +	.host_init = ls_pcie_host_init,
-> +	.pme_turn_off = ls1043a_pcie_send_turnoff_msg,
-> +};
-> +
-> +static const struct ls_pcie_drvdata ls1043a_drvdata = {
-> +	.pf_lut_off = 0x10000,
-> +	.pm_support = true,
-> +	.scfg_support = true,
-> +	.ops = &ls1043a_pcie_host_ops,
-> +	.exit_from_l2 = ls1043a_pcie_exit_from_l2,
-> +};
-> +
->  static const struct ls_pcie_drvdata layerscape_drvdata = {
->  	.pf_lut_off = 0xc0000,
->  	.pm_support = true,
-> @@ -252,7 +313,7 @@ static const struct of_device_id ls_pcie_of_match[] = {
->  	{ .compatible = "fsl,ls1012a-pcie", .data = &layerscape_drvdata },
->  	{ .compatible = "fsl,ls1021a-pcie", .data = &ls1021a_drvdata },
->  	{ .compatible = "fsl,ls1028a-pcie", .data = &layerscape_drvdata },
-> -	{ .compatible = "fsl,ls1043a-pcie", .data = &ls1021a_drvdata },
-> +	{ .compatible = "fsl,ls1043a-pcie", .data = &ls1043a_drvdata },
->  	{ .compatible = "fsl,ls1046a-pcie", .data = &layerscape_drvdata },
->  	{ .compatible = "fsl,ls2080a-pcie", .data = &layerscape_drvdata },
->  	{ .compatible = "fsl,ls2085a-pcie", .data = &layerscape_drvdata },
-> -- 
-> 2.34.1
-> 
+From that description, it sounds like the SPS bit might be similar to arm64
+contiguous bit? Although sounds like you are currently using it in a slightly
+different way - telling kernel that the base page is 16K but mapping each 16K
+page with 4x 4K entries (plus the SPS bit set)?
 
--- 
-மணிவண்ணன் சதாசிவம்
+> 
+> There is also a similar approach for 512k pages, we have 128 contiguous 
+> identical PTEs for them.
+> 
+> And whatever PAGE_SIZE is (either 4k or 16k), the HW needs one 'unsigned 
+> long' pte for each 4k fragment. So at the time being when we define 
+> PAGE_SIZE as 16k, we need a special pte_t which is a table of 4x 
+> unsigned long.
+> 
+> Wondering if the cont_pte concept is similar and whether it could help.
+
+To be honest, while I understand pte_cont() and friends, I don't understand
+their relevance (or at least potential future relevance) to GUP?
+
+> 
+> Thanks
+> Christophe
+
