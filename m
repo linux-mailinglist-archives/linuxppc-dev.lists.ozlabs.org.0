@@ -1,66 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F006C803C8A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 19:14:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00672803C96
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 19:16:47 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=myQI1JR1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=bXyl5/vp;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SkWym3M1cz3vm9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 05:14:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SkX1T3Gd0z3d8W
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 05:16:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=myQI1JR1;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=bXyl5/vp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::732; helo=mail-qk1-x732.google.com; envelope-from=andy.shevchenko@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2c; helo=mail-qv1-xf2c.google.com; envelope-from=andy.shevchenko@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-qv1-xf2c.google.com (mail-qv1-xf2c.google.com [IPv6:2607:f8b0:4864:20::f2c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SkWxy22Yjz3cW5
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Dec 2023 05:13:42 +1100 (AEDT)
-Received: by mail-qk1-x732.google.com with SMTP id af79cd13be357-77d85cf1ff5so308527185a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Dec 2023 10:13:42 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SkX0c47sXz2xdf
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Dec 2023 05:16:00 +1100 (AEDT)
+Received: by mail-qv1-xf2c.google.com with SMTP id 6a1803df08f44-67a934a5b7eso25312776d6.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Dec 2023 10:16:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701713619; x=1702318419; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1701713757; x=1702318557; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cv5W8UxLCR/5ceJa4BXZdc/7xUY5p3Shixmo6OvaNl8=;
-        b=myQI1JR1wYfWuY7Vp3vIh6E/3MIVUYAhjusVyO7vlbD8r0PW9JbVeiFn0q1vgN4Pnm
-         AMTSv/tzGZRKoDCsgGEOyFavey8dUsRYpbPhTUE9o2mterzNTkVJGrLD3uj2pwTw0hox
-         Z67Ig2iduRkOY32K60E4oCEmbecy+q/4rQIlWtz4Fe9yblRkcRkRq43ewrpOAsWa4AJa
-         NvAm1YSBYU/MXYlhaG6WwoEDqzPsj4dYhe3uSY0sqai0reJwerpkc0XX9fGa127RMujl
-         Sv42boRS41oQjwpFOjtx7X00AnxgLTnQs8zkuhENhJ/fkvRbLYYswEmccyA6uuIrc65N
-         r4ig==
+        bh=TrXoxXZcL5o0bwmshlpciFrBa2ROqvh7a5sct4i1UKg=;
+        b=bXyl5/vp0Nxx9pilp9wAEbr2FnxXXRW5guc12XWkj/x//RHNU6r1SsjjcWySZbczbg
+         QaM56ZeZy3emq8Zj9MDUxjA5vgpQawV7qgk/chfrSH5sJv7nWgEX7kbb2cy+n+7O61y5
+         ZidSqWEBRJstn9iikjCKR5Gk30np/3G6QPGu/YWJktv5lcLnNruLxN9kM0++CFi30rSr
+         V6H+e5ncY8i6Ice30x4Smt+w2hYdHdRqE6ck0efzH1ut1yNcTMSUSv1CVDFRctVibQTm
+         p7iJLv4wECneUYW87G925UaUV9DHQrZ9Hh5ruXjfHOZHM4ZC6XR4bYrlXWxNl8aBTAXp
+         938Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701713619; x=1702318419;
+        d=1e100.net; s=20230601; t=1701713757; x=1702318557;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cv5W8UxLCR/5ceJa4BXZdc/7xUY5p3Shixmo6OvaNl8=;
-        b=X5/wUdUzkYHNA+DGNi2WAqPNodO9DrjMau8iL52864XlD+GqqTDZHwoYyq2YaQ1WK2
-         /GasS9eFRpW5ys+LBt9Z1cc8OAiwqlFO7rOUtZACV1AnVhPtziRsKVek5usspqHhf0I8
-         TdZGJBcXnSuPgIcd72yMcq2bUeehhDjRB2XqYFj2SookoYeXpdGgcrcNr3miXdv/lF5z
-         Tsst8McUvGK+j6BxVMTIX27tkpRPa9Md9QhoY62P/7pJ1rc02iIxHRbFa40w7zVGrYWV
-         O8erNfPp944UkDw1WT0jauhl93J3KajA1PLV0kJwXb5f4acG149G07vDkRO+8DcKh4X/
-         YNww==
-X-Gm-Message-State: AOJu0Yxn4wX6mFbSMW8lOpISYWPZByTOn+wV+NODvjiy3dPtcjVvwNm8
-	ZJCiqytinzg2E4+Z5btEjgmIbAOBv40cwm2f/fg=
-X-Google-Smtp-Source: AGHT+IHDD5RoF3kCsuQM1b2t3YZgwiiRD95GHo5n9uXPGJLfvqKzVllX46OCHT8qfyQ/Iw/ykvNMOOKfu8qZWH64NAc=
-X-Received: by 2002:ad4:4384:0:b0:67a:d891:fd75 with SMTP id
- s4-20020ad44384000000b0067ad891fd75mr567320qvr.129.1701713618841; Mon, 04 Dec
- 2023 10:13:38 -0800 (PST)
+        bh=TrXoxXZcL5o0bwmshlpciFrBa2ROqvh7a5sct4i1UKg=;
+        b=tatpFCzxPFa7je8e+HHF70GkK0NotkQUVoNRy+0CpW2B/i88OkXVgZUG6KgwzzUXob
+         rDwU0a4Ln/O3fI0xeWAKUpzWZF/J3UB+h2pDB/gDiWEpMhR1bzJ0J3EB9+9zuhOYVCUY
+         7ErBy2SzR5Y0d7aqkTcq+WsSL/vRdmQqD7H3bq4maQek8Rnnpa385jnHyDCxraP4wiA3
+         Lll5syY3Z+RSpP+kjPGApTlop1aEewb1SD3JQ+qjQW4NE5lqDFHAx2hFbxvWXvo99gxC
+         +YRsa5JeiI0O6VzybRyzapbV/S5Ap5xRWSMhS+4qjzK1eCM81wNnxSNL43fZsu6QLK6T
+         Lweg==
+X-Gm-Message-State: AOJu0YxcTTVCoB09q2msH6pL7mP89jcnmd5R52/tiw/0OGM5+DsXGmiG
+	5hJ6C1WSatTb6n9cif2WAY2qictu7tLNDCODda0=
+X-Google-Smtp-Source: AGHT+IEjajfDd9RKlx7gFUwETBFW3qgAL1nJLNuT4J6PaOtDNdIF8ZKAVyxaqgT8rgBPT4oZQm5GDMnO9BQ+GnLJeQ0=
+X-Received: by 2002:a05:6214:1409:b0:67a:96c7:4c90 with SMTP id
+ pr9-20020a056214140900b0067a96c74c90mr5715457qvb.38.1701713757080; Mon, 04
+ Dec 2023 10:15:57 -0800 (PST)
 MIME-Version: 1.0
-References: <20231204180603.470421-1-gnstark@salutedevices.com> <20231204180603.470421-3-gnstark@salutedevices.com>
-In-Reply-To: <20231204180603.470421-3-gnstark@salutedevices.com>
+References: <20231204180603.470421-1-gnstark@salutedevices.com> <20231204180603.470421-4-gnstark@salutedevices.com>
+In-Reply-To: <20231204180603.470421-4-gnstark@salutedevices.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 4 Dec 2023 20:13:03 +0200
-Message-ID: <CAHp75VdxB+qEjLBq1M3Zfrh4_gnJOv70BRb1RR7+KeDWcPE6jg@mail.gmail.com>
-Subject: Re: [PATCH v2 02/10] leds: aw2013: unlock mutex before destroying it
+Date: Mon, 4 Dec 2023 20:15:21 +0200
+Message-ID: <CAHp75VeQ86JnDF=nJ_AK5zTPB7BkOvn9wU+GottY_PV7JHzGTg@mail.gmail.com>
+Subject: Re: [PATCH v2 03/10] leds: aw2013: use devm API to cleanup module's resources
 To: George Stark <gnstark@salutedevices.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -82,14 +82,42 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 On Mon, Dec 4, 2023 at 8:07=E2=80=AFPM George Stark <gnstark@salutedevices.=
 com> wrote:
 >
-> In the probe() callback in case of error mutex is destroyed being locked
-> which is not allowed so unlock the mute before destroying.
+> In this driver LEDs are registered using devm_led_classdev_register()
+> so they are automatically unregistered after module's remove() is done.
+> led_classdev_unregister() calls module's led_set_brightness() to turn off
+> the LEDs and that callback uses resources which were destroyed already
+> in module's remove() so use devm API instead of remove().
 
-Sounds to me like this is a real fix, hence the Fixes tag and being
-first in the series.
+...
 
-You free to add
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> +static void aw2013_chip_disable_action(void *data)
+> +{
+> +       struct aw2013 *chip =3D (struct aw2013 *)data;
+> +
+> +       aw2013_chip_disable(chip);
+> +}
+
+As with mutex release, this also can be oneliner
+
+static void aw2013_chip_disable_action(void *chip)
+{
+       aw2013_chip_disable(chip);
+}
+
+...
+
+> +       if (devm_mutex_init(&client->dev, &chip->mutex))
+> +               return -ENOMEM;
+
+Shouldn be
+
+       ret =3D devm_mutex_init(&client->dev, &chip->mutex);
+       if (ret)
+           return ret;
+
+?
+
+> +               return -ENOMEM;
 
 --=20
 With Best Regards,
