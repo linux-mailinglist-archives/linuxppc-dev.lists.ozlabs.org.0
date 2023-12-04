@@ -1,51 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85393802A4C
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 03:31:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5448802A45
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 03:29:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sk72L0Vx0z3d89
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 13:31:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sk70T1K2Pz3d8M
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 13:29:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=114.132.124.171; helo=bg1.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
-X-Greylist: delayed 372 seconds by postgrey-1.37 at boromir; Mon, 04 Dec 2023 13:30:41 AEDT
-Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.124.171])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=chentao@kylinos.cn; receiver=lists.ozlabs.org)
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sk71s4nsxz3c4t
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Dec 2023 13:30:41 +1100 (AEDT)
-X-QQ-mid: bizesmtp82t1701656608ty8azrma
-Received: from HX09040029.powercore.com.cn ( [58.34.117.194])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 04 Dec 2023 10:23:21 +0800 (CST)
-X-QQ-SSF: 01400000000000402000000A0000000
-X-QQ-FEAT: uGhnJwy6xZKw3HYMUMtltLGm75iKrd0p9Mg4/P8rycRmhTyVbD11w/SP4bnWS
-	xkFnJqlin6yip5DFMzorO23bnDYDqkAa53H9SKei1jG30ThzFmOQ18rKB6knc7iBaOurEBi
-	UtMz5/WbYXY3fsMQDLbBnzr/Gk8cj/hbb6LaM+djjX4aqDdSRKUrFqm6F3xqzMT4iswY4Ll
-	uN2cZS6upIg85/ItXCf7i8HmVr/8RUqeKPWo01J4b8yvLwUbKgqvbcfv3SGNK+QWkn7J+1q
-	eg4TcD2f2WYioztZpfXgvgXyesSPrhHxjzm3hAJQevs/h/aRXPliziDbZFRF5yvoenE2F3M
-	zEHEllLyrEKYGf1QczFwrAqeWeDfFXfUlvUpk0sGCNZ0GIQx8E01V+qwqZ09TNwUPbF9VeF
-	JweGbcYAIaU=
-X-QQ-GoodBg: 2
-X-BIZMAIL-ID: 17993081573831466038
-From: Luming Yu <luming.yu@shingroup.cn>
-To: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	christophe.leroy@csgroup.eu
-Subject: [PATCH 2/2] powerpc/locking: enable HAVE_CMPXCHG_LOCAL in kconfig
-Date: Mon,  4 Dec 2023 10:23:02 +0800
-Message-ID: <4250629DA95C6D4F+20231204022303.528-2-luming.yu@shingroup.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
-In-Reply-To: <20231204022303.528-1-luming.yu@shingroup.cn>
-References: <20231204022303.528-1-luming.yu@shingroup.cn>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sk70001Mhz3c4t
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Dec 2023 13:29:02 +1100 (AEDT)
+X-UUID: a156a3a52da548fca377d46206efd6dc-20231204
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.33,REQID:58783b7a-b7ad-4933-98ae-b467bde845a3,IP:10,
+	URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACT
+	ION:release,TS:-10
+X-CID-INFO: VERSION:1.1.33,REQID:58783b7a-b7ad-4933-98ae-b467bde845a3,IP:10,UR
+	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-10
+X-CID-META: VersionHash:364b77b,CLOUDID:5fb5c560-c89d-4129-91cb-8ebfae4653fc,B
+	ulkID:231204102756QBXUMQUM,BulkQuantity:0,Recheck:0,SF:19|44|66|38|24|17|1
+	02,TC:nil,Content:0,EDM:-3,IP:-2,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,CO
+	L:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI
+X-UUID: a156a3a52da548fca377d46206efd6dc-20231204
+X-User: chentao@kylinos.cn
+Received: from [172.21.13.26] [(116.128.244.171)] by mailgw
+	(envelope-from <chentao@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1655860228; Mon, 04 Dec 2023 10:27:53 +0800
+Message-ID: <2a0d2c32-5548-445e-a67e-db48157685d7@kylinos.cn>
+Date: Mon, 4 Dec 2023 10:27:47 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz5a-1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] powerpc/mm: Fix null-pointer dereference in
+ pgtable_cache_add
+Content-Language: en-US
+To: Michael Ellerman <mpe@ellerman.id.au>, npiggin@gmail.com,
+ christophe.leroy@csgroup.eu
+References: <20231130090953.2322490-1-chentao@kylinos.cn>
+ <87cyvq1b2f.fsf@mail.lhotse>
+From: Kunwu Chan <chentao@kylinos.cn>
+In-Reply-To: <87cyvq1b2f.fsf@mail.lhotse>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,29 +62,16 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: shenghui.qu@shingroup.cn, Luming Yu <luming.yu@shingroup.cn>, dawei.li@shingroup.cn, ke.zhao@shingroup.cn, luming.yu@gmail.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, kunwu.chan@hotmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-enable arch feature HAVE_CMPXCHG_LOCAL for ppc by default
+Sure,i'll follow your suggestion in v3 patch:
+1. set new to NULL
+2. add a 'if' judgment before 'kmem_cache_create'
 
-Signed-off-by: Luming Yu <luming.yu@shingroup.cn>
----
- arch/powerpc/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+Thanks,
+Kunwu
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 6f105ee4f3cf..c10229c0243c 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -226,6 +226,7 @@ config PPC
- 	select HAVE_ARCH_SECCOMP_FILTER
- 	select HAVE_ARCH_TRACEHOOK
- 	select HAVE_ASM_MODVERSIONS
-+	select HAVE_CMPXCHG_LOCAL
- 	select HAVE_CONTEXT_TRACKING_USER
- 	select HAVE_C_RECORDMCOUNT
- 	select HAVE_DEBUG_KMEMLEAK
--- 
-2.42.0.windows.2
-
+On 2023/12/1 18:17, Michael Ellerman wrote:
+> avoid two calls to panic
