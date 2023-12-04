@@ -1,74 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4667A803132
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 12:03:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FEF180313B
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 12:04:50 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=YESINvI+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=N1jdoU35;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SkLPQ5MZ4z2xYY
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 22:03:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SkLR34CfBz3cZt
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 22:04:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=YESINvI+;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=N1jdoU35;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::c2f; helo=mail-oo1-xc2f.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-oo1-xc2f.google.com (mail-oo1-xc2f.google.com [IPv6:2607:f8b0:4864:20::c2f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::f2a; helo=mail-qv1-xf2a.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SkLNY3lSWz2xYY
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Dec 2023 22:02:37 +1100 (AEDT)
-Received: by mail-oo1-xc2f.google.com with SMTP id 006d021491bc7-58fc1fa4d06so571379eaf.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Dec 2023 03:02:37 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SkLQD4hDPz2xYY
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Dec 2023 22:04:04 +1100 (AEDT)
+Received: by mail-qv1-xf2a.google.com with SMTP id 6a1803df08f44-67aa3b62c35so18523756d6.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Dec 2023 03:04:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1701687755; x=1702292555; darn=lists.ozlabs.org;
+        d=linaro.org; s=google; t=1701687841; x=1702292641; darn=lists.ozlabs.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=ytEXR2qK/0VcK3kLR46RxJ0mZjpWsqvBT5XoKZfshlg=;
-        b=YESINvI+9pd2Ed1zTQVfKIemGIfIo/srMfqVcVXw8uKHMgzKJgjiKoV56077ZJ+na9
-         JSv4zIoeRRCvEJobAFIyr6Cq2ZKVtT3bRxv2q9jVCN+zU2JEB8mLi3ys8vkUwYY3KwiS
-         MNh4gb6vrCsEse632eMR9a5DGyFHap5IwAoq1iiues6raYpV/UEqAUmOC12oj6mBGUI/
-         yqD6HsRop271FpKyNo/an8r6XeEOy+Wr7K78y8b15l9Q6hGnEBO69t3q2iG2rjkMa+vD
-         CObatjkXnduH1H5V9I3JnHpjxjS0UwW+BTI+n8iu78jrrrp8Ftw8XnHQm2JlPOb+WKMM
-         4sOA==
+        bh=swbDV6YHNPw6cNT5rrUA42erB6Nky2n0v5A5UtdMoss=;
+        b=N1jdoU356zm2h5PPSa0k9pm38+mKOAFvW8Aa7NVQMM5rp7nGcT484hBrymcXSK4cFa
+         1aqpf9BicOAIckAR/QC+NPAGCSpMhERkjE1vcs/YDjdridhddH+zJ+uVShSEYvYT76n2
+         VeNaKRwtoVrSvlYQqOXb8m4O8B0KrHMmPO81M4KPgJoFw7Q0MA7P+K8T+QLzfNt4raw8
+         b9JakGlZyIO1ZBViYAKBQg+j3U9hiOTdtwPX+8jQy+lvbJVZqfH/2T+pkqgc+IT9LMHS
+         13zXJAPg2+0FbsM7KMoCF6sK8kKh17L1oSnKlGu5mAT2P95qB8TVRQuPm1KpOy4RVJPK
+         BXdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701687755; x=1702292555;
+        d=1e100.net; s=20230601; t=1701687841; x=1702292641;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ytEXR2qK/0VcK3kLR46RxJ0mZjpWsqvBT5XoKZfshlg=;
-        b=eGDOH/+mK7dPUt8vP8jSApKQXnDyOgeBycnsASj948M/wQ8exzM0OeHqH7mJychYbr
-         DQcK3wvtdCfI4gel03uOEyJIHToEPVVi1lx4UQ3fvAOayde6dR+5uFD8OzLFlnAHf4o+
-         w0l+VLXSpzSfG/tlNN1UrqLIGdyn6cLfuyHlpXIkfKrIaU1jfCL+hgBiJNCIWfgsyfHo
-         2es6GBSDcg6OuSgvpfn4tPRIroO88+BL2U3bkOtlH7swHU6cTIK7c9p1Yv/AsxUWr4Eh
-         trEjpl1lKGW8eFNDVWZlchRcVkYaq/z826dbAsfI+FNEtBv5b3R1ej1QXcGjCls1AZd9
-         bjAg==
-X-Gm-Message-State: AOJu0YwbTZrVhi20A5i97u7wEnsROGBUqED8oHA87iiOViw+vlCnTrz9
-	2OUw55UeWBZmpaJzZ26Qu9iF
-X-Google-Smtp-Source: AGHT+IE9Hrs5Bx4+uEPJIz+n1aZygMz0seYo1fq0qHEZlcgQ3Lsd7f4RDXxraFBiibGuRGVqDIaxmQ==
-X-Received: by 2002:a05:6358:2904:b0:170:21b7:7321 with SMTP id y4-20020a056358290400b0017021b77321mr3297906rwb.20.1701687754654;
-        Mon, 04 Dec 2023 03:02:34 -0800 (PST)
+        bh=swbDV6YHNPw6cNT5rrUA42erB6Nky2n0v5A5UtdMoss=;
+        b=PKUpWeReqKMuKyUS4MzATD4/+cywHAzvL3X4Ruc6KCxIZ/wvlNx7GColj+l9YeY+SI
+         pUUrd+FLrRkySlceG2gOnaVj3XF+/5lPnywbArXQfB0qY0oqRC2EsgocuTKGdgtFx2Y/
+         FrBFnQTWVMilBB5nr0ebbCthR3ekLBF86SYuFDkta/dWXL0L2Pu9TTqdUATpA3bWJ26i
+         ZyBu5SGca4GT44DhLozz+dtXMGepjjsyJpKlj8wkiTy7UuthghInsGQHXMB6lwCJjtkP
+         AjNKuXKnYKT6iH8VInHuev2MW+QFZuFRKwjMol6ceUxnlDNudx5U2jlCcnwG47B4ezqW
+         03gw==
+X-Gm-Message-State: AOJu0Yx83YcuGplr5gIQmmUNYPuLzt2TuU6CthKzwNH9zGdTYkgiNV7q
+	SGSQcJ11bGaOu+Auf86U6cdp
+X-Google-Smtp-Source: AGHT+IEgXLrF2rPbXYX2KHUUrMiPsTUsWl8BAdec3IVSKfGCgd1GC+GpFcUTXWfC1rG8OjStFT63Sg==
+X-Received: by 2002:a05:6214:847:b0:67a:b372:721c with SMTP id dg7-20020a056214084700b0067ab372721cmr3864545qvb.34.1701687840504;
+        Mon, 04 Dec 2023 03:04:00 -0800 (PST)
 Received: from thinkpad ([117.213.101.240])
-        by smtp.gmail.com with ESMTPSA id w2-20020a0c9c42000000b0067a4a0a7e6fsm962342qve.108.2023.12.04.03.02.29
+        by smtp.gmail.com with ESMTPSA id z6-20020a0cf006000000b0067a17c8696esm2572644qvk.82.2023.12.04.03.03.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Dec 2023 03:02:34 -0800 (PST)
-Date: Mon, 4 Dec 2023 16:32:24 +0530
+        Mon, 04 Dec 2023 03:04:00 -0800 (PST)
+Date: Mon, 4 Dec 2023 16:33:50 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v5 3/4] PCI: layerscape(ep): Rename pf_* as pf_lut_*
-Message-ID: <20231204110224.GC35383@thinkpad>
+Subject: Re: [PATCH v5 4/4] PCI: layerscape: Add suspend/resume for ls1043a
+Message-ID: <20231204110350.GD35383@thinkpad>
 References: <20231201161712.1645987-1-Frank.Li@nxp.com>
- <20231201161712.1645987-4-Frank.Li@nxp.com>
+ <20231201161712.1645987-5-Frank.Li@nxp.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231201161712.1645987-4-Frank.Li@nxp.com>
+In-Reply-To: <20231201161712.1645987-5-Frank.Li@nxp.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,207 +84,142 @@ Cc: imx@lists.linux.dev, kw@linux.com, linux-pci@vger.kernel.org, lpieralisi@ker
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Dec 01, 2023 at 11:17:11AM -0500, Frank Li wrote:
-> 'pf' and 'lut' is just difference name in difference chips, but basic it is
-> a MMIO base address plus an offset.
+On Fri, Dec 01, 2023 at 11:17:12AM -0500, Frank Li wrote:
+> Add suspend/resume support for Layerscape LS1043a.
 > 
-> Rename it to avoid duplicate pf_* and lut_* in driver.
+> In the suspend path, PME_Turn_Off message is sent to the endpoint to
+> transition the link to L2/L3_Ready state. In this SoC, there is no way to
+> check if the controller has received the PME_To_Ack from the endpoint or
+> not. So to be on the safer side, the driver just waits for
+> PCIE_PME_TO_L2_TIMEOUT_US before asserting the SoC specific PMXMTTURNOFF
+> bit to complete the PME_Turn_Off handshake. Then the link would enter L2/L3
+> state depending on the VAUX supply.
+> 
+> In the resume path, the link is brought back from L2 to L0 by doing a
+> software reset.
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-One comment below. With that addressed,
-
 Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+
+- Mani
 
 > ---
 > 
 > Notes:
->     pf_lut is better than pf_* or lut* because some chip use 'pf', some chip
->     use 'lut'.
->     
 >     Change from v4 to v5
->     - rename layerscape-ep code also
->     change from v1 to v4
->     - new patch at v3
+>     - update commit message
+>     - use comments
+>     /* Reset the PEX wrapper to bring the link out of L2 */
+>     
+>     Change from v3 to v4
+>     - Call scfg_pcie_send_turnoff_msg() shared with ls1021a
+>     - update commit message
+>     
+>     Change from v2 to v3
+>     - Remove ls_pcie_lut_readl(writel) function
+>     
+>     Change from v1 to v2
+>     - Update subject 'a' to 'A'
 > 
->  .../pci/controller/dwc/pci-layerscape-ep.c    | 16 ++++-----
->  drivers/pci/controller/dwc/pci-layerscape.c   | 36 +++++++++----------
->  2 files changed, 26 insertions(+), 26 deletions(-)
+>  drivers/pci/controller/dwc/pci-layerscape.c | 63 ++++++++++++++++++++-
+>  1 file changed, 62 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> index 3d3c50ef4b6ff..2ca339f938a86 100644
-> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> @@ -49,7 +49,7 @@ struct ls_pcie_ep {
->  	bool				big_endian;
->  };
->  
-> -static u32 ls_lut_readl(struct ls_pcie_ep *pcie, u32 offset)
-> +static u32 ls_pcie_pf_lut_readl(struct ls_pcie_ep *pcie, u32 offset)
->  {
->  	struct dw_pcie *pci = pcie->pci;
->  
-> @@ -59,7 +59,7 @@ static u32 ls_lut_readl(struct ls_pcie_ep *pcie, u32 offset)
->  		return ioread32(pci->dbi_base + offset);
->  }
->  
-> -static void ls_lut_writel(struct ls_pcie_ep *pcie, u32 offset, u32 value)
-> +static void ls_pcie_pf_lut_writel(struct ls_pcie_ep *pcie, u32 offset, u32 value)
->  {
->  	struct dw_pcie *pci = pcie->pci;
->  
-> @@ -76,8 +76,8 @@ static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
->  	u32 val, cfg;
->  	u8 offset;
->  
-> -	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_DR);
-> -	ls_lut_writel(pcie, PEX_PF0_PME_MES_DR, val);
-> +	val = ls_pcie_pf_lut_readl(pcie, PEX_PF0_PME_MES_DR);
-> +	ls_pcie_pf_lut_writel(pcie, PEX_PF0_PME_MES_DR, val);
->  
->  	if (!val)
->  		return IRQ_NONE;
-> @@ -96,9 +96,9 @@ static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
->  		dw_pcie_writel_dbi(pci, offset + PCI_EXP_LNKCAP, pcie->lnkcap);
->  		dw_pcie_dbi_ro_wr_dis(pci);
->  
-> -		cfg = ls_lut_readl(pcie, PEX_PF0_CONFIG);
-> +		cfg = ls_pcie_pf_lut_readl(pcie, PEX_PF0_CONFIG);
->  		cfg |= PEX_PF0_CFG_READY;
-> -		ls_lut_writel(pcie, PEX_PF0_CONFIG, cfg);
-> +		ls_pcie_pf_lut_writel(pcie, PEX_PF0_CONFIG, cfg);
->  		dw_pcie_ep_linkup(&pci->ep);
->  
->  		dev_dbg(pci->dev, "Link up\n");
-> @@ -130,10 +130,10 @@ static int ls_pcie_ep_interrupt_init(struct ls_pcie_ep *pcie,
->  	}
->  
->  	/* Enable interrupts */
-> -	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_IER);
-> +	val = ls_pcie_pf_lut_readl(pcie, PEX_PF0_PME_MES_IER);
->  	val |=  PEX_PF0_PME_MES_IER_LDDIE | PEX_PF0_PME_MES_IER_HRDIE |
->  		PEX_PF0_PME_MES_IER_LUDIE;
-> -	ls_lut_writel(pcie, PEX_PF0_PME_MES_IER, val);
-> +	ls_pcie_pf_lut_writel(pcie, PEX_PF0_PME_MES_IER, val);
->  
->  	return 0;
->  }
 > diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
-> index 8bdaae9be7d56..a9151e98fde6f 100644
+> index a9151e98fde6f..715365e91f8ef 100644
 > --- a/drivers/pci/controller/dwc/pci-layerscape.c
 > +++ b/drivers/pci/controller/dwc/pci-layerscape.c
-> @@ -44,7 +44,7 @@
+> @@ -41,6 +41,15 @@
+>  #define SCFG_PEXSFTRSTCR	0x190
+>  #define PEXSR(idx)		BIT(idx)
+>  
+> +/* LS1043A PEX PME control register */
+> +#define SCFG_PEXPMECR		0x144
+> +#define PEXPME(idx)		BIT(31 - (idx) * 4)
+> +
+> +/* LS1043A PEX LUT debug register */
+> +#define LS_PCIE_LDBG	0x7fc
+> +#define LDBG_SR		BIT(30)
+> +#define LDBG_WE		BIT(31)
+> +
 >  #define PCIE_IATU_NUM		6
 >  
 >  struct ls_pcie_drvdata {
-> -	const u32 pf_off;
-> +	const u32 pf_lut_off;
->  	const struct dw_pcie_host_ops *ops;
->  	int (*exit_from_l2)(struct dw_pcie_rp *pp);
->  	bool scfg_support;
-> @@ -54,13 +54,13 @@ struct ls_pcie_drvdata {
->  struct ls_pcie {
->  	struct dw_pcie *pci;
->  	const struct ls_pcie_drvdata *drvdata;
-> -	void __iomem *pf_base;
-> +	void __iomem *pf_lut_base;
->  	struct regmap *scfg;
->  	int index;
->  	bool big_endian;
+> @@ -224,6 +233,45 @@ static int ls1021a_pcie_exit_from_l2(struct dw_pcie_rp *pp)
+>  	return scfg_pcie_exit_from_l2(pcie->scfg, SCFG_PEXSFTRSTCR, PEXSR(pcie->index));
+>  }
+>  
+> +static void ls1043a_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
+> +{
+> +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> +	struct ls_pcie *pcie = to_ls_pcie(pci);
+> +
+> +	scfg_pcie_send_turnoff_msg(pcie->scfg, SCFG_PEXPMECR, PEXPME(pcie->index));
+> +}
+> +
+> +static int ls1043a_pcie_exit_from_l2(struct dw_pcie_rp *pp)
+> +{
+> +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> +	struct ls_pcie *pcie = to_ls_pcie(pci);
+> +	u32 val;
+> +
+> +	/*
+> +	 * Reset the PEX wrapper to bring the link out of L2.
+> +	 * LDBG_WE: allows the user to have write access to the PEXDBG[SR] for both setting and
+> +	 *	    clearing the soft reset on the PEX module.
+> +	 * LDBG_SR: When SR is set to 1, the PEX module enters soft reset.
+> +	 */
+> +	val = ls_pcie_pf_lut_readl(pcie, LS_PCIE_LDBG);
+> +	val |= LDBG_WE;
+> +	ls_pcie_pf_lut_writel(pcie, LS_PCIE_LDBG, val);
+> +
+> +	val = ls_pcie_pf_lut_readl(pcie, LS_PCIE_LDBG);
+> +	val |= LDBG_SR;
+> +	ls_pcie_pf_lut_writel(pcie, LS_PCIE_LDBG, val);
+> +
+> +	val = ls_pcie_pf_lut_readl(pcie, LS_PCIE_LDBG);
+> +	val &= ~LDBG_SR;
+> +	ls_pcie_pf_lut_writel(pcie, LS_PCIE_LDBG, val);
+> +
+> +	val = ls_pcie_pf_lut_readl(pcie, LS_PCIE_LDBG);
+> +	val &= ~LDBG_WE;
+> +	ls_pcie_pf_lut_writel(pcie, LS_PCIE_LDBG, val);
+> +
+> +	return 0;
+> +}
+> +
+>  static const struct dw_pcie_host_ops ls_pcie_host_ops = {
+>  	.host_init = ls_pcie_host_init,
+>  	.pme_turn_off = ls_pcie_send_turnoff_msg,
+> @@ -241,6 +289,19 @@ static const struct ls_pcie_drvdata ls1021a_drvdata = {
+>  	.exit_from_l2 = ls1021a_pcie_exit_from_l2,
 >  };
 >  
-> -#define ls_pcie_pf_readl_addr(addr)	ls_pcie_pf_readl(pcie, addr)
-> +#define ls_pcie_pf_lut_readl_addr(addr)	ls_pcie_pf_lut_readl(pcie, addr)
->  #define to_ls_pcie(x)	dev_get_drvdata((x)->dev)
->  
->  static bool ls_pcie_is_bridge(struct ls_pcie *pcie)
-> @@ -101,20 +101,20 @@ static void ls_pcie_fix_error_response(struct ls_pcie *pcie)
->  	iowrite32(PCIE_ABSERR_SETTING, pci->dbi_base + PCIE_ABSERR);
->  }
->  
-> -static u32 ls_pcie_pf_readl(struct ls_pcie *pcie, u32 off)
-> +static u32 ls_pcie_pf_lut_readl(struct ls_pcie *pcie, u32 off)
->  {
->  	if (pcie->big_endian)
-> -		return ioread32be(pcie->pf_base + off);
-> +		return ioread32be(pcie->pf_lut_base + off);
->  
-> -	return ioread32(pcie->pf_base + off);
-> +	return ioread32(pcie->pf_lut_base + off);
->  }
->  
-> -static void ls_pcie_pf_writel(struct ls_pcie *pcie, u32 off, u32 val)
-> +static void ls_pcie_pf_lut_writel(struct ls_pcie *pcie, u32 off, u32 val)
->  {
->  	if (pcie->big_endian)
-> -		iowrite32be(val, pcie->pf_base + off);
-> +		iowrite32be(val, pcie->pf_lut_base + off);
->  	else
-> -		iowrite32(val, pcie->pf_base + off);
-> +		iowrite32(val, pcie->pf_lut_base + off);
->  }
->  
->  static void ls_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
-> @@ -124,11 +124,11 @@ static void ls_pcie_send_turnoff_msg(struct dw_pcie_rp *pp)
->  	u32 val;
->  	int ret;
->  
-> -	val = ls_pcie_pf_readl(pcie, LS_PCIE_PF_MCR);
-> +	val = ls_pcie_pf_lut_readl(pcie, LS_PCIE_PF_MCR);
->  	val |= PF_MCR_PTOMR;
-> -	ls_pcie_pf_writel(pcie, LS_PCIE_PF_MCR, val);
-> +	ls_pcie_pf_lut_writel(pcie, LS_PCIE_PF_MCR, val);
->  
-> -	ret = readx_poll_timeout(ls_pcie_pf_readl_addr, LS_PCIE_PF_MCR,
-> +	ret = readx_poll_timeout(ls_pcie_pf_lut_readl_addr, LS_PCIE_PF_MCR,
->  				 val, !(val & PF_MCR_PTOMR),
->  				 PCIE_PME_TO_L2_TIMEOUT_US/10,
->  				 PCIE_PME_TO_L2_TIMEOUT_US);
-> @@ -147,15 +147,15 @@ static int ls_pcie_exit_from_l2(struct dw_pcie_rp *pp)
->  	 * Set PF_MCR_EXL2S bit in LS_PCIE_PF_MCR register for the link
->  	 * to exit L2 state.
->  	 */
-> -	val = ls_pcie_pf_readl(pcie, LS_PCIE_PF_MCR);
-> +	val = ls_pcie_pf_lut_readl(pcie, LS_PCIE_PF_MCR);
->  	val |= PF_MCR_EXL2S;
-> -	ls_pcie_pf_writel(pcie, LS_PCIE_PF_MCR, val);
-> +	ls_pcie_pf_lut_writel(pcie, LS_PCIE_PF_MCR, val);
->  
->  	/*
->  	 * L2 exit timeout of 10ms is not defined in the specifications,
->  	 * it was chosen based on empirical observations.
->  	 */
-> -	ret = readx_poll_timeout(ls_pcie_pf_readl_addr, LS_PCIE_PF_MCR,
-> +	ret = readx_poll_timeout(ls_pcie_pf_lut_readl_addr, LS_PCIE_PF_MCR,
->  				 val, !(val & PF_MCR_EXL2S),
->  				 1000,
->  				 10000);
-> @@ -242,9 +242,9 @@ static const struct ls_pcie_drvdata ls1021a_drvdata = {
->  };
->  
+> +static const struct dw_pcie_host_ops ls1043a_pcie_host_ops = {
+> +	.host_init = ls_pcie_host_init,
+> +	.pme_turn_off = ls1043a_pcie_send_turnoff_msg,
+> +};
+> +
+> +static const struct ls_pcie_drvdata ls1043a_drvdata = {
+> +	.pf_lut_off = 0x10000,
+> +	.pm_support = true,
+> +	.scfg_support = true,
+> +	.ops = &ls1043a_pcie_host_ops,
+> +	.exit_from_l2 = ls1043a_pcie_exit_from_l2,
+> +};
+> +
 >  static const struct ls_pcie_drvdata layerscape_drvdata = {
-> -	.pf_off = 0xc0000,
-> +	.pf_lut_off = 0xc0000,
+>  	.pf_lut_off = 0xc0000,
 >  	.pm_support = true,
-> -	.ops = &ls_pcie_host_ops;
-> +	.ops = &ls_pcie_host_ops,
-
-This change should be part of the previous patch.
-
-- Mani
-
->  	.exit_from_l2 = ls_pcie_exit_from_l2,
->  };
->  
-> @@ -293,7 +293,7 @@ static int ls_pcie_probe(struct platform_device *pdev)
->  
->  	pcie->big_endian = of_property_read_bool(dev->of_node, "big-endian");
->  
-> -	pcie->pf_base = pci->dbi_base + pcie->drvdata->pf_off;
-> +	pcie->pf_lut_base = pci->dbi_base + pcie->drvdata->pf_lut_off;
->  
->  	if (pcie->drvdata->scfg_support) {
->  		pcie->scfg = syscon_regmap_lookup_by_phandle(dev->of_node, "fsl,pcie-scfg");
+> @@ -252,7 +313,7 @@ static const struct of_device_id ls_pcie_of_match[] = {
+>  	{ .compatible = "fsl,ls1012a-pcie", .data = &layerscape_drvdata },
+>  	{ .compatible = "fsl,ls1021a-pcie", .data = &ls1021a_drvdata },
+>  	{ .compatible = "fsl,ls1028a-pcie", .data = &layerscape_drvdata },
+> -	{ .compatible = "fsl,ls1043a-pcie", .data = &ls1021a_drvdata },
+> +	{ .compatible = "fsl,ls1043a-pcie", .data = &ls1043a_drvdata },
+>  	{ .compatible = "fsl,ls1046a-pcie", .data = &layerscape_drvdata },
+>  	{ .compatible = "fsl,ls2080a-pcie", .data = &layerscape_drvdata },
+>  	{ .compatible = "fsl,ls2085a-pcie", .data = &layerscape_drvdata },
 > -- 
 > 2.34.1
 > 
