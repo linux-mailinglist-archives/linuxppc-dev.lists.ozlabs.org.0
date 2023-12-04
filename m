@@ -1,57 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1BFA802E74
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 10:23:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E70C1802EC7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 10:37:51 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MG1AbMiG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TLQAILlI;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SkJB62vYNz3cY8
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 20:23:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SkJVh3N63z3cZP
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 20:37:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MG1AbMiG;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TLQAILlI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=aneesh.kumar@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=aneesh.kumar@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SkJ9H0cRdz3bZM
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Dec 2023 20:22:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SkJTp2SQyz2xl6
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Dec 2023 20:37:02 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 8710860F6E;
-	Mon,  4 Dec 2023 09:22:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A810C433C8;
-	Mon,  4 Dec 2023 09:22:35 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 82C87CE0ED4;
+	Mon,  4 Dec 2023 09:36:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4339C433C7;
+	Mon,  4 Dec 2023 09:36:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701681758;
-	bh=5FEbE9qsx2GJHGLUodYReUa2g2wRjgj8NKWyM50I94c=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=MG1AbMiGu5mwnetb5Mk/sm7lH7xK7CkoQ6PLMUEJcHsu3Si6guCwk3E7y8FtJ8+Mf
-	 HWSOsAv9fvRBgEZkYpZaia+odwJKLu8iM+1+WiGBJjwq0RR/WsAsTl3wSg3zxlNg0o
-	 u2qgPm/zlwX2EqEEJmj0oUwyob+/QczyxiqBGyLNJcN+tAFRV3vdu43E5lnRFj22d2
-	 IdLTpwiVjwLBc/pucIytSwvLD/EC7Ru1NB75dOyUZU2Xrc0tuNXjXu6b98IrydPTl4
-	 WNW7oWdf1hFonnHbk7AZLkg6aH0VxWcfSRzWABR8j9Th/UHZWa6y23FBYh4ugJ4N3H
-	 R2aHyHp/BloAQ==
-X-Mailer: emacs 29.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
+	s=k20201202; t=1701682617;
+	bh=cpfnv2cwbjzuWInLv2DlRIuHnQ7ADN7R82FvPIelbTg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=TLQAILlI3Gnuk5l1XOhsZ4pZVv77FmzgpbVnfvVfIMNI8fVYoK1gWvXNk9qE3kLph
+	 zYSNi9jwPwMdukn+KVgH7/yqe0MUH7mlL/e5oxGxmC3uNyIMkB6Ll1v1p+Ch54AuZS
+	 SFT0JXHf2YZ7EInWc/q/hEbpGcF86Qu8/vCnFRsc4vKhVi72OIkImYHgF3R4QQZ8KU
+	 U6tU8uNpCE2XYnPI79Hox1WogCNCvNV/WXQvXjx0GzYYhe/Utogjw6Pg0HidK6Am+2
+	 0uy69sNL9M3mNO9DZOeD56fbyGv8H7KTS9J15da4kuxXO4SV3WliQLWxupDsPn5Mui
+	 u3JAmG7GYxc1Q==
+From: aneesh.kumar@kernel.org
+To: linuxppc-dev@lists.ozlabs.org,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
 	christophe.leroy@csgroup.eu
-Subject: Re: [PATCH v2] powerpc/book3s/hash: Drop _PAGE_PRIVILEGED from
- PAGE_NONE
-In-Reply-To: <87a5qu1a7k.fsf@mail.lhotse>
-References: <20231114071130.197966-1-aneesh.kumar@linux.ibm.com>
- <87a5qu1a7k.fsf@mail.lhotse>
-Date: Mon, 04 Dec 2023 14:52:32 +0530
-Message-ID: <87cyvm2ug7.fsf@kernel.org>
+Subject: [PATCH v2 1/2] powerpc/book3s/hash: Drop _PAGE_PRIVILEGED from PAGE_NONE
+Date: Mon,  4 Dec 2023 15:06:37 +0530
+Message-ID: <20231204093638.71503-1-aneesh.kumar@kernel.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,94 +59,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: "Aneesh Kumar K.V \(IBM\)" <aneesh.kumar@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
+From: "Aneesh Kumar K.V (IBM)" <aneesh.kumar@kernel.org>
 
-> "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
->> There used to be a dependency on _PAGE_PRIVILEGED with pte_savedwrite.
->> But that got dropped by
->> commit 6a56ccbcf6c6 ("mm/autonuma: use can_change_(pte|pmd)_writable() to replace savedwrite")
->>
->> With the change in this patch numa fault pte (pte_protnone()) gets mapped as regular user pte
->> with RWX cleared (no-access) whereas earlier it used to be mapped _PAGE_PRIVILEGED.
->>
->> Hash fault handling code did get some WARN_ON added because those
->> functions are not expected to get called with _PAGE_READ cleared.
->> commit 18061c17c8ec ("powerpc/mm: Update PROTFAULT handling in the page fault path")
->> explains the details.
->  
-> You say "did get" which makes me think you're talking about the past.
-> But I think you're referring to the WARN_ON you are adding in this patch?
+There used to be a dependency on _PAGE_PRIVILEGED with pte_savedwrite.
+But that got dropped by
+commit 6a56ccbcf6c6 ("mm/autonuma: use can_change_(pte|pmd)_writable() to replace savedwrite")
 
-That is correct. Will update this as "Hash fault handing code gets some
-WARN_ON added in this patch ..." ?
->
+With the change in this patch numa fault pte (pte_protnone()) gets mapped as regular user pte
+with RWX cleared (no-access) whereas earlier it used to be mapped _PAGE_PRIVILEGED.
 
->
->> Also revert commit 1abce0580b89 ("powerpc/64s: Fix __pte_needs_flush() false positive warning")
->
-> That could be done separately as a follow-up couldn't it? Would reduce
-> the diff size.
->
+Hash fault handling code gets some WARN_ON added in this patch because
+those functions are not expected to get called with _PAGE_READ cleared.
+commit 18061c17c8ec ("powerpc/mm: Update PROTFAULT handling in the page
+fault path") explains the details.
 
-Will split that to a separate patch.
+Signed-off-by: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
+---
+ arch/powerpc/include/asm/book3s/64/pgtable.h | 10 ++--------
+ arch/powerpc/mm/book3s64/hash_utils.c        |  7 +++++++
+ 2 files changed, 9 insertions(+), 8 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index cb77eddca54b..927d585652bc 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -17,12 +17,6 @@
+ #define _PAGE_EXEC		0x00001 /* execute permission */
+ #define _PAGE_WRITE		0x00002 /* write access allowed */
+ #define _PAGE_READ		0x00004	/* read access allowed */
+-#define _PAGE_NA		_PAGE_PRIVILEGED
+-#define _PAGE_NAX		_PAGE_EXEC
+-#define _PAGE_RO		_PAGE_READ
+-#define _PAGE_ROX		(_PAGE_READ | _PAGE_EXEC)
+-#define _PAGE_RW		(_PAGE_READ | _PAGE_WRITE)
+-#define _PAGE_RWX		(_PAGE_READ | _PAGE_WRITE | _PAGE_EXEC)
+ #define _PAGE_PRIVILEGED	0x00008 /* kernel access only */
+ #define _PAGE_SAO		0x00010 /* Strong access order */
+ #define _PAGE_NON_IDEMPOTENT	0x00020 /* non idempotent memory */
+@@ -532,8 +526,8 @@ static inline bool pte_user(pte_t pte)
+ static inline bool pte_access_permitted(pte_t pte, bool write)
+ {
+ 	/*
+-	 * _PAGE_READ is needed for any access and will be
+-	 * cleared for PROT_NONE
++	 * _PAGE_READ is needed for any access and will be cleared for
++	 * PROT_NONE. Execute-only mapping via PROT_EXEC also returns false.
+ 	 */
+ 	if (!pte_present(pte) || !pte_user(pte) || !pte_read(pte))
+ 		return false;
+diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+index ad2afa08e62e..0626a25b0d72 100644
+--- a/arch/powerpc/mm/book3s64/hash_utils.c
++++ b/arch/powerpc/mm/book3s64/hash_utils.c
+@@ -310,9 +310,16 @@ unsigned long htab_convert_pte_flags(unsigned long pteflags, unsigned long flags
+ 			else
+ 				rflags |= 0x3;
+ 		}
++		VM_WARN_ONCE(!(pteflags & _PAGE_RWX), "no-access mapping request");
+ 	} else {
+ 		if (pteflags & _PAGE_RWX)
+ 			rflags |= 0x2;
++		/*
++		 * We should never hit this in normal fault handling because
++		 * a permission check (check_pte_access()) will bubble this
++		 * to higher level linux handler even for PAGE_NONE.
++		 */
++		VM_WARN_ONCE(!(pteflags & _PAGE_RWX), "no-access mapping request");
+ 		if (!((pteflags & _PAGE_WRITE) && (pteflags & _PAGE_DIRTY)))
+ 			rflags |= 0x1;
+ 	}
+-- 
+2.43.0
 
->> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->> ---
->>  arch/powerpc/include/asm/book3s/64/pgtable.h  | 9 +++------
->>  arch/powerpc/include/asm/book3s/64/tlbflush.h | 9 ++-------
->>  arch/powerpc/mm/book3s64/hash_utils.c         | 7 +++++++
->>  3 files changed, 12 insertions(+), 13 deletions(-)
->>
->> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
->> index cb77eddca54b..2cc58ac74080 100644
->> --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
->> +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
->> @@ -17,12 +17,6 @@
->>  #define _PAGE_EXEC		0x00001 /* execute permission */
->>  #define _PAGE_WRITE		0x00002 /* write access allowed */
->>  #define _PAGE_READ		0x00004	/* read access allowed */
->> -#define _PAGE_NA		_PAGE_PRIVILEGED
->  
->> -#define _PAGE_NAX		_PAGE_EXEC
->> -#define _PAGE_RO		_PAGE_READ
->> -#define _PAGE_ROX		(_PAGE_READ | _PAGE_EXEC)
->> -#define _PAGE_RW		(_PAGE_READ | _PAGE_WRITE)
->> -#define _PAGE_RWX		(_PAGE_READ | _PAGE_WRITE | _PAGE_EXEC)
->  
-> Those are unrelated I think?
->
-
-If we don't require _PAGE_NA we can fallback to generic version.
-
-
->>  #define _PAGE_PRIVILEGED	0x00008 /* kernel access only */
->>  #define _PAGE_SAO		0x00010 /* Strong access order */
->>  #define _PAGE_NON_IDEMPOTENT	0x00020 /* non idempotent memory */
->> @@ -529,6 +523,9 @@ static inline bool pte_user(pte_t pte)
->>  }
->>  
->>  #define pte_access_permitted pte_access_permitted
->> +/*
->> + * execute-only mappings return false
->> + */
->
-> That would fit better in the existing comment block inside the function
-> I think. Normally this location would be a function description comment.
->
-
-Will move.
-
->>  static inline bool pte_access_permitted(pte_t pte, bool write)
->>  {
->>  	/*
->           ie. here
->
-> cheers
-
-Thanks
--aneesh
