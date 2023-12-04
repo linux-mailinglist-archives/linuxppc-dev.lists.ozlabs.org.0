@@ -1,66 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00672803C96
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 19:16:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75993803CA5
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Dec 2023 19:17:49 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=bXyl5/vp;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=R/kjo27K;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SkX1T3Gd0z3d8W
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 05:16:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SkX2f6vDMz3vfm
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 05:17:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=bXyl5/vp;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=R/kjo27K;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2c; helo=mail-qv1-xf2c.google.com; envelope-from=andy.shevchenko@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-qv1-xf2c.google.com (mail-qv1-xf2c.google.com [IPv6:2607:f8b0:4864:20::f2c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f32; helo=mail-qv1-xf32.google.com; envelope-from=andy.shevchenko@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SkX0c47sXz2xdf
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Dec 2023 05:16:00 +1100 (AEDT)
-Received: by mail-qv1-xf2c.google.com with SMTP id 6a1803df08f44-67a934a5b7eso25312776d6.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Dec 2023 10:16:00 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SkX1q5ZFPz2yDD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Dec 2023 05:17:03 +1100 (AEDT)
+Received: by mail-qv1-xf32.google.com with SMTP id 6a1803df08f44-679dd3055faso28686886d6.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Dec 2023 10:17:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701713757; x=1702318557; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1701713820; x=1702318620; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TrXoxXZcL5o0bwmshlpciFrBa2ROqvh7a5sct4i1UKg=;
-        b=bXyl5/vp0Nxx9pilp9wAEbr2FnxXXRW5guc12XWkj/x//RHNU6r1SsjjcWySZbczbg
-         QaM56ZeZy3emq8Zj9MDUxjA5vgpQawV7qgk/chfrSH5sJv7nWgEX7kbb2cy+n+7O61y5
-         ZidSqWEBRJstn9iikjCKR5Gk30np/3G6QPGu/YWJktv5lcLnNruLxN9kM0++CFi30rSr
-         V6H+e5ncY8i6Ice30x4Smt+w2hYdHdRqE6ck0efzH1ut1yNcTMSUSv1CVDFRctVibQTm
-         p7iJLv4wECneUYW87G925UaUV9DHQrZ9Hh5ruXjfHOZHM4ZC6XR4bYrlXWxNl8aBTAXp
-         938Q==
+        bh=zKrXivUU4s4Ix2KPkaOEslUQnUKTTONTEc2Vza38tik=;
+        b=R/kjo27K1r3Lr9a7jyySPrID5EXhy6eLEXmRnJ9EdUoMaMmXeZ3VQNw+3G8wWEd6aD
+         /9V3yu0RE06WtH16Ddnrex2mesSQqtWSA6EAHKFGxijsjMewKdTFNau4/ZjIKLFUm8eJ
+         td6ZG4DzR/rCIKx9c7qsdSJcchZGQtelZu8H33aYhZEkmsIWUxGID9gJWjekkcu0XeI9
+         HAquZprmxUgwKkXMQdVNiIpiYD0fMKZYx2LqSyGX0V6VSoifB3tdxSMZ29pCkHCvGFxb
+         faEzlmSTYbd6yxQBNwZc6JyVEPq35SzS7ouML396xjS5h+SRuh0l2gghsZscLA21QON1
+         xnUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701713757; x=1702318557;
+        d=1e100.net; s=20230601; t=1701713820; x=1702318620;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TrXoxXZcL5o0bwmshlpciFrBa2ROqvh7a5sct4i1UKg=;
-        b=tatpFCzxPFa7je8e+HHF70GkK0NotkQUVoNRy+0CpW2B/i88OkXVgZUG6KgwzzUXob
-         rDwU0a4Ln/O3fI0xeWAKUpzWZF/J3UB+h2pDB/gDiWEpMhR1bzJ0J3EB9+9zuhOYVCUY
-         7ErBy2SzR5Y0d7aqkTcq+WsSL/vRdmQqD7H3bq4maQek8Rnnpa385jnHyDCxraP4wiA3
-         Lll5syY3Z+RSpP+kjPGApTlop1aEewb1SD3JQ+qjQW4NE5lqDFHAx2hFbxvWXvo99gxC
-         +YRsa5JeiI0O6VzybRyzapbV/S5Ap5xRWSMhS+4qjzK1eCM81wNnxSNL43fZsu6QLK6T
-         Lweg==
-X-Gm-Message-State: AOJu0YxcTTVCoB09q2msH6pL7mP89jcnmd5R52/tiw/0OGM5+DsXGmiG
-	5hJ6C1WSatTb6n9cif2WAY2qictu7tLNDCODda0=
-X-Google-Smtp-Source: AGHT+IEjajfDd9RKlx7gFUwETBFW3qgAL1nJLNuT4J6PaOtDNdIF8ZKAVyxaqgT8rgBPT4oZQm5GDMnO9BQ+GnLJeQ0=
-X-Received: by 2002:a05:6214:1409:b0:67a:96c7:4c90 with SMTP id
- pr9-20020a056214140900b0067a96c74c90mr5715457qvb.38.1701713757080; Mon, 04
- Dec 2023 10:15:57 -0800 (PST)
+        bh=zKrXivUU4s4Ix2KPkaOEslUQnUKTTONTEc2Vza38tik=;
+        b=E11o3ELaGXPYqiQ5FrL+M+ZjBs+owZcz91nGFpI9TnYFcjs7YflMVGd0UnhckAzhwS
+         XcjD8BZMj71GKpCTGXInux9MLJWK6BjF/mwuPPSN8A0mK1JziCYkNa41se8PUXZxZKgy
+         a2OwvCt9cKCA9Ju2tQW38wVTR6XWdQk7TersA5EqC9p9AToXscO/ioAfWIEONDOhjCaS
+         qbU1UNy/gSXKcjfRrcRsfXmcsl56vcFEuHCAHJcNPgdygSIJ9aZj+GK7N0qAxehDvNz7
+         C4QWmetP9dFy9s4l5DXOnluIX4JDjk9F/Z42JoUoKHcqA90KMXjFu9TlzORGKGt0cPZ5
+         G91A==
+X-Gm-Message-State: AOJu0YxLklPDmyQisk6RSIV0js/F3yDmzD5aIGgFyi3UP2U7HV4wSpD1
+	EyTg/MlQnL5hXsj2MjjrS0xiaYDFZ69U0kf0YsOB2K2Nzuk=
+X-Google-Smtp-Source: AGHT+IENXN54JfD+GXTqScuy8jrajcws4TOEJiG6ht7UYF6f/npWH1zpa4uDEUtYwikXtEemxs1oijBNhnLkIElizdQ=
+X-Received: by 2002:a0c:fec7:0:b0:67a:cafa:ce13 with SMTP id
+ z7-20020a0cfec7000000b0067acaface13mr1629751qvs.53.1701713820408; Mon, 04 Dec
+ 2023 10:17:00 -0800 (PST)
 MIME-Version: 1.0
-References: <20231204180603.470421-1-gnstark@salutedevices.com> <20231204180603.470421-4-gnstark@salutedevices.com>
-In-Reply-To: <20231204180603.470421-4-gnstark@salutedevices.com>
+References: <20231204180603.470421-1-gnstark@salutedevices.com> <20231204180603.470421-5-gnstark@salutedevices.com>
+In-Reply-To: <20231204180603.470421-5-gnstark@salutedevices.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 4 Dec 2023 20:15:21 +0200
-Message-ID: <CAHp75VeQ86JnDF=nJ_AK5zTPB7BkOvn9wU+GottY_PV7JHzGTg@mail.gmail.com>
-Subject: Re: [PATCH v2 03/10] leds: aw2013: use devm API to cleanup module's resources
+Date: Mon, 4 Dec 2023 20:16:24 +0200
+Message-ID: <CAHp75VeNhGFtmjQOR5K52bmb3t6ufqtMoS-1mLkk_swDgO+-gg@mail.gmail.com>
+Subject: Re: [PATCH v2 04/10] leds: aw200xx: use devm API to cleanup module's resources
 To: George Stark <gnstark@salutedevices.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -90,34 +90,28 @@ com> wrote:
 
 ...
 
-> +static void aw2013_chip_disable_action(void *data)
+> +static void aw200xx_chip_reset_action(void *data)
 > +{
-> +       struct aw2013 *chip =3D (struct aw2013 *)data;
+> +       const struct aw200xx *chip =3D (struct aw200xx *)data;
 > +
-> +       aw2013_chip_disable(chip);
+> +       aw200xx_chip_reset(chip);
+> +}
+> +
+> +static void aw200xx_disable_action(void *data)
+> +{
+> +       const struct aw200xx *chip =3D (struct aw200xx *)data;
+> +
+> +       aw200xx_disable(chip);
 > +}
 
-As with mutex release, this also can be oneliner
-
-static void aw2013_chip_disable_action(void *chip)
-{
-       aw2013_chip_disable(chip);
-}
+They can be made oneliners.
 
 ...
 
 > +       if (devm_mutex_init(&client->dev, &chip->mutex))
 > +               return -ENOMEM;
 
-Shouldn be
-
-       ret =3D devm_mutex_init(&client->dev, &chip->mutex);
-       if (ret)
-           return ret;
-
-?
-
-> +               return -ENOMEM;
+Do not shadow the real error code.
 
 --=20
 With Best Regards,
