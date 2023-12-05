@@ -1,40 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA2A480587F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 16:24:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D028805889
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 16:24:50 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=kMIMIVJT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=TJj3Nn6G;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sl47h26ksz3dRZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Dec 2023 02:24:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sl48b4mG4z3dTR
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Dec 2023 02:24:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=kMIMIVJT;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=TJj3Nn6G;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.194; helo=relay2-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::222; helo=relay2-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::222])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sl44v41j3z3cVS
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Dec 2023 02:21:35 +1100 (AEDT)
-Received: by mail.gandi.net (Postfix) with ESMTPA id C297F4001B;
-	Tue,  5 Dec 2023 15:21:31 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sl44x47Smz3cVf
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Dec 2023 02:21:36 +1100 (AEDT)
+Received: by mail.gandi.net (Postfix) with ESMTPA id A725140016;
+	Tue,  5 Dec 2023 15:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1701789692;
+	t=1701789693;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Vd+Rqgrbba9Ay4j5SVMCYkNm38iDM5D9Pbjrfd3n8FE=;
-	b=kMIMIVJTcFmxytn35uLE72UHMHVd+WvxwTSr2dNiRuHZ024u4qvaZRZqwebyFkXhLrOsPJ
-	wLZZDhaVkt70Ja3g6T9/c7qIPd991VGIjf1M7tq5f9heifkkjf+nGIVduWAyaE7MoCVU5P
-	blbIE9x1/w31unNra+yDDnDnkIK2/GSnRzlK/pSsHNwtRVUsonm8Da8N4xzFnTSLZ2kgUv
-	tNQ6/M4S2Uu1sa3ReuLIVLkEGL1K4Z/2wNYUDaL9PqJ1z3sli7oaxUjQf7zMqg5MouQgKM
-	1cMe0fc5I+HDCVivIfXhS1RnafV9IcxjAD+C8Y7AuOiM7loQveOqIDBfiNyo4Q==
+	bh=CH30td9T992ZcnPYMJ2jKOsiF+4ZPdmUv7OxdVim8jo=;
+	b=TJj3Nn6Gf7TOul1jvegZEjqExz5j5thj0t/3531uP6G5RPtM/rYzmT6heliCJQK/7/qTEE
+	ER6itkYhT/HB2Ztv3u9zFGooof5wgfWCQLp7pmUv4MmuKNG7gNGCKb9CLwCRRmhbwav8lk
+	7iqxDT3ewH5423ddovm/J/ynF3RfPbsoOkCwxPLVEm1HONsWJ0mjoIYcqNSqzgUqKu6DQg
+	Ew0ZP09hM9WNlSiEHv94sD2PDsxUZoP7lrWqO7OLIUKHlDn687jRONdRrDT9N7EFTp2AR4
+	jH96j5pt3V0UvncPZrAX5yGxoTUPp19Jn2OfjutpA08U3KJ5khavuFzhFxIuhA==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Herve Codina <herve.codina@bootlin.com>,
 	Qiang Zhao <qiang.zhao@nxp.com>,
@@ -49,9 +49,9 @@ To: Herve Codina <herve.codina@bootlin.com>,
 	Jaroslav Kysela <perex@perex.cz>,
 	Takashi Iwai <tiwai@suse.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 06/17] soc: fsl: cpm1: qmc: Add support for child devices
-Date: Tue,  5 Dec 2023 16:21:03 +0100
-Message-ID: <20231205152116.122512-7-herve.codina@bootlin.com>
+Subject: [PATCH v2 07/17] soc: fsl: cpm1: qmc: Introduce available timeslots masks
+Date: Tue,  5 Dec 2023 16:21:04 +0100
+Message-ID: <20231205152116.122512-8-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231205152116.122512-1-herve.codina@bootlin.com>
 References: <20231205152116.122512-1-herve.codina@bootlin.com>
@@ -73,179 +73,54 @@ Cc: alsa-devel@alsa-project.org, Arnd Bergmann <arnd@arndb.de>, linux-kernel@vge
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-QMC child devices support is needed to avoid orphan DT nodes that use a
-simple DT phandle to reference a QMC channel.
+Available timeslots masks define timeslots available for the related
+channel. These timeslots are defined by the QMC binding.
 
-Allow to instantiate child devices and also extend the API to get the
-qmc_chan using a child device.
+Timeslots used are initialized to available timeslots but can be a
+subset of available timeslots.
+This prepares the dynamic timeslots management (ie. changing timeslots
+at runtime).
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- drivers/soc/fsl/qe/qmc.c | 91 +++++++++++++++++++++++++++++++---------
- include/soc/fsl/qe/qmc.h |  2 +
- 2 files changed, 73 insertions(+), 20 deletions(-)
+ drivers/soc/fsl/qe/qmc.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
-index 27f2f16deac9..e716f13669a0 100644
+index e716f13669a0..0413e25d4c67 100644
 --- a/drivers/soc/fsl/qe/qmc.c
 +++ b/drivers/soc/fsl/qe/qmc.c
-@@ -1425,8 +1425,16 @@ static int qmc_probe(struct platform_device *pdev)
- 
- 	platform_set_drvdata(pdev, qmc);
- 
-+	/* Populate channel related devices */
-+	ret = devm_of_platform_populate(qmc->dev);
-+	if (ret)
-+		goto err_disable_txrx;
-+
- 	return 0;
- 
-+err_disable_txrx:
-+	qmc_setbits32(qmc->scc_regs + SCC_GSMRL, 0);
-+
- err_disable_intr:
- 	qmc_write16(qmc->scc_regs + SCC_SCCM, 0);
- 
-@@ -1465,26 +1473,16 @@ static struct platform_driver qmc_driver = {
- };
- module_platform_driver(qmc_driver);
- 
--struct qmc_chan *qmc_chan_get_byphandle(struct device_node *np, const char *phandle_name)
-+static struct qmc_chan *qmc_chan_get_from_qmc(struct device_node *qmc_np, unsigned int chan_index)
- {
--	struct of_phandle_args out_args;
- 	struct platform_device *pdev;
- 	struct qmc_chan *qmc_chan;
+@@ -177,7 +177,9 @@ struct qmc_chan {
  	struct qmc *qmc;
--	int ret;
+ 	void __iomem *s_param;
+ 	enum qmc_mode mode;
++	u64	tx_ts_mask_avail;
+ 	u64	tx_ts_mask;
++	u64	rx_ts_mask_avail;
+ 	u64	rx_ts_mask;
+ 	bool is_reverse_data;
  
--	ret = of_parse_phandle_with_fixed_args(np, phandle_name, 1, 0,
--					       &out_args);
--	if (ret < 0)
--		return ERR_PTR(ret);
--
--	if (!of_match_node(qmc_driver.driver.of_match_table, out_args.np)) {
--		of_node_put(out_args.np);
-+	if (!of_match_node(qmc_driver.driver.of_match_table, qmc_np))
- 		return ERR_PTR(-EINVAL);
--	}
+@@ -875,7 +877,8 @@ static int qmc_of_parse_chans(struct qmc *qmc, struct device_node *np)
+ 			of_node_put(chan_np);
+ 			return ret;
+ 		}
+-		chan->tx_ts_mask = ts_mask;
++		chan->tx_ts_mask_avail = ts_mask;
++		chan->tx_ts_mask = chan->tx_ts_mask_avail;
  
--	pdev = of_find_device_by_node(out_args.np);
--	of_node_put(out_args.np);
-+	pdev = of_find_device_by_node(qmc_np);
- 	if (!pdev)
- 		return ERR_PTR(-ENODEV);
+ 		ret = of_property_read_u64(chan_np, "fsl,rx-ts-mask", &ts_mask);
+ 		if (ret) {
+@@ -884,7 +887,8 @@ static int qmc_of_parse_chans(struct qmc *qmc, struct device_node *np)
+ 			of_node_put(chan_np);
+ 			return ret;
+ 		}
+-		chan->rx_ts_mask = ts_mask;
++		chan->rx_ts_mask_avail = ts_mask;
++		chan->rx_ts_mask = chan->rx_ts_mask_avail;
  
-@@ -1494,17 +1492,12 @@ struct qmc_chan *qmc_chan_get_byphandle(struct device_node *np, const char *phan
- 		return ERR_PTR(-EPROBE_DEFER);
- 	}
- 
--	if (out_args.args_count != 1) {
-+	if (chan_index >= ARRAY_SIZE(qmc->chans)) {
- 		platform_device_put(pdev);
- 		return ERR_PTR(-EINVAL);
- 	}
- 
--	if (out_args.args[0] >= ARRAY_SIZE(qmc->chans)) {
--		platform_device_put(pdev);
--		return ERR_PTR(-EINVAL);
--	}
--
--	qmc_chan = qmc->chans[out_args.args[0]];
-+	qmc_chan = qmc->chans[chan_index];
- 	if (!qmc_chan) {
- 		platform_device_put(pdev);
- 		return ERR_PTR(-ENOENT);
-@@ -1512,8 +1505,44 @@ struct qmc_chan *qmc_chan_get_byphandle(struct device_node *np, const char *phan
- 
- 	return qmc_chan;
- }
-+
-+struct qmc_chan *qmc_chan_get_byphandle(struct device_node *np, const char *phandle_name)
-+{
-+	struct of_phandle_args out_args;
-+	struct qmc_chan *qmc_chan;
-+	int ret;
-+
-+	ret = of_parse_phandle_with_fixed_args(np, phandle_name, 1, 0,
-+					       &out_args);
-+	if (ret < 0)
-+		return ERR_PTR(ret);
-+
-+	if (out_args.args_count != 1) {
-+		of_node_put(out_args.np);
-+		return ERR_PTR(-EINVAL);
-+	}
-+
-+	qmc_chan = qmc_chan_get_from_qmc(out_args.np, out_args.args[0]);
-+	of_node_put(out_args.np);
-+	return qmc_chan;
-+}
- EXPORT_SYMBOL(qmc_chan_get_byphandle);
- 
-+struct qmc_chan *qmc_chan_get_bychild(struct device_node *np)
-+{
-+	struct device_node *qmc_np;
-+	u32 chan_index;
-+	int ret;
-+
-+	qmc_np = np->parent;
-+	ret = of_property_read_u32(np, "reg", &chan_index);
-+	if (ret)
-+		return ERR_PTR(-EINVAL);
-+
-+	return qmc_chan_get_from_qmc(qmc_np, chan_index);
-+}
-+EXPORT_SYMBOL(qmc_chan_get_bychild);
-+
- void qmc_chan_put(struct qmc_chan *chan)
- {
- 	put_device(chan->qmc->dev);
-@@ -1550,6 +1579,28 @@ struct qmc_chan *devm_qmc_chan_get_byphandle(struct device *dev,
- }
- EXPORT_SYMBOL(devm_qmc_chan_get_byphandle);
- 
-+struct qmc_chan *devm_qmc_chan_get_bychild(struct device *dev,
-+					   struct device_node *np)
-+{
-+	struct qmc_chan *qmc_chan;
-+	struct qmc_chan **dr;
-+
-+	dr = devres_alloc(devm_qmc_chan_release, sizeof(*dr), GFP_KERNEL);
-+	if (!dr)
-+		return ERR_PTR(-ENOMEM);
-+
-+	qmc_chan = qmc_chan_get_bychild(np);
-+	if (!IS_ERR(qmc_chan)) {
-+		*dr = qmc_chan;
-+		devres_add(dev, dr);
-+	} else {
-+		devres_free(dr);
-+	}
-+
-+	return qmc_chan;
-+}
-+EXPORT_SYMBOL(devm_qmc_chan_get_bychild);
-+
- MODULE_AUTHOR("Herve Codina <herve.codina@bootlin.com>");
- MODULE_DESCRIPTION("CPM QMC driver");
- MODULE_LICENSE("GPL");
-diff --git a/include/soc/fsl/qe/qmc.h b/include/soc/fsl/qe/qmc.h
-index 6f1d6cebc9fe..166484bb4294 100644
---- a/include/soc/fsl/qe/qmc.h
-+++ b/include/soc/fsl/qe/qmc.h
-@@ -17,9 +17,11 @@ struct device;
- struct qmc_chan;
- 
- struct qmc_chan *qmc_chan_get_byphandle(struct device_node *np, const char *phandle_name);
-+struct qmc_chan *qmc_chan_get_bychild(struct device_node *np);
- void qmc_chan_put(struct qmc_chan *chan);
- struct qmc_chan *devm_qmc_chan_get_byphandle(struct device *dev, struct device_node *np,
- 					     const char *phandle_name);
-+struct qmc_chan *devm_qmc_chan_get_bychild(struct device *dev, struct device_node *np);
- 
- enum qmc_mode {
- 	QMC_TRANSPARENT,
+ 		mode = "transparent";
+ 		ret = of_property_read_string(chan_np, "fsl,operational-mode", &mode);
 -- 
 2.43.0
 
