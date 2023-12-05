@@ -1,50 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C94FF805D44
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 19:24:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03FDD805F45
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 21:19:38 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=Lj3F+Ag5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fLh/5rYx;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sl87l23xxz3dBg
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Dec 2023 05:24:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SlBhl3hS3z3dGr
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Dec 2023 07:19:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=Lj3F+Ag5;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fLh/5rYx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sl86t0BtXz3cDy
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Dec 2023 05:23:33 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id 229CDB81C68;
-	Tue,  5 Dec 2023 18:23:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C20BC433C7;
-	Tue,  5 Dec 2023 18:23:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701800608;
-	bh=1u3S+qdTDDJpU1AH8fRxdM6v7mEapa2b3xh7jr42q/o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Lj3F+Ag5ozXNa3vw9pJkWyWpOZmMTl8+2HFnH4W/RwXkvCsduK0p1onlXVpCTJmp5
-	 2/ugFcqip8aPFmSVrmEWjpBRHj21UKjTnF8MkrqJ7vpxdii/xEfiF0vq0KD1ffM4+U
-	 vXh9snhqG0gpkuMFeJp3bGzqjhqHcGiGpTvTpOQ0=
-Date: Wed, 6 Dec 2023 03:23:26 +0900
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Subject: Re: [PATCH 5.15 00/67] 5.15.142-rc1 review
-Message-ID: <2023120610-cause-chariot-961b@gregkh>
-References: <20231205031519.853779502@linuxfoundation.org>
- <CA+G9fYs-XB29+aZ2kk9psA+MTo8PCh0owWgwGRiq8JK60CuUtg@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SlBgs3RH6z3cVY
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Dec 2023 07:18:49 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3B5Jm57m015804;
+	Tue, 5 Dec 2023 20:18:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=2xqKcYQA8MQnqu68X0jRFrSDm32HOOSlsD1tIIjzdRc=;
+ b=fLh/5rYx9QKp8Oa+w+G2omcdSEP7AvSZYkB6RomHegehrm6zNA5qhSoGBgLnrns1NT5A
+ UrZ9URXzZNMnVpuVA9sD0FAW6hBeW2NsRAeUVFhUQuZkXB1xaorP3YdvZGzTFUL2vdyk
+ x3UAvaOWeI6vpLND7e4yvByvTFt0QmFhGzT2zTOZnrB8Op+67Mu56lNqsUAatKdldIbl
+ 4x01izXTcX3omQh3HqkJrAyY4fh55BMCC4bcwWvtGuWNeXPQf2TW7LDQ8Q8Y+iVn5T6+
+ frPVYgwlHWnhwPbxhVh+089b+wu2re4p5wARO3rUjeeVPi0iGlMrFnEwio4Cq9iGAO82 rg== 
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3utab9ru5h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 Dec 2023 20:18:41 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3B5J3WX8009969;
+	Tue, 5 Dec 2023 20:18:40 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3urh4kgqwp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 Dec 2023 20:18:40 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3B5KIbER44434100
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 5 Dec 2023 20:18:37 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A13CF20049;
+	Tue,  5 Dec 2023 20:18:37 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3A9172004D;
+	Tue,  5 Dec 2023 20:18:36 +0000 (GMT)
+Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.ibm.com.com (unknown [9.43.30.216])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  5 Dec 2023 20:18:35 +0000 (GMT)
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Subject: [RFC PATCH 0/3] powerpc/fadump: pass additional args to dump capture kernel
+Date: Wed,  6 Dec 2023 01:48:32 +0530
+Message-ID: <20231205201835.388030-1-hbathini@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYs-XB29+aZ2kk9psA+MTo8PCh0owWgwGRiq8JK60CuUtg@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: dx3wRfKemKFiM85yvbuPMiAdUJ3GRaRE
+X-Proofpoint-GUID: dx3wRfKemKFiM85yvbuPMiAdUJ3GRaRE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-05_15,2023-12-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=6 suspectscore=0
+ mlxlogscore=119 clxscore=1015 bulkscore=0 adultscore=0 lowpriorityscore=0
+ malwarescore=0 phishscore=0 mlxscore=6 spamscore=6 impostorscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2312050160
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,53 +86,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: f.fainelli@gmail.com, Gaurav Batra <gbatra@linux.vnet.ibm.com>, rwarsow@gmx.de, pavel@denx.de, conor@kernel.org, shuah@kernel.org, allen.lkml@gmail.com, patches@lists.linux.dev, stable@vger.kernel.org, linux-kernel@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, lkft-triage@lists.linaro.org, srw@sladewatkins.net, patches@kernelci.org, akpm@linux-foundation.org, jonathanh@nvidia.com, torvalds@linux-foundation.org, sudipm.mukherjee@gmail.com, linux@roeck-us.net
+Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Dec 05, 2023 at 10:18:49PM +0530, Naresh Kamboju wrote:
-> On Tue, 5 Dec 2023 at 09:10, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 5.15.142 release.
-> > There are 67 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Thu, 07 Dec 2023 03:14:57 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.142-rc1.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
-> 
-> 
-> Following powerpc build failures noticed.
-> 
-> * powerpc, build
->   - clang-17-defconfig - FAILED
->   - gcc-12-defconfig - FAILED
->   - gcc-8-defconfig - FAILED
-> 
-> build error:
-> ---
-> arch/powerpc/platforms/pseries/iommu.c: In function 'find_existing_ddw':
-> arch/powerpc/platforms/pseries/iommu.c:908:49: error: 'struct dma_win'
-> has no member named 'direct'
->   908 |                         *direct_mapping = window->direct;
->       |                                                 ^~
-> 
-> suspected commit:
-> powerpc/pseries/iommu: enable_ddw incorrectly returns direct mapping
-> for SR-IOV device
->  [ Upstream commit 3bf983e4e93ce8e6d69e9d63f52a66ec0856672e ]
-> 
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+While fadump is a more reliable alternative to kdump dump capturing
+method, it doesn't support passing additional parameters. Having
+such support is desirable for two major reasons:
 
-Thanks, now dropped from 5.15.y and 6.1.y
+  1. It helps minimize the memory consumption of fadump dump capture
+     kernel by disabling features that consume considerable amount of
+     memory but have little significance for dump capture environment
+     (eg. numa, cma, cgroup, etc.)
+   2. It helps disable such features/components in dump capture kernel
+      that are unstable and/or are being debugged.
+
+This patch series adds support to pass additional parameters to fadump
+capture kernel to make it more desirable. For this, a dedicated area
+is passed between production kernel and capture kerenl to pass these
+additional parameters. This support is enabled only on pseries as of
+now. The dedicated area is referred to as RTAS_FADUMP_PARAM_AREA.
+
+In radix MMU mode, this dedicated area can be anywhere but in case of
+hash MMU, it can only be in the first memory block to be accessible
+during early boot. Enabling this feature support in both radix and
+hash MMU modes but in hash MMU only when RMA size is 768MB or more
+to avoid complex memory real estate with FW components.
+
+The first patch adds support for multiple boot memory regions to make
+addition of any new region types simpler. The second patch sets up the
+parameter (dedicated) area to be passed to the capture kernel.
+/sys/kernel/fadump/bootargs_append is exported to the userspace to
+specify the additional parameters to be passed to the capture kernel.
+The last patch appends the parameters to bootargs during capture
+kernel boot.
+
+Hari Bathini (2):
+  powerpc/fadump: pass additional parameters to dump capture kernel
+  powerpc/fadump: pass additional parameters when fadump is active
+
+Sourabh Jain (1):
+  powerpc/pseries/fadump: add support for multiple boot memory regions
+
+ arch/powerpc/include/asm/fadump-internal.h   |   5 +-
+ arch/powerpc/include/asm/fadump.h            |   2 +
+ arch/powerpc/kernel/fadump.c                 | 141 +++++++--
+ arch/powerpc/kernel/prom.c                   |   3 +
+ arch/powerpc/platforms/powernv/opal-fadump.c |  14 +-
+ arch/powerpc/platforms/pseries/rtas-fadump.c | 293 +++++++++++++------
+ arch/powerpc/platforms/pseries/rtas-fadump.h |  29 +-
+ 7 files changed, 360 insertions(+), 127 deletions(-)
+
+-- 
+2.43.0
+
