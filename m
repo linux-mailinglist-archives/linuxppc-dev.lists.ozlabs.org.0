@@ -1,67 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82289805A49
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 17:49:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B62D6805A87
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 17:54:06 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=t+qDUyC3;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QT91pOiE;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sl62r0Q8rz3clL
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Dec 2023 03:49:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sl67c1Tz2z3d8S
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Dec 2023 03:54:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=t+qDUyC3;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QT91pOiE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::92e; helo=mail-ua1-x92e.google.com; envelope-from=naresh.kamboju@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-ua1-x92e.google.com (mail-ua1-x92e.google.com [IPv6:2607:f8b0:4864:20::92e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sl61z1Z8Vz3c2V
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Dec 2023 03:49:09 +1100 (AEDT)
-Received: by mail-ua1-x92e.google.com with SMTP id a1e0cc1a2514c-7c513dc5815so1982155241.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Dec 2023 08:49:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1701794941; x=1702399741; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=YfqclM3ZkWiAXDbZmcjbBwB6xmJbMZCT4iOO/IexVc0=;
-        b=t+qDUyC3Ke4U0BFbdAO4Xn2amYmWnRS8MM9TPKnXAejIXcig56uC8WtKFrIR5LOTGW
-         teLcQSXNskI0gb+O8oKj2OMYYajBTgb4H1DtsQovMnmjKebxBWNo1TAIvHpX5FpSTMQZ
-         zTXbuIbq+K+B3giF6pKSmKqG1gaRa2gRd+cjYuo9kyr11DWkjSPWlQFrjPP7micSSQno
-         GnoebOSkTa+34B2wBamuBtdV10gwKLTCU6TFKgbVuYaNr2jDLP/0D3d1XyS4L4GH2SIF
-         CDH6oj8ZcUhCYKGszjozIkuk2xCkb8JH8AWx8PHH8orTnXomhEwZbybY9jPTtwC61OIm
-         Mykg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701794941; x=1702399741;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YfqclM3ZkWiAXDbZmcjbBwB6xmJbMZCT4iOO/IexVc0=;
-        b=jp4Wx+pA615tNTg/iuXmJTXAVYKl3DWHx7cpKiXXQaL7LZ/jlS7q0KkUpSKAsvnUxh
-         8CPN3EJlpsIhWX6+ZknbTqYGhxhqrEwbEFZ+SM/6QRghmMUHpyMFevIBjrZUDX1M0VOF
-         3slIAhlsZvnZiqwNNW237XvGeM6NZijIBYhwafcB18hNbZk2oUVpLsy29w6XxbbHohwF
-         FbJS8RiO6vw+hqOasz9hvrV/mRn5KUAMGWSUMIFSjM3QeRKEM177bkxntDLl+DawNwK5
-         Y9F40ZOnamYH14pWwDGsqd8aFhF1mJOaZvFFuHYSorHYOWBgAzllxYC1r1L7TRmcrwIK
-         ywHA==
-X-Gm-Message-State: AOJu0YwMIHE6RE/NYi8MVyYNffv4vv94sZL9pE0AVVtlJq6Kdkftspnc
-	EY98kRM8ZuV2E+NH+EjDgrtbZzj8n6/ZaG6O8VrQ3Q==
-X-Google-Smtp-Source: AGHT+IHus3uB7dNMpJ0cP1uy5kkamJOMFLF8zMXjR6WyF50uZ0U0xiaK7tFOWnFeBiVqsPbRDg47o04MaF15ciRegfc=
-X-Received: by 2002:a05:6102:34e2:b0:462:c2e9:6dda with SMTP id
- bi2-20020a05610234e200b00462c2e96ddamr3198642vsb.31.1701794940837; Tue, 05
- Dec 2023 08:49:00 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sl66l2qW4z3cLQ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Dec 2023 03:53:19 +1100 (AEDT)
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3B5GRKAR021718;
+	Tue, 5 Dec 2023 16:53:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : content-type :
+ mime-version; s=pp1; bh=6z+4aSGkX0C8sh32Dh4puLLnTPzHE0UepW2m2Y8DuKs=;
+ b=QT91pOiE0ReUKPsQCvXofwgWmX6XnDAZSq8S6z+uk2X1CPuU/zT2J43xwpFdMxnYcc+m
+ OuqqSwg0WZ5liljmlLwDGWw+gYZGbRjZ1kh/pQ+YWdzebh5aXcMgaMQOh/NgZsv4aHN6
+ YhK2ZDnwq/+MBtWgq8KDOVTdQARt9JQ/5LUt+4DhHTVNjHqxTa9+saGO2EY0N2WslVSI
+ e/odk4Xvwn6I3HPeucbYgJ8gZGY1EZF79RR8gcgOWjgrNEzG4MBHgDFl2WIT6Z7Qy3XR
+ CMYRVqdd24SVinQllXdr561awuVcAeB58uswCQ0CVvn0eP0HzokCWjlxSaKi358taJHJ gw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ut7d68u8n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 Dec 2023 16:53:13 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B5GT6Kh028010;
+	Tue, 5 Dec 2023 16:53:12 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ut7d68twp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 Dec 2023 16:53:12 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3B5GjAZd009150;
+	Tue, 5 Dec 2023 16:51:31 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3urgdkythn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 Dec 2023 16:51:31 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3B5GpUWt41877996
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 5 Dec 2023 16:51:31 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 96C4C58056;
+	Tue,  5 Dec 2023 16:51:30 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7FD5958065;
+	Tue,  5 Dec 2023 16:51:30 +0000 (GMT)
+Received: from localhost (unknown [9.61.95.155])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  5 Dec 2023 16:51:30 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v4 05/13] powerpc/rtas: Facilitate high-level call
+ sequences
+In-Reply-To: <871qc623z2.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+References: <20231117-papr-sys_rtas-vs-lockdown-v4-0-b794d8cb8502@linux.ibm.com>
+ <20231117-papr-sys_rtas-vs-lockdown-v4-5-b794d8cb8502@linux.ibm.com>
+ <87sf4p33zg.fsf@mail.lhotse>
+ <87jzq11nsj.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+ <874jh43dcn.fsf@mail.lhotse>
+ <877clz14ii.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+ <87plzq271r.fsf@mail.lhotse>
+ <871qc623z2.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+Date: Tue, 05 Dec 2023 10:51:30 -0600
+Message-ID: <87sf4gk2y5.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: mQy7zw5r-uTkYocVf9tpvsQs4zOBRSzg
+X-Proofpoint-GUID: IKNJuBgp9YkyOL-Y55Llbhkszt1lF-3P
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <20231205031519.853779502@linuxfoundation.org>
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 5 Dec 2023 22:18:49 +0530
-Message-ID: <CA+G9fYs-XB29+aZ2kk9psA+MTo8PCh0owWgwGRiq8JK60CuUtg@mail.gmail.com>
-Subject: Re: [PATCH 5.15 00/67] 5.15.142-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-05_12,2023-12-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ mlxlogscore=999 spamscore=0 lowpriorityscore=0 phishscore=0 adultscore=0
+ impostorscore=0 priorityscore=1501 clxscore=1015 bulkscore=0
+ malwarescore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2312050133
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,59 +103,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: f.fainelli@gmail.com, Gaurav Batra <gbatra@linux.vnet.ibm.com>, rwarsow@gmx.de, pavel@denx.de, conor@kernel.org, shuah@kernel.org, allen.lkml@gmail.com, patches@lists.linux.dev, stable@vger.kernel.org, linux-kernel@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, lkft-triage@lists.linaro.org, srw@sladewatkins.net, patches@kernelci.org, akpm@linux-foundation.org, jonathanh@nvidia.com, torvalds@linux-foundation.org, sudipm.mukherjee@gmail.com, linux@roeck-us.net
+Cc: tyreld@linux.ibm.com, Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org, gcwilson@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 5 Dec 2023 at 09:10, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+Nathan Lynch <nathanl@linux.ibm.com> writes:
+> Michael Ellerman <mpe@ellerman.id.au> writes:
+>> Nathan Lynch <nathanl@linux.ibm.com> writes:
+>>> Michael Ellerman <mpe@ellerman.id.au> writes:
+>>>> Nathan Lynch <nathanl@linux.ibm.com> writes:
+>>>>> Michael Ellerman <mpe@ellerman.id.au> writes:
+>>>>>> Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
+>>>>>> writes:
+>>>>>>> From: Nathan Lynch <nathanl@linux.ibm.com>
+>>>>>>>
+>>>>>>> On RTAS platforms there is a general restriction that the OS must not
+>>>>>>> enter RTAS on more than one CPU at a time. This low-level
+>>>>>>> serialization requirement is satisfied by holding a spin
+>>>>>>> lock (rtas_lock) across most RTAS function invocations.
+>>>>>> ...
+>>>>>>> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+>>>>>>> index 1fc0b3fffdd1..52f2242d0c28 100644
+>>>>>>> --- a/arch/powerpc/kernel/rtas.c
+>>>>>>> +++ b/arch/powerpc/kernel/rtas.c
+>>>>>>> @@ -581,6 +652,28 @@ static const struct rtas_function *rtas_token_to_function(s32 token)
+>>>>>>>  	return NULL;
+>>>>>>>  }
+>>>>>>>  
+>>>>>>> +static void __rtas_function_lock(struct rtas_function *func)
+>>>>>>> +{
+>>>>>>> +	if (func && func->lock)
+>>>>>>> +		mutex_lock(func->lock);
+>>>>>>> +}
+>>>>>>
+>>>>>> This is obviously going to defeat most static analysis tools.
+>>>>>
+>>>>> I guess it's not that obvious to me :-) Is it because the mutex_lock()
+>>>>> is conditional? I'll improve this if it's possible.
+>>>>
+>>>> Well maybe I'm not giving modern static analysis tools enough credit :)
+>>>>
+>>>> But what I mean that it's not easy to reason about what the function
+>>>> does in isolation. ie. all you can say is that it may or may not lock a
+>>>> mutex, and you can't say which mutex.
+>>>
+>>> I've pulled the thread on this a little bit and here is what I can do:
+>>>
+>>> * Discard rtas_lock_function() and rtas_unlock_function() and make the
+>>>   function mutexes extern as needed. As of now only
+>>>   rtas_ibm_get_vpd_lock will need to be exposed. This enables us to put
+>>>   __acquires(), __releases(), and __must_hold() annotations in
+>>>   papr-vpd.c since it explicitly manipulates the mutex.
+>>>
+>>> * Then sys_rtas() becomes the only site that needs
+>>>   __rtas_function_lock() and __rtas_function_unlock(), which can be
+>>>   open-coded and commented (and, one hopes, not emulated elsewhere).
+>>>
+>>> This will look something like:
+>>>
+>>> SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
+>>> {
+>>>         struct rtas_function *func = rtas_token_to_function(token);
+>>>
+>>>         if (func->lock)
+>>>                 mutex_lock(func->lock);
+>>>
+>>>         [ ... acquire rtas_lock, enter RTAS, fetch any errors ... ]
+>>>
+>>>         if (func->lock)
+>>>                 mutex_unlock(func->lock);
+>>>
+>>> The indirection seems unavoidable since we're working backwards from a
+>>> token value (supplied by the user and not known at build time) to the
+>>> function descriptor.
+>>>
+>>> Is that tolerable for now?
+>>
+>> Yeah. Thanks for looking into it.
+>>
+>> I wasn't unhappy with the original version, but just slightly uneasy
+>> about the locking via pointer.
+>>
+>> But that new proposal sounds good, more code will have static lock
+>> annotations, and only sys_rtas() which is already weird, will have the
+>> dynamic stuff.
 >
-> This is the start of the stable review cycle for the 5.15.142 release.
-> There are 67 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 07 Dec 2023 03:14:57 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.142-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+> OK, I'll work that up then.
 
+Well, apparently the annotations aren't useful with mutexes; see these
+threads:
 
-Following powerpc build failures noticed.
+https://lore.kernel.org/all/8e8d93ee2125c739caabe5986f40fa2156c8b4ce.1579893447.git.jbi.octave@gmail.com/
+https://lore.kernel.org/all/20200601184552.23128-5-jbi.octave@gmail.com/
 
-* powerpc, build
-  - clang-17-defconfig - FAILED
-  - gcc-12-defconfig - FAILED
-  - gcc-8-defconfig - FAILED
+And indeed I can't get sparse to accept them when added to the papr-vpd
+code:
 
-build error:
----
-arch/powerpc/platforms/pseries/iommu.c: In function 'find_existing_ddw':
-arch/powerpc/platforms/pseries/iommu.c:908:49: error: 'struct dma_win'
-has no member named 'direct'
-  908 |                         *direct_mapping = window->direct;
-      |                                                 ^~
+$ make C=2 arch/powerpc/platforms/pseries/papr-vpd.o
+  CHECK   scripts/mod/empty.c
+  CALL    scripts/checksyscalls.sh
+  CHECK   arch/powerpc/platforms/pseries/papr-vpd.c
+    arch/powerpc/platforms/pseries/papr-vpd.c:235:13: warning: context
+      imbalance in 'vpd_sequence_begin' - wrong count at exit
+    arch/powerpc/platforms/pseries/papr-vpd.c:269:13: warning: context
+      imbalance in 'vpd_sequence_end' - wrong count at exit
 
-suspected commit:
-powerpc/pseries/iommu: enable_ddw incorrectly returns direct mapping
-for SR-IOV device
- [ Upstream commit 3bf983e4e93ce8e6d69e9d63f52a66ec0856672e ]
+I don't think it's my own mistake since I see existing code with the
+same problem, such as net/core/sock.c:
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+static void *proto_seq_start(struct seq_file *seq, loff_t *pos)
+	__acquires(proto_list_mutex)
+{
+	mutex_lock(&proto_list_mutex);
+	return seq_list_start_head(&proto_list, *pos);
+}
 
-Links:
-  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.141-68-gbff845be423f/testrun/21492943/suite/build/test/gcc-12-defconfig/details/
-  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.141-68-gbff845be423f/testrun/21492943/suite/build/test/gcc-12-defconfig/history/
+static void proto_seq_stop(struct seq_file *seq, void *v)
+	__releases(proto_list_mutex)
+{
+	mutex_unlock(&proto_list_mutex);
+}
 
+which yields:
 
---
-Linaro LKFT
-https://lkft.linaro.org
+net/core/sock.c:4018:13: warning: context imbalance in 'proto_seq_start'
+  - wrong count at exit
+net/core/sock.c:4030:13: warning: context imbalance in 'proto_seq_stop'
+  - wrong count at exit
+
+So I'll give up on static annotations for this series and look for
+opportunities to add lockdep_assert_held() etc.
