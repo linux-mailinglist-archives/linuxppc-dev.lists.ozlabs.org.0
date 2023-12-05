@@ -2,95 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC07C804E27
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 10:42:15 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eseCFvs+;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id F17E7804DD8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 10:29:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SkwYK32Ztz3d9G
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 20:42:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SkwGX3q7Jz3cmC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 20:29:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eseCFvs+;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=chentao@kylinos.cn; receiver=lists.ozlabs.org)
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SkwXQ6bbtz30P0
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Dec 2023 20:41:26 +1100 (AEDT)
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3B58puO7022191;
-	Tue, 5 Dec 2023 09:41:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=LOZ71nqKB1YViNGSJ4zg3iIa8bIXA4UwCeigzew7QYg=;
- b=eseCFvs+tpGHcU9LS75utjQyn3ucC+Y9lDcW1dp94dbWjDV0QOeLxwFjdwB6ShD/WZhe
- i3tz8++gh1JQnG2O/2xdQFIUm/SpNq26rCD3z/JvBUAz52qemlXN6ms4P5VTI9n98s9l
- ucmOYl3T+fNx0eM9g8LpEZ9tnn77y34lBRMnDv02w3feYLMhq/ZoT9OnTFiPu7f6+zTm
- QiKI+QbJxbmGYQzah7sXd757A/wIv44Lc146A6Eq+XzUH+MZd+lZ1BEvtAxN1Fxo+mBK
- lNA1gZMkZg6DtLGWcexcFtxAUdeMa9EZqMXM5DN0I85uCYM763C0nS7AZaV/KLCr+Eoi SQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ut0et1rr0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 Dec 2023 09:41:20 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B59GQkS003782;
-	Tue, 5 Dec 2023 09:41:20 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ut0et1rpm-3
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 Dec 2023 09:41:20 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3B57YF52009150;
-	Tue, 5 Dec 2023 09:22:02 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3urgdkwkfc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 Dec 2023 09:22:02 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3B59M1Ou43713260
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 5 Dec 2023 09:22:01 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4DEED5805A;
-	Tue,  5 Dec 2023 09:22:01 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 710095805C;
-	Tue,  5 Dec 2023 09:22:00 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.67.87.193])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  5 Dec 2023 09:22:00 +0000 (GMT)
-Subject: Re: [PATCH v3] powerpc/pseries/vas: Use usleep_range() to support
- HCALL delay
-To: "Aneesh Kumar K.V (IBM)" <aneesh.kumar@kernel.org>,
-        linuxppc-dev@lists.ozlabs.org
-References: <20231203020115.860099-1-haren@linux.ibm.com>
- <87r0k283lk.fsf@kernel.org>
-From: Haren Myneni <haren@linux.ibm.com>
-Message-ID: <ad7853f5-0899-7e0d-89e6-b5c1e4742a11@linux.ibm.com>
-Date: Tue, 5 Dec 2023 01:21:59 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SkwFz6Z9nz30fF
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Dec 2023 20:28:52 +1100 (AEDT)
+X-UUID: 2aa5a5f3ecf24832a2cd6db6e3ab7ebb-20231205
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.33,REQID:550d1e5a-49cd-4e19-8ab4-4c8269f71884,IP:5,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:-15
+X-CID-INFO: VERSION:1.1.33,REQID:550d1e5a-49cd-4e19-8ab4-4c8269f71884,IP:5,URL
+	:0,TC:0,Content:-5,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-15
+X-CID-META: VersionHash:364b77b,CLOUDID:871a2b96-10ce-4e4b-85c2-c9b5229ff92b,B
+	ulkID:2312041843482P8UAYLL,BulkQuantity:3,Recheck:0,SF:19|44|64|66|38|24|1
+	7|102,TC:nil,Content:0,EDM:-3,IP:-2,URL:0,File:nil,Bulk:40,QS:nil,BEC:nil,
+	COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI
+X-UUID: 2aa5a5f3ecf24832a2cd6db6e3ab7ebb-20231205
+X-User: chentao@kylinos.cn
+Received: from [172.20.15.254] [(116.128.244.169)] by mailgw
+	(envelope-from <chentao@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1414185240; Tue, 05 Dec 2023 17:28:31 +0800
+Message-ID: <7be4a5ac-d0b8-4f5d-848a-b54ab3c67228@kylinos.cn>
+Date: Tue, 5 Dec 2023 17:28:30 +0800
 MIME-Version: 1.0
-In-Reply-To: <87r0k283lk.fsf@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: rXefadSEe9G2p6GfmxHERkp5pnSXiGHX
-X-Proofpoint-GUID: eORk87oZ-wQZlAuncq3zvBLUMB4QzN02
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-05_04,2023-12-04_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 malwarescore=0
- bulkscore=0 impostorscore=0 phishscore=0 adultscore=0 clxscore=1011
- mlxlogscore=999 suspectscore=0 lowpriorityscore=0 priorityscore=1501
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2312050078
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] cxl: Fix null pointer dereference in cxl_get_fd
+To: Frederic Barrat <fbarrat@linux.ibm.com>, ajd@linux.ibm.com,
+ arnd@arndb.de, gregkh@linuxfoundation.org, mpe@ellerman.id.au,
+ mrochs@linux.vnet.ibm.com
+References: <20231204020745.2445944-1-chentao@kylinos.cn>
+ <c914f4ba-253d-4b57-bdd2-4c95d40bbf91@linux.ibm.com>
+From: Kunwu Chan <chentao@kylinos.cn>
+In-Reply-To: <c914f4ba-253d-4b57-bdd2-4c95d40bbf91@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,101 +61,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, npiggin@gmail.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, kunwu.chan@hotmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Fred,
+Thanks for your reply.
 
 
-On 12/4/23 6:05 AM, Aneesh Kumar K.V (IBM) wrote:
-> Haren Myneni <haren@linux.ibm.com> writes:
+But there is a question, whether we should return an error code in error 
+path so that the caller of the 'cxl_get_fd' can know the specific 
+reason. rather than just return NULL.
+Such as:
+-       int rc, flags, fdtmp;
++       int rc = 0, flags, fdtmp;
+         char *name = NULL;
+
+         /* only allow one per context */
+-       if (ctx->mapping)
+-               return ERR_PTR(-EEXIST);
++       if (ctx->mapping) {
++               rc = -EEXIST;
++               goto err;
++       }
+
+         flags = O_RDWR | O_CLOEXEC;
+
+         /* This code is similar to anon_inode_getfd() */
+         rc = get_unused_fd_flags(flags);
+-       if (rc < 0)
+-               return ERR_PTR(rc);
++       if (rc < 0) {
++               goto err;
++       }
+         fdtmp = rc;
+
+
+
+         name = kasprintf(GFP_KERNEL, "cxl:%d", ctx->pe);
++        if (!name) {
++               rc = -ENOMEM;
++               goto err_fd;
++        }
+         file = cxl_getfile(name, fops, ctx, flags);
+         kfree(name);
+@@ -434,6 +437,9 @@ struct file *cxl_get_fd(struct cxl_context *ctx, 
+struct file_operations *fops,
+
+  err_fd:
+         put_unused_fd(fdtmp);
++err:
++       if (rc)
++               return ERR_PTR(rc);
+         return NULL;
+
+
+Thanks again,
+Kunwu
+
+On 2023/12/4 18:43, Frederic Barrat wrote:
 > 
->> VAS allocate, modify and deallocate HCALLs returns
->> H_LONG_BUSY_ORDER_1_MSEC or H_LONG_BUSY_ORDER_10_MSEC for busy
->> delay and expects OS to reissue HCALL after that delay. But using
->> msleep() will often sleep at least 20 msecs even though the
->> hypervisor suggests OS reissue these HCALLs after 1 or 10msecs.
->> The open and close VAS window functions hold mutex and then issue
->> these HCALLs. So these operations can take longer than the
->> necessary when multiple threads issue open or close window APIs
->> simultaneously.
->>
->> So instead of msleep(), use usleep_range() to ensure sleep with
->> the expected value before issuing HCALL again.
->>
 > 
-> Can you summarize if there an user observable impact for the current
-> code? We have other code paths using msleep(get_longbusy_msec()). Should
-> we audit those usages?
-
-As mentioned in the description, the open and close VAS window APIs can 
-take longer with simultaneous calls, especially might affect the 
-performance in the case of repeat open/close APIs for each compression 
-request. On the large machine configuration which allows more 
-simultaneous open windows (Ex: 240 cores provides 4800 VAS credits), the 
-user can observe mutex contention around open/close HCAlls and hung-up 
-traces in dmesg. I will repost the patch with this update in the commit 
-message.
-
-I think applicable to use the similar approach for other HCALLs (like in 
-rtas_busy_delay()) but I have not seen any impact so far with other 
-HCALLs. So we can add this change later.
-
-Thanks
-Haren
-
-> 
-> 
+> On 04/12/2023 03:07, Kunwu Chan wrote:
+>> kasprintf() returns a pointer to dynamically allocated memory
+>> which can be NULL upon failure.
 >>
->> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
->> Suggested-by: Nathan Lynch <nathanl@linux.ibm.com>
->>
+>> Fixes: bdecf76e319a ("cxl: Fix coredump generation when cxl_get_fd() 
+>> is used")
+>> Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
 >> ---
->> v1 -> v2:
->> - Use usleep_range instead of using RTAS sleep routine as
->>    suggested by Nathan
->> v2 -> v3:
->> - Sleep 10MSecs even for HCALL delay > 10MSecs and the other
->>    commit / comemnt changes as suggested by Nathan and Ellerman.
->> ---
->>   arch/powerpc/platforms/pseries/vas.c | 25 ++++++++++++++++++++++++-
->>   1 file changed, 24 insertions(+), 1 deletion(-)
+>>   drivers/misc/cxl/api.c | 4 ++++
+>>   1 file changed, 4 insertions(+)
 >>
->> diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
->> index 71d52a670d95..5cf81c564d4b 100644
->> --- a/arch/powerpc/platforms/pseries/vas.c
->> +++ b/arch/powerpc/platforms/pseries/vas.c
->> @@ -38,7 +38,30 @@ static long hcall_return_busy_check(long rc)
->>   {
->>   	/* Check if we are stalled for some time */
->>   	if (H_IS_LONG_BUSY(rc)) {
->> -		msleep(get_longbusy_msecs(rc));
->> +		unsigned int ms;
->> +		/*
->> +		 * Allocate, Modify and Deallocate HCALLs returns
->> +		 * H_LONG_BUSY_ORDER_1_MSEC or H_LONG_BUSY_ORDER_10_MSEC
->> +		 * for the long delay. So the sleep time should always
->> +		 * be either 1 or 10msecs, but in case if the HCALL
->> +		 * returns the long delay > 10 msecs, clamp the sleep
->> +		 * time to 10msecs.
->> +		 */
->> +		ms = clamp(get_longbusy_msecs(rc), 1, 10);
->> +
->> +		/*
->> +		 * msleep() will often sleep at least 20 msecs even
->> +		 * though the hypervisor suggests that the OS reissue
->> +		 * HCALLs after 1 or 10msecs. Also the delay hint from
->> +		 * the HCALL is just a suggestion. So OK to pause for
->> +		 * less time than the hinted delay. Use usleep_range()
->> +		 * to ensure we don't sleep much longer than actually
->> +		 * needed.
->> +		 *
->> +		 * See Documentation/timers/timers-howto.rst for
->> +		 * explanation of the range used here.
->> +		 */
->> +		usleep_range(ms * 100, ms * 1000);
->>   		rc = H_BUSY;
->>   	} else if (rc == H_BUSY) {
->>   		cond_resched();
->> -- 
->> 2.26.3
+>> diff --git a/drivers/misc/cxl/api.c b/drivers/misc/cxl/api.c
+>> index d85c56530863..bfd7ccd4d7e1 100644
+>> --- a/drivers/misc/cxl/api.c
+>> +++ b/drivers/misc/cxl/api.c
+>> @@ -419,6 +419,10 @@ struct file *cxl_get_fd(struct cxl_context *ctx, 
+>> struct file_operations *fops,
+>>           fops = (struct file_operations *)&afu_fops;
+>>       name = kasprintf(GFP_KERNEL, "cxl:%d", ctx->pe);
+>> +    if (!name) {
+>> +        put_unused_fd(fdtmp);
+>> +        return ERR_PTR(-ENOMEM);
+>> +    }
+> 
+> 
+> That works, but you might as well follow the existing error path:
+> 
+>      name = kasprintf(GFP_KERNEL, "cxl:%d", ctx->pe);
+>      if (!name)
+>          goto err_fd;
+> 
+>    Fred
+> 
+> 
+>>       file = cxl_getfile(name, fops, ctx, flags);
+>>       kfree(name);
+>>       if (IS_ERR(file))
