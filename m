@@ -2,49 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A147F804939
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 06:13:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E529E804ACE
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 07:59:21 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=e/wAoH+j;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=HzwMXPNm;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SkpbP0ryjz3dFr
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 16:13:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SkrxM2QLGz3cft
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 17:59:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=e/wAoH+j;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=HzwMXPNm;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::240; helo=mslow1.mail.gandi.net; envelope-from=miquel.raynal@bootlin.com; receiver=lists.ozlabs.org)
+Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [IPv6:2001:4b98:dc4:8::240])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SkpZM6Z1Fz3d9B
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Dec 2023 16:12:43 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1701753163;
-	bh=Y/UcMyZulCMpkKSxYUXawhkspAHbn05SpEAtSEun5f8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=e/wAoH+jxLNN6y6pGOoENMhYs6iAjqi0qMSAD3hkk1mXBmV+u6rKYDB5BiPg6LELO
-	 xZ1xgrfVUhxQzgcLjcLxdgoG6iiGCoY836W9XYzhCTgEd2csFkuQL61qTzRcbBMK7c
-	 NmjfZ5Mt3fvTiQghsxPvswHJZryEc/Ltj009Lj+quYT5TlyUO7oUymHarqJPQ6LS9Q
-	 LwBzj1ugvHD73nQdNXcGJcgj1hAmeBu4zgas1pVsOYgd3j7ZbrJtG1n8kOjEIcfApi
-	 E4quCoXT9ZhC8mj+Nzbjfjw1kS9ChPhYV48cNEiSvOGPy5zsZfObIgCzqjAUa78L8T
-	 OhTQf/fSmQokA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SkpZM4Spcz4wdB;
-	Tue,  5 Dec 2023 16:12:43 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] MAINTAINERS: powerpc: Transfer PPC83XX to Christophe
-Date: Tue,  5 Dec 2023 16:12:39 +1100
-Message-ID: <20231205051239.737384-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.43.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SkrwT3hcHz2yjD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Dec 2023 17:58:33 +1100 (AEDT)
+Received: from relay6-d.mail.gandi.net (unknown [217.70.183.198])
+	by mslow1.mail.gandi.net (Postfix) with ESMTP id 565AFC09B7
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Dec 2023 06:51:41 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 6524CC0006;
+	Tue,  5 Dec 2023 06:51:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1701759080;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HmV/ix9amwJ7r86i5eKjinKKZ2rsJiuszC6Rdqdxvkc=;
+	b=HzwMXPNmz6whc7Lpk85Qn6zY/OATY25BeMWTJQcAXyjnM7VJJ2VXeAX+YWpdVRQT5Vur3R
+	QhFZ7m94EhMmFpc68Pu+TvXUbkN3AaCfoqMJ0YM3jNWfTv11ZKeKS7C84B6FNIcMZ89Qdd
+	f89dxnTRE9h3fG5NI+WkwypaPQVKVGnFiIr48c7zyn6ybn2r/QuBMHWvDYFzi6znO8Y3qN
+	XPXYuxTqDh3Xqrxv3JjU1Am74IpMqk2rwYgmjR25xwAIZbpmMtvveNvFwlEljiCzPDcsKq
+	xIkKhTMqxIgnw5KCI9gpuOxkCqGDN40qtrKms0AhQXax6Bc4/UCoa1hw6m14cg==
+Date: Tue, 5 Dec 2023 07:51:10 +0100
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH net-next v2 0/9] net*: Convert to platform remove
+ callback returning void
+Message-ID: <20231205075110.795b88d2@xps-13>
+In-Reply-To: <cover.1701713943.git.u.kleine-koenig@pengutronix.de>
+References: <cover.1701713943.git.u.kleine-koenig@pengutronix.de>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,48 +63,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: oss@buserror.net, linux-kernel@vger.kernel.org
+Cc: Andrew Lunn <andrew@lunn.ch>, Alexander Aring <alex.aring@gmail.com>, Sergey Ryazanov <ryazanov.s.a@gmail.com>, Eric Dumazet <edumazet@google.com>, Stefan Schmidt <stefan@datenfreihafen.org>, Zhao Qiang <qiang.zhao@nxp.com>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, Russell King <linux@armlinux.org.uk>, linux-wpan@vger.kernel.org, Andy Gross <agross@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>, Christian Marangi <ansuelsmth@gmail.com>, Nick Child <nnac123@linux.ibm.com>, Stephan Gerhold <stephan@gerhold.net>, linux-arm-msm@vger.kernel.org, Loic Poulain <loic.poulain@linaro.org>, Marc Kleine-Budde <mkl@pengutronix.de>, linux-arm-kernel@lists.infradead.org, Alex Elder <elder@kernel.org>, netdev@vger.kernel.org, Linus Walleij <linusw@kernel.org>, linux-renesas-soc@vger.kernel.org, kernel@pengutronix.de, Johannes Berg <johannes@sipsolutions.net>, Imr
+ e Kaloz <kaloz@openwrt.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Heiner Kallweit <hkallweit1@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe volunteered[1] to maintain PPC83XX.
+Hi Uwe,
 
-1: https://lore.kernel.org/all/7b1bf4dc-d09d-35b8-f4df-16bf00429b6d@csgroup.eu/
+u.kleine-koenig@pengutronix.de wrote on Mon,  4 Dec 2023 19:30:40 +0100:
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- MAINTAINERS | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> Hello,
+>=20
+> (implicit) v1 of this series can be found at
+> https://lore.kernel.org/netdev/20231117095922.876489-1-u.kleine-koenig@pe=
+ngutronix.de.
+> Changes since then:
+>=20
+>  - Dropped patch #1 as Alex objected. Patch #1 (was #2 before) now
+>    converts ipa to remove_new() and introduces an error message in the
+>    error path that failed before.
+>=20
+>  - Rebased to today's next
+>=20
+>  - Add the tags received in the previous round.
+>=20
+> Uwe Kleine-K=C3=B6nig (9):
+>   net: ipa: Convert to platform remove callback returning void
+>   net: fjes: Convert to platform remove callback returning void
+>   net: pcs: rzn1-miic: Convert to platform remove callback returning
+>     void
+>   net: sfp: Convert to platform remove callback returning void
+>   net: wan/fsl_ucc_hdlc: Convert to platform remove callback returning
+>     void
+>   net: wan/ixp4xx_hss: Convert to platform remove callback returning
+>     void
+>   net: wwan: qcom_bam_dmux: Convert to platform remove callback
+>     returning void
+>   ieee802154: fakelb: Convert to platform remove callback returning void
+>   ieee802154: hwsim: Convert to platform remove callback returning void
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 562d048863ee..d4efe48cc36a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12287,21 +12287,21 @@ S:	Orphan
- F:	arch/powerpc/platforms/40x/
- F:	arch/powerpc/platforms/44x/
- 
--LINUX FOR POWERPC EMBEDDED PPC83XX AND PPC85XX
-+LINUX FOR POWERPC EMBEDDED PPC85XX
- M:	Scott Wood <oss@buserror.net>
- L:	linuxppc-dev@lists.ozlabs.org
- S:	Odd fixes
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/scottwood/linux.git
- F:	Documentation/devicetree/bindings/cache/freescale-l2cache.txt
- F:	Documentation/devicetree/bindings/powerpc/fsl/
--F:	arch/powerpc/platforms/83xx/
- F:	arch/powerpc/platforms/85xx/
- 
--LINUX FOR POWERPC EMBEDDED PPC8XX
-+LINUX FOR POWERPC EMBEDDED PPC8XX AND PPC83XX
- M:	Christophe Leroy <christophe.leroy@csgroup.eu>
- L:	linuxppc-dev@lists.ozlabs.org
- S:	Maintained
- F:	arch/powerpc/platforms/8xx/
-+F:	arch/powerpc/platforms/83xx/
- 
- LINUX KERNEL DUMP TEST MODULE (LKDTM)
- M:	Kees Cook <keescook@chromium.org>
--- 
-2.43.0
+FYI, I plan on taking patches 8 and 9 through wpan-next.
 
+Thanks,
+Miqu=C3=A8l
