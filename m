@@ -1,57 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E5FD804B76
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 08:51:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B20A1804FAF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 11:02:14 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=b4vhiER6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=FlKtbOeq;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Skt5y5Ybsz3ckc
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 18:51:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Skx0N0Fygz3cb7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 21:02:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=b4vhiER6;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=FlKtbOeq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::229; helo=relay9-d.mail.gandi.net; envelope-from=miquel.raynal@bootlin.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 3563 seconds by postgrey-1.37 at boromir; Tue, 05 Dec 2023 18:51:03 AEDT
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::229])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::22e; helo=mail-lj1-x22e.google.com; envelope-from=mazziesaccount@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Skt530HS8z2xQC
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Dec 2023 18:51:00 +1100 (AEDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 15DFEFF80A;
-	Tue,  5 Dec 2023 07:50:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1701762654;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=33Cr2ldAlMbcSRdOfjbnL3I/Zg4ZMoiw1vVYuAFexRo=;
-	b=b4vhiER6a0L6V8r2zxzPP/QzfzSTlhkeU1AriyKxFIiplNb1XZ+XCg2+EjeucXV/uV/YO1
-	A6h6P+g9lkmW+V/niTIfxHvrUoEZvRPzOqCAIDa3DT3VFQTc+CsmYxgkF04Y5f60h3AyTB
-	LGT8ZexvnP/khyItrTvFEaSAjyBJLtzeazAio64kaoWBvk9/Cf5MbKMwt/WGwhkx/tsdFN
-	mh73fi+AM6pxPwChmWZxPfMalh+OE/yLyktflvwxRIlg6Tb8lQh+mjSaNsubYNsZFYEufg
-	rM38OiIl0V2/qYiI4jNoAbSvYw49xiCSmt3syB9uLbezVsY4n/msm/yXn2SWag==
-Date: Tue, 5 Dec 2023 08:50:46 +0100
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH net-next v2 0/9] net*: Convert to platform remove
- callback returning void
-Message-ID: <20231205085046.7307ca9b@xps-13>
-In-Reply-To: <20231205073911.e6nphzhc6yjan5vu@pengutronix.de>
-References: <cover.1701713943.git.u.kleine-koenig@pengutronix.de>
-	<20231205075110.795b88d2@xps-13>
-	<20231205073911.e6nphzhc6yjan5vu@pengutronix.de>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Skr5J0dxpz3c9y
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Dec 2023 17:21:06 +1100 (AEDT)
+Received: by mail-lj1-x22e.google.com with SMTP id 38308e7fff4ca-2c9fdf53abcso19184041fa.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Dec 2023 22:21:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701757259; x=1702362059; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EOqprCd4bG5T3dRTwPYRAAXTaR7ceVabdmLSc2XpaJ0=;
+        b=FlKtbOeqGRUzNymzuImHEujnlPe2o0YvtGbUgmHJMSFj9e7jeF4EoLfwVfr2ch9Saj
+         SA6o4jBlgAMx2kNsfC/MR+zXN6gt1Jwxfl3fYDyxNzzGTSCJSGoYHTGePgIiUashP2mL
+         iOkDYGuQfAh9pvBMUlgEcw4SWxrG+QXqgqwPdRPDw61PWroXyZSvFuGMy372JyRQkEg+
+         20cRgr/U2NPW6JcEY99+etJV6VwaWMWitoJqdWfk8kaUTYadBysMNU0CP1ZQKFoaR2gH
+         CfxQfQNf/fl1uy3uBGNUYpWtr+n2o9iA/nOTNw5lQl3XN9ja6UATrEmdu4JOo6hdvAA9
+         hQag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701757259; x=1702362059;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EOqprCd4bG5T3dRTwPYRAAXTaR7ceVabdmLSc2XpaJ0=;
+        b=H6i2qagmg11qa1uJOyocVrNnDQByqhZLVEeXB89OtPs71UDpv7pTIXnm7QDdzlNjIF
+         As7I66aQMnhZxL8IMvrgXcnLFZJQo+Thhl40NeaNoKvwa+kuhB0F7kIdW9sA8cuHvSio
+         eJBAE8YQiKhhGzI/wlFYqQ0NsCuJMDhkr+QGx5JDoSUaFnSwOKUMMbzRq+7kdOE3+MF+
+         XW3axwuLjmyoiC07cepuqGgiCvwuy0PA1juiOihJ5yrWScfSCBmzAgFl3ICbChHBRoIp
+         ZAT8c+KvfYmbRv58ynOTPlcLTCYR9qNaUy+EDtlFbMvewBwe2E/bd1RO/C2s/rU35pkD
+         fxFg==
+X-Gm-Message-State: AOJu0Yxt6FtqCFJCPUp5AiAyqYuLTlGCCpC4jIbPKqQSOBKC2wPQ243I
+	hi/gXPAt1jTD0GE6604++T8=
+X-Google-Smtp-Source: AGHT+IFEpn9/cYjwhdGUMp5Q8e82xnJ9Pnz3h+NI7jLulEvGm4X2k+vBHEEVziBdAvT0dyhQQPx1Rw==
+X-Received: by 2002:a2e:8908:0:b0:2c9:ea39:5fe1 with SMTP id d8-20020a2e8908000000b002c9ea395fe1mr629301lji.9.1701757258904;
+        Mon, 04 Dec 2023 22:20:58 -0800 (PST)
+Received: from ?IPV6:2001:14ba:16f8:1500::2? (dc78bmyyyyyyyyyyyyyby-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::2])
+        by smtp.gmail.com with ESMTPSA id e20-20020a2e8ed4000000b002ca0d8768a7sm296664ljl.93.2023.12.04.22.20.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 Dec 2023 22:20:57 -0800 (PST)
+Message-ID: <68533caa-d98f-4824-a761-82a09f419f41@gmail.com>
+Date: Tue, 5 Dec 2023 08:20:56 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/10] devm-helpers: introduce devm_mutex_init
+Content-Language: en-US, en-GB
+To: George Stark <gnstark@salutedevices.com>, pavel@ucw.cz, lee@kernel.org,
+ vadimp@nvidia.com, mpe@ellerman.id.au, npiggin@gmail.com,
+ christophe.leroy@csgroup.eu, hdegoede@redhat.com, andy.shevchenko@gmail.com,
+ jic23@kernel.org
+References: <20231204180603.470421-1-gnstark@salutedevices.com>
+ <20231204180603.470421-2-gnstark@salutedevices.com>
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20231204180603.470421-2-gnstark@salutedevices.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Mailman-Approved-At: Tue, 05 Dec 2023 21:01:31 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,56 +85,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Alexander Aring <alex.aring@gmail.com>, Sergey Ryazanov <ryazanov.s.a@gmail.com>, Eric Dumazet <edumazet@google.com>, Stefan Schmidt <stefan@datenfreihafen.org>, Zhao Qiang <qiang.zhao@nxp.com>, linux-renesas-soc@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Andy Gross <agross@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, =?UTF-8?B?Q2zDqW1l?= =?UTF-8?B?bnQgTMOpZ2Vy?= <clement.leger@bootlin.com>, Christian Marangi <ansuelsmth@gmail.com>, Nick Child <nnac123@linux.ibm.com>, Stephan Gerhold <stephan@gerhold.net>, linux-arm-msm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Loic Poulain <loic.poulain@linaro.org>, Marc Kleine-Budde <mkl@pengutronix.de>, linux-arm-kernel@lists.infradead.org, Alex Elder <elder@kernel.org>, netdev@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>, "David S. Miller" <davem@davemloft.net>, Konrad Dybcio <konrad.dybcio@linaro.org>, kernel@pengutronix.de, Johannes Berg <johannes@
- sipsolutions.net>, Imre Kaloz <kaloz@openwrt.org>, linux-wpan@vger.kernel.org, Linus Walleij <linusw@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: kernel@salutedevices.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Uwe,
+On 12/4/23 20:05, George Stark wrote:
+> Using of devm API leads to certain order of releasing resources.
+> So all dependent resources which are not devm-wrapped should be deleted
+> with respect to devm-release order. Mutex is one of such objects that
+> often is bound to other resources and has no own devm wrapping.
+> Since mutex_destroy() actually does nothing in non-debug builds
+> frequently calling mutex_destroy() is just ignored which is safe for now
+> but wrong formally and can lead to a problem if mutex_destroy() is
+> extended so introduce devm_mutex_init().
+> 
+> Signed-off-by: George Stark <gnstark@salutedevices.com>
+> ---
+>   include/linux/devm-helpers.h | 18 ++++++++++++++++++
+>   1 file changed, 18 insertions(+)
+> 
+> diff --git a/include/linux/devm-helpers.h b/include/linux/devm-helpers.h
+> index 74891802200d..2f56e476776f 100644
+> --- a/include/linux/devm-helpers.h
+> +++ b/include/linux/devm-helpers.h
+> @@ -76,4 +76,22 @@ static inline int devm_work_autocancel(struct device *dev,
+>   	return devm_add_action(dev, devm_work_drop, w);
+>   }
+>   
+> +static inline void devm_mutex_release(void *res)
+> +{
+> +	mutex_destroy(res);
+> +}
+> +
+> +/**
+> + * devm_mutex_init - Resource-managed mutex initialization
+> + * @dev:	Device which lifetime work is bound to
 
-u.kleine-koenig@pengutronix.de wrote on Tue, 5 Dec 2023 08:39:11 +0100:
+Work? Copy-paste error?
 
-> Hello Miquel,
->=20
-> On Tue, Dec 05, 2023 at 07:51:10AM +0100, Miquel Raynal wrote:
-> > u.kleine-koenig@pengutronix.de wrote on Mon,  4 Dec 2023 19:30:40 +0100=
-: =20
-> > > (implicit) v1 of this series can be found at
-> > > https://lore.kernel.org/netdev/20231117095922.876489-1-u.kleine-koeni=
-g@pengutronix.de.
-> > > Changes since then:
-> > >=20
-> > >  - Dropped patch #1 as Alex objected. Patch #1 (was #2 before) now
-> > >    converts ipa to remove_new() and introduces an error message in the
-> > >    error path that failed before.
-> > >=20
-> > >  - Rebased to today's next
-> > >=20
-> > >  - Add the tags received in the previous round.
-> > >=20
-> > > Uwe Kleine-K=C3=B6nig (9):
-> > >   net: ipa: Convert to platform remove callback returning void
-> > >   net: fjes: Convert to platform remove callback returning void
-> > >   net: pcs: rzn1-miic: Convert to platform remove callback returning
-> > >     void
-> > >   net: sfp: Convert to platform remove callback returning void
-> > >   net: wan/fsl_ucc_hdlc: Convert to platform remove callback returning
-> > >     void
-> > >   net: wan/ixp4xx_hss: Convert to platform remove callback returning
-> > >     void
-> > >   net: wwan: qcom_bam_dmux: Convert to platform remove callback
-> > >     returning void
-> > >   ieee802154: fakelb: Convert to platform remove callback returning v=
-oid
-> > >   ieee802154: hwsim: Convert to platform remove callback returning vo=
-id =20
-> >=20
-> > FYI, I plan on taking patches 8 and 9 through wpan-next. =20
->=20
-> I forgot to mention explicitly that there are no interdependencies in
-> this series. So each maintainer picking up up their patches is fine.
+> + * @lock:	Pointer to a mutex
+> + *
+> + * Initialize mutex which is automatically destroyed when driver is detached.
+> + */
+> +static inline int devm_mutex_init(struct device *dev, struct mutex *lock)
+> +{
+> +	mutex_init(lock);
+> +	return devm_add_action_or_reset(dev, devm_mutex_release, lock);
+> +}
+> +
+>   #endif
 
-Yes, no problem, it was quick to figure out.
+Doesn't the mutex stuff need a header inclusion?
 
-Thanks,
-Miqu=C3=A8l
+Yours,
+	-- Matti
+
+
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
+
