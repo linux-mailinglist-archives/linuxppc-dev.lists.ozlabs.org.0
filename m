@@ -1,39 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC10F80589D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 16:27:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04E108058A3
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 16:28:12 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=ZLTYCOXn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=XLd7LX8V;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sl4CY1Cbwz3vcs
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Dec 2023 02:27:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sl4DT3bYvz3vdv
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Dec 2023 02:28:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=ZLTYCOXn;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=XLd7LX8V;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::222; helo=relay2-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
 Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::222])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sl44x49v1z3cVl
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sl44x4Qs8z3cWP
 	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Dec 2023 02:21:36 +1100 (AEDT)
-Received: by mail.gandi.net (Postfix) with ESMTPA id 4239840006;
-	Tue,  5 Dec 2023 15:21:24 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 4AC094000A;
+	Tue,  5 Dec 2023 15:21:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1701789686;
+	t=1701789687;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=EQzemCGjTKgaOFfggHrbLZ6TF0LQrH4UISYJFYtdjhE=;
-	b=ZLTYCOXnb1VxUvJE0efVr+7U4KVX+H7XmeidTTaEu3Ym5K05fvFZW+FCckTZhrBaYBWxgu
-	OoOhfyHDT0nc6C/FmbPR/69hBqAZU+peuWmt11XRZfvbc1zmr0FQj0IrqH+TS9SA5+p2eq
-	OpcaIEDq3Rj3gOxwxWZeLFGrKzk0cKUW1M2w1yMDmE6BAoXXKYvspl5tRZFaIRqgQ96DYn
-	Jxgp4qxZHDlE/bl0WGfbki46dBNVCkSqIZkCyCKkYwXXLyPdybDeWTuyMiQGSSgZCCRnHV
-	SuGm2J7v8McKbtLm/hYzEX+4Jmsf3Hxd3duvIAELZIKjDaXLD8alOZh4RnqpUw==
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=i40CBW7wWWoV874rIs4ZPG3MOHsmrhQup9XhOrdZn/Q=;
+	b=XLd7LX8V8lyE9Ve80q8z438XR32xQuC5iM935MhORm2Lr7GOGb3wRXSC5/CnezW/OZRwLi
+	aLmBQH9nRKfla3I9tJaHJtxE41hgEG4N3ehBJrPSIXeJLxohKItqzU1DGSREf4r78KxvY4
+	PZafUObM/zSSC8QAN7NHziADwpwiloFEro3xmktqjamsoskzb7gYWYPc8Ae12pOPjkSBKf
+	LwVnHUk6OZs+40Bvgx0et9JTGIlywUKCpthh5r7wFEa7AJvQ+YLNNPTZqojyOOCtfMZBh3
+	lgKkBqeKEeqodAXJk15gAeDcDX4NhJAu/L5e6mupuRMKC/RWXS/6/pcHv2R6ig==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Herve Codina <herve.codina@bootlin.com>,
 	Qiang Zhao <qiang.zhao@nxp.com>,
@@ -48,12 +49,13 @@ To: Herve Codina <herve.codina@bootlin.com>,
 	Jaroslav Kysela <perex@perex.cz>,
 	Takashi Iwai <tiwai@suse.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 00/17] Prepare the PowerQUICC QMC and TSA for the HDLC QMC driver
-Date: Tue,  5 Dec 2023 16:20:57 +0100
-Message-ID: <20231205152116.122512-1-herve.codina@bootlin.com>
+Subject: [PATCH v2 01/17] soc: fsl: cpm1: tsa: Fix __iomem addresses declaration
+Date: Tue,  5 Dec 2023 16:20:58 +0100
+Message-ID: <20231205152116.122512-2-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20231205152116.122512-1-herve.codina@bootlin.com>
+References: <20231205152116.122512-1-herve.codina@bootlin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: herve.codina@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -67,94 +69,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: alsa-devel@alsa-project.org, kernel test robot <lkp@intel.com>, Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+Running sparse (make C=1) on tsa.c raises a lot of warning such as:
+  --- 8< ---
+  warning: incorrect type in assignment (different address spaces)
+     expected void *[noderef] si_regs
+     got void [noderef] __iomem *
+  --- 8< ---
 
-This series updates PowerQUICC QMC and TSA drivers to prepare the
-support for the QMC HDLC driver.
+Indeed, some variable were declared 'type *__iomem var' instead of
+'type __iomem *var'.
 
-Patches were previously sent as part of a full feature series:
-"Add support for QMC HDLC, framer infrastructure and PEF2256 framer" [1]
+Use the correct declaration to remove these warnings.
 
-The full feature series reached the v9 iteration.
-The v1 was sent the 07/25/2023 followed by the other iterations
-(07/26/2023, 08/09/2023, 08/18/2023, 09/12/2023, 09/22/2023, 09/28/2023,
-10/11/23, 11/15/2023) and was ready to be merged in its v8.
-  https://lore.kernel.org/linux-kernel/20231025123215.5caca7d4@kernel.org/
+Fixes: 1d4ba0b81c1c ("soc: fsl: cpm1: Add support for TSA")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202312051959.9YdRIYbg-lkp@intel.com/
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ drivers/soc/fsl/qe/tsa.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-The lack of feedback from the Freescale SoC and the Quicc Engine
-maintainers (i.e. drivers/soc/fsl/qe/ to which the QMC and TSA drivers
-belong) blocks the entire full feature series.
-These patches are fixes and improvements to TSA and QMC drivers.
-These drivers were previously acked by Li Yang but without any feedback
-from Li Yang nor Qiang Zhao the series cannot move forward.
-
-In order to ease the review/merge, the full feature series has been
-split and this series contains patches related to the PowerQUICC SoC
-part (QMC and TSA).
- - Perform some fixes (patches 1 to 5)
- - Add support for child devices (patch 6)
- - Add QMC dynamic timeslot support (patches 7 to 17)
-
-Compare to the previous iteration:
-  https://lore.kernel.org/linux-kernel/20231128140818.261541-1-herve.codina@bootlin.com/
-this v2 series:
-- Removes a forward declaration in the driver.
-- Adds kernel test robot tags as the issue was detected.
-- Adds some missing Cc: stable.
-
-Best regards,
-Hervé
-
-[1]: https://lore.kernel.org/linux-kernel/20231115144007.478111-1-herve.codina@bootlin.com/
-
-Changes v1 -> v2:
-  - Patch 1
-    Add 'Reported-by: kernel test robot <lkp@intel.com>'
-    Add 'Closes: https://lore.kernel.org/oe-kbuild-all/202312051959.9YdRIYbg-lkp@intel.com/'
-    Add 'Cc: stable@vger.kernel.org'
-
-  - Patch 2, 3
-    Add 'Cc: stable@vger.kernel.org
-
-  - Patch 15
-    Move qmc_setup_chan_trnsync() to avoid a forward declaration.
-
-Patches extracted:
-  - Patch 1..6 : full feature series patch 1..6
-  - Patch 7..17 : full feature series patch 9..19
-
-Herve Codina (17):
-  soc: fsl: cpm1: tsa: Fix __iomem addresses declaration
-  soc: fsl: cpm1: qmc: Fix __iomem addresses declaration
-  soc: fsl: cpm1: qmc: Fix rx channel reset
-  soc: fsl: cpm1: qmc: Extend the API to provide Rx status
-  soc: fsl: cpm1: qmc: Remove inline function specifiers
-  soc: fsl: cpm1: qmc: Add support for child devices
-  soc: fsl: cpm1: qmc: Introduce available timeslots masks
-  soc: fsl: cpm1: qmc: Rename qmc_setup_tsa* to qmc_init_tsa*
-  soc: fsl: cpm1: qmc: Introduce qmc_chan_setup_tsa*
-  soc: fsl: cpm1: qmc: Remove no more needed checks from
-    qmc_check_chans()
-  soc: fsl: cpm1: qmc: Check available timeslots in qmc_check_chans()
-  soc: fsl: cpm1: qmc: Add support for disabling channel TSA entries
-  soc: fsl: cpm1: qmc: Split Tx and Rx TSA entries setup
-  soc: fsl: cpm1: qmc: Introduce is_tsa_64rxtx flag
-  soc: fsl: cpm1: qmc: Handle timeslot entries at channel start() and
-    stop()
-  soc: fsl: cpm1: qmc: Remove timeslots handling from setup_chan()
-  soc: fsl: cpm1: qmc: Introduce functions to change timeslots at
-    runtime
-
- drivers/soc/fsl/qe/qmc.c      | 658 ++++++++++++++++++++++++++--------
- drivers/soc/fsl/qe/tsa.c      |  22 +-
- include/soc/fsl/qe/qmc.h      |  27 +-
- sound/soc/fsl/fsl_qmc_audio.c |   2 +-
- 4 files changed, 538 insertions(+), 171 deletions(-)
-
+diff --git a/drivers/soc/fsl/qe/tsa.c b/drivers/soc/fsl/qe/tsa.c
+index 3f9981335590..6c5741cf5e9d 100644
+--- a/drivers/soc/fsl/qe/tsa.c
++++ b/drivers/soc/fsl/qe/tsa.c
+@@ -98,9 +98,9 @@
+ #define TSA_SIRP	0x10
+ 
+ struct tsa_entries_area {
+-	void *__iomem entries_start;
+-	void *__iomem entries_next;
+-	void *__iomem last_entry;
++	void __iomem *entries_start;
++	void __iomem *entries_next;
++	void __iomem *last_entry;
+ };
+ 
+ struct tsa_tdm {
+@@ -117,8 +117,8 @@ struct tsa_tdm {
+ 
+ struct tsa {
+ 	struct device *dev;
+-	void *__iomem si_regs;
+-	void *__iomem si_ram;
++	void __iomem *si_regs;
++	void __iomem *si_ram;
+ 	resource_size_t si_ram_sz;
+ 	spinlock_t	lock;
+ 	int tdms; /* TSA_TDMx ORed */
+@@ -135,27 +135,27 @@ static inline struct tsa *tsa_serial_get_tsa(struct tsa_serial *tsa_serial)
+ 	return container_of(tsa_serial, struct tsa, serials[tsa_serial->id]);
+ }
+ 
+-static inline void tsa_write32(void *__iomem addr, u32 val)
++static inline void tsa_write32(void __iomem *addr, u32 val)
+ {
+ 	iowrite32be(val, addr);
+ }
+ 
+-static inline void tsa_write8(void *__iomem addr, u32 val)
++static inline void tsa_write8(void __iomem *addr, u32 val)
+ {
+ 	iowrite8(val, addr);
+ }
+ 
+-static inline u32 tsa_read32(void *__iomem addr)
++static inline u32 tsa_read32(void __iomem *addr)
+ {
+ 	return ioread32be(addr);
+ }
+ 
+-static inline void tsa_clrbits32(void *__iomem addr, u32 clr)
++static inline void tsa_clrbits32(void __iomem *addr, u32 clr)
+ {
+ 	tsa_write32(addr, tsa_read32(addr) & ~clr);
+ }
+ 
+-static inline void tsa_clrsetbits32(void *__iomem addr, u32 clr, u32 set)
++static inline void tsa_clrsetbits32(void __iomem *addr, u32 clr, u32 set)
+ {
+ 	tsa_write32(addr, (tsa_read32(addr) & ~clr) | set);
+ }
+@@ -313,7 +313,7 @@ static u32 tsa_serial_id2csel(struct tsa *tsa, u32 serial_id)
+ static int tsa_add_entry(struct tsa *tsa, struct tsa_entries_area *area,
+ 			 u32 count, u32 serial_id)
+ {
+-	void *__iomem addr;
++	void __iomem *addr;
+ 	u32 left;
+ 	u32 val;
+ 	u32 cnt;
 -- 
 2.43.0
 
