@@ -2,78 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B20A1804FAF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 11:02:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC07C804E27
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 10:42:15 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=FlKtbOeq;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eseCFvs+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Skx0N0Fygz3cb7
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 21:02:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SkwYK32Ztz3d9G
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Dec 2023 20:42:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=FlKtbOeq;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eseCFvs+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::22e; helo=mail-lj1-x22e.google.com; envelope-from=mazziesaccount@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Skr5J0dxpz3c9y
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Dec 2023 17:21:06 +1100 (AEDT)
-Received: by mail-lj1-x22e.google.com with SMTP id 38308e7fff4ca-2c9fdf53abcso19184041fa.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Dec 2023 22:21:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701757259; x=1702362059; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=EOqprCd4bG5T3dRTwPYRAAXTaR7ceVabdmLSc2XpaJ0=;
-        b=FlKtbOeqGRUzNymzuImHEujnlPe2o0YvtGbUgmHJMSFj9e7jeF4EoLfwVfr2ch9Saj
-         SA6o4jBlgAMx2kNsfC/MR+zXN6gt1Jwxfl3fYDyxNzzGTSCJSGoYHTGePgIiUashP2mL
-         iOkDYGuQfAh9pvBMUlgEcw4SWxrG+QXqgqwPdRPDw61PWroXyZSvFuGMy372JyRQkEg+
-         20cRgr/U2NPW6JcEY99+etJV6VwaWMWitoJqdWfk8kaUTYadBysMNU0CP1ZQKFoaR2gH
-         CfxQfQNf/fl1uy3uBGNUYpWtr+n2o9iA/nOTNw5lQl3XN9ja6UATrEmdu4JOo6hdvAA9
-         hQag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701757259; x=1702362059;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EOqprCd4bG5T3dRTwPYRAAXTaR7ceVabdmLSc2XpaJ0=;
-        b=H6i2qagmg11qa1uJOyocVrNnDQByqhZLVEeXB89OtPs71UDpv7pTIXnm7QDdzlNjIF
-         As7I66aQMnhZxL8IMvrgXcnLFZJQo+Thhl40NeaNoKvwa+kuhB0F7kIdW9sA8cuHvSio
-         eJBAE8YQiKhhGzI/wlFYqQ0NsCuJMDhkr+QGx5JDoSUaFnSwOKUMMbzRq+7kdOE3+MF+
-         XW3axwuLjmyoiC07cepuqGgiCvwuy0PA1juiOihJ5yrWScfSCBmzAgFl3ICbChHBRoIp
-         ZAT8c+KvfYmbRv58ynOTPlcLTCYR9qNaUy+EDtlFbMvewBwe2E/bd1RO/C2s/rU35pkD
-         fxFg==
-X-Gm-Message-State: AOJu0Yxt6FtqCFJCPUp5AiAyqYuLTlGCCpC4jIbPKqQSOBKC2wPQ243I
-	hi/gXPAt1jTD0GE6604++T8=
-X-Google-Smtp-Source: AGHT+IFEpn9/cYjwhdGUMp5Q8e82xnJ9Pnz3h+NI7jLulEvGm4X2k+vBHEEVziBdAvT0dyhQQPx1Rw==
-X-Received: by 2002:a2e:8908:0:b0:2c9:ea39:5fe1 with SMTP id d8-20020a2e8908000000b002c9ea395fe1mr629301lji.9.1701757258904;
-        Mon, 04 Dec 2023 22:20:58 -0800 (PST)
-Received: from ?IPV6:2001:14ba:16f8:1500::2? (dc78bmyyyyyyyyyyyyyby-3.rev.dnainternet.fi. [2001:14ba:16f8:1500::2])
-        by smtp.gmail.com with ESMTPSA id e20-20020a2e8ed4000000b002ca0d8768a7sm296664ljl.93.2023.12.04.22.20.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Dec 2023 22:20:57 -0800 (PST)
-Message-ID: <68533caa-d98f-4824-a761-82a09f419f41@gmail.com>
-Date: Tue, 5 Dec 2023 08:20:56 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SkwXQ6bbtz30P0
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Dec 2023 20:41:26 +1100 (AEDT)
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3B58puO7022191;
+	Tue, 5 Dec 2023 09:41:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=LOZ71nqKB1YViNGSJ4zg3iIa8bIXA4UwCeigzew7QYg=;
+ b=eseCFvs+tpGHcU9LS75utjQyn3ucC+Y9lDcW1dp94dbWjDV0QOeLxwFjdwB6ShD/WZhe
+ i3tz8++gh1JQnG2O/2xdQFIUm/SpNq26rCD3z/JvBUAz52qemlXN6ms4P5VTI9n98s9l
+ ucmOYl3T+fNx0eM9g8LpEZ9tnn77y34lBRMnDv02w3feYLMhq/ZoT9OnTFiPu7f6+zTm
+ QiKI+QbJxbmGYQzah7sXd757A/wIv44Lc146A6Eq+XzUH+MZd+lZ1BEvtAxN1Fxo+mBK
+ lNA1gZMkZg6DtLGWcexcFtxAUdeMa9EZqMXM5DN0I85uCYM763C0nS7AZaV/KLCr+Eoi SQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ut0et1rr0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 Dec 2023 09:41:20 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B59GQkS003782;
+	Tue, 5 Dec 2023 09:41:20 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ut0et1rpm-3
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 Dec 2023 09:41:20 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3B57YF52009150;
+	Tue, 5 Dec 2023 09:22:02 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3urgdkwkfc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 Dec 2023 09:22:02 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3B59M1Ou43713260
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 5 Dec 2023 09:22:01 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4DEED5805A;
+	Tue,  5 Dec 2023 09:22:01 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 710095805C;
+	Tue,  5 Dec 2023 09:22:00 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.67.87.193])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  5 Dec 2023 09:22:00 +0000 (GMT)
+Subject: Re: [PATCH v3] powerpc/pseries/vas: Use usleep_range() to support
+ HCALL delay
+To: "Aneesh Kumar K.V (IBM)" <aneesh.kumar@kernel.org>,
+        linuxppc-dev@lists.ozlabs.org
+References: <20231203020115.860099-1-haren@linux.ibm.com>
+ <87r0k283lk.fsf@kernel.org>
+From: Haren Myneni <haren@linux.ibm.com>
+Message-ID: <ad7853f5-0899-7e0d-89e6-b5c1e4742a11@linux.ibm.com>
+Date: Tue, 5 Dec 2023 01:21:59 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/10] devm-helpers: introduce devm_mutex_init
-Content-Language: en-US, en-GB
-To: George Stark <gnstark@salutedevices.com>, pavel@ucw.cz, lee@kernel.org,
- vadimp@nvidia.com, mpe@ellerman.id.au, npiggin@gmail.com,
- christophe.leroy@csgroup.eu, hdegoede@redhat.com, andy.shevchenko@gmail.com,
- jic23@kernel.org
-References: <20231204180603.470421-1-gnstark@salutedevices.com>
- <20231204180603.470421-2-gnstark@salutedevices.com>
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20231204180603.470421-2-gnstark@salutedevices.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <87r0k283lk.fsf@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Tue, 05 Dec 2023 21:01:31 +1100
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: rXefadSEe9G2p6GfmxHERkp5pnSXiGHX
+X-Proofpoint-GUID: eORk87oZ-wQZlAuncq3zvBLUMB4QzN02
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-05_04,2023-12-04_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 malwarescore=0
+ bulkscore=0 impostorscore=0 phishscore=0 adultscore=0 clxscore=1011
+ mlxlogscore=999 suspectscore=0 lowpriorityscore=0 priorityscore=1501
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2312050078
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,66 +102,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel@salutedevices.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org
+Cc: nathanl@linux.ibm.com, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/4/23 20:05, George Stark wrote:
-> Using of devm API leads to certain order of releasing resources.
-> So all dependent resources which are not devm-wrapped should be deleted
-> with respect to devm-release order. Mutex is one of such objects that
-> often is bound to other resources and has no own devm wrapping.
-> Since mutex_destroy() actually does nothing in non-debug builds
-> frequently calling mutex_destroy() is just ignored which is safe for now
-> but wrong formally and can lead to a problem if mutex_destroy() is
-> extended so introduce devm_mutex_init().
+
+
+On 12/4/23 6:05 AM, Aneesh Kumar K.V (IBM) wrote:
+> Haren Myneni <haren@linux.ibm.com> writes:
 > 
-> Signed-off-by: George Stark <gnstark@salutedevices.com>
-> ---
->   include/linux/devm-helpers.h | 18 ++++++++++++++++++
->   1 file changed, 18 insertions(+)
+>> VAS allocate, modify and deallocate HCALLs returns
+>> H_LONG_BUSY_ORDER_1_MSEC or H_LONG_BUSY_ORDER_10_MSEC for busy
+>> delay and expects OS to reissue HCALL after that delay. But using
+>> msleep() will often sleep at least 20 msecs even though the
+>> hypervisor suggests OS reissue these HCALLs after 1 or 10msecs.
+>> The open and close VAS window functions hold mutex and then issue
+>> these HCALLs. So these operations can take longer than the
+>> necessary when multiple threads issue open or close window APIs
+>> simultaneously.
+>>
+>> So instead of msleep(), use usleep_range() to ensure sleep with
+>> the expected value before issuing HCALL again.
+>>
 > 
-> diff --git a/include/linux/devm-helpers.h b/include/linux/devm-helpers.h
-> index 74891802200d..2f56e476776f 100644
-> --- a/include/linux/devm-helpers.h
-> +++ b/include/linux/devm-helpers.h
-> @@ -76,4 +76,22 @@ static inline int devm_work_autocancel(struct device *dev,
->   	return devm_add_action(dev, devm_work_drop, w);
->   }
->   
-> +static inline void devm_mutex_release(void *res)
-> +{
-> +	mutex_destroy(res);
-> +}
-> +
-> +/**
-> + * devm_mutex_init - Resource-managed mutex initialization
-> + * @dev:	Device which lifetime work is bound to
+> Can you summarize if there an user observable impact for the current
+> code? We have other code paths using msleep(get_longbusy_msec()). Should
+> we audit those usages?
 
-Work? Copy-paste error?
+As mentioned in the description, the open and close VAS window APIs can 
+take longer with simultaneous calls, especially might affect the 
+performance in the case of repeat open/close APIs for each compression 
+request. On the large machine configuration which allows more 
+simultaneous open windows (Ex: 240 cores provides 4800 VAS credits), the 
+user can observe mutex contention around open/close HCAlls and hung-up 
+traces in dmesg. I will repost the patch with this update in the commit 
+message.
 
-> + * @lock:	Pointer to a mutex
-> + *
-> + * Initialize mutex which is automatically destroyed when driver is detached.
-> + */
-> +static inline int devm_mutex_init(struct device *dev, struct mutex *lock)
-> +{
-> +	mutex_init(lock);
-> +	return devm_add_action_or_reset(dev, devm_mutex_release, lock);
-> +}
-> +
->   #endif
+I think applicable to use the similar approach for other HCALLs (like in 
+rtas_busy_delay()) but I have not seen any impact so far with other 
+HCALLs. So we can add this change later.
 
-Doesn't the mutex stuff need a header inclusion?
+Thanks
+Haren
 
-Yours,
-	-- Matti
-
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+> 
+> 
+>>
+>> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+>> Suggested-by: Nathan Lynch <nathanl@linux.ibm.com>
+>>
+>> ---
+>> v1 -> v2:
+>> - Use usleep_range instead of using RTAS sleep routine as
+>>    suggested by Nathan
+>> v2 -> v3:
+>> - Sleep 10MSecs even for HCALL delay > 10MSecs and the other
+>>    commit / comemnt changes as suggested by Nathan and Ellerman.
+>> ---
+>>   arch/powerpc/platforms/pseries/vas.c | 25 ++++++++++++++++++++++++-
+>>   1 file changed, 24 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
+>> index 71d52a670d95..5cf81c564d4b 100644
+>> --- a/arch/powerpc/platforms/pseries/vas.c
+>> +++ b/arch/powerpc/platforms/pseries/vas.c
+>> @@ -38,7 +38,30 @@ static long hcall_return_busy_check(long rc)
+>>   {
+>>   	/* Check if we are stalled for some time */
+>>   	if (H_IS_LONG_BUSY(rc)) {
+>> -		msleep(get_longbusy_msecs(rc));
+>> +		unsigned int ms;
+>> +		/*
+>> +		 * Allocate, Modify and Deallocate HCALLs returns
+>> +		 * H_LONG_BUSY_ORDER_1_MSEC or H_LONG_BUSY_ORDER_10_MSEC
+>> +		 * for the long delay. So the sleep time should always
+>> +		 * be either 1 or 10msecs, but in case if the HCALL
+>> +		 * returns the long delay > 10 msecs, clamp the sleep
+>> +		 * time to 10msecs.
+>> +		 */
+>> +		ms = clamp(get_longbusy_msecs(rc), 1, 10);
+>> +
+>> +		/*
+>> +		 * msleep() will often sleep at least 20 msecs even
+>> +		 * though the hypervisor suggests that the OS reissue
+>> +		 * HCALLs after 1 or 10msecs. Also the delay hint from
+>> +		 * the HCALL is just a suggestion. So OK to pause for
+>> +		 * less time than the hinted delay. Use usleep_range()
+>> +		 * to ensure we don't sleep much longer than actually
+>> +		 * needed.
+>> +		 *
+>> +		 * See Documentation/timers/timers-howto.rst for
+>> +		 * explanation of the range used here.
+>> +		 */
+>> +		usleep_range(ms * 100, ms * 1000);
+>>   		rc = H_BUSY;
+>>   	} else if (rc == H_BUSY) {
+>>   		cond_resched();
+>> -- 
+>> 2.26.3
