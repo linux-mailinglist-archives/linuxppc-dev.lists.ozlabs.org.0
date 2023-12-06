@@ -2,58 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28FF68075DB
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Dec 2023 17:55:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2560807848
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Dec 2023 19:58:53 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GOpN4SXl;
+	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=vjoGeMqQ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Slk6q4SRWz3d8K
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 03:55:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Slms72nr2z3cfB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 05:58:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GOpN4SXl;
+	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=vjoGeMqQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=conor@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=salutedevices.com (client-ip=37.18.73.165; helo=mx1.sberdevices.ru; envelope-from=gnstark@salutedevices.com; receiver=lists.ozlabs.org)
+Received: from mx1.sberdevices.ru (mx1.sberdevices.ru [37.18.73.165])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Slk5x6LYXz3cBH
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Dec 2023 03:54:45 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id 507D5B82344;
-	Wed,  6 Dec 2023 16:54:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41949C433C8;
-	Wed,  6 Dec 2023 16:54:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701881678;
-	bh=byr4iKaQR/A3UJDoHCSCnyLKNyvGROhGH9e9jyC+wMU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GOpN4SXlw4x1/dU2POw/8AZkN/KGJd1O1nz5pL5dskKSKJuW+ZT8zMtbhgRJuLxRp
-	 9tpDoll5pRy+N/0iHjDuF+k+KzzEpsLOXICrRKSn0xTjh/1ZGckb89gSpNbIwPizM/
-	 vZpyk6fnK1fif1hnU78PLVrz2Up6ryXzxPUl1dNMLbRanVrO5moPnoG0aFMzRj5zQ2
-	 XBl6De2XRcwqo1CGILZgoXJGSio6m7JmCma7pEtAq8tZv8oBHFECGEYSptAS7fD5TQ
-	 vOPefdItLrHoSasbsVzn1PyYg8twu81qh+HpQHdq548aZWh45HsMqPltXGZylalJN5
-	 6yy+KqyoBcFaQ==
-Date: Wed, 6 Dec 2023 16:54:33 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Baoquan He <bhe@redhat.com>
-Subject: Re: [PATCH v3 5/7] kexec_file, ricv: print out debugging message if
- required
-Message-ID: <20231206-pasta-embassy-c7250740b16c@spud>
-References: <20231130023955.5257-1-bhe@redhat.com>
- <20231130023955.5257-6-bhe@redhat.com>
- <20231201-blog-blasphemy-985d2665903c@wendy>
- <ZW3yXWJ7rTrtZzyg@MiWiFi-R3L-srv>
- <20231204-liftoff-enclosure-d3e3daf0ab6e@spud>
- <ZXCVUD9cCYEShrrj@MiWiFi-R3L-srv>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SlmrD2sl1z3bw8
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Dec 2023 05:58:01 +1100 (AEDT)
+Received: from p-infra-ksmg-sc-msk01 (localhost [127.0.0.1])
+	by mx1.sberdevices.ru (Postfix) with ESMTP id 2655710008B;
+	Wed,  6 Dec 2023 21:57:54 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 2655710008B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
+	s=mail; t=1701889074;
+	bh=NpLezAFU20p4lA7RI8RTAGPwTi4pPAE1O8kaflmrNRg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
+	b=vjoGeMqQYKof9wKSyhrKFmyRPNzz1k2CemNQ7cMCCih1In9i6AN6Tx++T0YQnPB6q
+	 ZJcRO/q731yRGju+EjlcvFBlj/q4QJmUNMunyTPO00S7dWcIgvL+39/SbVafexP8vv
+	 4/XUwTgil6H5GSotFbj+LdaoV0J4vQW4Cn8y6LSsxDTqBhL4ofbZUizB09pQ1jNNLF
+	 8kRN7st0f6hBqVdfCYxtoCWwJZN7XdSydsI/TLj84dguXFY106D7hUDH/NaOVTNgHf
+	 a+PiLuDS8sUf1dfNvXDO1d1Oytdmkv/pgeYcCvew5yhqkqNY0vB2uPNv1JuyLMy5RT
+	 mOul8+KdBfMNA==
+Received: from p-i-exch-sc-m01.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.sberdevices.ru (Postfix) with ESMTPS;
+	Wed,  6 Dec 2023 21:57:53 +0300 (MSK)
+Received: from [192.168.1.127] (100.64.160.123) by
+ p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Wed, 6 Dec 2023 21:57:53 +0300
+Message-ID: <29584eb6-fa10-4ce0-9fa3-0c409a582445@salutedevices.com>
+Date: Wed, 6 Dec 2023 21:58:18 +0300
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="+ZoXCPpIBvMNs/9S"
-Content-Disposition: inline
-In-Reply-To: <ZXCVUD9cCYEShrrj@MiWiFi-R3L-srv>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/10] devm-helpers: introduce devm_mutex_init
+To: Hans de Goede <hdegoede@redhat.com>, <pavel@ucw.cz>, <lee@kernel.org>,
+	<vadimp@nvidia.com>, <mpe@ellerman.id.au>, <npiggin@gmail.com>,
+	<christophe.leroy@csgroup.eu>, <mazziesaccount@gmail.com>,
+	<andy.shevchenko@gmail.com>, <jic23@kernel.org>, <peterz@infradead.org>,
+	Waiman Long <longman@redhat.com>
+References: <20231204180603.470421-1-gnstark@salutedevices.com>
+ <20231204180603.470421-2-gnstark@salutedevices.com>
+ <81798fe5-f89e-482f-b0d0-674ccbfc3666@redhat.com>
+Content-Language: en-US
+From: George Stark <gnstark@salutedevices.com>
+In-Reply-To: <81798fe5-f89e-482f-b0d0-674ccbfc3666@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [100.64.160.123]
+X-ClientProxiedBy: p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) To
+ p-i-exch-sc-m01.sberdevices.ru (172.16.192.107)
+X-KSMG-Rule-ID: 10
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Lua-Profiles: 181917 [Dec 06 2023]
+X-KSMG-AntiSpam-Version: 6.0.0.2
+X-KSMG-AntiSpam-Envelope-From: gnstark@salutedevices.com
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Info: LuaCore: 5 0.3.5 98d108ddd984cca1d7e65e595eac546a62b0144b, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;100.64.160.123:7.1.2;salutedevices.com:7.1.1;p-i-exch-sc-m01.sberdevices.ru:7.1.1,5.0.1, FromAlignment: s, ApMailHostAddress: 100.64.160.123
+X-MS-Exchange-Organization-SCL: -1
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiPhishing: Clean
+X-KSMG-LinksScanning: Clean
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2023/12/06 17:41:00 #22621737
+X-KSMG-AntiVirus-Status: Clean, skipped
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,196 +92,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-parisc@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, nathan@kernel.org, Conor Dooley <conor.dooley@microchip.com>, joe@perches.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org
+Cc: kernel@salutedevices.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---+ZoXCPpIBvMNs/9S
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hello Hans
 
-On Wed, Dec 06, 2023 at 11:37:52PM +0800, Baoquan He wrote:
-> On 12/04/23 at 04:14pm, Conor Dooley wrote:
-> > On Mon, Dec 04, 2023 at 11:38:05PM +0800, Baoquan He wrote:
-> > > On 12/01/23 at 10:38am, Conor Dooley wrote:
-> > > > On Thu, Nov 30, 2023 at 10:39:53AM +0800, Baoquan He wrote:
-> > > >=20
-> > > > $subject has a typo in the arch bit :)
-> > >=20
-> > > Indeed, will fix if need report. Thanks for careful checking.
-> > >=20
-> > > >=20
-> > > > > Replace pr_debug() with the newly added kexec_dprintk() in kexec_=
-file
-> > > > > loading related codes.
-> > > >=20
-> > > > Commit messages should be understandable in isolation, but this only
-> > > > explains (part of) what is obvious in the diff. Why is this change
-> > > > being made?
-> > >=20
-> > > The purpose has been detailedly described in cover letter and patch 1
-> > > log. Andrew has picked these patches into his tree and grabbed the co=
-ver
-> > > letter log into the relevant commit for people's later checking. All
-> > > these seven patches will be present in mainline together. This is com=
-mon
-> > > way when posting patch series? Please let me know if I misunderstand
-> > > anything.
-> >=20
-> > Each patch having a commit message that explains why a change is being
-> > made is the expectation. It is especially useful to explain the why
-> > here, since it is not just a mechanical conversion of pr_debug()s as the
-> > commit message suggests.
->=20
-> Sounds reasonable. I rephrase the patch 3 log as below, do you think
-> it's OK to you?
+Thanks for the review.
 
-Yes, but with one comment.
+On 12/6/23 18:01, Hans de Goede wrote:
+> Hi George,
+> 
+> On 12/4/23 19:05, George Stark wrote:
+>> Using of devm API leads to certain order of releasing resources.
+>> So all dependent resources which are not devm-wrapped should be deleted
+>> with respect to devm-release order. Mutex is one of such objects that
+>> often is bound to other resources and has no own devm wrapping.
+>> Since mutex_destroy() actually does nothing in non-debug builds
+>> frequently calling mutex_destroy() is just ignored which is safe for now
+>> but wrong formally and can lead to a problem if mutex_destroy() is
+>> extended so introduce devm_mutex_init().
+>>
+>> Signed-off-by: George Stark <gnstark@salutedevices.com>
+>> ---
+>>   include/linux/devm-helpers.h | 18 ++++++++++++++++++
+>>   1 file changed, 18 insertions(+)
+>>
+>> diff --git a/include/linux/devm-helpers.h b/include/linux/devm-helpers.h
+>> index 74891802200d..2f56e476776f 100644
+>> --- a/include/linux/devm-helpers.h
+>> +++ b/include/linux/devm-helpers.h
+>> @@ -76,4 +76,22 @@ static inline int devm_work_autocancel(struct device *dev,
+>>   	return devm_add_action(dev, devm_work_drop, w);
+>>   }
+>>   
+>> +static inline void devm_mutex_release(void *res)
+>> +{
+>> +	mutex_destroy(res);
+>> +}
+>> +
+>> +/**
+>> + * devm_mutex_init - Resource-managed mutex initialization
+>> + * @dev:	Device which lifetime work is bound to
+>> + * @lock:	Pointer to a mutex
+>> + *
+>> + * Initialize mutex which is automatically destroyed when driver is detached.
+>> + */
+>> +static inline int devm_mutex_init(struct device *dev, struct mutex *lock)
+>> +{
+>> +	mutex_init(lock);
+>> +	return devm_add_action_or_reset(dev, devm_mutex_release, lock);
+>> +}
+>> +
+>>   #endif
+> 
+> mutex_destroy() only actually does anything if CONFIG_DEBUG_MUTEXES
+> is set, otherwise it is an empty inline-stub.
+> 
+> Adding a devres resource to the device just to call an empty inline
+> stub which is a no-op seems like a waste of resources. IMHO it
+> would be better to change this to:
+> 
+> static inline int devm_mutex_init(struct device *dev, struct mutex *lock)
+> {
+> 	mutex_init(lock);
+> #ifdef CONFIG_DEBUG_MUTEXES
+> 	return devm_add_action_or_reset(dev, devm_mutex_release, lock);
+> #else
+> 	return 0;
+> #endif
+> }
+> 
+> To avoid the unnecessary devres allocation when
+> CONFIG_DEBUG_MUTEXES is not set.
 
->=20
-> I will also adjust patch logs on other ARCH once this one is done.
-> Thanks.
->=20
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-> Subject: [PATCH v3 5/7] kexec_file, ricv: print out debugging message if =
-required
->=20
-> Then when specifying '-d' for kexec_file_load interface, loaded
-> locations of kernel/initrd/cmdline etc can be printed out to help debug.
->=20
-> Here replace pr_debug() with the newly added kexec_dprintk() in kexec_file
-> loading related codes.
->=20
+Honestly saying I don't like unnecessary devres allocation either but 
+the proposed approach has its own price:
 
-> And also replace pr_notice() with kexec_dprintk() in elf_kexec_load()
-> because it's make sense to always print out loaded location of purgatory
-> and device tree even though users don't expect the message.
+1) we'll have more than one place with branching if mutex_destroy is 
+empty or not using  indirect condition. If suddenly mutex_destroy is 
+extended for non-debug code (in upstream branch or e.g. by someone for 
+local debug) than there'll be a problem.
 
-This seems to contradict what you said in your earlier mail, about
-moving these from notice to debug. I think you missed a negation in your
-new version of the commit message. What you said in response to me seems
-like a more complete explanation anyway:
-	always printing out the loaded location of purgatory and
-	device tree doesn't make sense. It will be confusing when users
-	see these even when they do normal kexec/kdump loading.
+2) If mutex_destroy is empty or not depends on CONFIG_PREEMPT_RT option 
+too. When CONFIG_PREEMPT_RT is on mutex_destroy is always empty.
 
-Thanks,
-Conor.
+As I see it only the mutex interface (mutex.h) has to say definitely if 
+mutex_destroy must be called. Probably we could add some define to 
+include/linux/mutex.h,like IS_MUTEX_DESTROY_REQUIRED and declare it near 
+mutex_destroy definition itself.
 
-> And also remove kexec_image_info() because the content has been printed
-> out in generic code.
->=20
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
->=20
-> >=20
-> > > >=20
-> > > > >=20
-> > > > > And also remove kexec_image_info() because the content has been p=
-rinted
-> > > > > out in generic code.
-> > > > >=20
-> > > > > Signed-off-by: Baoquan He <bhe@redhat.com>
-> > > > > ---
-> > > > >  arch/riscv/kernel/elf_kexec.c     | 11 ++++++-----
-> > > > >  arch/riscv/kernel/machine_kexec.c | 26 --------------------------
-> > > > >  2 files changed, 6 insertions(+), 31 deletions(-)
-> > > > >=20
-> > > > > diff --git a/arch/riscv/kernel/elf_kexec.c b/arch/riscv/kernel/el=
-f_kexec.c
-> > > > > index e60fbd8660c4..5bd1ec3341fe 100644
-> > > > > --- a/arch/riscv/kernel/elf_kexec.c
-> > > > > +++ b/arch/riscv/kernel/elf_kexec.c
-> > > > > @@ -216,7 +216,6 @@ static void *elf_kexec_load(struct kimage *im=
-age, char *kernel_buf,
-> > > > >  	if (ret)
-> > > > >  		goto out;
-> > > > >  	kernel_start =3D image->start;
-> > > > > -	pr_notice("The entry point of kernel at 0x%lx\n", image->start);
-> > > > > =20
-> > > > >  	/* Add the kernel binary to the image */
-> > > > >  	ret =3D riscv_kexec_elf_load(image, &ehdr, &elf_info,
-> > > > > @@ -252,8 +251,8 @@ static void *elf_kexec_load(struct kimage *im=
-age, char *kernel_buf,
-> > > > >  		image->elf_load_addr =3D kbuf.mem;
-> > > > >  		image->elf_headers_sz =3D headers_sz;
-> > > > > =20
-> > > > > -		pr_debug("Loaded elf core header at 0x%lx bufsz=3D0x%lx memsz=
-=3D0x%lx\n",
-> > > > > -			 image->elf_load_addr, kbuf.bufsz, kbuf.memsz);
-> > > > > +		kexec_dprintk("Loaded elf core header at 0x%lx bufsz=3D0x%lx m=
-emsz=3D0x%lx\n",
-> > > > > +			      image->elf_load_addr, kbuf.bufsz, kbuf.memsz);
-> > > > > =20
-> > > > >  		/* Setup cmdline for kdump kernel case */
-> > > > >  		modified_cmdline =3D setup_kdump_cmdline(image, cmdline,
-> > > > > @@ -275,6 +274,8 @@ static void *elf_kexec_load(struct kimage *im=
-age, char *kernel_buf,
-> > > > >  		pr_err("Error loading purgatory ret=3D%d\n", ret);
-> > > > >  		goto out;
-> > > > >  	}
-> > > > > +	kexec_dprintk("Loaded purgatory at 0x%lx\n", kbuf.mem);
-> > > > > +
-> > > > >  	ret =3D kexec_purgatory_get_set_symbol(image, "riscv_kernel_ent=
-ry",
-> > > > >  					     &kernel_start,
-> > > > >  					     sizeof(kernel_start), 0);
-> > > > > @@ -293,7 +294,7 @@ static void *elf_kexec_load(struct kimage *im=
-age, char *kernel_buf,
-> > > > >  		if (ret)
-> > > > >  			goto out;
-> > > > >  		initrd_pbase =3D kbuf.mem;
-> > > >=20
-> > > > > -		pr_notice("Loaded initrd at 0x%lx\n", initrd_pbase);
-> > > > > +		kexec_dprintk("Loaded initrd at 0x%lx\n", initrd_pbase);
-> > > >=20
-> > > > This is not a pr_debug().
-> > > >=20
-> > > > >  	}
-> > > > > =20
-> > > > >  	/* Add the DTB to the image */
-> > > > > @@ -318,7 +319,7 @@ static void *elf_kexec_load(struct kimage *im=
-age, char *kernel_buf,
-> > > > >  	}
-> > > > >  	/* Cache the fdt buffer address for memory cleanup */
-> > > > >  	image->arch.fdt =3D fdt;
-> > > >=20
-> > > > > -	pr_notice("Loaded device tree at 0x%lx\n", kbuf.mem);
-> > > > > +	kexec_dprintk("Loaded device tree at 0x%lx\n", kbuf.mem);
-> > > >=20
-> > > > Neither is this. Why are they being moved from pr_notice()?
-> > >=20
-> > > You are right.=20
-> > >=20
-> > > While always printing out the loaded location of purgatory and
-> > > device tree doesn't make sense. It will be confusing when users
-> > > see these even when they do normal kexec/kdump loading. It should be
-> > > changed to pr_debug().
-> > >=20
-> > > Which way do you suggest?
-> > > 1) change it back to pr_debug(), fix it in another patch;
-> > > 2) keep it as is in the patch;
-> >=20
-> > Personally I think it is fine to change them all in one patch, but the
-> > rationale for converting pr_notice() to your new debug infrastructure
-> > needs to be in the commit message.
->=20
-> Sure, sounds good to me. I have changed the patch log to reflect this as
-> you suggested, please help check. Thanks again.
->=20
+I tried to put devm_mutex_init itself in mutex.h and it could've helped 
+too but it's not the place for devm API.
 
---+ZoXCPpIBvMNs/9S
-Content-Type: application/pgp-signature; name="signature.asc"
+> 
+> Regards,
+> 
+> Hans
+> 
+> 
+> 
+> 
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZXCnSQAKCRB4tDGHoIJi
-0hSRAP4syRlZOyJw1n/YG43/qr9A2uscWNjv96tsTpRdHhZuhQEAx8XL/7OFrX0X
-gOHyX1y7zxLOH70IlST6DVGjMoDzYgg=
-=fWts
------END PGP SIGNATURE-----
-
---+ZoXCPpIBvMNs/9S--
+-- 
+Best regards
+George
