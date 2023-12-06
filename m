@@ -2,59 +2,98 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4BF5806FB4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Dec 2023 13:30:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5B2E807B28
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Dec 2023 23:10:56 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ehRZTaiX;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Cy4olHDE;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NQHlKZQ+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SlcF72Lqvz3d9K
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Dec 2023 23:30:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sls6k374Gz3cg1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 09:10:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ehRZTaiX;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Cy4olHDE;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NQHlKZQ+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=acme@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=hdegoede@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SlcCj2KG2z3cW7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Dec 2023 23:29:21 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 4176CCE1D0D;
-	Wed,  6 Dec 2023 12:29:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DCD5C433C7;
-	Wed,  6 Dec 2023 12:29:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701865757;
-	bh=Q0HoZRs2Q9F2t4b+cosMNjZ1vgtsTwFBeajyDqNa8h4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ehRZTaiXFsk/ydXQ+4ao5HFzJLeWtX/bL+ikaKNp0CGFWNECCN+fL5eXM7EZ/lZl4
-	 3iGpJ+bTP9PENPHJhPItf5HRuONIyFzWVcd2vpZ2HioGX91Nu7ZRl+5j38CXJIM0UA
-	 sw0fa+0/S7MBICxnqVo5C/ggHBKecwXs/HGD7xZyIdIVvLKouQs3FbIiuKGmWKeTSK
-	 6u37INE3uabqmLy4k0+Gw1y8rVCbo6+Rajq6o+MFbmjL/sL6Rdwkv2CR1hXOI2/1AS
-	 OkfUj+dcQpJi4zk37idjp6cAHMHU5yn79o49kA0OVgAtdYOaR1vs/CCX0ROzj/oHQ6
-	 h/l+Wgti+0NkQ==
-Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
-	id 2CF224041A; Wed,  6 Dec 2023 09:29:15 -0300 (-03)
-Date: Wed, 6 Dec 2023 09:29:15 -0300
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH V4] tools/perf: Add perf binary dependent rule for
- shellcheck log in Makefile.perf
-Message-ID: <ZXBpG69R2D/nKlTZ@kernel.org>
-References: <20231123160232.94253-1-atrajeev@linux.vnet.ibm.com>
- <e8143e4d-d3ca-88c5-f1c8-b79f70ee5ffa@arm.com>
- <ZW+bIGC3r2dcTQUO@kernel.org>
- <46112CD2-2033-4885-863B-CF0F61672E65@linux.vnet.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SlgWt2FRfz3c40
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Dec 2023 01:58:33 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1701874708;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lI8W6CO+u1S10tMvsZNrVhiLtm/T33ov+fTqgOUmfWo=;
+	b=Cy4olHDELpz4Rg28Yn8xHshnwLc3VgCviD1EiP+dS/mamQr88N+/ut2eb2ls4E0VoBgNBa
+	VMSmE1ZRHN4gIPQAp2MgzQr2i0SexGNwHGwPUJcSCCPFjwO5KS2K5vQs673tV5yI7FQJQt
+	z7x+xyYBLS5/hBMSzKUgmlu9knrdO4A=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1701874709;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lI8W6CO+u1S10tMvsZNrVhiLtm/T33ov+fTqgOUmfWo=;
+	b=NQHlKZQ+QjLjgq3yDAMRCJSCDTQpFKaem1LWnuKjGvFULXQpJp7IkznGtUx9QcfXKjeztF
+	uTrnTkaW4rkNxOBF+c7UBZ/1DCKyH1hOT5VsPXGESfDvxxIrbvblBIzqW7SBZu2QnbWvXU
+	LasaTgC21LZAhXbLnaAm6oyj1xBFy2w=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-249-BjoiSxFBNHmZ76JMIr1k5Q-1; Wed, 06 Dec 2023 09:58:26 -0500
+X-MC-Unique: BjoiSxFBNHmZ76JMIr1k5Q-1
+Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2c9f545220cso36301761fa.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Dec 2023 06:58:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701874705; x=1702479505;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lI8W6CO+u1S10tMvsZNrVhiLtm/T33ov+fTqgOUmfWo=;
+        b=iSVfG5C1Hlv/7gW2OMpjE3bcm/Q5GcEEYfZ5asvP2EwKsV/sN1MkB4RbRuM23anJp1
+         jwEzPyM0Vd087y/ehyUIGswB+M+CV+SaWVgD3vbhO0EHwoyYBz42Yr4D+MtU29GwReau
+         PzC2ydPUxctoKx7vmMm/O4ZXQCGwsFyZm9uK+01eduRYBveI+aCNhqyUOBpFpPdoQJwt
+         BOFRjVLegPJ0nYRNvkfeRCjlZmr75ghbo6YZoaS49AXJhBS9+h61b9n12A7e1v4wOBaO
+         mLwO4JeQeFfDnPt5A1fYjHZSL4wm682sTrYmmxUIHORnI0zNy46DEc6GAHjKsDNkxTJO
+         VAbw==
+X-Gm-Message-State: AOJu0YwNXMTMd+z4QTZ3OvM8AxU6G8ieBhncLgl+UfQbaV/wLtAwL2Ey
+	VqmEJvarRzy52PLuid3RYIiy98LBYVuAsq59babmO4bg7aTFhpe+DnmIX8K36b14jaTS1uOFCd4
+	8FJW9Nv2asnHqD/e38k86pRaKLw==
+X-Received: by 2002:a2e:879a:0:b0:2c9:f2ef:cf14 with SMTP id n26-20020a2e879a000000b002c9f2efcf14mr784404lji.67.1701874705523;
+        Wed, 06 Dec 2023 06:58:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHFAROg+Lxclo/3NuDIimFR4fm3oJ99oj3ElVJlPS5SozqYTKjUwT8fR42ApPqSVQx8pFmf9Q==
+X-Received: by 2002:a2e:879a:0:b0:2c9:f2ef:cf14 with SMTP id n26-20020a2e879a000000b002c9f2efcf14mr784392lji.67.1701874705190;
+        Wed, 06 Dec 2023 06:58:25 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id br20-20020a170906d15400b00a1dcfd8f95csm27081ejb.37.2023.12.06.06.58.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 06 Dec 2023 06:58:24 -0800 (PST)
+Message-ID: <6381d523-8f49-48e2-8576-b74a14eead30@redhat.com>
+Date: Wed, 6 Dec 2023 15:58:23 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/10] devm-helpers: introduce devm_mutex_init
+To: George Stark <gnstark@salutedevices.com>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>
+References: <20231204180603.470421-1-gnstark@salutedevices.com>
+ <20231204180603.470421-2-gnstark@salutedevices.com>
+ <CAHp75Vc=GAnzwhWQTifLzw8OA7Lb35hrJCDxK-RkgZnX8JmfOg@mail.gmail.com>
+ <48ea90f9-922d-4a03-86da-cbb5aa9908b6@salutedevices.com>
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <48ea90f9-922d-4a03-86da-cbb5aa9908b6@salutedevices.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, nl
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <46112CD2-2033-4885-863B-CF0F61672E65@linux.vnet.ibm.com>
-X-Url: http://acmel.wordpress.com
+X-Mailman-Approved-At: Thu, 07 Dec 2023 09:10:12 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,42 +105,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, linux-perf-users <linux-perf-users@vger.kernel.org>, James Clark <james.clark@arm.com>, Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>, disgoel@linux.vnet.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org, vadimp@nvidia.com, mazziesaccount@gmail.com, kernel@salutedevices.com, lee@kernel.org, linux-kernel@vger.kernel.org, npiggin@gmail.com, pavel@ucw.cz, linux-leds@vger.kernel.org, jic23@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Em Wed, Dec 06, 2023 at 10:15:06AM +0530, Athira Rajeev escreveu:
-> 
-> 
-> > On 06-Dec-2023, at 3:20 AM, Arnaldo Carvalho de Melo <acme@kernel.org> wrote:
-> > 
-> > Em Mon, Nov 27, 2023 at 11:12:57AM +0000, James Clark escreveu:
-> >> On 23/11/2023 16:02, Athira Rajeev wrote:
-> >>> --- a/tools/perf/Makefile.perf
-> >>> @@ -1134,6 +1152,7 @@ bpf-skel-clean:
-> >>> $(call QUIET_CLEAN, bpf-skel) $(RM) -r $(SKEL_TMP_OUT) $(SKELETONS)
-> >>> 
-> >>> clean:: $(LIBAPI)-clean $(LIBBPF)-clean $(LIBSUBCMD)-clean $(LIBSYMBOL)-clean $(LIBPERF)-clean fixdep-clean python-clean bpf-skel-clean tests-coresight-targets-clean
-> >>> + $(Q)$(MAKE) -f $(srctree)/tools/perf/tests/Makefile.tests clean
-> >>> $(call QUIET_CLEAN, core-objs)  $(RM) $(LIBPERF_A) $(OUTPUT)perf-archive $(OUTPUT)perf-iostat $(LANG_BINDINGS)
-> >>> $(Q)find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '\.*.cmd' -delete -o -name '\.*.d' -delete
-> >>> $(Q)$(RM) $(OUTPUT).config-detected
-> > 
-> > While merging perf-tools-next with torvalds/master I noticed that maybe
-> > we better have the above added line as:
-> > 
-> > +   $(call QUIET_CLEAN, tests) $(Q)$(MAKE) -f $(srctree)/tools/perf/tests/Makefile.tests clean
-> > 
-> > No?
-> > 
-> > Anyway I'm merging as-is, but it just hit my eye while merging,
-> > 
-> > - Arnaldo
-> Hi Arnaldo
-> 
-> As Ian pointed we removed Makefile.tests as part of :
-> https://lore.kernel.org/lkml/20231129213428.2227448-1-irogers@google.com/
+Hi,
 
-Right, thanks for checking, see my reply to Ian for further details.
+On 12/6/23 08:56, George Stark wrote:
+> Hello Andy
+> 
+> Thanks for the review.
+> 
+> On 12/4/23 21:11, Andy Shevchenko wrote:
+>> On Mon, Dec 4, 2023 at 8:07 PM George Stark <gnstark@salutedevices.com> wrote:
+>>>
+>>> Using of devm API leads to certain order of releasing resources.
+>>> So all dependent resources which are not devm-wrapped should be deleted
+>>> with respect to devm-release order. Mutex is one of such objects that
+>>> often is bound to other resources and has no own devm wrapping.
+>>> Since mutex_destroy() actually does nothing in non-debug builds
+>>> frequently calling mutex_destroy() is just ignored which is safe for now
+>>> but wrong formally and can lead to a problem if mutex_destroy() is
+>>> extended so introduce devm_mutex_init().
+>>
+>> ...
+>>
+>> Do you need to include mutex.h?
+> It's already included in linux/device.h which is included in devm-helpers. Should I include mutex.h explicitly?
 
-- Arnaldo
+Yes you must explicitly include all headers you use definitions
+from. Relying on other headers to do this for you is error prone.
+
+Regards,
+
+Hans
+
+
