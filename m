@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A3028074A6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Dec 2023 17:15:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA4888074A9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Dec 2023 17:15:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SljDF5FGGz3vc2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 03:15:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SljDx2LtZz3vgM
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 03:15:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
@@ -14,41 +14,41 @@ Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SljBr1LG6z3cX4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Dec 2023 03:13:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SljBw3B5Qz3ckp
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Dec 2023 03:14:00 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4SljBW6WMzz9vBt;
-	Wed,  6 Dec 2023 17:13:39 +0100 (CET)
+	by localhost (Postfix) with ESMTP id 4SljBX2kFZz9vCD;
+	Wed,  6 Dec 2023 17:13:40 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
 	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id ydXZFxMDsAjG; Wed,  6 Dec 2023 17:13:39 +0100 (CET)
+	with ESMTP id 3FYUCo95Fuy9; Wed,  6 Dec 2023 17:13:40 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4SljBR0D39z9vCN;
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4SljBR3YHLz9vCL;
 	Wed,  6 Dec 2023 17:13:35 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 0315B8B775;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 766AF8B768;
 	Wed,  6 Dec 2023 17:13:35 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id fgi-dUb6ITWg; Wed,  6 Dec 2023 17:13:34 +0100 (CET)
+	with ESMTP id v283c70XfHb5; Wed,  6 Dec 2023 17:13:35 +0100 (CET)
 Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.233.46])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id ACD3F8B768;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id EA1F58B774;
 	Wed,  6 Dec 2023 17:13:34 +0100 (CET)
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
 	Rob Herring <robh+dt@kernel.org>,
 	Frank Rowand <frowand.list@gmail.com>
-Subject: [PATCH v1 3/4] powerpc/machdep: Define 'compatibles' property in ppc_md and use it
-Date: Wed,  6 Dec 2023 17:13:34 +0100
-Message-ID: <9da79892e7ff433095a7bf42e86aef02ab86b5c1.1701878821.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v1 4/4] powerpc: Stop using of_root
+Date: Wed,  6 Dec 2023 17:13:35 +0100
+Message-ID: <b2f23f982ef414f0eaf7c55ccb79f30bec3c86cd.1701878821.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <e6cf01d41502b15e688b6f5aa5c3b68c62b8ac64.1701878821.git.christophe.leroy@csgroup.eu>
 References: <e6cf01d41502b15e688b6f5aa5c3b68c62b8ac64.1701878821.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1701879211; l=9111; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=CV2q/ipk+zYv6+HPQeuFhB5wQbNfNBT38H+Z56cA3vA=; b=o9kTX1klE4WcJZs1pgkevU2Rrk49c0JHRG0jeQpy30W2qdRPCegaab2C8UdURV7G6zwzRkg5T afY1+kgob10BKMTYserzjUCf75M6rtl58aWbTksBMsyodJUVVUEmqVH
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1701879211; l=7716; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=77K0delwMi3OukRKKy6/1eRhfB22ltpHavBgqxRwed0=; b=FikTP9d7zk0WKhQnlHzOxXVSIGyQ2yiTKRltLPzyysffyCZU06/ORHO/bhHbHJxpiDyUN9IB7 HXx+K1oL00MD2Li2OjqP0XRY+7WMLtTspSWxZUMVgMBxwdcbi2Fl0cV
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -66,260 +66,216 @@ Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Most probe functions that do not use the 'compatible' string do
-nothing else than checking whether the machine is compatible with
-one of the strings in a NULL terminated table of strings.
-
-Define that table of strings in ppc_md structure and check it directly
-from probe_machine() instead of using ppc_md.probe() for that.
-
-Keep checking in ppc_md.probe() only for more complex probing.
-
-All .compatible could be replaced with a single element NULL
-terminated list but that's not worth the churn. Can be do incrementaly
-in follow-up patches.
+Replace all usages of of_root by of_find_node_by_path("/")
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/machdep.h            |  1 +
- arch/powerpc/kernel/setup-common.c            |  2 ++
- arch/powerpc/platforms/40x/ppc40x_simple.c    |  9 +++------
- arch/powerpc/platforms/512x/mpc512x_generic.c |  4 +---
- arch/powerpc/platforms/52xx/lite5200.c        | 10 +---------
- arch/powerpc/platforms/52xx/mpc5200_simple.c  | 10 +---------
- arch/powerpc/platforms/83xx/mpc830x_rdb.c     | 10 +---------
- arch/powerpc/platforms/83xx/mpc831x_rdb.c     | 10 +---------
- arch/powerpc/platforms/83xx/mpc837x_rdb.c     | 10 +---------
- arch/powerpc/platforms/85xx/corenet_generic.c |  2 +-
- arch/powerpc/platforms/85xx/tqm85xx.c         | 10 +---------
- 11 files changed, 14 insertions(+), 64 deletions(-)
+ arch/powerpc/kernel/secure_boot.c        |  8 ++++++--
+ arch/powerpc/kexec/ranges.c              |  8 +++++---
+ arch/powerpc/mm/drmem.c                  | 10 +++++-----
+ arch/powerpc/mm/numa.c                   |  6 ++++--
+ arch/powerpc/platforms/52xx/efika.c      |  4 +++-
+ arch/powerpc/platforms/pasemi/pci.c      |  4 +++-
+ arch/powerpc/platforms/pseries/lparcfg.c |  6 +++++-
+ arch/powerpc/platforms/pseries/setup.c   | 12 +++++++++---
+ 8 files changed, 40 insertions(+), 18 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/machdep.h b/arch/powerpc/include/asm/machdep.h
-index d31a5ec1550d..1862f94335ee 100644
---- a/arch/powerpc/include/asm/machdep.h
-+++ b/arch/powerpc/include/asm/machdep.h
-@@ -22,6 +22,7 @@ struct pci_host_bridge;
- struct machdep_calls {
- 	const char	*name;
- 	const char	*compatible;
-+	const char * const *compatibles;
- #ifdef CONFIG_PPC64
- #ifdef CONFIG_PM
- 	void		(*iommu_restore)(void);
-diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-index 9b142b9d5187..ec02f9d8f55d 100644
---- a/arch/powerpc/kernel/setup-common.c
-+++ b/arch/powerpc/kernel/setup-common.c
-@@ -616,6 +616,8 @@ static __init void probe_machine(void)
- 		DBG("  %s ...\n", machine_id->name);
- 		if (machine_id->compatible && !of_machine_is_compatible(machine_id->compatible))
- 			continue;
-+		if (machine_id->compatibles && !of_machine_compatible_match(machine_id->compatibles))
-+			continue;
- 		memcpy(&ppc_md, machine_id, sizeof(struct machdep_calls));
- 		if (ppc_md.probe && !ppc_md.probe())
- 			continue;
-diff --git a/arch/powerpc/platforms/40x/ppc40x_simple.c b/arch/powerpc/platforms/40x/ppc40x_simple.c
-index e454e9d2eff1..294ab2728588 100644
---- a/arch/powerpc/platforms/40x/ppc40x_simple.c
-+++ b/arch/powerpc/platforms/40x/ppc40x_simple.c
-@@ -59,16 +59,13 @@ static const char * const board[] __initconst = {
+diff --git a/arch/powerpc/kernel/secure_boot.c b/arch/powerpc/kernel/secure_boot.c
+index f9af305d9579..9e0efb657f39 100644
+--- a/arch/powerpc/kernel/secure_boot.c
++++ b/arch/powerpc/kernel/secure_boot.c
+@@ -32,8 +32,10 @@ bool is_ppc_secureboot_enabled(void)
+ 	if (enabled)
+ 		goto out;
  
- static int __init ppc40x_probe(void)
+-	if (!of_property_read_u32(of_root, "ibm,secure-boot", &secureboot))
++	node = of_find_node_by_path("/");
++	if (!of_property_read_u32(node, "ibm,secure-boot", &secureboot))
+ 		enabled = (secureboot > 1);
++	of_node_put(node);
+ 
+ out:
+ 	pr_info("Secure boot mode %s\n", enabled ? "enabled" : "disabled");
+@@ -54,8 +56,10 @@ bool is_ppc_trustedboot_enabled(void)
+ 	if (enabled)
+ 		goto out;
+ 
+-	if (!of_property_read_u32(of_root, "ibm,trusted-boot", &trustedboot))
++	node = of_find_node_by_path("/");
++	if (!of_property_read_u32(node, "ibm,trusted-boot", &trustedboot))
+ 		enabled = (trustedboot > 0);
++	of_node_put(node);
+ 
+ out:
+ 	pr_info("Trusted boot mode %s\n", enabled ? "enabled" : "disabled");
+diff --git a/arch/powerpc/kexec/ranges.c b/arch/powerpc/kexec/ranges.c
+index fb3e12f15214..33b780049aaf 100644
+--- a/arch/powerpc/kexec/ranges.c
++++ b/arch/powerpc/kexec/ranges.c
+@@ -385,14 +385,16 @@ int add_opal_mem_range(struct crash_mem **mem_ranges)
+ int add_reserved_mem_ranges(struct crash_mem **mem_ranges)
  {
--	if (of_device_compatible_match(of_root, board)) {
--		pci_set_flags(PCI_REASSIGN_ALL_RSRC);
--		return 1;
--	}
--
--	return 0;
-+	pci_set_flags(PCI_REASSIGN_ALL_RSRC);
-+	return 1;
+ 	int n_mem_addr_cells, n_mem_size_cells, i, len, cells, ret = 0;
++	struct device_node *root = of_find_node_by_path("/");
+ 	const __be32 *prop;
+ 
+-	prop = of_get_property(of_root, "reserved-ranges", &len);
++	prop = of_get_property(root, "reserved-ranges", &len);
++	n_mem_addr_cells = of_n_addr_cells(root);
++	n_mem_size_cells = of_n_size_cells(root);
++	of_node_put(root);
+ 	if (!prop)
+ 		return 0;
+ 
+-	n_mem_addr_cells = of_n_addr_cells(of_root);
+-	n_mem_size_cells = of_n_size_cells(of_root);
+ 	cells = n_mem_addr_cells + n_mem_size_cells;
+ 
+ 	/* Each reserved range is an (address,size) pair */
+diff --git a/arch/powerpc/mm/drmem.c b/arch/powerpc/mm/drmem.c
+index fde7790277f7..c110ab8fa8a3 100644
+--- a/arch/powerpc/mm/drmem.c
++++ b/arch/powerpc/mm/drmem.c
+@@ -393,17 +393,17 @@ static const __be32 *of_get_usable_memory(struct device_node *dn)
+ int walk_drmem_lmbs(struct device_node *dn, void *data,
+ 		    int (*func)(struct drmem_lmb *, const __be32 **, void *))
+ {
++	struct device_node *root = of_find_node_by_path("/");
+ 	const __be32 *prop, *usm;
+ 	int ret = -ENODEV;
+ 
+-	if (!of_root)
++	if (!root)
+ 		return ret;
+ 
+ 	/* Get the address & size cells */
+-	of_node_get(of_root);
+-	n_root_addr_cells = of_n_addr_cells(of_root);
+-	n_root_size_cells = of_n_size_cells(of_root);
+-	of_node_put(of_root);
++	n_root_addr_cells = of_n_addr_cells(root);
++	n_root_size_cells = of_n_size_cells(root);
++	of_node_put(root);
+ 
+ 	if (init_drmem_lmb_size(dn))
+ 		return ret;
+diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+index f6c4ace3b221..a490724e84ad 100644
+--- a/arch/powerpc/mm/numa.c
++++ b/arch/powerpc/mm/numa.c
+@@ -1111,7 +1111,7 @@ static void __init setup_node_data(int nid, u64 start_pfn, u64 end_pfn)
+ 
+ static void __init find_possible_nodes(void)
+ {
+-	struct device_node *rtas;
++	struct device_node *rtas, *root;
+ 	const __be32 *domains = NULL;
+ 	int prop_length, max_nodes;
+ 	u32 i;
+@@ -1132,10 +1132,12 @@ static void __init find_possible_nodes(void)
+ 	 * If the LPAR is migratable, new nodes might be activated after a LPM,
+ 	 * so we should consider the max number in that case.
+ 	 */
+-	if (!of_get_property(of_root, "ibm,migratable-partition", NULL))
++	root = of_find_node_by_path("/");
++	if (!of_get_property(root, "ibm,migratable-partition", NULL))
+ 		domains = of_get_property(rtas,
+ 					  "ibm,current-associativity-domains",
+ 					  &prop_length);
++	of_node_put(root);
+ 	if (!domains) {
+ 		domains = of_get_property(rtas, "ibm,max-associativity-domains",
+ 					&prop_length);
+diff --git a/arch/powerpc/platforms/52xx/efika.c b/arch/powerpc/platforms/52xx/efika.c
+index aa82e6b437f3..37a67120f257 100644
+--- a/arch/powerpc/platforms/52xx/efika.c
++++ b/arch/powerpc/platforms/52xx/efika.c
+@@ -195,8 +195,10 @@ static void __init efika_setup_arch(void)
+ 
+ static int __init efika_probe(void)
+ {
+-	const char *model = of_get_property(of_root, "model", NULL);
++	struct device_node *root = of_find_node_by_path("/");
++	const char *model = of_get_property(root, "model", NULL);
+ 
++	of_node_put(root);
+ 	if (model == NULL)
+ 		return 0;
+ 	if (strcmp(model, "EFIKA5K2"))
+diff --git a/arch/powerpc/platforms/pasemi/pci.c b/arch/powerpc/platforms/pasemi/pci.c
+index f27d31414737..60f990a336c4 100644
+--- a/arch/powerpc/platforms/pasemi/pci.c
++++ b/arch/powerpc/platforms/pasemi/pci.c
+@@ -270,16 +270,18 @@ static int __init pas_add_bridge(struct device_node *dev)
+ 
+ void __init pas_pci_init(void)
+ {
++	struct device_node *root = of_find_node_by_path("/");
+ 	struct device_node *np;
+ 	int res;
+ 
+ 	pci_set_flags(PCI_SCAN_ALL_PCIE_DEVS);
+ 
+-	np = of_find_compatible_node(of_root, NULL, "pasemi,rootbus");
++	np = of_find_compatible_node(root, NULL, "pasemi,rootbus");
+ 	if (np) {
+ 		res = pas_add_bridge(np);
+ 		of_node_put(np);
+ 	}
++	of_node_put(root);
  }
  
- define_machine(ppc40x_simple) {
- 	.name = "PowerPC 40x Platform",
-+	.compatibles = board,
- 	.probe = ppc40x_probe,
- 	.progress = udbg_progress,
- 	.init_IRQ = uic_init_tree,
-diff --git a/arch/powerpc/platforms/512x/mpc512x_generic.c b/arch/powerpc/platforms/512x/mpc512x_generic.c
-index 0d58ab257cd9..d4fa6c302ccf 100644
---- a/arch/powerpc/platforms/512x/mpc512x_generic.c
-+++ b/arch/powerpc/platforms/512x/mpc512x_generic.c
-@@ -32,9 +32,6 @@ static const char * const board[] __initconst = {
+ void __iomem *__init pasemi_pci_getcfgaddr(struct pci_dev *dev, int offset)
+diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
+index 1c151d77e74b..f73c4d1c26af 100644
+--- a/arch/powerpc/platforms/pseries/lparcfg.c
++++ b/arch/powerpc/platforms/pseries/lparcfg.c
+@@ -346,9 +346,13 @@ static int read_rtas_lpar_name(struct seq_file *m)
   */
- static int __init mpc512x_generic_probe(void)
+ static int read_dt_lpar_name(struct seq_file *m)
  {
--	if (!of_device_compatible_match(of_root, board))
--		return 0;
--
- 	mpc512x_init_early();
++	struct device_node *root = of_find_node_by_path("/");
+ 	const char *name;
++	int ret;
  
- 	return 1;
-@@ -42,6 +39,7 @@ static int __init mpc512x_generic_probe(void)
+-	if (of_property_read_string(of_root, "ibm,partition-name", &name))
++	ret = of_property_read_string(root, "ibm,partition-name", &name);
++	of_node_put(root);
++	if (ret)
+ 		return -ENOENT;
  
- define_machine(mpc512x_generic) {
- 	.name			= "MPC512x generic",
-+	.compatibles		= board,
- 	.probe			= mpc512x_generic_probe,
- 	.init			= mpc512x_init,
- 	.setup_arch		= mpc512x_setup_arch,
-diff --git a/arch/powerpc/platforms/52xx/lite5200.c b/arch/powerpc/platforms/52xx/lite5200.c
-index 0fd67b3ffc3e..0a161d82a3a8 100644
---- a/arch/powerpc/platforms/52xx/lite5200.c
-+++ b/arch/powerpc/platforms/52xx/lite5200.c
-@@ -172,17 +172,9 @@ static const char * const board[] __initconst = {
- 	NULL,
- };
+ 	seq_printf(m, "partition_name=%s\n", name);
+diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+index ecea85c74c43..284a6fa04b0c 100644
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -1029,9 +1029,11 @@ static void __init pseries_add_hw_description(void)
+ 		return;
+ 	}
  
--/*
-- * Called very early, MMU is off, device-tree isn't unflattened
-- */
--static int __init lite5200_probe(void)
--{
--	return of_device_compatible_match(of_root, board);
--}
--
- define_machine(lite5200) {
- 	.name 		= "lite5200",
--	.probe 		= lite5200_probe,
-+	.compatibles	= board,
- 	.setup_arch 	= lite5200_setup_arch,
- 	.discover_phbs	= mpc52xx_setup_pci,
- 	.init		= mpc52xx_declare_of_platform_devices,
-diff --git a/arch/powerpc/platforms/52xx/mpc5200_simple.c b/arch/powerpc/platforms/52xx/mpc5200_simple.c
-index f1e85e86f5e5..7e0e4c34a40b 100644
---- a/arch/powerpc/platforms/52xx/mpc5200_simple.c
-+++ b/arch/powerpc/platforms/52xx/mpc5200_simple.c
-@@ -59,17 +59,9 @@ static const char *board[] __initdata = {
- 	NULL
- };
+-	if (of_property_read_bool(of_root, "ibm,powervm-partition") ||
+-	    of_property_read_bool(of_root, "ibm,fw-net-version"))
++	dn = of_find_node_by_path("/");
++	if (of_property_read_bool(dn, "ibm,powervm-partition") ||
++	    of_property_read_bool(dn, "ibm,fw-net-version"))
+ 		seq_buf_printf(&ppc_hw_desc, "hv:phyp ");
++	of_node_put(dn);
+ }
  
--/*
-- * Called very early, MMU is off, device-tree isn't unflattened
-- */
--static int __init mpc5200_simple_probe(void)
--{
--	return of_device_compatible_match(of_root, board);
--}
--
- define_machine(mpc5200_simple_platform) {
- 	.name		= "mpc5200-simple-platform",
--	.probe		= mpc5200_simple_probe,
-+	.compatibles	= board,
- 	.setup_arch	= mpc5200_simple_setup_arch,
- 	.discover_phbs	= mpc52xx_setup_pci,
- 	.init		= mpc52xx_declare_of_platform_devices,
-diff --git a/arch/powerpc/platforms/83xx/mpc830x_rdb.c b/arch/powerpc/platforms/83xx/mpc830x_rdb.c
-index 534bb227480d..63b6d213726a 100644
---- a/arch/powerpc/platforms/83xx/mpc830x_rdb.c
-+++ b/arch/powerpc/platforms/83xx/mpc830x_rdb.c
-@@ -34,19 +34,11 @@ static const char *board[] __initdata = {
- 	NULL
- };
+ /*
+@@ -1091,7 +1093,11 @@ static void pseries_power_off(void)
  
--/*
-- * Called very early, MMU is off, device-tree isn't unflattened
-- */
--static int __init mpc830x_rdb_probe(void)
--{
--	return of_device_compatible_match(of_root, board);
--}
--
- machine_device_initcall(mpc830x_rdb, mpc83xx_declare_of_platform_devices);
+ static int __init pSeries_probe(void)
+ {
+-	if (!of_node_is_type(of_root, "chrp"))
++	struct device_node *root = of_find_node_by_path("/");
++	bool ret = of_node_is_type(root, "chrp");
++
++	of_node_put(root);
++	if (!ret)
+ 		return 0;
  
- define_machine(mpc830x_rdb) {
- 	.name			= "MPC830x RDB",
--	.probe			= mpc830x_rdb_probe,
-+	.compatibles		= board,
- 	.setup_arch		= mpc830x_rdb_setup_arch,
- 	.discover_phbs		= mpc83xx_setup_pci,
- 	.init_IRQ		= mpc83xx_ipic_init_IRQ,
-diff --git a/arch/powerpc/platforms/83xx/mpc831x_rdb.c b/arch/powerpc/platforms/83xx/mpc831x_rdb.c
-index 7b901ab3b864..5c39966762e4 100644
---- a/arch/powerpc/platforms/83xx/mpc831x_rdb.c
-+++ b/arch/powerpc/platforms/83xx/mpc831x_rdb.c
-@@ -34,19 +34,11 @@ static const char *board[] __initdata = {
- 	NULL
- };
- 
--/*
-- * Called very early, MMU is off, device-tree isn't unflattened
-- */
--static int __init mpc831x_rdb_probe(void)
--{
--	return of_device_compatible_match(of_root, board);
--}
--
- machine_device_initcall(mpc831x_rdb, mpc83xx_declare_of_platform_devices);
- 
- define_machine(mpc831x_rdb) {
- 	.name			= "MPC831x RDB",
--	.probe			= mpc831x_rdb_probe,
-+	.compatibles		= board,
- 	.setup_arch		= mpc831x_rdb_setup_arch,
- 	.discover_phbs		= mpc83xx_setup_pci,
- 	.init_IRQ		= mpc83xx_ipic_init_IRQ,
-diff --git a/arch/powerpc/platforms/83xx/mpc837x_rdb.c b/arch/powerpc/platforms/83xx/mpc837x_rdb.c
-index 39e78018dd0b..45823e147933 100644
---- a/arch/powerpc/platforms/83xx/mpc837x_rdb.c
-+++ b/arch/powerpc/platforms/83xx/mpc837x_rdb.c
-@@ -61,17 +61,9 @@ static const char * const board[] __initconst = {
- 	NULL
- };
- 
--/*
-- * Called very early, MMU is off, device-tree isn't unflattened
-- */
--static int __init mpc837x_rdb_probe(void)
--{
--	return of_device_compatible_match(of_root, board);
--}
--
- define_machine(mpc837x_rdb) {
- 	.name			= "MPC837x RDB/WLAN",
--	.probe			= mpc837x_rdb_probe,
-+	.compatibles		= board,
- 	.setup_arch		= mpc837x_rdb_setup_arch,
- 	.discover_phbs  	= mpc83xx_setup_pci,
- 	.init_IRQ		= mpc83xx_ipic_init_IRQ,
-diff --git a/arch/powerpc/platforms/85xx/corenet_generic.c b/arch/powerpc/platforms/85xx/corenet_generic.c
-index 645fcca77cde..c44400e95f55 100644
---- a/arch/powerpc/platforms/85xx/corenet_generic.c
-+++ b/arch/powerpc/platforms/85xx/corenet_generic.c
-@@ -149,7 +149,7 @@ static int __init corenet_generic_probe(void)
- 	extern struct smp_ops_t smp_85xx_ops;
- #endif
- 
--	if (of_device_compatible_match(of_root, boards))
-+	if (of_machine_compatible_match(boards))
- 		return 1;
- 
- 	/* Check if we're running under the Freescale hypervisor */
-diff --git a/arch/powerpc/platforms/85xx/tqm85xx.c b/arch/powerpc/platforms/85xx/tqm85xx.c
-index 6be1b9809db6..f74d446c53f0 100644
---- a/arch/powerpc/platforms/85xx/tqm85xx.c
-+++ b/arch/powerpc/platforms/85xx/tqm85xx.c
-@@ -112,17 +112,9 @@ static const char * const board[] __initconst = {
- 	NULL
- };
- 
--/*
-- * Called very early, device-tree isn't unflattened
-- */
--static int __init tqm85xx_probe(void)
--{
--	return of_device_compatible_match(of_root, board);
--}
--
- define_machine(tqm85xx) {
- 	.name			= "TQM85xx",
--	.probe			= tqm85xx_probe,
-+	.compatibles		= board,
- 	.setup_arch		= tqm85xx_setup_arch,
- 	.init_IRQ		= tqm85xx_pic_init,
- 	.show_cpuinfo		= tqm85xx_show_cpuinfo,
+ 	/* Cell blades firmware claims to be chrp while it's not. Until this
 -- 
 2.41.0
 
