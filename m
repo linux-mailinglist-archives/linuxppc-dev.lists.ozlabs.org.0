@@ -2,31 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB5D5808871
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 13:52:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1754808841
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 13:46:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SmDgQ29Syz3w1N
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 23:52:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SmDYL3JsXz3dLs
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 23:46:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SmDVw6cpRz3dHc
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Dec 2023 23:44:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SmDVp0HwDz3dBn
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Dec 2023 23:44:34 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SmDVw5Qlmz4xSc;
-	Thu,  7 Dec 2023 23:44:40 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SmDVl4Jpgz4xKl;
+	Thu,  7 Dec 2023 23:44:31 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: fbarrat@linux.ibm.com, ajd@linux.ibm.com, arnd@arndb.de, gregkh@linuxfoundation.org, Li zeming <zeming@nfschina.com>
-In-Reply-To: <20231113012202.7887-1-zeming@nfschina.com>
-References: <20231113012202.7887-1-zeming@nfschina.com>
-Subject: Re: [PATCH] misc: ocxl: afu_irq: Remove unnecessary (void*) conversions
-Message-Id: <170195271157.2310221.15419175340995819525.b4-ty@ellerman.id.au>
+To: npiggin@gmail.com, christophe.leroy@csgroup.eu, fbarrat@linux.ibm.com, ajd@linux.ibm.com, arnd@arndb.de, gregkh@linuxfoundation.org, Zhao Ke <ke.zhao@shingroup.cn>
+In-Reply-To: <20231129075845.57976-1-ke.zhao@shingroup.cn>
+References: <20231129075845.57976-1-ke.zhao@shingroup.cn>
+Subject: Re: [PATCH v2] powerpc: Add PVN support for HeXin C2000 processor
+Message-Id: <170195271167.2310221.14120518840277202418.b4-ty@ellerman.id.au>
 Date: Thu, 07 Dec 2023 23:38:31 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,18 +42,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: luming.yu@shingroup.cn, kvm@vger.kernel.org, dawei.li@shingroup.cn, linux-kernel@vger.kernel.org, shenghui.qu@shingroup.cn, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 13 Nov 2023 09:22:02 +0800, Li zeming wrote:
-> The irq pointer does not need to cast the type.
+On Wed, 29 Nov 2023 15:58:45 +0800, Zhao Ke wrote:
+> HeXin Tech Co. has applied for a new PVN from the OpenPower Community
+> for its new processor C2000. The OpenPower has assigned a new PVN
+> and this newly assigned PVN is 0x0066, add pvr register related
+> support for this PVN.
 > 
 > 
 
 Applied to powerpc/next.
 
-[1/1] misc: ocxl: afu_irq: Remove unnecessary (void*) conversions
-      https://git.kernel.org/powerpc/c/84ba5d3675e23e6fa824a2268c5b6a04b52dde4d
+[1/1] powerpc: Add PVN support for HeXin C2000 processor
+      https://git.kernel.org/powerpc/c/e12d8e2602d2bcd26022eff3e2519d25925e760c
 
 cheers
