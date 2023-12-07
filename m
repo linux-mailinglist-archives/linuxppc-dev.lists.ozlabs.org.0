@@ -1,87 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EAA8807E49
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 03:17:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE71807FCA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 05:49:26 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SWTifrGq;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SWTifrGq;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=S3OFIEXV;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SlybG6ylLz3dBG
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 13:17:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sm1yX2X4Sz3clL
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 15:49:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SWTifrGq;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SWTifrGq;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=S3OFIEXV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=longman@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SlyZN6wFBz30hY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Dec 2023 13:16:43 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1701915401;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hBSYHwojXw9kaGuT0KXDyW/rgXDL9EP6Xo6RAZZVUjw=;
-	b=SWTifrGqQtBDAvSKw/WZz0sjuLL60LdZ28hKw1596+DssSfkTolc8LvpjrDsiSTTTNQvYZ
-	Lp7fiZct8G14HK8c6k1XrNPyhWzjxnNVdb3Qh7FFKOU8xg4jBRFj+1R4tkhe/Fgy77HkPP
-	00RrkVV6jxRLswsz+yqDotwMatRVv+w=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1701915401;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hBSYHwojXw9kaGuT0KXDyW/rgXDL9EP6Xo6RAZZVUjw=;
-	b=SWTifrGqQtBDAvSKw/WZz0sjuLL60LdZ28hKw1596+DssSfkTolc8LvpjrDsiSTTTNQvYZ
-	Lp7fiZct8G14HK8c6k1XrNPyhWzjxnNVdb3Qh7FFKOU8xg4jBRFj+1R4tkhe/Fgy77HkPP
-	00RrkVV6jxRLswsz+yqDotwMatRVv+w=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-471-rmphrsgtOkS3HsEJKlrQog-1; Wed, 06 Dec 2023 21:16:38 -0500
-X-MC-Unique: rmphrsgtOkS3HsEJKlrQog-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sm1xg3nZzz2yts
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Dec 2023 15:48:39 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1701924518;
+	bh=5v86kuw+WREddg6/1BQXTyPrhQFcUlwGuC7Hep43V7w=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=S3OFIEXVQyuJV7Ws1XwoxszchGOPw4PI3ELuLYrZ8O5AXipv+qrlyxTIzC82m7xKt
+	 Ymw41Dw4UkY/6p/LtB2bN+0t3FYUnSKsoh0XlN7uRLnq+Mywb5a24azY6t+L5qsVSM
+	 /r8R9LiKrpfGfgpLiCcdjgWHUwaUEMfrDQC1bEkEQanJni1i9IX8i7BE5P5hpnTm3J
+	 77ABRINUkx+EAR3cEXEB58Y9mSCoiIXIza1X9fQJTEc6mjPzBoXmz3vMLGnJ5TMX5/
+	 hIceK+2nMo066dyOGH0p2Qy9XNyS2SECDXY3wkVdWuFD6FJepCPj5vmCUnkxzuJZV5
+	 6SikDYMHWxj2w==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EA08F101A551;
-	Thu,  7 Dec 2023 02:16:37 +0000 (UTC)
-Received: from [10.22.34.92] (unknown [10.22.34.92])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 766B4C15E6C;
-	Thu,  7 Dec 2023 02:16:35 +0000 (UTC)
-Message-ID: <377e4437-7051-4d88-ae68-1460bcd692e1@redhat.com>
-Date: Wed, 6 Dec 2023 21:16:35 -0500
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sm1xf5YJJz4wd0;
+	Thu,  7 Dec 2023 15:48:35 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Subject: Re: [PATCH 4/4] powerpc/Makefile: Auto detect cross compiler
+In-Reply-To: <20231206162556.GK19790@gate.crashing.org>
+References: <20231206115548.1466874-1-mpe@ellerman.id.au>
+ <20231206115548.1466874-4-mpe@ellerman.id.au>
+ <20231206162556.GK19790@gate.crashing.org>
+Date: Thu, 07 Dec 2023 15:48:30 +1100
+Message-ID: <87y1e6ehy9.fsf@mail.lhotse>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/10] devm-helpers: introduce devm_mutex_init
-Content-Language: en-US
-To: George Stark <gnstark@salutedevices.com>,
- Hans de Goede <hdegoede@redhat.com>, pavel@ucw.cz, lee@kernel.org,
- vadimp@nvidia.com, mpe@ellerman.id.au, npiggin@gmail.com,
- christophe.leroy@csgroup.eu, mazziesaccount@gmail.com,
- andy.shevchenko@gmail.com, jic23@kernel.org, peterz@infradead.org,
- boqun.feng@gmail.com, will@kernel.org, mingo@redhat.com
-References: <20231204180603.470421-1-gnstark@salutedevices.com>
- <20231204180603.470421-2-gnstark@salutedevices.com>
- <81798fe5-f89e-482f-b0d0-674ccbfc3666@redhat.com>
- <29584eb6-fa10-4ce0-9fa3-0c409a582445@salutedevices.com>
- <580ecff0-b335-4cc0-b928-a99fe73741ca@redhat.com>
- <469f44fb-2371-4b3b-bc1c-d09ec35a5ec8@redhat.com>
- <75368bdb-b54e-4e15-a3c0-89b920e5e729@salutedevices.com>
-From: Waiman Long <longman@redhat.com>
-In-Reply-To: <75368bdb-b54e-4e15-a3c0-89b920e5e729@salutedevices.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,110 +59,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel@salutedevices.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/6/23 19:37, George Stark wrote:
-> Hello Waiman
+Segher Boessenkool <segher@kernel.crashing.org> writes:
+> On Wed, Dec 06, 2023 at 10:55:48PM +1100, Michael Ellerman wrote:
+>> Look for various combinations, matching:
+>>   powerpc(64(le)?)?(-unknown)?-linux(-gnu)?-
+>> 
+>> There are more possibilities, but the above is known to find a compiler
+>> on Fedora and Ubuntu (which use linux-gnu-), and also detects the
+>> kernel.org cross compilers (which use linux-).
 >
-> Thanks for the review.
+> $ sh ../config.sub powerpc64-linux
+> powerpc64-unknown-linux-gnu
 >
-> On 12/7/23 00:02, Waiman Long wrote:
->> On 12/6/23 14:55, Hans de Goede wrote:
->>> Hi,
->>>
->>> On 12/6/23 19:58, George Stark wrote:
->>>> Hello Hans
->>>>
->>>> Thanks for the review.
->>>>
->>>> On 12/6/23 18:01, Hans de Goede wrote:
->>>>> Hi George,
->>>>>
-> ...
->>>>> mutex_destroy() only actually does anything if CONFIG_DEBUG_MUTEXES
->>>>> is set, otherwise it is an empty inline-stub.
->>>>>
->>>>> Adding a devres resource to the device just to call an empty inline
->>>>> stub which is a no-op seems like a waste of resources. IMHO it
->>>>> would be better to change this to:
->>>>>
->>>>> static inline int devm_mutex_init(struct device *dev, struct mutex 
->>>>> *lock)
->>>>> {
->>>>>      mutex_init(lock);
->>>>> #ifdef CONFIG_DEBUG_MUTEXES
->>>>>      return devm_add_action_or_reset(dev, devm_mutex_release, lock);
->>>>> #else
->>>>>      return 0;
->>>>> #endif
->>>>> }
->>>>>
->>>>> To avoid the unnecessary devres allocation when
->>>>> CONFIG_DEBUG_MUTEXES is not set.
->>>> Honestly saying I don't like unnecessary devres allocation either 
->>>> but the proposed approach has its own price:
->>>>
->>>> 1) we'll have more than one place with branching if mutex_destroy 
->>>> is empty or not using  indirect condition. If suddenly 
->>>> mutex_destroy is extended for non-debug code (in upstream branch or 
->>>> e.g. by someone for local debug) than there'll be a problem.
->>>>
->>>> 2) If mutex_destroy is empty or not depends on CONFIG_PREEMPT_RT 
->>>> option too. When CONFIG_PREEMPT_RT is on mutex_destroy is always 
->>>> empty.
->>>>
->>>> As I see it only the mutex interface (mutex.h) has to say 
->>>> definitely if mutex_destroy must be called. Probably we could add 
->>>> some define to include/linux/mutex.h,like IS_MUTEX_DESTROY_REQUIRED 
->>>> and declare it near mutex_destroy definition itself.
->>> That (a  IS_MUTEX_DESTROY_REQUIRED define) is an interesting idea. 
->>> Lets s>
->>>>> Adding a devres resource to the device just to call an empty inline
->>>>> stub which is a no-op seems like a waste of resources. IMHO it
->>>>> would be better to change this to:
->>>>>
->>>>> static inline int devm_mutex_init(struct device *dev, struct mutex 
->>>>> *lock)
->>>>> {
->>>>>      mutex_init(lock);
->>>>> #ifdef CONFIG_DEBUG_MUTEXES
->>>>>      return devm_add_action_or_reset(dev, devm_mutex_release, lock);
->>>>> #else
->>>>>      return 0;
->>>>> #endif
->>>>> }
->>>>> ee for v3 if the mutex maintainers will accept that and if not 
->>> then I guess we will just need to live with the unnecessary devres 
->>> allocation.
->>
->> The purpose of calling mutex_destroy() is to mark a mutex as being 
->> destroyed so that any subsequent call to mutex_lock/unlock will cause 
->> a warning to be printed when CONFIG_DEBUG_MUTEXES is defined. I would 
->> not say that mutex_destroy() is required. Rather it is a nice to have 
->> for catching programming error.
->
-> This is quite understandable but probably mutex_destroy() is not the 
-> best name for an optional API. Questions are asked over and over again
-> if it can be safely ignored taking into account that it could be 
-> extended in the future. Every maintainer makes decision on that question
-> in his own way and it leads to inconsistency.
->
-> devm_mutex_init could take responsibility for calling/dropping 
-> mutex_destroy() on its own.
+> I am very very lazy, so buildall uses short names everywhere :-)
 
-The DEBUG_MUTEXES code is relatively old and there was no major change 
-to it for a number of years. I don't see we will make major change to it 
-in the near future. Of course, thing may change if there are new 
-requirement that may affect the DEBUG_MUTEXES code.
+I used to use just ppc64-gcc :)
 
-Cheers,
-Longman
+I can add more variants but didn't want to add too many unless someone
+is actually using them.
 
->
->> Cheers,
->> Longman
->>
->
+> Btw, can you build the kernel for a config that differs in 32/64 or
+> BE/LE with the default your compiler uses?  There is no reason this
+> shouldn't work (you don't use any system libraries), but you need to
+> use the correct compiler command-line flags for that always.
 
+Yes it should work. I've tested at least ppc64le/ppc64/ppc defconfigs.
+
+There have been bugs in the past but AFAIK we have fixed all of them,
+though there's probably some still lurking for more obscure configs.
+
+> Acked-by: Segher Boessenkool <segher@kernel.crashing.org>
+
+Thanks.
+
+cheers
