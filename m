@@ -2,61 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E49B808B6C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 16:06:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10436808B71
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 16:07:44 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=Xyy2cWlu;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=vE4eGU1D;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SmHfn3c09z3vg6
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Dec 2023 02:06:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SmHgx3kcqz2xgp
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Dec 2023 02:07:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=Xyy2cWlu;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=vE4eGU1D;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2a00:1450:4864:20::434; helo=mail-wr1-x434.google.com; envelope-from=alexghiti@rivosinc.com; receiver=lists.ozlabs.org)
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2a00:1450:4864:20::331; helo=mail-wm1-x331.google.com; envelope-from=alexghiti@rivosinc.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SmHdx46Zcz3vc8
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Dec 2023 02:05:57 +1100 (AEDT)
-Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-33348e711e0so1071764f8f.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Dec 2023 07:05:57 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SmHg54wbRz3dSq
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Dec 2023 02:06:57 +1100 (AEDT)
+Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-40c1e3ea2f2so10946365e9.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Dec 2023 07:06:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1701961553; x=1702566353; darn=lists.ozlabs.org;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1701961614; x=1702566414; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LVN+VzhbTBys9mVhAQGqZxkaIjV/7TRqzMN+a14FBcU=;
-        b=Xyy2cWluMkHzfckS3Hz2Cx/1OkWHAXTTBudtOqxvwuYp+Ec2h5AySv/uBl6SNKlp2i
-         fbJGGJqCj7aoNozPEZOc4uA8ytfVoZT0ZlIGHRoMa59gz88hqpLX2kv4VdN9lxFAwBI6
-         bTtCCYpvpxMYmIRcUfFxQls8RZsmFnvhOXXC1XB/q3Ou0CWbaKbHbrzhLeyPu2mz/nb1
-         rfCav2QnB0OwpzV8syq1P7lyVN5ulOGaAr/Y56y3/PTxRt/K7KnB6Hgu23UT8AN3YsuY
-         iCVivzocW/PE4jtWGOtheuitq0nPlEJMFGtgtimCcHPUEUaGy7sUw7YzA8jqjdJsvWuB
-         C5kg==
+        bh=EWcoco88tut+CY63Y/9PXHuBFD03h05uf7rbyZFiPT4=;
+        b=vE4eGU1DzI62Ncmkhq1m7YgrDw+2Y43kow7cCnsPup84dn45Syv97SPHMgUKXKqDSy
+         orB6bNFsTgj5gYenTC3ZtB5F94D2EBqf05pyXiV9kXf+fN3Jr4uPTyG+ytuFy/Boi2ic
+         w7m37tzV5rGA7wWM2CCaYyqPBFx7Ip/10Cc4Y1s++CsnGFZ1UC4CwiptM3HnJZiH5Ku0
+         28wf7dVniJBxBbyRal3+OB4qZcCJNwBa9mLHk6CT2HVEx2FmzkJVzSZQPr0CkSiL2mVY
+         I2XWuSOEn+YZ0dijBQ4V2l1+uaWegkAbrwf1A246b9UQWSG+FkNboU0MbTLtlNbMyY3o
+         rw4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701961553; x=1702566353;
+        d=1e100.net; s=20230601; t=1701961614; x=1702566414;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=LVN+VzhbTBys9mVhAQGqZxkaIjV/7TRqzMN+a14FBcU=;
-        b=Wmapbd2k3D2IQp/FJy6uXP0r/qz6I701h9L49eMpwibccJZ7u6qgbsNBMUQbf2bWf5
-         WYJsAMfNMdx7sFhJKDiGBgwSFgDleJUtS92myjY67q34kZTRx21naXqdzVstaj+U0WsY
-         48D3HxoZd18IT4vFa6jsNtFPiztfkjqk8G14/h2zzF6qYmPSzj/svlpDd6h+Lp6RQX5B
-         T6U5jEeUxpTUFZ8luKIbfFJMKcEKNhes34ByumFL53f2MUqbUGv820VyMWkllAP5u2MO
-         tRkdSDRlXaJwYgBdFBiv6cMrQXB8YrPZpzIoAUdPPC+bFwUhWkyUlIRYFJHVMjGDYx6t
-         j1gQ==
-X-Gm-Message-State: AOJu0YyKtWCej9sux3ctW9YlLCu5DCVJOoHg0vVeFpnvkm1m6X5N6Uh9
-	yDQJb64VCcWke0Z6fi9O0wDKNg==
-X-Google-Smtp-Source: AGHT+IEj2QTBGpOf3OHBs9Yni4aQareAokfWZfEZoiM8ehZh4/VLAukwcmzFcEIzO5CULnzn0YcNZw==
-X-Received: by 2002:adf:ea82:0:b0:333:1907:c2a3 with SMTP id s2-20020adfea82000000b003331907c2a3mr1503404wrm.21.1701961553264;
-        Thu, 07 Dec 2023 07:05:53 -0800 (PST)
+        bh=EWcoco88tut+CY63Y/9PXHuBFD03h05uf7rbyZFiPT4=;
+        b=SZ65jH2GOymyFFnv67Otc6S1tXhkC/CBZheP6gQPIV3bJLmrHLIYCeTyp3KybveJN3
+         LVo9L5DlNiqRfL4k1mji7ZtqgIq30YVV67xPgcUlRkZdlGen99w4GkJMEIOQGdnmRw/2
+         BQ3+prwnCEGPFXDVoJn7/MvTfpQ4XbsB1o7VMS//aP/65SDEPwiSeFwmHxy6dokt8J5r
+         Iu/WQU2SATyS5OwGkWyrVgIjzWDfPeSMwXJWjtad/5nVfxNIAoUOjUjt9Hy7bmHAIWya
+         N2vc5N2Y+AINGpJqzMk1ZZvrOUrs1cEqIBa3gOaKjHhoFxcobi+pthBPno7CKuD3NWbR
+         wjXw==
+X-Gm-Message-State: AOJu0YyYYaYnP6UcRTqozrHWoCU6SQZ/oC5Jk40kvNwxo+033BGr5AtR
+	r8x2jIlsg/IWDAg7wsfItcDUSw==
+X-Google-Smtp-Source: AGHT+IHTy8+IvueJsQn+KurIJffNNmKiqFVQtVzbm19iX0i45eZHV4tLMcBmveaKizCMPPNo4tYVVQ==
+X-Received: by 2002:a5d:67c5:0:b0:333:3867:c5aa with SMTP id n5-20020a5d67c5000000b003333867c5aamr1932506wrw.20.1701961614467;
+        Thu, 07 Dec 2023 07:06:54 -0800 (PST)
 Received: from alex-rivos.home (amontpellier-656-1-456-62.w92-145.abo.wanadoo.fr. [92.145.124.62])
-        by smtp.gmail.com with ESMTPSA id p13-20020a056000018d00b00333415503a7sm1644486wrx.22.2023.12.07.07.05.52
+        by smtp.gmail.com with ESMTPSA id a8-20020adffb88000000b003335e67e574sm1649359wrr.78.2023.12.07.07.06.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Dec 2023 07:05:53 -0800 (PST)
+        Thu, 07 Dec 2023 07:06:54 -0800 (PST)
 From: Alexandre Ghiti <alexghiti@rivosinc.com>
 To: Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>,
@@ -77,9 +77,9 @@ To: Catalin Marinas <catalin.marinas@arm.com>,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-riscv@lists.infradead.org,
 	linux-mm@kvack.org
-Subject: [PATCH RFC/RFT 2/4] riscv: Add a runtime detection of invalid TLB entries caching
-Date: Thu,  7 Dec 2023 16:03:46 +0100
-Message-Id: <20231207150348.82096-3-alexghiti@rivosinc.com>
+Subject: [PATCH RFC/RFT 3/4] riscv: Stop emitting preventive sfence.vma for new userspace mappings
+Date: Thu,  7 Dec 2023 16:03:47 +0100
+Message-Id: <20231207150348.82096-4-alexghiti@rivosinc.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231207150348.82096-1-alexghiti@rivosinc.com>
 References: <20231207150348.82096-1-alexghiti@rivosinc.com>
@@ -100,177 +100,208 @@ Cc: Alexandre Ghiti <alexghiti@rivosinc.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This mechanism allows to completely bypass the sfence.vma introduced by
-the previous commit for uarchs that do not cache invalid TLB entries.
+The preventive sfence.vma were emitted because new mappings must be made
+visible to the page table walker, either the uarch caches invalid
+entries or not.
+
+Actually, there is no need to preventively sfence.vma on new mappings for
+userspace, this should be handled only in the page fault path.
+
+This allows to drastically reduce the number of sfence.vma emitted:
+
+* Ubuntu boot to login:
+Before: ~630k sfence.vma
+After:  ~200k sfence.vma
+
+* ltp - mmapstress01
+Before: ~45k
+After:  ~6.3k
+
+* lmbench - lat_pagefault
+Before: ~665k
+After:   832 (!)
+
+* lmbench - lat_mmap
+Before: ~546k
+After:   718 (!)
+
+The only issue with the removal of sfence.vma in update_mmu_cache() is
+that on uarchs that cache invalid entries, those won't be invalidated
+until the process takes a fault: so that's an additional fault in those
+cases.
 
 Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 ---
- arch/riscv/mm/init.c | 124 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 124 insertions(+)
+ arch/arm64/include/asm/pgtable.h              |  2 +-
+ arch/mips/include/asm/pgtable.h               |  6 +--
+ arch/powerpc/include/asm/book3s/64/tlbflush.h |  8 ++--
+ arch/riscv/include/asm/pgtable.h              | 43 +++++++++++--------
+ include/linux/pgtable.h                       |  8 +++-
+ mm/memory.c                                   | 12 +++++-
+ 6 files changed, 48 insertions(+), 31 deletions(-)
 
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 379403de6c6f..2e854613740c 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -56,6 +56,8 @@ bool pgtable_l5_enabled = IS_ENABLED(CONFIG_64BIT) && !IS_ENABLED(CONFIG_XIP_KER
- EXPORT_SYMBOL(pgtable_l4_enabled);
- EXPORT_SYMBOL(pgtable_l5_enabled);
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index 7f7d9b1df4e5..728f25f529a5 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -57,7 +57,7 @@ static inline bool arch_thp_swp_supported(void)
+  * fault on one CPU which has been handled concurrently by another CPU
+  * does not need to perform additional invalidation.
+  */
+-#define flush_tlb_fix_spurious_fault(vma, address, ptep) do { } while (0)
++#define flush_tlb_fix_spurious_write_fault(vma, address, ptep) do { } while (0)
  
-+bool tlb_caching_invalid_entries;
-+
- phys_addr_t phys_ram_base __ro_after_init;
- EXPORT_SYMBOL(phys_ram_base);
- 
-@@ -750,6 +752,18 @@ static void __init disable_pgtable_l4(void)
- 	satp_mode = SATP_MODE_39;
+ /*
+  * ZERO_PAGE is a global shared page that is always zero: used
+diff --git a/arch/mips/include/asm/pgtable.h b/arch/mips/include/asm/pgtable.h
+index 430b208c0130..84439fe6ed29 100644
+--- a/arch/mips/include/asm/pgtable.h
++++ b/arch/mips/include/asm/pgtable.h
+@@ -478,9 +478,9 @@ static inline pgprot_t pgprot_writecombine(pgprot_t _prot)
+ 	return __pgprot(prot);
  }
  
-+static void __init enable_pgtable_l5(void)
-+{
-+	pgtable_l5_enabled = true;
-+	satp_mode = SATP_MODE_57;
-+}
-+
-+static void __init enable_pgtable_l4(void)
-+{
-+	pgtable_l4_enabled = true;
-+	satp_mode = SATP_MODE_48;
-+}
-+
- static int __init print_no4lvl(char *p)
+-static inline void flush_tlb_fix_spurious_fault(struct vm_area_struct *vma,
+-						unsigned long address,
+-						pte_t *ptep)
++static inline void flush_tlb_fix_spurious_write_fault(struct vm_area_struct *vma,
++						      unsigned long address,
++						      pte_t *ptep)
  {
- 	pr_info("Disabled 4-level and 5-level paging");
-@@ -826,6 +840,112 @@ static __init void set_satp_mode(uintptr_t dtb_pa)
- 	memset(early_pud, 0, PAGE_SIZE);
- 	memset(early_pmd, 0, PAGE_SIZE);
  }
-+
-+/* Determine at runtime if the uarch caches invalid TLB entries */
-+static __init void set_tlb_caching_invalid_entries(void)
+ 
+diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush.h b/arch/powerpc/include/asm/book3s/64/tlbflush.h
+index 1950c1b825b4..7166d56f90db 100644
+--- a/arch/powerpc/include/asm/book3s/64/tlbflush.h
++++ b/arch/powerpc/include/asm/book3s/64/tlbflush.h
+@@ -128,10 +128,10 @@ static inline void flush_tlb_page(struct vm_area_struct *vma,
+ #define flush_tlb_page(vma, addr)	local_flush_tlb_page(vma, addr)
+ #endif /* CONFIG_SMP */
+ 
+-#define flush_tlb_fix_spurious_fault flush_tlb_fix_spurious_fault
+-static inline void flush_tlb_fix_spurious_fault(struct vm_area_struct *vma,
+-						unsigned long address,
+-						pte_t *ptep)
++#define flush_tlb_fix_spurious_write_fault flush_tlb_fix_spurious_write_fault
++static inline void flush_tlb_fix_spurious_write_fault(struct vm_area_struct *vma,
++						      unsigned long address,
++						      pte_t *ptep)
+ {
+ 	/*
+ 	 * Book3S 64 does not require spurious fault flushes because the PTE
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index b2ba3f79cfe9..89aa5650f104 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -472,28 +472,20 @@ static inline void update_mmu_cache_range(struct vm_fault *vmf,
+ 		struct vm_area_struct *vma, unsigned long address,
+ 		pte_t *ptep, unsigned int nr)
+ {
+-	/*
+-	 * The kernel assumes that TLBs don't cache invalid entries, but
+-	 * in RISC-V, SFENCE.VMA specifies an ordering constraint, not a
+-	 * cache flush; it is necessary even after writing invalid entries.
+-	 * Relying on flush_tlb_fix_spurious_fault would suffice, but
+-	 * the extra traps reduce performance.  So, eagerly SFENCE.VMA.
+-	 */
+-	while (nr--)
+-		local_flush_tlb_page(address + nr * PAGE_SIZE);
+ }
+ #define update_mmu_cache(vma, addr, ptep) \
+ 	update_mmu_cache_range(NULL, vma, addr, ptep, 1)
+ 
+ #define __HAVE_ARCH_UPDATE_MMU_TLB
+-#define update_mmu_tlb update_mmu_cache
++static inline void update_mmu_tlb(struct vm_area_struct *vma,
++				  unsigned long address, pte_t *ptep)
 +{
-+#define NR_RETRIES_CACHING_INVALID_ENTRIES	50
-+	uintptr_t set_tlb_caching_invalid_entries_pmd = ((unsigned long)set_tlb_caching_invalid_entries) & PMD_MASK;
-+	// TODO the test_addr as defined below could go into another pud...
-+	uintptr_t test_addr = set_tlb_caching_invalid_entries_pmd + 2 * PMD_SIZE;
-+	pmd_t valid_pmd;
-+	u64 satp;
-+	int i = 0;
-+
-+	/* To ease the page table creation */
-+	disable_pgtable_l5();
-+	disable_pgtable_l4();
-+
-+	/* Establish a mapping for set_tlb_caching_invalid_entries() in sv39 */
-+	create_pgd_mapping(early_pg_dir,
-+			   set_tlb_caching_invalid_entries_pmd,
-+			   (uintptr_t)early_pmd,
-+			   PGDIR_SIZE, PAGE_TABLE);
-+
-+	/* Handle the case where set_tlb_caching_invalid_entries straddles 2 PMDs */
-+	create_pmd_mapping(early_pmd,
-+			   set_tlb_caching_invalid_entries_pmd,
-+			   set_tlb_caching_invalid_entries_pmd,
-+			   PMD_SIZE, PAGE_KERNEL_EXEC);
-+	create_pmd_mapping(early_pmd,
-+			   set_tlb_caching_invalid_entries_pmd + PMD_SIZE,
-+			   set_tlb_caching_invalid_entries_pmd + PMD_SIZE,
-+			   PMD_SIZE, PAGE_KERNEL_EXEC);
-+
-+	/* Establish an invalid mapping */
-+	create_pmd_mapping(early_pmd, test_addr, 0, PMD_SIZE, __pgprot(0));
-+
-+	/* Precompute the valid pmd here because the mapping for pfn_pmd() won't exist */
-+	valid_pmd = pfn_pmd(PFN_DOWN(set_tlb_caching_invalid_entries_pmd), PAGE_KERNEL);
-+
-+	local_flush_tlb_all();
-+	satp = PFN_DOWN((uintptr_t)&early_pg_dir) | SATP_MODE_39;
-+	csr_write(CSR_SATP, satp);
-+
-+	/*
-+	 * Set stvec to after the trapping access, access this invalid mapping
-+	 * and legitimately trap
-+	 */
-+	// TODO: Should I save the previous stvec?
-+#define ASM_STR(x)	__ASM_STR(x)
-+	asm volatile(
-+		"la a0, 1f				\n"
-+		"csrw " ASM_STR(CSR_TVEC) ", a0		\n"
-+		"ld a0, 0(%0)				\n"
-+		".align 2				\n"
-+		"1:					\n"
-+		:
-+		: "r" (test_addr)
-+		: "a0"
-+	);
-+
-+	/* Now establish a valid mapping to check if the invalid one is cached */
-+	early_pmd[pmd_index(test_addr)] = valid_pmd;
-+
-+	/*
-+	 * Access the valid mapping multiple times: indeed, we can't use
-+	 * sfence.vma as a barrier to make sure the cpu did not reorder accesses
-+	 * so we may trap even if the uarch does not cache invalid entries. By
-+	 * trying a few times, we make sure that those uarchs will see the right
-+	 * mapping at some point.
-+	 */
-+
-+	i = NR_RETRIES_CACHING_INVALID_ENTRIES;
-+
-+#define ASM_STR(x)	__ASM_STR(x)
-+	asm_volatile_goto(
-+		"la a0, 1f					\n"
-+		"csrw " ASM_STR(CSR_TVEC) ", a0			\n"
-+		".align 2					\n"
-+		"1:						\n"
-+		"addi %0, %0, -1				\n"
-+		"blt %0, zero, %l[caching_invalid_entries]	\n"
-+		"ld a0, 0(%1)					\n"
-+		:
-+		: "r" (i), "r" (test_addr)
-+		: "a0"
-+		: caching_invalid_entries
-+	);
-+
-+	csr_write(CSR_SATP, 0ULL);
-+	local_flush_tlb_all();
-+
-+	/* If we don't trap, the uarch does not cache invalid entries! */
-+	tlb_caching_invalid_entries = false;
-+	goto clean;
-+
-+caching_invalid_entries:
-+	csr_write(CSR_SATP, 0ULL);
-+	local_flush_tlb_all();
-+
-+	tlb_caching_invalid_entries = true;
-+clean:
-+	memset(early_pg_dir, 0, PAGE_SIZE);
-+	memset(early_pmd, 0, PAGE_SIZE);
-+
-+	enable_pgtable_l4();
-+	enable_pgtable_l5();
++	flush_tlb_range(vma, address, address + PAGE_SIZE);
 +}
+ 
+ static inline void update_mmu_cache_pmd(struct vm_area_struct *vma,
+ 		unsigned long address, pmd_t *pmdp)
+ {
+-	pte_t *ptep = (pte_t *)pmdp;
+-
+-	update_mmu_cache(vma, address, ptep);
+ }
+ 
+ #define __HAVE_ARCH_PTE_SAME
+@@ -548,13 +540,26 @@ static inline int ptep_set_access_flags(struct vm_area_struct *vma,
+ 					unsigned long address, pte_t *ptep,
+ 					pte_t entry, int dirty)
+ {
+-	if (!pte_same(*ptep, entry))
++	if (!pte_same(*ptep, entry)) {
+ 		__set_pte_at(ptep, entry);
+-	/*
+-	 * update_mmu_cache will unconditionally execute, handling both
+-	 * the case that the PTE changed and the spurious fault case.
+-	 */
+-	return true;
++		/* Here only not svadu is impacted */
++		flush_tlb_page(vma, address);
++		return true;
++	}
++
++	return false;
++}
++
++extern u64 nr_sfence_vma_handle_exception;
++extern bool tlb_caching_invalid_entries;
++
++#define flush_tlb_fix_spurious_read_fault flush_tlb_fix_spurious_read_fault
++static inline void flush_tlb_fix_spurious_read_fault(struct vm_area_struct *vma,
++						     unsigned long address,
++						     pte_t *ptep)
++{
++	if (tlb_caching_invalid_entries)
++		flush_tlb_page(vma, address);
+ }
+ 
+ #define __HAVE_ARCH_PTEP_GET_AND_CLEAR
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index af7639c3b0a3..7abaf42ef612 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -931,8 +931,12 @@ static inline void arch_swap_restore(swp_entry_t entry, struct folio *folio)
+ # define pte_accessible(mm, pte)	((void)(pte), 1)
+ #endif
+ 
+-#ifndef flush_tlb_fix_spurious_fault
+-#define flush_tlb_fix_spurious_fault(vma, address, ptep) flush_tlb_page(vma, address)
++#ifndef flush_tlb_fix_spurious_write_fault
++#define flush_tlb_fix_spurious_write_fault(vma, address, ptep) flush_tlb_page(vma, address)
++#endif
++
++#ifndef flush_tlb_fix_spurious_read_fault
++#define flush_tlb_fix_spurious_read_fault(vma, address, ptep)
  #endif
  
  /*
-@@ -1072,6 +1192,7 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
- #endif
- 
- #if defined(CONFIG_64BIT) && !defined(CONFIG_XIP_KERNEL)
-+	set_tlb_caching_invalid_entries();
- 	set_satp_mode(dtb_pa);
- #endif
- 
-@@ -1322,6 +1443,9 @@ static void __init setup_vm_final(void)
- 	local_flush_tlb_all();
- 
- 	pt_ops_set_late();
-+
-+	pr_info("uarch caches invalid entries: %s",
-+		tlb_caching_invalid_entries ? "yes" : "no");
- }
- #else
- asmlinkage void __init setup_vm(uintptr_t dtb_pa)
+diff --git a/mm/memory.c b/mm/memory.c
+index 517221f01303..5cb0ccf0c03f 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5014,8 +5014,16 @@ static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
+ 		 * with threads.
+ 		 */
+ 		if (vmf->flags & FAULT_FLAG_WRITE)
+-			flush_tlb_fix_spurious_fault(vmf->vma, vmf->address,
+-						     vmf->pte);
++			flush_tlb_fix_spurious_write_fault(vmf->vma, vmf->address,
++							   vmf->pte);
++		else
++			/*
++			 * With the pte_same(ptep_get(vmf->pte), entry) check
++			 * that calls update_mmu_tlb() above, multiple threads
++			 * faulting at the same time won't get there.
++			 */
++			flush_tlb_fix_spurious_read_fault(vmf->vma, vmf->address,
++							  vmf->pte);
+ 	}
+ unlock:
+ 	pte_unmap_unlock(vmf->pte, vmf->ptl);
 -- 
 2.39.2
 
