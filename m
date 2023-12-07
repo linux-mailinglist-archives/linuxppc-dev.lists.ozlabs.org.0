@@ -1,32 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF55808848
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 13:48:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA67B80885A
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 13:49:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SmDbM40FHz3w6k
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 23:48:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SmDcv2MKwz3wQH
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 23:49:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SmDVq6G5bz3dHJ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Dec 2023 23:44:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SmDVs3RfBz3dFr
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Dec 2023 23:44:37 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SmDVq57dGz4xMv;
-	Thu,  7 Dec 2023 23:44:35 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SmDVs2JWKz4xPc;
+	Thu,  7 Dec 2023 23:44:37 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20231024112726.1819795-1-mpe@ellerman.id.au>
-References: <20231024112726.1819795-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/configs/64s: Enable CONFIG_MEM_SOFT_DIRTY
-Message-Id: <170195271159.2310221.5412588290546588528.b4-ty@ellerman.id.au>
+In-Reply-To: <20231113043947.1931831-1-mpe@ellerman.id.au>
+References: <20231113043947.1931831-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc: Remove orphaned reg_a2.h
+Message-Id: <170195271159.2310221.847582356282241280.b4-ty@ellerman.id.au>
 Date: Thu, 07 Dec 2023 23:38:31 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -45,16 +45,19 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 24 Oct 2023 22:27:25 +1100, Michael Ellerman wrote:
-> Enable CONFIG_MEM_SOFT_DIRTY to get some test coverage. Distros enable
-> it, and it has been broken previously. See commit 66b2ca086210
-> ("powerpc/64s/radix: Fix soft dirty tracking").
+On Mon, 13 Nov 2023 15:39:47 +1100, Michael Ellerman wrote:
+> Commit fb5a515704d7 ("powerpc: Remove platforms/wsp and associated
+> pieces") removed the A2 CPU support, but missed removal of reg_a2.h.
+> 
+> None of the defines contained in it are used, with the exception of the
+> SPRN_TEN* values, but they are also defined in reg_booke.h.
 > 
 > 
+> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/configs/64s: Enable CONFIG_MEM_SOFT_DIRTY
-      https://git.kernel.org/powerpc/c/183bc0c640c785a710885a10b614193f114fe760
+[1/1] powerpc: Remove orphaned reg_a2.h
+      https://git.kernel.org/powerpc/c/6f2a9e0e0ae5fb0697dd1660ede7e609be25ff6f
 
 cheers
