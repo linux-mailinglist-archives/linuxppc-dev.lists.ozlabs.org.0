@@ -1,68 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 236FC807D8F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 02:04:11 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=29UF0vLX;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1597807E15
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 02:44:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Slwyc47k4z3d8n
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 12:04:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Slxsf1RHRz3dK0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 12:44:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=29UF0vLX;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--jmattson.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=31blxzqgkdp0orfyyxtslttlqj.htrqnsz2uuh-ij0qnxyx.t4qfgx.twl@flex--jmattson.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=jiangyunshui@kylinos.cn; receiver=lists.ozlabs.org)
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Slwxl0YwLz30gH
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Dec 2023 12:03:21 +1100 (AEDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-5d1ed4b268dso1830927b3.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Dec 2023 17:03:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1701910996; x=1702515796; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kNsTQFENpLV0yAX5x5gNndSdmWF67ocLDbukBVvw4Ho=;
-        b=29UF0vLXGyCC+Y5SQj5Pooq4yXZe80CRzIehPUZRhkHde4J9+n/fznSSPK9TgLpTyP
-         wMKwR06V1l5Nke65RbbvKDa40R7WJfmEktNcnMpxpwy9UsHAbJBE9t/yEE6xUU8TLBgJ
-         Y4CKESbmBsdPSH85jEBuG5bxnGG3DStxyX0zY+B43ecVdYevDvKXN3AggyTS7F5Fg/2n
-         xYaeQNVtpFcsvUcs6iqXYClna26iqlE+x2ktnr7+aJt6Lp4YjOTjSzNYV1iz4jBX46/i
-         jJEDRQpcf5eH/lFiwc+SFgwiDX1f6OOaF1KImWLroaKvo89R7nydSkbez1mN3xAhXEP5
-         TiSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701910996; x=1702515796;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kNsTQFENpLV0yAX5x5gNndSdmWF67ocLDbukBVvw4Ho=;
-        b=A/jsX1sKZHvwqxtdYn8ZMe2Qy/Vh1OJL8BfN5qLNF8pO6OvnIm79M5Y7fWMepLoa9g
-         YiIt+gZGaAJwhHPgqihFeVD16PFhgU+1zYxWAUv2xEVQdmTiiTMsEE6jfiTAYldaj2TT
-         pyNysuHQcW6pqdYovEGUwa9VVxMbMaVAe+CS1mBxylA9h+FIMCoEKNqFsR5/5+R2Uie6
-         rj4X7Ny/XmkoB+IzokrCQzEVHT3NAf0OLisdaUfKNLDaI1goS9YKbnU6pRT4VLgTYS04
-         6lUgbpvNKO450ubnFAtVFQmJCJcTtFTM23P+DwTAmiBpBc9Q3k+GfTOVCkE8TWMxDsPo
-         BKIQ==
-X-Gm-Message-State: AOJu0YzgR7TcvBcXo6x1fShPYKTIar+gyM2seDRes8KMYjlIyI6tILN5
-	+siGRRgoVSd/WmLIAFKNEM1rV3fBOgrW/Q==
-X-Google-Smtp-Source: AGHT+IEeNrOu3itFc+M9ynsd08u9d5b33h7Ph3dWYLMht1q/VwgbdO1TO2ezXuPbPGpyVmgh4Cp2D8u2f11e3g==
-X-Received: from loggerhead.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:29a])
- (user=jmattson job=sendgmr) by 2002:a25:2981:0:b0:dbc:3553:efe with SMTP id
- p123-20020a252981000000b00dbc35530efemr3380ybp.4.1701910996183; Wed, 06 Dec
- 2023 17:03:16 -0800 (PST)
-Date: Wed,  6 Dec 2023 17:03:02 -0800
-In-Reply-To: <20220921003201.1441511-11-seanjc@google.com>
-Mime-Version: 1.0
-References: <20220921003201.1441511-11-seanjc@google.com>
-X-Mailer: git-send-email 2.43.0.rc2.451.g8631bc7472-goog
-Message-ID: <20231207010302.2240506-1-jmattson@google.com>
-Subject: [PATCH v4 10/12] KVM: x86: never write to memory from kvm_vcpu_check_block()
-From: Jim Mattson <jmattson@google.com>
-To: seanjc@google.com
-Content-Type: text/plain; charset="UTF-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Slxs51pLzz30P0
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Dec 2023 12:44:24 +1100 (AEDT)
+X-UUID: 5aa9ead4bf7f45ebb64da22b7e64f6e2-20231207
+X-CID-O-RULE: Release_Ham
+X-CID-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.33,REQID:8fb5be05-f92e-467d-8ff9-69eadee6c510,IP:5,U
+	RL:0,TC:0,Content:0,EDM:0,RT:1,SF:-1,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:5
+X-CID-INFO: VERSION:1.1.33,REQID:8fb5be05-f92e-467d-8ff9-69eadee6c510,IP:5,URL
+	:0,TC:0,Content:0,EDM:0,RT:1,SF:-1,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:5
+X-CID-META: VersionHash:364b77b,CLOUDID:6768e760-c89d-4129-91cb-8ebfae4653fc,B
+	ulkID:2312070943101BF84CQB,BulkQuantity:0,Recheck:0,SF:100|66|24|72|19|42|
+	101|74|64|102,TC:nil,Content:1,EDM:-3,IP:-2,URL:0,File:nil,Bulk:nil,QS:nil
+	,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI
+X-UUID: 5aa9ead4bf7f45ebb64da22b7e64f6e2-20231207
+X-User: jiangyunshui@kylinos.cn
+Received: from localhost.localdomain [(112.64.161.44)] by mailgw
+	(envelope-from <jiangyunshui@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 733524998; Thu, 07 Dec 2023 09:43:08 +0800
+From: jiangyunshui <jiangyunshui@kylinos.cn>
+To: christophe.leroy@csgroup.eu
+Subject: Re: [PATCH] ocxl: fix driver function comment typo
+Date: Thu,  7 Dec 2023 09:43:07 +0800
+Message-Id: <20231207014307.12256-1-jiangyunshui@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <2f2aca95-f5a6-45fa-9e3b-37aecf657299@csgroup.eu>
+References: <2f2aca95-f5a6-45fa-9e3b-37aecf657299@csgroup.eu>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,80 +58,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, david@redhat.com, paul.walmsley@sifive.com, linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org, imbrenda@linux.ibm.com, kvmarm@lists.cs.columbia.edu, frankja@linux.ibm.com, maz@kernel.org, chenhuacai@kernel.org, mlevitsk@redhat.com, aleksandar.qemu.devel@gmail.com, palmer@dabbelt.com, borntraeger@linux.ibm.com, aou@eecs.berkeley.edu, suzuki.poulose@arm.com, atishp@atishpatra.org, alexandru.elisei@arm.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, oliver.upton@linux.dev, james.morse@arm.com, kvm-riscv@lists.infradead.org, anup@brainfault.org, pbonzini@redhat.com, linuxppc-dev@lists.ozlabs.org
+Cc: ajd@linux.ibm.com, kernel-bot@kylinos.cn, linux-kernel@vger.kernel.org, jiangyunshui@kylinos.cn, fbarrat@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-kvm_vcpu_check_block() is called while not in TASK_RUNNING, and therefore
-it cannot sleep.  Writing to guest memory is therefore forbidden, but it
-can happen on AMD processors if kvm_check_nested_events() causes a vmexit.
+> Date: Tue, 5 Dec 2023 11:00:16 +0000	[thread overview]
+> Message-ID: <2f2aca95-f5a6-45fa-9e3b-37aecf657299@csgroup.eu> (raw)
+> In-Reply-To: <20231205094319.32114-1-jiangyunshui@kylinos.cn>
 
-Fortunately, all events that are caught by kvm_check_nested_events() are
-also recognized by kvm_vcpu_has_events() through vendor callbacks such as
-kvm_x86_interrupt_allowed() or kvm_x86_ops.nested_ops->has_events(), so
-remove the call and postpone the actual processing to vcpu_block().
+> Please add a description explaining why you want to do that change.
 
-Opportunistically honor the return of kvm_check_nested_events().  KVM
-punted on the check in kvm_vcpu_running() because the only error path is
-if vmx_complete_nested_posted_interrupt() fails, in which case KVM exits
-to userspace with "internal error" i.e. the VM is likely dead anyways so
-it wasn't worth overloading the return of kvm_vcpu_running().
+> When I grep I see cxlflash driver, I don't know what ocxlflash driver is:
 
-Add the check mostly so that KVM is consistent with itself; the return of
-the call via kvm_apic_accept_events()=>kvm_check_nested_events() that
-immediately follows  _is_ checked.
+> $ git grep ocxl_config_read_afu
+> ...
+> drivers/scsi/cxlflash/ocxl_hw.c:        rc = ocxl_config_read_afu(pdev, 
+> fcfg, acfg, 0);
+> drivers/scsi/cxlflash/ocxl_hw.c:                dev_err(dev, "%s: 
+> ocxl_config_read_afu failed rc=%d\n",
+> include/misc/ocxl.h:int ocxl_config_read_afu(struct pci_dev *dev,
 
-Reported-by: Maxim Levitsky <mlevitsk@redhat.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-[sean: check and handle return of kvm_check_nested_events()]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/x86.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+> Christophe
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index dcc675d4e44b..8aeacbc2bff9 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10815,6 +10815,17 @@ static inline int vcpu_block(struct kvm_vcpu *vcpu)
- 			return 1;
- 	}
- 
-+	/*
-+	 * Evaluate nested events before exiting the halted state.  This allows
-+	 * the halt state to be recorded properly in the VMCS12's activity
-+	 * state field (AMD does not have a similar field and a VM-Exit always
-+	 * causes a spurious wakeup from HLT).
-+	 */
-+	if (is_guest_mode(vcpu)) {
-+		if (kvm_check_nested_events(vcpu) < 0)
-+			return 0;
-+	}
-+
- 	if (kvm_apic_accept_events(vcpu) < 0)
- 		return 0;
- 	switch(vcpu->arch.mp_state) {
-@@ -10837,9 +10848,6 @@ static inline int vcpu_block(struct kvm_vcpu *vcpu)
- 
- static inline bool kvm_vcpu_running(struct kvm_vcpu *vcpu)
- {
--	if (is_guest_mode(vcpu))
--		kvm_check_nested_events(vcpu);
--
- 	return (vcpu->arch.mp_state == KVM_MP_STATE_RUNNABLE &&
- 		!vcpu->arch.apf.halted);
- }
+I checked my commit again and found I'd mismatched the driver's name with other things.
+As you said it doesn't make sense to change cxlflash to ocxlflash.
+Sorry for the inconvenience, you could just drop my commit please.
+Thanks,
 
-This commit breaks delivery of a (virtualized) posted interrupt from
-an L1 vCPU to a halted L2 vCPU.
+Yunshui
 
-Looking back at commit e6c67d8cf117 ("KVM: nVMX: Wake blocked vCPU in
-guest-mode if pending interrupt in virtual APICv"), Liran wrote:
-
-    Note that this also handles the case of nested posted-interrupt by the
-    fact RVI is updated in vmx_complete_nested_posted_interrupt() which is
-    called from kvm_vcpu_check_block() -> kvm_arch_vcpu_runnable() ->
-    kvm_vcpu_running() -> vmx_check_nested_events() ->
-    vmx_complete_nested_posted_interrupt().
-
-Clearly, that is no longer the case.
+> ---
+> Reported-by: k2ci <kernel-bot@kylinos.cn>
+> Signed-off-by: yunshui <jiangyunshui@kylinos.cn>
+> ---
+>   include/misc/ocxl.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/include/misc/ocxl.h b/include/misc/ocxl.h
+> index 3ed736da02c8..ef7d26009a36 100644
+> --- a/include/misc/ocxl.h
+> +++ b/include/misc/ocxl.h
+> @@ -324,7 +324,7 @@ int ocxl_global_mmio_clear32(struct ocxl_afu *afu, size_t offset,
+>   int ocxl_global_mmio_clear64(struct ocxl_afu *afu, size_t offset,
+>                               enum ocxl_endian endian, u64 mask);
+>
+> -// Functions left here are for compatibility with the cxlflash driver
+> +// Functions left here are for compatibility with the ocxlflash driver
+>
+>   /*
+>    * Read the configuration space of a function for the AFU specified by
+> --
+> 2.25.1
+>
