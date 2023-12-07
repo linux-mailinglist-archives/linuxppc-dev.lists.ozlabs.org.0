@@ -2,35 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18D16808891
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 13:55:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CFF8808884
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 13:55:10 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=N9/bCE5o;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SmDlX4GqRz3wGF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 23:55:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SmDkz3gNQz75kQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 23:55:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=N9/bCE5o;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=salutedevices.com (client-ip=37.18.73.165; helo=mx1.sberdevices.ru; envelope-from=gnstark@salutedevices.com; receiver=lists.ozlabs.org)
+Received: from mx1.sberdevices.ru (mx1.sberdevices.ru [37.18.73.165])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SmDgQ1ftlz753s
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Dec 2023 23:52:02 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SmDft2jX8z75Sn
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Dec 2023 23:51:27 +1100 (AEDT)
+Received: from p-infra-ksmg-sc-msk01 (localhost [127.0.0.1])
+	by mx1.sberdevices.ru (Postfix) with ESMTP id 2ADA5100008;
+	Thu,  7 Dec 2023 15:51:21 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 2ADA5100008
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
+	s=mail; t=1701953481;
+	bh=fI5OzawEGCVVfRbMhXE1Of2XRpyVwMZSfxOH5EOrJ1o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
+	b=N9/bCE5o94pPixmQ6rwVigYyQ8ZL1iWdN3H/ufJbuG/fJmBzC9B70M7Eoay6t7FDw
+	 oxcblJ1d8+s2ljK8OVXEcoVQI0pi2Ww+RV0dyc3kaxNPhfplP3APYPDoq6XQbpmUSp
+	 XWj+PmNtWEeYkfMolrzH9LqSq7r2ZoD5owypj4jX75gVfw8eJ/83lwbvcwuRGFMpA2
+	 gw63RsmrnvH+sw02s6qyY6+kJPO4n4dy4zOGip7BPd9b4HZsC8ZtbFQjt5arC0e7YX
+	 QTbKG3wnO5+fev8HWiFVzM9VhppNYGUu44S+HSbQAbsoT8g50AQlSsQQc1v5nNxf0/
+	 mMxVTg0ZXWriA==
+Received: from p-i-exch-sc-m01.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SmDgQ0RYXz4xGP;
-	Thu,  7 Dec 2023 23:52:02 +1100 (AEDT)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Naveen N Rao <naveen@kernel.org>
-In-Reply-To: <20231130065947.2188860-1-naveen@kernel.org>
-References: <20231130065947.2188860-1-naveen@kernel.org>
-Subject: Re: [PATCH] powerpc/ftrace: Fix stack teardown in ftrace_no_trace
-Message-Id: <170195350072.2318049.5836008710043445095.b4-ty@ellerman.id.au>
-Date: Thu, 07 Dec 2023 23:51:40 +1100
+	by mx1.sberdevices.ru (Postfix) with ESMTPS;
+	Thu,  7 Dec 2023 15:51:20 +0300 (MSK)
+Received: from [192.168.1.127] (100.64.160.123) by
+ p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Thu, 7 Dec 2023 15:51:19 +0300
+Message-ID: <57ea099a-8b88-4b16-9b54-b81e5b28bcb6@salutedevices.com>
+Date: Thu, 7 Dec 2023 15:51:44 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/10] devm-helpers: introduce devm_mutex_init
+Content-Language: en-US
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Andy Shevchenko
+	<andy.shevchenko@gmail.com>
+References: <20231204180603.470421-1-gnstark@salutedevices.com>
+ <20231204180603.470421-2-gnstark@salutedevices.com>
+ <81798fe5-f89e-482f-b0d0-674ccbfc3666@redhat.com>
+ <29584eb6-fa10-4ce0-9fa3-0c409a582445@salutedevices.com>
+ <17a9fede-30e8-4cd5-ae02-fe34e11f5c20@csgroup.eu>
+ <be693688-2e82-4e1a-9ead-cf1513ee637b@csgroup.eu>
+ <2a68534b-9e64-4d6e-8a49-eeab0889841b@salutedevices.com>
+ <CAHp75Veyz-hMYPDEiCC1WJASGZ8N9pVef0foYJ0vBcW2VpfR+w@mail.gmail.com>
+ <34060476-86e5-42fb-a139-6790487c1568@csgroup.eu>
+From: George Stark <gnstark@salutedevices.com>
+In-Reply-To: <34060476-86e5-42fb-a139-6790487c1568@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [100.64.160.123]
+X-ClientProxiedBy: p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) To
+ p-i-exch-sc-m01.sberdevices.ru (172.16.192.107)
+X-KSMG-Rule-ID: 10
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Lua-Profiles: 181936 [Dec 07 2023]
+X-KSMG-AntiSpam-Version: 6.0.0.2
+X-KSMG-AntiSpam-Envelope-From: gnstark@salutedevices.com
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Info: LuaCore: 5 0.3.5 98d108ddd984cca1d7e65e595eac546a62b0144b, {Tracking_from_domain_doesnt_match_to}, p-i-exch-sc-m01.sberdevices.ru:7.1.1,5.0.1;100.64.160.123:7.1.2;salutedevices.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2, FromAlignment: s, ApMailHostAddress: 100.64.160.123
+X-MS-Exchange-Organization-SCL: -1
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiPhishing: Clean
+X-KSMG-LinksScanning: Clean
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2023/12/07 02:56:00 #22627289
+X-KSMG-AntiVirus-Status: Clean, skipped
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,24 +95,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "vadimp@nvidia.com" <vadimp@nvidia.com>, "mazziesaccount@gmail.com" <mazziesaccount@gmail.com>, "peterz@infradead.org" <peterz@infradead.org>, "boqun.feng@gmail.com" <boqun.feng@gmail.com>, "lee@kernel.org" <lee@kernel.org>, "kernel@salutedevices.com" <kernel@salutedevices.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "npiggin@gmail.com" <npiggin@gmail.com>, Hans de Goede <hdegoede@redhat.com>, "mingo@redhat.com" <mingo@redhat.com>, "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>, "pavel@ucw.cz" <pavel@ucw.cz>, Waiman Long <longman@redhat.com>, "will@kernel.org" <will@kernel.org>, "jic23@kernel.org" <jic23@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 30 Nov 2023 12:29:47 +0530, Naveen N Rao wrote:
-> Commit 41a506ef71eb ("powerpc/ftrace: Create a dummy stackframe to fix
-> stack unwind") added use of a new stack frame on ftrace entry to fix
-> stack unwind. However, the commit missed updating the offset used while
-> tearing down the ftrace stack when ftrace is disabled. Fix the same.
+
+
+On 12/7/23 15:28, Christophe Leroy wrote:
 > 
-> In addition, the commit missed saving the correct stack pointer in
-> pt_regs. Update the same.
 > 
-> [...]
+> Le 07/12/2023 à 13:02, Andy Shevchenko a écrit :
+>> On Thu, Dec 7, 2023 at 1:23 AM George Stark <gnstark@salutedevices.com> wrote:
+>>> On 12/7/23 01:37, Christophe Leroy wrote:
+>>>> Le 06/12/2023 à 23:14, Christophe Leroy a écrit :
+>>
+>> ...
+>>
+>>>> Looking at it closer, I have the feeling that you want to do similar to
+>>>> devm_gpio_request() in linux/gpio.h :
+>>>>
+>>>> In linux/mutex.h, add a prototype for devm_mutex_init() when
+>>>> CONFIG_DEBUG_MUTEXES is defined and an empty static inline otherwise.
+>>>> Then define devm_mutex_init() in kernel/locking/mutex-debug.c
+>>>
+>>> Yes, this would be almost perfect decision. BTW just as in linux/gpio.h
+>>> we wouldn't have to include whole "linux/device.h" into mutex.h, only
+>>> add forward declaration of struct device;
+>>
+>> In case you place it into a C-file. Otherwise you need a header for
+>> the API and that is not acceptable for mutex.h.
+>>
+> 
+> Right, that's the reason why I'm suggesting to define devm_mutex_init()
+> in kernel/locking/mutex-debug.c.
+> 
+> In linux/mutex.h, you define a stub for when CONFIG_DEBUG_MUTEXES is not
+> set, and the prototype of devm_mutex_init() when CONFIG_DEBUG_MUTEXES is
+> set.
 
-Applied to powerpc/fixes.
+Something like this:
 
-[1/1] powerpc/ftrace: Fix stack teardown in ftrace_no_trace
-      https://git.kernel.org/powerpc/c/4b3338aaa74d7d4ec5b6734dc298f0db94ec83d2
+diff --git a/include/linux/mutex.h b/include/linux/mutex.h
+index a33aa9eb9fc3..4a6041a7fd44 100644
+--- a/include/linux/mutex.h
++++ b/include/linux/mutex.h
+@@ -21,6 +21,8 @@
+  #include <linux/debug_locks.h>
+  #include <linux/cleanup.h>
 
-cheers
++struct device;
++
+  #ifdef CONFIG_DEBUG_LOCK_ALLOC
+  # define __DEP_MAP_MUTEX_INITIALIZER(lockname)			\
+  		, .dep_map = {					\
+@@ -127,6 +129,20 @@ extern void __mutex_init(struct mutex *lock, const 
+char *name,
+   */
+  extern bool mutex_is_locked(struct mutex *lock);
+
++#ifdef CONFIG_DEBUG_MUTEXES
++
++extern int devm_mutex_init(struct device *dev, struct mutex *lock);
++
++#else
++
++static inline int devm_mutex_init(struct device *dev, struct mutex *lock)
++{
++	mutex_init(lock);
++	return 0;
++}
++
++#endif
++
+  #else /* !CONFIG_PREEMPT_RT */
+  /*
+   * Preempt-RT variant based on rtmutexes.
+@@ -169,6 +185,13 @@ do {							\
+  							\
+  	__mutex_init((mutex), #mutex, &__key);		\
+  } while (0)
++
++static inline int devm_mutex_init(struct device *dev, struct mutex *lock)
++{
++	mutex_init(lock);
++	return 0;
++}
++
+  #endif /* CONFIG_PREEMPT_RT */
+
+  /*
+diff --git a/kernel/locking/mutex-debug.c b/kernel/locking/mutex-debug.c
+index bc8abb8549d2..d50dfa06e82c 100644
+--- a/kernel/locking/mutex-debug.c
++++ b/kernel/locking/mutex-debug.c
+@@ -19,6 +19,7 @@
+  #include <linux/kallsyms.h>
+  #include <linux/interrupt.h>
+  #include <linux/debug_locks.h>
++#include <linux/device.h>
+
+  #include "mutex.h"
+
+@@ -104,3 +105,25 @@ void mutex_destroy(struct mutex *lock)
+  }
+
+  EXPORT_SYMBOL_GPL(mutex_destroy);
++
++static void devm_mutex_release(void *res)
++{
++	mutex_destroy(res);
++}
++
++/**
++ * devm_mutex_init - Resource-managed mutex initialization
++ * @dev:	Device which lifetime mutex is bound to
++ * @lock:	Pointer to a mutex
++ *
++ * Initialize mutex which is automatically destroyed when the driver is 
+detached.
++ *
++ * Returns: 0 on success or a negative error code on failure.
++ */
++int devm_mutex_init(struct device *dev, struct mutex *lock)
++{
++	mutex_init(lock);
++	return devm_add_action_or_reset(dev, devm_mutex_release, lock);
++}
++
++EXPORT_SYMBOL_GPL(devm_mutex_init);
+\ No newline at end of file
+
+
+-- 
+Best regards
+George
