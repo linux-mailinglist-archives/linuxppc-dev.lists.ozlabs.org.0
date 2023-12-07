@@ -1,36 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AF85808852
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 13:49:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DA52808843
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 13:47:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SmDcN5H66z3wMS
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 23:49:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SmDYs0vSwz3dXG
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Dec 2023 23:47:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SmDVr70F1z3dJ0
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Dec 2023 23:44:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SmDVp2fXFz3dBs
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Dec 2023 23:44:34 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SmDVr5nhbz4xQS;
-	Thu,  7 Dec 2023 23:44:36 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SmDVp1Tw7z4xPQ;
+	Thu,  7 Dec 2023 23:44:34 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20231025012452.1985680-1-mpe@ellerman.id.au>
-References: <20231025012452.1985680-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc: Make cpu_spec __ro_after_init
-Message-Id: <170195271159.2310221.14820812805712713324.b4-ty@ellerman.id.au>
+In-Reply-To: <20231130114433.3053544-1-mpe@ellerman.id.au>
+References: <20231130114433.3053544-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH 1/2] powerpc/mm: Fix build failures due to arch_reserved_kernel_pages()
+Message-Id: <170195271172.2310221.6102752620377148359.b4-ty@ellerman.id.au>
 Date: Thu, 07 Dec 2023 23:38:31 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,25 +42,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: arnd@arndb.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 25 Oct 2023 12:24:52 +1100, Michael Ellerman wrote:
-> The cpu_spec is a struct holding various information about the CPU the
-> kernel is executing on. It's populated early in boot and must not change
-> after that.
+On Thu, 30 Nov 2023 22:44:32 +1100, Michael Ellerman wrote:
+> With NUMA=n and FA_DUMP=y or PRESERVE_FA_DUMP=y the build fails with:
 > 
-> In particular the cpu_features and mmu_features hold the set of
-> discovered CPU/MMU features and are used to set static keys for each
-> feature, and do binary patching of assembly. So any change to the
-> cpu_features/mmu_features later in boot will not be reflected in
-> the state of the static keys or patched code.
+>   arch/powerpc/kernel/fadump.c:1739:22: error: no previous prototype for ‘arch_reserved_kernel_pages’ [-Werror=missing-prototypes]
+>   1739 | unsigned long __init arch_reserved_kernel_pages(void)
+>        |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~
+> 
+> The prototype for arch_reserved_kernel_pages() is in include/linux/mm.h,
+> but it's guarded by __HAVE_ARCH_RESERVED_KERNEL_PAGES. The powerpc
+> headers define __HAVE_ARCH_RESERVED_KERNEL_PAGES in asm/mmzone.h, which
+> is not included into the generic headers when NUMA=n.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc: Make cpu_spec __ro_after_init
-      https://git.kernel.org/powerpc/c/98eb30fe4c69a9b602f29e406317c49b5580352a
+[1/2] powerpc/mm: Fix build failures due to arch_reserved_kernel_pages()
+      https://git.kernel.org/powerpc/c/d8c3f243d4db24675b653f0568bb65dae34e6455
+[2/2] powerpc: Fix build error due to is_valid_bugaddr()
+      https://git.kernel.org/powerpc/c/f8d3555355653848082c351fa90775214fb8a4fa
 
 cheers
