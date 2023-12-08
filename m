@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D95380A579
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Dec 2023 15:29:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCC2880A57E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Dec 2023 15:31:19 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=BmQHrs2t;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=HujZTOG+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Smtmw6vYHz3dHJ
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Dec 2023 01:29:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SmtqT1lL7z3dFr
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Dec 2023 01:31:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=BmQHrs2t;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=HujZTOG+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2a00:1450:4864:20::42e; helo=mail-wr1-x42e.google.com; envelope-from=alexghiti@rivosinc.com; receiver=lists.ozlabs.org)
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2a00:1450:4864:20::32a; helo=mail-wm1-x32a.google.com; envelope-from=alexghiti@rivosinc.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Smtm639vkz3cTF
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Dec 2023 01:28:20 +1100 (AEDT)
-Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-3332f1512e8so1957481f8f.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 08 Dec 2023 06:28:20 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Smtpb1Pvgz3cR8
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Dec 2023 01:30:30 +1100 (AEDT)
+Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-40c317723a8so11098175e9.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 08 Dec 2023 06:30:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1702045697; x=1702650497; darn=lists.ozlabs.org;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1702045827; x=1702650627; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PAMbjbUeNExg3jR9YfrOXqq7gkqmjKC91Dm2N2JHQ/A=;
-        b=BmQHrs2tRABmA+/VwNyG/qxZBZm+a04hlG9tw6GhBQF3xP1kysD8FRL4RpOcZDF44R
-         oqtefSXwsMoDh6vNjowDzVlaAE2+loY15BOpKtV7VhRDnTHH1htPP+adzceSpqAAd+LM
-         UqxG2vkcVIemsaT+IpPpT5a0gZBhSjOPS26BKCXwseL3a2m8Zhz2A+AuLwX8MVVYHvzi
-         WJFoBP+a+zSXSkHeyfPgugfkW0vCkeRznhMB/8Eo4D06wbWyGspCNoDFORBp4jDSZCao
-         I0AmKbwdQF+HKQ0W8LSP9V63Ib45LWv+OHqH+xZsGDDWjOa2Wdkf/GyGIhcJbKk7nU1r
-         0WEQ==
+        bh=9X8HQehrxqqdotEA60rYgF/5Z0BWv62JqBcRTG61sQ8=;
+        b=HujZTOG+AFA4EYtZ4Kvq28/656rbs7kjKehjLD0XyBcwD9If3AsqTKd3qLrVwl9UYm
+         hIRHUupY5QKfkuhLRNHisPFKfTmSBs+vaT04csJN1/T/3JvRIsoasjuYyDT9hVtD/3QF
+         4d1T9SM/KDZaONEB78+5vJgnC7qREuX/OTaOgfo3bB4d7qXchlkqc4JSOJtpHnRqwNcF
+         DCaiy5zXXHn3snhO5SDCc55BFXxSQ8vZhriKUJGXK84ThZtIS/7M7Bw3+HzZi0l6SA/s
+         u90lf7D1zjYhj586b9EnvcBQq2gGE8HWlkGWmZcBwKmFr9DO2eVE2/bw2WA9ZVMSvGx4
+         GfXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702045697; x=1702650497;
+        d=1e100.net; s=20230601; t=1702045827; x=1702650627;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PAMbjbUeNExg3jR9YfrOXqq7gkqmjKC91Dm2N2JHQ/A=;
-        b=f249RshhiamDPeCJpA8TcLS1w1idC/nLQnpycuqaIrlDw/ovagUVlhnrzbxBIce1Wd
-         q0Wvpt7oJFhyJvdIyok3rnze3oHpQC8bMGY/cVQ3dQ3HV87vvS+/JanwsAPScsCP8/Yl
-         jXB3z912ygFRJUqwGYRFzf2n+I+yVZctyL/zRmild7srHlv0jjiXRENu6fQXNtvfXLFx
-         rUZ6iYuZxejpnBO7J+GFzs2EWQOFotXEV4H6Qgv1yFtTOlaQB0d+WqF3q2KiY9o5j4ay
-         DrpMUfT6+GyjjBVSmm243c4tMartzfFA3b7t+aBPc7BWP2MT7Qx9PvHLqo12xyb0VDBT
-         ay3A==
-X-Gm-Message-State: AOJu0YyvdK34KWwGAxL+gYSlGffyvXLrlirF+Y514e7p158aFaoDJkTE
-	9+Ui2UV7eRrBHwpb+qxkaqux8LiI8rZRM868paHZ/A==
-X-Google-Smtp-Source: AGHT+IHoNadDPxIQtoDc8XaaVyQXJ8+RUUbaGefZZOgCrfyo3ePXP/MyaDv0pS1NmtW4EZmBlWmjUfpYXwwfiE4fKLo=
-X-Received: by 2002:a05:6000:1a4f:b0:333:2fd2:6f74 with SMTP id
- t15-20020a0560001a4f00b003332fd26f74mr59420wry.126.1702045696879; Fri, 08 Dec
- 2023 06:28:16 -0800 (PST)
+        bh=9X8HQehrxqqdotEA60rYgF/5Z0BWv62JqBcRTG61sQ8=;
+        b=FMVIUWriGnmV2wuYfVU5eeb0eL482nLUCuWETFz58rniED0ESKDj9NxWenKpRysLIi
+         aSa4RZSznnWtFeI6TFAPMtXWhtM8jpsG3m0sr3yIua4Np8lDfPfIG7QMRBCPZsFaBE7c
+         69TTTSsGpuFQaDLCZhqSjWRhkgDko9OBeqe0oLeQt8+FKcFmbdcdBDPkVKwO4N2RbOvc
+         2/psTNuiL4APxG0l4hRNCEsaT7pm2VWSVFR4qehRNmLoGbC/gv5sEAyIHSHqRg0rwuzs
+         QfdVdIgQwJ4yCD8pDn+CuV/4uXfv6UTP/XUZnwUbXqrwKg+Z/f05eHpPNEYelnCv1T2l
+         G5dw==
+X-Gm-Message-State: AOJu0Yww3kXph6U/r8vSbPUf9Tsn8Ngir/Gvu4PHxYl0qxJBX6dGzqV1
+	GukhQPyW5e8uyI46SYiHx+9KoTSRM2Bn8YCSTusAjw==
+X-Google-Smtp-Source: AGHT+IF4tJfaa/fk4ZwgJmpqT0IJIacv8FURbcP3EIH//i3tM9hlmyqgmhJPetNv8trt2hsappah6dIbHJpD3YL5pXI=
+X-Received: by 2002:a05:600c:4d0e:b0:40b:5e1e:cf1 with SMTP id
+ u14-20020a05600c4d0e00b0040b5e1e0cf1mr33402wmp.44.1702045826774; Fri, 08 Dec
+ 2023 06:30:26 -0800 (PST)
 MIME-Version: 1.0
 References: <20231207150348.82096-1-alexghiti@rivosinc.com>
- <20231207150348.82096-2-alexghiti@rivosinc.com> <27d8dffc-cfd8-4f07-9c0a-b7101963c2ae@csgroup.eu>
-In-Reply-To: <27d8dffc-cfd8-4f07-9c0a-b7101963c2ae@csgroup.eu>
+ <20231207150348.82096-3-alexghiti@rivosinc.com> <6e3fb7b0-f47d-4d2f-b1b8-3ecc047b9ebf@csgroup.eu>
+In-Reply-To: <6e3fb7b0-f47d-4d2f-b1b8-3ecc047b9ebf@csgroup.eu>
 From: Alexandre Ghiti <alexghiti@rivosinc.com>
-Date: Fri, 8 Dec 2023 15:28:06 +0100
-Message-ID: <CAHVXubjtb-bq1o=jxAavMc5h9T-a_Z0=xxkPgerycQEDdhLd3Q@mail.gmail.com>
-Subject: Re: [PATCH RFC/RFT 1/4] riscv: Stop emitting preventive sfence.vma
- for new vmalloc mappings
+Date: Fri, 8 Dec 2023 15:30:16 +0100
+Message-ID: <CAHVXubg3rX_HOq=v4GCOVmDGVB3AA8kWWUsZTcZu6Y+Y2XmYQw@mail.gmail.com>
+Subject: Re: [PATCH RFC/RFT 2/4] riscv: Add a runtime detection of invalid TLB
+ entries caching
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -81,292 +81,219 @@ Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "linux-mm@kvack.org" <linux
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
-
-On Thu, Dec 7, 2023 at 4:52=E2=80=AFPM Christophe Leroy
+On Thu, Dec 7, 2023 at 4:55=E2=80=AFPM Christophe Leroy
 <christophe.leroy@csgroup.eu> wrote:
 >
 >
 >
 > Le 07/12/2023 =C3=A0 16:03, Alexandre Ghiti a =C3=A9crit :
-> > In 6.5, we removed the vmalloc fault path because that can't work (see
-> > [1] [2]). Then in order to make sure that new page table entries were
-> > seen by the page table walker, we had to preventively emit a sfence.vma
-> > on all harts [3] but this solution is very costly since it relies on IP=
-I.
+> > This mechanism allows to completely bypass the sfence.vma introduced by
+> > the previous commit for uarchs that do not cache invalid TLB entries.
 > >
-> > And even there, we could end up in a loop of vmalloc faults if a vmallo=
-c
-> > allocation is done in the IPI path (for example if it is traced, see
-> > [4]), which could result in a kernel stack overflow.
-> >
-> > Those preventive sfence.vma needed to be emitted because:
-> >
-> > - if the uarch caches invalid entries, the new mapping may not be
-> >    observed by the page table walker and an invalidation may be needed.
-> > - if the uarch does not cache invalid entries, a reordered access
-> >    could "miss" the new mapping and traps: in that case, we would actua=
-lly
-> >    only need to retry the access, no sfence.vma is required.
-> >
-> > So this patch removes those preventive sfence.vma and actually handles
-> > the possible (and unlikely) exceptions. And since the kernel stacks
-> > mappings lie in the vmalloc area, this handling must be done very early
-> > when the trap is taken, at the very beginning of handle_exception: this
-> > also rules out the vmalloc allocations in the fault path.
-> >
-> > Note that for now, we emit a sfence.vma even for uarchs that do not
-> > cache invalid entries as we have no means to know that: that will be
-> > fixed in the next patch.
-> >
-> > Link: https://lore.kernel.org/linux-riscv/20230531093817.665799-1-bjorn=
-@kernel.org/ [1]
-> > Link: https://lore.kernel.org/linux-riscv/20230801090927.2018653-1-dyla=
-n@andestech.com [2]
-> > Link: https://lore.kernel.org/linux-riscv/20230725132246.817726-1-alexg=
-hiti@rivosinc.com/ [3]
-> > Link: https://lore.kernel.org/lkml/20200508144043.13893-1-joro@8bytes.o=
-rg/ [4]
 > > Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 > > ---
-> >   arch/riscv/include/asm/cacheflush.h  | 19 +++++-
-> >   arch/riscv/include/asm/thread_info.h |  5 ++
-> >   arch/riscv/kernel/asm-offsets.c      |  5 ++
-> >   arch/riscv/kernel/entry.S            | 94 +++++++++++++++++++++++++++=
+> >   arch/riscv/mm/init.c | 124 ++++++++++++++++++++++++++++++++++++++++++=
 +
-> >   arch/riscv/mm/init.c                 |  2 +
-> >   5 files changed, 124 insertions(+), 1 deletion(-)
+> >   1 file changed, 124 insertions(+)
 > >
-> > diff --git a/arch/riscv/include/asm/cacheflush.h b/arch/riscv/include/a=
-sm/cacheflush.h
-> > index 3cb53c4df27c..a916cbc69d47 100644
-> > --- a/arch/riscv/include/asm/cacheflush.h
-> > +++ b/arch/riscv/include/asm/cacheflush.h
-> > @@ -37,7 +37,24 @@ static inline void flush_dcache_page(struct page *pa=
-ge)
-> >       flush_icache_mm(vma->vm_mm, 0)
+> > diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+> > index 379403de6c6f..2e854613740c 100644
+> > --- a/arch/riscv/mm/init.c
+> > +++ b/arch/riscv/mm/init.c
+> > @@ -56,6 +56,8 @@ bool pgtable_l5_enabled =3D IS_ENABLED(CONFIG_64BIT) =
+&& !IS_ENABLED(CONFIG_XIP_KER
+> >   EXPORT_SYMBOL(pgtable_l4_enabled);
+> >   EXPORT_SYMBOL(pgtable_l5_enabled);
 > >
-> >   #ifdef CONFIG_64BIT
-> > -#define flush_cache_vmap(start, end) flush_tlb_kernel_range(start, end=
-)
-> > +extern u64 new_vmalloc[];
->
-> Can you have the table size here ? Would help GCC static analysis for
-> boundary checking.
-
-Yes, I'll do
-
->
-> > +extern char _end[];
-> > +#define flush_cache_vmap flush_cache_vmap
-> > +static inline void flush_cache_vmap(unsigned long start, unsigned long=
- end)
-> > +{
-> > +     if ((start < VMALLOC_END && end > VMALLOC_START) ||
-> > +         (start < MODULES_END && end > MODULES_VADDR)) {
->
-> Can you use is_vmalloc_or_module_addr() instead ?
-
-Yes, I'll do
-
->
->
-> > +             int i;
+> > +bool tlb_caching_invalid_entries;
 > > +
-> > +             /*
-> > +              * We don't care if concurrently a cpu resets this value =
-since
-> > +              * the only place this can happen is in handle_exception(=
-) where
-> > +              * an sfence.vma is emitted.
-> > +              */
-> > +             for (i =3D 0; i < NR_CPUS / sizeof(u64) + 1; ++i)
+> >   phys_addr_t phys_ram_base __ro_after_init;
+> >   EXPORT_SYMBOL(phys_ram_base);
+> >
+> > @@ -750,6 +752,18 @@ static void __init disable_pgtable_l4(void)
+> >       satp_mode =3D SATP_MODE_39;
+> >   }
+> >
+> > +static void __init enable_pgtable_l5(void)
+> > +{
+> > +     pgtable_l5_enabled =3D true;
+> > +     satp_mode =3D SATP_MODE_57;
+> > +}
+> > +
+> > +static void __init enable_pgtable_l4(void)
+> > +{
+> > +     pgtable_l4_enabled =3D true;
+> > +     satp_mode =3D SATP_MODE_48;
+> > +}
+> > +
+> >   static int __init print_no4lvl(char *p)
+> >   {
+> >       pr_info("Disabled 4-level and 5-level paging");
+> > @@ -826,6 +840,112 @@ static __init void set_satp_mode(uintptr_t dtb_pa=
+)
+> >       memset(early_pud, 0, PAGE_SIZE);
+> >       memset(early_pmd, 0, PAGE_SIZE);
+> >   }
+> > +
+> > +/* Determine at runtime if the uarch caches invalid TLB entries */
+> > +static __init void set_tlb_caching_invalid_entries(void)
+> > +{
+> > +#define NR_RETRIES_CACHING_INVALID_ENTRIES   50
 >
-> Use ARRAY_SIZE() ?
-
-And that too :)
-
-Thanks for the review,
-
-Alex
-
+> Looks odd to have macros nested in the middle of a function.
 >
-> > +                     new_vmalloc[i] =3D -1ULL;
-> > +     }
+> > +     uintptr_t set_tlb_caching_invalid_entries_pmd =3D ((unsigned long=
+)set_tlb_caching_invalid_entries) & PMD_MASK;
+> > +     // TODO the test_addr as defined below could go into another pud.=
+..
+> > +     uintptr_t test_addr =3D set_tlb_caching_invalid_entries_pmd + 2 *=
+ PMD_SIZE;
+> > +     pmd_t valid_pmd;
+> > +     u64 satp;
+> > +     int i =3D 0;
+> > +
+> > +     /* To ease the page table creation */
+> > +     disable_pgtable_l5();
+> > +     disable_pgtable_l4();
+> > +
+> > +     /* Establish a mapping for set_tlb_caching_invalid_entries() in s=
+v39 */
+> > +     create_pgd_mapping(early_pg_dir,
+> > +                        set_tlb_caching_invalid_entries_pmd,
+> > +                        (uintptr_t)early_pmd,
+> > +                        PGDIR_SIZE, PAGE_TABLE);
+> > +
+> > +     /* Handle the case where set_tlb_caching_invalid_entries straddle=
+s 2 PMDs */
+> > +     create_pmd_mapping(early_pmd,
+> > +                        set_tlb_caching_invalid_entries_pmd,
+> > +                        set_tlb_caching_invalid_entries_pmd,
+> > +                        PMD_SIZE, PAGE_KERNEL_EXEC);
+> > +     create_pmd_mapping(early_pmd,
+> > +                        set_tlb_caching_invalid_entries_pmd + PMD_SIZE=
+,
+> > +                        set_tlb_caching_invalid_entries_pmd + PMD_SIZE=
+,
+> > +                        PMD_SIZE, PAGE_KERNEL_EXEC);
+> > +
+> > +     /* Establish an invalid mapping */
+> > +     create_pmd_mapping(early_pmd, test_addr, 0, PMD_SIZE, __pgprot(0)=
+);
+> > +
+> > +     /* Precompute the valid pmd here because the mapping for pfn_pmd(=
+) won't exist */
+> > +     valid_pmd =3D pfn_pmd(PFN_DOWN(set_tlb_caching_invalid_entries_pm=
+d), PAGE_KERNEL);
+> > +
+> > +     local_flush_tlb_all();
+> > +     satp =3D PFN_DOWN((uintptr_t)&early_pg_dir) | SATP_MODE_39;
+> > +     csr_write(CSR_SATP, satp);
+> > +
+> > +     /*
+> > +      * Set stvec to after the trapping access, access this invalid ma=
+pping
+> > +      * and legitimately trap
+> > +      */
+> > +     // TODO: Should I save the previous stvec?
+> > +#define ASM_STR(x)   __ASM_STR(x)
+>
+> Looks odd to have macros nested in the middle of a function.
+>
+>
+> > +     asm volatile(
+> > +             "la a0, 1f                              \n"
+> > +             "csrw " ASM_STR(CSR_TVEC) ", a0         \n"
+> > +             "ld a0, 0(%0)                           \n"
+> > +             ".align 2                               \n"
+> > +             "1:                                     \n"
+> > +             :
+> > +             : "r" (test_addr)
+> > +             : "a0"
+> > +     );
+> > +
+> > +     /* Now establish a valid mapping to check if the invalid one is c=
+ached */
+> > +     early_pmd[pmd_index(test_addr)] =3D valid_pmd;
+> > +
+> > +     /*
+> > +      * Access the valid mapping multiple times: indeed, we can't use
+> > +      * sfence.vma as a barrier to make sure the cpu did not reorder a=
+ccesses
+> > +      * so we may trap even if the uarch does not cache invalid entrie=
+s. By
+> > +      * trying a few times, we make sure that those uarchs will see th=
+e right
+> > +      * mapping at some point.
+> > +      */
+> > +
+> > +     i =3D NR_RETRIES_CACHING_INVALID_ENTRIES;
+> > +
+> > +#define ASM_STR(x)   __ASM_STR(x)
+>
+> Deplicate define ?
+>
+> > +     asm_volatile_goto(
+> > +             "la a0, 1f                                      \n"
+> > +             "csrw " ASM_STR(CSR_TVEC) ", a0                 \n"
+> > +             ".align 2                                       \n"
+> > +             "1:                                             \n"
+> > +             "addi %0, %0, -1                                \n"
+> > +             "blt %0, zero, %l[caching_invalid_entries]      \n"
+> > +             "ld a0, 0(%1)                                   \n"
+> > +             :
+> > +             : "r" (i), "r" (test_addr)
+> > +             : "a0"
+> > +             : caching_invalid_entries
+> > +     );
+> > +
+> > +     csr_write(CSR_SATP, 0ULL);
+> > +     local_flush_tlb_all();
+> > +
+> > +     /* If we don't trap, the uarch does not cache invalid entries! */
+> > +     tlb_caching_invalid_entries =3D false;
+> > +     goto clean;
+> > +
+> > +caching_invalid_entries:
+> > +     csr_write(CSR_SATP, 0ULL);
+> > +     local_flush_tlb_all();
+> > +
+> > +     tlb_caching_invalid_entries =3D true;
+> > +clean:
+> > +     memset(early_pg_dir, 0, PAGE_SIZE);
+> > +     memset(early_pmd, 0, PAGE_SIZE);
+>
+> Use clear_page() instead ?
+>
+> > +
+> > +     enable_pgtable_l4();
+> > +     enable_pgtable_l5();
 > > +}
 > >   #endif
 > >
-> >   #ifndef CONFIG_SMP
-> > diff --git a/arch/riscv/include/asm/thread_info.h b/arch/riscv/include/=
-asm/thread_info.h
-> > index 1833beb00489..8fe12fa6c329 100644
-> > --- a/arch/riscv/include/asm/thread_info.h
-> > +++ b/arch/riscv/include/asm/thread_info.h
-> > @@ -60,6 +60,11 @@ struct thread_info {
-> >       long                    user_sp;        /* User stack pointer */
-> >       int                     cpu;
-> >       unsigned long           syscall_work;   /* SYSCALL_WORK_ flags */
-> > +     /*
-> > +      * Used in handle_exception() to save a0, a1 and a2 before knowin=
-g if we
-> > +      * can access the kernel stack.
-> > +      */
-> > +     unsigned long           a0, a1, a2;
-> >   };
-> >
 > >   /*
-> > diff --git a/arch/riscv/kernel/asm-offsets.c b/arch/riscv/kernel/asm-of=
-fsets.c
-> > index d6a75aac1d27..340c1c84560d 100644
-> > --- a/arch/riscv/kernel/asm-offsets.c
-> > +++ b/arch/riscv/kernel/asm-offsets.c
-> > @@ -34,10 +34,15 @@ void asm_offsets(void)
-> >       OFFSET(TASK_THREAD_S9, task_struct, thread.s[9]);
-> >       OFFSET(TASK_THREAD_S10, task_struct, thread.s[10]);
-> >       OFFSET(TASK_THREAD_S11, task_struct, thread.s[11]);
-> > +
-> > +     OFFSET(TASK_TI_CPU, task_struct, thread_info.cpu);
-> >       OFFSET(TASK_TI_FLAGS, task_struct, thread_info.flags);
-> >       OFFSET(TASK_TI_PREEMPT_COUNT, task_struct, thread_info.preempt_co=
-unt);
-> >       OFFSET(TASK_TI_KERNEL_SP, task_struct, thread_info.kernel_sp);
-> >       OFFSET(TASK_TI_USER_SP, task_struct, thread_info.user_sp);
-> > +     OFFSET(TASK_TI_A0, task_struct, thread_info.a0);
-> > +     OFFSET(TASK_TI_A1, task_struct, thread_info.a1);
-> > +     OFFSET(TASK_TI_A2, task_struct, thread_info.a2);
+> > @@ -1072,6 +1192,7 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
+> >   #endif
 > >
-> >       OFFSET(TASK_THREAD_F0,  task_struct, thread.fstate.f[0]);
-> >       OFFSET(TASK_THREAD_F1,  task_struct, thread.fstate.f[1]);
-> > diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
-> > index 143a2bb3e697..3a3c7b563816 100644
-> > --- a/arch/riscv/kernel/entry.S
-> > +++ b/arch/riscv/kernel/entry.S
-> > @@ -14,6 +14,88 @@
-> >   #include <asm/asm-offsets.h>
-> >   #include <asm/errata_list.h>
+> >   #if defined(CONFIG_64BIT) && !defined(CONFIG_XIP_KERNEL)
+> > +     set_tlb_caching_invalid_entries();
+> >       set_satp_mode(dtb_pa);
+> >   #endif
 > >
-> > +.macro new_vmalloc_check
-> > +     REG_S   a0, TASK_TI_A0(tp)
-> > +     REG_S   a1, TASK_TI_A1(tp)
-> > +     REG_S   a2, TASK_TI_A2(tp)
-> > +
-> > +     csrr    a0, CSR_CAUSE
-> > +     /* Exclude IRQs */
-> > +     blt     a0, zero, _new_vmalloc_restore_context
-> > +     /* Only check new_vmalloc if we are in page/protection fault */
-> > +     li      a1, EXC_LOAD_PAGE_FAULT
-> > +     beq     a0, a1, _new_vmalloc_kernel_address
-> > +     li      a1, EXC_STORE_PAGE_FAULT
-> > +     beq     a0, a1, _new_vmalloc_kernel_address
-> > +     li      a1, EXC_INST_PAGE_FAULT
-> > +     bne     a0, a1, _new_vmalloc_restore_context
-> > +
-> > +_new_vmalloc_kernel_address:
-> > +     /* Is it a kernel address? */
-> > +     csrr    a0, CSR_TVAL
-> > +     bge     a0, zero, _new_vmalloc_restore_context
-> > +
-> > +     /* Check if a new vmalloc mapping appeared that could explain the=
- trap */
-> > +
-> > +     /*
-> > +      * Computes:
-> > +      * a0 =3D &new_vmalloc[BIT_WORD(cpu)]
-> > +      * a1 =3D BIT_MASK(cpu)
-> > +      */
-> > +     REG_L   a2, TASK_TI_CPU(tp)
-> > +     /*
-> > +      * Compute the new_vmalloc element position:
-> > +      * (cpu / 64) * 8 =3D (cpu >> 6) << 3
-> > +      */
-> > +     srli    a1, a2, 6
-> > +     slli    a1, a1, 3
-> > +     la      a0, new_vmalloc
-> > +     add     a0, a0, a1
-> > +     /*
-> > +      * Compute the bit position in the new_vmalloc element:
-> > +      * bit_pos =3D cpu % 64 =3D cpu - (cpu / 64) * 64 =3D cpu - (cpu =
->> 6) << 6
-> > +      *         =3D cpu - ((cpu >> 6) << 3) << 3
-> > +      */
-> > +     slli    a1, a1, 3
-> > +     sub     a1, a2, a1
-> > +     /* Compute the "get mask": 1 << bit_pos */
-> > +     li      a2, 1
-> > +     sll     a1, a2, a1
-> > +
-> > +     /* Check the value of new_vmalloc for this cpu */
-> > +     ld      a2, 0(a0)
-> > +     and     a2, a2, a1
-> > +     beq     a2, zero, _new_vmalloc_restore_context
-> > +
-> > +     ld      a2, 0(a0)
-> > +     not     a1, a1
-> > +     and     a1, a2, a1
-> > +     sd      a1, 0(a0)
-> > +
-> > +     /* Only emit a sfence.vma if the uarch caches invalid entries */
-> > +     la      a0, tlb_caching_invalid_entries
-> > +     lb      a0, 0(a0)
-> > +     beqz    a0, _new_vmalloc_no_caching_invalid_entries
-> > +     sfence.vma
-> > +_new_vmalloc_no_caching_invalid_entries:
-> > +     // debug
-> > +     la      a0, nr_sfence_vma_handle_exception
-> > +     li      a1, 1
-> > +     amoadd.w    a0, a1, (a0)
-> > +     // end debug
-> > +     REG_L   a0, TASK_TI_A0(tp)
-> > +     REG_L   a1, TASK_TI_A1(tp)
-> > +     REG_L   a2, TASK_TI_A2(tp)
-> > +     csrw    CSR_SCRATCH, x0
-> > +     sret
-> > +
-> > +_new_vmalloc_restore_context:
-> > +     REG_L   a0, TASK_TI_A0(tp)
-> > +     REG_L   a1, TASK_TI_A1(tp)
-> > +     REG_L   a2, TASK_TI_A2(tp)
-> > +.endm
-> > +
-> > +
-> >   SYM_CODE_START(handle_exception)
-> >       /*
-> >        * If coming from userspace, preserve the user thread pointer and=
- load
-> > @@ -25,6 +107,18 @@ SYM_CODE_START(handle_exception)
+> > @@ -1322,6 +1443,9 @@ static void __init setup_vm_final(void)
+> >       local_flush_tlb_all();
 > >
-> >   _restore_kernel_tpsp:
-> >       csrr tp, CSR_SCRATCH
+> >       pt_ops_set_late();
 > > +
-> > +     /*
-> > +      * The RISC-V kernel does not eagerly emit a sfence.vma after eac=
-h
-> > +      * new vmalloc mapping, which may result in exceptions:
-> > +      * - if the uarch caches invalid entries, the new mapping would n=
-ot be
-> > +      *   observed by the page table walker and an invalidation is nee=
-ded.
-> > +      * - if the uarch does not cache invalid entries, a reordered acc=
-ess
-> > +      *   could "miss" the new mapping and traps: in that case, we onl=
-y need
-> > +      *   to retry the access, no sfence.vma is required.
-> > +      */
-> > +     new_vmalloc_check
-> > +
-> >       REG_S sp, TASK_TI_KERNEL_SP(tp)
-> >
-> >   #ifdef CONFIG_VMAP_STACK
-> > diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-> > index 0798bd861dcb..379403de6c6f 100644
-> > --- a/arch/riscv/mm/init.c
-> > +++ b/arch/riscv/mm/init.c
-> > @@ -36,6 +36,8 @@
-> >
-> >   #include "../kernel/head.h"
-> >
-> > +u64 new_vmalloc[NR_CPUS / sizeof(u64) + 1];
-> > +
-> >   struct kernel_mapping kernel_map __ro_after_init;
-> >   EXPORT_SYMBOL(kernel_map);
-> >   #ifdef CONFIG_XIP_KERNEL
+> > +     pr_info("uarch caches invalid entries: %s",
+> > +             tlb_caching_invalid_entries ? "yes" : "no");
+> >   }
+> >   #else
+> >   asmlinkage void __init setup_vm(uintptr_t dtb_pa)
+
+I left this patch so that people can easily test this without knowing
+what their uarch is actually doing, but it will very likely be dropped
+as a new extension has just been proposed for that.
+
+Thanks anyway, I should have been more clear in the patch title,
+
+Alex
