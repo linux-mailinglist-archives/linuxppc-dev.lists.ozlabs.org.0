@@ -1,55 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9238A809DF7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Dec 2023 09:16:24 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dlJzfGFD;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA480809EB1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Dec 2023 10:01:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SmkVt0DBHz3dLS
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Dec 2023 19:16:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SmlVz3MWhz3dTL
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Dec 2023 20:01:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dlJzfGFD;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=aneesh.kumar@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=chentao@kylinos.cn; receiver=lists.ozlabs.org)
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SmkV15tLwz3cF1
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Dec 2023 19:15:37 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id C1C4CB82B8A;
-	Fri,  8 Dec 2023 08:15:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CB4EC433C7;
-	Fri,  8 Dec 2023 08:15:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702023333;
-	bh=b2dKwJ5VRwAtWWbaaYxqyisFEjNne1OCfokDs9oJo3Y=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=dlJzfGFDB//CEldkopVVGPtuAJR4HTTAZwmi4ZFUaFQoybRoQyvI9sdT1wxpHzK9i
-	 Ljh5a/omN/96xCFqzxtOJ6BgB62yFO7JBos6z5YVszB2TLzLB/k7B2bjyBjTbrhVGy
-	 nmnDzHb7ycaHHo0eYjZTxctG7O6T1wbRrwY+Xbijtx9MtQUHFL8qWj506WzkSM6AW2
-	 ZM0bFbjD+3mDuKkFrTEwYJyyurgNaIjNSuWnEjv6NmWyzQH4Zh1NTTFASR+Etjx1c2
-	 p4RI1Ilh63YjhJCaBAuGj06uRR4pZyTbgWPf0S3cKnEnZI8hMPLmO75E2tkiJRmSI5
-	 f3Xrw+ZTpRo7Q==
-X-Mailer: emacs 29.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-	kvm@vger.kernel.org, kvm-ppc@vger.kernel.org
-Subject: Re: [PATCH 09/12] KVM: PPC: Book3S HV nestedv2: Do not call
- H_COPY_TOFROM_GUEST
-In-Reply-To: <20231201132618.555031-10-vaibhav@linux.ibm.com>
-References: <20231201132618.555031-1-vaibhav@linux.ibm.com>
- <20231201132618.555031-10-vaibhav@linux.ibm.com>
-Date: Fri, 08 Dec 2023 13:45:24 +0530
-Message-ID: <87sf4dun37.fsf@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SmlVR4VV0z2yG9
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Dec 2023 20:01:00 +1100 (AEDT)
+X-UUID: 1802c3bb5ed24c5e9c1f08ab8e1e3091-20231208
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.33,REQID:af98fde9-2795-4a43-b1b3-12ea01001784,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:-5
+X-CID-INFO: VERSION:1.1.33,REQID:af98fde9-2795-4a43-b1b3-12ea01001784,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:364b77b,CLOUDID:47c8f760-c89d-4129-91cb-8ebfae4653fc,B
+	ulkID:231208165944LJR4L0VC,BulkQuantity:0,Recheck:0,SF:24|17|19|44|66|38|1
+	02,TC:nil,Content:0,EDM:-3,IP:-2,URL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil
+	,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_FSI,TF_CID_SPAM_ULN,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,
+	TF_CID_SPAM_FSD
+X-UUID: 1802c3bb5ed24c5e9c1f08ab8e1e3091-20231208
+X-User: chentao@kylinos.cn
+Received: from vt.. [(116.128.244.171)] by mailgw
+	(envelope-from <chentao@kylinos.cn>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 615465568; Fri, 08 Dec 2023 16:59:42 +0800
+From: Kunwu Chan <chentao@kylinos.cn>
+To: mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	christophe.leroy@csgroup.eu,
+	ajd@linux.ibm.com
+Subject: [PATCH] powerpc/powernv: Add a null pointer check to scom_debug_init_one
+Date: Fri,  8 Dec 2023 16:59:37 +0800
+Message-Id: <20231208085937.107210-1-chentao@kylinos.cn>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,45 +59,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, sbhat@linux.ibm.com, amachhiw@linux.vnet.ibm.com, Jordan Niethe <jniethe5@gmail.com>, gautam@linux.ibm.com, Nicholas Piggin <npiggin@gmail.com>, David.Laight@ACULAB.COM, kconsul@linux.vnet.ibm.com, Vaibhav Jain <vaibhav@linux.ibm.com>, Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>
+Cc: Kunwu Chan <kunwu.chan@hotmail.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Kunwu Chan <chentao@kylinos.cn>, mirimmad17@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Vaibhav Jain <vaibhav@linux.ibm.com> writes:
+kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure.
+Add a null pointer check, and release 'ent' to avoid memory leaks.
 
-> From: Jordan Niethe <jniethe5@gmail.com>
->
-> H_COPY_TOFROM_GUEST is part of the nestedv1 API and so should not be
-> called by a nestedv2 host. Do not attempt to call it.
->
+Fixes: bfd2f0d49aef ("powerpc/powernv: Get rid of old scom_controller abstraction")
+Cc: Kunwu Chan <kunwu.chan@hotmail.com>
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+---
+ arch/powerpc/platforms/powernv/opal-xscom.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-May be we should use
-firmware_has_feature(FW_FEATURE_H_COPY_TOFROM_GUEST))?
+diff --git a/arch/powerpc/platforms/powernv/opal-xscom.c b/arch/powerpc/platforms/powernv/opal-xscom.c
+index 262cd6fac907..748c2b97fa53 100644
+--- a/arch/powerpc/platforms/powernv/opal-xscom.c
++++ b/arch/powerpc/platforms/powernv/opal-xscom.c
+@@ -165,6 +165,11 @@ static int scom_debug_init_one(struct dentry *root, struct device_node *dn,
+ 	ent->chip = chip;
+ 	snprintf(ent->name, 16, "%08x", chip);
+ 	ent->path.data = (void *)kasprintf(GFP_KERNEL, "%pOF", dn);
++	if (!ent->path.data) {
++		kfree(ent);
++		return -ENOMEM;
++	}
++
+ 	ent->path.size = strlen((char *)ent->path.data);
+ 
+ 	dir = debugfs_create_dir(ent->name, root);
+-- 
+2.39.2
 
-the nestedv2 can end up using the above hcall if it is supported by the
-hypervisor right? In its absence we will have to translate the guest ea
-using xlate and then use kvm_guest_read to read location using the guest
-real address right? That xlate will also involves multiple kvm_guest_read.
-
-
-> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
-> ---
->  arch/powerpc/kvm/book3s_64_mmu_radix.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-> index 916af6c153a5..4a1abb9f7c05 100644
-> --- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
-> +++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-> @@ -40,6 +40,9 @@ unsigned long __kvmhv_copy_tofrom_guest_radix(int lpid, int pid,
->  	unsigned long quadrant, ret = n;
->  	bool is_load = !!to;
->  
-> +	if (kvmhv_is_nestedv2())
-> +		return H_UNSUPPORTED;
-> +
->  	/* Can't access quadrants 1 or 2 in non-HV mode, call the HV to do it */
->  	if (kvmhv_on_pseries())
->  		return plpar_hcall_norets(H_COPY_TOFROM_GUEST, lpid, pid, eaddr,
-> -- 
-> 2.42.0
