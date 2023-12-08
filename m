@@ -2,98 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38B8280A2BB
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Dec 2023 12:55:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D6280A4AC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Dec 2023 14:46:25 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=A+/VyFh1;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Tosq5VHr;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SmqN550mMz3dRK
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Dec 2023 22:55:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Smsqf1scPz3cfQ
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Dec 2023 00:46:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=A+/VyFh1;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Tosq5VHr;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SmqJV1Q1Mz3d9g
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Dec 2023 22:52:42 +1100 (AEDT)
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4SmqJN0N6xz4wcX
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Dec 2023 22:52:36 +1100 (AEDT)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4SmqJN0FWKz4wxv; Fri,  8 Dec 2023 22:52:36 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=A+/VyFh1;
-	dkim-atps=neutral
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4SmqJM4P1mz4wcX
-	for <linuxppc-dev@ozlabs.org>; Fri,  8 Dec 2023 22:52:35 +1100 (AEDT)
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3B8B6204010338;
-	Fri, 8 Dec 2023 11:52:30 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Smspp3PBFz3bxZ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Dec 2023 00:45:37 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3B8DW9P5007074;
+	Fri, 8 Dec 2023 13:45:30 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=TgRhokg4OxTDBjyHH42b+unMsmPsWKZ8nLfoQ06sshw=;
- b=A+/VyFh1eJMPjA9TSW32kI4LFidwOsR4dzgJYhDCIsSvztv02JnZK7Sld925UtSmt55T
- CuZqJbdUoDsGmHJelQcggeLWSztdQopUiOiACFkbvMO5uxJKqR3cvjgN8kzjkNPT+871
- dm5Ll8mUTFP1XAUXVC6Fu/j88gIzfFVRY3goqo10Y4wqGnnSM2tyJz4t3j8RQcSNeL25
- /I92vZmuE/zKR5n+VodS4npnszg1gi7ALHUUZ1JG+nrjvM3pZAUtNK/XdF/BEN9AgN1O
- kGYG57Ev/LFXgtogViDNnCBqLpt1mOIpCP3j+dR5gsdUWb4ykcvEpUOIRv9gIy+77LlS Vw== 
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=Qx9R9+DTlQaKkym29SDOcUwTWtQZtP+au1dCPXcNuhs=;
+ b=Tosq5VHrYoVkZVD+323lAXW4JnaqfT3YQT8K/2nI3OGC4Vq5ic3ybb04ci1TZO6OYtdy
+ rBg/V1kWPV5j4MxSWdrYmTjc0ZSJtJ24y8yfUj3VK8JU6qaqq4DYNaxSmt3Bk+vQipcj
+ 0N7o6vGMN+hIrpHcpDiSD1liVgf0zns4YYUfrezMJxTFhFavRHtNFXM85K5I0sp0d9X9
+ JIPqkLP5JvAKQqLmsySJ9H9gXRGtQYXr+GrtTTflDwCgNfuwy1Zt32hp036jvXnV8E+i
+ SfqX5KPYG9U+UVFpnz3vvB7xB3VPaf9Epny2RcnJqu4oSHW2FhfY3UzXe1rR1bqE1WZK MQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uv4400aw8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Dec 2023 13:45:29 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B8DYJsu014358;
+	Fri, 8 Dec 2023 13:45:29 GMT
 Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uv190tdmp-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uv4400avq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 08 Dec 2023 11:52:29 +0000
+	Fri, 08 Dec 2023 13:45:28 +0000
 Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3B89dFo0027013;
-	Fri, 8 Dec 2023 11:52:29 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3utav39apv-1
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3B8DNTIV027021;
+	Fri, 8 Dec 2023 13:45:28 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3utav39s65-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 08 Dec 2023 11:52:29 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3B8BqQfG45417188
+	Fri, 08 Dec 2023 13:45:27 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3B8DjP1h4129434
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 8 Dec 2023 11:52:26 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4218A20040;
-	Fri,  8 Dec 2023 11:52:26 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 63CBA20043;
-	Fri,  8 Dec 2023 11:52:22 +0000 (GMT)
-Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.c4p-in.ibmmobiledemo.com (unknown [9.177.65.40])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  8 Dec 2023 11:52:21 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH v6 3/3] Documentation/powerpc: update fadump implementation details
-Date: Fri,  8 Dec 2023 17:21:59 +0530
-Message-ID: <20231208115159.82236-4-sourabhjain@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231208115159.82236-1-sourabhjain@linux.ibm.com>
-References: <20231208115159.82236-1-sourabhjain@linux.ibm.com>
+	Fri, 8 Dec 2023 13:45:25 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1EED32004D;
+	Fri,  8 Dec 2023 13:45:25 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9003120043;
+	Fri,  8 Dec 2023 13:45:21 +0000 (GMT)
+Received: from vaibhav?linux.ibm.com (unknown [9.171.39.24])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Fri,  8 Dec 2023 13:45:21 +0000 (GMT)
+Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Fri, 08 Dec 2023 19:15:20 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: "Aneesh Kumar K.V (IBM)" <aneesh.kumar@kernel.org>,
+        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        kvm-ppc@vger.kernel.org
+Subject: Re: [PATCH 01/12] KVM: PPC: Book3S HV nestedv2: Invalidate RPT
+ before deleting a guest
+In-Reply-To: <878r66xtjt.fsf@kernel.org>
+References: <20231201132618.555031-1-vaibhav@linux.ibm.com>
+ <20231201132618.555031-2-vaibhav@linux.ibm.com>
+ <878r66xtjt.fsf@kernel.org>
+Date: Fri, 08 Dec 2023 19:15:20 +0530
+Message-ID: <87jzpolsen.fsf@vajain21.in.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: tu25KXUOTHBIkZybzsFa24rTHg3ZeUsQ
-X-Proofpoint-ORIG-GUID: tu25KXUOTHBIkZybzsFa24rTHg3ZeUsQ
+X-Proofpoint-ORIG-GUID: fRpi75ehNiBfjVix_9KQOJvP1cMcR-o6
+X-Proofpoint-GUID: TQZEjuibjHeH_Fz5TXGn_UPQQh1bKHZF
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-08_06,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
- malwarescore=0 spamscore=0 adultscore=0 bulkscore=0 mlxlogscore=999
- impostorscore=0 priorityscore=1501 phishscore=0 clxscore=1015
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2312080098
+ definitions=2023-12-08_09,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=699 bulkscore=0
+ lowpriorityscore=0 impostorscore=0 mlxscore=0 phishscore=0 adultscore=0
+ priorityscore=1501 spamscore=0 malwarescore=0 clxscore=1011 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2312080114
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,170 +100,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>, Naveen N Rao <naveen@kernel.org>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Aditya Gupta <adityag@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>
+Cc: mikey@neuling.org, sbhat@linux.ibm.com, amachhiw@linux.vnet.ibm.com, Jordan Niethe <jniethe5@gmail.com>, gautam@linux.ibm.com, Nicholas Piggin <npiggin@gmail.com>, David.Laight@ACULAB.COM, kconsul@linux.vnet.ibm.com, Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The patch titled ("powerpc: make fadump resilient with memory add/remove
-events") has made significant changes to the implementation of fadump,
-particularly on elfcorehdr creation and fadump crash info header
-structure. Therefore, updating the fadump implementation documentation
-to reflect those changes.
 
-Following updates are done to firmware assisted dump documentation:
+Hi Aneesh,
 
-1. The elfcorehdr is no longer stored after fadump HDR in the reserved
-   dump area. Instead, the second kernel dynamically allocates memory
-   for the elfcorehdr within the address range from 0 to the boot memory
-   size. Therefore, update figures 1 and 2 of Memory Reservation during
-   the first and second kernels to reflect this change.
+Thanks for looking into this patch. My responses inline below:
 
-2. A version field has been added to the fadump header to manage the
-   future changes to fadump crash info header structure without changing
-   the fadump header magic number in the future. Therefore, remove the
-   corresponding TODO from the document.
+"Aneesh Kumar K.V (IBM)" <aneesh.kumar@kernel.org> writes:
 
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Cc: Aditya Gupta <adityag@linux.ibm.com>
-Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-Cc: Hari Bathini <hbathini@linux.ibm.com>
-Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Naveen N Rao <naveen@kernel.org>
----
- .../arch/powerpc/firmware-assisted-dump.rst   | 91 +++++++++----------
- 1 file changed, 42 insertions(+), 49 deletions(-)
+> Vaibhav Jain <vaibhav@linux.ibm.com> writes:
+>
+>> From: Jordan Niethe <jniethe5@gmail.com>
+>>
+>> An L0 must invalidate the L2's RPT during H_GUEST_DELETE if this has not
+>> already been done. This is a slow operation that means H_GUEST_DELETE
+>> must return H_BUSY multiple times before completing. Invalidating the
+>> tables before deleting the guest so there is less work for the L0 to do.
+>>
+>> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+>> ---
+>>  arch/powerpc/include/asm/kvm_book3s.h | 1 +
+>>  arch/powerpc/kvm/book3s_hv.c          | 6 ++++--
+>>  arch/powerpc/kvm/book3s_hv_nested.c   | 2 +-
+>>  3 files changed, 6 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/arch/powerpc/include/asm/kvm_book3s.h b/arch/powerpc/include/asm/kvm_book3s.h
+>> index 4f527d09c92b..a37736ed3728 100644
+>> --- a/arch/powerpc/include/asm/kvm_book3s.h
+>> +++ b/arch/powerpc/include/asm/kvm_book3s.h
+>> @@ -302,6 +302,7 @@ void kvmhv_nested_exit(void);
+>>  void kvmhv_vm_nested_init(struct kvm *kvm);
+>>  long kvmhv_set_partition_table(struct kvm_vcpu *vcpu);
+>>  long kvmhv_copy_tofrom_guest_nested(struct kvm_vcpu *vcpu);
+>> +void kvmhv_flush_lpid(u64 lpid);
+>>  void kvmhv_set_ptbl_entry(u64 lpid, u64 dw0, u64 dw1);
+>>  void kvmhv_release_all_nested(struct kvm *kvm);
+>>  long kvmhv_enter_nested_guest(struct kvm_vcpu *vcpu);
+>> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+>> index 1ed6ec140701..5543e8490cd9 100644
+>> --- a/arch/powerpc/kvm/book3s_hv.c
+>> +++ b/arch/powerpc/kvm/book3s_hv.c
+>> @@ -5691,10 +5691,12 @@ static void kvmppc_core_destroy_vm_hv(struct kvm *kvm)
+>>  			kvmhv_set_ptbl_entry(kvm->arch.lpid, 0, 0);
+>>  	}
+>>  
+>> -	if (kvmhv_is_nestedv2())
+>> +	if (kvmhv_is_nestedv2()) {
+>> +		kvmhv_flush_lpid(kvm->arch.lpid);
+>>  		plpar_guest_delete(0, kvm->arch.lpid);
+>>
+>
+> I am not sure I follow the optimization here. I would expect the
+> hypervisor to kill all the translation caches as part of guest_delete.
+> What is the benefit of doing a lpid flush outside the guest delete?
+>
+Thats right. However without this optimization the H_GUEST_DELETE hcall
+in plpar_guest_delete() returns H_BUSY multiple times resulting in
+multiple hcalls to the hypervisor until it finishes. Flushing the guest
+translation cache upfront reduces the number of HCALLs L1 guests has to
+make to delete a L2 guest via H_GUEST_DELETE.
 
-diff --git a/Documentation/arch/powerpc/firmware-assisted-dump.rst b/Documentation/arch/powerpc/firmware-assisted-dump.rst
-index e363fc48529a..7e37aadd1f77 100644
---- a/Documentation/arch/powerpc/firmware-assisted-dump.rst
-+++ b/Documentation/arch/powerpc/firmware-assisted-dump.rst
-@@ -134,12 +134,12 @@ that are run. If there is dump data, then the
- memory is held.
- 
- If there is no waiting dump data, then only the memory required to
--hold CPU state, HPTE region, boot memory dump, FADump header and
--elfcore header, is usually reserved at an offset greater than boot
--memory size (see Fig. 1). This area is *not* released: this region
--will be kept permanently reserved, so that it can act as a receptacle
--for a copy of the boot memory content in addition to CPU state and
--HPTE region, in the case a crash does occur.
-+hold CPU state, HPTE region, boot memory dump, and FADump header is
-+usually reserved at an offset greater than boot memory size (see Fig. 1).
-+This area is *not* released: this region will be kept permanently
-+reserved, so that it can act as a receptacle for a copy of the boot
-+memory content in addition to CPU state and HPTE region, in the case
-+a crash does occur.
- 
- Since this reserved memory area is used only after the system crash,
- there is no point in blocking this significant chunk of memory from
-@@ -153,22 +153,22 @@ that were present in CMA region::
- 
-   o Memory Reservation during first kernel
- 
--  Low memory                                                 Top of memory
--  0    boot memory size   |<--- Reserved dump area --->|       |
--  |           |           |    Permanent Reservation   |       |
--  V           V           |                            |       V
--  +-----------+-----/ /---+---+----+-------+-----+-----+----+--+
--  |           |           |///|////|  DUMP | HDR | ELF |////|  |
--  +-----------+-----/ /---+---+----+-------+-----+-----+----+--+
--        |                   ^    ^     ^      ^           ^
--        |                   |    |     |      |           |
--        \                  CPU  HPTE   /      |           |
--         ------------------------------       |           |
--      Boot memory content gets transferred    |           |
--      to reserved area by firmware at the     |           |
--      time of crash.                          |           |
--                                          FADump Header   |
--                                           (meta area)    |
-+  Low memory                                                  Top of memory
-+  0    boot memory size   |<------ Reserved dump area ----->|     |
-+  |           |           |      Permanent Reservation      |     |
-+  V           V           |                                 |     V
-+  +-----------+-----/ /---+---+----+-----------+-------+----+-----+
-+  |           |           |///|////|    DUMP   |  HDR  |////|     |
-+  +-----------+-----/ /---+---+----+-----------+-------+----+-----+
-+        |                   ^    ^       ^         ^      ^
-+        |                   |    |       |         |      |
-+        \                  CPU  HPTE     /         |      |
-+         --------------------------------          |      |
-+      Boot memory content gets transferred         |      |
-+      to reserved area by firmware at the          |      |
-+      time of crash.                               |      |
-+                                           FADump Header  |
-+                                            (meta area)   |
-                                                           |
-                                                           |
-                       Metadata: This area holds a metadata structure whose
-@@ -186,13 +186,20 @@ that were present in CMA region::
-   0      boot memory size                                      |
-   |           |<------------ Crash preserved area ------------>|
-   V           V           |<--- Reserved dump area --->|       |
--  +-----------+-----/ /---+---+----+-------+-----+-----+----+--+
--  |           |           |///|////|  DUMP | HDR | ELF |////|  |
--  +-----------+-----/ /---+---+----+-------+-----+-----+----+--+
--        |                                           |
--        V                                           V
--   Used by second                             /proc/vmcore
--   kernel to boot
-+  +----+---+--+-----/ /---+---+----+-------+-----+-----+-------+
-+  |    |ELF|  |           |///|////|  DUMP | HDR |/////|       |
-+  +----+---+--+-----/ /---+---+----+-------+-----+-----+-------+
-+       |   |  |                            |     |             |
-+       -----  ------------------------------     ---------------
-+         \              |                               |
-+           \            |                               |
-+             \          |                               |
-+               \        |    ----------------------------
-+                 \      |   /
-+                   \    |  /
-+                     \  | /
-+                  /proc/vmcore
-+
- 
-         +---+
-         |///| -> Regions (CPU, HPTE & Metadata) marked like this in the above
-@@ -200,6 +207,12 @@ that were present in CMA region::
-                  does not have CPU & HPTE regions while Metadata region is
-                  not supported on pSeries currently.
- 
-+        +---+
-+        |ELF| -> elfcorehdr, it is created in second kernel after crash.
-+        +---+
-+
-+        Note: Memory from 0 to the boot memory size is used by second kernel
-+
-                    Fig. 2
- 
- 
-@@ -353,26 +366,6 @@ TODO:
-  - Need to come up with the better approach to find out more
-    accurate boot memory size that is required for a kernel to
-    boot successfully when booted with restricted memory.
-- - The FADump implementation introduces a FADump crash info structure
--   in the scratch area before the ELF core header. The idea of introducing
--   this structure is to pass some important crash info data to the second
--   kernel which will help second kernel to populate ELF core header with
--   correct data before it gets exported through /proc/vmcore. The current
--   design implementation does not address a possibility of introducing
--   additional fields (in future) to this structure without affecting
--   compatibility. Need to come up with the better approach to address this.
--
--   The possible approaches are:
--
--	1. Introduce version field for version tracking, bump up the version
--	whenever a new field is added to the structure in future. The version
--	field can be used to find out what fields are valid for the current
--	version of the structure.
--	2. Reserve the area of predefined size (say PAGE_SIZE) for this
--	structure and have unused area as reserved (initialized to zero)
--	for future field additions.
--
--   The advantage of approach 1 over 2 is we don't need to reserve extra space.
- 
- Author: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>
- 
+>> -	else
+>> +	} else {
+>>  		kvmppc_free_lpid(kvm->arch.lpid);
+>> +	}
+>>  
+>>  	kvmppc_free_pimap(kvm);
+>>  }
+>> diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
+>> index 3b658b8696bc..5c375ec1a3c6 100644
+>> --- a/arch/powerpc/kvm/book3s_hv_nested.c
+>> +++ b/arch/powerpc/kvm/book3s_hv_nested.c
+>> @@ -503,7 +503,7 @@ void kvmhv_nested_exit(void)
+>>  	}
+>>  }
+>>  
+>> -static void kvmhv_flush_lpid(u64 lpid)
+>> +void kvmhv_flush_lpid(u64 lpid)
+>>  {
+>>  	long rc;
+>>  
+>> -- 
+>> 2.42.0
+
 -- 
-2.41.0
-
+Cheers
+~ Vaibhav
