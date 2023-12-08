@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EE0C80A949
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Dec 2023 17:37:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52ECE80A953
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Dec 2023 17:38:16 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ME9PtPfy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KmthFkp9;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Smxd36650z3cg1
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Dec 2023 03:37:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Smxdx5j2lz3vcj
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Dec 2023 03:38:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ME9PtPfy;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KmthFkp9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SmxZY0GZrz3d9Y
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Dec 2023 03:35:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SmxZc0yq6z3dGt
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Dec 2023 03:35:20 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id BD56ECE28A4;
-	Fri,  8 Dec 2023 16:35:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34BC3C433C7;
-	Fri,  8 Dec 2023 16:35:11 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 4D004624F4;
+	Fri,  8 Dec 2023 16:35:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 144D9C433B6;
+	Fri,  8 Dec 2023 16:35:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702053313;
-	bh=v2mYSDmjqdbapRfO1Kx9bcMiig2SVy+s9w1cLpmU0IY=;
+	s=k20201202; t=1702053317;
+	bh=l/ccn9TohWmVu0gidxLaFZAXe873u+W72QG48wg65qk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ME9PtPfym6Ef0DDZb+Yjsva6Tx8a2WFMT7p9z045HUvh9QMf6RYkYWO9RVuxKCFgU
-	 HJcwtvyeTDA4KEjFRvwrIbXOu7CmVeFAVv63UTCBUWBRfBvmLPohHZUqUw8UlH+OjM
-	 7XtiUv082yDmJAx1zPZCY03aeXILFNzg8yK+5FTCffZ4PiV0xSKCaQekcRzWHGLWdx
-	 tgDLBLsAWL7w1QN3PX4zxsuozv5RHP5xxw1+h7Ke6HDg5/vbmy6mu2P7Z7JC4Keetj
-	 GCv1sqJ1XsfaiO78KJ9MM0sDVB1FFKqvhgYXhoCOLIfq7BNf3nUgtbk23tcxonJOAV
-	 W9PhRJauc5uaQ==
+	b=KmthFkp9R6S/S5QKzNeYjmgaMpiidbj1m4cc2zhTtKl9OKSy2IzILLGw4PS0qs3VM
+	 Hh1heFlMbk9aE/p7RBhwLjnswCE20sB/esq/CO5GoY2rktts5wrkXxi6aHYiCfBRq7
+	 XgjhbwiQXDa+9B2X5cePCKwa6R+ED0TZv6+eghgsMEYO2vhqjU8OtofeTWVZmo0N/u
+	 RcF5U3Rm/tOZYbODaFJNlgpCv5VWA8Afh+n+MhcgtQiy7TsGZGRJV1CrT1EDsTBqcx
+	 1yibxRHME3rt9nAgj5bWwwmxecDUzmirP2JGnoaWXn4gfsho0Ws6VszDbfdaPo5/6D
+	 x8AlUT9JYDW2Q==
 From: Naveen N Rao <naveen@kernel.org>
 To: <linuxppc-dev@lists.ozlabs.org>,
 	<linux-kernel@vger.kernel.org>
-Subject: [RFC PATCH 3/9] powerpc/ftrace: Remove nops after the call to ftrace_stub
-Date: Fri,  8 Dec 2023 22:00:42 +0530
-Message-ID: <8ee5ec520e37d5523654bb2cd65a17512fb774e2.1702045299.git.naveen@kernel.org>
+Subject: [RFC PATCH 4/9] powerpc/Kconfig: Select FUNCTION_ALIGNMENT_4B
+Date: Fri,  8 Dec 2023 22:00:43 +0530
+Message-ID: <21892186ec44abe24df0daf64f577dac0e78783f.1702045299.git.naveen@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1702045299.git.naveen@kernel.org>
 References: <cover.1702045299.git.naveen@kernel.org>
@@ -63,34 +63,45 @@ Cc: Mark Rutland <mark.rutland@arm.com>, Florent Revest <revest@chromium.org>, N
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-ftrace_stub is within the same CU, so there is no need for a subsequent
-nop instruction.
+From: Sathvika Vasireddy <sv@linux.ibm.com>
 
-Signed-off-by: Naveen N Rao <naveen@kernel.org>
+Commit d49a0626216b95 ("arch: Introduce CONFIG_FUNCTION_ALIGNMENT")
+introduced a generic function-alignment infrastructure. Move to using
+FUNCTION_ALIGNMENT_4B on powerpc, to use the same alignment as that of
+the existing _GLOBAL macro.
+
+Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
 ---
- arch/powerpc/kernel/trace/ftrace_entry.S | 2 --
- 1 file changed, 2 deletions(-)
+ arch/powerpc/Kconfig               | 1 +
+ arch/powerpc/include/asm/linkage.h | 3 ---
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kernel/trace/ftrace_entry.S b/arch/powerpc/kernel/trace/ftrace_entry.S
-index 17d1ed3d0b40..244a1c7bb1e8 100644
---- a/arch/powerpc/kernel/trace/ftrace_entry.S
-+++ b/arch/powerpc/kernel/trace/ftrace_entry.S
-@@ -162,7 +162,6 @@ _GLOBAL(ftrace_regs_caller)
- .globl ftrace_regs_call
- ftrace_regs_call:
- 	bl	ftrace_stub
--	nop
- 	ftrace_regs_exit 1
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 6f105ee4f3cf..318e5c1b7454 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -189,6 +189,7 @@ config PPC
+ 	select EDAC_ATOMIC_SCRUB
+ 	select EDAC_SUPPORT
+ 	select FTRACE_MCOUNT_USE_PATCHABLE_FUNCTION_ENTRY if ARCH_USING_PATCHABLE_FUNCTION_ENTRY
++	select FUNCTION_ALIGNMENT_4B
+ 	select GENERIC_ATOMIC64			if PPC32
+ 	select GENERIC_CLOCKEVENTS_BROADCAST	if SMP
+ 	select GENERIC_CMOS_UPDATE
+diff --git a/arch/powerpc/include/asm/linkage.h b/arch/powerpc/include/asm/linkage.h
+index b88d1d2cf304..b71b9582e754 100644
+--- a/arch/powerpc/include/asm/linkage.h
++++ b/arch/powerpc/include/asm/linkage.h
+@@ -4,9 +4,6 @@
  
- _GLOBAL(ftrace_caller)
-@@ -171,7 +170,6 @@ _GLOBAL(ftrace_caller)
- .globl ftrace_call
- ftrace_call:
- 	bl	ftrace_stub
--	nop
- 	ftrace_regs_exit 0
+ #include <asm/types.h>
  
- _GLOBAL(ftrace_stub)
+-#define __ALIGN		.align 2
+-#define __ALIGN_STR	".align 2"
+-
+ #ifdef CONFIG_PPC64_ELF_ABI_V1
+ #define cond_syscall(x) \
+ 	asm ("\t.weak " #x "\n\t.set " #x ", sys_ni_syscall\n"		\
 -- 
 2.43.0
 
