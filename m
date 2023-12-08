@@ -2,48 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0955780A935
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Dec 2023 17:35:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 197E180A977
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Dec 2023 17:43:06 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GDMWy+Me;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Jh+JoUBh;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Smxb93Pbqz3d9H
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Dec 2023 03:35:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SmxlW4603z3vsQ
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Dec 2023 03:43:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GDMWy+Me;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Jh+JoUBh;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SmxZL13DCz3d9L
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Dec 2023 03:35:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Smxb83d7Hz3dJD
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Dec 2023 03:35:48 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 320B16231E;
-	Fri,  8 Dec 2023 16:35:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C539C433C9;
-	Fri,  8 Dec 2023 16:35:01 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id B77A5624EE;
+	Fri,  8 Dec 2023 16:35:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9608C433C8;
+	Fri,  8 Dec 2023 16:35:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702053302;
-	bh=xQL6pG6caMEyh27UFdkVG4YVqENSinSYSj4xkfqkX3c=;
-	h=From:To:Cc:Subject:Date:From;
-	b=GDMWy+MeAdezgVTuAgkePTDVNCDmK6Xb8vdKI+aRsMe1aHkIohr2LQhf1GDl1VW3p
-	 Qquxo3Cj+Gf5cb/QZuFokdhqLBP1FrAJ8Xgxymun8pajiCz2JdgZZgcvyIlNCfokKf
-	 ZdzdF2+bkZMDW7TxDMJP7oBDr7yXViufFmxlCNNPhkBiSacXp8vNxdVzu0oTokHzAV
-	 6qPuW2i5fpMmEiIjtxUrcndcOqG8XNhqGbfo4rzj/q/rM6gbc9497pDenwuTZzf+cu
-	 BATEflAHnCRp+pUO+NvOT4fGDZLRsbteEvmG2mBAHMHsZYrv252nKEnpnFjnwwRvhS
-	 1x1qOB9aFrx8w==
+	s=k20201202; t=1702053346;
+	bh=Ho/kybth4D2azYyy3+MrZcuV5/UtWLUUn5wsZ3KGBaY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Jh+JoUBhx/n+uubL7szxJytPSQ53Zm47OjhmnBAd9ZX/l9qyt04gNFfuYtjHYCHwr
+	 pZUNCoaeFX9sJLhGo43RBkkne2uQhz9S/6kr6T9MrVqBOoCuMFkBC7UmlyLtyDwLzL
+	 WOFgLyrJtV5039Mohiw8mt+5WoReashV3Kmzs4eK4POOkTSyAQS4ISVh4vNanu7ZCj
+	 bRclPa490aWqumbrEIEdUjScW+5bw30KF2iCQxtDW+O3S68I0/hvGM5539BT0BwATO
+	 UpdF5GT6VWOrQkGh+heMG1R9FL+7ui9lsazW+Vwcjis4OxopQ3P2LonVxMxCgwOy3x
+	 5dQVm+RiHAoyA==
 From: Naveen N Rao <naveen@kernel.org>
 To: <linuxppc-dev@lists.ozlabs.org>,
 	<linux-kernel@vger.kernel.org>
-Subject: [RFC PATCH 0/9] powerpc: ftrace updates
-Date: Fri,  8 Dec 2023 22:00:39 +0530
-Message-ID: <cover.1702045299.git.naveen@kernel.org>
+Subject: [RFC PATCH 1/9] powerpc/ftrace: Fix indentation in ftrace.h
+Date: Fri,  8 Dec 2023 22:00:40 +0530
+Message-ID: <9f058227bd9243f0842786ef7228d87ab10d29f6.1702045299.git.naveen@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1702045299.git.naveen@kernel.org>
+References: <cover.1702045299.git.naveen@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -61,69 +63,29 @@ Cc: Mark Rutland <mark.rutland@arm.com>, Florent Revest <revest@chromium.org>, N
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Early RFC.
+Replace seven spaces with a tab character to fix an indentation issue
+reported by the kernel test robot.
 
-This series attempts to address couple of issues with the existing 
-support for ftrace on powerpc, with a view towards improving performance 
-when ftrace is not enabled. See patch 6 for more details.
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311221731.alUwTDIm-lkp@intel.com/
+Signed-off-by: Naveen N Rao <naveen@kernel.org>
+---
+ arch/powerpc/include/asm/ftrace.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Patches 7 and 8 implement support for ftrace direct calls, through 
-adding support for DYNAMIC_FTRACE_WITH_CALL_OPS.
-
-The first 5 patches are minor cleanups and updates, and can go in 
-separately.
-
-This series depends on Benjamin Gray's series adding support for 
-patch_ulong().
-
-I have lightly tested this patch set and it looks to be working well. As 
-described in patch 6, context_switch microbenchmark shows an improvement 
-of ~6% with this series with ftrace disabled. Performance when ftrace is
-enabled reduces due to how DYNAMIC_FTRACE_WITH_CALL_OPS works, and due 
-to support for direct calls. Some of that can hopefully be improved, if 
-this approach is otherwise ok.
-
-- Naveen
-
-
-
-Naveen N Rao (8):
-  powerpc/ftrace: Fix indentation in ftrace.h
-  powerpc/ftrace: Unify 32-bit and 64-bit ftrace entry code
-  powerpc/ftrace: Remove nops after the call to ftrace_stub
-  powerpc/kprobes: Use ftrace to determine if a probe is at function
-    entry
-  powerpc/ftrace: Update and move function profile instructions
-    out-of-line
-  powerpc/ftrace: Add support for DYNAMIC_FTRACE_WITH_CALL_OPS
-  powerpc/ftrace: Add support for DYNAMIC_FTRACE_WITH_DIRECT_CALLS
-  samples/ftrace: Add support for ftrace direct samples on powerpc
-
-Sathvika Vasireddy (1):
-  powerpc/Kconfig: Select FUNCTION_ALIGNMENT_4B
-
- arch/powerpc/Kconfig                        |   6 +
- arch/powerpc/Makefile                       |   6 +-
- arch/powerpc/include/asm/code-patching.h    |  15 +-
- arch/powerpc/include/asm/ftrace.h           |  35 ++-
- arch/powerpc/include/asm/linkage.h          |   3 -
- arch/powerpc/kernel/asm-offsets.c           |   7 +
- arch/powerpc/kernel/kprobes.c               |  69 +++++-
- arch/powerpc/kernel/trace/ftrace.c          | 231 ++++++++++++++++----
- arch/powerpc/kernel/trace/ftrace_entry.S    | 182 +++++++++++----
- samples/ftrace/ftrace-direct-modify.c       |  94 +++++++-
- samples/ftrace/ftrace-direct-multi-modify.c | 110 +++++++++-
- samples/ftrace/ftrace-direct-multi.c        |  64 +++++-
- samples/ftrace/ftrace-direct-too.c          |  72 +++++-
- samples/ftrace/ftrace-direct.c              |  61 +++++-
- 14 files changed, 845 insertions(+), 110 deletions(-)
-
-
-base-commit: 9a15ae60f2c9707433b01e55815cd9142be102b2
-prerequisite-patch-id: 38d3e705bf2e27cfa5e3ba369a6ded84ba6615c2
-prerequisite-patch-id: 609d292e054b2396b603890522a940fa0bdfb6d8
-prerequisite-patch-id: 6f7213fb77b1260defbf43be0e47bff9c80054cc
-prerequisite-patch-id: f2328625ae2193c3c8e336b154b62030940cece8
+diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
+index 9e5a39b6a311..1ebd2ca97f12 100644
+--- a/arch/powerpc/include/asm/ftrace.h
++++ b/arch/powerpc/include/asm/ftrace.h
+@@ -25,7 +25,7 @@ static inline unsigned long ftrace_call_adjust(unsigned long addr)
+ 	if (IS_ENABLED(CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY))
+ 		addr += MCOUNT_INSN_SIZE;
+ 
+-       return addr;
++	return addr;
+ }
+ 
+ unsigned long prepare_ftrace_return(unsigned long parent, unsigned long ip,
 -- 
 2.43.0
 
