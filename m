@@ -1,76 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 670FB809B2C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Dec 2023 05:50:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91D12809C10
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Dec 2023 06:56:41 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=W0taEfyD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=IhLorxa7;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SmdxZ62mdz3dDP
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Dec 2023 15:50:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SmgPg0jfxz3dBw
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Dec 2023 16:56:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=W0taEfyD;
+	dkim=pass (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=IhLorxa7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sifive.com (client-ip=2607:f8b0:4864:20::732; helo=mail-qk1-x732.google.com; envelope-from=samuel.holland@sifive.com; receiver=lists.ozlabs.org)
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sifive.com (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=samuel.holland@sifive.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Smdwm0rgTz3cSq
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Dec 2023 15:49:58 +1100 (AEDT)
-Received: by mail-qk1-x732.google.com with SMTP id af79cd13be357-77f4b8bbe0eso25609985a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Dec 2023 20:49:58 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SmgMv4pbRz3cCv
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Dec 2023 16:55:05 +1100 (AEDT)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1d04c097e34so14168985ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Dec 2023 21:55:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1702010995; x=1702615795; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Siq5/aLB+N8os3ShA228wuqtqMbftMOZ84Ddlbg3k10=;
-        b=W0taEfyDM66+JXlGllf22jHJ5xo2iyYDa/P58YO4NGALLfMaIUBApfyDG1QgvxnyGL
-         lswFS9FXTpivLgIzN7YgXdnzeKgwHKwjHtGdidouBSrdwE+CcyJqK3OZN9YMd3tBrmNX
-         UWvcJkUZmO2pTAIC6k9HviAVwfoCNxk+xP5rhUcWVeBv4Qj4GYdXGRq9CYlDNEykf0p0
-         J6x5HyjSecMex9aQc/Sqs7IaXYImcomxO/zzifp9tOkV6gqeQ3s4ouACW4s48TaX5KsP
-         HxJZO1bzzv9qRC/BDj47a9AB09YnxQkgwoRdIH9+FS81TWU69D9a/zA90z17EPTXg+k2
-         2ZfQ==
+        d=sifive.com; s=google; t=1702014903; x=1702619703; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jIC4glHzB+IOAGM7YCu4gQFdGXeLpWj/I7OZVSGOh7k=;
+        b=IhLorxa7p6WGlcxMOo/k9xvsO/rM0LLNYLiZnF1nVCxb1t4XrVpLDWUMKBnsC7/XyP
+         4LSsVMZJDJpqLsU9rMh4d3Cm+g+IbVarjZgsEY4/6a6XFUwDCm1iCPZgiFqGAagGvI+X
+         tqwWKY01+n2MO4DrNq+Y7Dc++SJJpE0LrPRlJ0gAWRVLS08y88a26rHxR+ggATp1nhGF
+         EyY8jhwVA4COgNcPpxxIQOw4ifE9UBVbI/R6t1z1t9PyTB0Gb4LAKT9VuhOTHwO7gBBR
+         k69wfJv8k1ofz94EQxmG5UtXfViGh6E+KEYzJaT7Kq77jPDRhWBhr2Db1/dogQi5Kp9j
+         X0hQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702010995; x=1702615795;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Siq5/aLB+N8os3ShA228wuqtqMbftMOZ84Ddlbg3k10=;
-        b=o3mOydSwa4DHaxodm1AvDqAB7nm0GmG9ge+CnKwAdstuh4cMovUpQxvT79f1F0IH6t
-         0Fyj4FjnD8xlJzII9VjmzLd9sK5iQ7xHpxTEp3Ic5fdOuQu7//sBw/83Ch3BbMBqCLXa
-         DuCRiIxKeZDauliBTsV7fugo7eHlwSBW+jMkkIob/A8nOxuqzSHdgpG0ATe0EKPiv2te
-         2L1gfX+6H94+wd7V8H2NdyWlPl8AX+8rgNz1O1Z/mzRF2elK9v01J2slk7djfuLnFzI2
-         1WjrLV2fYz/GytPQ3kb+Y7Ip0dkC/DsS9YZWvZlt/bf4ko+eHJyYK0pfIGrdU68N7qDE
-         6+eQ==
-X-Gm-Message-State: AOJu0YyP/JC8aBLxl3btF64XMW0zgg4cAxBeDH/fbyllqwFdk572gH8k
-	w30lz+ihly3Q5MOq1QqMvhn6cg==
-X-Google-Smtp-Source: AGHT+IFZn6XnJPcvVcVddGixsOUuewR/YlITPthokCfZLM+Gy+wdFy5aCuBE/cobBs7DetgZyfJ9UA==
-X-Received: by 2002:a05:620a:1a8a:b0:77f:338c:a713 with SMTP id bl10-20020a05620a1a8a00b0077f338ca713mr2602110qkb.62.1702010994966;
-        Thu, 07 Dec 2023 20:49:54 -0800 (PST)
-Received: from ?IPV6:2600:1700:2000:b002:41c5:bf1:860b:1e95? ([2600:1700:2000:b002:41c5:bf1:860b:1e95])
-        by smtp.gmail.com with ESMTPSA id ov11-20020a05620a628b00b0077f05db2663sm430776qkn.66.2023.12.07.20.49.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Dec 2023 20:49:54 -0800 (PST)
-Message-ID: <6d4cecd5-9083-4d68-a7e2-266dae9e3952@sifive.com>
-Date: Thu, 7 Dec 2023 22:49:53 -0600
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] drm/amd/display: Support DRM_AMD_DC_FP on RISC-V
-Content-Language: en-US
-To: Christoph Hellwig <hch@infradead.org>
-References: <20231122030621.3759313-1-samuel.holland@sifive.com>
- <20231122030621.3759313-4-samuel.holland@sifive.com>
- <ZV2+f/yu3C6xTVqn@infradead.org>
+        d=1e100.net; s=20230601; t=1702014903; x=1702619703;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jIC4glHzB+IOAGM7YCu4gQFdGXeLpWj/I7OZVSGOh7k=;
+        b=XPpXzQxEDPSdZ4DhQ7BR/PiA1Ah10sAwMwXS84S4juOjstfWsGYKjRYmrpTt29SKzH
+         T1ouWlZelm29cJ+UACsuugFKDPy8UgY0ZYAbIHODyza//3MQKXDIt9m7dDpxHfiTNFzg
+         mGDAeiu8n9ERWq6NC+x7TqDjerwvinsPiJUgKJZdeLWj3C+GSPszT/67VYq7s5oAt43g
+         /DwWAHZbAuaCxxXwmgBBkMo1WIKcKRXGMnHY4br1v1lK0MqSeIeyqiLIlDVVQbRYD62w
+         lyqhhP9azaipIGsEzcD3Xm68U0kBwez17l0X5EvneAGwWw0Ao8h/7GtAm63odpRk7Roi
+         x2jw==
+X-Gm-Message-State: AOJu0Yxz8EBwPTKsJcDTokKSeSIzhIU+HTZT+ss1TDmiLeAXj5qSXWu4
+	NBHri3EIf6jUKSI2ABqOC3ZoEA==
+X-Google-Smtp-Source: AGHT+IHobgnIbAqUwh0qy5g87XS9Ops6tA3mZ0Tbbi2vny+WXvVENlMrplaMBh4oGzh2rC3HGh0NRQ==
+X-Received: by 2002:a17:902:c20c:b0:1d0:6ffd:610c with SMTP id 12-20020a170902c20c00b001d06ffd610cmr481032pll.46.1702014902890;
+        Thu, 07 Dec 2023 21:55:02 -0800 (PST)
+Received: from sw06.internal.sifive.com ([4.53.31.132])
+        by smtp.gmail.com with ESMTPSA id s22-20020a170902989600b001ce5b859a59sm786250plp.305.2023.12.07.21.55.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Dec 2023 21:55:02 -0800 (PST)
 From: Samuel Holland <samuel.holland@sifive.com>
-In-Reply-To: <ZV2+f/yu3C6xTVqn@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: linux-arm-kernel@lists.infradead.org,
+	loongarch@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	x86@kernel.org,
+	linux-riscv@lists.infradead.org,
+	Christoph Hellwig <hch@infradead.org>
+Subject: [RFC PATCH 00/12] Unified cross-architecture kernel-mode FPU API
+Date: Thu,  7 Dec 2023 21:54:30 -0800
+Message-ID: <20231208055501.2916202-1-samuel.holland@sifive.com>
+X-Mailer: git-send-email 2.42.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,90 +80,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, dri-devel@lists.freedesktop.org, linux-riscv@lists.infradead.org, David Airlie <airlied@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>, amd-gfx@lists.freedesktop.org, Harry Wentland <harry.wentland@amd.com>, Nicolas Schier <nicolas@fjasle.eu>, Will Deacon <will@kernel.org>, linux-kbuild@vger.kernel.org, Leo Li <sunpeng.li@amd.com>, Nathan Chancellor <nathan@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, linux-arm-kernel@lists.infradead.org, Pan Xinhui <Xinhui.Pan@amd.com>, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Daniel Vetter <daniel@ffwll.ch>, Alex Deucher <alexander.deucher@amd.com>, linuxppc-dev@lists.ozlabs.org, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, Samuel Holland <samuel.holland@sifive.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christoph,
+This series supersedes my earier RISC-V specific series[1].
 
-On 2023-11-22 2:40 AM, Christoph Hellwig wrote:
->> -	select DRM_AMD_DC_FP if (X86 || LOONGARCH || (PPC64 && ALTIVEC) || (ARM64 && KERNEL_MODE_NEON && !CC_IS_CLANG))
->> +	select DRM_AMD_DC_FP if ARM64 && KERNEL_MODE_NEON && !CC_IS_CLANG
->> +	select DRM_AMD_DC_FP if PPC64 && ALTIVEC
->> +	select DRM_AMD_DC_FP if RISCV && FPU
->> +	select DRM_AMD_DC_FP if LOONGARCH || X86
-> 
-> This really is a mess.  Can you add a ARCH_HAS_KERNEL_FPU_SUPPORT
-> symbol that all architetures that have it select instead, and them
-> make DRM_AMD_DC_FP depend on it?
+This series unifies the kernel-mode FPU API across several architectures
+by wrapping the existing functions (where needed) in consistently-named
+functions placed in a consistent header location, with mostly the same
+semantics: they can be called from preemptible or non-preemptible task
+context, and are not assumed to be reentrant. Architectures are also
+expected to provide CFLAGS adjustments for compiling FPU-dependent code.
+For the moment, SIMD/vector units are out of scope for this common API.
 
-Yes, I have done this for v2, which I will send shortly.
+This allows us to remove the ifdeffery and duplicated Makefile logic at
+each FPU user. It then implements the common API on RISC-V, and converts
+a couple of users to the new API: the AMDGPU DRM driver, and the FPU
+self test.
 
->> -#if defined(CONFIG_X86) || defined(CONFIG_LOONGARCH)
->> +#if defined(CONFIG_X86) || defined(CONFIG_LOONGARCH) || defined(CONFIG_RISCV)
->>  		kernel_fpu_begin();
->>  #elif defined(CONFIG_PPC64)
->>  		if (cpu_has_feature(CPU_FTR_VSX_COMP))
->> @@ -122,7 +124,7 @@ void dc_fpu_end(const char *function_name, const int line)
->>  
->>  	depth = __this_cpu_dec_return(fpu_recursion_depth);
->>  	if (depth == 0) {
->> -#if defined(CONFIG_X86) || defined(CONFIG_LOONGARCH)
->> +#if defined(CONFIG_X86) || defined(CONFIG_LOONGARCH) || defined(CONFIG_RISCV)
->>  		kernel_fpu_end();
->>  #elif defined(CONFIG_PPC64)
->>  		if (cpu_has_feature(CPU_FTR_VSX_COMP))
-> 
-> And then this mess can go away.  We'll need to decide if we want to
-> cover all the in-kernel vector support as part of it, which would
-> seem reasonable to me, or have a separate generic kernel_vector_begin
-> with it's own option.
+The underlying goal of this series is to allow using newer AMD GPUs
+(e.g. Navi) on RISC-V boards such as SiFive's HiFive Unmatched. Those
+GPUs need CONFIG_DRM_AMD_DC_FP to initialize, which requires kernel-mode
+FPU support.
 
-I think we may want to keep vector separate for performance on architectures
-with separate FP and vector register files. For now, I have limited my changes
-to FPU support only, which means I have removed VSX/Altivec from here; the
-AMDGPU code doesn't need Altivec anyway.
+[1]: https://lore.kernel.org/linux-riscv/20231122030621.3759313-1-samuel.holland@sifive.com/
 
->> diff --git a/drivers/gpu/drm/amd/display/dc/dml/Makefile b/drivers/gpu/drm/amd/display/dc/dml/Makefile
->> index ea7d60f9a9b4..5c8f840ef323 100644
->> --- a/drivers/gpu/drm/amd/display/dc/dml/Makefile
->> +++ b/drivers/gpu/drm/amd/display/dc/dml/Makefile
->> @@ -43,6 +43,12 @@ dml_ccflags := -mfpu=64
->>  dml_rcflags := -msoft-float
->>  endif
->>  
->> +ifdef CONFIG_RISCV
->> +include $(srctree)/arch/riscv/Makefile.isa
->> +# Remove V from the ISA string, like in arch/riscv/Makefile, but keep F and D.
->> +dml_ccflags := -march=$(shell echo $(riscv-march-y) | sed -E 's/(rv32ima|rv64ima)([^v_]*)v?/\1\2/')
->> +endif
->> +
->>  ifdef CONFIG_CC_IS_GCC
->>  ifneq ($(call gcc-min-version, 70100),y)
->>  IS_OLD_GCC = 1
-> 
-> And this is again not really something we should be doing.
-> Instead we need a generic way in Kconfig to enable FPU support
-> for an object file or set of, that the arch support can hook
-> into.
 
-I've included this in v2 as well.
+Samuel Holland (12):
+  arch: Add ARCH_HAS_KERNEL_FPU_SUPPORT
+  ARM: Implement ARCH_HAS_KERNEL_FPU_SUPPORT
+  ARM: crypto: Use CC_FLAGS_FPU for NEON CFLAGS
+  arm64: Implement ARCH_HAS_KERNEL_FPU_SUPPORT
+  lib/raid6: Use CC_FLAGS_FPU for NEON CFLAGS
+  LoongArch: Implement ARCH_HAS_KERNEL_FPU_SUPPORT
+  powerpc: Implement ARCH_HAS_KERNEL_FPU_SUPPORT
+  x86: Implement ARCH_HAS_KERNEL_FPU_SUPPORT
+  riscv: Add support for kernel-mode FPU
+  drm/amd/display: Use ARCH_HAS_KERNEL_FPU_SUPPORT
+  selftests/fpu: Move FP code to a separate translation unit
+  selftests/fpu: Allow building on other architectures
 
-> Btw, I'm also really worried about folks using the FPU instructions
-> outside the kernel_fpu_begin/end windows in general (not directly
-> related to the RISC-V support).  Can we have objecttool checks
-> for that similar to only allowing the unsafe uaccess in the
-> uaccess begin/end pairs?
+ Makefile                                      |  4 ++
+ arch/Kconfig                                  |  9 +++++
+ arch/arm/Kconfig                              |  1 +
+ arch/arm/Makefile                             |  7 ++++
+ arch/arm/include/asm/fpu.h                    | 17 +++++++++
+ arch/arm/lib/Makefile                         |  3 +-
+ arch/arm64/Kconfig                            |  1 +
+ arch/arm64/Makefile                           |  9 ++++-
+ arch/arm64/include/asm/fpu.h                  | 17 +++++++++
+ arch/loongarch/Kconfig                        |  1 +
+ arch/loongarch/Makefile                       |  5 ++-
+ arch/loongarch/include/asm/fpu.h              |  1 +
+ arch/powerpc/Kconfig                          |  1 +
+ arch/powerpc/Makefile                         |  5 ++-
+ arch/powerpc/include/asm/fpu.h                | 28 ++++++++++++++
+ arch/riscv/Kconfig                            |  1 +
+ arch/riscv/Makefile                           |  3 ++
+ arch/riscv/include/asm/fpu.h                  | 26 +++++++++++++
+ arch/riscv/kernel/Makefile                    |  1 +
+ arch/riscv/kernel/kernel_mode_fpu.c           | 28 ++++++++++++++
+ arch/x86/Kconfig                              |  1 +
+ arch/x86/Makefile                             | 20 ++++++++++
+ arch/x86/include/asm/fpu.h                    | 13 +++++++
+ drivers/gpu/drm/amd/display/Kconfig           |  2 +-
+ .../gpu/drm/amd/display/amdgpu_dm/dc_fpu.c    | 33 +----------------
+ drivers/gpu/drm/amd/display/dc/dml/Makefile   | 36 +-----------------
+ drivers/gpu/drm/amd/display/dc/dml2/Makefile  | 36 +-----------------
+ lib/Kconfig.debug                             |  2 +-
+ lib/Makefile                                  | 26 ++-----------
+ lib/raid6/Makefile                            | 31 ++++------------
+ lib/{test_fpu.c => test_fpu_glue.c}           | 37 +++----------------
+ lib/test_fpu_impl.c                           | 35 ++++++++++++++++++
+ 32 files changed, 255 insertions(+), 185 deletions(-)
+ create mode 100644 arch/arm/include/asm/fpu.h
+ create mode 100644 arch/arm64/include/asm/fpu.h
+ create mode 100644 arch/powerpc/include/asm/fpu.h
+ create mode 100644 arch/riscv/include/asm/fpu.h
+ create mode 100644 arch/riscv/kernel/kernel_mode_fpu.c
+ create mode 100644 arch/x86/include/asm/fpu.h
+ rename lib/{test_fpu.c => test_fpu_glue.c} (71%)
+ create mode 100644 lib/test_fpu_impl.c
 
-ARM partially enforces this at compile time: it disallows calling
-kernel_neon_begin() inside a translation unit that has NEON enabled. That
-doesn't prevent the programmer from calling a FPU-enabled function from outside
-a begin/end section, but it does prevent the compiler from generating unexpected
-FPU usage behind your back. I implemented this same functionality for RISC-V.
-
-Actually tracking all possibly-FPU-tainted functions and their call sites is
-probably possible, but a much larger task.
-
-Regards,
-Samuel
+-- 
+2.42.0
 
