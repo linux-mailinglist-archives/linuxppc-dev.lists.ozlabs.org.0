@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5457D80A972
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Dec 2023 17:40:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5800B80A974
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Dec 2023 17:41:27 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KUFBhlM7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ucggwy5F;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Smxhk5kqMz3vlm
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Dec 2023 03:40:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Smxjc5tXmz3vXc
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Dec 2023 03:41:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KUFBhlM7;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ucggwy5F;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SmxZt36K2z3dGl
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Dec 2023 03:35:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SmxZz379Hz3cc6
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Dec 2023 03:35:39 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id A6172624FD;
-	Fri,  8 Dec 2023 16:35:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DE94C433CB;
-	Fri,  8 Dec 2023 16:35:31 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 78E3261D2E;
+	Fri,  8 Dec 2023 16:35:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97072C433C8;
+	Fri,  8 Dec 2023 16:35:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702053332;
-	bh=mcOc029J1BqyWbOqtSlrwAjg5MaAlcqBJsrSldWAf8E=;
+	s=k20201202; t=1702053337;
+	bh=7raJIERHI+frfy4evcCjXbQCBLrz7+ndhekYbkUWCw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KUFBhlM7PmCPIHyssSqtMtp0iHkXz0NaajpTrYeU7B9HrrgSt6Sze/LesuoHwp5ZK
-	 xSB8ZFbckeD9MVLZrmE6MV1S8wu6nUgACwNuyfLZBEnOwnjhChCHrzwKnjuTuXIiFQ
-	 jC2gXriHQP89crMlGaYqaRLQ2+ii82w+BUq5++7TccuBh7QoJNxKe70VJlNj+xhLgz
-	 nhxvjs7ihyhHZlzHuMTrxQt2wl0jJnbMl0u8buymkdxplPfVzVqIeXthFgA2izpoVO
-	 rp4WP3WV7Y12Wb4a1HmJNeSxGaGEu4qcCR9A5ibNTgsMdd+OPLKQ0umsxYjqySGFQt
-	 pEBXTz3LJZP6A==
+	b=Ucggwy5F5BZXz172PhI07i2kTcoe04uwSX7QNPhw2P4840kQPSngfiErOdWEZVZUf
+	 8T76BRVjSRpjIIU9xWEIo8pMG3XrF3vBB3vODslqGDQ2vY283eRo8d9c1KBSpQaQnn
+	 VUNhDQVCQR8kVKY1Hje9m5HxyBmBJELQ1OwdZaTl2b2ogywS4CFPwZC33E7WCdnS8m
+	 eyvRbf9C0z970RJOqzOUyc7lcK0vJ9Y7pDV5pvaqEEZLMzYrMLyIkhnFsL4Tl7DVOi
+	 4yAMhNA/Idh3RtTl3h2SrraGMtbcBDfSTVXNghBw9OZNZFWT7rQJm83AGQK9WBHtKp
+	 UPBXMaKW9yzig==
 From: Naveen N Rao <naveen@kernel.org>
 To: <linuxppc-dev@lists.ozlabs.org>,
 	<linux-kernel@vger.kernel.org>
-Subject: [RFC PATCH 7/9] powerpc/ftrace: Add support for DYNAMIC_FTRACE_WITH_CALL_OPS
-Date: Fri,  8 Dec 2023 22:00:46 +0530
-Message-ID: <cc8ac847f3b23384b79e3db7968f79aea41bdc57.1702045299.git.naveen@kernel.org>
+Subject: [RFC PATCH 8/9] powerpc/ftrace: Add support for DYNAMIC_FTRACE_WITH_DIRECT_CALLS
+Date: Fri,  8 Dec 2023 22:00:47 +0530
+Message-ID: <62b7c2fcaca546c790a825cf79b9cced1ac8d1db.1702045299.git.naveen@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1702045299.git.naveen@kernel.org>
 References: <cover.1702045299.git.naveen@kernel.org>
@@ -63,259 +63,254 @@ Cc: Mark Rutland <mark.rutland@arm.com>, Florent Revest <revest@chromium.org>, N
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Implement support for DYNAMIC_FTRACE_WITH_CALL_OPS similar to the
-arm64 implementation.
+Add support for DYNAMIC_FTRACE_WITH_DIRECT_CALLS similar to the arm64
+implementation.
 
-This works by patching-in a pointer to an associated ftrace_ops
-structure before each traceable function. If multiple ftrace_ops are
-associated with a call site, then a special ftrace_list_ops is used to
-enable iterating over all the registered ftrace_ops. If no ftrace_ops
-are associated with a call site, then a special ftrace_nop_ops structure
-is used to render the ftrace call as a no-op. ftrace trampoline can then
-read the associated ftrace_ops for a call site by loading from an offset
-from the LR, and branch directly to the associated function.
+ftrace direct calls allow custom trampolines to be called into directly
+from function ftrace call sites, bypassing the ftrace trampoline
+completely. This functionality is currently utilized by BPF trampolines
+to hook into kernel function entries.
 
-The primary advantage with this approach is that we don't have to
-iterate over all the registered ftrace_ops for call sites that have a
-single ftrace_ops registered. This is the equivalent of implementing
-support for dynamic ftrace trampolines, which set up a special ftrace
-trampoline for each registered ftrace_ops and have individual call sites
-branch into those directly.
+Since we have limited relative branch range, we support ftrace direct
+calls through support for DYNAMIC_FTRACE_WITH_CALL_OPS. In this
+approach, ftrace trampoline is not entirely bypassed. Rather, it is
+re-purposed into a stub that reads direct_call field from the associated
+ftrace_ops structure and branches into that, if it is not NULL. For
+this, it is sufficient if we can ensure that the ftrace trampoline is
+reachable from all traceable functions.
 
-A secondary advantage is that this gives us a way to add support for
-direct ftrace callers without having to resort to using stubs. The
-address of the direct call trampoline can be loaded from the ftrace_ops
-structure.
-
-To support this, we utilize the space between the existing function
-profile sequence and the function entry. During ftrace activation, we
-update this location with the associated ftrace_ops pointer. Then, on
-ftrace entry, we load from this location and call into
-ftrace_ops->func().
-
-For 64-bit powerpc, we also select FUNCTION_ALIGNMENT_8B so that the
-ftrace_ops pointer is double word aligned and can be updated atomically.
+When multiple ftrace_ops are associated with a call site, we utilize a
+call back to set pt_regs->orig_gpr3 that can then be tested on the
+return path from the ftrace trampoline to branch into the direct caller.
 
 Signed-off-by: Naveen N Rao <naveen@kernel.org>
 ---
- arch/powerpc/Kconfig                     |  2 +
- arch/powerpc/kernel/asm-offsets.c        |  4 ++
- arch/powerpc/kernel/trace/ftrace.c       | 58 ++++++++++++++++++++++++
- arch/powerpc/kernel/trace/ftrace_entry.S | 39 +++++++++++-----
- 4 files changed, 91 insertions(+), 12 deletions(-)
+ arch/powerpc/Kconfig                     |  1 +
+ arch/powerpc/include/asm/ftrace.h        | 15 ++++
+ arch/powerpc/kernel/asm-offsets.c        |  3 +
+ arch/powerpc/kernel/trace/ftrace_entry.S | 99 ++++++++++++++++++------
+ 4 files changed, 93 insertions(+), 25 deletions(-)
 
 diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 318e5c1b7454..c8ecc9dcc914 100644
+index c8ecc9dcc914..4fe04fdca33a 100644
 --- a/arch/powerpc/Kconfig
 +++ b/arch/powerpc/Kconfig
-@@ -190,6 +190,7 @@ config PPC
- 	select EDAC_SUPPORT
- 	select FTRACE_MCOUNT_USE_PATCHABLE_FUNCTION_ENTRY if ARCH_USING_PATCHABLE_FUNCTION_ENTRY
- 	select FUNCTION_ALIGNMENT_4B
-+	select FUNCTION_ALIGNMENT_8B		if PPC64 && DYNAMIC_FTRACE_WITH_CALL_OPS
- 	select GENERIC_ATOMIC64			if PPC32
- 	select GENERIC_CLOCKEVENTS_BROADCAST	if SMP
- 	select GENERIC_CMOS_UPDATE
-@@ -233,6 +234,7 @@ config PPC
- 	select HAVE_DEBUG_STACKOVERFLOW
+@@ -235,6 +235,7 @@ config PPC
  	select HAVE_DYNAMIC_FTRACE
  	select HAVE_DYNAMIC_FTRACE_WITH_ARGS	if ARCH_USING_PATCHABLE_FUNCTION_ENTRY || MPROFILE_KERNEL || PPC32
-+	select HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS if ARCH_USING_PATCHABLE_FUNCTION_ENTRY
+ 	select HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS if ARCH_USING_PATCHABLE_FUNCTION_ENTRY
++	select HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS if HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS
  	select HAVE_DYNAMIC_FTRACE_WITH_REGS	if ARCH_USING_PATCHABLE_FUNCTION_ENTRY || MPROFILE_KERNEL || PPC32
  	select HAVE_EBPF_JIT
  	select HAVE_EFFICIENT_UNALIGNED_ACCESS
+diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
+index d9b99781bea3..986c4fffb9ec 100644
+--- a/arch/powerpc/include/asm/ftrace.h
++++ b/arch/powerpc/include/asm/ftrace.h
+@@ -93,6 +93,21 @@ struct ftrace_ops;
+ #define ftrace_graph_func ftrace_graph_func
+ void ftrace_graph_func(unsigned long ip, unsigned long parent_ip,
+ 		       struct ftrace_ops *op, struct ftrace_regs *fregs);
++
++#ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
++/*
++ * When an ftrace registered caller is tracing a function that is also set by a
++ * register_ftrace_direct() call, it needs to be differentiated in the
++ * ftrace_caller trampoline so that the direct call can be invoked after the
++ * other ftrace ops. To do this, place the direct caller in the orig_gpr3 field
++ * of pt_regs. This tells ftrace_caller that there's a direct caller.
++ */
++static inline void arch_ftrace_set_direct_caller(struct ftrace_regs *fregs, unsigned long addr)
++{
++	struct pt_regs *regs = &fregs->regs;
++	regs->orig_gpr3 = addr;
++}
++#endif /* CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS */
+ #endif
+ #endif /* __ASSEMBLY__ */
+ 
 diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
-index 9f14d95b8b32..8b8a39b57a9f 100644
+index 8b8a39b57a9f..85da10726d98 100644
 --- a/arch/powerpc/kernel/asm-offsets.c
 +++ b/arch/powerpc/kernel/asm-offsets.c
-@@ -676,5 +676,9 @@ int main(void)
- 	DEFINE(BPT_SIZE, BPT_SIZE);
+@@ -678,6 +678,9 @@ int main(void)
+ 
+ #ifdef CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS
+ 	OFFSET(FTRACE_OPS_FUNC, ftrace_ops, func);
++#ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
++	OFFSET(FTRACE_OPS_DIRECT_CALL, ftrace_ops, direct_call);
++#endif
  #endif
  
-+#ifdef CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS
-+	OFFSET(FTRACE_OPS_FUNC, ftrace_ops, func);
-+#endif
-+
  	return 0;
- }
-diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-index d3b4949142a8..af84eabf7912 100644
---- a/arch/powerpc/kernel/trace/ftrace.c
-+++ b/arch/powerpc/kernel/trace/ftrace.c
-@@ -124,6 +124,41 @@ static int ftrace_get_call_inst(struct dyn_ftrace *rec, unsigned long addr, ppc_
- 	return 0;
- }
- 
-+#ifdef CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS
-+static const struct ftrace_ops *powerpc_rec_get_ops(struct dyn_ftrace *rec)
-+{
-+	const struct ftrace_ops *ops = NULL;
-+
-+	if (rec->flags & FTRACE_FL_CALL_OPS_EN) {
-+		ops = ftrace_find_unique_ops(rec);
-+		WARN_ON_ONCE(!ops);
-+	}
-+
-+	if (!ops)
-+		ops = &ftrace_list_ops;
-+
-+	return ops;
-+}
-+
-+static int ftrace_rec_set_ops(const struct dyn_ftrace *rec, const struct ftrace_ops *ops)
-+{
-+	return patch_ulong((void *)(rec->ip - sizeof(unsigned long)), (unsigned long)ops);
-+}
-+
-+static int ftrace_rec_set_nop_ops(struct dyn_ftrace *rec)
-+{
-+	return ftrace_rec_set_ops(rec, &ftrace_nop_ops);
-+}
-+
-+static int ftrace_rec_update_ops(struct dyn_ftrace *rec)
-+{
-+	return ftrace_rec_set_ops(rec, powerpc_rec_get_ops(rec));
-+}
-+#else
-+static int ftrace_rec_set_nop_ops(struct dyn_ftrace *rec) { return 0; }
-+static int ftrace_rec_update_ops(struct dyn_ftrace *rec) { return 0; }
-+#endif
-+
- #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
- int ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr, unsigned long addr)
- {
-@@ -159,6 +194,10 @@ int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
- 	if (ret || !IS_ENABLED(CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY))
- 		return ret;
- 
-+	ret = ftrace_rec_update_ops(rec);
-+	if (ret)
-+		return ret;
-+
- 	ip = rec->ip;
- 	ret = ftrace_modify_code(ip, ppc_inst(PPC_RAW_NOP()),
- 				 ppc_inst(PPC_RAW_BRANCH(-FTRACE_MCOUNT_TRAMP_OFFSET)));
-@@ -214,16 +253,19 @@ void ftrace_replace_code(int enable)
- 		case FTRACE_UPDATE_MODIFY_CALL:
- 			ret = ftrace_get_call_inst(rec, new_addr, &new_call_inst);
- 			ret |= ftrace_get_call_inst(rec, addr, &call_inst);
-+			ret |= ftrace_rec_update_ops(rec);
- 			old = call_inst;
- 			new = new_call_inst;
- 			break;
- 		case FTRACE_UPDATE_MAKE_NOP:
- 			ret = ftrace_get_call_inst(rec, addr, &call_inst);
-+			ret |= ftrace_rec_set_nop_ops(rec);
- 			old = call_inst;
- 			new = nop_inst;
- 			break;
- 		case FTRACE_UPDATE_MAKE_CALL:
- 			ret = ftrace_get_call_inst(rec, new_addr, &call_inst);
-+			ret |= ftrace_rec_update_ops(rec);
- 			old = nop_inst;
- 			new = call_inst;
- 			break;
-@@ -312,6 +354,12 @@ int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
- 			ret |= ftrace_modify_code(ip, old, ppc_inst(ftrace_mcount_tramp_insns[i]));
- 
- 		if (IS_ENABLED(CONFIG_PPC64)) {
-+			if (IS_ENABLED(CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS) &&
-+			    !IS_ALIGNED(ip, sizeof(unsigned long))) {
-+				pr_err("0x%lx: Mis-aligned ftrace_ops patch site\n", ip);
-+				return -EINVAL;
-+			}
-+
- 			/* two more nops */
- 			ret |= ftrace_validate_inst(ip, old);
- 			ip += MCOUNT_INSN_SIZE;
-@@ -325,6 +373,9 @@ int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
- 		/* nop at ftrace location */
- 		ret |= ftrace_validate_inst(ip, old);
- 
-+		if (!ret)
-+			ret = ftrace_rec_set_nop_ops(rec);
-+
- 		return ret;
- 	}
- 
-@@ -383,6 +434,13 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
- 	ppc_inst_t old, new;
- 	int ret;
- 
-+	/*
-+	 * When using CALL_OPS, the function to call is associated with the
-+	 * call site, and we don't have a global function pointer to update.
-+	 */
-+	if (IS_ENABLED(CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS))
-+		return 0;
-+
- 	old = ppc_inst_read((u32 *)&ftrace_call);
- 	new = ftrace_create_branch_inst(ip, ppc_function_entry(func), 1);
- 	ret = ftrace_modify_code(ip, old, new);
 diff --git a/arch/powerpc/kernel/trace/ftrace_entry.S b/arch/powerpc/kernel/trace/ftrace_entry.S
-index 537c14b12904..4d1220c2e32f 100644
+index 4d1220c2e32f..ab60395fc34b 100644
 --- a/arch/powerpc/kernel/trace/ftrace_entry.S
 +++ b/arch/powerpc/kernel/trace/ftrace_entry.S
-@@ -97,11 +97,6 @@
+@@ -33,14 +33,57 @@
+  * and then arrange for the ftrace function to be called.
+  */
+ .macro	ftrace_regs_entry allregs
+-	/* Save the original return address in A's stack frame */
+-	PPC_STL		r0, LRSAVE(r1)
+ 	/* Create a minimal stack frame for representing B */
+ 	PPC_STLU	r1, -STACK_FRAME_MIN_SIZE(r1)
+ 
+ 	/* Create our stack frame + pt_regs */
+ 	PPC_STLU	r1,-SWITCH_FRAME_SIZE(r1)
+ 
++	.if \allregs == 1
++	SAVE_GPRS(11, 12, r1)
++	.endif
++
++	/* Get the _mcount() call site out of LR */
++	mflr	r11
++
++#ifdef CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY
++	/*
++	 * This points after the bl at 'mtlr r0', but this sequence could be
++	 * outside the function. Move this to point just after the ftrace
++	 * location inside the function for proper unwind.
++	 */
++	addi	r11, r11, FTRACE_MCOUNT_TRAMP_OFFSET - MCOUNT_INSN_SIZE
++
++#ifdef CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS
++	/* Load the ftrace_op */
++	PPC_LL	r12, -SZL-MCOUNT_INSN_SIZE(r11)
++
++#ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
++	/* Load direct_call from the ftrace_op */
++	PPC_LL	r12, FTRACE_OPS_DIRECT_CALL(r12)
++	PPC_LCMPI r12, 0
++	beq	1f
++	mtctr	r12
++	.if \allregs == 1
++	REST_GPRS(11, 12, r1)
++	.endif
++	addi	r1, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
++	bctr
++1:
++#endif
++#endif
++#endif
++
++	/* Save the previous LR in pt_regs->link */
++	PPC_STL	r0, _LINK(r1)
++	/* Also save it in A's stack frame */
++	PPC_STL	r0, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE+LRSAVE(r1)
++
++	/* Save our return address as pt_regs->nip */
++	PPC_STL	r11, _NIP(r1)
++	/* Also save it in B's stackframe header for proper unwind */
++	PPC_STL	r11, SWITCH_FRAME_SIZE+LRSAVE(r1)
++
+ 	/* Save all gprs to pt_regs */
+ 	SAVE_GPR(0, r1)
+ 	SAVE_GPRS(3, 10, r1)
+@@ -54,7 +97,7 @@
+ 
+ 	.if \allregs == 1
+ 	SAVE_GPR(2, r1)
+-	SAVE_GPRS(11, 31, r1)
++	SAVE_GPRS(13, 31, r1)
+ 	.else
+ #ifdef CONFIG_LIVEPATCH_64
+ 	SAVE_GPR(14, r1)
+@@ -65,6 +108,13 @@
+ 	addi	r8, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
+ 	PPC_STL	r8, GPR1(r1)
+ 
++#ifdef CONFIG_LIVEPATCH_64
++	mr	r14, r11	/* remember old NIP */
++#endif
++
++	/* Calculate ip from nip-4 into r3 for call below */
++	subi	r3, r11, MCOUNT_INSN_SIZE
++
+ 	.if \allregs == 1
+ 	/* Load special regs for save below */
+ 	mfmsr   r8
+@@ -76,22 +126,11 @@
+ 	li	r8, 0
+ 	.endif
+ 
+-	/* Get the _mcount() call site out of LR */
+-	mflr	r7
+-#ifdef CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY
+-	/*
+-	 * This points after the bl at 'mtlr r0', but this sequence could be
+-	 * outside the function. Move this to point just after the ftrace
+-	 * location inside the function for proper unwind.
+-	 */
+-	addi	r7, r7, FTRACE_MCOUNT_TRAMP_OFFSET - MCOUNT_INSN_SIZE
++#ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
++	/* Clear orig_gpr3 to later detect ftrace_direct call */
++	li	r7, 0
++	PPC_STL	r7, ORIG_GPR3(r1)
+ #endif
+-	/* Save it as pt_regs->nip */
+-	PPC_STL	r7, _NIP(r1)
+-	/* Also save it in B's stackframe header for proper unwind */
+-	PPC_STL	r7, LRSAVE+SWITCH_FRAME_SIZE(r1)
+-	/* Save the read LR in pt_regs->link */
+-	PPC_STL	r0, _LINK(r1)
+ 
+ #ifdef CONFIG_PPC64
  	/* Save callee's TOC in the ABI compliant location */
- 	std	r2, STK_GOT(r1)
+@@ -99,13 +138,6 @@
  	LOAD_PACA_TOC()		/* get kernel TOC in r2 */
--	LOAD_REG_ADDR(r3, function_trace_op)
--	ld	r5,0(r3)
--#else
--	lis	r3,function_trace_op@ha
--	lwz	r5,function_trace_op@l(r3)
  #endif
  
- #ifdef CONFIG_LIVEPATCH_64
-@@ -177,20 +172,40 @@
- #endif
+-#ifdef CONFIG_LIVEPATCH_64
+-	mr	r14, r7		/* remember old NIP */
+-#endif
+-
+-	/* Calculate ip from nip-4 into r3 for call below */
+-	subi    r3, r7, MCOUNT_INSN_SIZE
+-
+ 	/* Put the original return address in r4 as parent_ip */
+ 	mr	r4, r0
+ 
+@@ -122,6 +154,13 @@
  .endm
  
--_GLOBAL(ftrace_regs_caller)
--	ftrace_regs_entry 1
--	/* ftrace_call(r3, r4, r5, r6) */
-+.macro ftrace_regs_func allregs
-+#ifdef CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS
-+	PPC_LL	r5, -SZL(r3)
-+	PPC_LL	r12, FTRACE_OPS_FUNC(r5)
-+	mtctr	r12
-+	bctrl
-+#else
-+#ifdef CONFIG_PPC64
-+	LOAD_REG_ADDR(r5, function_trace_op)
-+	ld	r5, 0(r5)
-+#else
-+	lis	r5, function_trace_op@ha
-+	lwz	r5, function_trace_op@l(r5)
+ .macro	ftrace_regs_exit allregs
++#ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
++	/* Check orig_gpr3 to detect ftrace_direct call */
++	PPC_LL	r7, ORIG_GPR3(r1)
++	PPC_LCMPI cr1, r7, 0
++	mtctr	r7
 +#endif
-+	.if \allregs == 1
- .globl ftrace_regs_call
- ftrace_regs_call:
-+	.else
-+.globl ftrace_call
-+ftrace_call:
-+	.endif
-+	/* ftrace_call(r3, r4, r5, r6) */
- 	bl	ftrace_stub
-+#endif
-+.endm
 +
-+_GLOBAL(ftrace_regs_caller)
-+	ftrace_regs_entry 1
-+	ftrace_regs_func 1
- 	ftrace_regs_exit 1
+ 	/* Load ctr with the possibly modified NIP */
+ 	PPC_LL	r3, _NIP(r1)
  
- _GLOBAL(ftrace_caller)
- 	ftrace_regs_entry 0
--	/* ftrace_call(r3, r4, r5, r6) */
--.globl ftrace_call
--ftrace_call:
--	bl	ftrace_stub
-+	ftrace_regs_func 0
- 	ftrace_regs_exit 0
+@@ -164,8 +203,12 @@
+         /* Based on the cmpd above, if the NIP was altered handle livepatch */
+ 	bne-	livepatch_handler
+ #endif
++
+ 	/* jump after _mcount site */
+ #ifdef CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY
++#ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
++	bnectr	cr1
++#endif
+ 	blr
+ #else
+ 	bctr
+@@ -227,6 +270,12 @@ ftrace_no_trace:
+ #endif
+ #endif
  
- _GLOBAL(ftrace_stub)
++#ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
++SYM_FUNC_START(ftrace_stub_direct_tramp)
++	blr
++SYM_FUNC_END(ftrace_stub_direct_tramp)
++#endif
++
+ #ifdef CONFIG_LIVEPATCH_64
+ 	/*
+ 	 * This function runs in the mcount context, between two functions. As
 -- 
 2.43.0
 
