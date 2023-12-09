@@ -1,51 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 940D680A9DB
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Dec 2023 17:54:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DEED80B0DC
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Dec 2023 01:11:04 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gKbjRSiL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qyp1eqJc;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Smy1D0Ygwz3dFr
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Dec 2023 03:54:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sn7hQ00RFz3dRP
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Dec 2023 11:11:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gKbjRSiL;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qyp1eqJc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=andi.shyti@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Smy0Q5rFMz2xPb
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Dec 2023 03:54:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sn7gX2zV6z3cDT
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Dec 2023 11:10:16 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id 9441DB82E67;
-	Fri,  8 Dec 2023 16:54:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9764C433C7;
-	Fri,  8 Dec 2023 16:54:09 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id ECD6DCE2A9E;
+	Sat,  9 Dec 2023 00:10:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C54C5C433C8;
+	Sat,  9 Dec 2023 00:10:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702054450;
-	bh=rP/BoOBw5Wi94QQViNnTX6vvAn+7yt+JtMx5Ri2ncHg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=gKbjRSiLzKZGNfUhMQYIhifZWczNaZ9Eq9Y/tEFab9uHQVOGKz6HA/NHsmKfb4+F0
-	 ziNTw7QEuFW3K1TVs+9ymfmioHfwlGaVZyDlztuDUlQkwOIqD8xt9R6GK+EOu/hedI
-	 ClP8X+Mn4Hd8nHmb2plwGYUzPBX1w3eEUBWE5PoZ2Ct4LJT1mvPAZzxmR6omMexi+E
-	 j4gojDtzEboOoouSbEhJR7yc53+v7J3Sw08YnRlXOQBURkjDHHNDs/VBLZP4dhEb1U
-	 lKlhHNJT1rGCTRI3HPGWVnHEu/ov/1ssZpmNGReWp8NGD9cHvl7T5aPoKtxFpPxbd9
-	 kRujdfw9HwrBA==
-Date: Fri, 8 Dec 2023 10:54:08 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: linux-pci@vger.kernel.org
-Subject: Re: [PATCH 0/3] PCI/AER: Clean up logging
-Message-ID: <20231208165408.GA796794@bhelgaas>
+	s=k20201202; t=1702080611;
+	bh=XwpafKSxSIaU9fO0Z1UPvQPkXRe7CXV3jWPAij1MXpw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qyp1eqJcUWRaLF+8m75gLOK//4mNJy/GuZHSvYCaXRgJz9esiNNrjvs+umzyX9dqU
+	 LxkG5R2NuGxY8iNhia+dC8pzM8O1iMzrpx79tD0UxIQSmmauB9VjAKNAQV7XQTgZX1
+	 mhvs54RCEGnSFYldR2F6PZij6IlDsx9fLXFaajWViQ2rSpv0VzOo6ZKH0Wg4WDQ2RN
+	 w+Fy8HE4TwXztb2YZLZnfteLXRI37sDiuiNCGp0m6XIttof0K2RaYcfj5ycn2QGGkY
+	 px1E/jOzxzhSMKWu22gsrHkYucocPl1lm1KsQ7utaP8cMCKEoZD7JCtESAvYEZx8DI
+	 LhxTREBtKbX3g==
+Date: Sat, 9 Dec 2023 01:10:04 +0100
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2] i2c: cpm: Remove linux,i2c-index conversion from be32
+Message-ID: <20231209001004.n6dcdjwf2dqjctap@zenone.zhora.eu>
+References: <460afa20784a445dff05b552ebb8c6a389d9de85.1701901105.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231206224231.732765-1-helgaas@kernel.org>
+In-Reply-To: <460afa20784a445dff05b552ebb8c6a389d9de85.1701901105.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,29 +58,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Robert Richter <rrichter@amd.com>, Terry Bowman <terry.bowman@amd.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-kernel@vger.kernel.org, Kai-Heng Feng <kai.heng.feng@canonical.com>, Oliver O'Halloran <oohall@gmail.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-i2c@vger.kernel.org, kernel test robot <lkp@intel.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[+cc Jonathan]
+Hi Christophe,
 
-On Wed, Dec 06, 2023 at 04:42:28PM -0600, Bjorn Helgaas wrote:
-> From: Bjorn Helgaas <bhelgaas@google.com>
+On Wed, Dec 06, 2023 at 11:24:03PM +0100, Christophe Leroy wrote:
+> sparse reports an error on some data that gets converted from be32.
 > 
-> Clean up some minor AER logging issues:
+> That's because that data is typed u32 instead of __be32.
 > 
->   - Log as "Correctable errors", not "Corrected errors"
+> The type is correct, the be32_to_cpu() conversion is not.
 > 
->   - Decode the Requester ID when we couldn't find detail error info
+> Remove the conversion.
 > 
-> Bjorn Helgaas (3):
->   PCI/AER: Use 'Correctable' and 'Uncorrectable' spec terms for errors
->   PCI/AER: Decode Requester ID when no error info found
->   PCI/AER: Use explicit register sizes for struct members
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202312042210.QL4DA8Av-lkp@intel.com/
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+> v2: Use u32 directly, remove be32_to_cpu().
+> ---
+>  drivers/i2c/busses/i2c-cpm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
->  drivers/pci/pcie/aer.c | 19 ++++++++++++-------
->  include/linux/aer.h    |  8 ++++----
->  2 files changed, 16 insertions(+), 11 deletions(-)
+> diff --git a/drivers/i2c/busses/i2c-cpm.c b/drivers/i2c/busses/i2c-cpm.c
+> index 9a664abf734d..771d60bc8d71 100644
+> --- a/drivers/i2c/busses/i2c-cpm.c
+> +++ b/drivers/i2c/busses/i2c-cpm.c
+> @@ -658,7 +658,7 @@ static int cpm_i2c_probe(struct platform_device *ofdev)
+>  	/* register new adapter to i2c module... */
+>  
+>  	data = of_get_property(ofdev->dev.of_node, "linux,i2c-index", &len);
+> -	cpm->adap.nr = (data && len == 4) ? be32_to_cpup(data) : -1;
+> +	cpm->adap.nr = (data && len == 4) ? *data : -1;
 
-Applied to pci/aer for v6.8.  Thanks, Jonathan, for your time in
-taking a look.
+thanks!
+
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+
+Andi
