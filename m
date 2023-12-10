@@ -1,49 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F9D380B83A
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Dec 2023 01:30:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6274380B892
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Dec 2023 04:40:08 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=SI5E4Xnr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=W5M9+psl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Snm4733p5z3cTF
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Dec 2023 11:30:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SnrH96VsYz3cXd
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Dec 2023 14:40:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=SI5E4Xnr;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=W5M9+psl;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org)
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Snm3H1fshz30h0
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Dec 2023 11:29:31 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1702168166;
-	bh=JSsA0xeMBTfbUG5iyWB2yjJpJSqD6ERcemGdGQRU9xs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=SI5E4XnriUeSgKGPopMp2U47vFshZT1/PlPsCoBQ5IhZZTiVugPenPVu98w7+vAZb
-	 EuSw2cRjA0mLTBDIr7hRoDl1+ltIDsWC52iN3e/8b7qjvtXKrVJd9KZfnu7Hm8T4NK
-	 pazCl9i10yG18eLat1tgUvwWF4kWxcLdoYpmoTUwSa5EWaZCj4x0Jbzm7SBA0P8AX3
-	 Is++hmbtc4polTkbS0Iq1X0awtk2ZNcet4y1PkjoVeiyKy1u3GHPIyFhhwzl02xz3K
-	 IyrCIXbqvGX/Gch+shgQOv7HZzrkr8LEUf41ANfDrVJCklZuI92x84iONsLEG4ZMso
-	 xADK7W/KzDnZw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Snm3B1YQxz4xCg;
-	Sun, 10 Dec 2023 11:29:26 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.7-4 tag
-Date: Sun, 10 Dec 2023 11:29:22 +1100
-Message-ID: <87sf4aew7x.fsf@mail.lhotse>
-MIME-Version: 1.0
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SnrGK2bc5z3bx0
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Dec 2023 14:39:21 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by ams.source.kernel.org (Postfix) with ESMTP id E366DB80818;
+	Sun, 10 Dec 2023 03:39:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5D852C433C8;
+	Sun, 10 Dec 2023 03:39:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702179553;
+	bh=wrRfiJWMsLbF8VsfJ8VHxgmbslN/LBSjb08315byVMw=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=W5M9+pslJeDXje9aa0egifk+eSuIurft14HF2S4jJwGEcH552uajiQf4lXT5DbbfR
+	 pUJD2oLEV2Fjpg2HEJUoiZ/JEpNzi1S1WEGsCVBFRXwWfEu+jc6nmJSANtr0ZyPQzA
+	 Mw2R1Sy6IllQLgqDK7LktKv/K0uEbOg/dr5wTZ34dRYnTtqq6J2G/+FHEgedUnpdJC
+	 5Gcwwx1fzFz/wmURGVefEP4sutTBd1OqinxOPMXN+hpX/GWLQa3wZy2Bo1FjM3cTEj
+	 LIayXXCjb7brgyHK4DY4EeCXHa/Z+iR1jAvdbDpzLkwRjy6teeJj0U14iFA0/vmbDT
+	 3hl3Dtial9Rng==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 46604C04DD9;
+	Sun, 10 Dec 2023 03:39:13 +0000 (UTC)
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.7-4 tag
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <87sf4aew7x.fsf@mail.lhotse>
+References: <87sf4aew7x.fsf@mail.lhotse>
+X-PR-Tracked-List-Id: Linux on PowerPC Developers Mail List <linuxppc-dev.lists.ozlabs.org>
+X-PR-Tracked-Message-Id: <87sf4aew7x.fsf@mail.lhotse>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.7-4
+X-PR-Tracked-Commit-Id: 4b3338aaa74d7d4ec5b6734dc298f0db94ec83d2
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: c527f5606aa545233a4d2c6d5c636ed82b8633ef
+Message-Id: <170217955328.29712.5294828346710720884.pr-tracker-bot@kernel.org>
+Date: Sun, 10 Dec 2023 03:39:13 +0000
+To: Michael Ellerman <mpe@ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,57 +65,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, naveen@kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, naveen@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+The pull request you sent on Sun, 10 Dec 2023 11:29:22 +1100:
 
-Hi Linus,
+> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.7-4
 
-Please pull some more powerpc fixes for 6.7:
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/c527f5606aa545233a4d2c6d5c636ed82b8633ef
 
-The following changes since commit dc158d23b33df9033bcc8e7117e8591dd2f9d125:
+Thank you!
 
-  KVM: PPC: Book3S HV: Fix KVM_RUN clobbering FP/VEC user registers (2023-11-29 22:24:21 +1100)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.7-4
-
-for you to fetch changes up to 4b3338aaa74d7d4ec5b6734dc298f0db94ec83d2:
-
-  powerpc/ftrace: Fix stack teardown in ftrace_no_trace (2023-12-05 14:14:12 +1100)
-
-- ------------------------------------------------------------------
-powerpc fixes for 6.7 #4
-
- - Fix stack teardown in ftrace_no_trace, seen as crashes doing CPU hotplug
-   while ftrace is active.
-
-Thanks to: Naveen N Rao
-
-- ------------------------------------------------------------------
-Naveen N Rao (1):
-      powerpc/ftrace: Fix stack teardown in ftrace_no_trace
-
-
- arch/powerpc/kernel/trace/ftrace_entry.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmV1BNYACgkQUevqPMjh
-pYAI2RAAhz0DW42CARKjsiQ/iyDVphkYwuXMMlX6DCSFPBPFZMPkI+wPzwbQDASg
-ZW9p3NfxGa68szbKKSqK7RSYjHUAVlff8S4QyqNlnJzEwmErz6dhKa27vgGmE+k/
-bgMTJO5qKFIt2WQ/xdvHlFUCzVxa7exxhLvR1fGkYnpENSgZrroq7pI0SuM92pnK
-UDpoUeadXNKtwrP4yowdYTrGd0ciMdV2lQDXjG25Z9neW3eX4cT/D6FZLckS61wt
-8eVmOlhoElmgLNnz7tsUCrfM02z3/nsU/dRx/jGYMIzlSIc7CNDSC6vVlIjGqoHu
-4a/jhTL7OHQcamGo38GsmWenetqvJe+IJj6y5wcykA8z9Y231sUAdbAKbzw73t2k
-Gb6wys82twpf8YbakGdzR0rM3aT5oE52ZRsMcoXDWFK7Q12H/euh/h32TmLISknK
-tbsIROx/fLB8j8b+6R7Y1+7Kh5bvhckyoJqqjkGzUZMSI8QufEGOwfAnHJhD058x
-HYSFJmqioCtwOk5gTe0HRQzTsHU8xQfN+HiLlOO4e7NhJAP3LBGVcx9e4Gbr9j/1
-emq4hjB7cO1kBJdjpM0sQt2M2dgAuNzcUimkLqewy/swcR9KQV2NyjnU+teAJK0+
-FEqMVVnGd24PdMTjr9fAzC6p0995vxFgWYzXJlwDVPY22AyAjfE=
-=VOa0
------END PGP SIGNATURE-----
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
