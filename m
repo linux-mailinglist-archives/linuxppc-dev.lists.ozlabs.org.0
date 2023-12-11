@@ -1,56 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3856080CBB8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Dec 2023 14:53:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB8B580D06C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Dec 2023 17:03:55 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AM2c+Xaz;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=i6oUa6Sz;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Spjs051h5z3cQ7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Dec 2023 00:53:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Spmkx32GGz3bnx
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Dec 2023 03:03:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AM2c+Xaz;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=i6oUa6Sz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+30fb44a5c54f4ddee986+7414+infradead.org+hch@bombadil.srs.infradead.org; receiver=lists.ozlabs.org)
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SpjqT0yytz30hF
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Dec 2023 00:52:37 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id EB3D06124F;
-	Mon, 11 Dec 2023 13:52:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2193DC433C8;
-	Mon, 11 Dec 2023 13:52:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702302752;
-	bh=L/m0usjSFyvIqmBIXS7qRmIZGNCj7oEsBBqzks8O54w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AM2c+Xaz/hdQiUkmmnAiI3Lq3i7e9lka8Dj2dg91IslTpKr3Uq+leavTz5GJgunHD
-	 HdiJWBljnx5JOB3j7MJnRihzcbY1Bsv8zAuIFk4ADXLq2jF3UDS9a3byHWRbjUOg/v
-	 kQwlNeKUQRXpqZkXjK3nP8RGoHpekwLwRj8AeFjH1IlTSuPUG47oZDw+vX6DyL0LSz
-	 +HrIaEGxnq33D48f+O9HV7OgoVq23XpIAkmHF1uRtFXuuolG/lh1q5oEKn+s6fKksH
-	 Oj+eYPcZBdf1JE8O58RP0PoQlnmrPQgKiEi3Sdv1L1VAVTCvhJazmard06qVzHy4Vp
-	 CZ6Zjf7+3OKAA==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 15/47] ASoC: fsl_xcvr: refine the requested phy clock frequency
-Date: Mon, 11 Dec 2023 08:50:16 -0500
-Message-ID: <20231211135147.380223-15-sashal@kernel.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231211135147.380223-1-sashal@kernel.org>
-References: <20231211135147.380223-1-sashal@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Spmk228G0z2xl6
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Dec 2023 03:03:02 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=; b=i6oUa6SzUya9Rmly7/Zxj3QlUW
+	c7C2ZU8RWDdRpdXSwTpmJv/zTz25YG2AUDH8WXLPLt2iAxWbrJeCAZtqsrMKsQONNkcGH5ra7YMRt
+	nRpjB+G24LbfISNXhpu1+8YMsphtwLnGFJrIchrf+j6pub21fjTFCeZeiBzJRFmRDYKYRY7/t8MOm
+	y+ZbBLIaD13VO7VSaB+QWOnvvhkuVaK8g7Zyie/hXf53i3mAGdYxyE+fvi6oZig7ffUGfTL6WB+Le
+	fQF2uR6kJa1ZkkN1MCu1CkQaPrWoB0x+jQx+Tq7F2eGUwUzhIi9rgCsMVqUnJtS/SvhM6J7ICEdk6
+	4b3Adhmg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
+	id 1rCijy-005cgY-0w;
+	Mon, 11 Dec 2023 16:02:42 +0000
+Date: Mon, 11 Dec 2023 08:02:42 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Samuel Holland <samuel.holland@sifive.com>
+Subject: Re: [RFC PATCH 01/12] arch: Add ARCH_HAS_KERNEL_FPU_SUPPORT
+Message-ID: <ZXcyolSnTj1sts33@infradead.org>
+References: <20231208055501.2916202-1-samuel.holland@sifive.com>
+ <20231208055501.2916202-2-samuel.holland@sifive.com>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.5
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231208055501.2916202-2-samuel.holland@sifive.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,57 +58,10 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com, Iuliana Prodan <iuliana.prodan@nxp.com>, linuxppc-dev@lists.ozlabs.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, lgirdwood@gmail.com, linux-sound@vger.kernel.org, perex@perex.cz, Mark Brown <broonie@kernel.org>, shengjiu.wang@gmail.com
+Cc: linux-arch@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, Christoph Hellwig <hch@infradead.org>, loongarch@lists.linux.dev, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+Looks good:
 
-[ Upstream commit 347ecf29a68cc8958fbcbd26ef410d07fe9d82f4 ]
-
-As the input phy clock frequency will divided by 2 by default
-on i.MX8MP with the implementation of clk-imx8mp-audiomix driver,
-So the requested frequency need to be updated.
-
-The relation of phy clock is:
-    sai_pll_ref_sel
-       sai_pll
-          sai_pll_bypass
-             sai_pll_out
-                sai_pll_out_div2
-                   earc_phy_cg
-
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
-Link: https://lore.kernel.org/r/1700702093-8008-1-git-send-email-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- sound/soc/fsl/fsl_xcvr.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
-index 77f8e2394bf93..f0fb33d719c25 100644
---- a/sound/soc/fsl/fsl_xcvr.c
-+++ b/sound/soc/fsl/fsl_xcvr.c
-@@ -358,7 +358,7 @@ static int fsl_xcvr_en_aud_pll(struct fsl_xcvr *xcvr, u32 freq)
- 	struct device *dev = &xcvr->pdev->dev;
- 	int ret;
- 
--	freq = xcvr->soc_data->spdif_only ? freq / 10 : freq;
-+	freq = xcvr->soc_data->spdif_only ? freq / 5 : freq;
- 	clk_disable_unprepare(xcvr->phy_clk);
- 	ret = clk_set_rate(xcvr->phy_clk, freq);
- 	if (ret < 0) {
-@@ -409,7 +409,7 @@ static int fsl_xcvr_prepare(struct snd_pcm_substream *substream,
- 	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
- 	u32 m_ctl = 0, v_ctl = 0;
- 	u32 r = substream->runtime->rate, ch = substream->runtime->channels;
--	u32 fout = 32 * r * ch * 10 * 2;
-+	u32 fout = 32 * r * ch * 10;
- 	int ret = 0;
- 
- 	switch (xcvr->mode) {
--- 
-2.42.0
-
+Reviewed-by: Christoph Hellwig <hch@lst.de>
