@@ -1,48 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A857180BF76
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Dec 2023 03:53:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E9A80BF7B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Dec 2023 03:54:49 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AdwrYR4/;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SpRBZ1SWDz3dJg
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Dec 2023 13:53:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SpRDR1ZQ3z3cXM
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Dec 2023 13:54:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=43.155.80.173; helo=bg5.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
-Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.155.80.173])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AdwrYR4/;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SpRB63K0jz2xWc
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Dec 2023 13:52:46 +1100 (AEDT)
-X-QQ-mid: bizesmtp64t1702263093txwc5r18
-Received: from HX09040029.powercore.com.cn ( [58.34.117.194])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 11 Dec 2023 10:51:30 +0800 (CST)
-X-QQ-SSF: 01400000000000402000000A0000000
-X-QQ-FEAT: l3A5VUsUnUlcsmarVtr1L2MyOzd1tHeCEh7Lba7DnyL7XM6lBjjwpWggANvlj
-	37vbA2o6jXMMSVExU4hOP923LNECzG2mlYCsrEbEER10kpMLd1ytTJRAIkQMo/DuMHtbIq4
-	y7fJQxL4aAsCJeZVhKdXRgPujuV96APRS6oMgV7j95XrdcP1Lt7xOBkczU19oMf2JlCRWUI
-	2i+ILVZ4gDfP7RyUPHDErBcMfhs59sqmk8UESE/ptvWETVMLOy3gUMLpsfja5FudKa+tMpM
-	j30u0h0S/JI0R4dHOKGgVStzn6hC5bwesVf243JoatAujmU6Xn1YuJTs5CsPSNSx+AusESV
-	Ns98AtgEeIccij1Lya9L3/jc15C/ZrmM9K8k7SpfwczAOSjEfCdLCpSjan8rfPvrkHQxBlY
-	pHhEmqIBhuU=
-X-QQ-GoodBg: 2
-X-BIZMAIL-ID: 9599634464750526515
-From: Luming Yu <luming.yu@shingroup.cn>
-To: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	christophe.leroy@csgroup.eu
-Subject: [PATCH 1/1] powerpc/debug: implement HAVE_USER_RETURN_NOTIFIER
-Date: Mon, 11 Dec 2023 10:50:54 +0800
-Message-ID: <475A60AEEAA99F6C+20231211025054.885-1-luming.yu@shingroup.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SpRCd1v89z2xdX
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Dec 2023 13:54:05 +1100 (AEDT)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3BAMRQBU010491;
+	Mon, 11 Dec 2023 02:53:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=WQ7POFi02CGk/BmO4m3J+1ZTOvt6YbTFqqsSFCaiBRw=;
+ b=AdwrYR4/KY2Mp5M9H735DmhreD7h8QrWx4kHFx8D5IVEIpevU2fqshqv4ann4lO0LnuQ
+ FD0iDIVqCCjV03ixyG3OrJAgjwH5GF/m5AOLeiA+NU+QuRZo4JNdGNINilN+72rm89Po
+ WPgHJM2RI2L1VlbF9JzuzlOkQQreJY4IAr/qDYQPJHL8MZu3JNYInAYKOqDB08KVv6p4
+ fmtobNgxPG5ZzqbFpjLvuHJxpmpSo9dY/C8wIkbcCqFH9ZBgwthZBfScmDY+Gv9zGstp
+ 8DensijOfOku8ynd3VgqA+x5IkmZUdm8Hikq6BO0pr8cGWFdlywCWUyeuKqWtLgqzhBS mA== 
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uvtck4jqp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Dec 2023 02:53:53 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3BB2feFK004390;
+	Mon, 11 Dec 2023 02:53:52 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3uw4sjx6wd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Dec 2023 02:53:52 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3BB2roJJ31392090
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 11 Dec 2023 02:53:50 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5217320040;
+	Mon, 11 Dec 2023 02:53:50 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7B1D62004B;
+	Mon, 11 Dec 2023 02:53:49 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 11 Dec 2023 02:53:49 +0000 (GMT)
+Received: from [9.177.74.247] (unknown [9.177.74.247])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 9768C6015D;
+	Mon, 11 Dec 2023 13:53:44 +1100 (AEDT)
+Message-ID: <8ff974c9-994d-7aae-39cb-dfe69646ce9d@linux.ibm.com>
+Date: Mon, 11 Dec 2023 13:53:40 +1100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v9 4/7] powerpc: mm: Default p{m,u}d_pte implementations
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <20231130025404.37179-2-rmclure@linux.ibm.com>
+ <20231130025404.37179-7-rmclure@linux.ibm.com>
+ <5305d752-5161-41ea-9832-c629dc93dc3b@csgroup.eu>
+Content-Language: en-US, tr-TR
+From: Rohan McLure <rmclure@linux.ibm.com>
+In-Reply-To: <5305d752-5161-41ea-9832-c629dc93dc3b@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz5a-1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 2mSprlsbzpYEpYs7daA8bFK0MfYF5vrg
+X-Proofpoint-GUID: 2mSprlsbzpYEpYs7daA8bFK0MfYF5vrg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-10_16,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
+ clxscore=1015 suspectscore=0 mlxscore=0 lowpriorityscore=0 impostorscore=0
+ phishscore=0 priorityscore=1501 mlxlogscore=959 bulkscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2312110023
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,94 +100,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: shenghui.qu@shingroup.cn, Luming Yu <luming.yu@shingroup.cn>, dawei.li@shingroup.cn, ke.zhao@shingroup.cn, luming.yu@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The support for user return notifier infrastructure
-is hooked into powerpc architecture.
----
- arch/powerpc/Kconfig                    |  1 +
- arch/powerpc/include/asm/entry-common.h | 16 ++++++++++++++++
- arch/powerpc/include/asm/thread_info.h  |  2 ++
- arch/powerpc/kernel/process.c           |  2 ++
- 4 files changed, 21 insertions(+)
- create mode 100644 arch/powerpc/include/asm/entry-common.h
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index c10229c0243c..b968068cc04a 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -277,6 +277,7 @@ config PPC
- 	select HAVE_STACKPROTECTOR		if PPC64 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r13)
- 	select HAVE_STATIC_CALL			if PPC32
- 	select HAVE_SYSCALL_TRACEPOINTS
-+	select HAVE_USER_RETURN_NOTIFIER
- 	select HAVE_VIRT_CPU_ACCOUNTING
- 	select HAVE_VIRT_CPU_ACCOUNTING_GEN
- 	select HOTPLUG_SMT			if HOTPLUG_CPU
-diff --git a/arch/powerpc/include/asm/entry-common.h b/arch/powerpc/include/asm/entry-common.h
-new file mode 100644
-index 000000000000..51f1eb767696
---- /dev/null
-+++ b/arch/powerpc/include/asm/entry-common.h
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef ARCH_POWERPC_ENTRY_COMMON_H
-+#define ARCH_POWERPC_ENTRY_COMMON_H
-+
-+#include <linux/user-return-notifier.h>
-+
-+static inline void arch_exit_to_user_mode_prepare(struct pt_regs *regs,
-+						  unsigned long ti_work)
-+{
-+	if (ti_work & _TIF_USER_RETURN_NOTIFY)
-+		fire_user_return_notifiers();
-+}
-+
-+#define arch_exit_to_user_mode_prepare arch_exit_to_user_mode_prepare
-+
-+#endif
-diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
-index bf5dde1a4114..47e226032f9c 100644
---- a/arch/powerpc/include/asm/thread_info.h
-+++ b/arch/powerpc/include/asm/thread_info.h
-@@ -117,6 +117,7 @@ void arch_setup_new_exec(void);
- #endif
- #define TIF_POLLING_NRFLAG	19	/* true if poll_idle() is polling TIF_NEED_RESCHED */
- #define TIF_32BIT		20	/* 32 bit binary */
-+#define TIF_USER_RETURN_NOTIFY	21	/* notify kernel of userspace return */
- 
- /* as above, but as bit values */
- #define _TIF_SYSCALL_TRACE	(1<<TIF_SYSCALL_TRACE)
-@@ -125,6 +126,7 @@ void arch_setup_new_exec(void);
- #define _TIF_NOTIFY_SIGNAL	(1<<TIF_NOTIFY_SIGNAL)
- #define _TIF_POLLING_NRFLAG	(1<<TIF_POLLING_NRFLAG)
- #define _TIF_32BIT		(1<<TIF_32BIT)
-+#define _TIF_USER_RETURN_NOTIFY	(1<<TIF_USER_RETURN_NOTIFY)
- #define _TIF_RESTORE_TM		(1<<TIF_RESTORE_TM)
- #define _TIF_PATCH_PENDING	(1<<TIF_PATCH_PENDING)
- #define _TIF_SYSCALL_AUDIT	(1<<TIF_SYSCALL_AUDIT)
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 392404688cec..70a9ea949798 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -38,6 +38,7 @@
- #include <linux/uaccess.h>
- #include <linux/pkeys.h>
- #include <linux/seq_buf.h>
-+#include <linux/user-return-notifier.h>
- 
- #include <asm/interrupt.h>
- #include <asm/io.h>
-@@ -1386,6 +1387,7 @@ struct task_struct *__switch_to(struct task_struct *prev,
- 	if (current->thread.regs)
- 		restore_math(current->thread.regs);
- #endif /* CONFIG_PPC_BOOK3S_64 */
-+	propagate_user_return_notify(prev, new);
- 
- 	return last;
- }
--- 
-2.42.0.windows.2
+On 11/30/23 18:35, Christophe Leroy wrote:
+>
+> Le 30/11/2023 à 03:53, Rohan McLure a écrit :
+>> For 32-bit systems which have no usecases for p{m,u}d_pte() prior to
+>> page table checking, implement default stubs.
+> Is that the best solution ?
+>
+> If I understand correctly, it is only needed for 
+> pmd_user_accessible_page(). Why not provide a stub 
+> pmd_user_accessible_page() that returns false on those architectures ?
+Yep, this seems reasonable to me.
+>
+> Same for pud_user_accessible_page()
+>
+> But if you decide to keep it I think that:
+> - It should be squashed with following patch to make it clear it's 
+> needed for that only.
+> - Remove the WARN_ONCE().
+I might however move those WARN_ONCE() calls to the default, false-returning
+p{m,u}d_user_accessible_page() implementations, to be consistent with
+pud_pfn().
+> - Only have a special one for books/64 and a generic only common to he 3 
+> others.
+>
+>> Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
+>> ---
+>> v9: New patch
+>> ---
+>>   arch/powerpc/include/asm/book3s/64/pgtable.h |  3 +++
+>>   arch/powerpc/include/asm/nohash/64/pgtable.h |  2 ++
+>>   arch/powerpc/include/asm/pgtable.h           | 17 +++++++++++++++++
+>>   3 files changed, 22 insertions(+)
+>>
+>> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+>> index 8fdb7667c509..2454174b26cb 100644
+>> --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
+>> +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+>> @@ -887,6 +887,8 @@ static inline int pud_present(pud_t pud)
+>>   
+>>   extern struct page *pud_page(pud_t pud);
+>>   extern struct page *pmd_page(pmd_t pmd);
+>> +
+>> +#define pud_pte pud_pte
+>>   static inline pte_t pud_pte(pud_t pud)
+>>   {
+>>   	return __pte_raw(pud_raw(pud));
+>> @@ -1043,6 +1045,7 @@ static inline void __kernel_map_pages(struct page *page, int numpages, int enabl
+>>   }
+>>   #endif
+>>   
+>> +#define pmd_pte pmd_pte
+>>   static inline pte_t pmd_pte(pmd_t pmd)
+>>   {
+>>   	return __pte_raw(pmd_raw(pmd));
+>> diff --git a/arch/powerpc/include/asm/nohash/64/pgtable.h b/arch/powerpc/include/asm/nohash/64/pgtable.h
+>> index f58cbebde26e..09a34fe196ae 100644
+>> --- a/arch/powerpc/include/asm/nohash/64/pgtable.h
+>> +++ b/arch/powerpc/include/asm/nohash/64/pgtable.h
+>> @@ -93,6 +93,7 @@ static inline void pmd_clear(pmd_t *pmdp)
+>>   	*pmdp = __pmd(0);
+>>   }
+>>   
+>> +#define pmd_pte pmd_pte
+>>   static inline pte_t pmd_pte(pmd_t pmd)
+>>   {
+>>   	return __pte(pmd_val(pmd));
+>> @@ -134,6 +135,7 @@ static inline pmd_t *pud_pgtable(pud_t pud)
+>>   
+>>   extern struct page *pud_page(pud_t pud);
+>>   
+>> +#define pud_pte pud_pte
+>>   static inline pte_t pud_pte(pud_t pud)
+>>   {
+>>   	return __pte(pud_val(pud));
+>> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
+>> index 9c0f2151f08f..d7d0f47760d3 100644
+>> --- a/arch/powerpc/include/asm/pgtable.h
+>> +++ b/arch/powerpc/include/asm/pgtable.h
+>> @@ -233,6 +233,23 @@ static inline int pud_pfn(pud_t pud)
+>>   }
+>>   #endif
+>>   
+>> +#ifndef pmd_pte
+>> +#define pmd_pte pmd_pte
+>> +static inline pte_t pmd_pte(pmd_t pmd)
+>> +{
+>> +	WARN_ONCE(1, "pmd: platform does not use pmd entries directly");
+>> +	return __pte(pmd_val(pmd));
+>> +}
+>> +#endif
+>> +
+>> +#ifndef pud_pte
+>> +#define pud_pte pud_pte
+>> +static inline pte_t pud_pte(pud_t pud)
+>> +{
+>> +	WARN_ONCE(1, "pud: platform does not use pud entries directly");
+>> +	return __pte(pud_val(pud));
+>> +}
+>> +#endif
+>>   #endif /* __ASSEMBLY__ */
+>>   
+>>   #endif /* _ASM_POWERPC_PGTABLE_H */
 
