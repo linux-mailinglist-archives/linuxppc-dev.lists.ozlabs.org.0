@@ -2,128 +2,103 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F7F480C16A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Dec 2023 07:35:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAB5A80C35B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Dec 2023 09:35:48 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=QaSNbPnh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iNcQCLOm;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SpX6k61L7z3w0D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Dec 2023 17:35:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SpZnt1Cyzz3cXm
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Dec 2023 19:35:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=QaSNbPnh;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iNcQCLOm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e18::60c; helo=fra01-pr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-pr2fra01on2060c.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e18::60c])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SpZkN6bC0z30h8
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Dec 2023 19:32:44 +1100 (AEDT)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4SpZkN67RNz4x2V
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Dec 2023 19:32:44 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4SpZkN641lz4x2W; Mon, 11 Dec 2023 19:32:44 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iNcQCLOm;
+	dkim-atps=neutral
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SpX5t4f0sz3cVk
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Dec 2023 17:34:24 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZJ142sPZWJ/LKFOE8Vn9La102RyEeqbw6yqkDgdSdMyvnGrBX2BFpz9kmxkAddddb72K29jY+Lamzbby18wYTt9XNE30YkCrcN77OfeDzceCAgCK7KnXoyE7Abo9aRZmWp/mOMLc0KxXHu0d7n0TEoFClLahjtXBVH0qrzDdZSrAInkm8MkUnHxp9x0gvkstlmYEc0MHLaNdWKgEQKHIJwFgGsK8+8ct85nVSDZfUkjGRjL9ltnJTRhBt/yqeEgnjysk1co215pJrtCF7MIDhorTWc4xH5L8U1pNqvH0len2DBuxYOsV4zq4l+GfjmrJ6+Z1jZJsNjAJH5KGX/EsMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xOrw8kINkYyMP7DMYlVkicryW9Bij429jJT5LCwLg6Y=;
- b=f0qel9eLShZC63VbO3tV6/DLsneyfAL15gI305f8zuRlXn5yWJBweRvIruJr6BpZfz/M8APn6WQWIZuc4YNGmM+DEuN8oCMlQWFMhAeLUVJh7Fo/IMoKnhT067nCI/GdmkKyG/3/YyvXYQlpKCRxepFzAn218IwRC3qLkx10glpv7/zZoC5TbzADB3P/l3dM7CjkojRg2q4SlJp04Bi9cQaXVit5NTFizYqAlwTU7mi5lcVa+mvesxN/rOXcnG21OuB0XByBJs+/ok4iO8PtLp/LENP6ctNIueu4qMsaasEeIfNcmNk5ZHD1xwlW5W5wyqhlctSzN2h/wtzqcMid3Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xOrw8kINkYyMP7DMYlVkicryW9Bij429jJT5LCwLg6Y=;
- b=QaSNbPnhk18QgvJ1koVNTRupBz/Hb1Y4s1o/01lYJg+E51pMx5WjY6wEcxiZQMcAVjxv+Ep0tzEoYZluC/zfjPCgByrk0picFzvuXHOWy8/HT9AgAWhVqyI69M85AVkmflfc7whsmNax/rwSyQPn+rC4qiUcqM/Kd8hKg+t2EHSmM7lE9L6Kapg5pVNwfvholTHq9cCGNayAUnfZN8RgQRdo9+vYaAaYCPCgPRxvdcfhPk3Aoo3yUs0VgMqaQ+Sh62VrmlrG5n8JvgvbouOO48g2GQHHhCyqmUq0R9/wVZNEPgxqz7az4Rky3+yq/wi4UYIqMTXPkMVvY/zhD4G+wg==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR0P264MB1660.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:166::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.32; Mon, 11 Dec
- 2023 06:34:04 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::f788:32b4:1c5e:f264]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::f788:32b4:1c5e:f264%6]) with mapi id 15.20.7068.031; Mon, 11 Dec 2023
- 06:34:04 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Luming Yu <luming.yu@shingroup.cn>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
-	"npiggin@gmail.com" <npiggin@gmail.com>
-Subject: Re: [PATCH 1/1] powerpc/debug: implement HAVE_USER_RETURN_NOTIFIER
-Thread-Topic: [PATCH 1/1] powerpc/debug: implement HAVE_USER_RETURN_NOTIFIER
-Thread-Index: AQHaK9z4gCHAjpPmSk2g3ksWyP5ghrCjoFaA
-Date: Mon, 11 Dec 2023 06:34:04 +0000
-Message-ID: <894d6819-c8d8-4929-81c1-323724f62b80@csgroup.eu>
-References: <475A60AEEAA99F6C+20231211025054.885-1-luming.yu@shingroup.cn>
-In-Reply-To: <475A60AEEAA99F6C+20231211025054.885-1-luming.yu@shingroup.cn>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla Thunderbird
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR0P264MB1660:EE_
-x-ms-office365-filtering-correlation-id: b9090050-652b-422c-1b73-08dbfa132b4d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  Ct7lKgAo/IptsJn/1LS1zTL2tUgXoFZ8OzXYW7D+TYHiXTJTq1vltqQ5qH4AbrZkMIFKWTIfW8IpgmgSG51rJFspIIwkpWupy2An/MyCDQnc2xl28Og7ZKUhB5NqhsWeY8WU0xBKsBrC/bONEs5y4O1AaYKbLOxCW6uaRpUg3HhqXIeTXNLvyEsg5DjiqtByRpWU6JSQYHM6+FmEsCnoRh2Zg1xPImZnQ1FAtvNCdm7DewOPkchc+oznwAPhQoZNc+TkaMq50IVB3F4gdO3C5rWKwiyYPE5fC0sA5AahVnj/1EfAYEhrZhq+PSxXbsuipo46k+C8Ye3M6hcuT/+gqpmkb0kVfGf52sao52BMZdWN1pzyzrqMPeJpZi+L0+EaxXxvzPcrt66i3DTejAKZMfjXYtDrCpun6s8JrMG1in/++a3/ZD7aoQk/qgDPTnLe+LAyr/CjjFY2ksO6LbPahvTaTI60xD6D5TO9tnoifgIft6hzevSdxD0MsBM8UYhVNm2zEfUt6luMlh/B90GWMlmD05uciqwblw0XPRU6kbjcN302ogUJxhK687R0h+/Ho4gFG4bnbsWNhtk6Wd/ivY9SInuuWTBNTTfN/+BrfjBZlej6fLIM5E0nuOHIg/Ssfe5jKCQrbzXUuNWgrYyf+CTS3SSaQirfs349j5+IYRCgeIm7GkBzPWBQc3hxkV9N
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(396003)(39850400004)(136003)(376002)(346002)(366004)(230922051799003)(64100799003)(186009)(451199024)(1800799012)(6512007)(26005)(6486002)(2616005)(478600001)(966005)(71200400001)(6506007)(83380400001)(66574015)(44832011)(5660300002)(41300700001)(2906002)(76116006)(91956017)(54906003)(66446008)(64756008)(66476007)(66946007)(110136005)(316002)(66556008)(8936002)(8676002)(4326008)(38070700009)(38100700002)(86362001)(31696002)(122000001)(36756003)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?WFlTOWF1elR2SUF0UFVTeVFldUFDSmRCb1lSZWhwRUtnWG9vRWFubTFVZUxS?=
- =?utf-8?B?bnZPVDRSeFBXTnZzeVJQWUY2emZRV042UHVnQW9oUVBLUnZMVGRxUWsyU1lp?=
- =?utf-8?B?d21hUHJSVTZEaTVhamswVUNHZVVmdTFVbno3eGFUVHFFUmsvZnliQ0drM0F1?=
- =?utf-8?B?Zm5BWXhId0hiSDRmV3B3WHp5NEYxMllhR1NmMlErVFBOSHdMUU5QSFhkWTBF?=
- =?utf-8?B?c3pVKzRxUktIckIzYnFHQ1gvc0VSNmZYKzVDUC9zUDVjZEhkNVFvZGNTcFQv?=
- =?utf-8?B?RG9KVGVBVzZOaGJaRzBMMG91a0NaRGFXZERlSEh6UlR1N1NaUTFSYUZqSTFL?=
- =?utf-8?B?ZHBuc01nazc4cEJlV0NLT3NoUFh1OVVuanVhRXJBbzIyTGVJTys0WVBURGNO?=
- =?utf-8?B?RngxRkh4dllsT0QwTmpyazBHRWUrTUdxQ2dNbkxNZldUN0hRTFIxcU1CY2Zs?=
- =?utf-8?B?aDZad0VaYmZpY05ISnBNL3ZGalFScE55ZCtGMWZCeC9pbUlyZFI2YXpnS0JQ?=
- =?utf-8?B?MitiZC9GVWtrWk5IalNPR3NTdExCanhQWnhVSWdkY1dsT0xtRnhOVWIxaUFB?=
- =?utf-8?B?UmkrbmdkQis3V0ZUd2tDT3FuNHZwZHRBblJXRXgySFMveWR4TmlDYmxJQVMv?=
- =?utf-8?B?WlcyU2lWS0FsWmdOQ3IvaCtiNjUzMXVQSGUrbjBSUzVraDNkU3ZVMkNScUJa?=
- =?utf-8?B?RXlOeWpjSEVjTTEzVnZNUnZid3JaVFdFMmdWd2dGUVM1NXdPOSsxaVJQZlhT?=
- =?utf-8?B?Z0xsQ05PSVRGNEZ2Uit2SCtvS1Q1enlaNnRpY09MR3NaL3RBRmFJd05VNU5L?=
- =?utf-8?B?VW9ZNndrbVc4NzJFblo2MGNYS0ZrblNadVJvd09OMnRsWWpMV29FMzB0MEs3?=
- =?utf-8?B?SDZBSXVqOHU1ZW1rUEpjZE5ZNGthQ0s0K21aQXkxOFB4WE9LQmo4ZzZCY2RR?=
- =?utf-8?B?MjF5THdMZlp6Vnp6UUp5cjQ2SHo0Ui9VQ1htSEc0a3VwMUllamZrdkxvdk42?=
- =?utf-8?B?bk1GVnpuTW51Uk54TkF0d05VWGprTXMraWdNUFlQUkc3a1BmbmcvTG1nYTJZ?=
- =?utf-8?B?bzRqSkxNTFNPU3FKMW1BT2NZYmR1ODNLc3NsSEFCSm1UQzBUTlh2YlYvdGNr?=
- =?utf-8?B?TjR2c25GamZlc1hDY3d0QmsxcGE1NWYrTG5jNVJMRDNaWDNlNDhFNjlRYUM4?=
- =?utf-8?B?TCtRSmtvcFZpWUcyU040REtpK253ZnQ5T0ZCUWVnZjFNYWpqTEt3Mm1GS0pl?=
- =?utf-8?B?d3JDYU9EVEtXUmRDbXpWYUxYejNFL0UwMXBxb2tLYkN6N0FybWtjVkxLK0hJ?=
- =?utf-8?B?QVFzM285UWpIUXJkS2FGdnd5Nk5wMk90NGVYL2R0ZzU1cEdYRVFzZDlFVy9U?=
- =?utf-8?B?bnpzdTRtaUk2SWdKMVRJbHdidDFkbXU2SWV0ZG96cUtVTWUwdGlSNjFoQ3VX?=
- =?utf-8?B?NXYxZ0dScjR0UzVjS1dIa1dEL1BxTHg1SlhQMXBLLy8zMjJvSDMrSEoyc2x4?=
- =?utf-8?B?SWFpWVJ5LzMyekloVGpHa3grd2FWQVV0cGJweFRqNlllemNRaTlkRjRTazZw?=
- =?utf-8?B?NVdVNGNOUWhXbHl0ZCt1WGhROHB3OTRJdHpmZnhQd3krVW12QWdEbm0xeW9u?=
- =?utf-8?B?bDl6ZDlmOVFnOCs3V2NXWWg3OHlmUkhPU2h5ZGd1WnpxMEd1aFo1WmFkdTkz?=
- =?utf-8?B?Y1dyWm5vR3Z3dHNuQ2NYYXMydkhvQXh5YjZESDVWQmZNNkFTMmdZWGZ4b05R?=
- =?utf-8?B?dSt4c0xGaVJGL2NpY3UySHpLKzZxTEN4M0thZllQM2FGTmtEdmhIQWo3TGtB?=
- =?utf-8?B?cXBnNDZWcGNMOXJTZC8zbUZmbTlnenBTeEdoNCtXREhiQjZkdVRHcElHbkVL?=
- =?utf-8?B?V2FjUjl1NGxQcG1MbGRjdDZnS2ovOG9SSU1IRVlnc3Y5Nloxd3RZSHVZTUZV?=
- =?utf-8?B?VGRpNVEvR1V4QTZVaTdUMEhTN0lRdEpia3JMUDM0cnNqaXArb0l1UnhRUGUv?=
- =?utf-8?B?aGZMUlNjVzhPaU12UTg0SEpBZGNka2RMV1BvM1hqSS85cllBd3NpcmFraTFQ?=
- =?utf-8?B?Q1ZUN2NXZEUyYnBkWEVlVllOZ3dQcHh5RWJRVXVkQS81UHJxeDNxUUNxb3gr?=
- =?utf-8?Q?BMdhV7Py5Vf1xz+F7h7I26ttE?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <18CD83A3C7A8F849A03434BD306A590D@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4SpZkN3l5mz4x2V
+	for <linuxppc-dev@ozlabs.org>; Mon, 11 Dec 2023 19:32:44 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3BB8LOYM010595;
+	Mon, 11 Dec 2023 08:32:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=9aS92prpDDW3MDLFbkAEaNOcU+LxXEhM6zI2Q2pz5iQ=;
+ b=iNcQCLOmSIheyUYoLhLoz7GS8gi2JVXZazflP5c6i4cW602ExeQWn0IGVR5aPBW/3mhm
+ sD2rSDjDI4W90jI6YRG/bDbZGgJdAkbkkSWdJnKnBu+aHo5QMjseZd4BxpywrxVv7w+R
+ gIM0Um3mLbzPH6vGC7+V8ySU8D2qVjag/SPoG08Pb7+Yv4nbNa6xXB3RgMWqpwpMETu/
+ uyHxQ73/D5qXWGGeEI1lydOMo32d1xF+xtV9JAqr/BnSeICqgL6oPFjWlOHo3RMtmTwZ
+ 7OxBNUKLNUVEBFQ4rn9Kv1KBihcyRA+CdeFwt7+nWib5EdkXLy0DkbppB/zTpfMeCAhV WA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uvw10hpdr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Dec 2023 08:32:24 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3BB8LXJY011551;
+	Mon, 11 Dec 2023 08:32:22 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uvw10hnu4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Dec 2023 08:32:22 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3BB65Mvl004390;
+	Mon, 11 Dec 2023 08:31:15 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3uw4sjyqnf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Dec 2023 08:31:15 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3BB8VCo925952884
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 11 Dec 2023 08:31:12 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9D85620043;
+	Mon, 11 Dec 2023 08:31:12 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0B61D20040;
+	Mon, 11 Dec 2023 08:31:00 +0000 (GMT)
+Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.c4p-in.ibmmobiledemo.com (unknown [9.177.92.36])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 11 Dec 2023 08:30:59 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH v14 0/6] powerpc/crash: Kernel handling of CPU and memory hotplug
+Date: Mon, 11 Dec 2023 14:00:50 +0530
+Message-ID: <20231211083056.340404-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: QxvVAu_ePZjAMJ6aiHJRBZe4vCJgZ-z-
+X-Proofpoint-ORIG-GUID: GHpFtAdjGpSEzN8b415kIGBWGDk5aGz4
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: b9090050-652b-422c-1b73-08dbfa132b4d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Dec 2023 06:34:04.0708
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: nU/e+/wWk4/Eqg/csfJAuRWNVJBH3f2jMetT2eHPXCqH69BZHuA2LBYFc6NmVB00YmYbHIuqKtLzVMBDsZ63uEtQPfGUChj98e+yJOaZiFs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB1660
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-11_02,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ spamscore=0 priorityscore=1501 impostorscore=0 mlxscore=0 suspectscore=0
+ malwarescore=0 bulkscore=0 mlxlogscore=999 clxscore=1015 adultscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2312110071
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -135,82 +110,206 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "shenghui.qu@shingroup.cn" <shenghui.qu@shingroup.cn>, "dawei.li@shingroup.cn" <dawei.li@shingroup.cn>, "ke.zhao@shingroup.cn" <ke.zhao@shingroup.cn>, "luming.yu@gmail.com" <luming.yu@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, Mimi Zohar <zohar@linux.ibm.com>, Eric DeVolder <eric.devolder@oracle.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Valentin Schneider <vschneid@redhat.com>, Baoquan He <bhe@redhat.com>, x86@kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Laurent Dufour <laurent.dufour@fr.ibm.com>, Dave Young <dyoung@redhat.com>, Vivek Goyal <vgoyal@redhat.com>, Naveen N Rao <naveen@kernel.org>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, Hari Bathini <hbathini@linux.ibm.com>, Oscar Salvador <osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, kexec@lists.infradead.org, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>, Akhil Raj <lf32.dev@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDExLzEyLzIwMjMgw6AgMDM6NTAsIEx1bWluZyBZdSBhIMOpY3JpdMKgOg0KPiBbVm91
-cyBuZSByZWNldmV6IHBhcyBzb3V2ZW50IGRlIGNvdXJyaWVycyBkZSBsdW1pbmcueXVAc2hpbmdy
-b3VwLmNuLiBEw6ljb3V2cmV6IHBvdXJxdW9pIGNlY2kgZXN0IGltcG9ydGFudCDDoCBodHRwczov
-L2FrYS5tcy9MZWFybkFib3V0U2VuZGVySWRlbnRpZmljYXRpb24gXQ0KPiANCj4gVGhlIHN1cHBv
-cnQgZm9yIHVzZXIgcmV0dXJuIG5vdGlmaWVyIGluZnJhc3RydWN0dXJlDQo+IGlzIGhvb2tlZCBp
-bnRvIHBvd2VycGMgYXJjaGl0ZWN0dXJlLg0KDQoiVGhlIHN1cHBvcnQgLi4uIGlzIGhvb2tlZCIu
-IFNvIHdoYXQgPyBJdCdzIGxpa2Ugc2F5aW5nICJUaGUgc2t5IGlzIA0KYmx1ZSIuIE9rLCBhbmQg
-dGhlbiA/IFdoYXQncyB0aGUgbGluayBiZXR3ZWVuIHRoYXQgc3RhdGVtZW50IGFuZCB0aGUgcGF0
-Y2ggPw0KDQpJIGRvbid0IHVuZGVyc3RhbmQgd2hhdCB5b3UgbWVhbi4gUGxlYXNlIHByb3ZpZGUg
-bW9yZSBkZXRhaWxzLCB0ZWxsIHdoYXQgDQp0aGlzIHBhdGNoIGRvZXMgYW5kIGhvdy4NCg0KQ2hy
-aXN0b3BoZQ0KDQoNCj4gLS0tDQo+ICAgYXJjaC9wb3dlcnBjL0tjb25maWcgICAgICAgICAgICAg
-ICAgICAgIHwgIDEgKw0KPiAgIGFyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9lbnRyeS1jb21tb24u
-aCB8IDE2ICsrKysrKysrKysrKysrKysNCj4gICBhcmNoL3Bvd2VycGMvaW5jbHVkZS9hc20vdGhy
-ZWFkX2luZm8uaCAgfCAgMiArKw0KPiAgIGFyY2gvcG93ZXJwYy9rZXJuZWwvcHJvY2Vzcy5jICAg
-ICAgICAgICB8ICAyICsrDQo+ICAgNCBmaWxlcyBjaGFuZ2VkLCAyMSBpbnNlcnRpb25zKCspDQo+
-ICAgY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9lbnRyeS1jb21t
-b24uaA0KPiANCj4gZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJwYy9LY29uZmlnIGIvYXJjaC9wb3dl
-cnBjL0tjb25maWcNCj4gaW5kZXggYzEwMjI5YzAyNDNjLi5iOTY4MDY4Y2MwNGEgMTAwNjQ0DQo+
-IC0tLSBhL2FyY2gvcG93ZXJwYy9LY29uZmlnDQo+ICsrKyBiL2FyY2gvcG93ZXJwYy9LY29uZmln
-DQo+IEBAIC0yNzcsNiArMjc3LDcgQEAgY29uZmlnIFBQQw0KPiAgICAgICAgICBzZWxlY3QgSEFW
-RV9TVEFDS1BST1RFQ1RPUiAgICAgICAgICAgICAgaWYgUFBDNjQgJiYgJChjYy1vcHRpb24sLW1z
-dGFjay1wcm90ZWN0b3ItZ3VhcmQ9dGxzIC1tc3RhY2stcHJvdGVjdG9yLWd1YXJkLXJlZz1yMTMp
-DQo+ICAgICAgICAgIHNlbGVjdCBIQVZFX1NUQVRJQ19DQUxMICAgICAgICAgICAgICAgICBpZiBQ
-UEMzMg0KPiAgICAgICAgICBzZWxlY3QgSEFWRV9TWVNDQUxMX1RSQUNFUE9JTlRTDQo+ICsgICAg
-ICAgc2VsZWN0IEhBVkVfVVNFUl9SRVRVUk5fTk9USUZJRVINCj4gICAgICAgICAgc2VsZWN0IEhB
-VkVfVklSVF9DUFVfQUNDT1VOVElORw0KPiAgICAgICAgICBzZWxlY3QgSEFWRV9WSVJUX0NQVV9B
-Q0NPVU5USU5HX0dFTg0KPiAgICAgICAgICBzZWxlY3QgSE9UUExVR19TTVQgICAgICAgICAgICAg
-ICAgICAgICAgaWYgSE9UUExVR19DUFUNCj4gZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJwYy9pbmNs
-dWRlL2FzbS9lbnRyeS1jb21tb24uaCBiL2FyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9lbnRyeS1j
-b21tb24uaA0KPiBuZXcgZmlsZSBtb2RlIDEwMDY0NA0KPiBpbmRleCAwMDAwMDAwMDAwMDAuLjUx
-ZjFlYjc2NzY5Ng0KPiAtLS0gL2Rldi9udWxsDQo+ICsrKyBiL2FyY2gvcG93ZXJwYy9pbmNsdWRl
-L2FzbS9lbnRyeS1jb21tb24uaA0KPiBAQCAtMCwwICsxLDE2IEBADQo+ICsvKiBTUERYLUxpY2Vu
-c2UtSWRlbnRpZmllcjogR1BMLTIuMCAqLw0KPiArI2lmbmRlZiBBUkNIX1BPV0VSUENfRU5UUllf
-Q09NTU9OX0gNCj4gKyNkZWZpbmUgQVJDSF9QT1dFUlBDX0VOVFJZX0NPTU1PTl9IDQo+ICsNCj4g
-KyNpbmNsdWRlIDxsaW51eC91c2VyLXJldHVybi1ub3RpZmllci5oPg0KPiArDQo+ICtzdGF0aWMg
-aW5saW5lIHZvaWQgYXJjaF9leGl0X3RvX3VzZXJfbW9kZV9wcmVwYXJlKHN0cnVjdCBwdF9yZWdz
-ICpyZWdzLA0KPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIHVuc2lnbmVkIGxvbmcgdGlfd29yaykNCj4gK3sNCj4gKyAgICAgICBpZiAodGlfd29yayAm
-IF9USUZfVVNFUl9SRVRVUk5fTk9USUZZKQ0KPiArICAgICAgICAgICAgICAgZmlyZV91c2VyX3Jl
-dHVybl9ub3RpZmllcnMoKTsNCj4gK30NCj4gKw0KPiArI2RlZmluZSBhcmNoX2V4aXRfdG9fdXNl
-cl9tb2RlX3ByZXBhcmUgYXJjaF9leGl0X3RvX3VzZXJfbW9kZV9wcmVwYXJlDQo+ICsNCj4gKyNl
-bmRpZg0KPiBkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL3RocmVhZF9pbmZv
-LmggYi9hcmNoL3Bvd2VycGMvaW5jbHVkZS9hc20vdGhyZWFkX2luZm8uaA0KPiBpbmRleCBiZjVk
-ZGUxYTQxMTQuLjQ3ZTIyNjAzMmY5YyAxMDA2NDQNCj4gLS0tIGEvYXJjaC9wb3dlcnBjL2luY2x1
-ZGUvYXNtL3RocmVhZF9pbmZvLmgNCj4gKysrIGIvYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL3Ro
-cmVhZF9pbmZvLmgNCj4gQEAgLTExNyw2ICsxMTcsNyBAQCB2b2lkIGFyY2hfc2V0dXBfbmV3X2V4
-ZWModm9pZCk7DQo+ICAgI2VuZGlmDQo+ICAgI2RlZmluZSBUSUZfUE9MTElOR19OUkZMQUcgICAg
-IDE5ICAgICAgLyogdHJ1ZSBpZiBwb2xsX2lkbGUoKSBpcyBwb2xsaW5nIFRJRl9ORUVEX1JFU0NI
-RUQgKi8NCj4gICAjZGVmaW5lIFRJRl8zMkJJVCAgICAgICAgICAgICAgMjAgICAgICAvKiAzMiBi
-aXQgYmluYXJ5ICovDQo+ICsjZGVmaW5lIFRJRl9VU0VSX1JFVFVSTl9OT1RJRlkgMjEgICAgICAv
-KiBub3RpZnkga2VybmVsIG9mIHVzZXJzcGFjZSByZXR1cm4gKi8NCj4gDQo+ICAgLyogYXMgYWJv
-dmUsIGJ1dCBhcyBiaXQgdmFsdWVzICovDQo+ICAgI2RlZmluZSBfVElGX1NZU0NBTExfVFJBQ0Ug
-ICAgICgxPDxUSUZfU1lTQ0FMTF9UUkFDRSkNCj4gQEAgLTEyNSw2ICsxMjYsNyBAQCB2b2lkIGFy
-Y2hfc2V0dXBfbmV3X2V4ZWModm9pZCk7DQo+ICAgI2RlZmluZSBfVElGX05PVElGWV9TSUdOQUwg
-ICAgICgxPDxUSUZfTk9USUZZX1NJR05BTCkNCj4gICAjZGVmaW5lIF9USUZfUE9MTElOR19OUkZM
-QUcgICAgKDE8PFRJRl9QT0xMSU5HX05SRkxBRykNCj4gICAjZGVmaW5lIF9USUZfMzJCSVQgICAg
-ICAgICAgICAgKDE8PFRJRl8zMkJJVCkNCj4gKyNkZWZpbmUgX1RJRl9VU0VSX1JFVFVSTl9OT1RJ
-RlkgICAgICAgICgxPDxUSUZfVVNFUl9SRVRVUk5fTk9USUZZKQ0KPiAgICNkZWZpbmUgX1RJRl9S
-RVNUT1JFX1RNICAgICAgICAgICAgICAgICgxPDxUSUZfUkVTVE9SRV9UTSkNCj4gICAjZGVmaW5l
-IF9USUZfUEFUQ0hfUEVORElORyAgICAgKDE8PFRJRl9QQVRDSF9QRU5ESU5HKQ0KPiAgICNkZWZp
-bmUgX1RJRl9TWVNDQUxMX0FVRElUICAgICAoMTw8VElGX1NZU0NBTExfQVVESVQpDQo+IGRpZmYg
-LS1naXQgYS9hcmNoL3Bvd2VycGMva2VybmVsL3Byb2Nlc3MuYyBiL2FyY2gvcG93ZXJwYy9rZXJu
-ZWwvcHJvY2Vzcy5jDQo+IGluZGV4IDM5MjQwNDY4OGNlYy4uNzBhOWVhOTQ5Nzk4IDEwMDY0NA0K
-PiAtLS0gYS9hcmNoL3Bvd2VycGMva2VybmVsL3Byb2Nlc3MuYw0KPiArKysgYi9hcmNoL3Bvd2Vy
-cGMva2VybmVsL3Byb2Nlc3MuYw0KPiBAQCAtMzgsNiArMzgsNyBAQA0KPiAgICNpbmNsdWRlIDxs
-aW51eC91YWNjZXNzLmg+DQo+ICAgI2luY2x1ZGUgPGxpbnV4L3BrZXlzLmg+DQo+ICAgI2luY2x1
-ZGUgPGxpbnV4L3NlcV9idWYuaD4NCj4gKyNpbmNsdWRlIDxsaW51eC91c2VyLXJldHVybi1ub3Rp
-Zmllci5oPg0KPiANCj4gICAjaW5jbHVkZSA8YXNtL2ludGVycnVwdC5oPg0KPiAgICNpbmNsdWRl
-IDxhc20vaW8uaD4NCj4gQEAgLTEzODYsNiArMTM4Nyw3IEBAIHN0cnVjdCB0YXNrX3N0cnVjdCAq
-X19zd2l0Y2hfdG8oc3RydWN0IHRhc2tfc3RydWN0ICpwcmV2LA0KPiAgICAgICAgICBpZiAoY3Vy
-cmVudC0+dGhyZWFkLnJlZ3MpDQo+ICAgICAgICAgICAgICAgICAgcmVzdG9yZV9tYXRoKGN1cnJl
-bnQtPnRocmVhZC5yZWdzKTsNCj4gICAjZW5kaWYgLyogQ09ORklHX1BQQ19CT09LM1NfNjQgKi8N
-Cj4gKyAgICAgICBwcm9wYWdhdGVfdXNlcl9yZXR1cm5fbm90aWZ5KHByZXYsIG5ldyk7DQo+IA0K
-PiAgICAgICAgICByZXR1cm4gbGFzdDsNCj4gICB9DQo+IC0tDQo+IDIuNDIuMC53aW5kb3dzLjIN
-Cj4gDQo=
+Commit 247262756121 ("crash: add generic infrastructure for crash
+hotplug support") added a generic infrastructure that allows
+architectures to selectively update the kdump image component during CPU
+or memory add/remove events within the kernel itself.
+
+This patch series adds crash hotplug handler for PowerPC and enable
+support to update the kdump image on CPU/Memory add/remove events.
+
+Among the 6 patches in this series, the first three patches make changes
+to the generic crash hotplug handler to assist PowerPC in adding support
+for this feature. The last three patches add support for this feature.
+
+The following section outlines the problem addressed by this patch
+series, along with the current solution, its shortcomings, and the
+proposed resolution.
+
+Problem:
+========
+Due to CPU/Memory hotplug or online/offline events the elfcorehdr
+(which describes the CPUs and memory of the crashed kernel) and FDT
+(Flattened Device Tree) of kdump image becomes outdated. Consequently,
+attempting dump collection with an outdated elfcorehdr or FDT can lead
+to failed or inaccurate dump collection.
+
+Going forward CPU hotplug or online/offline events are referred as
+CPU/Memory add/remove events.
+
+Existing solution and its shortcoming:
+======================================
+The current solution to address the above issue involves monitoring the
+CPU/memory add/remove events in userspace using udev rules and whenever
+there are changes in CPU and memory resources, the entire kdump image
+is loaded again. The kdump image includes kernel, initrd, elfcorehdr,
+FDT, purgatory. Given that only elfcorehdr and FDT get outdated due to
+CPU/Memory add/remove events, reloading the entire kdump image is
+inefficient. More importantly, kdump remains inactive for a substantial
+amount of time until the kdump reload completes.
+
+Proposed solution:
+==================
+Instead of initiating a full kdump image reload from userspace on
+CPU/Memory hotplug and online/offline events, the proposed solution aims
+to update only the necessary kdump image component within the kernel
+itself.
+
+Git tree for testing:
+=====================
+Git tree rebased on top of v6.7-rc4:
+https://github.com/sourabhjains/linux/tree/kdump-in-kernel-crash-update-v14
+
+To realize this feature, the kdump udev rule must be updated. On RHEL,
+add the following two lines at the top of the
+"/usr/lib/udev/rules.d/98-kexec.rules" file.
+
+SUBSYSTEM=="cpu", ATTRS{crash_hotplug}=="1", GOTO="kdump_reload_end"
+SUBSYSTEM=="memory", ATTRS{crash_hotplug}=="1", GOTO="kdump_reload_end"
+
+With the above change to the kdump udev rule, kdump reload is avoided
+during CPU/Memory add/remove events if this feature is enabled in the
+kernel.
+
+Note: only kexec_file_load syscall will work. For kexec_load minor changes
+are required in kexec tool.
+
+Changelog:
+----------
+
+v14:
+  - Fix build warnings by including necessary header files
+  - Rebase to v6.7-rc5
+
+v13:
+  - Fix a build warning, take ranges.c out of CONFIG_KEXEC_FILE
+  - Rebase to v6.7-rc4
+
+v12:
+  - A patch to add new kexec flags to support this feature on kexec_load
+    system call
+  - Change in the way this feature is advertise to userspace for both
+    kexec_load syscall
+  - Rebase to v6.6-rc7
+
+v11:
+  - Rebase to v6.4-rc6
+  - The patch that introduced CONFIG_CRASH_HOTPLUG for PowerPC has been
+    removed. The config is now part of common configuration:
+    https://lore.kernel.org/all/87ilbpflsk.fsf@mail.lhotse/
+
+v10:
+  - Drop the patch that adds fdt_index attribute to struct kimage_arch
+    Find the fdt segment index when needed.
+  - Added more details into commits messages.
+  - Rebased onto 6.3.0-rc5
+
+v9:
+  - Removed patch to prepare elfcorehdr crash notes for possible CPUs.
+    The patch is moved to generic patch series that introduces generic
+    infrastructure for in kernel crash update.
+  - Removed patch to pass the hotplug action type to the arch crash
+    hotplug handler function. The generic patch series has introduced
+    the hotplug action type in kimage struct.
+  - Add detail commit message for better understanding.
+
+v8:
+  - Restrict fdt_index initialization to machine_kexec_post_load
+    it work for both kexec_load and kexec_file_load.[3/8] Laurent Dufour
+
+  - Updated the logic to find the number of offline core. [6/8]
+
+  - Changed the logic to find the elfcore program header to accommodate
+    future memory ranges due memory hotplug events. [8/8]
+
+v7
+  - added a new config to configure this feature
+  - pass hotplug action type to arch specific handler
+
+v6
+  - Added crash memory hotplug support
+
+v5:
+  - Replace COFNIG_CRASH_HOTPLUG with CONFIG_HOTPLUG_CPU.
+  - Move fdt segment identification for kexec_load case to load path
+    instead of crash hotplug handler
+  - Keep new attribute defined under kimage_arch to track FDT segment
+    under CONFIG_HOTPLUG_CPU config.
+
+v4:
+  - Update the logic to find the additional space needed for hotadd CPUs
+    post kexec load. Refer "[RFC v4 PATCH 4/5] powerpc/crash hp: add crash
+    hotplug support for kexec_file_load" patch to know more about the
+    change.
+  - Fix a couple of typo.
+  - Replace pr_err to pr_info_once to warn user about memory hotplug
+    support.
+  - In crash hotplug handle exit the for loop if FDT segment is found.
+
+v3
+  - Move fdt_index and fdt_index_vaild variables to kimage_arch struct.
+  - Rebase patche on top of
+    https://lore.kernel.org/lkml/20220303162725.49640-1-eric.devolder@oracle.com/
+  - Fixed warning reported by checpatch script
+
+v2:
+  - Use generic hotplug handler introduced by
+    https://lore.kernel.org/lkml/20220209195706.51522-1-eric.devolder@oracle.com/
+    a significant change from v1.
+
+Cc: Akhil Raj <lf32.dev@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Eric DeVolder <eric.devolder@oracle.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Hari Bathini <hbathini@linux.ibm.com>
+Cc: Laurent Dufour <laurent.dufour@fr.ibm.com>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Mimi Zohar <zohar@linux.ibm.com>
+Cc: Naveen N Rao <naveen@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Valentin Schneider <vschneid@redhat.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
+Cc: kexec@lists.infradead.org
+Cc: x86@kernel.org
+
+Sourabh Jain (6):
+  crash: forward memory_notify arg to arch crash hotplug handler
+  crash: make CPU and Memory hotplug support reporting flexible
+  crash: add a new kexec flag for FDT update
+  powerpc/kexec: turn some static helper functions public
+  powerpc: add crash CPU hotplug support
+  powerpc: add crash memory hotplug support
+
+ arch/powerpc/Kconfig                    |   4 +
+ arch/powerpc/include/asm/kexec.h        |  25 ++
+ arch/powerpc/include/asm/kexec_ranges.h |   1 +
+ arch/powerpc/kexec/Makefile             |   4 +-
+ arch/powerpc/kexec/core_64.c            | 369 ++++++++++++++++++++++++
+ arch/powerpc/kexec/elf_64.c             |  12 +-
+ arch/powerpc/kexec/file_load_64.c       | 211 +++-----------
+ arch/powerpc/kexec/ranges.c             |  85 ++++++
+ arch/x86/include/asm/kexec.h            |  10 +-
+ arch/x86/kernel/crash.c                 |  23 +-
+ include/linux/kexec.h                   |  21 +-
+ include/uapi/linux/kexec.h              |   1 +
+ kernel/crash_core.c                     |  37 ++-
+ kernel/kexec.c                          |   2 +
+ 14 files changed, 605 insertions(+), 200 deletions(-)
+
+-- 
+2.41.0
+
