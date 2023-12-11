@@ -1,51 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B0C080C837
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Dec 2023 12:41:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FEA380C9B1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Dec 2023 13:24:29 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=OjaZsTBT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=nIVA8V0y;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Spfw64rcVz3byT
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Dec 2023 22:41:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Spgsl07GPz3c1w
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Dec 2023 23:24:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=OjaZsTBT;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=nIVA8V0y;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SpfvG2Ktlz30Kd
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Dec 2023 22:40:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Spgrt6Bh4z2yyT
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Dec 2023 23:23:42 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1702294842;
-	bh=k4wN68Mq0e2bKIcvTdFsm/pTk95jdSaidC3qaQdYyYU=;
+	s=201909; t=1702297420;
+	bh=ODAUXRjain77XOmoPnKy1MNIInbnbbNcYLIa9FPn8ks=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=OjaZsTBT/hWYSnsoSwj4KCR5Jy3sQDTssSNWeIv+komjJmEafPirJrQjpcL7bvPrk
-	 pHubtmp3y+48jrCAPndqJnSRDEom1RfPP2CZW9f7GgR5Bu5ZXvldEqJhffcZLmVkeJ
-	 O4YvXEPxHVLvoh1AXro+tBs+8DLxe6hu35qbTZSQTWFCfM8gEqU41ehaH5HUKvTQ8z
-	 wdX2EmB0csZsywRtzYoH+gG7mbnTpeILo8jzDRhersMGQU9wTju80irAt44wKoMMPe
-	 JeLbuGw8o8MmehEJvsGrpwLs/nMtMak6RbETYVZrr7+iKCh5HK9WG+UK/lP1KA+Msr
-	 Blm4bLht2iwbA==
+	b=nIVA8V0yVj+ZMN8x89h2gJxxT4+cCTauZuj8Ht7cflzgnHnN4ITpBMOV1xWo7AIlq
+	 Qb+tJKhKhRta6FIYqIPB6IjCP4IRbYllJ3J3dFQkrZ5gBhylzYOFVQ0olRQRq0XFRq
+	 mToIUeHe7mjunplXY3/T3inRVriUXVwwqHAyMT8ZrNdDNjb78fGIZ7jZefsf1Xa8DY
+	 kagFMIi8wqGn8H2LFlRDsc9/abaI9Ajeo1k+5RyvhTShHF9xXBTFIlBig9ReYi7rDb
+	 14jHwg99Lq6Mb4L4gts5PmojrjCNJA0P9GJfiVGM/34KY923DExlNs08GewB4rxZRl
+	 xDIjF0NgfU/GA==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SpfvG0ZmVz4xPL;
-	Mon, 11 Dec 2023 22:40:41 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Spgrp6jZHz4xGM;
+	Mon, 11 Dec 2023 23:23:38 +1100 (AEDT)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Luming Yu <luming.yu@shingroup.cn>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, npiggin@gmail.com,
- christophe.leroy@csgroup.eu
-Subject: Re: [PATCH 1/2] powerpc/locking: implement this_cpu_cmpxchg local API
-In-Reply-To: <0EFBD0242622180B+20231204022303.528-1-luming.yu@shingroup.cn>
-References: <0EFBD0242622180B+20231204022303.528-1-luming.yu@shingroup.cn>
-Date: Mon, 11 Dec 2023 22:40:38 +1100
-Message-ID: <87jzpldl1l.fsf@mail.lhotse>
+To: Samuel Holland <samuel.holland@sifive.com>,
+ linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
+ linux-riscv@lists.infradead.org, Christoph Hellwig <hch@infradead.org>,
+ Timothy Pearson <tpearson@raptorengineering.com>
+Subject: Re: [RFC PATCH 10/12] drm/amd/display: Use ARCH_HAS_KERNEL_FPU_SUPPORT
+In-Reply-To: <20231208055501.2916202-11-samuel.holland@sifive.com>
+References: <20231208055501.2916202-1-samuel.holland@sifive.com>
+ <20231208055501.2916202-11-samuel.holland@sifive.com>
+Date: Mon, 11 Dec 2023 23:23:35 +1100
+Message-ID: <87h6kpdj20.fsf@mail.lhotse>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -59,73 +62,140 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: shenghui.qu@shingroup.cn, Luming Yu <luming.yu@shingroup.cn>, dawei.li@shingroup.cn, ke.zhao@shingroup.cn, luming.yu@gmail.com
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, Samuel Holland <samuel.holland@sifive.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Luming Yu,
+Hi Samuel,
 
-Luming Yu <luming.yu@shingroup.cn> writes:
-> ppc appears to have already supported cmpxchg-local atomic semantics
-> that is defined by the kernel convention of the feature.
-> Add this_cpu_cmpxchg ppc local for the performance benefit of arch
-> sepcific implementation than asm-generic c verison of the locking API.
+Thanks for trying to clean all this up.
 
-Implementing this has been suggested before but it wasn't clear that it
-was actually going to perform better than the generic version.
+One problem below.
 
-On 64-bit we have interrupt soft masking, so disabling interrupts is
-relatively cheap. So the generic this_cpu_cmpxhg using irq disable just
-becomes a few loads & stores, no atomic ops required.
-
-In contrast implementing it using __cmpxchg_local() will use
-ldarx/stdcx etc. which will be more expensive.
-
-Have you done any performance measurements?
-
-It probably is a bit fishy that we don't mask PMU interrupts vs
-this_cpu_cmpxchg() etc., but I don't think it's actually a bug given the
-few places using this_cpu_cmpxchg(). Though I could be wrong about that.
-
-> diff --git a/arch/powerpc/include/asm/percpu.h b/arch/powerpc/include/asm/percpu.h
-> index 8e5b7d0b851c..ceab5df6e7ab 100644
-> --- a/arch/powerpc/include/asm/percpu.h
-> +++ b/arch/powerpc/include/asm/percpu.h
-> @@ -18,5 +18,22 @@
->  #include <asm-generic/percpu.h>
->  
->  #include <asm/paca.h>
-> +#include <asm/cmpxchg.h>
-> +#ifdef this_cpu_cmpxchg_1
-> +#undef this_cpu_cmpxchg_1
+Samuel Holland <samuel.holland@sifive.com> writes:
+> Now that all previously-supported architectures select
+> ARCH_HAS_KERNEL_FPU_SUPPORT, this code can depend on that symbol instead
+> of the existing list of architectures. It can also take advantage of the
+> common kernel-mode FPU API and method of adjusting CFLAGS.
+>
+> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+...
+> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/dc_fpu.c b/drivers/gpu/drm/amd/display/amdgpu_dm/dc_fpu.c
+> index 4ae4720535a5..b64f917174ca 100644
+> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/dc_fpu.c
+> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/dc_fpu.c
+> @@ -87,20 +78,9 @@ void dc_fpu_begin(const char *function_name, const int line)
+>  	WARN_ON_ONCE(!in_task());
+>  	preempt_disable();
+>  	depth = __this_cpu_inc_return(fpu_recursion_depth);
+> -
+>  	if (depth == 1) {
+> -#if defined(CONFIG_X86) || defined(CONFIG_LOONGARCH)
+> +		BUG_ON(!kernel_fpu_available());
+>  		kernel_fpu_begin();
+> -#elif defined(CONFIG_PPC64)
+> -		if (cpu_has_feature(CPU_FTR_VSX_COMP))
+> -			enable_kernel_vsx();
+> -		else if (cpu_has_feature(CPU_FTR_ALTIVEC_COMP))
+> -			enable_kernel_altivec();
  
-If we need to undef then I think something has gone wrong with the
-header inclusion order, the model should be that the arch defines what
-it has and the generic code provides fallbacks if the arch didn't define
-anything.
+Note altivec.
 
-> +#define this_cpu_cmpxchg_1(pcp, oval, nval)	__cmpxchg_local(raw_cpu_ptr(&(pcp)), oval, nval, 1)
-
-I think this is unsafe vs preemption. The raw_cpu_ptr() can generate the
-per-cpu address, but then the task can be preempted and moved to a
-different CPU before the ldarx/stdcx do the cmpxchg.
-
-The arm64 implementation had the same bug until they fixed it.
-
-> +#endif 
-> +#ifdef this_cpu_cmpxchg_2
-> +#undef this_cpu_cmpxchg_2
-> +#define this_cpu_cmpxchg_2(pcp, oval, nval)	__cmpxchg_local(raw_cpu_ptr(&(pcp)), oval, nval, 2)
-> +#endif
-> +#ifdef this_cpu_cmpxchg_4
-> +#undef this_cpu_cmpxchg_4
-> +#define this_cpu_cmpxchg_4(pcp, oval, nval)	__cmpxchg_local(raw_cpu_ptr(&(pcp)), oval, nval, 4)
-> +#endif
-> +#ifdef this_cpu_cmpxchg_8
-> +#undef this_cpu_cmpxchg_8
-> +#define this_cpu_cmpxchg_8(pcp, oval, nval)	__cmpxchg_local(raw_cpu_ptr(&(pcp)), oval, nval, 8)
-> +#endif
+> -		else if (!cpu_has_feature(CPU_FTR_FPU_UNAVAILABLE))
+> -			enable_kernel_fp();
+> -#elif defined(CONFIG_ARM64)
+> -		kernel_neon_begin();
+> -#endif
+>  	}
 >  
->  #endif /* _ASM_POWERPC_PERCPU_H_ */
+>  	TRACE_DCN_FPU(true, function_name, line, depth);
+> diff --git a/drivers/gpu/drm/amd/display/dc/dml/Makefile b/drivers/gpu/drm/amd/display/dc/dml/Makefile
+> index ea7d60f9a9b4..5aad0f572ba3 100644
+> --- a/drivers/gpu/drm/amd/display/dc/dml/Makefile
+> +++ b/drivers/gpu/drm/amd/display/dc/dml/Makefile
+> @@ -25,40 +25,8 @@
+>  # It provides the general basic services required by other DAL
+>  # subcomponents.
+>  
+> -ifdef CONFIG_X86
+> -dml_ccflags-$(CONFIG_CC_IS_GCC) := -mhard-float
+> -dml_ccflags := $(dml_ccflags-y) -msse
+> -endif
+> -
+> -ifdef CONFIG_PPC64
+> -dml_ccflags := -mhard-float -maltivec
+> -endif
+
+And altivec is enabled in the flags there.
+
+That doesn't match your implementation for powerpc in patch 7, which
+only deals with float.
+
+I suspect the AMD driver actually doesn't need altivec enabled, but I
+don't know that for sure. It compiles without it, but I don't have a GPU
+to actually test. I've added Timothy on Cc who added the support for
+powerpc to the driver originally, hopefully he has a test system.
+
+Anyway if that's true that it doesn't need altivec we should probably do
+a lead-up patch that drops altivec from the AMD driver explicitly, eg.
+as below.
 
 cheers
+
+
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/dc_fpu.c b/drivers/gpu/drm/amd/display/amdgpu_dm/dc_fpu.c
+index 4ae4720535a5..0de16796466b 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/dc_fpu.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/dc_fpu.c
+@@ -92,11 +92,7 @@ void dc_fpu_begin(const char *function_name, const int line)
+ #if defined(CONFIG_X86) || defined(CONFIG_LOONGARCH)
+ 		kernel_fpu_begin();
+ #elif defined(CONFIG_PPC64)
+-		if (cpu_has_feature(CPU_FTR_VSX_COMP))
+-			enable_kernel_vsx();
+-		else if (cpu_has_feature(CPU_FTR_ALTIVEC_COMP))
+-			enable_kernel_altivec();
+-		else if (!cpu_has_feature(CPU_FTR_FPU_UNAVAILABLE))
++		if (!cpu_has_feature(CPU_FTR_FPU_UNAVAILABLE))
+ 			enable_kernel_fp();
+ #elif defined(CONFIG_ARM64)
+ 		kernel_neon_begin();
+@@ -125,11 +121,7 @@ void dc_fpu_end(const char *function_name, const int line)
+ #if defined(CONFIG_X86) || defined(CONFIG_LOONGARCH)
+ 		kernel_fpu_end();
+ #elif defined(CONFIG_PPC64)
+-		if (cpu_has_feature(CPU_FTR_VSX_COMP))
+-			disable_kernel_vsx();
+-		else if (cpu_has_feature(CPU_FTR_ALTIVEC_COMP))
+-			disable_kernel_altivec();
+-		else if (!cpu_has_feature(CPU_FTR_FPU_UNAVAILABLE))
++		if (!cpu_has_feature(CPU_FTR_FPU_UNAVAILABLE))
+ 			disable_kernel_fp();
+ #elif defined(CONFIG_ARM64)
+ 		kernel_neon_end();
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/Makefile b/drivers/gpu/drm/amd/display/dc/dml/Makefile
+index 6042a5a6a44f..554c39024a40 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dml/Makefile
+@@ -31,7 +31,7 @@ dml_ccflags := $(dml_ccflags-y) -msse
+ endif
+ 
+ ifdef CONFIG_PPC64
+-dml_ccflags := -mhard-float -maltivec
++dml_ccflags := -mhard-float
+ endif
+ 
+ ifdef CONFIG_ARM64
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/Makefile b/drivers/gpu/drm/amd/display/dc/dml2/Makefile
+index acff3449b8d7..7b51364084b5 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dml2/Makefile
+@@ -30,7 +30,7 @@ dml2_ccflags := $(dml2_ccflags-y) -msse
+ endif
+ 
+ ifdef CONFIG_PPC64
+-dml2_ccflags := -mhard-float -maltivec
++dml2_ccflags := -mhard-float
+ endif
+ 
+ ifdef CONFIG_ARM64
