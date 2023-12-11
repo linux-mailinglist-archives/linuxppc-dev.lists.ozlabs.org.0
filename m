@@ -2,56 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7AA280C033
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Dec 2023 05:02:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0C4480C0C2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Dec 2023 06:40:47 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Kr8Kvwnz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rZ4neWCT;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SpSkH15Stz3dRP
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Dec 2023 15:02:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SpVvx3WFqz30hQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Dec 2023 16:40:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Kr8Kvwnz;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rZ4neWCT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=aneesh.kumar@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=mhiramat@kernel.org; receiver=lists.ozlabs.org)
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SpSjT10Vhz2xXP
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Dec 2023 15:01:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SpVv52mYWz2ytm
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Dec 2023 16:40:01 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 59B81CE0B6C;
-	Mon, 11 Dec 2023 04:01:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 142F1C433C7;
-	Mon, 11 Dec 2023 04:01:20 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTP id 066C1B80B13;
+	Mon, 11 Dec 2023 05:39:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CDEDC433C7;
+	Mon, 11 Dec 2023 05:39:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702267285;
-	bh=5f+pnIiwqhlNQ1ca5+25Zh7b1thsDYAT5RqL0yc+DLw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Kr8KvwnzfaXk+DpQ5+JrMYbrF0txJNWuHCTDeo08vTW3cgZlYGPxVpjASqXmbX2mN
-	 3MwBjg3n3yhzzBzMLP4hK3TqRYhjfeE+FeiWXO5sSdYB8Jvo/pQBxEoVOp9PjgnFiW
-	 g5hdEaoiLv2yavK4NUi11c5fPLzQUh9DNJVLeM3e8rQdxcYJc9dGoYi6bNHDs1VREf
-	 XAAn5cPxNzPCOMAMyucSoHQoSImGNduKYlhulcdLHV4hJq8zE1fSV/IKnoIlzSiDNG
-	 ObhM+VTrq55UZIQ7LPCnhn2TfJ64pWYclUhWuzlza5GCLNd24xB0IFzUG4KF5rgrrA
-	 MnDrs421pFdmQ==
-Message-ID: <086fb48f-ea7c-4b4e-b3b5-c930aa74bbb2@kernel.org>
-Date: Mon, 11 Dec 2023 09:31:17 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/12] KVM: PPC: Book3S HV nestedv2: Do not call
- H_COPY_TOFROM_GUEST
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- kvm@vger.kernel.org, kvm-ppc@vger.kernel.org
-References: <20231201132618.555031-1-vaibhav@linux.ibm.com>
- <20231201132618.555031-10-vaibhav@linux.ibm.com> <87sf4dun37.fsf@kernel.org>
- <87jzplmlx5.fsf@vajain21.in.ibm.com>
-Content-Language: en-US
-From: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-In-Reply-To: <87jzplmlx5.fsf@vajain21.in.ibm.com>
-Content-Type: text/plain; charset=UTF-8
+	s=k20201202; t=1702273195;
+	bh=pXkGuPEWqJcgOs6ijfV32w7ZZV3pIr0foEoCn6cP/+c=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=rZ4neWCTUFGh1Y+953GYlVN2hnNOeL71TAYRdsHCd7Jk+zhyeZRMkMX4QL4UlFjPa
+	 DU8eBc8rFP8uMdvg0IoEazbkZS8MIFjx2HeskY6O2qS21h5tlb/PWQdo0rvmP1+7t7
+	 ObHCEOH/35CFjFP0DL+z8Lnh6be/Jmsf2g5Q7Hng329CKXKqZsGR9PwBgkCaqRh8KC
+	 KrpZKo4SLGo25yHGtRKqk//4MuoszNSOYv77wubakdw41SGYJ3m3brJf7jMPrvO50M
+	 UIefKNDhmr4bhUu8zjWSGJ1Rql78fOVBKwdnFvBAFwCIIzONdg8LahcFp6d814eX2F
+	 Lgh4qWviAbKPA==
+Date: Mon, 11 Dec 2023 14:39:50 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Naveen N Rao <naveen@kernel.org>
+Subject: Re: [RFC PATCH 5/9] powerpc/kprobes: Use ftrace to determine if a
+ probe is at function entry
+Message-Id: <20231211143950.980b4ab4e11b71de04332540@kernel.org>
+In-Reply-To: <15f0b3a2e72326423cfb4ce4e89afff540042245.1702045299.git.naveen@kernel.org>
+References: <cover.1702045299.git.naveen@kernel.org>
+	<15f0b3a2e72326423cfb4ce4e89afff540042245.1702045299.git.naveen@kernel.org>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -64,54 +61,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, sbhat@linux.ibm.com, amachhiw@linux.vnet.ibm.com, gautam@linux.ibm.com, Nicholas Piggin <npiggin@gmail.com>, David.Laight@ACULAB.COM, kconsul@linux.vnet.ibm.com, Jordan Niethe <jniethe5@gmail.com>, Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, Florent Revest <revest@chromium.org>, linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, Masami Hiramatsu <mhiramat@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/11/23 9:26 AM, Vaibhav Jain wrote:
-> Hi Aneesh,
+On Fri,  8 Dec 2023 22:00:44 +0530
+Naveen N Rao <naveen@kernel.org> wrote:
+
+> Rather than hard-coding the offset into a function to be used to
+> determine if a kprobe is at function entry, use ftrace_location() to
+> determine the ftrace location within the function and categorize all
+> instructions till that offset to be function entry.
 > 
-> Thanks for looking into this patch. My responses inline:
-> 
-> "Aneesh Kumar K.V (IBM)" <aneesh.kumar@kernel.org> writes:
-> 
-> <snip>
->> May be we should use 
->> firmware_has_feature(FW_FEATURE_H_COPY_TOFROM_GUEST))?
->> 
->> the nestedv2 can end up using the above hcall if it is supported by
->> the hypervisor right? In its absence we will have to translate the
->> guest ea using xlate and then use kvm_guest_read to read location
->> using the guest real address right? That xlate will also involves
->> multiple kvm_guest_read.
->> 
->> 
-> Yes, Agreed and thats a nice suggestion. However ATM the hypervisor 
-> supporting Nestedv2 doesnt have support for this hcall. In future
-> once we have support for this hcall for nestedv2 from the hypervisor
-> we can replace this branch with a firmware_has_feature() test.
+> For functions that cannot be traced, we fall back to using a fixed
+> offset of 8 (two instructions) to categorize a probe as being at
+> function entry for 64-bit elfv2.
 > 
 
-What I am suggesting is we convert that conditional to firmware_has_feature so that
-later when hypervisor supports this hcall all older kernel can make
-use of the copy_tofrom_guest without any code change.
+OK, so this can cover both KPROBES_ON_FTRACE=y/n cases and the function
+is traced by ftrace or not.
 
->>> Signed-off-by: Jordan Niethe <jniethe5@gmail.com> --- 
->>> arch/powerpc/kvm/book3s_64_mmu_radix.c | 3 +++ 1 file changed, 3
->>> insertions(+)
->>> 
->>> diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c
->>> b/arch/powerpc/kvm/book3s_64_mmu_radix.c index
->>> 916af6c153a5..4a1abb9f7c05 100644 ---
->>> a/arch/powerpc/kvm/book3s_64_mmu_radix.c +++
->>> b/arch/powerpc/kvm/book3s_64_mmu_radix.c @@ -40,6 +40,9 @@
->>> unsigned long __kvmhv_copy_tofrom_guest_radix(int lpid, int pid, 
->>> unsigned long quadrant, ret = n; bool is_load = !!to;
->>> 
->>> +	if (kvmhv_is_nestedv2()) +		return H_UNSUPPORTED; + /* Can't
->>> access quadrants 1 or 2 in non-HV mode, call the HV to do it */ 
->>> if (kvmhv_on_pseries()) return
->>> plpar_hcall_norets(H_COPY_TOFROM_GUEST, lpid, pid, eaddr, -- 
->>> 2.42.0
+Looks good to me.
+
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+
+Thanks,
+
+> Signed-off-by: Naveen N Rao <naveen@kernel.org>
+> ---
+>  arch/powerpc/kernel/kprobes.c | 18 ++++++++----------
+>  1 file changed, 8 insertions(+), 10 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
+> index b20ee72e873a..42665dfab59e 100644
+> --- a/arch/powerpc/kernel/kprobes.c
+> +++ b/arch/powerpc/kernel/kprobes.c
+> @@ -105,24 +105,22 @@ kprobe_opcode_t *kprobe_lookup_name(const char *name, unsigned int offset)
+>  	return addr;
+>  }
+>  
+> -static bool arch_kprobe_on_func_entry(unsigned long offset)
+> +static bool arch_kprobe_on_func_entry(unsigned long addr, unsigned long offset)
+>  {
+> -#ifdef CONFIG_PPC64_ELF_ABI_V2
+> -#ifdef CONFIG_KPROBES_ON_FTRACE
+> -	return offset <= 16;
+> -#else
+> -	return offset <= 8;
+> -#endif
+> -#else
+> +	unsigned long ip = ftrace_location(addr);
+> +
+> +	if (ip)
+> +		return offset <= (ip - addr);
+> +	if (IS_ENABLED(CONFIG_PPC64_ELF_ABI_V2))
+> +		return offset <= 8;
+>  	return !offset;
+> -#endif
+>  }
+>  
+>  /* XXX try and fold the magic of kprobe_lookup_name() in this */
+>  kprobe_opcode_t *arch_adjust_kprobe_addr(unsigned long addr, unsigned long offset,
+>  					 bool *on_func_entry)
+>  {
+> -	*on_func_entry = arch_kprobe_on_func_entry(offset);
+> +	*on_func_entry = arch_kprobe_on_func_entry(addr, offset);
+>  	return (kprobe_opcode_t *)(addr + offset);
+>  }
+>  
+> -- 
+> 2.43.0
 > 
 
+
+-- 
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
