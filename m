@@ -1,63 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE6DF80F3F4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Dec 2023 18:04:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA01280F407
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Dec 2023 18:07:34 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=i56E4NPk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iP1cQxby;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SqQ2F2v5Cz3cXl
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Dec 2023 04:04:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SqQ5w25V1z3c05
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Dec 2023 04:07:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=i56E4NPk;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iP1cQxby;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SqPzc0dJtz2xgw
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Dec 2023 04:02:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SqPzc34Tlz3bpp
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Dec 2023 04:02:04 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 118E8CE1ADA;
-	Tue, 12 Dec 2023 17:02:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3DF42C433C9;
+	by dfw.source.kernel.org (Postfix) with ESMTP id 9FDEF618D6;
+	Tue, 12 Dec 2023 17:02:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 49674C433C7;
 	Tue, 12 Dec 2023 17:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1702400520;
-	bh=nOwaVFmdC6wkLpxrAK2DTZC31maAICieOgia8iOQmTI=;
+	bh=Zoxzxiw8GD+0wIrOLoWKqVMwe3HmRaqK0uwSwCSq7oE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=i56E4NPkt634HhBClvhotrI2YG0s/AZsaRQCxGpXz/oBVj8Sk6F8uHy6b/4rbVlku
-	 19nzXTkVPACZjghzBiT6fQWbeqaInk9zzsMdE8QvBQfh0M1uQGxeUqLeHS0ZLfV7Aa
-	 85cm2Vq3d7hINY0BAQraS6vF2r9Xmrp9pF9AU1gla7iS6G7QYe3MsJwU9YR920Zqd/
-	 NZ6V9u4j5CRG67AZgLHybTwisS1lLqngCJODoQ4oiQQ15sc3P9RLXWJdbFRp2RMcPd
-	 mxTX3MC/K4VHpN3ez7p3PGEscom6O+sQm0hoHsrm216j2bidYvaOunB66AE6S8KnZS
-	 vFWEO8lJv38DQ==
+	b=iP1cQxby5vf2h9ndHIJgOXqxhI2WZ4mGt1xVn9hAMDoi53AHcV24nwBMitkp9fcsG
+	 c/EUoylHLODUUACD9oGrNz8Q/2wT48mwUvNFsPz++a92B/GBu9q40RSccR+kun+FmC
+	 bIRplqsoDcJ1u9mgYpBdAzDKyMmuP1huHmBeFRb4LNyrKJp4cZ7UH0WmDK3zBtc+1v
+	 LlOePN4DIAZ86jcbkM53UfAVhQRKk2jbw8J86eWbR6h6lnxKFR7uOeN8ZZQt+wAvqd
+	 YreEOSARtBe5PRfUEZ6uWim3bjDAsr/dGDJf9jpR1lFAQmw+vH6BHEONSuuqyUqgXO
+	 jK+/kcExZ7ZQg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 24504C4167B;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2FDF8C4167D;
 	Tue, 12 Dec 2023 17:02:00 +0000 (UTC)
 From: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
-Date: Tue, 12 Dec 2023 11:01:48 -0600
-Subject: [PATCH v6 01/13] powerpc/rtas: Avoid warning on invalid token
- argument to sys_rtas()
+Date: Tue, 12 Dec 2023 11:01:49 -0600
+Subject: [PATCH v6 02/13] powerpc/rtas: Add for_each_rtas_function()
+ iterator
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id:  <20231212-papr-sys_rtas-vs-lockdown-v6-1-e9eafd0c8c6c@linux.ibm.com>
+Message-Id:  <20231212-papr-sys_rtas-vs-lockdown-v6-2-e9eafd0c8c6c@linux.ibm.com>
 References:  <20231212-papr-sys_rtas-vs-lockdown-v6-0-e9eafd0c8c6c@linux.ibm.com>
 In-Reply-To:  <20231212-papr-sys_rtas-vs-lockdown-v6-0-e9eafd0c8c6c@linux.ibm.com>
 To: Michael Ellerman <mpe@ellerman.id.au>, 
  Nicholas Piggin <npiggin@gmail.com>
 X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1702400518; l=3232;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1702400518; l=1528;
  i=nathanl@linux.ibm.com; s=20230817; h=from:subject:message-id;
- bh=xeEDYmcM08Jdm+cCjHTDeI5+EGF9mkp/57/09NU+nko=;
- b=sEOv2n1xGwakYdMNdF39VDYCgKaj9GmTbZha4NJsw66YWJY/F8D+DyC1JbEdLxbfA+uGsbiTL
- TShvwjaxuA9Cb6k08P85s8Q4dV2YFQarrwUvfHOpDDnm+ICtfj0flvR
+ bh=NWsKJAvOyJ6+fcTpCAe3hP9I68yS9JzeFyNNJdqL2GM=;
+ b=8V/qhZfXSaD5jFSH/GeiyyNRWs4HZsxH8ThYG3EnhhWKCbsq02A2lqKMonXWeQu2wrTxcC/M8
+ JKWa6PDidVyCHpJ5U+QxXuQKe+mwdI4nwWIq9fh9iQzxP8zsTmUFkEx
 X-Developer-Key: i=nathanl@linux.ibm.com; a=ed25519;
  pk=jPDF44RvT+9DGFOH3NGoIu1xN9dF+82pjdpnKjXfoJ0=
 X-Endpoint-Received:  by B4 Relay for nathanl@linux.ibm.com/20230817 with auth_id=78
@@ -80,85 +80,45 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Nathan Lynch <nathanl@linux.ibm.com>
 
-rtas_token_to_function() WARNs when passed an invalid token; it's
-meant to catch bugs in kernel-based users of RTAS functions. However,
-user space controls the token value passed to rtas_token_to_function()
-by block_rtas_call(), so user space with sufficient privilege to use
-sys_rtas() can trigger the warnings at will:
+Add a convenience macro for iterating over every element of the
+internal function table and convert the one site that can use it. An
+additional user of the macro is anticipated in changes to follow.
 
-  unexpected failed lookup for token 2048
-  WARNING: CPU: 20 PID: 2247 at arch/powerpc/kernel/rtas.c:556
-    rtas_token_to_function+0xfc/0x110
-  ...
-  NIP rtas_token_to_function+0xfc/0x110
-  LR  rtas_token_to_function+0xf8/0x110
-  Call Trace:
-    rtas_token_to_function+0xf8/0x110 (unreliable)
-    sys_rtas+0x188/0x880
-    system_call_exception+0x268/0x530
-    system_call_common+0x160/0x2c4
-
-It's desirable to continue warning on bogus tokens in
-rtas_token_to_function(). Currently it is used to look up RTAS
-function descriptors when tracing, where we know there has to have
-been a successful descriptor lookup by different means already, and it
-would be a serious inconsistency for the reverse lookup to fail.
-
-So instead of weakening rtas_token_to_function()'s contract by
-removing the warnings, introduce rtas_token_to_function_untrusted(),
-which has no opinion on failed lookups. Convert block_rtas_call() and
-rtas_token_to_function() to use it.
-
-Fixes: 8252b88294d2 ("powerpc/rtas: improve function information lookups")
+Reviewed-by: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
 Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 ---
- arch/powerpc/kernel/rtas.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/rtas.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index c49f078382a9..ce37dc9860ef 100644
+index ce37dc9860ef..ae9b10c954a1 100644
 --- a/arch/powerpc/kernel/rtas.c
 +++ b/arch/powerpc/kernel/rtas.c
-@@ -544,6 +544,21 @@ static int __init rtas_token_to_function_xarray_init(void)
- }
- arch_initcall(rtas_token_to_function_xarray_init);
+@@ -454,6 +454,11 @@ static struct rtas_function rtas_function_table[] __ro_after_init = {
+ 	},
+ };
  
-+/*
-+ * For use by sys_rtas(), where the token value is provided by user
-+ * space and we don't want to warn on failed lookups.
-+ */
-+static const struct rtas_function *rtas_token_to_function_untrusted(s32 token)
-+{
-+	return xa_load(&rtas_token_to_function_xarray, token);
-+}
++#define for_each_rtas_function(funcp)                                       \
++	for (funcp = &rtas_function_table[0];                               \
++	     funcp < &rtas_function_table[ARRAY_SIZE(rtas_function_table)]; \
++	     ++funcp)
 +
-+/*
-+ * Reverse lookup for deriving the function descriptor from a
-+ * known-good token value in contexts where the former is not already
-+ * available. @token must be valid, e.g. derived from the result of a
-+ * prior lookup against the function table.
-+ */
- static const struct rtas_function *rtas_token_to_function(s32 token)
+ /*
+  * Nearly all RTAS calls need to be serialized. All uses of the
+  * default rtas_args block must hold rtas_lock.
+@@ -525,10 +530,10 @@ static DEFINE_XARRAY(rtas_token_to_function_xarray);
+ 
+ static int __init rtas_token_to_function_xarray_init(void)
  {
- 	const struct rtas_function *func;
-@@ -551,7 +566,7 @@ static const struct rtas_function *rtas_token_to_function(s32 token)
- 	if (WARN_ONCE(token < 0, "invalid token %d", token))
- 		return NULL;
++	const struct rtas_function *func;
+ 	int err = 0;
  
--	func = xa_load(&rtas_token_to_function_xarray, token);
-+	func = rtas_token_to_function_untrusted(token);
+-	for (size_t i = 0; i < ARRAY_SIZE(rtas_function_table); ++i) {
+-		const struct rtas_function *func = &rtas_function_table[i];
++	for_each_rtas_function(func) {
+ 		const s32 token = func->token;
  
- 	if (WARN_ONCE(!func, "unexpected failed lookup for token %d", token))
- 		return NULL;
-@@ -1721,7 +1736,7 @@ static bool block_rtas_call(int token, int nargs,
- 	 * If this token doesn't correspond to a function the kernel
- 	 * understands, you're not allowed to call it.
- 	 */
--	func = rtas_token_to_function(token);
-+	func = rtas_token_to_function_untrusted(token);
- 	if (!func)
- 		goto err;
- 	/*
+ 		if (token == RTAS_UNKNOWN_SERVICE)
 
 -- 
 2.41.0
