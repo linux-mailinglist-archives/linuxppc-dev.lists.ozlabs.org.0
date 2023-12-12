@@ -1,71 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CF9780F0D0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Dec 2023 16:29:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D68A80F14E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Dec 2023 16:39:58 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=K/YBQJSN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GCt1TX7T;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SqMx44sLRz3cV1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Dec 2023 02:29:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SqN8q536Xz3c4C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Dec 2023 02:39:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=K/YBQJSN;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GCt1TX7T;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3n3x4zqykdeqykgtpimuumrk.iusrot03vvi-jk1royzy.u5rghy.uxm@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SqMwH0Blfz2ytm
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Dec 2023 02:29:01 +1100 (AEDT)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5e1b9b10dc0so13156837b3.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Dec 2023 07:29:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1702394936; x=1702999736; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ESTPXNxaOVzfRXXRx0Fvol8yzry2uxBEEuLKqef2q4U=;
-        b=K/YBQJSNUdoEScEmzo3yOC+8yzKhthy590tOqmKlo/4C/5LuRJZ95FFux5GjOuPWTS
-         afszLfW1i6JlhbwT8yGHftc8guETFXYLrEyxLtAsvEJ+24x7X8lpQg7FElwKGrtpyPvY
-         E7GLdsYHP0EyXVDpV4CPtvYWm75NgNiN0s7VUVcW+Eh8MtPKjrmyALh7qYzNCFWpnxIJ
-         8JGQ9aasswqwCtSv7d0KFoktlDao1xheq1JnfsGBCkY5pR0tfb96b49TmoHG/lxP/sex
-         62myLqfrAenzxymR0VRd2GLFsu5lxV1r5R17hBwGk15xs1t/DR37hi3axgjQGc0Dfsm3
-         cOtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702394936; x=1702999736;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ESTPXNxaOVzfRXXRx0Fvol8yzry2uxBEEuLKqef2q4U=;
-        b=nVZLfrbv9Tg9hqXG/N73mWYw1jb5mznpfoUFEkyjo1GQ0rSWYBSSMlaGvkSjwIiBeJ
-         QJuGwL7/deKCzbpfWU01OcFKU9OTbzAa0gfi8D8GcYHn6vJbCb0oAHV/vaArjLl2hqck
-         LRwznIVF9jqNmi3oDQw4AMGRASeo7CMtyYORz/NhNFJJw1tK5E4MAzjQIW93Yo5bkD6x
-         KTl2UADOXwCnvI0Hw9Q0m1+/eFcQbVQr5vYfXe4sY1dGimQ71HjpeiOPTf9p3j3RQUiy
-         U1d4ZCAAWFbvIKNAy9DTF7pHmAzZS+HXuA4rGZpoyBlGOKldAeo/fONmdSFdKVdSwzMr
-         b4bg==
-X-Gm-Message-State: AOJu0YyaofFvCcGQkpkk/AzQDZZaAkuxbzxJmZgtqJ+owWdHQk80t5E7
-	vbqEnXBu1/mo7Av4uydOOQikd0Sy/Qo=
-X-Google-Smtp-Source: AGHT+IHBX6jt6VDhWuABWGol0Nx+Ii84S8r8nT9g/gNamSIHnZwQhzhs+bFmpCR2BuKO/hKALNdpvESE74w=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a25:db94:0:b0:db4:7ac:fea6 with SMTP id
- g142-20020a25db94000000b00db407acfea6mr41805ybf.7.1702394935890; Tue, 12 Dec
- 2023 07:28:55 -0800 (PST)
-Date: Tue, 12 Dec 2023 07:28:54 -0800
-In-Reply-To: <CALMp9eTT97oDmQT7pxeOMLQbt-371aMtC2Kev+-kWXVRDVrjeg@mail.gmail.com>
-Mime-Version: 1.0
-References: <20220921003201.1441511-11-seanjc@google.com> <20231207010302.2240506-1-jmattson@google.com>
- <ZXHw7tykubfG04Um@google.com> <CALMp9eTT97oDmQT7pxeOMLQbt-371aMtC2Kev+-kWXVRDVrjeg@mail.gmail.com>
-Message-ID: <ZXh8Nq_y_szj1WN0@google.com>
-Subject: Re: [PATCH v4 10/12] KVM: x86: never write to memory from kvm_vcpu_check_block()
-From: Sean Christopherson <seanjc@google.com>
-To: Jim Mattson <jmattson@google.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SqN7x2Zryz3bYc
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Dec 2023 02:39:08 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3BCFb5K3027008;
+	Tue, 12 Dec 2023 15:38:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=a9wK0cBefhda7UmrFVVczKTtJiDIZBqk+HUHCAnXH3o=;
+ b=GCt1TX7T+hpk+FjWJHEDBrmTrEI8ZEtCvUStcKFBoU9Jv+4kukUVT3R61FWHafylNJj9
+ l3a19Rdvtj/vxEwaePPOrr2xSlbxawulDSCvNSz47VGqcFqL0e88ZYN+IZw7QRzYEjGP
+ Pjs2mhd+drZaRx/aCa1d1qs8ABfh0CNhl/cUC83Bz3BszAEf9S/VdX4MNUde3sCwsPXz
+ 3HZY+aPiYXS9JQ4x7rpCN9eaY1xmnEXlfSfiKMSNu/1/PT10NNhTIf5h8Ty9pvSfTS44
+ Zj7uRGzVEo1IcWNhB1UAedtCRj1QWEvtbN4fMGa1Rdm0aZ6okorogNbXMvOwYG59N95S MA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uxtan01c6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Dec 2023 15:38:53 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3BCFbZdr030283;
+	Tue, 12 Dec 2023 15:38:52 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uxtan01bg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Dec 2023 15:38:52 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3BCCML2v014799;
+	Tue, 12 Dec 2023 15:38:51 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uw42kct5k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Dec 2023 15:38:51 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3BCFcoX933554814
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 12 Dec 2023 15:38:50 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F260A5805E;
+	Tue, 12 Dec 2023 15:38:49 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C9F1C58054;
+	Tue, 12 Dec 2023 15:38:49 +0000 (GMT)
+Received: from localhost (unknown [9.61.98.174])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 12 Dec 2023 15:38:49 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v5 11/13] powerpc/pseries/papr-sysparm: Expose character
+ device to user space
+In-Reply-To: <20231207-papr-sys_rtas-vs-lockdown-v5-11-2ce965636a58@linux.ibm.com>
+References: <20231207-papr-sys_rtas-vs-lockdown-v5-0-2ce965636a58@linux.ibm.com>
+ <20231207-papr-sys_rtas-vs-lockdown-v5-11-2ce965636a58@linux.ibm.com>
+Date: Tue, 12 Dec 2023 09:38:49 -0600
+Message-ID: <87plzbjura.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: VDPmeSjMuW75AmZXadFV2k5CQodVElLt
+X-Proofpoint-ORIG-GUID: TaSJLiEaVx1TNm-3HHeyiPc6-1k3bcgv
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-12_09,2023-12-12_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
+ adultscore=0 priorityscore=1501 impostorscore=0 phishscore=0 mlxscore=0
+ suspectscore=0 mlxlogscore=736 lowpriorityscore=0 clxscore=1015
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2312120120
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,35 +98,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, david@redhat.com, atishp@atishpatra.org, linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org, imbrenda@linux.ibm.com, frankja@linux.ibm.com, maz@kernel.org, chenhuacai@kernel.org, mlevitsk@redhat.com, palmer@dabbelt.com, borntraeger@linux.ibm.com, aou@eecs.berkeley.edu, suzuki.poulose@arm.com, paul.walmsley@sifive.com, alexandru.elisei@arm.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, oliver.upton@linux.dev, james.morse@arm.com, kvm-riscv@lists.infradead.org, anup@brainfault.org, pbonzini@redhat.com, linuxppc-dev@lists.ozlabs.org
+Cc: "Aneesh Kumar K.V \(IBM\)" <aneesh.kumar@kernel.org>, tyreld@linux.ibm.com, Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org, gcwilson@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Dec 10, 2023, Jim Mattson wrote:
-> On Thu, Dec 7, 2023 at 8:21=E2=80=AFAM Sean Christopherson <seanjc@google=
-.com> wrote:
-> > Doh.  We got the less obvious cases and missed the obvious one.
-> >
-> > Ugh, and we also missed a related mess in kvm_guest_apic_has_interrupt(=
-).  That
-> > thing should really be folded into vmx_has_nested_events().
-> >
-> > Good gravy.  And vmx_interrupt_blocked() does the wrong thing because t=
-hat
-> > specifically checks if L1 interrupts are blocked.
-> >
-> > Compile tested only, and definitely needs to be chunked into multiple p=
-atches,
-> > but I think something like this mess?
->=20
-> The proposed patch does not fix the problem. In fact, it messes things
-> up so much that I don't get any test results back.
+Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
+writes:
+> +static long papr_sysparm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
+> +{
+> +	void __user *argp = (__force void __user *)arg;
+> +	long ret;
+> +
+> +	switch (ioctl) {
+> +	case PAPR_SYSPARM_IOC_GET:
+> +		ret = papr_sysparm_ioctl_get(argp);
+> +		break;
+> +	case PAPR_SYSPARM_IOC_SET:
+> +		ret = papr_sysparm_ioctl_set(argp);
+> +		break;
 
-Drat.
-
-> Google has an internal K-U-T test that demonstrates the problem. I
-> will post it soon.
-
-Received, I'll dig in soonish, though "soonish" might unfortunately might m=
-ean
-2024.
+Some offline discussion raised the point that updating system parameters
+should be allowed only when the device is opened for writing. I've made
+this change and added a testcase for v6, coming shortly.
