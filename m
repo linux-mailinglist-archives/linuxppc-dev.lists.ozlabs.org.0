@@ -1,80 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69FA38108BA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Dec 2023 04:24:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17C6481092E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Dec 2023 05:39:37 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XsuFevZ4;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Dx0fNPtR;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=uZyWvxX5;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SqgnN10Khz3c3n
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Dec 2023 14:24:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SqjSQ3YPKz3cSV
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Dec 2023 15:39:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XsuFevZ4;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Dx0fNPtR;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SqgmV2k2Dz2yts
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Dec 2023 14:23:20 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702437796;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kJBrP/wuvom17BSUXW0NG0A84o2uJgCWtjNkzp2u12s=;
-	b=XsuFevZ4xDS53iniLbdzt8cFTjiyD+WTrg7swF1RPazlbB1mxJ3K+p/TmcVnHNraber94J
-	LTl2mLf9O6ZJl2J2ky9mALyOHXUTSKwe55ztj2tyjkPtmfO1m8+vqosebxXrW7BcCj9mNW
-	tIHIOh6hMnExkUGLBFihw5FElsSYNyo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702437797;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kJBrP/wuvom17BSUXW0NG0A84o2uJgCWtjNkzp2u12s=;
-	b=Dx0fNPtR7HcD2tznpS6HQrDWNi87tgak0hcVRYvaQtxgoTtF1yLbxZrcsWu1EaNzj4QrVW
-	SSSW5po8eCSzj/oTaM9at9+TZDNxf11rNxLkYp8Nf0eRLdqeSXZsaVVIiw47LHW7RgEi4R
-	elcbGnAdWeojmXIOKLuI19jCCHvtHsI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-656-qho-sWqZPYqtExHysk5vCA-1; Tue,
- 12 Dec 2023 22:23:11 -0500
-X-MC-Unique: qho-sWqZPYqtExHysk5vCA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4F9A43C29A62;
-	Wed, 13 Dec 2023 03:23:10 +0000 (UTC)
-Received: from localhost (unknown [10.72.116.83])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 519BB2026D66;
-	Wed, 13 Dec 2023 03:23:09 +0000 (UTC)
-Date: Wed, 13 Dec 2023 11:23:06 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Conor Dooley <conor@kernel.org>
-Subject: Re: [PATCH v3 5/7] kexec_file, ricv: print out debugging message if
- required
-Message-ID: <ZXkjmrWOH1dLbHGB@MiWiFi-R3L-srv>
-References: <20231130023955.5257-1-bhe@redhat.com>
- <20231130023955.5257-6-bhe@redhat.com>
- <20231201-blog-blasphemy-985d2665903c@wendy>
- <ZW3yXWJ7rTrtZzyg@MiWiFi-R3L-srv>
- <20231204-liftoff-enclosure-d3e3daf0ab6e@spud>
- <ZXCVUD9cCYEShrrj@MiWiFi-R3L-srv>
- <20231206-pasta-embassy-c7250740b16c@spud>
- <ZXECHg37DRZ9BQsP@MiWiFi-R3L-srv>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SqjRS2LyMz2ytm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Dec 2023 15:38:41 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=IYsXrcbAgOkY1hcRABRykSaTSrDGMZJwNs/3jqLIy9k=; b=uZyWvxX5LrccL/YUYNWB4aTFKk
+	HMHpfJQwPTJzw8xLpgwFTIin5u8DTJay6DBB7ICzdNMvrf+Rea2DrVXbz2J42jA1+rtoL3FXcoxam
+	1m/ElRJctiEdBzDxBiNXnNSTXTd0ePqY/rcWVHGPKnKZ23loiZ7DiLEVc8aodbCwN5kCMxMczta3a
+	jFSuaOL+fc2q9hhtiTzdJIWghk0dyhz/XUUK2RQcQ4E4+uSOMWQi0xxdl8C90QDJ4baPwmW9x4ood
+	IB6w95VICzRVE3X0+yBztc9rTXlbYNw1Ae/yGmhQP8HC1xWI8VFHLquOA91aiy/U3dBhSIkuUCVo2
+	D85UAFxQ==;
+Received: from [50.53.46.231] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+	id 1rDH13-00DbBK-0u;
+	Wed, 13 Dec 2023 04:38:37 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH] soc: fsl: dpio: fix spelling errors
+Date: Tue, 12 Dec 2023 20:38:36 -0800
+Message-ID: <20231213043836.6921-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZXECHg37DRZ9BQsP@MiWiFi-R3L-srv>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,183 +52,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-parisc@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, nathan@kernel.org, Conor Dooley <conor.dooley@microchip.com>, joe@perches.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org
+Cc: Roy Pledge <Roy.Pledge@nxp.com>, Randy Dunlap <rdunlap@infradead.org>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, Li Yang <leoyang.li@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/07/23 at 07:22am, Baoquan He wrote:
-> On 12/06/23 at 04:54pm, Conor Dooley wrote:
-> > On Wed, Dec 06, 2023 at 11:37:52PM +0800, Baoquan He wrote:
-> > > On 12/04/23 at 04:14pm, Conor Dooley wrote:
-> > > > On Mon, Dec 04, 2023 at 11:38:05PM +0800, Baoquan He wrote:
-> > > > > On 12/01/23 at 10:38am, Conor Dooley wrote:
-> > > > > > On Thu, Nov 30, 2023 at 10:39:53AM +0800, Baoquan He wrote:
-> > > > > > 
-> > > > > > $subject has a typo in the arch bit :)
-> > > > > 
-> > > > > Indeed, will fix if need report. Thanks for careful checking.
-> > > > > 
-> > > > > > 
-> > > > > > > Replace pr_debug() with the newly added kexec_dprintk() in kexec_file
-> > > > > > > loading related codes.
-> > > > > > 
-> > > > > > Commit messages should be understandable in isolation, but this only
-> > > > > > explains (part of) what is obvious in the diff. Why is this change
-> > > > > > being made?
-> > > > > 
-> > > > > The purpose has been detailedly described in cover letter and patch 1
-> > > > > log. Andrew has picked these patches into his tree and grabbed the cover
-> > > > > letter log into the relevant commit for people's later checking. All
-> > > > > these seven patches will be present in mainline together. This is common
-> > > > > way when posting patch series? Please let me know if I misunderstand
-> > > > > anything.
-> > > > 
-> > > > Each patch having a commit message that explains why a change is being
-> > > > made is the expectation. It is especially useful to explain the why
-> > > > here, since it is not just a mechanical conversion of pr_debug()s as the
-> > > > commit message suggests.
-> > > 
-> > > Sounds reasonable. I rephrase the patch 3 log as below, do you think
-> > > it's OK to you?
-> > 
-> > Yes, but with one comment.
-> > 
-> > > 
-> > > I will also adjust patch logs on other ARCH once this one is done.
-> > > Thanks.
-> > > 
-> > > =============================
-> > > Subject: [PATCH v3 5/7] kexec_file, ricv: print out debugging message if required
-> > > 
-> > > Then when specifying '-d' for kexec_file_load interface, loaded
-> > > locations of kernel/initrd/cmdline etc can be printed out to help debug.
-> > > 
-> > > Here replace pr_debug() with the newly added kexec_dprintk() in kexec_file
-> > > loading related codes.
-> > > 
-> > 
-> > > And also replace pr_notice() with kexec_dprintk() in elf_kexec_load()
-> > > because it's make sense to always print out loaded location of purgatory
->               ~
-> > > and device tree even though users don't expect the message.
-> 
-> Fixed typo:
-> ==========
-> 
-> And also replace pr_notice() with kexec_dprintk() in elf_kexec_load()
-> because it doesn't make sense to always print out loaded location of
-> purgatory and device tree even though users don't expect the message.
+Correct spelling mistakes as identified by codespell.
 
-I will post v4 to include these suggested changes, please add comments
-if there's any concern. Thanks for reviewing.
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Roy Pledge <Roy.Pledge@nxp.com>
+Cc: Li Yang <leoyang.li@nxp.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-arm-kernel@lists.infradead.org
+---
+ include/soc/fsl/dpaa2-io.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> 
-> > 
-> > This seems to contradict what you said in your earlier mail, about
-> > moving these from notice to debug. I think you missed a negation in your
-> > new version of the commit message. What you said in response to me seems
-> > like a more complete explanation anyway:
-> 
-> Ah, I made mistake when typing, these printing is only for debugging,
-> so always printing out them is not suggested.
-> 
-> > 	always printing out the loaded location of purgatory and
-> > 	device tree doesn't make sense. It will be confusing when users
-> > 	see these even when they do normal kexec/kdump loading.
-> > 
-> > Thanks,
-> > Conor.
-> > 
-> > > And also remove kexec_image_info() because the content has been printed
-> > > out in generic code.
-> > > 
-> > > ============================
-> > > 
-> > > > 
-> > > > > > 
-> > > > > > > 
-> > > > > > > And also remove kexec_image_info() because the content has been printed
-> > > > > > > out in generic code.
-> > > > > > > 
-> > > > > > > Signed-off-by: Baoquan He <bhe@redhat.com>
-> > > > > > > ---
-> > > > > > >  arch/riscv/kernel/elf_kexec.c     | 11 ++++++-----
-> > > > > > >  arch/riscv/kernel/machine_kexec.c | 26 --------------------------
-> > > > > > >  2 files changed, 6 insertions(+), 31 deletions(-)
-> > > > > > > 
-> > > > > > > diff --git a/arch/riscv/kernel/elf_kexec.c b/arch/riscv/kernel/elf_kexec.c
-> > > > > > > index e60fbd8660c4..5bd1ec3341fe 100644
-> > > > > > > --- a/arch/riscv/kernel/elf_kexec.c
-> > > > > > > +++ b/arch/riscv/kernel/elf_kexec.c
-> > > > > > > @@ -216,7 +216,6 @@ static void *elf_kexec_load(struct kimage *image, char *kernel_buf,
-> > > > > > >  	if (ret)
-> > > > > > >  		goto out;
-> > > > > > >  	kernel_start = image->start;
-> > > > > > > -	pr_notice("The entry point of kernel at 0x%lx\n", image->start);
-> > > > > > >  
-> > > > > > >  	/* Add the kernel binary to the image */
-> > > > > > >  	ret = riscv_kexec_elf_load(image, &ehdr, &elf_info,
-> > > > > > > @@ -252,8 +251,8 @@ static void *elf_kexec_load(struct kimage *image, char *kernel_buf,
-> > > > > > >  		image->elf_load_addr = kbuf.mem;
-> > > > > > >  		image->elf_headers_sz = headers_sz;
-> > > > > > >  
-> > > > > > > -		pr_debug("Loaded elf core header at 0x%lx bufsz=0x%lx memsz=0x%lx\n",
-> > > > > > > -			 image->elf_load_addr, kbuf.bufsz, kbuf.memsz);
-> > > > > > > +		kexec_dprintk("Loaded elf core header at 0x%lx bufsz=0x%lx memsz=0x%lx\n",
-> > > > > > > +			      image->elf_load_addr, kbuf.bufsz, kbuf.memsz);
-> > > > > > >  
-> > > > > > >  		/* Setup cmdline for kdump kernel case */
-> > > > > > >  		modified_cmdline = setup_kdump_cmdline(image, cmdline,
-> > > > > > > @@ -275,6 +274,8 @@ static void *elf_kexec_load(struct kimage *image, char *kernel_buf,
-> > > > > > >  		pr_err("Error loading purgatory ret=%d\n", ret);
-> > > > > > >  		goto out;
-> > > > > > >  	}
-> > > > > > > +	kexec_dprintk("Loaded purgatory at 0x%lx\n", kbuf.mem);
-> > > > > > > +
-> > > > > > >  	ret = kexec_purgatory_get_set_symbol(image, "riscv_kernel_entry",
-> > > > > > >  					     &kernel_start,
-> > > > > > >  					     sizeof(kernel_start), 0);
-> > > > > > > @@ -293,7 +294,7 @@ static void *elf_kexec_load(struct kimage *image, char *kernel_buf,
-> > > > > > >  		if (ret)
-> > > > > > >  			goto out;
-> > > > > > >  		initrd_pbase = kbuf.mem;
-> > > > > > 
-> > > > > > > -		pr_notice("Loaded initrd at 0x%lx\n", initrd_pbase);
-> > > > > > > +		kexec_dprintk("Loaded initrd at 0x%lx\n", initrd_pbase);
-> > > > > > 
-> > > > > > This is not a pr_debug().
-> > > > > > 
-> > > > > > >  	}
-> > > > > > >  
-> > > > > > >  	/* Add the DTB to the image */
-> > > > > > > @@ -318,7 +319,7 @@ static void *elf_kexec_load(struct kimage *image, char *kernel_buf,
-> > > > > > >  	}
-> > > > > > >  	/* Cache the fdt buffer address for memory cleanup */
-> > > > > > >  	image->arch.fdt = fdt;
-> > > > > > 
-> > > > > > > -	pr_notice("Loaded device tree at 0x%lx\n", kbuf.mem);
-> > > > > > > +	kexec_dprintk("Loaded device tree at 0x%lx\n", kbuf.mem);
-> > > > > > 
-> > > > > > Neither is this. Why are they being moved from pr_notice()?
-> > > > > 
-> > > > > You are right. 
-> > > > > 
-> > > > > While always printing out the loaded location of purgatory and
-> > > > > device tree doesn't make sense. It will be confusing when users
-> > > > > see these even when they do normal kexec/kdump loading. It should be
-> > > > > changed to pr_debug().
-> > > > > 
-> > > > > Which way do you suggest?
-> > > > > 1) change it back to pr_debug(), fix it in another patch;
-> > > > > 2) keep it as is in the patch;
-> > > > 
-> > > > Personally I think it is fine to change them all in one patch, but the
-> > > > rationale for converting pr_notice() to your new debug infrastructure
-> > > > needs to be in the commit message.
-> > > 
-> > > Sure, sounds good to me. I have changed the patch log to reflect this as
-> > > you suggested, please help check. Thanks again.
-> > > 
-> 
-> 
-
+diff -- a/include/soc/fsl/dpaa2-io.h b/include/soc/fsl/dpaa2-io.h
+--- a/include/soc/fsl/dpaa2-io.h
++++ b/include/soc/fsl/dpaa2-io.h
+@@ -22,7 +22,7 @@ struct device;
+  * DOC: DPIO Service
+  *
+  * The DPIO service provides APIs for users to interact with the datapath
+- * by enqueueing and dequeing frame descriptors.
++ * by enqueueing and dequeueing frame descriptors.
+  *
+  * The following set of APIs can be used to enqueue and dequeue frames
+  * as well as producing notification callbacks when data is available
+@@ -33,7 +33,7 @@ struct device;
+ 
+ /**
+  * struct dpaa2_io_desc - The DPIO descriptor
+- * @receives_notifications: Use notificaton mode. Non-zero if the DPIO
++ * @receives_notifications: Use notification mode. Non-zero if the DPIO
+  *                  has a channel.
+  * @has_8prio:      Set to non-zero for channel with 8 priority WQs.  Ignored
+  *                  unless receives_notification is TRUE.
