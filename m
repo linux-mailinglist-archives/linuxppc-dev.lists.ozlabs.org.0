@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00B258109CA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Dec 2023 07:01:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E84BD8109CB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Dec 2023 07:02:03 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gKdyagIF;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=X8P3xjlm;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QdNM1gtE;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QdNM1gtE;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SqlGW4yZYz3dLg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Dec 2023 17:01:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SqlHY4NH2z3dVm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Dec 2023 17:02:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gKdyagIF;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=X8P3xjlm;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QdNM1gtE;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QdNM1gtE;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SqlCG2xGqz3c4P
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Dec 2023 16:58:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SqlCQ0YNxz3c4R
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Dec 2023 16:58:25 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702447095;
+	s=mimecast20190719; t=1702447103;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vyIpUCoke21Fh9u4XVKPlBkpu2Ylo9Oo/U9H7G6iIE4=;
-	b=gKdyagIFJHM8v9ySz60vGPx7libbq118b8DUx2+MbFzMwS84PWKuyGjReAgaZ6LRkpMVCe
-	+H6yk3T9CzmdnypI7KZlhD3XBnvFFWIfhRRU9d04yGadS76ZTxgL0XYxL108tZXwU0iE7u
-	TRqjJq0iuoSIyAly8wTTBUsWT4L8KXE=
+	bh=HjkR0oYdbcf5oMJ79gB4p6mCedO7bWDTb3wlfW20JbQ=;
+	b=QdNM1gtEFWTvx33Ok9zNRo8jSN3tUKoDKooTyxRREo8EBmif9JTyBZNgnQvyTDClvC4Pjh
+	FRa3nkKoAkRzZZw8bk5NVRlmCBYMK5lTQcsUCSDuCICWSRsprOAd6EAttg5ffMqiJWClKA
+	3VgDgpLcyGDa2lwWaMOYDMhF+D9RHr0=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702447096;
+	s=mimecast20190719; t=1702447103;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vyIpUCoke21Fh9u4XVKPlBkpu2Ylo9Oo/U9H7G6iIE4=;
-	b=X8P3xjlmaCbxRS9RGq/NTMMo6W8SjyhYdEGjTRaAVqE6fk8KGHicPYzveFdgi9GIkbjkVj
-	5JdKRLJHD58ECqcl3n1E+xdlp8kxWazJXjOHtRFFTiS2hvaBrsGbng7oeP2tSQTh7fkG8q
-	REWevqOMNVc+ZvB4ke1sSbJdUx4cJIg=
+	bh=HjkR0oYdbcf5oMJ79gB4p6mCedO7bWDTb3wlfW20JbQ=;
+	b=QdNM1gtEFWTvx33Ok9zNRo8jSN3tUKoDKooTyxRREo8EBmif9JTyBZNgnQvyTDClvC4Pjh
+	FRa3nkKoAkRzZZw8bk5NVRlmCBYMK5lTQcsUCSDuCICWSRsprOAd6EAttg5ffMqiJWClKA
+	3VgDgpLcyGDa2lwWaMOYDMhF+D9RHr0=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-144-322HU_a3M7eeuAKLBuouCA-1; Wed,
- 13 Dec 2023 00:58:13 -0500
-X-MC-Unique: 322HU_a3M7eeuAKLBuouCA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-370-GiA1e1IzMRyM8FD9i7LtqA-1; Wed,
+ 13 Dec 2023 00:58:19 -0500
+X-MC-Unique: GiA1e1IzMRyM8FD9i7LtqA-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2CFBF3C40B52;
-	Wed, 13 Dec 2023 05:58:13 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 977253816B4E;
+	Wed, 13 Dec 2023 05:58:18 +0000 (UTC)
 Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.116.83])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 79EE21C060AF;
-	Wed, 13 Dec 2023 05:58:08 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id CE4311C060AF;
+	Wed, 13 Dec 2023 05:58:13 +0000 (UTC)
 From: Baoquan He <bhe@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v4 3/7] kexec_file, x86: print out debugging message if required
-Date: Wed, 13 Dec 2023 13:57:43 +0800
-Message-ID: <20231213055747.61826-4-bhe@redhat.com>
+Subject: [PATCH v4 4/7] kexec_file, arm64: print out debugging message if required
+Date: Wed, 13 Dec 2023 13:57:44 +0800
+Message-ID: <20231213055747.61826-5-bhe@redhat.com>
 In-Reply-To: <20231213055747.61826-1-bhe@redhat.com>
 References: <20231213055747.61826-1-bhe@redhat.com>
 MIME-Version: 1.0
@@ -91,107 +91,107 @@ debug.
 Here replace pr_debug() with the newly added kexec_dprintk() in
 kexec_file loading related codes.
 
-And also print out e820 memmap passed to 2nd kernel just as kexec_load
-interface has been doing.
+And also remove the kimage->segment[] printing because the generic code
+has done the printing.
 
 Signed-off-by: Baoquan He <bhe@redhat.com>
 ---
- arch/x86/kernel/crash.c           |  4 ++--
- arch/x86/kernel/kexec-bzimage64.c | 23 ++++++++++++++---------
- 2 files changed, 16 insertions(+), 11 deletions(-)
+ arch/arm64/kernel/kexec_image.c        |  6 +++---
+ arch/arm64/kernel/machine_kexec.c      | 26 ++++++--------------------
+ arch/arm64/kernel/machine_kexec_file.c | 12 ++++++------
+ 3 files changed, 15 insertions(+), 29 deletions(-)
 
-diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
-index c92d88680dbf..1715e5f06a59 100644
---- a/arch/x86/kernel/crash.c
-+++ b/arch/x86/kernel/crash.c
-@@ -386,8 +386,8 @@ int crash_load_segments(struct kimage *image)
- 	if (ret)
- 		return ret;
- 	image->elf_load_addr = kbuf.mem;
--	pr_debug("Loaded ELF headers at 0x%lx bufsz=0x%lx memsz=0x%lx\n",
--		 image->elf_load_addr, kbuf.bufsz, kbuf.memsz);
-+	kexec_dprintk("Loaded ELF headers at 0x%lx bufsz=0x%lx memsz=0x%lx\n",
-+		      image->elf_load_addr, kbuf.bufsz, kbuf.memsz);
+diff --git a/arch/arm64/kernel/kexec_image.c b/arch/arm64/kernel/kexec_image.c
+index 636be6715155..532d72ea42ee 100644
+--- a/arch/arm64/kernel/kexec_image.c
++++ b/arch/arm64/kernel/kexec_image.c
+@@ -122,9 +122,9 @@ static void *image_load(struct kimage *image,
+ 	kernel_segment->memsz -= text_offset;
+ 	image->start = kernel_segment->mem;
  
- 	return ret;
+-	pr_debug("Loaded kernel at 0x%lx bufsz=0x%lx memsz=0x%lx\n",
+-				kernel_segment->mem, kbuf.bufsz,
+-				kernel_segment->memsz);
++	kexec_dprintk("Loaded kernel at 0x%lx bufsz=0x%lx memsz=0x%lx\n",
++		      kernel_segment->mem, kbuf.bufsz,
++		      kernel_segment->memsz);
+ 
+ 	return NULL;
  }
-diff --git a/arch/x86/kernel/kexec-bzimage64.c b/arch/x86/kernel/kexec-bzimage64.c
-index a61c12c01270..e9ae0eac6bf9 100644
---- a/arch/x86/kernel/kexec-bzimage64.c
-+++ b/arch/x86/kernel/kexec-bzimage64.c
-@@ -82,7 +82,7 @@ static int setup_cmdline(struct kimage *image, struct boot_params *params,
+diff --git a/arch/arm64/kernel/machine_kexec.c b/arch/arm64/kernel/machine_kexec.c
+index 078910db77a4..b38aae5b488d 100644
+--- a/arch/arm64/kernel/machine_kexec.c
++++ b/arch/arm64/kernel/machine_kexec.c
+@@ -32,26 +32,12 @@
+ static void _kexec_image_info(const char *func, int line,
+ 	const struct kimage *kimage)
+ {
+-	unsigned long i;
+-
+-	pr_debug("%s:%d:\n", func, line);
+-	pr_debug("  kexec kimage info:\n");
+-	pr_debug("    type:        %d\n", kimage->type);
+-	pr_debug("    start:       %lx\n", kimage->start);
+-	pr_debug("    head:        %lx\n", kimage->head);
+-	pr_debug("    nr_segments: %lu\n", kimage->nr_segments);
+-	pr_debug("    dtb_mem: %pa\n", &kimage->arch.dtb_mem);
+-	pr_debug("    kern_reloc: %pa\n", &kimage->arch.kern_reloc);
+-	pr_debug("    el2_vectors: %pa\n", &kimage->arch.el2_vectors);
+-
+-	for (i = 0; i < kimage->nr_segments; i++) {
+-		pr_debug("      segment[%lu]: %016lx - %016lx, 0x%lx bytes, %lu pages\n",
+-			i,
+-			kimage->segment[i].mem,
+-			kimage->segment[i].mem + kimage->segment[i].memsz,
+-			kimage->segment[i].memsz,
+-			kimage->segment[i].memsz /  PAGE_SIZE);
+-	}
++	kexec_dprintk("%s:%d:\n", func, line);
++	kexec_dprintk("  kexec kimage info:\n");
++	kexec_dprintk("    type:        %d\n", kimage->type);
++	kexec_dprintk("    head:        %lx\n", kimage->head);
++	kexec_dprintk("    kern_reloc: %pa\n", &kimage->arch.kern_reloc);
++	kexec_dprintk("    el2_vectors: %pa\n", &kimage->arch.el2_vectors);
+ }
  
- 	cmdline_ptr[cmdline_len - 1] = '\0';
+ void machine_kexec_cleanup(struct kimage *kimage)
+diff --git a/arch/arm64/kernel/machine_kexec_file.c b/arch/arm64/kernel/machine_kexec_file.c
+index a11a6e14ba89..0e017358f4ba 100644
+--- a/arch/arm64/kernel/machine_kexec_file.c
++++ b/arch/arm64/kernel/machine_kexec_file.c
+@@ -127,8 +127,8 @@ int load_other_segments(struct kimage *image,
+ 		image->elf_load_addr = kbuf.mem;
+ 		image->elf_headers_sz = headers_sz;
  
--	pr_debug("Final command line is: %s\n", cmdline_ptr);
-+	kexec_dprintk("Final command line is: %s\n", cmdline_ptr);
- 	cmdline_ptr_phys = bootparams_load_addr + cmdline_offset;
- 	cmdline_low_32 = cmdline_ptr_phys & 0xffffffffUL;
- 	cmdline_ext_32 = cmdline_ptr_phys >> 32;
-@@ -272,7 +272,12 @@ setup_boot_parameters(struct kimage *image, struct boot_params *params,
- 
- 	nr_e820_entries = params->e820_entries;
- 
-+	kexec_dprintk("E820 memmap:\n");
- 	for (i = 0; i < nr_e820_entries; i++) {
-+		kexec_dprintk("%016llx-%016llx (%d)\n",
-+			      params->e820_table[i].addr,
-+			      params->e820_table[i].addr + params->e820_table[i].size - 1,
-+			      params->e820_table[i].type);
- 		if (params->e820_table[i].type != E820_TYPE_RAM)
- 			continue;
- 		start = params->e820_table[i].addr;
-@@ -424,7 +429,7 @@ static void *bzImage64_load(struct kimage *image, char *kernel,
- 	 * command line. Make sure it does not overflow
- 	 */
- 	if (cmdline_len + MAX_ELFCOREHDR_STR_LEN > header->cmdline_size) {
--		pr_debug("Appending elfcorehdr=<addr> to command line exceeds maximum allowed length\n");
-+		kexec_dprintk("Appending elfcorehdr=<addr> to command line exceeds maximum allowed length\n");
- 		return ERR_PTR(-EINVAL);
+-		pr_debug("Loaded elf core header at 0x%lx bufsz=0x%lx memsz=0x%lx\n",
+-			 image->elf_load_addr, kbuf.bufsz, kbuf.memsz);
++		kexec_dprintk("Loaded elf core header at 0x%lx bufsz=0x%lx memsz=0x%lx\n",
++			      image->elf_load_addr, kbuf.bufsz, kbuf.memsz);
  	}
  
-@@ -445,7 +450,7 @@ static void *bzImage64_load(struct kimage *image, char *kernel,
- 		return ERR_PTR(ret);
- 	}
- 
--	pr_debug("Loaded purgatory at 0x%lx\n", pbuf.mem);
-+	kexec_dprintk("Loaded purgatory at 0x%lx\n", pbuf.mem);
- 
- 
- 	/*
-@@ -490,8 +495,8 @@ static void *bzImage64_load(struct kimage *image, char *kernel,
- 	if (ret)
- 		goto out_free_params;
- 	bootparam_load_addr = kbuf.mem;
--	pr_debug("Loaded boot_param, command line and misc at 0x%lx bufsz=0x%lx memsz=0x%lx\n",
--		 bootparam_load_addr, kbuf.bufsz, kbuf.bufsz);
-+	kexec_dprintk("Loaded boot_param, command line and misc at 0x%lx bufsz=0x%lx memsz=0x%lx\n",
-+		      bootparam_load_addr, kbuf.bufsz, kbuf.bufsz);
- 
- 	/* Load kernel */
- 	kbuf.buffer = kernel + kern16_size;
-@@ -505,8 +510,8 @@ static void *bzImage64_load(struct kimage *image, char *kernel,
- 		goto out_free_params;
- 	kernel_load_addr = kbuf.mem;
- 
--	pr_debug("Loaded 64bit kernel at 0x%lx bufsz=0x%lx memsz=0x%lx\n",
--		 kernel_load_addr, kbuf.bufsz, kbuf.memsz);
-+	kexec_dprintk("Loaded 64bit kernel at 0x%lx bufsz=0x%lx memsz=0x%lx\n",
-+		      kernel_load_addr, kbuf.bufsz, kbuf.memsz);
- 
- 	/* Load initrd high */
- 	if (initrd) {
-@@ -520,8 +525,8 @@ static void *bzImage64_load(struct kimage *image, char *kernel,
- 			goto out_free_params;
+ 	/* load initrd */
+@@ -148,8 +148,8 @@ int load_other_segments(struct kimage *image,
+ 			goto out_err;
  		initrd_load_addr = kbuf.mem;
  
 -		pr_debug("Loaded initrd at 0x%lx bufsz=0x%lx memsz=0x%lx\n",
--				initrd_load_addr, initrd_len, initrd_len);
+-				initrd_load_addr, kbuf.bufsz, kbuf.memsz);
 +		kexec_dprintk("Loaded initrd at 0x%lx bufsz=0x%lx memsz=0x%lx\n",
-+			      initrd_load_addr, initrd_len, initrd_len);
- 
- 		setup_initrd(params, initrd_load_addr, initrd_len);
++			      initrd_load_addr, kbuf.bufsz, kbuf.memsz);
  	}
+ 
+ 	/* load dtb */
+@@ -179,8 +179,8 @@ int load_other_segments(struct kimage *image,
+ 	image->arch.dtb = dtb;
+ 	image->arch.dtb_mem = kbuf.mem;
+ 
+-	pr_debug("Loaded dtb at 0x%lx bufsz=0x%lx memsz=0x%lx\n",
+-			kbuf.mem, kbuf.bufsz, kbuf.memsz);
++	kexec_dprintk("Loaded dtb at 0x%lx bufsz=0x%lx memsz=0x%lx\n",
++		      kbuf.mem, kbuf.bufsz, kbuf.memsz);
+ 
+ 	return 0;
+ 
 -- 
 2.41.0
 
