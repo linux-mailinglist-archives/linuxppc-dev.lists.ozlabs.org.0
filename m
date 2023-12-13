@@ -2,39 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD516812186
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Dec 2023 23:32:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A004781217E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Dec 2023 23:31:26 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=no7tl/T9;
+	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=QQknCQHV;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sr9G73p8qz3d9G
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 09:32:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sr9F81jwZz3cV1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 09:31:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=no7tl/T9;
+	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=QQknCQHV;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=salutedevices.com (client-ip=37.18.73.165; helo=mx1.sberdevices.ru; envelope-from=gnstark@salutedevices.com; receiver=lists.ozlabs.org)
 Received: from mx1.sberdevices.ru (mx1.sberdevices.ru [37.18.73.165])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sr9DC3KY0z2ysD
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sr9DC3MWHz30Yb
 	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Dec 2023 09:30:33 +1100 (AEDT)
 Received: from p-infra-ksmg-sc-msk01 (localhost [127.0.0.1])
-	by mx1.sberdevices.ru (Postfix) with ESMTP id F198B100009;
-	Thu, 14 Dec 2023 01:30:27 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru F198B100009
+	by mx1.sberdevices.ru (Postfix) with ESMTP id 2F4C010000B;
+	Thu, 14 Dec 2023 01:30:28 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 2F4C010000B
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
-	s=mail; t=1702506627;
-	bh=Ii5sBqymhiHfCuQq+3pwgLlO+kjouXvW2nmQVbwI7UU=;
+	s=mail; t=1702506628;
+	bh=kF9z8Zs1NRPVQ38LR3pEhvUwo7xq0rlkJwa/lSFCewY=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=no7tl/T9jZK9UqsFMv6dlMpRIpk1r4Z0yLCC5syS64E6OO6uNGre09OjlqNyNAzuS
-	 57StAIaX4rIxlUDWPBp0lt0/l+Za59SJV5unYZhrVSDr9INOW4zYz0V45tjE5ot/XQ
-	 q5jZTTks7CrNm7mJq5DdeeeapRLh8s172PfxLzg03QIDb5csYBF3PhgkWmMb+cEIo6
-	 xx2S7VKZgKvDqWvMzuq7mtpt4DFhDqXNs9JqfmMtC2GRkj6L0vvJuKk6KFhnLmtAn5
-	 ioBfvQ32a1ctlUYa3NWZ2OssdaXhCvOxC/Qf9EBZLXfgDPilNoVo4Tnp2G966eB68U
-	 cTi36XKJ7EBZQ==
+	b=QQknCQHV9d+Gfy+NW/NmGZk5I0Qpsv4KYKdNMQ6mHsNnjApsyAfBiN0XSWX8iaH2W
+	 YKj5QVf89sohWLQbG0jVMCPGZIm58cfe6qLaq9lEKEyVPzn3NcuV8641Ll4sLD1OIa
+	 AwASqbcHQeYoegB3kgOcq/rLXTLb787MI2o7lalWa/WMRFVGFmB51tRb/eThCNmhc4
+	 +nSCGUmgh+WGHkNQnJm+HsldGQXoauZQf8qujipQJ+6qFmJxcsSzHhlKImLLo06dnW
+	 PERYE3pLbrqhsocVfXg/dU5ZBVYlcOgdRW+tB9q1ViM6dw6vAbD3Be4snZQryWHDu9
+	 iI+WZDZVVqbrw==
 Received: from smtp.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
@@ -51,9 +51,9 @@ To: <andy.shevchenko@gmail.com>, <pavel@ucw.cz>, <lee@kernel.org>,
 	<mazziesaccount@gmail.com>, <peterz@infradead.org>, <mingo@redhat.com>,
 	<will@kernel.org>, <longman@redhat.com>, <boqun.feng@gmail.com>,
 	<nikitos.tr@gmail.com>
-Subject: [PATCH v3 02/11] locking: add define if mutex_destroy() is not an empty function
-Date: Thu, 14 Dec 2023 01:30:11 +0300
-Message-ID: <20231213223020.2713164-3-gnstark@salutedevices.com>
+Subject: [PATCH v3 03/11] devm-helpers: introduce devm_mutex_init
+Date: Thu, 14 Dec 2023 01:30:12 +0300
+Message-ID: <20231213223020.2713164-4-gnstark@salutedevices.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231213223020.2713164-1-gnstark@salutedevices.com>
 References: <20231213223020.2713164-1-gnstark@salutedevices.com>
@@ -94,33 +94,63 @@ Cc: kernel@salutedevices.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.k
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-mutex_destroy() is only a debug helper and an empty function on non-debug
-configurations still we can't legally ignore it because it's the
-established API call and it can be extended theoretically in the future.
-Sometimes it could be useful to know e.g. in the higher-level API if
-mutex_destroy() really does something in the current configuration
-and it's should be called or skipped otherwise for the sake of
-optimization so add dedicated define to recognize these cases.
+Using of devm API leads to a certain order of releasing resources.
+So all dependent resources which are not devm-wrapped should be deleted
+with respect to devm-release order. Mutex is one of such objects that
+often is bound to other resources and has no own devm wrapper.
+Since mutex_destroy() actually does nothing in non-debug builds
+frequently calling mutex_destroy() is just ignored which is safe for now
+but wrong formally and can lead to a problem if mutex_destroy() is
+extended so introduce devm_mutex_init().
 
 Signed-off-by: George Stark <gnstark@salutedevices.com>
 ---
- include/linux/mutex.h | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/devm-helpers.h | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/include/linux/mutex.h b/include/linux/mutex.h
-index a33aa9eb9fc3..2395ce4fcaf6 100644
---- a/include/linux/mutex.h
-+++ b/include/linux/mutex.h
-@@ -83,6 +83,9 @@ struct mutex {
+diff --git a/include/linux/devm-helpers.h b/include/linux/devm-helpers.h
+index 74891802200d..4043c3481d2e 100644
+--- a/include/linux/devm-helpers.h
++++ b/include/linux/devm-helpers.h
+@@ -24,6 +24,7 @@
+  */
  
- extern void mutex_destroy(struct mutex *lock);
+ #include <linux/device.h>
++#include <linux/mutex.h>
+ #include <linux/workqueue.h>
  
-+/* mutex_destroy() is a real function, not a NOP */
-+#define mutex_destroy  mutex_destroy
+ static inline void devm_delayed_work_drop(void *res)
+@@ -76,4 +77,30 @@ static inline int devm_work_autocancel(struct device *dev,
+ 	return devm_add_action(dev, devm_work_drop, w);
+ }
+ 
++#ifdef mutex_destroy
++static inline void devm_mutex_release(void *res)
++{
++	mutex_destroy(res);
++}
++#endif
 +
- #else
- 
- # define __DEBUG_MUTEX_INITIALIZER(lockname)
++/**
++ * devm_mutex_init - Resource-managed mutex initialization
++ * @dev:	Device which lifetime mutex is bound to
++ * @lock:	Pointer to a mutex
++ *
++ * Initialize mutex which is automatically destroyed when the driver is detached.
++ *
++ * Returns: 0 on success or a negative error code on failure.
++ */
++static inline int devm_mutex_init(struct device *dev, struct mutex *lock)
++{
++	mutex_init(lock);
++#ifdef mutex_destroy
++	return devm_add_action_or_reset(dev, devm_mutex_release, lock);
++#else
++	return 0;
++#endif
++}
++
+ #endif
 -- 
 2.25.1
 
