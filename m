@@ -1,70 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2767781219C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Dec 2023 23:39:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12A22812201
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Dec 2023 23:45:12 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=SzFl8qAy;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cpmQelrF;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cpmQelrF;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sr9Qf5r08z3dRj
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 09:39:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sr9Y15V52z3cTg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 09:45:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=SzFl8qAy;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cpmQelrF;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cpmQelrF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::a30; helo=mail-vk1-xa30.google.com; envelope-from=andy.shevchenko@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-vk1-xa30.google.com (mail-vk1-xa30.google.com [IPv6:2607:f8b0:4864:20::a30])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mlevitsk@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sr9Pn3Jt7z307y
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Dec 2023 09:38:53 +1100 (AEDT)
-Received: by mail-vk1-xa30.google.com with SMTP id 71dfb90a1353d-4b314f78326so2034738e0c.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Dec 2023 14:38:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702507129; x=1703111929; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HLWuIS891/i8mk8Po2VW+0HfMFW0IVIkJ746lLbBUXQ=;
-        b=SzFl8qAyPgkbbWWWPweutajNggmSZUxP83RmE0CXLPeVAhj/UUbpiKBNuOpVjO1Cvz
-         io92ouPrdUQ7aTuM3QCMown908MbJYyVJ41yc2XBuLTq+rr7PAa+OqEcbQFV0pcjiP8O
-         qGFybGhnCZA72JPuQovs1RPmL4pZ6uuM84wdJrq15ZwedzVkQDm+AffVrEpgLt6iVeZo
-         W36Jyn7l5vDOpCv2X4kcG5H3dtUoM44zwmtUi2NAAW6gDGSnSjW6bU2VVoAc28KIw19n
-         MQ3LY7y2BJmwvu1+PbBctfzt/LGZ84CsFHxcG+MShb+26qDzxEsBqe+UdaR6BVUeCF+L
-         Ew5A==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sr9X61S8Cz3cBG
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Dec 2023 09:44:21 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1702507458;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wJ/noKt4RR9yP36R44EoDN70UzFeuyznjnW/8U/CnAQ=;
+	b=cpmQelrFh2kfK6YmAaEdPqt7RajsqRJSunkeJfJTASYW94TaRPxGBt+fOxSasRF2ErfZvi
+	TW3qd5Yh3eisKlbeLrxWoYrpZKVqD2+KBIc+puJfCu6ZvF0wcEjBM3fzSsOikvm5CTq5NR
+	g9mllIu7kG63mgYKm/fNqytDuVrI6BQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1702507458;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wJ/noKt4RR9yP36R44EoDN70UzFeuyznjnW/8U/CnAQ=;
+	b=cpmQelrFh2kfK6YmAaEdPqt7RajsqRJSunkeJfJTASYW94TaRPxGBt+fOxSasRF2ErfZvi
+	TW3qd5Yh3eisKlbeLrxWoYrpZKVqD2+KBIc+puJfCu6ZvF0wcEjBM3fzSsOikvm5CTq5NR
+	g9mllIu7kG63mgYKm/fNqytDuVrI6BQ=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-55-kecm5p2gNjy9qGpUqkaqjQ-1; Wed, 13 Dec 2023 17:44:17 -0500
+X-MC-Unique: kecm5p2gNjy9qGpUqkaqjQ-1
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-33342e25313so6240928f8f.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Dec 2023 14:44:16 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702507129; x=1703111929;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HLWuIS891/i8mk8Po2VW+0HfMFW0IVIkJ746lLbBUXQ=;
-        b=ltC/fXnnxyC3MFuVJN3qU8xq0FYPUhPgGBtyybyTE2FJ8PZbgUI3or94bQGT8kCZc2
-         8n8uQ08dxbjejGCQE7BIMaOmsTH+OFVdE9pUCxA0h4WOsdSkdxvC2qaSRaJ9Bl23fRg2
-         wl989LxRt3OwrUg3/rmTXlC88zgLMIi7tupwuIHeS54GwPzp7feNB2Li7rjo2+kd6hGY
-         smj/123hm83PlY8/wLndD9Ib7JI+BfysiR16eXotIMfgCnfsWWvXoaWZ3FDtxDv7PvBz
-         hMKC7nTf9oLYQrse4+UobT5T6Ruz/y7Ip/EE6lhiXnKGJ8mfzuOuc5YxMOjiiTcMrnWb
-         ah5g==
-X-Gm-Message-State: AOJu0Yxpk7PAAyOnVP66TWcKxSbKmEzdUdltKXUM7Yzjf6IUv3cR1OAN
-	PFwI85+ylZ1iuUzWcBtO5FYOXkgkD851HdP2YTA=
-X-Google-Smtp-Source: AGHT+IEA72sJCg1tWb886mfGiZY/WmWBDak7hL7FWZISYncmdSFQJTEsSf1eyijU0ANVEDLcJi29rH8j1muZd8fNPec=
-X-Received: by 2002:a05:6122:1699:b0:4ac:1423:1be9 with SMTP id
- 25-20020a056122169900b004ac14231be9mr8733380vkl.13.1702507129585; Wed, 13 Dec
- 2023 14:38:49 -0800 (PST)
+        d=1e100.net; s=20230601; t=1702507456; x=1703112256;
+        h=content-transfer-encoding:mime-version:user-agent:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wJ/noKt4RR9yP36R44EoDN70UzFeuyznjnW/8U/CnAQ=;
+        b=gBdnh5zQEJ7n07cYJxBKJ+lfJ828Uek4NzKElhe67PZEFKqIKhzWFUAjVntshtIAwB
+         xDKGC2ESk1mDz8JDB9xbM2WKqUEfMtS8Or4gZVk8pdvHXqzla5d+fnQzQqm4Do238yoJ
+         zsTPXZs+vfpyjxRw9rJH8p5PCFIMdxjaBpuSbczNihPgVCtKcTT7cVnG/s4vDjyJsySR
+         xKbA61nLEo4gU4VXkCbqMompGz79zTG6nPPJB74xBrF+aC/eLuXVZ2uwDlf5A/FJVxRB
+         EjmOYy1ZF9s1xQMkJhI1h5qh7v+cAdgupz+HBABkS2ArWU7VZyswSZrVzBhq/Q9QHIgb
+         IRnw==
+X-Gm-Message-State: AOJu0Yx8urjPuAx6Dlngum4vuipjGwc1sPZ21U2ZsjAwVgsU6TUx0RhE
+	a3PgedhNq6oLjvN/Zqmycs1gk1sWTgvVT96BCKZiuK8kR9waNael+V32k8d9XX/R9oBZACRQVx3
+	qQYbobvrhQ045OB2Y0365SrxxTQ==
+X-Received: by 2002:a7b:cd91:0:b0:40c:3399:d5a0 with SMTP id y17-20020a7bcd91000000b0040c3399d5a0mr3902511wmj.100.1702507455966;
+        Wed, 13 Dec 2023 14:44:15 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF5EdNQIMrjofmVv1zrJdv8ykEuwHCs2ZxHKs/y4nPdIAePbusp9PWe8bHPWPpyIDEswd1Chw==
+X-Received: by 2002:a7b:cd91:0:b0:40c:3399:d5a0 with SMTP id y17-20020a7bcd91000000b0040c3399d5a0mr3902490wmj.100.1702507455621;
+        Wed, 13 Dec 2023 14:44:15 -0800 (PST)
+Received: from starship ([77.137.131.62])
+        by smtp.gmail.com with ESMTPSA id az23-20020a05600c601700b0040c0902dc22sm22569330wmb.31.2023.12.13.14.44.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Dec 2023 14:44:15 -0800 (PST)
+Message-ID: <0c86e5ffb65f07cd3e444038d1f0ed39f0f4130a.camel@redhat.com>
+Subject: Re: [PATCH v4 10/12] KVM: x86: never write to memory from
+ kvm_vcpu_check_block()
+From: Maxim Levitsky <mlevitsk@redhat.com>
+To: Jim Mattson <jmattson@google.com>
+Date: Thu, 14 Dec 2023 00:44:12 +0200
+In-Reply-To: <CALMp9eQ69dGSix-9pJdEtEw9T1Mqz9E1eaf1-yGP9k4_nMZogw@mail.gmail.com>
+References: <20220921003201.1441511-11-seanjc@google.com>
+	 <20231207010302.2240506-1-jmattson@google.com>
+	 <ZXHw7tykubfG04Um@google.com>
+	 <CALMp9eTT97oDmQT7pxeOMLQbt-371aMtC2Kev+-kWXVRDVrjeg@mail.gmail.com>
+	 <ZXh8Nq_y_szj1WN0@google.com>
+	 <5ca5592b21131f515e296afae006e5bb28b1fb87.camel@redhat.com>
+	 <CALMp9eQ69dGSix-9pJdEtEw9T1Mqz9E1eaf1-yGP9k4_nMZogw@mail.gmail.com>
+User-Agent: Evolution 3.36.5 (3.36.5-2.fc32)
 MIME-Version: 1.0
-References: <20231213223020.2713164-1-gnstark@salutedevices.com>
- <20231213223020.2713164-4-gnstark@salutedevices.com> <CAHp75Vc1zZFWB8PPrg8oeAKz9aHnQrrSjdGyGd8mWcmeZdJ9qA@mail.gmail.com>
-In-Reply-To: <CAHp75Vc1zZFWB8PPrg8oeAKz9aHnQrrSjdGyGd8mWcmeZdJ9qA@mail.gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 14 Dec 2023 00:38:13 +0200
-Message-ID: <CAHp75Vdxa5k-CLhL+PmK0iTPTNSpP77DA6ooWnxfViwSKiEOSw@mail.gmail.com>
-Subject: Re: [PATCH v3 03/11] devm-helpers: introduce devm_mutex_init
-To: George Stark <gnstark@salutedevices.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,66 +106,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, vadimp@nvidia.com, mazziesaccount@gmail.com, peterz@infradead.org, boqun.feng@gmail.com, lee@kernel.org, kernel@salutedevices.com, linux-kernel@vger.kernel.org, npiggin@gmail.com, hdegoede@redhat.com, mingo@redhat.com, pavel@ucw.cz, longman@redhat.com, nikitos.tr@gmail.com, will@kernel.org, linux-leds@vger.kernel.org
+Cc: kvm@vger.kernel.org, david@redhat.com, atishp@atishpatra.org, linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org, imbrenda@linux.ibm.com, frankja@linux.ibm.com, maz@kernel.org, chenhuacai@kernel.org, palmer@dabbelt.com, borntraeger@linux.ibm.com, aou@eecs.berkeley.edu, suzuki.poulose@arm.com, paul.walmsley@sifive.com, alexandru.elisei@arm.com, linux-arm-kernel@lists.infradead.org, Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, oliver.upton@linux.dev, james.morse@arm.com, kvm-riscv@lists.infradead.org, anup@brainfault.org, pbonzini@redhat.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Dec 14, 2023 at 12:36=E2=80=AFAM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Thu, Dec 14, 2023 at 12:30=E2=80=AFAM George Stark <gnstark@salutedevi=
-ces.com> wrote:
-> >
-> > Using of devm API leads to a certain order of releasing resources.
-> > So all dependent resources which are not devm-wrapped should be deleted
-> > with respect to devm-release order. Mutex is one of such objects that
-> > often is bound to other resources and has no own devm wrapper.
-> > Since mutex_destroy() actually does nothing in non-debug builds
-> > frequently calling mutex_destroy() is just ignored which is safe for no=
-w
-> > but wrong formally and can lead to a problem if mutex_destroy() is
-> > extended so introduce devm_mutex_init().
+On Wed, 2023-12-13 at 14:31 -0800, Jim Mattson wrote:
+> On Wed, Dec 13, 2023 at 2:25 PM Maxim Levitsky <mlevitsk@redhat.com> wrote:
+> > On Tue, 2023-12-12 at 07:28 -0800, Sean Christopherson wrote:
+> > > On Sun, Dec 10, 2023, Jim Mattson wrote:
+> > > > On Thu, Dec 7, 2023 at 8:21 AM Sean Christopherson <seanjc@google.com> wrote:
+> > > > > Doh.  We got the less obvious cases and missed the obvious one.
+> > > > > 
+> > > > > Ugh, and we also missed a related mess in kvm_guest_apic_has_interrupt().  That
+> > > > > thing should really be folded into vmx_has_nested_events().
+> > > > > 
+> > > > > Good gravy.  And vmx_interrupt_blocked() does the wrong thing because that
+> > > > > specifically checks if L1 interrupts are blocked.
+> > > > > 
+> > > > > Compile tested only, and definitely needs to be chunked into multiple patches,
+> > > > > but I think something like this mess?
+> > > > 
+> > > > The proposed patch does not fix the problem. In fact, it messes things
+> > > > up so much that I don't get any test results back.
+> > > 
+> > > Drat.
+> > > 
+> > > > Google has an internal K-U-T test that demonstrates the problem. I
+> > > > will post it soon.
+> > > 
+> > > Received, I'll dig in soonish, though "soonish" might unfortunately might mean
+> > > 2024.
+> > > 
+> > 
+> > Hi,
+> > 
+> > So this is what I think:
+> > 
+> > 
+> > KVM does have kvm_guest_apic_has_interrupt() for this exact purpose,
+> > to check if nested APICv has a pending interrupt before halting.
+> > 
+> > 
+> > However the problem is bigger - with APICv we have in essence 2 pending interrupt
+> > bitmaps - the PIR and the IRR, and to know if the guest has a pending interrupt
+> > one has in theory to copy PIR to IRR, then see if the max is larger then the current PPR.
+> > 
+> > Since we don't want to write to guest memory, and the IRR here resides in the guest memory,
+> > I guess we have to do a 'dry-run' version of 'vmx_complete_nested_posted_interrupt' and call
+> > it from  kvm_guest_apic_has_interrupt().
+> > 
+> > What do you think? I can prepare a patch for this.
+> > 
+> > Can you share a reproducer or write a new one that can be shared?
+> 
+> See https://lore.kernel.org/kvm/20231211185552.3856862-1-jmattson@google.com/.
 
-...
+Thank you!
 
-> > +#ifdef mutex_destroy
-> > +static inline void devm_mutex_release(void *res)
-> > +{
-> > +       mutex_destroy(res);
-> > +}
-> > +#endif
-> > +
-> > +/**
-> > + * devm_mutex_init - Resource-managed mutex initialization
-> > + * @dev:       Device which lifetime mutex is bound to
-> > + * @lock:      Pointer to a mutex
-> > + *
-> > + * Initialize mutex which is automatically destroyed when the driver i=
-s detached.
-> > + *
-> > + * Returns: 0 on success or a negative error code on failure.
-> > + */
-> > +static inline int devm_mutex_init(struct device *dev, struct mutex *lo=
-ck)
-> > +{
-> > +       mutex_init(lock);
-> > +#ifdef mutex_destroy
-> > +       return devm_add_action_or_reset(dev, devm_mutex_release, lock);
-> > +#else
-> > +       return 0;
-> > +#endif
-> > +}
->
-> If this is going to be accepted, you may decrease the amount of ifdeffery=
-.
->
-> #ifdef ...
-> #else
-> #define devm_mutex_init(dev, lock)  mutex_init(lock)
+Best regards,
+	Maxim Levitsky
 
-More precisely ({ mutex_init(lock); 0; }) or as a static inline...
+> 
+> > Best regards,
+> >         Maxim Levitsky
+> > 
 
-> #endif
 
---=20
-With Best Regards,
-Andy Shevchenko
