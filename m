@@ -2,39 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15AB18138BF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 18:37:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DBB48138E6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 18:41:16 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=N3qm0OX4;
+	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=MMmWEM3+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SrfgL5kNRz3dBK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Dec 2023 04:37:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Srflt0sYzz3vjt
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Dec 2023 04:41:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=N3qm0OX4;
+	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=MMmWEM3+;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=salutedevices.com (client-ip=45.89.224.132; helo=mx1.sberdevices.ru; envelope-from=gnstark@salutedevices.com; receiver=lists.ozlabs.org)
 Received: from mx1.sberdevices.ru (mx2.sberdevices.ru [45.89.224.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SrffR28xMz3cTL
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SrffR2HX9z3cWZ
 	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Dec 2023 04:36:28 +1100 (AEDT)
 Received: from p-infra-ksmg-sc-msk02 (localhost [127.0.0.1])
-	by mx1.sberdevices.ru (Postfix) with ESMTP id 4C0C212001B;
+	by mx1.sberdevices.ru (Postfix) with ESMTP id 7EC7512001C;
 	Thu, 14 Dec 2023 20:36:25 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 4C0C212001B
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 7EC7512001C
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
 	s=mail; t=1702575385;
-	bh=2AuAiO3OInmf7JfFcpOZ0isTbjfNOkeR9WOJsIXMUT4=;
+	bh=E+93qW99+MbE6qv9QYbuPHDD4qbYVZKtaw4xnbuw8OI=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=N3qm0OX4jYf+qO+Up6Xf2I5g/M1zd2Colz3sB7rLYfos4v0EVovY2chsoiL+6683H
-	 aF4KszR1nUgXCqyRmO/bwV/+SFNnt8KjB3LGeWk7xfaBf64H/Lhf/HLItiKPqPIcbt
-	 pR4k2v6bGfPMuCXZCibc8tC7YutZ8i6ztxPHixzA9LBxvwxQvHIYrcsu/HvXLu2ulv
-	 wCAozndBC2ocvH/dr/fwHq1e8N63sU9sxuNUCc6qZhDuOwSYSvXA3DT9t+WEZjO8dQ
-	 I/TFtyeHs5B+Cp6WdQK+7z9QBhqLoWnIJDvUo8TXsTWERCTBBrM82Z0VOD8YGRv/Yk
-	 HTCVSWSr/K14Q==
+	b=MMmWEM3+ikA+w0TW+lYBUXezYUYlNgkI+4AIQg2LRMw9fGZeaxMX66VrZVOMazUTc
+	 sd4Ezd6d3UQWd4/raOOjzPXBR/O3D6RsyCptX8QW5AyBQtRbKdABgXaAjPnmK1D/vC
+	 iw+OrSrRYnVQbR6GBXsI30EjPoAISDeUF6n5q4LNbWV/VmLT5sB1PhrD5MbnDJPpGH
+	 ccqJPKvjJR+SmwNUrFZWA6E3ZNQsH+J3Ui76g+Ufw1aeCsfHeuxxERFw+Z27uJcTed
+	 4lcHtpVvxV5FispeMY/CIlcz+tGFtIrGHPzxGl9lCLuquH1VJrfhPP+oeSLJL80Att
+	 QlCIYCX3pj4xA==
 Received: from smtp.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
@@ -43,7 +43,7 @@ Received: from smtp.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.1
 Received: from localhost.localdomain (100.64.160.123) by
  p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Thu, 14 Dec 2023 20:36:24 +0300
+ 15.2.1118.40; Thu, 14 Dec 2023 20:36:25 +0300
 From: George Stark <gnstark@salutedevices.com>
 To: <andy.shevchenko@gmail.com>, <pavel@ucw.cz>, <lee@kernel.org>,
 	<vadimp@nvidia.com>, <mpe@ellerman.id.au>, <npiggin@gmail.com>,
@@ -51,9 +51,9 @@ To: <andy.shevchenko@gmail.com>, <pavel@ucw.cz>, <lee@kernel.org>,
 	<mazziesaccount@gmail.com>, <peterz@infradead.org>, <mingo@redhat.com>,
 	<will@kernel.org>, <longman@redhat.com>, <boqun.feng@gmail.com>,
 	<nikitos.tr@gmail.com>
-Subject: [PATCH v4 04/10] leds: aw200xx: use devm API to cleanup module's resources
-Date: Thu, 14 Dec 2023 20:36:08 +0300
-Message-ID: <20231214173614.2820929-5-gnstark@salutedevices.com>
+Subject: [PATCH v4 05/10] leds: lp3952: use devm API to cleanup module's resources
+Date: Thu, 14 Dec 2023 20:36:09 +0300
+Message-ID: <20231214173614.2820929-6-gnstark@salutedevices.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231214173614.2820929-1-gnstark@salutedevices.com>
 References: <20231214173614.2820929-1-gnstark@salutedevices.com>
@@ -99,95 +99,67 @@ so they are automatically unregistered after module's remove() is done.
 led_classdev_unregister() calls module's led_set_brightness() to turn off
 the LEDs and that callback uses resources which were destroyed already
 in module's remove() so use devm API instead of remove().
+Also drop explicit turning LEDs off from remove() due to they will be off
+anyway by led_classdev_unregister().
 
 Signed-off-by: George Stark <gnstark@salutedevices.com>
 ---
- drivers/leds/leds-aw200xx.c | 33 ++++++++++++++++++++++-----------
- 1 file changed, 22 insertions(+), 11 deletions(-)
+ drivers/leds/leds-lp3952.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/leds/leds-aw200xx.c b/drivers/leds/leds-aw200xx.c
-index 1d3943f86f7f..eed1e65c1c0e 100644
---- a/drivers/leds/leds-aw200xx.c
-+++ b/drivers/leds/leds-aw200xx.c
-@@ -10,6 +10,7 @@
- #include <linux/bitfield.h>
- #include <linux/bits.h>
- #include <linux/container_of.h>
-+#include <linux/devm-helpers.h>
- #include <linux/gpio/consumer.h>
- #include <linux/i2c.h>
- #include <linux/leds.h>
-@@ -530,6 +531,16 @@ static const struct regmap_config aw200xx_regmap_config = {
- 	.disable_locking = true,
+diff --git a/drivers/leds/leds-lp3952.c b/drivers/leds/leds-lp3952.c
+index 3bd55652a706..fc0e02a9768f 100644
+--- a/drivers/leds/leds-lp3952.c
++++ b/drivers/leds/leds-lp3952.c
+@@ -207,6 +207,13 @@ static const struct regmap_config lp3952_regmap = {
+ 	.cache_type = REGCACHE_RBTREE,
  };
  
-+static void aw200xx_chip_reset_action(void *data)
++static void gpio_set_low_action(void *data)
 +{
-+	aw200xx_chip_reset(data);
++	struct lp3952_led_array *priv = (struct lp3952_led_array *)data;
++
++	gpiod_set_value(priv->enable_gpio, 0);
 +}
 +
-+static void aw200xx_disable_action(void *data)
-+{
-+	aw200xx_disable(data);
-+}
-+
- static int aw200xx_probe(struct i2c_client *client)
+ static int lp3952_probe(struct i2c_client *client)
  {
- 	const struct aw200xx_chipdef *cdef;
-@@ -568,11 +579,17 @@ static int aw200xx_probe(struct i2c_client *client)
+ 	int status;
+@@ -226,6 +233,10 @@ static int lp3952_probe(struct i2c_client *client)
+ 		return status;
+ 	}
  
- 	aw200xx_enable(chip);
- 
-+	ret = devm_add_action(&client->dev, aw200xx_disable_action, chip);
-+	if (ret)
-+		return ret;
++	status = devm_add_action(&client->dev, gpio_set_low_action, priv);
++	if (status)
++		return status;
 +
- 	ret = aw200xx_chip_check(chip);
- 	if (ret)
- 		return ret;
- 
--	mutex_init(&chip->mutex);
-+	ret = devm_mutex_init(&client->dev, &chip->mutex);
-+	if (ret)
-+		return ret;
- 
- 	/* Need a lock now since after call aw200xx_probe_fw, sysfs nodes created */
- 	mutex_lock(&chip->mutex);
-@@ -581,6 +598,10 @@ static int aw200xx_probe(struct i2c_client *client)
- 	if (ret)
- 		goto out_unlock;
- 
-+	ret = devm_add_action(&client->dev, aw200xx_chip_reset_action, chip);
-+	if (ret)
-+		goto out_unlock;
-+
- 	ret = aw200xx_probe_fw(&client->dev, chip);
- 	if (ret)
- 		goto out_unlock;
-@@ -595,15 +616,6 @@ static int aw200xx_probe(struct i2c_client *client)
- 	return ret;
+ 	priv->regmap = devm_regmap_init_i2c(client, &lp3952_regmap);
+ 	if (IS_ERR(priv->regmap)) {
+ 		int err = PTR_ERR(priv->regmap);
+@@ -254,15 +265,6 @@ static int lp3952_probe(struct i2c_client *client)
+ 	return 0;
  }
  
--static void aw200xx_remove(struct i2c_client *client)
+-static void lp3952_remove(struct i2c_client *client)
 -{
--	struct aw200xx *chip = i2c_get_clientdata(client);
+-	struct lp3952_led_array *priv;
 -
--	aw200xx_chip_reset(chip);
--	aw200xx_disable(chip);
--	mutex_destroy(&chip->mutex);
+-	priv = i2c_get_clientdata(client);
+-	lp3952_on_off(priv, LP3952_LED_ALL, false);
+-	gpiod_set_value(priv->enable_gpio, 0);
 -}
 -
- static const struct aw200xx_chipdef aw20036_cdef = {
- 	.channels = 36,
- 	.display_size_rows_max = 3,
-@@ -652,7 +664,6 @@ static struct i2c_driver aw200xx_driver = {
- 		.of_match_table = aw200xx_match_table,
+ static const struct i2c_device_id lp3952_id[] = {
+ 	{LP3952_NAME, 0},
+ 	{}
+@@ -274,7 +276,6 @@ static struct i2c_driver lp3952_i2c_driver = {
+ 			.name = LP3952_NAME,
  	},
- 	.probe_new = aw200xx_probe,
--	.remove = aw200xx_remove,
- 	.id_table = aw200xx_id,
+ 	.probe = lp3952_probe,
+-	.remove = lp3952_remove,
+ 	.id_table = lp3952_id,
  };
- module_i2c_driver(aw200xx_driver);
+ 
 -- 
 2.25.1
 
