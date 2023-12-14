@@ -1,66 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA0AE8127BB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 07:09:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 877D48127CD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 07:14:48 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=RqNkw+CY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=PXH/XJPC;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SrMPh3BjNz3vww
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 17:09:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SrMWp1T7Nz3vcd
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 17:14:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=RqNkw+CY;
+	dkim=pass (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=PXH/XJPC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=brainfault.org (client-ip=2607:f8b0:4864:20::42a; helo=mail-pf1-x42a.google.com; envelope-from=anup@brainfault.org; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=brainfault.org (client-ip=2607:f8b0:4864:20::22f; helo=mail-oi1-x22f.google.com; envelope-from=anup@brainfault.org; receiver=lists.ozlabs.org)
+Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SrMJc04sFz3vwm
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Dec 2023 17:05:03 +1100 (AEDT)
-Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-6cedc988cf6so3500943b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Dec 2023 22:05:03 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SrMW13C0Mz2ydW
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Dec 2023 17:14:05 +1100 (AEDT)
+Received: by mail-oi1-x22f.google.com with SMTP id 5614622812f47-3b9e07690ccso5024946b6e.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Dec 2023 22:14:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1702533901; x=1703138701; darn=lists.ozlabs.org;
+        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1702534442; x=1703139242; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dvVjokEhJRkgiYQ+o9OaV0HA0xI9C7Xt69a6c2d+FcQ=;
-        b=RqNkw+CYre1ZWDPEppelhJfA7zaR5Ek9XEMwx0r/p8gsWCu73zklPbSkrCV8jTzeD6
-         duBGc+GUTVd6weohXltyGcG6y7ZH8l0Wtris61l00F0JuFMfYyoWHUtMHxcpdAZ2QaqI
-         5jg6K6VjWzf3IWfwh/G2wQL2IGWG2UdUZ2yoxmv1IefJiQiWtDnJ66UvOH8XAyVLkqim
-         qPekHJBZNhfPKXcouScvDl4uCl6Bps5mr629ZuCL7FpFctjsDZ8FmlUBGd7BmnBErlIa
-         JSj3odKvpkNZ9AC2LxeYwPO19KJtrMp8p1hhd7xv6f6BOrUCl24RMIOPS+PwTkGFPu4h
-         eseg==
+        bh=l3sMkRAMQECWLiukPZgPf+GGB55ddSK20MJ/gjXWD1s=;
+        b=PXH/XJPCKG9pURsmYMbeIm0JbXntRSmJtHp9gu54E941VojqW0YkFsp8Nz3XgOCIQn
+         OslaZ9K2bn0yIX8AhnwRmLcXVokp6/VhpynEd3PZVq1mdMoYLOOYVSaW/I0ZnInttG8f
+         6sb4D6bVl1As27u1sM8VX3TFu8vwAgVmQZP8Xt/bXwEpUCdrWxTirt8taX5hgziCY7At
+         H/FIQNlBQ8dO+Jx/s6mZ0p2eoHlHe+ad7FZgSrttEDqarRd7kUhWH5KGxZOshBDcflOg
+         jZELUE4uoJb6FZYNxo7HHgwi9YmIBkjLrq1ziJCWvYkKfCp7B1ofMq3uBXjYZ8ZuhZam
+         4fKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702533901; x=1703138701;
+        d=1e100.net; s=20230601; t=1702534442; x=1703139242;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dvVjokEhJRkgiYQ+o9OaV0HA0xI9C7Xt69a6c2d+FcQ=;
-        b=nnCyGMFTjMIYxyxa1r9HL5VrxGzOM56FE4t0WDdWvxAgrTPXaQe0KFP7hXOkeCOGkH
-         mWr9L9ZgbyEx42CC82ec7XCXl1BEONhgClHyx54QCfeUHVsQnXhznFLzhPLvNlxBJ/ON
-         6uMObM/qBKGULzJ0cTsSnON9laWpNrNo+FYUPvEwwnKIicqrp5Kq0iq1Y5/MHHqC3bFY
-         8D196pvxfh2FMk7elkXATfldUKlp90U/Bz0xwQaYOx4rx9jdHW6zPkFe+6KFo9d8UT/C
-         6fdKrzaS/fzXDvrq0976cjzpqC2xB4AogOeVEJh2A2BI2Fn9UkRZNyqN5vFX3bnVxWt1
-         BOnQ==
-X-Gm-Message-State: AOJu0Yz7OAAIOciSjPWaZgiYEe73shU7nznDEBJVqc6ysUXsbBW5W4dx
-	XHUCzuNOrYyad9CPhIRCczNiZfL8ObonI0FuXbqEqw==
-X-Google-Smtp-Source: AGHT+IHIasKoIhsfkj7Yu+FMUSkaxjPll3cuawBTpXD75vrutVj6NpINC37M3K8JiCCZ1y7ffegWrPb57ZwkbEZ9v2I=
-X-Received: by 2002:a17:90a:e395:b0:286:bfed:6f55 with SMTP id
- b21-20020a17090ae39500b00286bfed6f55mr4390822pjz.38.1702533901140; Wed, 13
- Dec 2023 22:05:01 -0800 (PST)
+        bh=l3sMkRAMQECWLiukPZgPf+GGB55ddSK20MJ/gjXWD1s=;
+        b=F42Ptt0mc+2LIuVy1setL6aWwLayHy0i+eG5gVBg/aoZSjqJ0yWT8IugIsmW9D5AV6
+         vzOKl1/ZAA1o17GZNSTTtC2zHc3KaeZk2uFmQDAs/6qeu7F4iDd1a4yuYiiNGeS5hDGI
+         Ye1oGdhNTMJRNdsWo0cyNf1ocW6X9dhcfPBXYtuYmh5TDxHctliO3ivwrr+jYp/aI5Rl
+         yKe+tKl8xLehoYnxkP7l4VJ9pybdQlm9Pha0uLN+JHZysHiC+P2oGi6r6N+xUE9zBEd4
+         HfymIFBh9xvr89QXueWr+rB6qxAhcLYz4GfE+OZMFuJ+zVB2kznN6FgZv2v2h6sk8BPH
+         7MDQ==
+X-Gm-Message-State: AOJu0YzLt2K3oeAGz/sOAqo2dao3K1xh/tesguwoBbkbrbwWmDzbSUTZ
+	32dIMSD4H66yB9corwFjp8mOLh0500cSJJgzXe50xA==
+X-Google-Smtp-Source: AGHT+IHQd+GqK3y5tlwO2tTpsax7aS81PVJh1PsMGIYAkqaLtpj/3C4S2vBn648Rccq1W4+OEQ+fJWJGTJEaydQwxew=
+X-Received: by 2002:a05:6808:2e85:b0:3ba:8d5:4009 with SMTP id
+ gt5-20020a0568082e8500b003ba08d54009mr11288098oib.110.1702534442120; Wed, 13
+ Dec 2023 22:14:02 -0800 (PST)
 MIME-Version: 1.0
-References: <20230916003118.2540661-1-seanjc@google.com> <20230916003118.2540661-20-seanjc@google.com>
-In-Reply-To: <20230916003118.2540661-20-seanjc@google.com>
+References: <20230916003118.2540661-1-seanjc@google.com> <20230916003118.2540661-23-seanjc@google.com>
+In-Reply-To: <20230916003118.2540661-23-seanjc@google.com>
 From: Anup Patel <anup@brainfault.org>
-Date: Thu, 14 Dec 2023 11:34:49 +0530
-Message-ID: <CAAhSdy1bzQ2mxOew0iw-OuLWxzOhk3LtO+908TYw2gw+5yN3RA@mail.gmail.com>
-Subject: Re: [PATCH 19/26] KVM: Standardize include paths across all architectures
+Date: Thu, 14 Dec 2023 11:43:50 +0530
+Message-ID: <CAAhSdy2N8PmP2+-8sFVpgduED0HU9D3dqg7sk3+R9f2wRgZ7KA@mail.gmail.com>
+Subject: Re: [PATCH 22/26] entry/kvm: KVM: Move KVM details related to
+ signal/-EINTR into KVM proper
 To: Sean Christopherson <seanjc@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -80,136 +81,202 @@ Cc: x86@kernel.org, kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Sep 16, 2023 at 6:01=E2=80=AFAM Sean Christopherson <seanjc@google.=
+On Sat, Sep 16, 2023 at 6:02=E2=80=AFAM Sean Christopherson <seanjc@google.=
 com> wrote:
 >
-> Standardize KVM's include paths across all architectures by declaring
-> the KVM-specific includes in the common Makefile.kvm.  Having common KVM
-> "own" the included paths reduces the temptation to unnecessarily add
-> virt/kvm to arch include paths, and conversely if allowing arch code to
-> grab headers from virt/kvm becomes desirable, virt/kvm can be added to
-> all architecture's include path with a single line update.
+> Move KVM's morphing of pending signals into exits to userspace into KVM
+> proper, and drop the @vcpu param from xfer_to_guest_mode_handle_work().
+> How KVM responds to -EINTR is a detail that really belongs in KVM itself,
+> and removing the non-KVM call to kvm_handle_signal_exit() will allow
+> hiding said API and the definition of "struct kvm_vcpu" from the kernel.
 >
-> Having the common KVM makefile append to ccflags also provides a
-> convenient location to append other things, e.g. KVM-specific #defines.
->
-> Note, this changes the behavior of s390 and PPC, as s390 and PPC
-> previously overwrote ccflags-y instead of adding on.  There is no evidenc=
-e
-> that overwriting ccflags-y was necessary or even deliberate, as both s390
-> and PPC switched to the overwrite behavior without so much as a passing
-> mention when EXTRA_CFLAGS was replaced with ccflags-y (commit c73028a0288=
-7
-> ("s390: change to new flag variable") and commit 4108d9ba9091
-> ("powerpc/Makefiles: Change to new flag variables")).
+> Alternatively, entry/kvm.c could be treated as part of KVM, i.e. be given
+> access to KVM internals, but that's not obviously better than having KVM
+> react to -EINTR (though it's not obviously worse either).
 >
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 
 For KVM RISC-V:
-Acked-by: Anup Patel <anup@brainfault.org>
+Anup Patel <anup@brainfault.org>
 
 Regards,
 Anup
 
 > ---
->  arch/arm64/kvm/Makefile   | 2 --
->  arch/mips/kvm/Makefile    | 2 --
->  arch/powerpc/kvm/Makefile | 2 --
->  arch/riscv/kvm/Makefile   | 2 --
->  arch/s390/kvm/Makefile    | 2 --
->  arch/x86/kvm/Makefile     | 1 -
->  virt/kvm/Makefile.kvm     | 2 ++
->  7 files changed, 2 insertions(+), 11 deletions(-)
+>  arch/arm64/kvm/arm.c      |  3 +--
+>  arch/riscv/kvm/vcpu.c     |  2 +-
+>  arch/x86/kvm/vmx/vmx.c    |  1 -
+>  arch/x86/kvm/x86.c        |  3 +--
+>  include/linux/entry-kvm.h |  3 +--
+>  include/linux/kvm_host.h  | 13 ++++++++++++-
+>  kernel/entry/kvm.c        | 11 ++++-------
+>  7 files changed, 20 insertions(+), 16 deletions(-)
 >
-> diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile
-> index c0c050e53157..3996489baeef 100644
-> --- a/arch/arm64/kvm/Makefile
-> +++ b/arch/arm64/kvm/Makefile
-> @@ -3,8 +3,6 @@
->  # Makefile for Kernel-based Virtual Machine module
->  #
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index 6480628197b4..641df091e46b 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -6,7 +6,6 @@
 >
-> -ccflags-y +=3D -I $(srctree)/$(src)
+>  #include <linux/bug.h>
+>  #include <linux/cpu_pm.h>
+> -#include <linux/entry-kvm.h>
+>  #include <linux/errno.h>
+>  #include <linux/err.h>
+>  #include <linux/kvm_host.h>
+> @@ -929,7 +928,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+>                 /*
+>                  * Check conditions before entering the guest
+>                  */
+> -               ret =3D xfer_to_guest_mode_handle_work(vcpu);
+> +               ret =3D kvm_xfer_to_guest_mode_handle_work(vcpu);
+>                 if (!ret)
+>                         ret =3D 1;
+>
+> diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
+> index 82229db1ce73..c313f4e90e70 100644
+> --- a/arch/riscv/kvm/vcpu.c
+> +++ b/arch/riscv/kvm/vcpu.c
+> @@ -667,7 +667,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+>         run->exit_reason =3D KVM_EXIT_UNKNOWN;
+>         while (ret > 0) {
+>                 /* Check conditions before entering the guest */
+> -               ret =3D xfer_to_guest_mode_handle_work(vcpu);
+> +               ret =3D kvm_xfer_to_guest_mode_handle_work(vcpu);
+>                 if (ret)
+>                         continue;
+>                 ret =3D 1;
+> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> index faf0071566ef..43b87ad5fde8 100644
+> --- a/arch/x86/kvm/vmx/vmx.c
+> +++ b/arch/x86/kvm/vmx/vmx.c
+> @@ -28,7 +28,6 @@
+>  #include <linux/slab.h>
+>  #include <linux/tboot.h>
+>  #include <linux/trace_events.h>
+> -#include <linux/entry-kvm.h>
+>
+>  #include <asm/apic.h>
+>  #include <asm/asm.h>
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 6c9c81e82e65..aab095f89d9e 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -59,7 +59,6 @@
+>  #include <linux/sched/stat.h>
+>  #include <linux/sched/isolation.h>
+>  #include <linux/mem_encrypt.h>
+> -#include <linux/entry-kvm.h>
+>  #include <linux/suspend.h>
+>  #include <linux/smp.h>
+>
+> @@ -10987,7 +10986,7 @@ static int vcpu_run(struct kvm_vcpu *vcpu)
+>
+>                 if (__xfer_to_guest_mode_work_pending()) {
+>                         kvm_vcpu_srcu_read_unlock(vcpu);
+> -                       r =3D xfer_to_guest_mode_handle_work(vcpu);
+> +                       r =3D kvm_xfer_to_guest_mode_handle_work(vcpu);
+>                         kvm_vcpu_srcu_read_lock(vcpu);
+>                         if (r)
+>                                 return r;
+> diff --git a/include/linux/entry-kvm.h b/include/linux/entry-kvm.h
+> index e7d90d06e566..e235a91d28fc 100644
+> --- a/include/linux/entry-kvm.h
+> +++ b/include/linux/entry-kvm.h
+> @@ -42,11 +42,10 @@ static inline int arch_xfer_to_guest_mode_handle_work=
+(unsigned long ti_work)
+>  /**
+>   * xfer_to_guest_mode_handle_work - Check and handle pending work which =
+needs
+>   *                                 to be handled before going to guest m=
+ode
+> - * @vcpu:      Pointer to current's VCPU data
+>   *
+>   * Returns: 0 or an error code
+>   */
+> -int xfer_to_guest_mode_handle_work(struct kvm_vcpu *vcpu);
+> +int xfer_to_guest_mode_handle_work(void);
+>
+>  /**
+>   * xfer_to_guest_mode_prepare - Perform last minute preparation work tha=
+t
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index fb6c6109fdca..d520d6801070 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -2,7 +2,7 @@
+>  #ifndef __KVM_HOST_H
+>  #define __KVM_HOST_H
+>
 > -
->  include $(srctree)/virt/kvm/Makefile.kvm
->
->  obj-$(CONFIG_KVM) +=3D kvm.o
-> diff --git a/arch/mips/kvm/Makefile b/arch/mips/kvm/Makefile
-> index 96a7cd21b140..d198e1addea7 100644
-> --- a/arch/mips/kvm/Makefile
-> +++ b/arch/mips/kvm/Makefile
-> @@ -4,8 +4,6 @@
->
->  include $(srctree)/virt/kvm/Makefile.kvm
->
-> -ccflags-y +=3D -Iarch/mips/kvm
-> -
->  kvm-$(CONFIG_CPU_HAS_MSA) +=3D msa.o
->
->  kvm-y +=3D    mips.o emulate.o entry.o \
-> diff --git a/arch/powerpc/kvm/Makefile b/arch/powerpc/kvm/Makefile
-> index 08a0e53d58c7..d6c6678ddf65 100644
-> --- a/arch/powerpc/kvm/Makefile
-> +++ b/arch/powerpc/kvm/Makefile
-> @@ -3,8 +3,6 @@
->  # Makefile for Kernel-based Virtual Machine module
->  #
->
-> -ccflags-y :=3D -Iarch/powerpc/kvm
-> -
->  include $(srctree)/virt/kvm/Makefile.kvm
->
->  common-objs-y +=3D powerpc.o emulate_loadstore.o
-> diff --git a/arch/riscv/kvm/Makefile b/arch/riscv/kvm/Makefile
-> index 4c2067fc59fc..ff7d5f67e229 100644
-> --- a/arch/riscv/kvm/Makefile
-> +++ b/arch/riscv/kvm/Makefile
-> @@ -3,8 +3,6 @@
->  # Makefile for RISC-V KVM support
->  #
->
-> -ccflags-y +=3D -I $(srctree)/$(src)
-> -
->  include $(srctree)/virt/kvm/Makefile.kvm
->
->  obj-$(CONFIG_KVM) +=3D kvm.o
-> diff --git a/arch/s390/kvm/Makefile b/arch/s390/kvm/Makefile
-> index f17249ab2a72..f8153189e003 100644
-> --- a/arch/s390/kvm/Makefile
-> +++ b/arch/s390/kvm/Makefile
-> @@ -5,8 +5,6 @@
->
->  include $(srctree)/virt/kvm/Makefile.kvm
->
-> -ccflags-y :=3D -Iarch/s390/kvm
-> -
->  kvm-y +=3D kvm-s390.o intercept.o interrupt.o priv.o sigp.o
->  kvm-y +=3D diag.o gaccess.o guestdbg.o vsie.o pv.o
->
-> diff --git a/arch/x86/kvm/Makefile b/arch/x86/kvm/Makefile
-> index 80e3fe184d17..d13f1a7b7b3d 100644
-> --- a/arch/x86/kvm/Makefile
-> +++ b/arch/x86/kvm/Makefile
-> @@ -1,6 +1,5 @@
->  # SPDX-License-Identifier: GPL-2.0
->
-> -ccflags-y +=3D -I $(srctree)/arch/x86/kvm
->  ccflags-$(CONFIG_KVM_WERROR) +=3D -Werror
->
->  ifeq ($(CONFIG_FRAME_POINTER),y)
-> diff --git a/virt/kvm/Makefile.kvm b/virt/kvm/Makefile.kvm
-> index 29373b59d89a..e85079ad245d 100644
-> --- a/virt/kvm/Makefile.kvm
-> +++ b/virt/kvm/Makefile.kvm
-> @@ -3,6 +3,8 @@
->  # Makefile for Kernel-based Virtual Machine module
->  #
->
-> +ccflags-y +=3D -I$(srctree)/$(src)
+> +#include <linux/entry-kvm.h>
+>  #include <linux/types.h>
+>  #include <linux/hardirq.h>
+>  #include <linux/list.h>
+> @@ -2293,6 +2293,17 @@ static inline void kvm_handle_signal_exit(struct k=
+vm_vcpu *vcpu)
+>         vcpu->run->exit_reason =3D KVM_EXIT_INTR;
+>         vcpu->stat.signal_exits++;
+>  }
 > +
->  KVM ?=3D ../../../virt/kvm
+> +static inline int kvm_xfer_to_guest_mode_handle_work(struct kvm_vcpu *vc=
+pu)
+> +{
+> +       int r =3D xfer_to_guest_mode_handle_work();
+> +
+> +       if (r) {
+> +               WARN_ON_ONCE(r !=3D -EINTR);
+> +               kvm_handle_signal_exit(vcpu);
+> +       }
+> +       return r;
+> +}
+>  #endif /* CONFIG_KVM_XFER_TO_GUEST_WORK */
 >
->  kvm-y :=3D $(KVM)/kvm_main.o $(KVM)/eventfd.o $(KVM)/binary_stats.o
+>  /*
+> diff --git a/kernel/entry/kvm.c b/kernel/entry/kvm.c
+> index c2fc39824157..872617468b4a 100644
+> --- a/kernel/entry/kvm.c
+> +++ b/kernel/entry/kvm.c
+> @@ -1,17 +1,14 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>
+>  #include <linux/entry-kvm.h>
+> -#include <linux/kvm_host.h>
+>
+> -static int xfer_to_guest_mode_work(struct kvm_vcpu *vcpu, unsigned long =
+ti_work)
+> +static int xfer_to_guest_mode_work(unsigned long ti_work)
+>  {
+>         do {
+>                 int ret;
+>
+> -               if (ti_work & (_TIF_SIGPENDING | _TIF_NOTIFY_SIGNAL)) {
+> -                       kvm_handle_signal_exit(vcpu);
+> +               if (ti_work & (_TIF_SIGPENDING | _TIF_NOTIFY_SIGNAL))
+>                         return -EINTR;
+> -               }
+>
+>                 if (ti_work & _TIF_NEED_RESCHED)
+>                         schedule();
+> @@ -28,7 +25,7 @@ static int xfer_to_guest_mode_work(struct kvm_vcpu *vcp=
+u, unsigned long ti_work)
+>         return 0;
+>  }
+>
+> -int xfer_to_guest_mode_handle_work(struct kvm_vcpu *vcpu)
+> +int xfer_to_guest_mode_handle_work(void)
+>  {
+>         unsigned long ti_work;
+>
+> @@ -44,6 +41,6 @@ int xfer_to_guest_mode_handle_work(struct kvm_vcpu *vcp=
+u)
+>         if (!(ti_work & XFER_TO_GUEST_MODE_WORK))
+>                 return 0;
+>
+> -       return xfer_to_guest_mode_work(vcpu, ti_work);
+> +       return xfer_to_guest_mode_work(ti_work);
+>  }
+>  EXPORT_SYMBOL_GPL(xfer_to_guest_mode_handle_work);
 > --
 > 2.42.0.459.ge4e396fd5e-goog
 >
