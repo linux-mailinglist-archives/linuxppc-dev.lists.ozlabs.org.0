@@ -2,39 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9C088138F9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 18:42:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48AEB813905
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 18:44:25 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=o4PVSh0a;
+	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=G2Btu04+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Srfnh4SpFz3vql
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Dec 2023 04:42:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SrfqV6yhVz3w02
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Dec 2023 04:44:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=o4PVSh0a;
+	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=G2Btu04+;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=salutedevices.com (client-ip=45.89.224.132; helo=mx1.sberdevices.ru; envelope-from=gnstark@salutedevices.com; receiver=lists.ozlabs.org)
 Received: from mx1.sberdevices.ru (mx2.sberdevices.ru [45.89.224.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SrffX5YBtz3cXK
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SrffX5jZpz3cXM
 	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Dec 2023 04:36:36 +1100 (AEDT)
 Received: from p-infra-ksmg-sc-msk02 (localhost [127.0.0.1])
-	by mx1.sberdevices.ru (Postfix) with ESMTP id EEC3A12001E;
-	Thu, 14 Dec 2023 20:36:25 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru EEC3A12001E
+	by mx1.sberdevices.ru (Postfix) with ESMTP id 2D8CE12001F;
+	Thu, 14 Dec 2023 20:36:26 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 2D8CE12001F
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
-	s=mail; t=1702575385;
-	bh=k3WMJ0GNwuGRczuP2LxdxutooPucV6JPLeqyGQDEPIA=;
+	s=mail; t=1702575386;
+	bh=nTXR4WBFZR+kxSlC13nocgtwFZu8ItCajWxM9cqi5i0=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=o4PVSh0a2zgp2DaGeInM7daHcqicls01cPeXE8aE6Ms6f52DMAt8ZQiWho05YOyaI
-	 kjcXnU24UMVevOlFWDY+qDps3W3bdbk9SwHjjg0L/2ghAUIzrZyR4stKkdvlreFN85
-	 7B4xg+GBckWhUmhdlCDgpn0fr8MVe2nJCptXc2hho4tNOsxUkBxc0iCJXlOEz/pEHS
-	 ho/FuaUTz+zI7l1DiApIVydpaCILJD0TrC/mN2Bvqt3BhYDzEJXV7dwJpQasMnOB0j
-	 RnRnOF33H+rh8lCfr/PqJboNgzzGUCU8u8O0cElS+Z7LkSVXPcsldDb4zMAH/fjNOh
-	 51D/Z/+OlCB7Q==
+	b=G2Btu04+yak/8X6fT3WuNA96d147W5JSc/bjvRnU3To5MiV3hU85t8rXnzP1CDGJc
+	 Nqi8RAragqLnWBD4xThH4DPHRJeqjq58CKKSzgix9X4rgOi6cVOuHKI5XgBWdGQAZD
+	 OG+zH2ofCmV/bRXj7tb2mVyDD+mwAj/ljsNBXZIAQ3/dzl+vQDOSuMBk7FkfrY9HbY
+	 5joVO1jvu2Kcjc8zbRWhmeyTqGx/Mdrp9Doa6r0FjTpQ0ke64J+vKkcl4lIXeOEBPn
+	 J2StXK9G5d/jG+k3NjZgO3V4NLF2RXBdffOgoFSKMlTT6+khG/VfmDFw0U3LqNxEFW
+	 leNh/hF5COznw==
 Received: from smtp.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
@@ -51,9 +51,9 @@ To: <andy.shevchenko@gmail.com>, <pavel@ucw.cz>, <lee@kernel.org>,
 	<mazziesaccount@gmail.com>, <peterz@infradead.org>, <mingo@redhat.com>,
 	<will@kernel.org>, <longman@redhat.com>, <boqun.feng@gmail.com>,
 	<nikitos.tr@gmail.com>
-Subject: [PATCH v4 07/10] leds: nic78bx: use devm API to cleanup module's resources
-Date: Thu, 14 Dec 2023 20:36:11 +0300
-Message-ID: <20231214173614.2820929-8-gnstark@salutedevices.com>
+Subject: [PATCH v4 08/10] leds: mlxreg: use devm_mutex_init for mutex initializtion
+Date: Thu, 14 Dec 2023 20:36:12 +0300
+Message-ID: <20231214173614.2820929-9-gnstark@salutedevices.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231214173614.2820929-1-gnstark@salutedevices.com>
 References: <20231214173614.2820929-1-gnstark@salutedevices.com>
@@ -97,71 +97,67 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 In this driver LEDs are registered using devm_led_classdev_register()
 so they are automatically unregistered after module's remove() is done.
 led_classdev_unregister() calls module's led_set_brightness() to turn off
-the LEDs and that callback uses resources which were destroyed already
-in module's remove() so use devm API instead of remove().
+the LEDs and that callback uses mutex which was destroyed already
+in module's remove() so use devm API instead.
 
 Signed-off-by: George Stark <gnstark@salutedevices.com>
 ---
- drivers/leds/leds-nic78bx.c | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ drivers/leds/leds-mlxreg.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/leds/leds-nic78bx.c b/drivers/leds/leds-nic78bx.c
-index f196f52eec1e..f3049fa14f04 100644
---- a/drivers/leds/leds-nic78bx.c
-+++ b/drivers/leds/leds-nic78bx.c
-@@ -118,6 +118,15 @@ static struct nic78bx_led nic78bx_leds[] = {
- 	}
- };
+diff --git a/drivers/leds/leds-mlxreg.c b/drivers/leds/leds-mlxreg.c
+index b7855c93bd72..64a78eff05c7 100644
+--- a/drivers/leds/leds-mlxreg.c
++++ b/drivers/leds/leds-mlxreg.c
+@@ -5,6 +5,7 @@
  
-+static void lock_led_reg_action(void *data)
-+{
-+	struct nic78bx_led_data *led_data = (struct nic78bx_led_data *)data;
-+
-+	/* Lock LED register */
-+	outb(NIC78BX_LOCK_VALUE,
-+	     led_data->io_base + NIC78BX_LOCK_REG_OFFSET);
-+}
-+
- static int nic78bx_probe(struct platform_device *pdev)
+ #include <linux/bitops.h>
+ #include <linux/device.h>
++#include <linux/devm-helpers.h>
+ #include <linux/io.h>
+ #include <linux/leds.h>
+ #include <linux/module.h>
+@@ -258,6 +259,7 @@ static int mlxreg_led_probe(struct platform_device *pdev)
  {
- 	struct device *dev = &pdev->dev;
-@@ -152,6 +161,10 @@ static int nic78bx_probe(struct platform_device *pdev)
- 	led_data->io_base = io_rc->start;
- 	spin_lock_init(&led_data->lock);
+ 	struct mlxreg_core_platform_data *led_pdata;
+ 	struct mlxreg_led_priv_data *priv;
++	int err;
  
-+	ret = devm_add_action(dev, lock_led_reg_action, led_data);
-+	if (ret)
-+		return ret;
+ 	led_pdata = dev_get_platdata(&pdev->dev);
+ 	if (!led_pdata) {
+@@ -269,28 +271,21 @@ static int mlxreg_led_probe(struct platform_device *pdev)
+ 	if (!priv)
+ 		return -ENOMEM;
+ 
+-	mutex_init(&priv->access_lock);
++	err = devm_mutex_init(&pdev->dev, &priv->access_lock);
++	if (err)
++		return err;
 +
- 	for (i = 0; i < ARRAY_SIZE(nic78bx_leds); i++) {
- 		nic78bx_leds[i].data = led_data;
+ 	priv->pdev = pdev;
+ 	priv->pdata = led_pdata;
  
-@@ -167,17 +180,6 @@ static int nic78bx_probe(struct platform_device *pdev)
- 	return ret;
+ 	return mlxreg_led_config(priv);
  }
  
--static int nic78bx_remove(struct platform_device *pdev)
+-static int mlxreg_led_remove(struct platform_device *pdev)
 -{
--	struct nic78bx_led_data *led_data = platform_get_drvdata(pdev);
+-	struct mlxreg_led_priv_data *priv = dev_get_drvdata(&pdev->dev);
 -
--	/* Lock LED register */
--	outb(NIC78BX_LOCK_VALUE,
--	     led_data->io_base + NIC78BX_LOCK_REG_OFFSET);
+-	mutex_destroy(&priv->access_lock);
 -
 -	return 0;
 -}
 -
- static const struct acpi_device_id led_device_ids[] = {
- 	{"NIC78B3", 0},
- 	{"", 0},
-@@ -186,7 +188,6 @@ MODULE_DEVICE_TABLE(acpi, led_device_ids);
- 
- static struct platform_driver led_driver = {
- 	.probe = nic78bx_probe,
--	.remove = nic78bx_remove,
+ static struct platform_driver mlxreg_led_driver = {
  	.driver = {
- 		.name = KBUILD_MODNAME,
- 		.acpi_match_table = ACPI_PTR(led_device_ids),
+ 	    .name = "leds-mlxreg",
+ 	},
+ 	.probe = mlxreg_led_probe,
+-	.remove = mlxreg_led_remove,
+ };
+ 
+ module_platform_driver(mlxreg_led_driver);
 -- 
 2.25.1
 
