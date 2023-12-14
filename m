@@ -1,51 +1,107 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F770812D17
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 11:35:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 700A9812F75
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 12:52:52 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=OzCRiAsf;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KPVCy4Jo;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AEcLp4Qm;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SrTK76DHQz3wKg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 21:35:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SrW1t1JGqz3cYy
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 22:52:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=OzCRiAsf;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KPVCy4Jo;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AEcLp4Qm;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=hdegoede@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SrTDl5zSKz3vhl
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Dec 2023 21:32:07 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1702549927;
-	bh=wq25GBJsbyghd55GhhhgbPyxN8BeAnr9gNBYTVIUpPs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OzCRiAsfvE/MJiS5OPusWIC2gJQhPD09SHuFxXokr64wyYQrZialQTGpNYmkqBA2j
-	 66UMyYAW7tdn20EOajWVbv8Fl+dnYz8URxGFLoCAuVxH3949xRhkes/6gF0TVeLcwT
-	 4KoMFWw3cqGdMT9K/wxlyduoSwqROYlggR7dRay7RybY+Mw5NsUu0KdbTia+yXyZYw
-	 +oscrfxUhR2gODqFFbD5C3ceZ6DsQtKdU7/4Ku6jHfIsQMAOI62qP2ey7rRYwntI+r
-	 pT2vDS08k4EFuW4ZXvua/HhmtdOd+jXZIgVh5Of8aQiJTyFIlxSBO7PR3DB52HAlxQ
-	 eLX2dzWM+Q9wA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SrTDl4rgGz4xRn;
-	Thu, 14 Dec 2023 21:32:07 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH v2 5/5] powerpc: Stop using of_root
-Date: Thu, 14 Dec 2023 21:31:52 +1100
-Message-ID: <20231214103152.12269-5-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231214103152.12269-1-mpe@ellerman.id.au>
-References: <20231214103152.12269-1-mpe@ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SrW0z2KR7z3bd6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Dec 2023 22:52:01 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1702554718;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aS/6XnBRIdVtrYOp4wLHjvS6oz2atR3YP9ICgOB3iGg=;
+	b=KPVCy4JoG5Zi1WZBbThBmgzcPQP47UmD0HsBh8Zw2DvPE6uG4/xs7xsl7dqZFNk5jhDT82
+	VABqJBLUkJ/+IfkcrnTPMMzSi4OF0r5m3kewmYedQPYPLPTQWxB2F7sB2GB0ICJ4FX+tzP
+	FPhWCy8+gLVhKkZaPapN01EcI3pVxq0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1702554719;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aS/6XnBRIdVtrYOp4wLHjvS6oz2atR3YP9ICgOB3iGg=;
+	b=AEcLp4Qm4ONpDt88Qs//W/StohQFanzXQrvDyyd4fQA5qsZGK9FlnbxdDca4L3TQdyRf91
+	MHPqxQNKOWyCs3LStjHt9Ol5awJknaZWnC8VGeX3Dfi7lcA9HljWv2XwQLO1y6vajmwa8G
+	iV3Fr07IGXOFgpJuNU2I+QEfokU73xE=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-355-jEJbN8haPgSLO9DLIMFg9g-1; Thu, 14 Dec 2023 06:51:56 -0500
+X-MC-Unique: jEJbN8haPgSLO9DLIMFg9g-1
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-a1eb3f3dc2eso219978866b.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Dec 2023 03:51:56 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702554715; x=1703159515;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aS/6XnBRIdVtrYOp4wLHjvS6oz2atR3YP9ICgOB3iGg=;
+        b=QCayweAiSO1YWJWPn8W5mv5VnUAOJDWvUkGAbxGSWGh5N9gUhHmgQ8ljzvw5gKENrB
+         b8yHbtuKiRqADSA/4oBdy8H8OB89ThBeB/rKIKe/W4/I7G2yM1bNBadzXkxIfJziVi93
+         1Eh/eWW0ehTyCG07Np9kbTMPrkxxRcEEdQ2DZwHnZ0ev9WZ9PtsBsIZccJnCEKyxYQzG
+         a+57DJAVXUhvqJtSWGs2SXuBMTs19qd2/RsRPGZDK+Beo5W8mYOSr9wRQzgQletXT167
+         WTdZpyxEiNXTZxGi2k2fvDb8FO2YFwjLq2J2k07vxRx0EKLPuOLiTxEX/GHaD3sPNzPI
+         uonA==
+X-Gm-Message-State: AOJu0YwajIbmnETHq8+YBZ++4ipRlIW7cPvxCjwhMCw9D+IXWGnzmsXS
+	U6sWNOkV5mJKmupMt5Vau/5JVnaS3T92pXNhaEKa+O0zPpNw+q5iZ+gqmIcYexXSJSbmVzYTlAz
+	EymgmwrZ7iwbiTKXrMUqhLI1oYg==
+X-Received: by 2002:a17:906:10c7:b0:a1c:e980:3c3 with SMTP id v7-20020a17090610c700b00a1ce98003c3mr4066585ejv.28.1702554715588;
+        Thu, 14 Dec 2023 03:51:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHFL7HyiSYut4T02F873+WBU/5sTp49/HyQIdZ0Go18ospT2UlJqi27N9WVGJWziHpX9DdSow==
+X-Received: by 2002:a17:906:10c7:b0:a1c:e980:3c3 with SMTP id v7-20020a17090610c700b00a1ce98003c3mr4066575ejv.28.1702554715217;
+        Thu, 14 Dec 2023 03:51:55 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id se13-20020a170907a38d00b00a1f78048f08sm8487004ejc.146.2023.12.14.03.51.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Dec 2023 03:51:54 -0800 (PST)
+Message-ID: <c8950992-9b3e-4740-8ad6-f22d5a043fb1@redhat.com>
+Date: Thu, 14 Dec 2023 12:51:53 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 03/11] devm-helpers: introduce devm_mutex_init
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ George Stark <gnstark@salutedevices.com>,
+ "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+ "pavel@ucw.cz" <pavel@ucw.cz>, "lee@kernel.org" <lee@kernel.org>,
+ "vadimp@nvidia.com" <vadimp@nvidia.com>,
+ "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
+ "npiggin@gmail.com" <npiggin@gmail.com>,
+ "mazziesaccount@gmail.com" <mazziesaccount@gmail.com>,
+ "peterz@infradead.org" <peterz@infradead.org>,
+ "mingo@redhat.com" <mingo@redhat.com>, "will@kernel.org" <will@kernel.org>,
+ "longman@redhat.com" <longman@redhat.com>,
+ "boqun.feng@gmail.com" <boqun.feng@gmail.com>,
+ "nikitos.tr@gmail.com" <nikitos.tr@gmail.com>
+References: <20231213223020.2713164-1-gnstark@salutedevices.com>
+ <20231213223020.2713164-4-gnstark@salutedevices.com>
+ <80881d5d-3ae9-4580-84c1-f25b421cc518@csgroup.eu>
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <80881d5d-3ae9-4580-84c1-f25b421cc518@csgroup.eu>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, nl
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -58,226 +114,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: robh+dt@kernel.org, linux-kernel@vger.kernel.org
+Cc: "kernel@salutedevices.com" <kernel@salutedevices.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Hi,
 
-Replace all usages of of_root by of_find_node_by_path("/")
+On 12/14/23 11:06, Christophe Leroy wrote:
+> 
+> 
+> Le 13/12/2023 à 23:30, George Stark a écrit :
+>> [Vous ne recevez pas souvent de courriers de gnstark@salutedevices.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+>>
+>> Using of devm API leads to a certain order of releasing resources.
+>> So all dependent resources which are not devm-wrapped should be deleted
+>> with respect to devm-release order. Mutex is one of such objects that
+>> often is bound to other resources and has no own devm wrapper.
+>> Since mutex_destroy() actually does nothing in non-debug builds
+>> frequently calling mutex_destroy() is just ignored which is safe for now
+>> but wrong formally and can lead to a problem if mutex_destroy() is
+>> extended so introduce devm_mutex_init().
+> 
+> So you abandonned the idea of using mutex.h ?
+> 
+> I can't see the point to spread mutex functions into devm-helpers.h
+> 
+> Adding a mutex_destroy macro for this purpose looks odd. And if someone 
+> defines a new version of mutex_destroy() and forget the macro, it will 
+> go undetected.
+> 
+> Usually macros of that type serve the purpose of defining a fallback 
+> when the macro is not defined. In that case, when someone adds a new 
+> version without defining the macro, it gets detected because if 
+> conflicts with the fallback.
+> But in your case it works the other way round, so I will just go undetected.
+> 
+> For me the best solution remains to use mutex.h and have 
+> devm_mutex_init() defined or declared at the same place as mutex_destroy().
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/kernel/secure_boot.c        |  8 ++++++--
- arch/powerpc/kexec/ranges.c              |  8 +++++---
- arch/powerpc/mm/drmem.c                  | 10 +++++-----
- arch/powerpc/mm/numa.c                   |  6 ++++--
- arch/powerpc/platforms/52xx/efika.c      |  4 +++-
- arch/powerpc/platforms/pasemi/pci.c      |  4 +++-
- arch/powerpc/platforms/pseries/lparcfg.c |  6 +++++-
- arch/powerpc/platforms/pseries/setup.c   | 12 +++++++++---
- 8 files changed, 40 insertions(+), 18 deletions(-)
+FWIW defining devm_mutex_init() in mutex.h is fine
+with me and makes sense to me. I also agree that putting
+it there would be better if that is acceptable for
+the mutex maintainers.
 
-v2: Unchanged.
+devm-helpers.h is there for helpers which don't fit
+in another place.
 
-diff --git a/arch/powerpc/kernel/secure_boot.c b/arch/powerpc/kernel/secure_boot.c
-index f9af305d9579..9e0efb657f39 100644
---- a/arch/powerpc/kernel/secure_boot.c
-+++ b/arch/powerpc/kernel/secure_boot.c
-@@ -32,8 +32,10 @@ bool is_ppc_secureboot_enabled(void)
- 	if (enabled)
- 		goto out;
- 
--	if (!of_property_read_u32(of_root, "ibm,secure-boot", &secureboot))
-+	node = of_find_node_by_path("/");
-+	if (!of_property_read_u32(node, "ibm,secure-boot", &secureboot))
- 		enabled = (secureboot > 1);
-+	of_node_put(node);
- 
- out:
- 	pr_info("Secure boot mode %s\n", enabled ? "enabled" : "disabled");
-@@ -54,8 +56,10 @@ bool is_ppc_trustedboot_enabled(void)
- 	if (enabled)
- 		goto out;
- 
--	if (!of_property_read_u32(of_root, "ibm,trusted-boot", &trustedboot))
-+	node = of_find_node_by_path("/");
-+	if (!of_property_read_u32(node, "ibm,trusted-boot", &trustedboot))
- 		enabled = (trustedboot > 0);
-+	of_node_put(node);
- 
- out:
- 	pr_info("Trusted boot mode %s\n", enabled ? "enabled" : "disabled");
-diff --git a/arch/powerpc/kexec/ranges.c b/arch/powerpc/kexec/ranges.c
-index fb3e12f15214..33b780049aaf 100644
---- a/arch/powerpc/kexec/ranges.c
-+++ b/arch/powerpc/kexec/ranges.c
-@@ -385,14 +385,16 @@ int add_opal_mem_range(struct crash_mem **mem_ranges)
- int add_reserved_mem_ranges(struct crash_mem **mem_ranges)
- {
- 	int n_mem_addr_cells, n_mem_size_cells, i, len, cells, ret = 0;
-+	struct device_node *root = of_find_node_by_path("/");
- 	const __be32 *prop;
- 
--	prop = of_get_property(of_root, "reserved-ranges", &len);
-+	prop = of_get_property(root, "reserved-ranges", &len);
-+	n_mem_addr_cells = of_n_addr_cells(root);
-+	n_mem_size_cells = of_n_size_cells(root);
-+	of_node_put(root);
- 	if (!prop)
- 		return 0;
- 
--	n_mem_addr_cells = of_n_addr_cells(of_root);
--	n_mem_size_cells = of_n_size_cells(of_root);
- 	cells = n_mem_addr_cells + n_mem_size_cells;
- 
- 	/* Each reserved range is an (address,size) pair */
-diff --git a/arch/powerpc/mm/drmem.c b/arch/powerpc/mm/drmem.c
-index fde7790277f7..c110ab8fa8a3 100644
---- a/arch/powerpc/mm/drmem.c
-+++ b/arch/powerpc/mm/drmem.c
-@@ -393,17 +393,17 @@ static const __be32 *of_get_usable_memory(struct device_node *dn)
- int walk_drmem_lmbs(struct device_node *dn, void *data,
- 		    int (*func)(struct drmem_lmb *, const __be32 **, void *))
- {
-+	struct device_node *root = of_find_node_by_path("/");
- 	const __be32 *prop, *usm;
- 	int ret = -ENODEV;
- 
--	if (!of_root)
-+	if (!root)
- 		return ret;
- 
- 	/* Get the address & size cells */
--	of_node_get(of_root);
--	n_root_addr_cells = of_n_addr_cells(of_root);
--	n_root_size_cells = of_n_size_cells(of_root);
--	of_node_put(of_root);
-+	n_root_addr_cells = of_n_addr_cells(root);
-+	n_root_size_cells = of_n_size_cells(root);
-+	of_node_put(root);
- 
- 	if (init_drmem_lmb_size(dn))
- 		return ret;
-diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-index f6c4ace3b221..a490724e84ad 100644
---- a/arch/powerpc/mm/numa.c
-+++ b/arch/powerpc/mm/numa.c
-@@ -1111,7 +1111,7 @@ static void __init setup_node_data(int nid, u64 start_pfn, u64 end_pfn)
- 
- static void __init find_possible_nodes(void)
- {
--	struct device_node *rtas;
-+	struct device_node *rtas, *root;
- 	const __be32 *domains = NULL;
- 	int prop_length, max_nodes;
- 	u32 i;
-@@ -1132,10 +1132,12 @@ static void __init find_possible_nodes(void)
- 	 * If the LPAR is migratable, new nodes might be activated after a LPM,
- 	 * so we should consider the max number in that case.
- 	 */
--	if (!of_get_property(of_root, "ibm,migratable-partition", NULL))
-+	root = of_find_node_by_path("/");
-+	if (!of_get_property(root, "ibm,migratable-partition", NULL))
- 		domains = of_get_property(rtas,
- 					  "ibm,current-associativity-domains",
- 					  &prop_length);
-+	of_node_put(root);
- 	if (!domains) {
- 		domains = of_get_property(rtas, "ibm,max-associativity-domains",
- 					&prop_length);
-diff --git a/arch/powerpc/platforms/52xx/efika.c b/arch/powerpc/platforms/52xx/efika.c
-index aa82e6b437f3..37a67120f257 100644
---- a/arch/powerpc/platforms/52xx/efika.c
-+++ b/arch/powerpc/platforms/52xx/efika.c
-@@ -195,8 +195,10 @@ static void __init efika_setup_arch(void)
- 
- static int __init efika_probe(void)
- {
--	const char *model = of_get_property(of_root, "model", NULL);
-+	struct device_node *root = of_find_node_by_path("/");
-+	const char *model = of_get_property(root, "model", NULL);
- 
-+	of_node_put(root);
- 	if (model == NULL)
- 		return 0;
- 	if (strcmp(model, "EFIKA5K2"))
-diff --git a/arch/powerpc/platforms/pasemi/pci.c b/arch/powerpc/platforms/pasemi/pci.c
-index f27d31414737..60f990a336c4 100644
---- a/arch/powerpc/platforms/pasemi/pci.c
-+++ b/arch/powerpc/platforms/pasemi/pci.c
-@@ -270,16 +270,18 @@ static int __init pas_add_bridge(struct device_node *dev)
- 
- void __init pas_pci_init(void)
- {
-+	struct device_node *root = of_find_node_by_path("/");
- 	struct device_node *np;
- 	int res;
- 
- 	pci_set_flags(PCI_SCAN_ALL_PCIE_DEVS);
- 
--	np = of_find_compatible_node(of_root, NULL, "pasemi,rootbus");
-+	np = of_find_compatible_node(root, NULL, "pasemi,rootbus");
- 	if (np) {
- 		res = pas_add_bridge(np);
- 		of_node_put(np);
- 	}
-+	of_node_put(root);
- }
- 
- void __iomem *__init pasemi_pci_getcfgaddr(struct pci_dev *dev, int offset)
-diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
-index 1c151d77e74b..f73c4d1c26af 100644
---- a/arch/powerpc/platforms/pseries/lparcfg.c
-+++ b/arch/powerpc/platforms/pseries/lparcfg.c
-@@ -346,9 +346,13 @@ static int read_rtas_lpar_name(struct seq_file *m)
-  */
- static int read_dt_lpar_name(struct seq_file *m)
- {
-+	struct device_node *root = of_find_node_by_path("/");
- 	const char *name;
-+	int ret;
- 
--	if (of_property_read_string(of_root, "ibm,partition-name", &name))
-+	ret = of_property_read_string(root, "ibm,partition-name", &name);
-+	of_node_put(root);
-+	if (ret)
- 		return -ENOENT;
- 
- 	seq_printf(m, "partition_name=%s\n", name);
-diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
-index ecea85c74c43..284a6fa04b0c 100644
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -1029,9 +1029,11 @@ static void __init pseries_add_hw_description(void)
- 		return;
- 	}
- 
--	if (of_property_read_bool(of_root, "ibm,powervm-partition") ||
--	    of_property_read_bool(of_root, "ibm,fw-net-version"))
-+	dn = of_find_node_by_path("/");
-+	if (of_property_read_bool(dn, "ibm,powervm-partition") ||
-+	    of_property_read_bool(dn, "ibm,fw-net-version"))
- 		seq_buf_printf(&ppc_hw_desc, "hv:phyp ");
-+	of_node_put(dn);
- }
- 
- /*
-@@ -1091,7 +1093,11 @@ static void pseries_power_off(void)
- 
- static int __init pSeries_probe(void)
- {
--	if (!of_node_is_type(of_root, "chrp"))
-+	struct device_node *root = of_find_node_by_path("/");
-+	bool ret = of_node_is_type(root, "chrp");
-+
-+	of_node_put(root);
-+	if (!ret)
- 		return 0;
- 
- 	/* Cell blades firmware claims to be chrp while it's not. Until this
--- 
-2.43.0
+Regards,
+
+Hans
+
+
+
+
+> 
+> 
+>>
+>> Signed-off-by: George Stark <gnstark@salutedevices.com>
+>> ---
+>>   include/linux/devm-helpers.h | 27 +++++++++++++++++++++++++++
+>>   1 file changed, 27 insertions(+)
+>>
+>> diff --git a/include/linux/devm-helpers.h b/include/linux/devm-helpers.h
+>> index 74891802200d..4043c3481d2e 100644
+>> --- a/include/linux/devm-helpers.h
+>> +++ b/include/linux/devm-helpers.h
+>> @@ -24,6 +24,7 @@
+>>    */
+>>
+>>   #include <linux/device.h>
+>> +#include <linux/mutex.h>
+>>   #include <linux/workqueue.h>
+>>
+>>   static inline void devm_delayed_work_drop(void *res)
+>> @@ -76,4 +77,30 @@ static inline int devm_work_autocancel(struct device *dev,
+>>          return devm_add_action(dev, devm_work_drop, w);
+>>   }
+>>
+>> +#ifdef mutex_destroy
+>> +static inline void devm_mutex_release(void *res)
+>> +{
+>> +       mutex_destroy(res);
+>> +}
+>> +#endif
+>> +
+>> +/**
+>> + * devm_mutex_init - Resource-managed mutex initialization
+>> + * @dev:       Device which lifetime mutex is bound to
+>> + * @lock:      Pointer to a mutex
+>> + *
+>> + * Initialize mutex which is automatically destroyed when the driver is detached.
+>> + *
+>> + * Returns: 0 on success or a negative error code on failure.
+>> + */
+>> +static inline int devm_mutex_init(struct device *dev, struct mutex *lock)
+>> +{
+>> +       mutex_init(lock);
+>> +#ifdef mutex_destroy
+>> +       return devm_add_action_or_reset(dev, devm_mutex_release, lock);
+>> +#else
+>> +       return 0;
+>> +#endif
+>> +}
+>> +
+>>   #endif
+>> --
+>> 2.25.1
+>>
 
