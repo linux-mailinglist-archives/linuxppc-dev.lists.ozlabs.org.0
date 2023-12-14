@@ -1,54 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E8648126AA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 05:46:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D73F8127C6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 07:13:35 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=PHvb5rAy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=trvn.ru header.i=@trvn.ru header.a=rsa-sha256 header.s=mail header.b=oxrcgcg5;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SrKYb0LZTz3cZw
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 15:46:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SrMVN5KSYz3dSW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 17:13:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=PHvb5rAy;
+	dkim=pass (2048-bit key; unprotected) header.d=trvn.ru header.i=@trvn.ru header.a=rsa-sha256 header.s=mail header.b=oxrcgcg5;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=trvn.ru (client-ip=194.87.146.52; helo=box.trvn.ru; envelope-from=nikita@trvn.ru; receiver=lists.ozlabs.org)
+X-Greylist: delayed 553 seconds by postgrey-1.37 at boromir; Thu, 14 Dec 2023 16:51:24 AEDT
+Received: from box.trvn.ru (box.trvn.ru [194.87.146.52])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SrKXk2fnYz3bPV
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Dec 2023 15:45:26 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1702529123;
-	bh=t7B9if0LOImFnd/AnccoK9V4d+WmshLVNwjLPY+Ohl0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=PHvb5rAyITybLJhslCdr+FPB6weuYhVdwGVqwI6pjC0ArKwZkSJyMqDVTRdcLTEp8
-	 CMM1zL432KtNyUzA4mhWgDTmzmIB20cDIEs1vpR4XVIlFKEuLTFGJUgQi2gSEUC13j
-	 mfFynirXmkKm9bE2EICqv9unlGx62DyfXiv5i2BtZBd3f6O85asjT6i+pBGfgfPjyp
-	 tkCdZSOpErcp/BMZpdsjN71xdXgGO4HsDEkHk/a+gxWH2FD87Y65cYU3IpDwO2jYA7
-	 PzUo9wW0hAbsQZZzGnqcxC0mqh1VvcVv56nNl78AXywD3K6/8BH+V8bphra6maMQo3
-	 RX1/dzF6mo1TA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SrM0r278Tz3bw2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Dec 2023 16:51:24 +1100 (AEDT)
+Received: from authenticated-user (box.trvn.ru [194.87.146.52])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4SrKXf0VB5z4wcH;
-	Thu, 14 Dec 2023 15:45:21 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Samuel Holland <samuel.holland@sifive.com>
-Subject: Re: [RFC PATCH 10/12] drm/amd/display: Use ARCH_HAS_KERNEL_FPU_SUPPORT
-In-Reply-To: <7ed20fcf-8a9d-40d5-b913-b5d2da443cd6@sifive.com>
-References: <20231208055501.2916202-1-samuel.holland@sifive.com>
- <20231208055501.2916202-11-samuel.holland@sifive.com>
- <87h6kpdj20.fsf@mail.lhotse>
- <7ed20fcf-8a9d-40d5-b913-b5d2da443cd6@sifive.com>
-Date: Thu, 14 Dec 2023 15:45:21 +1100
-Message-ID: <87bkatxuhq.fsf@mail.lhotse>
+	by box.trvn.ru (Postfix) with ESMTPSA id 51B15408EF;
+	Thu, 14 Dec 2023 10:42:02 +0500 (+05)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=trvn.ru; s=mail;
+	t=1702532522; bh=cR6tyKPKN7gk3TnmXe4ERX1lFG8NrlKVwL/KAde86sM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=oxrcgcg5FIrv/i0f5jrMIsUIaotfs1kKA+N3YsSNhycbKOL/vYxbPldu/fLCz6k2A
+	 dSIoswfhUFPKJ6tfpBEm44rtWZNjlai1hfv0rZ+1S1uW5nylDcSrFlEG+m7q6qjqYW
+	 qWjsrN9xv/7HyoI3GkZ9hJRSfUBOnoHD1/uX0NU7qNQN9/QEPo3CcGBLJU0U34vxVZ
+	 PD9eEBrl2Jv8SgkQkLyygMPQR/OuVRT0fbSmAsLHGhujMp76e5pn22VSBr5f/4z80a
+	 61xWQHXr316ZJbGUsimwOTRv8uBncW0oBm8WNPXQTCGaziLLlmxWJei0UxNf1JsjTU
+	 6I9V8pyTcSARA==
 MIME-Version: 1.0
-Content-Type: text/plain
+Date: Thu, 14 Dec 2023 10:42:01 +0500
+From: Nikita Travkin <nikita@trvn.ru>
+To: George Stark <gnstark@salutedevices.com>
+Subject: Re: [PATCH v3 04/11] leds: aw2013: use devm API to cleanup module's
+ resources
+In-Reply-To: <20231213223020.2713164-5-gnstark@salutedevices.com>
+References: <20231213223020.2713164-1-gnstark@salutedevices.com>
+ <20231213223020.2713164-5-gnstark@salutedevices.com>
+Message-ID: <c709e0f33da06db40127f3a0adcbebbd@trvn.ru>
+X-Sender: nikita@trvn.ru
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Thu, 14 Dec 2023 17:12:52 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,175 +62,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, Christoph Hellwig <hch@infradead.org>, Timothy Pearson <tpearson@raptorengineering.com>, loongarch@lists.linux.dev, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org, vadimp@nvidia.com, mazziesaccount@gmail.com, peterz@infradead.org, boqun.feng@gmail.com, lee@kernel.org, kernel@salutedevices.com, linux-kernel@vger.kernel.org, npiggin@gmail.com, hdegoede@redhat.com, andy.shevchenko@gmail.com, mingo@redhat.com, pavel@ucw.cz, longman@redhat.com, nikitos.tr@gmail.com, will@kernel.org, linux-leds@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Samuel Holland <samuel.holland@sifive.com> writes:
-> On 2023-12-11 6:23 AM, Michael Ellerman wrote:
->> Hi Samuel,
->> 
->> Thanks for trying to clean all this up.
->> 
->> One problem below.
->> 
->> Samuel Holland <samuel.holland@sifive.com> writes:
->>> Now that all previously-supported architectures select
->>> ARCH_HAS_KERNEL_FPU_SUPPORT, this code can depend on that symbol instead
->>> of the existing list of architectures. It can also take advantage of the
->>> common kernel-mode FPU API and method of adjusting CFLAGS.
->>>
->>> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
->> ...
->>> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/dc_fpu.c b/drivers/gpu/drm/amd/display/amdgpu_dm/dc_fpu.c
->>> index 4ae4720535a5..b64f917174ca 100644
->>> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/dc_fpu.c
->>> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/dc_fpu.c
->>> @@ -87,20 +78,9 @@ void dc_fpu_begin(const char *function_name, const int line)
->>>  	WARN_ON_ONCE(!in_task());
->>>  	preempt_disable();
->>>  	depth = __this_cpu_inc_return(fpu_recursion_depth);
->>> -
->>>  	if (depth == 1) {
->>> -#if defined(CONFIG_X86) || defined(CONFIG_LOONGARCH)
->>> +		BUG_ON(!kernel_fpu_available());
->>>  		kernel_fpu_begin();
->>> -#elif defined(CONFIG_PPC64)
->>> -		if (cpu_has_feature(CPU_FTR_VSX_COMP))
->>> -			enable_kernel_vsx();
->>> -		else if (cpu_has_feature(CPU_FTR_ALTIVEC_COMP))
->>> -			enable_kernel_altivec();
->>  
->> Note altivec.
->> 
->>> -		else if (!cpu_has_feature(CPU_FTR_FPU_UNAVAILABLE))
->>> -			enable_kernel_fp();
->>> -#elif defined(CONFIG_ARM64)
->>> -		kernel_neon_begin();
->>> -#endif
->>>  	}
->>>  
->>>  	TRACE_DCN_FPU(true, function_name, line, depth);
->>> diff --git a/drivers/gpu/drm/amd/display/dc/dml/Makefile b/drivers/gpu/drm/amd/display/dc/dml/Makefile
->>> index ea7d60f9a9b4..5aad0f572ba3 100644
->>> --- a/drivers/gpu/drm/amd/display/dc/dml/Makefile
->>> +++ b/drivers/gpu/drm/amd/display/dc/dml/Makefile
->>> @@ -25,40 +25,8 @@
->>>  # It provides the general basic services required by other DAL
->>>  # subcomponents.
->>>  
->>> -ifdef CONFIG_X86
->>> -dml_ccflags-$(CONFIG_CC_IS_GCC) := -mhard-float
->>> -dml_ccflags := $(dml_ccflags-y) -msse
->>> -endif
->>> -
->>> -ifdef CONFIG_PPC64
->>> -dml_ccflags := -mhard-float -maltivec
->>> -endif
->> 
->> And altivec is enabled in the flags there.
->> 
->> That doesn't match your implementation for powerpc in patch 7, which
->> only deals with float.
->> 
->> I suspect the AMD driver actually doesn't need altivec enabled, but I
->> don't know that for sure. It compiles without it, but I don't have a GPU
->> to actually test. I've added Timothy on Cc who added the support for
->> powerpc to the driver originally, hopefully he has a test system.
->
-> I tested this series on a POWER9 system with an AMD Radeon RX 6400 GPU (which
-> requires this FPU code to initialize), and got functioning graphics output.
+George Stark писал(а) 14.12.2023 03:30:
+> In this driver LEDs are registered using devm_led_classdev_register()
+> so they are automatically unregistered after module's remove() is done.
+> led_classdev_unregister() calls module's led_set_brightness() to turn off
+> the LEDs and that callback uses resources which were destroyed already
+> in module's remove() so use devm API instead of remove().
+> 
+> Signed-off-by: George Stark <gnstark@salutedevices.com>
 
-Awesome.
+Thanks for noticing and fixing this!
+Perhaps this patch needs a Fixes tag too, like 1/11?
 
->> Anyway if that's true that it doesn't need altivec we should probably do
->> a lead-up patch that drops altivec from the AMD driver explicitly, eg.
->> as below.
->
-> That makes sense to me. Do you want to provide your Signed-off-by so I can send
-> this patch with your authorship?
+Tested-by: Nikita Travkin <nikita@trvn.ru>
 
-Yeah that'd be great. Patch below. Feel free to adjust the commit
-message as you see fit.
+Btw, seems like (5..11)/11 never arrived to the lists...
 
-cheers
+Nikita
 
-
-From c8a2862d2ebe76a023eceb3267fd85262925c0ba Mon Sep 17 00:00:00 2001
-From: Michael Ellerman <mpe@ellerman.id.au>
-Date: Thu, 14 Dec 2023 15:39:05 +1100
-Subject: [PATCH] drm/amd/display: Only use hard-float, not altivec on powerpc
-
-The compiler flags enable altivec, but that is not required, hard-float
-is sufficient for the code to build and function.
-
-Drop altivec from the compiler flags and adjust the enable/disable code
-to only enable FPU use.
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- drivers/gpu/drm/amd/display/amdgpu_dm/dc_fpu.c | 12 ++----------
- drivers/gpu/drm/amd/display/dc/dml/Makefile    |  2 +-
- drivers/gpu/drm/amd/display/dc/dml2/Makefile   |  2 +-
- 3 files changed, 4 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/dc_fpu.c b/drivers/gpu/drm/amd/display/amdgpu_dm/dc_fpu.c
-index 4ae4720535a5..0de16796466b 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/dc_fpu.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/dc_fpu.c
-@@ -92,11 +92,7 @@ void dc_fpu_begin(const char *function_name, const int line)
- #if defined(CONFIG_X86) || defined(CONFIG_LOONGARCH)
- 		kernel_fpu_begin();
- #elif defined(CONFIG_PPC64)
--		if (cpu_has_feature(CPU_FTR_VSX_COMP))
--			enable_kernel_vsx();
--		else if (cpu_has_feature(CPU_FTR_ALTIVEC_COMP))
--			enable_kernel_altivec();
--		else if (!cpu_has_feature(CPU_FTR_FPU_UNAVAILABLE))
-+		if (!cpu_has_feature(CPU_FTR_FPU_UNAVAILABLE))
- 			enable_kernel_fp();
- #elif defined(CONFIG_ARM64)
- 		kernel_neon_begin();
-@@ -125,11 +121,7 @@ void dc_fpu_end(const char *function_name, const int line)
- #if defined(CONFIG_X86) || defined(CONFIG_LOONGARCH)
- 		kernel_fpu_end();
- #elif defined(CONFIG_PPC64)
--		if (cpu_has_feature(CPU_FTR_VSX_COMP))
--			disable_kernel_vsx();
--		else if (cpu_has_feature(CPU_FTR_ALTIVEC_COMP))
--			disable_kernel_altivec();
--		else if (!cpu_has_feature(CPU_FTR_FPU_UNAVAILABLE))
-+		if (!cpu_has_feature(CPU_FTR_FPU_UNAVAILABLE))
- 			disable_kernel_fp();
- #elif defined(CONFIG_ARM64)
- 		kernel_neon_end();
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/Makefile b/drivers/gpu/drm/amd/display/dc/dml/Makefile
-index 6042a5a6a44f..554c39024a40 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/Makefile
-+++ b/drivers/gpu/drm/amd/display/dc/dml/Makefile
-@@ -31,7 +31,7 @@ dml_ccflags := $(dml_ccflags-y) -msse
- endif
- 
- ifdef CONFIG_PPC64
--dml_ccflags := -mhard-float -maltivec
-+dml_ccflags := -mhard-float
- endif
- 
- ifdef CONFIG_ARM64
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/Makefile b/drivers/gpu/drm/amd/display/dc/dml2/Makefile
-index acff3449b8d7..7b51364084b5 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/Makefile
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/Makefile
-@@ -30,7 +30,7 @@ dml2_ccflags := $(dml2_ccflags-y) -msse
- endif
- 
- ifdef CONFIG_PPC64
--dml2_ccflags := -mhard-float -maltivec
-+dml2_ccflags := -mhard-float
- endif
- 
- ifdef CONFIG_ARM64
--- 
-2.43.0
-
-
+> ---
+>  drivers/leds/leds-aw2013.c | 26 ++++++++++++++------------
+>  1 file changed, 14 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/leds/leds-aw2013.c b/drivers/leds/leds-aw2013.c
+> index c2bc0782c0cd..863aeb02f278 100644
+> --- a/drivers/leds/leds-aw2013.c
+> +++ b/drivers/leds/leds-aw2013.c
+> @@ -1,6 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0+
+>  // Driver for Awinic AW2013 3-channel LED driver
+>  
+> +#include <linux/devm-helpers.h>
+>  #include <linux/i2c.h>
+>  #include <linux/leds.h>
+>  #include <linux/module.h>
+> @@ -318,6 +319,11 @@ static int aw2013_probe_dt(struct aw2013 *chip)
+>  	return 0;
+>  }
+>  
+> +static void aw2013_chip_disable_action(void *data)
+> +{
+> +	aw2013_chip_disable(data);
+> +}
+> +
+>  static const struct regmap_config aw2013_regmap_config = {
+>  	.reg_bits = 8,
+>  	.val_bits = 8,
+> @@ -334,7 +340,10 @@ static int aw2013_probe(struct i2c_client *client)
+>  	if (!chip)
+>  		return -ENOMEM;
+>  
+> -	mutex_init(&chip->mutex);
+> +	ret = devm_mutex_init(&client->dev, &chip->mutex);
+> +	if (ret)
+> +		return ret;
+> +
+>  	mutex_lock(&chip->mutex);
+>  
+>  	chip->client = client;
+> @@ -378,6 +387,10 @@ static int aw2013_probe(struct i2c_client *client)
+>  		goto error_reg;
+>  	}
+>  
+> +	ret = devm_add_action(&client->dev, aw2013_chip_disable_action, chip);
+> +	if (ret)
+> +		goto error_reg;
+> +
+>  	ret = aw2013_probe_dt(chip);
+>  	if (ret < 0)
+>  		goto error_reg;
+> @@ -398,19 +411,9 @@ static int aw2013_probe(struct i2c_client *client)
+>  
+>  error:
+>  	mutex_unlock(&chip->mutex);
+> -	mutex_destroy(&chip->mutex);
+>  	return ret;
+>  }
+>  
+> -static void aw2013_remove(struct i2c_client *client)
+> -{
+> -	struct aw2013 *chip = i2c_get_clientdata(client);
+> -
+> -	aw2013_chip_disable(chip);
+> -
+> -	mutex_destroy(&chip->mutex);
+> -}
+> -
+>  static const struct of_device_id aw2013_match_table[] = {
+>  	{ .compatible = "awinic,aw2013", },
+>  	{ /* sentinel */ },
+> @@ -424,7 +427,6 @@ static struct i2c_driver aw2013_driver = {
+>  		.of_match_table = of_match_ptr(aw2013_match_table),
+>  	},
+>  	.probe = aw2013_probe,
+> -	.remove = aw2013_remove,
+>  };
+>  
+>  module_i2c_driver(aw2013_driver);
