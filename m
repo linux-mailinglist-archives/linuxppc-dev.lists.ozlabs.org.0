@@ -2,136 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5196F812C7D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 11:07:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8F08812CC6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 11:19:45 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=BLqrxx+t;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=e7vryThQ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SrShF6cWdz3w8N
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 21:07:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SrSyR2VWXz3vt4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Dec 2023 21:19:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=BLqrxx+t;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=e7vryThQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::622; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20622.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e19::622])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=aneesh.kumar@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SrSgN2pv2z2yVG
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Dec 2023 21:06:38 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=j3SSVJo191XyERLgZc6FIDGs+O2U0zyqP1MoKTKlbpsfPQdg1cwQ1NNjd2uv2p8J9C5l9f2zqmBA1vElDR3bCau1GlQOcy9/kCdILWqzaUHD7AY/mCEwSCnXKsS12BKGN3R8Mqi3DGWtOcMEko3vbnDQoeXy15jmxfXs+t6Qs2k1wPtIHgzm6reSGdnElfTYGJ8so93nX+Avgh6XkT/IPSuwkDqAeh6HKnuk/yNcZv5vzmCc00U6ng8+107Bn+Sov3HOjOlk+bTHyJ6usSkH2DILzyQeWAXP/u0mICcLuDh0jVgwuZ+7i/7U0lLdNHXaYBJUN6KT6CzAFbQ/dYTIHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=X0geG+idqdCbIRUqjpU/QuH6oRdBjNpbzz13EXG/z2s=;
- b=hPSW940VsSYcJ4RI8o6FXacF+EvV2I5Huhv7hK0Zxs9LhllfO96kbeJhFjr1Ns046nJWlKwb8pbpwclN98LeX3F/GJZWnpapwuYo+VhYGBVpkoLZIjYg/qNNeL7v6udq1o7w6MyQRyiU1lIyVDqCUGgpkKTYaVVvCeasOOMNLtWz+ij9p9LB2K9ej4r50vtznQfzb7uQ7e02aJjAM9ZsHTkTZ06DBZ9zClgQjg7dA4cdPRGJ0FaIF+d7dtgp3uUO7gSDwZvBCK5ybG16pwqHJwV4znbV3GrZPZKFtySF9z0UEXsMmF8BpTF42HeczdKw1XMFpRdBXEdGe0LfLapgJA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=X0geG+idqdCbIRUqjpU/QuH6oRdBjNpbzz13EXG/z2s=;
- b=BLqrxx+tnGbUIlczUeQ/exqv8yv3ksAPJ9JU2ig+pUm2psmnpOeK0fMBNjmn1vw/Dp3fbb5TNK2kkt0Wx4vfFySRCfvsvgi439EYLUhzMk5kB3cgA5woFtQBG0Y40rAaV2Z7hXmBl4LGr+FuQ/XdKjjbpUetUOcOOgDVf66md1Hz7dUAo599ZIQOjistABCRAPIH9iFgvIcidYh9tWgB1FLt7Y45LW3VW2BqldT0Q9i5/diVzrhJJpLUBT9SUxbi7vrzNpgPsdsfOVzO/8GWmWb7GcNqW2aHLsO6zoxJvH6RKBKWcRb7Zkly0RM9wW4XNDjnB57eL5NOVNsyuJobUQ==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR1P264MB2048.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1b3::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.28; Thu, 14 Dec
- 2023 10:06:15 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::f788:32b4:1c5e:f264]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::f788:32b4:1c5e:f264%7]) with mapi id 15.20.7091.028; Thu, 14 Dec 2023
- 10:06:15 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: George Stark <gnstark@salutedevices.com>, "andy.shevchenko@gmail.com"
-	<andy.shevchenko@gmail.com>, "pavel@ucw.cz" <pavel@ucw.cz>, "lee@kernel.org"
-	<lee@kernel.org>, "vadimp@nvidia.com" <vadimp@nvidia.com>,
-	"mpe@ellerman.id.au" <mpe@ellerman.id.au>, "npiggin@gmail.com"
-	<npiggin@gmail.com>, "hdegoede@redhat.com" <hdegoede@redhat.com>,
-	"mazziesaccount@gmail.com" <mazziesaccount@gmail.com>, "peterz@infradead.org"
-	<peterz@infradead.org>, "mingo@redhat.com" <mingo@redhat.com>,
-	"will@kernel.org" <will@kernel.org>, "longman@redhat.com"
-	<longman@redhat.com>, "boqun.feng@gmail.com" <boqun.feng@gmail.com>,
-	"nikitos.tr@gmail.com" <nikitos.tr@gmail.com>
-Subject: Re: [PATCH v3 03/11] devm-helpers: introduce devm_mutex_init
-Thread-Topic: [PATCH v3 03/11] devm-helpers: introduce devm_mutex_init
-Thread-Index: AQHaLhP7EUtTiJmPIEy5WnZk/rrl9LCoji8A
-Date: Thu, 14 Dec 2023 10:06:15 +0000
-Message-ID: <80881d5d-3ae9-4580-84c1-f25b421cc518@csgroup.eu>
-References: <20231213223020.2713164-1-gnstark@salutedevices.com>
- <20231213223020.2713164-4-gnstark@salutedevices.com>
-In-Reply-To: <20231213223020.2713164-4-gnstark@salutedevices.com>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla Thunderbird
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR1P264MB2048:EE_
-x-ms-office365-filtering-correlation-id: a6d39062-d614-49c0-cda2-08dbfc8c4f22
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  +kYouZM2YZwI1T5iUR2cdBOBdnOKzLJphIQxNcR30qmeOU3Y1O68qlUu2z9TMuV2yXakUPVONaJa6zHqbzhweJiLVqJuMO+zMvruGCWQtSJYR+hjOLV4Uys0olINgI/AAYVCHBQa4FU9qbGI29ofcnLmmQpy+ecY1zghk3hOXmgaT3YCLOO/Oc9oa0lQHkkwSf6KUpP4jMTEU7ZCweYj+yJBZoQDZwyBhOrKvnZqrScxS6grCYmiR86SEag3l+KxkDJ/ujOKi3gu1KecxtDh21t8DRn+askJlhwtasVOHqXgnK21zUkt92Be7egpY65xkXuw3rWysG4kElrpQnzJJxnStKgwFg36O3tiAtsC8N/Vs7//aeOlAd7cCzaAFz9XyQerT813NyTHWNlBc+79/j7WgnUkOzojkVfChlZrVdiWOZHRbVN8qNSBdiahZ9tfnvsgNHT7IqVgv9YS84lJVNkVmfR5VlyjObxNkBmghFZHhByie1WOGQR9cU5LmplzvgOczd+1Ns+FuRGXJXFXf3IaKlK5YXOOIMs6Ytp1D8bhjTpGyyiq2IAVhnt5b4Ah8TUrB784zpEuBzo2lES22+j6STo36fsk/GFfzMsTuae8OL0sTUPE5daDStJjW6/ZWA7iUi/KMOQO8IQGHFG7dYDsDWy21JL3RKXDA5m2yMSiVdsQlkbiiToSit8h1P1xhzZ2cNGrwyTZMHowB7RJqA==
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(376002)(136003)(346002)(396003)(366004)(230922051799003)(1800799012)(64100799003)(451199024)(186009)(31696002)(86362001)(36756003)(31686004)(91956017)(41300700001)(66556008)(478600001)(6506007)(76116006)(66946007)(66476007)(66446008)(64756008)(54906003)(71200400001)(38070700009)(921008)(26005)(6512007)(38100700002)(122000001)(83380400001)(2616005)(66574015)(7416002)(2906002)(5660300002)(316002)(110136005)(6486002)(966005)(44832011)(4326008)(8936002)(8676002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?YXhnWjZ3NlpVRTRCWmE4VjlXaXBoQnlHWS8za3hNQm0vdWVReSsycklKU09z?=
- =?utf-8?B?UHVmYUNhM0orVE50K0swSW43SjRxYWRPWk9QcTE5V0Ftb2RBS2FjMFlwYTQ3?=
- =?utf-8?B?d0gwcGo2UHdodmVqdWlZek1oOG4zaWh6bTF2aEsvQW90TElaczBkTFFNYm1B?=
- =?utf-8?B?NTd1MFRmOU80ZGtjdWsyY3lGN0N0djBKdDRmZ0RyTUNNQmJ5bW1PdkdrOXk3?=
- =?utf-8?B?RnlNdmkzZ1haOXdoTloxZVVuVTBDeklwYWFZSTVNeDRRS0phTGttRWlYU0hM?=
- =?utf-8?B?dlM1ZFNFMjV4TUZwZ3FzOEZMWmdacjJyQWNGYjc5UzlQT1Y0QmVWaldyUUJD?=
- =?utf-8?B?MW1kWS8yUFVrZzBHNllnd0pPQ1VsbmN0ODcvMWdPczZIMytCbWtTazR0SGt0?=
- =?utf-8?B?RXd2R3VGYTVSODNNTHpWUngrZEcvczdKUmQwRFBWQ0VWQjRiRlpmaHd5Titr?=
- =?utf-8?B?MURKdXNYc3Q0c1JOYzNIYWJtYXMyVS9RQkNhNTFEZm9BaEpjQmxzSW14V25G?=
- =?utf-8?B?ck53dm8xaXp5RWllMU83SkladFZ6L3JYUFV5UW0xUi9sZGtSckRIc0JRV1Nl?=
- =?utf-8?B?ZlozcDJsZi9Na0Nua2UzbkhVUm1ERFdJVi9yRDJ6SXMzK1RUUlRUWU44Y05a?=
- =?utf-8?B?S3RtY05CYzlkMTBNN0tSTFYxdCtDMDNmT3pGZFgwd1J0RDBPUStBT21vWE5B?=
- =?utf-8?B?OGNzRzFVQkdVN0J4VThCZUs0RGxoRWFiUklTWDhwMUVoWmRkek4zeDY1Y2t5?=
- =?utf-8?B?VjBCcWIwQ3VhUk1DckRYcHVMbWNkaFYxSG1tL05tL3J0YnRTNDRFK011YmhC?=
- =?utf-8?B?dm0vRFJmdFc5dkxTQW9nKy9VQm51Uy9vVldCQlJOS2pDWU1mM0Jab3NQbGxv?=
- =?utf-8?B?UGttcmVydVhjZ0dTNnBkdXlKL3RyY3ZoWWpXcHZlYXl3Ny9iYmdORFZrNFY2?=
- =?utf-8?B?NWJtSTRpcEZ3a3RjUStXTDB3b29IOGIyZ3lGS3JzNjkzMEYyeDBabHE1U3hI?=
- =?utf-8?B?Snk0a0c3U2Q0MkM2cG1OZkNsWjhPaXhTWHhVRDRvblUxMEY1QVZGRzUxUXEz?=
- =?utf-8?B?Uy9SQy9FZzRZUXkwdlZ5aUc1d1JmblIwUEVsbDFzMDVUSVQ3eEtYd0tlRFBr?=
- =?utf-8?B?ckUwblN2K0MxTmRBMEdRQWkvWUlqOWVHZEFPZ3owcWxYS1NSZWxqa2VkckJs?=
- =?utf-8?B?SGxMd3kvOExlbDY2ZFp5N05uL2lIa1Job1V2V3dkTGtBcjF1aUtaRjJtTWk3?=
- =?utf-8?B?K2pVSTdvZ2xwWFF2cFY3c2ZyMlVnWlZBNGZFUVRhUXNTTEdpY2ZESVQyaUVL?=
- =?utf-8?B?Q3BsVURjbHhUSDJiM1BPVDBoWk15dVdWRjAwMVdJZmpIb0dKU2RrbFpwNEx3?=
- =?utf-8?B?NlJ5ZnNXZjJNWXFyU0o3Ykl2RmpxdFRZTmxXTlc1T1UzYmsvNHFBT3diZEVD?=
- =?utf-8?B?T2pnSWJMM3htZ1lnQ0JwMWxpanpBTjhMaFIxZlFGNU1WaTBTZUd1T09YRUdJ?=
- =?utf-8?B?aEJLenhVZTd5eXBKU1FoKzU1emhZeHI3d1V2ZGdLVkJEbzFYMjFtS3RRdjQv?=
- =?utf-8?B?VTdNcG5LZy85OUhVSVRSdXJwajV0OVhkcWhZNHc3Lzh1ZlFzNWJmelNyWUds?=
- =?utf-8?B?ckZGVFJBN2NhdWpQL2RweXBPb0o0NXdoNmFHNmVsQ3NmQWxsYVNxS0tyODNu?=
- =?utf-8?B?TTVtZWRtUi9FbU8wdXp3QzJCN0JiUG8yV3k3Ty9ZY3A4VFpqOVkzbFhMdUJE?=
- =?utf-8?B?U29kbnBieWRHbHR2bC9EWTRZZjNRZS90OG50SkRZU25hNHFTSjhvOWNLQmZ2?=
- =?utf-8?B?YVJCUzNsSURxVTJpOWtaRTZnUXhhRVVPbFkxYlF1dUZLSXQvU3NnZEEyQ2tE?=
- =?utf-8?B?OGFNZzR4WjNrVjN6RHBkODJ1R3Q3WENsa3JXcUh0NGh0ZGp1NkFsMlRuOHNY?=
- =?utf-8?B?MkZpME1JSVlxWjVRYmY1UlNTeER3a2JUZFg0SGV5VkFuVldBTThSeDEwRjZu?=
- =?utf-8?B?VWlNWkNYSW8yckFXTHVLV3RBMkhaR3hRbVVSUWxPVlZWUi9pYVhYazZzZ294?=
- =?utf-8?B?M1FJbGFCVFZOcGR3WGRxcHU1MjlBZzVBVWFnT0w4a2VHS0k5RVlzWDR2b2xL?=
- =?utf-8?B?d3MyakUwbmJQUUlSVGgxV0dtd3FKd2o4WXhWUzVzT1hLT25nYS81dUFXaVhq?=
- =?utf-8?B?NUE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <3FDC7E099C05AC4FBB5FCB90D554C5EB@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SrSxf2mWYz3dLY
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Dec 2023 21:19:02 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 153506216A;
+	Thu, 14 Dec 2023 10:18:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0218EC433C8;
+	Thu, 14 Dec 2023 10:18:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702549137;
+	bh=k9AS/5WNnLVPQB35WafYuUSuMyDo9SY6yZzLuQvYcYY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=e7vryThQKqOsUFQ8azbSBsXxpyp0HBLiF0t/AgdyA2TJUjhPfRAEugOH+Pf8g2gEt
+	 TDwCftdMIgPl3PWuN2UmCF/LudkhOLn/Sp0qwYeqLsutzluVvBlaq1dR2Er7AGovGU
+	 NAt8wrW/CMiBGJgnZDYNe30uI+md36y4AyqxfNvNmkjk+l7KVeF2kGd+585CsfcdE2
+	 DWD2PHtjSTImxgsf3rs8yyw8+jcNC2aOfkiOdWrPNLfNwThebfeYKGl3O3K4ayW0vR
+	 2I+Ni13JFg0w95unPkgyIC2Ae9STNU+FH17d/HeD/FJhpFrGo1m+r5Fxf4LBpnZ3XD
+	 mZJDO1ZtcztJg==
+X-Mailer: emacs 29.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Gaurav Batra <gbatra@linux.vnet.ibm.com>, mpe@ellerman.id.au
+Subject: Re: [PATCH] powerpc/pseries/iommu: IOMMU table is not initialized
+ for kdump over SR-IOV
+In-Reply-To: <20231213195233.10329-1-gbatra@linux.vnet.ibm.com>
+References: <20231213195233.10329-1-gbatra@linux.vnet.ibm.com>
+Date: Thu, 14 Dec 2023 15:48:51 +0530
+Message-ID: <87ttolm6ic.fsf@kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: a6d39062-d614-49c0-cda2-08dbfc8c4f22
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Dec 2023 10:06:15.6054
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: dg7zzZRC3P0Odd9zjsYTclh0eE276QhUt0JXZTPSgGR11/XB8YnxCyiGpBacDrdJ2tSPzVeJFQpemfLJ+delkxBxjS85Ga/T8sbbu1hIwxg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR1P264MB2048
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -143,60 +59,338 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "kernel@salutedevices.com" <kernel@salutedevices.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>
+Cc: brking@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, Gaurav Batra <gbatra@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDEzLzEyLzIwMjMgw6AgMjM6MzAsIEdlb3JnZSBTdGFyayBhIMOpY3JpdMKgOg0KPiBb
-Vm91cyBuZSByZWNldmV6IHBhcyBzb3V2ZW50IGRlIGNvdXJyaWVycyBkZSBnbnN0YXJrQHNhbHV0
-ZWRldmljZXMuY29tLiBEw6ljb3V2cmV6IHBvdXJxdW9pIGNlY2kgZXN0IGltcG9ydGFudCDDoCBo
-dHRwczovL2FrYS5tcy9MZWFybkFib3V0U2VuZGVySWRlbnRpZmljYXRpb24gXQ0KPiANCj4gVXNp
-bmcgb2YgZGV2bSBBUEkgbGVhZHMgdG8gYSBjZXJ0YWluIG9yZGVyIG9mIHJlbGVhc2luZyByZXNv
-dXJjZXMuDQo+IFNvIGFsbCBkZXBlbmRlbnQgcmVzb3VyY2VzIHdoaWNoIGFyZSBub3QgZGV2bS13
-cmFwcGVkIHNob3VsZCBiZSBkZWxldGVkDQo+IHdpdGggcmVzcGVjdCB0byBkZXZtLXJlbGVhc2Ug
-b3JkZXIuIE11dGV4IGlzIG9uZSBvZiBzdWNoIG9iamVjdHMgdGhhdA0KPiBvZnRlbiBpcyBib3Vu
-ZCB0byBvdGhlciByZXNvdXJjZXMgYW5kIGhhcyBubyBvd24gZGV2bSB3cmFwcGVyLg0KPiBTaW5j
-ZSBtdXRleF9kZXN0cm95KCkgYWN0dWFsbHkgZG9lcyBub3RoaW5nIGluIG5vbi1kZWJ1ZyBidWls
-ZHMNCj4gZnJlcXVlbnRseSBjYWxsaW5nIG11dGV4X2Rlc3Ryb3koKSBpcyBqdXN0IGlnbm9yZWQg
-d2hpY2ggaXMgc2FmZSBmb3Igbm93DQo+IGJ1dCB3cm9uZyBmb3JtYWxseSBhbmQgY2FuIGxlYWQg
-dG8gYSBwcm9ibGVtIGlmIG11dGV4X2Rlc3Ryb3koKSBpcw0KPiBleHRlbmRlZCBzbyBpbnRyb2R1
-Y2UgZGV2bV9tdXRleF9pbml0KCkuDQoNClNvIHlvdSBhYmFuZG9ubmVkIHRoZSBpZGVhIG9mIHVz
-aW5nIG11dGV4LmggPw0KDQpJIGNhbid0IHNlZSB0aGUgcG9pbnQgdG8gc3ByZWFkIG11dGV4IGZ1
-bmN0aW9ucyBpbnRvIGRldm0taGVscGVycy5oDQoNCkFkZGluZyBhIG11dGV4X2Rlc3Ryb3kgbWFj
-cm8gZm9yIHRoaXMgcHVycG9zZSBsb29rcyBvZGQuIEFuZCBpZiBzb21lb25lIA0KZGVmaW5lcyBh
-IG5ldyB2ZXJzaW9uIG9mIG11dGV4X2Rlc3Ryb3koKSBhbmQgZm9yZ2V0IHRoZSBtYWNybywgaXQg
-d2lsbCANCmdvIHVuZGV0ZWN0ZWQuDQoNClVzdWFsbHkgbWFjcm9zIG9mIHRoYXQgdHlwZSBzZXJ2
-ZSB0aGUgcHVycG9zZSBvZiBkZWZpbmluZyBhIGZhbGxiYWNrIA0Kd2hlbiB0aGUgbWFjcm8gaXMg
-bm90IGRlZmluZWQuIEluIHRoYXQgY2FzZSwgd2hlbiBzb21lb25lIGFkZHMgYSBuZXcgDQp2ZXJz
-aW9uIHdpdGhvdXQgZGVmaW5pbmcgdGhlIG1hY3JvLCBpdCBnZXRzIGRldGVjdGVkIGJlY2F1c2Ug
-aWYgDQpjb25mbGljdHMgd2l0aCB0aGUgZmFsbGJhY2suDQpCdXQgaW4geW91ciBjYXNlIGl0IHdv
-cmtzIHRoZSBvdGhlciB3YXkgcm91bmQsIHNvIEkgd2lsbCBqdXN0IGdvIHVuZGV0ZWN0ZWQuDQoN
-CkZvciBtZSB0aGUgYmVzdCBzb2x1dGlvbiByZW1haW5zIHRvIHVzZSBtdXRleC5oIGFuZCBoYXZl
-IA0KZGV2bV9tdXRleF9pbml0KCkgZGVmaW5lZCBvciBkZWNsYXJlZCBhdCB0aGUgc2FtZSBwbGFj
-ZSBhcyBtdXRleF9kZXN0cm95KCkuDQoNCg0KPiANCj4gU2lnbmVkLW9mZi1ieTogR2VvcmdlIFN0
-YXJrIDxnbnN0YXJrQHNhbHV0ZWRldmljZXMuY29tPg0KPiAtLS0NCj4gICBpbmNsdWRlL2xpbnV4
-L2Rldm0taGVscGVycy5oIHwgMjcgKysrKysrKysrKysrKysrKysrKysrKysrKysrDQo+ICAgMSBm
-aWxlIGNoYW5nZWQsIDI3IGluc2VydGlvbnMoKykNCj4gDQo+IGRpZmYgLS1naXQgYS9pbmNsdWRl
-L2xpbnV4L2Rldm0taGVscGVycy5oIGIvaW5jbHVkZS9saW51eC9kZXZtLWhlbHBlcnMuaA0KPiBp
-bmRleCA3NDg5MTgwMjIwMGQuLjQwNDNjMzQ4MWQyZSAxMDA2NDQNCj4gLS0tIGEvaW5jbHVkZS9s
-aW51eC9kZXZtLWhlbHBlcnMuaA0KPiArKysgYi9pbmNsdWRlL2xpbnV4L2Rldm0taGVscGVycy5o
-DQo+IEBAIC0yNCw2ICsyNCw3IEBADQo+ICAgICovDQo+IA0KPiAgICNpbmNsdWRlIDxsaW51eC9k
-ZXZpY2UuaD4NCj4gKyNpbmNsdWRlIDxsaW51eC9tdXRleC5oPg0KPiAgICNpbmNsdWRlIDxsaW51
-eC93b3JrcXVldWUuaD4NCj4gDQo+ICAgc3RhdGljIGlubGluZSB2b2lkIGRldm1fZGVsYXllZF93
-b3JrX2Ryb3Aodm9pZCAqcmVzKQ0KPiBAQCAtNzYsNCArNzcsMzAgQEAgc3RhdGljIGlubGluZSBp
-bnQgZGV2bV93b3JrX2F1dG9jYW5jZWwoc3RydWN0IGRldmljZSAqZGV2LA0KPiAgICAgICAgICBy
-ZXR1cm4gZGV2bV9hZGRfYWN0aW9uKGRldiwgZGV2bV93b3JrX2Ryb3AsIHcpOw0KPiAgIH0NCj4g
-DQo+ICsjaWZkZWYgbXV0ZXhfZGVzdHJveQ0KPiArc3RhdGljIGlubGluZSB2b2lkIGRldm1fbXV0
-ZXhfcmVsZWFzZSh2b2lkICpyZXMpDQo+ICt7DQo+ICsgICAgICAgbXV0ZXhfZGVzdHJveShyZXMp
-Ow0KPiArfQ0KPiArI2VuZGlmDQo+ICsNCj4gKy8qKg0KPiArICogZGV2bV9tdXRleF9pbml0IC0g
-UmVzb3VyY2UtbWFuYWdlZCBtdXRleCBpbml0aWFsaXphdGlvbg0KPiArICogQGRldjogICAgICAg
-RGV2aWNlIHdoaWNoIGxpZmV0aW1lIG11dGV4IGlzIGJvdW5kIHRvDQo+ICsgKiBAbG9jazogICAg
-ICBQb2ludGVyIHRvIGEgbXV0ZXgNCj4gKyAqDQo+ICsgKiBJbml0aWFsaXplIG11dGV4IHdoaWNo
-IGlzIGF1dG9tYXRpY2FsbHkgZGVzdHJveWVkIHdoZW4gdGhlIGRyaXZlciBpcyBkZXRhY2hlZC4N
-Cj4gKyAqDQo+ICsgKiBSZXR1cm5zOiAwIG9uIHN1Y2Nlc3Mgb3IgYSBuZWdhdGl2ZSBlcnJvciBj
-b2RlIG9uIGZhaWx1cmUuDQo+ICsgKi8NCj4gK3N0YXRpYyBpbmxpbmUgaW50IGRldm1fbXV0ZXhf
-aW5pdChzdHJ1Y3QgZGV2aWNlICpkZXYsIHN0cnVjdCBtdXRleCAqbG9jaykNCj4gK3sNCj4gKyAg
-ICAgICBtdXRleF9pbml0KGxvY2spOw0KPiArI2lmZGVmIG11dGV4X2Rlc3Ryb3kNCj4gKyAgICAg
-ICByZXR1cm4gZGV2bV9hZGRfYWN0aW9uX29yX3Jlc2V0KGRldiwgZGV2bV9tdXRleF9yZWxlYXNl
-LCBsb2NrKTsNCj4gKyNlbHNlDQo+ICsgICAgICAgcmV0dXJuIDA7DQo+ICsjZW5kaWYNCj4gK30N
-Cj4gKw0KPiAgICNlbmRpZg0KPiAtLQ0KPiAyLjI1LjENCj4gDQo=
+Gaurav Batra <gbatra@linux.vnet.ibm.com> writes:
+
+> When kdump kernel tries to copy dump data over SR-IOV, LPAR panics due to
+> NULL pointer execption.
+>
+> Here is the complete stack
+>
+> [   19.944378] Kernel attempted to read user page (0) - exploit attempt? (uid: 0)^M
+> [   19.944388] BUG: Kernel NULL pointer dereference on read at 0x00000000^M
+> [   19.944394] Faulting instruction address: 0xc000000020847ad4^M
+> [   19.944400] Oops: Kernel access of bad area, sig: 11 [#1]^M
+> [   19.944406] LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries^M
+> [   19.944413] Modules linked in: mlx5_core(+) vmx_crypto pseries_wdt papr_scm libnvdimm mlxfw tls psample sunrpc fuse overlay squashfs loop^M
+> [   19.944435] CPU: 12 PID: 315 Comm: systemd-udevd Not tainted 6.4.0-Test102+ #12^M
+> [   19.944442] Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1060.00 (NH1060_008) hv:phyp pSeries^M
+> [   19.944450] NIP:  c000000020847ad4 LR: c00000002083b2dc CTR: 00000000006cd18c^M
+> [   19.944457] REGS: c000000029162ca0 TRAP: 0300   Not tainted  (6.4.0-Test102+)^M
+> [   19.944463] MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 48288244  XER: 00000008^M
+> [   19.944480] CFAR: c00000002083b2d8 DAR: 0000000000000000 DSISR: 40000000 IRQMASK: 1 ^M
+> [   19.944480] GPR00: c00000002088ecd4 c000000029162f40 c000000021542900 ffffffffffffffff ^M
+> [   19.944480] GPR04: ffffffffffffffff 0000000000000000 0000000000000000 000000000000ffff ^M
+> [   19.944480] GPR08: 0000000000000000 ffffffffffffffff 0000000000000000 0000000000000001 ^M
+> [   19.944480] GPR12: 0000000000000000 c000000022ec1000 0000000040000000 0000000000000000 ^M
+> [   19.944480] GPR16: c00000002b8b3900 c00000002b8b3918 c00000002b8b3800 ffffffffffffffff ^M
+> [   19.944480] GPR20: 0000000000000000 000000000000ffff ffffffff00000000 00000000ffffffff ^M
+> [   19.944480] GPR24: 000000000000ffff 0000000000010000 0000000000000000 ffffffffffff0000 ^M
+> [   19.944480] GPR28: 0000000000000000 ffffffffffffffff ffffffffffffffff 0000000000000000 ^M
+> [   19.944553] NIP [c000000020847ad4] _find_next_zero_bit+0x24/0x110^M
+> [   19.944564] LR [c00000002083b2dc] bitmap_find_next_zero_area_off+0x5c/0xe0^M
+> [   19.944572] Call Trace:^M
+> [   19.944576] [c000000029162f40] [c0000000209fec70] dev_printk_emit+0x38/0x48 (unreliable)^M
+> [   19.944587] [c000000029162fa0] [c00000002088ecd4] iommu_area_alloc+0xc4/0x180^M
+> [   19.944596] [c000000029163020] [c00000002005a3d8] iommu_range_alloc+0x1e8/0x580^M
+> [   19.944606] [c000000029163150] [c00000002005a7d0] iommu_alloc+0x60/0x130^M
+> [   19.944613] [c0000000291631a0] [c00000002005b9f8] iommu_alloc_coherent+0x158/0x2b0^M
+> [   19.944621] [c000000029163260] [c000000020058fdc] dma_iommu_alloc_coherent+0x3c/0x50^M
+> [   19.944629] [c000000029163280] [c000000020235260] dma_alloc_attrs+0x170/0x1f0^M
+> [   19.944637] [c0000000291632f0] [c00800000140c058] mlx5_cmd_init+0xc0/0x760 [mlx5_core]^M
+> [   19.944745] [c0000000291633c0] [c008000001403448] mlx5_function_setup+0xf0/0x510 [mlx5_core]^M
+> [   19.944845] [c000000029163490] [c0080000014039bc] mlx5_init_one+0x84/0x210 [mlx5_core]^M
+> [   19.944943] [c000000029163520] [c008000001404c00] probe_one+0x118/0x2c0 [mlx5_core]^M
+> [   19.945041] [c0000000291635b0] [c0000000208ddce8] local_pci_probe+0x68/0x110^M
+> [   19.945049] [c000000029163630] [c0000000208deb98] pci_call_probe+0x68/0x200^M
+> [   19.945057] [c000000029163790] [c0000000208dfecc] pci_device_probe+0xbc/0x1a0^M
+> [   19.945065] [c0000000291637d0] [c000000020a032f4] really_probe+0x104/0x540^M
+> [   19.945072] [c000000029163850] [c000000020a037e4] __driver_probe_device+0xb4/0x230^M
+> [   19.945080] [c0000000291638d0] [c000000020a039b4] driver_probe_device+0x54/0x130^M
+> [   19.945088] [c000000029163910] [c000000020a03da8] __driver_attach+0x158/0x2b0^M
+> [   19.945096] [c000000029163990] [c0000000209ffa78] bus_for_each_dev+0xa8/0x130^M
+> [   19.945103] [c0000000291639f0] [c000000020a026c4] driver_attach+0x34/0x50^M
+> [   19.945110] [c000000029163a10] [c000000020a01aac] bus_add_driver+0x16c/0x300^M
+> [   19.945118] [c000000029163aa0] [c000000020a05944] driver_register+0xa4/0x1b0^M
+> [   19.945126] [c000000029163b10] [c0000000208dd428] __pci_register_driver+0x68/0x80^M
+> [   19.945133] [c000000029163b30] [c0080000015414cc] mlx5_init+0xb8/0x100 [mlx5_core]^M
+> [   19.945247] [c000000029163ba0] [c000000020012f60] do_one_initcall+0x60/0x300^M
+> [   19.945255] [c000000029163c80] [c000000020241cbc] do_init_module+0x7c/0x2b0^M
+>
+> At the time of LPAR dump, before kexec hands over control to kdump kernel,
+> DDWs are scanned and added in the FDT. For the SR-IOV case, default DMA
+> window "ibm,dma-window" is removed from the FDT and DDW added, for the
+> device.
+>
+> Now, kexec hands over control to the kdump kernel.
+>
+> When the kdump kernel initializes, PCI busses are scanned and IOMMU
+> group/tables created, in pci_dma_bus_setup_pSeriesLP(). For the SR-IOV
+> case, there is no "ibm,dma-window". As a result, due to the code bug, the
+> newly created IOMMU table is not initialized. Later, when the device driver
+> tries to enter TCEs for the SR-IOV device, NULL pointer execption is thrown
+> from iommu_area_alloc().
+>
+> The fix would be to initialize IOMMU table with DDW property stored in
+> the FDT. There are 2 points to remember -
+>
+> 	1. For the dedicated adapter, kdump kernel would encounter both
+> 	   default and DDW in FDT. In this case, DDW property is used to
+> 	   initialize the IOMMU table.
+>
+> 	2. A DDW could be direct or dynamic mapped. kdump kernel would
+> 	   initialize IOMMU table and mark the existing DDW as
+> 	   "dynamic". This works fine since, at the time of table
+> 	   initialization, iommu_table_clear() makes some space in the
+> 	   DDW, for some predefined number of TCEs which are needed for
+> 	   kdump to succeed.
+>
+
+
+While looking at this change, I'm wondering if it would be helpful to
+note that the iommu_table_setparms_lpar function currently only examines
+the ibm,dma-window device node, which can cause issues with kexec kernel
+in certain scenarios in place where you mention "code bug".
+
+Additionally, I'm curious how this worked before
+considering that commit b1fc44eaa9ba was supposed to address the same
+issue that you are fixing here.
+
+>
+> Fixes: b1fc44eaa9ba ("pseries/iommu/ddw: Fix kdump to work in absence of ibm,dma-window")
+> Signed-off-by: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+> Reviewed-by: Brian King <brking@linux.vnet.ibm.com>
+> ---
+>  arch/powerpc/platforms/pseries/iommu.c | 150 ++++++++++++++++---------
+>  1 file changed, 99 insertions(+), 51 deletions(-)
+>
+> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+> index 496e16c588aa..6f022c51bd57 100644
+> --- a/arch/powerpc/platforms/pseries/iommu.c
+> +++ b/arch/powerpc/platforms/pseries/iommu.c
+> @@ -574,29 +574,6 @@ static void iommu_table_setparms(struct pci_controller *phb,
+>  
+>  struct iommu_table_ops iommu_table_lpar_multi_ops;
+>  
+> -/*
+> - * iommu_table_setparms_lpar
+> - *
+> - * Function: On pSeries LPAR systems, return TCE table info, given a pci bus.
+> - */
+> -static void iommu_table_setparms_lpar(struct pci_controller *phb,
+> -				      struct device_node *dn,
+> -				      struct iommu_table *tbl,
+> -				      struct iommu_table_group *table_group,
+> -				      const __be32 *dma_window)
+> -{
+> -	unsigned long offset, size, liobn;
+> -
+> -	of_parse_dma_window(dn, dma_window, &liobn, &offset, &size);
+> -
+> -	iommu_table_setparms_common(tbl, phb->bus->number, liobn, offset, size, IOMMU_PAGE_SHIFT_4K, NULL,
+> -				    &iommu_table_lpar_multi_ops);
+> -
+> -
+> -	table_group->tce32_start = offset;
+> -	table_group->tce32_size = size;
+> -}
+> -
+>  struct iommu_table_ops iommu_table_pseries_ops = {
+>  	.set = tce_build_pSeries,
+>  	.clear = tce_free_pSeries,
+> @@ -724,26 +701,71 @@ struct iommu_table_ops iommu_table_lpar_multi_ops = {
+>   * dynamic 64bit DMA window, walking up the device tree.
+>   */
+>  static struct device_node *pci_dma_find(struct device_node *dn,
+> -					const __be32 **dma_window)
+> +					struct dynamic_dma_window_prop *prop)
+>  {
+> -	const __be32 *dw = NULL;
+> +	const __be32 *default_prop = NULL;
+> +	const __be32 *ddw_prop = NULL;
+> +	struct device_node *rdn = NULL;
+> +	bool default_win = false, ddw_win = false;
+>  
+>  	for ( ; dn && PCI_DN(dn); dn = dn->parent) {
+> -		dw = of_get_property(dn, "ibm,dma-window", NULL);
+> -		if (dw) {
+> -			if (dma_window)
+> -				*dma_window = dw;
+> -			return dn;
+> +		default_prop = of_get_property(dn, "ibm,dma-window", NULL);
+> +		if (default_prop) {
+> +			rdn = dn;
+> +			default_win = true;
+> +		}
+> +		ddw_prop = of_get_property(dn, DIRECT64_PROPNAME, NULL);
+> +		if (ddw_prop) {
+> +			rdn = dn;
+> +			ddw_win = true;
+> +			break;
+> +		}
+> +		ddw_prop = of_get_property(dn, DMA64_PROPNAME, NULL);
+> +		if (ddw_prop) {
+> +			rdn = dn;
+> +			ddw_win = true;
+> +			break;
+>  		}
+> -		dw = of_get_property(dn, DIRECT64_PROPNAME, NULL);
+> -		if (dw)
+> -			return dn;
+> -		dw = of_get_property(dn, DMA64_PROPNAME, NULL);
+> -		if (dw)
+> -			return dn;
+> +
+> +		/* At least found default window, which is the case for normal boot */
+> +		if (default_win)
+> +			break;
+>  	}
+>  
+> -	return NULL;
+> +	/* For PCI devices there will always be a DMA window, either on the device
+> +	 * or parent bus
+> +	 */
+> +	WARN_ON(!(default_win | ddw_win));
+> +
+> +	/* caller doesn't want to get DMA window property */
+> +	if (!prop)
+> +		return rdn;
+> +
+> +	/* parse DMA window property. During normal system boot, only default
+> +	 * DMA window is passed in OF. But, for kdump, a dedicated adapter might
+> +	 * have both default and DDW in FDT. In this scenario, DDW takes precedence
+> +	 * over default window.
+> +	 */
+> +	if (ddw_win) {
+> +		struct dynamic_dma_window_prop *p;
+> +
+> +		p = (struct dynamic_dma_window_prop *)ddw_prop;
+> +		prop->liobn = be32_to_cpu(p->liobn);
+> +		prop->dma_base = be64_to_cpu(p->dma_base);
+> +		prop->tce_shift = be32_to_cpu(p->tce_shift);
+> +		prop->window_shift = be32_to_cpu(p->window_shift);
+> +	} else if (default_win) {
+> +		unsigned long offset, size, liobn;
+> +
+> +		of_parse_dma_window(rdn, default_prop, &liobn, &offset, &size);
+> +
+> +		prop->liobn = liobn;
+> +		prop->dma_base = offset;
+> +		prop->tce_shift = IOMMU_PAGE_SHIFT_4K;
+> +		prop->window_shift = order_base_2(size);
+> +	}
+> +
+> +	return rdn;
+>  }
+>  
+>  static void pci_dma_bus_setup_pSeriesLP(struct pci_bus *bus)
+> @@ -751,17 +773,20 @@ static void pci_dma_bus_setup_pSeriesLP(struct pci_bus *bus)
+>  	struct iommu_table *tbl;
+>  	struct device_node *dn, *pdn;
+>  	struct pci_dn *ppci;
+> -	const __be32 *dma_window = NULL;
+> +	struct dynamic_dma_window_prop prop;
+>  
+>  	dn = pci_bus_to_OF_node(bus);
+>  
+>  	pr_debug("pci_dma_bus_setup_pSeriesLP: setting up bus %pOF\n",
+>  		 dn);
+>  
+> -	pdn = pci_dma_find(dn, &dma_window);
+> +	pdn = pci_dma_find(dn, &prop);
+>  
+> -	if (dma_window == NULL)
+> -		pr_debug("  no ibm,dma-window property !\n");
+> +	/* In PPC architecture, there will always be DMA window on bus or one of the
+> +	 * parent bus. During reboot, there will be ibm,dma-window property to
+> +	 * define DMA window. For kdump, there will at least be default window or DDW
+> +	 * or both.
+> +	 */
+>  
+>  	ppci = PCI_DN(pdn);
+>  
+> @@ -771,13 +796,21 @@ static void pci_dma_bus_setup_pSeriesLP(struct pci_bus *bus)
+>  	if (!ppci->table_group) {
+>  		ppci->table_group = iommu_pseries_alloc_group(ppci->phb->node);
+>  		tbl = ppci->table_group->tables[0];
+> -		if (dma_window) {
+> -			iommu_table_setparms_lpar(ppci->phb, pdn, tbl,
+> -						  ppci->table_group, dma_window);
+>  
+> -			if (!iommu_init_table(tbl, ppci->phb->node, 0, 0))
+> -				panic("Failed to initialize iommu table");
+> -		}
+> +		iommu_table_setparms_common(tbl, ppci->phb->bus->number, prop.liobn,
+> +				prop.dma_base, 1ULL << prop.window_shift,
+> +				prop.tce_shift, NULL, &iommu_table_lpar_multi_ops);
+> +
+> +		/* Only for normal boot with default window. Doesn't matter even
+> +		 * if we set these with DDW which is 64bit during kdump, since
+> +		 * these will not be used during kdump.
+> +		 */
+> +		ppci->table_group->tce32_start = prop.dma_base;
+> +		ppci->table_group->tce32_size = 1ULL << prop.window_shift;
+> +
+> +		if (!iommu_init_table(tbl, ppci->phb->node, 0, 0))
+> +			panic("Failed to initialize iommu table");
+> +
+>  		iommu_register_group(ppci->table_group,
+>  				pci_domain_nr(bus), 0);
+>  		pr_debug("  created table: %p\n", ppci->table_group);
+> @@ -968,6 +1001,12 @@ static void find_existing_ddw_windows_named(const char *name)
+>  			continue;
+>  		}
+>  
+> +		/* If at the time of system initialization, there are DDWs in OF,
+> +		 * it means this is during kexec. DDW could be direct or dynamic.
+> +		 * We will just mark DDWs as "dynamic" since this is kdump path,
+> +		 * no need to worry about perforance. ddw_list_new_entry() will
+> +		 * set window->direct = false.
+> +		 */
+>  		window = ddw_list_new_entry(pdn, dma64);
+>  		if (!window) {
+>  			of_node_put(pdn);
+> @@ -1524,8 +1563,8 @@ static void pci_dma_dev_setup_pSeriesLP(struct pci_dev *dev)
+>  {
+>  	struct device_node *pdn, *dn;
+>  	struct iommu_table *tbl;
+> -	const __be32 *dma_window = NULL;
+>  	struct pci_dn *pci;
+> +	struct dynamic_dma_window_prop prop;
+>  
+>  	pr_debug("pci_dma_dev_setup_pSeriesLP: %s\n", pci_name(dev));
+>  
+> @@ -1538,7 +1577,7 @@ static void pci_dma_dev_setup_pSeriesLP(struct pci_dev *dev)
+>  	dn = pci_device_to_OF_node(dev);
+>  	pr_debug("  node is %pOF\n", dn);
+>  
+> -	pdn = pci_dma_find(dn, &dma_window);
+> +	pdn = pci_dma_find(dn, &prop);
+>  	if (!pdn || !PCI_DN(pdn)) {
+>  		printk(KERN_WARNING "pci_dma_dev_setup_pSeriesLP: "
+>  		       "no DMA window found for pci dev=%s dn=%pOF\n",
+> @@ -1551,8 +1590,17 @@ static void pci_dma_dev_setup_pSeriesLP(struct pci_dev *dev)
+>  	if (!pci->table_group) {
+>  		pci->table_group = iommu_pseries_alloc_group(pci->phb->node);
+>  		tbl = pci->table_group->tables[0];
+> -		iommu_table_setparms_lpar(pci->phb, pdn, tbl,
+> -				pci->table_group, dma_window);
+> +
+> +		iommu_table_setparms_common(tbl, pci->phb->bus->number, prop.liobn,
+> +				prop.dma_base, 1ULL << prop.window_shift,
+> +				prop.tce_shift, NULL, &iommu_table_lpar_multi_ops);
+> +
+> +		/* Only for normal boot with default window. Doesn't matter even
+> +		 * if we set these with DDW which is 64bit during kdump, since
+> +		 * these will not be used during kdump.
+> +		 */
+> +		pci->table_group->tce32_start = prop.dma_base;
+> +		pci->table_group->tce32_size = 1ULL << prop.window_shift;
+>  
+>  		iommu_init_table(tbl, pci->phb->node, 0, 0);
+>  		iommu_register_group(pci->table_group,
+> -- 
+> 2.39.3 (Apple Git-145)
