@@ -2,68 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F377A814C3B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Dec 2023 17:00:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14FA4814CAE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Dec 2023 17:13:58 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gEy347kK;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rzb0vRMv;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SsDSq57wBz3dSf
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Dec 2023 03:00:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SsDmg5W0nz3dSx
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Dec 2023 03:13:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gEy347kK;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rzb0vRMv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::2d; helo=mail-oa1-x2d.google.com; envelope-from=andy.shevchenko@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oa1-x2d.google.com (mail-oa1-x2d.google.com [IPv6:2001:4860:4864:20::2d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=aneesh.kumar@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SsDRy47Lzz30XR
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Dec 2023 02:59:24 +1100 (AEDT)
-Received: by mail-oa1-x2d.google.com with SMTP id 586e51a60fabf-1f03d9ad89fso544277fac.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Dec 2023 07:59:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702655961; x=1703260761; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MG9yAVm50lR8ICiHnRNf31I38rZ2htO3wSzdsU8ztZ4=;
-        b=gEy347kK6eoi5kXjYGRvgBczNqClDDsn7krZ3u1XnZw5gqdWkP+U8KkXzvX7RWNIzp
-         +H/6F5xGL7RepGTvlXdvdt6zPzez6OFUU3SSNOJkuiqGDGyes//VAqGN+7xKFlNhAxWx
-         nkseFBIKUJCXpognAOnK0ErM8DimvhQuXhV0VdYaMFcI1wX7ek77A1dggjOnpKw9JK1x
-         M0q4T9XdCUGgOzIeQU6Xgnsz5qJXuYyEpN8dddPi3Ja+AtcgdJpl0BUdbGrqBokFTdo0
-         WBY4YFKJmoi9NIhTInWbrgDCVEdpnmGIlbm1LB5Ky87aK/gRxRhB1NsiT8QKhOO5/N4L
-         c2Ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702655961; x=1703260761;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MG9yAVm50lR8ICiHnRNf31I38rZ2htO3wSzdsU8ztZ4=;
-        b=wByFBfQgJwX/ZfUyEvaaODoCo8gv1rRWD80sn+0P/Z7yoh3m4mHsq8T59QK61+lSX6
-         UX5K5aShurOfShj8Nr+xAcqx6MX/hqXfknL1C3KfOHOnCS8UVZ9qamAgECzQMSGYhyeP
-         QW4ya5EsLCZkh1ilWJuueD80481XhSnfh0CX9nXfDQtov+IzliMcYAXW1wMe+lmXuPNv
-         EwRzzTEWXTDCDdEXSfOy/xoDcrgdxE5n4ZToGZqr5ahspvaMw35PzqGb84YIkclVkIz9
-         iMJiYI4hQoMFXbSEgv3k8rDa/Ta+XICpvPa0qU3enz8O+Z3LyDFveEd2kSpVnZ9yUtli
-         dKkQ==
-X-Gm-Message-State: AOJu0YyqAfXY2Dlor+J15kJsJtrw1fsT3PuXjvc91RBOUQDrnv9ke5jC
-	uIfrxDU/YIjUdQLuR5ShAnEoIEkSzriFf3D393Q=
-X-Google-Smtp-Source: AGHT+IGLoY1Nw1pfnxSccxTPPQGkI5sLz3dmiL9hVukMxvSLrc6SwWXCmZBocGOvbRO13ErKz7EtuQ8V4zYiAag9VFM=
-X-Received: by 2002:a05:6870:9383:b0:1f9:e6cb:7eb5 with SMTP id
- b3-20020a056870938300b001f9e6cb7eb5mr13635905oal.18.1702655961087; Fri, 15
- Dec 2023 07:59:21 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SsDlp5wc8z2yDD
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Dec 2023 03:13:10 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id A1C3D62678;
+	Fri, 15 Dec 2023 16:13:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7966C433C7;
+	Fri, 15 Dec 2023 16:13:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702656787;
+	bh=J5U0YPNa7AB26BKYS1W5zmJBF+duoWLKvJ0dL3e/X7E=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=rzb0vRMvSulaJmQCd1WxGCX+vJoa+mxO3N+P3GvoG39ZwEN7JjohfqYCg5Ecy+BXS
+	 +nwpi8PXsAyVjbgxjHz64OD09dRbSH2GXFQYUhIP9a3z3cr21ptpUwZpbqky6aKalt
+	 zNLsGYL4OIza0+xnfGjj5+YA+0j1iGFG4V7H7URQk2rYsCJlUSr4SeGXRy8gauPLxl
+	 aCByVKWNB84vUZwAL17bLSZpBQM7sGzft7WxCTvM6FJ7XyuCPHxF64Zie75hSS9C3Q
+	 dAGP+S7uevpQQ5V4k35JQD7UQxrrrz/tzb5Z4bbvgK4TtJ2RThDjNmkA+X/6fZjcGW
+	 VafUSsfRVrmMg==
+X-Mailer: emacs 29.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+	kvm@vger.kernel.org, kvm-ppc@vger.kernel.org
+Subject: Re: [PATCH 01/12] KVM: PPC: Book3S HV nestedv2: Invalidate RPT
+ before deleting a guest
+In-Reply-To: <87jzpolsen.fsf@vajain21.in.ibm.com>
+References: <20231201132618.555031-1-vaibhav@linux.ibm.com>
+ <20231201132618.555031-2-vaibhav@linux.ibm.com>
+ <878r66xtjt.fsf@kernel.org> <87jzpolsen.fsf@vajain21.in.ibm.com>
+Date: Fri, 15 Dec 2023 21:42:59 +0530
+Message-ID: <87r0jntpf8.fsf@kernel.org>
 MIME-Version: 1.0
-References: <20231214173614.2820929-3-gnstark@salutedevices.com> <c16599b23afa853a44d13b906af5683027959a26.1702621174.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <c16599b23afa853a44d13b906af5683027959a26.1702621174.git.christophe.leroy@csgroup.eu>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 15 Dec 2023 17:58:44 +0200
-Message-ID: <CAHp75VfBcmTBXXtU6o1x0Ea24wG-_Qb46opkS0EXKQ1Ynh0Mcw@mail.gmail.com>
-Subject: Re: [PATCH RFC v4-bis] locking: introduce devm_mutex_init
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,63 +62,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel@salutedevices.com, vadimp@nvidia.com, mazziesaccount@gmail.com, peterz@infradead.org, boqun.feng@gmail.com, lee@kernel.org, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, linux-kernel@vger.kernel.org, hdegoede@redhat.com, mingo@redhat.com, pavel@ucw.cz, George Stark <gnstark@salutedevices.com>, longman@redhat.com, nikitos.tr@gmail.com, will@kernel.org, linux-leds@vger.kernel.org
+Cc: mikey@neuling.org, sbhat@linux.ibm.com, amachhiw@linux.vnet.ibm.com, Jordan Niethe <jniethe5@gmail.com>, gautam@linux.ibm.com, Nicholas Piggin <npiggin@gmail.com>, David.Laight@ACULAB.COM, kconsul@linux.vnet.ibm.com, Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Dec 15, 2023 at 8:23=E2=80=AFAM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
+Vaibhav Jain <vaibhav@linux.ibm.com> writes:
+
+> Hi Aneesh,
 >
-> From: George Stark <gnstark@salutedevices.com>
+> Thanks for looking into this patch. My responses inline below:
 >
-> Using of devm API leads to a certain order of releasing resources.
-> So all dependent resources which are not devm-wrapped should be deleted
-> with respect to devm-release order. Mutex is one of such objects that
-> often is bound to other resources and has no own devm wrapping.
-> Since mutex_destroy() actually does nothing in non-debug builds
-> frequently calling mutex_destroy() is just ignored which is safe for now
-> but wrong formally and can lead to a problem if mutex_destroy() will be
-> extended so introduce devm_mutex_init()
+> "Aneesh Kumar K.V (IBM)" <aneesh.kumar@kernel.org> writes:
+>
+>> Vaibhav Jain <vaibhav@linux.ibm.com> writes:
+>>
+>>> From: Jordan Niethe <jniethe5@gmail.com>
+>>>
+>>> An L0 must invalidate the L2's RPT during H_GUEST_DELETE if this has not
+>>> already been done. This is a slow operation that means H_GUEST_DELETE
+>>> must return H_BUSY multiple times before completing. Invalidating the
+>>> tables before deleting the guest so there is less work for the L0 to do.
+>>>
+>>> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+>>> ---
+>>>  arch/powerpc/include/asm/kvm_book3s.h | 1 +
+>>>  arch/powerpc/kvm/book3s_hv.c          | 6 ++++--
+>>>  arch/powerpc/kvm/book3s_hv_nested.c   | 2 +-
+>>>  3 files changed, 6 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/include/asm/kvm_book3s.h b/arch/powerpc/include/asm/kvm_book3s.h
+>>> index 4f527d09c92b..a37736ed3728 100644
+>>> --- a/arch/powerpc/include/asm/kvm_book3s.h
+>>> +++ b/arch/powerpc/include/asm/kvm_book3s.h
+>>> @@ -302,6 +302,7 @@ void kvmhv_nested_exit(void);
+>>>  void kvmhv_vm_nested_init(struct kvm *kvm);
+>>>  long kvmhv_set_partition_table(struct kvm_vcpu *vcpu);
+>>>  long kvmhv_copy_tofrom_guest_nested(struct kvm_vcpu *vcpu);
+>>> +void kvmhv_flush_lpid(u64 lpid);
+>>>  void kvmhv_set_ptbl_entry(u64 lpid, u64 dw0, u64 dw1);
+>>>  void kvmhv_release_all_nested(struct kvm *kvm);
+>>>  long kvmhv_enter_nested_guest(struct kvm_vcpu *vcpu);
+>>> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+>>> index 1ed6ec140701..5543e8490cd9 100644
+>>> --- a/arch/powerpc/kvm/book3s_hv.c
+>>> +++ b/arch/powerpc/kvm/book3s_hv.c
+>>> @@ -5691,10 +5691,12 @@ static void kvmppc_core_destroy_vm_hv(struct kvm *kvm)
+>>>  			kvmhv_set_ptbl_entry(kvm->arch.lpid, 0, 0);
+>>>  	}
+>>>  
+>>> -	if (kvmhv_is_nestedv2())
+>>> +	if (kvmhv_is_nestedv2()) {
+>>> +		kvmhv_flush_lpid(kvm->arch.lpid);
+>>>  		plpar_guest_delete(0, kvm->arch.lpid);
+>>>
+>>
+>> I am not sure I follow the optimization here. I would expect the
+>> hypervisor to kill all the translation caches as part of guest_delete.
+>> What is the benefit of doing a lpid flush outside the guest delete?
+>>
+> Thats right. However without this optimization the H_GUEST_DELETE hcall
+> in plpar_guest_delete() returns H_BUSY multiple times resulting in
+> multiple hcalls to the hypervisor until it finishes. Flushing the guest
+> translation cache upfront reduces the number of HCALLs L1 guests has to
+> make to delete a L2 guest via H_GUEST_DELETE.
+>
 
-Missing period.
+can we add that as a comment above that kvmhv_flush_lpid()?
 
-...
-
->  } while (0)
->  #endif /* CONFIG_PREEMPT_RT */
-
-^^^ (1)
-
-> +struct device;
-> +
-> +/*
-> + * devm_mutex_init() registers a function that calls mutex_destroy()
-> + * when the ressource is released.
-> + *
-> + * When mutex_destroy() is a not, there is no need to register that
-> + * function.
-> + */
-> +#ifdef CONFIG_DEBUG_MUTEXES
-
-Shouldn't this be
-
-#if defined(CONFIG_DEBUG_MUTEXES) && !defined(CONFIG_PREEMPT_RT)
-
-(see (1) as well)?
-
-> +void mutex_destroy(struct mutex *lock);
-> +int devm_mutex_init(struct device *dev, struct mutex *lock);
-> +#else
-> +static inline void mutex_destroy(struct mutex *lock) {}
-> +
-> +static inline int devm_mutex_init(struct device *dev, struct mutex *lock=
-)
-> +{
-> +       mutex_init(lock);
-> +       return 0;
-> +}
-> +#endif
-
---=20
-With Best Regards,
-Andy Shevchenko
+-aneesh
