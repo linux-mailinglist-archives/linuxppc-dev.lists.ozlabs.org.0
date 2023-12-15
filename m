@@ -1,76 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC01C813F23
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Dec 2023 02:24:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43ECB813FC9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Dec 2023 03:29:56 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OY4eTQpD;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OrtLybnX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Srs2L4NGvz3cZ9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Dec 2023 12:24:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SrtTs6nnGz3dLR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Dec 2023 13:29:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OY4eTQpD;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OrtLybnX;
 	dkim-atps=neutral
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Srs1S4hN3z3039
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Dec 2023 12:23:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SrtT21vxSz3cLk
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Dec 2023 13:29:10 +1100 (AEDT)
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4Srs1R1HqCz4wcH
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Dec 2023 12:23:39 +1100 (AEDT)
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4SrtSx4xJcz4wdB
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Dec 2023 13:29:05 +1100 (AEDT)
 Received: by gandalf.ozlabs.org (Postfix)
-	id 4Srs1R135nz4wd6; Fri, 15 Dec 2023 12:23:39 +1100 (AEDT)
+	id 4SrtSx4lTPz4wqN; Fri, 15 Dec 2023 13:29:05 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OY4eTQpD;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OrtLybnX;
 	dkim-atps=neutral
 Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4Srs1Q2tjhz4wcH
-	for <linuxppc-dev@ozlabs.org>; Fri, 15 Dec 2023 12:23:36 +1100 (AEDT)
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4SrtSx1Vhtz4wdB
+	for <linuxppc-dev@ozlabs.org>; Fri, 15 Dec 2023 13:29:03 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702603413;
+	s=mimecast20190719; t=1702607341;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=g1bhtjDjJjsGGmJrsgISU2ckN9X28MSmHj79+ZP7Rvc=;
-	b=OY4eTQpDkmQO6FnPukwtUclcjpwxdS4Wg5gZapjgL3BDgYtLydtwnkTgHzxDF/Iu8q6VJK
-	9iGsksTKpVXrfXQEJ+FE36wb7zR8bdC29Itma9ozkZUKIxwpACvlEXNaNXE+kMtXDxJq+y
-	+wr2bbKcBJvSF3mtK/bWnU32dOSLqTk=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-625-HtsyReVfOnSHPU5YH6kKGA-1; Thu,
- 14 Dec 2023 20:23:29 -0500
-X-MC-Unique: HtsyReVfOnSHPU5YH6kKGA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+	bh=xiQyckJTwnqYOVFcTln1GExvRHz6Chm9H/hFawrpLu4=;
+	b=OrtLybnXIhogrjFcYFKOwQb3F1t9TkkM+cP7DFE6k5tB0eQIOWpn0e5ZDsOVzDUYFlgS9q
+	q6t3eDe070er76ff352a5+9XbZCItYGKQdwgnITa6Pr32rpHa3lXjddAguPK0kBQRPuytH
+	mIp2U5zVf8nDoFrKZ6GX/P3PJK2nOsM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-633-_ekwzBs_NQC2U-Afnm6wqA-1; Thu, 14 Dec 2023 21:28:58 -0500
+X-MC-Unique: _ekwzBs_NQC2U-Afnm6wqA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A6E8428BBEEC;
-	Fri, 15 Dec 2023 01:23:28 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3DB13881B6B;
+	Fri, 15 Dec 2023 02:28:57 +0000 (UTC)
 Received: from localhost (unknown [10.72.116.38])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id CE89E3C2E;
-	Fri, 15 Dec 2023 01:23:26 +0000 (UTC)
-Date: Fri, 15 Dec 2023 09:23:24 +0800
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id E298E2166B31;
+	Fri, 15 Dec 2023 02:28:55 +0000 (UTC)
+Date: Fri, 15 Dec 2023 10:28:53 +0800
 From: Baoquan He <bhe@redhat.com>
 To: Sourabh Jain <sourabhjain@linux.ibm.com>
-Subject: Re: [PATCH v14 6/6] powerpc: add crash memory hotplug support
-Message-ID: <ZXuqjAsRlKP152YG@MiWiFi-R3L-srv>
+Subject: Re: [PATCH v14 3/6] crash: add a new kexec flag for FDT update
+Message-ID: <ZXu55ZXVSMeQDE/e@MiWiFi-R3L-srv>
 References: <20231211083056.340404-1-sourabhjain@linux.ibm.com>
- <20231211083056.340404-7-sourabhjain@linux.ibm.com>
+ <20231211083056.340404-4-sourabhjain@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20231211083056.340404-7-sourabhjain@linux.ibm.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+In-Reply-To: <20231211083056.340404-4-sourabhjain@linux.ibm.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
@@ -91,357 +91,109 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 12/11/23 at 02:00pm, Sourabh Jain wrote:
-...... 
-> diff --git a/arch/powerpc/include/asm/kexec_ranges.h b/arch/powerpc/include/asm/kexec_ranges.h
-> index f83866a19e87..802abf580cf0 100644
-> --- a/arch/powerpc/include/asm/kexec_ranges.h
-> +++ b/arch/powerpc/include/asm/kexec_ranges.h
-> @@ -7,6 +7,7 @@
->  void sort_memory_ranges(struct crash_mem *mrngs, bool merge);
->  struct crash_mem *realloc_mem_ranges(struct crash_mem **mem_ranges);
->  int add_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size);
-> +int remove_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size);
->  int add_tce_mem_ranges(struct crash_mem **mem_ranges);
->  int add_initrd_mem_range(struct crash_mem **mem_ranges);
->  #ifdef CONFIG_PPC_64S_HASH_MMU
-> diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
-> index 9932793cd64b..5be30659172f 100644
-> --- a/arch/powerpc/kexec/core_64.c
-> +++ b/arch/powerpc/kexec/core_64.c
-> @@ -19,8 +19,11 @@
->  #include <linux/of.h>
->  #include <linux/libfdt.h>
->  #include <linux/memblock.h>
-> +#include <linux/memory.h>
->  
->  #include <asm/page.h>
-> +#include <asm/drmem.h>
-> +#include <asm/mmzone.h>
->  #include <asm/current.h>
->  #include <asm/machdep.h>
->  #include <asm/cacheflush.h>
-> @@ -547,9 +550,7 @@ int update_cpus_node(void *fdt)
->  #undef pr_fmt
->  #define pr_fmt(fmt) "crash hp: " fmt
->  
-> -#ifdef CONFIG_HOTPLUG_CPU
-> - /* Provides the value for the sysfs crash_hotplug nodes */
-> -int arch_crash_hotplug_cpu_support(struct kimage *image)
-> +static int crash_hotplug_support(struct kimage *image)
->  {
->  	if (image->file_mode)
->  		return 1;
-> @@ -560,8 +561,118 @@ int arch_crash_hotplug_cpu_support(struct kimage *image)
->  	 */
->  	return image->update_elfcorehdr && image->update_fdt;
->  }
-> +
-> +#ifdef CONFIG_HOTPLUG_CPU
-> + /* Provides the value for the sysfs crash_hotplug nodes */
-> +int arch_crash_hotplug_cpu_support(struct kimage *image)
-> +{
-> +	return crash_hotplug_support(image);
-> +}
-> +#endif
-> +
-> +#ifdef CONFIG_MEMORY_HOTPLUG
-> + /* Provides the value for the sysfs memory_hotplug nodes */
-> +int arch_crash_hotplug_memory_support(struct kimage *image)
-> +{
-> +	return crash_hotplug_support(image);
-> +}
+> The commit a72bbec70da2 ("crash: hotplug support for kexec_load()")
+> introduced a new kexec flag, `KEXEC_UPDATE_ELFCOREHDR`. Kexec tool uses
+> this flag to indicate kernel that it is safe to modify the elfcorehdr
+> of kdump image loaded using kexec_load system call.
+> 
+> Similarly, add a new kexec flag, `KEXEC_UPDATE_FDT`, for another kdump
+> component named FDT (Flatten Device Tree). Architectures like PowerPC
+> need to update FDT kdump image component on CPU hotplug events. Kexec
+> tool passing `KEXEC_UPDATE_FDT` will be an indication to kernel that FDT
+> segment is not part of SHA calculation hence it is safe to update it.
+> 
+> With the `KEXEC_UPDATE_ELFCOREHDR` and `KEXEC_UPDATE_FDT` kexec flags,
+> crash hotplug support can be added to PowerPC for the kexec_load syscall
+> while maintaining the backward compatibility with older kexec tools that
+> do not have these newly introduced flags.
+> 
+> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+> Cc: Akhil Raj <lf32.dev@gmail.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+> Cc: Baoquan He <bhe@redhat.com>
+> Cc: Borislav Petkov (AMD) <bp@alien8.de>
+> Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Dave Young <dyoung@redhat.com>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Eric DeVolder <eric.devolder@oracle.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Hari Bathini <hbathini@linux.ibm.com>
+> Cc: Laurent Dufour <laurent.dufour@fr.ibm.com>
+> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Mimi Zohar <zohar@linux.ibm.com>
+> Cc: Naveen N Rao <naveen@kernel.org>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Valentin Schneider <vschneid@redhat.com>
+> Cc: Vivek Goyal <vgoyal@redhat.com>
+> Cc: kexec@lists.infradead.org
+> Cc: x86@kernel.org
+> ---
+>  include/linux/kexec.h      | 6 ++++--
+>  include/uapi/linux/kexec.h | 1 +
+>  kernel/kexec.c             | 2 ++
+>  3 files changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/kexec.h b/include/linux/kexec.h
+> index 0f6ea35879ee..bcedb7625b1f 100644
+> --- a/include/linux/kexec.h
+> +++ b/include/linux/kexec.h
+> @@ -319,6 +319,7 @@ struct kimage {
+>  #ifdef CONFIG_CRASH_HOTPLUG
+>  	/* If set, allow changes to elfcorehdr of kexec_load'd image */
+>  	unsigned int update_elfcorehdr:1;
+> +	unsigned int update_fdt:1;
+
+Can we unify this to one flag, e.g hotplug_update?
+
+With this, on x86_64, we will skip the sha calculation for elfcorehdr. 
+On ppc, we will skip the sha calculation for elfcorehdr and fdt.
+
 >  #endif
 >  
-> +/*
-> + * Advertise preferred elfcorehdr size to userspace via
-> + * /sys/kernel/crash_elfcorehdr_size sysfs interface.
-> + */
-> +unsigned int arch_crash_get_elfcorehdr_size(void)
-> +{
-> +	unsigned int sz;
-> +	unsigned long elf_phdr_cnt;
-> +
-> +	/* Program header for CPU notes and vmcoreinfo */
-> +	elf_phdr_cnt = 2;
-> +	if (IS_ENABLED(CONFIG_MEMORY_HOTPLUG))
-> +		/* In the worst case, a Phdr is needed for every other LMB to be
-> +		 * represented as an individual crash range.
-> +		 */
-> +		elf_phdr_cnt += memory_hotplug_max() / (2 * drmem_lmb_size());
-> +
-> +	/* Do not cross the max limit */
-> +	if (elf_phdr_cnt > PN_XNUM)
-> +		elf_phdr_cnt = PN_XNUM;
-> +
-> +	sz = sizeof(struct elfhdr) + (elf_phdr_cnt * sizeof(Elf64_Phdr));
-> +	return sz;
-> +}
-> +
-> +/**
-> + * update_crash_elfcorehdr() - Recreate the elfcorehdr and replace it with old
-> + *			       elfcorehdr in the kexec segment array.
-> + * @image: the active struct kimage
-> + * @mn: struct memory_notify data handler
-> + */
-> +static void update_crash_elfcorehdr(struct kimage *image, struct memory_notify *mn)
-> +{
-> +	int ret;
-> +	struct crash_mem *cmem = NULL;
-> +	struct kexec_segment *ksegment;
-> +	void *ptr, *mem, *elfbuf = NULL;
-> +	unsigned long elfsz, memsz, base_addr, size;
-> +
-> +	ksegment = &image->segment[image->elfcorehdr_index];
-> +	mem = (void *) ksegment->mem;
-> +	memsz = ksegment->memsz;
-> +
-> +	ret = get_crash_memory_ranges(&cmem);
-> +	if (ret) {
-> +		pr_err("Failed to get crash mem range\n");
-> +		return;
-> +	}
-> +
-> +	/*
-> +	 * The hot unplugged memory is part of crash memory ranges,
-> +	 * remove it here.
-> +	 */
-> +	if (image->hp_action == KEXEC_CRASH_HP_REMOVE_MEMORY) {
-> +		base_addr = PFN_PHYS(mn->start_pfn);
-> +		size = mn->nr_pages * PAGE_SIZE;
-> +		ret = remove_mem_range(&cmem, base_addr, size);
-
-Althouth this is ppc specific, I don't understand. Why don't you
-recreate the elfcorehdr, but take removing the removed region. Comparing the
-remove_mem_range() implementation with recreating, I don't see too much
-benefit from that, and it makes your code more complicated. Just
-curious, surely ppc people can decide what should be taken. 
-
-> +		if (ret) {
-> +			pr_err("Failed to remove hot-unplugged from crash memory ranges.\n");
-> +			return;
-> +		}
-> +	}
-> +
-> +	ret = crash_prepare_elf64_headers(cmem, false, &elfbuf, &elfsz);
-> +	if (ret) {
-> +		pr_err("Failed to prepare elf header\n");
-> +		return;
-> +	}
-> +
-> +	/*
-> +	 * It is unlikely that kernel hit this because elfcorehdr kexec
-> +	 * segment (memsz) is built with addition space to accommodate growing
-> +	 * number of crash memory ranges while loading the kdump kernel. It is
-> +	 * Just to avoid any unforeseen case.
-> +	 */
-> +	if (elfsz > memsz) {
-> +		pr_err("Updated crash elfcorehdr elfsz %lu > memsz %lu", elfsz, memsz);
-> +		goto out;
-> +	}
-> +
-> +	ptr = __va(mem);
-> +	if (ptr) {
-> +		/* Temporarily invalidate the crash image while it is replaced */
-> +		xchg(&kexec_crash_image, NULL);
-> +
-> +		/* Replace the old elfcorehdr with newly prepared elfcorehdr */
-> +		memcpy((void *)ptr, elfbuf, elfsz);
-> +
-> +		/* The crash image is now valid once again */
-> +		xchg(&kexec_crash_image, image);
-> +	}
-> +out:
-> +	vfree(elfbuf);
-> +}
-> +
->  /**
->   * arch_crash_handle_hotplug_event - Handle crash CPU/Memory hotplug events to update the
->   *				     necessary kexec segments based on the hotplug event.
-> @@ -572,7 +683,7 @@ int arch_crash_hotplug_cpu_support(struct kimage *image)
->   * CPU addition: Update the FDT segment to include the newly added CPU.
->   * CPU removal: No action is needed, with the assumption that it's okay to have offline CPUs
->   *		as part of the FDT.
-> - * Memory addition/removal: No action is taken as this is not yet supported.
-> + * Memory addition/removal: Recreate the elfcorehdr segment
->   */
->  void arch_crash_handle_hotplug_event(struct kimage *image, void *arg)
->  {
-> @@ -593,7 +704,6 @@ void arch_crash_handle_hotplug_event(struct kimage *image, void *arg)
->  		return;
+>  #ifdef ARCH_HAS_KIMAGE_ARCH
+> @@ -396,9 +397,10 @@ bool kexec_load_permitted(int kexec_image_type);
 >  
->  	} else if (hp_action == KEXEC_CRASH_HP_ADD_CPU) {
-> -
->  		void *fdt, *ptr;
->  		unsigned long mem;
->  		int i, fdt_index = -1;
-> @@ -628,8 +738,10 @@ void arch_crash_handle_hotplug_event(struct kimage *image, void *arg)
->  
->  	} else if (hp_action == KEXEC_CRASH_HP_REMOVE_MEMORY ||
->  		   hp_action == KEXEC_CRASH_HP_ADD_MEMORY) {
-> -		pr_info_once("Crash update is not supported for memory hotplug\n");
-> -		return;
-> +		struct memory_notify *mn;
-> +
-> +		mn = (struct memory_notify *)arg;
-> +		update_crash_elfcorehdr(image, mn);
->  	}
->  }
+>  /* List of defined/legal kexec flags */
+>  #ifndef CONFIG_KEXEC_JUMP
+> -#define KEXEC_FLAGS    (KEXEC_ON_CRASH | KEXEC_UPDATE_ELFCOREHDR)
+> +#define KEXEC_FLAGS    (KEXEC_ON_CRASH | KEXEC_UPDATE_ELFCOREHDR | KEXEC_UPDATE_FDT)
+>  #else
+> -#define KEXEC_FLAGS    (KEXEC_ON_CRASH | KEXEC_PRESERVE_CONTEXT | KEXEC_UPDATE_ELFCOREHDR)
+> +#define KEXEC_FLAGS    (KEXEC_ON_CRASH | KEXEC_PRESERVE_CONTEXT | KEXEC_UPDATE_ELFCOREHDR | \
+> +			KEXEC_UPDATE_FDT)
 >  #endif
-> diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-> index e2148a009701..2457d7ec2075 100644
-> --- a/arch/powerpc/kexec/file_load_64.c
-> +++ b/arch/powerpc/kexec/file_load_64.c
-> @@ -21,6 +21,8 @@
->  #include <linux/memblock.h>
->  #include <linux/slab.h>
->  #include <linux/vmalloc.h>
-> +#include <linux/elf.h>
-> +
->  #include <asm/setup.h>
->  #include <asm/cputhreads.h>
->  #include <asm/drmem.h>
-> @@ -740,7 +742,35 @@ static int load_elfcorehdr_segment(struct kimage *image, struct kexec_buf *kbuf)
 >  
->  	kbuf->buffer = headers;
->  	kbuf->mem = KEXEC_BUF_MEM_UNKNOWN;
-> -	kbuf->bufsz = kbuf->memsz = headers_sz;
-> +	kbuf->bufsz = headers_sz;
-> +#if defined(CONFIG_CRASH_HOTPLUG) && defined(CONFIG_MEMORY_HOTPLUG)
-> +	/* Adjust the elfcorehdr segment size to accommodate
-> +	 * future crash memory ranges.
-> +	 */
-> +	int max_lmb;
-> +	unsigned long pnum;
-> +
-> +	/* In the worst case, a Phdr is needed for every other LMB to be
-> +	 * represented as an individual crash range.
-> +	 */
-> +	max_lmb = memory_hotplug_max() / (2 * drmem_lmb_size());
-> +
-> +	/* Do not cross the Phdr max limit of the elf header.
-> +	 * Avoid counting Phdr for crash ranges (cmem->nr_ranges)
-> +	 * which are already part of elfcorehdr.
-> +	 */
-> +	if (max_lmb > PN_XNUM)
-> +		pnum = PN_XNUM - cmem->nr_ranges;
-> +	else
-> +		pnum = max_lmb - cmem->nr_ranges;
-> +
-> +	/* Additional buffer space for elfcorehdr to accommodate
-> +	 * future memory ranges.
-> +	 */
-> +	kbuf->memsz = headers_sz + pnum * sizeof(Elf64_Phdr);
-> +#else
-> +	kbuf->memsz = headers_sz;
-> +#endif
->  	kbuf->top_down = false;
+>  /* List of defined/legal kexec file flags */
+> diff --git a/include/uapi/linux/kexec.h b/include/uapi/linux/kexec.h
+> index 01766dd839b0..3d5b3d757bed 100644
+> --- a/include/uapi/linux/kexec.h
+> +++ b/include/uapi/linux/kexec.h
+> @@ -13,6 +13,7 @@
+>  #define KEXEC_ON_CRASH		0x00000001
+>  #define KEXEC_PRESERVE_CONTEXT	0x00000002
+>  #define KEXEC_UPDATE_ELFCOREHDR	0x00000004
+> +#define KEXEC_UPDATE_FDT	0x00000008
+>  #define KEXEC_ARCH_MASK		0xffff0000
 >  
->  	ret = kexec_add_buffer(kbuf);
-> @@ -750,7 +780,7 @@ static int load_elfcorehdr_segment(struct kimage *image, struct kexec_buf *kbuf)
->  	}
+>  /*
+> diff --git a/kernel/kexec.c b/kernel/kexec.c
+> index 8f35a5a42af8..97eb151cd931 100644
+> --- a/kernel/kexec.c
+> +++ b/kernel/kexec.c
+> @@ -132,6 +132,8 @@ static int do_kexec_load(unsigned long entry, unsigned long nr_segments,
+>  #ifdef CONFIG_CRASH_HOTPLUG
+>  	if (flags & KEXEC_UPDATE_ELFCOREHDR)
+>  		image->update_elfcorehdr = 1;
+> +	if (flags & KEXEC_UPDATE_FDT)
+> +		image->update_fdt = 1;
+>  #endif
 >  
->  	image->elf_load_addr = kbuf->mem;
-> -	image->elf_headers_sz = headers_sz;
-> +	image->elf_headers_sz = kbuf->memsz;
->  	image->elf_headers = headers;
->  out:
->  	kfree(cmem);
-> diff --git a/arch/powerpc/kexec/ranges.c b/arch/powerpc/kexec/ranges.c
-> index fb3e12f15214..4fd0c5d5607b 100644
-> --- a/arch/powerpc/kexec/ranges.c
-> +++ b/arch/powerpc/kexec/ranges.c
-> @@ -234,6 +234,91 @@ int add_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size)
->  	return __add_mem_range(mem_ranges, base, size);
->  }
->  
-> +/**
-> + * remove_mem_range - Removes the given memory range from the range list.
-> + * @mem_ranges:    Range list to remove the memory range to.
-> + * @base:          Base address of the range to remove.
-> + * @size:          Size of the memory range to remove.
-> + *
-> + * (Re)allocates memory, if needed.
-> + *
-> + * Returns 0 on success, negative errno on error.
-> + */
-> +int remove_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size)
-> +{
-> +	u64 end;
-> +	int ret = 0;
-> +	unsigned int i;
-> +	u64 mstart, mend;
-> +	struct crash_mem *mem_rngs = *mem_ranges;
-> +
-> +	if (!size)
-> +		return 0;
-> +
-> +	/*
-> +	 * Memory range are stored as start and end address, use
-> +	 * the same format to do remove operation.
-> +	 */
-> +	end = base + size - 1;
-> +
-> +	for (i = 0; i < mem_rngs->nr_ranges; i++) {
-> +		mstart = mem_rngs->ranges[i].start;
-> +		mend = mem_rngs->ranges[i].end;
-> +
-> +		/*
-> +		 * Memory range to remove is not part of this range entry
-> +		 * in the memory range list
-> +		 */
-> +		if (!(base >= mstart && end <= mend))
-> +			continue;
-> +
-> +		/*
-> +		 * Memory range to remove is equivalent to this entry in the
-> +		 * memory range list. Remove the range entry from the list.
-> +		 */
-> +		if (base == mstart && end == mend) {
-> +			for (; i < mem_rngs->nr_ranges - 1; i++) {
-> +				mem_rngs->ranges[i].start = mem_rngs->ranges[i+1].start;
-> +				mem_rngs->ranges[i].end = mem_rngs->ranges[i+1].end;
-> +			}
-> +			mem_rngs->nr_ranges--;
-> +			goto out;
-> +		}
-> +		/*
-> +		 * Start address of the memory range to remove and the
-> +		 * current memory range entry in the list is same. Just
-> +		 * move the start address of the current memory range
-> +		 * entry in the list to end + 1.
-> +		 */
-> +		else if (base == mstart) {
-> +			mem_rngs->ranges[i].start = end + 1;
-> +			goto out;
-> +		}
-> +		/*
-> +		 * End address of the memory range to remove and the
-> +		 * current memory range entry in the list is same.
-> +		 * Just move the end address of the current memory
-> +		 * range entry in the list to base - 1.
-> +		 */
-> +		else if (end == mend)  {
-> +			mem_rngs->ranges[i].end = base - 1;
-> +			goto out;
-> +		}
-> +		/*
-> +		 * Memory range to remove is not at the edge of current
-> +		 * memory range entry. Split the current memory entry into
-> +		 * two half.
-> +		 */
-> +		else {
-> +			mem_rngs->ranges[i].end = base - 1;
-> +			size = mem_rngs->ranges[i].end - end;
-> +			ret = add_mem_range(mem_ranges, end + 1, size);
-> +		}
-> +	}
-> +out:
-> +	return ret;
-> +}
-> +
->  /**
->   * add_tce_mem_ranges - Adds tce-table range to the given memory ranges list.
->   * @mem_ranges:         Range list to add the memory range(s) to.
+>  	ret = machine_kexec_prepare(image);
 > -- 
 > 2.41.0
 > 
