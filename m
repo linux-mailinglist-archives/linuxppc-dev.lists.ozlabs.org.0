@@ -1,58 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91465814B28
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Dec 2023 16:06:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F377A814C3B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Dec 2023 17:00:13 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=J82Ykm4F;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gEy347kK;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SsCGQ1qtXz3dTC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Dec 2023 02:06:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SsDSq57wBz3dSf
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Dec 2023 03:00:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=J82Ykm4F;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gEy347kK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::2d; helo=mail-oa1-x2d.google.com; envelope-from=andy.shevchenko@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-oa1-x2d.google.com (mail-oa1-x2d.google.com [IPv6:2001:4860:4864:20::2d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SsCFd267tz3c1J
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Dec 2023 02:05:25 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id 98EE6B828F0;
-	Fri, 15 Dec 2023 15:05:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77B90C433C7;
-	Fri, 15 Dec 2023 15:05:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702652722;
-	bh=XOILv9Fmwwz3Rta+62IPEge55zNcBrrWIBM03rU+5UE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=J82Ykm4F3QSyWLSqa7ED/v/ozXselGaYeoF/WX6M4v0Tws+q+L/NnlN+b+c5XyPJJ
-	 0oRLZ1Qo+ulD5PbpBqh8sBrlVEHI0/D9M7Sh0xCi9jYHXO66xjFcBJZKYgtmZ6hCF5
-	 YtCmKKZEfvO3tFE2NNHZJtcU9fUBaQf2feOG0ItjoUlncJIO0R3SvVH+V2y51EGoBU
-	 lMcDrDTQv/jaLvD1vE4E1sYXJxQ+MUFRPhWyE2Zh4pmyAUjkIwhLZSHxhBf1MGN9BW
-	 mswU/V4Rey357AU7dMhKfKRj2NxsxEJ0GxL2k+SHZfq6Me39WaErEvLy1vhyrKq7nv
-	 0MceiqvqXxTNg==
-From: Mark Brown <broonie@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
- Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org, 
- linuxppc-dev@lists.ozlabs.org, linux-sound@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Wang Jinchao <wangjinchao@xfusion.com>
-In-Reply-To: <202312151713+0800-wangjinchao@xfusion.com>
-References: <202312151713+0800-wangjinchao@xfusion.com>
-Subject: Re: [PATCH] ASoC: fsl_mqs: remove duplicated including
-Message-Id: <170265271919.82974.8640827688447166639.b4-ty@kernel.org>
-Date: Fri, 15 Dec 2023 15:05:19 +0000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SsDRy47Lzz30XR
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Dec 2023 02:59:24 +1100 (AEDT)
+Received: by mail-oa1-x2d.google.com with SMTP id 586e51a60fabf-1f03d9ad89fso544277fac.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Dec 2023 07:59:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702655961; x=1703260761; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MG9yAVm50lR8ICiHnRNf31I38rZ2htO3wSzdsU8ztZ4=;
+        b=gEy347kK6eoi5kXjYGRvgBczNqClDDsn7krZ3u1XnZw5gqdWkP+U8KkXzvX7RWNIzp
+         +H/6F5xGL7RepGTvlXdvdt6zPzez6OFUU3SSNOJkuiqGDGyes//VAqGN+7xKFlNhAxWx
+         nkseFBIKUJCXpognAOnK0ErM8DimvhQuXhV0VdYaMFcI1wX7ek77A1dggjOnpKw9JK1x
+         M0q4T9XdCUGgOzIeQU6Xgnsz5qJXuYyEpN8dddPi3Ja+AtcgdJpl0BUdbGrqBokFTdo0
+         WBY4YFKJmoi9NIhTInWbrgDCVEdpnmGIlbm1LB5Ky87aK/gRxRhB1NsiT8QKhOO5/N4L
+         c2Ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702655961; x=1703260761;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MG9yAVm50lR8ICiHnRNf31I38rZ2htO3wSzdsU8ztZ4=;
+        b=wByFBfQgJwX/ZfUyEvaaODoCo8gv1rRWD80sn+0P/Z7yoh3m4mHsq8T59QK61+lSX6
+         UX5K5aShurOfShj8Nr+xAcqx6MX/hqXfknL1C3KfOHOnCS8UVZ9qamAgECzQMSGYhyeP
+         QW4ya5EsLCZkh1ilWJuueD80481XhSnfh0CX9nXfDQtov+IzliMcYAXW1wMe+lmXuPNv
+         EwRzzTEWXTDCDdEXSfOy/xoDcrgdxE5n4ZToGZqr5ahspvaMw35PzqGb84YIkclVkIz9
+         iMJiYI4hQoMFXbSEgv3k8rDa/Ta+XICpvPa0qU3enz8O+Z3LyDFveEd2kSpVnZ9yUtli
+         dKkQ==
+X-Gm-Message-State: AOJu0YyqAfXY2Dlor+J15kJsJtrw1fsT3PuXjvc91RBOUQDrnv9ke5jC
+	uIfrxDU/YIjUdQLuR5ShAnEoIEkSzriFf3D393Q=
+X-Google-Smtp-Source: AGHT+IGLoY1Nw1pfnxSccxTPPQGkI5sLz3dmiL9hVukMxvSLrc6SwWXCmZBocGOvbRO13ErKz7EtuQ8V4zYiAag9VFM=
+X-Received: by 2002:a05:6870:9383:b0:1f9:e6cb:7eb5 with SMTP id
+ b3-20020a056870938300b001f9e6cb7eb5mr13635905oal.18.1702655961087; Fri, 15
+ Dec 2023 07:59:21 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-5c066
+References: <20231214173614.2820929-3-gnstark@salutedevices.com> <c16599b23afa853a44d13b906af5683027959a26.1702621174.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <c16599b23afa853a44d13b906af5683027959a26.1702621174.git.christophe.leroy@csgroup.eu>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Fri, 15 Dec 2023 17:58:44 +0200
+Message-ID: <CAHp75VfBcmTBXXtU6o1x0Ea24wG-_Qb46opkS0EXKQ1Ynh0Mcw@mail.gmail.com>
+Subject: Re: [PATCH RFC v4-bis] locking: introduce devm_mutex_init
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,40 +75,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: stone.xulei@xfusion.com
+Cc: kernel@salutedevices.com, vadimp@nvidia.com, mazziesaccount@gmail.com, peterz@infradead.org, boqun.feng@gmail.com, lee@kernel.org, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, linux-kernel@vger.kernel.org, hdegoede@redhat.com, mingo@redhat.com, pavel@ucw.cz, George Stark <gnstark@salutedevices.com>, longman@redhat.com, nikitos.tr@gmail.com, will@kernel.org, linux-leds@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 15 Dec 2023 17:13:51 +0800, Wang Jinchao wrote:
-> rm the second \#include <linux/of.h>
-> 
-> 
+On Fri, Dec 15, 2023 at 8:23=E2=80=AFAM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+> From: George Stark <gnstark@salutedevices.com>
+>
+> Using of devm API leads to a certain order of releasing resources.
+> So all dependent resources which are not devm-wrapped should be deleted
+> with respect to devm-release order. Mutex is one of such objects that
+> often is bound to other resources and has no own devm wrapping.
+> Since mutex_destroy() actually does nothing in non-debug builds
+> frequently calling mutex_destroy() is just ignored which is safe for now
+> but wrong formally and can lead to a problem if mutex_destroy() will be
+> extended so introduce devm_mutex_init()
 
-Applied to
+Missing period.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+...
 
-Thanks!
+>  } while (0)
+>  #endif /* CONFIG_PREEMPT_RT */
 
-[1/1] ASoC: fsl_mqs: remove duplicated including
-      commit: e7a4a2fd9a4116286a1523ea1a5cbabd2c36f5b9
+^^^ (1)
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+> +struct device;
+> +
+> +/*
+> + * devm_mutex_init() registers a function that calls mutex_destroy()
+> + * when the ressource is released.
+> + *
+> + * When mutex_destroy() is a not, there is no need to register that
+> + * function.
+> + */
+> +#ifdef CONFIG_DEBUG_MUTEXES
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Shouldn't this be
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+#if defined(CONFIG_DEBUG_MUTEXES) && !defined(CONFIG_PREEMPT_RT)
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+(see (1) as well)?
 
-Thanks,
-Mark
+> +void mutex_destroy(struct mutex *lock);
+> +int devm_mutex_init(struct device *dev, struct mutex *lock);
+> +#else
+> +static inline void mutex_destroy(struct mutex *lock) {}
+> +
+> +static inline int devm_mutex_init(struct device *dev, struct mutex *lock=
+)
+> +{
+> +       mutex_init(lock);
+> +       return 0;
+> +}
+> +#endif
 
+--=20
+With Best Regards,
+Andy Shevchenko
