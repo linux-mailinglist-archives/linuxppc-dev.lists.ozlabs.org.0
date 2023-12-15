@@ -1,56 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14FA4814CAE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Dec 2023 17:13:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 985D5814E35
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Dec 2023 18:15:52 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rzb0vRMv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pp0lD+H8;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SsDmg5W0nz3dSx
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Dec 2023 03:13:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SsG861gS0z3dL8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Dec 2023 04:15:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rzb0vRMv;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pp0lD+H8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=aneesh.kumar@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SsDlp5wc8z2yDD
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Dec 2023 03:13:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SsG7D0jpkz30hn
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Dec 2023 04:15:04 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id A1C3D62678;
-	Fri, 15 Dec 2023 16:13:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7966C433C7;
-	Fri, 15 Dec 2023 16:13:02 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTP id 7AC55B82A5E
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Dec 2023 17:14:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB64C433C8
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Dec 2023 17:14:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702656787;
-	bh=J5U0YPNa7AB26BKYS1W5zmJBF+duoWLKvJ0dL3e/X7E=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=rzb0vRMvSulaJmQCd1WxGCX+vJoa+mxO3N+P3GvoG39ZwEN7JjohfqYCg5Ecy+BXS
-	 +nwpi8PXsAyVjbgxjHz64OD09dRbSH2GXFQYUhIP9a3z3cr21ptpUwZpbqky6aKalt
-	 zNLsGYL4OIza0+xnfGjj5+YA+0j1iGFG4V7H7URQk2rYsCJlUSr4SeGXRy8gauPLxl
-	 aCByVKWNB84vUZwAL17bLSZpBQM7sGzft7WxCTvM6FJ7XyuCPHxF64Zie75hSS9C3Q
-	 dAGP+S7uevpQQ5V4k35JQD7UQxrrrz/tzb5Z4bbvgK4TtJ2RThDjNmkA+X/6fZjcGW
-	 VafUSsfRVrmMg==
-X-Mailer: emacs 29.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-	kvm@vger.kernel.org, kvm-ppc@vger.kernel.org
-Subject: Re: [PATCH 01/12] KVM: PPC: Book3S HV nestedv2: Invalidate RPT
- before deleting a guest
-In-Reply-To: <87jzpolsen.fsf@vajain21.in.ibm.com>
-References: <20231201132618.555031-1-vaibhav@linux.ibm.com>
- <20231201132618.555031-2-vaibhav@linux.ibm.com>
- <878r66xtjt.fsf@kernel.org> <87jzpolsen.fsf@vajain21.in.ibm.com>
-Date: Fri, 15 Dec 2023 21:42:59 +0530
-Message-ID: <87r0jntpf8.fsf@kernel.org>
+	s=k20201202; t=1702660498;
+	bh=s4dpcKFSOpffFMkLeUyk6a1Hqn70UOiGuwHq3pZ2x3M=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=pp0lD+H8LpkhU1gbKSJba+kSztqi0VqYD1rl0fOwE/NORkX9ChGns9bNNzrst+Xo2
+	 louOv26Mj6n1EKNN/NY8GzwveRb9fER+eCudIYdzHMj/kUAlqo8A7FVTmOTcrFqdif
+	 daKSQ6BZfsSTpRoZsTEneJ64xiUvH8GrrmLIwbBW9ZOpZ3B11jX9yI+BXtgl+uVW5/
+	 NOC+43nfebfEuYBF7LcITZ0Asich2kam7TibasR9V5IU8kPfOk7H9Kyu842XFFHvXF
+	 eNMWJ8z1yr5s3vFkV25rgoCE/GX9NLItg6eKGmxXXO6eV/s+8DjeFOFXcm1T0UbK6B
+	 0q0uxBdKq0+yQ==
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-6da5259e3a3so432760a34.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Dec 2023 09:14:58 -0800 (PST)
+X-Gm-Message-State: AOJu0YyqtJqzp+Q6XS/KPpwx90wTdVXLiSLxeG4knhgq5gGJogHeBVnI
+	5PHPCFsxSaPVHjLXDK+Ey1j0HsNYA2PuOKEdcHs=
+X-Google-Smtp-Source: AGHT+IG/ffSXQejDqbvOPaP3pp3auTpYqO7TlQzwcixijWKSehFgrp3ZXIk1Q+mZdPXKJtKIb41MOV9edOYQWbYQJ/8=
+X-Received: by 2002:a05:6871:750d:b0:1fb:19a:5d6 with SMTP id
+ ny13-20020a056871750d00b001fb019a05d6mr14154078oac.59.1702660498202; Fri, 15
+ Dec 2023 09:14:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20231212161610.100862-1-matthias.schiffer@ew.tq-group.com>
+ <CAK7LNAQhVJ6kYC_+LutUzE9m-dQmaZ2HnWbLcOj54w5LZJe2FA@mail.gmail.com> <a7ed5eddc674b0fcb7062af58c10d0190ccda2b8.camel@ew.tq-group.com>
+In-Reply-To: <a7ed5eddc674b0fcb7062af58c10d0190ccda2b8.camel@ew.tq-group.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sat, 16 Dec 2023 02:14:22 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATuZ5w4+znxqUVEfyD0cCKHr+sd6Yr=R=kshxFqNYHnwA@mail.gmail.com>
+Message-ID: <CAK7LNATuZ5w4+znxqUVEfyD0cCKHr+sd6Yr=R=kshxFqNYHnwA@mail.gmail.com>
+Subject: Re: [PATCH] Reapply "kbuild: Create directory for target DTB"
+To: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,71 +68,154 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, sbhat@linux.ibm.com, amachhiw@linux.vnet.ibm.com, Jordan Niethe <jniethe5@gmail.com>, gautam@linux.ibm.com, Nicholas Piggin <npiggin@gmail.com>, David.Laight@ACULAB.COM, kconsul@linux.vnet.ibm.com, Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>
+Cc: Nicolas Schier <nicolas@fjasle.eu>, "linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux@ew.tq-group.com" <linux@ew.tq-group.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Vaibhav Jain <vaibhav@linux.ibm.com> writes:
+On Wed, Dec 13, 2023 at 8:22=E2=80=AFPM Matthias Schiffer
+<matthias.schiffer@ew.tq-group.com> wrote:
+>
+> On Tue, 2023-12-12 at 17:13 +0000, Masahiro Yamada wrote:
+> >
+> >
+> > On Wed, Dec 13, 2023 at 1:17=E2=80=AFAM Matthias Schiffer
+> > <matthias.schiffer@ew.tq-group.com> wrote:
+> > >
+> > > This reverts commit dd7699e37f289fa433f42c6bcc108468c8b198c0.
+> > >
+> > > On powerpc, dtb-y is usually empty unless CONFIG_OF_ALL_DTBS is set. =
+While
+> > > passing a DTB as a make target explicitly works fine, individual DTB
+> > > builds may also be pulled in as dependencies by cuImage.% and similar
+> > > targets. In this case, nothing creates the arch/powerpc/dts directory=
+,
+> > > causing out-of-tree builds to fail.
+> > >
+> > > Fixes: dd7699e37f28 ("Revert "kbuild: Create directory for target DTB=
+"")
+> > > Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+> > > ---
+> >
+> >
+> >
+> > NACK.
+> >
+> > %.dtb is generated by if_changed_dep.
+> >
+> > Each Makefile is responsible for adding %.dtb to 'targets'
+> > if it is pulled in as dependencies of other images.
+> >
+> > If it does not work for PowerPC, it is a bug in PowerPC Makefile.
+> >
+> >
+> > Just checking arch/powerpc/boot/Makefile,
+> > it adds dts/%.dtb and dts/fsl/%.dtb to 'targets'. [1] [2]
+> >
+> > cuImage.% should be file, but it does not cover all images.
+> >
+> > Fix arch/powerpc/boot/Makefile.
+>
+> Ah, thank you for the pointers, I did not quite get the meaning of those =
+Makefile lines when first
+> reading them. So the issue is that I'm trying to build a cuImage that is =
+not added to image-y in the
+> powerpc Makefile. It is unfortunate that this leads to a very confusing e=
+rror message about the
+> missing dts directory.
+>
+> I'll send a new patch if I come to the conclusion that I actually need th=
+e cuImage (for the ancient
+> TQM5200 which hasn't really been touched since 2011).
 
-> Hi Aneesh,
->
-> Thanks for looking into this patch. My responses inline below:
->
-> "Aneesh Kumar K.V (IBM)" <aneesh.kumar@kernel.org> writes:
->
->> Vaibhav Jain <vaibhav@linux.ibm.com> writes:
->>
->>> From: Jordan Niethe <jniethe5@gmail.com>
->>>
->>> An L0 must invalidate the L2's RPT during H_GUEST_DELETE if this has not
->>> already been done. This is a slow operation that means H_GUEST_DELETE
->>> must return H_BUSY multiple times before completing. Invalidating the
->>> tables before deleting the guest so there is less work for the L0 to do.
->>>
->>> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
->>> ---
->>>  arch/powerpc/include/asm/kvm_book3s.h | 1 +
->>>  arch/powerpc/kvm/book3s_hv.c          | 6 ++++--
->>>  arch/powerpc/kvm/book3s_hv_nested.c   | 2 +-
->>>  3 files changed, 6 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/arch/powerpc/include/asm/kvm_book3s.h b/arch/powerpc/include/asm/kvm_book3s.h
->>> index 4f527d09c92b..a37736ed3728 100644
->>> --- a/arch/powerpc/include/asm/kvm_book3s.h
->>> +++ b/arch/powerpc/include/asm/kvm_book3s.h
->>> @@ -302,6 +302,7 @@ void kvmhv_nested_exit(void);
->>>  void kvmhv_vm_nested_init(struct kvm *kvm);
->>>  long kvmhv_set_partition_table(struct kvm_vcpu *vcpu);
->>>  long kvmhv_copy_tofrom_guest_nested(struct kvm_vcpu *vcpu);
->>> +void kvmhv_flush_lpid(u64 lpid);
->>>  void kvmhv_set_ptbl_entry(u64 lpid, u64 dw0, u64 dw1);
->>>  void kvmhv_release_all_nested(struct kvm *kvm);
->>>  long kvmhv_enter_nested_guest(struct kvm_vcpu *vcpu);
->>> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
->>> index 1ed6ec140701..5543e8490cd9 100644
->>> --- a/arch/powerpc/kvm/book3s_hv.c
->>> +++ b/arch/powerpc/kvm/book3s_hv.c
->>> @@ -5691,10 +5691,12 @@ static void kvmppc_core_destroy_vm_hv(struct kvm *kvm)
->>>  			kvmhv_set_ptbl_entry(kvm->arch.lpid, 0, 0);
->>>  	}
->>>  
->>> -	if (kvmhv_is_nestedv2())
->>> +	if (kvmhv_is_nestedv2()) {
->>> +		kvmhv_flush_lpid(kvm->arch.lpid);
->>>  		plpar_guest_delete(0, kvm->arch.lpid);
->>>
->>
->> I am not sure I follow the optimization here. I would expect the
->> hypervisor to kill all the translation caches as part of guest_delete.
->> What is the benefit of doing a lpid flush outside the guest delete?
->>
-> Thats right. However without this optimization the H_GUEST_DELETE hcall
-> in plpar_guest_delete() returns H_BUSY multiple times resulting in
-> multiple hcalls to the hypervisor until it finishes. Flushing the guest
-> translation cache upfront reduces the number of HCALLs L1 guests has to
-> make to delete a L2 guest via H_GUEST_DELETE.
->
 
-can we add that as a comment above that kvmhv_flush_lpid()?
 
--aneesh
+
+If your target image does not exist in arch/powerpc/boot/Makefile,
+one solution might be CONFIG_EXTRA_TARGETS
+
+
+I see the following code:
+
+  image-y +=3D $(CONFIG_EXTRA_TARGETS)
+
+
+
+
+Another solution might be:
+
+  image-y +=3D $(filter dtbImage.% uImage.% cuImage.% simpleImage.%
+treeImage.%, $(MAKECMDGOALS))
+
+
+
+
+But, I did not test any of them.
+
+
+
+
+
+
+> Regards,
+> Matthias
+>
+>
+> >
+> >
+> >
+> > [1] https://github.com/torvalds/linux/blob/v6.7-rc5/arch/powerpc/boot/M=
+akefile#L386
+> > [2] https://github.com/torvalds/linux/blob/v6.7-rc5/arch/powerpc/boot/M=
+akefile#L388
+> >
+> >
+> >
+> > >  scripts/Makefile.lib | 3 ++-
+> > >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+> > > index 1a965fe68e011..3fe0fc46badfe 100644
+> > > --- a/scripts/Makefile.lib
+> > > +++ b/scripts/Makefile.lib
+> > > @@ -389,7 +389,8 @@ $(obj)/%.dtbo.S: $(obj)/%.dtbo FORCE
+> > >         $(call if_changed,wrap_S_dtb)
+> > >
+> > >  quiet_cmd_dtc =3D DTC     $@
+> > > -cmd_dtc =3D $(HOSTCC) -E $(dtc_cpp_flags) -x assembler-with-cpp -o $=
+(dtc-tmp) $< ; \
+> > > +cmd_dtc =3D mkdir -p $(dir ${dtc-tmp}) ; \
+> > > +       $(HOSTCC) -E $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-=
+tmp) $< ; \
+> > >         $(DTC) -o $@ -b 0 \
+> > >                 $(addprefix -i,$(dir $<) $(DTC_INCLUDE)) $(DTC_FLAGS)=
+ \
+> > >                 -d $(depfile).dtc.tmp $(dtc-tmp) ; \
+> > > --
+> > > TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld=
+, Germany
+> > > Amtsgericht M=C3=BCnchen, HRB 105018
+> > > Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stef=
+an Schneider
+> > > https://www.tq-group.com/
+> > >
+> >
+> >
+> > --
+> > Best Regards
+> >
+> > Masahiro Yamada
+> >
+>
+> --
+> TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Ge=
+rmany
+> Amtsgericht M=C3=BCnchen, HRB 105018
+> Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan S=
+chneider
+> https://www.tq-group.com/
+
+
+
+--=20
+Best Regards
+Masahiro Yamada
