@@ -1,88 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B74C08143DD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Dec 2023 09:43:55 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HFpH7CM8;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E4D7814405
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Dec 2023 09:58:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ss2nP2pNMz3dL0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Dec 2023 19:43:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ss35q5nhhz3dTJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Dec 2023 19:58:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HFpH7CM8;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=43.155.80.173; helo=bg5.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
+Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.155.80.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ss2mW5WDzz3bYR
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Dec 2023 19:43:07 +1100 (AEDT)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3BF8guvV008975;
-	Fri, 15 Dec 2023 08:43:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=vHb9UqXQsdIUmbe4LgA6GtT4Thp8u4x0RQT5HQZIeeM=;
- b=HFpH7CM8w8TGQu1xtY84oayzqwGpJBaa1lUTXobcWC7qVJbnlyQXoVN7fxc5QKmQugAP
- +uPaPY9P/6E0N9yuxHfW2euhYfjGuRKktH4GcLoIGT8usXND1qxOXPzw5/XbIiX2Usbc
- ByubXmgHShsecIjOmFZvuhXsqhNsoP0ANwO0ZHuGl+SVdWw7t8Q8OgYJRjBMJZ1ukfN5
- SFUYrEQ4TcvDNIJ+7GE9b1rVWKEWslQoOZeg0vmHc0ESsBhCgbWd3qYlfg5xX788L9JK
- 13AJTft4gpxlb4bwQUsfyITM64mLN+S4r04wvqRGJDkOEWV3ymmDR2ltAarxuw9/NZFy oQ== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3v0khag05a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 15 Dec 2023 08:43:01 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3BF5tVX6014813;
-	Fri, 15 Dec 2023 08:43:00 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uw42kjy0n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 15 Dec 2023 08:43:00 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3BF8gvIR27067028
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 15 Dec 2023 08:42:57 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3A57F20043;
-	Fri, 15 Dec 2023 08:42:57 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0E3E920040;
-	Fri, 15 Dec 2023 08:42:56 +0000 (GMT)
-Received: from [9.79.186.169] (unknown [9.79.186.169])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 15 Dec 2023 08:42:55 +0000 (GMT)
-Message-ID: <1de00a5a-afa0-4c75-9f29-4b5e091d8321@linux.ibm.com>
-Date: Fri, 15 Dec 2023 14:12:55 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ss35J5FHMz3c5t
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Dec 2023 19:57:40 +1100 (AEDT)
+X-QQ-mid: bizesmtp81t1702630218thfsx9pm
+Received: from HX09040029.powercore.com.cn ( [58.34.117.194])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 15 Dec 2023 16:50:08 +0800 (CST)
+X-QQ-SSF: 01400000000000402000000A0000000
+X-QQ-FEAT: ceHWIenCpmDuhrSrhvNLjSeriLEySCYhA7RcdCsZagNjgKO6tixTcenj4mA5g
+	OofENfpRkwA7602PJI3HdlCm1qKusu8tjy5JzvoTmk4ga7dLuYR7kxmQjbApLOeT6mr61Pb
+	rZy6+y4YwT3R2Qym5ciyn1eTpbexZsRdxnETeU3vRJfYOBU9TEcy3R3SlHIehLf+jIlyxod
+	84NUUjBMnLKYXiPivNpeUqIKIoQz7V+EuAsRZICwZ0ayQnj8gDD2JvGiG9ya8IKmOHFBLEt
+	RwlCLQoKqGfeVZIvWfiCKOcKUd2k1eeHCWccpsgBmDMcPk2qZA5D+/MnBf90lI2BKXn/up0
+	j8x19IH2aiEB/9OS+dGVp0uTTo29kngaJdIC46MGByG2Yymj1eWBCVKXQr9XMkVG620xjCT
+	QOgfLTjgVl0=
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 2766933889210276903
+Date: Fri, 15 Dec 2023 16:50:08 +0800
+From: Luming Yu <luming.yu@shingroup.cn>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH 1/2] powerpc/locking: implement this_cpu_cmpxchg local API
+Message-ID: <6A256ED30D339626+ZXwTQL1lMXhQ_inW@HX09040029.powercore.com.cn>
+References: <0EFBD0242622180B+20231204022303.528-1-luming.yu@shingroup.cn>
+ <87jzpldl1l.fsf@mail.lhotse>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/3] powerpc/fadump: pass additional parameters to
- dump capture kernel
-Content-Language: en-US
-To: Hari Bathini <hbathini@linux.ibm.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-References: <20231205201835.388030-1-hbathini@linux.ibm.com>
- <20231205201835.388030-3-hbathini@linux.ibm.com>
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <20231205201835.388030-3-hbathini@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: W7Ftf3OEE9ClbgBVocoDzVx9VS-nyfmi
-X-Proofpoint-ORIG-GUID: W7Ftf3OEE9ClbgBVocoDzVx9VS-nyfmi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-15_04,2023-12-14_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=999 malwarescore=0 spamscore=0 suspectscore=0
- lowpriorityscore=0 bulkscore=0 mlxscore=0 adultscore=0 phishscore=0
- impostorscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2311290000 definitions=main-2312150056
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87jzpldl1l.fsf@mail.lhotse>
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz5a-1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,310 +53,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+Cc: ke.zhao@shingroup.cn, dawei.li@shingroup.cn, npiggin@gmail.com, linux-kernel@vger.kernel.org, luming.yu@gmail.com, shenghui.qu@shingroup.cn, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Hari,
+On Mon, Dec 11, 2023 at 10:40:38PM +1100, Michael Ellerman wrote:
+> Hi Luming Yu,
+> 
+> Luming Yu <luming.yu@shingroup.cn> writes:
+> > ppc appears to have already supported cmpxchg-local atomic semantics
+> > that is defined by the kernel convention of the feature.
+> > Add this_cpu_cmpxchg ppc local for the performance benefit of arch
+> > sepcific implementation than asm-generic c verison of the locking API.
+> 
+> Implementing this has been suggested before but it wasn't clear that it
+> was actually going to perform better than the generic version.
+Thanks for the info. To me, it is a news. : -)
+I will check if any web search engine could serve me well to find it out. 
+> 
+> On 64-bit we have interrupt soft masking, so disabling interrupts is
+> relatively cheap. So the generic this_cpu_cmpxhg using irq disable just
+> becomes a few loads & stores, no atomic ops required.
 
-On 06/12/23 01:48, Hari Bathini wrote:
-> For fadump case, passing additional parameters to dump capture kernel
-> helps in minimizing the memory footprint for it and also provides the
-> flexibility to disable components/modules, like hugepages, that are
-> hindering the boot process of the special dump capture environment.
->
-> Set up a dedicated parameter area to be passed to the capture kernel.
-> This area type is defined as RTAS_FADUMP_PARAM_AREA. Sysfs attribute
-> '/sys/kernel/fadump/bootargs_append' is exported to the userspace to
-> specify the additional parameters to be passed to the capture kernel
->
-> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-> ---
->   arch/powerpc/include/asm/fadump-internal.h   |  3 +
->   arch/powerpc/kernel/fadump.c                 | 80 ++++++++++++++++++++
->   arch/powerpc/platforms/powernv/opal-fadump.c |  6 +-
->   arch/powerpc/platforms/pseries/rtas-fadump.c | 35 ++++++++-
->   arch/powerpc/platforms/pseries/rtas-fadump.h | 11 ++-
->   5 files changed, 126 insertions(+), 9 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/fadump-internal.h b/arch/powerpc/include/asm/fadump-internal.h
-> index b3956c400519..81629226b15f 100644
-> --- a/arch/powerpc/include/asm/fadump-internal.h
-> +++ b/arch/powerpc/include/asm/fadump-internal.h
-> @@ -97,6 +97,8 @@ struct fw_dump {
->   	unsigned long	cpu_notes_buf_vaddr;
->   	unsigned long	cpu_notes_buf_size;
->   
-> +	unsigned long	param_area;
-> +
->   	/*
->   	 * Maximum size supported by firmware to copy from source to
->   	 * destination address per entry.
-> @@ -111,6 +113,7 @@ struct fw_dump {
->   	unsigned long	dump_active:1;
->   	unsigned long	dump_registered:1;
->   	unsigned long	nocma:1;
-> +	unsigned long	param_area_supported:1;
->   
->   	struct fadump_ops	*ops;
->   };
-> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-> index 757681658dda..98f089747ac9 100644
-> --- a/arch/powerpc/kernel/fadump.c
-> +++ b/arch/powerpc/kernel/fadump.c
-> @@ -1470,6 +1470,7 @@ static ssize_t mem_reserved_show(struct kobject *kobj,
->   	return sprintf(buf, "%ld\n", fw_dump.reserve_dump_area_size);
->   }
->   
-> +
->   static ssize_t registered_show(struct kobject *kobj,
->   			       struct kobj_attribute *attr,
->   			       char *buf)
-> @@ -1477,6 +1478,43 @@ static ssize_t registered_show(struct kobject *kobj,
->   	return sprintf(buf, "%d\n", fw_dump.dump_registered);
->   }
->   
-> +static ssize_t bootargs_append_show(struct kobject *kobj,
-> +				   struct kobj_attribute *attr,
-> +				   char *buf)
-> +{
-> +	return sprintf(buf, "%s\n", (char *)__va(fw_dump.param_area));
-> +}
-> +
-> +static ssize_t bootargs_append_store(struct kobject *kobj,
-> +				   struct kobj_attribute *attr,
-> +				   const char *buf, size_t count)
-> +{
-> +	char *params;
-> +
-> +	if (!fw_dump.fadump_enabled || fw_dump.dump_active)
-> +		return -EPERM;
-> +
-> +	if (count >= COMMAND_LINE_SIZE)
-> +		return -EINVAL;
-> +
-> +	/*
-> +	 * Fail here instead of handling this scenario with
-> +	 * some silly workaround in capture kernel.
-> +	 */
-> +	if (saved_command_line_len + count >= COMMAND_LINE_SIZE) {
-> +		pr_err("Appending parameters exceeds cmdline size!\n");
-> +		return -ENOSPC;
-> +	}
-> +
-> +	params = __va(fw_dump.param_area);
-> +	strscpy_pad(params, buf, COMMAND_LINE_SIZE);
-> +	/* Remove newline character at the end. */
-> +	if (params[count-1] == '\n')
-> +		params[count-1] = '\0';
-> +
-> +	return count;
-> +}
-> +
->   static ssize_t registered_store(struct kobject *kobj,
->   				struct kobj_attribute *attr,
->   				const char *buf, size_t count)
-> @@ -1535,6 +1573,7 @@ static struct kobj_attribute release_attr = __ATTR_WO(release_mem);
->   static struct kobj_attribute enable_attr = __ATTR_RO(enabled);
->   static struct kobj_attribute register_attr = __ATTR_RW(registered);
->   static struct kobj_attribute mem_reserved_attr = __ATTR_RO(mem_reserved);
-> +static struct kobj_attribute bootargs_append_attr = __ATTR_RW(bootargs_append);
->   
->   static struct attribute *fadump_attrs[] = {
->   	&enable_attr.attr,
-> @@ -1611,6 +1650,46 @@ static void __init fadump_init_files(void)
->   	return;
->   }
->   
-> +/*
-> + * Reserve memory to store additional parameters to be passed
-> + * for fadump/capture kernel.
-> + */
-> +static void fadump_setup_param_area(void)
-> +{
-> +	phys_addr_t range_start, range_end;
-> +
-> +	if (!fw_dump.param_area_supported || fw_dump.dump_active)
-> +		return;
-> +
-> +	/* This memory can't be used by PFW or bootloader as it is shared across kernels */
-> +	if (radix_enabled()) {
-> +		/*
-> +		 * Anywhere in the upper half should be good enough as all memory
-> +		 * is accessible in real mode.
-> +		 */
-> +		range_start = memblock_end_of_DRAM() / 2;
-> +		range_end = memblock_end_of_DRAM();
-> +	} else {
-> +		/*
-> +		 * Passing additional parameters is supported for hash MMU only
-> +		 * if the first memory block size is 768MB or higher.
-> +		 */
-> +		if (ppc64_rma_size < 0x30000000)
-> +			return;
-> +
-> +		/* 640 MB to 768 MB is not used by bootloader */
-> +		range_start = 0x28000000;
-> +		range_end = range_start + 0x4000000;
-> +	}
-> +
-> +	fw_dump.param_area = memblock_phys_alloc_range(COMMAND_LINE_SIZE,
-> +						       COMMAND_LINE_SIZE,
-> +						       range_start,
-> +						       range_end);
+something like this just popped up in my first try with a p8 test kvm on
+a c1000 powernv8 platform?
 
-Should we initialize the `param_area` to avoid garbage values, or retrieve
-command-line arguments from the previous boot?
+I'm not sure the soft lockup is relevant to the interrupt soft masking,
+but I will find it out for sure. : -)
 
-I observed that cat /sys/kernel/fadump/bootargs_append prints the same
-value which I set before reboot. Is this expected?
+[  460.217669] watchdog: BUG: soft lockup - CPU#0 stuck for 22s! [swapper/0:1]
+[  460.217742] Modules linked in:
+[  460.217828] CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W    L   N 6.7.0-rc5+ #5
+[  460.217915] Hardware name: IBM pSeries (emulated by qemu) POWER9 (raw) 0x4e1200 0xf000005 of:SLOF,git-6b6c16 pSeries
+[  460.217999] NIP:  c00000000003e0ec LR: c00000000003e414 CTR: 0000000000000000
+[  460.218074] REGS: c000000004797788 TRAP: 0900   Tainted: G        W    L   N  (6.7.0-rc5+)
+[  460.218151] MSR:  8000000002009033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 24042442  XER: 00000000
+[  460.218342] CFAR: 0000000000000000 IRQMASK: 0
+[  460.218342] GPR00: c00000000003e414 c000000004797760 c000000001583b00 c000000004797758
+[  460.218342] GPR04: 0000000000000000 0000000000000004 c000000004ccf51c c00000000224e510
+[  460.218342] GPR08: 4000000000000002 0000000000000049 c00000000457b280 0015000b00170038
+[  460.218342] GPR12: 00340030003a0010 c000000002f40000 0000000000000008 c000000004ccf4fc
+[  460.218342] GPR16: 0000000000007586 c0000000040f45c0 c000000004ddd080 c0000000040f45c0
+[  460.218342] GPR20: 0000000000000008 0000000000000024 0000000000000004 c000000004ccf4fc
+[  460.218342] GPR24: 000000000000003f 0000000000000001 0000000000000001 c000000004cc6e7e
+[  460.218342] GPR28: fcffffffffffffff 0000000000000002 fcffffffffffffff 0000000000000003
+[  460.219187] NIP [c00000000003e0ec] __replay_soft_interrupts+0x3c/0x160
+[  460.219286] LR [c00000000003e414] arch_local_irq_restore+0x174/0x1a0
+[  460.219365] Call Trace:
+[  460.219400] [c000000004797760] [c00000000003e150] __replay_soft_interrupts+0xa0/0x160 (unreliable)
+[  460.219515] [c000000004797910] [c00000000003e414] arch_local_irq_restore+0x174/0x1a0
+[  460.219612] [c000000004797950] [c000000000a155c4] get_random_u32+0xb4/0x140
+[  460.219699] [c0000000047979a0] [c0000000008b1ae0] get_rcw_we+0x138/0x274
+[  460.219781] [c000000004797a30] [c00000000208d4bc] test_rslib_init+0x8b8/0xb70
+[  460.219877] [c000000004797c40] [c00000000000fb80] do_one_initcall+0x60/0x390
+[  460.219965] [c000000004797d10] [c000000002004a18] kernel_init_freeable+0x32c/0x3dc
+[  460.220059] [c000000004797de0] [c0000000000102a4] kernel_init+0x34/0x1b0
+[  460.220141] [c000000004797e50] [c00000000000cf14] ret_from_kernel_user_thread+0x14/0x1c
+[  460.220229] --- interrupt: 0 at 0x0
+[  460.220291] Code: 60000000 7c0802a6 f8010010 f821fe51 e92d0c78 f92101a8 39200000 38610028 892d0933 61290040 992d0933 48043a3d <60000000> 39200000 e9410130 f9210160
+[  460.955369] Testing (23,15)_64 code...
 
-Thanks,
-Sourabh
+> 
+> In contrast implementing it using __cmpxchg_local() will use
+> ldarx/stdcx etc. which will be more expensive.
+> 
+> Have you done any performance measurements?
+Yes, I'm looking for resource to track the perf changes (positive or negative)
+in this corner for this patch set being proposed again.
 
-> +	if (!fw_dump.param_area || sysfs_create_file(fadump_kobj, &bootargs_append_attr.attr))
-> +		pr_warn("WARNING: Could not setup area to pass additional parameters!\n");
-> +}
-> +
->   /*
->    * Prepare for firmware-assisted dump.
->    */
-> @@ -1639,6 +1718,7 @@ int __init setup_fadump(void)
->   	}
->   	/* Initialize the kernel dump memory structure and register with f/w */
->   	else if (fw_dump.reserve_dump_area_size) {
-> +		fadump_setup_param_area();
->   		fw_dump.ops->fadump_init_mem_struct(&fw_dump);
->   		register_fadump();
->   	}
-> diff --git a/arch/powerpc/platforms/powernv/opal-fadump.c b/arch/powerpc/platforms/powernv/opal-fadump.c
-> index fa26c21a08d9..13370f5cd5ac 100644
-> --- a/arch/powerpc/platforms/powernv/opal-fadump.c
-> +++ b/arch/powerpc/platforms/powernv/opal-fadump.c
-> @@ -682,8 +682,10 @@ void __init opal_fadump_dt_scan(struct fw_dump *fadump_conf, u64 node)
->   		}
->   	}
->   
-> -	fadump_conf->ops		= &opal_fadump_ops;
-> -	fadump_conf->fadump_supported	= 1;
-> +	fadump_conf->ops			= &opal_fadump_ops;
-> +	fadump_conf->fadump_supported		= 1;
-> +	/* TODO: Add support to pass additional parameters */
-> +	fadump_conf->param_area_supported	= 0;
->   
->   	/*
->   	 * Firmware supports 32-bit field for size. Align it to PAGE_SIZE
-> diff --git a/arch/powerpc/platforms/pseries/rtas-fadump.c b/arch/powerpc/platforms/pseries/rtas-fadump.c
-> index 1b05b4cefdfd..18838ae90688 100644
-> --- a/arch/powerpc/platforms/pseries/rtas-fadump.c
-> +++ b/arch/powerpc/platforms/pseries/rtas-fadump.c
-> @@ -18,6 +18,7 @@
->   
->   #include <asm/page.h>
->   #include <asm/rtas.h>
-> +#include <asm/setup.h>
->   #include <asm/fadump.h>
->   #include <asm/fadump-internal.h>
->   
-> @@ -80,6 +81,9 @@ static void __init rtas_fadump_get_config(struct fw_dump *fadump_conf,
->   			last_end = base + size;
->   			fadump_conf->boot_mem_regs_cnt++;
->   			break;
-> +		case RTAS_FADUMP_PARAM_AREA:
-> +			fadump_conf->param_area = be64_to_cpu(fdm->rgn[i].destination_address);
-> +			break;
->   		default:
->   			pr_warn("Section type %d unsupported on this kernel. Ignoring!\n", type);
->   			break;
-> @@ -153,7 +157,17 @@ static u64 rtas_fadump_init_mem_struct(struct fw_dump *fadump_conf)
->   		sec_cnt++;
->   	}
->   
-> +	/* Parameters area */
-> +	if (fadump_conf->param_area) {
-> +		fdm.rgn[sec_cnt].request_flag = cpu_to_be32(RTAS_FADUMP_REQUEST_FLAG);
-> +		fdm.rgn[sec_cnt].source_data_type = cpu_to_be16(RTAS_FADUMP_PARAM_AREA);
-> +		fdm.rgn[sec_cnt].source_address = cpu_to_be64(fadump_conf->param_area);
-> +		fdm.rgn[sec_cnt].source_len = cpu_to_be64(COMMAND_LINE_SIZE);
-> +		fdm.rgn[sec_cnt].destination_address = cpu_to_be64(fadump_conf->param_area);
-> +		sec_cnt++;
-> +	}
->   	fdm.header.dump_num_sections = cpu_to_be16(sec_cnt);
-> +
->   	rtas_fadump_update_config(fadump_conf, &fdm);
->   
->   	return addr;
-> @@ -457,6 +471,13 @@ static int __init rtas_fadump_process(struct fw_dump *fadump_conf)
->   				return rc;
->   			}
->   			break;
-> +		case RTAS_FADUMP_PARAM_AREA:
-> +			if (fdm_active->rgn[i].bytes_dumped != fdm_active->rgn[i].source_len ||
-> +			    fdm_active->rgn[i].error_flags != 0) {
-> +				pr_warn("Failed to process additional parameters! Proceeding anyway..\n");
-> +				fadump_conf->param_area = 0;
-> +			}
-> +			break;
->   		default:
->   			/*
->   			 * If the first/crashed kernel added a new region type that the
-> @@ -532,6 +553,13 @@ static void rtas_fadump_region_show(struct fw_dump *fadump_conf,
->   				   be64_to_cpu(fdm_ptr->rgn[i].source_len),
->   				   be64_to_cpu(fdm_ptr->rgn[i].bytes_dumped));
->   			break;
-> +		case RTAS_FADUMP_PARAM_AREA:
-> +			seq_printf(m, "\n[%#016llx-%#016llx]: cmdline append: '%s'\n",
-> +				   be64_to_cpu(fdm_ptr->rgn[i].destination_address),
-> +				   be64_to_cpu(fdm_ptr->rgn[i].destination_address) +
-> +				   be64_to_cpu(fdm_ptr->rgn[i].source_len) - 1,
-> +				   (char *)__va(be64_to_cpu(fdm_ptr->rgn[i].destination_address)));
-> +			break;
->   		default:
->   			seq_printf(m, "Unknown region type %d : Src: %#016llx, Dest: %#016llx, ",
->   				   type, be64_to_cpu(fdm_ptr->rgn[i].source_address),
-> @@ -594,9 +622,10 @@ void __init rtas_fadump_dt_scan(struct fw_dump *fadump_conf, u64 node)
->   	if (!token)
->   		return;
->   
-> -	fadump_conf->ibm_configure_kernel_dump = be32_to_cpu(*token);
-> -	fadump_conf->ops		= &rtas_fadump_ops;
-> -	fadump_conf->fadump_supported	= 1;
-> +	fadump_conf->ibm_configure_kernel_dump	= be32_to_cpu(*token);
-> +	fadump_conf->ops			= &rtas_fadump_ops;
-> +	fadump_conf->fadump_supported		= 1;
-> +	fadump_conf->param_area_supported	= 1;
->   
->   	/* Firmware supports 64-bit value for size, align it to pagesize. */
->   	fadump_conf->max_copy_size = ALIGN_DOWN(U64_MAX, PAGE_SIZE);
-> diff --git a/arch/powerpc/platforms/pseries/rtas-fadump.h b/arch/powerpc/platforms/pseries/rtas-fadump.h
-> index 6740f4981bb8..c109abf6befd 100644
-> --- a/arch/powerpc/platforms/pseries/rtas-fadump.h
-> +++ b/arch/powerpc/platforms/pseries/rtas-fadump.h
-> @@ -23,6 +23,9 @@
->   #define RTAS_FADUMP_HPTE_REGION		0x0002
->   #define RTAS_FADUMP_REAL_MODE_REGION	0x0011
->   
-> +/* OS defined sections */
-> +#define RTAS_FADUMP_PARAM_AREA		0x0100
-> +
->   /* Dump request flag */
->   #define RTAS_FADUMP_REQUEST_FLAG	0x00000001
->   
-> @@ -31,12 +34,12 @@
->   
->   /*
->    * The Firmware Assisted Dump Memory structure supports a maximum of 10 sections
-> - * in the dump memory structure. Presently, first two sections are used for
-> - * CPU and HPTE data, while the remaining eight sections can be used for
-> - * boot memory regions.
-> + * in the dump memory structure. Presently, three sections are used for
-> + * CPU state data, HPTE & Parameters area, while the remaining seven sections
-> + * can be used for boot memory regions.
->    */
->   #define MAX_SECTIONS				10
-> -#define RTAS_FADUMP_MAX_BOOT_MEM_REGS		8
-> +#define RTAS_FADUMP_MAX_BOOT_MEM_REGS		7
->   
->   /* Kernel Dump section info */
->   struct rtas_fadump_section {
+> 
+> It probably is a bit fishy that we don't mask PMU interrupts vs
+> this_cpu_cmpxchg() etc., but I don't think it's actually a bug given the
+> few places using this_cpu_cmpxchg(). Though I could be wrong about that.
+I will try to understand the concern and will try to come up with a patch update,
+iff the performance number from the change could look reasonable and promising.
+> 
+> > diff --git a/arch/powerpc/include/asm/percpu.h b/arch/powerpc/include/asm/percpu.h
+> > index 8e5b7d0b851c..ceab5df6e7ab 100644
+> > --- a/arch/powerpc/include/asm/percpu.h
+> > +++ b/arch/powerpc/include/asm/percpu.h
+> > @@ -18,5 +18,22 @@
+> >  #include <asm-generic/percpu.h>
+> >  
+> >  #include <asm/paca.h>
+> > +#include <asm/cmpxchg.h>
+> > +#ifdef this_cpu_cmpxchg_1
+> > +#undef this_cpu_cmpxchg_1
+>  
+> If we need to undef then I think something has gone wrong with the
+> header inclusion order, the model should be that the arch defines what
+> it has and the generic code provides fallbacks if the arch didn't define
+> anything.
+> 
+> > +#define this_cpu_cmpxchg_1(pcp, oval, nval)	__cmpxchg_local(raw_cpu_ptr(&(pcp)), oval, nval, 1)
+> 
+> I think this is unsafe vs preemption. The raw_cpu_ptr() can generate the
+> per-cpu address, but then the task can be preempted and moved to a
+> different CPU before the ldarx/stdcx do the cmpxchg.
+> 
+> The arm64 implementation had the same bug until they fixed it.
+Thanks for the review, I will look deeper into this spot. I suppose, for per cpu api down to this level,
+it is safe to assume it's safe in terms of being preemption-disabled. But, things could be mis-understood
+and I can be wrong as well as linux kernel has been rapidly changing so much.:-(
+> 
+> > +#endif 
+> > +#ifdef this_cpu_cmpxchg_2
+> > +#undef this_cpu_cmpxchg_2
+> > +#define this_cpu_cmpxchg_2(pcp, oval, nval)	__cmpxchg_local(raw_cpu_ptr(&(pcp)), oval, nval, 2)
+> > +#endif
+> > +#ifdef this_cpu_cmpxchg_4
+> > +#undef this_cpu_cmpxchg_4
+> > +#define this_cpu_cmpxchg_4(pcp, oval, nval)	__cmpxchg_local(raw_cpu_ptr(&(pcp)), oval, nval, 4)
+> > +#endif
+> > +#ifdef this_cpu_cmpxchg_8
+> > +#undef this_cpu_cmpxchg_8
+> > +#define this_cpu_cmpxchg_8(pcp, oval, nval)	__cmpxchg_local(raw_cpu_ptr(&(pcp)), oval, nval, 8)
+> > +#endif
+> >  
+> >  #endif /* _ASM_POWERPC_PERCPU_H_ */
+> 
+> cheers
+> 
+best regards
 
