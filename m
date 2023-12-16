@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F55B8159B9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Dec 2023 15:06:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71D1D8159BA
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Dec 2023 15:06:55 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=RGFK7bGw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KEd2Pjpx;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ssntk0T2nz3vyq
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Dec 2023 01:06:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ssnvd1lVJz3vpw
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Dec 2023 01:06:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=RGFK7bGw;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KEd2Pjpx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::132; helo=mail-il1-x132.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-x132.google.com (mail-il1-x132.google.com [IPv6:2607:f8b0:4864:20::132])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::2b; helo=mail-oa1-x2b.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-oa1-x2b.google.com (mail-oa1-x2b.google.com [IPv6:2001:4860:4864:20::2b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SsnQZ1xptz3cXq
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Dec 2023 00:45:10 +1100 (AEDT)
-Received: by mail-il1-x132.google.com with SMTP id e9e14a558f8ab-35d72bc5cf2so7670975ab.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Dec 2023 05:45:10 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SsnQg3Sshz3dKd
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Dec 2023 00:45:15 +1100 (AEDT)
+Received: by mail-oa1-x2b.google.com with SMTP id 586e51a60fabf-1f5bd86ceb3so1137718fac.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Dec 2023 05:45:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702734308; x=1703339108; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1702734312; x=1703339112; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=icClGOC13RpCndO6jcPh9sEaLH/R88jTwAqzXHDwgMY=;
-        b=RGFK7bGwZ6eevFLtujlpsmxbVCCRIivumHsHaa6d4mjXQ9M/S9BMHd/2Npf66UKBJo
-         Ekbl6PqqAkwkiQtcwI3Hz9SvLvNSwUj7AbBdN5aJUVMByxV1JkfANmxEGi/BAaUK7faO
-         qQe/3x6NW6mpNwjb4OpWX50Nrw14dvcvzidurGFsMTBbV8czBwqyiSzH6B8A/4JJ6kGz
-         FB01z8Fkoak28K8aYNulYvF5HJpGf1DhUZNU8ENVKUzO8qkD+1jk9iK2mraOpMorkfCf
-         t5TLw2qchCoaM28Klqx+fkorOQmU1+zUurj1XPsULh+ES88Ygn2I0TahAoUsUZpwIpy8
-         deMQ==
+        bh=8XE9XKLSIf9UgRjfXZPBdby7Mjp122zrlXjBO3aNJ9U=;
+        b=KEd2PjpxxeQQwo2E5TEE3e+SryF+0RTU9S/XsV2Yu+mKBteb/a3uL6JEQjzA7JVK9Q
+         YwATihWG6Ki/4I2LDXQ/HpkyLXblJrdvcJ80O6pZCws+jt3Gl65DtJNVeAZgK09qBhwf
+         CR506yrQJSNdVIf6bDy5Q1J+1JTiVN2hlVDJTpdC1T6ZeHMpxzEHraVTsxQrZnOdKtma
+         4qKXXVnq9pd6Ck/Pv5c33AidflsRfw1jdOnf1X5fCIQ9xoi0m9BziiJ1VaQyl239XrBK
+         xwSRtJRMyNTxWFNxQd3766TgW6EPyNqaVwyTvsqCuIuXjZJR/sYcoCl0ZPlG//pljXqH
+         6rQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702734308; x=1703339108;
+        d=1e100.net; s=20230601; t=1702734312; x=1703339112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=icClGOC13RpCndO6jcPh9sEaLH/R88jTwAqzXHDwgMY=;
-        b=wzKCs02+bEdsEL8U7egg9GLE7m9VZZmYegAzuZbn5hqAqjxxVYrX0Gva8fZbrfHteB
-         RFqC7nm5XBP8gOu9s4tiUlMQ1iq+xVzs/xHYSOx2YekYZNv6e+Qt2Y6Tl+rdScOpPWWW
-         cdrmerPJAyfK+Yb6C744mAblv3X1wVEXxURbLX/ONr+CGFK7AonJDJ/VnU2ZeOsUVSjv
-         Sd6AhhKJvNWyQM1MKBSzJaJBwR3W02XlH7rIOumM07nBF4GEseahwZoAltkpn/MtCxTb
-         V82rWxFQzULq/mOjhhklS+gWCw7vbtdD8zuJxUbUttr+QSJAzD2sXV7HKfrOfenKwtLR
-         YsXw==
-X-Gm-Message-State: AOJu0YyAtIRrCMjIiTL9do57DnhvJ8vO6B+SytMMqTyCpnari3pzpa/L
-	zSAs0eL0Eq5K7bG5a6mYffQ=
-X-Google-Smtp-Source: AGHT+IGwXFyNUnZi+4S3PALNqxJ2TQNYMTTxNL950MVsIpVv59psCBNIdlrTYt/cp3QyHiZHmdxWFQ==
-X-Received: by 2002:a05:6e02:1bad:b0:35d:62f2:1f45 with SMTP id n13-20020a056e021bad00b0035d62f21f45mr20860836ili.20.1702734308334;
-        Sat, 16 Dec 2023 05:45:08 -0800 (PST)
+        bh=8XE9XKLSIf9UgRjfXZPBdby7Mjp122zrlXjBO3aNJ9U=;
+        b=CPJ9rs0fksA065pOIBuoeAmekWMlCoeTQuxHMkZsnLigS5Z/wWKwNgu8Ug60y7Aclc
+         NJk1wrXL9JYpXTvS9ZubUYXyBLHuWEQHNpi0ewRvP238qJrJc5t/QtjCEUGk7K1+hoHq
+         D4PzXG1go3gaP/Wd85kS5TgnrEnaD23EVsW5bmIZZZBU7VwdJMnNdXGEkAN3dmKLEf13
+         6CrQUwvxkkKwQS89pXHWsqEoLY3PFWUMwsZKptnvPG/Z95V89HuinHaFBYCL8skRPMcB
+         lIAcuGnEIpa3sgZpCEIUwza9GCCfjwNeNqfwWib3H5F7iJzRdTgGXO3rPk4KvLd/QE3H
+         nHFw==
+X-Gm-Message-State: AOJu0YzMn6MtQ2I5PkWLIb+jNzxaXWVLGY6NCqw9hGL8QwsesDUnWXiX
+	JrlHyczxx46NdrJe63arIxg=
+X-Google-Smtp-Source: AGHT+IFNxLFd/uFec+bI0z4pyF+adcDjIzNVsuSTkCh9dJw8ovpvK2QPpuq2Lb4ILve/oR+1XOr0ZA==
+X-Received: by 2002:a05:6871:a10d:b0:1fa:fd62:18f5 with SMTP id vs13-20020a056871a10d00b001fafd6218f5mr14289888oab.22.1702734312328;
+        Sat, 16 Dec 2023 05:45:12 -0800 (PST)
 Received: from wheely.local0.net (203-221-42-190.tpgi.com.au. [203.221.42.190])
-        by smtp.gmail.com with ESMTPSA id w2-20020a654102000000b005c65ed23b65sm12663631pgp.94.2023.12.16.05.45.04
+        by smtp.gmail.com with ESMTPSA id w2-20020a654102000000b005c65ed23b65sm12663631pgp.94.2023.12.16.05.45.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Dec 2023 05:45:08 -0800 (PST)
+        Sat, 16 Dec 2023 05:45:12 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm@vger.kernel.org
-Subject: [kvm-unit-tests PATCH v5 27/29] powerpc: Avoid using larx/stcx. in spinlocks when only one CPU is running
-Date: Sat, 16 Dec 2023 23:42:54 +1000
-Message-ID: <20231216134257.1743345-28-npiggin@gmail.com>
+Subject: [kvm-unit-tests PATCH v5 28/29] powerpc: Add atomics tests
+Date: Sat, 16 Dec 2023 23:42:55 +1000
+Message-ID: <20231216134257.1743345-29-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231216134257.1743345-1-npiggin@gmail.com>
 References: <20231216134257.1743345-1-npiggin@gmail.com>
@@ -82,127 +82,242 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, Nico Bo
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The test harness uses spinlocks if they are implemented with larx/stcx.
-it can prevent some test scenarios such as testing migration of a
-reservation.
-
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- lib/powerpc/asm/smp.h    |  1 +
- lib/powerpc/smp.c        |  6 ++++++
- lib/powerpc/spinlock.c   | 28 ++++++++++++++++++++++++++++
- lib/ppc64/asm/spinlock.h |  7 ++++++-
- powerpc/Makefile.common  |  1 +
- 5 files changed, 42 insertions(+), 1 deletion(-)
- create mode 100644 lib/powerpc/spinlock.c
+ powerpc/Makefile.common |   1 +
+ powerpc/atomics.c       | 190 ++++++++++++++++++++++++++++++++++++++++
+ powerpc/unittests.cfg   |   9 ++
+ 3 files changed, 200 insertions(+)
+ create mode 100644 powerpc/atomics.c
 
-diff --git a/lib/powerpc/asm/smp.h b/lib/powerpc/asm/smp.h
-index 163bbeec..e2c03295 100644
---- a/lib/powerpc/asm/smp.h
-+++ b/lib/powerpc/asm/smp.h
-@@ -19,5 +19,6 @@ void local_ipi_disable(void);
- void send_ipi(int cpu_id);
- 
- extern int nr_cpus_online;
-+extern bool multithreaded;
- 
- #endif /* _ASMPOWERPC_SMP_H_ */
-diff --git a/lib/powerpc/smp.c b/lib/powerpc/smp.c
-index 96e3219a..b473ba41 100644
---- a/lib/powerpc/smp.c
-+++ b/lib/powerpc/smp.c
-@@ -280,6 +280,8 @@ static void start_each_secondary(int fdtnode, u64 regval __unused, void *info)
- 	datap->nr_started += start_core(fdtnode, datap->entry);
- }
- 
-+bool multithreaded = false;
-+
- /*
-  * Start all stopped cpus on the guest at entry with register 3 set to r3
-  * We expect that we come in with only one thread currently started
-@@ -293,8 +295,10 @@ bool start_all_cpus(secondary_entry_fn entry)
- 
- 	memset(start_secondary_cpus, 0xff, sizeof(start_secondary_cpus));
- 
-+	assert(!multithreaded);
- 	assert(nr_cpus_online == 1);
- 
-+	multithreaded = true;
- 	nr_started = 0;
- 	nr_cpus_present = 0;
- 	ret = dt_for_each_cpu_node(start_each_secondary, &data);
-@@ -305,6 +309,8 @@ bool start_all_cpus(secondary_entry_fn entry)
- 
- void stop_all_cpus(void)
- {
-+	assert(multithreaded);
- 	while (nr_cpus_online > 1)
- 		cpu_relax();
-+	multithreaded = false;
- }
-diff --git a/lib/powerpc/spinlock.c b/lib/powerpc/spinlock.c
-new file mode 100644
-index 00000000..238549f1
---- /dev/null
-+++ b/lib/powerpc/spinlock.c
-@@ -0,0 +1,28 @@
-+#include <asm/spinlock.h>
-+#include <asm/smp.h>
-+
-+/*
-+ * Skip the atomic when single-threaded, which helps avoid larx/stcx. in
-+ * the harness when testing tricky larx/stcx. sequences (e.g., migration
-+ * vs reservation).
-+ */
-+void spin_lock(struct spinlock *lock)
-+{
-+	if (!multithreaded) {
-+		assert(lock->v == 0);
-+		lock->v = 1;
-+	} else {
-+		while (__sync_lock_test_and_set(&lock->v, 1))
-+			;
-+	}
-+}
-+
-+void spin_unlock(struct spinlock *lock)
-+{
-+	assert(lock->v == 1);
-+	if (!multithreaded) {
-+		lock->v = 0;
-+	} else {
-+		__sync_lock_release(&lock->v);
-+	}
-+}
-diff --git a/lib/ppc64/asm/spinlock.h b/lib/ppc64/asm/spinlock.h
-index f59eed19..b952386d 100644
---- a/lib/ppc64/asm/spinlock.h
-+++ b/lib/ppc64/asm/spinlock.h
-@@ -1,6 +1,11 @@
- #ifndef _ASMPPC64_SPINLOCK_H_
- #define _ASMPPC64_SPINLOCK_H_
- 
--#include <asm-generic/spinlock.h>
-+struct spinlock {
-+	unsigned int v;
-+};
-+
-+void spin_lock(struct spinlock *lock);
-+void spin_unlock(struct spinlock *lock);
- 
- #endif /* _ASMPPC64_SPINLOCK_H_ */
 diff --git a/powerpc/Makefile.common b/powerpc/Makefile.common
-index f9dd937a..caa807f2 100644
+index caa807f2..697f5735 100644
 --- a/powerpc/Makefile.common
 +++ b/powerpc/Makefile.common
-@@ -47,6 +47,7 @@ cflatobjs += lib/powerpc/rtas.o
- cflatobjs += lib/powerpc/processor.o
- cflatobjs += lib/powerpc/handlers.o
- cflatobjs += lib/powerpc/smp.o
-+cflatobjs += lib/powerpc/spinlock.o
+@@ -10,6 +10,7 @@ tests-common = \
+ 	$(TEST_DIR)/spapr_hcall.elf \
+ 	$(TEST_DIR)/rtas.elf \
+ 	$(TEST_DIR)/emulator.elf \
++	$(TEST_DIR)/atomics.elf \
+ 	$(TEST_DIR)/tm.elf \
+ 	$(TEST_DIR)/smp.elf \
+ 	$(TEST_DIR)/sprs.elf \
+diff --git a/powerpc/atomics.c b/powerpc/atomics.c
+new file mode 100644
+index 00000000..f2e7a3e3
+--- /dev/null
++++ b/powerpc/atomics.c
+@@ -0,0 +1,190 @@
++/*
++ * Test some powerpc instructions
++ */
++#include <stdint.h>
++#include <libcflat.h>
++#include <migrate.h>
++#include <asm/processor.h>
++
++static int verbose;
++
++#define RSV_SIZE 128
++
++static uint8_t granule[RSV_SIZE] __attribute((__aligned__(RSV_SIZE)));
++
++static void test_lwarx_stwcx(void)
++{
++	unsigned int *var = (unsigned int *)granule;
++	unsigned int old;
++	unsigned int result;
++
++	report_prefix_push("lwarx/stwcx.");
++
++	*var = 0;
++	asm volatile ("1:"
++		      "lwarx	%0,0,%2;"
++		      "stwcx.	%1,0,%2;"
++		      "bne-	1b;"
++		      : "=&r"(old) : "r"(1), "r"(var) : "cr0", "memory");
++	report(old == 0 && *var == 1, "simple update");
++
++	*var = 0;
++	asm volatile ("li	%0,0;"
++		      "stwcx.	%1,0,%2;"
++		      "stwcx.	%1,0,%2;"
++		      "bne-	1f;"
++		      "li	%0,1;"
++		      "1:"
++		      : "=&r"(result)
++		      : "r"(1), "r"(var) : "cr0", "memory");
++	report(result == 0 && *var == 0, "failed stwcx. (no reservation)");
++
++	*var = 0;
++	asm volatile ("li	%0,0;"
++		      "lwarx	%1,0,%4;"
++		      "stw	%3,0(%4);"
++		      "stwcx.	%2,0,%4;"
++		      "bne-	1f;"
++		      "li	%0,1;"
++		      "1:"
++		      : "=&r"(result), "=&r"(old)
++		      : "r"(1), "r"(2), "r"(var) : "cr0", "memory");
++	report(result == 0 && *var == 2, "failed stwcx. (intervening store)");
++
++	report_prefix_pop();
++}
++
++static void test_lqarx_stqcx(void)
++{
++	union {
++		__int128_t var;
++		struct {
++#if  __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
++			unsigned long var1;
++			unsigned long var2;
++#else
++			unsigned long var2;
++			unsigned long var1;
++#endif
++		};
++	} var __attribute__((aligned(16)));
++	register unsigned long new1 asm("r8");
++	register unsigned long new2 asm("r9");
++	register unsigned long old1 asm("r10");
++	register unsigned long old2 asm("r11");
++	unsigned int result;
++
++	var.var1 = 1;
++	var.var2 = 2;
++
++	(void)new2;
++	(void)old2;
++
++	report_prefix_push("lqarx/stqcx.");
++
++	old1 = 0;
++	old2 = 0;
++	new1 = 3;
++	new2 = 4;
++	asm volatile ("1:"
++		      "lqarx	%0,0,%4;"
++		      "stqcx.	%2,0,%4;"
++		      "bne-	1b;"
++		      : "=&r"(old1), "=&r"(old2)
++		      : "r"(new1), "r"(new2), "r"(&var)
++		      : "cr0", "memory");
++
++	report(old1 == 2 && old2 == 1 && var.var1 == 4 && var.var2 == 3,
++			"simple update");
++
++	var.var1 = 1;
++	var.var2 = 2;
++	new1 = 3;
++	new2 = 4;
++	asm volatile ("li	%0,0;"
++		      "stqcx.	%1,0,%3;"
++		      "stqcx.	%1,0,%3;"
++		      "bne-	1f;"
++		      "li	%0,1;"
++		      "1:"
++		      : "=&r"(result)
++		      : "r"(new1), "r"(new2), "r"(&var)
++		      : "cr0", "memory");
++	report(result == 0 && var.var1 == 1 && var.var2 == 2,
++			"failed stqcx. (no reservation)");
++
++	var.var1 = 1;
++	var.var2 = 2;
++	new1 = 3;
++	new2 = 4;
++	asm volatile ("li	%0,0;"
++		      "lqarx	%1,0,%6;"
++		      "std	%5,0(%6);"
++		      "stqcx.	%3,0,%6;"
++		      "bne-	1f;"
++		      "li	%0,1;"
++		      "1:"
++		      : "=&r"(result), "=&r"(old1), "=&r"(old2)
++		      : "r"(new1), "r"(new2), "r"(0), "r"(&var)
++		      : "cr0", "memory");
++	report(result == 0 && (var.var1 == 0 || var.var2 == 0),
++			"failed stqcx. (intervening store)");
++
++	report_prefix_pop();
++}
++
++static void test_migrate_reserve(void)
++{
++	unsigned int *var = (unsigned int *)granule;
++	unsigned int old;
++
++	/* ensure incorrect value does not succeed */
++	report_prefix_push("migrate reservation");
++
++	*var = 0x12345;
++	asm volatile ("lwarx	%0,0,%1" : "=&r"(old) : "r"(var) : "memory");
++	migrate();
++	*var = 0;
++	asm volatile ("stwcx.	%0,0,%1" : : "r"(0xbad), "r"(var) : "cr0", "memory");
++	report(*var == 0, "migrate reserve update fails with concurrently modified value");
++
++#if 0
++XXX this will not work with KVM and for QEMU it only works with record/replay -
++something the harness is not equipped to test.
++
++	/* ensure reservation succeds */
++	report_prefix_push("migrate reservation");
++
++	*var = 0x12345;
++	asm volatile ("lwarx	%0,0,%1" : "=&r"(old) : "r"(var) : "memory");
++	migrate();
++	asm volatile ("stwcx.	%0,0,%1" : : "r"(0xf070), "r"(var) : "cr0", "memory");
++	report(*var == 0xf070, "migrate reserve update succeeds with unmodified value");
++#endif
++}
++
++int main(int argc, char **argv)
++{
++	int i;
++	bool migrate = false;
++
++	for (i = 1; i < argc; i++) {
++		if (strcmp(argv[i], "-v") == 0) {
++			verbose = 1;
++		}
++		if (strcmp(argv[i], "-m") == 0) {
++			migrate = true;
++		}
++	}
++
++	report_prefix_push("atomics");
++
++	test_lwarx_stwcx();
++	test_lqarx_stqcx();
++	if (migrate)
++		test_migrate_reserve();
++
++	report_prefix_pop();
++
++	return report_summary();
++}
+diff --git a/powerpc/unittests.cfg b/powerpc/unittests.cfg
+index 727712bb..9f71ea93 100644
+--- a/powerpc/unittests.cfg
++++ b/powerpc/unittests.cfg
+@@ -80,6 +80,15 @@ smp = 2
+ file = smp.elf
+ smp = 8,threads=4
  
- OBJDIRS += lib/powerpc
- 
++[atomics]
++file = atomics.elf
++
++[atomics-migration]
++file = atomics.elf
++machine = pseries
++extra_params = -append '-m'
++groups = migration
++
+ [h_cede_tm]
+ file = tm.elf
+ machine = pseries
 -- 
 2.42.0
 
