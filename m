@@ -2,117 +2,134 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F27F5815BAE
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Dec 2023 21:24:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDC98815C30
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Dec 2023 23:58:19 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Dex2sMcB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VxLZ854V;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SsyHb4JRrz3bjK
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Dec 2023 07:24:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4St1hn4NPpz3c2H
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Dec 2023 09:58:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Dex2sMcB;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VxLZ854V;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12a; helo=mail-lf1-x12a.google.com; envelope-from=hkallweit1@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::236; helo=mail-oi1-x236.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SsyGk0Qj9z3bTN
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Dec 2023 07:23:57 +1100 (AEDT)
-Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-50dfac6c0beso2202844e87.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Dec 2023 12:23:56 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4St08C1g3kz30YS
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Dec 2023 08:48:25 +1100 (AEDT)
+Received: by mail-oi1-x236.google.com with SMTP id 5614622812f47-3b9db318839so1431973b6e.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Dec 2023 13:48:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702758228; x=1703363028; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=X78ZMdhhJN3JWpvieTeot9+oGs2JdmyEnHsVumMXT3Q=;
-        b=Dex2sMcBHrsVh8PodpxrKRxAFTXjjwYUkVQy0LfOEFB3/aZI0naeC/9Vc9Vwei77Ni
-         x6f23Tdrsc9Bzcrbr86n2pLS1SlgROzr5DaCnUDdxulMXib153f3JNvgfYjI4QxPXr4m
-         dmvFgqZ3ILW1xSaA77K/E74wAtjOUI6G2DlatYez87UvHs4WTUB+d2NcAsb+KvlnXIX+
-         QLmIrLWRiZWCRGBlGkOcZQgBYPjhlgl5mEZRiBGFMy62Z3H3imdfS5CWFr4yj5CUEr1g
-         I/I3IGKLP6l8Em5wBfwPKY9IhyQyiEwiRp6dKN8IeIV0lqKDSE/apIdSeWkBFyytB6pl
-         Jp/w==
+        d=gmail.com; s=20230601; t=1702763300; x=1703368100; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NUQpZPD/c05+/8BhIN1J/cQeLxUmIOzSz7QCay9VzCE=;
+        b=VxLZ854VcbG/gmyiOQ+BAMrSEkbv3X7slQR6+8yx2twZ1RAv5127FTfk9C1maJoI4u
+         RRYN3phbyQo6RycRHy61SI1f4fbmswbH43Kq0q+6M6ffbJhwOfNpeOCPl00T0C7n3npT
+         Pq7Q/ILSZGwATXkVWCtlB5MACjIXJaT8VU9RNK5fjz+qv5SgiazAccsiNS5IAZkKEbLr
+         8wBKJA+s+AHHAaSvcaKSRGLX31ydXBHSPd8/hjH/Bn1i1Z/6dHzobM8abroNmfqQHMIo
+         ARGFOqBI3VtqCWstznUql4y/MZNOOcInATJpxdmRkSwYmAlil1WJJ6dcFaxoHVc/nYyw
+         yeMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702758228; x=1703363028;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=X78ZMdhhJN3JWpvieTeot9+oGs2JdmyEnHsVumMXT3Q=;
-        b=KF3zkfPijYFfSuKqmxm7uzZ13priluc6RUY41p1579Otr0wEfkA0UuAZqrQ1g6HsJx
-         0kCSQQtBknDpZm5eEUupFpY+3+8flvZVZDWerHfkDpVk1nFLmqJD8ZymkNmUKaND92iF
-         A5lwQWQeZmMm9WHUbpBf8gsheuXqC/lT1quFu/T9vhPKpmVG0F44lR7v9gfhOQD83nj2
-         +EPokwykONIIu1wCzEZD5f1VT2OefMT3JezUp00/jEi6b+vZq5onwjdnU85lm7vsGCNs
-         Xeglf6oOjwgqTIV7s/Xvxl4B/vDNpKY6voRQee27baiB3LMozaJZY7nvaBAw//efi6N/
-         nSjA==
-X-Gm-Message-State: AOJu0YyCxA+DoAOisy4M73tKDdTYfmDRUKFLFff4DYfoCDsoFSr7FQ6w
-	J6ypsEf6EOyhTdsF4tWT99Q=
-X-Google-Smtp-Source: AGHT+IENVxCq/MWAUwaWFwVw1NBBuQ99lFXbm4n4EZzX7Uw0VXV/iqkibbscxZaDoXeUTqcZsh2O8g==
-X-Received: by 2002:a19:6559:0:b0:50b:efd3:7e3c with SMTP id c25-20020a196559000000b0050befd37e3cmr6015036lfj.31.1702758228277;
-        Sat, 16 Dec 2023 12:23:48 -0800 (PST)
-Received: from ?IPV6:2a01:c23:bcb9:f800:bce0:dd9c:e9fe:4f11? (dynamic-2a01-0c23-bcb9-f800-bce0-dd9c-e9fe-4f11.c23.pool.telefonica.de. [2a01:c23:bcb9:f800:bce0:dd9c:e9fe:4f11])
-        by smtp.googlemail.com with ESMTPSA id le9-20020a170907170900b00a1e2aa3d090sm12099727ejc.206.2023.12.16.12.23.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 16 Dec 2023 12:23:47 -0800 (PST)
-Message-ID: <b2dd7159-844e-4d5a-832d-a2e8c0f26f50@gmail.com>
-Date: Sat, 16 Dec 2023 21:23:47 +0100
+        d=1e100.net; s=20230601; t=1702763300; x=1703368100;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NUQpZPD/c05+/8BhIN1J/cQeLxUmIOzSz7QCay9VzCE=;
+        b=BSte5LangE4OQBrElu/7nbtE7lmp5lUFeqQ7JQHBtv525dwwx1dw1EVMz/wpfI+Opg
+         nAcB8+qTU5ssvGaO2U3uYKGK9D19JkrHjuejSue9H6UTGtPkz3LtwXs87PSGq66tfmqA
+         VPFMfqTxXCssp1REqtvMQWFKPADsRC2i1K+kUdo1EI9jMZ9b3LOevMnEyjITMsLIr+d7
+         Gj2jfEOin2eWq7vtrXgGVQHEcuBjem3CFxdoOuLZB0BzzaHRzUCaGu1gvoHePZrYx9c8
+         XLquk6D1VTVnNwIVSVL9hBicQsCEAtMDoiOPEDhpJqGwLxZHfBO10hcvmEennTIhqNt0
+         633A==
+X-Gm-Message-State: AOJu0YwCLF9XCIV+lxH+43Xgu0pM9E1aFgFx9T47APc10SFmQb3VHmEg
+	pFFxjQB8ckYIyS7L93VT5Aw=
+X-Google-Smtp-Source: AGHT+IFAZquuH097Av+/ztaIvHAct5BHBdf+5D2NTKxYyfNfNcV2HR26lQ0bCSd6CXKBysIoEd8l8w==
+X-Received: by 2002:a05:6808:1819:b0:3b8:b063:6658 with SMTP id bh25-20020a056808181900b003b8b0636658mr13429212oib.79.1702763299744;
+        Sat, 16 Dec 2023 13:48:19 -0800 (PST)
+Received: from localhost ([2601:344:8301:57f0:4a5e:2f67:f6d1:4a98])
+        by smtp.gmail.com with ESMTPSA id l6-20020a25bcc6000000b00dbd22a3eb4fsm60955ybm.51.2023.12.16.13.48.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 16 Dec 2023 13:48:19 -0800 (PST)
+Date: Sat, 16 Dec 2023 13:48:18 -0800
+From: Yury Norov <yury.norov@gmail.com>
+To: linux-kernel@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"James E.J. Bottomley" <jejb@linux.ibm.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	"Md. Haris Iqbal" <haris.iqbal@ionos.com>,
+	Akinobu Mita <akinobu.mita@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Borislav Petkov <bp@alien8.de>, Chaitanya Kulkarni <kch@nvidia.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Disseldorp <ddiss@suse.de>,
+	Edward Cree <ecree.xilinx@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Fenghua Yu <fenghua.yu@intel.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Hugh Dickins <hughd@google.com>, Ingo Molnar <mingo@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Jens Axboe <axboe@kernel.dk>,
+	Jiri Pirko <jiri@resnulli.us>, Jiri Slaby <jirislaby@kernel.org>,
+	Kalle Valo <kvalo@kernel.org>, Karsten Graul <kgraul@linux.ibm.com>,
+	Karsten Keil <isdn@linux-pingi.de>,
+	Kees Cook <keescook@chromium.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Martin Habets <habetsm.xilinx@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Simek <monstr@monstr.eu>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Oliver Neukum <oneukum@suse.com>, Paolo Abeni <pabeni@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ping-Ke Shih <pkshih@realtek.com>, Rich Felker <dalias@libc.org>,
+	Rob Herring <robh@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Stanislaw Gruszka <stf_xl@wp.pl>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>, Will Deacon <will@kernel.org>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	GR-QLogic-Storage-Upstream@marvell.com, alsa-devel@alsa-project.org,
+	ath10k@lists.infradead.org, dmaengine@vger.kernel.org,
+	iommu@lists.linux.dev, kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+	linux-hyperv@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+	linux-media@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-net-drivers@amd.com, linux-pci@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-sh@vger.kernel.org, linux-sound@vger.kernel.org,
+	linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, mpi3mr-linuxdrv.pdl@broadcom.com,
+	netdev@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v3 00/35] bitops: add atomic find_bit() operations
+Message-ID: <ZX4bIisLzpW8c4WM@yury-ThinkPad>
+References: <20231212022749.625238-1-yury.norov@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/10] Don't let i2c adapters declare I2C_CLASS_SPD
- support if they support I2C_CLASS_HWMON
-Content-Language: en-US
-To: Wolfram Sang <wsa@kernel.org>
-References: <20231124101619.6470-1-hkallweit1@gmail.com>
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Autocrypt: addr=hkallweit1@gmail.com; keydata=
- xsFNBF/0ZFUBEAC0eZyktSE7ZNO1SFXL6cQ4i4g6Ah3mOUIXSB4pCY5kQ6OLKHh0FlOD5/5/
- sY7IoIouzOjyFdFPnz4Bl3927ClT567hUJJ+SNaFEiJ9vadI6vZm2gcY4ExdIevYHWe1msJF
- MVE4yNwdS+UsPeCF/6CQQTzHc+n7DomE7fjJD5J1hOJjqz2XWe71fTvYXzxCFLwXXbBiqDC9
- dNqOe5odPsa4TsWZ09T33g5n2nzTJs4Zw8fCy8rLqix/raVsqr8fw5qM66MVtdmEljFaJ9N8
- /W56qGCp+H8Igk/F7CjlbWXiOlKHA25mPTmbVp7VlFsvsmMokr/imQr+0nXtmvYVaKEUwY2g
- 86IU6RAOuA8E0J5bD/BeyZdMyVEtX1kT404UJZekFytJZrDZetwxM/cAH+1fMx4z751WJmxQ
- J7mIXSPuDfeJhRDt9sGM6aRVfXbZt+wBogxyXepmnlv9K4A13z9DVLdKLrYUiu9/5QEl6fgI
- kPaXlAZmJsQfoKbmPqCHVRYj1lpQtDM/2/BO6gHASflWUHzwmBVZbS/XRs64uJO8CB3+V3fa
- cIivllReueGCMsHh6/8wgPAyopXOWOxbLsZ291fmZqIR0L5Y6b2HvdFN1Xhc+YrQ8TKK+Z4R
- mJRDh0wNQ8Gm89g92/YkHji4jIWlp2fwzCcx5+lZCQ1XdqAiHQARAQABzSZIZWluZXIgS2Fs
- bHdlaXQgPGhrYWxsd2VpdDFAZ21haWwuY29tPsLBjgQTAQgAOBYhBGxfqY/yOyXjyjJehXLe
- ig9U8DoMBQJf9GRVAhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEHLeig9U8DoMSycQ
- AJbfg8HZEK0ljV4M8nvdaiNixWAufrcZ+SD8zhbxl8GispK4F3Yo+20Y3UoZ7FcIidJWUUJL
- axAOkpI/70YNhlqAPMsuudlAieeYZKjIv1WV5ucNZ3VJ7dC+dlVqQdAr1iD869FZXvy91KhJ
- wYulyCf+s4T9YgmLC6jLMBZghKIf1uhSd0NzjyCqYWbk2ZxByZHgunEShOhHPHswu3Am0ftt
- ePaYIHgZs+Vzwfjs8I7EuW/5/f5G9w1vibXxtGY/GXwgGGHRDjFM7RSprGOv4F5eMGh+NFUJ
- TU9N96PQYMwXVxnQfRXl8O6ffSVmFx4H9rovxWPKobLmqQL0WKLLVvA/aOHCcMKgfyKRcLah
- 57vGC50Ga8oT2K1g0AhKGkyJo7lGXkMu5yEs0m9O+btqAB261/E3DRxfI1P/tvDZpLJKtq35
- dXsj6sjvhgX7VxXhY1wE54uqLLHY3UZQlmH3QF5t80MS7/KhxB1pO1Cpcmkt9hgyzH8+5org
- +9wWxGUtJWNP7CppY+qvv3SZtKJMKsxqk5coBGwNkMms56z4qfJm2PUtJQGjA65XWdzQACib
- 2iaDQoBqGZfXRdPT0tC1H5kUJuOX4ll1hI/HBMEFCcO8++Bl2wcrUsAxLzGvhINVJX2DAQaF
- aNetToazkCnzubKfBOyiTqFJ0b63c5dqziAgzsFNBF/0ZFUBEADF8UEZmKDl1w/UxvjeyAeX
- kghYkY3bkK6gcIYXdLRfJw12GbvMioSguvVzASVHG8h7NbNjk1yur6AONfbUpXKSNZ0skV8V
- fG+ppbaY+zQofsSMoj5gP0amwbwvPzVqZCYJai81VobefTX2MZM2Mg/ThBVtGyzV3NeCpnBa
- 8AX3s9rrX2XUoCibYotbbxx9afZYUFyflOc7kEpc9uJXIdaxS2Z6MnYLHsyVjiU6tzKCiVOU
- KJevqvzPXJmy0xaOVf7mhFSNQyJTrZpLa+tvB1DQRS08CqYtIMxRrVtC0t0LFeQGly6bOngr
- ircurWJiJKbSXVstLHgWYiq3/GmCSx/82ObeLO3PftklpRj8d+kFbrvrqBgjWtMH4WtK5uN5
- 1WJ71hWJfNchKRlaJ3GWy8KolCAoGsQMovn/ZEXxrGs1ndafu47yXOpuDAozoHTBGvuSXSZo
- ythk/0EAuz5IkwkhYBT1MGIAvNSn9ivE5aRnBazugy0rTRkVggHvt3/7flFHlGVGpBHxFUwb
- /a4UjJBPtIwa4tWR8B1Ma36S8Jk456k2n1id7M0LQ+eqstmp6Y+UB+pt9NX6t0Slw1NCdYTW
- gJezWTVKF7pmTdXszXGxlc9kTrVUz04PqPjnYbv5UWuDd2eyzGjrrFOsJEi8OK2d2j4FfF++
- AzOMdW09JVqejQARAQABwsF2BBgBCAAgFiEEbF+pj/I7JePKMl6Fct6KD1TwOgwFAl/0ZFUC
- GwwACgkQct6KD1TwOgxUfg//eAoYc0Vm4NrxymfcY30UjHVD0LgSvU8kUmXxil3qhFPS7KA+
- y7tgcKLHOkZkXMX5MLFcS9+SmrAjSBBV8omKoHNo+kfFx/dUAtz0lot8wNGmWb+NcHeKM1eb
- nwUMOEa1uDdfZeKef/U/2uHBceY7Gc6zPZPWgXghEyQMTH2UhLgeam8yglyO+A6RXCh+s6ak
- Wje7Vo1wGK4eYxp6pwMPJXLMsI0ii/2k3YPEJPv+yJf90MbYyQSbkTwZhrsokjQEaIfjrIk3
- rQRjTve/J62WIO28IbY/mENuGgWehRlTAbhC4BLTZ5uYS0YMQCR7v9UGMWdNWXFyrOB6PjSu
- Trn9MsPoUc8qI72mVpxEXQDLlrd2ijEWm7Nrf52YMD7hL6rXXuis7R6zY8WnnBhW0uCfhajx
- q+KuARXC0sDLztcjaS3ayXonpoCPZep2Bd5xqE4Ln8/COCslP7E92W1uf1EcdXXIrx1acg21
- H/0Z53okMykVs3a8tECPHIxnre2UxKdTbCEkjkR4V6JyplTS47oWMw3zyI7zkaadfzVFBxk2
- lo/Tny+FX1Azea3Ce7oOnRUEZtWSsUidtIjmL8YUQFZYm+JUIgfRmSpMFq8JP4VH43GXpB/S
- OCrl+/xujzvoUBFV/cHKjEQYBxo+MaiQa1U54ykM2W4DnHb1UiEf5xDkFd4=
-In-Reply-To: <20231124101619.6470-1-hkallweit1@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231212022749.625238-1-yury.norov@gmail.com>
+X-Mailman-Approved-At: Sun, 17 Dec 2023 09:57:31 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -124,58 +141,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, greybus-dev@lists.linaro.org, linux-i2c@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-media@vger.kernel.org
+Cc: Sergey Shtylyov <s.shtylyov@omp.ru>, Jan Kara <jack@suse.cz>, Bart Van Assche <bvanassche@acm.org>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, Matthew Wilcox <willy@infradead.org>, Alexey Klimov <klimov.linux@gmail.com>, Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Maxim Kuvyrkov <maxim.kuvyrkov@linaro.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 24.11.2023 11:16, Heiner Kallweit wrote:
-> After removal of the legacy eeprom driver the only remaining I2C
-> client device driver supporting I2C_CLASS_SPD is jc42. Because this
-> driver also supports I2C_CLASS_HWMON, adapters don't have to
-> declare support for I2C_CLASS_SPD if they support I2C_CLASS_HWMON.
-> It's one step towards getting rid of I2C_CLASS_SPD mid-term.
+On Mon, Dec 11, 2023 at 06:27:14PM -0800, Yury Norov wrote:
+> Add helpers around test_and_{set,clear}_bit() that allow to search for
+> clear or set bits and flip them atomically.
 > 
-> Series was created supported by Coccinelle and its splitpatch.
+> The target patterns may look like this:
 > 
-> v2:
-> - fix style issue in patch 4
-> - add ack in patch 2
-> - set proper subject prefix for all patches
+> 	for (idx = 0; idx < nbits; idx++)
+> 		if (test_and_clear_bit(idx, bitmap))
+> 			do_something(idx);
 > 
-> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+> Or like this:
 > 
-> ---
+> 	do {
+> 		bit = find_first_bit(bitmap, nbits);
+> 		if (bit >= nbits)
+> 			return nbits;
+> 	} while (!test_and_clear_bit(bit, bitmap));
+> 	return bit;
 > 
->  drivers/i2c/busses/i2c-ali1535.c                  |    2 +-
->  drivers/i2c/busses/i2c-ali1563.c                  |    2 +-
->  drivers/i2c/busses/i2c-ali15x3.c                  |    2 +-
->  drivers/i2c/busses/i2c-amd756.c                   |    2 +-
->  drivers/i2c/busses/i2c-amd8111.c                  |    2 +-
->  drivers/i2c/busses/i2c-elektor.c                  |    2 +-
->  drivers/i2c/busses/i2c-gpio.c                     |    2 +-
->  drivers/i2c/busses/i2c-ibm_iic.c                  |    2 +-
->  drivers/i2c/busses/i2c-iop3xx.c                   |    2 +-
->  drivers/i2c/busses/i2c-isch.c                     |    2 +-
->  drivers/i2c/busses/i2c-kempld.c                   |    3 +--
->  drivers/i2c/busses/i2c-mlxcpld.c                  |    2 +-
->  drivers/i2c/busses/i2c-nforce2.c                  |    2 +-
->  drivers/i2c/busses/i2c-pasemi-pci.c               |    2 +-
->  drivers/i2c/busses/i2c-piix4.c                    |    2 +-
->  drivers/i2c/busses/i2c-scmi.c                     |    2 +-
->  drivers/i2c/busses/i2c-sh7760.c                   |    2 +-
->  drivers/i2c/busses/i2c-sibyte.c                   |    4 ++--
->  drivers/i2c/busses/i2c-sis5595.c                  |    2 +-
->  drivers/i2c/busses/i2c-sis630.c                   |    2 +-
->  drivers/i2c/busses/i2c-sis96x.c                   |    2 +-
->  drivers/i2c/busses/i2c-via.c                      |    2 +-
->  drivers/i2c/busses/i2c-viapro.c                   |    2 +-
->  drivers/i2c/busses/scx200_acb.c                   |    2 +-
->  drivers/i2c/i2c-stub.c                            |    2 +-
->  drivers/media/pci/netup_unidvb/netup_unidvb_i2c.c |    2 +-
->  drivers/staging/greybus/i2c.c                     |    2 +-
->  27 files changed, 28 insertions(+), 29 deletions(-)
+> In both cases, the opencoded loop may be converted to a single function
+> or iterator call. Correspondingly:
+> 
+> 	for_each_test_and_clear_bit(idx, bitmap, nbits)
+> 		do_something(idx);
+> 
+> Or:
+> 	return find_and_clear_bit(bitmap, nbits);
+> 
+> Obviously, the less routine code people have to write themself, the
+> less probability to make a mistake.
+> 
+> Those are not only handy helpers but also resolve a non-trivial
+> issue of using non-atomic find_bit() together with atomic
+> test_and_{set,clear)_bit().
+> 
+> The trick is that find_bit() implies that the bitmap is a regular
+> non-volatile piece of memory, and compiler is allowed to use such
+> optimization techniques like re-fetching memory instead of caching it.
+> 
+> For example, find_first_bit() is implemented like this:
+> 
+>       for (idx = 0; idx * BITS_PER_LONG < sz; idx++) {
+>               val = addr[idx];
+>               if (val) {
+>                       sz = min(idx * BITS_PER_LONG + __ffs(val), sz);
+>                       break;
+>               }
+>       }
+> 
+> On register-memory architectures, like x86, compiler may decide to
+> access memory twice - first time to compare against 0, and second time
+> to fetch its value to pass it to __ffs().
+> 
+> When running find_first_bit() on volatile memory, the memory may get
+> changed in-between, and for instance, it may lead to passing 0 to
+> __ffs(), which is undefined. This is a potentially dangerous call.
+> 
+> find_and_clear_bit() as a wrapper around test_and_clear_bit()
+> naturally treats underlying bitmap as a volatile memory and prevents
+> compiler from such optimizations.
+> 
+> Now that KCSAN is catching exactly this type of situations and warns on
+> undercover memory modifications. We can use it to reveal improper usage
+> of find_bit(), and convert it to atomic find_and_*_bit() as appropriate.
+> 
+> In some cases concurrent operations with plain find_bit() are acceptable.
+> For example:
+> 
+>  - two threads running find_*_bit(): safe wrt ffs(0) and returns correct
+>    value, because underlying bitmap is unchanged;
+>  - find_next_bit() in parallel with set or clear_bit(), when modifying
+>    a bit prior to the start bit to search: safe and correct;
+>  - find_first_bit() in parallel with set_bit(): safe, but may return wrong
+>    bit number;
+>  - find_first_zero_bit() in parallel with clear_bit(): same as above.
+> 
+> In last 2 cases find_bit() may not return a correct bit number, but
+> it may be OK if caller requires any (not exactly the first) set or clear
+> bit, correspondingly.
+> 
+> In such cases, KCSAN may be safely silenced with data_race(). But in most
+> cases where KCSAN detects concurrency people should carefully review their
+> code and likely protect critical sections or switch to atomic
+> find_and_bit(), as appropriate.
+> 
+> The 1st patch of the series adds the following atomic primitives:
+> 
+> 	find_and_set_bit(addr, nbits);
+> 	find_and_set_next_bit(addr, nbits, start);
+> 	...
+> 
+> Here find_and_{set,clear} part refers to the corresponding
+> test_and_{set,clear}_bit function. Suffixes like _wrap or _lock
+> derive their semantics from corresponding find() or test() functions.
+> 
+> For brevity, the naming omits the fact that we search for zero bit in
+> find_and_set, and correspondingly search for set bit in find_and_clear
+> functions.
+> 
+> The patch also adds iterators with atomic semantics, like
+> for_each_test_and_set_bit(). Here, the naming rule is to simply prefix
+> corresponding atomic operation with 'for_each'.
+> 
+> In [1] Jan reported 2% slowdown in a single-thread search test when
+> switching find_bit() function to treat bitmaps as volatile arrays. On
+> the other hand, kernel robot in the same thread reported +3.7% to the
+> performance of will-it-scale.per_thread_ops test.
+> 
+> Assuming that our compilers are sane and generate better code against
+> properly annotated data, the above discrepancy doesn't look weird. When
+> running on non-volatile bitmaps, plain find_bit() outperforms atomic
+> find_and_bit(), and vice-versa.
+> 
+> So, all users of find_bit() API, where heavy concurrency is expected,
+> are encouraged to switch to atomic find_and_bit() as appropriate.
+> 
+> The 1st patch of this series adds atomic find_and_bit() API, 2nd adds
+> a basic test for new API, and all the following patches spread it over
+> the kernel.
+> 
+> They can be applied separately from each other on per-subsystems basis,
+> or I can pull them in bitmap tree, as appropriate.
+> 
+> [1] https://lore.kernel.org/lkml/634f5fdf-e236-42cf-be8d-48a581c21660@alu.unizg.hr/T/#m3e7341eb3571753f3acf8fe166f3fb5b2c12e615
+ 
+Thank you all for reviews and comments. Now moving the series to
+bitmap-for-next for testing.
 
-This series and my other series are sitting idle in patchwork
-for 3 weeks now. AFAICS they have the needed ack's.
-Anything missing before they can be applied?
-
+Thanks,
+Yury
