@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C92781599B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Dec 2023 14:53:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 175FE8159A3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Dec 2023 14:53:52 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=AH0Ic5bt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Grk7c+mX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ssnbg1NV2z3vnS
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Dec 2023 00:53:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SsncY5DHcz3cYh
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Dec 2023 00:53:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=AH0Ic5bt;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Grk7c+mX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::31; helo=mail-oa1-x31.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oa1-x31.google.com (mail-oa1-x31.google.com [IPv6:2001:4860:4864:20::31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::536; helo=mail-pg1-x536.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SsnPL0HpKz3cJ9
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Dec 2023 00:44:05 +1100 (AEDT)
-Received: by mail-oa1-x31.google.com with SMTP id 586e51a60fabf-2039cb39b32so146026fac.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Dec 2023 05:44:05 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SsnPP6Jksz3cWX
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Dec 2023 00:44:09 +1100 (AEDT)
+Received: by mail-pg1-x536.google.com with SMTP id 41be03b00d2f7-5c690c3d113so1309146a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Dec 2023 05:44:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702734243; x=1703339043; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1702734247; x=1703339047; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kpz81cw6IXL/gUJKQ1JuTJJ/AYFIP4kGeCEMgz+hkck=;
-        b=AH0Ic5btCOqd82hjS4c+WBCUza2nPd0MhuimIB1DAT5kDjLEw4sD/5v03tXVkKyU3c
-         1yCBgrBcUqBRpLeNEPRbcOPzeZ4MQ8kUZGtqM7HIK4zj/UFzXbBNvMc2xGMLHLpMYnCo
-         OIw2J3PGjAaGiEDeOjSoqpVIj4kXa4Q5jz0LCvRBiCGL97Bj7CrPonFhmHOpAE+KpEE8
-         rBFzw5Cq+ss7vUPWtU0+8iO4ujUkl29I0YgZSF+NP6MGjXu9O/MbZsd9Afqqxae1WRCZ
-         /ERMEDhl4bV5WP/PkCjrXZy3tlcaL+MshatcnaFIlggjtiWlczV4eb5Ano/R6LTCxRHZ
-         VdlQ==
+        bh=YUAtQDtApcgVJAqnWOXyR/Ya4iTsAGlBvKQ21gyDzAY=;
+        b=Grk7c+mXXyuFI3S2p6m7hTiruDy5JbioRoZPam9JNj2Ai0O6jhMksxOaqMa/TTVJF2
+         8UUz169b7wzWAWDOy1pYD6rPuz9DSbMBHm32gicaN5QpU/2M4ccg7e5OPR8DSERzjanU
+         0GU+rRhOtgsMUwpIW/hDYBJqWilYlnvAD6mWqeG/utxVDbt6BJzrhn9sN3eidKgpEgZw
+         lTYIcdm5qFl1LJGXGnPX3nt4fUyoDlr9cF1z/h9kfeY7qT1rrUxY9ZxnWKV00HkGV0r2
+         YKAh6Ae+ihTygpFf358LKgn5JaKRbte+JMrkm6btYoxWHYEIRTkydndiAmP+lJJ7z5ix
+         0OVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702734243; x=1703339043;
+        d=1e100.net; s=20230601; t=1702734247; x=1703339047;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kpz81cw6IXL/gUJKQ1JuTJJ/AYFIP4kGeCEMgz+hkck=;
-        b=UzB62LyeGb2vKnZT7bbfQX0To0OamfyAME3o+rJ4lHYUbCYQxy9coTL6UbDalsjCB4
-         btNpacsHLZUVvhz7zNFzttdAT6ghjnA8pBS2ZKWGAmnLDSaI6Qte0BCZ6U0a7f/6q+VD
-         gL9RB8bmGA+rifzx3OBi5t5ZWVKKlKc1TrZYv9osijHqEmRJxvs/hwDj6zVcY4HFlNVc
-         /GXd1SUecFALlucNaYPvye1XAp/6lgJI9YNleljwj/nSOY2xNo+RRzluWxxh4Jb9320S
-         BqTrJxX3vrj/wa/wv3npcjKncC0rFQqh0TsrNxILw6MhGrdz/H0bn+894SI6J7pT63br
-         mXfQ==
-X-Gm-Message-State: AOJu0Yyi0xqWkLSyKNdrc394eLDTs3naROi3m101xqaRfw9YUL33MBU5
-	5I/qmunDUNplsrpv37ELp1zb+oaNLG4=
-X-Google-Smtp-Source: AGHT+IFg2AwO310R8zzQQs+zdrgcP7ojgiF9wQHDegKwCO7gLz0TdBCsU9sq0SHJCCrdcD8pvmyKoQ==
-X-Received: by 2002:a05:6870:2196:b0:1fb:75c:4002 with SMTP id l22-20020a056870219600b001fb075c4002mr15219516oae.98.1702734243197;
-        Sat, 16 Dec 2023 05:44:03 -0800 (PST)
+        bh=YUAtQDtApcgVJAqnWOXyR/Ya4iTsAGlBvKQ21gyDzAY=;
+        b=FI/GmTHUvlZgolUX1jj5HstlgIvm6X+OL3d20Akc2AO9EPSVRmQsLWMejYhFThow2d
+         9PB/fM0RRrcKIz3bKJURDhT9VjnJeUt3iCiGVlPsXnS/hqVkY6/nj29eNj8Sf0i604jK
+         MBDT7y9V+u2kaOEF4UUdEdAZok50fUpRAb13mHaRrcN0uScoYeVukpMzET1eiS1y2EM3
+         368Dyqu9wVFRKMqEiEb2q6BY722YdDSlsazLBzkZrPctrNUcHIGv27OXefMGrn1yXQzW
+         gM7McVWa2wdAtaBYaQyw2N7kk1cfR8d+wWbHT46AJYmZKcoHbkiLK0s67H9wNwQp+LV8
+         vnjA==
+X-Gm-Message-State: AOJu0Yx7ys3JRaFI3AP7MF4fdtKN/OkgEtW8eZ9Xd+xfpl1888kJA8ym
+	ifSISwqSOQ7bseN83Y8PzuQ=
+X-Google-Smtp-Source: AGHT+IGXiPYOu3Brmfx95kDfKpD6ZJoVeXT7ugdb1G7RY9S++SLmazxazUBOvPCTWBw75wG1Vk42Yg==
+X-Received: by 2002:a05:6a20:2583:b0:18c:d38:9169 with SMTP id k3-20020a056a20258300b0018c0d389169mr15658268pzd.21.1702734247178;
+        Sat, 16 Dec 2023 05:44:07 -0800 (PST)
 Received: from wheely.local0.net (203-221-42-190.tpgi.com.au. [203.221.42.190])
-        by smtp.gmail.com with ESMTPSA id w2-20020a654102000000b005c65ed23b65sm12663631pgp.94.2023.12.16.05.43.59
+        by smtp.gmail.com with ESMTPSA id w2-20020a654102000000b005c65ed23b65sm12663631pgp.94.2023.12.16.05.44.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Dec 2023 05:44:02 -0800 (PST)
+        Sat, 16 Dec 2023 05:44:06 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm@vger.kernel.org
-Subject: [kvm-unit-tests PATCH v5 11/29] powerpc/sprs: Don't fail changed SPRs that are used by the test harness
-Date: Sat, 16 Dec 2023 23:42:38 +1000
-Message-ID: <20231216134257.1743345-12-npiggin@gmail.com>
+Subject: [kvm-unit-tests PATCH v5 12/29] powerpc/sprs: Avoid taking async interrupts caused by register fuzzing
+Date: Sat, 16 Dec 2023 23:42:39 +1000
+Message-ID: <20231216134257.1743345-13-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231216134257.1743345-1-npiggin@gmail.com>
 References: <20231216134257.1743345-1-npiggin@gmail.com>
@@ -82,30 +82,51 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, Nico Bo
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-SPRs annotated with SPR_HARNESS can change between consecutive reads
-because the test harness code has changed them. Avoid failing the
-test in this case.
+Storing certain values in some registers can cause asynchronous
+interrupts that can crash the test case, for example decrementer
+or PMU interrupts.
 
-[XER was observed to change after the next changeset to use mdelay.]
+Change the msleep to mdelay which does not enable MSR[EE] and so
+avoids the problem. This allows removing some of the SPR special
+casing.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- powerpc/sprs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ powerpc/sprs.c | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
 diff --git a/powerpc/sprs.c b/powerpc/sprs.c
-index cd8b472d..01041912 100644
+index 01041912..313698e0 100644
 --- a/powerpc/sprs.c
 +++ b/powerpc/sprs.c
-@@ -557,7 +557,7 @@ int main(int argc, char **argv)
- 			if (before[i] >> 32)
- 				pass = false;
- 		}
--		if (!(sprs[i].type & SPR_ASYNC) && (before[i] != after[i]))
-+		if (!(sprs[i].type & (SPR_HARNESS|SPR_ASYNC)) && (before[i] != after[i]))
- 			pass = false;
+@@ -481,12 +481,7 @@ static void set_sprs(uint64_t val)
+ 			continue;
+ 		if (sprs[i].type & SPR_HARNESS)
+ 			continue;
+-		if (!strcmp(sprs[i].name, "MMCR0")) {
+-			/* XXX: could use a comment or better abstraction! */
+-			__mtspr(i, (val & 0xfffffffffbab3fffULL) | 0xfa0b2070);
+-		} else {
+-			__mtspr(i, val);
+-		}
++		__mtspr(i, val);
+ 	}
+ }
  
- 		if (sprs[i].width == 32 && !(before[i] >> 32) && !(after[i] >> 32))
+@@ -536,12 +531,7 @@ int main(int argc, char **argv)
+ 	if (pause) {
+ 		migrate_once();
+ 	} else {
+-		msleep(2000);
+-
+-		/* Taking a dec updates SRR0, SRR1, SPRG1, so don't fail. */
+-		sprs[26].type |= SPR_ASYNC;
+-		sprs[27].type |= SPR_ASYNC;
+-		sprs[273].type |= SPR_ASYNC;
++		mdelay(2000);
+ 	}
+ 
+ 	get_sprs(after);
 -- 
 2.42.0
 
