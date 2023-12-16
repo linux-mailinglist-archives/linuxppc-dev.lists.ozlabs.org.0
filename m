@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32D958159A9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Dec 2023 14:57:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F5EC8159AA
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Dec 2023 14:57:51 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Q4Xf2EzA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ER3vjzos;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SsnhG6J6zz3dLG
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Dec 2023 00:57:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ssnj90QJ1z3vnh
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Dec 2023 00:57:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Q4Xf2EzA;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ER3vjzos;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::329; helo=mail-ot1-x329.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::2e; helo=mail-oa1-x2e.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SsnPk18yLz3cWn
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Dec 2023 00:44:26 +1100 (AEDT)
-Received: by mail-ot1-x329.google.com with SMTP id 46e09a7af769-6d9f069e9b0so1396392a34.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Dec 2023 05:44:25 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SsnPp2Lrjz3cSL
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Dec 2023 00:44:30 +1100 (AEDT)
+Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-2039cb39b32so146243fac.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Dec 2023 05:44:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702734263; x=1703339063; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1702734267; x=1703339067; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GRUnkU+g7qRtG9MV7NCG/L4yfLCIdw5pgzKA9HKUSKU=;
-        b=Q4Xf2EzAc+7DBStXehbW5ssNiLwUgTu/+ULCJPehNAKXoH03fKVA4A9eeMQek78QPY
-         lCZ5BS1Jr9fvf1k7EDYwAzq7DyWr0culk9znCkUYMSP2YUpZBq99Ljim6dsxU9pv5ew+
-         a1bRai7U7pk3bVZgsgRyqmfxiTSbYQASK8Ae7msyzqYP2pwB54Ie2HYrGtQjY0jeS3Je
-         fJeuAKOvbZkU6MwmLucJCKnPH2JhS7vdL3B6OjWzNVtGe6LDzvEwfllWuIkhjO3+8RlK
-         7SJlGi7dxNvHbpZZHVtQUP4R0fXyuPh3IZRjfQ6fby4I5fzSYhoHIKx5/kLY1RXcsc8R
-         SsOA==
+        bh=x/q9+SOTNgxejygyzTqb3f6ILvTs7v7L66VeB6SlNtM=;
+        b=ER3vjzosJJwdP4uEFTd43Tt/KVpFN7jFgr4UcdoziOHxf0GsnaUWYad2XL9AiJdqHH
+         E4sDlPQNB1KBJACL1CVUB4tpYLMFGhkizLYH6aEb6Gc+meeXxahtRwOwUmbZXzYha7XK
+         xKWbrhHN+9l0IZRLIcl9PU3d9CCn0f9OY461pYb+5rIPAm0OF0bjZxVpAb27bCc1hla7
+         bNdudNZy+SLcVdWymapsKNdpBvuypj0+fFT45a/K4CKDmvNXScQs/rbgqnMg+K0+lYHi
+         +rsZcaowiEuZ8XbDeiURtOS7BdgMU+AIOudxfKPf1s5KcZz92l3GuLEYxfa4Otlaofww
+         0t/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702734263; x=1703339063;
+        d=1e100.net; s=20230601; t=1702734267; x=1703339067;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GRUnkU+g7qRtG9MV7NCG/L4yfLCIdw5pgzKA9HKUSKU=;
-        b=u9jg5e8UVroqVGgw45Yh8plF/OXevfiBY2XOY5f2tkZJcbdepqmvD5eCp2n0kbDGr8
-         dl5OifVz+BVHguk4xf/Ti2/UPLSypCIC05czwvzGbtm5hT2G8D0Bes2IrKcHlLnTQroD
-         +EPLmz5BwtAD1IfQRTSaq9sNkq0UfCs+zSyJQsh65X4uNKycVSbwOHT5PYnN1m1zn759
-         Lc8EDfvx8X8cE6868g+CgMxxTrg8Eyt7oNsRxK2pfOrEj0oVUHK8j4Znq4Hn6wa8qpOy
-         5JucKNCr3P4hRVwSGnaKi1wPRqDoaGyxqHcLfnh5jW1VcSRfmY3PYhEkXjaXoblNcK9K
-         aPdw==
-X-Gm-Message-State: AOJu0YyyrJA1aUaKiZ7u4PlfLJBmCFJNqV+IjbxX/aR8cHYZOsv23IDD
-	UYvHeuMSETq3vJcwmReFJIA=
-X-Google-Smtp-Source: AGHT+IFal2Q0T3a8RPC2sdfwbSB1Hzulx2S6zDy81QrBYbZwS1rlFsrVCGPsN4M43mq4C0EJYqZ1gA==
-X-Received: by 2002:a05:6830:1499:b0:6d9:e7db:7b60 with SMTP id s25-20020a056830149900b006d9e7db7b60mr14145763otq.12.1702734263452;
-        Sat, 16 Dec 2023 05:44:23 -0800 (PST)
+        bh=x/q9+SOTNgxejygyzTqb3f6ILvTs7v7L66VeB6SlNtM=;
+        b=JBEHvGLHptWmSJOLR9FTOx3NUQhskAKs0KxDEm3jqrovEKz5/oH01nGdBD/1WgEyWK
+         UeGBWPvTHCm/pNO0SohAaLc8WIyIiO0+De36xcBkLYt1jXoIi1whGMe06K9qtdiDl1n5
+         4i/HRKVDZ9O6CRNIv6PiTl11s7CWFhxcnOlnm2Sc8UocSMP3ASQfA6222th8ESu3iaEu
+         ao7FUdnbx9v+IbTPKNQ4Csl49CEW718rv56475QFUpVCoULmuLB0C9PVwGFpasOvM1uN
+         wyNJRZpYB81urpWQaSjZLCrLq1xGRwdBMoUx2NNEjxtwCPoRJpKGVKxNs159DyMri+qn
+         ifCA==
+X-Gm-Message-State: AOJu0YwluAoQ7FGv5Cgb8s6jY3DNIpmszL2URN88rcuAOKC14q/7p2r5
+	23Z5sF4v08DtPbYvJAFl+9iSlHf73GE=
+X-Google-Smtp-Source: AGHT+IFO3S6GTU9B8coHknBBHNQlHDEePwVqxJzCwvKeJib5aGrsNWRA85MGzG8yqLEVBKRdInLFkw==
+X-Received: by 2002:a05:6870:a452:b0:203:5a17:7d8f with SMTP id n18-20020a056870a45200b002035a177d8fmr4204496oal.100.1702734267474;
+        Sat, 16 Dec 2023 05:44:27 -0800 (PST)
 Received: from wheely.local0.net (203-221-42-190.tpgi.com.au. [203.221.42.190])
-        by smtp.gmail.com with ESMTPSA id w2-20020a654102000000b005c65ed23b65sm12663631pgp.94.2023.12.16.05.44.19
+        by smtp.gmail.com with ESMTPSA id w2-20020a654102000000b005c65ed23b65sm12663631pgp.94.2023.12.16.05.44.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Dec 2023 05:44:23 -0800 (PST)
+        Sat, 16 Dec 2023 05:44:27 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm@vger.kernel.org
-Subject: [kvm-unit-tests PATCH v5 16/29] powerpc: Set .got section alignment to 256 bytes
-Date: Sat, 16 Dec 2023 23:42:43 +1000
-Message-ID: <20231216134257.1743345-17-npiggin@gmail.com>
+Subject: [kvm-unit-tests PATCH v5 17/29] powerpc: Discover runtime load address dynamically
+Date: Sat, 16 Dec 2023 23:42:44 +1000
+Message-ID: <20231216134257.1743345-18-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231216134257.1743345-1-npiggin@gmail.com>
 References: <20231216134257.1743345-1-npiggin@gmail.com>
@@ -82,43 +82,63 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, Nico Bo
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Modern powerpc64 toolchains require the .got section have alignment of
-256 bytes. Incorrect alignment ends up causing the .data section ELF
-load address to move by 8 bytes from its file offset, relative to
-previous sections. This is not a problem for the QEMU bios loader used
-by the pseries machine, but it is a problem for the powernv machine
-using skiboot as the bios and the test programs as a kernel, because the
-skiboot ELF loader is crippled:
+The next change will load the kernels at different addresses depending
+on test options, so this needs to be reverted back to dynamic
+discovery.
 
-  * Note that we execute the kernel in-place, we don't actually
-  * obey the load informations in the headers. This is expected
-  * to work for the Linux Kernel because it's a fairly dumb ELF
-  * but it will not work for any ELF binary.
-
-This causes all references to data to be incorrect. Aligning the .got
-to 256 bytes prevents this offset skew and allows the skiboot "flat"
-loader to work. [I don't know why the .got alignment can cause this
-difference in linking.]
-
+Acked-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- powerpc/flat.lds | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ powerpc/cstart64.S | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/powerpc/flat.lds b/powerpc/flat.lds
-index 5eed368d..e07b91c1 100644
---- a/powerpc/flat.lds
-+++ b/powerpc/flat.lds
-@@ -41,8 +41,7 @@ SECTIONS
-     /*
-      * tocptr is tocbase + 32K, allowing toc offsets to be +-32K
-      */
--    tocptr = . + 32K;
--    .got : { *(.toc) *(.got) }
-+    .got : ALIGN(256) { tocptr = . + 32K; *(.toc .got) }
-     . = ALIGN(64K);
-     edata = .;
-     . += 64K;
+diff --git a/powerpc/cstart64.S b/powerpc/cstart64.S
+index b7514100..e18ae9a2 100644
+--- a/powerpc/cstart64.S
++++ b/powerpc/cstart64.S
+@@ -33,9 +33,14 @@ start:
+ 	 * We were loaded at QEMU's kernel load address, but we're not
+ 	 * allowed to link there due to how QEMU deals with linker VMAs,
+ 	 * so we just linked at zero. This means the first thing to do is
+-	 * to find our stack and toc, and then do a relocate.
++	 * to find our stack and toc, and then do a relocate. powernv and
++	 * pseries load addresses are not the same, so find the address
++	 * dynamically:
+ 	 */
+-	LOAD_REG_IMMEDIATE(r31, SPAPR_KERNEL_LOAD_ADDR)
++	bl	0f
++0:	mflr	r31
++	subi	r31, r31, 0b - start	/* QEMU's kernel load address */
++
+ 	ld	r1, (p_stack - start)(r31)
+ 	ld	r2, (p_toc - start)(r31)
+ 	add	r1, r1, r31
+@@ -114,8 +119,11 @@ p_toc:		.llong  tocptr
+ p_dyn:		.llong  dynamic_start
+ 
+ .text
++start_text:
+ .align 3
++p_toc_text:	.llong	tocptr
+ 
++.align 3
+ .globl hcall
+ hcall:
+ 	sc	1
+@@ -185,9 +193,10 @@ call_handler:
+ 	std	r0,_CCR(r1)
+ 
+ 	/* restore TOC pointer */
+-
+-	LOAD_REG_IMMEDIATE(r31, SPAPR_KERNEL_LOAD_ADDR)
+-	ld	r2, (p_toc - start)(r31)
++	bl	0f
++0:	mflr	r31
++	subi	r31, r31, 0b - start_text
++	ld	r2, (p_toc_text - start_text)(r31)
+ 
+ 	/* FIXME: build stack frame */
+ 
 -- 
 2.42.0
 
