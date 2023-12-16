@@ -2,68 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 317FA815970
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Dec 2023 14:44:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B5AA81597A
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Dec 2023 14:44:59 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=LxH3AgDs;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=nO11PLNf;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SsnPP6YzTz3cWZ
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Dec 2023 00:44:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SsnQK0tFQz3cWn
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Dec 2023 00:44:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=LxH3AgDs;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=nO11PLNf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::534; helo=mail-pg1-x534.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SsnNY6H1Tz2ykC
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Dec 2023 00:43:24 +1100 (AEDT)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6ce72730548so1521197b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Dec 2023 05:43:24 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SsnNZ0Bplz30fZ
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Dec 2023 00:43:25 +1100 (AEDT)
+Received: by mail-pg1-x534.google.com with SMTP id 41be03b00d2f7-5c690c3d113so1308913a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Dec 2023 05:43:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702734199; x=1703338999; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=B+7l4pOYsT3CaviTaqKN9x/Myq8yxFLM9fmkQeR06OU=;
-        b=LxH3AgDsr2gimFjOKXsLmgO7CjimatK/wPQkJ1/7b179VB9mXUoiMJ+SdtQM/bpop0
-         Uc5D0XKdJaXZBhrN7CzfOhqA4DPRcJUV/YU4EYdjXcBYRT0+aZSi/+V/p4aXUSE//3Nh
-         /1k5QVxvA4h5rjlF82G5AUY1l6V03c1UDm+QJl12FYX951kpsvRVOYMeJ3b/WP4bchn7
-         rmDvJAIG5pP2h6hU6brySJJbcw6QReVkLWHsRg4jN+cLAz1GI6ptXbiTTyMJT/xTRRov
-         llNpCkGbwd5DlAaNJWPlqCCgKMA4iOl9guWjxRw3eyT2KCSPhanGeV8kt/DBaIdZLjLa
-         nmVA==
+        d=gmail.com; s=20230601; t=1702734202; x=1703339002; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Cu8pXvZrMvEyGfJqwo7jShQ/A2yK8wN3uOSg+62bGgw=;
+        b=nO11PLNfyF0dUFyJkEApml/AxS18BEFMZETjkD58WGdhY+AzbpMpsE5014Eq0hLfP4
+         nKSCL/fmpZ44u1E0tmM0r7IVzdVd5WHd4zotrHTmB7c5MzrVyKxq8MG+0ZRsaPLrvEOP
+         dIZkU94Nj9punQHDtyk/2Y1yBNygjwHzOMUA91tnmyeSGzp0tHWWFfBXTA+6QR2ek17o
+         /sdfRqrX9vy+0rdbrtBc+ICsVGSYi1SYDp0x4xzPqTTUIrFAPGMnhh2xA1i9nyqjAJVF
+         BbImYv9gYGZomKmqub+Mdf1jkpXWXuNIHmwS5nw4oebqx3V7nl84JG7v0MDViaM9vHZ7
+         HkjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702734199; x=1703338999;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=B+7l4pOYsT3CaviTaqKN9x/Myq8yxFLM9fmkQeR06OU=;
-        b=ISPo6AloX1C86lP/f6yBJQzwzFm9Qubi1NK5TKFNJhAmYfU1EZppjLy2A1aeNZ3SzZ
-         PndHqYPdhAFAXK0D6gCljCz+TJlW/keP8RevWP+n40/RtrFM8wt6pqoidM2bpVn2MYsO
-         3lkF/HYtmRvTGsrJXYTrlXvYCT+QYVuRDZcBvt9xBr5hq4Ap+4VE/cU/Z65qYnmJZnzS
-         +cUjBoVtMcrZl7U71I4sLvSTjFGkkRhWXXVSbj2VzBcFyxpEAYGvoHwd29SIll65bdOL
-         SXafzWYFUrlivA3mJza62alGxbebm+6dbYUMv+79pgpGhfvEg2JkkD4PtidH17ns1DrT
-         yx6g==
-X-Gm-Message-State: AOJu0Yw9S9c9JczVLlBcRv8cN//AL1cKgGUcMi3kEeVuu+akqDJK8Ead
-	1yEFewgVyt8eJTDPvwOiQsc=
-X-Google-Smtp-Source: AGHT+IFImnuuEZM7gUszelAmMNRJPwf8qvl5oixScMR+P/AjXJJp1B60/5PKOvLofHshAeJQxpUrqg==
-X-Received: by 2002:aa7:8390:0:b0:6d2:7294:96e7 with SMTP id u16-20020aa78390000000b006d2729496e7mr3378119pfm.62.1702734198831;
-        Sat, 16 Dec 2023 05:43:18 -0800 (PST)
+        d=1e100.net; s=20230601; t=1702734202; x=1703339002;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Cu8pXvZrMvEyGfJqwo7jShQ/A2yK8wN3uOSg+62bGgw=;
+        b=Eto6j6JCkQ6SXtYtJM6FkigWIlkMGCXECC4v0JTTYUK2ToQBNIFzkfjQ+Z6cMVSn9o
+         LzJ/26k1cq9avf01y/Pl13xynGQ3HOI320z28kGsujqisMZSN4jOjDhn8U+Jh+th+vbz
+         8GjEnVSRLb0SHJJuMmFe+ufR8NEmeF6SHatBwJIjXiggTN4l8DdvjIaJ9gi0okaIfdF+
+         37/0UmPA7MEuBwQUmK0gPUHoTMVUPceqMnYWduYzJ+Q4IwVpudfJoc5GylmTqF9zYa0d
+         4hktj9hpLreBdQ2t5eiXLtmZ87Sv7hSXFsP8LQYKPIa+LNRWvNSO728HhDh+5mSVKbqH
+         6ouA==
+X-Gm-Message-State: AOJu0Yyo7NaSuCYY19ax50u5J73NO8zMYur4KgF++q4lvk4/NIiXbQvd
+	f6m6Z8dTtX+peTAlZ7TM3U0Q2kIxZv4=
+X-Google-Smtp-Source: AGHT+IEiHRMq62KMzmdGnFRpRmshtiSJoLYOJvPsJPszWrTjzN8bYf1c0gnjybqQW4DZYo2pugFxdA==
+X-Received: by 2002:a05:6a20:4caa:b0:18f:97c:617c with SMTP id fq42-20020a056a204caa00b0018f097c617cmr10932258pzb.121.1702734202709;
+        Sat, 16 Dec 2023 05:43:22 -0800 (PST)
 Received: from wheely.local0.net (203-221-42-190.tpgi.com.au. [203.221.42.190])
-        by smtp.gmail.com with ESMTPSA id w2-20020a654102000000b005c65ed23b65sm12663631pgp.94.2023.12.16.05.43.15
+        by smtp.gmail.com with ESMTPSA id w2-20020a654102000000b005c65ed23b65sm12663631pgp.94.2023.12.16.05.43.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Dec 2023 05:43:18 -0800 (PST)
+        Sat, 16 Dec 2023 05:43:22 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm@vger.kernel.org
-Subject: [kvm-unit-tests PATCH v5 00/29] powerpc: updates, P10, PNV support
-Date: Sat, 16 Dec 2023 23:42:27 +1000
-Message-ID: <20231216134257.1743345-1-npiggin@gmail.com>
+Subject: [kvm-unit-tests PATCH v5 01/29] arch-run: Clean up temporary files properly
+Date: Sat, 16 Dec 2023 23:42:28 +1000
+Message-ID: <20231216134257.1743345-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231216134257.1743345-1-npiggin@gmail.com>
+References: <20231216134257.1743345-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -80,120 +82,47 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, Nico Bo
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This has taken quite a while to get right, but I think is getting
-much better now.
+Migration files weren't being removed when tests were interrupted.
+This seems to improve the situation.
 
-There are several semi-related things here: multi-migration support,
-bugfixing, adding powernv machine, expanding and adding test cases.
-But I found it easiest to leave it as one series. Multi-migration I
-added when testing and debugging time migration issues in QEMU, and
-that has grown to quite a size, I can try to split that out if
-preferred.
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ scripts/arch-run.bash | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-Since v4:
-- Multi migration now seems quite solid, I haven't broken it. Arm64
-  migration regression reported by Shaoqin is fixed, it was due to an exit
-  status getting lost.
-- Several other small migration fixes and cleanups that poppedup in
-  testing.
-- More complete SMP support including IPI for pseries and powernv.
-- Made powernv a first-class citizen that can do run_tests.sh unit
-  tests (with machine option).
-- More polished, quiet warnings, skip unsupported tests, etc.
-- Fix several powerpc bugs that got exposed (.got, stack backtrace,
-  stack alignment).
-- Added a bunch more tests I've been accumulating, atomics, smp,
-  timebase, interrupts.
-
-Note the arm64 psci cpu-on test is flakey with/without this series.
-
-Thanks,
-Nick
-
-
-Nicholas Piggin (29):
-  arch-run: Clean up temporary files properly
-  arch-run: Clean up initrd cleanup
-  migration: use a more robust way to wait for background job
-  migration: Support multiple migrations
-  arch-run: rename migration variables
-  powerpc: Quiet QEMU TCG pseries capability warnings
-  powerpc: Add a migration stress tester
-  powerpc: Require KVM for the TM test
-  powerpc: Fix interrupt stack alignment
-  powerpc/sprs: Specify SPRs with data rather than code
-  powerpc/sprs: Don't fail changed SPRs that are used by the test
-    harness
-  powerpc/sprs: Avoid taking async interrupts caused by register fuzzing
-  powerpc: Make interrupt handler error more readable
-  powerpc: Expand exception handler vector granularity
-  powerpc: Add support for more interrupts including HV interrupts
-  powerpc: Set .got section alignment to 256 bytes
-  powerpc: Discover runtime load address dynamically
-  powerpc: Fix stack backtrace termination
-  scripts: allow machine option to be specified in unittests.cfg
-  scripts: Accommodate powerpc powernv machine differences
-  powerpc: Support powernv machine with QEMU TCG
-  powerpc: Fix emulator illegal instruction test for powernv
-  powerpc/sprs: Test hypervisor registers on powernv machine
-  powerpc: interrupt tests
-  powerpc: Add rtas stop-self support
-  powerpc: add SMP and IPI support
-  powerpc: Avoid using larx/stcx. in spinlocks when only one CPU is
-    running
-  powerpc: Add atomics tests
-  powerpc: Add timebase tests
-
- lib/migrate.c               |   8 +-
- lib/migrate.h               |   1 +
- lib/powerpc/asm/ppc_asm.h   |  25 ++
- lib/powerpc/asm/processor.h |  41 +++
- lib/powerpc/asm/rtas.h      |   2 +
- lib/powerpc/asm/setup.h     |   3 +-
- lib/powerpc/asm/smp.h       |  24 +-
- lib/powerpc/hcall.c         |   4 +-
- lib/powerpc/io.c            |  27 +-
- lib/powerpc/io.h            |   6 +
- lib/powerpc/processor.c     |  55 ++-
- lib/powerpc/rtas.c          |  78 ++++-
- lib/powerpc/setup.c         |  50 ++-
- lib/powerpc/smp.c           | 270 +++++++++++++--
- lib/powerpc/spinlock.c      |  28 ++
- lib/ppc64/asm/atomic.h      |   6 +
- lib/ppc64/asm/opal.h        |  20 ++
- lib/ppc64/asm/ptrace.h      |   1 +
- lib/ppc64/asm/spinlock.h    |   7 +-
- lib/ppc64/opal-calls.S      |  46 +++
- lib/ppc64/opal.c            |  76 +++++
- powerpc/Makefile.common     |   8 +-
- powerpc/Makefile.ppc64      |   2 +
- powerpc/atomics.c           | 190 +++++++++++
- powerpc/cstart64.S          | 163 +++++++--
- powerpc/emulator.c          |  19 +-
- powerpc/flat.lds            |   3 +-
- powerpc/interrupts.c        | 412 +++++++++++++++++++++++
- powerpc/migrate.c           |  64 ++++
- powerpc/run                 |  39 ++-
- powerpc/smp.c               | 199 +++++++++++
- powerpc/sprs.c              | 642 +++++++++++++++++++++++++-----------
- powerpc/timebase.c          | 328 ++++++++++++++++++
- powerpc/tm.c                |   2 +-
- powerpc/unittests.cfg       |  37 +++
- scripts/arch-run.bash       | 181 +++++++---
- scripts/common.bash         |   8 +-
- scripts/runtime.bash        |  20 +-
- 38 files changed, 2736 insertions(+), 359 deletions(-)
- create mode 100644 lib/powerpc/spinlock.c
- create mode 100644 lib/ppc64/asm/atomic.h
- create mode 100644 lib/ppc64/asm/opal.h
- create mode 100644 lib/ppc64/opal-calls.S
- create mode 100644 lib/ppc64/opal.c
- create mode 100644 powerpc/atomics.c
- create mode 100644 powerpc/interrupts.c
- create mode 100644 powerpc/migrate.c
- create mode 100644 powerpc/smp.c
- create mode 100644 powerpc/timebase.c
-
+diff --git a/scripts/arch-run.bash b/scripts/arch-run.bash
+index d0864360..f22ead6f 100644
+--- a/scripts/arch-run.bash
++++ b/scripts/arch-run.bash
+@@ -134,12 +134,14 @@ run_migration ()
+ 	qmp1=$(mktemp -u -t mig-helper-qmp1.XXXXXXXXXX)
+ 	qmp2=$(mktemp -u -t mig-helper-qmp2.XXXXXXXXXX)
+ 	fifo=$(mktemp -u -t mig-helper-fifo.XXXXXXXXXX)
++
++	# race here between file creation and trap
++	trap "trap - TERM ; kill 0 ; exit 2" INT TERM
++	trap "rm -f ${migout1} ${migsock} ${qmp1} ${qmp2} ${fifo}" RETURN EXIT
++
+ 	qmpout1=/dev/null
+ 	qmpout2=/dev/null
+ 
+-	trap 'kill 0; exit 2' INT TERM
+-	trap 'rm -f ${migout1} ${migsock} ${qmp1} ${qmp2} ${fifo}' RETURN EXIT
+-
+ 	eval "$@" -chardev socket,id=mon1,path=${qmp1},server=on,wait=off \
+ 		-mon chardev=mon1,mode=control | tee ${migout1} &
+ 	live_pid=`jobs -l %+ | grep "eval" | awk '{print$2}'`
+@@ -211,8 +213,8 @@ run_panic ()
+ 
+ 	qmp=$(mktemp -u -t panic-qmp.XXXXXXXXXX)
+ 
+-	trap 'kill 0; exit 2' INT TERM
+-	trap 'rm -f ${qmp}' RETURN EXIT
++	trap "trap - TERM ; kill 0 ; exit 2" INT TERM
++	trap "rm -f ${qmp}" RETURN EXIT
+ 
+ 	# start VM stopped so we don't miss any events
+ 	eval "$@" -chardev socket,id=mon1,path=${qmp},server=on,wait=off \
 -- 
 2.42.0
 
