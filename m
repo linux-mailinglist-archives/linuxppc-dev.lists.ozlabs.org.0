@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1204B815991
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Dec 2023 14:48:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C783D815992
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Dec 2023 14:49:52 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Dbn+Up77;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Z4gh62xd;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SsnVw5LKnz3vkC
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Dec 2023 00:48:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SsnWy2SSTz3vnN
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Dec 2023 00:49:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Dbn+Up77;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Z4gh62xd;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::234; helo=mail-oi1-x234.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::32c; helo=mail-ot1-x32c.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ot1-x32c.google.com (mail-ot1-x32c.google.com [IPv6:2607:f8b0:4864:20::32c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SsnNy014Mz3cJW
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Dec 2023 00:43:45 +1100 (AEDT)
-Received: by mail-oi1-x234.google.com with SMTP id 5614622812f47-3b9ef61b6b8so1359607b6e.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Dec 2023 05:43:45 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SsnP14Xrtz3c2C
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Dec 2023 00:43:49 +1100 (AEDT)
+Received: by mail-ot1-x32c.google.com with SMTP id 46e09a7af769-6d9f7af8918so1443799a34.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Dec 2023 05:43:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702734223; x=1703339023; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1702734227; x=1703339027; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JpfFN7ncIBGdqptU1/FlLtsZ9ai1Z65NxzA1SGKGTcY=;
-        b=Dbn+Up77UL7j1+btFKwjKd0N2gxSOYOLtumFE/53Jtxr+fQFOiABMVTM5lg1500SVq
-         Med7YHyTPH6Q5Ea5P/dtR7AcjLbwoMwWh4yhm24RXFOJU6X38xzcQoSHDdrVORV+9euD
-         w/GhwJyVVnYjyD6gQn5X9D31VE02KQ+D/S+QeOw4cVEAmj4Kq/hxMJ3cd1qj17lpKcUq
-         /sghQ/3Nfg5V5mr0cIGGYxCQ9oBqQ5x9VvPhJpakq47/Rg2QYyf3KEGW+qthcqceBdQ/
-         v5CpxUeEhMLe69F0BNYIZDJEo+eeGXtUVtFwPD3t1CPvPPIgeX0x2gEeZSoPgH0Nz2js
-         1OOg==
+        bh=mSpSWzn4652t77dC2if+1ZPCUxLXIz50XDP/r03Pb+U=;
+        b=Z4gh62xdoq7zR5P0jN2o0qjafTTM93tk2eQ0Irdz1JVEC1LJRcprzDAQ/WOMySehWQ
+         RyeDZ3Yyvqjd265dUmMcvk8oOXzNjKuvbAvtO4S4ANG+H0trpNiCbCkknp6qtGLl3Z+f
+         4UZYN3CI9jBFCEVk4Ds7mWGlU7bcqhXKsdOt36rJFs5g63oTvybvF5seSVvEz7TpKvIi
+         hJITLs8dLGqcFUTbcOYIzar1HFBPwINqLQlUbVmJ+tRXY6vocfuxEtuzj69NpZDxdzr9
+         BE13svFVeW/4CsC+G2yTC3ogQqera2fYVZBhuUOgHOvEEWd3mayl1Mb4TLbeqTsNlVu4
+         0eQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702734223; x=1703339023;
+        d=1e100.net; s=20230601; t=1702734227; x=1703339027;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=JpfFN7ncIBGdqptU1/FlLtsZ9ai1Z65NxzA1SGKGTcY=;
-        b=WRTcIxW7m6vUpFmnWgqutKr5VXNSgn9HhMCCHhuokOOlfrEFlHut+mmzoU9w5yCo8j
-         HNPl/8RgqibN2vhz/SNSrmEWGWKxYufOjF4AmfT4zA++cjeqcYA0EfumLu/64d3GgrN3
-         CG6fOSYrvw5u3Ym2SrlDt3oqQpZ9h/ghVCJ+0w02/Ev8JSbRjBWsIkwKtCUba2bm9NPP
-         /6ywP8iSL8s7wNsil22g4RdI9mLa2OQSqyMQLDN8sNg9Q8vL87wHflp2b68wuYagKAEs
-         jCgW8rTuZ1bj06m5H8/T0EiuKig/59TRRbeKNOONfVQnkLd9zVimmwUsBbqJtsw7qtGX
-         r8oQ==
-X-Gm-Message-State: AOJu0YwwLYjtfkdKMy8XUWyWiukJoIho5iKA4Psfr2te/tdzYNup2mAK
-	0e4aaCGOidbselPRNBqkNys=
-X-Google-Smtp-Source: AGHT+IEkJDNpkM5EzOkYJcQ3oxV5ZV3nPBZfSSeW1HAIQIfme0McmXAezwp9oz3Ir5CrRRUmZSL72A==
-X-Received: by 2002:a05:6808:384f:b0:3ba:175:f190 with SMTP id ej15-20020a056808384f00b003ba0175f190mr21493280oib.53.1702734222737;
-        Sat, 16 Dec 2023 05:43:42 -0800 (PST)
+        bh=mSpSWzn4652t77dC2if+1ZPCUxLXIz50XDP/r03Pb+U=;
+        b=Kxc3wBMVgK/zfvnjrWkuCZDFLunnQ+fMGfTPt+AbA5Kicm2pFSIE8+Yl4sbD7ih1n4
+         Xk8zAjeycNtMR5MkXKq3w8SfgtETbfOlHgp5bmI4JjsxKy+UpLIcsWm+nVzWRVdsQ250
+         WrftPJFNyAKjoAJwPOgkZ8t2s+BiBXeV3PSF86h75GlUmygOVQFQbxcNDT1VxBNFjJ2R
+         TIuq9mZ5C9LMFQaZ2aENthOe1FXV9MTr8H5s2rVUMuzX4bCWedkKTdOSioLhmq5jR/vw
+         n5s1knwVNGHRqNvmg0wNfeJl95Py9O5cBOW7O4bv68RwiJc/seiypyA/0iqqo7GpcQTP
+         OA5Q==
+X-Gm-Message-State: AOJu0YyjW4BtBUTTObPQ1XJWyLn76NpVZoOTNe3q0ViwgsTGur6slRML
+	X8LSuuKUZaQKm6NRZE1Wu1tiDvIKlBs=
+X-Google-Smtp-Source: AGHT+IEXgq5oEUwnAtybLyjE6VtQ/SWrDJLNuWsTXXJoIvXOVDAykBdwexRdEdtoITO0ovmL8mYCTg==
+X-Received: by 2002:a05:6808:3c89:b0:3b8:94c0:87fb with SMTP id gs9-20020a0568083c8900b003b894c087fbmr17350871oib.9.1702734226763;
+        Sat, 16 Dec 2023 05:43:46 -0800 (PST)
 Received: from wheely.local0.net (203-221-42-190.tpgi.com.au. [203.221.42.190])
-        by smtp.gmail.com with ESMTPSA id w2-20020a654102000000b005c65ed23b65sm12663631pgp.94.2023.12.16.05.43.39
+        by smtp.gmail.com with ESMTPSA id w2-20020a654102000000b005c65ed23b65sm12663631pgp.94.2023.12.16.05.43.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Dec 2023 05:43:42 -0800 (PST)
+        Sat, 16 Dec 2023 05:43:46 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm@vger.kernel.org
-Subject: [kvm-unit-tests PATCH v5 06/29] powerpc: Quiet QEMU TCG pseries capability warnings
-Date: Sat, 16 Dec 2023 23:42:33 +1000
-Message-ID: <20231216134257.1743345-7-npiggin@gmail.com>
+Subject: [kvm-unit-tests PATCH v5 07/29] powerpc: Add a migration stress tester
+Date: Sat, 16 Dec 2023 23:42:34 +1000
+Message-ID: <20231216134257.1743345-8-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231216134257.1743345-1-npiggin@gmail.com>
 References: <20231216134257.1743345-1-npiggin@gmail.com>
@@ -82,29 +82,98 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, Nico Bo
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Quieten this console spam.
+This performs 1000 migrations a tight loop to flush out simple issues
+in the multiple-migration code.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- powerpc/run | 5 +++++
- 1 file changed, 5 insertions(+)
+ powerpc/Makefile.common |  1 +
+ powerpc/migrate.c       | 64 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 65 insertions(+)
+ create mode 100644 powerpc/migrate.c
 
-diff --git a/powerpc/run b/powerpc/run
-index b353169f..e469f1eb 100755
---- a/powerpc/run
-+++ b/powerpc/run
-@@ -21,6 +21,11 @@ fi
+diff --git a/powerpc/Makefile.common b/powerpc/Makefile.common
+index f8f47490..a7af225b 100644
+--- a/powerpc/Makefile.common
++++ b/powerpc/Makefile.common
+@@ -5,6 +5,7 @@
+ #
  
- M='-machine pseries'
- M+=",accel=$ACCEL$ACCEL_PROPS"
+ tests-common = \
++	$(TEST_DIR)/migrate.elf \
+ 	$(TEST_DIR)/selftest.elf \
+ 	$(TEST_DIR)/spapr_hcall.elf \
+ 	$(TEST_DIR)/rtas.elf \
+diff --git a/powerpc/migrate.c b/powerpc/migrate.c
+new file mode 100644
+index 00000000..a9f98c9f
+--- /dev/null
++++ b/powerpc/migrate.c
+@@ -0,0 +1,64 @@
++/*
++ * Stress Test Migration
++ *
++ * This work is licensed under the terms of the GNU LGPL, version 2.
++ */
++#include <libcflat.h>
++#include <util.h>
++#include <migrate.h>
++#include <alloc.h>
++#include <asm/handlers.h>
++#include <devicetree.h>
++#include <asm/hcall.h>
++#include <asm/processor.h>
++#include <asm/barrier.h>
 +
-+if [[ "$ACCEL" == "tcg" ]] ; then
-+	M+=",cap-cfpc=broken,cap-sbbc=broken,cap-ibs=broken,cap-ccf-assist=off"
-+fi
++static bool do_migrate = false;
 +
- command="$qemu -nodefaults $M -bios $FIRMWARE"
- command+=" -display none -serial stdio -kernel"
- command="$(migration_cmd) $(timeout_cmd) $command"
++static void test_migration(int argc, char **argv)
++{
++	int i;
++
++	for (i = 0; i < 1000; i++) {
++		if (do_migrate)
++			migrate();
++	}
++}
++
++struct {
++	const char *name;
++	void (*func)(int argc, char **argv);
++} hctests[] = {
++	{ "migration", test_migration },
++	{ NULL, NULL }
++};
++
++int main(int argc, char **argv)
++{
++	bool all;
++	int i;
++
++	all = argc == 1 || !strcmp(argv[1], "all");
++
++	for (i = 1; i < argc; i++) {
++		if (!strcmp(argv[i], "-w")) {
++			do_migrate = true;
++			if (!all && argc == 2)
++				all = true;
++		}
++	}
++
++	report_prefix_push("migration");
++
++	for (i = 0; hctests[i].name != NULL; i++) {
++		if (all || strcmp(argv[1], hctests[i].name) == 0) {
++			report_prefix_push(hctests[i].name);
++			hctests[i].func(argc, argv);
++			report_prefix_pop();
++		}
++	}
++
++	report_prefix_pop();
++
++	return report_summary();
++}
 -- 
 2.42.0
 
