@@ -2,87 +2,140 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC030815E3F
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Dec 2023 09:42:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE587815E53
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Dec 2023 10:32:47 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tjRZ+alx;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=T6uGIJXT;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4StGff43y1z3cT8
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Dec 2023 19:42:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4StHms3Vtmz3cQj
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Dec 2023 20:32:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tjRZ+alx;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=T6uGIJXT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adityag@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:261c::600; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20600.outbound.protection.outlook.com [IPv6:2a01:111:f403:261c::600])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4StGdk5f6Pz30Dw
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Dec 2023 19:41:30 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3BH6qS4W006353
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Dec 2023 08:41:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=+egVyB4bZBK/iN9BfW8b79OUB0mZpNri3o8ABEyjh1c=;
- b=tjRZ+alxRSDC7Q9XNTFfEh6HPHcNX9/mZ0Fv6GYrZP2PSk1lM7i4ZIBNZqlWV2vBqzJn
- ZdCCfle0csggVQIHTDtWm+avtKAwGJ5TYhXmrE1DLvPuQthihLO02opgDTQ1F7NcK/t2
- 96LCAcW4fWDQpjnGwqwjkCgeEUmQiEv6ixAL9MoRzDKqxapE+obkPfIytb6O1kmWu9wv
- 9OBVs+i5Ksy1LWy0CeaYRQHqpxmDnpE6yOYE3ug6j8FMbksqrZa7A0DxV09JbmRls+dj
- XHDSpjxgP+TVjeoJ2IHM1EKf/OO5rKmaV+w9islUjth+hWxEmNL+EnbdSPPpuFDOJwg3 3g== 
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3v1v3gt31v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Dec 2023 08:41:25 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3BH5ANB0010840
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Dec 2023 08:41:24 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3v1q7n1pq2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Dec 2023 08:41:24 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3BH8fK7G45023864
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 17 Dec 2023 08:41:21 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CEFC82004D;
-	Sun, 17 Dec 2023 08:41:20 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5CDC720040;
-	Sun, 17 Dec 2023 08:41:19 +0000 (GMT)
-Received: from [9.179.3.52] (unknown [9.179.3.52])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 17 Dec 2023 08:41:19 +0000 (GMT)
-Message-ID: <dfa27ef9-e6f1-4701-ba66-905280b4149f@linux.ibm.com>
-Date: Sun, 17 Dec 2023 14:11:17 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4StHm045R3z301f
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Dec 2023 20:31:58 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=S7xQv5KWuv1oT3aGZETXuH5xgW0nr3NmcKK1OCgyt95W97VAleX+TP6f6HfGesjF420amULWT+ha6K/cwUwtkgZPDS/o+xtybiRJ42O+usY0j66fmp4Bx8xk6F6g6nMH2GDG2gs0EuRGOa/ARDja7zD4ePlJVa0VjJNk7uNLwiYs+/5ZbIetC+VpwSVSwxOoGnvQVQUgSmBbEsER6wsWzMwnD6O87BGW/JdK+iL003E2mkMNYES1DmsRBMDFXii+F4UkURZvSB3PI+S+UD78pzoid5zY9rYj/SMwZwTNGLjCyVR8LTDWX/ybYdCj4vVR4b1dCJvY0wdp64pn1tjKtA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FThNnBKAeB+MuyRm2Jp3fhB2WVppw/4x0m7daFRLDJs=;
+ b=BSXtFHzBX/xJT7TKzJ7BLlZblvacjNGj3iKJu+gg3hbkO5eQVDwct8Rdgr8VHI8EmE3U5nwZckdf/wDUEWn3VAcCfO8o9VRH5Gjdq6vjbj+eknuKsaRH/VbdtPU/+nUUlOT4iexpvDc9D/HZc308toIK8vXNCwlUlDjBns0knA8Tw4l2VXlnmf7M6fiVpe0XNfUm0srmFfEE/5THrwP2Zg3ZbMtEVo53jevMa4952JzT3VeQAkFvfd4489CQ1uR27B74s/G8EDY2omgmbXWHd/NVybDmDovx2QSmEXIUdXnjSbH9GSu0rYwPw1B1KAea+u8fkciriSTDgcWKe+8Bmg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FThNnBKAeB+MuyRm2Jp3fhB2WVppw/4x0m7daFRLDJs=;
+ b=T6uGIJXTRwAzxAu2iNsI8OLmv3MBGyMoc4S1O0m4p22CputHQAP/dWegWg5fMazQnUxptz5hUrvr8mb+JVb5WG3JUAYTB7s59HIhAr6vY40IVli9GQ17cpaOgXK/5eaAxh9GD0x5D3xLigcumN3ttTV9KUVg2zTrIkQ9SCjFgKQM79kVTYbddU/3A34a6c9T83Pro7qIkfQC+Wy2FgbVOWbg5hjbvannSlCmcvDckirkQCwqQmm9sa9svgxCKGmidyn0RjhqqcWntinW0oh5snZPOEjBmaceSYPQusG7mlfulbRFqNtlynWGwt/cnjqzmZHiF5eb59Feb1vLO/L8zQ==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by PAZP264MB3168.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1f2::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.37; Sun, 17 Dec
+ 2023 09:31:33 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::f788:32b4:1c5e:f264]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::f788:32b4:1c5e:f264%7]) with mapi id 15.20.7091.034; Sun, 17 Dec 2023
+ 09:31:33 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: George Stark <gnstark@salutedevices.com>, Waiman Long
+	<longman@redhat.com>, "andy.shevchenko@gmail.com"
+	<andy.shevchenko@gmail.com>, "pavel@ucw.cz" <pavel@ucw.cz>, "lee@kernel.org"
+	<lee@kernel.org>, "vadimp@nvidia.com" <vadimp@nvidia.com>,
+	"mpe@ellerman.id.au" <mpe@ellerman.id.au>, "npiggin@gmail.com"
+	<npiggin@gmail.com>, "hdegoede@redhat.com" <hdegoede@redhat.com>,
+	"mazziesaccount@gmail.com" <mazziesaccount@gmail.com>, "peterz@infradead.org"
+	<peterz@infradead.org>, "mingo@redhat.com" <mingo@redhat.com>,
+	"will@kernel.org" <will@kernel.org>, "boqun.feng@gmail.com"
+	<boqun.feng@gmail.com>, "nikitos.tr@gmail.com" <nikitos.tr@gmail.com>
+Subject: Re: [PATCH v4 02/10] locking: introduce devm_mutex_init
+Thread-Topic: [PATCH v4 02/10] locking: introduce devm_mutex_init
+Thread-Index:  AQHaLrQSLTXRy4mOS0OgHh/wjtvn+LCpHvQAgAASE4CAACAsAIAAhXeAgALWTACAAI1EgA==
+Date: Sun, 17 Dec 2023 09:31:32 +0000
+Message-ID: <0a81e53d-f837-486c-8b0b-7a3c62853be7@csgroup.eu>
+References: <20231214173614.2820929-1-gnstark@salutedevices.com>
+ <20231214173614.2820929-3-gnstark@salutedevices.com>
+ <5c10f66c-3fd8-4861-994b-13e71c24f10a@redhat.com>
+ <b158ca2b-7300-4ad0-82b8-e1442d267734@csgroup.eu>
+ <300d2131-87ef-48c1-b162-dcef0d8d5722@redhat.com>
+ <5ef8a83a-5dfd-4038-851e-c730d5f1b6f3@csgroup.eu>
+ <1e5907f2-c794-4ee2-8abc-b45831cca5bb@salutedevices.com>
+In-Reply-To: <1e5907f2-c794-4ee2-8abc-b45831cca5bb@salutedevices.com>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla Thunderbird
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PAZP264MB3168:EE_
+x-ms-office365-filtering-correlation-id: ee9ca7be-016b-46b8-fafd-08dbfee2f4fb
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  W+cyZRvWpEsc+YGXx1FIsfbavNLaOukeCdebFJFzTLrLfNFW9Uid5Pp1dZEVoo91w8enlHmK/hzSDbu2aevkuKQu38605Rk/da1fPg5D/iUxsKHMYr1P7QOw3BBxbmdnxJF0HnlR9q7wpOSC8NgU464VTV9JZ6PKmPeCMvFpLh4KyoiCWkFAIsrVFdi1BbZHFZD8bkB9J9ualB6hH5FFE05h9irgLTmDHsQNCubdYuImbdcF2P5olCsTy5bIQICTTAX+SSJmYWCKPOtyoM213VEoQvsQaVggS4rVpxDFuS38eBIfx/P+kyF3mTn6ZOC/lOBdvV3avMa3Wy9ndtyFQiP6Vc7sVIVqvH1hARk60lOxFHjQkJl1rHqy7DAiWmo4siXBSRiEVl+5Yq8Xy458NOO974Dm4JgNy7L++J+HbcVROzYWi3W2ljUKYomD6uqizyAMP5NEec0CCkx5DUXKhgFCtysSr2Rf0Mf9tSMBF2psU0Eo6ALyXk2orESxzCmnLAE987mrDQ8dsrQb5pZtzaDe3WA5FGU5A7IYebG3KOUZIxo6rtkzKZjLxBOBKixn1rZKPOO+Wq5CeJbbgyGYC1P6Ef3n6BQkDg048mEaQqeVBpBMypjztkrvzaHZHqRy+4cwLAbG8Tl4JFXvm9bEneUCnQBC2wce09inG4mXq4iw8QoHFyxewiDelYUbH0YPunybEE/MEHFqdLPaKBs806BM/UwlpLguOZSyGWu0jO8=
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(136003)(346002)(376002)(366004)(396003)(39850400004)(230173577357003)(230273577357003)(230922051799003)(186009)(1800799012)(451199024)(64100799003)(36756003)(38070700009)(921008)(66556008)(316002)(83380400001)(66574015)(91956017)(110136005)(66946007)(66476007)(54906003)(64756008)(66446008)(76116006)(7416002)(38100700002)(2906002)(122000001)(8936002)(4326008)(8676002)(5660300002)(44832011)(71200400001)(53546011)(6506007)(6512007)(26005)(31686004)(966005)(6486002)(478600001)(2616005)(31696002)(41300700001)(86362001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?UGx0QkJRQ01CdDZLZ0puSWVEZ1V2WnBFK3N0L0kzS096MVpIeGVGbE05N0pn?=
+ =?utf-8?B?MndqNEg5enVEUCtsSm4wQ2twTmh2R29JL1lwdGhHVStpZEkvd3VqaVdoVVJP?=
+ =?utf-8?B?dVVXR2drVVdJaUE1U0M3VFZsMmNsU0dQdTVSRmZVaU5GUElXS25yYVN3SlEx?=
+ =?utf-8?B?cDdHNnBEdXY3ZVhXSytEaUFYb3M0dDVxb0ZmRUplcDJ2Y1F3SE1PVVpxNnBJ?=
+ =?utf-8?B?OTgzZmVqTklYWTFsaTIyQWZLRHZFR2tUR2JubW9hdWZlQ3hRZTExaThkM3Iw?=
+ =?utf-8?B?WVdaR2N4K3o4SUJRRFRINFp3S2QwNEZJMldHbDhYdTNqTVppc2JkY1JqVDRZ?=
+ =?utf-8?B?VXhJdzdraHU2eitScG10MlNnMHJQZ0pNaUFwNTcvOFB2ZzlDZDA3Z0dyS2V3?=
+ =?utf-8?B?WCtEalU3S1BsaHVrQzBZNU9mZmY0dVZHMEpuMldFYTdsbFZJUlM3U2JjeXdF?=
+ =?utf-8?B?cEN4bzM4aUZOQnN3eGx4RHMyOXJWUi9JYkxYRmlCYm1EVGYyODF2Vlg2cEZh?=
+ =?utf-8?B?RGVHRVpSV05FbzZHakh6Q3hER1hJTDNNR0xMTlpiNkphcGJPRjJYN2lKU0t3?=
+ =?utf-8?B?QXA0NDZCRjR4ZzJPcVBBbW5nM01HMndhbHd2TjJ6STdadFRSd2l0Z3g3QjFJ?=
+ =?utf-8?B?Ni9LODM2eVdIQXdNWnVGZXk5M0tGVHVEM0hBTUZQdE9hV291UDhMYVFrakZ6?=
+ =?utf-8?B?ZE50eCtRbUpLMENkZVZwTDM5NFRrb2h2WmV5VmNqT2R0Ylp5aElEdm8vcUll?=
+ =?utf-8?B?am45NDB0a0g1MTZTbzRxOXNZOE5QcjhaYWRNZ2ljSnA0VnIrZW5JVHY5QXor?=
+ =?utf-8?B?LzE5a1RUaHlxeXFoQ2tlWmd6a0NTQWFXMElSWkhIME5EKzJQNGRBMXVpQ1Ix?=
+ =?utf-8?B?SmROS2Q5UWliWmp0R0x0ZE00eVU2QmM5ZUc0MXp0MnR1Y25QSloxSnp0U09u?=
+ =?utf-8?B?TGRpVnFUZTc2Wi96bVM1ZUcxWGd1bUQ0dHRLbDVxQzJmTEJvTTlLYzFRN3VM?=
+ =?utf-8?B?cmlnVGlvMlhqTzZzTjRPNnZpaG04SkhIdWJ5ZFhQMS8vNCt6Z3lRZms0aFFQ?=
+ =?utf-8?B?YXJNcUxpUVloVlhoSzFscThMSkQ2MWk5ditFZjlCd2ZNV1F0S1V4cXJ6OFpU?=
+ =?utf-8?B?dWM1K3pTelNiUW1hcWxmODVIQmc1TjB2TytaMzk3bE5QR1NsYkhjMGt0c1BV?=
+ =?utf-8?B?OFp6SElKMmtvckgzSUJZSSthekFDNFJuQTFtdThDaWJJK0lhVjAxNVZUbXZC?=
+ =?utf-8?B?ZE9vY05GemZzQnp2UXgxNi9GVmFkeXYzYWFIUHRUSU9GU3o5cTdzQXBtd2ZH?=
+ =?utf-8?B?eFNXMjVYcGpUVEVRR0M1L0VCYm5OUmdRdVN5blp1azFvdlBnK3Y5NGtzYmJr?=
+ =?utf-8?B?SXBQZ0pKSDBWVlVBcUZ0L1g1S0g4UEJicWhWa3ZTZFg4QVBWTGRybE5PNk0w?=
+ =?utf-8?B?eTBYZFpac3NqSEN3dGREUmtxdUR2aDRYbXlrYURwVXArcmxkdVhBdlhnRmJr?=
+ =?utf-8?B?dHF4UG1RK055TitONmZVVzVmVytyeEs4UHpQYzFFSHlUbk1hWlFxWWxqTWFM?=
+ =?utf-8?B?ZnM1QXd1T280a1VXYmFTUURha0FkditXRWJZMmVvMnNBdyswTHJRYXYyM0Ur?=
+ =?utf-8?B?VjBDeWhVdEhsQVQ4cHdMS2tzaWdXRkJkZ2xQeEFoOTgxNUxNZjBXb1QzeitE?=
+ =?utf-8?B?dmkxQ2duWk1tWm91MmtqSGl1bldabGdpd0tjVDFacjJOcGxOMXNWNmp6Z2xp?=
+ =?utf-8?B?dnJCT2RZTkdKNHh0YnJBaDhKZjRBNGgyemFMQWNFYzZ3bDV2VXhmV1hxQ0VL?=
+ =?utf-8?B?L1RXMUV2aHM2SVpCNThRYkZNNStySzd6VEZRekJhN0hTZFJXYi9BN1oyNXZZ?=
+ =?utf-8?B?SUJkMitHTmthaXpnd1dDdXJPOGc2M2l2Q3Q4ejdxTzF2ZkN4Q3lCMDlGM0ZM?=
+ =?utf-8?B?dzFOWFQ2TUZialZ0R093allmUktudEJkTG5qeURXWlBGVVJMamJuMnd3MmdV?=
+ =?utf-8?B?emxQajU0bVlQSTM1T2ZaOEMvNXVxY3d6N2pPVjBnQjlTQngzbzBHVEx1L2Z0?=
+ =?utf-8?B?TWJTYVVENnNTV3lRVnMzK1VVSWJrRGszR2Y5ay84UXBUQ1lQVWdsWGo3WFRL?=
+ =?utf-8?Q?jHOJV5z48VyEi46SlzMqsSxNx?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E538E0EB29CBE44AA2AEF4760B9F4979@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/3] powerpc/pseries/fadump: add support for multiple
- boot memory regions
-Content-Language: en-US
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Sourabh Jain <sourabhjain@linux.ibm.com>
-References: <20231205201835.388030-1-hbathini@linux.ibm.com>
- <20231205201835.388030-2-hbathini@linux.ibm.com>
-From: Aditya Gupta <adityag@linux.ibm.com>
-In-Reply-To: <20231205201835.388030-2-hbathini@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: GXQEhNc-A6D_7_P_VfGcw_hFC32A00Su
-X-Proofpoint-ORIG-GUID: GXQEhNc-A6D_7_P_VfGcw_hFC32A00Su
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-16_19,2023-12-14_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- malwarescore=0 suspectscore=0 phishscore=0 priorityscore=1501 adultscore=0
- mlxscore=0 mlxlogscore=999 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2312170063
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: ee9ca7be-016b-46b8-fafd-08dbfee2f4fb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Dec 2023 09:31:32.9159
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: L+c04SfoEENiLzemP8tqxSSRgXfsZW/xbBuSdGdYl9AiYq8ElxocQOmpiILM10ykEjv9lLh7bKyThfutJ2D8LrdPB497zhQcEh1cYjdURtw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAZP264MB3168
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,573 +147,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>
+Cc: "kernel@salutedevices.com" <kernel@salutedevices.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi sourabh,
-
-On 06/12/23 01:48, Hari Bathini wrote:
-> From: Sourabh Jain <sourabhjain@linux.ibm.com>
->
-> Currently, fadump on pseries assumes a single boot memory region even
-> though f/w supports more than one boot memory region. Add support for
-> more boot memory regions to make the implementation flexible for any
-> enhancements that introduce other region types. For this, rtas memory
-> structure for fadump is updated to have multiple boot memory regions
-> instead of just one. Additionally, methods responsible for creating
-> the fadump memory structure during both the first and second kernel
-> boot have been modified to take these multiple boot memory regions
-> into account. Also, a new callback has been added to the fadump_ops
-> structure to get the maximum boot memory regions supported by the
-> platform.
->
-> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-> ---
->   arch/powerpc/include/asm/fadump-internal.h   |   2 +-
->   arch/powerpc/kernel/fadump.c                 |  27 +-
->   arch/powerpc/platforms/powernv/opal-fadump.c |   8 +
->   arch/powerpc/platforms/pseries/rtas-fadump.c | 258 ++++++++++++-------
->   arch/powerpc/platforms/pseries/rtas-fadump.h |  26 +-
->   5 files changed, 199 insertions(+), 122 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/fadump-internal.h b/arch/powerpc/include/asm/fadump-internal.h
-> index 27f9e11eda28..b3956c400519 100644
-> --- a/arch/powerpc/include/asm/fadump-internal.h
-> +++ b/arch/powerpc/include/asm/fadump-internal.h
-> @@ -129,6 +129,7 @@ struct fadump_ops {
->   				      struct seq_file *m);
->   	void	(*fadump_trigger)(struct fadump_crash_info_header *fdh,
->   				  const char *msg);
-> +	int	(*fadump_max_boot_mem_rgns)(void);
->   };
->   
->   /* Helper functions */
-> @@ -136,7 +137,6 @@ s32 __init fadump_setup_cpu_notes_buf(u32 num_cpus);
->   void fadump_free_cpu_notes_buf(void);
->   u32 *__init fadump_regs_to_elf_notes(u32 *buf, struct pt_regs *regs);
->   void __init fadump_update_elfcore_header(char *bufp);
-> -bool is_fadump_boot_mem_contiguous(void);
->   bool is_fadump_reserved_mem_contiguous(void);
->   
->   #else /* !CONFIG_PRESERVE_FA_DUMP */
-> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-> index d14eda1e8589..757681658dda 100644
-> --- a/arch/powerpc/kernel/fadump.c
-> +++ b/arch/powerpc/kernel/fadump.c
-> @@ -222,28 +222,6 @@ static bool is_fadump_mem_area_contiguous(u64 d_start, u64 d_end)
->   	return ret;
->   }
->   
-> -/*
-> - * Returns true, if there are no holes in boot memory area,
-> - * false otherwise.
-> - */
-> -bool is_fadump_boot_mem_contiguous(void)
-> -{
-> -	unsigned long d_start, d_end;
-> -	bool ret = false;
-> -	int i;
-> -
-> -	for (i = 0; i < fw_dump.boot_mem_regs_cnt; i++) {
-> -		d_start = fw_dump.boot_mem_addr[i];
-> -		d_end   = d_start + fw_dump.boot_mem_sz[i];
-> -
-> -		ret = is_fadump_mem_area_contiguous(d_start, d_end);
-> -		if (!ret)
-> -			break;
-> -	}
-> -
-> -	return ret;
-> -}
-> -
->   /*
->    * Returns true, if there are no holes in reserved memory area,
->    * false otherwise.
-> @@ -389,10 +367,11 @@ static unsigned long __init get_fadump_area_size(void)
->   static int __init add_boot_mem_region(unsigned long rstart,
->   				      unsigned long rsize)
->   {
-> +	int max_boot_mem_rgns = fw_dump.ops->fadump_max_boot_mem_rgns();
->   	int i = fw_dump.boot_mem_regs_cnt++;
->   
-> -	if (fw_dump.boot_mem_regs_cnt > FADUMP_MAX_MEM_REGS) {
-> -		fw_dump.boot_mem_regs_cnt = FADUMP_MAX_MEM_REGS;
-> +	if (fw_dump.boot_mem_regs_cnt > max_boot_mem_rgns) {
-> +		fw_dump.boot_mem_regs_cnt = max_boot_mem_rgns;
->   		return 0;
->   	}
->   
-> diff --git a/arch/powerpc/platforms/powernv/opal-fadump.c b/arch/powerpc/platforms/powernv/opal-fadump.c
-> index 964f464b1b0e..fa26c21a08d9 100644
-> --- a/arch/powerpc/platforms/powernv/opal-fadump.c
-> +++ b/arch/powerpc/platforms/powernv/opal-fadump.c
-> @@ -615,6 +615,13 @@ static void opal_fadump_trigger(struct fadump_crash_info_header *fdh,
->   		pr_emerg("No backend support for MPIPL!\n");
->   }
->   
-> +/* FADUMP_MAX_MEM_REGS or lower */
-> +static int opal_fadump_max_boot_mem_rgns(void)
-> +{
-> +	return FADUMP_MAX_MEM_REGS;
-> +
-> +}
-> +
->   static struct fadump_ops opal_fadump_ops = {
->   	.fadump_init_mem_struct		= opal_fadump_init_mem_struct,
->   	.fadump_get_metadata_size	= opal_fadump_get_metadata_size,
-> @@ -627,6 +634,7 @@ static struct fadump_ops opal_fadump_ops = {
->   	.fadump_process			= opal_fadump_process,
->   	.fadump_region_show		= opal_fadump_region_show,
->   	.fadump_trigger			= opal_fadump_trigger,
-> +	.fadump_max_boot_mem_rgns	= opal_fadump_max_boot_mem_rgns,
->   };
->   
->   void __init opal_fadump_dt_scan(struct fw_dump *fadump_conf, u64 node)
-> diff --git a/arch/powerpc/platforms/pseries/rtas-fadump.c b/arch/powerpc/platforms/pseries/rtas-fadump.c
-> index b5853e9fcc3c..1b05b4cefdfd 100644
-> --- a/arch/powerpc/platforms/pseries/rtas-fadump.c
-> +++ b/arch/powerpc/platforms/pseries/rtas-fadump.c
-> @@ -29,9 +29,6 @@ static const struct rtas_fadump_mem_struct *fdm_active;
->   static void rtas_fadump_update_config(struct fw_dump *fadump_conf,
->   				      const struct rtas_fadump_mem_struct *fdm)
->   {
-> -	fadump_conf->boot_mem_dest_addr =
-> -		be64_to_cpu(fdm->rmr_region.destination_address);
-> -
->   	fadump_conf->fadumphdr_addr = (fadump_conf->boot_mem_dest_addr +
->   				       fadump_conf->boot_memory_size);
->   }
-> @@ -43,20 +40,52 @@ static void rtas_fadump_update_config(struct fw_dump *fadump_conf,
->   static void __init rtas_fadump_get_config(struct fw_dump *fadump_conf,
->   				   const struct rtas_fadump_mem_struct *fdm)
->   {
-> -	fadump_conf->boot_mem_addr[0] =
-> -		be64_to_cpu(fdm->rmr_region.source_address);
-> -	fadump_conf->boot_mem_sz[0] = be64_to_cpu(fdm->rmr_region.source_len);
-> -	fadump_conf->boot_memory_size = fadump_conf->boot_mem_sz[0];
-> +	unsigned long base, size, last_end, hole_size;
->   
-> -	fadump_conf->boot_mem_top = fadump_conf->boot_memory_size;
-> -	fadump_conf->boot_mem_regs_cnt = 1;
-> +	last_end = 0;
-> +	hole_size = 0;
-> +	fadump_conf->boot_memory_size = 0;
-> +	fadump_conf->boot_mem_regs_cnt = 0;
-> +	pr_debug("Boot memory regions:\n");
-> +	for (int i = 0; i < be16_to_cpu(fdm->header.dump_num_sections); i++) {
-> +		int type = be16_to_cpu(fdm->rgn[i].source_data_type);
->   
-> -	/*
-> -	 * Start address of reserve dump area (permanent reservation) for
-> -	 * re-registering FADump after dump capture.
-> -	 */
-> -	fadump_conf->reserve_dump_area_start =
-> -		be64_to_cpu(fdm->cpu_state_data.destination_address);
-> +		switch (type) {
-> +		case RTAS_FADUMP_CPU_STATE_DATA:
-> +			u64 addr = be64_to_cpu(fdm->rgn[i].destination_address);
-
-This caused a compiler error on my system:
-
-arch/powerpc/platforms/pseries/rtas-fadump.c: In function 
-‘rtas_fadump_get_config’:
-arch/powerpc/platforms/pseries/rtas-fadump.c:56:4: error: a label can 
-only be part of a statement and a declaration is not a statement
-     u64 addr = be64_to_cpu(fdm->rgn[i].destination_address);
-     ^~~
-
-Probably the 'addr' local variable needs to be in it's own local scope.
-
-Adding the case block in brackets {} solved the error for me.
-Rest of the code looks good to me. I will also try to test the patch 
-series later.
-
-
-Thanks,
-
-Aditya Gupta
-
-> +
-> +			fadump_conf->cpu_state_dest_vaddr = (u64)__va(addr);
-> +			/*
-> +			 * Start address of reserve dump area (permanent reservation) for
-> +			 * re-registering FADump after dump capture.
-> +			 */
-> +			fadump_conf->reserve_dump_area_start = addr;
-> +			break;
-> +		case RTAS_FADUMP_HPTE_REGION:
-> +			/* Not processed currently. */
-> +			break;
-> +		case RTAS_FADUMP_REAL_MODE_REGION:
-> +			base = be64_to_cpu(fdm->rgn[i].source_address);
-> +			size = be64_to_cpu(fdm->rgn[i].source_len);
-> +			pr_debug("\t[%03d] base: 0x%lx, size: 0x%lx\n", i, base, size);
-> +			if (!base) {
-> +				fadump_conf->boot_mem_dest_addr =
-> +					be64_to_cpu(fdm->rgn[i].destination_address);
-> +			}
-> +
-> +			fadump_conf->boot_mem_addr[fadump_conf->boot_mem_regs_cnt] = base;
-> +			fadump_conf->boot_mem_sz[fadump_conf->boot_mem_regs_cnt] = size;
-> +			fadump_conf->boot_memory_size += size;
-> +			hole_size += (base - last_end);
-> +			last_end = base + size;
-> +			fadump_conf->boot_mem_regs_cnt++;
-> +			break;
-> +		default:
-> +			pr_warn("Section type %d unsupported on this kernel. Ignoring!\n", type);
-> +			break;
-> +		}
-> +	}
-> +	fadump_conf->boot_mem_top = fadump_conf->boot_memory_size + hole_size;
->   
->   	rtas_fadump_update_config(fadump_conf, fdm);
->   }
-> @@ -64,16 +93,15 @@ static void __init rtas_fadump_get_config(struct fw_dump *fadump_conf,
->   static u64 rtas_fadump_init_mem_struct(struct fw_dump *fadump_conf)
->   {
->   	u64 addr = fadump_conf->reserve_dump_area_start;
-> +	u16 sec_cnt = 0;
->   
->   	memset(&fdm, 0, sizeof(struct rtas_fadump_mem_struct));
->   	addr = addr & PAGE_MASK;
->   
->   	fdm.header.dump_format_version = cpu_to_be32(0x00000001);
-> -	fdm.header.dump_num_sections = cpu_to_be16(3);
->   	fdm.header.dump_status_flag = 0;
->   	fdm.header.offset_first_dump_section =
-> -		cpu_to_be32((u32)offsetof(struct rtas_fadump_mem_struct,
-> -					  cpu_state_data));
-> +		cpu_to_be32((u32)offsetof(struct rtas_fadump_mem_struct, rgn));
->   
->   	/*
->   	 * Fields for disk dump option.
-> @@ -89,25 +117,22 @@ static u64 rtas_fadump_init_mem_struct(struct fw_dump *fadump_conf)
->   
->   	/* Kernel dump sections */
->   	/* cpu state data section. */
-> -	fdm.cpu_state_data.request_flag =
-> -		cpu_to_be32(RTAS_FADUMP_REQUEST_FLAG);
-> -	fdm.cpu_state_data.source_data_type =
-> -		cpu_to_be16(RTAS_FADUMP_CPU_STATE_DATA);
-> -	fdm.cpu_state_data.source_address = 0;
-> -	fdm.cpu_state_data.source_len =
-> -		cpu_to_be64(fadump_conf->cpu_state_data_size);
-> -	fdm.cpu_state_data.destination_address = cpu_to_be64(addr);
-> +	fdm.rgn[sec_cnt].request_flag = cpu_to_be32(RTAS_FADUMP_REQUEST_FLAG);
-> +	fdm.rgn[sec_cnt].source_data_type = cpu_to_be16(RTAS_FADUMP_CPU_STATE_DATA);
-> +	fdm.rgn[sec_cnt].source_address = 0;
-> +	fdm.rgn[sec_cnt].source_len = cpu_to_be64(fadump_conf->cpu_state_data_size);
-> +	fdm.rgn[sec_cnt].destination_address = cpu_to_be64(addr);
->   	addr += fadump_conf->cpu_state_data_size;
-> +	sec_cnt++;
->   
->   	/* hpte region section */
-> -	fdm.hpte_region.request_flag = cpu_to_be32(RTAS_FADUMP_REQUEST_FLAG);
-> -	fdm.hpte_region.source_data_type =
-> -		cpu_to_be16(RTAS_FADUMP_HPTE_REGION);
-> -	fdm.hpte_region.source_address = 0;
-> -	fdm.hpte_region.source_len =
-> -		cpu_to_be64(fadump_conf->hpte_region_size);
-> -	fdm.hpte_region.destination_address = cpu_to_be64(addr);
-> +	fdm.rgn[sec_cnt].request_flag = cpu_to_be32(RTAS_FADUMP_REQUEST_FLAG);
-> +	fdm.rgn[sec_cnt].source_data_type = cpu_to_be16(RTAS_FADUMP_HPTE_REGION);
-> +	fdm.rgn[sec_cnt].source_address = 0;
-> +	fdm.rgn[sec_cnt].source_len = cpu_to_be64(fadump_conf->hpte_region_size);
-> +	fdm.rgn[sec_cnt].destination_address = cpu_to_be64(addr);
->   	addr += fadump_conf->hpte_region_size;
-> +	sec_cnt++;
->   
->   	/*
->   	 * Align boot memory area destination address to page boundary to
-> @@ -115,15 +140,20 @@ static u64 rtas_fadump_init_mem_struct(struct fw_dump *fadump_conf)
->   	 */
->   	addr = PAGE_ALIGN(addr);
->   
-> -	/* RMA region section */
-> -	fdm.rmr_region.request_flag = cpu_to_be32(RTAS_FADUMP_REQUEST_FLAG);
-> -	fdm.rmr_region.source_data_type =
-> -		cpu_to_be16(RTAS_FADUMP_REAL_MODE_REGION);
-> -	fdm.rmr_region.source_address = cpu_to_be64(0);
-> -	fdm.rmr_region.source_len = cpu_to_be64(fadump_conf->boot_memory_size);
-> -	fdm.rmr_region.destination_address = cpu_to_be64(addr);
-> -	addr += fadump_conf->boot_memory_size;
-> +	/* First boot memory region destination address */
-> +	fadump_conf->boot_mem_dest_addr = addr;
-> +	for (int i = 0; i < fadump_conf->boot_mem_regs_cnt; i++) {
-> +		/* Boot memory regions */
-> +		fdm.rgn[sec_cnt].request_flag = cpu_to_be32(RTAS_FADUMP_REQUEST_FLAG);
-> +		fdm.rgn[sec_cnt].source_data_type = cpu_to_be16(RTAS_FADUMP_REAL_MODE_REGION);
-> +		fdm.rgn[sec_cnt].source_address = cpu_to_be64(fadump_conf->boot_mem_addr[i]);
-> +		fdm.rgn[sec_cnt].source_len = cpu_to_be64(fadump_conf->boot_mem_sz[i]);
-> +		fdm.rgn[sec_cnt].destination_address = cpu_to_be64(addr);
-> +		addr += fadump_conf->boot_mem_sz[i];
-> +		sec_cnt++;
-> +	}
->   
-> +	fdm.header.dump_num_sections = cpu_to_be16(sec_cnt);
->   	rtas_fadump_update_config(fadump_conf, &fdm);
->   
->   	return addr;
-> @@ -136,14 +166,21 @@ static u64 rtas_fadump_get_bootmem_min(void)
->   
->   static int rtas_fadump_register(struct fw_dump *fadump_conf)
->   {
-> -	unsigned int wait_time;
-> +	unsigned int wait_time, fdm_size;
->   	int rc, err = -EIO;
->   
-> +	/*
-> +	 * Platform requires the exact size of the Dump Memory Structure.
-> +	 * Avoid including any unused rgns in the calculation, as this
-> +	 * could result in a parameter error (-3) from the platform.
-> +	 */
-> +	fdm_size = sizeof(struct rtas_fadump_section_header);
-> +	fdm_size += be16_to_cpu(fdm.header.dump_num_sections) * sizeof(struct rtas_fadump_section);
-> +
->   	/* TODO: Add upper time limit for the delay */
->   	do {
->   		rc =  rtas_call(fadump_conf->ibm_configure_kernel_dump, 3, 1,
-> -				NULL, FADUMP_REGISTER, &fdm,
-> -				sizeof(struct rtas_fadump_mem_struct));
-> +				NULL, FADUMP_REGISTER, &fdm, fdm_size);
->   
->   		wait_time = rtas_busy_delay_time(rc);
->   		if (wait_time)
-> @@ -161,9 +198,7 @@ static int rtas_fadump_register(struct fw_dump *fadump_conf)
->   		pr_err("Failed to register. Hardware Error(%d).\n", rc);
->   		break;
->   	case -3:
-> -		if (!is_fadump_boot_mem_contiguous())
-> -			pr_err("Can't have holes in boot memory area.\n");
-> -		else if (!is_fadump_reserved_mem_contiguous())
-> +		if (!is_fadump_reserved_mem_contiguous())
->   			pr_err("Can't have holes in reserved memory area.\n");
->   
->   		pr_err("Failed to register. Parameter Error(%d).\n", rc);
-> @@ -316,11 +351,9 @@ static int __init rtas_fadump_build_cpu_notes(struct fw_dump *fadump_conf)
->   	u32 num_cpus, *note_buf;
->   	int i, rc = 0, cpu = 0;
->   	struct pt_regs regs;
-> -	unsigned long addr;
->   	void *vaddr;
->   
-> -	addr = be64_to_cpu(fdm_active->cpu_state_data.destination_address);
-> -	vaddr = __va(addr);
-> +	vaddr = (void *)fadump_conf->cpu_state_dest_vaddr;
->   
->   	reg_header = vaddr;
->   	if (be64_to_cpu(reg_header->magic_number) !=
-> @@ -395,24 +428,48 @@ static int __init rtas_fadump_build_cpu_notes(struct fw_dump *fadump_conf)
->   static int __init rtas_fadump_process(struct fw_dump *fadump_conf)
->   {
->   	struct fadump_crash_info_header *fdh;
-> -	int rc = 0;
-> +	int i, rc = 0;
->   
->   	if (!fdm_active || !fadump_conf->fadumphdr_addr)
->   		return -EINVAL;
->   
-> -	/* Check if the dump data is valid. */
-> -	if ((be16_to_cpu(fdm_active->header.dump_status_flag) ==
-> -			RTAS_FADUMP_ERROR_FLAG) ||
-> -			(fdm_active->cpu_state_data.error_flags != 0) ||
-> -			(fdm_active->rmr_region.error_flags != 0)) {
-> -		pr_err("Dump taken by platform is not valid\n");
-> -		return -EINVAL;
-> -	}
-> -	if ((fdm_active->rmr_region.bytes_dumped !=
-> -			fdm_active->rmr_region.source_len) ||
-> -			!fdm_active->cpu_state_data.bytes_dumped) {
-> -		pr_err("Dump taken by platform is incomplete\n");
-> -		return -EINVAL;
-> +	/* Check all regions. */
-> +	for (i = 0; i < be16_to_cpu(fdm_active->header.dump_num_sections); i++) {
-> +		int type = be16_to_cpu(fdm_active->rgn[i].source_data_type);
-> +
-> +		switch (type) {
-> +		case RTAS_FADUMP_CPU_STATE_DATA:
-> +		case RTAS_FADUMP_HPTE_REGION:
-> +		case RTAS_FADUMP_REAL_MODE_REGION:
-> +			if (fdm_active->rgn[i].error_flags != 0) {
-> +				pr_err("Dump taken by platform is not valid (%d)\n", i);
-> +				rc = -EINVAL;
-> +			}
-> +			if (fdm_active->rgn[i].bytes_dumped != fdm_active->rgn[i].source_len) {
-> +				pr_err("Dump taken by platform is incomplete (%d)\n", i);
-> +				rc = -EINVAL;
-> +			}
-> +			if (rc) {
-> +				pr_warn("Region type: %u src addr: 0x%llx dest addr: 0x%llx\n",
-> +					be16_to_cpu(fdm_active->rgn[i].source_data_type),
-> +					be64_to_cpu(fdm_active->rgn[i].source_address),
-> +					be64_to_cpu(fdm_active->rgn[i].destination_address));
-> +				return rc;
-> +			}
-> +			break;
-> +		default:
-> +			/*
-> +			 * If the first/crashed kernel added a new region type that the
-> +			 * second/fadump kernel doesn't recognize, skip it and process
-> +			 * assuming backward compatibility.
-> +			 */
-> +			pr_warn("Unknown region found: type: %u src addr: 0x%llx dest addr: 0x%llx\n",
-> +				be16_to_cpu(fdm_active->rgn[i].source_data_type),
-> +				be64_to_cpu(fdm_active->rgn[i].source_address),
-> +				be64_to_cpu(fdm_active->rgn[i].destination_address));
-> +			break;
-> +		}
-> +
->   	}
->   
->   	/* Validate the fadump crash info header */
-> @@ -439,7 +496,6 @@ static int __init rtas_fadump_process(struct fw_dump *fadump_conf)
->   static void rtas_fadump_region_show(struct fw_dump *fadump_conf,
->   				    struct seq_file *m)
->   {
-> -	const struct rtas_fadump_section *cpu_data_section;
->   	const struct rtas_fadump_mem_struct *fdm_ptr;
->   
->   	if (fdm_active)
-> @@ -447,27 +503,42 @@ static void rtas_fadump_region_show(struct fw_dump *fadump_conf,
->   	else
->   		fdm_ptr = &fdm;
->   
-> -	cpu_data_section = &(fdm_ptr->cpu_state_data);
-> -	seq_printf(m, "CPU :[%#016llx-%#016llx] %#llx bytes, Dumped: %#llx\n",
-> -		   be64_to_cpu(cpu_data_section->destination_address),
-> -		   be64_to_cpu(cpu_data_section->destination_address) +
-> -		   be64_to_cpu(cpu_data_section->source_len) - 1,
-> -		   be64_to_cpu(cpu_data_section->source_len),
-> -		   be64_to_cpu(cpu_data_section->bytes_dumped));
-> -
-> -	seq_printf(m, "HPTE:[%#016llx-%#016llx] %#llx bytes, Dumped: %#llx\n",
-> -		   be64_to_cpu(fdm_ptr->hpte_region.destination_address),
-> -		   be64_to_cpu(fdm_ptr->hpte_region.destination_address) +
-> -		   be64_to_cpu(fdm_ptr->hpte_region.source_len) - 1,
-> -		   be64_to_cpu(fdm_ptr->hpte_region.source_len),
-> -		   be64_to_cpu(fdm_ptr->hpte_region.bytes_dumped));
-> -
-> -	seq_printf(m, "DUMP: Src: %#016llx, Dest: %#016llx, ",
-> -		   be64_to_cpu(fdm_ptr->rmr_region.source_address),
-> -		   be64_to_cpu(fdm_ptr->rmr_region.destination_address));
-> -	seq_printf(m, "Size: %#llx, Dumped: %#llx bytes\n",
-> -		   be64_to_cpu(fdm_ptr->rmr_region.source_len),
-> -		   be64_to_cpu(fdm_ptr->rmr_region.bytes_dumped));
-> +
-> +	for (int i = 0; i < be16_to_cpu(fdm_ptr->header.dump_num_sections); i++) {
-> +		int type = be16_to_cpu(fdm_ptr->rgn[i].source_data_type);
-> +
-> +		switch (type) {
-> +		case RTAS_FADUMP_CPU_STATE_DATA:
-> +			seq_printf(m, "CPU :[%#016llx-%#016llx] %#llx bytes, Dumped: %#llx\n",
-> +				   be64_to_cpu(fdm_ptr->rgn[i].destination_address),
-> +				   be64_to_cpu(fdm_ptr->rgn[i].destination_address) +
-> +				   be64_to_cpu(fdm_ptr->rgn[i].source_len) - 1,
-> +				   be64_to_cpu(fdm_ptr->rgn[i].source_len),
-> +				   be64_to_cpu(fdm_ptr->rgn[i].bytes_dumped));
-> +			break;
-> +		case RTAS_FADUMP_HPTE_REGION:
-> +			seq_printf(m, "HPTE:[%#016llx-%#016llx] %#llx bytes, Dumped: %#llx\n",
-> +				   be64_to_cpu(fdm_ptr->rgn[i].destination_address),
-> +				   be64_to_cpu(fdm_ptr->rgn[i].destination_address) +
-> +				   be64_to_cpu(fdm_ptr->rgn[i].source_len) - 1,
-> +				   be64_to_cpu(fdm_ptr->rgn[i].source_len),
-> +				   be64_to_cpu(fdm_ptr->rgn[i].bytes_dumped));
-> +			break;
-> +		case RTAS_FADUMP_REAL_MODE_REGION:
-> +			seq_printf(m, "DUMP: Src: %#016llx, Dest: %#016llx, ",
-> +				   be64_to_cpu(fdm_ptr->rgn[i].source_address),
-> +				   be64_to_cpu(fdm_ptr->rgn[i].destination_address));
-> +			seq_printf(m, "Size: %#llx, Dumped: %#llx bytes\n",
-> +				   be64_to_cpu(fdm_ptr->rgn[i].source_len),
-> +				   be64_to_cpu(fdm_ptr->rgn[i].bytes_dumped));
-> +			break;
-> +		default:
-> +			seq_printf(m, "Unknown region type %d : Src: %#016llx, Dest: %#016llx, ",
-> +				   type, be64_to_cpu(fdm_ptr->rgn[i].source_address),
-> +				   be64_to_cpu(fdm_ptr->rgn[i].destination_address));
-> +			break;
-> +		}
-> +	}
->   
->   	/* Dump is active. Show preserved area start address. */
->   	if (fdm_active) {
-> @@ -483,6 +554,20 @@ static void rtas_fadump_trigger(struct fadump_crash_info_header *fdh,
->   	rtas_os_term((char *)msg);
->   }
->   
-> +/* FADUMP_MAX_MEM_REGS or lower */
-> +static int rtas_fadump_max_boot_mem_rgns(void)
-> +{
-> +	/*
-> +	 * Version 1 of Kernel Assisted Dump Memory Structure (PAPR) supports 10 sections.
-> +	 * With one each section taken for CPU state data & HPTE respectively, 8 sections
-> +	 * can be used for boot memory regions.
-> +	 *
-> +	 * If new region(s) is(are) defined, maximum boot memory regions will decrease
-> +	 * proportionally.
-> +	 */
-> +	return RTAS_FADUMP_MAX_BOOT_MEM_REGS;
-> +}
-> +
->   static struct fadump_ops rtas_fadump_ops = {
->   	.fadump_init_mem_struct		= rtas_fadump_init_mem_struct,
->   	.fadump_get_bootmem_min		= rtas_fadump_get_bootmem_min,
-> @@ -492,6 +577,7 @@ static struct fadump_ops rtas_fadump_ops = {
->   	.fadump_process			= rtas_fadump_process,
->   	.fadump_region_show		= rtas_fadump_region_show,
->   	.fadump_trigger			= rtas_fadump_trigger,
-> +	.fadump_max_boot_mem_rgns	= rtas_fadump_max_boot_mem_rgns,
->   };
->   
->   void __init rtas_fadump_dt_scan(struct fw_dump *fadump_conf, u64 node)
-> diff --git a/arch/powerpc/platforms/pseries/rtas-fadump.h b/arch/powerpc/platforms/pseries/rtas-fadump.h
-> index fd59bd7ca9c3..6740f4981bb8 100644
-> --- a/arch/powerpc/platforms/pseries/rtas-fadump.h
-> +++ b/arch/powerpc/platforms/pseries/rtas-fadump.h
-> @@ -29,6 +29,15 @@
->   /* Dump status flag */
->   #define RTAS_FADUMP_ERROR_FLAG		0x2000
->   
-> +/*
-> + * The Firmware Assisted Dump Memory structure supports a maximum of 10 sections
-> + * in the dump memory structure. Presently, first two sections are used for
-> + * CPU and HPTE data, while the remaining eight sections can be used for
-> + * boot memory regions.
-> + */
-> +#define MAX_SECTIONS				10
-> +#define RTAS_FADUMP_MAX_BOOT_MEM_REGS		8
-> +
->   /* Kernel Dump section info */
->   struct rtas_fadump_section {
->   	__be32	request_flag;
-> @@ -61,20 +70,15 @@ struct rtas_fadump_section_header {
->    * Firmware Assisted dump memory structure. This structure is required for
->    * registering future kernel dump with power firmware through rtas call.
->    *
-> - * No disk dump option. Hence disk dump path string section is not included.
-> + * In version 1, the platform permits one section header, dump-disk path
-> + * and ten sections.
-> + *
-> + * Note: No disk dump option. Hence disk dump path string section is not
-> + * included.
->    */
->   struct rtas_fadump_mem_struct {
->   	struct rtas_fadump_section_header	header;
-> -
-> -	/* Kernel dump sections */
-> -	struct rtas_fadump_section		cpu_state_data;
-> -	struct rtas_fadump_section		hpte_region;
-> -
-> -	/*
-> -	 * TODO: Extend multiple boot memory regions support in the kernel
-> -	 *       for this platform.
-> -	 */
-> -	struct rtas_fadump_section		rmr_region;
-> +	struct rtas_fadump_section		rgn[MAX_SECTIONS];
->   };
->   
->   /*
+DQoNCkxlIDE3LzEyLzIwMjMgw6AgMDI6MDUsIEdlb3JnZSBTdGFyayBhIMOpY3JpdMKgOg0KPiBb
+Vm91cyBuZSByZWNldmV6IHBhcyBzb3V2ZW50IGRlIGNvdXJyaWVycyBkZSBnbnN0YXJrQHNhbHV0
+ZWRldmljZXMuY29tLiANCj4gRMOpY291dnJleiBwb3VycXVvaSBjZWNpIGVzdCBpbXBvcnRhbnQg
+w6AgDQo+IGh0dHBzOi8vYWthLm1zL0xlYXJuQWJvdXRTZW5kZXJJZGVudGlmaWNhdGlvbiBdDQo+
+IA0KPiBIZWxsbyBDaHJpc3RvcGhlDQo+IA0KPiBPbiAxMi8xNS8yMyAwODo0NiwgQ2hyaXN0b3Bo
+ZSBMZXJveSB3cm90ZToNCj4+DQo+Pg0KPj4gTGUgMTQvMTIvMjAyMyDDoCAyMjo0OCwgV2FpbWFu
+IExvbmcgYSDDqWNyaXQgOg0KPj4+IE9uIDEyLzE0LzIzIDE0OjUzLCBDaHJpc3RvcGhlIExlcm95
+IHdyb3RlOg0KPj4+Pg0KPj4+PiBMZSAxNC8xMi8yMDIzIMOgIDE5OjQ4LCBXYWltYW4gTG9uZyBh
+IMOpY3JpdCA6DQo+Pj4+PiBPbiAxMi8xNC8yMyAxMjozNiwgR2VvcmdlIFN0YXJrIHdyb3RlOg0K
+Pj4+Pj4+IFVzaW5nIG9mIGRldm0gQVBJIGxlYWRzIHRvIGEgY2VydGFpbiBvcmRlciBvZiByZWxl
+YXNpbmcgcmVzb3VyY2VzLg0KPj4+Pj4+IFNvIGFsbCBkZXBlbmRlbnQgcmVzb3VyY2VzIHdoaWNo
+IGFyZSBub3QgZGV2bS13cmFwcGVkIHNob3VsZCBiZSANCj4+Pj4+PiBkZWxldGVkDQo+Pj4+Pj4g
+d2l0aCByZXNwZWN0IHRvIGRldm0tcmVsZWFzZSBvcmRlci4gTXV0ZXggaXMgb25lIG9mIHN1Y2gg
+b2JqZWN0cyB0aGF0DQo+Pj4+Pj4gb2Z0ZW4gaXMgYm91bmQgdG8gb3RoZXIgcmVzb3VyY2VzIGFu
+ZCBoYXMgbm8gb3duIGRldm0gd3JhcHBpbmcuDQo+Pj4+Pj4gU2luY2UgbXV0ZXhfZGVzdHJveSgp
+IGFjdHVhbGx5IGRvZXMgbm90aGluZyBpbiBub24tZGVidWcgYnVpbGRzDQo+Pj4+Pj4gZnJlcXVl
+bnRseSBjYWxsaW5nIG11dGV4X2Rlc3Ryb3koKSBpcyBqdXN0IGlnbm9yZWQgd2hpY2ggaXMgc2Fm
+ZSBmb3INCj4+Pj4+PiBub3cNCj4+Pj4+PiBidXQgd3JvbmcgZm9ybWFsbHkgYW5kIGNhbiBsZWFk
+IHRvIGEgcHJvYmxlbSBpZiBtdXRleF9kZXN0cm95KCkgDQo+Pj4+Pj4gd2lsbCBiZQ0KPj4+Pj4+
+IGV4dGVuZGVkIHNvIGludHJvZHVjZSBkZXZtX211dGV4X2luaXQoKQ0KPj4+Pj4+DQo+Pj4+Pj4g
+U2lnbmVkLW9mZi1ieTogR2VvcmdlIFN0YXJrIDxnbnN0YXJrQHNhbHV0ZWRldmljZXMuY29tPg0K
+Pj4+Pj4+IC0tLQ0KPj4+Pj4+IMKgwqDCoCBpbmNsdWRlL2xpbnV4L211dGV4LmjCoMKgwqDCoMKg
+wqDCoCB8IDIzICsrKysrKysrKysrKysrKysrKysrKysrDQo+Pj4+Pj4gwqDCoMKgIGtlcm5lbC9s
+b2NraW5nL211dGV4LWRlYnVnLmMgfCAyMiArKysrKysrKysrKysrKysrKysrKysrDQo+Pj4+Pj4g
+wqDCoMKgIDIgZmlsZXMgY2hhbmdlZCwgNDUgaW5zZXJ0aW9ucygrKQ0KPj4+Pj4+DQo+Pj4+Pj4g
+ZGlmZiAtLWdpdCBhL2luY2x1ZGUvbGludXgvbXV0ZXguaCBiL2luY2x1ZGUvbGludXgvbXV0ZXgu
+aA0KPj4+Pj4+IGluZGV4IGEzM2FhOWViOWZjMy4uZWJkMDNmZjFlZjY2IDEwMDY0NA0KPj4+Pj4+
+IC0tLSBhL2luY2x1ZGUvbGludXgvbXV0ZXguaA0KPj4+Pj4+ICsrKyBiL2luY2x1ZGUvbGludXgv
+bXV0ZXguaA0KPj4+Pj4+IEBAIC0yMSw2ICsyMSw4IEBADQo+Pj4+Pj4gwqDCoMKgICNpbmNsdWRl
+IDxsaW51eC9kZWJ1Z19sb2Nrcy5oPg0KPj4+Pj4+IMKgwqDCoCAjaW5jbHVkZSA8bGludXgvY2xl
+YW51cC5oPg0KPj4+Pj4+ICtzdHJ1Y3QgZGV2aWNlOw0KPj4+Pj4+ICsNCj4+Pj4+PiDCoMKgwqAg
+I2lmZGVmIENPTkZJR19ERUJVR19MT0NLX0FMTE9DDQo+Pj4+Pj4gwqDCoMKgICMgZGVmaW5lIF9f
+REVQX01BUF9NVVRFWF9JTklUSUFMSVpFUihsb2NrbmFtZSnCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+IFwNCj4+Pj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICwgLmRlcF9tYXAgPSB7wqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgXA0KPj4+Pj4+IEBAIC0xMjcsNiArMTI5LDIw
+IEBAIGV4dGVybiB2b2lkIF9fbXV0ZXhfaW5pdChzdHJ1Y3QgbXV0ZXggKmxvY2ssDQo+Pj4+Pj4g
+Y29uc3QgY2hhciAqbmFtZSwNCj4+Pj4+PiDCoMKgwqDCoCAqLw0KPj4+Pj4+IMKgwqDCoCBleHRl
+cm4gYm9vbCBtdXRleF9pc19sb2NrZWQoc3RydWN0IG11dGV4ICpsb2NrKTsNCj4+Pj4+PiArI2lm
+ZGVmIENPTkZJR19ERUJVR19NVVRFWEVTDQo+Pj4+Pj4gKw0KPj4+Pj4+ICtpbnQgZGV2bV9tdXRl
+eF9pbml0KHN0cnVjdCBkZXZpY2UgKmRldiwgc3RydWN0IG11dGV4ICpsb2NrKTsNCj4+Pj4+IFBs
+ZWFzZSBhZGQgImV4dGVybiIgdG8gdGhlIGZ1bmN0aW9uIGRlY2xhcmF0aW9uIHRvIGJlIGNvbnNp
+c3RlbnQgd2l0aA0KPj4+Pj4gb3RoZXIgZnVuY3Rpb25hbCBkZWNsYXJhdGlvbnMgaW4gbXV0ZXgu
+aC4NCj4+Pj4gJ2V4dGVybicgaXMgcG9pbnRsZXNzIGFuZCBkZXByZWNhdGVkIG9uIGZ1bmN0aW9u
+IHByb3RvdHlwZXMuIEFscmVhZHkNCj4+Pj4gaGF2aW5nIHNvbWUgaXMgbm90IGEgZ29vZCByZWFz
+b24gdG8gYWRkIG5ldyBvbmVzLCBlcnJvcnMgZnJvbSB0aGUgcGFzdA0KPj4+PiBzaG91bGQgYmUg
+YXZvaWRlZCBub3dhZGF5cy4gV2l0aCB0aW1lIHRoZXkgc2hvdWxkIGFsbCBkaXNhcHBlYXIgc28g
+DQo+Pj4+IGRvbid0DQo+Pj4+IGFkZCBuZXcgb25lcy4NCj4+PiBZZXMsICJleHRlcm4iIGlzIG9w
+dGlvbmFsLiBJdCBpcyBqdXN0IGEgc3VnZ2VzdGlvbiBhbmQgSSBhbSBnb2luZyB0bw0KPj4+IGFy
+Z3VlIGFib3V0IHRoYXQuDQo+Pg0KPj4gRldJVywgbm90ZSB0aGF0IHdoZW4geW91IHBlcmZvcm0g
+YSBzdHJpY3QgY2hlY2sgd2l0aCBjaGVja3BhdGNoLnBsLCB5b3UNCj4+IGdldCBhIHdhcm5pbmcg
+Zm9yIHRoYXQ6DQo+Pg0KPj4gJCAuL3NjcmlwdHMvY2hlY2twYXRjaC5wbCAtLXN0cmljdCAtZyBI
+RUFEDQo+PiBDSEVDSzogZXh0ZXJuIHByb3RvdHlwZXMgc2hvdWxkIGJlIGF2b2lkZWQgaW4gLmgg
+ZmlsZXMNCj4+ICM1NjogRklMRTogaW5jbHVkZS9saW51eC9tdXRleC5oOjEzMToNCj4+ICtleHRl
+cm4gaW50IGRldm1fbXV0ZXhfaW5pdChzdHJ1Y3QgZGV2aWNlICpkZXYsIHN0cnVjdCBtdXRleCAq
+bG9jayk7DQo+Pg0KPj4gdG90YWw6IDAgZXJyb3JzLCAwIHdhcm5pbmdzLCAxIGNoZWNrcywgOTkg
+bGluZXMgY2hlY2tlZA0KPiANCj4gVGhpcyBpcyBhbWJpZ3VvdXMgc2l0dWF0aW9uIGFib3V0IGV4
+dGVybi4gSXQncyBkZXByZWNhdGVkIGFuZCB1c2VsZXNzIG9uDQo+IG9uZSBoYW5kIGJ1dCBoYXJt
+bGVzcy4gQW5kIHRob3NlIGV4dGVybnMgd2lsbCBub3QgZGlzYXBwZWFyIGJ5IHRoZW1zZWxmDQo+
+IC0gaXQnbGwgYmUgb25lIHBhdGNoIHRoYXQgY2xlYW4gdGhlbSBhbGwgYXQgb25jZSAoaW4gb25l
+IGhlYWRlciBhdA0KPiBsZWFzdCkgc28gb25lIG1vcmUgZXh0ZXJuIHdpbGwgbm90IGFsdGVyIHRo
+ZSBvdmVyYWxsIHBpY3R1cmUuDQoNClRoYXQga2luZCBvZiBjbGVhbnVwIHBhdGNoIGJvbWIgaXMg
+YSBuaWdodG1hcmUgZm9yIGJhY2twb3J0aW5nLCBzbyBpZiBpdCANCmhhcHBlbnMgb25lIGRheSBp
+dCBzaG91bGQgYmUgYXMgbGlnaHQgYXMgcG9zc2libGUsIGhlbmNlIHRoZSBpbXBvcnRhbmNlIA0K
+dG8gbm90IGFkZCBuZXcgb25lcyBhbmQgcmVtb3ZlIGV4aXN0aW5nIG9uZSBldmVyeXRpbWUgeW91
+IG1vZGlmeSBvciBtb3ZlIA0KYSBsaW5lIGluY2x1ZGluZyBpdCBmb3Igd2hhdGV2ZXIgcmVhc29u
+Lg0KDQo+IA0KPiBPbiB0aGUgb3RoZXIgaGFuZCBpZiB3ZSBtYW5hZ2UgdG8gcGxhY2UgZGV2bV9t
+dXRleF9pbml0IG5lYXINCj4gbXV0ZXhfZGVzdHJveSB0aGVuIHdlJ2xsIGhhdmU6DQo+IA0KPiBp
+bnQgZGV2bV9tdXRleF9pbml0KHN0cnVjdCBkZXZpY2UgKmRldiwgc3RydWN0IG11dGV4ICpsb2Nr
+KTsNCj4gZXh0ZXJuIHZvaWQgbXV0ZXhfZGVzdHJveShzdHJ1Y3QgbXV0ZXggKmxvY2spOw0KDQpJ
+IHNlbnQgeW91IGFuIGFsdGVybmF0aXZlIHByb3Bvc2FsIHRoYXQgYXZvaWRzIGR1cGxpY2F0aW9u
+IG9mIHRoZSBzdGF0aWMgDQppbmxpbmUgdmVyc2lvbiBvZiBkZXZtX211dGV4X2luaXQoKS4gSWYg
+eW91IGFncmVlIHdpdGggaXQganVzdCB0YWtlIGl0IA0KaW50byB5b3VyIHNlcmllcyBhbmQgdGhh
+dCBxdWVzdGlvbiB3aWxsIHZhbmlzaC4NCg0KPiANCj4gYW5kIGl0IHJhaXNlcyBxdWVzdGlvbnMg
+YW5kIGRvZXMgbm90IGxvb2sgdmVyeSBuaWNlLg0KDQpJZiB5b3UgbG9vayBhdCBsaW51eC9tbS5o
+IHRoZXJlIGFyZSBwbGVudHkgb2YgdGhlbSBhbnl3YXksIHNvIHdoeSBkbyANCmRpZmZlcmVudCA/
+IEZvciBhbiBleGVtcGxlIGxvb2sgYXQgDQpodHRwczovL2VsaXhpci5ib290bGluLmNvbS9saW51
+eC92Ni43LXJjNC9zb3VyY2UvaW5jbHVkZS9saW51eC9tbS5oI0wyMzcyDQoNCg0KQ2hyaXN0b3Bo
+ZQ0K
