@@ -1,94 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D7B8815CEE
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Dec 2023 02:06:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E9BB815DB0
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Dec 2023 06:47:53 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=W+0Whlom;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VHOywECW;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4St4YC1d9Kz3cQj
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Dec 2023 12:06:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4StBnK5vmSz3bqB
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Dec 2023 16:47:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=W+0Whlom;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VHOywECW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=salutedevices.com (client-ip=37.18.73.165; helo=mx1.sberdevices.ru; envelope-from=gnstark@salutedevices.com; receiver=lists.ozlabs.org)
-Received: from mx1.sberdevices.ru (mx1.sberdevices.ru [37.18.73.165])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4St4XH3zkLz30MD
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Dec 2023 12:06:02 +1100 (AEDT)
-Received: from p-infra-ksmg-sc-msk01 (localhost [127.0.0.1])
-	by mx1.sberdevices.ru (Postfix) with ESMTP id C51D81000B2;
-	Sun, 17 Dec 2023 04:05:55 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru C51D81000B2
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
-	s=mail; t=1702775155;
-	bh=WicLE+m2KjZ0UmGZ33Un03zmL1z8fwkULFl3o1Sphb4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
-	b=W+0WhlomTM+JUUUkZ1gq/VVpGfyhap3Ye6TWBZLEfhpPnBEPBHh3fhua2HFk/p1k2
-	 KFYCG88OVd9r3xIj1aUCzy6VJEPdIUFmm4NPO0PBHSAbT62xcZpgpHTKtJBr3+jDHv
-	 S/E04O/2CndBgMd3Pr4M3D1MGnknhvHd534qIuDulKOL0MKz74Y0emh0Mqj8JcuLVe
-	 ZwKOW1kJfITZZBsdegrE+4emxsmK34hUWrl64gIRPvXhvyXMnyPGCLPodD6zG1yeNN
-	 G8cGD/vbH82Ln3a/+wIis19FxjuM5mvIHBzGGoFJrTzpR0ZMb0NZ6eylr6xf5Yae8/
-	 LkM62LVkt+3yA==
-Received: from smtp.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4StBmT539Xz307V
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Dec 2023 16:47:05 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1702792019;
+	bh=sjJYJPAysPoKxYJ9ye7fdK3cz4HvUz9eSpSgI6DOv34=;
+	h=From:To:Cc:Subject:Date:From;
+	b=VHOywECWeAG1Q6vdSFt/hRVdkleytUo3PbfJ3u4GjFjpQGmnPICUC3B5HJic6qi4n
+	 n+x6ax/FE6DZBSkbSakTiWGbEkZZsAkSNrmRuWLUBPsTU2G9H6S9BmvtV3GB3cAW9Q
+	 4koLI5d+1azY1ofxpTpcbp4c630vZ3401UX7Zp/aJbWpDV4pVVSi5XI4UaEh+0KRIO
+	 v8XE7DpIUofIa4XFDqjF4Ceu/30aRwKP0/MvGxksN8gH4GI2xR3ReemSc4SjZ5m9Bp
+	 5TqvmYCLOzRiBCo2ACeHhOxONcc02HdfRBnNLPMlMi10gnAbkveR42B08tNc0DHCDH
+	 NjqaI8iXtwung==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx1.sberdevices.ru (Postfix) with ESMTPS;
-	Sun, 17 Dec 2023 04:05:55 +0300 (MSK)
-Received: from [192.168.1.143] (100.64.160.123) by
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Sun, 17 Dec 2023 04:05:55 +0300
-Message-ID: <1e5907f2-c794-4ee2-8abc-b45831cca5bb@salutedevices.com>
-Date: Sun, 17 Dec 2023 04:05:54 +0300
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4StBmL2Tkhz4wx5;
+	Sun, 17 Dec 2023 16:46:58 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.7-5 tag
+Date: Sun, 17 Dec 2023 16:46:57 +1100
+Message-ID: <875y0xmlda.fsf@mail.lhotse>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 02/10] locking: introduce devm_mutex_init
-Content-Language: en-US
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Waiman Long
-	<longman@redhat.com>, "andy.shevchenko@gmail.com"
-	<andy.shevchenko@gmail.com>, "pavel@ucw.cz" <pavel@ucw.cz>, "lee@kernel.org"
-	<lee@kernel.org>, "vadimp@nvidia.com" <vadimp@nvidia.com>,
-	"mpe@ellerman.id.au" <mpe@ellerman.id.au>, "npiggin@gmail.com"
-	<npiggin@gmail.com>, "hdegoede@redhat.com" <hdegoede@redhat.com>,
-	"mazziesaccount@gmail.com" <mazziesaccount@gmail.com>, "peterz@infradead.org"
-	<peterz@infradead.org>, "mingo@redhat.com" <mingo@redhat.com>,
-	"will@kernel.org" <will@kernel.org>, "boqun.feng@gmail.com"
-	<boqun.feng@gmail.com>, "nikitos.tr@gmail.com" <nikitos.tr@gmail.com>
-References: <20231214173614.2820929-1-gnstark@salutedevices.com>
- <20231214173614.2820929-3-gnstark@salutedevices.com>
- <5c10f66c-3fd8-4861-994b-13e71c24f10a@redhat.com>
- <b158ca2b-7300-4ad0-82b8-e1442d267734@csgroup.eu>
- <300d2131-87ef-48c1-b162-dcef0d8d5722@redhat.com>
- <5ef8a83a-5dfd-4038-851e-c730d5f1b6f3@csgroup.eu>
-From: George Stark <gnstark@salutedevices.com>
-In-Reply-To: <5ef8a83a-5dfd-4038-851e-c730d5f1b6f3@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [100.64.160.123]
-X-ClientProxiedBy: p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) To
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107)
-X-KSMG-Rule-ID: 10
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 182147 [Dec 16 2023]
-X-KSMG-AntiSpam-Version: 6.1.0.3
-X-KSMG-AntiSpam-Envelope-From: gnstark@salutedevices.com
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 7 0.3.7 6d6bf5bd8eea7373134f756a2fd73e9456bb7d1a, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;smtp.sberdevices.ru:5.0.1,7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;salutedevices.com:7.1.1;100.64.160.123:7.1.2, FromAlignment: s, ApMailHostAddress: 100.64.160.123
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean
-X-KSMG-LinksScanning: Clean
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2023/12/16 23:36:00 #22664677
-X-KSMG-AntiVirus-Status: Clean, skipped
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,122 +55,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "kernel@salutedevices.com" <kernel@salutedevices.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>
+Cc: aneesh.kumar@kernel.org, linuxppc-dev@lists.ozlabs.org, haren@linux.ibm.com, linux-kernel@vger.kernel.org, naveen.n.rao@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Christophe
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-On 12/15/23 08:46, Christophe Leroy wrote:
-> 
-> 
-> Le 14/12/2023 à 22:48, Waiman Long a écrit :
->> On 12/14/23 14:53, Christophe Leroy wrote:
->>>
->>> Le 14/12/2023 à 19:48, Waiman Long a écrit :
->>>> On 12/14/23 12:36, George Stark wrote:
->>>>> Using of devm API leads to a certain order of releasing resources.
->>>>> So all dependent resources which are not devm-wrapped should be deleted
->>>>> with respect to devm-release order. Mutex is one of such objects that
->>>>> often is bound to other resources and has no own devm wrapping.
->>>>> Since mutex_destroy() actually does nothing in non-debug builds
->>>>> frequently calling mutex_destroy() is just ignored which is safe for
->>>>> now
->>>>> but wrong formally and can lead to a problem if mutex_destroy() will be
->>>>> extended so introduce devm_mutex_init()
->>>>>
->>>>> Signed-off-by: George Stark <gnstark@salutedevices.com>
->>>>> ---
->>>>>     include/linux/mutex.h        | 23 +++++++++++++++++++++++
->>>>>     kernel/locking/mutex-debug.c | 22 ++++++++++++++++++++++
->>>>>     2 files changed, 45 insertions(+)
->>>>>
->>>>> diff --git a/include/linux/mutex.h b/include/linux/mutex.h
->>>>> index a33aa9eb9fc3..ebd03ff1ef66 100644
->>>>> --- a/include/linux/mutex.h
->>>>> +++ b/include/linux/mutex.h
->>>>> @@ -21,6 +21,8 @@
->>>>>     #include <linux/debug_locks.h>
->>>>>     #include <linux/cleanup.h>
->>>>> +struct device;
->>>>> +
->>>>>     #ifdef CONFIG_DEBUG_LOCK_ALLOC
->>>>>     # define __DEP_MAP_MUTEX_INITIALIZER(lockname)            \
->>>>>             , .dep_map = {                    \
->>>>> @@ -127,6 +129,20 @@ extern void __mutex_init(struct mutex *lock,
->>>>> const char *name,
->>>>>      */
->>>>>     extern bool mutex_is_locked(struct mutex *lock);
->>>>> +#ifdef CONFIG_DEBUG_MUTEXES
->>>>> +
->>>>> +int devm_mutex_init(struct device *dev, struct mutex *lock);
->>>> Please add "extern" to the function declaration to be consistent with
->>>> other functional declarations in mutex.h.
->>> 'extern' is pointless and deprecated on function prototypes. Already
->>> having some is not a good reason to add new ones, errors from the past
->>> should be avoided nowadays. With time they should all disappear so don't
->>> add new ones.
->> Yes, "extern" is optional. It is just a suggestion and I am going to
->> argue about that.
-> 
-> FWIW, note that when you perform a strict check with checkpatch.pl, you
-> get a warning for that:
-> 
-> $ ./scripts/checkpatch.pl --strict -g HEAD
-> CHECK: extern prototypes should be avoided in .h files
-> #56: FILE: include/linux/mutex.h:131:
-> +extern int devm_mutex_init(struct device *dev, struct mutex *lock);
-> 
-> total: 0 errors, 0 warnings, 1 checks, 99 lines checked
+Hi Linus,
 
-This is ambiguous situation about extern. It's deprecated and useless on 
-one hand but harmless. And those externs will not disappear by themself 
-- it'll be one patch that clean them all at once (in one header at 
-least) so one more extern will not alter the overall picture.
+Please pull some more powerpc fixes for 6.7:
 
-On the other hand if we manage to place devm_mutex_init near 
-mutex_destroy then we'll have:
+The following changes since commit 4b3338aaa74d7d4ec5b6734dc298f0db94ec83d2:
 
-int devm_mutex_init(struct device *dev, struct mutex *lock);
-extern void mutex_destroy(struct mutex *lock);
+  powerpc/ftrace: Fix stack teardown in ftrace_no_trace (2023-12-05 14:14:12 +1100)
 
-and it raises questions and does not look very nice.
+are available in the git repository at:
 
->>>
->>>>> +
->>>>> +#else
->>>>> +
->>>>> +static inline int devm_mutex_init(struct device *dev, struct mutex
->>>>> *lock)
->>>>> +{
->>>>> +    mutex_init(lock);
->>>>> +    return 0;
->>>>> +}
->>>> I would prefer you to add a devm_mutex_init macro after the function
->>>> declaration and put this inline function at the end of header if the
->>>> devm_mutex_init macro isn't defined. In this way, you don't need to
->>>> repeat this inline function twice as it has no dependency on PREEMPT_RT.
->>> It is already done that way for other functions in that file. Should be
->>> kept consistant. I agree with you it is not ideal, maybe we should
->>> rework that file completely but I don't like the idea of a
->>> devm_mutex_init macro for that.
->>
->> devm_mutex_init() is not an API for the core mutex code. That is why I
->> want to minimize change to the existing code layout. Putting it at the
->> end will reduce confusion when developers look up mutex.h header file to
->> find out what mutex functions are available.
-> 
-> If I look at linux/gpio.h we are more or less in the same situation I think.
-> 
-> devm_mutex_init() is not an API for the core mutex code, but developers
-> need to know the managed functions for mutex exist, and having them at
-> the same place as non managed functions looks better to me. Now I agree
-> with you that this duplication of functions is not the best, and it also
-> applies to existing content of mutex.h so maybe we can do something
-> about it later and improve the situation.
-> 
-> Christophe
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.7-5
 
--- 
-Best regards
-George
+for you to fetch changes up to d2441d3e8c0c076d0a2e705fa235c76869a85140:
+
+  MAINTAINERS: powerpc: Add Aneesh & Naveen (2023-12-13 22:35:57 +1100)
+
+- ------------------------------------------------------------------
+powerpc fixes for 6.7 #5
+
+ - Fix a bug where heavy VAS (accelerator) usage could race with partition
+   migration and prevent the migration from completing.
+
+ - Update MAINTAINERS to add Aneesh & Naveen.
+
+Thanks to: Haren Myneni
+
+- ------------------------------------------------------------------
+Haren Myneni (1):
+      powerpc/pseries/vas: Migration suspend waits for no in-progress open windows
+
+Michael Ellerman (1):
+      MAINTAINERS: powerpc: Add Aneesh & Naveen
+
+
+ MAINTAINERS                          |  2 +
+ arch/powerpc/platforms/pseries/vas.c | 51 +++++++++++++++++---
+ arch/powerpc/platforms/pseries/vas.h |  2 +
+ 3 files changed, 48 insertions(+), 7 deletions(-)
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmV+hd0ACgkQUevqPMjh
+pYBXUxAAtTAlULmrNviBMDi27WZ4nSagRytDch3u+BcmoKLLSYJtHJLKW0qqujnQ
+GSJJ9bnV9dOHYu6I6VUom4SDyU3ExaxggJ4+UTlPigXM6++FZhFuhrXgXlcAh+6h
+nkL71XkPMzFitUWEUa5nboiMpcHWNn81gLWTek8rieDtggspyPi3d+TQzMFiNddd
+LOCAXU4hxxlcqbSL5v5v6UU9a+j0vGJYPU2sc/nY0mEzQHyTaC+KZcPVtloH2zzK
+/9BAeHPUkj6zIG9ioBehFgCfnocJI3hsUQgU/8v2Kqwc6om8gpUgkO/yn3Adajln
+DrYKKKiAEOBWh7qdj98G+i77nCx9HPko3cfVM6SyfH9+qZEaKz6mOVt2idXJUqsK
++pSUXir/F3z+eZ591YmUc/Vn2LFXnNvpcih7EDKx9Tyqz4yULMpVqEKdr6onyXWf
+48/rNu4KxlqzbsZkilJKjGeCtwcrrZiYbOQNaj0D9i4pVDFgUYSTxhJ3r3oA0fIy
+U7NPSzfkbob/w0KROXNvpGJlE/IyDzb47MAw7muO009o2AiAswDiGfzgdQ4l/9z7
+4F1gvx/sEuZAcL0NgkCpZWdsy5cv+OkAZeKlGIc6C6jcoVIik2g3mSR9qxp4JE31
+yBBo5e8s4Ai7AgCnIf57rouBrhEgLuHL8WrBhjecmt2uXao5/v4=
+=duiu
+-----END PGP SIGNATURE-----
