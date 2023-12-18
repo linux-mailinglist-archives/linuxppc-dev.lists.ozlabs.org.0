@@ -2,42 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC819816544
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Dec 2023 04:14:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC90481654F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Dec 2023 04:21:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4StlLL6R09z3cXb
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Dec 2023 14:14:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4StlV23W6fz3dBK
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Dec 2023 14:21:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=43.155.80.173; helo=bg5.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
-Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.155.80.173])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=114.132.65.219; helo=bg1.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
+X-Greylist: delayed 399 seconds by postgrey-1.37 at boromir; Mon, 18 Dec 2023 14:21:02 AEDT
+Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.65.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4StlKt1BPNz2yDS
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Dec 2023 14:14:25 +1100 (AEDT)
-X-QQ-mid: bizesmtp74t1702869227t11cgp0b
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4StlTV2cL0z2yQL
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Dec 2023 14:21:02 +1100 (AEDT)
+X-QQ-mid: bizesmtp71t1702869266tp6lsvnj
 Received: from HX09040029.powercore.com.cn ( [58.34.117.194])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 18 Dec 2023 11:13:44 +0800 (CST)
+	id ; Mon, 18 Dec 2023 11:14:23 +0800 (CST)
 X-QQ-SSF: 01400000000000402000000A0000000
-X-QQ-FEAT: ojreUey1GAJh8hL6tFNRr/A8uhfy7W4zq3Yz29fwbmPUxIt/sWXzmwhmi3hB7
-	HEBw4koeQHjL3Qi/cVxpCKaWJG5ZGMO+/cXTzN6SfHcl0ULH600a3DcvPjlj6tyg2k/gKZu
-	XSOQdClx+ydjQqzaULB6SML3BiQ88F2+h4RH4MXzqVhRMbVF5h5paqDpm/uMIfWMj1a8USz
-	yihH3cUqAKqL9Ft5UEzlFMMSIrKJ4u45WR3Xcv+g+sI78M384cTjXLiJitHs42w41v9XQcG
-	MGI0xeEB6FDlyTxOgcbMO4SEFL5vJL4qeb1zaXB4g4Db2+0uqy5u5u8U+IklyT7SGiEXHO7
-	CnY03CRLj3jo60/R0YoLOMehhGvZCJwedC2KtL5v7sPa0tku5w+sPOoCOD6XFJwROfl/I1u
-	7HpqbRCfybjinFJ3Xga9lQ==
+X-QQ-FEAT: fmY4SgAPM3slIzyLYur0WBpW/RTrgfiYkLSU8cSt6wuysWhvu08Z99fSf9eWz
+	bKG73zarUNRBOQvL6DiaJOscOyuPb1ZmFcFlLiJ/teAX/q10RRN9y80nvBtinp7zWe/ZIw0
+	uHwE/HtMpgiVNFP8CMi61za4iP61BhvHx4uxpEJqZMUgpk9i34RgHoqSoS1WAsLM/wsKlRi
+	yBt2cACO+mLQXY+IU4QlFrCo/3aMUgSTI46C8G+UkywtDtd9chmWXn1+33zcY+5fZnI5IlB
+	FZWUEwFKStcaQFspg90PzopQaRpSsFK+8/qOdcSswKgl+P6aedSms2q5g0ZQbtr28haSefF
+	wXq01TOM2x4vnSowTOm8LzRXNVC3EWgcNZ+3n7WrvkFQbFcPKKlFkvrKDd5M3ROUZHG21kB
+	842HVHETayS4DY/5L1kVwQ==
 X-QQ-GoodBg: 2
-X-BIZMAIL-ID: 4197664245729680774
+X-BIZMAIL-ID: 7532627385370386625
 From: Luming Yu <luming.yu@shingroup.cn>
 To: linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org,
 	mpe@ellerman.id.au,
 	npiggin@gmail.com,
 	christophe.leroy@csgroup.eu
-Subject: [PATCH v1 2/2] powerpc/debug: hook to user return notifier infrastructure
-Date: Mon, 18 Dec 2023 11:13:37 +0800
-Message-ID: <B375A36C9C4D73FF+20231218031338.2084-1-luming.yu@shingroup.cn>
+Subject: [PATCH 1/1] powerpc/io: enable dma-contiguous API
+Date: Mon, 18 Dec 2023 11:14:19 +0800
+Message-ID: <F73A5182F488C472+20231218031420.2112-1-luming.yu@shingroup.cn>
 X-Mailer: git-send-email 2.42.0.windows.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -58,35 +59,46 @@ Cc: shenghui.qu@shingroup.cn, Luming Yu <luming.yu@shingroup.cn>, dawei.li@shing
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Before we have powerpc to use the generic entry infrastructure,
-the call to fire user return notifier is made temporarily in powerpc
-entry code.
+enable HAVE_DMA_CONTIGUOUS for general use of
+CMA on powerpc.
 
 Signed-off-by: Luming Yu <luming.yu@shingroup.cn>
 ---
- arch/powerpc/kernel/interrupt.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/Kconfig               | 1 +
+ arch/powerpc/kernel/setup-common.c | 2 ++
+ 2 files changed, 3 insertions(+)
 
-diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-index c4f6d3c69ba9..7fe704946e96 100644
---- a/arch/powerpc/kernel/interrupt.c
-+++ b/arch/powerpc/kernel/interrupt.c
-@@ -19,6 +19,7 @@
- #include <asm/time.h>
- #include <asm/tm.h>
- #include <asm/unistd.h>
-+#include <asm/entry-common.h>
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index b968068cc04a..e21f72bcb61f 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -231,6 +231,7 @@ config PPC
+ 	select HAVE_C_RECORDMCOUNT
+ 	select HAVE_DEBUG_KMEMLEAK
+ 	select HAVE_DEBUG_STACKOVERFLOW
++	select HAVE_DMA_CONTIGUOUS
+ 	select HAVE_DYNAMIC_FTRACE
+ 	select HAVE_DYNAMIC_FTRACE_WITH_ARGS	if ARCH_USING_PATCHABLE_FUNCTION_ENTRY || MPROFILE_KERNEL || PPC32
+ 	select HAVE_DYNAMIC_FTRACE_WITH_REGS	if ARCH_USING_PATCHABLE_FUNCTION_ENTRY || MPROFILE_KERNEL || PPC32
+diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+index 9b142b9d5187..50d09363352d 100644
+--- a/arch/powerpc/kernel/setup-common.c
++++ b/arch/powerpc/kernel/setup-common.c
+@@ -35,6 +35,7 @@
+ #include <linux/of_irq.h>
+ #include <linux/hugetlb.h>
+ #include <linux/pgtable.h>
++#include <linux/dma-map-ops.h>
+ #include <asm/io.h>
+ #include <asm/paca.h>
+ #include <asm/processor.h>
+@@ -975,6 +976,7 @@ void __init setup_arch(char **cmdline_p)
+ 	 */
+ 	kvm_cma_reserve();
+ 	gigantic_hugetlb_cma_reserve();
++	dma_contiguous_reserve(0);
  
- #if defined(CONFIG_PPC_ADV_DEBUG_REGS) && defined(CONFIG_PPC32)
- unsigned long global_dbcr0[NR_CPUS];
-@@ -245,6 +246,8 @@ interrupt_exit_user_prepare_main(unsigned long ret, struct pt_regs *regs)
- 	/* Restore user access locks last */
- 	kuap_user_restore(regs);
- 
-+	arch_exit_to_user_mode_prepare(regs, ti_flags);
-+
- 	return ret;
- }
+ 	early_memtest(min_low_pfn << PAGE_SHIFT, max_low_pfn << PAGE_SHIFT);
  
 -- 
 2.42.0.windows.2
