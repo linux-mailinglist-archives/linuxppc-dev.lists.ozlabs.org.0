@@ -1,127 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5116F816E5B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Dec 2023 13:47:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35CDB81706E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Dec 2023 14:27:28 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=nDD6mPO6;
+	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=DSuPVkoZ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sv03b0KcWz3cM5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Dec 2023 23:47:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sv0x96H8Pz3cJ9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 00:27:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=nDD6mPO6;
+	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=DSuPVkoZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::329; helo=mail-wm1-x329.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=salutedevices.com (client-ip=45.89.224.132; helo=mx1.sberdevices.ru; envelope-from=gnstark@salutedevices.com; receiver=lists.ozlabs.org)
+Received: from mx1.sberdevices.ru (mx2.sberdevices.ru [45.89.224.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sv02l3QtZz2ydW
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Dec 2023 23:47:08 +1100 (AEDT)
-Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-40c69403b3eso28220255e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Dec 2023 04:47:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1702903621; x=1703508421; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q5uQmT85hN5Blw5wIPIAmzozo5Lx91qu3slA3GJ+h4s=;
-        b=nDD6mPO6bg51cdM54Yxu2MIgg3cP9V0oqFz+bjGRjr1ajzyrPEpFYM5Yw2VxxHxcPY
-         kzTTLskoBbZkFwoPnEYBtG+0wSRnDLsacikDMpxBKWT6ge+eaRjaY/zpcFAiRpFG3v2p
-         dHUYynacv1ZtmYfkXSA3M2tB+EtUs0XPWXj44Z8kChC3Wm5DBSOBVCpugglmdWvKrPGG
-         HuZt9Oq9coVT9KqkuJgfHBu4uiW4Bew+16ju0hKYIJ0H297hUFGoA5GC6hexBXuKOXdG
-         3IV4PRYVtFbAdwCWO0ZvxEM6EsFGDWsPXDKwEv1enoAwDpDeogOcLG9hMgcOwHl1cT0H
-         iyqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702903621; x=1703508421;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q5uQmT85hN5Blw5wIPIAmzozo5Lx91qu3slA3GJ+h4s=;
-        b=NZHg3IA/318n9H421ekGvCZ4hjoF+9NxLqTNczoHmBdZzRUjeRhXPzdIL++mfJAknR
-         V6Z/h03ZqzYwlUh/4Kao2hoqKoM03uFdpYYX0xQfT8gHSWQJpf0NAvPqGcdxJAf+ftWI
-         X8BzSF9KjqR4ApsolYNGocU7vC3hkFHgoxSSQ94M7x6EO70fkjm6exuLSEWdydZoVbhE
-         yG9bKhyyLTOoGLKtdefMlppS75PFDmdwK5gv7QVGYzR4Kyerkh9BxrCBq0JKx7hX/Mjb
-         vOwwOtXinYtoUwGsMr8quBigNeUzqQGHOZnL+RyL/D/D3UU7dauHDJDTD/FoMJAo6NAg
-         VQKw==
-X-Gm-Message-State: AOJu0YxSubW9y2/KTkNqNESLX6jZeZSAiP/QJSYks3SY6lkvzkoxRyN9
-	fssa3752HU1mnVXrpV/LiS3bUw==
-X-Google-Smtp-Source: AGHT+IGjNvhwKz+4urz8fJWawFyt8gyVA7ctsw/d4seUPcQuZw4GrukjuV5DkgYrHT38kyirqOKCjQ==
-X-Received: by 2002:a05:600c:3c83:b0:40c:4aa6:75b9 with SMTP id bg3-20020a05600c3c8300b0040c4aa675b9mr6689035wmb.126.1702903621415;
-        Mon, 18 Dec 2023 04:47:01 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.218.27])
-        by smtp.gmail.com with ESMTPSA id wn9-20020a170907068900b00a2362c5e3dbsm563527ejb.151.2023.12.18.04.46.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Dec 2023 04:47:00 -0800 (PST)
-Message-ID: <fae1e6f8-f679-4266-95b6-5879c71683a4@linaro.org>
-Date: Mon, 18 Dec 2023 13:46:58 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sv0wJ6h1jz3bYR
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 00:26:37 +1100 (AEDT)
+Received: from p-infra-ksmg-sc-msk02 (localhost [127.0.0.1])
+	by mx1.sberdevices.ru (Postfix) with ESMTP id 24864120002;
+	Mon, 18 Dec 2023 16:26:32 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 24864120002
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
+	s=mail; t=1702905992;
+	bh=hEKEWxV96Sppv23+lUv1cXH/VDIdkynH55REibS5m+8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
+	b=DSuPVkoZOiwDglNg6opkAzQYO9j5AbMHfvo8QoJ3yQPwBf0xMJ4XDVF6sIT5Liw+O
+	 FOmdxhHbwZXZKCA+BbeQh7yYEW9OnPElzLEL0LcwLu+H+4HNdKDSNKW8nLvqiQ+FnW
+	 JLvXkheWuEt1gKaoNuRpTfADZd1A97rkWDnsg7IU6wCYwoZmTuj6bszWAWsvcppMNS
+	 MWfrg4lc5FR3H3o13kBE8aMmyn4HTBya9uWt9o0dudCcqrqAr6P3jLZP8tJ7vFUzzv
+	 Q4kHDdGaUkzOpanwds6Bp4FLZuxR2s6MRD0blxkRfIH2kP6u87oKBCSVdYicUWw6AU
+	 PG9feifyoQcMQ==
+Received: from smtp.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.sberdevices.ru (Postfix) with ESMTPS;
+	Mon, 18 Dec 2023 16:26:31 +0300 (MSK)
+Received: from [192.168.1.143] (100.64.160.123) by
+ p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Mon, 18 Dec 2023 16:26:30 +0300
+Message-ID: <d160443b-b973-4162-9900-95c04e62cd65@salutedevices.com>
+Date: Mon, 18 Dec 2023 16:26:30 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv3 RESEND 00/10] ASoC: fsl-asoc-card: compatibility
- integration of a generic codec use case for use with S/PDIF controller
-To: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Shengjiu Wang <shengjiu.wang@gmail.com>,
- Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Nicolin Chen <nicoleotsuka@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>
-References: <20231218124058.2047167-1-elinor.montmasson@savoirfairelinux.com>
+Subject: Re: [PATCH v4 02/10] locking: introduce devm_mutex_init
 Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231218124058.2047167-1-elinor.montmasson@savoirfairelinux.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Waiman Long
+	<longman@redhat.com>, "andy.shevchenko@gmail.com"
+	<andy.shevchenko@gmail.com>, "pavel@ucw.cz" <pavel@ucw.cz>, "lee@kernel.org"
+	<lee@kernel.org>, "vadimp@nvidia.com" <vadimp@nvidia.com>,
+	"mpe@ellerman.id.au" <mpe@ellerman.id.au>, "npiggin@gmail.com"
+	<npiggin@gmail.com>, "hdegoede@redhat.com" <hdegoede@redhat.com>,
+	"mazziesaccount@gmail.com" <mazziesaccount@gmail.com>, "peterz@infradead.org"
+	<peterz@infradead.org>, "mingo@redhat.com" <mingo@redhat.com>,
+	"will@kernel.org" <will@kernel.org>, "boqun.feng@gmail.com"
+	<boqun.feng@gmail.com>, "nikitos.tr@gmail.com" <nikitos.tr@gmail.com>
+References: <20231214173614.2820929-1-gnstark@salutedevices.com>
+ <20231214173614.2820929-3-gnstark@salutedevices.com>
+ <5c10f66c-3fd8-4861-994b-13e71c24f10a@redhat.com>
+ <b158ca2b-7300-4ad0-82b8-e1442d267734@csgroup.eu>
+ <300d2131-87ef-48c1-b162-dcef0d8d5722@redhat.com>
+ <5ef8a83a-5dfd-4038-851e-c730d5f1b6f3@csgroup.eu>
+ <1e5907f2-c794-4ee2-8abc-b45831cca5bb@salutedevices.com>
+ <0a81e53d-f837-486c-8b0b-7a3c62853be7@csgroup.eu>
+From: George Stark <gnstark@salutedevices.com>
+In-Reply-To: <0a81e53d-f837-486c-8b0b-7a3c62853be7@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [100.64.160.123]
+X-ClientProxiedBy: p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) To
+ p-i-exch-sc-m01.sberdevices.ru (172.16.192.107)
+X-KSMG-Rule-ID: 10
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Lua-Profiles: 182174 [Dec 18 2023]
+X-KSMG-AntiSpam-Version: 6.1.0.3
+X-KSMG-AntiSpam-Envelope-From: gnstark@salutedevices.com
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Info: LuaCore: 7 0.3.7 6d6bf5bd8eea7373134f756a2fd73e9456bb7d1a, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;100.64.160.123:7.1.2;lore.kernel.org:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;elixir.bootlin.com:7.1.1;salutedevices.com:7.1.1;smtp.sberdevices.ru:7.1.1,5.0.1, FromAlignment: s, ApMailHostAddress: 100.64.160.123
+X-MS-Exchange-Organization-SCL: -1
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiPhishing: Clean, bases: 2023/12/18 11:26:00
+X-KSMG-LinksScanning: Clean, bases: 2023/12/18 11:26:00
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2023/12/18 10:59:00 #22677376
+X-KSMG-AntiVirus-Status: Clean, skipped
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -133,84 +102,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, Philip-Dylan <philip-dylan.gleonec@savoirfairelinux.com>, linuxppc-dev@lists.ozlabs.org
+Cc: "kernel@salutedevices.com" <kernel@salutedevices.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 18/12/2023 13:40, Elinor Montmasson wrote:
-> Hello,
-> 
-> This is the v3 of the series of patch aiming to make the machine driver
-> "fsl-asoc-card" compatible with use cases where there is no real codec
-> driver.
-> It proposes to use the "spdif_receiver" and "spdif_transmitter"
-> drivers instead of the dummy codec.
-> This is a first step in using the S/PDIF controller with the ASRC.
-> 
-> The five first patches add compatibility with the pair of codecs
-> "spdif_receiver" and "spdif_transmitter" with a new compatible,
-> "fsl,imx-audio-generic".
-> Codec parameters are set with default values.
-> Consequently, the driver is modified to work with multi-codec use cases.
-> It can get 2 codecs phandles from the device tree, and the
-> "fsl_asoc_card_priv" struct now has 2 "codec_priv" to store properties
-> of both codecs. It is fixed to 2 codecs as only "fsl,imx-audio-generic"
-> uses multiple codecs at the moment.
-> However, the driver now uses for_each_codecs macros when possible to
-> ease future implementations of multi-codec configurations.
-> 
-> The remaining patches add configuration options for the device tree.
-> They configure the CPU DAI when using "fsl,imx-audio-generic".
-> These options are usually hard-coded in "fsl-asoc-card.c" for each
-> audio codec.
-> Because the generic codec could be used with other CPU DAIs than
-> the S/PDIF controller, setting these parameters could be required.
-> 
-> This series of patch was successfully built for arm64 and x86 on top of
-> the latest for-next branch of the ASoC git tree on the 14th of December.
-> These modifications have also been tested on an i.MX8MN evaluation
-> board, with a linux kernel RT v6.1.26-rt8.
-> 
-> 
-> We also have a few questions, following remarks made by
-> Krzysztof Kozlowski in a previous email for patch 10/10:
-> 
->>>>> The compatible list for this generic sound card currently:
->>>>> @@ -48,6 +51,8 @@ The compatible list for this generic sound card
->>>>> currently:
->>>>>
->>>>> "fsl,imx-audio-nau8822"
->>>>>
->>>>> + "fsl,imx-audio-generic"
->>>>
->>>> Generic does not look like hardware specific.
+Hello Christophe
+
+
+On 12/17/23 12:31, Christophe Leroy wrote:
+
+...
+>>>>>>> ---
+>>>>>>>      include/linux/mutex.h        | 23 +++++++++++++++++++++++
+>>>>>>>      kernel/locking/mutex-debug.c | 22 ++++++++++++++++++++++
+>>>>>>>      2 files changed, 45 insertions(+)
+>>>>>>>
+>>>>>>> diff --git a/include/linux/mutex.h b/include/linux/mutex.h
+>>>>>>> index a33aa9eb9fc3..ebd03ff1ef66 100644
+>>>>>>> --- a/include/linux/mutex.h
+>>>>>>> +++ b/include/linux/mutex.h
+>>>>>>> @@ -21,6 +21,8 @@
+>>>>>>>      #include <linux/debug_locks.h>
+>>>>>>>      #include <linux/cleanup.h>
+>>>>>>> +struct device;
+>>>>>>> +
+>>>>>>>      #ifdef CONFIG_DEBUG_LOCK_ALLOC
+>>>>>>>      # define __DEP_MAP_MUTEX_INITIALIZER(lockname)            \
+>>>>>>>              , .dep_map = {                    \
+>>>>>>> @@ -127,6 +129,20 @@ extern void __mutex_init(struct mutex *lock,
+>>>>>>> const char *name,
+>>>>>>>       */
+>>>>>>>      extern bool mutex_is_locked(struct mutex *lock);
+>>>>>>> +#ifdef CONFIG_DEBUG_MUTEXES
+>>>>>>> +
+>>>>>>> +int devm_mutex_init(struct device *dev, struct mutex *lock);
+>>>>>> Please add "extern" to the function declaration to be consistent with
+>>>>>> other functional declarations in mutex.h.
+>>>>> 'extern' is pointless and deprecated on function prototypes. Already
+>>>>> having some is not a good reason to add new ones, errors from the past
+>>>>> should be avoided nowadays. With time they should all disappear so
+>>>>> don't
+>>>>> add new ones.
+>>>> Yes, "extern" is optional. It is just a suggestion and I am going to
+>>>> argue about that.
 >>>
->>> Even if our end goal is to use it with the S/PDIF controller, this new
->>> support can be used with different hardware that doesn't
->>> require a codec. Thus, we don't really want to specify "spdif" in it.
+>>> FWIW, note that when you perform a strict check with checkpatch.pl, you
+>>> get a warning for that:
 >>>
->>> Is this compatible string not suitable ?
->>> Should we rename it to something else, like "fsl,imx-audio-no-codec" ?
+>>> $ ./scripts/checkpatch.pl --strict -g HEAD
+>>> CHECK: extern prototypes should be avoided in .h files
+>>> #56: FILE: include/linux/mutex.h:131:
+>>> +extern int devm_mutex_init(struct device *dev, struct mutex *lock);
+>>>
+>>> total: 0 errors, 0 warnings, 1 checks, 99 lines checked
 >>
->> Maybe Mark or Rob will help here, but for me "imx-audio" is just way too
->> generic.
+>> This is ambiguous situation about extern. It's deprecated and useless on
+>> one hand but harmless. And those externs will not disappear by themself
+>> - it'll be one patch that clean them all at once (in one header at
+>> least) so one more extern will not alter the overall picture.
 > 
-> * Which generic name should we use ? Or how should we change it?
-
-Compatible should be specific to one SoC, even if there is one driver
-for entire family.
-
->  
->> Also, you add several new properties, so I really expect either
->> converting old binding to DT schema first or adding new device in DT
->> schema format.
+> That kind of cleanup patch bomb is a nightmare for backporting, so if it
+> happens one day it should be as light as possible, hence the importance
+> to not add new ones and remove existing one everytime you modify or move
+> a line including it for whatever reason.
 > 
-> * fsl-asoc-card.txt currently follows the old dt-bindings format.
-> Should we update it to DT schema format in this patch series
-> before adding my new properties?
+>>
+>> On the other hand if we manage to place devm_mutex_init near
+>> mutex_destroy then we'll have:
+>>
+>> int devm_mutex_init(struct device *dev, struct mutex *lock);
+>> extern void mutex_destroy(struct mutex *lock);
+> 
+> I sent you an alternative proposal that avoids duplication of the static
+> inline version of devm_mutex_init(). If you agree with it just take it
+> into your series and that question will vanish.
 
-You add six new properties, so from my point of view this cannot be in TXT.
+Thanks for that patch by the way. The only comment is that moving 
+mutex_destroy
+should be done in a separate patch IMO.
+Waiman Long proposed such a refactoring here:
+https://lore.kernel.org/lkml/20231216013656.1382213-2-longman@redhat.com/T/
 
-Best regards,
-Krzysztof
+With this patch adding devm_mutex_init would be straightforward.
 
+>>
+>> and it raises questions and does not look very nice.
+> 
+> If you look at linux/mm.h there are plenty of them anyway, so why do
+> different ? For an exemple look at
+> https://elixir.bootlin.com/linux/v6.7-rc4/source/include/linux/mm.h#L2372
+Oh, I see. Ok, I don't have any more arguments against removing extern.
+We'll see what mutex.h maintainers decide.
+
+> 
+> Christophe
+
+-- 
+Best regards
+George
