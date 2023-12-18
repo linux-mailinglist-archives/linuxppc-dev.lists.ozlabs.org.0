@@ -2,94 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FEB58165D2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Dec 2023 05:56:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F6728165EA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Dec 2023 05:58:39 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Uuojkkpe;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IoBic/rp;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4StnbP6TRKz3bqP
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Dec 2023 15:56:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Stnf51MBNz3c96
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Dec 2023 15:58:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Uuojkkpe;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IoBic/rp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4StnZT3YnVz30hF
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Dec 2023 15:55:28 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3BI4N57Z023466;
-	Mon, 18 Dec 2023 04:55:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=dyjnPnZ3hP4sSdFpgG3DJYQ2s/6vp6EuYjygih2dsMg=;
- b=UuojkkpeSTUa96uz0iKtwW9xeJ9bWwfjqHejhQVn8xW4KwhknoZEfddghkNFa+FbkedV
- NRf1HAC/Dc568qYjtTN3+DAwO1P9AlYRVgPTaEEaB0EcOviU9ymCfe178FSLyeDxbcEy
- 0OCzm3Nk08iOls+l7L3b5K1ouQFOeR0sDiBZBnFU0mYomR+13owlc1krLXmqmtYgUMLn
- dPpD9T5Q5TQY1JjANtneeUaEIDH43xIn/pAXnYN4VUDkBdnRQAC346ZB7SJhJsQpJyuc
- 1bxiHMZUUWb+Av7wFespRuAyB+nO77M2FFi+bMJt8wzNA9h9o8ApBDVNe4W0OXNX5akq BQ== 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4StndF0w92z2xTS
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Dec 2023 15:57:52 +1100 (AEDT)
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3BI4rs2a005504;
+	Mon, 18 Dec 2023 04:57:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=LZAxFx4EonWNZR1Ir6a5e5qF8MZSqMxZbimtZ7i+N3Y=;
+ b=IoBic/rp4N2L1W4tnCyKKFkJzCJRBEfLrb7ofi7OI4fVovrxiM4Gr2WZA+5yN7YrXqKF
+ 2sp4PbwtdNzNkX+Yai2LjLFVqMNHPFDknWbKtIYsueJ0eeVIM856WxAxULeS9DGHC1uT
+ DvsSEX6cubRsIYQCUwvvmUKj8FtnXZebD9nWMIn+gpxF/8ZGjHJbulh2pcrK+5dgmRD/
+ 25LbITYu78nQ6epNpeeqM1exMPj3oXroWPXfLmxyVSIbXXYx1NgyL2euvdXPesWAZ25j
+ raAxrTwPmdF2h/+NQ27/549ty6nwx1znL1098fGEhRVIdUAGvxGN4qF51E+dF0Wd0xvW gw== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3v2f0p0nrf-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3v2c4xmjyc-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Dec 2023 04:55:14 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3BI4jtBS016047;
-	Mon, 18 Dec 2023 04:55:14 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3v2f0p0nqy-1
+	Mon, 18 Dec 2023 04:57:07 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3BI4bl12002614;
+	Mon, 18 Dec 2023 04:57:06 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3v2c4xmjxs-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Dec 2023 04:55:13 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3BI4F54l012308;
-	Mon, 18 Dec 2023 04:55:13 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3v1rx1e7ns-1
+	Mon, 18 Dec 2023 04:57:06 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3BI3BXH4013763;
+	Mon, 18 Dec 2023 04:57:05 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3v1qqjxj4w-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Dec 2023 04:55:13 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3BI4tAmW43188640
+	Mon, 18 Dec 2023 04:57:05 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3BI4v3Cn14090916
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 18 Dec 2023 04:55:10 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 14F812004B;
-	Mon, 18 Dec 2023 04:55:10 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3B4D820040;
-	Mon, 18 Dec 2023 04:54:55 +0000 (GMT)
-Received: from vaibhav?linux.ibm.com (unknown [9.67.88.179])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Mon, 18 Dec 2023 04:54:54 +0000 (GMT)
-Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Mon, 18 Dec 2023 10:24:51 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        kvm-ppc@vger.kernel.org
-Subject: Re: [PATCH 01/12] KVM: PPC: Book3S HV nestedv2: Invalidate RPT
- before deleting a guest
-In-Reply-To: <87r0jntpf8.fsf@kernel.org>
-References: <20231201132618.555031-1-vaibhav@linux.ibm.com>
- <20231201132618.555031-2-vaibhav@linux.ibm.com>
- <878r66xtjt.fsf@kernel.org> <87jzpolsen.fsf@vajain21.in.ibm.com>
- <87r0jntpf8.fsf@kernel.org>
-Date: Mon, 18 Dec 2023 10:24:51 +0530
-Message-ID: <8734w0az50.fsf@vajain21.in.ibm.com>
+	Mon, 18 Dec 2023 04:57:03 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0BAC52004B;
+	Mon, 18 Dec 2023 04:57:03 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 97E5D20040;
+	Mon, 18 Dec 2023 04:57:02 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 18 Dec 2023 04:57:02 +0000 (GMT)
+Received: from jarvis.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 6012E6016C;
+	Mon, 18 Dec 2023 15:56:59 +1100 (AEDT)
+Message-ID: <2b35027ca6c61c2211117d30bd84c0e26cced1f6.camel@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/powernv: Add a null pointer check to
+ scom_debug_init_one
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: Kunwu Chan <chentao@kylinos.cn>, mpe@ellerman.id.au, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu
+Date: Mon, 18 Dec 2023 15:56:48 +1100
+In-Reply-To: <20231208085937.107210-1-chentao@kylinos.cn>
+References: <20231208085937.107210-1-chentao@kylinos.cn>
+Autocrypt: addr=ajd@linux.ibm.com; prefer-encrypt=mutual;
+ keydata=mDMEZPaWfhYJKwYBBAHaRw8BAQdAAuMUoxVRwqphnsFua1W+WBz6I2cIn0+Ox4YypJSdBJ+0MEFuZHJldyBEb25uZWxsYW4gKElCTSBzdHVmZikgPGFqZEBsaW51eC5pYm0uY29tPoiTBBMWCgA7FiEE01kE3s9shZVYLX1Aj1Qx8QRYRqAFAmT2ln4CGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQj1Qx8QRYRqAdswD8DhIh4trRQYiPe+7LaM7q+0+Thz+CwUJCW3UFOf0SEO0BAPNdsi7aVV+4Oah6nYzqzH5Zbs4Tz5RY+Vsf+DD/EzUKuDgEZPaWfhIKKwYBBAGXVQEFAQEHQLN9moJRqN8Zop/kcyIjga+2qzLoVaNAL6+4diGnlr1xAwEIB4h4BBgWCgAgFiEE01kE3s9shZVYLX1Aj1Qx8QRYRqAFAmT2ln4CGwwACgkQj1Qx8QRYRqCYkwD/W+gIP9kITfU4wnLtueFUThxA0T/LF49M7k31Qb8rPCwBALeEYAlX648lzjSA07pJB68Jt39FuUno444dSVmhYtoH
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.2 (3.50.2-1.fc39) 
 MIME-Version: 1.0
-Content-Type: text/plain
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: DXBkf98tLjwrV10hfZmzXMr0d_AhLKfF
-X-Proofpoint-GUID: -7xeJE62nHDf_RxHV5bLL0UxTFZuCjhW
+X-Proofpoint-GUID: YWCYse8US4TUUpg0jRtmDF8BKdKFc5N4
+X-Proofpoint-ORIG-GUID: xJhNnQO6dBMc8QbgzBAyh7-ogqXrdcio
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-12-18_02,2023-12-14_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- priorityscore=1501 adultscore=0 mlxlogscore=700 suspectscore=0
- lowpriorityscore=0 impostorscore=0 spamscore=0 bulkscore=0 malwarescore=0
- mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2312180032
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
+ adultscore=0 phishscore=0 lowpriorityscore=0 clxscore=1011 bulkscore=0
+ spamscore=0 mlxlogscore=677 suspectscore=0 priorityscore=1501
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2312180033
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,80 +106,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, sbhat@linux.ibm.com, amachhiw@linux.vnet.ibm.com, Jordan Niethe <jniethe5@gmail.com>, gautam@linux.ibm.com, Nicholas Piggin <npiggin@gmail.com>, David.Laight@ACULAB.COM, kconsul@linux.vnet.ibm.com, Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>
+Cc: robh@kernel.org, Kunwu Chan <kunwu.chan@hotmail.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, mirimmad17@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Aneesh Kumar K.V" <aneesh.kumar@kernel.org> writes:
+On Fri, 2023-12-08 at 16:59 +0800, Kunwu Chan wrote:
+> kasprintf() returns a pointer to dynamically allocated memory
+> which can be NULL upon failure.
+> Add a null pointer check, and release 'ent' to avoid memory leaks.
+>=20
+> Fixes: bfd2f0d49aef ("powerpc/powernv: Get rid of old scom_controller
+> abstraction")
 
-> Vaibhav Jain <vaibhav@linux.ibm.com> writes:
->
->> Hi Aneesh,
->>
->> Thanks for looking into this patch. My responses inline below:
->>
->> "Aneesh Kumar K.V (IBM)" <aneesh.kumar@kernel.org> writes:
->>
->>> Vaibhav Jain <vaibhav@linux.ibm.com> writes:
->>>
->>>> From: Jordan Niethe <jniethe5@gmail.com>
->>>>
->>>> An L0 must invalidate the L2's RPT during H_GUEST_DELETE if this has not
->>>> already been done. This is a slow operation that means H_GUEST_DELETE
->>>> must return H_BUSY multiple times before completing. Invalidating the
->>>> tables before deleting the guest so there is less work for the L0 to do.
->>>>
->>>> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
->>>> ---
->>>>  arch/powerpc/include/asm/kvm_book3s.h | 1 +
->>>>  arch/powerpc/kvm/book3s_hv.c          | 6 ++++--
->>>>  arch/powerpc/kvm/book3s_hv_nested.c   | 2 +-
->>>>  3 files changed, 6 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/arch/powerpc/include/asm/kvm_book3s.h b/arch/powerpc/include/asm/kvm_book3s.h
->>>> index 4f527d09c92b..a37736ed3728 100644
->>>> --- a/arch/powerpc/include/asm/kvm_book3s.h
->>>> +++ b/arch/powerpc/include/asm/kvm_book3s.h
->>>> @@ -302,6 +302,7 @@ void kvmhv_nested_exit(void);
->>>>  void kvmhv_vm_nested_init(struct kvm *kvm);
->>>>  long kvmhv_set_partition_table(struct kvm_vcpu *vcpu);
->>>>  long kvmhv_copy_tofrom_guest_nested(struct kvm_vcpu *vcpu);
->>>> +void kvmhv_flush_lpid(u64 lpid);
->>>>  void kvmhv_set_ptbl_entry(u64 lpid, u64 dw0, u64 dw1);
->>>>  void kvmhv_release_all_nested(struct kvm *kvm);
->>>>  long kvmhv_enter_nested_guest(struct kvm_vcpu *vcpu);
->>>> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
->>>> index 1ed6ec140701..5543e8490cd9 100644
->>>> --- a/arch/powerpc/kvm/book3s_hv.c
->>>> +++ b/arch/powerpc/kvm/book3s_hv.c
->>>> @@ -5691,10 +5691,12 @@ static void kvmppc_core_destroy_vm_hv(struct kvm *kvm)
->>>>  			kvmhv_set_ptbl_entry(kvm->arch.lpid, 0, 0);
->>>>  	}
->>>>  
->>>> -	if (kvmhv_is_nestedv2())
->>>> +	if (kvmhv_is_nestedv2()) {
->>>> +		kvmhv_flush_lpid(kvm->arch.lpid);
->>>>  		plpar_guest_delete(0, kvm->arch.lpid);
->>>>
->>>
->>> I am not sure I follow the optimization here. I would expect the
->>> hypervisor to kill all the translation caches as part of guest_delete.
->>> What is the benefit of doing a lpid flush outside the guest delete?
->>>
->> Thats right. However without this optimization the H_GUEST_DELETE hcall
->> in plpar_guest_delete() returns H_BUSY multiple times resulting in
->> multiple hcalls to the hypervisor until it finishes. Flushing the guest
->> translation cache upfront reduces the number of HCALLs L1 guests has to
->> make to delete a L2 guest via H_GUEST_DELETE.
->>
->
-> can we add that as a comment above that kvmhv_flush_lpid()?
-Sure, I will put up a comment with that detail in v2 of the patch
-series.
+[+ robh]
 
->
-> -aneesh
+This commit just reshuffled around some existing code. The commit that
+appears to have added this is actually b7c670d673d1 ("powerpc: Convert
+to using %pOF instead of full_name").
 
--- 
-Cheers
-~ Vaibhav
+> Cc: Kunwu Chan <kunwu.chan@hotmail.com>
+> Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+> ---
+> =C2=A0arch/powerpc/platforms/powernv/opal-xscom.c | 5 +++++
+> =C2=A01 file changed, 5 insertions(+)
+>=20
+> diff --git a/arch/powerpc/platforms/powernv/opal-xscom.c
+> b/arch/powerpc/platforms/powernv/opal-xscom.c
+> index 262cd6fac907..748c2b97fa53 100644
+> --- a/arch/powerpc/platforms/powernv/opal-xscom.c
+> +++ b/arch/powerpc/platforms/powernv/opal-xscom.c
+> @@ -165,6 +165,11 @@ static int scom_debug_init_one(struct dentry
+> *root, struct device_node *dn,
+> =C2=A0	ent->chip =3D chip;
+> =C2=A0	snprintf(ent->name, 16, "%08x", chip);
+> =C2=A0	ent->path.data =3D (void *)kasprintf(GFP_KERNEL, "%pOF", dn);
+> +	if (!ent->path.data) {
+> +		kfree(ent);
+> +		return -ENOMEM;
+
+The caller of this function (scom_debug_init()) uses a bitwise OR to
+aggregate the return codes of multiple calls to scom_debug_init_one().
+This doesn't really work for returning specific error codes, so I'd
+just return -1 here (or change the way the return codes are handled on
+the caller side).
+
+> +	}
+> +
+> =C2=A0	ent->path.size =3D strlen((char *)ent->path.data);
+> =C2=A0
+> =C2=A0	dir =3D debugfs_create_dir(ent->name, root);
+
+--=20
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
