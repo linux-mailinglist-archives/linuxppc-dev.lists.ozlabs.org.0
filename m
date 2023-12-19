@@ -1,69 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 045348182DE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 09:01:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 760AD8182E8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 09:02:23 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OmeSxnUw;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OmeSxnUw;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iZsYvq8q;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iZsYvq8q;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SvTfh4y9wz3vmG
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 19:01:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SvTgd0y8vz3vgx
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 19:02:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OmeSxnUw;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OmeSxnUw;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iZsYvq8q;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iZsYvq8q;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SvTYh37Pxz3c3x
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 18:57:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SvTYz2g5sz3d9H
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 18:57:27 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702972630;
+	s=mimecast20190719; t=1702972645;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uyBT0nqGKaQsvTTr5mCIJmcBkZIho6YT9IXUJI5Nmzw=;
-	b=OmeSxnUwWoa6tJ92TEOtR66UT11ctZnKhQExLfg5A/gxJiEJyQXNN9esZEndlyUOV1QssQ
-	FDfhQRtavalAv+kVai8dgU++/wN8+fOhJURpiHAgFywr7UWQnM4bvY0nn8Q+2EzpcOXrZV
-	09ouaY5IqGNgSE3ZIuDkV8X89tVNuoA=
+	bh=4pxuQ+zeUrZD43W0p30SCM4P3ajCE4Euxhqhb6PE8fI=;
+	b=iZsYvq8qNTV90aCaj3kKlaGc448Xb0lN4vlU4UwahWwC9Tp7wZnDzI/gR3pbhYQfpz8oWs
+	gSiUjSpl4K4oQvhf9ltIRR6TkJK1TPw7dRSpzxcCP4BkqOZ1VSfB59sU2l0ubmdozgF0eL
+	rrczbfJzfVBMWxDHwLHvUwyK1KU1ZlI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702972630;
+	s=mimecast20190719; t=1702972645;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uyBT0nqGKaQsvTTr5mCIJmcBkZIho6YT9IXUJI5Nmzw=;
-	b=OmeSxnUwWoa6tJ92TEOtR66UT11ctZnKhQExLfg5A/gxJiEJyQXNN9esZEndlyUOV1QssQ
-	FDfhQRtavalAv+kVai8dgU++/wN8+fOhJURpiHAgFywr7UWQnM4bvY0nn8Q+2EzpcOXrZV
-	09ouaY5IqGNgSE3ZIuDkV8X89tVNuoA=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-150-L9GGlqWjOR6XdFWT616TOg-1; Tue,
- 19 Dec 2023 02:57:06 -0500
-X-MC-Unique: L9GGlqWjOR6XdFWT616TOg-1
+	bh=4pxuQ+zeUrZD43W0p30SCM4P3ajCE4Euxhqhb6PE8fI=;
+	b=iZsYvq8qNTV90aCaj3kKlaGc448Xb0lN4vlU4UwahWwC9Tp7wZnDzI/gR3pbhYQfpz8oWs
+	gSiUjSpl4K4oQvhf9ltIRR6TkJK1TPw7dRSpzxcCP4BkqOZ1VSfB59sU2l0ubmdozgF0eL
+	rrczbfJzfVBMWxDHwLHvUwyK1KU1ZlI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-308-O_LLgdEzO2yAjxB50bIomw-1; Tue, 19 Dec 2023 02:57:17 -0500
+X-MC-Unique: O_LLgdEzO2yAjxB50bIomw-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E4B5F3813F20;
-	Tue, 19 Dec 2023 07:57:04 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 94A54837221;
+	Tue, 19 Dec 2023 07:57:16 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.117])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id EAA8A2026D66;
-	Tue, 19 Dec 2023 07:56:53 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id B40302026D66;
+	Tue, 19 Dec 2023 07:57:05 +0000 (UTC)
 From: peterx@redhat.com
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 06/13] mm/gup: Drop folio_fast_pin_allowed() in hugepd processing
-Date: Tue, 19 Dec 2023 15:55:31 +0800
-Message-ID: <20231219075538.414708-7-peterx@redhat.com>
+Subject: [PATCH 07/13] mm/gup: Refactor record_subpages() to find 1st small page
+Date: Tue, 19 Dec 2023 15:55:32 +0800
+Message-ID: <20231219075538.414708-8-peterx@redhat.com>
 In-Reply-To: <20231219075538.414708-1-peterx@redhat.com>
 References: <20231219075538.414708-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -86,65 +86,85 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Peter Xu <peterx@redhat.com>
 
-Hugepd format for GUP is only used in PowerPC with hugetlbfs.  There are
-some kernel usage of hugepd (can refer to hugepd_populate_kernel() for
-PPC_8XX), however those pages are not candidates for GUP.
+All the fast-gup functions take a tail page to operate, always need to do
+page mask calculations before feeding that into record_subpages().
 
-Commit a6e79df92e4a ("mm/gup: disallow FOLL_LONGTERM GUP-fast writing to
-file-backed mappings") added a check to fail gup-fast if there's potential
-risk of violating GUP over writeback file systems.  That should never apply
-to hugepd.  Considering that hugepd is an old format (and even
-software-only), there's no plan to extend hugepd into other file typed
-memories that is prone to the same issue.
+Merge that logic into record_subpages(), so that it will do the nth_page()
+calculation.
 
-Drop that check, not only because it'll never be true for hugepd per any
-known plan, but also it paves way for reusing the function outside
-fast-gup.
-
-To make sure we'll still remember this issue just in case hugepd will be
-extended to support non-hugetlbfs memories, add a rich comment above
-gup_huge_pd(), explaining the issue with proper references.
-
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Lorenzo Stoakes <lstoakes@gmail.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- mm/gup.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ mm/gup.c | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
 diff --git a/mm/gup.c b/mm/gup.c
-index efc9847e58fb..bb5b7134f10b 100644
+index bb5b7134f10b..82d28d517d0d 100644
 --- a/mm/gup.c
 +++ b/mm/gup.c
-@@ -2820,11 +2820,6 @@ static int gup_hugepte(pte_t *ptep, unsigned long sz, unsigned long addr,
- 		return 0;
+@@ -2767,13 +2767,16 @@ static int __gup_device_huge_pud(pud_t pud, pud_t *pudp, unsigned long addr,
+ }
+ #endif
+ 
+-static int record_subpages(struct page *page, unsigned long addr,
+-			   unsigned long end, struct page **pages)
++static int record_subpages(struct page *page, unsigned long sz,
++			   unsigned long addr, unsigned long end,
++			   struct page **pages)
+ {
++	struct page *start_page;
+ 	int nr;
+ 
++	start_page = nth_page(page, (addr & (sz - 1)) >> PAGE_SHIFT);
+ 	for (nr = 0; addr != end; nr++, addr += PAGE_SIZE)
+-		pages[nr] = nth_page(page, nr);
++		pages[nr] = nth_page(start_page, nr);
+ 
+ 	return nr;
+ }
+@@ -2808,8 +2811,8 @@ static int gup_hugepte(pte_t *ptep, unsigned long sz, unsigned long addr,
+ 	/* hugepages are never "special" */
+ 	VM_BUG_ON(!pfn_valid(pte_pfn(pte)));
+ 
+-	page = nth_page(pte_page(pte), (addr & (sz - 1)) >> PAGE_SHIFT);
+-	refs = record_subpages(page, addr, end, pages + *nr);
++	page = pte_page(pte);
++	refs = record_subpages(page, sz, addr, end, pages + *nr);
+ 
+ 	folio = try_grab_folio(page, refs, flags);
+ 	if (!folio)
+@@ -2882,8 +2885,8 @@ static int gup_huge_pmd(pmd_t orig, pmd_t *pmdp, unsigned long addr,
+ 					     pages, nr);
  	}
  
--	if (!folio_fast_pin_allowed(folio, flags)) {
--		gup_put_folio(folio, refs, flags);
--		return 0;
--	}
--
- 	if (!pte_write(pte) && gup_must_unshare(NULL, flags, &folio->page)) {
- 		gup_put_folio(folio, refs, flags);
- 		return 0;
-@@ -2835,6 +2830,14 @@ static int gup_hugepte(pte_t *ptep, unsigned long sz, unsigned long addr,
- 	return 1;
- }
+-	page = nth_page(pmd_page(orig), (addr & ~PMD_MASK) >> PAGE_SHIFT);
+-	refs = record_subpages(page, addr, end, pages + *nr);
++	page = pmd_page(orig);
++	refs = record_subpages(page, PMD_SIZE, addr, end, pages + *nr);
  
-+/*
-+ * NOTE: currently GUP for a hugepd is only possible on hugetlbfs file
-+ * systems on Power, which does not have issue with folio writeback against
-+ * GUP updates.  When hugepd will be extended to support non-hugetlbfs or
-+ * even anonymous memory, we need to do extra check as what we do with most
-+ * of the other folios. See writable_file_mapping_allowed() and
-+ * folio_fast_pin_allowed() for more information.
-+ */
- static int gup_huge_pd(hugepd_t hugepd, unsigned long addr,
- 		unsigned int pdshift, unsigned long end, unsigned int flags,
- 		struct page **pages, int *nr)
+ 	folio = try_grab_folio(page, refs, flags);
+ 	if (!folio)
+@@ -2926,8 +2929,8 @@ static int gup_huge_pud(pud_t orig, pud_t *pudp, unsigned long addr,
+ 					     pages, nr);
+ 	}
+ 
+-	page = nth_page(pud_page(orig), (addr & ~PUD_MASK) >> PAGE_SHIFT);
+-	refs = record_subpages(page, addr, end, pages + *nr);
++	page = pud_page(orig);
++	refs = record_subpages(page, PUD_SIZE, addr, end, pages + *nr);
+ 
+ 	folio = try_grab_folio(page, refs, flags);
+ 	if (!folio)
+@@ -2966,8 +2969,8 @@ static int gup_huge_pgd(pgd_t orig, pgd_t *pgdp, unsigned long addr,
+ 
+ 	BUILD_BUG_ON(pgd_devmap(orig));
+ 
+-	page = nth_page(pgd_page(orig), (addr & ~PGDIR_MASK) >> PAGE_SHIFT);
+-	refs = record_subpages(page, addr, end, pages + *nr);
++	page = pgd_page(orig);
++	refs = record_subpages(page, PGDIR_SIZE, addr, end, pages + *nr);
+ 
+ 	folio = try_grab_folio(page, refs, flags);
+ 	if (!folio)
 -- 
 2.41.0
 
