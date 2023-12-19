@@ -2,88 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7CAB8186B9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 12:56:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82BA18186E6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 13:02:46 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F+PVdcQL;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F+PVdcQL;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jmd+TI5z;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jmd+TI5z;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SvZt53yyGz3cFf
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 22:56:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Svb101Tbxz3cRc
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 23:02:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F+PVdcQL;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F+PVdcQL;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jmd+TI5z;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jmd+TI5z;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SvZsH48TCz2xpp
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 22:56:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Svb085x3Jz2xpp
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 23:02:00 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702986961;
+	s=mimecast20190719; t=1702987317;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=CRzTT109Xd0Up5GuRVt2OIDmnr1m9IFlE9ql4FmRNAU=;
-	b=F+PVdcQLyMnfu9bYVdWi2UFg9O7Z5BLfzQBA+2ZRpnAcGn4x+lsaOBUksj1BdoCIJi6mDd
-	D6JAkqLeU6GwCchVZgWLSCAEt5W62oGY8yUs61JWumzakF5ZY+1AUfqsPT5JNLvjFjWge6
-	/L90XtKWJXEkETfsF+HpBIt0+9Vo0ME=
+	bh=vCITF5dMeDG0BubZdh654QnLC5s3UU0m6bF2nYSAq5Q=;
+	b=Jmd+TI5z8eOJdxiDRRDDtu/xPGfhoQk81XaJgSnO2Y11IR1ExDXaFNZkEeP0Engcv+FJVg
+	BejIsQDSrm+0XnmGJsapKLvPGS122Jfr0NC0cP0Re+mKWkmhcCXZHLjC9Dgfauw7R6RUZ6
+	spqnLb9o5GIBt2+bVq+Hd0ydy8cSt84=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702986961;
+	s=mimecast20190719; t=1702987317;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=CRzTT109Xd0Up5GuRVt2OIDmnr1m9IFlE9ql4FmRNAU=;
-	b=F+PVdcQLyMnfu9bYVdWi2UFg9O7Z5BLfzQBA+2ZRpnAcGn4x+lsaOBUksj1BdoCIJi6mDd
-	D6JAkqLeU6GwCchVZgWLSCAEt5W62oGY8yUs61JWumzakF5ZY+1AUfqsPT5JNLvjFjWge6
-	/L90XtKWJXEkETfsF+HpBIt0+9Vo0ME=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=vCITF5dMeDG0BubZdh654QnLC5s3UU0m6bF2nYSAq5Q=;
+	b=Jmd+TI5z8eOJdxiDRRDDtu/xPGfhoQk81XaJgSnO2Y11IR1ExDXaFNZkEeP0Engcv+FJVg
+	BejIsQDSrm+0XnmGJsapKLvPGS122Jfr0NC0cP0Re+mKWkmhcCXZHLjC9Dgfauw7R6RUZ6
+	spqnLb9o5GIBt2+bVq+Hd0ydy8cSt84=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-636-q-0UmIcpP9OZikjNPSE3Lg-1; Tue, 19 Dec 2023 06:55:57 -0500
-X-MC-Unique: q-0UmIcpP9OZikjNPSE3Lg-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-40c22bc1ebdso19414175e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 03:55:57 -0800 (PST)
+ us-mta-256-rG8lSHP_PI6-IGraG33Eaw-1; Tue, 19 Dec 2023 07:01:55 -0500
+X-MC-Unique: rG8lSHP_PI6-IGraG33Eaw-1
+Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-553b0eb5b80so2981a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 04:01:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702986957; x=1703591757;
+        d=1e100.net; s=20230601; t=1702987315; x=1703592115;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CRzTT109Xd0Up5GuRVt2OIDmnr1m9IFlE9ql4FmRNAU=;
-        b=Xa0b6N5utsWI71XjFF+BW9SaePO1ksVVxbc4GuNjOv1/zsBQ6k+3iexlfHAcVqow12
-         Qhwhx/efCiRWwN23Nyy1kJNceAvUh/4tFHiH3pyC4SW1p8kHUqBYKJsJtkqjo8ZFtJHy
-         XCNAOf+HqHfGMxtVNAJh11pqBy46nAObblnHurevS2KX7+vwXvQcBeTn5VhHfRsMz2Gu
-         IYIZqUk5/+3HBz+Q3m3+jsLdlr7iU29hpa64/I7CFLSLK3UMU5UxwsY0Ld38UH0DVvSv
-         tJJFxbkMcTsp7VCK7NQdVxo2yqcwqyFkp13jaTTYXHrsfjpe6LHbQagxW1eyR5YCP7F0
-         wXtw==
-X-Gm-Message-State: AOJu0YxysTfI+MDar/D5UzuVysDTfTCTQ/y0eYQYUB2U6WRjG0GzgUck
-	640MfegOrqs4rUwkzkT/OIrd7uQyLa7rIMQ3ANydd/BOCoeZC6kpfiL5Qogki65UQG7+TDp6Y4o
-	jldHwITTeMsZ51BEQyLNZ9KNM4A==
-X-Received: by 2002:a05:600c:8607:b0:40c:2ace:6e58 with SMTP id ha7-20020a05600c860700b0040c2ace6e58mr448788wmb.182.1702986956853;
-        Tue, 19 Dec 2023 03:55:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEbDrKIzkjdrzjHsrG5KTuvuH99zRb8ioV490mI7XbbPanRYuiRcH3PZ9e9w2zBXhzExal+fA==
-X-Received: by 2002:a05:600c:8607:b0:40c:2ace:6e58 with SMTP id ha7-20020a05600c860700b0040c2ace6e58mr448781wmb.182.1702986956596;
-        Tue, 19 Dec 2023 03:55:56 -0800 (PST)
+        bh=vCITF5dMeDG0BubZdh654QnLC5s3UU0m6bF2nYSAq5Q=;
+        b=lZFF4342H8h1gTREkldx4l4Jgo05zJdDCNv+/sXRMZeoqJwwa7m3QIcQFxyyca0ek8
+         wRCj2jQ62Tr00ar2vne8Q0GtMlp6QC4nuuXoqIObZh56a0UrNepJwrQ9zMHoo3/JQrXN
+         QLK+aiOQXBTowWJhch60aj5/NApV8KoJTyqO4wJCgOGZnheOO2YVnDabiuK7Ht3Vi3+O
+         Hf1cBGhoHV48Nu+akyb9De8ia2QKXJpGTORdV2LWUVRRYqpqcSGlrrGT6vhot2rSeTOH
+         oct6nwCTgmMYfh+KJnJdQNP3ab2GmQOilR+RDLnKfdz53HYdVcq10JCwyrrWIEjRT9Qo
+         qR8Q==
+X-Gm-Message-State: AOJu0YwO6AfgM1S/XhTLnZK37nwY74uyh1hy4pbJngYSnKTRcsMcQFLU
+	Tt92P2o7nxoBaPhm3et5XV2iIWCY+iT35UWhiy2Lo2oyb6Y7nTJMiFhts6Cyt6AyvxV0byc8/nv
+	TjYK04RMIDI1CN8Jpg4tO7j4UWA==
+X-Received: by 2002:a50:f697:0:b0:553:a040:65f9 with SMTP id d23-20020a50f697000000b00553a04065f9mr252247edn.84.1702987314933;
+        Tue, 19 Dec 2023 04:01:54 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG7jx3Vq9AAkz7K/qUEg1XLu723bAMS0wk/ho0kixXaWLXah8pb3TdELfRTlbERHVptxuFVYQ==
+X-Received: by 2002:a50:f697:0:b0:553:a040:65f9 with SMTP id d23-20020a50f697000000b00553a04065f9mr252227edn.84.1702987314186;
+        Tue, 19 Dec 2023 04:01:54 -0800 (PST)
 Received: from [192.168.0.6] (ip-109-43-177-45.web.vodafone.de. [109.43.177.45])
-        by smtp.gmail.com with ESMTPSA id u9-20020a05600c19c900b0040d18fdfe96sm2473706wmq.44.2023.12.19.03.55.55
+        by smtp.gmail.com with ESMTPSA id cn24-20020a0564020cb800b005532f5abaedsm2663635edb.72.2023.12.19.04.01.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Dec 2023 03:55:56 -0800 (PST)
-Message-ID: <ea43abdb-c333-4299-b6ad-e9eea95b18c5@redhat.com>
-Date: Tue, 19 Dec 2023 12:55:55 +0100
+        Tue, 19 Dec 2023 04:01:53 -0800 (PST)
+Message-ID: <37e8d8e3-4bd8-4bf0-9652-ac3e5636fb8e@redhat.com>
+Date: Tue, 19 Dec 2023 13:01:52 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v5 14/29] powerpc: Expand exception handler
- vector granularity
+Subject: Re: [kvm-unit-tests PATCH v5 16/29] powerpc: Set .got section
+ alignment to 256 bytes
 To: Nicholas Piggin <npiggin@gmail.com>, kvm@vger.kernel.org
 References: <20231216134257.1743345-1-npiggin@gmail.com>
- <20231216134257.1743345-15-npiggin@gmail.com>
+ <20231216134257.1743345-17-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -127,7 +127,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231216134257.1743345-15-npiggin@gmail.com>
+In-Reply-To: <20231216134257.1743345-17-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -149,15 +149,43 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 16/12/2023 14.42, Nicholas Piggin wrote:
-> Exception handlers are currently indexed in units of 0x100, but
-> powerpc can have vectors that are aligned to as little as 0x20
-> bytes. Increase granularity of the handler functions before
-> adding support for those vectors.
+> Modern powerpc64 toolchains require the .got section have alignment of
+> 256 bytes. Incorrect alignment ends up causing the .data section ELF
+> load address to move by 8 bytes from its file offset, relative to
+> previous sections. This is not a problem for the QEMU bios loader used
+> by the pseries machine, but it is a problem for the powernv machine
+> using skiboot as the bios and the test programs as a kernel, because the
+> skiboot ELF loader is crippled:
+> 
+>    * Note that we execute the kernel in-place, we don't actually
+>    * obey the load informations in the headers. This is expected
+>    * to work for the Linux Kernel because it's a fairly dumb ELF
+>    * but it will not work for any ELF binary.
+> 
+> This causes all references to data to be incorrect. Aligning the .got
+> to 256 bytes prevents this offset skew and allows the skiboot "flat"
+> loader to work. [I don't know why the .got alignment can cause this
+> difference in linking.]
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   lib/powerpc/processor.c | 16 +++++++++++-----
->   1 file changed, 11 insertions(+), 5 deletions(-)
+>   powerpc/flat.lds | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/powerpc/flat.lds b/powerpc/flat.lds
+> index 5eed368d..e07b91c1 100644
+> --- a/powerpc/flat.lds
+> +++ b/powerpc/flat.lds
+> @@ -41,8 +41,7 @@ SECTIONS
+>       /*
+>        * tocptr is tocbase + 32K, allowing toc offsets to be +-32K
+>        */
+> -    tocptr = . + 32K;
+> -    .got : { *(.toc) *(.got) }
+> +    .got : ALIGN(256) { tocptr = . + 32K; *(.toc .got) }
+>       . = ALIGN(64K);
+>       edata = .;
+>       . += 64K;
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Acked-by: Thomas Huth <thuth@redhat.com>
 
