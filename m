@@ -2,68 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 760AD8182E8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 09:02:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F2C8182F2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 09:03:17 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iZsYvq8q;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iZsYvq8q;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aMMGsaXZ;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aMMGsaXZ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SvTgd0y8vz3vgx
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 19:02:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SvThf6QcQz3vsJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 19:03:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iZsYvq8q;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iZsYvq8q;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aMMGsaXZ;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aMMGsaXZ;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SvTYz2g5sz3d9H
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 18:57:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SvTZ91tW8z3dHc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 18:57:37 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702972645;
+	s=mimecast20190719; t=1702972654;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4pxuQ+zeUrZD43W0p30SCM4P3ajCE4Euxhqhb6PE8fI=;
-	b=iZsYvq8qNTV90aCaj3kKlaGc448Xb0lN4vlU4UwahWwC9Tp7wZnDzI/gR3pbhYQfpz8oWs
-	gSiUjSpl4K4oQvhf9ltIRR6TkJK1TPw7dRSpzxcCP4BkqOZ1VSfB59sU2l0ubmdozgF0eL
-	rrczbfJzfVBMWxDHwLHvUwyK1KU1ZlI=
+	bh=WpRYnsdxCsgwENogJmMAQBWBGi+Y3txosu8YBUBJ2nU=;
+	b=aMMGsaXZViyHJrrJuZFCvO+XfHDfhVDFJaAkxQk+JlS2P0LS+o4YVsDOGmrUd0lwkUGo6h
+	vS+rSmoGILe9W/BUTgM8RrPiXDfm77GPJrrVyIh7hMaZoNZ+tpZqSq5Ic3rGM2w87uqIQV
+	rUie2mcq12v/rX9ugm/tj75Pdmm4TGw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702972645;
+	s=mimecast20190719; t=1702972654;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4pxuQ+zeUrZD43W0p30SCM4P3ajCE4Euxhqhb6PE8fI=;
-	b=iZsYvq8qNTV90aCaj3kKlaGc448Xb0lN4vlU4UwahWwC9Tp7wZnDzI/gR3pbhYQfpz8oWs
-	gSiUjSpl4K4oQvhf9ltIRR6TkJK1TPw7dRSpzxcCP4BkqOZ1VSfB59sU2l0ubmdozgF0eL
-	rrczbfJzfVBMWxDHwLHvUwyK1KU1ZlI=
+	bh=WpRYnsdxCsgwENogJmMAQBWBGi+Y3txosu8YBUBJ2nU=;
+	b=aMMGsaXZViyHJrrJuZFCvO+XfHDfhVDFJaAkxQk+JlS2P0LS+o4YVsDOGmrUd0lwkUGo6h
+	vS+rSmoGILe9W/BUTgM8RrPiXDfm77GPJrrVyIh7hMaZoNZ+tpZqSq5Ic3rGM2w87uqIQV
+	rUie2mcq12v/rX9ugm/tj75Pdmm4TGw=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-308-O_LLgdEzO2yAjxB50bIomw-1; Tue, 19 Dec 2023 02:57:17 -0500
-X-MC-Unique: O_LLgdEzO2yAjxB50bIomw-1
+ us-mta-650-6W9nSAUnNQOFp9mej7E_hg-1; Tue, 19 Dec 2023 02:57:29 -0500
+X-MC-Unique: 6W9nSAUnNQOFp9mej7E_hg-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 94A54837221;
-	Tue, 19 Dec 2023 07:57:16 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1341F83B8E5;
+	Tue, 19 Dec 2023 07:57:28 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.117])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id B40302026D66;
-	Tue, 19 Dec 2023 07:57:05 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 672D22026D66;
+	Tue, 19 Dec 2023 07:57:17 +0000 (UTC)
 From: peterx@redhat.com
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 07/13] mm/gup: Refactor record_subpages() to find 1st small page
-Date: Tue, 19 Dec 2023 15:55:32 +0800
-Message-ID: <20231219075538.414708-8-peterx@redhat.com>
+Subject: [PATCH 08/13] mm/gup: Handle hugetlb for no_page_table()
+Date: Tue, 19 Dec 2023 15:55:33 +0800
+Message-ID: <20231219075538.414708-9-peterx@redhat.com>
 In-Reply-To: <20231219075538.414708-1-peterx@redhat.com>
 References: <20231219075538.414708-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -86,85 +86,150 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Peter Xu <peterx@redhat.com>
 
-All the fast-gup functions take a tail page to operate, always need to do
-page mask calculations before feeding that into record_subpages().
+no_page_table() is not yet used for hugetlb code paths. Make it prepared.
 
-Merge that logic into record_subpages(), so that it will do the nth_page()
-calculation.
+The major difference here is hugetlb will return -EFAULT as long as page
+cache does not exist, even if VM_SHARED.  See hugetlb_follow_page_mask().
 
+Pass "address" into no_page_table() too, as hugetlb will need it.
+
+Reviewed-by: Christoph Hellwig <hch@infradead.org>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- mm/gup.c | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ mm/gup.c | 44 ++++++++++++++++++++++++++------------------
+ 1 file changed, 26 insertions(+), 18 deletions(-)
 
 diff --git a/mm/gup.c b/mm/gup.c
-index bb5b7134f10b..82d28d517d0d 100644
+index 82d28d517d0d..6c0d82fa8cc7 100644
 --- a/mm/gup.c
 +++ b/mm/gup.c
-@@ -2767,13 +2767,16 @@ static int __gup_device_huge_pud(pud_t pud, pud_t *pudp, unsigned long addr,
- }
- #endif
+@@ -501,19 +501,27 @@ static inline void mm_set_has_pinned_flag(unsigned long *mm_flags)
  
--static int record_subpages(struct page *page, unsigned long addr,
--			   unsigned long end, struct page **pages)
-+static int record_subpages(struct page *page, unsigned long sz,
-+			   unsigned long addr, unsigned long end,
-+			   struct page **pages)
+ #ifdef CONFIG_MMU
+ static struct page *no_page_table(struct vm_area_struct *vma,
+-		unsigned int flags)
++				  unsigned int flags, unsigned long address)
  {
-+	struct page *start_page;
- 	int nr;
- 
-+	start_page = nth_page(page, (addr & (sz - 1)) >> PAGE_SHIFT);
- 	for (nr = 0; addr != end; nr++, addr += PAGE_SIZE)
--		pages[nr] = nth_page(page, nr);
-+		pages[nr] = nth_page(start_page, nr);
- 
- 	return nr;
++	if (!(flags & FOLL_DUMP))
++		return NULL;
++
+ 	/*
+-	 * When core dumping an enormous anonymous area that nobody
+-	 * has touched so far, we don't want to allocate unnecessary pages or
++	 * When core dumping, we don't want to allocate unnecessary pages or
+ 	 * page tables.  Return error instead of NULL to skip handle_mm_fault,
+ 	 * then get_dump_page() will return NULL to leave a hole in the dump.
+ 	 * But we can only make this optimization where a hole would surely
+ 	 * be zero-filled if handle_mm_fault() actually did handle it.
+ 	 */
+-	if ((flags & FOLL_DUMP) &&
+-			(vma_is_anonymous(vma) || !vma->vm_ops->fault))
++	if (is_vm_hugetlb_page(vma)) {
++		struct hstate *h = hstate_vma(vma);
++
++		if (!hugetlbfs_pagecache_present(h, vma, address))
++			return ERR_PTR(-EFAULT);
++	} else if ((vma_is_anonymous(vma) || !vma->vm_ops->fault)) {
+ 		return ERR_PTR(-EFAULT);
++	}
++
+ 	return NULL;
  }
-@@ -2808,8 +2811,8 @@ static int gup_hugepte(pte_t *ptep, unsigned long sz, unsigned long addr,
- 	/* hugepages are never "special" */
- 	VM_BUG_ON(!pfn_valid(pte_pfn(pte)));
  
--	page = nth_page(pte_page(pte), (addr & (sz - 1)) >> PAGE_SHIFT);
--	refs = record_subpages(page, addr, end, pages + *nr);
-+	page = pte_page(pte);
-+	refs = record_subpages(page, sz, addr, end, pages + *nr);
+@@ -593,7 +601,7 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
  
- 	folio = try_grab_folio(page, refs, flags);
- 	if (!folio)
-@@ -2882,8 +2885,8 @@ static int gup_huge_pmd(pmd_t orig, pmd_t *pmdp, unsigned long addr,
- 					     pages, nr);
+ 	ptep = pte_offset_map_lock(mm, pmd, address, &ptl);
+ 	if (!ptep)
+-		return no_page_table(vma, flags);
++		return no_page_table(vma, flags, address);
+ 	pte = ptep_get(ptep);
+ 	if (!pte_present(pte))
+ 		goto no_page;
+@@ -685,7 +693,7 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
+ 	pte_unmap_unlock(ptep, ptl);
+ 	if (!pte_none(pte))
+ 		return NULL;
+-	return no_page_table(vma, flags);
++	return no_page_table(vma, flags, address);
+ }
+ 
+ static struct page *follow_pmd_mask(struct vm_area_struct *vma,
+@@ -701,27 +709,27 @@ static struct page *follow_pmd_mask(struct vm_area_struct *vma,
+ 	pmd = pmd_offset(pudp, address);
+ 	pmdval = pmdp_get_lockless(pmd);
+ 	if (pmd_none(pmdval))
+-		return no_page_table(vma, flags);
++		return no_page_table(vma, flags, address);
+ 	if (!pmd_present(pmdval))
+-		return no_page_table(vma, flags);
++		return no_page_table(vma, flags, address);
+ 	if (pmd_devmap(pmdval)) {
+ 		ptl = pmd_lock(mm, pmd);
+ 		page = follow_devmap_pmd(vma, address, pmd, flags, &ctx->pgmap);
+ 		spin_unlock(ptl);
+ 		if (page)
+ 			return page;
+-		return no_page_table(vma, flags);
++		return no_page_table(vma, flags, address);
  	}
+ 	if (likely(!pmd_trans_huge(pmdval)))
+ 		return follow_page_pte(vma, address, pmd, flags, &ctx->pgmap);
  
--	page = nth_page(pmd_page(orig), (addr & ~PMD_MASK) >> PAGE_SHIFT);
--	refs = record_subpages(page, addr, end, pages + *nr);
-+	page = pmd_page(orig);
-+	refs = record_subpages(page, PMD_SIZE, addr, end, pages + *nr);
+ 	if (pmd_protnone(pmdval) && !gup_can_follow_protnone(vma, flags))
+-		return no_page_table(vma, flags);
++		return no_page_table(vma, flags, address);
  
- 	folio = try_grab_folio(page, refs, flags);
- 	if (!folio)
-@@ -2926,8 +2929,8 @@ static int gup_huge_pud(pud_t orig, pud_t *pudp, unsigned long addr,
- 					     pages, nr);
+ 	ptl = pmd_lock(mm, pmd);
+ 	if (unlikely(!pmd_present(*pmd))) {
+ 		spin_unlock(ptl);
+-		return no_page_table(vma, flags);
++		return no_page_table(vma, flags, address);
  	}
+ 	if (unlikely(!pmd_trans_huge(*pmd))) {
+ 		spin_unlock(ptl);
+@@ -752,17 +760,17 @@ static struct page *follow_pud_mask(struct vm_area_struct *vma,
  
--	page = nth_page(pud_page(orig), (addr & ~PUD_MASK) >> PAGE_SHIFT);
--	refs = record_subpages(page, addr, end, pages + *nr);
-+	page = pud_page(orig);
-+	refs = record_subpages(page, PUD_SIZE, addr, end, pages + *nr);
+ 	pud = pud_offset(p4dp, address);
+ 	if (pud_none(*pud))
+-		return no_page_table(vma, flags);
++		return no_page_table(vma, flags, address);
+ 	if (pud_devmap(*pud)) {
+ 		ptl = pud_lock(mm, pud);
+ 		page = follow_devmap_pud(vma, address, pud, flags, &ctx->pgmap);
+ 		spin_unlock(ptl);
+ 		if (page)
+ 			return page;
+-		return no_page_table(vma, flags);
++		return no_page_table(vma, flags, address);
+ 	}
+ 	if (unlikely(pud_bad(*pud)))
+-		return no_page_table(vma, flags);
++		return no_page_table(vma, flags, address);
  
- 	folio = try_grab_folio(page, refs, flags);
- 	if (!folio)
-@@ -2966,8 +2969,8 @@ static int gup_huge_pgd(pgd_t orig, pgd_t *pgdp, unsigned long addr,
+ 	return follow_pmd_mask(vma, address, pud, flags, ctx);
+ }
+@@ -776,10 +784,10 @@ static struct page *follow_p4d_mask(struct vm_area_struct *vma,
  
- 	BUILD_BUG_ON(pgd_devmap(orig));
+ 	p4d = p4d_offset(pgdp, address);
+ 	if (p4d_none(*p4d))
+-		return no_page_table(vma, flags);
++		return no_page_table(vma, flags, address);
+ 	BUILD_BUG_ON(p4d_huge(*p4d));
+ 	if (unlikely(p4d_bad(*p4d)))
+-		return no_page_table(vma, flags);
++		return no_page_table(vma, flags, address);
  
--	page = nth_page(pgd_page(orig), (addr & ~PGDIR_MASK) >> PAGE_SHIFT);
--	refs = record_subpages(page, addr, end, pages + *nr);
-+	page = pgd_page(orig);
-+	refs = record_subpages(page, PGDIR_SIZE, addr, end, pages + *nr);
+ 	return follow_pud_mask(vma, address, p4d, flags, ctx);
+ }
+@@ -829,7 +837,7 @@ static struct page *follow_page_mask(struct vm_area_struct *vma,
+ 	pgd = pgd_offset(mm, address);
  
- 	folio = try_grab_folio(page, refs, flags);
- 	if (!folio)
+ 	if (pgd_none(*pgd) || unlikely(pgd_bad(*pgd)))
+-		return no_page_table(vma, flags);
++		return no_page_table(vma, flags, address);
+ 
+ 	return follow_p4d_mask(vma, address, pgd, flags, ctx);
+ }
 -- 
 2.41.0
 
