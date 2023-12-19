@@ -2,88 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74F54818144
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 07:00:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F34A81815C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 07:10:52 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=g+zwbZkW;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=g+zwbZkW;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OiNmELGq;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EJ/bnzVf;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SvQyW1F48z3cbl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 17:00:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SvRBw51zRz3cTM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 17:10:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=g+zwbZkW;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=g+zwbZkW;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OiNmELGq;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EJ/bnzVf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SvQxj0wN5z2xcv
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 16:59:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SvRB532Pqz2yhT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 17:10:04 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702965558;
+	s=mimecast20190719; t=1702966201;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jYoSXCZIKVpq1KRBLPkPUJyhvobqun0ThJvbnoM28S4=;
-	b=g+zwbZkWX5wSebssD1dhgeM1vsHprZfqLNt3IKfexzyWD9drAfhUjAwkcWAclrV/iX6kfI
-	2hd5T0APplh4RIghzBj3yorUbrkx7g/Y0L04ibs7MinHq0dUmXNy8VtalrNLGqMQlrIQsH
-	hd5xmRfori4OUzE2pRhJUo21POV9KUE=
+	bh=FDiZO4xY2dBdzsNw36coTEAz3iUJc7m7+N0IvPoUbyg=;
+	b=OiNmELGqWye4/zPmlS+LeBj1SEC8E2Y5iyxyGxRw46/BT9VwQka3oT64Hx+8mgXD+Rxboj
+	+8w2MXFfvYzJQty9zyjyctDtExx6567YOGE196UG/fXEJ0w7DWdZ9ByDDZT1ySNa4GyS4Y
+	48VioIiVTswoF2BQyagt0mnu0f958Yc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702965558;
+	s=mimecast20190719; t=1702966202;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jYoSXCZIKVpq1KRBLPkPUJyhvobqun0ThJvbnoM28S4=;
-	b=g+zwbZkWX5wSebssD1dhgeM1vsHprZfqLNt3IKfexzyWD9drAfhUjAwkcWAclrV/iX6kfI
-	2hd5T0APplh4RIghzBj3yorUbrkx7g/Y0L04ibs7MinHq0dUmXNy8VtalrNLGqMQlrIQsH
-	hd5xmRfori4OUzE2pRhJUo21POV9KUE=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=FDiZO4xY2dBdzsNw36coTEAz3iUJc7m7+N0IvPoUbyg=;
+	b=EJ/bnzVfP8nH4zZipvPSsC0tL0H4z/Y3CZL39JEUN89qdgx/x5RfQqHxiQ9GOGH78Ntryh
+	HuhCcwiTPbD/MM5MV+/T1EDcCXQ+uA3wAaDu0mZJKbRzej/fsimA5WEgWNqrxEswXwaks0
+	UA525fsF6JQVn7f2i2GwDkVqShhat7I=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-125-wOfBKjokNM2SVD7z4FtJtg-1; Tue, 19 Dec 2023 00:59:16 -0500
-X-MC-Unique: wOfBKjokNM2SVD7z4FtJtg-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-40c2c144e60so30818145e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Dec 2023 21:59:15 -0800 (PST)
+ us-mta-684-HqvtD9sdOfiZKfyI0rGovA-1; Tue, 19 Dec 2023 01:09:59 -0500
+X-MC-Unique: HqvtD9sdOfiZKfyI0rGovA-1
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3366bf4adbcso816825f8f.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Dec 2023 22:09:59 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702965555; x=1703570355;
+        d=1e100.net; s=20230601; t=1702966198; x=1703570998;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jYoSXCZIKVpq1KRBLPkPUJyhvobqun0ThJvbnoM28S4=;
-        b=rQ8nxH3C9zX74sE+LIRdD3Gv3i7DXn4E9nZfCfQI1PSib15sy+cAtusYzY/LXxd65A
-         goGVf4BQG30ggxRHM9QX2lx4YzsGXxJQkuJ/euIo8KFClbhTR1KC4HZ5LO36yv/I231W
-         d1EUOhhHPZRjHdde4GtTZWGf3WfxXEyc5zWS0hODKXhmlAJo8FconnaapIOE/Uxra7E9
-         zNJgyY4fS8m4xkL54/7lmAdVAzcZu2EhJDvRItqaYG87L/+rfIFIp7wMvFIjFWW7PYoR
-         +Pew/wCMii9ViFf3hqUyHl5AZkjTXLaQnz44ZnwriKrfdEJmvDTU+4RH8gDSyoThAJ0c
-         r2Dw==
-X-Gm-Message-State: AOJu0YxbLR+01FBvGEcSQe8kDYJouAKhshvCASSDDHsSf/yimq0ZDZkl
-	c7CzirrS8M8m1KncvQ6q+AxK3LpU/OWgBD/b0RNf3eP/bvHalgM4V3aPqdsuua0BvseBaLmNMol
-	cg4FSZlQSZLg8p64YxXuIiCih3A==
-X-Received: by 2002:a05:600c:548c:b0:40b:54ef:ff07 with SMTP id iv12-20020a05600c548c00b0040b54efff07mr9130506wmb.32.1702965555124;
-        Mon, 18 Dec 2023 21:59:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGYJwngycVl+1FPuIOjGNYJd+yeNN7PH8LkZgFnqelYmtAOJfAzxepfQ3UrZAdxqSqAyZxUhA==
-X-Received: by 2002:a05:600c:548c:b0:40b:54ef:ff07 with SMTP id iv12-20020a05600c548c00b0040b54efff07mr9130498wmb.32.1702965554854;
-        Mon, 18 Dec 2023 21:59:14 -0800 (PST)
+        bh=FDiZO4xY2dBdzsNw36coTEAz3iUJc7m7+N0IvPoUbyg=;
+        b=KC750GwNW7JdCufa33yuFJFn1A4eyEbkcqPxizA91fnPelvpR4bdCAAJYz4m078blh
+         /Js9gG1jAVrZDpCPiJ6ablXtRgMgcqXAFKNwOKkVubSft2Ko4wcq1/QUWXfbm6SAATKI
+         wefcee1E/BFduq7uqG74Nvr+7hvsMNQCXuRd8KlwvdPPfeYIjXEXQ7UDx0v0bk00yJ0e
+         viZ2Domn7vpK6HRgCw9W+mkTETJrzO6ooxr/vl9pir5VCDMnJ/jZLl1pyNiu4jRmKCaf
+         3kwzJUMXpLIgZKzDSh/yowKLXhOqzFqWbvA7y3WcBb9rh1jp46bFyLh6STM5i5zWLoVB
+         Cv6Q==
+X-Gm-Message-State: AOJu0Yznpklb7SUaQ9G5UqPNprHalhLZKOhjr4sCIOJPM0jd4DjXlxNf
+	wOb2F3EhE8834wwkpYTw05G7CfKWTrNIWRz9Yi1k6kl3RuCg6zOmHL97ip635mZoj9USfPOsgZ8
+	WKJrC5Ko4KUN6heI4YQ8UqHMFrg==
+X-Received: by 2002:a5d:6a89:0:b0:336:533b:518e with SMTP id s9-20020a5d6a89000000b00336533b518emr3787516wru.79.1702966198707;
+        Mon, 18 Dec 2023 22:09:58 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGeViwyFyKCTUluEVdR77bWhqeXSzA4W+72ygvGjzu2Y6AxTA+wiDozJ7D9lwNurwRTYEMirg==
+X-Received: by 2002:a5d:6a89:0:b0:336:533b:518e with SMTP id s9-20020a5d6a89000000b00336533b518emr3787509wru.79.1702966198408;
+        Mon, 18 Dec 2023 22:09:58 -0800 (PST)
 Received: from [192.168.0.6] (ip-109-43-177-45.web.vodafone.de. [109.43.177.45])
-        by smtp.gmail.com with ESMTPSA id l2-20020a05600c4f0200b003feae747ff2sm1183821wmq.35.2023.12.18.21.59.13
+        by smtp.gmail.com with ESMTPSA id c11-20020adfef4b000000b003366f4406f6sm1620365wrp.97.2023.12.18.22.09.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Dec 2023 21:59:14 -0800 (PST)
-Message-ID: <84ef54a0-56bd-4fba-9a52-908a8d82b7e2@redhat.com>
-Date: Tue, 19 Dec 2023 06:59:13 +0100
+        Mon, 18 Dec 2023 22:09:57 -0800 (PST)
+Message-ID: <ab2000e8-5d9c-4e4f-828b-9de584f614a9@redhat.com>
+Date: Tue, 19 Dec 2023 07:09:56 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v5 08/29] powerpc: Require KVM for the TM
- test
+Subject: Re: [kvm-unit-tests PATCH v5 09/29] powerpc: Fix interrupt stack
+ alignment
 To: Nicholas Piggin <npiggin@gmail.com>, kvm@vger.kernel.org
 References: <20231216134257.1743345-1-npiggin@gmail.com>
- <20231216134257.1743345-9-npiggin@gmail.com>
+ <20231216134257.1743345-10-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -127,7 +127,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231216134257.1743345-9-npiggin@gmail.com>
+In-Reply-To: <20231216134257.1743345-10-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -149,25 +149,14 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 16/12/2023 14.42, Nicholas Piggin wrote:
-> QEMU TCG does not support TM. Skip this test gracefully when not on KVM.
+> ppc64 requires the stack to be 16-byte aligned but the interrupt
+> stack frame has 8-byte aligned size. Add padding to fix.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   powerpc/unittests.cfg | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/powerpc/unittests.cfg b/powerpc/unittests.cfg
-> index dd5f361c..e71140aa 100644
-> --- a/powerpc/unittests.cfg
-> +++ b/powerpc/unittests.cfg
-> @@ -65,6 +65,7 @@ file = emulator.elf
->   
->   [h_cede_tm]
->   file = tm.elf
-> +accel = kvm
->   smp = 2,threads=2
->   extra_params = -machine cap-htm=on -append "h_cede_tm"
->   groups = h_cede_tm
+>   lib/powerpc/setup.c    | 3 +++
+>   lib/ppc64/asm/ptrace.h | 1 +
+>   2 files changed, 4 insertions(+)
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
