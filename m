@@ -2,88 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D11E81869B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 12:48:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D2848186B3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 12:54:51 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=M10JndKK;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=M10JndKK;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cPi6KrvO;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cPi6KrvO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SvZhw0cvkz3cR4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 22:48:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SvZqs1lY5z3cTm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 22:54:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=M10JndKK;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=M10JndKK;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cPi6KrvO;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cPi6KrvO;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SvZh26hcnz2xb2
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 22:48:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SvZq20qW1z2xwD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 22:54:05 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702986479;
+	s=mimecast20190719; t=1702986842;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=i1d2Ab31Ee77sG0X3X5fnzN3nw+6wvY9AWMLlM5zpLc=;
-	b=M10JndKKwmpZ0tLVeKcK9PcGeudaKg6nBtLK742Zud+3SWB8NoekNuA3CgABE4HqWQxgpC
-	4H12Vt7EgJpS37blck7CAABl3bVJ6qdiBp4FJYkxCio5IGSQu6NFOfCUyjZ7xgwEiuLhmz
-	7YP/bKLCwQDpJGdiIcJLpw46gzHRjwQ=
+	bh=3ge0vYIMSHofQN40YECeVZ2jR68lUGNh8boj/99SI6g=;
+	b=cPi6KrvOPBi5+pvfH79lZdQ0plECBUtifFz34Hg5FmNDhnB49PdJClgxhykghJFJzGPaaM
+	RFy0ish0BAdnNEYnYgnE9OJouq/JP73boDZKijvLCKzHa554NJlKUaJKdGR4NGNTmEOZ9I
+	m5/64NHqufyTqL/YnMl2c+1S5zgazws=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702986479;
+	s=mimecast20190719; t=1702986842;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=i1d2Ab31Ee77sG0X3X5fnzN3nw+6wvY9AWMLlM5zpLc=;
-	b=M10JndKKwmpZ0tLVeKcK9PcGeudaKg6nBtLK742Zud+3SWB8NoekNuA3CgABE4HqWQxgpC
-	4H12Vt7EgJpS37blck7CAABl3bVJ6qdiBp4FJYkxCio5IGSQu6NFOfCUyjZ7xgwEiuLhmz
-	7YP/bKLCwQDpJGdiIcJLpw46gzHRjwQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=3ge0vYIMSHofQN40YECeVZ2jR68lUGNh8boj/99SI6g=;
+	b=cPi6KrvOPBi5+pvfH79lZdQ0plECBUtifFz34Hg5FmNDhnB49PdJClgxhykghJFJzGPaaM
+	RFy0ish0BAdnNEYnYgnE9OJouq/JP73boDZKijvLCKzHa554NJlKUaJKdGR4NGNTmEOZ9I
+	m5/64NHqufyTqL/YnMl2c+1S5zgazws=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-612-A3ksDlvqNIm_HnoxlH_E-w-1; Tue, 19 Dec 2023 06:47:57 -0500
-X-MC-Unique: A3ksDlvqNIm_HnoxlH_E-w-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-40c495a9c7cso34278855e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 03:47:57 -0800 (PST)
+ us-mta-332-c4X7au5-OhKDeFJgMlf5Jw-1; Tue, 19 Dec 2023 06:54:00 -0500
+X-MC-Unique: c4X7au5-OhKDeFJgMlf5Jw-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-40c6397d9adso35896395e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 03:54:00 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702986476; x=1703591276;
+        d=1e100.net; s=20230601; t=1702986839; x=1703591639;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=i1d2Ab31Ee77sG0X3X5fnzN3nw+6wvY9AWMLlM5zpLc=;
-        b=TpPb+w5sWR7xHhl/m2VbiEb+wWttyTicTJF/cPzmTsr3A4DDFHxP72+UQA+0yDuzL4
-         NvslFwgOm7uULa519mU0y3dnEvC6M+cZLY/jnWEGgtkvswBS4x2am7C1LMvVflhE4cX4
-         ittthv8C8093xsw+c9nMEzUYKKY2xfbPT8Tao1jjsaIPcofEsRKWFu5TMgO1/hzb5fny
-         jpg/nSposJVrgwMSNhS02olkpjcAXG+aZsLNjHMD1g+vOGCZjbK8eXkuQhR7a3anBB/S
-         loSKLbcpdRCI8/nF1YcujFFpJK4Du/qt+O3yL9aNwYCSGHPyLhZJVNtmEDV6VCyG95LV
-         bjCw==
-X-Gm-Message-State: AOJu0YxLEvIz6MxnmgN/H/fTXfJe8zQ2eDLtQ9KSco+Km3rFc6ez8yzA
-	l6tcCUZPrjDe7Rl9ppjg6W7tpf9qqTXQ5x2yE5nFmwYJXa67Xec+wOzPK8Cb/iWEi+hWzUGkcIw
-	E/RP3WlioAH6Q7CVLsZ2UHjKS8w==
-X-Received: by 2002:a05:600c:3502:b0:40c:6a85:e83a with SMTP id h2-20020a05600c350200b0040c6a85e83amr4099246wmq.51.1702986476243;
-        Tue, 19 Dec 2023 03:47:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFiFVSJIncyXNQiQCK7FzhlOuTeobBj8bJrrGSExzIOLTjus4qqbQKoGc2WH5915vMigDM4Ug==
-X-Received: by 2002:a05:600c:3502:b0:40c:6a85:e83a with SMTP id h2-20020a05600c350200b0040c6a85e83amr4099235wmq.51.1702986475920;
-        Tue, 19 Dec 2023 03:47:55 -0800 (PST)
+        bh=3ge0vYIMSHofQN40YECeVZ2jR68lUGNh8boj/99SI6g=;
+        b=caO1FoMKdDnt5Drh0IuaU3e6cHQKbAFNv0XjzAXQDrKQFnjNrCZUsyLbKMCXsO+W0v
+         xefpW6vk7fOzLUr18jM+DnmME3FXuN3dtPfIL/J2sYr9NaTSv728QNHSUSGk/JFBqQkh
+         qv21QjUbohmNyz/bhhxq5zn3B6VBtrEG8NLYGh9ckopXxYP7UYrG+Lu8Cvt8SK5CzS/l
+         pGH296sw5aJlGAQeY3p7hFTq8Z5JeUPf7XAiVMQhiOtk13PKqpvm7cQ/0wbWRSQxo37A
+         8+K0mde+GZ+unrWBg6vQkyZoESIyzVvKGz1GGUmF4SpD4p3ZQ6lsKdmHCpi93p5H/J8l
+         QYGQ==
+X-Gm-Message-State: AOJu0Yw7KRKkTYf4wHmbEItA75tdTmfejsBTZ6xQpHdUCSr1ZFWGYdAd
+	FZ8juX6fJbeNLOFh3XsHu6LIYpnmEoZC7y+tEN1N6vNpcHCSGiykzkDe+OozzTGlJVS8JParYJH
+	KAo8osn5xCMFepjnFr+pv2npl7Q==
+X-Received: by 2002:a05:600c:b41:b0:40c:2a41:4a35 with SMTP id k1-20020a05600c0b4100b0040c2a414a35mr9211187wmr.130.1702986839232;
+        Tue, 19 Dec 2023 03:53:59 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEon7eRP8QSZH1EPIYWSwSAKjJ5zsTPbGNJntU7Tfs96CYFYuXsz0XSThXoSnVdydjRt5tPaQ==
+X-Received: by 2002:a05:600c:b41:b0:40c:2a41:4a35 with SMTP id k1-20020a05600c0b4100b0040c2a414a35mr9211180wmr.130.1702986838916;
+        Tue, 19 Dec 2023 03:53:58 -0800 (PST)
 Received: from [192.168.0.6] (ip-109-43-177-45.web.vodafone.de. [109.43.177.45])
-        by smtp.gmail.com with ESMTPSA id jg7-20020a05600ca00700b0040c46719966sm2452815wmb.25.2023.12.19.03.47.55
+        by smtp.gmail.com with ESMTPSA id n6-20020a05600c500600b0040c1d2c6331sm2507312wmr.32.2023.12.19.03.53.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Dec 2023 03:47:55 -0800 (PST)
-Message-ID: <c06b1cec-8a39-41ff-91e6-ad7bb99b3341@redhat.com>
-Date: Tue, 19 Dec 2023 12:47:54 +0100
+        Tue, 19 Dec 2023 03:53:58 -0800 (PST)
+Message-ID: <4a42b65c-f65b-41cf-91f6-eeb96519dc2c@redhat.com>
+Date: Tue, 19 Dec 2023 12:53:57 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v5 12/29] powerpc/sprs: Avoid taking async
- interrupts caused by register fuzzing
+Subject: Re: [kvm-unit-tests PATCH v5 13/29] powerpc: Make interrupt handler
+ error more readable
 To: Nicholas Piggin <npiggin@gmail.com>, kvm@vger.kernel.org
 References: <20231216134257.1743345-1-npiggin@gmail.com>
- <20231216134257.1743345-13-npiggin@gmail.com>
+ <20231216134257.1743345-14-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -127,7 +127,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231216134257.1743345-13-npiggin@gmail.com>
+In-Reply-To: <20231216134257.1743345-14-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -149,55 +149,33 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 16/12/2023 14.42, Nicholas Piggin wrote:
-> Storing certain values in some registers can cause asynchronous
-> interrupts that can crash the test case, for example decrementer
-> or PMU interrupts.
-> 
-> Change the msleep to mdelay which does not enable MSR[EE] and so
-> avoids the problem. This allows removing some of the SPR special
-> casing.
+> Installing the same handler twice reports a shifted trap vector
+> address which is hard to decipher. Print the unshifed address.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   powerpc/sprs.c | 14 ++------------
->   1 file changed, 2 insertions(+), 12 deletions(-)
+>   lib/powerpc/processor.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/powerpc/sprs.c b/powerpc/sprs.c
-> index 01041912..313698e0 100644
-> --- a/powerpc/sprs.c
-> +++ b/powerpc/sprs.c
-> @@ -481,12 +481,7 @@ static void set_sprs(uint64_t val)
->   			continue;
->   		if (sprs[i].type & SPR_HARNESS)
->   			continue;
-> -		if (!strcmp(sprs[i].name, "MMCR0")) {
-> -			/* XXX: could use a comment or better abstraction! */
-> -			__mtspr(i, (val & 0xfffffffffbab3fffULL) | 0xfa0b2070);
-> -		} else {
-> -			__mtspr(i, val);
-> -		}
-> +		__mtspr(i, val);
->   	}
->   }
->   
-> @@ -536,12 +531,7 @@ int main(int argc, char **argv)
->   	if (pause) {
->   		migrate_once();
->   	} else {
-> -		msleep(2000);
-> -
-> -		/* Taking a dec updates SRR0, SRR1, SPRG1, so don't fail. */
-> -		sprs[26].type |= SPR_ASYNC;
-> -		sprs[27].type |= SPR_ASYNC;
-> -		sprs[273].type |= SPR_ASYNC;
-> +		mdelay(2000);
->   	}
+> diff --git a/lib/powerpc/processor.c b/lib/powerpc/processor.c
+> index aaf45b68..b4cd5b4c 100644
+> --- a/lib/powerpc/processor.c
+> +++ b/lib/powerpc/processor.c
+> @@ -26,7 +26,7 @@ void handle_exception(int trap, void (*func)(struct pt_regs *, void *),
+>   	trap >>= 8;
 
-IIRC I used the H_CEDE stuff here on purpose to increase the possibility 
-that the guest gets rescheduled onto another CPU core on the host, and thus 
-that it uncovers sprs that are not saved and restored on the host more 
-easily. So I'd rather keep the msleep() here.
+You only change this to >>= 5 in the next patch...
+
+>   	if (func && handlers[trap].func) {
+> -		printf("exception handler installed twice %#x\n", trap);
+> +		printf("exception handler installed twice %#x\n", trap << 5);
+
+... so I think you should move this patch here after the next one.
 
   Thomas
 
+
+>   		abort();
+>   	}
+>   	handlers[trap].func = func;
 
