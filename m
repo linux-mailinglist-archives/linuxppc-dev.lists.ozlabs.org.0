@@ -2,54 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60818818A60
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 15:45:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48B08818BCC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 17:06:35 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dehLBIGr;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EZwCGzKC;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SvfcN0T9Fz3cSv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Dec 2023 01:45:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SvhQJ6nhJz3cWd
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Dec 2023 03:06:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dehLBIGr;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EZwCGzKC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=conor@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SvfbZ01fCz2xps
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Dec 2023 01:44:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SvhPS2Cs4z2ydW
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Dec 2023 03:05:48 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id 910E7B8179D;
-	Tue, 19 Dec 2023 14:44:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A9EC433C8;
-	Tue, 19 Dec 2023 14:44:19 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id B8D2961403;
+	Tue, 19 Dec 2023 16:05:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394FBC433CA;
+	Tue, 19 Dec 2023 16:05:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702997061;
-	bh=Ec49Y1Ch4Y7DbynL5qJ3/M6jv5kHIuiLATbynFYdEYk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dehLBIGr1LajE1OtvLVTLPVToTCjSzGsWdAe/pHVJeX2MIrC9m1mPTvooMTQrt3ta
-	 7RGV4aXSoxoCh+Xnx0YICqWv36ry11nHS/nzEb8E87JqaOK6O/XvQtbWdjvWtFdlFk
-	 Ax4IumnD102EC7x7VhIiWz1tdIygL5RL82izs263RsC/22KrDePCqEiQffo0bzg/fx
-	 IH02+GzjOlMJyhx/ApVqSUrufavub2gGPQRrSNemUpbfH1eoTb1/7OlF+Izlp0YFig
-	 o46oeV75pUDtP1526DL2IImMqbrWtaAdCOgm36G8fWwsiUQCOCxzS0D6au1TxDVNBI
-	 BlUl90OFPwCbA==
-Date: Tue, 19 Dec 2023 14:44:17 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Baoquan He <bhe@redhat.com>
-Subject: Re: [PATCH v4 5/7] kexec_file, ricv: print out debugging message if
- required
-Message-ID: <20231219-twitch-many-ca8877857182@spud>
-References: <20231213055747.61826-1-bhe@redhat.com>
- <20231213055747.61826-6-bhe@redhat.com>
+	s=k20201202; t=1703001943;
+	bh=dFfTW4Ywg/AnVhHHspPjP/ls8JhEBJSKWAKuZw3hh00=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=EZwCGzKC1l35Wk38SgOiMAWDej7vsInLJWFf/Frx6JArZxgiihEL+axeTVAJsz8T9
+	 BF2WyoDd3J8XObr7sn6XbhFCj1GaPxJvsuOB26BoXIGsM5dqyxOEDgwtZpxIoN4wwi
+	 Oau/Dh7rsZIAH7WPof7tDf+Y1jGRB0L/WgyF5mMM6P7cOcok1IMlwib1ptQK178ZCz
+	 wb+qf/ORQBpg1stzbdAc6tDWW4c8dxskTSMSnScN/3C73rgJFvyPbCXNHFHnGDEv6A
+	 1EuZx2G/QCEhRZ/HFwGlwV/SZNullZWiCAkrbsClFSf3rJdxOHoipDbqoN3QooPE/Y
+	 ZLIdkrUJ5KF4w==
+From: Mark Brown <broonie@kernel.org>
+To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
+ nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
+ alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, 
+ Shengjiu Wang <shengjiu.wang@nxp.com>
+In-Reply-To: <1702953057-4499-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1702953057-4499-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH v2] ASoC: fsl_sai: Fix channel swap issue on i.MX8MP
+Message-Id: <170300194095.59057.18227409280630031139.b4-ty@kernel.org>
+Date: Tue, 19 Dec 2023 16:05:40 +0000
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="s/6JoYHenWk4BZK6"
-Content-Disposition: inline
-In-Reply-To: <20231213055747.61826-6-bhe@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-5c066
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,50 +63,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-parisc@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, nathan@kernel.org, joe@perches.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, 19 Dec 2023 10:30:57 +0800, Shengjiu Wang wrote:
+> When flag mclk_with_tere and mclk_direction_output enabled,
+> The SAI transmitter or receiver will be enabled in very early
+> stage, that if FSL_SAI_xMR is set by previous case,
+> for example previous case is one channel, current case is
+> two channels, then current case started with wrong xMR in
+> the beginning, then channel swap happen.
+> 
+> [...]
 
---s/6JoYHenWk4BZK6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied to
 
-On Wed, Dec 13, 2023 at 01:57:45PM +0800, Baoquan He wrote:
-> Then when specifying '-d' for kexec_file_load interface, loaded
-> locations of kernel/initrd/cmdline etc can be printed out to help debug.
->=20
-> Here replace pr_debug() with the newly added kexec_dprintk() in kexec_file
-> loading related codes.
->=20
-> And also replace pr_notice() with kexec_dprintk() in elf_kexec_load()
-> because loaded location of purgatory and device tree are only printed
-> out for debugging, it doesn't make sense to always print them out.
->=20
-> And also remove kexec_image_info() because the content has been printed
-> out in generic code.
->=20
-> Signed-off-by: Baoquan He <bhe@redhat.com>
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-I'm sorry - I meant to look at this several days ago but I forgot.
-Apart from the typo that crept back into $subject, this version explains
-the rationale behind what you're changing a lot better, thanks.
+Thanks!
 
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+[1/1] ASoC: fsl_sai: Fix channel swap issue on i.MX8MP
+      commit: 8f0f01647550daf9cd8752c1656dcb0136d79ce1
 
-Cheers,
-Conor.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
---s/6JoYHenWk4BZK6
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZYGsQQAKCRB4tDGHoIJi
-0m1fAP9g+8AFIV/8mpsN7yszSR98AoukUk319L4Cyd7Ffhkl6wEA7poQh+JBuAOa
-YQJL75j4TedEPF5Y6iyMMP3w1MeKMAs=
-=JnLd
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---s/6JoYHenWk4BZK6--
+Thanks,
+Mark
+
