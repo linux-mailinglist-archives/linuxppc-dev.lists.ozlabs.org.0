@@ -1,89 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B848818990
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 15:16:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AF4E8189B0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 15:24:03 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OUO+h3zk;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OUO+h3zk;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OkmIPNtz;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cf/PC7c4;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Svdz501Hpz3cPl
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Dec 2023 01:16:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Svf805N98z3cSv
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Dec 2023 01:24:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OUO+h3zk;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OUO+h3zk;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OkmIPNtz;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cf/PC7c4;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SvdyF04RSz2xpx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Dec 2023 01:15:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Svf792Rl9z2xQC
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Dec 2023 01:23:16 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702995329;
+	s=mimecast20190719; t=1702995793;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=v4nROXlAiicNEglvMmsqm8SGfv1Cxad3KieGfFTyFDs=;
-	b=OUO+h3zk6vLGyJD7sm6zuoaO1NULB8rk78gBRwZgWof7uThby4C/x02KZAe7XlPmXM/qYD
-	YrJM4hXZqxdxesuzjLqYU0D4gPAyv3vYdBtgblWBZ52cCvRLqhnIdDlVLSmuHzPuOH4pN4
-	ijdueMBq5DVwlrSJDVtupJk2JE9+3Xo=
+	bh=GuXh4pC2Dq9smXPaPhaEUUJ13nYTKR8ECQ9yq0tByJM=;
+	b=OkmIPNtzxM/Wbw45ugo0CJD20BSwBTvEyKKflcBel94/jesK5mRhsFBY9rjG2Wv7rQNc2C
+	3+I7i+McOLRFB0QktuOO4Mxm0NhuDCGMaOhpNYFVxv/3nRENUvDuc9+gA2qz4NgzqDnMoR
+	nV99Pj83OLUCaKOAJuFaynwo/D/ChEY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702995329;
+	s=mimecast20190719; t=1702995794;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=v4nROXlAiicNEglvMmsqm8SGfv1Cxad3KieGfFTyFDs=;
-	b=OUO+h3zk6vLGyJD7sm6zuoaO1NULB8rk78gBRwZgWof7uThby4C/x02KZAe7XlPmXM/qYD
-	YrJM4hXZqxdxesuzjLqYU0D4gPAyv3vYdBtgblWBZ52cCvRLqhnIdDlVLSmuHzPuOH4pN4
-	ijdueMBq5DVwlrSJDVtupJk2JE9+3Xo=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=GuXh4pC2Dq9smXPaPhaEUUJ13nYTKR8ECQ9yq0tByJM=;
+	b=cf/PC7c4OklcGZzKk0xRwKAhrS1wf8WHbDOfMOHFdYVSLTUEUznS948l9QugDncndAHInG
+	gcKIR/9A+oxCTYCS0IxSUahS9Kzxk4W0onPKzrGa5lDxWfWRIkwt18M5VHPgRxi0lVbxFO
+	Fa/j+/PZED3tNdFMs5dP2GLmNlsQV64=
+Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com
+ [209.85.160.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-595-c04khnggNlmKnterxpBtjQ-1; Tue, 19 Dec 2023 09:15:27 -0500
-X-MC-Unique: c04khnggNlmKnterxpBtjQ-1
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-77f2d8199e4so697924085a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 06:15:27 -0800 (PST)
+ us-mta-115-y4jUrxMDMPSiJ4JMs8Vveg-1; Tue, 19 Dec 2023 09:23:12 -0500
+X-MC-Unique: y4jUrxMDMPSiJ4JMs8Vveg-1
+Received: by mail-oa1-f72.google.com with SMTP id 586e51a60fabf-203acfb5eedso2888164fac.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 06:23:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702995327; x=1703600127;
+        d=1e100.net; s=20230601; t=1702995791; x=1703600591;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=v4nROXlAiicNEglvMmsqm8SGfv1Cxad3KieGfFTyFDs=;
-        b=fZqj8nqLYUSL4B4SthiILCJryepExKg/OWzkKYrraFFShJFPtfizZfDbnx96NdBL6/
-         0mSKYjIyhRv9CmzHX2KjedCNt64otcQs+cWKFTZoP2pmO8mIjslqpYP0fopfGRRQtp4u
-         RjuEQoyFg7qwCnZ5PpMJlFbG3kP1oFvvRNaYI6cF7Cjq9KY9zLhwPG8OOC3Sfqtda3uw
-         xzTicQ1pk072Tb7PBkT7TTGin0WTQOclc6wsHW+rigPe7cxihjWg5pVX8UJRXkvTJZgp
-         L/POvgUkfoNJirU1raWxrMYHfwDL9+8QgJHU4+wgCAlNZaNMOPZd0I/5YaK0i4T4/GAV
-         65EQ==
-X-Gm-Message-State: AOJu0YyCxIJUQQjGJsEGBrNGTYXX/OdjVwXPA1zkvaQJOMYq/Rk60itx
-	itvG8AtQdfk5ClMPBcOupUILFh7HK7UefPaayQwF/E7onbHj54PN/FGAcgnSSXwwIpis6uH9n7v
-	lam+NAcyLhD/KdWjjpQGf/DKqXg==
-X-Received: by 2002:a05:620a:c9a:b0:77e:fba4:3a3d with SMTP id q26-20020a05620a0c9a00b0077efba43a3dmr18067561qki.147.1702995327285;
-        Tue, 19 Dec 2023 06:15:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHGWM0TMU4CFZY/qCGc8ha7a8BUR09IjdKv9t4jD4pdKSwaCFDzPK7Tp86PUXt3hkeVLTIQxg==
-X-Received: by 2002:a05:620a:c9a:b0:77e:fba4:3a3d with SMTP id q26-20020a05620a0c9a00b0077efba43a3dmr18067552qki.147.1702995327085;
-        Tue, 19 Dec 2023 06:15:27 -0800 (PST)
+        bh=GuXh4pC2Dq9smXPaPhaEUUJ13nYTKR8ECQ9yq0tByJM=;
+        b=QGcvhYtXAokNFzkMTJyL3oi2wCSXx2qY9NTLQohHagVLcTVeFS25Jv0Zmu3n+upLom
+         Ys1M2OsrIkwS8kaVaHIAFYLmB/3PoQ1c5oPpvHvFZdDzmzTYgtm+Sa5ISaQTXHcQXlMK
+         Ax5PEJDtTiEsM5ay+lntmzHyGGh477dHXoDNLG6WU9AtV7agSLghAtl0x1GduleJsZnp
+         Dw/XstBhKfXMuQQFg2qCiQIEhS2WZYUxGyFK3OM8IvBY0zyEaLkMKBYTfjBR1G/5ehzg
+         WtaQsx+12pgO1tGTqxTZ4E3HnQQooSaTx9wVEagureYxRwPP0nAr4gjTj1lXzqUgY0BE
+         XYGQ==
+X-Gm-Message-State: AOJu0YyeV4BJAh/r2xJWtaByRtZAkATqamvqF1LiIjpX5pdTCoQFyYdI
+	HELUXQJMoWRMXPs36YoyD2TJyGWeP6XNN+GxRuhm2xGoFInSsdMuByR+yrJ1GkRBGjzKgkIibOX
+	G0lWcS1ZX4q8ne8WdttdI5+CAyQ==
+X-Received: by 2002:a05:6870:d6a2:b0:203:a296:f586 with SMTP id z34-20020a056870d6a200b00203a296f586mr5677387oap.105.1702995791602;
+        Tue, 19 Dec 2023 06:23:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFg9BJ6Fmza4T0Fk9M7UTy/G2UT3TlRoKhXNds9iD0Tc37v6RQZDH77p3JsJXVmrNsC//bWLw==
+X-Received: by 2002:a05:6870:d6a2:b0:203:a296:f586 with SMTP id z34-20020a056870d6a200b00203a296f586mr5677366oap.105.1702995791214;
+        Tue, 19 Dec 2023 06:23:11 -0800 (PST)
 Received: from [192.168.0.6] (ip-109-43-177-45.web.vodafone.de. [109.43.177.45])
-        by smtp.gmail.com with ESMTPSA id br6-20020a05622a1e0600b00425962ee7bdsm7290763qtb.18.2023.12.19.06.15.25
+        by smtp.gmail.com with ESMTPSA id t18-20020ac865d2000000b00423829b6d91sm10258753qto.8.2023.12.19.06.23.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Dec 2023 06:15:26 -0800 (PST)
-Message-ID: <4e9e0ce9-8957-4b46-b428-23733fa200ad@redhat.com>
-Date: Tue, 19 Dec 2023 15:15:22 +0100
+        Tue, 19 Dec 2023 06:23:10 -0800 (PST)
+Message-ID: <c9659768-2c13-46b9-bae8-e902eb86b1d5@redhat.com>
+Date: Tue, 19 Dec 2023 15:23:06 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v5 25/29] powerpc: Add rtas stop-self
- support
+Subject: Re: [kvm-unit-tests PATCH v5 29/29] powerpc: Add timebase tests
 To: Nicholas Piggin <npiggin@gmail.com>, kvm@vger.kernel.org
 References: <20231216134257.1743345-1-npiggin@gmail.com>
- <20231216134257.1743345-26-npiggin@gmail.com>
+ <20231216134257.1743345-30-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -127,7 +126,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231216134257.1743345-26-npiggin@gmail.com>
+In-Reply-To: <20231216134257.1743345-30-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -149,38 +148,32 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 16/12/2023 14.42, Nicholas Piggin wrote:
-> In preparation for improved SMP support, add stop-self support to the
-> harness. This is non-trivial because it requires an unlocked rtas
-> call: a CPU can't be holding a spin lock when it goes offline or it
-> will deadlock other CPUs. rtas permits stop-self to be called without
-> serialising all other rtas operations.
+> This has a known failure on QEMU TCG machines where the decrementer
+> interrupt is not lowered when the DEC wraps from -ve to +ve.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   lib/powerpc/asm/rtas.h |  2 ++
->   lib/powerpc/rtas.c     | 78 +++++++++++++++++++++++++++++++++---------
->   2 files changed, 64 insertions(+), 16 deletions(-)
+>   lib/powerpc/asm/ppc_asm.h   |   1 +
+>   lib/powerpc/asm/processor.h |  22 +++
+>   powerpc/Makefile.common     |   1 +
+>   powerpc/smp.c               |  22 ---
+>   powerpc/timebase.c          | 328 ++++++++++++++++++++++++++++++++++++
+>   powerpc/unittests.cfg       |   8 +
+>   6 files changed, 360 insertions(+), 22 deletions(-)
+>   create mode 100644 powerpc/timebase.c
 ...
-> +void rtas_stop_self(void)
-> +{
-> +	struct rtas_args args;
-> +	uint32_t token;
-> +	int ret;
-> +
-> +	ret = rtas_token("stop-self", &token);
-> +	if (ret) {
-> +		puts("RTAS stop-self not available\n");
-> +		return;
-> +	}
-> +
-> +	ret = rtas_call_unlocked(&args, token, 0, 1, NULL);
-> +	printf("RTAS stop-self returnd %d\n", ret);
+> diff --git a/powerpc/timebase.c b/powerpc/timebase.c
+> new file mode 100644
+> index 00000000..4d80ea09
+> --- /dev/null
+> +++ b/powerpc/timebase.c
+> @@ -0,0 +1,328 @@
+> +/*
+> + * Test Timebase
+> + *
+> + * Copyright 2017  Thomas Huth, Red Hat Inc.
 
-s/returnd/returned/
+No, not really. Please update ;-)
 
-> +}
-
-With the typo fixed:
-
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+  Thomas
 
