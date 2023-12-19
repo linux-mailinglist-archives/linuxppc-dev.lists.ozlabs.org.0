@@ -2,88 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D2848186B3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 12:54:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7CAB8186B9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 12:56:47 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cPi6KrvO;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cPi6KrvO;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F+PVdcQL;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F+PVdcQL;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SvZqs1lY5z3cTm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 22:54:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SvZt53yyGz3cFf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 22:56:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cPi6KrvO;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cPi6KrvO;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F+PVdcQL;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F+PVdcQL;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SvZq20qW1z2xwD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 22:54:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SvZsH48TCz2xpp
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 22:56:03 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702986842;
+	s=mimecast20190719; t=1702986961;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=3ge0vYIMSHofQN40YECeVZ2jR68lUGNh8boj/99SI6g=;
-	b=cPi6KrvOPBi5+pvfH79lZdQ0plECBUtifFz34Hg5FmNDhnB49PdJClgxhykghJFJzGPaaM
-	RFy0ish0BAdnNEYnYgnE9OJouq/JP73boDZKijvLCKzHa554NJlKUaJKdGR4NGNTmEOZ9I
-	m5/64NHqufyTqL/YnMl2c+1S5zgazws=
+	bh=CRzTT109Xd0Up5GuRVt2OIDmnr1m9IFlE9ql4FmRNAU=;
+	b=F+PVdcQLyMnfu9bYVdWi2UFg9O7Z5BLfzQBA+2ZRpnAcGn4x+lsaOBUksj1BdoCIJi6mDd
+	D6JAkqLeU6GwCchVZgWLSCAEt5W62oGY8yUs61JWumzakF5ZY+1AUfqsPT5JNLvjFjWge6
+	/L90XtKWJXEkETfsF+HpBIt0+9Vo0ME=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702986842;
+	s=mimecast20190719; t=1702986961;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=3ge0vYIMSHofQN40YECeVZ2jR68lUGNh8boj/99SI6g=;
-	b=cPi6KrvOPBi5+pvfH79lZdQ0plECBUtifFz34Hg5FmNDhnB49PdJClgxhykghJFJzGPaaM
-	RFy0ish0BAdnNEYnYgnE9OJouq/JP73boDZKijvLCKzHa554NJlKUaJKdGR4NGNTmEOZ9I
-	m5/64NHqufyTqL/YnMl2c+1S5zgazws=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=CRzTT109Xd0Up5GuRVt2OIDmnr1m9IFlE9ql4FmRNAU=;
+	b=F+PVdcQLyMnfu9bYVdWi2UFg9O7Z5BLfzQBA+2ZRpnAcGn4x+lsaOBUksj1BdoCIJi6mDd
+	D6JAkqLeU6GwCchVZgWLSCAEt5W62oGY8yUs61JWumzakF5ZY+1AUfqsPT5JNLvjFjWge6
+	/L90XtKWJXEkETfsF+HpBIt0+9Vo0ME=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-332-c4X7au5-OhKDeFJgMlf5Jw-1; Tue, 19 Dec 2023 06:54:00 -0500
-X-MC-Unique: c4X7au5-OhKDeFJgMlf5Jw-1
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-40c6397d9adso35896395e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 03:54:00 -0800 (PST)
+ us-mta-636-q-0UmIcpP9OZikjNPSE3Lg-1; Tue, 19 Dec 2023 06:55:57 -0500
+X-MC-Unique: q-0UmIcpP9OZikjNPSE3Lg-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-40c22bc1ebdso19414175e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 03:55:57 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702986839; x=1703591639;
+        d=1e100.net; s=20230601; t=1702986957; x=1703591757;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3ge0vYIMSHofQN40YECeVZ2jR68lUGNh8boj/99SI6g=;
-        b=caO1FoMKdDnt5Drh0IuaU3e6cHQKbAFNv0XjzAXQDrKQFnjNrCZUsyLbKMCXsO+W0v
-         xefpW6vk7fOzLUr18jM+DnmME3FXuN3dtPfIL/J2sYr9NaTSv728QNHSUSGk/JFBqQkh
-         qv21QjUbohmNyz/bhhxq5zn3B6VBtrEG8NLYGh9ckopXxYP7UYrG+Lu8Cvt8SK5CzS/l
-         pGH296sw5aJlGAQeY3p7hFTq8Z5JeUPf7XAiVMQhiOtk13PKqpvm7cQ/0wbWRSQxo37A
-         8+K0mde+GZ+unrWBg6vQkyZoESIyzVvKGz1GGUmF4SpD4p3ZQ6lsKdmHCpi93p5H/J8l
-         QYGQ==
-X-Gm-Message-State: AOJu0Yw7KRKkTYf4wHmbEItA75tdTmfejsBTZ6xQpHdUCSr1ZFWGYdAd
-	FZ8juX6fJbeNLOFh3XsHu6LIYpnmEoZC7y+tEN1N6vNpcHCSGiykzkDe+OozzTGlJVS8JParYJH
-	KAo8osn5xCMFepjnFr+pv2npl7Q==
-X-Received: by 2002:a05:600c:b41:b0:40c:2a41:4a35 with SMTP id k1-20020a05600c0b4100b0040c2a414a35mr9211187wmr.130.1702986839232;
-        Tue, 19 Dec 2023 03:53:59 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEon7eRP8QSZH1EPIYWSwSAKjJ5zsTPbGNJntU7Tfs96CYFYuXsz0XSThXoSnVdydjRt5tPaQ==
-X-Received: by 2002:a05:600c:b41:b0:40c:2a41:4a35 with SMTP id k1-20020a05600c0b4100b0040c2a414a35mr9211180wmr.130.1702986838916;
-        Tue, 19 Dec 2023 03:53:58 -0800 (PST)
+        bh=CRzTT109Xd0Up5GuRVt2OIDmnr1m9IFlE9ql4FmRNAU=;
+        b=Xa0b6N5utsWI71XjFF+BW9SaePO1ksVVxbc4GuNjOv1/zsBQ6k+3iexlfHAcVqow12
+         Qhwhx/efCiRWwN23Nyy1kJNceAvUh/4tFHiH3pyC4SW1p8kHUqBYKJsJtkqjo8ZFtJHy
+         XCNAOf+HqHfGMxtVNAJh11pqBy46nAObblnHurevS2KX7+vwXvQcBeTn5VhHfRsMz2Gu
+         IYIZqUk5/+3HBz+Q3m3+jsLdlr7iU29hpa64/I7CFLSLK3UMU5UxwsY0Ld38UH0DVvSv
+         tJJFxbkMcTsp7VCK7NQdVxo2yqcwqyFkp13jaTTYXHrsfjpe6LHbQagxW1eyR5YCP7F0
+         wXtw==
+X-Gm-Message-State: AOJu0YxysTfI+MDar/D5UzuVysDTfTCTQ/y0eYQYUB2U6WRjG0GzgUck
+	640MfegOrqs4rUwkzkT/OIrd7uQyLa7rIMQ3ANydd/BOCoeZC6kpfiL5Qogki65UQG7+TDp6Y4o
+	jldHwITTeMsZ51BEQyLNZ9KNM4A==
+X-Received: by 2002:a05:600c:8607:b0:40c:2ace:6e58 with SMTP id ha7-20020a05600c860700b0040c2ace6e58mr448788wmb.182.1702986956853;
+        Tue, 19 Dec 2023 03:55:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEbDrKIzkjdrzjHsrG5KTuvuH99zRb8ioV490mI7XbbPanRYuiRcH3PZ9e9w2zBXhzExal+fA==
+X-Received: by 2002:a05:600c:8607:b0:40c:2ace:6e58 with SMTP id ha7-20020a05600c860700b0040c2ace6e58mr448781wmb.182.1702986956596;
+        Tue, 19 Dec 2023 03:55:56 -0800 (PST)
 Received: from [192.168.0.6] (ip-109-43-177-45.web.vodafone.de. [109.43.177.45])
-        by smtp.gmail.com with ESMTPSA id n6-20020a05600c500600b0040c1d2c6331sm2507312wmr.32.2023.12.19.03.53.57
+        by smtp.gmail.com with ESMTPSA id u9-20020a05600c19c900b0040d18fdfe96sm2473706wmq.44.2023.12.19.03.55.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Dec 2023 03:53:58 -0800 (PST)
-Message-ID: <4a42b65c-f65b-41cf-91f6-eeb96519dc2c@redhat.com>
-Date: Tue, 19 Dec 2023 12:53:57 +0100
+        Tue, 19 Dec 2023 03:55:56 -0800 (PST)
+Message-ID: <ea43abdb-c333-4299-b6ad-e9eea95b18c5@redhat.com>
+Date: Tue, 19 Dec 2023 12:55:55 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v5 13/29] powerpc: Make interrupt handler
- error more readable
+Subject: Re: [kvm-unit-tests PATCH v5 14/29] powerpc: Expand exception handler
+ vector granularity
 To: Nicholas Piggin <npiggin@gmail.com>, kvm@vger.kernel.org
 References: <20231216134257.1743345-1-npiggin@gmail.com>
- <20231216134257.1743345-14-npiggin@gmail.com>
+ <20231216134257.1743345-15-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -127,7 +127,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231216134257.1743345-14-npiggin@gmail.com>
+In-Reply-To: <20231216134257.1743345-15-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -149,33 +149,15 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 16/12/2023 14.42, Nicholas Piggin wrote:
-> Installing the same handler twice reports a shifted trap vector
-> address which is hard to decipher. Print the unshifed address.
+> Exception handlers are currently indexed in units of 0x100, but
+> powerpc can have vectors that are aligned to as little as 0x20
+> bytes. Increase granularity of the handler functions before
+> adding support for those vectors.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   lib/powerpc/processor.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/lib/powerpc/processor.c b/lib/powerpc/processor.c
-> index aaf45b68..b4cd5b4c 100644
-> --- a/lib/powerpc/processor.c
-> +++ b/lib/powerpc/processor.c
-> @@ -26,7 +26,7 @@ void handle_exception(int trap, void (*func)(struct pt_regs *, void *),
->   	trap >>= 8;
+>   lib/powerpc/processor.c | 16 +++++++++++-----
+>   1 file changed, 11 insertions(+), 5 deletions(-)
 
-You only change this to >>= 5 in the next patch...
-
->   	if (func && handlers[trap].func) {
-> -		printf("exception handler installed twice %#x\n", trap);
-> +		printf("exception handler installed twice %#x\n", trap << 5);
-
-... so I think you should move this patch here after the next one.
-
-  Thomas
-
-
->   		abort();
->   	}
->   	handlers[trap].func = func;
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
