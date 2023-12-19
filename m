@@ -1,89 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8371681875E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 13:23:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A00B818777
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 13:28:19 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dKReT4V8;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dKReT4V8;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RktIH0eX;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RktIH0eX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SvbTB1T1mz3cSS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 23:23:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SvbZS6HCvz3cLL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Dec 2023 23:28:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dKReT4V8;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dKReT4V8;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RktIH0eX;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RktIH0eX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SvbSL0J5nz2xch
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 23:22:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SvbYd2Xq3z2xch
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 23:27:33 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702988574;
+	s=mimecast20190719; t=1702988850;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ScmodmRY1DhWwRsVePjC0/jEg/0Gnr/zqZH69W9QYvo=;
-	b=dKReT4V8sLdiM6zQbn1Dtg1NmwY0BB0Hud4Sp4unjdblHx3NZJhO+jvTku47LgsgBVqaXg
-	Kz6Z22ItTSOZL4u0qg/0ww1yPMSRfObY5mF+Y50GseYn3qca1DMnIUj4VzGQ9cHAWMS8pZ
-	HWzK5FjdUus+jefWfDBGLsp11/fymyA=
+	bh=RbbJ5eIrXcjdReDyv3RJBIq3VmDXMbdp/uvztD9DHe4=;
+	b=RktIH0eXVB0GUIa5dRICRtZhSeKhw2c2KDYbJSSvUG+gc2U4Yv8txBdejb+BhNHwk8w7ve
+	O8vjE72Yy8yke2P+QmqK//Hcv5SSRyGL4LVVjzW0k4IlpzvSsebo/AISuf72lwONMeVsF6
+	OLsesS3IsddnthQEh9xL2nEhBTIY+Yo=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702988574;
+	s=mimecast20190719; t=1702988850;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ScmodmRY1DhWwRsVePjC0/jEg/0Gnr/zqZH69W9QYvo=;
-	b=dKReT4V8sLdiM6zQbn1Dtg1NmwY0BB0Hud4Sp4unjdblHx3NZJhO+jvTku47LgsgBVqaXg
-	Kz6Z22ItTSOZL4u0qg/0ww1yPMSRfObY5mF+Y50GseYn3qca1DMnIUj4VzGQ9cHAWMS8pZ
-	HWzK5FjdUus+jefWfDBGLsp11/fymyA=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=RbbJ5eIrXcjdReDyv3RJBIq3VmDXMbdp/uvztD9DHe4=;
+	b=RktIH0eXVB0GUIa5dRICRtZhSeKhw2c2KDYbJSSvUG+gc2U4Yv8txBdejb+BhNHwk8w7ve
+	O8vjE72Yy8yke2P+QmqK//Hcv5SSRyGL4LVVjzW0k4IlpzvSsebo/AISuf72lwONMeVsF6
+	OLsesS3IsddnthQEh9xL2nEhBTIY+Yo=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-396-iODH1VWxMzOdvQuieOvi6w-1; Tue, 19 Dec 2023 07:22:53 -0500
-X-MC-Unique: iODH1VWxMzOdvQuieOvi6w-1
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-332ee20a3f0so3388072f8f.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 04:22:52 -0800 (PST)
+ us-mta-537-eJzsQjrDM_yVUFuGdeEmBA-1; Tue, 19 Dec 2023 07:27:28 -0500
+X-MC-Unique: eJzsQjrDM_yVUFuGdeEmBA-1
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-9fffa4c4f28so138760366b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Dec 2023 04:27:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702988572; x=1703593372;
+        d=1e100.net; s=20230601; t=1702988848; x=1703593648;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ScmodmRY1DhWwRsVePjC0/jEg/0Gnr/zqZH69W9QYvo=;
-        b=kBqHwStklJ16o264LaV7smkbGYW+PzKE+uLx88jE8jRG6DMPCPgkKmPY2TYPGwis+N
-         qQVnZN7bGUV+X3YpJKikvlN3xVffpP0Dx+v4ZySZjTtI8LAZZji/PvVtSNSO3vHUW2hq
-         HMDfdaArrJhSMGiCzzteKtItCoqXW9I7Mxfip2f0HkNTt+wUqC6nA/G60XOJnsVOG62R
-         HAvxx75xdGKhTqmybVdRhIbvt0dytq1wqvYzrGbiG7HZIoWMyNUITA41rfswub9efNIX
-         /RASyopLkpMpL0UtoQ76G7Kgy9gl9bwVxc5njenpkdomSCRgKs2eHv/6AlGuk5G+R8ZS
-         sUTQ==
-X-Gm-Message-State: AOJu0YxjLRrK+PN/4r7quuCyN676wzQ+JTs5AwStQRUTRMisLRmezk9F
-	feP+LRv5ONrWrxIYQMdAcYCUHhJ5iGS65y0bTtiQ9cxsXM3qt0KFKHVlI7hPmsnV+h0UdSEcxEv
-	y6agOn7Fxo0TZ1L+FVAQ/RJDrIQ==
-X-Received: by 2002:adf:f652:0:b0:336:6d00:8bf8 with SMTP id x18-20020adff652000000b003366d008bf8mr628537wrp.286.1702988571948;
-        Tue, 19 Dec 2023 04:22:51 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHUUrGMNUDo5rUN3K5C3MerqRS07x5oLALxlgd/DLTTqO9GjZx+ekKpkLeF/li84wAv3gFW3w==
-X-Received: by 2002:adf:f652:0:b0:336:6d00:8bf8 with SMTP id x18-20020adff652000000b003366d008bf8mr628531wrp.286.1702988571645;
-        Tue, 19 Dec 2023 04:22:51 -0800 (PST)
+        bh=RbbJ5eIrXcjdReDyv3RJBIq3VmDXMbdp/uvztD9DHe4=;
+        b=hG7qzqwrpD5VSvXtoFyAwF8ICctOdIKQ/R+lP9/roTZPxYVeQJFMlUKQmKeRkVDIyd
+         HzFWRGbpM8Fm+/ZoEqDWBp6W7jphDavy8iO+NpEltMcTace4PsIatgZ4E23wE6qZeiku
+         GbYjMBEBpZrwpkgxMquMr7gd3ZuOYVh3pdlOl780kBxWsY5pAYBhnTFG3+HKJUyfTagD
+         ELTscGYooQ6DDplg9Q0o7tbYPP18yXD36AqVF4hx3C3Gh6PYQ9RpT3uzidlneok9yqfU
+         TbJn78lpIx3hq+aBhbECkFtNevXCJqA88n4YGLdiyYVHIIo2wR5KHiVecY5Cmry+TvFw
+         Ok8g==
+X-Gm-Message-State: AOJu0YyqPxi/Y/78MrC+jVEXnsnhJsetVbEJiOr2XZrA8oY3SCwY+WK/
+	V1ZYMTSW6F6MvVh4DPBxPVMfQn4nTwAaSj5dWBX5l2B+X6RSkPCq/bjQbrNZIX97DqGD4+xIG+b
+	jZNm/xw9GBelzLijutlX8bhP73A==
+X-Received: by 2002:a17:906:2247:b0:a23:3e76:185 with SMTP id 7-20020a170906224700b00a233e760185mr1933009ejr.35.1702988847880;
+        Tue, 19 Dec 2023 04:27:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFG8okK30RHpIsNvh9ix8iaNEcUSaj5RJwS5gVDZAmh7oeeSJc9UX0xdwvdFEFTKfTTm3CP6Q==
+X-Received: by 2002:a17:906:2247:b0:a23:3e76:185 with SMTP id 7-20020a170906224700b00a233e760185mr1933000ejr.35.1702988847399;
+        Tue, 19 Dec 2023 04:27:27 -0800 (PST)
 Received: from [192.168.0.6] (ip-109-43-177-45.web.vodafone.de. [109.43.177.45])
-        by smtp.gmail.com with ESMTPSA id k15-20020a5d628f000000b0033656783e76sm11211070wru.111.2023.12.19.04.22.50
+        by smtp.gmail.com with ESMTPSA id vv8-20020a170907a68800b00a1d2b0d4500sm15273390ejc.168.2023.12.19.04.27.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Dec 2023 04:22:51 -0800 (PST)
-Message-ID: <464fccfc-b375-4458-b718-de606e50c61c@redhat.com>
-Date: Tue, 19 Dec 2023 13:22:50 +0100
+        Tue, 19 Dec 2023 04:27:27 -0800 (PST)
+Message-ID: <018c2d8f-b956-4b8e-9741-b4d3d3da1a8d@redhat.com>
+Date: Tue, 19 Dec 2023 13:27:25 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v5 18/29] powerpc: Fix stack backtrace
- termination
+Subject: Re: [kvm-unit-tests PATCH v5 19/29] scripts: allow machine option to
+ be specified in unittests.cfg
 To: Nicholas Piggin <npiggin@gmail.com>, kvm@vger.kernel.org
 References: <20231216134257.1743345-1-npiggin@gmail.com>
- <20231216134257.1743345-19-npiggin@gmail.com>
+ <20231216134257.1743345-20-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -127,7 +127,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20231216134257.1743345-19-npiggin@gmail.com>
+In-Reply-To: <20231216134257.1743345-20-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -149,46 +149,15 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 16/12/2023 14.42, Nicholas Piggin wrote:
-> The backtrace handler terminates when it sees a NULL caller address,
-> but the powerpc stack setup does not keep such a NULL caller frame
-> at the start of the stack.
-> 
-> This happens to work on pseries because the memory at 0 is mapped and
-> it contains 0 at the location of the return address pointer if it
-> were a stack frame. But this is fragile, and does not work with powernv
-> where address 0 contains firmware instructions.
-> 
-> Use the existing dummy frame on stack as the NULL caller, and create a
-> new frame on stack for the entry code.
+> This allows different machines with different requirements to be
+> supported by run_tests.sh, similarly to how different accelerators
+> are handled.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   powerpc/cstart64.S | 12 ++++++++++--
->   1 file changed, 10 insertions(+), 2 deletions(-)
-> 
-> diff --git a/powerpc/cstart64.S b/powerpc/cstart64.S
-> index e18ae9a2..14ab0c6c 100644
-> --- a/powerpc/cstart64.S
-> +++ b/powerpc/cstart64.S
-> @@ -46,8 +46,16 @@ start:
->   	add	r1, r1, r31
->   	add	r2, r2, r31
->   
-> +	/* Zero backpointers in initial stack frame so backtrace() stops */
-> +	li	r0,0
-> +	std	r0,0(r1)
-> +	std	r0,16(r1)
-> +
-> +	/* Create entry frame */
-> +	stdu	r1,-INT_FRAME_SIZE(r1)
+>   scripts/common.bash  |  8 ++++++--
+>   scripts/runtime.bash | 16 ++++++++++++----
+>   2 files changed, 18 insertions(+), 6 deletions(-)
 
-Shouldn't that rather be STACK_FRAME_OVERHEAD instead of INT_FRAME_SIZE...
-
->   	/* save DTB pointer */
-> -	std	r3, 56(r1)
-> +	SAVE_GPR(3,r1)
-
-... since SAVE_GPR uses STACK_FRAME_OVERHEAD (via GPR0), too?
-
-  Thomas
+Acked-by: Thomas Huth <thuth@redhat.com>
 
