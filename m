@@ -1,83 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5132081A5C7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Dec 2023 17:58:31 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MyB42emq;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92AD481A906
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Dec 2023 23:21:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SwKWm71Wlz3cbN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 03:58:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SwShg24bfz3cb2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 09:21:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MyB42emq;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.118; helo=out30-118.freemail.mail.aliyun.com; envelope-from=renyu.zj@linux.alibaba.com; receiver=lists.ozlabs.org)
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SwKV64FQYz3cRc
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Dec 2023 03:57:02 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3BKFtrAa009006;
-	Wed, 20 Dec 2023 16:56:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=iIx7zev5EAPBk/H2f8ZF0+DE3dkV9NqEeif7xXVkJ20=;
- b=MyB42emq+eCXfQMC9VRUy2GJX38zCuxYFcY8X5OX7XZId+z9IPDG8pA55T88Xm4sqops
- nqQyknrzlbPNzN+AQzrGc2EOtHRdFY0N6J0BuPt7V/vJ7s2sr7xmb4uuPPT0NumWtqw1
- F6I+Z2FaDj/z5u6Bmd1G5wiCaIRJMhEe6RECg9eGE5v7VRbrBuxZ3mnIiGwhAG0rKDQV
- m+N5zhM69UfYsN3naL1Smfx49dy/yt741KRpxAwwKO9ConWcHjON1YQ4gwXk04bdGtw9
- 2AeBBIHbDkC4uaV5Zcc831FVlQCeMFK3ByndHKxj5VLcd/OQDQcckuCktKeIWXlzvhbQ 2w== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3v415px6mb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 Dec 2023 16:56:32 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3BKEjj6o013890;
-	Wed, 20 Dec 2023 16:56:31 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3v1qqkfhyj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 Dec 2023 16:56:31 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3BKGuTCl22020732
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 20 Dec 2023 16:56:29 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3B94C20049;
-	Wed, 20 Dec 2023 16:56:29 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6F3D520040;
-	Wed, 20 Dec 2023 16:56:26 +0000 (GMT)
-Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.ibm.com.com (unknown [9.43.81.245])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 20 Dec 2023 16:56:26 +0000 (GMT)
-From: Hari Bathini <hbathini@linux.ibm.com>
-To: bpf@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH 2/2] powerpc/bpf: enable kfunc call
-Date: Wed, 20 Dec 2023 22:26:22 +0530
-Message-ID: <20231220165622.246723-2-hbathini@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231220165622.246723-1-hbathini@linux.ibm.com>
-References: <20231220165622.246723-1-hbathini@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sw6PV4FDWz2ykx
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Dec 2023 19:37:16 +1100 (AEDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R751e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045168;MF=renyu.zj@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0VyteU4X_1703061428;
+Received: from 30.221.146.20(mailfrom:renyu.zj@linux.alibaba.com fp:SMTPD_---0VyteU4X_1703061428)
+          by smtp.aliyun-inc.com;
+          Wed, 20 Dec 2023 16:37:09 +0800
+Message-ID: <98276b4d-d842-4dac-ab06-2e0fd245f3a8@linux.alibaba.com>
+Date: Wed, 20 Dec 2023 16:37:06 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: perf tools arch Arm CMN PMU JSON files build breakage on ubuntu
+ 18.04 cross build
+To: Arnaldo Carvalho de Melo <acme@kernel.org>
+References: <ZBxP77deq7ikTxwG@kernel.org>
+ <a21aa4e1-506a-916c-03bd-39d7403c7941@linux.ibm.com>
+ <ZXxlERShV-TIGVit@kernel.org> <ZXxlj3g-KMG3iYjx@kernel.org>
+From: Jing Zhang <renyu.zj@linux.alibaba.com>
+In-Reply-To: <ZXxlj3g-KMG3iYjx@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: mcFD4qApMac4yKbPwA6Y6zON5dx3Cchq
-X-Proofpoint-GUID: mcFD4qApMac4yKbPwA6Y6zON5dx3Cchq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-20_10,2023-12-20_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 mlxlogscore=999 clxscore=1015 phishscore=0
- lowpriorityscore=0 mlxscore=0 suspectscore=0 spamscore=0 impostorscore=0
- adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2312200121
+X-Mailman-Approved-At: Thu, 21 Dec 2023 09:21:15 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,38 +46,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Ian Rogers <irogers@google.com>, kajoljain <kjain@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Thomas Richter <tmricht@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With module addresses supported, override bpf_jit_supports_kfunc_call()
-to enable kfunc support. Module address offsets can be more than 32-bit
-long, so override bpf_jit_supports_far_kfunc_call() to enable 64-bit
-pointers.
 
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
----
- arch/powerpc/net/bpf_jit_comp.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
 
-diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-index 0f9a21783329..a6151a5ef9a5 100644
---- a/arch/powerpc/net/bpf_jit_comp.c
-+++ b/arch/powerpc/net/bpf_jit_comp.c
-@@ -359,3 +359,13 @@ void bpf_jit_free(struct bpf_prog *fp)
- 
- 	bpf_prog_unlock_free(fp);
- }
-+
-+bool bpf_jit_supports_kfunc_call(void)
-+{
-+	return true;
-+}
-+
-+bool bpf_jit_supports_far_kfunc_call(void)
-+{
-+	return true;
-+}
--- 
-2.43.0
+在 2023/12/15 下午10:41, Arnaldo Carvalho de Melo 写道:
+> Em Fri, Dec 15, 2023 at 11:39:14AM -0300, Arnaldo Carvalho de Melo escreveu:
+>> Em Mon, Mar 27, 2023 at 09:52:11AM +0530, kajoljain escreveu:
+>>> On 3/23/23 18:41, Arnaldo Carvalho de Melo wrote:
+>>>> Exception processing pmu-events/arch/powerpc/power9/other.json
+>>>> Traceback (most recent call last):
+>>>>   File "pmu-events/jevents.py", line 997, in <module>
+>>>>     main()
+>>>>   File "pmu-events/jevents.py", line 979, in main
+>>>>     ftw(arch_path, [], preprocess_one_file)
+>>>>   File "pmu-events/jevents.py", line 935, in ftw
+>>>>     ftw(item.path, parents + [item.name], action)
+>>>>   File "pmu-events/jevents.py", line 933, in ftw
+>>>>     action(parents, item)
+>>>>   File "pmu-events/jevents.py", line 514, in preprocess_one_file
+>>>>     for event in read_json_events(item.path, topic):
+>>>>   File "pmu-events/jevents.py", line 388, in read_json_events
+>>>>     events = json.load(open(path), object_hook=JsonEvent)
+>>>>   File "/usr/lib/python3.6/json/__init__.py", line 296, in load
+>>>>     return loads(fp.read(),
+>>>>   File "/usr/lib/python3.6/encodings/ascii.py", line 26, in decode
+>>>>     return codecs.ascii_decode(input, self.errors)[0]
+>>>> UnicodeDecodeError: 'ascii' codec can't decode byte 0xc2 in position 55090: ordinal not in range(128)
+>>>>   CC      /tmp/build/perf/tests/expr.o
+>>>> pmu-events/Build:35: recipe for target '/tmp/build/perf/pmu-events/pmu-events.c' failed
+>>>> make[3]: *** [/tmp/build/perf/pmu-events/pmu-events.c] Error 1
+>>>> make[3]: *** Deleting file '/tmp/build/perf/pmu-events/pmu-events.c'
+>>>> Makefile.perf:679: recipe for target '/tmp/build/perf/pmu-events/pmu-events-in.o' failed
+>>>> make[2]: *** [/tmp/build/perf/pmu-events/pmu-events-in.o] Error 2
+>>>> make[2]: *** Waiting for unfinished jobs....
+>>
+>>>> Now jevents is an opt-out feature so I'm noticing these problems.
+>>  
+>>>     Thanks for raising it. I will check this issue.
+>>
+>> Now I'm seeing this on:
+> 
+> Jing,
+> 
+> 	Please take a look at:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=5d9df8731c0941f3add30f96745a62586a0c9d52
+> 
+> 	For the fix for the ppc case above.
+> 
 
+I'm sorry for the breakage. Thanks for the catch! I will fix it soon.
+
+Thanks,
+Jing
+
+
+> - Arnaldo
+>  
+>> Exception processing pmu-events/arch/arm64/arm/cmn/sys/cmn.json
+>> Traceback (most recent call last):
+>>   File "pmu-events/jevents.py", line 1285, in <module>
+>>     main()
+>>   File "pmu-events/jevents.py", line 1267, in main
+>>     ftw(arch_path, [], preprocess_one_file)
+>>   File "pmu-events/jevents.py", line 1217, in ftw
+>>     ftw(item.path, parents + [item.name], action)
+>>   File "pmu-events/jevents.py", line 1217, in ftw
+>>     ftw(item.path, parents + [item.name], action)
+>>   File "pmu-events/jevents.py", line 1217, in ftw
+>>     ftw(item.path, parents + [item.name], action)
+>>   File "pmu-events/jevents.py", line 1215, in ftw
+>>     action(parents, item)
+>>   File "pmu-events/jevents.py", line 599, in preprocess_one_file
+>>     for event in read_json_events(item.path, topic):
+>>   File "pmu-events/jevents.py", line 416, in read_json_events
+>>     events = json.load(open(path), object_hook=JsonEvent)
+>>   File "/usr/lib/python3.6/json/__init__.py", line 296, in load
+>>     return loads(fp.read(),
+>>   File "/usr/lib/python3.6/encodings/ascii.py", line 26, in decode
+>>     return codecs.ascii_decode(input, self.errors)[0]
+>> UnicodeDecodeError: 'ascii' codec can't decode byte 0xe2 in position 3071: ordinal not in range(128)
+>>
+> 
