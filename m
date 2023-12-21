@@ -2,31 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0938581B3EE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 11:41:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A53681B3F9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 11:42:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Swn6R5QBZz3dLB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 21:41:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Swn7N5HYzz3dD1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 21:42:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Swn5W21HCz2xct
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Dec 2023 21:40:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Swn5X73b8z3bTf
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Dec 2023 21:40:48 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Swn5W0lWqz4xKZ;
-	Thu, 21 Dec 2023 21:40:47 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Swn5X5kx6z4x5m;
+	Thu, 21 Dec 2023 21:40:48 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, christophe.leroy@csgroup.eu, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-In-Reply-To: <20231114071219.198222-1-aneesh.kumar@linux.ibm.com>
-References: <20231114071219.198222-1-aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/sched: Cleanup vcpu_is_preempted()
-Message-Id: <170315510021.2192823.5031895314323063818.b4-ty@ellerman.id.au>
+To: npiggin@gmail.com, christophe.leroy@csgroup.eu, benh@kernel.crashing.org, rmclure@linux.ibm.com, Kunwu Chan <chentao@kylinos.cn>
+In-Reply-To: <20231127030755.1546750-1-chentao@kylinos.cn>
+References: <20231127030755.1546750-1-chentao@kylinos.cn>
+Subject: Re: [PATCH] powerpc/powernv: Add a null pointer check in opal_event_init
+Message-Id: <170315510017.2192823.1023474611305733746.b4-ty@ellerman.id.au>
 Date: Thu, 21 Dec 2023 21:38:20 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,20 +42,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, kunwu.chan@hotmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 14 Nov 2023 12:42:19 +0530, Aneesh Kumar K.V wrote:
-> No functional change in this patch. A helper is added to find if
-> vcpu is dispatched by hypervisor. Use that instead of opencoding.
-> Also clarify some of the comments.
+On Mon, 27 Nov 2023 11:07:55 +0800, Kunwu Chan wrote:
+> kasprintf() returns a pointer to dynamically allocated memory
+> which can be NULL upon failure.
 > 
 > 
 
 Applied to powerpc/next.
 
-[1/1] powerpc/sched: Cleanup vcpu_is_preempted()
-      https://git.kernel.org/powerpc/c/6f4b7052daa060e7d20d6d599697b8ac702a7e69
+[1/1] powerpc/powernv: Add a null pointer check in opal_event_init
+      https://git.kernel.org/powerpc/c/8649829a1dd25199bbf557b2621cedb4bf9b3050
 
 cheers
