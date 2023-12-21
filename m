@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F79A81AE20
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 05:47:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC8181AE21
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 05:48:34 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=S225jgcu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KU/z8HPw;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SwdGB0xxJz3dLH
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 15:47:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SwdH36WmXz3dFB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 15:48:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=S225jgcu;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KU/z8HPw;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f32; helo=mail-qv1-xf32.google.com; envelope-from=haokexin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f36; helo=mail-qv1-xf36.google.com; envelope-from=haokexin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-qv1-xf36.google.com (mail-qv1-xf36.google.com [IPv6:2607:f8b0:4864:20::f36])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SwdCm5vtlz3cP3
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Dec 2023 15:45:40 +1100 (AEDT)
-Received: by mail-qv1-xf32.google.com with SMTP id 6a1803df08f44-67f5132e8fcso2651866d6.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Dec 2023 20:45:40 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SwdCw3W3Rz3cRt
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Dec 2023 15:45:48 +1100 (AEDT)
+Received: by mail-qv1-xf36.google.com with SMTP id 6a1803df08f44-67f5c0be04cso2389416d6.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Dec 2023 20:45:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703133937; x=1703738737; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1703133945; x=1703738745; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=508hzsA1BZw2wQ/qtSJVPGxmi524ZrH5CnpDQLWzUtM=;
-        b=S225jgcucCm0AnGdUsUNN77gD62AQhK7k2fUYe8Ynb8+X7+ns++Ab+WMaR25aXF/sS
-         CLzMeiDT06wlQI5m5kAChLWzeHFBX1mALw90yJrmyPI1xj+z7uIkVizULWDqd9F0nc47
-         2mXLOmRuDZYIFEFLF2lBgQzF+hvhQdTpMSlpFTrjCgXM7C/g1AwRGlOLnVgrlt/Om3g9
-         3ChxOKKoeovxZEc7IqR7Hf2Pti6W2d08u1crvoGNeDO+FKaWoagiIgvpHsWSmNzp2Lbh
-         FfOhlIlYk/PKPSStMuARCBafcQMzKWuLHgQIOcwZ9zeQuMyL7RwygZS8eAXzO6zfsoCs
-         eOxw==
+        bh=wDbvXqjKpu9jOEJyZCSpkgRzMyYzFDZk80pdFn2FvQ0=;
+        b=KU/z8HPweP0UD6sWs+vErMbu1v2ECw2iShZ5lS+AqC1lb+TgkFhyc+P7GdcKF4OaPf
+         ebwXukbBAw3V66zUNc1lxMZJ3Vm6Rg9qCym9eR8uT7cbBmobMINAecS8zrsFamd0eUC0
+         QBljiQA8zS9mGImsqliZVc+4m4h4wJeAS1sFcpSt29n+LEhD1Bgbn6cevLIEKk6VgpE8
+         zhT4/1NNsCg2pR2YdcS6ASjfY6G/IkYDh8xGWcU7DViLJWMDg2CJXWKFIKp0XyhsVq5k
+         KZjma4VB3D7XqaGzoKF+wOq63L97SDnGBIOK4Jo5Tnn5LhvkY6gE/BJ/JCHvv568lVLm
+         Z8kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703133937; x=1703738737;
+        d=1e100.net; s=20230601; t=1703133945; x=1703738745;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=508hzsA1BZw2wQ/qtSJVPGxmi524ZrH5CnpDQLWzUtM=;
-        b=rCDFJ9I9jd059MUhRCyghUVuKWJuGYhGZNq4m6f090dtPqGAyp3Ume8sjMU1Jk/22m
-         LKGTXXf1OOJH0b5cU+qoK2fpdBONeTRwMODjXprSDadum9ZS5iALBV/cd0C3eQaRRcUe
-         +NFxChQUw0JWEJud+jKRN7CZ5bsfm6aH2zwOwWbqojcnIbaJPHkbNXP0O1howPx4ufdQ
-         6WzxRrlqsjgUHOAODQEblCq2CSmpF4NdOXxl++o07x9tHdaEiA862F8JbPqOZrKJiLGh
-         MOvwKeAlQUnuh4fJXHO7umMWeAwd+ADed/PQGT6Cw+frvH4yvHSjcbDH2BsVxaK4t/VO
-         oq0w==
-X-Gm-Message-State: AOJu0Yz07Uz1fmHJv/bwyA8CNRnFNOjgFIg2Bh6tvZCzMgu9r8bE7Bdd
-	ezcwDe0PgH48ytc+gPvdefA=
-X-Google-Smtp-Source: AGHT+IHynyQm1EkvDOzEXHBgQqb7+M+tw/igfjpw6D5leCrSmS4SxqtZ6h/hnYIuaA/t0ZriLE7jHw==
-X-Received: by 2002:a05:6214:2603:b0:67f:67e4:f289 with SMTP id gu3-20020a056214260300b0067f67e4f289mr5263444qvb.4.1703133937462;
-        Wed, 20 Dec 2023 20:45:37 -0800 (PST)
+        bh=wDbvXqjKpu9jOEJyZCSpkgRzMyYzFDZk80pdFn2FvQ0=;
+        b=E7RdxvnRkW9o9iVpbgu8jhZ9qyIapFhRDEwomDO8fC4guJkqYXHKwCgoob+NTSl72E
+         g+obb5sm/Q6ErssN+w2LH/9r91lIKc5rOCao/g/dxyMc+wG74xGrdnAN5lJp+pY4Kr6k
+         otxZz21AzdCGMSGJl/MVDsmYLBOpe3hB8pmuive79ipaqAnfcrJ0/A5ZtI+azCxbfnWH
+         /flkI235EIP4dOSEijBkbMOm9bvzlay/nJDhvsUPW73NPlLLb8y/Xgl32wYgs8HNaV+Q
+         4pn37dDUSZisqvQ387eoxmtlIEfv+fTz7XT3BacbNb99ywQ2/ziY7k+G0waWbmnzzRub
+         R0bg==
+X-Gm-Message-State: AOJu0Yxv730r0lI9qTgXbf3SStr2pz5r2CYVZan5F6Vg/wyTSuNSCGgm
+	7X+6LASb0VeCu50XUz7v+v8=
+X-Google-Smtp-Source: AGHT+IFINFJHWis+uHctWMcmPOO+C0/kRDSgnSS6JisZOvvJwl2MAYZozqB4C5bCboK+A4/MG7GMCA==
+X-Received: by 2002:a05:6214:48c:b0:67f:4bd6:ccdd with SMTP id pt12-20020a056214048c00b0067f4bd6ccddmr7418503qvb.64.1703133945355;
+        Wed, 20 Dec 2023 20:45:45 -0800 (PST)
 Received: from pek-lpggp6.wrs.com (unknown-105-121.windriver.com. [147.11.105.121])
-        by smtp.gmail.com with ESMTPSA id ct15-20020a056214178f00b0067f3f3d8e8asm374459qvb.111.2023.12.20.20.45.33
+        by smtp.gmail.com with ESMTPSA id ct15-20020a056214178f00b0067f3f3d8e8asm374459qvb.111.2023.12.20.20.45.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Dec 2023 20:45:36 -0800 (PST)
+        Wed, 20 Dec 2023 20:45:44 -0800 (PST)
 From: Kevin Hao <haokexin@gmail.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 2/3] powerpc: mpc83xx: Use wait_event_freezable() for freezable kthread
-Date: Thu, 21 Dec 2023 12:45:09 +0800
-Message-Id: <20231221044510.1802429-3-haokexin@gmail.com>
+Subject: [PATCH 3/3] powerpc: ps3: Add missing set_freezable() for ps3_probe_thread()
+Date: Thu, 21 Dec 2023 12:45:10 +0800
+Message-Id: <20231221044510.1802429-4-haokexin@gmail.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231221044510.1802429-1-haokexin@gmail.com>
 References: <20231221044510.1802429-1-haokexin@gmail.com>
@@ -78,38 +78,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Pavel Machek <pavel@ucw.cz>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Geoff Levand <geoff@infradead.org>, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Pavel Machek <pavel@ucw.cz>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A freezable kernel thread can enter frozen state during freezing by
-either calling try_to_freeze() or using wait_event_freezable() and its
-variants. So for the following snippet of code in a kernel thread loop:
-  wait_event_interruptible();
-  try_to_freeze();
-
-We can change it to a simple wait_event_freezable() and then eliminate
-a function call.
+The kernel thread function ps3_probe_thread() invokes the try_to_freeze()
+in its loop. But all the kernel threads are non-freezable by default.
+So if we want to make a kernel thread to be freezable, we have to invoke
+set_freezable() explicitly.
 
 Signed-off-by: Kevin Hao <haokexin@gmail.com>
 ---
- arch/powerpc/platforms/83xx/suspend.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/powerpc/platforms/ps3/device-init.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/platforms/83xx/suspend.c b/arch/powerpc/platforms/83xx/suspend.c
-index eed325ed08cc..c9664e46b03d 100644
---- a/arch/powerpc/platforms/83xx/suspend.c
-+++ b/arch/powerpc/platforms/83xx/suspend.c
-@@ -264,8 +264,7 @@ static int agent_thread_fn(void *data)
- 	set_freezable();
+diff --git a/arch/powerpc/platforms/ps3/device-init.c b/arch/powerpc/platforms/ps3/device-init.c
+index e87360a0fb40..878bc160246e 100644
+--- a/arch/powerpc/platforms/ps3/device-init.c
++++ b/arch/powerpc/platforms/ps3/device-init.c
+@@ -827,6 +827,7 @@ static int ps3_probe_thread(void *data)
+ 	if (res)
+ 		goto fail_free_irq;
  
- 	while (1) {
--		wait_event_interruptible(agent_wq, pci_pm_state >= 2);
--		try_to_freeze();
-+		wait_event_freezable(agent_wq, pci_pm_state >= 2);
- 
- 		if (signal_pending(current) || pci_pm_state < 2)
- 			continue;
++	set_freezable();
+ 	/* Loop here processing the requested notification events. */
+ 	do {
+ 		try_to_freeze();
 -- 
 2.39.2
 
