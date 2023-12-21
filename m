@@ -1,32 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DABB881B404
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 11:43:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D58081B409
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 11:43:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Swn8T3PKvz3cY8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 21:43:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Swn8y0gncz3vnX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 21:43:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Swn5Y5Wsvz3cRD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Dec 2023 21:40:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Swn5Z1JZsz3cT3
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Dec 2023 21:40:50 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Swn5Y4NDZz4xMv;
-	Thu, 21 Dec 2023 21:40:49 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Swn5Z0FJqz4xMw;
+	Thu, 21 Dec 2023 21:40:50 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: npiggin@gmail.com, christophe.leroy@csgroup.eu, robh@kernel.org, Kunwu Chan <chentao@kylinos.cn>
-In-Reply-To: <20231126095739.1501990-1-chentao@kylinos.cn>
-References: <20231126095739.1501990-1-chentao@kylinos.cn>
-Subject: Re: [PATCH] powerpc/powernv: Fix null pointer dereference in opal_powercap_init
-Message-Id: <170315510017.2192823.14859661011576735714.b4-ty@ellerman.id.au>
+To: npiggin@gmail.com, christophe.leroy@csgroup.eu, Kunwu Chan <chentao@kylinos.cn>
+In-Reply-To: <20231204023223.2447523-1-chentao@kylinos.cn>
+References: <20231204023223.2447523-1-chentao@kylinos.cn>
+Subject: Re: [PATCH v3] powerpc/mm: Fix null-pointer dereference in pgtable_cache_add
+Message-Id: <170315510015.2192823.7515374595652036540.b4-ty@ellerman.id.au>
 Date: Thu, 21 Dec 2023 21:38:20 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -46,15 +46,16 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, kunwu.chan@hotm
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, 26 Nov 2023 17:57:39 +0800, Kunwu Chan wrote:
+On Mon, 04 Dec 2023 10:32:23 +0800, Kunwu Chan wrote:
 > kasprintf() returns a pointer to dynamically allocated memory
-> which can be NULL upon failure.
+> which can be NULL upon failure. Ensure the allocation was successful
+> by checking the pointer validity.
 > 
 > 
 
 Applied to powerpc/next.
 
-[1/1] powerpc/powernv: Fix null pointer dereference in opal_powercap_init
-      https://git.kernel.org/powerpc/c/e123015c0ba859cf48aa7f89c5016cc6e98e018d
+[1/1] powerpc/mm: Fix null-pointer dereference in pgtable_cache_add
+      https://git.kernel.org/powerpc/c/f46c8a75263f97bda13c739ba1c90aced0d3b071
 
 cheers
