@@ -1,32 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2374E81B42A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 11:46:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9B6081B3E7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 11:41:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SwnDK611Dz3wJ0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 21:46:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Swn5y1bBMz3clL
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 21:41:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Swn5g0yBGz3cVm
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Dec 2023 21:40:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Swn5V67FFz2xct
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Dec 2023 21:40:46 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4Swn5V5mK7z4xKZ; Thu, 21 Dec 2023 21:40:46 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Swn5f4TZjz4xPc;
-	Thu, 21 Dec 2023 21:40:54 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Swn5V50Kqz4wcH;
+	Thu, 21 Dec 2023 21:40:46 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Naveen N Rao <naveen@kernel.org>
-In-Reply-To: <cover.1702045299.git.naveen@kernel.org>
-References: <cover.1702045299.git.naveen@kernel.org>
-Subject: Re: (subset) [RFC PATCH 0/9] powerpc: ftrace updates
-Message-Id: <170315510015.2192823.8374732857134504654.b4-ty@ellerman.id.au>
+To: linuxppc-dev@ozlabs.org, Aditya Gupta <adityag@linux.ibm.com>
+In-Reply-To: <20230920105706.853626-1-adityag@linux.ibm.com>
+References: <20230920105706.853626-1-adityag@linux.ibm.com>
+Subject: Re: [PATCH v2 1/2] powerpc: add `cur_cpu_spec` symbol to vmcoreinfo
+Message-Id: <170315510020.2192823.15295866344121712980.b4-ty@ellerman.id.au>
 Date: Thu, 21 Dec 2023 21:38:20 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,29 +45,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Florent Revest <revest@chromium.org>, Nicholas Piggin <npiggin@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Hari Bathini <hbathini@linux.ibm.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>, Sachin Sant <sachinp@linux.ibm.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 08 Dec 2023 22:00:39 +0530, Naveen N Rao wrote:
-> Early RFC.
+On Wed, 20 Sep 2023 16:27:05 +0530, Aditya Gupta wrote:
+> Since below commit, address mapping for vmemmap has changed for Radix
+> MMU, where address mapping is stored in kernel page table itself,
+> instead of earlier used 'vmemmap_list'.
 > 
-> This series attempts to address couple of issues with the existing
-> support for ftrace on powerpc, with a view towards improving performance
-> when ftrace is not enabled. See patch 6 for more details.
-> 
-> Patches 7 and 8 implement support for ftrace direct calls, through
-> adding support for DYNAMIC_FTRACE_WITH_CALL_OPS.
+>     commit 368a0590d954 ("powerpc/book3s64/vmemmap: switch radix to use
+>     a different vmemmap handling function")
 > 
 > [...]
 
-Patches 1, 3 and 4 applied to powerpc/next.
+Patch 2 applied to powerpc/next.
 
-[1/9] powerpc/ftrace: Fix indentation in ftrace.h
-      https://git.kernel.org/powerpc/c/2ec36570c3581285d15de672eaed10ce7e9218cd
-[3/9] powerpc/ftrace: Remove nops after the call to ftrace_stub
-      https://git.kernel.org/powerpc/c/ae24db43b3b427eb290b58d55179c32f0a7539d1
-[4/9] powerpc/Kconfig: Select FUNCTION_ALIGNMENT_4B
-      https://git.kernel.org/powerpc/c/b20f98e8b3deb50247603f0242ee2d1e38726635
+[2/2] powerpc: add cpu_spec.cpu_features to vmcoreinfo
+      https://git.kernel.org/powerpc/c/a143892cb77c5397fd4356bbef9982abe4f3c5a5
 
 cheers
