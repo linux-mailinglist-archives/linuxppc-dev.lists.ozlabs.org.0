@@ -1,53 +1,131 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 224ED81BA51
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 16:12:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84A9E81BA76
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 16:21:32 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TwGUel50;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=J76Pu3Fe;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Swv6Z4wfbz3cNl
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Dec 2023 02:12:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SwvKQ1gJjz3cY0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Dec 2023 02:21:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TwGUel50;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=J76Pu3Fe;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=lee@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:261c::600; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20600.outbound.protection.outlook.com [IPv6:2a01:111:f403:261c::600])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Swv5k68q5z30gr
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Dec 2023 02:11:22 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 3D794CE1FCC;
-	Thu, 21 Dec 2023 15:11:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15165C433C8;
-	Thu, 21 Dec 2023 15:11:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703171478;
-	bh=W1V9iuz27C48mcTlqdM84d1TvizSzj69f6WQ4WY/wVQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TwGUel50uL+FDdnJI4Nx7w8bbZ1gLxQiTAPJkXHQ7oQ9ckAb/J5ZNNvA8XSm/A1CM
-	 1CqjVjgnR0WeQKhjKbY74jVKh3SvK6MQqlczBeAjY3D5oABn92wBdsOm6JJkniezlf
-	 uvnX8vMWTNj7e+qCelDRXDDe69MGKkgK7y0zzWHvRSw5tZiPvVtPiO3pAFXd+R3G0g
-	 yoEVPuqFhRkkq/DuHaHI+ObRKSHZZmG301GPzanBE8tBEC71m4rGnM2O0ucHiI6tyq
-	 ugfIApkUhglx5DJ9uINOc4q4igWuKfzcyOWhQpWno/jH+klKRX4FPPDfUdc5XlARj/
-	 H3pBTlqkQDGzA==
-Date: Thu, 21 Dec 2023 15:11:11 +0000
-From: Lee Jones <lee@kernel.org>
-To: George Stark <gnstark@salutedevices.com>
-Subject: Re: [PATCH v4 00/10] devm_led_classdev_register() usage problem
-Message-ID: <20231221151111.GJ10102@google.com>
-References: <20231214173614.2820929-1-gnstark@salutedevices.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SwvJV0yzZz30gm
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Dec 2023 02:20:40 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IFh4umfDw6w5N/+jsizY8nhdE3CNs0jDV2iYovAXrhPLh+KiyJdNiu0zs7sjqnUDrghyuv+nUxX/aERIrO7InrY7q9v/Ut+Fk4oALoztd3WIjU5rVPprfYwL//wvHmvoYygPUy+EUTsAKtoupoAy13NBhaXVMJ8ALgPDTx6hE72sxKr+rcSKgGPxVXKjIGlj5kZKr+nKYFKQOX/AstkjKyh7Iq9ljKKu/7Oda/jRcbTNRastgOiKL53qXoWiZi0/YKzPMGoEq309flpm2HwqAp7JhkX9h/yqnhJDssQqLm2e3ocklrIPPADN9LLVLuCmcVzMMv4KU/wbUw2PTrOVaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LBZ2uCcv/rJmRbj5GHNtsHy5UVo3T5tg7GNP34Vo3ts=;
+ b=eShJda/Mt89oDUlrJZg/ZoFZtsNWhGpOCpr81OBfA4kl7AlXtkT3sYTK8ZYT3CyuwqmwluQ1soSW/GyGi6RTOqPRw6sGmnCKq42GT7aLIhFUCPPzOcB8IedXCGH73Ot3Of+R34rqweYq9n6CSzQPhmRvNNyrpSEQXLYerrZdEguqs1+9accAozAL2QJ0++d1kXXVhlAOhPKkJo3Mgw1SjlpX8t8EVh18EeQA2r/AbE9lMY18I5eCA/fDYfQPlm4tUQEudtD4ivwZ40/b316Zp5wkhh1AyJBcJaNtekbzqXAC01donhT+nMlO5p/ZMX5K51JEFVCoa1feYwzRf5bGgg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LBZ2uCcv/rJmRbj5GHNtsHy5UVo3T5tg7GNP34Vo3ts=;
+ b=J76Pu3FeeUQQGwaISFAFtw9h+OhLbLVK8pUKmgxjrY8YexXNgph3LYBK/XHMVDzgOw+PUPQlFPBkLtE0l5EXYAR3dNKsHw+yS7SdGI9h/vT1eAp124O+iZ5JzGhNgP7AKjhay4lsLosrAqXn6fIe4FX0J8SHOscpgVcqDucz3L/SxTeNrL6SypbRwOZ+86BWntgh/oN3GjbYBS2uvwzIZkFzEuSTF9TVe8KSXoe8VudvRG0n+aQUgl/2zqrNLplUG/LnvR6f0Fh0rJ5jHEBQbT8y2c//V5TWCZ7IsxzamVqfZ0P6IidxA68Gpj9/EgU647pSOIPZR+OosTx4fN3fQg==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by PR0P264MB3337.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:110::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.20; Thu, 21 Dec
+ 2023 15:20:14 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::f788:32b4:1c5e:f264]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::f788:32b4:1c5e:f264%7]) with mapi id 15.20.7113.019; Thu, 21 Dec 2023
+ 15:20:14 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [RFC PATCH 6/9] powerpc/ftrace: Update and move function profile
+ instructions out-of-line
+Thread-Topic: [RFC PATCH 6/9] powerpc/ftrace: Update and move function profile
+ instructions out-of-line
+Thread-Index: AQHaKfSSFFbB72zM4keIX1bFln/D9rCzoeSAgAA9XoCAAA85AA==
+Date: Thu, 21 Dec 2023 15:20:14 +0000
+Message-ID: <107a3da4-def6-4e66-a09d-67592ae056c7@csgroup.eu>
+References: <cover.1702045299.git.naveen@kernel.org>
+ <39363eb6b1857f26f9fa51808ad48b0121899b84.1702045299.git.naveen@kernel.org>
+ <e2e467a3-7283-4f22-8cd9-2d1875f60e92@csgroup.eu>
+ <20231221092545.1b696eb6@gandalf.local.home>
+In-Reply-To: <20231221092545.1b696eb6@gandalf.local.home>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla Thunderbird
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR0P264MB3337:EE_
+x-ms-office365-filtering-correlation-id: 5baa7e72-7e56-4129-8451-08dc02385505
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  3trNu0MMlcpM1dM4jwNO3dbn3Q+HTrkLIVqfbSg0bfU+mYtJ9xp8cDtV3VgpmtVbxYShEczyhMuvaj64C/o0AqXrgIzr4wA0pGlj8OqERLZxiuTECCE5ptgB3hTxNxp+wvjYf6qSgVY2RP+m5cl4rkH8C8AxiDQzpUPqm7qq8AyqTBVxgw8qlH/oQAnrgIp1W9FFJm+f0Q8P4qJQ4XPvUBKxCyoq5m53faVKP7kNkyGNlBNGQkbgSddc3pW1Qv96HFhSdhuxaGrRLbs5hEQTTOCodgEgtKbT7akvk5sO2TnWNukZx4E3UtcqkBxucFQQdHvDku5Vu6Qpt3/gdT+EV2KO0xv+ElH+fJpjQ3cG+rsi7x1gl4v5vHpE8t9OhJqE2eWnxDadFUwEptSCUghOs34bvMWqu92qbfpre5Ovb5I3UbNpyF0VEMViTBMxSzTFNf//JyiGEUBdIu0NoP9M/Zg2FDBhSCjrypsvY2kqOkpJpEqU5RM9mrRAqbLdhJVcpkuxG5O0peYDP40Stfc2PvMwMM4+qy4kJpiPRS9OHuKY1cXbgp7Ebihi1jo6wOG24IebtnZB5KUrVvsunmT3D2CzrF4lhMpzS66IZOmaEJ8qz4O0+jWDjrtx+Tgbk6tYR8nz/FOw8Ex6APo8FUUBFsQblzmi991MPCB7r1wWM8y6Wuf7fr9kQ+4aDkA5vzIe
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(376002)(136003)(39860400002)(366004)(396003)(346002)(230922051799003)(1800799012)(64100799003)(186009)(451199024)(31686004)(2616005)(26005)(6512007)(71200400001)(6506007)(66574015)(36756003)(86362001)(31696002)(38070700009)(38100700002)(7416002)(83380400001)(4326008)(8936002)(8676002)(41300700001)(44832011)(122000001)(66446008)(64756008)(54906003)(66946007)(5660300002)(76116006)(91956017)(6916009)(15650500001)(66476007)(6486002)(2906002)(66556008)(316002)(478600001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?NHpNd29KK1BqT1pqamVWb0lNOEdvVFRqb012a2huS0lhZGFoZE0yN1h1Smlk?=
+ =?utf-8?B?UFRNakVCZCswSnlnK2MwWk1aOUJwWm1rT2JUaGJwNlVsV3NUckdWQzI2VGZV?=
+ =?utf-8?B?SjZIT0dWQXpPUEtaTnFRVzNLQnRkUGE1TDFNWXI0L0dNSTQ4bDk4T1h4ZlFw?=
+ =?utf-8?B?T3BYdkk4RGF5YkxmUm80MUtQbjZUaktmcWZ4VS8rTWJCcmdpQUQ4bzJFckdr?=
+ =?utf-8?B?eUYwUkRUQUJhTFRielJFdHZMZnFzUW04UmRoUWJWTEFJWUNGQUNyVkJWM281?=
+ =?utf-8?B?L3JSUjM5MEZZNWJlYVlrRmhRU1BJN0pUMkhWUXNYeHBpTjBTVW1veFRlRmVy?=
+ =?utf-8?B?azR4V0VDcHh0WUlrcWRVNXpnQmtDOWh0b3o0amFxN1ExaWl4YkUvWW82N0xY?=
+ =?utf-8?B?YnhEd1YvM1VpUVVHMUdWRjEwVmJLMXJoSzBSQUN1eXByQ2R1TTBkYmhpMUlv?=
+ =?utf-8?B?Qjl4NjVNY0FCMVdveURtYWNEZjlGSVRkM3NuVjhjUkdRVm1iM1dtVXZvM2Q0?=
+ =?utf-8?B?c1lKYlI1NTROcTNKdUpyNkZVTUQ4S0JNaUlzODlJMlh0czBvZmF0TTgrU25M?=
+ =?utf-8?B?azV0WE9ZTkJYdHUwa1g2Y0NpekVGMGorU0phRDBjZ3Q1SmdxVG84RXd2WHN1?=
+ =?utf-8?B?aWM3TkQ3bEIvbjBDM2ZpQXlUb3NCTWdxVURCVmZBMlI2SHJXMTRoVTd1a0pQ?=
+ =?utf-8?B?Y3RWd2JaTG10U0liRU13NXhSYmlKaFU4dnlxSXlBV1F2aVpUaXRmZmZpUGF6?=
+ =?utf-8?B?blpPVDRUT3dESDFuU09TRDdmakg0TmdqUWh4SFV0YW9GME16NHA5b0lwb0VZ?=
+ =?utf-8?B?elRISytUNlBMeE1VYTBaMFJWTUxabFV0WUZwOTk5QWVLa1NpaWc2VitSb2FZ?=
+ =?utf-8?B?UUZIOXRKQ0JObGdGYnpsVW5tNEFnWDEwempZV1l6cFBuYmgzcExFTThMazFp?=
+ =?utf-8?B?UVdkOXJlZTl6bnh6NElYdEU3b0RqUy9KWCtra3hiZk5xY1FIdTJXMmpJazY3?=
+ =?utf-8?B?NWU4aWJ6Zjl1L2c0NUI0QzJQbkFBdWhieHdFdGNEKzJXaEczcHJMOXlSeXJF?=
+ =?utf-8?B?NFFHZXY4cnlTZVNVZTBoT0s5ZGVNcW8wSHh4SHhxRElxbDV5MXdrL0M5WXBs?=
+ =?utf-8?B?VURCeVdOTTdjQUZUUTZLN1VxaVdoTHU4b01ENjlyWWNQUDdwUTFKWC9tR3A4?=
+ =?utf-8?B?eG5QQTkzOWJValRuUmFjUmFkOU91YzVXWDlvaXFNREI2Mm9xaEJ4VGFTUVZV?=
+ =?utf-8?B?MzVhaUJSSWRNVS9hSm9HZTh4ZDVUSjlIczZQOWFiVEJLYWtxRGQwQkdUVFd4?=
+ =?utf-8?B?cjlrU3I0U0JWdlF3L2IvWDhtS0ZuZ1Bpc1RvRkZTOTJiK1Z6b09tQksyc1Y1?=
+ =?utf-8?B?UDZPMWVJUHIrRkZpdFpiWUZvSkhBZTlZelFEcy9nbFZqcXhSOWdabHZJazRS?=
+ =?utf-8?B?RXdvZ1JJTHZwaTZTYjVpd2Z0WVRaZWZzaUNVZkxyRThSVGNvdkpoa2QrbTN6?=
+ =?utf-8?B?eUVHcWpxOVI4eWNZR1R3L052Y1RJUk53YWo4RnNrNXRxNUV4RDJSMTBFTnRr?=
+ =?utf-8?B?YnNTTFU0ZTI3ZUpMcHJnSlVwRDYwWlhNSXFId0NNWXBhVHdwaEpReS9oa0Zr?=
+ =?utf-8?B?TWdkck5GbkJqcjBSSWFEbzJrK3dkZmpEc1ZxTGQ3RFRNVHErRlhjYVdRdFBx?=
+ =?utf-8?B?YWZCT2h1UVhEamNCRXNOTmJzY3NOQzdPZ1ZhNjgrSXJRL1lQQVE0WlhMNHBi?=
+ =?utf-8?B?UWE1ZGJWcVZFQzJTR3RobXlPV0Fua1o5ZDh0eXFPbkxITllaTi84dUJUM0Vk?=
+ =?utf-8?B?MCs5b3dGL2wzbzdqQk9oYk11ckNnZHBFY0xzZ01Zd0NYdTc1TkpCYWRDQzdS?=
+ =?utf-8?B?MkhGWHpEbm5lUGJqTmU3WHRGUkxyeVY0S05hQ1g5Vy80K1ppQWhJNjV2S3Fk?=
+ =?utf-8?B?aTN5eGZac2w3UElFNWF1VERxVGhpWHY1cFdXZ2wxemdnblUxcEozbzRUL3h4?=
+ =?utf-8?B?NzhiamRHN0RQNXg1UWNTdXVGQWY2TWFjVG9pUlhvMnVPSHQwNFovNy8wRGtv?=
+ =?utf-8?B?SS9qdGNaaWFiQUhvcEpIT1paTG9EV1Y0SDhJa0Ztd2JmbGJkR2kvNzl1MkVC?=
+ =?utf-8?Q?gcbseBnqwiGX3KTQ18ZIadyup?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <9F8943835091C04BAD318F290206F5AE@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231214173614.2820929-1-gnstark@salutedevices.com>
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5baa7e72-7e56-4129-8451-08dc02385505
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Dec 2023 15:20:14.7377
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: jWh5pdhaKjzEnfCJG9hwAhDQEE7MC4yyBwF7G7mmElniuG968PseuZwSr3mozGgA/pELb8Ox6Egex0Hdz3fnDnNxCvJdzUGVUVpLpdXR/Gc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB3337
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,122 +137,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel@salutedevices.com, vadimp@nvidia.com, mazziesaccount@gmail.com, peterz@infradead.org, boqun.feng@gmail.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, hdegoede@redhat.com, andy.shevchenko@gmail.com, mingo@redhat.com, npiggin@gmail.com, pavel@ucw.cz, longman@redhat.com, nikitos.tr@gmail.com, will@kernel.org, linux-leds@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Florent Revest <revest@chromium.org>, Naveen N Rao <naveen@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 14 Dec 2023, George Stark wrote:
-
-> This patch series fixes the problem of devm_led_classdev_register misusing.
-> 
-> The basic problem is described in [1]. Shortly when devm_led_classdev_register()
-> is used then led_classdev_unregister() called after driver's remove() callback.
-> led_classdev_unregister() calls driver's brightness_set callback and that callback
-> may use resources which were destroyed already in driver's remove().
-> 
-> After discussion with maintainers [2] [3] we decided:
-> 1) don't touch led subsytem core code and don't remove led_set_brightness() from it
-> but fix drivers
-> 2) don't use devm_led_classdev_unregister
-> 
-> So the solution is to use devm wrappers for all resources
-> driver's brightness_set() depends on. And introduce dedicated devm wrapper
-> for mutex as it's often used resource.
-> 
-> [1] https://lore.kernel.org/lkml/8704539b-ed3b-44e6-aa82-586e2f895e2b@salutedevices.com/T/
-> [2] https://lore.kernel.org/lkml/8704539b-ed3b-44e6-aa82-586e2f895e2b@salutedevices.com/T/#mc132b9b350fa51931b4fcfe14705d9f06e91421f
-> [3] https://lore.kernel.org/lkml/8704539b-ed3b-44e6-aa82-586e2f895e2b@salutedevices.com/T/#mdbf572a85c33f869a553caf986b6228bb65c8383
-> 
-> Changelog:
-> v1->v2:
-> 	revise patch series completely
-> 
-> v2->v3:
-> locking: add define if mutex_destroy() is not an empty function
-> 	new patch, discussed here [8]
-> 
-> devm-helpers: introduce devm_mutex_init
-> 	previous version [4]
-> 	- revise code based on mutex_destroy define
-> 	- update commit message
-> 	- update devm_mutex_init()'s description
-> 
-> leds: aw2013: unlock mutex before destroying it
-> 	previous version [5]
-> 	- make this patch first in the series
-> 	- add tags Fixes and RvB by Andy 
-> 
-> leds: aw2013: use devm API to cleanup module's resources
-> 	previous version [6]
-> 	- make aw2013_chip_disable_action()'s body oneline
-> 	- don't shadow devm_mutex_init() return code
-> 
-> leds: aw200xx: use devm API to cleanup module's resources
-> 	previous version [7]
-> 	- make aw200xx_*_action()'s bodies oneline
-> 	- don't shadow devm_mutex_init() return code
-> 
-> leds: lm3532: use devm API to cleanup module's resources
-> leds: nic78bx: use devm API to cleanup module's resources
-> leds: mlxreg: use devm_mutex_init for mutex initializtion
-> leds: an30259a: use devm_mutext_init for mutext initialization
-> leds: powernv: add LED_RETAIN_AT_SHUTDOWN flag for leds
-> 	- those pathes were planned but not sent in the series #2 due to mail server
-> 	problem on my side. I revised them according to the comments.
-> 
-> v3->v4:
-> locking: introduce devm_mutex_init
-> 	new patch
-> 	- move devm_mutex_init implementation completely from devm-helpers.h to mutex.h
-> 
-> locking: add define if mutex_destroy() is not an empty function
-> 	drop the patch [9]
-> 
-> devm-helpers: introduce devm_mutex_init
-> 	drop the patch [10]
-> 
-> leds: aw2013: use devm API to cleanup module's resources
-> 	- add tag Tested-by: Nikita Travkin <nikita@trvn.ru>
-> 
-> [4] https://lore.kernel.org/lkml/20231204180603.470421-1-gnstark@salutedevices.com/T/#mf500af0eda2a9ffc95594607dbe4cb64f2e3c9a8
-> [5] https://lore.kernel.org/lkml/20231204180603.470421-1-gnstark@salutedevices.com/T/#mc92df4fb4f7d4187fb01cc1144acfa5fb5230dd2
-> [6] https://lore.kernel.org/lkml/20231204180603.470421-1-gnstark@salutedevices.com/T/#m300df89710c43cc2ab598baa16c68dd0a0d7d681
-> [7] https://lore.kernel.org/lkml/20231204180603.470421-1-gnstark@salutedevices.com/T/#m8e5c65e0c6b137c91fa00bb9320ad581164d1d0b
-> [8] https://lore.kernel.org/lkml/377e4437-7051-4d88-ae68-1460bcd692e1@redhat.com/T/#m5f84a4a2f387d49678783e652b9e658e02c27450
-> [9] https://lore.kernel.org/lkml/20231213223020.2713164-1-gnstark@salutedevices.com/T/#m19ad1fc04c560012c1e27418e3156d0c9306dd84
-> [10] https://lore.kernel.org/lkml/20231213223020.2713164-1-gnstark@salutedevices.com/T/#m63126025f5d1bdcef69bcad50f2e58274d42e2d7
-> 
-> George Stark (10):
->   leds: aw2013: unlock mutex before destroying it
->   locking: introduce devm_mutex_init
->   leds: aw2013: use devm API to cleanup module's resources
->   leds: aw200xx: use devm API to cleanup module's resources
->   leds: lp3952: use devm API to cleanup module's resources
->   leds: lm3532: use devm API to cleanup module's resources
->   leds: nic78bx: use devm API to cleanup module's resources
->   leds: mlxreg: use devm_mutex_init for mutex initializtion
->   leds: an30259a: use devm_mutext_init for mutext initialization
->   leds: powernv: use LED_RETAIN_AT_SHUTDOWN flag for leds
-> 
->  drivers/leds/leds-an30259a.c | 15 +++++----------
->  drivers/leds/leds-aw200xx.c  | 33 ++++++++++++++++++++++-----------
->  drivers/leds/leds-aw2013.c   | 27 +++++++++++++++------------
->  drivers/leds/leds-lm3532.c   | 30 ++++++++++++++++++------------
->  drivers/leds/leds-lp3952.c   | 21 +++++++++++----------
->  drivers/leds/leds-mlxreg.c   | 17 ++++++-----------
->  drivers/leds/leds-nic78bx.c  | 25 +++++++++++++------------
->  drivers/leds/leds-powernv.c  | 23 ++++++++---------------
-
-FYI: I'll conduct my review once the locking side is settled.
-
->  include/linux/mutex.h        | 23 +++++++++++++++++++++++
->  kernel/locking/mutex-debug.c | 22 ++++++++++++++++++++++
->  10 files changed, 143 insertions(+), 93 deletions(-)
-> 
-> -- 
-> 2.25.1
-> 
-> 
-
--- 
-Lee Jones [李琼斯]
+DQoNCkxlIDIxLzEyLzIwMjMgw6AgMTU6MjUsIFN0ZXZlbiBSb3N0ZWR0IGEgw6ljcml0wqA6DQo+
+IE9uIFRodSwgMjEgRGVjIDIwMjMgMTA6NDY6MDggKzAwMDANCj4gQ2hyaXN0b3BoZSBMZXJveSA8
+Y2hyaXN0b3BoZS5sZXJveUBjc2dyb3VwLmV1PiB3cm90ZToNCj4gDQo+Pj4gVG8gZW5hYmxlIGZ0
+cmFjZSwgdGhlIG5vcCBhdCBmdW5jdGlvbiBlbnRyeSBpcyBjaGFuZ2VkIHRvIGFuDQo+Pj4gdW5j
+b25kaXRpb25hbCBicmFuY2ggdG8gJ3RyYW1wJy4gVGhlIGNhbGwgdG8gZnRyYWNlX2NhbGxlcigp
+IG1heSBiZQ0KPj4+IHVwZGF0ZWQgdG8gZnRyYWNlX3JlZ3NfY2FsbGVyKCkgZGVwZW5kaW5nIG9u
+IHRoZSByZWdpc3RlcmVkIGZ0cmFjZSBvcHMuDQo+Pj4gT24gNjQtYml0IHBvd2VycGMsIHdlIGFk
+ZGl0aW9uYWxseSBjaGFuZ2UgdGhlIGluc3RydWN0aW9uIGF0ICd0cmFtcCcgdG8NCj4+PiAnbWZs
+ciByMCcgZnJvbSBhbiB1bmNvbmRpdGlvbmFsIGJyYW5jaCBiYWNrIHRvIGZ1bmMrNC4gVGhpcyBp
+cyBzbyB0aGF0DQo+Pj4gZnVuY3Rpb25zIGVudGVyZWQgdGhyb3VnaCB0aGUgR0VQIGNhbiBza2lw
+IHRoZSBmdW5jdGlvbiBwcm9maWxlIHNlcXVlbmNlDQo+Pj4gdW5sZXNzIGZ0cmFjZSBpcyBlbmFi
+bGVkLg0KPj4+DQo+Pj4gV2l0aCB0aGUgY29udGV4dF9zd2l0Y2ggbWljcm9iZW5jaG1hcmsgb24g
+YSBQOSBtYWNoaW5lLCB0aGVyZSBpcyBhDQo+Pj4gcGVyZm9ybWFuY2UgaW1wcm92ZW1lbnQgb2Yg
+fjYlIHdpdGggdGhpcyBwYXRjaCBhcHBsaWVkLCBnb2luZyBmcm9tIDY1MGsNCj4+PiBjb250ZXh0
+IHN3aXRjaGVzIHRvIDY5MGsgY29udGV4dCBzd2l0Y2hlcyB3aXRob3V0IGZ0cmFjZSBlbmFibGVk
+LiBXaXRoDQo+Pj4gZnRyYWNlIGVuYWJsZWQsIHRoZSBwZXJmb3JtYW5jZSB3YXMgc2ltaWxhciBh
+dCA4NmsgY29udGV4dCBzd2l0Y2hlcy4NCj4+DQo+PiBXb25kZXJpbmcgaG93IHNpZ25pZmljYW50
+IHRoYXQgY29udGV4dF9zd2l0Y2ggbWljb3JiZW5jaG1hcmsgaXMuDQo+Pg0KPj4gSSByYW4gaXQg
+b24gYm90aCBtcGM4ODUgYW5kIG1wYzgzMjEgYW5kIEknbSBhIGJpdCBwdXp6bGVkIGJ5IHNvbWUg
+b2YgdGhlDQo+PiByZXN1bHRzOg0KPj4gIyAuL2NvbnRleHRfc3dpdGNoIC0tbm8tZnANCj4+IFVz
+aW5nIHRocmVhZHMgd2l0aCB5aWVsZCBvbiBjcHVzIDAvMCB0b3VjaGluZyBGUDpubyBhbHRpdmVj
+Om5vIHZlY3Rvcjpubw0KPj4gdmRzbzpubw0KPj4NCj4+IE9uIDg4NSwgSSBnZXQgdGhlIGZvbGxv
+d2luZyByZXN1bHRzIGJlZm9yZSBhbmQgYWZ0ZXIgeW91ciBwYXRjaC4NCj4+DQo+PiBDT05GSUdf
+RlRSQUNFIG5vdCBzZWxlY3RlZCA6IDQ0LDlrDQo+PiBDT05GSUdfRlRSQUNFIHNlbGVjdGVkLCBi
+ZWZvcmUgOiAzMiw4aw0KPj4gQ09ORklHX0ZUUkFDRSBzZWxlY3RlZCwgYWZ0ZXIgOiAzMyw2aw0K
+Pj4NCj4+IEFsbCB0aGlzIGlzIHdpdGggQ09ORklHX0lOSVRfU1RBQ0tfQUxMX1pFUk8gd2hpY2gg
+aXMgdGhlIGRlZmF1bHQuIEJ1dA0KPj4gd2hlbiBJIHNlbGVjdCBDT05GSUdfSU5JVF9TVEFDS19O
+T05FLCB0aGUgQ09ORklHX0ZUUkFDRSBub3Qgc2VsZWN0ZWQNCj4+IHJlc3VsdCBpcyBvbmx5IDM0
+LDQuDQo+Pg0KPj4gT24gODMyMToNCj4+DQo+PiBDT05GSUdfRlRSQUNFIG5vdCBzZWxlY3RlZCA6
+IDEwMCwzaw0KPj4gQ09ORklHX0ZUUkFDRSBzZWxlY3RlZCwgYmVmb3JlIDogNzIsNWsNCj4+IENP
+TkZJR19GVFJBQ0Ugc2VsZWN0ZWQsIGFmdGVyIDogMTE2aw0KPj4NCj4+IFNvIHRoZSByZXN1bHRz
+IGxvb2sgb2RkIHRvIG1lLg0KPiANCj4gDQo+IEJUVywgQ09ORklHX0ZUUkFDRSBqdXN0IGVuYWJs
+ZXMgdGhlIHRyYWNpbmcgc3lzdGVtIChJIHdvdWxkIGxpa2UgdG8gY2hhbmdlDQo+IHRoYXQgdG8g
+Q09ORklHX1RSQUNJTkcsIGJ1dCBub3Qgc3VyZSBpZiBJIGNhbiB3aXRob3V0IGJyZWFraW5nIC5j
+b25maWdzIGFsbA0KPiBvdmVyIHRoZSBwbGFjZSkuDQo+IA0KPiBUaGUgbm9wcyBmb3IgZnRyYWNl
+IGlzIGVuYWJsZWQgd2l0aCBDT05GSUdfRlVOQ1RJT05fVFJBQ0VSLg0KDQpZZXMgSSBzZWxlY3Rl
+ZCBib3RoIENPTkZJR19GVFJBQ0UgYW5kIENPTkZJR19GVU5DVElPTl9UUkFDRVINCg0KQ2hyaXN0
+b3BoZQ0K
