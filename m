@@ -1,40 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B821281B978
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 15:25:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 224ED81BA51
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 16:12:09 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TwGUel50;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Swt4V3T9mz3cY8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Dec 2023 01:25:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Swv6Z4wfbz3cNl
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Dec 2023 02:12:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=srs0=vhtz=ia=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TwGUel50;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=lee@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Swt424wvLz2xWR
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Dec 2023 01:24:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Swv5k68q5z30gr
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Dec 2023 02:11:22 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id 8B503B82026;
-	Thu, 21 Dec 2023 14:24:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3065C433C9;
-	Thu, 21 Dec 2023 14:24:42 +0000 (UTC)
-Date: Thu, 21 Dec 2023 09:25:45 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [RFC PATCH 6/9] powerpc/ftrace: Update and move function
- profile instructions out-of-line
-Message-ID: <20231221092545.1b696eb6@gandalf.local.home>
-In-Reply-To: <e2e467a3-7283-4f22-8cd9-2d1875f60e92@csgroup.eu>
-References: <cover.1702045299.git.naveen@kernel.org>
-	<39363eb6b1857f26f9fa51808ad48b0121899b84.1702045299.git.naveen@kernel.org>
-	<e2e467a3-7283-4f22-8cd9-2d1875f60e92@csgroup.eu>
-X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by sin.source.kernel.org (Postfix) with ESMTP id 3D794CE1FCC;
+	Thu, 21 Dec 2023 15:11:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15165C433C8;
+	Thu, 21 Dec 2023 15:11:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1703171478;
+	bh=W1V9iuz27C48mcTlqdM84d1TvizSzj69f6WQ4WY/wVQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TwGUel50uL+FDdnJI4Nx7w8bbZ1gLxQiTAPJkXHQ7oQ9ckAb/J5ZNNvA8XSm/A1CM
+	 1CqjVjgnR0WeQKhjKbY74jVKh3SvK6MQqlczBeAjY3D5oABn92wBdsOm6JJkniezlf
+	 uvnX8vMWTNj7e+qCelDRXDDe69MGKkgK7y0zzWHvRSw5tZiPvVtPiO3pAFXd+R3G0g
+	 yoEVPuqFhRkkq/DuHaHI+ObRKSHZZmG301GPzanBE8tBEC71m4rGnM2O0ucHiI6tyq
+	 ugfIApkUhglx5DJ9uINOc4q4igWuKfzcyOWhQpWno/jH+klKRX4FPPDfUdc5XlARj/
+	 H3pBTlqkQDGzA==
+Date: Thu, 21 Dec 2023 15:11:11 +0000
+From: Lee Jones <lee@kernel.org>
+To: George Stark <gnstark@salutedevices.com>
+Subject: Re: [PATCH v4 00/10] devm_led_classdev_register() usage problem
+Message-ID: <20231221151111.GJ10102@google.com>
+References: <20231214173614.2820929-1-gnstark@salutedevices.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231214173614.2820929-1-gnstark@salutedevices.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,57 +59,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Florent Revest <revest@chromium.org>, Naveen N Rao <naveen@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: kernel@salutedevices.com, vadimp@nvidia.com, mazziesaccount@gmail.com, peterz@infradead.org, boqun.feng@gmail.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, hdegoede@redhat.com, andy.shevchenko@gmail.com, mingo@redhat.com, npiggin@gmail.com, pavel@ucw.cz, longman@redhat.com, nikitos.tr@gmail.com, will@kernel.org, linux-leds@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 21 Dec 2023 10:46:08 +0000
-Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
+On Thu, 14 Dec 2023, George Stark wrote:
 
-> > To enable ftrace, the nop at function entry is changed to an
-> > unconditional branch to 'tramp'. The call to ftrace_caller() may be
-> > updated to ftrace_regs_caller() depending on the registered ftrace ops.
-> > On 64-bit powerpc, we additionally change the instruction at 'tramp' to
-> > 'mflr r0' from an unconditional branch back to func+4. This is so that
-> > functions entered through the GEP can skip the function profile sequence
-> > unless ftrace is enabled.
-> > 
-> > With the context_switch microbenchmark on a P9 machine, there is a
-> > performance improvement of ~6% with this patch applied, going from 650k
-> > context switches to 690k context switches without ftrace enabled. With
-> > ftrace enabled, the performance was similar at 86k context switches.  
+> This patch series fixes the problem of devm_led_classdev_register misusing.
 > 
-> Wondering how significant that context_switch micorbenchmark is.
+> The basic problem is described in [1]. Shortly when devm_led_classdev_register()
+> is used then led_classdev_unregister() called after driver's remove() callback.
+> led_classdev_unregister() calls driver's brightness_set callback and that callback
+> may use resources which were destroyed already in driver's remove().
 > 
-> I ran it on both mpc885 and mpc8321 and I'm a bit puzzled by some of the 
-> results:
-> # ./context_switch --no-fp
-> Using threads with yield on cpus 0/0 touching FP:no altivec:no vector:no 
-> vdso:no
+> After discussion with maintainers [2] [3] we decided:
+> 1) don't touch led subsytem core code and don't remove led_set_brightness() from it
+> but fix drivers
+> 2) don't use devm_led_classdev_unregister
 > 
-> On 885, I get the following results before and after your patch.
+> So the solution is to use devm wrappers for all resources
+> driver's brightness_set() depends on. And introduce dedicated devm wrapper
+> for mutex as it's often used resource.
 > 
-> CONFIG_FTRACE not selected : 44,9k
-> CONFIG_FTRACE selected, before : 32,8k
-> CONFIG_FTRACE selected, after : 33,6k
+> [1] https://lore.kernel.org/lkml/8704539b-ed3b-44e6-aa82-586e2f895e2b@salutedevices.com/T/
+> [2] https://lore.kernel.org/lkml/8704539b-ed3b-44e6-aa82-586e2f895e2b@salutedevices.com/T/#mc132b9b350fa51931b4fcfe14705d9f06e91421f
+> [3] https://lore.kernel.org/lkml/8704539b-ed3b-44e6-aa82-586e2f895e2b@salutedevices.com/T/#mdbf572a85c33f869a553caf986b6228bb65c8383
 > 
-> All this is with CONFIG_INIT_STACK_ALL_ZERO which is the default. But 
-> when I select CONFIG_INIT_STACK_NONE, the CONFIG_FTRACE not selected 
-> result is only 34,4.
+> Changelog:
+> v1->v2:
+> 	revise patch series completely
 > 
-> On 8321:
+> v2->v3:
+> locking: add define if mutex_destroy() is not an empty function
+> 	new patch, discussed here [8]
 > 
-> CONFIG_FTRACE not selected : 100,3k
-> CONFIG_FTRACE selected, before : 72,5k
-> CONFIG_FTRACE selected, after : 116k
+> devm-helpers: introduce devm_mutex_init
+> 	previous version [4]
+> 	- revise code based on mutex_destroy define
+> 	- update commit message
+> 	- update devm_mutex_init()'s description
 > 
-> So the results look odd to me.
+> leds: aw2013: unlock mutex before destroying it
+> 	previous version [5]
+> 	- make this patch first in the series
+> 	- add tags Fixes and RvB by Andy 
+> 
+> leds: aw2013: use devm API to cleanup module's resources
+> 	previous version [6]
+> 	- make aw2013_chip_disable_action()'s body oneline
+> 	- don't shadow devm_mutex_init() return code
+> 
+> leds: aw200xx: use devm API to cleanup module's resources
+> 	previous version [7]
+> 	- make aw200xx_*_action()'s bodies oneline
+> 	- don't shadow devm_mutex_init() return code
+> 
+> leds: lm3532: use devm API to cleanup module's resources
+> leds: nic78bx: use devm API to cleanup module's resources
+> leds: mlxreg: use devm_mutex_init for mutex initializtion
+> leds: an30259a: use devm_mutext_init for mutext initialization
+> leds: powernv: add LED_RETAIN_AT_SHUTDOWN flag for leds
+> 	- those pathes were planned but not sent in the series #2 due to mail server
+> 	problem on my side. I revised them according to the comments.
+> 
+> v3->v4:
+> locking: introduce devm_mutex_init
+> 	new patch
+> 	- move devm_mutex_init implementation completely from devm-helpers.h to mutex.h
+> 
+> locking: add define if mutex_destroy() is not an empty function
+> 	drop the patch [9]
+> 
+> devm-helpers: introduce devm_mutex_init
+> 	drop the patch [10]
+> 
+> leds: aw2013: use devm API to cleanup module's resources
+> 	- add tag Tested-by: Nikita Travkin <nikita@trvn.ru>
+> 
+> [4] https://lore.kernel.org/lkml/20231204180603.470421-1-gnstark@salutedevices.com/T/#mf500af0eda2a9ffc95594607dbe4cb64f2e3c9a8
+> [5] https://lore.kernel.org/lkml/20231204180603.470421-1-gnstark@salutedevices.com/T/#mc92df4fb4f7d4187fb01cc1144acfa5fb5230dd2
+> [6] https://lore.kernel.org/lkml/20231204180603.470421-1-gnstark@salutedevices.com/T/#m300df89710c43cc2ab598baa16c68dd0a0d7d681
+> [7] https://lore.kernel.org/lkml/20231204180603.470421-1-gnstark@salutedevices.com/T/#m8e5c65e0c6b137c91fa00bb9320ad581164d1d0b
+> [8] https://lore.kernel.org/lkml/377e4437-7051-4d88-ae68-1460bcd692e1@redhat.com/T/#m5f84a4a2f387d49678783e652b9e658e02c27450
+> [9] https://lore.kernel.org/lkml/20231213223020.2713164-1-gnstark@salutedevices.com/T/#m19ad1fc04c560012c1e27418e3156d0c9306dd84
+> [10] https://lore.kernel.org/lkml/20231213223020.2713164-1-gnstark@salutedevices.com/T/#m63126025f5d1bdcef69bcad50f2e58274d42e2d7
+> 
+> George Stark (10):
+>   leds: aw2013: unlock mutex before destroying it
+>   locking: introduce devm_mutex_init
+>   leds: aw2013: use devm API to cleanup module's resources
+>   leds: aw200xx: use devm API to cleanup module's resources
+>   leds: lp3952: use devm API to cleanup module's resources
+>   leds: lm3532: use devm API to cleanup module's resources
+>   leds: nic78bx: use devm API to cleanup module's resources
+>   leds: mlxreg: use devm_mutex_init for mutex initializtion
+>   leds: an30259a: use devm_mutext_init for mutext initialization
+>   leds: powernv: use LED_RETAIN_AT_SHUTDOWN flag for leds
+> 
+>  drivers/leds/leds-an30259a.c | 15 +++++----------
+>  drivers/leds/leds-aw200xx.c  | 33 ++++++++++++++++++++++-----------
+>  drivers/leds/leds-aw2013.c   | 27 +++++++++++++++------------
+>  drivers/leds/leds-lm3532.c   | 30 ++++++++++++++++++------------
+>  drivers/leds/leds-lp3952.c   | 21 +++++++++++----------
+>  drivers/leds/leds-mlxreg.c   | 17 ++++++-----------
+>  drivers/leds/leds-nic78bx.c  | 25 +++++++++++++------------
+>  drivers/leds/leds-powernv.c  | 23 ++++++++---------------
 
+FYI: I'll conduct my review once the locking side is settled.
 
-BTW, CONFIG_FTRACE just enables the tracing system (I would like to change
-that to CONFIG_TRACING, but not sure if I can without breaking .configs all
-over the place).
+>  include/linux/mutex.h        | 23 +++++++++++++++++++++++
+>  kernel/locking/mutex-debug.c | 22 ++++++++++++++++++++++
+>  10 files changed, 143 insertions(+), 93 deletions(-)
+> 
+> -- 
+> 2.25.1
+> 
+> 
 
-The nops for ftrace is enabled with CONFIG_FUNCTION_TRACER.
-
--- Steve
+-- 
+Lee Jones [李琼斯]
