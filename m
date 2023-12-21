@@ -2,31 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 940D081B414
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 11:44:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2374E81B42A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 11:46:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Swn9v25tZz3vxH
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 21:44:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SwnDK611Dz3wJ0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 21:46:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Swn5b1DJYz3cVG
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Dec 2023 21:40:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Swn5g0yBGz3cVm
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Dec 2023 21:40:55 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Swn5b0D2Bz4wcH;
-	Thu, 21 Dec 2023 21:40:51 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Swn5f4TZjz4xPc;
+	Thu, 21 Dec 2023 21:40:54 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Kajol Jain <kjain@linux.ibm.com>
-In-Reply-To: <20231116122033.160964-1-kjain@linux.ibm.com>
-References: <20231116122033.160964-1-kjain@linux.ibm.com>
-Subject: Re: (subset) [PATCH 1/2] powerpc/hv-gpci: Add return value check in affinity_domain_via_partition_show function
-Message-Id: <170315510012.2192823.4722890033079720737.b4-ty@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Naveen N Rao <naveen@kernel.org>
+In-Reply-To: <cover.1702045299.git.naveen@kernel.org>
+References: <cover.1702045299.git.naveen@kernel.org>
+Subject: Re: (subset) [RFC PATCH 0/9] powerpc: ftrace updates
+Message-Id: <170315510015.2192823.8374732857134504654.b4-ty@ellerman.id.au>
 Date: Thu, 21 Dec 2023 21:38:20 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,25 +42,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: disgoel@linux.ibm.com, atrajeev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, Disha Goel <disgoel@linux.vnet.ibm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, Florent Revest <revest@chromium.org>, Nicholas Piggin <npiggin@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 16 Nov 2023 17:50:32 +0530, Kajol Jain wrote:
-> To access hv-gpci kernel interface files data, the
-> "Enable Performance Information Collection" option has to be set
-> in hmc. Incase that option is not set and user try to read
-> the interface files, it should give error message as
-> operation not permitted.
+On Fri, 08 Dec 2023 22:00:39 +0530, Naveen N Rao wrote:
+> Early RFC.
 > 
-> Result of accessing added interface files with disabled
-> performance collection option:
+> This series attempts to address couple of issues with the existing
+> support for ftrace on powerpc, with a view towards improving performance
+> when ftrace is not enabled. See patch 6 for more details.
+> 
+> Patches 7 and 8 implement support for ftrace direct calls, through
+> adding support for DYNAMIC_FTRACE_WITH_CALL_OPS.
 > 
 > [...]
 
-Applied to powerpc/next.
+Patches 1, 3 and 4 applied to powerpc/next.
 
-[1/2] powerpc/hv-gpci: Add return value check in affinity_domain_via_partition_show function
-      https://git.kernel.org/powerpc/c/070b71f428facd9130319707db854ed8bd24637a
+[1/9] powerpc/ftrace: Fix indentation in ftrace.h
+      https://git.kernel.org/powerpc/c/2ec36570c3581285d15de672eaed10ce7e9218cd
+[3/9] powerpc/ftrace: Remove nops after the call to ftrace_stub
+      https://git.kernel.org/powerpc/c/ae24db43b3b427eb290b58d55179c32f0a7539d1
+[4/9] powerpc/Kconfig: Select FUNCTION_ALIGNMENT_4B
+      https://git.kernel.org/powerpc/c/b20f98e8b3deb50247603f0242ee2d1e38726635
 
 cheers
