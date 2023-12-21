@@ -1,77 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7C5A81AB0C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 00:31:57 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P8oDRmAf;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P8oDRmAf;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECEF981ADD3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 04:55:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SwVFl4848z3cRD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 10:31:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Swc5x4nt6z3ccf
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 14:55:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P8oDRmAf;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P8oDRmAf;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=liyouhong@kylinos.cn; receiver=lists.ozlabs.org)
+X-Greylist: delayed 367 seconds by postgrey-1.37 at boromir; Thu, 21 Dec 2023 13:42:29 AEDT
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SwVDt0S9Mz2xrD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Dec 2023 10:31:08 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1703115059;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NpHzyetdfnFa+em1B7GLhPjt2d/LNwN97Oht9kcvxy0=;
-	b=P8oDRmAfoLiybtnscj26YhnAiEog411BLBEvUNj9s8YMfOsCp5hd977RUGuRoAp9mXNdMV
-	fSn40uYHpyTokv47djmbPAHXPabiFTtJoHaN3sfeupSnooTh9H07KNpFg0E0du+Bri80GH
-	vtcMEmfql89TygMlR6DJnWZk+JH7fzg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1703115059;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NpHzyetdfnFa+em1B7GLhPjt2d/LNwN97Oht9kcvxy0=;
-	b=P8oDRmAfoLiybtnscj26YhnAiEog411BLBEvUNj9s8YMfOsCp5hd977RUGuRoAp9mXNdMV
-	fSn40uYHpyTokv47djmbPAHXPabiFTtJoHaN3sfeupSnooTh9H07KNpFg0E0du+Bri80GH
-	vtcMEmfql89TygMlR6DJnWZk+JH7fzg=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-320-si85M4twNxiIF802LZPQqA-1; Wed,
- 20 Dec 2023 18:30:52 -0500
-X-MC-Unique: si85M4twNxiIF802LZPQqA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 54B173C00094;
-	Wed, 20 Dec 2023 23:30:51 +0000 (UTC)
-Received: from localhost (unknown [10.72.116.38])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 96C10492BFA;
-	Wed, 20 Dec 2023 23:30:50 +0000 (UTC)
-Date: Thu, 21 Dec 2023 07:30:47 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v4 5/7] kexec_file, ricv: print out debugging message if
- required
-Message-ID: <ZYN5Jy4PVh3ghbxN@MiWiFi-R3L-srv>
-References: <20231213055747.61826-1-bhe@redhat.com>
- <20231213055747.61826-6-bhe@redhat.com>
- <20231219-twitch-many-ca8877857182@spud>
- <ZYJsBW0Y7Y+XhSgf@MiWiFi-R3L-srv>
- <20231220074634.cd736ec567cd7adf1e4c6d7e@linux-foundation.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SwZTd3WXRz2ywC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Dec 2023 13:42:28 +1100 (AEDT)
+X-UUID: c2713873dbb3464a955e73b98afabf69-20231221
+X-CID-UNFAMILIAR: 1
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.33,REQID:90a79e35-9fc6-466c-ab94-6681d1db0fed,IP:25,
+	URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:8,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:28
+X-CID-INFO: VERSION:1.1.33,REQID:90a79e35-9fc6-466c-ab94-6681d1db0fed,IP:25,UR
+	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:8,FILE:0,BULK:0,RULE:Release_HamU,ACTION
+	:release,TS:28
+X-CID-META: VersionHash:364b77b,CLOUDID:cdde512e-1ab8-4133-9780-81938111c800,B
+	ulkID:231221103511OABB4G6M,BulkQuantity:0,Recheck:0,SF:66|38|24|16|19|44|1
+	02,TC:nil,Content:0,EDM:-3,IP:-2,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,CO
+	L:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_FSI,TF_CID_SPAM_SNR,TF_CID_SPAM_USA,TF_CID_SPAM_FSD
+X-UUID: c2713873dbb3464a955e73b98afabf69-20231221
+Received: from node4.com.cn [(39.156.73.12)] by mailgw
+	(envelope-from <liyouhong@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1028198504; Thu, 21 Dec 2023 10:35:10 +0800
+Received: from node4.com.cn (localhost [127.0.0.1])
+	by node4.com.cn (NSMail) with SMTP id 6805B16001CD7;
+	Thu, 21 Dec 2023 10:35:10 +0800 (CST)
+X-ns-mid: postfix-6583A45E-29320911
+Received: from localhost.localdomain (unknown [172.20.185.164])
+	by node4.com.cn (NSMail) with ESMTPA id 6C42C16001CD7;
+	Thu, 21 Dec 2023 02:35:09 +0000 (UTC)
+From: YouHong Li <liyouhong@kylinos.cn>
+To: balbi@kernel.org,
+	leoyang.li@nxp.com
+Subject: [PATCH] drivers/usb/gadget/udc: Fix spelling typo in comments(reqest->request)
+Date: Thu, 21 Dec 2023 10:34:25 +0800
+Message-Id: <20231221023425.1316397-1-liyouhong@kylinos.cn>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231220074634.cd736ec567cd7adf1e4c6d7e@linux-foundation.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Content-Transfer-Encoding: quoted-printable
+X-Mailman-Approved-At: Thu, 21 Dec 2023 14:55:11 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,19 +65,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-parisc@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, Conor Dooley <conor@kernel.org>, nathan@kernel.org, joe@perches.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: liyouhong <liyouhong@kylinos.cn>, k2ci <kernel-bot@kylinos.cn>, linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/20/23 at 07:46am, Andrew Morton wrote:
-> On Wed, 20 Dec 2023 12:22:29 +0800 Baoquan He <bhe@redhat.com> wrote:
-> 
-> > Could you help fix the typo in subject?
-> > 
-> > [PATCH v4 5/7] kexec_file, ricv: print out debugging message if required
-> >                            ~~~ s/ricv/riscv/
-> 
-> I made that change.
+From: liyouhong <liyouhong@kylinos.cn>
 
-Thanks a lot.
+Fix spelling typo in comments.
+
+Reported-by: k2ci <kernel-bot@kylinos.cn>
+Signed-off-by: liyouhong <liyouhong@kylinos.cn>
+
+diff --git a/drivers/usb/gadget/udc/fsl_udc_core.c b/drivers/usb/gadget/u=
+dc/fsl_udc_core.c
+index ee5705d336e3..97932278e381 100644
+--- a/drivers/usb/gadget/udc/fsl_udc_core.c
++++ b/drivers/usb/gadget/udc/fsl_udc_core.c
+@@ -1360,7 +1360,7 @@ static void ch9getstatus(struct fsl_udc *udc, u8 re=
+quest_type, u16 value,
+ 	udc->ep0_dir =3D USB_DIR_IN;
+ 	/* Borrow the per device status_req */
+ 	req =3D udc->status_req;
+-	/* Fill in the reqest structure */
++	/* Fill in the request structure */
+ 	*((u16 *) req->req.buf) =3D cpu_to_le16(tmp);
+=20
+ 	req->ep =3D ep;
+diff --git a/drivers/usb/gadget/udc/mv_udc_core.c b/drivers/usb/gadget/ud=
+c/mv_udc_core.c
+index d888dcda2bc8..78308b64955d 100644
+--- a/drivers/usb/gadget/udc/mv_udc_core.c
++++ b/drivers/usb/gadget/udc/mv_udc_core.c
+@@ -1451,7 +1451,7 @@ udc_prime_status(struct mv_udc *udc, u8 direction, =
+u16 status, bool empty)
+=20
+ 	req =3D udc->status_req;
+=20
+-	/* fill in the reqest structure */
++	/* fill in the request structure */
+ 	if (empty =3D=3D false) {
+ 		*((u16 *) req->req.buf) =3D cpu_to_le16(status);
+ 		req->req.length =3D 2;
+--=20
+2.34.1
 
