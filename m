@@ -1,56 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CD7E81BB63
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 16:56:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E73D81C20D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Dec 2023 00:43:35 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mnHjE07U;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=RXLJpd2O;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sww5m6JPMz3cGb
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Dec 2023 02:56:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sx6Sh6V0Mz3byh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Dec 2023 10:43:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mnHjE07U;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=RXLJpd2O;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=acme@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sww4v4wk4z30P0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Dec 2023 02:55:43 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 9D375619E2;
-	Thu, 21 Dec 2023 15:55:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C32DC433C9;
-	Thu, 21 Dec 2023 15:55:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703174140;
-	bh=oYeU6vuYtU1xXqhDf4oLE8y9AeEh1sjx1Oz8lnC92vM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mnHjE07UhFwc1hEL4I5XEOg7CsoeSyJveoyJZMzxO2vop/iaZvDtejcVqxhqQ7qQG
-	 R1yDpgSBLVtz+Fz7Mgfzwzkn9qIEoGy0Xwrcj4qbRAgykP0v4dZxZ6lfk7lBlyOrzJ
-	 C/Swfws8TeaOWJ5qiOB6eHcB1/Cu3P8MFUs6VNr5d03x50BvM/wxY3Imj+UYfeAtiD
-	 FCKO9sN7DZq2EEpgHj015kRSdDB4PoIAbQw9Vb3pJJGoZobisBwGqDztuxhVqFfisG
-	 dY/7Vmj1h/dAARIi4V2oycBQ24VshUH8Q3josZz9l0A/Ef6BT+B0L2saEKBzHoA2nO
-	 Jf1XPqpG/Phiw==
-Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
-	id B1233403EF; Thu, 21 Dec 2023 12:55:37 -0300 (-03)
-Date: Thu, 21 Dec 2023 12:55:37 -0300
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-To: Jing Zhang <renyu.zj@linux.alibaba.com>
-Subject: Re: [PATCH] perf vendor events: Remove UTF-8 characters from cmn.json
-Message-ID: <ZYRf-ZYIifg8InFJ@kernel.org>
-References: <1703138593-50486-1-git-send-email-renyu.zj@linux.alibaba.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sx6Rq3p45z2xYY
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Dec 2023 10:42:47 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1703202167;
+	bh=LvpDHPV8ZFO1a5ZSBn5Alv45CExq5OC+ct9WY4ZpH6A=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=RXLJpd2OTict3gFueFqVwWKz9dPtkZEC/67FxfUIe4PMqhDNZtEKc830FiCY9dPph
+	 IRLapDBLOMzd/mgCaSQUPtyaISMupFO+MyyJ+NfBwidwatWNS4Or5BpO++dMjUat5D
+	 5vUAkdWe7LNtr265irZMqetkQMQLKIozn86HLCTfi5UxTfENxqf/LZs0mh8wdu9MZm
+	 ZFdnRH+ToY/4Wf7theyy2Psu5yCtDZosKTOBriHxInQiNDMbjlE3Hf+VYx5wBBpbkH
+	 NQ9o2bOMGs7Q54OnRdRCnon6UtWzB5HG0bxBFFOEK8Ue5Kvqmn5+tsArQ7d6StID+C
+	 4REfNJp976m1Q==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Sx6Rq2pHvz4wcJ;
+	Fri, 22 Dec 2023 10:42:47 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH] powerpc: Split PAGE_SHIFT/SIZE into vdso/page.h
+In-Reply-To: <CACRpkdZk3pSZ_EfhkPDcm3eXRDRqvHtZ=7hqOHUnTFiew_VtJg@mail.gmail.com>
+References: <20231221120410.2226678-1-mpe@ellerman.id.au>
+ <CACRpkdZk3pSZ_EfhkPDcm3eXRDRqvHtZ=7hqOHUnTFiew_VtJg@mail.gmail.com>
+Date: Fri, 22 Dec 2023 10:42:45 +1100
+Message-ID: <878r5nktqi.fsf@mail.lhotse>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1703138593-50486-1-git-send-email-renyu.zj@linux.alibaba.com>
-X-Url: http://acmel.wordpress.com
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,52 +59,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, kajoljain <kjain@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Thomas Richter <tmricht@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Em Thu, Dec 21, 2023 at 02:03:13PM +0800, Jing Zhang escreveu:
-> cmn.json contains UTF-8 characters in brief description which
-> could break the perf build on some distros.
-> 
-> Fix this issue by removing the UTF-8 characters from cmn.json.
-> 
-> without the fix:
-> $find tools/perf/pmu-events/ -name "*.json" | xargs file -i | grep -v us-ascii
-> tools/perf/pmu-events/arch/arm64/arm/cmn/sys/cmn.json:                   application/json; charset=utf-8
-> 
-> with the fix:
-> $file -i tools/perf/pmu-events/arch/arm64/arm/cmn/sys/cmn.json
-> tools/perf/pmu-events/arch/arm64/arm/cmn/sys/cmn.json: text/plain; charset=us-ascii
+Linus Walleij <linus.walleij@linaro.org> writes:
+> On Thu, Dec 21, 2023 at 1:04=E2=80=AFPM Michael Ellerman <mpe@ellerman.id=
+.au> wrote:
+>
+>> The VDSO needs PAGE_SHIFT/SIZE defined, so it includes asm/page.h.
+>>
+>> However when COMPAT=3Dy the VDSO is built 32-bit, even though the kernel
+>> is 64-bit. That can lead to odd warnings because some kernel constants
+>> are 64-bit, but unsigned long is 32-bit, for example:
+>>
+>>     VDSO32C arch/powerpc/kernel/vdso/vgettimeofday-32.o
+>>   In file included from <built-in>:4:
+>>   In file included from /home/michael/linux/lib/vdso/gettimeofday.c:5:
+>>   In file included from ../include/vdso/datapage.h:137:
+>>   In file included from ../arch/powerpc/include/asm/vdso/gettimeofday.h:=
+7:
+>>   ../arch/powerpc/include/asm/page.h:230:9: warning: result of compariso=
+n of constant 13835058055282163712 with expression of type 'unsigned long' =
+is always true
+>>     230 |         return __pa(kaddr) >> PAGE_SHIFT;
+>>         |                ^~~~~~~~~~~
+>>
+>> Fix it by moving the PAGE_SHIFT/SIZE constants into a separate header,
+>> which can be included by the VDSO, and also by the existing kernel
+>> headers. That avoids exposing the rest of the header to the non-standard
+>> build environment of the compat VDSO.
+>>
+>> The particular warning above was introduced by commit 58b6fed89ab0
+>> ("powerpc: Make virt_to_pfn() a static inline"), though it is not at
+>> fault, it just exposed the fact that the VDSO was including parts of
+>> page.h that weren't needed or appropriate for the VDSO.
+>>
+>> Don't copy the comment about page sizes, it just risks becoming
+>> outdated, that information is better available in the Kconfig
+>> dependencies and help text.
+>>
+>> Fixes: 58b6fed89ab0 ("powerpc: Make virt_to_pfn() a static inline")
+>> Reported-by: kernel test robot <lkp@intel.com>
+>> Closes: https://lore.kernel.org/oe-kbuild-all/202311061940.4pBrm44u-lkp@=
+intel.com/
+>> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+>
+> Clearly a working solution!
+> Acked-by: Linus Walleij <linus.walleij@linaro.org>
 
-Thanks, applied!
+Thanks.
 
-- Arnaldo
- 
-> Fixes: 0b4de7bdf46c5215 ("perf jevents: Add support for Arm CMN PMU aliasing")
-> Reported-by: Arnaldo Carvalho de Melo <acme@kernel.com>
-> Signed-off-by: Jing Zhang <renyu.zj@linux.alibaba.com>
-> ---
->  tools/perf/pmu-events/arch/arm64/arm/cmn/sys/cmn.json | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/perf/pmu-events/arch/arm64/arm/cmn/sys/cmn.json b/tools/perf/pmu-events/arch/arm64/arm/cmn/sys/cmn.json
-> index 428605c..5ec157c 100644
-> --- a/tools/perf/pmu-events/arch/arm64/arm/cmn/sys/cmn.json
-> +++ b/tools/perf/pmu-events/arch/arm64/arm/cmn/sys/cmn.json
-> @@ -107,7 +107,7 @@
->  		"EventName": "hnf_qos_hh_retry",
->  		"EventidCode": "0xe",
->  		"NodeType": "0x5",
-> -		"BriefDescription": "Counts number of times a HighHigh priority request is protocolretried at the HN‑F.",
-> +		"BriefDescription": "Counts number of times a HighHigh priority request is protocolretried at the HN-F.",
->  		"Unit": "arm_cmn",
->  		"Compat": "(434|436|43c|43a).*"
->  	},
-> -- 
-> 1.8.3.1
-> 
+> Just a note:
+>
+>> diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/=
+page.h
+> (...)
+>> +#include <asm/vdso/page.h>
+>
+> (...)
+>> +++ b/arch/powerpc/include/asm/vdso/page.h
+>> @@ -0,0 +1,10 @@
+>> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+>> +#ifndef _ASM_POWERPC_VDSO_PAGE_H
+>> +#define _ASM_POWERPC_VDSO_PAGE_H
+>> +
+>> +#include <vdso/const.h>
+>
+> Now the whole kernel includes <vdso/const.h>, is this necessary?
 
--- 
+It's already included by approximately the whole kernel via:
+  include/linux/kernel.h
+   - include/uapi/linux/kernel.h
+     - include/linux/const.h
+       - include/vdso/const.h
 
-- Arnaldo
+And arch/powerpc/include/asm/page.h already includes linux/kernel.h, so
+includers of page.h should not see any new headers other than
+asm/vdso/page.h.
+
+cheers
