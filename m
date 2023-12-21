@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B5B681B3FE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 11:42:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4902481B43E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 11:48:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Swn805VhWz3dKw
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 21:42:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SwnGP73NQz3dT8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Dec 2023 21:48:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Swn5Y376Cz3cNQ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Dec 2023 21:40:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Swn8n3x9mz3vmV
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Dec 2023 21:43:37 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Swn5Y1gJZz4xM2;
-	Thu, 21 Dec 2023 21:40:49 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Swn8n2zvXz4xSQ;
+	Thu, 21 Dec 2023 21:43:37 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: npiggin@gmail.com, christophe.leroy@csgroup.eu, ajd@linux.ibm.com, Kunwu Chan <chentao@kylinos.cn>
-In-Reply-To: <20231208085937.107210-1-chentao@kylinos.cn>
-References: <20231208085937.107210-1-chentao@kylinos.cn>
-Subject: Re: [PATCH] powerpc/powernv: Add a null pointer check to scom_debug_init_one
-Message-Id: <170315510016.2192823.2333350776691711493.b4-ty@ellerman.id.au>
-Date: Thu, 21 Dec 2023 21:38:20 +1100
+To: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org
+In-Reply-To: <20231204093638.71503-1-aneesh.kumar@kernel.org>
+References: <20231204093638.71503-1-aneesh.kumar@kernel.org>
+Subject: Re: [PATCH v2 1/2] powerpc/book3s/hash: Drop _PAGE_PRIVILEGED from PAGE_NONE
+Message-Id: <170315539653.2195986.11611625910794632258.b4-ty@ellerman.id.au>
+Date: Thu, 21 Dec 2023 21:43:16 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -42,20 +42,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kunwu Chan <kunwu.chan@hotmail.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, mirimmad17@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 08 Dec 2023 16:59:37 +0800, Kunwu Chan wrote:
-> kasprintf() returns a pointer to dynamically allocated memory
-> which can be NULL upon failure.
-> Add a null pointer check, and release 'ent' to avoid memory leaks.
+On Mon, 04 Dec 2023 15:06:37 +0530, aneesh.kumar@kernel.org wrote:
+> There used to be a dependency on _PAGE_PRIVILEGED with pte_savedwrite.
+> But that got dropped by
+> commit 6a56ccbcf6c6 ("mm/autonuma: use can_change_(pte|pmd)_writable() to replace savedwrite")
 > 
+> With the change in this patch numa fault pte (pte_protnone()) gets mapped as regular user pte
+> with RWX cleared (no-access) whereas earlier it used to be mapped _PAGE_PRIVILEGED.
 > 
+> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/powernv: Add a null pointer check to scom_debug_init_one
-      https://git.kernel.org/powerpc/c/9a260f2dd827bbc82cc60eb4f4d8c22707d80742
+[1/2] powerpc/book3s/hash: Drop _PAGE_PRIVILEGED from PAGE_NONE
+      https://git.kernel.org/powerpc/c/773b93f1d1c38c5c0d5308b8c9229c7a6ec5b2a0
+[2/2] powerpc/book3s64: Avoid __pte_protnone() check in __pte_flags_need_flush()
+      https://git.kernel.org/powerpc/c/a59c14f6b4caad7671dfb81737beba0b313897e4
 
 cheers
