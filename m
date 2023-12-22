@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EC8881CB05
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Dec 2023 14:58:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FFB281CB06
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Dec 2023 14:59:11 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=i2wVIN8U;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dfyOrGL4;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SxTR25wJPz3vcd
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Dec 2023 00:58:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SxTRx1C3Jz3vf5
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Dec 2023 00:59:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=i2wVIN8U;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dfyOrGL4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a; helo=mail-pj1-x102a.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SxTHn4pffz3cfK
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Dec 2023 00:52:05 +1100 (AEDT)
-Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1d4006b251aso16453345ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Dec 2023 05:52:05 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SxTHx1QGxz3cYF
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Dec 2023 00:52:13 +1100 (AEDT)
+Received: by mail-pj1-x102a.google.com with SMTP id 98e67ed59e1d1-28c075ad8e7so596764a91.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Dec 2023 05:52:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703253123; x=1703857923; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1703253130; x=1703857930; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2A8b0YOIg6lGChxKQRkSufzy4suZ23mRhNBzFJEEdSM=;
-        b=i2wVIN8UDYGUZUswQWv76rfsx+nigG8P4T3gj1DL6Y7RzOPjHi1VjsoiaCV1JJLOHp
-         8Wt1y4iVjuoMxnIAZAFPndI9MaQJQW8a+PbzOzAqR3i3k+A/fHuc0Khj0XqZqBSmtk/8
-         jDjmTvFoMDY0uPfaIEFZpePN0nnnNHfC5uNMwX15tMTCdYEaD2NbZ6M8ZPW8tP8q+UJm
-         h5e4BnwqWD9EcHPMJvBrVh6b9a39s2D5fI8LIO9RPrIF1PcUc1OMRNtWV46iqyB55S8U
-         hHoxlc/oQKCvOvkkhuoCGrxQuydzuf6G2yVOenNlXA3ImvHdd3SAnw3qdNHm4mTO6yKM
-         LqSw==
+        bh=aeAYbCIRliGvqtaXOLpF2rqcgjxtp1a4iDArca+1VrE=;
+        b=dfyOrGL4QGlbAqQMPqDcFNlvzvUrkDdeyeg7qjQUGohVNe0sHQy2VmQE6bqtNXNSfm
+         RFSeHc18Mkk4gpXI8I4vDaf1MD8b+7uzapUk0upWf/u7RVxWHJTLKvU3Th3o5ubA+dB0
+         BvnSqYdbvnN/H91jNgY3jbVmkhnUWX1dtpsLpzSyLQ+dRzXqb4Q/9YKtlvVCaSFmjDGl
+         YeKed4QG583SeZiq9MmQSGxcZ4JM2RyQjyeEEObLF8a9pPyoxCKvGQPEJk6ZB+SkQk+h
+         GDee6Wxogy/dUae0HRO8GEV++24hFDuIY1SNiGiNsIq7lqb3hVU87+dKame8c98b6iVF
+         xqOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703253123; x=1703857923;
+        d=1e100.net; s=20230601; t=1703253130; x=1703857930;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2A8b0YOIg6lGChxKQRkSufzy4suZ23mRhNBzFJEEdSM=;
-        b=jI2KYeMGMHDDCg2SYCs4mmS8bZFxUEzcDdJfOzwkAD/BdqTZYaAalGtolIO1K3y4Rn
-         cZRibjnMlHLq2m4U4z4hPsiZHFJasbLnC9pLxpBPMgyhHWkrPRr0t+2fECMQvXE4YgSR
-         Dd2hIkf7vofbGspZrLEh/G69m/6h9VTWrag0YfswdqPXi4WcfAKTw7+Xkdl0g67fgjSS
-         u1GHMxFNnD3GHt0lBeVvFXnvJTc28UJYqSRvZjA6JD3FD4RuLK9rvfgHse5ZXbl2CjXR
-         0GkvRRlh0IVyCRFfZLNb1olZyQnhLZsn0xhZ+tyD/kNdIee466uTpaGlPKuVzvYf70my
-         KTNQ==
-X-Gm-Message-State: AOJu0YxpwFtN1739SrpD+TH1+UWhMAZkb1C/NNRPGcUBrKidRCuQzXas
-	jVDFZXCJCD+nQ5f6QJHdBUg=
-X-Google-Smtp-Source: AGHT+IFQvmq4OO8RZRqoYdZH+NyCux5jSToZv3wFAzfmemzYuCnTc4PXXs3gZ8OTO3g8gRr8Oh1Jgg==
-X-Received: by 2002:a17:903:32ce:b0:1d4:223f:3c26 with SMTP id i14-20020a17090332ce00b001d4223f3c26mr829886plr.38.1703253123349;
-        Fri, 22 Dec 2023 05:52:03 -0800 (PST)
+        bh=aeAYbCIRliGvqtaXOLpF2rqcgjxtp1a4iDArca+1VrE=;
+        b=YfrscoOsA22vx3hpzL1EI3+OqXmu7N2wfVnQkgpa9Fw4xCDnyvnNmfpQZ3Sh8+tjrS
+         1P2Bj5isx79qcgUX50jIZDLGxUVLGIjAtFq4R5DOPuqyuzp3sI9z8sXxv4n9gsPBbi59
+         XJY82+8N14ih5fGV1It9o19PYSHiJ37b6380JNbfo8xDibGvo2i+sTkuqsn7f5KxBMpf
+         6hoeghJV10GtCQOLNJzrzm0L6v7qluKVcjyyRMFOAs2xAs1fF5QV/6LK70dTUE6eWtrZ
+         g6hXMKXfATq8rYmmSXTJy/TskTfYgcFnqAJUjdf7Mqt7nQ16LdIHRVf4SgvixIUGacC5
+         zxoQ==
+X-Gm-Message-State: AOJu0YzlBZ7uu2jlDtThkd5s8INIziMU+WLPgYSXkIA4lcEnBCmWpi6S
+	CrEjzOsqDqAAJR1TRLadSzR88NUTfvQ=
+X-Google-Smtp-Source: AGHT+IExjN9duiOKRKviSE2m6Rk3lPcZdwg4mh/5940CTeHG0yd/WEEfRjEKyjHpXFhQ5zZy8GD3fg==
+X-Received: by 2002:a17:90a:9d8b:b0:28c:1eff:ac4a with SMTP id k11-20020a17090a9d8b00b0028c1effac4amr143403pjp.90.1703253130457;
+        Fri, 22 Dec 2023 05:52:10 -0800 (PST)
 Received: from wheely.local0.net ([203.220.145.68])
-        by smtp.gmail.com with ESMTPSA id n12-20020a17090ac68c00b0028ae54d988esm3629280pjt.48.2023.12.22.05.51.56
+        by smtp.gmail.com with ESMTPSA id n12-20020a17090ac68c00b0028ae54d988esm3629280pjt.48.2023.12.22.05.52.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Dec 2023 05:52:02 -0800 (PST)
+        Fri, 22 Dec 2023 05:52:10 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Thomas Huth <thuth@redhat.com>
-Subject: [kvm-unit-tests PATCH 8/9] Add common/ directory for architecture-independent tests
-Date: Fri, 22 Dec 2023 23:50:47 +1000
-Message-ID: <20231222135048.1924672-9-npiggin@gmail.com>
+Subject: [kvm-unit-tests PATCH 9/9] migration: add a migration selftest
+Date: Fri, 22 Dec 2023 23:50:48 +1000
+Message-ID: <20231222135048.1924672-10-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231222135048.1924672-1-npiggin@gmail.com>
 References: <20231222135048.1924672-1-npiggin@gmail.com>
@@ -82,160 +82,144 @@ Cc: Laurent Vivier <lvivier@redhat.com>, linux-s390@vger.kernel.org, Nico Boehr 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-x86/sieve.c is used by s390x and arm via symbolic link. Make a new
-directory common/ for architecture-independent tests and move
-sieve.c here.
+Add a selftest for migration support in  guest library and test harness
+code. It performs migrations a tight loop to irritate races, and has
+flushed out several bugs in developing in the complicated test harness
+migration code already.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arm/sieve.c    |  2 +-
- common/sieve.c | 51 +++++++++++++++++++++++++++++++++++++++++++++++++
- s390x/sieve.c  |  2 +-
- x86/sieve.c    | 52 +-------------------------------------------------
- 4 files changed, 54 insertions(+), 53 deletions(-)
- create mode 100644 common/sieve.c
- mode change 100644 => 120000 x86/sieve.c
+ arm/Makefile.common         |  1 +
+ arm/unittests.cfg           |  6 ++++++
+ common/selftest-migration.c | 34 ++++++++++++++++++++++++++++++++++
+ powerpc/Makefile.common     |  1 +
+ powerpc/unittests.cfg       |  4 ++++
+ s390x/Makefile              |  1 +
+ s390x/unittests.cfg         |  4 ++++
+ 7 files changed, 51 insertions(+)
+ create mode 100644 common/selftest-migration.c
 
-diff --git a/arm/sieve.c b/arm/sieve.c
-index 8f14a5c3..fe299f30 120000
---- a/arm/sieve.c
-+++ b/arm/sieve.c
-@@ -1 +1 @@
--../x86/sieve.c
-\ No newline at end of file
-+../common/sieve.c
-\ No newline at end of file
-diff --git a/common/sieve.c b/common/sieve.c
+diff --git a/arm/Makefile.common b/arm/Makefile.common
+index 5214c8ac..d769ae52 100644
+--- a/arm/Makefile.common
++++ b/arm/Makefile.common
+@@ -5,6 +5,7 @@
+ #
+ 
+ tests-common  = $(TEST_DIR)/selftest.$(exe)
++tests-common += $(TEST_DIR)/selftest-migration.$(exe)
+ tests-common += $(TEST_DIR)/spinlock-test.$(exe)
+ tests-common += $(TEST_DIR)/pci-test.$(exe)
+ tests-common += $(TEST_DIR)/pmu.$(exe)
+diff --git a/arm/unittests.cfg b/arm/unittests.cfg
+index fe601cbb..1ffd9a82 100644
+--- a/arm/unittests.cfg
++++ b/arm/unittests.cfg
+@@ -55,6 +55,12 @@ smp = $MAX_SMP
+ extra_params = -append 'smp'
+ groups = selftest
+ 
++# Test migration
++[selftest-migration]
++file = selftest-migration.flat
++groups = selftest migration
++
++arch = arm64
+ # Test PCI emulation
+ [pci-test]
+ file = pci-test.flat
+diff --git a/common/selftest-migration.c b/common/selftest-migration.c
 new file mode 100644
-index 00000000..8150f2d9
+index 00000000..f70c505f
 --- /dev/null
-+++ b/common/sieve.c
-@@ -0,0 +1,51 @@
-+#include "alloc.h"
-+#include "libcflat.h"
++++ b/common/selftest-migration.c
+@@ -0,0 +1,34 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Machine independent migration tests
++ *
++ * This is just a very simple test that is intended to stress the migration
++ * support in the test harness. This could be expanded to test more guest
++ * library code, but architecture-specific tests should be used to test
++ * migration of tricky machine state.
++ */
++#include <libcflat.h>
++#include <migrate.h>
 +
-+static int sieve(char* data, int size)
++#if defined(__arm__) || defined(__aarch64__)
++/* arm can only call getchar 15 times */
++#define NR_MIGRATIONS 15
++#else
++#define NR_MIGRATIONS 100
++#endif
++
++int main(int argc, char **argv)
 +{
-+    int i, j, r = 0;
++	int i = 0;
 +
-+    for (i = 0; i < size; ++i)
-+	data[i] = 1;
++	report_prefix_push("migration");
 +
-+    data[0] = data[1] = 0;
++	for (i = 0; i < NR_MIGRATIONS; i++)
++		migrate_quiet();
 +
-+    for (i = 2; i < size; ++i)
-+	if (data[i]) {
-+	    ++r;
-+	    for (j = i*2; j < size; j += i)
-+		data[j] = 0;
-+	}
-+    return r;
++	report(true, "simple harness stress test");
++
++	report_prefix_pop();
++
++	return report_summary();
 +}
+diff --git a/powerpc/Makefile.common b/powerpc/Makefile.common
+index f8f47490..0d1a65f7 100644
+--- a/powerpc/Makefile.common
++++ b/powerpc/Makefile.common
+@@ -6,6 +6,7 @@
+ 
+ tests-common = \
+ 	$(TEST_DIR)/selftest.elf \
++	$(TEST_DIR)/selftest-migration.elf \
+ 	$(TEST_DIR)/spapr_hcall.elf \
+ 	$(TEST_DIR)/rtas.elf \
+ 	$(TEST_DIR)/emulator.elf \
+diff --git a/powerpc/unittests.cfg b/powerpc/unittests.cfg
+index e71140aa..7ce57de0 100644
+--- a/powerpc/unittests.cfg
++++ b/powerpc/unittests.cfg
+@@ -36,6 +36,10 @@ smp = 2
+ extra_params = -m 256 -append 'setup smp=2 mem=256'
+ groups = selftest
+ 
++[selftest-migration]
++file = selftest-migration.elf
++groups = selftest migration
 +
-+static void test_sieve(const char *msg, char *data, int size)
-+{
-+    int r;
+ [spapr_hcall]
+ file = spapr_hcall.elf
+ 
+diff --git a/s390x/Makefile b/s390x/Makefile
+index 95ef9533..505e5d32 100644
+--- a/s390x/Makefile
++++ b/s390x/Makefile
+@@ -1,4 +1,5 @@
+ tests = $(TEST_DIR)/selftest.elf
++tests += $(TEST_DIR)/selftest-migration.elf
+ tests += $(TEST_DIR)/intercept.elf
+ tests += $(TEST_DIR)/emulator.elf
+ tests += $(TEST_DIR)/sieve.elf
+diff --git a/s390x/unittests.cfg b/s390x/unittests.cfg
+index f5024b6e..a7ad522c 100644
+--- a/s390x/unittests.cfg
++++ b/s390x/unittests.cfg
+@@ -24,6 +24,10 @@ groups = selftest
+ # please keep the kernel cmdline in sync with $(TEST_DIR)/selftest.parmfile
+ extra_params = -append 'test 123'
+ 
++[selftest-migration]
++file = selftest-migration.elf
++groups = selftest migration
 +
-+    printf("%s:", msg);
-+    r = sieve(data, size);
-+    printf("%d out of %d\n", r, size);
-+}
-+
-+#define STATIC_SIZE 1000000
-+#define VSIZE 100000000
-+char static_data[STATIC_SIZE];
-+
-+int main(void)
-+{
-+    void *v;
-+    int i;
-+
-+    printf("starting sieve\n");
-+    test_sieve("static", static_data, STATIC_SIZE);
-+    setup_vm();
-+    test_sieve("mapped", static_data, STATIC_SIZE);
-+    for (i = 0; i < 3; ++i) {
-+	v = malloc(VSIZE);
-+	test_sieve("virtual", v, VSIZE);
-+	free(v);
-+    }
-+
-+    return 0;
-+}
-diff --git a/s390x/sieve.c b/s390x/sieve.c
-index 8f14a5c3..fe299f30 120000
---- a/s390x/sieve.c
-+++ b/s390x/sieve.c
-@@ -1 +1 @@
--../x86/sieve.c
-\ No newline at end of file
-+../common/sieve.c
-\ No newline at end of file
-diff --git a/x86/sieve.c b/x86/sieve.c
-deleted file mode 100644
-index 8150f2d9..00000000
---- a/x86/sieve.c
-+++ /dev/null
-@@ -1,51 +0,0 @@
--#include "alloc.h"
--#include "libcflat.h"
--
--static int sieve(char* data, int size)
--{
--    int i, j, r = 0;
--
--    for (i = 0; i < size; ++i)
--	data[i] = 1;
--
--    data[0] = data[1] = 0;
--
--    for (i = 2; i < size; ++i)
--	if (data[i]) {
--	    ++r;
--	    for (j = i*2; j < size; j += i)
--		data[j] = 0;
--	}
--    return r;
--}
--
--static void test_sieve(const char *msg, char *data, int size)
--{
--    int r;
--
--    printf("%s:", msg);
--    r = sieve(data, size);
--    printf("%d out of %d\n", r, size);
--}
--
--#define STATIC_SIZE 1000000
--#define VSIZE 100000000
--char static_data[STATIC_SIZE];
--
--int main(void)
--{
--    void *v;
--    int i;
--
--    printf("starting sieve\n");
--    test_sieve("static", static_data, STATIC_SIZE);
--    setup_vm();
--    test_sieve("mapped", static_data, STATIC_SIZE);
--    for (i = 0; i < 3; ++i) {
--	v = malloc(VSIZE);
--	test_sieve("virtual", v, VSIZE);
--	free(v);
--    }
--
--    return 0;
--}
-diff --git a/x86/sieve.c b/x86/sieve.c
-new file mode 120000
-index 00000000..fe299f30
---- /dev/null
-+++ b/x86/sieve.c
-@@ -0,0 +1 @@
-+../common/sieve.c
-\ No newline at end of file
+ [intercept]
+ file = intercept.elf
+ 
 -- 
 2.42.0
 
