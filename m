@@ -1,72 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FFB281CB06
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Dec 2023 14:59:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BB2481CB66
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Dec 2023 15:35:44 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dfyOrGL4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jR60heL5;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SxTRx1C3Jz3vf5
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Dec 2023 00:59:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SxVG60JCmz3d95
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Dec 2023 01:35:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dfyOrGL4;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jR60heL5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a; helo=mail-pj1-x102a.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SxTHx1QGxz3cYF
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Dec 2023 00:52:13 +1100 (AEDT)
-Received: by mail-pj1-x102a.google.com with SMTP id 98e67ed59e1d1-28c075ad8e7so596764a91.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Dec 2023 05:52:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703253130; x=1703857930; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aeAYbCIRliGvqtaXOLpF2rqcgjxtp1a4iDArca+1VrE=;
-        b=dfyOrGL4QGlbAqQMPqDcFNlvzvUrkDdeyeg7qjQUGohVNe0sHQy2VmQE6bqtNXNSfm
-         RFSeHc18Mkk4gpXI8I4vDaf1MD8b+7uzapUk0upWf/u7RVxWHJTLKvU3Th3o5ubA+dB0
-         BvnSqYdbvnN/H91jNgY3jbVmkhnUWX1dtpsLpzSyLQ+dRzXqb4Q/9YKtlvVCaSFmjDGl
-         YeKed4QG583SeZiq9MmQSGxcZ4JM2RyQjyeEEObLF8a9pPyoxCKvGQPEJk6ZB+SkQk+h
-         GDee6Wxogy/dUae0HRO8GEV++24hFDuIY1SNiGiNsIq7lqb3hVU87+dKame8c98b6iVF
-         xqOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703253130; x=1703857930;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aeAYbCIRliGvqtaXOLpF2rqcgjxtp1a4iDArca+1VrE=;
-        b=YfrscoOsA22vx3hpzL1EI3+OqXmu7N2wfVnQkgpa9Fw4xCDnyvnNmfpQZ3Sh8+tjrS
-         1P2Bj5isx79qcgUX50jIZDLGxUVLGIjAtFq4R5DOPuqyuzp3sI9z8sXxv4n9gsPBbi59
-         XJY82+8N14ih5fGV1It9o19PYSHiJ37b6380JNbfo8xDibGvo2i+sTkuqsn7f5KxBMpf
-         6hoeghJV10GtCQOLNJzrzm0L6v7qluKVcjyyRMFOAs2xAs1fF5QV/6LK70dTUE6eWtrZ
-         g6hXMKXfATq8rYmmSXTJy/TskTfYgcFnqAJUjdf7Mqt7nQ16LdIHRVf4SgvixIUGacC5
-         zxoQ==
-X-Gm-Message-State: AOJu0YzlBZ7uu2jlDtThkd5s8INIziMU+WLPgYSXkIA4lcEnBCmWpi6S
-	CrEjzOsqDqAAJR1TRLadSzR88NUTfvQ=
-X-Google-Smtp-Source: AGHT+IExjN9duiOKRKviSE2m6Rk3lPcZdwg4mh/5940CTeHG0yd/WEEfRjEKyjHpXFhQ5zZy8GD3fg==
-X-Received: by 2002:a17:90a:9d8b:b0:28c:1eff:ac4a with SMTP id k11-20020a17090a9d8b00b0028c1effac4amr143403pjp.90.1703253130457;
-        Fri, 22 Dec 2023 05:52:10 -0800 (PST)
-Received: from wheely.local0.net ([203.220.145.68])
-        by smtp.gmail.com with ESMTPSA id n12-20020a17090ac68c00b0028ae54d988esm3629280pjt.48.2023.12.22.05.52.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Dec 2023 05:52:10 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: Thomas Huth <thuth@redhat.com>
-Subject: [kvm-unit-tests PATCH 9/9] migration: add a migration selftest
-Date: Fri, 22 Dec 2023 23:50:48 +1000
-Message-ID: <20231222135048.1924672-10-npiggin@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231222135048.1924672-1-npiggin@gmail.com>
-References: <20231222135048.1924672-1-npiggin@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SxVFJ063gz3cP3
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Dec 2023 01:34:59 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 726CFCE21B0;
+	Fri, 22 Dec 2023 14:34:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58DD5C433C8;
+	Fri, 22 Dec 2023 14:34:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1703255693;
+	bh=wD+DMULNfcm5v8XBB1zPgHfSQmHjnNJXjMQ/L2uZCUs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jR60heL5YoJ84gLmfHknmBiULDdGVsMMFgLQPfZCYpy78qODZ1J1sj/eVo4tR/f8z
+	 DwF5RCDyZbO6L6vA/PV94WL9baUoKHKWqNn9tDDmndx9HosFKmLvGdiYyIn6raooh0
+	 6euKwvSP+2R+sicagkmQNX20Ga751Z8xj1Xl2OK7lP4lu7JezvrfqYI69yJcX5yh4V
+	 QYCThon4gk1S3HT31/NBvXkQZPkoCKAiXrSXikKI2n53dH9WXlvcjBjUk7jr4hzRJ4
+	 eP3lk91zvAlNy7Cbj2nmvs/mXx9QDbUSNrvQ4k8wq4r26626NRHUZljsLU+dUiRY+N
+	 Vz9xmjFVSUFUg==
+Date: Fri, 22 Dec 2023 19:59:25 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Hari Bathini <hbathini@linux.ibm.com>
+Subject: Re: [PATCH 1/2] powerpc/bpf: ensure module addresses are supported
+Message-ID: <qi7rglfbf5bzkbsvuzpfrjwglobltam2ejvvf2hmdau2jd6qqf@af2q5pxoiywz>
+References: <20231220165622.246723-1-hbathini@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231220165622.246723-1-hbathini@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,148 +58,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, linux-s390@vger.kernel.org, Nico Boehr <nrb@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org, Shaoqin Huang <shahuang@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, Andrew Jones <andrew.jones@linux.dev>, Eric Auger <eric.auger@redhat.com>, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: Song Liu <songliubraving@fb.com>, Daniel Borkmann <daniel@iogearbox.net>, Martin KaFai Lau <martin.lau@linux.dev>, Andrii Nakryiko <andrii@kernel.org>, Alexei Starovoitov <ast@kernel.org>, bpf@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a selftest for migration support in  guest library and test harness
-code. It performs migrations a tight loop to irritate races, and has
-flushed out several bugs in developing in the complicated test harness
-migration code already.
+On Wed, Dec 20, 2023 at 10:26:21PM +0530, Hari Bathini wrote:
+> Currently, bpf jit code on powerpc assumes all the bpf functions and
+> helpers to be kernel text. This is false for kfunc case, as function
+> addresses are mostly module addresses in that case. Ensure module
+> addresses are supported to enable kfunc support.
+> 
+> This effectively reverts commit feb6307289d8 ("powerpc64/bpf: Optimize
+> instruction sequence used for function calls") and commit 43d636f8b4fd
+> ("powerpc64/bpf elfv1: Do not load TOC before calling functions") that
+> assumed only kernel text for bpf functions/helpers.
+> 
+> Also, commit b10cb163c4b3 ("powerpc64/bpf elfv2: Setup kernel TOC in
+> r2 on entry") that paved the way for the commits mentioned above is
+> reverted.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arm/Makefile.common         |  1 +
- arm/unittests.cfg           |  6 ++++++
- common/selftest-migration.c | 34 ++++++++++++++++++++++++++++++++++
- powerpc/Makefile.common     |  1 +
- powerpc/unittests.cfg       |  4 ++++
- s390x/Makefile              |  1 +
- s390x/unittests.cfg         |  4 ++++
- 7 files changed, 51 insertions(+)
- create mode 100644 common/selftest-migration.c
+Instead of that, can we detect kfunc and use separate set of 
+instructions just for those?
 
-diff --git a/arm/Makefile.common b/arm/Makefile.common
-index 5214c8ac..d769ae52 100644
---- a/arm/Makefile.common
-+++ b/arm/Makefile.common
-@@ -5,6 +5,7 @@
- #
- 
- tests-common  = $(TEST_DIR)/selftest.$(exe)
-+tests-common += $(TEST_DIR)/selftest-migration.$(exe)
- tests-common += $(TEST_DIR)/spinlock-test.$(exe)
- tests-common += $(TEST_DIR)/pci-test.$(exe)
- tests-common += $(TEST_DIR)/pmu.$(exe)
-diff --git a/arm/unittests.cfg b/arm/unittests.cfg
-index fe601cbb..1ffd9a82 100644
---- a/arm/unittests.cfg
-+++ b/arm/unittests.cfg
-@@ -55,6 +55,12 @@ smp = $MAX_SMP
- extra_params = -append 'smp'
- groups = selftest
- 
-+# Test migration
-+[selftest-migration]
-+file = selftest-migration.flat
-+groups = selftest migration
-+
-+arch = arm64
- # Test PCI emulation
- [pci-test]
- file = pci-test.flat
-diff --git a/common/selftest-migration.c b/common/selftest-migration.c
-new file mode 100644
-index 00000000..f70c505f
---- /dev/null
-+++ b/common/selftest-migration.c
-@@ -0,0 +1,34 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Machine independent migration tests
-+ *
-+ * This is just a very simple test that is intended to stress the migration
-+ * support in the test harness. This could be expanded to test more guest
-+ * library code, but architecture-specific tests should be used to test
-+ * migration of tricky machine state.
-+ */
-+#include <libcflat.h>
-+#include <migrate.h>
-+
-+#if defined(__arm__) || defined(__aarch64__)
-+/* arm can only call getchar 15 times */
-+#define NR_MIGRATIONS 15
-+#else
-+#define NR_MIGRATIONS 100
-+#endif
-+
-+int main(int argc, char **argv)
-+{
-+	int i = 0;
-+
-+	report_prefix_push("migration");
-+
-+	for (i = 0; i < NR_MIGRATIONS; i++)
-+		migrate_quiet();
-+
-+	report(true, "simple harness stress test");
-+
-+	report_prefix_pop();
-+
-+	return report_summary();
-+}
-diff --git a/powerpc/Makefile.common b/powerpc/Makefile.common
-index f8f47490..0d1a65f7 100644
---- a/powerpc/Makefile.common
-+++ b/powerpc/Makefile.common
-@@ -6,6 +6,7 @@
- 
- tests-common = \
- 	$(TEST_DIR)/selftest.elf \
-+	$(TEST_DIR)/selftest-migration.elf \
- 	$(TEST_DIR)/spapr_hcall.elf \
- 	$(TEST_DIR)/rtas.elf \
- 	$(TEST_DIR)/emulator.elf \
-diff --git a/powerpc/unittests.cfg b/powerpc/unittests.cfg
-index e71140aa..7ce57de0 100644
---- a/powerpc/unittests.cfg
-+++ b/powerpc/unittests.cfg
-@@ -36,6 +36,10 @@ smp = 2
- extra_params = -m 256 -append 'setup smp=2 mem=256'
- groups = selftest
- 
-+[selftest-migration]
-+file = selftest-migration.elf
-+groups = selftest migration
-+
- [spapr_hcall]
- file = spapr_hcall.elf
- 
-diff --git a/s390x/Makefile b/s390x/Makefile
-index 95ef9533..505e5d32 100644
---- a/s390x/Makefile
-+++ b/s390x/Makefile
-@@ -1,4 +1,5 @@
- tests = $(TEST_DIR)/selftest.elf
-+tests += $(TEST_DIR)/selftest-migration.elf
- tests += $(TEST_DIR)/intercept.elf
- tests += $(TEST_DIR)/emulator.elf
- tests += $(TEST_DIR)/sieve.elf
-diff --git a/s390x/unittests.cfg b/s390x/unittests.cfg
-index f5024b6e..a7ad522c 100644
---- a/s390x/unittests.cfg
-+++ b/s390x/unittests.cfg
-@@ -24,6 +24,10 @@ groups = selftest
- # please keep the kernel cmdline in sync with $(TEST_DIR)/selftest.parmfile
- extra_params = -append 'test 123'
- 
-+[selftest-migration]
-+file = selftest-migration.elf
-+groups = selftest migration
-+
- [intercept]
- file = intercept.elf
- 
--- 
-2.42.0
+Unless unavoidable, I would prefer to retain the existing optimal
+sequence using TOC for calls to bpf kernel helpers, since those are a 
+lot more common than kfunc.
+
+- Naveen
 
