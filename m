@@ -1,76 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 258EB81C79D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Dec 2023 10:52:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40F8E81C7AC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Dec 2023 10:56:45 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NKABxWyk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VU3RwpRH;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SxMzr5r7pz3d95
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Dec 2023 20:52:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SxN4B6kRLz3cTj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Dec 2023 20:56:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NKABxWyk;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VU3RwpRH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62d; helo=mail-pl1-x62d.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SxMz06kXLz3c3H
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Dec 2023 20:52:12 +1100 (AEDT)
-Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1d3ef33e68dso12213045ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Dec 2023 01:52:12 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SxN3P5T5Bz2xFn
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Dec 2023 20:56:01 +1100 (AEDT)
+Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1d3e6c86868so13783725ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Dec 2023 01:56:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703238730; x=1703843530; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1703238959; x=1703843759; darn=lists.ozlabs.org;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/oGzqKbAgpu4zySBC+7kLRFWSum1+ZYKYmLtZ1Yu6Nk=;
-        b=NKABxWykWwAC7qMyjNaSiJ+FyziBXKZGtbwT4qSDgb/GIATTQLSFKx3yeEOshApkLC
-         S7webG2dR7IjipfhkgISn42iJjfIv7QVDE8ADuZS5UKd7iDSI5udiCLyZNajeCCIJoYm
-         S5gjEs2v+re1yeQmeph4lqgEPQKSBzRVdr6K0OGUM9LU7NPVEDUVBoN9j/x8nE6N/i8J
-         EiW+ugKQ2+wPUqAqyVw613hg+ziu1Oxi5039iHfARXVMM7rXbRbrO2MzsVF9Oo+Hz0Fv
-         oDNZbj/8Wykg7NVkR0stYU7hZRYBfc0nUNnicWV7cWQMwmrHV9dd0zdMnVbF4U5TQmVl
-         4hoQ==
+        bh=+OLFd2ztkNVgmb3arj+SalK3eRAnUUPZiYspaCp+2ZI=;
+        b=VU3RwpRHEHHlg3lJyzHdveCBCf74nGAT/hQMS53hV0Qy5leYW5gV/aeoHeGLtYdAVM
+         AZSiCWVstz8DG0n696wQ4R1ogCXg1GOeoe82UcrA3I2CDRRsO6QmO2/cMQGBxcQC6a3f
+         ZtrrPrKUHzj3NDP9CZNS9FsUdKcaHL6Dhrt6bZHMe2FGe2JKYwdlU6a5mAzod7GuIW86
+         ini2+q63ASWHiPUMvnT7IXc5yISXu2hy6BoGI7IuDRa+AqOeKbKlmrwUF9A33czNqsLr
+         /Vwz8UgILsg5EbLqY7TH0E5fwJOd0qySZFMJ/Y9IoQh71YWCRzKarktzHWRGHpAIZzB3
+         nW8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703238730; x=1703843530;
+        d=1e100.net; s=20230601; t=1703238959; x=1703843759;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=/oGzqKbAgpu4zySBC+7kLRFWSum1+ZYKYmLtZ1Yu6Nk=;
-        b=Dv2MHabiR8FDippHwc6aPL6VpFCwcOzbFa7V9v1H7He5KCatxYdLCKpzzWVS/z0mF1
-         JuwrRaqqVxl469ruPmL6AIoBiaWZv0yCga/42Aupj+09hGBvLcasmN2UgR7CM/h0TPKl
-         TYzVVPGRTZR9vX7eZwCQDJA95JJjwpfbHiqAGSbA3caU2CR/wjQeZ1LB5Q8QtVMMCFSM
-         rozn43k6dXDttMO4l2XQp8XoQPbXh1VUkHArs52k+cAVwq3fkYFMmr2E5WXG0/mI4swa
-         zuZ7QQXUoO7OWPq3kd/jNB2uz+f2zFeTaZKw0ygLZe0qlj2/Abbo3f53YrXeiofq1/GT
-         ZK4A==
-X-Gm-Message-State: AOJu0YwCcxlVUn34Be8T2B7/6qcXXt0Ck8RvGj47OmmXNBf1vBhqZYHR
-	/Hz+CVYsXTnhFsG7r/ANUg0=
-X-Google-Smtp-Source: AGHT+IFhx3xO2W0ciK9SRJbTwz9Gf645xzxvDZynI5z/OnmVKHMCSfWHi71FKgmV4f8xxVHmz4B7cA==
-X-Received: by 2002:a17:902:d54f:b0:1d4:cae:99f9 with SMTP id z15-20020a170902d54f00b001d40cae99f9mr1594572plf.45.1703238729951;
-        Fri, 22 Dec 2023 01:52:09 -0800 (PST)
+        bh=+OLFd2ztkNVgmb3arj+SalK3eRAnUUPZiYspaCp+2ZI=;
+        b=mmNvvA+VT02kp31f3ndI7t8gssI9UtC03qQl2FarigWkxVi432RNBN02CnNynjO5Ao
+         TadH7VTKk7ZQWOeFYscxY5Vg3ca6a00zZ+TUDRIyYexNeTuuQcvo9uguc6X429QswEM5
+         rIHDON2Nqlkaa0wCOL95YFjteej5DBYmb2wJkGbRd4Z+OJOHO1EVZGS9Te67j5wEsMbN
+         3PDZUVt2D8hjmdiCGuYJmqDp7ElAxQU5pfn0uHcaXhnarRcRf4LTeYaArFPMoi46uXXR
+         RapP/sD70522EX5K2nHdjipan6WUAT/tIB+7627UN+pLCu2L81kET5X7dHReCOE+lQRj
+         1QEA==
+X-Gm-Message-State: AOJu0Ywvh9YZyrdzFVdIDcbBeKSAyO6HiZcP7tFUj6ocdeLqYT6HgBp4
+	brrgx25SQ1z2pMehqD0IXlVBlMUUsCg=
+X-Google-Smtp-Source: AGHT+IHGXJeA4Z9CHTuglBHWWMDbE1zDQFmX5Q6sHzAuyhKWSEdBaEczbg674wDAG3DdC6OjcLGP3Q==
+X-Received: by 2002:a17:902:db02:b0:1d3:bc96:6c13 with SMTP id m2-20020a170902db0200b001d3bc966c13mr1173424plx.35.1703238958957;
+        Fri, 22 Dec 2023 01:55:58 -0800 (PST)
 Received: from localhost ([203.220.145.68])
-        by smtp.gmail.com with ESMTPSA id x2-20020a170902ea8200b001d1d6f6b67dsm3052737plb.147.2023.12.22.01.52.06
+        by smtp.gmail.com with ESMTPSA id be10-20020a170902aa0a00b001d3c3d486bfsm3036465plb.163.2023.12.22.01.55.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 Dec 2023 01:52:09 -0800 (PST)
+        Fri, 22 Dec 2023 01:55:58 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 22 Dec 2023 19:52:04 +1000
-Message-Id: <CXURQJVKGNET.OGA1CKMUBD42@wheely>
-Subject: Re: [kvm-unit-tests PATCH v5 13/29] powerpc: Make interrupt handler
- error more readable
+Date: Fri, 22 Dec 2023 19:55:53 +1000
+Message-Id: <CXURTH5YQKXS.36M3EIM30WDMC@wheely>
+Subject: Re: [kvm-unit-tests PATCH v5 18/29] powerpc: Fix stack backtrace
+ termination
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "Thomas Huth" <thuth@redhat.com>, <kvm@vger.kernel.org>
 X-Mailer: aerc 0.15.2
 References: <20231216134257.1743345-1-npiggin@gmail.com>
- <20231216134257.1743345-14-npiggin@gmail.com>
- <4a42b65c-f65b-41cf-91f6-eeb96519dc2c@redhat.com>
-In-Reply-To: <4a42b65c-f65b-41cf-91f6-eeb96519dc2c@redhat.com>
+ <20231216134257.1743345-19-npiggin@gmail.com>
+ <464fccfc-b375-4458-b718-de606e50c61c@redhat.com>
+In-Reply-To: <464fccfc-b375-4458-b718-de606e50c61c@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,33 +86,53 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Nico Boehr <nrb@linux.ibm.com>, linuxpp
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue Dec 19, 2023 at 9:53 PM AEST, Thomas Huth wrote:
+On Tue Dec 19, 2023 at 10:22 PM AEST, Thomas Huth wrote:
 > On 16/12/2023 14.42, Nicholas Piggin wrote:
-> > Installing the same handler twice reports a shifted trap vector
-> > address which is hard to decipher. Print the unshifed address.
+> > The backtrace handler terminates when it sees a NULL caller address,
+> > but the powerpc stack setup does not keep such a NULL caller frame
+> > at the start of the stack.
+> >=20
+> > This happens to work on pseries because the memory at 0 is mapped and
+> > it contains 0 at the location of the return address pointer if it
+> > were a stack frame. But this is fragile, and does not work with powernv
+> > where address 0 contains firmware instructions.
+> >=20
+> > Use the existing dummy frame on stack as the NULL caller, and create a
+> > new frame on stack for the entry code.
 > >=20
 > > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > > ---
-> >   lib/powerpc/processor.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> >   powerpc/cstart64.S | 12 ++++++++++--
+> >   1 file changed, 10 insertions(+), 2 deletions(-)
 > >=20
-> > diff --git a/lib/powerpc/processor.c b/lib/powerpc/processor.c
-> > index aaf45b68..b4cd5b4c 100644
-> > --- a/lib/powerpc/processor.c
-> > +++ b/lib/powerpc/processor.c
-> > @@ -26,7 +26,7 @@ void handle_exception(int trap, void (*func)(struct p=
-t_regs *, void *),
-> >   	trap >>=3D 8;
+> > diff --git a/powerpc/cstart64.S b/powerpc/cstart64.S
+> > index e18ae9a2..14ab0c6c 100644
+> > --- a/powerpc/cstart64.S
+> > +++ b/powerpc/cstart64.S
+> > @@ -46,8 +46,16 @@ start:
+> >   	add	r1, r1, r31
+> >   	add	r2, r2, r31
+> >  =20
+> > +	/* Zero backpointers in initial stack frame so backtrace() stops */
+> > +	li	r0,0
+> > +	std	r0,0(r1)
+> > +	std	r0,16(r1)
+> > +
+> > +	/* Create entry frame */
+> > +	stdu	r1,-INT_FRAME_SIZE(r1)
 >
-> You only change this to >>=3D 5 in the next patch...
+> Shouldn't that rather be STACK_FRAME_OVERHEAD instead of INT_FRAME_SIZE..=
+.
 >
-> >   	if (func && handlers[trap].func) {
-> > -		printf("exception handler installed twice %#x\n", trap);
-> > +		printf("exception handler installed twice %#x\n", trap << 5);
+> >   	/* save DTB pointer */
+> > -	std	r3, 56(r1)
+> > +	SAVE_GPR(3,r1)
 >
-> ... so I think you should move this patch here after the next one.
+> ... since SAVE_GPR uses STACK_FRAME_OVERHEAD (via GPR0), too?
 
-Paper bag for me.
+No I think it's correct. INT_FRAME_SIZE has STACK_FRAME_OVERHEAD and
+struct pt_regs. The STACK_FRAME_OVERHEAD in GPR offsets is just to skip
+that and get to pt_regs.gpr[].
 
 Thanks,
 Nick
