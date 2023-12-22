@@ -1,56 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B60481CBB5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Dec 2023 16:05:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C64BD81CC16
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Dec 2023 16:19:31 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fJjtql6P;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KuM0vInl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SxVwq4S05z3cYL
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Dec 2023 02:05:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SxWDd3D9nz3cZx
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Dec 2023 02:19:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fJjtql6P;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KuM0vInl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=imbrenda@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SxVvw2sknz3c84
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Dec 2023 02:05:00 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 2F90CCE2243;
-	Fri, 22 Dec 2023 15:04:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A02EC433C8;
-	Fri, 22 Dec 2023 15:04:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703257493;
-	bh=ff+11cBpb6fDBCxthTcpJKSANtb1FArJ8elQvMrgPHA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fJjtql6PY7v6wiyIpT1yxgYQQM+rkvq9l3L6YsVK2NGidGNbRyV32izlJirpUJ5Tn
-	 +FlAIcWePB4Yg3H0zzXhOxLiXt9MXu4r48TlKwyaGn/JNhEFBj7YmJBxPSZvSvbDoz
-	 OGW+BmTczlUXrUlGmyXvce7cCOFGeMJ2Q7H5PTIIIACi5/4v3wI5RVHVJ15GptOja3
-	 a9rOLTCI3cxUPLzhskaMnahbEZv1rijKeduZTxiGR5KP8N5NKC3+DJOWTtuz4D1q6E
-	 MSEmspMVzdkejDwf1tovy5x6EetYjUbxAnI1NEmlEv/CHXqJJtp3OXYn1WOovA2V1T
-	 ox3pcwQ+09U4Q==
-Date: Fri, 22 Dec 2023 20:31:08 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [RFC PATCH 6/9] powerpc/ftrace: Update and move function profile
- instructions out-of-line
-Message-ID: <thjuqdsy6a6oinxciztpao7nobop3j4pnd6xktnioriofad7lz@ue6bdz7wlqba>
-References: <cover.1702045299.git.naveen@kernel.org>
- <39363eb6b1857f26f9fa51808ad48b0121899b84.1702045299.git.naveen@kernel.org>
- <e2e467a3-7283-4f22-8cd9-2d1875f60e92@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SxWBr5s6Xz2xQD
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Dec 2023 02:17:56 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3BME67DO010059;
+	Fri, 22 Dec 2023 15:17:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=ZWrJsTYOoV29o/sIVqwxhwxPR262KH+d/Yci05WaoFA=;
+ b=KuM0vInlBUnHa2qLXAc18v7cMikri79roF4vD7og7eHW0FR1lKtrF+35Ld1UfvHApS48
+ uXFhhpZWo1HT9vNY5Y4MhXBZMmrA+CyfsiZsTEyUqyQOF5EoyanmG5gV4z0dhsWY+YXp
+ w9ziYVQNz3PNL9o2/CtdG39EbDSQteTKQ5kvkJXCtueoZ4odFI9+nhCgOVbcEIGoNZHM
+ 9cup5FoINxx7iy4IubPuudXOkwyRHCskmSQDOLoKXWTUNx2sSIyT7v2OWMTrQdrOE7DW
+ wwPc57ZgyCxZBEhAUHGaQy+o/zjp486elZULKlueig197SE/8adznSuYWguAwG3KXHnJ ag== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3v5afmkfqx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Dec 2023 15:17:41 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3BMEEkoQ032205;
+	Fri, 22 Dec 2023 15:17:40 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3v5afmkf61-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Dec 2023 15:17:39 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3BMEk2Fr029718;
+	Fri, 22 Dec 2023 15:16:03 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3v1p7t45k8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Dec 2023 15:16:02 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3BMFG0Xq19005978
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 22 Dec 2023 15:16:00 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1C39C2004F;
+	Fri, 22 Dec 2023 15:16:00 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 49C7320043;
+	Fri, 22 Dec 2023 15:15:59 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.179.5.15])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Fri, 22 Dec 2023 15:15:59 +0000 (GMT)
+Date: Fri, 22 Dec 2023 16:04:14 +0100
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [kvm-unit-tests PATCH 1/9] s390x: clean lib/auxinfo.o
+Message-ID: <20231222160414.5175ebba@p-imbrenda>
+In-Reply-To: <20231222135048.1924672-2-npiggin@gmail.com>
+References: <20231222135048.1924672-1-npiggin@gmail.com>
+	<20231222135048.1924672-2-npiggin@gmail.com>
+Organization: IBM
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e2e467a3-7283-4f22-8cd9-2d1875f60e92@csgroup.eu>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: P7Ivpbc0jONApp_ZrCWAo_Kd26CGdaCl
+X-Proofpoint-ORIG-GUID: MmZlGmYa-oSqI4DgF66gFF7_0WpynP8N
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-22_09,2023-12-21_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 priorityscore=1501
+ spamscore=0 lowpriorityscore=0 suspectscore=0 impostorscore=0 adultscore=0
+ phishscore=0 malwarescore=0 clxscore=1015 mlxlogscore=867 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2312220112
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,169 +99,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Florent Revest <revest@chromium.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Steven Rostedt <rostedt@goodmis.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Laurent Vivier <lvivier@redhat.com>, linux-s390@vger.kernel.org, Thomas Huth <thuth@redhat.com>, Nico Boehr <nrb@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org, Shaoqin Huang <shahuang@redhat.com>, Andrew Jones <andrew.jones@linux.dev>, Eric Auger <eric.auger@redhat.com>, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Alexandru Elisei <alexandru.elisei@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Dec 21, 2023 at 10:46:08AM +0000, Christophe Leroy wrote:
-> 
-> 
-> Le 08/12/2023 à 17:30, Naveen N Rao a écrit :
-> > Function profile sequence on powerpc includes two instructions at the
-> > beginning of each function:
-> > 
-> > 	mflr	r0
-> > 	bl	ftrace_caller
-> > 
-> > The call to ftrace_caller() gets nop'ed out during kernel boot and is
-> > patched in when ftrace is enabled.
-> > 
-> > There are two issues with this:
-> > 1. The 'mflr r0' instruction at the beginning of each function remains
-> >     even though ftrace is not being used.
-> > 2. When ftrace is activated, we return from ftrace_caller() with a bctr
-> >     instruction to preserve r0 and LR, resulting in the link stack
-> >     becoming unbalanced.
-> > 
-> > To address (1), we have tried to nop'out the 'mflr r0' instruction when
-> > nop'ing out the call to ftrace_caller() and restoring it when enabling
-> > ftrace. But, that required additional synchronization slowing down
-> > ftrace activation. It also left an additional nop instruction at the
-> > beginning of each function and that wasn't desirable on 32-bit powerpc.
-> > 
-> > Instead of that, move the function profile sequence out-of-line leaving
-> > a single nop at function entry. On ftrace activation, the nop is changed
-> > to an unconditional branch to the out-of-line sequence that in turn
-> > calls ftrace_caller(). This removes the need for complex synchronization
-> > during ftrace activation and simplifies the code. More importantly, this
-> > improves performance of the kernel when ftrace is not in use.
-> > 
-> > To address (2), change the ftrace trampoline to return with a 'blr'
-> > instruction with the original return address in r0 intact. Then, an
-> > additional 'mtlr r0' instruction in the function profile sequence can
-> > move the correct return address back to LR.
-> > 
-> > With the above two changes, the function profile sequence now looks like
-> > the following:
-> > 
-> >   [func:		# GEP -- 64-bit powerpc, optional
-> > 	addis	r2,r12,imm1
-> > 	addi	r2,r2,imm2]
-> >    tramp:
-> > 	mflr	r0
-> > 	bl	ftrace_caller
-> > 	mtlr	r0
-> > 	b	func
-> > 	nop
-> > 	[nop]	# 64-bit powerpc only
-> >    func:		# LEP
-> > 	nop
-> > 
-> > On 32-bit powerpc, the ftrace mcount trampoline is now completely
-> > outside the function. This is also the case on 64-bit powerpc for
-> > functions that do not need a GEP. However, for functions that need a
-> > GEP, the additional instructions are inserted between the GEP and the
-> > LEP. Since we can only have a fixed number of instructions between GEP
-> > and LEP, we choose to emit 6 instructions. Four of those instructions
-> > are used for the function profile sequence and two instruction slots are
-> > reserved for implementing support for DYNAMIC_FTRACE_WITH_CALL_OPS. On
-> > 32-bit powerpc, we emit one additional nop for this purpose resulting in
-> > a total of 5 nops before function entry.
-> > 
-> > To enable ftrace, the nop at function entry is changed to an
-> > unconditional branch to 'tramp'. The call to ftrace_caller() may be
-> > updated to ftrace_regs_caller() depending on the registered ftrace ops.
-> > On 64-bit powerpc, we additionally change the instruction at 'tramp' to
-> > 'mflr r0' from an unconditional branch back to func+4. This is so that
-> > functions entered through the GEP can skip the function profile sequence
-> > unless ftrace is enabled.
-> > 
-> > With the context_switch microbenchmark on a P9 machine, there is a
-> > performance improvement of ~6% with this patch applied, going from 650k
-> > context switches to 690k context switches without ftrace enabled. With
-> > ftrace enabled, the performance was similar at 86k context switches.
-> 
-> Wondering how significant that context_switch micorbenchmark is.
-> 
-> I ran it on both mpc885 and mpc8321 and I'm a bit puzzled by some of the 
-> results:
-> # ./context_switch --no-fp
-> Using threads with yield on cpus 0/0 touching FP:no altivec:no vector:no 
-> vdso:no
-> 
-> On 885, I get the following results before and after your patch.
-> 
-> CONFIG_FTRACE not selected : 44,9k
-> CONFIG_FTRACE selected, before : 32,8k
-> CONFIG_FTRACE selected, after : 33,6k
-> 
-> All this is with CONFIG_INIT_STACK_ALL_ZERO which is the default. But 
-> when I select CONFIG_INIT_STACK_NONE, the CONFIG_FTRACE not selected 
-> result is only 34,4.
-> 
-> On 8321:
-> 
-> CONFIG_FTRACE not selected : 100,3k
-> CONFIG_FTRACE selected, before : 72,5k
-> CONFIG_FTRACE selected, after : 116k
-> 
-> So the results look odd to me.
+On Fri, 22 Dec 2023 23:50:40 +1000
+Nicholas Piggin <npiggin@gmail.com> wrote:
 
-That's indeed odd, though it looks to be showing good improvement. Are 
-those numbers with/without the function tracer enabled?
-
-Do you see more reasonable numbers if you use a different 
-FUNCTION_ALIGNMENT?
-
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  s390x/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> > 
-> > The downside of this approach is the increase in vmlinux size,
-> > especially on 32-bit powerpc. We now emit 3 additional instructions for
-> > each function (excluding the one or two instructions for supporting
-> > DYNAMIC_FTRACE_WITH_CALL_OPS). On 64-bit powerpc with the current
-> > implementation of -fpatchable-function-entry though, this is not
-> > avoidable since we are forced to emit 6 instructions between the GEP and
-> > the LEP even if we are to only support DYNAMIC_FTRACE_WITH_CALL_OPS.
-> 
-> The increase is almost 5% on the few 32 bits defconfig I have tested.  
-> That's a lot.
+> diff --git a/s390x/Makefile b/s390x/Makefile
+> index f79fd009..95ef9533 100644
+> --- a/s390x/Makefile
+> +++ b/s390x/Makefile
+> @@ -227,7 +227,7 @@ $(snippet_asmlib): $$(patsubst %.o,%.S,$$@) $(asm-offsets)
+>  
+>  
+>  arch_clean: asm_offsets_clean
+> -	$(RM) $(TEST_DIR)/*.{o,elf,bin,lds} $(SNIPPET_DIR)/*/*.{o,elf,*bin,*obj,hdr,lds} $(SNIPPET_DIR)/asm/.*.d $(TEST_DIR)/.*.d lib/s390x/.*.d $(comm-key)
+> +	$(RM) $(TEST_DIR)/*.{o,elf,bin,lds} $(SNIPPET_DIR)/*/*.{o,elf,*bin,*obj,hdr,lds} $(SNIPPET_DIR)/asm/.*.d $(TEST_DIR)/.*.d lib/s390x/.*.d lib/auxinfo.o $(comm-key)
 
-Indeed. Note that one of those nops is for DYN_FTRACE_WITH_CALL_OPS, 
-which we will need regardless.
+it seems other architectures don't need to do the cleanp? what are we
+doing wrong?
 
-Moving the ftrace mcount sequence out of line will alone need 2 
-additional nops. 'mtlr r0' for balancing the link stack costs us one 
-more nop.
-
-> 
-> On 32 bits powerpc, only the e500 has a link stack that could end up 
-> being unbalanced. Could we keep the bctr and avoid the mtlr and the jump 
-> in the trampoline ?
-> 
-> On 8xx a NOP is one cycle, a taken branch is 2 cycles, but the second 
-> cycle is a bubble that most of the time gets filled by following 
-> operations. On the 83xx, branches and NOPs are supposed to be seamless.
-> 
-> So is that out-of-line trampoline really worth it ? Maybe keeping the 
-> ftrace instructions at the begining and just replacing the mflr by an 
-> jump when ftrace is off would help reduce the ftrace insns by one more 
-> instruction.
-
-I was looking forward to your feedback w.r.t 32-bit powerpc since I 
-couldn't test that.
-
-We can certainly retain the existing behavior for ppc32, though it might 
-make it harder to share the code base with ppc64.
-
-The primary downside with the 'mflr r0' at function entry is that 
-patching it out (or replacing it with a branch) will need additional
-synchronization.
-
-I'm out on vacation till end of the year. I plan on doing more tests 
-once I am back to understand if the performance benefit is worth the 
-increase in vmlinux size.
-
-
-Thanks,
-Naveen
+>  
+>  generated-files = $(asm-offsets)
+>  $(tests:.elf=.o) $(asmlib) $(cflatobjs): $(generated-files)
 
