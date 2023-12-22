@@ -2,90 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9E3081C2D3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Dec 2023 02:36:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB74881C4AF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Dec 2023 06:36:21 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YIGN3i3U;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YIGN3i3U;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gqC3NDNp;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Sx8zP4MTlz3cbd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Dec 2023 12:36:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SxGHl3Xwbz3cfQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Dec 2023 16:36:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YIGN3i3U;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YIGN3i3U;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gqC3NDNp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sx8yX6NcMz30YL
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Dec 2023 12:36:03 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1703208959;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2akJnTxfKkE9MplltMUxeeJDEmgi/IaQGIuEfCeumQQ=;
-	b=YIGN3i3Ud3EPgN/1HeZsnfkSnyuKZ9BjyPcaTp7K544XYFN8h6sC27DUXhkz5RQlgagpGv
-	s3MQimlXFR5rRiBLOPevHRrRBxHy1As1yglULOqPV7BLAebrywmxa8VjVh0sKvrhlVZCY1
-	i1DidW3OynKFMp8Sigo5JLqn7flGdeA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1703208959;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2akJnTxfKkE9MplltMUxeeJDEmgi/IaQGIuEfCeumQQ=;
-	b=YIGN3i3Ud3EPgN/1HeZsnfkSnyuKZ9BjyPcaTp7K544XYFN8h6sC27DUXhkz5RQlgagpGv
-	s3MQimlXFR5rRiBLOPevHRrRBxHy1As1yglULOqPV7BLAebrywmxa8VjVh0sKvrhlVZCY1
-	i1DidW3OynKFMp8Sigo5JLqn7flGdeA=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-211-Fqd5wESOPk22Fy8zhlmQWQ-1; Thu, 21 Dec 2023 20:35:57 -0500
-X-MC-Unique: Fqd5wESOPk22Fy8zhlmQWQ-1
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-28bc1adb0c0so418319a91.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Dec 2023 17:35:57 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703208956; x=1703813756;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2akJnTxfKkE9MplltMUxeeJDEmgi/IaQGIuEfCeumQQ=;
-        b=e6rH9QGg5tMoE1GECRcFrxmF4oAbjvKZoCDGqcT4VVKRJ9GVwu191SBDV4aOoiCDBQ
-         UqVG+Tltd+TwXRtGhfwkAgqEAqHuqVMhSuIBIdOKFK/uXPV5jYeqX0yEc0lvbeWvIgt+
-         Rhep1Icy/Tb2shnsLJRYudxaM0UneR26bI530qE0Hlr4tuORXR4sRDSXD50mv2KtVmmI
-         sVnxZApPy5636KyyGOKGhSd/q2tid9OF2QC9SSSpgYra087BOHlr34x7shwGdYZdKKij
-         aNoG6ETRb0hQjIb1SFIo9rcqin+hcvPbMBW/jzmSfUD8IgQU1uVnJ2MfTok7wA9k1l/k
-         Oteg==
-X-Gm-Message-State: AOJu0YxxWtlKZpKTqjsJvK7yNsCTyhNqg2junaUOJXlCfkq/ytT15Fip
-	28T/onQyyS54oqftlZuECjKYQHjxGBFcFPlmG3rIPSAEXU6Yz/h98e5t3gga37iNXQMTKjGI91t
-	G/1aaCKU5fdT1/vp54LMeUdy/LxPGoGwvFg==
-X-Received: by 2002:a17:90a:4b8f:b0:28b:c1ad:9cef with SMTP id i15-20020a17090a4b8f00b0028bc1ad9cefmr1137542pjh.3.1703208956240;
-        Thu, 21 Dec 2023 17:35:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF1CdzSSxO6gL0EU6CjYH72GBwDyRwTpiPtorA3Dx6OQ9XzFAqCTOZ2ez8iSmfN4CA4vPwFxQ==
-X-Received: by 2002:a17:90a:4b8f:b0:28b:c1ad:9cef with SMTP id i15-20020a17090a4b8f00b0028bc1ad9cefmr1137522pjh.3.1703208955962;
-        Thu, 21 Dec 2023 17:35:55 -0800 (PST)
-Received: from x1n ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id qc12-20020a17090b288c00b0028b6f522fedsm6308509pjb.43.2023.12.21.17.35.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Dec 2023 17:35:55 -0800 (PST)
-Date: Fri, 22 Dec 2023 09:35:43 +0800
-From: Peter Xu <peterx@redhat.com>
-To: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	Muchun Song <songmuchun@bytedance.com>
-Subject: Re: [PATCH 00/13] mm/gup: Unify hugetlb, part 2
-Message-ID: <ZYTn70CDVeNMed0f@x1n>
-References: <20231219075538.414708-1-peterx@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SxGGs4Kykz30PJ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Dec 2023 16:35:33 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 447E461AF3;
+	Fri, 22 Dec 2023 05:35:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C306DC433CA;
+	Fri, 22 Dec 2023 05:35:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1703223327;
+	bh=S3+IvGow6OfbvyCxmFUeP8nVvq1zubSgdZKMLCh8qUQ=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=gqC3NDNpMOJQpzHYTJ/WWkeK1vGzvRSHjoz6OP8ud4i04z/r2EZfmH3tniHrnFadL
+	 io2/m1sFzc+DRQkxJsCcmNMuFk6epvE0WQ0IaQR5SfMLTiCmQTmsVyvt6rTQZnYfnT
+	 hbs6zbiqROhDLjU/FCTXuko1c2vJngfTtWA0smQFZidvcRG0TfTNZYG6tz2K8GQ/Xm
+	 UBcSfH2J522QDK7wkW/aFA24nJO9THu8CXDYCL4QrKY9vkDb+SFncvsH5lZCTf6Q/7
+	 ozqK3i/1P4W47D/9cMNnKuyUQM2FOqLKG6/iqYtqZG0c9RQPbpeSGIFOvaXRFDpD7q
+	 Q3+hSGIaBta5g==
+Date: Thu, 21 Dec 2023 21:35:26 -0800
+From: Kees Cook <kees@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Nicholas Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ Luis Chamberlain <mcgrof@kernel.org>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_1/3=5D_init=3A_Declare_rodata=5Fe?= =?US-ASCII?Q?nabled_and_mark=5Frodata=5Fro=28=29_at_all_time?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <87bkajlphj.fsf@mail.lhotse>
+References: <7b5df1782e94a755b4a18733af44d17d8dd8b37b.1703149011.git.christophe.leroy@csgroup.eu> <87bkajlphj.fsf@mail.lhotse>
+Message-ID: <D5F308F6-C394-4CC3-9C0C-923EDB055D0D@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20231219075538.414708-1-peterx@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,12 +63,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: James Houghton <jthoughton@google.com>, David Hildenbrand <david@redhat.com>, Yang Shi <shy828301@gmail.com>, Andrew Jones <andrew.jones@linux.dev>, Matthew Wilcox <willy@infradead.org>, linux-riscv@lists.infradead.org, Andrea Arcangeli <aarcange@redhat.com>, Christoph Hellwig <hch@infradead.org>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Jason Gunthorpe <jgg@nvidia.com>, Axel Rasmussen <axelrasmussen@google.com>, Rik van Riel <riel@surriel.com>, John Hubbard <jhubbard@nvidia.com>, "Kirill A . Shutemov" <kirill@shutemov.name>, linux-arm-kernel@lists.infradead.org, Lorenzo Stoakes <lstoakes@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, Kees Cook <keescook@chromium.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Copy Muchun, which I forgot since the start, sorry.
 
--- 
-Peter Xu
 
+On December 21, 2023 4:16:56 AM PST, Michael Ellerman <mpe@ellerman=2Eid=
+=2Eau> wrote:
+>Cc +Kees
+>
+>Christophe Leroy <christophe=2Eleroy@csgroup=2Eeu> writes:
+>> Declaring rodata_enabled and mark_rodata_ro() at all time
+>> helps removing related #ifdefery in C files=2E
+>>
+>> Signed-off-by: Christophe Leroy <christophe=2Eleroy@csgroup=2Eeu>
+>> ---
+>>  include/linux/init=2Eh |  4 ----
+>>  init/main=2Ec          | 21 +++++++--------------
+>>  2 files changed, 7 insertions(+), 18 deletions(-)
+>>
+>> diff --git a/include/linux/init=2Eh b/include/linux/init=2Eh
+>> index 01b52c9c7526=2E=2Ed2b47be38a07 100644
+>> --- a/include/linux/init=2Eh
+>> +++ b/include/linux/init=2Eh
+>> @@ -168,12 +168,8 @@ extern initcall_entry_t __initcall_end[];
+>> =20
+>>  extern struct file_system_type rootfs_fs_type;
+>> =20
+>> -#if defined(CONFIG_STRICT_KERNEL_RWX) || defined(CONFIG_STRICT_MODULE_=
+RWX)
+>>  extern bool rodata_enabled;
+>> -#endif
+>> -#ifdef CONFIG_STRICT_KERNEL_RWX
+>>  void mark_rodata_ro(void);
+>> -#endif
+>> =20
+>>  extern void (*late_time_init)(void);
+>> =20
+>> diff --git a/init/main=2Ec b/init/main=2Ec
+>> index e24b0780fdff=2E=2E807df08c501f 100644
+>> --- a/init/main=2Ec
+>> +++ b/init/main=2Ec
+>> @@ -1396,10 +1396,9 @@ static int __init set_debug_rodata(char *str)
+>>  early_param("rodata", set_debug_rodata);
+>>  #endif
+>> =20
+>> -#ifdef CONFIG_STRICT_KERNEL_RWX
+>>  static void mark_readonly(void)
+>>  {
+>> -	if (rodata_enabled) {
+>> +	if (IS_ENABLED(CONFIG_STRICT_KERNEL_RWX) && rodata_enabled) {
+
+I think this will break without rodata_enabled actual existing on other ar=
+chitectures=2E (Only declaration was made visible, not the definition, whic=
+h is above here and still behind ifdefs?)
+
+-Kees
+
+>>  		/*
+>>  		 * load_module() results in W+X mappings, which are cleaned
+>>  		 * up with call_rcu()=2E  Let's make sure that queued work is
+>> @@ -1409,20 +1408,14 @@ static void mark_readonly(void)
+>>  		rcu_barrier();
+>>  		mark_rodata_ro();
+>>  		rodata_test();
+>> -	} else
+>> +	} else if (IS_ENABLED(CONFIG_STRICT_KERNEL_RWX)) {
+>>  		pr_info("Kernel memory protection disabled=2E\n");
+>> +	} else if (IS_ENABLED(CONFIG_ARCH_HAS_STRICT_KERNEL_RWX)) {
+>> +		pr_warn("Kernel memory protection not selected by kernel config=2E\n=
+");
+>> +	} else {
+>> +		pr_warn("This architecture does not have kernel memory protection=2E=
+\n");
+>> +	}
+>>  }
+>> -#elif defined(CONFIG_ARCH_HAS_STRICT_KERNEL_RWX)
+>> -static inline void mark_readonly(void)
+>> -{
+>> -	pr_warn("Kernel memory protection not selected by kernel config=2E\n"=
+);
+>> -}
+>> -#else
+>> -static inline void mark_readonly(void)
+>> -{
+>> -	pr_warn("This architecture does not have kernel memory protection=2E\=
+n");
+>> -}
+>> -#endif
+>> =20
+>>  void __weak free_initmem(void)
+>>  {
+>> --=20
+>> 2=2E41=2E0
+
+--=20
+Kees Cook
