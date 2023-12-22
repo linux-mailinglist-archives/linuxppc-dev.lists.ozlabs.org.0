@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D045581CAFF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Dec 2023 14:53:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E48A81CB00
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Dec 2023 14:54:26 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=JpknUMed;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=c/3u3VGz;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SxTKY3Xl0z3dBr
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Dec 2023 00:53:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SxTLS0CFlz3cYg
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Dec 2023 00:54:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=JpknUMed;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=c/3u3VGz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52f; helo=mail-pg1-x52f.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102d; helo=mail-pj1-x102d.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SxTGy75czz3cW8
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Dec 2023 00:51:22 +1100 (AEDT)
-Received: by mail-pg1-x52f.google.com with SMTP id 41be03b00d2f7-5c66b093b86so2170009a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Dec 2023 05:51:22 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SxTH560dtz3cWN
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Dec 2023 00:51:29 +1100 (AEDT)
+Received: by mail-pj1-x102d.google.com with SMTP id 98e67ed59e1d1-28b82dc11e6so1182366a91.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Dec 2023 05:51:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703253080; x=1703857880; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1703253087; x=1703857887; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aeVnbjWEi5yI3wZCxJZ+3TFl6uPEJpXO65IAKcNUOWw=;
-        b=JpknUMed0ucyYxrfD3HEZMvClY1EuUG6CUvzPHMAAeU3jOp7mqqa6J4Haj9NWt+cKP
-         JM/oyuHv9Ad3TJBMaEbRJ/XBK+G4sdGdNzEDLiXe7GKJ6hKY9e9vb4e17qkqYRgjOWjS
-         pkswXU4aafn0ANzJhJmXdSEVKFeGD8bXc3FuzxoIP5+MVewDhZS+YOCipe0s3I4R+9Nt
-         sH5o87kKGvQooeSwlGZUBwDxM9M3skSnSOEILuWy8cJJBBb064wHw+MEP2o3cMRC+fKs
-         jHgOnYF7UUXwUrGyI5Ddh2UFIig+giOEngimSi9m7qIj+RLHS187wvE/sC6gEjY8P5ft
-         iVAA==
+        bh=EawXcrWZcj4wjBdULRz+yh78MdJFfpIVMXufen8CLio=;
+        b=c/3u3VGzgEj7bwIOumPkapOy3/TqR4W65mgMmy4gc/VcZGklygM5ZHlOG1wn/kEcmU
+         ecbnDoSUKl1qZf1RBYlcU3sdesLp6qLf5L5j0sDlp6UJI10altqB/xWGBKih4a7RDtFF
+         nKATcX9x/KBDOi8s1CWS828/vBuGf5Umxafu+z+LeuD6kr6yIYKMvbyuekOPFn07rUvy
+         StOrynLqqGIBJOLzkqqYqxWm/nQXPczX4jeRA/i+tH4pDlUFg2mCUgOqdv3HJzqA/Pdp
+         Pc8PL/78pw8MwX7AzBJu76JtIf7vbwkKa6vzimTYiNY/SBiT5Fsgs8hbUlAvoW5C7qdO
+         76jA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703253080; x=1703857880;
+        d=1e100.net; s=20230601; t=1703253087; x=1703857887;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aeVnbjWEi5yI3wZCxJZ+3TFl6uPEJpXO65IAKcNUOWw=;
-        b=UW7mw6Ru3mtq7s8ESyf6I0jewK49VjJf4nZsyYpA6Ri2A2d0LW6RWAu/rJDOE4OCio
-         9JjMYluuBUYGa6s6dVJhdGNaltPTMrxCROJrjKKl+t6ppfNNbhPujOYwHFXJUHL0aZ1M
-         Bb0Fuzg7i0mCsdMmFI+qU5MVJTnYjZJ291XzzbhXLZ2stk+zr47IeuB0j4ENsD9xvLnh
-         4E3yHWHrIl/f6DSi60025HcA3NF+5AlMAKnvvQmQCkmDFoXsLdsYcVa1BcsmmNnbaCDn
-         Bip6aqq6uNzjg7NR61DjA6N5xuy7caN5x0sLnOyJaf7bS2a28/M6mZVmEqaQOl4Sr+mA
-         jiZg==
-X-Gm-Message-State: AOJu0YzaFdOux9ZW9dua2gPuJez3OcDxke6JtjmTcmUpZvMHVsfWwNa4
-	RzLvxaLMU3Obwz6D2Vtvbdf+Gw47CxA=
-X-Google-Smtp-Source: AGHT+IHqnb2JvkeLOq0Zyx6dkuBTdsnQ/G+82at1GcM1w/Cj+jE+jQEH5a3pKGr37WxpE4SIFDqkjg==
-X-Received: by 2002:a17:90b:1945:b0:28c:191:132a with SMTP id nk5-20020a17090b194500b0028c0191132amr1657944pjb.7.1703253079864;
-        Fri, 22 Dec 2023 05:51:19 -0800 (PST)
+        bh=EawXcrWZcj4wjBdULRz+yh78MdJFfpIVMXufen8CLio=;
+        b=smNuF9KgR+/fk3Dv/vggsAHa+NzU+YXQgEeP8Bzq6iMRKXOynECO7f3ITaeS0VaMx0
+         oQ0D/hCLf0qs/ns4rM9Uq8Dli8avVXgYVd7NNnwnXPOs2Q2uakaRbkN7SfRqfeae+pJq
+         ErhOWdiwN3Uv5LlzIM+YxTGOtI/+1WGJy6q9e78QS5vu4fdtfCSsmst1czetafb9bnht
+         eVHI2qQQaqtw2nRXa3BlD3noZNqMa8ufbbWP10UZ9tmRZLOAiuatj4yDEABzEEy2T5eV
+         o4XbvafLMJKD2hQz6XgDap0HOlfORUP+SdNfG+1biYv5bYrelalfY6taD0+cha6qw1GZ
+         Mj3g==
+X-Gm-Message-State: AOJu0YxYjELFVTWe6I0sIUY4rOsvTjkPHqU3hLDIyhjFeVmNdbB0l2iA
+	JJ0ua2LQWyeO1nx01kwYUPc=
+X-Google-Smtp-Source: AGHT+IFxYHMd3mIJhG2htlTQipJ7HFZrRdouAmWJJ2UmxbUBkbfOshxr2F261fmorF3DjDY21EJ+3w==
+X-Received: by 2002:a17:90a:158f:b0:28b:bf26:3ba8 with SMTP id m15-20020a17090a158f00b0028bbf263ba8mr829664pja.6.1703253087364;
+        Fri, 22 Dec 2023 05:51:27 -0800 (PST)
 Received: from wheely.local0.net ([203.220.145.68])
-        by smtp.gmail.com with ESMTPSA id n12-20020a17090ac68c00b0028ae54d988esm3629280pjt.48.2023.12.22.05.51.13
+        by smtp.gmail.com with ESMTPSA id n12-20020a17090ac68c00b0028ae54d988esm3629280pjt.48.2023.12.22.05.51.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Dec 2023 05:51:19 -0800 (PST)
+        Fri, 22 Dec 2023 05:51:26 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Thomas Huth <thuth@redhat.com>
-Subject: [kvm-unit-tests PATCH 2/9] arch-run: Clean up temporary files properly
-Date: Fri, 22 Dec 2023 23:50:41 +1000
-Message-ID: <20231222135048.1924672-3-npiggin@gmail.com>
+Subject: [kvm-unit-tests PATCH 3/9] arch-run: Clean up initrd cleanup
+Date: Fri, 22 Dec 2023 23:50:42 +1000
+Message-ID: <20231222135048.1924672-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231222135048.1924672-1-npiggin@gmail.com>
 References: <20231222135048.1924672-1-npiggin@gmail.com>
@@ -82,47 +82,40 @@ Cc: Laurent Vivier <lvivier@redhat.com>, linux-s390@vger.kernel.org, Nico Boehr 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Migration files weren't being removed when tests were interrupted.
-This improves the situation.
+Rather than put a big script into the trap handler, have it call
+a function.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- scripts/arch-run.bash | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ scripts/arch-run.bash | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/scripts/arch-run.bash b/scripts/arch-run.bash
-index d0864360..f22ead6f 100644
+index f22ead6f..cc7da7c5 100644
 --- a/scripts/arch-run.bash
 +++ b/scripts/arch-run.bash
-@@ -134,12 +134,14 @@ run_migration ()
- 	qmp1=$(mktemp -u -t mig-helper-qmp1.XXXXXXXXXX)
- 	qmp2=$(mktemp -u -t mig-helper-qmp2.XXXXXXXXXX)
- 	fifo=$(mktemp -u -t mig-helper-fifo.XXXXXXXXXX)
+@@ -271,10 +271,20 @@ search_qemu_binary ()
+ 	export PATH=$save_path
+ }
+ 
++initrd_cleanup ()
++{
++	if [ "$KVM_UNIT_TESTS_ENV_OLD" ]; then
++		export KVM_UNIT_TESTS_ENV="$KVM_UNIT_TESTS_ENV_OLD"
++	else
++		unset KVM_UNIT_TESTS_ENV
++		unset KVM_UNIT_TESTS_ENV_OLD
++	fi
++}
 +
-+	# race here between file creation and trap
-+	trap "trap - TERM ; kill 0 ; exit 2" INT TERM
-+	trap "rm -f ${migout1} ${migsock} ${qmp1} ${qmp2} ${fifo}" RETURN EXIT
-+
- 	qmpout1=/dev/null
- 	qmpout2=/dev/null
- 
--	trap 'kill 0; exit 2' INT TERM
--	trap 'rm -f ${migout1} ${migsock} ${qmp1} ${qmp2} ${fifo}' RETURN EXIT
--
- 	eval "$@" -chardev socket,id=mon1,path=${qmp1},server=on,wait=off \
- 		-mon chardev=mon1,mode=control | tee ${migout1} &
- 	live_pid=`jobs -l %+ | grep "eval" | awk '{print$2}'`
-@@ -211,8 +213,8 @@ run_panic ()
- 
- 	qmp=$(mktemp -u -t panic-qmp.XXXXXXXXXX)
- 
--	trap 'kill 0; exit 2' INT TERM
--	trap 'rm -f ${qmp}' RETURN EXIT
-+	trap "trap - TERM ; kill 0 ; exit 2" INT TERM
-+	trap "rm -f ${qmp}" RETURN EXIT
- 
- 	# start VM stopped so we don't miss any events
- 	eval "$@" -chardev socket,id=mon1,path=${qmp},server=on,wait=off \
+ initrd_create ()
+ {
+ 	if [ "$ENVIRON_DEFAULT" = "yes" ]; then
+-		trap_exit_push 'rm -f $KVM_UNIT_TESTS_ENV; [ "$KVM_UNIT_TESTS_ENV_OLD" ] && export KVM_UNIT_TESTS_ENV="$KVM_UNIT_TESTS_ENV_OLD" || unset KVM_UNIT_TESTS_ENV; unset KVM_UNIT_TESTS_ENV_OLD'
++		trap_exit_push 'rm -f $KVM_UNIT_TESTS_ENV; initrd_cleanup'
+ 		[ -f "$KVM_UNIT_TESTS_ENV" ] && export KVM_UNIT_TESTS_ENV_OLD="$KVM_UNIT_TESTS_ENV"
+ 		export KVM_UNIT_TESTS_ENV=$(mktemp)
+ 		env_params
 -- 
 2.42.0
 
