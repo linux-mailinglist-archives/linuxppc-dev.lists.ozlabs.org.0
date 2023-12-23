@@ -1,60 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8817A81D0D5
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Dec 2023 01:31:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 000F281D271
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Dec 2023 06:19:47 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gftYzIb3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TFPCgzse;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SxlTP1ZV7z3cVg
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Dec 2023 11:31:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sxst94z2lz3cbt
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Dec 2023 16:19:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gftYzIb3;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TFPCgzse;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::12a; helo=mail-il1-x12a.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SxlSW5f7yz2ytJ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Dec 2023 11:30:33 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1703291436; x=1734827436;
-  h=date:from:to:cc:subject:message-id;
-  bh=Y+bvg4XdqXF90/Lcgw0YAqMNJY5jhXFYp1WiS026Z2g=;
-  b=gftYzIb3V+WMdHzscJpYZFwzyRk5jK37AYZbBdwNqRRVQIlqb7DX8moY
-   UvdK/dS1YxcIOxA9c8X6pLk/BTlUz9P2e5vcLSWOVoiQFV60jH2ZNNz+E
-   UIsvOYuinWl83+WjpPucyeHLKVOJyC+ie+C9OvKsmTCk0ARFcYIpvcJSC
-   Ir0+Q0/INSzydg3ttWo8uibpV+aOqsUw48ZSC7JvA1z2dFFoaocnZvgXw
-   SCFViuW0yWQK8vb0Fg6OPC+wohalIQnV7OO5NhMjzizv/Ou1ACBrKOzrG
-   /cGfn8lnLs9deDIr0JQIwUXZ2Hlk1mDcoZnl4QYjglvv9zi9PZLCDfny4
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10932"; a="482351482"
-X-IronPort-AV: E=Sophos;i="6.04,297,1695711600"; 
-   d="scan'208";a="482351482"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2023 16:30:24 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10932"; a="1024392220"
-X-IronPort-AV: E=Sophos;i="6.04,297,1695711600"; 
-   d="scan'208";a="1024392220"
-Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by fmsmga006.fm.intel.com with ESMTP; 22 Dec 2023 16:30:23 -0800
-Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rGptD-000A30-3B;
-	Sat, 23 Dec 2023 00:29:22 +0000
-Date: Sat, 23 Dec 2023 08:26:25 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS
- 9ec1d7486e2520b4898d7f8e1ec3acc7c13c8dc8
-Message-ID: <202312230822.Ta640efY-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SxssK02Msz2yGv
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Dec 2023 16:18:59 +1100 (AEDT)
+Received: by mail-il1-x12a.google.com with SMTP id e9e14a558f8ab-35fb96f3404so10391165ab.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Dec 2023 21:18:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1703308735; x=1703913535; darn=lists.ozlabs.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XnwDpdbEms0r9ctWFykUHT4Fg9JnNMIjKFVXl1aMRgY=;
+        b=TFPCgzseSa962V7bYETpZWP7cFwgz4ZdgQFAyYzlin3Dz1/ceaKl8/8rK0TgZmEvYW
+         pKmwWFhvbvfuG/jKk3Msyjs5uBPzMWI0SN5Kaw1IY3cCbHwhXiooyUTzeynE8Fuypc20
+         t/OKijYhtY2OEQIJeaZEbkd2i/PCExP+uwlbGREGLJlXqBzyiIjM+WFKI8sNQ4+xOo3J
+         9fmyTcBxDuOgmL4CjZPVjIkpzIfsVpZeM6FRcYB6AtRZ2mmHnnRhQG7gtYV9iGDipEMP
+         Br7JqUL8LQyPDGT4u7cKIE1bH83AFTYe6rrYbSAdPdDc7vD/22LaV39xtvRyZXlhI9WO
+         5YPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703308735; x=1703913535;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=XnwDpdbEms0r9ctWFykUHT4Fg9JnNMIjKFVXl1aMRgY=;
+        b=okztGvwCC0k6BSp5ZDTQZZdGP6/ZFyfeq4fIkNO9l9KZqgXXMLNu1Uo5EUsfifaujc
+         9aPPrgPig934p4LvGxX59gE1tLeJJSKlQf7doHgEI4zJicYKj9da7v+h/g6/3oqyF2i6
+         jbEPg3eOSCmQLQhtMSeSPhJJtJPdauAZ+E1a2A8o1w27rBGW1BBv7dYOqoGeplXVkz9j
+         28U1Pt5buteSx4+iOEO2DJLYXusw8VBoL6C5+m+nuBKfgehbFVqPYZJ9SiBcbR9JVQY/
+         d2sgEZkrYakOJeZbyKy9eEcD811YJwN97o2Rm+GdvbZISYEK0tWvP6iSNFFHhc6UDE+2
+         GSXQ==
+X-Gm-Message-State: AOJu0YwQhmQw/zgYeWoXsOJl36/imcBMIjrudVN9+B1y9GuwajDlZ6w0
+	Y89aNrNcGUfUaP3krBcA3Vs=
+X-Google-Smtp-Source: AGHT+IFaHzlucHRk+1cz9vp3pAi/3gV++IZOiVArAG66rH8YvEuO0wUOoZEKgYXgJDJX2cMfaNfq+A==
+X-Received: by 2002:a05:6e02:1707:b0:35f:e71f:4c60 with SMTP id u7-20020a056e02170700b0035fe71f4c60mr2472288ill.13.1703308735520;
+        Fri, 22 Dec 2023 21:18:55 -0800 (PST)
+Received: from localhost ([203.220.145.68])
+        by smtp.gmail.com with ESMTPSA id c6-20020a17090a020600b0028aed79c244sm3641553pjc.1.2023.12.22.21.18.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 22 Dec 2023 21:18:55 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 23 Dec 2023 15:18:45 +1000
+Message-Id: <CXVGJUAN6935.1L9WYI8NQ4R0O@wheely>
+Subject: Re: [kvm-unit-tests PATCH 1/9] s390x: clean lib/auxinfo.o
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
+X-Mailer: aerc 0.15.2
+References: <20231222135048.1924672-1-npiggin@gmail.com>
+ <20231222135048.1924672-2-npiggin@gmail.com>
+ <20231222160414.5175ebba@p-imbrenda>
+In-Reply-To: <20231222160414.5175ebba@p-imbrenda>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,81 +81,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Laurent
+ Vivier <lvivier@redhat.com>, linux-s390@vger.kernel.org, Thomas Huth <thuth@redhat.com>, Nico Boehr <nrb@linux.ibm.com>, Janosch
+ Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org, Shaoqin Huang <shahuang@redhat.com>, Andrew Jones <andrew.jones@linux.dev>, Eric Auger <eric.auger@redhat.com>, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Alexandru Elisei <alexandru.elisei@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-branch HEAD: 9ec1d7486e2520b4898d7f8e1ec3acc7c13c8dc8  powerpc/fsl: Fix fsl,tmu-calibration to match the schema
+On Sat Dec 23, 2023 at 1:04 AM AEST, Claudio Imbrenda wrote:
+> On Fri, 22 Dec 2023 23:50:40 +1000
+> Nicholas Piggin <npiggin@gmail.com> wrote:
+>
+> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> > ---
+> >  s390x/Makefile | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+> > diff --git a/s390x/Makefile b/s390x/Makefile
+> > index f79fd009..95ef9533 100644
+> > --- a/s390x/Makefile
+> > +++ b/s390x/Makefile
+> > @@ -227,7 +227,7 @@ $(snippet_asmlib): $$(patsubst %.o,%.S,$$@) $(asm-o=
+ffsets)
+> > =20
+> > =20
+> >  arch_clean: asm_offsets_clean
+> > -	$(RM) $(TEST_DIR)/*.{o,elf,bin,lds} $(SNIPPET_DIR)/*/*.{o,elf,*bin,*o=
+bj,hdr,lds} $(SNIPPET_DIR)/asm/.*.d $(TEST_DIR)/.*.d lib/s390x/.*.d $(comm-=
+key)
+> > +	$(RM) $(TEST_DIR)/*.{o,elf,bin,lds} $(SNIPPET_DIR)/*/*.{o,elf,*bin,*o=
+bj,hdr,lds} $(SNIPPET_DIR)/asm/.*.d $(TEST_DIR)/.*.d lib/s390x/.*.d lib/aux=
+info.o $(comm-key)
+>
+> it seems other architectures don't need to do the cleanp? what are we
+> doing wrong?
 
-elapsed time: 2204m
+x86 does clean it via cflatobjs. arm and powerpc never build the .o
+AFAIKS.
 
-configs tested: 58
-configs skipped: 0
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-arc                   randconfig-001-20231223   gcc  
-arc                   randconfig-002-20231223   gcc  
-arm                   randconfig-001-20231223   clang
-arm                   randconfig-002-20231223   clang
-arm                   randconfig-003-20231223   clang
-arm                   randconfig-004-20231223   clang
-arm64                 randconfig-001-20231223   clang
-arm64                 randconfig-002-20231223   clang
-arm64                 randconfig-003-20231223   clang
-arm64                 randconfig-004-20231223   clang
-csky                  randconfig-001-20231223   gcc  
-csky                  randconfig-002-20231223   gcc  
-hexagon               randconfig-001-20231223   clang
-hexagon               randconfig-002-20231223   clang
-i386                             allmodconfig   clang
-i386                              allnoconfig   clang
-i386                             allyesconfig   clang
-i386         buildonly-randconfig-001-20231223   clang
-i386         buildonly-randconfig-002-20231223   clang
-i386         buildonly-randconfig-003-20231223   clang
-i386         buildonly-randconfig-004-20231223   clang
-i386         buildonly-randconfig-005-20231223   clang
-i386         buildonly-randconfig-006-20231223   clang
-i386                                defconfig   gcc  
-i386                  randconfig-001-20231223   clang
-i386                  randconfig-002-20231223   clang
-i386                  randconfig-003-20231223   clang
-i386                  randconfig-004-20231223   clang
-i386                  randconfig-005-20231223   clang
-i386                  randconfig-006-20231223   clang
-i386                  randconfig-011-20231223   gcc  
-i386                  randconfig-012-20231223   gcc  
-i386                  randconfig-013-20231223   gcc  
-i386                  randconfig-014-20231223   gcc  
-i386                  randconfig-015-20231223   gcc  
-i386                  randconfig-016-20231223   gcc  
-loongarch             randconfig-001-20231223   gcc  
-loongarch             randconfig-002-20231223   gcc  
-nios2                 randconfig-001-20231223   gcc  
-nios2                 randconfig-002-20231223   gcc  
-parisc                randconfig-001-20231223   gcc  
-parisc                randconfig-002-20231223   gcc  
-powerpc               randconfig-001-20231223   clang
-powerpc               randconfig-002-20231223   clang
-powerpc               randconfig-003-20231223   clang
-powerpc64             randconfig-001-20231223   clang
-powerpc64             randconfig-002-20231223   clang
-powerpc64             randconfig-003-20231223   clang
-riscv                 randconfig-001-20231223   clang
-riscv                 randconfig-002-20231223   clang
-s390                  randconfig-001-20231223   gcc  
-s390                  randconfig-002-20231223   gcc  
-sh                    randconfig-001-20231223   gcc  
-sh                    randconfig-002-20231223   gcc  
-x86_64                            allnoconfig   gcc  
-x86_64                           allyesconfig   clang
-x86_64                              defconfig   gcc  
-x86_64                          rhel-8.3-rust   clang
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+Nick
