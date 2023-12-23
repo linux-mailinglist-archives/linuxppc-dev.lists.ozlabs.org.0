@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0403581D647
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Dec 2023 20:26:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A17C81D64B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Dec 2023 20:27:58 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=w+dL+yWC;
+	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=DRvT13IY;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SyDgV4qSLz3cY8
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Dec 2023 06:26:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4SyDhr0tJBz3c4h
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Dec 2023 06:27:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=w+dL+yWC;
+	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=DRvT13IY;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=web.de (client-ip=212.227.15.14; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=lists.ozlabs.org)
 Received: from mout.web.de (mout.web.de [212.227.15.14])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SyDfh3XNHz2xcw
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Dec 2023 06:26:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4SyDh21jPjz2xcw
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Dec 2023 06:27:13 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
-	t=1703359556; x=1703964356; i=markus.elfring@web.de;
-	bh=8Z2UWZfzwEDJ7zyg5026yhkAS0hTMuV2wF4BEAAq9kI=;
+	t=1703359341; x=1703964141; i=markus.elfring@web.de;
+	bh=YdAJatdNn222cw6W3QL2m67wBaRz4XfpDHkOgUq/DzM=;
 	h=X-UI-Sender-Class:Date:Subject:From:To:Cc:References:
 	 In-Reply-To;
-	b=w+dL+yWCLM6X+HaJh2oItzSSX1H79xLKCaupBzYgnLqakND9pp7hYoReE4n2i/ov
-	 WnguDWbUA5oLYmNFvotgXWiO6el5aXsIVaYn4fILKEqsvICP94QMsb0NZfFAnTFc/
-	 hUIQ8xO2oBdF15VBo0uyIwcobH2F21B+Yqrw/BYD1pvWxBw0n1uJeO2W/OT7ZQHMg
-	 nXX4uPEkMR7G6lQ62TOFBbUjfRsFzVGYZ/Bog7c+Cx3AuSJl1XfMp5jiq0J+8rwd5
-	 MIMsckzRqoLs33Ls5Rnbm7/v7RcZEStsF1+uTDRll2mhiEluPzzJNjEEVm6RA177e
-	 DPy73vKKKiVEmVu8aQ==
+	b=DRvT13IYN86qWWYfaYYHMQGACaB4wgzWoWS3gk3x95GEXcjtp/qQhmP2ddXpxmpR
+	 3U1TUhijU+JI2BOr3YuQbPeaxlcgr2ZUrgp/kyMoyG/D3L9EK/kiLjNWO+4xMrA7M
+	 XFtoCmHjmcLgRT4z8pmcWWzCxtvsFKlYkv7WilwLnbpoPuzXvSurUbUap5OTUJVtx
+	 digFUaZp50o8nTrNc4GPR/GVCvSXZXEpzKHT7BjxiXGjN21dhh1T8tyzc5Vb1HBuM
+	 YyF8s+003nVGsfFVSzqDJqMUE5++xPdvly88/TMIGPTgCXm3FNJ+l9eFmApWoEf48
+	 z2+jLdCrUJ/q6bvpCg==
 X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.85.95]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1N14ta-1rA9Gk1bMA-012k71; Sat, 23
- Dec 2023 20:20:24 +0100
-Message-ID: <1f1c21cf-c34c-418c-b00c-8e6474f12612@web.de>
-Date: Sat, 23 Dec 2023 20:20:23 +0100
+Received: from [192.168.178.21] ([94.31.85.95]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1M91LW-1rJr8V0A3q-006YFy; Sat, 23
+ Dec 2023 20:22:21 +0100
+Message-ID: <f46f04bc-613c-4e98-b602-4c5120556b09@web.de>
+Date: Sat, 23 Dec 2023 20:22:19 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH 1/2] powerpc/powernv/vas: One function call less in
- vas_window_alloc() after error detection
+Subject: [PATCH 2/2] powerpc/powernv/vas: Return directly after a failed
+ kasprintf() in map_paste_region()
 Content-Language: en-GB
 From: Markus Elfring <Markus.Elfring@web.de>
 To: linuxppc-dev@lists.ozlabs.org, kernel-janitors@vger.kernel.org,
@@ -55,26 +55,26 @@ References: <7be66990-de9e-488b-ad6d-fafd1c7bb34c@web.de>
 In-Reply-To: <7be66990-de9e-488b-ad6d-fafd1c7bb34c@web.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:PUZbbeRbt872OFeEXt9lEIn6ld+RqZBajG+dMGfiFv6L0AVghxM
- EirMQ786ltRpWXGQhVE0xl7H5xadbtnvbZb4IQsQOPy0Wb6/4zdbbuUHYoLQdG5mWhHBw0I
- zXGAz72cNkVS2hENSQ69tkYsbF3syfbS8S957H5pltWdGr6Sb1HVau+idUfaoxGy/Kv721n
- bUFHjuaFVb4uh9UggISBQ==
+X-Provags-ID: V03:K1:iwQeDu1WH1Hs/rx34Ekzp0SH4cpBbM2mbWTPb1Ujg9sRMV1MtuX
+ gioyvZq/vdlkoLQnvzThvnykPLFZzuC+llhzMCsLGNoubqs4RnjZ3/DO3ZaxyH8kiPh86X6
+ 4tzaAWtuSr+WpILDljfOuOoWFNvHhfMAF7CsWVVqya2KuKYmykyhq4lrLdAu2/6mZucSe2L
+ 2HMPjzjgQWhXWBRqK5bVw==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:C2hApiPv/HA=;H4d5CiGholiTZynSU3/po8EIcKV
- XU10G3snYdmBJUnzCNk40EE31NDOAMoZEx2BGKRt1yDRO1a1ecJDJyTu9y3hchG5PhhEhS61q
- Yw4QRtaEqjM/H4+u/FdJSp0wDPiwy3o0gabE8MYZ2zjEMA4AK+EPKMK4Bg63vkbCpSfMX8G8T
- sr4pTaAsof26rBkfEKLCrbBTAVrkQkiX7Qkco3S3e9Cs3dqAbfSsu6cuxGBz+RTqQgqwypGyx
- Kw1lfkxe+lMTUT2bq4zbfxiXFk4j9qNAR8PMhJcnzKq8ACWYOXrE7rkZgt0+Ou064s4hThBP9
- R/M3Y9nKEc7xxjazgVNOW3r24fW2jK1J/jMhIwmSwkknXnLEyvsYRFKQxfFz1RCZRHLqAsyDX
- Rdyexlpw9rp7x6GCczq1vi9NpM+ruCDlhTCjih9dezjMIT0+k3lIRM9XexsAsMkt7I0xVhMeO
- +bBnHODDNTuWoAds8RVGEdf2lk+at/QPHlCfgPUxgwrcRNqCSRkzDr8W3bwWfZc3cwdnX4uJS
- TptgAlJHc/jDkOMQ57e26sGe3Ier+jbX4sp2rEWQizKCG6H7A9mJL6CpFnHb82e7Mqc4Do+8S
- 1bI+o5Q5IOJLwBubicuMAqYIc9LxMwe+R/FYM4PcQ5of320RCjnROEpn8fBAO68qL3JesZqAn
- +3o40k3c+M/wRxs4KwgkOA/ACT1bsJn6tV/hZm75QFkj3E/r9NVgr+EABbEjiM8G7IwoTEArB
- +p78JBoHvjvX/aE0c8kwO4DbZWXDCTl12YBDJ9ed3myalKMQwte7VoWmh/kwDoE0ss1aPpyWJ
- 56DhMqGEBgUjQEiotBUPNO/IrzmNNYVCBl54azAc7mesWwZUCcrBRNp0Nz/c6CZAXPBMjrmmo
- 9RnbZY07gMOYMCNxG4/wJlU8jOHQWVZCwMkhaRZxskZaJbuN6EHrZNdXesL7y2QT05vB+idj7
- DgGqZGfYsSolXB9vwQP2iS0dhk8=
+UI-OutboundReport: notjunk:1;M01:P0:yZKPcLNQDaY=;mP4Sq/6d+Osl3c8Mwq3xGfn65G+
+ Cy5+3xeihr3bxyKux71Trf6ILjj2DIcDIUmt18T/zGJ62znw0jMhZR6we8zwz/6bFPK7bT1ux
+ 0vYRROAT6T3jA+FNSPbn2lgKAYciOgQGdR5jrgEggtlJR0TWQHSZ1ZI+8UwCO9Hw9a92SQlYs
+ TOMBlmpeFbR4IJubUkjGeS0H+ZCphXEKJpBTjPC7Bcb6YtPclT645Gso2flPViTSPWCplrEej
+ HpeUWa+ePUK51LU2zj92Qb+hEICLkrFzWkLwERFn4GVjBUbbX0hFyELc6Si0+h7PGejF1sF0r
+ ImuOBZY7SQiTsVHFsemFmZ9n5xkl2PDJeteIz6XuiTxwuK6EavKZjBm6DsVnUyz4IE6A9jRYo
+ LimvMDPYW7QF8WRmSNyrEen1UH8rD2saHBG36rnuSyFKC5gKQFTnUZVlB3qeVf6evneM0xhHV
+ Dvi/07QxLwnO1MbKIan2zaFBQxGf0VSLZTIpmDaBIPdJOVD62d1LZI0WBrJd/NKfGoYHTCzgm
+ Q5Kl96pAVli/Ct1DFdRESfDfPDNgHR0CV0XJE/Effb6Ppu7i71TG/aLLVlCh1eNMThstuJk3C
+ OGCMCVO6jyacm/4gHq1Ya66c3zU5w/qfKU2mvHqZx/b89i9Xk0g04aKDz2ZGewVSF+9ZT++8X
+ 5eMQ7FbECCqK+aGDqhgyCW45yXhLHICdVk/QIfISFC6sLzashmKAi7JT7QC9/ZZxhE+VZT2Jp
+ 8WoAbMsv7esgEIt2EY6FWwi6ANGovAJ1SfWTswYMFjJokwFCklRQ+Loco+PMX8RRZK4KlAG3H
+ u2GDnSSQZ5QH56KhGZb2ucnXqlmGGzc9jlwDpSIeQ8PFwlQksvQyQqyqUHG03lTy8RSY44C+y
+ RPMvO2rmKoZ9EM5GYzvgz7lfmLd0LRyTXHFrwIgE5ISh5IZsbmL8l6K6ek6xXbqMpDan+JVA5
+ QcrSsA==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,44 +91,32 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sat, 23 Dec 2023 19:35:13 +0100
+Date: Sat, 23 Dec 2023 19:48:09 +0100
 
-The kfree() function was called in one case by the
-vas_window_alloc() function during error handling
-even if the passed variable contained a null pointer.
-This issue was detected by using the Coccinelle software.
-
-Thus use another label.
+Return directly after a call of the function =E2=80=9Ckasprintf=E2=80=9D f=
+ailed
+at the beginning.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- arch/powerpc/platforms/powernv/vas-window.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/powerpc/platforms/powernv/vas-window.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/platforms/powernv/vas-window.c b/arch/powerpc/pl=
 atforms/powernv/vas-window.c
-index b664838008c1..b51219b4b698 100644
+index b51219b4b698..2f7d1850b1fa 100644
 =2D-- a/arch/powerpc/platforms/powernv/vas-window.c
 +++ b/arch/powerpc/platforms/powernv/vas-window.c
-@@ -545,7 +545,7 @@ static struct pnv_vas_window *vas_window_alloc(struct =
-vas_instance *vinst)
+@@ -78,7 +78,7 @@ static void *map_paste_region(struct pnv_vas_window *txw=
+in)
+ 	name =3D kasprintf(GFP_KERNEL, "window-v%d-w%d", txwin->vinst->vas_id,
+ 				txwin->vas_win.winid);
+ 	if (!name)
+-		goto free_name;
++		return ERR_PTR(-ENOMEM);
 
- 	window =3D kzalloc(sizeof(*window), GFP_KERNEL);
- 	if (!window)
--		goto out_free;
-+		goto release_window_id;
-
- 	window->vinst =3D vinst;
- 	window->vas_win.winid =3D winid;
-@@ -559,6 +559,7 @@ static struct pnv_vas_window *vas_window_alloc(struct =
-vas_instance *vinst)
-
- out_free:
- 	kfree(window);
-+release_window_id:
- 	vas_release_window_id(&vinst->ida, winid);
- 	return ERR_PTR(-ENOMEM);
- }
+ 	txwin->paste_addr_name =3D name;
+ 	vas_win_paste_addr(txwin, &start, &len);
 =2D-
 2.43.0
 
