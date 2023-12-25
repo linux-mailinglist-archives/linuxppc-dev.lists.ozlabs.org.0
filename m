@@ -1,51 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A442F81D76F
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Dec 2023 01:53:57 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=pi5oeE6u;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0741C81DDB7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Dec 2023 04:01:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4SyMwz04KRz3c3H
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Dec 2023 11:53:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Sz2jX4r5Tz3cfm
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Dec 2023 14:01:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=pi5oeE6u;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=geoff@infradead.org; receiver=lists.ozlabs.org)
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=114.132.65.219; helo=bg1.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
+Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.65.219])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4SyMw542BWz2xcp
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Dec 2023 11:53:06 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
-	:To:Subject:From:MIME-Version:Date:Message-ID:Sender:Reply-To:Cc:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=SbtpzQ1mMoyOp1SxOoEEffhAWj9cVrDhMMR3qD0sCyI=; b=pi5oeE6udcispur0yrc8KqlKJR
-	3QqguvulMJdtzbsKJZ7Nj4yZ7cvPvfJ3/9hUVexN3u6IysSv7h5XW5xn1mRybClHrVWcN9P3bFHZC
-	rKMny3mKy6IbkkKaqPydqQ/Sd8KzIG3loXEUtdT8Yooz8ubKNgPgF7UAtBdEK7lmBPUpylBUgl1JQ
-	6F6FJexBEkjmG5q614Tmvx13Y75BEH9awiqwx7U7eQxYnKMRFw/VAztKqv6QtWVWxmQ9k6U5UqkM0
-	GGw9b7EBwjx9N71Xs00OZb+qGwlrq+XRaTZ8sY8rdiM0pTKT2E7nsm4f6g0vzjbNGVP9sYst3eYLG
-	AXRTaXVw==;
-Received: from om126166238204.28.openmobile.ne.jp ([126.166.238.204] helo=[192.168.43.165])
-	by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1rHCjg-00Fu86-0G;
-	Sun, 24 Dec 2023 00:52:56 +0000
-Message-ID: <df906ac1-5f17-44b9-b0bb-7cd292a0df65@infradead.org>
-Date: Sun, 24 Dec 2023 09:52:46 +0900
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Sz2j25F7Sz30Yb
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Dec 2023 14:00:53 +1100 (AEDT)
+X-QQ-mid: bizesmtp83t1703473175t0fjew5d
+Received: from HX09040029.powercore.com.cn ( [58.34.117.194])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 25 Dec 2023 10:59:32 +0800 (CST)
+X-QQ-SSF: 01400000000000501000000A0000000
+X-QQ-FEAT: cbck7jzG4waTzGVHJSvhz4fDlwNvrHHZVHRG9jP7o3SoKAw8V4l7n0Oav1nTf
+	FBeh1tF3Wl3f0I+Ro3O88RaWd96B9qDptSY+EsOxFmkomli6trBZ/+mlmvy7huXEg2uuImE
+	MwevjdvOPii9JHotGgzSrVaclNisM4tKUVu9fkfAdex6HtdJKLb4uLxZpdDfgVXvVVTqaem
+	HJiXXHwUc+MdXvM+XCAd+WhlJyrMIAQqtxjLlbJhRu+CfIIetCahBJdEogxbMRmBo0gv1P2
+	mRLtZuij7ptin7KA/pCrf1XRoBJMaM0VM2p7OXJTLF/35I2wPodTisLeRZkfvBt5qTAuZHI
+	LJ59YXG5+mLTzflSO5oL+ct/b26VxNabq3E6F2muOi+AK/eikpYqlswI8hNqduHpPvrVy4V
+	aXI4eqUDZgM=
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 8344457211181323372
+From: Luming Yu <luming.yu@shingroup.cn>
+To: linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	christophe.leroy@csgroup.eu
+Subject: [PATCH 1/1] powerpc/powernv: fix up kernel compile issues
+Date: Mon, 25 Dec 2023 10:58:24 +0800
+Message-ID: <1655B2CD28DA1F77+20231225025824.830-1-luming.yu@shingroup.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-From: Geoff Levand <geoff@infradead.org>
-Subject: [PATCH] powerpc/ps3_defconfig: Disable PPC64_BIG_ENDIAN_ELF_ABI_V2
-To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz5a-1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,45 +54,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: shenghui.qu@shingroup.cn, Luming Yu <luming.yu@shingroup.cn>, dawei.li@shingroup.cn, ke.zhao@shingroup.cn, luming.yu@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 8c5fa3b5c4df3d071dab42b04b971df370d99354 (powerpc/64: Make ELFv2 the
-default for big-endian builds), merged in Linux-6.5-rc1 changes the calling ABI
-in a way that is incompatible with the current code for the PS3's LV1 hypervisor
-calls.
+up kernel is quite useful to silicon validation, despite
+it is rare to be found in server productions. the fixes are
+obvious. Not like IBM pSeries, it may be not necessary
+to have powernv SMP forced. It is difficult to compile a
+up kernel for pSerises as I've tried.
 
-This change just adds the line '# CONFIG_PPC64_BIG_ENDIAN_ELF_ABI_V2 is not set'
-to the ps3_defconfig file so that the PPC64_ELF_ABI_V1 is used.
-
-Fixes run time errors like these:
-
-	BUG: Kernel NULL pointer dereference at 0x00000000
-	Faulting instruction address: 0xc000000000047cf0
-	Oops: Kernel access of bad area, sig: 11 [#1]
-
-	Call Trace:
-	[c0000000023039e0] [c00000000100ebfc] ps3_create_spu+0xc4/0x2b0 (unreliable)
-	[c000000002303ab0] [c00000000100d4c4] create_spu+0xcc/0x3c4
-	[c000000002303b40] [c00000000100eae4] ps3_enumerate_spus+0xa4/0xf8
-
-Signed-off-by: Geoff Levand <geoff@infradead.org>
+Signed-off-by: Luming Yu <luming.yu@shingroup.cn>
 ---
- arch/powerpc/configs/ps3_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/platforms/powernv/Kconfig    | 1 -
+ arch/powerpc/platforms/powernv/opal-imc.c | 1 +
+ arch/powerpc/sysdev/xive/common.c         | 2 ++
+ arch/powerpc/sysdev/xive/spapr.c          | 5 ++++-
+ 4 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/configs/ps3_defconfig b/arch/powerpc/configs/ps3_defconfig
-index 2b175ddf82f0..aa8bb0208bcc 100644
---- a/arch/powerpc/configs/ps3_defconfig
-+++ b/arch/powerpc/configs/ps3_defconfig
-@@ -24,6 +24,7 @@ CONFIG_PS3_VRAM=m
- CONFIG_PS3_LPM=m
- # CONFIG_PPC_OF_BOOT_TRAMPOLINE is not set
- CONFIG_KEXEC=y
-+# CONFIG_PPC64_BIG_ENDIAN_ELF_ABI_V2 is not set
- CONFIG_PPC_4K_PAGES=y
- CONFIG_SCHED_SMT=y
- CONFIG_PM=y
+diff --git a/arch/powerpc/platforms/powernv/Kconfig b/arch/powerpc/platforms/powernv/Kconfig
+index 70a46acc70d6..40b1a49379de 100644
+--- a/arch/powerpc/platforms/powernv/Kconfig
++++ b/arch/powerpc/platforms/powernv/Kconfig
+@@ -15,7 +15,6 @@ config PPC_POWERNV
+ 	select CPU_FREQ
+ 	select PPC_DOORBELL
+ 	select MMU_NOTIFIER
+-	select FORCE_SMP
+ 	select ARCH_SUPPORTS_PER_VMA_LOCK
+ 	default y
+ 
+diff --git a/arch/powerpc/platforms/powernv/opal-imc.c b/arch/powerpc/platforms/powernv/opal-imc.c
+index 828fc4d88471..6e9e2b0a5bdc 100644
+--- a/arch/powerpc/platforms/powernv/opal-imc.c
++++ b/arch/powerpc/platforms/powernv/opal-imc.c
+@@ -13,6 +13,7 @@
+ #include <linux/of_address.h>
+ #include <linux/crash_dump.h>
+ #include <linux/debugfs.h>
++#include <asm/smp.h>
+ #include <asm/opal.h>
+ #include <asm/io.h>
+ #include <asm/imc-pmu.h>
+diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
+index a289cb97c1d7..d49b12809c10 100644
+--- a/arch/powerpc/sysdev/xive/common.c
++++ b/arch/powerpc/sysdev/xive/common.c
+@@ -1497,7 +1497,9 @@ static int xive_prepare_cpu(unsigned int cpu)
+ 				  GFP_KERNEL, cpu_to_node(cpu));
+ 		if (!xc)
+ 			return -ENOMEM;
++#ifdef CONFIG_SMP
+ 		xc->hw_ipi = XIVE_BAD_IRQ;
++#endif
+ 		xc->chip_id = XIVE_INVALID_CHIP_ID;
+ 		if (xive_ops->prepare_cpu)
+ 			xive_ops->prepare_cpu(cpu, xc);
+diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
+index e45419264391..7298f57f8416 100644
+--- a/arch/powerpc/sysdev/xive/spapr.c
++++ b/arch/powerpc/sysdev/xive/spapr.c
+@@ -81,6 +81,7 @@ static void xive_irq_bitmap_remove_all(void)
+ 	}
+ }
+ 
++#ifdef CONFIG_SMP
+ static int __xive_irq_bitmap_alloc(struct xive_irq_bitmap *xibm)
+ {
+ 	int irq;
+@@ -126,7 +127,7 @@ static void xive_irq_bitmap_free(int irq)
+ 		}
+ 	}
+ }
+-
++#endif 
+ 
+ /* Based on the similar routines in RTAS */
+ static unsigned int plpar_busy_delay_time(long rc)
+@@ -663,6 +664,7 @@ static void xive_spapr_sync_source(u32 hw_irq)
+ 	plpar_int_sync(0, hw_irq);
+ }
+ 
++#ifdef CONFIG_SMP
+ static int xive_spapr_debug_show(struct seq_file *m, void *private)
+ {
+ 	struct xive_irq_bitmap *xibm;
+@@ -680,6 +682,7 @@ static int xive_spapr_debug_show(struct seq_file *m, void *private)
+ 
+ 	return 0;
+ }
++#endif
+ 
+ static const struct xive_ops xive_spapr_ops = {
+ 	.populate_irq_data	= xive_spapr_populate_irq_data,
 -- 
-2.34.1
+2.42.0.windows.2
 
