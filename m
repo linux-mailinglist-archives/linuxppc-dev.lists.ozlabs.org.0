@@ -2,71 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A08281ECF4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Dec 2023 08:27:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6278F81ED5E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Dec 2023 09:35:06 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=S9vW7t9v;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Tc5KLHRm;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T0NWZ5vvRz3ccX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Dec 2023 18:27:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T0Q1h1bLTz3bsP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Dec 2023 19:35:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=S9vW7t9v;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Tc5KLHRm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::535; helo=mail-pg1-x535.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T0NS75m5Lz2yl1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Dec 2023 18:24:23 +1100 (AEDT)
-Received: by mail-pg1-x535.google.com with SMTP id 41be03b00d2f7-53fbf2c42bfso3610675a12.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Dec 2023 23:24:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703661861; x=1704266661; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zzRC8+hLEix8FcekENIF3VjBMsiAFAQUhA/PaV1ZNMc=;
-        b=S9vW7t9vFOCf3klhUG1M9D1zNsHlIer1pLTw8hb31jeEf8FBzu6SmSw6Vh8YYkZzLL
-         yArcIrETl1EMaf+lLi4QGk5tS6KmMOKX46R4XHRnP8Di4PtjC3l9m7A9AVPuDS6gV6i2
-         Dqe3LjvfB9uPrumFdUZCr/jqoXs/DN4zAvdHDAp/lZUEbenVC2uIFE6tcfDlhPrcpKA9
-         0ABeekoIEmEzmo5vA7hRTpkrMFQ211FoASYZbQuNrvLCN6rdaDNfhcETx0hwWoTnxgt2
-         6jCgAatuWom3B7uxN3CArVvcb78BcpqF80jmwcou49/hnU7DeQWr0U/FglDTgpkZ9jVG
-         TDBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703661861; x=1704266661;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zzRC8+hLEix8FcekENIF3VjBMsiAFAQUhA/PaV1ZNMc=;
-        b=CXcqPI5NWL57XJW7CjDMk7ihU2O0EtAA6JoWLJP4iwarkfYqYagZgat/AW3cvNUK9d
-         UyLx3mwdHCLP/u/mGAGf/XwK5jVz0RqqlMuOftNkAgJhzbNxcRklqCnGbQDvBLc3WODj
-         pavyCP1LQHMliI1aw6rYxCQq2dftFfQ+y2Y57TnEyztNU97g4BMyZkixMvt8HWtATDrS
-         GEDwpjTVYothTVT7z0rSs9Cd+4zLjfP9OsShtap6ECTKjOWfR/196DRLe3rEeGDdz5YX
-         79JFzI09LZwvDVFm8b406HRcwUNMpKCwUVOjuWiBpXEI5GdXaqQyqZoz7iVRliPghEr0
-         ZFLA==
-X-Gm-Message-State: AOJu0YxWQWOiA064eMtxARYwRcwss6yu5EY5iOQZMwP4gsHr7jfHh3nz
-	CDmcUmp+4dlgk40E4fTvBSTNvkzGGuE=
-X-Google-Smtp-Source: AGHT+IGUqVWTH6/bYvYW/AaUW9YMAxaiZc/0o/dJeiSKkvCu96pHsUfLxp5mFDQCaQ+M/IXgW9DQ1w==
-X-Received: by 2002:a05:6a21:339f:b0:196:1f58:34c9 with SMTP id yy31-20020a056a21339f00b001961f5834c9mr552100pzb.63.1703661860745;
-        Tue, 26 Dec 2023 23:24:20 -0800 (PST)
-Received: from wheely.local0.net ([203.220.145.68])
-        by smtp.gmail.com with ESMTPSA id px9-20020a17090b270900b0028c952fd855sm261074pjb.52.2023.12.26.23.24.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Dec 2023 23:24:20 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T0Q0q1KlDz2xl6
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Dec 2023 19:34:18 +1100 (AEDT)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3BR7J3ve007471;
+	Wed, 27 Dec 2023 08:34:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=zrR711Y2opQPBWdC2okpMByx4G7S2yFFhmp0uMekf0I=;
+ b=Tc5KLHRmfp6/aR/BASQWtfpwYmZO1KWNOQuH6/BfwmLdBqWIBGymL2ZTUkwYM3ZmAhQ7
+ h5RbfvQySsYn0ISuGRn4yxoNBB6sXnQU1hjBZHFN7LciOGfRsNREj6STiHY+mdN+mM+u
+ v4Gce1F1mo1hkN6Y7mOinPUfOWCnVeRxLEBgs3fnt/pwgsSh89Jrh+o64qVIjly5GOMY
+ KRgSNbKeXND1xpXg7Lhx+qwTY07RnZ+kI/L1SoFT82AhWcRh6bpPb3AmIA44yRUMs/Fd
+ +r6l4V0LmMV4mzNG5EdCjW9D296ZMhQGqllEh/6+MUfaNiQEGjLgAPla5SGzdPALnS+Q 5A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3v8fe099ny-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 Dec 2023 08:34:10 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3BR8R6vr030286;
+	Wed, 27 Dec 2023 08:34:09 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3v8fe099nm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 Dec 2023 08:34:09 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3BR4jieK008292;
+	Wed, 27 Dec 2023 08:34:08 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3v6ck1rph1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 Dec 2023 08:34:08 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3BR8Y6CY14025424
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 27 Dec 2023 08:34:06 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8AB6858059;
+	Wed, 27 Dec 2023 08:34:06 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2C3515804B;
+	Wed, 27 Dec 2023 08:34:05 +0000 (GMT)
+Received: from localhost.ibm.com (unknown [9.67.171.31])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 27 Dec 2023 08:34:04 +0000 (GMT)
+From: Haren Myneni <haren@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 3/3] powerpc/ps3: Make real stack frames for LV1 hcalls
-Date: Wed, 27 Dec 2023 17:24:05 +1000
-Message-ID: <20231227072405.63751-4-npiggin@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231227072405.63751-1-npiggin@gmail.com>
-References: <20231227072405.63751-1-npiggin@gmail.com>
+Subject: [PATCH v4] powerpc/pseries/vas: Use usleep_range() to support HCALL delay
+Date: Wed, 27 Dec 2023 00:34:01 -0800
+Message-Id: <20231227083401.2307526-1-haren@linux.ibm.com>
+X-Mailer: git-send-email 2.26.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: hLIjM_hV8-AXV37o1PpAMZLfMTZQUG7_
+X-Proofpoint-GUID: 6H7D62gG8TRAjAC53HFsCAGtMvepiDzg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-27_04,2023-12-26_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ lowpriorityscore=0 clxscore=1011 impostorscore=0 bulkscore=0
+ priorityscore=1501 spamscore=0 suspectscore=0 mlxlogscore=999 adultscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2312270062
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,533 +93,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Geoff Levand <geoff@infradead.org>, Nicholas Piggin <npiggin@gmail.com>
+Cc: nathanl@linux.ibm.com, haren@linux.ibm.com, npiggin@gmail.com, aneesh.kumar@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The PS3 hcall assembly code makes ad-hoc stack frames that don't have
-a back-chain pointer or meet other requirements like minimum frame size.
-This probably confuses stack unwinders. Give all hcalls a real stack
-frame.
+VAS allocate, modify and deallocate HCALLs returns
+H_LONG_BUSY_ORDER_1_MSEC or H_LONG_BUSY_ORDER_10_MSEC for busy
+delay and expects OS to reissue HCALL after that delay. But using
+msleep() will often sleep at least 20 msecs even though the
+hypervisor suggests OS reissue these HCALLs after 1 or 10msecs.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+The open and close VAS window functions hold mutex and then issue
+these HCALLs. So these operations can take longer than the
+necessary when multiple threads issue open or close window APIs
+simultaneously, especially might affect the performance in the
+case of repeat open/close APIs for each compression request.
+On the large machine configuration which allows more simultaneous
+open/close windows (Ex: 240 cores provides 4800 VAS credits), the
+user can observe hung task traces in dmesg due to mutex contention
+around open/close HCAlls.
+
+So instead of msleep(), use usleep_range() to ensure sleep with
+the expected value before issuing HCALL again.
+
+Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+Suggested-by: Nathan Lynch <nathanl@linux.ibm.com>
+
 ---
- arch/powerpc/platforms/ps3/hvcall.S | 152 +++++++++++++++++-----------
- 1 file changed, 94 insertions(+), 58 deletions(-)
+v1 -> v2:
+- Use usleep_range instead of using RTAS sleep routine as
+  suggested by Nathan
+v2 -> v3:
+- Sleep 10MSecs even for HCALL delay > 10MSecs and the other
+  commit / comemnt changes as suggested by Nathan and Ellerman.
+v4 -> v3:
+- More description in the commit log with the visible impact for
+  the current code as suggested by Aneesh
+---
+ arch/powerpc/platforms/pseries/vas.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/ps3/hvcall.S b/arch/powerpc/platforms/ps3/hvcall.S
-index b854675f6113..b6454d476962 100644
---- a/arch/powerpc/platforms/ps3/hvcall.S
-+++ b/arch/powerpc/platforms/ps3/hvcall.S
-@@ -9,6 +9,7 @@
- 
- #include <asm/processor.h>
- #include <asm/ppc_asm.h>
-+#include <asm/ptrace.h>
- 
- #define lv1call .long 0x44000022; extsw r3, r3
- 
-@@ -18,8 +19,10 @@ _GLOBAL(_##API_NAME)				\
- 	mflr	r0;				\
- 	std	r0, LRSAVE(r1);			\
- 						\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE(r1);	\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE;	\
- 						\
- 	ld	r0, LRSAVE(r1);			\
- 	mtlr	r0;				\
-@@ -40,12 +43,13 @@ _GLOBAL(_##API_NAME)				\
- 	mflr	r0;				\
- 	std	r0, LRSAVE(r1);			\
- 						\
--	stdu    r3, -8(r1);			\
-+	std	r3, -8(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-8(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 8;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+8;	\
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 						\
-@@ -60,12 +64,13 @@ _GLOBAL(_##API_NAME)				\
- 	std	r0, LRSAVE(r1);			\
- 						\
- 	std     r3, -8(r1);			\
--	stdu	r4, -16(r1);			\
-+	std	r4, -16(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-16(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 16;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+16; \
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 	ld	r11, -16(r1);			\
-@@ -83,12 +88,13 @@ _GLOBAL(_##API_NAME)				\
- 						\
- 	std     r3, -8(r1);			\
- 	std	r4, -16(r1);			\
--	stdu	r5, -24(r1);			\
-+	std	r5, -24(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-24(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 24;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+24; \
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 	ld	r11, -16(r1);			\
-@@ -112,12 +118,13 @@ _GLOBAL(_##API_NAME)				\
- 	std	r6, -32(r1);			\
- 	std	r7, -40(r1);			\
- 	std	r8, -48(r1);			\
--	stdu	r9, -56(r1);			\
-+	std	r9, -56(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-56(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 56;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+56; \
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 	ld	r11, -16(r1);			\
-@@ -143,12 +150,13 @@ _GLOBAL(_##API_NAME)				\
- 	mflr	r0;				\
- 	std	r0, LRSAVE(r1);			\
- 						\
--	stdu    r4, -8(r1);			\
-+	std	r4, -8(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-8(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 8;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+8;	\
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 						\
-@@ -163,12 +171,13 @@ _GLOBAL(_##API_NAME)				\
- 	std	r0, LRSAVE(r1);			\
- 						\
- 	std     r4, -8(r1);			\
--	stdu	r5, -16(r1);			\
-+	std	r5, -16(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-16(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 16;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+16; \
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 	ld	r11, -16(r1);			\
-@@ -186,12 +195,13 @@ _GLOBAL(_##API_NAME)				\
- 						\
- 	std     r4, -8(r1);			\
- 	std	r5, -16(r1);			\
--	stdu	r6, -24(r1);			\
-+	std	r6, -24(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-24(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 24;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+24; \
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 	ld	r11, -16(r1);			\
-@@ -212,12 +222,13 @@ _GLOBAL(_##API_NAME)				\
- 	std     r4, -8(r1);			\
- 	std	r5, -16(r1);			\
- 	std	r6, -24(r1);			\
--	stdu	r7, -32(r1);			\
-+	std	r7, -32(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-32(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 32;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+32; \
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 	ld	r11, -16(r1);			\
-@@ -241,12 +252,13 @@ _GLOBAL(_##API_NAME)				\
- 	std	r5, -16(r1);			\
- 	std	r6, -24(r1);			\
- 	std	r7, -32(r1);			\
--	stdu	r8, -40(r1);			\
-+	std	r8, -40(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-40(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 40;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+40; \
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 	ld	r11, -16(r1);			\
-@@ -273,12 +285,13 @@ _GLOBAL(_##API_NAME)				\
- 	std	r6, -24(r1);			\
- 	std	r7, -32(r1);			\
- 	std	r8, -40(r1);			\
--	stdu	r9, -48(r1);			\
-+	std	r9, -48(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-48(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 48;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+48; \
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 	ld	r11, -16(r1);			\
-@@ -308,12 +321,13 @@ _GLOBAL(_##API_NAME)				\
- 	std	r7, -32(r1);			\
- 	std	r8, -40(r1);			\
- 	std	r9, -48(r1);			\
--	stdu	r10, -56(r1);			\
-+	std	r10, -56(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-56(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 56;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+56; \
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 	ld	r11, -16(r1);			\
-@@ -339,12 +353,13 @@ _GLOBAL(_##API_NAME)				\
- 	mflr	r0;				\
- 	std	r0, LRSAVE(r1);			\
- 						\
--	stdu	r5, -8(r1);			\
-+	std	r5, -8(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-8(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 8;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+8;	\
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 						\
-@@ -359,12 +374,13 @@ _GLOBAL(_##API_NAME)				\
- 	std	r0, LRSAVE(r1);			\
- 						\
- 	std     r5, -8(r1);			\
--	stdu	r6, -16(r1);			\
-+	std	r6, -16(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-16(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 16;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+16; \
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 	ld	r11, -16(r1);			\
-@@ -382,12 +398,13 @@ _GLOBAL(_##API_NAME)				\
- 						\
- 	std     r5, -8(r1);			\
- 	std	r6, -16(r1);			\
--	stdu	r7, -24(r1);			\
-+	std	r7, -24(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-24(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 24;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+24; \
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 	ld	r11, -16(r1);			\
-@@ -408,12 +425,13 @@ _GLOBAL(_##API_NAME)				\
- 	std     r5, -8(r1);			\
- 	std	r6, -16(r1);			\
- 	std	r7, -24(r1);			\
--	stdu	r8, -32(r1);			\
-+	std	r8, -32(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-32(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 32;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+32; 
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 	ld	r11, -16(r1);			\
-@@ -437,12 +455,13 @@ _GLOBAL(_##API_NAME)				\
- 	std	r6, -16(r1);			\
- 	std	r7, -24(r1);			\
- 	std	r8, -32(r1);			\
--	stdu	r9, -40(r1);			\
-+	std	r9, -40(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-40(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 40;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+40; \
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 	ld	r11, -16(r1);			\
-@@ -464,12 +483,13 @@ _GLOBAL(_##API_NAME)				\
- 	mflr	r0;				\
- 	std	r0, LRSAVE(r1);			\
- 						\
--	stdu	r6, -8(r1);			\
-+	std	r6, -8(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-8(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 8;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+8;	\
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 						\
-@@ -484,12 +504,13 @@ _GLOBAL(_##API_NAME)				\
- 	std	r0, LRSAVE(r1);			\
- 						\
- 	std     r6, -8(r1);			\
--	stdu	r7, -16(r1);			\
-+	std	r7, -16(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-16(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 16;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+16; \
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 	ld	r11, -16(r1);			\
-@@ -507,12 +528,13 @@ _GLOBAL(_##API_NAME)				\
- 						\
- 	std     r6, -8(r1);			\
- 	std	r7, -16(r1);			\
--	stdu	r8, -24(r1);			\
-+	std	r8, -24(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-24(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 24;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+24; \
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 	ld	r11, -16(r1);			\
-@@ -530,12 +552,13 @@ _GLOBAL(_##API_NAME)				\
- 	mflr	r0;				\
- 	std	r0, LRSAVE(r1);			\
- 						\
--	stdu    r7, -8(r1);			\
-+	std	r7, -8(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-8(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 8;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+8;	\
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 						\
-@@ -550,12 +573,13 @@ _GLOBAL(_##API_NAME)				\
- 	std	r0, LRSAVE(r1);			\
- 						\
- 	std     r7, -8(r1);			\
--	stdu	r8, -16(r1);			\
-+	std	r8, -16(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-16(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 16;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+16; \
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 	ld	r11, -16(r1);			\
-@@ -573,12 +597,13 @@ _GLOBAL(_##API_NAME)				\
- 						\
- 	std     r7, -8(r1);			\
- 	std	r8, -16(r1);			\
--	stdu	r9, -24(r1);			\
-+	std	r9, -24(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-24(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 24;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+24; \
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 	ld	r11, -16(r1);			\
-@@ -596,12 +621,13 @@ _GLOBAL(_##API_NAME)				\
- 	mflr	r0;				\
- 	std	r0, LRSAVE(r1);			\
- 						\
--	stdu    r8, -8(r1);			\
-+	std	r8, -8(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-8(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 8;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+8;	\
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 						\
-@@ -616,12 +642,13 @@ _GLOBAL(_##API_NAME)				\
- 	std	r0, LRSAVE(r1);			\
- 						\
- 	std     r8, -8(r1);			\
--	stdu	r9, -16(r1);			\
-+	std	r9, -16(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-16(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 16;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+16; \
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 	ld	r11, -16(r1);			\
-@@ -639,12 +666,13 @@ _GLOBAL(_##API_NAME)				\
- 						\
- 	std     r8, -8(r1);			\
- 	std	r9, -16(r1);			\
--	stdu	r10, -24(r1);			\
-+	std	r10, -24(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-24(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 24;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+24; \
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 	ld	r11, -16(r1);			\
-@@ -662,12 +690,13 @@ _GLOBAL(_##API_NAME)				\
- 	mflr	r0;				\
- 	std	r0, LRSAVE(r1);			\
- 						\
--	stdu    r9, -8(r1);			\
-+	std	r9, -8(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-8(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 8;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+8;	\
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 						\
-@@ -682,12 +711,13 @@ _GLOBAL(_##API_NAME)				\
- 	std	r0, LRSAVE(r1);			\
- 						\
- 	std     r9, -8(r1);			\
--	stdu    r10, -16(r1);			\
-+	std	r10, -16(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-16(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 16;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+16; \
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 	ld	r11, -16(r1);			\
-@@ -704,12 +734,13 @@ _GLOBAL(_##API_NAME)				\
- 	std	r0, LRSAVE(r1);			\
- 						\
- 	std     r9, -8(r1);			\
--	stdu    r10, -16(r1);			\
-+	std	r10, -16(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-16(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 16;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+16; \
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 	ld	r11, -16(r1);			\
-@@ -727,12 +758,13 @@ _GLOBAL(_##API_NAME)				\
- 	mflr	r0;				\
- 	std	r0, LRSAVE(r1);			\
- 						\
--	stdu    r10, -8(r1);			\
-+	std	r10, -8(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE-8(r1); \
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
--	addi	r1, r1, 8;			\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE+8;	\
- 	ld	r11, -8(r1);			\
- 	std	r4, 0(r11);			\
- 						\
-@@ -747,10 +779,12 @@ _GLOBAL(_##API_NAME)				\
- 	std	r0, LRSAVE(r1);			\
- 						\
- 	std	r10, STK_PARAM_AREA+8*7(r1);	\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE(r1);	\
- 						\
- 	li	r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE;	\
- 	ld	r11, STK_PARAM_AREA+8*7(r1);	\
- 	std	r4, 0(r11);			\
- 	ld	r11, STK_PARAM_AREA+8*8(r1);	\
-@@ -773,10 +807,12 @@ _GLOBAL(_##API_NAME)				\
- 						\
- 	mflr	r0;				\
- 	std	r0, LRSAVE(r1);			\
-+	stdu    r1, -STACK_FRAME_MIN_SIZE(r1);	\
- 						\
- 	li      r11, API_NUMBER;		\
- 	lv1call;				\
- 						\
-+	addi	r1, r1, STACK_FRAME_MIN_SIZE;	\
- 	ld	r11, STK_PARAM_AREA+8*8(r1);	\
- 	std	r4, 0(r11);			\
- 						\
+diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
+index 71d52a670d95..5cf81c564d4b 100644
+--- a/arch/powerpc/platforms/pseries/vas.c
++++ b/arch/powerpc/platforms/pseries/vas.c
+@@ -38,7 +38,30 @@ static long hcall_return_busy_check(long rc)
+ {
+ 	/* Check if we are stalled for some time */
+ 	if (H_IS_LONG_BUSY(rc)) {
+-		msleep(get_longbusy_msecs(rc));
++		unsigned int ms;
++		/*
++		 * Allocate, Modify and Deallocate HCALLs returns
++		 * H_LONG_BUSY_ORDER_1_MSEC or H_LONG_BUSY_ORDER_10_MSEC
++		 * for the long delay. So the sleep time should always
++		 * be either 1 or 10msecs, but in case if the HCALL
++		 * returns the long delay > 10 msecs, clamp the sleep
++		 * time to 10msecs.
++		 */
++		ms = clamp(get_longbusy_msecs(rc), 1, 10);
++
++		/*
++		 * msleep() will often sleep at least 20 msecs even
++		 * though the hypervisor suggests that the OS reissue
++		 * HCALLs after 1 or 10msecs. Also the delay hint from
++		 * the HCALL is just a suggestion. So OK to pause for
++		 * less time than the hinted delay. Use usleep_range()
++		 * to ensure we don't sleep much longer than actually
++		 * needed.
++		 *
++		 * See Documentation/timers/timers-howto.rst for
++		 * explanation of the range used here.
++		 */
++		usleep_range(ms * 100, ms * 1000);
+ 		rc = H_BUSY;
+ 	} else if (rc == H_BUSY) {
+ 		cond_resched();
 -- 
-2.42.0
+2.26.3
 
