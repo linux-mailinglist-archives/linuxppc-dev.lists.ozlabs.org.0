@@ -2,65 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC3BB81F24E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Dec 2023 23:15:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A87E981F3C1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Dec 2023 02:43:11 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=R1f8YuFJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=c+Z08SRH;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T0mDC6ksWz3cD0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Dec 2023 09:15:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T0rqx3dX9z3c4P
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Dec 2023 12:43:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=R1f8YuFJ;
+	dkim=pass (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=c+Z08SRH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 65 seconds by postgrey-1.37 at boromir; Thu, 28 Dec 2023 09:14:35 AEDT
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sifive.com (client-ip=2607:f8b0:4864:20::434; helo=mail-pf1-x434.google.com; envelope-from=samuel.holland@sifive.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T0mCH0Wczz2ytm
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Dec 2023 09:14:34 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1703715275; x=1735251275;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=WlZslcJTLUSFPtfxC7Fw+lCqv8h0iz3VyjcE6pSLkRA=;
-  b=R1f8YuFJgLzczZsPxgX4AldukMl5x1m12Z3p/2tnf6b1dTbL3s06j2Mg
-   TKlWw2++A/9rTmxtYfBHQJOZZKCO4oVT8+JQ2EkvXjbQoHt0PD8mIUzoW
-   U/WsMt0T0cIVKC3rKTJQJAUuGbOmIinbL6K2AvWCsreSOxAA7PayWuiWo
-   Dc0CSTxD7OvdE6SwGdZ3VSF7E1aEKjvUJlCXrAgtlmx1eDyS7jOMa1IpN
-   WuPb0IfR2r8aZDUwLkFJYf011a+JUqtZHYgH7S3Cb9bryyZRBLZdBpClI
-   pPSrJysDE0yshgTiK2gTWulMlmDGV466mYbxDf1iidp5+3Hofv3CNAO57
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10936"; a="3566739"
-X-IronPort-AV: E=Sophos;i="6.04,310,1695711600"; 
-   d="scan'208";a="3566739"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2023 12:46:43 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10936"; a="868949895"
-X-IronPort-AV: E=Sophos;i="6.04,310,1695711600"; 
-   d="scan'208";a="868949895"
-Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by FMSMGA003.fm.intel.com with ESMTP; 27 Dec 2023 12:46:38 -0800
-Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rIanT-000FkS-2l;
-	Wed, 27 Dec 2023 20:46:35 +0000
-Date: Thu, 28 Dec 2023 04:45:56 +0800
-From: kernel test robot <lkp@intel.com>
-To: Pingfan Liu <kernelfans@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCHv10 3/3] powerpc/smp: Allow hole in paca_ptrs to
- accommodate boot_cpu
-Message-ID: <202312280454.Et1Ovm5u-lkp@intel.com>
-References: <20231227024147.12485-1-kernelfans@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T0rq61Nbjz2xQD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Dec 2023 12:42:24 +1100 (AEDT)
+Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-6d9bba6d773so2024529b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Dec 2023 17:42:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1703727742; x=1704332542; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LKYKCC0iAyjtmcl9i3gxZmi/p+HZhZfirGb7twXi050=;
+        b=c+Z08SRHD2znXjE2vnysHk4woiOwnIx7oIsyB9A8xcx/8gNd8n8nssuyqQeDa8+AJ6
+         HY4qr9piS1m9UZo9qfUtRZkl7izcMXz3bwsbkRgOFap7c78fdx7trejehrgPT7mgmXAY
+         SwnWB3CJCwll10NW1zQHdd8vfChr9HvKvfVSYP2FDu9dvK+g4WnGLko9+ZEFmgq1tbbz
+         WTD2wGKp6BOEtP9rmQf7y3iO18fij9nWEG+LQxYFOE3iCdGnYSsb5mjiQF9yPgGyY1Mf
+         DJ8499z8m6RmAn77OG39ppcRa4BzUBtY1f5lGefFDmd5GiLgzFEL115hL/DVd/Ma7HUn
+         OPRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703727742; x=1704332542;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LKYKCC0iAyjtmcl9i3gxZmi/p+HZhZfirGb7twXi050=;
+        b=L+EJjXwkhU886afmCevwqvmkhuadQ+Gd9+g/CLw/Va42zBJoKD3EM0FFRO/gkwNljH
+         bxzyCUVta2J1WT5Fv+IEToGKfTTTqox8brtjJWrgZhyJsGrjvrFBB6cJ+C9ssFwnbYd2
+         HmcNwG50Qi71/HMqOUnN8mrOg+cJopqheQ829UjbqEhUq1NadiCJbMFIGXWYT+RAO9UE
+         fJUj5e+VXKwxPcCL5qV6CVsyIpJdY8ORgfh/6qaCmvpwlPM07Nd+SgXVu9VbrKAMganP
+         C0FcPJG2euwT4jz8CEbIzyYHUIaJD263J05rSpfjsGeThe66E+NtSX54brIJComwU2Uv
+         HPjQ==
+X-Gm-Message-State: AOJu0Yy9btWdIPnJ3ZTh4ia/vFQNiKQ6Tr7XvXx8t9vuQ2w9aCMg3W/Z
+	POz+Ylq1qybjV7Iods7OC6ftKpHvsawvB6lujj/8ryBxVhA=
+X-Google-Smtp-Source: AGHT+IHZ0/JideaaZYntOkNOqAPh5V/QL/d8QFy5AdTRppdgJDCkExfUqVkpEa+jpNl3GOmHDV7Ddw==
+X-Received: by 2002:a05:6a00:1d05:b0:6d9:bfb8:e37c with SMTP id a5-20020a056a001d0500b006d9bfb8e37cmr6112797pfx.41.1703727742547;
+        Wed, 27 Dec 2023 17:42:22 -0800 (PST)
+Received: from sw06.internal.sifive.com ([4.53.31.132])
+        by smtp.gmail.com with ESMTPSA id g24-20020aa78758000000b006d49ed3effasm7335440pfo.63.2023.12.27.17.42.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Dec 2023 17:42:22 -0800 (PST)
+From: Samuel Holland <samuel.holland@sifive.com>
+To: linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	x86@kernel.org,
+	linux-riscv@lists.infradead.org,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH v2 00/14] Unified cross-architecture kernel-mode FPU API
+Date: Wed, 27 Dec 2023 17:41:50 -0800
+Message-ID: <20231228014220.3562640-1-samuel.holland@sifive.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231227024147.12485-1-kernelfans@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,597 +79,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Baoquan He <bhe@redhat.com>, Pingfan Liu <piliu@redhat.com>, llvm@lists.linux.dev, kexec@lists.infradead.org, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Ming Lei <ming.lei@redhat.com>, Sourabh Jain <sourabhjain@linux.ibm.com>, oe-kbuild-all@lists.linux.dev, Hari Bathini <hbathini@linux.ibm.com>, Wen Xiong <wenxiong@us.ibm.com>
+Cc: linux-arch@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, Samuel Holland <samuel.holland@sifive.com>, loongarch@lists.linux.dev
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Pingfan,
+This series unifies the kernel-mode FPU API across several architectures
+by wrapping the existing functions (where needed) in consistently-named
+functions placed in a consistent header location, with mostly the same
+semantics: they can be called from preemptible or non-preemptible task
+context, and are not assumed to be reentrant. Architectures are also
+expected to provide CFLAGS adjustments for compiling FPU-dependent code.
+For the moment, SIMD/vector units are out of scope for this common API.
 
-kernel test robot noticed the following build errors:
+This allows us to remove the ifdeffery and duplicated Makefile logic at
+each FPU user. It then implements the common API on RISC-V, and converts
+a couple of users to the new API: the AMDGPU DRM driver, and the FPU
+self test.
 
-[auto build test ERROR on powerpc/next]
-[also build test ERROR on powerpc/fixes linus/master v6.7-rc7 next-20231222]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+The underlying goal of this series is to allow using newer AMD GPUs
+(e.g. Navi) on RISC-V boards such as SiFive's HiFive Unmatched. Those
+GPUs need CONFIG_DRM_AMD_DC_FP to initialize, which requires kernel-mode
+FPU support.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Pingfan-Liu/powerpc-kernel-Remove-check-on-paca_ptrs_size/20231227-104412
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-patch link:    https://lore.kernel.org/r/20231227024147.12485-1-kernelfans%40gmail.com
-patch subject: [PATCHv10 3/3] powerpc/smp: Allow hole in paca_ptrs to accommodate boot_cpu
-config: powerpc64-randconfig-001-20231227 (https://download.01.org/0day-ci/archive/20231228/202312280454.Et1Ovm5u-lkp@intel.com/config)
-compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231228/202312280454.Et1Ovm5u-lkp@intel.com/reproduce)
+Previous versions:
+v1: https://lore.kernel.org/linux-kernel/20231208055501.2916202-1-samuel.holland@sifive.com/
+v0: https://lore.kernel.org/linux-kernel/20231122030621.3759313-1-samuel.holland@sifive.com/
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202312280454.Et1Ovm5u-lkp@intel.com/
+Changes in v2:
+ - Add documentation explaining the built-time and runtime APIs
+ - Add a linux/fpu.h header for generic isolation enforcement
+ - Remove file name from header comment
+ - Clean up arch/arm64/lib/Makefile, like for arch/arm
+ - Remove RISC-V architecture-specific preprocessor check
+ - Split altivec removal to a separate patch
+ - Use linux/fpu.h instead of asm/fpu.h in consumers
+ - Declare test_fpu() in a header
 
-All error/warnings (new ones prefixed by >>):
+Michael Ellerman (1):
+  drm/amd/display: Only use hard-float, not altivec on powerpc
 
->> arch/powerpc/kernel/paca.c:248:48: error: use of undeclared identifier 'threads_in_core'; did you mean 'cpu_thread_in_core'?
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                                                         ^~~~~~~~~~~~~~~
-                                                         cpu_thread_in_core
-   include/linux/align.h:8:43: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                                        ^
-   include/uapi/linux/const.h:31:70: note: expanded from macro '__ALIGN_KERNEL'
-   #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-                                                                                  ^
-   include/uapi/linux/const.h:32:47: note: expanded from macro '__ALIGN_KERNEL_MASK'
-   #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-                                                    ^
-   include/linux/minmax.h:92:38: note: expanded from macro 'max'
-   #define max(x, y)       __careful_cmp(max, x, y)
-                                              ^
-   include/linux/minmax.h:56:40: note: expanded from macro '__careful_cmp'
-           __builtin_choose_expr(__is_constexpr((x) - (y)),        \
-                                                 ^
-   include/linux/compiler.h:236:48: note: expanded from macro '__is_constexpr'
-           (sizeof(int) == sizeof(*(8 ? ((void *)((long)(x) * 0l)) : (int *)8)))
-                                                         ^
-   arch/powerpc/include/asm/cputhreads.h:48:19: note: 'cpu_thread_in_core' declared here
-   static inline int cpu_thread_in_core(int cpu)
-                     ^
->> arch/powerpc/kernel/paca.c:248:26: warning: cast to smaller integer type 'typeof ((0 + 1))' (aka 'int') from 'int (*)(int)' [-Wpointer-to-int-cast]
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                 ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/align.h:8:22: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                   ^
-   include/uapi/linux/const.h:31:54: note: expanded from macro '__ALIGN_KERNEL'
-   #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-                                                                  ^
-   include/uapi/linux/const.h:32:47: note: expanded from macro '__ALIGN_KERNEL_MASK'
-   #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-                                                    ^
-   include/linux/minmax.h:92:38: note: expanded from macro 'max'
-   #define max(x, y)       __careful_cmp(max, x, y)
-                           ~~~~~~~~~~~~~~~~~~~^~~~~
-   include/linux/minmax.h:56:40: note: expanded from macro '__careful_cmp'
-           __builtin_choose_expr(__is_constexpr((x) - (y)),        \
-                                 ~~~~~~~~~~~~~~~~^~~~~~~~~
-   include/linux/compiler.h:236:48: note: expanded from macro '__is_constexpr'
-           (sizeof(int) == sizeof(*(8 ? ((void *)((long)(x) * 0l)) : (int *)8)))
-                                                         ^
->> arch/powerpc/kernel/paca.c:248:48: error: use of undeclared identifier 'threads_in_core'; did you mean 'cpu_thread_in_core'?
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                                                         ^~~~~~~~~~~~~~~
-                                                         cpu_thread_in_core
-   include/linux/align.h:8:43: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                                        ^
-   include/uapi/linux/const.h:31:70: note: expanded from macro '__ALIGN_KERNEL'
-   #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-                                                                                  ^
-   include/uapi/linux/const.h:32:58: note: expanded from macro '__ALIGN_KERNEL_MASK'
-   #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-                                                               ^
-   include/linux/minmax.h:92:38: note: expanded from macro 'max'
-   #define max(x, y)       __careful_cmp(max, x, y)
-                                              ^
-   include/linux/minmax.h:56:40: note: expanded from macro '__careful_cmp'
-           __builtin_choose_expr(__is_constexpr((x) - (y)),        \
-                                                 ^
-   include/linux/compiler.h:236:48: note: expanded from macro '__is_constexpr'
-           (sizeof(int) == sizeof(*(8 ? ((void *)((long)(x) * 0l)) : (int *)8)))
-                                                         ^
-   arch/powerpc/include/asm/cputhreads.h:48:19: note: 'cpu_thread_in_core' declared here
-   static inline int cpu_thread_in_core(int cpu)
-                     ^
->> arch/powerpc/kernel/paca.c:248:26: warning: cast to smaller integer type 'typeof ((0 + 1))' (aka 'int') from 'int (*)(int)' [-Wpointer-to-int-cast]
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                 ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/align.h:8:22: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                   ^
-   include/uapi/linux/const.h:31:54: note: expanded from macro '__ALIGN_KERNEL'
-   #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-                                                                  ^
-   include/uapi/linux/const.h:32:58: note: expanded from macro '__ALIGN_KERNEL_MASK'
-   #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-                                                               ^
-   include/linux/minmax.h:92:38: note: expanded from macro 'max'
-   #define max(x, y)       __careful_cmp(max, x, y)
-                           ~~~~~~~~~~~~~~~~~~~^~~~~
-   include/linux/minmax.h:56:40: note: expanded from macro '__careful_cmp'
-           __builtin_choose_expr(__is_constexpr((x) - (y)),        \
-                                 ~~~~~~~~~~~~~~~~^~~~~~~~~
-   include/linux/compiler.h:236:48: note: expanded from macro '__is_constexpr'
-           (sizeof(int) == sizeof(*(8 ? ((void *)((long)(x) * 0l)) : (int *)8)))
-                                                         ^
->> arch/powerpc/kernel/paca.c:248:48: error: use of undeclared identifier 'threads_in_core'; did you mean 'cpu_thread_in_core'?
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                                                         ^~~~~~~~~~~~~~~
-                                                         cpu_thread_in_core
-   include/linux/align.h:8:43: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                                        ^
-   include/uapi/linux/const.h:31:70: note: expanded from macro '__ALIGN_KERNEL'
-   #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-                                                                                  ^
-   include/uapi/linux/const.h:32:47: note: expanded from macro '__ALIGN_KERNEL_MASK'
-   #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-                                                    ^
-   include/linux/minmax.h:92:38: note: expanded from macro 'max'
-   #define max(x, y)       __careful_cmp(max, x, y)
-                                              ^
-   include/linux/minmax.h:57:13: note: expanded from macro '__careful_cmp'
-                   __cmp(op, x, y),                                \
-                             ^
-   include/linux/minmax.h:46:27: note: expanded from macro '__cmp'
-   #define __cmp(op, x, y) ((x) __cmp_op_##op (y) ? (x) : (y))
-                             ^
-   arch/powerpc/include/asm/cputhreads.h:48:19: note: 'cpu_thread_in_core' declared here
-   static inline int cpu_thread_in_core(int cpu)
-                     ^
->> arch/powerpc/kernel/paca.c:248:26: warning: cast to smaller integer type 'typeof ((0 + 1))' (aka 'int') from 'int (*)(int)' [-Wpointer-to-int-cast]
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                 ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/align.h:8:22: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                   ^
-   include/uapi/linux/const.h:31:54: note: expanded from macro '__ALIGN_KERNEL'
-   #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-                                                                  ^
-   include/uapi/linux/const.h:32:47: note: expanded from macro '__ALIGN_KERNEL_MASK'
-   #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-                                                    ^
-   include/linux/minmax.h:92:38: note: expanded from macro 'max'
-   #define max(x, y)       __careful_cmp(max, x, y)
-                           ~~~~~~~~~~~~~~~~~~~^~~~~
-   include/linux/minmax.h:57:13: note: expanded from macro '__careful_cmp'
-                   __cmp(op, x, y),                                \
-                   ~~~~~~~~~~^~~~~
-   include/linux/minmax.h:46:27: note: expanded from macro '__cmp'
-   #define __cmp(op, x, y) ((x) __cmp_op_##op (y) ? (x) : (y))
-                             ^
->> arch/powerpc/kernel/paca.c:248:48: error: use of undeclared identifier 'threads_in_core'; did you mean 'cpu_thread_in_core'?
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                                                         ^~~~~~~~~~~~~~~
-                                                         cpu_thread_in_core
-   include/linux/align.h:8:43: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                                        ^
-   include/uapi/linux/const.h:31:70: note: expanded from macro '__ALIGN_KERNEL'
-   #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-                                                                                  ^
-   include/uapi/linux/const.h:32:58: note: expanded from macro '__ALIGN_KERNEL_MASK'
-   #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-                                                               ^
-   include/linux/minmax.h:92:38: note: expanded from macro 'max'
-   #define max(x, y)       __careful_cmp(max, x, y)
-                                              ^
-   include/linux/minmax.h:57:13: note: expanded from macro '__careful_cmp'
-                   __cmp(op, x, y),                                \
-                             ^
-   include/linux/minmax.h:46:27: note: expanded from macro '__cmp'
-   #define __cmp(op, x, y) ((x) __cmp_op_##op (y) ? (x) : (y))
-                             ^
-   arch/powerpc/include/asm/cputhreads.h:48:19: note: 'cpu_thread_in_core' declared here
-   static inline int cpu_thread_in_core(int cpu)
-                     ^
->> arch/powerpc/kernel/paca.c:248:26: warning: cast to smaller integer type 'typeof ((0 + 1))' (aka 'int') from 'int (*)(int)' [-Wpointer-to-int-cast]
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                 ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/align.h:8:22: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                   ^
-   include/uapi/linux/const.h:31:54: note: expanded from macro '__ALIGN_KERNEL'
-   #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-                                                                  ^
-   include/uapi/linux/const.h:32:58: note: expanded from macro '__ALIGN_KERNEL_MASK'
-   #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-                                                               ^
-   include/linux/minmax.h:92:38: note: expanded from macro 'max'
-   #define max(x, y)       __careful_cmp(max, x, y)
-                           ~~~~~~~~~~~~~~~~~~~^~~~~
-   include/linux/minmax.h:57:13: note: expanded from macro '__careful_cmp'
-                   __cmp(op, x, y),                                \
-                   ~~~~~~~~~~^~~~~
-   include/linux/minmax.h:46:27: note: expanded from macro '__cmp'
-   #define __cmp(op, x, y) ((x) __cmp_op_##op (y) ? (x) : (y))
-                             ^
->> arch/powerpc/kernel/paca.c:248:48: error: use of undeclared identifier 'threads_in_core'; did you mean 'cpu_thread_in_core'?
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                                                         ^~~~~~~~~~~~~~~
-                                                         cpu_thread_in_core
-   include/linux/align.h:8:43: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                                        ^
-   include/uapi/linux/const.h:31:70: note: expanded from macro '__ALIGN_KERNEL'
-   #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-                                                                                  ^
-   include/uapi/linux/const.h:32:47: note: expanded from macro '__ALIGN_KERNEL_MASK'
-   #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-                                                    ^
-   include/linux/minmax.h:92:38: note: expanded from macro 'max'
-   #define max(x, y)       __careful_cmp(max, x, y)
-                                              ^
-   include/linux/minmax.h:57:13: note: expanded from macro '__careful_cmp'
-                   __cmp(op, x, y),                                \
-                             ^
-   include/linux/minmax.h:46:51: note: expanded from macro '__cmp'
-   #define __cmp(op, x, y) ((x) __cmp_op_##op (y) ? (x) : (y))
-                                                     ^
-   arch/powerpc/include/asm/cputhreads.h:48:19: note: 'cpu_thread_in_core' declared here
-   static inline int cpu_thread_in_core(int cpu)
-                     ^
->> arch/powerpc/kernel/paca.c:248:26: warning: cast to smaller integer type 'typeof ((0 + 1))' (aka 'int') from 'int (*)(int)' [-Wpointer-to-int-cast]
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                 ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/align.h:8:22: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                   ^
-   include/uapi/linux/const.h:31:54: note: expanded from macro '__ALIGN_KERNEL'
-   #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-                                                                  ^
-   include/uapi/linux/const.h:32:47: note: expanded from macro '__ALIGN_KERNEL_MASK'
-   #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-                                                    ^
-   include/linux/minmax.h:92:38: note: expanded from macro 'max'
-   #define max(x, y)       __careful_cmp(max, x, y)
-                           ~~~~~~~~~~~~~~~~~~~^~~~~
-   include/linux/minmax.h:57:13: note: expanded from macro '__careful_cmp'
-                   __cmp(op, x, y),                                \
-                   ~~~~~~~~~~^~~~~
-   include/linux/minmax.h:46:51: note: expanded from macro '__cmp'
-   #define __cmp(op, x, y) ((x) __cmp_op_##op (y) ? (x) : (y))
-                                                     ^
->> arch/powerpc/kernel/paca.c:248:48: error: use of undeclared identifier 'threads_in_core'; did you mean 'cpu_thread_in_core'?
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                                                         ^~~~~~~~~~~~~~~
-                                                         cpu_thread_in_core
-   include/linux/align.h:8:43: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                                        ^
-   include/uapi/linux/const.h:31:70: note: expanded from macro '__ALIGN_KERNEL'
-   #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-                                                                                  ^
-   include/uapi/linux/const.h:32:58: note: expanded from macro '__ALIGN_KERNEL_MASK'
-   #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-                                                               ^
-   include/linux/minmax.h:92:38: note: expanded from macro 'max'
-   #define max(x, y)       __careful_cmp(max, x, y)
-                                              ^
-   include/linux/minmax.h:57:13: note: expanded from macro '__careful_cmp'
-                   __cmp(op, x, y),                                \
-                             ^
-   include/linux/minmax.h:46:51: note: expanded from macro '__cmp'
-   #define __cmp(op, x, y) ((x) __cmp_op_##op (y) ? (x) : (y))
-                                                     ^
-   arch/powerpc/include/asm/cputhreads.h:48:19: note: 'cpu_thread_in_core' declared here
-   static inline int cpu_thread_in_core(int cpu)
-                     ^
->> arch/powerpc/kernel/paca.c:248:26: warning: cast to smaller integer type 'typeof ((0 + 1))' (aka 'int') from 'int (*)(int)' [-Wpointer-to-int-cast]
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                 ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/align.h:8:22: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                   ^
-   include/uapi/linux/const.h:31:54: note: expanded from macro '__ALIGN_KERNEL'
-   #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-                                                                  ^
-   include/uapi/linux/const.h:32:58: note: expanded from macro '__ALIGN_KERNEL_MASK'
-   #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-                                                               ^
-   include/linux/minmax.h:92:38: note: expanded from macro 'max'
-   #define max(x, y)       __careful_cmp(max, x, y)
-                           ~~~~~~~~~~~~~~~~~~~^~~~~
-   include/linux/minmax.h:57:13: note: expanded from macro '__careful_cmp'
-                   __cmp(op, x, y),                                \
-                   ~~~~~~~~~~^~~~~
-   include/linux/minmax.h:46:51: note: expanded from macro '__cmp'
-   #define __cmp(op, x, y) ((x) __cmp_op_##op (y) ? (x) : (y))
-                                                     ^
->> arch/powerpc/kernel/paca.c:248:48: error: use of undeclared identifier 'threads_in_core'; did you mean 'cpu_thread_in_core'?
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                                                         ^~~~~~~~~~~~~~~
-                                                         cpu_thread_in_core
-   include/linux/align.h:8:43: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                                        ^
-   include/uapi/linux/const.h:31:70: note: expanded from macro '__ALIGN_KERNEL'
-   #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-                                                                                  ^
-   include/uapi/linux/const.h:32:47: note: expanded from macro '__ALIGN_KERNEL_MASK'
-   #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-                                                    ^
-   include/linux/minmax.h:92:38: note: expanded from macro 'max'
-   #define max(x, y)       __careful_cmp(max, x, y)
-                                              ^
-   include/linux/minmax.h:58:18: note: expanded from macro '__careful_cmp'
-                   __cmp_once(op, x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y)))
-                                  ^
-   include/linux/minmax.h:49:9: note: expanded from macro '__cmp_once'
-           typeof(x) unique_x = (x);                       \
-                  ^
-   arch/powerpc/include/asm/cputhreads.h:48:19: note: 'cpu_thread_in_core' declared here
-   static inline int cpu_thread_in_core(int cpu)
-                     ^
->> arch/powerpc/kernel/paca.c:248:26: warning: cast to smaller integer type 'typeof ((0 + 1))' (aka 'int') from 'int (*)(int)' [-Wpointer-to-int-cast]
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                 ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/align.h:8:22: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                   ^
-   include/uapi/linux/const.h:31:54: note: expanded from macro '__ALIGN_KERNEL'
-   #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-                                                                  ^
-   include/uapi/linux/const.h:32:47: note: expanded from macro '__ALIGN_KERNEL_MASK'
-   #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-                                                    ^
-   include/linux/minmax.h:92:38: note: expanded from macro 'max'
-   #define max(x, y)       __careful_cmp(max, x, y)
-                           ~~~~~~~~~~~~~~~~~~~^~~~~
-   include/linux/minmax.h:58:18: note: expanded from macro '__careful_cmp'
-                   __cmp_once(op, x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y)))
-                   ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/minmax.h:49:9: note: expanded from macro '__cmp_once'
-           typeof(x) unique_x = (x);                       \
-                  ^
->> arch/powerpc/kernel/paca.c:248:48: error: use of undeclared identifier 'threads_in_core'; did you mean 'cpu_thread_in_core'?
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                                                         ^~~~~~~~~~~~~~~
-                                                         cpu_thread_in_core
-   include/linux/align.h:8:43: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                                        ^
-   include/uapi/linux/const.h:31:70: note: expanded from macro '__ALIGN_KERNEL'
-   #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-                                                                                  ^
-   include/uapi/linux/const.h:32:58: note: expanded from macro '__ALIGN_KERNEL_MASK'
-   #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-                                                               ^
-   include/linux/minmax.h:92:38: note: expanded from macro 'max'
-   #define max(x, y)       __careful_cmp(max, x, y)
-                                              ^
-   include/linux/minmax.h:58:18: note: expanded from macro '__careful_cmp'
-                   __cmp_once(op, x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y)))
-                                  ^
-   include/linux/minmax.h:49:9: note: expanded from macro '__cmp_once'
-           typeof(x) unique_x = (x);                       \
-                  ^
-   arch/powerpc/include/asm/cputhreads.h:48:19: note: 'cpu_thread_in_core' declared here
-   static inline int cpu_thread_in_core(int cpu)
-                     ^
->> arch/powerpc/kernel/paca.c:248:26: warning: cast to smaller integer type 'typeof ((0 + 1))' (aka 'int') from 'int (*)(int)' [-Wpointer-to-int-cast]
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                 ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/align.h:8:22: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                   ^
-   include/uapi/linux/const.h:31:54: note: expanded from macro '__ALIGN_KERNEL'
-   #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-                                                                  ^
-   include/uapi/linux/const.h:32:58: note: expanded from macro '__ALIGN_KERNEL_MASK'
-   #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-                                                               ^
-   include/linux/minmax.h:92:38: note: expanded from macro 'max'
-   #define max(x, y)       __careful_cmp(max, x, y)
-                           ~~~~~~~~~~~~~~~~~~~^~~~~
-   include/linux/minmax.h:58:18: note: expanded from macro '__careful_cmp'
-                   __cmp_once(op, x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y)))
-                   ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/minmax.h:49:9: note: expanded from macro '__cmp_once'
-           typeof(x) unique_x = (x);                       \
-                  ^
->> arch/powerpc/kernel/paca.c:248:48: error: use of undeclared identifier 'threads_in_core'; did you mean 'cpu_thread_in_core'?
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                                                         ^~~~~~~~~~~~~~~
-                                                         cpu_thread_in_core
-   include/linux/align.h:8:43: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                                        ^
-   include/uapi/linux/const.h:31:70: note: expanded from macro '__ALIGN_KERNEL'
-   #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-                                                                                  ^
-   include/uapi/linux/const.h:32:47: note: expanded from macro '__ALIGN_KERNEL_MASK'
-   #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-                                                    ^
-   include/linux/minmax.h:92:38: note: expanded from macro 'max'
-   #define max(x, y)       __careful_cmp(max, x, y)
-                                              ^
-   include/linux/minmax.h:58:18: note: expanded from macro '__careful_cmp'
-                   __cmp_once(op, x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y)))
-                                  ^
-   include/linux/minmax.h:49:24: note: expanded from macro '__cmp_once'
-           typeof(x) unique_x = (x);                       \
-                                 ^
-   arch/powerpc/include/asm/cputhreads.h:48:19: note: 'cpu_thread_in_core' declared here
-   static inline int cpu_thread_in_core(int cpu)
-                     ^
->> arch/powerpc/kernel/paca.c:248:26: warning: cast to smaller integer type 'typeof ((0 + 1))' (aka 'int') from 'int (*)(int)' [-Wpointer-to-int-cast]
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                 ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/align.h:8:22: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                   ^
-   include/uapi/linux/const.h:31:54: note: expanded from macro '__ALIGN_KERNEL'
-   #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-                                                                  ^
-   include/uapi/linux/const.h:32:47: note: expanded from macro '__ALIGN_KERNEL_MASK'
-   #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-                                                    ^
-   include/linux/minmax.h:92:38: note: expanded from macro 'max'
-   #define max(x, y)       __careful_cmp(max, x, y)
-                           ~~~~~~~~~~~~~~~~~~~^~~~~
-   include/linux/minmax.h:58:18: note: expanded from macro '__careful_cmp'
-                   __cmp_once(op, x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y)))
-                   ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/minmax.h:49:24: note: expanded from macro '__cmp_once'
-           typeof(x) unique_x = (x);                       \
-                                 ^
->> arch/powerpc/kernel/paca.c:248:48: error: use of undeclared identifier 'threads_in_core'; did you mean 'cpu_thread_in_core'?
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                                                         ^~~~~~~~~~~~~~~
-                                                         cpu_thread_in_core
-   include/linux/align.h:8:43: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                                        ^
-   include/uapi/linux/const.h:31:70: note: expanded from macro '__ALIGN_KERNEL'
-   #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-                                                                                  ^
-   include/uapi/linux/const.h:32:58: note: expanded from macro '__ALIGN_KERNEL_MASK'
-   #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-                                                               ^
-   include/linux/minmax.h:92:38: note: expanded from macro 'max'
-   #define max(x, y)       __careful_cmp(max, x, y)
-                                              ^
-   include/linux/minmax.h:58:18: note: expanded from macro '__careful_cmp'
-                   __cmp_once(op, x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y)))
-                                  ^
-   include/linux/minmax.h:49:24: note: expanded from macro '__cmp_once'
-           typeof(x) unique_x = (x);                       \
-                                 ^
-   arch/powerpc/include/asm/cputhreads.h:48:19: note: 'cpu_thread_in_core' declared here
-   static inline int cpu_thread_in_core(int cpu)
-                     ^
->> arch/powerpc/kernel/paca.c:248:26: warning: cast to smaller integer type 'typeof ((0 + 1))' (aka 'int') from 'int (*)(int)' [-Wpointer-to-int-cast]
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                 ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/align.h:8:22: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                   ^
-   include/uapi/linux/const.h:31:54: note: expanded from macro '__ALIGN_KERNEL'
-   #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-                                                                  ^
-   include/uapi/linux/const.h:32:58: note: expanded from macro '__ALIGN_KERNEL_MASK'
-   #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-                                                               ^
-   include/linux/minmax.h:92:38: note: expanded from macro 'max'
-   #define max(x, y)       __careful_cmp(max, x, y)
-                           ~~~~~~~~~~~~~~~~~~~^~~~~
-   include/linux/minmax.h:58:18: note: expanded from macro '__careful_cmp'
-                   __cmp_once(op, x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y)))
-                   ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/minmax.h:49:24: note: expanded from macro '__cmp_once'
-           typeof(x) unique_x = (x);                       \
-                                 ^
-   arch/powerpc/kernel/paca.c:248:48: error: use of undeclared identifier 'threads_in_core'; did you mean 'cpu_thread_in_core'?
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                                                         ^~~~~~~~~~~~~~~
-                                                         cpu_thread_in_core
-   include/linux/align.h:8:43: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                                        ^
-   include/uapi/linux/const.h:31:70: note: expanded from macro '__ALIGN_KERNEL'
-   #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-                                                                                  ^
-   include/uapi/linux/const.h:32:47: note: expanded from macro '__ALIGN_KERNEL_MASK'
-   #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-                                                    ^
-   note: (skipping 6 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler.h:236:48: note: expanded from macro '__is_constexpr'
-           (sizeof(int) == sizeof(*(8 ? ((void *)((long)(x) * 0l)) : (int *)8)))
-                                                         ^
-   include/linux/build_bug.h:77:50: note: expanded from macro 'static_assert'
-   #define static_assert(expr, ...) __static_assert(expr, ##__VA_ARGS__, #expr)
-                                                    ^
-   include/linux/build_bug.h:78:56: note: expanded from macro '__static_assert'
-   #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-                                                          ^
-   arch/powerpc/include/asm/cputhreads.h:48:19: note: 'cpu_thread_in_core' declared here
-   static inline int cpu_thread_in_core(int cpu)
-                     ^
-   arch/powerpc/kernel/paca.c:248:26: warning: cast to smaller integer type 'typeof ((0 + 1))' (aka 'int') from 'int (*)(int)' [-Wpointer-to-int-cast]
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                 ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/align.h:8:22: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                   ^
-   include/uapi/linux/const.h:31:54: note: expanded from macro '__ALIGN_KERNEL'
-   #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-                                                                  ^
-   include/uapi/linux/const.h:32:47: note: expanded from macro '__ALIGN_KERNEL_MASK'
-   #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-                                                    ^
-   note: (skipping 6 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler.h:236:48: note: expanded from macro '__is_constexpr'
-           (sizeof(int) == sizeof(*(8 ? ((void *)((long)(x) * 0l)) : (int *)8)))
-                                                         ^
-   include/linux/build_bug.h:77:50: note: expanded from macro 'static_assert'
-   #define static_assert(expr, ...) __static_assert(expr, ##__VA_ARGS__, #expr)
-                                    ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:78:56: note: expanded from macro '__static_assert'
-   #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-                                                          ^~~~
-   arch/powerpc/kernel/paca.c:248:48: error: use of undeclared identifier 'threads_in_core'; did you mean 'cpu_thread_in_core'?
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                                                         ^~~~~~~~~~~~~~~
-                                                         cpu_thread_in_core
-   include/linux/align.h:8:43: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                                        ^
-   include/uapi/linux/const.h:31:70: note: expanded from macro '__ALIGN_KERNEL'
-   #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-                                                                                  ^
-   include/uapi/linux/const.h:32:58: note: expanded from macro '__ALIGN_KERNEL_MASK'
-   #define __ALIGN_KERNEL_MASK(x, mask)    (((x) + (mask)) & ~(mask))
-                                                               ^
-   note: (skipping 6 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler.h:236:48: note: expanded from macro '__is_constexpr'
-           (sizeof(int) == sizeof(*(8 ? ((void *)((long)(x) * 0l)) : (int *)8)))
-                                                         ^
-   include/linux/build_bug.h:77:50: note: expanded from macro 'static_assert'
-   #define static_assert(expr, ...) __static_assert(expr, ##__VA_ARGS__, #expr)
-                                                    ^
-   include/linux/build_bug.h:78:56: note: expanded from macro '__static_assert'
-   #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-                                                          ^
-   arch/powerpc/include/asm/cputhreads.h:48:19: note: 'cpu_thread_in_core' declared here
-   static inline int cpu_thread_in_core(int cpu)
-                     ^
-   arch/powerpc/kernel/paca.c:248:26: warning: cast to smaller integer type 'typeof ((0 + 1))' (aka 'int') from 'int (*)(int)' [-Wpointer-to-int-cast]
-           cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-                 ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/align.h:8:22: note: expanded from macro 'ALIGN'
-   #define ALIGN(x, a)             __ALIGN_KERNEL((x), (a))
-                                   ^
+Samuel Holland (13):
+  arch: Add ARCH_HAS_KERNEL_FPU_SUPPORT
+  ARM: Implement ARCH_HAS_KERNEL_FPU_SUPPORT
+  ARM: crypto: Use CC_FLAGS_FPU for NEON CFLAGS
+  arm64: Implement ARCH_HAS_KERNEL_FPU_SUPPORT
+  arm64: crypto: Use CC_FLAGS_FPU for NEON CFLAGS
+  lib/raid6: Use CC_FLAGS_FPU for NEON CFLAGS
+  LoongArch: Implement ARCH_HAS_KERNEL_FPU_SUPPORT
+  powerpc: Implement ARCH_HAS_KERNEL_FPU_SUPPORT
+  x86: Implement ARCH_HAS_KERNEL_FPU_SUPPORT
+  riscv: Add support for kernel-mode FPU
+  drm/amd/display: Use ARCH_HAS_KERNEL_FPU_SUPPORT
+  selftests/fpu: Move FP code to a separate translation unit
+  selftests/fpu: Allow building on other architectures
 
-
-vim +248 arch/powerpc/kernel/paca.c
-
-   242	
-   243	void __init allocate_paca_ptrs(void)
-   244	{
-   245		unsigned int cnt;
-   246	
-   247		/* paca_ptrs should be big enough to hold boot cpu */
- > 248		cnt = max((unsigned int)ALIGN(boot_cpuid + 1, threads_in_core), nr_cpu_ids);
-   249		paca_last_cpu_num = cnt;
-   250		paca_ptrs_size = sizeof(struct paca_struct *) * cnt;
-   251		paca_ptrs = memblock_alloc_raw(paca_ptrs_size, SMP_CACHE_BYTES);
-   252		if (!paca_ptrs)
-   253			panic("Failed to allocate %d bytes for paca pointers\n",
-   254			      paca_ptrs_size);
-   255	
-   256		memset(paca_ptrs, 0x88, paca_ptrs_size);
-   257	}
-   258	
+ Documentation/core-api/floating-point.rst     | 78 +++++++++++++++++++
+ Documentation/core-api/index.rst              |  1 +
+ Makefile                                      |  5 ++
+ arch/Kconfig                                  |  6 ++
+ arch/arm/Kconfig                              |  1 +
+ arch/arm/Makefile                             |  7 ++
+ arch/arm/include/asm/fpu.h                    | 15 ++++
+ arch/arm/lib/Makefile                         |  3 +-
+ arch/arm64/Kconfig                            |  1 +
+ arch/arm64/Makefile                           |  9 ++-
+ arch/arm64/include/asm/fpu.h                  | 15 ++++
+ arch/arm64/lib/Makefile                       |  6 +-
+ arch/loongarch/Kconfig                        |  1 +
+ arch/loongarch/Makefile                       |  5 +-
+ arch/loongarch/include/asm/fpu.h              |  1 +
+ arch/powerpc/Kconfig                          |  1 +
+ arch/powerpc/Makefile                         |  5 +-
+ arch/powerpc/include/asm/fpu.h                | 28 +++++++
+ arch/riscv/Kconfig                            |  1 +
+ arch/riscv/Makefile                           |  3 +
+ arch/riscv/include/asm/fpu.h                  | 16 ++++
+ arch/riscv/kernel/Makefile                    |  1 +
+ arch/riscv/kernel/kernel_mode_fpu.c           | 28 +++++++
+ arch/x86/Kconfig                              |  1 +
+ arch/x86/Makefile                             | 20 +++++
+ arch/x86/include/asm/fpu.h                    | 13 ++++
+ drivers/gpu/drm/amd/display/Kconfig           |  2 +-
+ .../gpu/drm/amd/display/amdgpu_dm/dc_fpu.c    | 35 +--------
+ drivers/gpu/drm/amd/display/dc/dml/Makefile   | 36 +--------
+ drivers/gpu/drm/amd/display/dc/dml2/Makefile  | 36 +--------
+ include/linux/fpu.h                           | 12 +++
+ lib/Kconfig.debug                             |  2 +-
+ lib/Makefile                                  | 26 +------
+ lib/raid6/Makefile                            | 31 ++------
+ lib/test_fpu.h                                |  8 ++
+ lib/{test_fpu.c => test_fpu_glue.c}           | 37 ++-------
+ lib/test_fpu_impl.c                           | 37 +++++++++
+ 37 files changed, 343 insertions(+), 190 deletions(-)
+ create mode 100644 Documentation/core-api/floating-point.rst
+ create mode 100644 arch/arm/include/asm/fpu.h
+ create mode 100644 arch/arm64/include/asm/fpu.h
+ create mode 100644 arch/powerpc/include/asm/fpu.h
+ create mode 100644 arch/riscv/include/asm/fpu.h
+ create mode 100644 arch/riscv/kernel/kernel_mode_fpu.c
+ create mode 100644 arch/x86/include/asm/fpu.h
+ create mode 100644 include/linux/fpu.h
+ create mode 100644 lib/test_fpu.h
+ rename lib/{test_fpu.c => test_fpu_glue.c} (71%)
+ create mode 100644 lib/test_fpu_impl.c
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.42.0
+
