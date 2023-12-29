@@ -2,53 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D7F81FF4E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Dec 2023 13:08:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27D2981FFBA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Dec 2023 14:46:36 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=iGu4TXb/;
+	dkim=pass (2048-bit key; unprotected) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.a=rsa-sha256 header.s=DFC430D2-D198-11EC-948E-34200CB392D2 header.b=po3U1yBC;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T1kfz6Thlz3cSS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Dec 2023 23:08:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T1mr96cj1z3cTb
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Dec 2023 00:46:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=iGu4TXb/;
+	dkim=pass (2048-bit key; unprotected) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.a=rsa-sha256 header.s=DFC430D2-D198-11EC-948E-34200CB392D2 header.b=po3U1yBC;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=savoirfairelinux.com (client-ip=208.88.110.44; helo=mail.savoirfairelinux.com; envelope-from=elinor.montmasson@savoirfairelinux.com; receiver=lists.ozlabs.org)
+Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [208.88.110.44])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T1kf93VBfz2xHT
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Dec 2023 23:07:45 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1703851665;
-	bh=WNHw3aubT3CF0HJcnnDIhvKd0BEO6tSg+Hq9A9JlkMs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=iGu4TXb/CKCjHX/4jPVQ4eDUlqFuFSdlZZYJ2xkG6zafiwk2/xfJgLZRdIU9lj7NK
-	 4h6M5yDu8sclIooU+86sYEq/0aGejwlyrBgs8cLfFjK4P6f5CrNWAOZCC5I60crq8r
-	 YsoyHTpOtbP4TwXG78B7DZ0M0+c9IBBmRJLPkErdaJquNvCo4THS1M8uae4hIHc2SE
-	 KrvnI5E/ECtMLwjDpLUkXxsrhMaAziyKpL2qGCJxqwMJM9XEr2/gR1rbcGJiZIENkS
-	 Eh3t7oWZGtCxmiGcJlxGx4bBmHDcUqai11XrIScnxrRQoc8gZk8hvhlVzZNRgBYOTq
-	 MDnl12WqDBibA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4T1kf92lGQz4wbQ;
-	Fri, 29 Dec 2023 23:07:45 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Pingfan Liu <kernelfans@gmail.com>, Pingfan Liu <piliu@redhat.com>, Hari
- Bathini <hbathini@linux.ibm.com>
-Subject: Re: [RFC PATCH 5/5] powerpc/smp: Remap boot CPU onto core 0 if >=
- nr_cpu_ids
-In-Reply-To: <20231229120107.2281153-5-mpe@ellerman.id.au>
-References: <20231229120107.2281153-1-mpe@ellerman.id.au>
- <20231229120107.2281153-5-mpe@ellerman.id.au>
-Date: Fri, 29 Dec 2023 23:07:45 +1100
-Message-ID: <87tto1jjou.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T1mqL6MCCz3Wtt
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Dec 2023 00:45:49 +1100 (AEDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id 0A2DD9C330F;
+	Fri, 29 Dec 2023 08:45:45 -0500 (EST)
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10032)
+ with ESMTP id RDHQVC7hAZsW; Fri, 29 Dec 2023 08:45:44 -0500 (EST)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id 8E1B49C3380;
+	Fri, 29 Dec 2023 08:45:44 -0500 (EST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com 8E1B49C3380
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=savoirfairelinux.com; s=DFC430D2-D198-11EC-948E-34200CB392D2;
+	t=1703857544; bh=Lyk686/x2Ez5b2w7VD1NWpu9PQmISjz21nS2j3Knoo8=;
+	h=Date:From:To:Message-ID:MIME-Version;
+	b=po3U1yBCDfCq7u3iTDEhMpY8CICqIY+mxPesFY9awIGMWGOZBSA/zcCmtcejahKEW
+	 NxEnYNdHTH3keUrQoK5VIZddX58OzHZF1Hff7Os09Z1MeHnvX14ykUwhVJpfvaEphu
+	 2xtN3k4Jbr//2Z+G7Lww8H0I944uvqDPcHqGbqwVRz4rYcmOR/C+O3cMFszFNaU/BS
+	 CBGXnjsKjfYSoQysu3xVtrJmDCqOSNfRojHHrAVWVqlSXpcpAkfhfViPUEzCTNjpL2
+	 ynpe8QHWMOaX0o7K/AQ+KC3XVGR9c//FwgX16u/rbZpvEm9na8cOAcv0dqSrRfDxxz
+	 0b26rCZdsiuaA==
+X-Virus-Scanned: amavis at mail.savoirfairelinux.com
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id sSUMGHPKYEW5; Fri, 29 Dec 2023 08:45:44 -0500 (EST)
+Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [192.168.48.237])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id 515039C330F;
+	Fri, 29 Dec 2023 08:45:44 -0500 (EST)
+Date: Fri, 29 Dec 2023 08:45:44 -0500 (EST)
+From: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+To: Daniel Baluta <daniel.baluta@gmail.com>
+Message-ID: <361044647.7067.1703857544284.JavaMail.zimbra@savoirfairelinux.com>
+In-Reply-To: <347346270.284192.1702989565367.JavaMail.zimbra@savoirfairelinux.com>
+References: <20231218124058.2047167-1-elinor.montmasson@savoirfairelinux.com> <CAEnQRZAwk-USZqXwLOVuN3iTn7r-55BJH=Sqq5+2Od+DhrK0iw@mail.gmail.com> <347346270.284192.1702989565367.JavaMail.zimbra@savoirfairelinux.com>
+Subject: Re: [PATCHv3 RESEND 00/10] ASoC: fsl-asoc-card: compatibility
+ integration of a generic codec use case for use with S/PDIF controller
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: Zimbra 8.8.15_GA_4581 (ZimbraWebClient - GC112 (Linux)/8.8.15_GA_4581)
+Thread-Topic: ASoC: fsl-asoc-card: compatibility integration of a generic codec use case for use with S/PDIF controller
+Thread-Index: lu32M+7WowvRn2WxYZZGeiz9hy0xKkRA+mdz
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,21 +74,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: devicetree <devicetree@vger.kernel.org>, Conor Dooley <conor+dt@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, alsa-devel <alsa-devel@alsa-project.org>, Xiubo Lee <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh+dt@kernel.org>, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>, linux-sound <linux-sound@vger.kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, shengjiu wang <shengjiu.wang@gmail.com>, linux-kernel <linux-kernel@vger.kernel.org>, Philip-Dylan Gleonec <philip-dylan.gleonec@savoirfairelinux.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
-> If nr_cpu_ids is too low to include the boot CPU, remap the boot CPU
-> onto logical core 0.
+Hello
 
-Hi guys,
+On Monday, 18 December, 2023 14:54:03, Daniel Baluta wrote 
+> I know this is extra-work but we would greatly appreciate if you first 
+> convert fsl-asoc-card.txt 
+> to yml format and then add your new properties. 
 
-I finally got time to look at this issue. I think this series should fix
-the problems that have been seen. I've tested this fairly thoroughly
-with a qemu script, and also a few boots on a real machine.
+DT schema must have at least one maintainer in the "maintainers" field.
+Who should I put for fsl-asoc-card.yaml ?
 
-If you can test it with your setups that would be great. Hopefully there
-isn't some obscure case I've missed.
+Best regards, 
+Elinor Montmasson 
 
-cheers
