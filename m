@@ -1,47 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EECA181FF49
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Dec 2023 13:02:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 905AF81FF4B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Dec 2023 13:04:32 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Iq4v4fNY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=R834tpqO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T1kXb5JDXz3cW3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Dec 2023 23:02:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T1kZQ2HKWz3dRt
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Dec 2023 23:04:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Iq4v4fNY;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=R834tpqO;
 	dkim-atps=neutral
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T1kVv3Wjhz30gM
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T1kVv62fJz3byT
 	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Dec 2023 23:01:27 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
 	s=201909; t=1703851287;
-	bh=wm/fsqpowae/1/KFnL6vpH1fal4nKzG+BQQ3RhSEM40=;
+	bh=VBP8pGJTkyLVpg2aerijLY0eZdkYiejhxD2xPbSWKaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iq4v4fNYmqlp/3S2ACsOmnPu66IElzoVGDbY0mofPyCfidCkJNL99cnv9xPdHua4B
-	 rnkWtRBl7g0ReDNMT2dOFZ0ze4iyTX7XHKaye8nbLl0+2pwVtJKtzpHhg9J//qsv4C
-	 2qZHJiDYzPkM3erehFmrCUlg+4zcCayv12IJfPIP05TgdWNAgZSYXBZvnNRmiZ20kN
-	 cdRaahFZ3Zc+XgEwmjwQn2S6WheKKvCYAHpvaLyfUM3MpTYu6iW8vpIuVOMRNlJFUt
-	 8v6BZXu0+g8nyJ65UnwKX39u+G4JCOeTww7DN6WRzoBmQukly9kCL2ZtQ9OYPIsU25
-	 mNvITj7jnTUew==
+	b=R834tpqOew00qzu9dKZeHwwakZRxQg29vUlUzCO7fbQwVtpFDshXxtK/uWIax179t
+	 dW94azno3w03Sb0Dr85lfcc8z0WPBJtSYqBNz3v7EhuPf9uSbptWf8GeekdjD1SIx9
+	 W63efzeWNRmS6L9knV8K7RH+Iu+kyNWIXVMqFtNCPOEgALKChmKmr/xTbYQYBOJ7my
+	 XMdxDpn3alHCrxU7FGAQcp7KyDVWmYv6nBJ3QT1oriXndlYavao6cdGrSE5ggqjE0W
+	 ZxzJTy3oyY75r9sF+DftYJlAWq9LhRGDev2Ak3YSu/JuoyDx+NxvHG7FZG1XDwjakq
+	 y3EdmVkv5tuEw==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4T1kVv2pWhz4xTy;
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4T1kVv5wDqz4xV1;
 	Fri, 29 Dec 2023 23:01:27 +1100 (AEDT)
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [RFC PATCH 3/5] powerpc/smp: Lookup avail once per device tree node
-Date: Fri, 29 Dec 2023 23:01:05 +1100
-Message-ID: <20231229120107.2281153-3-mpe@ellerman.id.au>
+Subject: [RFC PATCH 4/5] powerpc/smp: Factor out assign_threads()
+Date: Fri, 29 Dec 2023 23:01:06 +1100
+Message-ID: <20231229120107.2281153-4-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231229120107.2281153-1-mpe@ellerman.id.au>
 References: <20231229120107.2281153-1-mpe@ellerman.id.au>
@@ -62,42 +62,74 @@ Cc: Hari Bathini <hbathini@linux.ibm.com>, Pingfan Liu <piliu@redhat.com>, Pingf
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The of_device_is_available() check only needs to be done once per device
-node, there's no need to repeat it for each thread. Move it out of the
-loop.
+Factor out the for loop that assigns CPU numbers to threads of a core.
+The function takes the next CPU number to use as input, and returns the
+next available CPU number after the threads has been assigned.
+
+This will allow a subsequent change to assign threads out of order.
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/kernel/setup-common.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ arch/powerpc/kernel/setup-common.c | 32 ++++++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 11 deletions(-)
 
 diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-index ec02f9d8f55d..ff7616023ade 100644
+index ff7616023ade..d9f8ed9bd2fc 100644
 --- a/arch/powerpc/kernel/setup-common.c
 +++ b/arch/powerpc/kernel/setup-common.c
-@@ -468,17 +468,16 @@ void __init smp_setup_cpu_maps(void)
+@@ -411,6 +411,25 @@ static void __init cpu_init_thread_core_maps(int tpc)
  
- 		nthreads = len / sizeof(int);
+ u32 *cpu_to_phys_id = NULL;
  
-+		bool avail = of_device_is_available(dn);
-+		if (!avail)
-+			avail = !of_property_match_string(dn,
-+					"enable-method", "spin-table");
++static int assign_threads(unsigned cpu, unsigned int nthreads, bool avail,
++                          const __be32 *hw_ids)
++{
++	for (int i = 0; i < nthreads && cpu < nr_cpu_ids; i++) {
++		__be32 hwid;
 +
- 		for (j = 0; j < nthreads && cpu < nr_cpu_ids; j++) {
--			bool avail;
++		hwid = be32_to_cpu(hw_ids[i]);
++
++		DBG("    thread %d -> cpu %d (hard id %d)\n", i, cpu, hwid);
++
++		set_cpu_present(cpu, avail);
++		set_cpu_possible(cpu, true);
++		cpu_to_phys_id[cpu] = hwid;
++		cpu++;
++	}
++
++	return cpu;
++}
++
+ /**
+  * setup_cpu_maps - initialize the following cpu maps:
+  *                  cpu_possible_mask
+@@ -446,7 +465,7 @@ void __init smp_setup_cpu_maps(void)
+ 	for_each_node_by_type(dn, "cpu") {
+ 		const __be32 *intserv;
+ 		__be32 cpu_be;
+-		int j, len;
++		int len;
  
- 			DBG("    thread %d -> cpu %d (hard id %d)\n",
- 			    j, cpu, be32_to_cpu(intserv[j]));
+ 		DBG("  * %pOF...\n", dn);
  
--			avail = of_device_is_available(dn);
--			if (!avail)
--				avail = !of_property_match_string(dn,
--						"enable-method", "spin-table");
+@@ -473,16 +492,7 @@ void __init smp_setup_cpu_maps(void)
+ 			avail = !of_property_match_string(dn,
+ 					"enable-method", "spin-table");
+ 
+-		for (j = 0; j < nthreads && cpu < nr_cpu_ids; j++) {
 -
- 			set_cpu_present(cpu, avail);
- 			set_cpu_possible(cpu, true);
- 			cpu_to_phys_id[cpu] = be32_to_cpu(intserv[j]);
+-			DBG("    thread %d -> cpu %d (hard id %d)\n",
+-			    j, cpu, be32_to_cpu(intserv[j]));
+-
+-			set_cpu_present(cpu, avail);
+-			set_cpu_possible(cpu, true);
+-			cpu_to_phys_id[cpu] = be32_to_cpu(intserv[j]);
+-			cpu++;
+-		}
++		cpu = assign_threads(cpu, nthreads, avail, intserv);
+ 
+ 		if (cpu >= nr_cpu_ids) {
+ 			of_node_put(dn);
 -- 
 2.43.0
 
