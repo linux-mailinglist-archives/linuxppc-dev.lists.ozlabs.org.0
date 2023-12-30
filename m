@@ -1,59 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9460D82058E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Dec 2023 13:09:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C6BC8205D3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Dec 2023 13:12:28 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RTrCHGuz;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KDTHlQ5E;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T2Ldd0gTTz3cVq
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Dec 2023 23:09:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T2Lj6061Hz3cRD
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Dec 2023 23:12:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RTrCHGuz;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KDTHlQ5E;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.8; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T2Lcj3zG6z3bgs
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Dec 2023 23:08:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T2LhH58Hbz3cFf
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Dec 2023 23:11:43 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1703938118; x=1735474118;
+  t=1703938304; x=1735474304;
   h=date:from:to:cc:subject:message-id;
-  bh=5bD9jFHTKpg0F2/t6aPGnzncuczsGv3AVKrr5ReOKZk=;
-  b=RTrCHGuz+u5gO+2SO+p0tsdhDd0GjtdSqjrTn6C2eCeZsrkcvyVavLVE
-   nfW+zeTINJqeL+asLLtLIfiGUG6h7WNZdW9Y+fgc6y4iheaUtk5GiWFBd
-   1cjykQA2thJoHVHzK8iRDpJTJ9F8IPuRf1/Yhio5XQOMrvD/cFfHgrxGN
-   KmlrHFK7J00CK9cS7j4PKWce03S8xTaFsnPcMFsXjbDIRHUA5g6EnPkLN
-   PFRkOI0BZtDDnfCD6A1J46whNAabkVh8rxHnDFAxY/hZ3MiErgj2Nq9HY
-   PTF2wRYeUK90U1Xm1Qx3jAEJOTFCUejrTC8YLxKDv1fICAu4YELwD2xOl
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10938"; a="10294338"
+  bh=M0gKrk7udMJzbXzdeMrDLhayHCZl4Nvx+jWzDSqRoJc=;
+  b=KDTHlQ5EU+BUAuMV+bvypJOtET2sGESNjTxXa5PX9GlZEbjnY6ZSbehA
+   vqMQwhT+GBjKI40IgtAyPsPaqSsqg3dj7rqeP7pkLlTJoTeB/BPswckWa
+   bWR1xelIVx1iObrElT/80BMEpIMYSddnsGqUluEhHplebKuZzgyF/fOMm
+   VDILDcQcvoL56BWdes309FJ/36PPLVOtjGKJe9MTHCEQEgXVfVXXvcRIA
+   JvMeomGIueGr6/Yv9EmBbq3z5rGCqzPa7yF/gCFN/IwfoF+Y5i4NBUr+o
+   GTE0zcEuw20Tnk5Uc1o3Y78YpHGYXkzLLtqIiSdQdjpWAsR4YR2xPIPE8
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10938"; a="3549689"
 X-IronPort-AV: E=Sophos;i="6.04,318,1695711600"; 
-   d="scan'208";a="10294338"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Dec 2023 03:55:01 -0800
+   d="scan'208";a="3549689"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Dec 2023 03:57:08 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10938"; a="1110367623"
+X-IronPort-AV: E=McAfee;i="6600,9927,10938"; a="952285483"
 X-IronPort-AV: E=Sophos;i="6.04,318,1695711600"; 
-   d="scan'208";a="1110367623"
+   d="scan'208";a="952285483"
 Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by fmsmga005.fm.intel.com with ESMTP; 30 Dec 2023 03:54:59 -0800
+  by orsmga005.jf.intel.com with ESMTP; 30 Dec 2023 03:57:06 -0800
 Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1rJXvc-000IPD-0H;
-	Sat, 30 Dec 2023 11:54:56 +0000
-Date: Sat, 30 Dec 2023 19:54:00 +0800
+	id 1rJXxe-000IPV-1n;
+	Sat, 30 Dec 2023 11:57:02 +0000
+Date: Sat, 30 Dec 2023 19:56:36 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS
- b5aa3d696430bc74d24a2e6e2bad450fd5229ce7
-Message-ID: <202312301956.RJ61Cy0A-lkp@intel.com>
+Subject: [powerpc:next] BUILD SUCCESS
+ 44a1aad2fe6c10bfe0589d8047057b10a4c18a19
+Message-ID: <202312301932.3K5c2Uv2-lkp@intel.com>
 User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -70,13 +70,13 @@ Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: b5aa3d696430bc74d24a2e6e2bad450fd5229ce7  Automatic merge of 'next' into merge (2023-12-29 21:54)
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+branch HEAD: 44a1aad2fe6c10bfe0589d8047057b10a4c18a19  Merge branch 'topic/ppc-kvm' into next
 
-elapsed time: 1458m
+elapsed time: 1460m
 
-configs tested: 256
-configs skipped: 2
+configs tested: 269
+configs skipped: 3
 
 The following configs have been built successfully.
 More configs may be tested in the coming days.
@@ -96,6 +96,7 @@ arc                   randconfig-001-20231229   gcc
 arc                   randconfig-001-20231230   gcc  
 arc                   randconfig-002-20231229   gcc  
 arc                   randconfig-002-20231230   gcc  
+arc                        vdk_hs38_defconfig   gcc  
 arm                              allmodconfig   gcc  
 arm                               allnoconfig   gcc  
 arm                              allyesconfig   gcc  
@@ -105,6 +106,7 @@ arm                   milbeaut_m10v_defconfig   clang
 arm                            mps2_defconfig   gcc  
 arm                       multi_v4t_defconfig   gcc  
 arm                        multi_v7_defconfig   gcc  
+arm                        mvebu_v7_defconfig   gcc  
 arm                         orion5x_defconfig   clang
 arm                   randconfig-001-20231229   clang
 arm                   randconfig-002-20231229   clang
@@ -171,6 +173,7 @@ loongarch                        allmodconfig   gcc
 loongarch                         allnoconfig   gcc  
 loongarch                        allyesconfig   gcc  
 loongarch                           defconfig   gcc  
+loongarch                 loongson3_defconfig   gcc  
 loongarch             randconfig-001-20231229   gcc  
 loongarch             randconfig-001-20231230   gcc  
 loongarch             randconfig-002-20231229   gcc  
@@ -179,6 +182,7 @@ m68k                             allmodconfig   gcc
 m68k                              allnoconfig   gcc  
 m68k                             allyesconfig   gcc  
 m68k                         apollo_defconfig   gcc  
+m68k                          atari_defconfig   gcc  
 m68k                                defconfig   gcc  
 microblaze                       allmodconfig   gcc  
 microblaze                        allnoconfig   gcc  
@@ -188,13 +192,18 @@ mips                             allmodconfig   gcc
 mips                              allnoconfig   clang
 mips                             allyesconfig   gcc  
 mips                         bigsur_defconfig   gcc  
+mips                      bmips_stb_defconfig   clang
 mips                           ci20_defconfig   gcc  
 mips                     cu1830-neo_defconfig   clang
 mips                      fuloong2e_defconfig   gcc  
 mips                           gcw0_defconfig   gcc  
 mips                           ip22_defconfig   gcc  
+mips                       lemote2f_defconfig   gcc  
+mips                     loongson1b_defconfig   gcc  
 mips                     loongson1c_defconfig   clang
 mips                     loongson2k_defconfig   gcc  
+mips                        omega2p_defconfig   clang
+mips                        qi_lb60_defconfig   clang
 nios2                            allmodconfig   gcc  
 nios2                             allnoconfig   gcc  
 nios2                            allyesconfig   gcc  
@@ -231,6 +240,7 @@ powerpc               randconfig-002-20231229   clang
 powerpc               randconfig-003-20231229   clang
 powerpc                    socrates_defconfig   gcc  
 powerpc                     tqm5200_defconfig   clang
+powerpc                     tqm8541_defconfig   gcc  
 powerpc                     tqm8548_defconfig   gcc  
 powerpc64             randconfig-001-20231229   clang
 powerpc64             randconfig-002-20231229   clang
@@ -252,9 +262,11 @@ s390                  randconfig-001-20231229   gcc
 s390                  randconfig-001-20231230   gcc  
 s390                  randconfig-002-20231229   gcc  
 s390                  randconfig-002-20231230   gcc  
+sh                               alldefconfig   gcc  
 sh                               allmodconfig   gcc  
 sh                                allnoconfig   gcc  
 sh                               allyesconfig   gcc  
+sh                        apsh4ad0a_defconfig   gcc  
 sh                                  defconfig   gcc  
 sh                        dreamcast_defconfig   gcc  
 sh                         ecovec24_defconfig   gcc  
@@ -264,6 +276,7 @@ sh                    randconfig-001-20231230   gcc
 sh                    randconfig-002-20231229   gcc  
 sh                    randconfig-002-20231230   gcc  
 sh                          rsk7201_defconfig   gcc  
+sh                          sdk7780_defconfig   gcc  
 sh                           se7619_defconfig   gcc  
 sh                              ul2_defconfig   gcc  
 sparc                            allmodconfig   gcc  
