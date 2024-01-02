@@ -1,87 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C4E821DAA
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jan 2024 15:31:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCF77821E88
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jan 2024 16:16:58 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qoxBGGkr;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EMxxMyBo;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T4Fdm574dz3cTg
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jan 2024 01:31:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T4Gfc3TyHz3bsd
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jan 2024 02:16:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qoxBGGkr;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EMxxMyBo;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T4Fcx11VRz2ydW
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jan 2024 01:30:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T4Gdp489Tz2xQ7
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jan 2024 02:16:13 +1100 (AEDT)
 Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 402DiaPn028526;
-	Tue, 2 Jan 2024 14:30:22 GMT
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 402FD2u4005057;
+	Tue, 2 Jan 2024 15:16:08 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : in-reply-to : references : date : message-id : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=L9wsvGMZSJp3/jakokQi4h502LASYRmsodDRfbt57OQ=;
- b=qoxBGGkriObmkRHbAbAUQjd2XgP7A9KuX2IVb8ThgO+8eZk82+1qkhA7fLA02shbeD1g
- SXf6lQW4K3H0WpHfLQYY3jjIVhi2KBFOdSVls4KhaDAGMq85HbyHlVIfilwhr5x7/4aZ
- abodRpg1wXpQqQ1NijOVp7ACRxB2rXiI/tB/xO3Plw3otNAgTo8z5eyVo+Fz6n36FF3R
- q7HnW7L1j7wNkEt1utZgh5yXlazwgUtFzqSF/Od+PkmqhaeWcD8rq2/oiGYYUb18Idaw
- kVv1xNEdMQnFJyO1/6vhFPTxfXbSb06a8f2zc5/fcsbQCcWODDvTuZCjjulxabGNd2rS Vg== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vcjqut883-1
+ content-type; s=pp1; bh=yGhxx0AeGI7e5qMoZUz2ZFXRvV8uArHlbUZ/vA1WFT4=;
+ b=EMxxMyBotsV3r5bVh+No//1QUJnmPyCQhr3Qfj7fuVehNMH2bxq5pdKzlf0dua83Qdhi
+ fvplI9ZhOAa1QNvPGXlfnYKsp3FsCLAFZNSlWnMNhwKL8FirsuijhVGw0WQOLLAnRh3i
+ qImJFN3JvE0hEjrM3UyUnuMoBHzqAFB5WrzJzgatiiVCqb8B4WJ8osGD9FzotkDNxCs5
+ ExyVCd26rxBRCLRiy4yodjfsgGkyCgUsWzKX1oeoX20Qq6SAzFe8ZBaJE1L/JLZgcat3
+ vx0EVdAKyDNpunj2WmDONv4FDnlh/oXPaSdi3Qfz8qAmd0UtPrMXK21QanzjA6UaTd54 Mw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vcmxb82ej-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Jan 2024 14:30:21 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 402EKUji019424;
-	Tue, 2 Jan 2024 14:30:21 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vc30sce2g-1
+	Tue, 02 Jan 2024 15:16:08 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 402FDFAE005332;
+	Tue, 2 Jan 2024 15:16:07 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vcmxb82e8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Jan 2024 14:30:21 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 402EUKVX20841146
+	Tue, 02 Jan 2024 15:16:07 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 402DFPVO027288;
+	Tue, 2 Jan 2024 15:16:07 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vawht5u9q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 02 Jan 2024 15:16:07 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 402FG6Xn46334666
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 2 Jan 2024 14:30:20 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7427058057;
-	Tue,  2 Jan 2024 14:30:20 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5CC8A58058;
-	Tue,  2 Jan 2024 14:30:20 +0000 (GMT)
+	Tue, 2 Jan 2024 15:16:06 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 86BCC5805C;
+	Tue,  2 Jan 2024 15:16:06 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 614F658054;
+	Tue,  2 Jan 2024 15:16:06 +0000 (GMT)
 Received: from localhost (unknown [9.61.111.122])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  2 Jan 2024 14:30:20 +0000 (GMT)
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  2 Jan 2024 15:16:06 +0000 (GMT)
 From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Tasmiya Nalatwad <tasmiya@linux.vnet.ibm.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [Mainline/linux-next-netdev/net-next/scsi]Dlpar remove, drmgr
- phb and pci remove operations are failing
-In-Reply-To: <2b1814f7-c7a2-4ea3-8bc7-abd8712ebef8@linux.vnet.ibm.com>
-References: <2b1814f7-c7a2-4ea3-8bc7-abd8712ebef8@linux.vnet.ibm.com>
-Date: Tue, 02 Jan 2024 08:30:20 -0600
-Message-ID: <87v88breo3.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+        Haren Myneni
+ <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v4] powerpc/pseries/vas: Use usleep_range() to support
+ HCALL delay
+In-Reply-To: <87il4do9xq.fsf@kernel.org>
+References: <20231227083401.2307526-1-haren@linux.ibm.com>
+ <87il4do9xq.fsf@kernel.org>
+Date: Tue, 02 Jan 2024 09:16:06 -0600
+Message-ID: <87sf3frcjt.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 95FaDXZkav18y2DRoiU7nROnM0bySmGv
-X-Proofpoint-ORIG-GUID: 95FaDXZkav18y2DRoiU7nROnM0bySmGv
+X-Proofpoint-ORIG-GUID: Ht1gu10XFbJi5LaLXpe5Tl4MVpsj6wkI
+X-Proofpoint-GUID: 2AH68VSb6MmN8tsASXsuPdsXYBQylO69
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-01-02_04,2024-01-02_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 phishscore=0
- mlxlogscore=999 suspectscore=0 adultscore=0 priorityscore=1501
- impostorscore=0 spamscore=0 bulkscore=0 mlxscore=0 malwarescore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401020111
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 lowpriorityscore=0 adultscore=0 impostorscore=0
+ bulkscore=0 mlxscore=0 phishscore=0 spamscore=0 mlxlogscore=999
+ malwarescore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311290000 definitions=main-2401020117
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,51 +98,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "sachinp@linux.vnet.com" <sachinp@linux.vnet.com>, "abdhalee@linux.vnet.ibm.com" <abdhalee@linux.vnet.ibm.com>, "mputtash@linux.vnet.com" <mputtash@linux.vnet.com>
+Cc: haren@linux.ibm.com, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
-
-Tasmiya Nalatwad <tasmiya@linux.vnet.ibm.com> writes:
->  =C2=A0[Mainline/linux-next-netdev/net-next/scsi]
-
-What does this mean? Are you reporting this issue against four separate
-trees?
-
-> Dlpar remove, drmgr phb and=20
-> pci remove operations are failing
+"Aneesh Kumar K.V" <aneesh.kumar@kernel.org> writes:
+> Haren Myneni <haren@linux.ibm.com> writes:
 >
-> command ---> chhwres -r io --rsubtype slot -m "managed system name" -o r=
-=20
-> --id 6 -l 21030014
+>> diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
+>> index 71d52a670d95..5cf81c564d4b 100644
+>> --- a/arch/powerpc/platforms/pseries/vas.c
+>> +++ b/arch/powerpc/platforms/pseries/vas.c
+>> @@ -38,7 +38,30 @@ static long hcall_return_busy_check(long rc)
+>>  {
+>>  	/* Check if we are stalled for some time */
+>>  	if (H_IS_LONG_BUSY(rc)) {
+>> -		msleep(get_longbusy_msecs(rc));
+>> +		unsigned int ms;
+>> +		/*
+>> +		 * Allocate, Modify and Deallocate HCALLs returns
+>> +		 * H_LONG_BUSY_ORDER_1_MSEC or H_LONG_BUSY_ORDER_10_MSEC
+>> +		 * for the long delay. So the sleep time should always
+>> +		 * be either 1 or 10msecs, but in case if the HCALL
+>> +		 * returns the long delay > 10 msecs, clamp the sleep
+>> +		 * time to 10msecs.
+>> +		 */
+>> +		ms = clamp(get_longbusy_msecs(rc), 1, 10);
+>> +
+>> +		/*
+>> +		 * msleep() will often sleep at least 20 msecs even
+>> +		 * though the hypervisor suggests that the OS reissue
+>> +		 * HCALLs after 1 or 10msecs. Also the delay hint from
+>> +		 * the HCALL is just a suggestion. So OK to pause for
+>> +		 * less time than the hinted delay. Use usleep_range()
+>> +		 * to ensure we don't sleep much longer than actually
+>> +		 * needed.
+>> +		 *
+>> +		 * See Documentation/timers/timers-howto.rst for
+>> +		 * explanation of the range used here.
+>> +		 */
+>> +		usleep_range(ms * 100, ms * 1000);
+>>
 >
-> output --->
->
-> HSCL2929 The dynamic removal of I/O resources failed: The I/O slot=20
-> dynamic partitioning operation failed.=C2=A0 Here are the I/O slot IDs th=
-at=20
-> failed and the reasons for failure:
->
-> Jan 02 02:20:22 caDlparCommand:execv to drmgr
-> Validating PHB DLPAR capability...yes.
-> Could not find drc index 0x20000014 to add to phb list
-> There are no DR capable slots on this system
-> Could not find PHB PHB 20
->
-> The OS return code is 3.
+> Is there more details on this range? (ms *100, ms * 1000)
 
-This isn't really a useful report to send to kernel mailing lists. This
-is a mixture of output from the HMC (Hardware Management Console) and
-output from drmgr, a powerpc-specific utility that the HMC invokes
-remotely on the host. There's no indication of a kernel problem.
+The preceding comment ("see Documentation/timers/timers-howto...")
+should be removed, that document does not really explain this range
+directly.
 
-This is just a guess, but please ensure your powerpc-utils package
-(which contains drmgr) is reasonably recent. Versions up until something
-like 3-4 years ago don't understand the ibm,drc-info properties in the
-device tree and may experience failures like this.
+What timers-howto does say is that the larger a range you provide, the
+less likely you are to trigger an interrupt to wake up. Since we know
+that retrying "too soon" is harmless, providing a lower bound an order
+of magnitude less than the suggested delay (which forms the upper bound)
+seems reasonable.
 
-If that doesn't help, there is likely some other issue (kernel or not)
-to investigate here. Your best route to a resolution is probably to file
-an internal bug and make the test environment available to a developer
-who can look into it.
+>
+> can we use USEC_PER_MSEC instead of 1000.
+
+agreed
+
+>>  		rc = H_BUSY;
+>>  	} else if (rc == H_BUSY) {
+>>  		cond_resched();
+>
+>
+> It would be good to convert this to a helper and switch rtas_busy_delay
+> to use this new helper.
+
+I have reservations about that suggestion.
+
+The logic for handling the 990x extended delay constants conceivably
+could be shared. But any helper that handles the "retry immediately"
+statuses has to know whether it's handling a status from an RTAS call or
+an hcall: RTAS_BUSY and H_BUSY have the same semantics but different
+values.
+
+Also I don't really want kernel/rtas.c to gain more dependencies on
+pseries-specific code as long as there are non-pseries platforms that
+use it (chrp, maple, cell).
+
+Tolerating a little duplication here should be OK IMO.
+
+> One question though is w.r.t the clamp values.
+> Does that need to be specific to each hcall? Can we make it generic?
+>
+> rtas_busy_delay() expliclity check for 20msec. Any reason to do that?
+> timers-howto.rst suggest > 10msec to use msleep.
+
+I understand it to suggest (roughly) 20ms for the threshold:
+
+        SLEEPING FOR ~USECS OR SMALL MSECS ( 10us - 20ms):
+                * Use usleep_range
+[...]
+                        msleep(1~20) may not do what the caller intends, and
+                        will often sleep longer (~20 ms actual sleep for any
+                        value given in the 1~20ms range).
+
+20ms is also the threshold used by fsleep().
