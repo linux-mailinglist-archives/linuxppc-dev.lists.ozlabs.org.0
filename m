@@ -1,90 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 009C882160F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jan 2024 01:53:12 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MnWfT7FR;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MnWfT7FR;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 760EA82168E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jan 2024 03:52:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T3vTy4v5Nz3cSS
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jan 2024 11:53:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T3y7l6zMmz3cXn
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jan 2024 13:52:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MnWfT7FR;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MnWfT7FR;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=piliu@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=114.132.65.219; helo=bg1.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
+Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.65.219])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T3vT4669qz2xLR
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jan 2024 11:52:23 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1704156739;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Hn3yZPc5aSpO0YbvCjnALHpqvPvA9UwVTSzN3i4swWE=;
-	b=MnWfT7FRXMMxZQSTMMTE3tmrZukhlc0tBMSlk7bsgl87fjPioYnLf12qoTJzBPNxB6iogz
-	sw0B2MD3OQShPSbJ/sOir4935lubWpnKluoyp+2/uQ0eKSpwjPiZj8uV6qVut3AmWyWc71
-	aUOgIWftuvNKsGW/jx/5zfXHQAkUlTk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1704156739;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Hn3yZPc5aSpO0YbvCjnALHpqvPvA9UwVTSzN3i4swWE=;
-	b=MnWfT7FRXMMxZQSTMMTE3tmrZukhlc0tBMSlk7bsgl87fjPioYnLf12qoTJzBPNxB6iogz
-	sw0B2MD3OQShPSbJ/sOir4935lubWpnKluoyp+2/uQ0eKSpwjPiZj8uV6qVut3AmWyWc71
-	aUOgIWftuvNKsGW/jx/5zfXHQAkUlTk=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-180-r_HHWoBDNBGHsnXjEWzhUg-1; Mon, 01 Jan 2024 19:52:10 -0500
-X-MC-Unique: r_HHWoBDNBGHsnXjEWzhUg-1
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-6805f615543so103421896d6.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Jan 2024 16:52:10 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704156730; x=1704761530;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Hn3yZPc5aSpO0YbvCjnALHpqvPvA9UwVTSzN3i4swWE=;
-        b=khHS4x29D4KWp/3IknC2AIzQL7OgU3h+iH/TPvsz21lCB9EQkUz3tWqT7kUdZaCKc8
-         G7DkCzH1NyltgLFMDdRqky9b5oooh+kR0yQGfodSwU74sfdz6rQzExZR6mfdHoTj1lTa
-         QTy5cYxjHSenL4YE1Ig7xe7LKQwnc7/ksMvU/uy9M45GoCpWqomJKTKlGv58fjgXF81r
-         xSqejQVAFS3m+U7ESF/oSOVWtBuu8S0iUILPaeu67+vqG7JPcSSPURMPMmHdXh7/eeE8
-         2KsVlrLGwxNQ7Qviyt6gtAXEMc/wzRqkbfpSeDS3zQj2QfwvJzrL46FsJxQ82gBeQjwa
-         qD+A==
-X-Gm-Message-State: AOJu0YxsyH4UKtfMqZH26h+wLZKO/TKAx2MHZGLY7qmo4mVQYDmtbR9B
-	AFDcmAT1kCsbY+UCQdtbKngRp+4KSD6QVW6yDOsXyaQ3bnwXzsVm13YZcK+y7w0TVwtSPakfXp6
-	CiKcmbWyiT4Apeb1gDE3ycYk6zWyClxECMj7KpOZ8xcU2KI8wAw==
-X-Received: by 2002:a05:6214:c5:b0:67f:ae1d:917d with SMTP id f5-20020a05621400c500b0067fae1d917dmr19860874qvs.125.1704156729895;
-        Mon, 01 Jan 2024 16:52:09 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF8Yq2NhTKVXVIHL3AhMruPY16SPBWmHDzxDJke5sS9oNVopqZspPShbMAGArZYyrkpGX17amWOOeV/V6tyqC8=
-X-Received: by 2002:a05:6214:c5:b0:67f:ae1d:917d with SMTP id
- f5-20020a05621400c500b0067fae1d917dmr19860870qvs.125.1704156729748; Mon, 01
- Jan 2024 16:52:09 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T3y7D4rHSz2xPZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jan 2024 13:52:08 +1100 (AEDT)
+X-QQ-mid: bizesmtp86t1704163871tg2dwz8o
+Received: from HX09040029.powercore.com.cn ( [58.34.117.194])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 02 Jan 2024 10:51:08 +0800 (CST)
+X-QQ-SSF: 01400000000000501000000A0000000
+X-QQ-FEAT: rl11S5XfjRM+K3CqE9NA/KtuXDvLJOQfrtCOe0koMm/1vBAqueAkA7GnGVg2I
+	dG1G/I7guyUw2o4+QG4+GhbeGQENG0yVmHDeLzIc8BRM12PyohldUKV6Zj8eGlvwgGxXWtL
+	PBVxilW6Zml17i9A3deKmr1VsUtH/9FQjOw8y5Nw+aAo5SdwNWaKUGkfWfJuQ0KDaDlARaX
+	v5258o8OlDsIsiiNKE4tXF27fnUSkh8ekcoxu+azBxF6NWtI0wPM2RDKiEo+n2GKMoauAQy
+	nHU/djWhxOkqBX5sJf81axsHA+X5m+uBIfdehPO3azt3fbrKz8C1hSHFq+pn9q0a6haWMYy
+	swpqgJBPLmAAdA37BQ5pwzgdMsNNFWPy2P1iuOSM7CnC7a0v124UE2Lt9CxxszHHZ3VhDj3
+	SxIKePjwiW8=
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 9632030453733915372
+From: Luming Yu <luming.yu@shingroup.cn>
+To: linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	christophe.leroy@csgroup.eu
+Subject: [PATCH v1 1/1] powerpc/powernv: fix up kernel compile issues
+Date: Tue,  2 Jan 2024 10:48:35 +0800
+Message-ID: <9D8FEE1731685D9B+20240102024834.1276-2-luming.yu@shingroup.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 MIME-Version: 1.0
-References: <20231229120107.2281153-1-mpe@ellerman.id.au> <20231229120107.2281153-5-mpe@ellerman.id.au>
- <87tto1jjou.fsf@mail.lhotse>
-In-Reply-To: <87tto1jjou.fsf@mail.lhotse>
-From: Pingfan Liu <piliu@redhat.com>
-Date: Tue, 2 Jan 2024 08:51:59 +0800
-Message-ID: <CAF+s44QfT+m1hL=Z-wevFhWff=O6DNK=WRxcdjK+p-rK5J=LKQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 5/5] powerpc/smp: Remap boot CPU onto core 0 if >= nr_cpu_ids
-To: Michael Ellerman <mpe@ellerman.id.au>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz5a-1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,36 +54,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ming Lei <ming.lei@redhat.com>, linuxppc-dev@lists.ozlabs.org, Hari Bathini <hbathini@linux.ibm.com>, Pingfan Liu <kernelfans@gmail.com>, Wen Xiong <wenxiong@us.ibm.com>
+Cc: shenghui.qu@shingroup.cn, Luming Yu <luming.yu@shingroup.cn>, dawei.li@shingroup.cn, ke.zhao@shingroup.cn, luming.yu@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Dec 29, 2023 at 8:07=E2=80=AFPM Michael Ellerman <mpe@ellerman.id.a=
-u> wrote:
->
-> Michael Ellerman <mpe@ellerman.id.au> writes:
-> > If nr_cpu_ids is too low to include the boot CPU, remap the boot CPU
-> > onto logical core 0.
->
-> Hi guys,
->
-> I finally got time to look at this issue. I think this series should fix
+up kernel is quite useful to silicon validation, despite
+it is rare to be found in server productions. the fixes are
+obvious. Not like IBM pSeries, it may be not necessary
+to have powernv SMP forced. It is difficult to compile a
+up kernel for pSerises as I've tried.
 
-Thanks a lot for sparing time on it and hope we can close this
-prolonged issue soon.
+Signed-off-by: Luming Yu <luming.yu@shingroup.cn>
+---
+v0->v1: solve powernv vas up kernel compile issues found by lkp bot.
+---
+ arch/powerpc/platforms/powernv/Kconfig    | 1 -
+ arch/powerpc/platforms/powernv/opal-imc.c | 1 +
+ arch/powerpc/platforms/powernv/vas.c      | 1 +
+ arch/powerpc/platforms/powernv/vas.h      | 1 +
+ arch/powerpc/sysdev/xive/common.c         | 2 ++
+ arch/powerpc/sysdev/xive/spapr.c          | 5 ++++-
+ 6 files changed, 9 insertions(+), 2 deletions(-)
 
-And loop in Wen Xiong and Ming Lei, who care for this issue too.
-
-Best Regards,
-
-Pingfan
-
-> the problems that have been seen. I've tested this fairly thoroughly
-> with a qemu script, and also a few boots on a real machine.
->
-> If you can test it with your setups that would be great. Hopefully there
-> isn't some obscure case I've missed.
->
-> cheers
->
+diff --git a/arch/powerpc/platforms/powernv/Kconfig b/arch/powerpc/platforms/powernv/Kconfig
+index 70a46acc70d6..40b1a49379de 100644
+--- a/arch/powerpc/platforms/powernv/Kconfig
++++ b/arch/powerpc/platforms/powernv/Kconfig
+@@ -15,7 +15,6 @@ config PPC_POWERNV
+ 	select CPU_FREQ
+ 	select PPC_DOORBELL
+ 	select MMU_NOTIFIER
+-	select FORCE_SMP
+ 	select ARCH_SUPPORTS_PER_VMA_LOCK
+ 	default y
+ 
+diff --git a/arch/powerpc/platforms/powernv/opal-imc.c b/arch/powerpc/platforms/powernv/opal-imc.c
+index 828fc4d88471..6e9e2b0a5bdc 100644
+--- a/arch/powerpc/platforms/powernv/opal-imc.c
++++ b/arch/powerpc/platforms/powernv/opal-imc.c
+@@ -13,6 +13,7 @@
+ #include <linux/of_address.h>
+ #include <linux/crash_dump.h>
+ #include <linux/debugfs.h>
++#include <asm/smp.h>
+ #include <asm/opal.h>
+ #include <asm/io.h>
+ #include <asm/imc-pmu.h>
+diff --git a/arch/powerpc/platforms/powernv/vas.c b/arch/powerpc/platforms/powernv/vas.c
+index b65256a63e87..c1759135aca5 100644
+--- a/arch/powerpc/platforms/powernv/vas.c
++++ b/arch/powerpc/platforms/powernv/vas.c
+@@ -18,6 +18,7 @@
+ #include <linux/interrupt.h>
+ #include <asm/prom.h>
+ #include <asm/xive.h>
++#include <asm/smp.h>
+ 
+ #include "vas.h"
+ 
+diff --git a/arch/powerpc/platforms/powernv/vas.h b/arch/powerpc/platforms/powernv/vas.h
+index 08d9d3d5a22b..313a8f2c8c7d 100644
+--- a/arch/powerpc/platforms/powernv/vas.h
++++ b/arch/powerpc/platforms/powernv/vas.h
+@@ -12,6 +12,7 @@
+ #include <linux/dcache.h>
+ #include <linux/mutex.h>
+ #include <linux/stringify.h>
++#include <linux/interrupt.h>
+ 
+ /*
+  * Overview of Virtual Accelerator Switchboard (VAS).
+diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
+index a289cb97c1d7..d49b12809c10 100644
+--- a/arch/powerpc/sysdev/xive/common.c
++++ b/arch/powerpc/sysdev/xive/common.c
+@@ -1497,7 +1497,9 @@ static int xive_prepare_cpu(unsigned int cpu)
+ 				  GFP_KERNEL, cpu_to_node(cpu));
+ 		if (!xc)
+ 			return -ENOMEM;
++#ifdef CONFIG_SMP
+ 		xc->hw_ipi = XIVE_BAD_IRQ;
++#endif
+ 		xc->chip_id = XIVE_INVALID_CHIP_ID;
+ 		if (xive_ops->prepare_cpu)
+ 			xive_ops->prepare_cpu(cpu, xc);
+diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
+index e45419264391..7298f57f8416 100644
+--- a/arch/powerpc/sysdev/xive/spapr.c
++++ b/arch/powerpc/sysdev/xive/spapr.c
+@@ -81,6 +81,7 @@ static void xive_irq_bitmap_remove_all(void)
+ 	}
+ }
+ 
++#ifdef CONFIG_SMP
+ static int __xive_irq_bitmap_alloc(struct xive_irq_bitmap *xibm)
+ {
+ 	int irq;
+@@ -126,7 +127,7 @@ static void xive_irq_bitmap_free(int irq)
+ 		}
+ 	}
+ }
+-
++#endif 
+ 
+ /* Based on the similar routines in RTAS */
+ static unsigned int plpar_busy_delay_time(long rc)
+@@ -663,6 +664,7 @@ static void xive_spapr_sync_source(u32 hw_irq)
+ 	plpar_int_sync(0, hw_irq);
+ }
+ 
++#ifdef CONFIG_SMP
+ static int xive_spapr_debug_show(struct seq_file *m, void *private)
+ {
+ 	struct xive_irq_bitmap *xibm;
+@@ -680,6 +682,7 @@ static int xive_spapr_debug_show(struct seq_file *m, void *private)
+ 
+ 	return 0;
+ }
++#endif
+ 
+ static const struct xive_ops xive_spapr_ops = {
+ 	.populate_irq_data	= xive_spapr_populate_irq_data,
+-- 
+2.42.0.windows.2
 
