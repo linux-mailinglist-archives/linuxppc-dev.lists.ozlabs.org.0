@@ -1,86 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8C4D821B0F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jan 2024 12:36:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C48821B16
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jan 2024 12:38:33 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AuRYyMVa;
+	dkim=pass (2048-bit key; unprotected) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.a=rsa-sha256 header.s=DFC430D2-D198-11EC-948E-34200CB392D2 header.b=HfBx0L9S;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T49mD45Ntz3cTm
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jan 2024 22:36:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T49pb3mPkz3cRq
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jan 2024 22:38:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AuRYyMVa;
+	dkim=pass (2048-bit key; unprotected) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.a=rsa-sha256 header.s=DFC430D2-D198-11EC-948E-34200CB392D2 header.b=HfBx0L9S;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=tasmiya@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=savoirfairelinux.com (client-ip=208.88.110.44; helo=mail.savoirfairelinux.com; envelope-from=elinor.montmasson@savoirfairelinux.com; receiver=lists.ozlabs.org)
+Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [208.88.110.44])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T49lM1r3Xz2xPd
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jan 2024 22:35:42 +1100 (AEDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 402BCYTw022567;
-	Tue, 2 Jan 2024 11:35:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : to : cc : from : subject : content-type :
- content-transfer-encoding; s=pp1;
- bh=gs9Qiinqbf7yu2XrNTAz0gOXR9S0zfMkA9/GBX+J6AA=;
- b=AuRYyMVaERF6uOEMrelKYO7O5ST+NbmeWr5aAE6TKsu+Gc2lzVJdML9/LHX+oQvr2EXd
- FpHckmhQguhcZaCLUEoP4JfByP8kQlMEWoypSbmsfr8KgtLt4x0DqylTulnbC1YaED/w
- gq/loAtoQePpavkZaE2SxhxhGQrBBUZQzqnnf7TdLWQ4tvNaFkabrBW++k/wsjbkcehJ
- skmqaLDNlqcu37klbgDFu2DnM0qOoNb58e7NOX6RfKLUQPHLzaJZPfe8QxdJvp37q9pq
- wwUR+Rqs4zIbL8ok5xbmK3g24LH3Q+pxLemsIACS/AYyvRgV1O3h09bHSAy2IvmuVWlw XQ== 
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vchddrdh8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Jan 2024 11:35:38 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 402AEIWE017830;
-	Tue, 2 Jan 2024 11:35:36 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vawwymm44-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Jan 2024 11:35:36 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 402BZaEP13959680
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 2 Jan 2024 11:35:36 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 34BB158052;
-	Tue,  2 Jan 2024 11:35:36 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9056F58065;
-	Tue,  2 Jan 2024 11:35:33 +0000 (GMT)
-Received: from [9.43.79.31] (unknown [9.43.79.31])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  2 Jan 2024 11:35:33 +0000 (GMT)
-Message-ID: <2b1814f7-c7a2-4ea3-8bc7-abd8712ebef8@linux.vnet.ibm.com>
-Date: Tue, 2 Jan 2024 17:05:31 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T49nl1V2nz2xLW
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jan 2024 22:37:45 +1100 (AEDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id DFB4E9C0888;
+	Tue,  2 Jan 2024 06:37:40 -0500 (EST)
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10032)
+ with ESMTP id oH47By21Q_s9; Tue,  2 Jan 2024 06:37:40 -0500 (EST)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id 50F959C0957;
+	Tue,  2 Jan 2024 06:37:40 -0500 (EST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com 50F959C0957
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=savoirfairelinux.com; s=DFC430D2-D198-11EC-948E-34200CB392D2;
+	t=1704195460; bh=bAsNfTDPGcy9UE/qR8q9C/MYhrYIBcUMKG2G3Oi4VLE=;
+	h=Date:From:To:Message-ID:MIME-Version;
+	b=HfBx0L9SYhFxNTXnatyaVVD/0MKoxKv1DkFPwS4FhP21ZdGhZFAP2Yw2hgXG5W1+t
+	 DG22L6dYlNdqI/yA4nolhiQbAYRMk3Yvd1vhj35YZTZ1keQ1XC+emTImMoQmjgdIjh
+	 alA58hoYPXIYl8/8523fTVCfrQVCNMBqb6qPyKUQ1uoRLrwWFtxWeVm73HyoV71weA
+	 Vcvll8Fbldw/DCB9WQCaUVbMMf9+FXj0uatTbgq9RGC183UtRM5ockSfi6AD3jQlfV
+	 NlAXW2vSrvxzA0K2KrHkaWWkgrrQsn+4DCiJZlStF1JhWW5TYl6ACLELjZgkVicaEV
+	 5OCMfpqr9RX7g==
+X-Virus-Scanned: amavis at mail.savoirfairelinux.com
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id 20Ly5X62OB9G; Tue,  2 Jan 2024 06:37:40 -0500 (EST)
+Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [192.168.48.237])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id 1AD139C0888;
+	Tue,  2 Jan 2024 06:37:40 -0500 (EST)
+Date: Tue, 2 Jan 2024 06:37:39 -0500 (EST)
+From: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+To: Rob Herring <robh@kernel.org>
+Message-ID: <1300509761.24764.1704195459987.JavaMail.zimbra@savoirfairelinux.com>
+In-Reply-To: <20231220222550.GA1232936-robh@kernel.org>
+References: <20231218124058.2047167-1-elinor.montmasson@savoirfairelinux.com> <20231218124058.2047167-11-elinor.montmasson@savoirfairelinux.com> <20231220222550.GA1232936-robh@kernel.org>
+Subject: Re: [PATCHv3 RESEND 10/10] ASoC: dt-bindings: fsl-asoc-card: add
+ compatible for generic codec
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-From: Tasmiya Nalatwad <tasmiya@linux.vnet.ibm.com>
-Subject: [Mainline/linux-next-netdev/net-next/scsi]Dlpar remove, drmgr phb and
- pci remove operations are failing
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: JbG6rU-2UqTSb0FpKaEtMEEgl9-OSqIM
-X-Proofpoint-ORIG-GUID: JbG6rU-2UqTSb0FpKaEtMEEgl9-OSqIM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-02_02,2024-01-02_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 suspectscore=0
- bulkscore=0 phishscore=0 priorityscore=1501 lowpriorityscore=0
- impostorscore=0 clxscore=1011 mlxscore=0 spamscore=0 mlxlogscore=834
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401020088
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: Zimbra 8.8.15_GA_4581 (ZimbraWebClient - GC112 (Linux)/8.8.15_GA_4581)
+Thread-Topic: ASoC: dt-bindings: fsl-asoc-card: add compatible for generic codec
+Thread-Index: r/qDupTL/n3XOuEH8yE+GIqg/zABBQ==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,36 +74,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "sachinp@linux.vnet.com" <sachinp@linux.vnet.com>, "abdhalee@linux.vnet.ibm.com" <abdhalee@linux.vnet.ibm.com>, "mputtash@linux.vnet.com" <mputtash@linux.vnet.com>
+Cc: devicetree <devicetree@vger.kernel.org>, Conor Dooley <conor+dt@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, alsa-devel <alsa-devel@alsa-project.org>, Xiubo Lee <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, linux-sound <linux-sound@vger.kernel.org>, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>, Philip-Dylan Gleonec <philip-dylan.gleonec@savoirfairelinux.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, shengjiu wang <shengjiu.wang@gmail.com>, linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Greetings,
+Hello,
 
-  [Mainline/linux-next-netdev/net-next/scsi]Dlpar remove, drmgr phb and 
-pci remove operations are failing
+On Wednesday, 20 December, 2023 23:25:50, Rob Herring wrote:
+> On Mon, Dec 18, 2023 at 01:40:58PM +0100, Elinor Montmasson wrote: 
+> > +Optional, relevant only with the "fsl,imx-audio-generic" compatible: 
+> > + 
+> > + - cpu-slot-width : Indicates a specific TDM slot width in bits. 
+> > + - cpu-slot-num : Indicates a specific number of TDM slots per frame. 
+> 
+> Pretty sure I've seen other bindings with TDM slot properties. A sign we 
+> need something common if we don't already have something. 
 
-command ---> chhwres -r io --rsubtype slot -m "managed system name" -o r 
---id 6 -l 21030014
+That's right, "tdm-slot.txt" already defines TDM bindings, I will
+use them with the utility function snd_soc_of_parse_tdm_slot().
 
-output --->
+> > + - cpu-sysclk-freq-rx : Frequency of the CPU DAI sys clock for Rx. 
+> > + - cpu-sysclk-freq-tx : Frequency of the CPU DAI sys clock for Tx. 
+> > + 
+> > + - cpu-sysclk-dir-rx-out : Boolean property. Specifies sys clock direction 
+> > + as 'out' on initialization for Rx. 
+> > + If not set, default direction is 'in'. 
+> > + - cpu-sysclk-dir-tx-out : Boolean property. Specifies sys clock direction 
+> > + as 'out' on initialization for Tx. 
+> > + If not set, default direction is 'in'. 
+> 
+> Looks like clock stuff. Use the clock binding. 
 
-HSCL2929 The dynamic removal of I/O resources failed: The I/O slot 
-dynamic partitioning operation failed.  Here are the I/O slot IDs that 
-failed and the reasons for failure:
+simple-card defines similar properties at the dai level:
+"system-clock-frequency" and "system-clock-direction-out".
+The first is used if no "clocks" binding is specified for the dai node.
 
-Jan 02 02:20:22 caDlparCommand:execv to drmgr
-Validating PHB DLPAR capability...yes.
-Could not find drc index 0x20000014 to add to phb list
-There are no DR capable slots on this system
-Could not find PHB PHB 20
+Maybe I could use a similar logic with fsl-asoc-card ?
+* adding a "clock-cpu" phandle property which should be the cpu clock.
+It will be used to retreive the frequency for both RX and TX.
+* keeping "cpu-sysclk-freq-rx"/"cpu-sysclk-freq-tx", which are used if
+no clock is provided, like "system-clock-frequency" in simple-card.
+* keep using "cpu-sysclk-dir-rx-out"/"cpu-sysclk-dir-tx-out", like
+"system-clock-direction-out" in simple card.
 
+Also, maybe I could rename my new properties:
+cpu-system-clock-frequency-tx, cpu-system-clock-direction-out-rx, ...
+It would better match those in simple-card as they do the same thing.
 
-
-The OS return code is 3.
-
--- 
-Regards,
-Tasmiya Nalatwad
-IBM Linux Technology Center
-
+Best regards,
+Elinor Montmasson
