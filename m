@@ -2,50 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91F4E8216ED
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jan 2024 05:35:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3ED58216F8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jan 2024 05:46:55 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Imn4NHmH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qEcu/cYM;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T40QY2B2Cz3bn8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jan 2024 15:35:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T40gd3ZB7z3cSJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jan 2024 15:46:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Imn4NHmH;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qEcu/cYM;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=aneesh.kumar@kernel.org; receiver=lists.ozlabs.org)
 Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T40Pl1t67z2xQG
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jan 2024 15:34:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T40fr20Frz2xLW
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jan 2024 15:46:12 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 0103BCE0B3A;
-	Tue,  2 Jan 2024 04:34:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 286D3C433C7;
-	Tue,  2 Jan 2024 04:34:45 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 254CDCE0B74;
+	Tue,  2 Jan 2024 04:46:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 545BDC433C8;
+	Tue,  2 Jan 2024 04:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704170088;
-	bh=JZcgALy1yTy2guwrQqcrSDl+JYb10SnyOy5ifaFJCt4=;
+	s=k20201202; t=1704170770;
+	bh=z/Ovj/9iuAiW3FV9O0iwQV3AmD3nZdMqqX+IXPdX+6M=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Imn4NHmH7+iQMaCXAr4OQiHNzcC5VWaafvHFWbkJ6zVHu5rtKSEJr6f7LU2Q9QpHl
-	 mkzPtVB/b4XCbHZDXZ4IMJb58BGGYJXIPcxILFdq7IooJMyCubPVXseTvZLTa/oPDq
-	 HR7jl7abrbacQmWMsK+zB06000ViI7R31u8y/Ez/BJnB1Yk08KwJkPpuSzWLpHWjtM
-	 2TfFjQwrX73YiJCmEMlx0bp0uaWIz9cY+GnReVPMGbiWEJ3DKyOHrjZ864/HgMlDvd
-	 oPjA1CyHZJFoPmcltcO2y1CBsaFF1ZXGdVQW28/2Yr0eIAFi9ueg8hYmh109K/WMXS
-	 7EexZXuYAqqGw==
+	b=qEcu/cYMKtFWlOoXXZT+BmlNUB0mA7/I+uN6uw+rau8xYRDgSqbuq+QKjiU+KHkCV
+	 kQ+f7FColIh/FiO/DQw1QGSrhz7WsHDzwHeEx8UqgvHr0ZUA0DDrehkWSnm87Kv//Z
+	 3W1/P2TyJ/8mppMGiW2SW2pf43QYYwdfRhnI0S1FGJ+VvDszagPjyBV/1q9BVqZu32
+	 dr3euaSF7780XXvYxyE+/9jYrw5ZNwKlzclpgfCPYBlqQf/Mbvcv7UyAx3KzwdTu0T
+	 fmKOiCgJb49paQ66b0CY8l8aumFVXIq5OFQWVsC+Pm14LDPZ+iAA1a2EaFP1YXa+Hv
+	 ckvkhr4fl8psw==
 X-Mailer: emacs 29.1 (via feedmail 11-beta-1 I)
 From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
 To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [RFC PATCH 4/5] powerpc/smp: Factor out assign_threads()
-In-Reply-To: <20231229120107.2281153-4-mpe@ellerman.id.au>
+Subject: Re: [RFC PATCH 5/5] powerpc/smp: Remap boot CPU onto core 0 if >=
+ nr_cpu_ids
+In-Reply-To: <20231229120107.2281153-5-mpe@ellerman.id.au>
 References: <20231229120107.2281153-1-mpe@ellerman.id.au>
- <20231229120107.2281153-4-mpe@ellerman.id.au>
-Date: Tue, 02 Jan 2024 10:04:42 +0530
-Message-ID: <87frzgnyjh.fsf@kernel.org>
+ <20231229120107.2281153-5-mpe@ellerman.id.au>
+Date: Tue, 02 Jan 2024 10:16:04 +0530
+Message-ID: <87cyukny0j.fsf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -66,26 +67,45 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 Michael Ellerman <mpe@ellerman.id.au> writes:
 
 ....
-  
-> +static int assign_threads(unsigned cpu, unsigned int nthreads, bool avail,
+
+>  #ifdef CONFIG_PPC64
+>  int boot_cpu_hwid = -1;
+> @@ -492,12 +493,26 @@ void __init smp_setup_cpu_maps(void)
+>  			avail = !of_property_match_string(dn,
+>  					"enable-method", "spin-table");
+>  
+> -		cpu = assign_threads(cpu, nthreads, avail, intserv);
+> +		if (boot_core_hwid >= 0) {
+> +			if (cpu == 0) {
+> +				pr_info("Skipping CPU node %pOF to allow for boot core.\n", dn);
+> +				cpu = nthreads;
+> +				continue;
+> +			}
+>  
+> -		if (cpu >= nr_cpu_ids) {
+> +			if (be32_to_cpu(intserv[0]) == boot_core_hwid) {
+> +				pr_info("Renumbered boot core %pOF to logical 0\n", dn);
+> +				assign_threads(0, nthreads, avail, intserv);
+> +				of_node_put(dn);
+> +				break;
 >
 
-May be rename 'avail' to 'present'
+I was expecting a 'continue' here. Why 'break' the loop? The condition that
+should break the loop should be cpu >= nr_cpu_ids 
 
-> +                          const __be32 *hw_ids)
-> +{
-> +	for (int i = 0; i < nthreads && cpu < nr_cpu_ids; i++) {
-> +		__be32 hwid;
+
+> +			}
+> +		} else if (cpu >= nr_cpu_ids) {
+>  			of_node_put(dn);
+>  			break;
+>  		}
 > +
-> +		hwid = be32_to_cpu(hw_ids[i]);
-> +
-> +		DBG("    thread %d -> cpu %d (hard id %d)\n", i, cpu, hwid);
-> +
-> +		set_cpu_present(cpu, avail);
-> +		set_cpu_possible(cpu, true);
-> +		cpu_to_phys_id[cpu] = hwid;
-> +		cpu++;
-> +	}
-> +
+> +		if (cpu < nr_cpu_ids)
+> +			cpu = assign_threads(cpu, nthreads, avail, intserv);
+>  	}
+>  
+>  	/* If no SMT supported, nthreads is forced to 1 */
+> -- 
+> 2.43.0
 
 -aneesh
