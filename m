@@ -1,77 +1,128 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 195CF823720
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jan 2024 22:29:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A918C822BEF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jan 2024 12:16:31 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=gmfJ8QpW;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=PROaPpe2;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=bPxO51dz;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T52sm5qy2z3byh
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jan 2024 08:29:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T4nGj2X46z3dBl
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jan 2024 22:16:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=gmfJ8QpW;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=PROaPpe2;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=bPxO51dz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=mailbox.org (client-ip=2001:67c:2050:0:465::102; helo=mout-p-102.mailbox.org; envelope-from=torvic9@mailbox.org; receiver=lists.ozlabs.org)
-X-Greylist: delayed 317 seconds by postgrey-1.37 at boromir; Wed, 03 Jan 2024 20:39:21 AEDT
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [IPv6:2001:67c:2050:0:465::102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:261c::600; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20600.outbound.protection.outlook.com [IPv6:2a01:111:f403:261c::600])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T4l6d4WcLz30N8
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jan 2024 20:39:21 +1100 (AEDT)
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4T4l0J2lMGz9tF9;
-	Wed,  3 Jan 2024 10:33:52 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1704274432;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TRUNuY4twZgDFCA5VbnSEJ3nMmDqW3XaOjy/vo3VxTE=;
-	b=gmfJ8QpWwkRfC9P9BsjFu2Ox5QDn3kWmOHdS0KTNIalzZ/EFQ9qoe7e7OH8ne8dPssqA9E
-	gtRBo4BnUuXsDbW3iP5sziEu7HpDTCYtH8IRM1L5DbTIESxw6zanottpNJXw1GISgw1/dD
-	mwP3s2tb1eWv+NElbZ5kKn5xTwiodIq3c/D6WwJKQfbxGGtukTkw+fUTeCcow7jiBakx6p
-	MRiJyg8SeyczAjlyC3dU84bM1jt8lU94J6yAsTkOvpsXkT2SROTLCRYD2go+x+kHIAxyUs
-	UkIhWU3AIw4uo++gWoeiAcynweYRVomEiWu8bD1KofqNp0LD1LTFuBLvDl9Kzw==
-Message-ID: <8cdba1ac-701f-40d4-ade9-e429da4a0794@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1704274430;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TRUNuY4twZgDFCA5VbnSEJ3nMmDqW3XaOjy/vo3VxTE=;
-	b=PROaPpe2Y1vRkl7v9VKf4xLdhI4w4dZPcVJ8w4RxCVzKqoYh3UlqZ6a/ypyaCdRxG8zvBT
-	KJsgVU4xW6yt5XHZ/yOduq601SvTNW1N6hU0GbBlZImYXDSNRSwMrh4ThUSVx+fiv1gKdn
-	wv6cSLmudJUHN4yz9+gbE4gPIDWrFbOQgRL94AOfpzfl3ueCzXV/nr9Dw5whBtXOTFw4a3
-	9AgcN792Xw/9w+58nfzmPrfbaWRfhlpqyO6h5vPb7/IwAsp6Ls+umfQvT0XbQsIwiGCDgq
-	mPPDsP6ByZsH7B1zpSdtPQiKUUbMX0mUHHl+lW+htDCR292BcrGBk7AWybkKmQ==
-Date: Wed, 3 Jan 2024 10:33:42 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T4nFK2SPFz3byh
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jan 2024 22:15:16 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=K/1BQ2LkED6ZB4J6itpPUPDi8h0fmUoBpUSCdE4JJl9u2hbzfDFYNTAu1XrGyHQnSXIhoEFGkZLYuRDF9sUTeTe+Qzj1dyr0BZsv4ZmE5sx88/n7PjBd/De/sYGKPZ0g8gIKZuQeMDsD7gQz4DTVxAUbIPfBRlj9cf0iVNcaZbB0ttqxw8HRSQxu28PqbivRokO9w0L1N+A2/yP1Gyj9yr6ahyOxPh55UjgT5Qs/OaRe8UF4471JJsrmrHq7xRlyYBkMqO5rGeq9UU9PzHQrfgVWTrMPXNgtnwesiHVJj5bcZNbxMItgN+cYDleiF9aEdpJxHmw8g6FDuAO5w8I0PQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=61W9i2elWY4cDzcH9AfBgmc9NhqXytNr91CX1w8ccDA=;
+ b=ND27t8LF1CFL7SOPNrmIU32qB2WfAnX2ujkRwiZ6PjMxpztxD9uAfv1zvmRw55jAAm8MEivb1Y1SzWOmxPT2pHn4PdoxBU3ex1O0y+3dmPilxDWicHaUMdNvigralowDrKIwfr2DSUq8yCBCKOoBXqpmJjrvFqCsdtWD3++L9el2X/Ah8gWHvTDqvxY0s9zCqrCA7QYWMI/EPalbQ9wG0kmQVDE7N99LMocEnPvmmhf2RAG9R5wu32y7d9lWszfjVoYPbX/cDxmsax6uJVaVqSQVYhxsEtVm9eycLKpj/GweUT/aVYrm7352btj5wd+se2DXH9PvisRmbWgPvIPiYA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=61W9i2elWY4cDzcH9AfBgmc9NhqXytNr91CX1w8ccDA=;
+ b=bPxO51dz2KfAYd8fNowOhBosMPSfaBVKhaVF1hCsC5IOTY7eEohA/FmH7zGkMzUa+4DITjP1B7uRliLPWqc2RcqiHs/qvOysw6m7vlm3/Bu3HbUvZC+J0UciZxgA+nR+snIUQVyYUzqD8E0XQrJOq6l5gO8C3VWSIYmUW8+tyVfauCXWxsVcsIQxynvLR54z/bLnTjV4faSlFMbihC/9sfMlBsGFLQpIptiWg/DKFbbq1choi+4wnnJxdUIXe0mjXVEMbOFuyZ6vI5t/jrn4tpZssNN6CC3aik7JPhIaNgYwKtVh3rFuQtRmeNAj2FxrXYsyqriXd8mY9rYFDr1FIg==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by PR1P264MB1438.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1d::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.25; Wed, 3 Jan
+ 2024 11:14:54 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::f788:32b4:1c5e:f264]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::f788:32b4:1c5e:f264%7]) with mapi id 15.20.7135.023; Wed, 3 Jan 2024
+ 11:14:54 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: "peterx@redhat.com" <peterx@redhat.com>, "linux-mm@kvack.org"
+	<linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 00/13] mm/gup: Unify hugetlb, part 2
+Thread-Topic: [PATCH v2 00/13] mm/gup: Unify hugetlb, part 2
+Thread-Index: AQHaPiVMR3zGhecV+0qUMoop8MTeWbDH79wA
+Date: Wed, 3 Jan 2024 11:14:54 +0000
+Message-ID: <591c59d6-dedb-4399-8a6f-c574fd2ad9cc@csgroup.eu>
+References: <20240103091423.400294-1-peterx@redhat.com>
+In-Reply-To: <20240103091423.400294-1-peterx@redhat.com>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla Thunderbird
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR1P264MB1438:EE_
+x-ms-office365-filtering-correlation-id: a46ab680-8c26-4864-caae-08dc0c4d368e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  206BXAmyCBTV/6DPmDDl7TdD2SOVaG7S9Kq64plErT6hscH+EZn1mQSWp2Fq3orAaWVJpPPKVPXeZWvqpGoVGikBqiuHTVwodponlrwlMfMobcUhKZzvgXX5NGDs9zdpURmSuKE7x+EDPMhOYFWh+HV7vSfhoiWK09PsRIe3z7UfSMsO2YEj4FBUoQoCFaHEjJxcLBjOQ63FoJXZ3axAezfY2P9YK4+42w2W/WnxOnjuoeh2le0rusBvxqwdoo2/5ZEN8k+pDGw6k0lTyYQ2Nxe3FIldMAlMJMqTfhqBZusyCsp1U7+TL2fCdZHQy8ZhrrmIeYtghx/maSaKbweW+rhBYjeLY6UwhbmMoYtFLOgE971G6rna/ITJiFSNJyGe34TOPNVLeRi5Qs/ayKC1QjmcRRHUI0IM624sHzJo8V3dHQg8H6vjcjz0zDw4kqPLr5IoIQ7ycxdw/9xd99Fy3oOUXt3Zd7gsOYMM6M2ErzqgfPSVmH1siEzyG+2AIQDhiyIZDADEfipzf2u1As72mkfXa0i0RVY9MY1QiTxt4yAd7lrFkC6vYTN1fObJ6h/BAZfUDzh8IlTJMOXNquecc7OWw+8uSQyImrwis0oF8+qwOI/xRUHf3N5SqJ6Aw8Rv/QhtJ04chOr6rXNNahVsouG8rDqSlSjvGy3f1xZYgd0Po63wKbJoQAHglwWDKVUQ
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(376002)(366004)(39850400004)(396003)(136003)(346002)(230922051799003)(451199024)(1800799012)(186009)(64100799003)(38100700002)(122000001)(38070700009)(36756003)(31686004)(31696002)(86362001)(26005)(6506007)(6512007)(71200400001)(54906003)(4326008)(6486002)(316002)(8936002)(478600001)(8676002)(66446008)(66946007)(76116006)(66556008)(91956017)(66476007)(110136005)(64756008)(2616005)(41300700001)(44832011)(5660300002)(4744005)(7416002)(2906002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?eko1WmdKcG56ZjhDL3B6YmNsY2l4aVFKUGlxN0ZYenlja0xTNjM4VjlNaDhC?=
+ =?utf-8?B?N1JObUdydGFWcEJlWERPRjVoUDJlcUF6bi9mZUtqdzZCeGRMUE9JcmJhc29y?=
+ =?utf-8?B?TFZ1WE1NN21jZU85bHBacnEwVm1vVUpBLzU2K0JLc3h3NDd2V1lvckVLWW1k?=
+ =?utf-8?B?dVh0L0VkVE9WYUlaWXpINUpGYjQ2SHQ1MGF0cXBQdW42VkRpc0liUkkwYlIw?=
+ =?utf-8?B?ZkZ3Ly9HQW1WTU1wWklHMTNGUXJMN0hnZlpROWZaK2h0YXRnQjVXZFlTdWg1?=
+ =?utf-8?B?TjhUVm5aR2NLbjhTNWxwYSsxRDMvTy9hcjZpNjRUaHFsMzIvRGxUQThYSTFJ?=
+ =?utf-8?B?QUtCcXhHb2FpL1pldWJsUERxVDFiTHJWbEphTVMyWFZkUkliR0FRSUhiRWFR?=
+ =?utf-8?B?S1VqUm5xaUhKa0swVEo1UnA0SFhDbXhkTU1CVTVCTzh6N0JoNlN5bEhWbCtD?=
+ =?utf-8?B?UXNXbzQvN0U3emdZVEVZdjBYZ0tBb0NXdVIzQVRWN0ZlMElQWElXZmF4N0VY?=
+ =?utf-8?B?ejdDblltMGZCblZsK3RtU1NIV3UzcE1XaXZCRFR5NVN4dURwL0lBaWJYcjZw?=
+ =?utf-8?B?bU1abXYrNVZQbjdsUHZuZTNEOEZYb25Cclo3bUVvekd4TVYyWUFTVXpkaFRD?=
+ =?utf-8?B?Q2sxOXJhdVhUMkMyZlg2TWtEMDljSFd4WlBXeUYyRktzaDVMa05oQkFTSFRo?=
+ =?utf-8?B?VDh0OE9CM3lqWm1PbktvZDIwUVZVMmNqY2h6SDFDYUhveTg2cGJhVUR2ZWNY?=
+ =?utf-8?B?MGpPQkpWMVFOa2ZPZjdrKzRBK2lZZzBzNVYvUkUwdmk5aVUrTmNxZndXRVVa?=
+ =?utf-8?B?blk2cU14YXMvenp6MmhJN3VzQWJ3RUIzdmlLZ3hOTjZjZTBmU0FEYnorVWJU?=
+ =?utf-8?B?VGdzN29TTXJnaVQ4dURQSGFyRDN0SVExN2tmcE5LM1pycitkWS8rRU9wZkNn?=
+ =?utf-8?B?QXM3WnRGcXJWVE5EU09aYVZ1N1dTUVpZUms0L3hLTnVkcDA1dEJFaFVYd3Va?=
+ =?utf-8?B?anByOGM1RnlmYzBwSWlxMG5jbDNnOTM1dUNaQnFNL2RYbzFLeEErZlNOWUJr?=
+ =?utf-8?B?b0xzblp4SGZoUHZHejdwbkhGUWE1TXdiNDR2Z0M4NytHUFE0bUxzcnJ4Tjli?=
+ =?utf-8?B?QURnbW03c01pUi9sNDJuU2t5MFVHVXM4TzM3YlQzN0o5OVNoL0VseFh5blQw?=
+ =?utf-8?B?REl5VEl4Z3l4MThrb1pxWWQ1VDN4ZVlxMURHaW8vcEdCdDNRQWdrTWNLeXo0?=
+ =?utf-8?B?OTd5N2hYQWY3Rys2eEZLeFdzZHNOd2RndVVXQmlZME5wV0tiWTF4WVhxVERN?=
+ =?utf-8?B?Wi9QRzJqT1g4N3pvdU5YR3JVb0o1c3dtYkF5TGNZVDJLampaMHU5cjhqa1V3?=
+ =?utf-8?B?YmdKMUxkU0F0ZG9QMzJnZkdQZHZsSTJGbTdMVlU2Qjhoallmem1OY29rZkJX?=
+ =?utf-8?B?RjQ0d3FvZFIyTUo5blNieWhMVGg1WXluQis1U05NYXhRQW5BS0FETGlFcExG?=
+ =?utf-8?B?NDMxZkl3QnR4NjlMTllyTHlOVzhFMGZqVWlFMFA5cVVUNzNGNGdxT3ZnVlJ6?=
+ =?utf-8?B?Mml3TmlhdkVaM2M5VVoxWkZiNFp1NnhDeUJBSTducjhXWFVBZXBtUFhqS214?=
+ =?utf-8?B?ckJsL1J0OHZxWk9JK25vR1hCVVEybGVRVkZ6WDFyODdQckU0MDlBbzVlWmpr?=
+ =?utf-8?B?aWtqYVNxQ0RaL0Z4ZzZrS1lhT2M2bXRqRHdESERzMzUzZjRZV1NDRXZ2Rkln?=
+ =?utf-8?B?YmJZOEdwTVZ2R3ZjT1JhaWxrOWhEODYzQ0thcVJUM2Z3VmVNS0gxTG9memdK?=
+ =?utf-8?B?MXFmeVdTM0hpZFhpSDNwR2U3bFFaUy9hcmVoU1FKdTAvRjJQMVFtK0pnclZi?=
+ =?utf-8?B?UW5SU2UzR0hYT3A5cnAxT3I1VjJsSGYzcFZVSFZrbFE3ZlhNT2N4b1BtZ0xa?=
+ =?utf-8?B?YW15NjhrcGJmdmNEeTNFNGdRU0FNeWhocy94MXE2MUNqQ3FRTTJNQy9PNVZD?=
+ =?utf-8?B?dURYQ2l1RHNMWDdSa0hXVk9aSFl3NGtya0lTUXpETnlKbEgvU2hKKzcvQVZs?=
+ =?utf-8?B?V1pLUlhES1NjYVFQbzdlZ3VHU25LdE1kWXo1czYwZmdLNHBBMndnd1NWbGtN?=
+ =?utf-8?Q?CdhuWEYtVRTHjWy6h1uit1GuH?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <734BDE7BB8D75B4788D78F6935B9A2E5@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: WARNING: No atomic I2C transfer handler for 'i2c-4' at
- drivers/i2c/i2c-core.h:40 i2c_smbus_xfer+0x178/0x190 (kernel 6.6.X, 6.7-rcX,
- PowerMac G5 11,2)
-To: Erhard Furtner <erhard_f@mailbox.org>, linux-i2c@vger.kernel.org
-References: <20231222230106.73f030a5@yea>
-Content-Language: en-US
-From: Tor Vic <torvic9@mailbox.org>
-In-Reply-To: <20231222230106.73f030a5@yea>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-ID: b01b190b218eed6ac16
-X-MBO-RS-META: 76hzqx1k5odjfgyy6ufb1dyga4kiaiym
-X-Rspamd-Queue-Id: 4T4l0J2lMGz9tF9
-X-Mailman-Approved-At: Thu, 04 Jan 2024 08:28:33 +1100
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: a46ab680-8c26-4864-caae-08dc0c4d368e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Jan 2024 11:14:54.6602
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: NvPDBpNJ3tco9JeVbuzj/9gCNGcjUrPiOk6BQaHknYZY8OIitU8Lglv5C7XoVmPUM/ebk0qnZX9KIOmuiMXMYWApTEcc46ynxDpg/+Fqbmg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR1P264MB1438
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,137 +134,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mwalle@kernel.org, linuxppc-dev@lists.ozlabs.org, benjamin.bara@skidata.com, Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc: James Houghton <jthoughton@google.com>, David Hildenbrand <david@redhat.com>, Yang Shi <shy828301@gmail.com>, Andrew Jones <andrew.jones@linux.dev>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, Andrea Arcangeli <aarcange@redhat.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>, Vlastimil Babka <vbabka@suse.cz>, Jason Gunthorpe <jgg@nvidia.com>, Axel Rasmussen <axelrasmussen@google.com>, Rik van Riel <riel@surriel.com>, John Hubbard <jhubbard@nvidia.com>, "Kirill A . Shutemov" <kirill@shutemov.name>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Lorenzo Stoakes <lstoakes@gmail.com>, Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 12/22/23 23:01, Erhard Furtner wrote:
-> Greetings!
-> 
-> I am getting this on my PowerMac G5 11,2 at reboot on kernels 6.6.X and 6.7-rcX:
-> 
-
-Hi,
-
-this seems to be the same issue as [1], and also referenced in [2].
-
-For now, I have reverted the patch [3] as the huge splats on reboot are 
-really annoying.
-
-[1] 
-https://lore.kernel.org/linux-i2c/13271b9b-4132-46ef-abf8-2c311967bb46@mailbox.org/
-
-[2] 
-https://lore.kernel.org/linux-i2c/20230327-tegra-pmic-reboot-v7-2-18699d5dcd76@skidata.com/T/#m22d00b913f150b4d80623162c5b0c79b338774f0
-
-[3] (3473cf43b) i2c: core: Run atomic i2c xfer when !preemptible
-
-Cheers,
-Tor Vic
-
-> [...]
-> reboot: Restarting system
-> ------------[ cut here ]------------
-> No atomic I2C transfer handler for 'i2c-4'
-> WARNING: CPU: 1 PID: 362 at drivers/i2c/i2c-core.h:40 i2c_smbus_xfer+0x178/0x190
-> Modules linked in: windfarm_cpufreq_clamp windfarm_smu_sensors windfarm_smu_controls windfarm_pm112 snd_aoa_codec_onyx windfarm_pid snd_aoa_fabric_layout snd_aoa nouveau windfarm_smu_sat snd_aoa_i2sbus windfarm_lm75_sensor snd_aoa_soundbus windfarm_max6690_sensor firewire_ohci snd_pcm windfarm_core drm_exec snd_timer firewire_core crc_itu_t gpu_sched snd i2c_algo_bit backlight drm_ttm_helper ttm soundcore ohci_pci rack_meter tg3 drm_display_helper hwmon cfg80211 rfkill zram zsmalloc loop dm_mod configfs
-> CPU: 1 PID: 362 Comm: kwindfarm Not tainted 6.6.7-gentoo-PMacG5 #1
-> Hardware name: PowerMac11,2 PPC970MP 0x440101 PowerMac
-> NIP:  c000000000b03f68 LR: c000000000b03f64 CTR: 0000000000000000
-> REGS: c00000001fddf930 TRAP: 0700   Not tainted  (6.6.7-gentoo-PMacG5)
-> MSR:  9000000000029032 <SF,HV,EE,ME,IR,DR,RI>  CR: 24002842  XER: 00000000
-> IRQMASK: 0
-> GPR00: 0000000000000000 c00000001fddfbd0 c0000000010dd900 0000000000000000
-> GPR04: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> GPR12: 0000000000000000 c00000000ffff700 c000000000101558 c00000001be361c0
-> GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> GPR20: 0000000000000000 0000000000000000 0000000000000000 c0003d0000348258
-> GPR24: 0000000051eb851f 000000000000004c 0000000000000000 0000000000000001
-> GPR28: 0000000000000001 0000000000000002 c00000001fddfc96 c0000000040c8828
-> NIP [c000000000b03f68] i2c_smbus_xfer+0x178/0x190
-> LR [c000000000b03f64] i2c_smbus_xfer+0x174/0x190
-> Call Trace:
-> [c00000001fddfbd0] [c000000000b03f64] i2c_smbus_xfer+0x174/0x190 (unreliable)
-> [c00000001fddfc70] [c000000000b040d4] i2c_smbus_read_byte_data+0x64/0xd0
-> [c00000001fddfcd0] [c0003d00003290c8] wf_max6690_get+0x30/0x90 [windfarm_max6690_sensor]
-> [c00000001fddfd00] [c0003d000006878c] pm112_wf_notify+0x564/0x118c [windfarm_pm112]
-> [c00000001fddfe00] [c000000000103364] notifier_call_chain+0xa4/0x190
-> [c00000001fddfea0] [c00000000010387c] blocking_notifier_call_chain+0x5c/0xb0
-> [c00000001fddfee0] [c0003d000034ebe0] wf_thread_func+0xe8/0x190 [windfarm_core]
-> [c00000001fddff90] [c000000000101680] kthread+0x130/0x140
-> [c00000001fddffe0] [c00000000000bfb0] start_kernel_thread+0x14/0x18
-> Code: 39800000 4e800020 e9290018 2c290000 4082ff1c e88300e0 2c240000 4182001c 3c62fff4 3863f2b0 4b5bf379 60000000 <0fe00000> 4bfffef8 e8830090 4bffffe4
-> ---[ end trace 0000000000000000 ]---
-> ------------[ cut here ]------------
-> No atomic I2C transfer handler for 'i2c-4'
-> WARNING: CPU: 1 PID: 362 at drivers/i2c/i2c-core.h:40 i2c_smbus_xfer+0x178/0x190
-> Modules linked in: windfarm_cpufreq_clamp windfarm_smu_sensors windfarm_smu_controls windfarm_pm112 snd_aoa_codec_onyx windfarm_pid snd_aoa_fabric_layout snd_aoa nouveau windfarm_smu_sat snd_aoa_i2sbus windfarm_lm75_sensor snd_aoa_soundbus windfarm_max6690_sensor firewire_ohci snd_pcm windfarm_core drm_exec snd_timer firewire_core crc_itu_t gpu_sched snd i2c_algo_bit backlight drm_ttm_helper ttm soundcore ohci_pci rack_meter tg3 drm_display_helper hwmon cfg80211 rfkill zram zsmalloc loop dm_mod configfs
-> CPU: 1 PID: 362 Comm: kwindfarm Tainted: G        W          6.6.7-gentoo-PMacG5 #1
-> Hardware name: PowerMac11,2 PPC970MP 0x440101 PowerMac
-> NIP:  c000000000b03f68 LR: c000000000b03f64 CTR: 0000000000000000
-> REGS: c00000001fddf930 TRAP: 0700   Tainted: G        W           (6.6.7-gentoo-PMacG5)
-> MSR:  9000000000029032 <SF,HV,EE,ME,IR,DR,RI>  CR: 24002842  XER: 00000000
-> IRQMASK: 0
-> GPR00: 0000000000000000 c00000001fddfbd0 c0000000010dd900 0000000000000000
-> GPR04: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> GPR12: 0000000000000000 c00000000ffff700 c000000000101558 c00000001be361c0
-> GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> GPR20: 0000000000000000 0000000000000000 0000000000000000 c0003d0000348258
-> GPR24: 0000000051eb851f 000000000000004a 0000000000000000 0000000000000001
-> GPR28: 0000000000000000 0000000000000003 c00000001fddfc96 c0000000040c8828
-> NIP [c000000000b03f68] i2c_smbus_xfer+0x178/0x190
-> LR [c000000000b03f64] i2c_smbus_xfer+0x174/0x190
-> Call Trace:
-> [c00000001fddfbd0] [c000000000b03f64] i2c_smbus_xfer+0x174/0x190 (unreliable)
-> [c00000001fddfc70] [c000000000b04274] i2c_smbus_read_word_data+0x64/0xd0
-> [c00000001fddfcd0] [c0003d00003bc0dc] wf_lm75_get+0x44/0xf0 [windfarm_lm75_sensor]
-> [c00000001fddfd00] [c0003d00000688ac] pm112_wf_notify+0x684/0x118c [windfarm_pm112]
-> [c00000001fddfe00] [c000000000103364] notifier_call_chain+0xa4/0x190
-> [c00000001fddfea0] [c00000000010387c] blocking_notifier_call_chain+0x5c/0xb0
-> [c00000001fddfee0] [c0003d000034ebe0] wf_thread_func+0xe8/0x190 [windfarm_core]
-> [c00000001fddff90] [c000000000101680] kthread+0x130/0x140
-> [c00000001fddffe0] [c00000000000bfb0] start_kernel_thread+0x14/0x18
-> Code: 39800000 4e800020 e9290018 2c290000 4082ff1c e88300e0 2c240000 4182001c 3c62fff4 3863f2b0 4b5bf379 60000000 <0fe00000> 4bfffef8 e8830090 4bffffe4
-> ---[ end trace 0000000000000000 ]---
-> ------------[ cut here ]------------
-> No atomic I2C transfer handler for 'i2c-1'
-> WARNING: CPU: 1 PID: 362 at drivers/i2c/i2c-core.h:40 i2c_smbus_xfer+0x178/0x190
-> Modules linked in: windfarm_cpufreq_clamp windfarm_smu_sensors windfarm_smu_controls windfarm_pm112 snd_aoa_codec_onyx windfarm_pid snd_aoa_fabric_layout snd_aoa nouveau windfarm_smu_sat snd_aoa_i2sbus windfarm_lm75_sensor snd_aoa_soundbus windfarm_max6690_sensor firewire_ohci snd_pcm windfarm_core drm_exec snd_timer firewire_core crc_itu_t gpu_sched snd i2c_algo_bit backlight drm_ttm_helper ttm soundcore ohci_pci rack_meter tg3 drm_display_helper hwmon cfg80211 rfkill zram zsmalloc loop dm_mod configfs
-> CPU: 1 PID: 362 Comm: kwindfarm Tainted: G        W          6.6.7-gentoo-PMacG5 #1
-> Hardware name: PowerMac11,2 PPC970MP 0x440101 PowerMac
-> NIP:  c000000000b03f68 LR: c000000000b03f64 CTR: 0000000000000000
-> REGS: c00000001fddf8f0 TRAP: 0700   Tainted: G        W           (6.6.7-gentoo-PMacG5)
-> MSR:  9000000000029032 <SF,HV,EE,ME,IR,DR,RI>  CR: 24002842  XER: 00000000
-> IRQMASK: 0
-> GPR00: 0000000000000000 c00000001fddfb90 c0000000010dd900 0000000000000000
-> GPR04: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> GPR12: 0000000000000000 c00000000ffff700 c000000000101558 c00000001be361c0
-> GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> GPR20: 0000000000000000 0000000000000000 c0003d0000348840 c0003d0000348858
-> GPR24: 0000000000000000 0000000000000058 0000000000000000 0000000000000001
-> GPR28: 000000000000003f 0000000000000008 c00000001fddfc56 c0000000040ca028
-> NIP [c000000000b03f68] i2c_smbus_xfer+0x178/0x190
-> LR [c000000000b03f64] i2c_smbus_xfer+0x174/0x190
-> Call Trace:
-> [c00000001fddfb90] [c000000000b03f64] i2c_smbus_xfer+0x174/0x190 (unreliable)
-> [c00000001fddfc30] [c000000000b04644] i2c_smbus_read_i2c_block_data+0x84/0x120
-> [c00000001fddfca0] [c0003d00003374a4] wf_sat_sensor_get+0x16c/0x1a0 [windfarm_smu_sat]
-> [c00000001fddfd00] [c0003d00000684e8] pm112_wf_notify+0x2c0/0x118c [windfarm_pm112]
-> [c00000001fddfe00] [c000000000103364] notifier_call_chain+0xa4/0x190
-> [c00000001fddfea0] [c00000000010387c] blocking_notifier_call_chain+0x5c/0xb0
-> [c00000001fddfee0] [c0003d000034ebe0] wf_thread_func+0xe8/0x190 [windfarm_core]
-> [c00000001fddff90] [c000000000101680] kthread+0x130/0x140
-> [c00000001fddffe0] [c00000000000bfb0] start_kernel_thread+0x14/0x18
-> Code: 39800000 4e800020 e9290018 2c290000 4082ff1c e88300e0 2c240000 4182001c 3c62fff4 3863f2b0 4b5bf379 60000000 <0fe00000> 4bfffef8 e8830090 4bffffe4
-> ---[ end trace 0000000000000000 ]---
-> 
-> 
-> Kernel .config and full dmesg attached.
-> 
-> Regards,
-> Erhard
+DQoNCkxlIDAzLzAxLzIwMjQgw6AgMTA6MTQsIHBldGVyeEByZWRoYXQuY29tIGEgw6ljcml0wqA6
+DQo+IEZyb206IFBldGVyIFh1IDxwZXRlcnhAcmVkaGF0LmNvbT4NCj4gDQo+IA0KPiBUZXN0IERv
+bmUNCj4gPT09PT09PT09DQo+IA0KPiBUaGlzIHYxIHdlbnQgdGhyb3VnaCB0aGUgbm9ybWFsIEdV
+UCBzbW9rZSB0ZXN0cyBvdmVyIGRpZmZlcmVudCBtZW1vcnkNCj4gdHlwZXMgb24gYXJjaHMgKHVz
+aW5nIFZNIGluc3RhbmNlcyk6IHg4Nl82NCwgYWFyY2g2NCwgcHBjNjRsZS4gIEZvcg0KPiBhYXJj
+aDY0LCB0ZXN0ZWQgb3ZlciA2NEtCIGNvbnRfcHRlIGh1Z2UgcGFnZXMuICBGb3IgcHBjNjRsZSwg
+dGVzdGVkIG92ZXINCj4gMTZNQiBodWdlcGQgZW50cmllcyAoUG93ZXI4IGhhc2ggTU1VIG9uIDRL
+IGJhc2UgcGFnZSBzaXplKS4NCj4gDQoNCkNhbiB5b3UgdGVsbCBob3cgeW91IHRlc3QgPw0KDQpJ
+J20gd2lsbGluZyB0byB0ZXN0IHRoaXMgc2VyaWVzIG9uIHBvd2VycGMgOHh4IChQUEMzMikuDQoN
+CkNocmlzdG9waGUNCg==
