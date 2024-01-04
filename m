@@ -1,73 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D6E78241E8
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jan 2024 13:38:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDAFF824597
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jan 2024 16:59:17 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=F7QIjgQr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=FUmp0dq1;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T5R2m6b1kz3cZ1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jan 2024 23:38:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T5WVW3HyKz3brK
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jan 2024 02:59:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=F7QIjgQr;
+	dkim=pass (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=FUmp0dq1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2a00:1450:4864:20::62e; helo=mail-ej1-x62e.google.com; envelope-from=ajones@ventanamicro.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sifive.com (client-ip=2607:f8b0:4864:20::134; helo=mail-il1-x134.google.com; envelope-from=samuel.holland@sifive.com; receiver=lists.ozlabs.org)
+Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T5R1t0xlqz3bpk
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jan 2024 23:37:36 +1100 (AEDT)
-Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-a28aa47bd15so54755766b.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Jan 2024 04:37:36 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T5WTk2SsQz3bZK
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jan 2024 02:58:32 +1100 (AEDT)
+Received: by mail-il1-x134.google.com with SMTP id e9e14a558f8ab-35fc6eb9075so1852305ab.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Jan 2024 07:58:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1704371848; x=1704976648; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=b0YjTQ6DAdt/2c3mL0l6eIgN8OTkE75G1dsO8pPOomQ=;
-        b=F7QIjgQrWZMl7M//BSoJlXvjFneAXjL8yxtGh3Kq+xg22cVAe53xDs6p38/q2SdJe5
-         8gIWkr8U+KB3a6xviXjtPKimNUbTBk2kHru0U2+RmYARgApTEvnpUM0clNfTuN/VLuGY
-         RgIbmJry53eHNyrhoVOpXmliYwVm/GICR+jozXBh2+KMG1aHixbmNd12nxSzpUG19klc
-         te8WW49zjvj8pchYv1vdejTxvs6dAwUGrbvLgYQemh8YbeqPExqsmJok/WrAyr/9CEi2
-         VlXE4kMnsrcArdWyWkfoSG4bQeoKSIS+AmqYpvFEbhkHuAF1yJem4VzeQ3Mt27t1UdMp
-         tQ7w==
+        d=sifive.com; s=google; t=1704383909; x=1704988709; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=g+LkB4Vo+u25oWI7sGQO48sDZuLcvpPhc24u586CsWs=;
+        b=FUmp0dq1eTKyVteC9g0DTWlAa7v+5DATvu2wc14+xjJUXm4ukH+i88KUWSyD51zmjt
+         Aq7JfhBSkaQAT0+ywBX9VuALP3Qx3jFCBJAM3Y+hp9DqryVQG2zAmOW/jqoJuPPgBz92
+         obb+/o3SwUltSGdciV7MFNbGuoSOgxW4CSd7c2d3oJAIVbloKyUoY0/0ATbxKLjoqJ6s
+         Ezq1QThGnwbffK/GlyofikLaTchPw0AtjfGAoFCQeYdI0ptt9k6m7Tfmol4Rzs5LHvWx
+         RZMsdYr0cjaktH4LUbWuRyDYW1vgj0I4dOQytD4oivHD0NutzMa1UZWwmRnvLGJWrErb
+         53ZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704371848; x=1704976648;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=b0YjTQ6DAdt/2c3mL0l6eIgN8OTkE75G1dsO8pPOomQ=;
-        b=Y4Ph5VBrOP619+Ug1OnPSgRQ199Du/HHDXVxy+2AVeK+6JdfxodFo4l1m8ggqpuz/t
-         1tZHMzTqoGOti6uWZTRIiZTPO+11Q6/Tg6yThQ3GqRMkn5jof3y1kIxQhKVWjNOYVzRY
-         BnrhsA8WSVuGQ+phOYVPbg4GvFDoZZRc/HC3R0D4lpUl0WgYvUa0rHHarL1fyWsGIWVZ
-         Z4q95RxUHf3R0CGcbCuZ38bidto2InUnrpClXFbafgq/a6idPqQVZexX5UnvBMdT3PY+
-         Px2nsRzrmhgMwOAxNBS+r/Pybg+zJO8XMFhYqUhLTUgESjZUjIjpn/+h/UkF4rjicsbF
-         YETA==
-X-Gm-Message-State: AOJu0YzjrjiM1AtIjbP3lKJnyVPqgxC0e3oF9HOwJ3NSY0kg89YzUEP8
-	xVZPA/8KARQZLijhG6O6zVwXDQECpzN5Xg==
-X-Google-Smtp-Source: AGHT+IGuKrfQ1OvlUk+ZEceVcHij9CYGgADtdAxpjxUb2xwkyYhUHJZIQ7mR+ZBuQE0/8F7kowQcIw==
-X-Received: by 2002:a17:906:fa90:b0:a26:b71e:f75 with SMTP id lt16-20020a170906fa9000b00a26b71e0f75mr299486ejb.5.1704371848691;
-        Thu, 04 Jan 2024 04:37:28 -0800 (PST)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz. [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
-        by smtp.gmail.com with ESMTPSA id gh33-20020a1709073c2100b00a26b3f29f3dsm12649478ejc.43.2024.01.04.04.37.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jan 2024 04:37:28 -0800 (PST)
-From: Andrew Jones <ajones@ventanamicro.com>
-To: linux-riscv@lists.infradead.org,
-	linux-next@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org
-Subject: [PATCH -fixes v2] RISC-V: KVM: Require HAVE_KVM
-Date: Thu,  4 Jan 2024 13:37:28 +0100
-Message-ID: <20240104123727.76987-2-ajones@ventanamicro.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1704383909; x=1704988709;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=g+LkB4Vo+u25oWI7sGQO48sDZuLcvpPhc24u586CsWs=;
+        b=UikUczYaEB22m+uN6KMLFL1jtlDpWwLkkRLhvtg9xwXufj+VNfwBm9Pzw76aV8LBh9
+         3jwAgbz2BSwSrZ/oXyjBhSwOZ/Niub3fPobY9oyglhh2Kl1lts157RhWTRKksOJNfYtd
+         avknqS7zcJBpBhF6yWE1zVpMCMpDLBzl2J7Y0GFiSatvBiqD2v8osJQqau0UHYj9A4yi
+         7928I6dpCYH0iFmFFVYAbKfvYnn+8aofsmFDHT42vP+ZhtgAdwMj0GYBvN4ynHnBp7K7
+         YhzdW5/Hu/y8Tv6zXnkf+lHCbBPqqVbhpDez0nci4c4CJ+pUXwKiUlrVxKvti6bjv6rt
+         CYZQ==
+X-Gm-Message-State: AOJu0YxQ/jVtNJWE3T3APmXEGpJ8APKHnBhVMHmQfLsL8SGZt72JUui4
+	bH1lkhTcVun5h0RJU8I16dTidah5aqHlXg==
+X-Google-Smtp-Source: AGHT+IH0j3oQCRY8sxvQe5xsZpHeGls13odOGuU65eTJqn0FYIyylaRiHWDyo9dxY5HyEPL4psyAAg==
+X-Received: by 2002:a05:6e02:b48:b0:35f:f023:f8e2 with SMTP id f8-20020a056e020b4800b0035ff023f8e2mr508987ilu.17.1704383909345;
+        Thu, 04 Jan 2024 07:58:29 -0800 (PST)
+Received: from ?IPV6:2605:a601:adae:4500:b86c:e734:b34:45c6? ([2605:a601:adae:4500:b86c:e734:b34:45c6])
+        by smtp.gmail.com with ESMTPSA id v16-20020a92d250000000b0035d6559c5b9sm9232707ilg.64.2024.01.04.07.58.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Jan 2024 07:58:29 -0800 (PST)
+Message-ID: <84389bc3-f2e7-49c5-a820-de60ee00f8a7@sifive.com>
+Date: Thu, 4 Jan 2024 09:58:28 -0600
 MIME-Version: 1.0
-Content-type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 07/14] LoongArch: Implement ARCH_HAS_KERNEL_FPU_SUPPORT
+Content-Language: en-US
+To: Huacai Chen <chenhuacai@kernel.org>
+References: <20231228014220.3562640-1-samuel.holland@sifive.com>
+ <20231228014220.3562640-8-samuel.holland@sifive.com>
+ <CAAhV-H5TJPqRcgS6jywWDSNsCvd-PsVacgxgoiF-fJ00ZnS4uA@mail.gmail.com>
+From: Samuel Holland <samuel.holland@sifive.com>
+In-Reply-To: <CAAhV-H5TJPqRcgS6jywWDSNsCvd-PsVacgxgoiF-fJ00ZnS4uA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -80,54 +82,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sfr@canb.auug.org.au, aou@eecs.berkeley.edu, alex@ghiti.fr, anup@brainfault.org, rdunlap@infradead.org, npiggin@gmail.com, palmer@dabbelt.com, paul.walmsley@sifive.com, atishp@atishpatra.org, pbonzini@redhat.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, loongarch@lists.linux.dev, WANG Xuerui <git@xen0n.name>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-KVM requires EVENTFD, which is selected by HAVE_KVM. Other KVM
-supporting architectures select HAVE_KVM and then their KVM
-Kconfigs ensure its there with a depends on HAVE_KVM. Make RISCV
-consistent with that approach which fixes configs which have KVM
-but not EVENTFD, as was discovered with a randconfig test.
+Hi Huacai,
 
-Fixes: 99cdc6c18c2d ("RISC-V: Add initial skeletal KVM support")
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Closes: https://lore.kernel.org/all/44907c6b-c5bd-4e4a-a921-e4d3825539d8@infradead.org/
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
----
+On 2024-01-04 3:55 AM, Huacai Chen wrote:
+> Hi, Samuel,
+> 
+> On Thu, Dec 28, 2023 at 9:42 AM Samuel Holland
+> <samuel.holland@sifive.com> wrote:
+>>
+>> LoongArch already provides kernel_fpu_begin() and kernel_fpu_end() in
+>> asm/fpu.h, so it only needs to add kernel_fpu_available() and export
+>> the CFLAGS adjustments.
+>>
+>> Acked-by: WANG Xuerui <git@xen0n.name>
+>> Reviewed-by: Christoph Hellwig <hch@lst.de>
+>> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+>> ---
+>>
+>> (no changes since v1)
+>>
+>>  arch/loongarch/Kconfig           | 1 +
+>>  arch/loongarch/Makefile          | 5 ++++-
+>>  arch/loongarch/include/asm/fpu.h | 1 +
+>>  3 files changed, 6 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+>> index ee123820a476..65d4475565b8 100644
+>> --- a/arch/loongarch/Kconfig
+>> +++ b/arch/loongarch/Kconfig
+>> @@ -15,6 +15,7 @@ config LOONGARCH
+>>         select ARCH_HAS_CPU_FINALIZE_INIT
+>>         select ARCH_HAS_FORTIFY_SOURCE
+>>         select ARCH_HAS_KCOV
+>> +       select ARCH_HAS_KERNEL_FPU_SUPPORT if CPU_HAS_FPU
+>>         select ARCH_HAS_NMI_SAFE_THIS_CPU_OPS
+>>         select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+>>         select ARCH_HAS_PTE_SPECIAL
+>> diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
+>> index 4ba8d67ddb09..1afe28feaba5 100644
+>> --- a/arch/loongarch/Makefile
+>> +++ b/arch/loongarch/Makefile
+>> @@ -25,6 +25,9 @@ endif
+>>  32bit-emul             = elf32loongarch
+>>  64bit-emul             = elf64loongarch
+>>
+>> +CC_FLAGS_FPU           := -mfpu=64
+>> +CC_FLAGS_NO_FPU                := -msoft-float
+> We will add LoongArch32 support later, maybe it should be -mfpu=32 in
+> that case, and do other archs have the case that only support FP32?
 
-v2:
- - Added Fixes tag and -fixes prefix [Alexandre/Anup]
+Do you mean that LoongArch32 does not support double-precision FP in hardware?
+At least both of the consumers in this series use double-precision, so my first
+thought is that LoongArch32 could not select ARCH_HAS_KERNEL_FPU_SUPPORT.
 
- arch/riscv/Kconfig     | 1 +
- arch/riscv/kvm/Kconfig | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index a935a5f736b9..daba06a3b76f 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -128,6 +128,7 @@ config RISCV
- 	select HAVE_KPROBES if !XIP_KERNEL
- 	select HAVE_KPROBES_ON_FTRACE if !XIP_KERNEL
- 	select HAVE_KRETPROBES if !XIP_KERNEL
-+	select HAVE_KVM
- 	# https://github.com/ClangBuiltLinux/linux/issues/1881
- 	select HAVE_LD_DEAD_CODE_DATA_ELIMINATION if !LD_IS_LLD
- 	select HAVE_MOVE_PMD
-diff --git a/arch/riscv/kvm/Kconfig b/arch/riscv/kvm/Kconfig
-index 1fd76aee3b71..36fa8ec9e5ba 100644
---- a/arch/riscv/kvm/Kconfig
-+++ b/arch/riscv/kvm/Kconfig
-@@ -19,7 +19,7 @@ if VIRTUALIZATION
- 
- config KVM
- 	tristate "Kernel-based Virtual Machine (KVM) support (EXPERIMENTAL)"
--	depends on RISCV_SBI && MMU
-+	depends on HAVE_KVM && RISCV_SBI && MMU
- 	select HAVE_KVM_IRQCHIP
- 	select HAVE_KVM_IRQ_ROUTING
- 	select HAVE_KVM_MSI
--- 
-2.43.0
+Regards,
+Samuel
 
