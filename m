@@ -1,71 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25B2F8240BB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jan 2024 12:34:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D6E78241E8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jan 2024 13:38:27 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=xvw6CZ7/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=F7QIjgQr;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T5Pcf5jGqz3cVM
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jan 2024 22:34:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T5R2m6b1kz3cZ1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jan 2024 23:38:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=xvw6CZ7/;
+	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=F7QIjgQr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=brainfault.org (client-ip=2607:f8b0:4864:20::12e; helo=mail-il1-x12e.google.com; envelope-from=anup@brainfault.org; receiver=lists.ozlabs.org)
-Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2a00:1450:4864:20::62e; helo=mail-ej1-x62e.google.com; envelope-from=ajones@ventanamicro.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T5Pbn3FFBz3btm
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jan 2024 22:33:24 +1100 (AEDT)
-Received: by mail-il1-x12e.google.com with SMTP id e9e14a558f8ab-3606a0ce096so295775ab.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Jan 2024 03:33:24 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T5R1t0xlqz3bpk
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jan 2024 23:37:36 +1100 (AEDT)
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-a28aa47bd15so54755766b.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Jan 2024 04:37:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1704368001; x=1704972801; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5Dt7uLNKLulzrg/dNC959xAVcdyKjB2fv5qTZvClME8=;
-        b=xvw6CZ7/Jz0PYXauntbh3LOFJRppFWdRGY0R6r5cB8UbWZ/9zeeFimWasiuXGiYfm2
-         2qpbkbVpkSduwewDwxKFjkmXIUWQqHB92Rccws49W3OAtzKApfDC1su2jp9VNF6ePWP0
-         OZf96kS4/lgYpyusceGGz7+ZKgVNufY2YysaNhO4jqva27JdFy4LMwobixsxxwSh3DRm
-         m2G6U7bDsZ09pKTTvzqcIc/rMnN1x2l2+vvSVlGufmUsYPpYiWXMGOaLbiwtNwOsqBRk
-         tEmAXoSqxjhQlharJb0a8laDLcYXYdj0/fU7DEek71I8Z37OH3vGD2aX9iShh4YrEBzJ
-         ZIfQ==
+        d=ventanamicro.com; s=google; t=1704371848; x=1704976648; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=b0YjTQ6DAdt/2c3mL0l6eIgN8OTkE75G1dsO8pPOomQ=;
+        b=F7QIjgQrWZMl7M//BSoJlXvjFneAXjL8yxtGh3Kq+xg22cVAe53xDs6p38/q2SdJe5
+         8gIWkr8U+KB3a6xviXjtPKimNUbTBk2kHru0U2+RmYARgApTEvnpUM0clNfTuN/VLuGY
+         RgIbmJry53eHNyrhoVOpXmliYwVm/GICR+jozXBh2+KMG1aHixbmNd12nxSzpUG19klc
+         te8WW49zjvj8pchYv1vdejTxvs6dAwUGrbvLgYQemh8YbeqPExqsmJok/WrAyr/9CEi2
+         VlXE4kMnsrcArdWyWkfoSG4bQeoKSIS+AmqYpvFEbhkHuAF1yJem4VzeQ3Mt27t1UdMp
+         tQ7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704368001; x=1704972801;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5Dt7uLNKLulzrg/dNC959xAVcdyKjB2fv5qTZvClME8=;
-        b=sDwnMH/BmYVoP59C3cAyl6q3AeavGJ3uoFMEAiT/0k7cYnXtVy5oV6e8HIYRB38Nj+
-         pUTi2E1u67gH4bE0Y+z/KSrTmvoa7GLTd7LG0g6te7KokpsDOiGb7GwuwTfbeTLYuJTj
-         ew+LcfcjA0QXik5EjxjcAniRh5wHVO0YSc19n4TFp6c+17/T56Wx5ZE4ck+BeGRpzMJA
-         PgY2ylRFcCwmRyyMWMtC5xE0WJv47toiPobOzIrugDQQME/r2SqrMeLZ/pFWkg5DO51z
-         E41hgPZdjkzMyA/BHl4xJVEiJ58xJlwHghDHTv14fRV9vHKo0yk0T3aaGp8goJIrloW9
-         JFQw==
-X-Gm-Message-State: AOJu0YzfA0n+zujcURTCLqgJBmndh7gp25trPV59sQx8E6qBmeztJUq1
-	yF5uwGI4BP6IXvf838eINHnzwoMIQMzMDu4aefESdQHya6ZHzQ==
-X-Google-Smtp-Source: AGHT+IEiLv7qiits4vk8xdWF1s4r4OiPqhbNMM2mLBiLLO2wGlETEHoIcyBn6dRE3jspd9+Bb4GSzadf5GgKpkLl1DU=
-X-Received: by 2002:a05:6e02:17c9:b0:360:16c7:2d6a with SMTP id
- z9-20020a056e0217c900b0036016c72d6amr482112ilu.48.1704368001050; Thu, 04 Jan
- 2024 03:33:21 -0800 (PST)
+        d=1e100.net; s=20230601; t=1704371848; x=1704976648;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=b0YjTQ6DAdt/2c3mL0l6eIgN8OTkE75G1dsO8pPOomQ=;
+        b=Y4Ph5VBrOP619+Ug1OnPSgRQ199Du/HHDXVxy+2AVeK+6JdfxodFo4l1m8ggqpuz/t
+         1tZHMzTqoGOti6uWZTRIiZTPO+11Q6/Tg6yThQ3GqRMkn5jof3y1kIxQhKVWjNOYVzRY
+         BnrhsA8WSVuGQ+phOYVPbg4GvFDoZZRc/HC3R0D4lpUl0WgYvUa0rHHarL1fyWsGIWVZ
+         Z4q95RxUHf3R0CGcbCuZ38bidto2InUnrpClXFbafgq/a6idPqQVZexX5UnvBMdT3PY+
+         Px2nsRzrmhgMwOAxNBS+r/Pybg+zJO8XMFhYqUhLTUgESjZUjIjpn/+h/UkF4rjicsbF
+         YETA==
+X-Gm-Message-State: AOJu0YzjrjiM1AtIjbP3lKJnyVPqgxC0e3oF9HOwJ3NSY0kg89YzUEP8
+	xVZPA/8KARQZLijhG6O6zVwXDQECpzN5Xg==
+X-Google-Smtp-Source: AGHT+IGuKrfQ1OvlUk+ZEceVcHij9CYGgADtdAxpjxUb2xwkyYhUHJZIQ7mR+ZBuQE0/8F7kowQcIw==
+X-Received: by 2002:a17:906:fa90:b0:a26:b71e:f75 with SMTP id lt16-20020a170906fa9000b00a26b71e0f75mr299486ejb.5.1704371848691;
+        Thu, 04 Jan 2024 04:37:28 -0800 (PST)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz. [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+        by smtp.gmail.com with ESMTPSA id gh33-20020a1709073c2100b00a26b3f29f3dsm12649478ejc.43.2024.01.04.04.37.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jan 2024 04:37:28 -0800 (PST)
+From: Andrew Jones <ajones@ventanamicro.com>
+To: linux-riscv@lists.infradead.org,
+	linux-next@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org
+Subject: [PATCH -fixes v2] RISC-V: KVM: Require HAVE_KVM
+Date: Thu,  4 Jan 2024 13:37:28 +0100
+Message-ID: <20240104123727.76987-2-ajones@ventanamicro.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20240104104307.16019-2-ajones@ventanamicro.com>
- <20240104-d5ebb072b91a6f7abbb2ac76@orel> <752c11ea-7172-40ff-a821-c78aeb6c5518@ghiti.fr>
- <20240104-6a5a59dde14adcaf3ac22a35@orel>
-In-Reply-To: <20240104-6a5a59dde14adcaf3ac22a35@orel>
-From: Anup Patel <anup@brainfault.org>
-Date: Thu, 4 Jan 2024 17:03:10 +0530
-Message-ID: <CAAhSdy0uVZXsP1_3zZiwXXEXBZGkmWX5ujptirojD8S4nuzQpQ@mail.gmail.com>
-Subject: Re: Re: [PATCH] RISC-V: KVM: Require HAVE_KVM
-To: Andrew Jones <ajones@ventanamicro.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,34 +80,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sfr@canb.auug.org.au, aou@eecs.berkeley.edu, kvm@vger.kernel.org, Alexandre Ghiti <alex@ghiti.fr>, atishp@atishpatra.org, linux-kernel@vger.kernel.org, npiggin@gmail.com, linux-next@vger.kernel.org, palmer@dabbelt.com, rdunlap@infradead.org, kvm-riscv@lists.infradead.org, paul.walmsley@sifive.com, pbonzini@redhat.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
+Cc: sfr@canb.auug.org.au, aou@eecs.berkeley.edu, alex@ghiti.fr, anup@brainfault.org, rdunlap@infradead.org, npiggin@gmail.com, palmer@dabbelt.com, paul.walmsley@sifive.com, atishp@atishpatra.org, pbonzini@redhat.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 4, 2024 at 4:51=E2=80=AFPM Andrew Jones <ajones@ventanamicro.co=
-m> wrote:
->
-> On Thu, Jan 04, 2024 at 12:07:51PM +0100, Alexandre Ghiti wrote:
-> > On 04/01/2024 11:52, Andrew Jones wrote:
-> > > This applies to linux-next, but I forgot to append -next to the PATCH
-> > > prefix.
-> >
-> >
-> > Shoudn't this go to -fixes instead? With a Fixes tag?
->
-> I'm not sure how urgent it is since it's a randconfig thing, but if we
-> think it deserves the -fixes track then I can do that. The Fixes tag isn'=
-t
-> super easy to select since, while it seems like it should be 8132d887a702
-> ("KVM: remove CONFIG_HAVE_KVM_EVENTFD"), it could also be 99cdc6c18c2d
-> ("RISC-V: Add initial skeletal KVM support").
->
-> I'll leave both the urgency decision and the Fixes tag selection up to
-> the maintainers. Anup? Paolo?
-
-Lets add
+KVM requires EVENTFD, which is selected by HAVE_KVM. Other KVM
+supporting architectures select HAVE_KVM and then their KVM
+Kconfigs ensure its there with a depends on HAVE_KVM. Make RISCV
+consistent with that approach which fixes configs which have KVM
+but not EVENTFD, as was discovered with a randconfig test.
 
 Fixes: 99cdc6c18c2d ("RISC-V: Add initial skeletal KVM support")
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Closes: https://lore.kernel.org/all/44907c6b-c5bd-4e4a-a921-e4d3825539d8@infradead.org/
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+---
 
-Regards,
-Anup
+v2:
+ - Added Fixes tag and -fixes prefix [Alexandre/Anup]
+
+ arch/riscv/Kconfig     | 1 +
+ arch/riscv/kvm/Kconfig | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index a935a5f736b9..daba06a3b76f 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -128,6 +128,7 @@ config RISCV
+ 	select HAVE_KPROBES if !XIP_KERNEL
+ 	select HAVE_KPROBES_ON_FTRACE if !XIP_KERNEL
+ 	select HAVE_KRETPROBES if !XIP_KERNEL
++	select HAVE_KVM
+ 	# https://github.com/ClangBuiltLinux/linux/issues/1881
+ 	select HAVE_LD_DEAD_CODE_DATA_ELIMINATION if !LD_IS_LLD
+ 	select HAVE_MOVE_PMD
+diff --git a/arch/riscv/kvm/Kconfig b/arch/riscv/kvm/Kconfig
+index 1fd76aee3b71..36fa8ec9e5ba 100644
+--- a/arch/riscv/kvm/Kconfig
++++ b/arch/riscv/kvm/Kconfig
+@@ -19,7 +19,7 @@ if VIRTUALIZATION
+ 
+ config KVM
+ 	tristate "Kernel-based Virtual Machine (KVM) support (EXPERIMENTAL)"
+-	depends on RISCV_SBI && MMU
++	depends on HAVE_KVM && RISCV_SBI && MMU
+ 	select HAVE_KVM_IRQCHIP
+ 	select HAVE_KVM_IRQ_ROUTING
+ 	select HAVE_KVM_MSI
+-- 
+2.43.0
+
