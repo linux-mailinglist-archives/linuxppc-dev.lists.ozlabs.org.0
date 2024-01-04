@@ -2,54 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3EAC8245AB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jan 2024 17:03:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D2F28245C5
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jan 2024 17:07:03 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=q4PD0cGd;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aSTs4kkj;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T5WbH2kW5z3cZq
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jan 2024 03:03:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T5WgS5x6yz3cbt
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jan 2024 03:07:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=q4PD0cGd;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aSTs4kkj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T5WZN4vYKz3bpk
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jan 2024 03:02:36 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=azJ/J7vywXkqTQ9Hi2IirR6RPgqAfj1yxhz8MRLS2x0=; b=q4PD0cGdukmiPEaNlMlJWJF+pT
-	ZXVvbKF0lx8N6RKDbdA3XnJFCH57UNSdhZ/kO8Iz0hoRFVNagfGq3512N2nRWB7DjAXdStXkQIQWA
-	ncOA4AZhdNj8GPB/A2qakkDxKh6kd0iDbs6UmdffT9uSFK6jyOMkzXooC/E6xuAvuKKbe7Rp3CQTz
-	J1I841KAHRyzTq2XKmovhgML0YXdz5QY3zZHBV6z1JGo68+qVuCERlZ6TC/jEWjXTKRPozGsTHkOr
-	2gLYqGCPigeu8LwNiVrx9UwGlVUWFnDhAyslZYKq4eBvBb5hXDvGsvbI1KfC4At7taj8HX1V2qE8x
-	5swElK2g==;
-Received: from [50.53.46.231] (helo=[192.168.254.15])
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1rLQAp-00EbY6-1D;
-	Thu, 04 Jan 2024 16:02:23 +0000
-Message-ID: <41cdcf9d-d726-4f4f-9616-d67e68a535cb@infradead.org>
-Date: Thu, 4 Jan 2024 08:02:21 -0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T5Wfg1DW0z3bpk
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jan 2024 03:06:19 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 09F81618A6;
+	Thu,  4 Jan 2024 16:06:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A8CA7C433C8;
+	Thu,  4 Jan 2024 16:06:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704384375;
+	bh=TAWT/INzG+9nYzwzqhBxsSvW9WYNiknpgg46LmQySnU=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=aSTs4kkj4IzwmQ2M33LpsZse9z00H8xhXkrtTeslRA9ma/oWBOOGak5iEtn9EIeIX
+	 S6lO5jzgOed1tMB/kI4tXWGkgbFnzxH1AvTpM1vW6IwI+HHaNiZLxLg0oPbcaajgKX
+	 +C+y1NpdUWBrGRho9MNOpKW5CiWu6jk0NXDeBYaX9KrvHr67XcXqsvPtbFPknztCXP
+	 +0WTl1trwPqFPXnJEDr0MjdvDTbrfHF1roGORj1o4dpl1wND06aepyW3txb1GR3uA9
+	 k+OXnwyFLpezfGR7O4kXMPMsicuKJx9tUWyWLQnEmNbhk02Vd+JjJ+fp6KcLt1wvsQ
+	 guZMGyrH5WHuw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 89DBFC47073;
+	Thu,  4 Jan 2024 16:06:15 +0000 (UTC)
+From: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
+Date: Thu, 04 Jan 2024 10:06:07 -0600
+Subject: [PATCH] powerpc/pseries/lparcfg: drop error message from guest
+ name lookup
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH -fixes v2] RISC-V: KVM: Require HAVE_KVM
-Content-Language: en-US
-To: Andrew Jones <ajones@ventanamicro.com>, linux-riscv@lists.infradead.org,
- linux-next@vger.kernel.org, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, kvm-riscv@lists.infradead.org
-References: <20240104123727.76987-2-ajones@ventanamicro.com>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20240104123727.76987-2-ajones@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20240104-lparcfg-updates-v1-1-66a0184a4eb1@linux.ibm.com>
+X-B4-Tracking: v=1; b=H4sIAG7XlmUC/x3MTQqAIBBA4avErBP8yYSuEi3ERhuIEq0IxLsnL
+ b/FewUyJsIMU1cg4UOZzqNB9B24zR4BGa3NILlUQgrJ9miT84HdcbUXZoZe6EEZN2rDoVUxoaf
+ 3P85LrR9VyZygYQAAAA==
+To: Michael Ellerman <mpe@ellerman.id.au>, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, 
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1704384374; l=1163;
+ i=nathanl@linux.ibm.com; s=20230817; h=from:subject:message-id;
+ bh=GMz0IiAh9zK5P880g/A7U6ApcCcqSeLA3Ql+a2XZK9Y=;
+ b=O1xFqRDdGK5iRd8E3mmF8YTU9mQPmDWI4unbFo8rvxNIHwPuNzNIQJ+kvN0QEvz9QKmOdtkFB
+ wgYIHj6T2l1DU/bmiamqFGCoamt6/CFJUFtQla9AD4xRuTvkiYtXVbp
+X-Developer-Key: i=nathanl@linux.ibm.com; a=ed25519;
+ pk=jPDF44RvT+9DGFOH3NGoIu1xN9dF+82pjdpnKjXfoJ0=
+X-Endpoint-Received:  by B4 Relay for nathanl@linux.ibm.com/20230817 with auth_id=78
+X-Original-From: Nathan Lynch <nathanl@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,65 +76,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sfr@canb.auug.org.au, aou@eecs.berkeley.edu, alex@ghiti.fr, anup@brainfault.org, paul.walmsley@sifive.com, npiggin@gmail.com, palmer@dabbelt.com, atishp@atishpatra.org, pbonzini@redhat.com, linuxppc-dev@lists.ozlabs.org
+Reply-To: nathanl@linux.ibm.com
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
+It's not an error or exceptional situation when the hosting
+environment does not expose a name for the LP/guest via RTAS or the
+device tree. This happens with qemu when run without the '-name'
+option. The message also lacks a newline. Remove it.
 
-On 1/4/24 04:37, Andrew Jones wrote:
-> KVM requires EVENTFD, which is selected by HAVE_KVM. Other KVM
-> supporting architectures select HAVE_KVM and then their KVM
-> Kconfigs ensure its there with a depends on HAVE_KVM. Make RISCV
-> consistent with that approach which fixes configs which have KVM
-> but not EVENTFD, as was discovered with a randconfig test.
-> 
-> Fixes: 99cdc6c18c2d ("RISC-V: Add initial skeletal KVM support")
-> Reported-by: Randy Dunlap <rdunlap@infradead.org>
-> Closes: https://lore.kernel.org/all/44907c6b-c5bd-4e4a-a921-e4d3825539d8@infradead.org/
-> Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+---
+ arch/powerpc/platforms/pseries/lparcfg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
+index 1c151d77e74b..ff02ade17a75 100644
+--- a/arch/powerpc/platforms/pseries/lparcfg.c
++++ b/arch/powerpc/platforms/pseries/lparcfg.c
+@@ -357,8 +357,8 @@ static int read_dt_lpar_name(struct seq_file *m)
+ 
+ static void read_lpar_name(struct seq_file *m)
+ {
+-	if (read_rtas_lpar_name(m) && read_dt_lpar_name(m))
+-		pr_err_once("Error can't get the LPAR name");
++	if (read_rtas_lpar_name(m))
++		read_dt_lpar_name(m);
+ }
+ 
+ #define SPLPAR_MAXLENGTH 1026*(sizeof(char))
 
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
+---
+base-commit: 44a1aad2fe6c10bfe0589d8047057b10a4c18a19
+change-id: 20231212-lparcfg-updates-ef15437c6570
 
-Thanks.
-
-
-> ---
-> 
-> v2:
->  - Added Fixes tag and -fixes prefix [Alexandre/Anup]
-> 
->  arch/riscv/Kconfig     | 1 +
->  arch/riscv/kvm/Kconfig | 2 +-
->  2 files changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index a935a5f736b9..daba06a3b76f 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -128,6 +128,7 @@ config RISCV
->  	select HAVE_KPROBES if !XIP_KERNEL
->  	select HAVE_KPROBES_ON_FTRACE if !XIP_KERNEL
->  	select HAVE_KRETPROBES if !XIP_KERNEL
-> +	select HAVE_KVM
->  	# https://github.com/ClangBuiltLinux/linux/issues/1881
->  	select HAVE_LD_DEAD_CODE_DATA_ELIMINATION if !LD_IS_LLD
->  	select HAVE_MOVE_PMD
-> diff --git a/arch/riscv/kvm/Kconfig b/arch/riscv/kvm/Kconfig
-> index 1fd76aee3b71..36fa8ec9e5ba 100644
-> --- a/arch/riscv/kvm/Kconfig
-> +++ b/arch/riscv/kvm/Kconfig
-> @@ -19,7 +19,7 @@ if VIRTUALIZATION
->  
->  config KVM
->  	tristate "Kernel-based Virtual Machine (KVM) support (EXPERIMENTAL)"
-> -	depends on RISCV_SBI && MMU
-> +	depends on HAVE_KVM && RISCV_SBI && MMU
->  	select HAVE_KVM_IRQCHIP
->  	select HAVE_KVM_IRQ_ROUTING
->  	select HAVE_KVM_MSI
-
+Best regards,
 -- 
-#Randy
+Nathan Lynch <nathanl@linux.ibm.com>
+
