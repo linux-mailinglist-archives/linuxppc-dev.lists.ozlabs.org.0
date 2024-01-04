@@ -1,54 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 766CC8239B0
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jan 2024 01:38:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56883823F13
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jan 2024 10:56:28 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=Ikxh+Mtb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OHFkUtqf;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T573h1DC2z3c5t
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jan 2024 11:38:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T5MRs2zkBz3cTL
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jan 2024 20:56:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=Ikxh+Mtb;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OHFkUtqf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=chenhuacai@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T572k3W08z2xTm
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jan 2024 11:37:15 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=TIrs4SVN4sRDCoR2FH1y2ydUgyXfkIj7iu/mUg4qpdk=; b=Ikxh+Mtbz4GAUdOd1bXxWWLrlB
-	pGSr9SZaGlzzVkrssTh0BnOyVHZoapyzpE5XBIamNL8v45hj/wCVhQzr8Pr8ZCiQN4aP5MZvJa1uH
-	B6AWmGpbuip67N10bR60c/8xmEx6101/vB/+b2M74ksqusrgD7jRMHapo2gkpODYvyRHRjJ7EcSQG
-	bvpto/NSjrsJatdFEnMlBeEiWFUdWx4IrLf47b/t8HOHEPnShXnFnVF4UdHWbyHvELHS8YfGI4l5i
-	pCJwfhx/sP6+69Z+51bWTSnRl9vKC3SvSSXkWBaTIv/cM/Q2vnE5ghdX5/Dfcqpj08Tua9zOgBJNY
-	pyvbuIzQ==;
-Received: from [50.53.46.231] (helo=[192.168.254.15])
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1rLBjK-00CV87-0P;
-	Thu, 04 Jan 2024 00:37:02 +0000
-Message-ID: <e3dcf2f8-85dc-4adc-b917-af494a829499@infradead.org>
-Date: Wed, 3 Jan 2024 16:37:00 -0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T5MR40ZdJz2yky
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jan 2024 20:55:44 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 77017CE16FD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jan 2024 09:55:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C12CC433D9
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jan 2024 09:55:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704362139;
+	bh=NUKoeng2TtOuvmS1QuUleD7BGl+JqWw7EjY22X+zMeE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=OHFkUtqftfj+SZv9SeaQruKnYEQ+cq+CUVLhdhS4ctC5mJde61oZpomnZp+ecLocl
+	 edGdjmqnCNVqcSE+r/1BHCS9HtiWkfJlVSxkDAqPGjrXpj3m1RESX+i8Du30XCZhoc
+	 Phx4BiVKMLfV6iWckC4A+sp0BbGfUzv2NrDh9iOsqfiDWgJJBXqcmWjicme7o2UqjD
+	 OMdDO97BJHjpoD64eKNTbxVRZi2a6R+/ZwjD90Vah4KdwTLgLKFVkFiJMEVPIBQPIC
+	 QoCG2KHOziSdqLfOlz01MyVVY2UGekeYO2k3gZN/0V0FQCNOuMwCjTEqTwRZOK3QMU
+	 ZsLwm/ZTJ1jcQ==
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a28ac851523so36308666b.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Jan 2024 01:55:39 -0800 (PST)
+X-Gm-Message-State: AOJu0Yy3nr98WcrdzeWP+CeBUEBwOxkGR7QQFU3AqqNrUD6aptX2N8H8
+	6ygBt+M/EFkkC22tbyEplPxAcIChu3wFY4dSNG4=
+X-Google-Smtp-Source: AGHT+IEKmcnwqgygVH9sZZQyzsnOvSR/gqjMEXN+FYG4pXKZGSTboqY34lxGfMFTo2QI4qDTuxyc5MRzDYiHeKc4cMU=
+X-Received: by 2002:a17:906:a94:b0:a28:9633:d599 with SMTP id
+ y20-20020a1709060a9400b00a289633d599mr160134ejf.18.1704362137704; Thu, 04 Jan
+ 2024 01:55:37 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/8] powerpc: Fix typos
-Content-Language: en-US
-To: Bjorn Helgaas <helgaas@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>
-References: <20240103231605.1801364-1-helgaas@kernel.org>
- <20240103231605.1801364-8-helgaas@kernel.org>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20240103231605.1801364-8-helgaas@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20231228014220.3562640-1-samuel.holland@sifive.com> <20231228014220.3562640-8-samuel.holland@sifive.com>
+In-Reply-To: <20231228014220.3562640-8-samuel.holland@sifive.com>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Thu, 4 Jan 2024 17:55:32 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H5TJPqRcgS6jywWDSNsCvd-PsVacgxgoiF-fJ00ZnS4uA@mail.gmail.com>
+Message-ID: <CAAhV-H5TJPqRcgS6jywWDSNsCvd-PsVacgxgoiF-fJ00ZnS4uA@mail.gmail.com>
+Subject: Re: [PATCH v2 07/14] LoongArch: Implement ARCH_HAS_KERNEL_FPU_SUPPORT
+To: Samuel Holland <samuel.holland@sifive.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,57 +67,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-arch@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, loongarch@lists.linux.dev, WANG Xuerui <git@xen0n.name>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi, Samuel,
 
-
-On 1/3/24 15:16, Bjorn Helgaas wrote:
-> From: Bjorn Helgaas <bhelgaas@google.com>
-> 
-> Fix typos, most reported by "codespell arch/powerpc".  Only touches
-> comments, no code changes.
-> 
-> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: linuxppc-dev@lists.ozlabs.org
+On Thu, Dec 28, 2023 at 9:42=E2=80=AFAM Samuel Holland
+<samuel.holland@sifive.com> wrote:
+>
+> LoongArch already provides kernel_fpu_begin() and kernel_fpu_end() in
+> asm/fpu.h, so it only needs to add kernel_fpu_available() and export
+> the CFLAGS adjustments.
+>
+> Acked-by: WANG Xuerui <git@xen0n.name>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
 > ---
->  arch/powerpc/boot/Makefile                   |  4 ++--
->  arch/powerpc/boot/dts/acadia.dts             |  2 +-
->  arch/powerpc/boot/main.c                     |  2 +-
->  arch/powerpc/boot/ps3.c                      |  2 +-
->  arch/powerpc/include/asm/io.h                |  2 +-
->  arch/powerpc/include/asm/opal-api.h          |  4 ++--
->  arch/powerpc/include/asm/pmac_feature.h      |  2 +-
->  arch/powerpc/include/asm/uninorth.h          |  2 +-
->  arch/powerpc/include/uapi/asm/bootx.h        |  2 +-
->  arch/powerpc/kernel/eeh_pe.c                 |  2 +-
->  arch/powerpc/kernel/fadump.c                 |  2 +-
->  arch/powerpc/kernel/misc_64.S                |  4 ++--
->  arch/powerpc/kernel/process.c                | 12 ++++++------
->  arch/powerpc/kernel/ptrace/ptrace-tm.c       |  2 +-
->  arch/powerpc/kernel/smp.c                    |  2 +-
->  arch/powerpc/kernel/sysfs.c                  |  4 ++--
->  arch/powerpc/kvm/book3s_xive.c               |  2 +-
->  arch/powerpc/mm/cacheflush.c                 |  2 +-
->  arch/powerpc/mm/nohash/kaslr_booke.c         |  2 +-
->  arch/powerpc/platforms/512x/mpc512x_shared.c |  2 +-
->  arch/powerpc/platforms/cell/spufs/sched.c    |  2 +-
->  arch/powerpc/platforms/maple/pci.c           |  2 +-
->  arch/powerpc/platforms/powermac/pic.c        |  2 +-
->  arch/powerpc/platforms/powermac/sleep.S      |  2 +-
->  arch/powerpc/platforms/powernv/pci-sriov.c   |  4 ++--
->  arch/powerpc/platforms/powernv/vas-window.c  |  2 +-
->  arch/powerpc/platforms/pseries/vas.c         |  2 +-
->  arch/powerpc/sysdev/xive/common.c            |  4 ++--
->  arch/powerpc/sysdev/xive/native.c            |  2 +-
->  29 files changed, 40 insertions(+), 40 deletions(-)
+>
+> (no changes since v1)
+>
+>  arch/loongarch/Kconfig           | 1 +
+>  arch/loongarch/Makefile          | 5 ++++-
+>  arch/loongarch/include/asm/fpu.h | 1 +
+>  3 files changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+> index ee123820a476..65d4475565b8 100644
+> --- a/arch/loongarch/Kconfig
+> +++ b/arch/loongarch/Kconfig
+> @@ -15,6 +15,7 @@ config LOONGARCH
+>         select ARCH_HAS_CPU_FINALIZE_INIT
+>         select ARCH_HAS_FORTIFY_SOURCE
+>         select ARCH_HAS_KCOV
+> +       select ARCH_HAS_KERNEL_FPU_SUPPORT if CPU_HAS_FPU
+>         select ARCH_HAS_NMI_SAFE_THIS_CPU_OPS
+>         select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+>         select ARCH_HAS_PTE_SPECIAL
+> diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
+> index 4ba8d67ddb09..1afe28feaba5 100644
+> --- a/arch/loongarch/Makefile
+> +++ b/arch/loongarch/Makefile
+> @@ -25,6 +25,9 @@ endif
+>  32bit-emul             =3D elf32loongarch
+>  64bit-emul             =3D elf64loongarch
+>
+> +CC_FLAGS_FPU           :=3D -mfpu=3D64
+> +CC_FLAGS_NO_FPU                :=3D -msoft-float
+We will add LoongArch32 support later, maybe it should be -mfpu=3D32 in
+that case, and do other archs have the case that only support FP32?
 
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+Huacai
 
-Thanks.
-
--- 
-#Randy
+> +
+>  ifdef CONFIG_DYNAMIC_FTRACE
+>  KBUILD_CPPFLAGS +=3D -DCC_USING_PATCHABLE_FUNCTION_ENTRY
+>  CC_FLAGS_FTRACE :=3D -fpatchable-function-entry=3D2
+> @@ -46,7 +49,7 @@ ld-emul                       =3D $(64bit-emul)
+>  cflags-y               +=3D -mabi=3Dlp64s
+>  endif
+>
+> -cflags-y                       +=3D -pipe -msoft-float
+> +cflags-y                       +=3D -pipe $(CC_FLAGS_NO_FPU)
+>  LDFLAGS_vmlinux                        +=3D -static -n -nostdlib
+>
+>  # When the assembler supports explicit relocation hint, we must use it.
+> diff --git a/arch/loongarch/include/asm/fpu.h b/arch/loongarch/include/as=
+m/fpu.h
+> index c2d8962fda00..3177674228f8 100644
+> --- a/arch/loongarch/include/asm/fpu.h
+> +++ b/arch/loongarch/include/asm/fpu.h
+> @@ -21,6 +21,7 @@
+>
+>  struct sigcontext;
+>
+> +#define kernel_fpu_available() cpu_has_fpu
+>  extern void kernel_fpu_begin(void);
+>  extern void kernel_fpu_end(void);
+>
+> --
+> 2.42.0
+>
+>
