@@ -2,60 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56883823F13
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jan 2024 10:56:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03004824002
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jan 2024 11:59:33 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OHFkUtqf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=SLrT9oOc;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T5MRs2zkBz3cTL
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jan 2024 20:56:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T5Nrf53k2z3btj
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jan 2024 21:59:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OHFkUtqf;
+	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=SLrT9oOc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=chenhuacai@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2a00:1450:4864:20::52b; helo=mail-ed1-x52b.google.com; envelope-from=ajones@ventanamicro.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T5MR40ZdJz2yky
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jan 2024 20:55:44 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 77017CE16FD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jan 2024 09:55:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C12CC433D9
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jan 2024 09:55:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704362139;
-	bh=NUKoeng2TtOuvmS1QuUleD7BGl+JqWw7EjY22X+zMeE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=OHFkUtqftfj+SZv9SeaQruKnYEQ+cq+CUVLhdhS4ctC5mJde61oZpomnZp+ecLocl
-	 edGdjmqnCNVqcSE+r/1BHCS9HtiWkfJlVSxkDAqPGjrXpj3m1RESX+i8Du30XCZhoc
-	 Phx4BiVKMLfV6iWckC4A+sp0BbGfUzv2NrDh9iOsqfiDWgJJBXqcmWjicme7o2UqjD
-	 OMdDO97BJHjpoD64eKNTbxVRZi2a6R+/ZwjD90Vah4KdwTLgLKFVkFiJMEVPIBQPIC
-	 QoCG2KHOziSdqLfOlz01MyVVY2UGekeYO2k3gZN/0V0FQCNOuMwCjTEqTwRZOK3QMU
-	 ZsLwm/ZTJ1jcQ==
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a28ac851523so36308666b.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Jan 2024 01:55:39 -0800 (PST)
-X-Gm-Message-State: AOJu0Yy3nr98WcrdzeWP+CeBUEBwOxkGR7QQFU3AqqNrUD6aptX2N8H8
-	6ygBt+M/EFkkC22tbyEplPxAcIChu3wFY4dSNG4=
-X-Google-Smtp-Source: AGHT+IEKmcnwqgygVH9sZZQyzsnOvSR/gqjMEXN+FYG4pXKZGSTboqY34lxGfMFTo2QI4qDTuxyc5MRzDYiHeKc4cMU=
-X-Received: by 2002:a17:906:a94:b0:a28:9633:d599 with SMTP id
- y20-20020a1709060a9400b00a289633d599mr160134ejf.18.1704362137704; Thu, 04 Jan
- 2024 01:55:37 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T5Nqq1s8qz3bdm
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jan 2024 21:58:45 +1100 (AEDT)
+Received: by mail-ed1-x52b.google.com with SMTP id 4fb4d7f45d1cf-556ea884968so458237a12.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Jan 2024 02:58:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1704365922; x=1704970722; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=I5fZa5BBUNgRC/MuXKPlVg1/H35HoZwMYqORDEqtrMo=;
+        b=SLrT9oOcY5rFtjEkmf8mP4Z1C48WXdbZJZVzkbg4mex51pXgQQtwloMPUPw0DMbzxN
+         LhENsi/Y42UGB4dLq8JP+IiKJNd3nrj2tzyVIFHt4OBpb3loewKIWfD03hJX1Fkh1OIy
+         ja9EIEXU2XTcB8KB9esVgpTbak6R1UxE+WIBkd34XYGG/D6/QMmmmygLFJZjyvnI3SDA
+         cubkZPGFYxQSa9CFav08rJdf7AKzRvhDsa+oPwzkLjkALzm+xrvBD+gvm7PG2dz0vav7
+         IU2+Ypfx1kX7Vzqi/ywA6LKoX6uuUcotCb37OkPolQPG1WV/w9JsQgrO4f9/TRDckHCd
+         9+6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704365922; x=1704970722;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I5fZa5BBUNgRC/MuXKPlVg1/H35HoZwMYqORDEqtrMo=;
+        b=FWwlef0j5ywsVGdsUpUza404Iy1Ws0UAlh/3RgvHNOU3rriwCVvSGOFnh8ygIOYyB0
+         /NwDfiY1goWF0wcStghCpB//L7lqqYWlT+3LA1XUipdvFtOSoXjJUFV/L4aM75D1eivS
+         bq1z6c5IG6nd5HT+ZRuJT93AqGcV5siERdfmeYIzxqWrAZCfthIuHK6O9+5xKjRDBQ4O
+         beiDl/1DOcRxZsGSmHfnibrkQXcHv/mSfkJDBvsXlpSjoeVANCk+Hn3hkYsqcMhpvaQj
+         4UxjIIJQcxw3AsKRh4VOCOXWY0koJl6w1OY7Wj5PZ0dRpY1P/Qjc2oCtAtMiWdp9I4gT
+         KpIg==
+X-Gm-Message-State: AOJu0Yz8DtkLB2lXIxFUxs5jAw1Wra7yeq3F+1pLVR8xQd/NoZm6II0d
+	GYYEkeIJOinb0v0H8CxEMxGUHYv9cZlWmlXDb85roI1twic=
+X-Google-Smtp-Source: AGHT+IH2SFA7HOTq7Srx7DUub3qQkU+yO1rsmGqpIPcd4XSv3GgGa5Bl/CgkrtDWu8S+ikAtHQUTUA==
+X-Received: by 2002:a17:906:d9c9:b0:a27:fdc1:593f with SMTP id qk9-20020a170906d9c900b00a27fdc1593fmr240521ejb.67.1704365529270;
+        Thu, 04 Jan 2024 02:52:09 -0800 (PST)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz. [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+        by smtp.gmail.com with ESMTPSA id y2-20020a1709063da200b00a26e4986df8sm10496620ejh.58.2024.01.04.02.52.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jan 2024 02:52:08 -0800 (PST)
+Date: Thu, 4 Jan 2024 11:52:07 +0100
+From: Andrew Jones <ajones@ventanamicro.com>
+To: linux-riscv@lists.infradead.org, linux-next@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org
+Subject: Re: [PATCH] RISC-V: KVM: Require HAVE_KVM
+Message-ID: <20240104-d5ebb072b91a6f7abbb2ac76@orel>
+References: <20240104104307.16019-2-ajones@ventanamicro.com>
 MIME-Version: 1.0
-References: <20231228014220.3562640-1-samuel.holland@sifive.com> <20231228014220.3562640-8-samuel.holland@sifive.com>
-In-Reply-To: <20231228014220.3562640-8-samuel.holland@sifive.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Thu, 4 Jan 2024 17:55:32 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5TJPqRcgS6jywWDSNsCvd-PsVacgxgoiF-fJ00ZnS4uA@mail.gmail.com>
-Message-ID: <CAAhV-H5TJPqRcgS6jywWDSNsCvd-PsVacgxgoiF-fJ00ZnS4uA@mail.gmail.com>
-Subject: Re: [PATCH v2 07/14] LoongArch: Implement ARCH_HAS_KERNEL_FPU_SUPPORT
-To: Samuel Holland <samuel.holland@sifive.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240104104307.16019-2-ajones@ventanamicro.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,85 +78,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, loongarch@lists.linux.dev, WANG Xuerui <git@xen0n.name>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>, linux-arm-kernel@lists.infradead.org
+Cc: sfr@canb.auug.org.au, aou@eecs.berkeley.edu, anup@brainfault.org, rdunlap@infradead.org, npiggin@gmail.com, palmer@dabbelt.com, paul.walmsley@sifive.com, atishp@atishpatra.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi, Samuel,
 
-On Thu, Dec 28, 2023 at 9:42=E2=80=AFAM Samuel Holland
-<samuel.holland@sifive.com> wrote:
->
-> LoongArch already provides kernel_fpu_begin() and kernel_fpu_end() in
-> asm/fpu.h, so it only needs to add kernel_fpu_available() and export
-> the CFLAGS adjustments.
->
-> Acked-by: WANG Xuerui <git@xen0n.name>
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
-> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+This applies to linux-next, but I forgot to append -next to the PATCH
+prefix.
+
+On Thu, Jan 04, 2024 at 11:43:08AM +0100, Andrew Jones wrote:
+> KVM requires EVENTFD, which is selected by HAVE_KVM. Other KVM
+> supporting architectures select HAVE_KVM and then their KVM
+> Kconfigs ensure its there with a depends on HAVE_KVM. Make RISCV
+> consistent with that approach which fixes configs which have KVM
+> but not EVENTFD, as was discovered with a randconfig test.
+> 
+> Reported-by: Randy Dunlap <rdunlap@infradead.org>
+> Closes: https://lore.kernel.org/all/44907c6b-c5bd-4e4a-a921-e4d3825539d8@infradead.org/
+
+I think powerpc may need a patch like this as well, since I don't see
+anything ensuring EVENTFD is selected for it anymore either.
+
+Thanks,
+drew
+
+> Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
 > ---
->
-> (no changes since v1)
->
->  arch/loongarch/Kconfig           | 1 +
->  arch/loongarch/Makefile          | 5 ++++-
->  arch/loongarch/include/asm/fpu.h | 1 +
->  3 files changed, 6 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-> index ee123820a476..65d4475565b8 100644
-> --- a/arch/loongarch/Kconfig
-> +++ b/arch/loongarch/Kconfig
-> @@ -15,6 +15,7 @@ config LOONGARCH
->         select ARCH_HAS_CPU_FINALIZE_INIT
->         select ARCH_HAS_FORTIFY_SOURCE
->         select ARCH_HAS_KCOV
-> +       select ARCH_HAS_KERNEL_FPU_SUPPORT if CPU_HAS_FPU
->         select ARCH_HAS_NMI_SAFE_THIS_CPU_OPS
->         select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
->         select ARCH_HAS_PTE_SPECIAL
-> diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
-> index 4ba8d67ddb09..1afe28feaba5 100644
-> --- a/arch/loongarch/Makefile
-> +++ b/arch/loongarch/Makefile
-> @@ -25,6 +25,9 @@ endif
->  32bit-emul             =3D elf32loongarch
->  64bit-emul             =3D elf64loongarch
->
-> +CC_FLAGS_FPU           :=3D -mfpu=3D64
-> +CC_FLAGS_NO_FPU                :=3D -msoft-float
-We will add LoongArch32 support later, maybe it should be -mfpu=3D32 in
-that case, and do other archs have the case that only support FP32?
-
-Huacai
-
-> +
->  ifdef CONFIG_DYNAMIC_FTRACE
->  KBUILD_CPPFLAGS +=3D -DCC_USING_PATCHABLE_FUNCTION_ENTRY
->  CC_FLAGS_FTRACE :=3D -fpatchable-function-entry=3D2
-> @@ -46,7 +49,7 @@ ld-emul                       =3D $(64bit-emul)
->  cflags-y               +=3D -mabi=3Dlp64s
->  endif
->
-> -cflags-y                       +=3D -pipe -msoft-float
-> +cflags-y                       +=3D -pipe $(CC_FLAGS_NO_FPU)
->  LDFLAGS_vmlinux                        +=3D -static -n -nostdlib
->
->  # When the assembler supports explicit relocation hint, we must use it.
-> diff --git a/arch/loongarch/include/asm/fpu.h b/arch/loongarch/include/as=
-m/fpu.h
-> index c2d8962fda00..3177674228f8 100644
-> --- a/arch/loongarch/include/asm/fpu.h
-> +++ b/arch/loongarch/include/asm/fpu.h
-> @@ -21,6 +21,7 @@
->
->  struct sigcontext;
->
-> +#define kernel_fpu_available() cpu_has_fpu
->  extern void kernel_fpu_begin(void);
->  extern void kernel_fpu_end(void);
->
-> --
-> 2.42.0
->
->
+>  arch/riscv/Kconfig     | 1 +
+>  arch/riscv/kvm/Kconfig | 2 +-
+>  2 files changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index a935a5f736b9..daba06a3b76f 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -128,6 +128,7 @@ config RISCV
+>  	select HAVE_KPROBES if !XIP_KERNEL
+>  	select HAVE_KPROBES_ON_FTRACE if !XIP_KERNEL
+>  	select HAVE_KRETPROBES if !XIP_KERNEL
+> +	select HAVE_KVM
+>  	# https://github.com/ClangBuiltLinux/linux/issues/1881
+>  	select HAVE_LD_DEAD_CODE_DATA_ELIMINATION if !LD_IS_LLD
+>  	select HAVE_MOVE_PMD
+> diff --git a/arch/riscv/kvm/Kconfig b/arch/riscv/kvm/Kconfig
+> index 1fd76aee3b71..36fa8ec9e5ba 100644
+> --- a/arch/riscv/kvm/Kconfig
+> +++ b/arch/riscv/kvm/Kconfig
+> @@ -19,7 +19,7 @@ if VIRTUALIZATION
+>  
+>  config KVM
+>  	tristate "Kernel-based Virtual Machine (KVM) support (EXPERIMENTAL)"
+> -	depends on RISCV_SBI && MMU
+> +	depends on HAVE_KVM && RISCV_SBI && MMU
+>  	select HAVE_KVM_IRQCHIP
+>  	select HAVE_KVM_IRQ_ROUTING
+>  	select HAVE_KVM_MSI
+> -- 
+> 2.43.0
+> 
