@@ -1,74 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39613825239
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jan 2024 11:38:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73FFF8258EF
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jan 2024 18:20:32 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QghsFWIA;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QghsFWIA;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=w41Y8yUz;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T60Kj60b7z3vfj
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jan 2024 21:38:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T69Fp11fgz3cT2
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jan 2024 04:20:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QghsFWIA;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QghsFWIA;
+	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=w41Y8yUz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=web.de (client-ip=212.227.15.4; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=lists.ozlabs.org)
+Received: from mout.web.de (mout.web.de [212.227.15.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T60Dk0rMkz3cVP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jan 2024 21:33:57 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1704450835;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=i2HBs3OFSUIo1mUaqHX6XKawGogz4cRNe54pAihhNU4=;
-	b=QghsFWIAIhbdVlbl+en/uFg5Z3Z2eSU7PtUXD2W743pIOGWGRvs0yvDPw6Q7la5NQXi1aQ
-	9VOGOocMT7G9uwzOp1Wo6k4uxBiZovgT+EFKNzTJ9eL+phuJhv+2uNx+Gnse+5DxTZblq4
-	O+YnkDH012hqL/ETuAw/QRfeGE7Sth0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1704450835;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=i2HBs3OFSUIo1mUaqHX6XKawGogz4cRNe54pAihhNU4=;
-	b=QghsFWIAIhbdVlbl+en/uFg5Z3Z2eSU7PtUXD2W743pIOGWGRvs0yvDPw6Q7la5NQXi1aQ
-	9VOGOocMT7G9uwzOp1Wo6k4uxBiZovgT+EFKNzTJ9eL+phuJhv+2uNx+Gnse+5DxTZblq4
-	O+YnkDH012hqL/ETuAw/QRfeGE7Sth0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-277-Rb3lS4pWNTu-90VMiNhIEg-1; Fri,
- 05 Jan 2024 05:33:51 -0500
-X-MC-Unique: Rb3lS4pWNTu-90VMiNhIEg-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ED01F3C02786;
-	Fri,  5 Jan 2024 10:33:49 +0000 (UTC)
-Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.116.129])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 40706492BC6;
-	Fri,  5 Jan 2024 10:33:43 +0000 (UTC)
-From: Baoquan He <bhe@redhat.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH 5/5] crash: clean up CRASH_DUMP
-Date: Fri,  5 Jan 2024 18:33:05 +0800
-Message-ID: <20240105103305.557273-6-bhe@redhat.com>
-In-Reply-To: <20240105103305.557273-1-bhe@redhat.com>
-References: <20240105103305.557273-1-bhe@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T69Dy0g8cz3cMH
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Jan 2024 04:19:44 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
+	t=1704475159; x=1705079959; i=markus.elfring@web.de;
+	bh=c9a72mh2hIDNLywI3xHSiIa41+RUwXrfonhkfw8ihFg=;
+	h=X-UI-Sender-Class:Date:Subject:From:To:Cc:References:
+	 In-Reply-To;
+	b=w41Y8yUzzl7L3+IINq8nygYzaZVDOQ5yRxV6AZdvboQ6r9yPwsuCJxyYgql45lrr
+	 l8iQ/Z3ZLXiDdWnwr/3zvRk6E7sjZpK27oxnj3HjupD3h0EJb1qVOjiaL96jFxB5H
+	 bcSFVj80MZVrxcxOGv1KmRjw/dBYMIaFhVLSBtmDzzLQGARw/vd8+xI3HJttZF661
+	 tQee9IGBjRkEeNE5oQl319v3sQQx5vd87k7K8k3jbAi/CL6mOnWrMCo/0QxJsvMyL
+	 8gA/Wmvt9XahNUz6rAXub44CxNXolu5x+btyt6z74FOKmYmT4IiQrkDEZ523i3ypv
+	 +uMhc/lwPWpal+sCnw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.85.95]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MPrPT-1rZsUG1vlL-00MhqL; Fri, 05
+ Jan 2024 18:19:19 +0100
+Message-ID: <ac431904-993a-4c43-a54d-c183b08b7874@web.de>
+Date: Fri, 5 Jan 2024 18:19:17 +0100
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH resent v2 0/2] powerpc/pseries: Fixes for exception
+ handling in pSeries_reconfig_add_node()
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+To: kernel-janitors@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nathan Lynch <nathanl@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Paul Moore <paul@paul-moore.com>
+References: <f9303bdc-b1a7-be5e-56c6-dfa8232b8b55@web.de>
+ <0981dc33-95d0-4a1b-51d9-168907da99e6@web.de> <871qln8quw.fsf@linux.ibm.com>
+ <a01643fd-1e4a-1183-2fa6-000465bc81f3@web.de> <87v8iz75ck.fsf@linux.ibm.com>
+ <2f5a00f6-f3fb-9f00-676a-acdcbef90c6c@web.de> <87pm9377qt.fsf@linux.ibm.com>
+ <afb528f2-5960-d107-c3ba-42a3356ffc65@web.de>
+ <d4bcde15-b4f1-0e98-9072-3153d1bd21bc@web.de>
+ <08ddf274-b9a3-a702-dd1b-2c11b316ac5f@web.de>
+In-Reply-To: <08ddf274-b9a3-a702-dd1b-2c11b316ac5f@web.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:fd0DEtRES4E/LNEVX/4GnP30EuZ7SbZmpQ0+c+lSzsJF09hqG+p
+ PogCSbXrZbPvufXCVapRZNE9wk9BJ9El0JY+t4w8HAgsTEk6+404fOWX2YDbBz0+3fT1Ozg
+ f9z2FVRsbdVL86A5PKSFOsws3EIGiRm61Qc9IQ+gKi7h0gfwbBqMmLbPTY5HAkrZ3wwwFUW
+ 3XuOttoKqOtWYLDq1er/g==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:2ese3NzFQnc=;JA9Oql4YFmQCNSHqtztlSaK4GAq
+ +fjthp9Vnvv9dESoVYKzh1FrY8Z/qHa3Jw2C5YmaPHUEtZbBwCyf9sR/Ll+Zm9mXGRIWQe9o/
+ /UjuKok/SyzZO7FK3X7iQtG5+QnGddNp/39DzCjJdCDHX6DxK95aN6LHMHqFG+yA8mzebV1j4
+ DDW28DBcCM6fCIu/Zl0lf2di+c+47luBKHq5Fc6UAK/cqaB7pq+x+2UvnLcXk1RQHy4D6Vj7b
+ 0VL96ug72UMDfQrs7HoWBpOyleG8AP156TnGGGlNcnfCJhnl0CnbDx67tkhKmimlLyA4vtcXL
+ Ij7TzXHpR7VugLIerNgO+BTelyt8S6qDvWn9rjebFvy7oSKyAhGxmcKvzXPZBi0rD7f7EKK20
+ AfPyroG+x86lfOLFLLKOa60lWip2/kGoYn2vM/38qRcxPYSq4M0rEHy14h4Rz5h5CU6F3DjzU
+ SPLVukFPjF85byQnZZkQRsnh1tYlQr4as0DOO2U69K31KJdFMzvknf8fNSC0BElk1jz0ud7dJ
+ 4OAgjrqcW2w6p9T5pOCCRJgyxpdbsoNov691is66TJ1tjd42/N7pWSonNYIPSrQDATRilWr40
+ CjEJRFPV3/2M90D+/tPviPmSCQJghrBW4ncWNAfqgm1IcLMnuQXRfVUx7BzFfJHuTCWSxJqje
+ zpeOYgINfnxVrtZfFh364t36ZWK8eAi2bxY81WzAaYPYzwF/bIpWS9C3H/sAeckj1YRzhFnmD
+ Ezxz7hwyVZyEFWmtk76AojgAIPDMSGo0yT3v1Z6OffUxdfotJQjwLl+YIwfHtPzBe5S4rlxiH
+ nKWJHk2X8RZ471iToxQGj4/hIesJjKmfQMdeO9wD27oK9L9lFVEoPrxq4eyFMqBhH62PqJ7e2
+ 9eRmjd3Fj50LIov224u9ZHL0TGpLqASzoT0t+THqJOZ8nF3UOHDP2NrclAQw5fF2YY7BGXPd/
+ y0UBkVBoV8GM2hlKh3H9t52bdHY=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,80 +90,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arm-kernel@lists.infradead.org, x86@kernel.org, Baoquan He <bhe@redhat.com>, arnd@arndb.de, ignat@cloudflare.com, kexec@lists.infradead.org, kernel test robot <lkp@intel.com>, viro@zeniv.linux.org.uk, eric_devolder@yahoo.com, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, hbathini@linux.ibm.com, ebiederm@xmission.com
+Cc: LKML <linux-kernel@vger.kernel.org>, cocci@inria.fr
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+> Date: Tue, 21 Mar 2023 11:26:32 +0100
+>
+> A few update suggestions were taken into account
+> from static source code analysis.
+>
+> Markus Elfring (2):
+>   Do not pass an error pointer to of_node_put()
+>   Fix exception handling
+>
+>  arch/powerpc/platforms/pseries/reconfig.c | 26 ++++++++++++-----------
+>  1 file changed, 14 insertions(+), 12 deletions(-)
 
-By splitting CRASH_CORE into CRASH_RESERVE and VMCORE_INFO, and cleaning
-up the dependency of FA_DMUMP on CRASH_DUMP, now we can rearrange CRASH_DUMP
-to depend on KEXEC_CORE, and select CRASH_RESERVE and VMCORE_INFO.
+Is this patch series still in review queues?
 
-KEXEC_CORE won't select CRASH_RESERVE and VMCORE_INFO any more because
-KEXEC_CORE enables codes which allocate control pages, copy
-kexec/kdump segments, and prepare for switching. These codes are shared
-by both kexec_load and kexec_file_load, and by both kexec reboot and
-kdump.
-
-Doing this to make codes and the corresponding config items more
-logical.
-
-PROC_KCORE -----------> VMCORE_INFO
-
-           |----------> VMCORE_INFO
-FA_DUMP----|
-           |----------> CRASH_RESERVE
-
-                                                ---->VMCORE_INFO
-                                               /
-                                               |---->CRASH_RESERVE
-KEXEC      --|                                /|
-             |--> KEXEC_CORE--> CRASH_DUMP-->/-|---->PROC_VMCORE
-KEXEC_FILE --|                               \ |
-                                               \---->CRASH_HOTPLUG
-
-KEXEC      --|
-             |--> KEXEC_CORE--> kexec reboot
-KEXEC_FILE --|
-
-Previously, LKP reported a building error. When investigating, it can't
-be resolved reasonablly with the present messy kdump config items. With
-the prepartory patches and chaneg at above, the LKP reported issue can
-be solved now.
-
-Signed-off-by: Baoquan He <bhe@redhat.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202312182200.Ka7MzifQ-lkp@intel.com/
----
- kernel/Kconfig.kexec | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
-index 8faf27043432..6c34e63c88ff 100644
---- a/kernel/Kconfig.kexec
-+++ b/kernel/Kconfig.kexec
-@@ -9,8 +9,6 @@ config VMCORE_INFO
- 	bool
- 
- config KEXEC_CORE
--	select VMCORE_INFO
--	select CRASH_RESERVE
- 	bool
- 
- config KEXEC_ELF
-@@ -99,8 +97,11 @@ config KEXEC_JUMP
- 
- config CRASH_DUMP
- 	bool "kernel crash dumps"
-+	default y
- 	depends on ARCH_SUPPORTS_CRASH_DUMP
--	select KEXEC_CORE
-+	depends on KEXEC_CORE
-+	select VMCORE_INFO
-+	select CRASH_RESERVE
- 	help
- 	  Generate crash dump after being started by kexec.
- 	  This should be normally only set in special crash dump kernels
--- 
-2.41.0
-
+Regards,
+Markus
