@@ -1,74 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20EDA826454
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Jan 2024 14:59:07 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BgiG/vAG;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BgiG/vAG;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CE018267CD
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jan 2024 06:48:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T7JhS5SGdz3cSt
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jan 2024 00:59:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T7jlj5Hv6z3cZP
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jan 2024 16:48:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BgiG/vAG;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BgiG/vAG;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=43.154.197.177; helo=bg5.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
+X-Greylist: delayed 360 seconds by postgrey-1.37 at boromir; Mon, 08 Jan 2024 16:47:50 AEDT
+Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.154.197.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T7Jgf6rhDz2xdq
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Jan 2024 00:58:21 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1704635899;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kAWVwfaNjpLshEWYFcR9bmtF8nNUppRn3hitAUVt2zE=;
-	b=BgiG/vAGSMdQ9YW+G5tRFLvtX+3sefdTtcfdBOgyrGTkY3NaUK0tItH1jiZe4g32MLbCy5
-	JC4gLuuXUOyUaEAw95YO0EyuGP1FB+sgd8d7GkYR8+50uJkxJjt/a0R2XFZ9WrGuuSIMLo
-	ZN9n926ix/zLUTfrt3538HrrSfsIGCg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1704635899;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kAWVwfaNjpLshEWYFcR9bmtF8nNUppRn3hitAUVt2zE=;
-	b=BgiG/vAGSMdQ9YW+G5tRFLvtX+3sefdTtcfdBOgyrGTkY3NaUK0tItH1jiZe4g32MLbCy5
-	JC4gLuuXUOyUaEAw95YO0EyuGP1FB+sgd8d7GkYR8+50uJkxJjt/a0R2XFZ9WrGuuSIMLo
-	ZN9n926ix/zLUTfrt3538HrrSfsIGCg=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-20-tYf8LWUjPHCsHwWvnvmvTw-1; Sun,
- 07 Jan 2024 08:58:15 -0500
-X-MC-Unique: tYf8LWUjPHCsHwWvnvmvTw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C466029AC003;
-	Sun,  7 Jan 2024 13:58:14 +0000 (UTC)
-Received: from localhost (unknown [10.72.116.129])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id E9ECD5190;
-	Sun,  7 Jan 2024 13:58:13 +0000 (UTC)
-Date: Sun, 7 Jan 2024 21:58:10 +0800
-From: Baoquan He <bhe@redhat.com>
-To: kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH 1/5] kexec_core: move kdump related codes from
- crash_core.c to kexec_core.c
-Message-ID: <ZZqt8uXV6TwMiH32@MiWiFi-R3L-srv>
-References: <20240105103305.557273-2-bhe@redhat.com>
- <202401061800.3XPSaPsa-lkp@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T7jlB44ffz2xFq
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Jan 2024 16:47:50 +1100 (AEDT)
+X-QQ-mid: bizesmtp63t1704692456t04n30m0
+Received: from HX09040029.powercore.com.cn ( [58.34.117.194])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 08 Jan 2024 13:40:51 +0800 (CST)
+X-QQ-SSF: 01400000000000501000000A0000000
+X-QQ-FEAT: 1eRl5/SlfYN5JUjhDRm4yZophBcUYpPw5o1VcRkDjUlnr52f/6oai9mHQy4MD
+	oacUy8aVDbtg3l3CfqS4iyOW6Nmz9kllTY/IVvi29KOP6tNQlK9Q96U9wux6tLzCR1sMxJx
+	+h9rxCInHNgdocJg35T0lC5wfLWzUiE60XCzpLlXxF3ZTzemhXNUflShMKV1Sf8n+uH2YeX
+	5dX2f9gIeUVjIZRXtkGM5Rgs4Gmb9+qO+MOyt4Nfq0q8VtlbDCbhkrg/hsQrH+2DggtzSD0
+	2KzEeD1+HZ6AgXUXV7DLtzXpCNexsgZQ3WLtg3WZqqDwV0CBjqax9E90BYiqat+bVQd5N61
+	/IszZlfvgMqRWC2Br0+fcaOebC4veck2mcR2O/iIcEEnTMrhjKqU0u3PZYBQJxB1GWywiO4
+	vEwd4wpmwN0=
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 5612767180909649861
+From: Luming Yu <luming.yu@shingroup.cn>
+To: linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	christophe.leroy@csgroup.eu
+Subject: [PATCH v2 1/1] powerpc/powernv: fix non-SMP kernel compile issues
+Date: Mon,  8 Jan 2024 13:40:16 +0800
+Message-ID: <15983AF00027978D+20240108054016.1849-2-luming.yu@shingroup.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202401061800.3XPSaPsa-lkp@intel.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz8a-1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,48 +55,141 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arm-kernel@lists.infradead.org, x86@kernel.org, arnd@arndb.de, ignat@cloudflare.com, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, viro@zeniv.linux.org.uk, oe-kbuild-all@lists.linux.dev, eric_devolder@yahoo.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, hbathini@linux.ibm.com, ebiederm@xmission.com
+Cc: shenghui.qu@shingroup.cn, Luming Yu <luming.yu@shingroup.cn>, dawei.li@shingroup.cn, ke.zhao@shingroup.cn, luming.yu@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 01/06/24 at 06:59pm, kernel test robot wrote:
-> Hi Baoquan,
-> 
-> kernel test robot noticed the following build errors:
-> 
-> [auto build test ERROR on linus/master]
-> [also build test ERROR on v6.7-rc8]
-> [cannot apply to powerpc/next powerpc/fixes tip/x86/core arm64/for-next/core next-20240105]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
-> 
-> url:    https://github.com/intel-lab-lkp/linux/commits/Baoquan-He/kexec_core-move-kdump-related-codes-from-crash_core-c-to-kexec_core-c/20240105-223735
-> base:   linus/master
-> patch link:    https://lore.kernel.org/r/20240105103305.557273-2-bhe%40redhat.com
-> patch subject: [PATCH 1/5] kexec_core: move kdump related codes from crash_core.c to kexec_core.c
-> config: x86_64-randconfig-104-20240106 (https://download.01.org/0day-ci/archive/20240106/202401061800.3XPSaPsa-lkp@intel.com/config)
-> compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240106/202401061800.3XPSaPsa-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202401061800.3XPSaPsa-lkp@intel.com/
-> 
-> All errors (new ones prefixed by >>):
-> 
->    In file included from include/linux/string.h:11,
->                     from include/linux/bitmap.h:12,
->                     from include/linux/cpumask.h:12,
->                     from include/linux/smp.h:13,
->                     from arch/x86/kernel/crash.c:18:
->    arch/x86/kernel/crash.c: In function 'fill_up_crash_elf_data':
-> >> include/linux/overflow.h:293:23: error: invalid application of 'sizeof' to incomplete type 'struct crash_mem'
->      293 |                 sizeof(*(p)) + flex_array_size(p, member, count),       \
+Non-SMP kernel is quite useful to silicon validation, despite
+it is rare to be found in server productions. the fixes are
+obvious. Not like IBM pSeries, it may be not necessary
+to have powernv SMP forced. It is difficult to compile a
+non-SMP kernel for pSerises as I've tried.
 
-Thanks for reporting.
-This is the same as the one reported and fixed in below link:
+Signed-off-by: Luming Yu <luming.yu@shingroup.cn>
+---
+v1->v2: solve powernv nx-common-powernv.c non-SMP kernel compile issue found by lkp bot.
+v0->v1: solve powernv vas driver non-SMP kernel compile issue found by lkp bot.
+---
+ arch/powerpc/platforms/powernv/Kconfig    | 1 -
+ arch/powerpc/platforms/powernv/opal-imc.c | 1 +
+ arch/powerpc/platforms/powernv/vas.c      | 1 +
+ arch/powerpc/platforms/powernv/vas.h      | 1 +
+ arch/powerpc/sysdev/xive/common.c         | 2 ++
+ arch/powerpc/sysdev/xive/spapr.c          | 5 ++++-
+ drivers/crypto/nx/nx-common-powernv.c     | 1 +
+ 7 files changed, 10 insertions(+), 2 deletions(-)
 
-https://lore.kernel.org/oe-kbuild-all/ZZpmP5QeH+VigqXw@MiWiFi-R3L-srv/
+diff --git a/arch/powerpc/platforms/powernv/Kconfig b/arch/powerpc/platforms/powernv/Kconfig
+index 70a46acc70d6..40b1a49379de 100644
+--- a/arch/powerpc/platforms/powernv/Kconfig
++++ b/arch/powerpc/platforms/powernv/Kconfig
+@@ -15,7 +15,6 @@ config PPC_POWERNV
+ 	select CPU_FREQ
+ 	select PPC_DOORBELL
+ 	select MMU_NOTIFIER
+-	select FORCE_SMP
+ 	select ARCH_SUPPORTS_PER_VMA_LOCK
+ 	default y
+ 
+diff --git a/arch/powerpc/platforms/powernv/opal-imc.c b/arch/powerpc/platforms/powernv/opal-imc.c
+index 828fc4d88471..6e9e2b0a5bdc 100644
+--- a/arch/powerpc/platforms/powernv/opal-imc.c
++++ b/arch/powerpc/platforms/powernv/opal-imc.c
+@@ -13,6 +13,7 @@
+ #include <linux/of_address.h>
+ #include <linux/crash_dump.h>
+ #include <linux/debugfs.h>
++#include <asm/smp.h>
+ #include <asm/opal.h>
+ #include <asm/io.h>
+ #include <asm/imc-pmu.h>
+diff --git a/arch/powerpc/platforms/powernv/vas.c b/arch/powerpc/platforms/powernv/vas.c
+index b65256a63e87..c1759135aca5 100644
+--- a/arch/powerpc/platforms/powernv/vas.c
++++ b/arch/powerpc/platforms/powernv/vas.c
+@@ -18,6 +18,7 @@
+ #include <linux/interrupt.h>
+ #include <asm/prom.h>
+ #include <asm/xive.h>
++#include <asm/smp.h>
+ 
+ #include "vas.h"
+ 
+diff --git a/arch/powerpc/platforms/powernv/vas.h b/arch/powerpc/platforms/powernv/vas.h
+index 08d9d3d5a22b..313a8f2c8c7d 100644
+--- a/arch/powerpc/platforms/powernv/vas.h
++++ b/arch/powerpc/platforms/powernv/vas.h
+@@ -12,6 +12,7 @@
+ #include <linux/dcache.h>
+ #include <linux/mutex.h>
+ #include <linux/stringify.h>
++#include <linux/interrupt.h>
+ 
+ /*
+  * Overview of Virtual Accelerator Switchboard (VAS).
+diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
+index a289cb97c1d7..d49b12809c10 100644
+--- a/arch/powerpc/sysdev/xive/common.c
++++ b/arch/powerpc/sysdev/xive/common.c
+@@ -1497,7 +1497,9 @@ static int xive_prepare_cpu(unsigned int cpu)
+ 				  GFP_KERNEL, cpu_to_node(cpu));
+ 		if (!xc)
+ 			return -ENOMEM;
++#ifdef CONFIG_SMP
+ 		xc->hw_ipi = XIVE_BAD_IRQ;
++#endif
+ 		xc->chip_id = XIVE_INVALID_CHIP_ID;
+ 		if (xive_ops->prepare_cpu)
+ 			xive_ops->prepare_cpu(cpu, xc);
+diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
+index e45419264391..7298f57f8416 100644
+--- a/arch/powerpc/sysdev/xive/spapr.c
++++ b/arch/powerpc/sysdev/xive/spapr.c
+@@ -81,6 +81,7 @@ static void xive_irq_bitmap_remove_all(void)
+ 	}
+ }
+ 
++#ifdef CONFIG_SMP
+ static int __xive_irq_bitmap_alloc(struct xive_irq_bitmap *xibm)
+ {
+ 	int irq;
+@@ -126,7 +127,7 @@ static void xive_irq_bitmap_free(int irq)
+ 		}
+ 	}
+ }
+-
++#endif 
+ 
+ /* Based on the similar routines in RTAS */
+ static unsigned int plpar_busy_delay_time(long rc)
+@@ -663,6 +664,7 @@ static void xive_spapr_sync_source(u32 hw_irq)
+ 	plpar_int_sync(0, hw_irq);
+ }
+ 
++#ifdef CONFIG_SMP
+ static int xive_spapr_debug_show(struct seq_file *m, void *private)
+ {
+ 	struct xive_irq_bitmap *xibm;
+@@ -680,6 +682,7 @@ static int xive_spapr_debug_show(struct seq_file *m, void *private)
+ 
+ 	return 0;
+ }
++#endif
+ 
+ static const struct xive_ops xive_spapr_ops = {
+ 	.populate_irq_data	= xive_spapr_populate_irq_data,
+diff --git a/drivers/crypto/nx/nx-common-powernv.c b/drivers/crypto/nx/nx-common-powernv.c
+index 8c859872c183..58c42677b448 100644
+--- a/drivers/crypto/nx/nx-common-powernv.c
++++ b/drivers/crypto/nx/nx-common-powernv.c
+@@ -17,6 +17,7 @@
+ #include <asm/reg.h>
+ #include <asm/opal-api.h>
+ #include <asm/opal.h>
++#include <asm/smp.h>
+ 
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Dan Streetman <ddstreet@ieee.org>");
+-- 
+2.42.0.windows.2
 
