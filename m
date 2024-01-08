@@ -2,48 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CE018267CD
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jan 2024 06:48:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68B26826890
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jan 2024 08:28:29 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Gc0TMble;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fruNds8A;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T7jlj5Hv6z3cZP
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jan 2024 16:48:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T7lzG5crHz3cRK
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jan 2024 18:28:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=43.154.197.177; helo=bg5.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
-X-Greylist: delayed 360 seconds by postgrey-1.37 at boromir; Mon, 08 Jan 2024 16:47:50 AEDT
-Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.154.197.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Gc0TMble;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fruNds8A;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T7jlB44ffz2xFq
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Jan 2024 16:47:50 +1100 (AEDT)
-X-QQ-mid: bizesmtp63t1704692456t04n30m0
-Received: from HX09040029.powercore.com.cn ( [58.34.117.194])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 08 Jan 2024 13:40:51 +0800 (CST)
-X-QQ-SSF: 01400000000000501000000A0000000
-X-QQ-FEAT: 1eRl5/SlfYN5JUjhDRm4yZophBcUYpPw5o1VcRkDjUlnr52f/6oai9mHQy4MD
-	oacUy8aVDbtg3l3CfqS4iyOW6Nmz9kllTY/IVvi29KOP6tNQlK9Q96U9wux6tLzCR1sMxJx
-	+h9rxCInHNgdocJg35T0lC5wfLWzUiE60XCzpLlXxF3ZTzemhXNUflShMKV1Sf8n+uH2YeX
-	5dX2f9gIeUVjIZRXtkGM5Rgs4Gmb9+qO+MOyt4Nfq0q8VtlbDCbhkrg/hsQrH+2DggtzSD0
-	2KzEeD1+HZ6AgXUXV7DLtzXpCNexsgZQ3WLtg3WZqqDwV0CBjqax9E90BYiqat+bVQd5N61
-	/IszZlfvgMqRWC2Br0+fcaOebC4veck2mcR2O/iIcEEnTMrhjKqU0u3PZYBQJxB1GWywiO4
-	vEwd4wpmwN0=
-X-QQ-GoodBg: 2
-X-BIZMAIL-ID: 5612767180909649861
-From: Luming Yu <luming.yu@shingroup.cn>
-To: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	christophe.leroy@csgroup.eu
-Subject: [PATCH v2 1/1] powerpc/powernv: fix non-SMP kernel compile issues
-Date: Mon,  8 Jan 2024 13:40:16 +0800
-Message-ID: <15983AF00027978D+20240108054016.1849-2-luming.yu@shingroup.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T7lyQ1D9Bz30MQ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Jan 2024 18:27:40 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1704698856;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=++HIVa+fUHc7mVxMPbgRezSHjTqa6qZR6U7zKUbz7Hc=;
+	b=Gc0TMble/0NWHq5T6//n05hnJQ27EyD34l0vqCls4lMQyeCb8zQ5Y8g8s2CvahneRuuJfL
+	Jc/6YAqUvgUopJTCwlCIFEorWqZfwubruSL3Dry+hl9qW0rT9pHMwrAUFR4qZsnS5DMo7Z
+	tivIAJT3VLcy/dhEN27ETu2xMCU2hrE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1704698857;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=++HIVa+fUHc7mVxMPbgRezSHjTqa6qZR6U7zKUbz7Hc=;
+	b=fruNds8A3ANLlfkMSXqcrMw+qTGBVIirmX1Ilom8gUz+hUuxtS/REwHX0ESBC2Eogn/B8O
+	xaxOI6uAN451Yo8pHtc2hXvWY+zQ2v+uHWj5N//jEG38vC+C3yPHgKKRrsQsKy31qCJawZ
+	BRSVfdXE0D7tUCrtFiMp08R/RBnV0ug=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-581-C9KymUPMNVCHrQkv95p8eg-1; Mon, 08 Jan 2024 02:27:30 -0500
+X-MC-Unique: C9KymUPMNVCHrQkv95p8eg-1
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-28cfa4a37c2so746186a91.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 07 Jan 2024 23:27:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704698849; x=1705303649;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=++HIVa+fUHc7mVxMPbgRezSHjTqa6qZR6U7zKUbz7Hc=;
+        b=lfaQRQpDcb69q2rSoMd/aYkRNVscXvRjZUGkRq3fTZpV1sr4f5SsT/QMtfprg6YHtf
+         mFFqb2WT4+IXoF+dORjjfD1G1XlZdrerSk3/DKiU+YSt2gKOp7+XRQVryWBG+xis1SmU
+         URHlsaB2/HoPCpJ7bFZOqA0bCbkUKAr6IXSZiCGAPp+Bkh926OVGd4XZS+KcQSuGu8Gl
+         vd5C6HvFEw4SPDyOyxW5yaLid+1lifNAMnM6bthlpPXSruBdJiCCJmll67IilQ2/DyPK
+         ZdvwFd/+t2Yn8OBVhNkvbNubH2ZU2PZI9DeXa0S8Bzrgs7kiTMzcq9wyKMFLUm4VEjQa
+         s9JA==
+X-Gm-Message-State: AOJu0YzdNGVhqpWHjluIDfPeDD+cwROSCQkI7zWmKCiOSw3PfKIY8EqG
+	kYbjGEQ9VaUekxuhrh3HraURO5jA1OwEtiZyefqBVUixyB5K4/MoLdTNM3dv4JUyyauGjABXa4I
+	OU4rheOS9AXi75ATIrnL7HT8kErs7nVN7yQ==
+X-Received: by 2002:a05:6a20:3cab:b0:199:c866:1d46 with SMTP id b43-20020a056a203cab00b00199c8661d46mr931055pzj.6.1704698848992;
+        Sun, 07 Jan 2024 23:27:28 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHCAavyxZcZwU5CLY8vR5nixlH4bDIz/ZGJUz9tbspcbUqeK+w5R+Hs85r/f/cHobBdBUdCsQ==
+X-Received: by 2002:a05:6a20:3cab:b0:199:c866:1d46 with SMTP id b43-20020a056a203cab00b00199c8661d46mr931031pzj.6.1704698848614;
+        Sun, 07 Jan 2024 23:27:28 -0800 (PST)
+Received: from x1n ([43.228.180.230])
+        by smtp.gmail.com with ESMTPSA id d5-20020a17090a8d8500b0028c2de909e4sm5617976pjo.50.2024.01.07.23.27.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 Jan 2024 23:27:28 -0800 (PST)
+Date: Mon, 8 Jan 2024 15:27:17 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2 00/13] mm/gup: Unify hugetlb, part 2
+Message-ID: <ZZuj1Q3k9hX0IlK3@x1n>
+References: <20240103091423.400294-1-peterx@redhat.com>
+ <591c59d6-dedb-4399-8a6f-c574fd2ad9cc@csgroup.eu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz8a-1
+In-Reply-To: <591c59d6-dedb-4399-8a6f-c574fd2ad9cc@csgroup.eu>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,141 +97,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: shenghui.qu@shingroup.cn, Luming Yu <luming.yu@shingroup.cn>, dawei.li@shingroup.cn, ke.zhao@shingroup.cn, luming.yu@gmail.com
+Cc: James Houghton <jthoughton@google.com>, David Hildenbrand <david@redhat.com>, Yang Shi <shy828301@gmail.com>, Andrew Jones <andrew.jones@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, Andrea Arcangeli <aarcange@redhat.com>, Christoph Hellwig <hch@infradead.org>, Matthew Wilcox <willy@infradead.org>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Jason Gunthorpe <jgg@nvidia.com>, Axel Rasmussen <axelrasmussen@google.com>, Rik van Riel <riel@surriel.com>, John Hubbard <jhubbard@nvidia.com>, "Kirill A . Shutemov" <kirill@shutemov.name>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Lorenzo Stoakes <lstoakes@gmail.com>, Muchun Song <muchun.song@linux.dev>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Mike Rapoport <rp
+ pt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Non-SMP kernel is quite useful to silicon validation, despite
-it is rare to be found in server productions. the fixes are
-obvious. Not like IBM pSeries, it may be not necessary
-to have powernv SMP forced. It is difficult to compile a
-non-SMP kernel for pSerises as I've tried.
+Hi, Christophe,
 
-Signed-off-by: Luming Yu <luming.yu@shingroup.cn>
----
-v1->v2: solve powernv nx-common-powernv.c non-SMP kernel compile issue found by lkp bot.
-v0->v1: solve powernv vas driver non-SMP kernel compile issue found by lkp bot.
----
- arch/powerpc/platforms/powernv/Kconfig    | 1 -
- arch/powerpc/platforms/powernv/opal-imc.c | 1 +
- arch/powerpc/platforms/powernv/vas.c      | 1 +
- arch/powerpc/platforms/powernv/vas.h      | 1 +
- arch/powerpc/sysdev/xive/common.c         | 2 ++
- arch/powerpc/sysdev/xive/spapr.c          | 5 ++++-
- drivers/crypto/nx/nx-common-powernv.c     | 1 +
- 7 files changed, 10 insertions(+), 2 deletions(-)
+On Wed, Jan 03, 2024 at 11:14:54AM +0000, Christophe Leroy wrote:
+> > Test Done
+> > =========
+> > 
+> > This v1 went through the normal GUP smoke tests over different memory
+> > types on archs (using VM instances): x86_64, aarch64, ppc64le.  For
+> > aarch64, tested over 64KB cont_pte huge pages.  For ppc64le, tested over
+> > 16MB hugepd entries (Power8 hash MMU on 4K base page size).
+> > 
+> 
+> Can you tell how you test ?
+> 
+> I'm willing to test this series on powerpc 8xx (PPC32).
 
-diff --git a/arch/powerpc/platforms/powernv/Kconfig b/arch/powerpc/platforms/powernv/Kconfig
-index 70a46acc70d6..40b1a49379de 100644
---- a/arch/powerpc/platforms/powernv/Kconfig
-+++ b/arch/powerpc/platforms/powernv/Kconfig
-@@ -15,7 +15,6 @@ config PPC_POWERNV
- 	select CPU_FREQ
- 	select PPC_DOORBELL
- 	select MMU_NOTIFIER
--	select FORCE_SMP
- 	select ARCH_SUPPORTS_PER_VMA_LOCK
- 	default y
- 
-diff --git a/arch/powerpc/platforms/powernv/opal-imc.c b/arch/powerpc/platforms/powernv/opal-imc.c
-index 828fc4d88471..6e9e2b0a5bdc 100644
---- a/arch/powerpc/platforms/powernv/opal-imc.c
-+++ b/arch/powerpc/platforms/powernv/opal-imc.c
-@@ -13,6 +13,7 @@
- #include <linux/of_address.h>
- #include <linux/crash_dump.h>
- #include <linux/debugfs.h>
-+#include <asm/smp.h>
- #include <asm/opal.h>
- #include <asm/io.h>
- #include <asm/imc-pmu.h>
-diff --git a/arch/powerpc/platforms/powernv/vas.c b/arch/powerpc/platforms/powernv/vas.c
-index b65256a63e87..c1759135aca5 100644
---- a/arch/powerpc/platforms/powernv/vas.c
-+++ b/arch/powerpc/platforms/powernv/vas.c
-@@ -18,6 +18,7 @@
- #include <linux/interrupt.h>
- #include <asm/prom.h>
- #include <asm/xive.h>
-+#include <asm/smp.h>
- 
- #include "vas.h"
- 
-diff --git a/arch/powerpc/platforms/powernv/vas.h b/arch/powerpc/platforms/powernv/vas.h
-index 08d9d3d5a22b..313a8f2c8c7d 100644
---- a/arch/powerpc/platforms/powernv/vas.h
-+++ b/arch/powerpc/platforms/powernv/vas.h
-@@ -12,6 +12,7 @@
- #include <linux/dcache.h>
- #include <linux/mutex.h>
- #include <linux/stringify.h>
-+#include <linux/interrupt.h>
- 
- /*
-  * Overview of Virtual Accelerator Switchboard (VAS).
-diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
-index a289cb97c1d7..d49b12809c10 100644
---- a/arch/powerpc/sysdev/xive/common.c
-+++ b/arch/powerpc/sysdev/xive/common.c
-@@ -1497,7 +1497,9 @@ static int xive_prepare_cpu(unsigned int cpu)
- 				  GFP_KERNEL, cpu_to_node(cpu));
- 		if (!xc)
- 			return -ENOMEM;
-+#ifdef CONFIG_SMP
- 		xc->hw_ipi = XIVE_BAD_IRQ;
-+#endif
- 		xc->chip_id = XIVE_INVALID_CHIP_ID;
- 		if (xive_ops->prepare_cpu)
- 			xive_ops->prepare_cpu(cpu, xc);
-diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
-index e45419264391..7298f57f8416 100644
---- a/arch/powerpc/sysdev/xive/spapr.c
-+++ b/arch/powerpc/sysdev/xive/spapr.c
-@@ -81,6 +81,7 @@ static void xive_irq_bitmap_remove_all(void)
- 	}
- }
- 
-+#ifdef CONFIG_SMP
- static int __xive_irq_bitmap_alloc(struct xive_irq_bitmap *xibm)
- {
- 	int irq;
-@@ -126,7 +127,7 @@ static void xive_irq_bitmap_free(int irq)
- 		}
- 	}
- }
--
-+#endif 
- 
- /* Based on the similar routines in RTAS */
- static unsigned int plpar_busy_delay_time(long rc)
-@@ -663,6 +664,7 @@ static void xive_spapr_sync_source(u32 hw_irq)
- 	plpar_int_sync(0, hw_irq);
- }
- 
-+#ifdef CONFIG_SMP
- static int xive_spapr_debug_show(struct seq_file *m, void *private)
- {
- 	struct xive_irq_bitmap *xibm;
-@@ -680,6 +682,7 @@ static int xive_spapr_debug_show(struct seq_file *m, void *private)
- 
- 	return 0;
- }
-+#endif
- 
- static const struct xive_ops xive_spapr_ops = {
- 	.populate_irq_data	= xive_spapr_populate_irq_data,
-diff --git a/drivers/crypto/nx/nx-common-powernv.c b/drivers/crypto/nx/nx-common-powernv.c
-index 8c859872c183..58c42677b448 100644
---- a/drivers/crypto/nx/nx-common-powernv.c
-+++ b/drivers/crypto/nx/nx-common-powernv.c
-@@ -17,6 +17,7 @@
- #include <asm/reg.h>
- #include <asm/opal-api.h>
- #include <asm/opal.h>
-+#include <asm/smp.h>
- 
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Dan Streetman <ddstreet@ieee.org>");
+My apologies, for some reason I totally overlooked this email..
+
+I only tested using run_vmtests.sh, with:
+
+  $ bash ./run_vmtests.sh -t gup_test -a
+
+It should cover pretty much lots of tests of GUP using gup_test program.  I
+think the ones that matters here is "-H" over either "-U/-b".
+
+For ppc8xx, even though kernel mapping uses hugepd, I don't expect anything
+should change before/after this series, because the code that I touched
+(slow gup only) only affects user pages, so it shouldn't change anything
+over kernel mappings.  Said so, please feel free to smoke over whatever
+type of kernel hugepd mappings, and I'd trust you're the expert on how to
+trigger those paths.
+
+Since I got your attention, when working on this series I talked to David
+Gibson and just got to know that hugepd is actually a pure software idea.
+IIUC it means there's no PPC hardware that really understands the hugepd
+format at all, but only a "this is a huge page" hint for Linux.
+
+Considering that it _seems_ to play a similar role of cont_pXX here: do you
+think hugepd can have any chance to be implemented similarly like cont_pXX,
+or somehow share the code?
+
+For example, if hugepd is recognized only by Linux kernel itself, maybe
+there can be some special pgtable hint that can be attached to the cont_*
+entries, showing whether it's a "real cont_*" entry or a "hugepd" entry?
+IIUC it can be quite flexible because if hugepd only works for hash MMU so
+no hardware will even walk that radix table.  But I can overlook important
+things here.
+
+It'll be definitely great if hugepd can be merged into some existing forms
+like a generic pgtable (IMHO cont_* is such case: it's the same as no
+cont_* entries for softwares, while hardware can accelerate with TLB hits
+on larger ranges).  But I can be asking a very silly question here too, as
+I can overlook very important things.
+
+Thanks,
+
 -- 
-2.42.0.windows.2
+Peter Xu
 
