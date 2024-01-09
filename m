@@ -1,59 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90375827C3C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jan 2024 01:48:27 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aKPN44X5;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63324827E02
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jan 2024 05:55:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T8C3F1DMqz3cQr
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jan 2024 11:48:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T8JXr6bwdz3cWB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jan 2024 15:55:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aKPN44X5;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=guozihua@huawei.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1054 seconds by postgrey-1.37 at boromir; Tue, 09 Jan 2024 14:59:12 AEDT
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T8C2M468Fz2xQG
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jan 2024 11:47:39 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id B47EA6123E;
-	Tue,  9 Jan 2024 00:47:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3FFF5C43390;
-	Tue,  9 Jan 2024 00:47:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704761256;
-	bh=kaSVqiylQ1OVriAgdma+o2NRk9xOptJaNNEg23+9Xfo=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=aKPN44X5J90DbTq/d3/8G5LS22i+GKq7yQ+FUJHJp9k6qA4iNjaH1rQcfRs0baUz4
-	 WMJNMTZQ2N8kyliL4/BiZYuUR5WTVTsYAfbbhkVyRir6NzHoyOJm1WLbDo7aJ+EGvp
-	 aucHna/IHol+tC2wvyKc6nQjr+FOyACuWUhwclZ08WkcD3aq0vWGEjvMkogEP7l9Hq
-	 j8EkxUUz8uJJ2PtQembhyWVGxIgz55X2oi0Dt7TBBxTvWWIspd/EXhTdz9Y2QUZ8lg
-	 +/nthpRxNwlV9o6ZiOiHMjCXw5X27LtHzX9PZUM8Jn19hiiVN0ffzfKPLqcIvdrN/6
-	 alFQe6gcjtzig==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 2AEF8DFC686;
-	Tue,  9 Jan 2024 00:47:36 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.8-1 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <87r0j2k231.fsf@mail.lhotse>
-References: <87r0j2k231.fsf@mail.lhotse>
-X-PR-Tracked-List-Id: Linux on PowerPC Developers Mail List <linuxppc-dev.lists.ozlabs.org>
-X-PR-Tracked-Message-Id: <87r0j2k231.fsf@mail.lhotse>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.8-1
-X-PR-Tracked-Commit-Id: 44a1aad2fe6c10bfe0589d8047057b10a4c18a19
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 968b80332432172dbbb773e749a43bdc846d1a13
-Message-Id: <170476125616.27312.16824249786810615337.pr-tracker-bot@kernel.org>
-Date: Tue, 09 Jan 2024 00:47:36 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T8HHN1kq6z2ykZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jan 2024 14:59:09 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4T8Gtf1PhMzZgtf;
+	Tue,  9 Jan 2024 11:41:14 +0800 (CST)
+Received: from dggpemm500024.china.huawei.com (unknown [7.185.36.203])
+	by mail.maildlp.com (Postfix) with ESMTPS id 48B961404FC;
+	Tue,  9 Jan 2024 11:41:30 +0800 (CST)
+Received: from huawei.com (10.67.174.60) by dggpemm500024.china.huawei.com
+ (7.185.36.203) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 9 Jan
+ 2024 11:41:30 +0800
+From: GUO Zihua <guozihua@huawei.com>
+To: <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc: Fix preserved memory size for int-vectors
+Date: Tue, 9 Jan 2024 03:38:51 +0000
+Message-ID: <20240109033851.1310455-1-guozihua@huawei.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.67.174.60]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpemm500024.china.huawei.com (7.185.36.203)
+X-Mailman-Approved-At: Tue, 09 Jan 2024 15:55:35 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,19 +50,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: srikar@linux.vnet.ibm.com, chentao@kylinos.cn, jniethe5@gmail.com, kunyu@nfschina.com, adityag@linux.ibm.com, sfr@canb.auug.org.au, dario.binacchi@amarulasolutions.com, aneesh.kumar@linux.ibm.com, masahiroy@kernel.org, aneesh.kumar@kernel.org, kuba@kernel.org, colin.i.king@gmail.com, nathanl@linux.ibm.com, ajd@linux.ibm.com, arnd@arndb.de, kjain@linux.ibm.com, naveen@kernel.org, npiggin@gmail.com, oss@buserror.net, sv@linux.ibm.com, haokexin@gmail.com, liuhaoran14@163.com, ke.zhao@shingroup.cn, geoff@infradead.org, linuxppc-dev@lists.ozlabs.org, rdunlap@infradead.org, linux-kernel@vger.kernel.org, david@ixit.cz, zeming@nfschina.com, fbarrat@linux.ibm.com, vaibhav@linux.ibm.com, Linus Torvalds <torvalds@linux-foundation.org>
+Cc: aneesh.kumar@kernel.org, naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Sun, 31 Dec 2023 23:07:14 +1100:
+The first 32k of memory is reserved for interrupt vectors, however for
+powerpc64 this might not be enough. Fix this by reserving the maximum
+size between 32k and the real size of interrupt vectors.
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.8-1
+Signed-off-by: GUO Zihua <guozihua@huawei.com>
+---
+ arch/powerpc/kernel/prom.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/968b80332432172dbbb773e749a43bdc846d1a13
-
-Thank you!
-
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index 0b5878c3125b..f374487513b3 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -758,6 +758,7 @@ static inline void save_fscr_to_task(void) {}
+ void __init early_init_devtree(void *params)
+ {
+ 	phys_addr_t limit;
++	size_t int_vector_size;
+ 
+ 	DBG(" -> early_init_devtree(%px)\n", params);
+ 
+@@ -810,9 +811,17 @@ void __init early_init_devtree(void *params)
+ 	setup_initial_memory_limit(memstart_addr, first_memblock_size);
+ 	/* Reserve MEMBLOCK regions used by kernel, initrd, dt, etc... */
+ 	memblock_reserve(PHYSICAL_START, __pa(_end) - PHYSICAL_START);
++#ifdef CONFIG_PPC64
++	/* If relocatable, reserve at least 32k for interrupt vectors etc. */
++	int_vector_size = (size_t)((uintptr_t)__end_interrupts -
++				   (uintptr_t)_stext);
++	int_vector_size = max_t(size_t, 0x8000, int_vector_size);
++#else
+ 	/* If relocatable, reserve first 32k for interrupt vectors etc. */
++	int_vector_size = 0x8000;
++#endif
+ 	if (PHYSICAL_START > MEMORY_START)
+-		memblock_reserve(MEMORY_START, 0x8000);
++		memblock_reserve(MEMORY_START, int_vector_size);
+ 	reserve_kdump_trampoline();
+ #if defined(CONFIG_FA_DUMP) || defined(CONFIG_PRESERVE_FA_DUMP)
+ 	/*
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.34.1
+
