@@ -2,40 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D79CA8285DB
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jan 2024 13:15:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A577D8285DF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jan 2024 13:16:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T8VJ33Lzbz3c1C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jan 2024 23:15:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T8VJZ1qZTz3dH4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jan 2024 23:15:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T8VHW3HRKz2xcw
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jan 2024 23:15:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T8VHb1dSdz2xcw
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jan 2024 23:15:07 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4T8VHN1DB7z9v5M;
-	Tue,  9 Jan 2024 13:14:56 +0100 (CET)
+	by localhost (Postfix) with ESMTP id 4T8VHS157Qz9v6Y;
+	Tue,  9 Jan 2024 13:15:00 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
 	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 3UZY3QTji_ou; Tue,  9 Jan 2024 13:14:56 +0100 (CET)
+	with ESMTP id jdK_Jc1jqNjy; Tue,  9 Jan 2024 13:15:00 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4T8VHN0Hfvz9v2V;
-	Tue,  9 Jan 2024 13:14:56 +0100 (CET)
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4T8VHS0HC2z9v2V;
+	Tue,  9 Jan 2024 13:15:00 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 003308B77D;
-	Tue,  9 Jan 2024 13:14:55 +0100 (CET)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id F1DFE8B77D;
+	Tue,  9 Jan 2024 13:14:59 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id HBR04NexVvw3; Tue,  9 Jan 2024 13:14:55 +0100 (CET)
+	with ESMTP id 7pM4OD5n-ewz; Tue,  9 Jan 2024 13:14:59 +0100 (CET)
 Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.233.126])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6EFF18B774;
-	Tue,  9 Jan 2024 13:14:54 +0100 (CET)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 26ACE8B774;
+	Tue,  9 Jan 2024 13:14:58 +0100 (CET)
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: linux-hardening@vger.kernel.org,
 	Russell King <linux@armlinux.org.uk>,
@@ -64,12 +64,14 @@ To: linux-hardening@vger.kernel.org,
 	Peter Zijlstra <peterz@infradead.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Kees Cook <keescook@chromium.org>
-Subject: [PATCH 0/4] Refactor CONFIG_DEBUG_WX and check_wx_pages debugfs attribute
-Date: Tue,  9 Jan 2024 13:14:34 +0100
-Message-ID: <cover.1704800524.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH 1/4] arm: ptdump: Rename CONFIG_DEBUG_WX to CONFIG_ARM_DEBUG_WX
+Date: Tue,  9 Jan 2024 13:14:35 +0100
+Message-ID: <d651269a681150f9bdca8103434fb3f4b509f784.1704800524.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <cover.1704800524.git.christophe.leroy@csgroup.eu>
+References: <cover.1704800524.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1704802473; l=2144; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=Rosrc8SJ5lP3rVnXrjZMc3fjClOukQO/LV2fzgZVpQs=; b=s3Okt6I7tVLtHH9cIsW0wOp8leAGxF9lRsidic0YqOYcxb/GPUWk/wsLaGOrOrDVlBeQJRl4d A3TZyNi11uFDTOsNtgCv9Dd/0t2LrUpaUdzKjfrAy93UgJ/oTqyg9E5
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1704802473; l=1302; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=SZmJpW4kyN4zUs+MdMT6CDyMhbW9dyNyADl5ScxgQbU=; b=ZRUK6aNuwLf82oScWI/2o5V02OBwPHgNwHRpA6tH0OpUPTRtOVcXbXukUs0gIeW4L5Tm9Mi8E t1ySRzRI5ipD9FZVb5uHd+bEWidm7yIlzdJbDqOzk/F2uTz/mSpvamx
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -87,54 +89,48 @@ Cc: mark.rutland@arm.com, linux-s390@vger.kernel.org, Phong Tran <tranmanphong@g
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Refer old discussion at https://lore.kernel.org/lkml/20200422152656.GF676@willie-the-truck/T/#m802eaf33efd6f8d575939d157301b35ac0d4a64f
-And https://github.com/KSPP/linux/issues/35
+CONFIG_DEBUG_WX is a core option defined in mm/Kconfig.debug
 
-This series refactors CONFIG_DEBUG_WX for the 5 architectures
-implementing CONFIG_GENERIC_PTDUMP
+To avoid any future conflict, rename ARM version
+into CONFIG_ARM_DEBUG_WX.
 
-First rename stuff in ARM which uses similar names while not
-implementing CONFIG_GENERIC_PTDUMP.
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/arm/Kconfig.debug        | 2 +-
+ arch/arm/include/asm/ptdump.h | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-Then define a generic version of debug_checkwx() that calls
-ptdump_check_wx() when CONFIG_DEBUG_WX is set. Call it immediately
-after calling mark_rodata_ro() instead of calling it at the end of
-every mark_rodata_ro().
-
-Then implement a debugfs attribute that can be used to trigger
-a W^X test at anytime and regardless of CONFIG_DEBUG_WX
-
-Christophe Leroy (4):
-  arm: ptdump: Rename CONFIG_DEBUG_WX to CONFIG_ARM_DEBUG_WX
-  arm64, powerpc, riscv, s390, x86: Refactor CONFIG_DEBUG_WX
-  powerpc,s390: Define ptdump_check_wx() regardless of CONFIG_DEBUG_WX
-  ptdump: add check_wx_pages debugfs attribute
-
- arch/arm/Kconfig.debug          |  2 +-
- arch/arm/include/asm/ptdump.h   |  6 +++---
- arch/arm64/include/asm/ptdump.h |  7 -------
- arch/arm64/mm/mmu.c             |  2 --
- arch/powerpc/mm/mmu_decl.h      |  6 ------
- arch/powerpc/mm/pgtable_32.c    |  4 ----
- arch/powerpc/mm/pgtable_64.c    |  3 ---
- arch/powerpc/mm/ptdump/ptdump.c | 10 ++++++----
- arch/riscv/include/asm/ptdump.h | 22 ----------------------
- arch/riscv/mm/init.c            |  3 ---
- arch/riscv/mm/ptdump.c          |  1 -
- arch/s390/include/asm/ptdump.h  | 14 --------------
- arch/s390/mm/dump_pagetables.c  |  8 ++------
- arch/s390/mm/init.c             |  2 --
- arch/x86/include/asm/pgtable.h  |  3 +--
- arch/x86/mm/dump_pagetables.c   |  3 +++
- arch/x86/mm/init_32.c           |  2 --
- arch/x86/mm/init_64.c           |  2 --
- include/linux/ptdump.h          |  7 +++++++
- init/main.c                     |  2 ++
- mm/ptdump.c                     | 19 +++++++++++++++++++
- 21 files changed, 44 insertions(+), 84 deletions(-)
- delete mode 100644 arch/riscv/include/asm/ptdump.h
- delete mode 100644 arch/s390/include/asm/ptdump.h
-
+diff --git a/arch/arm/Kconfig.debug b/arch/arm/Kconfig.debug
+index fc2b41d41447..141151d632f6 100644
+--- a/arch/arm/Kconfig.debug
++++ b/arch/arm/Kconfig.debug
+@@ -17,7 +17,7 @@ config ARM_PTDUMP_DEBUGFS
+ 	  kernel.
+ 	  If in doubt, say "N"
+ 
+-config DEBUG_WX
++config ARM_DEBUG_WX
+ 	bool "Warn on W+X mappings at boot"
+ 	depends on MMU
+ 	select ARM_PTDUMP_CORE
+diff --git a/arch/arm/include/asm/ptdump.h b/arch/arm/include/asm/ptdump.h
+index aad1d034136c..46a4575146ee 100644
+--- a/arch/arm/include/asm/ptdump.h
++++ b/arch/arm/include/asm/ptdump.h
+@@ -32,10 +32,10 @@ void ptdump_check_wx(void);
+ 
+ #endif /* CONFIG_ARM_PTDUMP_CORE */
+ 
+-#ifdef CONFIG_DEBUG_WX
+-#define debug_checkwx() ptdump_check_wx()
++#ifdef CONFIG_ARM_DEBUG_WX
++#define arm_debug_checkwx() ptdump_check_wx()
+ #else
+-#define debug_checkwx() do { } while (0)
++#define arm_debug_checkwx() do { } while (0)
+ #endif
+ 
+ #endif /* __ASM_PTDUMP_H */
 -- 
 2.41.0
 
