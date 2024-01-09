@@ -1,44 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63324827E02
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jan 2024 05:55:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77B39827D8C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jan 2024 04:51:03 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZPif0KyL;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LxDu/geT;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T8JXr6bwdz3cWB
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jan 2024 15:55:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T8H5x0XR1z30hY
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jan 2024 14:51:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=guozihua@huawei.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1054 seconds by postgrey-1.37 at boromir; Tue, 09 Jan 2024 14:59:12 AEDT
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZPif0KyL;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LxDu/geT;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T8HHN1kq6z2ykZ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jan 2024 14:59:09 +1100 (AEDT)
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4T8Gtf1PhMzZgtf;
-	Tue,  9 Jan 2024 11:41:14 +0800 (CST)
-Received: from dggpemm500024.china.huawei.com (unknown [7.185.36.203])
-	by mail.maildlp.com (Postfix) with ESMTPS id 48B961404FC;
-	Tue,  9 Jan 2024 11:41:30 +0800 (CST)
-Received: from huawei.com (10.67.174.60) by dggpemm500024.china.huawei.com
- (7.185.36.203) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 9 Jan
- 2024 11:41:30 +0800
-From: GUO Zihua <guozihua@huawei.com>
-To: <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc: Fix preserved memory size for int-vectors
-Date: Tue, 9 Jan 2024 03:38:51 +0000
-Message-ID: <20240109033851.1310455-1-guozihua@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T8H536jCZz2xLW
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jan 2024 14:50:14 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1704772211;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=a0GQAZNSgQ9NYel79tdKOQqcnL4ZPX5GxjXGFUqL5FQ=;
+	b=ZPif0KyL4URvY+3rWVG51X4CWdGnMRdYXpHWq53W1VOlcCBjBY7edPmKEYwUjbYptY2cal
+	1uohUdhcXMOqgaAhiKh+4LL1bvwXh54snP0SrGOmsnNYOfNsHMMpcW7Spg1Bhna+urPBsD
+	OrzRhLWY6HEKD3FpVBei3hZxRORpqXs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1704772212;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=a0GQAZNSgQ9NYel79tdKOQqcnL4ZPX5GxjXGFUqL5FQ=;
+	b=LxDu/geTjtPo/N4rGuzRryrRyVb8hYVGhN4bcQZGe3fAA0J+p4WePoZJFrzQFEqVfBNzXu
+	GsFE05sYWNJFCnPouYdBb4qZj84kaLje70GwR01iCHU+THWxaXDRiDM8CxH82vcrzAf9ip
+	wk0TIzMn9Kq0A2qcwGcrVuqaiZHVwTc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-445-z2OS85ljPFq20Ze8WhKemQ-1; Mon, 08 Jan 2024 22:50:00 -0500
+X-MC-Unique: z2OS85ljPFq20Ze8WhKemQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 29B0285A588;
+	Tue,  9 Jan 2024 03:49:59 +0000 (UTC)
+Received: from localhost (unknown [10.72.116.129])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 4FFC53C4F;
+	Tue,  9 Jan 2024 03:49:57 +0000 (UTC)
+Date: Tue, 9 Jan 2024 11:49:54 +0800
+From: Baoquan He <bhe@redhat.com>
+To: kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH 5/5] crash: clean up CRASH_DUMP
+Message-ID: <ZZzCYr7t0FrMWafB@MiWiFi-R3L-srv>
+References: <20240105103305.557273-6-bhe@redhat.com>
+ <ZZqk+AnXbqnJuMdF@rli9-mobl>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.67.174.60]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemm500024.china.huawei.com (7.185.36.203)
-X-Mailman-Approved-At: Tue, 09 Jan 2024 15:55:35 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZZqk+AnXbqnJuMdF@rli9-mobl>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,50 +79,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@kernel.org, naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
+Cc: linux-arm-kernel@lists.infradead.org, x86@kernel.org, arnd@arndb.de, ignat@cloudflare.com, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, viro@zeniv.linux.org.uk, oe-kbuild-all@lists.linux.dev, eric_devolder@yahoo.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, hbathini@linux.ibm.com, ebiederm@xmission.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The first 32k of memory is reserved for interrupt vectors, however for
-powerpc64 this might not be enough. Fix this by reserving the maximum
-size between 32k and the real size of interrupt vectors.
+On 01/07/24 at 09:19pm, kernel test robot wrote:
+> Hi Baoquan,
+> 
+> kernel test robot noticed the following build errors:
+> 
+> [auto build test ERROR on linus/master]
+> [also build test ERROR on v6.7-rc8]
+> [cannot apply to powerpc/next powerpc/fixes tip/x86/core arm64/for-next/core next-20240105]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Baoquan-He/kexec_core-move-kdump-related-codes-from-crash_core-c-to-kexec_core-c/20240105-223735
+> base:   linus/master
+> patch link:    https://lore.kernel.org/r/20240105103305.557273-6-bhe%40redhat.com
+> patch subject: [PATCH 5/5] crash: clean up CRASH_DUMP
+> :::::: branch date: 2 days ago
+> :::::: commit date: 2 days ago
+> config: x86_64-randconfig-122-20240106 (https://download.01.org/0day-ci/archive/20240107/202401071326.52yn9Ftd-lkp@intel.com/config)
+> compiler: ClangBuiltLinux clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240107/202401071326.52yn9Ftd-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/r/202401071326.52yn9Ftd-lkp@intel.com/
 
-Signed-off-by: GUO Zihua <guozihua@huawei.com>
----
- arch/powerpc/kernel/prom.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+Thanks for reporting.
 
-diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 0b5878c3125b..f374487513b3 100644
---- a/arch/powerpc/kernel/prom.c
-+++ b/arch/powerpc/kernel/prom.c
-@@ -758,6 +758,7 @@ static inline void save_fscr_to_task(void) {}
- void __init early_init_devtree(void *params)
- {
- 	phys_addr_t limit;
-+	size_t int_vector_size;
- 
- 	DBG(" -> early_init_devtree(%px)\n", params);
- 
-@@ -810,9 +811,17 @@ void __init early_init_devtree(void *params)
- 	setup_initial_memory_limit(memstart_addr, first_memblock_size);
- 	/* Reserve MEMBLOCK regions used by kernel, initrd, dt, etc... */
- 	memblock_reserve(PHYSICAL_START, __pa(_end) - PHYSICAL_START);
-+#ifdef CONFIG_PPC64
-+	/* If relocatable, reserve at least 32k for interrupt vectors etc. */
-+	int_vector_size = (size_t)((uintptr_t)__end_interrupts -
-+				   (uintptr_t)_stext);
-+	int_vector_size = max_t(size_t, 0x8000, int_vector_size);
-+#else
- 	/* If relocatable, reserve first 32k for interrupt vectors etc. */
-+	int_vector_size = 0x8000;
-+#endif
- 	if (PHYSICAL_START > MEMORY_START)
--		memblock_reserve(MEMORY_START, 0x8000);
-+		memblock_reserve(MEMORY_START, int_vector_size);
- 	reserve_kdump_trampoline();
- #if defined(CONFIG_FA_DUMP) || defined(CONFIG_PRESERVE_FA_DUMP)
- 	/*
--- 
-2.34.1
+I have reproduced these linking errors, will consier how to rearrange
+code change and fix them. The thing splitting kdump out could be more
+complicated than I thought.
+
+> 
+> All errors (new ones prefixed by >>):
+> 
+> >> ld.lld: error: undefined symbol: crashk_res
+>    >>> referenced by initramfs.c:638 (init/initramfs.c:638)
+>    >>>               init/initramfs.o:(kexec_free_initrd) in archive vmlinux.a
+>    >>> referenced by initramfs.c:638 (init/initramfs.c:638)
+>    >>>               init/initramfs.o:(kexec_free_initrd) in archive vmlinux.a
+>    >>> referenced by initramfs.c:0 (init/initramfs.c:0)
+>    >>>               init/initramfs.o:(kexec_free_initrd) in archive vmlinux.a
+>    >>> referenced 77 more times
+> --
+> >> ld.lld: error: undefined symbol: parse_crashkernel
+>    >>> referenced by setup.c:479 (arch/x86/kernel/setup.c:479)
+>    >>>               arch/x86/kernel/setup.o:(arch_reserve_crashkernel) in archive vmlinux.a
+> --
+> >> ld.lld: error: undefined symbol: crashk_low_res
+>    >>> referenced by machine_kexec_64.c:539 (arch/x86/kernel/machine_kexec_64.c:539)
+>    >>>               arch/x86/kernel/machine_kexec_64.o:(kexec_mark_crashkres) in archive vmlinux.a
+>    >>> referenced by machine_kexec_64.c:539 (arch/x86/kernel/machine_kexec_64.c:539)
+>    >>>               arch/x86/kernel/machine_kexec_64.o:(kexec_mark_crashkres) in archive vmlinux.a
+>    >>> referenced by machine_kexec_64.c:539 (arch/x86/kernel/machine_kexec_64.c:539)
+>    >>>               arch/x86/kernel/machine_kexec_64.o:(kexec_mark_crashkres) in archive vmlinux.a
+>    >>> referenced 36 more times
+> --
+> >> ld.lld: error: undefined symbol: crash_update_vmcoreinfo_safecopy
+>    >>> referenced by kexec_core.c:522 (kernel/kexec_core.c:522)
+>    >>>               kernel/kexec_core.o:(kimage_crash_copy_vmcoreinfo) in archive vmlinux.a
+>    >>> referenced by kexec_core.c:610 (kernel/kexec_core.c:610)
+>    >>>               kernel/kexec_core.o:(kimage_free) in archive vmlinux.a
+> --
+> >> ld.lld: error: undefined symbol: crash_save_vmcoreinfo
+>    >>> referenced by kexec_core.c:1053 (kernel/kexec_core.c:1053)
+>    >>>               kernel/kexec_core.o:(__crash_kexec) in archive vmlinux.a
+> --
+> >> ld.lld: error: undefined symbol: paddr_vmcoreinfo_note
+>    >>> referenced by kexec_core.c:1148 (kernel/kexec_core.c:1148)
+>    >>>               kernel/kexec_core.o:(crash_prepare_elf64_headers) in archive vmlinux.a
+> --
+> >> ld.lld: error: undefined symbol: append_elf_note
+>    >>> referenced by kexec_core.c:1390 (kernel/kexec_core.c:1390)
+>    >>>               kernel/kexec_core.o:(crash_save_cpu) in archive vmlinux.a
+> --
+> >> ld.lld: error: undefined symbol: final_note
+>    >>> referenced by kexec_core.c:1392 (kernel/kexec_core.c:1392)
+>    >>>               kernel/kexec_core.o:(crash_save_cpu) in archive vmlinux.a
+> 
+> -- 
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
+> 
 
