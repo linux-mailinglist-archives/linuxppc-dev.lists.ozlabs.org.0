@@ -2,79 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C08382A415
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jan 2024 23:42:20 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jeJNV/GF;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DDE182A416
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jan 2024 23:42:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T9N8n4PF2z3cV9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jan 2024 09:42:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T9N9N0C8fz3d8x
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jan 2024 09:42:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jeJNV/GF;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=donettom@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.222.175; helo=mail-qk1-f175.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T91Km4pnCz2yts
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jan 2024 19:33:48 +1100 (AEDT)
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40A8WjVa005535;
-	Wed, 10 Jan 2024 08:33:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=GQLmdzTFvokN1N5EM1lR19Xz2d+PKMEyH5r0sANs38s=;
- b=jeJNV/GFGOMjMkhcI6J8PGwyQZgbFboUFjUx7WBkX7YPgfaAk9yFNSZYgsI9ljRF253w
- jS67iErR0xXwmy2ManTYBrEH3pfpzsRWcT5JCRIYOWRYcslZWnBEJZRq7ZZc9HoRm5pt
- b5CzTlC82JYwrExgszisyjiFr/iRBHEwGGX/KjFIp0U+wjQdRUez+sGrrr82N60ZNZNB
- UvtnmnogN6wJgDNVT3nAzCOJICsgMm1yf6gaUVHySdOhZQfJK1uk/sOfdEnJQXBF66tV
- lDU9A7xRNt/9/nHrfD6ahNWy0BARJcI2WxFjp49yPhZ1yjKtIHQmqXwhnpSzoTp2Om5I Vg== 
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vhqtng0xf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Jan 2024 08:33:41 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40A7a5Ob028052;
-	Wed, 10 Jan 2024 08:33:40 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vgwfsr3xw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Jan 2024 08:33:40 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40A8Xb4W14680706
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 10 Jan 2024 08:33:37 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B8B292004B;
-	Wed, 10 Jan 2024 08:33:37 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D80FE20040;
-	Wed, 10 Jan 2024 08:33:35 +0000 (GMT)
-Received: from li-06431bcc-2712-11b2-a85c-a6fe68df28f9.in.ibm.com (unknown [9.109.245.191])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 10 Jan 2024 08:33:35 +0000 (GMT)
-From: Donet Tom <donettom@linux.vnet.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>, linux-kselftest@vger.kernel.org
-Subject: [PATCH 1/1] selftests: mm: hugepage-vmemmap fails on 64K page size systems.
-Date: Wed, 10 Jan 2024 14:03:35 +0530
-Message-ID: <3b3a3ae37ba21218481c482a872bbf7526031600.1704865754.git.donettom@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.43.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T920b354Cz2xQG
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jan 2024 20:03:57 +1100 (AEDT)
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7831386ee01so376239985a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jan 2024 01:03:58 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704877435; x=1705482235;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=v2Qk0JS/X/M+iSFJkteLpcJbyzGhmpZqpSZNg5QY+TE=;
+        b=poBRlHA7XXZxPh7r4RUF8eyucglVGGzDX/LdauGvhyKMrQM2Go3J1e872eS8q+IJRU
+         AeTC/PYsqbFQJ9wnXmCCYxiMbRVYDoxeVzw76GtdA/d6F97XZlcQlAYwJwwQQbelGENy
+         gWbG+eOhZBdmImbHsE01/IbqeD34aYtTYMJ5yWHj+5oKMSpwEoXhaze4cOIi/RIhD4Ht
+         VOzUD4Ax/pBOWpP6iRzs3LZVzRP/R6wiN/2goSZwi3nvKfJT9Qu46vJAZDOeE3sYOk4G
+         cbi2gxq7beo84HW8Ez4LKjH+Kxt1IBdONCP5GLZ3ckV+FlA5kceGsb2HLAS3Ped39wCH
+         IztQ==
+X-Gm-Message-State: AOJu0Yz63tpimzwOC8b5cKYQsiyv+kdfROhwyFgFtlH8erZ3RusTqjJd
+	nYiQtrkLVBOpWsrIx1RXfgyFHf+/ZtfGeHSD
+X-Google-Smtp-Source: AGHT+IHHdiHuXtClo3HVNi7QNFKAxnVGz8ICqbFjdD5+1f65MSLFBksZbXL/7cIypQkt7lL8wnRZ4w==
+X-Received: by 2002:a05:620a:2850:b0:783:3976:e17a with SMTP id h16-20020a05620a285000b007833976e17amr183123qkp.52.1704877435295;
+        Wed, 10 Jan 2024 01:03:55 -0800 (PST)
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com. [209.85.160.176])
+        by smtp.gmail.com with ESMTPSA id b25-20020a05620a089900b00781587ab3dfsm1456634qka.74.2024.01.10.01.03.54
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Jan 2024 01:03:54 -0800 (PST)
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-42989016014so23211901cf.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jan 2024 01:03:54 -0800 (PST)
+X-Received: by 2002:a81:9843:0:b0:5fa:7e0a:b133 with SMTP id
+ p64-20020a819843000000b005fa7e0ab133mr127729ywg.79.1704877413506; Wed, 10 Jan
+ 2024 01:03:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ZSKpAOiSoWt1ETnpvKHBG_uRZdBm_ixf
-X-Proofpoint-ORIG-GUID: ZSKpAOiSoWt1ETnpvKHBG_uRZdBm_ixf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-10_02,2024-01-09_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=999
- impostorscore=0 malwarescore=0 bulkscore=0 clxscore=1011 suspectscore=0
- priorityscore=1501 spamscore=0 lowpriorityscore=0 phishscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401100069
+References: <20231108125843.3806765-1-arnd@kernel.org> <20231108125843.3806765-9-arnd@kernel.org>
+In-Reply-To: <20231108125843.3806765-9-arnd@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 10 Jan 2024 10:03:20 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdV8uFKntiMfwwmnFpd4Dcx8vJDwS6r1iBLtkh40N71dbw@mail.gmail.com>
+Message-ID: <CAMuHMdV8uFKntiMfwwmnFpd4Dcx8vJDwS6r1iBLtkh40N71dbw@mail.gmail.com>
+Subject: Re: [PATCH 08/22] [v2] arch: consolidate arch_irq_work_raise prototypes
+To: Arnd Bergmann <arnd@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Mailman-Approved-At: Thu, 11 Jan 2024 09:41:33 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -87,134 +68,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Aneesh Kumar <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Geetika Moolchandani <geetika@linux.ibm.com>, linux-mm@kvack.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Juri Lelli <juri.lelli@redhat.com>, linux-fbdev@vger.kernel.org, x86@kernel.org, loongarch@lists.linux.dev, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, netdev@vger.kernel.org, Guo Ren <guoren@kernel.org>, Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>, Helge Deller <deller@gmx.de>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Vincenzo Frascino <vincenzo.frascino@arm.com>, Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Vincent Guittot <vincent.guittot@linaro.org>, Masahiro Yamada <masahiroy@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, Greg Ungerer <gerg@linux-m68k.org>, linux-bcachefs@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, 
+ Vineet Gupta <vgupta@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org, linux-trace-kernel@vger.kernel.org, Palmer Dabbelt <palmer@rivosinc.com>, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, linux-kbuild@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Steven Rostedt <rostedt@goodmis.org>, Nathan Chancellor <nathan@kernel.org>, linux-m68k@lists.linux-m68k.org, linux-csky@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Andy Lutomirski <luto@kernel.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Timur Tabi <timur@kernel.org>, Geoff Levand <geoff@infradead.org>, Greg Kroah-Hartma
+ n <gregkh@linuxfoundation.org>, Kent Overstreet <kent.overstreet@linux.dev>, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Sudip Mukherjee <sudipm.mukherjee@gmail.com>, Dinh Nguyen <dinguyen@kernel.org>, linux-usb@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Masami Hiramatsu <mhiramat@kernel.org>, linux-alpha@vger.kernel.org, linux-mtd@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>, David Woodhouse <dwmw2@infradead.org>, "David S. Miller" <davem@davemloft.net>, Al Viro <viro@zeniv.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The kernel sefltest mm/hugepage-vmemmap fails on architectures
-which has different page size other than 4K. In hugepage-vmemmap
-page size used is 4k so the pfn calculation will go wrong on systems
-which has different page size .The length of MAP_HUGETLB memory must
-be hugepage aligned but in hugepage-vmemmap map length is 2M so this
-will not get aligned if the system has differnet hugepage size.
+On Wed, Nov 8, 2023 at 2:01=E2=80=AFPM Arnd Bergmann <arnd@kernel.org> wrot=
+e:
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> The prototype was hidden in an #ifdef on x86, which causes a warning:
+>
+> kernel/irq_work.c:72:13: error: no previous prototype for 'arch_irq_work_=
+raise' [-Werror=3Dmissing-prototypes]
 
-Added  psize() to get the page size and default_huge_page_size() to
-get the default hugepage size at run time, hugepage-vmemmap test pass
-on powerpc with 64K page size and x86 with 4K page size.
+This issue is now present upstream.
 
-Result on powerpc without patch (page size 64K)
-*# ./hugepage-vmemmap
-Returned address is 0x7effff000000 whose pfn is 0
-Head page flags (100000000) is invalid
-check_page_flags: Invalid argument
-*#
+> Some architectures have a working prototype, while others don't.
+> Fix this by providing it in only one place that is always visible.
+>
+> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+> Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+> Acked-by: Guo Ren <guoren@kernel.org>
+> Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Result on powerpc with patch (page size 64K)
-*# ./hugepage-vmemmap
-Returned address is 0x7effff000000 whose pfn is 600
-*#
+Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-Result on x86 with patch (page size 4K)
-*# ./hugepage-vmemmap
-Returned address is 0x7fc7c2c00000 whose pfn is 1dac00
-*#
+Gr{oetje,eeting}s,
 
-Signed-off-by: Donet Tom <donettom@linux.vnet.ibm.com>
-Reported-by : Geetika Moolchandani (geetika@linux.ibm.com)
-Tested-by : Geetika Moolchandani (geetika@linux.ibm.com)
----
- tools/testing/selftests/mm/hugepage-vmemmap.c | 29 ++++++++++++-------
- 1 file changed, 18 insertions(+), 11 deletions(-)
+                        Geert
 
-diff --git a/tools/testing/selftests/mm/hugepage-vmemmap.c b/tools/testing/selftests/mm/hugepage-vmemmap.c
-index 5b354c209e93..894d28c3dd47 100644
---- a/tools/testing/selftests/mm/hugepage-vmemmap.c
-+++ b/tools/testing/selftests/mm/hugepage-vmemmap.c
-@@ -10,10 +10,7 @@
- #include <unistd.h>
- #include <sys/mman.h>
- #include <fcntl.h>
--
--#define MAP_LENGTH		(2UL * 1024 * 1024)
--
--#define PAGE_SIZE		4096
-+#include "vm_util.h"
- 
- #define PAGE_COMPOUND_HEAD	(1UL << 15)
- #define PAGE_COMPOUND_TAIL	(1UL << 16)
-@@ -39,6 +36,9 @@
- #define MAP_FLAGS		(MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB)
- #endif
- 
-+static size_t pagesize;
-+static size_t maplength;
-+
- static void write_bytes(char *addr, size_t length)
- {
- 	unsigned long i;
-@@ -56,7 +56,7 @@ static unsigned long virt_to_pfn(void *addr)
- 	if (fd < 0)
- 		return -1UL;
- 
--	lseek(fd, (unsigned long)addr / PAGE_SIZE * sizeof(pagemap), SEEK_SET);
-+	lseek(fd, (unsigned long)addr / pagesize * sizeof(pagemap), SEEK_SET);
- 	read(fd, &pagemap, sizeof(pagemap));
- 	close(fd);
- 
-@@ -86,7 +86,7 @@ static int check_page_flags(unsigned long pfn)
- 	 * this also verifies kernel has correctly set the fake page_head to tail
- 	 * while hugetlb_free_vmemmap is enabled.
- 	 */
--	for (i = 1; i < MAP_LENGTH / PAGE_SIZE; i++) {
-+	for (i = 1; i < maplength / pagesize; i++) {
- 		read(fd, &pageflags, sizeof(pageflags));
- 		if ((pageflags & TAIL_PAGE_FLAGS) != TAIL_PAGE_FLAGS ||
- 		    (pageflags & HEAD_PAGE_FLAGS) == HEAD_PAGE_FLAGS) {
-@@ -106,18 +106,25 @@ int main(int argc, char **argv)
- 	void *addr;
- 	unsigned long pfn;
- 
--	addr = mmap(MAP_ADDR, MAP_LENGTH, PROT_READ | PROT_WRITE, MAP_FLAGS, -1, 0);
-+	pagesize  = psize();
-+	maplength = default_huge_page_size();
-+	if (!maplength) {
-+		printf("Unable to determine huge page size\n");
-+		exit(1);
-+	}
-+
-+	addr = mmap(MAP_ADDR, maplength, PROT_READ | PROT_WRITE, MAP_FLAGS, -1, 0);
- 	if (addr == MAP_FAILED) {
- 		perror("mmap");
- 		exit(1);
- 	}
- 
- 	/* Trigger allocation of HugeTLB page. */
--	write_bytes(addr, MAP_LENGTH);
-+	write_bytes(addr, maplength);
- 
- 	pfn = virt_to_pfn(addr);
- 	if (pfn == -1UL) {
--		munmap(addr, MAP_LENGTH);
-+		munmap(addr, maplength);
- 		perror("virt_to_pfn");
- 		exit(1);
- 	}
-@@ -125,13 +132,13 @@ int main(int argc, char **argv)
- 	printf("Returned address is %p whose pfn is %lx\n", addr, pfn);
- 
- 	if (check_page_flags(pfn) < 0) {
--		munmap(addr, MAP_LENGTH);
-+		munmap(addr, maplength);
- 		perror("check_page_flags");
- 		exit(1);
- 	}
- 
- 	/* munmap() length of MAP_HUGETLB memory must be hugepage aligned */
--	if (munmap(addr, MAP_LENGTH)) {
-+	if (munmap(addr, maplength)) {
- 		perror("munmap");
- 		exit(1);
- 	}
--- 
-2.43.0
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
 
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
