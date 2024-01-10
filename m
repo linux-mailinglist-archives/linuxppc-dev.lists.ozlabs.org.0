@@ -2,60 +2,106 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50A37828FC8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jan 2024 23:20:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBB2F8292E2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jan 2024 04:55:47 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Zq8ocN8G;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pWydVyLK;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T8ljv6Yw4z3cmV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jan 2024 09:20:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T8v8x22n9z3bn7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jan 2024 14:55:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Zq8ocN8G;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pWydVyLK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nicholas@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T8lf021J6z30fD
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jan 2024 09:16:56 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id DD333615A4;
-	Tue,  9 Jan 2024 22:16:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7695CC4163A;
-	Tue,  9 Jan 2024 22:16:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704838614;
-	bh=WEn5lTrzAXiM29oFJTOtG7WGsQHyaE8VVcpnTQ825es=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Zq8ocN8Gt1fqJMhJwOXYGLVh0X0nGl41KS8W4md+yRdfItGW8fNnP0aRYm/3H6lAl
-	 RS27Py+YNnR5kRSt+po4oAHAEWb8VCZ4plTxJ9tHH89qCRyg2dtoAWNC5e5An5dSZU
-	 +JzvfWbNjxCnZsb1JPhcCIyg8HTq07RwbIKmHE5PbUgHpl62LhEW99qTUmRwlC4XUj
-	 tFxwc5+m00o10eK3MDOXqDhJvrk7QWYLW9omp+MinaN9zQ5+dIOI1juTAcz3K/C2/p
-	 3/ZPyl9rbEDTjpogg6clozkMlc/fZuaj5iit9sPEM6FYdXPBAs73lpQUDVYHldIsnX
-	 4xjPgJS1qq3mQ==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Tue, 09 Jan 2024 15:16:31 -0700
-Subject: [PATCH 3/3] treewide: Update LLVM Bugzilla links
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T8v8274Bzz30Np
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jan 2024 14:54:58 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40A3okpQ001962;
+	Wed, 10 Jan 2024 03:54:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=pUVAfEd8UZ3Kgup8PAC9DYXLhqDnscMMx6ZISfm/AQk=;
+ b=pWydVyLKGGPmxZhuha3gk3Prcbyg3OH+amTdw7dUElYRWTNxAXGqjmA5xE/BWRHzhBxQ
+ zDISFDYoMP7DfpLar24xEydEFX2MQLnFO9vLtNZ1ZZjEQy0UjPUBiO533SeTJjtDCItJ
+ lw0THHlZLb9PMOAbWAPTOKs05YF9MA/z1KOVo+wDPrNPQMzAHtlTPEyORGOSeWa+Os9T
+ cFv3jbcWB6O0lyl9LmT1gMDA5/T3Jsa9gtKXpV/RMzhtG/G8EqRaoOl+oqFWdAnRnTqt
+ dAYrWlwm5P4vmmCHHAqp5hRQh/iIK8Ts8cyq85vNl7meihD+vKwZE8bt8ofPvJpBQ9tP SQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vher165ge-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Jan 2024 03:54:42 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40A3pPpm003780;
+	Wed, 10 Jan 2024 03:54:42 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vher165g9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Jan 2024 03:54:42 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40A1AjOq022793;
+	Wed, 10 Jan 2024 03:54:41 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vfhjyk3m1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Jan 2024 03:54:41 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40A3sdW728836314
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 10 Jan 2024 03:54:39 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5229920043;
+	Wed, 10 Jan 2024 03:54:39 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 87BE720040;
+	Wed, 10 Jan 2024 03:54:38 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 10 Jan 2024 03:54:38 +0000 (GMT)
+Received: from [10.61.2.106] (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id F126560218;
+	Wed, 10 Jan 2024 14:54:33 +1100 (AEDT)
+Message-ID: <74ad4d5f-7bf7-484c-9386-07945f0c6c5d@linux.ibm.com>
+Date: Wed, 10 Jan 2024 14:54:06 +1100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240109-update-llvm-links-v1-3-eb09b59db071@kernel.org>
-References: <20240109-update-llvm-links-v1-0-eb09b59db071@kernel.org>
-In-Reply-To: <20240109-update-llvm-links-v1-0-eb09b59db071@kernel.org>
-To: akpm@linux-foundation.org
-X-Mailer: b4 0.13-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11357; i=nathan@kernel.org;
- h=from:subject:message-id; bh=WEn5lTrzAXiM29oFJTOtG7WGsQHyaE8VVcpnTQ825es=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDKlzj16w1Pj8I8RGNGpqStpeL/2Ss7Fckxj+MQn8ummhc
- f/e3puMHaUsDGJcDLJiiizVj1WPGxrOOct449QkmDmsTCBDGLg4BWAipzgZ/mcpXDN6n369Z2Vr
- 7IPwnTz2R5dYJN5v++9iM3XOfBYtOU5GhuM55jNe+5/7H/HicGe1b2CLnMlqaZtVrzg+6Dfn1Hg
- YcwMA
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 10/13] powerpc: Define KMSAN metadata address ranges for
+ vmalloc and ioremap
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "glider@google.com" <glider@google.com>,
+        "elver@google.com"
+ <elver@google.com>,
+        "dvyukov@google.com" <dvyukov@google.com>,
+        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
+        "npiggin@gmail.com" <npiggin@gmail.com>
+References: <20231214055539.9420-1-nicholas@linux.ibm.com>
+ <20231214055539.9420-11-nicholas@linux.ibm.com>
+ <d24c430a-bde5-4432-8550-57de33cb203c@csgroup.eu>
+Content-Language: en-US
+From: Nicholas Miehlbradt <nicholas@linux.ibm.com>
+In-Reply-To: <d24c430a-bde5-4432-8550-57de33cb203c@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: hNZCu3MwXqikP36POMF8gOd8dje9b0A4
+X-Proofpoint-ORIG-GUID: aw9dGrggdNPFi0nAkY_dW39AreN6AI7l
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-09_13,2024-01-09_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ priorityscore=1501 adultscore=0 bulkscore=0 clxscore=1011 spamscore=0
+ mlxlogscore=999 impostorscore=0 suspectscore=0 malwarescore=0 mlxscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401100029
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,261 +113,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-efi@vger.kernel.org, kvm@vger.kernel.org, llvm@lists.linux.dev, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, kasan-dev@googlegroups.com, linux-kselftest@vger.kernel.org, linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, amd-gfx@lists.freedesktop.org, linux-media@vger.kernel.org, linux-pm@vger.kernel.org, bridge@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, patches@lists.linux.dev, linux-security-module@vger.kernel.org, linux-crypto@vger.kernel.org, linux-trace-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "iii@linux.ibm.com" <iii@linux.ibm.com>, "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-LLVM moved their issue tracker from their own Bugzilla instance to
-GitHub issues. While all of the links are still valid, they may not
-necessarily show the most up to date information around the issues, as
-all updates will occur on GitHub, not Bugzilla.
 
-Another complication is that the Bugzilla issue number is not always the
-same as the GitHub issue number. Thankfully, LLVM maintains this mapping
-through two shortlinks:
 
-  https://llvm.org/bz<num> -> https://bugs.llvm.org/show_bug.cgi?id=<num>
-  https://llvm.org/pr<num> -> https://github.com/llvm/llvm-project/issues/<mapped_num>
-
-Switch all "https://bugs.llvm.org/show_bug.cgi?id=<num>" links to the
-"https://llvm.org/pr<num>" shortlink so that the links show the most up
-to date information. Each migrated issue links back to the Bugzilla
-entry, so there should be no loss of fidelity of information here.
-
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- arch/powerpc/Makefile                           | 4 ++--
- arch/powerpc/kvm/book3s_hv_nested.c             | 2 +-
- arch/s390/include/asm/ftrace.h                  | 2 +-
- arch/x86/power/Makefile                         | 2 +-
- crypto/blake2b_generic.c                        | 2 +-
- drivers/firmware/efi/libstub/Makefile           | 2 +-
- drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c        | 2 +-
- drivers/media/test-drivers/vicodec/codec-fwht.c | 2 +-
- drivers/regulator/Kconfig                       | 2 +-
- include/asm-generic/vmlinux.lds.h               | 2 +-
- lib/Kconfig.kasan                               | 2 +-
- lib/raid6/Makefile                              | 2 +-
- lib/stackinit_kunit.c                           | 2 +-
- mm/slab_common.c                                | 2 +-
- net/bridge/br_multicast.c                       | 2 +-
- security/Kconfig                                | 2 +-
- 16 files changed, 17 insertions(+), 17 deletions(-)
-
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index f19dbaa1d541..cd6aaa45f355 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -133,11 +133,11 @@ CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mno-pointers-to-nested-functions)
- CFLAGS-$(CONFIG_PPC64)	+= $(call cc-option,-mlong-double-128)
- 
- # Clang unconditionally reserves r2 on ppc32 and does not support the flag
--# https://bugs.llvm.org/show_bug.cgi?id=39555
-+# https://llvm.org/pr39555
- CFLAGS-$(CONFIG_PPC32)	:= $(call cc-option, -ffixed-r2)
- 
- # Clang doesn't support -mmultiple / -mno-multiple
--# https://bugs.llvm.org/show_bug.cgi?id=39556
-+# https://llvm.org/pr39556
- CFLAGS-$(CONFIG_PPC32)	+= $(call cc-option, $(MULTIPLEWORD))
- 
- CFLAGS-$(CONFIG_PPC32)	+= $(call cc-option,-mno-readonly-in-sdata)
-diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
-index 3b658b8696bc..3f5970f74c6b 100644
---- a/arch/powerpc/kvm/book3s_hv_nested.c
-+++ b/arch/powerpc/kvm/book3s_hv_nested.c
-@@ -55,7 +55,7 @@ void kvmhv_save_hv_regs(struct kvm_vcpu *vcpu, struct hv_guest_state *hr)
- 	hr->dawrx1 = vcpu->arch.dawrx1;
- }
- 
--/* Use noinline_for_stack due to https://bugs.llvm.org/show_bug.cgi?id=49610 */
-+/* Use noinline_for_stack due to https://llvm.org/pr49610 */
- static noinline_for_stack void byteswap_pt_regs(struct pt_regs *regs)
- {
- 	unsigned long *addr = (unsigned long *) regs;
-diff --git a/arch/s390/include/asm/ftrace.h b/arch/s390/include/asm/ftrace.h
-index 5a82b08f03cd..621f23d5ae30 100644
---- a/arch/s390/include/asm/ftrace.h
-+++ b/arch/s390/include/asm/ftrace.h
-@@ -9,7 +9,7 @@
- #ifndef __ASSEMBLY__
- 
- #ifdef CONFIG_CC_IS_CLANG
--/* https://bugs.llvm.org/show_bug.cgi?id=41424 */
-+/* https://llvm.org/pr41424 */
- #define ftrace_return_address(n) 0UL
- #else
- #define ftrace_return_address(n) __builtin_return_address(n)
-diff --git a/arch/x86/power/Makefile b/arch/x86/power/Makefile
-index 379777572bc9..e0cd7afd5302 100644
---- a/arch/x86/power/Makefile
-+++ b/arch/x86/power/Makefile
-@@ -5,7 +5,7 @@
- CFLAGS_cpu.o	:= -fno-stack-protector
- 
- # Clang may incorrectly inline functions with stack protector enabled into
--# __restore_processor_state(): https://bugs.llvm.org/show_bug.cgi?id=47479
-+# __restore_processor_state(): https://llvm.org/pr47479
- CFLAGS_REMOVE_cpu.o := $(CC_FLAGS_LTO)
- 
- obj-$(CONFIG_PM_SLEEP)		+= cpu.o
-diff --git a/crypto/blake2b_generic.c b/crypto/blake2b_generic.c
-index 6704c0355889..32e380b714b6 100644
---- a/crypto/blake2b_generic.c
-+++ b/crypto/blake2b_generic.c
-@@ -102,7 +102,7 @@ static void blake2b_compress_one_generic(struct blake2b_state *S,
- 	ROUND(10);
- 	ROUND(11);
- #ifdef CONFIG_CC_IS_CLANG
--#pragma nounroll /* https://bugs.llvm.org/show_bug.cgi?id=45803 */
-+#pragma nounroll /* https://llvm.org/pr45803 */
- #endif
- 	for (i = 0; i < 8; ++i)
- 		S->h[i] = S->h[i] ^ v[i] ^ v[i + 8];
-diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-index 06964a3c130f..a223bd10564b 100644
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -105,7 +105,7 @@ lib-y				:= $(patsubst %.o,%.stub.o,$(lib-y))
- # Even when -mbranch-protection=none is set, Clang will generate a
- # .note.gnu.property for code-less object files (like lib/ctype.c),
- # so work around this by explicitly removing the unwanted section.
--# https://bugs.llvm.org/show_bug.cgi?id=46480
-+# https://llvm.org/pr46480
- STUBCOPY_FLAGS-y		+= --remove-section=.note.gnu.property
- 
- STUBCOPY_RELOC-$(CONFIG_X86_32)	:= R_386_32
-diff --git a/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c b/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
-index 0f24af6f2810..265fa028b121 100644
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
-@@ -610,7 +610,7 @@ static uint32_t sdma_v4_4_2_rb_cntl(struct amdgpu_ring *ring, uint32_t rb_cntl)
- 	/* Set ring buffer size in dwords */
- 	uint32_t rb_bufsz = order_base_2(ring->ring_size / 4);
- 
--	barrier(); /* work around https://bugs.llvm.org/show_bug.cgi?id=42576 */
-+	barrier(); /* work around https://llvm.org/pr42576 */
- 	rb_cntl = REG_SET_FIELD(rb_cntl, SDMA_GFX_RB_CNTL, RB_SIZE, rb_bufsz);
- #ifdef __BIG_ENDIAN
- 	rb_cntl = REG_SET_FIELD(rb_cntl, SDMA_GFX_RB_CNTL, RB_SWAP_ENABLE, 1);
-diff --git a/drivers/media/test-drivers/vicodec/codec-fwht.c b/drivers/media/test-drivers/vicodec/codec-fwht.c
-index 1ce682e1b85c..fd75457d03b2 100644
---- a/drivers/media/test-drivers/vicodec/codec-fwht.c
-+++ b/drivers/media/test-drivers/vicodec/codec-fwht.c
-@@ -49,7 +49,7 @@ static const uint8_t zigzag[64] = {
- 
- /*
-  * noinline_for_stack to work around
-- * https://bugs.llvm.org/show_bug.cgi?id=38809
-+ * https://llvm.org/pr38809
-  */
- static int noinline_for_stack
- rlc(const s16 *in, __be16 *output, int blocktype)
-diff --git a/drivers/regulator/Kconfig b/drivers/regulator/Kconfig
-index f3ec24691378..f537e78478ef 100644
---- a/drivers/regulator/Kconfig
-+++ b/drivers/regulator/Kconfig
-@@ -278,7 +278,7 @@ config REGULATOR_CROS_EC
- config REGULATOR_DA903X
- 	tristate "Dialog Semiconductor DA9030/DA9034 regulators"
- 	depends on PMIC_DA903X
--	depends on !CC_IS_CLANG # https://bugs.llvm.org/show_bug.cgi?id=38789
-+	depends on !CC_IS_CLANG # https://llvm.org/pr38789
- 	help
- 	  Say y here to support the BUCKs and LDOs regulators found on
- 	  Dialog Semiconductor DA9030/DA9034 PMIC.
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index bae0fe4d499b..c425a1e2edee 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -977,7 +977,7 @@
-  * -fsanitize=thread produce unwanted sections (.eh_frame
-  * and .init_array.*), but CONFIG_CONSTRUCTORS wants to
-  * keep any .init_array.* sections.
-- * https://bugs.llvm.org/show_bug.cgi?id=46478
-+ * https://llvm.org/pr46478
-  */
- #ifdef CONFIG_UNWIND_TABLES
- #define DISCARD_EH_FRAME
-diff --git a/lib/Kconfig.kasan b/lib/Kconfig.kasan
-index fdca89c05745..de3e9e4803af 100644
---- a/lib/Kconfig.kasan
-+++ b/lib/Kconfig.kasan
-@@ -163,7 +163,7 @@ config KASAN_STACK
- 	  out-of-bounds bugs in stack variables.
- 
- 	  With Clang, stack instrumentation has a problem that causes excessive
--	  stack usage, see https://bugs.llvm.org/show_bug.cgi?id=38809. Thus,
-+	  stack usage, see https://llvm.org/pr38809. Thus,
- 	  with Clang, this option is deemed unsafe.
- 
- 	  This option is always disabled when compile-testing with Clang to
-diff --git a/lib/raid6/Makefile b/lib/raid6/Makefile
-index 1c5420ff254e..385a94aa0b99 100644
---- a/lib/raid6/Makefile
-+++ b/lib/raid6/Makefile
-@@ -21,7 +21,7 @@ altivec_flags += -isystem $(shell $(CC) -print-file-name=include)
- ifdef CONFIG_CC_IS_CLANG
- # clang ppc port does not yet support -maltivec when -msoft-float is
- # enabled. A future release of clang will resolve this
--# https://bugs.llvm.org/show_bug.cgi?id=31177
-+# https://llvm.org/pr31177
- CFLAGS_REMOVE_altivec1.o  += -msoft-float
- CFLAGS_REMOVE_altivec2.o  += -msoft-float
- CFLAGS_REMOVE_altivec4.o  += -msoft-float
-diff --git a/lib/stackinit_kunit.c b/lib/stackinit_kunit.c
-index 05947a2feb93..7a10e1d17258 100644
---- a/lib/stackinit_kunit.c
-+++ b/lib/stackinit_kunit.c
-@@ -404,7 +404,7 @@ static noinline int leaf_switch_2_none(unsigned long sp, bool fill,
-  * These are expected to fail for most configurations because neither
-  * GCC nor Clang have a way to perform initialization of variables in
-  * non-code areas (i.e. in a switch statement before the first "case").
-- * https://bugs.llvm.org/show_bug.cgi?id=44916
-+ * https://llvm.org/pr44916
-  */
- DEFINE_TEST_DRIVER(switch_1_none, uint64_t, SCALAR, ALWAYS_FAIL);
- DEFINE_TEST_DRIVER(switch_2_none, uint64_t, SCALAR, ALWAYS_FAIL);
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 8d431193c273..105ba974854c 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -656,7 +656,7 @@ static struct kmem_cache *__init create_kmalloc_cache(const char *name,
- 
- struct kmem_cache *
- kmalloc_caches[NR_KMALLOC_TYPES][KMALLOC_SHIFT_HIGH + 1] __ro_after_init =
--{ /* initialization for https://bugs.llvm.org/show_bug.cgi?id=42570 */ };
-+{ /* initialization for https://llvm.org/pr42570 */ };
- EXPORT_SYMBOL(kmalloc_caches);
- 
- #ifdef CONFIG_RANDOM_KMALLOC_CACHES
-diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index d7d021af1029..523f72ac9633 100644
---- a/net/bridge/br_multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -5043,7 +5043,7 @@ void br_multicast_uninit_stats(struct net_bridge *br)
- 	free_percpu(br->mcast_stats);
- }
- 
--/* noinline for https://bugs.llvm.org/show_bug.cgi?id=45802#c9 */
-+/* noinline for https://llvm.org/pr45802#c9 */
- static noinline_for_stack void mcast_stats_add_dir(u64 *dst, u64 *src)
- {
- 	dst[BR_MCAST_DIR_RX] += src[BR_MCAST_DIR_RX];
-diff --git a/security/Kconfig b/security/Kconfig
-index 52c9af08ad35..606a87c29a01 100644
---- a/security/Kconfig
-+++ b/security/Kconfig
-@@ -142,7 +142,7 @@ config HARDENED_USERCOPY
- config FORTIFY_SOURCE
- 	bool "Harden common str/mem functions against buffer overflows"
- 	depends on ARCH_HAS_FORTIFY_SOURCE
--	# https://bugs.llvm.org/show_bug.cgi?id=41459
-+	# https://llvm.org/pr41459
- 	depends on !CC_IS_CLANG || CLANG_VERSION >= 120001
- 	# https://github.com/llvm/llvm-project/issues/53645
- 	depends on !CC_IS_CLANG || !X86_32
-
--- 
-2.43.0
-
+On 14/12/2023 8:17 pm, Christophe Leroy wrote:
+> 
+> 
+> Le 14/12/2023 à 06:55, Nicholas Miehlbradt a écrit :
+>> Splits the vmalloc region into four. The first quarter is the new
+>> vmalloc region, the second is used to store shadow metadata and the
+>> third is used to store origin metadata. The fourth quarter is unused.
+>>
+>> Do the same for the ioremap region.
+>>
+>> Module data is stored in the vmalloc region so alias the modules
+>> metadata addresses to the respective vmalloc metadata addresses. Define
+>> MODULES_VADDR and MODULES_END to the start and end of the vmalloc
+>> region.
+>>
+>> Since MODULES_VADDR was previously only defined on ppc32 targets checks
+>> for if this macro is defined need to be updated to include
+>> defined(CONFIG_PPC32).
+> 
+> Why ?
+> 
+> In your case MODULES_VADDR is above PAGE_OFFSET so there should be no
+> difference.
+> 
+> Christophe
+> 
+On 64 bit builds the BUILD_BUG always triggers since MODULES_VADDR 
+expands to __vmalloc_start which is defined in a different translation 
+unit. I can restrict the #ifdef CONFIG_PPC32 to just around the 
+BUILD_BUG since as you pointed out there is no difference otherwise.
+>>
+>> Signed-off-by: Nicholas Miehlbradt <nicholas@linux.ibm.com>
+>> ---
+>>    arch/powerpc/include/asm/book3s/64/pgtable.h | 42 ++++++++++++++++++++
+>>    arch/powerpc/kernel/module.c                 |  2 +-
+>>    2 files changed, 43 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+>> index cb77eddca54b..b3a02b8d96e3 100644
+>> --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
+>> +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+>> @@ -249,7 +249,38 @@ enum pgtable_index {
+>>    extern unsigned long __vmalloc_start;
+>>    extern unsigned long __vmalloc_end;
+>>    #define VMALLOC_START	__vmalloc_start
+>> +
+>> +#ifndef CONFIG_KMSAN
+>>    #define VMALLOC_END	__vmalloc_end
+>> +#else
+>> +/*
+>> + * In KMSAN builds vmalloc area is four times smaller, and the remaining 3/4
+>> + * are used to keep the metadata for virtual pages. The memory formerly
+>> + * belonging to vmalloc area is now laid out as follows:
+>> + *
+>> + * 1st quarter: VMALLOC_START to VMALLOC_END - new vmalloc area
+>> + * 2nd quarter: KMSAN_VMALLOC_SHADOW_START to
+>> + *              KMSAN_VMALLOC_SHADOW_START+VMALLOC_LEN - vmalloc area shadow
+>> + * 3rd quarter: KMSAN_VMALLOC_ORIGIN_START to
+>> + *              KMSAN_VMALLOC_ORIGIN_START+VMALLOC_LEN - vmalloc area origins
+>> + * 4th quarter: unused
+>> + */
+>> +#define VMALLOC_LEN ((__vmalloc_end - __vmalloc_start) >> 2)
+>> +#define VMALLOC_END (VMALLOC_START + VMALLOC_LEN)
+>> +
+>> +#define KMSAN_VMALLOC_SHADOW_START VMALLOC_END
+>> +#define KMSAN_VMALLOC_ORIGIN_START (VMALLOC_END + VMALLOC_LEN)
+>> +
+>> +/*
+>> + * Module metadata is stored in the corresponding vmalloc metadata regions
+>> + */
+>> +#define KMSAN_MODULES_SHADOW_START	KMSAN_VMALLOC_SHADOW_START
+>> +#define KMSAN_MODULES_ORIGIN_START	KMSAN_VMALLOC_ORIGIN_START
+>> +#endif /* CONFIG_KMSAN */
+>> +
+>> +#define MODULES_VADDR VMALLOC_START
+>> +#define MODULES_END VMALLOC_END
+>> +#define MODULES_LEN		(MODULES_END - MODULES_VADDR)
+>>    
+>>    static inline unsigned int ioremap_max_order(void)
+>>    {
+>> @@ -264,7 +295,18 @@ extern unsigned long __kernel_io_start;
+>>    extern unsigned long __kernel_io_end;
+>>    #define KERN_VIRT_START __kernel_virt_start
+>>    #define KERN_IO_START  __kernel_io_start
+>> +#ifndef CONFIG_KMSAN
+>>    #define KERN_IO_END __kernel_io_end
+>> +#else
+>> +/*
+>> + * In KMSAN builds IO space is 4 times smaller, the remaining space is used to
+>> + * store metadata. See comment for vmalloc regions above.
+>> + */
+>> +#define KERN_IO_LEN             ((__kernel_io_end - __kernel_io_start) >> 2)
+>> +#define KERN_IO_END             (KERN_IO_START + KERN_IO_LEN)
+>> +#define KERN_IO_SHADOW_START    KERN_IO_END
+>> +#define KERN_IO_ORIGIN_START    (KERN_IO_SHADOW_START + KERN_IO_LEN)
+>> +#endif /* !CONFIG_KMSAN */
+>>    
+>>    extern struct page *vmemmap;
+>>    extern unsigned long pci_io_base;
+>> diff --git a/arch/powerpc/kernel/module.c b/arch/powerpc/kernel/module.c
+>> index f6d6ae0a1692..5043b959ad4d 100644
+>> --- a/arch/powerpc/kernel/module.c
+>> +++ b/arch/powerpc/kernel/module.c
+>> @@ -107,7 +107,7 @@ __module_alloc(unsigned long size, unsigned long start, unsigned long end, bool
+>>    
+>>    void *module_alloc(unsigned long size)
+>>    {
+>> -#ifdef MODULES_VADDR
+>> +#if defined(MODULES_VADDR) && defined(CONFIG_PPC32)
+>>    	unsigned long limit = (unsigned long)_etext - SZ_32M;
+>>    	void *ptr = NULL;
+>>    
