@@ -2,68 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CEC282B607
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jan 2024 21:35:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 198B082B83A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jan 2024 00:48:42 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=0j0s+wme;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YEdBtaAD;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T9xHn3dtwz3bbt
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jan 2024 07:35:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TB1Zv46Jjz3cgN
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jan 2024 10:48:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=0j0s+wme;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YEdBtaAD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::331; helo=mail-wm1-x331.google.com; envelope-from=maskray@google.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T9xGx05hgz3bqh
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jan 2024 07:34:32 +1100 (AEDT)
-Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-40e4afe9ea7so13875e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jan 2024 12:34:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1705005269; x=1705610069; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZhucuI11iLm9jZSo5DyrLuQREbxS6U88O/YNonTCxz8=;
-        b=0j0s+wmehFmL0tfrRVayDIaTG9kC3gDgXVBy+EF4ghywDXhC84l0a02Hchr+inBK9/
-         cXQdS5EOrITiCqYYW77aEccWWBr8k+h41sukDdckMsEsAGTQ4359YeTiQhPIDaNhdnec
-         m0AEk4Vj5hiY+XulC5ppxKjZGMDdWRADIz4ARn9+V8adotyyYYxQPE3TdZfNjV53tdJn
-         bp97LqEsxQ+0MHAR8QMS+nmdSOMfXrHGZBOPqzRmOOUsikAOJBdPu02poQjF2fn/DgOR
-         VK7naBiNuRXo70PUw60Yv3goS9ITa9ge3YAMMHCUItwh8QNcrB7qJPTry7GLKkke3MN0
-         H2sA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705005269; x=1705610069;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZhucuI11iLm9jZSo5DyrLuQREbxS6U88O/YNonTCxz8=;
-        b=GQUEQkRdKd90KNEi6Lw1n8zDgViY+lzIavXsGw5Gync5BlxGsyQnAAXnwkgvKe+YQW
-         nlVau81RDL4nI9mFoXYPpQ0Tt87Oyo5HfpVtmA16PNDJkpjYVrY7zBzru+ixHIHfXBca
-         1Kq0jYed64UnBAKQ02ptofEnVEEV6Sgi1mAaHz9ulUY7vA5NZmmnltXDTszL6KjWAZTp
-         jPmYugmth5lOs35b+6i3BBPer+vbUAUvJcaLh98YTqMNLH5ajA7SpN/0WgvpggCOJ426
-         SnERgDLpmUjN6xpcJtpo45PZUo8e7lAwYdTgNzk3H61CzSCYKtm1qrNsvDcGtowQrRWO
-         35JA==
-X-Gm-Message-State: AOJu0Yxy7UQMzjp8Ce3QYPCc1PUzS98tUk4tm0apWTmllgxtTwu755n2
-	FtcwK1m6IyT3XzCtqhBQuCSTOmMpuz+JkFuEKhbe0FQ3evf7
-X-Google-Smtp-Source: AGHT+IEwsvtKygl+nvSOgn3WrpQlaoPEPZDIYAeAvmwuubPmfNOdEKX4uyCZcs5X4QVXtXNLJ5Llz2AVykCfzYGX6ws=
-X-Received: by 2002:a05:600c:1d1f:b0:40e:61cf:af91 with SMTP id
- l31-20020a05600c1d1f00b0040e61cfaf91mr127026wms.7.1705005268801; Thu, 11 Jan
- 2024 12:34:28 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TB1Yz4hVqz2xdR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jan 2024 10:47:51 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id E0CDCCE1BAC;
+	Thu, 11 Jan 2024 23:47:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B6113C433F1;
+	Thu, 11 Jan 2024 23:47:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705016866;
+	bh=bt+QWO+BoyLrTgdPkH5ffD1b3CetCyHlTE9OT4h2Nqc=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=YEdBtaADUJYv3l2s/GpoCVgW6JEWZCq5/YooIXKpWp+CvCzlwIyzjcFNcFZI7K6zU
+	 2AkN7RVa912J2WwPNzelB+fLx8bg3GmSn/WAQm1GrZNH0cSA9xhPeEgvN7xtg1POfA
+	 Z7oYxYpGTKKhdxgA6WUsomUZBtL4GSv+4q1sMH2wKvtqsgxxTl+YbKWN/yqlrVvqKJ
+	 PzEdbwICAAAmL+rmrhQ236xQL9Txff84KLXr862BVR1wnnq6UX/wtIoFZCLUdJHNLp
+	 kuJqNfWOf9VX2tANMnqfS5JGdHpLMqcVSYZXGD1mT+gVlU86H5OAv+90FkXsG7yvpA
+	 1PCQRRvxJZ0vw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 91A94C4707B;
+	Thu, 11 Jan 2024 23:47:46 +0000 (UTC)
+From: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
+Date: Thu, 11 Jan 2024 17:47:32 -0600
+Subject: [PATCH RFC] powerpc/pseries: exploit H_PAGE_SET_UNUSED for
+ partition migration
 MIME-Version: 1.0
-References: <20240109-update-llvm-links-v1-0-eb09b59db071@kernel.org> <202401101645.ED161519BA@keescook>
-In-Reply-To: <202401101645.ED161519BA@keescook>
-From: Fangrui Song <maskray@google.com>
-Date: Thu, 11 Jan 2024 12:34:17 -0800
-Message-ID: <CAFP8O3+947djoRjnVPuPhHUHbHv_9CugufuXQ+c=N03yLsaEcA@mail.gmail.com>
-Subject: Re: [PATCH 0/3] Update LLVM Phabricator and Bugzilla links
-To: Nathan Chancellor <nathan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id:  <20240111-h_page_set_unused-for-lpm-v1-1-cd56184ad608@linux.ibm.com>
+X-B4-Tracking: v=1; b=H4sIABN+oGUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDQ0ND3Yz4gsT01Pji1JL40rzS4tQU3bT8It2cglzdFEsDI/NkM3OjtFQ
+ LJaD+gqLUtMwKsNnRSkFuzkqxtbUAEWfkUHAAAAA=
+To: Michael Ellerman <mpe@ellerman.id.au>, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, 
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, 
+ Brian King <brking@linux.ibm.com>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1705016866; l=3110;
+ i=nathanl@linux.ibm.com; s=20230817; h=from:subject:message-id;
+ bh=QCi+aYIXD+KJwHE/NMLCXj3RgfCu6hT6HPoTPMEKTQE=;
+ b=ugyi1ajuyIEOgMBZepRH2Zmbq/HsnGw8iKFxVOLzqV7gXBzP5wWbYUoPQOi7JQCvAyLeAOYHR
+ AJVUYmJL3z3AStEOIn11pdccvX/eUsdw119WUzr9imQxQTBXGDalPYO
+X-Developer-Key: i=nathanl@linux.ibm.com; a=ed25519;
+ pk=jPDF44RvT+9DGFOH3NGoIu1xN9dF+82pjdpnKjXfoJ0=
+X-Endpoint-Received:  by B4 Relay for nathanl@linux.ibm.com/20230817 with auth_id=78
+X-Original-From: Nathan Lynch <nathanl@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,89 +77,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-efi@vger.kernel.org, kvm@vger.kernel.org, llvm@lists.linux.dev, ast@kernel.org, dri-devel@lists.freedesktop.org, patches@lists.linux.dev, linux-mm@kvack.org, kasan-dev@googlegroups.com, linux-kselftest@vger.kernel.org, linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, mykolal@fb.com, daniel@iogearbox.net, andrii@kernel.org, amd-gfx@lists.freedesktop.org, linux-media@vger.kernel.org, Kees Cook <keescook@chromium.org>, linux-pm@vger.kernel.org, bridge@lists.linux.dev, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, linux-crypto@vger.kernel.org, akpm@linux-foundation.org, linux-trace-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Reply-To: nathanl@linux.ibm.com
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 10, 2024 at 4:46=E2=80=AFPM Kees Cook <keescook@chromium.org> w=
-rote:
->
-> On Tue, Jan 09, 2024 at 03:16:28PM -0700, Nathan Chancellor wrote:
-> > This series updates all instances of LLVM Phabricator and Bugzilla link=
-s
-> > to point to GitHub commits directly and LLVM's Bugzilla to GitHub issue
-> > shortlinks respectively.
-> >
-> > I split up the Phabricator patch into BPF selftests and the rest of the
-> > kernel in case the BPF folks want to take it separately from the rest o=
-f
-> > the series, there are obviously no dependency issues in that case. The
-> > Bugzilla change was mechanical enough and should have no conflicts.
-> >
-> > I am aiming this at Andrew and CC'ing other lists, in case maintainers
-> > want to chime in, but I think this is pretty uncontroversial (famous
-> > last words...).
-> >
-> > ---
-> > Nathan Chancellor (3):
-> >       selftests/bpf: Update LLVM Phabricator links
-> >       arch and include: Update LLVM Phabricator links
-> >       treewide: Update LLVM Bugzilla links
-> >
-> >  arch/arm64/Kconfig                                 |  4 +--
-> >  arch/powerpc/Makefile                              |  4 +--
-> >  arch/powerpc/kvm/book3s_hv_nested.c                |  2 +-
-> >  arch/riscv/Kconfig                                 |  2 +-
-> >  arch/riscv/include/asm/ftrace.h                    |  2 +-
-> >  arch/s390/include/asm/ftrace.h                     |  2 +-
-> >  arch/x86/power/Makefile                            |  2 +-
-> >  crypto/blake2b_generic.c                           |  2 +-
-> >  drivers/firmware/efi/libstub/Makefile              |  2 +-
-> >  drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c           |  2 +-
-> >  drivers/media/test-drivers/vicodec/codec-fwht.c    |  2 +-
-> >  drivers/regulator/Kconfig                          |  2 +-
-> >  include/asm-generic/vmlinux.lds.h                  |  2 +-
-> >  include/linux/compiler-clang.h                     |  2 +-
-> >  lib/Kconfig.kasan                                  |  2 +-
-> >  lib/raid6/Makefile                                 |  2 +-
-> >  lib/stackinit_kunit.c                              |  2 +-
-> >  mm/slab_common.c                                   |  2 +-
-> >  net/bridge/br_multicast.c                          |  2 +-
-> >  security/Kconfig                                   |  2 +-
-> >  tools/testing/selftests/bpf/README.rst             | 32 +++++++++++---=
---------
-> >  tools/testing/selftests/bpf/prog_tests/xdpwall.c   |  2 +-
-> >  .../selftests/bpf/progs/test_core_reloc_type_id.c  |  2 +-
-> >  23 files changed, 40 insertions(+), 40 deletions(-)
-> > ---
-> > base-commit: 0dd3ee31125508cd67f7e7172247f05b7fd1753a
-> > change-id: 20240109-update-llvm-links-d03f9d649e1e
-> >
-> > Best regards,
-> > --
-> > Nathan Chancellor <nathan@kernel.org>
-> >
->
-> Excellent! Thanks for doing this. I spot checked a handful I was
-> familiar with and everything looks good to me.
->
-> Reviewed-by: Kees Cook <keescook@chromium.org>
->
-> --
-> Kees Cook
->
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-These reviews.llvm.org links would definitely be kept like
-https://lists.llvm.org/pipermail/llvm-dev/ or cfe-dev links
-(discussions have been migrated to Discourse).
-However, I agree that the github repo link looks more official. I have
-clicked a few links and they look good.
+Although the H_PAGE_INIT hcall's H_PAGE_SET_UNUSED historically has
+been tied to the cooperative memory overcommit (CMO) platform feature,
+the flag also is treated by the PowerVM hypervisor as a hint that the
+page contents need not be copied to the destination during a live
+partition migration.
 
-Since I maintain reviews.llvm.org and created the static archive [1],
+Use the "ibm,migratable-partition" root node property to determine
+whether this partition/guest can be migrated. Mark freed pages unused
+if so (or if CMO is in use, as before).
 
-Acked-by: Fangrui Song <maskray@google.com>
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+---
+Several things yet to improve here:
 
-[1]: https://discourse.llvm.org/t/llvm-phabricator-turndown/76137
+* powerpc's arch_free_page()/HAVE_ARCH_FREE_PAGE should be decoupled
+  from CONFIG_PPC_SMLPAR.
 
---=20
-=E5=AE=8B=E6=96=B9=E7=9D=BF
+* powerpc's arch_free_page() could be made to use a static key if
+  justified.
+
+* I have not yet measured the overhead this introduces, nor have I
+  measured the benefit to a live migration.
+
+To date, I have smoke tested it by doing a live migration and
+performing a build on a kernel with the change, to ensure it doesn't
+introduce obvious memory corruption or anything. It hasn't blown up
+yet :-)
+
+This will be a possibly significant behavior change in that we will be
+flagging pages unused where we typically did not before. Until now,
+having CMO enabled was the only way to do this, and I don't think that
+feature is used all that much?
+
+Posting this as RFC to see if there are any major concerns.
+---
+ arch/powerpc/platforms/pseries/lpar.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
+
+diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
+index 4561667832ed..b264371d8e12 100644
+--- a/arch/powerpc/platforms/pseries/lpar.c
++++ b/arch/powerpc/platforms/pseries/lpar.c
+@@ -16,6 +16,7 @@
+ #include <linux/export.h>
+ #include <linux/jump_label.h>
+ #include <linux/delay.h>
++#include <linux/of.h>
+ #include <linux/stop_machine.h>
+ #include <linux/spinlock.h>
+ #include <linux/cpuhotplug.h>
+@@ -1772,17 +1773,25 @@ static void pSeries_set_page_state(struct page *page, int order,
+ 	}
+ }
+ 
++static bool migratable_partition;
++
+ void arch_free_page(struct page *page, int order)
+ {
+-	if (radix_enabled())
+-		return;
+-	if (!cmo_free_hint_flag || !firmware_has_feature(FW_FEATURE_CMO))
+-		return;
+-
+-	pSeries_set_page_state(page, order, H_PAGE_SET_UNUSED);
++	if (migratable_partition ||
++	    (firmware_has_feature(FW_FEATURE_CMO) && cmo_free_hint_flag))
++		pSeries_set_page_state(page, order, H_PAGE_SET_UNUSED);
+ }
+ EXPORT_SYMBOL(arch_free_page);
+ 
++static int __init check_migratable_partition(void)
++{
++	struct device_node *root = of_find_node_by_path("/");
++	migratable_partition = !!of_find_property(root, "ibm,migratable-partition", NULL);
++	of_node_put(root);
++	return 0;
++}
++machine_device_initcall(pseries, check_migratable_partition);
++
+ #endif /* CONFIG_PPC_SMLPAR */
+ #endif /* CONFIG_PPC_BOOK3S_64 */
+ 
+
+---
+base-commit: 44a1aad2fe6c10bfe0589d8047057b10a4c18a19
+change-id: 20240111-h_page_set_unused-for-lpm-d9027c672fe8
+
+Best regards,
+-- 
+Nathan Lynch <nathanl@linux.ibm.com>
+
