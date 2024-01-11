@@ -2,88 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 767AF82B40E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jan 2024 18:28:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8821A82B557
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jan 2024 20:40:59 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qSBFom5A;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SPPtBjPT;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T9s7q04Npz3cYv
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jan 2024 04:28:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T9w550ZsGz3cVb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jan 2024 06:40:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qSBFom5A;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SPPtBjPT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T9s704HfDz3bbt
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jan 2024 04:27:24 +1100 (AEDT)
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40BFVCxM027610;
-	Thu, 11 Jan 2024 17:27:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=Rr2akWAmrXqGDR2rnFbHSU7APart35OLIahqQOxuJRg=;
- b=qSBFom5ASe1zQeNrGKn+Igx9jiumfMwC/r8c4eizrTQ40ycP8u8B7wAgY6smaKa/trzy
- C5yqoQIctMWQ/DLLHF1p0cb9fk1r6Kykm4kNzhU/C6hN3wZjcOywa6Wl8SuyCUckbY/V
- 8NNdWPiAlCIiI8RpScn4uzNIV/zOU1jTrNtKRr3dGtkovhEBttwaoNcM6Axv2lf66ill
- 7B+F2ji0etUNtwv62hUVcA38/0P0aQ/pUd2wQCYxLpDx48NTayanMDcxMrC5HxMg/RZ1
- wqTdjs9wbAaw4bMKoV3nbrsUy1IY5Ru5DeYyJg/Q7MxjiR0csn4e312260Wn+v/76CG7 9g== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vjgmxf27s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jan 2024 17:27:15 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40BGsW5u018143;
-	Thu, 11 Jan 2024 17:27:14 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vjgmxf26m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jan 2024 17:27:14 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40BGMDqE027254;
-	Thu, 11 Jan 2024 17:27:13 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vfkw2ceba-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jan 2024 17:27:13 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40BHRC347864874
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 11 Jan 2024 17:27:12 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 58AD95805F;
-	Thu, 11 Jan 2024 17:27:12 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 37E3358059;
-	Thu, 11 Jan 2024 17:27:12 +0000 (GMT)
-Received: from localhost (unknown [9.41.178.242])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 11 Jan 2024 17:27:12 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v5] powerpc/pseries/vas: Use usleep_range() to support
- HCALL delay
-In-Reply-To: <20240111062510.1889752-1-haren@linux.ibm.com>
-References: <20240111062510.1889752-1-haren@linux.ibm.com>
-Date: Thu, 11 Jan 2024 11:27:11 -0600
-Message-ID: <87v87zaihc.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T9w4C34KWz30gr
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jan 2024 06:40:11 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id A7724617A3;
+	Thu, 11 Jan 2024 19:40:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE49C433C7;
+	Thu, 11 Jan 2024 19:40:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705002004;
+	bh=DmkLUwPO5pHCJHvVcwPy1P4sgjTzQNNak+Eq1cUdG4A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SPPtBjPT+YAd4ocTNd3PGbSKeEby62sm5DsaPgCv2HqVIW9AA61WpCKjUG1nFowUj
+	 3KfWsd59L33mr3lPW1pODJ4DxPp3c0FvcL65M+M43Xd0dsozkiXoWTzMQXYyp+ok+1
+	 Cb30aWs3Sxk5AodiSlMI4eMG+NABT1HgniB893pjpYDswpLiHA/yPSOP9UoGeJLbKt
+	 bnTkQNlGsDQqy8YOmI7KSXeLlghLdU+zlsbZoTu+RaMYkcWjxf+xdeMOQ8myzu+KXS
+	 4DFQ7cH+eAqKWFGmhszUBwC2NDKu/wiPRUDEP+5/MhjNc4xXnfccYuJTOa5a8NwKDV
+	 Z7nFRX4xsl/qg==
+Date: Thu, 11 Jan 2024 12:40:01 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Yonghong Song <yonghong.song@linux.dev>, akpm@linux-foundation.org
+Subject: Re: [PATCH 1/3] selftests/bpf: Update LLVM Phabricator links
+Message-ID: <20240111194001.GA3805856@dev-arch.thelio-3990X>
+References: <20240109-update-llvm-links-v1-0-eb09b59db071@kernel.org>
+ <20240109-update-llvm-links-v1-1-eb09b59db071@kernel.org>
+ <6a655e9f-9878-4292-9d16-f988c4bdfc73@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: A21CN73_XWdPPdaVyUOI92JrtEsrXLCo
-X-Proofpoint-ORIG-GUID: ZJwRIpmDzoNxSqhGTSHe910CtpEmtzYL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-11_09,2024-01-11_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 suspectscore=0 mlxlogscore=999 clxscore=1015 adultscore=0
- malwarescore=0 bulkscore=0 lowpriorityscore=0 mlxscore=0 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401110137
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6a655e9f-9878-4292-9d16-f988c4bdfc73@linux.dev>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,70 +60,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@kernel.org, npiggin@gmail.com
+Cc: linux-efi@vger.kernel.org, kvm@vger.kernel.org, llvm@lists.linux.dev, ast@kernel.org, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, kasan-dev@googlegroups.com, linux-kselftest@vger.kernel.org, linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, mykolal@fb.com, daniel@iogearbox.net, andrii@kernel.org, amd-gfx@lists.freedesktop.org, linux-media@vger.kernel.org, linux-pm@vger.kernel.org, bridge@lists.linux.dev, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, patches@lists.linux.dev, linux-security-module@vger.kernel.org, linux-crypto@vger.kernel.org, bpf@vger.kernel.org, linux-trace-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Haren Myneni <haren@linux.ibm.com> writes:
-> VAS allocate, modify and deallocate HCALLs returns
-> H_LONG_BUSY_ORDER_1_MSEC or H_LONG_BUSY_ORDER_10_MSEC for busy
-> delay and expects OS to reissue HCALL after that delay. But using
-> msleep() will often sleep at least 20 msecs even though the
-> hypervisor suggests OS reissue these HCALLs after 1 or 10msecs.
->
-> The open and close VAS window functions hold mutex and then issue
-> these HCALLs. So these operations can take longer than the
-> necessary when multiple threads issue open or close window APIs
-> simultaneously, especially might affect the performance in the
-> case of repeat open/close APIs for each compression request.
-> On the large machine configuration which allows more simultaneous
-> open/close windows (Ex: 240 cores provides 4800 VAS credits), the
-> user can observe hung task traces in dmesg due to mutex contention
-> around open/close HCAlls.
+Hi Yonghong,
 
-Is this because the workload queues enough tasks on the mutex to trigger
-the hung task watchdog? With a threshold of 120 seconds, something on
-the order of ~6000 tasks each taking 20ms or more to traverse this
-critical section would cause the problem I think you're describing.
+On Wed, Jan 10, 2024 at 08:05:36PM -0800, Yonghong Song wrote:
+> 
+> On 1/9/24 2:16 PM, Nathan Chancellor wrote:
+> > reviews.llvm.org was LLVM's Phabricator instances for code review. It
+> > has been abandoned in favor of GitHub pull requests. While the majority
+> > of links in the kernel sources still work because of the work Fangrui
+> > has done turning the dynamic Phabricator instance into a static archive,
+> > there are some issues with that work, so preemptively convert all the
+> > links in the kernel sources to point to the commit on GitHub.
+> > 
+> > Most of the commits have the corresponding differential review link in
+> > the commit message itself so there should not be any loss of fidelity in
+> > the relevant information.
+> > 
+> > Additionally, fix a typo in the xdpwall.c print ("LLMV" -> "LLVM") while
+> > in the area.
+> > 
+> > Link: https://discourse.llvm.org/t/update-on-github-pull-requests/71540/172
+> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> 
+> Ack with one nit below.
+> 
+> Acked-by: Yonghong Song <yonghong.song@linux.dev>
 
-Presumably this change improves the situation, but the commit message
-isn't explicit. Have you measured the "throughput" of window open/close
-activity before and after? Anything that quantifies the improvement
-would be welcome.
+<snip>
 
-> diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
-> index 71d52a670d95..79ffe8868c04 100644
-> --- a/arch/powerpc/platforms/pseries/vas.c
-> +++ b/arch/powerpc/platforms/pseries/vas.c
-> @@ -38,7 +38,27 @@ static long hcall_return_busy_check(long rc)
->  {
->  	/* Check if we are stalled for some time */
->  	if (H_IS_LONG_BUSY(rc)) {
-> -		msleep(get_longbusy_msecs(rc));
-> +		unsigned int ms;
-> +		/*
-> +		 * Allocate, Modify and Deallocate HCALLs returns
-> +		 * H_LONG_BUSY_ORDER_1_MSEC or H_LONG_BUSY_ORDER_10_MSEC
-> +		 * for the long delay. So the sleep time should always
-> +		 * be either 1 or 10msecs, but in case if the HCALL
-> +		 * returns the long delay > 10 msecs, clamp the sleep
-> +		 * time to 10msecs.
-> +		 */
-> +		ms = clamp(get_longbusy_msecs(rc), 1, 10);
-> +
-> +		/*
-> +		 * msleep() will often sleep at least 20 msecs even
-> +		 * though the hypervisor suggests that the OS reissue
-> +		 * HCALLs after 1 or 10msecs. Also the delay hint from
-> +		 * the HCALL is just a suggestion. So OK to pause for
-> +		 * less time than the hinted delay. Use usleep_range()
-> +		 * to ensure we don't sleep much longer than actually
-> +		 * needed.
-> +		 */
-> +		usleep_range(ms * 100, ms * USEC_PER_MSEC);
+> > @@ -304,6 +304,6 @@ from running test_progs will look like:
+> >   .. code-block:: console
+> > -  test_xdpwall:FAIL:Does LLVM have https://reviews.llvm.org/D109073? unexpected error: -4007
+> > +  test_xdpwall:FAIL:Does LLVM have https://github.com/llvm/llvm-project/commit/ea72b0319d7b0f0c2fcf41d121afa5d031b319d5? unexpected error: -4007
+> > -__ https://reviews.llvm.org/D109073
+> > +__ https://github.com/llvm/llvm-project/commit/ea72b0319d7b0f0c2fcf41d121afa5d031b319d
+> 
+> To be consistent with other links, could you add the missing last alnum '5' to the above link?
 
-                usleep_range(ms * (USEC_PER_MSEC / 10), ms * USEC_PER_MSEC);
+Thanks a lot for catching this and providing an ack. Andrew, could you
+squash this update into selftests-bpf-update-llvm-phabricator-links.patch?
 
-is probably what reviewers want to see when they ask you to use
-USEC_PER_MSEC. I.e. both arguments to usleep_range() should be expressed
-in terms of USEC_PER_MSEC.
+diff --git a/tools/testing/selftests/bpf/README.rst b/tools/testing/selftests/bpf/README.rst
+index b9a493f66557..e56034abb3c2 100644
+--- a/tools/testing/selftests/bpf/README.rst
++++ b/tools/testing/selftests/bpf/README.rst
+@@ -306,4 +306,4 @@ from running test_progs will look like:
+ 
+   test_xdpwall:FAIL:Does LLVM have https://github.com/llvm/llvm-project/commit/ea72b0319d7b0f0c2fcf41d121afa5d031b319d5? unexpected error: -4007
+ 
+-__ https://github.com/llvm/llvm-project/commit/ea72b0319d7b0f0c2fcf41d121afa5d031b319d
++__ https://github.com/llvm/llvm-project/commit/ea72b0319d7b0f0c2fcf41d121afa5d031b319d5
