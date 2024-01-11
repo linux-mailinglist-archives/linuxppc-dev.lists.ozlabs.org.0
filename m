@@ -2,136 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A36682B00A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jan 2024 14:56:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C10D882B056
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jan 2024 15:10:49 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=gVz6i5i3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sw5AHQ3l;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T9mRN2zrQz3cW8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jan 2024 00:56:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T9mm72CdSz3cX0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jan 2024 01:10:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=gVz6i5i3;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sw5AHQ3l;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::330; helo=mail-wm1-x330.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T9mQW74cXz2xm5
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jan 2024 00:55:29 +1100 (AEDT)
-Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-40e62979feeso1502825e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jan 2024 05:55:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704981326; x=1705586126; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=I0dIPsJGSMOF5s4ZOOWNHew/JfNIDHIN+6H9/lTo/to=;
-        b=gVz6i5i3XMV6R4wK3h5rC5YT+71hjaALmNchSHQb88B5OlAvHHxscjvAmAVa4+R8ED
-         A5bKm3aHPRixxz2D6Lu9Ji75yOstsOIvEg6K54yBRXCD7OKDTQp3wyPRnTbfleHVpCon
-         tCfuHJX80p6ekIJBcAHRpT7RpeNz8KJw944CwYx+UCplmvooRXWPH9cO2hmmpTYR0tAA
-         IrSpV9d1pPBrfwQW9fFqbGqhZhBjT16QxyEee6wxQFAGAJA6Drxq1ITkCQQy/ywKeQGK
-         Q4hclsUfqPX9nQFSiGXNPTItUUabSR+RabLFX50saaaEpekJ0+Ns2PKC39RkRiFiKzAA
-         c73g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704981326; x=1705586126;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=I0dIPsJGSMOF5s4ZOOWNHew/JfNIDHIN+6H9/lTo/to=;
-        b=KwXiBguNXpRFdwR8ny9XmVOecrgPUXotd9dEMN+b62wH0q5lFajZAiH0XswjoAwDNp
-         nxxNwiHQejUAjVcHW/FJ8H3KCCbaJJplEqP8KJfuipEvsAYGv58zvnehWLLUskSuZNDR
-         g7Yy51m7aA0Rs4nwWqiDikh6f4PyUDBFT1FOZ48Nm1XcdwSEEnnCNsQSm1G7ltEtoOUm
-         AbTPlWnDotVpC7YSa7md2pl1BVVWx7XOXUfYSy9GLlZwuEj+RKGaSw5EvLqSnzl8w7xI
-         8hqG6Jcw1akknn517KsiAnFoOq8TeBrJ3pqan2pRAn8F2biziyGhDYkw+eIQoNPXFMAN
-         Gwzw==
-X-Gm-Message-State: AOJu0YyT+0oUll9d1ogQeROfTNIdZwM1clKhshBMhVnG9cNTL4IQwC2K
-	p2eF2sCcvNgcTtWtwLSfGX+oG6u2XnpqNQ==
-X-Google-Smtp-Source: AGHT+IGtF3QNalwefKPZvWwsQufdvQFpfDZHDVwKS22BIc21HKHHWst7x8VNdyXHzgwLSfb8v4hU0A==
-X-Received: by 2002:a05:600c:444e:b0:40d:7505:a4ca with SMTP id v14-20020a05600c444e00b0040d7505a4camr460918wmn.37.1704981326427;
-        Thu, 11 Jan 2024 05:55:26 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.223.112])
-        by smtp.gmail.com with ESMTPSA id t18-20020a05600c199200b0040e5951f199sm1971457wmq.34.2024.01.11.05.55.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Jan 2024 05:55:25 -0800 (PST)
-Message-ID: <af970ab0-f325-4d6c-9547-750eaa785160@linaro.org>
-Date: Thu, 11 Jan 2024 14:55:21 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T9mlG5rtrz3btc
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jan 2024 01:10:02 +1100 (AEDT)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4T9mlH0Znxz4wbr
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jan 2024 01:10:03 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4T9mlH09j9z4xF2; Fri, 12 Jan 2024 01:10:03 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sw5AHQ3l;
+	dkim-atps=neutral
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4T9mlG42HCz4xCg
+	for <linuxppc-dev@ozlabs.org>; Fri, 12 Jan 2024 01:10:02 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40BE7ABt015066;
+	Thu, 11 Jan 2024 14:09:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=OSjyt9K4dwB1sMUEMR2hBbu4xV4SekecTT6VXlh6nIk=;
+ b=sw5AHQ3lOFmcGexjygsUvExcz/10r7tuD7t6pvVh5nHhKh5m5WVLRsLhKPj3XPV8bA68
+ CLf7fjwR5nuTw2bKtjL7XyKgA6XBwec1Y+A5rEySjfw7e9I3acvo6sHDjRzNJVCoMDWe
+ nWhcjY2IXDPynMHANhCOhOlXrBY2MKNHdf0E7w4MiX9FFGw1oeJiyBf2Zk88hFndyZPq
+ fADrfP9/abPbQ1nDu+bq8JH9eWsUMggbZ0WDIEIqdJ9EUwAfxUg05K5mU7AbebcwzCqn
+ 2rt8HDwFyH+tSV9BRugs3z/hj2GVGVQQ3YE9FeWMzs8LZAkQ6gC5u+1Lfxmjrud7XQJ/ 4Q== 
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vjfarv22f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 11 Jan 2024 14:09:55 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40BBsahf023399;
+	Thu, 11 Jan 2024 14:09:55 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vfj6nus5f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 11 Jan 2024 14:09:54 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40BE9pcl43647254
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 11 Jan 2024 14:09:52 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C2CF52004D;
+	Thu, 11 Jan 2024 14:09:51 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A60422004B;
+	Thu, 11 Jan 2024 14:09:49 +0000 (GMT)
+Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.195.34.42])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 11 Jan 2024 14:09:49 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH v7 0/3] powerpc: make fadump resilient with memory add/remove events
+Date: Thu, 11 Jan 2024 19:39:40 +0530
+Message-ID: <20240111140943.297501-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: qJKlgN_tvPpzpPqaSfuO4VC5Gu6MXB71
+X-Proofpoint-ORIG-GUID: qJKlgN_tvPpzpPqaSfuO4VC5Gu6MXB71
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] ASoC: dt-bindings: fsl,sai: Add compatible string for
- i.MX95 platform
-Content-Language: en-US
-To: Chancel Liu <chancel.liu@nxp.com>,
- "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
- "broonie@kernel.org" <broonie@kernel.org>,
- "robh+dt@kernel.org" <robh+dt@kernel.org>,
- "krzysztof.kozlowski+dt@linaro.org" <krzysztof.kozlowski+dt@linaro.org>,
- "conor+dt@kernel.org" <conor+dt@kernel.org>,
- "shengjiu.wang@gmail.com" <shengjiu.wang@gmail.com>,
- "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
- "festevam@gmail.com" <festevam@gmail.com>,
- "nicoleotsuka@gmail.com" <nicoleotsuka@gmail.com>,
- "perex@perex.cz" <perex@perex.cz>, "tiwai@suse.com" <tiwai@suse.com>,
- "linux-sound@vger.kernel.org" <linux-sound@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <20240109075551.870001-1-chancel.liu@nxp.com>
- <20240109075551.870001-2-chancel.liu@nxp.com>
- <8ed559e8-1f97-45ee-acb9-c792752fd419@linaro.org>
- <DB9PR04MB9498C7C66BD45F2FBDD163D5E3682@DB9PR04MB9498.eurprd04.prod.outlook.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <DB9PR04MB9498C7C66BD45F2FBDD163D5E3682@DB9PR04MB9498.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-11_07,2024-01-11_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
+ lowpriorityscore=0 phishscore=0 clxscore=1015 malwarescore=0
+ impostorscore=0 mlxlogscore=999 priorityscore=1501 mlxscore=0
+ suspectscore=0 bulkscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311290000 definitions=main-2401110112
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -143,38 +103,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>, Naveen N Rao <naveen@kernel.org>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Aditya Gupta <adityag@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/01/2024 12:06, Chancel Liu wrote:
->>> Add compatible string "fsl,imx95-sai" for i.MX95 platform.
->>>
->>> Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
->>> ---
->>>  Documentation/devicetree/bindings/sound/fsl,sai.yaml | 1 +
->>>  1 file changed, 1 insertion(+)
->>>
->>> diff --git a/Documentation/devicetree/bindings/sound/fsl,sai.yaml
->> b/Documentation/devicetree/bindings/sound/fsl,sai.yaml
->>> index 088c26b001cc..f3d910aa2dc6 100644
->>> --- a/Documentation/devicetree/bindings/sound/fsl,sai.yaml
->>> +++ b/Documentation/devicetree/bindings/sound/fsl,sai.yaml
->>> @@ -40,6 +40,7 @@ properties:
->>>                - fsl,imx8ulp-sai
->>>                - fsl,imx93-sai
->>>                - fsl,vf610-sai
->>> +              - fsl,imx95-sai
->>
->> Don't break the order, please.
->>
->> Best regards,
->> Krzysztof
-> 
-> Sorry but I don't understand what's the "order" refer to. Could you please
-> explain it to me?
+Problem:
+========
+Due to changes in memory resources caused by either memory hotplug or
+online/offline events, the elfcorehdr, which describes the cpus and
+memory of the crashed kernel to the kernel that collects the dump (known
+as second/fadump kernel), becomes outdated. Consequently, attempting
+dump collection with an outdated elfcorehdr can lead to failed or
+inaccurate dump collection.
 
-Items look alphabetically ordered.
+Memory hotplug or online/offline events is referred as memory add/remove
+events in reset of the patch series.
 
-Best regards,
-Krzysztof
+Existing solution:
+==================
+Monitor memory add/remove events in userspace using udev rules, and
+re-register fadump whenever there are changes in memory resources. This
+leads to the creation of a new elfcorehdr with updated system memory
+information.
+
+Challenges with existing solution:
+==================================
+1. Performing bulk memory add/remove with udev-based fadump
+   re-registration can lead to race conditions and, more importantly,
+   it creates a large wide window during which fadump is inactive until
+   all memory add/remove events are settled.
+2. Re-registering fadump for every memory add/remove event is
+   inefficient.
+3. Memory for elfcorehdr is allocated based on the memblock regions
+   available during first kernel early boot and it remains fixed
+   thereafter. However, if the elfcorehdr is later recreated with
+   additional memblock regions, its size will increase, potentially
+   leading to memory corruption.
+
+Proposed solution:
+==================
+Address the aforementioned challenges by shifting the creation of
+elfcorehdr from the first kernel (also referred as the crashed kernel),
+where it was created and frequently recreated for every memory
+add/remove event, to the fadump kernel. As a result, the elfcorehdr only
+needs to be created once, thus eliminating the necessity to re-register
+fadump during memory add/remove events.
+
+To know more about elfcorehdr creation in the fadump kernel, refer to
+the first patch in this series.
+
+The second patch includes a new sysfs interface that tells userspace
+that fadump re-registration isn't needed for memory add/remove events. 
+note that userspace changes do not need to be in sync with kernel
+changes; they can roll out independently.
+
+Since there are significant changes in the fadump implementation, the
+third patch updates the fadump documentation to reflect the changes made
+in this patch series.
+
+Kernel tree rebased on 6.7.0-rc4 with patch series applied:
+=========================================================
+https://github.com/sourabhjains/linux/tree/fadump-mem-hotplug-v7
+
+Userspace changes:
+==================
+To realize this feature, one must update the kdump udev rules to prevent
+fadump re-registration during memory add/remove events.
+
+On rhel apply the following changes to file
+/usr/lib/udev/rules.d/98-kexec.rules
+
+-run+="/bin/sh -c '/usr/bin/systemctl is-active kdump.service || exit 0; /usr/bin/systemd-run --quiet --no-block /usr/lib/udev/kdump-udev-throttler'"
++# don't re-register fadump if the value of the node
++# /sys/kernel/fadump/hotplug_ready is 1.
++
++run+="/bin/sh -c '/usr/bin/systemctl is-active kdump.service || exit 0; ! test -f /sys/kernel/fadump_enabled || cat /sys/kernel/fadump_enabled | grep 0  || ! test -f /sys/kernel/fadump/hotplug_ready || cat /sys/kernel/fadump/hotplug_ready | grep 0 || exit 0; /usr/bin/systemd-run --quiet --no-block /usr/lib/udev/kdump-udev-throttler'"
+
+Changelog:
+==========
+v7: 11 Jan 2023
+  - Rebase it to 6.7
+
+v6: 8 Dec 2023
+  https://lore.kernel.org/all/20231208115159.82236-1-sourabhjain@linux.ibm.com/
+  - Add size fields for `pt_regs` and `cpumask` in the fadump header
+    structure
+  - Don't process the dump if the size of `pt_regs` and `cpu_mask` is
+    not same in the crashed and fadump kernel
+  - Include an additional check for endianness mismatch when the magic
+    number doesn't match, to print the relevant error message
+  - Don't process the dump if the fadump header contains an old magic number
+  - Rebased it to 6.7.0-rc4
+
+v5: 29 Oct 2023 
+  https://lore.kernel.org/all/20231029124548.12198-1-sourabhjain@linux.ibm.com/
+  - Fix a comment on the first patch
+
+v4: 21 Oct 2023
+  https://lore.kernel.org/all/20231021181733.204311-1-sourabhjain@linux.ibm.com/
+  - Fix a build warning about type casting
+
+v3: 9 Oct 2023
+  https://lore.kernel.org/all/20231009041953.36139-1-sourabhjain@linux.ibm.com/
+  - Assign physical address of elfcorehdr to fdh->elfcorehdr_addr
+  - Rename a variable, boot_mem_dest_addr -> boot_mem_dest_offset
+
+v2: 25 Sep 2023
+  https://lore.kernel.org/all/20230925051214.678957-1-sourabhjain@linux.ibm.com/
+  - Fixed a few indentation issues reported by the checkpatch script.
+  - Rebased it to 6.6.0-rc3
+
+v1: 17 Sep 2023
+  https://lore.kernel.org/all/20230917080225.561627-1-sourabhjain@linux.ibm.com/
+
+Cc: Aditya Gupta <adityag@linux.ibm.com>
+Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+Cc: Hari Bathini <hbathini@linux.ibm.com>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Naveen N Rao <naveen@kernel.org>
+
+Sourabh Jain (3):
+  powerpc: make fadump resilient with memory add/remove events
+  powerpc/fadump: add hotplug_ready sysfs interface
+  Documentation/powerpc: update fadump implementation details
+
+ Documentation/ABI/testing/sysfs-kernel-fadump |  11 +
+ .../arch/powerpc/firmware-assisted-dump.rst   |  91 ++---
+ arch/powerpc/include/asm/fadump-internal.h    |  31 +-
+ arch/powerpc/kernel/fadump.c                  | 369 +++++++++++-------
+ arch/powerpc/platforms/powernv/opal-fadump.c  |  18 +-
+ arch/powerpc/platforms/pseries/rtas-fadump.c  |  23 +-
+ 6 files changed, 309 insertions(+), 234 deletions(-)
+
+-- 
+2.41.0
 
