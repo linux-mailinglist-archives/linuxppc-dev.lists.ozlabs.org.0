@@ -2,52 +2,126 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AFD182A81B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jan 2024 08:16:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47CA282A940
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jan 2024 09:43:14 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=q90eKb7K;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=ztjE9OGU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T9bZ60vtXz3cQD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jan 2024 18:16:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T9dV75mYxz3cbH
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jan 2024 19:43:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=q90eKb7K;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=ztjE9OGU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::aa; helo=out-170.mta1.migadu.com; envelope-from=yonghong.song@linux.dev; receiver=lists.ozlabs.org)
-X-Greylist: delayed 328 seconds by postgrey-1.37 at boromir; Thu, 11 Jan 2024 15:11:36 AEDT
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [IPv6:2001:41d0:203:375::aa])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::630; helo=mail-ej1-x630.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T9WSm67vxz30gC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jan 2024 15:11:36 +1100 (AEDT)
-Message-ID: <6a655e9f-9878-4292-9d16-f988c4bdfc73@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1704945949;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oe8y6rx2nxJCVb5v6A3KEWIfmf39eOlQDxZDCZDQpSs=;
-	b=q90eKb7K7E7fJPyeOkcWuuQTXMX/wft3oCBjOBhlyiFmrgkyKMUJJweJzGZ7ubFNp8EHyV
-	GcPbNwdLXwLn7SNydULG8Gy/XrORJnr8NctjugZkNqq03qyefn2lSAbUGAAVNkmDZdUytt
-	a026lbDO23xBpkhnXEJJxhDMfDKiHMo=
-Date: Wed, 10 Jan 2024 20:05:36 -0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T9dTH15x1z3020
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jan 2024 19:42:24 +1100 (AEDT)
+Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-a2b4aba3a8aso324306366b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jan 2024 00:42:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1704962538; x=1705567338; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=W+eVcDDUmv0txF8stBLHXcS3p3JThX1RqnAPKZAxyn4=;
+        b=ztjE9OGU0ZaTo+MGfYrTc5PXP4tRHw2kn+jYkhMwqEizE0VPSf1YJypUBnP9syF+4a
+         Hf7px4UcW8iO493qKPgY+3QjAmKrc0QRBIlLedO7yuy3XPkbaVhmab2SOI90DoeWjQGc
+         spzP71V447so0Re6CBdA0NJLjrPUI6C+rm+yUZ+Wke56wgO9WQcmORu15qD9M7c8H2aw
+         Y0WJmzXyXo4JqDCsd3Zw5yAp5z4VJsDq0mn3yyAA53axhKbefC5OHWX+eRS9/mmIyVgj
+         y4hW7uOGC3f0H/ToSInESAJMRMH1ivjne37s88IEpv5cijsDNU2GtxbLjiliGFDrK+q6
+         sMaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704962538; x=1705567338;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=W+eVcDDUmv0txF8stBLHXcS3p3JThX1RqnAPKZAxyn4=;
+        b=cEyf0BxF80vDgFUkFWZvwLcRyg1P6TLCNvPE56ESX1RZrZacPdsrclOn+dq/XOVvF8
+         pEh/gMCYz/V50sqJK5w86Cv9/Lbd46wT5FW84ZyNYeqkwojNUqoQ47xVT+wqwNjAjNDX
+         XqhvGRsFibHw8EJ3fl45ptgwTlVlnSEPHlGWqTK2y3oOgmhPn2AlMQxKDbC8sFEghH6c
+         V9dsaeA5WNldbdByVuGby7w/l/Z34ARTCj83PWZx5+qMU9AnJTg0Ch/kGcowpbD56WkP
+         7egH+eNGbDwYxLTJDbYeCIt1QF9gL9ZCT9MdGiqFAd+xFdTMkDf5Y+0S00VmY3iJtDFQ
+         WAIA==
+X-Gm-Message-State: AOJu0YyRCT3lTGjOwJkQM+I5iz5lqFEJnn08IdGQ4nMx9eO0mlEHm2z9
+	Qs1lVwcrOhlF2JsbuEhSAc/rSW9cgl5ENg==
+X-Google-Smtp-Source: AGHT+IETaC3qvOZ98hvNXlBt/oilwEkam8Ww68VyZsVL7/u1je3QBDe11B+ZNh5mL/+gsJv5luefOQ==
+X-Received: by 2002:a17:907:6093:b0:a28:de82:1232 with SMTP id ht19-20020a170907609300b00a28de821232mr449874ejc.139.1704962538009;
+        Thu, 11 Jan 2024 00:42:18 -0800 (PST)
+Received: from [192.168.1.20] ([178.197.223.112])
+        by smtp.gmail.com with ESMTPSA id ox9-20020a170907100900b00a2825a9e1d0sm306063ejb.174.2024.01.11.00.42.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Jan 2024 00:42:17 -0800 (PST)
+Message-ID: <8ed559e8-1f97-45ee-acb9-c792752fd419@linaro.org>
+Date: Thu, 11 Jan 2024 09:42:14 +0100
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/3] selftests/bpf: Update LLVM Phabricator links
-Content-Language: en-GB
-To: Nathan Chancellor <nathan@kernel.org>, akpm@linux-foundation.org
-References: <20240109-update-llvm-links-v1-0-eb09b59db071@kernel.org>
- <20240109-update-llvm-links-v1-1-eb09b59db071@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yonghong Song <yonghong.song@linux.dev>
-In-Reply-To: <20240109-update-llvm-links-v1-1-eb09b59db071@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] ASoC: dt-bindings: fsl,sai: Add compatible string for
+ i.MX95 platform
+To: Chancel Liu <chancel.liu@nxp.com>, lgirdwood@gmail.com,
+ broonie@kernel.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+ conor+dt@kernel.org, shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, nicoleotsuka@gmail.com, perex@perex.cz, tiwai@suse.com,
+ linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
+ linuxppc-dev@lists.ozlabs.org
+References: <20240109075551.870001-1-chancel.liu@nxp.com>
+ <20240109075551.870001-2-chancel.liu@nxp.com>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20240109075551.870001-2-chancel.liu@nxp.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Mailman-Approved-At: Thu, 11 Jan 2024 18:15:47 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,177 +133,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-efi@vger.kernel.org, kvm@vger.kernel.org, llvm@lists.linux.dev, ast@kernel.org, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, kasan-dev@googlegroups.com, linux-kselftest@vger.kernel.org, linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, mykolal@fb.com, daniel@iogearbox.net, andrii@kernel.org, amd-gfx@lists.freedesktop.org, linux-media@vger.kernel.org, linux-pm@vger.kernel.org, bridge@lists.linux.dev, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, patches@lists.linux.dev, linux-security-module@vger.kernel.org, linux-crypto@vger.kernel.org, bpf@vger.kernel.org, linux-trace-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-On 1/9/24 2:16 PM, Nathan Chancellor wrote:
-> reviews.llvm.org was LLVM's Phabricator instances for code review. It
-> has been abandoned in favor of GitHub pull requests. While the majority
-> of links in the kernel sources still work because of the work Fangrui
-> has done turning the dynamic Phabricator instance into a static archive,
-> there are some issues with that work, so preemptively convert all the
-> links in the kernel sources to point to the commit on GitHub.
->
-> Most of the commits have the corresponding differential review link in
-> the commit message itself so there should not be any loss of fidelity in
-> the relevant information.
->
-> Additionally, fix a typo in the xdpwall.c print ("LLMV" -> "LLVM") while
-> in the area.
->
-> Link: https://discourse.llvm.org/t/update-on-github-pull-requests/71540/172
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-
-Ack with one nit below.
-
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-
+On 09/01/2024 08:55, Chancel Liu wrote:
+> Add compatible string "fsl,imx95-sai" for i.MX95 platform.
+> 
+> Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
 > ---
-> Cc: ast@kernel.org
-> Cc: daniel@iogearbox.net
-> Cc: andrii@kernel.org
-> Cc: mykolal@fb.com
-> Cc: bpf@vger.kernel.org
-> Cc: linux-kselftest@vger.kernel.org
-> ---
->   tools/testing/selftests/bpf/README.rst             | 32 +++++++++++-----------
->   tools/testing/selftests/bpf/prog_tests/xdpwall.c   |  2 +-
->   .../selftests/bpf/progs/test_core_reloc_type_id.c  |  2 +-
->   3 files changed, 18 insertions(+), 18 deletions(-)
->
-> diff --git a/tools/testing/selftests/bpf/README.rst b/tools/testing/selftests/bpf/README.rst
-> index cb9b95702ac6..b9a493f66557 100644
-> --- a/tools/testing/selftests/bpf/README.rst
-> +++ b/tools/testing/selftests/bpf/README.rst
-> @@ -115,7 +115,7 @@ the insn 20 undoes map_value addition. It is currently impossible for the
->   verifier to understand such speculative pointer arithmetic.
->   Hence `this patch`__ addresses it on the compiler side. It was committed on llvm 12.
->   
-> -__ https://reviews.llvm.org/D85570
-> +__ https://github.com/llvm/llvm-project/commit/ddf1864ace484035e3cde5e83b3a31ac81e059c6
->   
->   The corresponding C code
->   
-> @@ -165,7 +165,7 @@ This is due to a llvm BPF backend bug. `The fix`__
->   has been pushed to llvm 10.x release branch and will be
->   available in 10.0.1. The patch is available in llvm 11.0.0 trunk.
->   
-> -__  https://reviews.llvm.org/D78466
-> +__  https://github.com/llvm/llvm-project/commit/3cb7e7bf959dcd3b8080986c62e10a75c7af43f0
->   
->   bpf_verif_scale/loop6.bpf.o test failure with Clang 12
->   ======================================================
-> @@ -204,7 +204,7 @@ r5(w5) is eventually saved on stack at insn #24 for later use.
->   This cause later verifier failure. The bug has been `fixed`__ in
->   Clang 13.
->   
-> -__  https://reviews.llvm.org/D97479
-> +__  https://github.com/llvm/llvm-project/commit/1959ead525b8830cc8a345f45e1c3ef9902d3229
->   
->   BPF CO-RE-based tests and Clang version
->   =======================================
-> @@ -221,11 +221,11 @@ failures:
->   - __builtin_btf_type_id() [0_, 1_, 2_];
->   - __builtin_preserve_type_info(), __builtin_preserve_enum_value() [3_, 4_].
->   
-> -.. _0: https://reviews.llvm.org/D74572
-> -.. _1: https://reviews.llvm.org/D74668
-> -.. _2: https://reviews.llvm.org/D85174
-> -.. _3: https://reviews.llvm.org/D83878
-> -.. _4: https://reviews.llvm.org/D83242
-> +.. _0: https://github.com/llvm/llvm-project/commit/6b01b465388b204d543da3cf49efd6080db094a9
-> +.. _1: https://github.com/llvm/llvm-project/commit/072cde03aaa13a2c57acf62d79876bf79aa1919f
-> +.. _2: https://github.com/llvm/llvm-project/commit/00602ee7ef0bf6c68d690a2bd729c12b95c95c99
-> +.. _3: https://github.com/llvm/llvm-project/commit/6d218b4adb093ff2e9764febbbc89f429412006c
-> +.. _4: https://github.com/llvm/llvm-project/commit/6d6750696400e7ce988d66a1a00e1d0cb32815f8
->   
->   Floating-point tests and Clang version
->   ======================================
-> @@ -234,7 +234,7 @@ Certain selftests, e.g. core_reloc, require support for the floating-point
->   types, which was introduced in `Clang 13`__. The older Clang versions will
->   either crash when compiling these tests, or generate an incorrect BTF.
->   
-> -__  https://reviews.llvm.org/D83289
-> +__  https://github.com/llvm/llvm-project/commit/a7137b238a07d9399d3ae96c0b461571bd5aa8b2
->   
->   Kernel function call test and Clang version
->   ===========================================
-> @@ -248,7 +248,7 @@ Without it, the error from compiling bpf selftests looks like:
->   
->     libbpf: failed to find BTF for extern 'tcp_slow_start' [25] section: -2
->   
-> -__ https://reviews.llvm.org/D93563
-> +__ https://github.com/llvm/llvm-project/commit/886f9ff53155075bd5f1e994f17b85d1e1b7470c
->   
->   btf_tag test and Clang version
->   ==============================
-> @@ -264,8 +264,8 @@ Without them, the btf_tag selftest will be skipped and you will observe:
->   
->     #<test_num> btf_tag:SKIP
->   
-> -.. _0: https://reviews.llvm.org/D111588
-> -.. _1: https://reviews.llvm.org/D111199
-> +.. _0: https://github.com/llvm/llvm-project/commit/a162b67c98066218d0d00aa13b99afb95d9bb5e6
-> +.. _1: https://github.com/llvm/llvm-project/commit/3466e00716e12e32fdb100e3fcfca5c2b3e8d784
->   
->   Clang dependencies for static linking tests
->   ===========================================
-> @@ -274,7 +274,7 @@ linked_vars, linked_maps, and linked_funcs tests depend on `Clang fix`__ to
->   generate valid BTF information for weak variables. Please make sure you use
->   Clang that contains the fix.
->   
-> -__ https://reviews.llvm.org/D100362
-> +__ https://github.com/llvm/llvm-project/commit/968292cb93198442138128d850fd54dc7edc0035
->   
->   Clang relocation changes
->   ========================
-> @@ -292,7 +292,7 @@ Here, ``type 2`` refers to new relocation type ``R_BPF_64_ABS64``.
->   To fix this issue, user newer libbpf.
->   
->   .. Links
-> -.. _clang reloc patch: https://reviews.llvm.org/D102712
-> +.. _clang reloc patch: https://github.com/llvm/llvm-project/commit/6a2ea84600ba4bd3b2733bd8f08f5115eb32164b
->   .. _kernel llvm reloc: /Documentation/bpf/llvm_reloc.rst
->   
->   Clang dependencies for the u32 spill test (xdpwall)
-> @@ -304,6 +304,6 @@ from running test_progs will look like:
->   
->   .. code-block:: console
->   
-> -  test_xdpwall:FAIL:Does LLVM have https://reviews.llvm.org/D109073? unexpected error: -4007
-> +  test_xdpwall:FAIL:Does LLVM have https://github.com/llvm/llvm-project/commit/ea72b0319d7b0f0c2fcf41d121afa5d031b319d5? unexpected error: -4007
->   
-> -__ https://reviews.llvm.org/D109073
-> +__ https://github.com/llvm/llvm-project/commit/ea72b0319d7b0f0c2fcf41d121afa5d031b319d
+>  Documentation/devicetree/bindings/sound/fsl,sai.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/sound/fsl,sai.yaml b/Documentation/devicetree/bindings/sound/fsl,sai.yaml
+> index 088c26b001cc..f3d910aa2dc6 100644
+> --- a/Documentation/devicetree/bindings/sound/fsl,sai.yaml
+> +++ b/Documentation/devicetree/bindings/sound/fsl,sai.yaml
+> @@ -40,6 +40,7 @@ properties:
+>                - fsl,imx8ulp-sai
+>                - fsl,imx93-sai
+>                - fsl,vf610-sai
+> +              - fsl,imx95-sai
 
-To be consistent with other links, could you add the missing last alnum '5' to the above link?
+Don't break the order, please.
 
-> diff --git a/tools/testing/selftests/bpf/prog_tests/xdpwall.c b/tools/testing/selftests/bpf/prog_tests/xdpwall.c
-> index f3927829a55a..4599154c8e9b 100644
-> --- a/tools/testing/selftests/bpf/prog_tests/xdpwall.c
-> +++ b/tools/testing/selftests/bpf/prog_tests/xdpwall.c
-> @@ -9,7 +9,7 @@ void test_xdpwall(void)
->   	struct xdpwall *skel;
->   
->   	skel = xdpwall__open_and_load();
-> -	ASSERT_OK_PTR(skel, "Does LLMV have https://reviews.llvm.org/D109073?");
-> +	ASSERT_OK_PTR(skel, "Does LLVM have https://github.com/llvm/llvm-project/commit/ea72b0319d7b0f0c2fcf41d121afa5d031b319d5?");
->   
->   	xdpwall__destroy(skel);
->   }
-> diff --git a/tools/testing/selftests/bpf/progs/test_core_reloc_type_id.c b/tools/testing/selftests/bpf/progs/test_core_reloc_type_id.c
-> index 22aba3f6e344..6fc8b9d66e34 100644
-> --- a/tools/testing/selftests/bpf/progs/test_core_reloc_type_id.c
-> +++ b/tools/testing/selftests/bpf/progs/test_core_reloc_type_id.c
-> @@ -80,7 +80,7 @@ int test_core_type_id(void *ctx)
->   	 * to detect whether this test has to be executed, however strange
->   	 * that might look like.
->   	 *
-> -	 *   [0] https://reviews.llvm.org/D85174
-> +	 *   [0] https://github.com/llvm/llvm-project/commit/00602ee7ef0bf6c68d690a2bd729c12b95c95c99
->   	 */
->   #if __has_builtin(__builtin_preserve_type_info)
->   	struct core_reloc_type_id_output *out = (void *)&data.out;
->
+Best regards,
+Krzysztof
+
