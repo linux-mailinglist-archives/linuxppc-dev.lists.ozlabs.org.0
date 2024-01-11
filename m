@@ -2,105 +2,139 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58F7A82AC9D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jan 2024 11:56:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDAFF82ACE2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jan 2024 12:08:05 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=USy0kNt1;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=TNSx5SkR;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4T9hRd672cz3d8B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jan 2024 21:56:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4T9hjH2NBHz3bp1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jan 2024 22:08:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=USy0kNt1;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=TNSx5SkR;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4T9hNh6GMpz3cVs
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jan 2024 21:53:40 +1100 (AEDT)
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4T9hNj1XPgz4wcc
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jan 2024 21:53:41 +1100 (AEDT)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4T9hNj1SkJz4wcH; Thu, 11 Jan 2024 21:53:41 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=USy0kNt1;
-	dkim-atps=neutral
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2613::600; helo=eur05-vi1-obe.outbound.protection.outlook.com; envelope-from=chancel.liu@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on20600.outbound.protection.outlook.com [IPv6:2a01:111:f403:2613::600])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4T9hNh69Fpz4wcc
-	for <linuxppc-dev@ozlabs.org>; Thu, 11 Jan 2024 21:53:40 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40B9xCkB015799;
-	Thu, 11 Jan 2024 10:52:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=70hWUdp5z/nheKq6S0kDaMX40+u1RDgSmKY4KvwBlyc=;
- b=USy0kNt1bqwuK9lyMPk3rMIZsPrNIrGLXSEs+fAueMBz8HDMEfZi9j+em++xbGzZzAZF
- U9N6ZC/tkjGnu8ShLLMLtv4JhD6jhiMBD+LwgcLyT2LwN7l+1lzEyco+5wIa80Z1Yhn9
- 8rQM3CSDinVGV6jOPHUuuXMiAShvy18HTVfM0CfS1SAzEtFnhgVG/uqoCzWQoag/zvDz
- fYdru6q10AevWnx2HgQBSGCXm5DBADzLTvTsgK1QUxCUtp0FPKe3gRTmQQZ+Zc9FwD5k
- 1OcYo1eCCGqP7Kst/Tm5PVgSDDw2C7d5mEEsQ9Kho1BL4Yx+OZzrQZrmRfUDcMAqc4Um Ng== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vje2usfyp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jan 2024 10:52:28 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40BATMML022498;
-	Thu, 11 Jan 2024 10:52:28 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vje2usfy3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jan 2024 10:52:28 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40BAPCrx026999;
-	Thu, 11 Jan 2024 10:52:26 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vfkw2ag0s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jan 2024 10:52:26 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40BAqOv642860888
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 11 Jan 2024 10:52:24 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0604320043;
-	Thu, 11 Jan 2024 10:52:24 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CE9052004E;
-	Thu, 11 Jan 2024 10:52:19 +0000 (GMT)
-Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.79.182.66])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 11 Jan 2024 10:52:19 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH v15 5/5] powerpc: add crash memory hotplug support
-Date: Thu, 11 Jan 2024 16:21:38 +0530
-Message-ID: <20240111105138.251366-6-sourabhjain@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240111105138.251366-1-sourabhjain@linux.ibm.com>
-References: <20240111105138.251366-1-sourabhjain@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4T9hhR2RFvz2xTN
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jan 2024 22:07:17 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IYYs/kRq/78aBpeaqpSGGa0yOT/KS5OzC1mVVUsUin92y0wLcIXL+jsPbXlZ9ds4z06ZGjpQ/1cNN8sAqMUuDH7J/B+ByZI4Wl/7SGxrOaxALkACoNk0xvhqQKbmIJFBHmCwsu5H9Wqf9cEXl57LHaNZUCw+q538w404xwUCYbLcULPWEHja6tFjuOhOg5VAVS0NSL7W/opADvhNh63+Y9+6ci4nYzu6mydtCLqRNgOj+TrLD6FPNVc9jQckITYbriHkKKgBtaDpVYG5B/5EtQMoKbF6yvTVAqWJ+IkjABq5g1TBQ0RvvvWSN65/naaiu83dsaZV1d1w1XrDAx9/Qw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jvDwk5jkP15X0Pm8mhccDPi8aUwn9kLsb0+YMzgMDpI=;
+ b=jv9mq6psmLbPTCNFVUXzS5ir7iVsNvE9ZKRFm1Iw5fHJoba5Gs4u3YzZUFPPBAk1snYN+7Tp6nZOMiJrob9KsVU7ZJlJ1r2AotMwELQoPiY5SWoS7BUTDlAbQYucP1kDHGO6uSOSV+S5yXySkfceK6L9jV+M74IGIuMQtZBPVnt96oh5W4yWpdsyC+SIqBKM0V1oqsTa9ymJrDmCNKIQRBZp0rMWV8P8dtSFXgaTjAQ57ftHwo5qsobaIcMElqqP8t16C5Q+88nzHlPX/UO08FiMnXUIKmyrkfrp5t3LYV57O204N3+cplkdwb/lNW8mgAjpaf32b6wu8CmaDD+Yrw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jvDwk5jkP15X0Pm8mhccDPi8aUwn9kLsb0+YMzgMDpI=;
+ b=TNSx5SkRtxDNSoW9xt9KH/UBupwbnNTirLGP+KBs85Z1FfmoehLG7s5YlViz36SFeh54lRcMjH7N98vtN/ogJW7GZlkKNWmH15OnfwJMIS1QXMsZ2vPEL3tQ7c+iMh7ohSDn5mAVnLoc2B7WCFSpvNrpzesRRJ1tKImw/b9VAxc=
+Received: from DB9PR04MB9498.eurprd04.prod.outlook.com (2603:10a6:10:360::21)
+ by PAXPR04MB8426.eurprd04.prod.outlook.com (2603:10a6:102:1ca::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7181.19; Thu, 11 Jan
+ 2024 11:06:55 +0000
+Received: from DB9PR04MB9498.eurprd04.prod.outlook.com
+ ([fe80::2a3c:9a90:b09f:293c]) by DB9PR04MB9498.eurprd04.prod.outlook.com
+ ([fe80::2a3c:9a90:b09f:293c%3]) with mapi id 15.20.7159.020; Thu, 11 Jan 2024
+ 11:06:55 +0000
+From: Chancel Liu <chancel.liu@nxp.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	"lgirdwood@gmail.com" <lgirdwood@gmail.com>, "broonie@kernel.org"
+	<broonie@kernel.org>, "robh+dt@kernel.org" <robh+dt@kernel.org>,
+	"krzysztof.kozlowski+dt@linaro.org" <krzysztof.kozlowski+dt@linaro.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>, "shengjiu.wang@gmail.com"
+	<shengjiu.wang@gmail.com>, "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
+	"festevam@gmail.com" <festevam@gmail.com>, "nicoleotsuka@gmail.com"
+	<nicoleotsuka@gmail.com>, "perex@perex.cz" <perex@perex.cz>, "tiwai@suse.com"
+	<tiwai@suse.com>, "linux-sound@vger.kernel.org"
+	<linux-sound@vger.kernel.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "alsa-devel@alsa-project.org"
+	<alsa-devel@alsa-project.org>, "linuxppc-dev@lists.ozlabs.org"
+	<linuxppc-dev@lists.ozlabs.org>
+Subject: RE: Re: [PATCH 1/3] ASoC: dt-bindings: fsl,sai: Add compatible string
+ for i.MX95 platform
+Thread-Topic: Re: [PATCH 1/3] ASoC: dt-bindings: fsl,sai: Add compatible
+ string for i.MX95 platform
+Thread-Index: AQHaRH5JRPPqOQSwLESjzaZBO2/1og==
+Date: Thu, 11 Jan 2024 11:06:55 +0000
+Message-ID:  <DB9PR04MB9498C7C66BD45F2FBDD163D5E3682@DB9PR04MB9498.eurprd04.prod.outlook.com>
+References: <20240109075551.870001-1-chancel.liu@nxp.com>
+ <20240109075551.870001-2-chancel.liu@nxp.com>
+ <8ed559e8-1f97-45ee-acb9-c792752fd419@linaro.org>
+In-Reply-To: <8ed559e8-1f97-45ee-acb9-c792752fd419@linaro.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DB9PR04MB9498:EE_|PAXPR04MB8426:EE_
+x-ms-office365-filtering-correlation-id: bca4a025-7f43-46ff-672d-08dc12956c30
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  M9dGGskF9xcaa4hK/CaVb4WpyvoayVAU2CivokzSRGIz4Xvg4dpS2Lz86Nx5G5BzHVWHGeLENJv4Lmx9sdNTUCt+OJjmEd3O7lqxwacw76Bqi3GGc35s1AR5iAPZDGFF3eVSd1ZTJ2xhX6UcU8oy1lsWt9F8Xuqw2qdsn/RSpKrX9SCcvGkbnla+JMmXYg/RJXmw5T3zFGQU7tUcCNRZb2n/kXbTMncphgx7iSCyojME49Q4q/NIuYz5+QOaBspVv5b/t3q/IcM7H2F65LrUIDNCyY9XHYrvm7lm51LRzxozzVNzxC9Is+D9xgFV89kzRGhbB2yqSAi53hCAwtGMTtsVhHGkhHem5Iuqh2r9lQXfSWB6c+PE7ui9SVv06ABJdIZdI5saJZDBBZxxpUrtt0kSIQuSga3N3bCQ/ZQO8dT4xE07awUvyr8dh/yc8hxg6o8Fq/w4tURFZnhWVqHj+wpYV2n31JW3RaE1ZVOJIBxc42YBMi3S5UIsheiCDfdCVxhHGB/Jh7i0lhT6OZsQ3GD7RA5Q2xmJ+f4m5VuOu7x9XlGciCy77/Fo+y0U2Vy8BCnfW6bbtKWqvH3DSmJ2YAnIDPI0PwuxalL0OGL0mOgxmftDflTea/IG0hsoUqzGwI6Sbfcm4Bs9ZgOvq4AYvA==
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9498.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(366004)(39860400002)(376002)(346002)(136003)(230922051799003)(64100799003)(186009)(451199024)(1800799012)(55016003)(83380400001)(921011)(41300700001)(76116006)(33656002)(86362001)(38070700009)(122000001)(38100700002)(26005)(6506007)(9686003)(7696005)(2906002)(66556008)(66476007)(66446008)(64756008)(110136005)(316002)(478600001)(66946007)(71200400001)(5660300002)(44832011)(8936002)(8676002)(7416002)(4744005)(52536014);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?REs1NkVhdmhlVUVKamNZQWwzRjZtZlRvcHFrVE5mL1dKS3ZLTHBZNFQwakVZ?=
+ =?utf-8?B?RldkeXhRUVhNKzkxcm1wNzY1Qk04dHFDQlFDekdsK3pBTERqTWNGTTNPYjl5?=
+ =?utf-8?B?NnZ0bEFIb1ZlQitjcWs0V1AzekwrK2lqUkdtVkFjNk9jbU41RnQ3aW1ldUZa?=
+ =?utf-8?B?NGk5eWNkQVpGZStUeVJyNHdCYmcwT3loOGtlTTB4eEd5Q2VTakRoQWNYbUQ0?=
+ =?utf-8?B?OU1ldHM3MUNkNVFVeUlpSjhzcjFxWFNkVXVEeXZ6ZzBveDRsaW9aYUFwM3Qy?=
+ =?utf-8?B?RXZRNGo1dlRjRitTZ0svV21scFgvL1FPemF2WGtoRXlCTzJKQ3hjNWJHa2xx?=
+ =?utf-8?B?MU5STERlZXhFWEhsZnh6Q1VlRGxqUGpBZkJlNGhJRW5RK1JRVG4zTDBMTTJI?=
+ =?utf-8?B?V2ZDdkZQTE1tWXVwQ29Eb0hsKzV0b0xsUVRON2J0bzlYa1ZuWWIzZW1QMEV2?=
+ =?utf-8?B?aDR2RDdTYWxRWDEyOG1GVkNDL0NBbmtGaFhGWlpOUjRmR3ZYN2RpdnE5SXo2?=
+ =?utf-8?B?b3VOYndxRWpJU2xlSnNiQzU3WXJGcmRWT0o5bFl2RDVGY2s1RDc3Vm56MWRa?=
+ =?utf-8?B?andndy95UGFJTlNoS090NS9jYjV5a2R5UStJS2lGbWZJNjlkQjhVNWhHcW9O?=
+ =?utf-8?B?WXBaR2xBWXRHWGR3S1pFa2E3QmFoNTdmREtIT2IvelZUM29pQWcyYlcrWUx5?=
+ =?utf-8?B?S3dZTzhWUVVJTERHOUluQXVjOVdYaTlJenc5OC9IWlovZUtmcDhCcFQvR1Qw?=
+ =?utf-8?B?ZXltUzlDN2JGVDQ4WTdXNkMxd0V1YWdDeU5RWGJ5M21jN3RWL0RldW5BR0xT?=
+ =?utf-8?B?dFhaeGxVODFsV29uaUI3OVBKNEM0bnlVUXJzbnRZLzZPMjNaUnpxaWZQWDRy?=
+ =?utf-8?B?WmlmdUdaYWwvRDRWMHhKY0RHVkFXd1lCRjdlbFMybTZoamRsTXljVHB0eURR?=
+ =?utf-8?B?R2QzSlpnUTVzQmYwTUVpNmJpanFVb2F3VzFvQ3RGVFpBYm1ESFd6SVVvaEhT?=
+ =?utf-8?B?ZnlFSmZvNjFZVUFib25HS0dLK1lFaXRySlZWdllPWUszcTNyMm9Ud09KcENa?=
+ =?utf-8?B?Z1pPdGV5V05RRmtwdUV0Wmhab0h0Sk8xNHFmbTF4WnZNSFhIWk13VitjZUtv?=
+ =?utf-8?B?K08yd2FaU2V6bUwxanppOWl1dHg4RHB0M0FBRytoOFZBM2RGU1BGMGk2N0pI?=
+ =?utf-8?B?YzlDeTlZSUpzNWltaUNyM1JhdFZ2WDUxNmcrWTBsWmRCK1ZucVVzZ1d2VU5N?=
+ =?utf-8?B?T1pSKzRCZHRVand4ZDllZHc2K05MWEdzOVhrSFZJdXlKdUtUdGxLQjdGOXRB?=
+ =?utf-8?B?RDQ3bXdoZkRqQXV5WStLYUZCMWVleE1uUmtiV3dHLzd1ck5Vcy85RGhOa3p1?=
+ =?utf-8?B?OWNxQWlEWk9nV3E3VFQxMTMzK0JONUtPWkljTnpGdHNPMWpQa0E3Z1BoWW9i?=
+ =?utf-8?B?SFRaTUNDR0hqb0k2ejRRYjJORDNmbHFjZEd3enRZdGJmVFpzV1NTSFIrMTQx?=
+ =?utf-8?B?K0lRc0hETEZPNDZhemdsYlBYZVRRbElrV1NRTWR5N3piYnpVcis4S2t2K3RR?=
+ =?utf-8?B?YVNIbWNEUFc0QmdZZEhrZStEYzBjR1ZCTWhMdnhSTldCZUNUd2RwRzJBcWNP?=
+ =?utf-8?B?MHRBYkxqZkFkeUJNRllnUUlLVEhnWWtWOG8wcFVuMUhlejgzaVArYlhsNnZS?=
+ =?utf-8?B?WVNTRnBZc0tmRnBuSVdhNXZoSnR3bEJkN0Z4ZDFCUFFCMXZ5aTVRYjZBRlBv?=
+ =?utf-8?B?b2VBNldrc3RoY0tOR2Z2RE1UZE02OGRBY3FkbHZXQmlob2M3OUpnSW1sMWIy?=
+ =?utf-8?B?b0tNNFZJNzdGMTk5Y1dSM2RsUVAvcjBhUkRRaEowKy85dGZham1WOEZkL2NS?=
+ =?utf-8?B?cFc0VlAyckR6SlVJUjBjQnJ5Nm4wa3RNaXZCZkt5N0xBcSswNzNtd2RPR1Ro?=
+ =?utf-8?B?MW02U0twYnVVaENXNURmV1d0RHNDdE0xdWZiY1pOVC9laG5zNHNzSGdVTUNj?=
+ =?utf-8?B?V1dlZGNzSGpMeVV0N0diRW9HSW1zbmJaMnM2dWRuUC8zY1VLRzNLODBVWGV3?=
+ =?utf-8?B?dU5nRWdWTGltSmVZd2hjVjMyRWxQZkhSTVRLNVJBZDNGWW8vZm4vL3FRZzdq?=
+ =?utf-8?Q?l7Ak548xV1V2Rbmelvv5Cscjz?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ARYIaqjKzSIvd7Yo5IEziUZYFQaGlvof
-X-Proofpoint-GUID: 1_W2vtqhLaiHWFl_DV8HJHk7BfIAe75f
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-11_05,2024-01-11_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- malwarescore=0 suspectscore=0 priorityscore=1501 impostorscore=0
- phishscore=0 clxscore=1015 adultscore=0 spamscore=0 mlxscore=0 bulkscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401110088
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9498.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bca4a025-7f43-46ff-672d-08dc12956c30
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Jan 2024 11:06:55.3813
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: LIWRTMjTkZxD9vblG2e7w4OLVKKBF8apbp3EAIlVsBCgWJAXvng4hQFZM5OCQ1kFuv4pbpPY7ESK8wnmheXPgA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8426
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,425 +146,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, Mimi Zohar <zohar@linux.ibm.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Valentin Schneider <vschneid@redhat.com>, Baoquan He <bhe@redhat.com>, x86@kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Laurent Dufour <laurent.dufour@fr.ibm.com>, Dave Young <dyoung@redhat.com>, Vivek Goyal <vgoyal@redhat.com>, Naveen N Rao <naveen@kernel.org>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, Hari Bathini <hbathini@linux.ibm.com>, Oscar Salvador <osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, kexec@lists.infradead.org, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>, Akhil Raj <lf32.dev@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Extend the arch crash hotplug handler, as introduced by the patch title
-("powerpc: add crash CPU hotplug support"), to also support memory
-add/remove events.
-
-Elfcorehdr describes the memory of the crash kernel to capture the
-kernel; hence, it needs to be updated if memory resources change due to
-memory add/remove events. Therefore, arch_crash_handle_hotplug_event()
-is updated to recreate the elfcorehdr and replace it with the previous
-one on memory add/remove events.
-
-The memblock list is used to prepare the elfcorehdr. In the case of
-memory hot removal, the memblock list is updated after the arch crash
-hotplug handler is triggered, as depicted in Figure 1. Thus, the
-hot-removed memory is explicitly removed from the crash memory ranges
-to ensure that the memory ranges added to elfcorehdr do not include the
-hot-removed memory.
-
-    Memory remove
-          |
-          v
-    Offline pages
-          |
-          v
- Initiate memory notify call <----> crash hotplug handler
- chain for MEM_OFFLINE event
-          |
-          v
- Update memblock list
-
- 	Figure 1
-
-There are two system calls, `kexec_file_load` and `kexec_load`, used to
-load the kdump image. A few changes have been made to ensure that the
-kernel can safely update the elfcorehdr component of the kdump image for
-both system calls.
-
-For the kexec_file_load syscall, kdump image is prepared in the kernel.
-To support an increasing number of memory regions, the elfcorehdr is
-built with extra buffer space to ensure that it can accommodate
-additional memory ranges in future.
-
-For the kexec_load syscall, the elfcorehdr is updated only if the
-KEXEC_CRASH_HOTPLUG_SUPPORT kexec flag is passed to the kernel by the
-kexec tool. Passing this flag to the kernel indicates that the
-elfcorehdr is built to accommodate additional memory ranges and the
-elfcorehdr segment is not considered for SHA calculation, making it safe
-to update.
-
-The changes related to this feature are kept under the CRASH_HOTPLUG
-config, and it is enabled by default.
-
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Cc: Akhil Raj <lf32.dev@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Hari Bathini <hbathini@linux.ibm.com>
-Cc: Laurent Dufour <laurent.dufour@fr.ibm.com>
-Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Mimi Zohar <zohar@linux.ibm.com>
-Cc: Naveen N Rao <naveen@kernel.org>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Valentin Schneider <vschneid@redhat.com>
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: kexec@lists.infradead.org
-Cc: x86@kernel.org
----
- arch/powerpc/include/asm/kexec.h        |   5 +-
- arch/powerpc/include/asm/kexec_ranges.h |   1 +
- arch/powerpc/kexec/core_64.c            | 107 +++++++++++++++++++++++-
- arch/powerpc/kexec/file_load_64.c       |  34 +++++++-
- arch/powerpc/kexec/ranges.c             |  85 +++++++++++++++++++
- 5 files changed, 225 insertions(+), 7 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
-index 943e58eb9bff..25ff5b7f1a28 100644
---- a/arch/powerpc/include/asm/kexec.h
-+++ b/arch/powerpc/include/asm/kexec.h
-@@ -116,8 +116,11 @@ int get_crash_memory_ranges(struct crash_mem **mem_ranges);
- #ifdef CONFIG_CRASH_HOTPLUG
- void arch_crash_handle_hotplug_event(struct kimage *image, void *arg);
- #define arch_crash_handle_hotplug_event arch_crash_handle_hotplug_event
--#endif /*CONFIG_CRASH_HOTPLUG */
- 
-+unsigned int arch_crash_get_elfcorehdr_size(void);
-+#define crash_get_elfcorehdr_size arch_crash_get_elfcorehdr_size
-+
-+#endif /*CONFIG_CRASH_HOTPLUG */
- #endif /* CONFIG_PPC64 */
- 
- #ifdef CONFIG_KEXEC_FILE
-diff --git a/arch/powerpc/include/asm/kexec_ranges.h b/arch/powerpc/include/asm/kexec_ranges.h
-index f83866a19e87..802abf580cf0 100644
---- a/arch/powerpc/include/asm/kexec_ranges.h
-+++ b/arch/powerpc/include/asm/kexec_ranges.h
-@@ -7,6 +7,7 @@
- void sort_memory_ranges(struct crash_mem *mrngs, bool merge);
- struct crash_mem *realloc_mem_ranges(struct crash_mem **mem_ranges);
- int add_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size);
-+int remove_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size);
- int add_tce_mem_ranges(struct crash_mem **mem_ranges);
- int add_initrd_mem_range(struct crash_mem **mem_ranges);
- #ifdef CONFIG_PPC_64S_HASH_MMU
-diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
-index 43fcd78c2102..4673f150f973 100644
---- a/arch/powerpc/kexec/core_64.c
-+++ b/arch/powerpc/kexec/core_64.c
-@@ -19,8 +19,11 @@
- #include <linux/of.h>
- #include <linux/libfdt.h>
- #include <linux/memblock.h>
-+#include <linux/memory.h>
- 
- #include <asm/page.h>
-+#include <asm/drmem.h>
-+#include <asm/mmzone.h>
- #include <asm/current.h>
- #include <asm/machdep.h>
- #include <asm/cacheflush.h>
-@@ -546,6 +549,101 @@ int update_cpus_node(void *fdt)
- #undef pr_fmt
- #define pr_fmt(fmt) "crash hp: " fmt
- 
-+/*
-+ * Advertise preferred elfcorehdr size to userspace via
-+ * /sys/kernel/crash_elfcorehdr_size sysfs interface.
-+ */
-+unsigned int arch_crash_get_elfcorehdr_size(void)
-+{
-+	unsigned int sz;
-+	unsigned long elf_phdr_cnt;
-+
-+	/* Program header for CPU notes and vmcoreinfo */
-+	elf_phdr_cnt = 2;
-+	if (IS_ENABLED(CONFIG_MEMORY_HOTPLUG))
-+		/* In the worst case, a Phdr is needed for every other LMB to be
-+		 * represented as an individual crash range.
-+		 */
-+		elf_phdr_cnt += memory_hotplug_max() / (2 * drmem_lmb_size());
-+
-+	/* Do not cross the max limit */
-+	if (elf_phdr_cnt > PN_XNUM)
-+		elf_phdr_cnt = PN_XNUM;
-+
-+	sz = sizeof(struct elfhdr) + (elf_phdr_cnt * sizeof(Elf64_Phdr));
-+	return sz;
-+}
-+
-+/**
-+ * update_crash_elfcorehdr() - Recreate the elfcorehdr and replace it with old
-+ *			       elfcorehdr in the kexec segment array.
-+ * @image: the active struct kimage
-+ * @mn: struct memory_notify data handler
-+ */
-+static void update_crash_elfcorehdr(struct kimage *image, struct memory_notify *mn)
-+{
-+	int ret;
-+	struct crash_mem *cmem = NULL;
-+	struct kexec_segment *ksegment;
-+	void *ptr, *mem, *elfbuf = NULL;
-+	unsigned long elfsz, memsz, base_addr, size;
-+
-+	ksegment = &image->segment[image->elfcorehdr_index];
-+	mem = (void *) ksegment->mem;
-+	memsz = ksegment->memsz;
-+
-+	ret = get_crash_memory_ranges(&cmem);
-+	if (ret) {
-+		pr_err("Failed to get crash mem range\n");
-+		return;
-+	}
-+
-+	/*
-+	 * The hot unplugged memory is part of crash memory ranges,
-+	 * remove it here.
-+	 */
-+	if (image->hp_action == KEXEC_CRASH_HP_REMOVE_MEMORY) {
-+		base_addr = PFN_PHYS(mn->start_pfn);
-+		size = mn->nr_pages * PAGE_SIZE;
-+		ret = remove_mem_range(&cmem, base_addr, size);
-+		if (ret) {
-+			pr_err("Failed to remove hot-unplugged from crash memory ranges.\n");
-+			return;
-+		}
-+	}
-+
-+	ret = crash_prepare_elf64_headers(cmem, false, &elfbuf, &elfsz);
-+	if (ret) {
-+		pr_err("Failed to prepare elf header\n");
-+		return;
-+	}
-+
-+	/*
-+	 * It is unlikely that kernel hit this because elfcorehdr kexec
-+	 * segment (memsz) is built with addition space to accommodate growing
-+	 * number of crash memory ranges while loading the kdump kernel. It is
-+	 * Just to avoid any unforeseen case.
-+	 */
-+	if (elfsz > memsz) {
-+		pr_err("Updated crash elfcorehdr elfsz %lu > memsz %lu", elfsz, memsz);
-+		goto out;
-+	}
-+
-+	ptr = __va(mem);
-+	if (ptr) {
-+		/* Temporarily invalidate the crash image while it is replaced */
-+		xchg(&kexec_crash_image, NULL);
-+
-+		/* Replace the old elfcorehdr with newly prepared elfcorehdr */
-+		memcpy((void *)ptr, elfbuf, elfsz);
-+
-+		/* The crash image is now valid once again */
-+		xchg(&kexec_crash_image, image);
-+	}
-+out:
-+	vfree(elfbuf);
-+}
-+
- /**
-  * arch_crash_handle_hotplug_event - Handle crash CPU/Memory hotplug events to update the
-  *				     necessary kexec segments based on the hotplug event.
-@@ -556,7 +654,7 @@ int update_cpus_node(void *fdt)
-  * CPU addition: Update the FDT segment to include the newly added CPU.
-  * CPU removal: No action is needed, with the assumption that it's okay to have offline CPUs
-  *		as part of the FDT.
-- * Memory addition/removal: No action is taken as this is not yet supported.
-+ * Memory addition/removal: Recreate the elfcorehdr segment
-  */
- void arch_crash_handle_hotplug_event(struct kimage *image, void *arg)
- {
-@@ -570,7 +668,6 @@ void arch_crash_handle_hotplug_event(struct kimage *image, void *arg)
- 		return;
- 
- 	} else if (hp_action == KEXEC_CRASH_HP_ADD_CPU) {
--
- 		void *fdt, *ptr;
- 		unsigned long mem;
- 		int i, fdt_index = -1;
-@@ -605,8 +702,10 @@ void arch_crash_handle_hotplug_event(struct kimage *image, void *arg)
- 
- 	} else if (hp_action == KEXEC_CRASH_HP_REMOVE_MEMORY ||
- 		   hp_action == KEXEC_CRASH_HP_ADD_MEMORY) {
--		pr_info_once("Crash update is not supported for memory hotplug\n");
--		return;
-+		struct memory_notify *mn;
-+
-+		mn = (struct memory_notify *)arg;
-+		update_crash_elfcorehdr(image, mn);
- 	}
- }
- #endif
-diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-index 3fb0500fee16..672a901edaa1 100644
---- a/arch/powerpc/kexec/file_load_64.c
-+++ b/arch/powerpc/kexec/file_load_64.c
-@@ -21,6 +21,8 @@
- #include <linux/memblock.h>
- #include <linux/slab.h>
- #include <linux/vmalloc.h>
-+#include <linux/elf.h>
-+
- #include <asm/setup.h>
- #include <asm/cputhreads.h>
- #include <asm/drmem.h>
-@@ -740,7 +742,35 @@ static int load_elfcorehdr_segment(struct kimage *image, struct kexec_buf *kbuf)
- 
- 	kbuf->buffer = headers;
- 	kbuf->mem = KEXEC_BUF_MEM_UNKNOWN;
--	kbuf->bufsz = kbuf->memsz = headers_sz;
-+	kbuf->bufsz = headers_sz;
-+#if defined(CONFIG_CRASH_HOTPLUG) && defined(CONFIG_MEMORY_HOTPLUG)
-+	/* Adjust the elfcorehdr segment size to accommodate
-+	 * future crash memory ranges.
-+	 */
-+	int max_lmb;
-+	unsigned long pnum;
-+
-+	/* In the worst case, a Phdr is needed for every other LMB to be
-+	 * represented as an individual crash range.
-+	 */
-+	max_lmb = memory_hotplug_max() / (2 * drmem_lmb_size());
-+
-+	/* Do not cross the Phdr max limit of the elf header.
-+	 * Avoid counting Phdr for crash ranges (cmem->nr_ranges)
-+	 * which are already part of elfcorehdr.
-+	 */
-+	if (max_lmb > PN_XNUM)
-+		pnum = PN_XNUM - cmem->nr_ranges;
-+	else
-+		pnum = max_lmb - cmem->nr_ranges;
-+
-+	/* Additional buffer space for elfcorehdr to accommodate
-+	 * future memory ranges.
-+	 */
-+	kbuf->memsz = headers_sz + pnum * sizeof(Elf64_Phdr);
-+#else
-+	kbuf->memsz = headers_sz;
-+#endif
- 	kbuf->top_down = false;
- 
- 	ret = kexec_add_buffer(kbuf);
-@@ -750,7 +780,7 @@ static int load_elfcorehdr_segment(struct kimage *image, struct kexec_buf *kbuf)
- 	}
- 
- 	image->elf_load_addr = kbuf->mem;
--	image->elf_headers_sz = headers_sz;
-+	image->elf_headers_sz = kbuf->memsz;
- 	image->elf_headers = headers;
- out:
- 	kfree(cmem);
-diff --git a/arch/powerpc/kexec/ranges.c b/arch/powerpc/kexec/ranges.c
-index fb3e12f15214..4fd0c5d5607b 100644
---- a/arch/powerpc/kexec/ranges.c
-+++ b/arch/powerpc/kexec/ranges.c
-@@ -234,6 +234,91 @@ int add_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size)
- 	return __add_mem_range(mem_ranges, base, size);
- }
- 
-+/**
-+ * remove_mem_range - Removes the given memory range from the range list.
-+ * @mem_ranges:    Range list to remove the memory range to.
-+ * @base:          Base address of the range to remove.
-+ * @size:          Size of the memory range to remove.
-+ *
-+ * (Re)allocates memory, if needed.
-+ *
-+ * Returns 0 on success, negative errno on error.
-+ */
-+int remove_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size)
-+{
-+	u64 end;
-+	int ret = 0;
-+	unsigned int i;
-+	u64 mstart, mend;
-+	struct crash_mem *mem_rngs = *mem_ranges;
-+
-+	if (!size)
-+		return 0;
-+
-+	/*
-+	 * Memory range are stored as start and end address, use
-+	 * the same format to do remove operation.
-+	 */
-+	end = base + size - 1;
-+
-+	for (i = 0; i < mem_rngs->nr_ranges; i++) {
-+		mstart = mem_rngs->ranges[i].start;
-+		mend = mem_rngs->ranges[i].end;
-+
-+		/*
-+		 * Memory range to remove is not part of this range entry
-+		 * in the memory range list
-+		 */
-+		if (!(base >= mstart && end <= mend))
-+			continue;
-+
-+		/*
-+		 * Memory range to remove is equivalent to this entry in the
-+		 * memory range list. Remove the range entry from the list.
-+		 */
-+		if (base == mstart && end == mend) {
-+			for (; i < mem_rngs->nr_ranges - 1; i++) {
-+				mem_rngs->ranges[i].start = mem_rngs->ranges[i+1].start;
-+				mem_rngs->ranges[i].end = mem_rngs->ranges[i+1].end;
-+			}
-+			mem_rngs->nr_ranges--;
-+			goto out;
-+		}
-+		/*
-+		 * Start address of the memory range to remove and the
-+		 * current memory range entry in the list is same. Just
-+		 * move the start address of the current memory range
-+		 * entry in the list to end + 1.
-+		 */
-+		else if (base == mstart) {
-+			mem_rngs->ranges[i].start = end + 1;
-+			goto out;
-+		}
-+		/*
-+		 * End address of the memory range to remove and the
-+		 * current memory range entry in the list is same.
-+		 * Just move the end address of the current memory
-+		 * range entry in the list to base - 1.
-+		 */
-+		else if (end == mend)  {
-+			mem_rngs->ranges[i].end = base - 1;
-+			goto out;
-+		}
-+		/*
-+		 * Memory range to remove is not at the edge of current
-+		 * memory range entry. Split the current memory entry into
-+		 * two half.
-+		 */
-+		else {
-+			mem_rngs->ranges[i].end = base - 1;
-+			size = mem_rngs->ranges[i].end - end;
-+			ret = add_mem_range(mem_ranges, end + 1, size);
-+		}
-+	}
-+out:
-+	return ret;
-+}
-+
- /**
-  * add_tce_mem_ranges - Adds tce-table range to the given memory ranges list.
-  * @mem_ranges:         Range list to add the memory range(s) to.
--- 
-2.41.0
-
+PiA+IEFkZCBjb21wYXRpYmxlIHN0cmluZyAiZnNsLGlteDk1LXNhaSIgZm9yIGkuTVg5NSBwbGF0
+Zm9ybS4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IENoYW5jZWwgTGl1IDxjaGFuY2VsLmxpdUBu
+eHAuY29tPg0KPiA+IC0tLQ0KPiA+ICBEb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3Mv
+c291bmQvZnNsLHNhaS55YW1sIHwgMSArDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlv
+bigrKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5k
+aW5ncy9zb3VuZC9mc2wsc2FpLnlhbWwNCj4gYi9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmlu
+ZGluZ3Mvc291bmQvZnNsLHNhaS55YW1sDQo+ID4gaW5kZXggMDg4YzI2YjAwMWNjLi5mM2Q5MTBh
+YTJkYzYgMTAwNjQ0DQo+ID4gLS0tIGEvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdz
+L3NvdW5kL2ZzbCxzYWkueWFtbA0KPiA+ICsrKyBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9i
+aW5kaW5ncy9zb3VuZC9mc2wsc2FpLnlhbWwNCj4gPiBAQCAtNDAsNiArNDAsNyBAQCBwcm9wZXJ0
+aWVzOg0KPiA+ICAgICAgICAgICAgICAgIC0gZnNsLGlteDh1bHAtc2FpDQo+ID4gICAgICAgICAg
+ICAgICAgLSBmc2wsaW14OTMtc2FpDQo+ID4gICAgICAgICAgICAgICAgLSBmc2wsdmY2MTAtc2Fp
+DQo+ID4gKyAgICAgICAgICAgICAgLSBmc2wsaW14OTUtc2FpDQo+IA0KPiBEb24ndCBicmVhayB0
+aGUgb3JkZXIsIHBsZWFzZS4NCj4gDQo+IEJlc3QgcmVnYXJkcywNCj4gS3J6eXN6dG9mDQoNClNv
+cnJ5IGJ1dCBJIGRvbid0IHVuZGVyc3RhbmQgd2hhdCdzIHRoZSAib3JkZXIiIHJlZmVyIHRvLiBD
+b3VsZCB5b3UgcGxlYXNlDQpleHBsYWluIGl0IHRvIG1lPw0KDQpSZWdhcmRzLCANCkNoYW5jZWwg
+TGl1DQoNCg==
