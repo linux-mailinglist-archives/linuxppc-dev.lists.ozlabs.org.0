@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8495182BB86
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jan 2024 08:14:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1F8482BB87
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jan 2024 08:15:22 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=IaXxObYK;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=RYC9Q4ar;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TBCTN4gdnz3cKN
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jan 2024 18:14:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TBCVJ4Svbz3cXw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jan 2024 18:15:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=IaXxObYK;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=RYC9Q4ar;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::433; helo=mail-wr1-x433.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::434; helo=mail-wr1-x434.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TBCSY6SjZz3bZ6
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jan 2024 18:13:49 +1100 (AEDT)
-Received: by mail-wr1-x433.google.com with SMTP id ffacd0b85a97d-3368ae75082so3953797f8f.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jan 2024 23:13:49 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TBCTD2Pqgz3cR4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jan 2024 18:14:24 +1100 (AEDT)
+Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-33678156e27so5118057f8f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jan 2024 23:14:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1705043626; x=1705648426; darn=lists.ozlabs.org;
+        d=linaro.org; s=google; t=1705043660; x=1705648460; darn=lists.ozlabs.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=/BOdUm3gdbHMFqsawB5xFPercT0eYdgrEZogleugtcM=;
-        b=IaXxObYK6mqfAnERFd/EsNRGZXqtyojBdHv97LDp5WBALo/pUJ0Z9eVT6+S9rGL6TJ
-         EVTFsvDekFzGEmYYJHzOhj1Ssmyg5DeQ8EuwjDpLbHLSlBr67fislkE8gEVTPgBHwDAI
-         3fzMH5oXpePd1fXL66szaV6tCxoZbJ/StMbuKrJNjFG01HeXEWOLKjK5tqGqoSvdugOs
-         Nqc6H+OvaDLVYT8P5zkYSciQiCSLQNAb0LOTD3+u4yG7gXzHm1i/P9hXwJv/pcaGBcKB
-         R3yWTLPUFk1GoTz0Fd31d/CHUCJRb1ezcXN0E6hcnP9tPxc0zARw8fdRlwjxH0jbZiZ0
-         gkVQ==
+        bh=pO8yskQ+wiZb8dWLml0fvQDWP9QnZ411FtZvYaQ7ez0=;
+        b=RYC9Q4arBO4jWUGgXNqfcG96Uzkft/HBRjEwMiBNAr2vbfxaUS4O0jIpJ2mQmC32+Y
+         2GPN82u56ejl+e14Wvj2oNMqOUXrRa6v1DlhiP4K15Ylxoqv5wu2nHM48ZSNUgBv7Gkc
+         p0AC4R5TaphZ0BM6iJvweou42Q/Zh5gn40NwBSxcWkdlenQzZdrvjTLv54iBCJZDpuha
+         PjWGwADYOdZYQKhD6LkkbCFS7yUq2tT0TvFtLTYgCH34lAB+C5mGw7J2aHUXtDjTw79G
+         4Lx3wESkqEoVCNVHEmaygf7UKtwKBJkKHt9YGTWReTbdvIQkA2X9ZyL5KwoDTJG4DJaZ
+         DSBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705043626; x=1705648426;
+        d=1e100.net; s=20230601; t=1705043660; x=1705648460;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/BOdUm3gdbHMFqsawB5xFPercT0eYdgrEZogleugtcM=;
-        b=kECtnp0gpOde6tZHxkoCk/U9eLWCUefkcWODYZd1LIxCZL36uBVYFLAW91lWx0ctF4
-         qKmOpHzuhDVHm9oxvWpLQjC297uQgGIAhNLzMSXNZGHkihnG6AGfFtlSq+ap2xMhHuF8
-         QP4iUzv5V2RTlDKHZbbtOXiD0Uqo1f3f8HjOrwCEqyauTbKRSmRUEhU1mR/frQrjD0EW
-         bgWisGqQft4a6Z1qtaGZKySj2TvQt7QRuFNx13jmmqF/PnDJMNAzOm8VbFJj94+wuTkJ
-         hgk3/NB9rXW0sPYnQg0nDkVgr988sR3sJIHRMXS3sYKb9yafoWYv3MMZInKiQLjI/MND
-         MKng==
-X-Gm-Message-State: AOJu0YyfvY5aE2w8wSBtJ++s4LbF9SZHEiJScV9U3P27rJjSIHqHL2TC
-	RcYm0DsDD8KSlSVM+Rdqpnb+u+Hcr9cYgA==
-X-Google-Smtp-Source: AGHT+IEgnYK98s+QMgNWcW2xSyxNyRzqXddcodmtWWfCogARjx9d4g4HzKG/aJEF4Vkl2hRoD7/VPw==
-X-Received: by 2002:adf:e98f:0:b0:336:86af:ede5 with SMTP id h15-20020adfe98f000000b0033686afede5mr494024wrm.46.1705043625766;
-        Thu, 11 Jan 2024 23:13:45 -0800 (PST)
+        bh=pO8yskQ+wiZb8dWLml0fvQDWP9QnZ411FtZvYaQ7ez0=;
+        b=eJrVeoMWxgz/vFzFp649CJ+74G8/tjPjLLmr56uvFXoVKV3JAKbtOi4x0Tz2J+TrPL
+         wI+hkgNvQNh8aWxeAZRBWo+pBPFu0gthqc8cWwrZH9rvaRSSB85HhgzgaGD/nPkr3pQ9
+         2CZriy8U8qufnRV+civiFjCEEcLTqlFzangzS1ELdzxr4Nrgqs68CPp1BbGHaKz/jNtx
+         rTbs0xTLTP0NcnJw9RqkjHhlfXceRsmPmhvvH0N/sgF6WvDO0Y61K+YNxKy2YBPWQiAT
+         pUOYnEeaheyKso/2z3sicbiMU+4acKiZ5wx7sqkB/yFPPjVYmTB+e5imWUiAq/2Tf/Ms
+         cfzQ==
+X-Gm-Message-State: AOJu0Yz//72Xjwsq5pBJJ+GvHjD0JKnz6kMFPsFhX2S3tz4iCuA9UK/N
+	tNSsSRyfrcScSrbMKyaZBj+hjaS0Ka515w==
+X-Google-Smtp-Source: AGHT+IG/gm0nC27MHjndVZqBTFlAqUKdyTn7WB4Vs6PRjFVCWcv2wdL6rjCIRGvrCjWD71IGZbBtEw==
+X-Received: by 2002:a05:6000:137b:b0:336:7885:fff7 with SMTP id q27-20020a056000137b00b003367885fff7mr472388wrz.52.1705043660497;
+        Thu, 11 Jan 2024 23:14:20 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.223.112])
-        by smtp.gmail.com with ESMTPSA id f6-20020adfb606000000b00336aa190139sm3018880wre.5.2024.01.11.23.13.44
+        by smtp.gmail.com with ESMTPSA id f6-20020adfb606000000b00336aa190139sm3018880wre.5.2024.01.11.23.14.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Jan 2024 23:13:45 -0800 (PST)
-Message-ID: <73732b62-e362-401f-b257-0613593e8557@linaro.org>
-Date: Fri, 12 Jan 2024 08:13:44 +0100
+        Thu, 11 Jan 2024 23:14:20 -0800 (PST)
+Message-ID: <1fba162e-8f59-4e99-8197-94ccb9d7d914@linaro.org>
+Date: Fri, 12 Jan 2024 08:14:18 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] ASoC: dt-bindings: fsl,sai: Add compatible string
- for i.MX95 platform
+Subject: Re: [PATCH v2 3/3] ASoC: dt-bindings: fsl,micfil: Add compatible
+ string for i.MX95 platform
 Content-Language: en-US
 To: Chancel Liu <chancel.liu@nxp.com>, lgirdwood@gmail.com,
  broonie@kernel.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
@@ -72,7 +72,7 @@ To: Chancel Liu <chancel.liu@nxp.com>, lgirdwood@gmail.com,
  linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
  linuxppc-dev@lists.ozlabs.org
 References: <20240112054331.3244104-1-chancel.liu@nxp.com>
- <20240112054331.3244104-2-chancel.liu@nxp.com>
+ <20240112054331.3244104-4-chancel.liu@nxp.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -118,7 +118,7 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240112054331.3244104-2-chancel.liu@nxp.com>
+In-Reply-To: <20240112054331.3244104-4-chancel.liu@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -136,11 +136,12 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 12/01/2024 06:43, Chancel Liu wrote:
-> Add compatible string "fsl,imx95-sai" for i.MX95 platform.
+> Add compatible string "fsl,imx95-micfil" for i.MX95 platform.
 > 
 > Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
-> ---
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
