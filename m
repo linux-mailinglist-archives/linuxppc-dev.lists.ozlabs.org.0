@@ -2,64 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0BF882C5FC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jan 2024 20:43:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B2C282C647
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jan 2024 21:14:33 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=d39F6l+K;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=EBBKGXDE;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TBX5q5bZRz3bqV
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jan 2024 06:43:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TBXnM0tfwz3c58
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jan 2024 07:14:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=d39F6l+K;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=EBBKGXDE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d30; helo=mail-io1-xd30.google.com; envelope-from=nphamcs@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d2b; helo=mail-io1-xd2b.google.com; envelope-from=nphamcs@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-io1-xd2b.google.com (mail-io1-xd2b.google.com [IPv6:2607:f8b0:4864:20::d2b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TBX4y2nCfz3bbt
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jan 2024 06:42:56 +1100 (AEDT)
-Received: by mail-io1-xd30.google.com with SMTP id ca18e2360f4ac-7baa8da5692so301283639f.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jan 2024 11:42:56 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TBXmS68Y2z30gC
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jan 2024 07:13:43 +1100 (AEDT)
+Received: by mail-io1-xd2b.google.com with SMTP id ca18e2360f4ac-7baa8097064so319371439f.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jan 2024 12:13:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705088573; x=1705693373; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1705090420; x=1705695220; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7jBwE7Jt9seeB7l4z11oYjZwnUcDEcCEvTkM2Ir2NMI=;
-        b=d39F6l+KeTnn8BUWsq6n8oyI24HxZyMqD8DJIZKJYYpUAFHhTtyHezYpXovQjdhWoA
-         DYXIMeJKErEI1rWCmxf9jofFSpn+FRj9ju1kd2Vmi/iR7XG8q81pgV8S794wtz1hzWmI
-         6pJ00wKjmMZQ5IZ89hUZ/fwvnRsHn5ov+nvHfXeyC/Ddab5/5NjyvPosG7dwNJ1KY2Hx
-         EIDbOq7GsqyPQYWaK8PizWg0P05EWo9C0RoVfc4wZBmaT9MoEIOxnRoL7yXsa6FiT2HA
-         tGOJQFrX9ikxyA4RttnU+kRfD390/GDmjLME1U6lOqFZMKiqJQGTfrCcQzact6AzKIE1
-         sDag==
+        bh=8DVdUR7buxaSZgsNyBuJ3Vi9ZupYqJqGpn1NqWbOy7E=;
+        b=EBBKGXDEwRVLNOYtbNJ6KBtRvr+7/cZZI6zNogXKLk+Av8LAXQcX1vdCEx79mNZmkU
+         x3WEWGXHd5DJoPmWSjqbaqvsBU8sdZjjCS6QOKCijYP6VvzNKt9Z70nKcUszciW0iYiD
+         U0eSdL4d9OE/DQMeRO0tjsEhwVrFWc046fCV3msy2G1gX6qCWG01qN27SqdfNT2I5ts7
+         Pvq1iDOvf+yRDwQEpMvS7AwRVuUMfDxUdlV/q0HnLZDFjoHZmU7bmvNzZoqnHCs9GRJD
+         1RTCz+2RmEidCWku41bWmKlHvAV+YHmW86qqpt9jniuUw3BuO8IvX4kIngwcEKIT80v3
+         x7Xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705088573; x=1705693373;
+        d=1e100.net; s=20230601; t=1705090420; x=1705695220;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7jBwE7Jt9seeB7l4z11oYjZwnUcDEcCEvTkM2Ir2NMI=;
-        b=MBhUsUNGnavGiIgozr5LI4mB+JIspr/+VNG8eNFBlgPHlKtvDrT29x1KaIXX1xfLVD
-         wc5itRzhoK/qAs528DisvN2VH5KrjNLiuDVqFF51jcs2zh/QnMpIlGvt0x4B4qSTcvYn
-         tyePqaAbL8LOm9M2zqmbIzKWa+ZiPpcxUspMEvQozwWSiorwjxwSJ0OVMTpIMWLal40Q
-         yRsoB2EIi7nAls43ARp/ZyQ/uCmXWOVbcNAwl24pW4O2op6hFOrkV+Nc3viyQIJCjsn5
-         /y20Frat0bI7ELvSL1nTw4ka5yXE/0HuUWwrqB1OHGiSnDtl3kQME3TWkz3VYX7XoELZ
-         RAHg==
-X-Gm-Message-State: AOJu0Yxrte08CKMdrIYyFfKzAYU7lEdk011JSENRzIFOKGl6eOfAYp6a
-	fffuPjQQVu7/zMYe+u9IcyjHERWCQKmLG+LRsWQ=
-X-Google-Smtp-Source: AGHT+IHfCfBeIKefE1pIXMRHJc5enwSKf3AqqH1Q2r68AUAgrpkc5+s5bMgmxMzoF9BtYalbpQtcdFcbOtmlcSPYcNU=
-X-Received: by 2002:a5e:dd09:0:b0:7be:f53e:4dbc with SMTP id
- t9-20020a5edd09000000b007bef53e4dbcmr2169399iop.28.1705088573558; Fri, 12 Jan
- 2024 11:42:53 -0800 (PST)
+        bh=8DVdUR7buxaSZgsNyBuJ3Vi9ZupYqJqGpn1NqWbOy7E=;
+        b=hK6iaoDIl7zBWJea05ay14VrZvujqnXlJMmaELutHX2SlrzWuTQTM5Gh6y55WCm7qK
+         Gn14Fbda93YptSsnFXB1ZTL5aY3Dl+oosqHsM6Efohr+opsOSfKBU+z2WIl4k6Aymv3C
+         PdvqqYtijEbiNXxW6rxkyqWu9G6DfXOrCMfbkaQYY07wv71ySMRJ4bsa5D6/nVgzh9cz
+         GuntKpuwbbpMfFJxLGPwZYv6/qOqY6arWjT0rtX+hXR6j/ag/XxqbIlQfIC/fO6YUW8t
+         fhk1r7gLoFzLRgGpxDg3mhoAHSPyEOaaj1zVthK8zCyencLywdNDjF+diUp5Bc8beqJ8
+         gVQg==
+X-Gm-Message-State: AOJu0YzE7AXsuQHw9rdWhH2MBNr3Fo/rFkUuq+kpfw6E4ipetgzx/4l2
+	HP0qLLXjS3/3SxmxMkIgO13YU6IK5oebV5L0ZAxCW12mLhs=
+X-Google-Smtp-Source: AGHT+IGtNExBQDITOeAzpzI8w4wiEssGRxsB//UqmPRz3KcbPpLnhwKnSz7qACcQ4d6yB+nGNV/rrbvuMXfFRhBcNsI=
+X-Received: by 2002:a5e:8815:0:b0:7bf:27ff:dadb with SMTP id
+ l21-20020a5e8815000000b007bf27ffdadbmr1338144ioj.2.1705090420103; Fri, 12 Jan
+ 2024 12:13:40 -0800 (PST)
 MIME-Version: 1.0
 References: <20240112193103.3798287-1-yosryahmed@google.com>
 In-Reply-To: <20240112193103.3798287-1-yosryahmed@google.com>
 From: Nhat Pham <nphamcs@gmail.com>
-Date: Fri, 12 Jan 2024 11:42:42 -0800
-Message-ID: <CAKEwX=PXfZssERxeMS3FpMP7H0psMzC72C2ga3fqr_Qh88M75A@mail.gmail.com>
+Date: Fri, 12 Jan 2024 12:13:29 -0800
+Message-ID: <CAKEwX=NPMcrg6tGFJ=avYXeYvu3yxBKkcxNQp1TBEYctcPXzmg@mail.gmail.com>
 Subject: Re: [RFC PATCH] mm: z3fold: rename CONFIG_Z3FOLD to CONFIG_Z3FOLD_DEPRECATED
 To: Yosry Ahmed <yosryahmed@google.com>
 Content-Type: text/plain; charset="UTF-8"
@@ -86,12 +86,6 @@ On Fri, Jan 12, 2024 at 11:31=E2=80=AFAM Yosry Ahmed <yosryahmed@google.com=
 > zsmalloc. The only disadvantage of zsmalloc in comparison is the
 > dependency on MMU, and zbud is a more common option for !MMU as it was
 > the default zswap allocator for a long time.
-
-Johannes and I were chatting about this the other day. We might be
-able to disable certain zsmalloc behavior in the case of !MMU, making
-it available there too. Once that's happened, we can outright remove
-z3fold and zbud, and have one allocator to rule them all? :)
-
 >
 > In hopes of having a single compressed pages allocator at some point,
 > and following in the footsteps of SLAB, deprecate z3fold. Rename the
@@ -182,3 +176,6 @@ al
 > --
 > 2.43.0.275.g3460e3d667-goog
 >
+
+FWIW:
+Acked-by: Nhat Pham <nphamcs@gmail.com>
