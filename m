@@ -2,70 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 198B082B83A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jan 2024 00:48:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2994082B871
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jan 2024 01:07:20 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YEdBtaAD;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QZ2/ZoXc;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TB1Zv46Jjz3cgN
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jan 2024 10:48:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TB20P4fWkz3cfg
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jan 2024 11:07:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YEdBtaAD;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QZ2/ZoXc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=oohall@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TB1Yz4hVqz2xdR
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jan 2024 10:47:51 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id E0CDCCE1BAC;
-	Thu, 11 Jan 2024 23:47:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B6113C433F1;
-	Thu, 11 Jan 2024 23:47:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705016866;
-	bh=bt+QWO+BoyLrTgdPkH5ffD1b3CetCyHlTE9OT4h2Nqc=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=YEdBtaADUJYv3l2s/GpoCVgW6JEWZCq5/YooIXKpWp+CvCzlwIyzjcFNcFZI7K6zU
-	 2AkN7RVa912J2WwPNzelB+fLx8bg3GmSn/WAQm1GrZNH0cSA9xhPeEgvN7xtg1POfA
-	 Z7oYxYpGTKKhdxgA6WUsomUZBtL4GSv+4q1sMH2wKvtqsgxxTl+YbKWN/yqlrVvqKJ
-	 PzEdbwICAAAmL+rmrhQ236xQL9Txff84KLXr862BVR1wnnq6UX/wtIoFZCLUdJHNLp
-	 kuJqNfWOf9VX2tANMnqfS5JGdHpLMqcVSYZXGD1mT+gVlU86H5OAv+90FkXsG7yvpA
-	 1PCQRRvxJZ0vw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 91A94C4707B;
-	Thu, 11 Jan 2024 23:47:46 +0000 (UTC)
-From: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
-Date: Thu, 11 Jan 2024 17:47:32 -0600
-Subject: [PATCH RFC] powerpc/pseries: exploit H_PAGE_SET_UNUSED for
- partition migration
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TB1zW4gMkz30hY
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jan 2024 11:06:30 +1100 (AEDT)
+Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1d542701796so32951245ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jan 2024 16:06:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705017987; x=1705622787; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JKLPhbioWpfH1srd0q/IxvLCNQNb8nO9MyFbNf4pRe0=;
+        b=QZ2/ZoXchdnQ+gi43iAhcwlIJG2dwp9woG8CnpgfKqPM1FUHdJYzYmySKI6H1wbj6E
+         4HSta3DrZv1QK3ptRtGu+RhEspEhi1OcQ+uJjUeidfeHi4S0RNGDBw/SVJC7xtBD7MW2
+         dRA8x5Ws5vEc2/ZHzguRY8R9niNn0YSZIp+M6gPYCC4gB44/W+c8QNZ5s8JnWplAcEjW
+         /vHn9jhzdLYScwWDEeVFO27r7MEfnw28/RV6WTidYfrvK8v8saJTBXeQsGdN8ClNGBKF
+         6sUmqvC7OrbTjqBBFG/CT4sUaYgZfB2OsAqhvnINJMiyqwxndWjBj5oQ9McFXmh5NPCV
+         AZcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705017987; x=1705622787;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JKLPhbioWpfH1srd0q/IxvLCNQNb8nO9MyFbNf4pRe0=;
+        b=FkZ+raCd3q5htQRNvIr75GfolBdnRxAwgnakxr62P0g9OFJb2mYIFw2bdOv9N9TwlH
+         E9vAHvlluAvLzf03ww97J8x3s+ViXpuhq2tZXDR0j9lhP+uugN2Vfc4mIXgGG8sSQwqe
+         jW9hDAasVIGHRxxbWc6Z/R5qj873HdfI+zhzJzCfmGIcQHmndpjCVu+lV9k73byK653V
+         hyj8ufM1EDYvnwZzhGPZFHA11gLXqKAgpZyBzXTyGhbrdtAN8ydO8ISl+Yw0dpKWIN45
+         msXDeU5b2YjppADQlIOJMUt4X3fKo1Sw+rep4YC0tPZHrdr9nnZ+wSx8GNvajwgVhLWt
+         bU4A==
+X-Gm-Message-State: AOJu0YzbmsHWmWsNXNXihipaeXENsIG7j/EkMhjOUrUWYSkl1+SJ40Bn
+	+le0x9F/Kcp+K0+ljXITVgT0t5spRMri1yTs8BwcPXdsTWDo3w==
+X-Google-Smtp-Source: AGHT+IFbuLp6sm4bRgDDYFo7YqbafV2kTHANQ2/PIacmGMzOtgNkFdKGc2JOO7JvYBwf1FIXKoqFLeKFFqmQz/XZksY=
+X-Received: by 2002:a17:902:bd87:b0:1d4:2473:e833 with SMTP id
+ q7-20020a170902bd8700b001d42473e833mr94782pls.69.1705017987206; Thu, 11 Jan
+ 2024 16:06:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id:  <20240111-h_page_set_unused-for-lpm-v1-1-cd56184ad608@linux.ibm.com>
-X-B4-Tracking: v=1; b=H4sIABN+oGUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDQ0ND3Yz4gsT01Pji1JL40rzS4tQU3bT8It2cglzdFEsDI/NkM3OjtFQ
- LJaD+gqLUtMwKsNnRSkFuzkqxtbUAEWfkUHAAAAA=
-To: Michael Ellerman <mpe@ellerman.id.au>, 
- Nicholas Piggin <npiggin@gmail.com>, 
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, 
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, 
- Brian King <brking@linux.ibm.com>
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1705016866; l=3110;
- i=nathanl@linux.ibm.com; s=20230817; h=from:subject:message-id;
- bh=QCi+aYIXD+KJwHE/NMLCXj3RgfCu6hT6HPoTPMEKTQE=;
- b=ugyi1ajuyIEOgMBZepRH2Zmbq/HsnGw8iKFxVOLzqV7gXBzP5wWbYUoPQOi7JQCvAyLeAOYHR
- AJVUYmJL3z3AStEOIn11pdccvX/eUsdw119WUzr9imQxQTBXGDalPYO
-X-Developer-Key: i=nathanl@linux.ibm.com; a=ed25519;
- pk=jPDF44RvT+9DGFOH3NGoIu1xN9dF+82pjdpnKjXfoJ0=
-X-Endpoint-Received:  by B4 Relay for nathanl@linux.ibm.com/20230817 with auth_id=78
-X-Original-From: Nathan Lynch <nathanl@linux.ibm.com>
+References: <674182417.2124034.1703736924982.JavaMail.zimbra@raptorengineeringinc.com>
+In-Reply-To: <674182417.2124034.1703736924982.JavaMail.zimbra@raptorengineeringinc.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Fri, 12 Jan 2024 11:06:15 +1100
+Message-ID: <CAOSf1CFTM4A2akwBZUSv9Ys0UUWqxwoQ9xeAdvs13G5izM=L4w@mail.gmail.com>
+Subject: Re: PowerNV PCIe hotplug support?
+To: Timothy Pearson <tpearson@raptorengineering.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,101 +75,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: nathanl@linux.ibm.com
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+On Thu, Dec 28, 2023 at 3:16=E2=80=AFPM Timothy Pearson
+<tpearson@raptorengineering.com> wrote:
+>
+> I've been evaluating some new options for our POWER9-based hardware in th=
+e NVMe space, and would like some clarification on the current status of PC=
+Ie hotplug for the PowerNV platforms.
+>
+> From what I understand, the pnv_php driver provides the basic hotplug fun=
+ctionality on PowerNV.  What I'm not clear on is to what extent this is int=
+ended to flow downstream to attached PCIe switches.
 
-Although the H_PAGE_INIT hcall's H_PAGE_SET_UNUSED historically has
-been tied to the cooperative memory overcommit (CMO) platform feature,
-the flag also is treated by the PowerVM hypervisor as a hint that the
-page contents need not be copied to the destination during a live
-partition migration.
+I did a bunch of work on NVMe hotplug back in the day and it worked
+fine then. Most of that work was done with Gen3 PLX switches though
+which are considerably dumber than the newer ones though.
 
-Use the "ibm,migratable-partition" root node property to determine
-whether this partition/guest can be migrated. Mark freed pages unused
-if so (or if CMO is in use, as before).
+> I have a test setup here that consists of a PMC 8533 switch and several d=
+ownstream NVMe drives, with the switch attached directly to the PHB4 root p=
+ort.  After loading the pnv_php module, I can disconnect the downstream NVM=
+e devices by either using echo 0 on /sys/bus/pcu/slots/Snnnnnnn/power, or b=
+y doing a physical surprise unplug, however nothing I try can induce a newl=
+y plugged device to train and be detected on the bus.  Even trying a echo 0=
+ and subsequent echo 1 to /sys/bus/pcu/slots/Snnnnnnn/power only results in=
+ the device going offline, there seems to be no way to bring the device bac=
+k online short of a reboot.
+>
+> Hotplug of other devices connected directly to the PHB4 appears to work p=
+roperly (I can online and offline via the power node); the issue seems to b=
+e restricted to downstream devices connected to the (theoretically hotplug =
+capable) PMC 8533 switch.
 
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
----
-Several things yet to improve here:
+I'd suspect either the PCIe interrupt is not being delivered for some
+reason (EEH might be isolating the PCIe switch port?) or the removal
+is triggering downstream port containment on the switch. Check the
+port capability status with lspci. IIRC pnv_php doesn't know anything
+about DPC so you might need to have skiboot disable that by default to
+keep the kernel happy.
 
-* powerpc's arch_free_page()/HAVE_ARCH_FREE_PAGE should be decoupled
-  from CONFIG_PPC_SMLPAR.
+> Is this the intended behavior for downstream (non-IBM) PCIe ports?  Rapto=
+r can provide resources to assist in a fix if needed, but I would like to u=
+nderstand if this is a bug or an unimplemented feature first, and if the la=
+tter what the main issues are likely to be in implementation.
 
-* powerpc's arch_free_page() could be made to use a static key if
-  justified.
-
-* I have not yet measured the overhead this introduces, nor have I
-  measured the benefit to a live migration.
-
-To date, I have smoke tested it by doing a live migration and
-performing a build on a kernel with the change, to ensure it doesn't
-introduce obvious memory corruption or anything. It hasn't blown up
-yet :-)
-
-This will be a possibly significant behavior change in that we will be
-flagging pages unused where we typically did not before. Until now,
-having CMO enabled was the only way to do this, and I don't think that
-feature is used all that much?
-
-Posting this as RFC to see if there are any major concerns.
----
- arch/powerpc/platforms/pseries/lpar.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
-
-diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-index 4561667832ed..b264371d8e12 100644
---- a/arch/powerpc/platforms/pseries/lpar.c
-+++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -16,6 +16,7 @@
- #include <linux/export.h>
- #include <linux/jump_label.h>
- #include <linux/delay.h>
-+#include <linux/of.h>
- #include <linux/stop_machine.h>
- #include <linux/spinlock.h>
- #include <linux/cpuhotplug.h>
-@@ -1772,17 +1773,25 @@ static void pSeries_set_page_state(struct page *page, int order,
- 	}
- }
- 
-+static bool migratable_partition;
-+
- void arch_free_page(struct page *page, int order)
- {
--	if (radix_enabled())
--		return;
--	if (!cmo_free_hint_flag || !firmware_has_feature(FW_FEATURE_CMO))
--		return;
--
--	pSeries_set_page_state(page, order, H_PAGE_SET_UNUSED);
-+	if (migratable_partition ||
-+	    (firmware_has_feature(FW_FEATURE_CMO) && cmo_free_hint_flag))
-+		pSeries_set_page_state(page, order, H_PAGE_SET_UNUSED);
- }
- EXPORT_SYMBOL(arch_free_page);
- 
-+static int __init check_migratable_partition(void)
-+{
-+	struct device_node *root = of_find_node_by_path("/");
-+	migratable_partition = !!of_find_property(root, "ibm,migratable-partition", NULL);
-+	of_node_put(root);
-+	return 0;
-+}
-+machine_device_initcall(pseries, check_migratable_partition);
-+
- #endif /* CONFIG_PPC_SMLPAR */
- #endif /* CONFIG_PPC_BOOK3S_64 */
- 
-
----
-base-commit: 44a1aad2fe6c10bfe0589d8047057b10a4c18a19
-change-id: 20240111-h_page_set_unused-for-lpm-d9027c672fe8
-
-Best regards,
--- 
-Nathan Lynch <nathanl@linux.ibm.com>
-
+It *should* work and the WARN()/BUG() spew you're seeing are bugs that
+just need fixing. That said, hotplug on PNV is a headache for a bunch
+of reasons most of which are due to EEH. Something I was working
+towards before I left IBM was refactoring how EEH worked internally so
+we could eliminate the need for pnv_php and go back to using the
+standard pcieport driver. Unfortunately, that's a big job and I can't
+even remember how much of that work actually made it upstream.
