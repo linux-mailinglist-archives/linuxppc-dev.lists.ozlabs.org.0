@@ -2,68 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1C0582C239
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jan 2024 15:53:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1547682C572
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jan 2024 19:31:32 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jHicdR7y;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=f1Kys5h3;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TBPfv45F2z3c0n
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jan 2024 01:53:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TBVVV0FVvz3cR1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jan 2024 05:31:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jHicdR7y;
+	dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=f1Kys5h3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::29; helo=mail-oa1-x29.google.com; envelope-from=alexdeucher@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oa1-x29.google.com (mail-oa1-x29.google.com [IPv6:2001:4860:4864:20::29])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::22f; helo=mail-oi1-x22f.google.com; envelope-from=palmer@dabbelt.com; receiver=lists.ozlabs.org)
+Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TBPf06yytz30P0
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jan 2024 01:52:39 +1100 (AEDT)
-Received: by mail-oa1-x29.google.com with SMTP id 586e51a60fabf-204301f2934so4093871fac.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jan 2024 06:52:39 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TBVTd021Vz3bXk
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jan 2024 05:30:43 +1100 (AEDT)
+Received: by mail-oi1-x22f.google.com with SMTP id 5614622812f47-3bc09844f29so5502618b6e.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jan 2024 10:30:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705071150; x=1705675950; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZO45YkzCWML/dfVASjM1WgREcSCHVv4YlKgRi2In5SM=;
-        b=jHicdR7y2P7/VE/Wb1WtHvrY0NmmoJWhWD9gD3hNr9UNMRZN2LSubbKDhV/W/K7I02
-         7iKm7pelBLZZ3jQJD4vdzV5Pkz5exs/CL5q7JrjhjGoJNRbI0xsASAfYW4q3J1zgHk3e
-         rggmSF1LZ43HLO+lUPgQ3awZ9T8GAEjIj3iUDhxb3GDU3DsvDzx350eNzdVkWr3VVkXY
-         26PYai2H5fVGZo3bGvLCr3sVKGHyvul5d1At4JeilycnchZdFb7AkStH/i4DrEmletHl
-         oiVGRjex8lb6PQgn4V5f6D1nvCXP4RVi9OjbJv9CnjEWJCGeY4OYP5JcyOOz4cRaLR1U
-         r7PA==
+        d=dabbelt-com.20230601.gappssmtp.com; s=20230601; t=1705084238; x=1705689038; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1y9RFKMR0FSPqYNNO9hPu+QHh0esMWSorBv6pzr/qFM=;
+        b=f1Kys5h3NSe999slSUcGyd108WAPFJnbriruOLQu9wDdT6shBP26JsAOh2wXOoHdLK
+         wYQoWtUIPqj+3Q+W70lwuJH+rLPXJW/6s7XGdmOE1er13VMdB6zgEJcSNs7d+jnIZwz/
+         4h9GCZd/PRNgZUKlKUiv73le9u0q4RlSQMChso8bo+0RgB0pKGHiyv1/QIiyewtFbGJN
+         0o8/f6foRH/Rrpan21pMmPG3sN7yFnqg8w2v9hL6RavhpJGv4IX3T+cgsMoxp6qbWw7V
+         1Gwpvli+4r+OA35+CSvqXsu4xIr8TfROw/cClGaYC3oq0UidwDxUPAYC2grKCE/VuEGs
+         Y3lQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705071150; x=1705675950;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZO45YkzCWML/dfVASjM1WgREcSCHVv4YlKgRi2In5SM=;
-        b=Gz9MazJZ8qVOvC/O5rn4uKf5eQOQ5XXY9iEdM0WVh7rGcWe+sRV4Q33XYYDUUnIKJ1
-         JcX+6JlP0/m19ur42SMEVtzp28aJypqS9twxCWQ17brX904sSZi2hV4Aixef4qX3GDeb
-         wofR3haKUpyzJ/8j6yP0DKylHd+wL+gj5Q96ZWEyAHOW+znrPP0nsvuHNFXtcrfkAiMh
-         wlGWafRH0VUzREBC8J6QVk2bwVcumhKMHfCfUvRs6kLlKvIRkYLlnwBxPFT0ucmkkW51
-         GmeIeCehYHPCpKJ+CrDErsNEE5bA2LvSlclHSM5W4yXewVoG9jirj7v/7CNd2wX+cwuF
-         3vpg==
-X-Gm-Message-State: AOJu0YzOQz43IFPCRrTBAd/OoEEtwbpXY70a4YX3QJp4Jnbz71wjNlNA
-	P0FcnlUswWwKm1zTS1GgmpfmuILnJ6gZpQMnjmY=
-X-Google-Smtp-Source: AGHT+IF3L5IPA3aINLKE1Gh2ONL1jl1iO/jiOLm/9Zoi+Tx7cZA3qsT/gQ+IN9bZafCkSYUcodRd62GQ0tiAxg2qKZk=
-X-Received: by 2002:a05:6871:452:b0:206:8691:cc78 with SMTP id
- e18-20020a056871045200b002068691cc78mr1680164oag.34.1705071149757; Fri, 12
- Jan 2024 06:52:29 -0800 (PST)
-MIME-Version: 1.0
-References: <20240109-update-llvm-links-v1-0-eb09b59db071@kernel.org>
-In-Reply-To: <20240109-update-llvm-links-v1-0-eb09b59db071@kernel.org>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Fri, 12 Jan 2024 09:52:17 -0500
-Message-ID: <CADnq5_MVDDR-EvgSEhiw_qPkUDPnV25tjUN0SNYq45Q29BN4EQ@mail.gmail.com>
-Subject: Re: [PATCH 0/3] Update LLVM Phabricator and Bugzilla links
-To: Nathan Chancellor <nathan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        d=1e100.net; s=20230601; t=1705084238; x=1705689038;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1y9RFKMR0FSPqYNNO9hPu+QHh0esMWSorBv6pzr/qFM=;
+        b=P81LMoTEJvJelJ+YCsErjEb8s4TJv4pvJZ2nDTTkhCKZE2tfvnAfGTvUu2CHgadSkx
+         B4CMPMJTYwdkjgisYVLUR6afdr43hPInPKj86EWx+aoMUQm0NbIjS6WHDgnia90PaMyL
+         SzzOF4AW0znMgDaYZ0GExVSmPWy4+qdV5S4kjOeSDNM1NekT69LNTUXVe3aRWvCN7QX9
+         dzOCA1E0K9SowivJiPqS5mvIHe0CPWvnrUCjek7tm0Uh7Ie2D8x9qxZGY7U47OZM3IcO
+         MWdJZM0a0OMtpHG+PKa0ad8J+jkh3jhpSNdJK1tn7gJLOU5Govxf5PI2FE4NU7zVRySO
+         u4lw==
+X-Gm-Message-State: AOJu0YzXaSVWIDJ1hm1YbITpoEYfYRiQepuNIZpkup0LfLPBDjrjxfwW
+	pGONp+sLx/zUNM7sIAueEOX4j9gumTCt2w==
+X-Google-Smtp-Source: AGHT+IF1BUZm9MFACP928AtwGap6NZre7MHtBSqet5vC3dqPxL0czPLn7Q0DKWE2Rm3d/VpIQYiTIg==
+X-Received: by 2002:a05:6808:3a14:b0:3bd:5f84:b599 with SMTP id gr20-20020a0568083a1400b003bd5f84b599mr2083047oib.109.1705084238187;
+        Fri, 12 Jan 2024 10:30:38 -0800 (PST)
+Received: from localhost ([192.184.165.199])
+        by smtp.gmail.com with ESMTPSA id n17-20020a0568080a1100b003bc144dc4f5sm669050oij.1.2024.01.12.10.30.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Jan 2024 10:30:37 -0800 (PST)
+Date: Fri, 12 Jan 2024 10:30:37 -0800 (PST)
+X-Google-Original-Date: Fri, 12 Jan 2024 10:30:23 PST (-0800)
+Subject: Re: [PATCH v5 0/5] RISC-V SBI debug console extension support
+In-Reply-To: <170498463783.20080.10723421328706946354.git-patchwork-notify@kernel.org>
+From: Palmer Dabbelt <palmer@dabbelt.com>
+To: apatel@ventanamicro.com, Greg KH <gregkh@linuxfoundation.org>, nathan@kernel.org
+Message-ID: <mhng-2a34d0e2-170f-47a5-a688-ab454a70f06b@palmer-ri-x1c9>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,65 +78,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-efi@vger.kernel.org, kvm@vger.kernel.org, llvm@lists.linux.dev, ast@kernel.org, dri-devel@lists.freedesktop.org, patches@lists.linux.dev, linux-mm@kvack.org, kasan-dev@googlegroups.com, linux-kselftest@vger.kernel.org, linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, mykolal@fb.com, daniel@iogearbox.net, andrii@kernel.org, amd-gfx@lists.freedesktop.org, linux-media@vger.kernel.org, linux-pm@vger.kernel.org, bridge@lists.linux.dev, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, linux-crypto@vger.kernel.org, akpm@linux-foundation.org, linux-trace-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Conor Dooley <conor@kernel.org>, linux-serial@vger.kernel.org, Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org, jirislaby@kernel.org, ajones@ventanamicro.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jan 9, 2024 at 5:26=E2=80=AFPM Nathan Chancellor <nathan@kernel.org=
-> wrote:
+On Thu, 11 Jan 2024 06:50:37 PST (-0800), patchwork-bot+linux-riscv@kernel.org wrote:
+> Hello:
 >
-> This series updates all instances of LLVM Phabricator and Bugzilla links
-> to point to GitHub commits directly and LLVM's Bugzilla to GitHub issue
-> shortlinks respectively.
+> This series was applied to riscv/linux.git (for-next)
+> by Palmer Dabbelt <palmer@rivosinc.com>:
 >
-> I split up the Phabricator patch into BPF selftests and the rest of the
-> kernel in case the BPF folks want to take it separately from the rest of
-> the series, there are obviously no dependency issues in that case. The
-> Bugzilla change was mechanical enough and should have no conflicts.
+> On Fri, 24 Nov 2023 12:39:00 +0530 you wrote:
+>> The SBI v2.0 specification is now frozen. The SBI v2.0 specification defines
+>> SBI debug console (DBCN) extension which replaces the legacy SBI v0.1
+>> functions sbi_console_putchar() and sbi_console_getchar().
+>> (Refer v2.0-rc5 at https://github.com/riscv-non-isa/riscv-sbi-doc/releases)
+>>
+>> This series adds support for SBI debug console (DBCN) extension in
+>> Linux RISC-V.
+>>
+>> [...]
 >
-> I am aiming this at Andrew and CC'ing other lists, in case maintainers
-> want to chime in, but I think this is pretty uncontroversial (famous
-> last words...).
+> Here is the summary with links:
+>   - [v5,1/5] RISC-V: Add stubs for sbi_console_putchar/getchar()
+>     https://git.kernel.org/riscv/c/f503b167b660
+>   - [v5,2/5] RISC-V: Add SBI debug console helper routines
+>     https://git.kernel.org/riscv/c/f43fabf444ca
+>   - [v5,3/5] tty/serial: Add RISC-V SBI debug console based earlycon
+>     https://git.kernel.org/riscv/c/c77bf3607a0f
+>   - [v5,4/5] tty: Add SBI debug console support to HVC SBI driver
+>     https://git.kernel.org/riscv/c/88ead68e764c
+>   - [v5,5/5] RISC-V: Enable SBI based earlycon support
+>     https://git.kernel.org/riscv/c/50942ad6ddb5
 >
+> You are awesome, thank you!
 
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Nathan points out that this has some semantic conflicts with a patch in 
+Greg's TTY tree: https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git/commit/?id=f32fcbedbe9290565e4eac3fd7c4c451d5478787
 
-> ---
-> Nathan Chancellor (3):
->       selftests/bpf: Update LLVM Phabricator links
->       arch and include: Update LLVM Phabricator links
->       treewide: Update LLVM Bugzilla links
->
->  arch/arm64/Kconfig                                 |  4 +--
->  arch/powerpc/Makefile                              |  4 +--
->  arch/powerpc/kvm/book3s_hv_nested.c                |  2 +-
->  arch/riscv/Kconfig                                 |  2 +-
->  arch/riscv/include/asm/ftrace.h                    |  2 +-
->  arch/s390/include/asm/ftrace.h                     |  2 +-
->  arch/x86/power/Makefile                            |  2 +-
->  crypto/blake2b_generic.c                           |  2 +-
->  drivers/firmware/efi/libstub/Makefile              |  2 +-
->  drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c           |  2 +-
->  drivers/media/test-drivers/vicodec/codec-fwht.c    |  2 +-
->  drivers/regulator/Kconfig                          |  2 +-
->  include/asm-generic/vmlinux.lds.h                  |  2 +-
->  include/linux/compiler-clang.h                     |  2 +-
->  lib/Kconfig.kasan                                  |  2 +-
->  lib/raid6/Makefile                                 |  2 +-
->  lib/stackinit_kunit.c                              |  2 +-
->  mm/slab_common.c                                   |  2 +-
->  net/bridge/br_multicast.c                          |  2 +-
->  security/Kconfig                                   |  2 +-
->  tools/testing/selftests/bpf/README.rst             | 32 +++++++++++-----=
-------
->  tools/testing/selftests/bpf/prog_tests/xdpwall.c   |  2 +-
->  .../selftests/bpf/progs/test_core_reloc_type_id.c  |  2 +-
->  23 files changed, 40 insertions(+), 40 deletions(-)
-> ---
-> base-commit: 0dd3ee31125508cd67f7e7172247f05b7fd1753a
-> change-id: 20240109-update-llvm-links-d03f9d649e1e
->
-> Best regards,
-> --
-> Nathan Chancellor <nathan@kernel.org>
->
+So I think the best bet is to wait on Greg's patch to land in Linus' 
+tree, and then base a v6 of this patch set on that merged patch.  I'm 
+going to drop this one from for-next.
