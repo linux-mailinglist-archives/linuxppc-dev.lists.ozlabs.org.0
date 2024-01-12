@@ -1,72 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1547682C572
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jan 2024 19:31:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0BF882C5FC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jan 2024 20:43:45 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=f1Kys5h3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=d39F6l+K;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TBVVV0FVvz3cR1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jan 2024 05:31:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TBX5q5bZRz3bqV
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jan 2024 06:43:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=f1Kys5h3;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=d39F6l+K;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::22f; helo=mail-oi1-x22f.google.com; envelope-from=palmer@dabbelt.com; receiver=lists.ozlabs.org)
-Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d30; helo=mail-io1-xd30.google.com; envelope-from=nphamcs@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TBVTd021Vz3bXk
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jan 2024 05:30:43 +1100 (AEDT)
-Received: by mail-oi1-x22f.google.com with SMTP id 5614622812f47-3bc09844f29so5502618b6e.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jan 2024 10:30:43 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TBX4y2nCfz3bbt
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jan 2024 06:42:56 +1100 (AEDT)
+Received: by mail-io1-xd30.google.com with SMTP id ca18e2360f4ac-7baa8da5692so301283639f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jan 2024 11:42:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20230601.gappssmtp.com; s=20230601; t=1705084238; x=1705689038; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1y9RFKMR0FSPqYNNO9hPu+QHh0esMWSorBv6pzr/qFM=;
-        b=f1Kys5h3NSe999slSUcGyd108WAPFJnbriruOLQu9wDdT6shBP26JsAOh2wXOoHdLK
-         wYQoWtUIPqj+3Q+W70lwuJH+rLPXJW/6s7XGdmOE1er13VMdB6zgEJcSNs7d+jnIZwz/
-         4h9GCZd/PRNgZUKlKUiv73le9u0q4RlSQMChso8bo+0RgB0pKGHiyv1/QIiyewtFbGJN
-         0o8/f6foRH/Rrpan21pMmPG3sN7yFnqg8w2v9hL6RavhpJGv4IX3T+cgsMoxp6qbWw7V
-         1Gwpvli+4r+OA35+CSvqXsu4xIr8TfROw/cClGaYC3oq0UidwDxUPAYC2grKCE/VuEGs
-         Y3lQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705084238; x=1705689038;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1705088573; x=1705693373; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1y9RFKMR0FSPqYNNO9hPu+QHh0esMWSorBv6pzr/qFM=;
-        b=P81LMoTEJvJelJ+YCsErjEb8s4TJv4pvJZ2nDTTkhCKZE2tfvnAfGTvUu2CHgadSkx
-         B4CMPMJTYwdkjgisYVLUR6afdr43hPInPKj86EWx+aoMUQm0NbIjS6WHDgnia90PaMyL
-         SzzOF4AW0znMgDaYZ0GExVSmPWy4+qdV5S4kjOeSDNM1NekT69LNTUXVe3aRWvCN7QX9
-         dzOCA1E0K9SowivJiPqS5mvIHe0CPWvnrUCjek7tm0Uh7Ie2D8x9qxZGY7U47OZM3IcO
-         MWdJZM0a0OMtpHG+PKa0ad8J+jkh3jhpSNdJK1tn7gJLOU5Govxf5PI2FE4NU7zVRySO
-         u4lw==
-X-Gm-Message-State: AOJu0YzXaSVWIDJ1hm1YbITpoEYfYRiQepuNIZpkup0LfLPBDjrjxfwW
-	pGONp+sLx/zUNM7sIAueEOX4j9gumTCt2w==
-X-Google-Smtp-Source: AGHT+IF1BUZm9MFACP928AtwGap6NZre7MHtBSqet5vC3dqPxL0czPLn7Q0DKWE2Rm3d/VpIQYiTIg==
-X-Received: by 2002:a05:6808:3a14:b0:3bd:5f84:b599 with SMTP id gr20-20020a0568083a1400b003bd5f84b599mr2083047oib.109.1705084238187;
-        Fri, 12 Jan 2024 10:30:38 -0800 (PST)
-Received: from localhost ([192.184.165.199])
-        by smtp.gmail.com with ESMTPSA id n17-20020a0568080a1100b003bc144dc4f5sm669050oij.1.2024.01.12.10.30.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jan 2024 10:30:37 -0800 (PST)
-Date: Fri, 12 Jan 2024 10:30:37 -0800 (PST)
-X-Google-Original-Date: Fri, 12 Jan 2024 10:30:23 PST (-0800)
-Subject: Re: [PATCH v5 0/5] RISC-V SBI debug console extension support
-In-Reply-To: <170498463783.20080.10723421328706946354.git-patchwork-notify@kernel.org>
-From: Palmer Dabbelt <palmer@dabbelt.com>
-To: apatel@ventanamicro.com, Greg KH <gregkh@linuxfoundation.org>, nathan@kernel.org
-Message-ID: <mhng-2a34d0e2-170f-47a5-a688-ab454a70f06b@palmer-ri-x1c9>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+        bh=7jBwE7Jt9seeB7l4z11oYjZwnUcDEcCEvTkM2Ir2NMI=;
+        b=d39F6l+KeTnn8BUWsq6n8oyI24HxZyMqD8DJIZKJYYpUAFHhTtyHezYpXovQjdhWoA
+         DYXIMeJKErEI1rWCmxf9jofFSpn+FRj9ju1kd2Vmi/iR7XG8q81pgV8S794wtz1hzWmI
+         6pJ00wKjmMZQ5IZ89hUZ/fwvnRsHn5ov+nvHfXeyC/Ddab5/5NjyvPosG7dwNJ1KY2Hx
+         EIDbOq7GsqyPQYWaK8PizWg0P05EWo9C0RoVfc4wZBmaT9MoEIOxnRoL7yXsa6FiT2HA
+         tGOJQFrX9ikxyA4RttnU+kRfD390/GDmjLME1U6lOqFZMKiqJQGTfrCcQzact6AzKIE1
+         sDag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705088573; x=1705693373;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7jBwE7Jt9seeB7l4z11oYjZwnUcDEcCEvTkM2Ir2NMI=;
+        b=MBhUsUNGnavGiIgozr5LI4mB+JIspr/+VNG8eNFBlgPHlKtvDrT29x1KaIXX1xfLVD
+         wc5itRzhoK/qAs528DisvN2VH5KrjNLiuDVqFF51jcs2zh/QnMpIlGvt0x4B4qSTcvYn
+         tyePqaAbL8LOm9M2zqmbIzKWa+ZiPpcxUspMEvQozwWSiorwjxwSJ0OVMTpIMWLal40Q
+         yRsoB2EIi7nAls43ARp/ZyQ/uCmXWOVbcNAwl24pW4O2op6hFOrkV+Nc3viyQIJCjsn5
+         /y20Frat0bI7ELvSL1nTw4ka5yXE/0HuUWwrqB1OHGiSnDtl3kQME3TWkz3VYX7XoELZ
+         RAHg==
+X-Gm-Message-State: AOJu0Yxrte08CKMdrIYyFfKzAYU7lEdk011JSENRzIFOKGl6eOfAYp6a
+	fffuPjQQVu7/zMYe+u9IcyjHERWCQKmLG+LRsWQ=
+X-Google-Smtp-Source: AGHT+IHfCfBeIKefE1pIXMRHJc5enwSKf3AqqH1Q2r68AUAgrpkc5+s5bMgmxMzoF9BtYalbpQtcdFcbOtmlcSPYcNU=
+X-Received: by 2002:a5e:dd09:0:b0:7be:f53e:4dbc with SMTP id
+ t9-20020a5edd09000000b007bef53e4dbcmr2169399iop.28.1705088573558; Fri, 12 Jan
+ 2024 11:42:53 -0800 (PST)
+MIME-Version: 1.0
+References: <20240112193103.3798287-1-yosryahmed@google.com>
+In-Reply-To: <20240112193103.3798287-1-yosryahmed@google.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Fri, 12 Jan 2024 11:42:42 -0800
+Message-ID: <CAKEwX=PXfZssERxeMS3FpMP7H0psMzC72C2ga3fqr_Qh88M75A@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm: z3fold: rename CONFIG_Z3FOLD to CONFIG_Z3FOLD_DEPRECATED
+To: Yosry Ahmed <yosryahmed@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,44 +75,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Conor Dooley <conor@kernel.org>, linux-serial@vger.kernel.org, Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org, jirislaby@kernel.org, ajones@ventanamicro.com
+Cc: Miaohe Lin <linmiaohe@huawei.com>, Huacai Chen <chenhuacai@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, linux-mm@kvack.org, loongarch@lists.linux.dev, Johannes Weiner <hannes@cmpxchg.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, WANG Xuerui <kernel@xen0n.name>, Vitaly Wool <vitaly.wool@konsulko.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 11 Jan 2024 06:50:37 PST (-0800), patchwork-bot+linux-riscv@kernel.org wrote:
-> Hello:
+On Fri, Jan 12, 2024 at 11:31=E2=80=AFAM Yosry Ahmed <yosryahmed@google.com=
+> wrote:
 >
-> This series was applied to riscv/linux.git (for-next)
-> by Palmer Dabbelt <palmer@rivosinc.com>:
->
-> On Fri, 24 Nov 2023 12:39:00 +0530 you wrote:
->> The SBI v2.0 specification is now frozen. The SBI v2.0 specification defines
->> SBI debug console (DBCN) extension which replaces the legacy SBI v0.1
->> functions sbi_console_putchar() and sbi_console_getchar().
->> (Refer v2.0-rc5 at https://github.com/riscv-non-isa/riscv-sbi-doc/releases)
->>
->> This series adds support for SBI debug console (DBCN) extension in
->> Linux RISC-V.
->>
->> [...]
->
-> Here is the summary with links:
->   - [v5,1/5] RISC-V: Add stubs for sbi_console_putchar/getchar()
->     https://git.kernel.org/riscv/c/f503b167b660
->   - [v5,2/5] RISC-V: Add SBI debug console helper routines
->     https://git.kernel.org/riscv/c/f43fabf444ca
->   - [v5,3/5] tty/serial: Add RISC-V SBI debug console based earlycon
->     https://git.kernel.org/riscv/c/c77bf3607a0f
->   - [v5,4/5] tty: Add SBI debug console support to HVC SBI driver
->     https://git.kernel.org/riscv/c/88ead68e764c
->   - [v5,5/5] RISC-V: Enable SBI based earlycon support
->     https://git.kernel.org/riscv/c/50942ad6ddb5
->
-> You are awesome, thank you!
+> The z3fold compressed pages allocator is not widely used, most users use
+> zsmalloc. The only disadvantage of zsmalloc in comparison is the
+> dependency on MMU, and zbud is a more common option for !MMU as it was
+> the default zswap allocator for a long time.
 
-Nathan points out that this has some semantic conflicts with a patch in 
-Greg's TTY tree: https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git/commit/?id=f32fcbedbe9290565e4eac3fd7c4c451d5478787
+Johannes and I were chatting about this the other day. We might be
+able to disable certain zsmalloc behavior in the case of !MMU, making
+it available there too. Once that's happened, we can outright remove
+z3fold and zbud, and have one allocator to rule them all? :)
 
-So I think the best bet is to wait on Greg's patch to land in Linus' 
-tree, and then base a v6 of this patch set on that merged patch.  I'm 
-going to drop this one from for-next.
+>
+> In hopes of having a single compressed pages allocator at some point,
+> and following in the footsteps of SLAB, deprecate z3fold. Rename the
+> user-visible option so that users with CONFIG_Z3FOLD=3Dy get a new prompt
+> with explanation during make oldconfig. Remove CONFIG_Z3FOLD=3Dy from
+> defconfigs.
+>
+> Existing users, if any, should voice their objections. Otherwise, we can
+> remove z3fold in a few releases.
+>
+> Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
+> ---
+> I have limited understanding of Kconfigs. I modelled this after commit
+> eb07c4f39c3e ("mm/slab: rename CONFIG_SLAB to CONFIG_SLAB_DEPRECATED"),
+> but one difference is that CONFIG_Z3FOLD is a tristate. I made
+> CONFIG_Z3FOLD_DEPRECATED a boolean config, and CONFIG_Z3FOLD default y
+> so that it is on by default if CONFIG_Z3FOLD_DEPRECATED is selected. I
+> am not sure if that's the correct way to do this.
+>
+> ---
+>  arch/loongarch/configs/loongson3_defconfig |  1 -
+>  arch/powerpc/configs/ppc64_defconfig       |  1 -
+>  mm/Kconfig                                 | 13 +++++++++++--
+>  3 files changed, 11 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/loongarch/configs/loongson3_defconfig b/arch/loongarch/=
+configs/loongson3_defconfig
+> index 33795e4a5bd63..89b66b6c6a1d5 100644
+> --- a/arch/loongarch/configs/loongson3_defconfig
+> +++ b/arch/loongarch/configs/loongson3_defconfig
+> @@ -85,7 +85,6 @@ CONFIG_ZPOOL=3Dy
+>  CONFIG_ZSWAP=3Dy
+>  CONFIG_ZSWAP_COMPRESSOR_DEFAULT_ZSTD=3Dy
+>  CONFIG_ZBUD=3Dy
+> -CONFIG_Z3FOLD=3Dy
+>  CONFIG_ZSMALLOC=3Dm
+>  # CONFIG_COMPAT_BRK is not set
+>  CONFIG_MEMORY_HOTPLUG=3Dy
+> diff --git a/arch/powerpc/configs/ppc64_defconfig b/arch/powerpc/configs/=
+ppc64_defconfig
+> index 544a65fda77bc..d39284489aa26 100644
+> --- a/arch/powerpc/configs/ppc64_defconfig
+> +++ b/arch/powerpc/configs/ppc64_defconfig
+> @@ -81,7 +81,6 @@ CONFIG_MODULE_SIG_SHA512=3Dy
+>  CONFIG_PARTITION_ADVANCED=3Dy
+>  CONFIG_BINFMT_MISC=3Dm
+>  CONFIG_ZSWAP=3Dy
+> -CONFIG_Z3FOLD=3Dy
+>  CONFIG_ZSMALLOC=3Dy
+>  # CONFIG_SLAB_MERGE_DEFAULT is not set
+>  CONFIG_SLAB_FREELIST_RANDOM=3Dy
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index 1902cfe4cc4f5..bc6cc97c08349 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -193,15 +193,24 @@ config ZBUD
+>           deterministic reclaim properties that make it preferable to a h=
+igher
+>           density approach when reclaim will be used.
+>
+> -config Z3FOLD
+> -       tristate "3:1 compression allocator (z3fold)"
+> +config Z3FOLD_DEPRECATED
+> +       bool "3:1 compression allocator (z3fold) (DEPRECATED)"
+>         depends on ZSWAP
+>         help
+> +         Deprecated and scheduled for removal in a few cycles. If you ha=
+ve
+> +         a good reason for using Z3FOLD rather than ZSMALLOC or ZBUD, pl=
+ease
+> +         contact linux-mm@kvack.org and the zswap maintainers.
+> +
+>           A special purpose allocator for storing compressed pages.
+>           It is designed to store up to three compressed pages per physic=
+al
+>           page. It is a ZBUD derivative so the simplicity and determinism=
+ are
+>           still there.
+>
+> +config Z3FOLD
+> +       tristate
+> +       default y
+> +       depends on Z3FOLD_DEPRECATED
+> +
+>  config ZSMALLOC
+>         tristate
+>         prompt "N:1 compression allocator (zsmalloc)" if ZSWAP
+> --
+> 2.43.0.275.g3460e3d667-goog
+>
