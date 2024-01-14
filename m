@@ -1,70 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A3782D23C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jan 2024 23:43:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F071382D295
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jan 2024 00:15:39 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=foEpoX1N;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=3GsmFle3;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TCr0L0RBLz30XZ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jan 2024 09:43:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TCrjP6Kvfz3c2K
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jan 2024 10:15:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=foEpoX1N;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=3GsmFle3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::12f; helo=mail-il1-x12f.google.com; envelope-from=nphamcs@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-x12f.google.com (mail-il1-x12f.google.com [IPv6:2607:f8b0:4864:20::12f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::636; helo=mail-ej1-x636.google.com; envelope-from=yosryahmed@google.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TCqzM4z23z2xgw
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jan 2024 09:42:37 +1100 (AEDT)
-Received: by mail-il1-x12f.google.com with SMTP id e9e14a558f8ab-36071f2181cso29160165ab.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jan 2024 14:42:37 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TCrhZ1w5vz2xWR
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jan 2024 10:14:53 +1100 (AEDT)
+Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-a277339dcf4so904294066b.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jan 2024 15:14:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705272151; x=1705876951; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1705274088; x=1705878888; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XoLJM1YCWGjUlR9N5C5AV+mH39ndl7FYD4RDzU57JFY=;
-        b=foEpoX1NWC9iuOuYZdCziG+DkvzE53gonGRROTu9uk2NJL33zJpBcrqXfLdfdWQzXp
-         /r3sF0U1WCNdHkVDpRMBDrCrvBn8aH9cGrQUJ8TjKwVfFsZTAII0ghAxfm7yUCTz1OvQ
-         sr6zf2nSZmlIm23xoYx/f7whvbn7IkfQB/tvlBwT3EPUtE5/lerhbDM5RxOZPVgkUDB2
-         rltJhS8WDXbbGTxqdwhRqbwT2ZakDnxV8mWRDff3YY6kcOXeH4ICQqOaYg7s5Ou+fgeO
-         LVeZEWRiyxV2k+G9j9DaOvWuIub3HxfRBF2BbIYPWC0Q4JLqMKzch88x8QHo2IFUkcLL
-         7+oA==
+        bh=6k76bVz3l5qhz2PG/FN1fCGCB8QPQrnTnxXAo7lmPrQ=;
+        b=3GsmFle3trMkRF0rRf5JowTTe3adh0q7qTS/8kbwKe4vk/uU0zdO/0cyj6UrB9rFX3
+         Raj8263WMZA8rO+3XzGPo+Ae+u0RRfC4UsilTopZN6QJXBs4gxlCFUIwjMpOzoaFJirt
+         lEwAn/Tw4If9AQExUqik5KzSATi7NHzfAWawuPIb0z/8cdQYh3HP1tfnMwem7BbfQGgx
+         DBDUkZPclMTWqP+DdreRZfQQ0nf1H0Uplr9NBGNRuPDR0JidRUvHs+D2ibntKxpq6CkT
+         W2r1qHHXuej8b0xriIXE9YPIgquoL+YL6TIpHxEhrIPBQWj/cO7N3RvYfHC8PO0oWzeD
+         hLPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705272151; x=1705876951;
+        d=1e100.net; s=20230601; t=1705274088; x=1705878888;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XoLJM1YCWGjUlR9N5C5AV+mH39ndl7FYD4RDzU57JFY=;
-        b=Nb9GRTEK0JeQSS2HIU5Y3v+rANrhI4G19zGcUydUvpZXoqGeUEHy40cElKqr7+v4/V
-         k0mpPeNfvtoeLHP+W7ag3B/CsKUZjClb0DrtZ9nE+Z23TRaLD1Zut9BZRpPJmnpXleGo
-         9txdNtM+Hjz01R878sjs1/Z8unFoCVCrxrTiIN6R2+LtHRNsiIJrFk6XVJdtTTnBqAct
-         Z2Eje4ogFkkE+pMpRnei5ykz9+Fz43L1bsM3ygiKbRLS7t/W8HRaEEyhfIEbQQBkQ20E
-         LMMD6GTOZ0PzZjEKsJ9ciQLevvdBNBUYsLGAQVNmtcBAJ5NbmwtuPhp3F9xcGw2rY0yN
-         fGOw==
-X-Gm-Message-State: AOJu0Yy2xaa3W6FX2VbK9BB8mco2/8yipitCS4EK1TrlWhzuNM9PBd3h
-	JD1tkG46XJOMUEcWHNh0FUSjxzZ0qNNED+qbDTM=
-X-Google-Smtp-Source: AGHT+IFc4YnzZDRRq3UdDjmWjnvvkoOaNnHCSsjrca54VMY2DX6cokwWeZGlhFAWBtidREnmbk5yja+calb/V2yb6xI=
-X-Received: by 2002:a05:6e02:188a:b0:360:7244:6089 with SMTP id
- o10-20020a056e02188a00b0036072446089mr7334277ilu.43.1705272151280; Sun, 14
- Jan 2024 14:42:31 -0800 (PST)
+        bh=6k76bVz3l5qhz2PG/FN1fCGCB8QPQrnTnxXAo7lmPrQ=;
+        b=no+VnLKADEfBKcpPYzM+U6T4vl9AoA4cFxeLhNoB9vldOlKjaRidMyB5Xpnhv5A7u8
+         wlqtJ8vQlwFVNHiLGzN5pExdnUW7XbPjQp5/FBFrRF0sEI4UPcl1FXi0loPDuq5Ow/ss
+         qIq2/r/rpIUUFzsMJ8TPYvr2CxCywcUNX06LsmyU1MdQLEnM361swI7qYtIO3IICW5pL
+         pnxOwmuOeUt1YDIz20t/0swaopn7zQW5nSA+c0yAqY9UINL/SQWHIX3F+vxkToQsNG0N
+         2jaEBsThNbjicgDXr7qWPMZwmEFd6AuZZEEHFE9uR+2rz02uKYOMgBiQIKdH76NZdyvS
+         hJBQ==
+X-Gm-Message-State: AOJu0YwgncP3LIGBDmABVhLK8UU320WFC9HSicTHs855LGaJdqTfOEw+
+	B0Bs31e0isS5CFbYZFZ3amK69+7FRuxM21yUPB17Y5tOiHa5
+X-Google-Smtp-Source: AGHT+IGmzBUdoziLE2Tv88J9U2uChvlAVAX8Vas/pQSY8zMLgWkqGHOPaM3jX3KpJU3blLIwZXnH5YlhC/wo0MwjzgQ=
+X-Received: by 2002:a17:906:da8d:b0:a28:fab0:a88c with SMTP id
+ xh13-20020a170906da8d00b00a28fab0a88cmr2519935ejb.78.1705274087622; Sun, 14
+ Jan 2024 15:14:47 -0800 (PST)
 MIME-Version: 1.0
 References: <20240112193103.3798287-1-yosryahmed@google.com>
  <CAKEwX=PXfZssERxeMS3FpMP7H0psMzC72C2ga3fqr_Qh88M75A@mail.gmail.com>
  <CAJD7tkYqKve5V4eJjbZE8kPZ=-5DU1Xh6jym8OfE1twQz-vbUA@mail.gmail.com>
- <CAKEwX=P21VvVyfmAADzXe0=Mqz3Htyx9nQuiivLchcDZRumh6Q@mail.gmail.com> <CAJD7tkaW9TuMjrVn1OivyKE-E0-WVs7u_iAkAQVXxOnnzaJF1A@mail.gmail.com>
-In-Reply-To: <CAJD7tkaW9TuMjrVn1OivyKE-E0-WVs7u_iAkAQVXxOnnzaJF1A@mail.gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Sun, 14 Jan 2024 14:42:20 -0800
-Message-ID: <CAKEwX=O7nYs_syDbMO34K=tqDw8aX51mnZVj4tCLO_N6h-u_pg@mail.gmail.com>
+ <CAKEwX=P21VvVyfmAADzXe0=Mqz3Htyx9nQuiivLchcDZRumh6Q@mail.gmail.com>
+ <CAJD7tkaW9TuMjrVn1OivyKE-E0-WVs7u_iAkAQVXxOnnzaJF1A@mail.gmail.com> <CAKEwX=O7nYs_syDbMO34K=tqDw8aX51mnZVj4tCLO_N6h-u_pg@mail.gmail.com>
+In-Reply-To: <CAKEwX=O7nYs_syDbMO34K=tqDw8aX51mnZVj4tCLO_N6h-u_pg@mail.gmail.com>
+From: Yosry Ahmed <yosryahmed@google.com>
+Date: Sun, 14 Jan 2024 15:14:09 -0800
+Message-ID: <CAJD7tkZt_cX=wm9Sp7MuLBxYQ=Hvidz3p9bA1gKhHN+wVVCiOA@mail.gmail.com>
 Subject: Re: [RFC PATCH] mm: z3fold: rename CONFIG_Z3FOLD to CONFIG_Z3FOLD_DEPRECATED
-To: Yosry Ahmed <yosryahmed@google.com>
+To: Nhat Pham <nphamcs@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -82,58 +83,71 @@ Cc: Miaohe Lin <linmiaohe@huawei.com>, Sergey Senozhatsky <senozhatsky@chromium.
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Jan 14, 2024 at 10:49=E2=80=AFAM Yosry Ahmed <yosryahmed@google.com=
-> wrote:
+On Sun, Jan 14, 2024 at 2:42=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrote=
+:
 >
-> On Fri, Jan 12, 2024 at 4:38=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wro=
-te:
+> On Sun, Jan 14, 2024 at 10:49=E2=80=AFAM Yosry Ahmed <yosryahmed@google.c=
+om> wrote:
 > >
-> > On Fri, Jan 12, 2024 at 3:37=E2=80=AFPM Yosry Ahmed <yosryahmed@google.=
-com> wrote:
+> > On Fri, Jan 12, 2024 at 4:38=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> w=
+rote:
 > > >
-> > > On Fri, Jan 12, 2024 at 11:42=E2=80=AFAM Nhat Pham <nphamcs@gmail.com=
-> wrote:
+> > > On Fri, Jan 12, 2024 at 3:37=E2=80=AFPM Yosry Ahmed <yosryahmed@googl=
+e.com> wrote:
 > > > >
-> > > > On Fri, Jan 12, 2024 at 11:31=E2=80=AFAM Yosry Ahmed <yosryahmed@go=
-ogle.com> wrote:
+> > > > On Fri, Jan 12, 2024 at 11:42=E2=80=AFAM Nhat Pham <nphamcs@gmail.c=
+om> wrote:
 > > > > >
-> > > > > The z3fold compressed pages allocator is not widely used, most us=
-ers use
-> > > > > zsmalloc. The only disadvantage of zsmalloc in comparison is the
-> > > > > dependency on MMU, and zbud is a more common option for !MMU as i=
-t was
-> > > > > the default zswap allocator for a long time.
+> > > > > On Fri, Jan 12, 2024 at 11:31=E2=80=AFAM Yosry Ahmed <yosryahmed@=
+google.com> wrote:
+> > > > > >
+> > > > > > The z3fold compressed pages allocator is not widely used, most =
+users use
+> > > > > > zsmalloc. The only disadvantage of zsmalloc in comparison is th=
+e
+> > > > > > dependency on MMU, and zbud is a more common option for !MMU as=
+ it was
+> > > > > > the default zswap allocator for a long time.
+> > > > >
+> > > > > Johannes and I were chatting about this the other day. We might b=
+e
+> > > > > able to disable certain zsmalloc behavior in the case of !MMU, ma=
+king
+> > > > > it available there too. Once that's happened, we can outright rem=
+ove
+> > > > > z3fold and zbud, and have one allocator to rule them all? :)
 > > > >
-> > > > Johannes and I were chatting about this the other day. We might be
-> > > > able to disable certain zsmalloc behavior in the case of !MMU, maki=
-ng
-> > > > it available there too. Once that's happened, we can outright remov=
+> > > > (Adding Sergey and Minchan for visibility)
+> > > >
+> > > > I didn't want to bring up the zsmalloc MMU dependency in this threa=
+d
+> > > > to reduce noise, but that's also what I had in mind. Sergey and I w=
+ere
+> > > > also chatting about this the other day :)
+> > > >
+> > > > I thought deprecating z3fold is the low hanging fruit. Then, once w=
 e
-> > > > z3fold and zbud, and have one allocator to rule them all? :)
+> > > > can sort out the MMU dependency in zsmalloc, we can go after zbud a=
+s
+> > > > well.
 > > >
-> > > (Adding Sergey and Minchan for visibility)
-> > >
-> > > I didn't want to bring up the zsmalloc MMU dependency in this thread
-> > > to reduce noise, but that's also what I had in mind. Sergey and I wer=
-e
-> > > also chatting about this the other day :)
-> > >
-> > > I thought deprecating z3fold is the low hanging fruit. Then, once we
-> > > can sort out the MMU dependency in zsmalloc, we can go after zbud as
-> > > well.
+> > > Makes sense to me. Should we do the same thing to zbud? We probably
+> > > have even less of a case for it, no?
 > >
-> > Makes sense to me. Should we do the same thing to zbud? We probably
-> > have even less of a case for it, no?
+> > Do you mean declare it as deprecated now? I initially thought that
+> > would only be appropriate to do after zsmalloc has no dependency on
+> > MMU, so that we can confidently say zbud has no practical use case.
 >
-> Do you mean declare it as deprecated now? I initially thought that
-> would only be appropriate to do after zsmalloc has no dependency on
-> MMU, so that we can confidently say zbud has no practical use case.
+> Ah, I misread your email. My bad. Personally, I'd like to declare both
+> (zbud and z3fold) as deprecated. That said, no strong feelings here -
+> as long as (eventually) we move towards retiring both of them. So my
+> original ACK still holds.
+>
+> Not entirely sure which should we remove first between zbud and z3fold
+> though. I was under the assumption that z3fold is slightly better, but
+> that could be my bias for shiny new things showing :)
 
-Ah, I misread your email. My bad. Personally, I'd like to declare both
-(zbud and z3fold) as deprecated. That said, no strong feelings here -
-as long as (eventually) we move towards retiring both of them. So my
-original ACK still holds.
-
-Not entirely sure which should we remove first between zbud and z3fold
-though. I was under the assumption that z3fold is slightly better, but
-that could be my bias for shiny new things showing :)
+My rationale is that zbud was the default zswap allocator for a long
+time, so it's the one we should keep for now as it is more likely to
+have users. That said, I don't know of any users of either zbud or
+z3fold, and I am fine starting with deprecating either.
