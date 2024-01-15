@@ -1,112 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51F1982E03F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jan 2024 19:52:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC20682E121
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jan 2024 21:03:00 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=NT2S93lN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=mpTBHKAA;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TDLpz1VHCz3w4l
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jan 2024 05:52:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TDNNf5xvvz3ccQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jan 2024 07:02:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=NT2S93lN;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=mpTBHKAA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f400:7e8c::61e; helo=nam04-mw2-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2061e.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e8c::61e])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d2f; helo=mail-io1-xd2f.google.com; envelope-from=nphamcs@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TDLp9289Qz3vyJ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jan 2024 05:51:27 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=U473ISkqTD2rgPlUk95UsqOD4lEH3TmUDTX3Kv+qRKxYku+SY8vmsz/9QXIyCY+GLV+D/yb2tekjhXOJIbleepOSiYusuQ3mz/YuyNJNCaffNvAh5CjtoWHEQSFzhmE/fh85SoeXaoS2i+1oOnG6TlJcKjbTvZSjULp37GvIYwbZVv4silUTxz/PRC+iSo+yREk5O7PYSQPfST8M0p/HrwF967DnOi6+oobjyyV9flEtIAOEwnDSkiQ7e0POzKTrCqAOcs7tolw3Ii7pQ01PLi6W6DZOoldLusnodb6Ho1ejqVeTJutDzNDHou7R49CXS9EkZvDqLZPYa2QCfrdHXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=U4zQwuX2MFUlfhO8gVzvGSHNoLQIiG/kR/yzPWO7Dn8=;
- b=VCvxlMyjftfu94EjunoEG8A9DKCdcQMCDasQZfW9Hz269qiuOsEsk0rdsUcXAs5o6qKxrkQ/U+y7tsoqrLdj4mAGIgdofLSwqJC6A08ytrQ0J1FQaugA1IJg+LaIlc3PUnhT1ppBqdyXJZL0Fpl09+aSusLcKSF6VrIqJHH2y1P1kgSg23HkZDJvyG/v/1bgmJzR8pNr3CTf0cjSgF/dcd2CmWW2NOO/OIkNxcTE5QBGog7sq5xTX5WLgqCTBG15Vh2bWU2h+LOCLm0/IT07iSCzq1wxSGvqFLN5k/LrMnEtwerkxv0jPvsTwKLfWrw+ctxav/I64eU8sR4BncWseA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=U4zQwuX2MFUlfhO8gVzvGSHNoLQIiG/kR/yzPWO7Dn8=;
- b=NT2S93lN14HMUHx07sUUczGy82AbUVl7b3uz9R6OnJb4AB2/3MXXdREunpNDMOp2Rr1f6cTjj2wAhQ8OH8khCaNdPOAsFxjKInJxc9x5mOcSp2PdIDA8iGbISBQmrF4mfGosTjP6nEFWNpgwUvubIUOtocYb3XyhfE56p+JQ1vwvxonMQLN4MGUwN53TsHsbGUZopT1AavBMBYijh5mX4vF1T8QUtpqEJTRiPb1mBJZCxuUSLVSVthKzSNXEQhVdLQMgLHp905tvvQAHmQCQp2i8ScJdf40I3/JeviokdE5F+iLuXoktZilJdYVgIt7KNu5wMlHXonhDtaPLg2xZ4A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
- by DM4PR12MB5769.namprd12.prod.outlook.com (2603:10b6:8:60::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7181.21; Mon, 15 Jan 2024 18:51:08 +0000
-Received: from LV2PR12MB5869.namprd12.prod.outlook.com
- ([fe80::96dd:1160:6472:9873]) by LV2PR12MB5869.namprd12.prod.outlook.com
- ([fe80::96dd:1160:6472:9873%6]) with mapi id 15.20.7181.020; Mon, 15 Jan 2024
- 18:51:08 +0000
-Date: Mon, 15 Jan 2024 14:51:07 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: peterx@redhat.com
-Subject: Re: [PATCH v2 11/13] mm/gup: Handle huge pmd for follow_pmd_mask()
-Message-ID: <20240115185107.GW734935@nvidia.com>
-References: <20240103091423.400294-1-peterx@redhat.com>
- <20240103091423.400294-12-peterx@redhat.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240103091423.400294-12-peterx@redhat.com>
-X-ClientProxiedBy: BL1PR13CA0028.namprd13.prod.outlook.com
- (2603:10b6:208:256::33) To LV2PR12MB5869.namprd12.prod.outlook.com
- (2603:10b6:408:176::16)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TDNMq1gpcz3bXw
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jan 2024 07:02:14 +1100 (AEDT)
+Received: by mail-io1-xd2f.google.com with SMTP id ca18e2360f4ac-7bee87b2f5eso168101639f.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jan 2024 12:02:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705348930; x=1705953730; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WbP8f68FneqS35iMSb6Ai2Krkdv9R7DQjS6AqJROA3o=;
+        b=mpTBHKAA/QGFoDriLUKBOqXgczr2SDHsfJZdK0Pz+qdnsQbsEa5Dw1jpaPOq/Hkrg5
+         xFXlwEJIQBKYlLpePLOJZFNTvjcelVskbv2YcndEzSTIwzbARyPMIm9ZP/k3w2vGfrry
+         SJKZX7tZ4TNuB8GpP9BgIdVToMtyQiBiXjAe/IYH6Nqgrew4cH5GVw1cnArrvaOPKozJ
+         aEoQpr28PFGU3TL9YSjZn6fUfHSQcI/QVmp5/oEVWA/gIm4xlpQ6DvWJD5DFPaLTTO5E
+         0y7TwR5m34ugDqk0E/HPagJ52sVE1gTeMEMotAZCejAbfyypZZJdAXkMzkqZtZ18T0Ue
+         Hcmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705348930; x=1705953730;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WbP8f68FneqS35iMSb6Ai2Krkdv9R7DQjS6AqJROA3o=;
+        b=PFLHFuCtD9zzEPtfXeOyuIDjc2eTXra5K0NJADu0xg7NHYHs3deIpF3olO5QsM7V2Q
+         jji48N+EysGl1Sx57TUkuJdNvgsGovc5R3DQ4ZkQyOTxYUfznuhO6dyNoZ0FuxB0TNjN
+         aTikIkTQtqKk0MOo2dglmbEnuJ9aO9FQb19irKCAET8mKGdPLtVOKraib5i3ekcy/Uhl
+         J285pUsy6wyW63GKsOfS6vHsRjfyMiHDtOFVPcXh2ff7Q/LP+b9V2t/SBH5BkKXOtO74
+         Q6CrsSlxvqhPWWYtYYgA+lwrcgM7PRam8NQlKD2jgGSr5KPW8d8ljHo4Q7vvICnqkL8E
+         PADw==
+X-Gm-Message-State: AOJu0YxqpNf6hjdAuOqm3zhVYsNxXK5Tz4A5Mz+0iYkkvtTInsrDs8IW
+	pyVcFuj6kBbJ5aeUeiWCFt9xNsQ8QqSEFWInOK0=
+X-Google-Smtp-Source: AGHT+IGoOdW+aeoc91UwOnpg9hVQGt8tI8/aToJQfADXkg0FmKNY58cZw1wiDMwjHJuDhjzyx1g4Ij03JmdRrdylacs=
+X-Received: by 2002:a6b:f017:0:b0:7bf:3b15:a4b8 with SMTP id
+ w23-20020a6bf017000000b007bf3b15a4b8mr2795535ioc.37.1705348930027; Mon, 15
+ Jan 2024 12:02:10 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|DM4PR12MB5769:EE_
-X-MS-Office365-Filtering-Correlation-Id: 58f3eacf-11e8-495d-3337-08dc15faefa8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	piNEPncTYCf60S9om+ZPGzPFaAFLvfW7GkKYaEUm6MW1J/ksuPREnTkonZ7hBtHvbhZ1fZxwkzZLAvMczZqdWlpoXwA60aNhubY9pUyBBGQ0xLRoS5CudUJ1uhlqcSIZ3ZwyNvvT9NUUNAtGOjvINvWz7bODogkIFeQeKmr/B3lHgB+Zte5s/rH7qY82jv03qGAHsM+QMAwXjJByrxJtRYN7we8NJkG5B2U7nhRv0ffCkLhGArRrHEVx9Lfa+ywa4jtfLbmrG46vuzXWyu177kmo7zTdIJpo1q2LNkd9UMYn3Sb/zKgzNh2tXA/iWVaxU88/0/t6AJWchQ3z6T7oDs9/TXdAPYtqtDPJmEryaYYksnUtI/lvFRDWB6BHwfg0ZbpDPNqz2+yWyI2B0T0MF2zJncalY2NgwwChIvlMGhH3rbKk76dXM9EWikIMgad8+eMT83U7A7i7PlXzMFnKM44qbavB0R64ZpvdFt34qZ2quVkZ6miyoytgAJBW8UV6237+sHtIfzS8+ZE3BR6a9+6e027cRinwhnendBYqvjXpSRioZgGNMNC/XlO/UBXI5Wp7f+x7qZa+qY0oAZEQKj7ugBZVJFyryIgh0dxAcmjcolrhtKXeSrbSM9xTKxCeARyy280c3Cs/KdU6WR8P3Q==
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5869.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(396003)(376002)(366004)(39860400002)(346002)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(66946007)(36756003)(316002)(66556008)(6916009)(66476007)(54906003)(6506007)(6512007)(478600001)(6486002)(41300700001)(8936002)(8676002)(4326008)(2906002)(7416002)(38100700002)(83380400001)(5660300002)(33656002)(26005)(1076003)(86362001)(2616005)(27376004)(14583001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?jX3QNSpOZwtINWcBOwz39nQ2SkQLrQJ4BQvkz/yzJqGCsT9l9Kn/QB/n5N5R?=
- =?us-ascii?Q?EFgUfIg9QNV10iclP1vFU8NejLYfJnKUCXriBI7OjRiP/Q0IBaAD5tapAWHW?=
- =?us-ascii?Q?YbVkGeO6N0+zuOeP1OyrkG+TtX2uze9sJ7N5SXWV8Ds8BRyaFKNpE/oc/cHt?=
- =?us-ascii?Q?9ToUeyuP8t1B60OKtOscu878eiowvhalD/KP1huAPJ/9puPbK8WS90sExXIY?=
- =?us-ascii?Q?sJ1b6+QA9AH8KEs8On29OhmW9JY8PqV7g7geUqVzr4BJt6j2/1OP8eT2jjHj?=
- =?us-ascii?Q?LFSbSV0s9ZMYTWs2MY6l6gD5dLvFo3pySIwqPNxWb2Ku8IcjdydtO6EuJjYR?=
- =?us-ascii?Q?32KgMg6eMiZjk+1UbzUqYn3nMgIuxLANTL4ZmpKYuKc9uSzzRMMBQgwZWPS8?=
- =?us-ascii?Q?pKhE6Jf3ECKXdY8FrTeDjwqcZ8d2djWx0mQrSTKQwV7rzFsKg/b+RhX4CuLA?=
- =?us-ascii?Q?z3AF6MOuoKN6XPPNpQzI2AD3mejjmN6MrtOC9qEC2RVvUVlGVl7qKaMNXwBt?=
- =?us-ascii?Q?1eOoO9Plh8Yt1r6iFc961PhBdAlG3VHKFwJdhR5dNVZanDh0Mqmc7eR8uvHK?=
- =?us-ascii?Q?mxtopxhQQVhzoZCCeNQXv2kuLzY0OmQwK8zdR2zFs9D6dxsBSUGPpoTOUI2E?=
- =?us-ascii?Q?Yjh441+BsqUQI1tWHK2sNINWBUo2A6YRbCJUq3EDcvL45xMjFBB+fajVyQqy?=
- =?us-ascii?Q?ZpMO3Favn5CbrexNTu7rcT7PLBBZ05zQpklzwtWJZTxH+uEEpggr8P8Hz8Vn?=
- =?us-ascii?Q?stAIDpYw5NZ0+zg9NDM6CVphZlK01o1Uby9VltuRfTa9uAch6zKKcCXzMdJs?=
- =?us-ascii?Q?Kl/pl7d84mGPtogxCEplM2s7Uo2eROpDEYhCTpEPlsqLvdwFcWO6o/WVmgjR?=
- =?us-ascii?Q?MntYxEvgsuw5ngqkVuEeL8jcl5n9k+8bbAEt025E2FD2Cv10lTylNfTpkLEi?=
- =?us-ascii?Q?neYsmXEZwVbR8TipPJzoJlNb7P/ml/IsJjG3u6sgi9IVUen7arh/fH5g6J8b?=
- =?us-ascii?Q?Opeeaun/Ly6g8Ysm/kor7OOWCS5ipAEaSsTvEuw5HnurtCihk0sMcvNQamyj?=
- =?us-ascii?Q?7Jfiqn+xBiv7cYu18CWtlLiZaY8S8ZyPaO7q5E3JXA0C0Xp9hFm2+YiBsvbb?=
- =?us-ascii?Q?ZP8L777KE044zHF+mBEO/OTAfyWmAyWhAGjNwQPxGcl12dRX1+fZ0ZvjVQgt?=
- =?us-ascii?Q?ZkV/ijKGRt9OGr+xpmpNc/iFxsnDcutywF4HNPdEmUCEC47i1nkEQ1QzlzN1?=
- =?us-ascii?Q?XbRjH0TggJX5iczno3nEDRlPsMzzDwDj9iW5xtpjCZB3vsy0bZ3zldiMsSsg?=
- =?us-ascii?Q?PuapAcK3BIfY9ZC/RhNDU+4PgdczHj3Ls+A4t1z+9W0QW0eEPr2eQ3mODb4z?=
- =?us-ascii?Q?/5KmGFZK3+fpOKu/Tw6B6+qqoRFq8aT0g+csOUOEMbJSv51B0i7G7oD1SC7m?=
- =?us-ascii?Q?Bv65dDpy4TV/Q/+kYOTqKdS/x6MNME3lITVW65zt/LLu7Ri3PYFp5ea4N9wu?=
- =?us-ascii?Q?H51Eg+yOwUVezO+rnzOXkecqKN5sYwsaZ/YmtGG1/0OkCWeLks91sWVcpc4Z?=
- =?us-ascii?Q?gCe5bJE3gqlRK9edffXcRKGOKTopSTjf3+DERrYc?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 58f3eacf-11e8-495d-3337-08dc15faefa8
-X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2024 18:51:08.7660
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: h2ONvC+x4X73qqLknIM1poogsOHktZKgevjy1eKdc1nZZYsAsGbc0axtuU6y0082
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5769
+References: <20240112193103.3798287-1-yosryahmed@google.com> <CAM4kBBKPLwwp2H37q1nBSubFwaMiwdhC78f+n_0qpAHNODTYhQ@mail.gmail.com>
+In-Reply-To: <CAM4kBBKPLwwp2H37q1nBSubFwaMiwdhC78f+n_0qpAHNODTYhQ@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Mon, 15 Jan 2024 12:01:58 -0800
+Message-ID: <CAKEwX=Pskq2Rvi1bUaPHPoAfVv9h9_u40ytJa+hkYpxmKogbfw@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm: z3fold: rename CONFIG_Z3FOLD to CONFIG_Z3FOLD_DEPRECATED
+To: Vitaly Wool <vitaly.wool@konsulko.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -118,34 +75,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: James Houghton <jthoughton@google.com>, David Hildenbrand <david@redhat.com>, Yang Shi <shy828301@gmail.com>, Andrew Jones <andrew.jones@linux.dev>, linux-mm@kvack.org, Matthew Wilcox <willy@infradead.org>, linux-riscv@lists.infradead.org, Andrea Arcangeli <aarcange@redhat.com>, Christoph Hellwig <hch@infradead.org>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Axel Rasmussen <axelrasmussen@google.com>, Rik van Riel <riel@surriel.com>, John Hubbard <jhubbard@nvidia.com>, "Kirill A . Shutemov" <kirill@shutemov.name>, linux-arm-kernel@lists.infradead.org, Lorenzo Stoakes <lstoakes@gmail.com>, Muchun Song <muchun.song@linux.dev>, linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Yosry Ahmed <yosryahmed@google.com>, linux-mm@kvack.org, loongarch@lists.linux.dev, Johannes Weiner <hannes@cmpxchg.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, WANG Xuerui <kernel@xen0n.name>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 03, 2024 at 05:14:21PM +0800, peterx@redhat.com wrote:
-> From: Peter Xu <peterx@redhat.com>
-> 
-> Replace pmd_trans_huge() with pmd_thp_or_huge() to also cover pmd_huge() as
-> long as enabled.
-> 
-> FOLL_TOUCH and FOLL_SPLIT_PMD only apply to THP, not yet huge.
-> 
-> Since now follow_trans_huge_pmd() can process hugetlb pages, renaming it
-> into follow_huge_pmd() to match what it does.  Move it into gup.c so not
-> depend on CONFIG_THP.
-> 
-> When at it, move the ctx->page_mask setup into follow_huge_pmd(), only set
-> it when the page is valid.  It was not a bug to set it before even if GUP
-> failed (page==NULL), because follow_page_mask() callers always ignores
-> page_mask if so.  But doing so makes the code cleaner.
-> 
-> Signed-off-by: Peter Xu <peterx@redhat.com>
-> ---
->  mm/gup.c         | 107 ++++++++++++++++++++++++++++++++++++++++++++---
->  mm/huge_memory.c |  86 +------------------------------------
->  mm/internal.h    |   5 +--
->  3 files changed, 105 insertions(+), 93 deletions(-)
+On Mon, Jan 15, 2024 at 4:27=E2=80=AFAM Vitaly Wool <vitaly.wool@konsulko.c=
+om> wrote:
+>
+> On Fri, Jan 12, 2024 at 8:31=E2=80=AFPM Yosry Ahmed <yosryahmed@google.co=
+m> wrote:
+> >
+> > The z3fold compressed pages allocator is not widely used, most users us=
+e
+> > zsmalloc. The only disadvantage of zsmalloc in comparison is the
+> > dependency on MMU, and zbud is a more common option for !MMU as it was
+> > the default zswap allocator for a long time.
+> >
+> > In hopes of having a single compressed pages allocator at some point,
+> > and following in the footsteps of SLAB, deprecate z3fold. Rename the
+> > user-visible option so that users with CONFIG_Z3FOLD=3Dy get a new prom=
+pt
+> > with explanation during make oldconfig. Remove CONFIG_Z3FOLD=3Dy from
+> > defconfigs.
+>
+> I believe that having a single compressed pages allocator is a false goal=
+.
 
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+I think it should be, where possible. Having fewer code will lower the
+maintenance burden. Of course, this is not always possible, as one
+option might be the best in one aspect/use case, but not so in others.
+In the case of zswap (which is the only user for zbud and z3fold), it
+seems (to me anyway) zbud and z3fold aren't really serious competitors
+for zsmalloc anymore (outside of that aforementioned !MMU case). I'd
+love to hear some use cases if I'm mistaken though :)
 
-Jason
+>
+> > Existing users, if any, should voice their objections. Otherwise, we ca=
+n
+> > remove z3fold in a few releases.
+>
+> At this point I NACK this patch. We're about to submit an allocator
+> which is clearly better that z3fold and is faster that zsmalloc in
+> most cases and that submission will mark z3fold as deprecated. But for
+> now this move is premature.
+
+Ah, this sounds promising. I'd love to hear more about this new
+allocator, and once it's available, experiment with it internally too
+:)
+
+That said, even at this point, does anyone actually use z3fold and/or
+zbud, and cannot use zsmalloc? If yes, then yeah this is quite
+premature. If not, then we can mark them as deprecate, no? Introducing
+the other allocator and fixing zsmalloc for !MMU can be done in
+parallel - we're not removing z3fold and zbud anytime soon even with
+this deprecation notice.
+
+
+>
+> Best,
+> Vitaly
+>
+> > Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
+> > ---
+> > I have limited understanding of Kconfigs. I modelled this after commit
+> > eb07c4f39c3e ("mm/slab: rename CONFIG_SLAB to CONFIG_SLAB_DEPRECATED"),
+> > but one difference is that CONFIG_Z3FOLD is a tristate. I made
+> > CONFIG_Z3FOLD_DEPRECATED a boolean config, and CONFIG_Z3FOLD default y
+> > so that it is on by default if CONFIG_Z3FOLD_DEPRECATED is selected. I
+> > am not sure if that's the correct way to do this.
+> >
+> > ---
+> >  arch/loongarch/configs/loongson3_defconfig |  1 -
+> >  arch/powerpc/configs/ppc64_defconfig       |  1 -
+> >  mm/Kconfig                                 | 13 +++++++++++--
+> >  3 files changed, 11 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/arch/loongarch/configs/loongson3_defconfig b/arch/loongarc=
+h/configs/loongson3_defconfig
+> > index 33795e4a5bd63..89b66b6c6a1d5 100644
+> > --- a/arch/loongarch/configs/loongson3_defconfig
+> > +++ b/arch/loongarch/configs/loongson3_defconfig
+> > @@ -85,7 +85,6 @@ CONFIG_ZPOOL=3Dy
+> >  CONFIG_ZSWAP=3Dy
+> >  CONFIG_ZSWAP_COMPRESSOR_DEFAULT_ZSTD=3Dy
+> >  CONFIG_ZBUD=3Dy
+> > -CONFIG_Z3FOLD=3Dy
+> >  CONFIG_ZSMALLOC=3Dm
+> >  # CONFIG_COMPAT_BRK is not set
+> >  CONFIG_MEMORY_HOTPLUG=3Dy
+> > diff --git a/arch/powerpc/configs/ppc64_defconfig b/arch/powerpc/config=
+s/ppc64_defconfig
+> > index 544a65fda77bc..d39284489aa26 100644
+> > --- a/arch/powerpc/configs/ppc64_defconfig
+> > +++ b/arch/powerpc/configs/ppc64_defconfig
+> > @@ -81,7 +81,6 @@ CONFIG_MODULE_SIG_SHA512=3Dy
+> >  CONFIG_PARTITION_ADVANCED=3Dy
+> >  CONFIG_BINFMT_MISC=3Dm
+> >  CONFIG_ZSWAP=3Dy
+> > -CONFIG_Z3FOLD=3Dy
+> >  CONFIG_ZSMALLOC=3Dy
+> >  # CONFIG_SLAB_MERGE_DEFAULT is not set
+> >  CONFIG_SLAB_FREELIST_RANDOM=3Dy
+> > diff --git a/mm/Kconfig b/mm/Kconfig
+> > index 1902cfe4cc4f5..bc6cc97c08349 100644
+> > --- a/mm/Kconfig
+> > +++ b/mm/Kconfig
+> > @@ -193,15 +193,24 @@ config ZBUD
+> >           deterministic reclaim properties that make it preferable to a=
+ higher
+> >           density approach when reclaim will be used.
+> >
+> > -config Z3FOLD
+> > -       tristate "3:1 compression allocator (z3fold)"
+> > +config Z3FOLD_DEPRECATED
+> > +       bool "3:1 compression allocator (z3fold) (DEPRECATED)"
+> >         depends on ZSWAP
+> >         help
+> > +         Deprecated and scheduled for removal in a few cycles. If you =
+have
+> > +         a good reason for using Z3FOLD rather than ZSMALLOC or ZBUD, =
+please
+> > +         contact linux-mm@kvack.org and the zswap maintainers.
+> > +
+> >           A special purpose allocator for storing compressed pages.
+> >           It is designed to store up to three compressed pages per phys=
+ical
+> >           page. It is a ZBUD derivative so the simplicity and determini=
+sm are
+> >           still there.
+> >
+> > +config Z3FOLD
+> > +       tristate
+> > +       default y
+> > +       depends on Z3FOLD_DEPRECATED
+> > +
+> >  config ZSMALLOC
+> >         tristate
+> >         prompt "N:1 compression allocator (zsmalloc)" if ZSWAP
+> > --
+> > 2.43.0.275.g3460e3d667-goog
+> >
