@@ -1,52 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F6B482E3D3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jan 2024 00:40:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A2082E3DA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jan 2024 00:41:03 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Hmh40ORZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=t7F0UGmE;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TDTC71PjQz3vl8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jan 2024 10:40:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TDTDF1Mn3z3vmk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jan 2024 10:41:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Hmh40ORZ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=t7F0UGmE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TDSwZ1cbNz3brC
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jan 2024 10:27:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TDSwh6XJYz3cX1
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jan 2024 10:27:32 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 72FE361010;
-	Mon, 15 Jan 2024 23:27:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D4AAC433C7;
-	Mon, 15 Jan 2024 23:27:23 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 3E88260FDA;
+	Mon, 15 Jan 2024 23:27:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED56FC433F1;
+	Mon, 15 Jan 2024 23:27:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705361244;
-	bh=gWVu0DGyxjlmkVChVPoGAddpi9m+zYf8NRgtJQVpRo8=;
+	s=k20201202; t=1705361250;
+	bh=2AzBnltgVnkqilTUrxFTbYwSk3MkGW/zLwHm0+XqAdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hmh40ORZZpGpoORDB80DGQBqFmHL4VYy+zUD/wCsd8o12Xl9NhNmKunXd6Pq2HTC7
-	 4hFvBEivSGZHMjhwnVoK2v6kWyYAeM/OdSWrxtnB+WbRMwQjYaJdUKkhXdF9s8ryg+
-	 12fnTRvx3KKan7OMfCiQG9vSUIOCHqxVAp1Mom0uaB770ee0aiHrjhlk3hXCCRYeKC
-	 tt+9AswSKVHlXdxPz/dwGzzbboAo2aWQho3/cuYk4IbWtC9PVrQDNDllcrbWST4BRq
-	 L5XbfuuIq7XWP2U7kDYBn9xlBOS0uAzKBkMYimHqucsUgNaxBlL/TRs9bO9RCyyUOl
-	 M07PHu7R0VVvg==
+	b=t7F0UGmEqPIhZwbHMfJURpHqWI0aCat9HH5AxHvYVcHzGZOR6jsqTZZ6vyVT6hgWY
+	 Hebji7phLm9IMVnYU2D26py/vcOclaGVQ/Bb1/iBRKX//9hYYQNtKj63Y/mnNJ7vzj
+	 GPP2euM0c24EleRCrWFdAbDiKYCqFIqylG/FfWReGwNYEcHNRhe5r/tQwJZPVV8+ZE
+	 mtn4ocnCBcpNxNJXObdRB0hOZwqOuLNHfoyM4XcxjGMELoLm5vk9yaYcrVcM2rh9Ip
+	 CW64hKUREv6V1E5VIVwCeFewatTk1EnbcPqvPAu5dYrLKsw/Oe3kVUgb+IpyWzW3XJ
+	 82nlP9BOygJ0A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 02/12] powerpc/mm: Fix null-pointer dereference in pgtable_cache_add
-Date: Mon, 15 Jan 2024 18:26:47 -0500
-Message-ID: <20240115232718.209642-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 05/12] powerpc: Fix build error due to is_valid_bugaddr()
+Date: Mon, 15 Jan 2024 18:26:50 -0500
+Message-ID: <20240115232718.209642-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240115232718.209642-1-sashal@kernel.org>
 References: <20240115232718.209642-1-sashal@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.147
@@ -62,51 +63,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org, Kunwu Chan <chentao@kylinos.cn>
+Cc: Sasha Levin <sashal@kernel.org>, arnd@arndb.de, naveen@kernel.org, bgray@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit f46c8a75263f97bda13c739ba1c90aced0d3b071 ]
+[ Upstream commit f8d3555355653848082c351fa90775214fb8a4fa ]
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure. Ensure the allocation was successful
-by checking the pointer validity.
+With CONFIG_GENERIC_BUG=n the build fails with:
 
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+  arch/powerpc/kernel/traps.c:1442:5: error: no previous prototype for ‘is_valid_bugaddr’ [-Werror=missing-prototypes]
+  1442 | int is_valid_bugaddr(unsigned long addr)
+       |     ^~~~~~~~~~~~~~~~
+
+The prototype is only defined, and the function is only needed, when
+CONFIG_GENERIC_BUG=y, so move the implementation under that.
+
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231204023223.2447523-1-chentao@kylinos.cn
+Link: https://msgid.link/20231130114433.3053544-2-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/init-common.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/traps.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
-index 3a82f89827a5..4bc8f0c893a2 100644
---- a/arch/powerpc/mm/init-common.c
-+++ b/arch/powerpc/mm/init-common.c
-@@ -105,7 +105,7 @@ void pgtable_cache_add(unsigned int shift)
- 	 * as to leave enough 0 bits in the address to contain it. */
- 	unsigned long minalign = max(MAX_PGTABLE_INDEX_SIZE + 1,
- 				     HUGEPD_SHIFT_MASK + 1);
--	struct kmem_cache *new;
-+	struct kmem_cache *new = NULL;
+diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+index fe912983ced9..f1a2a75c4757 100644
+--- a/arch/powerpc/kernel/traps.c
++++ b/arch/powerpc/kernel/traps.c
+@@ -1423,10 +1423,12 @@ static int emulate_instruction(struct pt_regs *regs)
+ 	return -EINVAL;
+ }
  
- 	/* It would be nice if this was a BUILD_BUG_ON(), but at the
- 	 * moment, gcc doesn't seem to recognize is_power_of_2 as a
-@@ -118,7 +118,8 @@ void pgtable_cache_add(unsigned int shift)
++#ifdef CONFIG_GENERIC_BUG
+ int is_valid_bugaddr(unsigned long addr)
+ {
+ 	return is_kernel_addr(addr);
+ }
++#endif
  
- 	align = max_t(unsigned long, align, minalign);
- 	name = kasprintf(GFP_KERNEL, "pgtable-2^%d", shift);
--	new = kmem_cache_create(name, table_size, align, 0, ctor(shift));
-+	if (name)
-+		new = kmem_cache_create(name, table_size, align, 0, ctor(shift));
- 	if (!new)
- 		panic("Could not allocate pgtable cache for order %d", shift);
- 
+ #ifdef CONFIG_MATH_EMULATION
+ static int emulate_math(struct pt_regs *regs)
 -- 
 2.43.0
 
