@@ -2,50 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAD1582D91B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jan 2024 13:53:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A5482DDE2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jan 2024 17:49:10 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=qkSTBs3V;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=LjKr+b29;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TDBrw0T4Xz3cB2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jan 2024 23:53:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TDJ500z0hz2xdZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jan 2024 03:49:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=qkSTBs3V;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=LjKr+b29;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.174; helo=out-174.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
-X-Greylist: delayed 485 seconds by postgrey-1.37 at boromir; Mon, 15 Jan 2024 23:52:33 AEDT
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::631; helo=mail-ej1-x631.google.com; envelope-from=yosryahmed@google.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TDBr16YfJz3bTt
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jan 2024 23:52:33 +1100 (AEDT)
-Date: Mon, 15 Jan 2024 13:44:17 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1705322660;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MwtEWLAXam/IycH3fliQdB9hc+Fa+3tIJSxCSLpGklg=;
-	b=qkSTBs3VJnpyVeSfr53o+AUoEBfoa5dlIRd+6kIoAVDl8WIuSCQd77yD7dHnO6r3aksh+g
-	OtddvsEWRILNOTNVjzpmeGn50EtxIftBx+29mCVpTVmGAxMBvvQQJrm1s9MV2LwKdIhhk5
-	XxQ2ie+A3NvnwIF2Tfp5s7zyl1rQIV8=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Andrew Jones <andrew.jones@linux.dev>
-To: Shaoqin Huang <shahuang@redhat.com>
-Subject: Re: [kvm-unit-tests PATCH v1 01/18] Makefile: Define __ASSEMBLY__
- for assembly files
-Message-ID: <20240115-0c41f7d4aa09b7b82613faa8@orel>
-References: <20231130090722.2897974-1-shahuang@redhat.com>
- <20231130090722.2897974-2-shahuang@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TDJ486pvfz2xdX
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jan 2024 03:48:23 +1100 (AEDT)
+Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-a277339dcf4so1000825966b.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jan 2024 08:48:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1705337297; x=1705942097; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ceLGL0enl6PfAsopv7AJI+nA+EII0JrlzYSMhyq0em8=;
+        b=LjKr+b29uZhit3BfsBxQP4dtfkyhpeHaZY4iEp+EIHp4NH9eTKrSfS35ogXEPho1+P
+         /RR4Qz7c+jiLsc+fMEi+fCmdca6qkqVuaguOflMk9y8mkEhcy2a9s2f15QOy13ksL6U6
+         uDCdTmskVtFHRUvQg0xqf5jQXk5nyru/ZPao3Gk/D1mmDti8vf0iRNfvFyDemwFSYEAl
+         cD3KNda+GuOJ3bIBNUHka7mOFlHdLJwdEdsE/Aqx31bhMdaAv/0Np3tizP4XKCsDNvmF
+         Af9z5o/8ibKdbpng+eGD6edoMQ0zPk+sOci78y8b10NsSe0eERK7ApXc+2q4nqqt64w3
+         NCvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705337297; x=1705942097;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ceLGL0enl6PfAsopv7AJI+nA+EII0JrlzYSMhyq0em8=;
+        b=Eb6wSjYLynSvLz6zpDg2klsG9sRmYpyXhBN817GbX+juEQufza7DzghPfJHqyzPhWb
+         jK9UqFSmuErlj5t8OlQcBg118fnG35nRRDHJuv1jq6joC9ghZI3o50Dt7DCAHuqU4hba
+         7uAZOl8kyYysdUdebtzoqW+mXJfDqfseB9QsxUK4W1t1urxOIRlpA7oAe3UNC0LsLLA3
+         yQ6RLiV8eZwCJ/c6Ow1DKH/a1Mt7NQqyClacyDFDWuwKisWPAJqzFmCwhAUdc6iBdDnX
+         o9F9J5+u1PrXN9esvDV1EL1DL9Q5X44L0ujWI91fujH7eq3kQDQbOLdqEL3NTpl3y/Lk
+         LGMQ==
+X-Gm-Message-State: AOJu0Ywy0UsDAnbnOgavHfLzImbicj0ujlBjpFXpZmKJx6QOajE28qKR
+	D4WyePnp7pflp1ZhQ5uVXqi8DZgO+IB8IHH7NFitqvRAzNLx
+X-Google-Smtp-Source: AGHT+IHNV4MCloqcrGH6S7WU4i7/ZBSuL75kLy09XQg3jP02TmtwtjBL5T0bywpvmu4Eca6GWIIogf7mqkbyC37kOnA=
+X-Received: by 2002:a17:907:a08f:b0:a2c:b0a6:8ab with SMTP id
+ hu15-20020a170907a08f00b00a2cb0a608abmr3275465ejc.7.1705337297039; Mon, 15
+ Jan 2024 08:48:17 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231130090722.2897974-2-shahuang@redhat.com>
-X-Migadu-Flow: FLOW_OUT
+References: <20240112193103.3798287-1-yosryahmed@google.com> <CAM4kBBKPLwwp2H37q1nBSubFwaMiwdhC78f+n_0qpAHNODTYhQ@mail.gmail.com>
+In-Reply-To: <CAM4kBBKPLwwp2H37q1nBSubFwaMiwdhC78f+n_0qpAHNODTYhQ@mail.gmail.com>
+From: Yosry Ahmed <yosryahmed@google.com>
+Date: Mon, 15 Jan 2024 08:47:39 -0800
+Message-ID: <CAJD7tka3Ap5G7AKa=AWfTNG8rUi=Z5Fd-JD503NuRk2ycCexiQ@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm: z3fold: rename CONFIG_Z3FOLD to CONFIG_Z3FOLD_DEPRECATED
+To: Vitaly Wool <vitaly.wool@konsulko.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,100 +75,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, Nico Boehr <nrb@linux.ibm.com>, kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Nikos Nikoleris <nikos.nikoleris@arm.com>, Eric Auger <eric.auger@redhat.com>, Nadav Amit <namit@vmware.com>, kvmarm@lists.linux.dev, Alexandru Elisei <alexandru.elisei@arm.com>, David Woodhouse <dwmw@amazon.co.uk>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, Nhat Pham <nphamcs@gmail.com>, Huacai Chen <chenhuacai@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, linux-mm@kvack.org, loongarch@lists.linux.dev, Johannes Weiner <hannes@cmpxchg.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, WANG Xuerui <kernel@xen0n.name>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Nov 30, 2023 at 04:07:03AM -0500, Shaoqin Huang wrote:
-> From: Alexandru Elisei <alexandru.elisei@arm.com>
-> 
-> There are 25 header files today (found with grep -r "#ifndef __ASSEMBLY__)
-> with functionality relies on the __ASSEMBLY__ prepocessor constant being
-> correctly defined to work correctly. So far, kvm-unit-tests has relied on
-> the assembly files to define the constant before including any header
-> files which depend on it.
-> 
-> Let's make sure that nobody gets this wrong and define it as a compiler
-> constant when compiling assembly files. __ASSEMBLY__ is now defined for all
-> .S files, even those that didn't set it explicitely before.
-> 
-> Reviewed-by: Nikos Nikoleris <nikos.nikoleris@arm.com>
-> Reviewed-by: Andrew Jones <andrew.jones@linux.dev>
-> Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
-> Signed-off-by: Shaoqin Huang <shahuang@redhat.com>
-> ---
->  Makefile           | 5 ++++-
->  arm/cstart.S       | 1 -
->  arm/cstart64.S     | 1 -
->  powerpc/cstart64.S | 1 -
->  4 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/Makefile b/Makefile
-> index 602910dd..27ed14e6 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -92,6 +92,9 @@ CFLAGS += -Woverride-init -Wmissing-prototypes -Wstrict-prototypes
->  
->  autodepend-flags = -MMD -MP -MF $(dir $*).$(notdir $*).d
->  
-> +AFLAGS  = $(CFLAGS)
-> +AFLAGS += -D__ASSEMBLY__
-> +
->  LDFLAGS += -nostdlib $(no_pie) -z noexecstack
->  
->  $(libcflat): $(cflatobjs)
-> @@ -113,7 +116,7 @@ directories:
->  	@mkdir -p $(OBJDIRS)
->  
->  %.o: %.S
-> -	$(CC) $(CFLAGS) -c -nostdlib -o $@ $<
-> +	$(CC) $(AFLAGS) -c -nostdlib -o $@ $<
+On Mon, Jan 15, 2024 at 4:27=E2=80=AFAM Vitaly Wool <vitaly.wool@konsulko.c=
+om> wrote:
+>
+> On Fri, Jan 12, 2024 at 8:31=E2=80=AFPM Yosry Ahmed <yosryahmed@google.co=
+m> wrote:
+> >
+> > The z3fold compressed pages allocator is not widely used, most users us=
+e
+> > zsmalloc. The only disadvantage of zsmalloc in comparison is the
+> > dependency on MMU, and zbud is a more common option for !MMU as it was
+> > the default zswap allocator for a long time.
+> >
+> > In hopes of having a single compressed pages allocator at some point,
+> > and following in the footsteps of SLAB, deprecate z3fold. Rename the
+> > user-visible option so that users with CONFIG_Z3FOLD=3Dy get a new prom=
+pt
+> > with explanation during make oldconfig. Remove CONFIG_Z3FOLD=3Dy from
+> > defconfigs.
+>
+> I believe that having a single compressed pages allocator is a false goal=
+.
 
-I think we can drop the two hunks above from this patch and just rely on
-the compiler to add __ASSEMBLY__ for us when compiling assembly files.
+It's not a goal in itself for sure, but when most users use one
+allocator that is mostly superior, it makes sense to try to deprecate
+others.
 
-Thanks,
-drew
+>
+> > Existing users, if any, should voice their objections. Otherwise, we ca=
+n
+> > remove z3fold in a few releases.
+>
+> At this point I NACK this patch. We're about to submit an allocator
+> which is clearly better that z3fold and is faster that zsmalloc in
+> most cases and that submission will mark z3fold as deprecated. But for
+> now this move is premature.
 
->  
->  -include */.*.d */*/.*.d
->  
-> diff --git a/arm/cstart.S b/arm/cstart.S
-> index 3dd71ed9..b24ecabc 100644
-> --- a/arm/cstart.S
-> +++ b/arm/cstart.S
-> @@ -5,7 +5,6 @@
->   *
->   * This work is licensed under the terms of the GNU LGPL, version 2.
->   */
-> -#define __ASSEMBLY__
->  #include <auxinfo.h>
->  #include <asm/assembler.h>
->  #include <asm/thread_info.h>
-> diff --git a/arm/cstart64.S b/arm/cstart64.S
-> index bc2be45a..a8ad6dc8 100644
-> --- a/arm/cstart64.S
-> +++ b/arm/cstart64.S
-> @@ -5,7 +5,6 @@
->   *
->   * This work is licensed under the terms of the GNU GPL, version 2.
->   */
-> -#define __ASSEMBLY__
->  #include <auxinfo.h>
->  #include <asm/asm-offsets.h>
->  #include <asm/assembler.h>
-> diff --git a/powerpc/cstart64.S b/powerpc/cstart64.S
-> index 34e39341..fa32ef24 100644
-> --- a/powerpc/cstart64.S
-> +++ b/powerpc/cstart64.S
-> @@ -5,7 +5,6 @@
->   *
->   * This work is licensed under the terms of the GNU LGPL, version 2.
->   */
-> -#define __ASSEMBLY__
->  #include <asm/hcall.h>
->  #include <asm/ppc_asm.h>
->  #include <asm/rtas.h>
-> -- 
-> 2.40.1
-> 
+I think unless there are current users of z3fold that cannot use
+zsmalloc, the introduction of a new allocator should be irrelevant to
+deprecating z3fold. Do you know of such users? Can you explain why
+zsmalloc is not usable for them?
