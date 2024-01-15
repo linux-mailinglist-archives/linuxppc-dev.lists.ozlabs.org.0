@@ -2,52 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04C0C82E3BD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jan 2024 00:37:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64BAE82E3C3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jan 2024 00:38:26 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MetDaALC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WgCH6KF8;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TDT8G6St8z3vpP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jan 2024 10:37:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TDT9D2H7hz2x9T
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jan 2024 10:38:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MetDaALC;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WgCH6KF8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TDSvZ1TR9z3c7S
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jan 2024 10:26:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TDSvl2Z8Tz3bwd
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jan 2024 10:26:43 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id E0CD7CE18C5;
-	Mon, 15 Jan 2024 23:26:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F56CC433C7;
-	Mon, 15 Jan 2024 23:26:31 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id A99F06100E;
+	Mon, 15 Jan 2024 23:26:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5393FC433F1;
+	Mon, 15 Jan 2024 23:26:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705361192;
-	bh=ErGYLm5tSR7DH+ivbIrGjwlkUo9tshP+VMkyXbit+i8=;
+	s=k20201202; t=1705361201;
+	bh=fm4JBwQhz5LhOUehQ5s7hh/uLH+EAhRtYFgcXgP8W9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MetDaALCth0H2gWFdiqu1RzCwVPgTYeuvqVVJcOtES7TqJ/s9G0yg8GeLd6DAbftc
-	 LQRbw26nhrVlX1HClbx75j5S9hQoPfUszyyKR/aNVtvzSBNu1TcRge3oGqfNA6oeRT
-	 jKeD4/X/FD68HCzve4GQbWae47K7ttUsA6+8MLogenhAeLX6MLcuFhGzbTBe+SuNtv
-	 ZY49WnjUKfjA1xKh3lALZQs9Sbm4GPrLTty8rkOmSd9cLNbRYw71IOiCFvDl2kc8pN
-	 4jAQtHrLoR2XP7EO9Gh7nyB1Cf+Cbd4sqGg/vWjj2UWkDFMkS5q3qBYyB6acjSKSvR
-	 GC/mO6IRFaaiA==
+	b=WgCH6KF8Udh3yvX07KBQaXQYzvDqUi0vWPsNdUiNho+xUT3fvmaYnif81nDjmHG+R
+	 GSAwp7poa6wV1Vuo9mz8PM/k8FezybIjpVZKg7U2PiF51D9bDECSZvx2lmfyKmUJqs
+	 9oYPrRXHlWvbB5HB1itjVpCNmy/gbnsxfN+O70M1OO2tfQnWz81JJOpMgb38bcnSs4
+	 4z2/+wb/f/9nPcYBlnlCnsTjpUhhbdiXVTHOPDyW41iocDb1gmgn+Isxx33Wyd5hCE
+	 95TYZLjGYTZ/EKP+Ug+VdTkUaTJDtjyrjGyKNSqvIuOF/r6XsrvMBP+u+5+cYkSiNJ
+	 3d3rkUDWuAtAw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 08/14] powerpc/64s: Fix CONFIG_NUMA=n build due to create_section_mapping()
-Date: Mon, 15 Jan 2024 18:25:42 -0500
-Message-ID: <20240115232611.209265-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 10/14] powerpc: pmd_move_must_withdraw() is only needed for CONFIG_TRANSPARENT_HUGEPAGE
+Date: Mon, 15 Jan 2024 18:25:44 -0500
+Message-ID: <20240115232611.209265-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240115232611.209265-1-sashal@kernel.org>
 References: <20240115232611.209265-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.73
@@ -63,64 +62,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, Stephen Rothwell <sfr@canb.auug.org.au>, arnd@arndb.de, vishal.moola@gmail.com, aneesh.kumar@linux.ibm.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Stephen Rothwell <sfr@canb.auug.org.au>
 
-[ Upstream commit ede66cd22441820cbd399936bf84fdc4294bc7fa ]
+[ Upstream commit 0d555b57ee660d8a871781c0eebf006e855e918d ]
 
-With CONFIG_NUMA=n the build fails with:
+The linux-next build of powerpc64 allnoconfig fails with:
 
-  arch/powerpc/mm/book3s64/pgtable.c:275:15: error: no previous prototype for ‘create_section_mapping’ [-Werror=missing-prototypes]
-  275 | int __meminit create_section_mapping(unsigned long start, unsigned long end,
-      |               ^~~~~~~~~~~~~~~~~~~~~~
+  arch/powerpc/mm/book3s64/pgtable.c:557:5: error: no previous prototype for 'pmd_move_must_withdraw'
+    557 | int pmd_move_must_withdraw(struct spinlock *new_pmd_ptl,
+        |     ^~~~~~~~~~~~~~~~~~~~~~
 
-That happens because the prototype for create_section_mapping() is in
-asm/mmzone.h, but asm/mmzone.h is only included by linux/mmzone.h
-when CONFIG_NUMA=y.
+Caused by commit:
 
-In fact the prototype is only needed by arch/powerpc/mm code, so move
-the prototype into arch/powerpc/mm/mmu_decl.h, which also fixes the
-build error.
+  c6345dfa6e3e ("Makefile.extrawarn: turn on missing-prototypes globally")
 
+Fix it by moving the function definition under
+CONFIG_TRANSPARENT_HUGEPAGE like the prototype. The function is only
+called when CONFIG_TRANSPARENT_HUGEPAGE=y.
+
+Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+[mpe: Flesh out change log from linux-next patch]
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231129131919.2528517-5-mpe@ellerman.id.au
+Link: https://msgid.link/20231127132809.45c2b398@canb.auug.org.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/mmzone.h | 5 -----
- arch/powerpc/mm/mmu_decl.h        | 5 +++++
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ arch/powerpc/mm/book3s64/pgtable.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/mmzone.h b/arch/powerpc/include/asm/mmzone.h
-index 3764d3585d30..da827d2d0866 100644
---- a/arch/powerpc/include/asm/mmzone.h
-+++ b/arch/powerpc/include/asm/mmzone.h
-@@ -43,10 +43,5 @@ u64 memory_hotplug_max(void);
- #define memory_hotplug_max() memblock_end_of_DRAM()
- #endif /* CONFIG_NUMA */
- 
--#ifdef CONFIG_MEMORY_HOTPLUG
--extern int create_section_mapping(unsigned long start, unsigned long end,
--				  int nid, pgprot_t prot);
--#endif
--
- #endif /* __KERNEL__ */
- #endif /* _ASM_MMZONE_H_ */
-diff --git a/arch/powerpc/mm/mmu_decl.h b/arch/powerpc/mm/mmu_decl.h
-index bd9784f77f2e..71250605b784 100644
---- a/arch/powerpc/mm/mmu_decl.h
-+++ b/arch/powerpc/mm/mmu_decl.h
-@@ -179,3 +179,8 @@ static inline bool debug_pagealloc_enabled_or_kfence(void)
- {
- 	return IS_ENABLED(CONFIG_KFENCE) || debug_pagealloc_enabled();
+diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+index f6151a589298..87aa76c73799 100644
+--- a/arch/powerpc/mm/book3s64/pgtable.c
++++ b/arch/powerpc/mm/book3s64/pgtable.c
+@@ -463,6 +463,7 @@ void ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned long addr,
+ 	set_pte_at(vma->vm_mm, addr, ptep, pte);
  }
-+
-+#ifdef CONFIG_MEMORY_HOTPLUG
-+int create_section_mapping(unsigned long start, unsigned long end,
-+			   int nid, pgprot_t prot);
+ 
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ /*
+  * For hash translation mode, we use the deposited table to store hash slot
+  * information and they are stored at PTRS_PER_PMD offset from related pmd
+@@ -484,6 +485,7 @@ int pmd_move_must_withdraw(struct spinlock *new_pmd_ptl,
+ 
+ 	return true;
+ }
 +#endif
+ 
+ /*
+  * Does the CPU support tlbie?
 -- 
 2.43.0
 
