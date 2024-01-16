@@ -2,53 +2,94 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 025ED82E633
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jan 2024 02:08:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28FFE82E7F0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jan 2024 03:37:30 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=W+mNVQ2q;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=V5e87H5Z;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TDW8x6Z0gz3cW4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jan 2024 12:08:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TDY7r0h45z3c9l
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jan 2024 13:37:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=W+mNVQ2q;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=V5e87H5Z;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TDW8840zxz3cT9
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jan 2024 12:07:36 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id A48C960B73;
-	Tue, 16 Jan 2024 01:07:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77D5C433C7;
-	Tue, 16 Jan 2024 01:07:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705367254;
-	bh=TfDrsInvUzA+wma/7RiDh79sAMkHkv8eHX1xyaL6l1Q=;
-	h=From:To:Cc:Subject:Date:From;
-	b=W+mNVQ2q/+GOj4ZrOXC4r0iMcYozdtKWlyHO3V3z6XBtnhOlHHxJiRdfLgpG+2UrC
-	 ehpIBNLiH2Eid+XXR+zeKO6TXtfBst/rL4TxRD7pRh8cn4vqZw6HNVoYPUhsQFXPfJ
-	 7YLW0KCUvp4B0c9JbUj0H1X8fzgWHZN2k/eF7nDAvYi9IrX+zPg5p5p6eOU+Jwpbhv
-	 ybNXDWudNJ5HQPHPTEszaiOS0pRxWa+hmp1eKQf7mdr1+JQg1iRtSfPGxqOmUdyTUL
-	 k4bEXMRfxwYk2IzHlTmjXQGC9vbODqc91TgvZ/M0PsG1tevs9/j0QQ7ZiOB+A+W+Rx
-	 wb+YP1UsgSeaA==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 01/11] arch: consolidate arch_irq_work_raise prototypes
-Date: Mon, 15 Jan 2024 20:07:01 -0500
-Message-ID: <20240116010729.219219-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TDY6z0KW4z2yst
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jan 2024 13:36:42 +1100 (AEDT)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40G2WX1N024324;
+	Tue, 16 Jan 2024 02:36:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=8IvyELGeV2sLBre+05KqOTYvHpwQ8T0u/lyKejMyHuU=;
+ b=V5e87H5Zoa3HheabqQPOTcWm5X8qlx2ufFg3Yg7YkZgj2D8CtMVQvxUgst6pdHxtYWg0
+ evpWYzXn7ARpABVpJF3khSkd0+lPoVWHQCvxmP8LUSQQspSYciwKQqbLUfYSeuepIK5H
+ d9I6YA7DyMRHJ6gumIaGQru13ZRIAAft82Obgv7amEQrf2Jf8/mjuAUlKlQmIzE4pDAX
+ 9NNqPOm1lK1HBKA5X8maCdb84KYf1Ujx18k186FA9jSQn5H3Wu+fAJed+MnCtz6yufWc
+ /BrXVC9vesctMC79CNJQFvzxTeg3/vad/fJZfKYbP1un9mJlDD5xo1yaAqGe2OZsXJLx Bg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vnh3n02g7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jan 2024 02:36:34 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40G2XCqO026797;
+	Tue, 16 Jan 2024 02:36:33 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vnh3n02fu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jan 2024 02:36:33 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40G0qGlU008632;
+	Tue, 16 Jan 2024 02:36:32 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vm6bkbv77-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jan 2024 02:36:32 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40G2aVgo52626156
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Jan 2024 02:36:31 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4B40F58058;
+	Tue, 16 Jan 2024 02:36:31 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 10F4958059;
+	Tue, 16 Jan 2024 02:36:30 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.67.30.46])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 16 Jan 2024 02:36:29 +0000 (GMT)
+Subject: Re: [PATCH v5] powerpc/pseries/vas: Use usleep_range() to support
+ HCALL delay
+To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+References: <20240111062510.1889752-1-haren@linux.ibm.com>
+ <87v87zaihc.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+From: Haren Myneni <haren@linux.ibm.com>
+Message-ID: <88b3cf3e-c207-cb46-f372-ff99fd172457@linux.ibm.com>
+Date: Mon, 15 Jan 2024 18:36:29 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.147
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <87v87zaihc.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 05EKKaBIHh1Tm_XsOLFhkI7U9QEVk751
+X-Proofpoint-GUID: Krd6cD6y-ENAN-p_ySC1SWRsfZPSS7BG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-15_17,2024-01-15_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
+ bulkscore=0 phishscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ suspectscore=0 malwarescore=0 priorityscore=1501 clxscore=1015 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2401160019
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,120 +101,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, dave.hansen@linux.intel.com, Palmer Dabbelt <palmer@rivosinc.com>, Guo Ren <guoren@kernel.org>, linux-riscv@lists.infradead.org, will@kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Sasha Levin <sashal@kernel.org>, linux-s390@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, linux-csky@vger.kernel.org, mingo@redhat.com, aou@eecs.berkeley.edu, gor@linux.ibm.com, hca@linux.ibm.com, bp@alien8.de, paul.walmsley@sifive.com, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, palmer@dabbelt.com, linuxppc-dev@lists.ozlabs.org
+Cc: aneesh.kumar@kernel.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 64bac5ea17d527872121adddfee869c7a0618f8f ]
 
-The prototype was hidden in an #ifdef on x86, which causes a warning:
+On 1/11/24 9:27 AM, Nathan Lynch wrote:
+> Haren Myneni <haren@linux.ibm.com> writes:
+>> VAS allocate, modify and deallocate HCALLs returns
+>> H_LONG_BUSY_ORDER_1_MSEC or H_LONG_BUSY_ORDER_10_MSEC for busy
+>> delay and expects OS to reissue HCALL after that delay. But using
+>> msleep() will often sleep at least 20 msecs even though the
+>> hypervisor suggests OS reissue these HCALLs after 1 or 10msecs.
+>>
+>> The open and close VAS window functions hold mutex and then issue
+>> these HCALLs. So these operations can take longer than the
+>> necessary when multiple threads issue open or close window APIs
+>> simultaneously, especially might affect the performance in the
+>> case of repeat open/close APIs for each compression request.
+>> On the large machine configuration which allows more simultaneous
+>> open/close windows (Ex: 240 cores provides 4800 VAS credits), the
+>> user can observe hung task traces in dmesg due to mutex contention
+>> around open/close HCAlls.
+> 
+> Is this because the workload queues enough tasks on the mutex to trigger
+> the hung task watchdog? With a threshold of 120 seconds, something on
+> the order of ~6000 tasks each taking 20ms or more to traverse this
+> critical section would cause the problem I think you're describing.
+> 
+> Presumably this change improves the situation, but the commit message
+> isn't explicit. Have you measured the "throughput" of window open/close
+> activity before and after? Anything that quantifies the improvement
+> would be welcome.
 
-kernel/irq_work.c:72:13: error: no previous prototype for 'arch_irq_work_raise' [-Werror=missing-prototypes]
+Yes, tested on the large system which allows open/close 4800 windows at 
+the same time (means 4800 tasks). Noticed sleep more than 20msecs for 
+some tasks and getting hung traces for some tasks since the combined 
+waiting timing is more then 120seconds. With this patch, the maximum 
+sleep is 10msecs and did not see these traces on this system. I will add 
+more description to the commit log.
 
-Some architectures have a working prototype, while others don't.
-Fix this by providing it in only one place that is always visible.
+Thanks
+Haren
 
-Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
-Acked-by: Guo Ren <guoren@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm64/include/asm/irq_work.h   | 2 --
- arch/csky/include/asm/irq_work.h    | 2 +-
- arch/powerpc/include/asm/irq_work.h | 1 -
- arch/riscv/include/asm/irq_work.h   | 2 +-
- arch/s390/include/asm/irq_work.h    | 2 --
- arch/x86/include/asm/irq_work.h     | 1 -
- include/linux/irq_work.h            | 3 +++
- 7 files changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/include/asm/irq_work.h b/arch/arm64/include/asm/irq_work.h
-index 81bbfa3a035b..a1020285ea75 100644
---- a/arch/arm64/include/asm/irq_work.h
-+++ b/arch/arm64/include/asm/irq_work.h
-@@ -2,8 +2,6 @@
- #ifndef __ASM_IRQ_WORK_H
- #define __ASM_IRQ_WORK_H
- 
--extern void arch_irq_work_raise(void);
--
- static inline bool arch_irq_work_has_interrupt(void)
- {
- 	return true;
-diff --git a/arch/csky/include/asm/irq_work.h b/arch/csky/include/asm/irq_work.h
-index 33aaf39d6f94..d39fcc1f5395 100644
---- a/arch/csky/include/asm/irq_work.h
-+++ b/arch/csky/include/asm/irq_work.h
-@@ -7,5 +7,5 @@ static inline bool arch_irq_work_has_interrupt(void)
- {
- 	return true;
- }
--extern void arch_irq_work_raise(void);
-+
- #endif /* __ASM_CSKY_IRQ_WORK_H */
-diff --git a/arch/powerpc/include/asm/irq_work.h b/arch/powerpc/include/asm/irq_work.h
-index b8b0be8f1a07..c6d3078bd8c3 100644
---- a/arch/powerpc/include/asm/irq_work.h
-+++ b/arch/powerpc/include/asm/irq_work.h
-@@ -6,6 +6,5 @@ static inline bool arch_irq_work_has_interrupt(void)
- {
- 	return true;
- }
--extern void arch_irq_work_raise(void);
- 
- #endif /* _ASM_POWERPC_IRQ_WORK_H */
-diff --git a/arch/riscv/include/asm/irq_work.h b/arch/riscv/include/asm/irq_work.h
-index b53891964ae0..b27a4d64fc6a 100644
---- a/arch/riscv/include/asm/irq_work.h
-+++ b/arch/riscv/include/asm/irq_work.h
-@@ -6,5 +6,5 @@ static inline bool arch_irq_work_has_interrupt(void)
- {
- 	return IS_ENABLED(CONFIG_SMP);
- }
--extern void arch_irq_work_raise(void);
-+
- #endif /* _ASM_RISCV_IRQ_WORK_H */
-diff --git a/arch/s390/include/asm/irq_work.h b/arch/s390/include/asm/irq_work.h
-index 603783766d0a..f00c9f610d5a 100644
---- a/arch/s390/include/asm/irq_work.h
-+++ b/arch/s390/include/asm/irq_work.h
-@@ -7,6 +7,4 @@ static inline bool arch_irq_work_has_interrupt(void)
- 	return true;
- }
- 
--void arch_irq_work_raise(void);
--
- #endif /* _ASM_S390_IRQ_WORK_H */
-diff --git a/arch/x86/include/asm/irq_work.h b/arch/x86/include/asm/irq_work.h
-index 800ffce0db29..6b4d36c95165 100644
---- a/arch/x86/include/asm/irq_work.h
-+++ b/arch/x86/include/asm/irq_work.h
-@@ -9,7 +9,6 @@ static inline bool arch_irq_work_has_interrupt(void)
- {
- 	return boot_cpu_has(X86_FEATURE_APIC);
- }
--extern void arch_irq_work_raise(void);
- #else
- static inline bool arch_irq_work_has_interrupt(void)
- {
-diff --git a/include/linux/irq_work.h b/include/linux/irq_work.h
-index ec2a47a81e42..ee5f9120c4d7 100644
---- a/include/linux/irq_work.h
-+++ b/include/linux/irq_work.h
-@@ -58,6 +58,9 @@ void irq_work_sync(struct irq_work *work);
- void irq_work_run(void);
- bool irq_work_needs_cpu(void);
- void irq_work_single(void *arg);
-+
-+void arch_irq_work_raise(void);
-+
- #else
- static inline bool irq_work_needs_cpu(void) { return false; }
- static inline void irq_work_run(void) { }
--- 
-2.43.0
 
