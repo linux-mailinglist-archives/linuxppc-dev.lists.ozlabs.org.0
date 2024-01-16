@@ -1,72 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34E1382F75D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jan 2024 21:21:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E5A682FAC0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jan 2024 22:40:06 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=loIWYCWf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pBCDyTAq;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TF0l810RBz3cX8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jan 2024 07:21:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TF2V33s78z3c40
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jan 2024 08:39:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=loIWYCWf;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pBCDyTAq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::62e; helo=mail-ej1-x62e.google.com; envelope-from=yosryahmed@google.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TF0kF5tcsz3bwj
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jan 2024 07:20:20 +1100 (AEDT)
-Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-a28ab7ae504so978468166b.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jan 2024 12:20:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1705436417; x=1706041217; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=P3E2Y2gGlsfMwMpgThK3AbQt/GlaabuQMTiIlyvqmJY=;
-        b=loIWYCWfYKu85JtDsHkqD64lS+RfTvKnkOqiO3NOUAIgqIP+npYpJI5gtjuCr5hsNJ
-         Xtwz5AwEDWFSj84n5uyypDr0tq64TGmvNcLVx/PgZTevVftRsHzTdaUE0MxZxU+Jzkko
-         HzwOWfZo7s+2n6EjBne+2LbabT0Ab86UzNPvhb51vAzGo4HXoAyy47aj5UIF0aGF/fd+
-         aaYmsl5pYxf3oNV0xek9uq/1I+S+OES8YSWUaDnpZyZKwAbgWvDHG4wU+DO2RjKYsnFg
-         RXXhrGxdsfyjkvMAmaZxs5RMGneIAT5R2UOTMlsec/8+jOsKlEaGMoPGQFFnIxcAMR8J
-         ULdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705436417; x=1706041217;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=P3E2Y2gGlsfMwMpgThK3AbQt/GlaabuQMTiIlyvqmJY=;
-        b=Hj/WVRTjs2o0831mU2Hk9OUS7ufAwFMYI/W7xLeUM2SnRNw+1ENeorI02D4jCCXXdN
-         ECXgSib87birZNcjuksTacrVnfZ2NSQQ/3cHltHbDR+udVFaQJX00ylI0yvRN8o8fgJW
-         7snI+F089Qx+txVbX7Tf9dVSYvOPxmach9iqlZbMEyTtNXUy21AZL0IaOggbakGuXJIg
-         4Gcmlmli11SQwWl48dT7BywR1WdsPSM+2bfVJQbE7OL6Pd3LW33vdJHRSldfQVAXMfqd
-         43it/9BbqWOgA9R6cHs5Fl7trjgaO8IEkYWPpU89sJJFh6EIjt8V/JMTczuE3Z0L60VG
-         XiYg==
-X-Gm-Message-State: AOJu0YyN50hesN9zrCLJ5K21wudPqg8ZxgPzFOjj2oRsPQctGCeh/G4n
-	dh+WzmdcdBJXM3dgCIBuzKTaiM8zxoFzJ06CEU817EDhFuyf
-X-Google-Smtp-Source: AGHT+IEPFQwqltvYgFxlysBjGHd+0u+L4kfWHJuGtRT3TShDlHV6JS9iDCNOLsEInB40YpGF+P8XDD4PBoRyi2p/qPg=
-X-Received: by 2002:a17:906:1457:b0:a27:915e:a306 with SMTP id
- q23-20020a170906145700b00a27915ea306mr3648666ejc.136.1705436417121; Tue, 16
- Jan 2024 12:20:17 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TF2T82G3gz2xgp
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jan 2024 08:39:07 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40GLbCeX011034;
+	Tue, 16 Jan 2024 21:38:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=C34bD3H/UW2o8lGJiE4Kl6JTQHvAgZThBzA+i3EkQj4=;
+ b=pBCDyTAqmIHQUh+WookDoNH+IaXDelj8E17v4vrqhzDtkWmm7/W79f09VlO9RLAGsyDQ
+ 5XpT7BzXBzTjat8kOoLEtQhpr9KxbD+064D4h/Kv3zpIGju3wjpHoQsaR04CV45RsRLy
+ mwDHnngbbdsjZJ4GoMXL9UeYcBYBpvvlqNYzpes9ouanXZZFKZJLU+y4Zn4mjexMEeC+
+ J+JXb79X5lSv/4+BxOa9PQ1axgPBcfkRayp9wEdkfHZwtntkgxQ7MPF8hm3dI4B22KDu
+ v1d0B+0w3llpJDEop1ib9yzyU1dw11yK3m8mXS4fZ3V3FytdkvKZTAW6yspngS4k46S2 ug== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vp1vcg1jp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jan 2024 21:38:51 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40GLcDTF016360;
+	Tue, 16 Jan 2024 21:38:51 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vp1vcg1hs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jan 2024 21:38:51 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40GJ6ONT023421;
+	Tue, 16 Jan 2024 21:38:49 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vm6bkh59q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jan 2024 21:38:49 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40GLcmas66912726
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Jan 2024 21:38:49 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A30145804B;
+	Tue, 16 Jan 2024 21:38:48 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8250858055;
+	Tue, 16 Jan 2024 21:38:47 +0000 (GMT)
+Received: from [9.61.126.152] (unknown [9.61.126.152])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 16 Jan 2024 21:38:47 +0000 (GMT)
+Message-ID: <92007644-72e3-4312-b9e9-e93e5142e090@linux.ibm.com>
+Date: Tue, 16 Jan 2024 13:38:46 -0800
 MIME-Version: 1.0
-References: <20240112193103.3798287-1-yosryahmed@google.com>
- <CAKEwX=PXfZssERxeMS3FpMP7H0psMzC72C2ga3fqr_Qh88M75A@mail.gmail.com>
- <CAJD7tkYqKve5V4eJjbZE8kPZ=-5DU1Xh6jym8OfE1twQz-vbUA@mail.gmail.com>
- <CAKEwX=P21VvVyfmAADzXe0=Mqz3Htyx9nQuiivLchcDZRumh6Q@mail.gmail.com> <ZaajDheNtqKkCoeD@infradead.org>
-In-Reply-To: <ZaajDheNtqKkCoeD@infradead.org>
-From: Yosry Ahmed <yosryahmed@google.com>
-Date: Tue, 16 Jan 2024 12:19:39 -0800
-Message-ID: <CAJD7tkaYu2+g-3y3k35KaiLEsrFVtfpSS=9uv+ic3Zwv6fTS3w@mail.gmail.com>
-Subject: Re: [RFC PATCH] mm: z3fold: rename CONFIG_Z3FOLD to CONFIG_Z3FOLD_DEPRECATED
-To: Christoph Hellwig <hch@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 25/42] drivers/scsi/ibmvscsi: Convert snprintf to
+ sysfs_emit
+Content-Language: en-US
+To: Li Zhijian <lizhijian@fujitsu.com>, linux-kernel@vger.kernel.org
+References: <20240116041129.3937800-1-lizhijian@fujitsu.com>
+ <20240116045151.3940401-1-lizhijian@fujitsu.com>
+ <20240116045151.3940401-23-lizhijian@fujitsu.com>
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+In-Reply-To: <20240116045151.3940401-23-lizhijian@fujitsu.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: T9F9F6QalnDwMMGJCSEfB4HU9ZM759gq
+X-Proofpoint-ORIG-GUID: s4AnZKTFZA-kPfDCUxWgqMxp7_K2Rqb-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-16_12,2024-01-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
+ mlxlogscore=888 clxscore=1011 priorityscore=1501 lowpriorityscore=0
+ bulkscore=0 impostorscore=0 spamscore=0 adultscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401160170
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,38 +101,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, Nhat Pham <nphamcs@gmail.com>, linux-mm@kvack.org, Chris Li <chrisl@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, loongarch@lists.linux.dev, Johannes Weiner <hannes@cmpxchg.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Minchan Kim <minchan@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, WANG Xuerui <kernel@xen0n.name>, Vitaly Wool <vitaly.wool@konsulko.com>
+Cc: linux-scsi@vger.kernel.org, "Martin K. Petersen" <martin.petersen@oracle.com>, "James E.J. Bottomley" <jejb@linux.ibm.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jan 16, 2024 at 7:39=E2=80=AFAM Christoph Hellwig <hch@infradead.or=
-g> wrote:
->
-> On Fri, Jan 12, 2024 at 04:38:30PM -0800, Nhat Pham wrote:
-> > >
-> > > I thought deprecating z3fold is the low hanging fruit. Then, once we
-> > > can sort out the MMU dependency in zsmalloc, we can go after zbud as
-> > > well.
-> >
-> > Makes sense to me. Should we do the same thing to zbud? We probably
-> > have even less of a case for it, no?
->
-> Is there any user visible effect of switching the allocator?  If not it
-> seems a bit pointless to deprecate them vs just removing them (or maybe
-> making z3fold depend on !MMU for now).
+On 1/15/24 20:51, Li Zhijian wrote:
+> Per filesystems/sysfs.rst, show() should only use sysfs_emit()
+> or sysfs_emit_at() when formatting the value to be returned to user space.
+> 
+> coccinelle complains that there are still a couple of functions that use
+> snprintf(). Convert them to sysfs_emit().
+> 
+>> ./drivers/scsi/ibmvscsi/ibmvfc.c:3483:8-16: WARNING: please use sysfs_emit
+>> ./drivers/scsi/ibmvscsi/ibmvfc.c:3493:8-16: WARNING: please use sysfs_emit
+>> ./drivers/scsi/ibmvscsi/ibmvfc.c:3503:8-16: WARNING: please use sysfs_emit
+>> ./drivers/scsi/ibmvscsi/ibmvfc.c:3513:8-16: WARNING: please use sysfs_emit
+>> ./drivers/scsi/ibmvscsi/ibmvfc.c:3522:8-16: WARNING: please use sysfs_emit
+>> ./drivers/scsi/ibmvscsi/ibmvfc.c:3530:8-16: WARNING: please use sysfs_emit
+> 
+> No functional change intended
+> 
+> CC: Tyrel Datwyler <tyreld@linux.ibm.com>
+> CC: Michael Ellerman <mpe@ellerman.id.au>
+> CC: Nicholas Piggin <npiggin@gmail.com>
+> CC: Christophe Leroy <christophe.leroy@csgroup.eu>
+> CC: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+> CC: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+> CC: "James E.J. Bottomley" <jejb@linux.ibm.com>
+> CC: "Martin K. Petersen" <martin.petersen@oracle.com>
+> CC: linux-scsi@vger.kernel.org
+> CC: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+> ---
 
-Well, better compression ratios for one :)
+Acked-by: Tyrel Datwyler <tyreld@linux.ibm.com>
 
-I think a long time ago there were complaints that zsmalloc had higher
-latency than zbud/z3fold, but since then a lot of things have changed
-(including nice compaction optimization from Sergey, and compaction
-was one of the main factors AFAICT). Also, recent experiments that
-Chris Li conducted showed that (at least in our setup), the
-decompression is only a small part of the fault latency with zswap
-(i.e. not the main factor) -- so I am not sure if it actually matters
-in practice.
-
-That said, I have not conducted any experiments personally with z3fold
-or zbud, which is why I proposed the conservative approach of marking
-as deprecated first. However, if others believe this is unnecessary I
-am fine with removal as well. Whatever we agree on is fine by me.
