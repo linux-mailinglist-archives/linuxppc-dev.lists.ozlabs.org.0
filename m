@@ -1,60 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A552682E932
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jan 2024 06:26:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C233F82E953
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jan 2024 07:00:16 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SZO0mq8j;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TDctN4Nv6z3ckP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jan 2024 16:26:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TDddp4g26z3bTf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jan 2024 17:00:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=fujitsu.com (client-ip=139.138.37.100; helo=esa12.hc1455-7.c3s2.iphmx.com; envelope-from=lizhijian@fujitsu.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 65 seconds by postgrey-1.37 at boromir; Tue, 16 Jan 2024 15:54:07 AEDT
-Received: from esa12.hc1455-7.c3s2.iphmx.com (esa12.hc1455-7.c3s2.iphmx.com [139.138.37.100])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SZO0mq8j;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TDc9W0hlnz3bTf
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jan 2024 15:54:06 +1100 (AEDT)
-X-IronPort-AV: E=McAfee;i="6600,9927,10954"; a="125556485"
-X-IronPort-AV: E=Sophos;i="6.04,198,1695654000"; 
-   d="scan'208";a="125556485"
-Received: from unknown (HELO oym-r3.gw.nic.fujitsu.com) ([210.162.30.91])
-  by esa12.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2024 13:52:24 +0900
-Received: from oym-m4.gw.nic.fujitsu.com (oym-nat-oym-m4.gw.nic.fujitsu.com [192.168.87.61])
-	by oym-r3.gw.nic.fujitsu.com (Postfix) with ESMTP id E497FD64B3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jan 2024 13:52:22 +0900 (JST)
-Received: from kws-ab3.gw.nic.fujitsu.com (kws-ab3.gw.nic.fujitsu.com [192.51.206.21])
-	by oym-m4.gw.nic.fujitsu.com (Postfix) with ESMTP id 1A8A5D5401
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jan 2024 13:52:22 +0900 (JST)
-Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
-	by kws-ab3.gw.nic.fujitsu.com (Postfix) with ESMTP id AB20B200A56C8
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jan 2024 13:52:21 +0900 (JST)
-Received: from localhost.localdomain (unknown [10.167.226.45])
-	by edo.cn.fujitsu.com (Postfix) with ESMTP id 0CC131A0070;
-	Tue, 16 Jan 2024 12:52:21 +0800 (CST)
-From: Li Zhijian <lizhijian@fujitsu.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH 25/42] drivers/scsi/ibmvscsi: Convert snprintf to sysfs_emit
-Date: Tue, 16 Jan 2024 12:51:34 +0800
-Message-Id: <20240116045151.3940401-23-lizhijian@fujitsu.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20240116045151.3940401-1-lizhijian@fujitsu.com>
-References: <20240116041129.3937800-1-lizhijian@fujitsu.com>
- <20240116045151.3940401-1-lizhijian@fujitsu.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TDdcy2vryz2yPq
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jan 2024 16:59:29 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40G5Ogqi014334;
+	Tue, 16 Jan 2024 05:59:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=CkRzBSnSlq2cSIZgPX3ORkWzotDVQCad1hVcxBW3e5A=;
+ b=SZO0mq8j5j5wugI8TxrURl+TP/pXCXDIpqrn7zrLzT6ETvQ72dY7KC+iMckG/xh7Mo8U
+ DLCT318d7tlP9lB5u5SsOQZeTFoaH4hDwYdF2xL6SilgqXyNgADqDg8clr/hti3JX6kH
+ 1JTHkZOJf01EHcWUt6tZllqfGVnvcUV9Btiy/jz6wiX/ObvgGDa0bBU7K6VAtjbjgdns
+ qjJTS0T9LLuB2Y825ZvWKFQEyjXqFMmGJ7vqb7ZDxfJmq2Of5PnHQxluY3rKXuvZ810l
+ cXcc4kSb1HVO18HbhUJNJ/QCgwZajpQwTBlyaFPal8xeF2eyLoCGbkGEHCWIfzqhmdgs Fg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vnkmfrr7f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jan 2024 05:59:19 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40G5RO4s023975;
+	Tue, 16 Jan 2024 05:59:18 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vnkmfrr79-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jan 2024 05:59:18 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40G43Dtx008657;
+	Tue, 16 Jan 2024 05:59:18 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vm6bkcnka-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jan 2024 05:59:18 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40G5xEam26214962
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Jan 2024 05:59:15 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B15315805C;
+	Tue, 16 Jan 2024 05:59:14 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2B9D45805A;
+	Tue, 16 Jan 2024 05:59:13 +0000 (GMT)
+Received: from localhost.ibm.com (unknown [9.67.73.23])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 16 Jan 2024 05:59:12 +0000 (GMT)
+From: Haren Myneni <haren@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v6] powerpc/pseries/vas: Use usleep_range() to support HCALL delay
+Date: Mon, 15 Jan 2024 21:59:10 -0800
+Message-Id: <20240116055910.421605-1-haren@linux.ibm.com>
+X-Mailer: git-send-email 2.26.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-28122.004
-X-TM-AS-User-Approved-Sender: Yes
-X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-28122.004
-X-TMASE-Result: 10--16.426000-10.000000
-X-TMASE-MatchedRID: Jy5kObkVr+g4ibokZ3+Q0CoiRKlBVkYIBXngI6jFvpfvd49YGReckE1N
-	J2MN+nPkgxCMf8A0YpR5sRK06wHV4TBF7stuNMMxLdBFrfY9r2lSuvtBzlaEqL42hLbi424DvwU
-	evDt+uW5/XjpbSJS7a0NziVKCujClh44pFEtxshLfSQNpZkETVAv/9UzFeXITS4KPPiCB23AokC
-	/iIVpcslHmENCJyDB7gDLqnrRlXrZ8nn9tnqel2JBlLa6MK1y4
-X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
-X-Mailman-Approved-At: Tue, 16 Jan 2024 16:24:27 +1100
+X-Proofpoint-ORIG-GUID: h_T6UoxV-YKblL-QkfBO6DzOR80mMGEi
+X-Proofpoint-GUID: 6SHlzS3TZzpNW_jsa6JuyEcdSLuYl-G9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-16_02,2024-01-15_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
+ priorityscore=1501 lowpriorityscore=0 malwarescore=0 impostorscore=0
+ bulkscore=0 clxscore=1015 spamscore=0 mlxscore=0 mlxlogscore=999
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401160044
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,122 +93,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, linux-scsi@vger.kernel.org, "Martin K. Petersen" <martin.petersen@oracle.com>, "James E.J. Bottomley" <jejb@linux.ibm.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Li Zhijian <lizhijian@fujitsu.com>, linuxppc-dev@lists.ozlabs.org
+Cc: nathanl@linux.ibm.com, haren@linux.ibm.com, npiggin@gmail.com, aneesh.kumar@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Per filesystems/sysfs.rst, show() should only use sysfs_emit()
-or sysfs_emit_at() when formatting the value to be returned to user space.
+VAS allocate, modify and deallocate HCALLs returns
+H_LONG_BUSY_ORDER_1_MSEC or H_LONG_BUSY_ORDER_10_MSEC for busy
+delay and expects OS to reissue HCALL after that delay. But using
+msleep() will often sleep at least 20 msecs even though the
+hypervisor suggests OS reissue these HCALLs after 1 or 10msecs.
 
-coccinelle complains that there are still a couple of functions that use
-snprintf(). Convert them to sysfs_emit().
+The open and close VAS window functions hold mutex and then issue
+these HCALLs. So these operations can take longer than the
+necessary when multiple threads issue open or close window APIs
+simultaneously, especially might affect the performance in the
+case of repeat open/close APIs for each compression request.
 
-> ./drivers/scsi/ibmvscsi/ibmvfc.c:3483:8-16: WARNING: please use sysfs_emit
-> ./drivers/scsi/ibmvscsi/ibmvfc.c:3493:8-16: WARNING: please use sysfs_emit
-> ./drivers/scsi/ibmvscsi/ibmvfc.c:3503:8-16: WARNING: please use sysfs_emit
-> ./drivers/scsi/ibmvscsi/ibmvfc.c:3513:8-16: WARNING: please use sysfs_emit
-> ./drivers/scsi/ibmvscsi/ibmvfc.c:3522:8-16: WARNING: please use sysfs_emit
-> ./drivers/scsi/ibmvscsi/ibmvfc.c:3530:8-16: WARNING: please use sysfs_emit
+Multiple tasks can open / close VAS windows at the same time
+which depends on the available VAS credits. For example, 240
+cores system provides 4800 VAS credits. It means 4800 tasks can
+execute open VAS windows HCALLs with the mutex. Since each
+msleep() will often sleep more than 20 msecs, some tasks are
+waiting more than 120 secs to acquire mutex. It can cause hung
+traces for these tasks in dmesg due to mutex contention around
+open/close HCALLs.
 
-No functional change intended
+Instead of msleep(), use usleep_range() to ensure sleep with
+the expected value before issuing HCALL again. So since each
+task sleep 10 msecs maximum, this patch allow more tasks can
+issue open/close VAS calls without any hung traces in the
+dmesg.
 
-CC: Tyrel Datwyler <tyreld@linux.ibm.com>
-CC: Michael Ellerman <mpe@ellerman.id.au>
-CC: Nicholas Piggin <npiggin@gmail.com>
-CC: Christophe Leroy <christophe.leroy@csgroup.eu>
-CC: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-CC: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-CC: "James E.J. Bottomley" <jejb@linux.ibm.com>
-CC: "Martin K. Petersen" <martin.petersen@oracle.com>
-CC: linux-scsi@vger.kernel.org
-CC: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+Suggested-by: Nathan Lynch <nathanl@linux.ibm.com>
+
 ---
- drivers/scsi/ibmvscsi/ibmvfc.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+v1 -> v2:
+- Use usleep_range instead of using RTAS sleep routine as
+  suggested by Nathan
+v2 -> v3:
+- Sleep 10MSecs even for HCALL delay > 10MSecs and the other
+  commit / comemnt changes as suggested by Nathan and Ellerman.
+v3 -> v4:
+- More description in the commit log with the visible impact for
+  the current code as suggested by Aneesh
+v4 -> v5:
+- Use USEC_PER_MSEC macro in usleep_range as suggested by Aneesh
+v5 -> v6:
+- Use USEC_PER_MSEC macro to calculate all ranges in usleep_range()
+  and more description in the commit log.
+---
+ arch/powerpc/platforms/pseries/vas.c | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
-index 92c440f2e3a7..4be013976866 100644
---- a/drivers/scsi/ibmvscsi/ibmvfc.c
-+++ b/drivers/scsi/ibmvscsi/ibmvfc.c
-@@ -3480,8 +3480,7 @@ static ssize_t ibmvfc_show_host_partition_name(struct device *dev,
- 	struct Scsi_Host *shost = class_to_shost(dev);
- 	struct ibmvfc_host *vhost = shost_priv(shost);
- 
--	return snprintf(buf, PAGE_SIZE, "%s\n",
--			vhost->login_buf->resp.partition_name);
-+	return sysfs_emit(buf, "%s\n", vhost->login_buf->resp.partition_name);
- }
- 
- static ssize_t ibmvfc_show_host_device_name(struct device *dev,
-@@ -3490,8 +3489,7 @@ static ssize_t ibmvfc_show_host_device_name(struct device *dev,
- 	struct Scsi_Host *shost = class_to_shost(dev);
- 	struct ibmvfc_host *vhost = shost_priv(shost);
- 
--	return snprintf(buf, PAGE_SIZE, "%s\n",
--			vhost->login_buf->resp.device_name);
-+	return sysfs_emit(buf, "%s\n", vhost->login_buf->resp.device_name);
- }
- 
- static ssize_t ibmvfc_show_host_loc_code(struct device *dev,
-@@ -3500,8 +3498,7 @@ static ssize_t ibmvfc_show_host_loc_code(struct device *dev,
- 	struct Scsi_Host *shost = class_to_shost(dev);
- 	struct ibmvfc_host *vhost = shost_priv(shost);
- 
--	return snprintf(buf, PAGE_SIZE, "%s\n",
--			vhost->login_buf->resp.port_loc_code);
-+	return sysfs_emit(buf, "%s\n", vhost->login_buf->resp.port_loc_code);
- }
- 
- static ssize_t ibmvfc_show_host_drc_name(struct device *dev,
-@@ -3510,8 +3507,7 @@ static ssize_t ibmvfc_show_host_drc_name(struct device *dev,
- 	struct Scsi_Host *shost = class_to_shost(dev);
- 	struct ibmvfc_host *vhost = shost_priv(shost);
- 
--	return snprintf(buf, PAGE_SIZE, "%s\n",
--			vhost->login_buf->resp.drc_name);
-+	return sysfs_emit(buf, "%s\n", vhost->login_buf->resp.drc_name);
- }
- 
- static ssize_t ibmvfc_show_host_npiv_version(struct device *dev,
-@@ -3519,7 +3515,8 @@ static ssize_t ibmvfc_show_host_npiv_version(struct device *dev,
+diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
+index 71d52a670d95..8e8934564557 100644
+--- a/arch/powerpc/platforms/pseries/vas.c
++++ b/arch/powerpc/platforms/pseries/vas.c
+@@ -38,7 +38,27 @@ static long hcall_return_busy_check(long rc)
  {
- 	struct Scsi_Host *shost = class_to_shost(dev);
- 	struct ibmvfc_host *vhost = shost_priv(shost);
--	return snprintf(buf, PAGE_SIZE, "%d\n", be32_to_cpu(vhost->login_buf->resp.version));
-+	return sysfs_emit(buf, "%d\n",
-+			  be32_to_cpu(vhost->login_buf->resp.version));
- }
- 
- static ssize_t ibmvfc_show_host_capabilities(struct device *dev,
-@@ -3527,7 +3524,8 @@ static ssize_t ibmvfc_show_host_capabilities(struct device *dev,
- {
- 	struct Scsi_Host *shost = class_to_shost(dev);
- 	struct ibmvfc_host *vhost = shost_priv(shost);
--	return snprintf(buf, PAGE_SIZE, "%llx\n", be64_to_cpu(vhost->login_buf->resp.capabilities));
-+	return sysfs_emit(buf, "%llx\n",
-+			  be64_to_cpu(vhost->login_buf->resp.capabilities));
- }
- 
- /**
-@@ -3548,7 +3546,7 @@ static ssize_t ibmvfc_show_log_level(struct device *dev,
- 	int len;
- 
- 	spin_lock_irqsave(shost->host_lock, flags);
--	len = snprintf(buf, PAGE_SIZE, "%d\n", vhost->log_level);
-+	len = sysfs_emit(buf, "%d\n", vhost->log_level);
- 	spin_unlock_irqrestore(shost->host_lock, flags);
- 	return len;
- }
-@@ -3587,7 +3585,7 @@ static ssize_t ibmvfc_show_scsi_channels(struct device *dev,
- 	int len;
- 
- 	spin_lock_irqsave(shost->host_lock, flags);
--	len = snprintf(buf, PAGE_SIZE, "%d\n", scsi->desired_queues);
-+	len = sysfs_emit(buf, "%d\n", scsi->desired_queues);
- 	spin_unlock_irqrestore(shost->host_lock, flags);
- 	return len;
- }
+ 	/* Check if we are stalled for some time */
+ 	if (H_IS_LONG_BUSY(rc)) {
+-		msleep(get_longbusy_msecs(rc));
++		unsigned int ms;
++		/*
++		 * Allocate, Modify and Deallocate HCALLs returns
++		 * H_LONG_BUSY_ORDER_1_MSEC or H_LONG_BUSY_ORDER_10_MSEC
++		 * for the long delay. So the sleep time should always
++		 * be either 1 or 10msecs, but in case if the HCALL
++		 * returns the long delay > 10 msecs, clamp the sleep
++		 * time to 10msecs.
++		 */
++		ms = clamp(get_longbusy_msecs(rc), 1, 10);
++
++		/*
++		 * msleep() will often sleep at least 20 msecs even
++		 * though the hypervisor suggests that the OS reissue
++		 * HCALLs after 1 or 10msecs. Also the delay hint from
++		 * the HCALL is just a suggestion. So OK to pause for
++		 * less time than the hinted delay. Use usleep_range()
++		 * to ensure we don't sleep much longer than actually
++		 * needed.
++		 */
++		usleep_range(ms * (USEC_PER_MSEC / 10), ms * USEC_PER_MSEC);
+ 		rc = H_BUSY;
+ 	} else if (rc == H_BUSY) {
+ 		cond_resched();
 -- 
-2.29.2
+2.26.3
 
