@@ -1,31 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4B978302E8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jan 2024 10:57:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D4FA830300
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jan 2024 10:59:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TFLs35nNqz3cTj
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jan 2024 20:57:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TFLvf3xq3z3cSQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jan 2024 20:59:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=srs0=kqa0=i3=xs4all.nl=hverkuil@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=srs0=kqa0=i3=xs4all.nl=hverkuil@kernel.org; receiver=lists.ozlabs.org)
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TFLrY0kb6z30GC
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jan 2024 20:57:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TFLvB3G5fz30GC
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jan 2024 20:59:18 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id 0749EB80F9E;
-	Wed, 17 Jan 2024 09:56:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37F5C433C7;
-	Wed, 17 Jan 2024 09:56:52 +0000 (UTC)
-Message-ID: <0cc58fbf-6f8a-46f2-afa1-c53c484ceb56@xs4all.nl>
-Date: Wed, 17 Jan 2024 10:56:50 +0100
+	by ams.source.kernel.org (Postfix) with ESMTP id DB722B8108B;
+	Wed, 17 Jan 2024 09:59:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09C7C433C7;
+	Wed, 17 Jan 2024 09:59:09 +0000 (UTC)
+Message-ID: <e01ed202-0e8c-4adb-bdd7-6ff2b83963db@xs4all.nl>
+Date: Wed, 17 Jan 2024 10:59:08 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 10/15] media: uapi: Add audio rate controls support
+Subject: Re: [PATCH v11 12/15] media: uapi: Add an entity type for audio
+ resampler
 Content-Language: en-US, nl
 To: Shengjiu Wang <shengjiu.wang@nxp.com>, sakari.ailus@iki.fi,
  tfiga@chromium.org, m.szyprowski@samsung.com, mchehab@kernel.org,
@@ -35,7 +36,7 @@ To: Shengjiu Wang <shengjiu.wang@nxp.com>, sakari.ailus@iki.fi,
  perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org,
  linuxppc-dev@lists.ozlabs.org
 References: <1700637838-6743-1-git-send-email-shengjiu.wang@nxp.com>
- <1700637838-6743-11-git-send-email-shengjiu.wang@nxp.com>
+ <1700637838-6743-13-git-send-email-shengjiu.wang@nxp.com>
 From: Hans Verkuil <hverkuil@xs4all.nl>
 Autocrypt: addr=hverkuil@xs4all.nl; keydata=
  xsFNBFQ84W0BEAC7EF1iL4s3tY8cRTVkJT/297h0Hz0ypA+ByVM4CdU9sN6ua/YoFlr9k0K4
@@ -80,7 +81,7 @@ Autocrypt: addr=hverkuil@xs4all.nl; keydata=
  gYmkrmv0duG1FStpY+IIQn1TOkuXrciTVfZY1cZD0aVxwlxXBnUNZZNslldvXFtndxR0SFat
  sflovhDxKyhFwXOP0Rv8H378/+14TaykknRBIKEc0+lcr+EMOSUR5eg4aURb8Gc3Uc7fgQ6q
  UssTXzHPyj1hAyDpfu8DzAwlh4kKFTodxSsKAjI45SLjadSc94/5Gy8645Y1KgBzBPTH7Q==
-In-Reply-To: <1700637838-6743-11-git-send-email-shengjiu.wang@nxp.com>
+In-Reply-To: <1700637838-6743-13-git-send-email-shengjiu.wang@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -97,101 +98,60 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Shengjiu,
-
-Some small comments below:
+Some small comments:
 
 On 22/11/2023 08:23, Shengjiu Wang wrote:
-> Add V4L2_CID_M2M_AUDIO_SOURCE_RATE and V4L2_CID_M2M_AUDIO_DEST_RATE
-> new IDs for rate control.
-> 
-> Add V4L2_CID_M2M_AUDIO_SOURCE_RATE_OFFSET and
-> V4L2_CID_M2M_AUDIO_DEST_RATE_OFFSET for clock drift.
+> Add and document a media entity type for audio resampler.
+
+for -> for an
+
+> It is MEDIA_ENT_F_PROC_AUDIO_RESAMPLER.
 > 
 > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 > ---
->  .../media/v4l/ext-ctrls-audio-m2m.rst         | 20 +++++++++++++++++++
->  drivers/media/v4l2-core/v4l2-ctrls-defs.c     |  6 ++++++
->  include/uapi/linux/v4l2-controls.h            |  5 +++++
->  3 files changed, 31 insertions(+)
+>  Documentation/userspace-api/media/mediactl/media-types.rst | 6 ++++++
+>  include/uapi/linux/media.h                                 | 1 +
+>  2 files changed, 7 insertions(+)
 > 
-> diff --git a/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst b/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
-> index 82d2ecedbfee..a3c06fbb91b9 100644
-> --- a/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
-> +++ b/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
-> @@ -19,3 +19,23 @@ Audio M2M Control IDs
->      The Audio M2M class descriptor. Calling
->      :ref:`VIDIOC_QUERYCTRL` for this control will
->      return a description of this control class.
-> +
-> +.. _v4l2-audio-asrc:
-> +
-> +``V4L2_CID_M2M_AUDIO_SOURCE_RATE (integer menu)``
-> +    Sets the audio source sample rate, unit is Hz
-> +
-> +``V4L2_CID_M2M_AUDIO_DEST_RATE (integer menu)``
-> +    Sets the audio destination sample rate, unit is Hz
-> +
-> +``V4L2_CID_M2M_AUDIO_SOURCE_RATE_OFFSET (fixed point)``
-> +    Sets the offset from the audio source sample rate, unit is Hz.
-> +    The offset compensates for any clock drift. The actual source audio sample
-> +    rate is the ideal source audio sample rate from
-> +    ``V4L2_CID_M2M_AUDIO_SOURCE_RATE`` plus this fixed point offset.
-> +
-> +``V4L2_CID_M2M_AUDIO_DEST_RATE_OFFSET (fixed point)``
-> +    Sets the offset from the audio dest sample rate, unit is Hz.
-
-dest -> destination
-
-> +    The offset compensates for any clock drift. The actual dest audio sample
-
-Ditto.
-
-> +    rate is the ideal source audio sample rate from
-> +    ``V4L2_CID_M2M_AUDIO_DEST_RATE`` plus this fixed point offset.
-> diff --git a/drivers/media/v4l2-core/v4l2-ctrls-defs.c b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
-> index 2a85ea3dc92f..4e606d7fd971 100644
-> --- a/drivers/media/v4l2-core/v4l2-ctrls-defs.c
-> +++ b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
-> @@ -1245,6 +1245,8 @@ const char *v4l2_ctrl_get_name(u32 id)
+> diff --git a/Documentation/userspace-api/media/mediactl/media-types.rst b/Documentation/userspace-api/media/mediactl/media-types.rst
+> index f0880aea41d6..abbe515dad76 100644
+> --- a/Documentation/userspace-api/media/mediactl/media-types.rst
+> +++ b/Documentation/userspace-api/media/mediactl/media-types.rst
+> @@ -40,6 +40,7 @@ Types and flags used to represent the media graph elements
+>  .. _MEDIA-ENT-F-PROC-VIDEO-ENCODER:
+>  .. _MEDIA-ENT-F-PROC-VIDEO-DECODER:
+>  .. _MEDIA-ENT-F-PROC-VIDEO-ISP:
+> +.. _MEDIA-ENT-F-PROC-AUDIO-RESAMPLER:
+>  .. _MEDIA-ENT-F-VID-MUX:
+>  .. _MEDIA-ENT-F-VID-IF-BRIDGE:
+>  .. _MEDIA-ENT-F-DV-DECODER:
+> @@ -208,6 +209,11 @@ Types and flags used to represent the media graph elements
+>  	  combination of custom V4L2 controls and IOCTLs, and parameters
+>  	  supplied in a metadata buffer.
 >  
->  	/* Audio M2M controls */
->  	case V4L2_CID_M2M_AUDIO_CLASS:  return "Audio M2M Controls";
-> +	case V4L2_CID_M2M_AUDIO_SOURCE_RATE:	return "Audio Source Sample Rate";
-> +	case V4L2_CID_M2M_AUDIO_DEST_RATE:	return "Audio Dest Sample Rate";
+> +    *  -  ``MEDIA_ENT_F_PROC_AUDIO_RESAMPLER``
+> +       -  An Audio Resampler device. An entity capable of
+> +	  resampling a audio stream from one sample rate to another sample
 
-Dest -> Destination
+a audio -> an audio
 
->  	default:
->  		return NULL;
->  	}
-> @@ -1606,6 +1608,10 @@ void v4l2_ctrl_fill(u32 id, const char **name, enum v4l2_ctrl_type *type,
->  	case V4L2_CID_COLORIMETRY_HDR10_MASTERING_DISPLAY:
->  		*type = V4L2_CTRL_TYPE_HDR10_MASTERING_DISPLAY;
->  		break;
-> +	case V4L2_CID_M2M_AUDIO_SOURCE_RATE:
-> +	case V4L2_CID_M2M_AUDIO_DEST_RATE:
-> +		*type = V4L2_CTRL_TYPE_INTEGER_MENU;
-> +		break;
->  	default:
->  		*type = V4L2_CTRL_TYPE_INTEGER;
->  		break;
-> diff --git a/include/uapi/linux/v4l2-controls.h b/include/uapi/linux/v4l2-controls.h
-> index 7d318065a33d..493b59f20a35 100644
-> --- a/include/uapi/linux/v4l2-controls.h
-> +++ b/include/uapi/linux/v4l2-controls.h
-> @@ -3489,6 +3489,11 @@ struct v4l2_ctrl_av1_film_grain {
->  #define V4L2_CID_M2M_AUDIO_CLASS_BASE  (V4L2_CTRL_CLASS_M2M_AUDIO | 0x900)
->  #define V4L2_CID_M2M_AUDIO_CLASS       (V4L2_CTRL_CLASS_M2M_AUDIO | 1)
->  
-> +#define V4L2_CID_M2M_AUDIO_SOURCE_RATE	(V4L2_CID_M2M_AUDIO_CLASS_BASE + 0)
-> +#define V4L2_CID_M2M_AUDIO_DEST_RATE	(V4L2_CID_M2M_AUDIO_CLASS_BASE + 1)
-> +#define V4L2_CID_M2M_AUDIO_SOURCE_RATE_OFFSET	(V4L2_CID_M2M_AUDIO_CLASS_BASE + 2)
-> +#define V4L2_CID_M2M_AUDIO_DEST_RATE_OFFSET	(V4L2_CID_M2M_AUDIO_CLASS_BASE + 3)
+> +	  rate. Must have one sink pad and at least one source pad.
 > +
->  /* MPEG-compression definitions kept for backwards compatibility */
->  #ifndef __KERNEL__
->  #define V4L2_CTRL_CLASS_MPEG            V4L2_CTRL_CLASS_CODEC
+>      *  -  ``MEDIA_ENT_F_VID_MUX``
+>         - Video multiplexer. An entity capable of multiplexing must have at
+>           least two sink pads and one source pad, and must pass the video
+> diff --git a/include/uapi/linux/media.h b/include/uapi/linux/media.h
+> index 9ff6dec7393a..a8266eaa8042 100644
+> --- a/include/uapi/linux/media.h
+> +++ b/include/uapi/linux/media.h
+> @@ -125,6 +125,7 @@ struct media_device_info {
+>  #define MEDIA_ENT_F_PROC_VIDEO_ENCODER		(MEDIA_ENT_F_BASE + 0x4007)
+>  #define MEDIA_ENT_F_PROC_VIDEO_DECODER		(MEDIA_ENT_F_BASE + 0x4008)
+>  #define MEDIA_ENT_F_PROC_VIDEO_ISP		(MEDIA_ENT_F_BASE + 0x4009)
+> +#define MEDIA_ENT_F_PROC_AUDIO_RESAMPLER	(MEDIA_ENT_F_BASE + 0x400a)
+>  
+>  /*
+>   * Switch and bridge entity functions
 
 Regards,
 
