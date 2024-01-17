@@ -1,95 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E5A682FAC0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jan 2024 22:40:06 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pBCDyTAq;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DEE3830213
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jan 2024 10:18:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TF2V33s78z3c40
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jan 2024 08:39:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TFL0Z1w9sz3cSL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jan 2024 20:18:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pBCDyTAq;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=chentao@kylinos.cn; receiver=lists.ozlabs.org)
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TF2T82G3gz2xgp
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jan 2024 08:39:07 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40GLbCeX011034;
-	Tue, 16 Jan 2024 21:38:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=C34bD3H/UW2o8lGJiE4Kl6JTQHvAgZThBzA+i3EkQj4=;
- b=pBCDyTAqmIHQUh+WookDoNH+IaXDelj8E17v4vrqhzDtkWmm7/W79f09VlO9RLAGsyDQ
- 5XpT7BzXBzTjat8kOoLEtQhpr9KxbD+064D4h/Kv3zpIGju3wjpHoQsaR04CV45RsRLy
- mwDHnngbbdsjZJ4GoMXL9UeYcBYBpvvlqNYzpes9ouanXZZFKZJLU+y4Zn4mjexMEeC+
- J+JXb79X5lSv/4+BxOa9PQ1axgPBcfkRayp9wEdkfHZwtntkgxQ7MPF8hm3dI4B22KDu
- v1d0B+0w3llpJDEop1ib9yzyU1dw11yK3m8mXS4fZ3V3FytdkvKZTAW6yspngS4k46S2 ug== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vp1vcg1jp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Jan 2024 21:38:51 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40GLcDTF016360;
-	Tue, 16 Jan 2024 21:38:51 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vp1vcg1hs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Jan 2024 21:38:51 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40GJ6ONT023421;
-	Tue, 16 Jan 2024 21:38:49 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vm6bkh59q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Jan 2024 21:38:49 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40GLcmas66912726
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 16 Jan 2024 21:38:49 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A30145804B;
-	Tue, 16 Jan 2024 21:38:48 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8250858055;
-	Tue, 16 Jan 2024 21:38:47 +0000 (GMT)
-Received: from [9.61.126.152] (unknown [9.61.126.152])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 16 Jan 2024 21:38:47 +0000 (GMT)
-Message-ID: <92007644-72e3-4312-b9e9-e93e5142e090@linux.ibm.com>
-Date: Tue, 16 Jan 2024 13:38:46 -0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TFL033Nz8z300v
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jan 2024 20:18:26 +1100 (AEDT)
+X-UUID: 092a25c25f774595a76680933ec4c3ab-20240117
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.35,REQID:e62c8672-fef4-4b33-9946-b3a1b05d1d21,IP:10,
+	URL:0,TC:0,Content:0,EDM:25,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACT
+	ION:release,TS:20
+X-CID-INFO: VERSION:1.1.35,REQID:e62c8672-fef4-4b33-9946-b3a1b05d1d21,IP:10,UR
+	L:0,TC:0,Content:0,EDM:25,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:20
+X-CID-META: VersionHash:5d391d7,CLOUDID:035e432f-1ab8-4133-9780-81938111c800,B
+	ulkID:24011717171241K6UZ5Z,BulkQuantity:0,Recheck:0,SF:66|38|24|17|19|44|1
+	02,TC:nil,Content:0,EDM:5,IP:-2,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL
+	:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI
+X-UUID: 092a25c25f774595a76680933ec4c3ab-20240117
+Received: from mail.kylinos.cn [(39.156.73.10)] by mailgw
+	(envelope-from <chentao@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 55816797; Wed, 17 Jan 2024 17:17:10 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id AF339E000EB9;
+	Wed, 17 Jan 2024 17:17:10 +0800 (CST)
+X-ns-mid: postfix-65A79B16-504608615
+Received: from kernel.. (unknown [172.20.15.234])
+	by mail.kylinos.cn (NSMail) with ESMTPA id DF716E000EB9;
+	Wed, 17 Jan 2024 17:17:07 +0800 (CST)
+From: Kunwu Chan <chentao@kylinos.cn>
+To: mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	christophe.leroy@csgroup.eu,
+	aneesh.kumar@kernel.org,
+	naveen.n.rao@linux.ibm.com
+Subject: [PATCH] powerpc/pasemi: Add a null pointer check to the pas_setup_mce_regs
+Date: Wed, 17 Jan 2024 17:17:06 +0800
+Message-Id: <20240117091706.153431-1-chentao@kylinos.cn>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 25/42] drivers/scsi/ibmvscsi: Convert snprintf to
- sysfs_emit
-Content-Language: en-US
-To: Li Zhijian <lizhijian@fujitsu.com>, linux-kernel@vger.kernel.org
-References: <20240116041129.3937800-1-lizhijian@fujitsu.com>
- <20240116045151.3940401-1-lizhijian@fujitsu.com>
- <20240116045151.3940401-23-lizhijian@fujitsu.com>
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-In-Reply-To: <20240116045151.3940401-23-lizhijian@fujitsu.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: T9F9F6QalnDwMMGJCSEfB4HU9ZM759gq
-X-Proofpoint-ORIG-GUID: s4AnZKTFZA-kPfDCUxWgqMxp7_K2Rqb-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-16_12,2024-01-16_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
- mlxlogscore=888 clxscore=1011 priorityscore=1501 lowpriorityscore=0
- bulkscore=0 impostorscore=0 spamscore=0 adultscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401160170
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,38 +65,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-scsi@vger.kernel.org, "Martin K. Petersen" <martin.petersen@oracle.com>, "James E.J. Bottomley" <jejb@linux.ibm.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Kunwu Chan <chentao@kylinos.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 1/15/24 20:51, Li Zhijian wrote:
-> Per filesystems/sysfs.rst, show() should only use sysfs_emit()
-> or sysfs_emit_at() when formatting the value to be returned to user space.
-> 
-> coccinelle complains that there are still a couple of functions that use
-> snprintf(). Convert them to sysfs_emit().
-> 
->> ./drivers/scsi/ibmvscsi/ibmvfc.c:3483:8-16: WARNING: please use sysfs_emit
->> ./drivers/scsi/ibmvscsi/ibmvfc.c:3493:8-16: WARNING: please use sysfs_emit
->> ./drivers/scsi/ibmvscsi/ibmvfc.c:3503:8-16: WARNING: please use sysfs_emit
->> ./drivers/scsi/ibmvscsi/ibmvfc.c:3513:8-16: WARNING: please use sysfs_emit
->> ./drivers/scsi/ibmvscsi/ibmvfc.c:3522:8-16: WARNING: please use sysfs_emit
->> ./drivers/scsi/ibmvscsi/ibmvfc.c:3530:8-16: WARNING: please use sysfs_emit
-> 
-> No functional change intended
-> 
-> CC: Tyrel Datwyler <tyreld@linux.ibm.com>
-> CC: Michael Ellerman <mpe@ellerman.id.au>
-> CC: Nicholas Piggin <npiggin@gmail.com>
-> CC: Christophe Leroy <christophe.leroy@csgroup.eu>
-> CC: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-> CC: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-> CC: "James E.J. Bottomley" <jejb@linux.ibm.com>
-> CC: "Martin K. Petersen" <martin.petersen@oracle.com>
-> CC: linux-scsi@vger.kernel.org
-> CC: linuxppc-dev@lists.ozlabs.org
-> Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-> ---
+kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure. Ensure the allocation was successful
+by checking the pointer validity.
 
-Acked-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+---
+ arch/powerpc/platforms/pasemi/setup.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/powerpc/platforms/pasemi/setup.c b/arch/powerpc/platfor=
+ms/pasemi/setup.c
+index 0761d98e5be3..8f98f3b58888 100644
+--- a/arch/powerpc/platforms/pasemi/setup.c
++++ b/arch/powerpc/platforms/pasemi/setup.c
+@@ -165,6 +165,8 @@ static int __init pas_setup_mce_regs(void)
+ 	while (dev && reg < MAX_MCE_REGS) {
+ 		mce_regs[reg].name =3D kasprintf(GFP_KERNEL,
+ 						"mc%d_mcdebug_errsta", reg);
++		if (!mce_regs[reg].name)
++			return -ENOMEM;
+ 		mce_regs[reg].addr =3D pasemi_pci_getcfgaddr(dev, 0x730);
+ 		dev =3D pci_get_device(PCI_VENDOR_ID_PASEMI, 0xa00a, dev);
+ 		reg++;
+--=20
+2.39.2
 
