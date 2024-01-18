@@ -2,55 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45A37831C8B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jan 2024 16:30:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43E23831C63
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jan 2024 16:26:32 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EikAJD1G;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SVW7z7Cg;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TG6Bv14yhz3dLh
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 02:30:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TG66G1HTJz3c1C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 02:26:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EikAJD1G;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SVW7z7Cg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TG65Q44NWz3bqx
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TG65Q1PtJz3bq0
 	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jan 2024 02:25:46 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id AAA83B818E9;
-	Thu, 18 Jan 2024 15:25:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0DB1EC433C7;
+	by sin.source.kernel.org (Postfix) with ESMTP id B9C04CE1FBC;
+	Thu, 18 Jan 2024 15:25:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1011DC43390;
 	Thu, 18 Jan 2024 15:25:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1705591542;
-	bh=ZrNZI/+KtaqDAeKBFPjQTAb311LBOoljbtl1LqlVqgU=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=EikAJD1G0pb3jVcwCRG+fB0VgJ6aECiR0DbO54vwJS46/PkKZ7ypAmiMAywBa+7JN
-	 C1OngJTsht/5e51HRbViv6HUrlVtjUPRv0J3Qk7C2KjRCLiFQz0JvjuGslWHyND9md
-	 f0XkLLJ4PU0msMmmK7luaFGXqzi9hMuWLJp3wG8GINIkNCqsC+XfxzRa/E9Q94Cyff
-	 gfZdmoS1nRFjp1cnjYAQndurEZBfwEKhUM9cdi+42IQxFdV6CMds4/EpKOcop3BAPf
-	 3UaFtN62BBsJQ2ySVDbcgHKrVeyIn30mRyuKzVlplAmvtbTAq8M2jafdjw0NKeMuEo
-	 eXCfOwb6+Tr4A==
+	bh=bv8EIfucd5lBrjjXVVDPU3FSiLtb8atCLikYS+cOi0U=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=SVW7z7Cg7uBzrupT3P+M0huZwscyqIFAUvkR8lMUWOI1kMhI7WutgJYTNKa60UXEl
+	 3igECw7aCQd7Y3s8DQX7J8cYc1fkFRZ3AWN5yDVkYHsD9TcUrNh5fApx9L9yE2W8xq
+	 1tzr6fKrAF4x42Q7G+/IPIVrc142OiEJeLuInikONOBwdJqp73peJ6celGZt2u2Htl
+	 6C07wt2UWaOQx1GnpWXDj55qj3aEyEXdo3PtOvnH5tEIUomOwMKcmfqAbV2p4aQiFN
+	 wtKdVNAlKi8wlepYq07zK8ejC56R/odwfe/SJvrszewChOnZ9etUOByQMF/u84jF85
+	 Lro7blXHXaomA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E0019C4707B;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ECCAEC47DAF;
 	Thu, 18 Jan 2024 15:25:41 +0000 (UTC)
 From: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
-Subject: [PATCH RFC 0/5] dump_stack: Allow runtime updates of the hardware
- description
-Date: Thu, 18 Jan 2024 09:25:11 -0600
-Message-Id:  <20240118-update-dump-stack-arch-str-v1-0-5c0f98d017b5@linux.ibm.com>
+Date: Thu, 18 Jan 2024 09:25:12 -0600
+Subject: [PATCH RFC 1/5] dump_stack: Make arch description buffer
+ __ro_after_init
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANdCqWUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDQ0ND3dKClMSSVN2U0twC3eKSxORs3cSi5Awgs0jXPM3AwsIgxcg4zdh
- ACWhAQVFqWmYF2PBopSA3Z6XY2loA6bwz0HEAAAA=
+Message-Id:  <20240118-update-dump-stack-arch-str-v1-1-5c0f98d017b5@linux.ibm.com>
+References:  <20240118-update-dump-stack-arch-str-v1-0-5c0f98d017b5@linux.ibm.com>
+In-Reply-To:  <20240118-update-dump-stack-arch-str-v1-0-5c0f98d017b5@linux.ibm.com>
 To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, 
  "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, 
  Brian King <brking@linux.ibm.com>, 
@@ -61,11 +60,11 @@ To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
  Sergey Senozhatsky <senozhatsky@chromium.org>, 
  Steven Rostedt <rostedt@goodmis.org>
 X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1705591541; l=2778;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1705591541; l=904;
  i=nathanl@linux.ibm.com; s=20230817; h=from:subject:message-id;
- bh=ZrNZI/+KtaqDAeKBFPjQTAb311LBOoljbtl1LqlVqgU=;
- b=vrcF1cNPIm2O4+bieSkcw1uoqBBdSqf4JkN+kVqZt0fSLkeqYShpMyznUhC+rjw1sJEeTCg3r
- HvE7JadRlXGBBcZSgBWO/h+xHLaE9TtJfvuE3gqdy++muQ22sED6j1/
+ bh=uGRC5bEXAZpqbl74Y43nE5tPlwjA0DDYCHWXiMdO7oY=;
+ b=mRB3b+vZUc4j1CZuAqps+dMLW3dhH0rtknvVIhYr75cbUsWxHXQzwL1XHsgm2Dka6lOqHqzli
+ tuQArMMkTQ6A8GpmfpD4X7jCoFyeMG5WzBkP2vlcjAz4E3Oo1hWIy2X
 X-Developer-Key: i=nathanl@linux.ibm.com; a=ed25519;
  pk=jPDF44RvT+9DGFOH3NGoIu1xN9dF+82pjdpnKjXfoJ0=
 X-Endpoint-Received:  by B4 Relay for nathanl@linux.ibm.com/20230817 with auth_id=78
@@ -86,66 +85,39 @@ Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-k
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When the kernel emits a stack trace, typically it includes a hardware
-description string, e.g.
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-  Kernel panic - not syncing: sysrq triggered crash
-  CPU: 6 PID: 46433 Comm: bash Tainted: G        W          6.7.0-rc2+ #83
-> Hardware name: IBM,9040-MR9 POWER9 (architected) 0x4e2102 0xf000005 of:IBM,FW950.01 (VM950_047) hv:phyp pSeries
-  Call Trace:
-   dump_stack_lvl+0xc4/0x170 (unreliable)
-   panic+0x39c/0x584
-   sysrq_handle_crash+0x80/0xe0
-   __handle_sysrq+0x208/0x4bc
-   [...]
-
-This string is a statically allocated buffer populated during boot by
-arch code calling dump_stack_set_arch_desc(). For most platforms this
-is sufficient.
-
-But the string may become inaccurate on the IBM PowerVM platform due
-to live migration between machine models and firmware versions. Stack
-dumps emitted after a migration reflect the machine on which the
-kernel booted, not necessarily the machine on which it is currently
-running. This is potentially confusing for anyone investigating
-kernel issues on the platform.
-
-To address this, this series introduces a new function that safely
-updates the hardware description string and updates the powerpc
-pseries platform code to call it after a migration. The series also
-includes changes addressing minor latent issues identified during the
-implementation.
-
-Platforms which do not need the new functionality remain unchanged.
-
-For this initial version at least, the powerpc/pseries part includes
-some "self-test" code that 1. verifies that reconstructing the
-hardware description string late in boot matches the one that was
-built earlier, and 2. fully exercises the update path before any
-migrations occur. This could be dropped or made configurable in the
-future.
+The static hardware description buffer is populated by arch code
+during boot and should not change afterwards, so mark it
+__ro_after_init.
 
 Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 ---
-Nathan Lynch (5):
-      dump_stack: Make arch description buffer __ro_after_init
-      dump_stack: Allow update of arch description string at runtime
-      powerpc/prom: Add CPU info to hardware description string later
-      powerpc/pseries: Prepare pseries_add_hw_description() for runtime use
-      powerpc/pseries: Update hardware description string after migration
+ lib/dump_stack.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
- arch/powerpc/kernel/prom.c                | 12 +++--
- arch/powerpc/platforms/pseries/mobility.c |  5 ++
- arch/powerpc/platforms/pseries/pseries.h  |  1 +
- arch/powerpc/platforms/pseries/setup.c    | 80 +++++++++++++++++++++++++++++--
- include/linux/printk.h                    |  5 ++
- lib/dump_stack.c                          | 57 ++++++++++++++++++++--
- 6 files changed, 146 insertions(+), 14 deletions(-)
----
-base-commit: 44a1aad2fe6c10bfe0589d8047057b10a4c18a19
-change-id: 20240111-update-dump-stack-arch-str-7f0880d23f30
+diff --git a/lib/dump_stack.c b/lib/dump_stack.c
+index 83471e81501a..1057f102f6f2 100644
+--- a/lib/dump_stack.c
++++ b/lib/dump_stack.c
+@@ -6,6 +6,7 @@
+ 
+ #include <linux/kernel.h>
+ #include <linux/buildid.h>
++#include <linux/cache.h>
+ #include <linux/export.h>
+ #include <linux/sched.h>
+ #include <linux/sched/debug.h>
+@@ -15,7 +16,7 @@
+ #include <linux/utsname.h>
+ #include <linux/stop_machine.h>
+ 
+-static char dump_stack_arch_desc_str[128];
++static char dump_stack_arch_desc_str[128] __ro_after_init;
+ 
+ /**
+  * dump_stack_set_arch_desc - set arch-specific str to show with task dumps
 
-Best regards,
 -- 
-Nathan Lynch <nathanl@linux.ibm.com>
+2.43.0
 
