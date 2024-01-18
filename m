@@ -1,84 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F6D8320BF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jan 2024 22:13:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 097C28320C6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jan 2024 22:15:39 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FqnT8Vdu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hid5dLq6;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TGFpN5sNcz3bc2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 08:13:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TGFs46gZpz3cSQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 08:15:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FqnT8Vdu;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hid5dLq6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TFwJ85XQPz30GC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jan 2024 19:04:24 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40I7vMeD011578;
-	Thu, 18 Jan 2024 08:04:09 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TFwJB2hWFz3bZK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jan 2024 19:04:26 +1100 (AEDT)
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40I7wJRJ031217;
+	Thu, 18 Jan 2024 08:04:12 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=he2i3jOgA8ugAT3gEAoGWdurDGiSbKEL1Suh3vTdnWQ=;
- b=FqnT8Vdu+4klNVAUZNOFJmePrzOyFXCDdMuhtEEUFUIQMhwAzmZSuaztVMjfuzWcGrS+
- wmepl0Qk64klA1q/8MSAWI/LuFnKEpQsXhSWtD3fiYsf9pTGhnmE92y4DHkHfdAMDKfU
- o+WxFX4KVKYRWVO2VR6pmmurMwIM6U8V7AONGVztE8cSYr8M2j87B8UUTM+pfagTpYkd
- P3M6VsZtiFLdZVxIuDn3FpHKye4a0CJpZf8HnmQxtfbAko/z468v1jPdM1ZfcO6DOfBd
- KbLrGtSKuwNw/FHp1r7+v8Dx8bv4SkgdXqwGNMT3dv84t2UFPJOtc2uDGkqJ3pGVB/Rt fw== 
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vq02206hh-1
+ bh=hnQzzb54EB6Nik9tA08SsWOYd/w2z1oIWszr1RROCZM=;
+ b=hid5dLq6gdY3ewwsoy3mFW75v5sJh8x7pTlvEjBuWIzEh60czM6udDXOOPvZZVDf/+3l
+ sdh1GZO6e2J70Q4cRDwNlr+3TllFAwglsYRGWTERLiEUfosEKeAe1W6nYPGuCgm5V6bz
+ exfymJ6ZnJw3TJAeJehGNcl4kyXd82CkwSFlcltwWoIv+7qFWepcQdfljSgwa55IzUbi
+ 2+Jdr9yVmk/RLDCpU4wZFKgyKVll/QCvAOt106bJmZDKnTzXm7tBi7UqjTdX2+7PVNAb
+ lOn+M7iLeKu7ERM6PNVWu7ig/86eO2Wcgv89PlPeKrykb4GdPXShLESpYAHXY3tHU72l gg== 
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vq02f86hj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Jan 2024 08:04:08 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40I74lOb011009;
-	Thu, 18 Jan 2024 08:04:07 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vm57ytc11-1
+	Thu, 18 Jan 2024 08:04:11 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40I72xol000441;
+	Thu, 18 Jan 2024 08:04:10 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vm4ut2bda-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Jan 2024 08:04:07 +0000
+	Thu, 18 Jan 2024 08:04:10 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40I845W424707822
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40I848TM15008286
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 18 Jan 2024 08:04:05 GMT
+	Thu, 18 Jan 2024 08:04:09 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 55C0120040;
-	Thu, 18 Jan 2024 08:04:05 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id D570C2004B;
+	Thu, 18 Jan 2024 08:04:08 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F279320043;
-	Thu, 18 Jan 2024 08:04:02 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id C712020043;
+	Thu, 18 Jan 2024 08:04:06 +0000 (GMT)
 Received: from li-c1fdab4c-355a-11b2-a85c-ef242fe9efb4.in.ibm.com (unknown [9.109.201.126])
 	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 18 Jan 2024 08:04:02 +0000 (GMT)
+	Thu, 18 Jan 2024 08:04:06 +0000 (GMT)
 From: Shrikanth Hegde <sshegde@linux.ibm.com>
 To: linux-kernel@vger.kernel.org, linux-ntfs-dev@lists.sourceforge.net,
         linux-xfs@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH 1/3] sched: remove duplicate ifdefs
-Date: Thu, 18 Jan 2024 13:33:24 +0530
-Message-Id: <20240118080326.13137-2-sshegde@linux.ibm.com>
+Subject: [RFC PATCH 2/3] fs: remove duplicate ifdefs
+Date: Thu, 18 Jan 2024 13:33:25 +0530
+Message-Id: <20240118080326.13137-3-sshegde@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240118080326.13137-1-sshegde@linux.ibm.com>
 References: <20240118080326.13137-1-sshegde@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 3PWccwYfkYM-DHA16-RytUKNot96V0J9
-X-Proofpoint-GUID: 3PWccwYfkYM-DHA16-RytUKNot96V0J9
+X-Proofpoint-ORIG-GUID: P-8pNzrwHJ2K49DWfj4Oc0tgPfJY7qbK
+X-Proofpoint-GUID: P-8pNzrwHJ2K49DWfj4Oc0tgPfJY7qbK
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-01-18_04,2024-01-17_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
- clxscore=1015 bulkscore=0 priorityscore=1501 adultscore=0 mlxlogscore=961
- impostorscore=0 phishscore=0 malwarescore=0 lowpriorityscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2401180056
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
+ impostorscore=0 phishscore=0 adultscore=0 suspectscore=0 spamscore=0
+ mlxscore=0 priorityscore=1501 lowpriorityscore=0 mlxlogscore=999
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401180056
 X-Mailman-Approved-At: Fri, 19 Jan 2024 08:12:35 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -106,63 +106,63 @@ endif
 ...code block...
 endif
 
-In the scheduler code, there are two places where above pattern can be
-observed. Hence second ifdef is a duplicate and not needed.
-Plus a minor comment update to reflect the else case.
-
+There are few places in fs code where above pattern was seen.
 No functional change is intended here. It only aims to improve code
 readability.
 
 Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
 ---
- kernel/sched/core.c | 4 +---
- kernel/sched/fair.c | 2 --
- 2 files changed, 1 insertion(+), 5 deletions(-)
+ fs/ntfs/inode.c    | 2 --
+ fs/xfs/xfs_sysfs.c | 4 ----
+ 2 files changed, 6 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 038eeaf76d2d..1bfb186fd67f 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -1792,7 +1792,6 @@ static void cpu_util_update_eff(struct cgroup_subsys_state *css);
- #endif
-
- #ifdef CONFIG_SYSCTL
--#ifdef CONFIG_UCLAMP_TASK
- #ifdef CONFIG_UCLAMP_TASK_GROUP
- static void uclamp_update_root_tg(void)
- {
-@@ -1898,7 +1897,6 @@ static int sysctl_sched_uclamp_handler(struct ctl_table *table, int write,
- 	return result;
+diff --git a/fs/ntfs/inode.c b/fs/ntfs/inode.c
+index aba1e22db4e9..d2c8622d53d1 100644
+--- a/fs/ntfs/inode.c
++++ b/fs/ntfs/inode.c
+@@ -2859,11 +2859,9 @@ int ntfs_truncate(struct inode *vi)
+  *
+  * See ntfs_truncate() description above for details.
+  */
+-#ifdef NTFS_RW
+ void ntfs_truncate_vfs(struct inode *vi) {
+ 	ntfs_truncate(vi);
  }
- #endif
 -#endif
 
- static int uclamp_validate(struct task_struct *p,
- 			   const struct sched_attr *attr)
-@@ -2065,7 +2063,7 @@ static void __init init_uclamp(void)
- 	}
+ /**
+  * ntfs_setattr - called from notify_change() when an attribute is being changed
+diff --git a/fs/xfs/xfs_sysfs.c b/fs/xfs/xfs_sysfs.c
+index 17485666b672..d2391eec37fe 100644
+--- a/fs/xfs/xfs_sysfs.c
++++ b/fs/xfs/xfs_sysfs.c
+@@ -193,7 +193,6 @@ always_cow_show(
  }
+ XFS_SYSFS_ATTR_RW(always_cow);
 
--#else /* CONFIG_UCLAMP_TASK */
-+#else /* !CONFIG_UCLAMP_TASK */
- static inline void uclamp_rq_inc(struct rq *rq, struct task_struct *p) { }
- static inline void uclamp_rq_dec(struct rq *rq, struct task_struct *p) { }
- static inline int uclamp_validate(struct task_struct *p,
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index f2bb83675e4a..6158a6752c25 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -10166,10 +10166,8 @@ static int idle_cpu_without(int cpu, struct task_struct *p)
- 	 * be computed and tested before calling idle_cpu_without().
- 	 */
+-#ifdef DEBUG
+ /*
+  * Override how many threads the parallel work queue is allowed to create.
+  * This has to be a debug-only global (instead of an errortag) because one of
+@@ -260,7 +259,6 @@ larp_show(
+ 	return snprintf(buf, PAGE_SIZE, "%d\n", xfs_globals.larp);
+ }
+ XFS_SYSFS_ATTR_RW(larp);
+-#endif /* DEBUG */
 
--#ifdef CONFIG_SMP
- 	if (rq->ttwu_pending)
- 		return 0;
+ STATIC ssize_t
+ bload_leaf_slack_store(
+@@ -319,10 +317,8 @@ static struct attribute *xfs_dbg_attrs[] = {
+ 	ATTR_LIST(log_recovery_delay),
+ 	ATTR_LIST(mount_delay),
+ 	ATTR_LIST(always_cow),
+-#ifdef DEBUG
+ 	ATTR_LIST(pwork_threads),
+ 	ATTR_LIST(larp),
 -#endif
-
- 	return 1;
- }
+ 	ATTR_LIST(bload_leaf_slack),
+ 	ATTR_LIST(bload_node_slack),
+ 	NULL,
 --
 2.39.3
 
