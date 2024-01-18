@@ -2,44 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9698F831C4A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jan 2024 16:23:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45A37831C8B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jan 2024 16:30:33 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EikAJD1G;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TG62k423bz3cM5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 02:23:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TG6Bv14yhz3dLh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 02:30:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 401 seconds by postgrey-1.37 at boromir; Fri, 19 Jan 2024 02:22:59 AEDT
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TG62C22fwz3bnx
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jan 2024 02:22:57 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8E4711042;
-	Thu, 18 Jan 2024 07:16:27 -0800 (PST)
-Received: from [10.57.77.97] (unknown [10.57.77.97])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EE12B3F73F;
-	Thu, 18 Jan 2024 07:15:37 -0800 (PST)
-Message-ID: <9e60b948-0044-4826-8551-0a3888650657@arm.com>
-Date: Thu, 18 Jan 2024 15:15:36 +0000
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EikAJD1G;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=lists.ozlabs.org)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TG65Q44NWz3bqx
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jan 2024 02:25:46 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by ams.source.kernel.org (Postfix) with ESMTP id AAA83B818E9;
+	Thu, 18 Jan 2024 15:25:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0DB1EC433C7;
+	Thu, 18 Jan 2024 15:25:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705591542;
+	bh=ZrNZI/+KtaqDAeKBFPjQTAb311LBOoljbtl1LqlVqgU=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=EikAJD1G0pb3jVcwCRG+fB0VgJ6aECiR0DbO54vwJS46/PkKZ7ypAmiMAywBa+7JN
+	 C1OngJTsht/5e51HRbViv6HUrlVtjUPRv0J3Qk7C2KjRCLiFQz0JvjuGslWHyND9md
+	 f0XkLLJ4PU0msMmmK7luaFGXqzi9hMuWLJp3wG8GINIkNCqsC+XfxzRa/E9Q94Cyff
+	 gfZdmoS1nRFjp1cnjYAQndurEZBfwEKhUM9cdi+42IQxFdV6CMds4/EpKOcop3BAPf
+	 3UaFtN62BBsJQ2ySVDbcgHKrVeyIn30mRyuKzVlplAmvtbTAq8M2jafdjw0NKeMuEo
+	 eXCfOwb6+Tr4A==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E0019C4707B;
+	Thu, 18 Jan 2024 15:25:41 +0000 (UTC)
+From: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
+Subject: [PATCH RFC 0/5] dump_stack: Allow runtime updates of the hardware
+ description
+Date: Thu, 18 Jan 2024 09:25:11 -0600
+Message-Id:  <20240118-update-dump-stack-arch-str-v1-0-5c0f98d017b5@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 06/13] mm/gup: Drop folio_fast_pin_allowed() in hugepd
- processing
-Content-Language: en-GB
-To: Jason Gunthorpe <jgg@nvidia.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <20240103091423.400294-1-peterx@redhat.com>
- <20240103091423.400294-7-peterx@redhat.com>
- <20240115183748.GR734935@nvidia.com>
- <c60c9d88-33aa-4312-a23c-20206e503b6e@csgroup.eu>
- <20240116123138.GZ734935@nvidia.com>
- <44e450cb-5d3f-407e-97a3-024eb936f74b@csgroup.eu>
- <20240117132243.GG734935@nvidia.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20240117132243.GG734935@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANdCqWUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDQ0ND3dKClMSSVN2U0twC3eKSxORs3cSi5Awgs0jXPM3AwsIgxcg4zdh
+ ACWhAQVFqWmYF2PBopSA3Z6XY2loA6bwz0HEAAAA=
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, 
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, 
+ Brian King <brking@linux.ibm.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ John Ogness <john.ogness@linutronix.de>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Petr Mladek <pmladek@suse.com>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>, 
+ Steven Rostedt <rostedt@goodmis.org>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1705591541; l=2778;
+ i=nathanl@linux.ibm.com; s=20230817; h=from:subject:message-id;
+ bh=ZrNZI/+KtaqDAeKBFPjQTAb311LBOoljbtl1LqlVqgU=;
+ b=vrcF1cNPIm2O4+bieSkcw1uoqBBdSqf4JkN+kVqZt0fSLkeqYShpMyznUhC+rjw1sJEeTCg3r
+ HvE7JadRlXGBBcZSgBWO/h+xHLaE9TtJfvuE3gqdy++muQ22sED6j1/
+X-Developer-Key: i=nathanl@linux.ibm.com; a=ed25519;
+ pk=jPDF44RvT+9DGFOH3NGoIu1xN9dF+82pjdpnKjXfoJ0=
+X-Endpoint-Received:  by B4 Relay for nathanl@linux.ibm.com/20230817 with auth_id=78
+X-Original-From: Nathan Lynch <nathanl@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,116 +81,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: James Houghton <jthoughton@google.com>, David Hildenbrand <david@redhat.com>, Yang Shi <shy828301@gmail.com>, "peterx@redhat.com" <peterx@redhat.com>, Andrew Jones <andrew.jones@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, Andrea Arcangeli <aarcange@redhat.com>, Christoph Hellwig <hch@infradead.org>, Matthew Wilcox <willy@infradead.org>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Axel Rasmussen <axelrasmussen@google.com>, Rik van Riel <riel@surriel.com>, John Hubbard <jhubbard@nvidia.com>, "Kirill A . Shutemov" <kirill@shutemov.name>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Lorenzo Stoakes <lstoakes@gmail.com>, Muchun Song <muchun.song@linux.dev>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Mike Rapop
- ort <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
+Reply-To: nathanl@linux.ibm.com
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 17/01/2024 13:22, Jason Gunthorpe wrote:
-> On Tue, Jan 16, 2024 at 06:32:32PM +0000, Christophe Leroy wrote:
->>>> hugepd is a page directory dedicated to huge pages, where you have huge
->>>> pages listed instead of regular pages. For instance, on powerpc 32 with
->>>> each PGD entries covering 4Mbytes, a regular page table has 1024 PTEs. A
->>>> hugepd for 512k is a page table with 8 entries.
->>>>
->>>> And for 8Mbytes entries, the hugepd is a page table with only one entry.
->>>> And 2 consecutive PGS entries will point to the same hugepd to cover the
->>>> entire 8Mbytes.
->>>
->>> That still sounds alot like the ARM thing - except ARM replicates the
->>> entry, you also said PPC relicates the entry like ARM to get to the
->>> 8M?
->>
->> Is it like ARM ? Not sure. The PTE is not in the PGD it must be in a L2 
->> directory, even for 8M.
-> 
-> Your diagram looks almost exactly like ARM to me.
-> 
-> The key thing is that the address for the L2 Table is *always* formed as:
-> 
->    L2 Table Base << 12 + L2 Index << 2 + 00
-> 
-> Then the L2 Descriptor must contains bits indicating the page
-> size. The L2 Descriptor is replicated to every 4k entry that the page
-> size covers.
-> 
-> The only difference I see is the 8M case which has a page size greater
-> than a single L1 entry.
-> 
->> Yes that's how it works on powerpc. For 8xx we used to do that for both 
->> 8M and 512k pages. Now for 512k pages we do kind of like ARM (which 
->> means replicating the entry 128 times) as that's needed to allow mixing 
->> different page sizes for a given PGD entry.
-> 
-> Right, you want to have granular page sizes or it becomes unusable in
-> the general case
->  
->> But for 8M pages that would mean replicating the entry 2048 times. 
->> That's a bit too much isn't it ?
-> 
-> Indeed, de-duplicating the L2 Table is a neat optimization.
-> 
->>> So if you imagine a pmd_leaf(), pmd_leaf_size() and a pte_leaf_size()
->>> that would return enough information for both.
->>
->> pmd_leaf() ? Unless I'm missing something I can't do leaf at PMD (PGD) 
->> level. It must be a two-level process even for pages bigger than a PMD 
->> entry.
-> 
-> Right, this is the normal THP/hugetlb situation on x86/etc. It
-> wouldn't apply here since it seems the HW doesn't have a bit in the L1
-> descriptor to indicate leaf.
-> 
-> Instead for PPC this hugepd stuff should start to follow Ryan's
-> generic work for ARM contig:
-> 
-> https://lore.kernel.org/all/20231218105100.172635-1-ryan.roberts@arm.com/
-> 
-> Specifically the arch implementation:
-> 
-> https://lore.kernel.org/linux-mm/20231218105100.172635-15-ryan.roberts@arm.com/
-> 
-> Ie the arch should ultimately wire up the replication and variable
-> page size bits within its implementation of set_ptes(). set_ptes()s
-> gets a contiguous run of address and should install it with maximum
-> use of the variable page sizes. The core code will start to call
-> set_ptes() in more cases as Ryan gets along his project.
+When the kernel emits a stack trace, typically it includes a hardware
+description string, e.g.
 
-Note that it's not just set_ptes() that you want to batch; there are other calls
-that can benefit too. See patches 2 and 3 in the series you linked. (although
-I'm working with DavidH on this and the details are going to change a little).
+  Kernel panic - not syncing: sysrq triggered crash
+  CPU: 6 PID: 46433 Comm: bash Tainted: G        W          6.7.0-rc2+ #83
+> Hardware name: IBM,9040-MR9 POWER9 (architected) 0x4e2102 0xf000005 of:IBM,FW950.01 (VM950_047) hv:phyp pSeries
+  Call Trace:
+   dump_stack_lvl+0xc4/0x170 (unreliable)
+   panic+0x39c/0x584
+   sysrq_handle_crash+0x80/0xe0
+   __handle_sysrq+0x208/0x4bc
+   [...]
 
-> 
-> For the purposes of GUP, where are are today and where we are going,
-> it would be much better to not have a special PPC specific "hugepd"
-> parser. Just process each of the 4k replicates one by one like ARM is
-> starting with.
-> 
-> The arch would still have to return the correct page address from
-> pte_phys() which I think Ryan is doing by having the replicates encode
-> the full 4k based address in each entry.
+This string is a statically allocated buffer populated during boot by
+arch code calling dump_stack_set_arch_desc(). For most platforms this
+is sufficient.
 
-Yes; although its actually also a requirement of the arm architecture. Since the
-contig bit is just a hint that the HW may or may not take any notice of, the
-page tables have to be correct for the case where the HW just reads them in base
-pages. Fixing up the bottom bits should be trivial using the PTE pointer, if
-needed for ppc.
+But the string may become inaccurate on the IBM PowerVM platform due
+to live migration between machine models and firmware versions. Stack
+dumps emitted after a migration reflect the machine on which the
+kernel booted, not necessarily the machine on which it is currently
+running. This is potentially confusing for anyone investigating
+kernel issues on the platform.
 
-> The HW will ignore those low
-> bits and pte_phys() then works properly. This would work for PPC as
-> well, excluding the 8M optimization.
-> 
-> Going forward I'd expect to see some pte_page_size() that returns the
-> size bits and GUP can have logic to skip reading replicates.
+To address this, this series introduces a new function that safely
+updates the hardware description string and updates the powerpc
+pseries platform code to call it after a migration. The series also
+includes changes addressing minor latent issues identified during the
+implementation.
 
-Yes; pte_batch_remaining() in patch 2 is an attempt at this. But as I said the
-details will likely change a little.
+Platforms which do not need the new functionality remain unchanged.
 
-> 
-> The advantage of all this is that it stops making the feature special
-> and the work Ryan is doing to generically push larger folios into
-> set_ptes will become usable on these PPC platforms as well. And we can
-> kill the PPC specific hugepd.
-> 
-> Jason
+For this initial version at least, the powerpc/pseries part includes
+some "self-test" code that 1. verifies that reconstructing the
+hardware description string late in boot matches the one that was
+built earlier, and 2. fully exercises the update path before any
+migrations occur. This could be dropped or made configurable in the
+future.
+
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+---
+Nathan Lynch (5):
+      dump_stack: Make arch description buffer __ro_after_init
+      dump_stack: Allow update of arch description string at runtime
+      powerpc/prom: Add CPU info to hardware description string later
+      powerpc/pseries: Prepare pseries_add_hw_description() for runtime use
+      powerpc/pseries: Update hardware description string after migration
+
+ arch/powerpc/kernel/prom.c                | 12 +++--
+ arch/powerpc/platforms/pseries/mobility.c |  5 ++
+ arch/powerpc/platforms/pseries/pseries.h  |  1 +
+ arch/powerpc/platforms/pseries/setup.c    | 80 +++++++++++++++++++++++++++++--
+ include/linux/printk.h                    |  5 ++
+ lib/dump_stack.c                          | 57 ++++++++++++++++++++--
+ 6 files changed, 146 insertions(+), 14 deletions(-)
+---
+base-commit: 44a1aad2fe6c10bfe0589d8047057b10a4c18a19
+change-id: 20240111-update-dump-stack-arch-str-7f0880d23f30
+
+Best regards,
+-- 
+Nathan Lynch <nathanl@linux.ibm.com>
 
