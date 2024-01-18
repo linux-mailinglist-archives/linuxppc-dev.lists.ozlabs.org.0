@@ -2,28 +2,28 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B7F3831A6A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jan 2024 14:19:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A4A4831A6D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jan 2024 14:20:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TG3Hd2yQcz3wFY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 00:19:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TG3JG29PSz3dD1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 00:19:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
 Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TG3Bf2sRcz3cBW
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jan 2024 00:15:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TG3Bg4h7Fz3cVT
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jan 2024 00:15:07 +1100 (AEDT)
 Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id B080C1A22A9;
-	Thu, 18 Jan 2024 14:15:03 +0100 (CET)
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id F18A01A228F;
+	Thu, 18 Jan 2024 14:15:04 +0100 (CET)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 56A2F1A22A5;
-	Thu, 18 Jan 2024 14:15:03 +0100 (CET)
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 900CD1A22A0;
+	Thu, 18 Jan 2024 14:15:04 +0100 (CET)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 4FED918002A2;
-	Thu, 18 Jan 2024 21:15:01 +0800 (+08)
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id DA2F6183AC0A;
+	Thu, 18 Jan 2024 21:15:02 +0800 (+08)
 From: Shengjiu Wang <shengjiu.wang@nxp.com>
 To: hverkuil@xs4all.nl,
 	sakari.ailus@iki.fi,
@@ -42,9 +42,9 @@ To: hverkuil@xs4all.nl,
 	tiwai@suse.com,
 	alsa-devel@alsa-project.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v12 09/15] media: uapi: Add V4L2_CTRL_CLASS_M2M_AUDIO
-Date: Thu, 18 Jan 2024 20:32:02 +0800
-Message-Id: <1705581128-4604-10-git-send-email-shengjiu.wang@nxp.com>
+Subject: [PATCH v12 10/15] media: uapi: Add audio rate controls support
+Date: Thu, 18 Jan 2024 20:32:03 +0800
+Message-Id: <1705581128-4604-11-git-send-email-shengjiu.wang@nxp.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1705581128-4604-1-git-send-email-shengjiu.wang@nxp.com>
 References: <1705581128-4604-1-git-send-email-shengjiu.wang@nxp.com>
@@ -63,114 +63,83 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The Audio M2M class includes controls for audio memory-to-memory
-use cases. The controls can be used for audio codecs, audio
-preprocessing, audio postprocessing.
+Add V4L2_CID_M2M_AUDIO_SOURCE_RATE and V4L2_CID_M2M_AUDIO_DEST_RATE
+new IDs for rate control.
+
+Add V4L2_CID_M2M_AUDIO_SOURCE_RATE_OFFSET and
+V4L2_CID_M2M_AUDIO_DEST_RATE_OFFSET for clock drift.
 
 Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 ---
- .../userspace-api/media/v4l/common.rst        |  1 +
- .../media/v4l/ext-ctrls-audio-m2m.rst         | 21 +++++++++++++++++++
- .../media/v4l/vidioc-g-ext-ctrls.rst          |  4 ++++
- drivers/media/v4l2-core/v4l2-ctrls-defs.c     |  4 ++++
- include/uapi/linux/v4l2-controls.h            |  4 ++++
- 5 files changed, 34 insertions(+)
- create mode 100644 Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
+ .../media/v4l/ext-ctrls-audio-m2m.rst         | 20 +++++++++++++++++++
+ drivers/media/v4l2-core/v4l2-ctrls-defs.c     |  6 ++++++
+ include/uapi/linux/v4l2-controls.h            |  5 +++++
+ 3 files changed, 31 insertions(+)
 
-diff --git a/Documentation/userspace-api/media/v4l/common.rst b/Documentation/userspace-api/media/v4l/common.rst
-index ea0435182e44..d5366e96a596 100644
---- a/Documentation/userspace-api/media/v4l/common.rst
-+++ b/Documentation/userspace-api/media/v4l/common.rst
-@@ -52,6 +52,7 @@ applicable to all devices.
-     ext-ctrls-fm-rx
-     ext-ctrls-detect
-     ext-ctrls-colorimetry
-+    ext-ctrls-audio-m2m
-     fourcc
-     format
-     planar-apis
 diff --git a/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst b/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
-new file mode 100644
-index 000000000000..82d2ecedbfee
---- /dev/null
+index 82d2ecedbfee..de579ab8fb94 100644
+--- a/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
 +++ b/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
-@@ -0,0 +1,21 @@
-+.. SPDX-License-Identifier: GFDL-1.1-no-invariants-or-later
+@@ -19,3 +19,23 @@ Audio M2M Control IDs
+     The Audio M2M class descriptor. Calling
+     :ref:`VIDIOC_QUERYCTRL` for this control will
+     return a description of this control class.
 +
-+.. _audiom2m-controls:
++.. _v4l2-audio-asrc:
 +
-+***************************
-+Audio M2M Control Reference
-+***************************
++``V4L2_CID_M2M_AUDIO_SOURCE_RATE (integer menu)``
++    Sets the audio source sample rate, unit is Hz
 +
-+The Audio M2M class includes controls for audio memory-to-memory
-+use cases. The controls can be used for audio codecs, audio
-+preprocessing, audio postprocessing.
++``V4L2_CID_M2M_AUDIO_DEST_RATE (integer menu)``
++    Sets the audio destination sample rate, unit is Hz
 +
-+Audio M2M Control IDs
-+-----------------------
++``V4L2_CID_M2M_AUDIO_SOURCE_RATE_OFFSET (fixed point)``
++    Sets the offset from the audio source sample rate, unit is Hz.
++    The offset compensates for any clock drift. The actual source audio
++    sample rate is the ideal source audio sample rate from
++    ``V4L2_CID_M2M_AUDIO_SOURCE_RATE`` plus this fixed point offset.
 +
-+.. _audiom2m-control-id:
-+
-+``V4L2_CID_M2M_AUDIO_CLASS (class)``
-+    The Audio M2M class descriptor. Calling
-+    :ref:`VIDIOC_QUERYCTRL` for this control will
-+    return a description of this control class.
-diff --git a/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst b/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
-index 4d56c0528ad7..aeb1ad8e7d29 100644
---- a/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
-+++ b/Documentation/userspace-api/media/v4l/vidioc-g-ext-ctrls.rst
-@@ -488,6 +488,10 @@ still cause this situation.
-       - 0xa50000
-       - The class containing colorimetry controls. These controls are
- 	described in :ref:`colorimetry-controls`.
-+    * - ``V4L2_CTRL_CLASS_M2M_AUDIO``
-+      - 0xa60000
-+      - The class containing audio m2m controls. These controls are
-+	described in :ref:`audiom2m-controls`.
- 
- Return Value
- ============
++``V4L2_CID_M2M_AUDIO_DEST_RATE_OFFSET (fixed point)``
++    Sets the offset from the audio destination sample rate, unit is Hz.
++    The offset compensates for any clock drift. The actual destination audio
++    sample rate is the ideal source audio sample rate from
++    ``V4L2_CID_M2M_AUDIO_DEST_RATE`` plus this fixed point offset.
 diff --git a/drivers/media/v4l2-core/v4l2-ctrls-defs.c b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
-index 8696eb1cdd61..2a85ea3dc92f 100644
+index 2a85ea3dc92f..91e1f5348c23 100644
 --- a/drivers/media/v4l2-core/v4l2-ctrls-defs.c
 +++ b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
-@@ -1242,6 +1242,9 @@ const char *v4l2_ctrl_get_name(u32 id)
- 	case V4L2_CID_COLORIMETRY_CLASS:	return "Colorimetry Controls";
- 	case V4L2_CID_COLORIMETRY_HDR10_CLL_INFO:		return "HDR10 Content Light Info";
- 	case V4L2_CID_COLORIMETRY_HDR10_MASTERING_DISPLAY:	return "HDR10 Mastering Display";
-+
-+	/* Audio M2M controls */
-+	case V4L2_CID_M2M_AUDIO_CLASS:  return "Audio M2M Controls";
+@@ -1245,6 +1245,8 @@ const char *v4l2_ctrl_get_name(u32 id)
+ 
+ 	/* Audio M2M controls */
+ 	case V4L2_CID_M2M_AUDIO_CLASS:  return "Audio M2M Controls";
++	case V4L2_CID_M2M_AUDIO_SOURCE_RATE:	return "Audio Source Sample Rate";
++	case V4L2_CID_M2M_AUDIO_DEST_RATE:	return "Audio Destination Sample Rate";
  	default:
  		return NULL;
  	}
-@@ -1451,6 +1454,7 @@ void v4l2_ctrl_fill(u32 id, const char **name, enum v4l2_ctrl_type *type,
- 	case V4L2_CID_DETECT_CLASS:
- 	case V4L2_CID_CODEC_STATELESS_CLASS:
- 	case V4L2_CID_COLORIMETRY_CLASS:
-+	case V4L2_CID_M2M_AUDIO_CLASS:
- 		*type = V4L2_CTRL_TYPE_CTRL_CLASS;
- 		/* You can neither read nor write these */
- 		*flags |= V4L2_CTRL_FLAG_READ_ONLY | V4L2_CTRL_FLAG_WRITE_ONLY;
+@@ -1606,6 +1608,10 @@ void v4l2_ctrl_fill(u32 id, const char **name, enum v4l2_ctrl_type *type,
+ 	case V4L2_CID_COLORIMETRY_HDR10_MASTERING_DISPLAY:
+ 		*type = V4L2_CTRL_TYPE_HDR10_MASTERING_DISPLAY;
+ 		break;
++	case V4L2_CID_M2M_AUDIO_SOURCE_RATE:
++	case V4L2_CID_M2M_AUDIO_DEST_RATE:
++		*type = V4L2_CTRL_TYPE_INTEGER_MENU;
++		break;
+ 	default:
+ 		*type = V4L2_CTRL_TYPE_INTEGER;
+ 		break;
 diff --git a/include/uapi/linux/v4l2-controls.h b/include/uapi/linux/v4l2-controls.h
-index 99c3f5e99da7..a8b4b830c757 100644
+index a8b4b830c757..30129ccdc282 100644
 --- a/include/uapi/linux/v4l2-controls.h
 +++ b/include/uapi/linux/v4l2-controls.h
-@@ -30,6 +30,7 @@
- #define V4L2_CTRL_CLASS_DETECT		0x00a30000	/* Detection controls */
- #define V4L2_CTRL_CLASS_CODEC_STATELESS 0x00a40000	/* Stateless codecs controls */
- #define V4L2_CTRL_CLASS_COLORIMETRY	0x00a50000	/* Colorimetry controls */
-+#define V4L2_CTRL_CLASS_M2M_AUDIO	0x00a60000	/* Audio M2M controls */
+@@ -3495,6 +3495,11 @@ struct v4l2_ctrl_av1_film_grain {
+ #define V4L2_CID_M2M_AUDIO_CLASS_BASE  (V4L2_CTRL_CLASS_M2M_AUDIO | 0x900)
+ #define V4L2_CID_M2M_AUDIO_CLASS       (V4L2_CTRL_CLASS_M2M_AUDIO | 1)
  
- /* User-class control IDs */
- 
-@@ -3491,6 +3492,9 @@ struct v4l2_ctrl_av1_film_grain {
- 	__u8 reserved[4];
- };
- 
-+#define V4L2_CID_M2M_AUDIO_CLASS_BASE  (V4L2_CTRL_CLASS_M2M_AUDIO | 0x900)
-+#define V4L2_CID_M2M_AUDIO_CLASS       (V4L2_CTRL_CLASS_M2M_AUDIO | 1)
++#define V4L2_CID_M2M_AUDIO_SOURCE_RATE	(V4L2_CID_M2M_AUDIO_CLASS_BASE + 0)
++#define V4L2_CID_M2M_AUDIO_DEST_RATE	(V4L2_CID_M2M_AUDIO_CLASS_BASE + 1)
++#define V4L2_CID_M2M_AUDIO_SOURCE_RATE_OFFSET	(V4L2_CID_M2M_AUDIO_CLASS_BASE + 2)
++#define V4L2_CID_M2M_AUDIO_DEST_RATE_OFFSET	(V4L2_CID_M2M_AUDIO_CLASS_BASE + 3)
 +
  /* MPEG-compression definitions kept for backwards compatibility */
  #ifndef __KERNEL__
