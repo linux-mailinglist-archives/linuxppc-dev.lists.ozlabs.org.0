@@ -1,84 +1,124 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE91B8320C1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jan 2024 22:14:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B624D8320C7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jan 2024 22:16:26 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TISuaZPH;
+	dkim=fail reason="key not found in DNS" header.d=amperemail.onmicrosoft.com header.i=@amperemail.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-amperemail-onmicrosoft-com header.b=lGGCFvdd;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TGFqH5PD8z3cTj
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 08:14:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TGFt04ZRFz3cMQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 08:16:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TISuaZPH;
+	dkim=fail reason="key not found in DNS" header.d=amperemail.onmicrosoft.com header.i=@amperemail.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-amperemail-onmicrosoft-com header.b=lGGCFvdd;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=os.amperecomputing.com (client-ip=2a01:111:f403:2412::700; helo=nam10-mw2-obe.outbound.protection.outlook.com; envelope-from=shijie@os.amperecomputing.com; receiver=lists.ozlabs.org)
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on20700.outbound.protection.outlook.com [IPv6:2a01:111:f403:2412::700])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TFwJ86Dd6z3bXv
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jan 2024 19:04:24 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40I7oocq009670;
-	Thu, 18 Jan 2024 08:04:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=AmRsDf2UHYAbAbmc8ihNWLxJC5WvTdmS07elNqb4DPo=;
- b=TISuaZPH9xaLur3lvZqvrDF376vxZm7NEbOlhJLj3dqSaWCgVG/Etz4aqjOWhdkHaZOT
- q5qDAm9sUFMoDUst33j7DvQz/ATYVfR9W8HoU1bzZsU7LBAYSBLiFYrOnaXWZp0AXquN
- /dZ6Bhw75MXvdreA0wEsirqHbG5VYyc2X5q+wOuyVMD5WdoXAe50Vay3a6HGsXGOw0DY
- cV/icFPkk/JmC3t5qao/6ZaWoDE/t1eq7QRF7ogUVD9ufONdZAdmjRe44sJfhb97xAga
- Y85FWsT+O17ipvosGHLmlNJWY60nDcXa2qD/8zyI9VwMMiYcXjT2awZBZulOkDn7R/Q1 kA== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vpyrk8m52-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Jan 2024 08:04:16 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40I77MnU005807;
-	Thu, 18 Jan 2024 08:04:14 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vm6bkt1s3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Jan 2024 08:04:14 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40I84CsQ25821724
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 18 Jan 2024 08:04:12 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 56F682004B;
-	Thu, 18 Jan 2024 08:04:12 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5983220040;
-	Thu, 18 Jan 2024 08:04:10 +0000 (GMT)
-Received: from li-c1fdab4c-355a-11b2-a85c-ef242fe9efb4.in.ibm.com (unknown [9.109.201.126])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 18 Jan 2024 08:04:10 +0000 (GMT)
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-To: linux-kernel@vger.kernel.org, linux-ntfs-dev@lists.sourceforge.net,
-        linux-xfs@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH 3/3] arch/powerpc: remove duplicate ifdefs
-Date: Thu, 18 Jan 2024 13:33:26 +0530
-Message-Id: <20240118080326.13137-4-sshegde@linux.ibm.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20240118080326.13137-1-sshegde@linux.ibm.com>
-References: <20240118080326.13137-1-sshegde@linux.ibm.com>
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TFyWK0kxwz3bTP
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jan 2024 20:44:11 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=OQIGEtWootoUXey9ZzcMd+launavz0klPqSWIYNE3l6Q06VgjkKcFZhVZ7T9SB2Bj0TxEoq5iooJgKrf7CKh9TvX2iQBZ9UWwDwwLfYy+u+uarII15VN2rbeeMbzi84u0dc6UeWEn0r/JvFelQp1SSPatb1S3ireSyJx0IgGnOax4qPrN51oz5MZRxqF6Yhr9AmDTXtF1Umgor47POCNs7SiC2xhYdDNqs/s/Wob6DQJlUnXLP2IcZ/Wc9La7r1OgkV9GFVdULy6OZLbOFBxaRi/UDXJOY2160dCgtYqftBAdDNs6/ZLt9tq751RwaC1axjT4r3564ia0Z5q4fE7FQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ge6lr17kU3oUFaV/jyv+EtN3EYLB8BzBl/9CAG63juA=;
+ b=KRK0kiIRvrCeXiinoTIalbdXgFY4uvxVHMKt1DCAqK9CMZqVuZSYjDhWUowVhLqq8i2DOUmuVrYRB4i8RuetW3wJuOfAgWjYRvzkL3IqiFU55+mS0Yt4FsoTFZJJfT3qwFJjUJk75b8Hq5/T4V/xEeOEtley4KtQL1zK8iSVAe3mB1IZbTZPH8woazhauLcTcsKMbEksc3CXL++Q4qHkqWji4QJNXSKr/GyTsYkp4flB96kY+rFfDUz5Jwss3w/vY6PXbuwuCAEPh4e0r5Oj2fgmWmZ/FVlF+zAJ5wcF9heL0//sYpA7Lyd7aCibKAgIqI8Ytubi0auh5SwCt/P4eQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=amperemail.onmicrosoft.com; dkim=pass
+ header.d=amperemail.onmicrosoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amperemail.onmicrosoft.com; s=selector1-amperemail-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ge6lr17kU3oUFaV/jyv+EtN3EYLB8BzBl/9CAG63juA=;
+ b=lGGCFvddQL5/UNUdunC+S1VfH55GIsOiqTaju5/b6j1isVr7QkYUymKHO8MUaY4A/NPKzEYRs3+TvCUBryKRIO/DAK30mLyvc4ubkubtDgOlgKU/5R+CuhhG5nGA6vGY8IdpJ8Jl78BOwATT21QFfkBG3+yyg7IAq3X8yFETye0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amperemail.onmicrosoft.com;
+Received: from PH0PR01MB7975.prod.exchangelabs.com (2603:10b6:510:26d::15) by
+ BY3PR01MB6690.prod.exchangelabs.com (2603:10b6:a03:363::17) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7202.24; Thu, 18 Jan 2024 09:43:45 +0000
+Received: from PH0PR01MB7975.prod.exchangelabs.com ([fe80::91c:92f:45a5:e68a])
+ by PH0PR01MB7975.prod.exchangelabs.com ([fe80::91c:92f:45a5:e68a%6]) with
+ mapi id 15.20.7159.020; Thu, 18 Jan 2024 09:43:45 +0000
+Message-ID: <b5d793c6-2951-474c-8439-8f541e65a538@amperemail.onmicrosoft.com>
+Date: Thu, 18 Jan 2024 17:43:14 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] init: refactor the generic cpu_to_node for NUMA
+To: Greg KH <gregkh@linuxfoundation.org>,
+ Huang Shijie <shijie@os.amperecomputing.com>
+References: <20240118031412.3300-1-shijie@os.amperecomputing.com>
+ <2024011820-path-throat-b7c8@gregkh>
+From: Shijie Huang <shijie@amperemail.onmicrosoft.com>
+In-Reply-To: <2024011820-path-throat-b7c8@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ybzYR_15sOZJwGfICg1PC-UelNSZi1tz
-X-Proofpoint-ORIG-GUID: ybzYR_15sOZJwGfICg1PC-UelNSZi1tz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-18_04,2024-01-17_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- bulkscore=0 adultscore=0 mlxscore=0 spamscore=0 suspectscore=0
- phishscore=0 clxscore=1015 impostorscore=0 malwarescore=0
- priorityscore=1501 mlxlogscore=657 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2311290000 definitions=main-2401180056
+X-ClientProxiedBy: CH5P221CA0014.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:610:1f2::7) To PH0PR01MB7975.prod.exchangelabs.com
+ (2603:10b6:510:26d::15)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR01MB7975:EE_|BY3PR01MB6690:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7e947797-4c3c-4723-03d4-08dc1809f6c5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	JdZniYWrIC5GGNy6Y5Nx+uFe/EeEFGaJMxT4FLkpYoq9jFk/Zh78+NlUrvmCOyamvFXClpqF8wiUp2GeWQfT9sFYwNUO43VkLG6+EG8rMms5+q7CpAA3eOCBnYgAItmvJb+B6A3Ot+E11WqHbOcpa1eYMciBpX5QGyj650S1kq6dVxn7r9D6KNj44S2rmifNqM0I1dTMSV50kSW4qTDxjIjymbUFwVLlXXGUg2KWvGEoI9NTC7MjFeKe4X2CsmmDcZ1m8PQBBXaM1AHMuOmAQGKBbr71EyytL59AShmiAnnWXeX0HKd/LHjatSm8IuQPH8uGQdN/jPa8sfF0eVwg+Ur2x5Aa190l//SZEMkv335Q/KZXpHJbxrPVRRPKladiZ+42A6KW2IzUf65W2T/6Yv8uoqwgPFg3e92btpZwcFIhGxMGV/qnFAJr7z24d9anN+UgFCCNWnzVgJgay21RNluVqNa4c87K1UIeTfMwMMWjV30kfI7OYEthIjDhMTcqlmMGmo/ElDj57UeCWqvYPdJl3910TkViJdZJllC8HNKwHP4Xkd+3WAFmINdUD905GkKomxIetrDlR/7Tmqadm1EhcJtu+RIfNvcZjV68iYCLaCx11zsWIHMkkOkOWiQvSgyCfuskESIt96i49xEjwQ==
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR01MB7975.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(376002)(396003)(346002)(39850400004)(136003)(230922051799003)(64100799003)(186009)(451199024)(1800799012)(26005)(6506007)(38100700002)(6666004)(42882007)(2616005)(6512007)(107886003)(7416002)(5660300002)(4326008)(8936002)(2906002)(41300700001)(6486002)(4744005)(8676002)(478600001)(66946007)(66476007)(110136005)(66556008)(316002)(83170400001)(31696002)(31686004)(41533002)(43740500002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?L2ZTb2w3Rmx1SFNCTEs2RkR6WUludUtrNkkrUFRDVFBoMlM4UUI2blpNRU9i?=
+ =?utf-8?B?Sk8wVHdMYVN4M1VEc1dZeDRGam1BY1M4VGRwV2N0MW1tSmhybjRFTVJHa0Fx?=
+ =?utf-8?B?NGE4d01jUDVITmlwUTUyYjUwTkNJWUZsNnNzOUxxTkVyRXczWWVHOTg4cS9r?=
+ =?utf-8?B?UTNVcHFMMjBBbCt6Wkl3NHFCcENOVEIvb1RBcnlmSjVuRWRZNkZxWkl3NnpC?=
+ =?utf-8?B?TnNTemR5NXVFd0dya1VTNmVrUUxLMFovbHpGYVhpZHlKdnlDL2o1dFlZeTNX?=
+ =?utf-8?B?ZFBSVjZTanBvQ0xRS2RlYURrc0V6aCt6UDhqMXZ5OU5TTW9RQmVsL2hkQytV?=
+ =?utf-8?B?RUFIcWxJNE9qeTlGbTNKWHRpME1RekorUnRxT3RQOEJiaHFwWVFtVExkWVYx?=
+ =?utf-8?B?NG1hZFhRTURqc2xWTHdMdnhubkRFOEZua0o3bmliOEVsNjUwT1JrUjhISHc3?=
+ =?utf-8?B?SFF2NVViMnYvSkNaZGNmYW1qWVQxSXVnOE4rVXdqOWpIZ0hPY2xURFNqWlZm?=
+ =?utf-8?B?c1dvdHhnT2U1dnFpT3d3eUVkOXd3TGFiUnNHaVhBY1lrVnZqVm9NQWNBOXdU?=
+ =?utf-8?B?U0RCZlNzOFJVaWJRVGNhbGVDb2hWeFdWQlpGc3hlTkZXeGhiWU5ZQkt6ZW42?=
+ =?utf-8?B?MDFiMitKWElJYjNCWThxUWhDT1JPM0JSZVlpT3ZvUGZPMXE1bUJuTVZKeHNl?=
+ =?utf-8?B?c0pKRzZUak9pbEhMNkNZQVdTalNXZnJxa3k0R0Jxb1NRK3IzMnBseVhqRWRJ?=
+ =?utf-8?B?UnJDYUZqUzFqUlFrZjhGKzRYNXVTVlRvMzVRNmZQWVN5NXBRMnJhbUJNNy9a?=
+ =?utf-8?B?aXVQZHBDbjBydllCM1hoR0JIaldUQTB5VWtzNkY0bENLWkNSOVUyeEdxbi9i?=
+ =?utf-8?B?VEJZb3BHMWZybEQ4S2FuTU9LWHhEWTV5V3VSbjRGUlpkTlp0Nlg5VCtvNFBG?=
+ =?utf-8?B?aGtrQkNCN0RMQ1lDY1lldWpTeDE3a1o2UGpGcjhYNEovSUVVaXRHQmpLMWhn?=
+ =?utf-8?B?c3l3RXBHZWxSSmk4R2d0TzdPREsxS3cwQlJwZUVSVjJyQmhEeS9wTUx0b0pl?=
+ =?utf-8?B?d1Vtc29wSGVIOEVjY2JCT3VuZmV1MFdoc2hidjNxRkNSOVJWblJYS3lKNFF2?=
+ =?utf-8?B?d2piTWduQXRxRUUyTEYwRUgxcWl0UjhPb3hXMFFqVWFvZ2E1ZDJCb1ZTbksw?=
+ =?utf-8?B?NFNFdHRHN3RUVldnZlRHOERDSlV4MVVvdVp6ajRhdVpFdUh5MWRRMm1tazBZ?=
+ =?utf-8?B?UUpqYkxHc2RRaGdMejI2OVdWODJaS3ZzTEh3MW82bGVhWW4zRTdoTlVHYWRI?=
+ =?utf-8?B?cHlmdUZ0SXR6bnBwZUxMQWFJN29hOGxYYnNybm5DVmtJWlpSTFkzM1ZqODBH?=
+ =?utf-8?B?eEx0c2dvamROeXZGV3YxSndad2tnaUJkVmhTaWVSWnVzcDlPMERXaHVvcnlk?=
+ =?utf-8?B?ZlIyNUs3amd5UDQ0WXR6OHhacWR3UHRpcmc0a0ZSc2dGbndrdDU3UVBDS0hu?=
+ =?utf-8?B?Z2hPK2NUNGNoNDAvcmF6cERxUjBmWGNyVmZoeDFYNWg4dkxZL2FzWGdUc2hs?=
+ =?utf-8?B?VXBHZHdvRnpOMHhwamM1ZFZBd25JTVMyeUVJcG1XQ1lhcjMyZktSZFlCS05C?=
+ =?utf-8?B?NStEc0hiaDVqSjNhNlNEaFJuUnpKampnclc4Rlc4RlRFOHVrUGhnYkJJVlpt?=
+ =?utf-8?B?OHBUSjU2RlVaM2pyUHBTWWxxam8vbkVVZnltMElvUm56QVlxMVNrVjZTeFFS?=
+ =?utf-8?B?WUY4QlgySEtBZXFJa1JwRGxSQi9GV3l1UWNyWVJJaytGUVVJNWQ2dUc5a3Fj?=
+ =?utf-8?B?UUp2bDY1RFM5ZVk5bHU1dVBUTzJ6SXEvR3pCcUFDc2J3Y0FhZEdEMUpFallB?=
+ =?utf-8?B?cmhiOEdqU2x0REtYbXlSSmEvVzVKRkorUk9aajhDL0JBREtjQWViZ0FLNVA2?=
+ =?utf-8?B?UC9HM002YXROZUtBV1lFeEpSOEtPb0RjblN4SkZraTBPaHJETURpczFRY0tq?=
+ =?utf-8?B?T250d21nU1A1ekZucjFrSTRZdjU3ajBwTlIvSHA1VlhaeTg5VEErT20xZXNm?=
+ =?utf-8?B?MmpZSjBaRG8rdkJnNlRlYUVXMXBnUmUrcVNsV2luRExGd2F3Sk0zZVJVL0Qy?=
+ =?utf-8?B?OG1BelBxZHJIYUg1eUpFTDhuNXIxM1ozQVdGVlN2c3VYSzllaXFQY0tJNzls?=
+ =?utf-8?Q?bf/LcA/Ft4kE5Pe0rCf1Md4=3D?=
+X-OriginatorOrg: amperemail.onmicrosoft.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7e947797-4c3c-4723-03d4-08dc1809f6c5
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR01MB7975.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jan 2024 09:43:45.5287
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0Q3TpdTXa7ZTHeqzxbkBIx32wdM03n3dQGMoyZ6K6JvjU77V364stTIgahzhdrnk+G1IdSlnDaEXONK6XuS8UpLoHZAans7qDBI9sWMh/AOgONjkTxrX+r/Jpm34urEI
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY3PR01MB6690
 X-Mailman-Approved-At: Fri, 19 Jan 2024 08:12:35 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -91,108 +131,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: peterz@infradead.org, sshegde@linux.ibm.com, mingo@kernel.org, anton@tuxera.com, chandan.babu@oracle.com
+Cc: mark.rutland@arm.com, rafael@kernel.org, catalin.marinas@arm.com, jiaxun.yang@flygoat.com, mikelley@microsoft.com, linux-riscv@lists.infradead.org, will@kernel.org, mingo@kernel.org, vschneid@redhat.com, arnd@arndb.de, chenhuacai@kernel.org, cl@os.amperecomputing.com, vbabka@suse.cz, kuba@kernel.org, patches@amperecomputing.com, linux-mips@vger.kernel.org, aou@eecs.berkeley.edu, yury.norov@gmail.com, paul.walmsley@sifive.com, tglx@linutronix.de, jpoimboe@kernel.org, linux-arm-kernel@lists.infradead.org, ndesaulniers@google.com, linux-kernel@vger.kernel.org, palmer@dabbelt.com, mhiramat@kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-when a ifdef is used in the below manner, second one could be considered as
-duplicate.
+Hi Greg,
 
-ifdef DEFINE_A
-...code block...
-ifdef DEFINE_A
-...code block...
-endif
-...code block...
-endif
+在 2024/1/18 17:27, Greg KH 写道:
+> On Thu, Jan 18, 2024 at 11:14:12AM +0800, Huang Shijie wrote:
+>> (0) We list the ARCHs which support the NUMA:
+>>         arm64, loongarch, powerpc, riscv,
+>>         sparc, mips, s390, x86,
+> I do not understand this format, what are you saying here?
 
-few places in arch/powerpc where this pattern was seen. In addition to that
-in paca.h, CONFIG_PPC_BOOK3S_64 was defined back to back. merged the two
-ifdefs.
+Sorry for the confusing.
 
-No functional change is intended here. It only aims to improve code
-readability.
 
-Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
----
- arch/powerpc/include/asm/paca.h           | 4 ----
- arch/powerpc/kernel/asm-offsets.c         | 2 --
- arch/powerpc/platforms/powermac/feature.c | 2 --
- arch/powerpc/xmon/xmon.c                  | 2 --
- 4 files changed, 10 deletions(-)
+I should put the conclusion at the beginning:
 
-diff --git a/arch/powerpc/include/asm/paca.h b/arch/powerpc/include/asm/paca.h
-index e667d455ecb4..1d58da946739 100644
---- a/arch/powerpc/include/asm/paca.h
-+++ b/arch/powerpc/include/asm/paca.h
-@@ -163,9 +163,7 @@ struct paca_struct {
- 	u64 kstack;			/* Saved Kernel stack addr */
- 	u64 saved_r1;			/* r1 save for RTAS calls or PM or EE=0 */
- 	u64 saved_msr;			/* MSR saved here by enter_rtas */
--#ifdef CONFIG_PPC64
- 	u64 exit_save_r1;		/* Syscall/interrupt R1 save */
--#endif
- #ifdef CONFIG_PPC_BOOK3E_64
- 	u16 trap_save;			/* Used when bad stack is encountered */
- #endif
-@@ -214,8 +212,6 @@ struct paca_struct {
- 	/* Non-maskable exceptions that are not performance critical */
- 	u64 exnmi[EX_SIZE];	/* used for system reset (nmi) */
- 	u64 exmc[EX_SIZE];	/* used for machine checks */
--#endif
--#ifdef CONFIG_PPC_BOOK3S_64
- 	/* Exclusive stacks for system reset and machine check exception. */
- 	void *nmi_emergency_sp;
- 	void *mc_emergency_sp;
-diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
-index 9f14d95b8b32..f029755f9e69 100644
---- a/arch/powerpc/kernel/asm-offsets.c
-+++ b/arch/powerpc/kernel/asm-offsets.c
-@@ -246,9 +246,7 @@ int main(void)
- 	OFFSET(PACAHWCPUID, paca_struct, hw_cpu_id);
- 	OFFSET(PACAKEXECSTATE, paca_struct, kexec_state);
- 	OFFSET(PACA_DSCR_DEFAULT, paca_struct, dscr_default);
--#ifdef CONFIG_PPC64
- 	OFFSET(PACA_EXIT_SAVE_R1, paca_struct, exit_save_r1);
--#endif
- #ifdef CONFIG_PPC_BOOK3E_64
- 	OFFSET(PACA_TRAP_SAVE, paca_struct, trap_save);
- #endif
-diff --git a/arch/powerpc/platforms/powermac/feature.c b/arch/powerpc/platforms/powermac/feature.c
-index 81c9fbae88b1..2cc257f75c50 100644
---- a/arch/powerpc/platforms/powermac/feature.c
-+++ b/arch/powerpc/platforms/powermac/feature.c
-@@ -2333,7 +2333,6 @@ static struct pmac_mb_def pmac_mb_defs[] = {
- 		PMAC_TYPE_POWERMAC_G5,		g5_features,
- 		0,
- 	},
--#ifdef CONFIG_PPC64
- 	{	"PowerMac7,3",			"PowerMac G5",
- 		PMAC_TYPE_POWERMAC_G5,		g5_features,
- 		0,
-@@ -2359,7 +2358,6 @@ static struct pmac_mb_def pmac_mb_defs[] = {
- 		0,
- 	},
- #endif /* CONFIG_PPC64 */
--#endif /* CONFIG_PPC64 */
- };
+   The generic cpu_to_node() has bug in some situations.
 
- /*
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index b3b94cd37713..f413c220165c 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -643,10 +643,8 @@ static int xmon_core(struct pt_regs *regs, volatile int fromipi)
- 			touch_nmi_watchdog();
- 		} else {
- 			cmd = 1;
--#ifdef CONFIG_SMP
- 			if (xmon_batch)
- 				cmd = batch_cmds(regs);
--#endif
- 			if (!locked_down && cmd)
- 				cmd = cmds(regs);
- 			if (locked_down || cmd != 0) {
---
-2.39.3
+   The generic cpu_to_node()  does not work in arm64, powerpc, riscv 
+when the CONFIG_NUMA is enabled:
+
+      The cpu_to_node() is called before it is initialized.
+
+  So all the four places are set with the wrong node id (get by 
+cpu_to_node()):
+
+            a.) early_trace_init()         in kernel/trace/trace.c
+	   b.) sched_init()               in kernel/sched/core.c
+	   c.) init_sched_fair_class()    in kernel/sched/fair.c
+	   d.) workqueue_init_early()     in kernel/workqueue.c
+
+
+Thanks
+
+Huang Shijie
 
