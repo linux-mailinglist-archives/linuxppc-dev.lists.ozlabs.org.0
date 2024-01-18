@@ -1,65 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDA0583181F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jan 2024 12:09:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C12F68319D2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jan 2024 14:00:18 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hUtx6X2c;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=jIq5DEk+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TG0PR2xNhz3cW5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jan 2024 22:09:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TG2sX34CPz3cGC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 00:00:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hUtx6X2c;
+	dkim=pass (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=jIq5DEk+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.65; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=brainfault.org (client-ip=2607:f8b0:4864:20::129; helo=mail-il1-x129.google.com; envelope-from=anup@brainfault.org; receiver=lists.ozlabs.org)
+Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TG0Nc5v9vz30YZ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jan 2024 22:08:31 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1705576112; x=1737112112;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=mjy35o3OcV45hLL1uxk3iUN5tBVkfvj+D2W44/uMvS8=;
-  b=hUtx6X2c0MBio2+E7nXVwA0MOyyh4TWqPwaONqNYC9R69/DYQSEYK5zA
-   hrshaSi6kMAw+0hUnyI3lWr/2PwcFxQvz2ot129qYjpaTVuA9qnqej8R8
-   nP4lmKNtGKfkteqO9vud1LbgpSrh7uu090zIPxXuJVdcpjBFbDpjCjCvS
-   +JWU8zu3RWzVKAhYO873tI6l4F34Gs/T/CrcCrHtTKtP6EMyvdXojLux4
-   iZnXM4ryY5J+acqyDfU0wwbH3fWnWd16dgdR3dw/YqwhV0dQ9D7J862/4
-   ncKzHPvye5esbyA7/kHoRot1NdD1DoPu/PomdXiWJ+/8Ae1gf7LUQYlne
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="404183209"
-X-IronPort-AV: E=Sophos;i="6.05,201,1701158400"; 
-   d="scan'208";a="404183209"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2024 03:08:26 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,201,1701158400"; 
-   d="scan'208";a="297769"
-Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.94.254.202])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2024 03:08:23 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	"Oliver O'Halloran" <oohall@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Dongdong Liu <liudongdong3@huawei.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] PCI/DPC: Fix TLP Prefix register reading offset
-Date: Thu, 18 Jan 2024 13:08:15 +0200
-Message-Id: <20240118110815.3867-1-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.39.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TG2rg0klkz3bYx
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jan 2024 23:59:29 +1100 (AEDT)
+Received: by mail-il1-x129.google.com with SMTP id e9e14a558f8ab-3608cfa5ce6so56403095ab.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jan 2024 04:59:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1705582767; x=1706187567; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HWADTwPjX+2jaYXFvN/zsXEQ2ZmoOpg5k/PCeUcdjSk=;
+        b=jIq5DEk+yJtytVQ4lfnqMspeQcxobUTGAnZ9RVMJx2bpyvEi9L/L1NQbNzV3UFJxsP
+         MwNPA47/syyaULYreP9B6RQ0hWKLDNYgRzYKB2uaWJFtCiYMiVIfMz2e1pRPro3Ifd0K
+         eFAJcgD28Lp6MOvhkNOTQsq/jAjoLV/i9iVA0AlvEo3uN/xUcdSdcw1ZBCRNpaHhin7e
+         h008KY30BZDkBaX9732lM0cF6qez+jsJk3kbmChmG4GNthRbtTqw7MMf+lKLPAirZyrO
+         HYxxrdM+zYS0Heset+zOzdf74KZ0yWPzu/tdiD/NJinBmnWm4554lpFBNF7M34/1yBOz
+         X6Sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705582767; x=1706187567;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HWADTwPjX+2jaYXFvN/zsXEQ2ZmoOpg5k/PCeUcdjSk=;
+        b=ox2gfUzjqX8Ci+jwLLIiEaoSe+0COUpSmwXCsw5H8u5AvMblLk2fxNT3LWT3rC3GQw
+         6jldNwikz82WI0dkfREpkEsr6xwDOp3+ooaZlrSB44AlAOih65knBg7WJVEFg9rJ8k09
+         86sO28tQwW8hKxOn09JfpdoN38UxXU3wH9EvpwIUiRRXadgWHyu9vyOW92bRM2UvE/PW
+         Y33ywhF1R/rrnVojp1hWt2JftGtijRTcpZb69aWOBgJkp2wFcIizikFEtw0ANidi9YKm
+         lrIr5V0K5S7k04zH49QocOKZ5EdGkVElCGdcaTM2XqGUif1xiyECod/7KIGLf7NV+nT+
+         +6rA==
+X-Gm-Message-State: AOJu0YxhUYzm4G0OmPuUE0rdg98NoBbbTN7AVhEGvmD46RvQOiAfD038
+	/mXwmbc+hmK456SEOHplXaRYdy5D+hRzyZm9apA4WwMtfX78TtzJOErMK79ugF2D3Pl12mNasFZ
+	snfRO7w06YykTwYIuEcCvl2fbF8a1YFQX2lWSGw==
+X-Google-Smtp-Source: AGHT+IEULXICvafspeHkLMkr6soWFzV0SUySB8GzLHkUsKVp+V05biZlODsydI6eC8onv1WinflroTNSid+Lah/ulTM=
+X-Received: by 2002:a05:6e02:5ac:b0:361:98a3:a7ac with SMTP id
+ k12-20020a056e0205ac00b0036198a3a7acmr879075ils.58.1705582767073; Thu, 18 Jan
+ 2024 04:59:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20240104123727.76987-2-ajones@ventanamicro.com>
+In-Reply-To: <20240104123727.76987-2-ajones@ventanamicro.com>
+From: Anup Patel <anup@brainfault.org>
+Date: Thu, 18 Jan 2024 18:29:16 +0530
+Message-ID: <CAAhSdy0SxZWdCHQVW0Bki+bHpg4qrHWV0aFzJq8V2xYtwsMWhw@mail.gmail.com>
+Subject: Re: [PATCH -fixes v2] RISC-V: KVM: Require HAVE_KVM
+To: Andrew Jones <ajones@ventanamicro.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,34 +76,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: sfr@canb.auug.org.au, aou@eecs.berkeley.edu, alex@ghiti.fr, kvm@vger.kernel.org, atishp@atishpatra.org, linux-kernel@vger.kernel.org, npiggin@gmail.com, linux-next@vger.kernel.org, palmer@dabbelt.com, rdunlap@infradead.org, kvm-riscv@lists.infradead.org, paul.walmsley@sifive.com, pbonzini@redhat.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The TLP Prefix Log Register consists of multiple DWORDs (PCIe r6.1 sec
-7.9.14.13) but the loop in dpc_process_rp_pio_error() keeps reading
-from the first DWORD. Add the iteration count based offset calculation
-into the config read.
+On Thu, Jan 4, 2024 at 6:07=E2=80=AFPM Andrew Jones <ajones@ventanamicro.co=
+m> wrote:
+>
+> KVM requires EVENTFD, which is selected by HAVE_KVM. Other KVM
+> supporting architectures select HAVE_KVM and then their KVM
+> Kconfigs ensure its there with a depends on HAVE_KVM. Make RISCV
+> consistent with that approach which fixes configs which have KVM
+> but not EVENTFD, as was discovered with a randconfig test.
+>
+> Fixes: 99cdc6c18c2d ("RISC-V: Add initial skeletal KVM support")
+> Reported-by: Randy Dunlap <rdunlap@infradead.org>
+> Closes: https://lore.kernel.org/all/44907c6b-c5bd-4e4a-a921-e4d3825539d8@=
+infradead.org/
+> Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
 
-Fixes: f20c4ea49ec4 ("PCI/DPC: Add eDPC support")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
----
- drivers/pci/pcie/dpc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Queued this patch for Linux-6.8
 
-diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-index 94111e438241..e5d7c12854fa 100644
---- a/drivers/pci/pcie/dpc.c
-+++ b/drivers/pci/pcie/dpc.c
-@@ -234,7 +234,7 @@ static void dpc_process_rp_pio_error(struct pci_dev *pdev)
- 
- 	for (i = 0; i < pdev->dpc_rp_log_size - 5; i++) {
- 		pci_read_config_dword(pdev,
--			cap + PCI_EXP_DPC_RP_PIO_TLPPREFIX_LOG, &prefix);
-+			cap + PCI_EXP_DPC_RP_PIO_TLPPREFIX_LOG + i * 4, &prefix);
- 		pci_err(pdev, "TLP Prefix Header: dw%d, %#010x\n", i, prefix);
- 	}
-  clear_status:
--- 
-2.39.2
+Regards,
+Anup
 
+> ---
+>
+> v2:
+>  - Added Fixes tag and -fixes prefix [Alexandre/Anup]
+>
+>  arch/riscv/Kconfig     | 1 +
+>  arch/riscv/kvm/Kconfig | 2 +-
+>  2 files changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index a935a5f736b9..daba06a3b76f 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -128,6 +128,7 @@ config RISCV
+>         select HAVE_KPROBES if !XIP_KERNEL
+>         select HAVE_KPROBES_ON_FTRACE if !XIP_KERNEL
+>         select HAVE_KRETPROBES if !XIP_KERNEL
+> +       select HAVE_KVM
+>         # https://github.com/ClangBuiltLinux/linux/issues/1881
+>         select HAVE_LD_DEAD_CODE_DATA_ELIMINATION if !LD_IS_LLD
+>         select HAVE_MOVE_PMD
+> diff --git a/arch/riscv/kvm/Kconfig b/arch/riscv/kvm/Kconfig
+> index 1fd76aee3b71..36fa8ec9e5ba 100644
+> --- a/arch/riscv/kvm/Kconfig
+> +++ b/arch/riscv/kvm/Kconfig
+> @@ -19,7 +19,7 @@ if VIRTUALIZATION
+>
+>  config KVM
+>         tristate "Kernel-based Virtual Machine (KVM) support (EXPERIMENTA=
+L)"
+> -       depends on RISCV_SBI && MMU
+> +       depends on HAVE_KVM && RISCV_SBI && MMU
+>         select HAVE_KVM_IRQCHIP
+>         select HAVE_KVM_IRQ_ROUTING
+>         select HAVE_KVM_MSI
+> --
+> 2.43.0
+>
