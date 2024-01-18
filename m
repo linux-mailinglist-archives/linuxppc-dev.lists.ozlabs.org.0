@@ -2,73 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 559DA831C85
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jan 2024 16:29:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83147831DEA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jan 2024 17:55:35 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pDBdwisn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GjTQmwO3;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TG69z1ttzz3cSH
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 02:29:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TG8511Qxtz3byl
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 03:55:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pDBdwisn;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GjTQmwO3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TG65Q556Fz3bfS
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jan 2024 02:25:46 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 7A38FCE1FE9;
-	Thu, 18 Jan 2024 15:25:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 38468C433A6;
-	Thu, 18 Jan 2024 15:25:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705591542;
-	bh=loaLhqGDhJWXtcsUXFBqm/6Nnc30eNcrN719EvZDEF8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=pDBdwisnWTJWdSizVqn8gGCbn7LTVoeGfXEaWx+rYB2ELXojCW/UhSdoM03OITk2N
-	 V5leDhhgvX3r5nMaAs2QQauxCFIth/tKExfEEJZ4ZmctTHaHAXVlZg8oI65z7zJuCJ
-	 by7Y7PFSrbOKb0zeZqZScClsxFW4Vf7ralolLy8rQfhhhcoJ/kQetkpVKFbmTJcHSA
-	 rv9zq96ICpHm8Qz7iGcHXGRa0xEf9DwxYjRwLsNLVT7ipcFJrqfgVcGVB/Tdu+D33m
-	 voFfx8sUvZf6mveAbYOsrKP5I2io2jVZ+yClR8IvLJHqjJ74pYY5NgHCiAmMeUFfiX
-	 zgqHewOd7+SFA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2532CC47DD6;
-	Thu, 18 Jan 2024 15:25:42 +0000 (UTC)
-From: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
-Date: Thu, 18 Jan 2024 09:25:16 -0600
-Subject: [PATCH RFC 5/5] powerpc/pseries: Update hardware description
- string after migration
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TG8473M6cz2x9T
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jan 2024 03:54:47 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40IG2ftR030193;
+	Thu, 18 Jan 2024 16:54:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=prRDCbVOhbKHGi5TCgmxx9era6YL99O0cTuS3rgHrLg=;
+ b=GjTQmwO373ejfR/uWbv1Zi68o7tyn7TauY4K8dxo+rOxG8gHbvU0zHewTm8WGJEgboRk
+ Bi5tfY87BJWnBub/CrcjbXUBClbtlj6e7PzwLFCOIWmwtmneF8mj3Zy5zle/EOPoRgC+
+ dhFMdUk6xD7ZyUs/YXK1hjlE7SjNvRGpVwQA2zw2ye/jG+8h7Kccrenon5iadnsDmvbk
+ OsmnSnCQGd64c9zWIMFsYcLBCT8u3bkhhAEY3ocvG6CisvmsAeC9hYPi15oUoW9LjxI7
+ wTAD88Lve5MSHsO4aATnXB4ikOo0+ixul8HBWht/UUUiAJRESYGoINkk6a7XxZ8TYtH/ 4w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vq75q9vyk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Jan 2024 16:54:37 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40IGkskN016450;
+	Thu, 18 Jan 2024 16:54:36 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vq75q9vwy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Jan 2024 16:54:36 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40IE7dSq006508;
+	Thu, 18 Jan 2024 16:54:35 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vm7j240a8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Jan 2024 16:54:35 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40IGsYlq10683008
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 18 Jan 2024 16:54:34 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2633B5805A;
+	Thu, 18 Jan 2024 16:54:34 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0F13B58056;
+	Thu, 18 Jan 2024 16:54:34 +0000 (GMT)
+Received: from localhost (unknown [9.61.184.220])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 18 Jan 2024 16:54:33 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v6] powerpc/pseries/vas: Use usleep_range() to support
+ HCALL delay
+In-Reply-To: <20240116055910.421605-1-haren@linux.ibm.com>
+References: <20240116055910.421605-1-haren@linux.ibm.com>
+Date: Thu, 18 Jan 2024 10:54:33 -0600
+Message-ID: <87r0iea8fq.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id:  <20240118-update-dump-stack-arch-str-v1-5-5c0f98d017b5@linux.ibm.com>
-References:  <20240118-update-dump-stack-arch-str-v1-0-5c0f98d017b5@linux.ibm.com>
-In-Reply-To:  <20240118-update-dump-stack-arch-str-v1-0-5c0f98d017b5@linux.ibm.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, 
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, 
- Brian King <brking@linux.ibm.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- John Ogness <john.ogness@linutronix.de>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- Petr Mladek <pmladek@suse.com>, 
- Sergey Senozhatsky <senozhatsky@chromium.org>, 
- Steven Rostedt <rostedt@goodmis.org>
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1705591541; l=4664;
- i=nathanl@linux.ibm.com; s=20230817; h=from:subject:message-id;
- bh=yLmHE9ThZlzMbb6aloXvN4gTgnWJfDyfG66G809WhB4=;
- b=Q+37SjK8zZS4Tun8c+TodJT0/xdTHbgWsnBNDyyUECvL05LqqXalJJi38TeuCBXrRQu3g/dT8
- C/f58x/aq0iDCDQFi4PKjSRId3cA59UKDsExSucwkOSohtWaW/rYYO6
-X-Developer-Key: i=nathanl@linux.ibm.com; a=ed25519;
- pk=jPDF44RvT+9DGFOH3NGoIu1xN9dF+82pjdpnKjXfoJ0=
-X-Endpoint-Received:  by B4 Relay for nathanl@linux.ibm.com/20230817 with auth_id=78
-X-Original-From: Nathan Lynch <nathanl@linux.ibm.com>
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: zK5jLBrkXTCOZ7a7xnbS3nI6fxGFLFgH
+X-Proofpoint-ORIG-GUID: ZtM2IjN-6ea-E8TaOxMV8IcPor1lQ6eY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-18_08,2024-01-17_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=828
+ priorityscore=1501 spamscore=0 malwarescore=0 impostorscore=0
+ lowpriorityscore=0 mlxscore=0 adultscore=0 phishscore=0 bulkscore=0
+ clxscore=1011 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311290000 definitions=main-2401180123
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,146 +95,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: nathanl@linux.ibm.com
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: aneesh.kumar@kernel.org, haren@linux.ibm.com, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+Haren Myneni <haren@linux.ibm.com> writes:
+> VAS allocate, modify and deallocate HCALLs returns
+> H_LONG_BUSY_ORDER_1_MSEC or H_LONG_BUSY_ORDER_10_MSEC for busy
+> delay and expects OS to reissue HCALL after that delay. But using
+> msleep() will often sleep at least 20 msecs even though the
+> hypervisor suggests OS reissue these HCALLs after 1 or 10msecs.
+>
+> The open and close VAS window functions hold mutex and then issue
+> these HCALLs. So these operations can take longer than the
+> necessary when multiple threads issue open or close window APIs
+> simultaneously, especially might affect the performance in the
+> case of repeat open/close APIs for each compression request.
+>
+> Multiple tasks can open / close VAS windows at the same time
+> which depends on the available VAS credits. For example, 240
+> cores system provides 4800 VAS credits. It means 4800 tasks can
+> execute open VAS windows HCALLs with the mutex. Since each
+> msleep() will often sleep more than 20 msecs, some tasks are
+> waiting more than 120 secs to acquire mutex. It can cause hung
+> traces for these tasks in dmesg due to mutex contention around
+> open/close HCALLs.
+>
+> Instead of msleep(), use usleep_range() to ensure sleep with
+> the expected value before issuing HCALL again. So since each
+> task sleep 10 msecs maximum, this patch allow more tasks can
+> issue open/close VAS calls without any hung traces in the
+> dmesg.
+>
+> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+> Suggested-by: Nathan Lynch <nathanl@linux.ibm.com>
 
-Introduce code that rebuilds the short hardware description printed by
-stack traces. This sort of duplicates some code from boot (prom.c
-mainly), but that code populates the string as early as possible using
-APIs that aren't available later. So sharing all the code between the
-boot and runtime versions isn't feasible.
+Reviewed-by: Nathan Lynch <nathanl@linux.ibm.com>
 
-To prevent "drift" between the boot and runtime versions, rebuild the
-description using the new runtime APIs in a late initcall and warn if
-it doesn't match the one built earlier. The initcall also invokes
-dump_stack_update_arch_desc() twice to fully exercise it before any
-partition migration occurs. These checks could be dropped or made
-configurable later.
-
-Call pseries_update_hw_description() immediately after updating the
-device tree when resuming from a partition migration.
-
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
----
- arch/powerpc/platforms/pseries/mobility.c |  5 +++
- arch/powerpc/platforms/pseries/pseries.h  |  1 +
- arch/powerpc/platforms/pseries/setup.c    | 70 +++++++++++++++++++++++++++++++
- 3 files changed, 76 insertions(+)
-
-diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
-index 1798f0f14d58..ff573cb5aee5 100644
---- a/arch/powerpc/platforms/pseries/mobility.c
-+++ b/arch/powerpc/platforms/pseries/mobility.c
-@@ -378,6 +378,11 @@ void post_mobility_fixup(void)
- 	rc = pseries_devicetree_update(MIGRATION_SCOPE);
- 	if (rc)
- 		pr_err("device tree update failed: %d\n", rc);
-+	/*
-+	 * Rebuild the hardware description printed in stack traces
-+	 * using the updated device tree.
-+	 */
-+	pseries_update_hw_description();
- 
- 	cacheinfo_rebuild();
- 
-diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/platforms/pseries/pseries.h
-index bba4ad192b0f..810a64fccc7e 100644
---- a/arch/powerpc/platforms/pseries/pseries.h
-+++ b/arch/powerpc/platforms/pseries/pseries.h
-@@ -56,6 +56,7 @@ extern int dlpar_acquire_drc(u32 drc_index);
- extern int dlpar_release_drc(u32 drc_index);
- extern int dlpar_unisolate_drc(u32 drc_index);
- extern void post_mobility_fixup(void);
-+void pseries_update_hw_description(void);
- 
- void queue_hotplug_event(struct pseries_hp_errorlog *hp_errlog);
- int handle_dlpar_errorlog(struct pseries_hp_errorlog *hp_errlog);
-diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
-index 9ae1951f8312..72177411026e 100644
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -1034,6 +1034,76 @@ static void pseries_add_hw_description(struct seq_buf *sb)
- 		seq_buf_printf(sb, "hv:phyp ");
- }
- 
-+static void pseries_rebuild_hw_desc(struct seq_buf *sb)
-+{
-+	struct device_node *cpudn, *root;
-+	const char *model;
-+	u32 cpu_version;
-+
-+	seq_buf_clear(sb);
-+
-+	root = of_find_node_by_path("/");
-+	if (!of_property_read_string(root, "model", &model))
-+		seq_buf_printf(sb, "%s ", model);
-+	of_node_put(root);
-+
-+	seq_buf_printf(sb, "%s 0x%04lx ", cur_cpu_spec->cpu_name, mfspr(SPRN_PVR));
-+
-+	cpudn = of_get_next_cpu_node(NULL);
-+	if (!of_property_read_u32(cpudn, "cpu-version", &cpu_version)) {
-+		if ((cpu_version & 0xff000000) == 0x0f000000)
-+			seq_buf_printf(sb, "0x%04x ", cpu_version);
-+	}
-+	of_node_put(cpudn);
-+
-+	pseries_add_hw_description(sb);
-+
-+	seq_buf_puts(sb, ppc_md.name);
-+}
-+
-+void pseries_update_hw_description(void)
-+{
-+	struct seq_buf sb = { // todo: use DECLARE_SEQ_BUF() once it's fixed
-+		.buffer = (char[128]) { 0 },
-+		.size = sizeof(char[128]),
-+	};
-+
-+	pseries_rebuild_hw_desc(&sb);
-+	dump_stack_update_arch_desc("%s", seq_buf_str(&sb));
-+}
-+
-+static int __init pseries_test_update_hw_desc(void)
-+{
-+	struct seq_buf sb = { // todo: use DECLARE_SEQ_BUF() once it's fixed
-+		.buffer = (char[128]) { 0 },
-+		.size = sizeof(char[128]),
-+	};
-+	bool mismatch;
-+
-+	/*
-+	 * Ensure the rebuilt description matches the one built during
-+	 * boot.
-+	 */
-+	pseries_rebuild_hw_desc(&sb);
-+
-+	mismatch = strcmp(seq_buf_str(&ppc_hw_desc), seq_buf_str(&sb));
-+	if (WARN(mismatch, "rebuilt hardware description string mismatch")) {
-+		pr_err("  boot:    '%s'\n", ppc_hw_desc.buffer);
-+		pr_err("  runtime: '%s'\n", sb.buffer);
-+		return -EINVAL;
-+	}
-+
-+	/*
-+	 * Invoke dump_stack_update_arch_desc() *twice* to ensure it
-+	 * exercises the free path.
-+	 */
-+	dump_stack_update_arch_desc("%s", sb.buffer);
-+	dump_stack_update_arch_desc("%s", sb.buffer);
-+
-+	return 0;
-+}
-+late_initcall(pseries_test_update_hw_desc);
-+
- /*
-  * Early initialization.  Relocation is on but do not reference unbolted pages
-  */
-
--- 
-2.43.0
-
+IMO this can be converted to a more generic helper in the future, should
+one emerge.
