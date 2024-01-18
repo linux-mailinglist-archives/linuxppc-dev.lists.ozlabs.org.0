@@ -1,70 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C12F68319D2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jan 2024 14:00:18 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=jIq5DEk+;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BFCB831A40
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jan 2024 14:15:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TG2sX34CPz3cGC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 00:00:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TG3CW45VWz3cXs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 00:15:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=jIq5DEk+;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=brainfault.org (client-ip=2607:f8b0:4864:20::129; helo=mail-il1-x129.google.com; envelope-from=anup@brainfault.org; receiver=lists.ozlabs.org)
-Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TG2rg0klkz3bYx
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jan 2024 23:59:29 +1100 (AEDT)
-Received: by mail-il1-x129.google.com with SMTP id e9e14a558f8ab-3608cfa5ce6so56403095ab.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jan 2024 04:59:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1705582767; x=1706187567; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HWADTwPjX+2jaYXFvN/zsXEQ2ZmoOpg5k/PCeUcdjSk=;
-        b=jIq5DEk+yJtytVQ4lfnqMspeQcxobUTGAnZ9RVMJx2bpyvEi9L/L1NQbNzV3UFJxsP
-         MwNPA47/syyaULYreP9B6RQ0hWKLDNYgRzYKB2uaWJFtCiYMiVIfMz2e1pRPro3Ifd0K
-         eFAJcgD28Lp6MOvhkNOTQsq/jAjoLV/i9iVA0AlvEo3uN/xUcdSdcw1ZBCRNpaHhin7e
-         h008KY30BZDkBaX9732lM0cF6qez+jsJk3kbmChmG4GNthRbtTqw7MMf+lKLPAirZyrO
-         HYxxrdM+zYS0Heset+zOzdf74KZ0yWPzu/tdiD/NJinBmnWm4554lpFBNF7M34/1yBOz
-         X6Sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705582767; x=1706187567;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HWADTwPjX+2jaYXFvN/zsXEQ2ZmoOpg5k/PCeUcdjSk=;
-        b=ox2gfUzjqX8Ci+jwLLIiEaoSe+0COUpSmwXCsw5H8u5AvMblLk2fxNT3LWT3rC3GQw
-         6jldNwikz82WI0dkfREpkEsr6xwDOp3+ooaZlrSB44AlAOih65knBg7WJVEFg9rJ8k09
-         86sO28tQwW8hKxOn09JfpdoN38UxXU3wH9EvpwIUiRRXadgWHyu9vyOW92bRM2UvE/PW
-         Y33ywhF1R/rrnVojp1hWt2JftGtijRTcpZb69aWOBgJkp2wFcIizikFEtw0ANidi9YKm
-         lrIr5V0K5S7k04zH49QocOKZ5EdGkVElCGdcaTM2XqGUif1xiyECod/7KIGLf7NV+nT+
-         +6rA==
-X-Gm-Message-State: AOJu0YxhUYzm4G0OmPuUE0rdg98NoBbbTN7AVhEGvmD46RvQOiAfD038
-	/mXwmbc+hmK456SEOHplXaRYdy5D+hRzyZm9apA4WwMtfX78TtzJOErMK79ugF2D3Pl12mNasFZ
-	snfRO7w06YykTwYIuEcCvl2fbF8a1YFQX2lWSGw==
-X-Google-Smtp-Source: AGHT+IEULXICvafspeHkLMkr6soWFzV0SUySB8GzLHkUsKVp+V05biZlODsydI6eC8onv1WinflroTNSid+Lah/ulTM=
-X-Received: by 2002:a05:6e02:5ac:b0:361:98a3:a7ac with SMTP id
- k12-20020a056e0205ac00b0036198a3a7acmr879075ils.58.1705582767073; Thu, 18 Jan
- 2024 04:59:27 -0800 (PST)
-MIME-Version: 1.0
-References: <20240104123727.76987-2-ajones@ventanamicro.com>
-In-Reply-To: <20240104123727.76987-2-ajones@ventanamicro.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Thu, 18 Jan 2024 18:29:16 +0530
-Message-ID: <CAAhSdy0SxZWdCHQVW0Bki+bHpg4qrHWV0aFzJq8V2xYtwsMWhw@mail.gmail.com>
-Subject: Re: [PATCH -fixes v2] RISC-V: KVM: Require HAVE_KVM
-To: Andrew Jones <ajones@ventanamicro.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TG3BR1rtdz3bnm
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jan 2024 00:14:54 +1100 (AEDT)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id A72CA2022F1;
+	Thu, 18 Jan 2024 14:14:49 +0100 (CET)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 422722022EA;
+	Thu, 18 Jan 2024 14:14:49 +0100 (CET)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 33218183487A;
+	Thu, 18 Jan 2024 21:14:47 +0800 (+08)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: hverkuil@xs4all.nl,
+	sakari.ailus@iki.fi,
+	tfiga@chromium.org,
+	m.szyprowski@samsung.com,
+	mchehab@kernel.org,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	alsa-devel@alsa-project.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v12 00/15] Add audio support in v4l2 framework
+Date: Thu, 18 Jan 2024 20:31:53 +0800
+Message-Id: <1705581128-4604-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,65 +58,166 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sfr@canb.auug.org.au, aou@eecs.berkeley.edu, alex@ghiti.fr, kvm@vger.kernel.org, atishp@atishpatra.org, linux-kernel@vger.kernel.org, npiggin@gmail.com, linux-next@vger.kernel.org, palmer@dabbelt.com, rdunlap@infradead.org, kvm-riscv@lists.infradead.org, paul.walmsley@sifive.com, pbonzini@redhat.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 4, 2024 at 6:07=E2=80=AFPM Andrew Jones <ajones@ventanamicro.co=
-m> wrote:
->
-> KVM requires EVENTFD, which is selected by HAVE_KVM. Other KVM
-> supporting architectures select HAVE_KVM and then their KVM
-> Kconfigs ensure its there with a depends on HAVE_KVM. Make RISCV
-> consistent with that approach which fixes configs which have KVM
-> but not EVENTFD, as was discovered with a randconfig test.
->
-> Fixes: 99cdc6c18c2d ("RISC-V: Add initial skeletal KVM support")
-> Reported-by: Randy Dunlap <rdunlap@infradead.org>
-> Closes: https://lore.kernel.org/all/44907c6b-c5bd-4e4a-a921-e4d3825539d8@=
-infradead.org/
-> Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+Audio signal processing also has the requirement for memory to
+memory similar as Video.
 
-Queued this patch for Linux-6.8
+This asrc memory to memory (memory ->asrc->memory) case is a non
+real time use case.
 
-Regards,
-Anup
+User fills the input buffer to the asrc module, after conversion, then asrc
+sends back the output buffer to user. So it is not a traditional ALSA playback
+and capture case.
 
-> ---
->
-> v2:
->  - Added Fixes tag and -fixes prefix [Alexandre/Anup]
->
->  arch/riscv/Kconfig     | 1 +
->  arch/riscv/kvm/Kconfig | 2 +-
->  2 files changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index a935a5f736b9..daba06a3b76f 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -128,6 +128,7 @@ config RISCV
->         select HAVE_KPROBES if !XIP_KERNEL
->         select HAVE_KPROBES_ON_FTRACE if !XIP_KERNEL
->         select HAVE_KRETPROBES if !XIP_KERNEL
-> +       select HAVE_KVM
->         # https://github.com/ClangBuiltLinux/linux/issues/1881
->         select HAVE_LD_DEAD_CODE_DATA_ELIMINATION if !LD_IS_LLD
->         select HAVE_MOVE_PMD
-> diff --git a/arch/riscv/kvm/Kconfig b/arch/riscv/kvm/Kconfig
-> index 1fd76aee3b71..36fa8ec9e5ba 100644
-> --- a/arch/riscv/kvm/Kconfig
-> +++ b/arch/riscv/kvm/Kconfig
-> @@ -19,7 +19,7 @@ if VIRTUALIZATION
->
->  config KVM
->         tristate "Kernel-based Virtual Machine (KVM) support (EXPERIMENTA=
-L)"
-> -       depends on RISCV_SBI && MMU
-> +       depends on HAVE_KVM && RISCV_SBI && MMU
->         select HAVE_KVM_IRQCHIP
->         select HAVE_KVM_IRQ_ROUTING
->         select HAVE_KVM_MSI
-> --
-> 2.43.0
->
+It is a specific use case,  there is no reference in current kernel.
+v4l2 memory to memory is the closed implementation,  v4l2 current
+support video, image, radio, tuner, touch devices, so it is not
+complicated to add support for this specific audio case.
+
+Because we had implemented the "memory -> asrc ->i2s device-> codec"
+use case in ALSA.  Now the "memory->asrc->memory" needs
+to reuse the code in asrc driver, so the first 3 patches is for refining
+the code to make it can be shared by the "memory->asrc->memory"
+driver.
+
+The main change is in the v4l2 side, A /dev/vl4-audioX will be created,
+user applications only use the ioctl of v4l2 framework.
+
+Other change is to add memory to memory support for two kinds of i.MX ASRC
+module.
+
+changes in v12
+- minor changes according to comments
+- drop min_buffers_needed = 1 and V4L2_CTRL_FLAG_UPDATE flag
+- drop bus_info
+
+changes in v11
+- add add-fixed-point-test-controls in vivid.
+- add v4l2_ctrl_fp_compose() helper function for min and max
+
+changes in v10
+- remove FIXED_POINT type
+- change code base on media: v4l2-ctrls: add support for fraction_bits
+- fix issue reported by kernel test robot
+- remove module_alias
+
+changes in v9:
+- add MEDIA_ENT_F_PROC_AUDIO_RESAMPLER.
+- add MEDIA_INTF_T_V4L_AUDIO
+- add media controller support
+- refine the vim2m-audio to support 8k<->16k conversion.
+
+changes in v8:
+- refine V4L2_CAP_AUDIO_M2M to be 0x00000008
+- update doc for FIXED_POINT
+- address comments for imx-asrc
+
+changes in v7:
+- add acked-by from Mark
+- separate commit for fixed point, m2m audio class, audio rate controls
+- use INTEGER_MENU for rate,  FIXED_POINT for rate offset
+- remove used fmts
+- address other comments for Hans
+
+changes in v6:
+- use m2m_prepare/m2m_unprepare/m2m_start/m2m_stop to replace
+  m2m_start_part_one/m2m_stop_part_one, m2m_start_part_two/m2m_stop_part_two.
+- change V4L2_CTRL_TYPE_ASRC_RATE to V4L2_CTRL_TYPE_FIXED_POINT
+- fix warning by kernel test rebot
+- remove some unused format V4L2_AUDIO_FMT_XX
+- Get SNDRV_PCM_FORMAT from V4L2_AUDIO_FMT in driver.
+- rename audm2m to viaudm2m.
+
+changes in v5:
+- remove V4L2_AUDIO_FMT_LPCM
+- define audio pixel format like V4L2_AUDIO_FMT_S8...
+- remove rate and format in struct v4l2_audio_format.
+- Add V4L2_CID_ASRC_SOURCE_RATE and V4L2_CID_ASRC_DEST_RATE controls
+- updata document accordingly.
+
+changes in v4:
+- update document style
+- separate V4L2_AUDIO_FMT_LPCM and V4L2_CAP_AUDIO_M2M in separate commit
+
+changes in v3:
+- Modify documents for adding audio m2m support
+- Add audio virtual m2m driver
+- Defined V4L2_AUDIO_FMT_LPCM format type for audio.
+- Defined V4L2_CAP_AUDIO_M2M capability type for audio m2m case.
+- with modification in v4l-utils, pass v4l2-compliance test.
+
+changes in v2:
+- decouple the implementation in v4l2 and ALSA
+- implement the memory to memory driver as a platfrom driver
+  and move it to driver/media
+- move fsl_asrc_common.h to include/sound folder
+
+Shengjiu Wang (15):
+  ASoC: fsl_asrc: define functions for memory to memory usage
+  ASoC: fsl_easrc: define functions for memory to memory usage
+  ASoC: fsl_asrc: move fsl_asrc_common.h to include/sound
+  ASoC: fsl_asrc: register m2m platform device
+  ASoC: fsl_easrc: register m2m platform device
+  media: uapi: Add V4L2_CAP_AUDIO_M2M capability flag
+  media: v4l2: Add audio capture and output support
+  media: uapi: Define audio sample format fourcc type
+  media: uapi: Add V4L2_CTRL_CLASS_M2M_AUDIO
+  media: uapi: Add audio rate controls support
+  media: uapi: Declare interface types for Audio
+  media: uapi: Add an entity type for audio resampler
+  media: vivid: add fixed point test controls
+  media: imx-asrc: Add memory to memory driver
+  media: vim2m-audio: add virtual driver for audio memory to memory
+
+ .../media/mediactl/media-types.rst            |   11 +
+ .../userspace-api/media/v4l/buffer.rst        |    6 +
+ .../userspace-api/media/v4l/common.rst        |    1 +
+ .../media/v4l/dev-audio-mem2mem.rst           |   71 +
+ .../userspace-api/media/v4l/devices.rst       |    1 +
+ .../media/v4l/ext-ctrls-audio-m2m.rst         |   41 +
+ .../userspace-api/media/v4l/pixfmt-audio.rst  |   87 ++
+ .../userspace-api/media/v4l/pixfmt.rst        |    1 +
+ .../media/v4l/vidioc-enum-fmt.rst             |    2 +
+ .../media/v4l/vidioc-g-ext-ctrls.rst          |    4 +
+ .../userspace-api/media/v4l/vidioc-g-fmt.rst  |    4 +
+ .../media/v4l/vidioc-querycap.rst             |    3 +
+ .../media/videodev2.h.rst.exceptions          |    3 +
+ .../media/common/videobuf2/videobuf2-v4l2.c   |    4 +
+ drivers/media/platform/nxp/Kconfig            |   13 +
+ drivers/media/platform/nxp/Makefile           |    1 +
+ drivers/media/platform/nxp/imx-asrc.c         | 1256 +++++++++++++++++
+ drivers/media/test-drivers/Kconfig            |   10 +
+ drivers/media/test-drivers/Makefile           |    1 +
+ drivers/media/test-drivers/vim2m-audio.c      |  793 +++++++++++
+ drivers/media/test-drivers/vivid/vivid-core.h |    2 +
+ .../media/test-drivers/vivid/vivid-ctrls.c    |   26 +
+ drivers/media/v4l2-core/v4l2-compat-ioctl32.c |    9 +
+ drivers/media/v4l2-core/v4l2-ctrls-defs.c     |   10 +
+ drivers/media/v4l2-core/v4l2-dev.c            |   21 +
+ drivers/media/v4l2-core/v4l2-ioctl.c          |   66 +
+ drivers/media/v4l2-core/v4l2-mem2mem.c        |   13 +-
+ include/media/v4l2-ctrls.h                    |    6 +
+ include/media/v4l2-dev.h                      |    2 +
+ include/media/v4l2-ioctl.h                    |   34 +
+ .../fsl => include/sound}/fsl_asrc_common.h   |   60 +
+ include/uapi/linux/media.h                    |    2 +
+ include/uapi/linux/v4l2-controls.h            |    9 +
+ include/uapi/linux/videodev2.h                |   41 +
+ sound/soc/fsl/fsl_asrc.c                      |  144 ++
+ sound/soc/fsl/fsl_asrc.h                      |    4 +-
+ sound/soc/fsl/fsl_asrc_dma.c                  |    2 +-
+ sound/soc/fsl/fsl_easrc.c                     |  233 +++
+ sound/soc/fsl/fsl_easrc.h                     |    6 +-
+ 39 files changed, 2996 insertions(+), 7 deletions(-)
+ create mode 100644 Documentation/userspace-api/media/v4l/dev-audio-mem2mem.rst
+ create mode 100644 Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
+ create mode 100644 Documentation/userspace-api/media/v4l/pixfmt-audio.rst
+ create mode 100644 drivers/media/platform/nxp/imx-asrc.c
+ create mode 100644 drivers/media/test-drivers/vim2m-audio.c
+ rename {sound/soc/fsl => include/sound}/fsl_asrc_common.h (60%)
+
+-- 
+2.34.1
+
