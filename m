@@ -1,131 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E991B832ACC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 14:54:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33C25832BC0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 15:53:54 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=db/r7Jni;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FF3m3woi;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FF3m3woi;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TGh1Z69Wsz3cNV
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jan 2024 00:54:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TGjL80LHnz3bwJ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jan 2024 01:53:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=db/r7Jni;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FF3m3woi;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FF3m3woi;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:261c::600; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20600.outbound.protection.outlook.com [IPv6:2a01:111:f403:261c::600])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TGh0f6Cbfz3bZr
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Jan 2024 00:53:36 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PoiaerykOXsLSjnSrOFXHZFVaBzoQvYp9Rrn35KiaFVnt298Tz0S4XkOo/M3Oy/TUIVrMMpmut3Mczyso2TaRK296qONl//4u75SFRHV0WbvX6aSmf6OM00MS7q6IFNSWEipx6Vlfy427K5vJoeXmPFvg5OB6ZbU0/mdeNOGwDNJvyURurHf5SMQMeImda8YYohd7kcLGHjSxunIfZRRfbx+OIjKOAZ8kdP6C0K9dS6B/9bT6x6SD5CsAy68CI6Yfd8XZtjJsPTa/fr3xpOyafA7RU9fT5FSRxgxqIq0ASk8Xh2o/hGXIwY/gVIZqNuFiV9ZCADqvbRYphP5LrL1OA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uyA5OrPGllfQIV5WP6U8SxGnWiXQvsLmwFkVWqmwvQg=;
- b=X8T0toNA0q+/ujeNEizTHnEALaUtbH9mjgw4nUM73iryGuhcn8BIfhmKfh+eGyLa4PiyOttJcNU3LQv5tZ5bCEZxVUK/X+lB6WVA9Vu1kn2wSQDFZVOl0wJ28oRwvGrkuG5241K58NHYgWJf4qDQWSkm65r5QFdTG162JByLGPAFL5tKr4pu7PmViK4WiX0n5MgF7kbzwqDGSRNpzVgP3kdYzYHAaKE2+2HLVdAzekIkN41BpOuZOW+PLRS0T7M/vVa3by3n41T3BpLWjiqX3k1hHyjOG+4w95uWzeokPv+pyy/VSPF8b+kpLRzC6D0GnSshJ4b897CTSNCSnRzbgg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uyA5OrPGllfQIV5WP6U8SxGnWiXQvsLmwFkVWqmwvQg=;
- b=db/r7JniVgocMMLFowZYhdDI48u3ab9pUgIBqD9pbgYEHNGkyVTd7ZZNHQtmTuB0XAzrgP7JM1AVZSw+ley1eQeuXfJmAcuEs5KDsJxKPGVMPbtXbgDUeFHd9q5mJvYM9StVmCrvEyLcW27AXVCxVD0MISZGC2k+7qJCGE9EDU0Q+NIS+eDLvNdjjLFnWnu7NjxrxzShqpSlAk6x+yXHW6rM8evB1DfJV61xjhD4yvLYCQ2nynMub+BQXYEySdgopSFmayayC8xWc8FQr2f2m89uqyFkjysv25pk4r+nuPB1MyOs2cwPzw6wezsOO3w0mK4HDRU/WpqDErzSz4pVdQ==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PAZP264MB3103.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1f5::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.26; Fri, 19 Jan
- 2024 13:53:12 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::9f77:c0ff:cd22:ae96]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::9f77:c0ff:cd22:ae96%4]) with mapi id 15.20.7202.024; Fri, 19 Jan 2024
- 13:53:12 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Subject: Re: [PATCH] powerpc/6xx: set High BAT Enable flag on G2 cores
-Thread-Topic: [PATCH] powerpc/6xx: set High BAT Enable flag on G2 cores
-Thread-Index: AQHaNAu2YovK4Jn7OUefUWrjeoMLCrCzw0QAgAE764CAAKXIAIArrUMAgAADXQA=
-Date: Fri, 19 Jan 2024 13:53:12 +0000
-Message-ID: <f8c2f1c8-0b43-47c6-9359-9aeeb14863eb@csgroup.eu>
-References: <20231221124538.159706-1-matthias.schiffer@ew.tq-group.com>
- <2fad9563-09ee-4017-8a67-5958475d56c8@csgroup.eu>
- <b4eae5a8f451a3d253521a61b9625e3d7634f430.camel@ew.tq-group.com>
- <ad3d0d4d-f63b-4704-b829-e630a69a6cf3@csgroup.eu>
- <5610a6223b54a845185f28f54999ad72269b72f5.camel@ew.tq-group.com>
-In-Reply-To: <5610a6223b54a845185f28f54999ad72269b72f5.camel@ew.tq-group.com>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla Thunderbird
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PAZP264MB3103:EE_
-x-ms-office365-filtering-correlation-id: c7d4f860-0147-46af-ada9-08dc18f5fa69
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  MWh6npWphToh3DVv+ZlS29VaG01QdiOMFxlttTEZd80c+jDRIwrCXNk3en7+OlWkC7utlYKzxV30h+GsKlpfFhFdJfh/eeT6rTxbQglNXcfYXp8ohwPH6e3c0xGRIe1+XrRKivZvJKGp7L3CBMlROsVe20R3eyYBgTgCp2nPw5UEPMyo+yXb7v0W7sD49Hf9DyWJh5QGnDmOBllEC5TvKtlDZQAYdG2SdzEJ0M94pBI2TvRxcB99tPapFnZ3ZVWOcKvqqzw5DOMzf6XiczQDnBf7cmYTwy9aWSVu67i2FcDO4IoDgAQLSKvV/lncWnrCWxueTDSxgydp23YPRqaiHlhYrYRliATFbiV2CY7tKXgi+IA8ibHJEsgxYzi0m9F7k5h6y04lAyC33bIDswprRzZj7Gt/0nCJpUxIeM/R2Zk6HZgQMtZsrbDzBmZoFaQG/eRaZJhJQdhUUNKD/YM0YJUjC6Q5dLhkXcmvjswEEOtumbMV572IcKGzPdFPFdYm55I1Y1BtQnwZSoFx3BlfJUFl6IjuC/5nHAbqUrstKdWx9czEQcjH5NtfCmkBJ7ythMH04L0hVd1WhHMpPI+TLCn5kM5+c7LjNNlPaCQ8RQRNy/Zo4/dw/YQRwtScS8uURfZ2c3QKjN11qZvqPF3QJuOlQDcptrLi0XoTp3WnRTagSarUjnlA3GqHiyKRb06n0jYGEgqRAVyEaLizT07BZg==
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(366004)(39850400004)(396003)(136003)(346002)(376002)(230173577357003)(230273577357003)(230922051799003)(1800799012)(64100799003)(186009)(451199024)(31686004)(66574015)(6506007)(71200400001)(83380400001)(31696002)(36756003)(38100700002)(86362001)(40140700001)(2616005)(6512007)(38070700009)(122000001)(41300700001)(4326008)(44832011)(5660300002)(66476007)(64756008)(66946007)(66556008)(54906003)(66446008)(8676002)(91956017)(8936002)(6916009)(2906002)(316002)(76116006)(6486002)(966005)(478600001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?TVZtVmdXbmoyN1lXZ2lOeVlPOWx3NE9hUkxaQTAydkpmRmhSalRKcys0UVQz?=
- =?utf-8?B?VStqeVhpYTIzbWZ1ZjB6NHB3MWRSQW5pWWthc2tLUU41Mk1oODQ1azlGd1lS?=
- =?utf-8?B?RWhmeFYxZXZwb0k2WVl4NXdaT2lXOFJnMEYxZkEvWXRHc3VQUERYN3l5bSsy?=
- =?utf-8?B?UGVObGpWeHRLYkFFSWpxRGRxMmx5TGtPQm43SFA4Um9rek1CZU1STnI2bkJu?=
- =?utf-8?B?UEIvZ3Y1SVRid0dnTmV0aTdqMmlwVVVHYndTMFY4bCt5NnFlUVFueDVqVzN5?=
- =?utf-8?B?TmllYlNCMGlQYkJ6OXViK1ArMzUreU5uMS9KWVdpRWdjdGIveGh6ZDJnOFo3?=
- =?utf-8?B?Q1BEYUFOdk1ndzNqV2pzYkNLZTY3UG9IdXdpQytiTHF1RUg0QlY0b3gvTk0r?=
- =?utf-8?B?aTVwbDFnUDdpYnB3NmFPYjdjRWRCQXQ4ZmYyZ2pYbHBjKzQ2K0dEc1dBYWZQ?=
- =?utf-8?B?ZTA1aklOcTNnck4vYzdrR2ZaWnJzRVFucW1UUFRpOGI5YVJCZWFQV0dMZGt2?=
- =?utf-8?B?MTRJZlh5TUJlNkwyYjZqWnRaUGNGcVdwT2hYQS9XNjJzS2ZGZTlRVXo3UlEr?=
- =?utf-8?B?QnNneS9IeWpLRXB3cGkvMmlLRE5PNmJtSmJlMnErK1dxS1J6eTJkc1VvVTln?=
- =?utf-8?B?NTdmSVBlSkpSNThucGZlKzZkS1dCTWZmTy9KZWpZYlJJQVJEK0RpRmpaM1Nk?=
- =?utf-8?B?Mmg3a1ZaeVhzc1lodm50bUR4a0RPeWtXaHoxT0hiT1VMb0pmdjZXRnpQSVlv?=
- =?utf-8?B?ZFJQcTRRZWxDNW5MYjNrcGZ1WVM1SUVQVzdtVS9EUkJQRndsZlZOZXdXdlZ1?=
- =?utf-8?B?a09pV0dsNENNZTVjVWJIRmhCZ21KdmtZM2RlclBZb3RENEJJZDBzOWpFSlFY?=
- =?utf-8?B?RkM4UnlLTVA3eHBpcmszczQzRTNkdDFTSG5NNXJOdFBPbVRoamt6WHZJazJZ?=
- =?utf-8?B?SHBLMlJITjd4eWR5d2o0S0oxQ0ZsVlBxUXVVZ2ttQlNJSjMyS0FIWnltK01y?=
- =?utf-8?B?cmZUMTJML1d1L1k2c3JBa2ptaEQraDRXNGZzMG1JMjM4a3hFazJ3enVETWpl?=
- =?utf-8?B?bnNkQnJvQzZRc1BpMElHUDhNTHN5czJQdUplbVNiRFU0QVEvMW5FaC9IR2hx?=
- =?utf-8?B?aVg2YmtPMUNLbm1vMHptVGFSdlRhYURKcmtrMmk1ay84OFpIdk1YL0R1Nk5v?=
- =?utf-8?B?Ui9xL3FrOWhkQ2lHM1Z0TnV5dUhpbW9kMklBcHZwaU9Ib20wOFdudkNVNmZt?=
- =?utf-8?B?MmgzRmNWTGlQa3FuanNpbDIzSDRFUVNPVzJUMXZBakZZRjU2MWxGcUprbFl3?=
- =?utf-8?B?KzE2aC9lUEdpclBwbjNuTC8rb2p1N3hsOXVxMFVsTGVkT2taa29Qd0t6ekI1?=
- =?utf-8?B?T1Y0azNsbjBWOXExY2tzRGJONXVXTkFIWUs2cmdyK2ZSbmtVNTB0aTNKOG80?=
- =?utf-8?B?VjJKbGJPc3FKZW44ZHhTMm4zZEs3NGM3d2Njd3dFcEplK2hSR1ljaHlNbEM0?=
- =?utf-8?B?Z3lLam02bmtFUXFCWVZDd0ZsY281amRVYklEODk4U28yNjZuRVJGVGtoTEpi?=
- =?utf-8?B?Zzgya09BbjJEeENydTNLbExIUC93TzJVQndScVRUWkVkQlVISGgrQlJBOXNl?=
- =?utf-8?B?YVdYZVkydEs3OVdkK1lTMUZMNGlhTFg2ZlFNVDJMRURmSjA1Rit4QUFReHdo?=
- =?utf-8?B?dFo3Lzc3VnRsNlBUTWl0M0lmK3lkcHA2YUtmUWFrUHdRMDNRN0FJTGxVRjdI?=
- =?utf-8?B?ckUzNFVPN2NvQkVVbnphbTZ2NEU0N0kxblkwL1JSUDYvdDhYN2RnaFlPdndX?=
- =?utf-8?B?VTdwcHE5azZrY3ZsdTJ6d2ZZQ0hNeGhQQUd5TDF5M0RPSVJqVXZKWEJRS0Q2?=
- =?utf-8?B?Z2RXdmd5N3BCK1V3eElXVndrZTFqdTBlWjNtbGV6L3ErUS90YWM1eGRxcUFh?=
- =?utf-8?B?MmFXVU5rQ0VCZWlxRUVDN0RpelpLSFdmVGtuSjUwWmhiS29rejBHZjdNaklW?=
- =?utf-8?B?Q0YxM2FBcmplTGRJVk9IcFRwYm55cGNVZktuRHhONEJGSU1YcWtCc29ReDdF?=
- =?utf-8?B?SlEzb0FsM3JMcHVrSDFHckpWa0ZYRmtvcWs1aVprQnlWSTk4cHdSc0d0WnRB?=
- =?utf-8?B?bE5KbkZRcEZLT0pFMVcydENTSE84eHZZREFMTUdFa0prQTJjWmtYQXFCdVc2?=
- =?utf-8?Q?5sL3LdWv7NDU4zdqmLQRkrUAWBElsygdLeWYr3+m8vvE?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C2292934F309C4448E12EAD5D90ED7CC@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TGjKF2MrPz307V
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Jan 2024 01:53:04 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1705675979;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=a7b5wka3jZpJDrQA4DTDzEctwPm/eZO0QdaDBfGD0Sk=;
+	b=FF3m3woiNOoqiCGw+Bp366cCyLEGNZv8uFpUjg4FnBt5TBswtoeWM+E5drHIlmrpDn2osx
+	m39oiBOVU+J5eIwdUY3IqtUx+zwZEOfZe1YUrqOaFGhgbV+1BfbtiMOhTnPCmBl4BO91km
+	jNO+mVXZwOENfx6TSViSaWT+2R1643Y=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1705675979;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=a7b5wka3jZpJDrQA4DTDzEctwPm/eZO0QdaDBfGD0Sk=;
+	b=FF3m3woiNOoqiCGw+Bp366cCyLEGNZv8uFpUjg4FnBt5TBswtoeWM+E5drHIlmrpDn2osx
+	m39oiBOVU+J5eIwdUY3IqtUx+zwZEOfZe1YUrqOaFGhgbV+1BfbtiMOhTnPCmBl4BO91km
+	jNO+mVXZwOENfx6TSViSaWT+2R1643Y=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-553-y_u4cXE2P_WuQzhDc2Y6SA-1; Fri,
+ 19 Jan 2024 09:52:53 -0500
+X-MC-Unique: y_u4cXE2P_WuQzhDc2Y6SA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CF48C3C2A1DC;
+	Fri, 19 Jan 2024 14:52:52 +0000 (UTC)
+Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.116.4])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 528F451D5;
+	Fri, 19 Jan 2024 14:52:44 +0000 (UTC)
+From: Baoquan He <bhe@redhat.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v2 00/14] Split crash out from kexec and clean up related config items
+Date: Fri, 19 Jan 2024 22:52:27 +0800
+Message-ID: <20240119145241.769622-1-bhe@redhat.com>
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: c7d4f860-0147-46af-ada9-08dc18f5fa69
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Jan 2024 13:53:12.6766
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0XiyaelA5vHi8g6UPcJXSwGorUkL2nnF9ybI/NfO7OSdnWftPX6Mw8CvpOwKj/+j6pzTYEc3FBQZwqi+1woStNqAU4uQWggujbor03SEjHI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAZP264MB3103
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -137,128 +76,244 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux@ew.tq-group.com" <linux@ew.tq-group.com>
+Cc: linux-s390@vger.kernel.org, Baoquan He <bhe@redhat.com>, piliu@redhat.com, linux-sh@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, linux-mips@vger.kernel.org, ebiederm@xmission.com, loongarch@lists.linux.dev, hbathini@linux.ibm.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org, viro@zeniv.linux.org.uk
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDE5LzAxLzIwMjQgw6AgMTQ6NDEsIE1hdHRoaWFzIFNjaGlmZmVyIGEgw6ljcml0wqA6
-DQo+Pg0KPj4gVGhpbmtpbmcgYWJvdXQgaXQgb25jZSBtb3JlLCBjYW4gd2UgZG8gZXZlbiBtb3Jl
-IHNpbXBsZSA/DQo+Pg0KPj4gV2h5IGRvIHdlIG5lZWQgdGhhdCBfX3NldHVwX2NwdV9nMigpIGF0
-IGFsbCA/DQo+Pg0KPj4gWW91IGNvdWxkIGp1c3QgYWRkIHRoZSBmb2xsb3dpbmcgaW50byBfX3Nl
-dF9jcHVfNjAzKCkNCj4+DQo+PiBkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL2tlcm5lbC9jcHVf
-c2V0dXBfNnh4LlMNCj4+IGIvYXJjaC9wb3dlcnBjL2tlcm5lbC9jcHVfc2V0dXBfNnh4LlMNCj4+
-IGluZGV4IGM2N2QzMmUwNGRmOS4uN2I0MWUzODg0ODY2IDEwMDY0NA0KPj4gLS0tIGEvYXJjaC9w
-b3dlcnBjL2tlcm5lbC9jcHVfc2V0dXBfNnh4LlMNCj4+ICsrKyBiL2FyY2gvcG93ZXJwYy9rZXJu
-ZWwvY3B1X3NldHVwXzZ4eC5TDQo+PiBAQCAtMjEsNiArMjEsMTEgQEAgQkVHSU5fTU1VX0ZUUl9T
-RUNUSU9ODQo+PiAgICAgICAgbGkgICAgICByMTAsMA0KPj4gICAgICAgIG10c3ByICAgU1BSTl9T
-UFJHXzYwM19MUlUscjEwICAgICAgICAgICAvKiBpbml0IFNXIExSVSB0cmFja2luZyAqLw0KPj4g
-ICAgRU5EX01NVV9GVFJfU0VDVElPTl9JRlNFVChNTVVfRlRSX05FRURfRFRMQl9TV19MUlUpDQo+
-PiArQkVHSU5fTU1VX0ZUUl9TRUNUSU9ODQo+PiArICAgICBtZnNwciAgIHIxMSxTUFJOX0hJRDJf
-RzINCj4+ICsgICAgIG9yaXMgICAgcjExLHIxMSxISUQyX0hCRV9HMkBoDQo+PiArICAgICBtdHNw
-ciAgIFNQUk5fSElEMl9HMixyMTENCj4+ICtFTkRfTU1VX0ZUUl9TRUNUSU9OX0lGU0VUKE1NVV9G
-VFJfVVNFX0hJR0hfQkFUUykNCj4+DQo+PiAgICBCRUdJTl9GVFJfU0VDVElPTg0KPj4gICAgICAg
-IGJsICAgICAgX19pbml0X2ZwdV9yZWdpc3RlcnMNCj4+IC0tLQ0KPj4NCj4+IEJ5IHRoZSB3YXks
-IGFzIHlvdXIgcmVnaXN0ZXIgaXMgbmFtZWQgU1BSTl9ISUQyX0cyLCB0aGUgYml0IHdvdWxkIGJl
-dHRlcg0KPj4gYmUgbmFtZWQgSElEMl9HMl9IQkUgaW5zdGVhZCBvZiBISUQyX0hCRV9HMiBJIHRo
-aW5rLg0KPiANCj4gTXkgaW50ZW50aW9uIHdhcyB0byBrZWVwIHRoaXMgY29uc2lzdGVudCB3aXRo
-IHRoZSBTUFJOX0hJRDJfR0VLS08gZGVmaW5lLg0KDQpJIGRvbid0IHVuZGVyc3RhbmQgd2hhdCB5
-b3UgbWVhbi4gSSBjYW4ndCBzZWUgYW55IGJpdHMgZGVmaW5lZCBmb3IgDQpISUQyX0dFS0tPLg0K
-DQpXaGF0IEkgc2VlIHdoaWNoIGlzIHNpbWl0YXIgaXMgdGhlIGRlZmluaXRpb24gb2YgVFNDIHJl
-Z2lzdGVyIGZvciBDRUxMIENQVS4NCg0KI2RlZmluZSBTUFJOX1RTQ19DRUxMCTB4Mzk5CS8qIFRo
-cmVhZCBzd2l0Y2ggY29udHJvbCBvbiBDZWxsICovDQojZGVmaW5lICAgVFNDX0NFTExfREVDX0VO
-QUJMRV8wCTB4NDAwMDAwIC8qIERlY3JlbWVudGVyIEludGVycnVwdCAqLw0KI2RlZmluZSAgIFRT
-Q19DRUxMX0RFQ19FTkFCTEVfMQkweDIwMDAwMCAvKiBEZWNyZW1lbnRlciBJbnRlcnJ1cHQgKi8N
-CiNkZWZpbmUgICBUU0NfQ0VMTF9FRV9FTkFCTEUJMHgxMDAwMDAgLyogRXh0ZXJuYWwgSW50ZXJy
-dXB0ICovDQojZGVmaW5lICAgVFNDX0NFTExfRUVfQk9PU1QJMHgwODAwMDAgLyogRXh0ZXJuYWwg
-SW50ZXJydXB0IEJvb3N0ICovDQoNCg0KVGhleSBkb24ndCBjYWxsIGl0IFRTQ19FRV9CT09TVF9D
-RUxMIG9yIFRTQ19FRV9FTkFCTEVfQ0VMTA0KDQoNCkNocmlzdG9waGUNCg0KPiANCj4gUmVnYXJk
-cywNCj4gTWF0dGhpYXMNCj4gDQo+IA0KPiANCj4gDQo+Pg0KPj4gQ2hyaXN0b3BoZQ0KPj4NCj4+
-Pg0KPj4+Pg0KPj4+Pj4gKw0KPj4+Pj4gK0JFR0lOX0ZUUl9TRUNUSU9ODQo+Pj4+PiArICAgICAg
-IGJsICAgICAgX19pbml0X2ZwdV9yZWdpc3RlcnMNCj4+Pj4+ICtFTkRfRlRSX1NFQ1RJT05fSUZD
-TFIoQ1BVX0ZUUl9GUFVfVU5BVkFJTEFCTEUpDQo+Pj4+PiArICAgICAgIGJsICAgICAgc2V0dXBf
-Y29tbW9uX2NhY2hlcw0KPj4+Pj4gKyAgICAgICBibCAgICAgIHNldHVwX2cyX2hpZDINCj4+Pj4+
-ICsgICAgICAgbXRsciAgICByNQ0KPj4+Pj4gKyAgICAgICBibHINCj4+Pj4+DQo+Pj4+PiAgICAg
-LyogRW5hYmxlIGNhY2hlcyBmb3IgNjAzJ3MsIDYwNCwgNzUwICYgNzQwMCAqLw0KPj4+Pj4gICAg
-IFNZTV9GVU5DX1NUQVJUX0xPQ0FMKHNldHVwX2NvbW1vbl9jYWNoZXMpDQo+Pj4+PiBAQCAtMTE1
-LDYgKzEyOSwxNiBAQCBTWU1fRlVOQ19TVEFSVF9MT0NBTChzZXR1cF82MDRfaGlkMCkNCj4+Pj4+
-ICAgICAgICAgICAgYmxyDQo+Pj4+PiAgICAgU1lNX0ZVTkNfRU5EKHNldHVwXzYwNF9oaWQwKQ0K
-Pj4+Pj4NCj4+Pj4+ICsvKiBFbmFibGUgaGlnaCBCQVRzIGZvciBHMiAoRzJfTEUsIGUzMDBjWCkg
-Ki8NCj4+Pj4+ICtTWU1fRlVOQ19TVEFSVF9MT0NBTChzZXR1cF9nMl9oaWQyKQ0KPj4+Pj4gKyAg
-ICAgICBtZnNwciAgIHIxMSxTUFJOX0hJRDJfRzINCj4+Pj4+ICsgICAgICAgb3JpcyAgICByMTEs
-cjExLEhJRDJfSEJFX0cyQGgNCj4+Pj4+ICsgICAgICAgbXRzcHIgICBTUFJOX0hJRDJfRzIscjEx
-DQo+Pj4+PiArICAgICAgIHN5bmMNCj4+Pj4+ICsgICAgICAgaXN5bmMNCj4+Pj4+ICsgICAgICAg
-YmxyDQo+Pj4+PiArU1lNX0ZVTkNfRU5EKHNldHVwX2cyX2hpZDIpDQo+Pj4+PiArDQo+Pj4+PiAg
-ICAgLyogNzQwMCA8PSByZXYgMi43IGFuZCA3NDEwIHJldiA9IDEuMCBzdWZmZXIgZnJvbSBzb21l
-DQo+Pj4+PiAgICAgICogZXJyYXRhcyB3ZSB3b3JrIGFyb3VuZCBoZXJlLg0KPj4+Pj4gICAgICAq
-IE1vdG8gTVBDNzEwQ0UucGRmIGRlc2NyaWJlcyB0aGVtLCB0aG9zZSBhcmUgZXJyYXRhDQo+Pj4+
-PiBAQCAtNDk1LDQgKzUxOSwzIEBAIF9HTE9CQUwoX19yZXN0b3JlX2NwdV9zZXR1cCkNCj4+Pj4+
-ICAgICAgICAgICAgbXRjciAgICByNw0KPj4+Pj4gICAgICAgICAgICBibHINCj4+Pj4+ICAgICBf
-QVNNX05PS1BST0JFX1NZTUJPTChfX3Jlc3RvcmVfY3B1X3NldHVwKQ0KPj4+Pj4gLQ0KPj4+Pj4g
-ZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJwYy9rZXJuZWwvY3B1X3NwZWNzX2Jvb2szc18zMi5oIGIv
-YXJjaC9wb3dlcnBjL2tlcm5lbC9jcHVfc3BlY3NfYm9vazNzXzMyLmgNCj4+Pj4+IGluZGV4IDM3
-MTQ2MzRkMTk0YTEuLjgzZjA1NGZjZjgzN2MgMTAwNjQ0DQo+Pj4+PiAtLS0gYS9hcmNoL3Bvd2Vy
-cGMva2VybmVsL2NwdV9zcGVjc19ib29rM3NfMzIuaA0KPj4+Pj4gKysrIGIvYXJjaC9wb3dlcnBj
-L2tlcm5lbC9jcHVfc3BlY3NfYm9vazNzXzMyLmgNCj4+Pj4+IEBAIC02OSw3ICs2OSw3IEBAIHN0
-YXRpYyBzdHJ1Y3QgY3B1X3NwZWMgY3B1X3NwZWNzW10gX19pbml0ZGF0YSA9IHsNCj4+Pj4+ICAg
-ICAgICAgICAgICAgICAgICAubW11X2ZlYXR1cmVzICAgICAgICAgICA9IE1NVV9GVFJfVVNFX0hJ
-R0hfQkFUUywNCj4+Pj4+ICAgICAgICAgICAgICAgICAgICAuaWNhY2hlX2JzaXplICAgICAgICAg
-ICA9IDMyLA0KPj4+Pj4gICAgICAgICAgICAgICAgICAgIC5kY2FjaGVfYnNpemUgICAgICAgICAg
-ID0gMzIsDQo+Pj4+PiAtICAgICAgICAgICAgICAgLmNwdV9zZXR1cCAgICAgICAgICAgICAgPSBf
-X3NldHVwX2NwdV82MDMsDQo+Pj4+PiArICAgICAgICAgICAgICAgLmNwdV9zZXR1cCAgICAgICAg
-ICAgICAgPSBfX3NldHVwX2NwdV9nMiwNCj4+Pj4+ICAgICAgICAgICAgICAgICAgICAubWFjaGlu
-ZV9jaGVjayAgICAgICAgICA9IG1hY2hpbmVfY2hlY2tfZ2VuZXJpYywNCj4+Pj4+ICAgICAgICAg
-ICAgICAgICAgICAucGxhdGZvcm0gICAgICAgICAgICAgICA9ICJwcGM2MDMiLA0KPj4+Pj4gICAg
-ICAgICAgICB9LA0KPj4+Pj4gQEAgLTgzLDcgKzgzLDcgQEAgc3RhdGljIHN0cnVjdCBjcHVfc3Bl
-YyBjcHVfc3BlY3NbXSBfX2luaXRkYXRhID0gew0KPj4+Pj4gICAgICAgICAgICAgICAgICAgIC5t
-bXVfZmVhdHVyZXMgICAgICAgICAgID0gTU1VX0ZUUl9VU0VfSElHSF9CQVRTLA0KPj4+Pj4gICAg
-ICAgICAgICAgICAgICAgIC5pY2FjaGVfYnNpemUgICAgICAgICAgID0gMzIsDQo+Pj4+PiAgICAg
-ICAgICAgICAgICAgICAgLmRjYWNoZV9ic2l6ZSAgICAgICAgICAgPSAzMiwNCj4+Pj4+IC0gICAg
-ICAgICAgICAgICAuY3B1X3NldHVwICAgICAgICAgICAgICA9IF9fc2V0dXBfY3B1XzYwMywNCj4+
-Pj4+ICsgICAgICAgICAgICAgICAuY3B1X3NldHVwICAgICAgICAgICAgICA9IF9fc2V0dXBfY3B1
-X2cyLA0KPj4+Pj4gICAgICAgICAgICAgICAgICAgIC5tYWNoaW5lX2NoZWNrICAgICAgICAgID0g
-bWFjaGluZV9jaGVja184M3h4LA0KPj4+Pj4gICAgICAgICAgICAgICAgICAgIC5wbGF0Zm9ybSAg
-ICAgICAgICAgICAgID0gInBwYzYwMyIsDQo+Pj4+PiAgICAgICAgICAgIH0sDQo+Pj4+PiBAQCAt
-OTYsNyArOTYsNyBAQCBzdGF0aWMgc3RydWN0IGNwdV9zcGVjIGNwdV9zcGVjc1tdIF9faW5pdGRh
-dGEgPSB7DQo+Pj4+PiAgICAgICAgICAgICAgICAgICAgLm1tdV9mZWF0dXJlcyAgICAgICAgICAg
-PSBNTVVfRlRSX1VTRV9ISUdIX0JBVFMgfCBNTVVfRlRSX05FRURfRFRMQl9TV19MUlUsDQo+Pj4+
-PiAgICAgICAgICAgICAgICAgICAgLmljYWNoZV9ic2l6ZSAgICAgICAgICAgPSAzMiwNCj4+Pj4+
-ICAgICAgICAgICAgICAgICAgICAuZGNhY2hlX2JzaXplICAgICAgICAgICA9IDMyLA0KPj4+Pj4g
-LSAgICAgICAgICAgICAgIC5jcHVfc2V0dXAgICAgICAgICAgICAgID0gX19zZXR1cF9jcHVfNjAz
-LA0KPj4+Pj4gKyAgICAgICAgICAgICAgIC5jcHVfc2V0dXAgICAgICAgICAgICAgID0gX19zZXR1
-cF9jcHVfZzIsDQo+Pj4+PiAgICAgICAgICAgICAgICAgICAgLm1hY2hpbmVfY2hlY2sgICAgICAg
-ICAgPSBtYWNoaW5lX2NoZWNrXzgzeHgsDQo+Pj4+PiAgICAgICAgICAgICAgICAgICAgLnBsYXRm
-b3JtICAgICAgICAgICAgICAgPSAicHBjNjAzIiwNCj4+Pj4+ICAgICAgICAgICAgfSwNCj4+Pj4+
-IEBAIC0xMDksNyArMTA5LDcgQEAgc3RhdGljIHN0cnVjdCBjcHVfc3BlYyBjcHVfc3BlY3NbXSBf
-X2luaXRkYXRhID0gew0KPj4+Pj4gICAgICAgICAgICAgICAgICAgIC5tbXVfZmVhdHVyZXMgICAg
-ICAgICAgID0gTU1VX0ZUUl9VU0VfSElHSF9CQVRTIHwgTU1VX0ZUUl9ORUVEX0RUTEJfU1dfTFJV
-LA0KPj4+Pj4gICAgICAgICAgICAgICAgICAgIC5pY2FjaGVfYnNpemUgICAgICAgICAgID0gMzIs
-DQo+Pj4+PiAgICAgICAgICAgICAgICAgICAgLmRjYWNoZV9ic2l6ZSAgICAgICAgICAgPSAzMiwN
-Cj4+Pj4+IC0gICAgICAgICAgICAgICAuY3B1X3NldHVwICAgICAgICAgICAgICA9IF9fc2V0dXBf
-Y3B1XzYwMywNCj4+Pj4+ICsgICAgICAgICAgICAgICAuY3B1X3NldHVwICAgICAgICAgICAgICA9
-IF9fc2V0dXBfY3B1X2cyLA0KPj4+Pj4gICAgICAgICAgICAgICAgICAgIC5tYWNoaW5lX2NoZWNr
-ICAgICAgICAgID0gbWFjaGluZV9jaGVja184M3h4LA0KPj4+Pj4gICAgICAgICAgICAgICAgICAg
-IC5udW1fcG1jcyAgICAgICAgICAgICAgID0gNCwNCj4+Pj4+ICAgICAgICAgICAgICAgICAgICAu
-cGxhdGZvcm0gICAgICAgICAgICAgICA9ICJwcGM2MDMiLA0KPj4+Pj4gQEAgLTEyMyw3ICsxMjMs
-NyBAQCBzdGF0aWMgc3RydWN0IGNwdV9zcGVjIGNwdV9zcGVjc1tdIF9faW5pdGRhdGEgPSB7DQo+
-Pj4+PiAgICAgICAgICAgICAgICAgICAgLm1tdV9mZWF0dXJlcyAgICAgICAgICAgPSBNTVVfRlRS
-X1VTRV9ISUdIX0JBVFMgfCBNTVVfRlRSX05FRURfRFRMQl9TV19MUlUsDQo+Pj4+PiAgICAgICAg
-ICAgICAgICAgICAgLmljYWNoZV9ic2l6ZSAgICAgICAgICAgPSAzMiwNCj4+Pj4+ICAgICAgICAg
-ICAgICAgICAgICAuZGNhY2hlX2JzaXplICAgICAgICAgICA9IDMyLA0KPj4+Pj4gLSAgICAgICAg
-ICAgICAgIC5jcHVfc2V0dXAgICAgICAgICAgICAgID0gX19zZXR1cF9jcHVfNjAzLA0KPj4+Pj4g
-KyAgICAgICAgICAgICAgIC5jcHVfc2V0dXAgICAgICAgICAgICAgID0gX19zZXR1cF9jcHVfZzIs
-DQo+Pj4+PiAgICAgICAgICAgICAgICAgICAgLm1hY2hpbmVfY2hlY2sgICAgICAgICAgPSBtYWNo
-aW5lX2NoZWNrXzgzeHgsDQo+Pj4+PiAgICAgICAgICAgICAgICAgICAgLm51bV9wbWNzICAgICAg
-ICAgICAgICAgPSA0LA0KPj4+Pj4gICAgICAgICAgICAgICAgICAgIC5wbGF0Zm9ybSAgICAgICAg
-ICAgICAgID0gInBwYzYwMyIsDQo+Pj4+PiAtLQ0KPj4+Pj4gVFEtU3lzdGVtcyBHbWJIIHwgTcO8
-aGxzdHJhw59lIDIsIEd1dCBEZWxsaW5nIHwgODIyMjkgU2VlZmVsZCwgR2VybWFueQ0KPj4+Pj4g
-QW10c2dlcmljaHQgTcO8bmNoZW4sIEhSQiAxMDUwMTgNCj4+Pj4+IEdlc2Now6RmdHNmw7xocmVy
-OiBEZXRsZWYgU2NobmVpZGVyLCBSw7xkaWdlciBTdGFobCwgU3RlZmFuIFNjaG5laWRlcg0KPj4+
-Pj4gaHR0cHM6Ly93d3cudHEtZ3JvdXAuY29tLw0KPj4+DQo+Pj4gLS0NCj4+PiBUUS1TeXN0ZW1z
-IEdtYkggfCBNw7xobHN0cmHDn2UgMiwgR3V0IERlbGxpbmcgfCA4MjIyOSBTZWVmZWxkLCBHZXJt
-YW55DQo+Pj4gQW10c2dlcmljaHQgTcO8bmNoZW4sIEhSQiAxMDUwMTgNCj4+PiBHZXNjaMOkZnRz
-ZsO8aHJlcjogRGV0bGVmIFNjaG5laWRlciwgUsO8ZGlnZXIgU3RhaGwsIFN0ZWZhbiBTY2huZWlk
-ZXINCj4+PiBodHRwczovL3d3dy50cS1ncm91cC5jb20vDQo+IA0KPiAtLQ0KPiBUUS1TeXN0ZW1z
-IEdtYkggfCBNw7xobHN0cmHDn2UgMiwgR3V0IERlbGxpbmcgfCA4MjIyOSBTZWVmZWxkLCBHZXJt
-YW55DQo+IEFtdHNnZXJpY2h0IE3DvG5jaGVuLCBIUkIgMTA1MDE4DQo+IEdlc2Now6RmdHNmw7xo
-cmVyOiBEZXRsZWYgU2NobmVpZGVyLCBSw7xkaWdlciBTdGFobCwgU3RlZmFuIFNjaG5laWRlcg0K
-PiBodHRwczovL3d3dy50cS1ncm91cC5jb20vDQo=
+Motivation:
+=============
+Previously, LKP reported a building error. When investigating, it can't
+be resolved reasonablly with the present messy kdump config items.
+
+ https://lore.kernel.org/oe-kbuild-all/202312182200.Ka7MzifQ-lkp@intel.com/
+
+The kdump (crash dumping) related config items could causes confusions:
+
+Firstly,
+---
+CRASH_CORE enables codes including
+ - crashkernel reservation;
+ - elfcorehdr updating;
+ - vmcoreinfo exporting;
+ - crash hotplug handling;
+
+Now fadump of powerpc, kcore dynamic debugging and kdump all selects
+CRASH_CORE, while fadump
+ - fadump needs crashkernel parsing, vmcoreinfo exporting, and accessing
+   global variable 'elfcorehdr_addr';
+ - kcore only needs vmcoreinfo exporting;
+ - kdump needs all of the current kernel/crash_core.c.
+
+So only enabling PROC_CORE or FA_DUMP will enable CRASH_CORE, this
+mislead people that we enable crash dumping, actual it's not.
+
+Secondly,
+---
+It's not reasonable to allow KEXEC_CORE select CRASH_CORE.
+
+Because KEXEC_CORE enables codes which allocate control pages, copy
+kexec/kdump segments, and prepare for switching. These codes are
+shared by both kexec reboot and kdump. We could want kexec reboot,
+but disable kdump. In that case, CRASH_CORE should not be selected.
+
+ --------------------
+ CONFIG_CRASH_CORE=y
+ CONFIG_KEXEC_CORE=y
+ CONFIG_KEXEC=y
+ CONFIG_KEXEC_FILE=y
+    ---------------------
+
+Thirdly,
+---
+It's not reasonable to allow CRASH_DUMP select KEXEC_CORE.
+
+That could make KEXEC_CORE, CRASH_DUMP are enabled independently from
+KEXEC or KEXEC_FILE. However, w/o KEXEC or KEXEC_FILE, the KEXEC_CORE
+code built in doesn't make any sense because no kernel loading or
+switching will happen to utilize the KEXEC_CORE code.
+ ---------------------
+ CONFIG_CRASH_CORE=y 
+ CONFIG_KEXEC_CORE=y 
+ CONFIG_CRASH_DUMP=y
+ ---------------------
+
+In this case, what is worse, on arch sh and arm, KEXEC relies on MMU,
+while CRASH_DUMP can still be enabled when !MMU, then compiling error is
+seen as the lkp test robot reported in above link.
+
+ ------arch/sh/Kconfig------
+ config ARCH_SUPPORTS_KEXEC
+         def_bool MMU
+
+ config ARCH_SUPPORTS_CRASH_DUMP
+         def_bool BROKEN_ON_SMP
+ ---------------------------
+
+Changes:
+===========
+1, split out crash_reserve.c from crash_core.c;
+2, split out vmcore_infoc. from crash_core.c;
+3, move crash related codes in kexec_core.c into crash_core.c;
+4, remove dependency of FA_DUMP on CRASH_DUMP;
+5, clean up kdump related config items;
+6, wrap up crash codes in crash related ifdefs on all 9 arch-es
+   which support crash dumping;
+
+Achievement:
+===========
+With above changes, I can rearrange the config item logic as below (the right
+item depends on or is selected by the left item):
+
+    PROC_KCORE -----------> VMCORE_INFO
+
+               |----------> VMCORE_INFO
+    FA_DUMP----|
+               |----------> CRASH_RESERVE
+
+                                                    ---->VMCORE_INFO
+                                                   /
+                                                   |---->CRASH_RESERVE
+    KEXEC      --|                                /|
+                 |--> KEXEC_CORE--> CRASH_DUMP-->/-|---->PROC_VMCORE
+    KEXEC_FILE --|                               \ |
+                                                   \---->CRASH_HOTPLUG
+
+
+    KEXEC      --|
+                 |--> KEXEC_CORE (for kexec reboot only)
+    KEXEC_FILE --|
+
+Test
+========
+On all 8 architectures, including x86_64, arm64, s390x, sh, arm, mips,
+riscv, loongarch, I did below three cases of config item setting and
+building all passed. Let me take configs on x86_64 as exampmle here:
+
+(1) Both CONFIG_KEXEC and KEXEC_FILE is unset, then all kexec/kdump
+items are unset automatically:
+# Kexec and crash features
+# CONFIG_KEXEC is not set
+# CONFIG_KEXEC_FILE is not set
+# end of Kexec and crash features
+
+(2) set CONFIG_KEXEC_FILE and 'make olddefconfig':
+---------------
+# Kexec and crash features
+CONFIG_CRASH_RESERVE=y
+CONFIG_VMCORE_INFO=y
+CONFIG_KEXEC_CORE=y
+CONFIG_KEXEC_FILE=y
+CONFIG_CRASH_DUMP=y
+CONFIG_CRASH_HOTPLUG=y
+CONFIG_CRASH_MAX_MEMORY_RANGES=8192
+# end of Kexec and crash features
+---------------
+
+(3) unset CONFIG_CRASH_DUMP in case 2 and execute 'make olddefconfig':
+------------------------
+# Kexec and crash features
+CONFIG_KEXEC_CORE=y
+CONFIG_KEXEC_FILE=y
+# end of Kexec and crash features
+------------------------
+
+Note:
+For ppc, it needs investigation to make clear how to split out crash
+code in arch folder. Hope Hari and Pingfan can help have a look, see if
+it's doable. Now, I make it either have both kexec and crash enabled, or
+disable both of them altogether.
+
+Baoquan He (14):
+  kexec: split crashkernel reservation code out from crash_core.c
+  crash: split vmcoreinfo exporting code out from crash_core.c
+  crash: remove dependency of FA_DUMP on CRASH_DUMP
+  crash: split crash dumping code out from kexec_core.c
+  crash: clean up kdump related config items
+  x86, crash: wrap crash dumping code into crash related ifdefs
+  arm64, crash: wrap crash dumping code into crash related ifdefs
+  ppc, crash: enforce KEXEC and KEXEC_FILE to select CRASH_DUMP
+  s390, crash: wrap crash dumping code into crash related ifdefs
+  sh, crash: wrap crash dumping code into crash related ifdefs
+  arm, crash: wrap crash dumping code into crash related ifdefs
+  mips, crash: wrap crash dumping code into crash related ifdefs
+  riscv, crash: wrap crash dumping code into crash related ifdefs
+  loongarch, crash: wrap crash dumping code into crash related ifdefs
+
+ arch/arm/kernel/setup.c                       |   7 +-
+ arch/arm64/Kconfig                            |   2 +-
+ .../asm/{crash_core.h => crash_reserve.h}     |   4 +-
+ arch/arm64/include/asm/kexec.h                |   2 +-
+ arch/arm64/kernel/Makefile                    |   2 +-
+ arch/arm64/kernel/machine_kexec.c             |   2 +-
+ arch/arm64/kernel/machine_kexec_file.c        |  10 +-
+ .../kernel/{crash_core.c => vmcore_info.c}    |   2 +-
+ arch/loongarch/kernel/setup.c                 |   7 +-
+ arch/mips/kernel/setup.c                      |  17 +-
+ arch/powerpc/Kconfig                          |   9 +-
+ arch/powerpc/kernel/setup-common.c            |   2 +-
+ arch/powerpc/mm/nohash/kaslr_booke.c          |   4 +-
+ arch/powerpc/platforms/powernv/opal-core.c    |   2 +-
+ arch/riscv/Kconfig                            |   2 +-
+ .../asm/{crash_core.h => crash_reserve.h}     |   4 +-
+ arch/riscv/kernel/Makefile                    |   2 +-
+ arch/riscv/kernel/elf_kexec.c                 |   9 +-
+ .../kernel/{crash_core.c => vmcore_info.c}    |   2 +-
+ arch/riscv/mm/init.c                          |   2 +-
+ arch/s390/kernel/kexec_elf.c                  |   2 +
+ arch/s390/kernel/kexec_image.c                |   2 +
+ arch/s390/kernel/machine_kexec_file.c         |  10 +
+ arch/sh/kernel/machine_kexec.c                |   3 +
+ arch/sh/kernel/setup.c                        |   2 +-
+ arch/x86/Kconfig                              |   2 +-
+ .../asm/{crash_core.h => crash_reserve.h}     |   6 +-
+ arch/x86/kernel/Makefile                      |   6 +-
+ arch/x86/kernel/cpu/mshyperv.c                |   4 +
+ arch/x86/kernel/kexec-bzimage64.c             |   4 +
+ arch/x86/kernel/kvm.c                         |   4 +-
+ arch/x86/kernel/machine_kexec_64.c            |   3 +
+ arch/x86/kernel/reboot.c                      |   2 +-
+ arch/x86/kernel/setup.c                       |   2 +-
+ arch/x86/kernel/smp.c                         |   2 +-
+ .../{crash_core_32.c => vmcore_info_32.c}     |   2 +-
+ .../{crash_core_64.c => vmcore_info_64.c}     |   2 +-
+ arch/x86/xen/enlighten_hvm.c                  |   4 +
+ drivers/base/cpu.c                            |   6 +-
+ drivers/firmware/qemu_fw_cfg.c                |  14 +-
+ fs/proc/Kconfig                               |   2 +-
+ fs/proc/kcore.c                               |   2 +-
+ include/linux/buildid.h                       |   2 +-
+ include/linux/crash_core.h                    | 152 ++--
+ include/linux/crash_reserve.h                 |  48 ++
+ include/linux/kexec.h                         |  47 +-
+ include/linux/vmcore_info.h                   |  81 ++
+ init/initramfs.c                              |   2 +-
+ kernel/Kconfig.kexec                          |  12 +-
+ kernel/Makefile                               |   5 +-
+ kernel/crash_core.c                           | 764 +++++-------------
+ kernel/crash_reserve.c                        | 464 +++++++++++
+ kernel/{crash_dump.c => elfcorehdr.c}         |   0
+ kernel/kexec.c                                |  11 +-
+ kernel/kexec_core.c                           | 250 +-----
+ kernel/kexec_file.c                           |  13 +-
+ kernel/kexec_internal.h                       |   2 +
+ kernel/ksysfs.c                               |  10 +-
+ kernel/printk/printk.c                        |   4 +-
+ kernel/vmcore_info.c                          | 233 ++++++
+ lib/buildid.c                                 |   2 +-
+ 61 files changed, 1233 insertions(+), 1048 deletions(-)
+ rename arch/arm64/include/asm/{crash_core.h => crash_reserve.h} (81%)
+ rename arch/arm64/kernel/{crash_core.c => vmcore_info.c} (97%)
+ rename arch/riscv/include/asm/{crash_core.h => crash_reserve.h} (78%)
+ rename arch/riscv/kernel/{crash_core.c => vmcore_info.c} (96%)
+ rename arch/x86/include/asm/{crash_core.h => crash_reserve.h} (92%)
+ rename arch/x86/kernel/{crash_core_32.c => vmcore_info_32.c} (90%)
+ rename arch/x86/kernel/{crash_core_64.c => vmcore_info_64.c} (94%)
+ create mode 100644 include/linux/crash_reserve.h
+ create mode 100644 include/linux/vmcore_info.h
+ create mode 100644 kernel/crash_reserve.c
+ rename kernel/{crash_dump.c => elfcorehdr.c} (100%)
+ create mode 100644 kernel/vmcore_info.c
+
+-- 
+2.41.0
+
