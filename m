@@ -1,60 +1,131 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 184C4832AA8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 14:42:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E991B832ACC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 14:54:28 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=dyMdSn9N;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=db/r7Jni;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TGglH075xz3cSQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jan 2024 00:42:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TGh1Z69Wsz3cNV
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jan 2024 00:54:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=dyMdSn9N;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=db/r7Jni;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ew.tq-group.com (client-ip=93.104.207.81; helo=mx1.tq-group.com; envelope-from=matthias.schiffer@ew.tq-group.com; receiver=lists.ozlabs.org)
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:261c::600; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20600.outbound.protection.outlook.com [IPv6:2a01:111:f403:261c::600])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TGgkP1925z3bhc
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Jan 2024 00:41:14 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1705671677; x=1737207677;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=MbsAdrN7i6BnaKJBhIQfCSADFTjl5gSJsfm5oYBjTQM=;
-  b=dyMdSn9NHztjHDPmtAVLxkWOPf+FetkgRBSShKHivlPZP5nHzokLq1mp
-   ggWWqevkTymoAaTOi38aA1NXvO2Nmnnw282u2CAmeurqXCOr/hvvuvkyT
-   obN8EjYybn4lUE0Z0O1BQ0tQkiS46rgkhpL5Kl4sQ03Wv6Uo3AJXC6wi2
-   3UrEEvJTULaePxpeTKnV1DB3xSWDbN/Ax5V9jpeuB0wTDy8wJLWKfnZHk
-   ffTgWkmx6xvnDIKeEwQ9low0xa2m3YRmScw346FWC8RxNqZhJ3ztt97pB
-   4gd0qzkP3Y3P/BjDB9IkAa0/F5LzN7LWEmO5qOvLg2TELpu3elaS3P4Ei
-   g==;
-X-IronPort-AV: E=Sophos;i="6.05,204,1701126000"; 
-   d="scan'208";a="34983167"
-Received: from vtuxmail01.tq-net.de ([10.115.0.20])
-  by mx1.tq-group.com with ESMTP; 19 Jan 2024 14:41:10 +0100
-Received: from [192.168.2.128] (SCHIFFERM-M2.tq-net.de [10.121.53.15])
-	by vtuxmail01.tq-net.de (Postfix) with ESMTPA id 3DC49280075;
-	Fri, 19 Jan 2024 14:41:10 +0100 (CET)
-Message-ID: <5610a6223b54a845185f28f54999ad72269b72f5.camel@ew.tq-group.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TGh0f6Cbfz3bZr
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Jan 2024 00:53:36 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=PoiaerykOXsLSjnSrOFXHZFVaBzoQvYp9Rrn35KiaFVnt298Tz0S4XkOo/M3Oy/TUIVrMMpmut3Mczyso2TaRK296qONl//4u75SFRHV0WbvX6aSmf6OM00MS7q6IFNSWEipx6Vlfy427K5vJoeXmPFvg5OB6ZbU0/mdeNOGwDNJvyURurHf5SMQMeImda8YYohd7kcLGHjSxunIfZRRfbx+OIjKOAZ8kdP6C0K9dS6B/9bT6x6SD5CsAy68CI6Yfd8XZtjJsPTa/fr3xpOyafA7RU9fT5FSRxgxqIq0ASk8Xh2o/hGXIwY/gVIZqNuFiV9ZCADqvbRYphP5LrL1OA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uyA5OrPGllfQIV5WP6U8SxGnWiXQvsLmwFkVWqmwvQg=;
+ b=X8T0toNA0q+/ujeNEizTHnEALaUtbH9mjgw4nUM73iryGuhcn8BIfhmKfh+eGyLa4PiyOttJcNU3LQv5tZ5bCEZxVUK/X+lB6WVA9Vu1kn2wSQDFZVOl0wJ28oRwvGrkuG5241K58NHYgWJf4qDQWSkm65r5QFdTG162JByLGPAFL5tKr4pu7PmViK4WiX0n5MgF7kbzwqDGSRNpzVgP3kdYzYHAaKE2+2HLVdAzekIkN41BpOuZOW+PLRS0T7M/vVa3by3n41T3BpLWjiqX3k1hHyjOG+4w95uWzeokPv+pyy/VSPF8b+kpLRzC6D0GnSshJ4b897CTSNCSnRzbgg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uyA5OrPGllfQIV5WP6U8SxGnWiXQvsLmwFkVWqmwvQg=;
+ b=db/r7JniVgocMMLFowZYhdDI48u3ab9pUgIBqD9pbgYEHNGkyVTd7ZZNHQtmTuB0XAzrgP7JM1AVZSw+ley1eQeuXfJmAcuEs5KDsJxKPGVMPbtXbgDUeFHd9q5mJvYM9StVmCrvEyLcW27AXVCxVD0MISZGC2k+7qJCGE9EDU0Q+NIS+eDLvNdjjLFnWnu7NjxrxzShqpSlAk6x+yXHW6rM8evB1DfJV61xjhD4yvLYCQ2nynMub+BQXYEySdgopSFmayayC8xWc8FQr2f2m89uqyFkjysv25pk4r+nuPB1MyOs2cwPzw6wezsOO3w0mK4HDRU/WpqDErzSz4pVdQ==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by PAZP264MB3103.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1f5::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.26; Fri, 19 Jan
+ 2024 13:53:12 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::9f77:c0ff:cd22:ae96]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::9f77:c0ff:cd22:ae96%4]) with mapi id 15.20.7202.024; Fri, 19 Jan 2024
+ 13:53:12 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
 Subject: Re: [PATCH] powerpc/6xx: set High BAT Enable flag on G2 cores
-From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Date: Fri, 19 Jan 2024 14:41:10 +0100
-In-Reply-To: <ad3d0d4d-f63b-4704-b829-e630a69a6cf3@csgroup.eu>
+Thread-Topic: [PATCH] powerpc/6xx: set High BAT Enable flag on G2 cores
+Thread-Index: AQHaNAu2YovK4Jn7OUefUWrjeoMLCrCzw0QAgAE764CAAKXIAIArrUMAgAADXQA=
+Date: Fri, 19 Jan 2024 13:53:12 +0000
+Message-ID: <f8c2f1c8-0b43-47c6-9359-9aeeb14863eb@csgroup.eu>
 References: <20231221124538.159706-1-matthias.schiffer@ew.tq-group.com>
-	 <2fad9563-09ee-4017-8a67-5958475d56c8@csgroup.eu>
-	 <b4eae5a8f451a3d253521a61b9625e3d7634f430.camel@ew.tq-group.com>
-	 <ad3d0d4d-f63b-4704-b829-e630a69a6cf3@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+ <2fad9563-09ee-4017-8a67-5958475d56c8@csgroup.eu>
+ <b4eae5a8f451a3d253521a61b9625e3d7634f430.camel@ew.tq-group.com>
+ <ad3d0d4d-f63b-4704-b829-e630a69a6cf3@csgroup.eu>
+ <5610a6223b54a845185f28f54999ad72269b72f5.camel@ew.tq-group.com>
+In-Reply-To: <5610a6223b54a845185f28f54999ad72269b72f5.camel@ew.tq-group.com>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla Thunderbird
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PAZP264MB3103:EE_
+x-ms-office365-filtering-correlation-id: c7d4f860-0147-46af-ada9-08dc18f5fa69
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  MWh6npWphToh3DVv+ZlS29VaG01QdiOMFxlttTEZd80c+jDRIwrCXNk3en7+OlWkC7utlYKzxV30h+GsKlpfFhFdJfh/eeT6rTxbQglNXcfYXp8ohwPH6e3c0xGRIe1+XrRKivZvJKGp7L3CBMlROsVe20R3eyYBgTgCp2nPw5UEPMyo+yXb7v0W7sD49Hf9DyWJh5QGnDmOBllEC5TvKtlDZQAYdG2SdzEJ0M94pBI2TvRxcB99tPapFnZ3ZVWOcKvqqzw5DOMzf6XiczQDnBf7cmYTwy9aWSVu67i2FcDO4IoDgAQLSKvV/lncWnrCWxueTDSxgydp23YPRqaiHlhYrYRliATFbiV2CY7tKXgi+IA8ibHJEsgxYzi0m9F7k5h6y04lAyC33bIDswprRzZj7Gt/0nCJpUxIeM/R2Zk6HZgQMtZsrbDzBmZoFaQG/eRaZJhJQdhUUNKD/YM0YJUjC6Q5dLhkXcmvjswEEOtumbMV572IcKGzPdFPFdYm55I1Y1BtQnwZSoFx3BlfJUFl6IjuC/5nHAbqUrstKdWx9czEQcjH5NtfCmkBJ7ythMH04L0hVd1WhHMpPI+TLCn5kM5+c7LjNNlPaCQ8RQRNy/Zo4/dw/YQRwtScS8uURfZ2c3QKjN11qZvqPF3QJuOlQDcptrLi0XoTp3WnRTagSarUjnlA3GqHiyKRb06n0jYGEgqRAVyEaLizT07BZg==
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(366004)(39850400004)(396003)(136003)(346002)(376002)(230173577357003)(230273577357003)(230922051799003)(1800799012)(64100799003)(186009)(451199024)(31686004)(66574015)(6506007)(71200400001)(83380400001)(31696002)(36756003)(38100700002)(86362001)(40140700001)(2616005)(6512007)(38070700009)(122000001)(41300700001)(4326008)(44832011)(5660300002)(66476007)(64756008)(66946007)(66556008)(54906003)(66446008)(8676002)(91956017)(8936002)(6916009)(2906002)(316002)(76116006)(6486002)(966005)(478600001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?TVZtVmdXbmoyN1lXZ2lOeVlPOWx3NE9hUkxaQTAydkpmRmhSalRKcys0UVQz?=
+ =?utf-8?B?VStqeVhpYTIzbWZ1ZjB6NHB3MWRSQW5pWWthc2tLUU41Mk1oODQ1azlGd1lS?=
+ =?utf-8?B?RWhmeFYxZXZwb0k2WVl4NXdaT2lXOFJnMEYxZkEvWXRHc3VQUERYN3l5bSsy?=
+ =?utf-8?B?UGVObGpWeHRLYkFFSWpxRGRxMmx5TGtPQm43SFA4Um9rek1CZU1STnI2bkJu?=
+ =?utf-8?B?UEIvZ3Y1SVRid0dnTmV0aTdqMmlwVVVHYndTMFY4bCt5NnFlUVFueDVqVzN5?=
+ =?utf-8?B?TmllYlNCMGlQYkJ6OXViK1ArMzUreU5uMS9KWVdpRWdjdGIveGh6ZDJnOFo3?=
+ =?utf-8?B?Q1BEYUFOdk1ndzNqV2pzYkNLZTY3UG9IdXdpQytiTHF1RUg0QlY0b3gvTk0r?=
+ =?utf-8?B?aTVwbDFnUDdpYnB3NmFPYjdjRWRCQXQ4ZmYyZ2pYbHBjKzQ2K0dEc1dBYWZQ?=
+ =?utf-8?B?ZTA1aklOcTNnck4vYzdrR2ZaWnJzRVFucW1UUFRpOGI5YVJCZWFQV0dMZGt2?=
+ =?utf-8?B?MTRJZlh5TUJlNkwyYjZqWnRaUGNGcVdwT2hYQS9XNjJzS2ZGZTlRVXo3UlEr?=
+ =?utf-8?B?QnNneS9IeWpLRXB3cGkvMmlLRE5PNmJtSmJlMnErK1dxS1J6eTJkc1VvVTln?=
+ =?utf-8?B?NTdmSVBlSkpSNThucGZlKzZkS1dCTWZmTy9KZWpZYlJJQVJEK0RpRmpaM1Nk?=
+ =?utf-8?B?Mmg3a1ZaeVhzc1lodm50bUR4a0RPeWtXaHoxT0hiT1VMb0pmdjZXRnpQSVlv?=
+ =?utf-8?B?ZFJQcTRRZWxDNW5MYjNrcGZ1WVM1SUVQVzdtVS9EUkJQRndsZlZOZXdXdlZ1?=
+ =?utf-8?B?a09pV0dsNENNZTVjVWJIRmhCZ21KdmtZM2RlclBZb3RENEJJZDBzOWpFSlFY?=
+ =?utf-8?B?RkM4UnlLTVA3eHBpcmszczQzRTNkdDFTSG5NNXJOdFBPbVRoamt6WHZJazJZ?=
+ =?utf-8?B?SHBLMlJITjd4eWR5d2o0S0oxQ0ZsVlBxUXVVZ2ttQlNJSjMyS0FIWnltK01y?=
+ =?utf-8?B?cmZUMTJML1d1L1k2c3JBa2ptaEQraDRXNGZzMG1JMjM4a3hFazJ3enVETWpl?=
+ =?utf-8?B?bnNkQnJvQzZRc1BpMElHUDhNTHN5czJQdUplbVNiRFU0QVEvMW5FaC9IR2hx?=
+ =?utf-8?B?aVg2YmtPMUNLbm1vMHptVGFSdlRhYURKcmtrMmk1ay84OFpIdk1YL0R1Nk5v?=
+ =?utf-8?B?Ui9xL3FrOWhkQ2lHM1Z0TnV5dUhpbW9kMklBcHZwaU9Ib20wOFdudkNVNmZt?=
+ =?utf-8?B?MmgzRmNWTGlQa3FuanNpbDIzSDRFUVNPVzJUMXZBakZZRjU2MWxGcUprbFl3?=
+ =?utf-8?B?KzE2aC9lUEdpclBwbjNuTC8rb2p1N3hsOXVxMFVsTGVkT2taa29Qd0t6ekI1?=
+ =?utf-8?B?T1Y0azNsbjBWOXExY2tzRGJONXVXTkFIWUs2cmdyK2ZSbmtVNTB0aTNKOG80?=
+ =?utf-8?B?VjJKbGJPc3FKZW44ZHhTMm4zZEs3NGM3d2Njd3dFcEplK2hSR1ljaHlNbEM0?=
+ =?utf-8?B?Z3lLam02bmtFUXFCWVZDd0ZsY281amRVYklEODk4U28yNjZuRVJGVGtoTEpi?=
+ =?utf-8?B?Zzgya09BbjJEeENydTNLbExIUC93TzJVQndScVRUWkVkQlVISGgrQlJBOXNl?=
+ =?utf-8?B?YVdYZVkydEs3OVdkK1lTMUZMNGlhTFg2ZlFNVDJMRURmSjA1Rit4QUFReHdo?=
+ =?utf-8?B?dFo3Lzc3VnRsNlBUTWl0M0lmK3lkcHA2YUtmUWFrUHdRMDNRN0FJTGxVRjdI?=
+ =?utf-8?B?ckUzNFVPN2NvQkVVbnphbTZ2NEU0N0kxblkwL1JSUDYvdDhYN2RnaFlPdndX?=
+ =?utf-8?B?VTdwcHE5azZrY3ZsdTJ6d2ZZQ0hNeGhQQUd5TDF5M0RPSVJqVXZKWEJRS0Q2?=
+ =?utf-8?B?Z2RXdmd5N3BCK1V3eElXVndrZTFqdTBlWjNtbGV6L3ErUS90YWM1eGRxcUFh?=
+ =?utf-8?B?MmFXVU5rQ0VCZWlxRUVDN0RpelpLSFdmVGtuSjUwWmhiS29rejBHZjdNaklW?=
+ =?utf-8?B?Q0YxM2FBcmplTGRJVk9IcFRwYm55cGNVZktuRHhONEJGSU1YcWtCc29ReDdF?=
+ =?utf-8?B?SlEzb0FsM3JMcHVrSDFHckpWa0ZYRmtvcWs1aVprQnlWSTk4cHdSc0d0WnRB?=
+ =?utf-8?B?bE5KbkZRcEZLT0pFMVcydENTSE84eHZZREFMTUdFa0prQTJjWmtYQXFCdVc2?=
+ =?utf-8?Q?5sL3LdWv7NDU4zdqmLQRkrUAWBElsygdLeWYr3+m8vvE?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <C2292934F309C4448E12EAD5D90ED7CC@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: c7d4f860-0147-46af-ada9-08dc18f5fa69
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Jan 2024 13:53:12.6766
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 0XiyaelA5vHi8g6UPcJXSwGorUkL2nnF9ybI/NfO7OSdnWftPX6Mw8CvpOwKj/+j6pzTYEc3FBQZwqi+1woStNqAU4uQWggujbor03SEjHI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAZP264MB3103
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,313 +141,124 @@ Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Pigg
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2023-12-22 at 18:41 +0000, Christophe Leroy wrote:
-> Le 22/12/2023 =C3=A0 09:48, Matthias Schiffer a =C3=A9crit=C2=A0:
-> > [Vous ne recevez pas souvent de courriers de matthias.schiffer@ew.tq-gr=
-oup.com. D=C3=A9couvrez pourquoi ceci est important =C3=A0 https://aka.ms/L=
-earnAboutSenderIdentification ]
-> >=20
-> > On Thu, 2023-12-21 at 13:57 +0000, Christophe Leroy wrote:
-> > >=20
-> > >=20
-> > > Le 21/12/2023 =C3=A0 13:45, Matthias Schiffer a =C3=A9crit :
-> > > > MMU_FTR_USE_HIGH_BATS is set for G2-based cores (G2_LE, e300cX), bu=
-t the
-> > > > high BATs need to be enabled in HID2 to work. Add register definiti=
-ons
-> > > > and introduce a G2 variant of __setup_cpu_603.
-> > >=20
-> > > Well spotted.
-> > >=20
-> > > I have a mpc8321, hence e300c2. I never had the problem you had.
-> > >=20
-> > > But ... looks like U-boot configuration has CONFIG_HID2_HBE so that's
-> > > set by U-boot indeed, that's the reason why I never had that problem.
-> >=20
-> > I'll extend the commit message to mention that U-Boot setting in v2.
-> >=20
-> >=20
-> > >=20
-> > > >=20
-> > > > This fixes boot on CPUs like the MPC5200B with STRICT_KERNEL_RWX en=
-abled.
-> > > >=20
-> > > > Fixes: e4d6654ebe6e ("powerpc/mm/32s: rework mmu_mapin_ram()")
-> > > > Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com=
->
-> > > > ---
-> > > >    arch/powerpc/include/asm/cpu_setup.h      |  1 +
-> > > >    arch/powerpc/include/asm/reg.h            |  2 ++
-> > > >    arch/powerpc/kernel/cpu_setup_6xx.S       | 25 +++++++++++++++++=
-+++++-
-> > > >    arch/powerpc/kernel/cpu_specs_book3s_32.h | 10 ++++-----
-> > > >    4 files changed, 32 insertions(+), 6 deletions(-)
-> > > >=20
-> > > >=20
-> > > > I have only tested this on the MPC5200B (G2_LE), but according to t=
-he
-> > > > e300 manual, e300cX cores should behave the same.
-> > > >=20
-> > > > The Fixes tag is the best I could come up with - I believe that the
-> > > > underlying issue of setting USE_HIGH_BATS without actually enabling=
- them
-> > > > is as old as Linux's PowerPC implementation, but the specific code
-> > > > causing the boot failure was added in the mentioned commit.
-> > >=20
-> > > Agreed, before that only BATs 0 to 3 were used anyway.
-> > > There was also BAT 4 used by platforms/embedded6xx/wii.c  , but that'=
-s
-> > > probably not a G2 ?
-> > >=20
-> > > >=20
-> > > > Another issue I found in the code is that
-> > > > arch/powerpc/platforms/52xx/lite5200_sleep.S uses the SPRN_HID2 def=
-inition
-> > > > which does not refer to HID2 on the 5200... but that will be for so=
-meone
-> > > > else to fix, if there is still anyone left using that platform.
-> > >=20
-> > > Maybe file an issue for it at https://github.com/linuxppc/issues/issu=
-es
-> > > if you don't plan to fix it ?
-> > >=20
-> > > By the way, it looks like the SPRN_HID2 definition we have is very
-> > > specific to the IBM 750.
-> > >=20
-> >=20
-> > IBM 750GX even - googling for IBM 750 came up with several other cores =
-that either don't have HID2,
-> > or have it at a different SPR.
-> >=20
-> >=20
-> > > MPC 750 has SPRN_HID2 as 1011 =3D=3D 0x3f3 like others.
-> >=20
-> > > >=20
-> > > >=20
-> > > > diff --git a/arch/powerpc/include/asm/cpu_setup.h b/arch/powerpc/in=
-clude/asm/cpu_setup.h
-> > > > index 30e2fe3895024..68d804e74d221 100644
-> > > > --- a/arch/powerpc/include/asm/cpu_setup.h
-> > > > +++ b/arch/powerpc/include/asm/cpu_setup.h
-> > > > @@ -35,6 +35,7 @@ void __setup_cpu_750fx(unsigned long offset, stru=
-ct cpu_spec *spec);
-> > > >    void __setup_cpu_7400(unsigned long offset, struct cpu_spec *spe=
-c);
-> > > >    void __setup_cpu_7410(unsigned long offset, struct cpu_spec *spe=
-c);
-> > > >    void __setup_cpu_745x(unsigned long offset, struct cpu_spec *spe=
-c);
-> > > > +void __setup_cpu_g2(unsigned long offset, struct cpu_spec *spec);
-> > > >=20
-> > > >    void __setup_cpu_ppc970(unsigned long offset, struct cpu_spec *s=
-pec);
-> > > >    void __setup_cpu_ppc970MP(unsigned long offset, struct cpu_spec =
-*spec);
-> > > > diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/=
-asm/reg.h
-> > > > index 4ae4ab9090a2d..f5641fcd1da85 100644
-> > > > --- a/arch/powerpc/include/asm/reg.h
-> > > > +++ b/arch/powerpc/include/asm/reg.h
-> > > > @@ -617,6 +617,8 @@
-> > > >    #endif
-> > > >    #define SPRN_HID2      0x3F8           /* Hardware Implementatio=
-n Register 2 */
-> > >=20
-> > > Should that HID2 be renamed to SPRN_HID2_750 to avoid confusion ?
-> >=20
-> > Makes sense (should the suffix be "750GX"?). I can also add a FIXME com=
-ment to lite5200_sleep.S as
-> > part of the rename.
-> >=20
-> >=20
-> > >=20
-> > > >    #define SPRN_HID2_GEKKO        0x398           /* Gekko HID2 Reg=
-ister */
-> > > > +#define SPRN_HID2_G2   0x3F3           /* G2 HID2 Register */
-> > > > +#define  HID2_HBE_G2   (1<<18)         /* High BAT Enable (G2) */
-> > > >    #define SPRN_IABR      0x3F2   /* Instruction Address Breakpoint=
- Register */
-> > > >    #define SPRN_IABR2     0x3FA           /* 83xx */
-> > > >    #define SPRN_IBCR      0x135           /* 83xx Insn Breakpoint C=
-ontrol Reg */
-> > > > diff --git a/arch/powerpc/kernel/cpu_setup_6xx.S b/arch/powerpc/ker=
-nel/cpu_setup_6xx.S
-> > > > index f29ce3dd6140f..c67d32e04df9c 100644
-> > > > --- a/arch/powerpc/kernel/cpu_setup_6xx.S
-> > > > +++ b/arch/powerpc/kernel/cpu_setup_6xx.S
-> > > > @@ -81,6 +81,20 @@ _GLOBAL(__setup_cpu_745x)
-> > > >           bl      setup_745x_specifics
-> > > >           mtlr    r5
-> > > >           blr
-> > > > +_GLOBAL(__setup_cpu_g2)
-> > > > +       mflr    r5
-> > > > +BEGIN_MMU_FTR_SECTION
-> > > > +       li      r10,0
-> > > > +       mtspr   SPRN_SPRG_603_LRU,r10           /* init SW LRU trac=
-king */
-> > > > +END_MMU_FTR_SECTION_IFSET(MMU_FTR_NEED_DTLB_SW_LRU)
-> > >=20
-> > > MMU_FTR_NEED_DTLB_SW_LRU is dedicated to e300 core. You should also
-> > > remove it from __setup_cpu_603
-> >=20
-> > Will do, thanks.
->=20
-> Thinking about it once more, can we do even more simple ?
->=20
-> Why do we need that __setup_cpu_g2() at all ?
->=20
-> You could just add the following into __set_cpu_603()
->=20
-> diff --git a/arch/powerpc/kernel/cpu_setup_6xx.S=20
-> b/arch/powerpc/kernel/cpu_setup_6xx.S
-> index c67d32e04df9..7b41e3884866 100644
-> --- a/arch/powerpc/kernel/cpu_setup_6xx.S
-> +++ b/arch/powerpc/kernel/cpu_setup_6xx.S
-> @@ -21,6 +21,11 @@ BEGIN_MMU_FTR_SECTION
->   	li	r10,0
->   	mtspr	SPRN_SPRG_603_LRU,r10		/* init SW LRU tracking */
->   END_MMU_FTR_SECTION_IFSET(MMU_FTR_NEED_DTLB_SW_LRU)
-> +BEGIN_MMU_FTR_SECTION
-> +	mfspr	r11,SPRN_HID2_G2
-> +	oris	r11,r11,HID2_HBE_G2@h
-> +	mtspr	SPRN_HID2_G2,r11
-> +END_MMU_FTR_SECTION_IFSET(MMU_FTR_USE_HIGH_BATS)
->=20
->   BEGIN_FTR_SECTION
->   	bl	__init_fpu_registers
-> ---
->=20
-> By the way, as your register is named SPRN_HID2_G2, the bit would better=
-=20
-> be named HID2_G2_HBE instead of HID2_HBE_G2 I think.
-
-My intention was to keep this consistent with the SPRN_HID2_GEKKO define.
-
-Regards,
-Matthias
-
-
-
-
->=20
-> Christophe
->=20
-> >=20
-> > >=20
-> > > > +
-> > > > +BEGIN_FTR_SECTION
-> > > > +       bl      __init_fpu_registers
-> > > > +END_FTR_SECTION_IFCLR(CPU_FTR_FPU_UNAVAILABLE)
-> > > > +       bl      setup_common_caches
-> > > > +       bl      setup_g2_hid2
-> > > > +       mtlr    r5
-> > > > +       blr
-> > > >=20
-> > > >    /* Enable caches for 603's, 604, 750 & 7400 */
-> > > >    SYM_FUNC_START_LOCAL(setup_common_caches)
-> > > > @@ -115,6 +129,16 @@ SYM_FUNC_START_LOCAL(setup_604_hid0)
-> > > >           blr
-> > > >    SYM_FUNC_END(setup_604_hid0)
-> > > >=20
-> > > > +/* Enable high BATs for G2 (G2_LE, e300cX) */
-> > > > +SYM_FUNC_START_LOCAL(setup_g2_hid2)
-> > > > +       mfspr   r11,SPRN_HID2_G2
-> > > > +       oris    r11,r11,HID2_HBE_G2@h
-> > > > +       mtspr   SPRN_HID2_G2,r11
-> > > > +       sync
-> > > > +       isync
-> > > > +       blr
-> > > > +SYM_FUNC_END(setup_g2_hid2)
-> > > > +
-> > > >    /* 7400 <=3D rev 2.7 and 7410 rev =3D 1.0 suffer from some
-> > > >     * erratas we work around here.
-> > > >     * Moto MPC710CE.pdf describes them, those are errata
-> > > > @@ -495,4 +519,3 @@ _GLOBAL(__restore_cpu_setup)
-> > > >           mtcr    r7
-> > > >           blr
-> > > >    _ASM_NOKPROBE_SYMBOL(__restore_cpu_setup)
-> > > > -
-> > > > diff --git a/arch/powerpc/kernel/cpu_specs_book3s_32.h b/arch/power=
-pc/kernel/cpu_specs_book3s_32.h
-> > > > index 3714634d194a1..83f054fcf837c 100644
-> > > > --- a/arch/powerpc/kernel/cpu_specs_book3s_32.h
-> > > > +++ b/arch/powerpc/kernel/cpu_specs_book3s_32.h
-> > > > @@ -69,7 +69,7 @@ static struct cpu_spec cpu_specs[] __initdata =3D=
- {
-> > > >                   .mmu_features           =3D MMU_FTR_USE_HIGH_BATS=
-,
-> > > >                   .icache_bsize           =3D 32,
-> > > >                   .dcache_bsize           =3D 32,
-> > > > -               .cpu_setup              =3D __setup_cpu_603,
-> > > > +               .cpu_setup              =3D __setup_cpu_g2,
-> > > >                   .machine_check          =3D machine_check_generic=
-,
-> > > >                   .platform               =3D "ppc603",
-> > > >           },
-> > > > @@ -83,7 +83,7 @@ static struct cpu_spec cpu_specs[] __initdata =3D=
- {
-> > > >                   .mmu_features           =3D MMU_FTR_USE_HIGH_BATS=
-,
-> > > >                   .icache_bsize           =3D 32,
-> > > >                   .dcache_bsize           =3D 32,
-> > > > -               .cpu_setup              =3D __setup_cpu_603,
-> > > > +               .cpu_setup              =3D __setup_cpu_g2,
-> > > >                   .machine_check          =3D machine_check_83xx,
-> > > >                   .platform               =3D "ppc603",
-> > > >           },
-> > > > @@ -96,7 +96,7 @@ static struct cpu_spec cpu_specs[] __initdata =3D=
- {
-> > > >                   .mmu_features           =3D MMU_FTR_USE_HIGH_BATS=
- | MMU_FTR_NEED_DTLB_SW_LRU,
-> > > >                   .icache_bsize           =3D 32,
-> > > >                   .dcache_bsize           =3D 32,
-> > > > -               .cpu_setup              =3D __setup_cpu_603,
-> > > > +               .cpu_setup              =3D __setup_cpu_g2,
-> > > >                   .machine_check          =3D machine_check_83xx,
-> > > >                   .platform               =3D "ppc603",
-> > > >           },
-> > > > @@ -109,7 +109,7 @@ static struct cpu_spec cpu_specs[] __initdata =
-=3D {
-> > > >                   .mmu_features           =3D MMU_FTR_USE_HIGH_BATS=
- | MMU_FTR_NEED_DTLB_SW_LRU,
-> > > >                   .icache_bsize           =3D 32,
-> > > >                   .dcache_bsize           =3D 32,
-> > > > -               .cpu_setup              =3D __setup_cpu_603,
-> > > > +               .cpu_setup              =3D __setup_cpu_g2,
-> > > >                   .machine_check          =3D machine_check_83xx,
-> > > >                   .num_pmcs               =3D 4,
-> > > >                   .platform               =3D "ppc603",
-> > > > @@ -123,7 +123,7 @@ static struct cpu_spec cpu_specs[] __initdata =
-=3D {
-> > > >                   .mmu_features           =3D MMU_FTR_USE_HIGH_BATS=
- | MMU_FTR_NEED_DTLB_SW_LRU,
-> > > >                   .icache_bsize           =3D 32,
-> > > >                   .dcache_bsize           =3D 32,
-> > > > -               .cpu_setup              =3D __setup_cpu_603,
-> > > > +               .cpu_setup              =3D __setup_cpu_g2,
-> > > >                   .machine_check          =3D machine_check_83xx,
-> > > >                   .num_pmcs               =3D 4,
-> > > >                   .platform               =3D "ppc603",
-> > > > --
-> > > > TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefe=
-ld, Germany
-> > > > Amtsgericht M=C3=BCnchen, HRB 105018
-> > > > Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, St=
-efan Schneider
-> > > > https://www.tq-group.com/
-> >=20
-> > --
-> > TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, =
-Germany
-> > Amtsgericht M=C3=BCnchen, HRB 105018
-> > Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan=
- Schneider
-> > https://www.tq-group.com/
-
---=20
-TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
-any
-Amtsgericht M=C3=BCnchen, HRB 105018
-Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
-neider
-https://www.tq-group.com/
+DQoNCkxlIDE5LzAxLzIwMjQgw6AgMTQ6NDEsIE1hdHRoaWFzIFNjaGlmZmVyIGEgw6ljcml0wqA6
+DQo+Pg0KPj4gVGhpbmtpbmcgYWJvdXQgaXQgb25jZSBtb3JlLCBjYW4gd2UgZG8gZXZlbiBtb3Jl
+IHNpbXBsZSA/DQo+Pg0KPj4gV2h5IGRvIHdlIG5lZWQgdGhhdCBfX3NldHVwX2NwdV9nMigpIGF0
+IGFsbCA/DQo+Pg0KPj4gWW91IGNvdWxkIGp1c3QgYWRkIHRoZSBmb2xsb3dpbmcgaW50byBfX3Nl
+dF9jcHVfNjAzKCkNCj4+DQo+PiBkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL2tlcm5lbC9jcHVf
+c2V0dXBfNnh4LlMNCj4+IGIvYXJjaC9wb3dlcnBjL2tlcm5lbC9jcHVfc2V0dXBfNnh4LlMNCj4+
+IGluZGV4IGM2N2QzMmUwNGRmOS4uN2I0MWUzODg0ODY2IDEwMDY0NA0KPj4gLS0tIGEvYXJjaC9w
+b3dlcnBjL2tlcm5lbC9jcHVfc2V0dXBfNnh4LlMNCj4+ICsrKyBiL2FyY2gvcG93ZXJwYy9rZXJu
+ZWwvY3B1X3NldHVwXzZ4eC5TDQo+PiBAQCAtMjEsNiArMjEsMTEgQEAgQkVHSU5fTU1VX0ZUUl9T
+RUNUSU9ODQo+PiAgICAgICAgbGkgICAgICByMTAsMA0KPj4gICAgICAgIG10c3ByICAgU1BSTl9T
+UFJHXzYwM19MUlUscjEwICAgICAgICAgICAvKiBpbml0IFNXIExSVSB0cmFja2luZyAqLw0KPj4g
+ICAgRU5EX01NVV9GVFJfU0VDVElPTl9JRlNFVChNTVVfRlRSX05FRURfRFRMQl9TV19MUlUpDQo+
+PiArQkVHSU5fTU1VX0ZUUl9TRUNUSU9ODQo+PiArICAgICBtZnNwciAgIHIxMSxTUFJOX0hJRDJf
+RzINCj4+ICsgICAgIG9yaXMgICAgcjExLHIxMSxISUQyX0hCRV9HMkBoDQo+PiArICAgICBtdHNw
+ciAgIFNQUk5fSElEMl9HMixyMTENCj4+ICtFTkRfTU1VX0ZUUl9TRUNUSU9OX0lGU0VUKE1NVV9G
+VFJfVVNFX0hJR0hfQkFUUykNCj4+DQo+PiAgICBCRUdJTl9GVFJfU0VDVElPTg0KPj4gICAgICAg
+IGJsICAgICAgX19pbml0X2ZwdV9yZWdpc3RlcnMNCj4+IC0tLQ0KPj4NCj4+IEJ5IHRoZSB3YXks
+IGFzIHlvdXIgcmVnaXN0ZXIgaXMgbmFtZWQgU1BSTl9ISUQyX0cyLCB0aGUgYml0IHdvdWxkIGJl
+dHRlcg0KPj4gYmUgbmFtZWQgSElEMl9HMl9IQkUgaW5zdGVhZCBvZiBISUQyX0hCRV9HMiBJIHRo
+aW5rLg0KPiANCj4gTXkgaW50ZW50aW9uIHdhcyB0byBrZWVwIHRoaXMgY29uc2lzdGVudCB3aXRo
+IHRoZSBTUFJOX0hJRDJfR0VLS08gZGVmaW5lLg0KDQpJIGRvbid0IHVuZGVyc3RhbmQgd2hhdCB5
+b3UgbWVhbi4gSSBjYW4ndCBzZWUgYW55IGJpdHMgZGVmaW5lZCBmb3IgDQpISUQyX0dFS0tPLg0K
+DQpXaGF0IEkgc2VlIHdoaWNoIGlzIHNpbWl0YXIgaXMgdGhlIGRlZmluaXRpb24gb2YgVFNDIHJl
+Z2lzdGVyIGZvciBDRUxMIENQVS4NCg0KI2RlZmluZSBTUFJOX1RTQ19DRUxMCTB4Mzk5CS8qIFRo
+cmVhZCBzd2l0Y2ggY29udHJvbCBvbiBDZWxsICovDQojZGVmaW5lICAgVFNDX0NFTExfREVDX0VO
+QUJMRV8wCTB4NDAwMDAwIC8qIERlY3JlbWVudGVyIEludGVycnVwdCAqLw0KI2RlZmluZSAgIFRT
+Q19DRUxMX0RFQ19FTkFCTEVfMQkweDIwMDAwMCAvKiBEZWNyZW1lbnRlciBJbnRlcnJ1cHQgKi8N
+CiNkZWZpbmUgICBUU0NfQ0VMTF9FRV9FTkFCTEUJMHgxMDAwMDAgLyogRXh0ZXJuYWwgSW50ZXJy
+dXB0ICovDQojZGVmaW5lICAgVFNDX0NFTExfRUVfQk9PU1QJMHgwODAwMDAgLyogRXh0ZXJuYWwg
+SW50ZXJydXB0IEJvb3N0ICovDQoNCg0KVGhleSBkb24ndCBjYWxsIGl0IFRTQ19FRV9CT09TVF9D
+RUxMIG9yIFRTQ19FRV9FTkFCTEVfQ0VMTA0KDQoNCkNocmlzdG9waGUNCg0KPiANCj4gUmVnYXJk
+cywNCj4gTWF0dGhpYXMNCj4gDQo+IA0KPiANCj4gDQo+Pg0KPj4gQ2hyaXN0b3BoZQ0KPj4NCj4+
+Pg0KPj4+Pg0KPj4+Pj4gKw0KPj4+Pj4gK0JFR0lOX0ZUUl9TRUNUSU9ODQo+Pj4+PiArICAgICAg
+IGJsICAgICAgX19pbml0X2ZwdV9yZWdpc3RlcnMNCj4+Pj4+ICtFTkRfRlRSX1NFQ1RJT05fSUZD
+TFIoQ1BVX0ZUUl9GUFVfVU5BVkFJTEFCTEUpDQo+Pj4+PiArICAgICAgIGJsICAgICAgc2V0dXBf
+Y29tbW9uX2NhY2hlcw0KPj4+Pj4gKyAgICAgICBibCAgICAgIHNldHVwX2cyX2hpZDINCj4+Pj4+
+ICsgICAgICAgbXRsciAgICByNQ0KPj4+Pj4gKyAgICAgICBibHINCj4+Pj4+DQo+Pj4+PiAgICAg
+LyogRW5hYmxlIGNhY2hlcyBmb3IgNjAzJ3MsIDYwNCwgNzUwICYgNzQwMCAqLw0KPj4+Pj4gICAg
+IFNZTV9GVU5DX1NUQVJUX0xPQ0FMKHNldHVwX2NvbW1vbl9jYWNoZXMpDQo+Pj4+PiBAQCAtMTE1
+LDYgKzEyOSwxNiBAQCBTWU1fRlVOQ19TVEFSVF9MT0NBTChzZXR1cF82MDRfaGlkMCkNCj4+Pj4+
+ICAgICAgICAgICAgYmxyDQo+Pj4+PiAgICAgU1lNX0ZVTkNfRU5EKHNldHVwXzYwNF9oaWQwKQ0K
+Pj4+Pj4NCj4+Pj4+ICsvKiBFbmFibGUgaGlnaCBCQVRzIGZvciBHMiAoRzJfTEUsIGUzMDBjWCkg
+Ki8NCj4+Pj4+ICtTWU1fRlVOQ19TVEFSVF9MT0NBTChzZXR1cF9nMl9oaWQyKQ0KPj4+Pj4gKyAg
+ICAgICBtZnNwciAgIHIxMSxTUFJOX0hJRDJfRzINCj4+Pj4+ICsgICAgICAgb3JpcyAgICByMTEs
+cjExLEhJRDJfSEJFX0cyQGgNCj4+Pj4+ICsgICAgICAgbXRzcHIgICBTUFJOX0hJRDJfRzIscjEx
+DQo+Pj4+PiArICAgICAgIHN5bmMNCj4+Pj4+ICsgICAgICAgaXN5bmMNCj4+Pj4+ICsgICAgICAg
+YmxyDQo+Pj4+PiArU1lNX0ZVTkNfRU5EKHNldHVwX2cyX2hpZDIpDQo+Pj4+PiArDQo+Pj4+PiAg
+ICAgLyogNzQwMCA8PSByZXYgMi43IGFuZCA3NDEwIHJldiA9IDEuMCBzdWZmZXIgZnJvbSBzb21l
+DQo+Pj4+PiAgICAgICogZXJyYXRhcyB3ZSB3b3JrIGFyb3VuZCBoZXJlLg0KPj4+Pj4gICAgICAq
+IE1vdG8gTVBDNzEwQ0UucGRmIGRlc2NyaWJlcyB0aGVtLCB0aG9zZSBhcmUgZXJyYXRhDQo+Pj4+
+PiBAQCAtNDk1LDQgKzUxOSwzIEBAIF9HTE9CQUwoX19yZXN0b3JlX2NwdV9zZXR1cCkNCj4+Pj4+
+ICAgICAgICAgICAgbXRjciAgICByNw0KPj4+Pj4gICAgICAgICAgICBibHINCj4+Pj4+ICAgICBf
+QVNNX05PS1BST0JFX1NZTUJPTChfX3Jlc3RvcmVfY3B1X3NldHVwKQ0KPj4+Pj4gLQ0KPj4+Pj4g
+ZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJwYy9rZXJuZWwvY3B1X3NwZWNzX2Jvb2szc18zMi5oIGIv
+YXJjaC9wb3dlcnBjL2tlcm5lbC9jcHVfc3BlY3NfYm9vazNzXzMyLmgNCj4+Pj4+IGluZGV4IDM3
+MTQ2MzRkMTk0YTEuLjgzZjA1NGZjZjgzN2MgMTAwNjQ0DQo+Pj4+PiAtLS0gYS9hcmNoL3Bvd2Vy
+cGMva2VybmVsL2NwdV9zcGVjc19ib29rM3NfMzIuaA0KPj4+Pj4gKysrIGIvYXJjaC9wb3dlcnBj
+L2tlcm5lbC9jcHVfc3BlY3NfYm9vazNzXzMyLmgNCj4+Pj4+IEBAIC02OSw3ICs2OSw3IEBAIHN0
+YXRpYyBzdHJ1Y3QgY3B1X3NwZWMgY3B1X3NwZWNzW10gX19pbml0ZGF0YSA9IHsNCj4+Pj4+ICAg
+ICAgICAgICAgICAgICAgICAubW11X2ZlYXR1cmVzICAgICAgICAgICA9IE1NVV9GVFJfVVNFX0hJ
+R0hfQkFUUywNCj4+Pj4+ICAgICAgICAgICAgICAgICAgICAuaWNhY2hlX2JzaXplICAgICAgICAg
+ICA9IDMyLA0KPj4+Pj4gICAgICAgICAgICAgICAgICAgIC5kY2FjaGVfYnNpemUgICAgICAgICAg
+ID0gMzIsDQo+Pj4+PiAtICAgICAgICAgICAgICAgLmNwdV9zZXR1cCAgICAgICAgICAgICAgPSBf
+X3NldHVwX2NwdV82MDMsDQo+Pj4+PiArICAgICAgICAgICAgICAgLmNwdV9zZXR1cCAgICAgICAg
+ICAgICAgPSBfX3NldHVwX2NwdV9nMiwNCj4+Pj4+ICAgICAgICAgICAgICAgICAgICAubWFjaGlu
+ZV9jaGVjayAgICAgICAgICA9IG1hY2hpbmVfY2hlY2tfZ2VuZXJpYywNCj4+Pj4+ICAgICAgICAg
+ICAgICAgICAgICAucGxhdGZvcm0gICAgICAgICAgICAgICA9ICJwcGM2MDMiLA0KPj4+Pj4gICAg
+ICAgICAgICB9LA0KPj4+Pj4gQEAgLTgzLDcgKzgzLDcgQEAgc3RhdGljIHN0cnVjdCBjcHVfc3Bl
+YyBjcHVfc3BlY3NbXSBfX2luaXRkYXRhID0gew0KPj4+Pj4gICAgICAgICAgICAgICAgICAgIC5t
+bXVfZmVhdHVyZXMgICAgICAgICAgID0gTU1VX0ZUUl9VU0VfSElHSF9CQVRTLA0KPj4+Pj4gICAg
+ICAgICAgICAgICAgICAgIC5pY2FjaGVfYnNpemUgICAgICAgICAgID0gMzIsDQo+Pj4+PiAgICAg
+ICAgICAgICAgICAgICAgLmRjYWNoZV9ic2l6ZSAgICAgICAgICAgPSAzMiwNCj4+Pj4+IC0gICAg
+ICAgICAgICAgICAuY3B1X3NldHVwICAgICAgICAgICAgICA9IF9fc2V0dXBfY3B1XzYwMywNCj4+
+Pj4+ICsgICAgICAgICAgICAgICAuY3B1X3NldHVwICAgICAgICAgICAgICA9IF9fc2V0dXBfY3B1
+X2cyLA0KPj4+Pj4gICAgICAgICAgICAgICAgICAgIC5tYWNoaW5lX2NoZWNrICAgICAgICAgID0g
+bWFjaGluZV9jaGVja184M3h4LA0KPj4+Pj4gICAgICAgICAgICAgICAgICAgIC5wbGF0Zm9ybSAg
+ICAgICAgICAgICAgID0gInBwYzYwMyIsDQo+Pj4+PiAgICAgICAgICAgIH0sDQo+Pj4+PiBAQCAt
+OTYsNyArOTYsNyBAQCBzdGF0aWMgc3RydWN0IGNwdV9zcGVjIGNwdV9zcGVjc1tdIF9faW5pdGRh
+dGEgPSB7DQo+Pj4+PiAgICAgICAgICAgICAgICAgICAgLm1tdV9mZWF0dXJlcyAgICAgICAgICAg
+PSBNTVVfRlRSX1VTRV9ISUdIX0JBVFMgfCBNTVVfRlRSX05FRURfRFRMQl9TV19MUlUsDQo+Pj4+
+PiAgICAgICAgICAgICAgICAgICAgLmljYWNoZV9ic2l6ZSAgICAgICAgICAgPSAzMiwNCj4+Pj4+
+ICAgICAgICAgICAgICAgICAgICAuZGNhY2hlX2JzaXplICAgICAgICAgICA9IDMyLA0KPj4+Pj4g
+LSAgICAgICAgICAgICAgIC5jcHVfc2V0dXAgICAgICAgICAgICAgID0gX19zZXR1cF9jcHVfNjAz
+LA0KPj4+Pj4gKyAgICAgICAgICAgICAgIC5jcHVfc2V0dXAgICAgICAgICAgICAgID0gX19zZXR1
+cF9jcHVfZzIsDQo+Pj4+PiAgICAgICAgICAgICAgICAgICAgLm1hY2hpbmVfY2hlY2sgICAgICAg
+ICAgPSBtYWNoaW5lX2NoZWNrXzgzeHgsDQo+Pj4+PiAgICAgICAgICAgICAgICAgICAgLnBsYXRm
+b3JtICAgICAgICAgICAgICAgPSAicHBjNjAzIiwNCj4+Pj4+ICAgICAgICAgICAgfSwNCj4+Pj4+
+IEBAIC0xMDksNyArMTA5LDcgQEAgc3RhdGljIHN0cnVjdCBjcHVfc3BlYyBjcHVfc3BlY3NbXSBf
+X2luaXRkYXRhID0gew0KPj4+Pj4gICAgICAgICAgICAgICAgICAgIC5tbXVfZmVhdHVyZXMgICAg
+ICAgICAgID0gTU1VX0ZUUl9VU0VfSElHSF9CQVRTIHwgTU1VX0ZUUl9ORUVEX0RUTEJfU1dfTFJV
+LA0KPj4+Pj4gICAgICAgICAgICAgICAgICAgIC5pY2FjaGVfYnNpemUgICAgICAgICAgID0gMzIs
+DQo+Pj4+PiAgICAgICAgICAgICAgICAgICAgLmRjYWNoZV9ic2l6ZSAgICAgICAgICAgPSAzMiwN
+Cj4+Pj4+IC0gICAgICAgICAgICAgICAuY3B1X3NldHVwICAgICAgICAgICAgICA9IF9fc2V0dXBf
+Y3B1XzYwMywNCj4+Pj4+ICsgICAgICAgICAgICAgICAuY3B1X3NldHVwICAgICAgICAgICAgICA9
+IF9fc2V0dXBfY3B1X2cyLA0KPj4+Pj4gICAgICAgICAgICAgICAgICAgIC5tYWNoaW5lX2NoZWNr
+ICAgICAgICAgID0gbWFjaGluZV9jaGVja184M3h4LA0KPj4+Pj4gICAgICAgICAgICAgICAgICAg
+IC5udW1fcG1jcyAgICAgICAgICAgICAgID0gNCwNCj4+Pj4+ICAgICAgICAgICAgICAgICAgICAu
+cGxhdGZvcm0gICAgICAgICAgICAgICA9ICJwcGM2MDMiLA0KPj4+Pj4gQEAgLTEyMyw3ICsxMjMs
+NyBAQCBzdGF0aWMgc3RydWN0IGNwdV9zcGVjIGNwdV9zcGVjc1tdIF9faW5pdGRhdGEgPSB7DQo+
+Pj4+PiAgICAgICAgICAgICAgICAgICAgLm1tdV9mZWF0dXJlcyAgICAgICAgICAgPSBNTVVfRlRS
+X1VTRV9ISUdIX0JBVFMgfCBNTVVfRlRSX05FRURfRFRMQl9TV19MUlUsDQo+Pj4+PiAgICAgICAg
+ICAgICAgICAgICAgLmljYWNoZV9ic2l6ZSAgICAgICAgICAgPSAzMiwNCj4+Pj4+ICAgICAgICAg
+ICAgICAgICAgICAuZGNhY2hlX2JzaXplICAgICAgICAgICA9IDMyLA0KPj4+Pj4gLSAgICAgICAg
+ICAgICAgIC5jcHVfc2V0dXAgICAgICAgICAgICAgID0gX19zZXR1cF9jcHVfNjAzLA0KPj4+Pj4g
+KyAgICAgICAgICAgICAgIC5jcHVfc2V0dXAgICAgICAgICAgICAgID0gX19zZXR1cF9jcHVfZzIs
+DQo+Pj4+PiAgICAgICAgICAgICAgICAgICAgLm1hY2hpbmVfY2hlY2sgICAgICAgICAgPSBtYWNo
+aW5lX2NoZWNrXzgzeHgsDQo+Pj4+PiAgICAgICAgICAgICAgICAgICAgLm51bV9wbWNzICAgICAg
+ICAgICAgICAgPSA0LA0KPj4+Pj4gICAgICAgICAgICAgICAgICAgIC5wbGF0Zm9ybSAgICAgICAg
+ICAgICAgID0gInBwYzYwMyIsDQo+Pj4+PiAtLQ0KPj4+Pj4gVFEtU3lzdGVtcyBHbWJIIHwgTcO8
+aGxzdHJhw59lIDIsIEd1dCBEZWxsaW5nIHwgODIyMjkgU2VlZmVsZCwgR2VybWFueQ0KPj4+Pj4g
+QW10c2dlcmljaHQgTcO8bmNoZW4sIEhSQiAxMDUwMTgNCj4+Pj4+IEdlc2Now6RmdHNmw7xocmVy
+OiBEZXRsZWYgU2NobmVpZGVyLCBSw7xkaWdlciBTdGFobCwgU3RlZmFuIFNjaG5laWRlcg0KPj4+
+Pj4gaHR0cHM6Ly93d3cudHEtZ3JvdXAuY29tLw0KPj4+DQo+Pj4gLS0NCj4+PiBUUS1TeXN0ZW1z
+IEdtYkggfCBNw7xobHN0cmHDn2UgMiwgR3V0IERlbGxpbmcgfCA4MjIyOSBTZWVmZWxkLCBHZXJt
+YW55DQo+Pj4gQW10c2dlcmljaHQgTcO8bmNoZW4sIEhSQiAxMDUwMTgNCj4+PiBHZXNjaMOkZnRz
+ZsO8aHJlcjogRGV0bGVmIFNjaG5laWRlciwgUsO8ZGlnZXIgU3RhaGwsIFN0ZWZhbiBTY2huZWlk
+ZXINCj4+PiBodHRwczovL3d3dy50cS1ncm91cC5jb20vDQo+IA0KPiAtLQ0KPiBUUS1TeXN0ZW1z
+IEdtYkggfCBNw7xobHN0cmHDn2UgMiwgR3V0IERlbGxpbmcgfCA4MjIyOSBTZWVmZWxkLCBHZXJt
+YW55DQo+IEFtdHNnZXJpY2h0IE3DvG5jaGVuLCBIUkIgMTA1MDE4DQo+IEdlc2Now6RmdHNmw7xo
+cmVyOiBEZXRsZWYgU2NobmVpZGVyLCBSw7xkaWdlciBTdGFobCwgU3RlZmFuIFNjaG5laWRlcg0K
+PiBodHRwczovL3d3dy50cS1ncm91cC5jb20vDQo=
