@@ -2,52 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2B9E832309
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 02:36:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD68B832394
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 04:14:02 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pnmxjqCf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=k1ymdH+j;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TGMfT0SRSz3by2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 12:36:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TGPpc4dWdz3cNl
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 14:14:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pnmxjqCf;
+	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=k1ymdH+j;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=djwong@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2a00:1450:4864:20::12d; helo=mail-lf1-x12d.google.com; envelope-from=apatel@ventanamicro.com; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TGMdZ0vFcz30Pp
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jan 2024 12:36:02 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id 117B7B81A94;
-	Fri, 19 Jan 2024 01:35:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61ACAC433C7;
-	Fri, 19 Jan 2024 01:35:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705628157;
-	bh=/ZfBCWmKyNYBScnBAqemNsyShCkWcxOBncpAtpEWVpQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pnmxjqCfMbdtcQd4B/aZ9FYiMlXjDpLoOG5if9v8CV8fFE2+Ckq1ZKGT0saqx8VE3
-	 Rl6gCUzJVaF2ufyuLQR0lu9WDrcW/buZCPitTWDfs+vLE2xDRz79W2O1L9JINJyUnU
-	 LimS0XUSQ7FgR3fXW/L6sGaPlbZRCQCJ8StLrTXPe98HbBJNw63HKKyXv2cHcaPtyK
-	 HA3yD/hG61bInR4Iqp7+mVZ4WMxLmOm/sTYxhup5HfgNhCjUWE3E6TWYvU2A6FafCQ
-	 +ksYWfTKzyTWFQJhNsqh96iha2FSaWOrUd5D2shSOi50ilKgXEJNSLAXRF7NyT+1Jl
-	 +xspb4K52Rtxg==
-Date: Thu, 18 Jan 2024 17:35:56 -0800
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Shrikanth Hegde <sshegde@linux.ibm.com>
-Subject: Re: [RFC PATCH 2/3] fs: remove duplicate ifdefs
-Message-ID: <20240119013556.GT674499@frogsfrogsfrogs>
-References: <20240118080326.13137-1-sshegde@linux.ibm.com>
- <20240118080326.13137-3-sshegde@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TGPnk5wyvz3bYx
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jan 2024 14:13:12 +1100 (AEDT)
+Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-50e7ddd999bso346548e87.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jan 2024 19:13:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1705633986; x=1706238786; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YfU1RR3yVXE2aFjE6KuwO1NTsoIa0IOOIUzkc/YADig=;
+        b=k1ymdH+jtdQNFqFvrEeFeZASbvGUu9rSLjkEjkTUKAeEHeqo4j0AvqugGnP3y67prK
+         iSAzipv31a4TXCDBHadjPpdZfU6qf+Ggf28X68R0Ek9rFgDzPbDPydruMtJtJhEMCk8S
+         6lpziVDnQCgU7lj/rQ8CZAeylkVUgpvqzd7L7I995xOE/NttDnzARb39zaDwpDg2FjnS
+         L1p8bInvYjHk3aHwffE1cb7ktT52bbUAgGvm5mniAWeMGXxi3z2FwNWjo8Sh1KwT1jjf
+         rYqngUc6qr6M7wJ0k9js7o/vIao8Z2P1PkPkWlMUZYXdNm3pe0bG0QvLZ3uvm63Hwx2X
+         Df0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705633986; x=1706238786;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YfU1RR3yVXE2aFjE6KuwO1NTsoIa0IOOIUzkc/YADig=;
+        b=T24oEWJSQLJGFw+GQBl9tColD1g7JLAstayTVbIO66Lj9D9sPPpZRZuKPA5y5vG6TP
+         QBYZeyvoeEeLv7hmpw8HRcvJX0sTwlGfH3BUpkcj/TxEUA7upnaf0SlGhwR3CqgBIfws
+         Rd9sWyZeUG9jni8xsdfNaQknp3n3nvkOQDcHwaUEITKYGm9jxnf1VdQnqrmVoxFIdU22
+         kIlU8eNW8a0/TDTUAY7C1a/1vtm7tXWQmf+GPUTMCxxBoAstN+I8OdsuwPzZzYX5atVE
+         3nxgPvvYm1cEgVqBXQNmQh2jximagASX84QQKjMLnB9OOuH/1qv/qWXsW1xgTpzPwiJi
+         Uojg==
+X-Gm-Message-State: AOJu0YxumVbXQrDZuFqPaCsx4fqV21LoXalPzJEHWVfFzRvFlJd/jdGY
+	mNfDexPKiel9E+Eo+PTAYDzlUiH59EuRf82hC+S6ZYBUs7dvy51C1BfgSyjiYrWWx+ELWNnVIB+
+	VQK7xoCIA1t8YTZbtSu0HbfT7C5F9TnL8hr/cuA==
+X-Google-Smtp-Source: AGHT+IE+iUkkY6fxTl1+JfpkYAQ0slyXdEkKVq40J5n5SU1ZLhag+ZXwroh2Z1WoXt0AjKQUbiW1WyNyUstIlFIKEPY=
+X-Received: by 2002:ac2:41c9:0:b0:50e:314c:76da with SMTP id
+ d9-20020ac241c9000000b0050e314c76damr265337lfi.82.1705633986292; Thu, 18 Jan
+ 2024 19:13:06 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240118080326.13137-3-sshegde@linux.ibm.com>
+References: <20240104123727.76987-2-ajones@ventanamicro.com>
+ <CAAhSdy0SxZWdCHQVW0Bki+bHpg4qrHWV0aFzJq8V2xYtwsMWhw@mail.gmail.com> <ZalilFSHBa_XHolD@google.com>
+In-Reply-To: <ZalilFSHBa_XHolD@google.com>
+From: Anup Patel <apatel@ventanamicro.com>
+Date: Fri, 19 Jan 2024 08:42:53 +0530
+Message-ID: <CAK9=C2X4R+3F5Lh-f33dPVMkyGt+koXorfwMOmB-JnqSs79eQw@mail.gmail.com>
+Subject: Re: [PATCH -fixes v2] RISC-V: KVM: Require HAVE_KVM
+To: Sean Christopherson <seanjc@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,88 +77,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ntfs-dev@lists.sourceforge.net, linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, peterz@infradead.org, linuxppc-dev@lists.ozlabs.org, mingo@kernel.org, anton@tuxera.com, chandan.babu@oracle.com
+Cc: sfr@canb.auug.org.au, aou@eecs.berkeley.edu, alex@ghiti.fr, kvm@vger.kernel.org, Anup Patel <anup@brainfault.org>, atishp@atishpatra.org, linux-kernel@vger.kernel.org, npiggin@gmail.com, linux-next@vger.kernel.org, palmer@dabbelt.com, rdunlap@infradead.org, kvm-riscv@lists.infradead.org, paul.walmsley@sifive.com, pbonzini@redhat.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Andrew Jones <ajones@ventanamicro.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 18, 2024 at 01:33:25PM +0530, Shrikanth Hegde wrote:
-> when a ifdef is used in the below manner, second one could be considered as
-> duplicate.
-> 
-> ifdef DEFINE_A
-> ...code block...
-> ifdef DEFINE_A
-> ...code block...
-> endif
-> ...code block...
-> endif
-> 
-> There are few places in fs code where above pattern was seen.
-> No functional change is intended here. It only aims to improve code
-> readability.
-> 
-> Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-> ---
->  fs/ntfs/inode.c    | 2 --
->  fs/xfs/xfs_sysfs.c | 4 ----
->  2 files changed, 6 deletions(-)
-> 
-> diff --git a/fs/ntfs/inode.c b/fs/ntfs/inode.c
-> index aba1e22db4e9..d2c8622d53d1 100644
-> --- a/fs/ntfs/inode.c
-> +++ b/fs/ntfs/inode.c
-> @@ -2859,11 +2859,9 @@ int ntfs_truncate(struct inode *vi)
->   *
->   * See ntfs_truncate() description above for details.
->   */
-> -#ifdef NTFS_RW
->  void ntfs_truncate_vfs(struct inode *vi) {
->  	ntfs_truncate(vi);
->  }
-> -#endif
-> 
->  /**
->   * ntfs_setattr - called from notify_change() when an attribute is being changed
-> diff --git a/fs/xfs/xfs_sysfs.c b/fs/xfs/xfs_sysfs.c
-> index 17485666b672..d2391eec37fe 100644
-> --- a/fs/xfs/xfs_sysfs.c
-> +++ b/fs/xfs/xfs_sysfs.c
-> @@ -193,7 +193,6 @@ always_cow_show(
->  }
->  XFS_SYSFS_ATTR_RW(always_cow);
-> 
-> -#ifdef DEBUG
->  /*
->   * Override how many threads the parallel work queue is allowed to create.
->   * This has to be a debug-only global (instead of an errortag) because one of
-> @@ -260,7 +259,6 @@ larp_show(
->  	return snprintf(buf, PAGE_SIZE, "%d\n", xfs_globals.larp);
->  }
->  XFS_SYSFS_ATTR_RW(larp);
-> -#endif /* DEBUG */
-> 
->  STATIC ssize_t
->  bload_leaf_slack_store(
-> @@ -319,10 +317,8 @@ static struct attribute *xfs_dbg_attrs[] = {
->  	ATTR_LIST(log_recovery_delay),
->  	ATTR_LIST(mount_delay),
->  	ATTR_LIST(always_cow),
-> -#ifdef DEBUG
->  	ATTR_LIST(pwork_threads),
->  	ATTR_LIST(larp),
-> -#endif
+On Thu, Jan 18, 2024 at 11:10=E2=80=AFPM Sean Christopherson <seanjc@google=
+.com> wrote:
+>
+> On Thu, Jan 18, 2024, Anup Patel wrote:
+> > On Thu, Jan 4, 2024 at 6:07=E2=80=AFPM Andrew Jones <ajones@ventanamicr=
+o.com> wrote:
+> > >
+> > > KVM requires EVENTFD, which is selected by HAVE_KVM. Other KVM
+> > > supporting architectures select HAVE_KVM and then their KVM
+> > > Kconfigs ensure its there with a depends on HAVE_KVM. Make RISCV
+> > > consistent with that approach which fixes configs which have KVM
+> > > but not EVENTFD, as was discovered with a randconfig test.
+> > >
+> > > Fixes: 99cdc6c18c2d ("RISC-V: Add initial skeletal KVM support")
+> > > Reported-by: Randy Dunlap <rdunlap@infradead.org>
+> > > Closes: https://lore.kernel.org/all/44907c6b-c5bd-4e4a-a921-e4d382553=
+9d8@infradead.org/
+> > > Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+> >
+> > Queued this patch for Linux-6.8
+>
+> That should be unnecessary.  Commit caadf876bb74 ("KVM: introduce CONFIG_=
+KVM_COMMON"),
+> which is in Paolo's pull request for 6.8, addresses the EVENTFD issue.  A=
+nd the
+> rest of Paolo's series[*], which presumably will get queued for 6.9, elim=
+inates
+> HAVE_KVM entirely.
+>
+> [*] https://lore.kernel.org/all/20240108124740.114453-6-pbonzini@redhat.c=
+om
 
-The xfs part seems fine to me bcause I think some bot already
-complained about this...
+I was not sure about the timeline of when Paolo's series would be merged
+hence thought of taking this patch as a fix.
 
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+For now, I will drop this patch from my queue. If required we can have it
+as a 6.8-rc fix.
 
---D
-
->  	ATTR_LIST(bload_leaf_slack),
->  	ATTR_LIST(bload_node_slack),
->  	NULL,
-> --
-> 2.39.3
-> 
-> 
+Regards,
+Anup
