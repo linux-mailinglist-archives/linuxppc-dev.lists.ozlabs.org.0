@@ -2,66 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70601832419
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 05:43:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E341832446
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 06:36:43 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=mANcmeaK;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=RK5pRqjg;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TGRnZ2nk7z30Pp
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 15:43:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TGSzF1zwcz3cNB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jan 2024 16:36:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=mANcmeaK;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=RK5pRqjg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1130; helo=mail-yw1-x1130.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TGRml4Chbz30Yb
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jan 2024 15:42:30 +1100 (AEDT)
-Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-5ff84214fc7so3941157b3.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jan 2024 20:42:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705639347; x=1706244147; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QUbzb1YsPTuj5pO3yS3gRXNyLqhUcfVQnRjTyZebgdY=;
-        b=mANcmeaKkay7FfJdnhOVt5Zx0L16sewrfP508KGVB85fSo1/c5oV9f8vPC8Q7mm/z5
-         ZBfNSDX9UzRibiW+p4/TPBPcWKXhD4tM0qjD/9P/HTr3iOBhhYOPe2I1M4SX/UQTO/1T
-         gmV0P/YFDsLe3ohEuKvePLm8agJqpDKnJQYX5XJZnXOWTO/G/Y08MRSxRNFphC+0aiqe
-         oFfpG8hqZMfvBON7Lkt89o2J2cpzdpF0zIIvSzMpeittPsNGAqW8pU4HKa1+I1mRGB1B
-         a22+06Tj0DvytmjVKdyuBjDm8JwbuMFPEpHA/BNdF7TubfmcU0CCcztdezV+G5rUAQbA
-         8TMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705639347; x=1706244147;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QUbzb1YsPTuj5pO3yS3gRXNyLqhUcfVQnRjTyZebgdY=;
-        b=sVmwJaX8MdHV6+3iGotFQ8kmELgHA1mljf7RQGoLXIbN32oH+Kr5ckV6uzaAeixBRm
-         rxONrTxqUeEzQvAtDahvZ6FZ/r6q29s/V46BhIAlde7bWQcK1/XF8T8B5Vh0xIruIWs4
-         8o2x4qFEflEyQqoVEPnnZwFlatC41Tc7bm6/awuDpYQEOybJdU/2BVMe1gY6ayZ805sx
-         pe64/bKuptHcX3/TKHVVWJrJs5us1u4PSndRISESCYxMffa5E2+q0rl8szWDe3sJehFB
-         AeIPk3lFtxhsE56iHdx9pbDOECz1ntovrhE5BovAXbmlfi86WevSEdsXHMWcaJbnLGDL
-         9s3Q==
-X-Gm-Message-State: AOJu0YwyF2TWZtl46P3WQtT59sH62QyO/WoNg0elMQ/SvXJ1xJXXR/FG
-	LcyXlIBoWsgMcehG2MFEZ7yIqgsT/8H1pcCtt4FDlrdeJT8avtaf
-X-Google-Smtp-Source: AGHT+IHLrd8uaTT0OOHdcytJ8iHjmKPtxYqdGqH2+DZik5pfzx5cxI60sO/qbir/GslTPLU+qYhC/Q==
-X-Received: by 2002:a81:4e85:0:b0:5ff:3087:a378 with SMTP id c127-20020a814e85000000b005ff3087a378mr1746436ywb.13.1705639347074;
-        Thu, 18 Jan 2024 20:42:27 -0800 (PST)
-Received: from localhost ([2601:344:8301:57f0:b45f:9648:c2e:2e36])
-        by smtp.gmail.com with ESMTPSA id b6-20020a0dd906000000b005f941afab71sm21362ywe.30.2024.01.18.20.42.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jan 2024 20:42:26 -0800 (PST)
-Date: Thu, 18 Jan 2024 20:42:25 -0800
-From: Yury Norov <yury.norov@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TGSyN2rN2z2xcs
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jan 2024 16:35:55 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id F2AD161083;
+	Fri, 19 Jan 2024 05:35:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 076E6C433C7;
+	Fri, 19 Jan 2024 05:35:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1705642551;
+	bh=xwIvYirzcQSwftyIx5L3JhM83cF7QaQjlnMuqrVIBW0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RK5pRqjgi6Jn5tJ8rmDeMlYrbrTcn13P1in9jNFBBmtQye8lmAYZVLH5sgNDwDYcj
+	 G/W7j8+u6jGvZIpeWfD/1/0yVMJWag21Fy71X8+gFqOwq+7MnSVVVpj0QefvOT3yE4
+	 oCGZgYFbu705V1AUa+l476kv25eE1SK0a3p09xGI=
+Date: Fri, 19 Jan 2024 06:35:48 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
 To: Huang Shijie <shijie@os.amperecomputing.com>
 Subject: Re: [PATCH] NUMA: Early use of cpu_to_node() returns 0 instead of
  the correct node id
-Message-ID: <Zan9sb0vtSvVvQeA@yury-ThinkPad>
+Message-ID: <2024011937-multitude-yield-fd4d@gregkh>
 References: <20240119033227.14113-1-shijie@os.amperecomputing.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -78,17 +56,11 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, rafael@kernel.org, catalin.marinas@arm.com, jiaxun.yang@flygoat.com, mikelley@microsoft.com, linux-riscv@lists.infradead.org, will@kernel.org, mingo@kernel.org, vschneid@redhat.com, chenhuacai@kernel.org, cl@os.amperecomputing.com, vbabka@suse.cz, kuba@kernel.org, patches@amperecomputing.com, linux-mips@vger.kernel.org, aou@eecs.berkeley.edu, arnd@arndb.de, paul.walmsley@sifive.com, tglx@linutronix.de, jpoimboe@kernel.org, linux-arm-kernel@lists.infradead.org, gregkh@linuxfoundation.org, ndesaulniers@google.com, linux-kernel@vger.kernel.org, palmer@dabbelt.com, mhiramat@kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, rppt@kernel.org
+Cc: mark.rutland@arm.com, rafael@kernel.org, catalin.marinas@arm.com, jiaxun.yang@flygoat.com, mikelley@microsoft.com, linux-riscv@lists.infradead.org, will@kernel.org, mingo@kernel.org, vschneid@redhat.com, arnd@arndb.de, chenhuacai@kernel.org, cl@os.amperecomputing.com, vbabka@suse.cz, kuba@kernel.org, patches@amperecomputing.com, linux-mips@vger.kernel.org, aou@eecs.berkeley.edu, yury.norov@gmail.com, paul.walmsley@sifive.com, tglx@linutronix.de, jpoimboe@kernel.org, linux-arm-kernel@lists.infradead.org, ndesaulniers@google.com, linux-kernel@vger.kernel.org, palmer@dabbelt.com, mhiramat@kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Fri, Jan 19, 2024 at 11:32:27AM +0800, Huang Shijie wrote:
-> hZ7bkEvc+Z19RHkS/HVG3KMg
-> X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR01MB7144
-> Status: O
-> Content-Length: 3779
-> Lines: 126
-> 
 > During the kernel booting, the generic cpu_to_node() is called too early in
 > arm64, powerpc and riscv when CONFIG_NUMA is enabled.
 > 
@@ -105,26 +77,7 @@ On Fri, Jan 19, 2024 at 11:32:27AM +0800, Huang Shijie wrote:
 > smp_prepare_boot_cpu(), and set cpu_to_node with early_cpu_to_node.
 > Introduce smp_prepare_cpus_done() to wrap the original smp_prepare_cpus(),
 > and set the cpu_to_node to formal _cpu_to_node().
-
-This adds another level of indirection, I think. Currently cpu_to_node
-is a simple inliner. After the patch it would be a real function with
-all the associate overhead. Can you share a bloat-o-meter output here?
-
-Regardless, I don't think that the approach is correct. As per your
-description, some initialization functions erroneously call
-cpu_to_node() instead of early_cpu_to_node() which exists specifically
-for that case.
-
-If the above correct, it's clearly a caller problem, and the fix is to
-simply switch all those callers to use early version.
-
-I would also initialize the numa_node with NUMA_NO_NODE at declaration,
-so that if someone calls cpu_to_node() before the variable is properly
-initialized at runtime, he'll get NO_NODE, which is obviously an error.
-
-Thanks,
-Yury
- 
+> 
 > Signed-off-by: Huang Shijie <shijie@os.amperecomputing.com>
 > ---
 >  drivers/base/arch_numa.c | 11 +++++++++++
@@ -225,4 +178,41 @@ Yury
 >  	/* Now the scheduler is fully set up and can do blocking allocations */
 > @@ -1531,7 +1556,7 @@ static noinline void __init kernel_init_freeable(void)
 >  
->  	cad_pid = get_pid(t
+>  	cad_pid = get_pid(task_pid(current));
+>  
+> -	smp_prepare_cpus(setup_max_cpus);
+> +	smp_prepare_cpus_done(setup_max_cpus);
+>  
+>  	workqueue_init();
+>  
+> -- 
+> 2.40.1
+> 
+
+Hi,
+
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
+
+You are receiving this message because of the following common error(s)
+as indicated below:
+
+- This looks like a new version of a previously submitted patch, but you
+  did not list below the --- line any changes from the previous version.
+  Please read the section entitled "The canonical patch format" in the
+  kernel file, Documentation/process/submitting-patches.rst for what
+  needs to be done here to properly describe this.
+
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
+
+thanks,
+
+greg k-h's patch email bot
