@@ -2,58 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77958833407
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jan 2024 13:15:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E90918334F3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jan 2024 14:59:38 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VV0/BS6U;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QAEfIEOt;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4THFn42XSbz3cTD
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jan 2024 23:15:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4THJ545CMkz3cTg
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Jan 2024 00:59:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VV0/BS6U;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QAEfIEOt;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.12; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4THFm933Jjz2xHT
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Jan 2024 23:14:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4THJ4B6zKcz3bqC
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Jan 2024 00:58:48 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1705752890; x=1737288890;
+  t=1705759131; x=1737295131;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=lYlNdQ0Gc+gMkO+7wnw6RT9UdR/P8tIvnMQnN95xP0A=;
-  b=VV0/BS6U1lI7NcFeQCErKfolMZ4jdKgXpfY1pSjN4nuP7QKXvDyNrGwm
-   Z2uJxeep1USx0a5GqCNGun5ahjaHq34KrxBamJRdKc0lo6Z/iEcRzaUq9
-   B/zP+LQ3stLJXPJ4KTM0I4bjFFMVBPRoWtud0Rq774LYzSjwo/Oha95g0
-   bk7vQAooGXQrvjYS7iG+vD2awUlv3AnRbtxYLMyygYdR0cyrbiXzvBuRC
-   LGpH/EKWfQ/yXJzrJ9fuvkzK+scT7fQr/2baNMrHDIohoAr0/zz64Zb3a
-   e9Y3KvcRDH+6rgsdczxCFz3GTDTarY98xT84AjtZ00MaEr1Hqq6/dnjgW
+  bh=D7c3vMf9ccSBFZdgQbSr1dRX1CxiKZpITQQp7zG1YTU=;
+  b=QAEfIEOt5OwfPH/hW78hv4rzMgc/F6NfLbo3J2xl/kNRP6t1bYbj04sn
+   mZTL+rr0l1sHhjO+DTcqqR3VotsutM0xD4s13kZnJoHXPhRSZ5dXLXHAI
+   HOm2DWL2MiUOZ9ZG6ythNPfPuqm728OwD2mM3h1jGDPLy7rAuMX+72A84
+   zoZxCRd0lwYHm5bT/JZM4tmvPm8CmBCKLZr0P7FuKInd/vDSstPda+5zH
+   p3YC6aSO/MUQDEU6rlR/6M4LFIxs8BGCljcvzDN1qAaU/XAxV4EcaN0/M
+   UbTNWPM3djUwvP2o3at13ycNJ24D0OdZGyXJqt308/B+Ak+vYZfJm76jD
    g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10957"; a="19508287"
-X-IronPort-AV: E=Sophos;i="6.05,207,1701158400"; 
-   d="scan'208";a="19508287"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2024 04:14:44 -0800
+X-IronPort-AV: E=McAfee;i="6600,9927,10959"; a="8314741"
+X-IronPort-AV: E=Sophos;i="6.05,208,1701158400"; 
+   d="scan'208";a="8314741"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2024 05:58:45 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,207,1701158400"; 
-   d="scan'208";a="26963912"
+X-IronPort-AV: E=Sophos;i="6.05,208,1701158400"; 
+   d="scan'208";a="834696"
 Received: from lkp-server01.sh.intel.com (HELO 961aaaa5b03c) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 20 Jan 2024 04:14:39 -0800
+  by orviesa003.jf.intel.com with ESMTP; 20 Jan 2024 05:58:40 -0800
 Received: from kbuild by 961aaaa5b03c with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1rRAFA-00054k-0l;
-	Sat, 20 Jan 2024 12:14:36 +0000
-Date: Sat, 20 Jan 2024 20:13:45 +0800
+	id 1rRBrq-00058A-04;
+	Sat, 20 Jan 2024 13:58:38 +0000
+Date: Sat, 20 Jan 2024 21:58:16 +0800
 From: kernel test robot <lkp@intel.com>
 To: Baoquan He <bhe@redhat.com>, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v2 11/14] arm, crash: wrap crash dumping code into crash
  related ifdefs
-Message-ID: <202401202057.aPg08Eh8-lkp@intel.com>
+Message-ID: <202401202159.9a6W0aOH-lkp@intel.com>
 References: <20240119145241.769622-12-bhe@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -70,7 +70,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, x86@kernel.org, Baoquan He <bhe@redhat.com>, piliu@redhat.com, linux-sh@vger.kernel.org, llvm@lists.linux.dev, kexec@lists.infradead.org, linux-mips@vger.kernel.org, ebiederm@xmission.com, loongarch@lists.linux.dev, oe-kbuild-all@lists.linux.dev, hbathini@linux.ibm.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org, viro@zeniv.linux.org.uk
+Cc: linux-s390@vger.kernel.org, Baoquan He <bhe@redhat.com>, piliu@redhat.com, linux-sh@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, linux-mips@vger.kernel.org, ebiederm@xmission.com, loongarch@lists.linux.dev, oe-kbuild-all@lists.linux.dev, hbathini@linux.ibm.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org, viro@zeniv.linux.org.uk
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
@@ -88,24 +88,32 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Baoquan-He/kexec-split-cr
 base:   linus/master
 patch link:    https://lore.kernel.org/r/20240119145241.769622-12-bhe%40redhat.com
 patch subject: [PATCH v2 11/14] arm, crash: wrap crash dumping code into crash related ifdefs
-config: arm-randconfig-001-20240120 (https://download.01.org/0day-ci/archive/20240120/202401202057.aPg08Eh8-lkp@intel.com/config)
-compiler: clang version 18.0.0git (https://github.com/llvm/llvm-project d92ce344bf641e6bb025b41b3f1a77dd25e2b3e9)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240120/202401202057.aPg08Eh8-lkp@intel.com/reproduce)
+config: arm-allnoconfig (https://download.01.org/0day-ci/archive/20240120/202401202159.9a6W0aOH-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240120/202401202159.9a6W0aOH-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202401202057.aPg08Eh8-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202401202159.9a6W0aOH-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
->> arch/arm/kernel/setup.c:1036:49: error: use of undeclared identifier 'SECTION_SIZE'
+   arch/arm/kernel/setup.c: In function 'reserve_crashkernel':
+>> arch/arm/kernel/setup.c:1036:63: error: 'SECTION_SIZE' undeclared (first use in this function); did you mean 'SECTIONS_SHIFT'?
     1036 |                 start = memblock_phys_alloc_range(crash_size, SECTION_SIZE,
-         |                                                               ^
-   1 error generated.
+         |                                                               ^~~~~~~~~~~~
+         |                                                               SECTIONS_SHIFT
+   arch/arm/kernel/setup.c:1036:63: note: each undeclared identifier is reported only once for each function it appears in
+   In file included from arch/arm/include/asm/efi.h:12,
+                    from arch/arm/kernel/setup.c:37:
+   arch/arm/include/asm/fixmap.h: At top level:
+   arch/arm/include/asm/fixmap.h:39:35: warning: '__end_of_fixed_addresses' defined but not used [-Wunused-const-variable=]
+      39 | static const enum fixed_addresses __end_of_fixed_addresses =
+         |                                   ^~~~~~~~~~~~~~~~~~~~~~~~
 
 
-vim +/SECTION_SIZE +1036 arch/arm/kernel/setup.c
+vim +1036 arch/arm/kernel/setup.c
 
 3c57fb43c8fcbe Mika Westerberg 2010-05-10   995  
 3c57fb43c8fcbe Mika Westerberg 2010-05-10   996  /**
