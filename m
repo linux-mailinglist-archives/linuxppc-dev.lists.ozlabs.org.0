@@ -1,55 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAF90833639
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jan 2024 22:11:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD42E833642
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jan 2024 22:12:12 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ncG4baLy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f5fgAd8l;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4THTgJ4fY9z3cWQ
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Jan 2024 08:11:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4THThB4j9Nz3cTP
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Jan 2024 08:12:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ncG4baLy;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f5fgAd8l;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+linux-riscv@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=patchwork-bot+linux-riscv@kernel.org; receiver=lists.ozlabs.org)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4THTdc3kbxz2xm3
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Jan 2024 08:09:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4THTdh3RlJz2ygX
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Jan 2024 08:10:00 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id BFD8560BD6;
-	Sat, 20 Jan 2024 21:09:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3A8E3C43390;
-	Sat, 20 Jan 2024 21:09:52 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTP id DE988B80943;
+	Sat, 20 Jan 2024 21:09:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8EF1CC433F1;
+	Sat, 20 Jan 2024 21:09:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705784992;
-	bh=Rp5EUqsK/zub74udKI73W3OYZb8MEebPJJcJBbBEBqQ=;
+	s=k20201202; t=1705784997;
+	bh=fjX1QcNSUSDtg3zN9eJIvh1kheAnttohq2CojBDtXqM=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ncG4baLylKP+ss4CNXGIlS1a6uVEW90QY99EMGmgpt4V0oF/pEjWEZ3npunq0fl94
-	 6PShq8XUgcdedvfzb/WzPJFqk0JtjmvcUPRYOzk0iNlMKX8YNyCcm+ak7wj9Cs0cQ0
-	 nYdvbHahPXimCBXcoo/hRh31unWRJgPFFXQANqeWvuw1gUb1052zmkYbcwW8lH3JNy
-	 UferhTZ58Bmo4LtIjuw6GElQDqC1PevMsZITHmk7jIkMPCrGudcbfNOBvQcvgU4wUP
-	 b2WVtO6lkZuexwY2RgZZyq4EE1kc6h0RZ0V/MEDn2mCQykMUkd9XAAR3j8w4O3c98P
-	 WXy4hDcSfDJug==
+	b=f5fgAd8lGmVqY/67XbUSO4Qk0dRCUMvtUJD6k/fd5iG2uct6gv2xMQ3OHM1WYZ8U2
+	 ngc78M3hIIoMXED9Rhlsx50MT1WXbiTtNG6ah5EKBwBMud8j+kcgE1H0x+0FnmqSGT
+	 BBTDD9MuDisjsB7prVtq2FzT7FYcqsURHqxqgW0uE6WwNcJg/7ykZhWW1w3xibUlyP
+	 wX703TQTb8qu6a0/EiiGati/ykJT0BM8pyB94IT1As1Rm6DeIeWHsSDdmfkdUHpJ+M
+	 Y4G5OILFVDaAC74ogXv0ePOSln8yYvcsMgVHnWJJUfV+xzzSdGzo674sw/Es00ID6Y
+	 cufuVhFU3QLqg==
 Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 2A88ED8C96C;
-	Sat, 20 Jan 2024 21:09:52 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 7D333D8C970;
+	Sat, 20 Jan 2024 21:09:57 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v6 0/5] RISC-V SBI debug console extension support
+Subject: Re: [PATCH 0/2] kexec_file: Load kernel at top of system RAM if required
 From: patchwork-bot+linux-riscv@kernel.org
-Message-Id:  <170578499217.24348.10595488871949157918.git-patchwork-notify@kernel.org>
-Date: Sat, 20 Jan 2024 21:09:52 +0000
-References: <20240119113449.492152-1-apatel@ventanamicro.com>
-In-Reply-To: <20240119113449.492152-1-apatel@ventanamicro.com>
-To: Anup Patel <apatel@ventanamicro.com>
+Message-Id:  <170578499750.24348.2518240009884006018.git-patchwork-notify@kernel.org>
+Date: Sat, 20 Jan 2024 21:09:57 +0000
+References: <20231114091658.228030-1-bhe@redhat.com>
+In-Reply-To: <20231114091658.228030-1-bhe@redhat.com>
+To: Baoquan He <bhe@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,37 +61,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org, conor@kernel.org, linux-kernel@vger.kernel.org, palmer@dabbelt.com, linux-serial@vger.kernel.org, paul.walmsley@sifive.com, linux-riscv@lists.infradead.org, jirislaby@kernel.org, ajones@ventanamicro.com
+Cc: linux-s390@vger.kernel.org, linux-parisc@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, takahiro.akashi@linaro.org, ebiederm@xmission.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, akpm@linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Hello:
 
 This series was applied to riscv/linux.git (fixes)
-by Palmer Dabbelt <palmer@rivosinc.com>:
+by Andrew Morton <akpm@linux-foundation.org>:
 
-On Fri, 19 Jan 2024 17:04:44 +0530 you wrote:
-> The SBI v2.0 specification is now frozen. The SBI v2.0 specification defines
-> SBI debug console (DBCN) extension which replaces the legacy SBI v0.1
-> functions sbi_console_putchar() and sbi_console_getchar().
-> (Refer v2.0-rc5 at https://github.com/riscv-non-isa/riscv-sbi-doc/releases)
-> 
-> This series adds support for SBI debug console (DBCN) extension in
-> Linux RISC-V.
+On Tue, 14 Nov 2023 17:16:56 +0800 you wrote:
+> Justification:
+> ==============
+> Kexec_load interface has been doing top down searching and loading
+> kernel/initrd/purgtory etc to prepare for kexec reboot. In that way,
+> the benefits are that it avoids to consume and fragment limited low
+> memory which satisfy DMA buffer allocation and big chunk of continuous
+> memory during system init; and avoids to stir with BIOS/FW reserved
+> or occupied areas, or corner case handling/work around/quirk occupied
+> areas when doing system init. By the way, the top-down searching and
+> loading of kexec-ed kernel is done in user space utility code.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v6,1/5] RISC-V: Add stubs for sbi_console_putchar/getchar()
-    https://git.kernel.org/riscv/c/f503b167b660
-  - [v6,2/5] RISC-V: Add SBI debug console helper routines
+  - [1/2] resource: add walk_system_ram_res_rev()
     (no matching commit)
-  - [v6,3/5] tty/serial: Add RISC-V SBI debug console based earlycon
-    https://git.kernel.org/riscv/c/c77bf3607a0f
-  - [v6,4/5] tty: Add SBI debug console support to HVC SBI driver
-    (no matching commit)
-  - [v6,5/5] RISC-V: Enable SBI based earlycon support
-    https://git.kernel.org/riscv/c/50942ad6ddb5
+  - [2/2] kexec_file: Load kernel at top of system RAM if required
+    https://git.kernel.org/riscv/c/b3ba234171cd
 
 You are awesome, thank you!
 -- 
