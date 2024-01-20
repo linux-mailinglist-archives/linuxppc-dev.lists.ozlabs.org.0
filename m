@@ -1,68 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 881638332AD
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jan 2024 05:00:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F4B28332B0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jan 2024 05:01:13 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=l99+XTIl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=abaqgU/D;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TH2nS4n5gz3cMH
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jan 2024 15:00:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TH2pb0qdxz3cWr
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jan 2024 15:01:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=l99+XTIl;
+	dkim=pass (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=abaqgU/D;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=brainfault.org (client-ip=2607:f8b0:4864:20::12c; helo=mail-il1-x12c.google.com; envelope-from=anup@brainfault.org; receiver=lists.ozlabs.org)
-Received: from mail-il1-x12c.google.com (mail-il1-x12c.google.com [IPv6:2607:f8b0:4864:20::12c])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=brainfault.org (client-ip=2607:f8b0:4864:20::d2c; helo=mail-io1-xd2c.google.com; envelope-from=anup@brainfault.org; receiver=lists.ozlabs.org)
+Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TH2mf1T6Cz3bXk
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Jan 2024 14:59:27 +1100 (AEDT)
-Received: by mail-il1-x12c.google.com with SMTP id e9e14a558f8ab-3608aa647bfso7026575ab.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jan 2024 19:59:27 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TH2nj3zgxz3bYQ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Jan 2024 15:00:25 +1100 (AEDT)
+Received: by mail-io1-xd2c.google.com with SMTP id ca18e2360f4ac-7beefdfe71eso65710639f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jan 2024 20:00:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1705723163; x=1706327963; darn=lists.ozlabs.org;
+        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1705723222; x=1706328022; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MUdj33zU6WPp9NMXR1jDLao5OoMg89mIJNooFVUpnh0=;
-        b=l99+XTIlH/3WjMt1OVORZ95mSXpl4zcpqIRjgKZoKC5o8+1B1AvHkcfgi2BHU68Ydz
-         vZp0qkTL2ZccsOjGRjkGTePomAbzIxt+j3/xQxMb7ViAHomVmLmyOCWzY+gEb4fNCcDW
-         Cr3Kxs9UnYi4gMehSwcx9SCsD6Y+AmzImEIGxQavVxRVAKQYMO2BfYiuxLfG5j+q9XbH
-         zN1xVqPnoZW0hxj1fe4QSroccWOXCjXzu8ft02DJHtYeD2jrSZodOn3JT3iNrcaxeCoh
-         Wdg2LVNDpiTs+59tA/X4xdC9CfHqhexVO26FSvvlGfXsff8DW+fJmWYO1CEPu0pLzNWX
-         hM7g==
+        bh=Xm77cdy8sjLxejMosTN9VvQDmoUNl7t40h/yggndkso=;
+        b=abaqgU/Dj7udDBnZ3tHRpgSpJtSaxHCHtW1Dt9Vf8SX3J4pQi8jJPmSyR2gtDbQbK3
+         eBaowOALN/Iwok2vRoN5jT8tXSAiTNJ5PBRlXJ95s86eIQBq35ybrc7g6JL0Zc4lJTn2
+         a7APg77VbhERaNfpckOmFsxYJoRDHW1jgG7diVvGMS5cZ9TSJHjn8HYdri+mAXa9ZGIc
+         TY3nk+OkE/SfUn317UPzMMVqKu/Wg4AHQnLEWpYnhq9YzmEheqMjweCYnKaH7DSSTK6P
+         hW7Uz5c6Ur4bH2XXcLjEBz/Th/2BZhr+Kyn9Btu9+4HQfCIG4SfhilIsqXZ9kSJPKDdN
+         vd3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705723163; x=1706327963;
+        d=1e100.net; s=20230601; t=1705723222; x=1706328022;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=MUdj33zU6WPp9NMXR1jDLao5OoMg89mIJNooFVUpnh0=;
-        b=Wuy7YJ2kb96zwxz/B4w1QxpCp8Q1ZvSy1FsnxgfhD+GqeYHaWTP6w9xuhYRuv6clW1
-         srdvVNvAAHLE99PsKIAgoKPw0BBU74Nd0ogxJW9D9L+IoOjw3Boxamoz1Xk4LDgSB6ov
-         DhczWp8Kxyw27mTDZV24cNdd5VFZ3ClsOJDVefVy/8cM+hA5upc+3UfaLu4ZYVM3Qrm8
-         39ep0Z+1acI4uZn/+IU2AkBwEbRv45/e4cAkViL8x6diUrm9nO7Np+kXH7lI8aX4ZlDQ
-         DMfoIAEFIsdMUHojhXrtM9MdWGQS0Jfo2eMBB95Cxo30ZDjbSX6uFyGXRl6Y2ukEd+Lb
-         3ytg==
-X-Gm-Message-State: AOJu0Yxk/59C49WMSwtI7wOAj8FQAxAO9WMp3hCQNqCA1uS2DJBe/pc2
-	FciwYs0mbRLHxjJITH65Uyk7nhtub3TKfC2dYK5RQFxveaM34XOZUVWuf8XxuJ80++dOjJlwOMx
-	oOXbMGpiRM1uPz+/hd7AGtJ/AbqUJEmXK+fvXXA==
-X-Google-Smtp-Source: AGHT+IE/vAYx8mnNdDKMAblUXSdltL/8n5TCQTrCXmLC8zaNaqz1vAs/Oe/IS8XQjJqKfiNn3hNoFDPDJZHtazYV8Ls=
-X-Received: by 2002:a92:b70a:0:b0:360:7190:f895 with SMTP id
- k10-20020a92b70a000000b003607190f895mr854939ili.52.1705723162955; Fri, 19 Jan
- 2024 19:59:22 -0800 (PST)
+        bh=Xm77cdy8sjLxejMosTN9VvQDmoUNl7t40h/yggndkso=;
+        b=W2dkGK1mSRL+vt47fNQ83e6Dy7Lvg4RcBi0Br4BabiBZZn35CuhVITUdIoJQdF5YUx
+         xwKCGA9wJpKyQnxr4w4YnRxnXZmUzE721Ja6QFiiYFhceh2Coq2NASbyZ1eXflP0tvdw
+         VJtUr6p423AQ5ylACJaAhsuRlLl7oTPofts7nqfufyusWqHwaFpN5rZNpHLwje+Hr2al
+         oEpNthakDcvpZ0VVVzgIW5xHP1sdtlWpO7iUKaMIp4N5W/JhmwFF+xttcmhSdasZva3f
+         itrlidZhXtSmacFGAJtoW1FaNo3CW0ZPvXmdyWjqUmiK9ichwt6I045zqrYAAgl3VJ+N
+         B7+w==
+X-Gm-Message-State: AOJu0YwAJX4uiajt7eXHOTJS5QAg1tmYz02jep9/enecdJYeEGbDhn5T
+	4FZE9KaGP4H63byERFPO0N4kQCfSjDUIDk14yJko9DVxxH1p40AtDnYo6EPUu7aqKsY3BxssRVS
+	k3rfYLzRxFumDBP6zjjWt/Hi4dk8Gpd2xYqklUg==
+X-Google-Smtp-Source: AGHT+IGg4ZcMYreFV9xlYVnib9lYgAyXv1Hi5hQ3Ji6o35ET/PG3DLNpo8igmEKscRALY1LTjwXa2naZ6EqS+RMFBqM=
+X-Received: by 2002:a05:6602:4f49:b0:7bf:4f95:c10f with SMTP id
+ gm9-20020a0566024f4900b007bf4f95c10fmr758470iob.33.1705723221837; Fri, 19 Jan
+ 2024 20:00:21 -0800 (PST)
 MIME-Version: 1.0
-References: <20240119224404.26695-2-palmer@rivosinc.com>
-In-Reply-To: <20240119224404.26695-2-palmer@rivosinc.com>
+References: <CAK9=C2UV8J52a1pZjsNpFNwpUKn5K3nhS-+bS-3pohDwi3HrfQ@mail.gmail.com>
+ <mhng-f5f3ec82-ce6a-4e20-8799-f36fd82d74b6@palmer-ri-x1c9>
+In-Reply-To: <mhng-f5f3ec82-ce6a-4e20-8799-f36fd82d74b6@palmer-ri-x1c9>
 From: Anup Patel <anup@brainfault.org>
-Date: Sat, 20 Jan 2024 09:29:11 +0530
-Message-ID: <CAAhSdy0naZf8aKkAH6MgYyLior3rZEjx0WWWgp4Ljakrb5q5XQ@mail.gmail.com>
-Subject: Re: [PATCH v2] tty: hvc: Fix the RISC-V SBI driver for a refactoring
-To: Palmer Dabbelt <palmer@rivosinc.com>
+Date: Sat, 20 Jan 2024 09:30:10 +0530
+Message-ID: <CAAhSdy1irrxUXTZKVvYB6UmXC6brb4U7xB_k5z2T82qOS=jdug@mail.gmail.com>
+Subject: Re: [PATCH v5 0/5] RISC-V SBI debug console extension support
+To: Palmer Dabbelt <palmer@dabbelt.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -76,97 +77,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: apatel@ventanamicro.com, aou@eecs.berkeley.edu, Greg KH <gregkh@linuxfoundation.org>, Atish Patra <atishp@rivosinc.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, linux-serial@vger.kernel.org, Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org, jirislaby@kernel.org, ajones@ventanamicro.com
+Cc: apatel@ventanamicro.com, Greg KH <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org, Conor Dooley <conor@kernel.org>, linux-kernel@vger.kernel.org, nathan@kernel.org, linux-serial@vger.kernel.org, Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org, jirislaby@kernel.org, ajones@ventanamicro.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Jan 20, 2024 at 4:15=E2=80=AFAM Palmer Dabbelt <palmer@rivosinc.com=
-> wrote:
+On Sat, Jan 20, 2024 at 3:29=E2=80=AFAM Palmer Dabbelt <palmer@dabbelt.com>=
+ wrote:
 >
-> From: Palmer Dabbelt <palmer@rivosinc.com>
+> On Fri, 19 Jan 2024 02:09:18 PST (-0800), apatel@ventanamicro.com wrote:
+> > On Sat, Jan 13, 2024 at 12:00=E2=80=AFAM Palmer Dabbelt <palmer@dabbelt=
+.com> wrote:
+> >>
+> >> On Thu, 11 Jan 2024 06:50:37 PST (-0800), patchwork-bot+linux-riscv@ke=
+rnel.org wrote:
+> >> > Hello:
+> >> >
+> >> > This series was applied to riscv/linux.git (for-next)
+> >> > by Palmer Dabbelt <palmer@rivosinc.com>:
+> >> >
+> >> > On Fri, 24 Nov 2023 12:39:00 +0530 you wrote:
+> >> >> The SBI v2.0 specification is now frozen. The SBI v2.0 specificatio=
+n defines
+> >> >> SBI debug console (DBCN) extension which replaces the legacy SBI v0=
+.1
+> >> >> functions sbi_console_putchar() and sbi_console_getchar().
+> >> >> (Refer v2.0-rc5 at https://github.com/riscv-non-isa/riscv-sbi-doc/r=
+eleases)
+> >> >>
+> >> >> This series adds support for SBI debug console (DBCN) extension in
+> >> >> Linux RISC-V.
+> >> >>
+> >> >> [...]
+> >> >
+> >> > Here is the summary with links:
+> >> >   - [v5,1/5] RISC-V: Add stubs for sbi_console_putchar/getchar()
+> >> >     https://git.kernel.org/riscv/c/f503b167b660
+> >> >   - [v5,2/5] RISC-V: Add SBI debug console helper routines
+> >> >     https://git.kernel.org/riscv/c/f43fabf444ca
+> >> >   - [v5,3/5] tty/serial: Add RISC-V SBI debug console based earlycon
+> >> >     https://git.kernel.org/riscv/c/c77bf3607a0f
+> >> >   - [v5,4/5] tty: Add SBI debug console support to HVC SBI driver
+> >> >     https://git.kernel.org/riscv/c/88ead68e764c
+> >> >   - [v5,5/5] RISC-V: Enable SBI based earlycon support
+> >> >     https://git.kernel.org/riscv/c/50942ad6ddb5
+> >> >
+> >> > You are awesome, thank you!
+> >>
+> >> Nathan points out that this has some semantic conflicts with a patch i=
+n
+> >> Greg's TTY tree: https://git.kernel.org/pub/scm/linux/kernel/git/gregk=
+h/tty.git/commit/?id=3Df32fcbedbe9290565e4eac3fd7c4c451d5478787
+> >>
+> >> So I think the best bet is to wait on Greg's patch to land in Linus'
+> >> tree, and then base a v6 of this patch set on that merged patch.  I'm
+> >> going to drop this one from for-next.
+> >
+> > Greg's patch is now available in upstream Linux so I will rebase and
+> > send out v6.
 >
-> I missed the int->size_t refactoring in f32fcbedbe92 ("tty: hvc: convert
-> to u8 and size_t"), which causes the newly used ops in 88ead68e764c
-> ("tty: Add SBI debug console support to HVC SBI driver") to fail to
-> build due to a
->
-> linux/drivers/tty/hvc/hvc_riscv_sbi.c:59:15: error: incompatible function=
- pointer types initializing 'ssize_t (*)(uint32_t, const u8 *, size_t)' (ak=
-a 'long (*)(unsigned int, const unsigned char *, unsigned long)') with an e=
-xpression of type 'int (uint32_t, const char *, int)' (aka 'int (unsigned i=
-nt, const char *, int)') [-Wincompatible-function-pointer-types]
->         .put_chars =3D hvc_sbi_dbcn_tty_put,
->
-> Fixes: f32fcbedbe92 ("tty: hvc: convert to u8 and size_t")
-> Fixes: 88ead68e764c ("tty: Add SBI debug console support to HVC SBI drive=
-r")
-> Link: https://lore.kernel.org/r/20240119215612.20529-2-palmer@rivosinc.co=
-m
-> Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-> ---
-> Changes since v1 <20240119215612.20529-2-palmer@rivosinc.com>:
-> * Fix the return and arguments correctly.
-> * Also fix the hvc_sbi_dbcn_tty_{get,put}().
-> ---
->  drivers/tty/hvc/hvc_riscv_sbi.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/tty/hvc/hvc_riscv_sbi.c b/drivers/tty/hvc/hvc_riscv_=
-sbi.c
-> index 2f3571f17ecd..f8cd3310ef35 100644
-> --- a/drivers/tty/hvc/hvc_riscv_sbi.c
-> +++ b/drivers/tty/hvc/hvc_riscv_sbi.c
-> @@ -15,7 +15,7 @@
->
->  #include "hvc_console.h"
->
-> -static int hvc_sbi_tty_put(uint32_t vtermno, const char *buf, int count)
-> +static ssize_t hvc_sbi_tty_put(uint32_t vtermno, const u8 *buf, size_t c=
-ount)
->  {
->         int i;
->
-> @@ -25,7 +25,7 @@ static int hvc_sbi_tty_put(uint32_t vtermno, const char=
- *buf, int count)
->         return i;
->  }
->
-> -static int hvc_sbi_tty_get(uint32_t vtermno, char *buf, int count)
-> +static ssize_t hvc_sbi_tty_get(uint32_t vtermno, u8 *buf, size_t count)
+> Sorry, I forgot about this one and merged it.  I just sent up a fixup:
+> https://lore.kernel.org/all/20240119215612.20529-2-palmer@rivosinc.com/
 
-The hvc_sbi_tty_put() and hvc_sbi_tty_get() functions are already
-updated in Linus's tree. We only need to fix hvc_sbi_dbcn_tty_put()
-and hvc_sbi_dbcn_tty_get()
-
-Please rebase this fix upon Linux-6.8-rc1 whenever that is available.
-
->  {
->         int i, c;
->
-> @@ -44,12 +44,12 @@ static const struct hv_ops hvc_sbi_v01_ops =3D {
->         .put_chars =3D hvc_sbi_tty_put,
->  };
->
-> -static int hvc_sbi_dbcn_tty_put(uint32_t vtermno, const char *buf, int c=
-ount)
-> +static ssize_t hvc_sbi_dbcn_tty_put(uint32_t vtermno, const u8 *buf, siz=
-e_t count)
->  {
->         return sbi_debug_console_write(buf, count);
->  }
->
-> -static int hvc_sbi_dbcn_tty_get(uint32_t vtermno, char *buf, int count)
-> +static ssize_t hvc_sbi_dbcn_tty_get(uint32_t vtermno, u8 *buf, size_t co=
-unt)
->  {
->         return sbi_debug_console_read(buf, count);
->  }
-> --
-> 2.43.0
->
->
-
-Reviewed-by: Anup Patel <anup@brainfault.org>
+No issues. Apart from a minor comment, your fixup looks good to me.
 
 Thanks,
 Anup
+
+> .
+>
+> >
+> > Thanks,
+> > Anup
+>
