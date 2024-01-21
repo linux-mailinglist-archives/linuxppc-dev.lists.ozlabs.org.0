@@ -1,61 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FE9383366A
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jan 2024 22:26:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E585835425
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Jan 2024 02:56:32 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256 header.s=pandora-2019 header.b=NchmfWpK;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ak+Dibr1;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Z0/liNqj;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4THV1C5V9fz30Ng
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Jan 2024 08:26:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4THc0G1nbhz3c1J
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Jan 2024 12:56:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256 header.s=pandora-2019 header.b=NchmfWpK;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ak+Dibr1;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Z0/liNqj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=armlinux.org.uk (client-ip=2001:4d48:ad52:32c8:5054:ff:fe00:142; helo=pandora.armlinux.org.uk; envelope-from=linux+linuxppc-dev=lists.ozlabs.org@armlinux.org.uk; receiver=lists.ozlabs.org)
-X-Greylist: delayed 609 seconds by postgrey-1.37 at boromir; Sun, 21 Jan 2024 08:26:08 AEDT
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4THV0J3LXJz30Ng
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Jan 2024 08:26:08 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=1aBK0Gktyu8z+XAOtZwM9ibKmLTWPXmi9JXFn46Moag=; b=NchmfWpKV8qW4oGh0F1Qvj2C/6
-	/9LiX34B1wlpHtipYkfPNQ+3G4sxN+nN75vc36dqQqjNMWNyQa5wFbXiDuuJCw81FAOfCSys3cLbS
-	IooU5FuZdHsgy/cCTasUw23eGZLHi8rqM87NA8xNGA8TZZ5t8ap1so2ig5rH24oATjRzXeNBH9G8b
-	ES6a95oRMX+OMy2zD9vQRKPlkHHSsMPeqUmu5H/RRAiTRt7YRBqjFrwcrblJ1oMA3AphMu0iwndBx
-	qYPvgpL249fguGP08RS7rSdcLn8m1HFKMQRGIg7MzbGLKydZ2bOvJvLHRY4wKgtirPXoSsCPXUNrl
-	VswDM4wg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:40226)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1rRIgD-0007pB-1l;
-	Sat, 20 Jan 2024 21:15:05 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1rRIg9-0007ya-3x; Sat, 20 Jan 2024 21:15:01 +0000
-Date: Sat, 20 Jan 2024 21:15:01 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: patchwork-bot+linux-riscv@kernel.org
-Subject: Re: [PATCH 1/1] arch/mm/fault: fix major fault accounting when
- retrying under per-VMA lock
-Message-ID: <Zaw31DVa9q3JZASo@shell.armlinux.org.uk>
-References: <20231226214610.109282-1-surenb@google.com>
- <170578498755.24348.16166096320323933297.git-patchwork-notify@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4THbzP5chCz2ytN
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Jan 2024 12:55:44 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1705802139;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Bn2lkxxGrsi3E9Vcx5NFx8RtBRe4v7W5psgsNCHmDng=;
+	b=Ak+Dibr1FCJBwu59M+szqYrFMurngkYybSCz40DgcaN/FN0foN3qHK03OeTfzPJF6t8FzY
+	ll36sUY5ZsY2GvQgruA6/8fbe2plhiQhbPoe+EwYeSeUXuE9sM6mM4vDjrwUciFP73NYAY
+	sn8bbpEW39QIFr7Iw6eN9Bg4ECWDRZ0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1705802140;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Bn2lkxxGrsi3E9Vcx5NFx8RtBRe4v7W5psgsNCHmDng=;
+	b=Z0/liNqj1ZfYvDnqkcXYUbGx42zhNioMIZEG/RRgXOI5gooJ8uQ7e0TYFxlw5pY2iMBGPs
+	vQ0JRINZ8uMX92kWzwJL2oqydkk3pCfcueQchMFmVABCqeoRoNc1PzaDgHc5ql87HuE/j0
+	ZRaoNGJlF1RorYVGDJ70DwuTSkFpbZE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-471-1HnnZH15OaydAjxT0WE9tA-1; Sat, 20 Jan 2024 20:55:35 -0500
+X-MC-Unique: 1HnnZH15OaydAjxT0WE9tA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0A53885A588;
+	Sun, 21 Jan 2024 01:55:35 +0000 (UTC)
+Received: from localhost (unknown [10.72.116.12])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id B83D651D5;
+	Sun, 21 Jan 2024 01:55:33 +0000 (UTC)
+Date: Sun, 21 Jan 2024 09:55:29 +0800
+From: Baoquan He <bhe@redhat.com>
+To: kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v2 11/14] arm, crash: wrap crash dumping code into crash
+ related ifdefs
+Message-ID: <Zax5kXfiREk2bDbu@MiWiFi-R3L-srv>
+References: <20240119145241.769622-12-bhe@redhat.com>
+ <202401202057.aPg08Eh8-lkp@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <170578498755.24348.16166096320323933297.git-patchwork-notify@kernel.org>
+In-Reply-To: <202401202057.aPg08Eh8-lkp@intel.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,45 +80,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com, peterz@infradead.org, Suren Baghdasaryan <surenb@google.com>, dave.hansen@linux.intel.com, x86@kernel.org, willy@infradead.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, palmer@dabbelt.com, luto@kernel.org, catalin.marinas@arm.com, linux-riscv@lists.infradead.org, will@kernel.org, akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org
+Cc: linux-s390@vger.kernel.org, llvm@lists.linux.dev, piliu@redhat.com, linux-sh@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, ebiederm@xmission.com, loongarch@lists.linux.dev, oe-kbuild-all@lists.linux.dev, hbathini@linux.ibm.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org, viro@zeniv.linux.org.uk
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Jan 20, 2024 at 09:09:47PM +0000, patchwork-bot+linux-riscv@kernel.org wrote:
-> Hello:
+On 01/20/24 at 08:13pm, kernel test robot wrote:
+> Hi Baoquan,
 > 
-> This patch was applied to riscv/linux.git (fixes)
-> by Andrew Morton <akpm@linux-foundation.org>:
+> kernel test robot noticed the following build errors:
 > 
-> On Tue, 26 Dec 2023 13:46:10 -0800 you wrote:
-> > A test [1] in Android test suite started failing after [2] was merged.
-> > It turns out that after handling a major fault under per-VMA lock, the
-> > process major fault counter does not register that fault as major.
-> > Before [2] read faults would be done under mmap_lock, in which case
-> > FAULT_FLAG_TRIED flag is set before retrying. That in turn causes
-> > mm_account_fault() to account the fault as major once retry completes.
-> > With per-VMA locks we often retry because a fault can't be handled
-> > without locking the whole mm using mmap_lock. Therefore such retries
-> > do not set FAULT_FLAG_TRIED flag. This logic does not work after [2]
-> > because we can now handle read major faults under per-VMA lock and
-> > upon retry the fact there was a major fault gets lost. Fix this by
-> > setting FAULT_FLAG_TRIED after retrying under per-VMA lock if
-> > VM_FAULT_MAJOR was returned. Ideally we would use an additional
-> > VM_FAULT bit to indicate the reason for the retry (could not handle
-> > under per-VMA lock vs other reason) but this simpler solution seems
-> > to work, so keeping it simple.
-> > 
-> > [...]
+> [auto build test ERROR on linus/master]
+> [cannot apply to tip/x86/core arm64/for-next/core powerpc/next powerpc/fixes v6.7 next-20240119]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
 > 
-> Here is the summary with links:
->   - [1/1] arch/mm/fault: fix major fault accounting when retrying under per-VMA lock
->     https://git.kernel.org/riscv/c/46e714c729c8
+> url:    https://github.com/intel-lab-lkp/linux/commits/Baoquan-He/kexec-split-crashkernel-reservation-code-out-from-crash_core-c/20240119-225820
+> base:   linus/master
+> patch link:    https://lore.kernel.org/r/20240119145241.769622-12-bhe%40redhat.com
+> patch subject: [PATCH v2 11/14] arm, crash: wrap crash dumping code into crash related ifdefs
+> config: arm-randconfig-001-20240120 (https://download.01.org/0day-ci/archive/20240120/202401202057.aPg08Eh8-lkp@intel.com/config)
+> compiler: clang version 18.0.0git (https://github.com/llvm/llvm-project d92ce344bf641e6bb025b41b3f1a77dd25e2b3e9)
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240120/202401202057.aPg08Eh8-lkp@intel.com/reproduce)
 > 
-> You are awesome, thank you!
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202401202057.aPg08Eh8-lkp@intel.com/
 
-Now that 32-bit ARM has support for the per-VMA lock, does that also
-need to be patched?
+Thanks for reporting this, I can reproduce it.
 
+In the provided config, it has:
+
+# CONFIG_MMU is not set
+and all kexec/kdump related config items are unset. 
+
+The if (!IS_ENABLED(CONFIG_CRASH_RESERVE)) checking will cause funciton
+reserve_crashkernel() is compiled, but not built in. With CONFIG_MMU=no,
+SECTION_SIZE is undefined on arm. So fix it by wrapping up
+reserve_crashkernel() inside CONFIG_CRASH_RESERVE ifdeffery scope.
+
+
+From d580b65f6aa042233e228aab45609c3de88ab29e Mon Sep 17 00:00:00 2001
+From: Baoquan He <bhe@redhat.com>
+Date: Mon, 15 Jan 2024 22:32:19 -0500
+Subject: [PATCH] arm, crash: wrap crash dumping code into crash related ifdefs
+Content-type: text/plain
+
+Now crash codes under kernel/ folder has been split out from kexec
+code, crash dumping can be separated from kexec reboot in config
+items on arm with some adjustments.
+
+Here use CONFIG_CRASH_RESERVE ifdef to replace CONFIG_KEXEC ifdef.
+
+Signed-off-by: Baoquan He <bhe@redhat.com>
+---
+ arch/arm/kernel/setup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/kernel/setup.c b/arch/arm/kernel/setup.c
+index ff2299ce1ad7..7b33b157fca0 100644
+--- a/arch/arm/kernel/setup.c
++++ b/arch/arm/kernel/setup.c
+@@ -979,7 +979,7 @@ static int __init init_machine_late(void)
+ }
+ late_initcall(init_machine_late);
+ 
+-#ifdef CONFIG_KEXEC
++#ifdef CONFIG_CRASH_RESERVE
+ /*
+  * The crash region must be aligned to 128MB to avoid
+  * zImage relocating below the reserved region.
+@@ -1066,7 +1066,7 @@ static void __init reserve_crashkernel(void)
+ }
+ #else
+ static inline void reserve_crashkernel(void) {}
+-#endif /* CONFIG_KEXEC */
++#endif /* CONFIG_CRASH_RESERVE*/
+ 
+ void __init hyp_mode_check(void)
+ {
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.41.0
+
