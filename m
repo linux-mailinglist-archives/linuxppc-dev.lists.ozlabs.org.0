@@ -1,50 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD978354B1
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Jan 2024 07:02:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1690883575E
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Jan 2024 20:34:46 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=r7EBNXJG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=I1gJvvMO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4THjRh1hWrz3bmy
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Jan 2024 17:02:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TJ3TJ0DGzz3c2V
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jan 2024 06:34:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=r7EBNXJG;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=I1gJvvMO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=aneesh.kumar@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org)
 Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4THjQq2DFHz2ytJ
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Jan 2024 17:01:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TJ3SQ3Lp8z30N8
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jan 2024 06:33:58 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 8EA49CE11E6;
-	Sun, 21 Jan 2024 06:01:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F70C433F1;
-	Sun, 21 Jan 2024 06:01:16 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 55585CE03F5;
+	Sun, 21 Jan 2024 19:33:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8E619C433C7;
+	Sun, 21 Jan 2024 19:33:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705816878;
-	bh=NhuWvOK0Ww7kWbZZ5RP94AqOzv5GR82HM8u8uXEYXoE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=r7EBNXJGZQpC+3aNfH8hPNKK8Moi2IktJH5QBxGfFERpiGuhdBOFsQSw3s4unNLpt
-	 6EM21rgFFfUK62e/vhWco8G3L+IgfgrSddS3JRsqOOKX5guIvElzZRgGdeppIlkc40
-	 x5HKTLHufrkg1m4W+CfX4XmtGYdCkeO2XNfQg5eUc27p3kmzZpFm6xcIBSYRUvGO+Z
-	 mhK6YWKC0AJd4emRusaBFychz/IS2eBeBDiNpAaJc6kP/yUYgIu1MIA4RqS4BTff3Q
-	 zpRtLafeqx7li8Lzfb7jraLfKaf0edOONBICP1LoUbnTNs42gUel74cNNNuvZxJud/
-	 PMWjeyblrmrZg==
-X-Mailer: emacs 29.1 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.8-2 tag
-Date: Sun, 21 Jan 2024 11:31:11 +0530
-Message-ID: <875xznql7c.fsf@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+	s=k20201202; t=1705865631;
+	bh=JAcvexAQOm6zkXOa3WMMQlCf6u2vPqTfhHb8PUSao3s=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=I1gJvvMOTynskAseAkPfz2P9q0EE3ScXkFBL/xETNfCGJc0dte/r1NRYM9tWzgZoU
+	 OQCCmkoC4RiXBZHtige4LmM95UYopVJVUTWQGA/Lp/tmRUYzPVnSgbz1jG0SHZkkAM
+	 BnDGtCiR6NxD9gjkIVLNuPf0f4Z+ieb9a9YYJLXPz31aQxvHNZM0i8SmYKOYGFc6N0
+	 2gi76+ggdQK9/GQJFHmecoHa0+jDRp2b5hKxVIdV9NEG9wZdfnbuKIcLmwLKOia0AT
+	 VBOss0EG0+x+rdgpdOJPYNhb2KP4kalvCZPsJchDgcXv6Dxxxn6gdpbpH+xx02K/Pn
+	 QOU9s+m/r0WEA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 7D524D8C978;
+	Sun, 21 Jan 2024 19:33:51 +0000 (UTC)
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.8-2 tag
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <875xznql7c.fsf@kernel.org>
+References: <875xznql7c.fsf@kernel.org>
+X-PR-Tracked-List-Id: Linux on PowerPC Developers Mail List <linuxppc-dev.lists.ozlabs.org>
+X-PR-Tracked-Message-Id: <875xznql7c.fsf@kernel.org>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.8-2
+X-PR-Tracked-Commit-Id: 18f14afe281648e31ed35c9ad2fcb724c4838ad9
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 7b297a5cc9308b57c29635e00395f4005c9ba960
+Message-Id: <170586563148.13428.17843378059290885207.pr-tracker-bot@kernel.org>
+Date: Sun, 21 Jan 2024 19:33:51 +0000
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,49 +65,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: aneesh.kumar@kernel.org, linuxppc-dev@lists.ozlabs.org, Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The pull request you sent on Sun, 21 Jan 2024 11:31:11 +0530:
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA512
+> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.8-2
 
-Hi Linus,
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/7b297a5cc9308b57c29635e00395f4005c9ba960
 
-Please pull powerpc fixes for 6.8:
+Thank you!
 
-The following changes since commit d2441d3e8c0c076d0a2e705fa235c76869a85140:
-
-  MAINTAINERS: powerpc: Add Aneesh & Naveen (2023-12-13 22:35:57 +1100)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.8-2
-
-for you to fetch changes up to 18f14afe281648e31ed35c9ad2fcb724c4838ad9:
-
-  powerpc/64s: Increase default stack size to 32KB (2024-01-19 00:10:14 +0530)
-
-- ------------------------------------------------------------------
-powerpc fixes for 6.8 #2
-
- - 18f14afe2816 powerpc/64s: Increase default stack size to 32KB BY: Michael Ellerman
-
-Thanks to:
-Michael Ellerman
-
-- ------------------------------------------------------------------
-Michael Ellerman (1):
-      powerpc/64s: Increase default stack size to 32KB
-
-
- arch/powerpc/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQTYs9CDOrDQRwKRmtrJvCLnGrjHVgUCZayyTgAKCRDJvCLnGrjH
-VlgzAQDkYdg1/DjYNR4Ie/i4MdlYj2cA4s4kTR1x25QHHb6t7AD/URA8U20cMSla
-etAHTJ3/Y/B/C/nL4GsC2uC5nYZ+bgo=
-=WIHK
------END PGP SIGNATURE-----
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
