@@ -1,59 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F441837440
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jan 2024 21:45:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA238837486
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jan 2024 21:50:32 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PWvoqp4K;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=fPKDmKPz;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TJj05753fz3cTM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 07:45:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TJj6G4X52z3cRk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 07:50:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PWvoqp4K;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=fPKDmKPz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::62f; helo=mail-ej1-x62f.google.com; envelope-from=yosryahmed@google.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TJhzL60fTz2yk7
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jan 2024 07:44:30 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id EBB5E61A8A;
-	Mon, 22 Jan 2024 20:44:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF45C43390;
-	Mon, 22 Jan 2024 20:44:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705956262;
-	bh=jHahJBNOqmpxsRa3jIC+1XUQhYkCmY2XrppesnzXsns=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=PWvoqp4K/BSNf38aC031IAIAGvnawluui5ppROC72eOoP60pdyF1a1GwutIp0XJun
-	 QhmRWGJjkX7a0NYQQL8DLh+Ia5f5+X8L8ctO9WaZ8uIG215wxpE27CvYw4EilCUN3L
-	 E9H+xcKGmq32P79671o0+eXHdOm3vVIi5pIenMcYURyq0Q4soYwq5Hjuw43lRjz0Rw
-	 EjR3S5UQr9grqDMROnI3/eegu7gSW3xG5eqL1XGUnbbAyOYK6wOdiUfCEhCcdaybKt
-	 IDqTL3GZe4+rY7rbVlbXEJ3VTQenQ12EPtMjRjav90PSAkruylijxR3Epy0W2AxU3H
-	 tV+SWwIVLeu7g==
-From: Mark Brown <broonie@kernel.org>
-To: lgirdwood@gmail.com, robh+dt@kernel.org, 
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
- shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
- nicoleotsuka@gmail.com, perex@perex.cz, tiwai@suse.com, 
- linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org, 
- linuxppc-dev@lists.ozlabs.org, Chancel Liu <chancel.liu@nxp.com>
-In-Reply-To: <20240112054331.3244104-1-chancel.liu@nxp.com>
-References: <20240112054331.3244104-1-chancel.liu@nxp.com>
-Subject: Re: [PATCH v2 0/3] ASoC: Support SAI and MICFIL on i.MX95 platform
-Message-Id: <170595625937.145475.18065779265515755326.b4-ty@kernel.org>
-Date: Mon, 22 Jan 2024 20:44:19 +0000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TJj5T5BTpz2yst
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jan 2024 07:49:48 +1100 (AEDT)
+Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-a28a6cef709so357829466b.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jan 2024 12:49:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1705956582; x=1706561382; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=a3IFgXkLl95HUfhHT8xvYlvUcRJv9Sps5HuKi7yJyr0=;
+        b=fPKDmKPzS3f1fEOLMaJGZLIyF99GmxdNzl2Q8d3Hdg+ODy7wg3yE6nubXCCFFcOJIh
+         Ub1YxZeA+Ny8PXkYzLLfA73mGBC1OLJBp+mnDL7sIzdW5B35L8GbrcSWi/S2Ob3gSutg
+         FtV03D/ZwVrXHLoJC50iWXvCLMHMdtX785x5OXzgF+5dZZcLNz0hYlAPqo3CmECQQ+AF
+         jlfU4WJr9k1SZv5KQvqPGV4fiJHji52OJBKdYvqrCNmCtHrrGNnHlXsSXLatH7m58PWw
+         brsj+4U3c9UgNb36AOnL9vVlGhsgGX51W2EokVTXE3mHwRNKZqQ0kLRuPBVGZNMjVeND
+         U8CA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705956582; x=1706561382;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=a3IFgXkLl95HUfhHT8xvYlvUcRJv9Sps5HuKi7yJyr0=;
+        b=ftYc8HEgkwihAK8w9VxbCnnK1iMSnlKnX00i298nyq4mgCoxuCYnPoEO3kGFpHIros
+         PBz6eiVObKqf6MRKb/pwCaDODdij/9b8R0KUMhpgis0reqTYIdkD+CQiC/+LmL5d+ME9
+         EGYyKxI6bECN+UpTPAq8ZTvF3gadhBbCOp8X/Rx5k3LH1tulTi46jesajY5fwDCV+cDH
+         TqK1a273itS0FN9VTaEO7EkWMm9gA/GzB3qEvLyf0Ky0OAqigUYw8ooQu8ROio8EfX7m
+         a4m94tQSJbzlLjFC2OCPqs/+slyqgOyhSqNUJML9bwRs2fud1Mudl9BhYV8ORBYf7iMg
+         i96Q==
+X-Gm-Message-State: AOJu0Yy/0uwwrMyrv4hv17/PsFvWyV3vfAYha1IZoeLG5CLi9zy4U5sR
+	O9/HUeWkbb3N2jHXAoyye5+hSaMgiRDfsD3HsevoPkxkRTHxFVho4e5erdZIpISFZls8vVUrC92
+	+8MuyjjWy9gQBo2K5geJM9jFvBznKZxM7bPzt
+X-Google-Smtp-Source: AGHT+IHmoA2jzTQf7fFoYCB9p19IElaggUb5JNtVRvLZRR2GWNFR0iDWTD7SCEap+uVo0WQVp+gXFBeD6HpBvfznDFE=
+X-Received: by 2002:a17:906:3a8f:b0:a28:b574:8551 with SMTP id
+ y15-20020a1709063a8f00b00a28b5748551mr2420412ejd.147.1705956581807; Mon, 22
+ Jan 2024 12:49:41 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-5c066
+References: <20240112193103.3798287-1-yosryahmed@google.com>
+ <CAKEwX=PXfZssERxeMS3FpMP7H0psMzC72C2ga3fqr_Qh88M75A@mail.gmail.com>
+ <CAJD7tkYqKve5V4eJjbZE8kPZ=-5DU1Xh6jym8OfE1twQz-vbUA@mail.gmail.com>
+ <CAKEwX=P21VvVyfmAADzXe0=Mqz3Htyx9nQuiivLchcDZRumh6Q@mail.gmail.com>
+ <ZaajDheNtqKkCoeD@infradead.org> <CAJD7tkaYu2+g-3y3k35KaiLEsrFVtfpSS=9uv+ic3Zwv6fTS3w@mail.gmail.com>
+ <Za4cT3tATxVlMki3@infradead.org>
+In-Reply-To: <Za4cT3tATxVlMki3@infradead.org>
+From: Yosry Ahmed <yosryahmed@google.com>
+Date: Mon, 22 Jan 2024 12:49:05 -0800
+Message-ID: <CAJD7tkYWS88bmC9SRaBFJK1feKLJ9bYVBqwEDx1iXwqWYzfSgw@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm: z3fold: rename CONFIG_Z3FOLD to CONFIG_Z3FOLD_DEPRECATED
+To: Christoph Hellwig <hch@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,53 +81,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, Nhat Pham <nphamcs@gmail.com>, linux-mm@kvack.org, Chris Li <chrisl@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, loongarch@lists.linux.dev, Johannes Weiner <hannes@cmpxchg.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Minchan Kim <minchan@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, WANG Xuerui <kernel@xen0n.name>, Vitaly Wool <vitaly.wool@konsulko.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 12 Jan 2024 14:43:28 +0900, Chancel Liu wrote:
-> Support SAI and MICFIL on i.MX95 platform
-> 
-> changes in v2
-> - Remove unnecessary "item" in fsl,micfil.yaml
-> - Don't change alphabetical order in fsl,sai.yaml
-> 
-> Chancel Liu (3):
->   ASoC: dt-bindings: fsl,sai: Add compatible string for i.MX95 platform
->   ASoC: fsl_sai: Add support for i.MX95 platform
->   ASoC: dt-bindings: fsl,micfil: Add compatible string for i.MX95
->     platform
-> 
-> [...]
+On Sun, Jan 21, 2024 at 11:42=E2=80=AFPM Christoph Hellwig <hch@infradead.o=
+rg> wrote:
+>
+> On Tue, Jan 16, 2024 at 12:19:39PM -0800, Yosry Ahmed wrote:
+> > Well, better compression ratios for one :)
+> >
+> > I think a long time ago there were complaints that zsmalloc had higher
+> > latency than zbud/z3fold, but since then a lot of things have changed
+> > (including nice compaction optimization from Sergey, and compaction
+> > was one of the main factors AFAICT). Also, recent experiments that
+> > Chris Li conducted showed that (at least in our setup), the
+> > decompression is only a small part of the fault latency with zswap
+> > (i.e. not the main factor) -- so I am not sure if it actually matters
+> > in practice.
+> >
+> > That said, I have not conducted any experiments personally with z3fold
+> > or zbud, which is why I proposed the conservative approach of marking
+> > as deprecated first. However, if others believe this is unnecessary I
+> > am fine with removal as well. Whatever we agree on is fine by me.
+>
+> In general deprecated is for code that has active (intentional) users
+> and/or would break setups.  I does sound to me like that is not the
+> case here, but others might understand this better.
 
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/3] ASoC: dt-bindings: fsl,sai: Add compatible string for i.MX95 platform
-      commit: 52523f70fdf9b2cb0bfd1999eba4aa3a30b04fa6
-[2/3] ASoC: fsl_sai: Add support for i.MX95 platform
-      commit: 2f2d78e2c29347a96268f6f34092538b307ed056
-[3/3] ASoC: dt-bindings: fsl,micfil: Add compatible string for i.MX95 platform
-      commit: 20d2719937cf439602566a8f041d3208274abc01
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+I generally agree. So far we have no knowledge of active users, and if
+there are some, I expect most of them to be able to switch to zsmalloc
+with no problems. That being said, I was trying to take the
+conservative approach. If others agree I can send a removal patch
+instead.
