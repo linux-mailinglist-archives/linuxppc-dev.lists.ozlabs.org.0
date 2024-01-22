@@ -1,60 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 962B4836303
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jan 2024 13:21:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A45183659B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jan 2024 15:38:47 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iA1Tz6Ti;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=O8TnIYlY;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TJTps3lkRz3c5Y
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jan 2024 23:21:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TJXsK0JNYz3cSQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 01:38:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iA1Tz6Ti;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=O8TnIYlY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.88; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TJTnz2xRxz3bbt
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jan 2024 23:20:37 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1705926039; x=1737462039;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=Fst93YHEkoTT1MXwK0wHemZAw7gr0g5iyr/F8HZnIIM=;
-  b=iA1Tz6TiC/D5BAzm0tujjiEBo89nDi/PIRZ8cd3dQRs8wvtlKMPE+grG
-   QDb5s9tuOaQt+3talLjTIQ9/4WEDAOoi7+KtnLWBNDmzjA0w7QAq6qpl5
-   SGbFLcx/25RsmIPersz9F4QuEK2Ut8+cKCWUZQ7n1doZpnQ/BkLFftFV8
-   vie6rpYEHqrvd/Kbr0AyVu5mphyAdjpcuCCynpRDGl/eLQN5WtlB+ssCO
-   Ybgjgon0FCpqtHYek/RD1sBLrvs0lJmpiwUn3Fqg0BKqJebovrHcYnElO
-   cHghA5QdlDLzJwRGCqSzhTCNC+PvPQiqaqenoUKWjb1qEX6jiSG919DBM
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="432355873"
-X-IronPort-AV: E=Sophos;i="6.05,211,1701158400"; 
-   d="scan'208";a="432355873"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2024 04:20:34 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="958720646"
-X-IronPort-AV: E=Sophos;i="6.05,211,1701158400"; 
-   d="scan'208";a="958720646"
-Received: from avulfx-mobl1.ger.corp.intel.com (HELO localhost) ([10.94.249.150])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2024 04:20:30 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 22 Jan 2024 14:20:25 +0200 (EET)
-To: Bjorn Helgaas <helgaas@kernel.org>
-Subject: Re: [PATCH 1/1] PCI/DPC: Fix TLP Prefix register reading offset
-In-Reply-To: <20240119225923.GA191511@bhelgaas>
-Message-ID: <ad91677a-cce3-03fe-c826-12f8d44e3466@linux.intel.com>
-References: <20240119225923.GA191511@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TJXrT0vkhz3bTt
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jan 2024 01:38:00 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40MDB74L027059;
+	Mon, 22 Jan 2024 14:37:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=9eZRduKNvGVeB9aJIyquvVMwc8fAl3YaIxTQDqo1WTg=;
+ b=O8TnIYlYGZfyYQL8P3i0C8yxN4DRQvasrWwLr0b4OqgDmaI75iRcqmBnf3Lf51wHvqTx
+ prcbnFbRJj/s9eg5rNrRlh1L8zxgBRYDnsrWnsOMQb6WOpQpZeEGa5BaiKxu08FOIGPd
+ QkER6Y2zHzffdGfKmCzXaCJPvrMb/YP5ZFZF4ygTpjOoKoCiuuunx22Z6KgtXoJL0FWn
+ Q0oWbhDZ3Ym/d9Jfq7CnIkpqpx26B8hnUROolFW2Z/1WHG2mgAmyeVDApW2U+F2uNakq
+ XEoPnP5uIZJIK1JrBLPQkoHLvGyr8wy/3+1g6JK3SQMssybZulRVfGyZ/LuZwYEKE+Lo GQ== 
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vsrycjk32-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Jan 2024 14:37:40 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40MBSVlX025636;
+	Mon, 22 Jan 2024 14:37:39 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vrsgnruju-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Jan 2024 14:37:39 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40MEbcMb18285072
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 22 Jan 2024 14:37:38 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 527DB58055;
+	Mon, 22 Jan 2024 14:37:38 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2C46F5804B;
+	Mon, 22 Jan 2024 14:37:35 +0000 (GMT)
+Received: from [9.43.53.45] (unknown [9.43.53.45])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 22 Jan 2024 14:37:34 +0000 (GMT)
+Message-ID: <218f08f9-bc12-47db-aa04-c2058c901986@linux.ibm.com>
+Date: Mon, 22 Jan 2024 20:07:33 +0530
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323328-1542941559-1705925767=:994"
-Content-ID: <c10c0ccc-5b18-b509-a91c-8375ff8673c8@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 2/3] fs: remove duplicate ifdefs
+To: Chandan Babu R <chandanbabu@kernel.org>
+References: <20240118080326.13137-1-sshegde@linux.ibm.com>
+ <20240118080326.13137-3-sshegde@linux.ibm.com>
+ <87cyttedjj.fsf@debian-BULLSEYE-live-builder-AMD64>
+Content-Language: en-US
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
+In-Reply-To: <87cyttedjj.fsf@debian-BULLSEYE-live-builder-AMD64>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: wwsiLOWQFOWpM58VonwYO5JiFtGQQtRe
+X-Proofpoint-GUID: wwsiLOWQFOWpM58VonwYO5JiFtGQQtRe
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-22_05,2024-01-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1011
+ impostorscore=0 mlxscore=0 spamscore=0 adultscore=0 mlxlogscore=620
+ bulkscore=0 priorityscore=1501 lowpriorityscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401220099
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,42 +93,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, LKML <linux-kernel@vger.kernel.org>, Keith Busch <kbusch@kernel.org>, Oliver O'Halloran <oohall@gmail.com>, Dongdong Liu <liudongdong3@huawei.com>, Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-ntfs-dev@lists.sourceforge.net, linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, peterz@infradead.org, linuxppc-dev@lists.ozlabs.org, mingo@kernel.org, anton@tuxera.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
 
---8323328-1542941559-1705925767=:994
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Content-ID: <ac85c081-d4f5-e715-905e-e955db4eb39c@linux.intel.com>
 
-On Fri, 19 Jan 2024, Bjorn Helgaas wrote:
+On 1/22/24 6:20 PM, Chandan Babu R wrote:
+> On Thu, Jan 18, 2024 at 01:33:25 PM +0530, Shrikanth Hegde wrote:
+>> when a ifdef is used in the below manner, second one could be considered as
+>> duplicate.
+>>
+>> ifdef DEFINE_A
+>> ...code block...
+>> ifdef DEFINE_A
+>> ...code block...
+>> endif
+>> ...code block...
+>> endif
+>>
+>> There are few places in fs code where above pattern was seen.
+>> No functional change is intended here. It only aims to improve code
+>> readability.
+>>
+> 
+> Can you please post the xfs changes as a separate patch along with Darrick's
+> RVB tag? This will make it easy for me to apply the resulting patch to the XFS
+> tree.
 
-> On Thu, Jan 18, 2024 at 01:08:15PM +0200, Ilpo J=E4rvinen wrote:
-> > The TLP Prefix Log Register consists of multiple DWORDs (PCIe r6.1 sec
-> > 7.9.14.13) but the loop in dpc_process_rp_pio_error() keeps reading
-> > from the first DWORD. Add the iteration count based offset calculation
-> > into the config read.
->=20
-> So IIUC the user-visible bug is that we print only the first PIO TLP
-> Prefix (duplicated several times), and we never print the second,
-> third, etc Prefixes, right?
+Ok. will split the fs patches into two and send v2 soon. 
 
-Yes.
+Thanks.
 
-> I wish we could print them all in a single pci_err(), as we do for the
-> TLP Header Log, instead of dribbling them out one by one.
-
-I've also done some work towards consolidating AER and DPC TLP=20
-Header/Prefix Log handling which is when I found this bug (the reading=20
-side is already done but printing is still pending).
-
-> > Fixes: f20c4ea49ec4 ("PCI/DPC: Add eDPC support")
-> > Signed-off-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
-
---=20
- i.
---8323328-1542941559-1705925767=:994--
+> 
