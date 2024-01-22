@@ -1,58 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC89E835BD8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jan 2024 08:42:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B43AC835BE7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jan 2024 08:45:26 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jOnqDMRd;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=WBu8+uXr;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TJMdR4gN0z3btl
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jan 2024 18:42:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TJMhN4TDKz3cMH
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jan 2024 18:45:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jOnqDMRd;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bombadil.srs.infradead.org (client-ip=198.137.202.133; helo=bombadil.infradead.org; envelope-from=batv+f852a6472c07d339093a+7456+infradead.org+hch@bombadil.srs.infradead.org; receiver=lists.ozlabs.org)
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TJMcf5JrRz30fD
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jan 2024 18:42:10 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id D8F62610E7;
-	Mon, 22 Jan 2024 07:42:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B284C43394;
-	Mon, 22 Jan 2024 07:41:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705909326;
-	bh=6q+Ae298LK6Fwx9w1Hxqg+/TcqF4+MMHBmWb7Tw8+hU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jOnqDMRdvXuWTje7hxQN2dCLE7PzYUq8rAYWennGmg2eWAJlF8wYxF7WITOD93XyX
-	 kOi7HC3t/JBdyraClA4q5IQ6eCe0QP9DQEOOLu5rJzGGtUakerutvskNDSebyStAJZ
-	 z+mnBJqfh9Fcq+5rh+Kc2KPiYn9xLCRpmCpxOFhvwp4xLOdS0I9/a1r1ZusQ+JEtay
-	 eerJbS9dnoFfr2YnDqeIifjrZ8RFwgs3XLP/I8Wfw7PBHR0aHCQTC5FxayDUKgCqE/
-	 I+Nux9qFYloyZL8LPJSk6tchB/m6C22f9IUgs1mhO9obbBZ8/pniLuN0IIT85I3k0j
-	 4+4RMm18KCn0Q==
-Date: Mon, 22 Jan 2024 09:41:40 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Shijie Huang <shijie@amperemail.onmicrosoft.com>
-Subject: Re: [PATCH] NUMA: Early use of cpu_to_node() returns 0 instead of
- the correct node id
-Message-ID: <Za4cNBQBLZujlAlP@kernel.org>
-References: <20240119033227.14113-1-shijie@os.amperecomputing.com>
- <Zan9sb0vtSvVvQeA@yury-ThinkPad>
- <1cd078fd-c345-4d85-a92f-04c806c20efa@amperemail.onmicrosoft.com>
- <Zao13I4Bb0tur0fZ@kernel.org>
- <b8786c38-d6c4-4fea-a918-ac6a45682dba@amperemail.onmicrosoft.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TJMgT38WSz30YR
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jan 2024 18:44:36 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=dR6yx6tN67WvcGk22bfKMLtWLGB0Su5dqNJD6Sk4JUQ=; b=WBu8+uXrPFN46pwRaBFARTzEwz
+	BTwc4Pz8LPt1Fqn8IVxHsE4uzB01j9gUoHrZg1sOYkZYoAVys53D0DpJ8iSKFPpjTP8YS7AAaec0c
+	3mEQN405x+d3rJ3RuYaVyhVkhmJzmcDbV0S+m25vaJlc4nmjvu5Yw89rNHHf0lTGhOsgKsKVqOWV1
+	6W7K/KrBBAl+kJK4s9uL5uYbGtywtn8YWThJg3rcDEsPhRKD1LyF46FZTVbDjoezyc0jAsDenhi2K
+	aoMnIZ9xkfG/2SiyVHT5Dkc7DlWhSmUKoGQJhKQhVBEJ3s/J1Cm5aCtRYaT6r+uASa0BJgXOZ72/R
+	CI7KFzJw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
+	id 1rRowZ-00Atfo-0s;
+	Mon, 22 Jan 2024 07:42:07 +0000
+Date: Sun, 21 Jan 2024 23:42:07 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Yosry Ahmed <yosryahmed@google.com>
+Subject: Re: [RFC PATCH] mm: z3fold: rename CONFIG_Z3FOLD to
+ CONFIG_Z3FOLD_DEPRECATED
+Message-ID: <Za4cT3tATxVlMki3@infradead.org>
+References: <20240112193103.3798287-1-yosryahmed@google.com>
+ <CAKEwX=PXfZssERxeMS3FpMP7H0psMzC72C2ga3fqr_Qh88M75A@mail.gmail.com>
+ <CAJD7tkYqKve5V4eJjbZE8kPZ=-5DU1Xh6jym8OfE1twQz-vbUA@mail.gmail.com>
+ <CAKEwX=P21VvVyfmAADzXe0=Mqz3Htyx9nQuiivLchcDZRumh6Q@mail.gmail.com>
+ <ZaajDheNtqKkCoeD@infradead.org>
+ <CAJD7tkaYu2+g-3y3k35KaiLEsrFVtfpSS=9uv+ic3Zwv6fTS3w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b8786c38-d6c4-4fea-a918-ac6a45682dba@amperemail.onmicrosoft.com>
+In-Reply-To: <CAJD7tkaYu2+g-3y3k35KaiLEsrFVtfpSS=9uv+ic3Zwv6fTS3w@mail.gmail.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,41 +60,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, rafael@kernel.org, catalin.marinas@arm.com, jiaxun.yang@flygoat.com, mikelley@microsoft.com, linux-riscv@lists.infradead.org, will@kernel.org, mingo@kernel.org, vschneid@redhat.com, arnd@arndb.de, chenhuacai@kernel.org, cl@os.amperecomputing.com, linux-arm-kernel@lists.infradead.org, kuba@kernel.org, patches@amperecomputing.com, linux-mips@vger.kernel.org, aou@eecs.berkeley.edu, Yury Norov <yury.norov@gmail.com>, paul.walmsley@sifive.com, tglx@linutronix.de, jpoimboe@kernel.org, vbabka@suse.cz, Huang Shijie <shijie@os.amperecomputing.com>, gregkh@linuxfoundation.org, ndesaulniers@google.com, linux-kernel@vger.kernel.org, palmer@dabbelt.com, mhiramat@kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: Miaohe Lin <linmiaohe@huawei.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nhat Pham <nphamcs@gmail.com>, linux-mm@kvack.org, Chris Li <chrisl@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Christoph Hellwig <hch@infradead.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, loongarch@lists.linux.dev, Johannes Weiner <hannes@cmpxchg.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Minchan Kim <minchan@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, WANG Xuerui <kernel@xen0n.name>, Vitaly Wool <vitaly.wool@konsulko.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jan 19, 2024 at 04:50:53PM +0800, Shijie Huang wrote:
+On Tue, Jan 16, 2024 at 12:19:39PM -0800, Yosry Ahmed wrote:
+> Well, better compression ratios for one :)
 > 
-> 在 2024/1/19 16:42, Mike Rapoport 写道:
-> > Is there a fundamental reason to have early_cpu_to_node() at all?
+> I think a long time ago there were complaints that zsmalloc had higher
+> latency than zbud/z3fold, but since then a lot of things have changed
+> (including nice compaction optimization from Sergey, and compaction
+> was one of the main factors AFAICT). Also, recent experiments that
+> Chris Li conducted showed that (at least in our setup), the
+> decompression is only a small part of the fault latency with zswap
+> (i.e. not the main factor) -- so I am not sure if it actually matters
+> in practice.
 > 
-> The early_cpu_to_node does not work on some ARCHs (which support the NUMA),
-> such as  SPARC, MIPS and S390.
+> That said, I have not conducted any experiments personally with z3fold
+> or zbud, which is why I proposed the conservative approach of marking
+> as deprecated first. However, if others believe this is unnecessary I
+> am fine with removal as well. Whatever we agree on is fine by me.
 
-My question was why we need early_cpu_to_node() at all and why can't we use
-cpu_to_node() early on arches that do have it.
- 
-> Thanks
-> 
-> Huang Shijie
-> 
-> > It seems that all the mappings are known by the end of setup_arch() and the
-> > initialization of numa_node can be moved earlier.
-> > > > I would also initialize the numa_node with NUMA_NO_NODE at declaration,
-> > > > so that if someone calls cpu_to_node() before the variable is properly
-> > > > initialized at runtime, he'll get NO_NODE, which is obviously an error.
-> > > Even we set the numa_node with NUMA_NO_NODE, it does not always produce
-> > > error.
-> > > 
-> > > Please see the alloc_pages_node().
-> > > 
-> > > 
-> > > Thanks
-> > > 
-> > > Huang Shijie
-> > > 
-
--- 
-Sincerely yours,
-Mike.
+In general deprecated is for code that has active (intentional) users
+and/or would break setups.  I does sound to me like that is not the
+case here, but others might understand this better.
