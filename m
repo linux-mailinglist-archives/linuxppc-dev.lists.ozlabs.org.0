@@ -2,86 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A45183659B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jan 2024 15:38:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F9DA836E58
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jan 2024 18:50:58 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=O8TnIYlY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HQU/xgY+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TJXsK0JNYz3cSQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 01:38:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TJd743RwTz3cDT
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 04:50:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=O8TnIYlY;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HQU/xgY+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TJXrT0vkhz3bTt
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jan 2024 01:38:00 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40MDB74L027059;
-	Mon, 22 Jan 2024 14:37:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=9eZRduKNvGVeB9aJIyquvVMwc8fAl3YaIxTQDqo1WTg=;
- b=O8TnIYlYGZfyYQL8P3i0C8yxN4DRQvasrWwLr0b4OqgDmaI75iRcqmBnf3Lf51wHvqTx
- prcbnFbRJj/s9eg5rNrRlh1L8zxgBRYDnsrWnsOMQb6WOpQpZeEGa5BaiKxu08FOIGPd
- QkER6Y2zHzffdGfKmCzXaCJPvrMb/YP5ZFZF4ygTpjOoKoCiuuunx22Z6KgtXoJL0FWn
- Q0oWbhDZ3Ym/d9Jfq7CnIkpqpx26B8hnUROolFW2Z/1WHG2mgAmyeVDApW2U+F2uNakq
- XEoPnP5uIZJIK1JrBLPQkoHLvGyr8wy/3+1g6JK3SQMssybZulRVfGyZ/LuZwYEKE+Lo GQ== 
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vsrycjk32-1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TJd5P2V9Qz3brc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jan 2024 04:49:29 +1100 (AEDT)
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40MHOOss032448;
+	Mon, 22 Jan 2024 17:49:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=EtTVATMRo8Tg2MeiKpn3dDX6z3G14KJlXax/0NCnrsE=;
+ b=HQU/xgY+X5uQi/buZnYEV1O9TtTA+b3KKSxgkQE9MO3xmVLsXpHLn/qs4ndFkbkki9rZ
+ pK6cvKIBHcmAxJ9QXKZzAkvoTrk8hu0rb0VsHsFhtwnvNeGwMY8LcuWQclk1IeGCHM7F
+ Z7lpBuosa2RrgvVn9CS5Qke3DnNXFL0KRlv5E5+u3sQ2hDTX5fiVvePB2mWe+wy82t+y
+ /SFNl6YQV+U57nBbmtSYT+rV9QyOGeoe9L97M3FMM+3sOChqVW5F5wUDNvigwl5mTr7t
+ eFFDYXERm6WknFOC+XaEUXtVnGBWbJWHIKzcLu+uMncgwpd9KWqbaul0ESvKooaCUULk Pw== 
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vsuxaa5nk-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 Jan 2024 14:37:40 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40MBSVlX025636;
-	Mon, 22 Jan 2024 14:37:39 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vrsgnruju-1
+	Mon, 22 Jan 2024 17:49:13 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40MFkQrU026475;
+	Mon, 22 Jan 2024 17:49:12 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vrrgt2eet-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 Jan 2024 14:37:39 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40MEbcMb18285072
+	Mon, 22 Jan 2024 17:49:12 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40MHnARB27591306
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 22 Jan 2024 14:37:38 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 527DB58055;
-	Mon, 22 Jan 2024 14:37:38 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2C46F5804B;
-	Mon, 22 Jan 2024 14:37:35 +0000 (GMT)
-Received: from [9.43.53.45] (unknown [9.43.53.45])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 22 Jan 2024 14:37:34 +0000 (GMT)
-Message-ID: <218f08f9-bc12-47db-aa04-c2058c901986@linux.ibm.com>
-Date: Mon, 22 Jan 2024 20:07:33 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/3] fs: remove duplicate ifdefs
-To: Chandan Babu R <chandanbabu@kernel.org>
-References: <20240118080326.13137-1-sshegde@linux.ibm.com>
- <20240118080326.13137-3-sshegde@linux.ibm.com>
- <87cyttedjj.fsf@debian-BULLSEYE-live-builder-AMD64>
-Content-Language: en-US
+	Mon, 22 Jan 2024 17:49:10 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 390B220043;
+	Mon, 22 Jan 2024 17:49:10 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B0C2620040;
+	Mon, 22 Jan 2024 17:49:07 +0000 (GMT)
+Received: from li-c1fdab4c-355a-11b2-a85c-ef242fe9efb4.ibm.com.com (unknown [9.43.53.45])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 22 Jan 2024 17:49:07 +0000 (GMT)
 From: Shrikanth Hegde <sshegde@linux.ibm.com>
-In-Reply-To: <87cyttedjj.fsf@debian-BULLSEYE-live-builder-AMD64>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: linux-kernel@vger.kernel.org, linux-ntfs-dev@lists.sourceforge.net,
+        linux-xfs@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH v2 0/4] remove duplicate ifdefs
+Date: Mon, 22 Jan 2024 23:19:00 +0530
+Message-Id: <20240122174904.178594-1-sshegde@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: wwsiLOWQFOWpM58VonwYO5JiFtGQQtRe
-X-Proofpoint-GUID: wwsiLOWQFOWpM58VonwYO5JiFtGQQtRe
+X-Proofpoint-ORIG-GUID: -rzBX_0dIV7n-gkdJoFKiqnOb4QTrDRU
+X-Proofpoint-GUID: -rzBX_0dIV7n-gkdJoFKiqnOb4QTrDRU
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-22_05,2024-01-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1011
- impostorscore=0 mlxscore=0 spamscore=0 adultscore=0 mlxlogscore=620
- bulkscore=0 priorityscore=1501 lowpriorityscore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401220099
+ definitions=2024-01-22_07,2024-01-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxscore=0
+ lowpriorityscore=0 mlxlogscore=824 priorityscore=1501 clxscore=1011
+ suspectscore=0 spamscore=0 malwarescore=0 phishscore=0 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401220124
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,36 +88,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ntfs-dev@lists.sourceforge.net, linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, peterz@infradead.org, linuxppc-dev@lists.ozlabs.org, mingo@kernel.org, anton@tuxera.com
+Cc: peterz@infradead.org, sshegde@linux.ibm.com, djwong@kernel.org, mingo@kernel.org, anton@tuxera.com, chandan.babu@oracle.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+When going through the code observed a case in scheduler,
+where #ifdef CONFIG_SMP was used to inside an #ifdef CONFIG_SMP.
+That didn't make sense since first one is good enough and second
+one is a duplicate.
 
+This could improve code readability. No functional change is intended.
 
-On 1/22/24 6:20 PM, Chandan Babu R wrote:
-> On Thu, Jan 18, 2024 at 01:33:25 PM +0530, Shrikanth Hegde wrote:
->> when a ifdef is used in the below manner, second one could be considered as
->> duplicate.
->>
->> ifdef DEFINE_A
->> ...code block...
->> ifdef DEFINE_A
->> ...code block...
->> endif
->> ...code block...
->> endif
->>
->> There are few places in fs code where above pattern was seen.
->> No functional change is intended here. It only aims to improve code
->> readability.
->>
-> 
-> Can you please post the xfs changes as a separate patch along with Darrick's
-> RVB tag? This will make it easy for me to apply the resulting patch to the XFS
-> tree.
+Since this might be present in other code areas wrote a very basic
+python script which helps in finding these cases. It doesn't handle any
+complicated #defines or space separated "# if". At some places the
+log collected had to be manually corrected due to space separated ifdefs.
+Thats why its not a treewide change.
+There might be an opportunity for other files as well.
 
-Ok. will split the fs patches into two and send v2 soon. 
+Logic is very simple. If there is #ifdef or #if or #ifndef add that
+variable to list. Upon every subsequent #ifdef or #if or #ifndef
+check if the same variable is in the list. If yes flag
+an error. Verification was done manually later checking for any #undef
+or any error due to script. These were the ones that flagged out and
+made sense after going through code.
 
-Thanks.
+More details about how the logs were collected and the script used for
+processing the logs are mentioned in v1 cover letter.
 
-> 
+v2->v1:
+split the fs change into two patches as suggested by Chandan Babu R.
+v1: https://lore.kernel.org/all/20240118080326.13137-1-sshegde@linux.ibm.com/
+
+Shrikanth Hegde (4):
+  sched: remove duplicate ifdefs
+  xfs: remove duplicate ifdefs
+  ntfs: remove duplicate ifdefs
+  arch/powerpc: remove duplicate ifdefs
+
+ arch/powerpc/include/asm/paca.h           | 4 ----
+ arch/powerpc/kernel/asm-offsets.c         | 2 --
+ arch/powerpc/platforms/powermac/feature.c | 2 --
+ arch/powerpc/xmon/xmon.c                  | 2 --
+ fs/ntfs/inode.c                           | 2 --
+ fs/xfs/xfs_sysfs.c                        | 4 ----
+ kernel/sched/core.c                       | 4 +---
+ kernel/sched/fair.c                       | 2 --
+ 8 files changed, 1 insertion(+), 21 deletions(-)
+
+--
+2.39.3
+
