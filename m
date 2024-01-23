@@ -1,96 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 387FC838D75
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 12:32:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05ECE838D84
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 12:34:33 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XlxMaVAG;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XlxMaVAG;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SOUQ6Y1N;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SOUQ6Y1N;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TK4h36bdmz3dLj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 22:32:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TK4kF74ZQz3dS9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 22:34:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XlxMaVAG;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XlxMaVAG;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SOUQ6Y1N;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SOUQ6Y1N;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TK4gD2lnnz3d9G
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jan 2024 22:31:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TK4jT37P1z3cXq
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jan 2024 22:33:49 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706009508;
+	s=mimecast20190719; t=1706009626;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Yf61M8UqrExnva1oDmd/loE0AIxUjfiEYWfUe179FRY=;
-	b=XlxMaVAGzcpYnTE3buI0uc8CSF/fW5pxDN91eEb5xQ6Sc5hsS/eB20Crw2uFTwYZVaaoeL
-	lHqjsO3/yCZr+pjO2zaMT8RlTAb0kpfqR8ORjPLZIl8skTJUp1mV53oSzUUB69YkcOSaMB
-	twbL8FtfikbsQnomkzGPe6k1eVR/Tp4=
+	bh=uYc245fmLpfbj4/lgjLqWN/cr5PYPrgDXzu14mAh+7Q=;
+	b=SOUQ6Y1NEAv8LkBx82IkYy7m2yR910N5mgdeD2kECAvYJPc4/mVezrB8/AUX5ajy2YlMeq
+	HuoIxNlmn4R7IThPTyj2CYeZYeGxRLGE3Q6HJUEQ8iVVW2kx/l/9dqPpHroxSxOZBUGLKY
+	V5YLh+ZUqlgQc/mdEkAlS9dpHp9uPvw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706009508;
+	s=mimecast20190719; t=1706009626;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Yf61M8UqrExnva1oDmd/loE0AIxUjfiEYWfUe179FRY=;
-	b=XlxMaVAGzcpYnTE3buI0uc8CSF/fW5pxDN91eEb5xQ6Sc5hsS/eB20Crw2uFTwYZVaaoeL
-	lHqjsO3/yCZr+pjO2zaMT8RlTAb0kpfqR8ORjPLZIl8skTJUp1mV53oSzUUB69YkcOSaMB
-	twbL8FtfikbsQnomkzGPe6k1eVR/Tp4=
+	bh=uYc245fmLpfbj4/lgjLqWN/cr5PYPrgDXzu14mAh+7Q=;
+	b=SOUQ6Y1NEAv8LkBx82IkYy7m2yR910N5mgdeD2kECAvYJPc4/mVezrB8/AUX5ajy2YlMeq
+	HuoIxNlmn4R7IThPTyj2CYeZYeGxRLGE3Q6HJUEQ8iVVW2kx/l/9dqPpHroxSxOZBUGLKY
+	V5YLh+ZUqlgQc/mdEkAlS9dpHp9uPvw=
 Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
  [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-163-1Q-bTGJZNuKHRkA7zCE9Tg-1; Tue, 23 Jan 2024 06:31:46 -0500
-X-MC-Unique: 1Q-bTGJZNuKHRkA7zCE9Tg-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-40e53200380so36895725e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jan 2024 03:31:46 -0800 (PST)
+ us-mta-288-S9GKwGdeNAiUh6dDwYh7CQ-1; Tue, 23 Jan 2024 06:33:44 -0500
+X-MC-Unique: S9GKwGdeNAiUh6dDwYh7CQ-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-40eb6ce1ddaso5588305e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jan 2024 03:33:44 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706009505; x=1706614305;
+        d=1e100.net; s=20230601; t=1706009623; x=1706614423;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
          :references:cc:to:content-language:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Yf61M8UqrExnva1oDmd/loE0AIxUjfiEYWfUe179FRY=;
-        b=BJqzP8k+GE7+S2HG4+wFhdMAmp7hBSqFvnkDmKBvgr4W0VaZrSYPeLAgAkgALZp3Uj
-         UNYSwndM/IndfkjLZZooQ3ccFsH+uJFW0aNeLbAHHTOt09Ifoau7XS11U5Ol9Q4Pi/nw
-         9qVo0yDmQXiydQHllJGZdy6+0LvBHA/1IxkiQ8S0/z6RPVL3Z48IMT2MnGeqbfxweZuE
-         DE4bXXcx5h9dPgH2wRGs2r+Ilu51RYo7KB0rcj2NOfu5Aui/6rdtQ5+0eaPCV9zlbjab
-         oMnhZKm29sGH6Uu9pxgR5MwOeFOo2/ZgRp9og75XNy6mt+FZ6i19eWRhnP/vWP8uMhoR
-         lpzw==
-X-Gm-Message-State: AOJu0YzF6HWvfMP28t7Sgh7x1g2i9fbbh2/EgPdbuX//BS8fYqQCxUt5
-	x9MEYhd+nS90RycQMbJVDIqDaZwLHZIvwegKl7VlZBNW+RdnXK+kYdksXulCXK2sOnV6OcZSrdm
-	1UaAhx/FpUY8jFsx+X3EPuwN6xEHuc2Eo3q+qjyrV0Wx+0dEZodYsdpYDD3frCe0=
-X-Received: by 2002:a1c:7702:0:b0:40e:7677:c25b with SMTP id t2-20020a1c7702000000b0040e7677c25bmr461578wmi.126.1706009505719;
-        Tue, 23 Jan 2024 03:31:45 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IETOIsx9qzxq/2tWmfpQRgqVviNsiTQTmRoU7sl76OQkf5tkaz5plMB0WrHvRb6RwgDJ4jEKA==
-X-Received: by 2002:a1c:7702:0:b0:40e:7677:c25b with SMTP id t2-20020a1c7702000000b0040e7677c25bmr461558wmi.126.1706009505357;
-        Tue, 23 Jan 2024 03:31:45 -0800 (PST)
+        bh=uYc245fmLpfbj4/lgjLqWN/cr5PYPrgDXzu14mAh+7Q=;
+        b=D45SWLbIkSEbPctvSMC09sjOOtLoe4Sa5LW+aV3qplLVMTfcgk5ENChZ19AquU/fQm
+         EZrtQAi+bKz1ND0vTYx2eNTF/51ydWcmXSPUGgV/CUDeozzvWWiNRf9BeHOnHVpunDx5
+         XO3niZN7YkU9ijTpuCO9gqy/2rrIf1r5AuMyneDT+wv3Hy6lLleMZCjKUMhrGJjidW0t
+         bWc7BYz1EDwO/RnWOInG66nH7GCxuIFp/RedTYhLREekROK1Z/RNzeeg9dTaNTFaad4z
+         1L8/mb8VzTpaz+ufBwq0ybB9mbwzCQNz99tqPmXTW6vHNxFpiypvUGCDsI8GLfU8xrwd
+         Jv0Q==
+X-Gm-Message-State: AOJu0YyNWSi3Ffk9kUViOGwh1kfIzeLN5o91rhevJIZ9mqT2xodxhFqY
+	yKYyYCa5gRMMV3zXvP+mqNs1ZeaqWzT/i88cuvba2SyKJELx/z3cyYIrC2m+w7hoRMa/vGIXvnU
+	+HxLZuaX8jzCCZvlKSKRhapQAUPTzj2eQCWnQzUFmD0dQm9JxUM2ATEQU/0w/ZnY=
+X-Received: by 2002:a05:600c:18a6:b0:40e:4806:7f9b with SMTP id x38-20020a05600c18a600b0040e48067f9bmr227457wmp.307.1706009623416;
+        Tue, 23 Jan 2024 03:33:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHFJvXfwJB2xAbV09x8KiTq4J32uzT4FvDsoae6ebynNFGjmyUFY1Tg60erzHgnrvVXUOqPHw==
+X-Received: by 2002:a05:600c:18a6:b0:40e:4806:7f9b with SMTP id x38-20020a05600c18a600b0040e48067f9bmr227451wmp.307.1706009622974;
+        Tue, 23 Jan 2024 03:33:42 -0800 (PST)
 Received: from ?IPV6:2003:cb:c741:de00:bf0f:cd46:dc1c:2de9? (p200300cbc741de00bf0fcd46dc1c2de9.dip0.t-ipconnect.de. [2003:cb:c741:de00:bf0f:cd46:dc1c:2de9])
-        by smtp.gmail.com with ESMTPSA id w15-20020adfec4f000000b00338a3325331sm11193798wrn.69.2024.01.23.03.31.43
+        by smtp.gmail.com with ESMTPSA id e7-20020a5d4e87000000b00337d56264d4sm13181557wru.8.2024.01.23.03.33.41
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Jan 2024 03:31:45 -0800 (PST)
-Message-ID: <3a970289-a72f-418e-b43c-89f67f0d5283@redhat.com>
-Date: Tue, 23 Jan 2024 12:31:43 +0100
+        Tue, 23 Jan 2024 03:33:42 -0800 (PST)
+Message-ID: <08607590-3115-46e6-8f1f-bcc60c33cc20@redhat.com>
+Date: Tue, 23 Jan 2024 12:33:41 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v1 01/11] arm/pgtable: define PFN_PTE_SHIFT on arm and
  arm64
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Ryan Roberts <ryan.roberts@arm.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Ryan Roberts <ryan.roberts@arm.com>, linux-kernel@vger.kernel.org
 References: <20240122194200.381241-1-david@redhat.com>
  <20240122194200.381241-2-david@redhat.com>
  <fdaeb9a5-d890-499a-92c8-d171df43ad01@arm.com>
  <46080ac1-7789-499b-b7f3-0231d7bd6de7@redhat.com>
- <6703b648-10ab-4fea-b7f1-75421319465b@arm.com>
- <ae3d826f-758f-4738-b72a-e99f098bb2b3@csgroup.eu>
+ <02d42161-a867-424d-bef8-efd67d592cbc@redhat.com>
+ <75e99c49-734a-47f4-b7a5-7e346bd2487b@arm.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -137,12 +135,12 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <ae3d826f-758f-4738-b72a-e99f098bb2b3@csgroup.eu>
+In-Reply-To: <75e99c49-734a-47f4-b7a5-7e346bd2487b@arm.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -154,46 +152,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, Andre
- w Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "David S. Miller" <davem@davemloft.net>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-arm-kernel@lists.infradead.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
->>
->>> If high bits are used for
->>> something else, then we might produce a garbage PTE on overflow, but that
->>> shouldn't really matter I concluded for folio_pte_batch() purposes, we'd not
->>> detect "belongs to this folio batch" either way.
->>
->> Exactly.
->>
+On 23.01.24 12:17, Ryan Roberts wrote:
+> On 23/01/2024 11:02, David Hildenbrand wrote:
+>> On 23.01.24 11:48, David Hildenbrand wrote:
+>>> On 23.01.24 11:34, Ryan Roberts wrote:
+>>>> On 22/01/2024 19:41, David Hildenbrand wrote:
+>>>>> We want to make use of pte_next_pfn() outside of set_ptes(). Let's
+>>>>> simpliy define PFN_PTE_SHIFT, required by pte_next_pfn().
+>>>>>
+>>>>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>>>>> ---
+>>>>>     arch/arm/include/asm/pgtable.h   | 2 ++
+>>>>>     arch/arm64/include/asm/pgtable.h | 2 ++
+>>>>>     2 files changed, 4 insertions(+)
+>>>>>
+>>>>> diff --git a/arch/arm/include/asm/pgtable.h b/arch/arm/include/asm/pgtable.h
+>>>>> index d657b84b6bf70..be91e376df79e 100644
+>>>>> --- a/arch/arm/include/asm/pgtable.h
+>>>>> +++ b/arch/arm/include/asm/pgtable.h
+>>>>> @@ -209,6 +209,8 @@ static inline void __sync_icache_dcache(pte_t pteval)
+>>>>>     extern void __sync_icache_dcache(pte_t pteval);
+>>>>>     #endif
+>>>>>     +#define PFN_PTE_SHIFT        PAGE_SHIFT
+>>>>> +
+>>>>>     void set_ptes(struct mm_struct *mm, unsigned long addr,
+>>>>>                   pte_t *ptep, pte_t pteval, unsigned int nr);
+>>>>>     #define set_ptes set_ptes
+>>>>> diff --git a/arch/arm64/include/asm/pgtable.h
+>>>>> b/arch/arm64/include/asm/pgtable.h
+>>>>> index 79ce70fbb751c..d4b3bd96e3304 100644
+>>>>> --- a/arch/arm64/include/asm/pgtable.h
+>>>>> +++ b/arch/arm64/include/asm/pgtable.h
+>>>>> @@ -341,6 +341,8 @@ static inline void __sync_cache_and_tags(pte_t pte,
+>>>>> unsigned int nr_pages)
+>>>>>             mte_sync_tags(pte, nr_pages);
+>>>>>     }
+>>>>>     +#define PFN_PTE_SHIFT        PAGE_SHIFT
+>>>>
+>>>> I think this is buggy. And so is the arm64 implementation of set_ptes(). It
+>>>> works fine for 48-bit output address, but for 52-bit OAs, the high bits are not
+>>>> kept contigously, so if you happen to be setting a mapping for which the
+>>>> physical memory block straddles bit 48, this won't work.
 >>>
->>> Maybe it's likely cleaner to also have a custom pte_next_pfn() on ppc, I just
->>> hope that we don't lose any other arbitrary PTE bits by doing the pte_pgprot().
+>>> Right, as soon as the PTE bits are not contiguous, this stops working,
+>>> just like set_ptes() would, which I used as orientation.
+>>>
+>>>>
+>>>> Today, only the 64K base page config can support 52 bits, and for this,
+>>>> OA[51:48] are stored in PTE[15:12]. But 52 bits for 4K and 16K base pages is
+>>>> coming (hopefully v6.9) and in this case OA[51:50] are stored in PTE[9:8].
+>>>> Fortunately we already have helpers in arm64 to abstract this.
+>>>>
+>>>> So I think arm64 will want to define its own pte_next_pfn():
+>>>>
+>>>> #define pte_next_pfn pte_next_pfn
+>>>> static inline pte_t pte_next_pfn(pte_t pte)
+>>>> {
+>>>>      return pfn_pte(pte_pfn(pte) + 1, pte_pgprot(pte));
+>>>> }
+>>>>
 >>
->> I don't see the need for ppc to implement pte_next_pfn().
+>> Digging into the details, on arm64 we have:
+>>
+>> #define pte_pfn(pte)           (__pte_to_phys(pte) >> PAGE_SHIFT)
+>>
+>> and
+>>
+>> #define __pte_to_phys(pte)     (pte_val(pte) & PTE_ADDR_MASK)
+>>
+>> But that implies, that upstream the PFN is always contiguous, no?
+>>
 > 
-> Agreed.
+> 
+> But __pte_to_phys() and __phys_to_pte_val() depend on a Kconfig. If PA bits is
+> 52, the bits are not all contiguous:
+> 
+> #ifdef CONFIG_ARM64_PA_BITS_52
+> static inline phys_addr_t __pte_to_phys(pte_t pte)
+> {
+> 	return (pte_val(pte) & PTE_ADDR_LOW) |
+> 		((pte_val(pte) & PTE_ADDR_HIGH) << PTE_ADDR_HIGH_SHIFT);
+> }
+> static inline pteval_t __phys_to_pte_val(phys_addr_t phys)
+> {
+> 	return (phys | (phys >> PTE_ADDR_HIGH_SHIFT)) & PTE_ADDR_MASK;
+> }
+> #else
+> #define __pte_to_phys(pte)	(pte_val(pte) & PTE_ADDR_MASK)
+> #define __phys_to_pte_val(phys)	(phys)
+> #endif
+> 
 
-So likely we should then do on top for powerpc (whitespace damage):
+Ah, how could I've missed that. Agreed, set_ptes() and this patch are 
+broken.
 
-diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-index a04ae4449a025..549a440ed7f65 100644
---- a/arch/powerpc/mm/pgtable.c
-+++ b/arch/powerpc/mm/pgtable.c
-@@ -220,10 +220,7 @@ void set_ptes(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
-                         break;
-                 ptep++;
-                 addr += PAGE_SIZE;
--               /*
--                * increment the pfn.
--                */
--               pte = pfn_pte(pte_pfn(pte) + 1, pte_pgprot((pte)));
-+               pte = pte_next_pfn(pte);
-         }
-  }
-  
-
+Do you want to send a patch to implement pte_next_pfn() on arm64, and 
+then use pte_next_pfn() in set_ptes()? Then I can drop this patch here 
+completely from this series.
 
 -- 
 Cheers,
