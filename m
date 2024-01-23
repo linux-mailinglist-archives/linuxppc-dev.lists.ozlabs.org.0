@@ -1,92 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63E1D838C79
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 11:49:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6555A838CC5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 12:03:12 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=S2JVeR97;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=S2JVeR97;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ePlJqPGY;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ePlJqPGY;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TK3k80yr4z3cWS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 21:49:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TK426183Vz3cPN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 22:03:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=S2JVeR97;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=S2JVeR97;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ePlJqPGY;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ePlJqPGY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TK3jN3Ytzz3cXc
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jan 2024 21:48:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TK41K5tNTz3bV2
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jan 2024 22:02:29 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706006917;
+	s=mimecast20190719; t=1706007746;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=iER4mCfZQHjX5vldd+UfqoqhW1+fd9a/CugQqPAvg1o=;
-	b=S2JVeR97Fe8QWuA30jcxCcFcxPeIGBiG9oxLIJvo02NyDqHRrHlR9sw5k2IKB4x3fTEtGr
-	dUdZCGDElHSxJGXQkn2l7aV+vuQ8oe4ik9iNwqc8cGFoUB64aRH47XSPbKHTRDM0UNS+IF
-	79ona7dlgl8deqDa6WjDfNF/Y2t89l0=
+	bh=ADeVdxuyk9aWMHIaHDhLLOZKsBVve1swb6NJsYgtkms=;
+	b=ePlJqPGYz/m7vS8MDxjtAlatpqc0hNiJtB+SeZTgkLQL4lH6AmFGey2gA4tQ/Ji9s2dwL5
+	lF/gfKqJbE1FXFqBU6kBx57lmcgfas6KxPSahYGsCkHfZSu0W2m1lSMcosl7nlTjUJAczk
+	uugZiVPDoB0BnJyxSoDUsl0qhqzGE2Y=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706006917;
+	s=mimecast20190719; t=1706007746;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=iER4mCfZQHjX5vldd+UfqoqhW1+fd9a/CugQqPAvg1o=;
-	b=S2JVeR97Fe8QWuA30jcxCcFcxPeIGBiG9oxLIJvo02NyDqHRrHlR9sw5k2IKB4x3fTEtGr
-	dUdZCGDElHSxJGXQkn2l7aV+vuQ8oe4ik9iNwqc8cGFoUB64aRH47XSPbKHTRDM0UNS+IF
-	79ona7dlgl8deqDa6WjDfNF/Y2t89l0=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=ADeVdxuyk9aWMHIaHDhLLOZKsBVve1swb6NJsYgtkms=;
+	b=ePlJqPGYz/m7vS8MDxjtAlatpqc0hNiJtB+SeZTgkLQL4lH6AmFGey2gA4tQ/Ji9s2dwL5
+	lF/gfKqJbE1FXFqBU6kBx57lmcgfas6KxPSahYGsCkHfZSu0W2m1lSMcosl7nlTjUJAczk
+	uugZiVPDoB0BnJyxSoDUsl0qhqzGE2Y=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-27-YOwwOKLlMGuw711fbB3Wjg-1; Tue, 23 Jan 2024 05:48:35 -0500
-X-MC-Unique: YOwwOKLlMGuw711fbB3Wjg-1
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3392c9e8001so1034575f8f.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jan 2024 02:48:35 -0800 (PST)
+ us-mta-568-P8W8lue6NZmUpe8RqnLCiA-1; Tue, 23 Jan 2024 06:02:24 -0500
+X-MC-Unique: P8W8lue6NZmUpe8RqnLCiA-1
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-40eaf5c52d3so14151925e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jan 2024 03:02:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706006914; x=1706611714;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :references:cc:to:content-language:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iER4mCfZQHjX5vldd+UfqoqhW1+fd9a/CugQqPAvg1o=;
-        b=Dhueh7TSHM4I23jCf7fjHrkQ2gIxS+uQ2Wy8QEaHHcsISHd4Hd+dhjoI8IAG68CUaX
-         fS7Wws8d14jwimn8tH5DkrDQpTijzBeHwAErxBtc/6X1KbMDGqFKptVcjoQzk/T4OJ4D
-         S2+UMyKJRWQRpZMgYTOFi7L7RRJmx1FlZ9Dgq77T7kJNOenr/2FNQky/5Fz4um/nmeqN
-         Wl7EeZQkAVZ+iDVs1UCxxxATAoCgM7QhlF/U0sISxnE8AUq1kKQiHdgil/0+YLefQt1v
-         NuvbhhUND+uvs/DaT/FOqjNUt6c+cSO+Aslu7dQdnAuRIBbdCgQhciPucZg0w61y3Bw8
-         92RQ==
-X-Gm-Message-State: AOJu0Yz3S1No0hQmwixWqIYvOZ+xK3uQ2JYzboHMNwj53JYlmxhSLwT9
-	j9lVhDWyk90j6pe7HaffUQxfTBcwB1ayOHpu37cfNeFh2TGMbb5Unb3WwNEVF1Km81fR7upBP7c
-	gfBOI/74to9AHAaMsvNB8semTiAoA/j6tBUVySskBzj3vbUll1XIV7UfAHnDSopA=
-X-Received: by 2002:a05:600c:4515:b0:40e:c047:9336 with SMTP id t21-20020a05600c451500b0040ec0479336mr183546wmo.100.1706006914183;
-        Tue, 23 Jan 2024 02:48:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGqy0cgCgqnuoQ6JwnAf+pFGk65GDbL13eMCZ3Z9NsmyiQh16dTSTVkrdqi2eQNG6FMLOCVAw==
-X-Received: by 2002:a05:600c:4515:b0:40e:c047:9336 with SMTP id t21-20020a05600c451500b0040ec0479336mr183533wmo.100.1706006913777;
-        Tue, 23 Jan 2024 02:48:33 -0800 (PST)
+        d=1e100.net; s=20230601; t=1706007743; x=1706612543;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :references:cc:to:from:content-language:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ADeVdxuyk9aWMHIaHDhLLOZKsBVve1swb6NJsYgtkms=;
+        b=XY2GUzebNOpmxVyIA+SI+Nv2A1gvFquYcetDldM00HdI1zraX4sK23frMf85fMXN4u
+         sFSxhvYUt7xaxOslXW72V6t/sORv6+F6eNgkMYnpW6dCpFnRghuc4zlnSkb2hIr52XGZ
+         qule/SFH6xD3gHvbz5CO8doRb4AvtR898jzbBhYaqGe9sYs854k3UeeuF8Xx8cq/YKGM
+         yFxejFGaFaRZnbFAIp2KOPzadqWYnO49IpzoxqDohygmxxAqV5O9RUymI7QTz+8pZyB9
+         V1SqHtTbz14bJ9+/C0TliouqK8EL4z6dOvkYkLd/uQd90z1OlUo0NtyDzIL3b2f+Otpq
+         ZczQ==
+X-Gm-Message-State: AOJu0Yx6DEdBR8thVMrOQjgH7TruH9KeLeO9uTCXAzpJM5PgS0YZWArU
+	VVqppOCetiFm7EcHpV3UpR+Kf0AcVeMQeIVMnjBsdx5W19qhbz2cVEC1W7u4a3PULw7WctWPPHK
+	k9zhpUnCEoLBD0XB2Q6zPL6q5VKqqHEQbHjn9GQW/cTptj5WrDsOHihij1MrVlLQ=
+X-Received: by 2002:a7b:cb87:0:b0:40e:b2b2:d2 with SMTP id m7-20020a7bcb87000000b0040eb2b200d2mr6569wmi.134.1706007743553;
+        Tue, 23 Jan 2024 03:02:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF+tCfxmJ/19soGtVmtlIvjQMKvo21RHU0ZgsqtMZFvba5PNIEO7LEFpu0n7sRR1TY7GNTQEA==
+X-Received: by 2002:a7b:cb87:0:b0:40e:b2b2:d2 with SMTP id m7-20020a7bcb87000000b0040eb2b200d2mr6550wmi.134.1706007743076;
+        Tue, 23 Jan 2024 03:02:23 -0800 (PST)
 Received: from ?IPV6:2003:cb:c741:de00:bf0f:cd46:dc1c:2de9? (p200300cbc741de00bf0fcd46dc1c2de9.dip0.t-ipconnect.de. [2003:cb:c741:de00:bf0f:cd46:dc1c:2de9])
-        by smtp.gmail.com with ESMTPSA id l6-20020a7bc346000000b0040d81ca11casm40988147wmj.28.2024.01.23.02.48.32
+        by smtp.gmail.com with ESMTPSA id fl21-20020a05600c0b9500b0040e9d507424sm15840531wmb.5.2024.01.23.03.02.21
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Jan 2024 02:48:33 -0800 (PST)
-Message-ID: <46080ac1-7789-499b-b7f3-0231d7bd6de7@redhat.com>
-Date: Tue, 23 Jan 2024 11:48:31 +0100
+        Tue, 23 Jan 2024 03:02:22 -0800 (PST)
+Message-ID: <02d42161-a867-424d-bef8-efd67d592cbc@redhat.com>
+Date: Tue, 23 Jan 2024 12:02:20 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v1 01/11] arm/pgtable: define PFN_PTE_SHIFT on arm and
  arm64
+From: David Hildenbrand <david@redhat.com>
 To: Ryan Roberts <ryan.roberts@arm.com>, linux-kernel@vger.kernel.org
 References: <20240122194200.381241-1-david@redhat.com>
  <20240122194200.381241-2-david@redhat.com>
  <fdaeb9a5-d890-499a-92c8-d171df43ad01@arm.com>
-From: David Hildenbrand <david@redhat.com>
+ <46080ac1-7789-499b-b7f3-0231d7bd6de7@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -132,7 +133,7 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <fdaeb9a5-d890-499a-92c8-d171df43ad01@arm.com>
+In-Reply-To: <46080ac1-7789-499b-b7f3-0231d7bd6de7@redhat.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -153,91 +154,73 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, sparclinux@vg
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 23.01.24 11:34, Ryan Roberts wrote:
-> On 22/01/2024 19:41, David Hildenbrand wrote:
->> We want to make use of pte_next_pfn() outside of set_ptes(). Let's
->> simpliy define PFN_PTE_SHIFT, required by pte_next_pfn().
+On 23.01.24 11:48, David Hildenbrand wrote:
+> On 23.01.24 11:34, Ryan Roberts wrote:
+>> On 22/01/2024 19:41, David Hildenbrand wrote:
+>>> We want to make use of pte_next_pfn() outside of set_ptes(). Let's
+>>> simpliy define PFN_PTE_SHIFT, required by pte_next_pfn().
+>>>
+>>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>>> ---
+>>>    arch/arm/include/asm/pgtable.h   | 2 ++
+>>>    arch/arm64/include/asm/pgtable.h | 2 ++
+>>>    2 files changed, 4 insertions(+)
+>>>
+>>> diff --git a/arch/arm/include/asm/pgtable.h b/arch/arm/include/asm/pgtable.h
+>>> index d657b84b6bf70..be91e376df79e 100644
+>>> --- a/arch/arm/include/asm/pgtable.h
+>>> +++ b/arch/arm/include/asm/pgtable.h
+>>> @@ -209,6 +209,8 @@ static inline void __sync_icache_dcache(pte_t pteval)
+>>>    extern void __sync_icache_dcache(pte_t pteval);
+>>>    #endif
+>>>    
+>>> +#define PFN_PTE_SHIFT		PAGE_SHIFT
+>>> +
+>>>    void set_ptes(struct mm_struct *mm, unsigned long addr,
+>>>    		      pte_t *ptep, pte_t pteval, unsigned int nr);
+>>>    #define set_ptes set_ptes
+>>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+>>> index 79ce70fbb751c..d4b3bd96e3304 100644
+>>> --- a/arch/arm64/include/asm/pgtable.h
+>>> +++ b/arch/arm64/include/asm/pgtable.h
+>>> @@ -341,6 +341,8 @@ static inline void __sync_cache_and_tags(pte_t pte, unsigned int nr_pages)
+>>>    		mte_sync_tags(pte, nr_pages);
+>>>    }
+>>>    
+>>> +#define PFN_PTE_SHIFT		PAGE_SHIFT
 >>
->> Signed-off-by: David Hildenbrand <david@redhat.com>
->> ---
->>   arch/arm/include/asm/pgtable.h   | 2 ++
->>   arch/arm64/include/asm/pgtable.h | 2 ++
->>   2 files changed, 4 insertions(+)
+>> I think this is buggy. And so is the arm64 implementation of set_ptes(). It
+>> works fine for 48-bit output address, but for 52-bit OAs, the high bits are not
+>> kept contigously, so if you happen to be setting a mapping for which the
+>> physical memory block straddles bit 48, this won't work.
+> 
+> Right, as soon as the PTE bits are not contiguous, this stops working,
+> just like set_ptes() would, which I used as orientation.
+> 
 >>
->> diff --git a/arch/arm/include/asm/pgtable.h b/arch/arm/include/asm/pgtable.h
->> index d657b84b6bf70..be91e376df79e 100644
->> --- a/arch/arm/include/asm/pgtable.h
->> +++ b/arch/arm/include/asm/pgtable.h
->> @@ -209,6 +209,8 @@ static inline void __sync_icache_dcache(pte_t pteval)
->>   extern void __sync_icache_dcache(pte_t pteval);
->>   #endif
->>   
->> +#define PFN_PTE_SHIFT		PAGE_SHIFT
->> +
->>   void set_ptes(struct mm_struct *mm, unsigned long addr,
->>   		      pte_t *ptep, pte_t pteval, unsigned int nr);
->>   #define set_ptes set_ptes
->> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
->> index 79ce70fbb751c..d4b3bd96e3304 100644
->> --- a/arch/arm64/include/asm/pgtable.h
->> +++ b/arch/arm64/include/asm/pgtable.h
->> @@ -341,6 +341,8 @@ static inline void __sync_cache_and_tags(pte_t pte, unsigned int nr_pages)
->>   		mte_sync_tags(pte, nr_pages);
->>   }
->>   
->> +#define PFN_PTE_SHIFT		PAGE_SHIFT
-> 
-> I think this is buggy. And so is the arm64 implementation of set_ptes(). It
-> works fine for 48-bit output address, but for 52-bit OAs, the high bits are not
-> kept contigously, so if you happen to be setting a mapping for which the
-> physical memory block straddles bit 48, this won't work.
+>> Today, only the 64K base page config can support 52 bits, and for this,
+>> OA[51:48] are stored in PTE[15:12]. But 52 bits for 4K and 16K base pages is
+>> coming (hopefully v6.9) and in this case OA[51:50] are stored in PTE[9:8].
+>> Fortunately we already have helpers in arm64 to abstract this.
+>>
+>> So I think arm64 will want to define its own pte_next_pfn():
+>>
+>> #define pte_next_pfn pte_next_pfn
+>> static inline pte_t pte_next_pfn(pte_t pte)
+>> {
+>> 	return pfn_pte(pte_pfn(pte) + 1, pte_pgprot(pte));
+>> }
+>>
 
-Right, as soon as the PTE bits are not contiguous, this stops working, 
-just like set_ptes() would, which I used as orientation.
+Digging into the details, on arm64 we have:
 
-> 
-> Today, only the 64K base page config can support 52 bits, and for this,
-> OA[51:48] are stored in PTE[15:12]. But 52 bits for 4K and 16K base pages is
-> coming (hopefully v6.9) and in this case OA[51:50] are stored in PTE[9:8].
-> Fortunately we already have helpers in arm64 to abstract this.
-> 
-> So I think arm64 will want to define its own pte_next_pfn():
-> 
-> #define pte_next_pfn pte_next_pfn
-> static inline pte_t pte_next_pfn(pte_t pte)
-> {
-> 	return pfn_pte(pte_pfn(pte) + 1, pte_pgprot(pte));
-> }
-> 
-> I'll do a separate patch to fix the already broken arm64 set_ptes() implementation.
+#define pte_pfn(pte)           (__pte_to_phys(pte) >> PAGE_SHIFT)
 
-Make sense.
+and
 
-> 
-> I'm not sure if this type of problem might also apply to other arches?
+#define __pte_to_phys(pte)     (pte_val(pte) & PTE_ADDR_MASK)
 
-I saw similar handling in the PPC implementation of set_ptes, but was 
-not able to convince me that it is actually required there.
-
-pte_pfn on ppc does:
-
-static inline unsigned long pte_pfn(pte_t pte)
-{
-	return (pte_val(pte) & PTE_RPN_MASK) >> PTE_RPN_SHIFT;
-}
-
-But that means that the PFNs *are* contiguous. If high bits are used for 
-something else, then we might produce a garbage PTE on overflow, but 
-that shouldn't really matter I concluded for folio_pte_batch() purposes, 
-we'd not detect "belongs to this folio batch" either way.
-
-Maybe it's likely cleaner to also have a custom pte_next_pfn() on ppc, I 
-just hope that we don't lose any other arbitrary PTE bits by doing the 
-pte_pgprot().
-
-
-I guess pte_pfn() implementations should tell us if anything special 
-needs to happen.
+But that implies, that upstream the PFN is always contiguous, no?
 
 -- 
 Cheers,
