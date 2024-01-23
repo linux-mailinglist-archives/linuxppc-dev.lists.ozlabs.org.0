@@ -2,36 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A50838E16
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 13:02:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E216838E25
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 13:06:26 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=DUaBTYRk;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TK5LF0865z3vmT
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 23:02:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TK5R36N7Cz3vcx
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 23:06:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TK5Kl41Vpz3cbC
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jan 2024 23:01:45 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5AB021FB;
-	Tue, 23 Jan 2024 04:02:00 -0800 (PST)
-Received: from [10.57.77.165] (unknown [10.57.77.165])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5C3E03F762;
-	Tue, 23 Jan 2024 04:01:10 -0800 (PST)
-Message-ID: <63be0c3c-bf34-4cbb-b47b-7c9be0e65058@arm.com>
-Date: Tue, 23 Jan 2024 12:01:08 +0000
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=DUaBTYRk;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ew.tq-group.com (client-ip=93.104.207.81; helo=mx1.tq-group.com; envelope-from=matthias.schiffer@ew.tq-group.com; receiver=lists.ozlabs.org)
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TK5QD00lhz3cWS
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jan 2024 23:05:37 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1706011540; x=1737547540;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=QyowHaKSq5r48J0lIW2adI/3JjSI0PpbZix4J7mH2Dw=;
+  b=DUaBTYRk741HfPmQkf3ijXOu5IOYRIMH6/ZiN75pvXLCyE3ZsaMpJZWs
+   96I/prQCJpqGj2EKWKWOE4ZWZGB6h9UsQ2kw9KR5OwrPuMHd8XQHANP2P
+   l0irU3kdy64i8Zf9nOuR75e0EkSXOvYHBH8/AI3reIOYxrIIK/EB71aVe
+   xMAsqmTJckCUPqsbHFLaDzGh+42BhlgTFf62IkB+oW8QEwyrJ8FVLNgf5
+   zqOv3WKCNoPgCOdXHGw0+x4BQBC/U3NYOeEmFwy49MyYPc8RQrqWu48Tk
+   ulZYxhVQiEzo9KG0Txn0PX3KYh+bfsdc4BdCXbDI9NV5MrqKLqZo126zt
+   A==;
+X-IronPort-AV: E=Sophos;i="6.05,214,1701126000"; 
+   d="scan'208";a="35030276"
+Received: from vtuxmail01.tq-net.de ([10.115.0.20])
+  by mx1.tq-group.com with ESMTP; 23 Jan 2024 13:05:31 +0100
+Received: from [192.168.153.128] (SCHIFFERM-M3.tq-net.de [10.121.49.135])
+	by vtuxmail01.tq-net.de (Postfix) with ESMTPA id 3CBFC280075;
+	Tue, 23 Jan 2024 13:05:31 +0100 (CET)
+Message-ID: <effe9e2c56baca76cbef09b0262c246478670bc2.camel@ew.tq-group.com>
+Subject: Re: [PATCH] powerpc/6xx: set High BAT Enable flag on G2 cores
+From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Date: Tue, 23 Jan 2024 13:05:30 +0100
+In-Reply-To: <f8c2f1c8-0b43-47c6-9359-9aeeb14863eb@csgroup.eu>
+References: <20231221124538.159706-1-matthias.schiffer@ew.tq-group.com>
+	 <2fad9563-09ee-4017-8a67-5958475d56c8@csgroup.eu>
+	 <b4eae5a8f451a3d253521a61b9625e3d7634f430.camel@ew.tq-group.com>
+	 <ad3d0d4d-f63b-4704-b829-e630a69a6cf3@csgroup.eu>
+	 <5610a6223b54a845185f28f54999ad72269b72f5.camel@ew.tq-group.com>
+	 <f8c2f1c8-0b43-47c6-9359-9aeeb14863eb@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 09/11] mm/memory: optimize fork() with PTE-mapped THP
-Content-Language: en-GB
-To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-References: <20240122194200.381241-1-david@redhat.com>
- <20240122194200.381241-10-david@redhat.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20240122194200.381241-10-david@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,310 +68,213 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-arm-kernel@lists.infradead.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux@ew.tq-group.com" <linux@ew.tq-group.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 22/01/2024 19:41, David Hildenbrand wrote:
-> Let's implement PTE batching when consecutive (present) PTEs map
-> consecutive pages of the same large folio, and all other PTE bits besides
-> the PFNs are equal.
-> 
-> We will optimize folio_pte_batch() separately, to ignore some other
-> PTE bits. This patch is based on work by Ryan Roberts.
-> 
-> Use __always_inline for __copy_present_ptes() and keep the handling for
-> single PTEs completely separate from the multi-PTE case: we really want
-> the compiler to optimize for the single-PTE case with small folios, to
-> not degrade performance.
-> 
-> Note that PTE batching will never exceed a single page table and will
-> always stay within VMA boundaries.
-> 
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  include/linux/pgtable.h |  17 +++++-
->  mm/memory.c             | 113 +++++++++++++++++++++++++++++++++-------
->  2 files changed, 109 insertions(+), 21 deletions(-)
-> 
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index f6d0e3513948a..d32cedf6936ba 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -212,8 +212,6 @@ static inline int pmd_dirty(pmd_t pmd)
->  #define arch_flush_lazy_mmu_mode()	do {} while (0)
->  #endif
->  
-> -#ifndef set_ptes
-> -
->  #ifndef pte_next_pfn
->  static inline pte_t pte_next_pfn(pte_t pte)
->  {
-> @@ -221,6 +219,7 @@ static inline pte_t pte_next_pfn(pte_t pte)
->  }
->  #endif
->  
-> +#ifndef set_ptes
->  /**
->   * set_ptes - Map consecutive pages to a contiguous range of addresses.
->   * @mm: Address space to map the pages into.
-> @@ -650,6 +649,20 @@ static inline void ptep_set_wrprotect(struct mm_struct *mm, unsigned long addres
->  }
->  #endif
->  
-> +#ifndef wrprotect_ptes
+On Fri, 2024-01-19 at 13:53 +0000, Christophe Leroy wrote:
+>=20
+> Le 19/01/2024 =C3=A0 14:41, Matthias Schiffer a =C3=A9crit=C2=A0:
+> > >=20
+> > > Thinking about it once more, can we do even more simple ?
+> > >=20
+> > > Why do we need that __setup_cpu_g2() at all ?
+> > >=20
+> > > You could just add the following into __set_cpu_603()
+> > >=20
+> > > diff --git a/arch/powerpc/kernel/cpu_setup_6xx.S
+> > > b/arch/powerpc/kernel/cpu_setup_6xx.S
+> > > index c67d32e04df9..7b41e3884866 100644
+> > > --- a/arch/powerpc/kernel/cpu_setup_6xx.S
+> > > +++ b/arch/powerpc/kernel/cpu_setup_6xx.S
+> > > @@ -21,6 +21,11 @@ BEGIN_MMU_FTR_SECTION
+> > >        li      r10,0
+> > >        mtspr   SPRN_SPRG_603_LRU,r10           /* init SW LRU trackin=
+g */
+> > >    END_MMU_FTR_SECTION_IFSET(MMU_FTR_NEED_DTLB_SW_LRU)
+> > > +BEGIN_MMU_FTR_SECTION
+> > > +     mfspr   r11,SPRN_HID2_G2
+> > > +     oris    r11,r11,HID2_HBE_G2@h
+> > > +     mtspr   SPRN_HID2_G2,r11
+> > > +END_MMU_FTR_SECTION_IFSET(MMU_FTR_USE_HIGH_BATS)
+> > >=20
+> > >    BEGIN_FTR_SECTION
+> > >        bl      __init_fpu_registers
+> > > ---
+> > >=20
+> > > By the way, as your register is named SPRN_HID2_G2, the bit would bet=
+ter
+> > > be named HID2_G2_HBE instead of HID2_HBE_G2 I think.
+> >=20
+> > My intention was to keep this consistent with the SPRN_HID2_GEKKO defin=
+e.
+>=20
+> I don't understand what you mean. I can't see any bits defined for=20
+> HID2_GEKKO.
+>=20
+> What I see which is simitar is the definition of TSC register for CELL CP=
+U.
+>=20
+> #define SPRN_TSC_CELL	0x399	/* Thread switch control on Cell */
+> #define   TSC_CELL_DEC_ENABLE_0	0x400000 /* Decrementer Interrupt */
+> #define   TSC_CELL_DEC_ENABLE_1	0x200000 /* Decrementer Interrupt */
+> #define   TSC_CELL_EE_ENABLE	0x100000 /* External Interrupt */
+> #define   TSC_CELL_EE_BOOST	0x080000 /* External Interrupt Boost */
+>=20
+>=20
+> They don't call it TSC_EE_BOOST_CELL or TSC_EE_ENABLE_CELL
 
-I wrote some documentation for this (based on Matthew's docs for set_ptes() in
-my version. Perhaps it makes sense to add it here, given this is overridable by
-the arch.
+Ah sorry, I got things mixed up. Will change the define to HID2_G2_HBE (or =
+maybe HID_G2_LE_HBE?)
+in v2.
 
-/**
- * wrprotect_ptes - Write protect a consecutive set of pages.
- * @mm: Address space that the pages are mapped into.
- * @addr: Address of first page to write protect.
- * @ptep: Page table pointer for the first entry.
- * @nr: Number of pages to write protect.
- *
- * May be overridden by the architecture, else implemented as a loop over
- * ptep_set_wrprotect().
- *
- * Context: The caller holds the page table lock. The PTEs are all in the same
- * PMD.
- */
+Regards,
+Matthias
 
-> +static inline void wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
-> +		pte_t *ptep, unsigned int nr)
-> +{
-> +	for (;;) {
-> +		ptep_set_wrprotect(mm, addr, ptep);
-> +		if (--nr == 0)
-> +			break;
-> +		ptep++;
-> +		addr += PAGE_SIZE;
-> +	}
-> +}
-> +#endif
-> +
->  /*
->   * On some architectures hardware does not set page access bit when accessing
->   * memory page, it is responsibility of software setting this bit. It brings
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 185b4aff13d62..f563aec85b2a8 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -930,15 +930,15 @@ copy_present_page(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma
->  	return 0;
->  }
->  
-> -static inline void __copy_present_pte(struct vm_area_struct *dst_vma,
-> +static __always_inline void __copy_present_ptes(struct vm_area_struct *dst_vma,
 
-nit: doesn't the addition of __always_inline really belong in the patch where
-you factored this out? (#7)
+>=20
+>=20
+> Christophe
+>=20
+> >=20
+> > Regards,
+> > Matthias
+> >=20
+> >=20
+> >=20
+> >=20
+> > >=20
+> > > Christophe
+> > >=20
+> > > >=20
+> > > > >=20
+> > > > > > +
+> > > > > > +BEGIN_FTR_SECTION
+> > > > > > +       bl      __init_fpu_registers
+> > > > > > +END_FTR_SECTION_IFCLR(CPU_FTR_FPU_UNAVAILABLE)
+> > > > > > +       bl      setup_common_caches
+> > > > > > +       bl      setup_g2_hid2
+> > > > > > +       mtlr    r5
+> > > > > > +       blr
+> > > > > >=20
+> > > > > >     /* Enable caches for 603's, 604, 750 & 7400 */
+> > > > > >     SYM_FUNC_START_LOCAL(setup_common_caches)
+> > > > > > @@ -115,6 +129,16 @@ SYM_FUNC_START_LOCAL(setup_604_hid0)
+> > > > > >            blr
+> > > > > >     SYM_FUNC_END(setup_604_hid0)
+> > > > > >=20
+> > > > > > +/* Enable high BATs for G2 (G2_LE, e300cX) */
+> > > > > > +SYM_FUNC_START_LOCAL(setup_g2_hid2)
+> > > > > > +       mfspr   r11,SPRN_HID2_G2
+> > > > > > +       oris    r11,r11,HID2_HBE_G2@h
+> > > > > > +       mtspr   SPRN_HID2_G2,r11
+> > > > > > +       sync
+> > > > > > +       isync
+> > > > > > +       blr
+> > > > > > +SYM_FUNC_END(setup_g2_hid2)
+> > > > > > +
+> > > > > >     /* 7400 <=3D rev 2.7 and 7410 rev =3D 1.0 suffer from some
+> > > > > >      * erratas we work around here.
+> > > > > >      * Moto MPC710CE.pdf describes them, those are errata
+> > > > > > @@ -495,4 +519,3 @@ _GLOBAL(__restore_cpu_setup)
+> > > > > >            mtcr    r7
+> > > > > >            blr
+> > > > > >     _ASM_NOKPROBE_SYMBOL(__restore_cpu_setup)
+> > > > > > -
+> > > > > > diff --git a/arch/powerpc/kernel/cpu_specs_book3s_32.h b/arch/p=
+owerpc/kernel/cpu_specs_book3s_32.h
+> > > > > > index 3714634d194a1..83f054fcf837c 100644
+> > > > > > --- a/arch/powerpc/kernel/cpu_specs_book3s_32.h
+> > > > > > +++ b/arch/powerpc/kernel/cpu_specs_book3s_32.h
+> > > > > > @@ -69,7 +69,7 @@ static struct cpu_spec cpu_specs[] __initdata=
+ =3D {
+> > > > > >                    .mmu_features           =3D MMU_FTR_USE_HIGH=
+_BATS,
+> > > > > >                    .icache_bsize           =3D 32,
+> > > > > >                    .dcache_bsize           =3D 32,
+> > > > > > -               .cpu_setup              =3D __setup_cpu_603,
+> > > > > > +               .cpu_setup              =3D __setup_cpu_g2,
+> > > > > >                    .machine_check          =3D machine_check_ge=
+neric,
+> > > > > >                    .platform               =3D "ppc603",
+> > > > > >            },
+> > > > > > @@ -83,7 +83,7 @@ static struct cpu_spec cpu_specs[] __initdata=
+ =3D {
+> > > > > >                    .mmu_features           =3D MMU_FTR_USE_HIGH=
+_BATS,
+> > > > > >                    .icache_bsize           =3D 32,
+> > > > > >                    .dcache_bsize           =3D 32,
+> > > > > > -               .cpu_setup              =3D __setup_cpu_603,
+> > > > > > +               .cpu_setup              =3D __setup_cpu_g2,
+> > > > > >                    .machine_check          =3D machine_check_83=
+xx,
+> > > > > >                    .platform               =3D "ppc603",
+> > > > > >            },
+> > > > > > @@ -96,7 +96,7 @@ static struct cpu_spec cpu_specs[] __initdata=
+ =3D {
+> > > > > >                    .mmu_features           =3D MMU_FTR_USE_HIGH=
+_BATS | MMU_FTR_NEED_DTLB_SW_LRU,
+> > > > > >                    .icache_bsize           =3D 32,
+> > > > > >                    .dcache_bsize           =3D 32,
+> > > > > > -               .cpu_setup              =3D __setup_cpu_603,
+> > > > > > +               .cpu_setup              =3D __setup_cpu_g2,
+> > > > > >                    .machine_check          =3D machine_check_83=
+xx,
+> > > > > >                    .platform               =3D "ppc603",
+> > > > > >            },
+> > > > > > @@ -109,7 +109,7 @@ static struct cpu_spec cpu_specs[] __initda=
+ta =3D {
+> > > > > >                    .mmu_features           =3D MMU_FTR_USE_HIGH=
+_BATS | MMU_FTR_NEED_DTLB_SW_LRU,
+> > > > > >                    .icache_bsize           =3D 32,
+> > > > > >                    .dcache_bsize           =3D 32,
+> > > > > > -               .cpu_setup              =3D __setup_cpu_603,
+> > > > > > +               .cpu_setup              =3D __setup_cpu_g2,
+> > > > > >                    .machine_check          =3D machine_check_83=
+xx,
+> > > > > >                    .num_pmcs               =3D 4,
+> > > > > >                    .platform               =3D "ppc603",
+> > > > > > @@ -123,7 +123,7 @@ static struct cpu_spec cpu_specs[] __initda=
+ta =3D {
+> > > > > >                    .mmu_features           =3D MMU_FTR_USE_HIGH=
+_BATS | MMU_FTR_NEED_DTLB_SW_LRU,
+> > > > > >                    .icache_bsize           =3D 32,
+> > > > > >                    .dcache_bsize           =3D 32,
+> > > > > > -               .cpu_setup              =3D __setup_cpu_603,
+> > > > > > +               .cpu_setup              =3D __setup_cpu_g2,
+> > > > > >                    .machine_check          =3D machine_check_83=
+xx,
+> > > > > >                    .num_pmcs               =3D 4,
+> > > > > >                    .platform               =3D "ppc603",
+> > > > > > --
+> > > > > > TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 S=
+eefeld, Germany
+> > > > > > Amtsgericht M=C3=BCnchen, HRB 105018
+> > > > > > Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl=
+, Stefan Schneider
+> > > > > > https://www.tq-group.com/
+> > > >=20
+> > > > --
+> > > > TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefe=
+ld, Germany
+> > > > Amtsgericht M=C3=BCnchen, HRB 105018
+> > > > Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, St=
+efan Schneider
+> > > > https://www.tq-group.com/
+> >=20
+> > --
+> > TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, =
+Germany
+> > Amtsgericht M=C3=BCnchen, HRB 105018
+> > Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan=
+ Schneider
+> > https://www.tq-group.com/
+>=20
 
->  		struct vm_area_struct *src_vma, pte_t *dst_pte, pte_t *src_pte,
-> -		pte_t pte, unsigned long addr)
-> +		pte_t pte, unsigned long addr, int nr)
->  {
->  	struct mm_struct *src_mm = src_vma->vm_mm;
->  
->  	/* If it's a COW mapping, write protect it both processes. */
->  	if (is_cow_mapping(src_vma->vm_flags) && pte_write(pte)) {
-> -		ptep_set_wrprotect(src_mm, addr, src_pte);
-> +		wrprotect_ptes(src_mm, addr, src_pte, nr);
->  		pte = pte_wrprotect(pte);
->  	}
->  
-> @@ -950,26 +950,94 @@ static inline void __copy_present_pte(struct vm_area_struct *dst_vma,
->  	if (!userfaultfd_wp(dst_vma))
->  		pte = pte_clear_uffd_wp(pte);
->  
-> -	set_pte_at(dst_vma->vm_mm, addr, dst_pte, pte);
-> +	set_ptes(dst_vma->vm_mm, addr, dst_pte, pte, nr);
-> +}
-> +
-> +/*
-> + * Detect a PTE batch: consecutive (present) PTEs that map consecutive
-> + * pages of the same folio.
-> + *
-> + * All PTEs inside a PTE batch have the same PTE bits set, excluding the PFN.
-> + */
-> +static inline int folio_pte_batch(struct folio *folio, unsigned long addr,
-> +		pte_t *start_ptep, pte_t pte, int max_nr)
-> +{
-> +	unsigned long folio_end_pfn = folio_pfn(folio) + folio_nr_pages(folio);
-> +	const pte_t *end_ptep = start_ptep + max_nr;
-> +	pte_t expected_pte = pte_next_pfn(pte);
-> +	pte_t *ptep = start_ptep + 1;
-> +
-> +	VM_WARN_ON_FOLIO(!pte_present(pte), folio);
-> +
-> +	while (ptep != end_ptep) {
-> +		pte = ptep_get(ptep);
-> +
-> +		if (!pte_same(pte, expected_pte))
-> +			break;
-> +
-> +		/*
-> +		 * Stop immediately once we reached the end of the folio. In
-> +		 * corner cases the next PFN might fall into a different
-> +		 * folio.
-> +		 */
-> +		if (pte_pfn(pte) == folio_end_pfn)
-> +			break;
-> +
-> +		expected_pte = pte_next_pfn(expected_pte);
-> +		ptep++;
-> +	}
-> +
-> +	return ptep - start_ptep;
->  }
->  
->  /*
-> - * Copy one pte.  Returns 0 if succeeded, or -EAGAIN if one preallocated page
-> - * is required to copy this pte.
-> + * Copy one present PTE, trying to batch-process subsequent PTEs that map
-> + * consecutive pages of the same folio by copying them as well.
-> + *
-> + * Returns -EAGAIN if one preallocated page is required to copy the next PTE.
-> + * Otherwise, returns the number of copied PTEs (at least 1).
->   */
->  static inline int
-> -copy_present_pte(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
-> +copy_present_ptes(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  		 pte_t *dst_pte, pte_t *src_pte, pte_t pte, unsigned long addr,
-> -		 int *rss, struct folio **prealloc)
-> +		 int max_nr, int *rss, struct folio **prealloc)
->  {
->  	struct page *page;
->  	struct folio *folio;
-> +	int err, nr;
->  
->  	page = vm_normal_page(src_vma, addr, pte);
->  	if (unlikely(!page))
->  		goto copy_pte;
->  
->  	folio = page_folio(page);
-> +
-> +	/*
-> +	 * If we likely have to copy, just don't bother with batching. Make
-> +	 * sure that the common "small folio" case stays as fast as possible
-> +	 * by keeping the batching logic separate.
-> +	 */
-> +	if (unlikely(!*prealloc && folio_test_large(folio) && max_nr != 1)) {
-> +		nr = folio_pte_batch(folio, addr, src_pte, pte, max_nr);
-> +		if (folio_test_anon(folio)) {
-> +			folio_ref_add(folio, nr);
-> +			if (unlikely(folio_try_dup_anon_rmap_ptes(folio, page,
-> +								  nr, src_vma))) {
-
-What happens if its not the first page of the batch that fails here? Aren't you
-signalling that you need a prealloc'ed page for the wrong pte? Shouldn't you
-still batch copy all the way up to the failing page first? Perhaps it all comes
-out in the wash and these events are so infrequent that we don't care about the
-lost batching opportunity?
-
-> +				folio_ref_sub(folio, nr);
-> +				return -EAGAIN;
-> +			}
-> +			rss[MM_ANONPAGES] += nr;
-> +			VM_WARN_ON_FOLIO(PageAnonExclusive(page), folio);
-> +		} else {
-> +			folio_ref_add(folio, nr);
-
-Perhaps hoist this out to immediately after folio_pte_batch() since you're
-calling it on both branches?
-
-> +			folio_dup_file_rmap_ptes(folio, page, nr);
-> +			rss[mm_counter_file(page)] += nr;
-> +		}
-> +		__copy_present_ptes(dst_vma, src_vma, dst_pte, src_pte, pte,
-> +				    addr, nr);
-> +		return nr;
-> +	}
-> +
->  	if (folio_test_anon(folio)) {
->  		/*
->  		 * If this page may have been pinned by the parent process,
-> @@ -981,8 +1049,9 @@ copy_present_pte(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  		if (unlikely(folio_try_dup_anon_rmap_pte(folio, page, src_vma))) {
->  			/* Page may be pinned, we have to copy. */
->  			folio_put(folio);
-> -			return copy_present_page(dst_vma, src_vma, dst_pte, src_pte,
-> -						 addr, rss, prealloc, page);
-> +			err = copy_present_page(dst_vma, src_vma, dst_pte, src_pte,
-> +						addr, rss, prealloc, page);
-> +			return err ? err : 1;
->  		}
->  		rss[MM_ANONPAGES]++;
->  		VM_WARN_ON_FOLIO(PageAnonExclusive(page), folio);
-> @@ -993,8 +1062,8 @@ copy_present_pte(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  	}
->  
->  copy_pte:
-> -	__copy_present_pte(dst_vma, src_vma, dst_pte, src_pte, pte, addr);
-> -	return 0;
-> +	__copy_present_ptes(dst_vma, src_vma, dst_pte, src_pte, pte, addr, 1);
-> +	return 1;
->  }
->  
->  static inline struct folio *folio_prealloc(struct mm_struct *src_mm,
-> @@ -1031,10 +1100,11 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  	pte_t *src_pte, *dst_pte;
->  	pte_t ptent;
->  	spinlock_t *src_ptl, *dst_ptl;
-> -	int progress, ret = 0;
-> +	int progress, max_nr, ret = 0;
->  	int rss[NR_MM_COUNTERS];
->  	swp_entry_t entry = (swp_entry_t){0};
->  	struct folio *prealloc = NULL;
-> +	int nr;
->  
->  again:
->  	progress = 0;
-> @@ -1065,6 +1135,8 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  	arch_enter_lazy_mmu_mode();
->  
->  	do {
-> +		nr = 1;
-> +
->  		/*
->  		 * We are holding two locks at this point - either of them
->  		 * could generate latencies in another task on another CPU.
-> @@ -1101,9 +1173,10 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  			 */
->  			WARN_ON_ONCE(ret != -ENOENT);
->  		}
-> -		/* copy_present_pte() will clear `*prealloc' if consumed */
-> -		ret = copy_present_pte(dst_vma, src_vma, dst_pte, src_pte,
-> -				       ptent, addr, rss, &prealloc);
-> +		/* copy_present_ptes() will clear `*prealloc' if consumed */
-> +		max_nr = (end - addr) / PAGE_SIZE;
-> +		ret = copy_present_ptes(dst_vma, src_vma, dst_pte, src_pte,
-> +					ptent, addr, max_nr, rss, &prealloc);
->  		/*
->  		 * If we need a pre-allocated page for this pte, drop the
->  		 * locks, allocate, and try again.
-> @@ -1120,8 +1193,10 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  			folio_put(prealloc);
->  			prealloc = NULL;
->  		}
-> -		progress += 8;
-> -	} while (dst_pte++, src_pte++, addr += PAGE_SIZE, addr != end);
-> +		nr = ret;
-> +		progress += 8 * nr;
-> +	} while (dst_pte += nr, src_pte += nr, addr += PAGE_SIZE * nr,
-> +		 addr != end);
->  
->  	arch_leave_lazy_mmu_mode();
->  	pte_unmap_unlock(orig_src_pte, src_ptl);
-> @@ -1142,7 +1217,7 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  		prealloc = folio_prealloc(src_mm, src_vma, addr, false);
->  		if (!prealloc)
->  			return -ENOMEM;
-> -	} else if (ret) {
-> +	} else if (ret < 0) {
->  		VM_WARN_ON_ONCE(1);
->  	}
->  
-
+--=20
+TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
+any
+Amtsgericht M=C3=BCnchen, HRB 105018
+Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
+neider
+https://www.tq-group.com/
