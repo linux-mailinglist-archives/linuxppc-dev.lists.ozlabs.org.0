@@ -1,62 +1,142 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E216838E25
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 13:06:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 515F4838E64
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 13:20:30 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=DUaBTYRk;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ETZtzkPd;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ETZtzkPd;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TK5R36N7Cz3vcx
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 23:06:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TK5lJ0q8xz3vhq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 23:20:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=DUaBTYRk;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ETZtzkPd;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ETZtzkPd;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ew.tq-group.com (client-ip=93.104.207.81; helo=mx1.tq-group.com; envelope-from=matthias.schiffer@ew.tq-group.com; receiver=lists.ozlabs.org)
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TK5QD00lhz3cWS
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jan 2024 23:05:37 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1706011540; x=1737547540;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=QyowHaKSq5r48J0lIW2adI/3JjSI0PpbZix4J7mH2Dw=;
-  b=DUaBTYRk741HfPmQkf3ijXOu5IOYRIMH6/ZiN75pvXLCyE3ZsaMpJZWs
-   96I/prQCJpqGj2EKWKWOE4ZWZGB6h9UsQ2kw9KR5OwrPuMHd8XQHANP2P
-   l0irU3kdy64i8Zf9nOuR75e0EkSXOvYHBH8/AI3reIOYxrIIK/EB71aVe
-   xMAsqmTJckCUPqsbHFLaDzGh+42BhlgTFf62IkB+oW8QEwyrJ8FVLNgf5
-   zqOv3WKCNoPgCOdXHGw0+x4BQBC/U3NYOeEmFwy49MyYPc8RQrqWu48Tk
-   ulZYxhVQiEzo9KG0Txn0PX3KYh+bfsdc4BdCXbDI9NV5MrqKLqZo126zt
-   A==;
-X-IronPort-AV: E=Sophos;i="6.05,214,1701126000"; 
-   d="scan'208";a="35030276"
-Received: from vtuxmail01.tq-net.de ([10.115.0.20])
-  by mx1.tq-group.com with ESMTP; 23 Jan 2024 13:05:31 +0100
-Received: from [192.168.153.128] (SCHIFFERM-M3.tq-net.de [10.121.49.135])
-	by vtuxmail01.tq-net.de (Postfix) with ESMTPA id 3CBFC280075;
-	Tue, 23 Jan 2024 13:05:31 +0100 (CET)
-Message-ID: <effe9e2c56baca76cbef09b0262c246478670bc2.camel@ew.tq-group.com>
-Subject: Re: [PATCH] powerpc/6xx: set High BAT Enable flag on G2 cores
-From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Date: Tue, 23 Jan 2024 13:05:30 +0100
-In-Reply-To: <f8c2f1c8-0b43-47c6-9359-9aeeb14863eb@csgroup.eu>
-References: <20231221124538.159706-1-matthias.schiffer@ew.tq-group.com>
-	 <2fad9563-09ee-4017-8a67-5958475d56c8@csgroup.eu>
-	 <b4eae5a8f451a3d253521a61b9625e3d7634f430.camel@ew.tq-group.com>
-	 <ad3d0d4d-f63b-4704-b829-e630a69a6cf3@csgroup.eu>
-	 <5610a6223b54a845185f28f54999ad72269b72f5.camel@ew.tq-group.com>
-	 <f8c2f1c8-0b43-47c6-9359-9aeeb14863eb@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TK5kT0kr3z3bhr
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jan 2024 23:19:44 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706012380;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=X/GElDPRN0NBVzcYw+fvqfvfgtwx2bhjdwkQ5wKWbFM=;
+	b=ETZtzkPd2D3FgUbhZdgswhu2pnC/gD2mVA5NSaQSisYPPLJcspW7d2wC+t5zJaSZKgaC6M
+	+pSH05WewvnNFUgX+pPfEOPgUBOswY20qZPu+/RRObziEW7OG9/Znv2PWOF0YMdREwe/vs
+	LhUA7oCi5U5NCZdQr5fEFrbh7gvbB+8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706012380;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=X/GElDPRN0NBVzcYw+fvqfvfgtwx2bhjdwkQ5wKWbFM=;
+	b=ETZtzkPd2D3FgUbhZdgswhu2pnC/gD2mVA5NSaQSisYPPLJcspW7d2wC+t5zJaSZKgaC6M
+	+pSH05WewvnNFUgX+pPfEOPgUBOswY20qZPu+/RRObziEW7OG9/Znv2PWOF0YMdREwe/vs
+	LhUA7oCi5U5NCZdQr5fEFrbh7gvbB+8=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-450-zkxPsW5wPQSgCOJoDDtFfA-1; Tue, 23 Jan 2024 07:19:38 -0500
+X-MC-Unique: zkxPsW5wPQSgCOJoDDtFfA-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-40e89a9a76fso32296745e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jan 2024 04:19:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706012377; x=1706617177;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :references:cc:to:content-language:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X/GElDPRN0NBVzcYw+fvqfvfgtwx2bhjdwkQ5wKWbFM=;
+        b=QBxz++XBoPepY+KYDDSSOUHSpHRL9zJBar72xLMDECGxdJyPpJK5W3nDzMD4lHnTe4
+         Wqb/Q+5SCIAaHSZWmtAUV9AA7iGJafJS40tZEA6ICf97WR1cXYQqSXG/3ApA2JwH68ro
+         GPUc0z+lZ45gwGAota5H9pp4byAYgLzUJVdlU7ZqhfAzP0nstklV84QFdUsAShMlL7C3
+         M4oQ2PworJ3RtVBBPxqYch/SjqpUUpmZzwocZ9UI2vkp7TXxw9YXPwWfp99PfQOuS2MR
+         tcF2U3ZGUYTNquJ6Z7Esy9bFiy8oYqzm3/Dop0tMntLwolkQntEN4gyw5UYP8Q+Axx+k
+         lIiA==
+X-Gm-Message-State: AOJu0YyJrtt6hDIBYMFxnS5AalPohg1aUWCvV7aB/ZcUikmOVIXaNUKS
+	AZxePzZm8bjYpxQcsYTX573QiExLPH5wY/OorrLoXMmadoJEht/VO1txhRRJtePIm39bnFPqm5w
+	EYt5YD53DcivEYk8FFdlou7VoC0Vhl9h3Ksy2d1WEw+jDmGnyNYCh1eLS9Wkm7Lc=
+X-Received: by 2002:a05:600c:2252:b0:40e:6cf9:506e with SMTP id a18-20020a05600c225200b0040e6cf9506emr568000wmm.96.1706012377616;
+        Tue, 23 Jan 2024 04:19:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEiO1TgrMoQCs5Jr/juHQivfPPHAMW0rIO6fj55v7fOTl2Rf6O3NzPt6TOAltNzV3LQyRp3GA==
+X-Received: by 2002:a05:600c:2252:b0:40e:6cf9:506e with SMTP id a18-20020a05600c225200b0040e6cf9506emr567992wmm.96.1706012377224;
+        Tue, 23 Jan 2024 04:19:37 -0800 (PST)
+Received: from ?IPV6:2003:cb:c741:de00:bf0f:cd46:dc1c:2de9? (p200300cbc741de00bf0fcd46dc1c2de9.dip0.t-ipconnect.de. [2003:cb:c741:de00:bf0f:cd46:dc1c:2de9])
+        by smtp.gmail.com with ESMTPSA id s8-20020a05600c45c800b0040e527602c8sm46523956wmo.9.2024.01.23.04.19.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 23 Jan 2024 04:19:36 -0800 (PST)
+Message-ID: <31a0661e-fa69-419c-9936-98bfe168d5a7@redhat.com>
+Date: Tue, 23 Jan 2024 13:19:35 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 09/11] mm/memory: optimize fork() with PTE-mapped THP
+To: Ryan Roberts <ryan.roberts@arm.com>, linux-kernel@vger.kernel.org
+References: <20240122194200.381241-1-david@redhat.com>
+ <20240122194200.381241-10-david@redhat.com>
+ <63be0c3c-bf34-4cbb-b47b-7c9be0e65058@arm.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <63be0c3c-bf34-4cbb-b47b-7c9be0e65058@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,213 +148,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux@ew.tq-group.com" <linux@ew.tq-group.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-arm-kernel@lists.infradead.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2024-01-19 at 13:53 +0000, Christophe Leroy wrote:
->=20
-> Le 19/01/2024 =C3=A0 14:41, Matthias Schiffer a =C3=A9crit=C2=A0:
-> > >=20
-> > > Thinking about it once more, can we do even more simple ?
-> > >=20
-> > > Why do we need that __setup_cpu_g2() at all ?
-> > >=20
-> > > You could just add the following into __set_cpu_603()
-> > >=20
-> > > diff --git a/arch/powerpc/kernel/cpu_setup_6xx.S
-> > > b/arch/powerpc/kernel/cpu_setup_6xx.S
-> > > index c67d32e04df9..7b41e3884866 100644
-> > > --- a/arch/powerpc/kernel/cpu_setup_6xx.S
-> > > +++ b/arch/powerpc/kernel/cpu_setup_6xx.S
-> > > @@ -21,6 +21,11 @@ BEGIN_MMU_FTR_SECTION
-> > >        li      r10,0
-> > >        mtspr   SPRN_SPRG_603_LRU,r10           /* init SW LRU trackin=
-g */
-> > >    END_MMU_FTR_SECTION_IFSET(MMU_FTR_NEED_DTLB_SW_LRU)
-> > > +BEGIN_MMU_FTR_SECTION
-> > > +     mfspr   r11,SPRN_HID2_G2
-> > > +     oris    r11,r11,HID2_HBE_G2@h
-> > > +     mtspr   SPRN_HID2_G2,r11
-> > > +END_MMU_FTR_SECTION_IFSET(MMU_FTR_USE_HIGH_BATS)
-> > >=20
-> > >    BEGIN_FTR_SECTION
-> > >        bl      __init_fpu_registers
-> > > ---
-> > >=20
-> > > By the way, as your register is named SPRN_HID2_G2, the bit would bet=
-ter
-> > > be named HID2_G2_HBE instead of HID2_HBE_G2 I think.
-> >=20
-> > My intention was to keep this consistent with the SPRN_HID2_GEKKO defin=
-e.
->=20
-> I don't understand what you mean. I can't see any bits defined for=20
-> HID2_GEKKO.
->=20
-> What I see which is simitar is the definition of TSC register for CELL CP=
-U.
->=20
-> #define SPRN_TSC_CELL	0x399	/* Thread switch control on Cell */
-> #define   TSC_CELL_DEC_ENABLE_0	0x400000 /* Decrementer Interrupt */
-> #define   TSC_CELL_DEC_ENABLE_1	0x200000 /* Decrementer Interrupt */
-> #define   TSC_CELL_EE_ENABLE	0x100000 /* External Interrupt */
-> #define   TSC_CELL_EE_BOOST	0x080000 /* External Interrupt Boost */
->=20
->=20
-> They don't call it TSC_EE_BOOST_CELL or TSC_EE_ENABLE_CELL
+[...]
 
-Ah sorry, I got things mixed up. Will change the define to HID2_G2_HBE (or =
-maybe HID_G2_LE_HBE?)
-in v2.
+> 
+> I wrote some documentation for this (based on Matthew's docs for set_ptes() in
+> my version. Perhaps it makes sense to add it here, given this is overridable by
+> the arch.
+> 
+> /**
+>   * wrprotect_ptes - Write protect a consecutive set of pages.
+>   * @mm: Address space that the pages are mapped into.
+>   * @addr: Address of first page to write protect.
+>   * @ptep: Page table pointer for the first entry.
+>   * @nr: Number of pages to write protect.
+>   *
+>   * May be overridden by the architecture, else implemented as a loop over
+>   * ptep_set_wrprotect().
+>   *
+>   * Context: The caller holds the page table lock. The PTEs are all in the same
+>   * PMD.
+>   */
+> 
 
-Regards,
-Matthias
+I could have sworn I had a documentation at some point. Let me add some, 
+thanks.
 
+[...]
 
->=20
->=20
-> Christophe
->=20
-> >=20
-> > Regards,
-> > Matthias
-> >=20
-> >=20
-> >=20
-> >=20
-> > >=20
-> > > Christophe
-> > >=20
-> > > >=20
-> > > > >=20
-> > > > > > +
-> > > > > > +BEGIN_FTR_SECTION
-> > > > > > +       bl      __init_fpu_registers
-> > > > > > +END_FTR_SECTION_IFCLR(CPU_FTR_FPU_UNAVAILABLE)
-> > > > > > +       bl      setup_common_caches
-> > > > > > +       bl      setup_g2_hid2
-> > > > > > +       mtlr    r5
-> > > > > > +       blr
-> > > > > >=20
-> > > > > >     /* Enable caches for 603's, 604, 750 & 7400 */
-> > > > > >     SYM_FUNC_START_LOCAL(setup_common_caches)
-> > > > > > @@ -115,6 +129,16 @@ SYM_FUNC_START_LOCAL(setup_604_hid0)
-> > > > > >            blr
-> > > > > >     SYM_FUNC_END(setup_604_hid0)
-> > > > > >=20
-> > > > > > +/* Enable high BATs for G2 (G2_LE, e300cX) */
-> > > > > > +SYM_FUNC_START_LOCAL(setup_g2_hid2)
-> > > > > > +       mfspr   r11,SPRN_HID2_G2
-> > > > > > +       oris    r11,r11,HID2_HBE_G2@h
-> > > > > > +       mtspr   SPRN_HID2_G2,r11
-> > > > > > +       sync
-> > > > > > +       isync
-> > > > > > +       blr
-> > > > > > +SYM_FUNC_END(setup_g2_hid2)
-> > > > > > +
-> > > > > >     /* 7400 <=3D rev 2.7 and 7410 rev =3D 1.0 suffer from some
-> > > > > >      * erratas we work around here.
-> > > > > >      * Moto MPC710CE.pdf describes them, those are errata
-> > > > > > @@ -495,4 +519,3 @@ _GLOBAL(__restore_cpu_setup)
-> > > > > >            mtcr    r7
-> > > > > >            blr
-> > > > > >     _ASM_NOKPROBE_SYMBOL(__restore_cpu_setup)
-> > > > > > -
-> > > > > > diff --git a/arch/powerpc/kernel/cpu_specs_book3s_32.h b/arch/p=
-owerpc/kernel/cpu_specs_book3s_32.h
-> > > > > > index 3714634d194a1..83f054fcf837c 100644
-> > > > > > --- a/arch/powerpc/kernel/cpu_specs_book3s_32.h
-> > > > > > +++ b/arch/powerpc/kernel/cpu_specs_book3s_32.h
-> > > > > > @@ -69,7 +69,7 @@ static struct cpu_spec cpu_specs[] __initdata=
- =3D {
-> > > > > >                    .mmu_features           =3D MMU_FTR_USE_HIGH=
-_BATS,
-> > > > > >                    .icache_bsize           =3D 32,
-> > > > > >                    .dcache_bsize           =3D 32,
-> > > > > > -               .cpu_setup              =3D __setup_cpu_603,
-> > > > > > +               .cpu_setup              =3D __setup_cpu_g2,
-> > > > > >                    .machine_check          =3D machine_check_ge=
-neric,
-> > > > > >                    .platform               =3D "ppc603",
-> > > > > >            },
-> > > > > > @@ -83,7 +83,7 @@ static struct cpu_spec cpu_specs[] __initdata=
- =3D {
-> > > > > >                    .mmu_features           =3D MMU_FTR_USE_HIGH=
-_BATS,
-> > > > > >                    .icache_bsize           =3D 32,
-> > > > > >                    .dcache_bsize           =3D 32,
-> > > > > > -               .cpu_setup              =3D __setup_cpu_603,
-> > > > > > +               .cpu_setup              =3D __setup_cpu_g2,
-> > > > > >                    .machine_check          =3D machine_check_83=
-xx,
-> > > > > >                    .platform               =3D "ppc603",
-> > > > > >            },
-> > > > > > @@ -96,7 +96,7 @@ static struct cpu_spec cpu_specs[] __initdata=
- =3D {
-> > > > > >                    .mmu_features           =3D MMU_FTR_USE_HIGH=
-_BATS | MMU_FTR_NEED_DTLB_SW_LRU,
-> > > > > >                    .icache_bsize           =3D 32,
-> > > > > >                    .dcache_bsize           =3D 32,
-> > > > > > -               .cpu_setup              =3D __setup_cpu_603,
-> > > > > > +               .cpu_setup              =3D __setup_cpu_g2,
-> > > > > >                    .machine_check          =3D machine_check_83=
-xx,
-> > > > > >                    .platform               =3D "ppc603",
-> > > > > >            },
-> > > > > > @@ -109,7 +109,7 @@ static struct cpu_spec cpu_specs[] __initda=
-ta =3D {
-> > > > > >                    .mmu_features           =3D MMU_FTR_USE_HIGH=
-_BATS | MMU_FTR_NEED_DTLB_SW_LRU,
-> > > > > >                    .icache_bsize           =3D 32,
-> > > > > >                    .dcache_bsize           =3D 32,
-> > > > > > -               .cpu_setup              =3D __setup_cpu_603,
-> > > > > > +               .cpu_setup              =3D __setup_cpu_g2,
-> > > > > >                    .machine_check          =3D machine_check_83=
-xx,
-> > > > > >                    .num_pmcs               =3D 4,
-> > > > > >                    .platform               =3D "ppc603",
-> > > > > > @@ -123,7 +123,7 @@ static struct cpu_spec cpu_specs[] __initda=
-ta =3D {
-> > > > > >                    .mmu_features           =3D MMU_FTR_USE_HIGH=
-_BATS | MMU_FTR_NEED_DTLB_SW_LRU,
-> > > > > >                    .icache_bsize           =3D 32,
-> > > > > >                    .dcache_bsize           =3D 32,
-> > > > > > -               .cpu_setup              =3D __setup_cpu_603,
-> > > > > > +               .cpu_setup              =3D __setup_cpu_g2,
-> > > > > >                    .machine_check          =3D machine_check_83=
-xx,
-> > > > > >                    .num_pmcs               =3D 4,
-> > > > > >                    .platform               =3D "ppc603",
-> > > > > > --
-> > > > > > TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 S=
-eefeld, Germany
-> > > > > > Amtsgericht M=C3=BCnchen, HRB 105018
-> > > > > > Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl=
-, Stefan Schneider
-> > > > > > https://www.tq-group.com/
-> > > >=20
-> > > > --
-> > > > TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefe=
-ld, Germany
-> > > > Amtsgericht M=C3=BCnchen, HRB 105018
-> > > > Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, St=
-efan Schneider
-> > > > https://www.tq-group.com/
-> >=20
-> > --
-> > TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, =
-Germany
-> > Amtsgericht M=C3=BCnchen, HRB 105018
-> > Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan=
- Schneider
-> > https://www.tq-group.com/
->=20
+>> +
+>> +	/*
+>> +	 * If we likely have to copy, just don't bother with batching. Make
+>> +	 * sure that the common "small folio" case stays as fast as possible
+>> +	 * by keeping the batching logic separate.
+>> +	 */
+>> +	if (unlikely(!*prealloc && folio_test_large(folio) && max_nr != 1)) {
+>> +		nr = folio_pte_batch(folio, addr, src_pte, pte, max_nr);
+>> +		if (folio_test_anon(folio)) {
+>> +			folio_ref_add(folio, nr);
+>> +			if (unlikely(folio_try_dup_anon_rmap_ptes(folio, page,
+>> +								  nr, src_vma))) {
+> 
+> What happens if its not the first page of the batch that fails here? Aren't you
+> signalling that you need a prealloc'ed page for the wrong pte? Shouldn't you
+> still batch copy all the way up to the failing page first? Perhaps it all comes
+> out in the wash and these events are so infrequent that we don't care about the
+> lost batching opportunity?
 
---=20
-TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
-any
-Amtsgericht M=C3=BCnchen, HRB 105018
-Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
-neider
-https://www.tq-group.com/
+I assume you mean the weird corner case that some folio pages in the 
+range have PAE set, others don't -- and the folio maybe pinned.
+
+In that case, we fallback to individual pages, and might have 
+preallocated a page although we wouldn't have to preallocate one for 
+processing the next page (that doesn't have PAE set).
+
+It should all work, although not optimized to the extreme, and as it's a 
+corner case, we don't particularly care. Hopefully, in the future we'll 
+only have a single PAE flag per folio.
+
+Or am I missing something?
+
+> 
+>> +				folio_ref_sub(folio, nr);
+>> +				return -EAGAIN;
+>> +			}
+>> +			rss[MM_ANONPAGES] += nr;
+>> +			VM_WARN_ON_FOLIO(PageAnonExclusive(page), folio);
+>> +		} else {
+>> +			folio_ref_add(folio, nr);
+> 
+> Perhaps hoist this out to immediately after folio_pte_batch() since you're
+> calling it on both branches?
+
+Makes sense, thanks.
+
+-- 
+Cheers,
+
+David / dhildenb
+
