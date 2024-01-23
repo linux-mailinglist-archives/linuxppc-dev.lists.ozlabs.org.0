@@ -1,41 +1,137 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85F2F838DCA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 12:46:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B71A838DDB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 12:49:49 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=XBrMLrdB;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TK4zy2QDnz3vhj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 22:46:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TK53v0tN8z3vgB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 22:49:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux-m68k.org (client-ip=195.130.132.48; helo=cantor.telenet-ops.be; envelope-from=geert@linux-m68k.org; receiver=lists.ozlabs.org)
-Received: from cantor.telenet-ops.be (cantor.telenet-ops.be [195.130.132.48])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=XBrMLrdB;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:261d::601; helo=fra01-pr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-pr2fra01on20601.outbound.protection.outlook.com [IPv6:2a01:111:f403:261d::601])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TK4zQ0N1Tz3cWx
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jan 2024 22:45:53 +1100 (AEDT)
-Received: from andre.telenet-ops.be (andre.telenet-ops.be [IPv6:2a02:1800:120:4::f00:15])
-	by cantor.telenet-ops.be (Postfix) with ESMTPS id 4TK4z56zRcz4wxZr
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jan 2024 12:45:37 +0100 (CET)
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:8ec8:24bf:c2ed:213e])
-	by andre.telenet-ops.be with bizsmtp
-	id eBlV2B0032E7G5801BlVKu; Tue, 23 Jan 2024 12:45:37 +0100
-Received: from geert (helo=localhost)
-	by ramsan.of.borg with local-esmtp (Exim 4.95)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1rSFDd-00GLOZ-05;
-	Tue, 23 Jan 2024 12:45:29 +0100
-Date: Tue, 23 Jan 2024 12:45:28 +0100 (CET)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: linux-kernel@vger.kernel.org
-Subject: Re: Build regressions/improvements in v6.8-rc1
-In-Reply-To: <20240123111235.3097079-1-geert@linux-m68k.org>
-Message-ID: <d03e90ca-8485-4d1b-5ec1-c3398e0e8da@linux-m68k.org>
-References: <CAHk-=wiB4iHTtfZKiy5pC24uOjun4fbj4kSX0=ZnGsOXadMf6g@mail.gmail.com> <20240123111235.3097079-1-geert@linux-m68k.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TK5370XPfz3d9H
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jan 2024 22:49:05 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=nvc2hXsfhJYHJEC9J0MZqLuI7s0G46UwDqhjH+tohnRGFDCQGWqFHjAIzHuC9zFPHMj7Wq/PBHcYYnswDsXgnC1D80Y3tKIMBNVWKVrMGHaaDZoNPkTVkP1MY8h3dWpra+ndMD6A/w6KMC4hRfPk5uTCCc4gbwsj5x4tqgt+gyXcEh1zUS6mRtF7Wg1bXiOeDz9kytbZAsHgqlNmoAmlEYbz/yttvxzrGD4DBz58PE+MadJSjKszjMHMHKN5+GIOcJz6AANAHSKlXfBXEp0Vvo60hBFdMaLOqovttQHpMffUyWVFPrqActEHQZUSpUEqPlE6ZbpftnDCfYFkqm2jbg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pSGG5bByL2rhyIVQ/yfMaC8zRd4ZbLjKYLybOEJ9zig=;
+ b=g6sRqqVecqAYtnnQTKe+tEr4yGmeLDwfeF2pPiNeJIOiDR1qfADtppvpK482SgoRFBY7e/nFyo4rD4J29N7SMiBdrgX2s+xvDpWmkgJf8/bIPtQCosb7I+tCyXs+L9szM+kLeT0Y8kCRNmLCuOBxv8X1qrgPL5tp558Upwyp4e/gm/tqbnOkotCMFJjGgEu30ffNFSvoxchMcSZpN44kEMUnCRQH5stnqeO5U3kf35Y6vxc+97FuAowJj+/yrT8bQgAE4vjqJk8oO9GBlKPZq9aUi1eqnjoPFmtYkej1+5RXds3jA5TUzGUM5aRAqYKLVLd80yLzdiCi53yF+ou+OA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pSGG5bByL2rhyIVQ/yfMaC8zRd4ZbLjKYLybOEJ9zig=;
+ b=XBrMLrdBPdHge1W9FtV+2Mrr0gCI/CDT0g5B0fQXxuXwvwelQqNyTYErmxj0Tiv9UtOGrZZxEWCeVi4FJfUj7i366FgnJyrTST0bjqkQGCpmxdheQrIFRrdXhspmAqY09sVsmdyGBDj5o7lTuRDj6MXbTIPY61p/WDDeXNTwwoepElk0Db1ILWrXvcRNfDFg8w4bVrfU9hOlAr6YXrYaQKZuCqZfKIkC90W+XeBe2rsxoxW8E6N4wEFgXmauY2a8la526vTdvILb9v9s8eTK+NKR9Vw88zJ0VmTsVO8aNE3NgoeEh06/lBaojIAKO3TzPJEfUYQ5XD/ESsb1P7gFqw==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MRZP264MB2539.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:1c::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.37; Tue, 23 Jan
+ 2024 11:48:43 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::9f77:c0ff:cd22:ae96]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::9f77:c0ff:cd22:ae96%4]) with mapi id 15.20.7202.035; Tue, 23 Jan 2024
+ 11:48:43 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Ryan Roberts <ryan.roberts@arm.com>, David Hildenbrand <david@redhat.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v1 01/11] arm/pgtable: define PFN_PTE_SHIFT on arm and
+ arm64
+Thread-Topic: [PATCH v1 01/11] arm/pgtable: define PFN_PTE_SHIFT on arm and
+ arm64
+Thread-Index:  AQHaTWsgqyRS0TfRAU20Q9lz/3ZqNbDnNJ2AgAAD9YCAAAWZgIAAAlKAgAAEJ4CAAAHlAIAAAtoA
+Date: Tue, 23 Jan 2024 11:48:43 +0000
+Message-ID: <11a7232c-8623-4c2c-b980-a13645f3fe89@csgroup.eu>
+References: <20240122194200.381241-1-david@redhat.com>
+ <20240122194200.381241-2-david@redhat.com>
+ <fdaeb9a5-d890-499a-92c8-d171df43ad01@arm.com>
+ <46080ac1-7789-499b-b7f3-0231d7bd6de7@redhat.com>
+ <6703b648-10ab-4fea-b7f1-75421319465b@arm.com>
+ <ae3d826f-758f-4738-b72a-e99f098bb2b3@csgroup.eu>
+ <3a970289-a72f-418e-b43c-89f67f0d5283@redhat.com>
+ <e0d9caab-39c7-446a-aeef-5d914d321c72@arm.com>
+In-Reply-To: <e0d9caab-39c7-446a-aeef-5d914d321c72@arm.com>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla Thunderbird
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|MRZP264MB2539:EE_
+x-ms-office365-filtering-correlation-id: 7087f5e4-356a-4af9-4667-08dc1c09401e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  6K8uFnWH04emw9wTWUgaYfTgAA80M/xbyNPe1IYDYM+CLdDKTOPT7Ak2lZgy5sWwfq/jRP+CePpbu8dGEjbRVxT9lj8g/7dzJRA4gqcFrLutqP9ZQm9ObS0gY+IbIrJSo4+eXyte6nA42m3d5KsRnzTlOK+H/gYn2k8ZtjDGsSvrjST6Fak0oEZrBHpec+3fgGxIV49zInALKvqNkuyJfFa4Kf+mQ7x8JsqIvsNvSKxfuheYeobhui8t94+t+g5lzfatu8RKAsHohUJlhsVRksVO+8jvfDX5YKph0ND3o2IEYwKy5cBsFSUDm9L2tm6YalURdJxSz9mXGJdY3ZKC+mII/eh4CR1VadEdV10Tf7jgAFSOt8rygVpS6x8oV6hZMV5gwhUhq9+q1Tw76VOon7PLCslMFaWfiqQqaeIlWRB3YqkoCPpWzDAFrf7XAZCoQilfPbobfLBds7lS55XKRWZK7KvR8VdK3t6xx40aolEFgUBWwTY29h2mAeeJJ+l/rgNsQ/v1LxQQTpLTEvj3r2+O5F264EEeGVyRLLguZgFn1Gm4p3u95qKc5VmjDHLdUqem+wFynAB9vS6G7qAF5KHJYEtizyc21xL8ME9yBV6RD4WWb/E930XzaG3eGGXddIvV+Pw2oGWdlPYaXG/o4jCYpwO46cJ0kn+Riarb1TA=
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(39850400004)(136003)(366004)(376002)(396003)(346002)(230922051799003)(186009)(64100799003)(451199024)(1800799012)(31686004)(66574015)(83380400001)(91956017)(36756003)(31696002)(86362001)(38070700009)(38100700002)(122000001)(2616005)(41300700001)(6512007)(26005)(6486002)(966005)(6506007)(66476007)(2906002)(76116006)(4326008)(478600001)(110136005)(66946007)(316002)(54906003)(53546011)(66446008)(71200400001)(66556008)(64756008)(44832011)(8676002)(5660300002)(7416002)(8936002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?a1crai9ERlpjSnJCWkhqelRZN08zU0tWVmVKM3ZJMm5aUW5FNTE5OC9leW5y?=
+ =?utf-8?B?My85UEhCSXB2bU5tMU5SSWcwRlNyWTd1UkhXVTdFTUUvUklrTER5WjExczIz?=
+ =?utf-8?B?RytQT1A4UjNZNGNZSGhsb2ZsUFlQcjlqek8vV2FyZTV6Zy9KeDRzOXorMzlW?=
+ =?utf-8?B?V0UvRXNTaFJzZU5UcnJuekhlNkd5b1IzVmlpODhxMnJHUFJ3MytjNktEaENR?=
+ =?utf-8?B?YzNWSzhRUmJDTjNITTU4c0F3ak1rcXVPQmN0VFo5WldBajF3Z3Rhc3FUY0hV?=
+ =?utf-8?B?b0R2NERuaTdwcTlvV1BrVUJrdkRJaEF6TEwwcVdLbWZXbm8wUGpEQ3BFNXRl?=
+ =?utf-8?B?V2t0V3FHamxUK0t1amtJbnhwVngzZG1OVEJ3N3FmNyswNFczcklSOE1LSkJ0?=
+ =?utf-8?B?dnlUQlIwcThwZ1ZobFVOM2dZN1pGT2hXdkY0RGFUUmNlbkdsb0pwcHJDM250?=
+ =?utf-8?B?ZElGejlrdU45NEpMMi9EN21PL2lMR2FlbDM0cldRdHhmMDRpMnZDbGFFZTJR?=
+ =?utf-8?B?bFJLb1RnUkovSUVIYjJMV1lycTY1eUU0ajM5azE4ZkJjSlFxL2d5T1lhU2Uz?=
+ =?utf-8?B?U0FoZkI5OFVKYWxUZjA4ZVBOc1RYMGYwU2I5bUtZTjRweVFXZzFETHhHYTlN?=
+ =?utf-8?B?S1VzVlgyZEtzS2FVdURYdTB1eCsxWmtzR3I5SXV0UEhhci9oUldvVTFyalFM?=
+ =?utf-8?B?d1JUSUUrbW9jR25MUXZIYWtDMVBFT0NoanFkZ0I5akJaMlVUeHplR2VEMHF5?=
+ =?utf-8?B?VTlHQlB1L3VHNXY2Y1NEam16dTQ1UkllRzBEVWpQTWVBM0tTdmI2NWFpQ0hj?=
+ =?utf-8?B?MTY0NWpycUZxZnpEZG5UTnZ3NVIwYnlzNGgxMXVuZlFrcmtESENVc0hoZVZx?=
+ =?utf-8?B?U0hKbUlVTEU2Y285YmxpSUhjb0lqd2swbVdVZ3U0VWFFUnFMM1dENXIrQ3Rq?=
+ =?utf-8?B?WHBiZ2pBVDZ1Q1kzQmI5aEhNYTduTTVodGNhS2Y5SU8wdTRKTzZEdU9qd2Ra?=
+ =?utf-8?B?RlovdlU5WUtvYXJzVVl4ZlBVTWViWVBWT3NHWUJwQkovVzN3ajRZVDl6dStE?=
+ =?utf-8?B?VUQrUG1lSHNXYW1ybHNVOHk0ZGpJZ3BoNjlhaExuc09yT2QrTmN6SjhyRjNF?=
+ =?utf-8?B?RWcwS0w4Y1RVV0hqNTFCR1ErWVZtRXdPM2IrSjkyb2FIUEJKOGNRRnZ4dnYr?=
+ =?utf-8?B?a3dzZkJxQkdtY2pVTXhvOVZIWVppN1RiNGtNbGl5SDcyYkxTenFtcjFJV2Z2?=
+ =?utf-8?B?N2t5M3JOTTdqM3RsUEM0dGJWY0M4ZTlINkc5SE9hMk1WVEhReW8veTJWUjdJ?=
+ =?utf-8?B?cUxJbjlGVzVmZnFHc2Z0MlRqVmNYdEdGMGZKRGU5M29STHl0ZjJnUlk1VlRC?=
+ =?utf-8?B?ZCtBTUgrYm05Vm1oOXR1R0IrOVRid2UrQUpSUEh5WVpFQ0xLN1A1UXBZTlo3?=
+ =?utf-8?B?NkE3d1R2VFozZVhvbjZCc213ekpPblFtdWY1OGo4aVI4VzZrTWo3OUxSbVBD?=
+ =?utf-8?B?VGdqTmc1Q0duRVg5dk1PdkJHM0c5UDd2M1kydUdHbDMySm16S1p4M1ZoUzV1?=
+ =?utf-8?B?b29zcVowRHgvRFNJelE3di9XUWx3OEI0Smg5OTN5YmRVOFlwTmttY0F3a0gw?=
+ =?utf-8?B?Ui8rR0NzekZEd3gyRmI1SFJUUHJhRnJFQ1RJWTRnY2hFRHBxM1RqNnNrZWpu?=
+ =?utf-8?B?c3B4QWswWFdFdSs0R2szdERJVmF6dmRVYVdzcGZtOFpZRjV0aDFEZkJ5Sk9r?=
+ =?utf-8?B?bUVwUVNVVWhjQWNHY3hPUmhwQzUwR3ZYS3ptUXpjZUtmZllMWWZWWXRCc005?=
+ =?utf-8?B?dzl6OCtITnpmVmx5MlV5N2FETlZCeWR6KzFoK2IzdXZwSlZ2UDRxMXZnMS9K?=
+ =?utf-8?B?bGg3L2lXaDB4NWZiRVJiOCtOYWxZWFQzV0I5eXAvcGxXU0UzZmNZaVFjSHNy?=
+ =?utf-8?B?TUhBZHpDNGM2dFFEdU9HZ29zUW5aMUZ3cThNQjNIbUM2VnN4aG9oZVQxT1VR?=
+ =?utf-8?B?VVhYM1Q3cUpPWWlCVUpUcHgvVHBJNHlsSkdoWlVpS3NnOXh5eERJdUEyLzlJ?=
+ =?utf-8?B?WGxaSzBKeGR0dWNJN2duaVdwMVBtVHVCMkFCOUtuNmFCL3VyMmpFTlJHa1Bx?=
+ =?utf-8?B?T1FKSk0zRDI4elJOWFF3T25wWStuNStUSFZxbWRGOG81K0hpKzVBd2xmUFNF?=
+ =?utf-8?B?S0E9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <33657EDE2316894A9BAF701D0B84101A@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-792708632-1706010328=:3895412"
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7087f5e4-356a-4af9-4667-08dc1c09401e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jan 2024 11:48:43.5694
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: c1kdvqylh0bLeXfyNZdEiVxGLPDO/vKe/RpxQJStizpE8vzHeO2HY9I5uRd3rGELcjA6sdXzsemKJyeY7FLQna3RwqLfMgOEpRnyOPX8FMw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB2539
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,205 +143,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Chris Zankel <chris@zankel.net>, Arnd Bergmann <arnd@arndb.de>, linux-scsi@vger.kernel.org, linux-sh@vger.kernel.org, netdev@vger.kernel.org, mpi3mr-linuxdrv.pdl@broadcom.com, qat-linux@intel.com, dri-devel@lists.freedesktop.org, Max Filippov <jcmvbkbc@gmail.com>, linux-mtd@lists.infradead.org, linux-hardening@vger.kernel.org, sparclinux@vger.kernel.org, intel-wired-lan@lists.osuosl.org, linuxppc-dev@lists.ozlabs.org, intel-xe@lists.freedesktop.org, linux-crypto@vger.kernel.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, Andre
+ w Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
---8323329-792708632-1706010328=:3895412
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
-
-On Tue, 23 Jan 2024, Geert Uytterhoeven wrote:
-> Below is the list of build error/warning regressions/improvements in
-> v6.8-rc1[1] compared to v6.7[2].
->
-> Summarized:
->  - build errors: +68/-18
->  - build warnings: +129/-1487
->
-> Happy fixing! ;-)
->
-> Thanks to the linux-next team for providing the build service.
->
-> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/6613476e225e090cc9aad49be7fa504e290dd33d/ (all 239 configs)
-> [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/0dd3ee31125508cd67f7e7172247f05b7fd1753a/ (all 239 configs)
->
->
-> *** ERRORS ***
->
-> 68 error regressions:
-
->  + /kisskb/src/arch/powerpc/sysdev/udbg_memcons.c: error: no previous prototype for 'memcons_getc' [-Werror=missing-prototypes]:  => 80:5
->  + /kisskb/src/arch/powerpc/sysdev/udbg_memcons.c: error: no previous prototype for 'memcons_getc_poll' [-Werror=missing-prototypes]:  => 57:5
->  + /kisskb/src/arch/powerpc/sysdev/udbg_memcons.c: error: no previous prototype for 'memcons_putc' [-Werror=missing-prototypes]:  => 44:6
-
-powerpc-gcc{5,12,13}/ppc64_book3e_allmodconfig
-
->  + /kisskb/src/arch/sh/kernel/cpu/init.c: error: no previous prototype for 'l2_cache_init' [-Werror=missing-prototypes]:  => 99:29
-
-sh4-gcc1[123]/se7{619,750}_defconfig
-sh4-gcc1[123]/sh-{all{mod,no,yes},def}config
-sh4-gcc11/sh-allnoconfig
-
->  + /kisskb/src/arch/sh/math-emu/math.c: error: no previous prototype for 'do_fpu_inst' [-Werror=missing-prototypes]:  => 492:5
-
-sh4-gcc1[123]/sh-all{mod,yes}config
-
->  + /kisskb/src/arch/sh/mm/cache-sh2.c: error: no previous prototype for 'sh2_cache_init' [-Werror=missing-prototypes]:  => 85:13
-
-sh4-gcc1[123]/se7619_defconfig
-sh4-gcc1[123]/sh-all{mod,yes}config
-
->  + /kisskb/src/arch/sh/mm/nommu.c: error: no previous prototype for 'kmap_coherent' [-Werror=missing-prototypes]:  => 80:7
->  + /kisskb/src/arch/sh/mm/nommu.c: error: no previous prototype for 'kmap_coherent_init' [-Werror=missing-prototypes]:  => 76:13
->  + /kisskb/src/arch/sh/mm/nommu.c: error: no previous prototype for 'kunmap_coherent' [-Werror=missing-prototypes]:  => 86:6
-
-sh4-gcc1[123]/se7619_defconfig
-sh4-gcc1[123]/sh-allnoconfig
-sh4-gcc12/sh-allyesconfig
-
->  + /kisskb/src/arch/sparc/include/asm/floppy_64.h: error: no previous prototype for 'sparc_floppy_irq' [-Werror=missing-prototypes]:  => 200:13
->  + /kisskb/src/arch/sparc/include/asm/floppy_64.h: error: no previous prototype for 'sun_pci_fd_dma_callback' [-Werror=missing-prototypes]:  => 437:6
-
-sparc64-gcc{5,11,12,13}/sparc64-allmodconfig
-
->  + /kisskb/src/arch/sparc/kernel/traps_64.c: error: no previous prototype for 'do_mcd_err' [-Werror=missing-prototypes]:  => 2035:6
->  + /kisskb/src/arch/sparc/kernel/traps_64.c: error: no previous prototype for 'is_no_fault_exception' [-Werror=missing-prototypes]:  => 253:6
->  + /kisskb/src/arch/sparc/kernel/traps_64.c: error: no previous prototype for 'sun4v_nonresum_error_user_handled' [-Werror=missing-prototypes]:  => 2153:6
->  + /kisskb/src/arch/sparc/prom/misc_64.c: error: no previous prototype for 'prom_get_mmu_ihandle' [-Werror=missing-prototypes]:  => 165:5
->  + /kisskb/src/arch/sparc/prom/p1275.c: error: no previous prototype for 'prom_cif_init' [-Werror=missing-prototypes]:  => 52:6
->  + /kisskb/src/kernel/dma.c: error: no previous prototype for 'free_dma' [-Werror=missing-prototypes]:  => 88:6
->  + /kisskb/src/kernel/dma.c: error: no previous prototype for 'request_dma' [-Werror=missing-prototypes]:  => 70:5
-
-sparc64-gcc{5,1[123]}/sparc64-{all{mod,no},def}config
-
->  + /kisskb/src/arch/sparc/lib/cmpdi2.c: error: no previous prototype for '__cmpdi2' [-Werror=missing-prototypes]:  => 6:11
-
-sparc64-gcc{5,1[123]}/sparc-{all{mod,no},def}config
-
->  + /kisskb/src/arch/sparc/mm/init_64.c: error: no previous prototype for 'vmemmap_free' [-Werror=missing-prototypes]:  => 2644:6
-
-sparc64-gcc{5,1[123]}/sparc64-{allmod,def}config
-
->  + /kisskb/src/arch/sparc/power/hibernate.c: error: no previous prototype for 'pfn_is_nosave' [-Werror=missing-prototypes]:  => 22:5
->  + /kisskb/src/arch/sparc/power/hibernate.c: error: no previous prototype for 'restore_processor_state' [-Werror=missing-prototypes]:  => 35:6
->  + /kisskb/src/arch/sparc/power/hibernate.c: error: no previous prototype for 'save_processor_state' [-Werror=missing-prototypes]:  => 30:6
->  + /kisskb/src/drivers/gpu/drm/xe/xe_lrc.c: error: "CTX_VALID" redefined [-Werror]:  => 24, 24:0
->  + /kisskb/src/drivers/mtd/maps/sun_uflash.c: error: no previous prototype for 'uflash_devinit' [-Werror=missing-prototypes]:  => 50:5
-
-sparc64-gcc{5,1[123]}/sparc64-allmodconfig
-
->  + /kisskb/src/arch/sparc/vdso/vclock_gettime.c: error: no previous prototype for '__vdso_clock_gettime' [-Werror=missing-prototypes]:  => 254:1
->  + /kisskb/src/arch/sparc/vdso/vclock_gettime.c: error: no previous prototype for '__vdso_clock_gettime_stick' [-Werror=missing-prototypes]:  => 282:1
->  + /kisskb/src/arch/sparc/vdso/vclock_gettime.c: error: no previous prototype for '__vdso_gettimeofday' [-Werror=missing-prototypes]:  => 307:1
->  + /kisskb/src/arch/sparc/vdso/vclock_gettime.c: error: no previous prototype for '__vdso_gettimeofday_stick' [-Werror=missing-prototypes]:  => 343:1
->  + /kisskb/src/arch/sparc/vdso/vdso32/../vclock_gettime.c: error: no previous prototype for '__vdso_clock_gettime' [-Werror=missing-prototypes]:  => 254:1
->  + /kisskb/src/arch/sparc/vdso/vdso32/../vclock_gettime.c: error: no previous prototype for '__vdso_clock_gettime_stick' [-Werror=missing-prototypes]:  => 282:1
->  + /kisskb/src/arch/sparc/vdso/vdso32/../vclock_gettime.c: error: no previous prototype for '__vdso_gettimeofday' [-Werror=missing-prototypes]:  => 307:1
->  + /kisskb/src/arch/sparc/vdso/vdso32/../vclock_gettime.c: error: no previous prototype for '__vdso_gettimeofday_stick' [-Werror=missing-prototypes]:  => 343:1
->  + /kisskb/src/arch/sparc/vdso/vma.c: error: no previous prototype for 'init_vdso_image' [-Werror=missing-prototypes]:  => 246:12
-
-sparc64-gcc{5,12,13}/sparc64-{allno,def}config
-sparc64-gcc11/sparc64-{all{mod,no},def}config
-
->  + /kisskb/src/arch/x86/um/shared/sysdep/kernel-offsets.h: error: no previous prototype for ‘foo’ [-Werror=missing-prototypes]:  => 9:6
-
-um-x86_64-gcc12/um-{all{mod,yes},def}config
-
->  + /kisskb/src/drivers/sbus/char/bbc_envctrl.c: error: no previous prototype for 'bbc_envctrl_cleanup' [-Werror=missing-prototypes]:  => 594:6
->  + /kisskb/src/drivers/sbus/char/bbc_envctrl.c: error: no previous prototype for 'bbc_envctrl_init' [-Werror=missing-prototypes]:  => 566:5
-
-sparc64-gcc1[12]/sparc64-allmodconfig
-
->  + /kisskb/src/drivers/scsi/mpi3mr/mpi3mr_transport.c: error: the frame size of 1680 bytes is larger than 1536 bytes [-Werror=frame-larger-than=]:  => 1818:1
-
-xtensa-gcc11/xtensa-allmodconfig
-
->  + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_1044' declared with attribute error: FIELD_GET: mask is not constant:  => 435:38
->  + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_1064' declared with attribute error: FIELD_PREP: mask is not constant:  => 435:38
-
-in drivers/net/ethernet/intel/ice/ice_base.c
-
-powerpc-gcc5/ppc32_allmodconfig
-
-
->  + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_1083' declared with attribute error: FIELD_GET: mask is not constant:  => 435:38
->  + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_1136' declared with attribute error: FIELD_GET: mask is not constant:  => 435:38
->  + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_923' declared with attribute error: FIELD_GET: mask is not constant:  => 435:38
-
-in drivers/net/ethernet/intel/ice/ice_nvm.c
-
-aarcharm64-gcc5/arm64-allmodconfig
-powerpc-gcc5/ppc32_allmodconfig
-powerpc-gcc5/powerpc-allmodconfig
-powerpc-gcc5/ppc64le_allmodconfig
-
->  + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_1094' declared with attribute error: FIELD_GET: mask is not constant:  => 435:38
->  + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_1147' declared with attribute error: FIELD_GET: mask is not constant:  => 435:38
->  + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_934' declared with attribute error: FIELD_GET: mask is not constant:  => 435:38
-
-in drivers/net/ethernet/intel/ice/ice_common.c
-
-arm64-gcc5/arm64-allmodconfig
-powerpc-gcc5/ppc32_allmodconfig
-
->  + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_453' declared with attribute error: FIELD_PREP: mask is not constant:  => 435:38
->  + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_485' declared with attribute error: FIELD_PREP: mask is not constant:  => 435:38
->  + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_544' declared with attribute error: FIELD_GET: mask is not constant:  => 435:38
->  + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_565' declared with attribute error: FIELD_GET: mask is not constant:  => 435:38
->  + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_614' declared with attribute error: FIELD_PREP: mask is not constant:  => 435:38
->  + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_646' declared with attribute error: FIELD_PREP: mask is not constant:  => 435:38
->  + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_656' declared with attribute error: FIELD_PREP: mask is not constant:  => 435:38
->  + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_688' declared with attribute error: FIELD_PREP: mask is not constant:  => 435:38
->  + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_705' declared with attribute error: FIELD_GET: mask is not constant:  => 435:38
->  + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_747' declared with attribute error: FIELD_GET: mask is not constant:  => 435:38
-
-in drivers/gpu/drm/xe/xe_guc_ct.c
-arm64-gcc5/arm64-allmodconfig
-powerpc-gcc5/ppc64_book3e_allmodconfig
-powerpc-gcc5/powerpc-allmodconfig
-
->  + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_693' declared with attribute error: FIELD_GET: mask is not constant:  => 435:38
->  + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_704' declared with attribute error: FIELD_GET: mask is not constant:  => 435:38
->  + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_748' declared with attribute error: FIELD_GET: mask is not constant:  => 435:38
-
-in drivers/net/ethernet/intel/i40e/i40e_dcb.c
-
-powerpc-gcc5/powerpc-allmodconfig
-powerpc-gcc5/ppc32_allmodconfig
-powerpc-gcc5/ppc64_book3e_allmodconfig
-
-
-arm64-gcc5/arm64-allmodconfig
-powerpc-gcc5/powerpc-all{mod,yes}config
-powerpc-gcc5/ppc{32,64le,64_book3e}_allmodconfig
-
->  + /kisskb/src/include/linux/fortify-string.h: error: call to '__read_overflow2_field' declared with attribute warning: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror]:  => 537:4
->  + /kisskb/src/include/linux/fortify-string.h: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror]:  => 528:4
-
-mips-gcc8/mips-allmodconfig
-
->  + {standard input}: Error: displacement to undefined symbol .L105 overflows 8-bit field :  => 590, 593
->  + {standard input}: Error: displacement to undefined symbol .L135 overflows 8-bit field :  => 603
->  + {standard input}: Error: displacement to undefined symbol .L140 overflows 8-bit field :  => 606
->  + {standard input}: Error: displacement to undefined symbol .L76 overflows 12-bit field:  => 591, 594
->  + {standard input}: Error: displacement to undefined symbol .L77 overflows 8-bit field : 607 => 607, 582, 585
->  + {standard input}: Error: displacement to undefined symbol .L97 overflows 12-bit field:  => 607
->  + {standard input}: Error: pcrel too far: 604, 590, 577, 593, 572, 569, 598, 599, 596, 610 => 610, 574, 599, 569, 598, 596, 601, 590, 604, 595, 572, 577, 593
-
-SH ICE crickets
-
-Gr{oetje,eeting}s,
-
- 						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
- 							    -- Linus Torvalds
---8323329-792708632-1706010328=:3895412--
+DQoNCkxlIDIzLzAxLzIwMjQgw6AgMTI6MzgsIFJ5YW4gUm9iZXJ0cyBhIMOpY3JpdMKgOg0KPiBP
+biAyMy8wMS8yMDI0IDExOjMxLCBEYXZpZCBIaWxkZW5icmFuZCB3cm90ZToNCj4+Pj4NCj4+Pj4+
+IElmIGhpZ2ggYml0cyBhcmUgdXNlZCBmb3INCj4+Pj4+IHNvbWV0aGluZyBlbHNlLCB0aGVuIHdl
+IG1pZ2h0IHByb2R1Y2UgYSBnYXJiYWdlIFBURSBvbiBvdmVyZmxvdywgYnV0IHRoYXQNCj4+Pj4+
+IHNob3VsZG4ndCByZWFsbHkgbWF0dGVyIEkgY29uY2x1ZGVkIGZvciBmb2xpb19wdGVfYmF0Y2go
+KSBwdXJwb3Nlcywgd2UnZCBub3QNCj4+Pj4+IGRldGVjdCAiYmVsb25ncyB0byB0aGlzIGZvbGlv
+IGJhdGNoIiBlaXRoZXIgd2F5Lg0KPj4+Pg0KPj4+PiBFeGFjdGx5Lg0KPj4+Pg0KPj4+Pj4NCj4+
+Pj4+IE1heWJlIGl0J3MgbGlrZWx5IGNsZWFuZXIgdG8gYWxzbyBoYXZlIGEgY3VzdG9tIHB0ZV9u
+ZXh0X3BmbigpIG9uIHBwYywgSSBqdXN0DQo+Pj4+PiBob3BlIHRoYXQgd2UgZG9uJ3QgbG9zZSBh
+bnkgb3RoZXIgYXJiaXRyYXJ5IFBURSBiaXRzIGJ5IGRvaW5nIHRoZSBwdGVfcGdwcm90KCkuDQo+
+Pj4+DQo+Pj4+IEkgZG9uJ3Qgc2VlIHRoZSBuZWVkIGZvciBwcGMgdG8gaW1wbGVtZW50IHB0ZV9u
+ZXh0X3BmbigpLg0KPj4+DQo+Pj4gQWdyZWVkLg0KPj4NCj4+IFNvIGxpa2VseSB3ZSBzaG91bGQg
+dGhlbiBkbyBvbiB0b3AgZm9yIHBvd2VycGMgKHdoaXRlc3BhY2UgZGFtYWdlKToNCj4+DQo+PiBk
+aWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL21tL3BndGFibGUuYyBiL2FyY2gvcG93ZXJwYy9tbS9w
+Z3RhYmxlLmMNCj4+IGluZGV4IGEwNGFlNDQ0OWEwMjUuLjU0OWE0NDBlZDdmNjUgMTAwNjQ0DQo+
+PiAtLS0gYS9hcmNoL3Bvd2VycGMvbW0vcGd0YWJsZS5jDQo+PiArKysgYi9hcmNoL3Bvd2VycGMv
+bW0vcGd0YWJsZS5jDQo+PiBAQCAtMjIwLDEwICsyMjAsNyBAQCB2b2lkIHNldF9wdGVzKHN0cnVj
+dCBtbV9zdHJ1Y3QgKm1tLCB1bnNpZ25lZCBsb25nIGFkZHIsDQo+PiBwdGVfdCAqcHRlcCwNCj4+
+ICDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGJyZWFrOw0K
+Pj4gIMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBwdGVwKys7DQo+PiAgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgIGFkZHIgKz0gUEFHRV9TSVpFOw0KPj4gLcKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgLyoNCj4+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
+KiBpbmNyZW1lbnQgdGhlIHBmbi4NCj4+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
+Ki8NCj4+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHB0ZSA9IHBmbl9wdGUocHRlX3Bm
+bihwdGUpICsgMSwgcHRlX3BncHJvdCgocHRlKSkpOw0KPj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgcHRlID0gcHRlX25leHRfcGZuKHB0ZSk7DQo+PiAgwqDCoMKgwqDCoMKgwqAgfQ0K
+Pj4gIMKgfQ0KPiANCj4gTG9va3MgbGlrZSBjb21taXQgNDdiOGRlZjkzNThjICgicG93ZXJwYy9t
+bTogQXZvaWQgY2FsbGluZw0KPiBhcmNoX2VudGVyL2xlYXZlX2xhenlfbW11KCkgaW4gc2V0X3B0
+ZXMiKSBjaGFuZ2VkIGZyb20gZG9pbmcgdGhlIHNpbXBsZQ0KPiBpbmNyZW1lbnQgdG8gdGhpcyBt
+b3JlIGNvbXBsZXggYXBwcm9hY2gsIGJ1dCB0aGUgbG9nIGRvZXNuJ3Qgc2F5IHdoeS4NCg0KUmln
+aHQuIFRoZXJlIHdhcyBhIGRpc2N1c3Npb24gYWJvdXQgaXQgd2l0aG91dCBhbnkgY29uY2x1c2lv
+bjogDQpodHRwczovL3BhdGNod29yay5vemxhYnMub3JnL3Byb2plY3QvbGludXhwcGMtZGV2L3Bh
+dGNoLzIwMjMxMDI0MTQzNjA0LjE2NzQ5LTEtYW5lZXNoLmt1bWFyQGxpbnV4LmlibS5jb20vDQoN
+CkFzIGZhciBhcyB1bmRlcnN0YW5kIHRoZSBzaW1wbGUgaW5jcmVtZW50IGlzIGJldHRlciBvbiBw
+cGMvMzIgYnV0IHdvcnNlIA0KaW4gcHBjLzY0Lg0KDQpDaHJpc3RvcGhlDQo=
