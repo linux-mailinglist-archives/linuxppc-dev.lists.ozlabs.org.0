@@ -1,50 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E2E68391EF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 16:02:45 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=OZ4uDMvo;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1042839289
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jan 2024 16:23:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TK9LW0Qyfz3c5Y
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jan 2024 02:02:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TK9nz6Q7sz3cWk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jan 2024 02:23:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TK9Kb59gzz2xdp
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jan 2024 02:01:53 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=PepByJiWQ5z0YJAy3zsX5i+pG7M9t28NlsHRNrHyzFg=; b=OZ4uDMvo60iZ4l06WQT6UPpOyK
-	1Mzz1amI2B4lmc7SzQBo9/H5nZHwSc+ahhYWItLeLfbqvNQjOpLZ379CUtpyrKiJpaFB3y3qceoFn
-	2/09mBIgxlyPrDWwBI1N1vIcVhBAJ+ccP2Eft8qdX7sawkIRu0Y4eD33nl5AX1fWh4yZRXAHa0diJ
-	xtf9jKwnR9O51wT9yPKs25kKmm0Ym9Nc1WnmkYd5euK/RIRwr1nWxHB5018vQ5PnPMYfUbcXkcguy
-	WziupYXg/e8D0xyqPtbSRcqVXqNtY1gEyT+tocZwXdwgad56hM1QmUaMd0kzNvFae844ES7sQELU7
-	yz18rMEQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rSIHS-00000003Un2-0lR2;
-	Tue, 23 Jan 2024 15:01:38 +0000
-Date: Tue, 23 Jan 2024 15:01:38 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Ryan Roberts <ryan.roberts@arm.com>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TK9nY5N2Jz3bp7
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jan 2024 02:22:39 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 985121FB;
+	Tue, 23 Jan 2024 07:22:51 -0800 (PST)
+Received: from [10.57.77.165] (unknown [10.57.77.165])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1AB543F5A1;
+	Tue, 23 Jan 2024 07:22:01 -0800 (PST)
+Message-ID: <90a9b1e5-9203-4baf-a69a-69b4f9ad73d5@arm.com>
+Date: Tue, 23 Jan 2024 15:22:00 +0000
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v1 01/11] arm/pgtable: define PFN_PTE_SHIFT on arm and
  arm64
-Message-ID: <Za_U0kYHGFkJdSss@casper.infradead.org>
+Content-Language: en-GB
+To: Matthew Wilcox <willy@infradead.org>
 References: <20240122194200.381241-1-david@redhat.com>
  <20240122194200.381241-2-david@redhat.com>
  <fdaeb9a5-d890-499a-92c8-d171df43ad01@arm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fdaeb9a5-d890-499a-92c8-d171df43ad01@arm.com>
+ <Za_U0kYHGFkJdSss@casper.infradead.org>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <Za_U0kYHGFkJdSss@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,16 +50,21 @@ Cc: David Hildenbrand <david@redhat.com>, Catalin Marinas <catalin.marinas@arm.c
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jan 23, 2024 at 10:34:21AM +0000, Ryan Roberts wrote:
-> > +#define PFN_PTE_SHIFT		PAGE_SHIFT
+On 23/01/2024 15:01, Matthew Wilcox wrote:
+> On Tue, Jan 23, 2024 at 10:34:21AM +0000, Ryan Roberts wrote:
+>>> +#define PFN_PTE_SHIFT		PAGE_SHIFT
+>>
+>> I think this is buggy. And so is the arm64 implementation of set_ptes(). It
+>> works fine for 48-bit output address, but for 52-bit OAs, the high bits are not
+>> kept contigously, so if you happen to be setting a mapping for which the
+>> physical memory block straddles bit 48, this won't work.
 > 
-> I think this is buggy. And so is the arm64 implementation of set_ptes(). It
-> works fine for 48-bit output address, but for 52-bit OAs, the high bits are not
-> kept contigously, so if you happen to be setting a mapping for which the
-> physical memory block straddles bit 48, this won't work.
+> I'd like to see the folio allocation that can straddle bit 48 ...
+> 
+> agreed, it's not workable _in general_, but specifically for a memory
+> allocation from a power-of-two allocator, you'd have to do a 49-bit
+> allocation (half a petabyte) to care.
 
-I'd like to see the folio allocation that can straddle bit 48 ...
-
-agreed, it's not workable _in general_, but specifically for a memory
-allocation from a power-of-two allocator, you'd have to do a 49-bit
-allocation (half a petabyte) to care.
+Hmm good point. So its a hypothetical bug, not an actual bug. Personally I'm
+still inclined to "fix" it. Although its going to cost a few more instructions.
+Shout if you disagree.
