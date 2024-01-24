@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34F8683A146
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jan 2024 06:21:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6722883A148
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jan 2024 06:21:54 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SK3X5zty;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SK3X5zty;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IQKmt5yT;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Yolz43JV;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TKXNy6rMmz3ckL
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jan 2024 16:21:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TKXPr1Pxrz3vpN
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jan 2024 16:21:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SK3X5zty;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SK3X5zty;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IQKmt5yT;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Yolz43JV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TKXF61bQVz3bTn
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jan 2024 16:14:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TKXFJ4KSqz3cWD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jan 2024 16:14:28 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706073255;
+	s=mimecast20190719; t=1706073262;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1ELQbTPNyx4L6Rjica+79k486cYCM/jEDd+jz77hDLU=;
-	b=SK3X5ztyBhgzVhKXVQhouv71Ock4SlIPuIIikibMOc9j3iG8XLhP/FfcUKgo0Wi0uVtxDH
-	KxWLSC0bfezVJ7PVyr9N4L1SA+WsgH6YHY0UXiux9fXP/zgRDOGpi71y9EHyCOHr2UD0Im
-	I5+JNKhzh9ydxwaowt7UQiz3F6L0WFc=
+	bh=X1mAKQotCLVkwrgDwzEKzyrz3Qjs1lczR0f5EiGuinE=;
+	b=IQKmt5yTqgGuVEVZtmayiP7C5yz91xCKqcNkZFmrFkPIy2R/N+a58O7xYY1bLHeaHAA/Qy
+	fsDkQracxL4rAvmyqWfAlnsrC2CBIjL+I7o2mMiJ8V82hKdXYuIzvHPSCZNK6+s+4QDbVE
+	R3A7qDV9XoZZfUBGXGWq+LHNWyEe0QQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706073255;
+	s=mimecast20190719; t=1706073263;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1ELQbTPNyx4L6Rjica+79k486cYCM/jEDd+jz77hDLU=;
-	b=SK3X5ztyBhgzVhKXVQhouv71Ock4SlIPuIIikibMOc9j3iG8XLhP/FfcUKgo0Wi0uVtxDH
-	KxWLSC0bfezVJ7PVyr9N4L1SA+WsgH6YHY0UXiux9fXP/zgRDOGpi71y9EHyCOHr2UD0Im
-	I5+JNKhzh9ydxwaowt7UQiz3F6L0WFc=
+	bh=X1mAKQotCLVkwrgDwzEKzyrz3Qjs1lczR0f5EiGuinE=;
+	b=Yolz43JVPS1fsct2F9I1udl7ub7+4dYsm3Pl//VQIPO8pPqTycu5wPr/pNNmMnhyl1gEhi
+	GcQfEkx87HwcrEz4pF8CkCAdyP5NO6iSfRN/De+QIVVA5Ls0jLov8FPz9iXqWP6wwld+FX
+	Rnyb1aIJjNWR3g4ukWnbiXH7ua/+bxY=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-654-6y3KZd9xNXOZOuwb7FQaow-1; Wed, 24 Jan 2024 00:14:08 -0500
-X-MC-Unique: 6y3KZd9xNXOZOuwb7FQaow-1
+ us-mta-691-HIffDQXhPqiRKUEtAWrImg-1; Wed, 24 Jan 2024 00:14:16 -0500
+X-MC-Unique: HIffDQXhPqiRKUEtAWrImg-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 764E885A58A;
-	Wed, 24 Jan 2024 05:14:07 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 02A09837224;
+	Wed, 24 Jan 2024 05:14:14 +0000 (UTC)
 Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.116.117])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 719011C060AF;
-	Wed, 24 Jan 2024 05:14:01 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 18E661C060AF;
+	Wed, 24 Jan 2024 05:14:07 +0000 (UTC)
 From: Baoquan He <bhe@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH linux-next v3 09/14] s390, crash: wrap crash dumping code into crash related ifdefs
-Date: Wed, 24 Jan 2024 13:12:49 +0800
-Message-ID: <20240124051254.67105-10-bhe@redhat.com>
+Subject: [PATCH linux-next v3 10/14] sh, crash: wrap crash dumping code into crash related ifdefs
+Date: Wed, 24 Jan 2024 13:12:50 +0800
+Message-ID: <20240124051254.67105-11-bhe@redhat.com>
 In-Reply-To: <20240124051254.67105-1-bhe@redhat.com>
 References: <20240124051254.67105-1-bhe@redhat.com>
 MIME-Version: 1.0
@@ -86,113 +86,45 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 Now crash codes under kernel/ folder has been split out from kexec
 code, crash dumping can be separated from kexec reboot in config
-items on s390 with some adjustments.
+items on SuperH with some adjustments.
 
-Here wrap up crash dumping codes with CONFIG_CRASH_DUMP ifdeffery.
+wrap up crash dumping codes with CONFIG_CRASH_DUMP ifdeffery, and
+use IS_ENABLED(CONFIG_CRASH_RESERVE) check to decide if compiling
+in the crashkernel reservation code.
 
 Signed-off-by: Baoquan He <bhe@redhat.com>
 ---
- arch/s390/kernel/kexec_elf.c          |  2 ++
- arch/s390/kernel/kexec_image.c        |  2 ++
- arch/s390/kernel/machine_kexec_file.c | 10 ++++++++++
- 3 files changed, 14 insertions(+)
+ arch/sh/kernel/machine_kexec.c | 3 +++
+ arch/sh/kernel/setup.c         | 2 +-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/s390/kernel/kexec_elf.c b/arch/s390/kernel/kexec_elf.c
-index 9da6fa30c447..4d364de43799 100644
---- a/arch/s390/kernel/kexec_elf.c
-+++ b/arch/s390/kernel/kexec_elf.c
-@@ -40,8 +40,10 @@ static int kexec_file_add_kernel_elf(struct kimage *image,
- 		buf.bufsz = phdr->p_filesz;
+diff --git a/arch/sh/kernel/machine_kexec.c b/arch/sh/kernel/machine_kexec.c
+index fa3a7b36190a..8daa8a6e6fa6 100644
+--- a/arch/sh/kernel/machine_kexec.c
++++ b/arch/sh/kernel/machine_kexec.c
+@@ -153,6 +153,9 @@ void __init reserve_crashkernel(void)
+ 	unsigned long long crash_size, crash_base;
+ 	int ret;
  
- 		buf.mem = ALIGN(phdr->p_paddr, phdr->p_align);
-+#ifdef CONFIG_CRASH_DUMP
- 		if (image->type == KEXEC_TYPE_CRASH)
- 			buf.mem += crashk_res.start;
-+#endif
- 		buf.memsz = phdr->p_memsz;
- 		data->memsz = ALIGN(data->memsz, phdr->p_align) + buf.memsz;
++	if (!IS_ENABLED(CONFIG_CRASH_RESERVE))
++		return;
++
+ 	ret = parse_crashkernel(boot_command_line, memblock_phys_mem_size(),
+ 			&crash_size, &crash_base, NULL, NULL);
+ 	if (ret == 0 && crash_size > 0) {
+diff --git a/arch/sh/kernel/setup.c b/arch/sh/kernel/setup.c
+index d3175f09b3aa..620e5cf8ae1e 100644
+--- a/arch/sh/kernel/setup.c
++++ b/arch/sh/kernel/setup.c
+@@ -220,7 +220,7 @@ void __init __add_active_range(unsigned int nid, unsigned long start_pfn,
+ 	request_resource(res, &code_resource);
+ 	request_resource(res, &data_resource);
+ 	request_resource(res, &bss_resource);
+-#ifdef CONFIG_KEXEC_CORE
++#ifdef CONFIG_CRASH_RESERVE
+ 	request_resource(res, &crashk_res);
+ #endif
  
-diff --git a/arch/s390/kernel/kexec_image.c b/arch/s390/kernel/kexec_image.c
-index af23eff5774d..a32ce8bea745 100644
---- a/arch/s390/kernel/kexec_image.c
-+++ b/arch/s390/kernel/kexec_image.c
-@@ -24,8 +24,10 @@ static int kexec_file_add_kernel_image(struct kimage *image,
- 	buf.bufsz = image->kernel_buf_len;
- 
- 	buf.mem = 0;
-+#ifdef CONFIG_CRASH_DUMP
- 	if (image->type == KEXEC_TYPE_CRASH)
- 		buf.mem += crashk_res.start;
-+#endif
- 	buf.memsz = buf.bufsz;
- 
- 	data->kernel_buf = image->kernel_buf;
-diff --git a/arch/s390/kernel/machine_kexec_file.c b/arch/s390/kernel/machine_kexec_file.c
-index 8d207b82d9fe..c2bac14dd668 100644
---- a/arch/s390/kernel/machine_kexec_file.c
-+++ b/arch/s390/kernel/machine_kexec_file.c
-@@ -105,6 +105,7 @@ static int kexec_file_update_purgatory(struct kimage *image,
- 	if (ret)
- 		return ret;
- 
-+#ifdef CONFIG_CRASH_DUMP
- 	if (image->type == KEXEC_TYPE_CRASH) {
- 		u64 crash_size;
- 
-@@ -121,6 +122,7 @@ static int kexec_file_update_purgatory(struct kimage *image,
- 						     sizeof(crash_size),
- 						     false);
- 	}
-+#endif
- 	return ret;
- }
- 
-@@ -134,8 +136,10 @@ static int kexec_file_add_purgatory(struct kimage *image,
- 
- 	data->memsz = ALIGN(data->memsz, PAGE_SIZE);
- 	buf.mem = data->memsz;
-+#ifdef CONFIG_CRASH_DUMP
- 	if (image->type == KEXEC_TYPE_CRASH)
- 		buf.mem += crashk_res.start;
-+#endif
- 
- 	ret = kexec_load_purgatory(image, &buf);
- 	if (ret)
-@@ -158,8 +162,10 @@ static int kexec_file_add_initrd(struct kimage *image,
- 
- 	data->memsz = ALIGN(data->memsz, PAGE_SIZE);
- 	buf.mem = data->memsz;
-+#ifdef CONFIG_CRASH_DUMP
- 	if (image->type == KEXEC_TYPE_CRASH)
- 		buf.mem += crashk_res.start;
-+#endif
- 	buf.memsz = buf.bufsz;
- 
- 	data->parm->initrd_start = data->memsz;
-@@ -223,8 +229,10 @@ static int kexec_file_add_ipl_report(struct kimage *image,
- 		data->kernel_buf + offsetof(struct lowcore, ipl_parmblock_ptr);
- 	*lc_ipl_parmblock_ptr = (__u32)buf.mem;
- 
-+#ifdef CONFIG_CRASH_DUMP
- 	if (image->type == KEXEC_TYPE_CRASH)
- 		buf.mem += crashk_res.start;
-+#endif
- 
- 	ret = kexec_add_buffer(&buf);
- out:
-@@ -268,10 +276,12 @@ void *kexec_file_add_components(struct kimage *image,
- 	memcpy(data.parm->command_line, image->cmdline_buf,
- 	       image->cmdline_buf_len);
- 
-+#ifdef CONFIG_CRASH_DUMP
- 	if (image->type == KEXEC_TYPE_CRASH) {
- 		data.parm->oldmem_base = crashk_res.start;
- 		data.parm->oldmem_size = crashk_res.end - crashk_res.start + 1;
- 	}
-+#endif
- 
- 	if (image->initrd_buf) {
- 		ret = kexec_file_add_initrd(image, &data);
 -- 
 2.41.0
 
