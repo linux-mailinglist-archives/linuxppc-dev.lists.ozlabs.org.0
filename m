@@ -2,74 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 833B783AC1A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jan 2024 15:39:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAFD183AC23
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jan 2024 15:40:39 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ibTk9I7w;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ibTk9I7w;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=PLi9BNiv;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TKmnY2v9Kz3cSy
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jan 2024 01:39:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TKmpY4mhFz3cYJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jan 2024 01:40:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ibTk9I7w;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ibTk9I7w;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=PLi9BNiv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::226; helo=relay6-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TKmmj6bfFz2xdp
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jan 2024 01:39:00 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706107138;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TKmnY64C6z3cPN
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jan 2024 01:39:42 +1100 (AEDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 26458C000A;
+	Wed, 24 Jan 2024 14:39:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1706107171;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Ls80tWWITZqF3iJAPsDuzCkVtKDTZBr/hmM0JE5RG5g=;
-	b=ibTk9I7woTM7wBzQRTX7VtTmhOJVD9e/h2qaATl5Ae9m9iPe3m+HRD/UR2VFGmUr0cNqRA
-	sfkppHLgKuNMQNe3NPEDyZ6ge7B4fOHTCrvfhEvz1d89OE2xlpdPMHM6/dzhSXO6X8wa+q
-	SEfaQbK5Mb9vICs3jryfHojn5RtQ5vI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706107138;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ls80tWWITZqF3iJAPsDuzCkVtKDTZBr/hmM0JE5RG5g=;
-	b=ibTk9I7woTM7wBzQRTX7VtTmhOJVD9e/h2qaATl5Ae9m9iPe3m+HRD/UR2VFGmUr0cNqRA
-	sfkppHLgKuNMQNe3NPEDyZ6ge7B4fOHTCrvfhEvz1d89OE2xlpdPMHM6/dzhSXO6X8wa+q
-	SEfaQbK5Mb9vICs3jryfHojn5RtQ5vI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-695-hw5KzothNAWkK-1bR3SVuw-1; Wed,
- 24 Jan 2024 09:38:53 -0500
-X-MC-Unique: hw5KzothNAWkK-1bR3SVuw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 254953806622;
-	Wed, 24 Jan 2024 14:38:53 +0000 (UTC)
-Received: from localhost (unknown [10.72.116.117])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 49B49AC03;
-	Wed, 24 Jan 2024 14:38:51 +0000 (UTC)
-Date: Wed, 24 Jan 2024 22:38:49 +0800
-From: Baoquan He <bhe@redhat.com>
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Subject: Re: [PATCH linux-next v3 10/14] sh, crash: wrap crash dumping code
- into crash related ifdefs
-Message-ID: <ZbEg+aoWKPww71gW@MiWiFi-R3L-srv>
-References: <20240124051254.67105-1-bhe@redhat.com>
- <20240124051254.67105-11-bhe@redhat.com>
- <27d8aa3a9e604a7e45c87b7fbc5b1ec2a63f03e3.camel@physik.fu-berlin.de>
+	bh=5+RHsh9TnhTPLnbjSPhtUEq2X2SMkZBbmcU+QGP4t3U=;
+	b=PLi9BNiveB2FxZ5Kx251oO4epHEanAzAZi6a3RwROulee+FHoVP8qt4zusPQzxIoou3qPt
+	XjebwPY3/axeHqsFudNEIKnVFgN3E83/svoI0vrJB9rUyMiB15J+R6NgbCAzWfCTze92up
+	ab3hunpuURdxJofoQ7yly7K4JJ4HFOyOphiz868T8ySlLFfvnLvGrchuuHHSZeNXn37EG1
+	yMUKU7eYp867QzbmHUd1W77/72zzF1HsHB0fMMo4N/N8dIIOG++H+jVMkQaf5+b14e3j1F
+	vFg9T6rcSsYxUGX5jcRwaLaOV67Bj0FCVYbQq0KulDjG9IPblys8hZT9O8+lYA==
+Date: Wed, 24 Jan 2024 15:39:27 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Subject: Re: [PATCH 1/4] net: wan: Add support for QMC HDLC
+Message-ID: <20240124153927.174f5b7a@bootlin.com>
+In-Reply-To: <7e7c5d46-001c-46db-85ca-eca013225a89@linux.dev>
+References: <20240123164912.249540-1-herve.codina@bootlin.com>
+	<20240123164912.249540-2-herve.codina@bootlin.com>
+	<7e7c5d46-001c-46db-85ca-eca013225a89@linux.dev>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <27d8aa3a9e604a7e45c87b7fbc5b1ec2a63f03e3.camel@physik.fu-berlin.de>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,41 +61,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, piliu@redhat.com, linux-sh@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, ebiederm@xmission.com, loongarch@lists.linux.dev, hbathini@linux.ibm.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org, viro@zeniv.linux.org.uk
+Cc: Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Mark Brown <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 01/24/24 at 09:13am, John Paul Adrian Glaubitz wrote:
-> Hello Baoquan,
-> 
-> On Wed, 2024-01-24 at 13:12 +0800, Baoquan He wrote:
-> > Now crash codes under kernel/ folder has been split out from kexec
-> > code, crash dumping can be separated from kexec reboot in config
-> > items on SuperH with some adjustments.
-> > 
-> > wrap up crash dumping codes with CONFIG_CRASH_DUMP ifdeffery, and
-> > use IS_ENABLED(CONFIG_CRASH_RESERVE) check to decide if compiling
-> > in the crashkernel reservation code.
-> 
-> Comparing this to the patches, it seems you missed the first word
-> "Here". Either amend that or write the word "wrap" capitalized.
-> 
-> I would omit "Here" as it's not necessary and just start the
-> sentence with "Wrap".
+Hi Vadim,
 
-You are right, thanks for careful checking. I will see if I need repost
-to include this update.
+On Wed, 24 Jan 2024 10:03:45 +0000
+Vadim Fedorenko <vadim.fedorenko@linux.dev> wrote:
 
+[...]
+
+> > +static void qmc_hcld_recv_complete(void *context, size_t length, unsigned int flags)
+> > +{
+> > +	struct qmc_hdlc_desc *desc = context;
+> > +	struct net_device *netdev = desc->netdev;
+> > +	struct qmc_hdlc *qmc_hdlc = netdev_to_qmc_hdlc(desc->netdev);  
 > 
-> -- 
->  .''`.  John Paul Adrian Glaubitz
-> : :' :  Debian Developer
-> `. `'   Physicist
->   `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+> a line above desc->netdev was stored in netdev. better to reuse it and 
+> make declaration part consistent with qmc_hcld_xmit_complete
+
+Yes.
+Will updated in the next iteration.
+
+[...]
+
+> > +static netdev_tx_t qmc_hdlc_xmit(struct sk_buff *skb, struct net_device *netdev)
+> > +{
+> > +	struct qmc_hdlc *qmc_hdlc = netdev_to_qmc_hdlc(netdev);
+> > +	struct qmc_hdlc_desc *desc;
+> > +	unsigned long flags;
+> > +	int ret;
+> > +
+> > +	spin_lock_irqsave(&qmc_hdlc->tx_lock, flags);
+> > +	desc = &qmc_hdlc->tx_descs[qmc_hdlc->tx_out];
+> > +	if (desc->skb) {
+> > +		/* Should never happen.
+> > +		 * Previous xmit should have already stopped the queue.
+> > +		 */  
 > 
-> _______________________________________________
-> kexec mailing list
-> kexec@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/kexec
+> according to the comment it's better to make if(unlikely(desc->skb)) or
+> even WARN_ONCE()
 > 
 
+Indeed. I will use WARN_ONCE() in the next iteration.
+
+Thanks for your review,
+Hervé
