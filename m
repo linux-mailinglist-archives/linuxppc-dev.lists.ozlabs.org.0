@@ -1,56 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B4483AD48
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jan 2024 16:27:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE5A83AF83
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jan 2024 18:19:59 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=XOOstg60;
+	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=ucmPOmXi;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TKnrp1bJ1z3cSv
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jan 2024 02:27:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TKrLP5cxyz3cQT
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jan 2024 04:19:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=XOOstg60;
+	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=ucmPOmXi;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.195; helo=relay3-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=web.de (client-ip=212.227.17.11; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 504 seconds by postgrey-1.37 at boromir; Thu, 25 Jan 2024 04:19:13 AEDT
+Received: from mout.web.de (mout.web.de [212.227.17.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TKnr150ZQz2yRS
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jan 2024 02:26:55 +1100 (AEDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A345160007;
-	Wed, 24 Jan 2024 15:26:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1706110010;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TGKqb8PfNbcdc7vOG6mzmbB70CQFl8QHgJOa/gqXS78=;
-	b=XOOstg60KgIbgyGgmgT6sVR+BznJZGxgtuMaNvi2uKxrvRhNy0pjmLTdmOBWrHpbzQOpxS
-	gUiZyRRXGNu/gasgAWh7ilfgenSA6py0gC5+riKvq+4tO+vAfjwYeezowvUng4cyc4v/Mt
-	oGwBLecvDGt1t2XaQfjyOaYG/KulXg4RiGl8yVc+xE//JvRuqhAxWcw7bAA6+Eewl1AViQ
-	/MUZjmldwWdDWBo8f4Vws99TzRH2Y4MtOhK/JhxY8OFw/Cy7f2GTJtGR7xmQwLRH+897pa
-	5Z2z5yCNRuXSmtflltBdnP2vfasJ9Lm/Do09I6ql4bK1psTTfe//1/331v8bTA==
-Date: Wed, 24 Jan 2024 16:26:46 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Subject: Re: [PATCH 3/4] net: wan: fsl_qmc_hdlc: Add runtime timeslots
- changes support
-Message-ID: <20240124162646.24bf9235@bootlin.com>
-In-Reply-To: <fc421c38-66b7-4d4e-abfa-051eccbf793c@linux.dev>
-References: <20240123164912.249540-1-herve.codina@bootlin.com>
-	<20240123164912.249540-4-herve.codina@bootlin.com>
-	<fc421c38-66b7-4d4e-abfa-051eccbf793c@linux.dev>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TKrKY4byHz3bfS
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jan 2024 04:19:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
+	t=1706116742; x=1706721542; i=markus.elfring@web.de;
+	bh=eZik0NQgHnxRTjoOGVz1jiYozSbIVj3TpK7roxu/iQA=;
+	h=X-UI-Sender-Class:Date:To:Cc:References:Subject:From:
+	 In-Reply-To;
+	b=ucmPOmXimqTTFngdDo2SZfzKYAUvwgeO3Ncxeu/KNI2+iIljZJ1cjX/qQRsiJju7
+	 jj/uFnYLUpTB3w97qf6G1CjD/smz62W7ZIvc6VNmVbqporrrrbRzsH6TWWrBH2M11
+	 JCFqhMkvWSfiiFnEYWcbsIrY5WifghQWCZ6jlba7rNeyFrFyaGr9JyRMD01u3HIeS
+	 K4EDd1RlLpdp6WEkJD0Qownpy0SrcJmptwIHg+ZFP3M011KdE9s78IoDhDA21KZdF
+	 p4/BOdkGen1NAfwnl2Q+imKpzlrF1JUz3caQ3N/VdNPRSP+SY+aFv0QeNfKN0pbvG
+	 RypcKGXYQ1Cge+lF+w==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.81.95]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MrwwJ-1qhJAi0Kl3-00nxrY; Wed, 24
+ Jan 2024 18:04:25 +0100
+Message-ID: <791da036-5c0d-4c96-b252-24726bc7f2f7@web.de>
+Date: Wed, 24 Jan 2024 18:04:20 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: Kunwu Chan <chentao@kylinos.cn>, kvm@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, kernel-janitors@vger.kernel.org,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>
+References: <20240124093647.479176-1-chentao@kylinos.cn>
+Subject: Re: [PATCH] KVM: PPC: code cleanup for kvmppc_book3s_irqprio_deliver
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20240124093647.479176-1-chentao@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:G0go2dhXVu0Sv5YnVpAY+1uRg0zK0HLp5MnOCn5FVZtO4VRVTPf
+ k9q/daeBYgsA02NjvmzAn4KOMTlyCurrP5801Mdn4mKysomJU90WRw7ePlw6upIqpTkv7NZ
+ hx/J7+hpeY2aNw8FtxcAp9ZkhAB5CRqbr5+4a8zmkttepfuC0gyOPkIB8mqwSrMnlOyi3gS
+ ZF2+m+O5P1khKJKI0Qlvg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:4OjEVhcVk6k=;okeH1ndEwonacKk/5t5xyr8P7eP
+ tx6gEs2O/A68R066M+zFHai4Xfz4N02eNPiEpppXOidhCqjnZgMnsW4xAIPGxp7kRs0Y+8cFR
+ RwYffE7gZFTy3de8e9CjNKUrz9Gh2Jxbv4C2BPIoaFxeaotN3H122DuYtVYT1fhOm9+yC3OU3
+ /tB/C6xC09MiWXM5Kd0RtmGfbPkb22aQH+z/0vEDqzkuHNAmKnotbYnStOgmuI4kua6sqz0QW
+ aRm+cA9ODBcTS20BRlPhIRIPYcp0QAjgjiHY5hUYlV53s7//Mk0zjVfN1OtJFB5cD1DEv9VqQ
+ sva/AgnwqYKn3DdKEwyM5TRhg37TjNtTYPJRMenmq2DwAhT8c4g2UYfV/ff/rGrowLJkbmK+R
+ m4rFFVYA8mlX2IOPvuCK0AkdseDykN0cGV75OnCrVSluZsZgEsqTJgFPtY/NGMjcm+wFLii8W
+ sSoo7585nRhlXuVu9LWpOBHKVQVuDMLArwMOrUgxCOJ9+9ld80D1hWplmU0zy9QQ5LbjlHhX9
+ DJepMzuzg2LeBjaqIqS+eO5qVjCMddvPpLLX5zwL9BpkoAIJcOFIMuj/+LIVuQKEQEH/BL9eU
+ Eb+rlD/DlFxXt8sN+2cYokS6xifVDOMNPdr40VmLFQKBscSNc2TiLdmqJU7dmbAJE2UwbOu57
+ A28VK26bYZgWxh1QrAP9IyB7HLOpgogvsYCDIY+xNMEERvhTqxoa+B6azZGrJkExJPo4yK//B
+ 7NdWTuYVdnLVd49DzkZhL7i+zIXh+jhKJLN8ppmLvZZamoxhAghhhw6NXU6sDcJo8FzRT1rLe
+ Ry2BzM6fP5IBbeAEXSJHHCioVfKIHp7/HMaJiebBUvDTz6O8Gp7qpxuoa46xYGG5/94qocR+m
+ ikHuOuUTrSeMu9rHIVzW+/GkW06R4+JSFvw5wrCP+niWrw2ji/atEYcsX/HCKA7mBSDdVSIRA
+ L5Hhgw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,150 +86,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Mark Brown <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: LKML <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Vadim,
+> If there are no plans to enable this part code in the future,
 
-On Wed, 24 Jan 2024 10:10:46 +0000
-Vadim Fedorenko <vadim.fedorenko@linux.dev> wrote:
+Will the word combination =E2=80=9Ccode part=E2=80=9D become preferred for
+a subsequent change description?
 
-[...]
-> > +static int qmc_hdlc_xlate_slot_map(struct qmc_hdlc *qmc_hdlc,
-> > +				   u32 slot_map, struct qmc_chan_ts_info *ts_info)
-> > +{
-> > +	u64 ts_mask_avail;
-> > +	unsigned int bit;
-> > +	unsigned int i;
-> > +	u64 ts_mask;
-> > +	u64 map;
-> > +
-> > +	/* Tx and Rx masks must be identical */
-> > +	if (ts_info->rx_ts_mask_avail != ts_info->tx_ts_mask_avail) {
-> > +		dev_err(qmc_hdlc->dev, "tx and rx available timeslots mismatch (0x%llx, 0x%llx)\n",
-> > +			ts_info->rx_ts_mask_avail, ts_info->tx_ts_mask_avail);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	ts_mask_avail = ts_info->rx_ts_mask_avail;
-> > +	ts_mask = 0;
-> > +	map = slot_map;
-> > +	bit = 0;
-> > +	for (i = 0; i < 64; i++) {
-> > +		if (ts_mask_avail & BIT_ULL(i)) {
-> > +			if (map & BIT_ULL(bit))
-> > +				ts_mask |= BIT_ULL(i);
-> > +			bit++;
-> > +		}
-> > +	}
-> > +
-> > +	if (hweight64(ts_mask) != hweight64(map)) {
-> > +		dev_err(qmc_hdlc->dev, "Cannot translate timeslots 0x%llx -> (0x%llx,0x%llx)\n",
-> > +			map, ts_mask_avail, ts_mask);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	ts_info->tx_ts_mask = ts_mask;
-> > +	ts_info->rx_ts_mask = ts_mask;
-> > +	return 0;
-> > +}
-> > +
-> > +static int qmc_hdlc_xlate_ts_info(struct qmc_hdlc *qmc_hdlc,
-> > +				  const struct qmc_chan_ts_info *ts_info, u32 *slot_map)
-> > +{
-> > +	u64 ts_mask_avail;
-> > +	unsigned int bit;
-> > +	unsigned int i;
-> > +	u64 ts_mask;
-> > +	u64 map;
-> > +  
-> 
-> Starting from here ...
-> 
-> > +	/* Tx and Rx masks must be identical */
-> > +	if (ts_info->rx_ts_mask_avail != ts_info->tx_ts_mask_avail) {
-> > +		dev_err(qmc_hdlc->dev, "tx and rx available timeslots mismatch (0x%llx, 0x%llx)\n",
-> > +			ts_info->rx_ts_mask_avail, ts_info->tx_ts_mask_avail);
-> > +		return -EINVAL;
-> > +	}
-> > +	if (ts_info->rx_ts_mask != ts_info->tx_ts_mask) {
-> > +		dev_err(qmc_hdlc->dev, "tx and rx timeslots mismatch (0x%llx, 0x%llx)\n",
-> > +			ts_info->rx_ts_mask, ts_info->tx_ts_mask);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	ts_mask_avail = ts_info->rx_ts_mask_avail;
-> > +	ts_mask = ts_info->rx_ts_mask;
-> > +	map = 0;
-> > +	bit = 0;
-> > +	for (i = 0; i < 64; i++) {
-> > +		if (ts_mask_avail & BIT_ULL(i)) {
-> > +			if (ts_mask & BIT_ULL(i))
-> > +				map |= BIT_ULL(bit);
-> > +			bit++;
-> > +		}
-> > +	}
-> > +
-> > +	if (hweight64(ts_mask) != hweight64(map)) {
-> > +		dev_err(qmc_hdlc->dev, "Cannot translate timeslots (0x%llx,0x%llx) -> 0x%llx\n",
-> > +			ts_mask_avail, ts_mask, map);
-> > +		return -EINVAL;
-> > +	}
-> > +  
-> 
-> till here the block looks like copy of the block from previous function.
-> It worth to make a separate function for it, I think.
-> 
-> > +	if (map >= BIT_ULL(32)) {
-> > +		dev_err(qmc_hdlc->dev, "Slot map out of 32bit (0x%llx,0x%llx) -> 0x%llx\n",
-> > +			ts_mask_avail, ts_mask, map);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	*slot_map = map;
-> > +	return 0;
-> > +}
-> > +
-[...]
 
-I am not so sure. There are slighty differences between the two functions.
-The error messages and, in particular, the loop in qmc_hdlc_xlate_slot_map() is:
-	--- 8< ---
-	ts_mask_avail = ts_info->rx_ts_mask_avail;
-	ts_mask = 0;
-	map = slot_map;
-	bit = 0;
-	for (i = 0; i < 64; i++) {
-		if (ts_mask_avail & BIT_ULL(i)) {
-			if (map & BIT_ULL(bit))
-				ts_mask |= BIT_ULL(i);
-			bit++;
-		}
-	}
-	--- 8< ---
+> we can remove this dead code.
 
-whereas it is the following in qmc_hdlc_xlate_ts_info():
-	--- 8< ---
-	ts_mask_avail = ts_info->rx_ts_mask_avail;
-	ts_mask = ts_info->rx_ts_mask;
-	map = 0;
-	bit = 0;
-	for (i = 0; i < 64; i++) {
-		if (ts_mask_avail & BIT_ULL(i)) {
-			if (ts_mask & BIT_ULL(i))
-				map |= BIT_ULL(bit);
-			bit++;
-		}
-	}
-	--- 8< ---
+And omit another blank line accordingly?
 
-ts_map and map initializations are not the same, i and bit are not used for
-the same purpose and the computed value is not computed based on the same
-information.
-
-With that pointed, I am not sure that having some common code for both
-function will be relevant. Your opinion ?
-
-Best regards,
-Hervé
+Regards,
+Markus
