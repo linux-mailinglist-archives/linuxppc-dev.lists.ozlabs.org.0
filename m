@@ -2,130 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09C1B83CEA1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jan 2024 22:30:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E8183CFB6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jan 2024 23:56:54 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=CgHX+kYN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=u/k5uY+I;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TLYry6dYnz3vqD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jan 2024 08:30:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TLbmh5Clyz3cT8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jan 2024 09:56:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=CgHX+kYN;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=u/k5uY+I;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:261c::600; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20600.outbound.protection.outlook.com [IPv6:2a01:111:f403:261c::600])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TLYrB5ZHMz3cQT
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jan 2024 08:29:46 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bTmdPBLyzVfsLJkUeQVwEaIPcVBNQNAYYZePX1flMY08OAmTW8sUEge/H+OUyV+5Z9j2w6xoy4AssyF7G7c4+JW93OQTjpZaELgfjCqy/oJZ6sVcYaDhfjuJLoXnU7add6lZn6EuOi1fZdL6XaDfe8pZ5KWFyeZMDtDFsKzgcOAkKvVWbUa8DnXYmmYfa5DCjMSK6UXHlPgsjPyVO8Eotml/pURSUllh7d92OGGytbflDBTJb6fR1uIMi643ZE2hlG00L2ba6Jt8tTrqVQZ5FxhtH/jzQAP4Ptntp5zTetYLns8epQ0vQo44qRityE41HySYsv5a90PfqpYUGd48yw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XXPk8IhJcL70qrnUX3KfO+K3yxqsxYa8OKHoknbxraE=;
- b=AYh+IvJmSGvYmeioKdt1c9t+7Qcuo+Pwi1GeNtIA2KRlJaAIlYeL0I6YyyhKT9Shr5iHhJtPlZrraBBIcsDsGggnQhSoFv5IXbfzd14lAlMVQ739e2lk+fgzXTDcC8ZVV1PKw7ElvT44uKogGVIk8xLp4O//2iXZz/SbJzjmZ8zoN5lEomDw01aOD+8aNILfo76XKy5+3nB5Bam5yqNbHp+Vv2Y2+53tNPh3Bcc2TT2mHPprNySnPxCMd6mGMmijger3I/qxPsOIacYdupCsUfuUeiGk/pILMhLuIioe/WQvzleiJjfeAMXF/n33ciEIfbUB5OIIDJmRqNVGFvypnQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XXPk8IhJcL70qrnUX3KfO+K3yxqsxYa8OKHoknbxraE=;
- b=CgHX+kYN3HzQpBGSPHA4yeMxLViYonU8b6ff/asoCUOzbrbsZsRKNTipKfbT/WhzkGgpiFk/JWIRsRR0Q5vYllVM8f2yFIk/vzHoan8trBIQCbT1BFLB7KPCftDqW3lXKwsUG1tgdUUs0m6pe312/dPFNBDS9dVrq4yABX9t22iZQeioBYXpt0y1dNK4OWHazx2655ydiJ8nA+uttnnXonnOOVqjXfcbbqlO3EQBPDLRfVdxx4/nRgBI87lZTukxi9F5Tzk1Jfbm/mQMJCBA2DNWQIEgwFXkhY/nunlGwjbk4xvQNKgCsraSvsd+gl4QR0enebsDdaI1+g+0fjFPiA==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MR1P264MB2308.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:35::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.26; Thu, 25 Jan
- 2024 21:29:28 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::9f77:c0ff:cd22:ae96]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::9f77:c0ff:cd22:ae96%4]) with mapi id 15.20.7228.027; Thu, 25 Jan 2024
- 21:29:28 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: David Hildenbrand <david@redhat.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 08/15] mm/pgtable: make pte_next_pfn() independent of
- set_ptes()
-Thread-Topic: [PATCH v2 08/15] mm/pgtable: make pte_next_pfn() independent of
- set_ptes()
-Thread-Index: AQHaT8VgySxvUt6KCEiNhWlHBfX7NrDrC5kA
-Date: Thu, 25 Jan 2024 21:29:27 +0000
-Message-ID: <661876d8-cbf2-4540-96d5-c522b285a2a0@csgroup.eu>
-References: <20240125193227.444072-1-david@redhat.com>
- <20240125193227.444072-9-david@redhat.com>
-In-Reply-To: <20240125193227.444072-9-david@redhat.com>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla Thunderbird
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|MR1P264MB2308:EE_
-x-ms-office365-filtering-correlation-id: 733121eb-a69a-4660-6588-08dc1decb5d3
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  A+3adguQEOtrU+DvkMHBTugNMn/kQ4ix0i3Xuec5HOvPGEvNRw6zE1iQ6ebbLuVElqSUbAEcIqKdcjaPCeg9RWmcfaq5edCImxokZbmETUR2FtbvaoGLUgmbgHwewjg0EfSnXpLyhEBJDJ6+hv9Eq5CL/9HoTMUjcXVKEtS6nUQSMX1jR3lUwhdmtGNLqUMAu0tOHaIdGs3VHFQ2+m32T1wdahe/5Ej/JRNvFIaUk0/VeZS8V0w+nEW4nn4DlmJTp9J6AXggSJkiPxU6+gDOaU8kaGnhNYCTTYu8U/D7k4z06F207O+SAhQhKFZDIE8ZkWe+zFTrZ19rrAutSref15/eq9kj2ACwZ2olV2oHQicerL9c0rteDaxW94Hh8gY7RqrVIwEqgGxFRELk0vn3Gf262SNXA+COM2Ep9JCkBSr8TEJqIVf8+TQei5T9Jk+tc1hKqzMLk+dVVtOMdTa75i4Fbupx+ahTMXCZi7JkJyYmeQEifzIjB8Td+oiYeKxTqRLujmEpoe7FqTvZ7HxeChKD9Mf+8JxG/OaHLZSJ4/SuEnMB9PMpy2Qhr7Ftqhlbn/GN/OYYsAlolVKutTjfi8ipcLjfjpSeIRvP8f246b/+xPtrmfA2DlCNKUy29FI7rVkX1k2vhEHvljAHJkUXusjOlf9rgiB/FT7E4Hi6g0/EerGY/jBBWNsQuhQ147fu
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(376002)(366004)(39860400002)(396003)(346002)(136003)(230922051799003)(1800799012)(451199024)(64100799003)(186009)(91956017)(31696002)(64756008)(86362001)(122000001)(6486002)(66946007)(478600001)(66446008)(71200400001)(76116006)(54906003)(66476007)(66556008)(316002)(110136005)(38100700002)(2616005)(6512007)(6506007)(26005)(8936002)(8676002)(4326008)(44832011)(83380400001)(66574015)(7416002)(41300700001)(2906002)(36756003)(31686004)(38070700009)(5660300002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?Tm45bEJpQUdyYmZ2bjU1bFlBVmpIZ2R5VEdDV0ZGT2NWTS9ZdjRWdXZXQ0hu?=
- =?utf-8?B?TEN2U1RtK3N5Ynk2cW9TdzFrclgvQ0lkWUhRaHNpUUlkdGltdnA1WDJCM3R1?=
- =?utf-8?B?NGtKUzR0clFEVzlUOVVqUURaeFczN0VvWWNTT09Md0NRRnZpUzNCdittMTlU?=
- =?utf-8?B?T2gwRHhUSFR0Q2Fpc0sxMng3QnFBVllSQlAvWmhRdVd1VlFkVUtZZ0JKYmU1?=
- =?utf-8?B?Uk9mWXBvNXh3WkNOWHg5UWVoREY2WkpEaFJEMEM1dzNWdkJ2VjB4YzdWb0dG?=
- =?utf-8?B?d0FGeVI2Wm9vSEVwQytGdjZvNmFHTWJkNG0wMUpLck8za1pNWjFvWk5NcGYr?=
- =?utf-8?B?OVZ2cE9nZmd2aExBVFVBSjVQbVhoUG1nWTRpMURoV1k4dloyV3krYlUvd0c5?=
- =?utf-8?B?N05jMDFvbGZrT0RUdUNUcHlMc1doWVh6ZmRwblVqcnBNNmJjczA4a2xlOEN3?=
- =?utf-8?B?ZDhHV3QvSjdtRkkwYXdZQ1E2NmFRcTBRRnYxQU9OOE5Udkwyc2tFLzR4aXlo?=
- =?utf-8?B?L1JFT0NnOGNucjhYN2grVVFIa3NHSzFpMEJ2Sk9neHpuUUlDTGpLMUlqTjRz?=
- =?utf-8?B?RHVEMlVLb0wxVWRzWnZHOWlxOGJZenF1RjFiTUdLaDQ1d0F3THE5OXgwMjF4?=
- =?utf-8?B?RDUwSkVnNXR0Z0J6K1EyN0VhRi9Wd25oUjFZaEVHQURsNmxKM1dkTmEyeG4y?=
- =?utf-8?B?TDhuUC95dWxUM2FrdFl5V3ViY2RuWkxzK0VQUE4wWmZTazc0QzR0RUJqd01N?=
- =?utf-8?B?QXhaTHdBUGpjc2YvNzhORjZxeXp4enpzb3pMVjBLbUhIc0tqTlE2SW9LaXF1?=
- =?utf-8?B?THRzV3NVclUxajBNa0J2V3lzcUJMeWRwemNvNWZiRGk2MXdKVUltVVdVTmk3?=
- =?utf-8?B?SHUxYmU5QWhzNW9PQkdGUUZNbmFpZSs1L2NURHl1S1ZML0R6YjBwd3BhVzM5?=
- =?utf-8?B?cUZCaGwzRGtsdDF1QXlzajdSa05jelAvaEdiZWNldWxWWkxROWhNSWl0Kzcv?=
- =?utf-8?B?Mm90cndPbWpPeDBuNGZZVGlNV01Ldy9TUC85cmVFaC9tbzBVdkZQcEgrOWIv?=
- =?utf-8?B?TWQ3blllMzB5eGJmVG1vYko1dnJ2QjYreGM4aUdzWlNGV3pHN1RONG1RNElG?=
- =?utf-8?B?ZGdHakpvODkyajVUUGxZSUVGNGM4S1pGL0grYmRpY2tHZXp6RGJPYk1uV0J5?=
- =?utf-8?B?T3p5UjNWbHRLbFpKVmduVjhIWGVYNEZINVhDOFBWdEtMYUxiclBoTXJrRkpt?=
- =?utf-8?B?NHkvRVFjUmIzWUgyZEZMNnREMFk5SlYyb0p1QXFCajBXYjFVODV6KzlIRXVF?=
- =?utf-8?B?dFNvQm92TlpsdTJVSGV3NkRodEExdTBPQ0g5bVNvbzMyM2c4UnBuR2d4Qkxt?=
- =?utf-8?B?Q0hjQXUxSWVDdUlHN1pDd0lCejNob21ZL1VxRmQzT2F6YWNkUGVNQ2NNcHBX?=
- =?utf-8?B?NWgrRzFoMVlEcG13TU9nbzhDVDRBWjZzL3BVOUJlTWJWdS82UmlSWXk0VzJn?=
- =?utf-8?B?WDVNTlRLd3orM20rWDlqTGIrc3BxUnQwNVNPazRQTk5LWkxGNlZLb2xEOE5N?=
- =?utf-8?B?UHRhb2ZFTEN6VDRTcVpxRk1XdWdNNWsyRjdnSFJHUlpaeG1ZMlJkM21IQXhy?=
- =?utf-8?B?RE8yQ01mMnMxM0ovd0ZpZVVSOFlIb2RwTGcvQ0NWeWp0K3dFOUZPQ3dJcDJl?=
- =?utf-8?B?MTlHVHh3d1FvUCt1UndUU0J5OERKSHBxVmZpTGpxakR0T3dGWk1uNmpqVURy?=
- =?utf-8?B?QXRydkhzeGV3SWI5YU9GRTRQL2o1YzNkRnFlMng4YjhCK2pqc0FTK0crdGRJ?=
- =?utf-8?B?WEhRWGc4elZpV1k5cVJmNlJIY1hBYjJXaVB1Yld0ZkdrMmhpdmVVbW9sMUY2?=
- =?utf-8?B?UXNvbWljcDBwUTN1bmRTb2o1Zm85cFR2OEtTbHFBQ09kZHZxVW40ZDcwY1Av?=
- =?utf-8?B?bGNqVmhnUDJEREFQN0lUTlFTbTVrUkhTdUVreG1ISXRGN3VpcittVDJNb3dP?=
- =?utf-8?B?b0JYUm0wQzhWZjlPZTdldC9IemRSSmtUeWc0YVAxckwvV3Y4U2tHcVo4WkNT?=
- =?utf-8?B?NFJ0Z3I3eTFUQTZMejVVclFoK0VmZ3dFWUVHWFM4Y29VWEJOWHp5L0gyL3Za?=
- =?utf-8?B?QlhCMzAyNk5GclFlWkRzZ3dvNjBHOHk1bkZxZVB3bkFBWGV5Y1UxYmJwNURp?=
- =?utf-8?B?NFE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <629A15BC207A0446B8FEDCDF0DF82E3F@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TLbll4Kz8z3bn6
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jan 2024 09:56:03 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id C7A55622B3;
+	Thu, 25 Jan 2024 22:56:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DA3C433F1;
+	Thu, 25 Jan 2024 22:55:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706223360;
+	bh=Bx1oIdTdd86nzue6xvhtwCp4wPQwGjG0ILCqZqgINO8=;
+	h=From:Subject:Date:To:Cc:From;
+	b=u/k5uY+I+ALGKvsZhJOKy+elEEMTuGK4js+9E2aa8C+jdW7zCUmcFB09uzv+3CoZu
+	 FWBWHBaHi7qqt5eN22oRGai4acZwbSD7+wTeYGd4bp/1BTWPKdzypKh5/upZuxCBTI
+	 DwwCb0OmIwH8ErHvyqJ9tF2AwVh/f9Tc6jYY5uvefvVeofbszLGkSgD9Psw/Y/fOqO
+	 4JubQhTEYhKN/h+N4+luvLNiDNT38sywwwjB3NkWClFOXDzTsmqYGb6NEb82khEZvP
+	 LyqTCcJ5Mv1GCoc5ko76xtnLjFlNccOpbLWrEyB9x/zp7+IcLe5lDiJ5iq6cetYBpb
+	 6LFQ6NVeleKSA==
+From: Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 00/11] Bump the minimum supported version of LLVM to 13.0.1
+Date: Thu, 25 Jan 2024 15:55:06 -0700
+Message-Id: <20240125-bump-min-llvm-ver-to-13-0-1-v1-0-f5ff9bda41c5@kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 733121eb-a69a-4660-6588-08dc1decb5d3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Jan 2024 21:29:27.9363
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: uF09p8j+ws1ZJXz7vE6EjQf7u6aYp9b2r1ZKutdSH7k9HxgIZQl9Zm2h6X+jfAjF9V5aQY/iqGqoEfyygCwULG+tkuiBvQV5CO6b5wtGTk8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR1P264MB2308
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMrmsmUC/x3MQQqDMBAF0KvIrPshkwSpvUrpojajHTBREhsK4
+ t0bunybd1CRrFLo1h2UpWrRNTXwpaPX+5lmgYZmssZ6w9Zj/MQNUROWpUZUydhXsIMBww3T1Yf
+ g+pEHasOWZdLvf78/zvMHzVeZdG0AAAA=
+To: akpm@linux-foundation.org, masahiroy@kernel.org
+X-Mailer: b4 0.13-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5041; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=Bx1oIdTdd86nzue6xvhtwCp4wPQwGjG0ILCqZqgINO8=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDKmbnv0VWied95P5q0eXfkzlxrZNofbTU+K5bbiVjef9U
+ LF9Lp/YUcrCIMbFICumyFL9WPW4oeGcs4w3Tk2CmcPKBDKEgYtTACbyoJSRYdfLJeuavmdyeR6u
+ +xn7PM6bZ9E7RT/WZzFKl4VUYs0DHjEyPAwMYX+6+56b/awFIlsKOvdcOn9vr4jAiuMznF5/qmc
+ T5wMA
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -137,30 +68,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "Naveen N.
- Rao" <naveen.n.rao@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Ryan Roberts <ryan.roberts@arm.com>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "David S.
- Miller" <davem@davemloft.net>
+Cc: mark.rutland@arm.com, catalin.marinas@arm.com, dave.hansen@linux.intel.com, linux-kernel@vger.kernel.org, aou@eecs.berkeley.edu, linux-hardening@vger.kernel.org, linux-riscv@lists.infradead.org, will@kernel.org, ardb@kernel.org, keescook@chromium.org, x86@kernel.org, linux@armlinux.org.uk, aneesh.kumar@kernel.org, mingo@redhat.com, naveen.n.rao@linux.ibm.com, llvm@lists.linux.dev, nicolas@fjasle.eu, linux-kbuild@vger.kernel.org, npiggin@gmail.com, Nathan Chancellor <nathan@kernel.org>, bp@alien8.de, paul.walmsley@sifive.com, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, patches@lists.linux.dev, conor@kernel.org, palmer@dabbelt.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDI1LzAxLzIwMjQgw6AgMjA6MzIsIERhdmlkIEhpbGRlbmJyYW5kIGEgw6ljcml0wqA6
-DQo+IExldCdzIHByb3ZpZGUgcHRlX25leHRfcGZuKCksIGluZGVwZW5kZW50bHkgb2Ygc2V0X3B0
-ZXMoKS4gVGhpcyBhbGxvd3MgZm9yDQo+IHVzaW5nIHRoZSBnZW5lcmljIHB0ZV9uZXh0X3Bmbigp
-IHZlcnNpb24gaW4gc29tZSBhcmNoLXNwZWNpZmljIHNldF9wdGVzKCkNCj4gaW1wbGVtZW50YXRp
-b25zLCBhbmQgcHJlcGFyZXMgZm9yIHJldXNpbmcgcHRlX25leHRfcGZuKCkgaW4gb3RoZXIgY29u
-dGV4dC4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IERhdmlkIEhpbGRlbmJyYW5kIDxkYXZpZEByZWRo
-YXQuY29tPg0KDQpSZXZpZXdlZC1ieTogQ2hyaXN0b3BoZSBMZXJveSA8Y2hyaXN0b3BoZS5sZXJv
-eUBjc2dyb3VwLmV1Pg0KDQo+IC0tLQ0KPiAgIGluY2x1ZGUvbGludXgvcGd0YWJsZS5oIHwgMiAr
-LQ0KPiAgIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQ0KPiAN
-Cj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvbGludXgvcGd0YWJsZS5oIGIvaW5jbHVkZS9saW51eC9w
-Z3RhYmxlLmgNCj4gaW5kZXggZjZkMGUzNTEzOTQ4YS4uMzUxY2Q5ZGM3MTk0ZiAxMDA2NDQNCj4g
-LS0tIGEvaW5jbHVkZS9saW51eC9wZ3RhYmxlLmgNCj4gKysrIGIvaW5jbHVkZS9saW51eC9wZ3Rh
-YmxlLmgNCj4gQEAgLTIxMiw3ICsyMTIsNiBAQCBzdGF0aWMgaW5saW5lIGludCBwbWRfZGlydHko
-cG1kX3QgcG1kKQ0KPiAgICNkZWZpbmUgYXJjaF9mbHVzaF9sYXp5X21tdV9tb2RlKCkJZG8ge30g
-d2hpbGUgKDApDQo+ICAgI2VuZGlmDQo+ICAgDQo+IC0jaWZuZGVmIHNldF9wdGVzDQo+ICAgDQo+
-ICAgI2lmbmRlZiBwdGVfbmV4dF9wZm4NCj4gICBzdGF0aWMgaW5saW5lIHB0ZV90IHB0ZV9uZXh0
-X3BmbihwdGVfdCBwdGUpDQo+IEBAIC0yMjEsNiArMjIwLDcgQEAgc3RhdGljIGlubGluZSBwdGVf
-dCBwdGVfbmV4dF9wZm4ocHRlX3QgcHRlKQ0KPiAgIH0NCj4gICAjZW5kaWYNCj4gICANCj4gKyNp
-Zm5kZWYgc2V0X3B0ZXMNCj4gICAvKioNCj4gICAgKiBzZXRfcHRlcyAtIE1hcCBjb25zZWN1dGl2
-ZSBwYWdlcyB0byBhIGNvbnRpZ3VvdXMgcmFuZ2Ugb2YgYWRkcmVzc2VzLg0KPiAgICAqIEBtbTog
-QWRkcmVzcyBzcGFjZSB0byBtYXAgdGhlIHBhZ2VzIGludG8uDQo=
+Hi all,
+
+This series bumps the minimum supported version of LLVM for building the
+kernel to 13.0.1. The first patch does the bump and all subsequent
+patches clean up all the various workarounds and checks for earlier
+versions.
+
+Quoting the first patch's commit message for those that were only on CC
+for the clean ups:
+
+  When __builtin_mul_overflow() has arguments that differ in terms of
+  signedness and width, LLVM may generate a libcall to __muloti4 because
+  it performs the checks in terms of 65-bit multiplication. This issue
+  becomes harder to hit (but still possible) after LLVM 12.0.0, which
+  includes a special case for matching widths but different signs.
+
+  To gain access to this special case, which the kernel can take advantage
+  of when calls to __muloti4 appear, bump the minimum supported version of
+  LLVM for building the kernel to 13.0.1. 13.0.1 was chosen because there
+  is minimal impact to distribution support while allowing a few more
+  workarounds to be dropped in the kernel source than if 12.0.0 were
+  chosen. Looking at container images of up to date distribution versions:
+
+    archlinux:latest              clang version 16.0.6
+    debian:oldoldstable-slim      clang version 7.0.1-8+deb10u2 (tags/RELEASE_701/final)
+    debian:oldstable-slim         Debian clang version 11.0.1-2
+    debian:stable-slim            Debian clang version 14.0.6
+    debian:testing-slim           Debian clang version 16.0.6 (19)
+    debian:unstable-slim          Debian clang version 16.0.6 (19)
+    fedora:38                     clang version 16.0.6 (Fedora 16.0.6-3.fc38)
+    fedora:latest                 clang version 17.0.6 (Fedora 17.0.6-1.fc39)
+    fedora:rawhide                clang version 17.0.6 (Fedora 17.0.6-1.fc40)
+    opensuse/leap:latest          clang version 15.0.7
+    opensuse/tumbleweed:latest    clang version 17.0.6
+    ubuntu:focal                  clang version 10.0.0-4ubuntu1
+    ubuntu:latest                 Ubuntu clang version 14.0.0-1ubuntu1.1
+    ubuntu:rolling                Ubuntu clang version 16.0.6 (15)
+    ubuntu:devel                  Ubuntu clang version 17.0.6 (3)
+
+  The only distribution that gets left behind is Debian Bullseye, as the
+  default version is 11.0.1; other distributions either have a newer
+  version than 13.0.1 or one older than the current minimum of 11.0.0.
+  Debian has easy access to more recent LLVM versions through
+  apt.llvm.org, so this is not as much of a concern. There are also the
+  kernel.org LLVM toolchains, which should work with distributions with
+  glibc 2.28 and newer.
+
+  Another benefit of slimming up the number of supported versions of LLVM
+  for building the kernel is reducing the build capacity needed to support
+  a matrix that builds with each supported version, which allows a matrix
+  to reallocate the freed up build capacity towards something else, such
+  as more configuration combinations.
+
+This passes my build matrix with all supported versions.
+
+This is based on Andrew's mm-nonmm-unstable to avoid trivial conflicts
+with my series to update the LLVM links across the repository [1] but I
+can easily rebase it to linux-kbuild if Masahiro would rather these
+patches go through there (and defer the conflict resolution to the merge
+window).
+
+[1]: https://lore.kernel.org/20240109-update-llvm-links-v1-0-eb09b59db071@kernel.org/
+
+---
+Nathan Chancellor (11):
+      kbuild: Raise the minimum supported version of LLVM to 13.0.1
+      Makefile: Drop warn-stack-size plugin opt
+      x86: Drop stack-alignment plugin opt
+      ARM: Remove Thumb2 __builtin_thread_pointer workaround for Clang
+      arm64: Kconfig: Clean up tautological LLVM version checks
+      powerpc: Kconfig: Remove tautology in CONFIG_COMPAT
+      riscv: Remove MCOUNT_NAME workaround
+      riscv: Kconfig: Remove version dependency from CONFIG_CLANG_SUPPORTS_DYNAMIC_FTRACE
+      fortify: Drop Clang version check for 12.0.1 or newer
+      lib/Kconfig.debug: Update Clang version check in CONFIG_KCOV
+      compiler-clang.h: Update __diag_clang() macros for minimum version bump
+
+ Documentation/process/changes.rst |  2 +-
+ Makefile                          |  8 --------
+ arch/arm/include/asm/current.h    |  8 +-------
+ arch/arm64/Kconfig                |  5 +----
+ arch/powerpc/Kconfig              |  1 -
+ arch/riscv/Kconfig                |  2 --
+ arch/riscv/include/asm/ftrace.h   | 14 ++------------
+ arch/riscv/kernel/mcount.S        | 10 +++++-----
+ arch/x86/Makefile                 |  6 ------
+ include/linux/compiler-clang.h    |  8 ++------
+ lib/Kconfig.debug                 |  2 +-
+ scripts/min-tool-version.sh       |  2 +-
+ scripts/recordmcount.pl           |  2 +-
+ security/Kconfig                  |  2 --
+ 14 files changed, 15 insertions(+), 57 deletions(-)
+---
+base-commit: 979741ebd48f75ed6d101c7290e3325340d361ff
+change-id: 20240124-bump-min-llvm-ver-to-13-0-1-39f84dd36b19
+
+Best regards,
+-- 
+Nathan Chancellor <nathan@kernel.org>
+
