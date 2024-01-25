@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6BDB83CC69
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jan 2024 20:38:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ACA683CC6E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jan 2024 20:38:55 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CW6n8Rjx;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CW6n8Rjx;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DX86JVOC;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DX86JVOC;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TLWMP5VKbz3vgb
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jan 2024 06:38:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TLWNF2RWyz3vjZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jan 2024 06:38:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CW6n8Rjx;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CW6n8Rjx;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DX86JVOC;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DX86JVOC;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TLWFr31Z4z3cVV
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jan 2024 06:33:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TLWFv1xx4z3cTM
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jan 2024 06:33:23 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706211197;
+	s=mimecast20190719; t=1706211200;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HOFElmHyy38IK1/HVpenWSDjKK2a/ajysR8u0SxNo40=;
-	b=CW6n8RjxrURyoj4EoncwQAD8EfO4pscRLUFD7i1bGRa4Mv6qW3r9majRliIktVlYZMcmBV
-	03pUJkLQSiMFhHbl0nhEw7PsLpMdNlNBS/TgrsL/KcMwdYGB9/7k8/YOge2YQ6HTzeF9F+
-	txZkcP8gwIRt5pg9ztp0egaMcErVsLQ=
+	bh=AR2hQWewzUwvICKUVjlsr+tzr4A8u7nsZckmD3jQawo=;
+	b=DX86JVOCOZHRQGbJyQCPHc/F9VDADMkzamE4aPMUnVZxVZjahDTL51uWQOQStjsvAwi4Hx
+	sRyHP28UJ5sT6vjW0a6YSwFcOkRiuWiQGSyfSwx/Kdrt0To33zQuLn+M81RT90w93eoOXM
+	rlKwqWkwtm+AeSSi9vR8GXFbc4+bNMY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706211197;
+	s=mimecast20190719; t=1706211200;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HOFElmHyy38IK1/HVpenWSDjKK2a/ajysR8u0SxNo40=;
-	b=CW6n8RjxrURyoj4EoncwQAD8EfO4pscRLUFD7i1bGRa4Mv6qW3r9majRliIktVlYZMcmBV
-	03pUJkLQSiMFhHbl0nhEw7PsLpMdNlNBS/TgrsL/KcMwdYGB9/7k8/YOge2YQ6HTzeF9F+
-	txZkcP8gwIRt5pg9ztp0egaMcErVsLQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-213-Hevm4ONKNRujmourt_4mew-1; Thu, 25 Jan 2024 14:33:10 -0500
-X-MC-Unique: Hevm4ONKNRujmourt_4mew-1
+	bh=AR2hQWewzUwvICKUVjlsr+tzr4A8u7nsZckmD3jQawo=;
+	b=DX86JVOCOZHRQGbJyQCPHc/F9VDADMkzamE4aPMUnVZxVZjahDTL51uWQOQStjsvAwi4Hx
+	sRyHP28UJ5sT6vjW0a6YSwFcOkRiuWiQGSyfSwx/Kdrt0To33zQuLn+M81RT90w93eoOXM
+	rlKwqWkwtm+AeSSi9vR8GXFbc4+bNMY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-353-WrT9vdwqP36DK-6PPc3Ylg-1; Thu,
+ 25 Jan 2024 14:33:17 -0500
+X-MC-Unique: WrT9vdwqP36DK-6PPc3Ylg-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 708AB8350EB;
-	Thu, 25 Jan 2024 19:33:09 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 459E7383CCE8;
+	Thu, 25 Jan 2024 19:33:15 +0000 (UTC)
 Received: from t14s.redhat.com (unknown [10.39.193.154])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 644EE492BC6;
-	Thu, 25 Jan 2024 19:33:04 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id B2F94492BC6;
+	Thu, 25 Jan 2024 19:33:09 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2 06/15] s390/pgtable: define PFN_PTE_SHIFT
-Date: Thu, 25 Jan 2024 20:32:18 +0100
-Message-ID: <20240125193227.444072-7-david@redhat.com>
+Subject: [PATCH v2 07/15] sparc/pgtable: define PFN_PTE_SHIFT
+Date: Thu, 25 Jan 2024 20:32:19 +0100
+Message-ID: <20240125193227.444072-8-david@redhat.com>
 In-Reply-To: <20240125193227.444072-1-david@redhat.com>
 References: <20240125193227.444072-1-david@redhat.com>
 MIME-Version: 1.0
@@ -89,22 +89,22 @@ simply define PFN_PTE_SHIFT, required by pte_next_pfn().
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- arch/s390/include/asm/pgtable.h | 2 ++
+ arch/sparc/include/asm/pgtable_64.h | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
-index 1299b56e43f6f..4b91e65c85d97 100644
---- a/arch/s390/include/asm/pgtable.h
-+++ b/arch/s390/include/asm/pgtable.h
-@@ -1316,6 +1316,8 @@ pgprot_t pgprot_writecombine(pgprot_t prot);
- #define pgprot_writethrough	pgprot_writethrough
- pgprot_t pgprot_writethrough(pgprot_t prot);
+diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+index a8c871b7d7860..652af9d63fa29 100644
+--- a/arch/sparc/include/asm/pgtable_64.h
++++ b/arch/sparc/include/asm/pgtable_64.h
+@@ -929,6 +929,8 @@ static inline void __set_pte_at(struct mm_struct *mm, unsigned long addr,
+ 	maybe_tlb_batch_add(mm, addr, ptep, orig, fullmm, PAGE_SHIFT);
+ }
  
 +#define PFN_PTE_SHIFT		PAGE_SHIFT
 +
- /*
-  * Set multiple PTEs to consecutive pages with a single call.  All PTEs
-  * are within the same folio, PMD and VMA.
+ static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
+ 		pte_t *ptep, pte_t pte, unsigned int nr)
+ {
 -- 
 2.43.0
 
