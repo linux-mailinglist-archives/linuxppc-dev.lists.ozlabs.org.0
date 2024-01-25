@@ -1,58 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E190A83C03A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jan 2024 12:07:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B1D783C024
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jan 2024 12:05:40 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YG91eQM7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V5kE1X1L;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TLJ1l5Y3mz3cQj
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jan 2024 22:07:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TLJ0214ktz3ckN
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jan 2024 22:05:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YG91eQM7;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V5kE1X1L;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.93; helo=mgamail.intel.com; envelope-from=qingshun.wang@linux.intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Thu, 25 Jan 2024 17:30:36 AEDT
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.13; helo=mgamail.intel.com; envelope-from=qingshun.wang@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TL9th31zzz2yq4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jan 2024 17:30:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TL9sr69XRz2xLW
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jan 2024 17:29:52 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706164236; x=1737700236;
+  t=1706164193; x=1737700193;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=+O6GABKRQ2LNWvey5j+xqRNX728ozxBB63IJoOeS85o=;
-  b=YG91eQM7QxQtbMJV0GqJvFTt2GzqMtRf/9NrmRuJ644xUEi67u/FGTid
-   b3H8vSEO9udOaU5F+MaXhhOAsiikaDzIcyp46YMtiyWEdUVKCDmRXHD/l
-   yrKB3daCDiFYVZLSzu9Lt3Ju9om5uAaih4OH8uMhnB1SUDOkPZjeMGpoP
-   DwAQPHneEu2Oh4GK7oiQBxT1d6J6W8KpTEvBHx037BsJLY2BCYoAKN1NG
-   +8FHt+hmHyjjkazATJ9aYRP/jxSpzTm88yawTTcqc+4auWcfyYKjjPPnj
-   IWUWr/KgiKln5ZC11d6N5YmBhOYMCWksMsMErOSAfK711ndno0q1EH++3
+  bh=x32LOme0VCi24BOXE0bhRSdLzmkLr19AHRZy9FC+YGQ=;
+  b=V5kE1X1L3HA13xHhwNeeTKy/DPLG6YmoGvBLrAuXX5uF7iXQsyeuvstV
+   /eMs++v3WEwHm+VVFqPyv6kDjQ2r2gDc0R1U0LqfRYR0lg8QtdymejnCM
+   kLIYjMEhKqebJm3vFuURRLXtb0CpH5KI3qLueZkoqBi8J9rYXSN0iJ1kf
+   pSvdr21UVqrKx/bvcbtyrKAjCwkYlL6xSvAtOJ9tDnfG1SKjSt05uCihv
+   J3edoo6TN9cGEG37NHLEKGcjxIUS+cWk0F3jQHC7xSOZm5ixe1LEvGvZw
+   HN6VL6AyV+WZZ2gq6bfzvcGZz4y+xj30TClnvShmfWdVb/zzwktKHJ7Yb
    g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="399233692"
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="976654"
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="399233692"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2024 22:29:29 -0800
+   d="scan'208";a="976654"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2024 22:29:45 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="959760224"
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="959760224"
+   d="scan'208";a="28658999"
 Received: from linchen5-mobl.ccr.corp.intel.com (HELO localhost) ([10.254.209.209])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2024 22:29:20 -0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2024 22:29:38 -0800
 From: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
 To: linux-pci@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH v2 3/4] PCI/AER: Fetch information for FTrace
-Date: Thu, 25 Jan 2024 14:28:01 +0800
-Message-ID: <20240125062802.50819-4-qingshun.wang@linux.intel.com>
+Subject: [PATCH v2 4/4] RAS: Trace more information in aer_event
+Date: Thu, 25 Jan 2024 14:28:02 +0800
+Message-ID: <20240125062802.50819-5-qingshun.wang@linux.intel.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240125062802.50819-1-qingshun.wang@linux.intel.com>
 References: <20240125062802.50819-1-qingshun.wang@linux.intel.com>
@@ -75,219 +73,177 @@ Cc: Miaohe Lin <linmiaohe@huawei.com>, Alison Schofield <alison.schofield@intel.
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fetch and store the data of 3 more registers: "Link Status", "Device
-Control 2", and "Advanced Error Capabilities and Control". This data is
-needed for external observation to better understand ANFE.
+Add following fields in aer_event to better understand Advisory
+Non-Fatal and other errors for external observation:
+
+  - cor_status		(Correctable Error Status)
+  - cor_mask		(Correctable Error Mask)
+  - uncor_status	(Uncorrectable Error Status)
+  - uncor_severity	(Uncorrectable Error Severity)
+  - uncor_mask		(Uncorrectable Error Mask)
+  - aer_cap_ctrl	(AER Capabilities and Control)
+  - link_status		(Link Status)
+  - device_status	(Device Status)
+  - device_control_2	(Device Control 2)
+
+In addition to the raw register value, value of following fields are
+extracted and logged for better observability:
+
+  - "First Error Pointer" and "Completion Timeout Prefix/Header Log
+    Capable" from "AER Capabilities and Control"
+  - "Completion Timeout Value" and "Completion Timeout Disable"
+    from "Device Control 2"
 
 Signed-off-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
 ---
- drivers/acpi/apei/ghes.c |  8 +++++++-
- drivers/cxl/core/pci.c   | 11 ++++++++++-
- drivers/pci/pci.h        |  4 ++++
- drivers/pci/pcie/aer.c   | 26 ++++++++++++++++++++------
- include/linux/aer.h      |  6 ++++--
- 5 files changed, 45 insertions(+), 10 deletions(-)
+ drivers/pci/pcie/aer.c        | 17 +++++++++++--
+ include/ras/ras_event.h       | 48 ++++++++++++++++++++++++++++++++---
+ include/uapi/linux/pci_regs.h |  1 +
+ 3 files changed, 60 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 6034039d5cff..047cc01be68c 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -594,7 +594,9 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
- 	if (pcie_err->validation_bits & CPER_PCIE_VALID_DEVICE_ID &&
- 	    pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO) {
- 		struct pcie_capability_regs *pcie_caps;
-+		u16 device_control_2 = 0;
- 		u16 device_status = 0;
-+		u16 link_status = 0;
- 		unsigned int devfn;
- 		int aer_severity;
- 		u8 *aer_info;
-@@ -619,7 +621,9 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
- 
- 		if (pcie_err->validation_bits & CPER_PCIE_VALID_CAPABILITY) {
- 			pcie_caps = (struct pcie_capability_regs *)pcie_err->capability;
-+			device_control_2 = pcie_caps->device_control_2;
- 			device_status = pcie_caps->device_status;
-+			link_status = pcie_caps->link_status;
- 		}
- 
- 		aer_recover_queue(pcie_err->device_id.segment,
-@@ -627,7 +631,9 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
- 				  devfn, aer_severity,
- 				  (struct aer_capability_regs *)
- 				  aer_info,
--				  device_status);
-+				  device_status,
-+				  link_status,
-+				  device_control_2);
- 	}
- #endif
- }
-diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
-index 9111a4415a63..3aa57fe8db42 100644
---- a/drivers/cxl/core/pci.c
-+++ b/drivers/cxl/core/pci.c
-@@ -903,7 +903,9 @@ static void cxl_handle_rdport_errors(struct cxl_dev_state *cxlds)
- 	struct aer_capability_regs aer_regs;
- 	struct cxl_dport *dport;
- 	struct cxl_port *port;
-+	u16 device_control_2;
- 	u16 device_status;
-+	u16 link_status;
- 	int severity;
- 
- 	port = cxl_pci_find_port(pdev, &dport);
-@@ -918,10 +920,17 @@ static void cxl_handle_rdport_errors(struct cxl_dev_state *cxlds)
- 	if (!cxl_rch_get_aer_severity(&aer_regs, &severity))
- 		return;
- 
-+	if (pcie_capability_read_word(pdev, PCI_EXP_DEVCTL2, &device_control_2))
-+		return;
-+
- 	if (pcie_capability_read_word(pdev, PCI_EXP_DEVSTA, &device_status))
- 		return;
- 
--	pci_print_aer(pdev, severity, &aer_regs, device_status);
-+	if (pcie_capability_read_word(pdev, PCI_EXP_LNKSTA, &link_status))
-+		return;
-+
-+	pci_print_aer(pdev, severity, &aer_regs, device_status,
-+		      link_status, device_control_2);
- 
- 	if (severity == AER_CORRECTABLE)
- 		cxl_handle_rdport_cor_ras(cxlds, dport);
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index f881a1b42f14..5788a94b4e95 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -412,7 +412,11 @@ struct aer_err_info {
- 	u32 uncor_mask;		/* UNCOR Error Mask */
- 	u32 uncor_status;	/* UNCOR Error Status */
- 	u32 uncor_severity;	/* UNCOR Error Severity */
-+
-+	u16 link_status;
-+	u32 aer_cap_ctrl;	/* AER Capabilities and Control */
- 	u16 device_status;
-+	u16 device_control_2;
- 	struct aer_header_log_regs tlp;	/* TLP Header */
- };
- 
 diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index 713cbf625d3f..eec3406f727a 100644
+index eec3406f727a..2f5639f6c40f 100644
 --- a/drivers/pci/pcie/aer.c
 +++ b/drivers/pci/pcie/aer.c
-@@ -825,7 +825,8 @@ EXPORT_SYMBOL_GPL(cper_severity_to_aer);
- #endif
+@@ -757,6 +757,7 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+ 	int layer, agent;
+ 	int id = pci_dev_id(dev);
+ 	const char *level;
++	struct aer_capability_regs aer_caps;
  
- void pci_print_aer(struct pci_dev *dev, int aer_severity,
--		   struct aer_capability_regs *aer, u16 device_status)
-+		   struct aer_capability_regs *aer, u16 device_status,
-+		   u16 link_status, u16 device_control_2)
- {
- 	int layer, agent, tlp_header_valid = 0;
- 	u32 status, mask;
-@@ -850,7 +851,10 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
- 	info.uncor_status = aer->uncor_status;
- 	info.uncor_severity = aer->uncor_severity;
- 	info.uncor_mask = aer->uncor_mask;
-+	info.link_status = link_status;
-+	info.aer_cap_ctrl = aer->cap_control;
- 	info.device_status = device_status;
-+	info.device_control_2 = device_control_2;
- 	info.first_error = PCI_ERR_CAP_FEP(aer->cap_control);
+ 	if (info->severity == AER_CORRECTABLE) {
+ 		status = info->cor_status;
+@@ -793,8 +794,18 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+ 	if (info->id && info->error_dev_num > 1 && info->id == id)
+ 		pci_err(dev, "  Error of this Agent is reported first\n");
  
- 	pci_err(dev, "aer_status: 0x%08x, aer_mask: 0x%08x\n", status, mask);
-@@ -1205,7 +1209,9 @@ struct aer_recover_entry {
- 	u8	devfn;
- 	u16	domain;
- 	int	severity;
-+	u16	link_status;
- 	u16	device_status;
-+	u16	device_control_2;
- 	struct aer_capability_regs *regs;
- };
++	aer_caps = (struct aer_capability_regs) {
++	  .cor_status = info->cor_status,
++	  .cor_mask = info->cor_mask,
++	  .uncor_status = info->uncor_status,
++	  .uncor_severity = info->uncor_severity,
++	  .uncor_mask = info->uncor_mask,
++	  .cap_control = info->aer_cap_ctrl
++	};
+ 	trace_aer_event(dev_name(&dev->dev), (status & ~mask),
+-			info->severity, info->tlp_header_valid, &info->tlp);
++			info->severity, info->tlp_header_valid, &info->tlp,
++			&aer_caps, info->link_status,
++			info->device_status, info->device_control_2);
+ }
  
-@@ -1226,7 +1232,8 @@ static void aer_recover_work_func(struct work_struct *work)
- 			       PCI_SLOT(entry.devfn), PCI_FUNC(entry.devfn));
- 			continue;
+ static void aer_print_port_info(struct pci_dev *dev, struct aer_err_info *info)
+@@ -870,7 +881,9 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
+ 		__print_tlp_header(dev, &aer->header_log);
+ 
+ 	trace_aer_event(dev_name(&dev->dev), (status & ~mask),
+-			aer_severity, tlp_header_valid, &aer->header_log);
++			aer_severity, tlp_header_valid, &aer->header_log,
++			aer, info.link_status,
++			info.device_status, info.device_control_2);
+ }
+ EXPORT_SYMBOL_NS_GPL(pci_print_aer, CXL);
+ 
+diff --git a/include/ras/ras_event.h b/include/ras/ras_event.h
+index cbd3ddd7c33d..a94997073d90 100644
+--- a/include/ras/ras_event.h
++++ b/include/ras/ras_event.h
+@@ -300,9 +300,14 @@ TRACE_EVENT(aer_event,
+ 		 const u32 status,
+ 		 const u8 severity,
+ 		 const u8 tlp_header_valid,
+-		 struct aer_header_log_regs *tlp),
++		 struct aer_header_log_regs *tlp,
++		 struct aer_capability_regs *aer_caps,
++		 const u16 link_status,
++		 const u16 device_status,
++		 const u16 device_control_2),
+ 
+-	TP_ARGS(dev_name, status, severity, tlp_header_valid, tlp),
++	TP_ARGS(dev_name, status, severity, tlp_header_valid, tlp,
++		aer_caps, link_status, device_status, device_control_2),
+ 
+ 	TP_STRUCT__entry(
+ 		__string(	dev_name,	dev_name	)
+@@ -310,6 +315,10 @@ TRACE_EVENT(aer_event,
+ 		__field(	u8,		severity	)
+ 		__field(	u8, 		tlp_header_valid)
+ 		__array(	u32, 		tlp_header, 4	)
++		__field_struct(struct aer_capability_regs, aer_caps)
++		__field(	u16,		link_status	)
++		__field(	u16,		device_status	)
++		__field(	u16,		device_control_2)
+ 	),
+ 
+ 	TP_fast_assign(
+@@ -317,6 +326,10 @@ TRACE_EVENT(aer_event,
+ 		__entry->status		= status;
+ 		__entry->severity	= severity;
+ 		__entry->tlp_header_valid = tlp_header_valid;
++		__entry->aer_caps	= *aer_caps;
++		__entry->link_status	= link_status;
++		__entry->device_status	= device_status;
++		__entry->device_control_2 = device_control_2;
+ 		if (tlp_header_valid) {
+ 			__entry->tlp_header[0] = tlp->dw0;
+ 			__entry->tlp_header[1] = tlp->dw1;
+@@ -325,7 +338,20 @@ TRACE_EVENT(aer_event,
  		}
--		pci_print_aer(pdev, entry.severity, entry.regs, entry.device_status);
-+		pci_print_aer(pdev, entry.severity, entry.regs, entry.device_status,
-+			      entry.link_status, entry.device_control_2);
- 		/*
- 		 * Memory for aer_capability_regs(entry.regs) is being allocated from the
- 		 * ghes_estatus_pool to protect it from overwriting when multiple sections
-@@ -1255,7 +1262,8 @@ static DEFINE_SPINLOCK(aer_recover_ring_lock);
- static DECLARE_WORK(aer_recover_work, aer_recover_work_func);
+ 	),
  
- void aer_recover_queue(int domain, unsigned int bus, unsigned int devfn,
--		       int severity, struct aer_capability_regs *aer_regs, u16 device_status)
-+		       int severity, struct aer_capability_regs *aer_regs, u16 device_status,
-+		       u16 link_status, u16 device_control_2)
- {
- 	struct aer_recover_entry entry = {
- 		.bus		= bus,
-@@ -1263,7 +1271,9 @@ void aer_recover_queue(int domain, unsigned int bus, unsigned int devfn,
- 		.domain		= domain,
- 		.severity	= severity,
- 		.regs		= aer_regs,
-+		.link_status	= link_status,
- 		.device_status	= device_status,
-+		.device_control_2 = device_control_2,
- 	};
+-	TP_printk("%s PCIe Bus Error: severity=%s, %s, TLP Header=%s\n",
++	TP_printk("%s PCIe Bus Error: severity=%s, %s, TLP Header=%s, "
++		  "Correctable Error Status=0x%08x, "
++		  "Correctable Error Mask=0x%08x, "
++		  "Uncorrectable Error Status=0x%08x, "
++		  "Uncorrectable Error Severity=0x%08x, "
++		  "Uncorrectable Error Mask=0x%08x, "
++		  "AER Capability and Control=0x%08x, "
++		  "First Error Pointer=0x%x, "
++		  "Completion Timeout Prefix/Header Log Capable=%s, "
++		  "Link Status=0x%04x, "
++		  "Device Status=0x%04x, "
++		  "Device Control 2=0x%04x, "
++		  "Completion Timeout Value=0x%x, "
++		  "Completion Timeout Disable=%sn",
+ 		__get_str(dev_name),
+ 		__entry->severity == AER_CORRECTABLE ? "Corrected" :
+ 			__entry->severity == AER_FATAL ?
+@@ -335,7 +361,21 @@ TRACE_EVENT(aer_event,
+ 		__print_flags(__entry->status, "|", aer_uncorrectable_errors),
+ 		__entry->tlp_header_valid ?
+ 			__print_array(__entry->tlp_header, 4, 4) :
+-			"Not available")
++			"Not available",
++		__entry->aer_caps.cor_status,
++		__entry->aer_caps.cor_mask,
++		__entry->aer_caps.uncor_status,
++		__entry->aer_caps.uncor_severity,
++		__entry->aer_caps.uncor_mask,
++		__entry->aer_caps.cap_control,
++		PCI_ERR_CAP_FEP(__entry->aer_caps.cap_control),
++		__entry->aer_caps.cap_control & PCI_ERR_CAP_CTO_LOGC ? "True" : "False",
++		__entry->link_status,
++		__entry->device_status,
++		__entry->device_control_2,
++		__entry->device_control_2 & PCI_EXP_DEVCTL2_COMP_TIMEOUT,
++		__entry->device_control_2 & PCI_EXP_DEVCTL2_COMP_TMOUT_DIS ?
++					    "True" : "False")
+ );
  
- 	if (kfifo_in_spinlocked(&aer_recover_ring, &entry, 1,
-@@ -1289,7 +1299,6 @@ int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info)
- {
- 	int type = pci_pcie_type(dev);
- 	int aer = dev->aer_cap;
--	int temp;
- 
- 	/* Must reset in this function */
- 	info->cor_status = 0;
-@@ -1317,8 +1326,14 @@ int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info)
- 				      &info->uncor_severity);
- 		pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_MASK,
- 				      &info->uncor_mask);
-+		pci_read_config_dword(dev, aer + PCI_ERR_CAP,
-+				      &info->aer_cap_ctrl);
-+		pcie_capability_read_word(dev, PCI_EXP_LNKSTA,
-+					  &info->link_status);
- 		pcie_capability_read_word(dev, PCI_EXP_DEVSTA,
- 					  &info->device_status);
-+		pcie_capability_read_word(dev, PCI_EXP_DEVCTL2,
-+					  &info->device_control_2);
- 	} else {
- 		return 1;
- 	}
-@@ -1331,8 +1346,7 @@ int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info)
- 			return 0;
- 
- 		/* Get First Error Pointer */
--		pci_read_config_dword(dev, aer + PCI_ERR_CAP, &temp);
--		info->first_error = PCI_ERR_CAP_FEP(temp);
-+		info->first_error = PCI_ERR_CAP_FEP(info->aer_cap_ctrl);
- 
- 		if (info->uncor_status & AER_LOG_TLP_MASKS) {
- 			info->tlp_header_valid = 1;
-diff --git a/include/linux/aer.h b/include/linux/aer.h
-index 38ac802250ac..327ebec1e4b3 100644
---- a/include/linux/aer.h
-+++ b/include/linux/aer.h
-@@ -52,9 +52,11 @@ static inline int pcie_aer_is_native(struct pci_dev *dev) { return 0; }
- #endif
- 
- void pci_print_aer(struct pci_dev *dev, int aer_severity,
--		    struct aer_capability_regs *aer, u16 device_status);
-+		    struct aer_capability_regs *aer, u16 device_status,
-+		    u16 link_status, u16 device_control_2);
- int cper_severity_to_aer(int cper_severity);
- void aer_recover_queue(int domain, unsigned int bus, unsigned int devfn,
--		       int severity, struct aer_capability_regs *aer_regs, u16 device_status);
-+		       int severity, struct aer_capability_regs *aer_regs, u16 device_status,
-+		       u16 link_status, u16 device_control_2);
- #endif //_AER_H_
- 
+ /*
+diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
+index a39193213ff2..54160ed2a8c9 100644
+--- a/include/uapi/linux/pci_regs.h
++++ b/include/uapi/linux/pci_regs.h
+@@ -787,6 +787,7 @@
+ #define  PCI_ERR_CAP_ECRC_GENE	0x00000040	/* ECRC Generation Enable */
+ #define  PCI_ERR_CAP_ECRC_CHKC	0x00000080	/* ECRC Check Capable */
+ #define  PCI_ERR_CAP_ECRC_CHKE	0x00000100	/* ECRC Check Enable */
++#define  PCI_ERR_CAP_CTO_LOGC	0x00001000	/* Completion Timeout Prefix/Header Log Capable */
+ #define PCI_ERR_HEADER_LOG	0x1c	/* Header Log Register (16 bytes) */
+ #define PCI_ERR_ROOT_COMMAND	0x2c	/* Root Error Command */
+ #define  PCI_ERR_ROOT_CMD_COR_EN	0x00000001 /* Correctable Err Reporting Enable */
 -- 
 2.42.0
 
