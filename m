@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A93F83CCBB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jan 2024 20:43:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FEAA83CCBC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jan 2024 20:44:22 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Vds1l+Rv;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Vds1l+Rv;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Qj6LQjVL;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dNQDMAlr;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TLWTX3NG6z3dVj
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jan 2024 06:43:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TLWVX0BVQz3vdM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jan 2024 06:44:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Vds1l+Rv;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Vds1l+Rv;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Qj6LQjVL;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dNQDMAlr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TLWGf10M5z3cQf
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jan 2024 06:34:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TLWGn3dJTz3cQD
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jan 2024 06:34:09 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706211239;
+	s=mimecast20190719; t=1706211246;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fXWjdZLipOfshgFI8W07OFbQ7KRQi8Xx3as2M14iVzc=;
-	b=Vds1l+RvWQ+aTIiaqxgGEFOziopvr2CoUBwCsScpDm4jh0x9rxaw+5rif0yPEE0XhSocKm
-	w2UJfJ3n5OXfW93dM34TIBcrKK0ejuuJzGeg/LzkL4T4NXNqdLDo7Rb5rwqS89C20VeQ1a
-	rDvLEish96H4odKUInNZ5uKRssQNr6Y=
+	bh=t50qmPGMpYBEYaKXQ+yO8QVLOuyugBz/n/H7V6E+Pmw=;
+	b=Qj6LQjVLJTu9V5IP2nirUVAprpy0WUCqnEoyprcCvHLOa2AA3tGUYSENwHWapbpWuWeFVh
+	aXMK5v2AkC5sS9TpQ4sUjMkxtV8nwWLqKGQfNzE2PQY9X+1rHk/6LHlVyhL0d04Y2WQf6Q
+	IH7SpGDb9rDw2w1S7imGqdXLqvihC3g=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706211239;
+	s=mimecast20190719; t=1706211247;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fXWjdZLipOfshgFI8W07OFbQ7KRQi8Xx3as2M14iVzc=;
-	b=Vds1l+RvWQ+aTIiaqxgGEFOziopvr2CoUBwCsScpDm4jh0x9rxaw+5rif0yPEE0XhSocKm
-	w2UJfJ3n5OXfW93dM34TIBcrKK0ejuuJzGeg/LzkL4T4NXNqdLDo7Rb5rwqS89C20VeQ1a
-	rDvLEish96H4odKUInNZ5uKRssQNr6Y=
+	bh=t50qmPGMpYBEYaKXQ+yO8QVLOuyugBz/n/H7V6E+Pmw=;
+	b=dNQDMAlr7o2mzPRjYSYO/AD4tjmvm0YkENOcSNlAyA9VKvvIDGo9556E+SBRZ7D6jStVy3
+	iRsG9B/DOmPDfCO0qOpztizvkEhrtQypZcGHku1npy/bWerIB8I5PpG+ZbPwqoyypU8242
+	ogzLXUtFqVw0gloly551lcQE9QTQnaM=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-36-qgFrcn9EOOKukZuZZZlfTA-1; Thu, 25 Jan 2024 14:33:54 -0500
-X-MC-Unique: qgFrcn9EOOKukZuZZZlfTA-1
+ us-mta-255-d5Q_-Ra7Nw6rcBDvoDTvqQ-1; Thu, 25 Jan 2024 14:34:01 -0500
+X-MC-Unique: d5Q_-Ra7Nw6rcBDvoDTvqQ-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 50C83185A782;
-	Thu, 25 Jan 2024 19:33:53 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E2A0C1013665;
+	Thu, 25 Jan 2024 19:33:59 +0000 (UTC)
 Received: from t14s.redhat.com (unknown [10.39.193.154])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 94E83492BC6;
-	Thu, 25 Jan 2024 19:33:46 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 9077F492BC6;
+	Thu, 25 Jan 2024 19:33:53 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2 13/15] mm/memory: optimize fork() with PTE-mapped THP
-Date: Thu, 25 Jan 2024 20:32:25 +0100
-Message-ID: <20240125193227.444072-14-david@redhat.com>
+Subject: [PATCH v2 14/15] mm/memory: ignore dirty/accessed/soft-dirty bits in folio_pte_batch()
+Date: Thu, 25 Jan 2024 20:32:26 +0100
+Message-ID: <20240125193227.444072-15-david@redhat.com>
 In-Reply-To: <20240125193227.444072-1-david@redhat.com>
 References: <20240125193227.444072-1-david@redhat.com>
 MIME-Version: 1.0
@@ -84,280 +84,100 @@ Cc: David Hildenbrand <david@redhat.com>, Catalin Marinas <catalin.marinas@arm.c
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Let's implement PTE batching when consecutive (present) PTEs map
-consecutive pages of the same large folio, and all other PTE bits besides
-the PFNs are equal.
+Let's always ignore the accessed/young bit: we'll always mark the PTE
+as old in our child process during fork, and upcoming users will
+similarly not care.
 
-We will optimize folio_pte_batch() separately, to ignore selected
-PTE bits. This patch is based on work by Ryan Roberts.
+Ignore the dirty bit only if we don't want to duplicate the dirty bit
+into the child process during fork. Maybe, we could just set all PTEs
+in the child dirty if any PTE is dirty. For now, let's keep the behavior
+unchanged, this can be optimized later if required.
 
-Use __always_inline for __copy_present_ptes() and keep the handling for
-single PTEs completely separate from the multi-PTE case: we really want
-the compiler to optimize for the single-PTE case with small folios, to
-not degrade performance.
+Ignore the soft-dirty bit only if the bit doesn't have any meaning in
+the src vma, and similarly won't have any in the copied dst vma.
 
-Note that PTE batching will never exceed a single page table and will
-always stay within VMA boundaries.
-
-Further, processing PTE-mapped THP that maybe pinned and have
-PageAnonExclusive set on at least one subpage should work as expected,
-but there is room for improvement: We will repeatedly (1) detect a PTE
-batch (2) detect that we have to copy a page (3) fall back and allocate a
-single page to copy a single page. For now we won't care as pinned pages
-are a corner case, and we should rather look into maintaining only a
-single PageAnonExclusive bit for large folios.
+For now, we won't bother with the uffd-wp bit.
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- include/linux/pgtable.h |  31 +++++++++++
- mm/memory.c             | 112 +++++++++++++++++++++++++++++++++-------
- 2 files changed, 124 insertions(+), 19 deletions(-)
+ mm/memory.c | 36 +++++++++++++++++++++++++++++++-----
+ 1 file changed, 31 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 351cd9dc7194f..891ed246978a4 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -650,6 +650,37 @@ static inline void ptep_set_wrprotect(struct mm_struct *mm, unsigned long addres
- }
- #endif
- 
-+#ifndef wrprotect_ptes
-+/**
-+ * wrprotect_ptes - Write-protect consecutive pages that are mapped to a
-+ *		    contiguous range of addresses.
-+ * @mm: Address space to map the pages into.
-+ * @addr: Address the first page is mapped at.
-+ * @ptep: Page table pointer for the first entry.
-+ * @nr: Number of pages to write-protect.
-+ *
-+ * May be overridden by the architecture; otherwise, implemented as a simple
-+ * loop over ptep_set_wrprotect().
-+ *
-+ * Note that PTE bits in the PTE range besides the PFN can differ. For example,
-+ * some PTEs might already be write-protected.
-+ *
-+ * Context: The caller holds the page table lock.  The pages all belong
-+ * to the same folio.  The PTEs are all in the same PMD.
-+ */
-+static inline void wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
-+		pte_t *ptep, unsigned int nr)
-+{
-+	for (;;) {
-+		ptep_set_wrprotect(mm, addr, ptep);
-+		if (--nr == 0)
-+			break;
-+		ptep++;
-+		addr += PAGE_SIZE;
-+	}
-+}
-+#endif
-+
- /*
-  * On some architectures hardware does not set page access bit when accessing
-  * memory page, it is responsibility of software setting this bit. It brings
 diff --git a/mm/memory.c b/mm/memory.c
-index 729ca4d6a820c..4d1be89a01ee0 100644
+index 4d1be89a01ee0..b3f035fe54c8d 100644
 --- a/mm/memory.c
 +++ b/mm/memory.c
-@@ -930,15 +930,15 @@ copy_present_page(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma
- 	return 0;
+@@ -953,24 +953,44 @@ static __always_inline void __copy_present_ptes(struct vm_area_struct *dst_vma,
+ 	set_ptes(dst_vma->vm_mm, addr, dst_pte, pte, nr);
  }
  
--static inline void __copy_present_pte(struct vm_area_struct *dst_vma,
-+static __always_inline void __copy_present_ptes(struct vm_area_struct *dst_vma,
- 		struct vm_area_struct *src_vma, pte_t *dst_pte, pte_t *src_pte,
--		pte_t pte, unsigned long addr)
-+		pte_t pte, unsigned long addr, int nr)
- {
- 	struct mm_struct *src_mm = src_vma->vm_mm;
- 
- 	/* If it's a COW mapping, write protect it both processes. */
- 	if (is_cow_mapping(src_vma->vm_flags) && pte_write(pte)) {
--		ptep_set_wrprotect(src_mm, addr, src_pte);
-+		wrprotect_ptes(src_mm, addr, src_pte, nr);
- 		pte = pte_wrprotect(pte);
- 	}
- 
-@@ -950,26 +950,93 @@ static inline void __copy_present_pte(struct vm_area_struct *dst_vma,
- 	if (!userfaultfd_wp(dst_vma))
- 		pte = pte_clear_uffd_wp(pte);
- 
--	set_pte_at(dst_vma->vm_mm, addr, dst_pte, pte);
-+	set_ptes(dst_vma->vm_mm, addr, dst_pte, pte, nr);
++/* Flags for folio_pte_batch(). */
++typedef int __bitwise fpb_t;
++
++/* Compare PTEs after pte_mkclean(), ignoring the dirty bit. */
++#define FPB_IGNORE_DIRTY		((__force fpb_t)BIT(0))
++
++/* Compare PTEs after pte_clear_soft_dirty(), ignoring the soft-dirty bit. */
++#define FPB_IGNORE_SOFT_DIRTY		((__force fpb_t)BIT(1))
++
++static inline pte_t __pte_batch_clear_ignored(pte_t pte, fpb_t flags)
++{
++	if (flags & FPB_IGNORE_DIRTY)
++		pte = pte_mkclean(pte);
++	if (likely(flags & FPB_IGNORE_SOFT_DIRTY))
++		pte = pte_clear_soft_dirty(pte);
++	return pte_mkold(pte);
 +}
 +
-+/*
-+ * Detect a PTE batch: consecutive (present) PTEs that map consecutive
-+ * pages of the same folio.
-+ *
-+ * All PTEs inside a PTE batch have the same PTE bits set, excluding the PFN.
-+ */
-+static inline int folio_pte_batch(struct folio *folio, unsigned long addr,
-+		pte_t *start_ptep, pte_t pte, int max_nr)
-+{
-+	unsigned long folio_end_pfn = folio_pfn(folio) + folio_nr_pages(folio);
-+	const pte_t *end_ptep = start_ptep + max_nr;
-+	pte_t expected_pte = pte_next_pfn(pte);
-+	pte_t *ptep = start_ptep + 1;
-+
-+	VM_WARN_ON_FOLIO(!pte_present(pte), folio);
-+
-+	while (ptep != end_ptep) {
-+		pte = ptep_get(ptep);
-+
-+		if (!pte_same(pte, expected_pte))
-+			break;
-+
-+		/*
-+		 * Stop immediately once we reached the end of the folio. In
-+		 * corner cases the next PFN might fall into a different
-+		 * folio.
-+		 */
-+		if (pte_pfn(pte) == folio_end_pfn)
-+			break;
-+
-+		expected_pte = pte_next_pfn(expected_pte);
-+		ptep++;
-+	}
-+
-+	return ptep - start_ptep;
- }
- 
  /*
-- * Copy one pte.  Returns 0 if succeeded, or -EAGAIN if one preallocated page
-- * is required to copy this pte.
-+ * Copy one present PTE, trying to batch-process subsequent PTEs that map
-+ * consecutive pages of the same folio by copying them as well.
-+ *
-+ * Returns -EAGAIN if one preallocated page is required to copy the next PTE.
-+ * Otherwise, returns the number of copied PTEs (at least 1).
+  * Detect a PTE batch: consecutive (present) PTEs that map consecutive
+  * pages of the same folio.
+  *
+- * All PTEs inside a PTE batch have the same PTE bits set, excluding the PFN.
++ * All PTEs inside a PTE batch have the same PTE bits set, excluding the PFN,
++ * the accessed bit, dirty bit (with FPB_IGNORE_DIRTY) and soft-dirty bit
++ * (with FPB_IGNORE_SOFT_DIRTY).
   */
- static inline int
--copy_present_pte(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
-+copy_present_ptes(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
- 		 pte_t *dst_pte, pte_t *src_pte, pte_t pte, unsigned long addr,
--		 int *rss, struct folio **prealloc)
-+		 int max_nr, int *rss, struct folio **prealloc)
+ static inline int folio_pte_batch(struct folio *folio, unsigned long addr,
+-		pte_t *start_ptep, pte_t pte, int max_nr)
++		pte_t *start_ptep, pte_t pte, int max_nr, fpb_t flags)
+ {
+ 	unsigned long folio_end_pfn = folio_pfn(folio) + folio_nr_pages(folio);
+ 	const pte_t *end_ptep = start_ptep + max_nr;
+-	pte_t expected_pte = pte_next_pfn(pte);
++	pte_t expected_pte = __pte_batch_clear_ignored(pte_next_pfn(pte), flags);
+ 	pte_t *ptep = start_ptep + 1;
+ 
+ 	VM_WARN_ON_FOLIO(!pte_present(pte), folio);
+ 
+ 	while (ptep != end_ptep) {
+-		pte = ptep_get(ptep);
++		pte = __pte_batch_clear_ignored(ptep_get(ptep), flags);
+ 
+ 		if (!pte_same(pte, expected_pte))
+ 			break;
+@@ -1004,6 +1024,7 @@ copy_present_ptes(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma
  {
  	struct page *page;
  	struct folio *folio;
-+	int err, nr;
++	fpb_t flags = 0;
+ 	int err, nr;
  
  	page = vm_normal_page(src_vma, addr, pte);
- 	if (unlikely(!page))
- 		goto copy_pte;
- 
- 	folio = page_folio(page);
+@@ -1018,7 +1039,12 @@ copy_present_ptes(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma
+ 	 * by keeping the batching logic separate.
+ 	 */
+ 	if (unlikely(!*prealloc && folio_test_large(folio) && max_nr != 1)) {
+-		nr = folio_pte_batch(folio, addr, src_pte, pte, max_nr);
++		if (src_vma->vm_flags & VM_SHARED)
++			flags |= FPB_IGNORE_DIRTY;
++		if (!vma_soft_dirty_enabled(src_vma))
++			flags |= FPB_IGNORE_SOFT_DIRTY;
 +
-+	/*
-+	 * If we likely have to copy, just don't bother with batching. Make
-+	 * sure that the common "small folio" case is as fast as possible
-+	 * by keeping the batching logic separate.
-+	 */
-+	if (unlikely(!*prealloc && folio_test_large(folio) && max_nr != 1)) {
-+		nr = folio_pte_batch(folio, addr, src_pte, pte, max_nr);
-+		folio_ref_add(folio, nr);
-+		if (folio_test_anon(folio)) {
-+			if (unlikely(folio_try_dup_anon_rmap_ptes(folio, page,
-+								  nr, src_vma))) {
-+				folio_ref_sub(folio, nr);
-+				return -EAGAIN;
-+			}
-+			rss[MM_ANONPAGES] += nr;
-+			VM_WARN_ON_FOLIO(PageAnonExclusive(page), folio);
-+		} else {
-+			folio_dup_file_rmap_ptes(folio, page, nr);
-+			rss[mm_counter_file(page)] += nr;
-+		}
-+		__copy_present_ptes(dst_vma, src_vma, dst_pte, src_pte, pte,
-+				    addr, nr);
-+		return nr;
-+	}
-+
- 	folio_get(folio);
- 	if (folio_test_anon(folio)) {
- 		/*
-@@ -981,8 +1048,9 @@ copy_present_pte(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
- 		if (unlikely(folio_try_dup_anon_rmap_pte(folio, page, src_vma))) {
- 			/* Page may be pinned, we have to copy. */
- 			folio_put(folio);
--			return copy_present_page(dst_vma, src_vma, dst_pte, src_pte,
--						 addr, rss, prealloc, page);
-+			err = copy_present_page(dst_vma, src_vma, dst_pte, src_pte,
-+						addr, rss, prealloc, page);
-+			return err ? err : 1;
- 		}
- 		rss[MM_ANONPAGES]++;
- 		VM_WARN_ON_FOLIO(PageAnonExclusive(page), folio);
-@@ -992,8 +1060,8 @@ copy_present_pte(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
- 	}
- 
- copy_pte:
--	__copy_present_pte(dst_vma, src_vma, dst_pte, src_pte, pte, addr);
--	return 0;
-+	__copy_present_ptes(dst_vma, src_vma, dst_pte, src_pte, pte, addr, 1);
-+	return 1;
- }
- 
- static inline struct folio *folio_prealloc(struct mm_struct *src_mm,
-@@ -1030,10 +1098,11 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
- 	pte_t *src_pte, *dst_pte;
- 	pte_t ptent;
- 	spinlock_t *src_ptl, *dst_ptl;
--	int progress, ret = 0;
-+	int progress, max_nr, ret = 0;
- 	int rss[NR_MM_COUNTERS];
- 	swp_entry_t entry = (swp_entry_t){0};
- 	struct folio *prealloc = NULL;
-+	int nr;
- 
- again:
- 	progress = 0;
-@@ -1064,6 +1133,8 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
- 	arch_enter_lazy_mmu_mode();
- 
- 	do {
-+		nr = 1;
-+
- 		/*
- 		 * We are holding two locks at this point - either of them
- 		 * could generate latencies in another task on another CPU.
-@@ -1100,9 +1171,10 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
- 			 */
- 			WARN_ON_ONCE(ret != -ENOENT);
- 		}
--		/* copy_present_pte() will clear `*prealloc' if consumed */
--		ret = copy_present_pte(dst_vma, src_vma, dst_pte, src_pte,
--				       ptent, addr, rss, &prealloc);
-+		/* copy_present_ptes() will clear `*prealloc' if consumed */
-+		max_nr = (end - addr) / PAGE_SIZE;
-+		ret = copy_present_ptes(dst_vma, src_vma, dst_pte, src_pte,
-+					ptent, addr, max_nr, rss, &prealloc);
- 		/*
- 		 * If we need a pre-allocated page for this pte, drop the
- 		 * locks, allocate, and try again.
-@@ -1119,8 +1191,10 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
- 			folio_put(prealloc);
- 			prealloc = NULL;
- 		}
--		progress += 8;
--	} while (dst_pte++, src_pte++, addr += PAGE_SIZE, addr != end);
-+		nr = ret;
-+		progress += 8 * nr;
-+	} while (dst_pte += nr, src_pte += nr, addr += PAGE_SIZE * nr,
-+		 addr != end);
- 
- 	arch_leave_lazy_mmu_mode();
- 	pte_unmap_unlock(orig_src_pte, src_ptl);
-@@ -1141,7 +1215,7 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
- 		prealloc = folio_prealloc(src_mm, src_vma, addr, false);
- 		if (!prealloc)
- 			return -ENOMEM;
--	} else if (ret) {
-+	} else if (ret < 0) {
- 		VM_WARN_ON_ONCE(1);
- 	}
- 
++		nr = folio_pte_batch(folio, addr, src_pte, pte, max_nr, flags);
+ 		folio_ref_add(folio, nr);
+ 		if (folio_test_anon(folio)) {
+ 			if (unlikely(folio_try_dup_anon_rmap_ptes(folio, page,
 -- 
 2.43.0
 
