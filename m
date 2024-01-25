@@ -1,111 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6740683C69E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jan 2024 16:31:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78FCA83C746
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jan 2024 16:51:10 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=IsB3UrNz;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=HEeG5r3E;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TLPvC2S0Gz3cWm
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jan 2024 02:31:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TLQKS372Tz3cXr
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jan 2024 02:51:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=IsB3UrNz;
+	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=HEeG5r3E;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=outlook.com (client-ip=2a01:111:f403:2c07::801; helo=nam02-bn1-obe.outbound.protection.outlook.com; envelope-from=mhklinux@outlook.com; receiver=lists.ozlabs.org)
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02olkn20801.outbound.protection.outlook.com [IPv6:2a01:111:f403:2c07::801])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::730; helo=mail-qk1-x730.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org)
+Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TLPtM6Kv8z3bWQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jan 2024 02:31:06 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Wi2W5EnWM5ImiRa0u3ZgYBv3psB5MjmVL7e8z7LXvboMv5qA9rV3ohntOcVM+0cpqbhjsYovoDDhqO8TEKuJ4uB+OSNa9qc2FFo80qPdpI4vm5FrYrdMRAbvlPet36rcyqe1OJjpoWzDkR2iyORDJ6iieHxmg54QUKnr8be15dAtSbxZh9WC5AD1tA0b/QM/BP1pMkQnOKpKOlrou7hno44gjFk3GKZSEZ3oeVZIHw3LswBSIoMqQLLkEHzDY5cuhpLzScYTtZ0kZ4ZBQEQP8V7Fdqvz6jKGTjG2euum7pUbcKo7ES4oYeFbPaByWFnffyY97aZ+/yzzWshoGhlfvg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eW2alejqAOYT8WAjMai/jwWkVOYlVlzir8+fWHfLoG4=;
- b=KZduFnFM4kmyDwEwvMI1M8eJgwyGOExC/11Jx+u6UjbeQNotC6IVwL3CK4/nR4SojUtIuhpSlFpSf0LV1/C5RDSlZEmXPX5ip+07VwHVSXyH9aQzHkBP/O3dGu+X72kKuiatorFDtxeVvf2C/zegsssnE3ttw4V6y/3RR09hSnFa+YsD//WNjIvun3UsXgD5haUSuqznZq4Yd4D0sEiO780dJw+wzLOjEiWZS2q6+OFGCT+KMGdvBuKGtTwrvNbZrYNtiB9bGT92K/UwfWzfBKk9+3xQFzblFHU9R9WbmZWica6+Z0WG5JX32ohM9U+SsDnT+Egbi/Wtn2Ip1hq83g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eW2alejqAOYT8WAjMai/jwWkVOYlVlzir8+fWHfLoG4=;
- b=IsB3UrNzu5Xn0UgYLY+hFfk9v7sdqDOpsfIpP1TB01DdZalsNRyvOSFwBuhU/OhlKKKSMj8AZYhE/YopziPalbqobev+gp6ALcF+EKAAU/MR//7VPs4kDUCHdh1u6mxmcOEPo0l5iJ5l4d7ioFfDt+31Yd7fMRGNvcnxD+0DmsfWtStaxEFeVE2wNmlye6Ic7A1Z56DiwbIyBuUxjEcfGAuK6760BuZtv1UsYxIDFrSWYg0E8CIIxOWrEkIm1fEm2AqnUYyTsJXpDlCtzQA8Mp+7FLSuAq6QFxwj1IJ8pV332UiwNKR/9Bvu22OETDLykJNNx7zaMO2bPInd/LGijA==
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
- by PH7PR02MB8980.namprd02.prod.outlook.com (2603:10b6:510:1f8::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.26; Thu, 25 Jan
- 2024 15:30:46 +0000
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::67a9:f3c0:f57b:86dd]) by SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::67a9:f3c0:f57b:86dd%5]) with mapi id 15.20.7228.022; Thu, 25 Jan 2024
- 15:30:46 +0000
-From: Michael Kelley <mhklinux@outlook.com>
-To: Baoquan He <bhe@redhat.com>
-Subject: RE: [PATCH linux-next v3 06/14] x86, crash: wrap crash dumping code
- into crash related ifdefs
-Thread-Topic: [PATCH linux-next v3 06/14] x86, crash: wrap crash dumping code
- into crash related ifdefs
-Thread-Index: AQHaToRG7EZBXaVit0yb4RXbyvoNjrDpkK1ggABa6ACAAA/3oIAARgWAgABnw3A=
-Date: Thu, 25 Jan 2024 15:30:45 +0000
-Message-ID:  <SN6PR02MB41572FDAE703FC8A91974DFFD47A2@SN6PR02MB4157.namprd02.prod.outlook.com>
-References: <20240124051254.67105-1-bhe@redhat.com>
- <20240124051254.67105-7-bhe@redhat.com>
- <SN6PR02MB4157931105FA68D72E3D3DB8D47B2@SN6PR02MB4157.namprd02.prod.outlook.com>
- <ZbHfACpwqi2U9vmK@MiWiFi-R3L-srv>
- <SN6PR02MB4157E138C7EE4A281AB49C10D47A2@SN6PR02MB4157.namprd02.prod.outlook.com>
- <ZbInIQeIoPj6R0kY@MiWiFi-R3L-srv>
-In-Reply-To: <ZbInIQeIoPj6R0kY@MiWiFi-R3L-srv>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-tmn: [kBPvbuH5eMbnBowZglgoIczCWf/e+Xu7]
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|PH7PR02MB8980:EE_
-x-ms-office365-filtering-correlation-id: 1dd18b5f-0428-4c59-dec9-08dc1dba99ba
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  /aH4jkmyv0ty76k9LAS6MR4nv2cgpKsOzP6GwHd+HQssdpDIfaJhh/vVCXR5kQsb2qLVdNOmHcA5A7cc3WeT/SgMcCPlMmhwYjkRKD4tHIHtGgseWm+MC7WitVnT0aUobih0TORAKdGV+vqg/MO5y3tIcKCGDSGgPKNxUmKtPJ3GAWl4/tFlLqiCTSaxsRdzLm1sKNVavQWi7KEoyAfEnw65Znm499uxsLJx2yJIla2Tu1HKJBDlhpZ1EqRFABkCrxz8RuGHmF/PjYwZpWzC1OuQ8cD+CxLJo0jD9tQC6ieY2984Tb4kTRt61JHprgz97soQWkbDSkOJAxZX6iNK7tcV85Dyjfyzptjsn6I65hFK5OPc0ax5aIsl3IEV0LvMIWdPbPP0aepx8DWPcZjpnDiYK++kS0uYGGFLS2NYNOqMa9SiJ2gLdb/2GuxHUldXbRgK2bexasJt+VsH5ay2gPBnT+OzSikbsY8Dp87eDbumkyM4IpzryLc6ioDtc18yaHOH451Lt6sII2q9gw5/kEiziqNxO7EcLKrAG/Pznz0GoepHww6mbTx1sTPc0uoF
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?us-ascii?Q?rDZlZD2CA0+HKZCv3KEDs5f1ygEjqFw7Le+0at86EcWCnClczxvKx2gWWXZh?=
- =?us-ascii?Q?JbXZBoacRbvSz0S9fsJbOF1HQ5pt1Ib5AwYgjpzrDMCmvHK/2UiPCnghx398?=
- =?us-ascii?Q?g/qp60CEmCbZclWstEjir0GGZus9cVAYEa0RiV84MiBKR85t0Pc0TgC3HRAf?=
- =?us-ascii?Q?PFUfGtzh3MXNZLZ8D719F5z5HVhgusVKAnDX9H14uGl8BgYbfRS5sZ4Y8/ww?=
- =?us-ascii?Q?0DkFC8qalh1O5XFdGj7hrJllMzk8CFLlUqjnRM8VHGGUwHCfNF3vqh0aSNAG?=
- =?us-ascii?Q?lLtAIRELT4IsacaRW0GOHFQZHDbl+dM0NmWA5lCv4ZZxtS76IBhxe55s55q1?=
- =?us-ascii?Q?2YdIvaxuvTjCgWkZ6TPIKFTKBxaxyAkSQE5IyWsmRGMoadyyDmpc9OYzYmRj?=
- =?us-ascii?Q?faZfO9KKf5xvzBBoy4UgjqNc8ncDfK8cA8exewsaH+GnwM8Omqq/av5h/v7n?=
- =?us-ascii?Q?9fBGovW5O0iSx5dbmmR3LpuiRbXsa3ZJin8+0KEPYaE29nLpFq8wYtTVKLmd?=
- =?us-ascii?Q?sRxm0Hn6GXn+CkqbRa3hz1vWu4TFvOZEtwv0yXZXnx5bXnUdGGBhC/0BR+bK?=
- =?us-ascii?Q?UFnxsvs1His8sEVC+92IQA2QXHh/idK9Ig+PAzA8RJe4NqDuU+B5FYnzZB3a?=
- =?us-ascii?Q?62kbTpJL0zZHePhkEtjTGrQVE8EPfjmpeBzHTrGULLJPlGOWvQmIYkgcnUOS?=
- =?us-ascii?Q?z/Lro/YRiqVPdu2AyO3S+BkrakpN8qf3oxkwXGeNPlDfquw3gvm6gITjm67Q?=
- =?us-ascii?Q?pxKl8IieqDV9/I0r4OC/18pFAauC/ka5PuZdzAm/xfYt4nQQxosh4iJ3FASs?=
- =?us-ascii?Q?3bFMn/VpX/hnEJ70ue5gQDmmy1vCT1k1/DIcqlJNNhkX0XsALsbEp1kNwU1H?=
- =?us-ascii?Q?kZcMKb88y4y18TWtb/4xo1XzDyOelY3iLVI4WE4u3o7wGA8QonVCPju9iEXG?=
- =?us-ascii?Q?QHdxH3p4bwS94RK0v4l34kQZI2TPsTy2Ce6sX/UzGgxFyaVCdBEzUqKY/8cE?=
- =?us-ascii?Q?zsISGi7fqdRCczg2ucuKHrAogLjBwq+/n3Cy1/YB2BHy7e7eyjGLJdCx8OQu?=
- =?us-ascii?Q?oubPCrqiLbaB0K5Me0Ev65m3brFPi+BrNKb2gqodosLxPnVymUrG64ceVvIu?=
- =?us-ascii?Q?of4og4ldjWPK70sCfx8Z8ky3MM1W5+40ir5tnA4unxxiJSXzirA/roTarfiP?=
- =?us-ascii?Q?6Ye4JHUgUp+GufrhQnN5JU+26xNBlYQ7tRYSaA=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TLQJc3GnQz3cQg
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jan 2024 02:50:22 +1100 (AEDT)
+Received: by mail-qk1-x730.google.com with SMTP id af79cd13be357-7831362c9bcso455450785a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jan 2024 07:50:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1706197819; x=1706802619; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=58NyEZxlKioQHJ5VpckWrYBK4rieOl/YNYhuqxJjrTQ=;
+        b=HEeG5r3Ee99chExbvnp2n567nnGAS04jbGnhgutOuhH3V29H5Nkg528eUncBQZ+c9y
+         XgnTyjHRbvc4S4tHcUK7xms68RT5/kCDZ/uRnwXJwu41+qrz6DF11Di4nc96QPW8MRuO
+         8rxXZ8gCPiNfwE9q8Awwx5BbxRgacJ5K+u7i9ILJgsNENu6K58FUSU9xCPOGnscToa3y
+         kvO+4WMPvdGQM6I9T/aQSTiGm4QIP5tMIGFZelYfN3Tv1+0dUofBvbCCJMowZhpMmAJb
+         tlZhEH7+38JxzC5rYnJNt4HHJEeOHWK7e9Och0Hl8z8pw3iVX5YFXw51RqkKUxXxJqTV
+         sBOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706197819; x=1706802619;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=58NyEZxlKioQHJ5VpckWrYBK4rieOl/YNYhuqxJjrTQ=;
+        b=qtz3QrFoFiE3kWFxPS5N71IeYH6WbXerGq+Vad0R0jcSJ5WpcnDfVqhvu2XwV8o9D6
+         CHZs4sTSKHn6QlFkuUrk+ptCp91gK5XG/Et9uxLK0qVq3hFFxWd4Wr8IDYNOCJ0Y399w
+         5ZPMp2xiKPV/SdCNhIFiv3MuudlqkFdo8OwZNgBNNvgb8HSvQnOdZshOku8aU2R0imc9
+         wobP/1hAiAQ+XVd9TZKZqTUpVnUsfe3JXLaDvAVINW5qI9vDWNetXV5+69soQsPPIKvK
+         jwj4HEZ7Kui0/HJInwlBLiZMQ9HhYyIsE6yY/1Dk/1k6stt66DPNg7ecF2T75mplAkVq
+         ax8Q==
+X-Gm-Message-State: AOJu0Yzr8CBqylFrZwMlrqPlydNjVsnow40R4io/uViZHLIqxLe6GOPY
+	9UjTJpjF5BpvfO6OVNkYu9al3KH8hDph4OVFBFC7QKpDTG/AR31o5V/KHjJZpns=
+X-Google-Smtp-Source: AGHT+IFLwvlLixMEJ8F1pWJryesPKscOkN+uPtiDwB9PKXC0aC3fby4A8RdctwHTaEij+xMpjf5IVw==
+X-Received: by 2002:a05:6214:1c0c:b0:681:9a5e:c49f with SMTP id u12-20020a0562141c0c00b006819a5ec49fmr1240542qvc.118.1706197819189;
+        Thu, 25 Jan 2024 07:50:19 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-68-80-239.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.80.239])
+        by smtp.gmail.com with ESMTPSA id dk13-20020a056214092d00b006852ff71ac2sm5578899qvb.30.2024.01.25.07.50.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Jan 2024 07:50:18 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.95)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1rT1zd-0091pp-BV;
+	Thu, 25 Jan 2024 11:50:17 -0400
+Date: Thu, 25 Jan 2024 11:50:17 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+Subject: Re: [PATCH 1/2] powerpc: iommu: Bring back table group
+ release_ownership() call
+Message-ID: <20240125155017.GW50608@ziepe.ca>
+References: <170618450592.3805.8216395093813382208.stgit@ltcd48-lp2.aus.stglab.ibm.com>
+ <170618451433.3805.9015493852395837391.stgit@ltcd48-lp2.aus.stglab.ibm.com>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1dd18b5f-0428-4c59-dec9-08dc1dba99ba
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Jan 2024 15:30:45.9873
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR02MB8980
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <170618451433.3805.9015493852395837391.stgit@ltcd48-lp2.aus.stglab.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -117,156 +83,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "piliu@redhat.com" <piliu@redhat.com>, "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, "kexec@lists.infradead.org" <kexec@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "ebiederm@xmission.com" <ebiederm@xmission.com>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, "hbathini@linux.ibm.com" <hbathini@linux.ibm.com>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>
+Cc: jroedel@suse.de, gbatra@linux.vnet.ibm.com, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, aneesh.kumar@kernel.org, tpearson@raptorengineering.com, iommu@lists.linux.dev, npiggin@gmail.com, bgray@linux.ibm.com, naveen.n.rao@linux.ibm.com, vaibhav@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, aik@amd.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Baoquan He <bhe@redhat.com> Sent: Thursday, January 25, 2024 1:17 AM
->=20
-> On 01/25/24 at 05:12am, Michael Kelley wrote:
-> > From: Baoquan He <bhe@redhat.com> Sent: Wednesday, January 24, 2024
-> 8:10 PM
-> > >
-> > > On 01/24/24 at 11:02pm, Michael Kelley wrote:
-> > > > > diff --git a/arch/x86/kernel/cpu/mshyperv.c
-> > > > > b/arch/x86/kernel/cpu/mshyperv.c
-> > > > > index 01fa06dd06b6..f8163a59026b 100644
-> > > > > --- a/arch/x86/kernel/cpu/mshyperv.c
-> > > > > +++ b/arch/x86/kernel/cpu/mshyperv.c
-> > > > > @@ -210,6 +210,7 @@ static void hv_machine_shutdown(void)
-> > > > >  		hyperv_cleanup();
-> > > > >  }
-> > > > >
-> > > > > +#ifdef CONFIG_CRASH_DUMP
-> > > > >  static void hv_machine_crash_shutdown(struct pt_regs *regs)
-> > > > >  {
-> > > > >  	if (hv_crash_handler)
-> > > > > @@ -221,6 +222,7 @@ static void hv_machine_crash_shutdown(struct =
-pt_regs *regs)
-> > > > >  	/* Disable the hypercall page when there is only 1 active CPU. =
-*/
-> > > > >  	hyperv_cleanup();
-> > > > >  }
-> > > > > +#endif
-> > > > >  #endif /* CONFIG_KEXEC_CORE */
-> > > >
-> > > > Note that the #ifdef CONFIG_CRASH_DUMP is nested inside
-> > > > #ifdef CONFIG_KEXEC_CODE here, and in the other Hyper-V code
-> > > > just below.   It's also nested in xen_hvm_guest_init() at the botto=
-m
-> > > > of this patch.  But the KVM case of setting crash_shutdown is
-> > > > not nested -- you changed #ifdef CONFIG_KEXEC_CORE to #ifdef
-> > > > CONFIG_CRASH_DUMP.
-> > > >
-> > > > I think both approaches work because CONFIG_CRASH_DUMP implies
-> > > > CONFIG_KEXEC_CORE, but I wonder if it would be better to *not* nest
-> > > > in all cases.  I'd like to see the cases be consistent so in the fu=
-ture
-> > > > someone doesn't wonder why there's a difference (unless there's
-> > > > a reason for the difference that I missed).
-> > >
-> > > I agree with you, it's a great suggestion. Thanks.
-> > >
-> > > Do you think below draft patch includes all changes you are concerned
-> > > about?
-> >
-> > Yes, these changes look good as a delta to your original patch.
-> >
-> > But also look at xen_hvm_guest_init().  It looks like your original pat=
-ch
-> > does nesting there as well, and it could probably be "un-nested".
->=20
-> Right. I checked them all in arch/x86 this time, hope nothing is missed
-> again. I can post a v4 to update this x86 patch later if no other
-> concern. Thanks.
+On Thu, Jan 25, 2024 at 06:08:39AM -0600, Shivaprasad G Bhat wrote:
+> The commit 2ad56efa80db ("powerpc/iommu: Setup a default domain and
+> remove set_platform_dma_ops") refactored the code removing the
+> set_platform_dma_ops(). It missed out the table group
+> release_ownership() call which would have got called otherwise
+> during the guest shutdown via vfio_group_detach_container(). On
+> PPC64, this particular call actually sets up the 32-bit TCE table,
+> and enables the 64-bit DMA bypass etc. Now after guest shutdown,
+> the subsequent host driver (e.g megaraid-sas) probe post unbind
+> from vfio-pci fails like,
+> 
+> megaraid_sas 0031:01:00.0: Warning: IOMMU dma not supported: mask 0x7fffffffffffffff, table unavailable
+> megaraid_sas 0031:01:00.0: Warning: IOMMU dma not supported: mask 0xffffffff, table unavailable
+> megaraid_sas 0031:01:00.0: Failed to set DMA mask
+> megaraid_sas 0031:01:00.0: Failed from megasas_init_fw 6539
+> 
+> The patch brings back the call to table_group release_ownership()
+> call when switching back to PLATFORM domain.
+> 
+> Fixes: 2ad56efa80db ("powerpc/iommu: Setup a default domain and remove set_platform_dma_ops")
+> Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+> ---
+>  arch/powerpc/kernel/iommu.c |   16 +++++++++++++---
+>  1 file changed, 13 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
+> index ebe259bdd462..ac7df43fa7ef 100644
+> --- a/arch/powerpc/kernel/iommu.c
+> +++ b/arch/powerpc/kernel/iommu.c
+> @@ -1296,9 +1296,19 @@ spapr_tce_platform_iommu_attach_dev(struct iommu_domain *platform_domain,
+>  	if (!grp)
+>  		return -ENODEV;
+>  
+> -	table_group = iommu_group_get_iommudata(grp);
+> -	ret = table_group->ops->take_ownership(table_group);
+> -	iommu_group_put(grp);
+> +	if (platform_domain->type == IOMMU_DOMAIN_PLATFORM) {
+> +		ret = 0;
+> +		table_group = iommu_group_get_iommudata(grp);
+> +		/*
+> +		 * The domain being set to PLATFORM from earlier
+> +		 * BLOCKED. The table_group ownership has to be released.
+> +		 */
+> +		table_group->ops->release_ownership(table_group);
+> +	} else if (platform_domain->type == IOMMU_DOMAIN_BLOCKED) {
+> +		table_group = iommu_group_get_iommudata(grp);
+> +		ret = table_group->ops->take_ownership(table_group);
+> +		iommu_group_put(grp);
+> +	}
 
-Yes -- everything looks good to me now.
+Sure, but please split the function, don't test on the
+platform->domain_type.
 
-Michael
+Also, is there any chance someone can work on actually fixing this to
+be a proper iommu driver? I think that will become important for power
+to use the common dma_iommu code in the next year...
 
->=20
-> diff --git a/arch/x86/kernel/cpu/mshyperv.c
-> b/arch/x86/kernel/cpu/mshyperv.c
-> index f8163a59026b..2e8cd5a4ae85 100644
-> --- a/arch/x86/kernel/cpu/mshyperv.c
-> +++ b/arch/x86/kernel/cpu/mshyperv.c
-> @@ -209,6 +209,7 @@ static void hv_machine_shutdown(void)
->  	if (kexec_in_progress)
->  		hyperv_cleanup();
->  }
-> +#endif /* CONFIG_KEXEC_CORE */
->=20
->  #ifdef CONFIG_CRASH_DUMP
->  static void hv_machine_crash_shutdown(struct pt_regs *regs)
-> @@ -222,8 +223,7 @@ static void hv_machine_crash_shutdown(struct
-> pt_regs *regs)
->  	/* Disable the hypercall page when there is only 1 active CPU. */
->  	hyperv_cleanup();
->  }
-> -#endif
-> -#endif /* CONFIG_KEXEC_CORE */
-> +#endif /* CONFIG_CRASH_DUMP */
->  #endif /* CONFIG_HYPERV */
->=20
->  static uint32_t  __init ms_hyperv_platform(void)
-> @@ -497,9 +497,11 @@ static void __init ms_hyperv_init_platform(void)
->  	no_timer_check =3D 1;
->  #endif
->=20
-> -#if IS_ENABLED(CONFIG_HYPERV) && defined(CONFIG_KEXEC_CORE)
-> +#if IS_ENABLED(CONFIG_HYPERV)
-> +#if defined(CONFIG_KEXEC_CORE)
->  	machine_ops.shutdown =3D hv_machine_shutdown;
-> -#ifdef CONFIG_CRASH_DUMP
-> +#endif
-> +#if defined(CONFIG_CRASH_DUMP)
->  	machine_ops.crash_shutdown =3D hv_machine_crash_shutdown;
->  #endif
->  #endif
-> diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-> index 1287b0d5962f..f3130f762784 100644
-> --- a/arch/x86/kernel/reboot.c
-> +++ b/arch/x86/kernel/reboot.c
-> @@ -826,7 +826,7 @@ void machine_halt(void)
->  	machine_ops.halt();
->  }
->=20
-> -#ifdef CONFIG_KEXEC_CORE
-> +#ifdef CONFIG_CRASH_DUMP
->  void machine_crash_shutdown(struct pt_regs *regs)
->  {
->  	machine_ops.crash_shutdown(regs);
-> diff --git a/arch/x86/xen/enlighten_hvm.c b/arch/x86/xen/enlighten_hvm.c
-> index 09e3db7ff990..0b367c1e086d 100644
-> --- a/arch/x86/xen/enlighten_hvm.c
-> +++ b/arch/x86/xen/enlighten_hvm.c
-> @@ -148,6 +148,7 @@ static void xen_hvm_shutdown(void)
->  	if (kexec_in_progress)
->  		xen_reboot(SHUTDOWN_soft_reset);
->  }
-> +#endif
->=20
->  #ifdef CONFIG_CRASH_DUMP
->  static void xen_hvm_crash_shutdown(struct pt_regs *regs)
-> @@ -156,7 +157,6 @@ static void xen_hvm_crash_shutdown(struct pt_regs
-> *regs)
->  	xen_reboot(SHUTDOWN_soft_reset);
->  }
->  #endif
-> -#endif
->=20
->  static int xen_cpu_up_prepare_hvm(unsigned int cpu)
->  {
-> @@ -238,10 +238,10 @@ static void __init xen_hvm_guest_init(void)
->=20
->  #ifdef CONFIG_KEXEC_CORE
->  	machine_ops.shutdown =3D xen_hvm_shutdown;
-> +#endif
->  #ifdef CONFIG_CRASH_DUMP
->  	machine_ops.crash_shutdown =3D xen_hvm_crash_shutdown;
->  #endif
-> -#endif
->  }
->=20
->  static __init int xen_parse_nopv(char *arg)
+Sort of like this:
 
+diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
+index ebe259bdd46298..0d6a7fea2bd9a5 100644
+--- a/arch/powerpc/kernel/iommu.c
++++ b/arch/powerpc/kernel/iommu.c
+@@ -1287,20 +1287,20 @@ spapr_tce_platform_iommu_attach_dev(struct iommu_domain *platform_domain,
+ 	struct iommu_domain *domain = iommu_get_domain_for_dev(dev);
+ 	struct iommu_group *grp = iommu_group_get(dev);
+ 	struct iommu_table_group *table_group;
+-	int ret = -EINVAL;
+ 
+ 	/* At first attach the ownership is already set */
+ 	if (!domain)
+ 		return 0;
+ 
+-	if (!grp)
+-		return -ENODEV;
+-
+ 	table_group = iommu_group_get_iommudata(grp);
+-	ret = table_group->ops->take_ownership(table_group);
++	/*
++	 * The domain being set to PLATFORM from earlier
++	 * BLOCKED. The table_group ownership has to be released.
++	 */
++	table_group->ops->release_ownership(table_group);
+ 	iommu_group_put(grp);
+ 
+-	return ret;
++	return 0
+ }
+ 
+ static const struct iommu_domain_ops spapr_tce_platform_domain_ops = {
+@@ -1312,13 +1312,33 @@ static struct iommu_domain spapr_tce_platform_domain = {
+ 	.ops = &spapr_tce_platform_domain_ops,
+ };
+ 
+-static struct iommu_domain spapr_tce_blocked_domain = {
+-	.type = IOMMU_DOMAIN_BLOCKED,
++static int
++spapr_tce_platform_iommu_blocked_dev(struct iommu_domain *platform_domain,
++				     struct device *dev)
++{
++	struct iommu_domain *domain = iommu_get_domain_for_dev(dev);
++	struct iommu_group *grp = iommu_group_get(dev);
++	struct iommu_table_group *table_group;
++	int ret = -EINVAL;
++
+ 	/*
+ 	 * FIXME: SPAPR mixes blocked and platform behaviors, the blocked domain
+ 	 * also sets the dma_api ops
+ 	 */
+-	.ops = &spapr_tce_platform_domain_ops,
++	table_group = iommu_group_get_iommudata(grp);
++	ret = table_group->ops->take_ownership(table_group);
++	iommu_group_put(grp);
++
++	return ret;
++}
++
++static const struct iommu_domain_ops spapr_tce_blocked_domain_ops = {
++	.attach_dev = spapr_tce_blocked_iommu_attach_dev,
++};
++
++static struct iommu_domain spapr_tce_blocked_domain = {
++	.type = IOMMU_DOMAIN_BLOCKED,
++	.ops = &spapr_tce_blocked_domain_ops,
+ };
+ 
+ static bool spapr_tce_iommu_capable(struct device *dev, enum iommu_cap cap)
