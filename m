@@ -2,129 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1FD483CCC8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jan 2024 20:45:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EE6B83CD76
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jan 2024 21:31:13 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=Q1zqfuzm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=V41F2y9r;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TLWXF4ybRz3vhS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jan 2024 06:45:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TLXXb2W2Rz3cX9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jan 2024 07:31:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=Q1zqfuzm;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=V41F2y9r;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:261c::601; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20601.outbound.protection.outlook.com [IPv6:2a01:111:f403:261c::601])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gbatra@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TLWPX3szPz3vlt
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jan 2024 06:40:00 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nwOVyxF0otBhYaBwtJPELfIyLY7DW60Y0iqGg5M3o11rLgd7zUoqwZ/yb0JR+o9IwUKL7aMUdNiUufJQGb1YRS9mRli+iNMxtOsmZNiIURlMV3KfGXxlDfXYD77+Rj8nEcdead9ENfG+a5Prwc65l8IV8HuateWeINFGR3mwVGl8tBJna5TZIbihZjIbjaExcRzS9gMEEnmP+k2SLRbhjP7lCsfDS2FM/kmQukhkCRYvkqAFc2WBxZ1ucvbzHoxUp+3oVSni0mTgkMGUPgDVN3fE+gonZBO3/APGIJFCjS8SLgYvTyvOMTTAbjjbIvYxQtNweLObkmx906kX0/4rag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ARoJWEw2ngvWa8TA1xFp0ffHXdaxKB84rp5elC1qepk=;
- b=frV3ETybKRtz4DrxzYZKhfAi/+cVkU5HIKJBLM61Pe1l9ko/9WX08wAJcp1lTJVqd3f0/4uUQHFo6bwFM+9cf2sM3KrXLHrgY8n9cfieFtY4k02HTHRlx0CWk++EPpcBZx81PfgGUMqkOGuZGrZd61kdpu95Q1RWt9AC8m25spGAeIKCuqQXvMi8YN32eEyt2IzoeMSArAnuAe6dGOYrydFE23xbMYxWU6GxwERoWKpanO7Fgm91JknCCquFaVyKwDUk9q5B+SrCVfIkhBnSP/c2IzB0Uiad6G1510wB+ZQg70ZXpbhIg3YfK2wjVb1E7YQBh+y/HLVqMjLxwqTi/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ARoJWEw2ngvWa8TA1xFp0ffHXdaxKB84rp5elC1qepk=;
- b=Q1zqfuzmulGA3YxfNDLz8bj1aksSbbLlW4xoWuvd6xWJL3fA8Gk1xhtW+t/Re+coK3mMrGwNf9TTlRF9RTu/8O3ET3gOrkT0LVG+paARnI7xQ0daidK7+m/QUyI00N2lWLM7inabHKFGIgx9rep6DEx0oBX2Ptnofth2GQXF82WfSLNfA+++BkLje8PLjffMaoB0ixiyM4+VNlPH3fcZT1IyGluhsQsPO63WvySX3T2x0BZ7lsciNmejELjQHFB+qsRxQ5A136dWHZnOA9PyhDBSw5tGBunFp/VckGmocYuvgWMKb5qdwDqtPR2UN1umINpESk/eR0rZ9gAvvomHwA==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR0P264MB2791.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1d2::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.22; Thu, 25 Jan
- 2024 19:39:38 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::9f77:c0ff:cd22:ae96]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::9f77:c0ff:cd22:ae96%4]) with mapi id 15.20.7228.027; Thu, 25 Jan 2024
- 19:39:38 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Pingfan Liu <kernelfans@gmail.com>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH v6 (proposal)] powerpc/cpu: enable nr_cpus for crash
- kernel
-Thread-Topic: [PATCH v6 (proposal)] powerpc/cpu: enable nr_cpus for crash
- kernel
-Thread-Index: AQHaT8Y7NgsQbOtsu0uteXBAvM/zig==
-Date: Thu, 25 Jan 2024 19:39:38 +0000
-Message-ID: <9ec1b69c-5a36-4dcc-935f-cc02bb87c4ca@csgroup.eu>
-References: <1526977424-25243-1-git-send-email-kernelfans@gmail.com>
-In-Reply-To: <1526977424-25243-1-git-send-email-kernelfans@gmail.com>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla Thunderbird
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR0P264MB2791:EE_
-x-ms-office365-filtering-correlation-id: 3a3c06e6-5386-4ec0-a5ce-08dc1ddd5e43
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  5v37J5hcd91k4EYsvR2drQ8XrqY7hmrpYWGYHCYMOGlGoTpf0KTliJHTeVtUzplDGNm0iocUECnf0T2cy/g1ECuogMZgOY2lQU7XMcIzzHy+DlEMKYr65UE4s0w8v3N+Aw1YI0WgmkPS+l87v2SnYbRbUNBTu12sCcELgx0r/9UOrh+8TXKWuamvCibgenHwOLbW1Cl6Ig3xrTp7Eu+fGwHZYaAF0TLDAXx+0+iTL0y309M67XMyfOLCRttc2ChF4WkIyqftIQO9tRridiUlfFSFb1jQvyiB5jQkCg7TsRCYO2lhozPj7QW1oSO41aEgjB0UEWkIeAQ6C/Ywf1bahqrLx+Dd9itUsFZmh5kahP9zyVXLtr90HIbyPfm4l1lCkMi+8LlRbAZQ20S8qeTcbgcG+w4ZwFgtawo4xpcQvq3AENygf7E32olzBnZmLGIiwxAg09nQYGSyLH90iQHyB0dC5btKSVz4QUDVOnsYyULZKnssc8jKVmzGWDGXNSsOijFOnjsebh6QRCjG8kijaUrfRzyWRZk2ySfEKEbvdPtsHapkgrb9SCgg9bpuxOOnhkntPGLL0N8OH707njdIF/1N+P2fTJvNwPd9Fpuev8hURIrp362CQhReW8p2OUlKVLd3jxtI5pQ95CwPcbTKkjoglDrCEW+pAa8LsbOdfuEthAOKuqGtmRjuILwAFn/iQN0ea3CX6odbArMvoipMwaiq0Npp83bcshsyfPW7MPagIeggKFJRaSv98PSjaCiw
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(136003)(396003)(366004)(39860400002)(376002)(346002)(230273577357003)(230922051799003)(230173577357003)(451199024)(64100799003)(186009)(1800799012)(41300700001)(83380400001)(26005)(6512007)(2616005)(38100700002)(66574015)(122000001)(44832011)(4326008)(8676002)(5660300002)(8936002)(478600001)(30864003)(66476007)(6506007)(76116006)(64756008)(66446008)(71200400001)(6486002)(2906002)(54906003)(66556008)(316002)(66946007)(110136005)(91956017)(3613699003)(38070700009)(31696002)(36756003)(86362001)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?cHpUYVFUZUR5VGJncGFKSkk1QzJNR2loUFI4MVhPSUkvMFdPUjU5dEdoRWwv?=
- =?utf-8?B?eHV2ZEIra01rcjZTNjMzT2RobFl6QkdCUmhyenhrQlF5WXE4cVVKMThFanZm?=
- =?utf-8?B?TGlqbHJwMTJDQzFMeDBQSzFjbmUxU3B4QWorbEQxWGR4cXpiSzNaL3kreit1?=
- =?utf-8?B?VmNrQ2RGd0o0bGllUGErcXVDRWkxMno5S1BSMFU0azZYSnlFdkFMdElHTDhW?=
- =?utf-8?B?bXptYWVZWmUwbll5WS9WQkRKV2xYWWx3clloSnBrUWpadngwRUpHeTNlNkJM?=
- =?utf-8?B?Znk4TXFteVA3bEc4UWcvZkJkREVUZXU5aHNnNUxuQTVxbnFRRUFnVDhYcEhK?=
- =?utf-8?B?czJmM3VYYmViMHFGMmEzNEcyMy9RaWRHUk4wWUxLTThOMzA0L2YrTUc4bEFv?=
- =?utf-8?B?a0hFZVNNelljWitOVGN0dStoWVJSWjFzQW9zU29zRUtjMkk2MmNpMEU0cEhm?=
- =?utf-8?B?WHB4d2t2MnBvbTk5NU9oUXBqdSs0cy9rSzBBYlNabC9sK0Yrc0lzT2NjV21G?=
- =?utf-8?B?Kys0Q3VINjV0ekpIMW00WS9aSFJEWXl4a0Y5TWlEUE4yMDcyT3h6SFVQaWVJ?=
- =?utf-8?B?ekR0SlJObEVpSnJJa0wzU3NmUkFoeDh5YlJNdDJNQkh6YU5FUXBJLzhCUGFU?=
- =?utf-8?B?ZDUwbGg3V1kvZjR6dTNQcEozaExRWVZ0ZGpBa25aUWRQNUEyblJ2WTZDYlpa?=
- =?utf-8?B?eVlVY1lPa29vQVJLcS9uVnJTT2ttelBJQ2hXcUxzc0YxamFiTzBwOXp5WCtq?=
- =?utf-8?B?d2huNXhjVHR5a0hPT25RcCtPT3IwSmZCNmxEMDN1UksyZEF6TUhuQjlGM1E2?=
- =?utf-8?B?TmRpWG84Umw5a213T3FCU2I5dU81WEVpZktqUjBkWktBVjg4UXQ3SlN3MERZ?=
- =?utf-8?B?VHNCWFgvUy9OTXk5ODlQWko5dEt3WXptN2wzQTFmYWRMZ0VTbUpsY01aenl3?=
- =?utf-8?B?UzRHSFVkT0VsVVVQUWVOcXUxSlpKRTZ1ZXg0dkxWQVRBbTJTb204ZEJPaVhr?=
- =?utf-8?B?VTUreGtQY3Zya0laUzdUTlJxWmdIK1NnZkpBSDZoMzR2Uk5SOUMxMHZxd3pG?=
- =?utf-8?B?N1A1ZmNNMXdjSkluai9EQ2YyWkdDS1g1a2hLWFJmVG9YaDVhaXowWERRRTdB?=
- =?utf-8?B?SjJpQ3A0ZU5iOEk5bzREM2FqWW1jTUhNVjNUTlhCZjkzdm52N0pIUXd6MTl3?=
- =?utf-8?B?SklRWGFhSW1RY3BLMm9hUllrZ2U1Y0ZCb1M4NlVmOXkwUDlXRU9xUlBITnFK?=
- =?utf-8?B?Y1VvRnI1WXFtRWtkSUdxbUkzeHY2MEdKQUZQcG0zaVNqT2NsdEt5TFQxNTlP?=
- =?utf-8?B?TzFHTTUvYS9GSEt2eVU1K0s4QTZoandLVE1ZREV5MEZtMkhrR3Fnbno0M0ph?=
- =?utf-8?B?d3VReDdoWm02WmNZNWJwQzBDc2s4QXRhdXBMYnhIWjdNRjRPL0l2NW9RRDQv?=
- =?utf-8?B?VUNoUzZ6OW5PYnRmTFhKZzhoeGQwUDQ0c3ZvSndBV2NmZUdIWkR5TEpPME9r?=
- =?utf-8?B?WWd5V2YvODJxbWRnYzUvc3lhY2x1Y3pYQklqTzBzQnlGMDYwaXUxNUZRRUg3?=
- =?utf-8?B?V0NmVUpzTmFkR1F0QmlHVnNBRXQ4WTV4WHQrQmdCTWJ3VXVxNVFlSmVOOWs0?=
- =?utf-8?B?c1NMdmNJMjRpV3c0akxnK051bFgrQW52Q2tKRzFuTzF1YzZJYmowZVRDc1JQ?=
- =?utf-8?B?M2lqT3d4T1I3Z01vbjB3MzBkR0lXYVBoV2JDMVlNM3VjalpPeTcwYmlrYVJU?=
- =?utf-8?B?eUhCN1VYTHpZRzZCVEhoOCtMREZBS21HS2NvRmNNRkNYcjd3cVorUUlhcDNr?=
- =?utf-8?B?ZER2bDlEVGZWM0ZVaEpKS0cwdU82NEtZYm1OZkZQT25YbExYTzVubDJ2QzZm?=
- =?utf-8?B?WHpkRGdKUDMxb3Q1UVdoSHdEajFnTGU1NXhZcy9ha3dxdEplWnEyY2ZlK1ph?=
- =?utf-8?B?V3hZWFhxYlFHa0pkdVdoc2dJQ2xkbzV5MDFrSDhxQ2dLN0VwejdJT013Z3Ns?=
- =?utf-8?B?bVgzckJyNU9kNTJnRGZzSW9rNWorUGZGYndkeFBubjJsWjYxQTMvczk0V3E4?=
- =?utf-8?B?UE5ScmhWS3dQOFdWUkFINkVGNzE4ZGp5NnZ0eUVvUFQ5SE9jRFFjbGh2eDJa?=
- =?utf-8?B?Z25rVG9QSVcwMzNSWU5VbXRXNDBwOWxNZ2JIVmVlT2dWUDBPM0J2bmcxVVFU?=
- =?utf-8?B?OEE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <24CE1A2FE926CD478FE0FD518DF16404@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TLXWl4nwjz3c5h
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jan 2024 07:30:27 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40PKKstJ022783;
+	Thu, 25 Jan 2024 20:30:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=4oL8+23Q4aoMOrrwL2qflZFGCojpQEr+88BkfYCc+bA=;
+ b=V41F2y9r3g4Hj3jWOkP9umzUQbI1LbxX2gv/Q7cE/GElknn7FlBqL51odgZipe/6wn7I
+ rzEf/wQ5YKXMomDZsZuslgbcnZLmoiiUTY5GTLil9MEZHqMNkyOYQ0JmJhKNh22wZOSx
+ WI8LmFux1q4XxAdT4AL7keTOf3Ftvt4qjkDZcyf9kWWP1Gipb+UlF3O3xmeu6AV0jU7f
+ IOHhgYO7SWjMcdgNUfUJiWvYAo2RgIk8ObvBG83Ag4ThUINjo5ziVAlgyCTl0NMul0eb
+ wNQt1pIhHEmxBADFULj/5XfKejpxFr4coDhJP8ucKZK7khhqMcLBBAx+U+6nn5u9pyE6 MQ== 
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vusbjhkk6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 25 Jan 2024 20:30:21 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40PIOx8e026879;
+	Thu, 25 Jan 2024 20:30:19 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vrrgtpsvx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 25 Jan 2024 20:30:19 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40PKUIZ120709978
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 25 Jan 2024 20:30:19 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 561F358053;
+	Thu, 25 Jan 2024 20:30:18 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 13D8058063;
+	Thu, 25 Jan 2024 20:30:18 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.24.23.29])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 25 Jan 2024 20:30:17 +0000 (GMT)
+From: Gaurav Batra <gbatra@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH v2] powerpc/pseries/iommu: IOMMU table is not initialized for kdump over SR-IOV
+Date: Thu, 25 Jan 2024 14:30:17 -0600
+Message-Id: <20240125203017.61014-1-gbatra@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-145)
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3a3c06e6-5386-4ec0-a5ce-08dc1ddd5e43
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Jan 2024 19:39:38.5626
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: MsQCaTLIAOxtWWNwa6oD+lcf+tMu1e4cDMI4AdYrkOGEz7RaP6Ytj1xqf7eWsiNumP/3E7EV61+u6MOYbm+2KnoqQnNjVi5QNug6v6McTQI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB2791
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: kdCb1vRI7Dm2YqpCb7agOSJTjy56Ff-0
+X-Proofpoint-ORIG-GUID: kdCb1vRI7Dm2YqpCb7agOSJTjy56Ff-0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-25_12,2024-01-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ priorityscore=1501 spamscore=0 clxscore=1015 mlxscore=0 suspectscore=0
+ lowpriorityscore=0 mlxlogscore=901 bulkscore=0 phishscore=0 malwarescore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401250147
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -136,225 +86,340 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mahesh J Salgaonkar <mahesh@linux.vnet.ibm.com>, "dyoung@redhat.com" <dyoung@redhat.com>, "kexec@lists.infradead.org" <kexec@lists.infradead.org>, "Guilherme G . Piccoli" <gpiccoli@linux.vnet.ibm.com>
+Cc: Brian King <brking@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org, Gaurav Batra <gbatra@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-SGksDQoNCkxlIDIyLzA1LzIwMTggw6AgMTA6MjMsIFBpbmdmYW4gTGl1IGEgw6ljcml0wqA6DQo+
-IEZvciBrZXhlYyAtcCwgdGhlIGJvb3QgY3B1IGNhbiBiZSBub3QgdGhlIGNwdTAsIHRoaXMgY2F1
-c2VzIHRoZSBwcm9ibGVtDQo+IHRvIGFsbG9jIHBhY2FbXS4gSW4gdGhlb3J5LCB0aGVyZSBpcyBu
-byByZXF1aXJlbWVudCB0byBhc3NpZ24gY3B1J3MgbG9naWNhbA0KPiBpZCBhcyBpdHMgcHJlc2Vu
-dCBzZXEgYnkgZGV2aWNlIHRyZWUuIEJ1dCB3ZSBoYXZlIHNvbWV0aGluZyBsaWtlDQo+IGNwdV9m
-aXJzdF90aHJlYWRfc2libGluZygpLCB3aGljaCBtYWtlcyBhc3N1bXB0aW9uIG9uIHRoZSBtYXBw
-aW5nIGluc2lkZQ0KPiBhIGNvcmUuIEhlbmNlIHBhcnRpYWxseSBjaGFuZ2luZyB0aGUgbWFwcGlu
-ZywgaS5lLiB1bmJpbmQgdGhlIG1hcHBpbmcgb2YNCj4gY29yZSB3aGlsZSBrZWVwIHRoZSBtYXBw
-aW5nIGluc2lkZSBhIGNvcmUuIEFmdGVyIHRoaXMgcGF0Y2gsIHRoZSBjb3JlIHdpdGgNCj4gYm9v
-dC1jcHUgd2lsbCBhbHdheXMgYmUgbWFwcGVkIGludG8gY29yZSAwLg0KPiANCj4gQW5kIGF0IHBy
-ZXNlbnQsIHRoZSBjb2RlIHRvIGRpc2NvdmVyeSBjcHUgc3ByZWFkcyBvdmVyIHR3byBmdW5jdGlv
-bnM6DQo+IGVhcmx5X2luaXRfZHRfc2Nhbl9jcHVzKCkgYW5kIHNtcF9zZXR1cF9jcHVfbWFwcygp
-Lg0KPiBUaGlzIHBhdGNoIHRyaWVzIHRvIGZvbGQgc21wX3NldHVwX2NwdV9tYXBzKCkgaW50byB0
-aGUgInByZXZpb3VzIiBvbmUNCg0KVGhpcyBwYXRjaCBpcyBwcmV0dHkgb2xkIGFuZCBkb2Vzbid0
-IGFwcGx5IGFueW1vcmUuIElmIHN0aWxsIHJlbGV2YW50IA0KY2FuIHlvdSBwbGVhc2UgcmViYXNl
-IGFuZCByZXN1Ym1pdC4NCg0KVGhhbmtzDQpDaHJpc3RvcGhlDQoNCj4gDQo+IFNpZ25lZC1vZmYt
-Ynk6IFBpbmdmYW4gTGl1IDxrZXJuZWxmYW5zQGdtYWlsLmNvbT4NCj4gLS0tDQo+IHY1IC0+IHY2
-Og0KPiAgICBzaW1wbGlmeSB0aGUgbG9vcCBsb2dpYyAoSG9wZSBpdCBjYW4gYW5zd2VyIEJlbmph
-bWluJ3MgY29uY2VybikNCj4gICAgY29uY2VudHJhdGUgdGhlIGNwdSByZWNvdmVyeSBjb2RlIHRv
-IGVhcmx5IHN0YWdlIChIb3BlIGl0IGNhbiBhbnN3ZXIgTWljaGFlbCdzIGNvbmNlcm4pDQo+IFRv
-ZG86IChpZiB0aGlzIG1ldGhvZCBpcyBhY2NlcHRlZCkNCj4gICAgZm9sZCB0aGUgd2hvbGUgc21w
-X3NldHVwX2NwdV9tYXBzKCkNCj4gDQo+ICAgYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL3NtcC5o
-ICAgICB8ICAgMSArDQo+ICAgYXJjaC9wb3dlcnBjL2tlcm5lbC9wcm9tLmMgICAgICAgICB8IDEy
-MyArKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tDQo+ICAgYXJjaC9wb3dlcnBj
-L2tlcm5lbC9zZXR1cC1jb21tb24uYyB8ICA1OCArKy0tLS0tLS0tLS0tLS0tLQ0KPiAgIGRyaXZl
-cnMvb2YvZmR0LmMgICAgICAgICAgICAgICAgICAgfCAgIDIgKy0NCj4gICBpbmNsdWRlL2xpbnV4
-L29mX2ZkdC5oICAgICAgICAgICAgIHwgICAyICsNCj4gICA1IGZpbGVzIGNoYW5nZWQsIDEwMyBp
-bnNlcnRpb25zKCspLCA4MyBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9hcmNoL3Bv
-d2VycGMvaW5jbHVkZS9hc20vc21wLmggYi9hcmNoL3Bvd2VycGMvaW5jbHVkZS9hc20vc21wLmgN
-Cj4gaW5kZXggZmFjOTYzZS4uODBjNzY5MyAxMDA2NDQNCj4gLS0tIGEvYXJjaC9wb3dlcnBjL2lu
-Y2x1ZGUvYXNtL3NtcC5oDQo+ICsrKyBiL2FyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9zbXAuaA0K
-PiBAQCAtMzAsNiArMzAsNyBAQA0KPiAgICNpbmNsdWRlIDxhc20vcGVyY3B1Lmg+DQo+ICAgDQo+
-ICAgZXh0ZXJuIGludCBib290X2NwdWlkOw0KPiArZXh0ZXJuIGludCB0aHJlYWRzX2luX2NvcmU7
-DQo+ICAgZXh0ZXJuIGludCBzcGlubmluZ19zZWNvbmRhcmllczsNCj4gICANCj4gICBleHRlcm4g
-dm9pZCBjcHVfZGllKHZvaWQpOw0KPiBkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL2tlcm5lbC9w
-cm9tLmMgYi9hcmNoL3Bvd2VycGMva2VybmVsL3Byb20uYw0KPiBpbmRleCA0OTIyMTYyLi4yYWUw
-YjRhIDEwMDY0NA0KPiAtLS0gYS9hcmNoL3Bvd2VycGMva2VybmVsL3Byb20uYw0KPiArKysgYi9h
-cmNoL3Bvd2VycGMva2VybmVsL3Byb20uYw0KPiBAQCAtNzcsNyArNzcsNiBAQCB1bnNpZ25lZCBs
-b25nIHRjZV9hbGxvY19zdGFydCwgdGNlX2FsbG9jX2VuZDsNCj4gICB1NjQgcHBjNjRfcm1hX3Np
-emU7DQo+ICAgI2VuZGlmDQo+ICAgc3RhdGljIHBoeXNfYWRkcl90IGZpcnN0X21lbWJsb2NrX3Np
-emU7DQo+IC1zdGF0aWMgaW50IF9faW5pdGRhdGEgYm9vdF9jcHVfY291bnQ7DQo+ICAgDQo+ICAg
-c3RhdGljIGludCBfX2luaXQgZWFybHlfcGFyc2VfbWVtKGNoYXIgKnApDQo+ICAgew0KPiBAQCAt
-MzA1LDYgKzMwNCwxNCBAQCBzdGF0aWMgdm9pZCBfX2luaXQgY2hlY2tfY3B1X2ZlYXR1cmVfcHJv
-cGVydGllcyh1bnNpZ25lZCBsb25nIG5vZGUpDQo+ICAgCX0NCj4gICB9DQo+ICAgDQo+ICtzdHJ1
-Y3QgYm9vdGluZm8gew0KPiArCWludCBib290X3RocmVhZF9pZDsNCj4gKwl1bnNpZ25lZCBpbnQg
-Y3B1X2NudDsNCj4gKwlpbnQgY3B1X2h3aWRzW05SX0NQVVNdOw0KPiArCWJvb2wgYXZhaWxbTlJf
-Q1BVU107DQo+ICt9Ow0KPiArc3RhdGljIHN0cnVjdCBib290aW5mbyAqYnRfaW5mbzsNCj4gKw0K
-PiAgIHN0YXRpYyBpbnQgX19pbml0IGVhcmx5X2luaXRfZHRfc2Nhbl9jcHVzKHVuc2lnbmVkIGxv
-bmcgbm9kZSwNCj4gICAJCQkJCSAgY29uc3QgY2hhciAqdW5hbWUsIGludCBkZXB0aCwNCj4gICAJ
-CQkJCSAgdm9pZCAqZGF0YSkNCj4gQEAgLTMxMiwxMCArMzE5LDEyIEBAIHN0YXRpYyBpbnQgX19p
-bml0IGVhcmx5X2luaXRfZHRfc2Nhbl9jcHVzKHVuc2lnbmVkIGxvbmcgbm9kZSwNCj4gICAJY29u
-c3QgY2hhciAqdHlwZSA9IG9mX2dldF9mbGF0X2R0X3Byb3Aobm9kZSwgImRldmljZV90eXBlIiwg
-TlVMTCk7DQo+ICAgCWNvbnN0IF9fYmUzMiAqcHJvcDsNCj4gICAJY29uc3QgX19iZTMyICppbnRz
-ZXJ2Ow0KPiAtCWludCBpLCBudGhyZWFkczsNCj4gKwlpbnQgaSwgbnRocmVhZHMsIG1heGlkeDsN
-Cj4gICAJaW50IGxlbjsNCj4gLQlpbnQgZm91bmQgPSAtMTsNCj4gLQlpbnQgZm91bmRfdGhyZWFk
-ID0gMDsNCj4gKwlpbnQgZm91bmRfdGhyZWFkID0gLTE7DQo+ICsJc3RydWN0IGJvb3RpbmZvICpp
-bmZvID0gZGF0YTsNCj4gKwlib29sIGF2YWlsOw0KPiArCWludCByb3RhdGVfY250LCBpZDsNCj4g
-ICANCj4gICAJLyogV2UgYXJlIHNjYW5uaW5nICJjcHUiIG5vZGVzIG9ubHkgKi8NCj4gICAJaWYg
-KHR5cGUgPT0gTlVMTCB8fCBzdHJjbXAodHlwZSwgImNwdSIpICE9IDApDQo+IEBAIC0zMjUsOCAr
-MzM0LDE1IEBAIHN0YXRpYyBpbnQgX19pbml0IGVhcmx5X2luaXRfZHRfc2Nhbl9jcHVzKHVuc2ln
-bmVkIGxvbmcgbm9kZSwNCj4gICAJaW50c2VydiA9IG9mX2dldF9mbGF0X2R0X3Byb3Aobm9kZSwg
-ImlibSxwcGMtaW50ZXJydXB0LXNlcnZlciNzIiwgJmxlbik7DQo+ICAgCWlmICghaW50c2VydikN
-Cj4gICAJCWludHNlcnYgPSBvZl9nZXRfZmxhdF9kdF9wcm9wKG5vZGUsICJyZWciLCAmbGVuKTsN
-Cj4gKwlhdmFpbCA9IG9mX2ZkdF9kZXZpY2VfaXNfYXZhaWxhYmxlKGluaXRpYWxfYm9vdF9wYXJh
-bXMsIG5vZGUpOw0KPiArI2lmIDANCj4gKwkvL3RvZG8NCj4gKwlpZiAoIWF2YWlsKQ0KPiArCQlh
-dmFpbCA9ICFvZl9mZHRfcHJvcGVydHlfbWF0Y2hfc3RyaW5nKG5vZGUsDQo+ICsJCQkJCSJlbmFi
-bGUtbWV0aG9kIiwgInNwaW4tdGFibGUiKTsNCj4gKyNlbmRpZg0KPiAgIA0KPiAtCW50aHJlYWRz
-ID0gbGVuIC8gc2l6ZW9mKGludCk7DQo+ICsJdGhyZWFkc19pbl9jb3JlID0gbnRocmVhZHMgPSBs
-ZW4gLyBzaXplb2YoaW50KTsNCj4gICANCj4gICAJLyoNCj4gICAJICogTm93IHNlZSBpZiBhbnkg
-b2YgdGhlc2UgdGhyZWFkcyBtYXRjaCBvdXIgYm9vdCBjcHUuDQo+IEBAIC0zMzgsOSArMzU0LDEw
-IEBAIHN0YXRpYyBpbnQgX19pbml0IGVhcmx5X2luaXRfZHRfc2Nhbl9jcHVzKHVuc2lnbmVkIGxv
-bmcgbm9kZSwNCj4gICAJCSAqIGJvb3RlZCBwcm9jLg0KPiAgIAkJICovDQo+ICAgCQlpZiAoZmR0
-X3ZlcnNpb24oaW5pdGlhbF9ib290X3BhcmFtcykgPj0gMikgew0KPiArCQkJaW5mby0+Y3B1X2h3
-aWRzW2luZm8tPmNwdV9jbnRdID0NCj4gKwkJCQkJYmUzMl90b19jcHUoaW50c2VydltpXSk7DQo+
-ICAgCQkJaWYgKGJlMzJfdG9fY3B1KGludHNlcnZbaV0pID09DQo+ICAgCQkJICAgIGZkdF9ib290
-X2NwdWlkX3BoeXMoaW5pdGlhbF9ib290X3BhcmFtcykpIHsNCj4gLQkJCQlmb3VuZCA9IGJvb3Rf
-Y3B1X2NvdW50Ow0KPiAgIAkJCQlmb3VuZF90aHJlYWQgPSBpOw0KPiAgIAkJCX0NCj4gICAJCX0g
-ZWxzZSB7DQo+IEBAIC0zNTEsMjIgKzM2OCwzNyBAQCBzdGF0aWMgaW50IF9faW5pdCBlYXJseV9p
-bml0X2R0X3NjYW5fY3B1cyh1bnNpZ25lZCBsb25nIG5vZGUsDQo+ICAgCQkJICovDQo+ICAgCQkJ
-aWYgKG9mX2dldF9mbGF0X2R0X3Byb3Aobm9kZSwNCj4gICAJCQkJCSJsaW51eCxib290LWNwdSIs
-IE5VTEwpICE9IE5VTEwpDQo+IC0JCQkJZm91bmQgPSBib290X2NwdV9jb3VudDsNCj4gKwkJCQlm
-b3VuZF90aHJlYWQgPSBpbmZvLT5jcHVfY250Ow0KPiAgIAkJfQ0KPiArCQlpbmZvLT5hdmFpbFtp
-bmZvLT5jcHVfY250XSA9IGF2YWlsOw0KPiArDQo+ICAgI2lmZGVmIENPTkZJR19TTVANCj4gICAJ
-CS8qIGxvZ2ljYWwgY3B1IGlkIGlzIGFsd2F5cyAwIG9uIFVQIGtlcm5lbHMgKi8NCj4gLQkJYm9v
-dF9jcHVfY291bnQrKzsNCj4gKwkJaW5mby0+Y3B1X2NudCsrOw0KPiAgICNlbmRpZg0KPiAgIAl9
-DQo+ICAgDQo+ICAgCS8qIE5vdCB0aGUgYm9vdCBDUFUgKi8NCj4gLQlpZiAoZm91bmQgPCAwKQ0K
-PiArCWlmIChmb3VuZF90aHJlYWQgPCAwKQ0KPiAgIAkJcmV0dXJuIDA7DQo+ICAgDQo+IC0JREJH
-KCJib290IGNwdTogbG9naWNhbCAlZCBwaHlzaWNhbCAlZFxuIiwgZm91bmQsDQo+ICsJLyogYWx3
-YXlzIG1hcHBpbmcgYm9vdC1jb3JlIHRvIGNvcmUgMCB0byBjb3BlIHdpdGgga2V4ZWMgLXAgKi8N
-Cj4gKwltYXhpZHggPSBpbmZvLT5jcHVfY250IC0gMTsNCj4gKwlyb3RhdGVfY250ID0gbnRocmVh
-ZHM7DQo+ICsJd2hpbGUgKHJvdGF0ZV9jbnQtLSA+IDApIHsNCj4gKwkJYXZhaWwgPSBpbmZvLT5h
-dmFpbFttYXhpZHhdOw0KPiArCQlpZCA9IGluZm8tPmNwdV9od2lkc1ttYXhpZHhdOw0KPiArCQlm
-b3IgKGkgPSBtYXhpZHg7IGkgPiAwOyBpLS0pIHsNCj4gKwkJCWluZm8tPmF2YWlsW2ldID0gaW5m
-by0+YXZhaWxbaSAtIDFdOw0KPiArCQkJaW5mby0+Y3B1X2h3aWRzW2ldID0gaW5mby0+Y3B1X2h3
-aWRzW2kgLSAxXTsNCj4gKwkJfQ0KPiArCQlpbmZvLT5hdmFpbFtpXSA9IGF2YWlsOw0KPiArCQlp
-bmZvLT5jcHVfaHdpZHNbaV0gPSBpZDsNCj4gKwl9DQo+ICsNCj4gKwlpbmZvLT5ib290X3RocmVh
-ZF9pZCA9IGZvdW5kX3RocmVhZDsNCj4gKwlEQkcoImJvb3QgY3B1OiBsb2dpY2FsICVkIHBoeXNp
-Y2FsICVkXG4iLCBmb3VuZF90aHJlYWQsDQo+ICAgCSAgICBiZTMyX3RvX2NwdShpbnRzZXJ2W2Zv
-dW5kX3RocmVhZF0pKTsNCj4gLQlib290X2NwdWlkID0gZm91bmQ7DQo+IC0Jc2V0X2hhcmRfc21w
-X3Byb2Nlc3Nvcl9pZChmb3VuZCwgYmUzMl90b19jcHUoaW50c2Vydltmb3VuZF90aHJlYWRdKSk7
-DQo+ICAgDQo+ICAgCS8qDQo+ICAgCSAqIFBBUFIgZGVmaW5lcyAibG9naWNhbCIgUFZSIHZhbHVl
-cyBmb3IgY3B1cyB0aGF0DQo+IEBAIC02NzUsNiArNzA3LDU1IEBAIHN0YXRpYyB2b2lkIF9faW5p
-dCB0bV9pbml0KHZvaWQpDQo+ICAgc3RhdGljIHZvaWQgdG1faW5pdCh2b2lkKSB7IH0NCj4gICAj
-ZW5kaWYgLyogQ09ORklHX1BQQ19UUkFOU0FDVElPTkFMX01FTSAqLw0KPiAgIA0KPiArc3RhdGlj
-IHZvaWQgZWFybHlfc2V0dXBfY3B1X21hcHBpbmcodm9pZCkNCj4gK3sNCj4gKwl1bnNpZ25lZCBp
-bnQgY3B1LCBjbnQ7DQo+ICsJaW50IG5yX2NwdXNfYWxpZ25lZDsNCj4gKw0KPiArCWJ0X2luZm8g
-PSBfX3ZhKG1lbWJsb2NrX2FsbG9jKHNpemVvZihzdHJ1Y3QgYm9vdGluZm8pLA0KPiArCQkJc2l6
-ZW9mKHVuc2lnbmVkIGxvbmcpKSk7DQo+ICsJbWVtc2V0KGJ0X2luZm8sIDAsIHNpemVvZihzdHJ1
-Y3QgYm9vdGluZm8pKTsNCj4gKwlidF9pbmZvLT5ib290X3RocmVhZF9pZCA9IC0xOw0KPiArCS8q
-IFJldHJpZXZlIENQVSByZWxhdGVkIGluZm9ybWF0aW9ucyBmcm9tIHRoZSBmbGF0IHRyZWUNCj4g
-KwkgKiAoYWx0aXZlYyBzdXBwb3J0LCBib290IENQVSBJRCwgLi4uKQ0KPiArCSAqLw0KPiArCW9m
-X3NjYW5fZmxhdF9kdChlYXJseV9pbml0X2R0X3NjYW5fY3B1cywgYnRfaW5mbyk7DQo+ICsNCj4g
-KwlpZiAoYnRfaW5mby0+Ym9vdF90aHJlYWRfaWQgPCAwKSB7DQo+ICsJCXByX2VycigiRmFpbGVk
-IHRvIGlkZW50aWZ5IGJvb3QgQ1BVICFcbiIpOw0KPiArCQlCVUcoKTsNCj4gKwl9DQo+ICsNCj4g
-Kwlib290X2NwdWlkID0gYnRfaW5mby0+Ym9vdF90aHJlYWRfaWQ7DQo+ICsJLyogd29yayBhcm91
-bmQgc3ViY29yZSBtb2RlICovDQo+ICsJbnJfY3B1c19hbGlnbmVkID0gX0FMSUdOX1VQKG5yX2Nw
-dV9pZHMsIHRocmVhZHNfaW5fY29yZSk7DQo+ICsJaWYgKG5yX2NwdXNfYWxpZ25lZCAhPSBucl9j
-cHVfaWRzKSB7DQo+ICsJCXByX2luZm8oIm5yX2NwdXMgaXMgZm9yY2VkIHRvIGJlIGFsaWduZWQg
-dXAgZnJvbTogJWQgdG86ICVkXG4iLA0KPiArCQkJbnJfY3B1X2lkcywgbnJfY3B1c19hbGlnbmVk
-KTsNCj4gKwkJbnJfY3B1X2lkcyA9IG5yX2NwdXNfYWxpZ25lZDsNCj4gKwl9DQo+ICsJY250ID0g
-KG5yX2NwdV9pZHMgPCBidF9pbmZvLT5jcHVfY250KSA/IG5yX2NwdV9pZHMNCj4gKwkJCTogYnRf
-aW5mby0+Y3B1X2NudDsNCj4gKw0KPiArCWFsbG9jYXRlX3BhY2FzKCk7DQo+ICsJZm9yIChjcHUg
-PSAwOyBjcHUgPCBjbnQ7IGNwdSsrKSB7DQo+ICsJCXNldF9jcHVfcHJlc2VudChjcHUsIGJ0X2lu
-Zm8tPmF2YWlsW2NwdV0pOw0KPiArCQlEQkcoInNldCBjcHUgcHJlc2VudDogJWQgLT4gaHdpZDol
-ZFxuIiwNCj4gKwkJCWNwdSwgYnRfaW5mby0+Y3B1X2h3aWRzW2NwdV0pOw0KPiArCQlzZXRfaGFy
-ZF9zbXBfcHJvY2Vzc29yX2lkKGNwdSwgYnRfaW5mby0+Y3B1X2h3aWRzW2NwdV0pOw0KPiArCQlz
-ZXRfY3B1X3Bvc3NpYmxlKGNwdSwgdHJ1ZSk7DQo+ICsJfQ0KPiArDQo+ICsjaWYgZGVmaW5lZChD
-T05GSUdfU01QKSAmJiBkZWZpbmVkKENPTkZJR19QUEM2NCkNCj4gKwkvKiBXZSdsbCBsYXRlciB3
-YWl0IGZvciBzZWNvbmRhcmllcyB0byBjaGVjayBpbjsgdGhlcmUgYXJlDQo+ICsJICogTkNQVVMt
-MSBub24tYm9vdCBDUFVzICA6LSkNCj4gKwkgKi8NCj4gKwlzcGlubmluZ19zZWNvbmRhcmllcyA9
-IGJ0X2luZm8tPmNwdV9jbnQgLSAxOw0KPiArI2VuZGlmDQo+ICsJbWVtYmxvY2tfZnJlZShfX3Bh
-KGJ0X2luZm8pLCBzaXplb2Yoc3RydWN0IGJvb3RpbmZvKSk7DQo+ICsJYnRfaW5mbyA9IE5VTEw7
-DQo+ICt9DQo+ICsNCj4gICB2b2lkIF9faW5pdCBlYXJseV9pbml0X2RldnRyZWUodm9pZCAqcGFy
-YW1zKQ0KPiAgIHsNCj4gICAJcGh5c19hZGRyX3QgbGltaXQ7DQo+IEBAIC03NDUsMjcgKzgyNiwx
-MSBAQCB2b2lkIF9faW5pdCBlYXJseV9pbml0X2RldnRyZWUodm9pZCAqcGFyYW1zKQ0KPiAgIAkg
-KiBGSVhNRSAuLiBhbmQgdGhlIGluaXRyZCB0b28/ICovDQo+ICAgCW1vdmVfZGV2aWNlX3RyZWUo
-KTsNCj4gICANCj4gLQlhbGxvY2F0ZV9wYWNhcygpOw0KPiAtDQo+ICAgCURCRygiU2Nhbm5pbmcg
-Q1BVcyAuLi5cbiIpOw0KPiAgIA0KPiAgIAlkdF9jcHVfZnRyc19zY2FuKCk7DQo+ICAgDQo+IC0J
-LyogUmV0cmlldmUgQ1BVIHJlbGF0ZWQgaW5mb3JtYXRpb25zIGZyb20gdGhlIGZsYXQgdHJlZQ0K
-PiAtCSAqIChhbHRpdmVjIHN1cHBvcnQsIGJvb3QgQ1BVIElELCAuLi4pDQo+IC0JICovDQo+IC0J
-b2Zfc2Nhbl9mbGF0X2R0KGVhcmx5X2luaXRfZHRfc2Nhbl9jcHVzLCBOVUxMKTsNCj4gLQlpZiAo
-Ym9vdF9jcHVpZCA8IDApIHsNCj4gLQkJcHJpbnRrKCJGYWlsZWQgdG8gaWRlbnRpZnkgYm9vdCBD
-UFUgIVxuIik7DQo+IC0JCUJVRygpOw0KPiAtCX0NCj4gLQ0KPiAtI2lmIGRlZmluZWQoQ09ORklH
-X1NNUCkgJiYgZGVmaW5lZChDT05GSUdfUFBDNjQpDQo+IC0JLyogV2UnbGwgbGF0ZXIgd2FpdCBm
-b3Igc2Vjb25kYXJpZXMgdG8gY2hlY2sgaW47IHRoZXJlIGFyZQ0KPiAtCSAqIE5DUFVTLTEgbm9u
-LWJvb3QgQ1BVcyAgOi0pDQo+IC0JICovDQo+IC0Jc3Bpbm5pbmdfc2Vjb25kYXJpZXMgPSBib290
-X2NwdV9jb3VudCAtIDE7DQo+IC0jZW5kaWYNCj4gKwllYXJseV9zZXR1cF9jcHVfbWFwcGluZygp
-Ow0KPiAgIA0KPiAgIAltbXVfZWFybHlfaW5pdF9kZXZ0cmVlKCk7DQo+ICAgDQo+IGRpZmYgLS1n
-aXQgYS9hcmNoL3Bvd2VycGMva2VybmVsL3NldHVwLWNvbW1vbi5jIGIvYXJjaC9wb3dlcnBjL2tl
-cm5lbC9zZXR1cC1jb21tb24uYw0KPiBpbmRleCA2NmY3Y2M2Li40NmQwMzRhIDEwMDY0NA0KPiAt
-LS0gYS9hcmNoL3Bvd2VycGMva2VybmVsL3NldHVwLWNvbW1vbi5jDQo+ICsrKyBiL2FyY2gvcG93
-ZXJwYy9rZXJuZWwvc2V0dXAtY29tbW9uLmMNCj4gQEAgLTg2LDcgKzg2LDkgQEAgc3RydWN0IG1h
-Y2hkZXBfY2FsbHMgKm1hY2hpbmVfaWQ7DQo+ICAgRVhQT1JUX1NZTUJPTChtYWNoaW5lX2lkKTsN
-Cj4gICANCj4gICBpbnQgYm9vdF9jcHVpZCA9IC0xOw0KPiAraW50IHRocmVhZHNfaW5fY29yZSA9
-IDE7DQo+ICAgRVhQT1JUX1NZTUJPTF9HUEwoYm9vdF9jcHVpZCk7DQo+ICtFWFBPUlRfU1lNQk9M
-X0dQTCh0aHJlYWRzX2luX2NvcmUpOw0KPiAgIA0KPiAgIC8qDQo+ICAgICogVGhlc2UgYXJlIHVz
-ZWQgaW4gYmluZm10X2VsZi5jIHRvIHB1dCBhdXggZW50cmllcyBvbiB0aGUgc3RhY2sNCj4gQEAg
-LTQ2MCw2MSArNDYyLDExIEBAIHZvaWQgX19pbml0IHNtcF9zZXR1cF9jcHVfbWFwcyh2b2lkKQ0K
-PiAgIHsNCj4gICAJc3RydWN0IGRldmljZV9ub2RlICpkbjsNCj4gICAJaW50IGNwdSA9IDA7DQo+
-IC0JaW50IG50aHJlYWRzID0gMTsNCj4gLQ0KPiAtCURCRygic21wX3NldHVwX2NwdV9tYXBzKClc
-biIpOw0KPiAtDQo+IC0JZm9yX2VhY2hfbm9kZV9ieV90eXBlKGRuLCAiY3B1Iikgew0KPiAtCQlj
-b25zdCBfX2JlMzIgKmludHNlcnY7DQo+IC0JCV9fYmUzMiBjcHVfYmU7DQo+IC0JCWludCBqLCBs
-ZW47DQo+IC0NCj4gLQkJREJHKCIgICogJXBPRi4uLlxuIiwgZG4pOw0KPiAtDQo+IC0JCWludHNl
-cnYgPSBvZl9nZXRfcHJvcGVydHkoZG4sICJpYm0scHBjLWludGVycnVwdC1zZXJ2ZXIjcyIsDQo+
-IC0JCQkJJmxlbik7DQo+IC0JCWlmIChpbnRzZXJ2KSB7DQo+IC0JCQlEQkcoIiAgICBpYm0scHBj
-LWludGVycnVwdC1zZXJ2ZXIjcyAtPiAlZCB0aHJlYWRzXG4iLA0KPiAtCQkJICAgIG50aHJlYWRz
-KTsNCj4gLQkJfSBlbHNlIHsNCj4gLQkJCURCRygiICAgIG5vIGlibSxwcGMtaW50ZXJydXB0LXNl
-cnZlciNzIC0+IDEgdGhyZWFkXG4iKTsNCj4gLQkJCWludHNlcnYgPSBvZl9nZXRfcHJvcGVydHko
-ZG4sICJyZWciLCAmbGVuKTsNCj4gLQkJCWlmICghaW50c2Vydikgew0KPiAtCQkJCWNwdV9iZSA9
-IGNwdV90b19iZTMyKGNwdSk7DQo+IC0JCQkJaW50c2VydiA9ICZjcHVfYmU7CS8qIGFzc3VtZSBs
-b2dpY2FsID09IHBoeXMgKi8NCj4gLQkJCQlsZW4gPSA0Ow0KPiAtCQkJfQ0KPiAtCQl9DQo+IC0N
-Cj4gLQkJbnRocmVhZHMgPSBsZW4gLyBzaXplb2YoaW50KTsNCj4gLQ0KPiAtCQlmb3IgKGogPSAw
-OyBqIDwgbnRocmVhZHMgJiYgY3B1IDwgbnJfY3B1X2lkczsgaisrKSB7DQo+IC0JCQlib29sIGF2
-YWlsOw0KPiAtDQo+IC0JCQlEQkcoIiAgICB0aHJlYWQgJWQgLT4gY3B1ICVkIChoYXJkIGlkICVk
-KVxuIiwNCj4gLQkJCSAgICBqLCBjcHUsIGJlMzJfdG9fY3B1KGludHNlcnZbal0pKTsNCj4gLQ0K
-PiAtCQkJYXZhaWwgPSBvZl9kZXZpY2VfaXNfYXZhaWxhYmxlKGRuKTsNCj4gLQkJCWlmICghYXZh
-aWwpDQo+IC0JCQkJYXZhaWwgPSAhb2ZfcHJvcGVydHlfbWF0Y2hfc3RyaW5nKGRuLA0KPiAtCQkJ
-CQkJImVuYWJsZS1tZXRob2QiLCAic3Bpbi10YWJsZSIpOw0KPiAtDQo+IC0JCQlzZXRfY3B1X3By
-ZXNlbnQoY3B1LCBhdmFpbCk7DQo+IC0JCQlzZXRfaGFyZF9zbXBfcHJvY2Vzc29yX2lkKGNwdSwg
-YmUzMl90b19jcHUoaW50c2VydltqXSkpOw0KPiAtCQkJc2V0X2NwdV9wb3NzaWJsZShjcHUsIHRy
-dWUpOw0KPiAtCQkJY3B1Kys7DQo+IC0JCX0NCj4gLQ0KPiAtCQlpZiAoY3B1ID49IG5yX2NwdV9p
-ZHMpIHsNCj4gLQkJCW9mX25vZGVfcHV0KGRuKTsNCj4gLQkJCWJyZWFrOw0KPiAtCQl9DQo+IC0J
-fQ0KPiAgIA0KPiAgIAkvKiBJZiBubyBTTVQgc3VwcG9ydGVkLCBudGhyZWFkcyBpcyBmb3JjZWQg
-dG8gMSAqLw0KPiAgIAlpZiAoIWNwdV9oYXNfZmVhdHVyZShDUFVfRlRSX1NNVCkpIHsNCj4gICAJ
-CURCRygiICBTTVQgZGlzYWJsZWQgISBudGhyZWFkcyBmb3JjZWQgdG8gMVxuIik7DQo+IC0JCW50
-aHJlYWRzID0gMTsNCj4gKwkJdGhyZWFkc19pbl9jb3JlID0gMTsNCj4gICAJfQ0KPiAgIA0KPiAg
-ICNpZmRlZiBDT05GSUdfUFBDNjQNCj4gQEAgLTUzOSw3ICs0OTEsNyBAQCB2b2lkIF9faW5pdCBz
-bXBfc2V0dXBfY3B1X21hcHModm9pZCkNCj4gICANCj4gICAJCS8qIERvdWJsZSBtYXhjcHVzIGZv
-ciBwcm9jZXNzb3JzIHdoaWNoIGhhdmUgU01UIGNhcGFiaWxpdHkgKi8NCj4gICAJCWlmIChjcHVf
-aGFzX2ZlYXR1cmUoQ1BVX0ZUUl9TTVQpKQ0KPiAtCQkJbWF4Y3B1cyAqPSBudGhyZWFkczsNCj4g
-KwkJCW1heGNwdXMgKj0gdGhyZWFkc19pbl9jb3JlOw0KPiAgIA0KPiAgIAkJaWYgKG1heGNwdXMg
-PiBucl9jcHVfaWRzKSB7DQo+ICAgCQkJcHJpbnRrKEtFUk5fV0FSTklORw0KPiBAQCAtNTY1LDcg
-KzUxNyw3IEBAIHZvaWQgX19pbml0IHNtcF9zZXR1cF9jcHVfbWFwcyh2b2lkKQ0KPiAgIAkgKiBl
-dmVyeSBDUFUgaW4gdGhlIHN5c3RlbS4gSWYgdGhhdCBpcyBub3QgdGhlIGNhc2UsIHRoZW4gc29t
-ZSBjb2RlDQo+ICAgCSAqIGhlcmUgd2lsbCBoYXZlIHRvIGJlIHJld29ya2VkDQo+ICAgCSAqLw0K
-PiAtCWNwdV9pbml0X3RocmVhZF9jb3JlX21hcHMobnRocmVhZHMpOw0KPiArCWNwdV9pbml0X3Ro
-cmVhZF9jb3JlX21hcHModGhyZWFkc19pbl9jb3JlKTsNCj4gICANCj4gICAJLyogTm93IHRoYXQg
-cG9zc2libGUgY3B1cyBhcmUgc2V0LCBzZXQgbnJfY3B1X2lkcyBmb3IgbGF0ZXIgdXNlICovDQo+
-ICAgCXNldHVwX25yX2NwdV9pZHMoKTsNCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvb2YvZmR0LmMg
-Yi9kcml2ZXJzL29mL2ZkdC5jDQo+IGluZGV4IDg0YWE5ZDYuLjE2ZDZiMDIgMTAwNjQ0DQo+IC0t
-LSBhL2RyaXZlcnMvb2YvZmR0LmMNCj4gKysrIGIvZHJpdmVycy9vZi9mZHQuYw0KPiBAQCAtMTMw
-LDcgKzEzMCw3IEBAIGJvb2wgb2ZfZmR0X2lzX2JpZ19lbmRpYW4oY29uc3Qgdm9pZCAqYmxvYiwg
-dW5zaWduZWQgbG9uZyBub2RlKQ0KPiAgIAlyZXR1cm4gZmFsc2U7DQo+ICAgfQ0KPiAgIA0KPiAt
-c3RhdGljIGJvb2wgb2ZfZmR0X2RldmljZV9pc19hdmFpbGFibGUoY29uc3Qgdm9pZCAqYmxvYiwg
-dW5zaWduZWQgbG9uZyBub2RlKQ0KPiArYm9vbCBvZl9mZHRfZGV2aWNlX2lzX2F2YWlsYWJsZShj
-b25zdCB2b2lkICpibG9iLCB1bnNpZ25lZCBsb25nIG5vZGUpDQo+ICAgew0KPiAgIAljb25zdCBj
-aGFyICpzdGF0dXMgPSBmZHRfZ2V0cHJvcChibG9iLCBub2RlLCAic3RhdHVzIiwgTlVMTCk7DQo+
-ICAgDQo+IGRpZmYgLS1naXQgYS9pbmNsdWRlL2xpbnV4L29mX2ZkdC5oIGIvaW5jbHVkZS9saW51
-eC9vZl9mZHQuaA0KPiBpbmRleCBiOWNkOWViLi4yODc1NmM1IDEwMDY0NA0KPiAtLS0gYS9pbmNs
-dWRlL2xpbnV4L29mX2ZkdC5oDQo+ICsrKyBiL2luY2x1ZGUvbGludXgvb2ZfZmR0LmgNCj4gQEAg
-LTMwLDYgKzMwLDggQEAgZXh0ZXJuIHZvaWQgKm9mX2ZkdF9nZXRfcHJvcGVydHkoY29uc3Qgdm9p
-ZCAqYmxvYiwNCj4gICAJCQkJIGludCAqc2l6ZSk7DQo+ICAgZXh0ZXJuIGJvb2wgb2ZfZmR0X2lz
-X2JpZ19lbmRpYW4oY29uc3Qgdm9pZCAqYmxvYiwNCj4gICAJCQkJIHVuc2lnbmVkIGxvbmcgbm9k
-ZSk7DQo+ICtleHRlcm4gYm9vbCBvZl9mZHRfZGV2aWNlX2lzX2F2YWlsYWJsZShjb25zdCB2b2lk
-ICpibG9iLA0KPiArCQkJdW5zaWduZWQgbG9uZyBub2RlKTsNCj4gICBleHRlcm4gaW50IG9mX2Zk
-dF9tYXRjaChjb25zdCB2b2lkICpibG9iLCB1bnNpZ25lZCBsb25nIG5vZGUsDQo+ICAgCQkJY29u
-c3QgY2hhciAqY29uc3QgKmNvbXBhdCk7DQo+ICAgZXh0ZXJuIHZvaWQgKm9mX2ZkdF91bmZsYXR0
-ZW5fdHJlZShjb25zdCB1bnNpZ25lZCBsb25nICpibG9iLA0K
+From: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+
+When kdump kernel tries to copy dump data over SR-IOV, LPAR panics due to
+NULL pointer execption.
+
+Here is the complete stack
+
+[   19.944378] Kernel attempted to read user page (0) - exploit attempt? (uid: 0)^M
+[   19.944388] BUG: Kernel NULL pointer dereference on read at 0x00000000^M
+[   19.944394] Faulting instruction address: 0xc000000020847ad4^M
+[   19.944400] Oops: Kernel access of bad area, sig: 11 [#1]^M
+[   19.944406] LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries^M
+[   19.944413] Modules linked in: mlx5_core(+) vmx_crypto pseries_wdt papr_scm libnvdimm mlxfw tls psample sunrpc fuse overlay squashfs loop^M
+[   19.944435] CPU: 12 PID: 315 Comm: systemd-udevd Not tainted 6.4.0-Test102+ #12^M
+[   19.944442] Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1060.00 (NH1060_008) hv:phyp pSeries^M
+[   19.944450] NIP:  c000000020847ad4 LR: c00000002083b2dc CTR: 00000000006cd18c^M
+[   19.944457] REGS: c000000029162ca0 TRAP: 0300   Not tainted  (6.4.0-Test102+)^M
+[   19.944463] MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 48288244  XER: 00000008^M
+[   19.944480] CFAR: c00000002083b2d8 DAR: 0000000000000000 DSISR: 40000000 IRQMASK: 1 ^M
+[   19.944480] GPR00: c00000002088ecd4 c000000029162f40 c000000021542900 ffffffffffffffff ^M
+[   19.944480] GPR04: ffffffffffffffff 0000000000000000 0000000000000000 000000000000ffff ^M
+[   19.944480] GPR08: 0000000000000000 ffffffffffffffff 0000000000000000 0000000000000001 ^M
+[   19.944480] GPR12: 0000000000000000 c000000022ec1000 0000000040000000 0000000000000000 ^M
+[   19.944480] GPR16: c00000002b8b3900 c00000002b8b3918 c00000002b8b3800 ffffffffffffffff ^M
+[   19.944480] GPR20: 0000000000000000 000000000000ffff ffffffff00000000 00000000ffffffff ^M
+[   19.944480] GPR24: 000000000000ffff 0000000000010000 0000000000000000 ffffffffffff0000 ^M
+[   19.944480] GPR28: 0000000000000000 ffffffffffffffff ffffffffffffffff 0000000000000000 ^M
+[   19.944553] NIP [c000000020847ad4] _find_next_zero_bit+0x24/0x110^M
+[   19.944564] LR [c00000002083b2dc] bitmap_find_next_zero_area_off+0x5c/0xe0^M
+[   19.944572] Call Trace:^M
+[   19.944576] [c000000029162f40] [c0000000209fec70] dev_printk_emit+0x38/0x48 (unreliable)^M
+[   19.944587] [c000000029162fa0] [c00000002088ecd4] iommu_area_alloc+0xc4/0x180^M
+[   19.944596] [c000000029163020] [c00000002005a3d8] iommu_range_alloc+0x1e8/0x580^M
+[   19.944606] [c000000029163150] [c00000002005a7d0] iommu_alloc+0x60/0x130^M
+[   19.944613] [c0000000291631a0] [c00000002005b9f8] iommu_alloc_coherent+0x158/0x2b0^M
+[   19.944621] [c000000029163260] [c000000020058fdc] dma_iommu_alloc_coherent+0x3c/0x50^M
+[   19.944629] [c000000029163280] [c000000020235260] dma_alloc_attrs+0x170/0x1f0^M
+[   19.944637] [c0000000291632f0] [c00800000140c058] mlx5_cmd_init+0xc0/0x760 [mlx5_core]^M
+[   19.944745] [c0000000291633c0] [c008000001403448] mlx5_function_setup+0xf0/0x510 [mlx5_core]^M
+[   19.944845] [c000000029163490] [c0080000014039bc] mlx5_init_one+0x84/0x210 [mlx5_core]^M
+[   19.944943] [c000000029163520] [c008000001404c00] probe_one+0x118/0x2c0 [mlx5_core]^M
+[   19.945041] [c0000000291635b0] [c0000000208ddce8] local_pci_probe+0x68/0x110^M
+[   19.945049] [c000000029163630] [c0000000208deb98] pci_call_probe+0x68/0x200^M
+[   19.945057] [c000000029163790] [c0000000208dfecc] pci_device_probe+0xbc/0x1a0^M
+[   19.945065] [c0000000291637d0] [c000000020a032f4] really_probe+0x104/0x540^M
+[   19.945072] [c000000029163850] [c000000020a037e4] __driver_probe_device+0xb4/0x230^M
+[   19.945080] [c0000000291638d0] [c000000020a039b4] driver_probe_device+0x54/0x130^M
+[   19.945088] [c000000029163910] [c000000020a03da8] __driver_attach+0x158/0x2b0^M
+[   19.945096] [c000000029163990] [c0000000209ffa78] bus_for_each_dev+0xa8/0x130^M
+[   19.945103] [c0000000291639f0] [c000000020a026c4] driver_attach+0x34/0x50^M
+[   19.945110] [c000000029163a10] [c000000020a01aac] bus_add_driver+0x16c/0x300^M
+[   19.945118] [c000000029163aa0] [c000000020a05944] driver_register+0xa4/0x1b0^M
+[   19.945126] [c000000029163b10] [c0000000208dd428] __pci_register_driver+0x68/0x80^M
+[   19.945133] [c000000029163b30] [c0080000015414cc] mlx5_init+0xb8/0x100 [mlx5_core]^M
+[   19.945247] [c000000029163ba0] [c000000020012f60] do_one_initcall+0x60/0x300^M
+[   19.945255] [c000000029163c80] [c000000020241cbc] do_init_module+0x7c/0x2b0^M
+
+At the time of LPAR dump, before kexec hands over control to kdump kernel,
+DDWs are scanned and added in the FDT. For the SR-IOV case, default DMA
+window "ibm,dma-window" is removed from the FDT and DDW added, for the
+device.
+
+Now, kexec hands over control to the kdump kernel.
+
+When the kdump kernel initializes, PCI busses are scanned and IOMMU
+group/tables created, in pci_dma_bus_setup_pSeriesLP(). For the SR-IOV
+case, there is no "ibm,dma-window". The original commit: b1fc44eaa9ba,
+fixes the path where memory is pre-mapped (direct mapped) to the DDW. When
+TCEs are direct mapped, there is no need to initialize IOMMU tables.
+
+iommu_table_setparms_lpar() only considers "ibm,dma-window" property when
+initiallizing IOMMU table. In the scenario where TCEs are dynamically
+allocated for SR-IOV, newly created IOMMU table is not initialized. Later,
+when the device driver tries to enter TCEs for the SR-IOV device, NULL
+pointer execption is thrown from iommu_area_alloc().
+
+The fix would be to initialize IOMMU table with DDW property stored in
+the FDT. There are 2 points to remember -
+
+	1. For the dedicated adapter, kdump kernel would encounter both
+	   default and DDW in FDT. In this case, DDW property is used to
+	   initialize the IOMMU table.
+
+	2. A DDW could be direct or dynamic mapped. kdump kernel would
+	   initialize IOMMU table and mark the existing DDW as
+	   "dynamic". This works fine since, at the time of table
+	   initialization, iommu_table_clear() makes some space in the
+	   DDW, for some predefined number of TCEs which are needed for
+	   kdump to succeed.
+
+Fixes: b1fc44eaa9ba ("pseries/iommu/ddw: Fix kdump to work in absence of ibm,dma-window")
+Signed-off-by: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+Reviewed-by: Brian King <brking@linux.vnet.ibm.com>
+---
+ arch/powerpc/platforms/pseries/iommu.c | 156 +++++++++++++++++--------
+ 1 file changed, 105 insertions(+), 51 deletions(-)
+
+diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+index 496e16c588aa..e8c4129697b1 100644
+--- a/arch/powerpc/platforms/pseries/iommu.c
++++ b/arch/powerpc/platforms/pseries/iommu.c
+@@ -574,29 +574,6 @@ static void iommu_table_setparms(struct pci_controller *phb,
+ 
+ struct iommu_table_ops iommu_table_lpar_multi_ops;
+ 
+-/*
+- * iommu_table_setparms_lpar
+- *
+- * Function: On pSeries LPAR systems, return TCE table info, given a pci bus.
+- */
+-static void iommu_table_setparms_lpar(struct pci_controller *phb,
+-				      struct device_node *dn,
+-				      struct iommu_table *tbl,
+-				      struct iommu_table_group *table_group,
+-				      const __be32 *dma_window)
+-{
+-	unsigned long offset, size, liobn;
+-
+-	of_parse_dma_window(dn, dma_window, &liobn, &offset, &size);
+-
+-	iommu_table_setparms_common(tbl, phb->bus->number, liobn, offset, size, IOMMU_PAGE_SHIFT_4K, NULL,
+-				    &iommu_table_lpar_multi_ops);
+-
+-
+-	table_group->tce32_start = offset;
+-	table_group->tce32_size = size;
+-}
+-
+ struct iommu_table_ops iommu_table_pseries_ops = {
+ 	.set = tce_build_pSeries,
+ 	.clear = tce_free_pSeries,
+@@ -724,26 +701,71 @@ struct iommu_table_ops iommu_table_lpar_multi_ops = {
+  * dynamic 64bit DMA window, walking up the device tree.
+  */
+ static struct device_node *pci_dma_find(struct device_node *dn,
+-					const __be32 **dma_window)
++					struct dynamic_dma_window_prop *prop)
+ {
+-	const __be32 *dw = NULL;
++	const __be32 *default_prop = NULL;
++	const __be32 *ddw_prop = NULL;
++	struct device_node *rdn = NULL;
++	bool default_win = false, ddw_win = false;
+ 
+ 	for ( ; dn && PCI_DN(dn); dn = dn->parent) {
+-		dw = of_get_property(dn, "ibm,dma-window", NULL);
+-		if (dw) {
+-			if (dma_window)
+-				*dma_window = dw;
+-			return dn;
++		default_prop = of_get_property(dn, "ibm,dma-window", NULL);
++		if (default_prop) {
++			rdn = dn;
++			default_win = true;
++		}
++		ddw_prop = of_get_property(dn, DIRECT64_PROPNAME, NULL);
++		if (ddw_prop) {
++			rdn = dn;
++			ddw_win = true;
++			break;
++		}
++		ddw_prop = of_get_property(dn, DMA64_PROPNAME, NULL);
++		if (ddw_prop) {
++			rdn = dn;
++			ddw_win = true;
++			break;
+ 		}
+-		dw = of_get_property(dn, DIRECT64_PROPNAME, NULL);
+-		if (dw)
+-			return dn;
+-		dw = of_get_property(dn, DMA64_PROPNAME, NULL);
+-		if (dw)
+-			return dn;
++
++		/* At least found default window, which is the case for normal boot */
++		if (default_win)
++			break;
+ 	}
+ 
+-	return NULL;
++	/* For PCI devices there will always be a DMA window, either on the device
++	 * or parent bus
++	 */
++	WARN_ON(!(default_win | ddw_win));
++
++	/* caller doesn't want to get DMA window property */
++	if (!prop)
++		return rdn;
++
++	/* parse DMA window property. During normal system boot, only default
++	 * DMA window is passed in OF. But, for kdump, a dedicated adapter might
++	 * have both default and DDW in FDT. In this scenario, DDW takes precedence
++	 * over default window.
++	 */
++	if (ddw_win) {
++		struct dynamic_dma_window_prop *p;
++
++		p = (struct dynamic_dma_window_prop *)ddw_prop;
++		prop->liobn = p->liobn;
++		prop->dma_base = p->dma_base;
++		prop->tce_shift = p->tce_shift;
++		prop->window_shift = p->window_shift;
++	} else if (default_win) {
++		unsigned long offset, size, liobn;
++
++		of_parse_dma_window(rdn, default_prop, &liobn, &offset, &size);
++
++		prop->liobn = cpu_to_be32((u32)liobn);
++		prop->dma_base = cpu_to_be64(offset);
++		prop->tce_shift = cpu_to_be32(IOMMU_PAGE_SHIFT_4K);
++		prop->window_shift = cpu_to_be32(order_base_2(size));
++	}
++
++	return rdn;
+ }
+ 
+ static void pci_dma_bus_setup_pSeriesLP(struct pci_bus *bus)
+@@ -751,17 +773,20 @@ static void pci_dma_bus_setup_pSeriesLP(struct pci_bus *bus)
+ 	struct iommu_table *tbl;
+ 	struct device_node *dn, *pdn;
+ 	struct pci_dn *ppci;
+-	const __be32 *dma_window = NULL;
++	struct dynamic_dma_window_prop prop;
+ 
+ 	dn = pci_bus_to_OF_node(bus);
+ 
+ 	pr_debug("pci_dma_bus_setup_pSeriesLP: setting up bus %pOF\n",
+ 		 dn);
+ 
+-	pdn = pci_dma_find(dn, &dma_window);
++	pdn = pci_dma_find(dn, &prop);
+ 
+-	if (dma_window == NULL)
+-		pr_debug("  no ibm,dma-window property !\n");
++	/* In PPC architecture, there will always be DMA window on bus or one of the
++	 * parent bus. During reboot, there will be ibm,dma-window property to
++	 * define DMA window. For kdump, there will at least be default window or DDW
++	 * or both.
++	 */
+ 
+ 	ppci = PCI_DN(pdn);
+ 
+@@ -771,13 +796,24 @@ static void pci_dma_bus_setup_pSeriesLP(struct pci_bus *bus)
+ 	if (!ppci->table_group) {
+ 		ppci->table_group = iommu_pseries_alloc_group(ppci->phb->node);
+ 		tbl = ppci->table_group->tables[0];
+-		if (dma_window) {
+-			iommu_table_setparms_lpar(ppci->phb, pdn, tbl,
+-						  ppci->table_group, dma_window);
+ 
+-			if (!iommu_init_table(tbl, ppci->phb->node, 0, 0))
+-				panic("Failed to initialize iommu table");
+-		}
++		iommu_table_setparms_common(tbl, ppci->phb->bus->number,
++				be32_to_cpu(prop.liobn),
++				be64_to_cpu(prop.dma_base),
++				1ULL << be32_to_cpu(prop.window_shift),
++				be32_to_cpu(prop.tce_shift), NULL,
++				&iommu_table_lpar_multi_ops);
++
++		/* Only for normal boot with default window. Doesn't matter even
++		 * if we set these with DDW which is 64bit during kdump, since
++		 * these will not be used during kdump.
++		 */
++		ppci->table_group->tce32_start = be64_to_cpu(prop.dma_base);
++		ppci->table_group->tce32_size = 1 << be32_to_cpu(prop.window_shift);
++
++		if (!iommu_init_table(tbl, ppci->phb->node, 0, 0))
++			panic("Failed to initialize iommu table");
++
+ 		iommu_register_group(ppci->table_group,
+ 				pci_domain_nr(bus), 0);
+ 		pr_debug("  created table: %p\n", ppci->table_group);
+@@ -968,6 +1004,12 @@ static void find_existing_ddw_windows_named(const char *name)
+ 			continue;
+ 		}
+ 
++		/* If at the time of system initialization, there are DDWs in OF,
++		 * it means this is during kexec. DDW could be direct or dynamic.
++		 * We will just mark DDWs as "dynamic" since this is kdump path,
++		 * no need to worry about perforance. ddw_list_new_entry() will
++		 * set window->direct = false.
++		 */
+ 		window = ddw_list_new_entry(pdn, dma64);
+ 		if (!window) {
+ 			of_node_put(pdn);
+@@ -1524,8 +1566,8 @@ static void pci_dma_dev_setup_pSeriesLP(struct pci_dev *dev)
+ {
+ 	struct device_node *pdn, *dn;
+ 	struct iommu_table *tbl;
+-	const __be32 *dma_window = NULL;
+ 	struct pci_dn *pci;
++	struct dynamic_dma_window_prop prop;
+ 
+ 	pr_debug("pci_dma_dev_setup_pSeriesLP: %s\n", pci_name(dev));
+ 
+@@ -1538,7 +1580,7 @@ static void pci_dma_dev_setup_pSeriesLP(struct pci_dev *dev)
+ 	dn = pci_device_to_OF_node(dev);
+ 	pr_debug("  node is %pOF\n", dn);
+ 
+-	pdn = pci_dma_find(dn, &dma_window);
++	pdn = pci_dma_find(dn, &prop);
+ 	if (!pdn || !PCI_DN(pdn)) {
+ 		printk(KERN_WARNING "pci_dma_dev_setup_pSeriesLP: "
+ 		       "no DMA window found for pci dev=%s dn=%pOF\n",
+@@ -1551,8 +1593,20 @@ static void pci_dma_dev_setup_pSeriesLP(struct pci_dev *dev)
+ 	if (!pci->table_group) {
+ 		pci->table_group = iommu_pseries_alloc_group(pci->phb->node);
+ 		tbl = pci->table_group->tables[0];
+-		iommu_table_setparms_lpar(pci->phb, pdn, tbl,
+-				pci->table_group, dma_window);
++
++		iommu_table_setparms_common(tbl, pci->phb->bus->number,
++				be32_to_cpu(prop.liobn),
++				be64_to_cpu(prop.dma_base),
++				1ULL << be32_to_cpu(prop.window_shift),
++				be32_to_cpu(prop.tce_shift), NULL,
++				&iommu_table_lpar_multi_ops);
++
++		/* Only for normal boot with default window. Doesn't matter even
++		 * if we set these with DDW which is 64bit during kdump, since
++		 * these will not be used during kdump.
++		 */
++		pci->table_group->tce32_start = be64_to_cpu(prop.dma_base);
++		pci->table_group->tce32_size = 1 << be32_to_cpu(prop.window_shift);
+ 
+ 		iommu_init_table(tbl, pci->phb->node, 0, 0);
+ 		iommu_register_group(pci->table_group,
+
+base-commit: 052d534373b7ed33712a63d5e17b2b6cdbce84fd
+-- 
+2.39.3 (Apple Git-145)
+
