@@ -1,87 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B849B83D85C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jan 2024 11:43:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4290983DD13
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jan 2024 16:10:36 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HQgP8YHN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dSDx1zsx;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TLvSJ4z5Dz3dLs
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jan 2024 21:43:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TM1NB11Yqz3bqB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jan 2024 02:10:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HQgP8YHN;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dSDx1zsx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=dtsen@linux.ibm.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sbhat@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TLvRT59Jlz3d97
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jan 2024 21:43:01 +1100 (AEDT)
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40QA2Eih002662;
-	Fri, 26 Jan 2024 10:42:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=2IMEERAUR7WgGpN5eMUxTy1J+tHxs7yz/GZ4foVta4s=;
- b=HQgP8YHN79Z/Xd0sxe8xQr/TmQICezlxF2sBTzg/p/TKOGogvlVIIoYvzcnbVPP1FLgL
- cgOIGh0BviOvSeh2kzYPSza4U8R1WtCPcGoxngZ41yjVyavCtJuLb26e88cHVfhS6aAw
- suZuwz/MdDHZBTJP11EyqL/74TDMEH8a/t4w1LgDzq16aEHefJ4pUFz8T0wlBf2oxi+c
- fC2Uc29B4CEirjN9xrhY+pdaQuz3lmqzL5IYwoT6uHJG2BqEBexfg9/GeHg8mfK42mZG
- tK4DhfieXlEIrCCJFFf+77IbMLL3oHxa4Tz/suB8qkhqpqLndHvDPXFKMs83XvIifD6j HQ== 
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vvamjgvak-1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TM1MK3J1jz2yhZ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jan 2024 02:09:48 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40QEWUt0016460;
+	Fri, 26 Jan 2024 15:09:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : from : to : cc
+ : date : message-id : content-type : content-transfer-encoding :
+ mime-version; s=pp1; bh=EMfDROFbgJEi008tLRtRfT5S/vVzIQIrctpoV9Kn3Kk=;
+ b=dSDx1zsxQ7vx+0ifKCtclKF1SH3AuEsQzf0vjxAhom2XNuLpwk/SVB0C4lwCV+USmygd
+ twrkr745XknJkghyH0974ZZpMZ1A+EPU7l+DorkdVAU2z3Ahei88CYFyeBWzVnUIuuXB
+ TLHc0kQPGvoJbd9W9BVbFgLRgtubddA2Pg6QINrPUpyq1KIhTWwlNOuQo45YKl4BYORR
+ GV60paUIHtCOW2pb6cx5c6PAG3BrpWSm7dCxMjaXCF4/mK6pYBiKq1PfVg+T4HbVleQO
+ dTHobHKLofwZKH1JKk9WkuIsK9NMe78OkK3Wg8lpBnX7HDhsguKh7DFjYrg6TnnoPu/O zg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vvek90wjm-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 26 Jan 2024 10:42:44 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40QAavab026508;
-	Fri, 26 Jan 2024 10:42:43 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vrrgtthf0-1
+	Fri, 26 Jan 2024 15:09:26 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40QF7XKX006293;
+	Fri, 26 Jan 2024 15:09:26 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vvek90wja-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 26 Jan 2024 10:42:43 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40QAgfga44434050
+	Fri, 26 Jan 2024 15:09:26 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40QD78IV028239;
+	Fri, 26 Jan 2024 15:09:25 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vru732xwe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 26 Jan 2024 15:09:25 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40QF9MJK27460100
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 26 Jan 2024 10:42:42 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A12C15805E;
-	Fri, 26 Jan 2024 10:42:41 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 948D65805D;
-	Fri, 26 Jan 2024 10:42:38 +0000 (GMT)
-Received: from [9.67.128.71] (unknown [9.67.128.71])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 26 Jan 2024 10:42:38 +0000 (GMT)
-Message-ID: <46ca196c-b7d3-4f3c-9ef0-5d66fb24c9e6@linux.ibm.com>
-Date: Fri, 26 Jan 2024 18:42:36 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] crypto:vmx: Move ppc vmx diirectory to
- arch/powerpc/crypto.
-To: Herbert Xu <herbert@gondor.apana.org.au>
-References: <20240102205856.370103-1-dtsen@linux.ibm.com>
- <ZbN0LufXZ6YZmn3E@gondor.apana.org.au>
-Content-Language: en-US
-From: Danny Tsen <dtsen@linux.ibm.com>
-In-Reply-To: <ZbN0LufXZ6YZmn3E@gondor.apana.org.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+	Fri, 26 Jan 2024 15:09:22 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 348192004B;
+	Fri, 26 Jan 2024 15:09:22 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A624320049;
+	Fri, 26 Jan 2024 15:09:19 +0000 (GMT)
+Received: from ltcd48-lp2.aus.stglab.ibm.com (unknown [9.3.101.175])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 26 Jan 2024 15:09:19 +0000 (GMT)
+Subject: [PATCH v2] powerpc: iommu: Bring back table group release_ownership()
+ call
+From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+To: iommu@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
+Date: Fri, 26 Jan 2024 09:09:18 -0600
+Message-ID:  <170628173462.3742.18330000394415935845.stgit@ltcd48-lp2.aus.stglab.ibm.com>
+User-Agent: StGit/1.5
+Content-Type: text/plain; charset="utf-8"
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: DPUyM4vhsiTM7ytNws9YY-5eg4mmlmv2
-X-Proofpoint-ORIG-GUID: DPUyM4vhsiTM7ytNws9YY-5eg4mmlmv2
+X-Proofpoint-GUID: YFJalwNzOQy4a9hjiadrOA2gTSIYVP95
+X-Proofpoint-ORIG-GUID: W4cEKw2h2TRDXchVH7azbDxp1mZ68xEa
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-01-25_14,2024-01-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 malwarescore=0
- impostorscore=0 phishscore=0 suspectscore=0 spamscore=0 bulkscore=0
- clxscore=1011 priorityscore=1501 lowpriorityscore=0 mlxscore=0
- mlxlogscore=692 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401260078
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 bulkscore=0
+ clxscore=1015 lowpriorityscore=0 malwarescore=0 phishscore=0 adultscore=0
+ priorityscore=1501 mlxlogscore=999 mlxscore=0 suspectscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401260111
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,68 +96,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dtsen@us.ibm.com, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, appro@cryptogams.org, linux-crypto@vger.kernel.org, ltcgcw@linux.vnet.ibm.com, leitao@debian.org, linuxppc-dev@lists.ozlabs.org
+Cc: jroedel@suse.de, gbatra@linux.vnet.ibm.com, sbhat@linux.ibm.com, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, aneesh.kumar@kernel.org, jgg@ziepe.ca, tpearson@raptorengineering.com, npiggin@gmail.com, bgray@linux.ibm.com, naveen.n.rao@linux.ibm.com, vaibhav@linux.ibm.com, aik@amd.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thanks Herbert.
+The commit 2ad56efa80db ("powerpc/iommu: Setup a default domain and
+remove set_platform_dma_ops") refactored the code removing the
+set_platform_dma_ops(). It missed out the table group
+release_ownership() call which would have got called otherwise
+during the guest shutdown via vfio_group_detach_container(). On
+PPC64, this particular call actually sets up the 32-bit TCE table,
+and enables the 64-bit DMA bypass etc. Now after guest shutdown,
+the subsequent host driver (e.g megaraid-sas) probe post unbind
+from vfio-pci fails like,
 
--Danny
+megaraid_sas 0031:01:00.0: Warning: IOMMU dma not supported: mask 0x7fffffffffffffff, table unavailable
+megaraid_sas 0031:01:00.0: Warning: IOMMU dma not supported: mask 0xffffffff, table unavailable
+megaraid_sas 0031:01:00.0: Failed to set DMA mask
+megaraid_sas 0031:01:00.0: Failed from megasas_init_fw 6539
 
-On 1/26/24 4:58 PM, Herbert Xu wrote:
-> On Tue, Jan 02, 2024 at 03:58:56PM -0500, Danny Tsen wrote:
->> Relocate all crypto files in vmx driver to arch/powerpc/crypto directory
->> and remove vmx directory.
->>
->> drivers/crypto/vmx/aes.c rename to arch/powerpc/crypto/aes.c
->> drivers/crypto/vmx/aes_cbc.c rename to arch/powerpc/crypto/aes_cbc.c
->> drivers/crypto/vmx/aes_ctr.c rename to arch/powerpc/crypto/aes_ctr.c
->> drivers/crypto/vmx/aes_xts.c rename to arch/powerpc/crypto/aes_xts.c
->> drivers/crypto/vmx/aesp8-ppc.h rename to arch/powerpc/crypto/aesp8-ppc.h
->> drivers/crypto/vmx/aesp8-ppc.pl rename to arch/powerpc/crypto/aesp8-ppc.pl
->> drivers/crypto/vmx/ghash.c rename to arch/powerpc/crypto/ghash.c
->> drivers/crypto/vmx/ghashp8-ppc.pl rename to arch/powerpc/crypto/ghashp8-ppc.pl
->> drivers/crypto/vmx/vmx.c rename to arch/powerpc/crypto/vmx.c
->>
->> deleted files:
->> drivers/crypto/vmx/Makefile
->> drivers/crypto/vmx/Kconfig
->> drivers/crypto/vmx/ppc-xlate.pl
->>
->> This patch has been tested has passed the selftest.  The patch is also tested with
->> CONFIG_CRYPTO_MANAGER_EXTRA_TESTS enabled.
->>
->> Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
->> ---
->>   arch/powerpc/crypto/Kconfig                   |  20 ++
->>   arch/powerpc/crypto/Makefile                  |  20 +-
->>   .../crypto/vmx => arch/powerpc/crypto}/aes.c  |   0
->>   .../vmx => arch/powerpc/crypto}/aes_cbc.c     |   0
->>   .../vmx => arch/powerpc/crypto}/aes_ctr.c     |   0
->>   .../vmx => arch/powerpc/crypto}/aes_xts.c     |   0
->>   .../vmx => arch/powerpc/crypto}/aesp8-ppc.h   |   0
->>   .../vmx => arch/powerpc/crypto}/aesp8-ppc.pl  |   0
->>   .../vmx => arch/powerpc/crypto}/ghash.c       |   0
->>   .../powerpc/crypto}/ghashp8-ppc.pl            |   0
->>   .../crypto/vmx => arch/powerpc/crypto}/vmx.c  |   0
->>   drivers/crypto/Kconfig                        |  14 +-
->>   drivers/crypto/Makefile                       |   2 +-
->>   drivers/crypto/vmx/.gitignore                 |   3 -
->>   drivers/crypto/vmx/Kconfig                    |  14 --
->>   drivers/crypto/vmx/Makefile                   |  23 --
->>   drivers/crypto/vmx/ppc-xlate.pl               | 231 ------------------
->>   17 files changed, 46 insertions(+), 281 deletions(-)
->>   rename {drivers/crypto/vmx => arch/powerpc/crypto}/aes.c (100%)
->>   rename {drivers/crypto/vmx => arch/powerpc/crypto}/aes_cbc.c (100%)
->>   rename {drivers/crypto/vmx => arch/powerpc/crypto}/aes_ctr.c (100%)
->>   rename {drivers/crypto/vmx => arch/powerpc/crypto}/aes_xts.c (100%)
->>   rename {drivers/crypto/vmx => arch/powerpc/crypto}/aesp8-ppc.h (100%)
->>   rename {drivers/crypto/vmx => arch/powerpc/crypto}/aesp8-ppc.pl (100%)
->>   rename {drivers/crypto/vmx => arch/powerpc/crypto}/ghash.c (100%)
->>   rename {drivers/crypto/vmx => arch/powerpc/crypto}/ghashp8-ppc.pl (100%)
->>   rename {drivers/crypto/vmx => arch/powerpc/crypto}/vmx.c (100%)
->>   delete mode 100644 drivers/crypto/vmx/.gitignore
->>   delete mode 100644 drivers/crypto/vmx/Kconfig
->>   delete mode 100644 drivers/crypto/vmx/Makefile
->>   delete mode 100644 drivers/crypto/vmx/ppc-xlate.pl
-> Patch applied.  Thanks.
+The patch brings back the call to table_group release_ownership()
+call when switching back to PLATFORM domain from BLOCKED, while
+also separates the domain_ops for both.
+
+Fixes: 2ad56efa80db ("powerpc/iommu: Setup a default domain and remove set_platform_dma_ops")
+Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+---
+Changelog:
+v1: https://lore.kernel.org/linux-iommu/170618451433.3805.9015493852395837391.stgit@ltcd48-lp2.aus.stglab.ibm.com/
+ - Split the common attach_dev call to platform and blocked attach_dev
+   calls as suggested.
+
+ arch/powerpc/kernel/iommu.c |   37 ++++++++++++++++++++++++++++---------
+ 1 file changed, 28 insertions(+), 9 deletions(-)
+
+diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
+index ebe259bdd462..d71eac3b2887 100644
+--- a/arch/powerpc/kernel/iommu.c
++++ b/arch/powerpc/kernel/iommu.c
+@@ -1287,20 +1287,20 @@ spapr_tce_platform_iommu_attach_dev(struct iommu_domain *platform_domain,
+ 	struct iommu_domain *domain = iommu_get_domain_for_dev(dev);
+ 	struct iommu_group *grp = iommu_group_get(dev);
+ 	struct iommu_table_group *table_group;
+-	int ret = -EINVAL;
+
+ 	/* At first attach the ownership is already set */
+ 	if (!domain)
+ 		return 0;
+
+-	if (!grp)
+-		return -ENODEV;
+-
+ 	table_group = iommu_group_get_iommudata(grp);
+-	ret = table_group->ops->take_ownership(table_group);
++	/*
++	 * The domain being set to PLATFORM from earlier
++	 * BLOCKED. The table_group ownership has to be released.
++	 */
++	table_group->ops->release_ownership(table_group);
+ 	iommu_group_put(grp);
+
+-	return ret;
++	return 0;
+ }
+
+ static const struct iommu_domain_ops spapr_tce_platform_domain_ops = {
+@@ -1312,13 +1312,32 @@ static struct iommu_domain spapr_tce_platform_domain = {
+ 	.ops = &spapr_tce_platform_domain_ops,
+ };
+
+-static struct iommu_domain spapr_tce_blocked_domain = {
+-	.type = IOMMU_DOMAIN_BLOCKED,
++static int
++spapr_tce_blocked_iommu_attach_dev(struct iommu_domain *platform_domain,
++				     struct device *dev)
++{
++	struct iommu_group *grp = iommu_group_get(dev);
++	struct iommu_table_group *table_group;
++	int ret = -EINVAL;
++
+ 	/*
+ 	 * FIXME: SPAPR mixes blocked and platform behaviors, the blocked domain
+ 	 * also sets the dma_api ops
+ 	 */
+-	.ops = &spapr_tce_platform_domain_ops,
++	table_group = iommu_group_get_iommudata(grp);
++	ret = table_group->ops->take_ownership(table_group);
++	iommu_group_put(grp);
++
++	return ret;
++}
++
++static const struct iommu_domain_ops spapr_tce_blocked_domain_ops = {
++	.attach_dev = spapr_tce_blocked_iommu_attach_dev,
++};
++
++static struct iommu_domain spapr_tce_blocked_domain = {
++	.type = IOMMU_DOMAIN_BLOCKED,
++	.ops = &spapr_tce_blocked_domain_ops,
+ };
+
+ static bool spapr_tce_iommu_capable(struct device *dev, enum iommu_cap cap)
+
+
