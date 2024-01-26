@@ -1,37 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A0983D607
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jan 2024 10:22:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ABFE83D5A7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jan 2024 10:12:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TLsfh68MNz3dWC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jan 2024 20:22:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TLsR754zGz3dRW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jan 2024 20:12:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gondor.apana.org.au (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1412 seconds by postgrey-1.37 at boromir; Fri, 26 Jan 2024 20:22:13 AEDT
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=chentao@kylinos.cn; receiver=lists.ozlabs.org)
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TLsfF72H1z3d9t
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jan 2024 20:22:13 +1100 (AEDT)
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-	id 1rTI2L-006EZR-QN; Fri, 26 Jan 2024 16:58:10 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 26 Jan 2024 16:58:22 +0800
-Date: Fri, 26 Jan 2024 16:58:22 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Danny Tsen <dtsen@linux.ibm.com>
-Subject: Re: [PATCH] crypto:vmx: Move ppc vmx diirectory to
- arch/powerpc/crypto.
-Message-ID: <ZbN0LufXZ6YZmn3E@gondor.apana.org.au>
-References: <20240102205856.370103-1-dtsen@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TLsQc50jQz3d9g
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jan 2024 20:12:07 +1100 (AEDT)
+X-UUID: 460be78cba3e40d0890baf0c874365d0-20240126
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.35,REQID:2c2a72b2-8f7f-4010-ad7a-03412aec4111,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:-5
+X-CID-INFO: VERSION:1.1.35,REQID:2c2a72b2-8f7f-4010-ad7a-03412aec4111,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:5d391d7,CLOUDID:677bc97f-4f93-4875-95e7-8c66ea833d57,B
+	ulkID:2401261428140T0ET36M,BulkQuantity:5,Recheck:0,SF:17|19|44|64|66|38|2
+	4|102,TC:nil,Content:0,EDM:-3,IP:-2,URL:0,File:nil,Bulk:40,QS:nil,BEC:nil,
+	COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI
+X-UUID: 460be78cba3e40d0890baf0c874365d0-20240126
+Received: from mail.kylinos.cn [(39.156.73.10)] by mailgw
+	(envelope-from <chentao@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1222685538; Fri, 26 Jan 2024 17:11:50 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id C449FE000EB9;
+	Fri, 26 Jan 2024 17:11:49 +0800 (CST)
+X-ns-mid: postfix-65B37755-723417383
+Received: from [172.20.15.234] (unknown [172.20.15.234])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 897DCE000EB9;
+	Fri, 26 Jan 2024 17:11:40 +0800 (CST)
+Message-ID: <fafa4a25-d940-443a-a5d0-9ceff3fb1648@kylinos.cn>
+Date: Fri, 26 Jan 2024 17:11:39 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240102205856.370103-1-dtsen@linux.ibm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] powerpc/cell: Code cleanup for spufs_mfc_flush
+To: Arnd Bergmann <arnd@arndb.de>, Jeremy Kerr <jk@ozlabs.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, aneesh.kumar@kernel.org,
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+References: <20240126021258.574916-1-chentao@kylinos.cn>
+ <fbae8c8e-6788-4749-b7e0-b64c9fffe85a@app.fastmail.com>
+Content-Language: en-US
+From: Kunwu Chan <chentao@kylinos.cn>
+In-Reply-To: <fbae8c8e-6788-4749-b7e0-b64c9fffe85a@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,68 +69,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dtsen@us.ibm.com, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, appro@cryptogams.org, linux-crypto@vger.kernel.org, ltcgcw@linux.vnet.ibm.com, leitao@debian.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jan 02, 2024 at 03:58:56PM -0500, Danny Tsen wrote:
-> Relocate all crypto files in vmx driver to arch/powerpc/crypto directory
-> and remove vmx directory.
+On 2024/1/26 14:27, Arnd Bergmann wrote:
+> On Fri, Jan 26, 2024, at 03:12, Kunwu Chan wrote:
+>> This part was commented from commit a33a7d7309d7
+>> ("[PATCH] spufs: implement mfc access for PPE-side DMA")
+>> in about 18 years before.
+>>
+>> If there are no plans to enable this part code in the future,
+>> we can remove this dead code.
+>>
+>> Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+>> Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 > 
-> drivers/crypto/vmx/aes.c rename to arch/powerpc/crypto/aes.c
-> drivers/crypto/vmx/aes_cbc.c rename to arch/powerpc/crypto/aes_cbc.c
-> drivers/crypto/vmx/aes_ctr.c rename to arch/powerpc/crypto/aes_ctr.c
-> drivers/crypto/vmx/aes_xts.c rename to arch/powerpc/crypto/aes_xts.c
-> drivers/crypto/vmx/aesp8-ppc.h rename to arch/powerpc/crypto/aesp8-ppc.h
-> drivers/crypto/vmx/aesp8-ppc.pl rename to arch/powerpc/crypto/aesp8-ppc.pl
-> drivers/crypto/vmx/ghash.c rename to arch/powerpc/crypto/ghash.c
-> drivers/crypto/vmx/ghashp8-ppc.pl rename to arch/powerpc/crypto/ghashp8-ppc.pl
-> drivers/crypto/vmx/vmx.c rename to arch/powerpc/crypto/vmx.c
+> Nobody is actively working on this code, so it clearly won't
+> be needed in the future.
 > 
-> deleted files:
-> drivers/crypto/vmx/Makefile
-> drivers/crypto/vmx/Kconfig
-> drivers/crypto/vmx/ppc-xlate.pl
+> Acked-by: Arnd Bergmann <arnd@arndb.de>
 > 
-> This patch has been tested has passed the selftest.  The patch is also tested with
-> CONFIG_CRYPTO_MANAGER_EXTRA_TESTS enabled.
-> 
-> Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
-> ---
->  arch/powerpc/crypto/Kconfig                   |  20 ++
->  arch/powerpc/crypto/Makefile                  |  20 +-
->  .../crypto/vmx => arch/powerpc/crypto}/aes.c  |   0
->  .../vmx => arch/powerpc/crypto}/aes_cbc.c     |   0
->  .../vmx => arch/powerpc/crypto}/aes_ctr.c     |   0
->  .../vmx => arch/powerpc/crypto}/aes_xts.c     |   0
->  .../vmx => arch/powerpc/crypto}/aesp8-ppc.h   |   0
->  .../vmx => arch/powerpc/crypto}/aesp8-ppc.pl  |   0
->  .../vmx => arch/powerpc/crypto}/ghash.c       |   0
->  .../powerpc/crypto}/ghashp8-ppc.pl            |   0
->  .../crypto/vmx => arch/powerpc/crypto}/vmx.c  |   0
->  drivers/crypto/Kconfig                        |  14 +-
->  drivers/crypto/Makefile                       |   2 +-
->  drivers/crypto/vmx/.gitignore                 |   3 -
->  drivers/crypto/vmx/Kconfig                    |  14 --
->  drivers/crypto/vmx/Makefile                   |  23 --
->  drivers/crypto/vmx/ppc-xlate.pl               | 231 ------------------
->  17 files changed, 46 insertions(+), 281 deletions(-)
->  rename {drivers/crypto/vmx => arch/powerpc/crypto}/aes.c (100%)
->  rename {drivers/crypto/vmx => arch/powerpc/crypto}/aes_cbc.c (100%)
->  rename {drivers/crypto/vmx => arch/powerpc/crypto}/aes_ctr.c (100%)
->  rename {drivers/crypto/vmx => arch/powerpc/crypto}/aes_xts.c (100%)
->  rename {drivers/crypto/vmx => arch/powerpc/crypto}/aesp8-ppc.h (100%)
->  rename {drivers/crypto/vmx => arch/powerpc/crypto}/aesp8-ppc.pl (100%)
->  rename {drivers/crypto/vmx => arch/powerpc/crypto}/ghash.c (100%)
->  rename {drivers/crypto/vmx => arch/powerpc/crypto}/ghashp8-ppc.pl (100%)
->  rename {drivers/crypto/vmx => arch/powerpc/crypto}/vmx.c (100%)
->  delete mode 100644 drivers/crypto/vmx/.gitignore
->  delete mode 100644 drivers/crypto/vmx/Kconfig
->  delete mode 100644 drivers/crypto/vmx/Makefile
->  delete mode 100644 drivers/crypto/vmx/ppc-xlate.pl
+> On the other hand there is probably little use in removing
+> the dead code either. It looks you sent a lot of these
+> patches with identical changelog texts to remove blocks
+> of dead code, which does not seem productive to me as
+> these were clearly all left in the code to document
+> something.
+Yes, I was doing some cleanup of useless code the other day.
+The previous patches were submitted to remove some code that had been 
+unused for a long time and was ineffective.
+I didn't remove the comments in the header file and the 
+debugging-related parts. Because these parts may be used later.
 
-Patch applied.  Thanks.
+Thank you very much for the reminder.I'll pay attention to whether it 
+has a document feature later.
+> 
+>        Arnd
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Thanks,
+   Kunwu
+
