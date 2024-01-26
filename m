@@ -1,79 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D105E83DD43
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jan 2024 16:17:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF1D683DD49
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jan 2024 16:20:09 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=YdgKWnD6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WbCFRpYo;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TM1Xb5Jpyz3cXS
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jan 2024 02:17:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TM1bC5SYRz3cXy
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jan 2024 02:20:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=YdgKWnD6;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WbCFRpYo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::231; helo=mail-oi1-x231.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org)
-Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sbhat@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TM1Wn1QmQz30Dg
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jan 2024 02:17:07 +1100 (AEDT)
-Received: by mail-oi1-x231.google.com with SMTP id 5614622812f47-3bd4e6a7cb0so293188b6e.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jan 2024 07:17:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1706282223; x=1706887023; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ycK1Stg6RqUITxTiNF6zYf2SsEC1R2ya33fUNr0wo3M=;
-        b=YdgKWnD6mzYXpBgECyp9yMDoZuPn23K5B2wvFs8BZ8wWxmAMPrMEB+SpSON17TOaoL
-         FKZzHHx/zLhcNlw6W+bRfs7S0sXXsWLsFpne9/ugZ9bYZd1Q2eqYPHUSXXF5F2hz3MOH
-         3jzTaVjNNb7/vHO+5+jUJv364iDwkyGTHsHnONx88OFRJ6SIA/cJmOXkqqRLNn36j3Ko
-         0XwVAeT9QNc7ODvduHUD06akOmdBe5j8GyojQw13BQsFyk13GK+FFQ3bfjBQL3qD6a2E
-         KV02a2o28mDmnGj676+g0pjkVIMx6VW6UY0Fa/si+BJzHLmdoMOgX2bBANVA/l4Co8L9
-         YaJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706282223; x=1706887023;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ycK1Stg6RqUITxTiNF6zYf2SsEC1R2ya33fUNr0wo3M=;
-        b=iN6+WvDE0dvJCGgm1Uq+meZKJ3iNFYTthtY/xovlSOpMoJ0jLASJLIQpWrGKFzFQ/P
-         NKZOSkTnLG5ojECiKpDygE1LIPl7fZHFQduFVSGILGZGgYOCp93mHUg7r9lcnaadkkOO
-         g8Rl5HNr2p7wHhWVUW9vYqyGj7kVLKClc6lPQgGAAAJ4DLXzX6b/1UXkOrNCc6V8SNnI
-         /5jNWLikoRkuWjxy/ZVwTFD9bO0S+wH/3nS8BtaBYIxNEgw5WlbRjedKNIYo5xZ+X7rP
-         u41SSvEE+QYrBNxLvPpnRLcDc50FLMcLgvkV9LP+e0OCK9kcjdjG37DZrDQpMQ0x9apv
-         IdqA==
-X-Gm-Message-State: AOJu0Yz9aNiQku5BPLYLdjZrrvdWaxdOi1OXW/k+V71FPtBMLgmiSEeQ
-	MRFSoXLNDHVLQ7m5ACa14fW1qBsAGW/qAl87N38/hYBT+uB0NM8PLZJGdfaIUtg=
-X-Google-Smtp-Source: AGHT+IFrt9nryZjWKK5XB8rdZZQ0ZLiVll/0WhFtuhH2eLFjwwzfbOmZXs5b/TpVTrjEAEXhJyZ8jA==
-X-Received: by 2002:a05:6870:b1c4:b0:210:e14a:7a9c with SMTP id x4-20020a056870b1c400b00210e14a7a9cmr1359195oak.58.1706282222837;
-        Fri, 26 Jan 2024 07:17:02 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-68-80-239.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.80.239])
-        by smtp.gmail.com with ESMTPSA id ns26-20020a056870ac9a00b00210cc6cc9eesm385454oab.33.2024.01.26.07.17.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jan 2024 07:17:02 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.95)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1rTNwz-009S0o-4e;
-	Fri, 26 Jan 2024 11:17:01 -0400
-Date: Fri, 26 Jan 2024 11:17:01 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-Subject: Re: [PATCH 1/2] powerpc: iommu: Bring back table group
- release_ownership() call
-Message-ID: <20240126151701.GZ50608@ziepe.ca>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TM1ZS15bvz2yk8
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jan 2024 02:19:27 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40QF2DcZ006856;
+	Fri, 26 Jan 2024 15:19:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=V5LjmVGdzbJgz18a5DWViGzLHhFurvsunSeYcuKPsjs=;
+ b=WbCFRpYoR0SMUpTyr4yZQ15GGHaNY3SD/MaN0AE/direuhl9CmKTKSnJ8BGIj1a4hTLT
+ zuG3ySe9KOyFovBnYlFf88QElSch9MoQJm/EAMo0CxZOVDeQX5LsENuatc4GkRbadQTj
+ GtXxzAJo2DYGEjODDaJmV+gqIKQrJetBivW5c3ciNPEgpNFT1+TVkTpmuBAZw843cKHy
+ s3PnyjxHTDmcDN24hjdB13KLd2Xl3SKaTyNfPYOo2oU36Kj79yuSCZ6LLF9I6RAzS4Qy
+ vSF/Kka+Gun1qaD/aco9VQGoh61UX5ewRXtJSagVUoQb35tEuemSr1GZXQtO4NfZ2r5H CQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vveeuhdyk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 26 Jan 2024 15:19:13 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40QFBR58012048;
+	Fri, 26 Jan 2024 15:19:12 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vveeuhdy4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 26 Jan 2024 15:19:12 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40QDaFVO026475;
+	Fri, 26 Jan 2024 15:19:12 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vrrgturbm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 26 Jan 2024 15:19:12 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40QFJ9hC40501952
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 26 Jan 2024 15:19:09 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2920220049;
+	Fri, 26 Jan 2024 15:19:09 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B0EAF20040;
+	Fri, 26 Jan 2024 15:19:05 +0000 (GMT)
+Received: from [9.43.53.156] (unknown [9.43.53.156])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 26 Jan 2024 15:19:05 +0000 (GMT)
+Message-ID: <c03f81bb-3a50-4191-9884-25a914e60672@linux.ibm.com>
+Date: Fri, 26 Jan 2024 20:49:04 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] iommu: Fix the domain type checks when default_domain
+ is set
+Content-Language: en-US
+To: Jason Gunthorpe <jgg@ziepe.ca>
 References: <170618450592.3805.8216395093813382208.stgit@ltcd48-lp2.aus.stglab.ibm.com>
- <170618451433.3805.9015493852395837391.stgit@ltcd48-lp2.aus.stglab.ibm.com>
- <20240125155017.GW50608@ziepe.ca>
- <b825dd04-3d32-4fbd-91e3-523ddf96fc7a@linux.ibm.com>
+ <170618452753.3805.4425669653666211728.stgit@ltcd48-lp2.aus.stglab.ibm.com>
+ <20240125155257.GX50608@ziepe.ca>
+From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+In-Reply-To: <20240125155257.GX50608@ziepe.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Yx0JUC79HWRFCurxWhU3gNr5kY8QHd-K
+X-Proofpoint-ORIG-GUID: c2je4RH8m4kTZROvYF205gx-VdNobq8C
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b825dd04-3d32-4fbd-91e3-523ddf96fc7a@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-25_14,2024-01-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
+ clxscore=1015 suspectscore=0 bulkscore=0 priorityscore=1501
+ impostorscore=0 adultscore=0 phishscore=0 lowpriorityscore=0
+ mlxlogscore=987 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311290000 definitions=main-2401260112
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,20 +106,50 @@ Cc: jroedel@suse.de, gbatra@linux.vnet.ibm.com, gregkh@linuxfoundation.org, linu
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jan 26, 2024 at 08:43:12PM +0530, Shivaprasad G Bhat wrote:
-> > Also, is there any chance someone can work on actually fixing this to
-> > be a proper iommu driver? I think that will become important for power
-> > to use the common dma_iommu code in the next year...
-> We are looking into it.
+On 1/25/24 21:22, Jason Gunthorpe wrote:
+> On Thu, Jan 25, 2024 at 06:08:52AM -0600, Shivaprasad G Bhat wrote:
+>> On PPC64, the iommu_ops.def_domain_type() is not defined and
+>> CONFIG_IOMMU_DMA not enabled. With commit 0f6a90436a57 ("iommu: Do not
+>> use IOMMU_DOMAIN_DMA if CONFIG_IOMMU_DMA is not enabled"), the
+>> iommu_get_default_domain_type() return IOMMU_DOMAIN_IDENTITY. With
+>> commit 2ad56efa80db ("powerpc/iommu: Setup a default domain and remove
+>> set_platform_dma_ops"), the defaule_domain is set wih the type being
+>> PLATFORM. With these two changes, iommu_group_alloc_default_domain()
+>> ends up returning the NULL(with recent changes, ERR_PTR(-EINVAL))
+>> leading to iommu_probe_device() failure and the device has no
+>> iommu_group set in effect. Subsequently, the bind to vfio(VFIO_IOMMU)
+>> fail as the iommu_group is not set for the device.
+>>
+>> Make the iommu_get_default_domain_type() to take default_domain->type
+>> into consideration along with default_domain_type() and fix
+>> iommu_group_alloc_default_domain() to not error out if the requested
+>> type is same as default domain type.
+>>
+>> Fixes: 2ad56efa80db ("powerpc/iommu: Setup a default domain and remove set_platform_dma_ops")
+>> Fixes: 0f6a90436a57 ("iommu: Do not use IOMMU_DOMAIN_DMA if CONFIG_IOMMU_DMA is not enabled")
+>> Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+>> ---
+>>   drivers/iommu/iommu.c |   14 ++++++++++----
+>>   1 file changed, 10 insertions(+), 4 deletions(-)
+> Are you OK with this version?
+>
+> https://lore.kernel.org/linux-iommu/20240123174905.GS50608@ziepe.ca/
+>
+> ?
+>
+> I think it does the same thing
 
-Okay, let me know, I can possibly help make parts of this happen
+Yes, This works. I see a very minor difference of default_domain->type 
+is given
 
-power is the last still-current architecture to be outside the modern
-IOMMU and DMA API design and I'm going to start proposing things that
-will not be efficient on power because of this.
+precedence over def_domain_type(). Please keep me CC when you post this 
+fix, I'll
 
-I think a basic iommu driver using the dma API would not be so hard.
+test it with any(?) other changes if coming along with it.
 
-I don't know what to do about the SPAPR VFIO mess though. :(
 
-Jason
+Thanks,
+
+Shivaprasad
+
+> Jason
