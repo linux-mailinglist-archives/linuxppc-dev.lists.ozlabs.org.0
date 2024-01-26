@@ -1,83 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64AF183DDE9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jan 2024 16:45:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5A6783E063
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jan 2024 18:37:30 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=AAPetc1G;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eSfQhLxS;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TM28q21c5z3dTH
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jan 2024 02:45:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TM4dh4sK0z3cXQ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jan 2024 04:37:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=AAPetc1G;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eSfQhLxS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2001:4860:4864:20::34; helo=mail-oa1-x34.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org)
-Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TM27S0Yyrz3cXP
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jan 2024 02:44:35 +1100 (AEDT)
-Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-206689895bfso328274fac.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jan 2024 07:44:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1706283869; x=1706888669; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ifj3vKt8QC0k+Lvrl/eE4vaSsPq+S4SksoQKXsBRSXc=;
-        b=AAPetc1GAC9XSjJZKHobGSQKkBYEKoe1dedT3WSNipzVEb7zofeo3xqpIgz7BEiDOY
-         i5wz2d0lW76880x6ugp6mtSVV/nXmdkEnkvK6YmUCGxDSBJ627S6NthW3Z2UaCL98hDR
-         xSRjs4PXqczMAEvUOoLCRNSrV2bb5O/xejUxDsuNyN86jSRaa6B9ApjCnZ5kFCY3KgYt
-         p0uFz1G3+YziJZSZrlVTh+89wGXgoXjdX4VrviTQiW/lIPDfznsoD7CD0Eo6T2fIIA1z
-         H6ztnvXv4QV/igezUjMreucBmSK6XEXRDg/eVkksnnNEGxlroxx5HMbHX+aNPzbF4Vch
-         BFvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706283869; x=1706888669;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ifj3vKt8QC0k+Lvrl/eE4vaSsPq+S4SksoQKXsBRSXc=;
-        b=C1w4olEMYG8O1lcOaSBPxHG+hmNApokqOVXQFCCxJqxG5B1nUk870OsaKwPXxMCBlm
-         DoE+yZmGfwOCLoRvhew4pCB2sdMmW1LraYd/ApaZOAJraYxkSgzNBlZwJI35QmcpyOl8
-         /wdWwy4Nvv6YmecMzIkQYewYf6odiWUsSx/w7mc1IU6LsFAw5AgH99iCWv+XvZ6lAAlB
-         F5XJT7wN12cMJz9YD0xPjJDgraSRQYyq87zqp76iD/TyqQLST4oSIwZwcMPZvejeXZ28
-         0nhoaP1kUHnhyi0A5mpTS/JLojzqRC89lMitjiUzcKEkYIT9pG3zMEidQTMd7ln9qpxS
-         720w==
-X-Gm-Message-State: AOJu0Yxbqlrzr1fLI54tOJm88P2jojHgw6bjr+/+n5yfT6KPCrUCqgy7
-	xvL1OD0rrRKpFheit26DzNyeFBMb2qxtY5NKPUnCrzk+5rC+qID59F3TT/IISfc=
-X-Google-Smtp-Source: AGHT+IHvXs9zt8rzQimULCxVKWRw2gBSkFT+WcT7r0xChxJT011B7UN6s63xs55ItZMqKHL08VvUaA==
-X-Received: by 2002:a05:6871:2787:b0:214:2544:bfd9 with SMTP id zd7-20020a056871278700b002142544bfd9mr955769oab.43.1706283869008;
-        Fri, 26 Jan 2024 07:44:29 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-68-80-239.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.80.239])
-        by smtp.gmail.com with ESMTPSA id pl10-20020a0568704e0a00b0021837cadf53sm200549oab.39.2024.01.26.07.44.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jan 2024 07:44:28 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.95)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1rTONX-009SCu-NX;
-	Fri, 26 Jan 2024 11:44:27 -0400
-Date: Fri, 26 Jan 2024 11:44:27 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Timothy Pearson <tpearson@raptorengineering.com>
-Subject: Re: [PATCH 1/2] powerpc: iommu: Bring back table group
- release_ownership() call
-Message-ID: <20240126154427.GB50608@ziepe.ca>
-References: <170618450592.3805.8216395093813382208.stgit@ltcd48-lp2.aus.stglab.ibm.com>
- <170618451433.3805.9015493852395837391.stgit@ltcd48-lp2.aus.stglab.ibm.com>
- <20240125155017.GW50608@ziepe.ca>
- <b825dd04-3d32-4fbd-91e3-523ddf96fc7a@linux.ibm.com>
- <20240126151701.GZ50608@ziepe.ca>
- <392247278.10124607.1706282995795.JavaMail.zimbra@raptorengineeringinc.com>
- <20240126153806.GA50608@ziepe.ca>
- <1453449220.10126352.1706283596477.JavaMail.zimbra@raptorengineeringinc.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TM4ct1MdQz30Q3
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jan 2024 04:36:46 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 82D3B6256A;
+	Fri, 26 Jan 2024 17:36:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C985EC43394;
+	Fri, 26 Jan 2024 17:36:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706290601;
+	bh=4iVM9+Je1Wsvrrm8yBmVzSmaL5OSsQ/orDrecbPYen8=;
+	h=From:Date:Subject:To:Cc:From;
+	b=eSfQhLxSwoBb3Kl5xmdZLqSuNuEh4sZLAQEbkIFuELSIvawi+eWE4VifIzKJCA1xN
+	 ud1K2sDHZNEU+9NvzpLehMGrBwNA4FU/V6dfTCEcGsUFYvYx28DdLpnYMZWeJhtiHt
+	 X+5wCY7lKxz5xbS0snMo2gaEI5jMmOH45EU6PgHKEsH9TXVOYxHjajQ70IUsmNEEYc
+	 pZpno9hTFis1oZzYWC1I57fwnnTLaU1tGIlGe7G2trNV+pdTwa7eZgHkKgPwTE+CvH
+	 bgA9Kf+bcqp1jm0MgmdiwKDSnypDEaJh3yKnN6nvrKvwJajC3jW70LmygRvcReN0VI
+	 iSb3Ln+zquTMA==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Fri, 26 Jan 2024 10:36:31 -0700
+Subject: [PATCH 4.19] powerpc: Use always instead of always-y in for
+ crtsavres.o
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1453449220.10126352.1706283596477.JavaMail.zimbra@raptorengineeringinc.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240126-4-19-fix-lib-powerpc-backport-v1-1-f0de224db66b@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAJ7ts2UC/x3M0QqDMAxA0V+RPC9iuiLTXxl7iDWdYWJLKttA/
+ PeVPR643AOKmEqBsTnA5K1F01ZBlwbCwttTUOdqcJ3zHbkePdKAUb+46oQ5fcRywInDKyfbsY+
+ eb+7KcySG+sgmtf3/7+BbGuBxnj+ZDa74dQAAAA==
+To: gregkh@linuxfoundation.org, sashal@kernel.org
+X-Mailer: b4 0.13-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1904; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=4iVM9+Je1Wsvrrm8yBmVzSmaL5OSsQ/orDrecbPYen8=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDKmb3664uenfguxwHdbUCL8t+sYm6TnH3/BZ2O1hYW21S
+ LaVEj7RUcrCIMbFICumyFL9WPW4oeGcs4w3Tk2CmcPKBDKEgYtTACbyXYjhnz43z6GLhtYb33a+
+ UVdp3nvb1mS73BMVQzv1rYUH5Jb+s2VkmCcRtPnbAR/3Y2wbl33v/vtp6Sc5ndnrDd86Vqz0nRX
+ swg8A
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,24 +69,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jroedel <jroedel@suse.de>, gbatra <gbatra@linux.vnet.ibm.com>, Shivaprasad G Bhat <sbhat@linux.ibm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel <linux-kernel@vger.kernel.org>, npiggin <npiggin@gmail.com>, aneesh kumar <aneesh.kumar@kernel.org>, iommu <iommu@lists.linux.dev>, bgray <bgray@linux.ibm.com>, naveen n rao <naveen.n.rao@linux.ibm.com>, vaibhav <vaibhav@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, aik <aik@amd.com>
+Cc: Nathan Chancellor <nathan@kernel.org>, llvm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org, linux-kbuild@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jan 26, 2024 at 09:39:56AM -0600, Timothy Pearson wrote:
-> > Just forget about the weird KVM and SPAPR stuff, leave it under the
-> > kconfig of the old code and nobody will run it. Almost nobody already
-> > runs it, apparently.
-> 
-> We actually use QEMU/KVM/VFIO extensively at Raptor, so need the
-> support and need it to be performant...
+This commit is for linux-4.19.y only, it has no direct upstream
+equivalent.
 
-I wonder if you alone are the "almost" :)
+Prior to commit 5f2fb52fac15 ("kbuild: rename hostprogs-y/always to
+hostprogs/always-y"), always-y did not exist, making the backport of
+mainline commit 1b1e38002648 ("powerpc: add crtsavres.o to always-y
+instead of extra-y") to linux-4.19.y as commit b7b85ec5ec15 ("powerpc:
+add crtsavres.o to always-y instead of extra-y") incorrect, breaking the
+build with linkers that need crtsavres.o:
 
-The KVM entanglement was hairy and scary. I never did figure out what
-was really going on there. Maybe you don't need all of it and can be
-successful with a more typical iommu working model?
+  ld.lld: error: cannot open arch/powerpc/lib/crtsavres.o: No such file or directory
 
-Suggest to tackle it after getting the first parts done.
+Backporting the aforementioned kbuild commit is not suitable for stable
+due to its size and number of conflicts, so transform the always-y usage
+to an equivalent form using always, which resolves the build issues.
 
-Jason
+Fixes: b7b85ec5ec15 ("powerpc: add crtsavres.o to always-y instead of extra-y")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ arch/powerpc/lib/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
+index 6f1e57182876..f0aa6fc8c6b2 100644
+--- a/arch/powerpc/lib/Makefile
++++ b/arch/powerpc/lib/Makefile
+@@ -21,8 +21,8 @@ obj-$(CONFIG_PPC32)	+= div64.o copy_32.o crtsavres.o strlen_32.o
+ # 64-bit linker creates .sfpr on demand for final link (vmlinux),
+ # so it is only needed for modules, and only for older linkers which
+ # do not support --save-restore-funcs
+-ifeq ($(call ld-ifversion, -lt, 225000000, y),y)
+-always-$(CONFIG_PPC64)	+= crtsavres.o
++ifeq ($(call ld-ifversion, -lt, 225000000, y)$(CONFIG_PPC64),yy)
++always	+= crtsavres.o
+ endif
+ 
+ obj-$(CONFIG_PPC_BOOK3S_64) += copyuser_power7.o copypage_power7.o \
+
+---
+base-commit: b060cfd3f707ad3c8ae8322e1b149ba7e2cf33e0
+change-id: 20240126-4-19-fix-lib-powerpc-backport-6f4a823adf1a
+
+Best regards,
+-- 
+Nathan Chancellor <nathan@kernel.org>
+
