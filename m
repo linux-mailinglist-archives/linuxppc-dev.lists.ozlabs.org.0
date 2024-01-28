@@ -2,54 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 602A383F68A
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jan 2024 17:14:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CE2083F69F
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jan 2024 17:15:34 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=psJtnZxF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Va9lCwBI;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TNGhv28vqz3cSX
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 03:14:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TNGkD0rvMz3cSH
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 03:15:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=psJtnZxF;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Va9lCwBI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TNGh873fdz2yk9
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jan 2024 03:13:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TNGjQ3PsJz2yk9
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jan 2024 03:14:50 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 9803D61BAC;
-	Sun, 28 Jan 2024 16:13:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60DA6C43390;
-	Sun, 28 Jan 2024 16:13:38 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 9C3EFCE0C6A;
+	Sun, 28 Jan 2024 16:14:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3FFC433C7;
+	Sun, 28 Jan 2024 16:14:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706458419;
-	bh=DWIRCtbLVXByUfR4/XlOy6OuDSTU5emKKZ/hb3zZs+s=;
+	s=k20201202; t=1706458485;
+	bh=7Oc7XQZw0BQgE7vpQeYLErcpNOAZHMGGgfcBbkIJeDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=psJtnZxFCR3TapCsLUVpoxOCLl0sVmDSRjjWz50t16xjR5VAkiOHMsvZMBUC0sU+e
-	 3UYu9Sq6e5YPfJikX2UNd9sWg9YTmfxg51rb2kogFzPTwzC6/MQNfnt65BU0fPDou8
-	 +KZUd32Q0CJpyM9EvvpjlxH7NgdjHUQeO8H7KpxESrNWGfAUU1Ab1Tz99Eqgv/aYyA
-	 9r12EpbWuAU/DCjSICQSjdpFx1nUvuJQsx8YPZzwVuPauLMnVY7yMVE/aIHfZP9jKA
-	 gLARJHNo0SgTOnMShHHTla5oyRIXoalqIqzX/ypGG/xlpopFDH6Rzlr43OU6vzv8tc
-	 eYdJNv3qNMeEQ==
+	b=Va9lCwBIIFEK8Wjzgae8HaljqSkHWgy/Ma9zzXoES1GmZH4rRLjjZzZ+7+FSiqBvK
+	 X5Ypt/CMBm9OvZRhytTqxKr5NNtC7lqL6k55/eeSLMCgYS6O+kbpvY9ytRGECIX7L8
+	 dHA8cwYU1Xotqq7Cgm2b82B961hzlPgjLG5PYToVDmMM77JWNGT2n/RGECOOtf2uEz
+	 SNPRM7NeH7Ac08dscE14dUWsKCoJbwP0aShPYVIzq53RFA6mhleH/3beyOaVX76w3c
+	 fCoBP8CxHVw4cKG32bsRJde1RhTr6WaGtx6kSg+c8KjPEYjenVKWtAT1xIErD5yTAg
+	 WwoZCNBVCUK6Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 14/31] PCI/AER: Decode Requester ID when no error info found
-Date: Sun, 28 Jan 2024 11:12:44 -0500
-Message-ID: <20240128161315.201999-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 12/27] PCI/AER: Decode Requester ID when no error info found
+Date: Sun, 28 Jan 2024 11:13:57 -0500
+Message-ID: <20240128161424.203600-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240128161315.201999-1-sashal@kernel.org>
-References: <20240128161315.201999-1-sashal@kernel.org>
+In-Reply-To: <20240128161424.203600-1-sashal@kernel.org>
+References: <20240128161424.203600-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.14
+X-stable-base: Linux 6.1.75
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -101,10 +101,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index 40d84cb0c601..c9afe4362835 100644
+index e2d8a74f83c3..5426f450ce91 100644
 --- a/drivers/pci/pcie/aer.c
 +++ b/drivers/pci/pcie/aer.c
-@@ -740,7 +740,7 @@ static void aer_print_port_info(struct pci_dev *dev, struct aer_err_info *info)
+@@ -748,7 +748,7 @@ static void aer_print_port_info(struct pci_dev *dev, struct aer_err_info *info)
  	u8 bus = info->id >> 8;
  	u8 devfn = info->id & 0xff;
  
@@ -113,7 +113,7 @@ index 40d84cb0c601..c9afe4362835 100644
  		 info->multi_error_valid ? "Multiple " : "",
  		 aer_error_severity_string[info->severity],
  		 pci_domain_nr(dev->bus), bus, PCI_SLOT(devfn),
-@@ -928,7 +928,12 @@ static bool find_source_device(struct pci_dev *parent,
+@@ -936,7 +936,12 @@ static bool find_source_device(struct pci_dev *parent,
  		pci_walk_bus(parent->subordinate, find_device_iter, e_info);
  
  	if (!e_info->error_dev_num) {
