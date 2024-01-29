@@ -1,67 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AECBD84076C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 14:51:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F1FA840770
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 14:52:20 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EDDkoG2Z;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EDDkoG2Z;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fSB+fDX6;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fSB+fDX6;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TNqTW4c9Fz3cVV
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 00:51:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TNqVT6btlz3cZq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 00:52:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EDDkoG2Z;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EDDkoG2Z;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fSB+fDX6;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fSB+fDX6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TNqSm2TMGz3bTn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 00:50:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TNqSs4y6lz3c3W
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 00:50:53 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706536244;
+	s=mimecast20190719; t=1706536251;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=jc8Yx5eNW+ZkMcLwS9vYyBi1Ha2SHd226WdxPKcg/iA=;
-	b=EDDkoG2ZVEaO5gAg+hR6D0mB//MB1WW4U0v7E5vlKvn1Mpl1PurByNejIiyPrrgCIipPPO
-	Q0SfnpTtYfW9qqRyNBvGpi1SWu3poiKjiflmF3juBlMdrKlKYFbs2ADeIE3DlUwCMfJSV5
-	Bg5BqyalqIPkmEdq3FrmYEAbitTAv64=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sLP3YBtiGz95VYsxBR+21UP0cxSRcXeV1OGJ7bAOlDk=;
+	b=fSB+fDX6q58E1n7vMBzG5YR5Itjl1rDszQsrj8tlanJd0iB3MyVaw4I03zeqeXyj8tHbYu
+	yUKwb5hikWGKrGvvh/kzU01lYS0MjE6cX6SjxkPkvKubH0ZcKgQ+BUJEB7gKQwSs2c+TR3
+	KUbKvZ+f4dZAOxR8v81YuDs2qYW7MS8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706536244;
+	s=mimecast20190719; t=1706536251;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=jc8Yx5eNW+ZkMcLwS9vYyBi1Ha2SHd226WdxPKcg/iA=;
-	b=EDDkoG2ZVEaO5gAg+hR6D0mB//MB1WW4U0v7E5vlKvn1Mpl1PurByNejIiyPrrgCIipPPO
-	Q0SfnpTtYfW9qqRyNBvGpi1SWu3poiKjiflmF3juBlMdrKlKYFbs2ADeIE3DlUwCMfJSV5
-	Bg5BqyalqIPkmEdq3FrmYEAbitTAv64=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sLP3YBtiGz95VYsxBR+21UP0cxSRcXeV1OGJ7bAOlDk=;
+	b=fSB+fDX6q58E1n7vMBzG5YR5Itjl1rDszQsrj8tlanJd0iB3MyVaw4I03zeqeXyj8tHbYu
+	yUKwb5hikWGKrGvvh/kzU01lYS0MjE6cX6SjxkPkvKubH0ZcKgQ+BUJEB7gKQwSs2c+TR3
+	KUbKvZ+f4dZAOxR8v81YuDs2qYW7MS8=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-253-_OvrGVNDO9avpejqoLvkvw-1; Mon, 29 Jan 2024 08:50:40 -0500
-X-MC-Unique: _OvrGVNDO9avpejqoLvkvw-1
+ us-mta-464-Rx5uj1wdM5eXqYAKo1NPvw-1; Mon, 29 Jan 2024 08:50:45 -0500
+X-MC-Unique: Rx5uj1wdM5eXqYAKo1NPvw-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5EA1B101A526;
-	Mon, 29 Jan 2024 13:50:40 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D07AD1065223;
+	Mon, 29 Jan 2024 13:50:44 +0000 (UTC)
 Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.116.15])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id ECEBAA26;
-	Mon, 29 Jan 2024 13:50:35 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 0203B488;
+	Mon, 29 Jan 2024 13:50:40 +0000 (UTC)
 From: Baoquan He <bhe@redhat.com>
 To: kexec@lists.infradead.org,
 	akpm@linux-foundation.org
-Subject: [PATCH linux-next 1/3] x86, crash: don't nest CONFIG_CRASH_DUMP ifdef inside CONFIG_KEXEC_CODE ifdef scope
-Date: Mon, 29 Jan 2024 21:50:31 +0800
-Message-ID: <20240129135033.157195-1-bhe@redhat.com>
+Subject: [PATCH linux-next 2/3] crash: fix building error in generic codes
+Date: Mon, 29 Jan 2024 21:50:32 +0800
+Message-ID: <20240129135033.157195-2-bhe@redhat.com>
+In-Reply-To: <20240129135033.157195-1-bhe@redhat.com>
+References: <20240129135033.157195-1-bhe@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
@@ -81,132 +85,76 @@ Cc: linux-s390@vger.kernel.org, Baoquan He <bhe@redhat.com>, mhklinux@outlook.co
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael pointed out that the #ifdef CONFIG_CRASH_DUMP is nested inside
-arch/x86/xen/enlighten_hvm.c.
+Nathan reported some building errors on arm64 as below:
 
-Although the nesting works well too since CONFIG_CRASH_DUMP has
-dependency on CONFIG_KEXEC_CORE, it may cause confuse because there
-are places where it's not nested, and people may think it need be nested
-even though it doesn't have to.
-
-Fix that by moving  CONFIG_CRASH_DUMP ifdeffery of codes out of
-CONFIG_KEXEC_CODE ifdeffery scope.
-
-And also fix a building error Nathan reported as below by replacing
-CONFIG_KEXEC_CORE ifdef with CONFIG_VMCORE_INFO ifdef.
-
-====
-$ curl -LSso .config https://git.alpinelinux.org/aports/plain/community/linux-edge/config-edge.x86_64
-$ make -skj"$(nproc)" ARCH=x86_64 CROSS_COMPILE=x86_64-linux- olddefconfig all
+==========
+$ curl -LSso .config https://github.com/archlinuxarm/PKGBUILDs/raw/master/core/linux-aarch64/config
+$ make -skj"$(nproc)" ARCH=arm64 CROSS_COMPILE=aarch64-linux- olddefconfig all
 ...
-x86_64-linux-ld: arch/x86/xen/mmu_pv.o: in function `paddr_vmcoreinfo_note':
-mmu_pv.c:(.text+0x3af3): undefined reference to `vmcoreinfo_note'
-====
+aarch64-linux-ld: kernel/kexec_file.o: in function `kexec_walk_memblock.constprop.0':
+kexec_file.c:(.text+0x314): undefined reference to `crashk_res'
+...
+aarch64-linux-ld: drivers/of/kexec.o: in function `of_kexec_alloc_and_setup_fdt':
+kexec.c:(.text+0x580): undefined reference to `crashk_res'
+...
+aarch64-linux-ld: kexec.c:(.text+0x5c0): undefined reference to `crashk_low_res'
+==========
 
-Link: https://lore.kernel.org/all/SN6PR02MB4157931105FA68D72E3D3DB8D47B2@SN6PR02MB4157.namprd02.prod.outlook.com/T/#u
-Link: https://lore.kernel.org/all/20240126045551.GA126645@dev-arch.thelio-3990X/T/#u
+On the provided config, it has:
+===
+CONFIG_VMCORE_INFO=y
+CONFIG_KEXEC_CORE=y
+CONFIG_KEXEC=y
+CONFIG_KEXEC_FILE=y
+===
+
+For these crash related code blocks, they need put inside CONFIG_CRASH_DUMP
+ifdeffery scope to avoid building erorr when CONFIG_CRASH_DUMP is not
+set.
+
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Closes: https://lore.kernel.org/all/20240126045551.GA126645@dev-arch.thelio-3990X/T/#u
 Signed-off-by: Baoquan He <bhe@redhat.com>
 ---
- arch/x86/kernel/cpu/mshyperv.c | 10 ++++++----
- arch/x86/kernel/reboot.c       |  2 +-
- arch/x86/xen/enlighten_hvm.c   |  4 ++--
- arch/x86/xen/mmu_pv.c          |  2 +-
- 4 files changed, 10 insertions(+), 8 deletions(-)
+ drivers/of/kexec.c  | 2 ++
+ kernel/kexec_file.c | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
-index f8163a59026b..2e8cd5a4ae85 100644
---- a/arch/x86/kernel/cpu/mshyperv.c
-+++ b/arch/x86/kernel/cpu/mshyperv.c
-@@ -209,6 +209,7 @@ static void hv_machine_shutdown(void)
- 	if (kexec_in_progress)
- 		hyperv_cleanup();
- }
-+#endif /* CONFIG_KEXEC_CORE */
+diff --git a/drivers/of/kexec.c b/drivers/of/kexec.c
+index 68278340cecf..9ccde2fd77cb 100644
+--- a/drivers/of/kexec.c
++++ b/drivers/of/kexec.c
+@@ -395,6 +395,7 @@ void *of_kexec_alloc_and_setup_fdt(const struct kimage *image,
+ 		if (ret)
+ 			goto out;
  
- #ifdef CONFIG_CRASH_DUMP
- static void hv_machine_crash_shutdown(struct pt_regs *regs)
-@@ -222,8 +223,7 @@ static void hv_machine_crash_shutdown(struct pt_regs *regs)
- 	/* Disable the hypercall page when there is only 1 active CPU. */
- 	hyperv_cleanup();
- }
--#endif
--#endif /* CONFIG_KEXEC_CORE */
-+#endif /* CONFIG_CRASH_DUMP */
- #endif /* CONFIG_HYPERV */
- 
- static uint32_t  __init ms_hyperv_platform(void)
-@@ -497,9 +497,11 @@ static void __init ms_hyperv_init_platform(void)
- 	no_timer_check = 1;
- #endif
- 
--#if IS_ENABLED(CONFIG_HYPERV) && defined(CONFIG_KEXEC_CORE)
-+#if IS_ENABLED(CONFIG_HYPERV)
-+#if defined(CONFIG_KEXEC_CORE)
- 	machine_ops.shutdown = hv_machine_shutdown;
--#ifdef CONFIG_CRASH_DUMP
-+#endif
-+#if defined(CONFIG_CRASH_DUMP)
- 	machine_ops.crash_shutdown = hv_machine_crash_shutdown;
- #endif
- #endif
-diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-index 1287b0d5962f..f3130f762784 100644
---- a/arch/x86/kernel/reboot.c
-+++ b/arch/x86/kernel/reboot.c
-@@ -826,7 +826,7 @@ void machine_halt(void)
- 	machine_ops.halt();
- }
- 
--#ifdef CONFIG_KEXEC_CORE
 +#ifdef CONFIG_CRASH_DUMP
- void machine_crash_shutdown(struct pt_regs *regs)
- {
- 	machine_ops.crash_shutdown(regs);
-diff --git a/arch/x86/xen/enlighten_hvm.c b/arch/x86/xen/enlighten_hvm.c
-index 09e3db7ff990..0b367c1e086d 100644
---- a/arch/x86/xen/enlighten_hvm.c
-+++ b/arch/x86/xen/enlighten_hvm.c
-@@ -148,6 +148,7 @@ static void xen_hvm_shutdown(void)
- 	if (kexec_in_progress)
- 		xen_reboot(SHUTDOWN_soft_reset);
- }
+ 		/* add linux,usable-memory-range */
+ 		ret = fdt_appendprop_addrrange(fdt, 0, chosen_node,
+ 				"linux,usable-memory-range", crashk_res.start,
+@@ -410,6 +411,7 @@ void *of_kexec_alloc_and_setup_fdt(const struct kimage *image,
+ 			if (ret)
+ 				goto out;
+ 		}
++#endif
+ 	}
+ 
+ 	/* add bootargs */
+diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+index ce7ce2ae27cd..2d1db05fbf04 100644
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -540,8 +540,10 @@ static int kexec_walk_memblock(struct kexec_buf *kbuf,
+ 	phys_addr_t mstart, mend;
+ 	struct resource res = { };
+ 
++#ifdef CONFIG_CRASH_DUMP
+ 	if (kbuf->image->type == KEXEC_TYPE_CRASH)
+ 		return func(&crashk_res, kbuf);
 +#endif
  
- #ifdef CONFIG_CRASH_DUMP
- static void xen_hvm_crash_shutdown(struct pt_regs *regs)
-@@ -156,7 +157,6 @@ static void xen_hvm_crash_shutdown(struct pt_regs *regs)
- 	xen_reboot(SHUTDOWN_soft_reset);
- }
- #endif
--#endif
- 
- static int xen_cpu_up_prepare_hvm(unsigned int cpu)
- {
-@@ -238,10 +238,10 @@ static void __init xen_hvm_guest_init(void)
- 
- #ifdef CONFIG_KEXEC_CORE
- 	machine_ops.shutdown = xen_hvm_shutdown;
-+#endif
- #ifdef CONFIG_CRASH_DUMP
- 	machine_ops.crash_shutdown = xen_hvm_crash_shutdown;
- #endif
--#endif
- }
- 
- static __init int xen_parse_nopv(char *arg)
-diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
-index 218773cfb009..e21974f2cf2d 100644
---- a/arch/x86/xen/mmu_pv.c
-+++ b/arch/x86/xen/mmu_pv.c
-@@ -2520,7 +2520,7 @@ int xen_remap_pfn(struct vm_area_struct *vma, unsigned long addr,
- }
- EXPORT_SYMBOL_GPL(xen_remap_pfn);
- 
--#ifdef CONFIG_KEXEC_CORE
-+#ifdef CONFIG_VMCORE_INFO
- phys_addr_t paddr_vmcoreinfo_note(void)
- {
- 	if (xen_pv_domain())
+ 	/*
+ 	 * Using MEMBLOCK_NONE will properly skip MEMBLOCK_DRIVER_MANAGED. See
 -- 
 2.41.0
 
