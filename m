@@ -2,29 +2,29 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D18818407CD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 15:04:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 704738407D9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 15:08:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TNqmq5gF5z3cVj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 01:04:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TNqrr33Nvz3dBr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 01:08:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=szxga04-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TNqmN6GYrz3bTn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 01:04:20 +1100 (AEDT)
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4TNqN02YmzzbcRg;
-	Mon, 29 Jan 2024 21:46:40 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TNqrN6RcSz3brc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 01:07:48 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4TNqMP4rlkz1xmlr;
+	Mon, 29 Jan 2024 21:46:09 +0800 (CST)
 Received: from kwepemm600017.china.huawei.com (unknown [7.193.23.234])
-	by mail.maildlp.com (Postfix) with ESMTPS id B5DC218007A;
-	Mon, 29 Jan 2024 21:47:05 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 957621404DB;
+	Mon, 29 Jan 2024 21:47:07 +0800 (CST)
 Received: from localhost.localdomain (10.175.112.125) by
  kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 29 Jan 2024 21:47:03 +0800
+ 15.1.2507.35; Mon, 29 Jan 2024 21:47:05 +0800
 From: Tong Tiangen <tongtiangen@huawei.com>
 To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
 	Mark Rutland <mark.rutland@arm.com>, James Morse <james.morse@arm.com>, Robin
@@ -39,9 +39,9 @@ To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
 	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
 	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v10 5/6] arm64: support copy_mc_[user]_highpage()
-Date: Mon, 29 Jan 2024 21:46:51 +0800
-Message-ID: <20240129134652.4004931-6-tongtiangen@huawei.com>
+Subject: [PATCH v10 6/6] arm64: introduce copy_mc_to_kernel() implementation
+Date: Mon, 29 Jan 2024 21:46:52 +0800
+Message-ID: <20240129134652.4004931-7-tongtiangen@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240129134652.4004931-1-tongtiangen@huawei.com>
 References: <20240129134652.4004931-1-tongtiangen@huawei.com>
@@ -66,443 +66,376 @@ Cc: wangkefeng.wang@huawei.com, linux-kernel@vger.kernel.org, kasan-dev@googlegr
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently, many scenarios that can tolerate memory errors when copying page
-have been supported in the kernel[1][2][3], all of which are implemented by
-copy_mc_[user]_highpage(). arm64 should also support this mechanism.
+The copy_mc_to_kernel() helper is memory copy implementation that handles
+source exceptions. It can be used in memory copy scenarios that tolerate
+hardware memory errors(e.g: pmem_read/dax_copy_to_iter).
 
-Due to mte, arm64 needs to have its own copy_mc_[user]_highpage()
-architecture implementation, macros __HAVE_ARCH_COPY_MC_HIGHPAGE and
-__HAVE_ARCH_COPY_MC_USER_HIGHPAGE have been added to control it.
-
-Add new helper copy_mc_page() which provide a page copy implementation with
-machine check safe. The copy_mc_page() in copy_mc_page.S is largely borrows
-from copy_page() in copy_page.S and the main difference is copy_mc_page()
-add extable entry to every load/store insn to support machine check safe.
-
-Add new extable type EX_TYPE_COPY_MC_PAGE_ERR_ZERO which used in
-copy_mc_page().
-
-[1]a873dfe1032a ("mm, hwpoison: try to recover from copy-on write faults")
-[2]5f2500b93cc9 ("mm/khugepaged: recover from poisoned anonymous memory")
-[3]6b970599e807 ("mm: hwpoison: support recovery from ksm_might_need_to_copy()")
+Currnently, only x86 and ppc suuport this helper, after arm64 support
+machine check safe framework, we introduce copy_mc_to_kernel()
+implementation.
 
 Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
 ---
- arch/arm64/include/asm/asm-extable.h | 15 ++++++
- arch/arm64/include/asm/assembler.h   |  4 ++
- arch/arm64/include/asm/mte.h         |  5 ++
- arch/arm64/include/asm/page.h        | 10 ++++
- arch/arm64/lib/Makefile              |  2 +
- arch/arm64/lib/copy_mc_page.S        | 78 ++++++++++++++++++++++++++++
- arch/arm64/lib/mte.S                 | 27 ++++++++++
- arch/arm64/mm/copypage.c             | 66 ++++++++++++++++++++---
- arch/arm64/mm/extable.c              |  7 +--
- include/linux/highmem.h              |  8 +++
- 10 files changed, 213 insertions(+), 9 deletions(-)
- create mode 100644 arch/arm64/lib/copy_mc_page.S
+ arch/arm64/include/asm/string.h  |   5 +
+ arch/arm64/include/asm/uaccess.h |  21 +++
+ arch/arm64/lib/Makefile          |   2 +-
+ arch/arm64/lib/memcpy_mc.S       | 257 +++++++++++++++++++++++++++++++
+ mm/kasan/shadow.c                |  12 ++
+ 5 files changed, 296 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm64/lib/memcpy_mc.S
 
-diff --git a/arch/arm64/include/asm/asm-extable.h b/arch/arm64/include/asm/asm-extable.h
-index 980d1dd8e1a3..819044fefbe7 100644
---- a/arch/arm64/include/asm/asm-extable.h
-+++ b/arch/arm64/include/asm/asm-extable.h
-@@ -10,6 +10,7 @@
- #define EX_TYPE_UACCESS_ERR_ZERO	2
- #define EX_TYPE_KACCESS_ERR_ZERO	3
- #define EX_TYPE_LOAD_UNALIGNED_ZEROPAD	4
-+#define EX_TYPE_COPY_MC_PAGE_ERR_ZERO	5
+diff --git a/arch/arm64/include/asm/string.h b/arch/arm64/include/asm/string.h
+index 3a3264ff47b9..995b63c26e99 100644
+--- a/arch/arm64/include/asm/string.h
++++ b/arch/arm64/include/asm/string.h
+@@ -35,6 +35,10 @@ extern void *memchr(const void *, int, __kernel_size_t);
+ extern void *memcpy(void *, const void *, __kernel_size_t);
+ extern void *__memcpy(void *, const void *, __kernel_size_t);
  
- /* Data fields for EX_TYPE_UACCESS_ERR_ZERO */
- #define EX_DATA_REG_ERR_SHIFT	0
-@@ -51,6 +52,16 @@
- #define _ASM_EXTABLE_UACCESS(insn, fixup)				\
- 	_ASM_EXTABLE_UACCESS_ERR_ZERO(insn, fixup, wzr, wzr)
- 
-+#define _ASM_EXTABLE_COPY_MC_PAGE_ERR_ZERO(insn, fixup, err, zero)	\
-+	__ASM_EXTABLE_RAW(insn, fixup, 					\
-+			  EX_TYPE_COPY_MC_PAGE_ERR_ZERO,		\
-+			  (						\
-+			    EX_DATA_REG(ERR, err) |			\
-+			    EX_DATA_REG(ZERO, zero)			\
-+			  ))
++#define __HAVE_ARCH_MEMCPY_MC
++extern int memcpy_mcs(void *, const void *, __kernel_size_t);
++extern int __memcpy_mcs(void *, const void *, __kernel_size_t);
 +
-+#define _ASM_EXTABLE_COPY_MC_PAGE(insn, fixup)				\
-+	_ASM_EXTABLE_COPY_MC_PAGE_ERR_ZERO(insn, fixup, wzr, wzr)
- /*
-  * Create an exception table entry for uaccess `insn`, which will branch to `fixup`
-  * when an unhandled fault is taken.
-@@ -59,6 +70,10 @@
- 	_ASM_EXTABLE_UACCESS(\insn, \fixup)
- 	.endm
+ #define __HAVE_ARCH_MEMMOVE
+ extern void *memmove(void *, const void *, __kernel_size_t);
+ extern void *__memmove(void *, const void *, __kernel_size_t);
+@@ -57,6 +61,7 @@ void memcpy_flushcache(void *dst, const void *src, size_t cnt);
+  */
  
-+	.macro          _asm_extable_copy_mc_page, insn, fixup
-+	_ASM_EXTABLE_COPY_MC_PAGE(\insn, \fixup)
-+	.endm
-+
- /*
-  * Create an exception table entry for `insn` if `fixup` is provided. Otherwise
-  * do nothing.
-diff --git a/arch/arm64/include/asm/assembler.h b/arch/arm64/include/asm/assembler.h
-index 513787e43329..e1d8ce155878 100644
---- a/arch/arm64/include/asm/assembler.h
-+++ b/arch/arm64/include/asm/assembler.h
-@@ -154,6 +154,10 @@ lr	.req	x30		// link register
- #define CPU_LE(code...) code
- #endif
+ #define memcpy(dst, src, len) __memcpy(dst, src, len)
++#define memcpy_mcs(dst, src, len) __memcpy_mcs(dst, src, len)
+ #define memmove(dst, src, len) __memmove(dst, src, len)
+ #define memset(s, c, n) __memset(s, c, n)
  
-+#define CPY_MC(l, x...)		\
-+9999:   x;			\
-+	_asm_extable_copy_mc_page    9999b, l
-+
- /*
-  * Define a macro that constructs a 64-bit value by concatenating two
-  * 32-bit registers. Note that on big endian systems the order of the
-diff --git a/arch/arm64/include/asm/mte.h b/arch/arm64/include/asm/mte.h
-index 91fbd5c8a391..9cdded082dd4 100644
---- a/arch/arm64/include/asm/mte.h
-+++ b/arch/arm64/include/asm/mte.h
-@@ -92,6 +92,7 @@ static inline bool try_page_mte_tagging(struct page *page)
- void mte_zero_clear_page_tags(void *addr);
- void mte_sync_tags(pte_t pte, unsigned int nr_pages);
- void mte_copy_page_tags(void *kto, const void *kfrom);
-+int mte_copy_mc_page_tags(void *kto, const void *kfrom);
- void mte_thread_init_user(void);
- void mte_thread_switch(struct task_struct *next);
- void mte_cpu_setup(void);
-@@ -128,6 +129,10 @@ static inline void mte_sync_tags(pte_t pte, unsigned int nr_pages)
- static inline void mte_copy_page_tags(void *kto, const void *kfrom)
- {
- }
-+static inline int mte_copy_mc_page_tags(void *kto, const void *kfrom)
-+{
-+	return 0;
-+}
- static inline void mte_thread_init_user(void)
- {
- }
-diff --git a/arch/arm64/include/asm/page.h b/arch/arm64/include/asm/page.h
-index 2312e6ee595f..304cc86b8a10 100644
---- a/arch/arm64/include/asm/page.h
-+++ b/arch/arm64/include/asm/page.h
-@@ -29,6 +29,16 @@ void copy_user_highpage(struct page *to, struct page *from,
- void copy_highpage(struct page *to, struct page *from);
- #define __HAVE_ARCH_COPY_HIGHPAGE
+diff --git a/arch/arm64/include/asm/uaccess.h b/arch/arm64/include/asm/uaccess.h
+index 14be5000c5a0..61e28ef2112a 100644
+--- a/arch/arm64/include/asm/uaccess.h
++++ b/arch/arm64/include/asm/uaccess.h
+@@ -425,4 +425,25 @@ static inline size_t probe_subpage_writeable(const char __user *uaddr,
+ 
+ #endif /* CONFIG_ARCH_HAS_SUBPAGE_FAULTS */
  
 +#ifdef CONFIG_ARCH_HAS_COPY_MC
-+int copy_mc_page(void *to, const void *from);
-+int copy_mc_highpage(struct page *to, struct page *from);
-+#define __HAVE_ARCH_COPY_MC_HIGHPAGE
++/**
++ * copy_mc_to_kernel - memory copy that handles source exceptions
++ *
++ * @dst:	destination address
++ * @src:	source address
++ * @len:	number of bytes to copy
++ *
++ * Return 0 for success, or #size if there was an exception.
++ */
++static inline unsigned long __must_check
++copy_mc_to_kernel(void *to, const void *from, unsigned long size)
++{
++	int ret;
 +
-+int copy_mc_user_highpage(struct page *to, struct page *from,
-+		unsigned long vaddr, struct vm_area_struct *vma);
-+#define __HAVE_ARCH_COPY_MC_USER_HIGHPAGE
++	ret = memcpy_mcs(to, from, size);
++	return (ret == -EFAULT) ? size : 0;
++}
++#define copy_mc_to_kernel copy_mc_to_kernel
 +#endif
 +
- struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
- 						unsigned long vaddr);
- #define vma_alloc_zeroed_movable_folio vma_alloc_zeroed_movable_folio
+ #endif /* __ASM_UACCESS_H */
 diff --git a/arch/arm64/lib/Makefile b/arch/arm64/lib/Makefile
-index 29490be2546b..a2fd865b816d 100644
+index a2fd865b816d..899d6ae9698c 100644
 --- a/arch/arm64/lib/Makefile
 +++ b/arch/arm64/lib/Makefile
-@@ -15,6 +15,8 @@ endif
+@@ -3,7 +3,7 @@ lib-y		:= clear_user.o delay.o copy_from_user.o		\
+ 		   copy_to_user.o copy_page.o				\
+ 		   clear_page.o csum.o insn.o memchr.o memcpy.o		\
+ 		   memset.o memcmp.o strcmp.o strncmp.o strlen.o	\
+-		   strnlen.o strchr.o strrchr.o tishift.o
++		   strnlen.o strchr.o strrchr.o tishift.o memcpy_mc.o
  
- lib-$(CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE) += uaccess_flushcache.o
- 
-+lib-$(CONFIG_ARCH_HAS_COPY_MC) += copy_mc_page.o
-+
- obj-$(CONFIG_CRC32) += crc32.o
- 
- obj-$(CONFIG_FUNCTION_ERROR_INJECTION) += error-inject.o
-diff --git a/arch/arm64/lib/copy_mc_page.S b/arch/arm64/lib/copy_mc_page.S
+ ifeq ($(CONFIG_KERNEL_MODE_NEON), y)
+ obj-$(CONFIG_XOR_BLOCKS)	+= xor-neon.o
+diff --git a/arch/arm64/lib/memcpy_mc.S b/arch/arm64/lib/memcpy_mc.S
 new file mode 100644
-index 000000000000..524534d26d86
+index 000000000000..7076b500d154
 --- /dev/null
-+++ b/arch/arm64/lib/copy_mc_page.S
-@@ -0,0 +1,78 @@
++++ b/arch/arm64/lib/memcpy_mc.S
+@@ -0,0 +1,257 @@
 +/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
-+ * Copyright (C) 2012 ARM Ltd.
++ * Copyright (c) 2012-2021, Arm Limited.
++ *
++ * Adapted from the original at:
++ * https://github.com/ARM-software/optimized-routines/blob/afd6244a1f8d9229/string/aarch64/memcpy.S
 + */
 +
 +#include <linux/linkage.h>
-+#include <linux/const.h>
 +#include <asm/assembler.h>
-+#include <asm/page.h>
-+#include <asm/cpufeature.h>
-+#include <asm/alternative.h>
-+#include <asm/asm-extable.h>
 +
-+/*
-+ * Copy a page from src to dest (both are page aligned) with machine check
++/* Assumptions:
 + *
-+ * Parameters:
-+ *	x0 - dest
-+ *	x1 - src
-+ * Returns:
-+ * 	x0 - Return 0 if copy success, or -EFAULT if anything goes wrong
-+ *	     while copying.
++ * ARMv8-a, AArch64, unaligned accesses.
++ *
 + */
-+SYM_FUNC_START(__pi_copy_mc_page)
-+CPY_MC(9998f, ldp	x2, x3, [x1])
-+CPY_MC(9998f, ldp	x4, x5, [x1, #16])
-+CPY_MC(9998f, ldp	x6, x7, [x1, #32])
-+CPY_MC(9998f, ldp	x8, x9, [x1, #48])
-+CPY_MC(9998f, ldp	x10, x11, [x1, #64])
-+CPY_MC(9998f, ldp	x12, x13, [x1, #80])
-+CPY_MC(9998f, ldp	x14, x15, [x1, #96])
-+CPY_MC(9998f, ldp	x16, x17, [x1, #112])
 +
-+	add	x0, x0, #256
-+	add	x1, x1, #128
-+1:
-+	tst	x0, #(PAGE_SIZE - 1)
++#define L(label) .L ## label
 +
-+CPY_MC(9998f, stnp	x2, x3, [x0, #-256])
-+CPY_MC(9998f, ldp	x2, x3, [x1])
-+CPY_MC(9998f, stnp	x4, x5, [x0, #16 - 256])
-+CPY_MC(9998f, ldp	x4, x5, [x1, #16])
-+CPY_MC(9998f, stnp	x6, x7, [x0, #32 - 256])
-+CPY_MC(9998f, ldp	x6, x7, [x1, #32])
-+CPY_MC(9998f, stnp	x8, x9, [x0, #48 - 256])
-+CPY_MC(9998f, ldp	x8, x9, [x1, #48])
-+CPY_MC(9998f, stnp	x10, x11, [x0, #64 - 256])
-+CPY_MC(9998f, ldp	x10, x11, [x1, #64])
-+CPY_MC(9998f, stnp	x12, x13, [x0, #80 - 256])
-+CPY_MC(9998f, ldp	x12, x13, [x1, #80])
-+CPY_MC(9998f, stnp	x14, x15, [x0, #96 - 256])
-+CPY_MC(9998f, ldp	x14, x15, [x1, #96])
-+CPY_MC(9998f, stnp	x16, x17, [x0, #112 - 256])
-+CPY_MC(9998f, ldp	x16, x17, [x1, #112])
++#define dstin	x0
++#define src	x1
++#define count	x2
++#define dst	x3
++#define srcend	x4
++#define dstend	x5
++#define A_l	x6
++#define A_lw	w6
++#define A_h	x7
++#define B_l	x8
++#define B_lw	w8
++#define B_h	x9
++#define C_l	x10
++#define C_lw	w10
++#define C_h	x11
++#define D_l	x12
++#define D_h	x13
++#define E_l	x14
++#define E_h	x15
++#define F_l	x16
++#define F_h	x17
++#define G_l	count
++#define G_h	dst
++#define H_l	src
++#define H_h	srcend
++#define tmp1	x14
 +
-+	add	x0, x0, #128
-+	add	x1, x1, #128
++/* This implementation handles overlaps and supports both memcpy and memmove
++   from a single entry point.  It uses unaligned accesses and branchless
++   sequences to keep the code small, simple and improve performance.
 +
-+	b.ne	1b
++   Copies are split into 3 main cases: small copies of up to 32 bytes, medium
++   copies of up to 128 bytes, and large copies.  The overhead of the overlap
++   check is negligible since it is only required for large copies.
 +
-+CPY_MC(9998f, stnp	x2, x3, [x0, #-256])
-+CPY_MC(9998f, stnp	x4, x5, [x0, #16 - 256])
-+CPY_MC(9998f, stnp	x6, x7, [x0, #32 - 256])
-+CPY_MC(9998f, stnp	x8, x9, [x0, #48 - 256])
-+CPY_MC(9998f, stnp	x10, x11, [x0, #64 - 256])
-+CPY_MC(9998f, stnp	x12, x13, [x0, #80 - 256])
-+CPY_MC(9998f, stnp	x14, x15, [x0, #96 - 256])
-+CPY_MC(9998f, stnp	x16, x17, [x0, #112 - 256])
++   Large copies use a software pipelined loop processing 64 bytes per iteration.
++   The destination pointer is 16-byte aligned to minimize unaligned accesses.
++   The loop tail is handled by always copying 64 bytes from the end.
++*/
 +
++SYM_FUNC_START(__pi_memcpy_mcs)
++	add	srcend, src, count
++	add	dstend, dstin, count
++	cmp	count, 128
++	b.hi	L(copy_long)
++	cmp	count, 32
++	b.hi	L(copy32_128)
++
++	/* Small copies: 0..32 bytes.  */
++	cmp	count, 16
++	b.lo	L(copy16)
++	CPY_MC(9998f, ldp	A_l, A_h, [src])
++	CPY_MC(9998f, ldp	D_l, D_h, [srcend, -16])
++	CPY_MC(9998f, stp	A_l, A_h, [dstin])
++	CPY_MC(9998f, stp	D_l, D_h, [dstend, -16])
++	mov x0, #0
++	ret
++
++	/* Copy 8-15 bytes.  */
++L(copy16):
++	tbz	count, 3, L(copy8)
++	CPY_MC(9998f, ldr	A_l, [src])
++	CPY_MC(9998f, ldr	A_h, [srcend, -8])
++	CPY_MC(9998f, str	A_l, [dstin])
++	CPY_MC(9998f, str	A_h, [dstend, -8])
++	mov x0, #0
++	ret
++
++	.p2align 3
++	/* Copy 4-7 bytes.  */
++L(copy8):
++	tbz	count, 2, L(copy4)
++	CPY_MC(9998f, ldr	A_lw, [src])
++	CPY_MC(9998f, ldr	B_lw, [srcend, -4])
++	CPY_MC(9998f, str	A_lw, [dstin])
++	CPY_MC(9998f, str	B_lw, [dstend, -4])
++	mov x0, #0
++	ret
++
++	/* Copy 0..3 bytes using a branchless sequence.  */
++L(copy4):
++	cbz	count, L(copy0)
++	lsr	tmp1, count, 1
++	CPY_MC(9998f, ldrb	A_lw, [src])
++	CPY_MC(9998f, ldrb	C_lw, [srcend, -1])
++	CPY_MC(9998f, ldrb	B_lw, [src, tmp1])
++	CPY_MC(9998f, strb	A_lw, [dstin])
++	CPY_MC(9998f, strb	B_lw, [dstin, tmp1])
++	CPY_MC(9998f, strb	C_lw, [dstend, -1])
++L(copy0):
++	mov x0, #0
++	ret
++
++	.p2align 4
++	/* Medium copies: 33..128 bytes.  */
++L(copy32_128):
++	CPY_MC(9998f, ldp	A_l, A_h, [src])
++	CPY_MC(9998f, ldp	B_l, B_h, [src, 16])
++	CPY_MC(9998f, ldp	C_l, C_h, [srcend, -32])
++	CPY_MC(9998f, ldp	D_l, D_h, [srcend, -16])
++	cmp	count, 64
++	b.hi	L(copy128)
++	CPY_MC(9998f, stp	A_l, A_h, [dstin])
++	CPY_MC(9998f, stp	B_l, B_h, [dstin, 16])
++	CPY_MC(9998f, stp	C_l, C_h, [dstend, -32])
++	CPY_MC(9998f, stp	D_l, D_h, [dstend, -16])
++	mov x0, #0
++	ret
++
++	.p2align 4
++	/* Copy 65..128 bytes.  */
++L(copy128):
++	CPY_MC(9998f, ldp	E_l, E_h, [src, 32])
++	CPY_MC(9998f, ldp	F_l, F_h, [src, 48])
++	cmp	count, 96
++	b.ls	L(copy96)
++	CPY_MC(9998f, ldp	G_l, G_h, [srcend, -64])
++	CPY_MC(9998f, ldp	H_l, H_h, [srcend, -48])
++	CPY_MC(9998f, stp	G_l, G_h, [dstend, -64])
++	CPY_MC(9998f, stp	H_l, H_h, [dstend, -48])
++L(copy96):
++	CPY_MC(9998f, stp	A_l, A_h, [dstin])
++	CPY_MC(9998f, stp	B_l, B_h, [dstin, 16])
++	CPY_MC(9998f, stp	E_l, E_h, [dstin, 32])
++	CPY_MC(9998f, stp	F_l, F_h, [dstin, 48])
++	CPY_MC(9998f, stp	C_l, C_h, [dstend, -32])
++	CPY_MC(9998f, stp	D_l, D_h, [dstend, -16])
++	mov x0, #0
++	ret
++
++	.p2align 4
++	/* Copy more than 128 bytes.  */
++L(copy_long):
++	/* Use backwards copy if there is an overlap.  */
++	sub	tmp1, dstin, src
++	cbz	tmp1, L(copy0)
++	cmp	tmp1, count
++	b.lo	L(copy_long_backwards)
++
++	/* Copy 16 bytes and then align dst to 16-byte alignment.  */
++
++	CPY_MC(9998f, ldp	D_l, D_h, [src])
++	and	tmp1, dstin, 15
++	bic	dst, dstin, 15
++	sub	src, src, tmp1
++	add	count, count, tmp1	/* Count is now 16 too large.  */
++	CPY_MC(9998f, ldp	A_l, A_h, [src, 16])
++	CPY_MC(9998f, stp	D_l, D_h, [dstin])
++	CPY_MC(9998f, ldp	B_l, B_h, [src, 32])
++	CPY_MC(9998f, ldp	C_l, C_h, [src, 48])
++	CPY_MC(9998f, ldp	D_l, D_h, [src, 64]!)
++	subs	count, count, 128 + 16	/* Test and readjust count.  */
++	b.ls	L(copy64_from_end)
++
++L(loop64):
++	CPY_MC(9998f, stp	A_l, A_h, [dst, 16])
++	CPY_MC(9998f, ldp	A_l, A_h, [src, 16])
++	CPY_MC(9998f, stp	B_l, B_h, [dst, 32])
++	CPY_MC(9998f, ldp	B_l, B_h, [src, 32])
++	CPY_MC(9998f, stp	C_l, C_h, [dst, 48])
++	CPY_MC(9998f, ldp	C_l, C_h, [src, 48])
++	CPY_MC(9998f, stp	D_l, D_h, [dst, 64]!)
++	CPY_MC(9998f, ldp	D_l, D_h, [src, 64]!)
++	subs	count, count, 64
++	b.hi	L(loop64)
++
++	/* Write the last iteration and copy 64 bytes from the end.  */
++L(copy64_from_end):
++	CPY_MC(9998f, ldp	E_l, E_h, [srcend, -64])
++	CPY_MC(9998f, stp	A_l, A_h, [dst, 16])
++	CPY_MC(9998f, ldp	A_l, A_h, [srcend, -48])
++	CPY_MC(9998f, stp	B_l, B_h, [dst, 32])
++	CPY_MC(9998f, ldp	B_l, B_h, [srcend, -32])
++	CPY_MC(9998f, stp	C_l, C_h, [dst, 48])
++	CPY_MC(9998f, ldp	C_l, C_h, [srcend, -16])
++	CPY_MC(9998f, stp	D_l, D_h, [dst, 64])
++	CPY_MC(9998f, stp	E_l, E_h, [dstend, -64])
++	CPY_MC(9998f, stp	A_l, A_h, [dstend, -48])
++	CPY_MC(9998f, stp	B_l, B_h, [dstend, -32])
++	CPY_MC(9998f, stp	C_l, C_h, [dstend, -16])
++	mov x0, #0
++	ret
++
++	.p2align 4
++
++	/* Large backwards copy for overlapping copies.
++	   Copy 16 bytes and then align dst to 16-byte alignment.  */
++L(copy_long_backwards):
++	CPY_MC(9998f, ldp	D_l, D_h, [srcend, -16])
++	and	tmp1, dstend, 15
++	sub	srcend, srcend, tmp1
++	sub	count, count, tmp1
++	CPY_MC(9998f, ldp	A_l, A_h, [srcend, -16])
++	CPY_MC(9998f, stp	D_l, D_h, [dstend, -16])
++	CPY_MC(9998f, ldp	B_l, B_h, [srcend, -32])
++	CPY_MC(9998f, ldp	C_l, C_h, [srcend, -48])
++	CPY_MC(9998f, ldp	D_l, D_h, [srcend, -64]!)
++	sub	dstend, dstend, tmp1
++	subs	count, count, 128
++	b.ls	L(copy64_from_start)
++
++L(loop64_backwards):
++	CPY_MC(9998f, stp	A_l, A_h, [dstend, -16])
++	CPY_MC(9998f, ldp	A_l, A_h, [srcend, -16])
++	CPY_MC(9998f, stp	B_l, B_h, [dstend, -32])
++	CPY_MC(9998f, ldp	B_l, B_h, [srcend, -32])
++	CPY_MC(9998f, stp	C_l, C_h, [dstend, -48])
++	CPY_MC(9998f, ldp	C_l, C_h, [srcend, -48])
++	CPY_MC(9998f, stp	D_l, D_h, [dstend, -64]!)
++	CPY_MC(9998f, ldp	D_l, D_h, [srcend, -64]!)
++	subs	count, count, 64
++	b.hi	L(loop64_backwards)
++
++	/* Write the last iteration and copy 64 bytes from the start.  */
++L(copy64_from_start):
++	CPY_MC(9998f, ldp	G_l, G_h, [src, 48])
++	CPY_MC(9998f, stp	A_l, A_h, [dstend, -16])
++	CPY_MC(9998f, ldp	A_l, A_h, [src, 32])
++	CPY_MC(9998f, stp	B_l, B_h, [dstend, -32])
++	CPY_MC(9998f, ldp	B_l, B_h, [src, 16])
++	CPY_MC(9998f, stp	C_l, C_h, [dstend, -48])
++	CPY_MC(9998f, ldp	C_l, C_h, [src])
++	CPY_MC(9998f, stp	D_l, D_h, [dstend, -64])
++	CPY_MC(9998f, stp	G_l, G_h, [dstin, 48])
++	CPY_MC(9998f, stp	A_l, A_h, [dstin, 32])
++	CPY_MC(9998f, stp	B_l, B_h, [dstin, 16])
++	CPY_MC(9998f, stp	C_l, C_h, [dstin])
 +	mov x0, #0
 +	ret
 +
 +9998:	mov x0, #-EFAULT
 +	ret
++SYM_FUNC_END(__pi_memcpy_mcs)
 +
-+SYM_FUNC_END(__pi_copy_mc_page)
-+SYM_FUNC_ALIAS(copy_mc_page, __pi_copy_mc_page)
-+EXPORT_SYMBOL(copy_mc_page)
-diff --git a/arch/arm64/lib/mte.S b/arch/arm64/lib/mte.S
-index 5018ac03b6bf..2b748e83f6cf 100644
---- a/arch/arm64/lib/mte.S
-+++ b/arch/arm64/lib/mte.S
-@@ -80,6 +80,33 @@ SYM_FUNC_START(mte_copy_page_tags)
- 	ret
- SYM_FUNC_END(mte_copy_page_tags)
- 
-+/*
-+ * Copy the tags from the source page to the destination one wiht machine check safe
-+ *   x0 - address of the destination page
-+ *   x1 - address of the source page
-+ * Returns:
-+ *   x0 - Return 0 if copy success, or
-+ *        -EFAULT if anything goes wrong while copying.
-+ */
-+SYM_FUNC_START(mte_copy_mc_page_tags)
-+	mov	x2, x0
-+	mov	x3, x1
-+	multitag_transfer_size x5, x6
-+1:
-+CPY_MC(2f, ldgm	x4, [x3])
-+CPY_MC(2f, stgm	x4, [x2])
-+	add	x2, x2, x5
-+	add	x3, x3, x5
-+	tst	x2, #(PAGE_SIZE - 1)
-+	b.ne	1b
-+
-+	mov x0, #0
-+	ret
-+
-+2:	mov x0, #-EFAULT
-+	ret
-+SYM_FUNC_END(mte_copy_mc_page_tags)
-+
- /*
-  * Read tags from a user buffer (one tag per byte) and set the corresponding
-  * tags at the given kernel address. Used by PTRACE_POKEMTETAGS.
-diff --git a/arch/arm64/mm/copypage.c b/arch/arm64/mm/copypage.c
-index a7bb20055ce0..9765e40cde6c 100644
---- a/arch/arm64/mm/copypage.c
-+++ b/arch/arm64/mm/copypage.c
-@@ -14,6 +14,25 @@
- #include <asm/cpufeature.h>
- #include <asm/mte.h>
- 
-+static int do_mte(struct page *to, struct page *from, void *kto, void *kfrom, bool mc)
-+{
-+	int ret = 0;
-+
-+	if (system_supports_mte() && page_mte_tagged(from)) {
-+		/* It's a new page, shouldn't have been tagged yet */
-+		WARN_ON_ONCE(!try_page_mte_tagging(to));
-+		if (mc)
-+			ret = mte_copy_mc_page_tags(kto, kfrom);
-+		else
-+			mte_copy_page_tags(kto, kfrom);
-+
-+		if (!ret)
-+			set_page_mte_tagged(to);
-+	}
-+
-+	return ret;
-+}
-+
- void copy_highpage(struct page *to, struct page *from)
- {
- 	void *kto = page_address(to);
-@@ -24,12 +43,7 @@ void copy_highpage(struct page *to, struct page *from)
- 	if (kasan_hw_tags_enabled())
- 		page_kasan_tag_reset(to);
- 
--	if (system_supports_mte() && page_mte_tagged(from)) {
--		/* It's a new page, shouldn't have been tagged yet */
--		WARN_ON_ONCE(!try_page_mte_tagging(to));
--		mte_copy_page_tags(kto, kfrom);
--		set_page_mte_tagged(to);
--	}
-+	do_mte(to, from, kto, kfrom, false);
- }
- EXPORT_SYMBOL(copy_highpage);
- 
-@@ -40,3 +54,43 @@ void copy_user_highpage(struct page *to, struct page *from,
- 	flush_dcache_page(to);
- }
- EXPORT_SYMBOL_GPL(copy_user_highpage);
-+
-+#ifdef CONFIG_ARCH_HAS_COPY_MC
-+/*
-+ * Return -EFAULT if anything goes wrong while copying page or mte.
-+ */
-+int copy_mc_highpage(struct page *to, struct page *from)
-+{
-+	void *kto = page_address(to);
-+	void *kfrom = page_address(from);
-+	int ret;
-+
-+	ret = copy_mc_page(kto, kfrom);
-+	if (ret)
-+		return -EFAULT;
-+
-+	if (kasan_hw_tags_enabled())
-+		page_kasan_tag_reset(to);
-+
-+	ret = do_mte(to, from, kto, kfrom, true);
-+	if (ret)
-+		return -EFAULT;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(copy_mc_highpage);
-+
-+int copy_mc_user_highpage(struct page *to, struct page *from,
-+			unsigned long vaddr, struct vm_area_struct *vma)
-+{
-+	int ret;
-+
-+	ret = copy_mc_highpage(to, from);
-+
-+	if (!ret)
-+		flush_dcache_page(to);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(copy_mc_user_highpage);
-+#endif
-diff --git a/arch/arm64/mm/extable.c b/arch/arm64/mm/extable.c
-index 28ec35e3d210..bdc81518d207 100644
---- a/arch/arm64/mm/extable.c
-+++ b/arch/arm64/mm/extable.c
-@@ -16,7 +16,7 @@ get_ex_fixup(const struct exception_table_entry *ex)
- 	return ((unsigned long)&ex->fixup + ex->fixup);
- }
- 
--static bool ex_handler_uaccess_err_zero(const struct exception_table_entry *ex,
-+static bool ex_handler_fixup_err_zero(const struct exception_table_entry *ex,
- 					struct pt_regs *regs)
- {
- 	int reg_err = FIELD_GET(EX_DATA_REG_ERR, ex->data);
-@@ -69,7 +69,7 @@ bool fixup_exception(struct pt_regs *regs)
- 		return ex_handler_bpf(ex, regs);
- 	case EX_TYPE_UACCESS_ERR_ZERO:
- 	case EX_TYPE_KACCESS_ERR_ZERO:
--		return ex_handler_uaccess_err_zero(ex, regs);
-+		return ex_handler_fixup_err_zero(ex, regs);
- 	case EX_TYPE_LOAD_UNALIGNED_ZEROPAD:
- 		return ex_handler_load_unaligned_zeropad(ex, regs);
- 	}
-@@ -87,7 +87,8 @@ bool fixup_exception_mc(struct pt_regs *regs)
- 
- 	switch (ex->type) {
- 	case EX_TYPE_UACCESS_ERR_ZERO:
--		return ex_handler_uaccess_err_zero(ex, regs);
-+	case EX_TYPE_COPY_MC_PAGE_ERR_ZERO:
-+		return ex_handler_fixup_err_zero(ex, regs);
- 	}
- 
- 	return false;
-diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-index c5ca1a1fc4f5..a42470ca42f2 100644
---- a/include/linux/highmem.h
-+++ b/include/linux/highmem.h
-@@ -332,6 +332,7 @@ static inline void copy_highpage(struct page *to, struct page *from)
- #endif
- 
- #ifdef copy_mc_to_kernel
-+#ifndef __HAVE_ARCH_COPY_MC_USER_HIGHPAGE
- /*
-  * If architecture supports machine check exception handling, define the
-  * #MC versions of copy_user_highpage and copy_highpage. They copy a memory
-@@ -354,7 +355,9 @@ static inline int copy_mc_user_highpage(struct page *to, struct page *from,
- 
- 	return ret ? -EFAULT : 0;
- }
-+#endif
- 
-+#ifndef __HAVE_ARCH_COPY_MC_HIGHPAGE
- static inline int copy_mc_highpage(struct page *to, struct page *from)
- {
- 	unsigned long ret;
-@@ -370,20 +373,25 @@ static inline int copy_mc_highpage(struct page *to, struct page *from)
- 
- 	return ret ? -EFAULT : 0;
- }
-+#endif
- #else
-+#ifndef __HAVE_ARCH_COPY_MC_USER_HIGHPAGE
- static inline int copy_mc_user_highpage(struct page *to, struct page *from,
- 					unsigned long vaddr, struct vm_area_struct *vma)
- {
- 	copy_user_highpage(to, from, vaddr, vma);
- 	return 0;
- }
-+#endif
- 
-+#ifndef __HAVE_ARCH_COPY_MC_HIGHPAGE
- static inline int copy_mc_highpage(struct page *to, struct page *from)
- {
- 	copy_highpage(to, from);
- 	return 0;
++SYM_FUNC_ALIAS(__memcpy_mcs, __pi_memcpy_mcs)
++EXPORT_SYMBOL(__memcpy_mcs)
++SYM_FUNC_ALIAS_WEAK(memcpy_mcs, __memcpy_mcs)
++EXPORT_SYMBOL(memcpy_mcs)
+diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+index 9ef84f31833f..e6519fd329b2 100644
+--- a/mm/kasan/shadow.c
++++ b/mm/kasan/shadow.c
+@@ -79,6 +79,18 @@ void *memcpy(void *dest, const void *src, size_t len)
  }
  #endif
-+#endif
  
- static inline void memcpy_page(struct page *dst_page, size_t dst_off,
- 			       struct page *src_page, size_t src_off,
++#ifdef __HAVE_ARCH_MEMCPY_MC
++#undef memcpy_mcs
++int memcpy_mcs(void *dest, const void *src, size_t len)
++{
++	if (!check_memory_region((unsigned long)src, len, false, _RET_IP_) ||
++	    !check_memory_region((unsigned long)dest, len, true, _RET_IP_))
++		return (unsigned long)len;
++
++	return __memcpy_mcs(dest, src, len);
++}
++#endif
++
+ void *__asan_memset(void *addr, int c, ssize_t len)
+ {
+ 	if (!kasan_check_range(addr, len, true, _RET_IP_))
 -- 
 2.25.1
 
