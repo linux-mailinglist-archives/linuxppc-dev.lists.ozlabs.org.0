@@ -1,73 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BCC4840772
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 14:53:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A81BF840864
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 15:33:17 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZdtjnjRK;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NUYsqixz;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Iqvpnmy6;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Iqvpnmy6;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TNqWJ3YG1z3cYN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 00:53:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TNrPl4Pnpz3cVP
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 01:33:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZdtjnjRK;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NUYsqixz;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Iqvpnmy6;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Iqvpnmy6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TNqSz1Mmqz3c3W
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 00:50:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TNrP141Pfz30QJ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 01:32:36 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706536256;
+	s=mimecast20190719; t=1706538753;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=75S7nZ64UnAF9qceiwWx9BHlJYFt/uNOyQt1Jso/DHk=;
-	b=ZdtjnjRKekVx9vbc3hoJl6KGlA/e+tYpd2ZmvpbYgA8sx71+OWcr/4uu1lV3TgH24TUN8P
-	mWAbXhmWu/lXFbPFcdHcIOgTzYOSnc74k4AhzvxrmrcYlkl2K3NZ03XlsfKd80bfSiE9Xy
-	l/+b4H6Qk1daiR9rCkJZzFeoLEutWM4=
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=UhBdOI+JB6L0dCFGLAOqO2pJABjn3Znd2yV65wClG/w=;
+	b=Iqvpnmy6mMOPZYG3tx6bZyM1BBxCV+4385uaRT74evBaBlOh3R6HgGA6282djlwpn0ZbeE
+	xpmrbEGCe8wFspedK7kQ1URAAT4MbKHIiT6zUZxjDHa8AWqylfV9qr3YdfR1y99pJlWW/N
+	8v0S5RIQtE24HcSrrIXkIm0/j7+r6rE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706536257;
+	s=mimecast20190719; t=1706538753;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=75S7nZ64UnAF9qceiwWx9BHlJYFt/uNOyQt1Jso/DHk=;
-	b=NUYsqixzQqrYnHZbJO4kE416DQXlcRKIG52saTbs7Fnq1k/GVKibjWyiqf/30R/mSL6PY2
-	i015oKkwNSGxtlrhqgZ7vvsmiDVgBDFy3Y6Mernf27WyHtMXM+ERIpjTveH85OQhiBS4ad
-	cfC8h0nJbhQ3yDLXuJFdQkqfg17FhEo=
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=UhBdOI+JB6L0dCFGLAOqO2pJABjn3Znd2yV65wClG/w=;
+	b=Iqvpnmy6mMOPZYG3tx6bZyM1BBxCV+4385uaRT74evBaBlOh3R6HgGA6282djlwpn0ZbeE
+	xpmrbEGCe8wFspedK7kQ1URAAT4MbKHIiT6zUZxjDHa8AWqylfV9qr3YdfR1y99pJlWW/N
+	8v0S5RIQtE24HcSrrIXkIm0/j7+r6rE=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-662-d5dO4PAtO-Calcv1XMdhbg-1; Mon,
- 29 Jan 2024 08:50:50 -0500
-X-MC-Unique: d5dO4PAtO-Calcv1XMdhbg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-478-Kz5-1HWrO6SlttN34_aWHQ-1; Mon,
+ 29 Jan 2024 09:32:29 -0500
+X-MC-Unique: Kz5-1HWrO6SlttN34_aWHQ-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5C60D3C2A1CC;
-	Mon, 29 Jan 2024 13:50:49 +0000 (UTC)
-Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.116.15])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 77CD6488;
-	Mon, 29 Jan 2024 13:50:45 +0000 (UTC)
-From: Baoquan He <bhe@redhat.com>
-To: kexec@lists.infradead.org,
-	akpm@linux-foundation.org
-Subject: [PATCH linux-next 3/3] arch, crash: move arch_crash_save_vmcoreinfo() out to file vmcore_info.c
-Date: Mon, 29 Jan 2024 21:50:33 +0800
-Message-ID: <20240129135033.157195-3-bhe@redhat.com>
-In-Reply-To: <20240129135033.157195-1-bhe@redhat.com>
-References: <20240129135033.157195-1-bhe@redhat.com>
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 979933C13A90;
+	Mon, 29 Jan 2024 14:32:27 +0000 (UTC)
+Received: from t14s.fritz.box (unknown [10.39.194.46])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 75D74C3F;
+	Mon, 29 Jan 2024 14:32:22 +0000 (UTC)
+From: David Hildenbrand <david@redhat.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v1 0/9] mm/memory: optimize unmap/zap with PTE-mapped THP
+Date: Mon, 29 Jan 2024 15:32:12 +0100
+Message-ID: <20240129143221.263763-1-david@redhat.com>
 MIME-Version: 1.0
-Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -81,315 +75,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Baoquan He <bhe@redhat.com>, mhklinux@outlook.com, x86@kernel.org, linux-kernel@vger.kernel.org, nathan@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>, Matthew Wilcox <willy@infradead.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Ryan Roberts <ryan.roberts@arm.com>, Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>, Nick Piggin <npiggin@gmail.com>, Sven Schnelle <svens@linux.ibm.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nathan reported below building error:
+This series is based on [1] and must be applied on top of it.
+Similar to what we did with fork(), let's implement PTE batching
+during unmap/zap when processing PTE-mapped THPs.
 
-=====
-$ curl -LSso .config https://git.alpinelinux.org/aports/plain/community/linux-edge/config-edge.armv7
-$ make -skj"$(nproc)" ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- olddefconfig all
-...
-arm-linux-gnueabi-ld: arch/arm/kernel/machine_kexec.o: in function `arch_crash_save_vmcoreinfo':
-machine_kexec.c:(.text+0x488): undefined reference to `vmcoreinfo_append_str'
-====
+We collect consecutive PTEs that map consecutive pages of the same large
+folio, making sure that the other PTE bits are compatible, and (a) adjust
+the refcount only once per batch, (b) call rmap handling functions only
+once per batch, (c) perform batch PTE setting/updates and (d) perform TLB
+entry removal once per batch.
 
-On architecutres, like arm, s390, ppc, sh, function
-arch_crash_save_vmcoreinfo() is located in machine_kexec.c and it can
-only be compiled in when CONFIG_KEXEC_CORE=y.
+Ryan was previously working on this in the context of cont-pte for
+arm64, int latest iteration [2] with a focus on arm6 with cont-pte only.
+This series implements the optimization for all architectures, independent
+of such PTE bits, teaches MMU gather/TLB code to be fully aware of such
+large-folio-pages batches as well, and amkes use of our new rmap batching
+function when removing the rmap.
 
-That's not right because arch_crash_save_vmcoreinfo() is used to export
-arch specific vmcoreinfo. CONFIG_VMCORE_INFO is supposed to control its
-compiling in. However, CONFIG_VMVCORE_INFO could be independent of
-CONFIG_KEXEC_CORE, e.g CONFIG_PROC_KCORE=y will select CONFIG_VMVCORE_INFO.
-Or CONFIG_KEXEC/CONFIG_KEXEC_FILE is set while CONFIG_CRASH_DUMP is
-not set, it will report linking error.
+To achieve that, we have to enlighten MMU gather / page freeing code
+(i.e., everything that consumes encoded_page) to process unmapping
+of consecutive pages that all belong to the same large folio. I'm being
+very careful to not degrade order-0 performance, and it looks like I
+managed to achieve that.
 
-So, on arm, s390, ppc and sh, move arch_crash_save_vmcoreinfo out to
-a new file vmcore_info.c. Let CONFIG_VMCORE_INFO decide if compiling in
-arch_crash_save_vmcoreinfo().
+While this series should -- similar to [1] -- be beneficial for adding
+cont-pte support on arm64[2], it's one of the requirements for maintaining
+a total mapcount[3] for large folios with minimal added overhead and
+further changes[4] that build up on top of the total mapcount.
 
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Closes: https://lore.kernel.org/all/20240126045551.GA126645@dev-arch.thelio-3990X/T/#u
-Signed-off-by: Baoquan He <bhe@redhat.com>
----
- arch/arm/kernel/Makefile         |  1 +
- arch/arm/kernel/machine_kexec.c  |  7 -------
- arch/arm/kernel/vmcore_info.c    | 10 ++++++++++
- arch/powerpc/kexec/Makefile      |  1 +
- arch/powerpc/kexec/core.c        | 28 --------------------------
- arch/powerpc/kexec/vmcore_info.c | 34 ++++++++++++++++++++++++++++++++
- arch/s390/kernel/Makefile        |  1 +
- arch/s390/kernel/machine_kexec.c | 15 --------------
- arch/s390/kernel/vmcore_info.c   | 23 +++++++++++++++++++++
- arch/sh/kernel/Makefile          |  1 +
- arch/sh/kernel/machine_kexec.c   | 11 -----------
- arch/sh/kernel/vmcore_info.c     | 17 ++++++++++++++++
- 12 files changed, 88 insertions(+), 61 deletions(-)
- create mode 100644 arch/arm/kernel/vmcore_info.c
- create mode 100644 arch/powerpc/kexec/vmcore_info.c
- create mode 100644 arch/s390/kernel/vmcore_info.c
- create mode 100644 arch/sh/kernel/vmcore_info.c
+Independent of all that, this series results in a speedup during munmap()
+and similar unmapping (process teardown, MADV_DONTNEED on larger ranges)
+with PTE-mapped THP, which is the default with THPs that are smaller than
+a PMD (for example, 16KiB to 1024KiB mTHPs for anonymous memory[5]).
 
-diff --git a/arch/arm/kernel/Makefile b/arch/arm/kernel/Makefile
-index 771264d4726a..6a9de826ffd3 100644
---- a/arch/arm/kernel/Makefile
-+++ b/arch/arm/kernel/Makefile
-@@ -60,6 +60,7 @@ obj-$(CONFIG_DYNAMIC_FTRACE)	+= ftrace.o insn.o patch.o
- obj-$(CONFIG_FUNCTION_GRAPH_TRACER)	+= ftrace.o insn.o patch.o
- obj-$(CONFIG_JUMP_LABEL)	+= jump_label.o insn.o patch.o
- obj-$(CONFIG_KEXEC_CORE)	+= machine_kexec.o relocate_kernel.o
-+obj-$(CONFIG_VMCORE_INFO)	+= vmcore_info.o
- # Main staffs in KPROBES are in arch/arm/probes/ .
- obj-$(CONFIG_KPROBES)		+= patch.o insn.o
- obj-$(CONFIG_OABI_COMPAT)	+= sys_oabi-compat.o
-diff --git a/arch/arm/kernel/machine_kexec.c b/arch/arm/kernel/machine_kexec.c
-index 5d07cf9e0044..80ceb5bd2680 100644
---- a/arch/arm/kernel/machine_kexec.c
-+++ b/arch/arm/kernel/machine_kexec.c
-@@ -198,10 +198,3 @@ void machine_kexec(struct kimage *image)
- 
- 	soft_restart(reboot_entry_phys);
- }
--
--void arch_crash_save_vmcoreinfo(void)
--{
--#ifdef CONFIG_ARM_LPAE
--	VMCOREINFO_CONFIG(ARM_LPAE);
--#endif
--}
-diff --git a/arch/arm/kernel/vmcore_info.c b/arch/arm/kernel/vmcore_info.c
-new file mode 100644
-index 000000000000..1437aba47787
---- /dev/null
-+++ b/arch/arm/kernel/vmcore_info.c
-@@ -0,0 +1,10 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include <linux/vmcore_info.h>
-+
-+void arch_crash_save_vmcoreinfo(void)
-+{
-+#ifdef CONFIG_ARM_LPAE
-+	VMCOREINFO_CONFIG(ARM_LPAE);
-+#endif
-+}
-diff --git a/arch/powerpc/kexec/Makefile b/arch/powerpc/kexec/Makefile
-index 0c2abe7f9908..91e96f5168b7 100644
---- a/arch/powerpc/kexec/Makefile
-+++ b/arch/powerpc/kexec/Makefile
-@@ -8,6 +8,7 @@ obj-y				+= core.o crash.o core_$(BITS).o
- obj-$(CONFIG_PPC32)		+= relocate_32.o
- 
- obj-$(CONFIG_KEXEC_FILE)	+= file_load.o ranges.o file_load_$(BITS).o elf_$(BITS).o
-+obj-$(CONFIG_VMCORE_INFO)	+= vmcore_info.o
- 
- # Disable GCOV, KCOV & sanitizers in odd or sensitive code
- GCOV_PROFILE_core_$(BITS).o := n
-diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
-index 27fa9098a5b7..3ff4411ed496 100644
---- a/arch/powerpc/kexec/core.c
-+++ b/arch/powerpc/kexec/core.c
-@@ -53,34 +53,6 @@ void machine_kexec_cleanup(struct kimage *image)
- {
- }
- 
--void arch_crash_save_vmcoreinfo(void)
--{
--
--#ifdef CONFIG_NUMA
--	VMCOREINFO_SYMBOL(node_data);
--	VMCOREINFO_LENGTH(node_data, MAX_NUMNODES);
--#endif
--#ifndef CONFIG_NUMA
--	VMCOREINFO_SYMBOL(contig_page_data);
--#endif
--#if defined(CONFIG_PPC64) && defined(CONFIG_SPARSEMEM_VMEMMAP)
--	VMCOREINFO_SYMBOL(vmemmap_list);
--	VMCOREINFO_SYMBOL(mmu_vmemmap_psize);
--	VMCOREINFO_SYMBOL(mmu_psize_defs);
--	VMCOREINFO_STRUCT_SIZE(vmemmap_backing);
--	VMCOREINFO_OFFSET(vmemmap_backing, list);
--	VMCOREINFO_OFFSET(vmemmap_backing, phys);
--	VMCOREINFO_OFFSET(vmemmap_backing, virt_addr);
--	VMCOREINFO_STRUCT_SIZE(mmu_psize_def);
--	VMCOREINFO_OFFSET(mmu_psize_def, shift);
--#endif
--	VMCOREINFO_SYMBOL(cur_cpu_spec);
--	VMCOREINFO_OFFSET(cpu_spec, cpu_features);
--	VMCOREINFO_OFFSET(cpu_spec, mmu_features);
--	vmcoreinfo_append_str("NUMBER(RADIX_MMU)=%d\n", early_radix_enabled());
--	vmcoreinfo_append_str("KERNELOFFSET=%lx\n", kaslr_offset());
--}
--
- /*
-  * Do not allocate memory (or fail in any way) in machine_kexec().
-  * We are past the point of no return, committed to rebooting now.
-diff --git a/arch/powerpc/kexec/vmcore_info.c b/arch/powerpc/kexec/vmcore_info.c
-new file mode 100644
-index 000000000000..c15f0adaaab5
---- /dev/null
-+++ b/arch/powerpc/kexec/vmcore_info.c
-@@ -0,0 +1,34 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include <linux/vmcore_info.h>
-+#include <asm/pgalloc.h>
-+
-+void arch_crash_save_vmcoreinfo(void)
-+{
-+
-+#ifdef CONFIG_NUMA
-+	VMCOREINFO_SYMBOL(node_data);
-+	VMCOREINFO_LENGTH(node_data, MAX_NUMNODES);
-+#endif
-+#ifndef CONFIG_NUMA
-+	VMCOREINFO_SYMBOL(contig_page_data);
-+#endif
-+#if defined(CONFIG_PPC64) && defined(CONFIG_SPARSEMEM_VMEMMAP)
-+	VMCOREINFO_SYMBOL(vmemmap_list);
-+	VMCOREINFO_SYMBOL(mmu_vmemmap_psize);
-+	VMCOREINFO_SYMBOL(mmu_psize_defs);
-+	VMCOREINFO_STRUCT_SIZE(vmemmap_backing);
-+	VMCOREINFO_OFFSET(vmemmap_backing, list);
-+	VMCOREINFO_OFFSET(vmemmap_backing, phys);
-+	VMCOREINFO_OFFSET(vmemmap_backing, virt_addr);
-+	VMCOREINFO_STRUCT_SIZE(mmu_psize_def);
-+	VMCOREINFO_OFFSET(mmu_psize_def, shift);
-+#endif
-+	VMCOREINFO_SYMBOL(cur_cpu_spec);
-+	VMCOREINFO_OFFSET(cpu_spec, cpu_features);
-+	VMCOREINFO_OFFSET(cpu_spec, mmu_features);
-+	vmcoreinfo_append_str("NUMBER(RADIX_MMU)=%d\n", early_radix_enabled());
-+	vmcoreinfo_append_str("KERNELOFFSET=%lx\n", kaslr_offset());
-+}
-+
-+
-diff --git a/arch/s390/kernel/Makefile b/arch/s390/kernel/Makefile
-index 7a562b4199c8..fa029d0dc28f 100644
---- a/arch/s390/kernel/Makefile
-+++ b/arch/s390/kernel/Makefile
-@@ -64,6 +64,7 @@ obj-$(CONFIG_FUNCTION_TRACER)	+= ftrace.o
- obj-$(CONFIG_FUNCTION_TRACER)	+= mcount.o
- obj-$(CONFIG_CRASH_DUMP)	+= crash_dump.o
- obj-$(CONFIG_KEXEC_CORE)	+= machine_kexec.o relocate_kernel.o
-+obj-$(CONFIG_VMCORE_INFO)	+= vmcore_info.o
- obj-$(CONFIG_UPROBES)		+= uprobes.o
- obj-$(CONFIG_JUMP_LABEL)	+= jump_label.o
- 
-diff --git a/arch/s390/kernel/machine_kexec.c b/arch/s390/kernel/machine_kexec.c
-index aa22ffc16bcd..10277a460204 100644
---- a/arch/s390/kernel/machine_kexec.c
-+++ b/arch/s390/kernel/machine_kexec.c
-@@ -209,21 +209,6 @@ void machine_kexec_cleanup(struct kimage *image)
- {
- }
- 
--void arch_crash_save_vmcoreinfo(void)
--{
--	struct lowcore *abs_lc;
--
--	VMCOREINFO_SYMBOL(lowcore_ptr);
--	VMCOREINFO_SYMBOL(high_memory);
--	VMCOREINFO_LENGTH(lowcore_ptr, NR_CPUS);
--	vmcoreinfo_append_str("SAMODE31=%lx\n", (unsigned long)__samode31);
--	vmcoreinfo_append_str("EAMODE31=%lx\n", (unsigned long)__eamode31);
--	vmcoreinfo_append_str("KERNELOFFSET=%lx\n", kaslr_offset());
--	abs_lc = get_abs_lowcore();
--	abs_lc->vmcore_info = paddr_vmcoreinfo_note();
--	put_abs_lowcore(abs_lc);
--}
--
- void machine_shutdown(void)
- {
- }
-diff --git a/arch/s390/kernel/vmcore_info.c b/arch/s390/kernel/vmcore_info.c
-new file mode 100644
-index 000000000000..eccb6b20b505
---- /dev/null
-+++ b/arch/s390/kernel/vmcore_info.c
-@@ -0,0 +1,23 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include <linux/vmcore_info.h>
-+#include <asm/abs_lowcore.h>
-+#include <linux/mm.h>
-+#include <asm/setup.h>
-+
-+void arch_crash_save_vmcoreinfo(void)
-+{
-+	struct lowcore *abs_lc;
-+
-+	VMCOREINFO_SYMBOL(lowcore_ptr);
-+	VMCOREINFO_SYMBOL(high_memory);
-+	VMCOREINFO_LENGTH(lowcore_ptr, NR_CPUS);
-+	vmcoreinfo_append_str("SAMODE31=%lx\n", (unsigned long)__samode31);
-+	vmcoreinfo_append_str("EAMODE31=%lx\n", (unsigned long)__eamode31);
-+	vmcoreinfo_append_str("KERNELOFFSET=%lx\n", kaslr_offset());
-+	abs_lc = get_abs_lowcore();
-+	abs_lc->vmcore_info = paddr_vmcoreinfo_note();
-+	put_abs_lowcore(abs_lc);
-+}
-+
-+
-diff --git a/arch/sh/kernel/Makefile b/arch/sh/kernel/Makefile
-index 2d7e70537de0..ba917008d63e 100644
---- a/arch/sh/kernel/Makefile
-+++ b/arch/sh/kernel/Makefile
-@@ -34,6 +34,7 @@ obj-$(CONFIG_SH_STANDARD_BIOS)	+= sh_bios.o
- obj-$(CONFIG_KGDB)		+= kgdb.o
- obj-$(CONFIG_MODULES)		+= sh_ksyms_32.o module.o
- obj-$(CONFIG_KEXEC_CORE)	+= machine_kexec.o relocate_kernel.o
-+obj-$(CONFIG_VMCORE_INFO)	+= vmcore_info.o
- obj-$(CONFIG_CRASH_DUMP)	+= crash_dump.o
- obj-$(CONFIG_STACKTRACE)	+= stacktrace.o
- obj-$(CONFIG_IO_TRAPPED)	+= io_trapped.o
-diff --git a/arch/sh/kernel/machine_kexec.c b/arch/sh/kernel/machine_kexec.c
-index 8daa8a6e6fa6..8321b31d2e19 100644
---- a/arch/sh/kernel/machine_kexec.c
-+++ b/arch/sh/kernel/machine_kexec.c
-@@ -137,17 +137,6 @@ void machine_kexec(struct kimage *image)
- 	__ftrace_enabled_restore(save_ftrace_enabled);
- }
- 
--void arch_crash_save_vmcoreinfo(void)
--{
--#ifdef CONFIG_NUMA
--	VMCOREINFO_SYMBOL(node_data);
--	VMCOREINFO_LENGTH(node_data, MAX_NUMNODES);
--#endif
--#ifdef CONFIG_X2TLB
--	VMCOREINFO_CONFIG(X2TLB);
--#endif
--}
--
- void __init reserve_crashkernel(void)
- {
- 	unsigned long long crash_size, crash_base;
-diff --git a/arch/sh/kernel/vmcore_info.c b/arch/sh/kernel/vmcore_info.c
-new file mode 100644
-index 000000000000..04c4387e6315
---- /dev/null
-+++ b/arch/sh/kernel/vmcore_info.c
-@@ -0,0 +1,17 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include <linux/vmcore_info.h>
-+#include <linux/mm.h>
-+
-+void arch_crash_save_vmcoreinfo(void)
-+{
-+#ifdef CONFIG_NUMA
-+	VMCOREINFO_SYMBOL(node_data);
-+	VMCOREINFO_LENGTH(node_data, MAX_NUMNODES);
-+#endif
-+#ifdef CONFIG_X2TLB
-+	VMCOREINFO_CONFIG(X2TLB);
-+#endif
-+}
-+
-+
+On an Intel Xeon Silver 4210R CPU, munmap'ing a 1GiB VMA backed by
+PTE-mapped folios of the same size (stddev < 1%) results in the following
+runtimes for munmap() in seconds (shorter is better):
+
+Folio Size | mm-unstable |      New | Change
+---------------------------------------------
+      4KiB |    0.058110 | 0.057715 |   - 1%
+     16KiB |    0.044198 | 0.035469 |   -20%
+     32KiB |    0.034216 | 0.023522 |   -31%
+     64KiB |    0.029207 | 0.018434 |   -37%
+    128KiB |    0.026579 | 0.014026 |   -47%
+    256KiB |    0.025130 | 0.011756 |   -53%
+    512KiB |    0.024292 | 0.010703 |   -56%
+   1024KiB |    0.023812 | 0.010294 |   -57%
+   2048KiB |    0.023785 | 0.009910 |   -58%
+
+CCing especially s390x folks, because they have a tlb freeing hooks that
+needs adjustment. Only tested on x86-64 for now, will have to do some more
+stress testing. Compile-tested on most other architectures. The PPC
+change is negleglible and makes my cross-compiler happy.
+
+[1] https://lkml.kernel.org/r/20240129124649.189745-1-david@redhat.com
+[2] https://lkml.kernel.org/r/20231218105100.172635-1-ryan.roberts@arm.com
+[3] https://lkml.kernel.org/r/20230809083256.699513-1-david@redhat.com
+[4] https://lkml.kernel.org/r/20231124132626.235350-1-david@redhat.com
+[5] https://lkml.kernel.org/r/20231207161211.2374093-1-ryan.roberts@arm.com
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: Nick Piggin <npiggin@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: linux-arch@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org
+
+David Hildenbrand (9):
+  mm/memory: factor out zapping of present pte into zap_present_pte()
+  mm/memory: handle !page case in zap_present_pte() separately
+  mm/memory: further separate anon and pagecache folio handling in
+    zap_present_pte()
+  mm/memory: factor out zapping folio pte into zap_present_folio_pte()
+  mm/mmu_gather: pass "delay_rmap" instead of encoded page to
+    __tlb_remove_page_size()
+  mm/mmu_gather: define ENCODED_PAGE_FLAG_DELAY_RMAP
+  mm/mmu_gather: add __tlb_remove_folio_pages()
+  mm/mmu_gather: add tlb_remove_tlb_entries()
+  mm/memory: optimize unmap/zap with PTE-mapped THP
+
+ arch/powerpc/include/asm/tlb.h |   2 +
+ arch/s390/include/asm/tlb.h    |  30 ++++--
+ include/asm-generic/tlb.h      |  40 ++++++--
+ include/linux/mm_types.h       |  37 ++++++--
+ include/linux/pgtable.h        |  66 +++++++++++++
+ mm/memory.c                    | 167 +++++++++++++++++++++++----------
+ mm/mmu_gather.c                |  63 +++++++++++--
+ mm/swap.c                      |  12 ++-
+ mm/swap_state.c                |  12 ++-
+ 9 files changed, 347 insertions(+), 82 deletions(-)
+
 -- 
-2.41.0
+2.43.0
 
