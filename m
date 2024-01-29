@@ -1,38 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59C2D840375
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 12:06:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B74584049D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 13:09:52 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=f85O+330;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TNlpq26H3z3cWr
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 22:06:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TNnDG2TDPz3cTX
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 23:09:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TNlpP0Cl3z30fn
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jan 2024 22:05:47 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 34BDC1FB;
-	Mon, 29 Jan 2024 03:06:00 -0800 (PST)
-Received: from [10.57.65.9] (unknown [10.57.65.9])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D2ECE3F5A1;
-	Mon, 29 Jan 2024 03:05:12 -0800 (PST)
-Message-ID: <7a34378c-3b1d-4ce1-80f8-938796ff3e6c@arm.com>
-Date: Mon, 29 Jan 2024 11:05:11 +0000
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=f85O+330;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TNnCW5LZMz30gJ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jan 2024 23:09:11 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40T9xXfK019941;
+	Mon, 29 Jan 2024 12:09:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=KcGhYSqbvopmT+SNtGkwaw3B+Hv9hZeMUrhNfChZ2A8=;
+ b=f85O+330DA0jjM4CqpFRyqrIxEFJEImo9jjAenGI1k8MllvsW/tnRZOpvTtXAcfnuEGX
+ lyda1opsdw/op6MgySmviNQIxW31+kBaeNfFzm+10Kmsr65XIwqLuaL/nvSNQ6AKZ27P
+ DCBP1QGbUk5XFI7Njszbaj6lA0rRyRAeRfmxVz5I0zPAJrQ+ZG7A+vGV8dHe/BpMfgv+
+ hMLUjUrqZkuZ+q3pdeD6iRBlOwfIgcc5IXUg4QKBX59RJ5iK/bxU9lJ7pAg78E3OMXtn
+ U4nKUFHsgoKqDncL8FIVCPI3SPxXoFUb8APmFfrylpl7hH3Omu9oJK6o+JALpNQTRWGO og== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vwthyapbp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 29 Jan 2024 12:09:05 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40TBtQc3000376;
+	Mon, 29 Jan 2024 12:09:05 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vwthyapb9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 29 Jan 2024 12:09:05 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40TBr8sP011067;
+	Mon, 29 Jan 2024 12:09:04 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vwd5ng10b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 29 Jan 2024 12:09:04 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40TC915g42992162
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 29 Jan 2024 12:09:01 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 34B4820040;
+	Mon, 29 Jan 2024 12:09:01 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0F60520043;
+	Mon, 29 Jan 2024 12:08:59 +0000 (GMT)
+Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.in.ibm.com (unknown [9.204.207.44])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 29 Jan 2024 12:08:58 +0000 (GMT)
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+To: acme@kernel.org, jolsa@kernel.org, irogers@google.com, namhyung@kernel.org
+Subject: [PATCH] perf/pmu-events/powerpc: Update json mapfile with Power11 PVR
+Date: Mon, 29 Jan 2024 17:38:55 +0530
+Message-ID: <20240129120855.551529-1-maddy@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 14/15] mm/memory: ignore dirty/accessed/soft-dirty bits
- in folio_pte_batch()
-Content-Language: en-GB
-To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-References: <20240125193227.444072-1-david@redhat.com>
- <20240125193227.444072-15-david@redhat.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20240125193227.444072-15-david@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 3X0hkpYshCB14owOqCvry76HR5t7tVYN
+X-Proofpoint-ORIG-GUID: u6caXPrPMFqG9q7E96_4JeigrDO73Hi9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-29_06,2024-01-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 spamscore=0 lowpriorityscore=0 mlxlogscore=945 mlxscore=0
+ malwarescore=0 clxscore=1011 adultscore=0 phishscore=0 priorityscore=1501
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401290087
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,106 +93,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-arm-kernel@lists.infradead.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, linux-perf-users@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 25/01/2024 19:32, David Hildenbrand wrote:
-> Let's always ignore the accessed/young bit: we'll always mark the PTE
-> as old in our child process during fork, and upcoming users will
-> similarly not care.
-> 
-> Ignore the dirty bit only if we don't want to duplicate the dirty bit
-> into the child process during fork. Maybe, we could just set all PTEs
-> in the child dirty if any PTE is dirty. For now, let's keep the behavior
-> unchanged, this can be optimized later if required.
-> 
-> Ignore the soft-dirty bit only if the bit doesn't have any meaning in
-> the src vma, and similarly won't have any in the copied dst vma.
-> 
-> For now, we won't bother with the uffd-wp bit.
-> 
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+Update the Power11 PVR to json mapfile to enable
+json events. Power11 is PowerISA v3.1 compliant
+and support Power10 events.
 
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+---
+ tools/perf/pmu-events/arch/powerpc/mapfile.csv | 1 +
+ 1 file changed, 1 insertion(+)
 
-> ---
->  mm/memory.c | 36 +++++++++++++++++++++++++++++++-----
->  1 file changed, 31 insertions(+), 5 deletions(-)
-> 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 4d1be89a01ee0..b3f035fe54c8d 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -953,24 +953,44 @@ static __always_inline void __copy_present_ptes(struct vm_area_struct *dst_vma,
->  	set_ptes(dst_vma->vm_mm, addr, dst_pte, pte, nr);
->  }
->  
-> +/* Flags for folio_pte_batch(). */
-> +typedef int __bitwise fpb_t;
-> +
-> +/* Compare PTEs after pte_mkclean(), ignoring the dirty bit. */
-> +#define FPB_IGNORE_DIRTY		((__force fpb_t)BIT(0))
-> +
-> +/* Compare PTEs after pte_clear_soft_dirty(), ignoring the soft-dirty bit. */
-> +#define FPB_IGNORE_SOFT_DIRTY		((__force fpb_t)BIT(1))
-> +
-> +static inline pte_t __pte_batch_clear_ignored(pte_t pte, fpb_t flags)
-> +{
-> +	if (flags & FPB_IGNORE_DIRTY)
-> +		pte = pte_mkclean(pte);
-> +	if (likely(flags & FPB_IGNORE_SOFT_DIRTY))
-> +		pte = pte_clear_soft_dirty(pte);
-> +	return pte_mkold(pte);
-> +}
-> +
->  /*
->   * Detect a PTE batch: consecutive (present) PTEs that map consecutive
->   * pages of the same folio.
->   *
-> - * All PTEs inside a PTE batch have the same PTE bits set, excluding the PFN.
-> + * All PTEs inside a PTE batch have the same PTE bits set, excluding the PFN,
-> + * the accessed bit, dirty bit (with FPB_IGNORE_DIRTY) and soft-dirty bit
-> + * (with FPB_IGNORE_SOFT_DIRTY).
->   */
->  static inline int folio_pte_batch(struct folio *folio, unsigned long addr,
-> -		pte_t *start_ptep, pte_t pte, int max_nr)
-> +		pte_t *start_ptep, pte_t pte, int max_nr, fpb_t flags)
->  {
->  	unsigned long folio_end_pfn = folio_pfn(folio) + folio_nr_pages(folio);
->  	const pte_t *end_ptep = start_ptep + max_nr;
-> -	pte_t expected_pte = pte_next_pfn(pte);
-> +	pte_t expected_pte = __pte_batch_clear_ignored(pte_next_pfn(pte), flags);
->  	pte_t *ptep = start_ptep + 1;
->  
->  	VM_WARN_ON_FOLIO(!pte_present(pte), folio);
->  
->  	while (ptep != end_ptep) {
-> -		pte = ptep_get(ptep);
-> +		pte = __pte_batch_clear_ignored(ptep_get(ptep), flags);
->  
->  		if (!pte_same(pte, expected_pte))
->  			break;
-> @@ -1004,6 +1024,7 @@ copy_present_ptes(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma
->  {
->  	struct page *page;
->  	struct folio *folio;
-> +	fpb_t flags = 0;
->  	int err, nr;
->  
->  	page = vm_normal_page(src_vma, addr, pte);
-> @@ -1018,7 +1039,12 @@ copy_present_ptes(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma
->  	 * by keeping the batching logic separate.
->  	 */
->  	if (unlikely(!*prealloc && folio_test_large(folio) && max_nr != 1)) {
-> -		nr = folio_pte_batch(folio, addr, src_pte, pte, max_nr);
-> +		if (src_vma->vm_flags & VM_SHARED)
-> +			flags |= FPB_IGNORE_DIRTY;
-> +		if (!vma_soft_dirty_enabled(src_vma))
-> +			flags |= FPB_IGNORE_SOFT_DIRTY;
-> +
-> +		nr = folio_pte_batch(folio, addr, src_pte, pte, max_nr, flags);
->  		folio_ref_add(folio, nr);
->  		if (folio_test_anon(folio)) {
->  			if (unlikely(folio_try_dup_anon_rmap_ptes(folio, page,
+diff --git a/tools/perf/pmu-events/arch/powerpc/mapfile.csv b/tools/perf/pmu-events/arch/powerpc/mapfile.csv
+index 599a588dbeb4..4d5e9138d4cc 100644
+--- a/tools/perf/pmu-events/arch/powerpc/mapfile.csv
++++ b/tools/perf/pmu-events/arch/powerpc/mapfile.csv
+@@ -15,3 +15,4 @@
+ 0x0066[[:xdigit:]]{4},1,power8,core
+ 0x004e[[:xdigit:]]{4},1,power9,core
+ 0x0080[[:xdigit:]]{4},1,power10,core
++0x0082[[:xdigit:]]{4},1,power10,core
+-- 
+2.43.0
 
