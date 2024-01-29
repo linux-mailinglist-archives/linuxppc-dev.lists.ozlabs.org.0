@@ -2,36 +2,98 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09543840320
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 11:47:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3624684032A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 11:48:42 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VX9e2rP6;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TNlPK6xczz3bx0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 21:47:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TNlQc0qlNz3cPt
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 21:48:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TNlNs27KGz2xwD
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jan 2024 21:47:06 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1F6C11FB;
-	Mon, 29 Jan 2024 02:47:17 -0800 (PST)
-Received: from [10.57.65.9] (unknown [10.57.65.9])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C3ED53F738;
-	Mon, 29 Jan 2024 02:46:29 -0800 (PST)
-Message-ID: <25ae5e0d-d07d-4be9-beb2-1a4333b0ee8f@arm.com>
-Date: Mon, 29 Jan 2024 10:46:28 +0000
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VX9e2rP6;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=amachhiw@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TNlPs6N31z2ygX
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jan 2024 21:48:01 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40T8sO0g012993;
+	Mon, 29 Jan 2024 10:47:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=Ij2Rapdm3IU0nLKbuSjeynA+xLwbQej0VShoWHYQmTI=;
+ b=VX9e2rP6cgm1T+3AfvrEovdzvPl+1o9WM1j4gbyF8sPupu5P0r8sbQuT0Oa6/vLHnJ+X
+ 4EFj6aeg+zAe5O6DZX7ZyQuwDwv7hku/yCSUP/EWd43Seaiq0/5FkHnIhdAn6h08fHFf
+ rs/yupBXAQH7Puc1fs0/qZqBpK9zRoK6yLjyo0Vg3Q/Z73EBEEOr0CeZCTNmlG29l70n
+ MWTOW3qKZrM1Fp5QWMnt/yHUzUWHNTK25ewPAoCgJGtUErIb1fnutQFQJosGWZVyI2ZM
+ MMRT/8H3qWzi3yyxtFZ4zXTsHXaS9C/klKxIYshMzzOD1Esj0AtWwqHIHBvl99Qkec6v YQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vx75bmtxb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 29 Jan 2024 10:47:51 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40T9CiDI011814;
+	Mon, 29 Jan 2024 10:47:51 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vx75bmtwv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 29 Jan 2024 10:47:50 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40TAIF75002319;
+	Mon, 29 Jan 2024 10:47:49 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vwc5syy1j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 29 Jan 2024 10:47:49 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40TAlkHY64750026
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 29 Jan 2024 10:47:46 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C06F520040;
+	Mon, 29 Jan 2024 10:47:46 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4C68B20049;
+	Mon, 29 Jan 2024 10:47:44 +0000 (GMT)
+Received: from li-a83676cc-350e-11b2-a85c-e11f86bb8d73.ibm.com (unknown [9.204.204.156])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 29 Jan 2024 10:47:44 +0000 (GMT)
+Date: Mon, 29 Jan 2024 16:17:41 +0530
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        kvm-ppc@vger.kernel.org
+Subject: Re: Re: [PATCH] KVM: PPC: Book3S HV: Fix L2 guest reboot failure due
+ to empty 'arch_compat'
+Message-ID: <2p36gb2dfk2s4tro6uekxbngyqwxmiddbh73zs6wz47d5wtnue@ioogh7wwzjdf>
+Mail-Followup-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, kvm-ppc@vger.kernel.org, 
+	Vaibhav Jain <vaibhav@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Jordan Niethe <jniethe5@gmail.com>, 
+	Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, linux-kernel@vger.kernel.org
+References: <20240118095653.2588129-1-amachhiw@linux.ibm.com>
+ <87v87jp4i4.fsf@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 13/15] mm/memory: optimize fork() with PTE-mapped THP
-To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-References: <20240125193227.444072-1-david@redhat.com>
- <20240125193227.444072-14-david@redhat.com>
-Content-Language: en-GB
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20240125193227.444072-14-david@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87v87jp4i4.fsf@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: KHp5UWja3MsK7G_MPsaa240H1_-6d7PL
+X-Proofpoint-ORIG-GUID: YqhCIo7KA7Cex_JHgQ2eF__LhzplDpDl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-29_06,2024-01-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
+ adultscore=0 malwarescore=0 mlxlogscore=851 spamscore=0 suspectscore=0
+ priorityscore=1501 impostorscore=0 clxscore=1015 phishscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2401290078
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,286 +105,142 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-arm-kernel@lists.infradead.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Jordan Niethe <jniethe5@gmail.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, Amit Machhiwal <amachhiw@linux.ibm.com>, "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 25/01/2024 19:32, David Hildenbrand wrote:
-> Let's implement PTE batching when consecutive (present) PTEs map
-> consecutive pages of the same large folio, and all other PTE bits besides
-> the PFNs are equal.
-> 
-> We will optimize folio_pte_batch() separately, to ignore selected
-> PTE bits. This patch is based on work by Ryan Roberts.
-> 
-> Use __always_inline for __copy_present_ptes() and keep the handling for
-> single PTEs completely separate from the multi-PTE case: we really want
-> the compiler to optimize for the single-PTE case with small folios, to
-> not degrade performance.
-> 
-> Note that PTE batching will never exceed a single page table and will
-> always stay within VMA boundaries.
-> 
-> Further, processing PTE-mapped THP that maybe pinned and have
-> PageAnonExclusive set on at least one subpage should work as expected,
-> but there is room for improvement: We will repeatedly (1) detect a PTE
-> batch (2) detect that we have to copy a page (3) fall back and allocate a
-> single page to copy a single page. For now we won't care as pinned pages
-> are a corner case, and we should rather look into maintaining only a
-> single PageAnonExclusive bit for large folios.
-> 
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+Hi Aneesh,
 
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Thanks for looking into the patch. My comments are inline below.
 
-> ---
->  include/linux/pgtable.h |  31 +++++++++++
->  mm/memory.c             | 112 +++++++++++++++++++++++++++++++++-------
->  2 files changed, 124 insertions(+), 19 deletions(-)
+On 2024/01/24 01:06 PM, Aneesh Kumar K.V wrote:
+> Amit Machhiwal <amachhiw@linux.ibm.com> writes:
 > 
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index 351cd9dc7194f..891ed246978a4 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -650,6 +650,37 @@ static inline void ptep_set_wrprotect(struct mm_struct *mm, unsigned long addres
->  }
->  #endif
->  
-> +#ifndef wrprotect_ptes
-> +/**
-> + * wrprotect_ptes - Write-protect consecutive pages that are mapped to a
-> + *		    contiguous range of addresses.
-> + * @mm: Address space to map the pages into.
-> + * @addr: Address the first page is mapped at.
-> + * @ptep: Page table pointer for the first entry.
-> + * @nr: Number of pages to write-protect.
-> + *
-> + * May be overridden by the architecture; otherwise, implemented as a simple
-> + * loop over ptep_set_wrprotect().
-> + *
-> + * Note that PTE bits in the PTE range besides the PFN can differ. For example,
-> + * some PTEs might already be write-protected.
-> + *
-> + * Context: The caller holds the page table lock.  The pages all belong
-> + * to the same folio.  The PTEs are all in the same PMD.
-> + */
-> +static inline void wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
-> +		pte_t *ptep, unsigned int nr)
-> +{
-> +	for (;;) {
-> +		ptep_set_wrprotect(mm, addr, ptep);
-> +		if (--nr == 0)
-> +			break;
-> +		ptep++;
-> +		addr += PAGE_SIZE;
-> +	}
-> +}
-> +#endif
-> +
->  /*
->   * On some architectures hardware does not set page access bit when accessing
->   * memory page, it is responsibility of software setting this bit. It brings
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 729ca4d6a820c..4d1be89a01ee0 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -930,15 +930,15 @@ copy_present_page(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma
->  	return 0;
->  }
->  
-> -static inline void __copy_present_pte(struct vm_area_struct *dst_vma,
-> +static __always_inline void __copy_present_ptes(struct vm_area_struct *dst_vma,
->  		struct vm_area_struct *src_vma, pte_t *dst_pte, pte_t *src_pte,
-> -		pte_t pte, unsigned long addr)
-> +		pte_t pte, unsigned long addr, int nr)
->  {
->  	struct mm_struct *src_mm = src_vma->vm_mm;
->  
->  	/* If it's a COW mapping, write protect it both processes. */
->  	if (is_cow_mapping(src_vma->vm_flags) && pte_write(pte)) {
-> -		ptep_set_wrprotect(src_mm, addr, src_pte);
-> +		wrprotect_ptes(src_mm, addr, src_pte, nr);
->  		pte = pte_wrprotect(pte);
->  	}
->  
-> @@ -950,26 +950,93 @@ static inline void __copy_present_pte(struct vm_area_struct *dst_vma,
->  	if (!userfaultfd_wp(dst_vma))
->  		pte = pte_clear_uffd_wp(pte);
->  
-> -	set_pte_at(dst_vma->vm_mm, addr, dst_pte, pte);
-> +	set_ptes(dst_vma->vm_mm, addr, dst_pte, pte, nr);
-> +}
-> +
-> +/*
-> + * Detect a PTE batch: consecutive (present) PTEs that map consecutive
-> + * pages of the same folio.
-> + *
-> + * All PTEs inside a PTE batch have the same PTE bits set, excluding the PFN.
-> + */
-> +static inline int folio_pte_batch(struct folio *folio, unsigned long addr,
-> +		pte_t *start_ptep, pte_t pte, int max_nr)
-> +{
-> +	unsigned long folio_end_pfn = folio_pfn(folio) + folio_nr_pages(folio);
-> +	const pte_t *end_ptep = start_ptep + max_nr;
-> +	pte_t expected_pte = pte_next_pfn(pte);
-> +	pte_t *ptep = start_ptep + 1;
-> +
-> +	VM_WARN_ON_FOLIO(!pte_present(pte), folio);
-> +
-> +	while (ptep != end_ptep) {
-> +		pte = ptep_get(ptep);
-> +
-> +		if (!pte_same(pte, expected_pte))
-> +			break;
-> +
-> +		/*
-> +		 * Stop immediately once we reached the end of the folio. In
-> +		 * corner cases the next PFN might fall into a different
-> +		 * folio.
-> +		 */
-> +		if (pte_pfn(pte) == folio_end_pfn)
-> +			break;
-> +
-> +		expected_pte = pte_next_pfn(expected_pte);
-> +		ptep++;
-> +	}
-> +
-> +	return ptep - start_ptep;
->  }
->  
->  /*
-> - * Copy one pte.  Returns 0 if succeeded, or -EAGAIN if one preallocated page
-> - * is required to copy this pte.
-> + * Copy one present PTE, trying to batch-process subsequent PTEs that map
-> + * consecutive pages of the same folio by copying them as well.
-> + *
-> + * Returns -EAGAIN if one preallocated page is required to copy the next PTE.
-> + * Otherwise, returns the number of copied PTEs (at least 1).
->   */
->  static inline int
-> -copy_present_pte(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
-> +copy_present_ptes(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  		 pte_t *dst_pte, pte_t *src_pte, pte_t pte, unsigned long addr,
-> -		 int *rss, struct folio **prealloc)
-> +		 int max_nr, int *rss, struct folio **prealloc)
->  {
->  	struct page *page;
->  	struct folio *folio;
-> +	int err, nr;
->  
->  	page = vm_normal_page(src_vma, addr, pte);
->  	if (unlikely(!page))
->  		goto copy_pte;
->  
->  	folio = page_folio(page);
-> +
-> +	/*
-> +	 * If we likely have to copy, just don't bother with batching. Make
-> +	 * sure that the common "small folio" case is as fast as possible
-> +	 * by keeping the batching logic separate.
-> +	 */
-> +	if (unlikely(!*prealloc && folio_test_large(folio) && max_nr != 1)) {
-> +		nr = folio_pte_batch(folio, addr, src_pte, pte, max_nr);
-> +		folio_ref_add(folio, nr);
-> +		if (folio_test_anon(folio)) {
-> +			if (unlikely(folio_try_dup_anon_rmap_ptes(folio, page,
-> +								  nr, src_vma))) {
-> +				folio_ref_sub(folio, nr);
-> +				return -EAGAIN;
-> +			}
-> +			rss[MM_ANONPAGES] += nr;
-> +			VM_WARN_ON_FOLIO(PageAnonExclusive(page), folio);
-> +		} else {
-> +			folio_dup_file_rmap_ptes(folio, page, nr);
-> +			rss[mm_counter_file(page)] += nr;
-> +		}
-> +		__copy_present_ptes(dst_vma, src_vma, dst_pte, src_pte, pte,
-> +				    addr, nr);
-> +		return nr;
-> +	}
-> +
->  	folio_get(folio);
->  	if (folio_test_anon(folio)) {
->  		/*
-> @@ -981,8 +1048,9 @@ copy_present_pte(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  		if (unlikely(folio_try_dup_anon_rmap_pte(folio, page, src_vma))) {
->  			/* Page may be pinned, we have to copy. */
->  			folio_put(folio);
-> -			return copy_present_page(dst_vma, src_vma, dst_pte, src_pte,
-> -						 addr, rss, prealloc, page);
-> +			err = copy_present_page(dst_vma, src_vma, dst_pte, src_pte,
-> +						addr, rss, prealloc, page);
-> +			return err ? err : 1;
->  		}
->  		rss[MM_ANONPAGES]++;
->  		VM_WARN_ON_FOLIO(PageAnonExclusive(page), folio);
-> @@ -992,8 +1060,8 @@ copy_present_pte(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  	}
->  
->  copy_pte:
-> -	__copy_present_pte(dst_vma, src_vma, dst_pte, src_pte, pte, addr);
-> -	return 0;
-> +	__copy_present_ptes(dst_vma, src_vma, dst_pte, src_pte, pte, addr, 1);
-> +	return 1;
->  }
->  
->  static inline struct folio *folio_prealloc(struct mm_struct *src_mm,
-> @@ -1030,10 +1098,11 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  	pte_t *src_pte, *dst_pte;
->  	pte_t ptent;
->  	spinlock_t *src_ptl, *dst_ptl;
-> -	int progress, ret = 0;
-> +	int progress, max_nr, ret = 0;
->  	int rss[NR_MM_COUNTERS];
->  	swp_entry_t entry = (swp_entry_t){0};
->  	struct folio *prealloc = NULL;
-> +	int nr;
->  
->  again:
->  	progress = 0;
-> @@ -1064,6 +1133,8 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  	arch_enter_lazy_mmu_mode();
->  
->  	do {
-> +		nr = 1;
-> +
->  		/*
->  		 * We are holding two locks at this point - either of them
->  		 * could generate latencies in another task on another CPU.
-> @@ -1100,9 +1171,10 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  			 */
->  			WARN_ON_ONCE(ret != -ENOENT);
->  		}
-> -		/* copy_present_pte() will clear `*prealloc' if consumed */
-> -		ret = copy_present_pte(dst_vma, src_vma, dst_pte, src_pte,
-> -				       ptent, addr, rss, &prealloc);
-> +		/* copy_present_ptes() will clear `*prealloc' if consumed */
-> +		max_nr = (end - addr) / PAGE_SIZE;
-> +		ret = copy_present_ptes(dst_vma, src_vma, dst_pte, src_pte,
-> +					ptent, addr, max_nr, rss, &prealloc);
->  		/*
->  		 * If we need a pre-allocated page for this pte, drop the
->  		 * locks, allocate, and try again.
-> @@ -1119,8 +1191,10 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  			folio_put(prealloc);
->  			prealloc = NULL;
->  		}
-> -		progress += 8;
-> -	} while (dst_pte++, src_pte++, addr += PAGE_SIZE, addr != end);
-> +		nr = ret;
-> +		progress += 8 * nr;
-> +	} while (dst_pte += nr, src_pte += nr, addr += PAGE_SIZE * nr,
-> +		 addr != end);
->  
->  	arch_leave_lazy_mmu_mode();
->  	pte_unmap_unlock(orig_src_pte, src_ptl);
-> @@ -1141,7 +1215,7 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  		prealloc = folio_prealloc(src_mm, src_vma, addr, false);
->  		if (!prealloc)
->  			return -ENOMEM;
-> -	} else if (ret) {
-> +	} else if (ret < 0) {
->  		VM_WARN_ON_ONCE(1);
->  	}
->  
+> > Currently, rebooting a pseries nested qemu-kvm guest (L2) results in
+> > below error as L1 qemu sends PVR value 'arch_compat' == 0 via
+> > ppc_set_compat ioctl. This triggers a condition failure in
+> > kvmppc_set_arch_compat() resulting in an EINVAL.
+> >
+> > qemu-system-ppc64: Unable to set CPU compatibility mode in KVM: Invalid
+> >
+> > This patch updates kvmppc_set_arch_compat() to use the host PVR value if
+> > 'compat_pvr' == 0 indicating that qemu doesn't want to enforce any
+> > specific PVR compat mode.
+> >
+> > Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+> > ---
+> >  arch/powerpc/kvm/book3s_hv.c          |  2 +-
+> >  arch/powerpc/kvm/book3s_hv_nestedv2.c | 12 ++++++++++--
+> >  2 files changed, 11 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> > index 1ed6ec140701..9573d7f4764a 100644
+> > --- a/arch/powerpc/kvm/book3s_hv.c
+> > +++ b/arch/powerpc/kvm/book3s_hv.c
+> > @@ -439,7 +439,7 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
+> >  	if (guest_pcr_bit > host_pcr_bit)
+> >  		return -EINVAL;
+> >  
+> > -	if (kvmhv_on_pseries() && kvmhv_is_nestedv2()) {
+> > +	if (kvmhv_on_pseries() && kvmhv_is_nestedv2() && arch_compat) {
+> >  		if (!(cap & nested_capabilities))
+> >  			return -EINVAL;
+> >  	}
+> >
+> 
+> Instead of that arch_compat check, would it better to do
+> 
+> 	if (kvmhv_on_pseries() && kvmhv_is_nestedv2()) {
+> 		if (cap && !(cap & nested_capabilities))
+> 			return -EINVAL;
+> 	}
+> 
+> ie, if a capability is requested, then check against nested_capbilites
+> to see if the capability exist.
 
+The above condition check will cause problems when we would try to boot
+a machine below Power 9.
+
+For example, if we passed the arch_compat == PVR_ARCH_207, cap will
+remain 0 resulting the above check into a false condition. Consequently,
+we would never return an -EINVAL in that case resulting the arch
+compatilbility request succeed when it doesn't support nested papr
+guest.
+
+> 
+> 
+> > diff --git a/arch/powerpc/kvm/book3s_hv_nestedv2.c b/arch/powerpc/kvm/book3s_hv_nestedv2.c
+> > index fd3c4f2d9480..069a1fcfd782 100644
+> > --- a/arch/powerpc/kvm/book3s_hv_nestedv2.c
+> > +++ b/arch/powerpc/kvm/book3s_hv_nestedv2.c
+> > @@ -138,6 +138,7 @@ static int gs_msg_ops_vcpu_fill_info(struct kvmppc_gs_buff *gsb,
+> >  	vector128 v;
+> >  	int rc, i;
+> >  	u16 iden;
+> > +	u32 arch_compat = 0;
+> >  
+> >  	vcpu = gsm->data;
+> >  
+> > @@ -347,8 +348,15 @@ static int gs_msg_ops_vcpu_fill_info(struct kvmppc_gs_buff *gsb,
+> >  			break;
+> >  		}
+> >  		case KVMPPC_GSID_LOGICAL_PVR:
+> > -			rc = kvmppc_gse_put_u32(gsb, iden,
+> > -						vcpu->arch.vcore->arch_compat);
+> > +			if (!vcpu->arch.vcore->arch_compat) {
+> > +				if (cpu_has_feature(CPU_FTR_ARCH_31))
+> > +					arch_compat = PVR_ARCH_31;
+> > +				else if (cpu_has_feature(CPU_FTR_ARCH_300))
+> > +					arch_compat = PVR_ARCH_300;
+> > +			} else {
+> > +				arch_compat = vcpu->arch.vcore->arch_compat;
+> > +			}
+> > +			rc = kvmppc_gse_put_u32(gsb, iden, arch_compat);
+> >
+> 
+> Won't a arch_compat = 0 work here?. ie, where you observing the -EINVAL from
+> the first hunk or does this hunk have an impact? 
+>
+
+No, an arch_compat == 0 won't work in nested API v2. That's because the
+guest wide PVR cannot be 0, and if arch_compat == 0, then suppported
+host PVR value should be mentioned.
+
+If we were to skip this hunk (keeping the arch_compat == 0), a system
+reboot of L2 guest would fail and result into a kernel trap as below:
+
+[   22.106360] reboot: Restarting system
+KVM: unknown exit, hardware reason ffffffffffffffea
+NIP 0000000000000100   LR 000000000000fe44 CTR 0000000000000000 XER 0000000020040092 CPU#0
+MSR 0000000000001000 HID0 0000000000000000  HF 6c000000 iidx 3 didx 3
+TB 00000000 00000000 DECR 0
+GPR00 0000000000000000 0000000000000000 c000000002a8c300 000000007fe00000
+GPR04 0000000000000000 0000000000000000 0000000000001002 8000000002803033
+GPR08 000000000a000000 0000000000000000 0000000000000004 000000002fff0000
+GPR12 0000000000000000 c000000002e10000 0000000105639200 0000000000000004
+GPR16 0000000000000000 000000010563a090 0000000000000000 0000000000000000
+GPR20 0000000105639e20 00000001056399c8 00007fffe54abab0 0000000105639288
+GPR24 0000000000000000 0000000000000001 0000000000000001 0000000000000000
+GPR28 0000000000000000 0000000000000000 c000000002b30840 0000000000000000
+CR 00000000  [ -  -  -  -  -  -  -  -  ]     RES 000@ffffffffffffffff
+ SRR0 0000000000000000  SRR1 0000000000000000    PVR 0000000000800200 VRSAVE 0000000000000000
+SPRG0 0000000000000000 SPRG1 0000000000000000  SPRG2 0000000000000000  SPRG3 0000000000000000
+SPRG4 0000000000000000 SPRG5 0000000000000000  SPRG6 0000000000000000  SPRG7 0000000000000000
+HSRR0 0000000000000000 HSRR1 0000000000000000
+ CFAR 0000000000000000
+ LPCR 0000000000020400
+ PTCR 0000000000000000   DAR 0000000000000000  DSISR 0000000000000000
+
+Message from syslogd@ltcd48-lp1 at Jan 24 08:02:16 ...
+ kernel:trap=0xffffffea | pc=0x100 | msr=0x1000
+
+> 
+> >  			break;
+> >  		}
+> >  
+> > -- 
+> > 2.43.0
+> 
+> -aneesh
+
+~Amit
