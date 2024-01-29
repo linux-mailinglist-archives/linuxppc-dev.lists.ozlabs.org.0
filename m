@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F2C84058E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 13:52:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFE8884059A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 13:52:49 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=N9NjfDJ0;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=N9NjfDJ0;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gXs7xh18;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Wyp0KHI1;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TNp913RDzz3vh9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 23:52:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TNp9q4sHSz3cbL
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 23:52:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=N9NjfDJ0;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=N9NjfDJ0;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gXs7xh18;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Wyp0KHI1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TNp3z1NsLz3cTX
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jan 2024 23:47:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TNp424WQgz3byP
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jan 2024 23:47:46 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706532460;
+	s=mimecast20190719; t=1706532463;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Q4tnrwU9nMLq/XRgt5SnLvg5SSqAxaQfTq+KC4Tr5Rw=;
-	b=N9NjfDJ0QmCumbYiWIsxiIq5WBWRvGyqWAmLbBi1SCJzSmj+sCkL0FCbHtVRP/ZL/z8sxB
-	s5IpRyNslxRt+v+UJ2Q/on90GFFMM3tBHQmKls0HNdS9qUT6pc71u4LRsWLefA75Nrtsqh
-	3mgoL01fZiPuaovnwVwxn+YVdcLJkc0=
+	bh=8viUIwfAqrpZYGrKXKN1ylfsdDoFL9veEN2EDkxcPF4=;
+	b=gXs7xh18Pe2TeZepNGKipPJN2s/pIeeh89xvqfj1Hwxq8J0XDEY9gjsut3AE6cBFL1XZv0
+	90maV9o/NdVD6ejN/B2v6B8gymqE9UMaVgacVBOw0Tb6FVRJmcPeqmxj4LXwmhbRpdr4Dn
+	7ekP08ItY0YfxXYWVX40vAozLGURSOA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706532460;
+	s=mimecast20190719; t=1706532464;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Q4tnrwU9nMLq/XRgt5SnLvg5SSqAxaQfTq+KC4Tr5Rw=;
-	b=N9NjfDJ0QmCumbYiWIsxiIq5WBWRvGyqWAmLbBi1SCJzSmj+sCkL0FCbHtVRP/ZL/z8sxB
-	s5IpRyNslxRt+v+UJ2Q/on90GFFMM3tBHQmKls0HNdS9qUT6pc71u4LRsWLefA75Nrtsqh
-	3mgoL01fZiPuaovnwVwxn+YVdcLJkc0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-626-0qzEMwiFPS-I-NbcZuBhSg-1; Mon,
- 29 Jan 2024 07:47:34 -0500
-X-MC-Unique: 0qzEMwiFPS-I-NbcZuBhSg-1
+	bh=8viUIwfAqrpZYGrKXKN1ylfsdDoFL9veEN2EDkxcPF4=;
+	b=Wyp0KHI19p6EkQUUmPxMUJol5ZRIU1hVRT2U+w2kYWxqTxVnR36Q6UTbS8Ccki9nznqPUj
+	PylqNfz/g7ngJ/+RipxWkPNs8eGr2ZduOuVDDLPglgs/ELf+JztMnZgbrc6qU5YwJTH7LY
+	9K1LfKWQnyh4HaJy68uXgxDz2oMrhfM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-513-FOOOGCS9Nq6C0wiBz3AC0A-1; Mon, 29 Jan 2024 07:47:40 -0500
+X-MC-Unique: FOOOGCS9Nq6C0wiBz3AC0A-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 208913814E8C;
-	Mon, 29 Jan 2024 12:47:33 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ED2DB86F122;
+	Mon, 29 Jan 2024 12:47:38 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.39.194.46])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 1C9928B;
-	Mon, 29 Jan 2024 12:47:26 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 802EB8B;
+	Mon, 29 Jan 2024 12:47:33 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v3 06/15] s390/pgtable: define PFN_PTE_SHIFT
-Date: Mon, 29 Jan 2024 13:46:40 +0100
-Message-ID: <20240129124649.189745-7-david@redhat.com>
+Subject: [PATCH v3 07/15] sparc/pgtable: define PFN_PTE_SHIFT
+Date: Mon, 29 Jan 2024 13:46:41 +0100
+Message-ID: <20240129124649.189745-8-david@redhat.com>
 In-Reply-To: <20240129124649.189745-1-david@redhat.com>
 References: <20240129124649.189745-1-david@redhat.com>
 MIME-Version: 1.0
@@ -89,22 +89,22 @@ simply define PFN_PTE_SHIFT, required by pte_next_pfn().
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- arch/s390/include/asm/pgtable.h | 2 ++
+ arch/sparc/include/asm/pgtable_64.h | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
-index 1299b56e43f6..4b91e65c85d9 100644
---- a/arch/s390/include/asm/pgtable.h
-+++ b/arch/s390/include/asm/pgtable.h
-@@ -1316,6 +1316,8 @@ pgprot_t pgprot_writecombine(pgprot_t prot);
- #define pgprot_writethrough	pgprot_writethrough
- pgprot_t pgprot_writethrough(pgprot_t prot);
+diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+index a8c871b7d786..652af9d63fa2 100644
+--- a/arch/sparc/include/asm/pgtable_64.h
++++ b/arch/sparc/include/asm/pgtable_64.h
+@@ -929,6 +929,8 @@ static inline void __set_pte_at(struct mm_struct *mm, unsigned long addr,
+ 	maybe_tlb_batch_add(mm, addr, ptep, orig, fullmm, PAGE_SHIFT);
+ }
  
 +#define PFN_PTE_SHIFT		PAGE_SHIFT
 +
- /*
-  * Set multiple PTEs to consecutive pages with a single call.  All PTEs
-  * are within the same folio, PMD and VMA.
+ static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
+ 		pte_t *ptep, pte_t pte, unsigned int nr)
+ {
 -- 
 2.43.0
 
