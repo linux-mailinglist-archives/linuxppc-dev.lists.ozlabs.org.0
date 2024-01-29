@@ -2,30 +2,29 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A9BD8407C8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 15:03:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 630C08407D3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 15:06:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TNqlB0pYpz3cSH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 01:03:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TNqpq2Rw2z3dVR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 01:06:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=szxga04-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 948 seconds by postgrey-1.37 at boromir; Tue, 30 Jan 2024 01:02:53 AEDT
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TNqkj1LRjz3bTn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 01:02:49 +1100 (AEDT)
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4TNqMD0tZpz1xmlw;
-	Mon, 29 Jan 2024 21:46:00 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TNqns0czWz3cZn
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 01:05:36 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4TNqMF3pN7zNkcY;
+	Mon, 29 Jan 2024 21:46:01 +0800 (CST)
 Received: from kwepemm600017.china.huawei.com (unknown [7.193.23.234])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0E5831A016D;
-	Mon, 29 Jan 2024 21:46:58 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id DA46B18005E;
+	Mon, 29 Jan 2024 21:46:59 +0800 (CST)
 Received: from localhost.localdomain (10.175.112.125) by
  kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 29 Jan 2024 21:46:55 +0800
+ 15.1.2507.35; Mon, 29 Jan 2024 21:46:57 +0800
 From: Tong Tiangen <tongtiangen@huawei.com>
 To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
 	Mark Rutland <mark.rutland@arm.com>, James Morse <james.morse@arm.com>, Robin
@@ -40,9 +39,9 @@ To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
 	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
 	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v10 1/6] uaccess: add generic fallback version of copy_mc_to_user()
-Date: Mon, 29 Jan 2024 21:46:47 +0800
-Message-ID: <20240129134652.4004931-2-tongtiangen@huawei.com>
+Subject: [PATCH v10 2/6] arm64: add support for machine check error safe
+Date: Mon, 29 Jan 2024 21:46:48 +0800
+Message-ID: <20240129134652.4004931-3-tongtiangen@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240129134652.4004931-1-tongtiangen@huawei.com>
 References: <20240129134652.4004931-1-tongtiangen@huawei.com>
@@ -67,62 +66,118 @@ Cc: wangkefeng.wang@huawei.com, linux-kernel@vger.kernel.org, kasan-dev@googlegr
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-x86/powerpc has it's implementation of copy_mc_to_user(), we add generic
-fallback in include/linux/uaccess.h prepare for other architechures to
-enable CONFIG_ARCH_HAS_COPY_MC.
+For the arm64 kernel, when it processes hardware memory errors for
+synchronize notifications(do_sea()), if the errors is consumed within the
+kernel, the current processing is panic. However, it is not optimal.
+
+Take uaccess for example, if the uaccess operation fails due to memory
+error, only the user process will be affected. Killing the user process and
+isolating the corrupt page is a better choice.
+
+This patch only enable machine error check framework and adds an exception
+fixup before the kernel panic in do_sea().
 
 Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/include/asm/uaccess.h | 1 +
- arch/x86/include/asm/uaccess.h     | 1 +
- include/linux/uaccess.h            | 9 +++++++++
- 3 files changed, 11 insertions(+)
+ arch/arm64/Kconfig               |  1 +
+ arch/arm64/include/asm/extable.h |  1 +
+ arch/arm64/mm/extable.c          | 16 ++++++++++++++++
+ arch/arm64/mm/fault.c            | 29 ++++++++++++++++++++++++++++-
+ 4 files changed, 46 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index f1f9890f50d3..4bfd1e6f0702 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -381,6 +381,7 @@ copy_mc_to_user(void __user *to, const void *from, unsigned long n)
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index aa7c1d435139..2cc34b5e7abb 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -20,6 +20,7 @@ config ARM64
+ 	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
+ 	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
+ 	select ARCH_HAS_CACHE_LINE_SIZE
++	select ARCH_HAS_COPY_MC if ACPI_APEI_GHES
+ 	select ARCH_HAS_CURRENT_STACK_POINTER
+ 	select ARCH_HAS_DEBUG_VIRTUAL
+ 	select ARCH_HAS_DEBUG_VM_PGTABLE
+diff --git a/arch/arm64/include/asm/extable.h b/arch/arm64/include/asm/extable.h
+index 72b0e71cc3de..f80ebd0addfd 100644
+--- a/arch/arm64/include/asm/extable.h
++++ b/arch/arm64/include/asm/extable.h
+@@ -46,4 +46,5 @@ bool ex_handler_bpf(const struct exception_table_entry *ex,
+ #endif /* !CONFIG_BPF_JIT */
  
- 	return n;
+ bool fixup_exception(struct pt_regs *regs);
++bool fixup_exception_mc(struct pt_regs *regs);
+ #endif
+diff --git a/arch/arm64/mm/extable.c b/arch/arm64/mm/extable.c
+index 228d681a8715..478e639f8680 100644
+--- a/arch/arm64/mm/extable.c
++++ b/arch/arm64/mm/extable.c
+@@ -76,3 +76,19 @@ bool fixup_exception(struct pt_regs *regs)
+ 
+ 	BUG();
  }
-+#define copy_mc_to_user copy_mc_to_user
- #endif
- 
- extern long __copy_from_user_flushcache(void *dst, const void __user *src,
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-index 5c367c1290c3..fd56282ee9a8 100644
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -497,6 +497,7 @@ copy_mc_to_kernel(void *to, const void *from, unsigned len);
- 
- unsigned long __must_check
- copy_mc_to_user(void __user *to, const void *from, unsigned len);
-+#define copy_mc_to_user copy_mc_to_user
- #endif
- 
- /*
-diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
-index 3064314f4832..550287c92990 100644
---- a/include/linux/uaccess.h
-+++ b/include/linux/uaccess.h
-@@ -205,6 +205,15 @@ copy_mc_to_kernel(void *dst, const void *src, size_t cnt)
- }
- #endif
- 
-+#ifndef copy_mc_to_user
-+static inline unsigned long __must_check
-+copy_mc_to_user(void *dst, const void *src, size_t cnt)
-+{
-+	check_object_size(src, cnt, true);
-+	return raw_copy_to_user(dst, src, cnt);
-+}
-+#endif
 +
- static __always_inline void pagefault_disabled_inc(void)
++bool fixup_exception_mc(struct pt_regs *regs)
++{
++	const struct exception_table_entry *ex;
++
++	ex = search_exception_tables(instruction_pointer(regs));
++	if (!ex)
++		return false;
++
++	/*
++	 * This is not complete, More Machine check safe extable type can
++	 * be processed here.
++	 */
++
++	return false;
++}
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index 55f6455a8284..312932dc100b 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -730,6 +730,31 @@ static int do_bad(unsigned long far, unsigned long esr, struct pt_regs *regs)
+ 	return 1; /* "fault" */
+ }
+ 
++static bool arm64_do_kernel_sea(unsigned long addr, unsigned int esr,
++				     struct pt_regs *regs, int sig, int code)
++{
++	if (!IS_ENABLED(CONFIG_ARCH_HAS_COPY_MC))
++		return false;
++
++	if (user_mode(regs))
++		return false;
++
++	if (apei_claim_sea(regs) < 0)
++		return false;
++
++	if (!fixup_exception_mc(regs))
++		return false;
++
++	if (current->flags & PF_KTHREAD)
++		return true;
++
++	set_thread_esr(0, esr);
++	arm64_force_sig_fault(sig, code, addr,
++		"Uncorrected memory error on access to user memory\n");
++
++	return true;
++}
++
+ static int do_sea(unsigned long far, unsigned long esr, struct pt_regs *regs)
  {
- 	current->pagefault_disabled++;
+ 	const struct fault_info *inf;
+@@ -755,7 +780,9 @@ static int do_sea(unsigned long far, unsigned long esr, struct pt_regs *regs)
+ 		 */
+ 		siaddr  = untagged_addr(far);
+ 	}
+-	arm64_notify_die(inf->name, regs, inf->sig, inf->code, siaddr, esr);
++
++	if (!arm64_do_kernel_sea(siaddr, esr, regs, inf->sig, inf->code))
++		arm64_notify_die(inf->name, regs, inf->sig, inf->code, siaddr, esr);
+ 
+ 	return 0;
+ }
 -- 
 2.25.1
 
