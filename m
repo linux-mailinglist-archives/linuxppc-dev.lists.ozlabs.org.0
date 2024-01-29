@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFE8884059A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 13:52:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F8D78405A6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 13:53:32 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gXs7xh18;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Wyp0KHI1;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=buX1YKBb;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=buX1YKBb;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TNp9q4sHSz3cbL
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 23:52:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TNpBf0Mbhz3vn9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 23:53:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gXs7xh18;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Wyp0KHI1;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=buX1YKBb;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=buX1YKBb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TNp424WQgz3byP
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jan 2024 23:47:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TNp493DP9z3c9y
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jan 2024 23:47:53 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706532463;
+	s=mimecast20190719; t=1706532470;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8viUIwfAqrpZYGrKXKN1ylfsdDoFL9veEN2EDkxcPF4=;
-	b=gXs7xh18Pe2TeZepNGKipPJN2s/pIeeh89xvqfj1Hwxq8J0XDEY9gjsut3AE6cBFL1XZv0
-	90maV9o/NdVD6ejN/B2v6B8gymqE9UMaVgacVBOw0Tb6FVRJmcPeqmxj4LXwmhbRpdr4Dn
-	7ekP08ItY0YfxXYWVX40vAozLGURSOA=
+	bh=dXK02yTQR3iX9+2hOAsyvxeT8orGle3067Vuz1QJ0iE=;
+	b=buX1YKBbCsioGm/KjK94h95ReJl75nIjKEJbJoS1FEuAFXRO2wy4poXWGMfc06K24Nwnkj
+	yi1YiUSW29kWwqj4HDZB185GErAmv3sU1n45+kYKx8nVeqj2zG8xuKDSia3ch1qszNscrY
+	LsC5FZmB5Um3EOqhK2clsmrTX/VkV5w=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706532464;
+	s=mimecast20190719; t=1706532470;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8viUIwfAqrpZYGrKXKN1ylfsdDoFL9veEN2EDkxcPF4=;
-	b=Wyp0KHI19p6EkQUUmPxMUJol5ZRIU1hVRT2U+w2kYWxqTxVnR36Q6UTbS8Ccki9nznqPUj
-	PylqNfz/g7ngJ/+RipxWkPNs8eGr2ZduOuVDDLPglgs/ELf+JztMnZgbrc6qU5YwJTH7LY
-	9K1LfKWQnyh4HaJy68uXgxDz2oMrhfM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-513-FOOOGCS9Nq6C0wiBz3AC0A-1; Mon, 29 Jan 2024 07:47:40 -0500
-X-MC-Unique: FOOOGCS9Nq6C0wiBz3AC0A-1
+	bh=dXK02yTQR3iX9+2hOAsyvxeT8orGle3067Vuz1QJ0iE=;
+	b=buX1YKBbCsioGm/KjK94h95ReJl75nIjKEJbJoS1FEuAFXRO2wy4poXWGMfc06K24Nwnkj
+	yi1YiUSW29kWwqj4HDZB185GErAmv3sU1n45+kYKx8nVeqj2zG8xuKDSia3ch1qszNscrY
+	LsC5FZmB5Um3EOqhK2clsmrTX/VkV5w=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-512-Yd-jPcF4M0WLV77ep4J5DA-1; Mon,
+ 29 Jan 2024 07:47:46 -0500
+X-MC-Unique: Yd-jPcF4M0WLV77ep4J5DA-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ED2DB86F122;
-	Mon, 29 Jan 2024 12:47:38 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C956E3CBD507;
+	Mon, 29 Jan 2024 12:47:44 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.39.194.46])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 802EB8B;
-	Mon, 29 Jan 2024 12:47:33 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 58D62111E8;
+	Mon, 29 Jan 2024 12:47:39 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v3 07/15] sparc/pgtable: define PFN_PTE_SHIFT
-Date: Mon, 29 Jan 2024 13:46:41 +0100
-Message-ID: <20240129124649.189745-8-david@redhat.com>
+Subject: [PATCH v3 08/15] mm/pgtable: make pte_next_pfn() independent of set_ptes()
+Date: Mon, 29 Jan 2024 13:46:42 +0100
+Message-ID: <20240129124649.189745-9-david@redhat.com>
 In-Reply-To: <20240129124649.189745-1-david@redhat.com>
 References: <20240129124649.189745-1-david@redhat.com>
 MIME-Version: 1.0
@@ -84,27 +84,36 @@ Cc: David Hildenbrand <david@redhat.com>, Catalin Marinas <catalin.marinas@arm.c
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We want to make use of pte_next_pfn() outside of set_ptes(). Let's
-simply define PFN_PTE_SHIFT, required by pte_next_pfn().
+Let's provide pte_next_pfn(), independently of set_ptes(). This allows for
+using the generic pte_next_pfn() version in some arch-specific set_ptes()
+implementations, and prepares for reusing pte_next_pfn() in other context.
 
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- arch/sparc/include/asm/pgtable_64.h | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/pgtable.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
-index a8c871b7d786..652af9d63fa2 100644
---- a/arch/sparc/include/asm/pgtable_64.h
-+++ b/arch/sparc/include/asm/pgtable_64.h
-@@ -929,6 +929,8 @@ static inline void __set_pte_at(struct mm_struct *mm, unsigned long addr,
- 	maybe_tlb_batch_add(mm, addr, ptep, orig, fullmm, PAGE_SHIFT);
- }
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index f6d0e3513948..351cd9dc7194 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -212,7 +212,6 @@ static inline int pmd_dirty(pmd_t pmd)
+ #define arch_flush_lazy_mmu_mode()	do {} while (0)
+ #endif
  
-+#define PFN_PTE_SHIFT		PAGE_SHIFT
-+
- static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
- 		pte_t *ptep, pte_t pte, unsigned int nr)
- {
+-#ifndef set_ptes
+ 
+ #ifndef pte_next_pfn
+ static inline pte_t pte_next_pfn(pte_t pte)
+@@ -221,6 +220,7 @@ static inline pte_t pte_next_pfn(pte_t pte)
+ }
+ #endif
+ 
++#ifndef set_ptes
+ /**
+  * set_ptes - Map consecutive pages to a contiguous range of addresses.
+  * @mm: Address space to map the pages into.
 -- 
 2.43.0
 
