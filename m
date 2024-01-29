@@ -1,35 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C978841152
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 18:54:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2169584114F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 18:52:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TNwsQ4TfNz3cYH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 04:54:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TNwqk71pZz3cWw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 04:52:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 465 seconds by postgrey-1.37 at boromir; Tue, 30 Jan 2024 04:52:13 AEDT
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TNws10cLhz3byP
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 04:53:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TNwqK23vqz3byT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 04:52:11 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 719E5DA7;
-	Mon, 29 Jan 2024 09:44:36 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 58831139F;
+	Mon, 29 Jan 2024 09:52:24 -0800 (PST)
 Received: from FVFF77S0Q05N (unknown [10.57.48.128])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6A2B13F738;
-	Mon, 29 Jan 2024 09:43:48 -0800 (PST)
-Date: Mon, 29 Jan 2024 17:43:24 +0000
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 529603F738;
+	Mon, 29 Jan 2024 09:51:36 -0800 (PST)
+Date: Mon, 29 Jan 2024 17:51:33 +0000
 From: Mark Rutland <mark.rutland@arm.com>
 To: Tong Tiangen <tongtiangen@huawei.com>
-Subject: Re: [PATCH v10 3/6] arm64: add uaccess to machine check safe
-Message-ID: <ZbfjvD1_yKK6IVVY@FVFF77S0Q05N>
+Subject: Re: [PATCH v10 2/6] arm64: add support for machine check error safe
+Message-ID: <ZbflpQV7aVry0qPz@FVFF77S0Q05N>
 References: <20240129134652.4004931-1-tongtiangen@huawei.com>
- <20240129134652.4004931-4-tongtiangen@huawei.com>
+ <20240129134652.4004931-3-tongtiangen@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240129134652.4004931-4-tongtiangen@huawei.com>
+In-Reply-To: <20240129134652.4004931-3-tongtiangen@huawei.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,76 +46,143 @@ Cc: wangkefeng.wang@huawei.com, Catalin Marinas <catalin.marinas@arm.com>, Dave 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jan 29, 2024 at 09:46:49PM +0800, Tong Tiangen wrote:
-> If user process access memory fails due to hardware memory error, only the
-> relevant processes are affected, so it is more reasonable to kill the user
-> process and isolate the corrupt page than to panic the kernel.
+On Mon, Jan 29, 2024 at 09:46:48PM +0800, Tong Tiangen wrote:
+> For the arm64 kernel, when it processes hardware memory errors for
+> synchronize notifications(do_sea()), if the errors is consumed within the
+> kernel, the current processing is panic. However, it is not optimal.
+> 
+> Take uaccess for example, if the uaccess operation fails due to memory
+> error, only the user process will be affected. Killing the user process and
+> isolating the corrupt page is a better choice.
+> 
+> This patch only enable machine error check framework and adds an exception
+> fixup before the kernel panic in do_sea().
 > 
 > Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
 > ---
->  arch/arm64/lib/copy_from_user.S | 10 +++++-----
->  arch/arm64/lib/copy_to_user.S   | 10 +++++-----
->  arch/arm64/mm/extable.c         |  8 ++++----
->  3 files changed, 14 insertions(+), 14 deletions(-)
+>  arch/arm64/Kconfig               |  1 +
+>  arch/arm64/include/asm/extable.h |  1 +
+>  arch/arm64/mm/extable.c          | 16 ++++++++++++++++
+>  arch/arm64/mm/fault.c            | 29 ++++++++++++++++++++++++++++-
+>  4 files changed, 46 insertions(+), 1 deletion(-)
 > 
-> diff --git a/arch/arm64/lib/copy_from_user.S b/arch/arm64/lib/copy_from_user.S
-> index 34e317907524..1bf676e9201d 100644
-> --- a/arch/arm64/lib/copy_from_user.S
-> +++ b/arch/arm64/lib/copy_from_user.S
-> @@ -25,7 +25,7 @@
->  	.endm
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index aa7c1d435139..2cc34b5e7abb 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -20,6 +20,7 @@ config ARM64
+>  	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
+>  	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
+>  	select ARCH_HAS_CACHE_LINE_SIZE
+> +	select ARCH_HAS_COPY_MC if ACPI_APEI_GHES
+>  	select ARCH_HAS_CURRENT_STACK_POINTER
+>  	select ARCH_HAS_DEBUG_VIRTUAL
+>  	select ARCH_HAS_DEBUG_VM_PGTABLE
+> diff --git a/arch/arm64/include/asm/extable.h b/arch/arm64/include/asm/extable.h
+> index 72b0e71cc3de..f80ebd0addfd 100644
+> --- a/arch/arm64/include/asm/extable.h
+> +++ b/arch/arm64/include/asm/extable.h
+> @@ -46,4 +46,5 @@ bool ex_handler_bpf(const struct exception_table_entry *ex,
+>  #endif /* !CONFIG_BPF_JIT */
 >  
->  	.macro strb1 reg, ptr, val
-> -	strb \reg, [\ptr], \val
-> +	USER(9998f, strb \reg, [\ptr], \val)
->  	.endm
-
-This is a store to *kernel* memory, not user memory. It should not be marked
-with USER().
-
-I understand that you *might* want to handle memory errors on these stores, but
-the commit message doesn't describe that and the associated trade-off. For
-example, consider that when a copy_form_user fails we'll try to zero the
-remaining buffer via memset(); so if a STR* instruction in copy_to_user
-faulted, upon handling the fault we'll immediately try to fix that up with some
-more stores which will also fault, but won't get fixed up, leading to a panic()
-anyway...
-
-Further, this change will also silently fixup unexpected kernel faults if we
-pass bad kernel pointers to copy_{to,from}_user, which will hide real bugs.
-
-So NAK to this change as-is; likewise for the addition of USER() to other ldr*
-macros in copy_from_user.S and the addition of USER() str* macros in
-copy_to_user.S.
-
-If we want to handle memory errors on some kaccesses, we need a new EX_TYPE_*
-separate from the usual EX_TYPE_KACESS_ERR_ZERO that means "handle memory
-errors, but treat other faults as fatal". That should come with a rationale and
-explanation of why it's actually useful.
-
-[...]
-
+>  bool fixup_exception(struct pt_regs *regs);
+> +bool fixup_exception_mc(struct pt_regs *regs);
+>  #endif
 > diff --git a/arch/arm64/mm/extable.c b/arch/arm64/mm/extable.c
-> index 478e639f8680..28ec35e3d210 100644
+> index 228d681a8715..478e639f8680 100644
 > --- a/arch/arm64/mm/extable.c
 > +++ b/arch/arm64/mm/extable.c
-> @@ -85,10 +85,10 @@ bool fixup_exception_mc(struct pt_regs *regs)
->  	if (!ex)
->  		return false;
+> @@ -76,3 +76,19 @@ bool fixup_exception(struct pt_regs *regs)
 >  
-> -	/*
-> -	 * This is not complete, More Machine check safe extable type can
-> -	 * be processed here.
-> -	 */
-> +	switch (ex->type) {
-> +	case EX_TYPE_UACCESS_ERR_ZERO:
-> +		return ex_handler_uaccess_err_zero(ex, regs);
-> +	}
+>  	BUG();
+>  }
+> +
+> +bool fixup_exception_mc(struct pt_regs *regs)
 
-Please fold this part into the prior patch, and start ogf with *only* handling
-errors on accesses already marked with EX_TYPE_UACCESS_ERR_ZERO. I think that
-change would be relatively uncontroversial, and it would be much easier to
-build atop that.
+Can we please replace 'mc' with something like 'memory_error' ?
 
-Thanks,
+There's no "machine check" on arm64, and 'mc' is opaque regardless.
+
+> +{
+> +	const struct exception_table_entry *ex;
+> +
+> +	ex = search_exception_tables(instruction_pointer(regs));
+> +	if (!ex)
+> +		return false;
+> +
+> +	/*
+> +	 * This is not complete, More Machine check safe extable type can
+> +	 * be processed here.
+> +	 */
+> +
+> +	return false;
+> +}
+
+As with my comment on the subsequenty patch, I'd much prefer that we handle
+EX_TYPE_UACCESS_ERR_ZERO from the outset.
+
+
+
+> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+> index 55f6455a8284..312932dc100b 100644
+> --- a/arch/arm64/mm/fault.c
+> +++ b/arch/arm64/mm/fault.c
+> @@ -730,6 +730,31 @@ static int do_bad(unsigned long far, unsigned long esr, struct pt_regs *regs)
+>  	return 1; /* "fault" */
+>  }
+>  
+> +static bool arm64_do_kernel_sea(unsigned long addr, unsigned int esr,
+> +				     struct pt_regs *regs, int sig, int code)
+> +{
+> +	if (!IS_ENABLED(CONFIG_ARCH_HAS_COPY_MC))
+> +		return false;
+> +
+> +	if (user_mode(regs))
+> +		return false;
+
+This function is called "arm64_do_kernel_sea"; surely the caller should *never*
+call this for a SEA taken from user mode?
+
+> +
+> +	if (apei_claim_sea(regs) < 0)
+> +		return false;
+> +
+> +	if (!fixup_exception_mc(regs))
+> +		return false;
+> +
+> +	if (current->flags & PF_KTHREAD)
+> +		return true;
+
+I think this needs a comment; why do we allow kthreads to go on, yet kill user
+threads? What about helper threads (e.g. for io_uring)?
+
+> +
+> +	set_thread_esr(0, esr);
+
+Why do we set the ESR to 0?
+
 Mark.
+
+> +	arm64_force_sig_fault(sig, code, addr,
+> +		"Uncorrected memory error on access to user memory\n");
+> +
+> +	return true;
+> +}
+> +
+>  static int do_sea(unsigned long far, unsigned long esr, struct pt_regs *regs)
+>  {
+>  	const struct fault_info *inf;
+> @@ -755,7 +780,9 @@ static int do_sea(unsigned long far, unsigned long esr, struct pt_regs *regs)
+>  		 */
+>  		siaddr  = untagged_addr(far);
+>  	}
+> -	arm64_notify_die(inf->name, regs, inf->sig, inf->code, siaddr, esr);
+> +
+> +	if (!arm64_do_kernel_sea(siaddr, esr, regs, inf->sig, inf->code))
+> +		arm64_notify_die(inf->name, regs, inf->sig, inf->code, siaddr, esr);
+>  
+>  	return 0;
+>  }
+> -- 
+> 2.25.1
+> 
