@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80B76840876
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 15:34:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19B3384087E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jan 2024 15:35:25 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CMKaI9S2;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fBHzLsIM;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OJh2Shmx;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OJh2Shmx;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TNrRN2znYz3cXd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 01:34:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TNrSC02jwz3cZq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 01:35:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CMKaI9S2;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fBHzLsIM;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OJh2Shmx;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OJh2Shmx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TNrPB2s44z3cCh
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 01:32:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TNrPF4qs4z3bsr
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 01:32:49 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706538763;
+	s=mimecast20190719; t=1706538767;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FNlnKqTU8a/1Fu37QrFx8MEnv7tH60nNAECNkKLkAAs=;
-	b=CMKaI9S2JZVGnzzHqxpKG0FJU21X44TNJZ3K/OpEsT3h0YDugIn2ui+Ykp09v3SbEBfH9x
-	rxDM87LeQEG1bBP4umJ1yjCA3Vl93OcSmWoNwKJxsSzUW9SECm0KsIpiwxv5fjCCIjLoPS
-	mbiwGEL6W1zpv9zRmP98e213WiWuU54=
+	bh=OkSqLVnz5/2y8MLWUf6UFgTHMoYCjTvN5uvEMNfOCyQ=;
+	b=OJh2Shmx2U8Ejx2Oqr5Eihdzs/VG8dln4YzNP7+gzND90vUObDov0FJzfZ9A2AhE+l3UJ7
+	WHG+g4xow3Zmw3txXhCXrvkH5KamXCyjjjbnQhdY9p4WXM5CtI4HSzMaIqGE4boYu7pl9b
+	HfSQ/DahZCiPklyWTH9v9vtMi9h5qZM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706538764;
+	s=mimecast20190719; t=1706538767;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FNlnKqTU8a/1Fu37QrFx8MEnv7tH60nNAECNkKLkAAs=;
-	b=fBHzLsIMgNu3mOQX5QdsSJ92GotfTRJnQnEEcJjoxGFmfcdXZPf31mmZP5J3/mW8gUtr/S
-	kT1p9BfQHtHmn4GmEZWNxt6Fgi+8GquNRkjwCU/aoHVBGKSsR6n+OCCBWUMWzZf9s2E2RZ
-	mxCmV1hIkGXuCq8ohM3dJAyEIO78C+M=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-151-unK-9W-5NjSJSLj6qcQ8jg-1; Mon,
- 29 Jan 2024 09:32:41 -0500
-X-MC-Unique: unK-9W-5NjSJSLj6qcQ8jg-1
+	bh=OkSqLVnz5/2y8MLWUf6UFgTHMoYCjTvN5uvEMNfOCyQ=;
+	b=OJh2Shmx2U8Ejx2Oqr5Eihdzs/VG8dln4YzNP7+gzND90vUObDov0FJzfZ9A2AhE+l3UJ7
+	WHG+g4xow3Zmw3txXhCXrvkH5KamXCyjjjbnQhdY9p4WXM5CtI4HSzMaIqGE4boYu7pl9b
+	HfSQ/DahZCiPklyWTH9v9vtMi9h5qZM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-332-tQCqrTzqPz-8PYoPDfxKqg-1; Mon, 29 Jan 2024 09:32:44 -0500
+X-MC-Unique: tQCqrTzqPz-8PYoPDfxKqg-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 902141C05137;
-	Mon, 29 Jan 2024 14:32:37 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8BAC885A599;
+	Mon, 29 Jan 2024 14:32:42 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.39.194.46])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 20796AD1;
-	Mon, 29 Jan 2024 14:32:32 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id CCEB7AD1;
+	Mon, 29 Jan 2024 14:32:37 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v1 2/9] mm/memory: handle !page case in zap_present_pte() separately
-Date: Mon, 29 Jan 2024 15:32:14 +0100
-Message-ID: <20240129143221.263763-3-david@redhat.com>
+Subject: [PATCH v1 3/9] mm/memory: further separate anon and pagecache folio handling in zap_present_pte()
+Date: Mon, 29 Jan 2024 15:32:15 +0100
+Message-ID: <20240129143221.263763-4-david@redhat.com>
 In-Reply-To: <20240129143221.263763-1-david@redhat.com>
 References: <20240129143221.263763-1-david@redhat.com>
 MIME-Version: 1.0
@@ -83,67 +83,59 @@ Cc: David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We don't need uptodate accessed/dirty bits, so in theory we could
-replace ptep_get_and_clear_full() by an optimized ptep_clear_full()
-function. Let's rely on the provided pte.
+We don't need up-to-date accessed-dirty information for anon folios and can
+simply work with the ptent we already have. Also, we know the RSS counter
+we want to update.
 
-Further, there is no scenario where we would have to insert uffd-wp
-markers when zapping something that is not a normal page (i.e., zeropage).
-Add a sanity check to make sure this remains true.
+We can safely move arch_check_zapped_pte() + tlb_remove_tlb_entry() +
+zap_install_uffd_wp_if_needed() after updating the folio and RSS.
 
-should_zap_folio() no longer has to handle NULL pointers. This change
-replaces 2/3 "!page/!folio" checks by a single "!page" one.
+While at it, only call zap_install_uffd_wp_if_needed() if there is even
+any chance that pte_install_uffd_wp_if_needed() would do *something*.
+That is, just don't bother if uffd-wp does not apply.
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- mm/memory.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ mm/memory.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
 diff --git a/mm/memory.c b/mm/memory.c
-index 50a6c79c78fc..69502cdc0a7d 100644
+index 69502cdc0a7d..20bc13ab8db2 100644
 --- a/mm/memory.c
 +++ b/mm/memory.c
-@@ -1497,10 +1497,6 @@ static inline bool should_zap_folio(struct zap_details *details,
- 	if (should_zap_cows(details))
- 		return true;
- 
--	/* E.g. the caller passes NULL for the case of a zero folio */
--	if (!folio)
--		return true;
--
- 	/* Otherwise we should only zap non-anon folios */
- 	return !folio_test_anon(folio);
- }
-@@ -1543,19 +1539,23 @@ static inline void zap_present_pte(struct mmu_gather *tlb,
- 	struct page *page;
- 
- 	page = vm_normal_page(vma, addr, ptent);
--	if (page)
--		folio = page_folio(page);
-+	if (!page) {
-+		/* We don't need up-to-date accessed/dirty bits. */
-+		ptep_get_and_clear_full(mm, addr, pte, tlb->fullmm);
-+		arch_check_zapped_pte(vma, ptent);
-+		tlb_remove_tlb_entry(tlb, pte, addr);
-+		VM_WARN_ON_ONCE(userfaultfd_wp(vma));
-+		ksm_might_unmap_zero_page(mm, ptent);
-+		return;
-+	}
- 
-+	folio = page_folio(page);
+@@ -1552,12 +1552,9 @@ static inline void zap_present_pte(struct mmu_gather *tlb,
+ 	folio = page_folio(page);
  	if (unlikely(!should_zap_folio(details, folio)))
  		return;
- 	ptent = ptep_get_and_clear_full(mm, addr, pte, tlb->fullmm);
- 	arch_check_zapped_pte(vma, ptent);
- 	tlb_remove_tlb_entry(tlb, pte, addr);
- 	zap_install_uffd_wp_if_needed(vma, addr, pte, details, ptent);
--	if (unlikely(!page)) {
--		ksm_might_unmap_zero_page(mm, ptent);
--		return;
--	}
+-	ptent = ptep_get_and_clear_full(mm, addr, pte, tlb->fullmm);
+-	arch_check_zapped_pte(vma, ptent);
+-	tlb_remove_tlb_entry(tlb, pte, addr);
+-	zap_install_uffd_wp_if_needed(vma, addr, pte, details, ptent);
  
  	if (!folio_test_anon(folio)) {
++		ptent = ptep_get_and_clear_full(mm, addr, pte, tlb->fullmm);
  		if (pte_dirty(ptent)) {
+ 			folio_mark_dirty(folio);
+ 			if (tlb_delay_rmap(tlb)) {
+@@ -1567,8 +1564,17 @@ static inline void zap_present_pte(struct mmu_gather *tlb,
+ 		}
+ 		if (pte_young(ptent) && likely(vma_has_recency(vma)))
+ 			folio_mark_accessed(folio);
++		rss[mm_counter(folio)]--;
++	} else {
++		/* We don't need up-to-date accessed/dirty bits. */
++		ptep_get_and_clear_full(mm, addr, pte, tlb->fullmm);
++		rss[MM_ANONPAGES]--;
+ 	}
+-	rss[mm_counter(folio)]--;
++	arch_check_zapped_pte(vma, ptent);
++	tlb_remove_tlb_entry(tlb, pte, addr);
++	if (unlikely(userfaultfd_pte_wp(vma, ptent)))
++		zap_install_uffd_wp_if_needed(vma, addr, pte, details, ptent);
++
+ 	if (!delay_rmap) {
+ 		folio_remove_rmap_pte(folio, page, vma);
+ 		if (unlikely(page_mapcount(page) < 0))
 -- 
 2.43.0
 
