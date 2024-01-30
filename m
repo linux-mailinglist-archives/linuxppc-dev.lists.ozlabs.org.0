@@ -2,36 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFE5984200B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 10:49:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5835A84205F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 11:01:09 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dShA7CDH;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=U1N1dnpB;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TPL3G6WX4z3cSt
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 20:48:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TPLKH1nvsz3cW0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 21:01:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TPL2s37rVz3bs0
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 20:48:35 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1F710DA7;
-	Tue, 30 Jan 2024 01:48:48 -0800 (PST)
-Received: from [10.57.79.54] (unknown [10.57.79.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6B3083F738;
-	Tue, 30 Jan 2024 01:48:01 -0800 (PST)
-Message-ID: <bec84017-b1c9-48e7-a206-c4c8a651ee83@arm.com>
-Date: Tue, 30 Jan 2024 09:48:00 +0000
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dShA7CDH;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=U1N1dnpB;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=jstancek@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TPLJR4Wwdz3btl
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 21:00:22 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706608819;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Lvd79EwJ/EeeRbQUvV7D8alEJPVcC5AuHB/N6mbkr5Q=;
+	b=dShA7CDHqo7nkGNy44jA4nN+FQ0AATCq6wDSNRu3iORsbO9j6rEWcB4vSthI1j1Z6ujsQv
+	sDeaE8GMwdO3kW+Qq0GJH63l/NxyS5eepJOHHXe34uRjakjWJqnwJlxxQPSpCx5W/MaM++
+	C8D3GwDxqQGipvnZ1nnWFTQDkSaMNmI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706608820;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Lvd79EwJ/EeeRbQUvV7D8alEJPVcC5AuHB/N6mbkr5Q=;
+	b=U1N1dnpBBHfeLK544Ojv3E5FP195L7J4391BJd0PwhoGXZFFWHrnMKLPSAG37i2/1gp6W0
+	MYIB0D6LCrQPdetTYb7otVc89loIQyi/Gi5rnKXnWRjOzQjkWYUOOxxuQt2WEMOMbo+u4c
+	0gJ9H4gxbL47CAALJtulJ2Iok4w6rD4=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-618-N7vJN-ptPySIQBwNLPvefQ-1; Tue, 30 Jan 2024 05:00:17 -0500
+X-MC-Unique: N7vJN-ptPySIQBwNLPvefQ-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-40fa6618eedso945225e9.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 02:00:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706608816; x=1707213616;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Lvd79EwJ/EeeRbQUvV7D8alEJPVcC5AuHB/N6mbkr5Q=;
+        b=n8ijnZ9BnlYNs0c3ZXRr6nF0fRdnxAPMfSOCbfD+lsVvE6xqk8zD4hjLRIxE9mii80
+         8wf4KVvQY+7ERJfAsYG2hE3Wzl/jlcpZX2+Ms8M5LJgBtYQcL2RoM3CBdVxH4Umr31BS
+         OI7vxvfBBa+OkYNUGelijjphaeoFNBAJ6gt9Y5AYzE9KebRE7B3Mw8oTSVps+ifC+hx6
+         HkfOgzO5qXRCr1MKDWAhm9eb8h5JKC8QQn1gBKzSVwFME2v+70mv+CUXZmiJ/9owoNe9
+         XBllspBTZuGpbS8mWEUWuooM11NGHpJgGzNOcldDb1x7tZwI7UtU50lH8DQTPDII8FW9
+         uL6Q==
+X-Gm-Message-State: AOJu0Ywmdtrw1d9DeINRczDTJBX/q7tyOOwvIrag+THVacaeDXujdPxu
+	4skTOmghebrJBmuhL2RqUbJFIn8hiiLUXeYSBVFFmUnF7+VlsFFQTs21vuQNwD4Kqfew9YXYflU
+	VR+6btsY+qSvDdAH4hIW35UBpo/1YeDiaBzS4H9tANZH0YUqTfiLAG7QPONyGDTbBChZwJAU=
+X-Received: by 2002:a05:6000:2ac:b0:33a:f521:5815 with SMTP id l12-20020a05600002ac00b0033af5215815mr2795197wry.26.1706608816485;
+        Tue, 30 Jan 2024 02:00:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEwb92jelVdRIonuHD9AAXhHL37860vpbI9s5dqUN+CbIom/XaWO3f0Bq1fr41DoHF1tZ3ZDA==
+X-Received: by 2002:a05:6000:2ac:b0:33a:f521:5815 with SMTP id l12-20020a05600002ac00b0033af5215815mr2795173wry.26.1706608816134;
+        Tue, 30 Jan 2024 02:00:16 -0800 (PST)
+Received: from t14s (109-81-83-173.rct.o2.cz. [109.81.83.173])
+        by smtp.gmail.com with ESMTPSA id az28-20020adfe19c000000b0033afcf8925asm678165wrb.24.2024.01.30.02.00.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jan 2024 02:00:15 -0800 (PST)
+Date: Tue, 30 Jan 2024 10:54:20 +0100
+From: Jan Stancek <jstancek@redhat.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc: add crtsavres.o to always-y instead of extra-y
+Message-ID: <ZbjHTMhQ4Z9lRR6L@t14s>
+References: <20231120232332.4100288-1-masahiroy@kernel.org>
+ <CX42TU4QHS1Z.A0UUHMDAMZOL@wheely>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 9/9] mm/memory: optimize unmap/zap with PTE-mapped THP
-Content-Language: en-GB
-To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-References: <20240129143221.263763-1-david@redhat.com>
- <20240129143221.263763-10-david@redhat.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20240129143221.263763-10-david@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <CX42TU4QHS1Z.A0UUHMDAMZOL@wheely>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,306 +97,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Vasily Gorbik <gor@linux.ibm.com>, Peter Zijlstra <peterz@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, Nick Piggin <npiggin@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, Tom Rix <trix@redhat.com>, linuxppc-dev@lists.ozlabs.org, jstancek@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 29/01/2024 14:32, David Hildenbrand wrote:
-> Similar to how we optimized fork(), let's implement PTE batching when
-> consecutive (present) PTEs map consecutive pages of the same large
-> folio.
-> 
-> Most infrastructure we need for batching (mmu gather, rmap) is already
-> there. We only have to add get_and_clear_full_ptes() and
-> clear_full_ptes(). Similarly, extend zap_install_uffd_wp_if_needed() to
-> process a PTE range.
-> 
-> We won't bother sanity-checking the mapcount of all subpages, but only
-> check the mapcount of the first subpage we process.
-> 
-> To keep small folios as fast as possible force inlining of a specialized
-> variant using __always_inline with nr=1.
-> 
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  include/linux/pgtable.h | 66 +++++++++++++++++++++++++++++
->  mm/memory.c             | 92 +++++++++++++++++++++++++++++------------
->  2 files changed, 132 insertions(+), 26 deletions(-)
-> 
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index aab227e12493..f0feae7f89fb 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -580,6 +580,72 @@ static inline pte_t ptep_get_and_clear_full(struct mm_struct *mm,
->  }
->  #endif
->  
-> +#ifndef get_and_clear_full_ptes
-> +/**
-> + * get_and_clear_full_ptes - Clear PTEs that map consecutive pages of the same
-> + *			     folio, collecting dirty/accessed bits.
-> + * @mm: Address space the pages are mapped into.
-> + * @addr: Address the first page is mapped at.
-> + * @ptep: Page table pointer for the first entry.
-> + * @nr: Number of entries to clear.
-> + * @full: Whether we are clearing a full mm.
-> + *
-> + * May be overridden by the architecture; otherwise, implemented as a simple
-> + * loop over ptep_get_and_clear_full(), merging dirty/accessed bits into
-> + * returned PTE.
-> + *
-> + * Note that PTE bits in the PTE range besides the PFN can differ. For example,
-> + * some PTEs might be write-protected.
-> + *
-> + * Context: The caller holds the page table lock.  The PTEs map consecutive
-> + * pages that belong to the same folio.  The PTEs are all in the same PMD.
-> + */
-> +static inline pte_t get_and_clear_full_ptes(struct mm_struct *mm,
-> +		unsigned long addr, pte_t *ptep, unsigned int nr, int full)
-> +{
-> +	pte_t pte, tmp_pte;
-> +
-> +	pte = ptep_get_and_clear_full(mm, addr, ptep, full);
-> +	while (--nr) {
-> +		ptep++;
-> +		addr += PAGE_SIZE;
-> +		tmp_pte = ptep_get_and_clear_full(mm, addr, ptep, full);
-> +		if (pte_dirty(tmp_pte))
-> +			pte = pte_mkdirty(pte);
-> +		if (pte_young(tmp_pte))
-> +			pte = pte_mkyoung(pte);
-> +	}
-> +	return pte;
-> +}
-> +#endif
-> +
-> +#ifndef clear_full_ptes
-> +/**
-> + * clear_full_ptes - Clear PTEs that map consecutive pages of the same folio.
+On Tue, Nov 21, 2023 at 10:51:34AM +1000, Nicholas Piggin wrote:
+>On Tue Nov 21, 2023 at 9:23 AM AEST, Masahiro Yamada wrote:
+>> crtsavres.o is linked to modules. However, as explained in commit
+>> d0e628cd817f ("kbuild: doc: clarify the difference between extra-y
+>> and always-y"), 'make modules' does not build extra-y.
+>>
+>> For example, the following command fails:
+>>
+>>   $ make ARCH=powerpc LLVM=1 KBUILD_MODPOST_WARN=1 mrproper ps3_defconfig modules
+>>     [snip]
+>>     LD [M]  arch/powerpc/platforms/cell/spufs/spufs.ko
+>>   ld.lld: error: cannot open arch/powerpc/lib/crtsavres.o: No such file or directory
+>>   make[3]: *** [scripts/Makefile.modfinal:56: arch/powerpc/platforms/cell/spufs/spufs.ko] Error 1
+>>   make[2]: *** [Makefile:1844: modules] Error 2
+>>   make[1]: *** [/home/masahiro/workspace/linux-kbuild/Makefile:350: __build_one_by_one] Error 2
+>>   make: *** [Makefile:234: __sub-make] Error 2
+>>
+>
+>Thanks. Is this the correct Fixes tag?
+>
+>Fixes: d0e628cd817f ("powerpc/64: Do not link crtsavres.o in vmlinux")
+>
+>Hmm, looks like LLD might just do this now automatically for us
+>too without --save-restore-funcs (https://reviews.llvm.org/D79977).
+>But we probably still need it for older versions, so we still need
+>your patch.
 
-I know its implied from "pages of the same folio" (and even more so for the
-above variant due to mention of access/dirty), but I wonder if its useful to
-explicitly state that "all ptes being cleared are present at the time of the call"?
+Hi,
 
-> + * @mm: Address space the pages are mapped into.
-> + * @addr: Address the first page is mapped at.
-> + * @ptep: Page table pointer for the first entry.
-> + * @nr: Number of entries to clear.
-> + * @full: Whether we are clearing a full mm.
-> + *
-> + * Note that PTE bits in the PTE range besides the PFN can differ. For example,
-> + * some PTEs might be write-protected.
-> + *
-> + * Context: The caller holds the page table lock.  The PTEs map consecutive
-> + * pages that belong to the same folio.  The PTEs are all in the same PMD.
-> + */
-> +static inline void clear_full_ptes(struct mm_struct *mm, unsigned long addr,
-> +		pte_t *ptep, unsigned int nr, int full)
-> +{
-> +	for (;;) {
-> +		ptep_get_and_clear_full(mm, addr, ptep, full);
-> +		if (--nr == 0)
-> +			break;
-> +		ptep++;
-> +		addr += PAGE_SIZE;
-> +	}
-> +}
-> +#endif
->  
->  /*
->   * If two threads concurrently fault at the same page, the thread that
-> diff --git a/mm/memory.c b/mm/memory.c
-> index a2190d7cfa74..38a010c4d04d 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -1515,7 +1515,7 @@ static inline bool zap_drop_file_uffd_wp(struct zap_details *details)
->   */
->  static inline void
->  zap_install_uffd_wp_if_needed(struct vm_area_struct *vma,
-> -			      unsigned long addr, pte_t *pte,
-> +			      unsigned long addr, pte_t *pte, int nr,
->  			      struct zap_details *details, pte_t pteval)
->  {
->  	/* Zap on anonymous always means dropping everything */
-> @@ -1525,20 +1525,27 @@ zap_install_uffd_wp_if_needed(struct vm_area_struct *vma,
->  	if (zap_drop_file_uffd_wp(details))
->  		return;
->  
-> -	pte_install_uffd_wp_if_needed(vma, addr, pte, pteval);
-> +	for (;;) {
-> +		/* the PFN in the PTE is irrelevant. */
-> +		pte_install_uffd_wp_if_needed(vma, addr, pte, pteval);
-> +		if (--nr == 0)
-> +			break;
-> +		pte++;
-> +		addr += PAGE_SIZE;
-> +	}
->  }
->  
-> -static inline void zap_present_folio_pte(struct mmu_gather *tlb,
-> +static __always_inline void zap_present_folio_ptes(struct mmu_gather *tlb,
->  		struct vm_area_struct *vma, struct folio *folio,
-> -		struct page *page, pte_t *pte, pte_t ptent, unsigned long addr,
-> -		struct zap_details *details, int *rss, bool *force_flush,
-> -		bool *force_break)
-> +		struct page *page, pte_t *pte, pte_t ptent, unsigned int nr,
-> +		unsigned long addr, struct zap_details *details, int *rss,
-> +		bool *force_flush, bool *force_break)
->  {
->  	struct mm_struct *mm = tlb->mm;
->  	bool delay_rmap = false;
->  
->  	if (!folio_test_anon(folio)) {
-> -		ptent = ptep_get_and_clear_full(mm, addr, pte, tlb->fullmm);
-> +		ptent = get_and_clear_full_ptes(mm, addr, pte, nr, tlb->fullmm);
->  		if (pte_dirty(ptent)) {
->  			folio_mark_dirty(folio);
->  			if (tlb_delay_rmap(tlb)) {
-> @@ -1548,36 +1555,49 @@ static inline void zap_present_folio_pte(struct mmu_gather *tlb,
->  		}
->  		if (pte_young(ptent) && likely(vma_has_recency(vma)))
->  			folio_mark_accessed(folio);
-> -		rss[mm_counter(folio)]--;
-> +		rss[mm_counter(folio)] -= nr;
->  	} else {
->  		/* We don't need up-to-date accessed/dirty bits. */
-> -		ptep_get_and_clear_full(mm, addr, pte, tlb->fullmm);
-> -		rss[MM_ANONPAGES]--;
-> +		clear_full_ptes(mm, addr, pte, nr, tlb->fullmm);
-> +		rss[MM_ANONPAGES] -= nr;
->  	}
-> +	/* Checking a single PTE in a batch is sufficient. */
->  	arch_check_zapped_pte(vma, ptent);
-> -	tlb_remove_tlb_entry(tlb, pte, addr);
-> +	tlb_remove_tlb_entries(tlb, pte, nr, addr);
->  	if (unlikely(userfaultfd_pte_wp(vma, ptent)))
-> -		zap_install_uffd_wp_if_needed(vma, addr, pte, details, ptent);
-> +		zap_install_uffd_wp_if_needed(vma, addr, pte, nr, details,
-> +					      ptent);
->  
->  	if (!delay_rmap) {
-> -		folio_remove_rmap_pte(folio, page, vma);
-> +		folio_remove_rmap_ptes(folio, page, nr, vma);
-> +
-> +		/* Only sanity-check the first page in a batch. */
->  		if (unlikely(page_mapcount(page) < 0))
->  			print_bad_pte(vma, addr, ptent, page);
+I'm still seeing the error of crtsavres.o missing when building external modules
+after "make LLVM=1 modules_prepare". Should it be built also in archprepare?
 
-Is there a case for either removing this all together or moving it into
-folio_remove_rmap_ptes()? It seems odd to only check some pages.
+Thanks,
+Jan
 
 
->  	}
-> -	if (unlikely(__tlb_remove_page(tlb, page, delay_rmap))) {
-> +	if (unlikely(__tlb_remove_folio_pages(tlb, page, nr, delay_rmap))) {
->  		*force_flush = true;
->  		*force_break = true;
->  	}
->  }
->  
-> -static inline void zap_present_pte(struct mmu_gather *tlb,
-> +/*
-> + * Zap or skip one present PTE, trying to batch-process subsequent PTEs that map
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index 051247027..a62334194 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -57,8 +57,11 @@ ifeq ($(CONFIG_PPC64)$(CONFIG_LD_IS_BFD),yy)
+  # Have the linker provide sfpr if possible.
+  # There is a corresponding test in arch/powerpc/lib/Makefile
+  KBUILD_LDFLAGS_MODULE += --save-restore-funcs
++crtsavres_prepare:
+  else
+  KBUILD_LDFLAGS_MODULE += arch/powerpc/lib/crtsavres.o
++crtsavres_prepare:
++       $(MAKE) $(build)=arch/powerpc/lib arch/powerpc/lib/crtsavres.o
+  endif
 
-Zap or skip *at least* one... ?
+  ifdef CONFIG_CPU_LITTLE_ENDIAN
+@@ -389,7 +392,7 @@ vdso_prepare: prepare0
+                 $(build)=arch/powerpc/kernel/vdso include/generated/vdso64-offsets.h)
+  endif
 
-> + * consecutive pages of the same folio.
-> + *
-> + * Returns the number of processed (skipped or zapped) PTEs (at least 1).
-> + */
-> +static inline int zap_present_ptes(struct mmu_gather *tlb,
->  		struct vm_area_struct *vma, pte_t *pte, pte_t ptent,
-> -		unsigned long addr, struct zap_details *details,
-> -		int *rss, bool *force_flush, bool *force_break)
-> +		unsigned int max_nr, unsigned long addr,
-> +		struct zap_details *details, int *rss, bool *force_flush,
-> +		bool *force_break)
->  {
-> +	const fpb_t fpb_flags = FPB_IGNORE_DIRTY | FPB_IGNORE_SOFT_DIRTY;
->  	struct mm_struct *mm = tlb->mm;
->  	struct folio *folio;
->  	struct page *page;
-> +	int nr;
->  
->  	page = vm_normal_page(vma, addr, ptent);
->  	if (!page) {
-> @@ -1587,14 +1607,29 @@ static inline void zap_present_pte(struct mmu_gather *tlb,
->  		tlb_remove_tlb_entry(tlb, pte, addr);
->  		VM_WARN_ON_ONCE(userfaultfd_wp(vma));
->  		ksm_might_unmap_zero_page(mm, ptent);
-> -		return;
-> +		return 1;
->  	}
->  
->  	folio = page_folio(page);
->  	if (unlikely(!should_zap_folio(details, folio)))
-> -		return;
-> -	zap_present_folio_pte(tlb, vma, folio, page, pte, ptent, addr, details,
-> -			      rss, force_flush, force_break);
-> +		return 1;
-> +
-> +	/*
-> +	 * Make sure that the common "small folio" case is as fast as possible
-> +	 * by keeping the batching logic separate.
-> +	 */
-> +	if (unlikely(folio_test_large(folio) && max_nr != 1)) {
-> +		nr = folio_pte_batch(folio, addr, pte, ptent, max_nr, fpb_flags,
-> +				     NULL);
-> +
-> +		zap_present_folio_ptes(tlb, vma, folio, page, pte, ptent, nr,
-> +				       addr, details, rss, force_flush,
-> +				       force_break);
-> +		return nr;
-> +	}
-> +	zap_present_folio_ptes(tlb, vma, folio, page, pte, ptent, 1, addr,
-> +			       details, rss, force_flush, force_break);
-> +	return 1;
->  }
->  
->  static unsigned long zap_pte_range(struct mmu_gather *tlb,
-> @@ -1609,6 +1644,7 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
->  	pte_t *start_pte;
->  	pte_t *pte;
->  	swp_entry_t entry;
-> +	int nr;
->  
->  	tlb_change_page_size(tlb, PAGE_SIZE);
->  	init_rss_vec(rss);
-> @@ -1622,7 +1658,9 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
->  		pte_t ptent = ptep_get(pte);
->  		struct folio *folio = NULL;
->  		struct page *page;
-> +		int max_nr;
->  
-> +		nr = 1;
->  		if (pte_none(ptent))
->  			continue;
->  
-> @@ -1630,10 +1668,12 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
->  			break;
->  
->  		if (pte_present(ptent)) {
-> -			zap_present_pte(tlb, vma, pte, ptent, addr, details,
-> -					rss, &force_flush, &force_break);
-> +			max_nr = (end - addr) / PAGE_SIZE;
-> +			nr = zap_present_ptes(tlb, vma, pte, ptent, max_nr,
-> +					      addr, details, rss, &force_flush,
-> +					      &force_break);
->  			if (unlikely(force_break)) {
-> -				addr += PAGE_SIZE;
-> +				addr += nr * PAGE_SIZE;
->  				break;
->  			}
->  			continue;
-> @@ -1687,8 +1727,8 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
->  			WARN_ON_ONCE(1);
->  		}
->  		pte_clear_not_present_full(mm, addr, pte, tlb->fullmm);
-> -		zap_install_uffd_wp_if_needed(vma, addr, pte, details, ptent);
-> -	} while (pte++, addr += PAGE_SIZE, addr != end);
-> +		zap_install_uffd_wp_if_needed(vma, addr, pte, 1, details, ptent);
-> +	} while (pte += nr, addr += PAGE_SIZE * nr, addr != end);
->  
->  	add_mm_rss_vec(mm, rss);
->  	arch_leave_lazy_mmu_mode();
+-archprepare: checkbin
++archprepare: checkbin crtsavres_prepare
+
+  archheaders:
+         $(Q)$(MAKE) $(build)=arch/powerpc/kernel/syscalls all
 
