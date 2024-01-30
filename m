@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 726F484261E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 14:23:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8AB2842650
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 14:42:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TPQpy2l9kz3cXl
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jan 2024 00:23:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TPRDF5m8pz3bw2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jan 2024 00:42:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=szxga04-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TPQpS4Kpsz3bqB
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jan 2024 00:23:09 +1100 (AEDT)
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4TPQm8519Qz29knY;
-	Tue, 30 Jan 2024 21:21:12 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TPRCm4K8Zz3bpp
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jan 2024 00:41:37 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4TPRBS0vRFzJpQM;
+	Tue, 30 Jan 2024 21:40:32 +0800 (CST)
 Received: from kwepemm600017.china.huawei.com (unknown [7.193.23.234])
-	by mail.maildlp.com (Postfix) with ESMTPS id 574B81A016B;
-	Tue, 30 Jan 2024 21:23:02 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 8B07B1400FF;
+	Tue, 30 Jan 2024 21:41:31 +0800 (CST)
 Received: from [10.174.179.234] (10.174.179.234) by
  kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 30 Jan 2024 21:23:00 +0800
-Message-ID: <f10848f1-36d5-c954-2b55-d9cdaf5262bf@huawei.com>
-Date: Tue, 30 Jan 2024 21:22:59 +0800
+ 15.1.2507.35; Tue, 30 Jan 2024 21:41:29 +0800
+Message-ID: <d8cb8cec-5530-c0e7-3bd3-bcd47e9bf4e1@huawei.com>
+Date: Tue, 30 Jan 2024 21:41:28 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.8.0
-Subject: Re: [PATCH v10 2/6] arm64: add support for machine check error safe
+Subject: Re: [PATCH v10 3/6] arm64: add uaccess to machine check safe
 To: Mark Rutland <mark.rutland@arm.com>
 References: <20240129134652.4004931-1-tongtiangen@huawei.com>
- <20240129134652.4004931-3-tongtiangen@huawei.com>
- <ZbflpQV7aVry0qPz@FVFF77S0Q05N>
- <eb78caf9-ac03-1030-4e32-b614e73c0f62@huawei.com>
- <Zbj0heg7eFukm_5Z@FVFF77S0Q05N>
+ <20240129134652.4004931-4-tongtiangen@huawei.com>
+ <ZbfjvD1_yKK6IVVY@FVFF77S0Q05N>
+ <23795738-b86e-7709-bc2b-5abba2e77b68@huawei.com>
+ <ZbjlFXVC_ZPYbKhR@FVFF77S0Q05N>
 From: Tong Tiangen <tongtiangen@huawei.com>
-In-Reply-To: <Zbj0heg7eFukm_5Z@FVFF77S0Q05N>
+In-Reply-To: <ZbjlFXVC_ZPYbKhR@FVFF77S0Q05N>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Originating-IP: [10.174.179.234]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
  kwepemm600017.china.huawei.com (7.193.23.234)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -61,154 +61,94 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 
 
-在 2024/1/30 21:07, Mark Rutland 写道:
-> On Tue, Jan 30, 2024 at 06:57:24PM +0800, Tong Tiangen wrote:
->> 在 2024/1/30 1:51, Mark Rutland 写道:
->>> On Mon, Jan 29, 2024 at 09:46:48PM +0800, Tong Tiangen wrote:
-> 
->>>> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
->>>> index 55f6455a8284..312932dc100b 100644
->>>> --- a/arch/arm64/mm/fault.c
->>>> +++ b/arch/arm64/mm/fault.c
->>>> @@ -730,6 +730,31 @@ static int do_bad(unsigned long far, unsigned long esr, struct pt_regs *regs)
->>>>    	return 1; /* "fault" */
->>>>    }
->>>> +static bool arm64_do_kernel_sea(unsigned long addr, unsigned int esr,
->>>> +				     struct pt_regs *regs, int sig, int code)
->>>> +{
->>>> +	if (!IS_ENABLED(CONFIG_ARCH_HAS_COPY_MC))
->>>> +		return false;
->>>> +
->>>> +	if (user_mode(regs))
->>>> +		return false;
->>>
->>> This function is called "arm64_do_kernel_sea"; surely the caller should *never*
->>> call this for a SEA taken from user mode?
+在 2024/1/30 20:01, Mark Rutland 写道:
+> On Tue, Jan 30, 2024 at 07:14:35PM +0800, Tong Tiangen wrote:
+>> 在 2024/1/30 1:43, Mark Rutland 写道:
+>>> On Mon, Jan 29, 2024 at 09:46:49PM +0800, Tong Tiangen wrote:
+>>> Further, this change will also silently fixup unexpected kernel faults if we
+>>> pass bad kernel pointers to copy_{to,from}_user, which will hide real bugs.
 >>
->> In do_sea(), the processing logic is as follows:
->>    do_sea()
->>    {
->>      [...]
->>      if (user_mode(regs) && apei_claim_sea(regs) == 0) {
->>         return 0;
->>      }
->>      [...]
->>      //[1]
->>      if (!arm64_do_kernel_sea()) {
->>         arm64_notify_die();
->>      }
->>    }
->>
->> [1] user_mode() is still possible to go here,If user_mode() goes here,
->>   it indicates that the impact caused by the memory error cannot be
->>   processed correctly by apei_claim_sea().
->>
->>
->> In this case, only arm64_notify_die() can be used, This also maintains
->> the original logic of user_mode()'s processing.
+>> I think this is better than the panic kernel, because the real bugs
+>> belongs to the user process. Even if the wrong pointer is
+>> transferred, the page corresponding to the wrong pointer has a memroy
+>> error.
 > 
-> My point is that either:
+> I think you have misunderstood my point; I'm talking about the case of a bad
+> kernel pointer *without* a memory error.
 > 
-> (a) The name means that this should *only* be called for SEAs from a kernel
->      context, and the caller should be responsible for ensuring that.
+> For example, consider some buggy code such as:
 > 
-> (b) The name is misleading, and the 'kernel' part should be removed from the
->      name.
+> 	void __user *uptr = some_valid_user_pointer;
+> 	void *kptr = NULL; // or any other bad pointer
 > 
-> I prefer (a), and if you head down that route it's clear that you can get rid
-> of a bunch of redundant logic and remove the need for do_kernel_sea(), anyway,
-> e.g.
+> 	ret = copy_to_user(uptr, kptr, size);
+> 	if (ret)
+> 		return -EFAULT;
 > 
-> | static int do_sea(unsigned long far, unsigned long esr, struct pt_regs *regs)
-> | {
-> |         const struct fault_info *inf = esr_to_fault_info(esr);
-> |         bool claimed = apei_claim_sea(regs) == 0;
-> |         unsigned long siaddr;
-> |
-> |         if (claimed) {
-> |                 if (user_mode(regs)) {
-> |                         /*
-> |                          * APEI claimed this as a firmware-first notification.
-> |                          * Some processing deferred to task_work before ret_to_user().
-> |                          */
-> |                         return 0;
-> |                 } else {
-> |                         /*
-> |                          * TODO: explain why this is correct.
-> |                          */
-> |                         if ((current->flags & PF_KTHREAD) &&
-> |                             fixup_exception_mc(regs))
-> |                                 return 0;
-> |                 }
-> |         }
+> Before this patch, when copy_to_user() attempted to load from NULL it would
+> fault, there would be no fixup handler for the LDR, and the kernel would die(),
+> reporting the bad kernel access.
+> 
+> After this patch (which adds fixup handlers to all the LDR*s in
+> copy_to_user()), the fault (which is *not* a memory error) would be handled by
+> the fixup handler, and copy_to_user() would return an error without *any*
+> indication of the horrible kernel bug.
+> 
+> This will hide kernel bugs, which will make those harder to identify and fix,
+> and will also potentially make it easier to exploit the kernel: if the user
+> somehow gains control of the kernel pointer, they can rely on the fixup handler
+> returning an error, and can scan through memory rather than dying as soon as
+> they pas a bad pointer.
 
-This code seems to be a bit more concise and avoids misleading function 
-names, which I'll use in the next version:）
-
-> |
-> |         if (esr & ESR_ELx_FnV) {
-> |                 siaddr = 0;
-> |         } else {
-> |                 /*
-> |                  * The architecture specifies that the tag bits of FAR_EL1 are
-> |                  * UNKNOWN for synchronous external aborts. Mask them out now
-> |                  * so that userspace doesn't see them.
-> |                  */
-> |                 siaddr  = untagged_addr(far);
-> |         }
-> |         arm64_notify_die(inf->name, regs, inf->sig, inf->code, siaddr, esr);
-> |
-> |         return 0;
-> | }
-> 
->>>> +
->>>> +	if (apei_claim_sea(regs) < 0)
->>>> +		return false;
->>>> +
->>>> +	if (!fixup_exception_mc(regs))
->>>> +		return false;
->>>> +
->>>> +	if (current->flags & PF_KTHREAD)
->>>> +		return true;
->>>
->>> I think this needs a comment; why do we allow kthreads to go on, yet kill user
->>> threads? What about helper threads (e.g. for io_uring)?
->>
->> If a memroy error occurs in the kernel thread, the problem is more
->> serious than that of the user thread. As a result, related kernel
->> functions, such as khugepaged, cannot run properly. kernel panic should
->> be a better choice at this time.
->>
->> Therefore, the processing scope of this framework is limited to the user
->> thread.
-> 
-> That's reasonable, but needs to be explained in a comment.
-> 
-> Also, as above, I think you haven't conisderd helper threads (e.g. io_uring),
-> which don't have PF_KTHREAD set but do have PF_USER_WORKER set. I suspect those
-> need the same treatment as kthreads.
-
-Okay, I'm going to investigate PF_USER_WORKER.
-
-> 
->>>> +	set_thread_esr(0, esr);
->>>
->>> Why do we set the ESR to 0?
->>
->> The purpose is to reuse the logic of arm64_notify_die() and set the
->> following parameters before sending signals to users:
->>    current->thread.fault_address = 0;
->>    current->thread.fault_code = err;
-> 
-> Ok, but there's no need to open-code that.
-> 
-> As per my above example, please continue to use the existing call to
-> arm64_notify_die() rather than open-coding bits of it.
-
-OK.
+I should understand what you mean. I'll think about this and reply.
 
 Many thanks.
 Tong.
+
+> 
+>> In addition, the panic information contains necessary information
+>> for users to check.
+> 
+> There is no panic() in the case I am describing.
+> 
+>>> So NAK to this change as-is; likewise for the addition of USER() to other ldr*
+>>> macros in copy_from_user.S and the addition of USER() str* macros in
+>>> copy_to_user.S.
+>>>
+>>> If we want to handle memory errors on some kaccesses, we need a new EX_TYPE_*
+>>> separate from the usual EX_TYPE_KACESS_ERR_ZERO that means "handle memory
+>>> errors, but treat other faults as fatal". That should come with a rationale and
+>>> explanation of why it's actually useful.
+>>
+>> This makes sense. Add kaccess types that can be processed properly.
+>>
+>>>
+>>> [...]
+>>>
+>>>> diff --git a/arch/arm64/mm/extable.c b/arch/arm64/mm/extable.c
+>>>> index 478e639f8680..28ec35e3d210 100644
+>>>> --- a/arch/arm64/mm/extable.c
+>>>> +++ b/arch/arm64/mm/extable.c
+>>>> @@ -85,10 +85,10 @@ bool fixup_exception_mc(struct pt_regs *regs)
+>>>>    	if (!ex)
+>>>>    		return false;
+>>>> -	/*
+>>>> -	 * This is not complete, More Machine check safe extable type can
+>>>> -	 * be processed here.
+>>>> -	 */
+>>>> +	switch (ex->type) {
+>>>> +	case EX_TYPE_UACCESS_ERR_ZERO:
+>>>> +		return ex_handler_uaccess_err_zero(ex, regs);
+>>>> +	}
+>>>
+>>> Please fold this part into the prior patch, and start ogf with *only* handling
+>>> errors on accesses already marked with EX_TYPE_UACCESS_ERR_ZERO. I think that
+>>> change would be relatively uncontroversial, and it would be much easier to
+>>> build atop that.
+>>
+>> OK, the two patches will be merged in the next release.
+> 
+> Thanks.
 > 
 > Mark.
 > .
