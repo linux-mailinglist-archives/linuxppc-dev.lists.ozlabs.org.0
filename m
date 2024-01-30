@@ -1,56 +1,143 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29000841E39
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 09:45:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E935841E3E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 09:46:48 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=c4sz7cgL;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PPRvZSOU;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PPRvZSOU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TPJfX0Tm2z3vgc
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 19:45:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TPJgV1FTbz3vkM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 19:46:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=c4sz7cgL;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PPRvZSOU;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PPRvZSOU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::223; helo=relay3-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::223])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TPJXm5HkQz3bq0
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 19:40:56 +1100 (AEDT)
-Received: by mail.gandi.net (Postfix) with ESMTPA id E745B60013;
-	Tue, 30 Jan 2024 08:40:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1706604050;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TPJY94ZQBz3cM7
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 19:41:16 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706604074;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7gu6XjSXx72QSPfbvEMAOKmCJHwRSWYKS/n8dDrRJZ4=;
-	b=c4sz7cgL8XOoRJh3a2KeNSJ6j9/P7M6rsCU5oOIXi5i9aSuS5Fs9ana8gu86AhTdhDQ+NF
-	EqHDgQYqG5HOSat0VoXByxGvoSEsKqGdq3zv+XNjLzWudf+Ss0l0p+l+l510G29eAciBqL
-	15zzapUC/6TIESQvgBLovuPEpWaJScsZep+UZ3GqN5e++p+ggeKh0OcxK2oaMFeOlvDp6u
-	W9pGV9SSjRvrSQGujfsXTWLa7cEbOhNTwnU3Gofl4j8N8eAKFuNBEhbfw0O547kXFopMTa
-	0ooJyEjdDgZ9sI1KzhM8ZN0n8J7wExGBjXZhJVE85NzNnJpE7LPvlAx0YRdCtA==
-From: Herve Codina <herve.codina@bootlin.com>
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Herve Codina <herve.codina@bootlin.com>
-Subject: [PATCH v2 6/6] net: wan: fsl_qmc_hdlc: Add framer support
-Date: Tue, 30 Jan 2024 09:40:21 +0100
-Message-ID: <20240130084035.115086-7-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240130084035.115086-1-herve.codina@bootlin.com>
-References: <20240130084035.115086-1-herve.codina@bootlin.com>
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=WTLnFRdfrnxQwRE7F4TUEf4XESOHlEYGkt2XMSp/gnM=;
+	b=PPRvZSOUrrU7EW8mNWyr/NR91Yp1Zo1wr4RBsyYW9wh4qnjXFjQJ3KrUhrq61FhfdK1jIP
+	4isqV75T7FbpdXfK/p/nGiTJ/zj0NvnBQEkIfV+QlI/cOXpsqjU2ta0CZxltOnZcvWAcBX
+	uSMvHnSPuZWoai3cHC5t0puG6GjmA44=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706604074;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=WTLnFRdfrnxQwRE7F4TUEf4XESOHlEYGkt2XMSp/gnM=;
+	b=PPRvZSOUrrU7EW8mNWyr/NR91Yp1Zo1wr4RBsyYW9wh4qnjXFjQJ3KrUhrq61FhfdK1jIP
+	4isqV75T7FbpdXfK/p/nGiTJ/zj0NvnBQEkIfV+QlI/cOXpsqjU2ta0CZxltOnZcvWAcBX
+	uSMvHnSPuZWoai3cHC5t0puG6GjmA44=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-365-kqoosjyEPne1ROuANoFvEg-1; Tue, 30 Jan 2024 03:41:11 -0500
+X-MC-Unique: kqoosjyEPne1ROuANoFvEg-1
+Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-5101af0a385so2189872e87.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 00:41:11 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706604070; x=1707208870;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :references:cc:to:content-language:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WTLnFRdfrnxQwRE7F4TUEf4XESOHlEYGkt2XMSp/gnM=;
+        b=YpiJ18yGRSN+qPAzmknIi6NYlj1h+06Fg8dTVWHtFom8+xanwnIvuRVw1ZvSVFqWs9
+         iMDfXCokZFiswKQk6VeCk0/sYq24OousWNu7R6QZPKWjkEu0NswuIR7A1TVr5Eocq+Ni
+         Ql7dors8U4Fe4wI1rvOuTV9EeNX97enhskTHNvFUSImOZisphZ7krRPe8WRA+yKF117I
+         QfMMJnvjgWnNXaBKa925qjY9HyNEyudq/E+gwsqgTz9bNf71RmF2MLoVaqwgORc4OeEC
+         NuYMGPAPtzS9HKebMZnlB0ilCY4tc25kIprkRNzesJUeRYyr+/6MqIyQMQ7XKa89Jwwq
+         pOmw==
+X-Gm-Message-State: AOJu0Yz7X1AeVLBAl0e7/x+IswvmMOY0xAMjhdLC2W/xBpFZmNaumtOo
+	gWlKod3aA3BfJ6wT3KaRSpHAceB6MG4hN7ic37o3b6uWKAilf1dwGjUsZdfSReQRVAjz+5uhWu+
+	h05bmCDRu7ZGRHhxuSwHmYhlIzUyFYyvk/4JDecOaYiIdtD0I+v4iex1oxoIjcGQ=
+X-Received: by 2002:a05:6512:e9b:b0:510:ee2d:c185 with SMTP id bi27-20020a0565120e9b00b00510ee2dc185mr5566841lfb.13.1706604070442;
+        Tue, 30 Jan 2024 00:41:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFcI8ngN1g9WgPokS7RyiEf1XgLiCDm+dXR+CkC1Oa7Yg/aFBEbTGjE1f71utFB2RtdPFKXlQ==
+X-Received: by 2002:a05:6512:e9b:b0:510:ee2d:c185 with SMTP id bi27-20020a0565120e9b00b00510ee2dc185mr5566802lfb.13.1706604069964;
+        Tue, 30 Jan 2024 00:41:09 -0800 (PST)
+Received: from ?IPV6:2003:cb:c708:2700:bdf6:739b:9f9d:862f? (p200300cbc7082700bdf6739b9f9d862f.dip0.t-ipconnect.de. [2003:cb:c708:2700:bdf6:739b:9f9d:862f])
+        by smtp.gmail.com with ESMTPSA id p34-20020a05600c1da200b0040f22171921sm838440wms.3.2024.01.30.00.41.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Jan 2024 00:41:09 -0800 (PST)
+Message-ID: <8d19d635-2f55-4c0d-958b-0640f99ff0ce@redhat.com>
+Date: Tue, 30 Jan 2024 09:41:08 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/9] mm/memory: factor out zapping of present pte into
+ zap_present_pte()
+To: Ryan Roberts <ryan.roberts@arm.com>, linux-kernel@vger.kernel.org
+References: <20240129143221.263763-1-david@redhat.com>
+ <20240129143221.263763-2-david@redhat.com>
+ <40e87333-4da9-4497-a117-9885986e376a@arm.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <40e87333-4da9-4497-a117-9885986e376a@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,370 +149,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Vasily Gorbik <gor@linux.ibm.com>, Peter Zijlstra <peterz@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, Nick Piggin <npiggin@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add framer support in the fsl_qmc_hdlc driver in order to be able to
-signal carrier changes to the network stack based on the framer status
-Also use this framer to provide information related to the E1/T1 line
-interface on IF_GET_IFACE and configure the line interface according to
-IF_IFACE_{E1,T1} information.
+On 30.01.24 09:13, Ryan Roberts wrote:
+> On 29/01/2024 14:32, David Hildenbrand wrote:
+>> Let's prepare for further changes by factoring out processing of present
+>> PTEs.
+>>
+>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>> ---
+>>   mm/memory.c | 92 ++++++++++++++++++++++++++++++-----------------------
+>>   1 file changed, 52 insertions(+), 40 deletions(-)
+>>
+>> diff --git a/mm/memory.c b/mm/memory.c
+>> index b05fd28dbce1..50a6c79c78fc 100644
+>> --- a/mm/memory.c
+>> +++ b/mm/memory.c
+>> @@ -1532,13 +1532,61 @@ zap_install_uffd_wp_if_needed(struct vm_area_struct *vma,
+>>   	pte_install_uffd_wp_if_needed(vma, addr, pte, pteval);
+>>   }
+>>   
+>> +static inline void zap_present_pte(struct mmu_gather *tlb,
+>> +		struct vm_area_struct *vma, pte_t *pte, pte_t ptent,
+>> +		unsigned long addr, struct zap_details *details,
+>> +		int *rss, bool *force_flush, bool *force_break)
+>> +{
+>> +	struct mm_struct *mm = tlb->mm;
+>> +	bool delay_rmap = false;
+>> +	struct folio *folio;
+> 
+> You need to init this to NULL otherwise its a random value when calling
+> should_zap_folio() if vm_normal_page() returns NULL.
 
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- drivers/net/wan/fsl_qmc_hdlc.c | 239 ++++++++++++++++++++++++++++++++-
- 1 file changed, 235 insertions(+), 4 deletions(-)
+Right, and we can stop setting it to NULL in the original function. 
+Patch #2 changes these checks, which is why it's only a problem in this 
+patch.
 
-diff --git a/drivers/net/wan/fsl_qmc_hdlc.c b/drivers/net/wan/fsl_qmc_hdlc.c
-index 8316f2984864..388d909ad0c8 100644
---- a/drivers/net/wan/fsl_qmc_hdlc.c
-+++ b/drivers/net/wan/fsl_qmc_hdlc.c
-@@ -9,6 +9,7 @@
- 
- #include <linux/bitmap.h>
- #include <linux/dma-mapping.h>
-+#include <linux/framer/framer.h>
- #include <linux/hdlc.h>
- #include <linux/module.h>
- #include <linux/of.h>
-@@ -28,6 +29,9 @@ struct qmc_hdlc {
- 	struct device *dev;
- 	struct qmc_chan *qmc_chan;
- 	struct net_device *netdev;
-+	struct framer *framer;
-+	spinlock_t carrier_lock; /* Protect carrier detection */
-+	struct notifier_block nb;
- 	bool is_crc32;
- 	spinlock_t tx_lock; /* Protect tx descriptors */
- 	struct qmc_hdlc_desc tx_descs[8];
-@@ -41,6 +45,195 @@ static inline struct qmc_hdlc *netdev_to_qmc_hdlc(struct net_device *netdev)
- 	return dev_to_hdlc(netdev)->priv;
- }
- 
-+static int qmc_hdlc_framer_set_carrier(struct qmc_hdlc *qmc_hdlc)
-+{
-+	struct framer_status framer_status;
-+	unsigned long flags;
-+	int ret;
-+
-+	if (!qmc_hdlc->framer)
-+		return 0;
-+
-+	spin_lock_irqsave(&qmc_hdlc->carrier_lock, flags);
-+
-+	ret = framer_get_status(qmc_hdlc->framer, &framer_status);
-+	if (ret) {
-+		dev_err(qmc_hdlc->dev, "get framer status failed (%d)\n", ret);
-+		goto end;
-+	}
-+	if (framer_status.link_is_on)
-+		netif_carrier_on(qmc_hdlc->netdev);
-+	else
-+		netif_carrier_off(qmc_hdlc->netdev);
-+
-+end:
-+	spin_unlock_irqrestore(&qmc_hdlc->carrier_lock, flags);
-+	return ret;
-+}
-+
-+static int qmc_hdlc_framer_notifier(struct notifier_block *nb, unsigned long action,
-+				    void *data)
-+{
-+	struct qmc_hdlc *qmc_hdlc = container_of(nb, struct qmc_hdlc, nb);
-+	int ret;
-+
-+	if (action != FRAMER_EVENT_STATUS)
-+		return NOTIFY_DONE;
-+
-+	ret = qmc_hdlc_framer_set_carrier(qmc_hdlc);
-+	return ret ? NOTIFY_DONE : NOTIFY_OK;
-+}
-+
-+static int qmc_hdlc_framer_start(struct qmc_hdlc *qmc_hdlc)
-+{
-+	struct framer_status framer_status;
-+	int ret;
-+
-+	if (!qmc_hdlc->framer)
-+		return 0;
-+
-+	ret = framer_power_on(qmc_hdlc->framer);
-+	if (ret) {
-+		dev_err(qmc_hdlc->dev, "framer power-on failed (%d)\n", ret);
-+		return ret;
-+	}
-+
-+	/* Be sure that get_status is supported */
-+	ret = framer_get_status(qmc_hdlc->framer, &framer_status);
-+	if (ret) {
-+		dev_err(qmc_hdlc->dev, "get framer status failed (%d)\n", ret);
-+		goto framer_power_off;
-+	}
-+
-+	qmc_hdlc->nb.notifier_call = qmc_hdlc_framer_notifier;
-+	ret = framer_notifier_register(qmc_hdlc->framer, &qmc_hdlc->nb);
-+	if (ret) {
-+		dev_err(qmc_hdlc->dev, "framer notifier register failed (%d)\n", ret);
-+		goto framer_power_off;
-+	}
-+
-+	return 0;
-+
-+framer_power_off:
-+	framer_power_off(qmc_hdlc->framer);
-+	return ret;
-+}
-+
-+static void qmc_hdlc_framer_stop(struct qmc_hdlc *qmc_hdlc)
-+{
-+	if (!qmc_hdlc->framer)
-+		return;
-+
-+	framer_notifier_unregister(qmc_hdlc->framer, &qmc_hdlc->nb);
-+	framer_power_off(qmc_hdlc->framer);
-+}
-+
-+static int qmc_hdlc_framer_set_iface(struct qmc_hdlc *qmc_hdlc, int if_iface,
-+				     const te1_settings *te1)
-+{
-+	struct framer_config config;
-+	int ret;
-+
-+	if (!qmc_hdlc->framer)
-+		return 0;
-+
-+	ret = framer_get_config(qmc_hdlc->framer, &config);
-+	if (ret)
-+		return ret;
-+
-+	switch (if_iface) {
-+	case IF_IFACE_E1:
-+		config.iface = FRAMER_IFACE_E1;
-+		break;
-+	case IF_IFACE_T1:
-+		config.iface = FRAMER_IFACE_T1;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	switch (te1->clock_type) {
-+	case CLOCK_DEFAULT:
-+		/* Keep current value */
-+		break;
-+	case CLOCK_EXT:
-+		config.clock_type = FRAMER_CLOCK_EXT;
-+		break;
-+	case CLOCK_INT:
-+		config.clock_type = FRAMER_CLOCK_INT;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	config.line_clock_rate = te1->clock_rate;
-+
-+	return framer_set_config(qmc_hdlc->framer, &config);
-+}
-+
-+static int qmc_hdlc_framer_get_iface(struct qmc_hdlc *qmc_hdlc, int *if_iface, te1_settings *te1)
-+{
-+	struct framer_config config;
-+	int ret;
-+
-+	if (!qmc_hdlc->framer) {
-+		*if_iface = IF_IFACE_E1;
-+		return 0;
-+	}
-+
-+	ret = framer_get_config(qmc_hdlc->framer, &config);
-+	if (ret)
-+		return ret;
-+
-+	switch (config.iface) {
-+	case FRAMER_IFACE_E1:
-+		*if_iface = IF_IFACE_E1;
-+		break;
-+	case FRAMER_IFACE_T1:
-+		*if_iface = IF_IFACE_T1;
-+		break;
-+	}
-+
-+	if (!te1)
-+		return 0; /* Only iface type requested */
-+
-+	switch (config.clock_type) {
-+	case FRAMER_CLOCK_EXT:
-+		te1->clock_type = CLOCK_EXT;
-+		break;
-+	case FRAMER_CLOCK_INT:
-+		te1->clock_type = CLOCK_INT;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	te1->clock_rate = config.line_clock_rate;
-+	return 0;
-+}
-+
-+static int qmc_hdlc_framer_init(struct qmc_hdlc *qmc_hdlc)
-+{
-+	int ret;
-+
-+	if (!qmc_hdlc->framer)
-+		return 0;
-+
-+	ret = framer_init(qmc_hdlc->framer);
-+	if (ret) {
-+		dev_err(qmc_hdlc->dev, "framer init failed (%d)\n", ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static void qmc_hdlc_framer_exit(struct qmc_hdlc *qmc_hdlc)
-+{
-+	if (!qmc_hdlc->framer)
-+		return;
-+
-+	framer_exit(qmc_hdlc->framer);
-+}
-+
- static int qmc_hdlc_recv_queue(struct qmc_hdlc *qmc_hdlc, struct qmc_hdlc_desc *desc, size_t size);
- 
- #define QMC_HDLC_RX_ERROR_FLAGS (QMC_RX_FLAG_HDLC_OVF | \
-@@ -299,6 +492,12 @@ static int qmc_hdlc_set_iface(struct qmc_hdlc *qmc_hdlc, int if_iface, const te1
- 
- 	qmc_hdlc->slot_map = te1->slot_map;
- 
-+	ret = qmc_hdlc_framer_set_iface(qmc_hdlc, if_iface, te1);
-+	if (ret) {
-+		dev_err(qmc_hdlc->dev, "framer set iface failed %d\n", ret);
-+		return ret;
-+	}
-+
- 	return 0;
- }
- 
-@@ -306,11 +505,16 @@ static int qmc_hdlc_ioctl(struct net_device *netdev, struct if_settings *ifs)
- {
- 	struct qmc_hdlc *qmc_hdlc = netdev_to_qmc_hdlc(netdev);
- 	te1_settings te1;
-+	int ret;
- 
- 	switch (ifs->type) {
- 	case IF_GET_IFACE:
--		ifs->type = IF_IFACE_E1;
- 		if (ifs->size < sizeof(te1)) {
-+			/* Retrieve type only */
-+			ret = qmc_hdlc_framer_get_iface(qmc_hdlc, &ifs->type, NULL);
-+			if (ret)
-+				return ret;
-+
- 			if (!ifs->size)
- 				return 0; /* only type requested */
- 
-@@ -320,6 +524,11 @@ static int qmc_hdlc_ioctl(struct net_device *netdev, struct if_settings *ifs)
- 
- 		memset(&te1, 0, sizeof(te1));
- 
-+		/* Retrieve info from framer */
-+		ret = qmc_hdlc_framer_get_iface(qmc_hdlc, &ifs->type, &te1);
-+		if (ret)
-+			return ret;
-+
- 		/* Update slot_map */
- 		te1.slot_map = qmc_hdlc->slot_map;
- 
-@@ -353,10 +562,17 @@ static int qmc_hdlc_open(struct net_device *netdev)
- 	int ret;
- 	int i;
- 
--	ret = hdlc_open(netdev);
-+	ret = qmc_hdlc_framer_start(qmc_hdlc);
- 	if (ret)
- 		return ret;
- 
-+	ret = hdlc_open(netdev);
-+	if (ret)
-+		goto framer_stop;
-+
-+	/* Update carrier */
-+	qmc_hdlc_framer_set_carrier(qmc_hdlc);
-+
- 	chan_param.mode = QMC_HDLC;
- 	/* HDLC_MAX_MRU + 4 for the CRC
- 	 * HDLC_MAX_MRU + 4 + 8 for the CRC and some extraspace needed by the QMC
-@@ -406,6 +622,8 @@ static int qmc_hdlc_open(struct net_device *netdev)
- 	}
- hdlc_close:
- 	hdlc_close(netdev);
-+framer_stop:
-+	qmc_hdlc_framer_stop(qmc_hdlc);
- 	return ret;
- }
- 
-@@ -441,6 +659,7 @@ static int qmc_hdlc_close(struct net_device *netdev)
- 	}
- 
- 	hdlc_close(netdev);
-+	qmc_hdlc_framer_stop(qmc_hdlc);
- 	return 0;
- }
- 
-@@ -489,6 +708,7 @@ static int qmc_hdlc_probe(struct platform_device *pdev)
- 
- 	qmc_hdlc->dev = &pdev->dev;
- 	spin_lock_init(&qmc_hdlc->tx_lock);
-+	spin_lock_init(&qmc_hdlc->carrier_lock);
- 
- 	qmc_hdlc->qmc_chan = devm_qmc_chan_get_bychild(qmc_hdlc->dev, np);
- 	if (IS_ERR(qmc_hdlc->qmc_chan)) {
-@@ -517,10 +737,19 @@ static int qmc_hdlc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
-+	qmc_hdlc->framer = devm_framer_optional_get(qmc_hdlc->dev, "fsl,framer");
-+	if (IS_ERR(qmc_hdlc->framer))
-+		return PTR_ERR(qmc_hdlc->framer);
-+
-+	ret = qmc_hdlc_framer_init(qmc_hdlc);
-+	if (ret)
-+		return ret;
-+
- 	qmc_hdlc->netdev = alloc_hdlcdev(qmc_hdlc);
- 	if (!qmc_hdlc->netdev) {
- 		dev_err(qmc_hdlc->dev, "failed to alloc hdlc dev\n");
--		return -ENOMEM;
-+		ret = -ENOMEM;
-+		goto framer_exit;
- 	}
- 
- 	hdlc = dev_to_hdlc(qmc_hdlc->netdev);
-@@ -536,11 +765,12 @@ static int qmc_hdlc_probe(struct platform_device *pdev)
- 	}
- 
- 	platform_set_drvdata(pdev, qmc_hdlc);
--
- 	return 0;
- 
- free_netdev:
- 	free_netdev(qmc_hdlc->netdev);
-+framer_exit:
-+	qmc_hdlc_framer_exit(qmc_hdlc);
- 	return ret;
- }
- 
-@@ -550,6 +780,7 @@ static int qmc_hdlc_remove(struct platform_device *pdev)
- 
- 	unregister_hdlc_device(qmc_hdlc->netdev);
- 	free_netdev(qmc_hdlc->netdev);
-+	qmc_hdlc_framer_exit(qmc_hdlc);
- 
- 	return 0;
- }
+Will fix, thanks!
+
 -- 
-2.43.0
+Cheers,
+
+David / dhildenb
 
