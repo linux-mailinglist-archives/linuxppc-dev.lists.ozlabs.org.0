@@ -2,39 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6963A841E29
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 09:43:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 905C7841E1E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 09:43:08 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=aUnvWw+S;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=Uw6yrSkU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TPJc52M8rz3cRB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 19:43:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TPJbG3X0sz3cc0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 19:43:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=aUnvWw+S;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=Uw6yrSkU;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::223; helo=relay3-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
 Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TPJXm4vyFz3bn8
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TPJXm4vb5z3bfK
 	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 19:40:56 +1100 (AEDT)
-Received: by mail.gandi.net (Postfix) with ESMTPA id 166DD6000C;
+Received: by mail.gandi.net (Postfix) with ESMTPA id D0F3760009;
 	Tue, 30 Jan 2024 08:40:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1706604047;
+	t=1706604048;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=opmB03pxVbtCj6pvCgp5nhczC3sDrqxdKFiEeY7PEsQ=;
-	b=aUnvWw+Sif48HwC03muNUyJ46k83JmJIqcHyF8tHiNSYxV449Nbu8KkNsjIQkjq0BnHDsR
-	mIS45MqKu/3wrR1a27mttIxlGpnKqVtjZjyBOgmi5mTMZDrOcD8semM9tqWqx6ueVIVaJL
-	+TM8zN1+lqHSPZGNYF0hrBfWaWZtenC/itCemBJRMyTgxJHib4LDBPL8eO0GtGPElBxe+z
-	/B6es6ytb2SBaA76kRkHwQGWpihnQqKBhjs027ojv0YCPonjOCGfFMU3r5SYTQ/gwR7u3h
-	MVUKycmHrdFtmUBBfSFb8Zr2C4ZhPrTn/mZ8xCTsQsFfZC/AvqKWEE/qDOWFWA==
+	bh=9ic1ckcjchbcoVTjdKWShBulE5zgYlgBqlicFqMJYpM=;
+	b=Uw6yrSkUlrdIS5Zut2e2GX19e5AUteDIck4QirysvTiIcCrPwIu82YRu2a82qBPWCFVNhJ
+	R3P3jWrakZ6fKJRC09dzFlszQMUxX4/CF4o+zR/WxVNrU569ZXqu0VJbLy6CxCNXOWh6Vq
+	OS1NIhoPZWKoFCD33Dxr6YJHv6dOEjLD4i9Z0h5cAG9u/CL3y6wz5TmPCsZK6OXJ7qtBK4
+	UqJCHzDvMdEhkL0UlCHUZLljlJ8xLHjkMuGAvHTwvfuoc0t9UU++d3K9Euo16lySiU1//z
+	bmFwSCrIuMVt/F+9cqm5TAHUJ5J6Soeycpy7kU84DrBKS4P4hYfRWmSSpA8URg==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -42,9 +42,9 @@ To: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Herve Codina <herve.codina@bootlin.com>
-Subject: [PATCH v2 2/6] MAINTAINERS: Add the Freescale QMC HDLC driver entry
-Date: Tue, 30 Jan 2024 09:40:17 +0100
-Message-ID: <20240130084035.115086-3-herve.codina@bootlin.com>
+Subject: [PATCH v2 3/6] bitmap: Make bitmap_onto() available to users
+Date: Tue, 30 Jan 2024 09:40:18 +0100
+Message-ID: <20240130084035.115086-4-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240130084035.115086-1-herve.codina@bootlin.com>
 References: <20240130084035.115086-1-herve.codina@bootlin.com>
@@ -66,32 +66,40 @@ Cc: Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org, linux-kernel@vger.kern
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-After contributing the driver, add myself as the maintainer for the
-Freescale QMC HDLC driver.
+Currently the bitmap_onto() is available only for CONFIG_NUMA=y case,
+while some users may benefit out of it and being independent to NUMA
+code.
+
+Make it available to users by moving out of ifdeffery and exporting for
+modules.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
+ lib/bitmap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8d1052fa6a69..15cd3a8e5866 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -8584,6 +8584,13 @@ F:	Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml
- F:	drivers/soc/fsl/qe/qmc.c
- F:	include/soc/fsl/qe/qmc.h
+diff --git a/lib/bitmap.c b/lib/bitmap.c
+index 09522af227f1..2feccb5047dc 100644
+--- a/lib/bitmap.c
++++ b/lib/bitmap.c
+@@ -547,7 +547,6 @@ int bitmap_bitremap(int oldbit, const unsigned long *old,
+ }
+ EXPORT_SYMBOL(bitmap_bitremap);
  
-+FREESCALE QUICC ENGINE QMC HDLC DRIVER
-+M:	Herve Codina <herve.codina@bootlin.com>
-+L:	netdev@vger.kernel.org
-+L:	linuxppc-dev@lists.ozlabs.org
-+S:	Maintained
-+F:	drivers/net/wan/fsl_qmc_hdlc.c
-+
- FREESCALE QUICC ENGINE TSA DRIVER
- M:	Herve Codina <herve.codina@bootlin.com>
- L:	linuxppc-dev@lists.ozlabs.org
+-#ifdef CONFIG_NUMA
+ /**
+  * bitmap_onto - translate one bitmap relative to another
+  *	@dst: resulting translated bitmap
+@@ -681,7 +680,9 @@ void bitmap_onto(unsigned long *dst, const unsigned long *orig,
+ 		m++;
+ 	}
+ }
++EXPORT_SYMBOL(bitmap_onto);
+ 
++#ifdef CONFIG_NUMA
+ /**
+  * bitmap_fold - fold larger bitmap into smaller, modulo specified size
+  *	@dst: resulting smaller bitmap
 -- 
 2.43.0
 
