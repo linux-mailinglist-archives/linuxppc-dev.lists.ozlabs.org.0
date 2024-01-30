@@ -1,141 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB082841EDE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 10:09:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11D5C841F25
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 10:17:19 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=e3Nw3BYr;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=e3Nw3BYr;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=GIQpSoHA;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TPK9x59bbz3cTL
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 20:09:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TPKLh6xJhz3cFf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 20:17:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=e3Nw3BYr;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=e3Nw3BYr;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=GIQpSoHA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=wenst@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TPK9C0Ngrz30XZ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 20:09:02 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706605739;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=iMFtN9YM7NI14gClvQJVTv8Klat8uVExXnf558gk9Hk=;
-	b=e3Nw3BYrPvr/Qqj5bP44qsCsQyI8RufPxLoQpOd6MkynTejInQPazK6VRVuq400SE254TF
-	hwUX7bUDKjsQFtnS/kucVhckt/bwg9V01OLpkpnnKuBANd2ctyK4Tl/93jrAgF8kmLZcMa
-	9IXh4GNwxCyb/AYfAkx0NucEZUgwUL0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706605739;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=iMFtN9YM7NI14gClvQJVTv8Klat8uVExXnf558gk9Hk=;
-	b=e3Nw3BYrPvr/Qqj5bP44qsCsQyI8RufPxLoQpOd6MkynTejInQPazK6VRVuq400SE254TF
-	hwUX7bUDKjsQFtnS/kucVhckt/bwg9V01OLpkpnnKuBANd2ctyK4Tl/93jrAgF8kmLZcMa
-	9IXh4GNwxCyb/AYfAkx0NucEZUgwUL0=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-338-dacol3zcP-eiChOstN5ihw-1; Tue, 30 Jan 2024 04:08:57 -0500
-X-MC-Unique: dacol3zcP-eiChOstN5ihw-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-40eee438e92so19040675e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 01:08:56 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TPKKv1frYz2yRS
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 20:16:32 +1100 (AEDT)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1d73066880eso29633515ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 01:16:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1706606190; x=1707210990; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qSmJDkz986T7M3StX+74NzpcKDLTKyki6HvWHSvEFfE=;
+        b=GIQpSoHA6udwkItAQ3VeR+DABxGerCHuuqxnq0+pUUQLd00lDVM2pA3awzgYNhLU/i
+         SmRoahh9hwhfCEpsc2FV9LzBQ3PbMN9MPSrBQXAPgwlBV2YS4Mwm2ANwMJWbfvwb7gcv
+         x5jg3rvuY9MES9J31uwophh/DX65PUEWokZZE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706605736; x=1707210536;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :references:cc:to:content-language:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1706606190; x=1707210990;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iMFtN9YM7NI14gClvQJVTv8Klat8uVExXnf558gk9Hk=;
-        b=oxl6yCrlkdaK0sMA4a7OeQi20y9Xnmf0XWedx2hONJZP/C3btcZV8rh0av2bVmuayX
-         YWr8o8DbbbVjWZoNxG5d/XKOKopVD7cfIpnDeJ+kDRCXKDP3vqkiuI8p8kR4T54SBfzO
-         7En3JUkgSXwkFF3lHnOQgAm9mS2nDsZWsYeW5dnNjtvJZ7nfsEdrmlPJUa8SCZSg9POQ
-         fNc2U1qP0gXKvqkEqKqUFPz89ymHZl5a00Yk9If7B5jdEeVHS5yvNqJCgQ5Lk1tXS/v7
-         FR4M6op0Dt++RWR0n8gc6IW0ikgvwYR3z7xdRmiLwVelYafVeBzF0sULDCk4JU/Vs3HZ
-         aRyQ==
-X-Gm-Message-State: AOJu0YxyKrFLjwA8KYm+i/DBl6DRhlHAw0vjHHrXm933P4onE4NnXpcj
-	WZ5iGbJI/uHoQIQmC8u6e4gzaewThVeileXfqq5rlojvqHH+47D2dynvttYKtIS+IrGLMzVpjF0
-	LKIYmgADijaytN1Q0t1K9ZJH9NzpR4vQkBrLqvrd9g+PRMtsxIomjcf5q/5j07mc=
-X-Received: by 2002:a05:600c:2941:b0:40e:e912:8f74 with SMTP id n1-20020a05600c294100b0040ee9128f74mr6819514wmd.25.1706605736022;
-        Tue, 30 Jan 2024 01:08:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH6Uit37MZF9xsn/6TflWQzU2N4yu2GzCcbdJtN3Xh+ex/+Pyt9LHa3hTGrN/MJecJrHUxA/g==
-X-Received: by 2002:a05:600c:2941:b0:40e:e912:8f74 with SMTP id n1-20020a05600c294100b0040ee9128f74mr6819489wmd.25.1706605735651;
-        Tue, 30 Jan 2024 01:08:55 -0800 (PST)
-Received: from ?IPV6:2003:cb:c708:2700:bdf6:739b:9f9d:862f? (p200300cbc7082700bdf6739b9f9d862f.dip0.t-ipconnect.de. [2003:cb:c708:2700:bdf6:739b:9f9d:862f])
-        by smtp.gmail.com with ESMTPSA id b7-20020adfee87000000b0033aebf727b2sm5441018wro.60.2024.01.30.01.08.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Jan 2024 01:08:55 -0800 (PST)
-Message-ID: <af5d1332-bbcc-4110-a167-84f2bb592794@redhat.com>
-Date: Tue, 30 Jan 2024 10:08:53 +0100
+        bh=qSmJDkz986T7M3StX+74NzpcKDLTKyki6HvWHSvEFfE=;
+        b=i7V01MESfCEK5mZphrEW+1IL7+sZN50KxfOnd7lVEnqhEGnrXDzwE6NhE/XovWmCZM
+         E9fHzqIez145XcMystCA6L7UbCfTsFbBIqkuB0idjxDW/1pNt5twLOnzgRyNTQikJbj0
+         /sBxkvvs5v6GuGekeDLVlz7Ev+SfFSOsnOIZSPE+21JRWYxaPMqzxhA0M8CHtzqKQVS9
+         VA5TiPFYRuq0hamwjREbAYlB4YDmEXX8xA37IXc7uu2tcADIpgqXuRKEYkpsIMA3MpbI
+         btfiu0Zzcv1dkZV/STwBq3f3JZoJmjFFSUkG+A2/S/51d/Gyszxtq1Sdgj7OIF3Dgivf
+         ZVfQ==
+X-Gm-Message-State: AOJu0Yw1JVUUdi9fTMdh+oFgYf9oC1Sd8mTwCPqqOxu1Ed4oa9UD9+9i
+	AwISMsGrv9yL5HHg68jr2yE9bE326zJQ4IrrVfuPIZlTRRYPhUMqqa5bmhVDCg==
+X-Google-Smtp-Source: AGHT+IHFU/he6S9dxGtNcZ4mRuNpcLuFDaUOykdO5oi66rSbqDidpgnEH7smXpQQlGgP3nvFq0Mnaw==
+X-Received: by 2002:a17:903:22cd:b0:1d7:7edb:e9b9 with SMTP id y13-20020a17090322cd00b001d77edbe9b9mr9062280plg.37.1706606189953;
+        Tue, 30 Jan 2024 01:16:29 -0800 (PST)
+Received: from google.com ([2401:fa00:1:10:469:110f:d748:6896])
+        by smtp.gmail.com with ESMTPSA id i18-20020a170902c95200b001d7439bf914sm6701420pla.235.2024.01.30.01.16.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jan 2024 01:16:29 -0800 (PST)
+Date: Tue, 30 Jan 2024 17:16:26 +0800
+From: Chen-Yu Tsai <wenst@chromium.org>
+To: Luis Chamberlain <mcgrof@kernel.org>
+Subject: Re: [PATCH 1/3] init: Declare rodata_enabled and mark_rodata_ro() at
+ all time
+Message-ID: <20240130091626.GA3684878@google.com>
+References: <7b5df1782e94a755b4a18733af44d17d8dd8b37b.1703149011.git.christophe.leroy@csgroup.eu>
+ <ZbgGDlgrLhB8tcGI@bombadil.infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 9/9] mm/memory: optimize unmap/zap with PTE-mapped THP
-To: linux-kernel@vger.kernel.org
-References: <20240129143221.263763-1-david@redhat.com>
- <20240129143221.263763-10-david@redhat.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20240129143221.263763-10-david@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZbgGDlgrLhB8tcGI@bombadil.infradead.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -147,71 +76,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Ryan Roberts <ryan.roberts@arm.com>, Arnd Bergmann <arnd@arndb.de>, Vasily Gorbik <gor@linux.ibm.com>, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, linuxppc-dev@lists.ozlabs.org, Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, Nick Piggin <npiggin@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-modules@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Re-reading the docs myself:
+Hi,
 
-> +#ifndef get_and_clear_full_ptes
-> +/**
-> + * get_and_clear_full_ptes - Clear PTEs that map consecutive pages of the same
-> + *			     folio, collecting dirty/accessed bits.
-> + * @mm: Address space the pages are mapped into.
-> + * @addr: Address the first page is mapped at.
-> + * @ptep: Page table pointer for the first entry.
-> + * @nr: Number of entries to clear.
-> + * @full: Whether we are clearing a full mm.
-> + *
-> + * May be overridden by the architecture; otherwise, implemented as a simple
-> + * loop over ptep_get_and_clear_full(), merging dirty/accessed bits into
-> + * returned PTE.
+On Mon, Jan 29, 2024 at 12:09:50PM -0800, Luis Chamberlain wrote:
+> On Thu, Dec 21, 2023 at 10:02:46AM +0100, Christophe Leroy wrote:
+> > Declaring rodata_enabled and mark_rodata_ro() at all time
+> > helps removing related #ifdefery in C files.
+> > 
+> > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> 
+> Very nice cleanup, thanks!, applied and pushed
+> 
+>   Luis
 
-"into the"
+On next-20240130, which has your modules-next branch, and thus this
+series and the other "module: Use set_memory_rox()" series applied,
+my kernel crashes in some very weird way. Reverting your branch
+makes the crash go away.
 
-> + *
-> + * Note that PTE bits in the PTE range besides the PFN can differ. For example,
-> + * some PTEs might be write-protected.
-> + *
-> + * Context: The caller holds the page table lock.  The PTEs map consecutive
-> + * pages that belong to the same folio.  The PTEs are all in the same PMD.
-> + */
-> +static inline pte_t get_and_clear_full_ptes(struct mm_struct *mm,
-> +		unsigned long addr, pte_t *ptep, unsigned int nr, int full)
-> +{
-> +	pte_t pte, tmp_pte;
-> +
-> +	pte = ptep_get_and_clear_full(mm, addr, ptep, full);
-> +	while (--nr) {
-> +		ptep++;
-> +		addr += PAGE_SIZE;
-> +		tmp_pte = ptep_get_and_clear_full(mm, addr, ptep, full);
-> +		if (pte_dirty(tmp_pte))
-> +			pte = pte_mkdirty(pte);
-> +		if (pte_young(tmp_pte))
-> +			pte = pte_mkyoung(pte);
-> +	}
-> +	return pte;
-> +}
-> +#endif
-> +
-> +#ifndef clear_full_ptes
-> +/**
-> + * clear_full_ptes - Clear PTEs that map consecutive pages of the same folio.
-> + * @mm: Address space the pages are mapped into.
-> + * @addr: Address the first page is mapped at.
-> + * @ptep: Page table pointer for the first entry.
-> + * @nr: Number of entries to clear.
-> + * @full: Whether we are clearing a full mm.
+I thought I'd report it right away. Maybe you folks would know what's
+happening here? This is on arm64.
 
-Something went missing:
-
-May be overridden by the architecture; otherwise, implemented as a 
-simple loop over ptep_get_and_clear_full().
-
-
--- 
-Cheers,
-
-David / dhildenb
+[   10.481015] Unable to handle kernel paging request at virtual address ffffffde85245d30
+[   10.490369] KASAN: maybe wild-memory-access in range [0x000000f42922e980-0x000000f42922e987]
+[   10.503744] Mem abort info:
+[   10.509383]   ESR = 0x0000000096000047
+[   10.514400]   EC = 0x25: DABT (current EL), IL = 32 bits
+[   10.522366]   SET = 0, FnV = 0
+[   10.526343]   EA = 0, S1PTW = 0
+[   10.530695]   FSC = 0x07: level 3 translation fault
+[   10.537081] Data abort info:
+[   10.540839]   ISV = 0, ISS = 0x00000047, ISS2 = 0x00000000
+[   10.546456]   CM = 0, WnR = 1, TnD = 0, TagAccess = 0
+[   10.551726]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[   10.557612] swapper pgtable: 4k pages, 39-bit VAs, pgdp=0000000041f98000
+[   10.565214] [ffffffde85245d30] pgd=100000023ffff003, p4d=100000023ffff003, pud=100000023ffff003, pmd=10000001121eb003, pte=0000000000000000
+[   10.578887] Internal error: Oops: 0000000096000047 [#1] PREEMPT SMP
+[   10.585815] Modules linked in:
+[   10.590235] CPU: 6 PID: 195 Comm: (udev-worker) Tainted: G    B              6.8.0-rc2-next-20240130-02908-ge8ad01d60927-dirty #163 3f2318148ecc5fa70d1092c2b874f9b59bdb7d60
+[   10.607021] Hardware name: Google Tentacruel board (DT)
+[   10.613607] pstate: a0400009 (NzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[   10.621954] pc : module_bug_finalize+0x118/0x148
+[   10.626823] lr : module_bug_finalize+0x118/0x148
+[   10.631463] sp : ffffffc0820478d0
+[   10.631466] x29: ffffffc0820478d0 x28: ffffffc082047ca0 x27: ffffffde8d7d31a0
+[   10.631477] x26: ffffffde85223780 x25: 0000000000000000 x24: ffffffde8c413cc0
+[   10.631486] x23: ffffffde8dfcec80 x22: ffffffde8dfce000 x21: ffffffde85223ba8
+[   10.631495] x20: ffffffde85223780 x19: ffffffde85245d28 x18: 0000000000000000
+[   10.631504] x17: ffffffde8aa15938 x16: ffffffde8aabdd90 x15: ffffffde8aab8124
+[   10.631513] x14: ffffffde8acdd380 x13: 0000000041b58ab3 x12: ffffffbbd1bf9d91
+[   10.631522] x11: 1ffffffbd1bf9d90 x10: ffffffbbd1bf9d90 x9 : dfffffc000000000
+[   10.631531] x8 : 000000442e406270 x7 : ffffffde8dfcec87 x6 : 0000000000000001
+[   10.631539] x5 : ffffffde8dfcec80 x4 : 0000000000000000 x3 : ffffffde8bbadf08
+[   10.631548] x2 : 0000000000000001 x1 : ffffffde8eaff080 x0 : 0000000000000000
+[   10.631556] Call trace:
+[   10.631559]  module_bug_finalize+0x118/0x148
+[   10.631565]  load_module+0x25ec/0x2a78
+[   10.631572]  __do_sys_init_module+0x234/0x418
+[   10.631578]  __arm64_sys_init_module+0x4c/0x68
+[   10.631584]  invoke_syscall+0x68/0x198
+[   10.631589]  el0_svc_common.constprop.0+0x11c/0x150
+[   10.631594]  do_el0_svc+0x38/0x50
+[   10.631598]  el0_svc+0x50/0xa0
+[   10.631604]  el0t_64_sync_handler+0x120/0x130
+[   10.631609]  el0t_64_sync+0x1a8/0x1b0
+[   10.631619] Code: 97c5418e c89ffef5 91002260 97c53ca7 (f9000675)
+[   10.631624] ---[ end trace 0000000000000000 ]---
+[   10.642965] Kernel panic - not syncing: Oops: Fatal exception
+[   10.642975] SMP: stopping secondary CPUs
+[   10.648339] Kernel Offset: 0x1e0a800000 from 0xffffffc080000000
+[   10.648343] PHYS_OFFSET: 0x40000000
+[   10.648345] CPU features: 0x0,c0000061,7002814a,2100720b
+[   10.648350] Memory Limit: none
 
