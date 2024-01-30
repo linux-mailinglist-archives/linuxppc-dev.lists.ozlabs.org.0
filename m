@@ -2,109 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FA9F841B79
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 06:38:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8492841C91
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 08:29:18 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=Q7aov1W3;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dIf6z8gJ;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dWKtxfWJ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TPDTt0ySjz3c56
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 16:38:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TPGy44g36z3cM7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 18:29:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=Q7aov1W3;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dIf6z8gJ;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dWKtxfWJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=outlook.com (client-ip=2a01:111:f403:2c18::801; helo=nam12-bn8-obe.outbound.protection.outlook.com; envelope-from=mhklinux@outlook.com; receiver=lists.ozlabs.org)
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12olkn20801.outbound.protection.outlook.com [IPv6:2a01:111:f403:2c18::801])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=piliu@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TPDT23J57z30hF
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 16:37:25 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZvbsOir8cbsXIOhX6IacKgKxwtGlDvvCbmmCwDZDqsFp3zJ+hah7G14t4DnNsUAPZADsdbKcRzGODGnIg8ZkVcAJpK0zLygbuX9GjWzZoE28XfeMT4VGVT+xOnA/RRz/cRlgl3VJvt/A8KrQv4nyc36lbNTpYhYDo4eFAHWC0xQoatyqAWJBzpfIdSLfqNM680/OAWbSEoGXqlBYlUShn/pSTnRR1JRRzUR2ezGjDtO0+fLnehl7LgLjquwgQIWqkZ0llV4iwnZPBTdlN7t6dUQHGJjiCjMrujYEZ6MXHPXqoJAjm9CVZh8/CZrddTbPPOqDIFMsjE1JVMlx3VvAdw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ePbyv4Cys6R9EWXnFliOFQTh/8OgQ8tkirzhniJ99GM=;
- b=ivXw+t8LVw179ZnQriHr6GMgwQDlEyHy7QkjiHqXDTV+jlsBxvWiVCt2M7o/K2X2/ga6OaABtscJudli4V7uaBoECoyVnACB5oETTAmf/bRfqGP9swHm0sklw2aqt45ZH5V64qsRNq+L63Qi0LKaSl0FJfpeRNYzt5mL74SxbMgreKwnkkeLvPw3W7HbD0+bfKUPLcCTR+6rvznVkbrZzX5d5oF6Kyl81TJpgL2jIwawAzXjyIAIJ5FwdGDWktNdpKDi3Lm+rYxnu5/qU6jXEEIwHiuMbRI7wOUCIoz/B+WeRyjwcrVa9g/3sLWCSgPJmRp5Ljv67gXXkB4ErAcz0Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ePbyv4Cys6R9EWXnFliOFQTh/8OgQ8tkirzhniJ99GM=;
- b=Q7aov1W3ga/uFq1/3is2m/dij1IWXm4XYFdLaffQ5NFrs2Fs/RkyrHTlx/obkpcTI8KeWKcuS+EcJHnqusQfLj40ipBTnUgDHQZ1drMcfNoODd5lhZ/5VE6whtEXJHWxXxHTOCN2fB8JkFI6/GEVpSpeixWEdnMaEWsAqIwED6tDlqqUiVejbDvdm4+8NPeKdj/hmrfhP+vrLenuhgQf7LW79DNtAISjRR9Xv5FmgYG+39Ik0Y1eFVt33uyt2Y5fmHMZGYuXPSJ94Wqqr2QOo2hWczJjwD3Ykje5fsnbToqr/wFy9C2o4Bx9emziVrnkuPErreFRzJS1GoEJlMVskA==
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
- by CH2PR02MB6728.namprd02.prod.outlook.com (2603:10b6:610:7e::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.33; Tue, 30 Jan
- 2024 05:36:59 +0000
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::67a9:f3c0:f57b:86dd]) by SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::67a9:f3c0:f57b:86dd%5]) with mapi id 15.20.7228.029; Tue, 30 Jan 2024
- 05:36:59 +0000
-From: Michael Kelley <mhklinux@outlook.com>
-To: Baoquan He <bhe@redhat.com>, "kexec@lists.infradead.org"
-	<kexec@lists.infradead.org>, "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>
-Subject: RE: [PATCH v2 linux-next 1/3] x86, crash: don't nest
- CONFIG_CRASH_DUMP ifdef inside CONFIG_KEXEC_CODE ifdef scope
-Thread-Topic: [PATCH v2 linux-next 1/3] x86, crash: don't nest
- CONFIG_CRASH_DUMP ifdef inside CONFIG_KEXEC_CODE ifdef scope
-Thread-Index: AQHaUyh40go+WQA5m0KtJmeFc8tkfrDx1bKw
-Date: Tue, 30 Jan 2024 05:36:59 +0000
-Message-ID:  <SN6PR02MB4157BA050EF4F9D9F58BC694D47D2@SN6PR02MB4157.namprd02.prod.outlook.com>
-References: <20240129135033.157195-1-bhe@redhat.com>
- <ZbhmL/jQtZ7TFZqV@MiWiFi-R3L-srv>
-In-Reply-To: <ZbhmL/jQtZ7TFZqV@MiWiFi-R3L-srv>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-tmn: [VDYORJ1NoFVwoncY4cx01ogrvBox94eG]
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|CH2PR02MB6728:EE_
-x-ms-office365-filtering-correlation-id: f6328023-b16c-4bca-3cb0-08dc21557a96
-x-ms-exchange-slblob-mailprops:  I89ikN2gb/9QbZtBpKkFdMk9gU7jZqZBTe7LPV7TAM+eVIUHrjlNRxn9SoJbiTKOEel6Zs9xDJ0eGGLvYsa1vpMfTjr/kYcziSbS5dQw2vEt9HnNh/WRyS1mE7oHyMLUo99xCzoCzlnY7tm+gI7Idx16W3VvMxqOqvLsJ5qKSwAhDlK5K3nWyHlRfL7ZJ/QMG0CR2xRXnM8A0VrzFcbZBhdt3hD9DLfYliVJt4Tq04GPSqrPAw+VTx9Ppfn7WIMSecnOriaKX8OSFlXsC7WwWL0Xny9wR7QaFN7ULKfDREMmWACMOqZ4jCyaLQdk8VT90NX0KilqwVeWMVabI6xo8PP9WhIQu9+FyFG2DL/iMnqSNmqdkcZlduLyTKK++/MjekbNGR9SQRWEgr714RGDkiaY7cCWWJKnOBtYtCzGlSS5gVj0D0dGoC9soCOC47zlvXiwEr5IEM66vws+4HnE/3HNNAMHevwH7scQnvKFA9+nCwvWcCpg6ZhtAct3lSHfZfrul+Cz2Hn4RQG9TsBnup3YR0K9ZoQKh7icGxmFNtjs+ZpkdtFDozxWYX87eIr39Qsi75gsytA/duiKUTIzbAKp+qwzYK0oFVO2sVzGPwl2d9eqq+G+CPTbz/aKMbQp2wqvMAUfeB71K3NDOC4lO1tQAyRJsFqWGxjoA9yBesdqsD1LOT7eU37jvGtfA7orCbI1Wv4qB+Ubs0KTIbpow2JiaJKWciyRMr8aLLAWdc90iTq3+V7F1JfwtR0yUvxZ05i+lOGI9lZ12fwZBRbDmjD8hyKKFDpLSvY6bGhzSZysimc5YzxtRnO0WXXe2xwkWlrOywRh4bIrwAlUrGHXlYvWjfNs81pYMBm/ZKmztJVph9A//RpU7cdvQteN3BwE64ZRq4dYqVI=
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  nEfAoiEFUwKWt8O37FmbSaXn4XOs2vOVebnZPji0gvNEthBzMKZNi4CklBO4Z4rJy5WKXTMKzWyvslXxa4YOKmcZREB+82QFdKL6fZIBGYRKmRf7yccXuodD61XrQS2mVQlGBoQq04b8ybrPuZ8038oUjALBAhW9vV0a7rICSBb9LUvqbeHXOpxNiB+lhegHjR9CpIg44+fXpm32d3rQNom5daQtJexK13Q3/RwThG70ed9nMNECh6Kwnjy67oUyUfJNx4b5XMySRchQq+7Jzf4AUjZaTZB2WpmP8kd+VK14z06lKqXHLyyeg1xR4JpjX1xjrds8DxffzEQFL2j7RaidfpnxEeNUDvyWPVORJIyWdwQom1adrrCRKoLvsbnPaIuNgm27VCIB20BXJofpz2i6PGnXPyPPz3JA+XWqGF5kzSbuLkwH4zR9rhb7bf3QmAi7EnDdN1cx3EO8Yrk8DRCm219cSBfWygeFpSYp9TvQuFShn7+vVYxdG6WKQW0kCfwB31TLNBWpTbOxWvYHARnHSwxJmv7tYgpPEpEb+Ryk6QWznQdTFVJT9Jhc1uRNgFbNZrZMngTjbaTbQ8IHSekvgVZdLgdYqR7IuPbq8NAnbn1uiWsiq9rMfy7t6FYbJPbgQVCKfIqxFLlfY3tc4A==
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?us-ascii?Q?yUhm9bN62hMTp6PwIbxaghVUECXBtPW1Lc30pSmY6HpQMrFaFLX+BLsX0uB6?=
- =?us-ascii?Q?jIF00WeBb1S5QlSdO4C7q0Ufsvf2rtiponsVLXznX12bIpI5HX7xaKuYX9od?=
- =?us-ascii?Q?auy9tiN/GnhOQheCLeg1U1WjFSXo9EucEakEphhjrDZm8T+LX4Fb2Ug910sz?=
- =?us-ascii?Q?ZXVm31DmIKtgl2zADzvvS6KQQ2c2M4HnZduQezk2sYWp8H/Q79znTyi2CQ2E?=
- =?us-ascii?Q?CD6o13TbrRM3iYb3NrFrpMAe3Yk2VMguoMB7nd7k7OxEiL2U4Onb5JcCkUSS?=
- =?us-ascii?Q?lPgaGqv0l7qTjLd84cMV1iRU/Yc5zgSbLCAsm+hSuUEh9aGDSCCPhxVdCxZ2?=
- =?us-ascii?Q?sjtPm1RALTZV5ZAwg7b+4cmnaV6vq/2IKRpnJSRbRxjsJxVAnVlbS/jekVTH?=
- =?us-ascii?Q?L0ujxsnD38hlaetMg/cw3ER5LBGfbzqTJWca0InsS/55hLhr4YU5Aq8cKLDj?=
- =?us-ascii?Q?06K2NJ+JnLd8CKIgLevKayjiw8/W66K9endcYefVcDoVfnOQUgJ5kDSvxxJ7?=
- =?us-ascii?Q?dILUTkU+E7yqu+tKp6BwDAhFnGrj6QT5R5QiN39TRCUaTENctuw9YF1xIvi8?=
- =?us-ascii?Q?W13olJIV6BtN0f3uAmpMbpQWK8nlWNogunOnW5z2poELl0YJY+wtyFykPL+2?=
- =?us-ascii?Q?YQ2ko3FP0/EEJciy26DqgRqd9RrQ8GO2a+M7EYQEeHAxtITDCCGvjDK0yv51?=
- =?us-ascii?Q?5jYLg1WsPQ82Zk86OGX99pwNqALF9WzV3Zrq4otkvXsvKpUqxC8UeyF+MAdg?=
- =?us-ascii?Q?w1c13QDCN0MONZtSSmaBYXodb+fCqSGikh6wPpAo15kvUAgmdHWOMVkCrjVC?=
- =?us-ascii?Q?fLGeeK1cKhsjq2a6iAHgb5bVPO3DSnOd7BAv+7BMNXDtK3GeqaXMLaYUKih+?=
- =?us-ascii?Q?mah8kcMk0jeHnA146obsusFpNygwntXZ2nLrwvrKyhPbTLb82CwcH5dg4E0Q?=
- =?us-ascii?Q?yzsV5Vp/6Fz5ZGzMEU6RN1J9Op5+H9zaPVLBJbUDieusqpsfHSgfByvsG2rV?=
- =?us-ascii?Q?ZsHa8a3vlSZY9oDELqXyRd9Wj3eafyDMCUkeWoqMAhVqOb25ZQMcVCC3nAi0?=
- =?us-ascii?Q?HMZnRo4W0jbawzGtiHH9rzbdF2yXAVV4rI1rfTxxZ9n/fJ2M0xzkoX/jqn3h?=
- =?us-ascii?Q?oD/gyicMqLPW4JWMjri+BI2GYYJ3MbBvhqT+dpiBEc+O3g89HUvTMAfdsd4j?=
- =?us-ascii?Q?bXVtCeISgi0t2KqIxY876I1RKrodqh34mgJ0Xg=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TPGxK1t3tz303d
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 18:28:35 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706599712;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=am88xYWpJaG93q3qG+mYeSVgM3JEqxYmPGVyxw1vBgk=;
+	b=dIf6z8gJDRw5iApsC2j3Iuh/Batoc2kHf5F/FI1onLAY1uOhd31CxW3lQSt5m2qZozmZ7w
+	INE1apoOoTI2kNc2DxLL+twJYJwi193VbSad0G2avKpIndiHX3KIazeOxZ5wW6G6dhxBse
+	2I4ByijMze+9JtoeiPE5I/7iliwYGOg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706599713;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=am88xYWpJaG93q3qG+mYeSVgM3JEqxYmPGVyxw1vBgk=;
+	b=dWKtxfWJvDx7scpAwSnK31R+YLYLCb5fRYwH9Yg3c+Hyvsx+HTaYfN74/c0gvGqCJx6X4A
+	QkOs2+9Bm4RjnIBhcoZdAP+4DU9kGTJtDZtjVgaNbKi9HYnTJSRMJY3dNLe7/zCf5t66Fq
+	uF0Qm+glSZl6COtVp+rdnXuq9QfV33I=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-132-1bMyJKOTP1qjB5ilqkVvPw-1; Tue, 30 Jan 2024 02:28:30 -0500
+X-MC-Unique: 1bMyJKOTP1qjB5ilqkVvPw-1
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-68c4f9c5c4fso40094816d6.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jan 2024 23:28:30 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706599710; x=1707204510;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=am88xYWpJaG93q3qG+mYeSVgM3JEqxYmPGVyxw1vBgk=;
+        b=aHo74yykIrjyxCivd61EyYhE4sK2EjCRtYPhsSXieUC/W3An/ph9m7a9l1gfn3JV/R
+         1oxEMDxBlLDQhdnZbH5dTk9nLPDFX2t+9gXW3+QHTW+i8miiedH+maARPz9DqkRlgMAq
+         GPZxXrBA+2PdlMJ4ILN28rXaFBTMYGfQ9I5jWI+tZZyQ50gs7f1BkisRFphYD23Q7UAq
+         GVQaY863yZEOfUnfE57VqZfuhQZnwVSt/4e9iFLKGLpKe6b3NkacKM54tNilMuBxvxs8
+         HnfzHE32hKXZDYvUFh5pKXlgwwVzeSVCLU6SAVP2w+hWjYoJlgf+26Qe0LDzWN7kFIX4
+         BQUA==
+X-Gm-Message-State: AOJu0YwU6db0VoMuSQ9nD29jwy5arZSULlIHSDQd2pbGP6etlAlXcbjv
+	NatnKeSwjtZfp4/pWR7y+Kt29CKY1Of8o0Ijz6yPfh1hAUf4oND4LwQDkBhTD0pTU7kxWNNYGo5
+	FnuC7yrUS7Q3y/Qp9kfSyXYBkm8HULy1lua/UUhpF498dQVw+S/sIxcBDPvjKBCuer/RvS/b4k5
+	Qq4PQV7OYnv5ANM/UQDoE9lZA8L++rX4Df3I8FvA==
+X-Received: by 2002:a05:6214:1c09:b0:681:57da:2345 with SMTP id u9-20020a0562141c0900b0068157da2345mr10374973qvc.67.1706599710172;
+        Mon, 29 Jan 2024 23:28:30 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEdqJmhfeHUaTMbX6t0d4OevvaGBjszfq7ObUC54ioXb5oecGPSzjP8VwrXKcErLs/GLRHPfQUtC4llo6BjvAE=
+X-Received: by 2002:a05:6214:1c09:b0:681:57da:2345 with SMTP id
+ u9-20020a0562141c0900b0068157da2345mr10374953qvc.67.1706599709778; Mon, 29
+ Jan 2024 23:28:29 -0800 (PST)
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: f6328023-b16c-4bca-3cb0-08dc21557a96
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jan 2024 05:36:59.1755
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR02MB6728
+References: <1526977424-25243-1-git-send-email-kernelfans@gmail.com> <9ec1b69c-5a36-4dcc-935f-cc02bb87c4ca@csgroup.eu>
+In-Reply-To: <9ec1b69c-5a36-4dcc-935f-cc02bb87c4ca@csgroup.eu>
+From: Pingfan Liu <piliu@redhat.com>
+Date: Tue, 30 Jan 2024 15:28:18 +0800
+Message-ID: <CAF+s44RzdJB3tUEN9zzo5LeF-dZf=G1E6sJumBcN7ucvpT1OOw@mail.gmail.com>
+Subject: Re: [PATCH v6 (proposal)] powerpc/cpu: enable nr_cpus for crash kernel
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -116,155 +96,429 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "nathan@kernel.org" <nathan@kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: "dyoung@redhat.com" <dyoung@redhat.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "kexec@lists.infradead.org" <kexec@lists.infradead.org>, Pingfan Liu <kernelfans@gmail.com>, "Guilherme G . Piccoli" <gpiccoli@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Baoquan He <bhe@redhat.com> Sent: Monday, January 29, 2024 7:00 PM
->=20
-> Michael pointed out that the CONFIG_CRASH_DUMP ifdef is nested inside
-> CONFIG_KEXEC_CODE ifdef scope in some XEN, Hyper-V codes.
->=20
-> Although the nesting works well too since CONFIG_CRASH_DUMP has
-> dependency on CONFIG_KEXEC_CORE, it may cause confusion because there
-> are places where it's not nested, and people may think it needs to be
-> nested even though it doesn't have to.
->=20
-> Fix that by moving  CONFIG_CRASH_DUMP ifdeffery of codes out of
-> CONFIG_KEXEC_CODE ifdeffery scope.
->=20
-> And also put function machine_crash_shutdown() definition inside
-> CONFIG_CRASH_DUMP ifdef scope instead of CONFIG_KEXEC_CORE ifdef.
->=20
-> And also fix a building error Nathan reported as below by replacing
-> CONFIG_KEXEC_CORE ifdef with CONFIG_VMCORE_INFO ifdef.
->=20
-> =3D=3D=3D=3D
-> $ curl -LSso .config https://git.alpinelinux.org/aports/plain/community/l=
-inux-edge/config-edge.x86_64
-> $ make -skj"$(nproc)" ARCH=3Dx86_64 CROSS_COMPILE=3Dx86_64-linux-
-> olddefconfig all
-> ...
-> x86_64-linux-ld: arch/x86/xen/mmu_pv.o: in function
-> `paddr_vmcoreinfo_note':
-> mmu_pv.c:(.text+0x3af3): undefined reference to `vmcoreinfo_note'
-> =3D=3D=3D=3D
->=20
-> Link: https://lore.kernel.org/all/SN6PR02MB4157931105FA68D72E3D3DB8D47B2@=
-SN6PR02MB4157.namprd02.prod.outlook.com/T/#u
-> Link: https://lore.kernel.org/all/20240126045551.GA126645@dev-arch.thelio=
--3990X/T/#u
-> Signed-off-by: Baoquan He <bhe@redhat.com>
-> ---
-> v1->v2:
-> - Add missing words and fix typos in patch log pointed out by Michael.
->=20
->  arch/x86/kernel/cpu/mshyperv.c | 10 ++++++----
->  arch/x86/kernel/reboot.c       |  2 +-
->  arch/x86/xen/enlighten_hvm.c   |  4 ++--
->  arch/x86/xen/mmu_pv.c          |  2 +-
->  4 files changed, 10 insertions(+), 8 deletions(-)
->=20
-> diff --git a/arch/x86/kernel/cpu/mshyperv.c
-> b/arch/x86/kernel/cpu/mshyperv.c
-> index f8163a59026b..2e8cd5a4ae85 100644
-> --- a/arch/x86/kernel/cpu/mshyperv.c
-> +++ b/arch/x86/kernel/cpu/mshyperv.c
-> @@ -209,6 +209,7 @@ static void hv_machine_shutdown(void)
->  	if (kexec_in_progress)
->  		hyperv_cleanup();
->  }
-> +#endif /* CONFIG_KEXEC_CORE */
->=20
->  #ifdef CONFIG_CRASH_DUMP
->  static void hv_machine_crash_shutdown(struct pt_regs *regs)
-> @@ -222,8 +223,7 @@ static void hv_machine_crash_shutdown(struct
-> pt_regs *regs)
->  	/* Disable the hypercall page when there is only 1 active CPU. */
->  	hyperv_cleanup();
->  }
-> -#endif
-> -#endif /* CONFIG_KEXEC_CORE */
-> +#endif /* CONFIG_CRASH_DUMP */
->  #endif /* CONFIG_HYPERV */
->=20
->  static uint32_t  __init ms_hyperv_platform(void)
-> @@ -497,9 +497,11 @@ static void __init ms_hyperv_init_platform(void)
->  	no_timer_check =3D 1;
->  #endif
->=20
-> -#if IS_ENABLED(CONFIG_HYPERV) && defined(CONFIG_KEXEC_CORE)
-> +#if IS_ENABLED(CONFIG_HYPERV)
-> +#if defined(CONFIG_KEXEC_CORE)
->  	machine_ops.shutdown =3D hv_machine_shutdown;
-> -#ifdef CONFIG_CRASH_DUMP
-> +#endif
-> +#if defined(CONFIG_CRASH_DUMP)
->  	machine_ops.crash_shutdown =3D hv_machine_crash_shutdown;
->  #endif
->  #endif
-> diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-> index 1287b0d5962f..f3130f762784 100644
-> --- a/arch/x86/kernel/reboot.c
-> +++ b/arch/x86/kernel/reboot.c
-> @@ -826,7 +826,7 @@ void machine_halt(void)
->  	machine_ops.halt();
->  }
->=20
-> -#ifdef CONFIG_KEXEC_CORE
-> +#ifdef CONFIG_CRASH_DUMP
->  void machine_crash_shutdown(struct pt_regs *regs)
->  {
->  	machine_ops.crash_shutdown(regs);
-> diff --git a/arch/x86/xen/enlighten_hvm.c b/arch/x86/xen/enlighten_hvm.c
-> index 09e3db7ff990..0b367c1e086d 100644
-> --- a/arch/x86/xen/enlighten_hvm.c
-> +++ b/arch/x86/xen/enlighten_hvm.c
-> @@ -148,6 +148,7 @@ static void xen_hvm_shutdown(void)
->  	if (kexec_in_progress)
->  		xen_reboot(SHUTDOWN_soft_reset);
->  }
-> +#endif
->=20
->  #ifdef CONFIG_CRASH_DUMP
->  static void xen_hvm_crash_shutdown(struct pt_regs *regs)
-> @@ -156,7 +157,6 @@ static void xen_hvm_crash_shutdown(struct pt_regs
-> *regs)
->  	xen_reboot(SHUTDOWN_soft_reset);
->  }
->  #endif
-> -#endif
->=20
->  static int xen_cpu_up_prepare_hvm(unsigned int cpu)
->  {
-> @@ -238,10 +238,10 @@ static void __init xen_hvm_guest_init(void)
->=20
->  #ifdef CONFIG_KEXEC_CORE
->  	machine_ops.shutdown =3D xen_hvm_shutdown;
-> +#endif
->  #ifdef CONFIG_CRASH_DUMP
->  	machine_ops.crash_shutdown =3D xen_hvm_crash_shutdown;
->  #endif
-> -#endif
->  }
->=20
->  static __init int xen_parse_nopv(char *arg)
-> diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
-> index 218773cfb009..e21974f2cf2d 100644
-> --- a/arch/x86/xen/mmu_pv.c
-> +++ b/arch/x86/xen/mmu_pv.c
-> @@ -2520,7 +2520,7 @@ int xen_remap_pfn(struct vm_area_struct *vma,
-> unsigned long addr,
->  }
->  EXPORT_SYMBOL_GPL(xen_remap_pfn);
->=20
-> -#ifdef CONFIG_KEXEC_CORE
-> +#ifdef CONFIG_VMCORE_INFO
->  phys_addr_t paddr_vmcoreinfo_note(void)
->  {
->  	if (xen_pv_domain())
-> --
-> 2.41.0
+Hi Christophe,
 
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+The latest series is
+https://lore.kernel.org/linuxppc-dev/20231017022806.4523-1-piliu@redhat.com=
+/
+
+And Michael has his implement on:
+https://lore.kernel.org/all/20231229120107.2281153-3-mpe@ellerman.id.au/T/#=
+m46128446bce1095631162a1927415733a3bf0633
+
+Thanks,
+
+Pingfan
+
+On Fri, Jan 26, 2024 at 3:40=E2=80=AFAM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+> Hi,
+>
+> Le 22/05/2018 =C3=A0 10:23, Pingfan Liu a =C3=A9crit :
+> > For kexec -p, the boot cpu can be not the cpu0, this causes the problem
+> > to alloc paca[]. In theory, there is no requirement to assign cpu's log=
+ical
+> > id as its present seq by device tree. But we have something like
+> > cpu_first_thread_sibling(), which makes assumption on the mapping insid=
+e
+> > a core. Hence partially changing the mapping, i.e. unbind the mapping o=
+f
+> > core while keep the mapping inside a core. After this patch, the core w=
+ith
+> > boot-cpu will always be mapped into core 0.
+> >
+> > And at present, the code to discovery cpu spreads over two functions:
+> > early_init_dt_scan_cpus() and smp_setup_cpu_maps().
+> > This patch tries to fold smp_setup_cpu_maps() into the "previous" one
+>
+> This patch is pretty old and doesn't apply anymore. If still relevant
+> can you please rebase and resubmit.
+>
+> Thanks
+> Christophe
+>
+> >
+> > Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
+> > ---
+> > v5 -> v6:
+> >    simplify the loop logic (Hope it can answer Benjamin's concern)
+> >    concentrate the cpu recovery code to early stage (Hope it can answer=
+ Michael's concern)
+> > Todo: (if this method is accepted)
+> >    fold the whole smp_setup_cpu_maps()
+> >
+> >   arch/powerpc/include/asm/smp.h     |   1 +
+> >   arch/powerpc/kernel/prom.c         | 123 ++++++++++++++++++++++++++++=
+---------
+> >   arch/powerpc/kernel/setup-common.c |  58 ++---------------
+> >   drivers/of/fdt.c                   |   2 +-
+> >   include/linux/of_fdt.h             |   2 +
+> >   5 files changed, 103 insertions(+), 83 deletions(-)
+> >
+> > diff --git a/arch/powerpc/include/asm/smp.h b/arch/powerpc/include/asm/=
+smp.h
+> > index fac963e..80c7693 100644
+> > --- a/arch/powerpc/include/asm/smp.h
+> > +++ b/arch/powerpc/include/asm/smp.h
+> > @@ -30,6 +30,7 @@
+> >   #include <asm/percpu.h>
+> >
+> >   extern int boot_cpuid;
+> > +extern int threads_in_core;
+> >   extern int spinning_secondaries;
+> >
+> >   extern void cpu_die(void);
+> > diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+> > index 4922162..2ae0b4a 100644
+> > --- a/arch/powerpc/kernel/prom.c
+> > +++ b/arch/powerpc/kernel/prom.c
+> > @@ -77,7 +77,6 @@ unsigned long tce_alloc_start, tce_alloc_end;
+> >   u64 ppc64_rma_size;
+> >   #endif
+> >   static phys_addr_t first_memblock_size;
+> > -static int __initdata boot_cpu_count;
+> >
+> >   static int __init early_parse_mem(char *p)
+> >   {
+> > @@ -305,6 +304,14 @@ static void __init check_cpu_feature_properties(un=
+signed long node)
+> >       }
+> >   }
+> >
+> > +struct bootinfo {
+> > +     int boot_thread_id;
+> > +     unsigned int cpu_cnt;
+> > +     int cpu_hwids[NR_CPUS];
+> > +     bool avail[NR_CPUS];
+> > +};
+> > +static struct bootinfo *bt_info;
+> > +
+> >   static int __init early_init_dt_scan_cpus(unsigned long node,
+> >                                         const char *uname, int depth,
+> >                                         void *data)
+> > @@ -312,10 +319,12 @@ static int __init early_init_dt_scan_cpus(unsigne=
+d long node,
+> >       const char *type =3D of_get_flat_dt_prop(node, "device_type", NUL=
+L);
+> >       const __be32 *prop;
+> >       const __be32 *intserv;
+> > -     int i, nthreads;
+> > +     int i, nthreads, maxidx;
+> >       int len;
+> > -     int found =3D -1;
+> > -     int found_thread =3D 0;
+> > +     int found_thread =3D -1;
+> > +     struct bootinfo *info =3D data;
+> > +     bool avail;
+> > +     int rotate_cnt, id;
+> >
+> >       /* We are scanning "cpu" nodes only */
+> >       if (type =3D=3D NULL || strcmp(type, "cpu") !=3D 0)
+> > @@ -325,8 +334,15 @@ static int __init early_init_dt_scan_cpus(unsigned=
+ long node,
+> >       intserv =3D of_get_flat_dt_prop(node, "ibm,ppc-interrupt-server#s=
+", &len);
+> >       if (!intserv)
+> >               intserv =3D of_get_flat_dt_prop(node, "reg", &len);
+> > +     avail =3D of_fdt_device_is_available(initial_boot_params, node);
+> > +#if 0
+> > +     //todo
+> > +     if (!avail)
+> > +             avail =3D !of_fdt_property_match_string(node,
+> > +                                     "enable-method", "spin-table");
+> > +#endif
+> >
+> > -     nthreads =3D len / sizeof(int);
+> > +     threads_in_core =3D nthreads =3D len / sizeof(int);
+> >
+> >       /*
+> >        * Now see if any of these threads match our boot cpu.
+> > @@ -338,9 +354,10 @@ static int __init early_init_dt_scan_cpus(unsigned=
+ long node,
+> >                * booted proc.
+> >                */
+> >               if (fdt_version(initial_boot_params) >=3D 2) {
+> > +                     info->cpu_hwids[info->cpu_cnt] =3D
+> > +                                     be32_to_cpu(intserv[i]);
+> >                       if (be32_to_cpu(intserv[i]) =3D=3D
+> >                           fdt_boot_cpuid_phys(initial_boot_params)) {
+> > -                             found =3D boot_cpu_count;
+> >                               found_thread =3D i;
+> >                       }
+> >               } else {
+> > @@ -351,22 +368,37 @@ static int __init early_init_dt_scan_cpus(unsigne=
+d long node,
+> >                        */
+> >                       if (of_get_flat_dt_prop(node,
+> >                                       "linux,boot-cpu", NULL) !=3D NULL=
+)
+> > -                             found =3D boot_cpu_count;
+> > +                             found_thread =3D info->cpu_cnt;
+> >               }
+> > +             info->avail[info->cpu_cnt] =3D avail;
+> > +
+> >   #ifdef CONFIG_SMP
+> >               /* logical cpu id is always 0 on UP kernels */
+> > -             boot_cpu_count++;
+> > +             info->cpu_cnt++;
+> >   #endif
+> >       }
+> >
+> >       /* Not the boot CPU */
+> > -     if (found < 0)
+> > +     if (found_thread < 0)
+> >               return 0;
+> >
+> > -     DBG("boot cpu: logical %d physical %d\n", found,
+> > +     /* always mapping boot-core to core 0 to cope with kexec -p */
+> > +     maxidx =3D info->cpu_cnt - 1;
+> > +     rotate_cnt =3D nthreads;
+> > +     while (rotate_cnt-- > 0) {
+> > +             avail =3D info->avail[maxidx];
+> > +             id =3D info->cpu_hwids[maxidx];
+> > +             for (i =3D maxidx; i > 0; i--) {
+> > +                     info->avail[i] =3D info->avail[i - 1];
+> > +                     info->cpu_hwids[i] =3D info->cpu_hwids[i - 1];
+> > +             }
+> > +             info->avail[i] =3D avail;
+> > +             info->cpu_hwids[i] =3D id;
+> > +     }
+> > +
+> > +     info->boot_thread_id =3D found_thread;
+> > +     DBG("boot cpu: logical %d physical %d\n", found_thread,
+> >           be32_to_cpu(intserv[found_thread]));
+> > -     boot_cpuid =3D found;
+> > -     set_hard_smp_processor_id(found, be32_to_cpu(intserv[found_thread=
+]));
+> >
+> >       /*
+> >        * PAPR defines "logical" PVR values for cpus that
+> > @@ -675,6 +707,55 @@ static void __init tm_init(void)
+> >   static void tm_init(void) { }
+> >   #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
+> >
+> > +static void early_setup_cpu_mapping(void)
+> > +{
+> > +     unsigned int cpu, cnt;
+> > +     int nr_cpus_aligned;
+> > +
+> > +     bt_info =3D __va(memblock_alloc(sizeof(struct bootinfo),
+> > +                     sizeof(unsigned long)));
+> > +     memset(bt_info, 0, sizeof(struct bootinfo));
+> > +     bt_info->boot_thread_id =3D -1;
+> > +     /* Retrieve CPU related informations from the flat tree
+> > +      * (altivec support, boot CPU ID, ...)
+> > +      */
+> > +     of_scan_flat_dt(early_init_dt_scan_cpus, bt_info);
+> > +
+> > +     if (bt_info->boot_thread_id < 0) {
+> > +             pr_err("Failed to identify boot CPU !\n");
+> > +             BUG();
+> > +     }
+> > +
+> > +     boot_cpuid =3D bt_info->boot_thread_id;
+> > +     /* work around subcore mode */
+> > +     nr_cpus_aligned =3D _ALIGN_UP(nr_cpu_ids, threads_in_core);
+> > +     if (nr_cpus_aligned !=3D nr_cpu_ids) {
+> > +             pr_info("nr_cpus is forced to be aligned up from: %d to: =
+%d\n",
+> > +                     nr_cpu_ids, nr_cpus_aligned);
+> > +             nr_cpu_ids =3D nr_cpus_aligned;
+> > +     }
+> > +     cnt =3D (nr_cpu_ids < bt_info->cpu_cnt) ? nr_cpu_ids
+> > +                     : bt_info->cpu_cnt;
+> > +
+> > +     allocate_pacas();
+> > +     for (cpu =3D 0; cpu < cnt; cpu++) {
+> > +             set_cpu_present(cpu, bt_info->avail[cpu]);
+> > +             DBG("set cpu present: %d -> hwid:%d\n",
+> > +                     cpu, bt_info->cpu_hwids[cpu]);
+> > +             set_hard_smp_processor_id(cpu, bt_info->cpu_hwids[cpu]);
+> > +             set_cpu_possible(cpu, true);
+> > +     }
+> > +
+> > +#if defined(CONFIG_SMP) && defined(CONFIG_PPC64)
+> > +     /* We'll later wait for secondaries to check in; there are
+> > +      * NCPUS-1 non-boot CPUs  :-)
+> > +      */
+> > +     spinning_secondaries =3D bt_info->cpu_cnt - 1;
+> > +#endif
+> > +     memblock_free(__pa(bt_info), sizeof(struct bootinfo));
+> > +     bt_info =3D NULL;
+> > +}
+> > +
+> >   void __init early_init_devtree(void *params)
+> >   {
+> >       phys_addr_t limit;
+> > @@ -745,27 +826,11 @@ void __init early_init_devtree(void *params)
+> >        * FIXME .. and the initrd too? */
+> >       move_device_tree();
+> >
+> > -     allocate_pacas();
+> > -
+> >       DBG("Scanning CPUs ...\n");
+> >
+> >       dt_cpu_ftrs_scan();
+> >
+> > -     /* Retrieve CPU related informations from the flat tree
+> > -      * (altivec support, boot CPU ID, ...)
+> > -      */
+> > -     of_scan_flat_dt(early_init_dt_scan_cpus, NULL);
+> > -     if (boot_cpuid < 0) {
+> > -             printk("Failed to identify boot CPU !\n");
+> > -             BUG();
+> > -     }
+> > -
+> > -#if defined(CONFIG_SMP) && defined(CONFIG_PPC64)
+> > -     /* We'll later wait for secondaries to check in; there are
+> > -      * NCPUS-1 non-boot CPUs  :-)
+> > -      */
+> > -     spinning_secondaries =3D boot_cpu_count - 1;
+> > -#endif
+> > +     early_setup_cpu_mapping();
+> >
+> >       mmu_early_init_devtree();
+> >
+> > diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/s=
+etup-common.c
+> > index 66f7cc6..46d034a 100644
+> > --- a/arch/powerpc/kernel/setup-common.c
+> > +++ b/arch/powerpc/kernel/setup-common.c
+> > @@ -86,7 +86,9 @@ struct machdep_calls *machine_id;
+> >   EXPORT_SYMBOL(machine_id);
+> >
+> >   int boot_cpuid =3D -1;
+> > +int threads_in_core =3D 1;
+> >   EXPORT_SYMBOL_GPL(boot_cpuid);
+> > +EXPORT_SYMBOL_GPL(threads_in_core);
+> >
+> >   /*
+> >    * These are used in binfmt_elf.c to put aux entries on the stack
+> > @@ -460,61 +462,11 @@ void __init smp_setup_cpu_maps(void)
+> >   {
+> >       struct device_node *dn;
+> >       int cpu =3D 0;
+> > -     int nthreads =3D 1;
+> > -
+> > -     DBG("smp_setup_cpu_maps()\n");
+> > -
+> > -     for_each_node_by_type(dn, "cpu") {
+> > -             const __be32 *intserv;
+> > -             __be32 cpu_be;
+> > -             int j, len;
+> > -
+> > -             DBG("  * %pOF...\n", dn);
+> > -
+> > -             intserv =3D of_get_property(dn, "ibm,ppc-interrupt-server=
+#s",
+> > -                             &len);
+> > -             if (intserv) {
+> > -                     DBG("    ibm,ppc-interrupt-server#s -> %d threads=
+\n",
+> > -                         nthreads);
+> > -             } else {
+> > -                     DBG("    no ibm,ppc-interrupt-server#s -> 1 threa=
+d\n");
+> > -                     intserv =3D of_get_property(dn, "reg", &len);
+> > -                     if (!intserv) {
+> > -                             cpu_be =3D cpu_to_be32(cpu);
+> > -                             intserv =3D &cpu_be;      /* assume logic=
+al =3D=3D phys */
+> > -                             len =3D 4;
+> > -                     }
+> > -             }
+> > -
+> > -             nthreads =3D len / sizeof(int);
+> > -
+> > -             for (j =3D 0; j < nthreads && cpu < nr_cpu_ids; j++) {
+> > -                     bool avail;
+> > -
+> > -                     DBG("    thread %d -> cpu %d (hard id %d)\n",
+> > -                         j, cpu, be32_to_cpu(intserv[j]));
+> > -
+> > -                     avail =3D of_device_is_available(dn);
+> > -                     if (!avail)
+> > -                             avail =3D !of_property_match_string(dn,
+> > -                                             "enable-method", "spin-ta=
+ble");
+> > -
+> > -                     set_cpu_present(cpu, avail);
+> > -                     set_hard_smp_processor_id(cpu, be32_to_cpu(intser=
+v[j]));
+> > -                     set_cpu_possible(cpu, true);
+> > -                     cpu++;
+> > -             }
+> > -
+> > -             if (cpu >=3D nr_cpu_ids) {
+> > -                     of_node_put(dn);
+> > -                     break;
+> > -             }
+> > -     }
+> >
+> >       /* If no SMT supported, nthreads is forced to 1 */
+> >       if (!cpu_has_feature(CPU_FTR_SMT)) {
+> >               DBG("  SMT disabled ! nthreads forced to 1\n");
+> > -             nthreads =3D 1;
+> > +             threads_in_core =3D 1;
+> >       }
+> >
+> >   #ifdef CONFIG_PPC64
+> > @@ -539,7 +491,7 @@ void __init smp_setup_cpu_maps(void)
+> >
+> >               /* Double maxcpus for processors which have SMT capabilit=
+y */
+> >               if (cpu_has_feature(CPU_FTR_SMT))
+> > -                     maxcpus *=3D nthreads;
+> > +                     maxcpus *=3D threads_in_core;
+> >
+> >               if (maxcpus > nr_cpu_ids) {
+> >                       printk(KERN_WARNING
+> > @@ -565,7 +517,7 @@ void __init smp_setup_cpu_maps(void)
+> >        * every CPU in the system. If that is not the case, then some co=
+de
+> >        * here will have to be reworked
+> >        */
+> > -     cpu_init_thread_core_maps(nthreads);
+> > +     cpu_init_thread_core_maps(threads_in_core);
+> >
+> >       /* Now that possible cpus are set, set nr_cpu_ids for later use *=
+/
+> >       setup_nr_cpu_ids();
+> > diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+> > index 84aa9d6..16d6b02 100644
+> > --- a/drivers/of/fdt.c
+> > +++ b/drivers/of/fdt.c
+> > @@ -130,7 +130,7 @@ bool of_fdt_is_big_endian(const void *blob, unsigne=
+d long node)
+> >       return false;
+> >   }
+> >
+> > -static bool of_fdt_device_is_available(const void *blob, unsigned long=
+ node)
+> > +bool of_fdt_device_is_available(const void *blob, unsigned long node)
+> >   {
+> >       const char *status =3D fdt_getprop(blob, node, "status", NULL);
+> >
+> > diff --git a/include/linux/of_fdt.h b/include/linux/of_fdt.h
+> > index b9cd9eb..28756c5 100644
+> > --- a/include/linux/of_fdt.h
+> > +++ b/include/linux/of_fdt.h
+> > @@ -30,6 +30,8 @@ extern void *of_fdt_get_property(const void *blob,
+> >                                int *size);
+> >   extern bool of_fdt_is_big_endian(const void *blob,
+> >                                unsigned long node);
+> > +extern bool of_fdt_device_is_available(const void *blob,
+> > +                     unsigned long node);
+> >   extern int of_fdt_match(const void *blob, unsigned long node,
+> >                       const char *const *compat);
+> >   extern void *of_fdt_unflatten_tree(const unsigned long *blob,
+> _______________________________________________
+> kexec mailing list
+> kexec@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/kexec
 
