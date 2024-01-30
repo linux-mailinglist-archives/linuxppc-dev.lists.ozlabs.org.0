@@ -1,70 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11D5C841F25
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 10:17:19 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=GIQpSoHA;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC01F841F48
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 10:22:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TPKLh6xJhz3cFf
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 20:17:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TPKT95mDfz3cXb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jan 2024 20:22:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=GIQpSoHA;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=wenst@chromium.org; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TPKKv1frYz2yRS
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 20:16:32 +1100 (AEDT)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1d73066880eso29633515ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 01:16:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1706606190; x=1707210990; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qSmJDkz986T7M3StX+74NzpcKDLTKyki6HvWHSvEFfE=;
-        b=GIQpSoHA6udwkItAQ3VeR+DABxGerCHuuqxnq0+pUUQLd00lDVM2pA3awzgYNhLU/i
-         SmRoahh9hwhfCEpsc2FV9LzBQ3PbMN9MPSrBQXAPgwlBV2YS4Mwm2ANwMJWbfvwb7gcv
-         x5jg3rvuY9MES9J31uwophh/DX65PUEWokZZE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706606190; x=1707210990;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qSmJDkz986T7M3StX+74NzpcKDLTKyki6HvWHSvEFfE=;
-        b=i7V01MESfCEK5mZphrEW+1IL7+sZN50KxfOnd7lVEnqhEGnrXDzwE6NhE/XovWmCZM
-         E9fHzqIez145XcMystCA6L7UbCfTsFbBIqkuB0idjxDW/1pNt5twLOnzgRyNTQikJbj0
-         /sBxkvvs5v6GuGekeDLVlz7Ev+SfFSOsnOIZSPE+21JRWYxaPMqzxhA0M8CHtzqKQVS9
-         VA5TiPFYRuq0hamwjREbAYlB4YDmEXX8xA37IXc7uu2tcADIpgqXuRKEYkpsIMA3MpbI
-         btfiu0Zzcv1dkZV/STwBq3f3JZoJmjFFSUkG+A2/S/51d/Gyszxtq1Sdgj7OIF3Dgivf
-         ZVfQ==
-X-Gm-Message-State: AOJu0Yw1JVUUdi9fTMdh+oFgYf9oC1Sd8mTwCPqqOxu1Ed4oa9UD9+9i
-	AwISMsGrv9yL5HHg68jr2yE9bE326zJQ4IrrVfuPIZlTRRYPhUMqqa5bmhVDCg==
-X-Google-Smtp-Source: AGHT+IHFU/he6S9dxGtNcZ4mRuNpcLuFDaUOykdO5oi66rSbqDidpgnEH7smXpQQlGgP3nvFq0Mnaw==
-X-Received: by 2002:a17:903:22cd:b0:1d7:7edb:e9b9 with SMTP id y13-20020a17090322cd00b001d77edbe9b9mr9062280plg.37.1706606189953;
-        Tue, 30 Jan 2024 01:16:29 -0800 (PST)
-Received: from google.com ([2401:fa00:1:10:469:110f:d748:6896])
-        by smtp.gmail.com with ESMTPSA id i18-20020a170902c95200b001d7439bf914sm6701420pla.235.2024.01.30.01.16.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jan 2024 01:16:29 -0800 (PST)
-Date: Tue, 30 Jan 2024 17:16:26 +0800
-From: Chen-Yu Tsai <wenst@chromium.org>
-To: Luis Chamberlain <mcgrof@kernel.org>
-Subject: Re: [PATCH 1/3] init: Declare rodata_enabled and mark_rodata_ro() at
- all time
-Message-ID: <20240130091626.GA3684878@google.com>
-References: <7b5df1782e94a755b4a18733af44d17d8dd8b37b.1703149011.git.christophe.leroy@csgroup.eu>
- <ZbgGDlgrLhB8tcGI@bombadil.infradead.org>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TPKSl1b66z30XZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jan 2024 20:22:28 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1BFBEDA7;
+	Tue, 30 Jan 2024 01:22:40 -0800 (PST)
+Received: from [10.57.79.54] (unknown [10.57.79.54])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6DE9E3F738;
+	Tue, 30 Jan 2024 01:21:53 -0800 (PST)
+Message-ID: <e4c7c6a3-b641-4e92-b782-68d90917795f@arm.com>
+Date: Tue, 30 Jan 2024 09:21:51 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZbgGDlgrLhB8tcGI@bombadil.infradead.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 7/9] mm/mmu_gather: add __tlb_remove_folio_pages()
+Content-Language: en-GB
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+References: <20240129143221.263763-1-david@redhat.com>
+ <20240129143221.263763-8-david@redhat.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <20240129143221.263763-8-david@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,80 +43,344 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-modules@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Vasily Gorbik <gor@linux.ibm.com>, Peter Zijlstra <peterz@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, Nick Piggin <npiggin@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
-
-On Mon, Jan 29, 2024 at 12:09:50PM -0800, Luis Chamberlain wrote:
-> On Thu, Dec 21, 2023 at 10:02:46AM +0100, Christophe Leroy wrote:
-> > Declaring rodata_enabled and mark_rodata_ro() at all time
-> > helps removing related #ifdefery in C files.
-> > 
-> > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+On 29/01/2024 14:32, David Hildenbrand wrote:
+> Add __tlb_remove_folio_pages(), which will remove multiple consecutive
+> pages that belong to the same large folio, instead of only a single
+> page. We'll be using this function when optimizing unmapping/zapping of
+> large folios that are mapped by PTEs.
 > 
-> Very nice cleanup, thanks!, applied and pushed
+> We're using the remaining spare bit in an encoded_page to indicate that
+> the next enoced page in an array contains actually shifted "nr_pages".
+> Teach swap/freeing code about putting multiple folio references, and
+> delayed rmap handling to remove page ranges of a folio.
 > 
->   Luis
+> This extension allows for still gathering almost as many small folios
+> as we used to (-1, because we have to prepare for a possibly bigger next
+> entry), but still allows for gathering consecutive pages that belong to the
+> same large folio.
+> 
+> Note that we don't pass the folio pointer, because it is not required for
+> now. Further, we don't support page_size != PAGE_SIZE, it won't be
+> required for simple PTE batching.
+> 
+> We have to provide a separate s390 implementation, but it's fairly
+> straight forward.
+> 
+> Another, more invasive and likely more expensive, approach would be to
+> use folio+range or a PFN range instead of page+nr_pages. But, we should
+> do that consistently for the whole mmu_gather. For now, let's keep it
+> simple and add "nr_pages" only.
+> 
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  arch/s390/include/asm/tlb.h | 17 +++++++++++
+>  include/asm-generic/tlb.h   |  8 +++++
+>  include/linux/mm_types.h    | 20 ++++++++++++
+>  mm/mmu_gather.c             | 61 +++++++++++++++++++++++++++++++------
+>  mm/swap.c                   | 12 ++++++--
+>  mm/swap_state.c             | 12 ++++++--
+>  6 files changed, 116 insertions(+), 14 deletions(-)
+> 
+> diff --git a/arch/s390/include/asm/tlb.h b/arch/s390/include/asm/tlb.h
+> index 48df896d5b79..abfd2bf29e9e 100644
+> --- a/arch/s390/include/asm/tlb.h
+> +++ b/arch/s390/include/asm/tlb.h
+> @@ -26,6 +26,8 @@ void __tlb_remove_table(void *_table);
+>  static inline void tlb_flush(struct mmu_gather *tlb);
+>  static inline bool __tlb_remove_page_size(struct mmu_gather *tlb,
+>  		struct page *page, bool delay_rmap, int page_size);
+> +static inline bool __tlb_remove_folio_pages(struct mmu_gather *tlb,
+> +		struct page *page, unsigned int nr_pages, bool delay_rmap);
+>  
+>  #define tlb_flush tlb_flush
+>  #define pte_free_tlb pte_free_tlb
+> @@ -52,6 +54,21 @@ static inline bool __tlb_remove_page_size(struct mmu_gather *tlb,
+>  	return false;
+>  }
+>  
+> +static inline bool __tlb_remove_folio_pages(struct mmu_gather *tlb,
+> +		struct page *page, unsigned int nr_pages, bool delay_rmap)
+> +{
+> +	struct encoded_page *encoded_pages[] = {
+> +		encode_page(page, ENCODED_PAGE_BIT_NR_PAGES),
+> +		encode_nr_pages(nr_pages),
+> +	};
+> +
+> +	VM_WARN_ON_ONCE(delay_rmap);
+> +	VM_WARN_ON_ONCE(page_folio(page) != page_folio(page + nr_pages - 1));
+> +
+> +	free_pages_and_swap_cache(encoded_pages, ARRAY_SIZE(encoded_pages));
+> +	return false;
+> +}
+> +
+>  static inline void tlb_flush(struct mmu_gather *tlb)
+>  {
+>  	__tlb_flush_mm_lazy(tlb->mm);
+> diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+> index 2eb7b0d4f5d2..428c3f93addc 100644
+> --- a/include/asm-generic/tlb.h
+> +++ b/include/asm-generic/tlb.h
+> @@ -69,6 +69,7 @@
+>   *
+>   *  - tlb_remove_page() / __tlb_remove_page()
+>   *  - tlb_remove_page_size() / __tlb_remove_page_size()
+> + *  - __tlb_remove_folio_pages()
+>   *
+>   *    __tlb_remove_page_size() is the basic primitive that queues a page for
+>   *    freeing. __tlb_remove_page() assumes PAGE_SIZE. Both will return a
+> @@ -78,6 +79,11 @@
+>   *    tlb_remove_page() and tlb_remove_page_size() imply the call to
+>   *    tlb_flush_mmu() when required and has no return value.
+>   *
+> + *    __tlb_remove_folio_pages() is similar to __tlb_remove_page(), however,
+> + *    instead of removing a single page, remove the given number of consecutive
+> + *    pages that are all part of the same (large) folio: just like calling
+> + *    __tlb_remove_page() on each page individually.
+> + *
+>   *  - tlb_change_page_size()
+>   *
+>   *    call before __tlb_remove_page*() to set the current page-size; implies a
+> @@ -262,6 +268,8 @@ struct mmu_gather_batch {
+>  
+>  extern bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page,
+>  		bool delay_rmap, int page_size);
+> +bool __tlb_remove_folio_pages(struct mmu_gather *tlb, struct page *page,
+> +		unsigned int nr_pages, bool delay_rmap);
+>  
+>  #ifdef CONFIG_SMP
+>  /*
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 1b89eec0d6df..198662b7a39a 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -226,6 +226,15 @@ struct encoded_page;
+>  /* Perform rmap removal after we have flushed the TLB. */
+>  #define ENCODED_PAGE_BIT_DELAY_RMAP		1ul
+>  
+> +/*
+> + * The next item in an encoded_page array is the "nr_pages" argument, specifying
+> + * the number of consecutive pages starting from this page, that all belong to
+> + * the same folio. For example, "nr_pages" corresponds to the number of folio
+> + * references that must be dropped. If this bit is not set, "nr_pages" is
+> + * implicitly 1.
+> + */
+> +#define ENCODED_PAGE_BIT_NR_PAGES		2ul
 
-On next-20240130, which has your modules-next branch, and thus this
-series and the other "module: Use set_memory_rox()" series applied,
-my kernel crashes in some very weird way. Reverting your branch
-makes the crash go away.
+nit: Perhaps this should be called ENCODED_PAGE_BIT_NR_PAGES_NEXT? There are a
+couple of places where you check for this bit on the current entry and advance
+to the next. So the "_NEXT" might make things clearer?
 
-I thought I'd report it right away. Maybe you folks would know what's
-happening here? This is on arm64.
+Otherwise, LGTM!
 
-[   10.481015] Unable to handle kernel paging request at virtual address ffffffde85245d30
-[   10.490369] KASAN: maybe wild-memory-access in range [0x000000f42922e980-0x000000f42922e987]
-[   10.503744] Mem abort info:
-[   10.509383]   ESR = 0x0000000096000047
-[   10.514400]   EC = 0x25: DABT (current EL), IL = 32 bits
-[   10.522366]   SET = 0, FnV = 0
-[   10.526343]   EA = 0, S1PTW = 0
-[   10.530695]   FSC = 0x07: level 3 translation fault
-[   10.537081] Data abort info:
-[   10.540839]   ISV = 0, ISS = 0x00000047, ISS2 = 0x00000000
-[   10.546456]   CM = 0, WnR = 1, TnD = 0, TagAccess = 0
-[   10.551726]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[   10.557612] swapper pgtable: 4k pages, 39-bit VAs, pgdp=0000000041f98000
-[   10.565214] [ffffffde85245d30] pgd=100000023ffff003, p4d=100000023ffff003, pud=100000023ffff003, pmd=10000001121eb003, pte=0000000000000000
-[   10.578887] Internal error: Oops: 0000000096000047 [#1] PREEMPT SMP
-[   10.585815] Modules linked in:
-[   10.590235] CPU: 6 PID: 195 Comm: (udev-worker) Tainted: G    B              6.8.0-rc2-next-20240130-02908-ge8ad01d60927-dirty #163 3f2318148ecc5fa70d1092c2b874f9b59bdb7d60
-[   10.607021] Hardware name: Google Tentacruel board (DT)
-[   10.613607] pstate: a0400009 (NzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[   10.621954] pc : module_bug_finalize+0x118/0x148
-[   10.626823] lr : module_bug_finalize+0x118/0x148
-[   10.631463] sp : ffffffc0820478d0
-[   10.631466] x29: ffffffc0820478d0 x28: ffffffc082047ca0 x27: ffffffde8d7d31a0
-[   10.631477] x26: ffffffde85223780 x25: 0000000000000000 x24: ffffffde8c413cc0
-[   10.631486] x23: ffffffde8dfcec80 x22: ffffffde8dfce000 x21: ffffffde85223ba8
-[   10.631495] x20: ffffffde85223780 x19: ffffffde85245d28 x18: 0000000000000000
-[   10.631504] x17: ffffffde8aa15938 x16: ffffffde8aabdd90 x15: ffffffde8aab8124
-[   10.631513] x14: ffffffde8acdd380 x13: 0000000041b58ab3 x12: ffffffbbd1bf9d91
-[   10.631522] x11: 1ffffffbd1bf9d90 x10: ffffffbbd1bf9d90 x9 : dfffffc000000000
-[   10.631531] x8 : 000000442e406270 x7 : ffffffde8dfcec87 x6 : 0000000000000001
-[   10.631539] x5 : ffffffde8dfcec80 x4 : 0000000000000000 x3 : ffffffde8bbadf08
-[   10.631548] x2 : 0000000000000001 x1 : ffffffde8eaff080 x0 : 0000000000000000
-[   10.631556] Call trace:
-[   10.631559]  module_bug_finalize+0x118/0x148
-[   10.631565]  load_module+0x25ec/0x2a78
-[   10.631572]  __do_sys_init_module+0x234/0x418
-[   10.631578]  __arm64_sys_init_module+0x4c/0x68
-[   10.631584]  invoke_syscall+0x68/0x198
-[   10.631589]  el0_svc_common.constprop.0+0x11c/0x150
-[   10.631594]  do_el0_svc+0x38/0x50
-[   10.631598]  el0_svc+0x50/0xa0
-[   10.631604]  el0t_64_sync_handler+0x120/0x130
-[   10.631609]  el0t_64_sync+0x1a8/0x1b0
-[   10.631619] Code: 97c5418e c89ffef5 91002260 97c53ca7 (f9000675)
-[   10.631624] ---[ end trace 0000000000000000 ]---
-[   10.642965] Kernel panic - not syncing: Oops: Fatal exception
-[   10.642975] SMP: stopping secondary CPUs
-[   10.648339] Kernel Offset: 0x1e0a800000 from 0xffffffc080000000
-[   10.648343] PHYS_OFFSET: 0x40000000
-[   10.648345] CPU features: 0x0,c0000061,7002814a,2100720b
-[   10.648350] Memory Limit: none
+> +
+>  static __always_inline struct encoded_page *encode_page(struct page *page, unsigned long flags)
+>  {
+>  	BUILD_BUG_ON(flags > ENCODED_PAGE_BITS);
+> @@ -242,6 +251,17 @@ static inline struct page *encoded_page_ptr(struct encoded_page *page)
+>  	return (struct page *)(~ENCODED_PAGE_BITS & (unsigned long)page);
+>  }
+>  
+> +static __always_inline struct encoded_page *encode_nr_pages(unsigned long nr)
+> +{
+> +	VM_WARN_ON_ONCE((nr << 2) >> 2 != nr);
+> +	return (struct encoded_page *)(nr << 2);
+> +}
+> +
+> +static __always_inline unsigned long encoded_nr_pages(struct encoded_page *page)
+> +{
+> +	return ((unsigned long)page) >> 2;
+> +}
+> +
+>  /*
+>   * A swap entry has to fit into a "unsigned long", as the entry is hidden
+>   * in the "index" field of the swapper address space.
+> diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+> index 6540c99c6758..dba1973dfe25 100644
+> --- a/mm/mmu_gather.c
+> +++ b/mm/mmu_gather.c
+> @@ -50,12 +50,21 @@ static bool tlb_next_batch(struct mmu_gather *tlb)
+>  #ifdef CONFIG_SMP
+>  static void tlb_flush_rmap_batch(struct mmu_gather_batch *batch, struct vm_area_struct *vma)
+>  {
+> +	struct encoded_page **pages = batch->encoded_pages;
+> +
+>  	for (int i = 0; i < batch->nr; i++) {
+> -		struct encoded_page *enc = batch->encoded_pages[i];
+> +		struct encoded_page *enc = pages[i];
+>  
+>  		if (encoded_page_flags(enc) & ENCODED_PAGE_BIT_DELAY_RMAP) {
+>  			struct page *page = encoded_page_ptr(enc);
+> -			folio_remove_rmap_pte(page_folio(page), page, vma);
+> +			unsigned int nr_pages = 1;
+> +
+> +			if (unlikely(encoded_page_flags(enc) &
+> +				     ENCODED_PAGE_BIT_NR_PAGES))
+> +				nr_pages = encoded_nr_pages(pages[++i]);
+> +
+> +			folio_remove_rmap_ptes(page_folio(page), page, nr_pages,
+> +					       vma);
+>  		}
+>  	}
+>  }
+> @@ -89,18 +98,26 @@ static void tlb_batch_pages_flush(struct mmu_gather *tlb)
+>  	for (batch = &tlb->local; batch && batch->nr; batch = batch->next) {
+>  		struct encoded_page **pages = batch->encoded_pages;
+>  
+> -		do {
+> +		while (batch->nr) {
+>  			/*
+>  			 * limit free batch count when PAGE_SIZE > 4K
+>  			 */
+>  			unsigned int nr = min(512U, batch->nr);
+>  
+> +			/*
+> +			 * Make sure we cover page + nr_pages, and don't leave
+> +			 * nr_pages behind when capping the number of entries.
+> +			 */
+> +			if (unlikely(encoded_page_flags(pages[nr - 1]) &
+> +				     ENCODED_PAGE_BIT_NR_PAGES))
+> +				nr++;
+> +
+>  			free_pages_and_swap_cache(pages, nr);
+>  			pages += nr;
+>  			batch->nr -= nr;
+>  
+>  			cond_resched();
+> -		} while (batch->nr);
+> +		}
+>  	}
+>  	tlb->active = &tlb->local;
+>  }
+> @@ -116,8 +133,9 @@ static void tlb_batch_list_free(struct mmu_gather *tlb)
+>  	tlb->local.next = NULL;
+>  }
+>  
+> -bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page,
+> -		bool delay_rmap, int page_size)
+> +static bool __tlb_remove_folio_pages_size(struct mmu_gather *tlb,
+> +		struct page *page, unsigned int nr_pages, bool delay_rmap,
+> +		int page_size)
+>  {
+>  	int flags = delay_rmap ? ENCODED_PAGE_BIT_DELAY_RMAP : 0;
+>  	struct mmu_gather_batch *batch;
+> @@ -126,6 +144,8 @@ bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page,
+>  
+>  #ifdef CONFIG_MMU_GATHER_PAGE_SIZE
+>  	VM_WARN_ON(tlb->page_size != page_size);
+> +	VM_WARN_ON_ONCE(nr_pages != 1 && page_size != PAGE_SIZE);
+> +	VM_WARN_ON_ONCE(page_folio(page) != page_folio(page + nr_pages - 1));
+>  #endif
+>  
+>  	batch = tlb->active;
+> @@ -133,17 +153,40 @@ bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page,
+>  	 * Add the page and check if we are full. If so
+>  	 * force a flush.
+>  	 */
+> -	batch->encoded_pages[batch->nr++] = encode_page(page, flags);
+> -	if (batch->nr == batch->max) {
+> +	if (likely(nr_pages == 1)) {
+> +		batch->encoded_pages[batch->nr++] = encode_page(page, flags);
+> +	} else {
+> +		flags |= ENCODED_PAGE_BIT_NR_PAGES;
+> +		batch->encoded_pages[batch->nr++] = encode_page(page, flags);
+> +		batch->encoded_pages[batch->nr++] = encode_nr_pages(nr_pages);
+> +	}
+> +	/*
+> +	 * Make sure that we can always add another "page" + "nr_pages",
+> +	 * requiring two entries instead of only a single one.
+> +	 */
+> +	if (batch->nr >= batch->max - 1) {
+>  		if (!tlb_next_batch(tlb))
+>  			return true;
+>  		batch = tlb->active;
+>  	}
+> -	VM_BUG_ON_PAGE(batch->nr > batch->max, page);
+> +	VM_BUG_ON_PAGE(batch->nr > batch->max - 1, page);
+>  
+>  	return false;
+>  }
+>  
+> +bool __tlb_remove_folio_pages(struct mmu_gather *tlb, struct page *page,
+> +		unsigned int nr_pages, bool delay_rmap)
+> +{
+> +	return __tlb_remove_folio_pages_size(tlb, page, nr_pages, delay_rmap,
+> +					     PAGE_SIZE);
+> +}
+> +
+> +bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page,
+> +		bool delay_rmap, int page_size)
+> +{
+> +	return __tlb_remove_folio_pages_size(tlb, page, 1, delay_rmap, page_size);
+> +}
+> +
+>  #endif /* MMU_GATHER_NO_GATHER */
+>  
+>  #ifdef CONFIG_MMU_GATHER_TABLE_FREE
+> diff --git a/mm/swap.c b/mm/swap.c
+> index cd8f0150ba3a..2a217520b80b 100644
+> --- a/mm/swap.c
+> +++ b/mm/swap.c
+> @@ -967,11 +967,17 @@ void release_pages(release_pages_arg arg, int nr)
+>  	unsigned int lock_batch;
+>  
+>  	for (i = 0; i < nr; i++) {
+> +		unsigned int nr_refs = 1;
+>  		struct folio *folio;
+>  
+>  		/* Turn any of the argument types into a folio */
+>  		folio = page_folio(encoded_page_ptr(encoded[i]));
+>  
+> +		/* Is our next entry actually "nr_pages" -> "nr_refs" ? */
+> +		if (unlikely(encoded_page_flags(encoded[i]) &
+> +			     ENCODED_PAGE_BIT_NR_PAGES))
+> +			nr_refs = encoded_nr_pages(encoded[++i]);
+> +
+>  		/*
+>  		 * Make sure the IRQ-safe lock-holding time does not get
+>  		 * excessive with a continuous string of pages from the
+> @@ -990,14 +996,14 @@ void release_pages(release_pages_arg arg, int nr)
+>  				unlock_page_lruvec_irqrestore(lruvec, flags);
+>  				lruvec = NULL;
+>  			}
+> -			if (put_devmap_managed_page(&folio->page))
+> +			if (put_devmap_managed_page_refs(&folio->page, nr_refs))
+>  				continue;
+> -			if (folio_put_testzero(folio))
+> +			if (folio_ref_sub_and_test(folio, nr_refs))
+>  				free_zone_device_page(&folio->page);
+>  			continue;
+>  		}
+>  
+> -		if (!folio_put_testzero(folio))
+> +		if (!folio_ref_sub_and_test(folio, nr_refs))
+>  			continue;
+>  
+>  		if (folio_test_large(folio)) {
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index e671266ad772..ae0c0f1f51bd 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -311,8 +311,16 @@ void free_page_and_swap_cache(struct page *page)
+>  void free_pages_and_swap_cache(struct encoded_page **pages, int nr)
+>  {
+>  	lru_add_drain();
+> -	for (int i = 0; i < nr; i++)
+> -		free_swap_cache(encoded_page_ptr(pages[i]));
+> +	for (int i = 0; i < nr; i++) {
+> +		struct page *page = encoded_page_ptr(pages[i]);
+> +
+> +		/* Skip over "nr_pages". Only call it once for the folio. */
+> +		if (unlikely(encoded_page_flags(pages[i]) &
+> +			     ENCODED_PAGE_BIT_NR_PAGES))
+> +			i++;
+> +
+> +		free_swap_cache(page);
+> +	}
+>  	release_pages(pages, nr);
+>  }
+>  
 
