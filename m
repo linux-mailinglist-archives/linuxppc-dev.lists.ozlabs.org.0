@@ -1,83 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB0D843FCA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jan 2024 13:57:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 532AB843FDE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jan 2024 14:00:46 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UPMR9cev;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a5O2ecbY;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EppDJGR2;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EppDJGR2;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TQ2B70Jqyz3cXK
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jan 2024 23:57:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TQ2G41gyZz3cVf
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Feb 2024 00:00:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UPMR9cev;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a5O2ecbY;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EppDJGR2;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EppDJGR2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TQ29J5j2qz30YZ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jan 2024 23:56:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TQ2FJ2G86z2xPc
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Feb 2024 00:00:03 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706705792;
+	s=mimecast20190719; t=1706706001;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=f53IOhiLrPUX1gRMuO+fvlb3pLNq/2nnndCf3VQaPeI=;
-	b=UPMR9cevQXpQkCf9Nqu10YLO1xIYzUDLNoD3MZrxNP9cFnKnKRUXvCnW1SHcf9ynlXeaHo
-	MJK3E3C/0H9a2CgxhgZyDDL5FkLPcwvVy3Qh7mkuV9BMXLAjf02hQy3lTDnAveVLLhGQ8F
-	5TMJ7DezqXeHITFBiVQX8FDgprlg4fg=
+	bh=0lTPJa5hogwvA7mfvI5JwYO2coIwhzqGUVh2e2+uFfY=;
+	b=EppDJGR2VPvlqu0HJL6DZ4yI1278uXL4P4RMbFlsbv4QUkAEz7J3geoDTxCthgMTIMlsID
+	RRWuVTOP29+MspQxJ4oaBhlaZZ21IL+eWz/t4LjGonaoMFLM8Z7bKgLk1hcfw73wIueg+2
+	ecPXPKvD6K08AwPn5zhC1Z7Z5xVFARs=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706705793;
+	s=mimecast20190719; t=1706706001;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=f53IOhiLrPUX1gRMuO+fvlb3pLNq/2nnndCf3VQaPeI=;
-	b=a5O2ecbYbBDQzj6tPENu0kSgpDvTDyPNwxE4VTfNI2zqfe3U0Zbd6UWnIBk7vcvTw6PHxw
-	UtGVm+SAhJwmg87AozaZQ3XAD1MCgJBps33bB8foxfWShWS7859svliu8bgPPKGOymTav9
-	g87xzGjkzbuRdo3jAMxedXlNoTv6od0=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=0lTPJa5hogwvA7mfvI5JwYO2coIwhzqGUVh2e2+uFfY=;
+	b=EppDJGR2VPvlqu0HJL6DZ4yI1278uXL4P4RMbFlsbv4QUkAEz7J3geoDTxCthgMTIMlsID
+	RRWuVTOP29+MspQxJ4oaBhlaZZ21IL+eWz/t4LjGonaoMFLM8Z7bKgLk1hcfw73wIueg+2
+	ecPXPKvD6K08AwPn5zhC1Z7Z5xVFARs=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-553-Exx25cDrOO6_trTCPNmuzg-1; Wed, 31 Jan 2024 07:56:31 -0500
-X-MC-Unique: Exx25cDrOO6_trTCPNmuzg-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-40efad468a5so15133195e9.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jan 2024 04:56:30 -0800 (PST)
+ us-mta-592-aNzcUeEiOuaQP0Eck6obpg-1; Wed, 31 Jan 2024 07:59:59 -0500
+X-MC-Unique: aNzcUeEiOuaQP0Eck6obpg-1
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-33aec659d0aso402514f8f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jan 2024 04:59:59 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706705790; x=1707310590;
+        d=1e100.net; s=20230601; t=1706705998; x=1707310798;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
          :references:cc:to:content-language:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=f53IOhiLrPUX1gRMuO+fvlb3pLNq/2nnndCf3VQaPeI=;
-        b=mLvEdkxsQqvYcS/o7pxB4/npySlKMPT05iljfiSeMu8Kv8tq2vTXBGYbjaSLypdayO
-         oqnrTDBALcuSiUYvoLN4ZYbtNu/B7PKPHLh1I/UoZ2moYVXpZ7J1wWUkeHe3SlWiTE3+
-         O9mYb9ACMyMAdqEfa5hTt2jYnvz/iRU9Ym4O+ZauAqYxhiLrY6s9/gEQbq3DGPqe/ziR
-         juJXoUG553DNxHNZYWLaqZtYQMr4WiwMl2ppOTNsGs+mvv21omcRcGOEGa+SfEmiCWh+
-         tsXZAVWXLb16apBjppOGwG6XcwDuSwQLgUNmaGXa7fQbl0LM05AwcLIJpKM/6c+INsO/
-         pkuQ==
-X-Gm-Message-State: AOJu0YzhFFsxDjMg17+9fRsuFiXhK9QKKOZrw0b025SK2t7y3cKzTlIf
-	GvYptlNMtfw0tZeDbptB9jjCF/YkgR/UbMrek7f4RFj+SjlTr23UnsCVJPYfx/RnG6vKBtFBnKC
-	M8wqQRSoSairsx2+qoQ0LGYxzgIw8l0LYn5M5RUwcE9eGKsv1a81R44q4XAK9EAJjNvhdHjA=
-X-Received: by 2002:a5d:654f:0:b0:33a:fa97:7ca6 with SMTP id z15-20020a5d654f000000b0033afa977ca6mr1181376wrv.10.1706705789863;
-        Wed, 31 Jan 2024 04:56:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGbLIdIx6kgoUl1cbbPBZL7eFEIfPvlgM53hMiavE08YIes7XgH7u6vH2Mc5TbCgeUVIbtRvA==
-X-Received: by 2002:a5d:654f:0:b0:33a:fa97:7ca6 with SMTP id z15-20020a5d654f000000b0033afa977ca6mr1181359wrv.10.1706705789365;
-        Wed, 31 Jan 2024 04:56:29 -0800 (PST)
+        bh=0lTPJa5hogwvA7mfvI5JwYO2coIwhzqGUVh2e2+uFfY=;
+        b=StbuFDxbgyZWtH5jUbzpxMpoSs52GRnR4kbBGTKH/Jw8UWA3rtf+uU1vUEPtbHRGRc
+         +3ZGPBxFnq7/6+wXHcAb1X9bteF3jf8d/4XvlBOIf32CGzP3/zA7swVpyCQctDHoF2ai
+         4UZ1UtUnSuYhR05vgSW4HCT6dslrBas8t0XweuVQL0r/Hx9za5yW88abP+r3tb9/Nx16
+         Qz+PB2ucGVqHICN7OYrb9rxhqYJWRwFSkgJkeDTk050k49QTrnRA1hHZJVNLirSPgi6a
+         RJfa4K0W+WwVVUHa5BwYLPNn8mg4pIXXSj7hpbuCZrO9VVM7yq06xygZm6Gw1XgcT5Zs
+         93+A==
+X-Gm-Message-State: AOJu0Yzanb3wDZdqR2oPJqOFESF07kruOb1MrjASealoZBTex4vHTtLb
+	fkzTCpdTbMyYUxojQCN2uPSIQ9gu2rhefXHDUoJjEZk9nhb3Mhc3baYi6vY+3l511lomIc+6lW3
+	2Tj7D3vRMylBydv8nd+Fiq7KOtB1+Cfab2ndTnx2AZ05ifBID4Ye3w1BdjsYMoyU=
+X-Received: by 2002:adf:ec4c:0:b0:338:c276:d78c with SMTP id w12-20020adfec4c000000b00338c276d78cmr4088038wrn.1.1706705998430;
+        Wed, 31 Jan 2024 04:59:58 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHKJejt1ENSaBUQWuofR4PWXz/tgON4kOPDzTeXfeUEZbuk3JAhKcajU8cJzdG6qVFClyi2+g==
+X-Received: by 2002:adf:ec4c:0:b0:338:c276:d78c with SMTP id w12-20020adfec4c000000b00338c276d78cmr4088002wrn.1.1706705998048;
+        Wed, 31 Jan 2024 04:59:58 -0800 (PST)
 Received: from [10.32.64.237] (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id r15-20020adfe68f000000b0033af51eafc6sm5794225wrm.104.2024.01.31.04.56.27
+        by smtp.gmail.com with ESMTPSA id i3-20020a05600011c300b0033ae8bdd642sm8969857wrx.114.2024.01.31.04.59.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 31 Jan 2024 04:56:28 -0800 (PST)
-Message-ID: <30718fc8-15cf-41e4-922c-5cdbf00a0840@redhat.com>
-Date: Wed, 31 Jan 2024 13:56:27 +0100
+        Wed, 31 Jan 2024 04:59:57 -0800 (PST)
+Message-ID: <cc381687-cc20-4a8d-945f-e07e6e907d1c@redhat.com>
+Date: Wed, 31 Jan 2024 13:59:56 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 00/15] mm/memory: optimize fork() with PTE-mapped THP
@@ -88,7 +88,6 @@ References: <20240129124649.189745-1-david@redhat.com>
  <57eb82c7-4816-42a2-b5ab-cc221e289b21@arm.com>
  <e6eaba5b-f290-4d1f-990b-a47d89f56ee4@redhat.com>
  <714d0930-2202-48b6-9728-d248f820325e@arm.com>
- <dcaa20c4-bd1f-4f15-bb0a-3a790808937d@arm.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -135,12 +134,12 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <dcaa20c4-bd1f-4f15-bb0a-3a790808937d@arm.com>
+In-Reply-To: <714d0930-2202-48b6-9728-d248f820325e@arm.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -156,184 +155,17 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, sparclinux@vg
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 31.01.24 13:37, Ryan Roberts wrote:
-> On 31/01/2024 11:49, Ryan Roberts wrote:
->> On 31/01/2024 11:28, David Hildenbrand wrote:
->>> On 31.01.24 12:16, Ryan Roberts wrote:
->>>> On 31/01/2024 11:06, David Hildenbrand wrote:
->>>>> On 31.01.24 11:43, Ryan Roberts wrote:
->>>>>> On 29/01/2024 12:46, David Hildenbrand wrote:
->>>>>>> Now that the rmap overhaul[1] is upstream that provides a clean interface
->>>>>>> for rmap batching, let's implement PTE batching during fork when processing
->>>>>>> PTE-mapped THPs.
->>>>>>>
->>>>>>> This series is partially based on Ryan's previous work[2] to implement
->>>>>>> cont-pte support on arm64, but its a complete rewrite based on [1] to
->>>>>>> optimize all architectures independent of any such PTE bits, and to
->>>>>>> use the new rmap batching functions that simplify the code and prepare
->>>>>>> for further rmap accounting changes.
->>>>>>>
->>>>>>> We collect consecutive PTEs that map consecutive pages of the same large
->>>>>>> folio, making sure that the other PTE bits are compatible, and (a) adjust
->>>>>>> the refcount only once per batch, (b) call rmap handling functions only
->>>>>>> once per batch and (c) perform batch PTE setting/updates.
->>>>>>>
->>>>>>> While this series should be beneficial for adding cont-pte support on
->>>>>>> ARM64[2], it's one of the requirements for maintaining a total mapcount[3]
->>>>>>> for large folios with minimal added overhead and further changes[4] that
->>>>>>> build up on top of the total mapcount.
->>>>>>>
->>>>>>> Independent of all that, this series results in a speedup during fork with
->>>>>>> PTE-mapped THP, which is the default with THPs that are smaller than a PMD
->>>>>>> (for example, 16KiB to 1024KiB mTHPs for anonymous memory[5]).
->>>>>>>
->>>>>>> On an Intel Xeon Silver 4210R CPU, fork'ing with 1GiB of PTE-mapped folios
->>>>>>> of the same size (stddev < 1%) results in the following runtimes
->>>>>>> for fork() (shorter is better):
->>>>>>>
->>>>>>> Folio Size | v6.8-rc1 |      New | Change
->>>>>>> ------------------------------------------
->>>>>>>          4KiB | 0.014328 | 0.014035 |   - 2%
->>>>>>>         16KiB | 0.014263 | 0.01196  |   -16%
->>>>>>>         32KiB | 0.014334 | 0.01094  |   -24%
->>>>>>>         64KiB | 0.014046 | 0.010444 |   -26%
->>>>>>>        128KiB | 0.014011 | 0.010063 |   -28%
->>>>>>>        256KiB | 0.013993 | 0.009938 |   -29%
->>>>>>>        512KiB | 0.013983 | 0.00985  |   -30%
->>>>>>>       1024KiB | 0.013986 | 0.00982  |   -30%
->>>>>>>       2048KiB | 0.014305 | 0.010076 |   -30%
->>>>>>
->>>>>> Just a heads up that I'm seeing some strange results on Apple M2. Fork for
->>>>>> order-0 is seemingly costing ~17% more. I'm using GCC 13.2 and was pretty
->>>>>> sure I
->>>>>> didn't see this problem with version 1; although that was on a different
->>>>>> baseline and I've thrown the numbers away so will rerun and try to debug this.
 >>
->> Numbers for v1 of the series, both on top of 6.8-rc1 and rebased to the same
->> mm-unstable base as v3 of the series (first 2 rows are from what I just posted
->> for context):
->>
->> | kernel             |   mean_rel |   std_rel |
->> |:-------------------|-----------:|----------:|
->> | mm-unstabe (base)  |       0.0% |      1.1% |
->> | mm-unstable + v3   |      16.7% |      0.8% |
->> | mm-unstable + v1   |      -2.5% |      1.7% |
->> | v6.8-rc1 + v1      |      -6.6% |      1.1% |
->>
->> So all looks good with v1. And seems to suggest mm-unstable has regressed by ~4%
->> vs v6.8-rc1. Is this really a useful benchmark? Does the raw performance of
->> fork() syscall really matter? Evidence suggests its moving all over the place -
->> breath on the code and it changes - not a great place to be when using the test
->> for gating purposes!
->>
->> Still with the old tests - I'll move to the new ones now.
->>
->>
->>>>>>
->>>>>
->>>>> So far, on my x86 tests (Intel, AMD EPYC), I was not able to observe this.
->>>>> fork() for order-0 was consistently effectively unchanged. Do you observe that
->>>>> on other ARM systems as well?
->>>>
->>>> Nope; running the exact same kernel binary and user space on Altra, I see
->>>> sensible numbers;
->>>>
->>>> fork order-0: -1.3%
->>>> fork order-9: -7.6%
->>>> dontneed order-0: -0.5%
->>>> dontneed order-9: 0.1%
->>>> munmap order-0: 0.0%
->>>> munmap order-9: -67.9%
->>>>
->>>> So I guess some pipelining issue that causes the M2 to stall more?
->>>
->>> With one effective added folio_test_large(), it could only be a code layout
->>> problem? Or the compiler does something stupid, but you say that you run the
->>> exact same kernel binary, so that doesn't make sense.
->>
->> Yup, same binary. We know this code is very sensitive - 1 cycle makes a big
->> difference. So could easily be code layout, branch prediction, etc...
->>
->>>
->>> I'm also surprised about the dontneed vs. munmap numbers.
->>
->> You mean the ones for Altra that I posted? (I didn't post any for M2). The altra
->> numbers look ok to me; dontneed has no change, and munmap has no change for
->> order-0 and is massively improved for order-9.
->>
->>   Doesn't make any sense
->>> (again, there was this VMA merging problem but it would still allow for batching
->>> within a single VMA that spans exactly one large folio).
->>>
->>> What are you using as baseline? Really just mm-unstable vs. mm-unstable+patches?
->>
->> yes. except for "v6.8-rc1 + v1" above.
->>
->>>
->>> Let's see if the new test changes the numbers you measure.
+>> I'm also surprised about the dontneed vs. munmap numbers.
 > 
-> Nope: looks the same. I've taken my test harness out of the picture and done
-> everything manually from the ground up, with the old tests and the new. Headline
-> is that I see similar numbers from both.
+> You mean the ones for Altra that I posted? (I didn't post any for M2). The altra
+> numbers look ok to me; dontneed has no change, and munmap has no change for
+> order-0 and is massively improved for order-9.
 
-I took me a while to get really reproducible numbers on Intel. Most 
-importantly:
-* Set a fixed CPU frequency, disabling any boost and avoiding any
-   thermal throttling.
-* Pin the test to CPUs and set a nice level.
 
-Another thing is, to avoid systems where you can have NUMA effects 
-within a single socket. Otherwise, memory access latency is just random 
-and depends on what the buddy enjoys giving you.
-
-But you seem to get the same +17 even after reboots, so that indicates 
-that the CPU is not happy about the code for some reason. And the weird 
-thing is, that nothing significantly changed for order-0 folios between 
-v1 and v3 that could explain any of this.
-
-I'm not worried about 5% or so, nobody cares. But it would be good to 
-have at least an explanation why only that system shows +17%.
-
-> 
-> Some details:
->   - I'm running for 10 seconds then averaging the output
-
-Same here.
-
->   - test is bimodal; first run (of 10 seconds) after boot is a bit faster on
->     average (up to 10%) than the rest; I could guess this is due to the memory
->     being allocated more contiguously the first few times through, so struct
->     pages have better locality, but that's a guess.
-
-I think it also has to do with the PCP lists, and the high-pcp auto 
-tuning (I played with disabling that). Running on a freshly booted 
-system gave me reproducible results.
-
-But yes: I was observing something similar on AMD EPYC, where you get 
-consecutive pages from the buddy, but once you allocate from the PCP it 
-might no longer be consecutive.
-
->   - test is 5-10% slower when output is printed to terminal vs when redirected to
->     file. I've always effectively been redirecting. Not sure if this overhead
->     could start to dominate the regression and that's why you don't see it?
-
-That's weird, because we don't print while measuring? Anyhow, 5/10% 
-variance on some system is not the end of the world.
-
-> 
-> I'm inclined to run this test for the last N kernel releases and if the number
-> moves around significantly, conclude that these tests don't really matter.
-> Otherwise its an exercise in randomly refactoring code until it works well, but
-> that's just overfitting to the compiler and hw. What do you think?
-
-Personally, I wouldn't lose sleep if you see weird, unexplainable 
-behavior on some system (not even architecture!). Trying to optimize for 
-that would indeed be random refactorings.
-
-But I would not be so fast to say that "these tests don't really matter" 
-and then go wild and degrade them as much as you want. There are use 
-cases that care about fork performance especially with order-0 pages -- 
-such as Redis.
+I would expect that dontneed would similarly benefit -- same code path. 
+But I focused on munmap measurements for now, I'll try finding time to 
+confirm that it's the same on Intel.
 
 -- 
 Cheers,
