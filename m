@@ -2,118 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 772158442DA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jan 2024 16:18:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A42B884438C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jan 2024 17:00:25 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=Xsu0+3xu;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=KZgn6jKK;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TQ5Jr2mgcz3cLk
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Feb 2024 02:18:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TQ6FM3ltgz3cYg
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Feb 2024 03:00:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=Xsu0+3xu;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=KZgn6jKK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=samsung.com (client-ip=210.118.77.12; helo=mailout2.w1.samsung.com; envelope-from=m.szyprowski@samsung.com; receiver=lists.ozlabs.org)
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2a00:1450:4864:20::335; helo=mail-wm1-x335.google.com; envelope-from=alexghiti@rivosinc.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TQ5J10SMrz30YR
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Feb 2024 02:17:33 +1100 (AEDT)
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20240131151721euoutp02aa3d63dcbc4b6f1c2b57cf515d66048c~vd49xJ96Z2788527885euoutp02i
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jan 2024 15:17:21 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20240131151721euoutp02aa3d63dcbc4b6f1c2b57cf515d66048c~vd49xJ96Z2788527885euoutp02i
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1706714241;
-	bh=vyZV6sJ+C4Ph/Q7b2FdAoMgA3iIBfoctDx1VoKpawe0=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=Xsu0+3xu7JFe65DllV2fQG+FheZxjvglMQila5Xju0CoIZqx0wuI/+f9g+s0QJ0B5
-	 95ddurlMroQunCY3k0QgJ/gHmVr1+Be8c+y7vQoE7cvysUQSNj1t3nTvj/zjmiziJO
-	 wWg+4io4Y/TCE1tmUQ5uU3fZ3Qotuc9xdYfgVBy8=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-	20240131151721eucas1p244ec5c2fa138b032dd0a4eca093b601c~vd49ekSzQ0568505685eucas1p2d;
-	Wed, 31 Jan 2024 15:17:21 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-	eusmges3new.samsung.com (EUCPMTA) with SMTP id 8B.D9.09552.1846AB56; Wed, 31
-	Jan 2024 15:17:21 +0000 (GMT)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20240131151720eucas1p1f168cb17a8e5b5b7792d2b570d13e1ca~vd48-k3mq1073110731eucas1p1f;
-	Wed, 31 Jan 2024 15:17:20 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-	eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-	20240131151720eusmtrp125e019057189bda9bfa0d717fa4f2635~vd48_8FXr2218422184eusmtrp1C;
-	Wed, 31 Jan 2024 15:17:20 +0000 (GMT)
-X-AuditID: cbfec7f5-83dff70000002550-3a-65ba6481bb82
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-	eusmgms1.samsung.com (EUCPMTA) with SMTP id 8D.7E.09146.0846AB56; Wed, 31
-	Jan 2024 15:17:20 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20240131151720eusmtip1bea35847920a57cbd0e168925f4283eb~vd48SIPHd2088220882eusmtip1d;
-	Wed, 31 Jan 2024 15:17:20 +0000 (GMT)
-Message-ID: <2febff4d-26ba-4809-a124-7add25ab3d35@samsung.com>
-Date: Wed, 31 Jan 2024 16:17:20 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TQ6DX5Tzzz3blb
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Feb 2024 02:59:38 +1100 (AEDT)
+Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-40e80046264so60596385e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jan 2024 07:59:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1706716773; x=1707321573; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SJEZ1qPaiDldAW8C05rM2rqR0hTzPI1igVobAmalZsY=;
+        b=KZgn6jKKekqL23aNblNC2CAGwfV0MHzepj6SnDyLpXKdq7cCBe+P9HOpstP+5D52KM
+         JStSL57K5DtKI089wghMXIx/HRJ3P0blHRoRb3GU/RfyWaNJEyED90ZIJtyLVrb+3FBf
+         6OrtEIBQF+TQLP4BVQgyGk0m4S9lRQFRLULQakqYZbiNEFjZAjZ4Y2wikmlnB8LoBuSC
+         rtJBXJeupTSua+u1b8KnR8jG1kVqf2UUnyqTlgjx9eW08rUpFNl07hDuSCQVVRWPzX/9
+         OuNB/yi0vDDdA5HF/+L44YqdQ9UEGXKShivCqoDo1lpOwRWFxjcG2eQD8XDkhg80gu+q
+         266Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706716773; x=1707321573;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SJEZ1qPaiDldAW8C05rM2rqR0hTzPI1igVobAmalZsY=;
+        b=Z80Q5JTiQEIJTV0IuleqI6ru1P9SXbsqrXj8KuBhTour3SlsdPw4rnzcDQ40jcC6du
+         NqmEzr2diN18vUGCyz3a/Oe5ldqgxdBHQHKcbEd6k7jZEq1BVPOTSLmMoQ2S3tjvxxkR
+         Rf3EYGXSPfOq4gBJZ+m3NXWDauq4LsShZ/Y9wxaF6gvMQlfOgEDkNhVDMHOcd0dhBiVB
+         QKpZAc/QqRD/p0bxBPyzeXD+mf8rIaTm+/2NwKFiRIHLScuuo6SGVaUMYZ+e/IiXWmnm
+         xK/CJUKxOWlYr0x0NtVkZ3pcCOzMQrcmt9p2+JGD1t8QByRLaYolZIkabiBnjS7+P0mU
+         MPiQ==
+X-Gm-Message-State: AOJu0YzUyetZ73VS4Rz9RkKBMMD7Pdf5GXA6WQQYikN+PoVa4a8M5Eud
+	/oSb6DrebhchmgSPdpuSD7ulYSqbFpVNY7/pSUqSqdcKPQRM1UEtYatanmXDq1g=
+X-Google-Smtp-Source: AGHT+IE0y4HMNlJGrQQF1/vBmusVf+vGvj5kGeOQLs8zgDMsoQ9mThbIK2SfMvCJNZS4ESF4P8sD+g==
+X-Received: by 2002:a05:600c:468b:b0:40e:e834:3d86 with SMTP id p11-20020a05600c468b00b0040ee8343d86mr1590072wmo.37.1706716772821;
+        Wed, 31 Jan 2024 07:59:32 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCU5toVRodwweHTcQIyYJFP2Sf3z6pJe8uOj3kJL8Bf9n+o3G8oH7qCtVvtBB6ZzANPh3d2Znisr/JVcpjb5tj+mnQOtD0bGrsmT4CRsS6KdtKyxWKOCl38Giy/mwdkpg1+QQxv40odbMZlnkY5SYdo2XLk0XdYDTp7WRoTnVpNlAlYCWWsQHxNfcLCDVAWDcXk3GvVdHhPFZ62Gx3ql6nSu6/WKzbRDqzGUIYgkgqpdB1vq50EO2ieKr+XUNsum2CV+pMMxiPj9TkdU06yVd81ZbG9I+ff7kAkhj9IowwAQm+N5BwHjhUoaeye58UCta73W6pRJRoGC3DvGN4oHjbsgUSKWyszDmS4NdxPTBbwp2RdU2Ks6e9clrZ+UECY6zRr/NAd2cDDBxGCLVOmgvb+jVeV5smy1Xly69fTl7+hY8866CxoOjFO1I48MgVF0UdOI5C1yuLuymZyybFPw6nm1nAcMitNsxXW/PlXLReWUH5BFV6Jriyq2AKNFsNYuHKk6srdfiXlJ0B77YIP+V0E/i01m7OxC/pDhPX+9RSpIvCQkc7ZVpcu7PMqJqsCDBi7cS4PdMDvYQwktSWOvXekDuYCwO0eKbSeWmguapyXy15tDZbbtoRH2ScNNIwiU21PKEtXagxXWu+FGng==
+Received: from alex-rivos.ba.rivosinc.com (amontpellier-656-1-456-62.w92-145.abo.wanadoo.fr. [92.145.124.62])
+        by smtp.gmail.com with ESMTPSA id t24-20020a1c7718000000b0040f0219c371sm1926678wmi.19.2024.01.31.07.59.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 31 Jan 2024 07:59:32 -0800 (PST)
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ved Shanbhogue <ved@rivosinc.com>,
+	Matt Evans <mev@rivosinc.com>,
+	Dylan Jhong <dylan@andestech.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	linux-mm@kvack.org
+Subject: [PATCH RFC v2 0/4] Svvptc extension to remove preventive sfence.vma
+Date: Wed, 31 Jan 2024 16:59:25 +0100
+Message-Id: <20240131155929.169961-1-alexghiti@rivosinc.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] init: Declare rodata_enabled and mark_rodata_ro()
- at all time
-Content-Language: en-US
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Chen-Yu Tsai
-	<wenst@chromium.org>, Luis Chamberlain <mcgrof@kernel.org>
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <46627d92-976a-4126-b261-a4c6575e5a3e@csgroup.eu>
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrKKsWRmVeSWpSXmKPExsWy7djP87qNKbtSDV4+E7H4O+kYu8WdSc/Z
-	LS7vmsNm0TD7O6vF7+//WC1uTHjKaLGl4RCbxc8XN1gsZrRdZnXg9Pj9axKjx+yGiyweX2+e
-	Y/JY9LKBxWPnrLvsHptWdbJ5nJ+xkNHj8ya5AI4oLpuU1JzMstQifbsErowF7x6wFPRqVHx/
-	/ZaxgXGjYhcjJ4eEgInEkhkPmboYuTiEBFYwSlz9PIcNJCEk8IVRYtseGYjEZ0aJeRPOscF0
-	HH6wmgmiaDmjxMpfdhBFHxklHn5pYgRJ8ArYSfz5d5gZxGYRUJVofPmLCSIuKHFy5hMWEFtU
-	QF7i/q0Z7CC2sECExJpJ18DqmQXEJW49mQ9WLyJQK3Hr0Wyw85gFtjFJ/Dr9ECzBJmAo0fW2
-	C+wiTqBlB7dsYoFolpdo3jqbGeLSZk6J5klFXYwcQLaLROd7Q4iwsMSr41vYIWwZidOTe1hA
-	5ksItDNKLPh9nwnCmcAo0fD8FiNElbXEnXO/2EAGMQtoSqzfpQ8RdpRY/RikGWQ+n8SNt4IQ
-	J/BJTNo2nRkizCvR0SYEUa0mMev4Ori1By9cYp7AqDQLKVRmIfl+FpJnZiHsXcDIsopRPLW0
-	ODc9tdg4L7Vcrzgxt7g0L10vOT93EyMwZZ3+d/zrDsYVrz7qHWJk4mA8xCjBwawkwrtSbmeq
-	EG9KYmVValF+fFFpTmrxIUZpDhYlcV7VFPlUIYH0xJLU7NTUgtQimCwTB6dUA5N9tN6R9TK+
-	RkHn3x/cfFTKlbuIxT19sdUmjbRXfu/sBRwiz9oabnjy1OHptLAZW59y88278vnQpALPnldd
-	Xl4NXPvN/ofcf+jtlTHjwvpk76NKS4HpbrOYGueeIxmC9nqTt2pxHzyR80H/8Q6vzRnCAQW3
-	6x/vab2mLnHmF9+MZxc7fkSVM7+qtIj8e/pIdw7jiduqWq1vnDLP5V13S4j9fHtL2dp8780/
-	eNn57KRPP3ra2eymv6mK88fUDStENNdzK3zM/CEtmcj4Q0VSnaWrUkQtOfhkAfNZkYzDCjrf
-	ykrXKsqoySQsnGNb9H2KJMO66uu9F/zCZreasl3f9+El0xmlp9f2r9O5fs1jvxJLcUaioRZz
-	UXEiAIMdtTPIAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrJIsWRmVeSWpSXmKPExsVy+t/xu7oNKbtSDZ7eNrD4O+kYu8WdSc/Z
-	LS7vmsNm0TD7O6vF7+//WC1uTHjKaLGl4RCbxc8XN1gsZrRdZnXg9Pj9axKjx+yGiyweX2+e
-	Y/JY9LKBxWPnrLvsHptWdbJ5nJ+xkNHj8ya5AI4oPZui/NKSVIWM/OISW6VoQwsjPUNLCz0j
-	E0s9Q2PzWCsjUyV9O5uU1JzMstQifbsEvYwF7x6wFPRqVHx//ZaxgXGjYhcjJ4eEgInE4Qer
-	mboYuTiEBJYySsx9cJEJIiEjcXJaAyuELSzx51oXG0TRe0aJU6+XsIAkeAXsJP78O8wMYrMI
-	qEo0vvzFBBEXlDg58wlYjaiAvMT9WzPYuxg5OIQFIiTW7JYCCTMLiEvcejIfrFxEoFbiUtda
-	Roj4NiaJZ7dyIXYtY5Zoe7gB7Ag2AUOJrrcgR3BycALtPbhlEwtEg5lE19YuqGZ5ieats5kn
-	MArNQnLGLCT7ZiFpmYWkZQEjyypGkdTS4tz03GJDveLE3OLSvHS95PzcTYzAON127OfmHYzz
-	Xn3UO8TIxMF4iFGCg1lJhHel3M5UId6UxMqq1KL8+KLSnNTiQ4ymwLCYyCwlmpwPTBR5JfGG
-	ZgamhiZmlgamlmbGSuK8ngUdiUIC6YklqdmpqQWpRTB9TBycUg1MctX8z5aH2KoybdVo9p0r
-	G+Du2J81I+5USODBTT3ZO66azP+hz+/v27w04u7iGefeTiuZ/X7pH6l53AI6K0osLxzlyOKa
-	ucrVe3ftN9Psj85eW46t3KE0nXfKt5L2nWa7arn/Xsny+LHa/nQV558ZLdb8+f3rf+3J053r
-	8fR00fQJll3fP/oUNe17HFzHsMZjxj0LeXuT7AvuoWttDB89lOTZm1fPe05Nt+f/ixqDW8rl
-	ew8Xa6cf+MduuefPhU+M0+yknjJ+d2W6zXrlfFX/nWKmytvrSxTYkhL47Be/K/ErFwqY8+ED
-	U+WHrKBZOSddFmqzxp094++W4rP+qajinfq0X9e4BVeEf9x0x/WDEktxRqKhFnNRcSIAC6yf
-	m1wDAAA=
-X-CMS-MailID: 20240131151720eucas1p1f168cb17a8e5b5b7792d2b570d13e1ca
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20240130174812eucas1p166f62549457fd188fed6ed72b6b4b9cd
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20240130174812eucas1p166f62549457fd188fed6ed72b6b4b9cd
-References: <7b5df1782e94a755b4a18733af44d17d8dd8b37b.1703149011.git.christophe.leroy@csgroup.eu>
-	<ZbgGDlgrLhB8tcGI@bombadil.infradead.org>
-	<20240130091626.GA3684878@google.com>
-	<9e298fa7-a953-462a-96a4-56a1b4316a17@csgroup.eu>
-	<CGME20240130174812eucas1p166f62549457fd188fed6ed72b6b4b9cd@eucas1p1.samsung.com>
-	<30ddedc9-0829-4a99-9cb1-39190937981c@samsung.com>
-	<46627d92-976a-4126-b261-a4c6575e5a3e@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -125,130 +94,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-modules@vger.kernel.org" <linux-modules@vger.kernel.org>
+Cc: Alexandre Ghiti <alexghiti@rivosinc.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
+In RISC-V, after a new mapping is established, a sfence.vma needs to be
+emitted for different reasons:
 
-On 31.01.2024 12:58, Christophe Leroy wrote:
-> Le 30/01/2024 à 18:48, Marek Szyprowski a écrit :
->> [Vous ne recevez pas souvent de courriers de m.szyprowski@samsung.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
->>
->> On 30.01.2024 12:03, Christophe Leroy wrote:
->>> Le 30/01/2024 à 10:16, Chen-Yu Tsai a écrit :
->>>> [Vous ne recevez pas souvent de courriers de wenst@chromium.org. D?couvrez pourquoi ceci est important ? https://aka.ms/LearnAboutSenderIdentification ]
->>>>
->>>> On Mon, Jan 29, 2024 at 12:09:50PM -0800, Luis Chamberlain wrote:
->>>>> On Thu, Dec 21, 2023 at 10:02:46AM +0100, Christophe Leroy wrote:
->>>>>> Declaring rodata_enabled and mark_rodata_ro() at all time
->>>>>> helps removing related #ifdefery in C files.
->>>>>>
->>>>>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->>>>> Very nice cleanup, thanks!, applied and pushed
->>>>>
->>>>>       Luis
->>>> On next-20240130, which has your modules-next branch, and thus this
->>>> series and the other "module: Use set_memory_rox()" series applied,
->>>> my kernel crashes in some very weird way. Reverting your branch
->>>> makes the crash go away.
->>>>
->>>> I thought I'd report it right away. Maybe you folks would know what's
->>>> happening here? This is on arm64.
->>> That's strange, it seems to bug in module_bug_finalize() which is
->>> _before_ calls to module_enable_ro() and such.
->>>
->>> Can you try to revert the 6 patches one by one to see which one
->>> introduces the problem ?
->>>
->>> In reality, only patch 677bfb9db8a3 really change things. Other ones are
->>> more on less only cleanup.
->> I've also run into this issue with today's (20240130) linux-next on my
->> test farm. The issue is not fully reproducible, so it was a bit hard to
->> bisect it automatically. I've spent some time on manual testing and it
->> looks that reverting the following 2 commits on top of linux-next fixes
->> the problem:
->>
->> 65929884f868 ("modules: Remove #ifdef CONFIG_STRICT_MODULE_RWX around
->> rodata_enabled")
->> 677bfb9db8a3 ("module: Don't ignore errors from set_memory_XX()")
->>
->> This in fact means that commit 677bfb9db8a3 is responsible for this
->> regression, as 65929884f868 has to be reverted only because the latter
->> depends on it. Let me know what I can do to help debugging this issue.
->>
-> Thanks for the bisect. I suspect you hit one of the errors and something
-> goes wrong in the error path.
->
-> To confirm this assumption, could you try with the following change on
-> top of everything ?
+- if the uarch caches invalid entries, we need to invalidate it otherwise
+  we would trap on this invalid entry,
+- if the uarch does not cache invalid entries, a reordered access could fail
+  to see the new mapping and then trap (sfence.vma acts as a fence).
 
+We can actually avoid emitting those (mostly) useless and costly sfence.vma
+by handling the traps instead:
 
-Yes, this is the problem. I've added printing a mod->name to the log. 
-Here is a log from kernel build from next-20240130 (sometimes it even 
-boots to shell):
+- for new kernel mappings: only vmalloc mappings need to be taken care of,
+  other new mapping are rare and already emit the required sfence.vma if
+  needed.
+  That must be achieved very early in the exception path as explained in
+  patch 3, and this also fixes our fragile way of dealing with vmalloc faults.
 
-# dmesg | grep module_set_memory
-[    8.061525] module_set_memory(6, 0000000000000000, 0) name ipv6 
-returned -22
-[    8.067543] WARNING: CPU: 3 PID: 1 at kernel/module/strict_rwx.c:22 
-module_set_memory+0x9c/0xb8
-[    8.097821] pc : module_set_memory+0x9c/0xb8
-[    8.102068] lr : module_set_memory+0x9c/0xb8
-[    8.183101]  module_set_memory+0x9c/0xb8
-[    8.472862] module_set_memory(6, 0000000000000000, 0) name x_tables 
-returned -22
-[    8.479215] WARNING: CPU: 2 PID: 1 at kernel/module/strict_rwx.c:22 
-module_set_memory+0x9c/0xb8
-[    8.510978] pc : module_set_memory+0x9c/0xb8
-[    8.515225] lr : module_set_memory+0x9c/0xb8
-[    8.596259]  module_set_memory+0x9c/0xb8
-[   10.529879] module_set_memory(6, 0000000000000000, 0) name dm_mod 
-returned -22
-[   10.536087] WARNING: CPU: 3 PID: 127 at kernel/module/strict_rwx.c:22 
-module_set_memory+0x9c/0xb8
-[   10.568254] pc : module_set_memory+0x9c/0xb8
-[   10.572501] lr : module_set_memory+0x9c/0xb8
-[   10.653535]  module_set_memory+0x9c/0xb8
-[   10.853177] module_set_memory(6, 0000000000000000, 0) name fuse 
-returned -22
-[   10.859196] WARNING: CPU: 5 PID: 130 at kernel/module/strict_rwx.c:22 
-module_set_memory+0x9c/0xb8
-[   10.891382] pc : module_set_memory+0x9c/0xb8
-[   10.895629] lr : module_set_memory+0x9c/0xb8
-[   10.976663]  module_set_memory+0x9c/0xb8
+- for new user mappings: Svvptc makes update_mmu_cache() a no-op and no
+  traps can happen since xRET instructions now act as fences.
 
+Patch 1 and 2 introduce Svvptc extension probing.
 
+It's still an RFC because Svvptc is not ratified yet.
 
-> diff --git a/kernel/module/strict_rwx.c b/kernel/module/strict_rwx.c
-> index a14df9655dbe..fdf8484154dd 100644
-> --- a/kernel/module/strict_rwx.c
-> +++ b/kernel/module/strict_rwx.c
-> @@ -15,9 +15,12 @@ static int module_set_memory(const struct module
-> *mod, enum mod_mem_type type,
->    			      int (*set_memory)(unsigned long start, int num_pages))
->    {
->    	const struct module_memory *mod_mem = &mod->mem[type];
-> +	int err;
->
->    	set_vm_flush_reset_perms(mod_mem->base);
-> -	return set_memory((unsigned long)mod_mem->base, mod_mem->size >>
-> PAGE_SHIFT);
-> +	err = set_memory((unsigned long)mod_mem->base, mod_mem->size >>
-> PAGE_SHIFT);
-> +	WARN(err, "module_set_memory(%d, %px, %x) returned %d\n", type,
-> mod_mem->base, mod_mem->size, err);
-> +	return err;
->    }
->
->    /*
->
->
-> Thanks for your help
-> Christophe
+On our uarch that does not cache invalid entries and a 6.5 kernel, the
+gains are measurable:
 
-Best regards
+* Kernel boot:                  6%
+* ltp - mmapstress01:           8%
+* lmbench - lat_pagefault:      20%
+* lmbench - lat_mmap:           5%
+
+Thanks to Ved and Matt Evans for triggering the discussion that led to
+this patchset!
+
+Any feedback, test or relevant benchmark are welcome :)
+
+Changes in v2:
+- Rebase on top of 6.8-rc1
+- Remove patch with runtime detection of tlb caching and debugfs patch
+- Add patch that probes Svvptc
+- Add patch that defines the new Svvptc dt-binding
+- Leave the behaviour as-is for uarchs that cache invalid TLB entries since
+  I don't have any good perf numbers
+- Address comments from Christoph on v1
+- Fix a race condition in new_vmalloc update:
+
+       ld      a2, 0(a0) <= this could load something which is != -1
+       not     a1, a1    <= here or in the instruction after, flush_cache_vmap()
+                            could make the whole bitmap to 1
+       and     a1, a2, a1
+       sd      a1, 0(a0) <= here we would clear bits that should not be cleared!
+
+   Instead, replace the whole sequence with:
+       amoxor.w        a0, a1, (a0)
+
+Alexandre Ghiti (4):
+  riscv: Add ISA extension parsing for Svvptc
+  dt-bindings: riscv: Add Svvptc ISA extension description
+  riscv: Stop emitting preventive sfence.vma for new vmalloc mappings
+  riscv: Stop emitting preventive sfence.vma for new userspace mappings
+    with Svvptc
+
+ .../devicetree/bindings/riscv/extensions.yaml |  7 ++
+ arch/riscv/include/asm/cacheflush.h           | 18 +++-
+ arch/riscv/include/asm/hwcap.h                |  1 +
+ arch/riscv/include/asm/pgtable.h              | 16 +++-
+ arch/riscv/include/asm/thread_info.h          |  5 ++
+ arch/riscv/kernel/asm-offsets.c               |  5 ++
+ arch/riscv/kernel/cpufeature.c                |  1 +
+ arch/riscv/kernel/entry.S                     | 84 +++++++++++++++++++
+ arch/riscv/mm/init.c                          |  2 +
+ arch/riscv/mm/pgtable.c                       | 13 +++
+ 10 files changed, 150 insertions(+), 2 deletions(-)
+
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+2.39.2
 
