@@ -1,89 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EA21843DC2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jan 2024 12:07:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C720843E0B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jan 2024 12:13:53 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dLqM/xDf;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dLqM/xDf;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bLX8t9qM;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VSs7TDgG;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TPzlm3RRqz3cVW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jan 2024 22:07:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TPztl3NVJz3cT1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jan 2024 22:13:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dLqM/xDf;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dLqM/xDf;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bLX8t9qM;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VSs7TDgG;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TPzl16rvgz2xHb
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jan 2024 22:07:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TPzt12fZCz30gC
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jan 2024 22:13:12 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706699226;
+	s=mimecast20190719; t=1706699589;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=EPrRA4G16rNph0HwrpyFZd0WmfVM9XjFuWwPmxCMxPs=;
-	b=dLqM/xDf/BPWgm2P48Tgbo5KEv9706uuD/+yi91mM+hEFkKqagPWzjgpoRx3OxLTOt64HF
-	Z8v8j+EbyjkvImkLkOnv768dUMRXgQYfef+GooIeQPmiAnaqf0t0/OqJQUs0wa98RpmnQi
-	gy9Cw9LGCIoti02wpgGvmCwWBh4ixwA=
+	bh=d4ma9zbE8mjb8i+FauSpNHy+FN/rZ5fB2oL3RLjV6rs=;
+	b=bLX8t9qM4WUR8REWg+0XkfWUSQK09h+hi9UWdax3f5UNM9Qc1Tj8CrjzSs/VkA/AKyJYL2
+	IDZOuaEl1tczJltgyUs5jAa+ciqy9UIb/YYCBCwPsN9nBIPPyjrljmhGGpKr6C4SOycd/D
+	IrOS1PCi+JUkz41Y0r8mDvT9ynhc9pI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706699226;
+	s=mimecast20190719; t=1706699590;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=EPrRA4G16rNph0HwrpyFZd0WmfVM9XjFuWwPmxCMxPs=;
-	b=dLqM/xDf/BPWgm2P48Tgbo5KEv9706uuD/+yi91mM+hEFkKqagPWzjgpoRx3OxLTOt64HF
-	Z8v8j+EbyjkvImkLkOnv768dUMRXgQYfef+GooIeQPmiAnaqf0t0/OqJQUs0wa98RpmnQi
-	gy9Cw9LGCIoti02wpgGvmCwWBh4ixwA=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=d4ma9zbE8mjb8i+FauSpNHy+FN/rZ5fB2oL3RLjV6rs=;
+	b=VSs7TDgGaUSr2Xh7gshkdiY3N9eXYVn9USZSt69osZbF5iYcZ+oBddH9Rqwxh1fxgCsRpZ
+	0vo7eDfQRp5LYtjLLYvmcDFWSznmZHb1mlXOmRM88ZZQz7JNhdYKE1LHK/Ax0hf/p0FXRm
+	WrrvqyZBXL/yIhf7N0Wgxp4nBDFkmPs=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-627-Ko26Z-c7M0ir8D64kjrflw-1; Wed, 31 Jan 2024 06:07:02 -0500
-X-MC-Unique: Ko26Z-c7M0ir8D64kjrflw-1
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-33af7421635so987623f8f.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jan 2024 03:07:02 -0800 (PST)
+ us-mta-231-0IbfNVSaMFeZFqqPC8ajcQ-1; Wed, 31 Jan 2024 06:13:08 -0500
+X-MC-Unique: 0IbfNVSaMFeZFqqPC8ajcQ-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-40fb03d8a39so5567715e9.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jan 2024 03:13:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706699221; x=1707304021;
+        d=1e100.net; s=20230601; t=1706699587; x=1707304387;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
          :references:cc:to:content-language:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EPrRA4G16rNph0HwrpyFZd0WmfVM9XjFuWwPmxCMxPs=;
-        b=baDXeikGU1iwJi4eB2I7nk6sa90UjOLPxOecuv3Ysd+EHUS0NeEhmUGwgleA1XUf4U
-         oi6lSD4DjQsxG0KlNe1iU/X5AEhijbWj13SN+se1n5IjAussCC0IhyiWcPAKVZaaU9N1
-         63rWFb6RTNJCxmwiSls8/wemN54siG5UOjvVtA9HucPouAXE49+/axotEdz0mYVYeqcB
-         Vqf0ZvQd/Lbuen9s2VaG3r+X4VZQ+XYS7cxlskhfgy59qNPmz43MYO27hqWomo86Dmwe
-         S+gu5NJ3uZT2YJ1TzC2CMO7w8bVuOhvQrTR/KyHTclgGDQtP0XG2va0O/kE5Rc5mTY1q
-         PvZw==
-X-Gm-Message-State: AOJu0Yz7yynSnz78eFh9nze5MeWp5vEFPMVOTH4SaPOJim266A+LF1/q
-	oEezG7AeV9V1GoEIdzax9X+op1zfMlcRP/2OQmcS93wtPmZSmMGfAm/89WBSGQ9O00OKR40Iz9p
-	6+/Tdekba0gcnJc1pM9IViRT2ajkS5kyGMLSnnmjcOZxTRo11bYx8/sSzemfYKIQ=
-X-Received: by 2002:adf:cd0b:0:b0:336:6377:6e3d with SMTP id w11-20020adfcd0b000000b0033663776e3dmr731882wrm.66.1706699221613;
-        Wed, 31 Jan 2024 03:07:01 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFA/lbkXBUTF2Q1hwLU6vcNIzd8zfJwdZPFVoQqQvBcWoL3J9lF0IZkIJXh4wwNAzmG9wj1/Q==
-X-Received: by 2002:adf:cd0b:0:b0:336:6377:6e3d with SMTP id w11-20020adfcd0b000000b0033663776e3dmr731857wrm.66.1706699221183;
-        Wed, 31 Jan 2024 03:07:01 -0800 (PST)
+        bh=d4ma9zbE8mjb8i+FauSpNHy+FN/rZ5fB2oL3RLjV6rs=;
+        b=oKfpYk8xYRESLpoTCf8OdTGhnC2rC4zQVSk/AvbKLKwTiWp1+c2eL2hoQtaMPxJGd3
+         ikmUJbKjrk/4cRurzbEcTd7iyiawvHYgK7V4CewTRwlL3sqtmgwCD5dIwzvNggv7Guzy
+         IaH+n8LT8cQtSwZ+zxfpW3IBQph7+IEx5XOwZ0ktvd5nig2rvsIH9ylB+lqH4wVKhc5x
+         OsM3tUZYszpq/RjtZ4B67VwycZf78/nvZ0Yg9ZQqXMHD5PamIzmXoKK63hrFIdR0wXCT
+         F4IaN7ES7uBU6tk/kLio1Xsi3osGyD8GEdoAUtg+XCAFYOXtfh+SGKbKv+06nzTym/7N
+         3Zmw==
+X-Gm-Message-State: AOJu0YxKsiCAMVMJx4T1n7W7I0x1Jh5Rjh5ix7iqGnvz63ssML1HUuZm
+	qKY8WL//yHLoauoQWe+WYFy33q+NenY3uIOU7sb/Nk72NJQnIobBEFgcT0Q5sJUSAASuOOrSMWQ
+	tjvjfgwmVwIIzh17+V1ELrlZPkFaZFXfVpk84IbuTm4caeRmGqbBmp2PP7xTm4sw=
+X-Received: by 2002:a05:600c:470d:b0:40e:f656:39f with SMTP id v13-20020a05600c470d00b0040ef656039fmr1018343wmo.6.1706699586979;
+        Wed, 31 Jan 2024 03:13:06 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFqBwS6p6bJR9z+v39DGZKJ94gGFj7YXuQe4rd8sPOmEQeUSMAmCXotFvLHcNalUBQDlimQJQ==
+X-Received: by 2002:a05:600c:470d:b0:40e:f656:39f with SMTP id v13-20020a05600c470d00b0040ef656039fmr1018321wmo.6.1706699586591;
+        Wed, 31 Jan 2024 03:13:06 -0800 (PST)
 Received: from [10.32.64.237] (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id fo4-20020a056000290400b0033af3294417sm6643931wrb.21.2024.01.31.03.06.59
+        by smtp.gmail.com with ESMTPSA id cl3-20020a5d5f03000000b0033afd49cac7sm3390196wrb.43.2024.01.31.03.13.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 31 Jan 2024 03:07:00 -0800 (PST)
-Message-ID: <a1a0e9b3-dae2-418f-bd63-50e65f471728@redhat.com>
-Date: Wed, 31 Jan 2024 12:06:59 +0100
+        Wed, 31 Jan 2024 03:13:06 -0800 (PST)
+Message-ID: <fbf08467-fbca-4b97-a1aa-046e0f17fdb8@redhat.com>
+Date: Wed, 31 Jan 2024 12:13:05 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/15] mm/memory: optimize fork() with PTE-mapped THP
+Subject: Re: [PATCH v1 9/9] mm/memory: optimize unmap/zap with PTE-mapped THP
 To: Ryan Roberts <ryan.roberts@arm.com>, linux-kernel@vger.kernel.org
-References: <20240129124649.189745-1-david@redhat.com>
- <a335a9d2-9b8f-4eb8-ba22-23a223b59b06@arm.com>
+References: <20240129143221.263763-1-david@redhat.com>
+ <20240129143221.263763-10-david@redhat.com>
+ <bec84017-b1c9-48e7-a206-c4c8a651ee83@arm.com>
+ <cf9adefc-8508-49a4-a7f0-784e345c5d80@redhat.com>
+ <424115a2-a924-4c28-8027-32db6ab9278d@arm.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -130,12 +133,12 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <a335a9d2-9b8f-4eb8-ba22-23a223b59b06@arm.com>
+In-Reply-To: <424115a2-a924-4c28-8027-32db6ab9278d@arm.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -147,100 +150,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-arm-kernel@lists.infradead.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Vasily Gorbik <gor@linux.ibm.com>, Peter Zijlstra <peterz@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, Nick Piggin <npiggin@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 31.01.24 11:43, Ryan Roberts wrote:
-> On 29/01/2024 12:46, David Hildenbrand wrote:
->> Now that the rmap overhaul[1] is upstream that provides a clean interface
->> for rmap batching, let's implement PTE batching during fork when processing
->> PTE-mapped THPs.
+>>>> -        folio_remove_rmap_pte(folio, page, vma);
+>>>> +        folio_remove_rmap_ptes(folio, page, nr, vma);
+>>>> +
+>>>> +        /* Only sanity-check the first page in a batch. */
+>>>>            if (unlikely(page_mapcount(page) < 0))
+>>>>                print_bad_pte(vma, addr, ptent, page);
+>>>
+>>> Is there a case for either removing this all together or moving it into
+>>> folio_remove_rmap_ptes()? It seems odd to only check some pages.
+>>>
 >>
->> This series is partially based on Ryan's previous work[2] to implement
->> cont-pte support on arm64, but its a complete rewrite based on [1] to
->> optimize all architectures independent of any such PTE bits, and to
->> use the new rmap batching functions that simplify the code and prepare
->> for further rmap accounting changes.
+>> I really wanted to avoid another nasty loop here.
 >>
->> We collect consecutive PTEs that map consecutive pages of the same large
->> folio, making sure that the other PTE bits are compatible, and (a) adjust
->> the refcount only once per batch, (b) call rmap handling functions only
->> once per batch and (c) perform batch PTE setting/updates.
+>> In my thinking, for 4k folios, or when zapping subpages of large folios, we
+>> still perform the exact same checks. Only when batching we don't. So if there is
+>> some problem, there are ways to get it triggered. And these problems are barely
+>> ever seen.
 >>
->> While this series should be beneficial for adding cont-pte support on
->> ARM64[2], it's one of the requirements for maintaining a total mapcount[3]
->> for large folios with minimal added overhead and further changes[4] that
->> build up on top of the total mapcount.
+>> folio_remove_rmap_ptes() feels like the better place -- especially because the
+>> delayed-rmap handling is effectively unchecked. But in there, we cannot
+>> "print_bad_pte()".
 >>
->> Independent of all that, this series results in a speedup during fork with
->> PTE-mapped THP, which is the default with THPs that are smaller than a PMD
->> (for example, 16KiB to 1024KiB mTHPs for anonymous memory[5]).
->>
->> On an Intel Xeon Silver 4210R CPU, fork'ing with 1GiB of PTE-mapped folios
->> of the same size (stddev < 1%) results in the following runtimes
->> for fork() (shorter is better):
->>
->> Folio Size | v6.8-rc1 |      New | Change
->> ------------------------------------------
->>        4KiB | 0.014328 | 0.014035 |   - 2%
->>       16KiB | 0.014263 | 0.01196  |   -16%
->>       32KiB | 0.014334 | 0.01094  |   -24%
->>       64KiB | 0.014046 | 0.010444 |   -26%
->>      128KiB | 0.014011 | 0.010063 |   -28%
->>      256KiB | 0.013993 | 0.009938 |   -29%
->>      512KiB | 0.013983 | 0.00985  |   -30%
->>     1024KiB | 0.013986 | 0.00982  |   -30%
->>     2048KiB | 0.014305 | 0.010076 |   -30%
+>> [background: if we had a total mapcount -- iow cheap folio_mapcount(), I'd check
+>> here that the total mapcount does not underflow, instead of checking per-subpage]
 > 
-> Just a heads up that I'm seeing some strange results on Apple M2. Fork for
-> order-0 is seemingly costing ~17% more. I'm using GCC 13.2 and was pretty sure I
-> didn't see this problem with version 1; although that was on a different
-> baseline and I've thrown the numbers away so will rerun and try to debug this.
-> 
+> All good points... perhaps extend the comment to describe how this could be
+> solved in future with cheap total_mapcount()? Or in the commit log if you prefer?
 
-So far, on my x86 tests (Intel, AMD EPYC), I was not able to observe 
-this. fork() for order-0 was consistently effectively unchanged. Do you 
-observe that on other ARM systems as well?
-
-
-> | kernel      |   mean_rel |   std_rel |
-> |:------------|-----------:|----------:|
-> | mm-unstable |       0.0% |      1.1% |
-> | patch 1     |      -2.3% |      1.3% |
-> | patch 10    |      -2.9% |      2.7% |
-> | patch 11    |      13.5% |      0.5% |
-> | patch 12    |      15.2% |      1.2% |
-> | patch 13    |      18.2% |      0.7% |
-> | patch 14    |      20.5% |      1.0% |
-> | patch 15    |      17.1% |      1.6% |
-> | patch 15    |      16.7% |      0.8% |
-> 
-> fork for order-9 is looking good (-20%), and for the zap series, munmap is
-> looking good, but dontneed is looking poor for both order-0 and 9. But one thing
-> at a time... let's concentrate on fork order-0 first.
-
-munmap and dontneed end up calling the exact same call paths. So a big 
-performance difference is rather surprising and might indicate something 
-else.
-
-(I think I told you that I was running in some kind of VMA merging 
-problem where one would suddenly get with my benchmark 1 VMA per page. 
-The new benchmark below works around that, but I am not sure if that was 
-fixed in the meantime)
-
-VMA merging can of course explain a big difference in fork and munmap 
-vs. dontneed times, especially when comparing different code base where 
-that VMA merging behavior was different.
-
-> 
-> Note that I'm still using the "old" benchmark code. Could you resend me the link
-> to the new code? Although I don't think there should be any effect for order-0
-> anyway, if I understood your changes correctly?
-
-This is the combined one (small and large PTEs):
-
-https://gitlab.com/davidhildenbrand/scratchspace/-/raw/main/pte-mapped-folio-benchmarks.c?inline=false
+I'll add more meat to the cover letter, thanks!
 
 -- 
 Cheers,
