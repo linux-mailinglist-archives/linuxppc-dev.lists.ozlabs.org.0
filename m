@@ -2,160 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AEBD843D19
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jan 2024 11:44:48 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aI2cEPAd;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id BDAA9843D74
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jan 2024 11:59:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TPzFB2HRlz3cXJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jan 2024 21:44:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TPzYl5Kzcz3cX1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jan 2024 21:59:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aI2cEPAd;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.12; helo=mgamail.intel.com; envelope-from=fengwei.yin@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TPzDF5btXz3cTS
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jan 2024 21:43:55 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706697838; x=1738233838;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=iPm5KQU4tHFCMavVHI/tSrCrpfgIiVLN6Qmyc/QzRfQ=;
-  b=aI2cEPAdbczjK90ItnbaRSH+yKihBKHIBuYdX4TE7XhWBuA9aaVMJf1u
-   zCuavPbF9s/c6WbAmidFzVqThiNTzR9vu6NAr81yCELKEViPp29CmDyPe
-   8uPlnGXEItIKCcW3p2qeRuOQsAuo+g8s82Vw/S8B75kAlHN/ehmQqSZxV
-   MvHiyNeleiwLe6ADLi/hQ+GJw9aWLewljI8f5HAS69pVJjScnBuW3v3qv
-   S0D0SDKlwjvgOXjjg1erkESHX0isQhFETwaUNcFYEAIHW+25Ezenn4K9f
-   aIuXGUORUxrJ83wQWq55gFsC0KmS1cxlLAjsEVCWdqQ1LIPiepNriDdfv
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="10933949"
-X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
-   d="scan'208";a="10933949"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 02:43:53 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="961571903"
-X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
-   d="scan'208";a="961571903"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by orsmga005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 31 Jan 2024 02:43:51 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 31 Jan 2024 02:43:51 -0800
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 31 Jan 2024 02:43:50 -0800
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Wed, 31 Jan 2024 02:43:50 -0800
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.169)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 31 Jan 2024 02:43:50 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RfxetzFd8GW2i73WKrrNXLWRWktxkNK/63xephfMdaQXcVMtV0tf5Jvsvb2PoRPmi4UKk3OgRF5R19QE6iLOBVIfstg1EskZw7voegRV4XEgl8z+wIpxELaKcxIEUl3tDWGqS6nvswfoYs/aHOoMB+0jVg8Ag0NVJfZCwq1p5FC6bkIWePv8I1VMKtV9WabUz2lsKc2kFw73TvEqSCJgkZe+/V/Bmfyph80doL/c2e2IctvqkFNY+3OLrASzeEpWM//uSQGSkfunk7vr1+4kfyIKJMWkc72wpu100Ae19Dfi+kKzHVt84PzVIzxOV8bTym1LbpIcMWR4zblzUX0u2w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xI+xlrLlZQfHefswm1G1uD2Ws1rP25MF2NEYW4cpBVM=;
- b=fruu03nCA25485ChAADppSg/CGKTNgO/GIvMs0G/PQA6fOQq7Y/FiBa/6OuEDvgJJf3eKRVfYfeax8CODwfXDqdXiwIsfCr6Dj+0CMWQ8Kct9wY5nmUkvNdJiYv7jDQeyIsjUFLOz5B1wsxnvopjZmSUM7DE5xykgX8DpU7Lvlw3c0aJs69sOIczLWjgFXGobhj9iqqIbhuAbDI/BD8vM3h2RsuIuN3fSxAf21983qefKOrzQ4jaSsL1e/WDF5B0jqAaWzIgllBKgyZLOgQrhjB4uWzK1qpOV3k11LnHuBYOxiI9C7hQSuUqRoiGy1URIKV0FkOxb7ZVEZhmrhml0Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CO1PR11MB4820.namprd11.prod.outlook.com (2603:10b6:303:6f::8)
- by SA1PR11MB6965.namprd11.prod.outlook.com (2603:10b6:806:2bf::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.22; Wed, 31 Jan
- 2024 10:43:48 +0000
-Received: from CO1PR11MB4820.namprd11.prod.outlook.com
- ([fe80::4647:3802:133d:8fc]) by CO1PR11MB4820.namprd11.prod.outlook.com
- ([fe80::4647:3802:133d:8fc%6]) with mapi id 15.20.7249.025; Wed, 31 Jan 2024
- 10:43:48 +0000
-Message-ID: <d7e1e877-80ad-48ce-b11e-2c60e951ec8b@intel.com>
-Date: Wed, 31 Jan 2024 18:43:38 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 9/9] mm/memory: optimize unmap/zap with PTE-mapped THP
-To: David Hildenbrand <david@redhat.com>, <linux-kernel@vger.kernel.org>
-References: <20240129143221.263763-1-david@redhat.com>
- <20240129143221.263763-10-david@redhat.com>
- <2375481c-9d61-4f06-9f96-232f25b0e49b@intel.com>
- <d83309fa-4daa-430f-ae52-4e72162bca9a@redhat.com>
-Content-Language: en-US
-From: "Yin, Fengwei" <fengwei.yin@intel.com>
-In-Reply-To: <d83309fa-4daa-430f-ae52-4e72162bca9a@redhat.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SI1PR02CA0054.apcprd02.prod.outlook.com
- (2603:1096:4:1f5::13) To CO1PR11MB4820.namprd11.prod.outlook.com
- (2603:10b6:303:6f::8)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=robin.murphy@arm.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 551 seconds by postgrey-1.37 at boromir; Wed, 31 Jan 2024 21:58:46 AEDT
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TPzYL0p8Nz3bmq
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jan 2024 21:58:44 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 59443DA7;
+	Wed, 31 Jan 2024 02:49:45 -0800 (PST)
+Received: from [10.57.88.75] (unknown [10.57.88.75])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 16D293F762;
+	Wed, 31 Jan 2024 02:48:59 -0800 (PST)
+Message-ID: <01234ac0-f96d-4a18-8dfa-557020818215@arm.com>
+Date: Wed, 31 Jan 2024 10:48:52 +0000
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PR11MB4820:EE_|SA1PR11MB6965:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9706f2de-c9ff-4c6b-32ed-08dc224981a3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: v1OS0x4DZKtojMFHGso8sBhAVBk5EUpwHaVl89VFRUw5spqegECHba02BH5Qmgr4HAwW+jkhJ0/1bihTs+eGxkcPJ+9l/Tz3h3IN+MgmPzTBR+lrpOY3tSDjU4SwBzgYbLbVtOx3FFCXT2K0/AIntjJ0jzCfaK5lfD9up66ebYlPFUjD+OndsV8YkfwAkgO+h0kU4ebb9L6DAcIVQXoUqUuciWcP3A/DAVLEV2wjIuczRuKjy3d+Il0jCAmvcKz6DMwFvSQm2ugvifSuSKDHUk/Um4dMYdNulwLAv5fTI33rJ0crjqfiZOBkzwyGCbs4a+mZxML0BzOKVOkpXYssPANCbNvk/HeXPopP46rX68EdUgkLu76H+wrpoYI1nWwPLxbZl/liG6REowW5NUPS1IiUWDw50rzqlvy2l/Sj22Nrm+cxZkQ7sKBQRv+y0+xL9YLLXW2k0gIi1iWRzmAXRrTVU4RP/i2q53ZiXDQ57fQUJLc1AfBnhlXweWIaKfmryYKERD99Sm6nAAAxCLGKO7UUIhWIkViFVOZNm0yGOxl/2yYsABwvKp0FJ+iaRroLJztE8OnzizIkQUXLVF3Hi9roB43BahdnkgoJcLJP6JxiH7bWow7iDEO7UXAuvzV29hutEdnZiTIos6kWzKC15w==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB4820.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(396003)(376002)(346002)(39860400002)(366004)(230922051799003)(451199024)(64100799003)(186009)(1800799012)(316002)(8936002)(8676002)(4326008)(2906002)(5660300002)(31696002)(86362001)(7416002)(66946007)(66556008)(66476007)(54906003)(36756003)(6486002)(82960400001)(38100700002)(53546011)(6512007)(6506007)(478600001)(6666004)(83380400001)(26005)(2616005)(41300700001)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?T1BwcXkwYmNKOTMwM2Nzc040NGhyRTYyZEJtVkdTaTc3UDlqL1d4TU9oa3pD?=
- =?utf-8?B?N2VnUGh1ZzVWVnd2d1JDQTRIaUNzQ0tHSUh4Mysrb1hoYXcrOHJDa0RlcUlV?=
- =?utf-8?B?MVJrNmRQZFJQR2FkLzlCakR2bkh1K3M2RW9SYXZjUUQyQlZ6UFZGQmFGMWVC?=
- =?utf-8?B?c25RZmRhSTBRTGdDMitPZEIxM1A1WWlYNGx6M3lzM0ZQVklDUjUvVms5Zjdl?=
- =?utf-8?B?Tkk5SlhRZEdIY1JwSnF5RTFJeUhGQk5VSk45NUhleW13Qnd3clBmYXB0KytK?=
- =?utf-8?B?RGg0UjVoblpHYTZFZ01aZHcvSlZWSEtnamhDT0lpeHVPd0xmTDRHZnc5SlRl?=
- =?utf-8?B?U0I2YndFS01hR1FNSXIwL0RJa1V4U0JXNzZJa1o1NkE0TGlIM0ZSdlQ0UFRv?=
- =?utf-8?B?YnM5SWhMTThFUlhvR1JFV1BUL3dGcGZRalUzeXBnNkxhUWh0SjhxQUJOL3FK?=
- =?utf-8?B?Q0JXWUp2VzVGVUlrdDZTMDdLU2NBd0lhS2ZzSnZuOWJraXpEdHRWb0VmODNI?=
- =?utf-8?B?R1o3VXpCbGlmSytSRHB5TFhJTGEzS2toSVFQdFRPcDRDcWFvTDlpUFk2K0J5?=
- =?utf-8?B?MmNDU1lIcUtsVnArdFcrK2NjZ2dSMVVaQkxYaDhwWWNCbGNka3UrOUN4ZVdE?=
- =?utf-8?B?THRKREZ0SHZPYzF0a3pncXdwMXB5WkcvVUlKWXZ0RU5NY2dIWG9IZEp5RU5h?=
- =?utf-8?B?K1hBc2RMTWpLM0QwNlFta0M0SE9TY1FhdS9rWlkwZDBZaThBSGFMQXkwbG9S?=
- =?utf-8?B?eDV1U0NLM3hFeTQ0Y1c4VTJVTk8xN3JoUFJLTFRFTzdXZzlWMEk2QTcwWVBJ?=
- =?utf-8?B?Rk5LaC95dXJEWXZTaTNtWWxzU3RRZjdhZEliMHVFV0FJekxwbmxwUWwxTzhY?=
- =?utf-8?B?Y1Bjb253Q0NNdUJGS1kwUTJ5RW5QSWFNdjNTc0RUVzZpQklYSWJlbmQ0aFlO?=
- =?utf-8?B?dHJWYlZLVU94SjBzRzBxSCtKMHJYbytkN2RIUFo0azhWR2w2Wm5MbjZLVlUw?=
- =?utf-8?B?SDdoUWhEbWxtWEZjRlVJbHMvb2lWelM2TmN3S3hWZnBkT3F2dlBaeXg2MUFS?=
- =?utf-8?B?UkRhcFcreTRqZ1g5Z3B0MFFPOVhHalgyVnp3eXJYYzBJQUFhdTJFeVpHQVQ0?=
- =?utf-8?B?M000Z0w0RSt5UHN6ZWxjazZFSmd3Q0ltcWwweUY2SUR2RlJEc2hPZkZhbVVs?=
- =?utf-8?B?TXpYSnlDU1plRnk3MGNYTklZNHJlTU8zeWhHdTdTMU5taENaNS95NzdUY3pX?=
- =?utf-8?B?d25mclUzNXVIdHFsZ1pRc1dGRU9PQU9UVEx0Vmt6ZDY2NVZCbVJuWHNEZmdB?=
- =?utf-8?B?dEVoTWFPYm95U2U2ZjZsVFBuTWYzVWJTeFVhTnpzMCtUVElQNElzaWJiVEpE?=
- =?utf-8?B?c0w1bXdyNjhQY1RnRWY1V2pCUVJxVTlHMlh6T2oxSWhCTE8zMFB4SlJoNjFp?=
- =?utf-8?B?QWJ2aStkcUhwRVo4NXA5bDVVcEE4YVpKYjJhWkJIVGNwWGFYZnRrdWlvNDhO?=
- =?utf-8?B?TFcreExsU0NKdnppODZydHVsRXhkOVNRK2RZSThYMTJNZVRQNEM3UFNsemNP?=
- =?utf-8?B?eERnR05TOXVHRm94VUdoQzNLb3d5WFdFazkyWkg4ckRzbGRjRHJVQ0pScW9I?=
- =?utf-8?B?WDBsald4RUhxcENSMUFyZ2pHWGxOZVR6ekI4Nk9jRFdBWCs2U1liVDJtQTZh?=
- =?utf-8?B?VlZySDJURUM5Nm5SV0kwWmFDOVo0SThabDZodkRSc1d4ZittM20wRWx0dGhD?=
- =?utf-8?B?VDBxYlJwR2ZpVWhncVM4SHczYy9XZFEwTUN2L3NuaWVpR1IwSHNsVDZwMVpn?=
- =?utf-8?B?emdrR2xOWkh1Z3BmQlU1bWhUejNIQkVLdXA2eS9KUXFZaldGaVB3UnYwVy9P?=
- =?utf-8?B?TEcyV1NtZmYzUHl4R2F3VnhDWjJFSStGOTBzUTJNZDc5RFFNR1dVZWpaam44?=
- =?utf-8?B?TjdCUk9ISUdyenpwVDlTRGNoZm5VVDgxS1VOTDk4bHJHRFpTaHJPc1JadS9X?=
- =?utf-8?B?emp4NkorazNKTkVRdFhNbG1BSXpwOE5HWTZIaVhmc0M4dzRJSHFUbjVxck1W?=
- =?utf-8?B?c2x2MGQ0cmpSTlBWcXZNLzNsTmt3OEYxbXVrUlpWQ3pWZjdZT25oL1pCcitH?=
- =?utf-8?Q?FG140XjI5sBcIVYyo9LGgiftP?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9706f2de-c9ff-4c6b-32ed-08dc224981a3
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB4820.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jan 2024 10:43:48.5721
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EtDIJe50qYmfE1/ZlNO+nXbnUoJOXLCzQ1MVygYor3/72vGAJhCYhlZ9zcdpFN1t6cwAiPibYzos5uShtpaFxA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6965
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [mainline] [linux-next] [6.8-rc1] [FC] [DLPAR] OOps kernel crash
+ after performing dlpar remove test
+To: Tasmiya Nalatwad <tasmiya@linux.vnet.ibm.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+ "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <b7e18415-c04d-412e-8129-22a144d736b9@linux.vnet.ibm.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <b7e18415-c04d-412e-8129-22a144d736b9@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -167,66 +48,141 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Ryan Roberts <ryan.roberts@arm.com>, Arnd Bergmann <arnd@arndb.de>, Vasily
- Gorbik <gor@linux.ibm.com>, Peter Zijlstra <peterz@infradead.org>, Catalin
- Marinas <catalin.marinas@arm.com>, linuxppc-dev@lists.ozlabs.org, Matthew
- Wilcox <willy@infradead.org>, linux-mm@kvack.org, Nick Piggin <npiggin@gmail.com>, "Aneesh
- Kumar K.V" <aneesh.kumar@linux.ibm.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>
+Cc: "mputtash@linux.vnet.com" <mputtash@linux.vnet.com>, joro@8bytes.org, "sachinp@linux.vnet.com" <sachinp@linux.vnet.com>, "abdhalee@linux.vnet.ibm.com" <abdhalee@linux.vnet.ibm.com>, iommu@lists.linux.dev, will@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 2024-01-31 9:19 am, Tasmiya Nalatwad wrote:
+> Greetings,
+> 
+> [mainline] [linux-next] [6.8-rc1] [DLPAR] OOps kernel crash after 
+> performing dlpar remove test
+> 
+> --- Traces ---
+> 
+> [58563.146236] BUG: Unable to handle kernel data access at 
+> 0x6b6b6b6b6b6b6b83
+> [58563.146242] Faulting instruction address: 0xc0000000009c0e60
+> [58563.146248] Oops: Kernel access of bad area, sig: 11 [#1]
+> [58563.146252] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=8192 NUMA pSeries
+> [58563.146258] Modules linked in: isofs cdrom dm_snapshot dm_bufio 
+> dm_round_robin dm_queue_length exfat vfat fat btrfs blake2b_generic xor 
+> raid6_pq zstd_compress loop xfs libcrc32c raid0 nvram rpadlpar_io rpaphp 
+> nfnetlink xsk_diag bonding tls rfkill sunrpc dm_service_time 
+> dm_multipath dm_mod pseries_rng vmx_crypto binfmt_misc ext4 mbcache jbd2 
+> sd_mod sg ibmvscsi scsi_transport_srp ibmveth lpfc nvmet_fc nvmet 
+> nvme_fc nvme_fabrics nvme_core t10_pi crc64_rocksoft crc64 
+> scsi_transport_fc fuse
+> [58563.146326] CPU: 0 PID: 1071247 Comm: drmgr Kdump: loaded Not tainted 
+> 6.8.0-rc1-auto-gecb1b8288dc7 #1
+> [58563.146332] Hardware name: IBM,9009-42A POWER9 (raw) 0x4e0202 
+> 0xf000005 of:IBM,FW950.A0 (VL950_141) hv:phyp pSeries
+> [58563.146337] NIP:  c0000000009c0e60 LR: c0000000009c0e28 CTR: 
+> c0000000009c1584
+> [58563.146342] REGS: c00000007960f260 TRAP: 0380   Not tainted 
+> (6.8.0-rc1-auto-gecb1b8288dc7)
+> [58563.146347] MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 
+> 24822424  XER: 20040006
+> [58563.146360] CFAR: c0000000009c0e74 IRQMASK: 0
+> [58563.146360] GPR00: c0000000009c0e28 c00000007960f500 c000000001482600 
+> c000000003050540
+> [58563.146360] GPR04: 0000000000000000 c00000089a6870c0 0000000000000001 
+> fffffffffffe0000
+> [58563.146360] GPR08: c000000002bac020 6b6b6b6b6b6b6b6b 6b6b6b6b6b6b6b6b 
+> 0000000000000220
+> [58563.146360] GPR12: 0000000000002000 c000000003080000 0000000000000000 
+> 0000000000000000
+> [58563.146360] GPR16: 0000000000000000 0000000000000000 0000000000000000 
+> 0000000000000001
+> [58563.146360] GPR20: c000000001281478 0000000000000000 c000000001281490 
+> c000000002bfed80
+> [58563.146360] GPR24: c00000089a6870c0 0000000000000000 0000000000000000 
+> c000000002b9ffb8
+> [58563.146360] GPR28: 0000000000000000 c000000002bac0e8 0000000000000000 
+> 0000000000000000
+> [58563.146421] NIP [c0000000009c0e60] iommu_ops_from_fwnode+0x68/0x118
+> [58563.146430] LR [c0000000009c0e28] iommu_ops_from_fwnode+0x30/0x118
 
+This implies that iommu_device_list has become corrupted. Looks like 
+spapr_tce_setup_phb_iommus_initcall() registers an iommu_device which 
+pcibios_free_controller() could free if a PCI controller is removed, but 
+there's no path anywhere to ever unregister any of those IOMMUs. 
+Presumably this also means that is a PCI controller is dynamically added 
+after init, its IOMMU won't be set up properly either.
 
-On 1/31/2024 6:30 PM, David Hildenbrand wrote:
-> On 31.01.24 03:30, Yin Fengwei wrote:
->>
->>
->> On 1/29/24 22:32, David Hildenbrand wrote:
->>> +static inline pte_t get_and_clear_full_ptes(struct mm_struct *mm,
->>> +        unsigned long addr, pte_t *ptep, unsigned int nr, int full)
->>> +{
->>> +    pte_t pte, tmp_pte;
->>> +
->>> +    pte = ptep_get_and_clear_full(mm, addr, ptep, full);
->>> +    while (--nr) {
->>> +        ptep++;
->>> +        addr += PAGE_SIZE;
->>> +        tmp_pte = ptep_get_and_clear_full(mm, addr, ptep, full);
->>> +        if (pte_dirty(tmp_pte))
->>> +            pte = pte_mkdirty(pte);
->>> +        if (pte_young(tmp_pte))
->>> +            pte = pte_mkyoung(pte);
->> I am wondering whether it's worthy to move the pte_mkdirty() and 
->> pte_mkyoung()
->> out of the loop and just do it one time if needed. The worst case is 
->> that they
->> are called nr - 1 time. Or it's just too micro?
-> 
-> I also thought about just indicating "any_accessed" or "any_dirty" using 
-> flags to the caller, to avoid the PTE modifications completely. Felt a 
-> bit micro-optimized.
-> 
-> Regarding your proposal: I thought about that as well, but my assumption 
-> was that dirty+young are "cheap" to be set.
-> 
-> On x86, pte_mkyoung() is setting _PAGE_ACCESSED.
-> pte_mkdirty() is setting _PAGE_DIRTY | _PAGE_SOFT_DIRTY, but it also has 
-> to handle the saveddirty handling, using some bit trickery.
-> 
-> So at least for pte_mkyoung() there would be no real benefit as far as I 
-> can see (might be even worse). For pte_mkdirty() there might be a small 
-> benefit.
-> 
-> Is it going to be measurable? Likely not.
-Yeah. We can do more investigation when performance profiling call this
-out.
+Thanks,
+Robin.
 
-
-Regards
-Yin, Fengwei
-
-> 
-> Am I missing something?
-> 
-> Thanks!
+> [58563.146437] Call Trace:
+> [58563.146439] [c00000007960f500] [c00000007960f560] 0xc00000007960f560 
+> (unreliable)
+> [58563.146446] [c00000007960f530] [c0000000009c0fd0] 
+> __iommu_probe_device+0xc0/0x5c0
+> [58563.146454] [c00000007960f5a0] [c0000000009c151c] 
+> iommu_probe_device+0x4c/0xb4
+> [58563.146462] [c00000007960f5e0] [c0000000009c15d0] 
+> iommu_bus_notifier+0x4c/0x8c
+> [58563.146469] [c00000007960f600] [c00000000019e3d0] 
+> notifier_call_chain+0xb8/0x1a0
+> [58563.146476] [c00000007960f660] [c00000000019eea0] 
+> blocking_notifier_call_chain+0x64/0x94
+> [58563.146483] [c00000007960f6a0] [c0000000009d3c5c] bus_notify+0x50/0x7c
+> [58563.146491] [c00000007960f6e0] [c0000000009cfba4] device_add+0x774/0x9bc
+> [58563.146498] [c00000007960f7a0] [c0000000008abe9c] 
+> pci_device_add+0x2f4/0x864
+> [58563.146506] [c00000007960f850] [c00000000007d5a0] 
+> of_create_pci_dev+0x390/0xa08
+> [58563.146514] [c00000007960f930] [c00000000007de68] 
+> __of_scan_bus+0x250/0x328
+> [58563.146520] [c00000007960fa10] [c00000000007a680] 
+> pcibios_scan_phb+0x274/0x3c0
+> [58563.146527] [c00000007960fae0] [c000000000105d58] 
+> init_phb_dynamic+0xb8/0x110
+> [58563.146535] [c00000007960fb50] [c0080000217b0380] 
+> dlpar_add_slot+0x170/0x3b4 [rpadlpar_io]
+> [58563.146544] [c00000007960fbf0] [c0080000217b0ca0] 
+> add_slot_store+0xa4/0x140 [rpadlpar_io]
+> [58563.146551] [c00000007960fc80] [c000000000f3dbec] 
+> kobj_attr_store+0x30/0x4c
+> [58563.146559] [c00000007960fca0] [c0000000006931fc] 
+> sysfs_kf_write+0x68/0x7c
+> [58563.146566] [c00000007960fcc0] [c000000000691b2c] 
+> kernfs_fop_write_iter+0x1c8/0x278
+> [58563.146573] [c00000007960fd10] [c000000000599f54] vfs_write+0x340/0x4cc
+> [58563.146580] [c00000007960fdc0] [c00000000059a2bc] ksys_write+0x7c/0x140
+> [58563.146587] [c00000007960fe10] [c000000000035d74] 
+> system_call_exception+0x134/0x330
+> [58563.146595] [c00000007960fe50] [c00000000000d6a0] 
+> system_call_common+0x160/0x2e4
+> [58563.146602] --- interrupt: c00 at 0x200004470cb4
+> [58563.146606] NIP:  0000200004470cb4 LR: 00002000043e7d04 CTR: 
+> 0000000000000000
+> [58563.146611] REGS: c00000007960fe80 TRAP: 0c00   Not tainted 
+> (6.8.0-rc1-auto-gecb1b8288dc7)
+> [58563.146616] MSR:  800000000280f033 
+> <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 24000282  XER: 00000000
+> [58563.146632] IRQMASK: 0
+> [58563.146632] GPR00: 0000000000000004 00007fffd3993420 0000200004557300 
+> 0000000000000007
+> [58563.146632] GPR04: 000001000d8a5270 0000000000000006 fffffffffbad2c80 
+> 000001000d8a02a0
+> [58563.146632] GPR08: 0000000000000001 0000000000000000 0000000000000000 
+> 0000000000000000
+> [58563.146632] GPR12: 0000000000000000 000020000422bb50 0000000000000000 
+> 0000000000000000
+> [58563.146632] GPR16: 0000000000000000 0000000000000000 0000000000000000 
+> 0000000000000000
+> [58563.146632] GPR20: 0000000000000000 0000000000000000 0000000000000000 
+> 0000000000000000
+> [58563.146632] GPR24: 0000000106b41668 0000000000000000 0000000000000006 
+> 000001000d8a5270
+> [58563.146632] GPR28: 0000000000000006 000001000d8a02a0 000001000d8a5270 
+> 0000000000000006
+> [58563.146690] NIP [0000200004470cb4] 0x200004470cb4
+> [58563.146694] LR [00002000043e7d04] 0x2000043e7d04
+> [58563.146698] --- interrupt: c00
+> [58563.146701] Code: e9299a20 3d020173 39089a20 7fa94000 419e0038 
+> e9490018 7fbf5000 409e0020 48000070 60000000 60000000 60000000 
+> <e9490018> 7faaf840 419e0058 e9290000
+> [58563.146722] ---[ end trace 0000000000000000 ]---
 > 
