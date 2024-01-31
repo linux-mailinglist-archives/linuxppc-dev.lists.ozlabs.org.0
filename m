@@ -1,137 +1,122 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C5BC84486C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jan 2024 21:08:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D3AB844AC8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jan 2024 23:11:48 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=bGwIoBNN;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=tehB01M4;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TQCm11KB8z3cW2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Feb 2024 07:08:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TQGTs13Yxz3c56
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Feb 2024 09:11:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=bGwIoBNN;
+	dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=tehB01M4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:261d::701; helo=fra01-pr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-pr2fra01on20701.outbound.protection.outlook.com [IPv6:2a01:111:f403:261d::701])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=samsung.com (client-ip=210.118.77.12; helo=mailout2.w1.samsung.com; envelope-from=m.szyprowski@samsung.com; receiver=lists.ozlabs.org)
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TQCl84q3Dz3bn6
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Feb 2024 07:08:02 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QK9nZ3O0A3ZCJ9/87gzNpzWlx1akp8cx+YzUUWJq3dXvpi1+YnVMxwpbzg/Z+uOgb9q5hCy1FgnDXbdZePOH327wyuPFkEstD7qcVlN9GzySM0pzPpeWsFp5o3YXepgglYVCPJcsw3wFHjs9mVqKm9c+nTVTtyxo6nADPLVPcNpZ6iaQiLTW66FEqwytyOSv/4RFSU9/blmojx3CPRdqnX93GJFxFcZRvhJuAfA6UrnY1o4Kpo52NLtdTYPscW5CUQVBa4j3ZZ+7Fdpp1iDIm5AfGknsjt36q1FtwtB4uuwtDGPalK8FxO7WRsEJbrglA4zoNQYllTfVul4f7zEhWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Uy+/lcr0i+p1eQoXqgGekasE3+nwgVbJSadwHUkHIGA=;
- b=fjEdE/H8u4NvnfaY7qe4weU3IhF6ZZHGsPjpK0skVBt+ruHZbb4Yla2bbw1fjyAzp3YzyRQWEF/ybnksClVGGTqKV2vApf9fjDBjIA+RWTrykmQwLjInQ0enms/+snN9KFPn1Gid4vCt498IIeEcfX79rHXal/fyouPy5pW/HEMCVLToMEDKuZQ+bROhIrOLB6Q4i1BkvyOuwlrBan6d3AZkc4yA2YH8NFCCPT6exT+JOEXlq22e7p3DJIyLZmhJU7PXrM5xlR320lCuqGQMhvJLhjk8NLIDzZj5rxBCDu26c2zQ82XK/YqOwHGPvvEDbq6mJ2Zact1aBVBAeCTWMQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Uy+/lcr0i+p1eQoXqgGekasE3+nwgVbJSadwHUkHIGA=;
- b=bGwIoBNNS4b3Wg2lP8GzZuF47atHDI1yrsxqZFN0Jcn7HWQ77kkllaziHJWNoFu4i0vY0rlAW92bTmFDnngP0zTcuUUYPYr+yrIfbKriHB81tWWRcMeTCPxiQOZJxzxXglx2sd4l9U0MnasWyakPlXGK7QXGeScxY9uWccnovN2QeMpdQJwi2W/PITyvj7yCXd9XEEvGwdMZBKZ9o+oseo1WuV0hA2aa+nQqAPklOKMvKJwqfTokUTMvTj75Bbomz6rVKyr3V44sFU41U7/WHCtYftF9ukXbjS5J/przP0nkJnCLqcysUSWBQo5FAtpvdJ0ZL2LVuoQkyJm0O4pMXA==
-Received: from MR1P264MB2980.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:3d::7) by
- MRZP264MB1893.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:9::17) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7249.24; Wed, 31 Jan 2024 20:07:40 +0000
-Received: from MR1P264MB2980.FRAP264.PROD.OUTLOOK.COM
- ([fe80::91e3:2737:5a73:cc27]) by MR1P264MB2980.FRAP264.PROD.OUTLOOK.COM
- ([fe80::91e3:2737:5a73:cc27%5]) with mapi id 15.20.7249.024; Wed, 31 Jan 2024
- 20:07:40 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Marek Szyprowski <m.szyprowski@samsung.com>, Chen-Yu Tsai
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TQGSy43Hkz307y
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Feb 2024 09:10:57 +1100 (AEDT)
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20240131221046euoutp02a569f1c949d88ca027aefdc47c5e008b~vjh7bSIwK2031720317euoutp025
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jan 2024 22:10:46 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20240131221046euoutp02a569f1c949d88ca027aefdc47c5e008b~vjh7bSIwK2031720317euoutp025
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1706739047;
+	bh=xw9bFaD6gvHKRBgFZNWh1F+5+rSksSy9A8PcP7zEdkA=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=tehB01M4+g4Lrwcx3WtQCyZOnhrp0OAf0dSJ8EWNi9LSiJy1ZMf8ZR6Zdevmdbnbb
+	 G0JvyemnvwYeYNIXy23c3BhctypDEjbPFvvjhFB4GDr3Q4l41N7PVRN5VU9JvZg2tH
+	 tXMcVlOJwvNGluKjZ0Rn3hOI/ZEd4yhcdWD+SKLE=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+	20240131221046eucas1p10ad24cc6fd163a129e2e99d88de7e5b4~vjh7BxA381145811458eucas1p1E;
+	Wed, 31 Jan 2024 22:10:46 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+	eusmges2new.samsung.com (EUCPMTA) with SMTP id 1B.BE.09814.665CAB56; Wed, 31
+	Jan 2024 22:10:46 +0000 (GMT)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20240131221045eucas1p25121869f8c1d945ea470fc3576fda1cc~vjh5_Ko3q2047520475eucas1p2x;
+	Wed, 31 Jan 2024 22:10:45 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+	eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+	20240131221045eusmtrp20f10545a103d1a52f8e3a5bd91e5005e~vjh59nBwy2952229522eusmtrp2v;
+	Wed, 31 Jan 2024 22:10:45 +0000 (GMT)
+X-AuditID: cbfec7f4-711ff70000002656-d3-65bac5668c91
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+	eusmgms2.samsung.com (EUCPMTA) with SMTP id EA.AC.10702.565CAB56; Wed, 31
+	Jan 2024 22:10:45 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20240131221044eusmtip1cab9fe7ad9b45c7529c0c3acfd9d1ffe~vjh5I5kTT0928909289eusmtip1M;
+	Wed, 31 Jan 2024 22:10:44 +0000 (GMT)
+Message-ID: <677c703b-4ece-4cfb-8f9a-a2c17eae869a@samsung.com>
+Date: Wed, 31 Jan 2024 23:10:44 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] init: Declare rodata_enabled and mark_rodata_ro()
+ at all time
+Content-Language: en-US
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Chen-Yu Tsai
 	<wenst@chromium.org>, Luis Chamberlain <mcgrof@kernel.org>, Catalin Marinas
 	<catalin.marinas@arm.com>
-Subject: Re: [PATCH 1/3] init: Declare rodata_enabled and mark_rodata_ro() at
- all time
-Thread-Topic: [PATCH 1/3] init: Declare rodata_enabled and mark_rodata_ro() at
- all time
-Thread-Index:  AQHaM+yXNPEoBBWgvUqc5dink/c7D7DxdmEAgADbxgCAAB3agIAAcSGAgAEwfgCAADexAIAAURwA
-Date: Wed, 31 Jan 2024 20:07:40 +0000
-Message-ID: <27eb37bb-f4eb-4cfb-ba3f-2317856f7b4b@csgroup.eu>
-References:  <7b5df1782e94a755b4a18733af44d17d8dd8b37b.1703149011.git.christophe.leroy@csgroup.eu>
- <ZbgGDlgrLhB8tcGI@bombadil.infradead.org>
- <20240130091626.GA3684878@google.com>
- <9e298fa7-a953-462a-96a4-56a1b4316a17@csgroup.eu>
- <CGME20240130174812eucas1p166f62549457fd188fed6ed72b6b4b9cd@eucas1p1.samsung.com>
- <30ddedc9-0829-4a99-9cb1-39190937981c@samsung.com>
- <46627d92-976a-4126-b261-a4c6575e5a3e@csgroup.eu>
- <2febff4d-26ba-4809-a124-7add25ab3d35@samsung.com>
-In-Reply-To: <2febff4d-26ba-4809-a124-7add25ab3d35@samsung.com>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla Thunderbird
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MR1P264MB2980:EE_|MRZP264MB1893:EE_
-x-ms-office365-filtering-correlation-id: 73ea2481-6ead-4127-ba94-08dc22984723
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  X+Z224A0xErNQNGAriFmv4aY/PDgcmRReElU91J4xciAOvcV5L0g8sHyiOo2iC318UIbNKkJQpHXp0ZFs0OU/7En3lIJQPwlOxuI15Q0RnnB18GogBOvMLG7YdSCNhb9oT2zEWRu8AM0UnZH6BkGQpYQeOTqM7NqslVaX3DW86a2a0DGSKvSkpe8hYLSc0e9ulafMniOkKCDjpUPaA2UuBEtNlCMAkBQYwVrffuAjTqO0j16kbTxzZ4YuyyQotAhJhBgnscP7f4tVpvYsQZZhlrAGTtN8pXDsjMKPpiAc4ZCuFyYBc2dMKy/wndJxxZHV86Tt7LcGxSs7ObSLXMK/isfrNSY20B4HAirakji2rrCB5B2Ee0clOYklsfLaCuxrIClGrL62EH7zb8XnUrJTIfCDSAlTr5MA1w6MZSo6jPaSlosecoWR3U4BjgJ6UrC6jSnOm55ulWtIcAL08R7h/d1UmMma38vu0uwgqWOLce6cJtlWUvJymsr+1TwwSx68kgUGIR7+SA5ZRHNvaNNtRwpMev+BBmuVNsFG6WYwyRmIQ1e0bmomddGJou4xT4STksN5fOAZLbGcdmODUuHzemTXxPWIPDl3WpyobPXZIWuMEsucT2nAI0L8AVroQ6EajeAIOG2mFab+Nhr328qQIatPwn5iacqBxtCWwZ+jX7KJxqz7VAPfmXYOlvslKRFC9HKO0c/irOgcrIeSTLLdFmTwigGYD2O4JTEvbozcYs=
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MR1P264MB2980.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(136003)(376002)(346002)(366004)(39860400002)(396003)(230173577357003)(230273577357003)(230922051799003)(186009)(64100799003)(1800799012)(451199024)(31686004)(26005)(66574015)(2616005)(41300700001)(54906003)(966005)(36756003)(38070700009)(316002)(66446008)(66556008)(64756008)(478600001)(6512007)(6486002)(83380400001)(53546011)(6506007)(71200400001)(38100700002)(66476007)(122000001)(66946007)(8936002)(110136005)(2906002)(4326008)(5660300002)(44832011)(31696002)(7416002)(91956017)(76116006)(86362001)(8676002)(43740500002)(45980500001);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?REZCTnRVT0Naa0tMc0J2Q0wzTnFwQy9FRjFxQ0JuS29sYWh0SFBweFl4TzhQ?=
- =?utf-8?B?bVQ2MndYMWlsa3FsaU9UYXFJbkU4RlB1VzEvL21DRnhZZzYzRGozcHVIc3pY?=
- =?utf-8?B?NWhiRm5PbjlIV0ZSYTQyakRaOG8yMWdLQTZzQ2hPRXl4RXRDNHJVaGNkMmd1?=
- =?utf-8?B?cjZxcEpJTEhqNXkzWjlIUmV3ODRYS1hvYmRrK3ljY1FJcWxUclZwQWN4RjlD?=
- =?utf-8?B?aGh3UjU2YmJMT3RHRHlqcXJFZG1hZnhUcE9SQzJ6b0NtWWNJekt2MERkVEVv?=
- =?utf-8?B?eWs4TWFQaktmdG81dGt3bTYzUnlJT1ZMaFZwN0JBdU9QalpIRm9ZaWpoZnpW?=
- =?utf-8?B?VlRlUm0rSHZWNS9OWURkZ1gxMktZWFpFMnhEdEFCYTRvWGNCMy9kUTJLTVVl?=
- =?utf-8?B?ME9xOWxsVXpwT3dWdUNBaTk2b0svRXdlNUpUc0ViZVJuNFRtaDVRYml5R3dB?=
- =?utf-8?B?OGpVeGdVRWFydjYxMXJnSVZnUVBxb0lyOXdjU21wMnZ1WmtOQzB5Q0xPQ2Yy?=
- =?utf-8?B?aHBYUVFsT3VLeUZoaVZ3bkZuUGpabTVsWHB5MUZHdnZ6a0x3c1ZsYXYzVXNZ?=
- =?utf-8?B?UGt3ZG9vQW9BbWprTldBdkhKaFhRQktGMnVFVWJuWG84YkNGbGtod2dmV0E5?=
- =?utf-8?B?aUVTcEs3UXlpY1Rsc3JGQVVLYS85VVhBUGlsaVhJTm1nQmFFcnVyN09mVjRz?=
- =?utf-8?B?SVU2MGx4bVFRMTVSMldSVEtTTHV4WXdscDZwdHJIRmNqeGxFdHljaVdYZnI5?=
- =?utf-8?B?Z3ZUNEZ5NzFKbHdTQ21LaHhlYnBaNENreWl2cURBSGZCNE0vZDBGaEN5WkNR?=
- =?utf-8?B?bS9iTGFBTmxReEJVTWxiVmZtdUsrVDFMK2hUWVpxaEszTnI3SEFVYjFuV1B2?=
- =?utf-8?B?aWRUS1FJeHJBMHFHY0F0a1ZTQnFXelllWU1Oa05FWTQ1b0xjOVg3TkdlaUE0?=
- =?utf-8?B?cGFhalJ4VDg3NHZ3VzdBeE5wbnB1VkozSmRsSlh1TjVOSVFNY1BSZlgzTDBi?=
- =?utf-8?B?NmxBeHlLd3BvZ2VreWUvSHlOVmhKVzg1WTY0S1V6bVErWGZreHhJWmc3bTZN?=
- =?utf-8?B?anE1ZlRFckkrTktwdWhLYmw1b0V0TEVNMG84aE9leGFKRWI5TzZlb0p1Zk9K?=
- =?utf-8?B?RXA5b2FBZ2FXOU5zQ1BYSjEwdDBabENpUGxMWDd2QzJ3NnpvSTRibEJQcUZr?=
- =?utf-8?B?L2poVUswRWVMckN1cUxmdTFRTDQ2UnJQKzZ0TG93aGJzN0h4eERkN2tYNFc3?=
- =?utf-8?B?aVIweG1nS0FCK0dsSDNTcnIwTVQ4MUthQmFBaVRobFNFVU5SbFZGZWJRYmEx?=
- =?utf-8?B?TmVuRU5MbktFSWE4Y2g3dTZJWlhQejhQVlNqSDBCSTdORUFHL0JLT01rajIy?=
- =?utf-8?B?V3lheGVmcjVoaFNSTHA0MFR6UTk1QUZibHRsRVJJT1dJUG1aeC9YYmFYb1E2?=
- =?utf-8?B?RDZ3M3F5ZStEbUxNS2FWNFEvQko5WXVWR3o0cVcycFNYZi9DdXNZaXQxNXBZ?=
- =?utf-8?B?Rm5pbTFqUE55MkJ6WnI2U2N1TUt4QlZNZmNCRVBmMXJBbVdtVFRLcXNGQVFS?=
- =?utf-8?B?REZLZEVrblF5NDg2N2d4LzYwemtIN25GRGR2QkI3MlZ5M1BmaCtNVHFYMGdN?=
- =?utf-8?B?dkhRanhRU0pxd0o2b1hlM1NOL2NKbko3U3R3TmdsYTR3MTdtaHBwaTB2RWhC?=
- =?utf-8?B?OTkwaXBPU2RIWHBiT0VMNEsrT0dpY2hWbWFEdFlTckZUT0syWUFDRmpURTJO?=
- =?utf-8?B?bjVRamJUVzRvcENob09lSXVlOEt2TEFRcU5rYkRueFc5MElOUkkwV0ZNeXFX?=
- =?utf-8?B?Z09PQnhnMW9OYlovQVFrbHowTi8yUzVGR1BhdWlsYzlNMFdUSVpBOVRkYzN2?=
- =?utf-8?B?YjdFblZheGh2MlQvSFYySmdPK3IxN3NTL0pxSU1UL2pnM29mTXM4Qk5mMllR?=
- =?utf-8?B?VU1lNSt4bmdoMjVkdmN6T1FFbHp4c2JZNVYzVFZtWTVCcmZnSytXMmEzS254?=
- =?utf-8?B?dFlSZTVDZGpScUdBZHNvVmJiczNFdjVzZFluVDdPRDBiNGx4OUE0K3U0Zjk0?=
- =?utf-8?B?RFdqU0ljMXk1NHV2YnBEZDZJTzdzQmc5TjhRb3IvOGRsQWY4MzVGNXkwNS96?=
- =?utf-8?B?RWxSLzczUjBNUTZyNDNBZ0hvcUY3aSs4MjQxYnNwU2k2T3dTMnZXK2tVMm5H?=
- =?utf-8?B?WlE9PQ==?=
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <27eb37bb-f4eb-4cfb-ba3f-2317856f7b4b@csgroup.eu>
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrDKsWRmVeSWpSXmKPExsWy7djPc7ppR3elGlzulrT4O+kYu8X7ZT2M
+	FncmPWe32PT4GqvF5V1z2CwaZn9ntfj9/R+rxY0JTxkttjQcYrP4+eIGi8WMtsusDtwea+at
+	YfT4/WsSo8fshossHl9vnmPyWPSygcVj56y77B6bVnWyeWxeUu9xfsZCRo/Pm+QCuKK4bFJS
+	czLLUov07RK4Mi5eWcpUcL+oouHUGrYGxndJXYycHBICJhIHn85k72Lk4hASWMEocbJpKjOE
+	84VRYtbuqywQzmdGib/ze9hhWtZs388IkVjOKPF21y6o/o+MEv0vl4BV8QrYSWzs2wtkc3Cw
+	CKhKzP5aDBEWlDg58wkLiC0qIC9x/9YMsHJhgQiJNZOuMYPYzALiEreezGcCmSkisIpRouXH
+	IrBtzAKvmCS29p4Dq2ITMJToetvFBmJzAi27vrmBFaJbXqJ562ywJyQEFnNKrPv6kgXibheJ
+	ZdtPMEPYwhKvjm+B+kdG4v9OiHUSAu2MEgt+34dyJjBKNDy/xQhRZS1x59wvNpB/mAU0Jdbv
+	0ocIO0qsftzDAhKWEOCTuPFWEOIIPolJ26YzQ4R5JTrahCCq1SRmHV8Ht/bghUvMExiVZiEF
+	zCykAJiF5J1ZCHsXMLKsYhRPLS3OTU8tNspLLdcrTswtLs1L10vOz93ECExwp/8d/7KDcfmr
+	j3qHGJk4GA8xSnAwK4nwrpTbmSrEm5JYWZValB9fVJqTWnyIUZqDRUmcVzVFPlVIID2xJDU7
+	NbUgtQgmy8TBKdXAVDvnWlzGRutnnHKxTw9K1av5yi4VKPP17vWRvvJJWcBzD6faZ74sSetk
+	vQt/1nN6rru195LRycRLv5NM965dtOVt06/9X1ddnvNxj2xHznO1AC/5T25Bfcf7/24OMElQ
+	cJp8P3nHjQMeSxv5+pOO3V/k0DC/Vmjq6wsJUpvEbLSliteoKXcd/rGwaKpoZP35hPAXf3N3
+	5nK3Tv8xYaJ2v5Bbr+Hry/2mDKY/62fmSe5Nf7hHpHH3U+XrPXzRXw24JBY1XptxtfG0+ovi
+	XT+S7H6vuLd9UdmvTmMP0f2XYqQ+GF4O1r69dE1n0iPReqa7VtzBF/jOZc7pYKs4lzLRdqZR
+	osi0yP0phrKZO+YdVWIpzkg01GIuKk4EANOnCHzfAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrLIsWRmVeSWpSXmKPExsVy+t/xu7qpR3elGrz7LWjxd9Ixdov3y3oY
+	Le5Mes5usenxNVaLy7vmsFk0zP7OavH7+z9WixsTnjJabGk4xGbx88UNFosZbZdZHbg91sxb
+	w+jx+9ckRo/ZDRdZPL7ePMfksehlA4vHzll32T02repk89i8pN7j/IyFjB6fN8kFcEXp2RTl
+	l5akKmTkF5fYKkUbWhjpGVpa6BmZWOoZGpvHWhmZKunb2aSk5mSWpRbp2yXoZVy8spSp4H5R
+	RcOpNWwNjO+Suhg5OSQETCTWbN/P2MXIxSEksJRR4sGnvUwQCRmJk9MaWCFsYYk/17rYIIre
+	M0p0bTvOBpLgFbCT2Ni3l72LkYODRUBVYvbXYoiwoMTJmU9YQGxRAXmJ+7dmgJUIC0RIrNkt
+	BRJmFhCXuPVkPhPISBGBVYwSV5ZfAZvPLPCKSaLj2W9miGX9LBKL1/wBu4hNwFCi620X2GJO
+	oMXXN0NcxyxgJtG1tYsRwpaXaN46m3kCo9AsJIfMQrJxFpKWWUhaFjCyrGIUSS0tzk3PLTbS
+	K07MLS7NS9dLzs/dxAiM523Hfm7Zwbjy1Ue9Q4xMHIyHGCU4mJVEeFfK7UwV4k1JrKxKLcqP
+	LyrNSS0+xGgKDIyJzFKiyfnAhJJXEm9oZmBqaGJmaWBqaWasJM7rWdCRKCSQnliSmp2aWpBa
+	BNPHxMEp1cBULvzwdr9NVUdvxIPMB9PW17+IeNYbWzLtaZpQ+93q5uxDBzq9cmIydVicfgTc
+	nXfl79XDVitKthy7ZpV6YrNd3d0LH/c46rxd6HVnwQ1Hzmu7Iz+J8YiUCF/zeG/7WHhq2wz7
+	bsUfn9K4LouHOPIuWXCfO1tzdoBebP9u11gl3ch/v43WXlr1dOaK7nqhJzM78xWUBPufcR4W
+	zV6S9WPDTZONOrV3wrpcc/b5Bz5Qe/rH8/DujVUafPd2RU5nX3A6I9tWc/lepyteh6dXdRmt
+	yKgONFqcGi/asqvR0vdrp4ZWokCLQfQD+aOS8pI6Tc5Jl+/vuLF/cdrSNlMGCed++QlKq2bf
+	Tm9dU8C6/48SS3FGoqEWc1FxIgB5+7XQcAMAAA==
+X-CMS-MailID: 20240131221045eucas1p25121869f8c1d945ea470fc3576fda1cc
+X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-Content-ID: <6F61F691FBDAB24D9F738B7A6E8EF56D@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MR1P264MB2980.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 73ea2481-6ead-4127-ba94-08dc22984723
-X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Jan 2024 20:07:40.3301
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: CVbRxqF/aXNMmxdTnK1PavynQ+6wW5oJS2VsBdp1mXLT7d+dzguC5pcDCzeBOqCu8wQG9k3cJmF1Ju2/wSWWH8n9anmKP4MvJbsVy1eE9bg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB1893
+X-RootMTR: 20240130174812eucas1p166f62549457fd188fed6ed72b6b4b9cd
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20240130174812eucas1p166f62549457fd188fed6ed72b6b4b9cd
+References: <7b5df1782e94a755b4a18733af44d17d8dd8b37b.1703149011.git.christophe.leroy@csgroup.eu>
+	<ZbgGDlgrLhB8tcGI@bombadil.infradead.org>
+	<20240130091626.GA3684878@google.com>
+	<9e298fa7-a953-462a-96a4-56a1b4316a17@csgroup.eu>
+	<CGME20240130174812eucas1p166f62549457fd188fed6ed72b6b4b9cd@eucas1p1.samsung.com>
+	<30ddedc9-0829-4a99-9cb1-39190937981c@samsung.com>
+	<46627d92-976a-4126-b261-a4c6575e5a3e@csgroup.eu>
+	<2febff4d-26ba-4809-a124-7add25ab3d35@samsung.com>
+	<27eb37bb-f4eb-4cfb-ba3f-2317856f7b4b@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -147,107 +132,320 @@ Cc: Arnd Bergmann <arnd@arndb.de>, "linux-kernel@vger.kernel.org" <linux-kernel@
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDMxLzAxLzIwMjQgw6AgMTY6MTcsIE1hcmVrIFN6eXByb3dza2kgYSDDqWNyaXTCoDoN
-Cj4gW1ZvdXMgbmUgcmVjZXZleiBwYXMgc291dmVudCBkZSBjb3VycmllcnMgZGUgbS5zenlwcm93
-c2tpQHNhbXN1bmcuY29tLiBEw6ljb3V2cmV6IHBvdXJxdW9pIGNlY2kgZXN0IGltcG9ydGFudCDD
-oCBodHRwczovL2FrYS5tcy9MZWFybkFib3V0U2VuZGVySWRlbnRpZmljYXRpb24gXQ0KPiANCj4g
-SGkgQ2hyaXN0b3BoZSwNCj4gDQo+IE9uIDMxLjAxLjIwMjQgMTI6NTgsIENocmlzdG9waGUgTGVy
-b3kgd3JvdGU6DQo+PiBMZSAzMC8wMS8yMDI0IMOgIDE4OjQ4LCBNYXJlayBTenlwcm93c2tpIGEg
-w6ljcml0IDoNCj4+PiBbVm91cyBuZSByZWNldmV6IHBhcyBzb3V2ZW50IGRlIGNvdXJyaWVycyBk
-ZSBtLnN6eXByb3dza2lAc2Ftc3VuZy5jb20uIETDqWNvdXZyZXogcG91cnF1b2kgY2VjaSBlc3Qg
-aW1wb3J0YW50IMOgIGh0dHBzOi8vYWthLm1zL0xlYXJuQWJvdXRTZW5kZXJJZGVudGlmaWNhdGlv
-biBdDQo+Pj4NCj4+PiBPbiAzMC4wMS4yMDI0IDEyOjAzLCBDaHJpc3RvcGhlIExlcm95IHdyb3Rl
-Og0KPj4+PiBMZSAzMC8wMS8yMDI0IMOgIDEwOjE2LCBDaGVuLVl1IFRzYWkgYSDDqWNyaXQgOg0K
-Pj4+Pj4gW1ZvdXMgbmUgcmVjZXZleiBwYXMgc291dmVudCBkZSBjb3VycmllcnMgZGUgd2Vuc3RA
-Y2hyb21pdW0ub3JnLiBEP2NvdXZyZXogcG91cnF1b2kgY2VjaSBlc3QgaW1wb3J0YW50ID8gaHR0
-cHM6Ly9ha2EubXMvTGVhcm5BYm91dFNlbmRlcklkZW50aWZpY2F0aW9uIF0NCj4+Pj4+DQo+Pj4+
-PiBPbiBNb24sIEphbiAyOSwgMjAyNCBhdCAxMjowOTo1MFBNIC0wODAwLCBMdWlzIENoYW1iZXJs
-YWluIHdyb3RlOg0KPj4+Pj4+IE9uIFRodSwgRGVjIDIxLCAyMDIzIGF0IDEwOjAyOjQ2QU0gKzAx
-MDAsIENocmlzdG9waGUgTGVyb3kgd3JvdGU6DQo+Pj4+Pj4+IERlY2xhcmluZyByb2RhdGFfZW5h
-YmxlZCBhbmQgbWFya19yb2RhdGFfcm8oKSBhdCBhbGwgdGltZQ0KPj4+Pj4+PiBoZWxwcyByZW1v
-dmluZyByZWxhdGVkICNpZmRlZmVyeSBpbiBDIGZpbGVzLg0KPj4+Pj4+Pg0KPj4+Pj4+PiBTaWdu
-ZWQtb2ZmLWJ5OiBDaHJpc3RvcGhlIExlcm95IDxjaHJpc3RvcGhlLmxlcm95QGNzZ3JvdXAuZXU+
-DQo+Pj4+Pj4gVmVyeSBuaWNlIGNsZWFudXAsIHRoYW5rcyEsIGFwcGxpZWQgYW5kIHB1c2hlZA0K
-Pj4+Pj4+DQo+Pj4+Pj4gICAgICAgIEx1aXMNCj4+Pj4+IE9uIG5leHQtMjAyNDAxMzAsIHdoaWNo
-IGhhcyB5b3VyIG1vZHVsZXMtbmV4dCBicmFuY2gsIGFuZCB0aHVzIHRoaXMNCj4+Pj4+IHNlcmll
-cyBhbmQgdGhlIG90aGVyICJtb2R1bGU6IFVzZSBzZXRfbWVtb3J5X3JveCgpIiBzZXJpZXMgYXBw
-bGllZCwNCj4+Pj4+IG15IGtlcm5lbCBjcmFzaGVzIGluIHNvbWUgdmVyeSB3ZWlyZCB3YXkuIFJl
-dmVydGluZyB5b3VyIGJyYW5jaA0KPj4+Pj4gbWFrZXMgdGhlIGNyYXNoIGdvIGF3YXkuDQo+Pj4+
-Pg0KPj4+Pj4gSSB0aG91Z2h0IEknZCByZXBvcnQgaXQgcmlnaHQgYXdheS4gTWF5YmUgeW91IGZv
-bGtzIHdvdWxkIGtub3cgd2hhdCdzDQo+Pj4+PiBoYXBwZW5pbmcgaGVyZT8gVGhpcyBpcyBvbiBh
-cm02NC4NCj4+Pj4gVGhhdCdzIHN0cmFuZ2UsIGl0IHNlZW1zIHRvIGJ1ZyBpbiBtb2R1bGVfYnVn
-X2ZpbmFsaXplKCkgd2hpY2ggaXMNCj4+Pj4gX2JlZm9yZV8gY2FsbHMgdG8gbW9kdWxlX2VuYWJs
-ZV9ybygpIGFuZCBzdWNoLg0KPj4+Pg0KPj4+PiBDYW4geW91IHRyeSB0byByZXZlcnQgdGhlIDYg
-cGF0Y2hlcyBvbmUgYnkgb25lIHRvIHNlZSB3aGljaCBvbmUNCj4+Pj4gaW50cm9kdWNlcyB0aGUg
-cHJvYmxlbSA/DQo+Pj4+DQo+Pj4+IEluIHJlYWxpdHksIG9ubHkgcGF0Y2ggNjc3YmZiOWRiOGEz
-IHJlYWxseSBjaGFuZ2UgdGhpbmdzLiBPdGhlciBvbmVzIGFyZQ0KPj4+PiBtb3JlIG9uIGxlc3Mg
-b25seSBjbGVhbnVwLg0KPj4+IEkndmUgYWxzbyBydW4gaW50byB0aGlzIGlzc3VlIHdpdGggdG9k
-YXkncyAoMjAyNDAxMzApIGxpbnV4LW5leHQgb24gbXkNCj4+PiB0ZXN0IGZhcm0uIFRoZSBpc3N1
-ZSBpcyBub3QgZnVsbHkgcmVwcm9kdWNpYmxlLCBzbyBpdCB3YXMgYSBiaXQgaGFyZCB0bw0KPj4+
-IGJpc2VjdCBpdCBhdXRvbWF0aWNhbGx5LiBJJ3ZlIHNwZW50IHNvbWUgdGltZSBvbiBtYW51YWwg
-dGVzdGluZyBhbmQgaXQNCj4+PiBsb29rcyB0aGF0IHJldmVydGluZyB0aGUgZm9sbG93aW5nIDIg
-Y29tbWl0cyBvbiB0b3Agb2YgbGludXgtbmV4dCBmaXhlcw0KPj4+IHRoZSBwcm9ibGVtOg0KPj4+
-DQo+Pj4gNjU5Mjk4ODRmODY4ICgibW9kdWxlczogUmVtb3ZlICNpZmRlZiBDT05GSUdfU1RSSUNU
-X01PRFVMRV9SV1ggYXJvdW5kDQo+Pj4gcm9kYXRhX2VuYWJsZWQiKQ0KPj4+IDY3N2JmYjlkYjhh
-MyAoIm1vZHVsZTogRG9uJ3QgaWdub3JlIGVycm9ycyBmcm9tIHNldF9tZW1vcnlfWFgoKSIpDQo+
-Pj4NCj4+PiBUaGlzIGluIGZhY3QgbWVhbnMgdGhhdCBjb21taXQgNjc3YmZiOWRiOGEzIGlzIHJl
-c3BvbnNpYmxlIGZvciB0aGlzDQo+Pj4gcmVncmVzc2lvbiwgYXMgNjU5Mjk4ODRmODY4IGhhcyB0
-byBiZSByZXZlcnRlZCBvbmx5IGJlY2F1c2UgdGhlIGxhdHRlcg0KPj4+IGRlcGVuZHMgb24gaXQu
-IExldCBtZSBrbm93IHdoYXQgSSBjYW4gZG8gdG8gaGVscCBkZWJ1Z2dpbmcgdGhpcyBpc3N1ZS4N
-Cj4+Pg0KPj4gVGhhbmtzIGZvciB0aGUgYmlzZWN0LiBJIHN1c3BlY3QgeW91IGhpdCBvbmUgb2Yg
-dGhlIGVycm9ycyBhbmQgc29tZXRoaW5nDQo+PiBnb2VzIHdyb25nIGluIHRoZSBlcnJvciBwYXRo
-Lg0KPj4NCj4+IFRvIGNvbmZpcm0gdGhpcyBhc3N1bXB0aW9uLCBjb3VsZCB5b3UgdHJ5IHdpdGgg
-dGhlIGZvbGxvd2luZyBjaGFuZ2Ugb24NCj4+IHRvcCBvZiBldmVyeXRoaW5nID8NCj4gDQo+IA0K
-PiBZZXMsIHRoaXMgaXMgdGhlIHByb2JsZW0uIEkndmUgYWRkZWQgcHJpbnRpbmcgYSBtb2QtPm5h
-bWUgdG8gdGhlIGxvZy4NCj4gSGVyZSBpcyBhIGxvZyBmcm9tIGtlcm5lbCBidWlsZCBmcm9tIG5l
-eHQtMjAyNDAxMzAgKHNvbWV0aW1lcyBpdCBldmVuDQo+IGJvb3RzIHRvIHNoZWxsKToNCj4gDQo+
-ICMgZG1lc2cgfCBncmVwIG1vZHVsZV9zZXRfbWVtb3J5DQo+IFvCoMKgwqAgOC4wNjE1MjVdIG1v
-ZHVsZV9zZXRfbWVtb3J5KDYsIDAwMDAwMDAwMDAwMDAwMDAsIDApIG5hbWUgaXB2Ng0KPiByZXR1
-cm5lZCAtMjINCj4gW8KgwqDCoCA4LjA2NzU0M10gV0FSTklORzogQ1BVOiAzIFBJRDogMSBhdCBr
-ZXJuZWwvbW9kdWxlL3N0cmljdF9yd3guYzoyMg0KPiBtb2R1bGVfc2V0X21lbW9yeSsweDljLzB4
-YjgNCg0KV291bGQgYmUgZ29vZCBpZiB5b3UgY291bGQgc2hvdyB0aGUgYmFja3RyYWNlIHRvbyBz
-byB0aGF0IHdlIGtub3cgd2hvIGlzIA0KdGhlIGNhbGxlci4gSSBndWVzcyB3aGF0IHlvdSBzaG93
-IGhlcmUgaXMgd2hhdCB5b3UgZ2V0IG9uIHRoZSBzY3JlZW4gPyANClRoZSBiYWNrdHJhY2Ugc2hv
-dWxkIGJlIGF2YWlsYWJsZSB0aHJvdWdodCAnZG1lc2cnLg0KDQpJIGd1ZXNzIHdlIHdpbGwgbm93
-IHNlZWsgaGVscCBmcm9tIEFSTTY0IHBlb3BsZSB0byB1bmRlcnN0YW5kIHdoeSANCm1vZHVsZV9z
-ZXRfbWVtb3J5X3NvbWV0aGluZygpIGZhaWxzIHdpdGggLUVJTlZBTCB3aGVuIGxvYWRpbmcgbW9k
-dWxlcy4NCg0KDQo+IFvCoMKgwqAgOC4wOTc4MjFdIHBjIDogbW9kdWxlX3NldF9tZW1vcnkrMHg5
-Yy8weGI4DQo+IFvCoMKgwqAgOC4xMDIwNjhdIGxyIDogbW9kdWxlX3NldF9tZW1vcnkrMHg5Yy8w
-eGI4DQo+IFvCoMKgwqAgOC4xODMxMDFdwqAgbW9kdWxlX3NldF9tZW1vcnkrMHg5Yy8weGI4DQo+
-IFvCoMKgwqAgOC40NzI4NjJdIG1vZHVsZV9zZXRfbWVtb3J5KDYsIDAwMDAwMDAwMDAwMDAwMDAs
-IDApIG5hbWUgeF90YWJsZXMNCj4gcmV0dXJuZWQgLTIyDQo+IFvCoMKgwqAgOC40NzkyMTVdIFdB
-Uk5JTkc6IENQVTogMiBQSUQ6IDEgYXQga2VybmVsL21vZHVsZS9zdHJpY3Rfcnd4LmM6MjINCj4g
-bW9kdWxlX3NldF9tZW1vcnkrMHg5Yy8weGI4DQo+IFvCoMKgwqAgOC41MTA5NzhdIHBjIDogbW9k
-dWxlX3NldF9tZW1vcnkrMHg5Yy8weGI4DQo+IFvCoMKgwqAgOC41MTUyMjVdIGxyIDogbW9kdWxl
-X3NldF9tZW1vcnkrMHg5Yy8weGI4DQo+IFvCoMKgwqAgOC41OTYyNTldwqAgbW9kdWxlX3NldF9t
-ZW1vcnkrMHg5Yy8weGI4DQo+IFvCoMKgIDEwLjUyOTg3OV0gbW9kdWxlX3NldF9tZW1vcnkoNiwg
-MDAwMDAwMDAwMDAwMDAwMCwgMCkgbmFtZSBkbV9tb2QNCj4gcmV0dXJuZWQgLTIyDQo+IFvCoMKg
-IDEwLjUzNjA4N10gV0FSTklORzogQ1BVOiAzIFBJRDogMTI3IGF0IGtlcm5lbC9tb2R1bGUvc3Ry
-aWN0X3J3eC5jOjIyDQo+IG1vZHVsZV9zZXRfbWVtb3J5KzB4OWMvMHhiOA0KPiBbwqDCoCAxMC41
-NjgyNTRdIHBjIDogbW9kdWxlX3NldF9tZW1vcnkrMHg5Yy8weGI4DQo+IFvCoMKgIDEwLjU3MjUw
-MV0gbHIgOiBtb2R1bGVfc2V0X21lbW9yeSsweDljLzB4YjgNCj4gW8KgwqAgMTAuNjUzNTM1XcKg
-IG1vZHVsZV9zZXRfbWVtb3J5KzB4OWMvMHhiOA0KPiBbwqDCoCAxMC44NTMxNzddIG1vZHVsZV9z
-ZXRfbWVtb3J5KDYsIDAwMDAwMDAwMDAwMDAwMDAsIDApIG5hbWUgZnVzZQ0KPiByZXR1cm5lZCAt
-MjINCj4gW8KgwqAgMTAuODU5MTk2XSBXQVJOSU5HOiBDUFU6IDUgUElEOiAxMzAgYXQga2VybmVs
-L21vZHVsZS9zdHJpY3Rfcnd4LmM6MjINCj4gbW9kdWxlX3NldF9tZW1vcnkrMHg5Yy8weGI4DQo+
-IFvCoMKgIDEwLjg5MTM4Ml0gcGMgOiBtb2R1bGVfc2V0X21lbW9yeSsweDljLzB4YjgNCj4gW8Kg
-wqAgMTAuODk1NjI5XSBsciA6IG1vZHVsZV9zZXRfbWVtb3J5KzB4OWMvMHhiOA0KPiBbwqDCoCAx
-MC45NzY2NjNdwqAgbW9kdWxlX3NldF9tZW1vcnkrMHg5Yy8weGI4DQo+IA0KPiANCj4gDQo+PiBk
-aWZmIC0tZ2l0IGEva2VybmVsL21vZHVsZS9zdHJpY3Rfcnd4LmMgYi9rZXJuZWwvbW9kdWxlL3N0
-cmljdF9yd3guYw0KPj4gaW5kZXggYTE0ZGY5NjU1ZGJlLi5mZGY4NDg0MTU0ZGQgMTAwNjQ0DQo+
-PiAtLS0gYS9rZXJuZWwvbW9kdWxlL3N0cmljdF9yd3guYw0KPj4gKysrIGIva2VybmVsL21vZHVs
-ZS9zdHJpY3Rfcnd4LmMNCj4+IEBAIC0xNSw5ICsxNSwxMiBAQCBzdGF0aWMgaW50IG1vZHVsZV9z
-ZXRfbWVtb3J5KGNvbnN0IHN0cnVjdCBtb2R1bGUNCj4+ICptb2QsIGVudW0gbW9kX21lbV90eXBl
-IHR5cGUsDQo+PiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGludCAoKnNldF9tZW1vcnkp
-KHVuc2lnbmVkIGxvbmcgc3RhcnQsIGludCBudW1fcGFnZXMpKQ0KPj4gICAgIHsNCj4+ICAgICAg
-ICBjb25zdCBzdHJ1Y3QgbW9kdWxlX21lbW9yeSAqbW9kX21lbSA9ICZtb2QtPm1lbVt0eXBlXTsN
-Cj4+ICsgICAgIGludCBlcnI7DQo+Pg0KPj4gICAgICAgIHNldF92bV9mbHVzaF9yZXNldF9wZXJt
-cyhtb2RfbWVtLT5iYXNlKTsNCj4+IC0gICAgIHJldHVybiBzZXRfbWVtb3J5KCh1bnNpZ25lZCBs
-b25nKW1vZF9tZW0tPmJhc2UsIG1vZF9tZW0tPnNpemUgPj4NCj4+IFBBR0VfU0hJRlQpOw0KPj4g
-KyAgICAgZXJyID0gc2V0X21lbW9yeSgodW5zaWduZWQgbG9uZyltb2RfbWVtLT5iYXNlLCBtb2Rf
-bWVtLT5zaXplID4+DQo+PiBQQUdFX1NISUZUKTsNCj4+ICsgICAgIFdBUk4oZXJyLCAibW9kdWxl
-X3NldF9tZW1vcnkoJWQsICVweCwgJXgpIHJldHVybmVkICVkXG4iLCB0eXBlLA0KPj4gbW9kX21l
-bS0+YmFzZSwgbW9kX21lbS0+c2l6ZSwgZXJyKTsNCj4+ICsgICAgIHJldHVybiBlcnI7DQo+PiAg
-ICAgfQ0KPj4NCj4+ICAgICAvKg0KPj4NCj4+DQo+PiBUaGFua3MgZm9yIHlvdXIgaGVscA0KPj4g
-Q2hyaXN0b3BoZQ0KPiANCj4gQmVzdCByZWdhcmRzDQo+IC0tDQo+IE1hcmVrIFN6eXByb3dza2ks
-IFBoRA0KPiBTYW1zdW5nIFImRCBJbnN0aXR1dGUgUG9sYW5kDQo+IA0K
+Hi Christophe,
+
+On 31.01.2024 21:07, Christophe Leroy wrote:
+> Le 31/01/2024 à 16:17, Marek Szyprowski a écrit :
+>> [Vous ne recevez pas souvent de courriers de m.szyprowski@samsung.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+>>
+>> On 31.01.2024 12:58, Christophe Leroy wrote:
+>>> Le 30/01/2024 à 18:48, Marek Szyprowski a écrit :
+>>>> [Vous ne recevez pas souvent de courriers de m.szyprowski@samsung.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+>>>>
+>>>> On 30.01.2024 12:03, Christophe Leroy wrote:
+>>>>> Le 30/01/2024 à 10:16, Chen-Yu Tsai a écrit :
+>>>>>> [Vous ne recevez pas souvent de courriers de wenst@chromium.org. D?couvrez pourquoi ceci est important ? https://aka.ms/LearnAboutSenderIdentification ]
+>>>>>>
+>>>>>> On Mon, Jan 29, 2024 at 12:09:50PM -0800, Luis Chamberlain wrote:
+>>>>>>> On Thu, Dec 21, 2023 at 10:02:46AM +0100, Christophe Leroy wrote:
+>>>>>>>> Declaring rodata_enabled and mark_rodata_ro() at all time
+>>>>>>>> helps removing related #ifdefery in C files.
+>>>>>>>>
+>>>>>>>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>>>>>>> Very nice cleanup, thanks!, applied and pushed
+>>>>>>>
+>>>>>>>         Luis
+>>>>>> On next-20240130, which has your modules-next branch, and thus this
+>>>>>> series and the other "module: Use set_memory_rox()" series applied,
+>>>>>> my kernel crashes in some very weird way. Reverting your branch
+>>>>>> makes the crash go away.
+>>>>>>
+>>>>>> I thought I'd report it right away. Maybe you folks would know what's
+>>>>>> happening here? This is on arm64.
+>>>>> That's strange, it seems to bug in module_bug_finalize() which is
+>>>>> _before_ calls to module_enable_ro() and such.
+>>>>>
+>>>>> Can you try to revert the 6 patches one by one to see which one
+>>>>> introduces the problem ?
+>>>>>
+>>>>> In reality, only patch 677bfb9db8a3 really change things. Other ones are
+>>>>> more on less only cleanup.
+>>>> I've also run into this issue with today's (20240130) linux-next on my
+>>>> test farm. The issue is not fully reproducible, so it was a bit hard to
+>>>> bisect it automatically. I've spent some time on manual testing and it
+>>>> looks that reverting the following 2 commits on top of linux-next fixes
+>>>> the problem:
+>>>>
+>>>> 65929884f868 ("modules: Remove #ifdef CONFIG_STRICT_MODULE_RWX around
+>>>> rodata_enabled")
+>>>> 677bfb9db8a3 ("module: Don't ignore errors from set_memory_XX()")
+>>>>
+>>>> This in fact means that commit 677bfb9db8a3 is responsible for this
+>>>> regression, as 65929884f868 has to be reverted only because the latter
+>>>> depends on it. Let me know what I can do to help debugging this issue.
+>>>>
+>>> Thanks for the bisect. I suspect you hit one of the errors and something
+>>> goes wrong in the error path.
+>>>
+>>> To confirm this assumption, could you try with the following change on
+>>> top of everything ?
+>>
+>> Yes, this is the problem. I've added printing a mod->name to the log.
+>> Here is a log from kernel build from next-20240130 (sometimes it even
+>> boots to shell):
+>>
+>> # dmesg | grep module_set_memory
+>> [    8.061525] module_set_memory(6, 0000000000000000, 0) name ipv6
+>> returned -22
+>> [    8.067543] WARNING: CPU: 3 PID: 1 at kernel/module/strict_rwx.c:22
+>> module_set_memory+0x9c/0xb8
+> Would be good if you could show the backtrace too so that we know who is
+> the caller. I guess what you show here is what you get on the screen ?
+> The backtrace should be available throught 'dmesg'.
+
+Here are relevant parts of the boot log:
+
+[    8.096850] ------------[ cut here ]------------
+[    8.096939] module_set_memory(6, 0000000000000000, 0) name ipv6 
+returned -22
+[    8.102947] WARNING: CPU: 4 PID: 1 at kernel/module/strict_rwx.c:22 
+module_set_memory+0x9c/0xb8
+[    8.111561] Modules linked in:
+[    8.114596] CPU: 4 PID: 1 Comm: systemd Not tainted 
+6.8.0-rc2-next-20240130-dirty #14429
+[    8.122654] Hardware name: Khadas VIM3 (DT)
+[    8.126815] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS 
+BTYPE=--)
+[    8.133747] pc : module_set_memory+0x9c/0xb8
+[    8.137994] lr : module_set_memory+0x9c/0xb8
+[    8.142240] sp : ffff800083fcba80
+[    8.145534] x29: ffff800083fcba80 x28: 0000000000000001 x27: 
+ffff80007c024448
+[    8.152640] x26: ffff800083fcbc10 x25: ffff80007c007958 x24: 
+ffff80007c024450
+[    8.159747] x23: ffff800083f2a090 x22: ffff80007c007940 x21: 
+0000000000000006
+[    8.166854] x20: 00000000ffffffea x19: ffff80007c007af0 x18: 
+0000000000000030
+[    8.173960] x17: 0000000000000000 x16: 0000000000005932 x15: 
+ffffffffffffffff
+[    8.181067] x14: ffff800082ea5658 x13: 00000000000003d5 x12: 
+0000000000000147
+[    8.188174] x11: 6920656d616e2029 x10: ffff800082efd658 x9 : 
+00000000fffff000
+[    8.195280] x8 : ffff800082ea5658 x7 : ffff800082efd658 x6 : 
+0000000000000000
+[    8.202387] x5 : 000000000000bff4 x4 : 0000000000000000 x3 : 
+0000000000000000
+[    8.209494] x2 : 0000000000000000 x1 : 0000000000000000 x0 : 
+ffff0000001f0000
+[    8.216601] Call trace:
+[    8.219027]  module_set_memory+0x9c/0xb8
+[    8.222927]  module_enable_rodata_ro+0x64/0xa0
+[    8.227347]  load_module+0x1838/0x1c88
+[    8.231074]  init_module_from_file+0x84/0xc0
+[    8.235320]  idempotent_init_module+0x180/0x250
+[    8.239827]  __arm64_sys_finit_module+0x64/0xa0
+[    8.244334]  invoke_syscall+0x48/0x114
+[    8.248060]  el0_svc_common.constprop.0+0x40/0xe0
+[    8.252740]  do_el0_svc+0x1c/0x28
+[    8.256034]  el0_svc+0x4c/0xe4
+[    8.259067]  el0t_64_sync_handler+0xc0/0xc4
+[    8.263227]  el0t_64_sync+0x190/0x194
+[    8.266868] irq event stamp: 1304234
+[    8.270421] hardirqs last  enabled at (1304233): [<ffff80008012c95c>] 
+console_unlock+0x120/0x12c
+[    8.279174] hardirqs last disabled at (1304234): [<ffff800081239bc0>] 
+el1_dbg+0x24/0x8c
+[    8.287147] softirqs last  enabled at (1301556): [<ffff800080010a60>] 
+__do_softirq+0x4a0/0x4e8
+[    8.295727] softirqs last disabled at (1301545): [<ffff8000800169b0>] 
+____do_softirq+0x10/0x1c
+[    8.304307] ---[ end trace 0000000000000000 ]---
+
+[    8.508381] ------------[ cut here ]------------
+[    8.508432] module_set_memory(6, 0000000000000000, 0) name x_tables 
+returned -22
+[    8.514785] WARNING: CPU: 2 PID: 1 at kernel/module/strict_rwx.c:22 
+module_set_memory+0x9c/0xb8
+[    8.523410] Modules linked in:
+[    8.526444] CPU: 2 PID: 1 Comm: systemd Tainted: G W          
+6.8.0-rc2-next-20240130-dirty #14429
+[    8.535976] Hardware name: Khadas VIM3 (DT)
+[    8.540137] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS 
+BTYPE=--)
+[    8.547069] pc : module_set_memory+0x9c/0xb8
+[    8.551316] lr : module_set_memory+0x9c/0xb8
+[    8.555562] sp : ffff800083fcba80
+[    8.558856] x29: ffff800083fcba80 x28: 0000000000000001 x27: 
+ffff80007bfab1f0
+[    8.565963] x26: ffff800083fcbc10 x25: ffff80007bfa5458 x24: 
+ffff80007bfab1f8
+[    8.573069] x23: ffff800083f2a090 x22: ffff80007bfa5440 x21: 
+0000000000000006
+[    8.580176] x20: 00000000ffffffea x19: ffff80007bfa55f0 x18: 
+0000000000000030
+[    8.587282] x17: 64656e7275746572 x16: 2073656c6261745f x15: 
+7820656d616e2029
+[    8.594389] x14: ffff800082ea5658 x13: 000000000000044a x12: 
+000000000000016e
+[    8.601496] x11: 6261745f7820656d x10: ffff800082efd658 x9 : 
+00000000fffff000
+[    8.608602] x8 : ffff800082ea5658 x7 : ffff800082efd658 x6 : 
+0000000000000000
+[    8.615709] x5 : 000000000000bff4 x4 : 0000000000000000 x3 : 
+0000000000000000
+[    8.622816] x2 : 0000000000000000 x1 : 0000000000000000 x0 : 
+ffff0000001f0000
+[    8.629923] Call trace:
+[    8.632349]  module_set_memory+0x9c/0xb8
+[    8.636249]  module_enable_rodata_ro+0x64/0xa0
+[    8.640669]  load_module+0x1838/0x1c88
+[    8.644396]  init_module_from_file+0x84/0xc0
+[    8.648642]  idempotent_init_module+0x180/0x250
+[    8.653149]  __arm64_sys_finit_module+0x64/0xa0
+[    8.657656]  invoke_syscall+0x48/0x114
+[    8.661383]  el0_svc_common.constprop.0+0x40/0xe0
+[    8.666062]  do_el0_svc+0x1c/0x28
+[    8.669356]  el0_svc+0x4c/0xe4
+[    8.672389]  el0t_64_sync_handler+0xc0/0xc4
+[    8.676549]  el0t_64_sync+0x190/0x194
+[    8.680190] irq event stamp: 1304890
+[    8.683742] hardirqs last  enabled at (1304889): [<ffff80008012c95c>] 
+console_unlock+0x120/0x12c
+[    8.692496] hardirqs last disabled at (1304890): [<ffff800081239bc0>] 
+el1_dbg+0x24/0x8c
+[    8.700469] softirqs last  enabled at (1304870): [<ffff800080010a60>] 
+__do_softirq+0x4a0/0x4e8
+[    8.709049] softirqs last disabled at (1304865): [<ffff8000800169b0>] 
+____do_softirq+0x10/0x1c
+[    8.717629] ---[ end trace 0000000000000000 ]---
+
+[   10.560872] ------------[ cut here ]------------
+[   10.560924] module_set_memory(6, 0000000000000000, 0) name dm_mod 
+returned -22
+[   10.567128] WARNING: CPU: 4 PID: 127 at kernel/module/strict_rwx.c:22 
+module_set_memory+0x9c/0xb8
+[   10.575902] Modules linked in:
+[   10.578937] CPU: 4 PID: 127 Comm: modprobe Tainted: G W          
+6.8.0-rc2-next-20240130-dirty #14429
+[   10.588728] Hardware name: Khadas VIM3 (DT)
+[   10.592889] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS 
+BTYPE=--)
+[   10.599821] pc : module_set_memory+0x9c/0xb8
+[   10.604068] lr : module_set_memory+0x9c/0xb8
+[   10.608314] sp : ffff800084da3a80
+[   10.611608] x29: ffff800084da3a80 x28: 0000000000000001 x27: 
+ffff80007bfbf22c
+[   10.618714] x26: ffff800084da3c10 x25: ffff80007bfb4c58 x24: 
+ffff80007bfbf234
+[   10.623602] systemd[1]: Starting modprobe@efi_pstore.service - Load 
+Kernel Module efi_pstore...
+[   10.625820] x23: ffff800083f2a090 x22: ffff80007bfb4c40 x21: 
+0000000000000006
+[   10.625848] x20: 00000000ffffffea x19: ffff80007bfb4df0 x18: 
+0000000000000030
+[   10.648751] x17: 2d2064656e727574 x16: 657220646f6d5f6d x15: 
+6420656d616e2029
+[   10.648768] x14: ffff800082ea5658 x13: 000000000000051f x12: 
+00000000000001b5
+[   10.648782] x11: 5f6d6420656d616e x10: ffff800082efd658 x9 : 
+00000000fffff000
+[   10.648795] x8 : ffff800082ea5658 x7 : ffff800082efd658 x6 : 
+0000000000000000
+[   10.677128] x5 : 000000000000bff4 x4 : 0000000000000000 x3 : 
+0000000000000000
+[   10.684235] x2 : 0000000000000000 x1 : 0000000000000000 x0 : 
+ffff00003d341b80
+[   10.691342] Call trace:
+[   10.693768]  module_set_memory+0x9c/0xb8
+[   10.697668]  module_enable_rodata_ro+0x64/0xa0
+[   10.702088]  load_module+0x1838/0x1c88
+[   10.705815]  init_module_from_file+0x84/0xc0
+[   10.710061]  idempotent_init_module+0x180/0x250
+[   10.714568]  __arm64_sys_finit_module+0x64/0xa0
+[   10.719075]  invoke_syscall+0x48/0x114
+[   10.722801]  el0_svc_common.constprop.0+0x40/0xe0
+[   10.727481]  do_el0_svc+0x1c/0x28
+[   10.730774]  el0_svc+0x4c/0xe4
+[   10.733808]  el0t_64_sync_handler+0xc0/0xc4
+[   10.737968]  el0t_64_sync+0x190/0x194
+[   10.741609] irq event stamp: 13696
+[   10.744988] hardirqs last  enabled at (13695): [<ffff80008012c95c>] 
+console_unlock+0x120/0x12c
+[   10.753568] hardirqs last disabled at (13696): [<ffff800081239bc0>] 
+el1_dbg+0x24/0x8c
+[   10.761368] softirqs last  enabled at (13692): [<ffff800080010a60>] 
+__do_softirq+0x4a0/0x4e8
+[   10.769774] softirqs last disabled at (13683): [<ffff8000800169b0>] 
+____do_softirq+0x10/0x1c
+[   10.778181] ---[ end trace 0000000000000000 ]---
+
+[   10.860938] ------------[ cut here ]------------
+[   10.860989] module_set_memory(6, 0000000000000000, 0) name fuse 
+returned -22
+[   10.867007] WARNING: CPU: 3 PID: 130 at kernel/module/strict_rwx.c:22 
+module_set_memory+0x9c/0xb8
+[   10.875796] Modules linked in:
+[   10.878829] CPU: 3 PID: 130 Comm: modprobe Tainted: G W          
+6.8.0-rc2-next-20240130-dirty #14429
+[   10.888621] Hardware name: Khadas VIM3 (DT)
+[   10.892781] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS 
+BTYPE=--)
+[   10.899714] pc : module_set_memory+0x9c/0xb8
+[   10.903960] lr : module_set_memory+0x9c/0xb8
+[   10.908207] sp : ffff800084d8ba80
+[   10.911500] x29: ffff800084d8ba80 x28: 0000000000000001 x27: 
+ffff80007bff7148
+[   10.918607] x26: ffff800084d8bc10 x25: ffff80007bfee758 x24: 
+ffff80007bff7150
+[   10.925714] x23: ffff800083f2a090 x22: ffff80007bfee740 x21: 
+0000000000000006
+[   10.932820] x20: 00000000ffffffea x19: ffff80007bfee8f0 x18: 
+0000000000000030
+[   10.939927] x17: 0000000000000000 x16: 0000000000000000 x15: 
+ffffffffffffffff
+[   10.947034] x14: ffff800082ea5658 x13: 000000000000059d x12: 
+00000000000001df
+[   10.954140] x11: 6620656d616e2029 x10: ffff800082efd658 x9 : 
+00000000fffff000
+[   10.961247] x8 : ffff800082ea5658 x7 : ffff800082efd658 x6 : 
+0000000000000000
+[   10.968354] x5 : 000000000000bff4 x4 : 0000000000000000 x3 : 
+0000000000000000
+[   10.975460] x2 : 0000000000000000 x1 : 0000000000000000 x0 : 
+ffff00000268d280
+[   10.982568] Call trace:
+[   10.984994]  module_set_memory+0x9c/0xb8
+[   10.988894]  module_enable_rodata_ro+0x64/0xa0
+[   10.993314]  load_module+0x1838/0x1c88
+[   10.997041]  init_module_from_file+0x84/0xc0
+[   11.001287]  idempotent_init_module+0x180/0x250
+[   11.005794]  __arm64_sys_finit_module+0x64/0xa0
+[   11.010301]  invoke_syscall+0x48/0x114
+[   11.014027]  el0_svc_common.constprop.0+0x40/0xe0
+[   11.018707]  do_el0_svc+0x1c/0x28
+[   11.022000]  el0_svc+0x4c/0xe4
+[   11.025034]  el0t_64_sync_handler+0xc0/0xc4
+[   11.029194]  el0t_64_sync+0x190/0x194
+[   11.032835] irq event stamp: 13612
+[   11.036214] hardirqs last  enabled at (13611): [<ffff80008012c95c>] 
+console_unlock+0x120/0x12c
+[   11.044794] hardirqs last disabled at (13612): [<ffff800081239bc0>] 
+el1_dbg+0x24/0x8c
+[   11.052594] softirqs last  enabled at (13584): [<ffff800080010a60>] 
+__do_softirq+0x4a0/0x4e8
+[   11.061000] softirqs last disabled at (13333): [<ffff8000800169b0>] 
+____do_softirq+0x10/0x1c
+[   11.069407] ---[ end trace 0000000000000000 ]---
+
+
+> I guess we will now seek help from ARM64 people to understand why
+> module_set_memory_something() fails with -EINVAL when loading modules.
+> > ...
+
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+
