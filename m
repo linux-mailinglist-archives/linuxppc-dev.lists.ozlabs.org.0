@@ -2,90 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 417348441B7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jan 2024 15:20:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 074DD8441E6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jan 2024 15:30:37 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Z01Ot9+m;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AagzYnd/;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MO4S90h8;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aXGcw6lT;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TQ42b1Dswz3cWW
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Feb 2024 01:20:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TQ4Fk6wM2z3cTZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Feb 2024 01:30:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Z01Ot9+m;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AagzYnd/;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MO4S90h8;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aXGcw6lT;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TQ41p4hYsz2xgw
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Feb 2024 01:20:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TQ4Dz3V2hz2xnK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Feb 2024 01:29:54 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706710810;
+	s=mimecast20190719; t=1706711391;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=EJ5IuSkHp6LD0vYjmHgDCJ3/HytjuH6PXzpbQ2D4dxA=;
-	b=Z01Ot9+mHQyt1ZHaxCdazhjdI0qFMS3gXIonW8xaoGtwhCXd4A5EU1Fv9CajMTTVBfZw1I
-	MVJdp+SRFl2aaHjBZxUmcTO7fmDdWGSm+49+f5oYy64kn1MHCRZb+4r+j9Y7XOxr5uRC9x
-	zg/7+lWC2LAI5+b1K88abwJX6B4aFn8=
+	bh=ZZ8b65xFaoLyifj6soTcCK4V3mFrLiPMpU7F9cu2+Zw=;
+	b=MO4S90h8v/5n1JdOQ22szy4MYjo0Y7z+wsOiSBG60+LlR/BIm7H2VsrcqFXStZAlFdsTjj
+	VQDsNY0VHzy/lxTTu3wTN/0I1CHQrbPiM4xd0lr/33sFPoURac1CqEa7dyl/LVUW2X0ZhX
+	HmApiAynI0W8NlmA9767Ul+1FJZtEFg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706710811;
+	s=mimecast20190719; t=1706711392;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=EJ5IuSkHp6LD0vYjmHgDCJ3/HytjuH6PXzpbQ2D4dxA=;
-	b=AagzYnd/mvN8MPZa1KLBmYhXsupgzohaySKSJ316tEPvtbv79HOJbKuSCJvpdVJS4RBPAW
-	1Kcz7hzPUaTluRKMzIaNcDETY+mMwIIyZPpEDDfoIVmbiBUS/U5k927FalCtmGzGlBORl5
-	qEkDwYRyVA0VtAz6Kry8tOT6ZRIG1y0=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=ZZ8b65xFaoLyifj6soTcCK4V3mFrLiPMpU7F9cu2+Zw=;
+	b=aXGcw6lTItHWLj0MCV5/Ms8IrO/RrajAO2MqyjhBt45TcItD0ibsEBnyjKbsBJHR5No4ra
+	qoX47StPsjyBtMg4O5AdjNhSppR8FTnzucySFtIYEoJ113JCd0JcGycTRaHSwbTmLrAuZ4
+	LzZ/CFmZoFrCToeuEdjRw9j1LTk4g/o=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-96-Vl6ysqzIPDSC7SrXuL_aVw-1; Wed, 31 Jan 2024 09:20:07 -0500
-X-MC-Unique: Vl6ysqzIPDSC7SrXuL_aVw-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-40fb505c97aso3639645e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jan 2024 06:20:06 -0800 (PST)
+ us-mta-314-LhwznjE2N7GsEMMgBLV1uA-1; Wed, 31 Jan 2024 09:29:50 -0500
+X-MC-Unique: LhwznjE2N7GsEMMgBLV1uA-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-33af105d951so1319210f8f.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jan 2024 06:29:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706710806; x=1707315606;
+        d=1e100.net; s=20230601; t=1706711389; x=1707316189;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
          :references:cc:to:content-language:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EJ5IuSkHp6LD0vYjmHgDCJ3/HytjuH6PXzpbQ2D4dxA=;
-        b=LnA5znJN2EXKxwvb01NEW0EaeI3EiHGqu7ATYJsy3M3jR/afH6ls+jlFhX83eI0hvk
-         92HvHRyTbT4QwvgFiS3jCR8J9JNG2CZeL7Ck+K9IRtXDZuSMnOzUgTaPdOe5ESG/VxDi
-         BwjDovmnr0CmurSO1awQsnoGsKLpiACkrfbnClmOpN0JpK5VzVSfU5/EwfwIN8p9m+Oe
-         qhn+JD01RkqwEh91UQAQAslKfbbUFhh1CjQavCW6q5RSMhw2wsgwYFcKel9gJrXxxjta
-         Ldk9CKPKIG7maNTf8VCoawAMo6W7KqhxJdlLgTQ1VNSYcBoQemVv51FTdmaLCqY3cEu0
-         yFVA==
-X-Gm-Message-State: AOJu0YybVCy/b2t//VYrsLvf94NSgy2d3wabjin7rvR041Y40IhWrvST
-	KVf+yWdiE324U/uYzj6C/XIQmPAsZcqRNh4lx+kuo5v3l2rzy+HqczGtfs8FlO3m2INTfHbdjW4
-	zxtR/0m6FK1D7OcJq01Bz8WMQxWA16e6h5Kb/RwxRoFipGjoq/dZxr2GWgCogvwm7pJq203s=
-X-Received: by 2002:a05:600c:1e16:b0:40e:f972:9918 with SMTP id ay22-20020a05600c1e1600b0040ef9729918mr1606328wmb.29.1706710805911;
-        Wed, 31 Jan 2024 06:20:05 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEVS0DLc03z9UjF+ShKdgT2iE+aZAHubGYficvaqYAxhORIFpUTuMxb55nVEcr4Ub+xdd+4nQ==
-X-Received: by 2002:a05:600c:1e16:b0:40e:f972:9918 with SMTP id ay22-20020a05600c1e1600b0040ef9729918mr1606301wmb.29.1706710805551;
-        Wed, 31 Jan 2024 06:20:05 -0800 (PST)
+        bh=ZZ8b65xFaoLyifj6soTcCK4V3mFrLiPMpU7F9cu2+Zw=;
+        b=dmqZg77rw1zigzkFP4Hr8CxFqkgkBVfkbyulLncZxJJ7IqP0BDe6ycjyaas+d/I1jl
+         zEW7z/bKgGNkOmUmhZYIy+MQyQ/uTcukuUkmHot6WHj9j05PsBLUm2rhhCfwQj8rfYRc
+         +1OXUej4kawm4bIQDfQthvKl7fZBEQrjFDoW/Z4HBf4M4mgSWxBCaKGZa/XuKEJ3HMcL
+         qvT1mAPnzYU27OcNXsgrQxsqZJ6xr+OAdj7npJaMeQ+4pGqXW2rzPLJQzcbjGqZeLTJI
+         ZpF0lutcjT46bdjhX9H7qHByKl5/bHlFaR4CkQmvfbNKRG2lVLBTwT+K9HZT0ZFrfTXn
+         sqcA==
+X-Gm-Message-State: AOJu0YyAAT0PeT/6AMUH3AyhCRaOsfUez5QIUwD+76huyKTXBKglmAwL
+	Jpzcyqa95eqz8irJ7BKtdZgDE3rUID2dOM5wRNOcth4ehR9Y578nzAHefaiOxek9LMNS9wV52XS
+	v3p0bmLmxfAbCafL+a/V2r2vl0vQ0NPBJjTcU4CZlICRT/t84bC9LYvfFm2CAd/w=
+X-Received: by 2002:a5d:598b:0:b0:33a:ff6f:608e with SMTP id n11-20020a5d598b000000b0033aff6f608emr1538712wri.39.1706711388917;
+        Wed, 31 Jan 2024 06:29:48 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFPGskpVirI8XyVxfxlAH1i9dBAoHA8YDWcFOsNNMi2vRqQHUZE1EbK6vou26NNGCX4WuJG6g==
+X-Received: by 2002:a5d:598b:0:b0:33a:ff6f:608e with SMTP id n11-20020a5d598b000000b0033aff6f608emr1538682wri.39.1706711388493;
+        Wed, 31 Jan 2024 06:29:48 -0800 (PST)
 Received: from [10.32.64.237] (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id n36-20020a05600c3ba400b0040ed1d6ce7csm1745809wms.46.2024.01.31.06.20.04
+        by smtp.gmail.com with ESMTPSA id 18-20020a05600c025200b0040d4e1393dcsm1765374wmj.20.2024.01.31.06.29.47
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 31 Jan 2024 06:20:05 -0800 (PST)
-Message-ID: <e55a111d-0f09-4981-94e1-f547bdfad059@redhat.com>
-Date: Wed, 31 Jan 2024 15:20:03 +0100
+        Wed, 31 Jan 2024 06:29:48 -0800 (PST)
+Message-ID: <74333154-a99b-4bad-81f4-bee02ba05e91@redhat.com>
+Date: Wed, 31 Jan 2024 15:29:46 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/9] mm/memory: optimize unmap/zap with PTE-mapped THP
-To: Michal Hocko <mhocko@suse.com>, Ryan Roberts <ryan.roberts@arm.com>
-References: <20240129143221.263763-1-david@redhat.com>
- <4ef64fd1-f605-4ddf-82e6-74b5e2c43892@intel.com>
- <ee94b8ca-9723-44c0-aa17-75c9678015c6@redhat.com>
- <1fd26a83-8e6f-4b96-9d27-dd46de9488cc@arm.com> <ZbpUVXa-Aujp6gWO@tiehlicka>
+Subject: Re: [PATCH v3 00/15] mm/memory: optimize fork() with PTE-mapped THP
+To: Ryan Roberts <ryan.roberts@arm.com>, linux-kernel@vger.kernel.org
+References: <20240129124649.189745-1-david@redhat.com>
+ <a335a9d2-9b8f-4eb8-ba22-23a223b59b06@arm.com>
+ <a1a0e9b3-dae2-418f-bd63-50e65f471728@redhat.com>
+ <57eb82c7-4816-42a2-b5ab-cc221e289b21@arm.com>
+ <e6eaba5b-f290-4d1f-990b-a47d89f56ee4@redhat.com>
+ <714d0930-2202-48b6-9728-d248f820325e@arm.com>
+ <dcaa20c4-bd1f-4f15-bb0a-3a790808937d@arm.com>
+ <30718fc8-15cf-41e4-922c-5cdbf00a0840@redhat.com>
+ <de975655-8f8f-40dc-b281-75c40dd1e2c1@arm.com>
+ <c63870b0-690a-4051-b4f5-296cf3b73be2@redhat.com>
+ <a0cdeb7c-dec8-4971-8b54-e6f65ea48ade@arm.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -132,7 +139,7 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <ZbpUVXa-Aujp6gWO@tiehlicka>
+In-Reply-To: <a0cdeb7c-dec8-4971-8b54-e6f65ea48ade@arm.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -149,35 +156,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, Matthew Wilcox <willy@infradead.org>, "Huang, Ying" <ying.huang@intel.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nick Piggin <npiggin@gmail.com>, Linus Torvalds <torvalds@linux-foundation.org>, Yin Fengwei <fengwei.yin@intel.com>, Sven Schnelle <svens@linux.ibm.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-arm-kernel@lists.infradead.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 31.01.24 15:08, Michal Hocko wrote:
-> On Wed 31-01-24 10:26:13, Ryan Roberts wrote:
->> IIRC there is an option to zero memory when it is freed back to the buddy? So
->> that could be a place where time is proportional to size rather than
->> proportional to folio count? But I think that option is intended for debug only?
->> So perhaps not a problem in practice?
+>> Note that regarding NUMA effects, I mean when some memory access within the same
+>> socket is faster/slower even with only a single node. On AMD EPYC that's
+>> possible, depending on which core you are running and on which memory controller
+>> the memory you want to access is located. If both are in different quadrants
+>> IIUC, the access latency will be different.
 > 
-> init_on_free is considered a security/hardening feature more than a
-> debugging one. It will surely add an overhead and I guess this is
-> something people who use it know about. The batch size limit is a latency
-> reduction feature for !PREEMPT kernels but by no means it should be
-> considered low latency guarantee feature. A lot of has changed since
-> the limit was introduced and the current latency numbers will surely be
-> different than back then. As long as soft lockups do not trigger again
-> this should be acceptable IMHO.
+> I've configured the NUMA to only bring the RAM and CPUs for a single socket
+> online, so I shouldn't be seeing any of these effects. Anyway, I've been using
+> the Altra as a secondary because its so much slower than the M2. Let me move
+> over to it and see if everything looks more straightforward there.
 
-It could now be zeroing out ~512 MiB. That shouldn't take double-digit 
-seconds unless we are running in a very problematic environment 
-(over-committed VM). But then, we might have different problems already.
+Better use a system where people will actually run Linux production 
+workloads on, even if it is slower :)
 
-I'll do some sanity checks with an extremely large processes (as much as 
-I can fit on my machines), with a !CONFIG_PREEMPT kernel and 
-init_on_free, to see if anything pops up.
+[...]
 
-Thanks Michal!
+>>>
+>>> I'll continue to mess around with it until the end of the day. But I'm not
+>>> making any headway, then I'll change tack; I'll just measure the performance of
+>>> my contpte changes using your fork/zap stuff as the baseline and post based on
+>>> that.
+>>
+>> You should likely not focus on M2 results. Just pick a representative bare metal
+>> machine where you get consistent, explainable results.
+>>
+>> Nothing in the code is fine-tuned for a particular architecture so far, only
+>> order-0 handling is kept separate.
+>>
+>> BTW: I see the exact same speedups for dontneed that I see for munmap. For
+>> example, for order-9, it goes from 0.023412s -> 0.009785, so -58%. So I'm
+>> curious why you see a speedup for munmap but not for dontneed.
+> 
+> Ugh... ok, coming up.
+
+Hopefully you were just staring at the wrong numbers (e.g., only with 
+fork patches). Because both (munmap/pte-dontneed) are using the exact 
+same code path.
 
 -- 
 Cheers,
