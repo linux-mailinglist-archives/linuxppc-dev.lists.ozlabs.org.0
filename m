@@ -1,77 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2991D846067
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Feb 2024 19:53:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F6BC8460FA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Feb 2024 20:30:37 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=CQgqR/4H;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CJvgEKp3;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TQp2V0l0Rz3dL8
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Feb 2024 05:53:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TQpsQ6n44z3dJq
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Feb 2024 06:30:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=CQgqR/4H;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CJvgEKp3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::82a; helo=mail-qt1-x82a.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TQp1j4KBwz3c89
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Feb 2024 05:52:39 +1100 (AEDT)
-Received: by mail-qt1-x82a.google.com with SMTP id d75a77b69052e-42a029c8e62so8125381cf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Feb 2024 10:52:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1706813553; x=1707418353; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7eTCfSpE8BSX3w2muEo/jhEsigVfUc1eYeRG/TfFs0A=;
-        b=CQgqR/4HKOpWmzG2ndHa23Q+ieQLaqFdIHENExnaIZxtFNMjw9DR1+w7WNXPo/dt2M
-         Qa3Eqr+cNlXspSFF8tAmumLPipk7sdNnX85Awa74Y/F0gYzhtu5Lnm37JEq96ZHEY0Ij
-         M0R+BuxoX7axMvNdxzMsSxfPIFM3AscNn85cXrAL/wtImIOE1uK42APTSZmERkBbsF82
-         DUGNMLn97Z6Vt3+OguwrZvvr2ThsIcD4slDgUtGEezNhQUAgct/lHyqYvQRziaxJg4NH
-         DZiNagZzt+c6Gd+c5nJHJTZ3+EPA7tZdMw4YChfRQrwMHiWB2asyq4dOj802vhReOvCx
-         Ahvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706813553; x=1707418353;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7eTCfSpE8BSX3w2muEo/jhEsigVfUc1eYeRG/TfFs0A=;
-        b=AfgGyWKYKFBSLvOqKVCnVucQcFViabQ+b2BEZcj0cQzT3zE2HNiC0QX0mfLk1nfSnI
-         GxSyJ311lQ1+FiAZ14xP4Ijknhw2gE5VNyVKLyw61Wxb0tP+1qh35L5wXska68xFYBAk
-         SHIrf+G6IfMXjsvE2upQSSoKfePhwPiMeshwhfF2b+CMRT1SQbaQ9T6BROLeHA8bX5/7
-         DBemFnvnA5kcXWAJpU+ZgiPDPEGUba1e+TQn4TiNCH0MGiuRVPp15qhsqJemC+tdSuEw
-         09xUyl83Melk5HUX/qRAts2iCD5j8GQxRrxVl5z0iPGT7gakiSJvxEstvL1eliPm4ZEA
-         GaYA==
-X-Gm-Message-State: AOJu0YwT1FwBUGrRpHENeCbqNaeiBYekqp+gjV0RdU7L5avplpfX9age
-	Q/VHCcHupEZlAuSmb+AAQ1sEH5sXFOhFDiSDhKU6ooacicMMA0iEnZa7MV4mhxw=
-X-Google-Smtp-Source: AGHT+IFgJjDZxGoU+AfH6P+MRx9vRucn+J7TQs9/JS1FLA6fwYCChoHxRRKWYO6S0i3pCkO2ELKixA==
-X-Received: by 2002:a05:622a:1b16:b0:42a:b346:4e10 with SMTP id bb22-20020a05622a1b1600b0042ab3464e10mr6579555qtb.39.1706813552851;
-        Thu, 01 Feb 2024 10:52:32 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCWvSVnDQ95l7NoA6swosk450Ra3893m7dUOxMRLKXwIczYcRr98wDcEaSiaXjPZGbqgqjb9aOVo8tKTXjI6QLEbWkFTCNQzlFGOelvNhYrOPQt1rMPtbQj2oAlPY2ChcstNH2lvjXfoR7NnIx236XeajzyDy5QwmCHJ6XIM+6+Y2EMxnjWjAyzLu98dsRXPqjdZh9k18rSZEOrWbGf1NZv/6yGuCdla1KhCfNuMYyoSM7O09WPAb6c/G6w4U7gg8cYF5BX80/cL0ReHSabR2tUund0W2x280+7ECvcV7bj4DSFENmWtAStsICp0G77sdMQqXGK283bQtfHQc5w+pnNiVFXcaTBzdy1ABf8s1PrkKSECFbXkXsO+o7MEScGfGLvsZDq8nkTcyiMLpm+VTb4/XmTfHJHldNvoYDI+Ly2OaMa/pAKVMRit1oM0dw9rDZQDp+Zlu0WhyTxdnFV/d40VsjpgvMYZhY8ws3MpssDL2SbgqxmokUlNVB4ds5lQUYAE+F02PQ==
-Received: from ziepe.ca (hlfxns017vw-142-68-80-239.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.80.239])
-        by smtp.gmail.com with ESMTPSA id bs26-20020ac86f1a000000b0042a992d8289sm43838qtb.19.2024.02.01.10.52.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Feb 2024 10:52:32 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.95)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1rVcAp-00AnuA-Ka;
-	Thu, 01 Feb 2024 14:52:31 -0400
-Date: Thu, 1 Feb 2024 14:52:31 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-Subject: Re: [PATCH v2] powerpc: iommu: Bring back table group
- release_ownership() call
-Message-ID: <20240201185231.GP50608@ziepe.ca>
-References: <170628173462.3742.18330000394415935845.stgit@ltcd48-lp2.aus.stglab.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TQprf2FRKz307y
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Feb 2024 06:29:54 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 725D1620F1;
+	Thu,  1 Feb 2024 19:29:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B7FEC43390;
+	Thu,  1 Feb 2024 19:29:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706815789;
+	bh=xWMKzJ3E5dP2kBqORp++Jj3aGv9et0AAr3ZkPRCk9II=;
+	h=From:To:Cc:Subject:Date:From;
+	b=CJvgEKp3D2MvQ4Bwk+5UvYK7n6A8dqVdyLCClCiVPTyKKUiZsuKWzbdUeStUUn7yL
+	 8yxzXCM45gXg/EQ5/fH1gwVKFcwU6hjIwcFJOOvellj8UDIWijRlw7R46UXC6r8prp
+	 MyijSz+vU+2I/7m53DDNl0Yn+Vm6EiPGLlTiA3ewCjhzNYEGCIhYxtY6bKTK5z1PA6
+	 xM/vmrVxhAFoirEdXjLRgesruO/nB+czXELbFknW1dRigMNZF5IOrSjThJ5ARkYXdP
+	 rc2DTwyTdjoptte+horOYpY6VSmXxlrdaaWcixGU7iNSPYdC9Uui0grtMLVZMLH+gf
+	 IaMcbrgdK7r8w==
+From: Rob Herring <robh@kernel.org>
+To: Li Yang <leoyang.li@nxp.com>
+Subject: [PATCH] soc: fsl: qbman: Remove RESERVEDMEM_OF_DECLARE usage
+Date: Thu,  1 Feb 2024 13:29:30 -0600
+Message-ID: <20240201192931.1324130-1-robh@kernel.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <170628173462.3742.18330000394415935845.stgit@ltcd48-lp2.aus.stglab.ibm.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,52 +56,210 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jroedel@suse.de, gbatra@linux.vnet.ibm.com, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, aneesh.kumar@kernel.org, tpearson@raptorengineering.com, iommu@lists.linux.dev, npiggin@gmail.com, bgray@linux.ibm.com, naveen.n.rao@linux.ibm.com, vaibhav@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, aik@amd.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jan 26, 2024 at 09:09:18AM -0600, Shivaprasad G Bhat wrote:
-> The commit 2ad56efa80db ("powerpc/iommu: Setup a default domain and
-> remove set_platform_dma_ops") refactored the code removing the
-> set_platform_dma_ops(). It missed out the table group
-> release_ownership() call which would have got called otherwise
-> during the guest shutdown via vfio_group_detach_container(). On
-> PPC64, this particular call actually sets up the 32-bit TCE table,
-> and enables the 64-bit DMA bypass etc. Now after guest shutdown,
-> the subsequent host driver (e.g megaraid-sas) probe post unbind
-> from vfio-pci fails like,
-> 
-> megaraid_sas 0031:01:00.0: Warning: IOMMU dma not supported: mask 0x7fffffffffffffff, table unavailable
-> megaraid_sas 0031:01:00.0: Warning: IOMMU dma not supported: mask 0xffffffff, table unavailable
-> megaraid_sas 0031:01:00.0: Failed to set DMA mask
-> megaraid_sas 0031:01:00.0: Failed from megasas_init_fw 6539
-> 
-> The patch brings back the call to table_group release_ownership()
-> call when switching back to PLATFORM domain from BLOCKED, while
-> also separates the domain_ops for both.
-> 
-> Fixes: 2ad56efa80db ("powerpc/iommu: Setup a default domain and remove set_platform_dma_ops")
-> Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-> ---
-> Changelog:
-> v1: https://lore.kernel.org/linux-iommu/170618451433.3805.9015493852395837391.stgit@ltcd48-lp2.aus.stglab.ibm.com/
->  - Split the common attach_dev call to platform and blocked attach_dev
->    calls as suggested.
-> 
->  arch/powerpc/kernel/iommu.c |   37 ++++++++++++++++++++++++++++---------
->  1 file changed, 28 insertions(+), 9 deletions(-)
+There is no reason to use RESERVEDMEM_OF_DECLARE() as the initialization
+hook just saves off the base address and size. Use of
+RESERVEDMEM_OF_DECLARE() is reserved for non-driver code and
+initialization which must be done early. For qbman, retrieving the
+address and size can be done in probe just as easily.
 
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+ drivers/soc/fsl/qbman/bman_ccsr.c | 27 +++---------
+ drivers/soc/fsl/qbman/dpaa_sys.c  | 12 +++--
+ drivers/soc/fsl/qbman/dpaa_sys.h  |  4 +-
+ drivers/soc/fsl/qbman/qman_ccsr.c | 73 ++++++++++---------------------
+ 4 files changed, 38 insertions(+), 78 deletions(-)
 
-> @@ -1312,13 +1312,32 @@ static struct iommu_domain spapr_tce_platform_domain = {
->  	.ops = &spapr_tce_platform_domain_ops,
->  };
-> 
-> -static struct iommu_domain spapr_tce_blocked_domain = {
-> -	.type = IOMMU_DOMAIN_BLOCKED,
-> +static int
-> +spapr_tce_blocked_iommu_attach_dev(struct iommu_domain *platform_domain,
+diff --git a/drivers/soc/fsl/qbman/bman_ccsr.c b/drivers/soc/fsl/qbman/bman_ccsr.c
+index cb24a08be084..b0f26f6f731e 100644
+--- a/drivers/soc/fsl/qbman/bman_ccsr.c
++++ b/drivers/soc/fsl/qbman/bman_ccsr.c
+@@ -144,17 +144,6 @@ static int bm_set_memory(u64 ba, u32 size)
+ static dma_addr_t fbpr_a;
+ static size_t fbpr_sz;
+ 
+-static int bman_fbpr(struct reserved_mem *rmem)
+-{
+-	fbpr_a = rmem->base;
+-	fbpr_sz = rmem->size;
+-
+-	WARN_ON(!(fbpr_a && fbpr_sz));
+-
+-	return 0;
+-}
+-RESERVEDMEM_OF_DECLARE(bman_fbpr, "fsl,bman-fbpr", bman_fbpr);
+-
+ static irqreturn_t bman_isr(int irq, void *ptr)
+ {
+ 	u32 isr_val, ier_val, ecsr_val, isr_mask, i;
+@@ -242,17 +231,11 @@ static int fsl_bman_probe(struct platform_device *pdev)
+ 		return -ENODEV;
+ 	}
+ 
+-	/*
+-	 * If FBPR memory wasn't defined using the qbman compatible string
+-	 * try using the of_reserved_mem_device method
+-	 */
+-	if (!fbpr_a) {
+-		ret = qbman_init_private_mem(dev, 0, &fbpr_a, &fbpr_sz);
+-		if (ret) {
+-			dev_err(dev, "qbman_init_private_mem() failed 0x%x\n",
+-				ret);
+-			return -ENODEV;
+-		}
++	ret = qbman_init_private_mem(dev, 0, "fsl,bman-fbpr", &fbpr_a, &fbpr_sz);
++	if (ret) {
++		dev_err(dev, "qbman_init_private_mem() failed 0x%x\n",
++			ret);
++		return -ENODEV;
+ 	}
+ 
+ 	dev_dbg(dev, "Allocated FBPR 0x%llx 0x%zx\n", fbpr_a, fbpr_sz);
+diff --git a/drivers/soc/fsl/qbman/dpaa_sys.c b/drivers/soc/fsl/qbman/dpaa_sys.c
+index 33751450047e..e1d7b79cc450 100644
+--- a/drivers/soc/fsl/qbman/dpaa_sys.c
++++ b/drivers/soc/fsl/qbman/dpaa_sys.c
+@@ -34,8 +34,8 @@
+ /*
+  * Initialize a devices private memory region
+  */
+-int qbman_init_private_mem(struct device *dev, int idx, dma_addr_t *addr,
+-				size_t *size)
++int qbman_init_private_mem(struct device *dev, int idx, const char *compat,
++			   dma_addr_t *addr, size_t *size)
+ {
+ 	struct device_node *mem_node;
+ 	struct reserved_mem *rmem;
+@@ -44,8 +44,12 @@ int qbman_init_private_mem(struct device *dev, int idx, dma_addr_t *addr,
+ 
+ 	mem_node = of_parse_phandle(dev->of_node, "memory-region", idx);
+ 	if (!mem_node) {
+-		dev_err(dev, "No memory-region found for index %d\n", idx);
+-		return -ENODEV;
++		mem_node = of_find_compatible_node(NULL, NULL, compat);
++		if (!mem_node) {
++			dev_err(dev, "No memory-region found for index %d or compatible '%s'\n",
++				idx, compat);
++			return -ENODEV;
++		}
+ 	}
+ 
+ 	rmem = of_reserved_mem_lookup(mem_node);
+diff --git a/drivers/soc/fsl/qbman/dpaa_sys.h b/drivers/soc/fsl/qbman/dpaa_sys.h
+index ae8afa552b1e..16485bde9636 100644
+--- a/drivers/soc/fsl/qbman/dpaa_sys.h
++++ b/drivers/soc/fsl/qbman/dpaa_sys.h
+@@ -101,8 +101,8 @@ static inline u8 dpaa_cyc_diff(u8 ringsize, u8 first, u8 last)
+ #define DPAA_GENALLOC_OFF	0x80000000
+ 
+ /* Initialize the devices private memory region */
+-int qbman_init_private_mem(struct device *dev, int idx, dma_addr_t *addr,
+-				size_t *size);
++int qbman_init_private_mem(struct device *dev, int idx, const char *compat,
++			   dma_addr_t *addr, size_t *size);
+ 
+ /* memremap() attributes for different platforms */
+ #ifdef CONFIG_PPC
+diff --git a/drivers/soc/fsl/qbman/qman_ccsr.c b/drivers/soc/fsl/qbman/qman_ccsr.c
+index 157659fd033a..392e54f14dbe 100644
+--- a/drivers/soc/fsl/qbman/qman_ccsr.c
++++ b/drivers/soc/fsl/qbman/qman_ccsr.c
+@@ -468,28 +468,6 @@ static int zero_priv_mem(phys_addr_t addr, size_t sz)
+ 
+ 	return 0;
+ }
+-
+-static int qman_fqd(struct reserved_mem *rmem)
+-{
+-	fqd_a = rmem->base;
+-	fqd_sz = rmem->size;
+-
+-	WARN_ON(!(fqd_a && fqd_sz));
+-	return 0;
+-}
+-RESERVEDMEM_OF_DECLARE(qman_fqd, "fsl,qman-fqd", qman_fqd);
+-
+-static int qman_pfdr(struct reserved_mem *rmem)
+-{
+-	pfdr_a = rmem->base;
+-	pfdr_sz = rmem->size;
+-
+-	WARN_ON(!(pfdr_a && pfdr_sz));
+-
+-	return 0;
+-}
+-RESERVEDMEM_OF_DECLARE(qman_pfdr, "fsl,qman-pfdr", qman_pfdr);
+-
+ #endif
+ 
+ unsigned int qm_get_fqid_maxcnt(void)
+@@ -796,39 +774,34 @@ static int fsl_qman_probe(struct platform_device *pdev)
+ 		qm_channel_caam = QMAN_CHANNEL_CAAM_REV3;
+ 	}
+ 
+-	if (fqd_a) {
++	/*
++	* Order of memory regions is assumed as FQD followed by PFDR
++	* in order to ensure allocations from the correct regions the
++	* driver initializes then allocates each piece in order
++	*/
++	ret = qbman_init_private_mem(dev, 0, "fsl,qman-fqd", &fqd_a, &fqd_sz);
++	if (ret) {
++		dev_err(dev, "qbman_init_private_mem() for FQD failed 0x%x\n",
++			ret);
++		return -ENODEV;
++	}
+ #ifdef CONFIG_PPC
+-		/*
+-		 * For PPC backward DT compatibility
+-		 * FQD memory MUST be zero'd by software
+-		 */
+-		zero_priv_mem(fqd_a, fqd_sz);
++	/*
++	 * For PPC backward DT compatibility
++	 * FQD memory MUST be zero'd by software
++	 */
++	zero_priv_mem(fqd_a, fqd_sz);
+ #else
+-		WARN(1, "Unexpected architecture using non shared-dma-mem reservations");
++	WARN(1, "Unexpected architecture using non shared-dma-mem reservations");
+ #endif
+-	} else {
+-		/*
+-		 * Order of memory regions is assumed as FQD followed by PFDR
+-		 * in order to ensure allocations from the correct regions the
+-		 * driver initializes then allocates each piece in order
+-		 */
+-		ret = qbman_init_private_mem(dev, 0, &fqd_a, &fqd_sz);
+-		if (ret) {
+-			dev_err(dev, "qbman_init_private_mem() for FQD failed 0x%x\n",
+-				ret);
+-			return -ENODEV;
+-		}
+-	}
+ 	dev_dbg(dev, "Allocated FQD 0x%llx 0x%zx\n", fqd_a, fqd_sz);
+ 
+-	if (!pfdr_a) {
+-		/* Setup PFDR memory */
+-		ret = qbman_init_private_mem(dev, 1, &pfdr_a, &pfdr_sz);
+-		if (ret) {
+-			dev_err(dev, "qbman_init_private_mem() for PFDR failed 0x%x\n",
+-				ret);
+-			return -ENODEV;
+-		}
++	/* Setup PFDR memory */
++	ret = qbman_init_private_mem(dev, 1, "fsl,qman-pfdr", &pfdr_a, &pfdr_sz);
++	if (ret) {
++		dev_err(dev, "qbman_init_private_mem() for PFDR failed 0x%x\n",
++			ret);
++		return -ENODEV;
+ 	}
+ 	dev_dbg(dev, "Allocated PFDR 0x%llx 0x%zx\n", pfdr_a, pfdr_sz);
+ 
+-- 
+2.43.0
 
-It was my typo but this should be "struct iommu_domain *blocked_domain"
-
-Jason
