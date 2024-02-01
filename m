@@ -2,91 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19DB284566B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Feb 2024 12:42:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 287878456BB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Feb 2024 13:02:47 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=R2/6lL8i;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=R2/6lL8i;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ge8Jnwgy;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ge8Jnwgy;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TQcTC0FWbz3dBG
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Feb 2024 22:42:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TQcwj0Spbz3cXv
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Feb 2024 23:02:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=R2/6lL8i;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=R2/6lL8i;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ge8Jnwgy;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ge8Jnwgy;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pabeni@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pabeni@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TQcSQ4xkpz3cT9
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Feb 2024 22:41:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TQcvt6HW4z3bX3
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Feb 2024 23:02:01 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706787697;
+	s=mimecast20190719; t=1706788917;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=r/enAOY8bYlnI4W8GOf1BAThfZOCO3s5L8WrAguVrtE=;
-	b=R2/6lL8ieCNc8Hs+ikmAnmCmWfBctDD+dUS1Rm7iLFzUj10Sdr+sNWbWHpd1I2D9uO71dl
-	c8oG9FpZtPIWc5Zekb8cSTiHFZhgXLcEIsVJ9DkZXiC8B7UL1oQE8Yk1CIiYWQr2ZIUPOJ
-	ljGHDMmuqr6+3J9iGWvd8g4yyAsz8xA=
+	bh=VXorcTispEdVTbJkYF6HYzYShARMqt/1Hjrtv5amQP4=;
+	b=ge8JnwgyI/LB7vN01Qkwe35tA9WmVF5kHhK9+nIVjZJBUyY7s01Qs93xZ4pXgkgvq2+Poy
+	nGx3TcfwovjlSdnchwUkDymRRoRz1lOUTATNoyFouNR90xKO5c4unk73flhFXC3Kb/RUz0
+	FkHBA8ToWx3Xv7UwXNAJ294BNC1y2Pg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706787697;
+	s=mimecast20190719; t=1706788917;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=r/enAOY8bYlnI4W8GOf1BAThfZOCO3s5L8WrAguVrtE=;
-	b=R2/6lL8ieCNc8Hs+ikmAnmCmWfBctDD+dUS1Rm7iLFzUj10Sdr+sNWbWHpd1I2D9uO71dl
-	c8oG9FpZtPIWc5Zekb8cSTiHFZhgXLcEIsVJ9DkZXiC8B7UL1oQE8Yk1CIiYWQr2ZIUPOJ
-	ljGHDMmuqr6+3J9iGWvd8g4yyAsz8xA=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=VXorcTispEdVTbJkYF6HYzYShARMqt/1Hjrtv5amQP4=;
+	b=ge8JnwgyI/LB7vN01Qkwe35tA9WmVF5kHhK9+nIVjZJBUyY7s01Qs93xZ4pXgkgvq2+Poy
+	nGx3TcfwovjlSdnchwUkDymRRoRz1lOUTATNoyFouNR90xKO5c4unk73flhFXC3Kb/RUz0
+	FkHBA8ToWx3Xv7UwXNAJ294BNC1y2Pg=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-386-jAyw5YaYONujq5pZYXpw0A-1; Thu, 01 Feb 2024 06:41:35 -0500
-X-MC-Unique: jAyw5YaYONujq5pZYXpw0A-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-40f02c4aa13so844445e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Feb 2024 03:41:35 -0800 (PST)
+ us-mta-587-U4vD6Vy0ONCNTs9Z72Rp7Q-1; Thu, 01 Feb 2024 07:01:56 -0500
+X-MC-Unique: U4vD6Vy0ONCNTs9Z72Rp7Q-1
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-40ef6441d1aso918005e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Feb 2024 04:01:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706787694; x=1707392494;
+        d=1e100.net; s=20230601; t=1706788914; x=1707393714;
         h=mime-version:user-agent:content-transfer-encoding:autocrypt
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Po/nHRCuG70ZslkVkUZB2if3wnt/DtEf/hbKhv1YQ2c=;
-        b=YWpo4gl+/X94QBJnQLrmY0Wg8JhbFD6nncKq1UZOm6e2tDreLIQvFqkFNceE0cK4yu
-         l9841ye6rd3yqn4JuS9qiNcNDqfkXILQs/4YGRNNlTEPWbKKaVZY4ELEy3h6zn7v/qiJ
-         rgDU0QtQ+HHmIZvwXXS+nYZlApwZRGdNfL4cueMdDo8PLsadXhMn5eHWXxzqGf3lUhNi
-         a9WtwG6AYO0gVyi9Ne7USuyFHLCeAmmGrKSMjpsktqCQ0uh/oFYOGGffvNRQaXVIaOhh
-         CjMmdZ5qZPHbWmvv9edMmGJ3cckyOEMVwvJ6g6HhLmPnMqpwiH3Z6TwApXLK/U6cgjev
-         LPtg==
-X-Forwarded-Encrypted: i=0; AJvYcCX6ksENv2zWeJD3gq47oU88zGkuWUmSScenCHpOODQCU4dDlmLWHqFHu2WtGOqt1qJ+ZDc8SsYKiajlo5O6JoKODNUP3INJ70jJZ/cMLA==
-X-Gm-Message-State: AOJu0YxJNxERPs6kIcvhazLwQTKNpL3fFWGdRMMj2rsviNxC+GHPNTZ3
-	3o/1tyElGAU0qmnf+lihXfZj0nyvK8aRx8Lo9umVj3SafXiBul2Q6Ot9ojW0WkMxrKlC7xnK6lw
-	1CgbnwMy671cClnxtWgP4tgfM0E3ldWFg9bRO4gLIY0fzgu3b9LDzHLD/of/dlTI=
-X-Received: by 2002:a05:600c:5199:b0:40f:befe:9b52 with SMTP id fa25-20020a05600c519900b0040fbefe9b52mr710271wmb.3.1706787694610;
-        Thu, 01 Feb 2024 03:41:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF1Pk0soFcf5+nMPfUxGPS2zjBnMym71rihGaqLn8Yk8QvqQ55k7qONdT2pMHMGwHFf9tVAmA==
-X-Received: by 2002:a05:600c:5199:b0:40f:befe:9b52 with SMTP id fa25-20020a05600c519900b0040fbefe9b52mr710251wmb.3.1706787694206;
-        Thu, 01 Feb 2024 03:41:34 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCWeOyCjpaHQhydCBnZcczJSSO99KotjeNaVtdOhGnDhLqZNUi4XBQIZwQrsQPwn0lpznTSyTEC3rMyWbOC0uEQISJBtJh5gjEptELPZOS7KmpgnXLSi4iXnfDAIho5unKP7VspkU5+uGdDIe8BEr2ey5Uz8vGd/6PvpLIHUrEgetvAQ6z94hdyRyJsCP9bU2saSR9gpffvoAEoSS8CO/LXcYzqE+SzDLHog7T0FA16+xrIJXqEOEsbjA3p3o11KZvAwacJ/SJx39FLD47lruzRavtvq1aWZoEHF9vIdZvbnVmDBdERLtNbIWRi5r7l0obejJ23SPpvc/oJ6gLTm1Cj90dBjq2CnZCthlBQHR3WmlvYlHU9EUD2CUNM=
+        bh=mcEUKdi4uiysteQLExSEli88YMa6cGV3bas2H1wcmjE=;
+        b=QPTGmMk8RTv4Tcb4/Gx0CqfYKrh7bxq5rgbClVPpQRR1r6DehzdoL2jUXQl+worWc0
+         2cuToaTnnYlBr9YldN3Fe8ZD0/7BSu9fVyHII/XGtRT2BU0uC2rBYeB/JmxrsPsTHg15
+         qfF10cU/n6L7/b45hVvxaYjcSDcnP+j92jtJlTtJSmVRlTZS8efLiEdkRIbamF/MFVMo
+         jFQ9qpTWFV3SChKQQgMy10aNJg4n++j7R4uZd+dK9AHxy+BaxSRRM2Kd5ZFoZ9tGOmkf
+         3Mpi7LgzrLaf2pjRXkAW5m6yAXZlo0ZV4pr6j1xJAMwUxRnaSfWdv1DIDtT+I1jKNYQs
+         KIEg==
+X-Forwarded-Encrypted: i=0; AJvYcCVxTYAFAmRPPXbZmxLOGGZ+Wsrml5nSvGpDENmmxrybvXah839JU/7CK6aHQTUqNJnOME+gxPnYYxEajlubGxj9ZJosk4ZvloZk7ad0cw==
+X-Gm-Message-State: AOJu0YzEudPy9sikhIPBX+nKEhjNbxvYSDQer2bnwV4sDnrkSMvPkae+
+	gCKkPkBwBwWcDkLGT+hFhWYZjxTklDVKCK0O2CNgBpRVb3jDOvTrWJ7/dMVWfD1lYF3/Pku8M9B
+	fHPCGc2lgeb9h66Fe7pi/q988ZvtMkceJNDzx7NtyfrEcAz95ilmoFOb4PQgKCjw=
+X-Received: by 2002:a5d:43ce:0:b0:33b:1a51:733c with SMTP id v14-20020a5d43ce000000b0033b1a51733cmr520669wrr.6.1706788913782;
+        Thu, 01 Feb 2024 04:01:53 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFSzFdSnCWWh8DuX2kOUaKPmifpX1BGRedx6WDhyPSJ5Aa+E7ADsiOr/z2Uydt9bsS+//LAHQ==
+X-Received: by 2002:a5d:43ce:0:b0:33b:1a51:733c with SMTP id v14-20020a5d43ce000000b0033b1a51733cmr520651wrr.6.1706788913413;
+        Thu, 01 Feb 2024 04:01:53 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCW/u2BuRjHWFot74Lj/r29L7EOgPRqNFE85eGX5C7PoWgKVQlIrBa3Va6N4OMLsqKyR0BgziOAv4N6/mLX5HXTlBR58ZXYn51MY/GFcp7f9uJQgwtYQ8xWmRXYNlBRlPR0hlrEtko2qybOvs7TeFt6zejyNgaDWUx/rZidOu9kVjsVaJvPwKawz/1LaGmp0exN97A5NYcsDCxa8BHmJwUY34bffEpQ46sOVhRLa+07YcQ8MNpUCVdA39W1YgjQbUvEbIdX0obteS9Jiu40aF56QW2Ji4OJGElU9jGzcwIyGKMS/Nt3JFbvf/T0z0Xn7O9RQdrQpjZAVeJ91Lmk4UWwwUC21gfvFJvK91ND+cC9cLmPEWBSUvKKE548=
 Received: from gerbillo.redhat.com (146-241-238-90.dyn.eolo.it. [146.241.238.90])
-        by smtp.gmail.com with ESMTPSA id 10-20020a05600c22ca00b0040ef8aa4822sm4136433wmg.38.2024.02.01.03.41.33
+        by smtp.gmail.com with ESMTPSA id e13-20020a5d4e8d000000b0033b08b9cd9dsm3083916wru.79.2024.02.01.04.01.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Feb 2024 03:41:33 -0800 (PST)
-Message-ID: <b1968b5c7e88edd448d5f55b57dfa40257b2b06c.camel@redhat.com>
-Subject: Re: [PATCH v2 1/6] net: wan: Add support for QMC HDLC
+        Thu, 01 Feb 2024 04:01:52 -0800 (PST)
+Message-ID: <a8845eca2d9bab5d7805c19a16811820671c41f2.camel@redhat.com>
+Subject: Re: [PATCH v2 5/6] net: wan: fsl_qmc_hdlc: Add runtime timeslots
+ changes support
 From: Paolo Abeni <pabeni@redhat.com>
 To: Herve Codina <herve.codina@bootlin.com>, Vadim Fedorenko
 	 <vadim.fedorenko@linux.dev>, "David S. Miller" <davem@davemloft.net>, Eric
 	Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>
-Date: Thu, 01 Feb 2024 12:41:32 +0100
-In-Reply-To: <20240130084035.115086-2-herve.codina@bootlin.com>
+Date: Thu, 01 Feb 2024 13:01:51 +0100
+In-Reply-To: <20240130084035.115086-6-herve.codina@bootlin.com>
 References: <20240130084035.115086-1-herve.codina@bootlin.com>
-	 <20240130084035.115086-2-herve.codina@bootlin.com>
+	 <20240130084035.115086-6-herve.codina@bootlin.com>
 Autocrypt: addr=pabeni@redhat.com; prefer-encrypt=mutual; keydata=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
@@ -113,212 +114,67 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Tue, 2024-01-30 at 09:40 +0100, Herve Codina wrote:
-> The QMC HDLC driver provides support for HDLC using the QMC (QUICC
-> Multichannel Controller) to transfer the HDLC data.
+> QMC channels support runtime timeslots changes but nothing is done at
+> the QMC HDLC driver to handle these changes.
+>=20
+> Use existing IFACE ioctl in order to configure the timeslots to use.
 >=20
 > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 > Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 > Acked-by: Jakub Kicinski <kuba@kernel.org>
 > ---
->  drivers/net/wan/Kconfig        |  12 +
->  drivers/net/wan/Makefile       |   1 +
->  drivers/net/wan/fsl_qmc_hdlc.c | 422 +++++++++++++++++++++++++++++++++
->  3 files changed, 435 insertions(+)
->  create mode 100644 drivers/net/wan/fsl_qmc_hdlc.c
+>  drivers/net/wan/fsl_qmc_hdlc.c | 155 ++++++++++++++++++++++++++++++++-
+>  1 file changed, 154 insertions(+), 1 deletion(-)
 >=20
-> diff --git a/drivers/net/wan/Kconfig b/drivers/net/wan/Kconfig
-> index 7dda87756d3f..31ab2136cdf1 100644
-> --- a/drivers/net/wan/Kconfig
-> +++ b/drivers/net/wan/Kconfig
-> @@ -197,6 +197,18 @@ config FARSYNC
->  =09  To compile this driver as a module, choose M here: the
->  =09  module will be called farsync.
-> =20
-> +config FSL_QMC_HDLC
-> +=09tristate "Freescale QMC HDLC support"
-> +=09depends on HDLC
-> +=09depends on CPM_QMC
-> +=09help
-> +=09  HDLC support using the Freescale QUICC Multichannel Controller (QMC=
-).
-> +
-> +=09  To compile this driver as a module, choose M here: the
-> +=09  module will be called fsl_qmc_hdlc.
-> +
-> +=09  If unsure, say N.
-> +
->  config FSL_UCC_HDLC
->  =09tristate "Freescale QUICC Engine HDLC support"
->  =09depends on HDLC
-> diff --git a/drivers/net/wan/Makefile b/drivers/net/wan/Makefile
-> index 8119b49d1da9..00e9b7ee1e01 100644
-> --- a/drivers/net/wan/Makefile
-> +++ b/drivers/net/wan/Makefile
-> @@ -25,6 +25,7 @@ obj-$(CONFIG_WANXL)=09=09+=3D wanxl.o
->  obj-$(CONFIG_PCI200SYN)=09=09+=3D pci200syn.o
->  obj-$(CONFIG_PC300TOO)=09=09+=3D pc300too.o
->  obj-$(CONFIG_IXP4XX_HSS)=09+=3D ixp4xx_hss.o
-> +obj-$(CONFIG_FSL_QMC_HDLC)=09+=3D fsl_qmc_hdlc.o
->  obj-$(CONFIG_FSL_UCC_HDLC)=09+=3D fsl_ucc_hdlc.o
->  obj-$(CONFIG_SLIC_DS26522)=09+=3D slic_ds26522.o
-> =20
 > diff --git a/drivers/net/wan/fsl_qmc_hdlc.c b/drivers/net/wan/fsl_qmc_hdl=
 c.c
-> new file mode 100644
-> index 000000000000..e7b2b72a6050
-> --- /dev/null
+> index e7b2b72a6050..8316f2984864 100644
+> --- a/drivers/net/wan/fsl_qmc_hdlc.c
 > +++ b/drivers/net/wan/fsl_qmc_hdlc.c
-> @@ -0,0 +1,422 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Freescale QMC HDLC Device Driver
-> + *
-> + * Copyright 2023 CS GROUP France
-> + *
-> + * Author: Herve Codina <herve.codina@bootlin.com>
-> + */
-> +
-> +#include <linux/dma-mapping.h>
-> +#include <linux/hdlc.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-> +#include <linux/of_platform.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/slab.h>
-> +#include <soc/fsl/qe/qmc.h>
-> +
-> +struct qmc_hdlc_desc {
-> +=09struct net_device *netdev;
-> +=09struct sk_buff *skb; /* NULL if the descriptor is not in use */
-> +=09dma_addr_t dma_addr;
-> +=09size_t dma_size;
-> +};
-> +
-> +struct qmc_hdlc {
-> +=09struct device *dev;
-> +=09struct qmc_chan *qmc_chan;
-> +=09struct net_device *netdev;
-> +=09bool is_crc32;
-> +=09spinlock_t tx_lock; /* Protect tx descriptors */
-> +=09struct qmc_hdlc_desc tx_descs[8];
-> +=09unsigned int tx_out;
-> +=09struct qmc_hdlc_desc rx_descs[4];
-> +};
-> +
-> +static inline struct qmc_hdlc *netdev_to_qmc_hdlc(struct net_device *net=
+> @@ -7,6 +7,7 @@
+>   * Author: Herve Codina <herve.codina@bootlin.com>
+>   */
+> =20
+> +#include <linux/bitmap.h>
+>  #include <linux/dma-mapping.h>
+>  #include <linux/hdlc.h>
+>  #include <linux/module.h>
+> @@ -32,6 +33,7 @@ struct qmc_hdlc {
+>  =09struct qmc_hdlc_desc tx_descs[8];
+>  =09unsigned int tx_out;
+>  =09struct qmc_hdlc_desc rx_descs[4];
+> +=09u32 slot_map;
+>  };
+> =20
+>  static inline struct qmc_hdlc *netdev_to_qmc_hdlc(struct net_device *net=
 dev)
+> @@ -202,6 +204,147 @@ static netdev_tx_t qmc_hdlc_xmit(struct sk_buff *sk=
+b, struct net_device *netdev)
+>  =09return NETDEV_TX_OK;
+>  }
+> =20
+> +static int qmc_hdlc_xlate_slot_map(struct qmc_hdlc *qmc_hdlc,
+> +=09=09=09=09   u32 slot_map, struct qmc_chan_ts_info *ts_info)
 > +{
-> +=09return dev_to_hdlc(netdev)->priv;
-> +}
-
-Please, no 'inline' function in c files. You could move this function
-and the struct definition into a new, local, header file.
-
-> +static int qmc_hdlc_recv_queue(struct qmc_hdlc *qmc_hdlc, struct qmc_hdl=
-c_desc *desc, size_t size);
+> +=09DECLARE_BITMAP(ts_mask_avail, 64);
+> +=09DECLARE_BITMAP(ts_mask, 64);
+> +=09DECLARE_BITMAP(map, 64);
+> +=09u32 array32[2];
 > +
-> +#define QMC_HDLC_RX_ERROR_FLAGS (QMC_RX_FLAG_HDLC_OVF | \
-> +=09=09=09=09 QMC_RX_FLAG_HDLC_UNA | \
-> +=09=09=09=09 QMC_RX_FLAG_HDLC_ABORT | \
-> +=09=09=09=09 QMC_RX_FLAG_HDLC_CRC)
-> +
-> +static void qmc_hcld_recv_complete(void *context, size_t length, unsigne=
-d int flags)
-> +{
-> +=09struct qmc_hdlc_desc *desc =3D context;
-> +=09struct net_device *netdev =3D desc->netdev;
-> +=09struct qmc_hdlc *qmc_hdlc =3D netdev_to_qmc_hdlc(netdev);
-> +=09int ret;
-
-Please, respect the reverse x-mas tree order for local variable
-definition.
-
-> +=09dma_unmap_single(qmc_hdlc->dev, desc->dma_addr, desc->dma_size, DMA_F=
-ROM_DEVICE);
-> +
-> +=09if (flags & QMC_HDLC_RX_ERROR_FLAGS) {
-> +=09=09netdev->stats.rx_errors++;
-> +=09=09if (flags & QMC_RX_FLAG_HDLC_OVF) /* Data overflow */
-> +=09=09=09netdev->stats.rx_over_errors++;
-> +=09=09if (flags & QMC_RX_FLAG_HDLC_UNA) /* bits received not multiple of=
- 8 */
-> +=09=09=09netdev->stats.rx_frame_errors++;
-> +=09=09if (flags & QMC_RX_FLAG_HDLC_ABORT) /* Received an abort sequence =
-*/
-> +=09=09=09netdev->stats.rx_frame_errors++;
-> +=09=09if (flags & QMC_RX_FLAG_HDLC_CRC) /* CRC error */
-> +=09=09=09netdev->stats.rx_crc_errors++;
-> +=09=09kfree_skb(desc->skb);
-> +=09} else {
-> +=09=09netdev->stats.rx_packets++;
-> +=09=09netdev->stats.rx_bytes +=3D length;
-> +
-> +=09=09skb_put(desc->skb, length);
-> +=09=09desc->skb->protocol =3D hdlc_type_trans(desc->skb, netdev);
-> +=09=09netif_rx(desc->skb);
+> +=09/* Tx and Rx available masks must be identical */
+> +=09if (ts_info->rx_ts_mask_avail !=3D ts_info->tx_ts_mask_avail) {
+> +=09=09dev_err(qmc_hdlc->dev, "tx and rx available timeslots mismatch (0x=
+%llx, 0x%llx)\n",
+> +=09=09=09ts_info->rx_ts_mask_avail, ts_info->tx_ts_mask_avail);
+> +=09=09return -EINVAL;
 > +=09}
 > +
-> +=09/* Re-queue a transfer using the same descriptor */
-> +=09ret =3D qmc_hdlc_recv_queue(qmc_hdlc, desc, desc->dma_size);
-> +=09if (ret) {
-> +=09=09dev_err(qmc_hdlc->dev, "queue recv desc failed (%d)\n", ret);
-> +=09=09netdev->stats.rx_errors++;
-> +=09}
-> +}
+> +=09bitmap_from_arr64(ts_mask_avail, &ts_info->rx_ts_mask_avail, 64);
+> +=09array32[0] =3D slot_map;
+> +=09array32[1] =3D 0;
+> +=09bitmap_from_arr32(map, array32, 64);
 
-[...]
-
-> +static netdev_tx_t qmc_hdlc_xmit(struct sk_buff *skb, struct net_device =
-*netdev)
-> +{
-> +=09struct qmc_hdlc *qmc_hdlc =3D netdev_to_qmc_hdlc(netdev);
-> +=09struct qmc_hdlc_desc *desc;
-> +=09unsigned long flags;
-> +=09int ret;
-> +
-> +=09spin_lock_irqsave(&qmc_hdlc->tx_lock, flags);
-> +=09desc =3D &qmc_hdlc->tx_descs[qmc_hdlc->tx_out];
-> +=09if (WARN_ONCE(!desc->skb, "No tx descriptors available\n")) {
-> +=09=09/* Should never happen.
-> +=09=09 * Previous xmit should have already stopped the queue.
-> +=09=09 */
-> +=09=09netif_stop_queue(netdev);
-> +=09=09spin_unlock_irqrestore(&qmc_hdlc->tx_lock, flags);
-> +=09=09return NETDEV_TX_BUSY;
-> +=09}
-> +=09spin_unlock_irqrestore(&qmc_hdlc->tx_lock, flags);
-> +
-> +=09desc->netdev =3D netdev;
-> +=09desc->dma_size =3D skb->len;
-> +=09desc->skb =3D skb;
-> +=09ret =3D qmc_hdlc_xmit_queue(qmc_hdlc, desc);
-> +=09if (ret) {
-> +=09=09desc->skb =3D NULL; /* Release the descriptor */
-> +=09=09if (ret =3D=3D -EBUSY) {
-> +=09=09=09netif_stop_queue(netdev);
-> +=09=09=09return NETDEV_TX_BUSY;
-> +=09=09}
-> +=09=09dev_kfree_skb(skb);
-> +=09=09netdev->stats.tx_dropped++;
-> +=09=09return NETDEV_TX_OK;
-> +=09}
-> +
-> +=09qmc_hdlc->tx_out =3D (qmc_hdlc->tx_out + 1) % ARRAY_SIZE(qmc_hdlc->tx=
-_descs);
-> +
-> +=09spin_lock_irqsave(&qmc_hdlc->tx_lock, flags);
-> +=09if (qmc_hdlc->tx_descs[qmc_hdlc->tx_out].skb)
-> +=09=09netif_stop_queue(netdev);
-> +=09spin_unlock_irqrestore(&qmc_hdlc->tx_lock, flags);
-
-The locking schema is quite bad, as the drivers acquires and releases 3
-locks for each tx packet. You could improve that using the qmc_chan-
->tx_lock to protect the whole qmc_hdlc_xmit() function, factoring out a
-lockless variant of qmc_hdlc_xmit_queue(),=C2=A0and using it here.
-
-In general is quite bad that the existing infra does not allow
-leveraging NAPI. Have you considered expanding the QMC to accomodate
-such user?
+What about using bitmap_from_u64 everywhere ?
 
 Cheers,
 
