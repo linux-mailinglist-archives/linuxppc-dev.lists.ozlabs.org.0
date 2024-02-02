@@ -1,24 +1,24 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880AB846A66
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Feb 2024 09:17:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26FC6846A69
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Feb 2024 09:18:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TR7tZ3DH0z3vxc
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Feb 2024 19:17:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TR7v10r1zz86SN
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Feb 2024 19:18:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TR7jq6b5Qz3vhZ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Feb 2024 19:10:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TR7jv4Mkrz3vhd
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Feb 2024 19:10:11 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E4B631BCA;
-	Fri,  2 Feb 2024 00:10:18 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B640A1BD0;
+	Fri,  2 Feb 2024 00:10:22 -0800 (PST)
 Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.26])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 047993F5A1;
-	Fri,  2 Feb 2024 00:09:32 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CA6BF3F5A1;
+	Fri,  2 Feb 2024 00:09:36 -0800 (PST)
 From: Ryan Roberts <ryan.roberts@arm.com>
 To: Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>,
@@ -45,9 +45,9 @@ To: Catalin Marinas <catalin.marinas@arm.com>,
 	Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v5 21/25] arm64/mm: Implement new [get_and_]clear_full_ptes() batch APIs
-Date: Fri,  2 Feb 2024 08:07:52 +0000
-Message-Id: <20240202080756.1453939-22-ryan.roberts@arm.com>
+Subject: [PATCH v5 22/25] mm: Add pte_batch_hint() to reduce scanning in folio_pte_batch()
+Date: Fri,  2 Feb 2024 08:07:53 +0000
+Message-Id: <20240202080756.1453939-23-ryan.roberts@arm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240202080756.1453939-1-ryan.roberts@arm.com>
 References: <20240202080756.1453939-1-ryan.roberts@arm.com>
@@ -68,151 +68,106 @@ Cc: Ryan Roberts <ryan.roberts@arm.com>, x86@kernel.org, linux-kernel@vger.kerne
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Optimize the contpte implementation to fix some of the
-exit/munmap/dontneed performance regression introduced by the initial
-contpte commit. Subsequent patches will solve it entirely.
+Some architectures (e.g. arm64) can tell from looking at a pte, if some
+follow-on ptes also map contiguous physical memory with the same pgprot.
+(for arm64, these are contpte mappings).
 
-During exit(), munmap() or madvise(MADV_DONTNEED), mappings must be
-cleared. Previously this was done 1 PTE at a time. But the core-mm
-supports batched clear via the new [get_and_]clear_full_ptes() APIs. So
-let's implement those APIs and for fully covered contpte mappings, we no
-longer need to unfold the contpte. This significantly reduces unfolding
-operations, reducing the number of tlbis that must be issued.
+Take advantage of this knowledge to optimize folio_pte_batch() so that
+it can skip these ptes when scanning to create a batch. By default, if
+an arch does not opt-in, folio_pte_batch() returns a compile-time 1, so
+the changes are optimized out and the behaviour is as before.
+
+arm64 will opt-in to providing this hint in the next patch, which will
+greatly reduce the cost of ptep_get() when scanning a range of contptes.
 
 Tested-by: John Hubbard <jhubbard@nvidia.com>
 Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 ---
- arch/arm64/include/asm/pgtable.h | 67 ++++++++++++++++++++++++++++++++
- arch/arm64/mm/contpte.c          | 17 ++++++++
- 2 files changed, 84 insertions(+)
+ include/linux/pgtable.h | 18 ++++++++++++++++++
+ mm/memory.c             | 20 +++++++++++++-------
+ 2 files changed, 31 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index c07f0d563733..ad04adb7b87f 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -965,6 +965,37 @@ static inline pte_t __ptep_get_and_clear(struct mm_struct *mm,
- 	return pte;
- }
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 50f32cccbd92..cba31f177d27 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -212,6 +212,24 @@ static inline int pmd_dirty(pmd_t pmd)
+ #define arch_flush_lazy_mmu_mode()	do {} while (0)
+ #endif
  
-+static inline void __clear_full_ptes(struct mm_struct *mm, unsigned long addr,
-+				pte_t *ptep, unsigned int nr, int full)
++#ifndef pte_batch_hint
++/**
++ * pte_batch_hint - Number of pages that can be added to batch without scanning.
++ * @ptep: Page table pointer for the entry.
++ * @pte: Page table entry.
++ *
++ * Some architectures know that a set of contiguous ptes all map the same
++ * contiguous memory with the same permissions. In this case, it can provide a
++ * hint to aid pte batching without the core code needing to scan every pte.
++ *
++ * May be overridden by the architecture, else pte_batch_hint is always 1.
++ */
++static inline unsigned int pte_batch_hint(pte_t *ptep, pte_t pte)
 +{
-+	for (;;) {
-+		__ptep_get_and_clear(mm, addr, ptep);
-+		if (--nr == 0)
-+			break;
-+		ptep++;
-+		addr += PAGE_SIZE;
-+	}
++	return 1;
 +}
++#endif
 +
-+static inline pte_t __get_and_clear_full_ptes(struct mm_struct *mm,
-+				unsigned long addr, pte_t *ptep,
-+				unsigned int nr, int full)
-+{
-+	pte_t pte, tmp_pte;
-+
-+	pte = __ptep_get_and_clear(mm, addr, ptep);
-+	while (--nr) {
-+		ptep++;
-+		addr += PAGE_SIZE;
-+		tmp_pte = __ptep_get_and_clear(mm, addr, ptep);
-+		if (pte_dirty(tmp_pte))
-+			pte = pte_mkdirty(pte);
-+		if (pte_young(tmp_pte))
-+			pte = pte_mkyoung(pte);
-+	}
-+	return pte;
-+}
-+
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- #define __HAVE_ARCH_PMDP_HUGE_GET_AND_CLEAR
- static inline pmd_t pmdp_huge_get_and_clear(struct mm_struct *mm,
-@@ -1167,6 +1198,11 @@ extern pte_t contpte_ptep_get(pte_t *ptep, pte_t orig_pte);
- extern pte_t contpte_ptep_get_lockless(pte_t *orig_ptep);
- extern void contpte_set_ptes(struct mm_struct *mm, unsigned long addr,
- 				pte_t *ptep, pte_t pte, unsigned int nr);
-+extern void contpte_clear_full_ptes(struct mm_struct *mm, unsigned long addr,
-+				pte_t *ptep, unsigned int nr, int full);
-+extern pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
-+				unsigned long addr, pte_t *ptep,
-+				unsigned int nr, int full);
- extern int contpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
- 				unsigned long addr, pte_t *ptep);
- extern int contpte_ptep_clear_flush_young(struct vm_area_struct *vma,
-@@ -1254,6 +1290,35 @@ static inline void pte_clear(struct mm_struct *mm,
- 	__pte_clear(mm, addr, ptep);
- }
- 
-+#define clear_full_ptes clear_full_ptes
-+static inline void clear_full_ptes(struct mm_struct *mm, unsigned long addr,
-+				pte_t *ptep, unsigned int nr, int full)
-+{
-+	if (likely(nr == 1)) {
-+		contpte_try_unfold(mm, addr, ptep, __ptep_get(ptep));
-+		__clear_full_ptes(mm, addr, ptep, nr, full);
-+	} else {
-+		contpte_clear_full_ptes(mm, addr, ptep, nr, full);
-+	}
-+}
-+
-+#define get_and_clear_full_ptes get_and_clear_full_ptes
-+static inline pte_t get_and_clear_full_ptes(struct mm_struct *mm,
-+				unsigned long addr, pte_t *ptep,
-+				unsigned int nr, int full)
-+{
-+	pte_t pte;
-+
-+	if (likely(nr == 1)) {
-+		contpte_try_unfold(mm, addr, ptep, __ptep_get(ptep));
-+		pte = __get_and_clear_full_ptes(mm, addr, ptep, nr, full);
-+	} else {
-+		pte = contpte_get_and_clear_full_ptes(mm, addr, ptep, nr, full);
-+	}
-+
-+	return pte;
-+}
-+
- #define __HAVE_ARCH_PTEP_GET_AND_CLEAR
- static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
- 				unsigned long addr, pte_t *ptep)
-@@ -1338,6 +1403,8 @@ static inline int ptep_set_access_flags(struct vm_area_struct *vma,
- #define set_pte					__set_pte
- #define set_ptes				__set_ptes
- #define pte_clear				__pte_clear
-+#define clear_full_ptes				__clear_full_ptes
-+#define get_and_clear_full_ptes			__get_and_clear_full_ptes
- #define __HAVE_ARCH_PTEP_GET_AND_CLEAR
- #define ptep_get_and_clear			__ptep_get_and_clear
- #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
-diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
-index c85e64baf03b..80346108450b 100644
---- a/arch/arm64/mm/contpte.c
-+++ b/arch/arm64/mm/contpte.c
-@@ -207,6 +207,23 @@ void contpte_set_ptes(struct mm_struct *mm, unsigned long addr,
- }
- EXPORT_SYMBOL(contpte_set_ptes);
- 
-+void contpte_clear_full_ptes(struct mm_struct *mm, unsigned long addr,
-+				pte_t *ptep, unsigned int nr, int full)
-+{
-+	contpte_try_unfold_partial(mm, addr, ptep, nr);
-+	__clear_full_ptes(mm, addr, ptep, nr, full);
-+}
-+EXPORT_SYMBOL(contpte_clear_full_ptes);
-+
-+pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
-+				unsigned long addr, pte_t *ptep,
-+				unsigned int nr, int full)
-+{
-+	contpte_try_unfold_partial(mm, addr, ptep, nr);
-+	return __get_and_clear_full_ptes(mm, addr, ptep, nr, full);
-+}
-+EXPORT_SYMBOL(contpte_get_and_clear_full_ptes);
-+
- int contpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
- 					unsigned long addr, pte_t *ptep)
+ #ifndef pte_advance_pfn
+ static inline pte_t pte_advance_pfn(pte_t pte, unsigned long nr)
  {
+diff --git a/mm/memory.c b/mm/memory.c
+index 65fbe4f886c1..902665b27702 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -988,16 +988,21 @@ static inline int folio_pte_batch(struct folio *folio, unsigned long addr,
+ {
+ 	unsigned long folio_end_pfn = folio_pfn(folio) + folio_nr_pages(folio);
+ 	const pte_t *end_ptep = start_ptep + max_nr;
+-	pte_t expected_pte = __pte_batch_clear_ignored(pte_advance_pfn(pte, 1), flags);
+-	pte_t *ptep = start_ptep + 1;
++	pte_t expected_pte = __pte_batch_clear_ignored(pte, flags);
++	pte_t *ptep = start_ptep;
+ 	bool writable;
++	int nr;
+ 
+ 	if (any_writable)
+ 		*any_writable = false;
+ 
+ 	VM_WARN_ON_FOLIO(!pte_present(pte), folio);
+ 
+-	while (ptep != end_ptep) {
++	nr = pte_batch_hint(ptep, pte);
++	expected_pte = pte_advance_pfn(expected_pte, nr);
++	ptep += nr;
++
++	while (ptep < end_ptep) {
+ 		pte = ptep_get(ptep);
+ 		if (any_writable)
+ 			writable = !!pte_write(pte);
+@@ -1011,17 +1016,18 @@ static inline int folio_pte_batch(struct folio *folio, unsigned long addr,
+ 		 * corner cases the next PFN might fall into a different
+ 		 * folio.
+ 		 */
+-		if (pte_pfn(pte) == folio_end_pfn)
++		if (pte_pfn(pte) >= folio_end_pfn)
+ 			break;
+ 
+ 		if (any_writable)
+ 			*any_writable |= writable;
+ 
+-		expected_pte = pte_advance_pfn(expected_pte, 1);
+-		ptep++;
++		nr = pte_batch_hint(ptep, pte);
++		expected_pte = pte_advance_pfn(expected_pte, nr);
++		ptep += nr;
+ 	}
+ 
+-	return ptep - start_ptep;
++	return min(ptep - start_ptep, max_nr);
+ }
+ 
+ /*
 -- 
 2.25.1
 
