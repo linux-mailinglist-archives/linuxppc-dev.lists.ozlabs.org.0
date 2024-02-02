@@ -2,23 +2,23 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81989846A42
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Feb 2024 09:12:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8589846A3A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Feb 2024 09:11:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TR7mR39Glz3w6V
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Feb 2024 19:12:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TR7l74HBkz3vtL
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Feb 2024 19:11:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TR7j0337mz3dSC
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TR7j02fTcz3cZy
 	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Feb 2024 19:09:23 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6299E176B;
-	Fri,  2 Feb 2024 00:09:25 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 34710176C;
+	Fri,  2 Feb 2024 00:09:29 -0800 (PST)
 Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.26])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 76D9A3F5A1;
-	Fri,  2 Feb 2024 00:08:39 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 489F23F5A1;
+	Fri,  2 Feb 2024 00:08:43 -0800 (PST)
 From: Ryan Roberts <ryan.roberts@arm.com>
 To: Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>,
@@ -45,9 +45,9 @@ To: Catalin Marinas <catalin.marinas@arm.com>,
 	Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v5 07/25] x86/mm: Convert pte_next_pfn() to pte_advance_pfn()
-Date: Fri,  2 Feb 2024 08:07:38 +0000
-Message-Id: <20240202080756.1453939-8-ryan.roberts@arm.com>
+Subject: [PATCH v5 08/25] mm: Remove pte_next_pfn() and replace with pte_advance_pfn()
+Date: Fri,  2 Feb 2024 08:07:39 +0000
+Message-Id: <20240202080756.1453939-9-ryan.roberts@arm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240202080756.1453939-1-ryan.roberts@arm.com>
 References: <20240202080756.1453939-1-ryan.roberts@arm.com>
@@ -68,36 +68,71 @@ Cc: Ryan Roberts <ryan.roberts@arm.com>, x86@kernel.org, linux-kernel@vger.kerne
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Core-mm needs to be able to advance the pfn by an arbitrary amount, so
-improve the API to do so and change the name.
+Now that the architectures are converted over to pte_advance_pfn(), we
+can remove the pte_next_pfn() wrapper and convert the callers to call
+pte_advance_pfn().
 
 Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 ---
- arch/x86/include/asm/pgtable.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/linux/pgtable.h | 9 +--------
+ mm/memory.c             | 4 ++--
+ 2 files changed, 3 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-index 9d077bca6a10..b60b0c897b4c 100644
---- a/arch/x86/include/asm/pgtable.h
-+++ b/arch/x86/include/asm/pgtable.h
-@@ -956,13 +956,13 @@ static inline int pte_same(pte_t a, pte_t b)
- 	return a.pte == b.pte;
- }
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 815d92dcb96b..50f32cccbd92 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -212,19 +212,12 @@ static inline int pmd_dirty(pmd_t pmd)
+ #define arch_flush_lazy_mmu_mode()	do {} while (0)
+ #endif
  
+-
+-#ifndef pte_next_pfn
+ #ifndef pte_advance_pfn
+ static inline pte_t pte_advance_pfn(pte_t pte, unsigned long nr)
+ {
+ 	return __pte(pte_val(pte) + (nr << PFN_PTE_SHIFT));
+ }
+ #endif
 -static inline pte_t pte_next_pfn(pte_t pte)
-+static inline pte_t pte_advance_pfn(pte_t pte, unsigned long nr)
- {
- 	if (__pte_needs_invert(pte_val(pte)))
--		return __pte(pte_val(pte) - (1UL << PFN_PTE_SHIFT));
--	return __pte(pte_val(pte) + (1UL << PFN_PTE_SHIFT));
-+		return __pte(pte_val(pte) - (nr << PFN_PTE_SHIFT));
-+	return __pte(pte_val(pte) + (nr << PFN_PTE_SHIFT));
- }
--#define pte_next_pfn	pte_next_pfn
-+#define pte_advance_pfn	pte_advance_pfn
+-{
+-	return pte_advance_pfn(pte, 1);
+-}
+-#endif
  
- static inline int pte_present(pte_t a)
+ #ifndef set_ptes
+ /**
+@@ -256,7 +249,7 @@ static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
+ 		if (--nr == 0)
+ 			break;
+ 		ptep++;
+-		pte = pte_next_pfn(pte);
++		pte = pte_advance_pfn(pte, 1);
+ 	}
+ 	arch_leave_lazy_mmu_mode();
+ }
+diff --git a/mm/memory.c b/mm/memory.c
+index 38a010c4d04d..65fbe4f886c1 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -988,7 +988,7 @@ static inline int folio_pte_batch(struct folio *folio, unsigned long addr,
  {
+ 	unsigned long folio_end_pfn = folio_pfn(folio) + folio_nr_pages(folio);
+ 	const pte_t *end_ptep = start_ptep + max_nr;
+-	pte_t expected_pte = __pte_batch_clear_ignored(pte_next_pfn(pte), flags);
++	pte_t expected_pte = __pte_batch_clear_ignored(pte_advance_pfn(pte, 1), flags);
+ 	pte_t *ptep = start_ptep + 1;
+ 	bool writable;
+ 
+@@ -1017,7 +1017,7 @@ static inline int folio_pte_batch(struct folio *folio, unsigned long addr,
+ 		if (any_writable)
+ 			*any_writable |= writable;
+ 
+-		expected_pte = pte_next_pfn(expected_pte);
++		expected_pte = pte_advance_pfn(expected_pte, 1);
+ 		ptep++;
+ 	}
+ 
 -- 
 2.25.1
 
