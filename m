@@ -2,60 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83BB88483DA
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Feb 2024 06:00:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C53FF848AD7
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Feb 2024 04:27:14 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DAQaeQoE;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=My6IunYp;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=My6IunYp;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TRgT03MBhz3dDT
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Feb 2024 16:00:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TSFLR5F0Fz3ccV
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Feb 2024 14:27:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DAQaeQoE;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=My6IunYp;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=My6IunYp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.19; helo=mgamail.intel.com; envelope-from=qingshun.wang@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TRgS90FSrz30gM
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Feb 2024 16:00:07 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706936409; x=1738472409;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=kf32GCMyGnr3JaXaP9xyzsdixQItASwsYvGjp9HHTXk=;
-  b=DAQaeQoEmimGLOD7SAjr9ycf/d2tiYqfNWeWcjlidNP4EpAC8w3d+vrL
-   iMh5RZuV3vC4K4qCgv2hke1Wd6sD5EEHjTas2XfwLSAMP+wzCK2YrPBPF
-   KynXiKP0+uRicBp4HOWZk9iMNdmZ5SuojXS0RJ1Lr1wzGt580c7+qPOk1
-   tz2UGsXIBe9tmaRv74E9661WgR14zBfADIMPnInFTdEP5iNWCrKjX6kiv
-   d/r2IiKCqweGrzvck/DZeJqnWuGoUFxzVl8pgtZ1wg2njWc6Dju7DWpxA
-   CLH9qo9jmtippQBFCTPMugiCt2WrWfbsioFFXXLKA2fOs/n5oQl/zz7tV
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="193959"
-X-IronPort-AV: E=Sophos;i="6.05,238,1701158400"; 
-   d="scan'208";a="193959"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2024 21:00:02 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,238,1701158400"; 
-   d="scan'208";a="4864772"
-Received: from yanqiu-mobl.ccr.corp.intel.com (HELO localhost) ([10.254.214.166])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2024 20:59:53 -0800
-Date: Sat, 3 Feb 2024 12:59:44 +0800
-From: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v2 3/4] PCI/AER: Fetch information for FTrace
-Message-ID: <7ajtd5skxgfkkwolsbxrd7y2yzfjsikffkg4shxvpumconc2rz@i7hk4gvirrx2>
-References: <20240125062802.50819-1-qingshun.wang@linux.intel.com>
- <20240125062802.50819-4-qingshun.wang@linux.intel.com>
- <65bd2e04aed44_2d43c29463@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TSFKb3WJLz3bnx
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Feb 2024 14:26:26 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1707017181;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eysYxb9qJ6RxmbOxjXjjrpSobYnMDkjTn7GmoY0o3W4=;
+	b=My6IunYp1gj/brtBTlliNRuvd3mj17Q/2g0TDqy8M0Nb7ACC7h6eSFtBstxMwLLIHFJOJ7
+	rZTjSSxdgMMh62Fdy1Am3j74jw3S7u4aDOLEpjh6iZzc5sg3FrIWr0yNfR7kJyeaotWO4r
+	DLZCU+HjbN9uk26nCGuBHJmyp5orOaU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1707017181;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eysYxb9qJ6RxmbOxjXjjrpSobYnMDkjTn7GmoY0o3W4=;
+	b=My6IunYp1gj/brtBTlliNRuvd3mj17Q/2g0TDqy8M0Nb7ACC7h6eSFtBstxMwLLIHFJOJ7
+	rZTjSSxdgMMh62Fdy1Am3j74jw3S7u4aDOLEpjh6iZzc5sg3FrIWr0yNfR7kJyeaotWO4r
+	DLZCU+HjbN9uk26nCGuBHJmyp5orOaU=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-220-x_mqoEOfNmSyHGbxxMyZPQ-1; Sat,
+ 03 Feb 2024 22:26:17 -0500
+X-MC-Unique: x_mqoEOfNmSyHGbxxMyZPQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D9FBD1C0514F;
+	Sun,  4 Feb 2024 03:26:16 +0000 (UTC)
+Received: from localhost (unknown [10.72.116.13])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id ED10F2026F95;
+	Sun,  4 Feb 2024 03:26:15 +0000 (UTC)
+Date: Sun, 4 Feb 2024 11:26:12 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Hari Bathini <hbathini@linux.ibm.com>
+Subject: Re: [PATCH v2 00/14] Split crash out from kexec and clean up related
+ config items
+Message-ID: <Zb8D1ASrgX0qVm9z@MiWiFi-R3L-srv>
+References: <20240119145241.769622-1-bhe@redhat.com>
+ <9101bb07-70f1-476c-bec9-ec67e9899744@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <65bd2e04aed44_2d43c29463@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+In-Reply-To: <9101bb07-70f1-476c-bec9-ec67e9899744@linux.ibm.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,102 +80,233 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, Alison Schofield <alison.schofield@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, linux-pci@vger.kernel.org, erwin.tsaur@intel.com, Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>, chao.p.peng@linux.intel.com, Ira Weiny <ira.weiny@intel.com>, Davidlohr Bueso <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>, linux-acpi@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, Len Brown <lenb@kernel.org>, Robert Richter <rrichter@amd.com>, Borislav Petkov <bp@alien8.de>, Jonathan Cameron <jonathan.cameron@huawei.com>, Bjorn Helgaas <bhelgaas@google.com>, linux-edac@vger.kernel.org, Tony Luck <tony.luck@intel.com>, feiting.wanyan@intel.com, qingshun.wang@intel.com, Adam Preble <adam.c.preble@intel.com>, Mahesh J Salgaonkar <m
- ahesh@linux.ibm.com>, Li Yang <leoyang.li@nxp.com>, Lukas Wunner <lukas@wunner.de>, James Morse <james.morse@arm.com>, linuxppc-dev@lists.ozlabs.org, Shiju Jose <shiju.jose@huawei.com>
+Cc: linux-s390@vger.kernel.org, piliu@redhat.com, linux-sh@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, ebiederm@xmission.com, loongarch@lists.linux.dev, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org, viro@zeniv.linux.org.uk
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Feb 02, 2024 at 10:01:40AM -0800, Dan Williams wrote:
-> Wang, Qingshun wrote:
-> > Fetch and store the data of 3 more registers: "Link Status", "Device
-> > Control 2", and "Advanced Error Capabilities and Control". This data is
-> > needed for external observation to better understand ANFE.
-> > 
-> > Signed-off-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
-> > ---
-> >  drivers/acpi/apei/ghes.c |  8 +++++++-
-> >  drivers/cxl/core/pci.c   | 11 ++++++++++-
-> >  drivers/pci/pci.h        |  4 ++++
-> >  drivers/pci/pcie/aer.c   | 26 ++++++++++++++++++++------
-> >  include/linux/aer.h      |  6 ++++--
-> >  5 files changed, 45 insertions(+), 10 deletions(-)
-> > 
-> > diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> > index 6034039d5cff..047cc01be68c 100644
-> > --- a/drivers/acpi/apei/ghes.c
-> > +++ b/drivers/acpi/apei/ghes.c
-> > @@ -594,7 +594,9 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
-> >  	if (pcie_err->validation_bits & CPER_PCIE_VALID_DEVICE_ID &&
-> >  	    pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO) {
-> >  		struct pcie_capability_regs *pcie_caps;
-> > +		u16 device_control_2 = 0;
-> >  		u16 device_status = 0;
-> > +		u16 link_status = 0;
-> >  		unsigned int devfn;
-> >  		int aer_severity;
-> >  		u8 *aer_info;
-> > @@ -619,7 +621,9 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
-> >  
-> >  		if (pcie_err->validation_bits & CPER_PCIE_VALID_CAPABILITY) {
-> >  			pcie_caps = (struct pcie_capability_regs *)pcie_err->capability;
-> > +			device_control_2 = pcie_caps->device_control_2;
-> >  			device_status = pcie_caps->device_status;
-> > +			link_status = pcie_caps->link_status;
-> >  		}
-> >  
-> >  		aer_recover_queue(pcie_err->device_id.segment,
-> > @@ -627,7 +631,9 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
-> >  				  devfn, aer_severity,
-> >  				  (struct aer_capability_regs *)
-> >  				  aer_info,
-> > -				  device_status);
-> > +				  device_status,
-> > +				  link_status,
-> > +				  device_control_2);
-> >  	}
-> >  #endif
-> >  }
-> > diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
-> > index 9111a4415a63..3aa57fe8db42 100644
-> > --- a/drivers/cxl/core/pci.c
-> > +++ b/drivers/cxl/core/pci.c
-> > @@ -903,7 +903,9 @@ static void cxl_handle_rdport_errors(struct cxl_dev_state *cxlds)
-> >  	struct aer_capability_regs aer_regs;
-> >  	struct cxl_dport *dport;
-> >  	struct cxl_port *port;
-> > +	u16 device_control_2;
-> >  	u16 device_status;
-> > +	u16 link_status;
-> >  	int severity;
-> >  
-> >  	port = cxl_pci_find_port(pdev, &dport);
-> > @@ -918,10 +920,17 @@ static void cxl_handle_rdport_errors(struct cxl_dev_state *cxlds)
-> >  	if (!cxl_rch_get_aer_severity(&aer_regs, &severity))
-> >  		return;
-> >  
-> > +	if (pcie_capability_read_word(pdev, PCI_EXP_DEVCTL2, &device_control_2))
-> > +		return;
-> > +
-> >  	if (pcie_capability_read_word(pdev, PCI_EXP_DEVSTA, &device_status))
-> >  		return;
-> >  
-> > -	pci_print_aer(pdev, severity, &aer_regs, device_status);
-> > +	if (pcie_capability_read_word(pdev, PCI_EXP_LNKSTA, &link_status))
-> > +		return;
-> > +
-> > +	pci_print_aer(pdev, severity, &aer_regs, device_status,
-> > +		      link_status, device_control_2);
+On 02/02/24 at 10:53am, Hari Bathini wrote:
+> Hi Baoquan,
 > 
-> Rather than complicate the calling convention of pci_print_aer(), update
-> the internals of pci_print_aer() to get these extra registers, or
-> provide a new wrapper interface that satisfies the dependencies and
-> switch users over to that.  Otherwise multiple touches of the same code
-> path in one patch set is indicative of the need for a higher level
-> helper.
+> On 19/01/24 8:22 pm, Baoquan He wrote:
+> > Motivation:
+> > =============
+> > Previously, LKP reported a building error. When investigating, it can't
+> > be resolved reasonablly with the present messy kdump config items.
+> > 
+> >   https://lore.kernel.org/oe-kbuild-all/202312182200.Ka7MzifQ-lkp@intel.com/
+> > 
+> > The kdump (crash dumping) related config items could causes confusions:
+> > 
+> > Firstly,
+> > ---
+> > CRASH_CORE enables codes including
+> >   - crashkernel reservation;
+> >   - elfcorehdr updating;
+> >   - vmcoreinfo exporting;
+> >   - crash hotplug handling;
+> > 
+> > Now fadump of powerpc, kcore dynamic debugging and kdump all selects
+> > CRASH_CORE, while fadump
+> >   - fadump needs crashkernel parsing, vmcoreinfo exporting, and accessing
+> >     global variable 'elfcorehdr_addr';
+> >   - kcore only needs vmcoreinfo exporting;
+> >   - kdump needs all of the current kernel/crash_core.c.
+> > 
+> > So only enabling PROC_CORE or FA_DUMP will enable CRASH_CORE, this
+> > mislead people that we enable crash dumping, actual it's not.
+> > 
+> > Secondly,
+> > ---
+> > It's not reasonable to allow KEXEC_CORE select CRASH_CORE.
+> > 
+> > Because KEXEC_CORE enables codes which allocate control pages, copy
+> > kexec/kdump segments, and prepare for switching. These codes are
+> > shared by both kexec reboot and kdump. We could want kexec reboot,
+> > but disable kdump. In that case, CRASH_CORE should not be selected.
+> > 
+> >   --------------------
+> >   CONFIG_CRASH_CORE=y
+> >   CONFIG_KEXEC_CORE=y
+> >   CONFIG_KEXEC=y
+> >   CONFIG_KEXEC_FILE=y
+> >      ---------------------
+> > 
+> > Thirdly,
+> > ---
+> > It's not reasonable to allow CRASH_DUMP select KEXEC_CORE.
+> > 
+> > That could make KEXEC_CORE, CRASH_DUMP are enabled independently from
+> > KEXEC or KEXEC_FILE. However, w/o KEXEC or KEXEC_FILE, the KEXEC_CORE
+> > code built in doesn't make any sense because no kernel loading or
+> > switching will happen to utilize the KEXEC_CORE code.
+> >   ---------------------
+> >   CONFIG_CRASH_CORE=y
+> >   CONFIG_KEXEC_CORE=y
+> >   CONFIG_CRASH_DUMP=y
+> >   ---------------------
+> > 
+> > In this case, what is worse, on arch sh and arm, KEXEC relies on MMU,
+> > while CRASH_DUMP can still be enabled when !MMU, then compiling error is
+> > seen as the lkp test robot reported in above link.
+> > 
+> >   ------arch/sh/Kconfig------
+> >   config ARCH_SUPPORTS_KEXEC
+> >           def_bool MMU
+> > 
+> >   config ARCH_SUPPORTS_CRASH_DUMP
+> >           def_bool BROKEN_ON_SMP
+> >   ---------------------------
+> > 
+> > Changes:
+> > ===========
+> > 1, split out crash_reserve.c from crash_core.c;
+> > 2, split out vmcore_infoc. from crash_core.c;
+> > 3, move crash related codes in kexec_core.c into crash_core.c;
+> > 4, remove dependency of FA_DUMP on CRASH_DUMP;
+> > 5, clean up kdump related config items;
+> > 6, wrap up crash codes in crash related ifdefs on all 9 arch-es
+> >     which support crash dumping;
+> > 
+> > Achievement:
+> > ===========
+> > With above changes, I can rearrange the config item logic as below (the right
+> > item depends on or is selected by the left item):
+> > 
+> >      PROC_KCORE -----------> VMCORE_INFO
+> > 
+> >                 |----------> VMCORE_INFO
+> >      FA_DUMP----|
+> >                 |----------> CRASH_RESERVE
+> 
+> FA_DUMP also needs PROC_VMCORE (CRASH_DUMP by dependency, I guess).
+> So, the FA_DUMP related changes here will need a relook..
 
-Thanks for the advice, it does make sense. Will reconsider the
-implementation.
+Thanks for checking this.
 
---
-Best regards,
-Wang, Qingshun
+So FA_DUMP needs vmcoreinfo exporting, crashkernel reservation,
+/proc/vmcore. Then it's easy to adjust the kernel config item of FA_DUMP
+to make it select CRASH_DUMP. Except of this, do you have concern about
+the current code and Kconfig refactorying?
+
+
+                           ---->VMCORE_INFO
+                         /|
+FA_DUMP--> CRASH_DUMP-->/-|---->CRASH_RESERVE
+                        \ |
+                          \---->PROC_VMCORE
+
+
+> 
+> 
+> >                                                      ---->VMCORE_INFO
+> >                                                     /
+> >                                                     |---->CRASH_RESERVE
+> >      KEXEC      --|                                /|
+> >                   |--> KEXEC_CORE--> CRASH_DUMP-->/-|---->PROC_VMCORE
+> >      KEXEC_FILE --|                               \ |
+> >                                                     \---->CRASH_HOTPLUG
+> > 
+> > 
+> >      KEXEC      --|
+> >                   |--> KEXEC_CORE (for kexec reboot only)
+> >      KEXEC_FILE --|
+> > 
+> > Test
+> > ========
+> > On all 8 architectures, including x86_64, arm64, s390x, sh, arm, mips,
+> > riscv, loongarch, I did below three cases of config item setting and
+> > building all passed. Let me take configs on x86_64 as exampmle here:
+> > 
+> > (1) Both CONFIG_KEXEC and KEXEC_FILE is unset, then all kexec/kdump
+> > items are unset automatically:
+> > # Kexec and crash features
+> > # CONFIG_KEXEC is not set
+> > # CONFIG_KEXEC_FILE is not set
+> > # end of Kexec and crash features
+> > 
+> > (2) set CONFIG_KEXEC_FILE and 'make olddefconfig':
+> > ---------------
+> > # Kexec and crash features
+> > CONFIG_CRASH_RESERVE=y
+> > CONFIG_VMCORE_INFO=y
+> > CONFIG_KEXEC_CORE=y
+> > CONFIG_KEXEC_FILE=y
+> > CONFIG_CRASH_DUMP=y
+> > CONFIG_CRASH_HOTPLUG=y
+> > CONFIG_CRASH_MAX_MEMORY_RANGES=8192
+> > # end of Kexec and crash features
+> > ---------------
+> > 
+> > (3) unset CONFIG_CRASH_DUMP in case 2 and execute 'make olddefconfig':
+> > ------------------------
+> > # Kexec and crash features
+> > CONFIG_KEXEC_CORE=y
+> > CONFIG_KEXEC_FILE=y
+> > # end of Kexec and crash features
+> > ------------------------
+> > 
+> > Note:
+> > For ppc, it needs investigation to make clear how to split out crash
+> > code in arch folder.
+> 
+> On powerpc, both kdump and fadump need PROC_VMCORE & CRASH_DUMP.
+> Hope that clears things. So, patch 3/14 breaks things for FA_DUMP..
+
+I see it now. We can easily fix that with below patch. What do you
+think?
+
+By the way, do you have chance to help test these on powerpc system?
+I can find ppc64le machine, while I don't know how to operate to test
+fadump.
+
+From fa8e6c3930d4f22f2b3768399c5bf0523c17adde Mon Sep 17 00:00:00 2001
+From: Baoquan He <bhe@redhat.com>
+Date: Sun, 4 Feb 2024 11:06:54 +0800
+Subject: [PATCH] power/fadump: make FA_DUMP select CRASH_DUMP
+Content-type: text/plain
+
+FA_DUMP which is similar with kdump needs vmcoreinfo exporting,
+crashkernel reservation and /proc/vmcore file . After refactoring crash
+related codes and Kconfig items, make FA_DUMP select CRASH_DUMP. Now
+the dependency layout is like below:
+
+                           ---->VMCORE_INFO
+                         /|
+FA_DUMP--> CRASH_DUMP-->/-|---->CRASH_RESERVE
+                        \ |
+                          \---->PROC_VMCORE
+
+Signed-off-by: Baoquan He <bhe@redhat.com>
+---
+ arch/powerpc/Kconfig | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index f182fb354bef..d5d4c890f010 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -695,8 +695,7 @@ config ARCH_SELECTS_CRASH_DUMP
+ config FA_DUMP
+ 	bool "Firmware-assisted dump"
+ 	depends on PPC64 && (PPC_RTAS || PPC_POWERNV)
+-	select VMCORE_INFO
+-	select CRASH_RESERVE
++	select CRASH_DUMP
+ 	help
+ 	  A robust mechanism to get reliable kernel crash dump with
+ 	  assistance from firmware. This approach does not use kexec,
+-- 
+2.41.0
+
+
+> 
+> > Hope Hari and Pingfan can help have a look, see if
+> > it's doable. Now, I make it either have both kexec and crash enabled, or
+> > disable both of them altogether.
+> 
+> 
+> Sure. I will take a closer look...
+
+Thanks a lot. Please feel free to post patches to make that, or I can do
+it with your support or suggestion.
+
