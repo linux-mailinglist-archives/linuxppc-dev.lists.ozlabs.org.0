@@ -2,79 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE2D849591
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Feb 2024 09:40:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6EBC849594
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Feb 2024 09:44:08 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=QwOUudl5;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Qq37bL5w;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TT0F82YNmz3c40
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Feb 2024 19:40:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TT0KZ6Hxrz3cNP
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Feb 2024 19:44:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=QwOUudl5;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Qq37bL5w;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sigma-star.at (client-ip=2a00:1450:4864:20::62e; helo=mail-ej1-x62e.google.com; envelope-from=david@sigma-star.at; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=aneesh.kumar@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TT0DK6CXFz30GC
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Feb 2024 19:39:27 +1100 (AEDT)
-Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-a36126e7459so538478866b.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Feb 2024 00:39:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sigma-star.at; s=google; t=1707122360; x=1707727160; darn=lists.ozlabs.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9fYC3H+9fhYO7ZOc/qX6rq1afQIQ11uUH5tLK3IWpXc=;
-        b=QwOUudl5ASrntmF24ja6Alaw70RFTss4eJunljpAxe9Xod7EMaU5X8igGMPR4+a1Ho
-         G+S2Rbl7BiMZdnWAeEikyVAKTBQGdugGIsEp6OLAlTFEEMIc4IyI23FiMScXbOpoAKzz
-         ceg98eaAPqLCzVaooPFbkiT8vcPXnJFg+Cj6Oe4cD0KVvtxptMsSQfqaZQ3cBQH1uFuN
-         VUBu9B0IFX1zRWU8kzUI9Ea+XBaTqHnX1GdZI4kdFl6mICss+eLlYEgnlvmCOpZoBtnW
-         FS9wtcU5rl3A4FRkCqBlPv+aPONROTrZQ6mlBObi2O7Uu/uVWOdqA+IzoYlQOOuijj4l
-         qU5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707122360; x=1707727160;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9fYC3H+9fhYO7ZOc/qX6rq1afQIQ11uUH5tLK3IWpXc=;
-        b=uN+VZpdRnEoLTaCCVKEd4LkBQh/rFuYyq9Bode61/1j2gaCwjS5laCXsxUETkxlt7w
-         DJMQswCqZrrt975aWmmBy6WJHB5KuyZresrUgCMRx2wlEj9pifY/BnQA7DAItvRkayga
-         6FKCo+F5YbdQWqVt1+4lFDHzKpdYLi9bX1oFMl3wyGl0Gcu3GxUUebPGo7iNUb/PXxJX
-         5YuItjZgA7snCTw+TadJVFJqdxbTI1VwiF3M2ipYW7qsjsgk+68HdNNZI7qo1mNuFUdl
-         /pWiLf7wS25Z2XQ6Ts3maW0DqRiX08ZzkaUHt3A/xL0bGZj5DaKz2Ul2+ctYx9MBn404
-         9Xrg==
-X-Gm-Message-State: AOJu0YwuqEmQa+iL2R4M4xTe6PpIr7ZHvUSYElENFAy/TmC4TeFbeyEK
-	fddaJi0HUaMrpRNK1aJ/9sES+VNWHKSKXSi/fmhoatg2gjYEyBvgESuosEnY8l0=
-X-Google-Smtp-Source: AGHT+IHLVlIqTHZQT4uS2cWMqHQ2/IKc/41epP/Cs1vBSz9FD6909OEjZv22ODsI8EUgs+fyzA4YHw==
-X-Received: by 2002:a17:906:16c8:b0:a37:bdc2:e4e6 with SMTP id t8-20020a17090616c800b00a37bdc2e4e6mr1530645ejd.10.1707122360096;
-        Mon, 05 Feb 2024 00:39:20 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCUTINvkr7TdZxNV3zYWkm9NGPQZ3GBX+JIgmxygvgv41SJzvPqoxxCTp3Tc5PUMHqQw6PbrIpUJx88b3E4cjK5SpUhXe9GIOdkr+YAeq65K7GeGBl1IcKBE3vDLsUsnuV2IbaG0QNY2n7bIZmG6EvZe1SBcWh+cXAGLPTi+gsHzLIB4Ek4PUYTx4gU+ytkjrCv9icm50Zeb3mURGFiiEDIG7cEFIv8APYkltJkm2gyR7ujeOD214DLsYXioA4GA+mfSAn1zE6cUXN3gEY+rLpkmUpLjD2iJPbzDVzGNISNprHIg7SmguU4h2FdVVnwSTySpbdJdWbY3O73k0isTb+fW+2BhqgbYzLQP4Th8toVBowOkBsWLuiIMTWzYAOhJmk6ekd906b1/N5qCiiP0jMcDqGHNHD66is0Ey/uYHly9YuPt9eh1AjwKjjwF5b/qpsQ704D/FfKIJGUGgJ1LvvVEDZ4wkLobm4MWzCyKR42KQu0JY9qwDmsVCk+CmP2XiCJQ8kF2e1uHxU2m6jE1Jk/PCyOQgU3eOv7zuzVmmRlrTGC97+WwZ9lMD8jIvBNhTVIoLbb6F+28AgmyFJsGRwnuvmQaQIBSDluu/HVeamiL/BJF4j44dxmUseTJh1DPAFnwb8JEHWSiMWx8TUueFEYA879cQmBtXxDqUYJWkmFVkkCePJ36slN9TE80+JJXJ1Z0bJJAZkbT5axJshtLmW1nYM/cCaLufm5IJ62p4nLFPkfgMBdpMO6VDWIOUm45cYxAY+QEZfwBlvJpE8Lld5T1ciB/mRzSVLQhcT3wgMswJ4SIQG0CdlYdDMod8umwfxAvQ5eVNuJZUIxogGlCwuZkzTMDTNJW11/MvqvmrxyUY2liKdTG8Q37KBJklaQPX7hBwW80miWJmXOgOFH/ZR0c8gSG0jlvmwQvhcM3zN3VOh/65AVlQsT6eAoJaDQm1u4hW4
- /DnIJlK+OUtw19HfTP17A+oLh+MUcCC6cXuft5pI0Syr4CJfj5Mt2O/zB3IJax/LQQuYmm
-Received: from smtpclient.apple ([82.150.214.1])
-        by smtp.gmail.com with ESMTPSA id vu11-20020a170907a64b00b00a37a38737d5sm1316761ejc.89.2024.02.05.00.39.18
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 05 Feb 2024 00:39:19 -0800 (PST)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.400.31\))
-Subject: Re: [PATCH v5 0/6] DCP as trusted keys backend
-From: David Gstir <david@sigma-star.at>
-In-Reply-To: <20231215110639.45522-1-david@sigma-star.at>
-Date: Mon, 5 Feb 2024 09:39:07 +0100
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <7AED262F-9387-446D-B11A-C549C02542F9@sigma-star.at>
-References: <20231215110639.45522-1-david@sigma-star.at>
-To: Mimi Zohar <zohar@linux.ibm.com>,
- James Bottomley <jejb@linux.ibm.com>,
- Jarkko Sakkinen <jarkko@kernel.org>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>
-X-Mailer: Apple Mail (2.3774.400.31)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TT0Jq2PPjz2yPq
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Feb 2024 19:43:23 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 17EF2CE0C48;
+	Mon,  5 Feb 2024 08:43:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F215C433F1;
+	Mon,  5 Feb 2024 08:43:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707122599;
+	bh=lKCtuWSFDhGzyhqOSwB25dC9ndfDxA6TQWnq5KqQlCM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Qq37bL5wZiF3KVeXjrCElOAecBblBW9HStIKaQ7iUZA52QUfySaZlGGTM3xSaL0IT
+	 LvquSx2Orj0fB+Bdza0qJ6ZJ+luqOQ1w+kHbvQ9su4wrC5/vA9A8KlvsduzhNWwhsQ
+	 lMtngKcL8E/5h+sfl/le2wRv5NRt2hxGj2BmLwS5zFxyj1lohbzETwE1fYjjD1iAEh
+	 kTy0bQbNE/cr6Kp2aq9KWsrN/+FClwNL/+KmFdugWi28egTUUQFb06DmTV2EHPgWoU
+	 8N5shYJKU5zZ85sLva7evqe8+zq9bg8p03lYaWSv3w6Uq6ChVoTWay+uwuRMuft+m2
+	 5WVVq9bhAuKAA==
+X-Mailer: emacs 29.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, mpe@ellerman.id.au
+Subject: Re: [PATCH v2 1/2] powerpc: Add Power11 architected and raw mode
+In-Reply-To: <20240205075808.174477-1-maddy@linux.ibm.com>
+References: <20240205075808.174477-1-maddy@linux.ibm.com>
+Date: Mon, 05 Feb 2024 14:13:10 +0530
+Message-ID: <8734u7b8td.fsf@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,114 +58,285 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, David Howells <dhowells@redhat.com>, "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>, Fabio Estevam <festevam@gmail.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Paul Moore <paul@paul-moore.com>, Jonathan Corbet <corbet@lwn.net>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, James Morris <jmorris@namei.org>, NXP Linux Team <linux-imx@nxp.com>, "Serge E. Hallyn" <serge@hallyn.com>, "Paul E. McKenney" <paulmck@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, sigma star Kernel Team <upstream+dcp@sigma-star.at>, "Steven Rostedt \(Google\)" <rostedt@goodmis.org>, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Li Yang <leoyang.li@nxp.com>, "linux-security-module@vger.kernel.org" <linux-security-module@vger.kernel.org>, "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, "k
- ernel@pengutronix.de" <kernel@pengutronix.de>, Tejun Heo <tj@kernel.org>, "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>, Shawn Guo <shawnguo@kernel.org>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+Madhavan Srinivasan <maddy@linux.ibm.com> writes:
 
-> On 15.12.2023, at 12:06, David Gstir <david@sigma-star.at> wrote:
->=20
-> This is a revival of the previous patch set submitted by Richard =
-Weinberger:
-> =
-https://lore.kernel.org/linux-integrity/20210614201620.30451-1-richard@nod=
-.at/
->=20
-> v4 is here:
-> =
-https://lore.kernel.org/keyrings/20231024162024.51260-1-david@sigma-star.a=
-t/
->=20
-> v4 -> v5:
-> - Make Kconfig for trust source check scalable as suggested by Jarkko =
-Sakkinen
-> - Add Acked-By from Herbert Xu to patch #1 - thanks!
-> v3 -> v4:
-> - Split changes on MAINTAINERS and documentation into dedicated =
-patches
-> - Use more concise wording in commit messages as suggested by Jarkko =
-Sakkinen
-> v2 -> v3:
-> - Addressed review comments from Jarkko Sakkinen
-> v1 -> v2:
-> - Revive and rebase to latest version
-> - Include review comments from Ahmad Fatoum
->=20
-> The Data CoProcessor (DCP) is an IP core built into many NXP SoCs such
-> as i.mx6ull.
->=20
-> Similar to the CAAM engine used in more powerful SoCs, DCP can AES-
-> encrypt/decrypt user data using a unique, never-disclosed,
-> device-specific key. Unlike CAAM though, it cannot directly wrap and
-> unwrap blobs in hardware. As DCP offers only the bare minimum feature
-> set and a blob mechanism needs aid from software. A blob in this case
-> is a piece of sensitive data (e.g. a key) that is encrypted and
-> authenticated using the device-specific key so that unwrapping can =
-only
-> be done on the hardware where the blob was wrapped.
->=20
-> This patch series adds a DCP based, trusted-key backend and is similar
-> in spirit to the one by Ahmad Fatoum [0] that does the same for CAAM.
-> It is of interest for similar use cases as the CAAM patch set, but for
-> lower end devices, where CAAM is not available.
->=20
-> Because constructing and parsing the blob has to happen in software,
-> we needed to decide on a blob format and chose the following:
->=20
-> struct dcp_blob_fmt {
-> __u8 fmt_version;
-> __u8 blob_key[AES_KEYSIZE_128];
-> __u8 nonce[AES_KEYSIZE_128];
-> __le32 payload_len;
-> __u8 payload[];
-> } __packed;
->=20
-> The `fmt_version` is currently 1.
->=20
-> The encrypted key is stored in the payload area. It is AES-128-GCM
-> encrypted using `blob_key` and `nonce`, GCM auth tag is attached at
-> the end of the payload (`payload_len` does not include the size of
-> the auth tag).
->=20
-> The `blob_key` itself is encrypted in AES-128-ECB mode by DCP using
-> the OTP or UNIQUE device key. A new `blob_key` and `nonce` are =
-generated
-> randomly, when sealing/exporting the DCP blob.
->=20
-> This patchset was tested with dm-crypt on an i.MX6ULL board.
->=20
-> [0] =
-https://lore.kernel.org/keyrings/20220513145705.2080323-1-a.fatoum@pengutr=
-onix.de/
->=20
-> David Gstir (6):
->  crypto: mxs-dcp: Add support for hardware-bound keys
->  KEYS: trusted: improve scalability of trust source config
->  KEYS: trusted: Introduce NXP DCP-backed trusted keys
->  MAINTAINERS: add entry for DCP-based trusted keys
->  docs: document DCP-backed trusted keys kernel params
->  docs: trusted-encrypted: add DCP as new trust source
->=20
-> .../admin-guide/kernel-parameters.txt         |  13 +
-> .../security/keys/trusted-encrypted.rst       |  85 +++++
-> MAINTAINERS                                   |   9 +
-> drivers/crypto/mxs-dcp.c                      | 104 +++++-
-> include/keys/trusted_dcp.h                    |  11 +
-> include/soc/fsl/dcp.h                         |  17 +
-> security/keys/trusted-keys/Kconfig            |  18 +-
-> security/keys/trusted-keys/Makefile           |   2 +
-> security/keys/trusted-keys/trusted_core.c     |   6 +-
-> security/keys/trusted-keys/trusted_dcp.c      | 311 ++++++++++++++++++
-> 10 files changed, 562 insertions(+), 14 deletions(-)
-> create mode 100644 include/keys/trusted_dcp.h
-> create mode 100644 include/soc/fsl/dcp.h
-> create mode 100644 security/keys/trusted-keys/trusted_dcp.c
+> reg.h is updated with Power11 pvr. pvr_mask value of 0x0F000007
+> means we are arch v3.1 compliant.
+>
 
-Jarkko, Mimi, David do you need anything from my side for these patches =
-to get them merged?
+If it is called arch v3.1, it will conflict with. 
 
-Thanks,
-- David
 
+#define PVR_ARCH_31	0x0f000006
+
+>This is used by phyp and
+> kvm when booting as a pseries guest to detect and enable
+> the appropriate hwcap, facility bits and PMU related fields.
+> Copied most of fields from Power10 table entry and added relevant
+> Power11 setup/restore and device tree routines.
+>
+> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+> ---
+> Changelog v1:
+> - no change in this patch.
+>
+>  arch/powerpc/include/asm/cpu_setup.h      |  2 ++
+>  arch/powerpc/include/asm/cputable.h       |  3 ++
+>  arch/powerpc/include/asm/mce.h            |  1 +
+>  arch/powerpc/include/asm/mmu.h            |  1 +
+>  arch/powerpc/include/asm/reg.h            |  1 +
+>  arch/powerpc/kernel/cpu_setup_power.c     | 10 +++++++
+>  arch/powerpc/kernel/cpu_specs_book3s_64.h | 34 +++++++++++++++++++++++
+>  arch/powerpc/kernel/dt_cpu_ftrs.c         | 15 ++++++++++
+>  arch/powerpc/kernel/mce_power.c           |  5 ++++
+>  arch/powerpc/kernel/prom_init.c           | 10 ++++++-
+>  10 files changed, 81 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/include/asm/cpu_setup.h b/arch/powerpc/include/asm/cpu_setup.h
+> index 30e2fe389502..ce800650bb8b 100644
+> --- a/arch/powerpc/include/asm/cpu_setup.h
+> +++ b/arch/powerpc/include/asm/cpu_setup.h
+> @@ -9,10 +9,12 @@ void __setup_cpu_power7(unsigned long offset, struct cpu_spec *spec);
+>  void __setup_cpu_power8(unsigned long offset, struct cpu_spec *spec);
+>  void __setup_cpu_power9(unsigned long offset, struct cpu_spec *spec);
+>  void __setup_cpu_power10(unsigned long offset, struct cpu_spec *spec);
+> +void __setup_cpu_power11(unsigned long offset, struct cpu_spec *spec);
+>  void __restore_cpu_power7(void);
+>  void __restore_cpu_power8(void);
+>  void __restore_cpu_power9(void);
+>  void __restore_cpu_power10(void);
+> +void __restore_cpu_power11(void);
+>  
+>  void __setup_cpu_e500v1(unsigned long offset, struct cpu_spec *spec);
+>  void __setup_cpu_e500v2(unsigned long offset, struct cpu_spec *spec);
+> diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
+> index 8765d5158324..3bd6e6e0224c 100644
+> --- a/arch/powerpc/include/asm/cputable.h
+> +++ b/arch/powerpc/include/asm/cputable.h
+> @@ -454,6 +454,9 @@ static inline void cpu_feature_keys_init(void) { }
+>  	    CPU_FTR_ARCH_300 | CPU_FTR_ARCH_31 | \
+>  	    CPU_FTR_DAWR | CPU_FTR_DAWR1 | \
+>  	    CPU_FTR_DEXCR_NPHIE)
+> +
+> +#define CPU_FTRS_POWER11	CPU_FTRS_POWER10
+>
+
+One of the problem with that is we have code that does the below in kvm.
+
+	if (cpu_has_feature(CPU_FTR_ARCH_31))
+		host_pcr_bit = PCR_ARCH_31;
+
+
+How should we handle that?
+
+> +
+>  #define CPU_FTRS_CELL	(CPU_FTR_LWSYNC | \
+>  	    CPU_FTR_PPCAS_ARCH_V2 | CPU_FTR_CTRL | \
+>  	    CPU_FTR_ALTIVEC_COMP | CPU_FTR_MMCRA | CPU_FTR_SMT | \
+> diff --git a/arch/powerpc/include/asm/mce.h b/arch/powerpc/include/asm/mce.h
+> index c9f0936bd3c9..241eee743fc5 100644
+> --- a/arch/powerpc/include/asm/mce.h
+> +++ b/arch/powerpc/include/asm/mce.h
+> @@ -257,6 +257,7 @@ long __machine_check_early_realmode_p7(struct pt_regs *regs);
+>  long __machine_check_early_realmode_p8(struct pt_regs *regs);
+>  long __machine_check_early_realmode_p9(struct pt_regs *regs);
+>  long __machine_check_early_realmode_p10(struct pt_regs *regs);
+> +long __machine_check_early_realmode_p11(struct pt_regs *regs);
+>  #endif /* CONFIG_PPC_BOOK3S_64 */
+>  
+>  #ifdef CONFIG_PPC_BOOK3S_64
+> diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
+> index d8b7e246a32f..61ebe5eff2c9 100644
+> --- a/arch/powerpc/include/asm/mmu.h
+> +++ b/arch/powerpc/include/asm/mmu.h
+> @@ -133,6 +133,7 @@
+>  #define MMU_FTRS_POWER8		MMU_FTRS_POWER6
+>  #define MMU_FTRS_POWER9		MMU_FTRS_POWER6
+>  #define MMU_FTRS_POWER10	MMU_FTRS_POWER6
+> +#define MMU_FTRS_POWER11	MMU_FTRS_POWER6
+>  #define MMU_FTRS_CELL		MMU_FTRS_DEFAULT_HPTE_ARCH_V2 | \
+>  				MMU_FTR_CI_LARGE_PAGE
+>  #define MMU_FTRS_PA6T		MMU_FTRS_DEFAULT_HPTE_ARCH_V2 | \
+> diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+> index 7fd09f25452d..7a7aa24bf57a 100644
+> --- a/arch/powerpc/include/asm/reg.h
+> +++ b/arch/powerpc/include/asm/reg.h
+> @@ -1364,6 +1364,7 @@
+>  #define PVR_HX_C2000	0x0066
+>  #define PVR_POWER9	0x004E
+>  #define PVR_POWER10	0x0080
+> +#define PVR_POWER11	0x0082
+>  #define PVR_BE		0x0070
+>  #define PVR_PA6T	0x0090
+>  
+> diff --git a/arch/powerpc/kernel/cpu_setup_power.c b/arch/powerpc/kernel/cpu_setup_power.c
+> index 98bd4e6c1770..8c24fc67d90f 100644
+> --- a/arch/powerpc/kernel/cpu_setup_power.c
+> +++ b/arch/powerpc/kernel/cpu_setup_power.c
+> @@ -286,3 +286,13 @@ void __restore_cpu_power10(void)
+>  	init_HFSCR();
+>  	init_PMU_HV();
+>  }
+> +
+> +void __setup_cpu_power11(unsigned long offset, struct cpu_spec *t)
+> +{
+> +	return __setup_cpu_power10(offset, t);
+> +}
+> +
+> +void __restore_cpu_power11(void)
+> +{
+> +	return __restore_cpu_power10();
+> +}
+>
+
+Do we need to duplicate these functions if they don't add anything
+extra? 
+
+> diff --git a/arch/powerpc/kernel/cpu_specs_book3s_64.h b/arch/powerpc/kernel/cpu_specs_book3s_64.h
+> index 3ff9757df4c0..886fdfc7d05f 100644
+> --- a/arch/powerpc/kernel/cpu_specs_book3s_64.h
+> +++ b/arch/powerpc/kernel/cpu_specs_book3s_64.h
+> @@ -60,6 +60,9 @@
+>  				 PPC_FEATURE2_ISEL | PPC_FEATURE2_TAR | \
+>  				 PPC_FEATURE2_VEC_CRYPTO)
+>  
+> +#define COMMON_USER_POWER11	COMMON_USER_POWER10
+> +#define COMMON_USER2_POWER11	COMMON_USER2_POWER10
+> +
+>  static struct cpu_spec cpu_specs[] __initdata = {
+>  	{	/* PPC970 */
+>  		.pvr_mask		= 0xffff0000,
+> @@ -281,6 +284,20 @@ static struct cpu_spec cpu_specs[] __initdata = {
+>  		.cpu_restore		= __restore_cpu_power10,
+>  		.platform		= "power10",
+>  	},
+> +	{	/* 3.1-compliant processor, i.e. Power11 "architected" mode */
+> +		.pvr_mask		= 0xffffffff,
+> +		.pvr_value		= 0x0f000007,
+> +		.cpu_name		= "Power11 (architected)",
+> +		.cpu_features		= CPU_FTRS_POWER11,
+> +		.cpu_user_features	= COMMON_USER_POWER11,
+> +		.cpu_user_features2	= COMMON_USER2_POWER11,
+> +		.mmu_features		= MMU_FTRS_POWER11,
+> +		.icache_bsize		= 128,
+> +		.dcache_bsize		= 128,
+> +		.cpu_setup		= __setup_cpu_power11,
+> +		.cpu_restore		= __restore_cpu_power11,
+> +		.platform		= "power11",
+> +	},
+>  	{	/* Power7 */
+>  		.pvr_mask		= 0xffff0000,
+>  		.pvr_value		= 0x003f0000,
+> @@ -451,6 +468,23 @@ static struct cpu_spec cpu_specs[] __initdata = {
+>  		.machine_check_early	= __machine_check_early_realmode_p10,
+>  		.platform		= "power10",
+>  	},
+> +	{	/* Power11 */
+> +		.pvr_mask		= 0xffff0000,
+> +		.pvr_value		= 0x00820000,
+> +		.cpu_name		= "Power11 (raw)",
+> +		.cpu_features		= CPU_FTRS_POWER11,
+> +		.cpu_user_features	= COMMON_USER_POWER11,
+> +		.cpu_user_features2	= COMMON_USER2_POWER11,
+> +		.mmu_features		= MMU_FTRS_POWER11,
+> +		.icache_bsize		= 128,
+> +		.dcache_bsize		= 128,
+> +		.num_pmcs		= 6,
+> +		.pmc_type		= PPC_PMC_IBM,
+> +		.cpu_setup		= __setup_cpu_power11,
+> +		.cpu_restore		= __restore_cpu_power11,
+> +		.machine_check_early	= __machine_check_early_realmode_p11,
+> +		.platform		= "power11",
+> +	},
+>  	{	/* Cell Broadband Engine */
+>  		.pvr_mask		= 0xffff0000,
+>  		.pvr_value		= 0x00700000,
+> diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
+> index c3fb9fdf5bd7..2b64dafa268f 100644
+> --- a/arch/powerpc/kernel/dt_cpu_ftrs.c
+> +++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
+> @@ -450,6 +450,11 @@ static int __init feat_enable_pmu_power10(struct dt_cpu_feature *f)
+>  	return 1;
+>  }
+>  
+> +static int __init feat_enable_pmu_power11(struct dt_cpu_feature *f)
+> +{
+> +	return feat_enable_pmu_power10(f);
+> +}
+> +
+>  static int __init feat_enable_mce_power10(struct dt_cpu_feature *f)
+>  {
+>  	cur_cpu_spec->platform = "power10";
+> @@ -458,6 +463,14 @@ static int __init feat_enable_mce_power10(struct dt_cpu_feature *f)
+>  	return 1;
+>  }
+>  
+> +static int __init feat_enable_mce_power11(struct dt_cpu_feature *f)
+> +{
+> +	cur_cpu_spec->platform = "power11";
+> +	cur_cpu_spec->machine_check_early = __machine_check_early_realmode_p11;
+> +
+> +	return 1;
+> +}
+> +
+>  static int __init feat_enable_tm(struct dt_cpu_feature *f)
+>  {
+>  #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+> @@ -648,8 +661,10 @@ static struct dt_cpu_feature_match __initdata
+>  	{"pc-relative-addressing", feat_enable, 0},
+>  	{"machine-check-power9", feat_enable_mce_power9, 0},
+>  	{"machine-check-power10", feat_enable_mce_power10, 0},
+> +	{"machine-check-power11", feat_enable_mce_power11, 0},
+>  	{"performance-monitor-power9", feat_enable_pmu_power9, 0},
+>  	{"performance-monitor-power10", feat_enable_pmu_power10, 0},
+> +	{"performance-monitor-power11", feat_enable_pmu_power11, 0},
+>  	{"event-based-branch-v3", feat_enable, 0},
+>  	{"random-number-generator", feat_enable, 0},
+>  	{"system-call-vectored", feat_disable, 0},
+> diff --git a/arch/powerpc/kernel/mce_power.c b/arch/powerpc/kernel/mce_power.c
+> index 71e8f2a92e36..11f69bb402e7 100644
+> --- a/arch/powerpc/kernel/mce_power.c
+> +++ b/arch/powerpc/kernel/mce_power.c
+> @@ -789,3 +789,8 @@ long __machine_check_early_realmode_p10(struct pt_regs *regs)
+>  	return mce_handle_error(regs, srr1,
+>  			mce_p10_derror_table, mce_p10_ierror_table);
+>  }
+> +
+> +long __machine_check_early_realmode_p11(struct pt_regs *regs)
+> +{
+> +	return __machine_check_early_realmode_p10(regs);
+> +}
+> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+> index e67effdba85c..895a3441223b 100644
+> --- a/arch/powerpc/kernel/prom_init.c
+> +++ b/arch/powerpc/kernel/prom_init.c
+> @@ -947,7 +947,7 @@ struct option_vector7 {
+>  } __packed;
+>  
+>  struct ibm_arch_vec {
+> -	struct { __be32 mask, val; } pvrs[14];
+> +	struct { __be32 mask, val; } pvrs[16];
+>  
+>  	u8 num_vectors;
+>  
+> @@ -1007,6 +1007,14 @@ static const struct ibm_arch_vec ibm_architecture_vec_template __initconst = {
+>  			.mask = cpu_to_be32(0xffff0000), /* POWER10 */
+>  			.val  = cpu_to_be32(0x00800000),
+>  		},
+> +		{
+> +			.mask = cpu_to_be32(0xffff0000), /* POWER11 */
+> +			.val  = cpu_to_be32(0x00820000),
+> +		},
+> +		{
+> +			.mask = cpu_to_be32(0xffffffff), /* all 3.1-compliant */
+> +			.val  = cpu_to_be32(0x0f000007),
+> +		},
+>  		{
+>  			.mask = cpu_to_be32(0xffffffff), /* all 3.1-compliant */
+>  			.val  = cpu_to_be32(0x0f000006),
+> -- 
+> 2.43.0
