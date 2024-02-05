@@ -1,54 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E61B2849C14
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Feb 2024 14:40:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F034E849CEB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Feb 2024 15:23:13 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Kmh8xrCS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=WdMAS6Pl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TT6vL5zQXz3cNl
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Feb 2024 00:40:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TT7rv66xVz3cTt
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Feb 2024 01:23:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Kmh8xrCS;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=WdMAS6Pl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=aneesh.kumar@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::228; helo=relay8-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::228])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TT6td1nNGz2yk6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Feb 2024 00:39:37 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id D8EAB6110F;
-	Mon,  5 Feb 2024 13:39:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8939C433C7;
-	Mon,  5 Feb 2024 13:39:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707140372;
-	bh=jYL0WlN0JFknygqVRceY0Io+Uft9euKFIpXTFZDsbYc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Kmh8xrCSjmzqIQgS3kcpFKRPfXqeeZAJDkQo+FiQic4cvVlxS0lVtYQT5N/YhCazx
-	 IVGbQBFjHKmhinN9e2GrOC1pQF9hBaCM5uXf0+3tADwoBh/jnEYelnxxuYzsISiqLT
-	 8MEvoEQGweVPLT7vbiqjYj5Eyzn+iptLdm9YiaCwKKifCR9DJWt7YxXNi1LOBz6ASv
-	 IoIXYf4Rv4W7M6BdMRCRq1d6lzZ9zEIu00sQ/PTqhiMV/baGF0w88muOXy/E7ATHn8
-	 IUCtCNFz7slyor5zIgyUNpQP7cA77f7S0DHBllhAc5g/TercIYVn/mo3vB0hChFGY5
-	 8nGDgwxl7qF6Q==
-X-Mailer: emacs 29.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-	kvm@vger.kernel.org, kvm-ppc@vger.kernel.org
-Subject: Re: [PATCH v2] KVM: PPC: Book3S HV: Fix L2 guest reboot failure due
- to empty 'arch_compat'
-In-Reply-To: <20240205132607.2776637-1-amachhiw@linux.ibm.com>
-References: <20240205132607.2776637-1-amachhiw@linux.ibm.com>
-Date: Mon, 05 Feb 2024 19:09:24 +0530
-Message-ID: <87sf2758tv.fsf@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TT7r628Hhz2yRS
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Feb 2024 01:22:26 +1100 (AEDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7B0CD1BF207;
+	Mon,  5 Feb 2024 14:22:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1707142935;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=X2lRUb3hksFq0yfXVR20ELEXLC5m7R4eEvD1161wPtg=;
+	b=WdMAS6PlW2bnMePzgM6xEUHFKbQpsK4l7I/RklZs+yFf7G3x3LNLqzH6/eXQ4wk/qSV+ZH
+	+6qibOM+9FntESYWxTuAcQNBqOq3A5Nd2SlaeYqAFsibQnE4roQHGyKDfvxFJi0uFhupVr
+	RGMjwnie8DBep4z5og7UbQDoAHhlz4eJe7gcGw2todrNHvxTE/l3bBGzmXFHKaBOK2foLC
+	VEW/3doORkGTr+/mrjW4QsxUMoloETwRldasNYuCYKYXi5Ef8iwxH0g9yISE3yk5fM/D6x
+	TtwHGzwLvp/N7+U5KLqkYV5pxIl4ZFent2eL2dtTVVeacPk8iVDVQ2J6g34iZA==
+Date: Mon, 5 Feb 2024 15:22:08 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH v2 1/6] net: wan: Add support for QMC HDLC
+Message-ID: <20240205152208.73535549@bootlin.com>
+In-Reply-To: <b1968b5c7e88edd448d5f55b57dfa40257b2b06c.camel@redhat.com>
+References: <20240130084035.115086-1-herve.codina@bootlin.com>
+	<20240130084035.115086-2-herve.codina@bootlin.com>
+	<b1968b5c7e88edd448d5f55b57dfa40257b2b06c.camel@redhat.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,169 +61,119 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jordan Niethe <jniethe5@gmail.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, Amit Machhiwal <amachhiw@linux.ibm.com>, "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Mark Brown <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Jakub Kicinski <kuba@kernel.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Amit Machhiwal <amachhiw@linux.ibm.com> writes:
+Hi Paolo,
 
-> Currently, rebooting a pseries nested qemu-kvm guest (L2) results in
-> below error as L1 qemu sends PVR value 'arch_compat' == 0 via
-> ppc_set_compat ioctl. This triggers a condition failure in
-> kvmppc_set_arch_compat() resulting in an EINVAL.
->
-> qemu-system-ppc64: Unable to set CPU compatibility mode in KVM: Invalid
-> argument
->
-> Also, a value of 0 for arch_compat generally refers the default
-> compatibility of the host. But, arch_compat, being a Guest Wide Element
-> in nested API v2, cannot be set to 0 in GSB as PowerVM (L0) expects a
-> non-zero value. A value of 0 triggers a kernel trap during a reboot and
-> consequently causes it to fail:
->
-> [   22.106360] reboot: Restarting system
-> KVM: unknown exit, hardware reason ffffffffffffffea
-> NIP 0000000000000100   LR 000000000000fe44 CTR 0000000000000000 XER 0000000020040092 CPU#0
-> MSR 0000000000001000 HID0 0000000000000000  HF 6c000000 iidx 3 didx 3
-> TB 00000000 00000000 DECR 0
-> GPR00 0000000000000000 0000000000000000 c000000002a8c300 000000007fe00000
-> GPR04 0000000000000000 0000000000000000 0000000000001002 8000000002803033
-> GPR08 000000000a000000 0000000000000000 0000000000000004 000000002fff0000
-> GPR12 0000000000000000 c000000002e10000 0000000105639200 0000000000000004
-> GPR16 0000000000000000 000000010563a090 0000000000000000 0000000000000000
-> GPR20 0000000105639e20 00000001056399c8 00007fffe54abab0 0000000105639288
-> GPR24 0000000000000000 0000000000000001 0000000000000001 0000000000000000
-> GPR28 0000000000000000 0000000000000000 c000000002b30840 0000000000000000
-> CR 00000000  [ -  -  -  -  -  -  -  -  ]     RES 000@ffffffffffffffff
->  SRR0 0000000000000000  SRR1 0000000000000000    PVR 0000000000800200 VRSAVE 0000000000000000
-> SPRG0 0000000000000000 SPRG1 0000000000000000  SPRG2 0000000000000000  SPRG3 0000000000000000
-> SPRG4 0000000000000000 SPRG5 0000000000000000  SPRG6 0000000000000000  SPRG7 0000000000000000
-> HSRR0 0000000000000000 HSRR1 0000000000000000
->  CFAR 0000000000000000
->  LPCR 0000000000020400
->  PTCR 0000000000000000   DAR 0000000000000000  DSISR 0000000000000000
->
->  kernel:trap=0xffffffea | pc=0x100 | msr=0x1000
->
-> This patch updates kvmppc_set_arch_compat() to use the host PVR value if
-> 'compat_pvr' == 0 indicating that qemu doesn't want to enforce any
-> specific PVR compat mode.
->
+On Thu, 01 Feb 2024 12:41:32 +0100
+Paolo Abeni <pabeni@redhat.com> wrote:
 
-Reviewed-by: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
+[...]
+> > +static inline struct qmc_hdlc *netdev_to_qmc_hdlc(struct net_device *netdev)
+> > +{
+> > +	return dev_to_hdlc(netdev)->priv;
+> > +}  
+> 
+> Please, no 'inline' function in c files. You could move this function
+> and the struct definition into a new, local, header file.
 
->
-> Fixes: 19d31c5f1157 ("KVM: PPC: Add support for nestedv2 guests")
-> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-> ---
->
-> Changes v1 -> v2:
->     - Added descriptive error log in the patch description when
->       `arch_compat == 0` passed in GSB
->     - Added a helper function for PCR to capabilities mapping
->     - Added relevant comments around the changes being made
->
-> v1: https://lore.kernel.org/lkml/20240118095653.2588129-1-amachhiw@linux.ibm.com/
->
->  arch/powerpc/kvm/book3s_hv.c          | 25 +++++++++++++++++++++++--
->  arch/powerpc/kvm/book3s_hv_nestedv2.c | 23 +++++++++++++++++++++--
->  2 files changed, 44 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 52427fc2a33f..270ab9cf9a54 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -391,6 +391,23 @@ static void kvmppc_set_pvr_hv(struct kvm_vcpu *vcpu, u32 pvr)
->  /* Dummy value used in computing PCR value below */
->  #define PCR_ARCH_31    (PCR_ARCH_300 << 1)
->  
-> +static inline unsigned long map_pcr_to_cap(unsigned long pcr)
-> +{
-> +	unsigned long cap = 0;
-> +
-> +	switch (pcr) {
-> +	case PCR_ARCH_300:
-> +		cap = H_GUEST_CAP_POWER9;
-> +		break;
-> +	case PCR_ARCH_31:
-> +		cap = H_GUEST_CAP_POWER10;
-> +	default:
-> +		break;
-> +	}
-> +
-> +	return cap;
-> +}
-> +
->  static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
->  {
->  	unsigned long host_pcr_bit = 0, guest_pcr_bit = 0, cap = 0;
-> @@ -424,11 +441,9 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
->  			break;
->  		case PVR_ARCH_300:
->  			guest_pcr_bit = PCR_ARCH_300;
-> -			cap = H_GUEST_CAP_POWER9;
->  			break;
->  		case PVR_ARCH_31:
->  			guest_pcr_bit = PCR_ARCH_31;
-> -			cap = H_GUEST_CAP_POWER10;
->  			break;
->  		default:
->  			return -EINVAL;
-> @@ -440,6 +455,12 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
->  		return -EINVAL;
->  
->  	if (kvmhv_on_pseries() && kvmhv_is_nestedv2()) {
-> +		/*
-> +		 * 'arch_compat == 0' would mean the guest should default to
-> +		 * L1's compatibility. In this case, the guest would pick
-> +		 * host's PCR and evaluate the corresponding capabilities.
-> +		 */
-> +		cap = map_pcr_to_cap(guest_pcr_bit);
->  		if (!(cap & nested_capabilities))
->  			return -EINVAL;
->  	}
-> diff --git a/arch/powerpc/kvm/book3s_hv_nestedv2.c b/arch/powerpc/kvm/book3s_hv_nestedv2.c
-> index 5378eb40b162..6042bdc70230 100644
-> --- a/arch/powerpc/kvm/book3s_hv_nestedv2.c
-> +++ b/arch/powerpc/kvm/book3s_hv_nestedv2.c
-> @@ -138,6 +138,7 @@ static int gs_msg_ops_vcpu_fill_info(struct kvmppc_gs_buff *gsb,
->  	vector128 v;
->  	int rc, i;
->  	u16 iden;
-> +	u32 arch_compat = 0;
->  
->  	vcpu = gsm->data;
->  
-> @@ -347,8 +348,26 @@ static int gs_msg_ops_vcpu_fill_info(struct kvmppc_gs_buff *gsb,
->  			break;
->  		}
->  		case KVMPPC_GSID_LOGICAL_PVR:
-> -			rc = kvmppc_gse_put_u32(gsb, iden,
-> -						vcpu->arch.vcore->arch_compat);
-> +			/*
-> +			 * Though 'arch_compat == 0' would mean the default
-> +			 * compatibility, arch_compat, being a Guest Wide
-> +			 * Element, cannot be filled with a value of 0 in GSB
-> +			 * as this would result into a kernel trap.
-> +			 * Hence, when `arch_compat == 0`, arch_compat should
-> +			 * default to L1's PVR.
-> +			 *
-> +			 * Rework this when PowerVM supports a value of 0
-> +			 * for arch_compat for KVM API v2.
-> +			 */
-> +			if (!vcpu->arch.vcore->arch_compat) {
-> +				if (cpu_has_feature(CPU_FTR_ARCH_31))
-> +					arch_compat = PVR_ARCH_31;
-> +				else if (cpu_has_feature(CPU_FTR_ARCH_300))
-> +					arch_compat = PVR_ARCH_300;
-> +			} else {
-> +				arch_compat = vcpu->arch.vcore->arch_compat;
-> +			}
-> +			rc = kvmppc_gse_put_u32(gsb, iden, arch_compat);
->  			break;
->  		}
->  
->
-> base-commit: 6764c317b6bb91bd806ef79adf6d9c0e428b191e
-> -- 
-> 2.43.0
+'inline' function specifier will be removed in the next iteration on the series.
+
+> 
+> > +static int qmc_hdlc_recv_queue(struct qmc_hdlc *qmc_hdlc, struct qmc_hdlc_desc *desc, size_t size);
+> > +
+> > +#define QMC_HDLC_RX_ERROR_FLAGS (QMC_RX_FLAG_HDLC_OVF | \
+> > +				 QMC_RX_FLAG_HDLC_UNA | \
+> > +				 QMC_RX_FLAG_HDLC_ABORT | \
+> > +				 QMC_RX_FLAG_HDLC_CRC)
+> > +
+> > +static void qmc_hcld_recv_complete(void *context, size_t length, unsigned int flags)
+> > +{
+> > +	struct qmc_hdlc_desc *desc = context;
+> > +	struct net_device *netdev = desc->netdev;
+> > +	struct qmc_hdlc *qmc_hdlc = netdev_to_qmc_hdlc(netdev);
+> > +	int ret;  
+> 
+> Please, respect the reverse x-mas tree order for local variable
+> definition.
+
+desc depends on context, netdev depends on desc and qmc_hdlc depends on netdev.
+I think the declaration order is correct here even it doesn't respect the reverse
+x-mas tree.
+
+[...]
+> > +static netdev_tx_t qmc_hdlc_xmit(struct sk_buff *skb, struct net_device *netdev)
+> > +{
+> > +	struct qmc_hdlc *qmc_hdlc = netdev_to_qmc_hdlc(netdev);
+> > +	struct qmc_hdlc_desc *desc;
+> > +	unsigned long flags;
+> > +	int ret;
+> > +
+> > +	spin_lock_irqsave(&qmc_hdlc->tx_lock, flags);
+> > +	desc = &qmc_hdlc->tx_descs[qmc_hdlc->tx_out];
+> > +	if (WARN_ONCE(!desc->skb, "No tx descriptors available\n")) {
+> > +		/* Should never happen.
+> > +		 * Previous xmit should have already stopped the queue.
+> > +		 */
+> > +		netif_stop_queue(netdev);
+> > +		spin_unlock_irqrestore(&qmc_hdlc->tx_lock, flags);
+> > +		return NETDEV_TX_BUSY;
+> > +	}
+> > +	spin_unlock_irqrestore(&qmc_hdlc->tx_lock, flags);
+> > +
+> > +	desc->netdev = netdev;
+> > +	desc->dma_size = skb->len;
+> > +	desc->skb = skb;
+> > +	ret = qmc_hdlc_xmit_queue(qmc_hdlc, desc);
+> > +	if (ret) {
+> > +		desc->skb = NULL; /* Release the descriptor */
+> > +		if (ret == -EBUSY) {
+> > +			netif_stop_queue(netdev);
+> > +			return NETDEV_TX_BUSY;
+> > +		}
+> > +		dev_kfree_skb(skb);
+> > +		netdev->stats.tx_dropped++;
+> > +		return NETDEV_TX_OK;
+> > +	}
+> > +
+> > +	qmc_hdlc->tx_out = (qmc_hdlc->tx_out + 1) % ARRAY_SIZE(qmc_hdlc->tx_descs);
+> > +
+> > +	spin_lock_irqsave(&qmc_hdlc->tx_lock, flags);
+> > +	if (qmc_hdlc->tx_descs[qmc_hdlc->tx_out].skb)
+> > +		netif_stop_queue(netdev);
+> > +	spin_unlock_irqrestore(&qmc_hdlc->tx_lock, flags);  
+> 
+> The locking schema is quite bad, as the drivers acquires and releases 3
+> locks for each tx packet. You could improve that using the qmc_chan-
+> >tx_lock to protect the whole qmc_hdlc_xmit() function, factoring out a  
+> lockless variant of qmc_hdlc_xmit_queue(), and using it here.
+
+I will change on next iteration and keep 2 lock/unlock instead of 3:
+  - one in qmc_hdlc_xmit()
+  - one in qmc_hdlc_xmit_complete() 
+to protect the descriptors accesses.
+
+> 
+> In general is quite bad that the existing infra does not allow
+> leveraging NAPI. Have you considered expanding the QMC to accomodate
+> such user?
+
+I cannot mask/unmask the 'end of transfer' interrupt.
+Indeed, other streams use this interrupt among them audio streams and so
+masking the interrupt for HDLC data will also mask the interrupt for audio
+data.
+
+At the HDLC driver level, the best I can to is to store a queue of complete
+HDLC skbs (queue filled on interrupts) and send them to the network stack
+when the napi poll() is called.
+
+I am not sure that this kind of queue (additional level between always
+enabled interrupts and the network stack) makes sense.
+
+Do you have any opinion about this additional queue management for NAPI
+support?
+
+Best regards,
+Hervé
