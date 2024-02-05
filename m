@@ -1,89 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA27584A1FF
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Feb 2024 19:19:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30BCF84A651
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Feb 2024 21:52:23 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aK9AHZlL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gQSKBB1a;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TTF5j689Pz3cB0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Feb 2024 05:19:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TTJTw15NBz3cRY
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Feb 2024 07:52:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aK9AHZlL;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gQSKBB1a;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=amachhiw@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TTF4x50p7z2yst
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Feb 2024 05:18:57 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 415IITo4006991;
-	Mon, 5 Feb 2024 18:18:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=7FZq3UKocrSdIKqb/HIHHIxnBLE3eJesaiVq6qENOmQ=;
- b=aK9AHZlL3h7U9VYkkszgSpiR6I8EO3Gge0GeM77H5VE0xLd2IEqo6+2l67HeKFodGiMJ
- oFWfZ943782f+zc9xvzITQyTunw+P5XZZ2ak+U7ME6K7eTNL8Sz6vXGZ6ONWh2id7Yag
- ZF8Zp4IuuNkcBUGsIaKsD11vXppcKM7t3iN9pj2a0jPplD5TemFOz3jR15BnMb34Ht0C
- N14D/WQ32ecMdQZc2ASdGWoeqaqKAO6W7diWMGc3l60UjsFimaLZLCxmccbaJJIe94O5
- YU0HSTmWjru68A6N4XAiWuqERAgKxzQIAA0CKtvvzbcMJwvAg2bLRNCy7jaSWrmbiMuD Ww== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w34u50075-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Feb 2024 18:18:46 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 415IIZwB007304;
-	Mon, 5 Feb 2024 18:18:46 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w34u5006u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Feb 2024 18:18:46 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 415GekxN014865;
-	Mon, 5 Feb 2024 18:18:45 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3w20tnj4vf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Feb 2024 18:18:45 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 415IIgo140239522
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 5 Feb 2024 18:18:42 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 557B220040;
-	Mon,  5 Feb 2024 18:18:42 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 436BE20043;
-	Mon,  5 Feb 2024 18:18:39 +0000 (GMT)
-Received: from li-a83676cc-350e-11b2-a85c-e11f86bb8d73.ibm.com.com (unknown [9.43.55.162])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  5 Feb 2024 18:18:39 +0000 (GMT)
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        kvm-ppc@vger.kernel.org
-Subject: [PATCH v3] KVM: PPC: Book3S HV: Fix L2 guest reboot failure due to empty 'arch_compat'
-Date: Mon,  5 Feb 2024 23:48:33 +0530
-Message-ID: <20240205181833.212955-1-amachhiw@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: CYr3oYuRF9ndfHDrfIlv9Y5hzJStxe98
-X-Proofpoint-ORIG-GUID: 6VBeCFRo2XRuVcwoMmETR36z-NQiZAa7
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TTJTB1KHdz30Np
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Feb 2024 07:51:42 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 4AF4D61283
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Feb 2024 20:51:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC40DC433C7
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Feb 2024 20:51:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707166296;
+	bh=rbxfWPsAtsZkwAub+b6KRhh6zPgaO8+Nsj7bKR2m5RM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=gQSKBB1auVt0+2i1wF9el62IAUkh4PeL0/sd2OjWkiV52ekTZFcXWz9X1ePXPXA3R
+	 3xiLneomSrhi0rvZm7fvIS94AFFbrPjE9vfY3vqBlTbo6U202xyk8qz5fabVfyZFFc
+	 +LEZTedFJ/GMXteRffOyJpwkNmrt5lhm1ExY81vW5OTDtyVlJ/B8PUThs0l1AnChu9
+	 kVIfSrZ8jyH8sLN+/uaOqGAwhKcUcPaUcmpRwR5EPpIijVKGEmtugZmDDFiitJllYI
+	 ClMllxJdWTGCL3M7Uac7F/Ei2FAGASPRVok1n1kDHZNiLOMzsxKX/S7tv4PG+NQhcJ
+	 5oYI/r14MPTOA==
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2d090c83d45so34718081fa.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Feb 2024 12:51:36 -0800 (PST)
+X-Gm-Message-State: AOJu0YxJdhAqHjrxZLU3D4ahK3R54urwVgrg9HPV5Au8Qf/HdUosnPIZ
+	xoNz7QGoeSptUVi6siwJ9hPcUDa98h9apoTOP/p35JlqYw9o7YnovZEcCSwdGwfmZPsqZwkDA4Z
+	oe/4R1Q9rOQYdLcCxiaFfyd1ZFNo=
+X-Google-Smtp-Source: AGHT+IH48mHUOfbKPsHz4ex522m4Efo9yfxYkbY+WPFm87RC+2HZW07sdB9JpcI7VvmtbRlov+g35Jw+FX0st/t6jd4=
+X-Received: by 2002:a2e:920d:0:b0:2d0:af09:e3d7 with SMTP id
+ k13-20020a2e920d000000b002d0af09e3d7mr580084ljg.41.1707166295433; Mon, 05 Feb
+ 2024 12:51:35 -0800 (PST)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-05_12,2024-01-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- suspectscore=0 bulkscore=0 phishscore=0 mlxlogscore=894 priorityscore=1501
- spamscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2402050138
+References: <20231120232332.4100288-1-masahiroy@kernel.org>
+ <CX42TU4QHS1Z.A0UUHMDAMZOL@wheely> <ZbjHTMhQ4Z9lRR6L@t14s>
+ <87v873870m.fsf@mail.lhotse> <CAASaF6w9SRoj+Kn6=UaReBNNfL_rrKo-4rvtCj=iF4Nd3Zpw-g@mail.gmail.com>
+In-Reply-To: <CAASaF6w9SRoj+Kn6=UaReBNNfL_rrKo-4rvtCj=iF4Nd3Zpw-g@mail.gmail.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Tue, 6 Feb 2024 05:50:58 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQe5SounO60gyYE_3e-M0cAAgT=9jac_SLcR0i9BeEgDQ@mail.gmail.com>
+Message-ID: <CAK7LNAQe5SounO60gyYE_3e-M0cAAgT=9jac_SLcR0i9BeEgDQ@mail.gmail.com>
+Subject: Re: [PATCH] powerpc: add crtsavres.o to always-y instead of extra-y
+To: Jan Stancek <jstancek@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,170 +70,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jordan Niethe <jniethe5@gmail.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Amit Machhiwal <amachhiw@linux.ibm.com>, "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>
+Cc: llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Tom Rix <trix@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently, rebooting a pseries nested qemu-kvm guest (L2) results in
-below error as L1 qemu sends PVR value 'arch_compat' == 0 via
-ppc_set_compat ioctl. This triggers a condition failure in
-kvmppc_set_arch_compat() resulting in an EINVAL.
+On Mon, Feb 5, 2024 at 10:22=E2=80=AFPM Jan Stancek <jstancek@redhat.com> w=
+rote:
+>
+> On Mon, Feb 5, 2024 at 12:50=E2=80=AFPM Michael Ellerman <mpe@ellerman.id=
+.au> wrote:
+> >
+> > Jan Stancek <jstancek@redhat.com> writes:
+> > > On Tue, Nov 21, 2023 at 10:51:34AM +1000, Nicholas Piggin wrote:
+> > >>On Tue Nov 21, 2023 at 9:23 AM AEST, Masahiro Yamada wrote:
+> > >>> crtsavres.o is linked to modules. However, as explained in commit
+> > >>> d0e628cd817f ("kbuild: doc: clarify the difference between extra-y
+> > >>> and always-y"), 'make modules' does not build extra-y.
+> > >>>
+> > >>> For example, the following command fails:
+> > >>>
+> > >>>   $ make ARCH=3Dpowerpc LLVM=3D1 KBUILD_MODPOST_WARN=3D1 mrproper p=
+s3_defconfig modules
+> > >>>     [snip]
+> > >>>     LD [M]  arch/powerpc/platforms/cell/spufs/spufs.ko
+> > >>>   ld.lld: error: cannot open arch/powerpc/lib/crtsavres.o: No such =
+file or directory
+> > >>>   make[3]: *** [scripts/Makefile.modfinal:56: arch/powerpc/platform=
+s/cell/spufs/spufs.ko] Error 1
+> > >>>   make[2]: *** [Makefile:1844: modules] Error 2
+> > >>>   make[1]: *** [/home/masahiro/workspace/linux-kbuild/Makefile:350:=
+ __build_one_by_one] Error 2
+> > >>>   make: *** [Makefile:234: __sub-make] Error 2
+> > >>>
+> > >>
+> > >>Thanks. Is this the correct Fixes tag?
+> > >>
+> > >>Fixes: d0e628cd817f ("powerpc/64: Do not link crtsavres.o in vmlinux"=
+)
+> > >>
+> > >>Hmm, looks like LLD might just do this now automatically for us
+> > >>too without --save-restore-funcs (https://reviews.llvm.org/D79977).
+> > >>But we probably still need it for older versions, so we still need
+> > >>your patch.
+> > >
+> > > Hi,
+> > >
+> > > I'm still seeing the error of crtsavres.o missing when building exter=
+nal modules
+> > > after "make LLVM=3D1 modules_prepare". Should it be built also in arc=
+hprepare?
+> >
+> > Or modules_prepare?
+> >
+> > Example patch below.
+>
+> I tested your patch with my setup and that works for me as well.
+>
 
-qemu-system-ppc64: Unable to set CPU compatibility mode in KVM: Invalid
-argument
 
-Also, a value of 0 for arch_compat generally refers the default
-compatibility of the host. But, arch_compat, being a Guest Wide Element
-in nested API v2, cannot be set to 0 in GSB as PowerVM (L0) expects a
-non-zero value. A value of 0 triggers a kernel trap during a reboot and
-consequently causes it to fail:
 
-[   22.106360] reboot: Restarting system
-KVM: unknown exit, hardware reason ffffffffffffffea
-NIP 0000000000000100   LR 000000000000fe44 CTR 0000000000000000 XER 0000000020040092 CPU#0
-MSR 0000000000001000 HID0 0000000000000000  HF 6c000000 iidx 3 didx 3
-TB 00000000 00000000 DECR 0
-GPR00 0000000000000000 0000000000000000 c000000002a8c300 000000007fe00000
-GPR04 0000000000000000 0000000000000000 0000000000001002 8000000002803033
-GPR08 000000000a000000 0000000000000000 0000000000000004 000000002fff0000
-GPR12 0000000000000000 c000000002e10000 0000000105639200 0000000000000004
-GPR16 0000000000000000 000000010563a090 0000000000000000 0000000000000000
-GPR20 0000000105639e20 00000001056399c8 00007fffe54abab0 0000000105639288
-GPR24 0000000000000000 0000000000000001 0000000000000001 0000000000000000
-GPR28 0000000000000000 0000000000000000 c000000002b30840 0000000000000000
-CR 00000000  [ -  -  -  -  -  -  -  -  ]     RES 000@ffffffffffffffff
- SRR0 0000000000000000  SRR1 0000000000000000    PVR 0000000000800200 VRSAVE 0000000000000000
-SPRG0 0000000000000000 SPRG1 0000000000000000  SPRG2 0000000000000000  SPRG3 0000000000000000
-SPRG4 0000000000000000 SPRG5 0000000000000000  SPRG6 0000000000000000  SPRG7 0000000000000000
-HSRR0 0000000000000000 HSRR1 0000000000000000
- CFAR 0000000000000000
- LPCR 0000000000020400
- PTCR 0000000000000000   DAR 0000000000000000  DSISR 0000000000000000
 
- kernel:trap=0xffffffea | pc=0x100 | msr=0x1000
+Please note 'make ARCH=3Dpowerpc clean' will remove  '*.o'
+files globally.
 
-This patch updates kvmppc_set_arch_compat() to use the host PVR value if
-'compat_pvr' == 0 indicating that qemu doesn't want to enforce any
-specific PVR compat mode.
 
-Fixes: 19d31c5f1157 ("KVM: PPC: Add support for nestedv2 guests")
-Reviewed-by: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
-Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
----
+Kbuild promised you would still be able to compile external modules
+after 'make clean' (until you run 'make mrproper'), but
+that would not work in this case.
 
-Changes v2 -> v3:
-    - Vaibhav: Use a 'break' instead of switch-case fallthrough
-    - v2: https://lore.kernel.org/all/20240205132607.2776637-1-amachhiw@linux.ibm.com/
+So, the external module support for powerpc
+is broken in another way, already.
 
-Changes v1 -> v2:
-    - Added descriptive error log in the patch description when
-      `arch_compat == 0` passed in GSB
-    - Added a helper function for PCR to capabilities mapping
-    - Added relevant comments around the changes being made
-    - v1: https://lore.kernel.org/lkml/20240118095653.2588129-1-amachhiw@linux.ibm.com/
 
- arch/powerpc/kvm/book3s_hv.c          | 26 ++++++++++++++++++++++++--
- arch/powerpc/kvm/book3s_hv_nestedv2.c | 23 +++++++++++++++++++++--
- 2 files changed, 45 insertions(+), 4 deletions(-)
+Perhaps, an easy workaround might be to change
+the suffix, but I did not test it at all.
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 52427fc2a33f..0b921704da45 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -391,6 +391,24 @@ static void kvmppc_set_pvr_hv(struct kvm_vcpu *vcpu, u32 pvr)
- /* Dummy value used in computing PCR value below */
- #define PCR_ARCH_31    (PCR_ARCH_300 << 1)
- 
-+static inline unsigned long map_pcr_to_cap(unsigned long pcr)
-+{
-+	unsigned long cap = 0;
-+
-+	switch (pcr) {
-+	case PCR_ARCH_300:
-+		cap = H_GUEST_CAP_POWER9;
-+		break;
-+	case PCR_ARCH_31:
-+		cap = H_GUEST_CAP_POWER10;
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	return cap;
-+}
-+
- static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
- {
- 	unsigned long host_pcr_bit = 0, guest_pcr_bit = 0, cap = 0;
-@@ -424,11 +442,9 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
- 			break;
- 		case PVR_ARCH_300:
- 			guest_pcr_bit = PCR_ARCH_300;
--			cap = H_GUEST_CAP_POWER9;
- 			break;
- 		case PVR_ARCH_31:
- 			guest_pcr_bit = PCR_ARCH_31;
--			cap = H_GUEST_CAP_POWER10;
- 			break;
- 		default:
- 			return -EINVAL;
-@@ -440,6 +456,12 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
- 		return -EINVAL;
- 
- 	if (kvmhv_on_pseries() && kvmhv_is_nestedv2()) {
-+		/*
-+		 * 'arch_compat == 0' would mean the guest should default to
-+		 * L1's compatibility. In this case, the guest would pick
-+		 * host's PCR and evaluate the corresponding capabilities.
-+		 */
-+		cap = map_pcr_to_cap(guest_pcr_bit);
- 		if (!(cap & nested_capabilities))
- 			return -EINVAL;
- 	}
-diff --git a/arch/powerpc/kvm/book3s_hv_nestedv2.c b/arch/powerpc/kvm/book3s_hv_nestedv2.c
-index 5378eb40b162..6042bdc70230 100644
---- a/arch/powerpc/kvm/book3s_hv_nestedv2.c
-+++ b/arch/powerpc/kvm/book3s_hv_nestedv2.c
-@@ -138,6 +138,7 @@ static int gs_msg_ops_vcpu_fill_info(struct kvmppc_gs_buff *gsb,
- 	vector128 v;
- 	int rc, i;
- 	u16 iden;
-+	u32 arch_compat = 0;
- 
- 	vcpu = gsm->data;
- 
-@@ -347,8 +348,26 @@ static int gs_msg_ops_vcpu_fill_info(struct kvmppc_gs_buff *gsb,
- 			break;
- 		}
- 		case KVMPPC_GSID_LOGICAL_PVR:
--			rc = kvmppc_gse_put_u32(gsb, iden,
--						vcpu->arch.vcore->arch_compat);
-+			/*
-+			 * Though 'arch_compat == 0' would mean the default
-+			 * compatibility, arch_compat, being a Guest Wide
-+			 * Element, cannot be filled with a value of 0 in GSB
-+			 * as this would result into a kernel trap.
-+			 * Hence, when `arch_compat == 0`, arch_compat should
-+			 * default to L1's PVR.
-+			 *
-+			 * Rework this when PowerVM supports a value of 0
-+			 * for arch_compat for KVM API v2.
-+			 */
-+			if (!vcpu->arch.vcore->arch_compat) {
-+				if (cpu_has_feature(CPU_FTR_ARCH_31))
-+					arch_compat = PVR_ARCH_31;
-+				else if (cpu_has_feature(CPU_FTR_ARCH_300))
-+					arch_compat = PVR_ARCH_300;
-+			} else {
-+				arch_compat = vcpu->arch.vcore->arch_compat;
-+			}
-+			rc = kvmppc_gse_put_u32(gsb, iden, arch_compat);
- 			break;
- 		}
- 
+mv arch/powerpc/lib/crtsavres.o arch/powerpc/lib/crtsavres.o.do_not_remove_=
+me
 
-base-commit: 6764c317b6bb91bd806ef79adf6d9c0e428b191e
--- 
-2.43.0
 
+
+
+--=20
+Best Regards
+Masahiro Yamada
