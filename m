@@ -1,46 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72F14849397
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Feb 2024 06:55:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB6C3849396
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Feb 2024 06:54:39 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=3gbwRWgI;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=VQkTwST2;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TSwZw2hwvz3cBx
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Feb 2024 16:55:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TSwZ56SC8z3c9N
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Feb 2024 16:54:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=3gbwRWgI;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=VQkTwST2;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TSwYJ431Kz2yk9
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Feb 2024 16:53:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TSwYK4f9Bz2yps
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Feb 2024 16:53:57 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:In-Reply-To:References;
-	bh=K9RNZrjlQWEBnvc1kEhCFcqKAhg1GOG9b2dv8n13vIE=; b=3gbwRWgI6vBQV07poLQVaQXKqx
-	Cs2QM95NNyVID6ZGdXJUGi2qIzIgkmsr6cwVue2X/IL8PR3ILVWkoyEdDmjxdIqj289ib0mBagW3u
-	yrQugMLgO4eVaqlL8n6osORKDO896bXULua+Ywt0W0Fk+IoiGfQA5YOzackEk0ypHjmKw3tcuCZkl
-	V10vZc3ENQOjVlONDfsGT/EfgJzeOAqtfHzug3PRMW/TEzFg1p0ioCd7brMXdN37m0VYUNPyDcfSZ
-	fSS8yYjFZ4Oi/B3NvThKDzVcHvG7dy1AYR2iQqfM6MyVhDr3TYXrLElXpUVUfrvwSnrJNqH1JcyKF
-	b5HCADHg==;
+	bh=O+ppX+9FxVt0ChoDJ88PQbcPFT09KUvFH7ZhZ4SJ20U=; b=VQkTwST282bY1inBK/7e0whc+U
+	ZwCDrP+Bzkm/wzt4n9B0V010rBcQ1kBvLS5UdrQ2axi6SVhmLZuikbuJvzDxhvaWxfDhedd6TsK7e
+	PidghTZtzNKXGUQ6uYXxXV4igTnKzVomFy7Jc1OACWY83aqkdNy0A3QIsdkuYBwAwI1JBO6U2BlLr
+	lp1Dr+QrkITzlBdLmMMfT4GRFT69fpqQsFOIe/s8VIcn+6yzz/vgq6eWYmy13qQ2gLqFacPw4STeO
+	jyAEQnVzdviIGgeLNiOc8JcBJxoWX0D2npeTWFDdvg/LOBNWkp5BTDHslPbcAzSXbgUtvrMEKPmHY
+	ZROiuFrA==;
 Received: from [50.53.50.0] (helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rWrvS-000000027ZI-2M0H;
-	Mon, 05 Feb 2024 05:53:50 +0000
+	id 1rWrvX-000000027aB-2ksO;
+	Mon, 05 Feb 2024 05:53:55 +0000
 From: Randy Dunlap <rdunlap@infradead.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2] soc: fsl: fix kernel-doc warnings and typos
-Date: Sun,  4 Feb 2024 21:53:49 -0800
-Message-ID: <20240205055349.24410-1-rdunlap@infradead.org>
+Subject: [PATCH v2] soc: fsl: dpio: fix kernel-doc typos
+Date: Sun,  4 Feb 2024 21:53:55 -0800
+Message-ID: <20240205055355.24844-1-rdunlap@infradead.org>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -59,11 +59,7 @@ Cc: Roy Pledge <Roy.Pledge@nxp.com>, Randy Dunlap <rdunlap@infradead.org>, Frank
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Correct spelling of "list".
-
-Fix a kernel-doc warning by describing the nested structure completely:
-
-include/soc/fsl/dpaa2-fd.h:52: warning: Function parameter or member 'simple' not described in 'dpaa2_fd'
+Correct spelling of 2 words.
 
 Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Cc: Li Yang <leoyang.li@nxp.com>
@@ -75,42 +71,27 @@ Cc: Roy Pledge <Roy.Pledge@nxp.com>
 ---
 v2:  update Cc: list, rebase
 
- include/soc/fsl/dpaa2-fd.h |   19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ include/soc/fsl/dpaa2-io.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff -- a/include/soc/fsl/dpaa2-fd.h b/include/soc/fsl/dpaa2-fd.h
---- a/include/soc/fsl/dpaa2-fd.h
-+++ b/include/soc/fsl/dpaa2-fd.h
-@@ -25,14 +25,15 @@
+diff -- a/include/soc/fsl/dpaa2-io.h b/include/soc/fsl/dpaa2-io.h
+--- a/include/soc/fsl/dpaa2-io.h
++++ b/include/soc/fsl/dpaa2-io.h
+@@ -22,7 +22,7 @@ struct device;
+  * DOC: DPIO Service
+  *
+  * The DPIO service provides APIs for users to interact with the datapath
+- * by enqueueing and dequeing frame descriptors.
++ * by enqueueing and dequeueing frame descriptors.
+  *
+  * The following set of APIs can be used to enqueue and dequeue frames
+  * as well as producing notification callbacks when data is available
+@@ -33,7 +33,7 @@ struct device;
  
  /**
-  * struct dpaa2_fd - Struct describing FDs
-- * @words:         for easier/faster copying the whole FD structure
-- * @addr:          address in the FD
-- * @len:           length in the FD
-- * @bpid:          buffer pool ID
-- * @format_offset: format, offset, and short-length fields
-- * @frc:           frame context
-- * @ctrl:          control bits...including dd, sc, va, err, etc
-- * @flc:           flow context address
-+ * @words:                for easier/faster copying the whole FD structure
-+ * @simple:               struct for the FD fields
-+ * @simple.addr:          address in the FD
-+ * @simple.len:           length in the FD
-+ * @simple.bpid:          buffer pool ID
-+ * @simple.format_offset: format, offset, and short-length fields
-+ * @simple.frc:           frame context
-+ * @simple.ctrl:          control bits...including dd, sc, va, err, etc
-+ * @simple.flc:           flow context address
-  *
-  * This structure represents the basic Frame Descriptor used in the system.
-  */
-@@ -497,7 +498,7 @@ static inline void dpaa2_fl_set_addr(str
-  * dpaa2_fl_get_frc() - Get the frame context in the FLE
-  * @fle: the given frame list entry
-  *
-- * Return the frame context field in the frame lsit entry.
-+ * Return the frame context field in the frame list entry.
-  */
- static inline u32 dpaa2_fl_get_frc(const struct dpaa2_fl_entry *fle)
- {
+  * struct dpaa2_io_desc - The DPIO descriptor
+- * @receives_notifications: Use notificaton mode. Non-zero if the DPIO
++ * @receives_notifications: Use notification mode. Non-zero if the DPIO
+  *                  has a channel.
+  * @has_8prio:      Set to non-zero for channel with 8 priority WQs.  Ignored
+  *                  unless receives_notification is TRUE.
