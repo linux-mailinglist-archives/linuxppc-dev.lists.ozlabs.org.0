@@ -1,94 +1,140 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B30258496F1
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Feb 2024 10:49:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57EA48498D5
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Feb 2024 12:29:37 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=E7EiHkVj;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=frWlSQHh;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=frWlSQHh;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TT1my44JDz3cGc
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Feb 2024 20:49:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TT40b28cCz3btJ
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Feb 2024 22:29:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=E7EiHkVj;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=frWlSQHh;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=frWlSQHh;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=tasmiya@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TT1Pw21zdz3bsX
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Feb 2024 20:32:52 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4158QbJY021764;
-	Mon, 5 Feb 2024 09:32:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- message-id : date : mime-version : to : cc : from : subject; s=pp1;
- bh=J2G19svvuyeQnZXUzuG4c4+kSa8OOZ7Ekemofg4ItTY=;
- b=E7EiHkVj6btM58XkccweyiESkHvJclk1wKQwu7y0p7/0hnIG5nTtLZ3W0PnZ/SV5OlP2
- houPGRcYa2My+bk3NXJBxBFQlsZHbwSD/zVq0FJXaBWK28uomBV9iIVQN+4xP4ObnC/R
- JwvNqRDSerqqv8/HagmYu1/pOidvARPfy/HUBanBp8t0tEPIU5d2L18ojdp8NarpUTsD
- c1kfaaTx2/2+G4Clq+U2kxVCS6XN5fvhRvsIlWjbnuGI3jx0ARlNB74VUMHZ0GRjMevP
- bIcWswmoiEr2yN5WihSFwSprbHz5uX8LrdgzL+mgsFFbGWcHLYQDumr8a2eVpLobGqeP HQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w2v5usjwj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Feb 2024 09:32:45 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4159POTA009353;
-	Mon, 5 Feb 2024 09:32:45 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w2v5usjw7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Feb 2024 09:32:45 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 415811iQ005756;
-	Mon, 5 Feb 2024 09:32:44 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3w21ak7e7j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Feb 2024 09:32:44 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4159WhOP20841042
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 5 Feb 2024 09:32:43 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 394E058055;
-	Mon,  5 Feb 2024 09:32:43 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EDFD858065;
-	Mon,  5 Feb 2024 09:32:39 +0000 (GMT)
-Received: from [9.43.107.229] (unknown [9.43.107.229])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  5 Feb 2024 09:32:39 +0000 (GMT)
-Content-Type: multipart/alternative;
- boundary="------------GtbxVLCHLhoZf0MKOpgPM1lZ"
-Message-ID: <5e2af457-883a-4d47-911c-cbfa9a734b89@linux.vnet.ibm.com>
-Date: Mon, 5 Feb 2024 15:02:38 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TT3zn2vD9z2xdn
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Feb 2024 22:28:51 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1707132527;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=nUaMZZu+Dp9dwRrEKB8bV8ysB1e4sCJY0FwagGA5ceE=;
+	b=frWlSQHhUaIrxA4ECNnKETP3hwojUlGTqcXbrTi/xW2BejpbPE/mZE3CAQhZ2yO3b404j7
+	OatKDvfPpv5Ht1wApKPuw1/mnOxR/Egc66+ZkfGC4cCtT6HuBHIbKvj3P3B8UGesKYVGXw
+	hD5sEj4ht1MXwfWlvrVwcIlIjpVELoI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1707132527;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=nUaMZZu+Dp9dwRrEKB8bV8ysB1e4sCJY0FwagGA5ceE=;
+	b=frWlSQHhUaIrxA4ECNnKETP3hwojUlGTqcXbrTi/xW2BejpbPE/mZE3CAQhZ2yO3b404j7
+	OatKDvfPpv5Ht1wApKPuw1/mnOxR/Egc66+ZkfGC4cCtT6HuBHIbKvj3P3B8UGesKYVGXw
+	hD5sEj4ht1MXwfWlvrVwcIlIjpVELoI=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-524-hwT7wDAdOkuPndUDRDHSNA-1; Mon, 05 Feb 2024 06:28:45 -0500
+X-MC-Unique: hwT7wDAdOkuPndUDRDHSNA-1
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-68c4f138403so54728276d6.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Feb 2024 03:28:45 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707132525; x=1707737325;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nUaMZZu+Dp9dwRrEKB8bV8ysB1e4sCJY0FwagGA5ceE=;
+        b=JACxbPjCWhmQR4Qd2UT5Voc9Hodg9cc9Jyvqwd5asnbeP/e/HT+v0uV/VvGHAAq1ZI
+         SE3FT06jB0jTiHcwWuhq0MP2TGka+Eci0B06s+8XglKgOgTG1tsaWsNs9dytr+JUVEuX
+         msDDsQTCmpS95ELa2KP87kyxQqrkKgzfQ2HpayhLa1jaMLYWKF6mg4GXsnHe4H5dD+pe
+         GwbeYSpV6V+8oSZjOm4MDNyMZQvdzMv1lr3a4LmbYZFlzm6slK9MNoBfOo8QdeJLTmT+
+         x+7FmJeBVRfLcHZ/ngxJJ+m4WwemWiPMvw4A91XzXLP2D+WMdTk1CSt31H4cQo3a0ZO9
+         OC6Q==
+X-Gm-Message-State: AOJu0YzL/nzRbo0Z09ObhnJe74oLT13QV6jmnnJRy+Znz42vVuqEszDG
+	MPJMsW8HAkjCxXrAaxdCaO8YAy45CQUeFSl8aGk0+oxcSqn13TVbj6nmK+lPlQ62YuGVkFQmqsl
+	732+KCnUfP5v5ARDQNLMKKWKPXkJpXQ96ED73xSrqqBrYqHdFX3BTdvNPxDPu4F8=
+X-Received: by 2002:a05:6214:1bca:b0:68c:5aec:a777 with SMTP id m10-20020a0562141bca00b0068c5aeca777mr10444487qvc.15.1707132525336;
+        Mon, 05 Feb 2024 03:28:45 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG8EaWM4B1y1ZetAAd55Aml2aHxbapztaFPxB73e0x4SKOBYmOWyWuKnTkcVyTF/NaB0tj2yA==
+X-Received: by 2002:a05:6214:1bca:b0:68c:5aec:a777 with SMTP id m10-20020a0562141bca00b0068c5aeca777mr10444456qvc.15.1707132525076;
+        Mon, 05 Feb 2024 03:28:45 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCXWPIeAmM4zXqyigLA0WaHjYvNc0iltB6bnBBy8QYvhZLHNBXkjYjHaucBRdJYPH0szT+kDLlvclxWkY5zxZP8lUzEhIXYmjGPkzkA3KlO3Qa2uRQXc9nXwApYOePPqxPh993CX+Ykh5jamYbUskGrr02J+wyVcxl+9yb35OMqMi48kHAZwZg/zppBC1scp8eyLC2fKAfLNawWG2xo2EawCIJYSrvkvLjxiVxsXNPOaclgOUBS2Qog+pId8rXLYpWHB/fFohXulmw0J7f8DgDSfPwPFRsOMVxURBnWOEI/X6tZAL8cEaDB2EZWPlvaEINY5yy9woLltLnE7jzYIZZGeRsspWNDvJgBPDqwzOYxDi3TAFncm1h9WOVQaLnZ8ZjiLaU40OkuC4ZMzb0k4f2AVGD5RBXnICUYtufL9szNSrdRZocVbgybUdJqs2dg617ubop/j5uGuX1VCXNWQ1YgZ2Su7HbPkAQ/hZidUC3/U
+Received: from [192.168.0.9] (ip-109-43-177-196.web.vodafone.de. [109.43.177.196])
+        by smtp.gmail.com with ESMTPSA id nz10-20020a0562143a8a00b0068c7664112bsm3658473qvb.52.2024.02.05.03.28.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 Feb 2024 03:28:44 -0800 (PST)
+Message-ID: <003f43ab-cce9-408d-8354-b7884f513ad1@redhat.com>
+Date: Mon, 5 Feb 2024 12:28:38 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Subject: Re: [kvm-unit-tests PATCH v2 1/9] (arm|powerpc|s390x): Makefile: Fix
+ .aux.o generation
+To: Andrew Jones <andrew.jones@linux.dev>, Nicholas Piggin <npiggin@gmail.com>
+References: <20240202065740.68643-1-npiggin@gmail.com>
+ <20240202065740.68643-2-npiggin@gmail.com>
+ <20240202-2f93f59553cec386791f7629@orel>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20240202-2f93f59553cec386791f7629@orel>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-To: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-From: Tasmiya Nalatwad <tasmiya@linux.vnet.ibm.com>
-Subject: 14:59,[Bisected] [commit dd6c3c544126] [linux-next] [6.8.0-rc2] Task
- hungs for infinite time call traces
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 1fz46XFSb6sflFbcUW11rA-FtGztiuJl
-X-Proofpoint-ORIG-GUID: LNvOhYB8mvfHeaToPr635YSzBw2YSkKB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-05_04,2024-01-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=1 priorityscore=1501
- impostorscore=0 mlxscore=1 clxscore=1015 suspectscore=0 lowpriorityscore=0
- spamscore=1 bulkscore=0 phishscore=0 malwarescore=0 mlxlogscore=217
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402050072
-X-Mailman-Approved-At: Mon, 05 Feb 2024 20:46:38 +1100
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,132 +146,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tj@kernel.org, "sachinp@linux.vnet.com" <sachinp@linux.vnet.com>, "mputtash@linux.vnet.com" <mputtash@linux.vnet.com>, jiangshanlai@gmail.com, "abdhalee@linux.vnet.ibm.com" <abdhalee@linux.vnet.ibm.com>
+Cc: Laurent Vivier <lvivier@redhat.com>, linux-s390@vger.kernel.org, Nico Boehr <nrb@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org, Shaoqin Huang <shahuang@redhat.com>, Eric Auger <eric.auger@redhat.com>, Marc Hartmayer <mhartmay@linux.ibm.com>, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexandru Elisei <alexandru.elisei@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
---------------GtbxVLCHLhoZf0MKOpgPM1lZ
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+On 02/02/2024 10.30, Andrew Jones wrote:
+> On Fri, Feb 02, 2024 at 04:57:32PM +1000, Nicholas Piggin wrote:
+>> Using all prerequisites for the source file results in the build
+>> dying on the second time around with:
+>>
+>> gcc: fatal error: cannot specify ‘-o’ with ‘-c’, ‘-S’ or ‘-E’ with multiple files
+>>
+>> This is due to auxinfo.h becoming a prerequisite after the first
+>> build recorded the dependency.
 
-[linux-next] [6.8.0-rc2-next-20240130] [FC/XFS] Task hungs for infinite 
-time while running bonnie test XFS filesystem
+D'oh, of course I only tried to run "make" once when testing that patch :-/
 
-Bisected the issue. Git bisect points to the below commit
-commit dd6c3c5441263723305a9c52c5ccc899a4653000
-           workqueue: Move pwq_dec_nr_in_flight() to the end of work 
-item handling
+>> diff --git a/arm/Makefile.common b/arm/Makefile.common
+>> index 54cb4a63..c2ee568c 100644
+>> --- a/arm/Makefile.common
+>> +++ b/arm/Makefile.common
+>> @@ -71,7 +71,7 @@ FLATLIBS = $(libcflat) $(LIBFDT_archive) $(libeabi)
+>>   
+>>   ifeq ($(CONFIG_EFI),y)
+>>   %.aux.o: $(SRCDIR)/lib/auxinfo.c
+>> -	$(CC) $(CFLAGS) -c -o $@ $^ \
+>> +	$(CC) $(CFLAGS) -c -o $@ $< \
+>>   		-DPROGNAME=\"$(@:.aux.o=.efi)\" -DAUXFLAGS=$(AUXFLAGS)
+> 
+> There are two instances of the %.aux.o target in arm/Makefile.common. We
+> need to fix both. We can actually pull the target out of the two arms of
+> the CONFIG_EFI if-else, though, by changing the .efi/.flat to .$(exe).
 
---- Traces ---
+I went ahead and pushed this patch with the trivial fix for the else-branch 
+to the repo to unbreak the build. If you think it's worthwhile to unify the 
+target, please provide a patch to do so, thanks!
 
-[  981.280811] Call Trace:
-[  981.280813] [c0000001d10b7560] [c000000006e9b934] 0xc000000006e9b934 (unreliable)
-[  981.280820] [c0000001d10b7710] [c00000000001fbac] __switch_to+0x13c/0x220
-[  981.280827] [c0000001d10b7770] [c000000001002840] __schedule+0x268/0x7c4
-[  981.280832] [c0000001d10b7840] [c000000001002ddc] schedule+0x40/0x108
-[  981.280836] [c0000001d10b78b0] [c00000000100b748] schedule_timeout+0x19c/0x1c0
-[  981.280841] [c0000001d10b7980] [c000000001004044] __wait_for_common+0x148/0x340
-[  981.280845] [c0000001d10b7a10] [c00000000018fa98] __flush_workqueue+0x15c/0x530
-[  981.280852] [c0000001d10b7ab0] [c008000008f89e9c] xfs_inodegc_flush+0x54/0x15c [xfs]
-[  981.280913] [c0000001d10b7b00] [c008000008f9f47c] xfs_unmountfs+0x30/0x1e4 [xfs]
-[  981.280969] [c0000001d10b7b80] [c008000008fa825c] xfs_fs_put_super+0x5c/0x110 [xfs]
-[  981.281023] [c0000001d10b7bf0] [c0000000005c8774] generic_shutdown_super+0xc0/0x16c
-[  981.281029] [c0000001d10b7c60] [c0000000005c8a50] kill_block_super+0x30/0x68
-[  981.281034] [c0000001d10b7c90] [c008000008fa5c54] xfs_kill_sb+0x28/0x4c [xfs]
-[  981.281088] [c0000001d10b7cc0] [c0000000005ca9d4] deactivate_locked_super+0x70/0x144
-[  981.281093] [c0000001d10b7cf0] [c000000000605728] cleanup_mnt+0x10c/0x1d8
-[  981.281098] [c0000001d10b7d40] [c00000000019b5e4] task_work_run+0xe0/0x16c
-[  981.281102] [c0000001d10b7d90] [c000000000022974] do_notify_resume+0x134/0x13c
-[  981.281107] [c0000001d10b7dc0] [c000000000032378] interrupt_exit_user_prepare_main+0x1ac/0x264
-[  981.281112] [c0000001d10b7e20] [c000000000032580] syscall_exit_prepare+0x150/0x178
-[  981.281116] [c0000001d10b7e50] [c00000000000d068] system_call_vectored_common+0x168/0x2ec
-[  981.281122] --- interrupt: 3000 at 0x7fffaed4c11c
-[  981.281125] NIP:  00007fffaed4c11c LR: 0000000000000000 CTR: 0000000000000000
-[  981.281128] REGS: c0000001d10b7e80 TRAP: 3000   Not tainted  (6.8.0-rc2-next-20240130-auto)
-[  981.281131] MSR:  800000000000d033 <SF,EE,PR,ME,IR,DR,RI,LE>  CR: 48002402  XER: 00000000
-[  981.281139] IRQMASK: 0
-[  981.281139] GPR00: 0000000000000034 00007fffec649770 00007fffaef07f00 0000000000000000
-[  981.281139] GPR04: 0000000000000000 ffffffffff000000 0000000000000000 0000000000000001
-[  981.281139] GPR08: 000000014cd61390 0000000000000000 0000000000000000 0000000000000000
-[  981.281139] GPR12: 0000000000000000 00007fffaefbc140 000000000ee6b280 00007fffec649a30
-[  981.281139] GPR16: 00007fffec649bd8 0000000118b66478 0000000000000000 0000000000000000
-[  981.281139] GPR20: ffffffffffffffff ffffffffffffffff 0000000000000000 0000000000000000
-[  981.281139] GPR24: 00007fffec64b0b0 0000000118b663d8 0000000118b66a58 0000000000000000
-[  981.281139] GPR28: 000000014cd61250 0000000000000000 000000014cd61370 000000014cd61140
-[  981.281175] NIP [00007fffaed4c11c] 0x7fffaed4c11c
-[  981.281177] LR [0000000000000000] 0x0
-[  981.281179] --- interrupt: 3000
-
--- 
-Regards,
-Tasmiya Nalatwad
-IBM Linux Technology Center
-
---------------GtbxVLCHLhoZf0MKOpgPM1lZ
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html>
-<html>
-  <head>
-
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p>[linux-next] [6.8.0-rc2-next-20240130] [FC/XFS] Task hungs for
-      infinite time while running bonnie test XFS filesystem</p>
-    <p>Bisected the issue. Git bisect points to the below commit<br>
-      commit dd6c3c5441263723305a9c52c5ccc899a4653000<br>
-                workqueue: Move pwq_dec_nr_in_flight() to the end of
-      work item handling<br>
-    </p>
-    <p>--- Traces ---</p>
-    <pre
-style="color: rgb(0, 0, 0); font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; overflow-wrap: break-word; white-space: pre-wrap;">[  981.280811] Call Trace:
-[  981.280813] [c0000001d10b7560] [c000000006e9b934] 0xc000000006e9b934 (unreliable)
-[  981.280820] [c0000001d10b7710] [c00000000001fbac] __switch_to+0x13c/0x220
-[  981.280827] [c0000001d10b7770] [c000000001002840] __schedule+0x268/0x7c4
-[  981.280832] [c0000001d10b7840] [c000000001002ddc] schedule+0x40/0x108
-[  981.280836] [c0000001d10b78b0] [c00000000100b748] schedule_timeout+0x19c/0x1c0
-[  981.280841] [c0000001d10b7980] [c000000001004044] __wait_for_common+0x148/0x340
-[  981.280845] [c0000001d10b7a10] [c00000000018fa98] __flush_workqueue+0x15c/0x530
-[  981.280852] [c0000001d10b7ab0] [c008000008f89e9c] xfs_inodegc_flush+0x54/0x15c [xfs]
-[  981.280913] [c0000001d10b7b00] [c008000008f9f47c] xfs_unmountfs+0x30/0x1e4 [xfs]
-[  981.280969] [c0000001d10b7b80] [c008000008fa825c] xfs_fs_put_super+0x5c/0x110 [xfs]
-[  981.281023] [c0000001d10b7bf0] [c0000000005c8774] generic_shutdown_super+0xc0/0x16c
-[  981.281029] [c0000001d10b7c60] [c0000000005c8a50] kill_block_super+0x30/0x68
-[  981.281034] [c0000001d10b7c90] [c008000008fa5c54] xfs_kill_sb+0x28/0x4c [xfs]
-[  981.281088] [c0000001d10b7cc0] [c0000000005ca9d4] deactivate_locked_super+0x70/0x144
-[  981.281093] [c0000001d10b7cf0] [c000000000605728] cleanup_mnt+0x10c/0x1d8
-[  981.281098] [c0000001d10b7d40] [c00000000019b5e4] task_work_run+0xe0/0x16c
-[  981.281102] [c0000001d10b7d90] [c000000000022974] do_notify_resume+0x134/0x13c
-[  981.281107] [c0000001d10b7dc0] [c000000000032378] interrupt_exit_user_prepare_main+0x1ac/0x264
-[  981.281112] [c0000001d10b7e20] [c000000000032580] syscall_exit_prepare+0x150/0x178
-[  981.281116] [c0000001d10b7e50] [c00000000000d068] system_call_vectored_common+0x168/0x2ec
-[  981.281122] --- interrupt: 3000 at 0x7fffaed4c11c
-[  981.281125] NIP:  00007fffaed4c11c LR: 0000000000000000 CTR: 0000000000000000
-[  981.281128] REGS: c0000001d10b7e80 TRAP: 3000   Not tainted  (6.8.0-rc2-next-20240130-auto)
-[  981.281131] MSR:  800000000000d033 &lt;SF,EE,PR,ME,IR,DR,RI,LE&gt;  CR: 48002402  XER: 00000000
-[  981.281139] IRQMASK: 0 
-[  981.281139] GPR00: 0000000000000034 00007fffec649770 00007fffaef07f00 0000000000000000 
-[  981.281139] GPR04: 0000000000000000 ffffffffff000000 0000000000000000 0000000000000001 
-[  981.281139] GPR08: 000000014cd61390 0000000000000000 0000000000000000 0000000000000000 
-[  981.281139] GPR12: 0000000000000000 00007fffaefbc140 000000000ee6b280 00007fffec649a30 
-[  981.281139] GPR16: 00007fffec649bd8 0000000118b66478 0000000000000000 0000000000000000 
-[  981.281139] GPR20: ffffffffffffffff ffffffffffffffff 0000000000000000 0000000000000000 
-[  981.281139] GPR24: 00007fffec64b0b0 0000000118b663d8 0000000118b66a58 0000000000000000 
-[  981.281139] GPR28: 000000014cd61250 0000000000000000 000000014cd61370 000000014cd61140 
-[  981.281175] NIP [00007fffaed4c11c] 0x7fffaed4c11c
-[  981.281177] LR [0000000000000000] 0x0
-[  981.281179] --- interrupt: 3000</pre>
-    <p></p>
-    <pre class="moz-signature" cols="72">-- 
-Regards,
-Tasmiya Nalatwad
-IBM Linux Technology Center</pre>
-  </body>
-</html>
-
---------------GtbxVLCHLhoZf0MKOpgPM1lZ--
+  Thomas
 
