@@ -2,63 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30BCF84A651
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Feb 2024 21:52:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C3AC84AA5C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Feb 2024 00:13:22 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gQSKBB1a;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Bag10mqg;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TTJTw15NBz3cRY
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Feb 2024 07:52:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TTMcc3HS7z3c75
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Feb 2024 10:13:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gQSKBB1a;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Bag10mqg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TTJTB1KHdz30Np
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Feb 2024 07:51:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TTMbp083Zz2ytg
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Feb 2024 10:12:37 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 4AF4D61283
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Feb 2024 20:51:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC40DC433C7
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Feb 2024 20:51:36 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id DAB03612B7;
+	Mon,  5 Feb 2024 23:12:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C61C433C7;
+	Mon,  5 Feb 2024 23:12:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707166296;
-	bh=rbxfWPsAtsZkwAub+b6KRhh6zPgaO8+Nsj7bKR2m5RM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=gQSKBB1auVt0+2i1wF9el62IAUkh4PeL0/sd2OjWkiV52ekTZFcXWz9X1ePXPXA3R
-	 3xiLneomSrhi0rvZm7fvIS94AFFbrPjE9vfY3vqBlTbo6U202xyk8qz5fabVfyZFFc
-	 +LEZTedFJ/GMXteRffOyJpwkNmrt5lhm1ExY81vW5OTDtyVlJ/B8PUThs0l1AnChu9
-	 kVIfSrZ8jyH8sLN+/uaOqGAwhKcUcPaUcmpRwR5EPpIijVKGEmtugZmDDFiitJllYI
-	 ClMllxJdWTGCL3M7Uac7F/Ei2FAGASPRVok1n1kDHZNiLOMzsxKX/S7tv4PG+NQhcJ
-	 5oYI/r14MPTOA==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2d090c83d45so34718081fa.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Feb 2024 12:51:36 -0800 (PST)
-X-Gm-Message-State: AOJu0YxJdhAqHjrxZLU3D4ahK3R54urwVgrg9HPV5Au8Qf/HdUosnPIZ
-	xoNz7QGoeSptUVi6siwJ9hPcUDa98h9apoTOP/p35JlqYw9o7YnovZEcCSwdGwfmZPsqZwkDA4Z
-	oe/4R1Q9rOQYdLcCxiaFfyd1ZFNo=
-X-Google-Smtp-Source: AGHT+IH48mHUOfbKPsHz4ex522m4Efo9yfxYkbY+WPFm87RC+2HZW07sdB9JpcI7VvmtbRlov+g35Jw+FX0st/t6jd4=
-X-Received: by 2002:a2e:920d:0:b0:2d0:af09:e3d7 with SMTP id
- k13-20020a2e920d000000b002d0af09e3d7mr580084ljg.41.1707166295433; Mon, 05 Feb
- 2024 12:51:35 -0800 (PST)
+	s=k20201202; t=1707174753;
+	bh=OqDQTVaTAC7P8L+gci1WqEUJDMaXntqkOBZoBUDrdLI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=Bag10mqgJTqDDZ2nf/rhFKcRX46JasJnfMnqmkVPvxLV0Z9VtKH/VnN5cSPWYAUH1
+	 vS9wtjSuSeG54Ovqhes4aNpS+JMvTymxRgkpM15XDK8WL8gNq69HF4DltQUt39KNHl
+	 JmXk2S1NAMN5SDpCacdseKINzcA9VVg15H0Vkejx9uz5FcDhBqBN77cFIN5ucOyBFR
+	 QGiB0godWa6MmqczYSOEzz/43UqpTUoTuCF/IX9UkSHRfP94WiQMGmhbfKMKeQmHYP
+	 vZFqE4lHtwzWpRD1z1/w/GppnhyKJIz3o7b2WRFCrQctk1h1l6482/+QoFoHfiaGLj
+	 mHo2ki2u8ezcg==
+Date: Mon, 5 Feb 2024 17:12:31 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
+Subject: Re: [PATCH v2 1/4] PCI/AER: Store more information in aer_err_info
+Message-ID: <20240205231231.GA830643@bhelgaas>
 MIME-Version: 1.0
-References: <20231120232332.4100288-1-masahiroy@kernel.org>
- <CX42TU4QHS1Z.A0UUHMDAMZOL@wheely> <ZbjHTMhQ4Z9lRR6L@t14s>
- <87v873870m.fsf@mail.lhotse> <CAASaF6w9SRoj+Kn6=UaReBNNfL_rrKo-4rvtCj=iF4Nd3Zpw-g@mail.gmail.com>
-In-Reply-To: <CAASaF6w9SRoj+Kn6=UaReBNNfL_rrKo-4rvtCj=iF4Nd3Zpw-g@mail.gmail.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 6 Feb 2024 05:50:58 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQe5SounO60gyYE_3e-M0cAAgT=9jac_SLcR0i9BeEgDQ@mail.gmail.com>
-Message-ID: <CAK7LNAQe5SounO60gyYE_3e-M0cAAgT=9jac_SLcR0i9BeEgDQ@mail.gmail.com>
-Subject: Re: [PATCH] powerpc: add crtsavres.o to always-y instead of extra-y
-To: Jan Stancek <jstancek@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240125062802.50819-2-qingshun.wang@linux.intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,87 +57,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Tom Rix <trix@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Miaohe Lin <linmiaohe@huawei.com>, Alison Schofield <alison.schofield@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, linux-pci@vger.kernel.org, erwin.tsaur@intel.com, Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>, chao.p.peng@linux.intel.com, Ira Weiny <ira.weiny@intel.com>, Davidlohr Bueso <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>, linux-acpi@vger.kernel.org, Len Brown <lenb@kernel.org>, Robert Richter <rrichter@amd.com>, Borislav Petkov <bp@alien8.de>, Jonathan Cameron <jonathan.cameron@huawei.com>, Bjorn Helgaas <bhelgaas@google.com>, Dan Williams <dan.j.williams@intel.com>, linux-edac@vger.kernel.org, Tony Luck <tony.luck@intel.com>, feiting.wanyan@intel.com, qingshun.wang@intel.com, Adam Preble <adam.c.preble@intel.com>, Mahesh J Salgaonk
+ ar <mahesh@linux.ibm.com>, Li Yang <leoyang.li@nxp.com>, Lukas Wunner <lukas@wunner.de>, James Morse <james.morse@arm.com>, linuxppc-dev@lists.ozlabs.org, Shiju Jose <shiju.jose@huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Feb 5, 2024 at 10:22=E2=80=AFPM Jan Stancek <jstancek@redhat.com> w=
-rote:
->
-> On Mon, Feb 5, 2024 at 12:50=E2=80=AFPM Michael Ellerman <mpe@ellerman.id=
-.au> wrote:
-> >
-> > Jan Stancek <jstancek@redhat.com> writes:
-> > > On Tue, Nov 21, 2023 at 10:51:34AM +1000, Nicholas Piggin wrote:
-> > >>On Tue Nov 21, 2023 at 9:23 AM AEST, Masahiro Yamada wrote:
-> > >>> crtsavres.o is linked to modules. However, as explained in commit
-> > >>> d0e628cd817f ("kbuild: doc: clarify the difference between extra-y
-> > >>> and always-y"), 'make modules' does not build extra-y.
-> > >>>
-> > >>> For example, the following command fails:
-> > >>>
-> > >>>   $ make ARCH=3Dpowerpc LLVM=3D1 KBUILD_MODPOST_WARN=3D1 mrproper p=
-s3_defconfig modules
-> > >>>     [snip]
-> > >>>     LD [M]  arch/powerpc/platforms/cell/spufs/spufs.ko
-> > >>>   ld.lld: error: cannot open arch/powerpc/lib/crtsavres.o: No such =
-file or directory
-> > >>>   make[3]: *** [scripts/Makefile.modfinal:56: arch/powerpc/platform=
-s/cell/spufs/spufs.ko] Error 1
-> > >>>   make[2]: *** [Makefile:1844: modules] Error 2
-> > >>>   make[1]: *** [/home/masahiro/workspace/linux-kbuild/Makefile:350:=
- __build_one_by_one] Error 2
-> > >>>   make: *** [Makefile:234: __sub-make] Error 2
-> > >>>
-> > >>
-> > >>Thanks. Is this the correct Fixes tag?
-> > >>
-> > >>Fixes: d0e628cd817f ("powerpc/64: Do not link crtsavres.o in vmlinux"=
-)
-> > >>
-> > >>Hmm, looks like LLD might just do this now automatically for us
-> > >>too without --save-restore-funcs (https://reviews.llvm.org/D79977).
-> > >>But we probably still need it for older versions, so we still need
-> > >>your patch.
-> > >
-> > > Hi,
-> > >
-> > > I'm still seeing the error of crtsavres.o missing when building exter=
-nal modules
-> > > after "make LLVM=3D1 modules_prepare". Should it be built also in arc=
-hprepare?
-> >
-> > Or modules_prepare?
-> >
-> > Example patch below.
->
-> I tested your patch with my setup and that works for me as well.
->
+On Thu, Jan 25, 2024 at 02:27:59PM +0800, Wang, Qingshun wrote:
+> When Advisory Non-Fatal errors are raised, both correctable and
+> uncorrectable error statuses will be set. The current kernel code cannot
+> store both statuses at the same time, thus failing to handle ANFE properly.
+> In addition, to avoid clearing UEs that are not ANFE by accident, UE
+> severity and Device Status also need to be recorded: any fatal UE cannot
+> be ANFE, and if Fatal/Non-Fatal Error Detected is set in Device Status, do
+> not take any assumption and let UE handler to clear UE status.
+> 
+> Store status and mask of both correctable and uncorrectable errors in
+> aer_err_info. The severity of UEs and the values of the Device Status
+> register are also recorded, which will be used to determine UEs that should
+> be handled by the ANFE handler. Refactor the rest of the code to use
+> cor/uncor_status and cor/uncor_mask fields instead of status and mask
+> fields.
 
+There's a lot going on in this patch.  Could it possibly be split up a
+bit, e.g., first tease apart aer_err_info.status/.mask into
+.cor_status/mask and .uncor_status/mask, then add .uncor_severity,
+then add the device_status bit separately?  If it could be split up, I
+think the ANFE case would be easier to see.
 
+Thanks a lot for working on this area!
 
-
-Please note 'make ARCH=3Dpowerpc clean' will remove  '*.o'
-files globally.
-
-
-Kbuild promised you would still be able to compile external modules
-after 'make clean' (until you run 'make mrproper'), but
-that would not work in this case.
-
-So, the external module support for powerpc
-is broken in another way, already.
-
-
-Perhaps, an easy workaround might be to change
-the suffix, but I did not test it at all.
-
-mv arch/powerpc/lib/crtsavres.o arch/powerpc/lib/crtsavres.o.do_not_remove_=
-me
-
-
-
-
---=20
-Best Regards
-Masahiro Yamada
+Bjorn
