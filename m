@@ -2,85 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E17C784AE39
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Feb 2024 06:55:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C973C84AE80
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Feb 2024 07:51:08 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VvXGsM/z;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TZLfeizE;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TTXXp5tmwz3cN9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Feb 2024 16:55:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TTYmp5Qszz3cLV
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Feb 2024 17:51:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VvXGsM/z;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TZLfeizE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::433; helo=mail-pf1-x433.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TTXX03hMvz2ykn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Feb 2024 16:54:56 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4164mG62032726;
-	Tue, 6 Feb 2024 05:54:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=K/rE5GczZn35+EI1Ig5WvAKiv6r+8shRKoDp1po9RBs=;
- b=VvXGsM/zQPt/x7B7jHzDBEg4HAeDFR5hk9O+bjPbJbhmnTrgfLQR5c4n13/twqsCJ0xT
- bygUE+6UcTVbCnPKVqQDzl1N2PfrOQd26rYgwYY+lRcwtP8hxWyVaYUce094CFP5rFyT
- 4R8eMsLPAaeuIZ7GQvih/1vFpO4m4SC9JH+3CwDrsTScFKUPP2c/HG8JAs1dxnCkVwWj
- dSKo+pHxynfxuLUgBdVMlEMdAvSSEEFt13bUXPUASckBhkpMjRkeExtLsn+pRgnHj34D
- 5xIC2ocyIJG+waVJyd4FlLgDVAqrSva6BBdPiI5+Ok4EU4TRcnHvkpsdpI7ClAwHR6UC cQ== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w3e2c970n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 Feb 2024 05:54:46 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41636n3e005756;
-	Tue, 6 Feb 2024 05:54:45 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3w21akd0r4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 Feb 2024 05:54:45 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4165shVW655930
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 6 Feb 2024 05:54:43 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A700620043;
-	Tue,  6 Feb 2024 05:54:43 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A0FD620040;
-	Tue,  6 Feb 2024 05:54:42 +0000 (GMT)
-Received: from [9.179.0.168] (unknown [9.179.0.168])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  6 Feb 2024 05:54:42 +0000 (GMT)
-Message-ID: <5306f4b2-5f94-4253-95b2-9da6d01be59d@linux.ibm.com>
-Date: Tue, 6 Feb 2024 11:24:41 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] powerpc: Add Power11 architected and raw mode
-Content-Language: en-US
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, mpe@ellerman.id.au
-References: <20240205075808.174477-1-maddy@linux.ibm.com>
- <8734u7b8td.fsf@kernel.org>
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-In-Reply-To: <8734u7b8td.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: GPpPaHT-glOVMFlEofaed9Ml1begZlHB
-X-Proofpoint-ORIG-GUID: GPpPaHT-glOVMFlEofaed9Ml1begZlHB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-05_18,2024-01-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- priorityscore=1501 bulkscore=0 phishscore=0 mlxscore=0 suspectscore=0
- impostorscore=0 spamscore=0 clxscore=1011 adultscore=0 mlxlogscore=999
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402060039
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TTYm0730Jz2yk8
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Feb 2024 17:50:23 +1100 (AEDT)
+Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-6e055c89dd9so212550b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Feb 2024 22:50:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707202220; x=1707807020; darn=lists.ozlabs.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/kdFePQ6nG6QtYf63LeF1ar0dDM9VOG+LaoM7J5+2Vc=;
+        b=TZLfeizEYRBf2Z1gOL2SS9qGLJUOXPLoTjk5uTMUpz5izjEYwaLA+3iXSzahFGAnhH
+         bmbruW5H3L9RrGuuiEpowBGp9XeTHBZqrnr4cJuHj974Tfp/0ieuVEx9FXHG9Kvd1c0y
+         V5tmbwj0WYhMlLbOay9oUNLrfbUexdiJ17Q3c2p0OyLeKqmzZlwrmgDahytt8XY7opVp
+         ae3FZu8fzTkGTxpz1KeOP/VvsGfhWQcff3KxZKLPi0QZKA3mtqcjYRbv+ZywuhF7vPdV
+         bEWzNhMdYVTUHSnCGv/ODKENUnvoz90OUOoTpuPIj5dh2WS976bcp+9IZtu1/M+XuMDx
+         FsOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707202220; x=1707807020;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=/kdFePQ6nG6QtYf63LeF1ar0dDM9VOG+LaoM7J5+2Vc=;
+        b=i+Eggk9iiPUtjWvJWczfBCyNde7Bo04vuVk0FJlVTNwVnG5Guwc4hgsH8SGWTclitF
+         LRCMGW/EMXag8L2Rznj3T/xyJsRJYsDUlK12dgk+6t+h+uWeQ6R/fQ8qTygoY6iGkhkS
+         1JW2NAsdQoe9d2GYIsPPZz/mTkMNhgIatHwqNj+TkdNwVv98ROvU9bbVCbBxw8gRaOg/
+         3zx1DhBbW9o0V6K2pO25oSrOHAmyDxUpvHx7YBJENbH8CZL4n1Wccu+xqTD8sqAgMg6E
+         MQ1Y+SUA1wDHWrcy3JslY5lxlZM9xbQU5+GisnmhQPfXLTfhvOsIuh3EzvA36q4tmGUn
+         mvAg==
+X-Gm-Message-State: AOJu0Yyf/iprke7od6y3eH10QBaiHAYuh+So2R/Eg7t9vwDteuK/nieu
+	iknqcsBmHZlDEWnILnLRWpzUtBg0cdj7jBKtTuOiKaldatEO3jDg
+X-Google-Smtp-Source: AGHT+IGvKjwL4W6wJxS1qhH+LUiqHU6y2PSnrtaNe+q1U78MQ6ejPupj7SdHUe8tv5SU8x3TR8Jtww==
+X-Received: by 2002:a62:ce0c:0:b0:6e0:44fd:687c with SMTP id y12-20020a62ce0c000000b006e044fd687cmr2639380pfg.6.1707202219680;
+        Mon, 05 Feb 2024 22:50:19 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCUvLpbZd5PGRt9Lm8N+YxGtxYwm7xHfKI7AfNe4JnD0ZcHDGb4AiM6NCATC6xn8QdWQ7NnNJLWk+kkBwOTxc56IZtQtmY8DKXtgHY1+qeUgs9uAsMQyiZ+X/vqtR2tV2xXah+hz1+oZB6q494nfuF8de38wjFHr0LvBPN4cE0PqFb1isJBeXY0+ZINCzwerxHiffe4gmQ8/5cXyG5x0zefEY564nhd/WYeamEjd6j7LO9LnyY03yySaesDTzrqzJXlg60ITFn3aaZgs55To53DiDkTS87aw5kJdm0gWt3+p7XWYJD2wcv23dZSRQdF4hMVBXOgXhMYh7qauuz7L43+RUiNHxAlCqso7yFLpK22NcpIl6M8oANLjVq6E6a7DDjUzPYHWrB325Ei3onpNjXC2063fiP4bW98HdFOdDRi1wOQiCpBBIgP6As8rsl2aebzRWNh5Rd6Azs95pkeONk7DWagx9+geb8Rp43+j7HU=
+Received: from localhost ([1.146.47.2])
+        by smtp.gmail.com with ESMTPSA id x23-20020aa784d7000000b006e04f2a438bsm1025925pfn.105.2024.02.05.22.50.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 Feb 2024 22:50:19 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 06 Feb 2024 16:50:08 +1000
+Message-Id: <CYXSOBQAP9FF.3GPR99T207WJY@wheely>
+Subject: Re: [kvm-unit-tests PATCH v2 4/9] migration: use a more robust way
+ to wait for background job
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Marc Hartmayer" <mhartmay@linux.ibm.com>, "Thomas Huth"
+ <thuth@redhat.com>
+X-Mailer: aerc 0.15.2
+References: <20240202065740.68643-1-npiggin@gmail.com>
+ <20240202065740.68643-5-npiggin@gmail.com> <87y1bzx8ji.fsf@linux.ibm.com>
+In-Reply-To: <87y1bzx8ji.fsf@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,302 +83,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Laurent Vivier <lvivier@redhat.com>, linux-s390@vger.kernel.org, Nico Boehr <nrb@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org, Shaoqin
+ Huang <shahuang@redhat.com>, Andrew Jones <andrew.jones@linux.dev>, Eric Auger <eric.auger@redhat.com>, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Claudio
+ Imbrenda <imbrenda@linux.ibm.com>, Alexandru Elisei <alexandru.elisei@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue Feb 6, 2024 at 12:58 AM AEST, Marc Hartmayer wrote:
+> On Fri, Feb 02, 2024 at 04:57 PM +1000, Nicholas Piggin <npiggin@gmail.co=
+m> wrote:
+> > Starting a pipeline of jobs in the background does not seem to have
+> > a simple way to reliably find the pid of a particular process in the
+> > pipeline (because not all processes are started when the shell
+> > continues to execute).
+> >
+> > The way PID of QEMU is derived can result in a failure waiting on a
+> > PID that is not running. This is easier to hit with subsequent
+> > multiple-migration support. Changing this to use $! by swapping the
+> > pipeline for a fifo is more robust.
+> >
+> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> > ---
+>
+> [=E2=80=A6snip=E2=80=A6]
+>
+> > =20
+> > +	# Wait until the destination has created the incoming and qmp sockets
+> > +	while ! [ -S ${migsock} ] ; do sleep 0.1 ; done
+> > +	while ! [ -S ${qmp2} ] ; do sleep 0.1 ; done
+>
+> There should be timeout implemented, otherwise we might end in an
+> endless loop in case of a bug. Or is the global timeout good enough to
+> handle this situation?
 
-On 2/5/24 2:13 PM, Aneesh Kumar K.V wrote:
-> Madhavan Srinivasan <maddy@linux.ibm.com> writes:
->
->> reg.h is updated with Power11 pvr. pvr_mask value of 0x0F000007
->> means we are arch v3.1 compliant.
->>
-> If it is called arch v3.1, it will conflict with.
->
->
-> #define PVR_ARCH_31	0x0f000006
+I was going to say it's not worthwhile since we can't recover, but
+actually printing where the timeout happens if nothing else would
+be pretty helpful to gather and diagnose problems especially ones
+we can't reproduce locally. So, yeah good idea.
 
-Nice catch. My bad, missed to include a macro for new logical PVR in the 
-patch. Will fix it
+We have a bunch of potential hangs where we don't do anything already
+though. Sadly it doesn't look like $BASH_LINENO can give anything
+useful of the interrupted context from a SIGHUP trap. We might be able
+to do something like -
 
->
->> This is used by phyp and
->> kvm when booting as a pseries guest to detect and enable
->> the appropriate hwcap, facility bits and PMU related fields.
->> Copied most of fields from Power10 table entry and added relevant
->> Power11 setup/restore and device tree routines.
->>
->> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
->> ---
->> Changelog v1:
->> - no change in this patch.
->>
->>   arch/powerpc/include/asm/cpu_setup.h      |  2 ++
->>   arch/powerpc/include/asm/cputable.h       |  3 ++
->>   arch/powerpc/include/asm/mce.h            |  1 +
->>   arch/powerpc/include/asm/mmu.h            |  1 +
->>   arch/powerpc/include/asm/reg.h            |  1 +
->>   arch/powerpc/kernel/cpu_setup_power.c     | 10 +++++++
->>   arch/powerpc/kernel/cpu_specs_book3s_64.h | 34 +++++++++++++++++++++++
->>   arch/powerpc/kernel/dt_cpu_ftrs.c         | 15 ++++++++++
->>   arch/powerpc/kernel/mce_power.c           |  5 ++++
->>   arch/powerpc/kernel/prom_init.c           | 10 ++++++-
->>   10 files changed, 81 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/powerpc/include/asm/cpu_setup.h b/arch/powerpc/include/asm/cpu_setup.h
->> index 30e2fe389502..ce800650bb8b 100644
->> --- a/arch/powerpc/include/asm/cpu_setup.h
->> +++ b/arch/powerpc/include/asm/cpu_setup.h
->> @@ -9,10 +9,12 @@ void __setup_cpu_power7(unsigned long offset, struct cpu_spec *spec);
->>   void __setup_cpu_power8(unsigned long offset, struct cpu_spec *spec);
->>   void __setup_cpu_power9(unsigned long offset, struct cpu_spec *spec);
->>   void __setup_cpu_power10(unsigned long offset, struct cpu_spec *spec);
->> +void __setup_cpu_power11(unsigned long offset, struct cpu_spec *spec);
->>   void __restore_cpu_power7(void);
->>   void __restore_cpu_power8(void);
->>   void __restore_cpu_power9(void);
->>   void __restore_cpu_power10(void);
->> +void __restore_cpu_power11(void);
->>   
->>   void __setup_cpu_e500v1(unsigned long offset, struct cpu_spec *spec);
->>   void __setup_cpu_e500v2(unsigned long offset, struct cpu_spec *spec);
->> diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
->> index 8765d5158324..3bd6e6e0224c 100644
->> --- a/arch/powerpc/include/asm/cputable.h
->> +++ b/arch/powerpc/include/asm/cputable.h
->> @@ -454,6 +454,9 @@ static inline void cpu_feature_keys_init(void) { }
->>   	    CPU_FTR_ARCH_300 | CPU_FTR_ARCH_31 | \
->>   	    CPU_FTR_DAWR | CPU_FTR_DAWR1 | \
->>   	    CPU_FTR_DEXCR_NPHIE)
->> +
->> +#define CPU_FTRS_POWER11	CPU_FTRS_POWER10
->>
-> One of the problem with that is we have code that does the below in kvm.
->
-> 	if (cpu_has_feature(CPU_FTR_ARCH_31))
-> 		host_pcr_bit = PCR_ARCH_31;
->
->
-> How should we handle that?
+    timeout_handler() {
+        echo "Timeout $timeout_msg"
+	exit
+    }
 
-This is my understanding and kindly advice if this assumption is wrong.
-IIUC, we dont see different host_pcr_bit values for Power10 and Power11 
-at this point,
-but that said, if we see a change, we could add additional check with 
-base pvr value to
-differentiate the value to set right?
+    trap timeout_handler HUP
+
+    timeout_msg=3D"waiting for destination migration socket to be created"
+    while ! [ -S ${migsock} ] ; do sleep 0.1 ; done
+    timeout_msg=3D"waiting for destination QMP socket to be created"
+    while ! [ -S ${qmp2} ] ; do sleep 0.1 ; done
+    timeout_msg=3D
+
+Unless you have any better ideas. Not sure if there's some useful
+bash debugging options that can be used. Other option is adding timeout
+checks in loops and blocking commands... not sure if that's simpler and
+less error prone though.
+
+Anyway we have a bunch of potential hangs and timeouts that aren't
+handled already though, so I might leave this out for a later pass at
+it unless we come up with a really nice easy way to go.
+
+Thanks,
+Nick
 
 >
->> +
->>   #define CPU_FTRS_CELL	(CPU_FTR_LWSYNC | \
->>   	    CPU_FTR_PPCAS_ARCH_V2 | CPU_FTR_CTRL | \
->>   	    CPU_FTR_ALTIVEC_COMP | CPU_FTR_MMCRA | CPU_FTR_SMT | \
->> diff --git a/arch/powerpc/include/asm/mce.h b/arch/powerpc/include/asm/mce.h
->> index c9f0936bd3c9..241eee743fc5 100644
->> --- a/arch/powerpc/include/asm/mce.h
->> +++ b/arch/powerpc/include/asm/mce.h
->> @@ -257,6 +257,7 @@ long __machine_check_early_realmode_p7(struct pt_regs *regs);
->>   long __machine_check_early_realmode_p8(struct pt_regs *regs);
->>   long __machine_check_early_realmode_p9(struct pt_regs *regs);
->>   long __machine_check_early_realmode_p10(struct pt_regs *regs);
->> +long __machine_check_early_realmode_p11(struct pt_regs *regs);
->>   #endif /* CONFIG_PPC_BOOK3S_64 */
->>   
->>   #ifdef CONFIG_PPC_BOOK3S_64
->> diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
->> index d8b7e246a32f..61ebe5eff2c9 100644
->> --- a/arch/powerpc/include/asm/mmu.h
->> +++ b/arch/powerpc/include/asm/mmu.h
->> @@ -133,6 +133,7 @@
->>   #define MMU_FTRS_POWER8		MMU_FTRS_POWER6
->>   #define MMU_FTRS_POWER9		MMU_FTRS_POWER6
->>   #define MMU_FTRS_POWER10	MMU_FTRS_POWER6
->> +#define MMU_FTRS_POWER11	MMU_FTRS_POWER6
->>   #define MMU_FTRS_CELL		MMU_FTRS_DEFAULT_HPTE_ARCH_V2 | \
->>   				MMU_FTR_CI_LARGE_PAGE
->>   #define MMU_FTRS_PA6T		MMU_FTRS_DEFAULT_HPTE_ARCH_V2 | \
->> diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
->> index 7fd09f25452d..7a7aa24bf57a 100644
->> --- a/arch/powerpc/include/asm/reg.h
->> +++ b/arch/powerpc/include/asm/reg.h
->> @@ -1364,6 +1364,7 @@
->>   #define PVR_HX_C2000	0x0066
->>   #define PVR_POWER9	0x004E
->>   #define PVR_POWER10	0x0080
->> +#define PVR_POWER11	0x0082
->>   #define PVR_BE		0x0070
->>   #define PVR_PA6T	0x0090
->>   
->> diff --git a/arch/powerpc/kernel/cpu_setup_power.c b/arch/powerpc/kernel/cpu_setup_power.c
->> index 98bd4e6c1770..8c24fc67d90f 100644
->> --- a/arch/powerpc/kernel/cpu_setup_power.c
->> +++ b/arch/powerpc/kernel/cpu_setup_power.c
->> @@ -286,3 +286,13 @@ void __restore_cpu_power10(void)
->>   	init_HFSCR();
->>   	init_PMU_HV();
->>   }
->> +
->> +void __setup_cpu_power11(unsigned long offset, struct cpu_spec *t)
->> +{
->> +	return __setup_cpu_power10(offset, t);
->> +}
->> +
->> +void __restore_cpu_power11(void)
->> +{
->> +	return __restore_cpu_power10();
->> +}
->>
-> Do we need to duplicate these functions if they don't add anything
-> extra?
+> > +
+> >  	qmp ${qmp1} '"migrate", "arguments": { "uri": "unix:'${migsock}'" }' =
+> ${qmpout1}
+> > =20
+> >  	# Wait for the migration to complete
+> > --=20
+> > 2.42.0
+> >
+> >
 
-What will be the preference in case of macros? Should we re-use
-power10 macros in the table instead of defining new macros.
-
-Maddy
-
->
->> diff --git a/arch/powerpc/kernel/cpu_specs_book3s_64.h b/arch/powerpc/kernel/cpu_specs_book3s_64.h
->> index 3ff9757df4c0..886fdfc7d05f 100644
->> --- a/arch/powerpc/kernel/cpu_specs_book3s_64.h
->> +++ b/arch/powerpc/kernel/cpu_specs_book3s_64.h
->> @@ -60,6 +60,9 @@
->>   				 PPC_FEATURE2_ISEL | PPC_FEATURE2_TAR | \
->>   				 PPC_FEATURE2_VEC_CRYPTO)
->>   
->> +#define COMMON_USER_POWER11	COMMON_USER_POWER10
->> +#define COMMON_USER2_POWER11	COMMON_USER2_POWER10
->> +
->>   static struct cpu_spec cpu_specs[] __initdata = {
->>   	{	/* PPC970 */
->>   		.pvr_mask		= 0xffff0000,
->> @@ -281,6 +284,20 @@ static struct cpu_spec cpu_specs[] __initdata = {
->>   		.cpu_restore		= __restore_cpu_power10,
->>   		.platform		= "power10",
->>   	},
->> +	{	/* 3.1-compliant processor, i.e. Power11 "architected" mode */
->> +		.pvr_mask		= 0xffffffff,
->> +		.pvr_value		= 0x0f000007,
->> +		.cpu_name		= "Power11 (architected)",
->> +		.cpu_features		= CPU_FTRS_POWER11,
->> +		.cpu_user_features	= COMMON_USER_POWER11,
->> +		.cpu_user_features2	= COMMON_USER2_POWER11,
->> +		.mmu_features		= MMU_FTRS_POWER11,
->> +		.icache_bsize		= 128,
->> +		.dcache_bsize		= 128,
->> +		.cpu_setup		= __setup_cpu_power11,
->> +		.cpu_restore		= __restore_cpu_power11,
->> +		.platform		= "power11",
->> +	},
->>   	{	/* Power7 */
->>   		.pvr_mask		= 0xffff0000,
->>   		.pvr_value		= 0x003f0000,
->> @@ -451,6 +468,23 @@ static struct cpu_spec cpu_specs[] __initdata = {
->>   		.machine_check_early	= __machine_check_early_realmode_p10,
->>   		.platform		= "power10",
->>   	},
->> +	{	/* Power11 */
->> +		.pvr_mask		= 0xffff0000,
->> +		.pvr_value		= 0x00820000,
->> +		.cpu_name		= "Power11 (raw)",
->> +		.cpu_features		= CPU_FTRS_POWER11,
->> +		.cpu_user_features	= COMMON_USER_POWER11,
->> +		.cpu_user_features2	= COMMON_USER2_POWER11,
->> +		.mmu_features		= MMU_FTRS_POWER11,
->> +		.icache_bsize		= 128,
->> +		.dcache_bsize		= 128,
->> +		.num_pmcs		= 6,
->> +		.pmc_type		= PPC_PMC_IBM,
->> +		.cpu_setup		= __setup_cpu_power11,
->> +		.cpu_restore		= __restore_cpu_power11,
->> +		.machine_check_early	= __machine_check_early_realmode_p11,
->> +		.platform		= "power11",
->> +	},
->>   	{	/* Cell Broadband Engine */
->>   		.pvr_mask		= 0xffff0000,
->>   		.pvr_value		= 0x00700000,
->> diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
->> index c3fb9fdf5bd7..2b64dafa268f 100644
->> --- a/arch/powerpc/kernel/dt_cpu_ftrs.c
->> +++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
->> @@ -450,6 +450,11 @@ static int __init feat_enable_pmu_power10(struct dt_cpu_feature *f)
->>   	return 1;
->>   }
->>   
->> +static int __init feat_enable_pmu_power11(struct dt_cpu_feature *f)
->> +{
->> +	return feat_enable_pmu_power10(f);
->> +}
->> +
->>   static int __init feat_enable_mce_power10(struct dt_cpu_feature *f)
->>   {
->>   	cur_cpu_spec->platform = "power10";
->> @@ -458,6 +463,14 @@ static int __init feat_enable_mce_power10(struct dt_cpu_feature *f)
->>   	return 1;
->>   }
->>   
->> +static int __init feat_enable_mce_power11(struct dt_cpu_feature *f)
->> +{
->> +	cur_cpu_spec->platform = "power11";
->> +	cur_cpu_spec->machine_check_early = __machine_check_early_realmode_p11;
->> +
->> +	return 1;
->> +}
->> +
->>   static int __init feat_enable_tm(struct dt_cpu_feature *f)
->>   {
->>   #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
->> @@ -648,8 +661,10 @@ static struct dt_cpu_feature_match __initdata
->>   	{"pc-relative-addressing", feat_enable, 0},
->>   	{"machine-check-power9", feat_enable_mce_power9, 0},
->>   	{"machine-check-power10", feat_enable_mce_power10, 0},
->> +	{"machine-check-power11", feat_enable_mce_power11, 0},
->>   	{"performance-monitor-power9", feat_enable_pmu_power9, 0},
->>   	{"performance-monitor-power10", feat_enable_pmu_power10, 0},
->> +	{"performance-monitor-power11", feat_enable_pmu_power11, 0},
->>   	{"event-based-branch-v3", feat_enable, 0},
->>   	{"random-number-generator", feat_enable, 0},
->>   	{"system-call-vectored", feat_disable, 0},
->> diff --git a/arch/powerpc/kernel/mce_power.c b/arch/powerpc/kernel/mce_power.c
->> index 71e8f2a92e36..11f69bb402e7 100644
->> --- a/arch/powerpc/kernel/mce_power.c
->> +++ b/arch/powerpc/kernel/mce_power.c
->> @@ -789,3 +789,8 @@ long __machine_check_early_realmode_p10(struct pt_regs *regs)
->>   	return mce_handle_error(regs, srr1,
->>   			mce_p10_derror_table, mce_p10_ierror_table);
->>   }
->> +
->> +long __machine_check_early_realmode_p11(struct pt_regs *regs)
->> +{
->> +	return __machine_check_early_realmode_p10(regs);
->> +}
->> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
->> index e67effdba85c..895a3441223b 100644
->> --- a/arch/powerpc/kernel/prom_init.c
->> +++ b/arch/powerpc/kernel/prom_init.c
->> @@ -947,7 +947,7 @@ struct option_vector7 {
->>   } __packed;
->>   
->>   struct ibm_arch_vec {
->> -	struct { __be32 mask, val; } pvrs[14];
->> +	struct { __be32 mask, val; } pvrs[16];
->>   
->>   	u8 num_vectors;
->>   
->> @@ -1007,6 +1007,14 @@ static const struct ibm_arch_vec ibm_architecture_vec_template __initconst = {
->>   			.mask = cpu_to_be32(0xffff0000), /* POWER10 */
->>   			.val  = cpu_to_be32(0x00800000),
->>   		},
->> +		{
->> +			.mask = cpu_to_be32(0xffff0000), /* POWER11 */
->> +			.val  = cpu_to_be32(0x00820000),
->> +		},
->> +		{
->> +			.mask = cpu_to_be32(0xffffffff), /* all 3.1-compliant */
->> +			.val  = cpu_to_be32(0x0f000007),
->> +		},
->>   		{
->>   			.mask = cpu_to_be32(0xffffffff), /* all 3.1-compliant */
->>   			.val  = cpu_to_be32(0x0f000006),
->> -- 
->> 2.43.0
