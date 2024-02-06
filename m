@@ -2,60 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33A7B84BB59
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Feb 2024 17:48:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7559C84BBC3
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Feb 2024 18:24:26 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=S8h0y3hb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VbH/xjJY;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TTq2N0mXrz3cY2
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Feb 2024 03:48:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TTqqX2k6fz3cST
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Feb 2024 04:24:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=S8h0y3hb;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VbH/xjJY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.12; helo=mgamail.intel.com; envelope-from=qingshun.wang@linux.intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Wed, 07 Feb 2024 03:48:03 AEDT
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TTq1b1DsPz2xdp
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Feb 2024 03:48:02 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707238083; x=1738774083;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=USPZtu7vxjk1ebvcOxNJKhO0fXx2MLMuxDfhFtm/z84=;
-  b=S8h0y3hbwjW1B6CiFvhrJJ0hq1OwUafTLKNTFMaJEdyVhG+tUBffj1eB
-   Yr0e8nKkBBpC3TjKKZoqQoXmh8ttuNFDr6dboG2eFyxgOUHJpvk5dcI3i
-   H3mclX4dH8qi8ZnmGJy2Yh3HdIWZ/rlwRiUy64qUSPFPE9lKXQ8tJdVbP
-   SZ8FB6Hv01EIzX8vTiW/QFONfho5dItuvorHVQffop05km0+JYr/ES8bJ
-   uuCrwcaCVavzxak2Q/MBLJOF66fQWyv84nnvyLvOKtbi2LA5urfHfOao2
-   eOMrUj7zI+2IYrIgzos8gj2Z9ZdxBkWUjf5pa5fwfhWSXhNGEjDvOV9Gb
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10976"; a="12146639"
-X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
-   d="scan'208";a="12146639"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 08:46:56 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
-   d="scan'208";a="1102749"
-Received: from jingjing-mobl1.ccr.corp.intel.com (HELO localhost) ([10.254.215.110])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 08:46:48 -0800
-Date: Wed, 7 Feb 2024 00:46:39 +0800
-From: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Subject: Re: [PATCH v2 2/4] PCI/AER: Handle Advisory Non-Fatal properly
-Message-ID: <ay2cwgycgjfqz5jmteeijgjiuje2u62wozhnkr76ag4tny6vl4@upbmy22y3hcn>
-References: <20240125062802.50819-3-qingshun.wang@linux.intel.com>
- <20240205232616.GA831017@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TTqpk52HCz3c9G
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Feb 2024 04:23:42 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id D16ABCE14E7;
+	Tue,  6 Feb 2024 17:23:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C145DC433F1;
+	Tue,  6 Feb 2024 17:23:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707240217;
+	bh=po8vFxWrgnIMI30IcGK3wKjOx+diDmMTZZJBoYh+eQs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=VbH/xjJYNUgcSHYX8q6R3XOgMBMYdLFz0wwh7u9in+aDxvfieDaQsfcKyvc8IJljm
+	 b4KjHmApQTFpV3dO3iDbgzIq452iChe4Hlh+NbWkOfvbUZAwcqMJKOmdrdWJDvx820
+	 yGKAU6o3UzpUqJtxSEDdVVdgjfhrjOOzt539Zz72GbRfzqXZni2RnBmRWm0weRDqIa
+	 abarX5VsT/PfIoUpx71JSSklbKAA2HtBv69vFwRwxqV13L9xCWMblKCxtAmGpAIqwi
+	 8sqKs24ZwA9C+e3TEvivW9S6Jps4z6qQAk8w70V+oieQDehciCMb6nvmk5plKPIwiL
+	 i1EveBd1FnZ6A==
+Date: Tue, 6 Feb 2024 11:23:35 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
+Subject: Re: [PATCH v2 1/4] PCI/AER: Store more information in aer_err_info
+Message-ID: <20240206172335.GA872811@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240205232616.GA831017@bhelgaas>
+In-Reply-To: <2rfnevhnhylik4r6smr56uunsxweo7s5elo65sjhiztvxnr6bq@5fcyv22zxyyp>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,17 +62,50 @@ Cc: Miaohe Lin <linmiaohe@huawei.com>, Alison Schofield <alison.schofield@intel.
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Feb 05, 2024 at 05:26:16PM -0600, Bjorn Helgaas wrote:
-> In the subject, "properly" really doesn't convey information.  I think
-> this patch does two things:
+On Wed, Feb 07, 2024 at 12:41:41AM +0800, Wang, Qingshun wrote:
+> On Mon, Feb 05, 2024 at 05:12:31PM -0600, Bjorn Helgaas wrote:
+> > On Thu, Jan 25, 2024 at 02:27:59PM +0800, Wang, Qingshun wrote:
+> > > When Advisory Non-Fatal errors are raised, both correctable and
+> > > uncorrectable error statuses will be set. The current kernel code cannot
+> > > store both statuses at the same time, thus failing to handle ANFE properly.
+> > > In addition, to avoid clearing UEs that are not ANFE by accident, UE
+> > > severity and Device Status also need to be recorded: any fatal UE cannot
+> > > be ANFE, and if Fatal/Non-Fatal Error Detected is set in Device Status, do
+> > > not take any assumption and let UE handler to clear UE status.
+> > > 
+> > > Store status and mask of both correctable and uncorrectable errors in
+> > > aer_err_info. The severity of UEs and the values of the Device Status
+> > > register are also recorded, which will be used to determine UEs that should
+> > > be handled by the ANFE handler. Refactor the rest of the code to use
+> > > cor/uncor_status and cor/uncor_mask fields instead of status and mask
+> > > fields.
+> > 
+> > There's a lot going on in this patch.  Could it possibly be split up a
+> > bit, e.g., first tease apart aer_err_info.status/.mask into
+> > .cor_status/mask and .uncor_status/mask, then add .uncor_severity,
+> > then add the device_status bit separately?  If it could be split up, I
+> > think the ANFE case would be easier to see.
 > 
->   - Prints error bits that might be ANFE 
->   - Clears UNCOR_STATUS bits that were previously not cleared
-> 
-> Maybe the subject line could say something about those (clearing
-> UNCOR_STATUS might be more important, or maybe this could even be
-> split into two patches so we could see both).
-> 
+> Thanks for the feedback! Will split it up into two pacthes in the next
+> version.
 
-Good idea, thanks. I think splitting it into two patches would be the
-better approach.
+Or even three:
+
+  1) tease apart aer_err_info.status/.mask into .cor_status/mask and
+     .uncor_status/mask
+
+  2) add .uncor_severity
+
+  3) add device_status
+
+Looking at this again, I'm a little confused about 2) and 3).  I see
+the new read of PCI_ERR_UNCOR_SEVER into .uncor_severity, but there's
+no actual *use* of it.
+
+Same for 3), I see the new read of PCI_EXP_DEVSTA, but AFAICS there's
+no use of that value.
+
+We should have the addition of these new values in the same patch
+that *uses* them.
+
+Bjorn
