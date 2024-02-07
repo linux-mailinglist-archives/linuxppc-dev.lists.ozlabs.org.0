@@ -1,73 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38CCC84C34D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Feb 2024 04:53:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF20484C4EF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Feb 2024 07:23:15 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=j/6Rzf2S;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RyihPSvJ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TV5nC0ZrDz3cPd
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Feb 2024 14:53:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TV9695Hbkz3cDS
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Feb 2024 17:23:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=j/6Rzf2S;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RyihPSvJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::332; helo=mail-ot1-x332.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=alexs@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TV5mP2tJjz3bl6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Feb 2024 14:52:36 +1100 (AEDT)
-Received: by mail-ot1-x332.google.com with SMTP id 46e09a7af769-6e125818649so62476a34.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Feb 2024 19:52:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707277953; x=1707882753; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=D4A1AgCuiO2H1snsJBD2hb/LtLS7ShogAO5jmZ/U/8Y=;
-        b=j/6Rzf2SkIqvPaxwdyzcg3KGFM6k40anLt0u9TfXM631X21yRXM1wphiI6kXppmQ+Z
-         zhFF5kpUPtwoW0qWPet9Bz4w2PiFK/1k5sh7/gWIzdVIOSFTJP4Y9gXSWLTGly3Akjci
-         G2C/DegBTFNiqd1yPLOiksBb3EfjuMeBAhcNmPa5OZPxyBOZATd7vW/ozGW82u1DjkOx
-         CF1G+R8pf5MXTU7IYq4oojvgMqFZmRYbohkypeRaTs6KyFbv5KOPauauUD6A3+vVCQkm
-         F3fuv1S3QKIHoEgPKOx/rBUB4g44o2fSui17W7Eq1r1n0llNGrmXj6xkUwg9ovlCkFM7
-         59aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707277953; x=1707882753;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=D4A1AgCuiO2H1snsJBD2hb/LtLS7ShogAO5jmZ/U/8Y=;
-        b=Vq9OYGb3g7WVBuX9+4t5zH67vIvC8NBHlV6QN0yB460hsDckOmKERdswEgvqahjPh4
-         N9QzDpgrH13XxfonoJc6edx21CFWVcMUnNAyQU1wAN6YRRxYKx6Ve4Trq6u9f32HzT7d
-         DdhBsSUspDjvbsESXIfgHZx575BrnXAmUu3nqCroo9gVZrMg5/n98NXj0/xE57MzmPsA
-         CEsSNbDKNbavYKoKo/N/4SU+yEq7y4zM+uc7i0pGevgl6/725OUxC9svq4yhavVfB7rt
-         cCUS7oUr5oLB2KsdjsSo3r1hViseZ9jKsa6v0u9m1CGtSOgI5IVey4iZpQfKsn3WTUlM
-         Up5w==
-X-Gm-Message-State: AOJu0Yw0J2k4dvblDMVH+Z+vvatDUFbNSsH+jFopTz9qW+63aQaK8Ijm
-	VmV+2tFKlzbD4K8s1iOcNZ3i+JkxR/z7qSk1RR4EgQUH/r8oIw6ZWDGXDIY8
-X-Google-Smtp-Source: AGHT+IGhIoBJrwHtZVoK8x5NHmUGiFe4sp2PSx6xL+yUTXsXKbXni+IA3iHMZqbYON4wnT1JdCFCFg==
-X-Received: by 2002:a05:6359:4294:b0:178:756b:6bcb with SMTP id kp20-20020a056359429400b00178756b6bcbmr1830716rwb.27.1707277952958;
-        Tue, 06 Feb 2024 19:52:32 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUTFt8KxoCpX+xjT6IC4Inhdm92FkeD6+co+dCc+G28MY7qPHd+Pr29patSOJ6Yvt9WCxMRIeFcKxe89bebegdX2GS4amE=
-Received: from wheely.local0.net (220-235-217-21.tpgi.com.au. [220.235.217.21])
-        by smtp.gmail.com with ESMTPSA id it7-20020a056a00458700b006e02da39dbcsm325317pfb.10.2024.02.06.19.52.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Feb 2024 19:52:32 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/2] powerpc/pseries: Set CPU_FTR_DBELL according to ibm,pi-features
-Date: Wed,  7 Feb 2024 13:52:19 +1000
-Message-ID: <20240207035220.339726-2-npiggin@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240207035220.339726-1-npiggin@gmail.com>
-References: <20240207035220.339726-1-npiggin@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TV5rK11Vfz2yps
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Feb 2024 14:56:01 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 47952CE17D8;
+	Wed,  7 Feb 2024 03:55:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 078A0C433C7;
+	Wed,  7 Feb 2024 03:55:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707278156;
+	bh=7kZpcTwOpBJsZVknIp6pf/jE4tv4HkKG1MtDV4vzq10=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=RyihPSvJY40VJwOTUJApVjde6sK5XNv/PxqZjQFRv32KGiU1FzOkZ1L3EKjmZrceU
+	 HXkENg39rGH6GGHyQ1lQ6QJGIRR6z1tilyqBeuQtlYLqKeK8U3ST26aph+PwuMYk3A
+	 o1+YL5Gj7nzAT3lKCKJDjeLFrMuMGnRg138EdPpDZN565PLrqY1JaPl0UrgusMF5Rs
+	 3Vu+IcbIap3B0nu2re4bR/efqn8J22rHIEUUckmGMdEQujnhkNjKYmVNolLycv0gim
+	 piiWsZNLD2HIDw5pgGauo2NeAF0BHUrWWlAeZwCBYuaBhp4GZW/UykHB5g73OJhLNh
+	 vU6qG5r5zAaHA==
+From: alexs@kernel.org
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	"Naveen N . Rao" <naveen.n.rao@linux.ibm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>,
+	Daniel Bristot de Oliveira <bristot@redhat.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Barry Song <song.bao.hua@hisilicon.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 5/5] sched: rename SD_SHARE_PKG_RESOURCES to SD_SHARE_LLC
+Date: Wed,  7 Feb 2024 11:58:40 +0800
+Message-ID: <20240207035840.936676-1-alexs@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240207034704.935774-4-alexs@kernel.org>
+References: <20240207034704.935774-4-alexs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Wed, 07 Feb 2024 17:22:31 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,66 +73,205 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vaibhav Jain <vaibhav@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: Valentin Schneider <vschneid@redhat.com>, Srikar Dronamraju <srikar@linux.vnet.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Yicong Yang <yangyicong@hisilicon.com>, "Gautham R . Shenoy" <gautham.shenoy@amd.com>, Ricardo Neri <ricardo.neri-calderon@linux.intel.com>, Josh Poimboeuf <jpoimboe@kernel.org>, Alex Shi <alexs@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PAPR will define a new ibm,pi-features bit which says that doorbells
-should not be used even on architectures where they exist. This could be
-because they are emulated and slower than using the interrupt controller
-directly for IPIs.
+From: Alex Shi <alexs@kernel.org>
 
-Wire this bit into the pi-features parser to clear CPU_FTR_DBELL, and
-ensure CPU_FTR_DBELL is not in CPU_FTRS_ALWAYS.
+SD_CLUSTER shares the CPU resources like llc tags or l2 cache, that's
+easy confuse with SD_SHARE_PKG_RESOURCES. So let's specifical point
+what the latter shares: LLC. That would reduce some confusing.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Suggested-by: Valentin Schneider <vschneid@redhat.com>
+Signed-off-by: Alex Shi <alexs@kernel.org>
+To: linux-kernel@vger.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+To: Miaohe Lin <linmiaohe@huawei.com>
+To: Barry Song <song.bao.hua@hisilicon.com>
+To: Mark Rutland <mark.rutland@arm.com>
+To: Frederic Weisbecker <frederic@kernel.org>
+To: Daniel Bristot de Oliveira <bristot@redhat.com>
+To: Ben Segall <bsegall@google.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+To: Dietmar Eggemann <dietmar.eggemann@arm.com>
+To: Juri Lelli <juri.lelli@redhat.com>
+To: Ingo Molnar <mingo@redhat.com>
+To: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: "Gautham R. Shenoy" <gautham.shenoy@amd.com>
+Cc: Yicong Yang <yangyicong@hisilicon.com>
+Cc: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Valentin Schneider <vschneid@redhat.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/include/asm/cputable.h | 11 ++++++-----
- arch/powerpc/kernel/prom.c          |  1 +
- 2 files changed, 7 insertions(+), 5 deletions(-)
+ arch/powerpc/kernel/smp.c      |  6 +++---
+ include/linux/sched/sd_flags.h |  4 ++--
+ include/linux/sched/topology.h |  6 +++---
+ kernel/sched/fair.c            |  2 +-
+ kernel/sched/topology.c        | 16 ++++++++--------
+ 5 files changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
-index 8765d5158324..48471ca388dd 100644
---- a/arch/powerpc/include/asm/cputable.h
-+++ b/arch/powerpc/include/asm/cputable.h
-@@ -542,19 +542,20 @@ enum {
- #define CPU_FTRS_DT_CPU_BASE	(~0ul)
- #endif
+diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+index 693334c20d07..a60e4139214b 100644
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -984,7 +984,7 @@ static bool shared_caches __ro_after_init;
+ /* cpumask of CPUs with asymmetric SMT dependency */
+ static int powerpc_smt_flags(void)
+ {
+-	int flags = SD_SHARE_CPUCAPACITY | SD_SHARE_PKG_RESOURCES;
++	int flags = SD_SHARE_CPUCAPACITY | SD_SHARE_LLC;
  
-+/* pseries may disable DBELL with ibm,pi-features */
- #ifdef CONFIG_CPU_LITTLE_ENDIAN
- #define CPU_FTRS_ALWAYS \
--	    (CPU_FTRS_POSSIBLE & ~CPU_FTR_HVMODE & CPU_FTRS_POWER7 & \
--	     CPU_FTRS_POWER8E & CPU_FTRS_POWER8 & CPU_FTRS_POWER9 & \
--	     CPU_FTRS_POWER9_DD2_1 & CPU_FTRS_POWER9_DD2_2 & \
-+	    (CPU_FTRS_POSSIBLE & ~CPU_FTR_HVMODE & ~CPU_FTR_DBELL & \
-+	     CPU_FTRS_POWER7 & CPU_FTRS_POWER8E & CPU_FTRS_POWER8 & \
-+	     CPU_FTRS_POWER9 & CPU_FTRS_POWER9_DD2_1 & CPU_FTRS_POWER9_DD2_2 & \
- 	     CPU_FTRS_POWER10 & CPU_FTRS_DT_CPU_BASE)
- #else
- #define CPU_FTRS_ALWAYS		\
- 	    (CPU_FTRS_PPC970 & CPU_FTRS_POWER5 & \
- 	     CPU_FTRS_POWER6 & CPU_FTRS_POWER7 & CPU_FTRS_CELL & \
- 	     CPU_FTRS_PA6T & CPU_FTRS_POWER8 & CPU_FTRS_POWER8E & \
--	     ~CPU_FTR_HVMODE & CPU_FTRS_POSSIBLE & CPU_FTRS_POWER9 & \
--	     CPU_FTRS_POWER9_DD2_1 & CPU_FTRS_POWER9_DD2_2 & \
-+	     ~CPU_FTR_HVMODE & ~CPU_FTR_DBELL & CPU_FTRS_POSSIBLE & \
-+	     CPU_FTRS_POWER9 & CPU_FTRS_POWER9_DD2_1 & CPU_FTRS_POWER9_DD2_2 & \
- 	     CPU_FTRS_POWER10 & CPU_FTRS_DT_CPU_BASE)
- #endif /* CONFIG_CPU_LITTLE_ENDIAN */
- #endif
-diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 62f4a0229fae..e3e8fe70475f 100644
---- a/arch/powerpc/kernel/prom.c
-+++ b/arch/powerpc/kernel/prom.c
-@@ -196,6 +196,7 @@ static struct ibm_feature ibm_pa_features[] __initdata = {
+ 	if (cpu_has_feature(CPU_FTR_ASYM_SMT)) {
+ 		printk_once(KERN_INFO "Enabling Asymmetric SMT scheduling\n");
+@@ -1010,9 +1010,9 @@ static __ro_after_init DEFINE_STATIC_KEY_FALSE(splpar_asym_pack);
+ static int powerpc_shared_cache_flags(void)
+ {
+ 	if (static_branch_unlikely(&splpar_asym_pack))
+-		return SD_SHARE_PKG_RESOURCES | SD_ASYM_PACKING;
++		return SD_SHARE_LLC | SD_ASYM_PACKING;
+ 
+-	return SD_SHARE_PKG_RESOURCES;
++	return SD_SHARE_LLC;
+ }
+ 
+ static int powerpc_shared_proc_flags(void)
+diff --git a/include/linux/sched/sd_flags.h b/include/linux/sched/sd_flags.h
+index a8b28647aafc..b04a5d04dee9 100644
+--- a/include/linux/sched/sd_flags.h
++++ b/include/linux/sched/sd_flags.h
+@@ -117,13 +117,13 @@ SD_FLAG(SD_SHARE_CPUCAPACITY, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
+ SD_FLAG(SD_CLUSTER, SDF_NEEDS_GROUPS)
+ 
+ /*
+- * Domain members share CPU package resources (i.e. caches)
++ * Domain members share CPU Last Level Caches
+  *
+  * SHARED_CHILD: Set from the base domain up until spanned CPUs no longer share
+  *               the same cache(s).
+  * NEEDS_GROUPS: Caches are shared between groups.
   */
- static struct ibm_feature ibm_pi_features[] __initdata = {
- 	{ .pabyte = 0, .pabit = 3, .mmu_features  = MMU_FTR_NX_DSI },
-+	{ .pabyte = 0, .pabit = 4, .cpu_features  = CPU_FTR_DBELL, .clear = 1 },
- };
+-SD_FLAG(SD_SHARE_PKG_RESOURCES, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
++SD_FLAG(SD_SHARE_LLC, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
  
- static void __init scan_features(unsigned long node, const unsigned char *ftrs,
+ /*
+  * Only a single load balancing instance
+diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
+index a6e04b4a21d7..191b122158fb 100644
+--- a/include/linux/sched/topology.h
++++ b/include/linux/sched/topology.h
+@@ -38,21 +38,21 @@ extern const struct sd_flag_debug sd_flag_debug[];
+ #ifdef CONFIG_SCHED_SMT
+ static inline int cpu_smt_flags(void)
+ {
+-	return SD_SHARE_CPUCAPACITY | SD_SHARE_PKG_RESOURCES;
++	return SD_SHARE_CPUCAPACITY | SD_SHARE_LLC;
+ }
+ #endif
+ 
+ #ifdef CONFIG_SCHED_CLUSTER
+ static inline int cpu_cluster_flags(void)
+ {
+-	return SD_CLUSTER | SD_SHARE_PKG_RESOURCES;
++	return SD_CLUSTER | SD_SHARE_LLC;
+ }
+ #endif
+ 
+ #ifdef CONFIG_SCHED_MC
+ static inline int cpu_core_flags(void)
+ {
+-	return SD_SHARE_PKG_RESOURCES;
++	return SD_SHARE_LLC;
+ }
+ #endif
+ 
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 10ae28e1c088..188597640b1f 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -10695,7 +10695,7 @@ static inline void calculate_imbalance(struct lb_env *env, struct sd_lb_stats *s
+ 	 */
+ 	if (local->group_type == group_has_spare) {
+ 		if ((busiest->group_type > group_fully_busy) &&
+-		    !(env->sd->flags & SD_SHARE_PKG_RESOURCES)) {
++		    !(env->sd->flags & SD_SHARE_LLC)) {
+ 			/*
+ 			 * If busiest is overloaded, try to fill spare
+ 			 * capacity. This might end up creating spare capacity
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index 0b33f7b05d21..e877730219d3 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -684,7 +684,7 @@ static void update_top_cache_domain(int cpu)
+ 	int id = cpu;
+ 	int size = 1;
+ 
+-	sd = highest_flag_domain(cpu, SD_SHARE_PKG_RESOURCES);
++	sd = highest_flag_domain(cpu, SD_SHARE_LLC);
+ 	if (sd) {
+ 		id = cpumask_first(sched_domain_span(sd));
+ 		size = cpumask_weight(sched_domain_span(sd));
+@@ -1554,7 +1554,7 @@ static struct cpumask		***sched_domains_numa_masks;
+  * function. For details, see include/linux/sched/sd_flags.h.
+  *
+  *   SD_SHARE_CPUCAPACITY
+- *   SD_SHARE_PKG_RESOURCES
++ *   SD_SHARE_LLC
+  *   SD_CLUSTER
+  *   SD_NUMA
+  *
+@@ -1566,7 +1566,7 @@ static struct cpumask		***sched_domains_numa_masks;
+ #define TOPOLOGY_SD_FLAGS		\
+ 	(SD_SHARE_CPUCAPACITY	|	\
+ 	 SD_CLUSTER		|	\
+-	 SD_SHARE_PKG_RESOURCES |	\
++	 SD_SHARE_LLC		|	\
+ 	 SD_NUMA		|	\
+ 	 SD_ASYM_PACKING)
+ 
+@@ -1609,7 +1609,7 @@ sd_init(struct sched_domain_topology_level *tl,
+ 					| 0*SD_BALANCE_WAKE
+ 					| 1*SD_WAKE_AFFINE
+ 					| 0*SD_SHARE_CPUCAPACITY
+-					| 0*SD_SHARE_PKG_RESOURCES
++					| 0*SD_SHARE_LLC
+ 					| 0*SD_SERIALIZE
+ 					| 1*SD_PREFER_SIBLING
+ 					| 0*SD_NUMA
+@@ -1646,7 +1646,7 @@ sd_init(struct sched_domain_topology_level *tl,
+ 	if (sd->flags & SD_SHARE_CPUCAPACITY) {
+ 		sd->imbalance_pct = 110;
+ 
+-	} else if (sd->flags & SD_SHARE_PKG_RESOURCES) {
++	} else if (sd->flags & SD_SHARE_LLC) {
+ 		sd->imbalance_pct = 117;
+ 		sd->cache_nice_tries = 1;
+ 
+@@ -1671,7 +1671,7 @@ sd_init(struct sched_domain_topology_level *tl,
+ 	 * For all levels sharing cache; connect a sched_domain_shared
+ 	 * instance.
+ 	 */
+-	if (sd->flags & SD_SHARE_PKG_RESOURCES) {
++	if (sd->flags & SD_SHARE_LLC) {
+ 		sd->shared = *per_cpu_ptr(sdd->sds, sd_id);
+ 		atomic_inc(&sd->shared->ref);
+ 		atomic_set(&sd->shared->nr_busy_cpus, sd_weight);
+@@ -2446,8 +2446,8 @@ build_sched_domains(const struct cpumask *cpu_map, struct sched_domain_attr *att
+ 		for (sd = *per_cpu_ptr(d.sd, i); sd; sd = sd->parent) {
+ 			struct sched_domain *child = sd->child;
+ 
+-			if (!(sd->flags & SD_SHARE_PKG_RESOURCES) && child &&
+-			    (child->flags & SD_SHARE_PKG_RESOURCES)) {
++			if (!(sd->flags & SD_SHARE_LLC) && child &&
++			    (child->flags & SD_SHARE_LLC)) {
+ 				struct sched_domain __rcu *top_p;
+ 				unsigned int nr_llcs;
+ 
 -- 
-2.42.0
+2.43.0
 
