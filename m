@@ -1,56 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAFF584CCC1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Feb 2024 15:29:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFF1784CEB3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Feb 2024 17:14:26 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HmqWNc40;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=RJNTBrNA;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TVMv86Mpbz3cQX
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 01:29:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TVQDJ4s8rz3cFq
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 03:14:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HmqWNc40;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TVMtP730rz2ykZ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Feb 2024 01:28:45 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id BABE5CE18F6;
-	Wed,  7 Feb 2024 14:28:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFE9C433F1;
-	Wed,  7 Feb 2024 14:28:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707316120;
-	bh=T09NH+K9OB+5cBRVizzfGFKyrC8gvkvf+GGOCbIop6Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HmqWNc40Wn8O+g2p5nCZRDdlHBgUdcSN7gF43458D1PwN4svHHFHuP4QEf4/DOw4N
-	 28bSY1wFrKHOe+iQOF23kKamdoiGMrpHVxGnPbcEDLsQ+EqCyGbgpVa9q0aKGUNe2W
-	 i85cJohoGvsPpsKdkgyAmG2P95AmsgLCk5+Hh2rMnlcTuiEsYCByfR5I3EtVvO+KHq
-	 1//9zynIJFJo++t4TXcmsStuLflTh0Oosv9wtTAfA95mwV+vq4qYXkHsUJ+Er+2L3H
-	 yt+CJIZEXJ6lb40ggUy18ZfMdtfttrThzsAVcNCpQqPiLhN1Oa3kPUDUrlwItdctEA
-	 DKBWg1W75H6kg==
-Date: Wed, 7 Feb 2024 15:28:37 +0100
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: Re: [PATCH 5/5] sched/vtime: do not include <asm/vtime.h> header
-Message-ID: <ZcOTlZwYo1n4-myD@localhost.localdomain>
-References: <cover.1706470223.git.agordeev@linux.ibm.com>
- <2402f44309e1c9705501bdc9b798e8fe6d73f905.1706470223.git.agordeev@linux.ibm.com>
- <ZcLBAKMJ5Vbbm2Ln@localhost.localdomain>
- <ZcOP6bm0ekxDUVk6@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TVQCQ5BFzz3bs2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Feb 2024 03:13:36 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=BzfR02iaC4unUSCO9abKwcFUwiyIjB6j/U2qifVyUjY=; b=RJNTBrNA0gX9tZMdxmaX0a3ewg
+	UQNsN0ZI+eUd/5Zhixy5DWyILdoKHPiVbMB3x40NacxvJaR1cZdLWFefS8x7WGy0Mh8x/GpApawEt
+	e9F3587MTXO5WU2Bkeu1QKEgyEzoSUZYzIxXT1YLuYvYbv0qED0ZL10TMfAtJT4SHZF4R65bziM7A
+	nmIjfG8Slb/SKaR2kjvBiCKEoa1d2hEiLJUmoV6x7KEeRJowHjmHZe04lucfdnO1VpiZ+fyUGOTGU
+	Fpm0TGGdwNq7bL7a6epxfUcxyuSOV0l5akAd3OFxd2AxCG5Ee3TRTNNB+WSiPXPkqSDoWoFJOnoXc
+	Q4A3mxrg==;
+Received: from [50.53.50.0] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rXkYA-0000000BBCJ-2Wir;
+	Wed, 07 Feb 2024 16:13:26 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v2] drivers/ps3: select VIDEO to provide cmdline functions
+Date: Wed,  7 Feb 2024 08:13:22 -0800
+Message-ID: <20240207161322.8073-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZcOP6bm0ekxDUVk6@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,27 +52,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Ingo Molnar <mingo@kernel.org>
+Cc: linux-fbdev@vger.kernel.org, Geoff Levand <geoff@infradead.org>, dri-devel@lists.freedesktop.org, Randy Dunlap <rdunlap@infradead.org>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Thomas Zimmermann <tzimmermann@suse.de>, "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le Wed, Feb 07, 2024 at 03:12:57PM +0100, Alexander Gordeev a écrit :
-> On Wed, Feb 07, 2024 at 12:30:08AM +0100, Frederic Weisbecker wrote:
-> > Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-> 
-> Thank you for the review, Frederic!
-> 
-> The Heiko comment is valid and I would add this chunk in v2:
-> 
-> --- a/arch/powerpc/include/asm/Kbuild
-> +++ b/arch/powerpc/include/asm/Kbuild
-> @@ -6,5 +6,4 @@ generic-y += agp.h
->  generic-y += kvm_types.h
->  generic-y += mcs_spinlock.h
->  generic-y += qrwlock.h
-> -generic-y += vtime.h
->  generic-y += early_ioremap.h
-> 
-> Would you keep your Reviewed-by?
+When VIDEO is not set, there is a build error. Fix that by selecting
+VIDEO for PS3_PS3AV.
 
-Sure!
+ERROR: modpost: ".video_get_options" [drivers/ps3/ps3av_mod.ko] undefined!
+
+Fixes: dae7fbf43fd0 ("driver/ps3: Include <video/cmdline.h> for mode parsing")
+Fixes: a3b6792e990d ("video/cmdline: Introduce CONFIG_VIDEO for video= parameter")
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+Cc: Naveen N. Rao <naveen.n.rao@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Geoff Levand <geoff@infradead.org>
+Acked-by: Geoff Levand <geoff@infradead.org>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+---
+v2: add Geoff's Ack;
+    add second Fixes: tag and more Cc:s (Thomas)
+
+ arch/powerpc/platforms/ps3/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff -- a/arch/powerpc/platforms/ps3/Kconfig b/arch/powerpc/platforms/ps3/Kconfig
+--- a/arch/powerpc/platforms/ps3/Kconfig
++++ b/arch/powerpc/platforms/ps3/Kconfig
+@@ -67,6 +67,7 @@ config PS3_VUART
+ config PS3_PS3AV
+ 	depends on PPC_PS3
+ 	tristate "PS3 AV settings driver" if PS3_ADVANCED
++	select VIDEO
+ 	select PS3_VUART
+ 	default y
+ 	help
