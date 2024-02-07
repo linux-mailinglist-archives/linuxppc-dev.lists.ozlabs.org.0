@@ -2,57 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 690FC84CB87
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Feb 2024 14:26:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A69B184CB8C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Feb 2024 14:27:39 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jNc1/vLD;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V6Wt5HZT;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TVLVr2M1yz3cLj
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 00:26:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TVLWs45rQz3cRs
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 00:27:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jNc1/vLD;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V6Wt5HZT;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.16; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TVLV20QMGz3bqB
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Feb 2024 00:25:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TVLW80TWgz3bqB
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Feb 2024 00:26:59 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707312363; x=1738848363;
+  t=1707312421; x=1738848421;
   h=date:from:to:cc:subject:message-id;
-  bh=PrtGkr7mx44zrrEC9Ax4zo+OpAXRckSKTOpOlFwpg4o=;
-  b=jNc1/vLDQfsV9eoZm9qWLY/qBBhKuWB4GpPF/yVNpUtVQjBBVMm4L8pc
-   oVFpHOQ2FPa14b4qdtkp117PKEzxgI+tgLrgCj2HqzEf7uUEz0UrncN88
-   z/iS8qSk2hIL8n556W7tmNuLUQDKCfcSctVqm3k2uG3jCCWSgk8QvlpyO
-   FsOyLd+KDN+UAtPI9xKZN0ifQgNcKR8+gg2aMsELIgaXJvmtAratTaYiH
-   qw8TlSRGmV/bWS9opyySzc8MCLVhfltkkih2YUJf7edJWLUK7Y7O0kxp5
-   K2mZTgSqMRwVPzHjtaTAdOJsXbxo0ek9+uQv3STemuXbbfRL+EN0vDVi2
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10976"; a="1142852"
+  bh=8xH+pyWNXrQNP0UvLGJ2xgy/0zh8qB/U/qeyEcwOLsM=;
+  b=V6Wt5HZTYNqS3xNKRxdO8zJXbQ7HCuh8nJTofjusWoq+fOCQgR5lOQHi
+   1XOne/DPip+QYYwP7TKs0honexBjQE6guCufQKw8RN+ofl/6wpqOhZQnC
+   RKZ84B7a0g7DGGPQIU/kKG0i2pqyojW6j2kqU1CRgGhTxS8LHLecgrzrE
+   ipOVvEPCcmqqw4WaS4xXgeERP/FXctUqA/gPnK6xZHwb764qBzJ4zLtE5
+   DjAZYgaMiSP/ZWCLbojIicbzcW4SCaJ60s/Chuks/ik4y2l5l19lw1cP1
+   7YAvZ7PyBTLW5Phg+iPTqguSeqDYhrAWF8B7rmF1EJQ+0LYdqqQJ+X17A
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10976"; a="1143136"
 X-IronPort-AV: E=Sophos;i="6.05,251,1701158400"; 
-   d="scan'208";a="1142852"
+   d="scan'208";a="1143136"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2024 05:25:58 -0800
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2024 05:26:58 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,251,1701158400"; 
-   d="scan'208";a="38765526"
+   d="scan'208";a="38765707"
 Received: from lkp-server01.sh.intel.com (HELO 01f0647817ea) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 07 Feb 2024 05:25:56 -0800
+  by orviesa001.jf.intel.com with ESMTP; 07 Feb 2024 05:26:56 -0800
 Received: from kbuild by 01f0647817ea with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1rXhw1-0002eo-2s;
-	Wed, 07 Feb 2024 13:25:53 +0000
-Date: Wed, 07 Feb 2024 21:25:21 +0800
+	id 1rXhwz-0002ew-34;
+	Wed, 07 Feb 2024 13:26:53 +0000
+Date: Wed, 07 Feb 2024 21:26:12 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- 1c57b9f63ab34f01b8c73731cc0efacb5a9a2f16
-Message-ID: <202402072116.gzUWnir7-lkp@intel.com>
+Subject: [powerpc:merge] BUILD SUCCESS
+ 4ef8376c466ae8b03e632dd8eca1e44315f7dd61
+Message-ID: <202402072108.wjSM5HIa-lkp@intel.com>
 User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -69,13 +69,13 @@ Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: 1c57b9f63ab34f01b8c73731cc0efacb5a9a2f16  powerpc: 85xx: mark local functions static
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 4ef8376c466ae8b03e632dd8eca1e44315f7dd61  Automatic merge of 'fixes' into merge (2024-02-06 22:58)
 
-elapsed time: 1462m
+elapsed time: 1463m
 
-configs tested: 194
-configs skipped: 3
+configs tested: 193
+configs skipped: 4
 
 The following configs have been built successfully.
 More configs may be tested in the coming days.
@@ -183,7 +183,6 @@ openrisc                         allmodconfig   gcc
 openrisc                          allnoconfig   gcc  
 openrisc                         allyesconfig   gcc  
 openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
 parisc                            allnoconfig   gcc  
 parisc                           allyesconfig   gcc  
 parisc                              defconfig   gcc  
