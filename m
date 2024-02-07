@@ -1,67 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF20484C4EF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Feb 2024 07:23:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8357484C465
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Feb 2024 06:29:46 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RyihPSvJ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=N/GirgzU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TV9695Hbkz3cDS
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Feb 2024 17:23:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TV7wS3PCZz3cGY
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Feb 2024 16:29:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RyihPSvJ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=N/GirgzU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=alexs@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=amachhiw@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TV5rK11Vfz2yps
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Feb 2024 14:56:01 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 47952CE17D8;
-	Wed,  7 Feb 2024 03:55:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 078A0C433C7;
-	Wed,  7 Feb 2024 03:55:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707278156;
-	bh=7kZpcTwOpBJsZVknIp6pf/jE4tv4HkKG1MtDV4vzq10=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RyihPSvJY40VJwOTUJApVjde6sK5XNv/PxqZjQFRv32KGiU1FzOkZ1L3EKjmZrceU
-	 HXkENg39rGH6GGHyQ1lQ6QJGIRR6z1tilyqBeuQtlYLqKeK8U3ST26aph+PwuMYk3A
-	 o1+YL5Gj7nzAT3lKCKJDjeLFrMuMGnRg138EdPpDZN565PLrqY1JaPl0UrgusMF5Rs
-	 3Vu+IcbIap3B0nu2re4bR/efqn8J22rHIEUUckmGMdEQujnhkNjKYmVNolLycv0gim
-	 piiWsZNLD2HIDw5pgGauo2NeAF0BHUrWWlAeZwCBYuaBhp4GZW/UykHB5g73OJhLNh
-	 vU6qG5r5zAaHA==
-From: alexs@kernel.org
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	"Naveen N . Rao" <naveen.n.rao@linux.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>,
-	Daniel Bristot de Oliveira <bristot@redhat.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Barry Song <song.bao.hua@hisilicon.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 5/5] sched: rename SD_SHARE_PKG_RESOURCES to SD_SHARE_LLC
-Date: Wed,  7 Feb 2024 11:58:40 +0800
-Message-ID: <20240207035840.936676-1-alexs@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240207034704.935774-4-alexs@kernel.org>
-References: <20240207034704.935774-4-alexs@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TV7vf6cWWz30ft
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Feb 2024 16:29:02 +1100 (AEDT)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4175RQFe008991;
+	Wed, 7 Feb 2024 05:28:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=RKdLZ6KJdPreBS6zTodP4YAl+wBdS315ObfSy4389rc=;
+ b=N/GirgzUnUWQXP3si2k/FugV/BKGchJeLL31q7np1CEusXm8GGaUxGGYNFuIN0PSKt1M
+ MkCMN170M9VrnVQ93BAIIPtiKsrzr0K2nwZu/GxdevR03xMOUz0QJ5Q2s+xEFqBtVBTz
+ Wft9xuVIr76Hz/g6c6/jscsMOF2wkS5GyqELKDrvC2mI8nQxirvCRb9EMvD+j2bx1Hn4
+ TZzGMLgmFmPZAMYPoDmn878K/uT/2phI+uYmyTRxNH/bRnix47bcS7W7hUGZAYBb0SEA
+ 7wAKn4OudrANG2S7B4ArOFZ7JRQvkdE6fUd5LjUdH6QsjB5QYVg8xEF3253ilSZNQ1rG HQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w43qn80kr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Feb 2024 05:28:53 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4175Sq9r014295;
+	Wed, 7 Feb 2024 05:28:52 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w43qn80kg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Feb 2024 05:28:52 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4172QCv8016137;
+	Wed, 7 Feb 2024 05:28:51 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3w22h23ac9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Feb 2024 05:28:51 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4175Sm9C18088640
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 7 Feb 2024 05:28:48 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C1C4620040;
+	Wed,  7 Feb 2024 05:28:48 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 11D2A20043;
+	Wed,  7 Feb 2024 05:28:46 +0000 (GMT)
+Received: from li-a83676cc-350e-11b2-a85c-e11f86bb8d73.ibm.com (unknown [9.43.65.120])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed,  7 Feb 2024 05:28:45 +0000 (GMT)
+Date: Wed, 7 Feb 2024 10:58:43 +0530
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, kvm-ppc@vger.kernel.org
+Subject: Re: Re: [PATCH v3] KVM: PPC: Book3S HV: Fix L2 guest reboot failure
+ due to empty 'arch_compat'
+Message-ID: <t5qjoir2gvckq6vscsi4zg66grkk3px24znzfrraaq32x5wea3@ogxxeqk5vrpu>
+Mail-Followup-To: Michael Ellerman <mpe@ellerman.id.au>, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, kvm-ppc@vger.kernel.org, 
+	Jordan Niethe <jniethe5@gmail.com>, linux-kernel@vger.kernel.org, 
+	Nicholas Piggin <npiggin@gmail.com>, Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>, 
+	Vaibhav Jain <vaibhav@linux.ibm.com>
+References: <20240205181833.212955-1-amachhiw@linux.ibm.com>
+ <87r0hp9a4z.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Wed, 07 Feb 2024 17:22:31 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87r0hp9a4z.fsf@mail.lhotse>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: vJKbdV8S2LfECZu1weNGWppdRNnRLro8
+X-Proofpoint-GUID: mZVR6pjwlinTqQk15RoF39MwZ6XhFph_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-06_16,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
+ malwarescore=0 mlxlogscore=982 suspectscore=0 phishscore=0
+ priorityscore=1501 impostorscore=0 clxscore=1015 spamscore=0 adultscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402070039
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,205 +104,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Valentin Schneider <vschneid@redhat.com>, Srikar Dronamraju <srikar@linux.vnet.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Yicong Yang <yangyicong@hisilicon.com>, "Gautham R . Shenoy" <gautham.shenoy@amd.com>, Ricardo Neri <ricardo.neri-calderon@linux.intel.com>, Josh Poimboeuf <jpoimboe@kernel.org>, Alex Shi <alexs@kernel.org>
+Cc: Jordan Niethe <jniethe5@gmail.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Alex Shi <alexs@kernel.org>
+Hi Michael,
 
-SD_CLUSTER shares the CPU resources like llc tags or l2 cache, that's
-easy confuse with SD_SHARE_PKG_RESOURCES. So let's specifical point
-what the latter shares: LLC. That would reduce some confusing.
+Thanks for looking into the patch and your comments.
 
-Suggested-by: Valentin Schneider <vschneid@redhat.com>
-Signed-off-by: Alex Shi <alexs@kernel.org>
-To: linux-kernel@vger.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-To: Miaohe Lin <linmiaohe@huawei.com>
-To: Barry Song <song.bao.hua@hisilicon.com>
-To: Mark Rutland <mark.rutland@arm.com>
-To: Frederic Weisbecker <frederic@kernel.org>
-To: Daniel Bristot de Oliveira <bristot@redhat.com>
-To: Ben Segall <bsegall@google.com>
-To: Steven Rostedt <rostedt@goodmis.org>
-To: Dietmar Eggemann <dietmar.eggemann@arm.com>
-To: Juri Lelli <juri.lelli@redhat.com>
-To: Ingo Molnar <mingo@redhat.com>
-To: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: "Gautham R. Shenoy" <gautham.shenoy@amd.com>
-Cc: Yicong Yang <yangyicong@hisilicon.com>
-Cc: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Valentin Schneider <vschneid@redhat.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/kernel/smp.c      |  6 +++---
- include/linux/sched/sd_flags.h |  4 ++--
- include/linux/sched/topology.h |  6 +++---
- kernel/sched/fair.c            |  2 +-
- kernel/sched/topology.c        | 16 ++++++++--------
- 5 files changed, 17 insertions(+), 17 deletions(-)
+On 2024/02/06 09:09 PM, Michael Ellerman wrote:
+> Hi Amit,
+> 
+> One comment below ...
+> 
+> Amit Machhiwal <amachhiw@linux.ibm.com> writes:
+> > Currently, rebooting a pseries nested qemu-kvm guest (L2) results in
+> > below error as L1 qemu sends PVR value 'arch_compat' == 0 via
+> > ppc_set_compat ioctl. This triggers a condition failure in
+> > kvmppc_set_arch_compat() resulting in an EINVAL.
+> ...
+> >  	
+> > diff --git a/arch/powerpc/kvm/book3s_hv_nestedv2.c b/arch/powerpc/kvm/book3s_hv_nestedv2.c
+> > index 5378eb40b162..6042bdc70230 100644
+> > --- a/arch/powerpc/kvm/book3s_hv_nestedv2.c
+> > +++ b/arch/powerpc/kvm/book3s_hv_nestedv2.c
+> > @@ -347,8 +348,26 @@ static int gs_msg_ops_vcpu_fill_info(struct kvmppc_gs_buff *gsb,
+> >  			break;
+> >  		}
+> >  		case KVMPPC_GSID_LOGICAL_PVR:
+> > -			rc = kvmppc_gse_put_u32(gsb, iden,
+> > -						vcpu->arch.vcore->arch_compat);
+> > +			/*
+> > +			 * Though 'arch_compat == 0' would mean the default
+> > +			 * compatibility, arch_compat, being a Guest Wide
+> > +			 * Element, cannot be filled with a value of 0 in GSB
+> > +			 * as this would result into a kernel trap.
+> > +			 * Hence, when `arch_compat == 0`, arch_compat should
+> > +			 * default to L1's PVR.
+> > +			 *
+> > +			 * Rework this when PowerVM supports a value of 0
+> > +			 * for arch_compat for KVM API v2.
+> > +			 */
+> 
+> Is there an actual plan that PowerVM will support this in future?
+> 
+> If so, how will a future kernel know that it's running on a version of
+> PowerVM that does support arch_compat == 0?
+> 
+> Similarly how will we know when it's OK to drop support for this
+> workaround?
 
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index 693334c20d07..a60e4139214b 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -984,7 +984,7 @@ static bool shared_caches __ro_after_init;
- /* cpumask of CPUs with asymmetric SMT dependency */
- static int powerpc_smt_flags(void)
- {
--	int flags = SD_SHARE_CPUCAPACITY | SD_SHARE_PKG_RESOURCES;
-+	int flags = SD_SHARE_CPUCAPACITY | SD_SHARE_LLC;
- 
- 	if (cpu_has_feature(CPU_FTR_ASYM_SMT)) {
- 		printk_once(KERN_INFO "Enabling Asymmetric SMT scheduling\n");
-@@ -1010,9 +1010,9 @@ static __ro_after_init DEFINE_STATIC_KEY_FALSE(splpar_asym_pack);
- static int powerpc_shared_cache_flags(void)
- {
- 	if (static_branch_unlikely(&splpar_asym_pack))
--		return SD_SHARE_PKG_RESOURCES | SD_ASYM_PACKING;
-+		return SD_SHARE_LLC | SD_ASYM_PACKING;
- 
--	return SD_SHARE_PKG_RESOURCES;
-+	return SD_SHARE_LLC;
- }
- 
- static int powerpc_shared_proc_flags(void)
-diff --git a/include/linux/sched/sd_flags.h b/include/linux/sched/sd_flags.h
-index a8b28647aafc..b04a5d04dee9 100644
---- a/include/linux/sched/sd_flags.h
-+++ b/include/linux/sched/sd_flags.h
-@@ -117,13 +117,13 @@ SD_FLAG(SD_SHARE_CPUCAPACITY, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
- SD_FLAG(SD_CLUSTER, SDF_NEEDS_GROUPS)
- 
- /*
-- * Domain members share CPU package resources (i.e. caches)
-+ * Domain members share CPU Last Level Caches
-  *
-  * SHARED_CHILD: Set from the base domain up until spanned CPUs no longer share
-  *               the same cache(s).
-  * NEEDS_GROUPS: Caches are shared between groups.
-  */
--SD_FLAG(SD_SHARE_PKG_RESOURCES, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
-+SD_FLAG(SD_SHARE_LLC, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
- 
- /*
-  * Only a single load balancing instance
-diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
-index a6e04b4a21d7..191b122158fb 100644
---- a/include/linux/sched/topology.h
-+++ b/include/linux/sched/topology.h
-@@ -38,21 +38,21 @@ extern const struct sd_flag_debug sd_flag_debug[];
- #ifdef CONFIG_SCHED_SMT
- static inline int cpu_smt_flags(void)
- {
--	return SD_SHARE_CPUCAPACITY | SD_SHARE_PKG_RESOURCES;
-+	return SD_SHARE_CPUCAPACITY | SD_SHARE_LLC;
- }
- #endif
- 
- #ifdef CONFIG_SCHED_CLUSTER
- static inline int cpu_cluster_flags(void)
- {
--	return SD_CLUSTER | SD_SHARE_PKG_RESOURCES;
-+	return SD_CLUSTER | SD_SHARE_LLC;
- }
- #endif
- 
- #ifdef CONFIG_SCHED_MC
- static inline int cpu_core_flags(void)
- {
--	return SD_SHARE_PKG_RESOURCES;
-+	return SD_SHARE_LLC;
- }
- #endif
- 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 10ae28e1c088..188597640b1f 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -10695,7 +10695,7 @@ static inline void calculate_imbalance(struct lb_env *env, struct sd_lb_stats *s
- 	 */
- 	if (local->group_type == group_has_spare) {
- 		if ((busiest->group_type > group_fully_busy) &&
--		    !(env->sd->flags & SD_SHARE_PKG_RESOURCES)) {
-+		    !(env->sd->flags & SD_SHARE_LLC)) {
- 			/*
- 			 * If busiest is overloaded, try to fill spare
- 			 * capacity. This might end up creating spare capacity
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index 0b33f7b05d21..e877730219d3 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -684,7 +684,7 @@ static void update_top_cache_domain(int cpu)
- 	int id = cpu;
- 	int size = 1;
- 
--	sd = highest_flag_domain(cpu, SD_SHARE_PKG_RESOURCES);
-+	sd = highest_flag_domain(cpu, SD_SHARE_LLC);
- 	if (sd) {
- 		id = cpumask_first(sched_domain_span(sd));
- 		size = cpumask_weight(sched_domain_span(sd));
-@@ -1554,7 +1554,7 @@ static struct cpumask		***sched_domains_numa_masks;
-  * function. For details, see include/linux/sched/sd_flags.h.
-  *
-  *   SD_SHARE_CPUCAPACITY
-- *   SD_SHARE_PKG_RESOURCES
-+ *   SD_SHARE_LLC
-  *   SD_CLUSTER
-  *   SD_NUMA
-  *
-@@ -1566,7 +1566,7 @@ static struct cpumask		***sched_domains_numa_masks;
- #define TOPOLOGY_SD_FLAGS		\
- 	(SD_SHARE_CPUCAPACITY	|	\
- 	 SD_CLUSTER		|	\
--	 SD_SHARE_PKG_RESOURCES |	\
-+	 SD_SHARE_LLC		|	\
- 	 SD_NUMA		|	\
- 	 SD_ASYM_PACKING)
- 
-@@ -1609,7 +1609,7 @@ sd_init(struct sched_domain_topology_level *tl,
- 					| 0*SD_BALANCE_WAKE
- 					| 1*SD_WAKE_AFFINE
- 					| 0*SD_SHARE_CPUCAPACITY
--					| 0*SD_SHARE_PKG_RESOURCES
-+					| 0*SD_SHARE_LLC
- 					| 0*SD_SERIALIZE
- 					| 1*SD_PREFER_SIBLING
- 					| 0*SD_NUMA
-@@ -1646,7 +1646,7 @@ sd_init(struct sched_domain_topology_level *tl,
- 	if (sd->flags & SD_SHARE_CPUCAPACITY) {
- 		sd->imbalance_pct = 110;
- 
--	} else if (sd->flags & SD_SHARE_PKG_RESOURCES) {
-+	} else if (sd->flags & SD_SHARE_LLC) {
- 		sd->imbalance_pct = 117;
- 		sd->cache_nice_tries = 1;
- 
-@@ -1671,7 +1671,7 @@ sd_init(struct sched_domain_topology_level *tl,
- 	 * For all levels sharing cache; connect a sched_domain_shared
- 	 * instance.
- 	 */
--	if (sd->flags & SD_SHARE_PKG_RESOURCES) {
-+	if (sd->flags & SD_SHARE_LLC) {
- 		sd->shared = *per_cpu_ptr(sdd->sds, sd_id);
- 		atomic_inc(&sd->shared->ref);
- 		atomic_set(&sd->shared->nr_busy_cpus, sd_weight);
-@@ -2446,8 +2446,8 @@ build_sched_domains(const struct cpumask *cpu_map, struct sched_domain_attr *att
- 		for (sd = *per_cpu_ptr(d.sd, i); sd; sd = sd->parent) {
- 			struct sched_domain *child = sd->child;
- 
--			if (!(sd->flags & SD_SHARE_PKG_RESOURCES) && child &&
--			    (child->flags & SD_SHARE_PKG_RESOURCES)) {
-+			if (!(sd->flags & SD_SHARE_LLC) && child &&
-+			    (child->flags & SD_SHARE_LLC)) {
- 				struct sched_domain __rcu *top_p;
- 				unsigned int nr_llcs;
- 
--- 
-2.43.0
+I'm sending a v4 based on an off mailing list discussion.
 
+> 
+> cheers
+
+~Amit
