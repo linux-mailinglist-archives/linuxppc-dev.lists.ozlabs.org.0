@@ -1,84 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2EC384CC73
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Feb 2024 15:15:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAFF584CCC1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Feb 2024 15:29:26 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ONDApOWB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HmqWNc40;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TVMbS5Qqrz3cQL
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 01:15:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TVMv86Mpbz3cQX
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 01:29:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ONDApOWB;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HmqWNc40;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TVMZk3NQNz2xPd
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Feb 2024 01:15:10 +1100 (AEDT)
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 417DRK4i024733;
-	Wed, 7 Feb 2024 14:15:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=M7VY3bsanvzSPuzOMowwnwqXYsUsv2q9/y/knc+OF04=;
- b=ONDApOWB+CkBmtwnnrXx6SkUxdZPi/jvq2kA4RgwXzzT59PZgrgSpWUSf3T7AgIbaLnV
- dKeUqduQCegSZZhMIOTmY5lxo34H5DkQG+Ichg2wDidWhzh2HcZzzKnm8y4q9VflI0kL
- qfSyhhUiYGTFh4q0gQ1gcEK3cRLp46W1weVLRbTm9eEVdv1nx41qHuQUNNmeDziO82YF
- zFv1ELWokMX1r5pshDTNYMgDGqxj7gTrZTelM9Q7Rv4SPQX2H9NtBJ1Yw05atCuyYxch
- YIH4+aKK8PDx//ui2NUPtpS3LMUy+dkJHG6kQsCK2LS8r3cJnlqRT9t2q6KWzLuDXSon kw== 
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w4arnsgfe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 Feb 2024 14:15:03 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 417D19rM020234;
-	Wed, 7 Feb 2024 14:15:03 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3w1ytt6d07-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 Feb 2024 14:15:02 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 417EF0io11666036
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 7 Feb 2024 14:15:00 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0FD5C2004E;
-	Wed,  7 Feb 2024 14:15:00 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D041A2004B;
-	Wed,  7 Feb 2024 14:14:59 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.155.204.135])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed,  7 Feb 2024 14:14:59 +0000 (GMT)
-Date: Wed, 7 Feb 2024 15:14:58 +0100
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Heiko Carstens <hca@linux.ibm.com>
-Subject: Re: [PATCH 4/5] s390/irq,nmi: do not include <linux/vtime.h> header
-Message-ID: <ZcOQYn7G+lE7sR9W@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TVMtP730rz2ykZ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Feb 2024 01:28:45 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id BABE5CE18F6;
+	Wed,  7 Feb 2024 14:28:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFE9C433F1;
+	Wed,  7 Feb 2024 14:28:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707316120;
+	bh=T09NH+K9OB+5cBRVizzfGFKyrC8gvkvf+GGOCbIop6Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HmqWNc40Wn8O+g2p5nCZRDdlHBgUdcSN7gF43458D1PwN4svHHFHuP4QEf4/DOw4N
+	 28bSY1wFrKHOe+iQOF23kKamdoiGMrpHVxGnPbcEDLsQ+EqCyGbgpVa9q0aKGUNe2W
+	 i85cJohoGvsPpsKdkgyAmG2P95AmsgLCk5+Hh2rMnlcTuiEsYCByfR5I3EtVvO+KHq
+	 1//9zynIJFJo++t4TXcmsStuLflTh0Oosv9wtTAfA95mwV+vq4qYXkHsUJ+Er+2L3H
+	 yt+CJIZEXJ6lb40ggUy18ZfMdtfttrThzsAVcNCpQqPiLhN1Oa3kPUDUrlwItdctEA
+	 DKBWg1W75H6kg==
+Date: Wed, 7 Feb 2024 15:28:37 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: Re: [PATCH 5/5] sched/vtime: do not include <asm/vtime.h> header
+Message-ID: <ZcOTlZwYo1n4-myD@localhost.localdomain>
 References: <cover.1706470223.git.agordeev@linux.ibm.com>
- <966148629217b56139f40c38ffbb45ca229bd489.1706470223.git.agordeev@linux.ibm.com>
- <20240129095144.6722-A-hca@linux.ibm.com>
+ <2402f44309e1c9705501bdc9b798e8fe6d73f905.1706470223.git.agordeev@linux.ibm.com>
+ <ZcLBAKMJ5Vbbm2Ln@localhost.localdomain>
+ <ZcOP6bm0ekxDUVk6@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240129095144.6722-A-hca@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: wQvamkGva6TInDfEiSrAYE_sclmi_aAF
-X-Proofpoint-GUID: wQvamkGva6TInDfEiSrAYE_sclmi_aAF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-07_05,2024-01-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=1 adultscore=0 mlxlogscore=188
- spamscore=1 malwarescore=0 clxscore=1015 mlxscore=1 impostorscore=0
- bulkscore=0 phishscore=0 suspectscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402070106
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZcOP6bm0ekxDUVk6@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,27 +62,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>, Frederic Weisbecker <frederic@kernel.org>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Ingo Molnar <mingo@kernel.org>
+Cc: linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jan 29, 2024 at 10:51:44AM +0100, Heiko Carstens wrote:
-> It is confusing when the patch subject is "do not include.." and all
-> what this patch is doing is to add two includes. I see what this is
-> doing: getting rid of the implicit include of asm/vtime.h most likely
-> via linux/hardirq.h, but that's not very obvious.
+Le Wed, Feb 07, 2024 at 03:12:57PM +0100, Alexander Gordeev a écrit :
+> On Wed, Feb 07, 2024 at 12:30:08AM +0100, Frederic Weisbecker wrote:
+> > Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
 > 
-> Anyway:
-> Acked-by: Heiko Carstens <hca@linux.ibm.com>
+> Thank you for the review, Frederic!
+> 
+> The Heiko comment is valid and I would add this chunk in v2:
+> 
+> --- a/arch/powerpc/include/asm/Kbuild
+> +++ b/arch/powerpc/include/asm/Kbuild
+> @@ -6,5 +6,4 @@ generic-y += agp.h
+>  generic-y += kvm_types.h
+>  generic-y += mcs_spinlock.h
+>  generic-y += qrwlock.h
+> -generic-y += vtime.h
+>  generic-y += early_ioremap.h
+> 
+> Would you keep your Reviewed-by?
 
-Thank you, Heiko!
-
-Whether this wording sounds better?
-
-s390/irq,nmi: include <asm/vtime.h> header directly                         
-
-update_timer_sys() and update_timer_mcck() are inlines used for             
-CPU time accounting from the interrupt and machine-check handlers.          
-These routines are specific to s390 architecture, but included              
-via <linux/vtime.h> header implicitly. Avoid the extra loop and             
-include <asm/vtime.h> header directly.                                      
+Sure!
