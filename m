@@ -1,62 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7950184C9F9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Feb 2024 12:52:43 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QX6XU+s2;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 443EF84CB74
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Feb 2024 14:23:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TVJQK2jTKz3cLQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Feb 2024 22:52:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TVLRb1Trwz3vjd
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 00:23:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QX6XU+s2;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Wed, 07 Feb 2024 22:51:59 AEDT
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=szxga04-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TVJPW3zF3z2yVL
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Feb 2024 22:51:59 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707306720; x=1738842720;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=SfvJn+xoupBR1MbkXFoDnA5hLXb3/g/1CcV8cOlXD/A=;
-  b=QX6XU+s2YzXZmbv2AaQ54CIEcAtDAOJXEW8w/77+wKUkA0RuHN7AEsaG
-   2dVxmEZzbffvtQ8Ssx+jjtSUoGxNyDyrivzbba2O0WmPmeDi+5vggaWse
-   wLLTgmannTCWprvTguPDMrl3y+B3iqcPhAoGkxttvb1Nn08Ek/lxXFsn0
-   yhB7zgt++QSrPE/sYfcAtyFjlN87QaMQO5RWaBp+fAxJFEclAy/jWrV7X
-   KS0qxHtiKSY+QgcuCIWzbptHo1z2IJNQy2IcZKafz5cT+zmIWToFlioLE
-   8ZWh46L42RPhlQufpW2SyMiEkxflgQP18iu4zhCJtZYtGlEDlo+aAcFnz
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10976"; a="4837025"
-X-IronPort-AV: E=Sophos;i="6.05,250,1701158400"; 
-   d="scan'208";a="4837025"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2024 03:50:50 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10976"; a="909976005"
-X-IronPort-AV: E=Sophos;i="6.05,250,1701158400"; 
-   d="scan'208";a="909976005"
-Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.246.51.96])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2024 03:50:43 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Wed, 7 Feb 2024 13:50:37 +0200 (EET)
-To: linux-pci@vger.kernel.org, 
-    "Wang, Qingshun" <qingshun.wang@linux.intel.com>
-Subject: Re: [PATCH 0/4] PCI: Consolidate TLP Log reading and printing
-In-Reply-To: <20240206135717.8565-1-ilpo.jarvinen@linux.intel.com>
-Message-ID: <d1168e4a-c766-b3c2-bb74-c8dbae984cff@linux.intel.com>
-References: <20240206135717.8565-1-ilpo.jarvinen@linux.intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TVLPr61SKz30ft
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Feb 2024 00:22:23 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4TVLNN2Ldmz1xnGX;
+	Wed,  7 Feb 2024 21:21:08 +0800 (CST)
+Received: from kwepemm600017.china.huawei.com (unknown [7.193.23.234])
+	by mail.maildlp.com (Postfix) with ESMTPS id EB0E9140414;
+	Wed,  7 Feb 2024 21:22:15 +0800 (CST)
+Received: from localhost.localdomain (10.175.112.125) by
+ kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Wed, 7 Feb 2024 21:22:14 +0800
+From: Tong Tiangen <tongtiangen@huawei.com>
+To: Mark Rutland <mark.rutland@arm.com>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Andrew Morton
+	<akpm@linux-foundation.org>, James Morse <james.morse@arm.com>, Robin Murphy
+	<robin.murphy@arm.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry
+ Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko
+	<glider@google.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Aneesh
+ Kumar K.V <aneesh.kumar@kernel.org>, "Naveen N. Rao"
+	<naveen.n.rao@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo
+ Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
+	<hpa@zytor.com>
+Subject: [PATCH v11 0/5]arm64: add ARCH_HAS_COPY_MC support
+Date: Wed, 7 Feb 2024 21:21:59 +0800
+Message-ID: <20240207132204.1720444-1-tongtiangen@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323328-2015099635-1707302934=:1119"
-Content-ID: <ca89eb14-5052-c712-0d3b-dae8e97234e8@linux.intel.com>
+Content-Type: text/plain; charset="y"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.175.112.125]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemm600017.china.huawei.com (7.193.23.234)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,54 +60,190 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>, linux-efi@vger.kernel.org, Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>, Paolo Abeni <pabeni@redhat.com>, LKML <linux-kernel@vger.kernel.org>, Jesse Brandeburg <jesse.brandeburg@intel.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Netdev <netdev@vger.kernel.org>, Tony Nguyen <anthony.l.nguyen@intel.com>, Jakub Kicinski <kuba@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, intel-wired-lan@lists.osuosl.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Ard Biesheuvel <ardb@kernel.org>, linux-edac@vger.kernel.org
+Cc: wangkefeng.wang@huawei.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Tong Tiangen <tongtiangen@huawei.com>, Guohanjun <guohanjun@huawei.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+With the increase of memory capacity and density, the probability of memory
+error also increases. The increasing size and density of server RAM in data
+centers and clouds have shown increased uncorrectable memory errors.
 
---8323328-2015099635-1707302934=:1119
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Content-ID: <5d24dca6-e3dc-f4f5-8d6c-ee0d65616a2f@linux.intel.com>
+Currently, more and more scenarios that can tolerate memory errors，such as
+CoW[1,2], KSM copy[3], coredump copy[4], khugepaged[5,6], uaccess copy[7],
+etc.
 
-Adding Cc Quigshun which I ended up forgotting despite thinking it at one=
-=20
-point.
+This patchset introduces a new processing framework on ARM64, which enables
+ARM64 to support error recovery in the above scenarios, and more scenarios
+can be expanded based on this in the future.
 
---=20
- i.
+In arm64, memory error handling in do_sea(), which is divided into two cases:
+ 1. If the user state consumed the memory errors, the solution is to kill
+    the user process and isolate the error page.
+ 2. If the kernel state consumed the memory errors, the solution is to
+    panic.
 
-On Tue, 6 Feb 2024, Ilpo J=E4rvinen wrote:
+For case 2, Undifferentiated panic may not be the optimal choice, as it can
+be handled better. In some scenarios, we can avoid panic, such as uaccess,
+if the uaccess fails due to memory error, only the user process will be
+affected, killing the user process and isolating the user page with
+hardware memory errors is a better choice.
 
-> This series consolidates AER & DPC TLP Log handling code. Helpers are
-> added for reading and printing the TLP Log and the format is made to
-> include E-E Prefixes in both cases (previously only one DPC RP PIO
-> displayed the E-E Prefixes).
->=20
-> I'd appreciate if people familiar with ixgbe could check the error
-> handling conversion within the driver is correct.
->=20
-> Ilpo J=E4rvinen (4):
->   PCI/AER: Cleanup register variable
->   PCI: Generalize TLP Header Log reading
->   PCI: Add TLP Prefix reading into pcie_read_tlp_log()
->   PCI: Create helper to print TLP Header and Prefix Log
->=20
->  drivers/firmware/efi/cper.c                   |  4 +-
->  drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 39 +++------
->  drivers/pci/ats.c                             |  2 +-
->  drivers/pci/pci.c                             | 79 +++++++++++++++++++
->  drivers/pci/pci.h                             |  2 +-
->  drivers/pci/pcie/aer.c                        | 28 ++-----
->  drivers/pci/pcie/dpc.c                        | 31 ++++----
->  drivers/pci/probe.c                           | 14 ++--
->  include/linux/aer.h                           | 16 ++--
->  include/linux/pci.h                           |  2 +-
->  include/ras/ras_event.h                       | 10 +--
->  include/uapi/linux/pci_regs.h                 |  2 +
->  12 files changed, 145 insertions(+), 84 deletions(-)
->=20
->=20
---8323328-2015099635-1707302934=:1119--
+[1] commit d302c2398ba2 ("mm, hwpoison: when copy-on-write hits poison, take page offline")
+[2] commit 1cb9dc4b475c ("mm: hwpoison: support recovery from HugePage copy-on-write faults")
+[3] commit 6b970599e807 ("mm: hwpoison: support recovery from ksm_might_need_to_copy()")
+[4] commit 245f09226893 ("mm: hwpoison: coredump: support recovery from dump_user_range()")
+[5] commit 98c76c9f1ef7 ("mm/khugepaged: recover from poisoned anonymous memory")
+[6] commit 12904d953364 ("mm/khugepaged: recover from poisoned file-backed memory")
+[7] commit 278b917f8cb9 ("x86/mce: Add _ASM_EXTABLE_CPY for copy user access")
+
+------------------
+Test result:
+
+1. copy_page(), copy_mc_page() basic function test pass, and the disassembly
+   contents remains the same before and after refactor.
+
+2. copy_to/from_user() access kernel NULL pointer raise translation fault
+   and dump error message then die(), test pass.
+
+3. Test following scenarios: copy_from_user(), get_user(), COW.
+
+   Before patched: trigger a hardware memory error then panic.
+   After  patched: trigger a hardware memory error without panic.
+
+   Testing step:
+   step1. start an user-process.
+   step2. poison(einj) the user-process's page.
+   step3: user-process access the poison page in kernel mode, then trigger SEA.
+   step4: the kernel will not panic, only the user process is killed, the poison
+          page is isolated. (before patched, the kernel will panic in do_sea())
+
+------------------
+
+Since V10:
+ Accroding Mark's suggestion:
+ 1. Merge V10's patch2 and patch3 to V11's patch2.
+ 2. Patch2(V11): use new fixup_type for ld* in copy_to_user(), fix fatal
+    issues (NULL kernel pointeraccess) been fixup incorrectly.
+ 3. Patch2(V11): refactoring the logic of do_sea().
+ 4. Patch4(V11): Remove duplicate assembly logic and remove do_mte().
+
+ Besides:
+ 1. Patch2(V11): remove st* insn's fixup, st* generally not trigger memory error.
+ 2. Split a part of the logic of patch2(V11) to patch5(V11), for detail,
+    see patch5(V11)'s commit msg.
+ 3. Remove patch6(v10) “arm64: introduce copy_mc_to_kernel() implementation”.
+    During modification, some problems that cannot be solved in a short
+    period are found. The patch will be released after the problems are
+    solved.
+ 4. Add test result in this patch.
+ 5. Modify patchset title, do not use machine check and remove "-next".
+
+Since V9:
+ 1. Rebase to latest kernel version 6.8-rc2.
+ 2. Add patch 6/6 to support copy_mc_to_kernel().
+
+Since V8:
+ 1. Rebase to latest kernel version and fix topo in some of the patches.
+ 2. According to the suggestion of Catalin, I attempted to modify the
+    return value of function copy_mc_[user]_highpage() to bytes not copied.
+    During the modification process, I found that it would be more
+    reasonable to return -EFAULT when copy error occurs (referring to the
+    newly added patch 4). 
+
+    For ARM64, the implementation of copy_mc_[user]_highpage() needs to
+    consider MTE. Considering the scenario where data copying is successful
+    but the MTE tag copying fails, it is also not reasonable to return
+    bytes not copied.
+ 3. Considering the recent addition of machine check safe support for
+    multiple scenarios, modify commit message for patch 5 (patch 4 for V8).
+
+Since V7:
+ Currently, there are patches supporting recover from poison
+ consumption for the cow scenario[1]. Therefore, Supporting cow
+ scenario under the arm64 architecture only needs to modify the relevant
+ code under the arch/.
+ [1]https://lore.kernel.org/lkml/20221031201029.102123-1-tony.luck@intel.com/
+
+Since V6:
+ Resend patches that are not merged into the mainline in V6.
+
+Since V5:
+ 1. Add patch2/3 to add uaccess assembly helpers.
+ 2. Optimize the implementation logic of arm64_do_kernel_sea() in patch8.
+ 3. Remove kernel access fixup in patch9.
+ All suggestion are from Mark. 
+
+Since V4:
+ 1. According Michael's suggestion, add patch5.
+ 2. According Mark's suggestiog, do some restructuring to arm64
+ extable, then a new adaptation of machine check safe support is made based
+ on this.
+ 3. According Mark's suggestion, support machine check safe in do_mte() in
+ cow scene.
+ 4. In V4, two patches have been merged into -next, so V5 not send these
+ two patches.
+
+Since V3:
+ 1. According to Robin's suggestion, direct modify user_ldst and
+ user_ldp in asm-uaccess.h and modify mte.S.
+ 2. Add new macro USER_MC in asm-uaccess.h, used in copy_from_user.S
+ and copy_to_user.S.
+ 3. According to Robin's suggestion, using micro in copy_page_mc.S to
+ simplify code.
+ 4. According to KeFeng's suggestion, modify powerpc code in patch1.
+ 5. According to KeFeng's suggestion, modify mm/extable.c and some code
+ optimization.
+
+Since V2:
+ 1. According to Mark's suggestion, all uaccess can be recovered due to
+    memory error.
+ 2. Scenario pagecache reading is also supported as part of uaccess
+    (copy_to_user()) and duplication code problem is also solved. 
+    Thanks for Robin's suggestion.
+ 3. According Mark's suggestion, update commit message of patch 2/5.
+ 4. According Borisllav's suggestion, update commit message of patch 1/5.
+
+Since V1:
+ 1.Consistent with PPC/x86, Using CONFIG_ARCH_HAS_COPY_MC instead of
+   ARM64_UCE_KERNEL_RECOVERY.
+ 2.Add two new scenes, cow and pagecache reading.
+ 3.Fix two small bug(the first two patch).
+
+V1 in here:
+https://lore.kernel.org/lkml/20220323033705.3966643-1-tongtiangen@huawei.com/
+
+Tong Tiangen (5):
+  uaccess: add generic fallback version of copy_mc_to_user()
+  arm64: add support for ARCH_HAS_COPY_MC
+  mm/hwpoison: return -EFAULT when copy fail in
+    copy_mc_[user]_highpage()
+  arm64: support copy_mc_[user]_highpage()
+  arm64: send SIGBUS to user process for SEA exception
+
+ arch/arm64/Kconfig                   |  1 +
+ arch/arm64/include/asm/asm-extable.h | 31 ++++++++++++---
+ arch/arm64/include/asm/asm-uaccess.h |  4 ++
+ arch/arm64/include/asm/extable.h     |  1 +
+ arch/arm64/include/asm/mte.h         |  9 +++++
+ arch/arm64/include/asm/page.h        | 10 +++++
+ arch/arm64/lib/Makefile              |  2 +
+ arch/arm64/lib/copy_mc_page.S        | 37 ++++++++++++++++++
+ arch/arm64/lib/copy_page.S           | 50 +++----------------------
+ arch/arm64/lib/copy_page_template.S  | 56 ++++++++++++++++++++++++++++
+ arch/arm64/lib/copy_to_user.S        | 10 ++---
+ arch/arm64/lib/mte.S                 | 29 ++++++++++++++
+ arch/arm64/mm/copypage.c             | 45 ++++++++++++++++++++++
+ arch/arm64/mm/extable.c              | 19 ++++++++++
+ arch/arm64/mm/fault.c                | 39 ++++++++++++++-----
+ arch/powerpc/include/asm/uaccess.h   |  1 +
+ arch/x86/include/asm/uaccess.h       |  1 +
+ include/linux/highmem.h              | 16 ++++++--
+ include/linux/uaccess.h              |  9 +++++
+ mm/khugepaged.c                      |  4 +-
+ 20 files changed, 304 insertions(+), 70 deletions(-)
+ create mode 100644 arch/arm64/lib/copy_mc_page.S
+ create mode 100644 arch/arm64/lib/copy_page_template.S
+
+-- 
+2.25.1
+
