@@ -2,52 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D05C84D9E7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 07:16:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11ACA84D9F0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 07:20:01 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ch0eIee+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jIr3HcQ5;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TVmw30fLrz3dTv
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 17:16:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TVmzy6w6bz3cGw
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 17:19:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ch0eIee+;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jIr3HcQ5;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TVmvH0fPSz3dLH
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Feb 2024 17:15:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TVmzG3PTSz2xFk
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Feb 2024 17:19:22 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 3A82E61B76;
-	Thu,  8 Feb 2024 06:15:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEF23C433F1;
-	Thu,  8 Feb 2024 06:15:43 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 7A15361B60;
+	Thu,  8 Feb 2024 06:19:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E073C433C7;
+	Thu,  8 Feb 2024 06:19:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707372952;
-	bh=4cpBdMWcDp/URDDivrNC/5C2U/2Get9Hcj59TpzJo88=;
+	s=k20201202; t=1707373160;
+	bh=sykn19xSWWObW9qLEcBLaerZOcbUqhpMGC17aR+qXjA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ch0eIee+TLQVcxJA1IRkGd00XN03txLrgzYzC4XgFSxqfrFQSz9Zg39KFHirnk8Dn
-	 HXqAbI6jaZMcaFtq1/+Jv5yhTQ9qnjaAWh0Up4V4v771H3bVOa0RD6klWQxgL/9ASp
-	 H01qOpHlb0gOleU7AQDWReSZtL8qLnAwMAUt1celTZxbjdnteZmnSZq/EFqUAx0mmN
-	 AeiyEEztyQtpKTBUo5oFZUSCHlnRBQ6ufZqDEhgsiFbZNBOAR+LBNUD5WKDlfHZnAd
-	 6Z+vqa2O+e9MDNRJCcItgHJ2iQFkpDLAcYLkQgY9uErSvCDDSuXkWQjkTilp2CM8Ph
-	 nkWZ07IuNEqyg==
-Date: Thu, 8 Feb 2024 08:15:27 +0200
+	b=jIr3HcQ5b0bG8W1uCJ8Xs3AwCdkv1B8MN9avDtnOskKLP0MGsSA5FdVe/qlbwHlcW
+	 ij75Se4Sr0M/mlXPbTkg0ExM3s0WbaPDmBB2z0afJU/DgLRzJylJTpMBlkaFq6genb
+	 UGrNOEd0VDk8McWIYbPInEhmtVwApod8E7+c/sGa2tGsu8eSLCSRKoYuzxYXt8WRCQ
+	 9cQouplzvU1R7Agn51n6p8mDjqipAaZ8nccLsae0oyB1d4PDPTePnX+SGrmuqMGd6I
+	 jV18g7gasEz+BfWfvdqPK2SfzN57x1dswOCBjsVrob3m65Q37nQIWq9pBNrosyAwa/
+	 8XrfQqz5PFmrw==
+Date: Thu, 8 Feb 2024 08:18:55 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v3 06/15] s390/pgtable: define PFN_PTE_SHIFT
-Message-ID: <ZcRxfx4Ze-_KXzE7@kernel.org>
+Subject: Re: [PATCH v3 07/15] sparc/pgtable: define PFN_PTE_SHIFT
+Message-ID: <ZcRyT9qil3f-Jot5@kernel.org>
 References: <20240129124649.189745-1-david@redhat.com>
- <20240129124649.189745-7-david@redhat.com>
+ <20240129124649.189745-8-david@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240129124649.189745-7-david@redhat.com>
+In-Reply-To: <20240129124649.189745-8-david@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,7 +64,7 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, sparclinux@vg
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jan 29, 2024 at 01:46:40PM +0100, David Hildenbrand wrote:
+On Mon, Jan 29, 2024 at 01:46:41PM +0100, David Hildenbrand wrote:
 > We want to make use of pte_next_pfn() outside of set_ptes(). Let's
 > simply define PFN_PTE_SHIFT, required by pte_next_pfn().
 > 
@@ -73,22 +73,22 @@ On Mon, Jan 29, 2024 at 01:46:40PM +0100, David Hildenbrand wrote:
 Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
 
 > ---
->  arch/s390/include/asm/pgtable.h | 2 ++
+>  arch/sparc/include/asm/pgtable_64.h | 2 ++
 >  1 file changed, 2 insertions(+)
 > 
-> diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
-> index 1299b56e43f6..4b91e65c85d9 100644
-> --- a/arch/s390/include/asm/pgtable.h
-> +++ b/arch/s390/include/asm/pgtable.h
-> @@ -1316,6 +1316,8 @@ pgprot_t pgprot_writecombine(pgprot_t prot);
->  #define pgprot_writethrough	pgprot_writethrough
->  pgprot_t pgprot_writethrough(pgprot_t prot);
+> diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+> index a8c871b7d786..652af9d63fa2 100644
+> --- a/arch/sparc/include/asm/pgtable_64.h
+> +++ b/arch/sparc/include/asm/pgtable_64.h
+> @@ -929,6 +929,8 @@ static inline void __set_pte_at(struct mm_struct *mm, unsigned long addr,
+>  	maybe_tlb_batch_add(mm, addr, ptep, orig, fullmm, PAGE_SHIFT);
+>  }
 >  
 > +#define PFN_PTE_SHIFT		PAGE_SHIFT
 > +
->  /*
->   * Set multiple PTEs to consecutive pages with a single call.  All PTEs
->   * are within the same folio, PMD and VMA.
+>  static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
+>  		pte_t *ptep, pte_t pte, unsigned int nr)
+>  {
 > -- 
 > 2.43.0
 > 
