@@ -1,53 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3915984DA01
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 07:22:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32DAE84DA15
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 07:28:31 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kOuzsSbB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kOdTKonu;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TVn2M13QNz3dFm
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 17:22:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TVn9n0nzbz3cDN
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 17:28:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kOuzsSbB;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kOdTKonu;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TVn1c6md4z3dLq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Feb 2024 17:21:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TVn941SKJz2xdh
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Feb 2024 17:27:52 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 347BF61B29;
-	Thu,  8 Feb 2024 06:21:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FA67C433C7;
-	Thu,  8 Feb 2024 06:21:13 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id E94BB61B13;
+	Thu,  8 Feb 2024 06:27:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F0D4C433C7;
+	Thu,  8 Feb 2024 06:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707373282;
-	bh=lD1lrtMMdOBpkeLYHTDECguSxgees/c78w0lL7yv0bw=;
+	s=k20201202; t=1707373669;
+	bh=wxaBvjOQruR4Ppe5iBXVeEd+wF2Ez98jfGSuez99hUI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kOuzsSbB27uwSEFp6QnBBwF4c8wSiOnHMBpoT0jJuV3IEfQ/f661CpCyRQBuvLibE
-	 lLQXgNR3XCQOOP5nvA2vnYrZmZkM/dZXQxbM9FSzlFF4YpKjZv+hycd+20Elp8ywEL
-	 LAv0lEURquSyS6AsBFqOIDxwSjBdh4LEyqj78PHMjfRFx1Z2x+WKh2zG2BJ8sNyFaF
-	 HujNOdc0xlfRqZUvzM5o9jvnfWteYJRjhw62WISYKo869NMnlPw7V7xJ1+fXv/PF/u
-	 pHUOw3YaYaqgO8HS3ztmkMy9JMAmPt1+mxKkvDu4Ht04n+bkQbqIzXeGeuiFUFesQd
-	 NG/ZDh6p/DJXg==
-Date: Thu, 8 Feb 2024 08:20:57 +0200
+	b=kOdTKonuPOHT47MMueyUa62BOnNiiM/wNlezDtex/q6A6C+C0/4I75w1hs6HgvTcM
+	 6hzU/xNlN2o7mllZJQrfNN8OS6yllsdwkypMwhdT9Zppi/oCLVm5oi0rjh8531W++l
+	 VyhzaLbe16SPL0h9xcRPSV+cCkOkyBpKxf4y5KkH108vuZcpzPDikPbUG6HlcbyEC6
+	 jTwJS9vdlSE+DGYuaJ63tvvk0g/PUUXVgtbv8Zylz7Hox9kBt886iEEM3kege/8EOf
+	 NJ+pl0uRULV4iQ598Nv8XuegThQZaF4ao5iEmjzKtdYeRjwmfPMTOqKkZ7RotF7fHW
+	 dTB19Ug9MhA4w==
+Date: Thu, 8 Feb 2024 08:27:24 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v3 10/15] powerpc/mm: use pte_next_pfn() in set_ptes()
-Message-ID: <ZcRyyTjbq8jxoPWC@kernel.org>
+Subject: Re: [PATCH v3 12/15] mm/memory: pass PTE to copy_present_pte()
+Message-ID: <ZcR0TF5d75ucLjBm@kernel.org>
 References: <20240129124649.189745-1-david@redhat.com>
- <20240129124649.189745-11-david@redhat.com>
+ <20240129124649.189745-13-david@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240129124649.189745-11-david@redhat.com>
+In-Reply-To: <20240129124649.189745-13-david@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,35 +64,46 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, sparclinux@vg
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jan 29, 2024 at 01:46:44PM +0100, David Hildenbrand wrote:
-> Let's use our handy new helper. Note that the implementation is slightly
-> different, but shouldn't really make a difference in practice.
+On Mon, Jan 29, 2024 at 01:46:46PM +0100, David Hildenbrand wrote:
+> We already read it, let's just forward it.
 > 
-> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> This patch is based on work by Ryan Roberts.
+> 
+> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
 > Signed-off-by: David Hildenbrand <david@redhat.com>
 
 Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
 
 > ---
->  arch/powerpc/mm/pgtable.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
+>  mm/memory.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
 > 
-> diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-> index a04ae4449a02..549a440ed7f6 100644
-> --- a/arch/powerpc/mm/pgtable.c
-> +++ b/arch/powerpc/mm/pgtable.c
-> @@ -220,10 +220,7 @@ void set_ptes(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
->  			break;
->  		ptep++;
->  		addr += PAGE_SIZE;
-> -		/*
-> -		 * increment the pfn.
-> -		 */
-> -		pte = pfn_pte(pte_pfn(pte) + 1, pte_pgprot((pte)));
-> +		pte = pte_next_pfn(pte);
->  	}
->  }
+> diff --git a/mm/memory.c b/mm/memory.c
+> index a3bdb25f4c8d..41b24da5be38 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -959,10 +959,9 @@ static inline void __copy_present_pte(struct vm_area_struct *dst_vma,
+>   */
+>  static inline int
+>  copy_present_pte(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
+> -		 pte_t *dst_pte, pte_t *src_pte, unsigned long addr, int *rss,
+> -		 struct folio **prealloc)
+> +		 pte_t *dst_pte, pte_t *src_pte, pte_t pte, unsigned long addr,
+> +		 int *rss, struct folio **prealloc)
+>  {
+> -	pte_t pte = ptep_get(src_pte);
+>  	struct page *page;
+>  	struct folio *folio;
 >  
+> @@ -1103,7 +1102,7 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
+>  		}
+>  		/* copy_present_pte() will clear `*prealloc' if consumed */
+>  		ret = copy_present_pte(dst_vma, src_vma, dst_pte, src_pte,
+> -				       addr, rss, &prealloc);
+> +				       ptent, addr, rss, &prealloc);
+>  		/*
+>  		 * If we need a pre-allocated page for this pte, drop the
+>  		 * locks, allocate, and try again.
 > -- 
 > 2.43.0
 > 
