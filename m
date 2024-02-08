@@ -1,70 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B1FA84DD3D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 10:48:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0C8184E3E6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 16:19:59 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=BBNkyPwy;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZnwGRyNa;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZnwGRyNa;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TVscD07nLz3cVq
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 20:48:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TW0z14QMDz3cWx
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 02:19:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=BBNkyPwy;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZnwGRyNa;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZnwGRyNa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::632; helo=mail-ej1-x632.google.com; envelope-from=lukas.bulwahn@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vschneid@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TVsbR1T9nz3c12
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Feb 2024 20:47:29 +1100 (AEDT)
-Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-a30e445602cso139057266b.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Feb 2024 01:47:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707385645; x=1707990445; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DH3hgklJ1R75I/VpBMJ+510hVZo1X3MvgC5DTxJlxAI=;
-        b=BBNkyPwyP0Mc7FMA1qXRghcPOG5CPojK7eT6pCqzVf3kt5W4F4HDU634eGpR/PbQTu
-         PzBlQ8bPryBYFe9j5uoOLpZXZwqTeRfR2RE913StIBJAq6Hi6nFg0nQJ2T2ARat8gMoF
-         HbYWMJ374r6qXUYVR9ZBCEY1uwiRVE0g3wF6WmWQ0W8Tu2D2TzsniFBFYnf2XZELw7bJ
-         2JKjCeUvHXUWCGsfAYBWe6o5M8ffkDT09Sigr2KOUWArtQ80nZ0vt4LZo0tpJB7t45Hc
-         87curMuVAxRedLeSPKf2yluLP80ikik2MH2XaKQ/Jiqa4zV9dY4ex6xI/tM3cfSIUUQD
-         wZuQ==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TW0y95fRfz3brB
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Feb 2024 02:19:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1707405548;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jC5ELXrvlO45sPj4MDJFCPeH9dCnSddJr5cpxY/vovY=;
+	b=ZnwGRyNakx9UAfDMRAwjoiZlmpYPf14SZWPJJs1uHDCNeGR91O/c7BaNIdFLK+wgUWc2Su
+	To0rcTQFLOW1F4VaPfZIrJP6YeMwOkDcJMoBlciceS7qe/nK4oApWaFyEGtKTbwtD8vAkv
+	8H0IqFqEqSMVxp4nlhRQU3wJ/ruab20=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1707405548;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jC5ELXrvlO45sPj4MDJFCPeH9dCnSddJr5cpxY/vovY=;
+	b=ZnwGRyNakx9UAfDMRAwjoiZlmpYPf14SZWPJJs1uHDCNeGR91O/c7BaNIdFLK+wgUWc2Su
+	To0rcTQFLOW1F4VaPfZIrJP6YeMwOkDcJMoBlciceS7qe/nK4oApWaFyEGtKTbwtD8vAkv
+	8H0IqFqEqSMVxp4nlhRQU3wJ/ruab20=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-594-cMiqC0u_MqGal7uBdH9_Cw-1; Thu, 08 Feb 2024 10:19:04 -0500
+X-MC-Unique: cMiqC0u_MqGal7uBdH9_Cw-1
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-68ca88ebb88so22140466d6.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Feb 2024 07:19:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707385645; x=1707990445;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DH3hgklJ1R75I/VpBMJ+510hVZo1X3MvgC5DTxJlxAI=;
-        b=rPi9tp1ZdADQSMkXdmT0FILh5snELDBNnkpJaqeeV4SqzoOA1RZ8lWrOx+z3VEoXQq
-         WG7NzeFAjBAbEFBoT3DT3iuw5ggVlYaVliDrgbYjSu70TP1Nl3OwLPmrVquPLB1mZXBX
-         542OhqPUPgn//GIhA0R3gd/nhj7YuBUOpzKE6HlZdxbIXrVhW+Nr5pXxxZvdTXHFGhE1
-         DsJ6ENRsM/wgwkEFRAjEFZkPT0xMVDnncKhUMaXuGr7FC6JRXbF4SD8jsQ+YnsZXrEzS
-         V04CelxYFUPLVoCe4liAVSBhSW5rB8tyIb9AI9EsBZguEqtfVHMW4c5ISN3yVQ+vYutz
-         wIJA==
-X-Gm-Message-State: AOJu0Ywi1wEBMV9VvR4heEwmAz0+qvsGFlgn3LuHtc4do5ZrniLCcwon
-	sqnxjemr0B82UnCxPy6viuiQJtSredN/j5R9YilzuFcPvNkUIdEKnU4XFlfiqw1j01SwcAX0dBX
-	mDTZkBDQNZmPG5cfbMKbDp493few=
-X-Google-Smtp-Source: AGHT+IGezKKWZ25bbGDuM3CK5CVJTtXoxBQHcRsyoeEV3EpwXsWsIoYWuis+AHvCuxSKvkEOsZmGBuCOh9k6CbxtP2I=
-X-Received: by 2002:a17:906:cc92:b0:a38:65e6:b996 with SMTP id
- oq18-20020a170906cc9200b00a3865e6b996mr1979455ejb.11.1707385644965; Thu, 08
- Feb 2024 01:47:24 -0800 (PST)
+        d=1e100.net; s=20230601; t=1707405544; x=1708010344;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jC5ELXrvlO45sPj4MDJFCPeH9dCnSddJr5cpxY/vovY=;
+        b=hvdlQ4IgflMMME61qqzw7UuTXwkyzF1waKUVe59KhTXjlLk35qRrXO3qP2hjZOx679
+         Hj2kBwWU2+n334X721LcjlSHzJhKL+jKI21mXWZER2RlN4tFYxNMbxOf0uyFO+Xs5hDK
+         GplITAxhqN86QjKPUy/iC0wcBWQnt9/zC4kRYCom8OtMXx2wAwUtfs4B5dVKLjeQPeV2
+         +i8HBCwrJyPfvAHXG50L68nxFsLpztizQmtanMYDL4p85bnicq/cXwboO6/S1z+vPcGS
+         sNcYIQ8ta+1upxYq/SXNTK2YUi4W2hAS4+X12ZMRLdwQ26NY6lmaGQwM9S2h9G+ryy1d
+         ICpg==
+X-Gm-Message-State: AOJu0Yxebsnpl7lnz9mIRgAQxr0m2cIgsTY9BOzP4r+iXVZ5BXSFT/pP
+	tFBet2u8w4M/80REx8NnXwuMzpO6PX3tkuG0Ivf6nOVpZOQpmEYcZy3FWjHxUDV+vHT57CdFQne
+	avNaliiuvl57xgDkIpnI3n9CuzlPKsHkH3vRKZHAkVezqQl/IlHwyZAHKmOkVz90=
+X-Received: by 2002:a0c:f28b:0:b0:68c:cf75:f3ed with SMTP id k11-20020a0cf28b000000b0068ccf75f3edmr312817qvl.36.1707405544172;
+        Thu, 08 Feb 2024 07:19:04 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEPHo2q5+5ap667UZTnNXH7EL+viO7Q3SQ3dk2Fw+Na2aQNXd0SHm24FatVHL7uUZWEREJmdA==
+X-Received: by 2002:a0c:f28b:0:b0:68c:cf75:f3ed with SMTP id k11-20020a0cf28b000000b0068ccf75f3edmr312779qvl.36.1707405543881;
+        Thu, 08 Feb 2024 07:19:03 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCX1vzpgWCr3GkZVrTqbWZpqwXV98dgoymDuP6/yj1JYcHSyTcMzDSbdcuymXQAp6RZ5AJ2iJJ37yXibzzcDg1UtvuVKRxS1ah1KaZY9cYQeCu9b+bB3c901lH68PkXBlTseR4itW/SavmR+Xtk6MinI2l1fgjAfswOHPLc8xTzvm8wsVYhR7AHm0s2DdThVX7r+y0AmvPY8YDLgS3sW5uJwaEBKFgnvHDTspFcY1q9Nyg0Gx1rda2sxlOusBSHmX3ARCerFCmPonpwX9l4Owi6MovZAirRUiRzV1Nx/UU25xIvLPMIWikYy+KJbL/MOPXQjinqSzXUs2s+sPHy9TnUm5unxugSKgDC9CmPxpQn22eDy4a2bebK8b2R3QuyRDoO5Kxbky6mXcNalp67WmRezJRhlf0OsHume+V9nu3mqJnawnx+5S1MnYL8JhJ71O8I9D4XEg1LcmR8Bv6clULulmG8HjTXN4U+/C+kZfS2s3BoZ6baMyXf7rjzw1hL4cgdFGLK1EVVEH63ADuDxCytjOH5ZnjzKxPBDX3Mm9o32SI8NDioqaZknh48tFkE+ixi56fdOhOPnavUvAGbbjUJUERdxC46W5jCeS3Rzd4AhsG5DlqGdsPPZdexMxR9ExQOqP/S5VtLH+GckqG0uDkfRldcOJ9Lupb02IRpCSDijfahGljo1YHDwqHbHhK+Tn2I5TSJfSeAcqsM43eY0tMH9oU3Ef56wi/g6pVsmrYBliOp7ePwN/A==
+Received: from vschneid-thinkpadt14sgen2i.remote.csb (213-44-141-166.abo.bbox.fr. [213.44.141.166])
+        by smtp.gmail.com with ESMTPSA id p16-20020ad451d0000000b006862b537412sm73991qvq.123.2024.02.08.07.18.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Feb 2024 07:19:03 -0800 (PST)
+From: Valentin Schneider <vschneid@redhat.com>
+To: alexs@kernel.org, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, "Naveen N . Rao"
+ <naveen.n.rao@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>, Juri Lelli
+ <juri.lelli@redhat.com>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Daniel Bristot de Oliveira <bristot@redhat.com>, Frederic Weisbecker
+ <frederic@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Barry Song
+ <song.bao.hua@hisilicon.com>, Miaohe Lin <linmiaohe@huawei.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 5/5] sched: rename SD_SHARE_PKG_RESOURCES to
+ SD_SHARE_LLC
+In-Reply-To: <20240207035840.936676-1-alexs@kernel.org>
+References: <20240207034704.935774-4-alexs@kernel.org>
+ <20240207035840.936676-1-alexs@kernel.org>
+Date: Thu, 08 Feb 2024 16:18:58 +0100
+Message-ID: <xhsmhv86zf0gt.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
 MIME-Version: 1.0
-References: <20240129131729.4311-1-lukas.bulwahn@gmail.com> <ZbsxfYVKqxwn5gl5@gondor.apana.org.au>
-In-Reply-To: <ZbsxfYVKqxwn5gl5@gondor.apana.org.au>
-From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Date: Thu, 8 Feb 2024 10:47:14 +0100
-Message-ID: <CAKXUXMynhktyTY8+JtDAuVHysV2g0eXy7dr09wvSqYxZ=paWUg@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: adjust file entries after crypto vmx file movement
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,43 +105,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-janitors@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org, Danny Tsen <dtsen@linux.ibm.com>, linux-kernel@vger.kernel.org
+Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Yicong Yang <yangyicong@hisilicon.com>, "Gautham R . Shenoy" <gautham.shenoy@amd.com>, Ricardo Neri <ricardo.neri-calderon@linux.intel.com>, Josh Poimboeuf <jpoimboe@kernel.org>, Alex Shi <alexs@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Feb 1, 2024 at 6:51=E2=80=AFAM Herbert Xu <herbert@gondor.apana.org=
-.au> wrote:
+On 07/02/24 11:58, alexs@kernel.org wrote:
+> From: Alex Shi <alexs@kernel.org>
 >
-> On Mon, Jan 29, 2024 at 02:17:29PM +0100, Lukas Bulwahn wrote:
-> >
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 2fb944964be5..15bc79e80e28 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -10307,12 +10307,12 @@ M:  Nayna Jain <nayna@linux.ibm.com>
-> >  M:   Paulo Flabiano Smorigo <pfsmorigo@gmail.com>
-> >  L:   linux-crypto@vger.kernel.org
-> >  S:   Supported
-> > -F:   drivers/crypto/vmx/Kconfig
-> > -F:   drivers/crypto/vmx/Makefile
-> > -F:   drivers/crypto/vmx/aes*
-> > -F:   drivers/crypto/vmx/ghash*
-> > -F:   drivers/crypto/vmx/ppc-xlate.pl
-> > -F:   drivers/crypto/vmx/vmx.c
-> > +F:   arch/powerpc/crypto/Kconfig
-> > +F:   arch/powerpc/crypto/Makefile
-> > +F:   arch/powerpc/crypto/aes*
+> SD_CLUSTER shares the CPU resources like llc tags or l2 cache, that's
+> easy confuse with SD_SHARE_PKG_RESOURCES. So let's specifical point
+> what the latter shares: LLC. That would reduce some confusing.
 >
-> Are you sure about this? There are non-vmx aes* files in that
-> directory.  Perhaps something more specific is needed here?
->
+> Suggested-by: Valentin Schneider <vschneid@redhat.com>
+> Signed-off-by: Alex Shi <alexs@kernel.org>
 
-sorry for the late reply. I revisited this patch and now keep the
-match exact in my patch v2:
+AFAICT it's just missing the below replacement (I've stretched the comments
+to go up to 80 chars while at it), otherwise LGTM.
 
-https://lore.kernel.org/lkml/20240208093327.23926-1-lukas.bulwahn@gmail.com=
-/
+Reviewed-by: Valentin Schneider <vschneid@redhat.com>
 
-Herbert, I hope you are fine to pick this patch v2.
+---
 
-Lukas
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index e877730219d38..99ea5986038ce 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -657,13 +657,13 @@ static void destroy_sched_domains(struct sched_domain *sd)
+ }
+ 
+ /*
+- * Keep a special pointer to the highest sched_domain that has
+- * SD_SHARE_PKG_RESOURCE set (Last Level Cache Domain) for this
+- * allows us to avoid some pointer chasing select_idle_sibling().
++ * Keep a special pointer to the highest sched_domain that has SD_SHARE_LLC set
++ * (Last Level Cache Domain) for this allows us to avoid some pointer chasing
++ * select_idle_sibling().
+  *
+- * Also keep a unique ID per domain (we use the first CPU number in
+- * the cpumask of the domain), this allows us to quickly tell if
+- * two CPUs are in the same cache domain, see cpus_share_cache().
++ * Also keep a unique ID per domain (we use the first CPU number in the cpumask
++ * of the domain), this allows us to quickly tell if two CPUs are in the same
++ * cache domain, see cpus_share_cache().
+  */
+ DEFINE_PER_CPU(struct sched_domain __rcu *, sd_llc);
+ DEFINE_PER_CPU(int, sd_llc_size);
+
