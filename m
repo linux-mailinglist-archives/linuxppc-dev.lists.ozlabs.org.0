@@ -1,53 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DE9F84D9FC
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 07:21:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3915984DA01
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 07:22:05 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sOPbdVla;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kOuzsSbB;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TVn1Z0fNDz3dLN
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 17:21:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TVn2M13QNz3dFm
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 17:22:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sOPbdVla;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kOuzsSbB;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TVn0h3Vj5z3cYj
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Feb 2024 17:20:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TVn1c6md4z3dLq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Feb 2024 17:21:24 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 6A01561B0E;
-	Thu,  8 Feb 2024 06:20:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F51C433C7;
-	Thu,  8 Feb 2024 06:20:24 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 347BF61B29;
+	Thu,  8 Feb 2024 06:21:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FA67C433C7;
+	Thu,  8 Feb 2024 06:21:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707373234;
-	bh=7wP0q4tFEy5WW95c3el7rqakiH4FhWwfyKIVHhjI1XU=;
+	s=k20201202; t=1707373282;
+	bh=lD1lrtMMdOBpkeLYHTDECguSxgees/c78w0lL7yv0bw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sOPbdVlaZ3j/34dFxXa4vB+wTlOrsQtoASWw+x3+65jJdyyCZoBVCQttsp96W2s7h
-	 +dA1wJ8Ez9ve5rimAhiY5/4mPY3ZzWQwsKvTsF8Cxkf1yL7WeETY3nbsyR+7vIMF8Q
-	 GuW4dxu/JPlWiqXJs/DKi3m2ES/5EmCcjon1rqH0D/VCX6tV4q7cOK3KzzTX7qrvVd
-	 SaM/kU/bAIRKAwb3SSP5QVrWdMzjitoySDGdjiasABQyDO4rXXsC3R9hRw7viriNL9
-	 SVm1OEQ8+qwo3As8rwgD9NWsvKsOyP5hEKMltiXMj0Y+3MHGqcNEYmdsehVkRtlm8W
-	 KYecGRtEzfD7A==
-Date: Thu, 8 Feb 2024 08:20:09 +0200
+	b=kOuzsSbB27uwSEFp6QnBBwF4c8wSiOnHMBpoT0jJuV3IEfQ/f661CpCyRQBuvLibE
+	 lLQXgNR3XCQOOP5nvA2vnYrZmZkM/dZXQxbM9FSzlFF4YpKjZv+hycd+20Elp8ywEL
+	 LAv0lEURquSyS6AsBFqOIDxwSjBdh4LEyqj78PHMjfRFx1Z2x+WKh2zG2BJ8sNyFaF
+	 HujNOdc0xlfRqZUvzM5o9jvnfWteYJRjhw62WISYKo869NMnlPw7V7xJ1+fXv/PF/u
+	 pHUOw3YaYaqgO8HS3ztmkMy9JMAmPt1+mxKkvDu4Ht04n+bkQbqIzXeGeuiFUFesQd
+	 NG/ZDh6p/DJXg==
+Date: Thu, 8 Feb 2024 08:20:57 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v3 09/15] arm/mm: use pte_next_pfn() in set_ptes()
-Message-ID: <ZcRymY35KnPAuuzY@kernel.org>
+Subject: Re: [PATCH v3 10/15] powerpc/mm: use pte_next_pfn() in set_ptes()
+Message-ID: <ZcRyyTjbq8jxoPWC@kernel.org>
 References: <20240129124649.189745-1-david@redhat.com>
- <20240129124649.189745-10-david@redhat.com>
+ <20240129124649.189745-11-david@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240129124649.189745-10-david@redhat.com>
+In-Reply-To: <20240129124649.189745-11-david@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,29 +64,35 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, sparclinux@vg
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jan 29, 2024 at 01:46:43PM +0100, David Hildenbrand wrote:
-> Let's use our handy helper now that it's available on all archs.
+On Mon, Jan 29, 2024 at 01:46:44PM +0100, David Hildenbrand wrote:
+> Let's use our handy new helper. Note that the implementation is slightly
+> different, but shouldn't really make a difference in practice.
 > 
+> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 > Signed-off-by: David Hildenbrand <david@redhat.com>
 
 Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
 
 > ---
->  arch/arm/mm/mmu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  arch/powerpc/mm/pgtable.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
 > 
-> diff --git a/arch/arm/mm/mmu.c b/arch/arm/mm/mmu.c
-> index 674ed71573a8..c24e29c0b9a4 100644
-> --- a/arch/arm/mm/mmu.c
-> +++ b/arch/arm/mm/mmu.c
-> @@ -1814,6 +1814,6 @@ void set_ptes(struct mm_struct *mm, unsigned long addr,
->  		if (--nr == 0)
+> diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
+> index a04ae4449a02..549a440ed7f6 100644
+> --- a/arch/powerpc/mm/pgtable.c
+> +++ b/arch/powerpc/mm/pgtable.c
+> @@ -220,10 +220,7 @@ void set_ptes(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
 >  			break;
 >  		ptep++;
-> -		pte_val(pteval) += PAGE_SIZE;
-> +		pteval = pte_next_pfn(pteval);
+>  		addr += PAGE_SIZE;
+> -		/*
+> -		 * increment the pfn.
+> -		 */
+> -		pte = pfn_pte(pte_pfn(pte) + 1, pte_pgprot((pte)));
+> +		pte = pte_next_pfn(pte);
 >  	}
 >  }
+>  
 > -- 
 > 2.43.0
 > 
