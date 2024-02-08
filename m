@@ -1,60 +1,34 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDF8584E4D7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 17:17:25 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RVWFLwBi;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C6F384E6E2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 18:35:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TW2FH6Wkmz3cXm
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 03:17:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TW3zd1Ghrz3bv3
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 04:35:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RVWFLwBi;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=qingshun.wang@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TW2DY0QV3z3btX
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Feb 2024 03:16:43 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707409005; x=1738945005;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vNcKCC/VYDlVMZCuvfjdsv4qWjl8OrFT+5tYxsr8d0s=;
-  b=RVWFLwBiaZOqbqQyNJi8dna5ATfKOHW7upNzfldwB8+GD4nFzAJeQxS+
-   aYAifpc5GgQQPaABFJS7leNpm93YoFrrECcOPamQ/RYPID7bB85lkkiQf
-   Dp0bdw9cEvT/xkG1wMUJBJx2yEuWg45+CiYa5mGOHoKHsRHcpLR34ICVd
-   0iy7JZGJeOMQ1eMPhzO6PAX1N/Kb73oSI7ox3ExU6BVM3jxyzs8wSVGYN
-   iaeT2XOOl7PYLxF9AujhXyA5oOjQT09qZoWql64deE6a2Z8JrBPwGDufd
-   hSduoCQmYaGCTjHGHGiio+P95bxQXI3yIBj2uxE8OTU+l8YYZQhdEoFFj
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="1115678"
-X-IronPort-AV: E=Sophos;i="6.05,254,1701158400"; 
-   d="scan'208";a="1115678"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 08:16:39 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,254,1701158400"; 
-   d="scan'208";a="24927005"
-Received: from zhushaoj-mobl1.ccr.corp.intel.com (HELO localhost) ([10.249.169.162])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 08:16:32 -0800
-Date: Fri, 9 Feb 2024 00:16:23 +0800
-From: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Subject: Re: [PATCH v2 1/4] PCI/AER: Store more information in aer_err_info
-Message-ID: <vc67zlmqs46fx2iqjqlpvju5dzpdvqkmydpebecgcaxjivlmu5@ksu4c2g7qqig>
-References: <2rfnevhnhylik4r6smr56uunsxweo7s5elo65sjhiztvxnr6bq@5fcyv22zxyyp>
- <20240206172335.GA872811@bhelgaas>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TW3zB2yWxz3bv3
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Feb 2024 04:35:15 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EC798DA7;
+	Thu,  8 Feb 2024 09:35:24 -0800 (PST)
+Received: from FVFF77S0Q05N.cambridge.arm.com (FVFF77S0Q05N.cambridge.arm.com [10.1.33.184])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E6E443F64C;
+	Thu,  8 Feb 2024 09:34:38 -0800 (PST)
+Date: Thu, 8 Feb 2024 17:34:33 +0000
+From: Mark Rutland <mark.rutland@arm.com>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Subject: Re: [PATCH v5 00/25] Transparent Contiguous PTEs for User Mappings
+Message-ID: <ZcUQqfg39zCS2BAv@FVFF77S0Q05N.cambridge.arm.com>
+References: <20240202080756.1453939-1-ryan.roberts@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240206172335.GA872811@bhelgaas>
+In-Reply-To: <20240202080756.1453939-1-ryan.roberts@arm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,60 +40,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, Alison Schofield <alison.schofield@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, linux-pci@vger.kernel.org, erwin.tsaur@intel.com, Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>, chao.p.peng@linux.intel.com, Ira Weiny <ira.weiny@intel.com>, Davidlohr Bueso <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>, linux-acpi@vger.kernel.org, Len Brown <lenb@kernel.org>, Robert Richter <rrichter@amd.com>, Borislav Petkov <bp@alien8.de>, Jonathan Cameron <jonathan.cameron@huawei.com>, Bjorn Helgaas <bhelgaas@google.com>, Dan Williams <dan.j.williams@intel.com>, linux-edac@vger.kernel.org, Tony Luck <tony.luck@intel.com>, feiting.wanyan@intel.com, qingshun.wang@intel.com, Adam Preble <adam.c.preble@intel.com>, Mahesh J Salgaonk
- ar <mahesh@linux.ibm.com>, Li Yang <leoyang.li@nxp.com>, Lukas Wunner <lukas@wunner.de>, James Morse <james.morse@arm.com>, linuxppc-dev@lists.ozlabs.org, Shiju Jose <shiju.jose@huawei.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, x86@kernel.org, David Hildenbrand <david@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>, Yang Shi <shy828301@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, Andrey Ryabinin <ryabinin.a.a@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>, Alistair Popple <apopple@nvidia.com>, Barry Song <21cnbao@gmail.com>, Matthew Wilcox <willy@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, Zi Yan <ziy@nvidia.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, John Hubbard <jhubbard@nvidia.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Feb 06, 2024 at 11:23:35AM -0600, Bjorn Helgaas wrote:
-> On Wed, Feb 07, 2024 at 12:41:41AM +0800, Wang, Qingshun wrote:
-> > On Mon, Feb 05, 2024 at 05:12:31PM -0600, Bjorn Helgaas wrote:
-> > > On Thu, Jan 25, 2024 at 02:27:59PM +0800, Wang, Qingshun wrote:
-> > > > When Advisory Non-Fatal errors are raised, both correctable and
-> > > > uncorrectable error statuses will be set. The current kernel code cannot
-> > > > store both statuses at the same time, thus failing to handle ANFE properly.
-> > > > In addition, to avoid clearing UEs that are not ANFE by accident, UE
-> > > > severity and Device Status also need to be recorded: any fatal UE cannot
-> > > > be ANFE, and if Fatal/Non-Fatal Error Detected is set in Device Status, do
-> > > > not take any assumption and let UE handler to clear UE status.
-> > > > 
-> > > > Store status and mask of both correctable and uncorrectable errors in
-> > > > aer_err_info. The severity of UEs and the values of the Device Status
-> > > > register are also recorded, which will be used to determine UEs that should
-> > > > be handled by the ANFE handler. Refactor the rest of the code to use
-> > > > cor/uncor_status and cor/uncor_mask fields instead of status and mask
-> > > > fields.
-> > > 
-> > > There's a lot going on in this patch.  Could it possibly be split up a
-> > > bit, e.g., first tease apart aer_err_info.status/.mask into
-> > > .cor_status/mask and .uncor_status/mask, then add .uncor_severity,
-> > > then add the device_status bit separately?  If it could be split up, I
-> > > think the ANFE case would be easier to see.
-> > 
-> > Thanks for the feedback! Will split it up into two pacthes in the next
-> > version.
-> 
-> Or even three:
-> 
->   1) tease apart aer_err_info.status/.mask into .cor_status/mask and
->      .uncor_status/mask
-> 
->   2) add .uncor_severity
-> 
->   3) add device_status
-> 
-> Looking at this again, I'm a little confused about 2) and 3).  I see
-> the new read of PCI_ERR_UNCOR_SEVER into .uncor_severity, but there's
-> no actual *use* of it.
-> 
-> Same for 3), I see the new read of PCI_EXP_DEVSTA, but AFAICS there's
-> no use of that value.
-> 
+On Fri, Feb 02, 2024 at 08:07:31AM +0000, Ryan Roberts wrote:
+> Hi All,
 
-Both 2) and 3) are used in PATCH 2 and traced in PATCH 4. I can separate
-the logic for reading these values from PATCH 1 and merge it with PATCH
-2.
+Hi Ryan,
 
---
-Best regards,
-Wang, Qingshun
+I assume this is the same as your 'features/granule_perf/contpte-lkml_v' branch
+on https://gitlab.arm.com/linux-arm/linux-rr/
+
+I've taken a quick look, and I have a few initial/superficial comments before
+digging into the detail on the important changes.
+
+> Patch Layout
+> ============
+> 
+> In this version, I've split the patches to better show each optimization:
+> 
+>   - 1-2:    mm prep: misc code and docs cleanups
+
+I'm not confident enough to comment on patch 2, but these look reasonable to
+me.
+
+>   - 3-8:    mm,arm,arm64,powerpc,x86 prep: Replace pte_next_pfn() with more
+>             general pte_advance_pfn()
+
+These look fine to me.
+
+>   - 9-18:   arm64 prep: Refactor ptep helpers into new layer
+
+The result of patches 9-17 looks good to me, but the intermediate stages where
+some functions are converted is a bit odd, and it's a bit painful for review
+since you need to skip ahead a few patches to see the end result to tell that
+the conversions are consistent and complete.
+
+IMO it'd be easier for review if that were three patches:
+
+1) Convert READ_ONCE() -> ptep_get()
+2) Convert set_pte_at() -> set_ptes()
+3) All the "New layer" renames and addition of the trivial wrappers
+
+Patch 18 looks fine to me.
+
+>   - 19:     functional contpte implementation
+>   - 20-25:  various optimizations on top of the contpte implementation
+
+I'll try to dig into these over the next few days.
+
+Mark.
