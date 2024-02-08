@@ -2,52 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB17584DA3E
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 07:43:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EACF384DD08
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 10:34:16 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eXfgqLd9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NFoSYfbz;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TVnVZ4Rwhz3cTT
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 17:43:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TVsJ64sM1z3cWH
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 20:34:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eXfgqLd9;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NFoSYfbz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::535; helo=mail-ed1-x535.google.com; envelope-from=lukas.bulwahn@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TVnTr3FgCz2xbC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Feb 2024 17:42:24 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 42F9761B8D;
-	Thu,  8 Feb 2024 06:42:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F50CC433F1;
-	Thu,  8 Feb 2024 06:42:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707374541;
-	bh=Q0QBXUvi2DClMvfJ1phvhOK/w5j08YYDMbbsStc2yQY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eXfgqLd9QUTkGv1W/ehUJa6sFq/3CyaP+4cUEidecXWVvmJDu0n0P2UECcJisR0V2
-	 nnothRp+ORVk0TwoCH5+vNTVME7CguMXp89J9uvilciQbgHWYfuEWVDbdHKWwSNNqe
-	 5wbTtAY2q2gPs3rWjC7SlZQ/ijex0YMpSx+folwS99tLA9ZOiYYITQKkCrNzvOaqUn
-	 iMy2sDTQ/gPsjSG6OLfzWCW8/vPiLhkOmtQjiRoIvv2V/+O3l61ylegyS3T8TFd/bI
-	 rcGpkK9gsaHzsD813FYOI9Ou4R8DWf6hWVerVSdfv4BAO+ExblwYIjadHW9Le24NAi
-	 oMymplkqG1vyA==
-Date: Thu, 8 Feb 2024 08:41:56 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v3 13/15] mm/memory: optimize fork() with PTE-mapped THP
-Message-ID: <ZcR3tBy9n0Yp5eq2@kernel.org>
-References: <20240129124649.189745-1-david@redhat.com>
- <20240129124649.189745-14-david@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240129124649.189745-14-david@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TVsHN3G9Nz3bn0
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Feb 2024 20:33:35 +1100 (AEDT)
+Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-55ff5f6a610so1655912a12.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Feb 2024 01:33:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707384811; x=1707989611; darn=lists.ozlabs.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ClZxZfA/V4+BWFkj7VuhiD7elrfOXLoTCprCHq1vgfU=;
+        b=NFoSYfbzFHRn+5eg2qaBop5xz1rT8M7S83dtT7ira51z3048uS2JkSTLBTt/8fWEM9
+         tz1eLcE1r0iIcgP/Y2P9xk61r93bgXJVAWoyAo9ORVEnlI0SZTAutiqHNtuhFHJjbKvQ
+         jYVlMcTIQH9EBzEPa7vf6KZTfLGy6iq6BtoTBExhXCURhRCCFWd9GdjcWMICwzDUKZQG
+         Hzp/C8h7cJVZm8pi+0l/h+G8TH4Eo1hX3VZbgxVvrQlXQ1uo0sFhK2pA+L2cRUPE/zAb
+         dSwyVTyBFCrxHQpLTAKeky2Aev2mz91DQCkLtExmn1NDEYY6WhkR71ojBdY2+S5hm3ke
+         b7qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707384811; x=1707989611;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ClZxZfA/V4+BWFkj7VuhiD7elrfOXLoTCprCHq1vgfU=;
+        b=tlILoOVEGDP91l2sx8osSPOKTyPzULEOiRauvhtlDEd+ffPr/rfR+nrsm1grrIDwzK
+         WZ1hCW+PxAUzrAOdtPbeP0g+MM6Ak8Gcui8K18runJ7Iko0XF73wSy3Gw37Z9XKWGPz9
+         AeQiUbq0MkM0LQ/ZFjiqRvsnUGs606lo7Bm4FlhqfoHocvaLldUQwpdFIwJqPT1VuREb
+         sP98tgvgcEBl5tYIH+raZD1B/6pahbSdk0uZ0yqKp4TBsYjyKTmF+7TKegMB4LtLPk2b
+         Qx0NkBOfIegGrczvRw28eqbfgvJuxowZvxG+uEsKeQtyLHPy8Equc/d7fhN9qxNqDfxk
+         DEfg==
+X-Gm-Message-State: AOJu0YwIC6ztbhyzrOG5k8F3HkTrgsvlDrKZVpqmcmzeJNX/xUE3NzSr
+	DMK8zR5AY8cR/cBuDcEfOBVlNQk8WBF9EB7MW3KHhUij1lprP1in
+X-Google-Smtp-Source: AGHT+IEZDOgle6xEeOkEl/5TlUMHh/sDQAV3pdX3MQSmWUeItHW9uH8U0Gszb+dGZ3njJ8RK0BuGYQ==
+X-Received: by 2002:aa7:d95a:0:b0:561:1484:8cc5 with SMTP id l26-20020aa7d95a000000b0056114848cc5mr534673eds.39.1707384811049;
+        Thu, 08 Feb 2024 01:33:31 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWdxX+Z5XfKi+0hB9EUdd/yz/n0ff5bWnTmPCM6KditwXe7kyb9xF7fGlJmcG7Qutlb6Zwco9744h+P0R8Mh3V5IizY3BIrOoHEtGdMCAxw3iNiFEJ6ZE0Ircd68BY0c0RPoaEQ5u0hDZPGt8BBJrNNcxPmMYtPEnvrJgXSBTCJbaLJ9NC74eviKltzeqexGBn/S36ZNGaeOxF8FUNB9tCQQx9o8Lhh/k7AB+Q1wXbeFm5VCM/Ac5Ii8CyDqo+b3A==
+Received: from felia.fritz.box ([2a02:810d:7e40:14b0:f81c:5b24:d269:24d])
+        by smtp.gmail.com with ESMTPSA id dk5-20020a0564021d8500b0055c97f940fcsm628306edb.81.2024.02.08.01.33.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Feb 2024 01:33:30 -0800 (PST)
+From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To: Danny Tsen <dtsen@linux.ibm.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	linux-crypto@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2] MAINTAINERS: adjust file entries after crypto vmx file movement
+Date: Thu,  8 Feb 2024 10:33:27 +0100
+Message-Id: <20240208093327.23926-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,295 +76,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Ryan Roberts <ryan.roberts@arm.com>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@d
- avemloft.net>
+Cc: Lukas Bulwahn <lukas.bulwahn@gmail.com>, kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jan 29, 2024 at 01:46:47PM +0100, David Hildenbrand wrote:
-> Let's implement PTE batching when consecutive (present) PTEs map
-> consecutive pages of the same large folio, and all other PTE bits besides
-> the PFNs are equal.
-> 
-> We will optimize folio_pte_batch() separately, to ignore selected
-> PTE bits. This patch is based on work by Ryan Roberts.
-> 
-> Use __always_inline for __copy_present_ptes() and keep the handling for
-> single PTEs completely separate from the multi-PTE case: we really want
-> the compiler to optimize for the single-PTE case with small folios, to
-> not degrade performance.
-> 
-> Note that PTE batching will never exceed a single page table and will
-> always stay within VMA boundaries.
-> 
-> Further, processing PTE-mapped THP that maybe pinned and have
-> PageAnonExclusive set on at least one subpage should work as expected,
-> but there is room for improvement: We will repeatedly (1) detect a PTE
-> batch (2) detect that we have to copy a page (3) fall back and allocate a
-> single page to copy a single page. For now we won't care as pinned pages
-> are a corner case, and we should rather look into maintaining only a
-> single PageAnonExclusive bit for large folios.
-> 
-> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+Commit 109303336a0c ("crypto: vmx - Move to arch/powerpc/crypto") moves the
+crypto vmx files to arch/powerpc, but misses to adjust the file entries for
+IBM Power VMX Cryptographic instructions and LINUX FOR POWERPC.
 
-Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Hence, ./scripts/get_maintainer.pl --self-test=patterns complains about
+broken references.
 
-> ---
->  include/linux/pgtable.h |  31 +++++++++++
->  mm/memory.c             | 112 +++++++++++++++++++++++++++++++++-------
->  2 files changed, 124 insertions(+), 19 deletions(-)
-> 
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index 351cd9dc7194..aab227e12493 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -650,6 +650,37 @@ static inline void ptep_set_wrprotect(struct mm_struct *mm, unsigned long addres
->  }
->  #endif
->  
-> +#ifndef wrprotect_ptes
-> +/**
-> + * wrprotect_ptes - Write-protect PTEs that map consecutive pages of the same
-> + *		    folio.
-> + * @mm: Address space the pages are mapped into.
-> + * @addr: Address the first page is mapped at.
-> + * @ptep: Page table pointer for the first entry.
-> + * @nr: Number of entries to write-protect.
-> + *
-> + * May be overridden by the architecture; otherwise, implemented as a simple
-> + * loop over ptep_set_wrprotect().
-> + *
-> + * Note that PTE bits in the PTE range besides the PFN can differ. For example,
-> + * some PTEs might be write-protected.
-> + *
-> + * Context: The caller holds the page table lock.  The PTEs map consecutive
-> + * pages that belong to the same folio.  The PTEs are all in the same PMD.
-> + */
-> +static inline void wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
-> +		pte_t *ptep, unsigned int nr)
-> +{
-> +	for (;;) {
-> +		ptep_set_wrprotect(mm, addr, ptep);
-> +		if (--nr == 0)
-> +			break;
-> +		ptep++;
-> +		addr += PAGE_SIZE;
-> +	}
-> +}
-> +#endif
-> +
->  /*
->   * On some architectures hardware does not set page access bit when accessing
->   * memory page, it is responsibility of software setting this bit. It brings
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 41b24da5be38..86f8a0021c8e 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -930,15 +930,15 @@ copy_present_page(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma
->  	return 0;
->  }
->  
-> -static inline void __copy_present_pte(struct vm_area_struct *dst_vma,
-> +static __always_inline void __copy_present_ptes(struct vm_area_struct *dst_vma,
->  		struct vm_area_struct *src_vma, pte_t *dst_pte, pte_t *src_pte,
-> -		pte_t pte, unsigned long addr)
-> +		pte_t pte, unsigned long addr, int nr)
->  {
->  	struct mm_struct *src_mm = src_vma->vm_mm;
->  
->  	/* If it's a COW mapping, write protect it both processes. */
->  	if (is_cow_mapping(src_vma->vm_flags) && pte_write(pte)) {
-> -		ptep_set_wrprotect(src_mm, addr, src_pte);
-> +		wrprotect_ptes(src_mm, addr, src_pte, nr);
->  		pte = pte_wrprotect(pte);
->  	}
->  
-> @@ -950,26 +950,93 @@ static inline void __copy_present_pte(struct vm_area_struct *dst_vma,
->  	if (!userfaultfd_wp(dst_vma))
->  		pte = pte_clear_uffd_wp(pte);
->  
-> -	set_pte_at(dst_vma->vm_mm, addr, dst_pte, pte);
-> +	set_ptes(dst_vma->vm_mm, addr, dst_pte, pte, nr);
-> +}
-> +
-> +/*
-> + * Detect a PTE batch: consecutive (present) PTEs that map consecutive
-> + * pages of the same folio.
-> + *
-> + * All PTEs inside a PTE batch have the same PTE bits set, excluding the PFN.
-> + */
-> +static inline int folio_pte_batch(struct folio *folio, unsigned long addr,
-> +		pte_t *start_ptep, pte_t pte, int max_nr)
-> +{
-> +	unsigned long folio_end_pfn = folio_pfn(folio) + folio_nr_pages(folio);
-> +	const pte_t *end_ptep = start_ptep + max_nr;
-> +	pte_t expected_pte = pte_next_pfn(pte);
-> +	pte_t *ptep = start_ptep + 1;
-> +
-> +	VM_WARN_ON_FOLIO(!pte_present(pte), folio);
-> +
-> +	while (ptep != end_ptep) {
-> +		pte = ptep_get(ptep);
-> +
-> +		if (!pte_same(pte, expected_pte))
-> +			break;
-> +
-> +		/*
-> +		 * Stop immediately once we reached the end of the folio. In
-> +		 * corner cases the next PFN might fall into a different
-> +		 * folio.
-> +		 */
-> +		if (pte_pfn(pte) == folio_end_pfn)
-> +			break;
-> +
-> +		expected_pte = pte_next_pfn(expected_pte);
-> +		ptep++;
-> +	}
-> +
-> +	return ptep - start_ptep;
->  }
->  
->  /*
-> - * Copy one pte.  Returns 0 if succeeded, or -EAGAIN if one preallocated page
-> - * is required to copy this pte.
-> + * Copy one present PTE, trying to batch-process subsequent PTEs that map
-> + * consecutive pages of the same folio by copying them as well.
-> + *
-> + * Returns -EAGAIN if one preallocated page is required to copy the next PTE.
-> + * Otherwise, returns the number of copied PTEs (at least 1).
->   */
->  static inline int
-> -copy_present_pte(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
-> +copy_present_ptes(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  		 pte_t *dst_pte, pte_t *src_pte, pte_t pte, unsigned long addr,
-> -		 int *rss, struct folio **prealloc)
-> +		 int max_nr, int *rss, struct folio **prealloc)
->  {
->  	struct page *page;
->  	struct folio *folio;
-> +	int err, nr;
->  
->  	page = vm_normal_page(src_vma, addr, pte);
->  	if (unlikely(!page))
->  		goto copy_pte;
->  
->  	folio = page_folio(page);
-> +
-> +	/*
-> +	 * If we likely have to copy, just don't bother with batching. Make
-> +	 * sure that the common "small folio" case is as fast as possible
-> +	 * by keeping the batching logic separate.
-> +	 */
-> +	if (unlikely(!*prealloc && folio_test_large(folio) && max_nr != 1)) {
-> +		nr = folio_pte_batch(folio, addr, src_pte, pte, max_nr);
-> +		folio_ref_add(folio, nr);
-> +		if (folio_test_anon(folio)) {
-> +			if (unlikely(folio_try_dup_anon_rmap_ptes(folio, page,
-> +								  nr, src_vma))) {
-> +				folio_ref_sub(folio, nr);
-> +				return -EAGAIN;
-> +			}
-> +			rss[MM_ANONPAGES] += nr;
-> +			VM_WARN_ON_FOLIO(PageAnonExclusive(page), folio);
-> +		} else {
-> +			folio_dup_file_rmap_ptes(folio, page, nr);
-> +			rss[mm_counter_file(folio)] += nr;
-> +		}
-> +		__copy_present_ptes(dst_vma, src_vma, dst_pte, src_pte, pte,
-> +				    addr, nr);
-> +		return nr;
-> +	}
-> +
->  	folio_get(folio);
->  	if (folio_test_anon(folio)) {
->  		/*
-> @@ -981,8 +1048,9 @@ copy_present_pte(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  		if (unlikely(folio_try_dup_anon_rmap_pte(folio, page, src_vma))) {
->  			/* Page may be pinned, we have to copy. */
->  			folio_put(folio);
-> -			return copy_present_page(dst_vma, src_vma, dst_pte, src_pte,
-> -						 addr, rss, prealloc, page);
-> +			err = copy_present_page(dst_vma, src_vma, dst_pte, src_pte,
-> +						addr, rss, prealloc, page);
-> +			return err ? err : 1;
->  		}
->  		rss[MM_ANONPAGES]++;
->  		VM_WARN_ON_FOLIO(PageAnonExclusive(page), folio);
-> @@ -992,8 +1060,8 @@ copy_present_pte(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  	}
->  
->  copy_pte:
-> -	__copy_present_pte(dst_vma, src_vma, dst_pte, src_pte, pte, addr);
-> -	return 0;
-> +	__copy_present_ptes(dst_vma, src_vma, dst_pte, src_pte, pte, addr, 1);
-> +	return 1;
->  }
->  
->  static inline struct folio *folio_prealloc(struct mm_struct *src_mm,
-> @@ -1030,10 +1098,11 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  	pte_t *src_pte, *dst_pte;
->  	pte_t ptent;
->  	spinlock_t *src_ptl, *dst_ptl;
-> -	int progress, ret = 0;
-> +	int progress, max_nr, ret = 0;
->  	int rss[NR_MM_COUNTERS];
->  	swp_entry_t entry = (swp_entry_t){0};
->  	struct folio *prealloc = NULL;
-> +	int nr;
->  
->  again:
->  	progress = 0;
-> @@ -1064,6 +1133,8 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  	arch_enter_lazy_mmu_mode();
->  
->  	do {
-> +		nr = 1;
-> +
->  		/*
->  		 * We are holding two locks at this point - either of them
->  		 * could generate latencies in another task on another CPU.
-> @@ -1100,9 +1171,10 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  			 */
->  			WARN_ON_ONCE(ret != -ENOENT);
->  		}
-> -		/* copy_present_pte() will clear `*prealloc' if consumed */
-> -		ret = copy_present_pte(dst_vma, src_vma, dst_pte, src_pte,
-> -				       ptent, addr, rss, &prealloc);
-> +		/* copy_present_ptes() will clear `*prealloc' if consumed */
-> +		max_nr = (end - addr) / PAGE_SIZE;
-> +		ret = copy_present_ptes(dst_vma, src_vma, dst_pte, src_pte,
-> +					ptent, addr, max_nr, rss, &prealloc);
->  		/*
->  		 * If we need a pre-allocated page for this pte, drop the
->  		 * locks, allocate, and try again.
-> @@ -1119,8 +1191,10 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  			folio_put(prealloc);
->  			prealloc = NULL;
->  		}
-> -		progress += 8;
-> -	} while (dst_pte++, src_pte++, addr += PAGE_SIZE, addr != end);
-> +		nr = ret;
-> +		progress += 8 * nr;
-> +	} while (dst_pte += nr, src_pte += nr, addr += PAGE_SIZE * nr,
-> +		 addr != end);
->  
->  	arch_leave_lazy_mmu_mode();
->  	pte_unmap_unlock(orig_src_pte, src_ptl);
-> @@ -1141,7 +1215,7 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->  		prealloc = folio_prealloc(src_mm, src_vma, addr, false);
->  		if (!prealloc)
->  			return -ENOMEM;
-> -	} else if (ret) {
-> +	} else if (ret < 0) {
->  		VM_WARN_ON_ONCE(1);
->  	}
->  
-> -- 
-> 2.43.0
-> 
-> 
+Adjust these file entries accordingly. To keep the matched files exact
+after the movement, spell out each file name in the new directory.
 
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+v1: https://lore.kernel.org/lkml/20240129131729.4311-1-lukas.bulwahn@gmail.com/
+
+v1 -> v2:
+  - address Herbert Xu's feedback:
+  keep the matched files exactly those which were in the vmx directory
+
+Danny, please ack.
+Herbert, please pick this minor clean-up patch on your -next tree.
+
+ MAINTAINERS | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 58845a852ab1..1820f661bfe1 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -10329,12 +10329,17 @@ M:	Nayna Jain <nayna@linux.ibm.com>
+ M:	Paulo Flabiano Smorigo <pfsmorigo@gmail.com>
+ L:	linux-crypto@vger.kernel.org
+ S:	Supported
+-F:	drivers/crypto/vmx/Kconfig
+-F:	drivers/crypto/vmx/Makefile
+-F:	drivers/crypto/vmx/aes*
+-F:	drivers/crypto/vmx/ghash*
+-F:	drivers/crypto/vmx/ppc-xlate.pl
+-F:	drivers/crypto/vmx/vmx.c
++F:	arch/powerpc/crypto/Kconfig
++F:	arch/powerpc/crypto/Makefile
++F:	arch/powerpc/crypto/aes.c
++F:	arch/powerpc/crypto/aes_cbc.c
++F:	arch/powerpc/crypto/aes_ctr.c
++F:	arch/powerpc/crypto/aes_xts.c
++F:	arch/powerpc/crypto/aesp8-ppc.*
++F:	arch/powerpc/crypto/ghash.c
++F:	arch/powerpc/crypto/ghashp8-ppc.pl
++F:	arch/powerpc/crypto/ppc-xlate.pl
++F:	arch/powerpc/crypto/vmx.c
+ 
+ IBM ServeRAID RAID DRIVER
+ S:	Orphan
+@@ -12428,7 +12433,6 @@ F:	drivers/*/*/*pasemi*
+ F:	drivers/*/*pasemi*
+ F:	drivers/char/tpm/tpm_ibmvtpm*
+ F:	drivers/crypto/nx/
+-F:	drivers/crypto/vmx/
+ F:	drivers/i2c/busses/i2c-opal.c
+ F:	drivers/net/ethernet/ibm/ibmveth.*
+ F:	drivers/net/ethernet/ibm/ibmvnic.*
 -- 
-Sincerely yours,
-Mike.
+2.17.1
+
