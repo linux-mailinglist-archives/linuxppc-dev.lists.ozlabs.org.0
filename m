@@ -1,54 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C63784D9CB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 07:12:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 647BA84D9CF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 07:13:05 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HFaz8r46;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HJX01pqq;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TVmpw3vGHz3c2G
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 17:12:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TVmqz2RbYz3bvJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Feb 2024 17:13:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HFaz8r46;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HJX01pqq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TVmpB16N3z2xdX
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Feb 2024 17:11:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TVmqC4M33z3bx2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Feb 2024 17:12:23 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 041F961B0E;
-	Thu,  8 Feb 2024 06:11:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2565C43390;
-	Thu,  8 Feb 2024 06:11:15 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 2CAB561B0E;
+	Thu,  8 Feb 2024 06:12:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96ADEC43390;
+	Thu,  8 Feb 2024 06:12:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707372684;
-	bh=P03Ra6tKJeIfMl5vzZANDer57SEANPUYFQQ4fYeImD4=;
+	s=k20201202; t=1707372739;
+	bh=L4FBQtW/eF2Uu1SqIrK2nRsbjsKSv4bUFB1aeX49JJE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HFaz8r46F2yMGhc4eChQ1bdDMIG2SJbZeO1JsISVjZZY5/QxNPEU574sO9dknngXq
-	 YVgyAOL6RSp2qvuoFw3QAZnOLGr4cDN/wpbTmNQ58lmjGGeuChQIAye3TRo4TxFy79
-	 V7xNv4sfFz+z0Vk0ON1uEn4vvWgR1e3+QhjIlA+1LT/Ifdm5+CkutQDtm79R+RIM1n
-	 4OE0Gfs2UAKksR/gYZdixvQn5xW9+A4inVRJwU+VYyn9RWTX93+YzHhWEvbOkcDwIJ
-	 h9Gt9Ms2CBz13jyRvnX4bzQn20gjiMAXZmHcQEZQTyBICBjNVu3/zFAWUGyA2x/MG4
-	 oI4EjuUTX0bdA==
-Date: Thu, 8 Feb 2024 08:10:59 +0200
+	b=HJX01pqqXnG+GEldJgYaVDhgObRa/4ZDUsQRXO0FxxpW+AgXzngnCGwKPtmlrSDNF
+	 Cd0wch4ykXrr0mi1Egq91joKDYcLOSWO4CV5+NT+l0PKfU1ySJjGlhsCWGbNmfqv8r
+	 W/rtdDJdoiXubGXIwaYbFfQafaBSv8zSGBXWrti3K34px06JngBKtot/k1I6J8kupf
+	 7RkJg6zbfIo00oLX58qxCXkm64N8BM0iGfo103B+q498Q8cmvH2+glZIe263m+Hl6Z
+	 B7vaV7wzv47KLyOCMCRswjVEGZqlxxnccg4wI4k9pxoaK10TbQYx++1EmVWsPo0kxO
+	 3dRtTW0ogm2QA==
+Date: Thu, 8 Feb 2024 08:11:54 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v3 01/15] arm64/mm: Make set_ptes() robust when OAs cross
- 48-bit boundary
-Message-ID: <ZcRwc2mEDHIXxgGa@kernel.org>
+Subject: Re: [PATCH v3 02/15] arm/pgtable: define PFN_PTE_SHIFT
+Message-ID: <ZcRwqizngdTmd7G8@kernel.org>
 References: <20240129124649.189745-1-david@redhat.com>
- <20240129124649.189745-2-david@redhat.com>
+ <20240129124649.189745-3-david@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240129124649.189745-2-david@redhat.com>
+In-Reply-To: <20240129124649.189745-3-david@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,92 +64,31 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, sparclinux@vg
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jan 29, 2024 at 01:46:35PM +0100, David Hildenbrand wrote:
-> From: Ryan Roberts <ryan.roberts@arm.com>
+On Mon, Jan 29, 2024 at 01:46:36PM +0100, David Hildenbrand wrote:
+> We want to make use of pte_next_pfn() outside of set_ptes(). Let's
+> simply define PFN_PTE_SHIFT, required by pte_next_pfn().
 > 
-> Since the high bits [51:48] of an OA are not stored contiguously in the
-> PTE, there is a theoretical bug in set_ptes(), which just adds PAGE_SIZE
-> to the pte to get the pte with the next pfn. This works until the pfn
-> crosses the 48-bit boundary, at which point we overflow into the upper
-> attributes.
-> 
-> Of course one could argue (and Matthew Wilcox has :) that we will never
-> see a folio cross this boundary because we only allow naturally aligned
-> power-of-2 allocation, so this would require a half-petabyte folio. So
-> its only a theoretical bug. But its better that the code is robust
-> regardless.
-> 
-> I've implemented pte_next_pfn() as part of the fix, which is an opt-in
-> core-mm interface. So that is now available to the core-mm, which will
-> be needed shortly to support forthcoming fork()-batching optimizations.
-> 
-> Link: https://lkml.kernel.org/r/20240125173534.1659317-1-ryan.roberts@arm.com
-> Fixes: 4a169d61c2ed ("arm64: implement the new page table range API")
-> Closes: https://lore.kernel.org/linux-mm/fdaeb9a5-d890-499a-92c8-d171df43ad01@arm.com/
-> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-> Reviewed-by: David Hildenbrand <david@redhat.com>
 > Signed-off-by: David Hildenbrand <david@redhat.com>
 
 Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
 
 > ---
->  arch/arm64/include/asm/pgtable.h | 28 +++++++++++++++++-----------
->  1 file changed, 17 insertions(+), 11 deletions(-)
+>  arch/arm/include/asm/pgtable.h | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-> index b50270107e2f..9428801c1040 100644
-> --- a/arch/arm64/include/asm/pgtable.h
-> +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -341,6 +341,22 @@ static inline void __sync_cache_and_tags(pte_t pte, unsigned int nr_pages)
->  		mte_sync_tags(pte, nr_pages);
->  }
+> diff --git a/arch/arm/include/asm/pgtable.h b/arch/arm/include/asm/pgtable.h
+> index d657b84b6bf7..be91e376df79 100644
+> --- a/arch/arm/include/asm/pgtable.h
+> +++ b/arch/arm/include/asm/pgtable.h
+> @@ -209,6 +209,8 @@ static inline void __sync_icache_dcache(pte_t pteval)
+>  extern void __sync_icache_dcache(pte_t pteval);
+>  #endif
 >  
-> +/*
-> + * Select all bits except the pfn
-> + */
-> +static inline pgprot_t pte_pgprot(pte_t pte)
-> +{
-> +	unsigned long pfn = pte_pfn(pte);
+> +#define PFN_PTE_SHIFT		PAGE_SHIFT
 > +
-> +	return __pgprot(pte_val(pfn_pte(pfn, __pgprot(0))) ^ pte_val(pte));
-> +}
-> +
-> +#define pte_next_pfn pte_next_pfn
-> +static inline pte_t pte_next_pfn(pte_t pte)
-> +{
-> +	return pfn_pte(pte_pfn(pte) + 1, pte_pgprot(pte));
-> +}
-> +
->  static inline void set_ptes(struct mm_struct *mm,
->  			    unsigned long __always_unused addr,
->  			    pte_t *ptep, pte_t pte, unsigned int nr)
-> @@ -354,7 +370,7 @@ static inline void set_ptes(struct mm_struct *mm,
->  		if (--nr == 0)
->  			break;
->  		ptep++;
-> -		pte_val(pte) += PAGE_SIZE;
-> +		pte = pte_next_pfn(pte);
->  	}
->  }
+>  void set_ptes(struct mm_struct *mm, unsigned long addr,
+>  		      pte_t *ptep, pte_t pteval, unsigned int nr);
 >  #define set_ptes set_ptes
-> @@ -433,16 +449,6 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
->  	return clear_pte_bit(pte, __pgprot(PTE_SWP_EXCLUSIVE));
->  }
->  
-> -/*
-> - * Select all bits except the pfn
-> - */
-> -static inline pgprot_t pte_pgprot(pte_t pte)
-> -{
-> -	unsigned long pfn = pte_pfn(pte);
-> -
-> -	return __pgprot(pte_val(pfn_pte(pfn, __pgprot(0))) ^ pte_val(pte));
-> -}
-> -
->  #ifdef CONFIG_NUMA_BALANCING
->  /*
->   * See the comment in include/linux/pgtable.h
 > -- 
 > 2.43.0
 > 
