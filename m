@@ -2,52 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D17684EFDD
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 06:15:59 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ql12PmRr;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F2B84EFFA
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 06:43:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TWMWd1WJ3z3cPh
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 16:15:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TWN7X1B8pz3cPm
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 16:43:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ql12PmRr;
-	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWMVw1yQJz2yk5
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Feb 2024 16:15:20 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1707455717;
-	bh=JVP7+dHngWW5QqFjEB3Li2tXHIk33S+0+gwI4qejE7A=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ql12PmRrPeN6w15lje0jOXjYkyY4Zd3bn4cGc9CmK5XAkHEd2zUxKooodVCroXa45
-	 kQV1oAv/jc19j1oapUa9U1naSax2L39VnHTlJ4XWJ+5o+x0q5doggVed4SEmfx16AR
-	 47Va7RWrUaEWrCijh4RGdaIOgfgCLjBCJ6uN/a7zaJODkKr80vu3wIYPLweb4b97OM
-	 IzMTkga+Mpg34Ji2O3+9htpWgzzL087MgTWe/OWyxTcafRRpWZAWpqZ6ibmmHv5KnB
-	 KQl4189OKresii4X6aw1xpo50zNSuDxE+Ly/sLi6jGwt2h0avLb4qRNLwgQFeqscv4
-	 TJxv47moU5mVA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4TWMVr4k82z4wcD;
-	Fri,  9 Feb 2024 16:15:16 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Thomas Zimmermann <tzimmermann@suse.de>, Randy Dunlap
- <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] drivers/ps3: select VIDEO to provide cmdline functions
-In-Reply-To: <e0893d21-606e-429e-a554-c9ee60fd0ae4@suse.de>
-References: <20240207161322.8073-1-rdunlap@infradead.org>
- <e0893d21-606e-429e-a554-c9ee60fd0ae4@suse.de>
-Date: Fri, 09 Feb 2024 16:15:15 +1100
-Message-ID: <8734u28bh8.fsf@mail.lhotse>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TWN743QPTz30hQ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Feb 2024 16:43:09 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8B737DA7;
+	Thu,  8 Feb 2024 21:43:18 -0800 (PST)
+Received: from a077893.blr.arm.com (a077893.blr.arm.com [10.162.40.23])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 169583F762;
+	Thu,  8 Feb 2024 21:42:32 -0800 (PST)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org
+Subject: [PATCH] mm/hugetlb: Move page order check inside hugetlb_cma_reserve()
+Date: Fri,  9 Feb 2024 11:12:21 +0530
+Message-Id: <20240209054221.1403364-1-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,36 +38,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, Geoff Levand <geoff@infradead.org>, dri-devel@lists.freedesktop.org, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org, Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thomas Zimmermann <tzimmermann@suse.de> writes:
-> Am 07.02.24 um 17:13 schrieb Randy Dunlap:
->> When VIDEO is not set, there is a build error. Fix that by selecting
->> VIDEO for PS3_PS3AV.
->>
->> ERROR: modpost: ".video_get_options" [drivers/ps3/ps3av_mod.ko] undefined!
->>
->> Fixes: dae7fbf43fd0 ("driver/ps3: Include <video/cmdline.h> for mode parsing")
->> Fixes: a3b6792e990d ("video/cmdline: Introduce CONFIG_VIDEO for video= parameter")
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: Nicholas Piggin <npiggin@gmail.com>
->> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
->> Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
->> Cc: Naveen N. Rao <naveen.n.rao@linux.ibm.com>
->> Cc: linuxppc-dev@lists.ozlabs.org
->> Cc: Thomas Zimmermann <tzimmermann@suse.de>
->> Cc: Geoff Levand <geoff@infradead.org>
->> Acked-by: Geoff Levand <geoff@infradead.org>
->> Cc: linux-fbdev@vger.kernel.org
->> Cc: dri-devel@lists.freedesktop.org
->> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
->
-> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+All platforms could benefit from page order check against MAX_PAGE_ORDER
+before allocating a CMA area for gigantic hugetlb pages. Let's move this
+check from individual platforms to generic hugetlb.
 
-Can you take it via whatever tree the CONFIG_VIDEO patch is in?
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+---
+This applies on v6.8-rc3
+ 
+ arch/arm64/mm/hugetlbpage.c   | 7 -------
+ arch/powerpc/mm/hugetlbpage.c | 4 +---
+ mm/hugetlb.c                  | 7 +++++++
+ 3 files changed, 8 insertions(+), 10 deletions(-)
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+index 8116ac599f80..6720ec8d50e7 100644
+--- a/arch/arm64/mm/hugetlbpage.c
++++ b/arch/arm64/mm/hugetlbpage.c
+@@ -45,13 +45,6 @@ void __init arm64_hugetlb_cma_reserve(void)
+ 	else
+ 		order = CONT_PMD_SHIFT - PAGE_SHIFT;
+ 
+-	/*
+-	 * HugeTLB CMA reservation is required for gigantic
+-	 * huge pages which could not be allocated via the
+-	 * page allocator. Just warn if there is any change
+-	 * breaking this assumption.
+-	 */
+-	WARN_ON(order <= MAX_PAGE_ORDER);
+ 	hugetlb_cma_reserve(order);
+ }
+ #endif /* CONFIG_CMA */
+diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
+index 0a540b37aab6..16557d008eef 100644
+--- a/arch/powerpc/mm/hugetlbpage.c
++++ b/arch/powerpc/mm/hugetlbpage.c
+@@ -614,8 +614,6 @@ void __init gigantic_hugetlb_cma_reserve(void)
+ 		 */
+ 		order = mmu_psize_to_shift(MMU_PAGE_16G) - PAGE_SHIFT;
+ 
+-	if (order) {
+-		VM_WARN_ON(order <= MAX_PAGE_ORDER);
++	if (order)
+ 		hugetlb_cma_reserve(order);
+-	}
+ }
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index cf9c9b2906ea..345b3524df35 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -7699,6 +7699,13 @@ void __init hugetlb_cma_reserve(int order)
+ 	bool node_specific_cma_alloc = false;
+ 	int nid;
+ 
++	/*
++	 * HugeTLB CMA reservation is required for gigantic
++	 * huge pages which could not be allocated via the
++	 * page allocator. Just warn if there is any change
++	 * breaking this assumption.
++	 */
++	VM_WARN_ON(order <= MAX_PAGE_ORDER);
+ 	cma_reserve_called = true;
+ 
+ 	if (!hugetlb_cma_size)
+-- 
+2.25.1
 
-cheers
