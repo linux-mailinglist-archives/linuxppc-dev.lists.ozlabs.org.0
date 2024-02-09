@@ -2,79 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C429F84EF63
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 04:29:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E99C284EF6E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 04:37:02 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=L4yinsu8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=b9DSMiR+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TWK8S5HLWz3cTZ
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 14:29:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TWKKS650rz3cTF
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 14:37:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=L4yinsu8;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=b9DSMiR+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::2c; helo=mail-oa1-x2c.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oa1-x2c.google.com (mail-oa1-x2c.google.com [IPv6:2001:4860:4864:20::2c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62d; helo=mail-pl1-x62d.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWK7f24gWz2xdh
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Feb 2024 14:28:28 +1100 (AEDT)
-Received: by mail-oa1-x2c.google.com with SMTP id 586e51a60fabf-214c940145bso255662fac.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Feb 2024 19:28:28 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWKJj6bC6z309c
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Feb 2024 14:36:20 +1100 (AEDT)
+Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1d71cb97937so4937155ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Feb 2024 19:36:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707449305; x=1708054105; darn=lists.ozlabs.org;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
+        d=gmail.com; s=20230601; t=1707449776; x=1708054576; darn=lists.ozlabs.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HxzGG9tiVnG9eoQG9HjEplP7zHqtFTQIBWqH3c45mMU=;
-        b=L4yinsu8nu6scJm0/N8DHP5HswSa6e0Vb8KmOYjTdwndTKBiATAbLrojTdbL81+ep8
-         9aefYHBG6m67BHbd/4i6+F0tJOSCmBEmIat9MZ/uwmXkrR26QziPT5453YMw1GWz7+pl
-         mIMuW/iCTCITZxqVDH5NSu23x/pPyPltzIaDeny7Fo60C/EucOe4xF7izP5O+ORRFDDx
-         vfcoQdwgrdMaDXiJRsKqzr/7GUOLNDVcIGNIf4893V3aE+bcNW1Psn7WmvVZkWMb6KN7
-         xt3rRPLRA8mBfJ3LjFXf4ENaTLzcQ00rDgp4oNEWaeYmTBfRIvtp+AXa2S0hSqkxaviN
-         6BbQ==
+        bh=jOvMICqHbaoju4gGMv5HJEQ663Ejredoe1u7kvvhOv8=;
+        b=b9DSMiR+qaMwIDhoAX9ba/rsGbNFN2k1X9r49Oi9Wr6mMrZPelz9HyfDjLg43nJ2lT
+         RrWiR5VcMXavEVQl+1D5dUN6KEwfRHbUkmDHMZGPEfXK6eL1UGxTlW/XDrVBUpxwzmEl
+         q5UgFpRG8XLCaTTcWjgSZf1xpfsL0O1kCT81SCIVRAXVUKEc8/hD4O6my8hYq5evEGc2
+         EBhjZ7AMGBppn9kCvZAlRu1yQtSj/zK9807F3gYv1CNqtOuQWPHjI8XrsKap4jpbs/9f
+         7v1CP+BWhud4msrkg+2ref4uAT9ef4OLdCY7I34/NqlrWtOcPgHMvevN96hDUANGlpZx
+         6k7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707449305; x=1708054105;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
+        d=1e100.net; s=20230601; t=1707449776; x=1708054576;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=HxzGG9tiVnG9eoQG9HjEplP7zHqtFTQIBWqH3c45mMU=;
-        b=VYwseUAl0xkh2Ru7hqLwsnvhKqFsttPQqOXpTYXRVfDPri4UMDTBKhwb7hFxq53Rfg
-         s9nDWh4wWKv7ctq07nsoJGf117J25He22bT5p/SaN/jDRYdHEKmgpe4+lEeu77YPHx2C
-         AvFKFQwQQnZdCTQTzSE+luKkZhzYR4dLpP60I56JAyNrsgAiT+m40B5cPZWuIulksDDs
-         BEVvTVeUxpiFdOUQKZ5o7U2KqsuCzJ6pgIqTjmHMOuJg2XlVJsYVLLTnKksuZOybcVep
-         rNQm4Jwqeg/GJCf1gdLO6eN6rBwM9tTIlyMzuQdOaWVOD1DT+i9BEWBoA0E9KBRTFzI4
-         H2TA==
-X-Forwarded-Encrypted: i=1; AJvYcCWQ8s+OwP3oKcmglSRO2pVidLfpSGEHejT7wpJngj1EFLdAQYlSENSuUfL+faY7HF84Dq+/46IBhNisaaR3I4G/XtkcDU3ELM6cW+8Ylg==
-X-Gm-Message-State: AOJu0YyV1OEZUuaDXAPyT10UbYSxZ+qlH7V+4SnXHQ5Sb5lzSv1mnZLJ
-	LZSyITQrrLU0xinUy3169nzmbXeB6eHlEeMQEhrqBTyF5x1duPhG
-X-Google-Smtp-Source: AGHT+IGJdYdAowW+FidRJBjJ5PRhE+P1LKYarWAESwpfBnD1uwZNpuEkdkLlM9TfbBRzyA0on78BAA==
-X-Received: by 2002:a05:6870:c112:b0:219:42a8:5d83 with SMTP id f18-20020a056870c11200b0021942a85d83mr406135oad.3.1707449305032;
-        Thu, 08 Feb 2024 19:28:25 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVULcZwPASQ+q6GP71T+MBtAqLWnLhugVfu4p8gmhSXuqNlEUODQuUxkyi2MEX6/l0cRKubC3JOSTZc0xPPaulE0+M39DBGhW9UnwmD7LC5KGv0u8vEQ3mmpVz4lm7Ai+truexjLt1afFD9ijiN9wUwMWdmN39tdsMwXPeMSUF7GPbHKsDiYREm6QPo5XKoOAh6LFvGDL3RMZClxq6HS6jVHV/2uHCugx+SDFEaASJB126BYDE4AH87u/Ipw0LeAGy1zpLjUdZLR6+h
+        bh=jOvMICqHbaoju4gGMv5HJEQ663Ejredoe1u7kvvhOv8=;
+        b=AQmhFDkiGXjDWOVd2xaGo3MLaCCfXvkJMflb9o2c8tKbCwPAXkPey4QCpm8/1NaTo4
+         M8ZA9IEC20lrLkZOaKbwc0vCdH2Mv4UrYpFuwG2rzy0xiJnGUvGb67Ckp00BmL7AHzHK
+         bWJQuUgshgSfMiazlgH9hgy1s2V+JloFSVWuekSSLNFLY64XaGFzz7ktSQyZANdQB+pe
+         /SB+rKi+SGSGDX2VscM5y+AR7ZFE1T3u9vosXG9qIY9HA1DCkqH3s054OpvkBDjcYP6K
+         jDS4Vwp1LGJo/XxQ/XUE2G2f0eyGnVZf2JL5JBwC71nmTjinRlM0BbJS6UoY0wfqXe1B
+         St/Q==
+X-Gm-Message-State: AOJu0YzHCmNtmwCfTvcQkw7PQ5GbREC+qSlsmiR+73f3AobFmLwOb/Ip
+	FDCTgLMbVRigbbQuFXNglGcGC0OXagkoUKIw78gnk9nrfMZJ7qnN
+X-Google-Smtp-Source: AGHT+IHdFrXH0nFeT4r0VIM8Ek03n+of3+ergenrguqPpHfVaRkUsdkMotfoKwjHuG7PmWZPn+JCcw==
+X-Received: by 2002:a17:902:6503:b0:1d8:f071:5067 with SMTP id b3-20020a170902650300b001d8f0715067mr341574plk.35.1707449775931;
+        Thu, 08 Feb 2024 19:36:15 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWWVSVfDEQS9ReM36LvSuofXi4xTJxAg2CkEwnRVAsPg/JSKZ4bUTZGysq63ScL77uYHKfUlVrAeuNd8Rpz2kwcZ3lRcpI47DQ5uPORBCqz3rTemp/ZJM1xbFk8/f4TSc9maOYHW7qC1gkl9Dn+bG6isSvPSkbnDNdvRuMrUp18sbvU4qMpvmwiGny/8tMbAOpkE2cU6rlbQxJVUzcVMEWThSFGG5Z6C4feX6eQXbOLxBLYklnzHsUCJSb7+EXtzzHpwGKUGIMDho4G
 Received: from localhost ([1.146.65.44])
-        by smtp.gmail.com with ESMTPSA id m7-20020a654387000000b005dc389409c1sm475022pgp.93.2024.02.08.19.28.20
+        by smtp.gmail.com with ESMTPSA id d13-20020a170902654d00b001d8cde39e8bsm533560pln.194.2024.02.08.19.36.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Feb 2024 19:28:24 -0800 (PST)
+        Thu, 08 Feb 2024 19:36:15 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 09 Feb 2024 13:28:17 +1000
-Message-Id: <CZ089ERGIDWI.14PQB4HD4F1NH@wheely>
+Date: Fri, 09 Feb 2024 13:36:08 +1000
+Message-Id: <CZ08FF0GBT76.1FZS9YFEMKSOM@wheely>
+Subject: Re: [PATCH v2 2/5] sched/vtime: get rid of generic
+ vtime_task_switch() implementation
+From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "Alexander Gordeev" <agordeev@linux.ibm.com>, "Frederic Weisbecker"
  <frederic@kernel.org>, "Ingo Molnar" <mingo@kernel.org>, "Michael Ellerman"
  <mpe@ellerman.id.au>, "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik"
  <gor@linux.ibm.com>
-Subject: Re: [PATCH v2 1/5] sched/vtime: remove confusing
- arch_vtime_task_switch() declaration
-From: "Nicholas Piggin" <npiggin@gmail.com>
 X-Mailer: aerc 0.15.2
 References: <cover.1707422448.git.agordeev@linux.ibm.com>
- <f5c88d9290bca3b280cfdd499c236a3c390af51b.1707422448.git.agordeev@linux.ibm.com>
-In-Reply-To: <f5c88d9290bca3b280cfdd499c236a3c390af51b.1707422448.git.agordeev@linux.ibm.com>
+ <2baebb95af9772959a0d85d0bd789afdfd2baf94.1707422448.git.agordeev@linux.ibm.com>
+In-Reply-To: <2baebb95af9772959a0d85d0bd789afdfd2baf94.1707422448.git.agordeev@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,34 +90,120 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Fri Feb 9, 2024 at 6:15 AM AEST, Alexander Gordeev wrote:
-> Callback arch_vtime_task_switch() is only defined when
-> CONFIG_VIRT_CPU_ACCOUNTING_NATIVE is selected. Yet, the
-> function prototype forward declaration is present for
-> CONFIG_VIRT_CPU_ACCOUNTING_GEN variant. Remove it.
+> The generic vtime_task_switch() implementation gets built only
+> if __ARCH_HAS_VTIME_TASK_SWITCH is not defined, but requires an
+> architecture to implement arch_vtime_task_switch() callback at
+> the same time, which is confusing.
 >
+> Further, arch_vtime_task_switch() is implemented for 32-bit PowerPC
+> architecture only and vtime_task_switch() generic variant is rather
+> superfluous.
+>
+> Simplify the whole vtime_task_switch() wiring by moving the existing
+> generic implementation to PowerPC.
 
-And powerpc arch_vtime_task_switch is static inline too,
-so this just confuses things.
+I think this could be squashed with patch 3.
 
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
+>
 > Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
 > Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 > ---
->  include/linux/vtime.h | 1 -
->  1 file changed, 1 deletion(-)
+>  arch/powerpc/include/asm/cputime.h | 13 -------------
+>  arch/powerpc/kernel/time.c         | 22 ++++++++++++++++++++++
+>  kernel/sched/cputime.c             | 13 -------------
+>  3 files changed, 22 insertions(+), 26 deletions(-)
 >
-> diff --git a/include/linux/vtime.h b/include/linux/vtime.h
-> index 3684487d01e1..593466ceebed 100644
-> --- a/include/linux/vtime.h
-> +++ b/include/linux/vtime.h
-> @@ -18,7 +18,6 @@ extern void vtime_account_idle(struct task_struct *tsk)=
-;
->  #endif /* !CONFIG_VIRT_CPU_ACCOUNTING */
+> diff --git a/arch/powerpc/include/asm/cputime.h b/arch/powerpc/include/as=
+m/cputime.h
+> index 4961fb38e438..aff858ca99c0 100644
+> --- a/arch/powerpc/include/asm/cputime.h
+> +++ b/arch/powerpc/include/asm/cputime.h
+> @@ -32,23 +32,10 @@
+>  #ifdef CONFIG_PPC64
+>  #define get_accounting(tsk)	(&get_paca()->accounting)
+>  #define raw_get_accounting(tsk)	(&local_paca->accounting)
+> -static inline void arch_vtime_task_switch(struct task_struct *tsk) { }
 > =20
->  #ifdef CONFIG_VIRT_CPU_ACCOUNTING_GEN
-> -extern void arch_vtime_task_switch(struct task_struct *tsk);
->  extern void vtime_user_enter(struct task_struct *tsk);
->  extern void vtime_user_exit(struct task_struct *tsk);
->  extern void vtime_guest_enter(struct task_struct *tsk);
+>  #else
+>  #define get_accounting(tsk)	(&task_thread_info(tsk)->accounting)
+>  #define raw_get_accounting(tsk)	get_accounting(tsk)
+> -/*
+> - * Called from the context switch with interrupts disabled, to charge al=
+l
+> - * accumulated times to the current process, and to prepare accounting o=
+n
+> - * the next process.
+> - */
+> -static inline void arch_vtime_task_switch(struct task_struct *prev)
+> -{
+> -	struct cpu_accounting_data *acct =3D get_accounting(current);
+> -	struct cpu_accounting_data *acct0 =3D get_accounting(prev);
+> -
+> -	acct->starttime =3D acct0->starttime;
+> -}
+>  #endif
+> =20
+>  /*
+> diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+> index df20cf201f74..c0fdc6d94fee 100644
+> --- a/arch/powerpc/kernel/time.c
+> +++ b/arch/powerpc/kernel/time.c
+> @@ -354,6 +354,28 @@ void vtime_flush(struct task_struct *tsk)
+>  	acct->hardirq_time =3D 0;
+>  	acct->softirq_time =3D 0;
+>  }
+> +
+> +/*
+> + * Called from the context switch with interrupts disabled, to charge al=
+l
+> + * accumulated times to the current process, and to prepare accounting o=
+n
+> + * the next process.
+> + */
+> +void vtime_task_switch(struct task_struct *prev)
+> +{
+> +	if (is_idle_task(prev))
+> +		vtime_account_idle(prev);
+> +	else
+> +		vtime_account_kernel(prev);
+> +
+> +	vtime_flush(prev);
+> +
+> +	if (!IS_ENABLED(CONFIG_PPC64)) {
+> +		struct cpu_accounting_data *acct =3D get_accounting(current);
+> +		struct cpu_accounting_data *acct0 =3D get_accounting(prev);
+> +
+> +		acct->starttime =3D acct0->starttime;
+> +	}
+> +}
+>  #endif /* CONFIG_VIRT_CPU_ACCOUNTING_NATIVE */
+> =20
+>  void __no_kcsan __delay(unsigned long loops)
+> diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
+> index af7952f12e6c..aa48b2ec879d 100644
+> --- a/kernel/sched/cputime.c
+> +++ b/kernel/sched/cputime.c
+> @@ -424,19 +424,6 @@ static inline void irqtime_account_process_tick(stru=
+ct task_struct *p, int user_
+>   */
+>  #ifdef CONFIG_VIRT_CPU_ACCOUNTING_NATIVE
+> =20
+> -# ifndef __ARCH_HAS_VTIME_TASK_SWITCH
+> -void vtime_task_switch(struct task_struct *prev)
+> -{
+> -	if (is_idle_task(prev))
+> -		vtime_account_idle(prev);
+> -	else
+> -		vtime_account_kernel(prev);
+> -
+> -	vtime_flush(prev);
+> -	arch_vtime_task_switch(prev);
+> -}
+> -# endif
+> -
+>  void vtime_account_irq(struct task_struct *tsk, unsigned int offset)
+>  {
+>  	unsigned int pc =3D irq_count() - offset;
 
