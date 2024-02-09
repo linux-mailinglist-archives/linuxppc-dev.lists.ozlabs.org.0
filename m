@@ -2,52 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83B6B84FF60
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 23:03:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9853C84FF8C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 23:16:11 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jHY/ue5I;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SaykXKEm;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SaykXKEm;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TWnt33Q9Rz3cnS
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Feb 2024 09:03:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TWp8n3FxFz3dBy
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Feb 2024 09:16:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jHY/ue5I;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SaykXKEm;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SaykXKEm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWnsG0354z3c2G
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Feb 2024 09:02:41 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 48D23CE1C27;
-	Fri,  9 Feb 2024 22:02:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D8EC433C7;
-	Fri,  9 Feb 2024 22:02:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707516155;
-	bh=vtEET3uyoCJTR2xzZC0XhdsJ1n+MqemqXmujTlSCaoQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=jHY/ue5IKYv+3rg7wvYqE1vBLPgfeLKvHvEmchnLNSXJP1N/JfnztQWQ9RiUN1ywT
-	 AIbagXHUZefIGsy4+d5tBpCG4dXz0FfdijjFIt5nh0y8UC+jLAkwx7JJld9tii5KDn
-	 /jqmr+yV/lOUvD9qEy3I52mjzrALKfT2kkYjc/4MjgUJE6i68LK0nSVG4YjDmwSpYC
-	 5TnPblCYvgZfpGSp4RhwhmF/rC6QD9JAdc/ZiegjYDQ6Nq9S3yIynRrAq2dTn56hZC
-	 opBxpvvDarDpyXVtDe9UfEIZTLXgiwCnO6e9GfOWuwTED4X0UZeQfXdFwOp+azJ6JC
-	 sBeg0CPjOWoPw==
-Date: Fri, 9 Feb 2024 14:02:34 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Herve Codina <herve.codina@bootlin.com>
-Subject: Re: [PATCH v3 4/6] bitmap: Introduce bitmap_off()
-Message-ID: <20240209140234.10e150b1@kernel.org>
-In-Reply-To: <20240206140717.107930-5-herve.codina@bootlin.com>
-References: <20240206140717.107930-1-herve.codina@bootlin.com>
-	<20240206140717.107930-5-herve.codina@bootlin.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWp7x1swlz3c89
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Feb 2024 09:15:24 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1707516921;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=IHB7ZolLgofmfMRsfkbwn2QUSh6DVNhQllqTULKzUgI=;
+	b=SaykXKEmZqjASYUXMZ3a05oX4OWnoNvtu9XtjiBuBKo5abTijL1jxzonZ5X/A1zq+jPAC+
+	o2+Cev9pZMEMnGBDEhwj7z8zM/l2J82wWjKOslVBrMQjS7o28oKLA7Wrbn5G2jtk82IYan
+	0yoWYNMRQ5DTJMzqhMvAF/CPsCVFOpE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1707516921;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=IHB7ZolLgofmfMRsfkbwn2QUSh6DVNhQllqTULKzUgI=;
+	b=SaykXKEmZqjASYUXMZ3a05oX4OWnoNvtu9XtjiBuBKo5abTijL1jxzonZ5X/A1zq+jPAC+
+	o2+Cev9pZMEMnGBDEhwj7z8zM/l2J82wWjKOslVBrMQjS7o28oKLA7Wrbn5G2jtk82IYan
+	0yoWYNMRQ5DTJMzqhMvAF/CPsCVFOpE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-428-_SIakAvhN7i8GkgZgtC1Hw-1; Fri, 09 Feb 2024 17:15:17 -0500
+X-MC-Unique: _SIakAvhN7i8GkgZgtC1Hw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3532785A589;
+	Fri,  9 Feb 2024 22:15:16 +0000 (UTC)
+Received: from t14s.redhat.com (unknown [10.39.194.59])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id CE8F71C14B04;
+	Fri,  9 Feb 2024 22:15:10 +0000 (UTC)
+From: David Hildenbrand <david@redhat.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v2 00/10] mm/memory: optimize unmap/zap with PTE-mapped THP
+Date: Fri,  9 Feb 2024 23:14:59 +0100
+Message-ID: <20240209221509.585251-1-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,19 +75,147 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Mark Brown <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>, Matthew Wilcox <willy@infradead.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Ryan Roberts <ryan.roberts@arm.com>, Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>, Nick Piggin <npiggin@gmail.com>, Yin Fengwei <fengwei.yin@intel.com>, Sven Schnelle <svens@linux.ibm.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue,  6 Feb 2024 15:07:14 +0100 Herve Codina wrote:
-> The bitmap_onto() function translates one bitmap relative to another but
-> no function are present to perform the reverse translation.
-> 
-> Introduce bitmap_off() to fill this hole.
+This series is based on [1]. Similar to what we did with fork(), let's
+implement PTE batching during unmap/zap when processing PTE-mapped THPs.
 
-Argh, Yury is not even CCed on this? I was about to ping him but then 
-I realized his email is completely missing :o
+We collect consecutive PTEs that map consecutive pages of the same large
+folio, making sure that the other PTE bits are compatible, and (a) adjust
+the refcount only once per batch, (b) call rmap handling functions only
+once per batch, (c) perform batch PTE setting/updates and (d) perform TLB
+entry removal once per batch.
 
-Please repost this and CC the appropriate maintainers...
+Ryan was previously working on this in the context of cont-pte for
+arm64, int latest iteration [2] with a focus on arm6 with cont-pte only.
+This series implements the optimization for all architectures, independent
+of such PTE bits, teaches MMU gather/TLB code to be fully aware of such
+large-folio-pages batches as well, and amkes use of our new rmap batching
+function when removing the rmap.
+
+To achieve that, we have to enlighten MMU gather / page freeing code
+(i.e., everything that consumes encoded_page) to process unmapping
+of consecutive pages that all belong to the same large folio. I'm being
+very careful to not degrade order-0 performance, and it looks like I
+managed to achieve that.
+
+While this series should -- similar to [1] -- be beneficial for adding
+cont-pte support on arm64[2], it's one of the requirements for maintaining
+a total mapcount[3] for large folios with minimal added overhead and
+further changes[4] that build up on top of the total mapcount.
+
+Independent of all that, this series results in a speedup during munmap()
+and similar unmapping (process teardown, MADV_DONTNEED on larger ranges)
+with PTE-mapped THP, which is the default with THPs that are smaller than
+a PMD (for example, 16KiB to 1024KiB mTHPs for anonymous memory[5]).
+
+On an Intel Xeon Silver 4210R CPU, munmap'ing a 1GiB VMA backed by
+PTE-mapped folios of the same size (stddev < 1%) results in the following
+runtimes for munmap() in seconds (shorter is better):
+
+Folio Size | mm-unstable |      New | Change
+---------------------------------------------
+      4KiB |    0.058110 | 0.057715 |   - 1%
+     16KiB |    0.044198 | 0.035469 |   -20%
+     32KiB |    0.034216 | 0.023522 |   -31%
+     64KiB |    0.029207 | 0.018434 |   -37%
+    128KiB |    0.026579 | 0.014026 |   -47%
+    256KiB |    0.025130 | 0.011756 |   -53%
+    512KiB |    0.024292 | 0.010703 |   -56%
+   1024KiB |    0.023812 | 0.010294 |   -57%
+   2048KiB |    0.023785 | 0.009910 |   -58%
+
+CCing especially s390x folks, because they have a tlb freeing hooks that
+needs adjustment. Only tested on x86-64 for now, will have to do some more
+stress testing. Compile-tested on most other architectures. The PPC
+change is negleglible and makes my cross-compiler happy.
+
+[1] https://lkml.kernel.org/r/20240129124649.189745-1-david@redhat.com
+[2] https://lkml.kernel.org/r/20231218105100.172635-1-ryan.roberts@arm.com
+[3] https://lkml.kernel.org/r/20230809083256.699513-1-david@redhat.com
+[4] https://lkml.kernel.org/r/20231124132626.235350-1-david@redhat.com
+[5] https://lkml.kernel.org/r/20231207161211.2374093-1-ryan.roberts@arm.com
+
+---
+
+The performance numbers are from v1. I did a quick benchmark run of v2
+and nothing significantly changed -- because nothing in the code
+significantly changed. Sending this out ASAP, so Ryan can make progress
+with cont-pte.
+
+v1 -> v2:
+* "mm/memory: factor out zapping of present pte into zap_present_pte()"
+ -> Initialize "struct folio *folio" to NULL
+* "mm/memory: handle !page case in zap_present_pte() separately"
+ -> Extend description regarding arch_check_zapped_pte()
+* "mm/mmu_gather: add __tlb_remove_folio_pages()"
+ -> ENCODED_PAGE_BIT_NR_PAGES_NEXT
+ -> Extend patch description regarding "batching more"
+* "mm/mmu_gather: improve cond_resched() handling with large folios and
+   expensive page freeing"
+ -> Handle the (so far) theoretical case of possible soft lockups when
+    we zero/poison memory when freeing pages. Try to keep old behavior in
+    that corner case to be safe.
+* "mm/memory: optimize unmap/zap with PTE-mapped THP"
+ -> Clarify description of new ptep clearing functions regarding "present
+    PTEs"
+ -> Extend patch description regarding relaxed mapcount sanity checks
+ -> Improve zap_present_ptes() description
+* Pick up RB's
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Yin Fengwei <fengwei.yin@intel.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: Nick Piggin <npiggin@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: linux-arch@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org
+
+David Hildenbrand (10):
+  mm/memory: factor out zapping of present pte into zap_present_pte()
+  mm/memory: handle !page case in zap_present_pte() separately
+  mm/memory: further separate anon and pagecache folio handling in
+    zap_present_pte()
+  mm/memory: factor out zapping folio pte into zap_present_folio_pte()
+  mm/mmu_gather: pass "delay_rmap" instead of encoded page to
+    __tlb_remove_page_size()
+  mm/mmu_gather: define ENCODED_PAGE_FLAG_DELAY_RMAP
+  mm/mmu_gather: add tlb_remove_tlb_entries()
+  mm/mmu_gather: add __tlb_remove_folio_pages()
+  mm/mmu_gather: improve cond_resched() handling with large folios and
+    expensive page freeing
+  mm/memory: optimize unmap/zap with PTE-mapped THP
+
+ arch/powerpc/include/asm/tlb.h |   2 +
+ arch/s390/include/asm/tlb.h    |  30 ++++--
+ include/asm-generic/tlb.h      |  40 ++++++--
+ include/linux/mm_types.h       |  37 ++++++--
+ include/linux/pgtable.h        |  70 ++++++++++++++
+ mm/memory.c                    | 169 +++++++++++++++++++++++----------
+ mm/mmu_gather.c                | 107 ++++++++++++++++++---
+ mm/swap.c                      |  12 ++-
+ mm/swap_state.c                |  15 ++-
+ 9 files changed, 393 insertions(+), 89 deletions(-)
+
+
+base-commit: d7f43604944787ce929efeaabd0f462414002a8f
 -- 
-pw-bot: cr
+2.43.0
+
