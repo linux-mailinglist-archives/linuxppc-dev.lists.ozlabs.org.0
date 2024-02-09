@@ -2,150 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E656284FD87
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 21:24:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6A1084FDEC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 21:49:42 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=xOQiJ839;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=h8ivNr7Z;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=O56OvfeW;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=3iMP0oPR;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BX354ORZ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TWlhS6Cppz3cll
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Feb 2024 07:24:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TWmF04dSrz3cVK
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Feb 2024 07:49:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=xOQiJ839;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=h8ivNr7Z;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=O56OvfeW;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=3iMP0oPR;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BX354ORZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:2; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2a07:de40:b251:101:10:150:64:2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWlgh6kWsz3cM7
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Feb 2024 07:24:16 +1100 (AEDT)
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 2A9C91F82D;
-	Fri,  9 Feb 2024 20:24:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1707510253; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=zQToUzkILW+4W9P7O1nAk21RTzRP9zevwKA9EqPyth8=;
-	b=xOQiJ839u/jesxP8nQcxj9+c03uoIGAKQ7vB+ribAlyJTdGoUxni1eZfXaPdmjbKNdfj80
-	A0kGFuRwDWV65IHM+iZfHU2wWegB1hYJXBuifohdjZ3UG//AFD7uqSqnprWylcBwZ2K8Hp
-	XeCX9t/SfrOHpzh5dmjc6MpjM8a7Azk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1707510253;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=zQToUzkILW+4W9P7O1nAk21RTzRP9zevwKA9EqPyth8=;
-	b=h8ivNr7ZNpwNrdSQ69YQv12VWC8FmWOn0coRfIlmdQ8gb6vw8K5nmSaVjbYFa2kYzMB3wt
-	P9t03yitaj/4Z2Bg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1707510252; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=zQToUzkILW+4W9P7O1nAk21RTzRP9zevwKA9EqPyth8=;
-	b=O56OvfeW4HeEro8+Tymoe1UuaUVZ37KZ4HH5bZ8fW6wOooeXkpXNkpOxiX1HsYtCxf1kkh
-	6I1u3VgxKxnrY4aSRsXsyVLHk4MQe0jFdXJ4U30VYGKVHqoU3IsN2lu3pHTMrKrnh5POYq
-	eKgBGU1aLuehhBe11TzXZd3TTejFjsI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1707510252;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=zQToUzkILW+4W9P7O1nAk21RTzRP9zevwKA9EqPyth8=;
-	b=3iMP0oPRPtCKptMfgc/iqaqMyMBN0Ekurg626k/UC9HEqeS19PM5TeR7vECjKNMYKPpkgh
-	kCDYXo/4QWifpSBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D1249139E7;
-	Fri,  9 Feb 2024 20:24:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id haeHMeuJxmUUWAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 09 Feb 2024 20:24:11 +0000
-Message-ID: <43ed64aa-17b0-4d04-a1f3-a6e13f59a743@suse.de>
-Date: Fri, 9 Feb 2024 21:24:11 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWmDF3jl2z3c2G
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Feb 2024 07:49:01 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id AE421CE1E85;
+	Fri,  9 Feb 2024 20:48:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3336FC433F1;
+	Fri,  9 Feb 2024 20:48:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707511738;
+	bh=QRg2R8un/qUCSLzzdjxaC2y88MIa1qgY+xSCzkKqNxU=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=BX354ORZXNorzTr+fiNY8SCAHQ5MVe3ULcYfV3WEcBnOL/bHnWsauNaLkbhi6x5fF
+	 E+0dwGajd9PNUNprT/ciIcRWjCzox7Hk4ysDxeIorTKJ0yyiDGPJiTfvv8BNQZWXUM
+	 UQ6zZdWfMzoRObYadIlEoScQ22uXUphl4UNLP96FoNeHy25Sol/QmeIa+l7orN/4ia
+	 xBYwA55Iuhh2VPrmFVc40FHZtIFXhkqZgmD2fRJKcJB1GxmJA+C+5qTc0LKE1XeB3k
+	 29YF2sGQ4S3aqsFDoN/YpWqhkbLMxhi9ZTe4lqSqE+dzsLsYYkeN9+jFzAeRX50InZ
+	 KN7/Xh6+KKkLA==
+From: Mark Brown <broonie@kernel.org>
+To: linux-spi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ Christian Lamparter <chunkeey@gmail.com>
+In-Reply-To: <3eb3f9c4407ba99d1cd275662081e46b9e839173.1707490664.git.chunkeey@gmail.com>
+References: <3eb3f9c4407ba99d1cd275662081e46b9e839173.1707490664.git.chunkeey@gmail.com>
+Subject: Re: [PATCH v1] spi: spi-ppc4xx: include missing platform_device.h
+Message-Id: <170751173690.2414604.16858513850600028471.b4-ty@kernel.org>
+Date: Fri, 09 Feb 2024 20:48:56 +0000
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drivers/ps3: select VIDEO to provide cmdline functions
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
-References: <20240207161322.8073-1-rdunlap@infradead.org>
- <e0893d21-606e-429e-a554-c9ee60fd0ae4@suse.de> <8734u28bh8.fsf@mail.lhotse>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <8734u28bh8.fsf@mail.lhotse>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: -8.29
-X-Spamd-Result: default: False [-8.29 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 XM_UA_NO_VERSION(0.01)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 REPLY(-4.00)[];
-	 BAYES_HAM(-3.00)[100.00%];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 NEURAL_HAM_SHORT(-0.20)[-0.999];
-	 RCPT_COUNT_SEVEN(0.00)[11];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,ellerman.id.au:email,csgroup.eu:email,suse.de:email,lists.freedesktop.org:email,ozlabs.org:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 FREEMAIL_CC(0.00)[gmail.com,csgroup.eu,kernel.org,linux.ibm.com,lists.ozlabs.org,infradead.org,vger.kernel.org,lists.freedesktop.org];
-	 RCVD_TLS_ALL(0.00)[];
-	 MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Flag: NO
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.13-dev-0438c
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -157,53 +60,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, Geoff Levand <geoff@infradead.org>, dri-devel@lists.freedesktop.org, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi
+On Fri, 09 Feb 2024 15:59:07 +0100, Christian Lamparter wrote:
+> the driver currently fails to compile on 6.8-rc3 due to:
+> | spi-ppc4xx.c: In function ‘spi_ppc4xx_of_probe’:
+> | @346:36: error: invalid use of undefined type ‘struct platform_device’
+> | 346 |         struct device_node *np = op->dev.of_node;
+> |     |                                    ^~
+> | ... (more similar errors)
+> 
+> [...]
 
-Am 09.02.24 um 06:15 schrieb Michael Ellerman:
-> Thomas Zimmermann <tzimmermann@suse.de> writes:
->> Am 07.02.24 um 17:13 schrieb Randy Dunlap:
->>> When VIDEO is not set, there is a build error. Fix that by selecting
->>> VIDEO for PS3_PS3AV.
->>>
->>> ERROR: modpost: ".video_get_options" [drivers/ps3/ps3av_mod.ko] undefined!
->>>
->>> Fixes: dae7fbf43fd0 ("driver/ps3: Include <video/cmdline.h> for mode parsing")
->>> Fixes: a3b6792e990d ("video/cmdline: Introduce CONFIG_VIDEO for video= parameter")
->>> Cc: Michael Ellerman <mpe@ellerman.id.au>
->>> Cc: Nicholas Piggin <npiggin@gmail.com>
->>> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
->>> Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
->>> Cc: Naveen N. Rao <naveen.n.rao@linux.ibm.com>
->>> Cc: linuxppc-dev@lists.ozlabs.org
->>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
->>> Cc: Geoff Levand <geoff@infradead.org>
->>> Acked-by: Geoff Levand <geoff@infradead.org>
->>> Cc: linux-fbdev@vger.kernel.org
->>> Cc: dri-devel@lists.freedesktop.org
->>> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
->> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Can you take it via whatever tree the CONFIG_VIDEO patch is in?
+Applied to
 
-The patch is now in drm-misc-next.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Best regards
-Thomas
+Thanks!
 
->
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
->
-> cheers
+[1/1] spi: spi-ppc4xx: include missing platform_device.h
+      commit: 9f208e097801f9c2088eb339a1162fff81c08b4e
 
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
