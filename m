@@ -1,92 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B454B84FFD6
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 23:25:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C26B2850019
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 23:37:14 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SIGVLNWK;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SIGVLNWK;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZC7DZSOr;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aC6rX+DZ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TWpLy4dydz3vwV
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Feb 2024 09:24:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TWpd44yNPz3cVM
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Feb 2024 09:37:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SIGVLNWK;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SIGVLNWK;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZC7DZSOr;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aC6rX+DZ;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWp9d3Z0dz3dK1
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Feb 2024 09:16:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWpcD5v7Wz30Ql
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Feb 2024 09:36:27 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707517010;
+	s=mimecast20190719; t=1707518184;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=dflloNC7LaAlJ2atdSFROMmPzF6iFHVdcqRgzt5YjTk=;
-	b=SIGVLNWKXvlI+tXQoqIMNEowdvX5WAsukOOMyfdwXpPzrj3qNUqtb91F3Z23h3A6aYvlM2
-	Flp3CxSXN/6+Po6L+exNweOQDohklXcoiDx124MP/cmIc5wj7WKaqA6xTWf2p296Q9qNOp
-	SxrA1oq0QYOEtXsC1O8LnjCc9FhFkm0=
+	bh=ZsuwvNcy7srG22SEiNvqp25+3IIw8oPhoxlAvIGHUo0=;
+	b=ZC7DZSOrCNGjvHiYJmqdQiI6s0ENvLYlG/oi1GA4IXG8ir7812kcz7391TVWGyUDrPmXOR
+	h4LwmR3KZO5EV6FFCBU/gxKm7xSr7jDUn2eQ84RHxhTGWduTKQT94Vf+ICKlEUWuvOUozc
+	5nWCtI3GkKWN9QulaKW3jyAvY64fNo8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707517010;
+	s=mimecast20190719; t=1707518185;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=dflloNC7LaAlJ2atdSFROMmPzF6iFHVdcqRgzt5YjTk=;
-	b=SIGVLNWKXvlI+tXQoqIMNEowdvX5WAsukOOMyfdwXpPzrj3qNUqtb91F3Z23h3A6aYvlM2
-	Flp3CxSXN/6+Po6L+exNweOQDohklXcoiDx124MP/cmIc5wj7WKaqA6xTWf2p296Q9qNOp
-	SxrA1oq0QYOEtXsC1O8LnjCc9FhFkm0=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=ZsuwvNcy7srG22SEiNvqp25+3IIw8oPhoxlAvIGHUo0=;
+	b=aC6rX+DZeTXEGi4c2ITuwRC4nx6TM3unHVXNODN2mPL3ze270ngmeyizzogUvWpXx+dpLy
+	TQI9Jqi0Nlsk0DswG+Oco2HpUEpuNVue3UXSLrhcgknGYmI/JO1Y8aFGLrxQAxhiMrWCcm
+	rQbIBOI3NvkIhywUI1iCkmzUOF0SLZs=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-649-FCLaaQLxO4umEJit134Abg-1; Fri, 09 Feb 2024 17:16:48 -0500
-X-MC-Unique: FCLaaQLxO4umEJit134Abg-1
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-33b0c264adbso666065f8f.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Feb 2024 14:16:48 -0800 (PST)
+ us-mta-473-WuzkPeNyOUiEWVn8eUWdxA-1; Fri, 09 Feb 2024 17:36:21 -0500
+X-MC-Unique: WuzkPeNyOUiEWVn8eUWdxA-1
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-33b16845d12so548165f8f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Feb 2024 14:36:21 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707517007; x=1708121807;
+        d=1e100.net; s=20230601; t=1707518180; x=1708122980;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :references:cc:to:content-language:subject:user-agent:mime-version
+         :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dflloNC7LaAlJ2atdSFROMmPzF6iFHVdcqRgzt5YjTk=;
-        b=LiL16BcMSj11LiskVWPcdfoH1StxenBTR1JNK+XJr7YVk2YqSOz8osaZK8vkpCS3F9
-         gojJtcYuzLbK0zZMsGarkJk50Lp8IdkGw64s+Pzec9ToqPFtqRw4Oit6JG9p55h3vbe+
-         NCEgPNejLBHBP/msMF5AFCR0eP6O3VFWOTvyyfslXaXnJ9e1x6NYapqMMGlaWCUi7JWv
-         VfH1mtIcaqC80tX1piKmsuBPVkCJEGWhKrsCSklRZEISddvxVWJScMXgjztRVJKF7VS/
-         WIqZqR6K0qUf2BXfU49OWYRPYb1rnwAp5CJQL7+tcWKaQffl1CD4e+C3em0MHBaU/LSk
-         Wbjw==
-X-Forwarded-Encrypted: i=1; AJvYcCXNqHubZP+pqCnzZS2BB5nTbylr0d78znaMuadaJCU2Pc1ODl7HR393OimMjdnokB2Z8WyMb3xcjz6fvZhCiE3Y4XPxPUWwYePVwQ+skg==
-X-Gm-Message-State: AOJu0YwJecNDN2M6lhQwsP/eB4Ren+EfXJTdoJYAX5PmmNOmCAMyf+mW
-	hoz/w+bMTJc0taxKEAvvpJbbw1qzpI/35xZA/XB5V6k32X2GHXbfhnswq/d6l7WfGUKcAj8fNVP
-	jwUxE9xy12C0YzgG6RE9Qp7lBH7zyophvZJHmqIue5xTR66S+QQJmE99IagLLHMU=
-X-Received: by 2002:a5d:5f56:0:b0:33b:3d7b:9df5 with SMTP id cm22-20020a5d5f56000000b0033b3d7b9df5mr301388wrb.3.1707517007581;
-        Fri, 09 Feb 2024 14:16:47 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGRraT+iqLCq+q+SFxi+pdwsHtFzhjNgLOYIJx29W2GMY7wrOLtNR7Da1ALVYwUglJgM07o2w==
-X-Received: by 2002:a5d:5f56:0:b0:33b:3d7b:9df5 with SMTP id cm22-20020a5d5f56000000b0033b3d7b9df5mr301362wrb.3.1707517007207;
-        Fri, 09 Feb 2024 14:16:47 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVtL7oNODxcHq+w10fGEtfBuwnhqS4NoQPo0xzUYUoLqTZ7DiSAYQAjnVTAiD2uYJeiW8Wp3CKVbOe7eal/If1UxAu/7ihgfg/oCqUU2FwIEryU1IXNGRxDYlgcmqdhn5CiMEh+l+PO6mDSxkZ8bN2QZwfRT40uGeraENi/Vjx3hSBJyR/bT6GllMBFOVvqsQ/G37un/U+/yUBTlhyTxKeLupmxdu9zsAeM52OmbXkHsTyomZ6G73qIBreN4KkVKhYQQE0emHO2Q0yh4s7FHl/x13Gknjbc1GxqrQERRs4d11SbCNftnUrLcF1loZW/blGOMiv23DQMSGeUymejUW+Mj3ntUE55urQqJAG4wtsXmaVi9Q1delgcbLX/ZcjgB4Cn7AtebU3vg45Buey37VQBBAlvfB2xtQedIWxPiNDNuPL5gcCYMeIwd5x2HGGVtj7xWvgra4dUB4kE4cIphLo64tXNMvFujlp4ykAT1jIgbRgeWP4kkIEnxhTww3CoW3iqVox3hJMO4cnVHj5SCeC0LEaBF1kzQKMd5XVTTW37M30DWDABxo2ye2qU3cKK6c4GZgmDQjJ7OL1423x4QLqxxJbAhcqsLc662Y7yrf+JwxWydc2FE8j4paPo9LqLEgvqKK94MtJXm6jhLBMPO/agkZsyr5ONZloeMavXg6FH4AyxILtyWcGpfp8kKkam0ThEDuL9+g0Uvh91wnlJg+ceGbSiXgJN/o3lCDoufX47fjAT7i0uW1hKnHOPjQ8HbLtAlAFlDB9tKsK12TmJpacefEHUtNPTSSjTh3IxE6bl8bmFoB4Y8k0SUMsshNzmuXWFjgSt6kxxBukMZb4NmZObWiBmxrPHFRd6j3370akMOPtlWAlc6VoV32J/kQ==
+        bh=ZsuwvNcy7srG22SEiNvqp25+3IIw8oPhoxlAvIGHUo0=;
+        b=tmurjTFfOTMqgm67y4fb+Z8H50XQ6TcOLD0Eu/RmyURK2zedJjTcQNoIqKjKcCqFmd
+         uXbwYYi2uCSyRy7/eRFsPSTeBNjC7NtYVcQthE4jIdGrkqbJGBySZZl1exLJ1QufBJIA
+         4rj3PvCmkOZHLTI5jQFH5PeIYcKHbwLDVtZPqbsTZIDgyem9B1ezuS0b6i6P4P3gKkDe
+         fT+y190erTBFOL8pGGSW02rTK/a8/OmfAImYu9VtQeKDv6OiQp4f/6zWmguBoaveiCge
+         F9udtGellwYKETzDruCw2S8TeHNHsmKzdryLE4bTSe9rTR/Su5M9RJ0fTRJuvLp9g561
+         Mi2A==
+X-Forwarded-Encrypted: i=1; AJvYcCUO5ZsZpNHMKyMl0dXi9kfY7tGxLVT3e4f+Ef2Q0Vwmd5qU/1aDmighDRxfdM+WhJaZ3+eHGPQebmAISp+EXEHMYoLirEEpnW7vaw/y/A==
+X-Gm-Message-State: AOJu0Yy+T2crihQy61sAgARTPDF3UM5K9FhC+0fE5aky5LT8R+VSnNL/
+	EwYHSjv9b7odp3QHpCSkFBflsvA6Lud10vDqGN28Is9FjeFS37vQwATibU0+USHODw4NdBHi7Y7
+	ugNpKLH4QteyFrzln5sODN6u4mHywOF8GZMszc4x31bV6AfvkTEYLvvigrVT6akQ=
+X-Received: by 2002:a5d:6292:0:b0:33b:63a5:feaf with SMTP id k18-20020a5d6292000000b0033b63a5feafmr257853wru.20.1707518180236;
+        Fri, 09 Feb 2024 14:36:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGy4CLCviUyK1OodnIQ1mSMGsomV26G3hTfhyNyhH+GDYkVLAS41fsfIsBxx2rncVdrBGU2iQ==
+X-Received: by 2002:a5d:6292:0:b0:33b:63a5:feaf with SMTP id k18-20020a5d6292000000b0033b63a5feafmr257824wru.20.1707518179877;
+        Fri, 09 Feb 2024 14:36:19 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCX+S/n/bVOO58PUK1OwN7/Y+dBJ5Acz/W4v5CpS3WjHnlBwf5/kpFz/wL+kjiKDWoYAbMbmz+gfFu3wnLXtBbxCWkITbHaCVUcGP7u+50RgLdzNW8tvTduDZYlK7MB1HQYRoJZinm8OkVnP8sJoPvVGz4wv+D0Eg2VgbZ7AXAwCuG3nMyDoSZuYSEQadSv9xdO/Fa6KTh1AkNjK94KUMkSDjzjPeBstwXOO6fe1+4//EXnxjeSQdYFt9cf1MrZj0tTGeQsXrFc8zY29xujzIzXIkv/sz7qQmw3J/oEyQULKRgSRj9dGr2hSQb6mMBn29bG9uZTzst7HlmvlOUeQMP3oO5aO9Qre9eufCQmP/scsKKHrMNn5C7brXfc/bnaV30nPWgCtCJj8DyNi6RVhcsICK0xzM3FLq+WtyxQXzxq3Q1mVv3ekPFV6vZDI9sRV0ZsOkcSnQr8Io1TS5UjvK5HhDSbVQSmc4Wh+hLJHHpfKcTOQ2+MxMY6N0Xxk9tPmR33BDXQythmIKROkQxoSG5pWrYSc6vt+la3dIZdPZKiOiKA8o1Qrw5HbI/KNeeMbhK0M6MWb8dov8n6VBAOblsB0fAZkWbv0dZBwcyGKAGdXYVftcthpd9cl8+TK+ztAgquDjBBYUdw9VWZ0hJbKnBMen/iCJVBWYDK18Kgh4t0wtTIgAL+hHoNIIwXxio66kkRQIbxB08XzsuYcI3oqq99Swsc1pwPtECz1LF3UJHq0YNgR131OhFS537vvvFq6oc08Ih4zOua0Y1XMcyyQAQPYLWoJSRDH6zWQYAyTkP5q6Is5nmPJhGU+1TZavOAw4aKVmIgceFdaNR9anFUa5bThPfvB3vEqMH60Pbru0a+AMRtmtj4XIDGO6hFgsPnuxl/y/ofxT5dIt4a28pdauobL4VRBGYmtKLzxoD6qzBcccu4oIX/98ViWmXZ9d0y+Cr0u5B
+ 2vz249Brar3w0=
 Received: from ?IPV6:2003:cb:c718:6800:9d15:2b60:4f57:7998? (p200300cbc71868009d152b604f577998.dip0.t-ipconnect.de. [2003:cb:c718:6800:9d15:2b60:4f57:7998])
-        by smtp.gmail.com with ESMTPSA id y12-20020a056000108c00b0033b40a3f92asm285796wrw.25.2024.02.09.14.16.45
+        by smtp.gmail.com with ESMTPSA id bv4-20020a0560001f0400b0033b670b0a6asm302786wrb.74.2024.02.09.14.36.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Feb 2024 14:16:46 -0800 (PST)
-Message-ID: <216aa113-dc3f-45d4-964f-98f80969a927@redhat.com>
-Date: Fri, 9 Feb 2024 23:16:45 +0100
+        Fri, 09 Feb 2024 14:36:19 -0800 (PST)
+Message-ID: <6b0d2c43-90cd-4429-baa9-078dd37fe207@redhat.com>
+Date: Fri, 9 Feb 2024 23:36:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 00/25] Transparent Contiguous PTEs for User Mappings
-To: Ryan Roberts <ryan.roberts@arm.com>, Mark Rutland <mark.rutland@arm.com>
-References: <20240202080756.1453939-1-ryan.roberts@arm.com>
- <ZcUQqfg39zCS2BAv@FVFF77S0Q05N.cambridge.arm.com>
- <3ba54c94-8e44-4dd6-9a25-2cf81b07336f@arm.com>
+Subject: Re: [PATCH v3 01/15] arm64/mm: Make set_ptes() robust when OAs cross
+ 48-bit boundary
+To: Mike Rapoport <rppt@kernel.org>
+References: <20240129124649.189745-1-david@redhat.com>
+ <20240129124649.189745-2-david@redhat.com> <ZcRwc2mEDHIXxgGa@kernel.org>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -133,7 +134,7 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <3ba54c94-8e44-4dd6-9a25-2cf81b07336f@arm.com>
+In-Reply-To: <ZcRwc2mEDHIXxgGa@kernel.org>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -150,23 +151,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Yang Shi <shy828301@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, Andrey Ryabinin <ryabinin.a.a@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>, Alistair Popple <apopple@nvidia.com>, Barry Song <21cnbao@gmail.com>, Matthew Wilcox <willy@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, Zi Yan <ziy@nvidia.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, John Hubbard <jhubbard@nvidia.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Ryan Roberts <ryan.roberts@arm.com>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@d
+ avemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
->> 1) Convert READ_ONCE() -> ptep_get()
->> 2) Convert set_pte_at() -> set_ptes()
->> 3) All the "New layer" renames and addition of the trivial wrappers
+On 08.02.24 07:10, Mike Rapoport wrote:
+> On Mon, Jan 29, 2024 at 01:46:35PM +0100, David Hildenbrand wrote:
+>> From: Ryan Roberts <ryan.roberts@arm.com>
+>>
+>> Since the high bits [51:48] of an OA are not stored contiguously in the
+>> PTE, there is a theoretical bug in set_ptes(), which just adds PAGE_SIZE
+>> to the pte to get the pte with the next pfn. This works until the pfn
+>> crosses the 48-bit boundary, at which point we overflow into the upper
+>> attributes.
+>>
+>> Of course one could argue (and Matthew Wilcox has :) that we will never
+>> see a folio cross this boundary because we only allow naturally aligned
+>> power-of-2 allocation, so this would require a half-petabyte folio. So
+>> its only a theoretical bug. But its better that the code is robust
+>> regardless.
+>>
+>> I've implemented pte_next_pfn() as part of the fix, which is an opt-in
+>> core-mm interface. So that is now available to the core-mm, which will
+>> be needed shortly to support forthcoming fork()-batching optimizations.
+>>
+>> Link: https://lkml.kernel.org/r/20240125173534.1659317-1-ryan.roberts@arm.com
+>> Fixes: 4a169d61c2ed ("arm64: implement the new page table range API")
+>> Closes: https://lore.kernel.org/linux-mm/fdaeb9a5-d890-499a-92c8-d171df43ad01@arm.com/
+>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+>> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+>> Reviewed-by: David Hildenbrand <david@redhat.com>
+>> Signed-off-by: David Hildenbrand <david@redhat.com>
 > 
-> Yep that makes sense. I'll start prepping that today. I'll hold off reposting
-> until I have your comments on 19-25. I'm also hoping that David will repost the
-> zap series today so that it can get into mm-unstable by mid-next week. Then I'll
-> repost on top of that, hopefully by end of next week, folding in all your
-> comments. This should give planty of time to soak in linux-next.
+> Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
 
-Just sent out v2. Will review this series (early) next week.
-
-Have a great weekend!
+Thanks for the review Mike, appreciated!
 
 -- 
 Cheers,
