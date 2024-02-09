@@ -1,69 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2023A84F092
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 08:03:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C03E084F096
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 08:04:06 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=b2CJvaUV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VoP2ytoP;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TWPvb0DGVz3cZn
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 18:03:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TWPwN4t9tz3dT6
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 18:04:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=b2CJvaUV;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VoP2ytoP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWPt60p95z2ykt
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Feb 2024 18:02:05 +1100 (AEDT)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1d7393de183so4742195ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Feb 2024 23:02:05 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWPtH0bX0z3cQT
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Feb 2024 18:02:14 +1100 (AEDT)
+Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1da0cd9c0e5so5128585ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Feb 2024 23:02:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707462123; x=1708066923; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1707462132; x=1708066932; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eL749GGZxcw+dNDSidA1ZYGeUwGyyiY2EeTAJqo21lY=;
-        b=b2CJvaUV4NehgZC2MmDnmJxu5HcwUSv1QFNURfooCGtnHD5F0F0qrEVRyiQ2tpoanR
-         BSVT+yNEbpzzfH9lFJUX2rboPfmFdURUa3zpKnn+9vlLnwuqlszrpMu+asnAYhdg8lah
-         BNK+Mbkr9624kuoCGJGQdzN0L3zzl5s594yxclTTZOx08aou4s8L5kJJPutn06RJs4/J
-         86HyjCdykeT+tQYwqy6Vnqg6/fthsliyXWdD/aehjMh+PRuBzxnBd62ia8mN/gwsjdwX
-         q4JEX1WL5DNb7gm8OiSZNVawIdmhQrqsW7XNeFBl9EGp+0lJtC/o6f8dKwQXxi1xGJcP
-         3dYw==
+        bh=PZWJe/FfY+0lZ+B78melC7fte3uc1Gnzj5kPj86WV+c=;
+        b=VoP2ytoPOk1XNZb/bG4pN1OxlzpDiZO/rnrdV9dDE1r/H6cfPDt6NoBgZGxEpdi0Kz
+         QQMstRbXjGoptICCYf5d9m8AZBAts9+tC/KNpvn6FHQC4dXyrjYgpjHmf4VewEQkGkBX
+         4sGxd/LPzG75QiTYcjr1vKqE4iBdVB5jZh37xmRzN5DE1VBdvz6gTmNDcjV19UF9nb7N
+         hK1bdfHGKb0CPzgSfDJIQm1KYuxLTr2AdT3i0H1o0v0kVTopAGP3QrZ7bP3A7dG0She3
+         CoiWxb9Btz27TkZz5LToCINMdbgZdHqC8YRdjTYXwK6jVnAqSaAINUXI08nRrJViLUv7
+         MVSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707462123; x=1708066923;
+        d=1e100.net; s=20230601; t=1707462132; x=1708066932;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eL749GGZxcw+dNDSidA1ZYGeUwGyyiY2EeTAJqo21lY=;
-        b=oz/BxFxpZ6P2nM1LN/tnHr3IxgSh4LOAMh6zhzltnTa1OZjdkqh4nKxio0xRPB0R/N
-         YEIXiCT8Ef+cS0KY2mWtJQzBHqNpqr3h5G8Nzm62id8VTdR3zYp9W24QLmDuKw2qe5w9
-         furnWE1YYIIC/wYbubq9e2qDhd6T1HNR/gW4sZr/1R5T2AeHVy3KyZrO802gEU6i/W6S
-         8dWcPclvX7dJjuIOk2c1wf3NcmyjqXC2VUJdKWoJTFIpLcwGZTXPF20fyn8ukXQV5Cke
-         lMKgCjKgIJ5ToAjr39o+Q3qLDrzERivsSIN1A2k0kL44Lka12XGE/NoRtQfUjkuuSFxh
-         /3kA==
-X-Forwarded-Encrypted: i=1; AJvYcCWnWn0t7yOZ27UwjbOMQq8QIedYazeH/Qv9J3kgk6xOEuaTPYQexMZTeftH3CixwseAisHXAXfhIV6e5BFA7w4zP0ch77Xv140TLmqlbg==
-X-Gm-Message-State: AOJu0YyZ9C+CGS+Ar+iskFUWp3DtgBz8KMGKXVdX3zg3VITwakYZFcFk
-	rWYRtV4SlFQUTXJ+tzDhQfkRmqFnE0yO8Q91Nr7h5WDiJ9BHKS6a
-X-Google-Smtp-Source: AGHT+IEdJEZPg4RmRriNJvZ9ahIM21K97ubmmeCO1CKYdbqQsQThckXb2cLmncRYSvscNc6GGM/MAQ==
-X-Received: by 2002:a17:90b:18b:b0:28d:1e1b:d73b with SMTP id t11-20020a17090b018b00b0028d1e1bd73bmr549771pjs.19.1707462123256;
-        Thu, 08 Feb 2024 23:02:03 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXAx3a693s2l69Ut2KmKGU4vE2ZC23IXFwaBq60nxdhXQH/wHqINSDRVEggFL83Uw2MwTD9HerALBagZpD8L1eLx4n8TkjqzJ1EGYIMSlHivyd5ypAco80tPfYCz8Hhg34bjv7ya4IYE/HbC0AqAGovAva0WfT4DoOWsO6umPQ+WPMNMsSVVAV6YrXzPXUNjf46OwTbAN+E3I9XhudqgT3G42OFW05p0f0ADTIl6+x+6xpc+BkKnDEuLGaBB/BqUB2jz51hr6LLF3YkHFzD8NghbacfpFpqTB42Io0ldUdysrN7sPlP4VBANUXFnYvnXnoZsg3HXxn21bbqXtbw8r/hLfPNYHjcYLXHdwKUrha44NHYGWm9DIneZWOA5u1atuzSBY0CETd4h9+sxh1mG7owCB0o0+ZXnqlFbAOozjeWyXn9jMGm+jqBMUF7S5W4yc/bzY/sAz8xGDJrLGWUVSy2CPWb1PfsKmTPZNmUM95l6OTokRvOeYdBLQBzEFZzMCIypPS85Ja35rox/gu4ZJdSZ7xbfoYZk4+nYnsWLWrlcarZSyzAyZ9l
+        bh=PZWJe/FfY+0lZ+B78melC7fte3uc1Gnzj5kPj86WV+c=;
+        b=D3zZksRofEeKBRO+pyMpU13uUcGyL/+ur35lShbF8zFevyh63OYJttimiK186ImWso
+         cEjCF7BCiem/sINQio+LiPQ12NpsfuPyEQCLun2KpauoKhVVnSa27zKC07JyLeoabAkY
+         qpnTlAyJJXwRO4DZj2RflrOErE1Z6uAEkwGlj73Xx8cmAxj+OrkGHK9xeGS+QPy6ucCv
+         tyhtnCXm41v73DK8FSHWDQvKu2ByT5urjA+9WdpLpdJFPLuViBbx008Ua0yONyZqktrF
+         2r23rj3xDK3ibYfO6OJ0WbD2GmMS3nx0tXAqsRep3pu9LbYXMezVKYH3riT9oJg+Ncpx
+         pOSw==
+X-Gm-Message-State: AOJu0YzRRdTdVnFcnjk8To9qbkDNn1lKfGZYmzbyUFte4r6LLHpxw4nS
+	HbZVL0Wdv9rOS/WILT1D//UInevEF3wqOLamPX6q4Z+GUycJ/HmL
+X-Google-Smtp-Source: AGHT+IHOeahmko/f+RwAZAHEJWia2rOHYMfGMz4gCsHP+DywjdnF57Ty4tjhGRk1+lg6vAvd2PgMDA==
+X-Received: by 2002:a17:903:22cb:b0:1d9:efc7:1c4e with SMTP id y11-20020a17090322cb00b001d9efc71c4emr251590plg.6.1707462132399;
+        Thu, 08 Feb 2024 23:02:12 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUjW0aiDCaCLLFfVUVr5+bjGqa7mzeF+p3ViNkQqbgtcj0Il6d+i/6lELOrZwAv2VLO/QuGkDOmTrZv2VMUIMsKQgyI4X6EJsrbFOqX3EwTBCt77J+G785rbh7UEFgzoGo0MeZTvVYFPZD7/1PJ01abi+YorczJW6k6akDxzxMXt9g2gLdOpy3QIpkuiqBIzAePfI7P128W0t4bkitbTsDbBr98gnEpsMuMgQjuH3Si8ur0dF4cnkyVF7dvAjGhMkLgFQmtXBD6lNkbOeef8ggdt/eBtk2c1xZjUn0zCW6G0TMxpZ+4JWMsZF63nPB1q8lKpmVddNx821u3QU0boOD2tlS8wYCQA3O9JUIEQCCb6Qnpm08pHAbnTmgBswHd5imYUiTh9O2eDynpgwF0mNiaOsqavbRC6Jul2MLacr+aprWRyUDanMygM30mw97u0KHVMszGF2zkWJ9/DGlFbxg4mH+LAJXvpwXsmpY+KkbPjxFdxOPeMt3Fc2yK1BQrEDsG6HaRcQ++jE20RCJF/GmJiLzdCsPsWr8F+BeQeiIe7Yj2y2RZ956a
 Received: from wheely.local0.net ([1.146.102.26])
-        by smtp.gmail.com with ESMTPSA id r10-20020a170903410a00b001d7284b9461sm839285pld.128.2024.02.08.23.01.55
+        by smtp.gmail.com with ESMTPSA id r10-20020a170903410a00b001d7284b9461sm839285pld.128.2024.02.08.23.02.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Feb 2024 23:02:02 -0800 (PST)
+        Thu, 08 Feb 2024 23:02:11 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Thomas Huth <thuth@redhat.com>
-Subject: [kvm-unit-tests PATCH v3 1/8] arch-run: Fix TRAP handler recursion to remove temporary files properly
-Date: Fri,  9 Feb 2024 17:01:34 +1000
-Message-ID: <20240209070141.421569-2-npiggin@gmail.com>
+Subject: [kvm-unit-tests PATCH v3 2/8] arch-run: Clean up initrd cleanup
+Date: Fri,  9 Feb 2024 17:01:35 +1000
+Message-ID: <20240209070141.421569-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240209070141.421569-1-npiggin@gmail.com>
 References: <20240209070141.421569-1-npiggin@gmail.com>
@@ -84,66 +83,41 @@ Cc: Laurent Vivier <lvivier@redhat.com>, linux-s390@vger.kernel.org, Nico Boehr 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Migration files were not being removed when the QEMU process is
-interrupted (e.g., with ^C). This is becaus the SIGINT propagates to the
-bash TRAP handler, which recursively TRAPs due to the 'kill 0' in the
-handler. This eventually crashes bash.
+Rather than put a big script into the trap handler, have it call
+a function.
 
-This can be observed by interrupting a long-running test program that is
-run with MIGRATION=yes, /tmp/mig-helper-* files remain afterwards.
-
-Removing TRAP recursion solves this problem and allows the EXIT handler
-to run and clean up the files.
-
-This also moves the trap handler before temp file creation, and expands
-the name variables at trap-time rather than install-time, which closes
-the small race between creation trap handler install.
-
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- scripts/arch-run.bash | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ scripts/arch-run.bash | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
 diff --git a/scripts/arch-run.bash b/scripts/arch-run.bash
-index d0864360..11d47a85 100644
+index 11d47a85..1e903e83 100644
 --- a/scripts/arch-run.bash
 +++ b/scripts/arch-run.bash
-@@ -129,6 +129,9 @@ run_migration ()
- 		return 77
- 	fi
+@@ -269,10 +269,21 @@ search_qemu_binary ()
+ 	export PATH=$save_path
+ }
  
-+	trap 'trap - TERM ; kill 0 ; exit 2' INT TERM
-+	trap 'rm -f ${migout1} ${migsock} ${qmp1} ${qmp2} ${fifo}' RETURN EXIT
++initrd_cleanup ()
++{
++	rm -f $KVM_UNIT_TESTS_ENV
++	if [ "$KVM_UNIT_TESTS_ENV_OLD" ]; then
++		export KVM_UNIT_TESTS_ENV="$KVM_UNIT_TESTS_ENV_OLD"
++	else
++		unset KVM_UNIT_TESTS_ENV
++		unset KVM_UNIT_TESTS_ENV_OLD
++	fi
++}
 +
- 	migsock=$(mktemp -u -t mig-helper-socket.XXXXXXXXXX)
- 	migout1=$(mktemp -t mig-helper-stdout1.XXXXXXXXXX)
- 	qmp1=$(mktemp -u -t mig-helper-qmp1.XXXXXXXXXX)
-@@ -137,9 +140,6 @@ run_migration ()
- 	qmpout1=/dev/null
- 	qmpout2=/dev/null
- 
--	trap 'kill 0; exit 2' INT TERM
--	trap 'rm -f ${migout1} ${migsock} ${qmp1} ${qmp2} ${fifo}' RETURN EXIT
--
- 	eval "$@" -chardev socket,id=mon1,path=${qmp1},server=on,wait=off \
- 		-mon chardev=mon1,mode=control | tee ${migout1} &
- 	live_pid=`jobs -l %+ | grep "eval" | awk '{print$2}'`
-@@ -209,11 +209,11 @@ run_panic ()
- 		return 77
- 	fi
- 
--	qmp=$(mktemp -u -t panic-qmp.XXXXXXXXXX)
--
--	trap 'kill 0; exit 2' INT TERM
-+	trap 'trap - TERM ; kill 0 ; exit 2' INT TERM
- 	trap 'rm -f ${qmp}' RETURN EXIT
- 
-+	qmp=$(mktemp -u -t panic-qmp.XXXXXXXXXX)
-+
- 	# start VM stopped so we don't miss any events
- 	eval "$@" -chardev socket,id=mon1,path=${qmp},server=on,wait=off \
- 		-mon chardev=mon1,mode=control -S &
+ initrd_create ()
+ {
+ 	if [ "$ENVIRON_DEFAULT" = "yes" ]; then
+-		trap_exit_push 'rm -f $KVM_UNIT_TESTS_ENV; [ "$KVM_UNIT_TESTS_ENV_OLD" ] && export KVM_UNIT_TESTS_ENV="$KVM_UNIT_TESTS_ENV_OLD" || unset KVM_UNIT_TESTS_ENV; unset KVM_UNIT_TESTS_ENV_OLD'
++		trap_exit_push 'initrd_cleanup'
+ 		[ -f "$KVM_UNIT_TESTS_ENV" ] && export KVM_UNIT_TESTS_ENV_OLD="$KVM_UNIT_TESTS_ENV"
+ 		export KVM_UNIT_TESTS_ENV=$(mktemp)
+ 		env_params
 -- 
 2.42.0
 
