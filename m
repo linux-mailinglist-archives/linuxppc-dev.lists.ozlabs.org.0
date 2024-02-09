@@ -2,89 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4106D84FB53
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 18:58:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C826B84FB9D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 19:09:58 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PPC5XmDG;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PPC5XmDG;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JQHPGWmP;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JQHPGWmP;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TWhR46Smfz3cnT
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Feb 2024 04:58:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TWhhh4fbfz3clw
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Feb 2024 05:09:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PPC5XmDG;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PPC5XmDG;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JQHPGWmP;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JQHPGWmP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWhQG45XJz3bv3
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Feb 2024 04:57:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWhgw1KKhz3bqB
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Feb 2024 05:09:15 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707501442;
+	s=mimecast20190719; t=1707502151;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=2kgITGNgRH4Wqk6mUUFnib2/8oqDp6rW8fOt5+7CaGI=;
-	b=PPC5XmDGBvqKXPIj5WdfBw6jE58eM6EhdzRfuAfs2GNOcc2H+NIbz0LNykEfDeSpburPTU
-	iNhNmuagYrekW4yMsMxQqU/12ZRufRT1YjTeLcPp6jgincqqbAwehlUExuf8g5OFXNBy3j
-	tEDL9za3/it0t2koGaLoQWj8rwXX43g=
+	bh=qWJBAjq5kZHM63Q92oX8rd7RVwpgAQWVuCWuJw6H2GI=;
+	b=JQHPGWmPbf9a22s9pyL5w8Y9pXiNV/y0OwXCGnXWepToDikQfSsndkquqGTkgaC2NSX5bk
+	tofIbygtxFX4EsKbEKmw9HJEKv6PV0cgFIfIGJCQoZSU6UKV6r6mv5z9ZxiKcErNW+x7Ni
+	CMHRJPYUxj3hVaqH6/Z8UE2zxq1AnM4=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707501442;
+	s=mimecast20190719; t=1707502151;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=2kgITGNgRH4Wqk6mUUFnib2/8oqDp6rW8fOt5+7CaGI=;
-	b=PPC5XmDGBvqKXPIj5WdfBw6jE58eM6EhdzRfuAfs2GNOcc2H+NIbz0LNykEfDeSpburPTU
-	iNhNmuagYrekW4yMsMxQqU/12ZRufRT1YjTeLcPp6jgincqqbAwehlUExuf8g5OFXNBy3j
-	tEDL9za3/it0t2koGaLoQWj8rwXX43g=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=qWJBAjq5kZHM63Q92oX8rd7RVwpgAQWVuCWuJw6H2GI=;
+	b=JQHPGWmPbf9a22s9pyL5w8Y9pXiNV/y0OwXCGnXWepToDikQfSsndkquqGTkgaC2NSX5bk
+	tofIbygtxFX4EsKbEKmw9HJEKv6PV0cgFIfIGJCQoZSU6UKV6r6mv5z9ZxiKcErNW+x7Ni
+	CMHRJPYUxj3hVaqH6/Z8UE2zxq1AnM4=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-581-XZbpxsdEPlyERH6TVmDH-A-1; Fri, 09 Feb 2024 12:57:21 -0500
-X-MC-Unique: XZbpxsdEPlyERH6TVmDH-A-1
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7859f5ae990so144696585a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Feb 2024 09:57:21 -0800 (PST)
+ us-mta-288-ra1wTAK9NX2rjhcCraRe9A-1; Fri, 09 Feb 2024 13:09:09 -0500
+X-MC-Unique: ra1wTAK9NX2rjhcCraRe9A-1
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-68c50d32297so16557256d6.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Feb 2024 10:09:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707501441; x=1708106241;
+        d=1e100.net; s=20230601; t=1707502149; x=1708106949;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2kgITGNgRH4Wqk6mUUFnib2/8oqDp6rW8fOt5+7CaGI=;
-        b=gCnMY3MU1bEf+LMPoTEdPG0yzvFg1mhn8YFdocFHTjyqerySCgNa8QUQJ3yO0uXxCi
-         44jqYeQIXmnjaJ73SWHKInXVRaAoBTLA328VVC3RX4K/SQ3rSyc9swIkxhqQp5h56hHE
-         bVoTdzcnyGtb3JGAAl5B3McPZ/vPmjwYCJtfPBmeY2zU9pvLyV8RkC16CetoZ513zi2M
-         NUmzgK48uXBloCZvv6Ov0dUC05/V6QbRAe69X8SITNGdLCSV/aFXtSnqXqGYiNfPrqX0
-         XF+TYzej+/ZeZjx3UGfbLIv/Kv0b71bYHPtbMmbynat0SDy8xul6PW7UPbak+1LovVII
-         ZkNA==
-X-Gm-Message-State: AOJu0YwNqkgs33fywS6BrC2bXSJHfBRarP7Jxhj17nrjdW0QMRrWDvms
-	uNTu6ObaJ5hSwbQgC+mnmZb50e1umUOS0EwFwhLX5MaqJdMt2wa/HdewweDHfb4lh+zsLZfhll3
-	EZkBs0sMPaQ54uI09ol+JjLtdB2JWodA2zTk2vLxTwWh7AHoEi+EZ7jWajNdJJew=
-X-Received: by 2002:a05:620a:199a:b0:783:cb5a:ec3b with SMTP id bm26-20020a05620a199a00b00783cb5aec3bmr2878181qkb.71.1707501440843;
-        Fri, 09 Feb 2024 09:57:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFh9eBa+uL0TgU8I7s2UC/0d5VeQVwvoUVp9Qb/f8h1ezUPmyU5PofF8iaO+q5Htkiy1Je+JQ==
-X-Received: by 2002:a05:620a:199a:b0:783:cb5a:ec3b with SMTP id bm26-20020a05620a199a00b00783cb5aec3bmr2878147qkb.71.1707501440460;
-        Fri, 09 Feb 2024 09:57:20 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXxdog3KtAVjA17ihb7yJMbtJys8LsF81l51sg4R8zhMr2ceg2lq62vOmj3gdhH39XD6aOFg9/L2Tk7nAT44EypfeNloh5Yb7v4MNhzbRx4awkuF9OcLqiBSxinoNtZLQBjd50L0P1ROKqAWPwz+/ohXd3W9z1cF830kNeU2FJXwo8LBlzxZMk/AsGOGTG7TvpjQJSar+4xvsPmATSrwMdekkSzwlnVvUqAtnC0xfnJVhcy2Hmwxh4+pZu2R3EXYzUgXla5jBmGgT1V2oyqG0bckI9VnJeIVGRD4sIsai7qCEtnLQHCyTtxBJWqJ+wj5SuLs48NSjgUR9iw/Pswh+ZmZiJOGnuxamkYGHPerL947oleU1N+nqSQmvm2Hpcrd3vXFVykzbExpeInqc9aC4rz6ohJv5jdthDnIk9YkLNxuQjJmRdFIKgVoKuyURm1BI+3Vnx2cIYKcvMdK74s3GZinvKMrYLpZcLDpnQGHSWPH4yUTeqivOQ3O1cRuvuqj2A4zqr0mjnP5HtxAM2hrc/gYj4Z
+        bh=qWJBAjq5kZHM63Q92oX8rd7RVwpgAQWVuCWuJw6H2GI=;
+        b=hJ3UFRx+qZCZKhqshXJKfS/5J3gEl0METFRvuFXFHrok2UzQtLYxxD5+dLi7K4vyVB
+         HUQOxVk0+HJBzLRqlS2AFAymKEkV4dEgRWxAGB8YUv56WD/pY/MSGTlLMXZ7lrEgQT6j
+         C9zGutOHwemUoENiYZurgY67qvHx3D9q+i3bzGsDJY55doRoxUL2IlcIVYEYfQHpP67G
+         2wgp0MlEn0oPt22Ghwvqf/9Onr/eUwZ+0Kc9S2AYw3cxAhxAZJYzgSe8kX07RdBEmqgM
+         HP73oHDyIv4w57uj8LB/uLgfUu88leC0R9Qbuo550FRbtO6iJZPGs6JjrvPxr7gNnXLu
+         K8Qw==
+X-Forwarded-Encrypted: i=1; AJvYcCUFNyxMP6VZpyQeRDbQOXORbhqMs4ElVJWIEkcCe+NRPSPlT7Lp6w/eaRzhDjVG4Zju2W037i8z8Sub4p0Y+3LLJUJLfX8YxPAwfB879g==
+X-Gm-Message-State: AOJu0YxmmgbGjR6VJ2+LNlEv79B+PKNhXWH1Su3jzxgxPWpLX223DmiC
+	h1JvI5ddjPR/iRuDm3Qk1Ni5mhW9mjL6uGWSpbcnS7lls31AUYdhyBnRIMTVaWvb/LYXLWojotj
+	ZTViDMr0mdspWvBE0WGZ02W4O5eubNwwX1WtNdJ6oiFWNuefSP0JuLz2KROs607I=
+X-Received: by 2002:ad4:5de8:0:b0:68c:8ee2:3fa0 with SMTP id jn8-20020ad45de8000000b0068c8ee23fa0mr2785579qvb.11.1707502149274;
+        Fri, 09 Feb 2024 10:09:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFtzks+e9Q2nimt+WHV4/eU5Wb7t5tJ07+77h0Wfr/SqqBOd3XyU6wdarwiFxt+G5VuHWYrMg==
+X-Received: by 2002:ad4:5de8:0:b0:68c:8ee2:3fa0 with SMTP id jn8-20020ad45de8000000b0068c8ee23fa0mr2785554qvb.11.1707502149049;
+        Fri, 09 Feb 2024 10:09:09 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWm4MgHh2FuocfMr0j0YAziH9jnpLxw46Vk1gOt4DPPwLZGIhOFvbtvc2/NiWd4RNK75vzcuho0FcXE876/WlhV32JQvZcs92n5psQ2MHVjJhkOnMZhtDfnlBlbEyjISh4Ki63oFKfhMZRzNE0YXFQVTnDHK4EuiQWSHTfcYtgBujW0y+WOniq1nh12MLWwXkry7LTR8a1JSfzQKZeEdTuRv2PEt5AibI09JqiKUTa6+3dvCZgAxHBnXYGbAYqrCe79U2CWjKHUeiN4WQ5LOqVWkBaWFIpsbfnW7RbQ8nUlM90s63Wf5D6WtoC1NpGmcCoWN8x2XRb/0P4vjhE0HXfnm9WPXwNKe3EdHAoPIO/+GcwI5Ln0ZPSxQSG2MmGK3tURNtcSNMsPjW8cM+BKpMVMt1HzkmXzcKg8KSkOQlRAWmIKyHq6a+9QMgm7oMb7bS0hUHzvOPTBx3kUUWWY06ik0mLyanfYuqeNFC+y718Zv57yIlofZac+3lzCWRXkoRvD6tPqHVKJF8aFGOMfHzaeCs1w
 Received: from [192.168.0.9] (ip-109-43-177-145.web.vodafone.de. [109.43.177.145])
-        by smtp.gmail.com with ESMTPSA id f6-20020a05620a12e600b0078552b5e161sm896441qkl.78.2024.02.09.09.57.17
+        by smtp.gmail.com with ESMTPSA id mc9-20020a056214554900b0068cb9a819a2sm1045597qvb.28.2024.02.09.10.09.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Feb 2024 09:57:20 -0800 (PST)
-Message-ID: <54232155-ef97-4911-b1c7-acc7ee06a676@redhat.com>
-Date: Fri, 9 Feb 2024 18:57:14 +0100
+        Fri, 09 Feb 2024 10:09:08 -0800 (PST)
+Message-ID: <62518aea-1214-4d33-8a15-41f1a494ee0b@redhat.com>
+Date: Fri, 9 Feb 2024 19:09:03 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v4 4/8] migration: Support multiple
- migrations
+Subject: Re: [kvm-unit-tests PATCH v4 6/8] migration: Add quiet migration
+ support
 To: Nicholas Piggin <npiggin@gmail.com>
 References: <20240209091134.600228-1-npiggin@gmail.com>
- <20240209091134.600228-5-npiggin@gmail.com>
+ <20240209091134.600228-7-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -128,7 +129,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240209091134.600228-5-npiggin@gmail.com>
+In-Reply-To: <20240209091134.600228-7-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -150,17 +151,16 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 09/02/2024 10.11, Nicholas Piggin wrote:
-> Support multiple migrations by flipping dest file/socket variables to
-> source after the migration is complete, ready to start again. A new
-> destination is created if the test outputs the migrate line again.
-> Test cases may now switch to calling migrate() one or more times.
+> Console output required to support migration becomes quite noisy
+> when doing lots of migrations. Provide a migrate_quiet() call that
+> suppresses console output and doesn't log a message.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   lib/migrate.c         |  8 ++--
+>   lib/migrate.c         | 11 +++++++++++
 >   lib/migrate.h         |  1 +
->   scripts/arch-run.bash | 86 ++++++++++++++++++++++++++++++++++++-------
->   3 files changed, 77 insertions(+), 18 deletions(-)
+>   scripts/arch-run.bash |  4 ++--
+>   3 files changed, 14 insertions(+), 2 deletions(-)
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
