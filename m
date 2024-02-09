@@ -1,71 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFD9484EF6F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 04:37:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D1484EF72
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 04:38:50 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=cRULODUr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QACYe0o1;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TWKLG4Wrtz3dBy
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 14:37:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TWKMX3J7Nz3dBs
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 14:38:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=cRULODUr;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QACYe0o1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::2e; helo=mail-oa1-x2e.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52b; helo=mail-pg1-x52b.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWKK62NqJz3cK4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Feb 2024 14:36:42 +1100 (AEDT)
-Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-21920f89441so254257fac.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Feb 2024 19:36:41 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWKLq2ywNz2yPq
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Feb 2024 14:38:11 +1100 (AEDT)
+Received: by mail-pg1-x52b.google.com with SMTP id 41be03b00d2f7-5c6bd3100fcso298342a12.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Feb 2024 19:38:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707449799; x=1708054599; darn=lists.ozlabs.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=gmail.com; s=20230601; t=1707449888; x=1708054688; darn=lists.ozlabs.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/itS1zlRQa0W3X3/sboV32WQE3hhCFnyF3AvCEPNz88=;
-        b=cRULODUrUQDYQmwsCwPoWZ/j3FgqXZN9DbQFRlQQhVboBWOeUcXNIwSQVX1FNp5ZJC
-         lV1vDgsVvoNxDYfm7wpcxg3u5T5btthfDM1M8EpJMU78wZDeCaDJwaIxNzq++jBbKV4f
-         oVL+hf2MNZTcyD0cdnhupmRc67MBlWM0mmRrRQOGz1mmTyCsObnp/xh/Nf+Wcy7ug33D
-         IV9g6ugxQyhC0V/FJa0AqQ9+DDIfIEG6A8uVFGeN3p+0A/05AHlQa1qM9jvfshow5E1V
-         FGLfZvwnJDfu195CN+Bomq+Orv9c7aOw08gOSNwsJwncotfv6jMjf4TOY6bedK/9pBMC
-         0bKA==
+        bh=+exzC8FxxlmEGoFzeebvnQTCtDzJ36K77Ic0tPa6NG0=;
+        b=QACYe0o1kK/icEoib5uuczMt7CerYWKBMTUwaoMDsHX6HO3i67lQ8tQX3r6RyFrC/Q
+         n8o1pf9vas/8Xv4OLfUnivVOnmpGZmBafjDdU2C8+U1GXR5trp63spQLqjC6p55OepMy
+         5fa1uIZn7c6WMOVoEmPzc58wm9k+hmTiuCipvVdNaOWltwsDoxhrLzMPkhCq4FgAVs78
+         4+m7+l88NIWpRuO4XsA7AVz72qs0nDNYxrGrrY/veqFVGf9o8LUF2BACdA6hD6dpHYPg
+         6tFwF40tWIHkwBCZXEmgA4QdwMBiNU02GJ4tzBV3E66RNkpv0/FY0qVZ7tRSkHiqciO+
+         EDsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707449799; x=1708054599;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=1e100.net; s=20230601; t=1707449888; x=1708054688;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=/itS1zlRQa0W3X3/sboV32WQE3hhCFnyF3AvCEPNz88=;
-        b=OdgvEfy3P06ru+KI/dAmdlkydupE0C51wI6/9GeJG129x92KkHH8G22VkKRp/cZhPm
-         XKgb5GOWixJtp4JRThw8QZVEnLz0JRpEtPqYpkSIFUzNVBd6Zv2ha6DRFEba9iXS3f51
-         V8wWzNKkbkdt2xrgomsiHIiDmnOXU9EYxLyfnVmimxnEoEOr7Sg2ZnExVaK9U5cRuCBX
-         r4VnHyWI9g9bulqoxy+LJEQwhJKgpogT8wkveQCkH4h32cXxkDLR521AV8zFTEfMz81R
-         mUkHsi0imOi/9CFCTqIxCYZEmLf6BMma6jpm0sVtfCu4r6jkD6VltDJtmky0oWXWk2vZ
-         oRyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWm0gPegvYqcV9xgLnmkJzuxNveRnXfQOVVVJ3Xc1raCdmfue+NUi73zw3pEvaj4FWBgMTQFcR5Mg46ACxIgBBT1SrGF0868PKfG6HGBA==
-X-Gm-Message-State: AOJu0YxIakEJUUNC6aQuVfqowJazzEn0AyWvRjT7qGg9NFx+nnkE7R7q
-	8/nw77bzZvWMBZ6HXZNNiUSb407JoPkl95Eru4A85a7emgpW0A4a
-X-Google-Smtp-Source: AGHT+IHl8GUTEq19JX8rNakjtBooH2UQnSMTKMAdjpPRY1T5Xru1ViOiNvOAzZ4u6IoQKt0Lx5+MOg==
-X-Received: by 2002:a05:6870:65ab:b0:214:b6dd:39bf with SMTP id fp43-20020a05687065ab00b00214b6dd39bfmr461789oab.36.1707449799564;
-        Thu, 08 Feb 2024 19:36:39 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVzaoBX89atdTx3Ru9rswKCpcVDpsh2nyN0T4awqFq6gzK94W2ss1uMZjRJHSZK7vrjOiQkrZj52tD+vUCmqUeGodzRxejsp8X/azn9FqlEG6j8ZJ8H/TmUOt/oj1sNTByt2U2MVyeGF9wcLax4Yq7SpXHnrQ1oARRNmP9uvM4iNUbH7xWrnFTudD/OjWnYMg61/z8lw8pDgMR+rxilBi+LT6UxSSodwiQ956rSB1ItdL71fc0JYGCzMCGVktuFR9KLClnfD+LG6G5k
+        bh=+exzC8FxxlmEGoFzeebvnQTCtDzJ36K77Ic0tPa6NG0=;
+        b=PhMXkpswNMgzyxW96dOypudpOi12/cPiXKYYX8xRQlPXDyXSOruaWdUvdz4MabsSGH
+         /jOGXF3q3oEv1A7vuy6nrQalm0rvqdaAaEfJi5an31jvfPfe/W1kEo41weohFJXmYI3b
+         6HgKwR82oeFhLdgyGoWDYACdajP/KcNgi7B4Yw2FxCnBAkoEIhcbh+3xrtBlDxNner7L
+         LyRXNTRQi9BPMP+uw2GoZZL7OrSURj27hC0Jg3njXT9gqbKzAMzOFsbQg413d+CLoOKL
+         8pSs+Qo5dRiQNzXVPLmUPIlEBVmBMOHc1DzokYWjTEMKR2Gr7APrujcDHno9ZH/Y6FXG
+         1m4Q==
+X-Gm-Message-State: AOJu0YygbcAkCOiaXCz7YA6SsTJNFtBgou1EGnkrV1KqTPlmdXQRG/4z
+	WK+8zJ9sNQ3xq0LyXzjtFnzDYOYmw1qAlnAR8q6ouSjLugUW4svx
+X-Google-Smtp-Source: AGHT+IFAXbnV5TW0cUkYpJih4U9cPn4/SX1EN+1r22I5ui38caXGIrOO980EM5KCUY0cOnmcHCqIYg==
+X-Received: by 2002:a05:6a20:9f47:b0:19e:957c:f7e6 with SMTP id ml7-20020a056a209f4700b0019e957cf7e6mr769555pzb.13.1707449888531;
+        Thu, 08 Feb 2024 19:38:08 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWlQOyVqCqmarM7+4FjzI9xeTntxER/MhKs1jzkz2Roi6HZlVgAnQZCo1A5wff+8lwTuNHkyujvc8AaISsuE9MPD7055vkS6rCsDQ3OaVtbISCNko3BLSi8X1Xd8nRvH4AqITbVhuRzwPFPO4+sG0y3HIBX99cprFvnhPIA8M/Jg00tMN/EL45C/udbxAfm3xDZYtSCzaqR7+fOAX0HZevclJRs9e4SArP5NBxCw70YcLMSLG6d6vC3NYlIQoSoCp5QQrxjh/X3CXFA
 Received: from localhost ([1.146.65.44])
-        by smtp.gmail.com with ESMTPSA id r16-20020a63e510000000b005dc36279d6dsm618997pgh.73.2024.02.08.19.36.35
+        by smtp.gmail.com with ESMTPSA id z8-20020a1709028f8800b001d911dd145esm505119plo.219.2024.02.08.19.38.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Feb 2024 19:36:39 -0800 (PST)
+        Thu, 08 Feb 2024 19:38:08 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 09 Feb 2024 13:36:33 +1000
-Message-Id: <CZ08FQE70OVJ.397UJ8KZ89BC4@wheely>
-Subject: Re: [PATCH v2 3/5] s390/vtime: remove unused
- __ARCH_HAS_VTIME_TASK_SWITCH leftover
+Date: Fri, 09 Feb 2024 13:38:01 +1000
+Message-Id: <CZ08GUY1Y35T.2U33WWSJN7JVH@wheely>
+Subject: Re: [PATCH v2 5/5] sched/vtime: do not include <asm/vtime.h> header
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "Alexander Gordeev" <agordeev@linux.ibm.com>, "Frederic Weisbecker"
  <frederic@kernel.org>, "Ingo Molnar" <mingo@kernel.org>, "Michael Ellerman"
@@ -73,8 +71,8 @@ To: "Alexander Gordeev" <agordeev@linux.ibm.com>, "Frederic Weisbecker"
  <gor@linux.ibm.com>
 X-Mailer: aerc 0.15.2
 References: <cover.1707422448.git.agordeev@linux.ibm.com>
- <2fcc4503851ef7cbb6106ba6706179605b7449fd.1707422448.git.agordeev@linux.ibm.com>
-In-Reply-To: <2fcc4503851ef7cbb6106ba6706179605b7449fd.1707422448.git.agordeev@linux.ibm.com>
+ <e0827ac2f96d87f623575098f9d55e77351b63c6.1707422448.git.agordeev@linux.ibm.com>
+In-Reply-To: <e0827ac2f96d87f623575098f9d55e77351b63c6.1707422448.git.agordeev@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,34 +89,55 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Fri Feb 9, 2024 at 6:15 AM AEST, Alexander Gordeev wrote:
-> __ARCH_HAS_VTIME_TASK_SWITCH macro is not used anymore.
+> There is no architecture-specific code or data left
+> that generic <linux/vtime.h> needs to know about.
+> Thus, avoid the inclusion of <asm/vtime.h> header.
 
-... but for benefit of patchwork if you decide to keep them
-apart
+Nice cleanup!
 
 Acked-by: Nicholas Piggin <npiggin@gmail.com>
 
 >
 > Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-> Acked-by: Heiko Carstens <hca@linux.ibm.com>
 > Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 > ---
->  arch/s390/include/asm/vtime.h | 2 --
->  1 file changed, 2 deletions(-)
+>  arch/powerpc/include/asm/Kbuild | 1 -
+>  include/asm-generic/vtime.h     | 1 -
+>  include/linux/vtime.h           | 4 ----
+>  3 files changed, 6 deletions(-)
+>  delete mode 100644 include/asm-generic/vtime.h
 >
-> diff --git a/arch/s390/include/asm/vtime.h b/arch/s390/include/asm/vtime.=
-h
-> index fe17e448c0c5..561c91c1a87c 100644
-> --- a/arch/s390/include/asm/vtime.h
-> +++ b/arch/s390/include/asm/vtime.h
-> @@ -2,8 +2,6 @@
->  #ifndef _S390_VTIME_H
->  #define _S390_VTIME_H
+> diff --git a/arch/powerpc/include/asm/Kbuild b/arch/powerpc/include/asm/K=
+build
+> index 61a8d5555cd7..e5fdc336c9b2 100644
+> --- a/arch/powerpc/include/asm/Kbuild
+> +++ b/arch/powerpc/include/asm/Kbuild
+> @@ -6,5 +6,4 @@ generic-y +=3D agp.h
+>  generic-y +=3D kvm_types.h
+>  generic-y +=3D mcs_spinlock.h
+>  generic-y +=3D qrwlock.h
+> -generic-y +=3D vtime.h
+>  generic-y +=3D early_ioremap.h
+> diff --git a/include/asm-generic/vtime.h b/include/asm-generic/vtime.h
+> deleted file mode 100644
+> index b1a49677fe25..000000000000
+> --- a/include/asm-generic/vtime.h
+> +++ /dev/null
+> @@ -1 +0,0 @@
+> -/* no content, but patch(1) dislikes empty files */
+> diff --git a/include/linux/vtime.h b/include/linux/vtime.h
+> index 593466ceebed..29dd5b91dd7d 100644
+> --- a/include/linux/vtime.h
+> +++ b/include/linux/vtime.h
+> @@ -5,10 +5,6 @@
+>  #include <linux/context_tracking_state.h>
+>  #include <linux/sched.h>
 > =20
-> -#define __ARCH_HAS_VTIME_TASK_SWITCH
+> -#ifdef CONFIG_VIRT_CPU_ACCOUNTING_NATIVE
+> -#include <asm/vtime.h>
+> -#endif
 > -
->  static inline void update_timer_sys(void)
->  {
->  	S390_lowcore.system_timer +=3D S390_lowcore.last_update_timer - S390_lo=
-wcore.exit_timer;
+>  /*
+>   * Common vtime APIs
+>   */
 
