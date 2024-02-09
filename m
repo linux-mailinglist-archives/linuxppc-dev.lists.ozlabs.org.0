@@ -2,49 +2,139 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E594784F139
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 09:05:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF66284F136
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 09:04:44 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EMm61B3L;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HdAmVzbs;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HdAmVzbs;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TWRHn60fxz3cM7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 19:05:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TWRGL55zSz3cX4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 19:04:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EMm61B3L;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HdAmVzbs;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HdAmVzbs;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWRH14rQQz309c
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Feb 2024 19:05:17 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 90E1761EE7;
-	Fri,  9 Feb 2024 08:05:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE2FAC433F1;
-	Fri,  9 Feb 2024 08:05:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707465914;
-	bh=l4wPmBotrK0lmvOpGwHwWCSz8z3m/0muNab90qiNBEI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=EMm61B3LEyUECN3uJswaEe/18RNJLw1HwlyLXu5H4K7TA1NYVcyMghTJjgnullj4g
-	 I7HMhUB/CqAn+zmMpaR9NcOVibtpuV+orj2qEDldOhJ3BNkOmGa0ireyZ/4sY4C+NN
-	 kIMyB8GMd/JXYGkf2hvUAsOW07TPcbIRwHSttaW/nfwg6llTy4nPhn/a/Go2akSTla
-	 QKjIR30m3PicXUX4ueCg0ZZ84NfrozYReiJqBBH6HCLE+980yEToN1nG8s4JgmCztx
-	 os0Yqv/aWMQBeswkyTnEvJ2v2HJ3onADI38v1FtgdcZpLqgiOnfPfDFuzrAkKbrvLa
-	 bAPubSCY7PkvA==
-From: Naveen N Rao <naveen@kernel.org>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] powerpc/ftrace: Ignore ftrace locations in exit text sections
-Date: Fri,  9 Feb 2024 13:29:31 +0530
-Message-ID: <20240209075931.666935-1-naveen@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWRFd4JsNz30fp
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Feb 2024 19:04:04 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1707465841;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=faE/LK4IJAeEyH7ZjqMtZX/ViQ+jKg9nw9ZeSbxZmiM=;
+	b=HdAmVzbsg6yYXylBJhxf+Nm+ksz/HSyTqP2n3yGuhvwj7fV8mWuv4i3a86ztP8Rl96S59k
+	95bAFXrltGKZvofnQjrxUSCB6V/fC93SpFnnRXXZXDBE+odWP8W28oIdmhZHW41Hq4wD/Y
+	Yr1+bB1QWw6Ido5vSmCRw4976xr/uOY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1707465841;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=faE/LK4IJAeEyH7ZjqMtZX/ViQ+jKg9nw9ZeSbxZmiM=;
+	b=HdAmVzbsg6yYXylBJhxf+Nm+ksz/HSyTqP2n3yGuhvwj7fV8mWuv4i3a86ztP8Rl96S59k
+	95bAFXrltGKZvofnQjrxUSCB6V/fC93SpFnnRXXZXDBE+odWP8W28oIdmhZHW41Hq4wD/Y
+	Yr1+bB1QWw6Ido5vSmCRw4976xr/uOY=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-556-XQ6SOXGQNO2JLZ9cKLhmWA-1; Fri, 09 Feb 2024 03:03:59 -0500
+X-MC-Unique: XQ6SOXGQNO2JLZ9cKLhmWA-1
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-68cacbd7d73so11598306d6.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Feb 2024 00:03:59 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707465839; x=1708070639;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=faE/LK4IJAeEyH7ZjqMtZX/ViQ+jKg9nw9ZeSbxZmiM=;
+        b=j1QlT1UvRmQWFlscL+lVEJufDR+5CquwmD0hCD6uTETVCK24JMzOtGsx+Alx3AT7De
+         7GUCEQephNKbe0yad6XZR3nUSgA0eIIGVxdqjC8LiM+d8HdOhduakM4PDp4tdUbeH3xh
+         mPUGt82dork/ZghJeETb6cYcgC2lDqOd1Qg9AR8B1nkBqliqfIfMfL7eMRXPZvtR1+HQ
+         TSpcw9WVNDN3hCtpr7DUj9G50at5tzWq6A6vHG21sqkPUl6PP6DLNVk3Rys78KrFi8nf
+         vuqE9oqdTY+dOjSb7S28R3+QpEGgLMelbVm9R655VllTJkvnRqYxeKSKVwh1FBFrDVRP
+         Qd2A==
+X-Forwarded-Encrypted: i=1; AJvYcCWUD/M01H+fu/Y8qFg0i9BvA7/EXa8Tm0v0K48DULPnzU3kHy3m5u/d55I5/mpnL8R0+7Av5MHZ2/zLwTO7gIE35Mth7qSNNM7U2d6V2Q==
+X-Gm-Message-State: AOJu0YzkYVUibRbQTvhwA6OO+V/mKlQVBHqmnllM5hYjiReJbE9msfW5
+	cFD7YMplC+PiGjAYufwOPYNbEPALb848yIozixAS22XAXmc5WM7ZmFejUiRHTrXmD5gcJfeTduU
+	kZzkoL1U2nRf5QV51fH8D33VWHXv8jX66kOSCSzK0Bnefa9bTw0+vvETzWpVE7zc=
+X-Received: by 2002:a0c:f2c3:0:b0:68c:814e:5410 with SMTP id c3-20020a0cf2c3000000b0068c814e5410mr976889qvm.19.1707465839103;
+        Fri, 09 Feb 2024 00:03:59 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH51X/CXuNxC3+hHzK8rvC/V3cxp3u9GUxeTMq/lAXErqJ+Tp2T2bQwIpIRQYR9MxuF6npl0g==
+X-Received: by 2002:a0c:f2c3:0:b0:68c:814e:5410 with SMTP id c3-20020a0cf2c3000000b0068c814e5410mr976874qvm.19.1707465838862;
+        Fri, 09 Feb 2024 00:03:58 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCX20yFKEBRU1/oWDnU56mOKPVncgFDMKdfTosM/Yk+KIPkh78vhB1odUpVY/O4m6KLPfevoSLDiaOXv9XjHmD7MJMIRrvUPDiOZ5QYenFRecrs462DGWYC8hYOpqZddy999hbO7m+TUk8YNRXuFqFptAkHP3ED95yi5GJrhhbHR7LyYDiQXyqA5tzA3XZLQeo7zmQZtSkgEe2L4k2C1NE2T8xgS8VulTEE0kgeR6FA/kNr5wwjGduFG0xIuuvG1zPV1serdqneGovnMPSEgt2OxzNKEFMWGSKlNHiC3gERL+MycLx/d72un9mpTU7EHNHsouKwdDCj4Wy6Q255JwJ8/4IYNO8in88gUqjvuwTTy1aAU+7rK8KnMoVTihCgoc4x40gdROmEhKE2HAE2V7OLqW/XQrPv0gY/8hQBe5dlj9zOqu2Mpxwm3sLYOPkNP0f4ar0Tw44XyDYitI5tYSbNZw79AQneAOCJMZ5e4NhZsMemf2RV/MBQjDQb5KYZrufHkcCyRBUdKS2bVx5PxtmSfdRPA
+Received: from [192.168.0.9] (ip-109-43-177-145.web.vodafone.de. [109.43.177.145])
+        by smtp.gmail.com with ESMTPSA id pc8-20020a056214488800b0068c6d56d4f7sm595736qvb.92.2024.02.09.00.03.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 09 Feb 2024 00:03:58 -0800 (PST)
+Message-ID: <c143430d-482e-43bb-9c94-b6977c6482e5@redhat.com>
+Date: Fri, 9 Feb 2024 09:03:53 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [kvm-unit-tests PATCH v3 6/8] migration: Add quiet migration
+ support
+To: Nicholas Piggin <npiggin@gmail.com>
+References: <20240209070141.421569-1-npiggin@gmail.com>
+ <20240209070141.421569-7-npiggin@gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
+ yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
+ 4CflIyFqjCpfDM4MuTmzTjXq4Uov1giGE9X6viNo1pxyEpd7PanlKNnf4PqEQp06X4IgUacW
+ tSGj6Gcns1bCuHV8OPWLkf4hkRnu8hdL6i60Yxz4E6TqlrpxsfYwLXgEeswPHOA6Mn4Cso9O
+ 0lewVYfFfsmokfAVMKWzOl1Sr0KGI5T9CpmRfAiSHpthhHWnECcJFwl72NTi6kUcUzG4se81
+ O6n9d/kTj7pzTmBdfwuOZ0YUSqcqs0W+l1NcASSYZQaDoD3/SLk+nqVeCBB4OnYOGhgmIHNW
+ 0CwMRO/GK+20alxzk//V9GmIM2ACElbfF8+Uug3pqiHkVnKqM7W9/S1NH2qmxB6zMiJUHlTH
+ gnVeZX0dgH27mzstcF786uPcdEqS0KJuxh2kk5IvUSL3Qn3ZgmgdxBMyCPciD/1cb7/Ahazr
+ 3ThHQXSHXkH/aDXdfLsKVuwDzHLVSkdSnZdt5HHh75/NFHxwaTlydgfHmFFwodK8y/TjyiGZ
+ zg2Kje38xnz8zKn9iesFBCcONXS7txENTzX0z80WKBhK+XSFJwARAQABzR5UaG9tYXMgSHV0
+ aCA8dGh1dGhAcmVkaGF0LmNvbT7CwXgEEwECACIFAlVgX6oCGwMGCwkIBwMCBhUIAgkKCwQW
+ AgMBAh4BAheAAAoJEC7Z13T+cC21EbIP/ii9cvT2HHGbFRl8HqGT6+7Wkb+XLMqJBMAIGiQK
+ QIP3xk1HPTsLfVG0ao4hy/oYkGNOP8+ubLnZen6Yq3zAFiMhQ44lvgigDYJo3Ve59gfe99KX
+ EbtB+X95ODARkq0McR6OAsPNJ7gpEUzfkQUUJTXRDQXfG/FX303Gvk+YU0spm2tsIKPl6AmV
+ 1CegDljzjycyfJbk418MQmMu2T82kjrkEofUO2a24ed3VGC0/Uz//XCR2ZTo+vBoBUQl41BD
+ eFFtoCSrzo3yPFS+w5fkH9NT8ChdpSlbNS32NhYQhJtr9zjWyFRf0Zk+T/1P7ECn6gTEkp5k
+ ofFIA4MFBc/fXbaDRtBmPB0N9pqTFApIUI4vuFPPO0JDrII9dLwZ6lO9EKiwuVlvr1wwzsgq
+ zJTPBU3qHaUO4d/8G+gD7AL/6T4zi8Jo/GmjBsnYaTzbm94lf0CjXjsOX3seMhaE6WAZOQQG
+ tZHAO1kAPWpaxne+wtgMKthyPLNwelLf+xzGvrIKvLX6QuLoWMnWldu22z2ICVnLQChlR9d6
+ WW8QFEpo/FK7omuS8KvvopFcOOdlbFMM8Y/8vBgVMSsK6fsYUhruny/PahprPbYGiNIhKqz7
+ UvgyZVl4pBFjTaz/SbimTk210vIlkDyy1WuS8Zsn0htv4+jQPgo9rqFE4mipJjy/iboDzsFN
+ BFH7eUwBEAC2nzfUeeI8dv0C4qrfCPze6NkryUflEut9WwHhfXCLjtvCjnoGqFelH/PE9NF4
+ 4VPSCdvD1SSmFVzu6T9qWdcwMSaC+e7G/z0/AhBfqTeosAF5XvKQlAb9ZPkdDr7YN0a1XDfa
+ +NgA+JZB4ROyBZFFAwNHT+HCnyzy0v9Sh3BgJJwfpXHH2l3LfncvV8rgFv0bvdr70U+On2XH
+ 5bApOyW1WpIG5KPJlDdzcQTyptOJ1dnEHfwnABEfzI3dNf63rlxsGouX/NFRRRNqkdClQR3K
+ gCwciaXfZ7ir7fF0u1N2UuLsWA8Ei1JrNypk+MRxhbvdQC4tyZCZ8mVDk+QOK6pyK2f4rMf/
+ WmqxNTtAVmNuZIwnJdjRMMSs4W4w6N/bRvpqtykSqx7VXcgqtv6eqoDZrNuhGbekQA0sAnCJ
+ VPArerAZGArm63o39me/bRUQeQVSxEBmg66yshF9HkcUPGVeC4B0TPwz+HFcVhheo6hoJjLq
+ knFOPLRj+0h+ZL+D0GenyqD3CyuyeTT5dGcNU9qT74bdSr20k/CklvI7S9yoQje8BeQAHtdV
+ cvO8XCLrpGuw9SgOS7OP5oI26a0548M4KldAY+kqX6XVphEw3/6U1KTf7WxW5zYLTtadjISB
+ X9xsRWSU+Yqs3C7oN5TIPSoj9tXMoxZkCIHWvnqGwZ7JhwARAQABwsFfBBgBAgAJBQJR+3lM
+ AhsMAAoJEC7Z13T+cC21hPAQAIsBL9MdGpdEpvXs9CYrBkd6tS9mbaSWj6XBDfA1AEdQkBOn
+ ZH1Qt7HJesk+qNSnLv6+jP4VwqK5AFMrKJ6IjE7jqgzGxtcZnvSjeDGPF1h2CKZQPpTw890k
+ fy18AvgFHkVk2Oylyexw3aOBsXg6ukN44vIFqPoc+YSU0+0QIdYJp/XFsgWxnFIMYwDpxSHS
+ 5fdDxUjsk3UBHZx+IhFjs2siVZi5wnHIqM7eK9abr2cK2weInTBwXwqVWjsXZ4tq5+jQrwDK
+ cvxIcwXdUTLGxc4/Z/VRH1PZSvfQxdxMGmNTGaXVNfdFZjm4fz0mz+OUi6AHC4CZpwnsliGV
+ ODqwX8Y1zic9viSTbKS01ZNp175POyWViUk9qisPZB7ypfSIVSEULrL347qY/hm9ahhqmn17
+ Ng255syASv3ehvX7iwWDfzXbA0/TVaqwa1YIkec+/8miicV0zMP9siRcYQkyTqSzaTFBBmqD
+ oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
+ IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
+ yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
+In-Reply-To: <20240209070141.421569-7-npiggin@gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,139 +146,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Laurent Vivier <lvivier@redhat.com>, linux-s390@vger.kernel.org, Nico Boehr <nrb@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org, Shaoqin Huang <shahuang@redhat.com>, Andrew Jones <andrew.jones@linux.dev>, Eric Auger <eric.auger@redhat.com>, Marc Hartmayer <mhartmay@linux.ibm.com>, kvm-riscv@lists.infradead.org, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexandru Elisei <alexandru.elisei@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael reported that we are seeing ftrace bug on bootup when KASAN is
-enabled, and if we are using -fpatchable-function-entry:
+On 09/02/2024 08.01, Nicholas Piggin wrote:
+> Console output required to support migration becomes quite noisy
+> when doing lots of migrations. Provide a migrate_quiet() call that
+> suppresses console output and doesn't log a message.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   lib/migrate.c         | 12 ++++++++++++
+>   lib/migrate.h         |  1 +
+>   scripts/arch-run.bash |  4 ++--
+>   3 files changed, 15 insertions(+), 2 deletions(-)
+> 
+> diff --git a/lib/migrate.c b/lib/migrate.c
+> index b7721659..4e0ab516 100644
+> --- a/lib/migrate.c
+> +++ b/lib/migrate.c
+> @@ -18,6 +18,18 @@ void migrate(void)
+>   	report_info("Migration complete");
+>   }
+>   
+> +/*
+> + * Like migrate() but supporess output and logs, useful for intensive
 
-    ftrace: allocating 47780 entries in 18 pages
-    ftrace-powerpc: 0xc0000000020b3d5c: No module provided for non-kernel address
-    ------------[ ftrace bug ]------------
-    ftrace faulted on modifying
-    [<c0000000020b3d5c>] 0xc0000000020b3d5c
-    Initializing ftrace call sites
-    ftrace record flags: 0
-     (0)
-     expected tramp: c00000000008cef4
-    ------------[ cut here ]------------
-    WARNING: CPU: 0 PID: 0 at kernel/trace/ftrace.c:2180 ftrace_bug+0x3c0/0x424
-    Modules linked in:
-    CPU: 0 PID: 0 Comm: swapper Not tainted 6.5.0-rc3-00120-g0f71dcfb4aef #860
-    Hardware name: IBM pSeries (emulated by qemu) POWER9 (raw) 0x4e1202 0xf000005 of:SLOF,HEAD hv:linux,kvm pSeries
-    NIP:  c0000000003aa81c LR: c0000000003aa818 CTR: 0000000000000000
-    REGS: c0000000033cfab0 TRAP: 0700   Not tainted  (6.5.0-rc3-00120-g0f71dcfb4aef)
-    MSR:  8000000002021033 <SF,VEC,ME,IR,DR,RI,LE>  CR: 28028240  XER: 00000000
-    CFAR: c0000000002781a8 IRQMASK: 3
-    ...
-    NIP [c0000000003aa81c] ftrace_bug+0x3c0/0x424
-    LR [c0000000003aa818] ftrace_bug+0x3bc/0x424
-    Call Trace:
-     ftrace_bug+0x3bc/0x424 (unreliable)
-     ftrace_process_locs+0x5f4/0x8a0
-     ftrace_init+0xc0/0x1d0
-     start_kernel+0x1d8/0x484
+s/supporess/suppress/
 
-With CONFIG_FTRACE_MCOUNT_USE_PATCHABLE_FUNCTION_ENTRY=y and
-CONFIG_KASAN=y, compiler emits nops in functions that it generates for
-registering and unregistering global variables (unlike with -pg and
--mprofile-kernel where calls to _mcount() are not generated in those
-functions). Those functions then end up in INIT_TEXT and EXIT_TEXT
-respectively. We don't expect to see any profiled functions in
-EXIT_TEXT, so ftrace_init_nop() assumes that all addresses that aren't
-in the core kernel text belongs to a module. Since these functions do
-not match that criteria, we see the above bug.
+> + * migration stress testing without polluting logs. Test cases should
+> + * provide relevant information about migration in failure reports.
+> + */
+> +void migrate_quiet(void)
+> +{
+> +	puts("Now migrate the VM (quiet)\n");
+> +	(void)getchar();
+> +}
+> +
+> +
 
-Address this by having ftrace ignore all locations in the text exit
-sections of vmlinux.
+Remove one empty line, please!
 
-Fixes: 0f71dcfb4aef ("powerpc/ftrace: Add support for -fpatchable-function-entry")
-Cc: stable@vger.kernel.org
-Reported-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Naveen N Rao <naveen@kernel.org>
----
- arch/powerpc/include/asm/ftrace.h   |  9 +--------
- arch/powerpc/include/asm/sections.h |  1 +
- arch/powerpc/kernel/trace/ftrace.c  | 12 ++++++++++++
- arch/powerpc/kernel/vmlinux.lds.S   |  2 ++
- 4 files changed, 16 insertions(+), 8 deletions(-)
+>   /*
+>    * Initiate migration and wait for it to complete.
+>    * If this function is called more than once, it is a no-op.
+> diff --git a/lib/migrate.h b/lib/migrate.h
+> index 2af06a72..95b9102b 100644
+> --- a/lib/migrate.h
+> +++ b/lib/migrate.h
+> @@ -7,4 +7,5 @@
+>    */
+>   
+>   void migrate(void);
+> +void migrate_quiet(void);
+>   void migrate_once(void);
+> diff --git a/scripts/arch-run.bash b/scripts/arch-run.bash
+> index 0b45eb61..29cf9b0c 100644
+> --- a/scripts/arch-run.bash
+> +++ b/scripts/arch-run.bash
+> @@ -152,7 +152,7 @@ run_migration ()
+>   		-chardev socket,id=mon,path=${src_qmp},server=on,wait=off \
+>   		-mon chardev=mon,mode=control > ${src_outfifo} &
+>   	live_pid=$!
+> -	cat ${src_outfifo} | tee ${src_out} &
+> +	cat ${src_outfifo} | tee ${src_out} | grep -v "Now migrate the VM (quiet)" &
+>   
+>   	# The test must prompt the user to migrate, so wait for the "migrate"
+>   	# keyword
+> @@ -200,7 +200,7 @@ do_migration ()
+>   		-mon chardev=mon,mode=control -incoming unix:${dst_incoming} \
+>   		< <(cat ${dst_infifo}) > ${dst_outfifo} &
+>   	incoming_pid=$!
+> -	cat ${dst_outfifo} | tee ${dst_out} &
+> +	cat ${dst_outfifo} | tee ${dst_out} | grep -v "Now migrate the VM (quiet)" &
+>   
+>   	# The test must prompt the user to migrate, so wait for the "migrate" keyword
+>   	while ! grep -q -i "Now migrate the VM" < ${src_out} ; do
 
-diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
-index 1ebd2ca97f12..d6babd083202 100644
---- a/arch/powerpc/include/asm/ftrace.h
-+++ b/arch/powerpc/include/asm/ftrace.h
-@@ -20,14 +20,7 @@
- #ifndef __ASSEMBLY__
- extern void _mcount(void);
- 
--static inline unsigned long ftrace_call_adjust(unsigned long addr)
--{
--	if (IS_ENABLED(CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY))
--		addr += MCOUNT_INSN_SIZE;
--
--	return addr;
--}
--
-+unsigned long ftrace_call_adjust(unsigned long addr);
- unsigned long prepare_ftrace_return(unsigned long parent, unsigned long ip,
- 				    unsigned long sp);
- 
-diff --git a/arch/powerpc/include/asm/sections.h b/arch/powerpc/include/asm/sections.h
-index ea26665f82cf..d389dcecdb0b 100644
---- a/arch/powerpc/include/asm/sections.h
-+++ b/arch/powerpc/include/asm/sections.h
-@@ -14,6 +14,7 @@ typedef struct func_desc func_desc_t;
- 
- extern char __head_end[];
- extern char __srwx_boundary[];
-+extern char _sexittext[], _eexittext[];
- 
- /* Patch sites */
- extern s32 patch__call_flush_branch_caches1;
-diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-index 82010629cf88..b5efd8d7bc01 100644
---- a/arch/powerpc/kernel/trace/ftrace.c
-+++ b/arch/powerpc/kernel/trace/ftrace.c
-@@ -27,10 +27,22 @@
- #include <asm/ftrace.h>
- #include <asm/syscall.h>
- #include <asm/inst.h>
-+#include <asm/sections.h>
- 
- #define	NUM_FTRACE_TRAMPS	2
- static unsigned long ftrace_tramps[NUM_FTRACE_TRAMPS];
- 
-+unsigned long ftrace_call_adjust(unsigned long addr)
-+{
-+	if (addr >= (unsigned long)_sexittext && addr < (unsigned long)_eexittext)
-+		return 0;
-+
-+	if (IS_ENABLED(CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY))
-+		addr += MCOUNT_INSN_SIZE;
-+
-+	return addr;
-+}
-+
- static ppc_inst_t ftrace_create_branch_inst(unsigned long ip, unsigned long addr, int link)
- {
- 	ppc_inst_t op;
-diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index 1c5970df3233..9c376ae6857d 100644
---- a/arch/powerpc/kernel/vmlinux.lds.S
-+++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -281,7 +281,9 @@ SECTIONS
- 	 * to deal with references from __bug_table
- 	 */
- 	.exit.text : AT(ADDR(.exit.text) - LOAD_OFFSET) {
-+		_sexittext = .;
- 		EXIT_TEXT
-+		_eexittext = .;
- 	}
- 
- 	. = ALIGN(PAGE_SIZE);
-
-base-commit: 4ef8376c466ae8b03e632dd8eca1e44315f7dd61
--- 
-2.43.0
+  Thomas
 
