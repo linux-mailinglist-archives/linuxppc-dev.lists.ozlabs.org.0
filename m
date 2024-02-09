@@ -2,90 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1057B84F15B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 09:29:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1F7184F15E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 09:30:01 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BJJ1KyiO;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XeSLkObF;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A7C42zlq;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=f6RLnSIU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TWRpY6yt7z3cQT
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 19:29:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TWRqW5hjGz3dRH
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 19:29:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BJJ1KyiO;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XeSLkObF;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A7C42zlq;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=f6RLnSIU;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWRnp53RZz3cXF
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Feb 2024 19:28:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWRpf6K1tz3dDx
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Feb 2024 19:29:14 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707467307;
+	s=mimecast20190719; t=1707467351;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=lSIosa7H9Vqr6g6wkjLttbFme+deNKcmttLyp+MsKjU=;
-	b=BJJ1KyiOg9hBpniBEZQeJppk5yBbhCX9ehCoZI4qIuEzyXJzZiwezAwovdDR9vG/TfzxDf
-	gZG/IosvtcINhhT8wvcZSP3ewCCZyjJiCtf7SB/gorU3h9kBI3VLgZFR4tswPJ/QsAIBBU
-	EdZbwjdcupb6fA+IkSdmCdZt7ZLMaJU=
+	bh=CYwym9bcvYVUdfgrQAx0w53qMrol8jdhzpg8cj+Mxlw=;
+	b=A7C42zlqDL8JVekjfGK0YK8YtdW7a4sCmdfnfHpKLXZ5x/1CM/EhhaE9+1sJ6KSdiSyxww
+	/OUX5mMKLs58MhGZC61evbZNfJcIQkD8NNOPm701hK7wXTD7PgqX9dVq50bIDzExMoh6oS
+	DimGRw52o2FVjfpdo8UesXoX/cm1nII=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707467308;
+	s=mimecast20190719; t=1707467352;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=lSIosa7H9Vqr6g6wkjLttbFme+deNKcmttLyp+MsKjU=;
-	b=XeSLkObFJUupZLwWf8ejmokMQaj2qcR2z5J3wtlBWUolZXVu+Y9WhiDy/Tq1cFWAeOaR3F
-	y4Pp6IhjbBw3+zAZXpDdr6Ow7AST7y8GfoF2U4A/p+khjN3IB+fQIMMPRX+r0bTNSJOmK0
-	v7NSCwkAPXbmQDZ+FMHu03vlVKs+mjk=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=CYwym9bcvYVUdfgrQAx0w53qMrol8jdhzpg8cj+Mxlw=;
+	b=f6RLnSIUZXPCicCL7NMAW/GI6ESbHad1Kd2QxdqlXujdhw8uZbIEtexv5R6Rxbl7tRk6UE
+	TDhl6ugoTYe7pRjBaZo0GFUvQaunNDrM0s4VkkgVbYnE6rNV1ZC7HMyx1RfcQpLQH8Uec4
+	NowQTyOtPq8baIod4oRPmycsczudrLQ=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-sjwo0FmwMIqyfw7xDQOeKA-1; Fri, 09 Feb 2024 03:28:25 -0500
-X-MC-Unique: sjwo0FmwMIqyfw7xDQOeKA-1
-Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-51149500aacso725611e87.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Feb 2024 00:28:25 -0800 (PST)
+ us-mta-341-gtlARn_XOxWFWRZUWILc9Q-1; Fri, 09 Feb 2024 03:29:10 -0500
+X-MC-Unique: gtlARn_XOxWFWRZUWILc9Q-1
+Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-50e9e5c8f49so747519e87.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Feb 2024 00:29:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707467304; x=1708072104;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lSIosa7H9Vqr6g6wkjLttbFme+deNKcmttLyp+MsKjU=;
-        b=tEohIxPWdFgx8jdVWBUQx34XnkGATYjUZ5beBk2Xu9LWyBMgJNbwSZ6gP6o6yUpc3D
-         2SXFY+71uY6jkg4wQrbXlKG64fJ0kFl3saMEz4BjpWmnCtJ2K/XNF4j1QjFKObCbS7Ip
-         2/EdAhu7doBRFza8FAZrADElYeefgQhC9f7HCUW0mW5g8btPbUsOXYoty8eI3G9O5vBN
-         m66BCj8E3RRPg0yA8nAGick2G4lEvTju+YvBd6GtJC5F95GSgssuq8FICkJetrlc57+O
-         4Op2Cwt01dNr8LZAaXRldbn5IAQpTtKTXYK0zuJJ9rMidKV1wRnj1QElWcA4o/yarNyI
-         0IDg==
-X-Gm-Message-State: AOJu0YyjIh0HmtpxwQwglQ4Zjep9PTcCh940JPuZcgQf7YLpj746gnUp
-	rZiDvF88OY714ktcQELJzdKvIq6H3z2HMlGz0ToeY/o6GhskrrPfgCpO5DkqWmMPEaxSs87pmhp
-	rIiv9o2XIZyyFJ71ejNf5i6gEo7YwR3regw4EQEE8owGKiBX2uQbYQBjb8kfbP5g=
-X-Received: by 2002:a19:8c50:0:b0:511:5361:20df with SMTP id i16-20020a198c50000000b00511536120dfmr532248lfj.13.1707467304491;
-        Fri, 09 Feb 2024 00:28:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH4iC+FRipMyVJYsUFGfBqVSr7OvTucmAa52sfLjON5ya4vVilp+U93Cecd2K9MevakvwHq5Q==
-X-Received: by 2002:a19:8c50:0:b0:511:5361:20df with SMTP id i16-20020a198c50000000b00511536120dfmr532225lfj.13.1707467304116;
-        Fri, 09 Feb 2024 00:28:24 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVltiJ29BtpoUYrPf1SZB45utAeCwTbqwI56ds2Aa8EuZgPms0LwddB+C5/ltorHPajgsPjWHznwdj56pQ6nu24/cSU0eXH1BGFKlLpjR6rvBc3CaDz7fawO3HG0y/7Gj1kRsXQceUY8H9DTHj7+R44o5x/+wAiDlcMMgMVxyLdLPEAfjjAlfUUxE++n5R8EJIaBBcUd/sybg4tB7HpCx0xfR7A3QZtmcA4CGK+PO2aZ3a4C3MTk7GaNjIS70jqUB8QQi/QEZtTvXyQPH2SeBlVAk3amng9fA+1lWXwUoI8AxAXRBESY/XUYLDZ8hU2RQuaRJyEuWMq21JPhPOlKlAvy0qf8iePnq2dDkTWjkRgl9+vU2u0DhldVHMj2B3GnDXN84fFK6s9RaZwI3YbGQeghRctNDpy3xzctkbPneerKo1h0eN4mdodAM7NkNUCmR5Z9nBofp5yuUCaQgVQg4gzECnx0ypTC+kVRzZq9/hWL3AcB68IavYtB4tow7DLo1gLXWRDd9TcE1hYecDqA1g4uLor
+        d=1e100.net; s=20230601; t=1707467349; x=1708072149;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CYwym9bcvYVUdfgrQAx0w53qMrol8jdhzpg8cj+Mxlw=;
+        b=YanklLZs7lLa2YqY+nYsJK4tYsCqCcFZdKWchdjuyFLVs/5j5eyCOfmHk+DzyU3PsV
+         5yjFpNmBYh6I5hLtdsbbH3GF4NWOG2GHoXo5sqfd/YFv/TOvx1BtHMPSmoqXfJJkul14
+         VxZKJaTSFoBKrDsdDjoOKdag7u0j0dhPKbFi0yW6bjShQn0LICtfujSfHhOSk2bXax6B
+         aTaO/ZmljdDzCSBatLlw7D3BGpM9TJpYk3yo58EBNbZPphAwIVYUvA7LMWfFebb3Wei0
+         5NKgSu1Jrk3e0zI5oFqam0VsZOE2EEU369cjwnaULpHpXHlsb441wE5/LM3wjUdSrJ3x
+         2Ypw==
+X-Forwarded-Encrypted: i=1; AJvYcCWguOHIP7QB1+pq1JuT3jLod9z4aR7fFKalBJMV0MRhluzyN6lMdMVrDQPsf+uypmZr6zsT9M1OkUJ8E4OjMoYzMWouLC9IRhz6nbXYPA==
+X-Gm-Message-State: AOJu0YxulFHSwefA9lcZdafxuGmAGjXZ5enQLymFgu21gX98YDkYvOIO
+	cdv/FCsjJkCDOqjlt+nfR77r2Tc6fcoV7jX4fJOlm1wFpxI4RLb64253Z6H0wcpyhctJnMBTWSm
+	29GPmRCfm2gjSN1idXplBJGMuo5fS40nmB48bGwavwoxVFU413t3Vhbit9VMZ/W4=
+X-Received: by 2002:a05:6512:308e:b0:511:4a3c:bc67 with SMTP id z14-20020a056512308e00b005114a3cbc67mr667559lfd.9.1707467348818;
+        Fri, 09 Feb 2024 00:29:08 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGwQzReLeDNTCJB+qOG+onzJW+a/6xHFTd6Il5yE+rs5dotq6oI7ml/IRzP9nwb4WRCRf2AHg==
+X-Received: by 2002:a05:6512:308e:b0:511:4a3c:bc67 with SMTP id z14-20020a056512308e00b005114a3cbc67mr667543lfd.9.1707467348491;
+        Fri, 09 Feb 2024 00:29:08 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVpQeKhZnUF9IF482WFoi5RSuK2K0dPm/viY5gZvvdBGW8PlAajaezs2kgDI06usWdUXLoRirtPMouC6vzNVLm1ebJIWnLWDLZ0GEN+Ijk5unz/HqQMvORGDIXXL3Dtf+prelx+pNyvYgYqYusGnquqaTXZA7QhS6HkQap6Y42pIVEN3/EQmJy7vAJs2JpmpxDIiPxkRPxrVbsmZSVnuPOwCDkwsek/pGDlArNd6Bhx7ExRfGSaMOQ2ipZnPHh4xKDAKmuDjNtcq0sQclTvVZDBpof/gkZtZFbDZHPz4rmJ1ciKFyS3O6Q898x0YkZAk2y+sY3IzMbJvaRgk+otdK75cu7gdEwEl57Q4sWFImYaPJDLS4LbMQtxErNNwect2IH8XoJ7esHEcOsAFRZwxa5aVSJRog7z8LtqPN/lXwq8u0iG8XVW+VdnuP/432M3PyFw2p8MGpGvbbSILN0vtIlZUve5ulCwIGBluVrh3YxuLzmOOdbG19SRLy0gaYXvLczv3TncY87RBF6BZarBaQ6IX1OF
 Received: from [192.168.0.9] (ip-109-43-177-145.web.vodafone.de. [109.43.177.145])
-        by smtp.gmail.com with ESMTPSA id x21-20020ac24895000000b00511749fec62sm90472lfc.72.2024.02.09.00.28.22
+        by smtp.gmail.com with ESMTPSA id x21-20020ac24895000000b00511749fec62sm90472lfc.72.2024.02.09.00.29.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Feb 2024 00:28:23 -0800 (PST)
-Message-ID: <cf01bf0c-ad31-4bb8-918f-98de47d40d7d@redhat.com>
-Date: Fri, 9 Feb 2024 09:28:21 +0100
+        Fri, 09 Feb 2024 00:29:07 -0800 (PST)
+Message-ID: <92633259-1a46-4342-a709-7200c6d215ab@redhat.com>
+Date: Fri, 9 Feb 2024 09:29:05 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v3 5/8] arch-run: rename migration
- variables
+Subject: Re: [kvm-unit-tests PATCH v3 7/8] Add common/ directory for
+ architecture-independent tests
 To: Nicholas Piggin <npiggin@gmail.com>
 References: <20240209070141.421569-1-npiggin@gmail.com>
- <20240209070141.421569-6-npiggin@gmail.com>
+ <20240209070141.421569-8-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -129,7 +129,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240209070141.421569-6-npiggin@gmail.com>
+In-Reply-To: <20240209070141.421569-8-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -151,15 +151,21 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 09/02/2024 08.01, Nicholas Piggin wrote:
-> Using 1 and 2 for source and destination is confusing, particularly
-> now with multiple migrations that flip between them. Do a rename
-> pass to tidy things up.
+> x86/sieve.c is used by s390x, arm, and riscv via symbolic link. Make a
+> new directory common/ for architecture-independent tests and move
+> sieve.c here.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   scripts/arch-run.bash | 115 +++++++++++++++++++++---------------------
->   1 file changed, 58 insertions(+), 57 deletions(-)
+>   arm/sieve.c    |  2 +-
+>   common/sieve.c | 51 +++++++++++++++++++++++++++++++++++++++++++++++++
+>   riscv/sieve.c  |  2 +-
+>   s390x/sieve.c  |  2 +-
+>   x86/sieve.c    | 52 +-------------------------------------------------
+>   5 files changed, 55 insertions(+), 54 deletions(-)
+>   create mode 100644 common/sieve.c
+>   mode change 100644 => 120000 x86/sieve.c
 
 
-Acked-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
