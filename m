@@ -2,102 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CABA84F935
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 17:05:42 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=tSuRJbRu;
-	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=dtz6Rf5O;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=tSuRJbRu;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=dtz6Rf5O;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E0DD84FAC6
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 18:13:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TWdxJ2llwz3cmg
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Feb 2024 03:05:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TWgS028J9z3cV9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Feb 2024 04:13:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=tSuRJbRu;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=dtz6Rf5O;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=tSuRJbRu;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=dtz6Rf5O;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=jbohac@suse.cz; receiver=lists.ozlabs.org)
-X-Greylist: delayed 533 seconds by postgrey-1.37 at boromir; Sat, 10 Feb 2024 03:04:59 AEDT
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=gmail.com (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=andy.shevchenko@gmail.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 63 seconds by postgrey-1.37 at boromir; Sat, 10 Feb 2024 04:13:28 AEDT
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWdwW19wRz3bnB
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Feb 2024 03:04:58 +1100 (AEDT)
-Received: from localhost (unknown [10.100.12.32])
-	by smtp-out2.suse.de (Postfix) with ESMTP id F22BD1F812;
-	Fri,  9 Feb 2024 15:56:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1707494162; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MIwSyfS9URKJTNUQOckxGb9czB6AcK30gHimJxb1yGY=;
-	b=tSuRJbRukpa8YnCVtte0KI3Z7pGuORUBW2HU2Due1v13Ij3yxndobnREEIqMXNruSbIsc5
-	Oe3yf4Tol2wPA7o6r35fPV+RU6j1fhvNp3EHJpYPyY2zpzPhSbTnCOfSYukxUxJ9PJinPJ
-	ibDT32qYVvwpfwIFwOl5MvASSVIaZ1c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1707494162;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MIwSyfS9URKJTNUQOckxGb9czB6AcK30gHimJxb1yGY=;
-	b=dtz6Rf5O/sWz8YAjDMw4LqyoHPNka6Z7Ug4M3Wv7w0v3DJPhsUDW73LrciUS0GMfShXX2B
-	Y3isnOvtqHwqt2Dw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1707494162; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MIwSyfS9URKJTNUQOckxGb9czB6AcK30gHimJxb1yGY=;
-	b=tSuRJbRukpa8YnCVtte0KI3Z7pGuORUBW2HU2Due1v13Ij3yxndobnREEIqMXNruSbIsc5
-	Oe3yf4Tol2wPA7o6r35fPV+RU6j1fhvNp3EHJpYPyY2zpzPhSbTnCOfSYukxUxJ9PJinPJ
-	ibDT32qYVvwpfwIFwOl5MvASSVIaZ1c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1707494162;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MIwSyfS9URKJTNUQOckxGb9czB6AcK30gHimJxb1yGY=;
-	b=dtz6Rf5O/sWz8YAjDMw4LqyoHPNka6Z7Ug4M3Wv7w0v3DJPhsUDW73LrciUS0GMfShXX2B
-	Y3isnOvtqHwqt2Dw==
-Date: Fri, 9 Feb 2024 16:56:01 +0100
-From: Jiri Bohac <jbohac@suse.cz>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Subject: Re: [RFC PATCH 5/5] powerpc/smp: Remap boot CPU onto core 0 if >=
- nr_cpu_ids
-Message-ID: <ZcZLEe1mQHXvh44Y@dwarf.suse.cz>
-References: <20231229120107.2281153-1-mpe@ellerman.id.au>
- <20231229120107.2281153-5-mpe@ellerman.id.au>
- <87cyukny0j.fsf@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWgRX0qXWz30Pp
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Feb 2024 04:13:27 +1100 (AEDT)
+X-IronPort-AV: E=McAfee;i="6600,9927,10979"; a="5258950"
+X-IronPort-AV: E=Sophos;i="6.05,257,1701158400"; 
+   d="scan'208";a="5258950"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2024 09:11:10 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10979"; a="910768835"
+X-IronPort-AV: E=Sophos;i="6.05,257,1701158400"; 
+   d="scan'208";a="910768835"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2024 09:11:05 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andy.shevchenko@gmail.com>)
+	id 1rYUOz-00000003Cxy-3Zci;
+	Fri, 09 Feb 2024 19:11:01 +0200
+Date: Fri, 9 Feb 2024 19:11:01 +0200
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+To: Lee Jones <lee@kernel.org>
+Subject: Re: [PATCH v4 00/10] devm_led_classdev_register() usage problem
+Message-ID: <ZcZcpUHygltD2ETa@smile.fi.intel.com>
+References: <20231214173614.2820929-1-gnstark@salutedevices.com>
+ <20231221151111.GJ10102@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87cyukny0j.fsf@kernel.org>
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spamd-Result: default: False [-0.10 / 50.00];
-	 ARC_NA(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 RCPT_COUNT_FIVE(0.00)[6];
-	 MID_RHS_MATCH_FROMTLD(0.00)[];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 RCVD_COUNT_ZERO(0.00)[0];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 FREEMAIL_CC(0.00)[ellerman.id.au,lists.ozlabs.org,gmail.com,redhat.com,linux.ibm.com];
-	 BAYES_HAM(-0.00)[16.58%]
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spam-Score: -0.10
+In-Reply-To: <20231221151111.GJ10102@google.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,67 +54,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hari Bathini <hbathini@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Pingfan Liu <piliu@redhat.com>, Pingfan Liu <kernelfans@gmail.com>
+Cc: kernel@salutedevices.com, vadimp@nvidia.com, mazziesaccount@gmail.com, peterz@infradead.org, boqun.feng@gmail.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, hdegoede@redhat.com, mingo@redhat.com, npiggin@gmail.com, pavel@ucw.cz, George Stark <gnstark@salutedevices.com>, longman@redhat.com, nikitos.tr@gmail.com, will@kernel.org, linux-leds@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jan 02, 2024 at 10:16:04AM +0530, Aneesh Kumar K.V wrote:
-> Michael Ellerman <mpe@ellerman.id.au> writes:
+On Thu, Dec 21, 2023 at 03:11:11PM +0000, Lee Jones wrote:
+> On Thu, 14 Dec 2023, George Stark wrote:
 > 
-> ....
-> 
-> >  #ifdef CONFIG_PPC64
-> >  int boot_cpu_hwid = -1;
-> > @@ -492,12 +493,26 @@ void __init smp_setup_cpu_maps(void)
-> >  			avail = !of_property_match_string(dn,
-> >  					"enable-method", "spin-table");
-> >  
-> > -		cpu = assign_threads(cpu, nthreads, avail, intserv);
-> > +		if (boot_core_hwid >= 0) {
-> > +			if (cpu == 0) {
-> > +				pr_info("Skipping CPU node %pOF to allow for boot core.\n", dn);
-> > +				cpu = nthreads;
-> > +				continue;
-> > +			}
-> >  
-> > -		if (cpu >= nr_cpu_ids) {
-> > +			if (be32_to_cpu(intserv[0]) == boot_core_hwid) {
-> > +				pr_info("Renumbered boot core %pOF to logical 0\n", dn);
-> > +				assign_threads(0, nthreads, avail, intserv);
-> > +				of_node_put(dn);
-> > +				break;
-> >
-> 
-> I was expecting a 'continue' here. Why 'break' the loop? The condition that
-> should break the loop should be cpu >= nr_cpu_ids 
+> > This patch series fixes the problem of devm_led_classdev_register misusing.
+> > 
+> > The basic problem is described in [1]. Shortly when devm_led_classdev_register()
+> > is used then led_classdev_unregister() called after driver's remove() callback.
+> > led_classdev_unregister() calls driver's brightness_set callback and that callback
+> > may use resources which were destroyed already in driver's remove().
+> > 
+> > After discussion with maintainers [2] [3] we decided:
+> > 1) don't touch led subsytem core code and don't remove led_set_brightness() from it
+> > but fix drivers
+> > 2) don't use devm_led_classdev_unregister
+> > 
+> > So the solution is to use devm wrappers for all resources
+> > driver's brightness_set() depends on. And introduce dedicated devm wrapper
+> > for mutex as it's often used resource.
+> > 
+> > [1] https://lore.kernel.org/lkml/8704539b-ed3b-44e6-aa82-586e2f895e2b@salutedevices.com/T/
+> > [2] https://lore.kernel.org/lkml/8704539b-ed3b-44e6-aa82-586e2f895e2b@salutedevices.com/T/#mc132b9b350fa51931b4fcfe14705d9f06e91421f
+> > [3] https://lore.kernel.org/lkml/8704539b-ed3b-44e6-aa82-586e2f895e2b@salutedevices.com/T/#mdbf572a85c33f869a553caf986b6228bb65c8383
 
-No, the patch seems correct:
+...
 
-We're in the "if (boot_core_hwid >= 0)" branch, meaning that it
-was determined by early_init_dt_scan_cpus() that boot_cpuid >=
-nr_cpu_ids. So we loop until we get to the boot CPU, so it can be
-renumbered to 0. Once we do that we break, because we
-know we are already past nr_cpu_ids - otherwise boot_core_hwid
-would not be >= 0. 
+> FYI: I'll conduct my review once the locking side is settled.
 
-
-> > +			}
-> > +		} else if (cpu >= nr_cpu_ids) {
-> >  			of_node_put(dn);
-> >  			break;
-> >  		}
-
-Here is what you expected - in case the boot CPU was < nr_cpu_ids
-we break as soon as nr_cpu_ids is reached.
-
-> > +
-> > +		if (cpu < nr_cpu_ids)
-
-this ensures that CPUs between nr_cpu_ids and the boot CPU are
-correctly ignored in case we're already past nr_cpu_ids and only
-scanning further to find the boot CPU to be renumbered to 0
+To reduce burden can you apply the first one? It's a fix.
 
 -- 
-Jiri Bohac <jbohac@suse.cz>
-SUSE Labs, Prague, Czechia
+With Best Regards,
+Andy Shevchenko
+
 
