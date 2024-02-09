@@ -2,89 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28D9084F0C7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 08:29:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6027584F0D3
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 08:33:38 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=V9CFALgE;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=V9CFALgE;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dnGwtj//;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dnGwtj//;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TWQVC0bPsz3cVy
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 18:29:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TWQZS2F3cz3cRR
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 18:33:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=V9CFALgE;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=V9CFALgE;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dnGwtj//;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dnGwtj//;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWQTR6VsGz3bt2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Feb 2024 18:29:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWQYj1B9cz309c
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Feb 2024 18:32:56 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707463752;
+	s=mimecast20190719; t=1707463973;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/kCQkh1KyEVD4cmjxJdTLiN9QRnCpv4ZYb6SgTC6zQo=;
-	b=V9CFALgE9hp/66AHUspo4sCR6PEQysF2V8fIVIkc3wTHXd5ouDU+AXCzFCIRzezU85BCJw
-	C+CwM98elL/WI1hBnqeRKNzGDGJmMG8wxHDoDUdKxGSozCBCDWi+CTmq65YNfZQGaMC5F3
-	Hqu6svgMzzLvBpZqGR60pdMZYCqkEDM=
+	bh=yY5P44hxC1Z4PKZ/FATMU8IHl7NhMLgeWkQFsYKZ1O8=;
+	b=dnGwtj//+9Y8DgJh/5Uxl8OEv0TXcguCq8QM5FeOA/bkjUPVe8BJ9OwsmvAbSdtjGXvvH+
+	z6g41/Ou9zTSfy+oSX3RcdT0a4CSx/EspkB6EssXG2q9koA2WCOkJ+a4F9DtcboKr4sMvs
+	kGl9JUJX1IuFQz1QRrBl6mWtgi6YQAc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707463752;
+	s=mimecast20190719; t=1707463973;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/kCQkh1KyEVD4cmjxJdTLiN9QRnCpv4ZYb6SgTC6zQo=;
-	b=V9CFALgE9hp/66AHUspo4sCR6PEQysF2V8fIVIkc3wTHXd5ouDU+AXCzFCIRzezU85BCJw
-	C+CwM98elL/WI1hBnqeRKNzGDGJmMG8wxHDoDUdKxGSozCBCDWi+CTmq65YNfZQGaMC5F3
-	Hqu6svgMzzLvBpZqGR60pdMZYCqkEDM=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=yY5P44hxC1Z4PKZ/FATMU8IHl7NhMLgeWkQFsYKZ1O8=;
+	b=dnGwtj//+9Y8DgJh/5Uxl8OEv0TXcguCq8QM5FeOA/bkjUPVe8BJ9OwsmvAbSdtjGXvvH+
+	z6g41/Ou9zTSfy+oSX3RcdT0a4CSx/EspkB6EssXG2q9koA2WCOkJ+a4F9DtcboKr4sMvs
+	kGl9JUJX1IuFQz1QRrBl6mWtgi6YQAc=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-580-15rA51xfMFSddL4u5Yan8Q-1; Fri, 09 Feb 2024 02:29:10 -0500
-X-MC-Unique: 15rA51xfMFSddL4u5Yan8Q-1
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-42c516d5324so5522491cf.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Feb 2024 23:29:10 -0800 (PST)
+ us-mta-587--pNMU4d8M1ysK9r0puxC1g-1; Fri, 09 Feb 2024 02:32:51 -0500
+X-MC-Unique: -pNMU4d8M1ysK9r0puxC1g-1
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-78319f64126so84783785a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Feb 2024 23:32:51 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707463750; x=1708068550;
+        d=1e100.net; s=20230601; t=1707463971; x=1708068771;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/kCQkh1KyEVD4cmjxJdTLiN9QRnCpv4ZYb6SgTC6zQo=;
-        b=aD/K5Rky5bYZrLKXHEY6aUdGR1/g22oyuaZzq6BQDxyhOOozuiZBdvJfZdnwN1WJ1+
-         uWqkC1icUbVQhDWLCnV4ebaWfco9d2D65XNiJkPoslsePCBxKp6XRtToUjqYAUZQSrpM
-         GvAS1LBDTqiJqaVa1zbHt7XZlvmD5W5YEK398iHTw4HiObrWO4SWui+XNwpUkOJ4riZQ
-         RNBdWfXug6CaUKH0p3L6cs6BZmaQ3ptX5hCRHHBP7BGnzruXInQLWIB1GgcZLvpddj7I
-         zMpPal+quYnmIvNx2BIZkmAgaPUutDOgJsrsscARjHyZsoeIqoU411O4oPkoxGmZMgkB
-         npcw==
-X-Gm-Message-State: AOJu0YwDIMStwRZ6ZNBEHLASK5CIterKR6864BZwlfl4Rl08/fq2Lrnw
-	nur6JzWOSYnGubt0v7GYoelPoWOdkoRJJwHmcYvZRNFtQt1wMxJdbEF8RPZ+c7AhNT8lVqlZcZ8
-	fc30870F1zGlrfQ/Ah5/ziCDQLoy0UrX5P16q0GBB164fshQuNz3xvR8A60fjDf8=
-X-Received: by 2002:a05:622a:1893:b0:42b:eba5:ddfa with SMTP id v19-20020a05622a189300b0042beba5ddfamr1059542qtc.45.1707463749918;
-        Thu, 08 Feb 2024 23:29:09 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFMxjVKgUnE4ZnmcUKcBrw8kAOVCQv/Rc0MeOA1nppU8LiVZdGnfF07uBuSMXuz36m7DpRJVA==
-X-Received: by 2002:a05:622a:1893:b0:42b:eba5:ddfa with SMTP id v19-20020a05622a189300b0042beba5ddfamr1059535qtc.45.1707463749665;
-        Thu, 08 Feb 2024 23:29:09 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUUx7B+ytx1jxJQX4+UCEaD6tXqKT6ucApPaiWJaZykn+w/0+a9uoX07+JiQbkbUn2PocH3WgLLSAwUWCRqHLGHfWw2RM4gftDO26hfG00892hDH/nJBHtY35xRnxec4jWrutSej2X3k58etZWZejKzojLkXvBJ7hvnLpXN0AoJ2560dbm7gHPx7EJppgxU63rFF0u8DPA+3VHkOqpci+TKf9Wp5TIhYbCCaygZuy+m1DQ5pbTM1MKkDYTdZB9UnU9lQPdwTJoEvO97tO2IdFk9FiKPj9ddRMld7j1xZPqY547vGm/HC+tp1mEl/USbhRvbnQ72Ad5RgfOARa2559A6Vt+yf24Q/bOtJmEGg3B6CWBY7L0Rg8RDCDi+fi04SNLskUP7nJczW7S7vwmU2WPv2EqZ+9Y53w1KMMTYX0YLPc/MGl6CV0YUBpPrD4O1KSAwTn7NQhEycInPV/3oHrbqfF7HYyqpqWNB9zMeyggz1/irjDv7QjtE1NmSqRVyQwe64oC6pBEOXKjOMY9TXeo57xpo
+        bh=yY5P44hxC1Z4PKZ/FATMU8IHl7NhMLgeWkQFsYKZ1O8=;
+        b=G7nwzae1drbLRm7YKmXFg7hqjXjoCleSfM/02CbOujvWnutjZEhmZbXQEig0oS3+hZ
+         zvUhoMeNamB/o8OdDvD6GFAQ5yAAkfFoOHK8bWLBW3T/JOfNfE/PvhTLq5L21SwUL/ID
+         MPmnk6OjHIOEpzPkQV5oAoJbYGTW8SEcZFOH0Uwqn4eTqa0X19Yak62MWYo4YOkTAJn7
+         CoO/XlWa8Du+BIEPK5tyF6LxG73Uou7eC2zds2gdICEBsUy7dH/APfb410Y5sO2hDLP2
+         oAbbQFjNNSz+d7aKb5wAEph+tw5K0nS1YENpKozlalc0kEH6wuflikhwcnBuRNE8/xEE
+         AS+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVR9h+vYolSRrBIMkAQ+/BxFmXSqDNAZ2PqHsRbeLT8vP1362DPDtKhh/bq7ivJ9mirz9jKiw1dOKgy8YBq4yGJj1jT3pugUjLHwnGuJg==
+X-Gm-Message-State: AOJu0YyaxWpMO/zXmAmnGD5BKg6Waw0jnzmEEv5GSGAZBat7Z8qv8Mz3
+	u2L6wU/N7DVT+4ZSe+Y5FoQBwd4Zwx5npF/oBxGVRjWV2hMIIAxQK7aVCdN5fGeEovpCiNSOrz6
+	+3Cp5KtcXK/xiEsw6glwlMticF4kskIEsSBTVG3Gz28FWgLP9ROnGYaMg5QF0Je0=
+X-Received: by 2002:a05:620a:4511:b0:785:4de5:e0cf with SMTP id t17-20020a05620a451100b007854de5e0cfmr839623qkp.13.1707463971214;
+        Thu, 08 Feb 2024 23:32:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH4tY5Tcj89/zw20tYT8a6Jj/CYnx9p7WyOp3A/Ob697w4U92gMwrcyM4oLMZ/oN/aG7asvNQ==
+X-Received: by 2002:a05:620a:4511:b0:785:4de5:e0cf with SMTP id t17-20020a05620a451100b007854de5e0cfmr839609qkp.13.1707463970921;
+        Thu, 08 Feb 2024 23:32:50 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCViAPNQIorc1kcwO9Rgc7RZTcKOU+uPz9myAgQRlco7n9MJu4+j2FyLRzCrI7EgnJc23AYjLTYW6JcxjAVZZzSUmcpZ8ZpKJxYIgvjz1QWTyq5LskBqsyYI0YzOnEryES2gygi9HP/Y4XD8F9zH7lzArTKcDiQ2mC8jERMIM7x2eDHad8G88x3XEdWcCtcN0OfqdzRFADac6Pyv6cISSEArBzIr6EBL6VHAfeV2rQAa1Je36FomE+MGCVXsYwf0ZeiMZafcy3S8m3oPhOBH91GFtpdTSN2o17dxaQ6I6ZIDliqB+kVl1Wo1ZlDeooyJ3eTFUOj00GAxNMvoPkiPU08uvqFLelS4ozgy9YqifaRBfukJSg8deIo+plDKu2G8vUdhWXhbh6bJ05/9E37SFwWQgei5LKmRulsNS1bHe+OahtONEUuOKGiEwbGXzz6l+n/lphYZukXvHhuD1A9lkc/GYAkRMJ9GyFShJTby9cECwc3g+UnAnxLQXV/TYh1fNVL80nqZE4ydMi8Xzf0Yb0/fXriF
 Received: from [192.168.0.9] (ip-109-43-177-145.web.vodafone.de. [109.43.177.145])
-        by smtp.gmail.com with ESMTPSA id c19-20020a05622a025300b00427fb1d6b44sm480566qtx.5.2024.02.08.23.29.06
+        by smtp.gmail.com with ESMTPSA id d25-20020a05620a159900b007840a08a097sm505152qkk.76.2024.02.08.23.32.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Feb 2024 23:29:09 -0800 (PST)
-Message-ID: <4203f6dc-ad8c-4bcd-a366-f50f866c55ec@redhat.com>
-Date: Fri, 9 Feb 2024 08:29:04 +0100
+        Thu, 08 Feb 2024 23:32:50 -0800 (PST)
+Message-ID: <9fb2f113-db36-41a6-a6f2-0499f28ace0a@redhat.com>
+Date: Fri, 9 Feb 2024 08:32:45 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v3 1/8] arch-run: Fix TRAP handler
- recursion to remove temporary files properly
+Subject: Re: [kvm-unit-tests PATCH v3 2/8] arch-run: Clean up initrd cleanup
 To: Nicholas Piggin <npiggin@gmail.com>
 References: <20240209070141.421569-1-npiggin@gmail.com>
- <20240209070141.421569-2-npiggin@gmail.com>
+ <20240209070141.421569-3-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -128,7 +128,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240209070141.421569-2-npiggin@gmail.com>
+In-Reply-To: <20240209070141.421569-3-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -150,66 +150,45 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 09/02/2024 08.01, Nicholas Piggin wrote:
-> Migration files were not being removed when the QEMU process is
-> interrupted (e.g., with ^C). This is becaus the SIGINT propagates to the
-> bash TRAP handler, which recursively TRAPs due to the 'kill 0' in the
-> handler. This eventually crashes bash.
+> Rather than put a big script into the trap handler, have it call
+> a function.
 > 
-> This can be observed by interrupting a long-running test program that is
-> run with MIGRATION=yes, /tmp/mig-helper-* files remain afterwards.
-> 
-> Removing TRAP recursion solves this problem and allows the EXIT handler
-> to run and clean up the files.
-> 
-> This also moves the trap handler before temp file creation, and expands
-> the name variables at trap-time rather than install-time, which closes
-> the small race between creation trap handler install.
-> 
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   scripts/arch-run.bash | 12 ++++++------
->   1 file changed, 6 insertions(+), 6 deletions(-)
+>   scripts/arch-run.bash | 13 ++++++++++++-
+>   1 file changed, 12 insertions(+), 1 deletion(-)
 > 
 > diff --git a/scripts/arch-run.bash b/scripts/arch-run.bash
-> index d0864360..11d47a85 100644
+> index 11d47a85..1e903e83 100644
 > --- a/scripts/arch-run.bash
 > +++ b/scripts/arch-run.bash
-> @@ -129,6 +129,9 @@ run_migration ()
->   		return 77
->   	fi
+> @@ -269,10 +269,21 @@ search_qemu_binary ()
+>   	export PATH=$save_path
+>   }
 >   
-> +	trap 'trap - TERM ; kill 0 ; exit 2' INT TERM
-> +	trap 'rm -f ${migout1} ${migsock} ${qmp1} ${qmp2} ${fifo}' RETURN EXIT
-> +
->   	migsock=$(mktemp -u -t mig-helper-socket.XXXXXXXXXX)
->   	migout1=$(mktemp -t mig-helper-stdout1.XXXXXXXXXX)
->   	qmp1=$(mktemp -u -t mig-helper-qmp1.XXXXXXXXXX)
-> @@ -137,9 +140,6 @@ run_migration ()
->   	qmpout1=/dev/null
->   	qmpout2=/dev/null
->   
-> -	trap 'kill 0; exit 2' INT TERM
-> -	trap 'rm -f ${migout1} ${migsock} ${qmp1} ${qmp2} ${fifo}' RETURN EXIT
-> -
->   	eval "$@" -chardev socket,id=mon1,path=${qmp1},server=on,wait=off \
->   		-mon chardev=mon1,mode=control | tee ${migout1} &
->   	live_pid=`jobs -l %+ | grep "eval" | awk '{print$2}'`
-> @@ -209,11 +209,11 @@ run_panic ()
->   		return 77
->   	fi
->   
-> -	qmp=$(mktemp -u -t panic-qmp.XXXXXXXXXX)
-> -
-> -	trap 'kill 0; exit 2' INT TERM
-> +	trap 'trap - TERM ; kill 0 ; exit 2' INT TERM
->   	trap 'rm -f ${qmp}' RETURN EXIT
->   
-> +	qmp=$(mktemp -u -t panic-qmp.XXXXXXXXXX)
-> +
->   	# start VM stopped so we don't miss any events
->   	eval "$@" -chardev socket,id=mon1,path=${qmp},server=on,wait=off \
->   		-mon chardev=mon1,mode=control -S &
+> +initrd_cleanup ()
+> +{
+> +	rm -f $KVM_UNIT_TESTS_ENV
+> +	if [ "$KVM_UNIT_TESTS_ENV_OLD" ]; then
+> +		export KVM_UNIT_TESTS_ENV="$KVM_UNIT_TESTS_ENV_OLD"
+> +	else
+> +		unset KVM_UNIT_TESTS_ENV
+> +		unset KVM_UNIT_TESTS_ENV_OLD
+> +	fi
+> +}
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Looking at the original code below, shouldn't this rather unset 
+KVM_UNIT_TESTS_ENV_OLD after the "fi" statement?
+
+  Thomas
+
+
+>   initrd_create ()
+>   {
+>   	if [ "$ENVIRON_DEFAULT" = "yes" ]; then
+> -		trap_exit_push 'rm -f $KVM_UNIT_TESTS_ENV; [ "$KVM_UNIT_TESTS_ENV_OLD" ] && export KVM_UNIT_TESTS_ENV="$KVM_UNIT_TESTS_ENV_OLD" || unset KVM_UNIT_TESTS_ENV; unset KVM_UNIT_TESTS_ENV_OLD'
+> +		trap_exit_push 'initrd_cleanup'
+>   		[ -f "$KVM_UNIT_TESTS_ENV" ] && export KVM_UNIT_TESTS_ENV_OLD="$KVM_UNIT_TESTS_ENV"
+>   		export KVM_UNIT_TESTS_ENV=$(mktemp)
+>   		env_params
 
