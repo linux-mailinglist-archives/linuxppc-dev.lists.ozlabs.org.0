@@ -1,74 +1,139 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F8A784F0A4
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 08:08:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28D9084F0C7
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 08:29:57 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=lbb4bnrS;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=V9CFALgE;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=V9CFALgE;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TWQ1W17ggz3vm4
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 18:08:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TWQVC0bPsz3cVy
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 18:29:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=lbb4bnrS;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=V9CFALgE;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=V9CFALgE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWPvF3Gtyz3cY2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Feb 2024 18:03:05 +1100 (AEDT)
-Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-6e0518c83c6so417682b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Feb 2024 23:03:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707462183; x=1708066983; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nLcEDOFfXRm4asPXfN/h/emKx6nM9DLWqis1Tw2BV0c=;
-        b=lbb4bnrS+TJ/rPJ7VkeSUsSsAZ9NnYc6TVAwnibB7JAEraL78vGWUgv3Ck+v1OB3Yy
-         AcIb/lkBHF7EU2ydMTJIIYejSChmrv+GckjcUWf3Vq0mV7j9M3f8eAeT7BRkTKqGyk3M
-         TssCymu4nNTjwi387KcQPHiJGTrfE4gFd7hcSNSeolYuzx6ZqavzsqwnxCnJ+9XA6rQv
-         KgB9uubBwhjySVxTwn5r0wYS/nZuUpCI1r3uCNNCC9voiDOkAxJNJHQOf8cxvtAXvney
-         guXbmm96r9+vYZdiLifWRs8U9x6LnMdeOzD1KgVK1cbZ4Po9P1lJnBxM6p/dSFXtE02r
-         mTWg==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWQTR6VsGz3bt2
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Feb 2024 18:29:14 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1707463752;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=/kCQkh1KyEVD4cmjxJdTLiN9QRnCpv4ZYb6SgTC6zQo=;
+	b=V9CFALgE9hp/66AHUspo4sCR6PEQysF2V8fIVIkc3wTHXd5ouDU+AXCzFCIRzezU85BCJw
+	C+CwM98elL/WI1hBnqeRKNzGDGJmMG8wxHDoDUdKxGSozCBCDWi+CTmq65YNfZQGaMC5F3
+	Hqu6svgMzzLvBpZqGR60pdMZYCqkEDM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1707463752;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=/kCQkh1KyEVD4cmjxJdTLiN9QRnCpv4ZYb6SgTC6zQo=;
+	b=V9CFALgE9hp/66AHUspo4sCR6PEQysF2V8fIVIkc3wTHXd5ouDU+AXCzFCIRzezU85BCJw
+	C+CwM98elL/WI1hBnqeRKNzGDGJmMG8wxHDoDUdKxGSozCBCDWi+CTmq65YNfZQGaMC5F3
+	Hqu6svgMzzLvBpZqGR60pdMZYCqkEDM=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-580-15rA51xfMFSddL4u5Yan8Q-1; Fri, 09 Feb 2024 02:29:10 -0500
+X-MC-Unique: 15rA51xfMFSddL4u5Yan8Q-1
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-42c516d5324so5522491cf.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Feb 2024 23:29:10 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707462183; x=1708066983;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nLcEDOFfXRm4asPXfN/h/emKx6nM9DLWqis1Tw2BV0c=;
-        b=O5K08cS+mfoEA+lzW8cilp/TkSc6huyr7mNNIaGDOTET98nj+BiHoL1OqF7XOakiHB
-         +KGc15M5RUnw9mfXPCLOq3Qh+iaWFqg5ttm/TzJHGQpi8ijW+Ii3rs9EG++3Nd8YxziJ
-         FsKA9gZjnVJcJYEpkbDnXYGA0nzB5SiDv63A6atTvS6Oi3+DrxF6Tk4Q7I+uNVlsojEg
-         oYdUkhydLu0VEtdoemLizttVexVTofQnIT2TwUxHUnRa/reQo4STRyKMaIekjRTTcqFr
-         9pRKiOor1CMMq+iO3QgsbNc8mDt2FrxfAdFfWaTzTMfbY1VNR6L12wRR4G50cR/RDtUH
-         h9Pw==
-X-Forwarded-Encrypted: i=1; AJvYcCWKeQEoOFiJhpWT7uJdCE1bxNztgYfpmiQIa3nyyAAXbXoD9J7EDS3qCwXn4Q/BGWrHTkJxnjjCZltxg59V1Dq0q0z0UY4PtNNSukpkzA==
-X-Gm-Message-State: AOJu0YyNsooBm+L2apj9RyHoO7x3yt2V+M1mRUMfdQOMdC1s8zncht9L
-	upAVbyI9D6To1HbjvCQ+LhlKqriHqWfyb1LLz5pqhFBleQsx4gdC
-X-Google-Smtp-Source: AGHT+IHCDQmhvrErtDNERE9RrkYau41AxB4oBcYKBUMctdPXanPruVPXCMJmeFh2pOIguDwPif262w==
-X-Received: by 2002:a05:6a20:94ce:b0:19e:99fd:3f5c with SMTP id ht14-20020a056a2094ce00b0019e99fd3f5cmr1013600pzb.25.1707462182771;
-        Thu, 08 Feb 2024 23:03:02 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUXjVIucCvEhqf7rvEFHTsNvZRp6jchNyZ+VPMsRdJDMsygxun8hUVxG2Y9mmn+X1wF20AwZkwuxOqKvnmXHpi9Ya7qdy/vQC1E8gcH8PMc7eRyxEQ8mxGRUcypUXdhMh5JNVzlCEUQn8zSJY5XWu7q9rUVLSdJRbAApVO3gxxx1wTOt9T5wuHIddoEFJ/CkUbe+ZaSr2EMUqb7uSZ9BG5yLWDyPSq0hBIjYZBEECml7FVaVkrV/Zuv+Mh+iVhI9fyn6tIai8lu4zaiajlWuaOLax7bDifk3TcJ0450njTgSSaMih51NGiRSQTbt5GfxXki6u5W+6T1MlF5lfjdZBtkNKW30gvRDaC0z0USNqRdKSFUhhngff5ouSHO68CgNwA1BOK4njt4vZ8qETP2fDsDhU2vgvMMeZdOGNcjIJtVNrDga/XQyaVyKUnraQN1U7rTY3mqC6Q8dAu5li30gvg7lhS31t1VyOq2ib3S6QOqL3A6gvEgf+d9zZjbG/M1dacZipocfeTU0ghXUdrosLA70IEtXqxgRi2+jQQjc25jY6VBoqWsSQQp
-Received: from wheely.local0.net ([1.146.102.26])
-        by smtp.gmail.com with ESMTPSA id r10-20020a170903410a00b001d7284b9461sm839285pld.128.2024.02.08.23.02.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Feb 2024 23:03:02 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: Thomas Huth <thuth@redhat.com>
-Subject: [kvm-unit-tests PATCH v3 8/8] migration: add a migration selftest
-Date: Fri,  9 Feb 2024 17:01:41 +1000
-Message-ID: <20240209070141.421569-9-npiggin@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240209070141.421569-1-npiggin@gmail.com>
-References: <20240209070141.421569-1-npiggin@gmail.com>
+        d=1e100.net; s=20230601; t=1707463750; x=1708068550;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/kCQkh1KyEVD4cmjxJdTLiN9QRnCpv4ZYb6SgTC6zQo=;
+        b=aD/K5Rky5bYZrLKXHEY6aUdGR1/g22oyuaZzq6BQDxyhOOozuiZBdvJfZdnwN1WJ1+
+         uWqkC1icUbVQhDWLCnV4ebaWfco9d2D65XNiJkPoslsePCBxKp6XRtToUjqYAUZQSrpM
+         GvAS1LBDTqiJqaVa1zbHt7XZlvmD5W5YEK398iHTw4HiObrWO4SWui+XNwpUkOJ4riZQ
+         RNBdWfXug6CaUKH0p3L6cs6BZmaQ3ptX5hCRHHBP7BGnzruXInQLWIB1GgcZLvpddj7I
+         zMpPal+quYnmIvNx2BIZkmAgaPUutDOgJsrsscARjHyZsoeIqoU411O4oPkoxGmZMgkB
+         npcw==
+X-Gm-Message-State: AOJu0YwDIMStwRZ6ZNBEHLASK5CIterKR6864BZwlfl4Rl08/fq2Lrnw
+	nur6JzWOSYnGubt0v7GYoelPoWOdkoRJJwHmcYvZRNFtQt1wMxJdbEF8RPZ+c7AhNT8lVqlZcZ8
+	fc30870F1zGlrfQ/Ah5/ziCDQLoy0UrX5P16q0GBB164fshQuNz3xvR8A60fjDf8=
+X-Received: by 2002:a05:622a:1893:b0:42b:eba5:ddfa with SMTP id v19-20020a05622a189300b0042beba5ddfamr1059542qtc.45.1707463749918;
+        Thu, 08 Feb 2024 23:29:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFMxjVKgUnE4ZnmcUKcBrw8kAOVCQv/Rc0MeOA1nppU8LiVZdGnfF07uBuSMXuz36m7DpRJVA==
+X-Received: by 2002:a05:622a:1893:b0:42b:eba5:ddfa with SMTP id v19-20020a05622a189300b0042beba5ddfamr1059535qtc.45.1707463749665;
+        Thu, 08 Feb 2024 23:29:09 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUUx7B+ytx1jxJQX4+UCEaD6tXqKT6ucApPaiWJaZykn+w/0+a9uoX07+JiQbkbUn2PocH3WgLLSAwUWCRqHLGHfWw2RM4gftDO26hfG00892hDH/nJBHtY35xRnxec4jWrutSej2X3k58etZWZejKzojLkXvBJ7hvnLpXN0AoJ2560dbm7gHPx7EJppgxU63rFF0u8DPA+3VHkOqpci+TKf9Wp5TIhYbCCaygZuy+m1DQ5pbTM1MKkDYTdZB9UnU9lQPdwTJoEvO97tO2IdFk9FiKPj9ddRMld7j1xZPqY547vGm/HC+tp1mEl/USbhRvbnQ72Ad5RgfOARa2559A6Vt+yf24Q/bOtJmEGg3B6CWBY7L0Rg8RDCDi+fi04SNLskUP7nJczW7S7vwmU2WPv2EqZ+9Y53w1KMMTYX0YLPc/MGl6CV0YUBpPrD4O1KSAwTn7NQhEycInPV/3oHrbqfF7HYyqpqWNB9zMeyggz1/irjDv7QjtE1NmSqRVyQwe64oC6pBEOXKjOMY9TXeo57xpo
+Received: from [192.168.0.9] (ip-109-43-177-145.web.vodafone.de. [109.43.177.145])
+        by smtp.gmail.com with ESMTPSA id c19-20020a05622a025300b00427fb1d6b44sm480566qtx.5.2024.02.08.23.29.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Feb 2024 23:29:09 -0800 (PST)
+Message-ID: <4203f6dc-ad8c-4bcd-a366-f50f866c55ec@redhat.com>
+Date: Fri, 9 Feb 2024 08:29:04 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [kvm-unit-tests PATCH v3 1/8] arch-run: Fix TRAP handler
+ recursion to remove temporary files properly
+To: Nicholas Piggin <npiggin@gmail.com>
+References: <20240209070141.421569-1-npiggin@gmail.com>
+ <20240209070141.421569-2-npiggin@gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20240209070141.421569-2-npiggin@gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,186 +145,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, linux-s390@vger.kernel.org, Nico Boehr <nrb@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org, Shaoqin Huang <shahuang@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, Andrew Jones <andrew.jones@linux.dev>, Eric Auger <eric.auger@redhat.com>, Marc Hartmayer <mhartmay@linux.ibm.com>, kvm-riscv@lists.infradead.org, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: Laurent Vivier <lvivier@redhat.com>, linux-s390@vger.kernel.org, Nico Boehr <nrb@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org, Shaoqin Huang <shahuang@redhat.com>, Andrew Jones <andrew.jones@linux.dev>, Eric Auger <eric.auger@redhat.com>, Marc Hartmayer <mhartmay@linux.ibm.com>, kvm-riscv@lists.infradead.org, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexandru Elisei <alexandru.elisei@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a selftest for migration support in  guest library and test harness
-code. It performs migrations a tight loop to irritate races and bugs in
-the test harness code.
+On 09/02/2024 08.01, Nicholas Piggin wrote:
+> Migration files were not being removed when the QEMU process is
+> interrupted (e.g., with ^C). This is becaus the SIGINT propagates to the
+> bash TRAP handler, which recursively TRAPs due to the 'kill 0' in the
+> handler. This eventually crashes bash.
+> 
+> This can be observed by interrupting a long-running test program that is
+> run with MIGRATION=yes, /tmp/mig-helper-* files remain afterwards.
+> 
+> Removing TRAP recursion solves this problem and allows the EXIT handler
+> to run and clean up the files.
+> 
+> This also moves the trap handler before temp file creation, and expands
+> the name variables at trap-time rather than install-time, which closes
+> the small race between creation trap handler install.
+> 
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   scripts/arch-run.bash | 12 ++++++------
+>   1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/scripts/arch-run.bash b/scripts/arch-run.bash
+> index d0864360..11d47a85 100644
+> --- a/scripts/arch-run.bash
+> +++ b/scripts/arch-run.bash
+> @@ -129,6 +129,9 @@ run_migration ()
+>   		return 77
+>   	fi
+>   
+> +	trap 'trap - TERM ; kill 0 ; exit 2' INT TERM
+> +	trap 'rm -f ${migout1} ${migsock} ${qmp1} ${qmp2} ${fifo}' RETURN EXIT
+> +
+>   	migsock=$(mktemp -u -t mig-helper-socket.XXXXXXXXXX)
+>   	migout1=$(mktemp -t mig-helper-stdout1.XXXXXXXXXX)
+>   	qmp1=$(mktemp -u -t mig-helper-qmp1.XXXXXXXXXX)
+> @@ -137,9 +140,6 @@ run_migration ()
+>   	qmpout1=/dev/null
+>   	qmpout2=/dev/null
+>   
+> -	trap 'kill 0; exit 2' INT TERM
+> -	trap 'rm -f ${migout1} ${migsock} ${qmp1} ${qmp2} ${fifo}' RETURN EXIT
+> -
+>   	eval "$@" -chardev socket,id=mon1,path=${qmp1},server=on,wait=off \
+>   		-mon chardev=mon1,mode=control | tee ${migout1} &
+>   	live_pid=`jobs -l %+ | grep "eval" | awk '{print$2}'`
+> @@ -209,11 +209,11 @@ run_panic ()
+>   		return 77
+>   	fi
+>   
+> -	qmp=$(mktemp -u -t panic-qmp.XXXXXXXXXX)
+> -
+> -	trap 'kill 0; exit 2' INT TERM
+> +	trap 'trap - TERM ; kill 0 ; exit 2' INT TERM
+>   	trap 'rm -f ${qmp}' RETURN EXIT
+>   
+> +	qmp=$(mktemp -u -t panic-qmp.XXXXXXXXXX)
+> +
+>   	# start VM stopped so we don't miss any events
+>   	eval "$@" -chardev socket,id=mon1,path=${qmp},server=on,wait=off \
+>   		-mon chardev=mon1,mode=control -S &
 
-Include the test in arm, s390, powerpc.
-
-Acked-by: Claudio Imbrenda <imbrenda@linux.ibm.com> (s390x)
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
-This has flushed out several bugs in developing the multi migration test
-harness code already.
-
-Thanks,
-Nick
-
- arm/Makefile.common          |  1 +
- arm/selftest-migration.c     |  1 +
- arm/unittests.cfg            |  6 ++++++
- common/selftest-migration.c  | 34 ++++++++++++++++++++++++++++++++++
- powerpc/Makefile.common      |  1 +
- powerpc/selftest-migration.c |  1 +
- powerpc/unittests.cfg        |  4 ++++
- s390x/Makefile               |  1 +
- s390x/selftest-migration.c   |  1 +
- s390x/unittests.cfg          |  4 ++++
- 10 files changed, 54 insertions(+)
- create mode 120000 arm/selftest-migration.c
- create mode 100644 common/selftest-migration.c
- create mode 120000 powerpc/selftest-migration.c
- create mode 120000 s390x/selftest-migration.c
-
-diff --git a/arm/Makefile.common b/arm/Makefile.common
-index f828dbe0..f107c478 100644
---- a/arm/Makefile.common
-+++ b/arm/Makefile.common
-@@ -5,6 +5,7 @@
- #
- 
- tests-common  = $(TEST_DIR)/selftest.$(exe)
-+tests-common += $(TEST_DIR)/selftest-migration.$(exe)
- tests-common += $(TEST_DIR)/spinlock-test.$(exe)
- tests-common += $(TEST_DIR)/pci-test.$(exe)
- tests-common += $(TEST_DIR)/pmu.$(exe)
-diff --git a/arm/selftest-migration.c b/arm/selftest-migration.c
-new file mode 120000
-index 00000000..bd1eb266
---- /dev/null
-+++ b/arm/selftest-migration.c
-@@ -0,0 +1 @@
-+../common/selftest-migration.c
-\ No newline at end of file
-diff --git a/arm/unittests.cfg b/arm/unittests.cfg
-index fe601cbb..1ffd9a82 100644
---- a/arm/unittests.cfg
-+++ b/arm/unittests.cfg
-@@ -55,6 +55,12 @@ smp = $MAX_SMP
- extra_params = -append 'smp'
- groups = selftest
- 
-+# Test migration
-+[selftest-migration]
-+file = selftest-migration.flat
-+groups = selftest migration
-+
-+arch = arm64
- # Test PCI emulation
- [pci-test]
- file = pci-test.flat
-diff --git a/common/selftest-migration.c b/common/selftest-migration.c
-new file mode 100644
-index 00000000..f70c505f
---- /dev/null
-+++ b/common/selftest-migration.c
-@@ -0,0 +1,34 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Machine independent migration tests
-+ *
-+ * This is just a very simple test that is intended to stress the migration
-+ * support in the test harness. This could be expanded to test more guest
-+ * library code, but architecture-specific tests should be used to test
-+ * migration of tricky machine state.
-+ */
-+#include <libcflat.h>
-+#include <migrate.h>
-+
-+#if defined(__arm__) || defined(__aarch64__)
-+/* arm can only call getchar 15 times */
-+#define NR_MIGRATIONS 15
-+#else
-+#define NR_MIGRATIONS 100
-+#endif
-+
-+int main(int argc, char **argv)
-+{
-+	int i = 0;
-+
-+	report_prefix_push("migration");
-+
-+	for (i = 0; i < NR_MIGRATIONS; i++)
-+		migrate_quiet();
-+
-+	report(true, "simple harness stress test");
-+
-+	report_prefix_pop();
-+
-+	return report_summary();
-+}
-diff --git a/powerpc/Makefile.common b/powerpc/Makefile.common
-index eb88398d..da4a7bbb 100644
---- a/powerpc/Makefile.common
-+++ b/powerpc/Makefile.common
-@@ -6,6 +6,7 @@
- 
- tests-common = \
- 	$(TEST_DIR)/selftest.elf \
-+	$(TEST_DIR)/selftest-migration.elf \
- 	$(TEST_DIR)/spapr_hcall.elf \
- 	$(TEST_DIR)/rtas.elf \
- 	$(TEST_DIR)/emulator.elf \
-diff --git a/powerpc/selftest-migration.c b/powerpc/selftest-migration.c
-new file mode 120000
-index 00000000..bd1eb266
---- /dev/null
-+++ b/powerpc/selftest-migration.c
-@@ -0,0 +1 @@
-+../common/selftest-migration.c
-\ No newline at end of file
-diff --git a/powerpc/unittests.cfg b/powerpc/unittests.cfg
-index e71140aa..7ce57de0 100644
---- a/powerpc/unittests.cfg
-+++ b/powerpc/unittests.cfg
-@@ -36,6 +36,10 @@ smp = 2
- extra_params = -m 256 -append 'setup smp=2 mem=256'
- groups = selftest
- 
-+[selftest-migration]
-+file = selftest-migration.elf
-+groups = selftest migration
-+
- [spapr_hcall]
- file = spapr_hcall.elf
- 
-diff --git a/s390x/Makefile b/s390x/Makefile
-index b72f7578..344d46d6 100644
---- a/s390x/Makefile
-+++ b/s390x/Makefile
-@@ -1,4 +1,5 @@
- tests = $(TEST_DIR)/selftest.elf
-+tests += $(TEST_DIR)/selftest-migration.elf
- tests += $(TEST_DIR)/intercept.elf
- tests += $(TEST_DIR)/emulator.elf
- tests += $(TEST_DIR)/sieve.elf
-diff --git a/s390x/selftest-migration.c b/s390x/selftest-migration.c
-new file mode 120000
-index 00000000..bd1eb266
---- /dev/null
-+++ b/s390x/selftest-migration.c
-@@ -0,0 +1 @@
-+../common/selftest-migration.c
-\ No newline at end of file
-diff --git a/s390x/unittests.cfg b/s390x/unittests.cfg
-index f5024b6e..a7ad522c 100644
---- a/s390x/unittests.cfg
-+++ b/s390x/unittests.cfg
-@@ -24,6 +24,10 @@ groups = selftest
- # please keep the kernel cmdline in sync with $(TEST_DIR)/selftest.parmfile
- extra_params = -append 'test 123'
- 
-+[selftest-migration]
-+file = selftest-migration.elf
-+groups = selftest migration
-+
- [intercept]
- file = intercept.elf
- 
--- 
-2.42.0
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
