@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 658BB84FFC6
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 23:22:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F13584FFD2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Feb 2024 23:24:14 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Hl9B0eLK;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Hl9B0eLK;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PXW0kEv9;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QkWs1lVn;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TWpJB26s3z3vnF
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Feb 2024 09:22:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TWpL43x8bz3vtS
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Feb 2024 09:24:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Hl9B0eLK;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Hl9B0eLK;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PXW0kEv9;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QkWs1lVn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWp8h4hVfz3cZP
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Feb 2024 09:16:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWp8s6KjRz3dCV
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Feb 2024 09:16:13 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707516961;
+	s=mimecast20190719; t=1707516970;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1nEVDzHw7aC5MZOjj7IJGnO0raht3IChKPRkoJ/iPcQ=;
-	b=Hl9B0eLKpidRd++7Af7Kx0nmhKl+x8tKJ7DBeNIuGhQsED5PS+vN7/S3A/SAvXrAvYBkJC
-	NUO4qgx17j6nac4uGioQ9eXuO1NckdeCh4Pyp2qykK8MYUFbP7Nr252agxbTDGQPC+szwv
-	XGFwKpBDtM/s/V8Fpis87TML+vPWe8Y=
+	bh=m8W53GW4ZEWC3PprgXE/ukTwzuRzol5bFe9xhF3bvjg=;
+	b=PXW0kEv9JT8Tfga1uv9Lw5xho9/uq4Jww73fE0a4YDbT9cRvG5qUboOHK72qA0UuShIovt
+	nhgRXy50Vyi0S/XbvhRhCTFaF1VdtNyy6QNV/4pqY/2Twir93KHbysLunC2N9XPHzyDaF6
+	SAreGWQM+bnTalb3XoQpnSucNIdY9z8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707516961;
+	s=mimecast20190719; t=1707516971;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1nEVDzHw7aC5MZOjj7IJGnO0raht3IChKPRkoJ/iPcQ=;
-	b=Hl9B0eLKpidRd++7Af7Kx0nmhKl+x8tKJ7DBeNIuGhQsED5PS+vN7/S3A/SAvXrAvYBkJC
-	NUO4qgx17j6nac4uGioQ9eXuO1NckdeCh4Pyp2qykK8MYUFbP7Nr252agxbTDGQPC+szwv
-	XGFwKpBDtM/s/V8Fpis87TML+vPWe8Y=
+	bh=m8W53GW4ZEWC3PprgXE/ukTwzuRzol5bFe9xhF3bvjg=;
+	b=QkWs1lVnn5iHp5WdUBtEJW1aaLcNaFW0gGIO2QLPPIksQO1CGJhvxG0yWeHhOsK8sQKwgm
+	4GPlPqPkUw7ZiO0uaKyJnueKp6UXrEXsKDEZcPcOgLv/sSi2oyl+WvipHNIbXroc62mRDD
+	gXiYNx00nIbg1exa6ADHRbKRMi4fJ+g=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-483-GjH1TBS8OeKCQERcPxqveA-1; Fri, 09 Feb 2024 17:15:57 -0500
-X-MC-Unique: GjH1TBS8OeKCQERcPxqveA-1
+ us-mta-60-t2V2UsG2PJSAXQJ2V6pbnw-1; Fri, 09 Feb 2024 17:16:04 -0500
+X-MC-Unique: t2V2UsG2PJSAXQJ2V6pbnw-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6AF29185A780;
-	Fri,  9 Feb 2024 22:15:56 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BE704837230;
+	Fri,  9 Feb 2024 22:16:02 +0000 (UTC)
 Received: from t14s.redhat.com (unknown [10.39.194.59])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id DF5C61C14B04;
-	Fri,  9 Feb 2024 22:15:51 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id E26B01C14B04;
+	Fri,  9 Feb 2024 22:15:56 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2 08/10] mm/mmu_gather: add __tlb_remove_folio_pages()
-Date: Fri,  9 Feb 2024 23:15:07 +0100
-Message-ID: <20240209221509.585251-9-david@redhat.com>
+Subject: [PATCH v2 09/10] mm/mmu_gather: improve cond_resched() handling with large folios and expensive page freeing
+Date: Fri,  9 Feb 2024 23:15:08 +0100
+Message-ID: <20240209221509.585251-10-david@redhat.com>
 In-Reply-To: <20240209221509.585251-1-david@redhat.com>
 References: <20240209221509.585251-1-david@redhat.com>
 MIME-Version: 1.0
@@ -83,350 +83,106 @@ Cc: Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>, Peter 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add __tlb_remove_folio_pages(), which will remove multiple consecutive
-pages that belong to the same large folio, instead of only a single
-page. We'll be using this function when optimizing unmapping/zapping of
-large folios that are mapped by PTEs.
+It's a pain that we have to handle cond_resched() in
+tlb_batch_pages_flush() manually and cannot simply handle it in
+release_pages() -- release_pages() can be called from atomic context.
+Well, in a perfect world we wouldn't have to make our code more at all.
 
-We're using the remaining spare bit in an encoded_page to indicate that
-the next enoced page in an array contains actually shifted "nr_pages".
-Teach swap/freeing code about putting multiple folio references, and
-delayed rmap handling to remove page ranges of a folio.
+With page poisoning and init_on_free, we might now run into soft lockups
+when we free a lot of rather large folio fragments, because page freeing
+time then depends on the actual memory size we are freeing instead of on
+the number of folios that are involved.
 
-This extension allows for still gathering almost as many small folios
-as we used to (-1, because we have to prepare for a possibly bigger next
-entry), but still allows for gathering consecutive pages that belong to the
-same large folio.
+In the absolute (unlikely) worst case, on arm64 with 64k we will be able
+to free up to 256 folio fragments that each span 512 MiB: zeroing out 128
+GiB does sound like it might take a while. But instead of ignoring this
+unlikely case, let's just handle it.
 
-Note that we don't pass the folio pointer, because it is not required for
-now. Further, we don't support page_size != PAGE_SIZE, it won't be
-required for simple PTE batching.
+So, let's teach tlb_batch_pages_flush() that there are some
+configurations where page freeing is horribly slow, and let's reschedule
+more frequently -- similarly like we did for now before we had large folio
+fragments in there. Note that we might end up freeing only a single folio
+fragment at a time that might exceed the old 512 pages limit: but if we
+cannot even free a single MAX_ORDER page on a system without running into
+soft lockups, something else is already completely bogus.
 
-We have to provide a separate s390 implementation, but it's fairly
-straight forward.
-
-Another, more invasive and likely more expensive, approach would be to
-use folio+range or a PFN range instead of page+nr_pages. But, we should
-do that consistently for the whole mmu_gather. For now, let's keep it
-simple and add "nr_pages" only.
-
-Note that it is now possible to gather significantly more pages: In the
-past, we were able to gather ~10000 pages, now we can gather
-also gather ~5000 folio fragments that span multiple pages. A folio
-fragement on x86-64 can be up to 512 pages (2 MiB THP) and on arm64 with
-64k in theory 8192 pages (512 MiB THP). Gathering more memory is not
-considered something we should worry about, especially because these are
-already corner cases.
-
-While we can gather more total memory, we won't free more folio
-fragments. As long as page freeing time primarily only depends on the
-number of involved folios, there is no effective change for !preempt
-configurations. However, we'll adjust tlb_batch_pages_flush() separately to
-handle corner cases where page freeing time grows proportionally with the
-actual memory size.
+In the future, we might want to detect if handling cond_resched() is
+required at all, and just not do any of that with full preemption enabled.
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- arch/s390/include/asm/tlb.h | 17 +++++++++++
- include/asm-generic/tlb.h   |  8 +++++
- include/linux/mm_types.h    | 20 ++++++++++++
- mm/mmu_gather.c             | 61 +++++++++++++++++++++++++++++++------
- mm/swap.c                   | 12 ++++++--
- mm/swap_state.c             | 15 +++++++--
- 6 files changed, 119 insertions(+), 14 deletions(-)
+ mm/mmu_gather.c | 50 ++++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 41 insertions(+), 9 deletions(-)
 
-diff --git a/arch/s390/include/asm/tlb.h b/arch/s390/include/asm/tlb.h
-index 48df896d5b79..e95b2c8081eb 100644
---- a/arch/s390/include/asm/tlb.h
-+++ b/arch/s390/include/asm/tlb.h
-@@ -26,6 +26,8 @@ void __tlb_remove_table(void *_table);
- static inline void tlb_flush(struct mmu_gather *tlb);
- static inline bool __tlb_remove_page_size(struct mmu_gather *tlb,
- 		struct page *page, bool delay_rmap, int page_size);
-+static inline bool __tlb_remove_folio_pages(struct mmu_gather *tlb,
-+		struct page *page, unsigned int nr_pages, bool delay_rmap);
- 
- #define tlb_flush tlb_flush
- #define pte_free_tlb pte_free_tlb
-@@ -52,6 +54,21 @@ static inline bool __tlb_remove_page_size(struct mmu_gather *tlb,
- 	return false;
- }
- 
-+static inline bool __tlb_remove_folio_pages(struct mmu_gather *tlb,
-+		struct page *page, unsigned int nr_pages, bool delay_rmap)
-+{
-+	struct encoded_page *encoded_pages[] = {
-+		encode_page(page, ENCODED_PAGE_BIT_NR_PAGES_NEXT),
-+		encode_nr_pages(nr_pages),
-+	};
-+
-+	VM_WARN_ON_ONCE(delay_rmap);
-+	VM_WARN_ON_ONCE(page_folio(page) != page_folio(page + nr_pages - 1));
-+
-+	free_pages_and_swap_cache(encoded_pages, ARRAY_SIZE(encoded_pages));
-+	return false;
-+}
-+
- static inline void tlb_flush(struct mmu_gather *tlb)
- {
- 	__tlb_flush_mm_lazy(tlb->mm);
-diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-index 95d60a4f468a..bd00dd238b79 100644
---- a/include/asm-generic/tlb.h
-+++ b/include/asm-generic/tlb.h
-@@ -69,6 +69,7 @@
-  *
-  *  - tlb_remove_page() / __tlb_remove_page()
-  *  - tlb_remove_page_size() / __tlb_remove_page_size()
-+ *  - __tlb_remove_folio_pages()
-  *
-  *    __tlb_remove_page_size() is the basic primitive that queues a page for
-  *    freeing. __tlb_remove_page() assumes PAGE_SIZE. Both will return a
-@@ -78,6 +79,11 @@
-  *    tlb_remove_page() and tlb_remove_page_size() imply the call to
-  *    tlb_flush_mmu() when required and has no return value.
-  *
-+ *    __tlb_remove_folio_pages() is similar to __tlb_remove_page(), however,
-+ *    instead of removing a single page, remove the given number of consecutive
-+ *    pages that are all part of the same (large) folio: just like calling
-+ *    __tlb_remove_page() on each page individually.
-+ *
-  *  - tlb_change_page_size()
-  *
-  *    call before __tlb_remove_page*() to set the current page-size; implies a
-@@ -262,6 +268,8 @@ struct mmu_gather_batch {
- 
- extern bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page,
- 		bool delay_rmap, int page_size);
-+bool __tlb_remove_folio_pages(struct mmu_gather *tlb, struct page *page,
-+		unsigned int nr_pages, bool delay_rmap);
- 
- #ifdef CONFIG_SMP
- /*
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 1b89eec0d6df..a7223ba3ea1e 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -226,6 +226,15 @@ struct encoded_page;
- /* Perform rmap removal after we have flushed the TLB. */
- #define ENCODED_PAGE_BIT_DELAY_RMAP		1ul
- 
-+/*
-+ * The next item in an encoded_page array is the "nr_pages" argument, specifying
-+ * the number of consecutive pages starting from this page, that all belong to
-+ * the same folio. For example, "nr_pages" corresponds to the number of folio
-+ * references that must be dropped. If this bit is not set, "nr_pages" is
-+ * implicitly 1.
-+ */
-+#define ENCODED_PAGE_BIT_NR_PAGES_NEXT		2ul
-+
- static __always_inline struct encoded_page *encode_page(struct page *page, unsigned long flags)
- {
- 	BUILD_BUG_ON(flags > ENCODED_PAGE_BITS);
-@@ -242,6 +251,17 @@ static inline struct page *encoded_page_ptr(struct encoded_page *page)
- 	return (struct page *)(~ENCODED_PAGE_BITS & (unsigned long)page);
- }
- 
-+static __always_inline struct encoded_page *encode_nr_pages(unsigned long nr)
-+{
-+	VM_WARN_ON_ONCE((nr << 2) >> 2 != nr);
-+	return (struct encoded_page *)(nr << 2);
-+}
-+
-+static __always_inline unsigned long encoded_nr_pages(struct encoded_page *page)
-+{
-+	return ((unsigned long)page) >> 2;
-+}
-+
- /*
-  * A swap entry has to fit into a "unsigned long", as the entry is hidden
-  * in the "index" field of the swapper address space.
 diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
-index 6540c99c6758..d175c0f1e2c8 100644
+index d175c0f1e2c8..2774044b5790 100644
 --- a/mm/mmu_gather.c
 +++ b/mm/mmu_gather.c
-@@ -50,12 +50,21 @@ static bool tlb_next_batch(struct mmu_gather *tlb)
- #ifdef CONFIG_SMP
- static void tlb_flush_rmap_batch(struct mmu_gather_batch *batch, struct vm_area_struct *vma)
- {
-+	struct encoded_page **pages = batch->encoded_pages;
-+
- 	for (int i = 0; i < batch->nr; i++) {
--		struct encoded_page *enc = batch->encoded_pages[i];
-+		struct encoded_page *enc = pages[i];
- 
- 		if (encoded_page_flags(enc) & ENCODED_PAGE_BIT_DELAY_RMAP) {
- 			struct page *page = encoded_page_ptr(enc);
--			folio_remove_rmap_pte(page_folio(page), page, vma);
-+			unsigned int nr_pages = 1;
-+
-+			if (unlikely(encoded_page_flags(enc) &
-+				     ENCODED_PAGE_BIT_NR_PAGES_NEXT))
-+				nr_pages = encoded_nr_pages(pages[++i]);
-+
-+			folio_remove_rmap_ptes(page_folio(page), page, nr_pages,
-+					       vma);
- 		}
- 	}
+@@ -91,18 +91,19 @@ void tlb_flush_rmaps(struct mmu_gather *tlb, struct vm_area_struct *vma)
  }
-@@ -89,18 +98,26 @@ static void tlb_batch_pages_flush(struct mmu_gather *tlb)
- 	for (batch = &tlb->local; batch && batch->nr; batch = batch->next) {
- 		struct encoded_page **pages = batch->encoded_pages;
- 
--		do {
-+		while (batch->nr) {
- 			/*
- 			 * limit free batch count when PAGE_SIZE > 4K
- 			 */
- 			unsigned int nr = min(512U, batch->nr);
- 
-+			/*
-+			 * Make sure we cover page + nr_pages, and don't leave
-+			 * nr_pages behind when capping the number of entries.
-+			 */
-+			if (unlikely(encoded_page_flags(pages[nr - 1]) &
-+				     ENCODED_PAGE_BIT_NR_PAGES_NEXT))
-+				nr++;
-+
- 			free_pages_and_swap_cache(pages, nr);
- 			pages += nr;
- 			batch->nr -= nr;
- 
- 			cond_resched();
--		} while (batch->nr);
-+		}
- 	}
- 	tlb->active = &tlb->local;
- }
-@@ -116,8 +133,9 @@ static void tlb_batch_list_free(struct mmu_gather *tlb)
- 	tlb->local.next = NULL;
- }
- 
--bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page,
--		bool delay_rmap, int page_size)
-+static bool __tlb_remove_folio_pages_size(struct mmu_gather *tlb,
-+		struct page *page, unsigned int nr_pages, bool delay_rmap,
-+		int page_size)
- {
- 	int flags = delay_rmap ? ENCODED_PAGE_BIT_DELAY_RMAP : 0;
- 	struct mmu_gather_batch *batch;
-@@ -126,6 +144,8 @@ bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page,
- 
- #ifdef CONFIG_MMU_GATHER_PAGE_SIZE
- 	VM_WARN_ON(tlb->page_size != page_size);
-+	VM_WARN_ON_ONCE(nr_pages != 1 && page_size != PAGE_SIZE);
-+	VM_WARN_ON_ONCE(page_folio(page) != page_folio(page + nr_pages - 1));
  #endif
  
- 	batch = tlb->active;
-@@ -133,17 +153,40 @@ bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page,
- 	 * Add the page and check if we are full. If so
- 	 * force a flush.
- 	 */
--	batch->encoded_pages[batch->nr++] = encode_page(page, flags);
--	if (batch->nr == batch->max) {
-+	if (likely(nr_pages == 1)) {
-+		batch->encoded_pages[batch->nr++] = encode_page(page, flags);
-+	} else {
-+		flags |= ENCODED_PAGE_BIT_NR_PAGES_NEXT;
-+		batch->encoded_pages[batch->nr++] = encode_page(page, flags);
-+		batch->encoded_pages[batch->nr++] = encode_nr_pages(nr_pages);
-+	}
-+	/*
-+	 * Make sure that we can always add another "page" + "nr_pages",
-+	 * requiring two entries instead of only a single one.
-+	 */
-+	if (batch->nr >= batch->max - 1) {
- 		if (!tlb_next_batch(tlb))
- 			return true;
- 		batch = tlb->active;
- 	}
--	VM_BUG_ON_PAGE(batch->nr > batch->max, page);
-+	VM_BUG_ON_PAGE(batch->nr > batch->max - 1, page);
- 
- 	return false;
- }
- 
-+bool __tlb_remove_folio_pages(struct mmu_gather *tlb, struct page *page,
-+		unsigned int nr_pages, bool delay_rmap)
-+{
-+	return __tlb_remove_folio_pages_size(tlb, page, nr_pages, delay_rmap,
-+					     PAGE_SIZE);
-+}
-+
-+bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page,
-+		bool delay_rmap, int page_size)
-+{
-+	return __tlb_remove_folio_pages_size(tlb, page, 1, delay_rmap, page_size);
-+}
-+
- #endif /* MMU_GATHER_NO_GATHER */
- 
- #ifdef CONFIG_MMU_GATHER_TABLE_FREE
-diff --git a/mm/swap.c b/mm/swap.c
-index cd8f0150ba3a..e5380d732c0d 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -967,11 +967,17 @@ void release_pages(release_pages_arg arg, int nr)
- 	unsigned int lock_batch;
- 
- 	for (i = 0; i < nr; i++) {
-+		unsigned int nr_refs = 1;
- 		struct folio *folio;
- 
- 		/* Turn any of the argument types into a folio */
- 		folio = page_folio(encoded_page_ptr(encoded[i]));
- 
-+		/* Is our next entry actually "nr_pages" -> "nr_refs" ? */
-+		if (unlikely(encoded_page_flags(encoded[i]) &
-+			     ENCODED_PAGE_BIT_NR_PAGES_NEXT))
-+			nr_refs = encoded_nr_pages(encoded[++i]);
-+
- 		/*
- 		 * Make sure the IRQ-safe lock-holding time does not get
- 		 * excessive with a continuous string of pages from the
-@@ -990,14 +996,14 @@ void release_pages(release_pages_arg arg, int nr)
- 				unlock_page_lruvec_irqrestore(lruvec, flags);
- 				lruvec = NULL;
- 			}
--			if (put_devmap_managed_page(&folio->page))
-+			if (put_devmap_managed_page_refs(&folio->page, nr_refs))
- 				continue;
--			if (folio_put_testzero(folio))
-+			if (folio_ref_sub_and_test(folio, nr_refs))
- 				free_zone_device_page(&folio->page);
- 			continue;
- 		}
- 
--		if (!folio_put_testzero(folio))
-+		if (!folio_ref_sub_and_test(folio, nr_refs))
- 			continue;
- 
- 		if (folio_test_large(folio)) {
-diff --git a/mm/swap_state.c b/mm/swap_state.c
-index 7255c01a1e4e..2f540748f7c0 100644
---- a/mm/swap_state.c
-+++ b/mm/swap_state.c
-@@ -311,8 +311,19 @@ void free_page_and_swap_cache(struct page *page)
- void free_pages_and_swap_cache(struct encoded_page **pages, int nr)
+-static void tlb_batch_pages_flush(struct mmu_gather *tlb)
++static void __tlb_batch_free_encoded_pages(struct mmu_gather_batch *batch)
  {
- 	lru_add_drain();
--	for (int i = 0; i < nr; i++)
--		free_swap_cache(encoded_page_ptr(pages[i]));
-+	for (int i = 0; i < nr; i++) {
-+		struct page *page = encoded_page_ptr(pages[i]);
+-	struct mmu_gather_batch *batch;
+-
+-	for (batch = &tlb->local; batch && batch->nr; batch = batch->next) {
+-		struct encoded_page **pages = batch->encoded_pages;
++	struct encoded_page **pages = batch->encoded_pages;
++	unsigned int nr, nr_pages;
+ 
++	/*
++	 * We might end up freeing a lot of pages. Reschedule on a regular
++	 * basis to avoid soft lockups in configurations without full
++	 * preemption enabled. The magic number of 512 folios seems to work.
++	 */
++	if (!page_poisoning_enabled_static() && !want_init_on_free()) {
+ 		while (batch->nr) {
+-			/*
+-			 * limit free batch count when PAGE_SIZE > 4K
+-			 */
+-			unsigned int nr = min(512U, batch->nr);
++			nr = min(512, batch->nr);
+ 
+ 			/*
+ 			 * Make sure we cover page + nr_pages, and don't leave
+@@ -119,6 +120,37 @@ static void tlb_batch_pages_flush(struct mmu_gather *tlb)
+ 			cond_resched();
+ 		}
+ 	}
 +
-+		/*
-+		 * Skip over the "nr_pages" entry. It's sufficient to call
-+		 * free_swap_cache() only once per folio.
-+		 */
-+		if (unlikely(encoded_page_flags(pages[i]) &
-+			     ENCODED_PAGE_BIT_NR_PAGES_NEXT))
-+			i++;
++	/*
++	 * With page poisoning and init_on_free, the time it takes to free
++	 * memory grows proportionally with the actual memory size. Therefore,
++	 * limit based on the actual memory size and not the number of involved
++	 * folios.
++	 */
++	while (batch->nr) {
++		for (nr = 0, nr_pages = 0;
++		     nr < batch->nr && nr_pages < 512; nr++) {
++			if (unlikely(encoded_page_flags(pages[nr]) &
++				     ENCODED_PAGE_BIT_NR_PAGES_NEXT))
++				nr_pages += encoded_nr_pages(pages[++nr]);
++			else
++				nr_pages++;
++		}
 +
-+		free_swap_cache(page);
++		free_pages_and_swap_cache(pages, nr);
++		pages += nr;
++		batch->nr -= nr;
++
++		cond_resched();
 +	}
- 	release_pages(pages, nr);
++}
++
++static void tlb_batch_pages_flush(struct mmu_gather *tlb)
++{
++	struct mmu_gather_batch *batch;
++
++	for (batch = &tlb->local; batch && batch->nr; batch = batch->next)
++		__tlb_batch_free_encoded_pages(batch);
+ 	tlb->active = &tlb->local;
  }
  
 -- 
