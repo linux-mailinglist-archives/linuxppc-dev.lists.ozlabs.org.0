@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A640A850440
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Feb 2024 12:37:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9BC48504A9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Feb 2024 15:17:12 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QnKaYv2F;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JKdkJ+38;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TX7xJ2scxz3cY4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Feb 2024 22:37:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TXCTf4zPPz3cV6
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Feb 2024 01:17:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QnKaYv2F;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JKdkJ+38;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=alexs@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.16; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TX7wW1LXGz30h8
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Feb 2024 22:36:43 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 04B416066C;
-	Sat, 10 Feb 2024 11:36:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDA1BC433A6;
-	Sat, 10 Feb 2024 11:36:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707564999;
-	bh=yH8HLFxJDhQAiOdU7y5xfW2QGHOpaw69vkAcwdGw4mM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QnKaYv2FqkdZ9sHGV/PBZqIgHSM2tBQj08b7vVx4FxxUMddBUDL00kogD9YA58vew
-	 q0MlZfnlSC5bowrnHtEaReNabaMjFkKRTBZ0MJ2bIZOqUqZR3Gka8BhEd5IDWx1AAn
-	 VTVzNu/TxntOK0ncY++ee/a0XKbqLczHbRq+/iyOKoB9XdybKw/KGRY5Ej51nV2IbO
-	 dlWqx74/RzBr2HK0+O2++J8B0UXvKDhwB4E2hA1leFecuNXMHKSV1PP+xNKfborhvy
-	 kml2+9ZzVqNdUwjqZRpq7TcboBljDmh0N9SNUJxzltLdsvUDoZVv3JX4SvI6icz8zj
-	 U031FHXt/JBPQ==
-From: alexs@kernel.org
-To: Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Daniel Bristot de Oliveira <bristot@redhat.com>,
-	Valentin Schneider <vschneid@redhat.com>,
-	linux-kernel@vger.kernel.org (open list:SCHEDULER),
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TXCSv3rK4z2ytg
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Feb 2024 01:16:28 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707574591; x=1739110591;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xp9zH1WaW6uoig/Qd9fQ2SgwWOA/7EqqFkCeMF5KI/4=;
+  b=JKdkJ+38OPjJob8siF82G0I5B6f9MBbQmvFs4QyGyYe7IUSraEU15Evu
+   KxIDBb8OrQzqG4e8sXODcbexyi3NZwrQ67MXvRUJB3wAIrc9SMkwKk5Vn
+   ZLQ1vm2a9YWO69DZZeceWFFSSfeeH70FryX6Zc6oJvA9LKe3r9bJA+7WK
+   OdPQaW7939CQmUdHg0QNgy/8xRCQEdzVZZAwkigXS4R3BiQLCTBwMk5Ez
+   Slm10Ko8/1gqyW0UHIkaqa6EukNWL1djfen5FcIhaGag54lw+xaexsJ60
+   wvJpoCjuHDSmDZLTWXJt1aScV65SLZ8b7pNCos/42fnrCwGNzzKBfbIsT
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10979"; a="1721047"
+X-IronPort-AV: E=Sophos;i="6.05,259,1701158400"; 
+   d="scan'208";a="1721047"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2024 06:16:23 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,259,1701158400"; 
+   d="scan'208";a="33257272"
+Received: from lkp-server01.sh.intel.com (HELO 01f0647817ea) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 10 Feb 2024 06:16:21 -0800
+Received: from kbuild by 01f0647817ea with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rYo9S-0005hy-2Y;
+	Sat, 10 Feb 2024 14:16:18 +0000
+Date: Sat, 10 Feb 2024 22:16:07 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Ricardo B. Marliere" <ricardo@marliere.net>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org (open list:LINUX FOR POWERPC (32-BIT AND 64-BIT))
-Subject: [PATCH v5 5/5] sched: rename SD_SHARE_PKG_RESOURCES to SD_SHARE_LLC
-Date: Sat, 10 Feb 2024 19:39:23 +0800
-Message-ID: <20240210113924.1130448-5-alexs@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240210113924.1130448-1-alexs@kernel.org>
-References: <20240210113924.1130448-1-alexs@kernel.org>
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+Subject: Re: [PATCH 4/4] powerpc: ibmebus: make ibmebus_bus_type const
+Message-ID: <202402102142.uphiKeqw-lkp@intel.com>
+References: <20240209-bus_cleanup-powerpc2-v1-4-79a56dcaebb1@marliere.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240209-bus_cleanup-powerpc2-v1-4-79a56dcaebb1@marliere.net>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,227 +74,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, Barry Song <song.bao.hua@hisilicon.com>, Srikar Dronamraju <srikar@linux.vnet.ibm.com>, Ricardo Neri <ricardo.neri-calderon@linux.intel.com>, Frederic Weisbecker <frederic@kernel.org>, linux-kernel@vger.kernel.org, Yicong Yang <yangyicong@hisilicon.com>, "Gautham R. Shenoy" <gautham.shenoy@amd.com>, Mark Rutland <mark.rutland@arm.com>, linuxppc-dev@lists.ozlabs.org, Josh Poimboeuf <jpoimboe@kernel.org>, Alex Shi <alexs@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Ricardo B. Marliere" <ricardo@marliere.net>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, oe-kbuild-all@lists.linux.dev
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Alex Shi <alexs@kernel.org>
+Hi Ricardo,
 
-SD_CLUSTER shares the CPU resources like llc tags or l2 cache, that's
-easy confuse with SD_SHARE_PKG_RESOURCES. So let's specifical point
-what the latter shares: LLC. That would reduce some confusing.
+kernel test robot noticed the following build errors:
 
-Suggested-by: Valentin Schneider <vschneid@redhat.com>
-Signed-off-by: Alex Shi <alexs@kernel.org>
-Cc: linux-kernel@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Barry Song <song.bao.hua@hisilicon.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Frederic Weisbecker <frederic@kernel.org>
-Cc: Daniel Bristot de Oliveira <bristot@redhat.com>
-Cc: Ben Segall <bsegall@google.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: "Gautham R. Shenoy" <gautham.shenoy@amd.com>
-Cc: Yicong Yang <yangyicong@hisilicon.com>
-Cc: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Valentin Schneider <vschneid@redhat.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Reviewed-by: Valentin Schneider <vschneid@redhat.com>
-Reviewed-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
----
- arch/powerpc/kernel/smp.c      |  6 +++---
- include/linux/sched/sd_flags.h |  4 ++--
- include/linux/sched/topology.h |  6 +++---
- kernel/sched/fair.c            |  2 +-
- kernel/sched/topology.c        | 28 ++++++++++++++--------------
- 5 files changed, 23 insertions(+), 23 deletions(-)
+[auto build test ERROR on 41bccc98fb7931d63d03f326a746ac4d429c1dd3]
 
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index 693334c20d07..a60e4139214b 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -984,7 +984,7 @@ static bool shared_caches __ro_after_init;
- /* cpumask of CPUs with asymmetric SMT dependency */
- static int powerpc_smt_flags(void)
- {
--	int flags = SD_SHARE_CPUCAPACITY | SD_SHARE_PKG_RESOURCES;
-+	int flags = SD_SHARE_CPUCAPACITY | SD_SHARE_LLC;
- 
- 	if (cpu_has_feature(CPU_FTR_ASYM_SMT)) {
- 		printk_once(KERN_INFO "Enabling Asymmetric SMT scheduling\n");
-@@ -1010,9 +1010,9 @@ static __ro_after_init DEFINE_STATIC_KEY_FALSE(splpar_asym_pack);
- static int powerpc_shared_cache_flags(void)
- {
- 	if (static_branch_unlikely(&splpar_asym_pack))
--		return SD_SHARE_PKG_RESOURCES | SD_ASYM_PACKING;
-+		return SD_SHARE_LLC | SD_ASYM_PACKING;
- 
--	return SD_SHARE_PKG_RESOURCES;
-+	return SD_SHARE_LLC;
- }
- 
- static int powerpc_shared_proc_flags(void)
-diff --git a/include/linux/sched/sd_flags.h b/include/linux/sched/sd_flags.h
-index a8b28647aafc..b04a5d04dee9 100644
---- a/include/linux/sched/sd_flags.h
-+++ b/include/linux/sched/sd_flags.h
-@@ -117,13 +117,13 @@ SD_FLAG(SD_SHARE_CPUCAPACITY, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
- SD_FLAG(SD_CLUSTER, SDF_NEEDS_GROUPS)
- 
- /*
-- * Domain members share CPU package resources (i.e. caches)
-+ * Domain members share CPU Last Level Caches
-  *
-  * SHARED_CHILD: Set from the base domain up until spanned CPUs no longer share
-  *               the same cache(s).
-  * NEEDS_GROUPS: Caches are shared between groups.
-  */
--SD_FLAG(SD_SHARE_PKG_RESOURCES, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
-+SD_FLAG(SD_SHARE_LLC, SDF_SHARED_CHILD | SDF_NEEDS_GROUPS)
- 
- /*
-  * Only a single load balancing instance
-diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
-index a6e04b4a21d7..191b122158fb 100644
---- a/include/linux/sched/topology.h
-+++ b/include/linux/sched/topology.h
-@@ -38,21 +38,21 @@ extern const struct sd_flag_debug sd_flag_debug[];
- #ifdef CONFIG_SCHED_SMT
- static inline int cpu_smt_flags(void)
- {
--	return SD_SHARE_CPUCAPACITY | SD_SHARE_PKG_RESOURCES;
-+	return SD_SHARE_CPUCAPACITY | SD_SHARE_LLC;
- }
- #endif
- 
- #ifdef CONFIG_SCHED_CLUSTER
- static inline int cpu_cluster_flags(void)
- {
--	return SD_CLUSTER | SD_SHARE_PKG_RESOURCES;
-+	return SD_CLUSTER | SD_SHARE_LLC;
- }
- #endif
- 
- #ifdef CONFIG_SCHED_MC
- static inline int cpu_core_flags(void)
- {
--	return SD_SHARE_PKG_RESOURCES;
-+	return SD_SHARE_LLC;
- }
- #endif
- 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index cd1ec57c0b7b..da6c77d05d07 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -10687,7 +10687,7 @@ static inline void calculate_imbalance(struct lb_env *env, struct sd_lb_stats *s
- 	 */
- 	if (local->group_type == group_has_spare) {
- 		if ((busiest->group_type > group_fully_busy) &&
--		    !(env->sd->flags & SD_SHARE_PKG_RESOURCES)) {
-+		    !(env->sd->flags & SD_SHARE_LLC)) {
- 			/*
- 			 * If busiest is overloaded, try to fill spare
- 			 * capacity. This might end up creating spare capacity
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index 0b33f7b05d21..99ea5986038c 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -657,13 +657,13 @@ static void destroy_sched_domains(struct sched_domain *sd)
- }
- 
- /*
-- * Keep a special pointer to the highest sched_domain that has
-- * SD_SHARE_PKG_RESOURCE set (Last Level Cache Domain) for this
-- * allows us to avoid some pointer chasing select_idle_sibling().
-+ * Keep a special pointer to the highest sched_domain that has SD_SHARE_LLC set
-+ * (Last Level Cache Domain) for this allows us to avoid some pointer chasing
-+ * select_idle_sibling().
-  *
-- * Also keep a unique ID per domain (we use the first CPU number in
-- * the cpumask of the domain), this allows us to quickly tell if
-- * two CPUs are in the same cache domain, see cpus_share_cache().
-+ * Also keep a unique ID per domain (we use the first CPU number in the cpumask
-+ * of the domain), this allows us to quickly tell if two CPUs are in the same
-+ * cache domain, see cpus_share_cache().
-  */
- DEFINE_PER_CPU(struct sched_domain __rcu *, sd_llc);
- DEFINE_PER_CPU(int, sd_llc_size);
-@@ -684,7 +684,7 @@ static void update_top_cache_domain(int cpu)
- 	int id = cpu;
- 	int size = 1;
- 
--	sd = highest_flag_domain(cpu, SD_SHARE_PKG_RESOURCES);
-+	sd = highest_flag_domain(cpu, SD_SHARE_LLC);
- 	if (sd) {
- 		id = cpumask_first(sched_domain_span(sd));
- 		size = cpumask_weight(sched_domain_span(sd));
-@@ -1554,7 +1554,7 @@ static struct cpumask		***sched_domains_numa_masks;
-  * function. For details, see include/linux/sched/sd_flags.h.
-  *
-  *   SD_SHARE_CPUCAPACITY
-- *   SD_SHARE_PKG_RESOURCES
-+ *   SD_SHARE_LLC
-  *   SD_CLUSTER
-  *   SD_NUMA
-  *
-@@ -1566,7 +1566,7 @@ static struct cpumask		***sched_domains_numa_masks;
- #define TOPOLOGY_SD_FLAGS		\
- 	(SD_SHARE_CPUCAPACITY	|	\
- 	 SD_CLUSTER		|	\
--	 SD_SHARE_PKG_RESOURCES |	\
-+	 SD_SHARE_LLC		|	\
- 	 SD_NUMA		|	\
- 	 SD_ASYM_PACKING)
- 
-@@ -1609,7 +1609,7 @@ sd_init(struct sched_domain_topology_level *tl,
- 					| 0*SD_BALANCE_WAKE
- 					| 1*SD_WAKE_AFFINE
- 					| 0*SD_SHARE_CPUCAPACITY
--					| 0*SD_SHARE_PKG_RESOURCES
-+					| 0*SD_SHARE_LLC
- 					| 0*SD_SERIALIZE
- 					| 1*SD_PREFER_SIBLING
- 					| 0*SD_NUMA
-@@ -1646,7 +1646,7 @@ sd_init(struct sched_domain_topology_level *tl,
- 	if (sd->flags & SD_SHARE_CPUCAPACITY) {
- 		sd->imbalance_pct = 110;
- 
--	} else if (sd->flags & SD_SHARE_PKG_RESOURCES) {
-+	} else if (sd->flags & SD_SHARE_LLC) {
- 		sd->imbalance_pct = 117;
- 		sd->cache_nice_tries = 1;
- 
-@@ -1671,7 +1671,7 @@ sd_init(struct sched_domain_topology_level *tl,
- 	 * For all levels sharing cache; connect a sched_domain_shared
- 	 * instance.
- 	 */
--	if (sd->flags & SD_SHARE_PKG_RESOURCES) {
-+	if (sd->flags & SD_SHARE_LLC) {
- 		sd->shared = *per_cpu_ptr(sdd->sds, sd_id);
- 		atomic_inc(&sd->shared->ref);
- 		atomic_set(&sd->shared->nr_busy_cpus, sd_weight);
-@@ -2446,8 +2446,8 @@ build_sched_domains(const struct cpumask *cpu_map, struct sched_domain_attr *att
- 		for (sd = *per_cpu_ptr(d.sd, i); sd; sd = sd->parent) {
- 			struct sched_domain *child = sd->child;
- 
--			if (!(sd->flags & SD_SHARE_PKG_RESOURCES) && child &&
--			    (child->flags & SD_SHARE_PKG_RESOURCES)) {
-+			if (!(sd->flags & SD_SHARE_LLC) && child &&
-+			    (child->flags & SD_SHARE_LLC)) {
- 				struct sched_domain __rcu *top_p;
- 				unsigned int nr_llcs;
- 
+url:    https://github.com/intel-lab-lkp/linux/commits/Ricardo-B-Marliere/powerpc-vio-move-device-attributes-into-a-new-ifdef/20240210-080925
+base:   41bccc98fb7931d63d03f326a746ac4d429c1dd3
+patch link:    https://lore.kernel.org/r/20240209-bus_cleanup-powerpc2-v1-4-79a56dcaebb1%40marliere.net
+patch subject: [PATCH 4/4] powerpc: ibmebus: make ibmebus_bus_type const
+config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20240210/202402102142.uphiKeqw-lkp@intel.com/config)
+compiler: powerpc64-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240210/202402102142.uphiKeqw-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202402102142.uphiKeqw-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> arch/powerpc/platforms/pseries/ibmebus.c:58:17: error: conflicting type qualifiers for 'ibmebus_bus_type'
+      58 | struct bus_type ibmebus_bus_type;
+         |                 ^~~~~~~~~~~~~~~~
+   In file included from arch/powerpc/platforms/pseries/ibmebus.c:51:
+   arch/powerpc/include/asm/ibmebus.h:51:30: note: previous declaration of 'ibmebus_bus_type' with type 'const struct bus_type'
+      51 | extern const struct bus_type ibmebus_bus_type;
+         |                              ^~~~~~~~~~~~~~~~
+   In file included from arch/powerpc/platforms/pseries/ibmebus.c:40:
+   arch/powerpc/platforms/pseries/ibmebus.c:445:15: error: conflicting type qualifiers for 'ibmebus_bus_type'
+     445 | EXPORT_SYMBOL(ibmebus_bus_type);
+         |               ^~~~~~~~~~~~~~~~
+   include/linux/export.h:56:28: note: in definition of macro '__EXPORT_SYMBOL'
+      56 |         extern typeof(sym) sym;                                 \
+         |                            ^~~
+   include/linux/export.h:68:41: note: in expansion of macro '_EXPORT_SYMBOL'
+      68 | #define EXPORT_SYMBOL(sym)              _EXPORT_SYMBOL(sym, "")
+         |                                         ^~~~~~~~~~~~~~
+   arch/powerpc/platforms/pseries/ibmebus.c:445:1: note: in expansion of macro 'EXPORT_SYMBOL'
+     445 | EXPORT_SYMBOL(ibmebus_bus_type);
+         | ^~~~~~~~~~~~~
+   arch/powerpc/platforms/pseries/ibmebus.c:435:23: note: previous definition of 'ibmebus_bus_type' with type 'const struct bus_type'
+     435 | const struct bus_type ibmebus_bus_type = {
+         |                       ^~~~~~~~~~~~~~~~
+
+
+vim +/ibmebus_bus_type +58 arch/powerpc/platforms/pseries/ibmebus.c
+
+d7a301033f1990 arch/powerpc/kernel/ibmebus.c Heiko J Schick 2005-11-16  57  
+6bccf755ff5324 arch/powerpc/kernel/ibmebus.c Joachim Fenkes 2007-03-09 @58  struct bus_type ibmebus_bus_type;
+6bccf755ff5324 arch/powerpc/kernel/ibmebus.c Joachim Fenkes 2007-03-09  59  
+
 -- 
-2.43.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
