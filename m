@@ -1,95 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27536850100
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Feb 2024 01:10:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B826E850294
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Feb 2024 05:59:46 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=marliere.net header.i=@marliere.net header.a=rsa-sha256 header.s=2024 header.b=HtWBl8Cz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uP/nY3bJ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TWrjF0S3xz3cgW
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Feb 2024 11:10:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TWz6R5k1sz3cND
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Feb 2024 15:59:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=marliere.net header.i=@marliere.net header.a=rsa-sha256 header.s=2024 header.b=HtWBl8Cz;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uP/nY3bJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::130; helo=mail-il1-x130.google.com; envelope-from=rbmarliere@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-x130.google.com (mail-il1-x130.google.com [IPv6:2607:f8b0:4864:20::130])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWrdC3v0Tz3cBH
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Feb 2024 11:07:27 +1100 (AEDT)
-Received: by mail-il1-x130.google.com with SMTP id e9e14a558f8ab-363f0b0a4fbso2213905ab.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Feb 2024 16:07:27 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707523644; x=1708128444;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:dkim-signature:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RZNl1Nye2ncQoYBtuTJZGLa+1bUaHxQW2hW4pvSwI+0=;
-        b=AgxjCoHUdXDLt02XJTtkWcwbKRIWL01eJlcii4iIfbjiJAR6CIiWrjU490D/09vVSn
-         rshdpNC13WZoEIBNbeogm19duzx9skyKBpYJpMG3AjI61CH394qNi4EbRZIrBvizWJOE
-         SmvrTJlBCyk/mcZ+JR3xqckzbLyMKnG4DWPdq/wis81HkfnO2BCF92TtFIHfxd8oJ7nM
-         4ZdCFUx2pUbbCE18p37iY9tX/8Blc3wxFTDIJVNcJH8wvypAicjSXHbGXjUT7tKnuM8+
-         s0hslqTavibxKql70tSGv/+Kj42Z+myKAijsY0QBGNdfnFO6JL3iyE4LpuT7yeXCPtGZ
-         UKxg==
-X-Gm-Message-State: AOJu0YyhkpSIfHDydW4rNuYnwQRStf9lgnJVKLQH8pjKFCEUDRCYV32W
-	a5VfXPUZJ31zmGJeBgylYGFeiJZDyozOO0Z94LV2cJlL0Qx49aKW
-X-Google-Smtp-Source: AGHT+IFjWpejum1p1/vdv1BGjtXN7B5mtVZFb0/yATzFOsqKSf6bGLt8FVbkzi7VkX/JMk9PwVL5yg==
-X-Received: by 2002:a92:b745:0:b0:363:d9eb:c2de with SMTP id c5-20020a92b745000000b00363d9ebc2demr915116ilm.6.1707523644142;
-        Fri, 09 Feb 2024 16:07:24 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUfkrikHMdzjZpt1BDV82uhnXds79HetY/KS5BbA2g8Q10MbHNtUiMVhwiBdAAqIh55En/wRQE2nTBjHhyauscgehZw4+FgP+lSGTCoX3fXAcQ110T/tRCWCGtjApJLlLM0XddSowx+prC6A8jy8Y99y1lMetwn/+L8g8odVu2zsKA7Eds5VToqiJ1CPOl3DdmFiy4aO1F4rHoqAm/cDzPcV+KPBTMwlv/U1HAYAiJhEE892L8LHhyzvSmij7Aak0sov3vJ8iMIzFiGcBIW
-Received: from mail.marliere.net ([24.199.118.162])
-        by smtp.gmail.com with ESMTPSA id b30-20020a63715e000000b005cfbec9f8b4sm2386759pgn.54.2024.02.09.16.07.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Feb 2024 16:07:23 -0800 (PST)
-From: "Ricardo B. Marliere" <ricardo@marliere.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
-	s=2024; t=1707523642;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RZNl1Nye2ncQoYBtuTJZGLa+1bUaHxQW2hW4pvSwI+0=;
-	b=HtWBl8CzqrlCIcxNQ3PWSqy+/Hz2YnVuaJ1AEpd3zB7827MKw6DQ41MXb+Xcjnn/2a+el8
-	4w4WayEjE+I5AuEIKjwnljv3PRPAiWsNGnBXEM/4R+B/I0ul9MmW9PkdeD1HTuVhxYkqrz
-	C0xP1qjyM+SnWR+JFroMjUqnDDFuQtntH6Qx/HcRoCHwq7U6W9vlgh5bT50CPEL6Ecjzz3
-	c3LmF/tdM+VttOVMSOf1poQ7ADJy1sbChwuWZ2W3xLkEKv/WxfIHvk6OETicluAH7vkgty
-	LT4N5pK6y99VREHyNg5CSaw8N+BNJzxoxBaapAtRqsq8zlNmyV2tHfPs+6Tsbw==
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=ricardo@marliere.net smtp.mailfrom=ricardo@marliere.net
-Date: Fri, 09 Feb 2024 21:07:19 -0300
-Subject: [PATCH 4/4] powerpc: ibmebus: make ibmebus_bus_type const
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TWtP30HKKz30hG
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Feb 2024 12:27:02 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 8A2676225D;
+	Sat, 10 Feb 2024 01:26:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8D5C433C7;
+	Sat, 10 Feb 2024 01:26:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707528418;
+	bh=ZbSoZXx/9HDBf8DsNqbS8trxVTS30KxSnV3BsPNQp3k=;
+	h=From:To:Cc:Subject:Date:From;
+	b=uP/nY3bJB+/VTamjus0HHPCwu+bMefQIk78SOUwKphz3+gWiLnNZ4DakrWJNSDx2O
+	 VTaU1OxpBh4Fd/KtZ/2pjL1q+TKDtJUf8zOpHrKnjwejf9chfYQoZVkUAXZhKzAIfu
+	 SDsy166t5sAGJfNCF1XfXPzm5tVktGrse6iCTgqRp5bo3wt8aQePan4sr1nAzLc/uc
+	 edCfP+fu0w8DPgThvXuOXR80kthoHTXbhU40CJP3tCwQNP/qI51uex6hw93abDldML
+	 HebBcWwW1alYdWU39xT8wSx8JXVAASlK1C5I7HzfBtF8ISK3R54aY/5uWJ0lpqRKAd
+	 onWTuotlmiQIQ==
+From: Niklas Cassel <cassel@kernel.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>,
+	Roy Zang <roy.zang@nxp.com>,
+	Srikanth Thokala <srikanth.thokala@intel.com>,
+	Marek Vasut <marek.vasut+renesas@gmail.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Jon Mason <jdmason@kudzu.us>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Allen Hubbe <allenbh@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>
+Subject: [PATCH 0/2] PCI endpoint BAR hardware description cleanup
+Date: Sat, 10 Feb 2024 02:26:24 +0100
+Message-ID: <20240210012634.600301-1-cassel@kernel.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240209-bus_cleanup-powerpc2-v1-4-79a56dcaebb1@marliere.net>
-References: <20240209-bus_cleanup-powerpc2-v1-0-79a56dcaebb1@marliere.net>
-In-Reply-To: <20240209-bus_cleanup-powerpc2-v1-0-79a56dcaebb1@marliere.net>
-To: Michael Ellerman <mpe@ellerman.id.au>, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1622; i=ricardo@marliere.net;
- h=from:subject:message-id; bh=qfzL4dZjlBHFtDwhGgCc6fcqy06lU4Edb3ekIeLug9k=;
- b=owEBbQKS/ZANAwAKAckLinxjhlimAcsmYgBlxr5QhN6gVJXkQevkdbSE1nkvWBm2oOqJEqMg2
- Zyb7GyHtAKJAjMEAAEKAB0WIQQDCo6eQk7jwGVXh+HJC4p8Y4ZYpgUCZca+UAAKCRDJC4p8Y4ZY
- plKpD/sEnqDg91vGpaoLiboM7638MBJIZ2SOARbckZ2DGmj5329s1yfXSuuBSC+qEJ7nYhPWFY0
- +gHWkY2T7cxt3u09NE7CEjIpwN9OggvTja9uT+iHOvrJJZ/IKy3zbNQ1wuQgAHoFVlD8iIDJ6k3
- mR2Zz/DZSCPvVOVkWEXsc0Ixn4VOYOkbcznucst/fRpDlj2iL0gtjp4K1jrU79Q4IYqeWArf50h
- TD80+tr9T8PzVacUf60/NQ1IFVXLWgGK2SAZg/+NTcl0fPmZNbmstWYMejBk1UubcVT6Mk+1uz3
- CgxnNR7uHPDLpxXXV8NhvdrbqswBuHQQYdcRcPfmsyyJKD2n5Ez0s7QWqu6bh0ZgVoTxB6Ft+lV
- hNV+MLWZtK6C+yJvQmuclcewGmh0UXp79iBw27zv9bcmW5LoHmdg1b51+U+rWeByILHqyXtyWy5
- hzkhRBwq5wu2dddmmXV1SZDsKOuJzfH0yfS19IxAasxoTlBkJ4Y0hmwyxdbjqWdeg29SgmrxIxT
- px6msPaISJFtpHr4ZPt4HMRYbTtzUzYkMwE3BV1Agj5/SZ/QfONLSZKtfBOzVdY9V1aOfOUAYDg
- iMusaepwXHJQmsDkD19+A7VOHIAvbhuui2vDngA66iBfVqR1kMYRtsYTVQiGxwc93s1Cc6/rsKC
- PxlD2hang6QavZA==
-X-Developer-Key: i=ricardo@marliere.net; a=openpgp;
- fpr=030A8E9E424EE3C0655787E1C90B8A7C638658A6
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Sat, 10 Feb 2024 15:59:08 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,48 +82,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Ricardo B. Marliere" <ricardo@marliere.net>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-pci@vger.kernel.org, ntb@lists.linux.dev, Frank Li <Frank.Li@nxp.com>, linux-renesas-soc@vger.kernel.org, Niklas Cassel <cassel@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, linux-tegra@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that the driver core can properly handle constant struct bus_type,
-move the ibmebus_bus_type variable to be a constant structure as well,
-placing it into read-only memory which can not be modified at runtime.
+The series is based on top of:
+https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/log/?h=endpoint
 
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
----
- arch/powerpc/include/asm/ibmebus.h       | 2 +-
- arch/powerpc/platforms/pseries/ibmebus.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/ibmebus.h b/arch/powerpc/include/asm/ibmebus.h
-index 6f33253a364a..46fe406f461c 100644
---- a/arch/powerpc/include/asm/ibmebus.h
-+++ b/arch/powerpc/include/asm/ibmebus.h
-@@ -48,7 +48,7 @@
- 
- struct platform_driver;
- 
--extern struct bus_type ibmebus_bus_type;
-+extern const struct bus_type ibmebus_bus_type;
- 
- int ibmebus_register_driver(struct platform_driver *drv);
- void ibmebus_unregister_driver(struct platform_driver *drv);
-diff --git a/arch/powerpc/platforms/pseries/ibmebus.c b/arch/powerpc/platforms/pseries/ibmebus.c
-index 998e3aff2457..4bb611afaba4 100644
---- a/arch/powerpc/platforms/pseries/ibmebus.c
-+++ b/arch/powerpc/platforms/pseries/ibmebus.c
-@@ -432,7 +432,7 @@ static int ibmebus_bus_modalias(const struct device *dev, struct kobj_uevent_env
- 	return of_device_uevent_modalias(dev, env);
- }
- 
--struct bus_type ibmebus_bus_type = {
-+const struct bus_type ibmebus_bus_type = {
- 	.name      = "ibmebus",
- 	.uevent    = ibmebus_bus_modalias,
- 	.bus_groups = ibmbus_bus_groups,
+Hello all,
+
+This series cleans up the hardware description for PCI endpoint BARs.
+
+The problems with the existing hardware description:
+-The documentation is lackluster.
+-Some of the names are confusingly similar, e.g. fixed_64bit and
+ fixed_size, even though these are for completely unrelated things.
+-The way that the BARs are defined in the endpoint controller drivers
+ is messy, because the left hand side is not a BAR, so you can mark a
+ BAR as e.g. both fixed size and reserved.
+
+This series tries to address all the problems above.
+
+Personally, I think that the code is more readable, both the endpoint
+controller drivers, but also pci-epc-core.c.
+
+(Oh, and as you can probably guess, I will be sending out a patch series
+that adds BAR_RESIZABLE to enum pci_epc_bar_type in the coming week(s).)
+
+
+Kind regards,
+Niklas
+
+
+Niklas Cassel (2):
+  PCI: endpoint: Clean up hardware description for BARs
+  PCI: endpoint: Drop only_64bit on reserved BARs
+
+ drivers/pci/controller/dwc/pci-imx6.c         |  3 +-
+ drivers/pci/controller/dwc/pci-keystone.c     | 12 +++---
+ .../pci/controller/dwc/pci-layerscape-ep.c    |  5 ++-
+ drivers/pci/controller/dwc/pcie-keembay.c     |  8 +++-
+ drivers/pci/controller/dwc/pcie-rcar-gen4.c   |  4 +-
+ drivers/pci/controller/dwc/pcie-tegra194.c    | 10 +++--
+ drivers/pci/controller/dwc/pcie-uniphier-ep.c | 15 ++++++--
+ drivers/pci/controller/pcie-rcar-ep.c         | 14 ++++---
+ drivers/pci/endpoint/functions/pci-epf-ntb.c  |  4 +-
+ drivers/pci/endpoint/functions/pci-epf-test.c |  8 ++--
+ drivers/pci/endpoint/functions/pci-epf-vntb.c |  2 +-
+ drivers/pci/endpoint/pci-epc-core.c           | 25 +++++-------
+ drivers/pci/endpoint/pci-epf-core.c           | 15 ++++----
+ include/linux/pci-epc.h                       | 38 ++++++++++++++++---
+ 14 files changed, 105 insertions(+), 58 deletions(-)
 
 -- 
 2.43.0
