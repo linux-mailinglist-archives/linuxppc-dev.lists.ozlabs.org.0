@@ -1,50 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA95D850D8E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Feb 2024 07:43:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75B08850E53
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Feb 2024 08:59:58 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NEVB8Lya;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=BwS+m6qg;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TYFK94R4lz3cNY
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Feb 2024 17:43:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TYH1S310zz3vZ4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Feb 2024 18:59:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NEVB8Lya;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=BwS+m6qg;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.194; helo=relay2-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TYFJS1gMVz3bcJ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Feb 2024 17:42:48 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1707720166;
-	bh=HPIKIlgH7qVN2nwc0zwVmUXEOTYvZzJH/gucpWhgTr4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=NEVB8LyaWIRstrQIhM8dr53vkzCcWoJcN+A16FbVds78uv8n3aCBbuJqWwq0OfIiH
-	 c4wCrD8CUmH/QE9sYsplfQYPq/6v6ZU2TUNBtYlpgtqCrr2ZxfztooU38hKCcaVbcE
-	 /FyCogMs0i+YB1KAN6mZrV+u26OAyDw7WkSZEaAt/uPgwJjq1ZtNfqrtvkSh9xEQiV
-	 vCRif5t6x4H6G/6fR+njx0tkkI4Ifnu33SGMqqr/aQ54+FiZ0NZvsyMfhhWf7bb8oJ
-	 vHA4yf4OVqF4n8/3mLgl3OGz56izzyxnu5Ig11UbiqIpBzBI2p34ZqfLIMQQzSnZCD
-	 Zcsuwzdl3EOnA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4TYFJQ4KZ7z4wcH;
-	Mon, 12 Feb 2024 17:42:46 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] powerpc/kasan: Limit KASAN thread size increase to 32KB
-Date: Mon, 12 Feb 2024 17:42:44 +1100
-Message-ID: <20240212064244.3924505-1-mpe@ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TYGyF49nDz30N8
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Feb 2024 18:57:06 +1100 (AEDT)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 7E36340006;
+	Mon, 12 Feb 2024 07:56:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1707724622;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=YSfZQ+fRkCMgKK8xfkXLcaIY0CpWpwvD1FeC5lzh3h8=;
+	b=BwS+m6qgkhMcZiklPjTbn01zfstqn6kmW83bm3eK6557hU+1f0mlrBNyjuYS4SRFnoel5h
+	DXVKJ+eBew0Fl7ZRwlt+3iGFbV0bfXUe/pIrQQtWzfYejsLtAqgNUv2lZb9tesZeHYghH3
+	0xedqZ60TFSiyH7L++d0wtoQFJ+fLQ9E6ftqUhLm5l2D5cuxqnEC1FtPnFIvcYxreDCrir
+	opmRtVYl9ACNfrrkPMHo8joDpDN6sZEa80ZE0qEN66a1YO/8s9zsaebNOlzk3HNf75VvHg
+	pj8RuQxB2/BbzrIqerDICZr1JyH6JiER8TsOBtzuh/nfWjKrVJ22lZjlhxsDPA==
+From: Herve Codina <herve.codina@bootlin.com>
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Subject: [PATCH v3 RESEND 0/6] Add support for QMC HDLC
+Date: Mon, 12 Feb 2024 08:56:28 +0100
+Message-ID: <20240212075646.19114-1-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,49 +63,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: spoorthy@linux.ibm.com, bgray@linux.ibm.com
+Cc: Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-KASAN is seen to increase stack usage, to the point that it was reported
-to lead to stack overflow on some 32-bit machines (see link).
+Hi,
 
-To avoid overflows the stack size was doubled for KASAN builds in
-commit 3e8635fb2e07 ("powerpc/kasan: Force thread size increase with
-KASAN").
+Note: Resent this v3 series with missing maintainers added in CC.
 
-However with a 32KB stack size to begin with, the doubling leads to a
-64KB stack, which causes build errors:
-  arch/powerpc/kernel/switch.S:249: Error: operand out of range (0x000000000000fe50 is not between 0xffffffffffff8000 and 0x0000000000007fff)
+This series introduces the QMC HDLC support.
 
-Although the asm could be reworked, in practice a 32KB stack seems
-sufficient even for KASAN builds - the additional usage seems to be in
-the 2-3KB range for a 64-bit KASAN build.
+Patches were previously sent as part of a full feature series and were
+previously reviewed in that context:
+"Add support for QMC HDLC, framer infrastructure and PEF2256 framer" [1]
 
-So only increase the stack for KASAN if the stack size is < 32KB.
+In order to ease the merge, the full feature series has been split and
+needed parts were merged in v6.8-rc1:
+ - "Prepare the PowerQUICC QMC and TSA for the HDLC QMC driver" [2]
+ - "Add support for framer infrastructure and PEF2256 framer" [3]
 
-Link: https://lore.kernel.org/linuxppc-dev/bug-207129-206035@https.bugzilla.kernel.org%2F/
-Reported-by: Spoorthy <spoorthy@linux.ibm.com>
-Reported-by: Benjamin Gray <bgray@linux.ibm.com>
-Fixes: 18f14afe2816 ("powerpc/64s: Increase default stack size to 32KB")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/include/asm/thread_info.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This series contains patches related to the QMC HDLC part (QMC HDLC
+driver):
+ - Introduce the QMC HDLC driver (patches 1 and 2)
+ - Add timeslots change support in QMC HDLC (patch 3)
+ - Add framer support as a framer consumer in QMC HDLC (patch 4)
 
-diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
-index bf5dde1a4114..15c5691dd218 100644
---- a/arch/powerpc/include/asm/thread_info.h
-+++ b/arch/powerpc/include/asm/thread_info.h
-@@ -14,7 +14,7 @@
- 
- #ifdef __KERNEL__
- 
--#ifdef CONFIG_KASAN
-+#if defined(CONFIG_KASAN) && CONFIG_THREAD_SHIFT < 15
- #define MIN_THREAD_SHIFT	(CONFIG_THREAD_SHIFT + 1)
- #else
- #define MIN_THREAD_SHIFT	CONFIG_THREAD_SHIFT
+Compare to the original full feature series, a modification was done on
+patch 3 in order to use a coherent prefix in the commit title.
+
+I kept the patches unsquashed as they were previously sent and reviewed.
+Of course, I can squash them if needed.
+
+Compared to the previous iteration:
+  https://lore.kernel.org/linux-kernel/20240130084035.115086-1-herve.codina@bootlin.com/
+this v3 series:
+- Remove 'inline' function specifier from .c file.
+- Fixed a bug introduced in the previous iteration.
+- Remove one lock/unlock sequence in the QMC HDCL xmit path.
+- Use bitmap_from_u64().
+
+Best regards,
+Hervé
+
+[1]: https://lore.kernel.org/linux-kernel/20231115144007.478111-1-herve.codina@bootlin.com/
+[2]: https://lore.kernel.org/linux-kernel/20231205152116.122512-1-herve.codina@bootlin.com/
+[3]: https://lore.kernel.org/linux-kernel/20231128132534.258459-1-herve.codina@bootlin.com/
+
+Changes v2 -> v3
+  - Patch 1
+    Remove 'inline' function specifier from .c file.
+    Fix a bug introduced when added WARN_ONCE(). The warn condition must
+    be desc->skb (descriptor used) instead of !desc->skb.
+    Remove a lock/unlock section locking the entire qmc_hdlc_xmit()
+    function.
+
+  - Patch 5
+    Use bitmap_from_u64() everywhere instead of bitmap_from_arr32() and
+    bitmap_from_arr64().
+
+Changes v1 -> v2
+  - Patch 1
+    Use the same qmc_hdlc initialisation in qmc_hcld_recv_complete()
+    than the one present in qmc_hcld_xmit_complete().
+    Use WARN_ONCE()
+
+  - Patch 3 (new patch in v2)
+    Make bitmap_onto() available to users
+
+  - Patch 4 (new patch in v2)
+    Introduce bitmap_off()
+
+  - Patch 5 (patch 3 in v1)
+    Use bitmap_*() functions
+
+  - Patch 6 (patch 4 in v1)
+    No changes
+
+Changes compare to the full feature series:
+  - Patch 3
+    Use 'net: wan: fsl_qmc_hdlc:' as commit title prefix
+
+Patches extracted:
+  - Patch 1 : full feature series patch 7
+  - Patch 2 : full feature series patch 8
+  - Patch 3 : full feature series patch 20
+  - Patch 4 : full feature series patch 27
+
+Herve Codina (6):
+  net: wan: Add support for QMC HDLC
+  MAINTAINERS: Add the Freescale QMC HDLC driver entry
+  bitmap: Make bitmap_onto() available to users
+  bitmap: Introduce bitmap_off()
+  net: wan: fsl_qmc_hdlc: Add runtime timeslots changes support
+  net: wan: fsl_qmc_hdlc: Add framer support
+
+ MAINTAINERS                    |   7 +
+ drivers/net/wan/Kconfig        |  12 +
+ drivers/net/wan/Makefile       |   1 +
+ drivers/net/wan/fsl_qmc_hdlc.c | 807 +++++++++++++++++++++++++++++++++
+ include/linux/bitmap.h         |   3 +
+ lib/bitmap.c                   |  45 +-
+ 6 files changed, 874 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/wan/fsl_qmc_hdlc.c
+
 -- 
 2.43.0
 
