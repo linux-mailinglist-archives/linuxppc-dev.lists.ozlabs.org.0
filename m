@@ -1,95 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33688851E71
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Feb 2024 21:08:48 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=marliere.net header.i=@marliere.net header.a=rsa-sha256 header.s=2024 header.b=cj+Gm/K7;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62A29851EC7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Feb 2024 21:40:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TYbBQ0k8Wz3vkS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Feb 2024 07:08:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TYbtY2SHKz3dW8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Feb 2024 07:40:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=marliere.net header.i=@marliere.net header.a=rsa-sha256 header.s=2024 header.b=cj+Gm/K7;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=rbmarliere@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TYb5m6spWz3d2x
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Feb 2024 07:04:44 +1100 (AEDT)
-Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1d72f71f222so28160905ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Feb 2024 12:04:44 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707768282; x=1708373082;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:dkim-signature:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=db2Uhnapp+w5dyUlo+M8v03nvRL1AyZA94jDVlSeXjQ=;
-        b=Op+EVSLIjGr7vYkox7F4HXCXuRYVxcAmqBhOzsESNI37zD4s1OuvcirudHxynDYPGQ
-         bOJ4J3rYqT5P006N/pW4Jm9KsUIfWULvRxIPlOyAS4cwkskVOHWU38CoigAJOPSq7hmi
-         ipVNZNCklC/Dj++G8UayHDiT/y+cEbAekwNH8LoXmw+Qld+aPNLA4Ox3+b3leRdgrTma
-         mN6SbwwOV2HV7MUujYJYTzIFLpxt1rjwuCBM3Zt398A8zBWJbomrkNzrswvuz0cDSzh3
-         PNA/iaIQOVdXK622xMbA1udNhabJEsfmHSuXvWhhFB+F0323Ghm/pMypDXOxAr4/BAlL
-         Rv7w==
-X-Gm-Message-State: AOJu0Yx6JxaR2+c17SwDucRh76JdCiWbVr9JL+4/2UNCmjN4OEGmbKSQ
-	eY/7+jfgBfFXRDehSWrJ2acbEsTX/Xngu3g1wdn8/xeOAmrJuYyV8t5h0yk6tiwMXQ==
-X-Google-Smtp-Source: AGHT+IE8SVcMxOkLwBDIRmqSz/zr2jQon8D4r5B9AFrKXhLXIulNq2CR9/4ML5XN80KSjvnDri+oBw==
-X-Received: by 2002:a17:902:f809:b0:1d9:427a:99b with SMTP id ix9-20020a170902f80900b001d9427a099bmr6869869plb.32.1707768282176;
-        Mon, 12 Feb 2024 12:04:42 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWh06n6YhsaJA8HcOSOeEyE9tkWsBCUMlmMXjeAnxBL4mwLpDYhrSU2gThu1OCwH7Tau36MBJYZphBqkJchgGjcyncBBsXHIJruIwI8Ole3n3F9/VRVKVB2qTX2N58J23sA47waUHOedZm391zeUNE+j14/lsHLrrhmeE9snpx+RZDvn6UQTIuX9YkVt8JooBJawbmG+IUTM/zc6+4pJNgcrM+SSCcdyLXEva9I5s2NuwFIeFRTfdz/ML1VMMmAhCF2D7ZeKLIjeIFTmOQB
-Received: from mail.marliere.net ([24.199.118.162])
-        by smtp.gmail.com with ESMTPSA id s2-20020a170902c64200b001d958de13c7sm759098pls.0.2024.02.12.12.04.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Feb 2024 12:04:41 -0800 (PST)
-From: "Ricardo B. Marliere" <ricardo@marliere.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
-	s=2024; t=1707768280;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=db2Uhnapp+w5dyUlo+M8v03nvRL1AyZA94jDVlSeXjQ=;
-	b=cj+Gm/K7r/ULgwd1zluQ8A+gbU2ta02TRefNIMEOMo0pSU1uNofUxpm4ooY+ye2Iy6fHzd
-	XlX/D+Kz7L1VgVRzoTUFqmBOT9oZGmouYaiKKAAmhvU/bgC/+v9k1GhSrAfhWID44UVfxS
-	EN55cY/ZxwvygA3SM9wJ7CbIju4vcYE3Qht4GWa/PssSB64Yx0ppDk4GHnl+5ZyLtKwQkh
-	/zpDf674RgUBRT2n3i181r1hIzyKtkiaZBJwiYeemDB8RcsiRwTlgwkellA93FfVNmxYxg
-	9Ap6d8BNw/d9/OeWUgoM6AEQH7xlb82Q+yOWADkwBn5SZqO0R1qT/+g3M6ciAg==
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=ricardo@marliere.net smtp.mailfrom=ricardo@marliere.net
-Date: Mon, 12 Feb 2024 17:05:03 -0300
-Subject: [PATCH v2 5/5] powerpc: ibmebus: make ibmebus_bus_type const
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TYbt56Z3qz3bwJ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Feb 2024 07:39:39 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 56446DA7;
+	Mon, 12 Feb 2024 12:39:47 -0800 (PST)
+Received: from [10.57.78.115] (unknown [10.57.78.115])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C95403F766;
+	Mon, 12 Feb 2024 12:39:00 -0800 (PST)
+Message-ID: <64395ae4-3a7d-45dd-8f1d-ea6b232829c5@arm.com>
+Date: Mon, 12 Feb 2024 20:38:59 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 19/25] arm64/mm: Wire up PTE_CONT for user mappings
+Content-Language: en-GB
+From: Ryan Roberts <ryan.roberts@arm.com>
+To: Mark Rutland <mark.rutland@arm.com>
+References: <20240202080756.1453939-1-ryan.roberts@arm.com>
+ <20240202080756.1453939-20-ryan.roberts@arm.com>
+ <ZcoIVypNwOPIX30w@FVFF77S0Q05N>
+ <c899f252-dbf3-4e7b-8342-b5a5180486cd@arm.com>
+ <aa232591-e0c8-422d-a641-fa555914c5f0@arm.com>
+In-Reply-To: <aa232591-e0c8-422d-a641-fa555914c5f0@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240212-bus_cleanup-powerpc2-v2-5-8441b3f77827@marliere.net>
-References: <20240212-bus_cleanup-powerpc2-v2-0-8441b3f77827@marliere.net>
-In-Reply-To: <20240212-bus_cleanup-powerpc2-v2-0-8441b3f77827@marliere.net>
-To: Michael Ellerman <mpe@ellerman.id.au>, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2050; i=ricardo@marliere.net;
- h=from:subject:message-id; bh=nVdAcq5qBuV+u2+BDT0vbbPtDSUMY5Jwqu+E2afCaAQ=;
- b=owEBbQKS/ZANAwAKAckLinxjhlimAcsmYgBlynnv/phT/tgLAi3w01xX1x1lm+XkR/vq3YP08
- H7MNNK8uo6JAjMEAAEKAB0WIQQDCo6eQk7jwGVXh+HJC4p8Y4ZYpgUCZcp57wAKCRDJC4p8Y4ZY
- pqLmD/wIPQTXfZHkPBsZz+WbeisckhU1iPI9/FW4ze2PGk/olNSI56xfFPbRxqvEQpuVUjym3t3
- Rx7QRjXneci1tfF+gw7xi2JJIAeXHtECUF+sox6V2X4B9SW9i35gGWfQHAZMUgyuJew/UuFWkW9
- II8liY2MgGjEhVDudIf8uaiazWWzQiS5INaA6NtQdDgjKWRLO8bZ9jgOh41GSRbmJ6ce1RhCan4
- q+QChn0KQKd2xTCxGAC/5cffnhOTyqhDW98TLHou90NiFJR4lAGuI1vu87fOsJ7466CT95W82iv
- th6FiAUmNSErQkN4uHdr95oDgXsx/xQP73ccL+TRNiAZmy+opUIvaxZXyG29euJNIxdQnfmGZV/
- j3UnxUIzcx7pVierP7VmNtIb7I1ISXYyVRdtmBYepA6p57OdiSkpizqoM/6+Rts55swvYVIQ9bl
- VkwMmBHWio39eH0MKHv8HyDOY4uBsJbvPD5qrPZiv6ukIsbyaJpv8d+I6JgUSqhOzYJeMezFlah
- kLxLtsQhvIf/UgmB0FAfmkBLSse5FhFGk6/18o+fx0Ix+VNLD+JT48G99Fyv/MUdfSK82izeSiC
- cF/9SaUKQTYG93oeKu6+dHB0zGDihLVkUyZ5guQDxwJZez53nwi8VhxF7keoTqTuE3oA61bl35x
- YIjcK1OIQ3FScuA==
-X-Developer-Key: i=ricardo@marliere.net; a=openpgp;
- fpr=030A8E9E424EE3C0655787E1C90B8A7C638658A6
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,60 +46,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Ricardo B. Marliere" <ricardo@marliere.net>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, x86@kernel.org, David Hildenbrand <david@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>, Yang Shi <shy828301@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, Andrey Ryabinin <ryabinin.a.a@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>, Alistair Popple <apopple@nvidia.com>, Barry Song <21cnbao@gmail.com>, Matthew Wilcox <willy@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, Zi Yan <ziy@nvidia.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, John Hubbard <jhubbard@nvidia.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since commit d492cc2573a0 ("driver core: device.h: make struct
-bus_type a const *"), the driver core can properly handle constant
-struct bus_type, move the ibmebus_bus_type variable to be a constant
-structure as well, placing it into read-only memory which can not be
-modified at runtime.
+[...]
 
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
----
- arch/powerpc/include/asm/ibmebus.h       | 2 +-
- arch/powerpc/platforms/pseries/ibmebus.c | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+>>>> +static inline bool mm_is_user(struct mm_struct *mm)
+>>>> +{
+>>>> +	/*
+>>>> +	 * Don't attempt to apply the contig bit to kernel mappings, because
+>>>> +	 * dynamically adding/removing the contig bit can cause page faults.
+>>>> +	 * These racing faults are ok for user space, since they get serialized
+>>>> +	 * on the PTL. But kernel mappings can't tolerate faults.
+>>>> +	 */
+>>>> +	return mm != &init_mm;
+>>>> +}
+>>>
+>>> We also have the efi_mm as a non-user mm, though I don't think we manipulate
+>>> that while it is live, and I'm not sure if that needs any special handling.
+>>
+>> Well we never need this function in the hot (order-0 folio) path, so I think I
+>> could add a check for efi_mm here with performance implication. It's probably
+>> safest to explicitly exclude it? What do you think?
+> 
+> Oops: This should have read "I think I could add a check for efi_mm here
+> *without* performance implication"
 
-diff --git a/arch/powerpc/include/asm/ibmebus.h b/arch/powerpc/include/asm/ibmebus.h
-index 6f33253a364a..46fe406f461c 100644
---- a/arch/powerpc/include/asm/ibmebus.h
-+++ b/arch/powerpc/include/asm/ibmebus.h
-@@ -48,7 +48,7 @@
- 
- struct platform_driver;
- 
--extern struct bus_type ibmebus_bus_type;
-+extern const struct bus_type ibmebus_bus_type;
- 
- int ibmebus_register_driver(struct platform_driver *drv);
- void ibmebus_unregister_driver(struct platform_driver *drv);
-diff --git a/arch/powerpc/platforms/pseries/ibmebus.c b/arch/powerpc/platforms/pseries/ibmebus.c
-index 998e3aff2457..b401282727a4 100644
---- a/arch/powerpc/platforms/pseries/ibmebus.c
-+++ b/arch/powerpc/platforms/pseries/ibmebus.c
-@@ -55,7 +55,7 @@ static struct device ibmebus_bus_device = { /* fake "parent" device */
- 	.init_name = "ibmebus",
- };
- 
--struct bus_type ibmebus_bus_type;
-+const struct bus_type ibmebus_bus_type;
- 
- /* These devices will automatically be added to the bus during init */
- static const struct of_device_id ibmebus_matches[] __initconst = {
-@@ -432,7 +432,7 @@ static int ibmebus_bus_modalias(const struct device *dev, struct kobj_uevent_env
- 	return of_device_uevent_modalias(dev, env);
- }
- 
--struct bus_type ibmebus_bus_type = {
-+const struct bus_type ibmebus_bus_type = {
- 	.name      = "ibmebus",
- 	.uevent    = ibmebus_bus_modalias,
- 	.bus_groups = ibmbus_bus_groups,
+It turns out that efi_mm is only defined when CONFIG_EFI is enabled. I can do this:
 
--- 
-2.43.0
+return mm != &init_mm && (!IS_ENABLED(CONFIG_EFI) || mm != &efi_mm);
+
+Is that acceptable? This is my preference, but nothing else outside of efi
+references this symbol currently.
+
+Or perhaps I can convince myself that its safe to treat efi_mm like userspace.
+There are a couple of things that need to be garanteed for it to be safe:
+
+  - The PFNs of present ptes either need to have an associated struct page or
+    need to have the PTE_SPECIAL bit set (either pte_mkspecial() or
+    pte_mkdevmap())
+
+  - Live mappings must either be static (no changes that could cause fold/unfold
+    while live) or the system must be able to tolerate a temporary fault
+
+Mark suggests efi_mm is not manipulated while live, so that meets the latter
+requirement, but I'm not sure about the former?
+
+Thanks,
+Ryan
 
