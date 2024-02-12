@@ -2,48 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57AFA851208
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Feb 2024 12:20:27 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mRmTs1vE;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 02322851219
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Feb 2024 12:22:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TYMSn1vVZz3dS0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Feb 2024 22:20:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TYMWY6Zgqz3dWH
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Feb 2024 22:22:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mRmTs1vE;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TYMS26nrSz2xck
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Feb 2024 22:19:46 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id AD2DE60F53;
-	Mon, 12 Feb 2024 11:19:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47C0C433F1;
-	Mon, 12 Feb 2024 11:19:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707736783;
-	bh=tWF0UWclQ/NoslADhYsN71fCn5aAl9tVNo99KfKidvQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=mRmTs1vEJdlljNDjvZu6R0W1Wa3NOZ9ZwI+XspkWtO+1QTAq4wj8UV8GJc1smFBwC
-	 6zFi06tclH1qtjP7G/h89Xp6dniA/CXx+GsnKK8j5FDWhE3V4RnWZZpgZxfd/GlRxO
-	 Xn54RVt6jB1K6X6QjY6FbdGwZttElmLriRplpPnGA3lSELh7hY20UixxevaX6a0ZYJ
-	 nRQ5phyfdHevnCJ5/Z4ZeOurZQvDyjmQx6a9+xLelK2evbl0q6yvhz/2RRg9xvGNdA
-	 rzPQkXOdw7OTOJqguy5CtpdyJ4T8fnKDpA1jOmMti3FbZ4uGlAOW0bslU+JYSe31UL
-	 BvwkwaAtXCRRA==
-From: Arnd Bergmann <arnd@kernel.org>
-To: Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH] i2c: pasemi: split driver into two separate modules
-Date: Mon, 12 Feb 2024 12:19:04 +0100
-Message-Id: <20240212111933.963985-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.2
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TYMW912Mtz2xck
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Feb 2024 22:22:28 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9C9AFDA7;
+	Mon, 12 Feb 2024 03:22:38 -0800 (PST)
+Received: from [10.57.78.115] (unknown [10.57.78.115])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E5E683F762;
+	Mon, 12 Feb 2024 03:21:53 -0800 (PST)
+Message-ID: <398991e6-d09d-4f47-a110-4ff1e8356b6e@arm.com>
+Date: Mon, 12 Feb 2024 11:21:52 +0000
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 09/10] mm/mmu_gather: improve cond_resched() handling
+ with large folios and expensive page freeing
+Content-Language: en-GB
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+References: <20240209221509.585251-1-david@redhat.com>
+ <20240209221509.585251-10-david@redhat.com>
+ <f1578e92-4de0-4718-bf79-ec29e9a19fe0@arm.com>
+ <6c66f7ca-4b14-4bbb-bf06-e81b3481b03f@redhat.com>
+ <590946ad-a538-4c99-947f-93455c2d96c6@arm.com>
+ <e6774e16-90c0-4fba-9b9c-98de803fc920@redhat.com>
+ <66ca6c58-1983-494f-b920-140be736f1d8@redhat.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <66ca6c58-1983-494f-b920-140be736f1d8@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -56,66 +49,179 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arm-kernel@lists.infradead.org, Wolfram Sang <wsa@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Sven Peter <sven@svenpeter.dev>, Hector Martin <marcan@marcan.st>, linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Olof Johansson <olof@lixom.net>, Nicholas Piggin <npiggin@gmail.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, asahi@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, Alyssa Rosenzweig <alyssa@rosenzweig.io>, linux-i2c@vger.kernel.org
+Cc: Michal Hocko <mhocko@suse.com>, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>, Matthew Wilcox <willy@infradead.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>, Nick Piggin <npiggin@gmail.com>, Yin Fengwei <fengwei.yin@intel.com>, Sven Schnelle <svens@linux.ibm.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Arnd Bergmann <arnd@arndb.de>
+On 12/02/2024 11:05, David Hildenbrand wrote:
+> On 12.02.24 11:56, David Hildenbrand wrote:
+>> On 12.02.24 11:32, Ryan Roberts wrote:
+>>> On 12/02/2024 10:11, David Hildenbrand wrote:
+>>>> Hi Ryan,
+>>>>
+>>>>>> -static void tlb_batch_pages_flush(struct mmu_gather *tlb)
+>>>>>> +static void __tlb_batch_free_encoded_pages(struct mmu_gather_batch *batch)
+>>>>>>     {
+>>>>>> -    struct mmu_gather_batch *batch;
+>>>>>> -
+>>>>>> -    for (batch = &tlb->local; batch && batch->nr; batch = batch->next) {
+>>>>>> -        struct encoded_page **pages = batch->encoded_pages;
+>>>>>> +    struct encoded_page **pages = batch->encoded_pages;
+>>>>>> +    unsigned int nr, nr_pages;
+>>>>>>     +    /*
+>>>>>> +     * We might end up freeing a lot of pages. Reschedule on a regular
+>>>>>> +     * basis to avoid soft lockups in configurations without full
+>>>>>> +     * preemption enabled. The magic number of 512 folios seems to work.
+>>>>>> +     */
+>>>>>> +    if (!page_poisoning_enabled_static() && !want_init_on_free()) {
+>>>>>
+>>>>> Is the performance win really worth 2 separate implementations keyed off this?
+>>>>> It seems a bit fragile, in case any other operations get added to free
+>>>>> which are
+>>>>> proportional to size in future. Why not just always do the conservative
+>>>>> version?
+>>>>
+>>>> I really don't want to iterate over all entries on the "sane" common case. We
+>>>> already do that two times:
+>>>>
+>>>> a) free_pages_and_swap_cache()
+>>>>
+>>>> b) release_pages()
+>>>>
+>>>> Only the latter really is required, and I'm planning on removing the one in (a)
+>>>> to move it into (b) as well.
+>>>>
+>>>> So I keep it separate to keep any unnecessary overhead to the setups that are
+>>>> already terribly slow.
+>>>>
+>>>> No need to iterate a page full of entries if it can be easily avoided.
+>>>> Especially, no need to degrade the common order-0 case.
+>>>
+>>> Yeah, I understand all that. But given this is all coming from an array, (so
+>>> easy to prefetch?) and will presumably all fit in the cache for the common case,
+>>> at least, so its hot for (a) and (b), does separating this out really make a
+>>> measurable performance difference? If yes then absolutely this optimizaiton
+>>> makes sense. But if not, I think its a bit questionable.
+>>
+>> I primarily added it because
+>>
+>> (a) we learned that each cycle counts during mmap() just like it does
+>> during fork().
+>>
+>> (b) Linus was similarly concerned about optimizing out another batching
+>> walk in c47454823bd4 ("mm: mmu_gather: allow more than one batch of
+>> delayed rmaps"):
+>>
+>> "it needs to walk that array of pages while still holding the page table
+>> lock, and our mmu_gather infrastructure allows for batching quite a lot
+>> of pages.  We may have thousands on pages queued up for freeing, and we
+>> wanted to walk only the last batch if we then added a dirty page to the
+>> queue."
+>>
+>> So if it matters enough for reducing the time we hold the page table
+>> lock, it surely adds "some" overhead in general.
+>>
+>>
+>>>
+>>> You're the boss though, so if your experience tells you this is neccessary, then
+>>> I'm ok with that.
+>>
+>> I did not do any measurements myself, I just did that intuitively as
+>> above. After all, it's all pretty straight forward (keeping the existing
+>> logic, we need a new one either way) and not that much code.
+>>
+>> So unless there are strong opinions, I'd just leave the common case as
+>> it was, and the odd case be special.
+> 
+> I think we can just reduce the code duplication easily:
+> 
+> diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+> index d175c0f1e2c8..99b3e9408aa0 100644
+> --- a/mm/mmu_gather.c
+> +++ b/mm/mmu_gather.c
+> @@ -91,18 +91,21 @@ void tlb_flush_rmaps(struct mmu_gather *tlb, struct
+> vm_area_struct *vma)
+>  }
+>  #endif
+>  
+> -static void tlb_batch_pages_flush(struct mmu_gather *tlb)
+> -{
+> -    struct mmu_gather_batch *batch;
+> +/*
+> + * We might end up freeing a lot of pages. Reschedule on a regular
+> + * basis to avoid soft lockups in configurations without full
+> + * preemption enabled. The magic number of 512 folios seems to work.
+> + */
+> +#define MAX_NR_FOLIOS_PER_FREE        512
+>  
+> -    for (batch = &tlb->local; batch && batch->nr; batch = batch->next) {
+> -        struct encoded_page **pages = batch->encoded_pages;
+> +static void __tlb_batch_free_encoded_pages(struct mmu_gather_batch *batch)
+> +{
+> +    struct encoded_page **pages = batch->encoded_pages;
+> +    unsigned int nr, nr_pages;
+>  
+> -        while (batch->nr) {
+> -            /*
+> -             * limit free batch count when PAGE_SIZE > 4K
+> -             */
+> -            unsigned int nr = min(512U, batch->nr);
+> +    while (batch->nr) {
+> +        if (!page_poisoning_enabled_static() && !want_init_on_free()) {
+> +            nr = min(MAX_NR_FOLIOS_PER_FREE, batch->nr);
+>  
+>              /*
+>               * Make sure we cover page + nr_pages, and don't leave
+> @@ -111,14 +114,39 @@ static void tlb_batch_pages_flush(struct mmu_gather *tlb)
+>              if (unlikely(encoded_page_flags(pages[nr - 1]) &
+>                       ENCODED_PAGE_BIT_NR_PAGES_NEXT))
+>                  nr++;
+> +        } else {
+> +            /*
+> +             * With page poisoning and init_on_free, the time it
+> +             * takes to free memory grows proportionally with the
+> +             * actual memory size. Therefore, limit based on the
+> +             * actual memory size and not the number of involved
+> +             * folios.
+> +             */
+> +            for (nr = 0, nr_pages = 0;
+> +                 nr < batch->nr && nr_pages < MAX_NR_FOLIOS_PER_FREE;
+> +                 nr++) {
+> +                if (unlikely(encoded_page_flags(pages[nr]) &
+> +                         ENCODED_PAGE_BIT_NR_PAGES_NEXT))
+> +                    nr_pages += encoded_nr_pages(pages[++nr]);
+> +                else
+> +                    nr_pages++;
+> +            }
+> +        }
+>  
+> -            free_pages_and_swap_cache(pages, nr);
+> -            pages += nr;
+> -            batch->nr -= nr;
+> +        free_pages_and_swap_cache(pages, nr);
+> +        pages += nr;
+> +        batch->nr -= nr;
+>  
+> -            cond_resched();
+> -        }
+> +        cond_resched();
+>      }
+> +}
+> +
+> +static void tlb_batch_pages_flush(struct mmu_gather *tlb)
+> +{
+> +    struct mmu_gather_batch *batch;
+> +
+> +    for (batch = &tlb->local; batch && batch->nr; batch = batch->next)
+> +        __tlb_batch_free_encoded_pages(batch);
+>      tlb->active = &tlb->local;
+>  }
+>  
 
-On powerpc, it is possible to compile test both the new apple (arm) and
-old pasemi (powerpc) drivers for the i2c hardware at the same time,
-which leads to a warning about linking the same object file twice:
+Yes this is much cleaner IMHO! I don't think putting the poison and init_on_free
+checks inside the while loops should make a whole lot of difference - you're
+only going round that loop once in the common (4K pages) case.
 
-scripts/Makefile.build:244: drivers/i2c/busses/Makefile: i2c-pasemi-core.o is added to multiple modules: i2c-apple i2c-pasemi
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
 
-Rework the driver to have an explicit helper module, letting Kbuild
-take care of whether this should be built-in or a loadable driver.
-
-Fixes: 9bc5f4f660ff ("i2c: pasemi: Split pci driver to its own file")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/i2c/busses/Makefile          | 6 ++----
- drivers/i2c/busses/i2c-pasemi-core.c | 6 ++++++
- 2 files changed, 8 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/i2c/busses/Makefile b/drivers/i2c/busses/Makefile
-index 3757b9391e60..aa0ee8ecd6f2 100644
---- a/drivers/i2c/busses/Makefile
-+++ b/drivers/i2c/busses/Makefile
-@@ -90,10 +90,8 @@ obj-$(CONFIG_I2C_NPCM)		+= i2c-npcm7xx.o
- obj-$(CONFIG_I2C_OCORES)	+= i2c-ocores.o
- obj-$(CONFIG_I2C_OMAP)		+= i2c-omap.o
- obj-$(CONFIG_I2C_OWL)		+= i2c-owl.o
--i2c-pasemi-objs := i2c-pasemi-core.o i2c-pasemi-pci.o
--obj-$(CONFIG_I2C_PASEMI)	+= i2c-pasemi.o
--i2c-apple-objs := i2c-pasemi-core.o i2c-pasemi-platform.o
--obj-$(CONFIG_I2C_APPLE)	+= i2c-apple.o
-+obj-$(CONFIG_I2C_PASEMI)	+= i2c-pasemi-core.o i2c-pasemi-pci.o
-+obj-$(CONFIG_I2C_APPLE)		+= i2c-pasemi-core.o i2c-pasemi-platform.o
- obj-$(CONFIG_I2C_PCA_PLATFORM)	+= i2c-pca-platform.o
- obj-$(CONFIG_I2C_PNX)		+= i2c-pnx.o
- obj-$(CONFIG_I2C_PXA)		+= i2c-pxa.o
-diff --git a/drivers/i2c/busses/i2c-pasemi-core.c b/drivers/i2c/busses/i2c-pasemi-core.c
-index 7d54a9f34c74..bd8becbdeeb2 100644
---- a/drivers/i2c/busses/i2c-pasemi-core.c
-+++ b/drivers/i2c/busses/i2c-pasemi-core.c
-@@ -369,6 +369,7 @@ int pasemi_i2c_common_probe(struct pasemi_smbus *smbus)
- 
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(pasemi_i2c_common_probe);
- 
- irqreturn_t pasemi_irq_handler(int irq, void *dev_id)
- {
-@@ -378,3 +379,8 @@ irqreturn_t pasemi_irq_handler(int irq, void *dev_id)
- 	complete(&smbus->irq_completion);
- 	return IRQ_HANDLED;
- }
-+EXPORT_SYMBOL_GPL(pasemi_irq_handler);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Olof Johansson <olof@lixom.net>");
-+MODULE_DESCRIPTION("PA Semi PWRficient SMBus driver");
--- 
-2.39.2
 
