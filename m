@@ -2,95 +2,107 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F8828518E1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Feb 2024 17:25:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB04785191D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Feb 2024 17:28:48 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fuObdmPk;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fuObdmPk;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Z/C7+Pk5;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NGFkvIK1;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TYVDJ1Bmgz3cy4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Feb 2024 03:25:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TYVJZ66Ymz3dRV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Feb 2024 03:28:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fuObdmPk;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fuObdmPk;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Z/C7+Pk5;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NGFkvIK1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TYVCY6mymz3c2C
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Feb 2024 03:24:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TYVHs51nDz2xFt
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Feb 2024 03:28:09 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707755062;
+	s=mimecast20190719; t=1707755286;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=GOwkoYQuMIadcYKF6zWQ+GFY38QcIy38SlPZ0TdQSoI=;
-	b=fuObdmPkrguQ6zkiPJe6ZvBC0rAUUFy1oNn8hSiMLttM+a8EoN0vYw+OLo7/BzH2YwT1qd
-	oPfwMrwCN39ykJW7ecqJwQLPOwdo/lYhRHWbbrgKCVTAE7f5S1retT68Sij1zWjTj9VEtH
-	O2AIyvMQVph9mgAaEP4XOohGW7oQNKc=
+	bh=u9+rwPAvqYLW6lsheKf2xHocBNG2KMyghJEaP/POFlg=;
+	b=Z/C7+Pk5jpaRm6vBc2QsyWrt81POKyi5rLK4lhnIHOdG2GBMiQ7H9luxeWR0NNsOe0h/kt
+	pDyWzadsc3UioDUK2L7glj2yOVsVIYxJyqPBK+Wvqje1uG1oVZpRjsO4auv6q7+Yit4Ew7
+	Hznj3dI5lET72RfH4Y6/PkjlMgFcCU4=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707755062;
+	s=mimecast20190719; t=1707755287;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=GOwkoYQuMIadcYKF6zWQ+GFY38QcIy38SlPZ0TdQSoI=;
-	b=fuObdmPkrguQ6zkiPJe6ZvBC0rAUUFy1oNn8hSiMLttM+a8EoN0vYw+OLo7/BzH2YwT1qd
-	oPfwMrwCN39ykJW7ecqJwQLPOwdo/lYhRHWbbrgKCVTAE7f5S1retT68Sij1zWjTj9VEtH
-	O2AIyvMQVph9mgAaEP4XOohGW7oQNKc=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=u9+rwPAvqYLW6lsheKf2xHocBNG2KMyghJEaP/POFlg=;
+	b=NGFkvIK1isIqWJiWuk4gi6s81eEC3W4dUzUOvdbU84RKuqF65KYOQ6jKU8VCa40Jws/llu
+	CtKn/sJDRhTbk8dewqJYovtl9eZP3VncJHpF2OLMbZaqyDhx+InFRUbUB5Y16eig1EdAQu
+	s1ulStmS8KC+J4Erxl0HfbD8B6motX0=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-656-klfs_r9qOAqhQCmrRsKO7g-1; Mon, 12 Feb 2024 11:24:19 -0500
-X-MC-Unique: klfs_r9qOAqhQCmrRsKO7g-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-40e435a606aso22123095e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Feb 2024 08:24:18 -0800 (PST)
+ us-mta-607-g8Cl0z_aNA2GxHVi2rmnkQ-1; Mon, 12 Feb 2024 11:28:03 -0500
+X-MC-Unique: g8Cl0z_aNA2GxHVi2rmnkQ-1
+Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-51156c3208cso3070499e87.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Feb 2024 08:28:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707755058; x=1708359858;
+        d=1e100.net; s=20230601; t=1707755282; x=1708360082;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
          :references:cc:to:content-language:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GOwkoYQuMIadcYKF6zWQ+GFY38QcIy38SlPZ0TdQSoI=;
-        b=n7wsXqLXeQ3RuMCjCih0PezI2+pLiQndA7CYk5WiXUPhdbQFDuGMnUvCcn4VQHGwR6
-         ZM3ZqHLIH4R7I3cD2SkwQhE8yARVbbv5ZXADQb8/1lyGSkxyNgaS1NqlMMSnp6PLq1A7
-         Rbo69gtC/cjQ26WO8PQJEKmS4N32WP7ZKKYozd6X3vzwZprJV8y/7DOYJLBAoBO/pI8u
-         dM7J7XrH/xix7PutPn3LWDX8q0NexXcXVQhIBVV7LHOxgmBoEO3KZ32TRKjjfS4D11w+
-         h41CF8aD8xxPb6HP8Or2c7Kqgjzg9gvmISJlqULeEo4gbx6UvSpSUaQxHKK312attHik
-         OaVA==
-X-Gm-Message-State: AOJu0YyikCIw7KghepSzZWu9A09jaAzYLbC4+l74l8QW9OeXfv4rTLQO
-	d9QPKjjr06KtPFU8kdQZORtu7rKR4sAORiKqiAwvl9bryz1N1Q2WB49cO/xKQbIZfD1jwCa3Iys
-	9Oj/G3wFldPKPwh65pifzkHGWMSnKktkoBoSz1C6ZArkks2mcMkxy4gEBIk1PIFk=
-X-Received: by 2002:a05:600c:190b:b0:410:cba3:e9bd with SMTP id j11-20020a05600c190b00b00410cba3e9bdmr2495714wmq.28.1707755057975;
-        Mon, 12 Feb 2024 08:24:17 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFa+/LDsRbiSrsZ5Rbz6fAK2jroCNh9cGIGgIF5DWkXAgF3SQjE5r82GE/sU/WYYMsCIGr5iw==
-X-Received: by 2002:a05:600c:190b:b0:410:cba3:e9bd with SMTP id j11-20020a05600c190b00b00410cba3e9bdmr2495688wmq.28.1707755057590;
-        Mon, 12 Feb 2024 08:24:17 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCULdexwSi/k/92KIdSOYdk8rpF78Q4lMIQFUDCbWlvl3HIL/Fub6NIzLu+OMbQYR4XFRlWx/dGMhGFMSXsHSg304PacKZwFBjzSMmypGS1rS3TdVBYqfuCcn9H+JQ9H9Vnmm5YfoS3t6RC+wwU1x0MDsL4q2NGV6qyTC+awk89EA4T7LQ9kAjv0ZyaLWgeAFMBZ2etCxohBWcBKH7m7OFqMMcfjv56JNFvl/CFNhDefQNIuRmhWQ8jBwEObTo4kvrFU3iF7q7DXK5SNbow7RpT4zVk0CJ5H9pZwSqGb8LLUGJ6Kg+r4wpsRvDhaa51ZZ7TxEb68iKusA4+0044CgHUR3oQV3sP9sMDO7rN1Kv1ffctEIQzSfS3xor3K907T47af9C2easkgfPeUJyNACy7bvJB9hmOZw6uUqDc4gwf2z43lclyCt91I/kXv4L68EV282UQ6qJFNJLH6hjhlqB3GseeSADKQGgjbD0onQk0lE7rtdzY64Bd/5BqID+MP1M8ql5EhRBUW/z7e411rk4VyJAlsq06K9NbCVR5W0x0G0cAiXWtnzjVGfPdyGjkQGQO4TCc93L2m//nm2ZsdkJP2BNFjYX3xCvIRaM7hQy64hEHM+QBoUmNAVGDHEWAocLQcKq1e9WysOsPx93O7anc8ztt1+LssUF0rn2KT2GNQEDQWrnHyIfQGmHoUTQPZ0PXoPJcpIrFDDqf0YEzrc4QJT3XZRp6ADy5j6mCvXN1uNO9Y23TenQnqwN/PwPyZjEw9qKmWIiF1eIMoQ0c63+U/NGwbOMiaQpGlkUbeO9wfTA7EzzEouzOlCLt9uZf1KkTOScZih1sIawwvya3NYJPBEkbXgAi9PG9jw/E1fCDZzqKkdDbZI0d6XGPJdA==
+        bh=u9+rwPAvqYLW6lsheKf2xHocBNG2KMyghJEaP/POFlg=;
+        b=FOYBjoTfbMc/5jvOEU2vRiGkZY2V/VjKloJtn+zovvdivugLWD376vPvc4/r9MaqQx
+         3uXtF5DzsJJSpeHbGPJNtatCo6iuhz8jU2OJHYLfl+ssFEQxVnz7lUlpA0jlrZNS/ONr
+         19McGYm+EV09RVkYAcbvMAlTSImiT9OlmZych014iYQVnk5zaYScaL0mB10EuNXQRymT
+         WbXa5QW4Bv+oV/aS+KknVivuOIu14gF30pSymcs8K6rN0hIdrudeAYUzNbb+EkD5bX9G
+         o6tvn3zLWe+6e0s+yKnHFBmnczgCCvzRByXl4Ro5S/twayYg1QlQl/GK60CBxmMdKszY
+         k8Sw==
+X-Gm-Message-State: AOJu0YzGVNxA8cDTK3Kc47adol1LVlq0e8pvDnig9Hmjafh5bh91XzNd
+	ppMW4/uu1Fi+E4j+9JS6ynao0I7Ir87FduckwRjk1Au11XbypTVDhc0cyZggxr7z1lVu5kH4qRq
+	64ccxFO3w1OlOfOv9eZqBxl7pt+7BUr5l25USCLplGd2Wbe+B9JLWeDTr7mwWdaA=
+X-Received: by 2002:a05:6512:2821:b0:511:80b2:ed55 with SMTP id cf33-20020a056512282100b0051180b2ed55mr4831652lfb.59.1707755281908;
+        Mon, 12 Feb 2024 08:28:01 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFuYVuTYBC14h4sDYzW/aLl/U8JwyGrVD3/cs/GfW/IzGs0rP7kN9naIVg2GjA3q6fMPds/aw==
+X-Received: by 2002:a05:6512:2821:b0:511:80b2:ed55 with SMTP id cf33-20020a056512282100b0051180b2ed55mr4831623lfb.59.1707755281417;
+        Mon, 12 Feb 2024 08:28:01 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCW6NOXchB0acazCLbctM1UoRBCugQgjPPJhRRiC1g5Sbj6NKcFNuDaUj46wAre8TPuXrzks6w4FihqKW86lCAl+IMM7iAcXNSDuxwYOmBSFODdmdW43kAeymJ6feUUTBvGVxUsHWjQGEpkz5Vk/hFieQBKjzP0Js5DoYkopIRCOOf/HXlnfDpqumPB5S+NKyOENV18FmEdzBLDrWKca50cH4hWVoV9NXILE4UMZzqMBmaSs9hH/AST9Iixynm4tJeXHL71wGZLBNWkUuRJBEsQC74+noXFcEW1wJaQvp6gMkzaNKupU/Bn24Oj16MDggifZsJ68YKKeSvyS2bzMisj3SWgBBY7DbruPR0+48l2CIebzf9l9YjS8v/X31bZkOYgEzZv4YNyMFOHbnLMVUqSJTLDEIuWG0x5qCsyMrMUSsXZCTJbAe5hYjZUuqassyP6DRW8OCjoKJqiad/j/UMmIdjUs1xK845kB1phH9V+z49gEOHNlusnksQ7kYyK5cHDgAFWZeJWJMaY/UJYWN5t0RQMtbpaCOsxe7A/gFrGYVHsQaToqOS9VImv7ttR92359l2iiYwMvIh40PfBGu1cajiBrPDxPwZVcEMbUyHX9PsJDK3Rq1vYqFNYGH3aRArVEcuvLaJPu7M+2SUFTFLRfA5Dfsi+VXrbdIdR9xDyPsvmEyWZtdc18ca/J4lgiw3Te3fcKNGA5NIFGGpp/27plke07gcpWZXKUZGmK2gfc420fWKOqYbwDvAjLjefs8jZGjbvLj3nXQteA/DospYVTO2YhqTukcAmRlDSjdMK36BaL13avvU2+pzyuxb18o9/qMOAafoJrlsSYONRvgEPrlbqwahY0Q7rd0FH1UNRm
 Received: from ?IPV6:2003:cb:c730:2200:7229:83b1:524e:283a? (p200300cbc7302200722983b1524e283a.dip0.t-ipconnect.de. [2003:cb:c730:2200:7229:83b1:524e:283a])
-        by smtp.gmail.com with ESMTPSA id i13-20020adffc0d000000b0033b63a0bd0dsm7214339wrr.109.2024.02.12.08.24.15
+        by smtp.gmail.com with ESMTPSA id jj19-20020a05600c6a1300b0040fccf7e8easm9024482wmb.36.2024.02.12.08.27.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Feb 2024 08:24:17 -0800 (PST)
-Message-ID: <55a1e0ef-14b3-4311-b2aa-a6add76fa2ed@redhat.com>
-Date: Mon, 12 Feb 2024 17:24:15 +0100
+        Mon, 12 Feb 2024 08:28:00 -0800 (PST)
+Message-ID: <cc6cd016-0d91-428d-8041-329d5400978e@redhat.com>
+Date: Mon, 12 Feb 2024 17:27:59 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 19/25] arm64/mm: Wire up PTE_CONT for user mappings
-To: Ryan Roberts <ryan.roberts@arm.com>, Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH v5 22/25] mm: Add pte_batch_hint() to reduce scanning in
+ folio_pte_batch()
+To: Ryan Roberts <ryan.roberts@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>,
+ James Morse <james.morse@arm.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>,
+ Kefeng Wang <wangkefeng.wang@huawei.com>, John Hubbard
+ <jhubbard@nvidia.com>, Zi Yan <ziy@nvidia.com>,
+ Barry Song <21cnbao@gmail.com>, Alistair Popple <apopple@nvidia.com>,
+ Yang Shi <shy828301@gmail.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>
 References: <20240202080756.1453939-1-ryan.roberts@arm.com>
- <20240202080756.1453939-20-ryan.roberts@arm.com>
- <ZcoIVypNwOPIX30w@FVFF77S0Q05N>
- <c899f252-dbf3-4e7b-8342-b5a5180486cd@arm.com>
- <a91cfe1c-289e-4828-8cfc-be34eb69a71b@redhat.com>
- <502a3ea7-fd86-4314-8292-c7999eda92eb@arm.com>
- <427ba87a-7dd0-4f3e-861f-fe6946b7cd97@redhat.com>
- <abe814c9-71f3-4d7d-bdc8-9dd930d6f0b2@arm.com>
+ <20240202080756.1453939-23-ryan.roberts@arm.com>
+ <6d452a1a-1edc-4e97-8b39-99dc48315bb8@redhat.com>
+ <82c59a7f-328e-4521-8855-ccacc3dc4ce5@arm.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -137,12 +149,12 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <abe814c9-71f3-4d7d-bdc8-9dd930d6f0b2@arm.com>
+In-Reply-To: <82c59a7f-328e-4521-8855-ccacc3dc4ce5@arm.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -154,87 +166,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Yang Shi <shy828301@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, Andrey Ryabinin <ryabinin.a.a@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>, Alistair Popple <apopple@nvidia.com>, Barry Song <21cnbao@gmail.com>, Matthew Wilcox <willy@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, Zi Yan <ziy@nvidia.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, John Hubbard <jhubbard@nvidia.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org, x86@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12.02.24 16:34, Ryan Roberts wrote:
-> On 12/02/2024 15:26, David Hildenbrand wrote:
->> On 12.02.24 15:45, Ryan Roberts wrote:
->>> On 12/02/2024 13:54, David Hildenbrand wrote:
->>>>>> If so, I wonder if we could instead do that comparison modulo the access/dirty
->>>>>> bits,
->>>>>
->>>>> I think that would work - but will need to think a bit more on it.
->>>>>
->>>>>> and leave ptep_get_lockless() only reading a single entry?
->>>>>
->>>>> I think we will need to do something a bit less fragile. ptep_get() does
->>>>> collect
->>>>> the access/dirty bits so its confusing if ptep_get_lockless() doesn't IMHO. So
->>>>> we will likely want to rename the function and make its documentation explicit
->>>>> that it does not return those bits.
->>>>>
->>>>> ptep_get_lockless_noyoungdirty()? yuk... Any ideas?
->>>>>
->>>>> Of course if I could convince you the current implementation is safe, I
->>>>> might be
->>>>> able to sidestep this optimization until a later date?
->>>>
->>>> As discussed (and pointed out abive), there might be quite some callsites where
->>>> we don't really care about uptodate accessed/dirty bits -- where ptep_get() is
->>>> used nowadays.
->>>>
->>>> One way to approach that I had in mind was having an explicit interface:
->>>>
->>>> ptep_get()
->>>> ptep_get_uptodate()
->>>> ptep_get_lockless()
->>>> ptep_get_lockless_uptodate()
+On 12.02.24 16:47, Ryan Roberts wrote:
+> On 12/02/2024 13:43, David Hildenbrand wrote:
+>> On 02.02.24 09:07, Ryan Roberts wrote:
+>>> Some architectures (e.g. arm64) can tell from looking at a pte, if some
+>>> follow-on ptes also map contiguous physical memory with the same pgprot.
+>>> (for arm64, these are contpte mappings).
 >>>
->>> Yes, I like the direction of this. I guess we anticipate that call sites
->>> requiring the "_uptodate" variant will be the minority so it makes sense to use
->>> the current names for the "_not_uptodate" variants? But to do a slow migration,
->>> it might be better/safer to have the weaker variant use the new name - that
->>> would allow us to downgrade one at a time?
->>
->> Yes, I was primarily struggling with names. Likely it makes sense to either have
->> two completely new function names, or use the new name only for the "faster but
->> less precise" variant.
->>
+>>> Take advantage of this knowledge to optimize folio_pte_batch() so that
+>>> it can skip these ptes when scanning to create a batch. By default, if
+>>> an arch does not opt-in, folio_pte_batch() returns a compile-time 1, so
+>>> the changes are optimized out and the behaviour is as before.
 >>>
->>>>
->>>> Especially the last one might not be needed.
->>> I've done a scan through the code and agree with Mark's original conclusions.
->>> Additionally, huge_pte_alloc() (which isn't used for arm64) doesn't rely on
->>> access/dirty info. So I think I could migrate everything to the weaker variant
->>> fairly easily.
+>>> arm64 will opt-in to providing this hint in the next patch, which will
+>>> greatly reduce the cost of ptep_get() when scanning a range of contptes.
 >>>
->>>>
->>>> Futher, "uptodate" might not be the best choice because of PageUptodate() and
->>>> friends. But it's better than "youngdirty"/"noyoungdirty" IMHO.
+>>> Tested-by: John Hubbard <jhubbard@nvidia.com>
+>>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+>>> ---
+>>>    include/linux/pgtable.h | 18 ++++++++++++++++++
+>>>    mm/memory.c             | 20 +++++++++++++-------
+>>>    2 files changed, 31 insertions(+), 7 deletions(-)
 >>>
->>> Certainly agree with "noyoungdirty" being a horrible name. How about "_sync" /
->>> "_nosync"?
+>>> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+>>> index 50f32cccbd92..cba31f177d27 100644
+>>> --- a/include/linux/pgtable.h
+>>> +++ b/include/linux/pgtable.h
+>>> @@ -212,6 +212,24 @@ static inline int pmd_dirty(pmd_t pmd)
+>>>    #define arch_flush_lazy_mmu_mode()    do {} while (0)
+>>>    #endif
+>>>    +#ifndef pte_batch_hint
+>>> +/**
+>>> + * pte_batch_hint - Number of pages that can be added to batch without scanning.
+>>> + * @ptep: Page table pointer for the entry.
+>>> + * @pte: Page table entry.
+>>> + *
+>>> + * Some architectures know that a set of contiguous ptes all map the same
+>>> + * contiguous memory with the same permissions. In this case, it can provide a
+>>> + * hint to aid pte batching without the core code needing to scan every pte.
 >>
->> I could live with
+>> I think we might want to document here the expectation regarding
+>> dirty/accessed bits. folio_pte_batch() will ignore dirty bits only with
+>> FPB_IGNORE_DIRTY. But especially for arm64, it makes sense to ignore them
+>> always when batching, because the dirty bit may target any pte part of the
+>> cont-pte group either way.
 >>
->> ptep_get_sync()
->> ptep_get_nosync()
+>> Maybe something like:
 >>
->> with proper documentation :)
+>> "
+>> An architecture implementation may only ignore the PTE accessed and dirty bits.
+>> Further, it may only ignore the dirty bit if that bit is already not
+>> maintained with precision per PTE inside the hinted batch, and ptep_get()
+>> would already have to collect it from various PTEs.
+>> "
 > 
-> but could you live with:
+> I'm proposing to simplify this to:
 > 
-> ptep_get()
-> ptep_get_nosync()
-> ptep_get_lockless_nosync()
+> "
+> An architecture implementation may ignore the PTE accessed state. Further, the
+> dirty state must apply atomically to all the PTEs described by the hint.
+> "
 > 
-> ?
-> 
-> So leave the "slower, more precise" version with the existing name.
+> Which I think more accurately describes the requirement. Shout if you disagree.
 
-Sure.
+I'm not 100% sure if the "must apply atomically" is clear without all of 
+the cont-pte details and ptep_get(). But I fail to describe it in a 
+better way.
+
+It's all better compared to what we had before, so LGTM :)
 
 -- 
 Cheers,
