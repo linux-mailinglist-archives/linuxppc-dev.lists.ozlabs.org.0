@@ -1,89 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0F86851599
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Feb 2024 14:44:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB90A8515A9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Feb 2024 14:47:19 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TF2sp8Lf;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TF2sp8Lf;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Vtjq4HhY;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Vtjq4HhY;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TYQfz3rbPz3d2x
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Feb 2024 00:44:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TYQkF66f0z3d4F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Feb 2024 00:47:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TF2sp8Lf;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TF2sp8Lf;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Vtjq4HhY;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Vtjq4HhY;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TYQfB660kz2ygZ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Feb 2024 00:43:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TYQjW1F0mz2ygZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Feb 2024 00:46:38 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707745423;
+	s=mimecast20190719; t=1707745595;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Wql6ivQ7cfc4OGlkQ9/pQHxcP/y4XGqiW0VoGmlxwAI=;
-	b=TF2sp8Lf6JG0zroaWrsZLKdWqG89ddidiw46kL+e4RtZoaEb74eGHgjS8eQhqp1LKBRXHW
-	MYLWlqAj4XzIGREu7WAxE8XG6yaG/mwDrFiDa1uqNkPS8h5XTDW1NnzhPCAhzjzmR8bqj3
-	h1jggcm04ZDoYIsJFzOVNGbHQB8kDiY=
+	bh=zKmWeo9+M/EVmSRX3wQ2UDRqy7D6ms4Kk2jOrOYSGJE=;
+	b=Vtjq4HhYvrMeGxXFTvz9XmezIw2g/V4L+mSfys8ZVoHO7RP5VepZkOZZILMf+fb5/NvNZ+
+	RAjbjsyPI7GzXJhbPbgYhAh38SgywVgkNr7/1QFGVrEIqH4EBV21zu92kH1GDMQ8nXzlhG
+	w9I6Mh34qJPhovKUEGuHvL1f3rVB3K8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707745423;
+	s=mimecast20190719; t=1707745595;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Wql6ivQ7cfc4OGlkQ9/pQHxcP/y4XGqiW0VoGmlxwAI=;
-	b=TF2sp8Lf6JG0zroaWrsZLKdWqG89ddidiw46kL+e4RtZoaEb74eGHgjS8eQhqp1LKBRXHW
-	MYLWlqAj4XzIGREu7WAxE8XG6yaG/mwDrFiDa1uqNkPS8h5XTDW1NnzhPCAhzjzmR8bqj3
-	h1jggcm04ZDoYIsJFzOVNGbHQB8kDiY=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=zKmWeo9+M/EVmSRX3wQ2UDRqy7D6ms4Kk2jOrOYSGJE=;
+	b=Vtjq4HhYvrMeGxXFTvz9XmezIw2g/V4L+mSfys8ZVoHO7RP5VepZkOZZILMf+fb5/NvNZ+
+	RAjbjsyPI7GzXJhbPbgYhAh38SgywVgkNr7/1QFGVrEIqH4EBV21zu92kH1GDMQ8nXzlhG
+	w9I6Mh34qJPhovKUEGuHvL1f3rVB3K8=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-588-df_ophPoPquTs5x7n4GWHQ-1; Mon, 12 Feb 2024 08:43:39 -0500
-X-MC-Unique: df_ophPoPquTs5x7n4GWHQ-1
-Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-5117bac8b0cso2203799e87.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Feb 2024 05:43:39 -0800 (PST)
+ us-mta-536-ECPD42asP7iqWfIuMbpaLQ-1; Mon, 12 Feb 2024 08:46:33 -0500
+X-MC-Unique: ECPD42asP7iqWfIuMbpaLQ-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-411a8c8d9b2so259545e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Feb 2024 05:46:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707745418; x=1708350218;
+        d=1e100.net; s=20230601; t=1707745592; x=1708350392;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
          :references:cc:to:content-language:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Wql6ivQ7cfc4OGlkQ9/pQHxcP/y4XGqiW0VoGmlxwAI=;
-        b=km1jEP9nZHUkBDUPairoA4P8/pchX51YElwEB7MKneofYSN5BhSXcbXgqMAMsHOFH3
-         1xP7QCrqPfNnnnL02IsKPaOljxjpxDTY9eFub+zCxQJbPLxX1Hhww0axgiVdpWBL7ll0
-         Zxipj4tpAIHXgAwHUvZTYCJtUjhg7rtMGkvXm9HMgAoaJXQFkVMJynhLaZF6UHOXAoco
-         jerDSi74fk1Tsdbu7kl7ycvR5vHZb2nQxwZEkmCAcD0ubvsqsQqD3OrtKob4+ynthdIi
-         42YECelbtlFI8XGBMpHoD77dthh1XD3Ax45xJAhouDpqhJTRO2011u7/d7u4iG24whyG
-         cUvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXuD+l+T1LJVQgW28oCdmBtu9iz8+iSU6hBqRddGaSly7oBWnZIk7bCYkwOSpwKhThezxx71wGDkOMXHp4tPE5sMTjRLk6xOMpK8cKrow==
-X-Gm-Message-State: AOJu0YzTLa55EldC5iLf7WMy1pkJXmr3LuCyS6toi+mNsAxZg18k5qCT
-	VDqLQIFP0J2B+REijv+JOs4f7wdKHH4blqhiLVWzujBb0uz/nZDr/OuTa4h5KKdr86yrYB8FM+n
-	ZLvjLgH1wGDfS3ADMh8Sx3BD0zC4fHSptBpFfjRThjtO64WZtrGCouKOo35KNK1k=
-X-Received: by 2002:ac2:47e2:0:b0:511:8691:62d4 with SMTP id b2-20020ac247e2000000b00511869162d4mr3105494lfp.41.1707745418192;
-        Mon, 12 Feb 2024 05:43:38 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHriQcdKIy0G7aOEgD/4n4uO0RMT9q+zAxJ7cTjOxnAz+sySW3XjBKf9f9PuPTe0XDPrZOYOQ==
-X-Received: by 2002:ac2:47e2:0:b0:511:8691:62d4 with SMTP id b2-20020ac247e2000000b00511869162d4mr3105466lfp.41.1707745417762;
-        Mon, 12 Feb 2024 05:43:37 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVBTSCugyK4m0kq/GNHfB0lyJEkLUmPcOKlvn2K+0vuzkghgMruz8tVe3p6sUzcKM/ZawItMbDvog7lgfKXwWbmElUQeXD2LRZBbwqci/woJI27POHKDlWQ4k/GUmOzV608/DE0bjGoYUzMtMoeDKPyI43pJLX2F3pveJriPR5X7KXLuLYE1HoYe9IqY8/nSUyu87qUO1bffgE+5ReolPunc1tOuOTaerknapWOVcS8fd43CKeQoC9ua21iobkEIDDY+IJjig/jA2uKbwCvoW1l8xggZRyUm4XcWgGmp+21ADcP85s9+9FzLHPl3vr15+lE3LMto5KYsUHBsrdnSDLxHDYGygQlhspbJ2EE8oEpdK+xHPvLHKpmSBp7c4kusUr/64MN/rNj6mvgASmdUofglLNfFQkZCl5+10QrO965RgEcbZWMFxJPMrbOpCPhIUxqGsQ1YQCvdYQaRFcDmx6JKEwIXWx/IVWf9Q+k/cJqDo2i/S+FBOvbGAqOap2smE2oqxIbCTJ5+EW7N2DN2k470wDQcFhI2X55LH2ZdjA5p28RrTS3mInkdhv++XF8fpQ3GK32YPIfAhE0zH47S6OY4SU+TF2xU8PXRl1aXxTxZFyNrzjNibySmJUbFiM2qo7QszGA+aH9FHM51LWSnErQXIFfZEg7Lz5jsLsZHweyi008xnr2uysYJBEqdpshVhv0Tmce6Vw8a3WzaFGniw08QzFQQtgbd0pyZ/Ibo/gnsH0u3n4QF70ljbPFhLoPf68O52p3yxi3EgqmpQsb3+/D1hyQcQBgJC1sBL5CCvk2ZV0pJgpn8m9Hn+sHCGoDidWg2/oRfEc8GLHMXmBU75ScBOSS8Udy1gjGOhWAYKlF
+        bh=zKmWeo9+M/EVmSRX3wQ2UDRqy7D6ms4Kk2jOrOYSGJE=;
+        b=VKIOHf21fXiv+ApFcdTpb0h/BE4i+1J0LTtcfqNOOP+7gba9b1O78sjk2rR96YNqdY
+         QMj4V9bHRNRw1VOYD8v9VSsUO3Oxy+JRW1QQV6XimTBgnzKiOcEQt78NEU8ItXvAorVr
+         kPEe1J+Y2p3CVjxjrQrgqaS/+0ypII6lhqoKECPN99DTfliHtqvRoO/WoU/EIaKXUjlC
+         HHColiWoRGGsQN85qLd5AETX3JZy69nOYxmX55dyhQGjRiq2xEsNEKGymA4JoUBwsAoE
+         z+QRTQ+mJcWm4vaM69eNvv4yG4gOF29UYS80XsbwUpnjECDYorstnodyuX8U9hKecwWT
+         KjdA==
+X-Gm-Message-State: AOJu0YwlEFE4E0iQBc6zHUbFX3TjSt726jr6e6S1ehXR5dwbeQxHjtf1
+	0JA3wf9pvCmKEMBGrKDspKt3hNMUSMBrbOsvpCUAyzH0c+Ujwcx5i6MZ1ZG/z8PK+78EhVGvH2H
+	K7fjEunVgGXrhoh+osC5KylefSrFQK+kufn2+rm4ZfhYgCCoFaEtTgD3RoiTzHcs=
+X-Received: by 2002:a05:600c:600c:b0:40f:dd3f:ba10 with SMTP id az12-20020a05600c600c00b0040fdd3fba10mr5191841wmb.33.1707745592214;
+        Mon, 12 Feb 2024 05:46:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFPplzWPcaqsso3N0CI/E/N7Xd7UgBngjC7BVWael91ny0xFI0Aw+/pztFLuooUEsC56YrOkQ==
+X-Received: by 2002:a05:600c:600c:b0:40f:dd3f:ba10 with SMTP id az12-20020a05600c600c00b0040fdd3fba10mr5191806wmb.33.1707745591828;
+        Mon, 12 Feb 2024 05:46:31 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWCSlxX41BvMfnIBhcdGMZl2lpBgDcDwOePABXkky0P/nzfUyDQBurJsAC3Rn3aYzEm/pJ2z2nKq3q9uku6xtqumdrSJjwcg9jmi9ZtIr0RKMGHnotL+yzYf9S4zwcj9Mwke+TnVtm953ifsd+mAUtGezxZpC8ZYxvBTfaRGnHiBRWA4rwgWRpVHGR6V88CfmKY2N3ho7Pf/7Hc+u2GBeR6q4rfUR+0kqgHgK2csKAaYfcwPLubnPICkGsiadrWMCYxoBq59OJpCKV8HPB3DK0Jd9YBI4qRgSkEVh0MGH7LLuSPzmcxBpGXCOQVjwE7giZT/VGSTggJV8NyHJU5fzuxCjD/XoK51wGF0xMNhBsnY9wonx3Bh71NABVFQylEiw3Ozwj4SsPh+9TewX1N0HvdydqsM1pWlrREKRdCWA+ZINOAFdafvKhpvTa4Dv8uPGJNys0K5oF1AdGel45TsEJGqWY1OPxASaQSXnsJHN31/0lqrHibmRZrAykgO8LtpqC+5ka75mhYkB8Vfgz0um22P1zoO2RnXZDA2vvqoucMqgq333sh6PvCYS6qubIgTk0e4+cjAQhcmy8goEm+4p3N5bowH49+Dl3k19fjuKTCZ3VS3z+xO9xx+AHRB3Hp0x0S/NsnvXrjEfiUvh9jmFcFdJcjCRVXM3OI5aXwLgkidGx1dfhPY/XmCneBxMIzEMhgr4TT7AgXQ9K1wKBM8RUCKhX/1Q9LsYRwmFTapKgO+sW8wZcgCLnH/RoOgsXPiSG13jhj/0qpEwAdyELrgclPl//O1YHwJ41ZoDegk3J4Ey7oJpDDvUQ9GWn6IG3bFrPBcihymlcw8yRF5mdIDs7dlGNU8GwwJqloiwJDZgSJ
 Received: from ?IPV6:2003:cb:c730:2200:7229:83b1:524e:283a? (p200300cbc7302200722983b1524e283a.dip0.t-ipconnect.de. [2003:cb:c730:2200:7229:83b1:524e:283a])
-        by smtp.gmail.com with ESMTPSA id t6-20020a05600c450600b0040fc56712e8sm8754772wmo.17.2024.02.12.05.43.36
+        by smtp.gmail.com with ESMTPSA id cl7-20020a5d5f07000000b0033b8881f31dsm762856wrb.68.2024.02.12.05.46.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Feb 2024 05:43:37 -0800 (PST)
-Message-ID: <6d452a1a-1edc-4e97-8b39-99dc48315bb8@redhat.com>
-Date: Mon, 12 Feb 2024 14:43:35 +0100
+        Mon, 12 Feb 2024 05:46:31 -0800 (PST)
+Message-ID: <40889617-0820-473e-86ed-04eca6489169@redhat.com>
+Date: Mon, 12 Feb 2024 14:46:29 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 22/25] mm: Add pte_batch_hint() to reduce scanning in
- folio_pte_batch()
+Subject: Re: [PATCH v5 23/25] arm64/mm: Implement pte_batch_hint()
 To: Ryan Roberts <ryan.roberts@arm.com>,
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>,
@@ -101,7 +99,7 @@ To: Ryan Roberts <ryan.roberts@arm.com>,
  Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
  "H. Peter Anvin" <hpa@zytor.com>
 References: <20240202080756.1453939-1-ryan.roberts@arm.com>
- <20240202080756.1453939-23-ryan.roberts@arm.com>
+ <20240202080756.1453939-24-ryan.roberts@arm.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -148,7 +146,7 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20240202080756.1453939-23-ryan.roberts@arm.com>
+In-Reply-To: <20240202080756.1453939-24-ryan.roberts@arm.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -170,131 +168,49 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 02.02.24 09:07, Ryan Roberts wrote:
-> Some architectures (e.g. arm64) can tell from looking at a pte, if some
-> follow-on ptes also map contiguous physical memory with the same pgprot.
-> (for arm64, these are contpte mappings).
+> When core code iterates over a range of ptes and calls ptep_get() for
+> each of them, if the range happens to cover contpte mappings, the number
+> of pte reads becomes amplified by a factor of the number of PTEs in a
+> contpte block. This is because for each call to ptep_get(), the
+> implementation must read all of the ptes in the contpte block to which
+> it belongs to gather the access and dirty bits.
 > 
-> Take advantage of this knowledge to optimize folio_pte_batch() so that
-> it can skip these ptes when scanning to create a batch. By default, if
-> an arch does not opt-in, folio_pte_batch() returns a compile-time 1, so
-> the changes are optimized out and the behaviour is as before.
-> 
-> arm64 will opt-in to providing this hint in the next patch, which will
-> greatly reduce the cost of ptep_get() when scanning a range of contptes.
+> This causes a hotspot for fork(), as well as operations that unmap
+> memory such as munmap(), exit and madvise(MADV_DONTNEED). Fortunately we
+> can fix this by implementing pte_batch_hint() which allows their
+> iterators to skip getting the contpte tail ptes when gathering the batch
+> of ptes to operate on. This results in the number of PTE reads returning
+> to 1 per pte.
 > 
 > Tested-by: John Hubbard <jhubbard@nvidia.com>
 > Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 > ---
->   include/linux/pgtable.h | 18 ++++++++++++++++++
->   mm/memory.c             | 20 +++++++++++++-------
->   2 files changed, 31 insertions(+), 7 deletions(-)
+>   arch/arm64/include/asm/pgtable.h | 9 +++++++++
+>   1 file changed, 9 insertions(+)
 > 
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index 50f32cccbd92..cba31f177d27 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -212,6 +212,24 @@ static inline int pmd_dirty(pmd_t pmd)
->   #define arch_flush_lazy_mmu_mode()	do {} while (0)
->   #endif
->   
-> +#ifndef pte_batch_hint
-> +/**
-> + * pte_batch_hint - Number of pages that can be added to batch without scanning.
-> + * @ptep: Page table pointer for the entry.
-> + * @pte: Page table entry.
-> + *
-> + * Some architectures know that a set of contiguous ptes all map the same
-> + * contiguous memory with the same permissions. In this case, it can provide a
-> + * hint to aid pte batching without the core code needing to scan every pte.
-
-I think we might want to document here the expectation regarding
-dirty/accessed bits. folio_pte_batch() will ignore dirty bits only with
-FPB_IGNORE_DIRTY. But especially for arm64, it makes sense to ignore them
-always when batching, because the dirty bit may target any pte part of the
-cont-pte group either way.
-
-Maybe something like:
-
-"
-An architecture implementation may only ignore the PTE accessed and dirty bits.
-Further, it may only ignore the dirty bit if that bit is already not
-maintained with precision per PTE inside the hinted batch, and ptep_get()
-would already have to collect it from various PTEs.
-"
-
-I think there are some more details to it, but I'm hoping something along
-the lines above is sufficient.
-
-
-> +
->   #ifndef pte_advance_pfn
->   static inline pte_t pte_advance_pfn(pte_t pte, unsigned long nr)
->   {
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 65fbe4f886c1..902665b27702 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -988,16 +988,21 @@ static inline int folio_pte_batch(struct folio *folio, unsigned long addr,
->   {
->   	unsigned long folio_end_pfn = folio_pfn(folio) + folio_nr_pages(folio);
->   	const pte_t *end_ptep = start_ptep + max_nr;
-> -	pte_t expected_pte = __pte_batch_clear_ignored(pte_advance_pfn(pte, 1), flags);
-> -	pte_t *ptep = start_ptep + 1;
-> +	pte_t expected_pte = __pte_batch_clear_ignored(pte, flags);
-> +	pte_t *ptep = start_ptep;
->   	bool writable;
-> +	int nr;
->   
->   	if (any_writable)
->   		*any_writable = false;
->   
->   	VM_WARN_ON_FOLIO(!pte_present(pte), folio);
->   
-> -	while (ptep != end_ptep) {
-> +	nr = pte_batch_hint(ptep, pte);
-> +	expected_pte = pte_advance_pfn(expected_pte, nr);
-> +	ptep += nr;
-> +
-
-*Maybe* it's easier to get when initializing expected_pte+ptep only once.
-
-Like:
-
-[...]
-pte_t expected_pte, *ptep;
-[...]
-
-nr = pte_batch_hint(start_ptep, pte);
-expected_pte = __pte_batch_clear_ignored(pte_advance_pfn(pte, nr), flags);
-ptep = start_ptep + nr;
-
-> +	while (ptep < end_ptep) {
->   		pte = ptep_get(ptep);
->   		if (any_writable)
->   			writable = !!pte_write(pte);
-> @@ -1011,17 +1016,18 @@ static inline int folio_pte_batch(struct folio *folio, unsigned long addr,
->   		 * corner cases the next PFN might fall into a different
->   		 * folio.
->   		 */
-> -		if (pte_pfn(pte) == folio_end_pfn)
-> +		if (pte_pfn(pte) >= folio_end_pfn)
->   			break;
->   
->   		if (any_writable)
->   			*any_writable |= writable;
->   
-> -		expected_pte = pte_advance_pfn(expected_pte, 1);
-> -		ptep++;
-> +		nr = pte_batch_hint(ptep, pte);
-> +		expected_pte = pte_advance_pfn(expected_pte, nr);
-> +		ptep += nr;
->   	}
->   
-> -	return ptep - start_ptep;
-> +	return min(ptep - start_ptep, max_nr);
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> index ad04adb7b87f..353ea67b5d75 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -1220,6 +1220,15 @@ static inline void contpte_try_unfold(struct mm_struct *mm, unsigned long addr,
+>   		__contpte_try_unfold(mm, addr, ptep, pte);
 >   }
+>   
+> +#define pte_batch_hint pte_batch_hint
+> +static inline unsigned int pte_batch_hint(pte_t *ptep, pte_t pte)
+> +{
+> +	if (!pte_valid_cont(pte))
+> +		return 1;
+> +
+> +	return CONT_PTES - (((unsigned long)ptep >> 3) & (CONT_PTES - 1));
+> +}
+> +
+>   /*
+>    * The below functions constitute the public API that arm64 presents to the
+>    * core-mm to manipulate PTE entries within their page tables (or at least this
 
-Acked-by: David Hildenbrand <david@redhat.com>
+
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers,
