@@ -2,55 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25CE8851508
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Feb 2024 14:28:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD18F85156B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Feb 2024 14:38:45 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=ie6b3+Dg;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TYQJ00hJhz3dXG
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Feb 2024 00:28:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TYQXM4nVnz3dVJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Feb 2024 00:38:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TYQHZ5qrgz3c1J
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Feb 2024 00:27:37 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A3AF9DA7;
-	Mon, 12 Feb 2024 05:27:47 -0800 (PST)
-Received: from [10.57.78.115] (unknown [10.57.78.115])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 009623F7BD;
-	Mon, 12 Feb 2024 05:27:01 -0800 (PST)
-Message-ID: <e19ba38c-8935-47be-be2a-1920b09034c8@arm.com>
-Date: Mon, 12 Feb 2024 13:27:00 +0000
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=ie6b3+Dg;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.201; helo=relay8-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TYQWb418Sz3c1w
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Feb 2024 00:38:00 +1100 (AEDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 481B41BF206;
+	Mon, 12 Feb 2024 13:37:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1707745076;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Z7rOVuLO0xilSDJ3N64aVRj6PnVPEco4AT9htw6H2H4=;
+	b=ie6b3+Dgxjr4F12aR7ja00IGv0kDHrgLsQfBeM4e67NBLH5C7IMRKZgVpnnOexMji6OOXm
+	YFOjZoH+AQnY9lFkGeIKeR244NpvpPsUchrtXSmUnev77+bqCNmWQ/Y7QpV2zwuTlhOhJq
+	znASmRBLlLlIlj8Vu34bvXPlOhI9sPJlm+8fAjkhjNijvebyiJSJmvsicnWq7mCUKnmDvU
+	0yEDZ0+wk/qOPBcxUl3sbnGmw8k6o7WjETQeI/Vvy1VXz/9szFs7UaBDdTcPbsRJJt/t4E
+	s2lm9xx4yoXjyh8H0nmscBy17KOVTso2Ebadt7atZAarYpr2naLuRahLuo4spA==
+Date: Mon, 12 Feb 2024 14:37:53 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v3 RESEND 3/6] bitmap: Make bitmap_onto() available to
+ users
+Message-ID: <20240212143753.620ddd6e@bootlin.com>
+In-Reply-To: <ZcoOpPb9HfXOYmAr@smile.fi.intel.com>
+References: <20240212075646.19114-1-herve.codina@bootlin.com>
+	<20240212075646.19114-4-herve.codina@bootlin.com>
+	<ZcoOpPb9HfXOYmAr@smile.fi.intel.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 18/25] arm64/mm: Split __flush_tlb_range() to elide
- trailing DSB
-Content-Language: en-GB
-To: David Hildenbrand <david@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>,
- James Morse <james.morse@arm.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>,
- Kefeng Wang <wangkefeng.wang@huawei.com>, John Hubbard
- <jhubbard@nvidia.com>, Zi Yan <ziy@nvidia.com>,
- Barry Song <21cnbao@gmail.com>, Alistair Popple <apopple@nvidia.com>,
- Yang Shi <shy828301@gmail.com>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>
-References: <20240202080756.1453939-1-ryan.roberts@arm.com>
- <20240202080756.1453939-19-ryan.roberts@arm.com>
- <9e1d793a-02c9-4dbb-a6d4-1e1c0c42638c@redhat.com>
- <1ef4c737-0926-424c-9698-794c23370b74@arm.com>
- <608feac1-8cd6-48c2-87ab-688fb9c0bda4@redhat.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <608feac1-8cd6-48c2-87ab-688fb9c0bda4@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,93 +62,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, x86@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: Andrew Lunn <andrew@lunn.ch>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, Yury Norov <yury.norov@gmail.com>, netdev@vger.kernel.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Mark Brown <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/02/2024 13:15, David Hildenbrand wrote:
-> On 12.02.24 14:05, Ryan Roberts wrote:
->> On 12/02/2024 12:44, David Hildenbrand wrote:
->>> On 02.02.24 09:07, Ryan Roberts wrote:
->>>> Split __flush_tlb_range() into __flush_tlb_range_nosync() +
->>>> __flush_tlb_range(), in the same way as the existing flush_tlb_page()
->>>> arrangement. This allows calling __flush_tlb_range_nosync() to elide the
->>>> trailing DSB. Forthcoming "contpte" code will take advantage of this
->>>> when clearing the young bit from a contiguous range of ptes.
->>>>
->>>> Tested-by: John Hubbard <jhubbard@nvidia.com>
->>>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
->>>> ---
->>>>    arch/arm64/include/asm/tlbflush.h | 13 +++++++++++--
->>>>    1 file changed, 11 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/arch/arm64/include/asm/tlbflush.h
->>>> b/arch/arm64/include/asm/tlbflush.h
->>>> index 79e932a1bdf8..50a765917327 100644
->>>> --- a/arch/arm64/include/asm/tlbflush.h
->>>> +++ b/arch/arm64/include/asm/tlbflush.h
->>>> @@ -422,7 +422,7 @@ do {                                    \
->>>>    #define __flush_s2_tlb_range_op(op, start, pages, stride, tlb_level) \
->>>>        __flush_tlb_range_op(op, start, pages, stride, 0, tlb_level, false,
->>>> kvm_lpa2_is_enabled());
->>>>    -static inline void __flush_tlb_range(struct vm_area_struct *vma,
->>>> +static inline void __flush_tlb_range_nosync(struct vm_area_struct *vma,
->>>>                         unsigned long start, unsigned long end,
->>>>                         unsigned long stride, bool last_level,
->>>>                         int tlb_level)
->>>> @@ -456,10 +456,19 @@ static inline void __flush_tlb_range(struct
->>>> vm_area_struct *vma,
->>>>            __flush_tlb_range_op(vae1is, start, pages, stride, asid,
->>>>                         tlb_level, true, lpa2_is_enabled());
->>>>    -    dsb(ish);
->>>>        mmu_notifier_arch_invalidate_secondary_tlbs(vma->vm_mm, start, end);
->>>>    }
->>>>    +static inline void __flush_tlb_range(struct vm_area_struct *vma,
->>>> +                     unsigned long start, unsigned long end,
->>>> +                     unsigned long stride, bool last_level,
->>>> +                     int tlb_level)
->>>> +{
->>>> +    __flush_tlb_range_nosync(vma, start, end, stride,
->>>> +                 last_level, tlb_level);
->>>> +    dsb(ish);
->>>> +}
->>>> +
->>>>    static inline void flush_tlb_range(struct vm_area_struct *vma,
->>>>                       unsigned long start, unsigned long end)
->>>>    {
->>>
->>> You're now calling dsb() after mmu_notifier_arch_invalidate_secondary_tlbs().
->>>
->>>
->>> In flush_tlb_mm(), we have the order
->>>
->>>      dsb(ish);
->>>      mmu_notifier_arch_invalidate_secondary_tlbs()
->>>
->>> In flush_tlb_page(), we have the effective order:
->>>
->>>      mmu_notifier_arch_invalidate_secondary_tlbs()
->>>      dsb(ish);
->>>
->>> In flush_tlb_range(), we used to have the order:
->>>
->>>      dsb(ish);
->>>      mmu_notifier_arch_invalidate_secondary_tlbs();
->>>
->>>
->>> So I *suspect* having that DSB before
->>> mmu_notifier_arch_invalidate_secondary_tlbs() is fine. Hopefully, nothing in
->>> there relies on that placement.
->>
->> Will spotted this against v3. My argument was that I was following the existing
->> pattern in flush_tlb_page(). Apparently that is not correct and needs changing,
->> but the conclusion was to leave my change as is for now, since it is consistent
->> and change them at a later date together.
+Hi Andy,
+
+On Mon, 12 Feb 2024 14:27:16 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+
+> On Mon, Feb 12, 2024 at 08:56:31AM +0100, Herve Codina wrote:
+> > Currently the bitmap_onto() is available only for CONFIG_NUMA=y case,
+> > while some users may benefit out of it and being independent to NUMA
+> > code.
+> > 
+> > Make it available to users by moving out of ifdeffery and exporting for
+> > modules.  
 > 
-> Good, I think you should add a few words to the patch description ("ordering
-> might be incorrect, but is in-line with __flush_tlb_page()"; will be resolved
-> separately).
+> Wondering if you are trying to have something like
+> https://lore.kernel.org/lkml/20230926052007.3917389-1-andriy.shevchenko@linux.intel.com/
 > 
 
-ACK, will do. Thanks!
+Yes, it looks like.
+Can you confirm that your bitmap_scatter() do the same operations as the
+existing bitmap_onto() ?
 
+If so, your bitmap_gather() will match my bitmap_off() (patch 4 in this series).
+
+Thanks,
+Hervé
+
+-- 
+Hervé Codina, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
