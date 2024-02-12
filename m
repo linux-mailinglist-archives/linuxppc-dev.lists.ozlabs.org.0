@@ -2,144 +2,109 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD577851609
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Feb 2024 14:55:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9EAC851660
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Feb 2024 15:03:41 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P55xZ7+M;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P55xZ7+M;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=M2nb50/V;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TYQvW5jkBz3dVR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Feb 2024 00:55:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TYR574VG6z3dVr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Feb 2024 01:03:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P55xZ7+M;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P55xZ7+M;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=M2nb50/V;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TYQtk19trz3c1g
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Feb 2024 00:54:37 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707746074;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=YP7Y72pR3TzaVeTLoSMRU6+Mwmpub8nSmmmtqDdNsGw=;
-	b=P55xZ7+MkooaprmUV4wjnR7l9rBSAG0LatJX0wD1oxn6XEUsr4WoZfh+IZ2GzREa3kQKPR
-	O1tfc9HWqme22Mwpbw8IedtVEFJn7aawbsEZjTvaC64lnXz/JFQwmxSbWJD7TisCuXIxJi
-	XJpWlUdENxMJggKM/azlXCMbT38ZiCI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707746074;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=YP7Y72pR3TzaVeTLoSMRU6+Mwmpub8nSmmmtqDdNsGw=;
-	b=P55xZ7+MkooaprmUV4wjnR7l9rBSAG0LatJX0wD1oxn6XEUsr4WoZfh+IZ2GzREa3kQKPR
-	O1tfc9HWqme22Mwpbw8IedtVEFJn7aawbsEZjTvaC64lnXz/JFQwmxSbWJD7TisCuXIxJi
-	XJpWlUdENxMJggKM/azlXCMbT38ZiCI=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-340-IrsiipZUMiqTBA5aJxw5Xg-1; Mon, 12 Feb 2024 08:54:32 -0500
-X-MC-Unique: IrsiipZUMiqTBA5aJxw5Xg-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-40e435a606aso21162215e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Feb 2024 05:54:31 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707746070; x=1708350870;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :references:cc:to:content-language:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YP7Y72pR3TzaVeTLoSMRU6+Mwmpub8nSmmmtqDdNsGw=;
-        b=hehrXusC/CgWZop+4oKQ8Ijbbgb+Ivo2eiBEBZQktHZ1wZeB3A891eEXc2I0Rmj6DN
-         NM5qcK7CziL8FSFBH2OCSDZVilEqHPW5ZNGOqEts6OFIUGIG20z5toJTpAaKTk9BjQZx
-         Jyz3M7L+3PKtL0Xbeg8/fq5OSYchH1yXun+El5tNYNAgmeiZMgfqhZ3+at6tSDJRjM8v
-         yTnOzvwctF6RkK2kSBhprkZ5UtON8N6eT32g14Udt8tejN34q8tdysUmgcbUV/IVpWWy
-         CDoYYeti2/1zedEspVxVToZNJAZuDZ7HuaBWRkLcSuLKBMetbcgWyfbzSFlfhNulNQlq
-         89Pg==
-X-Forwarded-Encrypted: i=1; AJvYcCXLqBcg0cmfGAGAxXnC77Ahzm+BaZEon/Aaxr4qnWM96D46CDW2AELPQtFR6qrTooBx0m7Vz4oJ8Oab1s80Rkj/qXgeL7+cABt9hUKcFQ==
-X-Gm-Message-State: AOJu0YymzBLl2vLS6XLYp3zqJQHa+w6E65gM0EQ2djHTcay31Lb1Ml8t
-	hKXPke+slGH0ppcAwYyJdTpJPyVddQhb5eIXly1MVPn7CUBhSnSPsrdogjBbAGN75VWbtr+ZelQ
-	czNJuZfTcVEHRA1q412UsRD+1ZtLh6f4zghepsj4pc4kB0hsh0ERFI4yzyX7IfUA=
-X-Received: by 2002:a05:600c:1d82:b0:411:a8e9:993e with SMTP id p2-20020a05600c1d8200b00411a8e9993emr79112wms.32.1707746070477;
-        Mon, 12 Feb 2024 05:54:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IECqjY4b/HynzxzJ2l+7/0bVWIETsdljuuAUD3AMoClAzlgC1kozPzME5eFXS62b0PYVkarNg==
-X-Received: by 2002:a05:600c:1d82:b0:411:a8e9:993e with SMTP id p2-20020a05600c1d8200b00411a8e9993emr79096wms.32.1707746070090;
-        Mon, 12 Feb 2024 05:54:30 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWrxG08xbF92anXCefVJKs4zYGQ6FMEDjKc2YetNG2vh4Bg4ZCnCsPM1AeM2s7LPqH1NZaBpVhdNYZXh8eoa69XRJa7RDpwA7WX9efD0mo2EBSI6osKvdy2MIsbjTvoflbj04Hl1hPq+2Ys6ZgX/5DNEobWqiu1OLmOuEj0LWYiMdeHXLX6+usmiNl2Ng9hGfm/rfpp9fmE6DMR1Dr4PfDcYvaSmXKMkmAZImLM1hd4t31wJ4+9zwqJkTnipshs5fPPL0X0O3Uvg8H5fFulYkYD2OPe9S6qjlesFjojqyEjTqnZWMmgKSG/MGAQ+Qd3P/8A2/wuvuMY6VGVYFH5YmppFaXeByzDlBavtELstwJcZMjyAfhDUaOkc1iYAz9NZOjPMv6lLai7Qf4h5KNPxotLQ926Qs7iOj2O2ttR0fmlqGmY/eTID2f6XWjmfloTAv0q8aJB8nkoLVUJBMsxRxJw0mQkJkXA5vO9pqqYKfG/4P6/PgBry+x2AY6nw3n6lyI1xLduov664gL1BigaeB4HYrpuxzPbv4Lo69US8Iu2dPbd98415V9m41pkxzp8G8EHWa+tX0Yz819QOE5/0/xKyDIE+haoZ+lU5aAohEvijwZJSU39CWLaoeq1A2V6/gR1uxcoclr7k1Q9YZNKRMBxslsbp6wniWUoTQzD+Fy7zDrwSg3HXTHP6DJq3UbxmrZ2aVJMzJW4x6dPz5B3NmE31/pwF9LptuXsmKX6McG0lSK9An9ALBEKG/B1mF+o1K5pdOxkyge0P/VTJuhjSpmunKrxyz0SdkpRIRFGJGZUbi7Vl6M6b9zaySa5EoJ59sQtLsgHzEjZznMDyJgi8TFxXEMKjjIkLN3OPgtQ0onCMr/n0UFJwlPHD5OLJg==
-Received: from [192.168.3.108] (p4ff23a05.dip0.t-ipconnect.de. [79.242.58.5])
-        by smtp.gmail.com with ESMTPSA id ay15-20020a5d6f0f000000b0033b4ebc3c8fsm7090793wrb.2.2024.02.12.05.54.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Feb 2024 05:54:29 -0800 (PST)
-Message-ID: <a91cfe1c-289e-4828-8cfc-be34eb69a71b@redhat.com>
-Date: Mon, 12 Feb 2024 14:54:27 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TYR4M0F95z3c2b
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Feb 2024 01:02:59 +1100 (AEDT)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4TYR4M014Yz4wcY
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Feb 2024 01:02:59 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4TYR4L74Dwz4wqM; Tue, 13 Feb 2024 01:02:58 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=M2nb50/V;
+	dkim-atps=neutral
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4TYR4L4bK9z4wcY
+	for <linuxppc-dev@ozlabs.org>; Tue, 13 Feb 2024 01:02:58 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41CDlrSb016026;
+	Mon, 12 Feb 2024 14:01:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=WDFquMZdyteP9vub8u38wzLlo4C4RMyX7VZRrXelmCE=;
+ b=M2nb50/VG9NaGKT8fxuB8OdtOgx+paxjd/lesiwRDo7c/YOXHuVIpyHoCrZk6Mt17xXY
+ 7Epc/Cg75LADoY+0N/9TeKPFMa/8ci97MYCE4idFdnhHUEYOcZJP1l4sf0IHV5rCHOvn
+ KLqJl73veS6V5S1Vg8MunXTap+jm/cEHOpUtXomT+oDYYRgcCKPzd87z385VDVKyuibR
+ 9ZlTSXvvoN4VTQMNvQtQ56i0zbwG2ipdrA5gNQhtZxjuRjr06VNInTRuS0FBklNkyTKx
+ RBzIsN7UNkjNIMxXFK8YRCTDj9/yzWOn6WcMqwo6Gz0uFmC5ovHcZ+V/qDjFgsaiVZm6 aw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w7mhf8csp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 Feb 2024 14:01:29 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41CDmcC7018847;
+	Mon, 12 Feb 2024 14:01:28 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w7mhf8cny-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 Feb 2024 14:01:28 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41CC3uEb009920;
+	Mon, 12 Feb 2024 13:57:24 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3w6p62gdd5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 Feb 2024 13:57:23 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41CDvJYq10552032
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 12 Feb 2024 13:57:21 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1F54C20043;
+	Mon, 12 Feb 2024 13:57:19 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 94CB220040;
+	Mon, 12 Feb 2024 13:57:05 +0000 (GMT)
+Received: from [9.61.8.5] (unknown [9.61.8.5])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 12 Feb 2024 13:57:05 +0000 (GMT)
+Message-ID: <cc02538f-9460-4cbb-9ae4-194412b85e36@linux.ibm.com>
+Date: Mon, 12 Feb 2024 19:27:02 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 19/25] arm64/mm: Wire up PTE_CONT for user mappings
-To: Ryan Roberts <ryan.roberts@arm.com>, Mark Rutland <mark.rutland@arm.com>
-References: <20240202080756.1453939-1-ryan.roberts@arm.com>
- <20240202080756.1453939-20-ryan.roberts@arm.com>
- <ZcoIVypNwOPIX30w@FVFF77S0Q05N>
- <c899f252-dbf3-4e7b-8342-b5a5180486cd@arm.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <c899f252-dbf3-4e7b-8342-b5a5180486cd@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCH v15 2/5] crash: add a new kexec flag for hotplug support
 Content-Language: en-US
+To: Baoquan He <bhe@redhat.com>
+References: <20240111105138.251366-1-sourabhjain@linux.ibm.com>
+ <20240111105138.251366-3-sourabhjain@linux.ibm.com>
+ <ZcBRle7szFrD3cW+@MiWiFi-R3L-srv>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <ZcBRle7szFrD3cW+@MiWiFi-R3L-srv>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: pEj1g4C062_8_BcoLlEZGUs5DCIJk-cd
+X-Proofpoint-GUID: eipVXqe8RoyqcOnrvMu35-_kwziOE1Z0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-12_10,2024-02-12_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
+ malwarescore=0 impostorscore=0 spamscore=0 bulkscore=0 adultscore=0
+ priorityscore=1501 suspectscore=0 mlxlogscore=999 phishscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402120106
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -151,49 +116,290 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Yang Shi <shy828301@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, Andrey Ryabinin <ryabinin.a.a@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>, Alistair Popple <apopple@nvidia.com>, Barry Song <21cnbao@gmail.com>, Matthew Wilcox <willy@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, Zi Yan <ziy@nvidia.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, John Hubbard <jhubbard@nvidia.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: David Hildenbrand <david@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, Mimi Zohar <zohar@linux.ibm.com>, linuxppc-dev@ozlabs.org, Eric DeVolder <eric.devolder@oracle.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Valentin Schneider <vschneid@redhat.com>, x86@kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Laurent Dufour <laurent.dufour@fr.ibm.com>, Dave Young <dyoung@redhat.com>, Vivek Goyal <vgoyal@redhat.com>, Naveen N Rao <naveen@kernel.org>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, Hari Bathini <hbathini@linux.ibm.com>, Oscar Salvador <osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, kexec@lists.infradead.org, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Akhil Raj <lf32.dev@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
->> If so, I wonder if we could instead do that comparison modulo the access/dirty
->> bits,
-> 
-> I think that would work - but will need to think a bit more on it.
-> 
->> and leave ptep_get_lockless() only reading a single entry?
-> 
-> I think we will need to do something a bit less fragile. ptep_get() does collect
-> the access/dirty bits so its confusing if ptep_get_lockless() doesn't IMHO. So
-> we will likely want to rename the function and make its documentation explicit
-> that it does not return those bits.
-> 
-> ptep_get_lockless_noyoungdirty()? yuk... Any ideas?
-> 
-> Of course if I could convince you the current implementation is safe, I might be
-> able to sidestep this optimization until a later date?
+Hello Baoquan,
 
-As discussed (and pointed out abive), there might be quite some 
-callsites where we don't really care about uptodate accessed/dirty bits 
--- where ptep_get() is used nowadays.
+On 05/02/24 08:40, Baoquan He wrote:
+> Hi Sourabh,
+>
+> Thanks for the great work. There are some concerns, please see inline
+> comments.
 
-One way to approach that I had in mind was having an explicit interface:
+Thank you :)
 
-ptep_get()
-ptep_get_uptodate()
-ptep_get_lockless()
-ptep_get_lockless_uptodate()
+>
+> On 01/11/24 at 04:21pm, Sourabh Jain wrote:
+> ......
+>> Now, if the kexec tool sends KEXEC_CRASH_HOTPLUG_SUPPORT kexec flag to
+>> the kernel, it indicates to the kernel that all the required kexec
+>> segment is skipped from SHA calculation and it is safe to update kdump
+>> image loaded using the kexec_load syscall.
+> So finally you add a new KEXEC_CRASH_HOTPLUG_SUPPORT flag, that's fine.
+>
+> ......
+>> diff --git a/arch/x86/include/asm/kexec.h b/arch/x86/include/asm/kexec.h
+>> index 9bb6607e864e..e791129fdf6c 100644
+>> --- a/arch/x86/include/asm/kexec.h
+>> +++ b/arch/x86/include/asm/kexec.h
+>> @@ -211,6 +211,9 @@ extern void kdump_nmi_shootdown_cpus(void);
+>>   void arch_crash_handle_hotplug_event(struct kimage *image, void *arg);
+>>   #define arch_crash_handle_hotplug_event arch_crash_handle_hotplug_event
+>>   
+>> +int arch_crash_hotplug_support(struct kimage *image, unsigned long kexec_flags);
+>> +#define arch_crash_hotplug_support arch_crash_hotplug_support
+>> +
+>>   #ifdef CONFIG_HOTPLUG_CPU
+>>   int arch_crash_hotplug_cpu_support(void);
+>>   #define crash_hotplug_cpu_support arch_crash_hotplug_cpu_support
+> Then crash_hotplug_cpu_support is not needed any more on x86_64, and
+> crash_hotplug_memory_support(), if you remove their implementation in
+> arch/x86/kernel/crash.c, won't it cause building warning or error on x86?
 
-Especially the last one might not be needed.
+Yeah, crash_hotplug_cpu_support and crash_hotplug_memory_support are
+no longer required. My bad, I forgot to remove them.
 
-Futher, "uptodate" might not be the best choice because of 
-PageUptodate() and friends. But it's better than 
-"youngdirty"/"noyoungdirty" IMHO.
+>> diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
+>> index 44744e9c68ec..293b54bff706 100644
+>> --- a/arch/x86/kernel/crash.c
+>> +++ b/arch/x86/kernel/crash.c
+>> @@ -398,20 +398,16 @@ int crash_load_segments(struct kimage *image)
+>>   #undef pr_fmt
+>>   #define pr_fmt(fmt) "crash hp: " fmt
+>>   
+>> -/* These functions provide the value for the sysfs crash_hotplug nodes */
+>> -#ifdef CONFIG_HOTPLUG_CPU
+>> -int arch_crash_hotplug_cpu_support(void)
+>> +int arch_crash_hotplug_support(struct kimage *image, unsigned long kexec_flags)
+>>   {
+>> -	return crash_check_update_elfcorehdr();
+>> -}
+>> -#endif
+>>   
+>> -#ifdef CONFIG_MEMORY_HOTPLUG
+>> -int arch_crash_hotplug_memory_support(void)
+>> -{
+>> -	return crash_check_update_elfcorehdr();
+>> -}
+>> +#ifdef CONFIG_KEXEC_FILE
+>> +	if (image->file_mode)
+>> +		return 1;
+>>   #endif
+>> +	return (kexec_flags & KEXEC_UPDATE_ELFCOREHDR ||
+>> +		kexec_flags & KEXEC_CRASH_HOTPLUG_SUPPORT);
+> Do we need add some document to tell why there are two kexec flags on
+> x86_64, except of checking this patch log?
 
-Of course, any such changes require care and are better done one step at 
-at time separately.
+Sure I will add a comment about it.
 
--- 
-Cheers,
+>
+>> +}
+>>   
+>>   unsigned int arch_crash_get_elfcorehdr_size(void)
+>>   {
+>> diff --git a/drivers/base/cpu.c b/drivers/base/cpu.c
+>> index 548491de818e..2f411ddfbd8b 100644
+>> --- a/drivers/base/cpu.c
+>> +++ b/drivers/base/cpu.c
+>> @@ -306,7 +306,7 @@ static ssize_t crash_hotplug_show(struct device *dev,
+>>   				     struct device_attribute *attr,
+>>   				     char *buf)
+>>   {
+>> -	return sysfs_emit(buf, "%d\n", crash_hotplug_cpu_support());
+>> +	return sysfs_emit(buf, "%d\n", crash_check_hotplug_support());
+>>   }
+>>   static DEVICE_ATTR_ADMIN_RO(crash_hotplug);
+>>   #endif
+>> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+>> index 8a13babd826c..e70ab1d3428e 100644
+>> --- a/drivers/base/memory.c
+>> +++ b/drivers/base/memory.c
+>> @@ -514,7 +514,7 @@ static DEVICE_ATTR_RW(auto_online_blocks);
+>>   static ssize_t crash_hotplug_show(struct device *dev,
+>>   				       struct device_attribute *attr, char *buf)
+>>   {
+>> -	return sysfs_emit(buf, "%d\n", crash_hotplug_memory_support());
+>> +	return sysfs_emit(buf, "%d\n", crash_check_hotplug_support());
+>>   }
+>>   static DEVICE_ATTR_RO(crash_hotplug);
+>>   #endif
+>> diff --git a/include/linux/kexec.h b/include/linux/kexec.h
+>> index 802052d9c64b..7880d74dc5c4 100644
+>> --- a/include/linux/kexec.h
+>> +++ b/include/linux/kexec.h
+>> @@ -317,8 +317,8 @@ struct kimage {
+>>   	/* If set, we are using file mode kexec syscall */
+>>   	unsigned int file_mode:1;
+>>   #ifdef CONFIG_CRASH_HOTPLUG
+>> -	/* If set, allow changes to elfcorehdr of kexec_load'd image */
+>> -	unsigned int update_elfcorehdr:1;
+>> +	/* If set, allow changes to kexec segments of kexec_load'd image */
+> The code comment doesn't reflect the usage of the flag.
+I should have updated the comment to indicate that this flag is for both 
+system calls.
+More comments below.
 
-David / dhildenb
+> You set it too
+> when it's kexec_file_load. Speaking of this, I do wonder why you need
+> set it too for kexec_file_load,
+If we do this one can just access image->hotplug_support to find hotplug
+support for currently loaded kdump image without bothering about which
+system call was used to load the kdump image.
+
+> and why we have
+> arch_crash_hotplug_support(), then crash_check_hotplug_support() both of
+> which have the same effect.
+
+arch_crash_hotplug_support(): This function processes the kexec flags 
+and finds the
+hotplug support for the kdump image. Based on the return value of this 
+function,
+the image->hotplug_support attribute is set.
+
+Now, once the kdump image is loaded, we no longer have access to the 
+kexec flags.
+Therefore, crash_check_hotplug_support simply returns the value of 
+image->hotplug_support
+when user space accesses the following sysfs files: 
+/sys/devices/system/[cpu|memory]/crash_hotplug.
+
+To keep things simple, I have introduced two functions: One function 
+processes the kexec flags
+and determines the hotplug support for the image being loaded. And other 
+function simply
+accesses image->hotplug_support and advertises CPU/Memory hotplug 
+support to userspace.
+
+Let me know you opinion.
+
+Thanks for reviewing the patch.
+
+- Sourabh Jain
+>
+>> +	unsigned int hotplug_support:1;
+>>   #endif
+>>   
+>>   #ifdef ARCH_HAS_KIMAGE_ARCH
+>> @@ -396,9 +396,10 @@ bool kexec_load_permitted(int kexec_image_type);
+>>   
+>>   /* List of defined/legal kexec flags */
+>>   #ifndef CONFIG_KEXEC_JUMP
+>> -#define KEXEC_FLAGS    (KEXEC_ON_CRASH | KEXEC_UPDATE_ELFCOREHDR)
+>> +#define KEXEC_FLAGS    (KEXEC_ON_CRASH | KEXEC_UPDATE_ELFCOREHDR | KEXEC_CRASH_HOTPLUG_SUPPORT)
+>>   #else
+>> -#define KEXEC_FLAGS    (KEXEC_ON_CRASH | KEXEC_PRESERVE_CONTEXT | KEXEC_UPDATE_ELFCOREHDR)
+>> +#define KEXEC_FLAGS    (KEXEC_ON_CRASH | KEXEC_PRESERVE_CONTEXT | KEXEC_UPDATE_ELFCOREHDR | \
+>> +			KEXEC_CRASH_HOTPLUG_SUPPORT)
+>>   #endif
+>>   
+>>   /* List of defined/legal kexec file flags */
+>> @@ -486,14 +487,18 @@ static inline void arch_kexec_pre_free_pages(void *vaddr, unsigned int pages) {
+>>   static inline void arch_crash_handle_hotplug_event(struct kimage *image, void *arg) { }
+>>   #endif
+>>   
+>> -int crash_check_update_elfcorehdr(void);
+>> +int crash_check_hotplug_support(void);
+>>   
+>> -#ifndef crash_hotplug_cpu_support
+>> -static inline int crash_hotplug_cpu_support(void) { return 0; }
+>> -#endif
+>> +#ifndef arch_crash_hotplug_support
+>> +static inline int arch_crash_hotplug_support(struct kimage *image, unsigned long kexec_flags)
+>> +{
+>>   
+>> -#ifndef crash_hotplug_memory_support
+>> -static inline int crash_hotplug_memory_support(void) { return 0; }
+>> +#ifdef CONFIG_KEXEC_FILE
+>> +	if (image->file_mode)
+>> +		return 1;
+>> +#endif
+>> +	return kexec_flags & KEXEC_CRASH_HOTPLUG_SUPPORT;
+>> +}
+>>   #endif
+>>   
+>>   #ifndef crash_get_elfcorehdr_size
+>> diff --git a/include/uapi/linux/kexec.h b/include/uapi/linux/kexec.h
+>> index c17bb096ea68..5ae1741ea8ea 100644
+>> --- a/include/uapi/linux/kexec.h
+>> +++ b/include/uapi/linux/kexec.h
+>> @@ -13,6 +13,7 @@
+>>   #define KEXEC_ON_CRASH		0x00000001
+>>   #define KEXEC_PRESERVE_CONTEXT	0x00000002
+>>   #define KEXEC_UPDATE_ELFCOREHDR	0x00000004
+>> +#define KEXEC_CRASH_HOTPLUG_SUPPORT 0x00000008
+>>   #define KEXEC_ARCH_MASK		0xffff0000
+>>   
+>>   /*
+>> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+>> index ab1c8e79759d..111548ad03e9 100644
+>> --- a/kernel/crash_core.c
+>> +++ b/kernel/crash_core.c
+>> @@ -876,7 +876,7 @@ DEFINE_MUTEX(__crash_hotplug_lock);
+>>    * It reflects the kernel's ability/permission to update the crash
+>>    * elfcorehdr directly.
+>>    */
+>> -int crash_check_update_elfcorehdr(void)
+>> +int crash_check_hotplug_support(void)
+>>   {
+>>   	int rc = 0;
+>>   
+>> @@ -888,10 +888,7 @@ int crash_check_update_elfcorehdr(void)
+>>   		return 0;
+>>   	}
+>>   	if (kexec_crash_image) {
+>> -		if (kexec_crash_image->file_mode)
+>> -			rc = 1;
+>> -		else
+>> -			rc = kexec_crash_image->update_elfcorehdr;
+>> +		rc = kexec_crash_image->hotplug_support;
+>>   	}
+>>   	/* Release lock now that update complete */
+>>   	kexec_unlock();
+>> @@ -932,8 +929,8 @@ static void crash_handle_hotplug_event(unsigned int hp_action, unsigned int cpu,
+>>   
+>>   	image = kexec_crash_image;
+>>   
+>> -	/* Check that updating elfcorehdr is permitted */
+>> -	if (!(image->file_mode || image->update_elfcorehdr))
+>> +	/* Check that kexec segments update is permitted */
+>> +	if (!image->hotplug_support)
+>>   		goto out;
+>>   
+>>   	if (hp_action == KEXEC_CRASH_HP_ADD_CPU ||
+>> diff --git a/kernel/kexec.c b/kernel/kexec.c
+>> index 8f35a5a42af8..9dc5b7ed5b73 100644
+>> --- a/kernel/kexec.c
+>> +++ b/kernel/kexec.c
+>> @@ -130,8 +130,8 @@ static int do_kexec_load(unsigned long entry, unsigned long nr_segments,
+>>   		image->preserve_context = 1;
+>>   
+>>   #ifdef CONFIG_CRASH_HOTPLUG
+>> -	if (flags & KEXEC_UPDATE_ELFCOREHDR)
+>> -		image->update_elfcorehdr = 1;
+>> +	if ((flags & KEXEC_ON_CRASH) && arch_crash_hotplug_support(image, flags))
+>> +		image->hotplug_support = 1;
+>>   #endif
+>>   
+>>   	ret = machine_kexec_prepare(image);
+>> diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+>> index bef2f6f2571b..4dddf9264a69 100644
+>> --- a/kernel/kexec_file.c
+>> +++ b/kernel/kexec_file.c
+>> @@ -373,6 +373,11 @@ SYSCALL_DEFINE5(kexec_file_load, int, kernel_fd, int, initrd_fd,
+>>   	if (ret)
+>>   		goto out;
+>>   
+>> +#ifdef CONFIG_CRASH_HOTPLUG
+>> +	if ((flags & KEXEC_FILE_ON_CRASH) && arch_crash_hotplug_support(image, flags))
+>> +		image->hotplug_support = 1;
+>> +#endif
+>> +
+>>   	ret = machine_kexec_prepare(image);
+>>   	if (ret)
+>>   		goto out;
+>> -- 
+>> 2.41.0
+>>
 
