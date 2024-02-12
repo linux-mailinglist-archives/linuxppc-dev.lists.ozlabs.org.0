@@ -1,111 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C8088512CB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Feb 2024 12:59:32 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dJ6omRxg;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF65C8512DC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Feb 2024 13:01:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TYNKt1D9Yz2xWJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Feb 2024 22:59:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TYNN85Ryjz3dXg
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Feb 2024 23:01:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dJ6omRxg;
-	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TYNK7156Dz2yPq
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Feb 2024 22:58:51 +1100 (AEDT)
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4TYNK31qr9z4wc6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Feb 2024 22:58:47 +1100 (AEDT)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4TYNK31XDVz4wd0; Mon, 12 Feb 2024 22:58:47 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dJ6omRxg;
-	dkim-atps=neutral
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4TYNK24c0wz4wc6
-	for <linuxppc-dev@ozlabs.org>; Mon, 12 Feb 2024 22:58:46 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41CBuMsg027069;
-	Mon, 12 Feb 2024 11:58:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=fjgm4EVcv42uFuuYVFwe4hjzuCWEw3kmWX6V7EkIpkM=;
- b=dJ6omRxgBKiAISLjTrCaoc40P6qRsGeAfveK+gLUIJNfaJOQQjDhJmWqdxUzFWwhCRbC
- dMYKGyhOVCjgeyQCbHaTgbe+qITmDhiypJiBKAHq50nJwRj+NAbvNMPWP/LM61aSJGEa
- OW7tgAOlETuFFeT3CME68mMieARW3S0fpYi2WNKXrNIAqLarbOLJg7369teojwfwSRL2
- rcINYxUadb5hC3/mAk+3w9rO3tRTE6s7arBvqfMyaiq+p7mEYpkEfUjkNJ+N5SW2xyXy
- KzPBgt4jcCbysiBrPFLbOQrfvggsVDhvP2WK7peNZS16PyRJwfCzNHZ0S9XC+LU2ZV2R gg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w7jw8r2j7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Feb 2024 11:58:09 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41CBuctl028176;
-	Mon, 12 Feb 2024 11:58:08 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w7jw8r2fq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Feb 2024 11:58:08 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41CBYXhF010063;
-	Mon, 12 Feb 2024 11:58:07 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3w6npkg0x5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Feb 2024 11:58:07 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41CBw2bU2687620
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 12 Feb 2024 11:58:04 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7FD9B20043;
-	Mon, 12 Feb 2024 11:58:02 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 08DC520040;
-	Mon, 12 Feb 2024 11:57:51 +0000 (GMT)
-Received: from [9.61.8.5] (unknown [9.61.8.5])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 12 Feb 2024 11:57:50 +0000 (GMT)
-Message-ID: <0bfaf88a-4ffc-4401-9673-ec4a125a04b9@linux.ibm.com>
-Date: Mon, 12 Feb 2024 17:27:48 +0530
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TYNMk5h7bz2xqq
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Feb 2024 23:01:04 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D7636DA7;
+	Mon, 12 Feb 2024 04:01:11 -0800 (PST)
+Received: from FVFF77S0Q05N (unknown [10.57.78.134])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4548D3F7BD;
+	Mon, 12 Feb 2024 04:00:26 -0800 (PST)
+Date: Mon, 12 Feb 2024 12:00:23 +0000
+From: Mark Rutland <mark.rutland@arm.com>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Subject: Re: [PATCH v5 19/25] arm64/mm: Wire up PTE_CONT for user mappings
+Message-ID: <ZcoIVypNwOPIX30w@FVFF77S0Q05N>
+References: <20240202080756.1453939-1-ryan.roberts@arm.com>
+ <20240202080756.1453939-20-ryan.roberts@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 1/5] crash: forward memory_notify arg to arch crash
- hotplug handler
-To: Baoquan He <bhe@redhat.com>
-References: <20240111105138.251366-1-sourabhjain@linux.ibm.com>
- <20240111105138.251366-2-sourabhjain@linux.ibm.com>
- <ZcBR8Q+/WL3luZnP@MiWiFi-R3L-srv>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <ZcBR8Q+/WL3luZnP@MiWiFi-R3L-srv>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: OLYrLvp5aRXBuf99ow6AA4bwTs9giQSt
-X-Proofpoint-ORIG-GUID: -nNR88___-ZZP6OuTmNrURUYx8etNA1U
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-12_09,2024-02-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- spamscore=0 impostorscore=0 suspectscore=0 malwarescore=0 clxscore=1011
- mlxscore=0 mlxlogscore=968 priorityscore=1501 phishscore=0 bulkscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402120091
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240202080756.1453939-20-ryan.roberts@arm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -117,151 +41,671 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, Mimi Zohar <zohar@linux.ibm.com>, linuxppc-dev@ozlabs.org, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Valentin Schneider <vschneid@redhat.com>, x86@kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Laurent Dufour <laurent.dufour@fr.ibm.com>, Dave Young <dyoung@redhat.com>, Vivek Goyal <vgoyal@redhat.com>, Naveen N Rao <naveen@kernel.org>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, Hari Bathini <hbathini@linux.ibm.com>, Oscar Salvador <osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, kexec@lists.infradead.org, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Akhil Raj <lf32.dev@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, x86@kernel.org, David Hildenbrand <david@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>, Yang Shi <shy828301@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, Andrey Ryabinin <ryabinin.a.a@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>, Alistair Popple <apopple@nvidia.com>, Barry Song <21cnbao@gmail.com>, Matthew Wilcox <willy@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, Zi Yan <ziy@nvidia.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, John Hubbard <jhubbard@nvidia.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Ryan,
 
+Overall this looks pretty good; I have a bunch of minor comments below, and a
+bigger question on the way ptep_get_lockless() works.
 
-On 05/02/24 08:41, Baoquan He wrote:
-> On 01/11/24 at 04:21pm, Sourabh Jain wrote:
->> In the event of memory hotplug or online/offline events, the crash
->> memory hotplug notifier `crash_memhp_notifier()` receives a
->> `memory_notify` object but doesn't forward that object to the
->> generic and architecture-specific crash hotplug handler.
->>
->> The `memory_notify` object contains the starting PFN (Page Frame Number)
->> and the number of pages in the hot-removed memory. This information is
->> necessary for architectures like PowerPC to update/recreate the kdump
->> image, specifically `elfcorehdr`.
->>
->> So update the function signature of `crash_handle_hotplug_event()` and
->> `arch_crash_handle_hotplug_event()` to accept the `memory_notify` object
->> as an argument from crash memory hotplug notifier.
->>
->> Since no such object is available in the case of CPU hotplug event, the
->> crash CPU hotplug notifier `crash_cpuhp_online()` passes NULL to the
->> crash hotplug handler.
->>
-> ......
->> ---
->>   arch/x86/include/asm/kexec.h |  2 +-
->>   arch/x86/kernel/crash.c      |  3 ++-
->>   include/linux/kexec.h        |  2 +-
->>   kernel/crash_core.c          | 14 +++++++-------
->>   4 files changed, 11 insertions(+), 10 deletions(-)
-> LGTM,
->
-> Acked-by: Baoquan He <bhe@redhat.com>
+On Fri, Feb 02, 2024 at 08:07:50AM +0000, Ryan Roberts wrote:
+> With the ptep API sufficiently refactored, we can now introduce a new
+> "contpte" API layer, which transparently manages the PTE_CONT bit for
+> user mappings.
+> 
+> In this initial implementation, only suitable batches of PTEs, set via
+> set_ptes(), are mapped with the PTE_CONT bit. Any subsequent
+> modification of individual PTEs will cause an "unfold" operation to
+> repaint the contpte block as individual PTEs before performing the
+> requested operation. While, a modification of a single PTE could cause
+> the block of PTEs to which it belongs to become eligible for "folding"
+> into a contpte entry, "folding" is not performed in this initial
+> implementation due to the costs of checking the requirements are met.
+> Due to this, contpte mappings will degrade back to normal pte mappings
+> over time if/when protections are changed. This will be solved in a
+> future patch.
+> 
+> Since a contpte block only has a single access and dirty bit, the
+> semantic here changes slightly; when getting a pte (e.g. ptep_get())
+> that is part of a contpte mapping, the access and dirty information are
+> pulled from the block (so all ptes in the block return the same
+> access/dirty info). When changing the access/dirty info on a pte (e.g.
+> ptep_set_access_flags()) that is part of a contpte mapping, this change
+> will affect the whole contpte block. This is works fine in practice
+> since we guarantee that only a single folio is mapped by a contpte
+> block, and the core-mm tracks access/dirty information per folio.
+> 
+> In order for the public functions, which used to be pure inline, to
+> continue to be callable by modules, export all the contpte_* symbols
+> that are now called by those public inline functions.
+> 
+> The feature is enabled/disabled with the ARM64_CONTPTE Kconfig parameter
+> at build time. It defaults to enabled as long as its dependency,
+> TRANSPARENT_HUGEPAGE is also enabled. The core-mm depends upon
+> TRANSPARENT_HUGEPAGE to be able to allocate large folios, so if its not
+> enabled, then there is no chance of meeting the physical contiguity
+> requirement for contpte mappings.
+> 
+> Tested-by: John Hubbard <jhubbard@nvidia.com>
+> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+> ---
+>  arch/arm64/Kconfig               |   9 +
+>  arch/arm64/include/asm/pgtable.h | 161 ++++++++++++++++++
+>  arch/arm64/mm/Makefile           |   1 +
+>  arch/arm64/mm/contpte.c          | 283 +++++++++++++++++++++++++++++++
+>  4 files changed, 454 insertions(+)
+>  create mode 100644 arch/arm64/mm/contpte.c
+> 
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index d86d7f4758b5..1442e8ed95b6 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -2230,6 +2230,15 @@ config UNWIND_PATCH_PAC_INTO_SCS
+>  	select UNWIND_TABLES
+>  	select DYNAMIC_SCS
+>  
+> +config ARM64_CONTPTE
+> +	bool "Contiguous PTE mappings for user memory" if EXPERT
+> +	depends on TRANSPARENT_HUGEPAGE
+> +	default y
+> +	help
+> +	  When enabled, user mappings are configured using the PTE contiguous
+> +	  bit, for any mappings that meet the size and alignment requirements.
+> +	  This reduces TLB pressure and improves performance.
+> +
+>  endmenu # "Kernel Features"
+>  
+>  menu "Boot options"
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> index 7dc6b68ee516..34892a95403d 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -133,6 +133,10 @@ static inline pteval_t __phys_to_pte_val(phys_addr_t phys)
+>   */
+>  #define pte_valid_not_user(pte) \
+>  	((pte_val(pte) & (PTE_VALID | PTE_USER | PTE_UXN)) == (PTE_VALID | PTE_UXN))
+> +/*
+> + * Returns true if the pte is valid and has the contiguous bit set.
+> + */
+> +#define pte_valid_cont(pte)	(pte_valid(pte) && pte_cont(pte))
+>  /*
+>   * Could the pte be present in the TLB? We must check mm_tlb_flush_pending
+>   * so that we don't erroneously return false for pages that have been
+> @@ -1135,6 +1139,161 @@ void vmemmap_update_pte(unsigned long addr, pte_t *ptep, pte_t pte);
+>  #define vmemmap_update_pte vmemmap_update_pte
+>  #endif
+>  
+> +#ifdef CONFIG_ARM64_CONTPTE
+> +
+> +/*
+> + * The contpte APIs are used to transparently manage the contiguous bit in ptes
+> + * where it is possible and makes sense to do so. The PTE_CONT bit is considered
+> + * a private implementation detail of the public ptep API (see below).
+> + */
+> +extern void __contpte_try_unfold(struct mm_struct *mm, unsigned long addr,
+> +				pte_t *ptep, pte_t pte);
+> +extern pte_t contpte_ptep_get(pte_t *ptep, pte_t orig_pte);
+> +extern pte_t contpte_ptep_get_lockless(pte_t *orig_ptep);
+> +extern void contpte_set_ptes(struct mm_struct *mm, unsigned long addr,
+> +				pte_t *ptep, pte_t pte, unsigned int nr);
+> +extern int contpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
+> +				unsigned long addr, pte_t *ptep);
+> +extern int contpte_ptep_clear_flush_young(struct vm_area_struct *vma,
+> +				unsigned long addr, pte_t *ptep);
+> +extern int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
+> +				unsigned long addr, pte_t *ptep,
+> +				pte_t entry, int dirty);
+> +
+> +static inline void contpte_try_unfold(struct mm_struct *mm, unsigned long addr,
+> +					pte_t *ptep, pte_t pte)
+> +{
+> +	if (unlikely(pte_valid_cont(pte)))
+> +		__contpte_try_unfold(mm, addr, ptep, pte);
+> +}
+> +
+> +/*
+> + * The below functions constitute the public API that arm64 presents to the
+> + * core-mm to manipulate PTE entries within their page tables (or at least this
+> + * is the subset of the API that arm64 needs to implement). These public
+> + * versions will automatically and transparently apply the contiguous bit where
+> + * it makes sense to do so. Therefore any users that are contig-aware (e.g.
+> + * hugetlb, kernel mapper) should NOT use these APIs, but instead use the
+> + * private versions, which are prefixed with double underscore. All of these
+> + * APIs except for ptep_get_lockless() are expected to be called with the PTL
+> + * held.
+> + */
+> +
+> +#define ptep_get ptep_get
+> +static inline pte_t ptep_get(pte_t *ptep)
+> +{
+> +	pte_t pte = __ptep_get(ptep);
+> +
+> +	if (likely(!pte_valid_cont(pte)))
+> +		return pte;
+> +
+> +	return contpte_ptep_get(ptep, pte);
+> +}
+> +
+> +#define ptep_get_lockless ptep_get_lockless
+> +static inline pte_t ptep_get_lockless(pte_t *ptep)
+> +{
+> +	pte_t pte = __ptep_get(ptep);
+> +
+> +	if (likely(!pte_valid_cont(pte)))
+> +		return pte;
+> +
+> +	return contpte_ptep_get_lockless(ptep);
+> +}
+> +
+> +static inline void set_pte(pte_t *ptep, pte_t pte)
+> +{
+> +	/*
+> +	 * We don't have the mm or vaddr so cannot unfold contig entries (since
+> +	 * it requires tlb maintenance). set_pte() is not used in core code, so
+> +	 * this should never even be called. Regardless do our best to service
+> +	 * any call and emit a warning if there is any attempt to set a pte on
+> +	 * top of an existing contig range.
+> +	 */
+> +	pte_t orig_pte = __ptep_get(ptep);
+> +
+> +	WARN_ON_ONCE(pte_valid_cont(orig_pte));
+> +	__set_pte(ptep, pte_mknoncont(pte));
+> +}
+> +
+> +#define set_ptes set_ptes
+> +static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
+> +				pte_t *ptep, pte_t pte, unsigned int nr)
+> +{
+> +	pte = pte_mknoncont(pte);
 
-Thanks Baoquan He
+Why do we have to clear the contiguous bit here? Is that for the same reason as
+set_pte(), or do we expect callers to legitimately call this with the
+contiguous bit set in 'pte'?
 
-- Sourabh
+I think you explained this to me in-person, and IIRC we don't expect callers to
+go set the bit themselves, but since it 'leaks' out to them via __ptep_get() we
+have to clear it here to defer the decision of whether to set/clear it when
+modifying entries. It would be nice if we could have a description of why/when
+we need to clear this, e.g. in the 'public API' comment block above.
 
->
->> diff --git a/arch/x86/include/asm/kexec.h b/arch/x86/include/asm/kexec.h
->> index c9f6a6c5de3c..9bb6607e864e 100644
->> --- a/arch/x86/include/asm/kexec.h
->> +++ b/arch/x86/include/asm/kexec.h
->> @@ -208,7 +208,7 @@ int arch_kimage_file_post_load_cleanup(struct kimage *image);
->>   extern void kdump_nmi_shootdown_cpus(void);
->>   
->>   #ifdef CONFIG_CRASH_HOTPLUG
->> -void arch_crash_handle_hotplug_event(struct kimage *image);
->> +void arch_crash_handle_hotplug_event(struct kimage *image, void *arg);
->>   #define arch_crash_handle_hotplug_event arch_crash_handle_hotplug_event
->>   
->>   #ifdef CONFIG_HOTPLUG_CPU
->> diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
->> index b6b044356f1b..44744e9c68ec 100644
->> --- a/arch/x86/kernel/crash.c
->> +++ b/arch/x86/kernel/crash.c
->> @@ -428,10 +428,11 @@ unsigned int arch_crash_get_elfcorehdr_size(void)
->>   /**
->>    * arch_crash_handle_hotplug_event() - Handle hotplug elfcorehdr changes
->>    * @image: a pointer to kexec_crash_image
->> + * @arg: struct memory_notify handler for memory hotplug case and NULL for CPU hotplug case.
->>    *
->>    * Prepare the new elfcorehdr and replace the existing elfcorehdr.
->>    */
->> -void arch_crash_handle_hotplug_event(struct kimage *image)
->> +void arch_crash_handle_hotplug_event(struct kimage *image, void *arg)
->>   {
->>   	void *elfbuf = NULL, *old_elfcorehdr;
->>   	unsigned long nr_mem_ranges;
->> diff --git a/include/linux/kexec.h b/include/linux/kexec.h
->> index 400cb6c02176..802052d9c64b 100644
->> --- a/include/linux/kexec.h
->> +++ b/include/linux/kexec.h
->> @@ -483,7 +483,7 @@ static inline void arch_kexec_pre_free_pages(void *vaddr, unsigned int pages) {
->>   #endif
->>   
->>   #ifndef arch_crash_handle_hotplug_event
->> -static inline void arch_crash_handle_hotplug_event(struct kimage *image) { }
->> +static inline void arch_crash_handle_hotplug_event(struct kimage *image, void *arg) { }
->>   #endif
->>   
->>   int crash_check_update_elfcorehdr(void);
->> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
->> index d48315667752..ab1c8e79759d 100644
->> --- a/kernel/crash_core.c
->> +++ b/kernel/crash_core.c
->> @@ -914,7 +914,7 @@ int crash_check_update_elfcorehdr(void)
->>    * list of segments it checks (since the elfcorehdr changes and thus
->>    * would require an update to purgatory itself to update the digest).
->>    */
->> -static void crash_handle_hotplug_event(unsigned int hp_action, unsigned int cpu)
->> +static void crash_handle_hotplug_event(unsigned int hp_action, unsigned int cpu, void *arg)
->>   {
->>   	struct kimage *image;
->>   
->> @@ -976,7 +976,7 @@ static void crash_handle_hotplug_event(unsigned int hp_action, unsigned int cpu)
->>   	image->hp_action = hp_action;
->>   
->>   	/* Now invoke arch-specific update handler */
->> -	arch_crash_handle_hotplug_event(image);
->> +	arch_crash_handle_hotplug_event(image, arg);
->>   
->>   	/* No longer handling a hotplug event */
->>   	image->hp_action = KEXEC_CRASH_HP_NONE;
->> @@ -992,17 +992,17 @@ static void crash_handle_hotplug_event(unsigned int hp_action, unsigned int cpu)
->>   	crash_hotplug_unlock();
->>   }
->>   
->> -static int crash_memhp_notifier(struct notifier_block *nb, unsigned long val, void *v)
->> +static int crash_memhp_notifier(struct notifier_block *nb, unsigned long val, void *arg)
->>   {
->>   	switch (val) {
->>   	case MEM_ONLINE:
->>   		crash_handle_hotplug_event(KEXEC_CRASH_HP_ADD_MEMORY,
->> -			KEXEC_CRASH_HP_INVALID_CPU);
->> +			KEXEC_CRASH_HP_INVALID_CPU, arg);
->>   		break;
->>   
->>   	case MEM_OFFLINE:
->>   		crash_handle_hotplug_event(KEXEC_CRASH_HP_REMOVE_MEMORY,
->> -			KEXEC_CRASH_HP_INVALID_CPU);
->> +			KEXEC_CRASH_HP_INVALID_CPU, arg);
->>   		break;
->>   	}
->>   	return NOTIFY_OK;
->> @@ -1015,13 +1015,13 @@ static struct notifier_block crash_memhp_nb = {
->>   
->>   static int crash_cpuhp_online(unsigned int cpu)
->>   {
->> -	crash_handle_hotplug_event(KEXEC_CRASH_HP_ADD_CPU, cpu);
->> +	crash_handle_hotplug_event(KEXEC_CRASH_HP_ADD_CPU, cpu, NULL);
->>   	return 0;
->>   }
->>   
->>   static int crash_cpuhp_offline(unsigned int cpu)
->>   {
->> -	crash_handle_hotplug_event(KEXEC_CRASH_HP_REMOVE_CPU, cpu);
->> +	crash_handle_hotplug_event(KEXEC_CRASH_HP_REMOVE_CPU, cpu, NULL);
->>   	return 0;
->>   }
->>   
->> -- 
->> 2.41.0
->>
+> +
+> +	if (likely(nr == 1)) {
+> +		contpte_try_unfold(mm, addr, ptep, __ptep_get(ptep));
+> +		__set_ptes(mm, addr, ptep, pte, 1);
+> +	} else {
+> +		contpte_set_ptes(mm, addr, ptep, pte, nr);
+> +	}
+> +}
+> +
+> +static inline void pte_clear(struct mm_struct *mm,
+> +				unsigned long addr, pte_t *ptep)
+> +{
+> +	contpte_try_unfold(mm, addr, ptep, __ptep_get(ptep));
+> +	__pte_clear(mm, addr, ptep);
+> +}
+> +
+> +#define __HAVE_ARCH_PTEP_GET_AND_CLEAR
+> +static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
+> +				unsigned long addr, pte_t *ptep)
+> +{
+> +	contpte_try_unfold(mm, addr, ptep, __ptep_get(ptep));
+> +	return __ptep_get_and_clear(mm, addr, ptep);
+> +}
+> +
+> +#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+> +static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
+> +				unsigned long addr, pte_t *ptep)
+> +{
+> +	pte_t orig_pte = __ptep_get(ptep);
+> +
+> +	if (likely(!pte_valid_cont(orig_pte)))
+> +		return __ptep_test_and_clear_young(vma, addr, ptep);
+> +
+> +	return contpte_ptep_test_and_clear_young(vma, addr, ptep);
+> +}
+> +
+> +#define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+> +static inline int ptep_clear_flush_young(struct vm_area_struct *vma,
+> +				unsigned long addr, pte_t *ptep)
+> +{
+> +	pte_t orig_pte = __ptep_get(ptep);
+> +
+> +	if (likely(!pte_valid_cont(orig_pte)))
+> +		return __ptep_clear_flush_young(vma, addr, ptep);
+> +
+> +	return contpte_ptep_clear_flush_young(vma, addr, ptep);
+> +}
+> +
+> +#define __HAVE_ARCH_PTEP_SET_WRPROTECT
+> +static inline void ptep_set_wrprotect(struct mm_struct *mm,
+> +				unsigned long addr, pte_t *ptep)
+> +{
+> +	contpte_try_unfold(mm, addr, ptep, __ptep_get(ptep));
+> +	__ptep_set_wrprotect(mm, addr, ptep);
+> +}
+> +
+> +#define __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
+> +static inline int ptep_set_access_flags(struct vm_area_struct *vma,
+> +				unsigned long addr, pte_t *ptep,
+> +				pte_t entry, int dirty)
+> +{
+> +	pte_t orig_pte = __ptep_get(ptep);
+> +
+> +	entry = pte_mknoncont(entry);
+> +
+> +	if (likely(!pte_valid_cont(orig_pte)))
+> +		return __ptep_set_access_flags(vma, addr, ptep, entry, dirty);
+> +
+> +	return contpte_ptep_set_access_flags(vma, addr, ptep, entry, dirty);
+> +}
+> +
+> +#else /* CONFIG_ARM64_CONTPTE */
+> +
+>  #define ptep_get				__ptep_get
+>  #define set_pte					__set_pte
+>  #define set_ptes				__set_ptes
+> @@ -1150,6 +1309,8 @@ void vmemmap_update_pte(unsigned long addr, pte_t *ptep, pte_t pte);
+>  #define __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
+>  #define ptep_set_access_flags			__ptep_set_access_flags
+>  
+> +#endif /* CONFIG_ARM64_CONTPTE */
+> +
+>  #endif /* !__ASSEMBLY__ */
+>  
+>  #endif /* __ASM_PGTABLE_H */
+> diff --git a/arch/arm64/mm/Makefile b/arch/arm64/mm/Makefile
+> index dbd1bc95967d..60454256945b 100644
+> --- a/arch/arm64/mm/Makefile
+> +++ b/arch/arm64/mm/Makefile
+> @@ -3,6 +3,7 @@ obj-y				:= dma-mapping.o extable.o fault.o init.o \
+>  				   cache.o copypage.o flush.o \
+>  				   ioremap.o mmap.o pgd.o mmu.o \
+>  				   context.o proc.o pageattr.o fixmap.o
+> +obj-$(CONFIG_ARM64_CONTPTE)	+= contpte.o
+>  obj-$(CONFIG_HUGETLB_PAGE)	+= hugetlbpage.o
+>  obj-$(CONFIG_PTDUMP_CORE)	+= ptdump.o
+>  obj-$(CONFIG_PTDUMP_DEBUGFS)	+= ptdump_debugfs.o
+> diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
+> new file mode 100644
+> index 000000000000..bfb50e6b44c7
+> --- /dev/null
+> +++ b/arch/arm64/mm/contpte.c
+> @@ -0,0 +1,283 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (C) 2023 ARM Ltd.
+> + */
+> +
+> +#include <linux/mm.h>
+> +#include <linux/export.h>
+> +#include <asm/tlbflush.h>
+> +
+> +static inline bool mm_is_user(struct mm_struct *mm)
+> +{
+> +	/*
+> +	 * Don't attempt to apply the contig bit to kernel mappings, because
+> +	 * dynamically adding/removing the contig bit can cause page faults.
+> +	 * These racing faults are ok for user space, since they get serialized
+> +	 * on the PTL. But kernel mappings can't tolerate faults.
+> +	 */
+> +	return mm != &init_mm;
+> +}
 
+We also have the efi_mm as a non-user mm, though I don't think we manipulate
+that while it is live, and I'm not sure if that needs any special handling.
+
+> +static inline pte_t *contpte_align_down(pte_t *ptep)
+> +{
+> +	return (pte_t *)(ALIGN_DOWN((unsigned long)ptep >> 3, CONT_PTES) << 3);
+
+I think this can be:
+
+static inline pte_t *contpte_align_down(pte_t *ptep)
+{
+	return PTR_ALIGN_DOWN(ptep, sizeof(*ptep) * CONT_PTES);
+}
+
+> +
+> +static void contpte_convert(struct mm_struct *mm, unsigned long addr,
+> +			    pte_t *ptep, pte_t pte)
+> +{
+> +	struct vm_area_struct vma = TLB_FLUSH_VMA(mm, 0);
+> +	unsigned long start_addr;
+> +	pte_t *start_ptep;
+> +	int i;
+> +
+> +	start_ptep = ptep = contpte_align_down(ptep);
+> +	start_addr = addr = ALIGN_DOWN(addr, CONT_PTE_SIZE);
+> +	pte = pfn_pte(ALIGN_DOWN(pte_pfn(pte), CONT_PTES), pte_pgprot(pte));
+> +
+> +	for (i = 0; i < CONT_PTES; i++, ptep++, addr += PAGE_SIZE) {
+> +		pte_t ptent = __ptep_get_and_clear(mm, addr, ptep);
+> +
+> +		if (pte_dirty(ptent))
+> +			pte = pte_mkdirty(pte);
+> +
+> +		if (pte_young(ptent))
+> +			pte = pte_mkyoung(pte);
+> +	}
+
+Not a big deal either way, but I wonder if it makes more sense to accumulate
+the 'ptent' dirty/young values, then modify 'pte' once, i.e.
+
+	bool dirty = false, young = false;
+
+	for (...) {
+		pte_t ptent = __ptep_get_and_clear(mm, addr, ptep);
+		dirty |= pte_dirty(ptent);
+		young |= pte_young(ptent);
+	}
+
+	if (dirty)
+		pte_mkdirty(pte);
+	if (young)
+		pte_mkyoung(pte);
+
+I suspect that might generate slightly better code, but I'm also happy with the
+current form if people thnk that's more legible (I have no strong feelings
+either way).
+
+> +
+> +	__flush_tlb_range(&vma, start_addr, addr, PAGE_SIZE, true, 3);
+> +
+> +	__set_ptes(mm, start_addr, start_ptep, pte, CONT_PTES);
+> +}
+> +
+> +void __contpte_try_unfold(struct mm_struct *mm, unsigned long addr,
+> +			pte_t *ptep, pte_t pte)
+> +{
+> +	/*
+> +	 * We have already checked that the ptes are contiguous in
+> +	 * contpte_try_unfold(), so just check that the mm is user space.
+> +	 */
+> +
+> +	if (!mm_is_user(mm))
+> +		return;
+
+Nit: normally we don't put a line gap between a comment block and the
+associated block of code.
+
+> +
+> +	pte = pte_mknoncont(pte);
+> +	contpte_convert(mm, addr, ptep, pte);
+> +}
+> +EXPORT_SYMBOL(__contpte_try_unfold);
+> +
+> +pte_t contpte_ptep_get(pte_t *ptep, pte_t orig_pte)
+> +{
+> +	/*
+> +	 * Gather access/dirty bits, which may be populated in any of the ptes
+> +	 * of the contig range. We are guarranteed to be holding the PTL, so any
+> +	 * contiguous range cannot be unfolded or otherwise modified under our
+> +	 * feet.
+> +	 */
+
+Nit: s/guarranteed/guaranteed/
+
+> +
+> +	pte_t pte;
+> +	int i;
+> +
+> +	ptep = contpte_align_down(ptep);
+> +
+> +	for (i = 0; i < CONT_PTES; i++, ptep++) {
+> +		pte = __ptep_get(ptep);
+> +
+> +		if (pte_dirty(pte))
+> +			orig_pte = pte_mkdirty(orig_pte);
+> +
+> +		if (pte_young(pte))
+> +			orig_pte = pte_mkyoung(orig_pte);
+> +	}
+> +
+> +	return orig_pte;
+> +}
+> +EXPORT_SYMBOL(contpte_ptep_get);
+> +
+> +pte_t contpte_ptep_get_lockless(pte_t *orig_ptep)
+> +{
+> +	/*
+> +	 * Gather access/dirty bits, which may be populated in any of the ptes
+> +	 * of the contig range. We may not be holding the PTL, so any contiguous
+> +	 * range may be unfolded/modified/refolded under our feet. Therefore we
+> +	 * ensure we read a _consistent_ contpte range by checking that all ptes
+> +	 * in the range are valid and have CONT_PTE set, that all pfns are
+> +	 * contiguous and that all pgprots are the same (ignoring access/dirty).
+> +	 * If we find a pte that is not consistent, then we must be racing with
+> +	 * an update so start again. If the target pte does not have CONT_PTE
+> +	 * set then that is considered consistent on its own because it is not
+> +	 * part of a contpte range.
+> +	 */
+> +
+> +	pgprot_t orig_prot;
+> +	unsigned long pfn;
+> +	pte_t orig_pte;
+> +	pgprot_t prot;
+> +	pte_t *ptep;
+> +	pte_t pte;
+> +	int i;
+> +
+> +retry:
+> +	orig_pte = __ptep_get(orig_ptep);
+> +
+> +	if (!pte_valid_cont(orig_pte))
+> +		return orig_pte;
+> +
+> +	orig_prot = pte_pgprot(pte_mkold(pte_mkclean(orig_pte)));
+> +	ptep = contpte_align_down(orig_ptep);
+> +	pfn = pte_pfn(orig_pte) - (orig_ptep - ptep);
+> +
+> +	for (i = 0; i < CONT_PTES; i++, ptep++, pfn++) {
+> +		pte = __ptep_get(ptep);
+> +		prot = pte_pgprot(pte_mkold(pte_mkclean(pte)));
+> +
+> +		if (!pte_valid_cont(pte) ||
+> +		   pte_pfn(pte) != pfn ||
+> +		   pgprot_val(prot) != pgprot_val(orig_prot))
+> +			goto retry;
+> +
+> +		if (pte_dirty(pte))
+> +			orig_pte = pte_mkdirty(orig_pte);
+> +
+> +		if (pte_young(pte))
+> +			orig_pte = pte_mkyoung(orig_pte);
+> +	}
+> +
+> +	return orig_pte;
+> +}
+> +EXPORT_SYMBOL(contpte_ptep_get_lockless);
+
+I'm struggling to convince myself that this is safe in general, as it really
+depends on how the caller will use this value. Which caller(s) actually care
+about the access/dirty bits, given those could change at any time anyway?
+
+I took a quick scan, and AFAICT:
+
+* For perf_get_pgtable_size(), we only care about whether the entry is valid
+  and has the contig bit set. We could clean that up with a new interface, e.g.
+  something like a new ptep_get_size_lockless().
+
+* For gup_pte_range(), I'm not sure we actually need the access/dirty bits when
+  we look at the pte to start with, since we only care where we can logically
+  write to the page at that point.
+
+  I see that we later follow up with:
+
+    with pte_val(pte) != pte_val(ptep_get(ptep)))
+
+  ... is that why we need ptep_get_lockless() to accumulate the access/dirty
+  bits? So that shape of lockless-try...locked-compare sequence works?
+
+* For huge_pte_alloc(), arm64 doesn't select CONFIG_ARCH_WANT_GENERAL_HUGETLB,
+  so this doesn' seem to matter.
+
+* For __collapse_huge_page_swapin(), we only care if the pte is a swap pte,
+  which means the pte isn't valid, and we'll return the orig_pte as-is anyway.
+
+* For pte_range_none() the access/dirty bits don't matter.
+
+* For handle_pte_fault() I think we have the same shape of
+  lockless-try...locked-compare sequence as for gup_pte_range(), where we don't
+  care about the acess/dirty bits before we reach the locked compare step.
+
+* For ptdump_pte_entry() I think it's arguable that we should continue to
+  report the access/dirty bits separately for each PTE, as we have done until
+  now, to give an accurate representation of the contents of the translation
+  tables.
+
+* For swap_vma_readahead() and unuse_pte_range() we only care if the PTE is a
+  swap entry, the access/dirty bits don't matter.
+
+So AFAICT this only really matters for gup_pte_range() and handle_pte_fault(),
+and IIUC that's only so that the locklessly-loaded pte value can be compared
+with a subsequently locked-loaded entry (for which the access/dirty bits will
+be accumulated). Have I understood that correctly?
+
+If so, I wonder if we could instead do that comparison modulo the access/dirty
+bits, and leave ptep_get_lockless() only reading a single entry?
+
+Thanks,
+Mark.
+
+> +void contpte_set_ptes(struct mm_struct *mm, unsigned long addr,
+> +					pte_t *ptep, pte_t pte, unsigned int nr)
+> +{
+> +	unsigned long next;
+> +	unsigned long end;
+> +	unsigned long pfn;
+> +	pgprot_t prot;
+> +
+> +	/*
+> +	 * The set_ptes() spec guarantees that when nr > 1, the initial state of
+> +	 * all ptes is not-present. Therefore we never need to unfold or
+> +	 * otherwise invalidate a range before we set the new ptes.
+> +	 * contpte_set_ptes() should never be called for nr < 2.
+> +	 */
+> +	VM_WARN_ON(nr == 1);
+> +
+> +	if (!mm_is_user(mm))
+> +		return __set_ptes(mm, addr, ptep, pte, nr);
+> +
+> +	end = addr + (nr << PAGE_SHIFT);
+> +	pfn = pte_pfn(pte);
+> +	prot = pte_pgprot(pte);
+> +
+> +	do {
+> +		next = pte_cont_addr_end(addr, end);
+> +		nr = (next - addr) >> PAGE_SHIFT;
+> +		pte = pfn_pte(pfn, prot);
+> +
+> +		if (((addr | next | (pfn << PAGE_SHIFT)) & ~CONT_PTE_MASK) == 0)
+> +			pte = pte_mkcont(pte);
+> +		else
+> +			pte = pte_mknoncont(pte);
+> +
+> +		__set_ptes(mm, addr, ptep, pte, nr);
+> +
+> +		addr = next;
+> +		ptep += nr;
+> +		pfn += nr;
+> +
+> +	} while (addr != end);
+> +}
+> +EXPORT_SYMBOL(contpte_set_ptes);
+> +
+> +int contpte_ptep_test_and_clear_young(struct vm_area_struct *vma,
+> +					unsigned long addr, pte_t *ptep)
+> +{
+> +	/*
+> +	 * ptep_clear_flush_young() technically requires us to clear the access
+> +	 * flag for a _single_ pte. However, the core-mm code actually tracks
+> +	 * access/dirty per folio, not per page. And since we only create a
+> +	 * contig range when the range is covered by a single folio, we can get
+> +	 * away with clearing young for the whole contig range here, so we avoid
+> +	 * having to unfold.
+> +	 */
+> +
+> +	int young = 0;
+> +	int i;
+> +
+> +	ptep = contpte_align_down(ptep);
+> +	addr = ALIGN_DOWN(addr, CONT_PTE_SIZE);
+> +
+> +	for (i = 0; i < CONT_PTES; i++, ptep++, addr += PAGE_SIZE)
+> +		young |= __ptep_test_and_clear_young(vma, addr, ptep);
+> +
+> +	return young;
+> +}
+> +EXPORT_SYMBOL(contpte_ptep_test_and_clear_young);
+> +
+> +int contpte_ptep_clear_flush_young(struct vm_area_struct *vma,
+> +					unsigned long addr, pte_t *ptep)
+> +{
+> +	int young;
+> +
+> +	young = contpte_ptep_test_and_clear_young(vma, addr, ptep);
+> +
+> +	if (young) {
+> +		/*
+> +		 * See comment in __ptep_clear_flush_young(); same rationale for
+> +		 * eliding the trailing DSB applies here.
+> +		 */
+> +		addr = ALIGN_DOWN(addr, CONT_PTE_SIZE);
+> +		__flush_tlb_range_nosync(vma, addr, addr + CONT_PTE_SIZE,
+> +					 PAGE_SIZE, true, 3);
+> +	}
+> +
+> +	return young;
+> +}
+> +EXPORT_SYMBOL(contpte_ptep_clear_flush_young);
+> +
+> +int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
+> +					unsigned long addr, pte_t *ptep,
+> +					pte_t entry, int dirty)
+> +{
+> +	unsigned long start_addr;
+> +	pte_t orig_pte;
+> +	int i;
+> +
+> +	/*
+> +	 * Gather the access/dirty bits for the contiguous range. If nothing has
+> +	 * changed, its a noop.
+> +	 */
+> +	orig_pte = pte_mknoncont(ptep_get(ptep));
+> +	if (pte_val(orig_pte) == pte_val(entry))
+> +		return 0;
+> +
+> +	/*
+> +	 * We can fix up access/dirty bits without having to unfold the contig
+> +	 * range. But if the write bit is changing, we must unfold.
+> +	 */
+> +	if (pte_write(orig_pte) == pte_write(entry)) {
+> +		/*
+> +		 * For HW access management, we technically only need to update
+> +		 * the flag on a single pte in the range. But for SW access
+> +		 * management, we need to update all the ptes to prevent extra
+> +		 * faults. Avoid per-page tlb flush in __ptep_set_access_flags()
+> +		 * and instead flush the whole range at the end.
+> +		 */
+> +		ptep = contpte_align_down(ptep);
+> +		start_addr = addr = ALIGN_DOWN(addr, CONT_PTE_SIZE);
+> +
+> +		for (i = 0; i < CONT_PTES; i++, ptep++, addr += PAGE_SIZE)
+> +			__ptep_set_access_flags(vma, addr, ptep, entry, 0);
+> +
+> +		if (dirty)
+> +			__flush_tlb_range(vma, start_addr, addr,
+> +							PAGE_SIZE, true, 3);
+> +	} else {
+> +		__contpte_try_unfold(vma->vm_mm, addr, ptep, orig_pte);
+> +		__ptep_set_access_flags(vma, addr, ptep, entry, dirty);
+> +	}
+> +
+> +	return 1;
+> +}
+> +EXPORT_SYMBOL(contpte_ptep_set_access_flags);
+> -- 
+> 2.25.1
+> 
