@@ -2,48 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9F1A8532F1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Feb 2024 15:22:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB7698533B4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Feb 2024 15:54:51 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=gaisler.com header.i=@gaisler.com header.a=rsa-sha256 header.s=unoeuro header.b=fxRUG6+y;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TZ3S44j27z3vXs
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Feb 2024 01:22:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TZ49j5ftcz3dVL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Feb 2024 01:54:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TZ3Rb3Gqnz30f8
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Feb 2024 01:21:44 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 355E0DA7;
-	Tue, 13 Feb 2024 06:21:53 -0800 (PST)
-Received: from [10.1.36.184] (XHFQ2J9959.cambridge.arm.com [10.1.36.184])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5BF583F762;
-	Tue, 13 Feb 2024 06:21:08 -0800 (PST)
-Message-ID: <ed91f6c5-1ed2-4fb3-b5a4-0a720721e3f6@arm.com>
-Date: Tue, 13 Feb 2024 14:21:07 +0000
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; secure) header.d=gaisler.com header.i=@gaisler.com header.a=rsa-sha256 header.s=unoeuro header.b=fxRUG6+y;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gaisler.com (client-ip=94.231.106.210; helo=smtp-out3.simply.com; envelope-from=andreas@gaisler.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 524 seconds by postgrey-1.37 at boromir; Wed, 14 Feb 2024 01:54:06 AEDT
+Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TZ48t63NRz3cB2
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Feb 2024 01:54:06 +1100 (AEDT)
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.simply.com (Simply.com) with ESMTP id 4TZ3yd4Dj4z681k;
+	Tue, 13 Feb 2024 15:45:13 +0100 (CET)
+Received: from [192.168.0.25] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(Client did not present a certificate)
+	by smtp.simply.com (Simply.com) with ESMTPSA id 4TZ3yH6LD4z67wS;
+	Tue, 13 Feb 2024 15:44:54 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
+	s=unoeuro; t=1707835513;
+	bh=v6NrxM1eJN7Z7yzkWSBTKUltm5dbJ2HTXi9hG2LMSTA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=fxRUG6+yBSU+BFXn6+rebuuiiuqqWopqe29Vz2GaIf78w+V69ZIB+Af31iKeLr62p
+	 qpQdz7sWHzQ58CP3tqsZon5MfZ78+Sms5m4nebpjjUITGZQ1A2ZnKMsF4BxSh1OMBa
+	 S898RixpmWtD3+3XqXRY4JGgZ7I8bBk64Oy1wp1k=
+Message-ID: <4582ff28-a443-4b0f-ba92-f48c414e2248@gaisler.com>
+Date: Tue, 13 Feb 2024 15:44:53 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 19/25] arm64/mm: Wire up PTE_CONT for user mappings
-Content-Language: en-GB
-To: Ard Biesheuvel <ardb@kernel.org>, David Hildenbrand <david@redhat.com>
-References: <20240202080756.1453939-1-ryan.roberts@arm.com>
- <20240202080756.1453939-20-ryan.roberts@arm.com>
- <ZcoIVypNwOPIX30w@FVFF77S0Q05N>
- <c899f252-dbf3-4e7b-8342-b5a5180486cd@arm.com>
- <aa232591-e0c8-422d-a641-fa555914c5f0@arm.com>
- <64395ae4-3a7d-45dd-8f1d-ea6b232829c5@arm.com>
- <d6ce951f-f83b-4a5a-a814-311f2d8b01e4@arm.com>
- <41499621-482f-455b-9f68-b43ea8052557@redhat.com>
- <1d302d7a-50ab-4ab4-b049-75ed4a71a87d@arm.com>
- <99e2a92c-f2a2-4e1e-8ce2-08caae2cb7e4@redhat.com>
- <dce5f80d-942f-439c-a549-5290666464ca@arm.com>
- <CAMj1kXEVf1m4hVXORc6t9ytAOb75KZLcW-OJ6999VaKbkVdQ3A@mail.gmail.com>
- <64b872bd-4b12-4dbd-b043-1ad11aeaa19a@redhat.com>
- <3de2130b-9f0f-4a11-ac06-7bf814de641c@arm.com>
- <f93e5552-5e46-4f49-918a-21b63156eb32@redhat.com>
- <CAMj1kXEK6wiHkO9sJ5h6D3L88dR=2UndEqGeQjv=TftZ3PnN9w@mail.gmail.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <CAMj1kXEK6wiHkO9sJ5h6D3L88dR=2UndEqGeQjv=TftZ3PnN9w@mail.gmail.com>
+Subject: Re: Build regressions/improvements in v6.8-rc1
+Content-Language: en-US
+To: Arnd Bergmann <arnd@arndb.de>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ linux-kernel@vger.kernel.org
+References: <CAHk-=wiB4iHTtfZKiy5pC24uOjun4fbj4kSX0=ZnGsOXadMf6g@mail.gmail.com>
+ <20240123111235.3097079-1-geert@linux-m68k.org>
+ <d03e90ca-8485-4d1b-5ec1-c3398e0e8da@linux-m68k.org>
+ <0229fa60-2d87-4b1c-b9f0-6f04c6e4dbdd@app.fastmail.com>
+From: Andreas Larsson <andreas@gaisler.com>
+In-Reply-To: <0229fa60-2d87-4b1c-b9f0-6f04c6e4dbdd@app.fastmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -57,87 +64,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Kefeng Wang <wangkefeng.wang@huawei.com>, x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Yang Shi <shy828301@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, Andrey Ryabinin <ryabinin.a.a@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, Alistair Popple <apopple@nvidia.com>, Barry Song <21cnbao@gmail.com>, Matthew Wilcox <willy@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, Zi Yan <ziy@nvidia.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, John Hubbard <jhubbard@nvidia.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Chris Zankel <chris@zankel.net>, linux-scsi@vger.kernel.org, linux-sh@vger.kernel.org, Netdev <netdev@vger.kernel.org>, mpi3mr-linuxdrv.pdl@broadcom.com, qat-linux@intel.com, dri-devel@lists.freedesktop.org, Max Filippov <jcmvbkbc@gmail.com>, linux-mtd@lists.infradead.org, linux-hardening@vger.kernel.org, sparclinux@vger.kernel.org, "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>, linuxppc-dev@lists.ozlabs.org, intel-xe@lists.freedesktop.org, linux-crypto@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 13/02/2024 14:08, Ard Biesheuvel wrote:
-> On Tue, 13 Feb 2024 at 15:05, David Hildenbrand <david@redhat.com> wrote:
+On 2024-01-23 15:21, Arnd Bergmann wrote:
+>>>  + /kisskb/src/arch/sparc/include/asm/floppy_64.h: error: no previous prototype for 'sparc_floppy_irq' [-Werror=missing-prototypes]:  => 200:13
+>>>  + /kisskb/src/arch/sparc/include/asm/floppy_64.h: error: no previous prototype for 'sun_pci_fd_dma_callback' [-Werror=missing-prototypes]:  => 437:6
 >>
->> On 13.02.24 15:02, Ryan Roberts wrote:
->>> On 13/02/2024 13:45, David Hildenbrand wrote:
->>>> On 13.02.24 14:33, Ard Biesheuvel wrote:
->>>>> On Tue, 13 Feb 2024 at 14:21, Ryan Roberts <ryan.roberts@arm.com> wrote:
->>>>>>
->>>>>> On 13/02/2024 13:13, David Hildenbrand wrote:
-> ...
->>>>>>> Just a thought, you could have a is_efi_mm() function that abstracts all that.
->>>>>>>
->>>>>>> diff --git a/include/linux/efi.h b/include/linux/efi.h
->>>>>>> index c74f47711f0b..152f5fa66a2a 100644
->>>>>>> --- a/include/linux/efi.h
->>>>>>> +++ b/include/linux/efi.h
->>>>>>> @@ -692,6 +692,15 @@ extern struct efi {
->>>>>>>
->>>>>>>    extern struct mm_struct efi_mm;
->>>>>>>
->>>>>>> +static inline void is_efi_mm(struct mm_struct *mm)
->>>>>>> +{
->>>>>>> +#ifdef CONFIG_EFI
->>>>>>> +       return mm == &efi_mm;
->>>>>>> +#else
->>>>>>> +       return false;
->>>>>>> +#endif
->>>>>>> +}
->>>>>>> +
->>>>>>>    static inline int
->>>>>>>    efi_guidcmp (efi_guid_t left, efi_guid_t right)
->>>>>>>    {
->>>>>>>
->>>>>>>
->>>>>>
->>>>>> That would definitely work, but in that case, I might as well just check for it
->>>>>> in mm_is_user() (and personally I would change the name to mm_is_efi()):
->>>>>>
->>>>>>
->>>>>> static inline bool mm_is_user(struct mm_struct *mm)
->>>>>> {
->>>>>>           return mm != &init_mm && !mm_is_efi(mm);
->>>>>> }
->>>>>>
->>>>>> Any objections?
->>>>>>
->>>>>
->>>>> Any reason not to use IS_ENABLED(CONFIG_EFI) in the above? The extern
->>>>> declaration is visible to the compiler, and any references should
->>>>> disappear before the linker could notice that efi_mm does not exist.
->>>>>
->>>>
->>>> Sure, as long as the linker is happy why not. I'll let Ryan mess with that :)
->>>
->>> I'm not sure if you are suggesting dropping the mm_is_efi() helper and just use
->>> IS_ENABLED(CONFIG_EFI) in mm_is_user() to guard efi_mm, or if you are suggesting
->>> using IS_ENABLED(CONFIG_EFI) in mm_is_efi() instead of the ifdefery?
->>>
->>> The former was what I did initially; It works great, but I didn't like that I
->>> was introducing a new code dependecy between efi and arm64 (nothing else outside
->>> of efi references efi_mm).
->>>
->>> So then concluded that it is safe to not worry about efi_mm (thanks for your
->>> confirmation). But then David wanted a VM_WARN check, which reintroduces the
->>> code dependency. So he suggested the mm_is_efi() helper to hide that... This is
->>> all starting to feel circular...
->>
->> I think Ard meant that inside mm_is_efi(), we could avoid the #ifdef and
->> simply use IS_ENABLED().
->>
+>> sparc64-gcc{5,11,12,13}/sparc64-allmodconfig
 > 
-> Yes.
-> 
-> static inline void mm_is_efi(struct mm_struct *mm)
-> {
->     return IS_ENABLED(CONFIG_EFI) && mm == &efi_mm;
-> }
+> Andrew Morton did a patch for the sparc warnings, and Andreas Larsson
+> is joining as a maintainer, so hopefully he can pick that up soon.
+Which patch do you refer to here? I can not seem to find a patch fixing
+these ones in particular on lore.kernel.org.
 
-Ahh, got it. Yes, I'll do it like this. Thanks!
+Thanks,
+Andreas
 
