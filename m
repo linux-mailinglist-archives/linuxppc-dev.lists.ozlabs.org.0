@@ -1,38 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD28A85369F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Feb 2024 17:54:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1467A8536A5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Feb 2024 17:55:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TZ6qG55MDz3dnN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Feb 2024 03:54:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TZ6sN0BMLz3vXP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Feb 2024 03:55:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TZ6pr2tqdz2y1Y
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Feb 2024 03:53:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TZ6ry1Cl1z2ykn
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Feb 2024 03:55:29 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CCA9CDA7;
-	Tue, 13 Feb 2024 08:53:48 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E5C0DDA7;
+	Tue, 13 Feb 2024 08:55:38 -0800 (PST)
 Received: from FVFF77S0Q05N.cambridge.arm.com (FVFF77S0Q05N.cambridge.arm.com [10.1.36.130])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CB5073F5A1;
-	Tue, 13 Feb 2024 08:53:03 -0800 (PST)
-Date: Tue, 13 Feb 2024 16:53:01 +0000
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DE5853F5A1;
+	Tue, 13 Feb 2024 08:54:53 -0800 (PST)
+Date: Tue, 13 Feb 2024 16:54:51 +0000
 From: Mark Rutland <mark.rutland@arm.com>
 To: Ryan Roberts <ryan.roberts@arm.com>
-Subject: Re: [PATCH v5 21/25] arm64/mm: Implement new
- [get_and_]clear_full_ptes() batch APIs
-Message-ID: <ZcuebesH1pvx4sxl@FVFF77S0Q05N.cambridge.arm.com>
+Subject: Re: [PATCH v5 23/25] arm64/mm: Implement pte_batch_hint()
+Message-ID: <Zcue2_wPJe8lx4_u@FVFF77S0Q05N.cambridge.arm.com>
 References: <20240202080756.1453939-1-ryan.roberts@arm.com>
- <20240202080756.1453939-22-ryan.roberts@arm.com>
- <ZcucHyb1OBG677gx@FVFF77S0Q05N.cambridge.arm.com>
- <aaf2bc8e-3fe3-4d41-ab5b-fca99b33c8a4@arm.com>
+ <20240202080756.1453939-24-ryan.roberts@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aaf2bc8e-3fe3-4d41-ab5b-fca99b33c8a4@arm.com>
+In-Reply-To: <20240202080756.1453939-24-ryan.roberts@arm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,31 +45,52 @@ Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, x86@kernel.org, David Hildenbrand 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Feb 13, 2024 at 04:48:50PM +0000, Ryan Roberts wrote:
-> On 13/02/2024 16:43, Mark Rutland wrote:
-> > On Fri, Feb 02, 2024 at 08:07:52AM +0000, Ryan Roberts wrote:
-
-> >> +static inline void __clear_full_ptes(struct mm_struct *mm, unsigned long addr,
-> >> +				pte_t *ptep, unsigned int nr, int full)
-> >> +{
-> >> +	for (;;) {
-> >> +		__ptep_get_and_clear(mm, addr, ptep);
-> >> +		if (--nr == 0)
-> >> +			break;
-> >> +		ptep++;
-> >> +		addr += PAGE_SIZE;
-> >> +	}
-> >> +}
-> > 
-> > The loop construct is a bit odd; can't this be:
+On Fri, Feb 02, 2024 at 08:07:54AM +0000, Ryan Roberts wrote:
+> When core code iterates over a range of ptes and calls ptep_get() for
+> each of them, if the range happens to cover contpte mappings, the number
+> of pte reads becomes amplified by a factor of the number of PTEs in a
+> contpte block. This is because for each call to ptep_get(), the
+> implementation must read all of the ptes in the contpte block to which
+> it belongs to gather the access and dirty bits.
 > 
-> I found it a little odd at first, but its avoiding the ptep and addr increments
-> the last time through the loop. Its the preferred pattern for these functions in
-> core-mm. See default set_ptes(), wrprotect_ptes(), clear_full_ptes() in
-> include/linux/pgtable.h.
+> This causes a hotspot for fork(), as well as operations that unmap
+> memory such as munmap(), exit and madvise(MADV_DONTNEED). Fortunately we
+> can fix this by implementing pte_batch_hint() which allows their
+> iterators to skip getting the contpte tail ptes when gathering the batch
+> of ptes to operate on. This results in the number of PTE reads returning
+> to 1 per pte.
 > 
-> So I'd prefer to leave it as is so that we match them. What do you think?
+> Tested-by: John Hubbard <jhubbard@nvidia.com>
+> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 
-That's fair enough; it I'm happy with it as-is.
+Acked-by: Mark Rutland <mark.rutland@arm.com>
 
 Mark.
+
+> ---
+>  arch/arm64/include/asm/pgtable.h | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> index ad04adb7b87f..353ea67b5d75 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -1220,6 +1220,15 @@ static inline void contpte_try_unfold(struct mm_struct *mm, unsigned long addr,
+>  		__contpte_try_unfold(mm, addr, ptep, pte);
+>  }
+>  
+> +#define pte_batch_hint pte_batch_hint
+> +static inline unsigned int pte_batch_hint(pte_t *ptep, pte_t pte)
+> +{
+> +	if (!pte_valid_cont(pte))
+> +		return 1;
+> +
+> +	return CONT_PTES - (((unsigned long)ptep >> 3) & (CONT_PTES - 1));
+> +}
+> +
+>  /*
+>   * The below functions constitute the public API that arm64 presents to the
+>   * core-mm to manipulate PTE entries within their page tables (or at least this
+> -- 
+> 2.25.1
+> 
