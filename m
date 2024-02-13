@@ -2,86 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AB6585283A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Feb 2024 06:29:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13AC4852839
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Feb 2024 06:29:06 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=m7Cwk1fE;
+	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=c7wC12TU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TYqdj6lVFz3dVm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Feb 2024 16:29:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TYqcv71dWz3dWF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Feb 2024 16:29:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=m7Cwk1fE;
+	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=c7wC12TU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org)
+Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TYqcN3mbDz3cWw
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Feb 2024 16:28:36 +1100 (AEDT)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41D52jZ4000539;
-	Tue, 13 Feb 2024 05:28:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=IvK+8d3L5jmfDhMn4Bt1DklpfBeWrXTvDFcR/8Fi/wQ=;
- b=m7Cwk1fEUE/TRfPJRIfhKyw+Bh/VciJjAUVItqLh6Cjb+x2w1N56MMqf+qrAD4yQ800B
- y3V2cug4Z58tEyTnwtWWOazLOy3PnlOMdnILPvimSNFiYIAqPUx0mTG5wkRVG3XDx/wO
- Tzz5zuP9bdLvFnVmOlzq+lK58TDpGxW1rxRc+yVSYxLlsEEjhxFavMsi7d55R97cGI8I
- y0YEg2vopjGOoZSdiodA4i+czqraVFo6jrRDrp2GrgmiwCvIhYbsQqT8SAXlpwsoK3Tv
- LeZ5J6+7+RMqE3F1yDRcanlL0a1Jh40u/TWrHws1UYTuNX4uPMITzV67HNiaQzyTDVvZ +A== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w81wy0ff7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Feb 2024 05:28:25 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41D5PnlD030991;
-	Tue, 13 Feb 2024 05:28:25 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w81wy0fem-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Feb 2024 05:28:25 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41D3cpSd004258;
-	Tue, 13 Feb 2024 05:28:24 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3w6kv05m1x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Feb 2024 05:28:24 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41D5SI6728115258
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 13 Feb 2024 05:28:20 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CCA942004B;
-	Tue, 13 Feb 2024 05:28:18 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C463E20049;
-	Tue, 13 Feb 2024 05:28:16 +0000 (GMT)
-Received: from li-c1fdab4c-355a-11b2-a85c-ef242fe9efb4.ibm.com.com (unknown [9.179.15.254])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 13 Feb 2024 05:28:16 +0000 (GMT)
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-To: mpe@ellerman.id.au, npiggin@gmail.com
-Subject: [PATCH] powerpc/pseries: fix accuracy of stolen time
-Date: Tue, 13 Feb 2024 10:56:35 +0530
-Message-Id: <20240213052635.231597-1-sshegde@linux.ibm.com>
-X-Mailer: git-send-email 2.39.3
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TYqc95f0hz3bn0
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Feb 2024 16:28:25 +1100 (AEDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id 83B6C8285640;
+	Mon, 12 Feb 2024 23:28:23 -0600 (CST)
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id PvDceAKHbEVG; Mon, 12 Feb 2024 23:28:22 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id 7FF108285662;
+	Mon, 12 Feb 2024 23:28:22 -0600 (CST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com 7FF108285662
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
+	t=1707802102; bh=D3sdTlIHAuP5+foFTB2CD1tuGX0tVLMyPVFBwL2KX7c=;
+	h=Date:From:To:Message-ID:MIME-Version;
+	b=c7wC12TUP1uMZt3bZzxKSF0gE4Y/MT9VXei0VfFweKhGteiYARDJJ+iTuxyEidosD
+	 qbJm+yTTEby2Cppy0CCZUOmdmULzyLQ0Rh5u+rNVxv+3VtaYmJtsOkgmkyW59NRhq+
+	 YibD94vrJQYxYyeoL/9ZboaBtY3KOJX75RY0SRJ0=
+X-Virus-Scanned: amavisd-new at rptsys.com
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id y8B1gaRKR34X; Mon, 12 Feb 2024 23:28:22 -0600 (CST)
+Received: from vali.starlink.edu (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id 51FA38285640;
+	Mon, 12 Feb 2024 23:28:22 -0600 (CST)
+Date: Mon, 12 Feb 2024 23:28:19 -0600 (CST)
+From: Timothy Pearson <tpearson@raptorengineering.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Message-ID: <1707543122.14983544.1707802099989.JavaMail.zimbra@raptorengineeringinc.com>
+In-Reply-To: <87r0hh6ip9.fsf@mail.lhotse>
+References: <995988479.14839534.1707756078600.JavaMail.zimbra@raptorengineeringinc.com> <20240212173043.GX19790@gate.crashing.org> <572013249.14851324.1707759979044.JavaMail.zimbra@raptorengineeringinc.com> <20240212175906.GY19790@gate.crashing.org> <1119220086.14855806.1707761223318.JavaMail.zimbra@raptorengineeringinc.com> <20240212182322.GZ19790@gate.crashing.org> <325865766.14859393.1707762675351.JavaMail.zimbra@raptorengineeringinc.com> <87r0hh6ip9.fsf@mail.lhotse>
+Subject: Re: [PATCH] powerpc: Add gpr1 and fpu save/restore functions
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: uLuySvfLQsPOfW2ewn6SOjkmNFasJ7bK
-X-Proofpoint-ORIG-GUID: l3H3sve1MtbU7_j4zZ--sgRaWLxhsWtj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-13_02,2024-02-12_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
- phishscore=0 mlxlogscore=999 impostorscore=0 suspectscore=0 clxscore=1011
- mlxscore=0 lowpriorityscore=0 malwarescore=0 priorityscore=1501
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402130039
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: Zimbra 8.5.0_GA_3042 (ZimbraWebClient - GC121 (Linux)/8.5.0_GA_3042)
+Thread-Topic: powerpc: Add gpr1 and fpu save/restore functions
+Thread-Index: bH+YjjC4jAw1r5ccRN8VBr/yy62CXQ==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,57 +69,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: srikar@linux.vnet.ibm.com, sshegde@linux.ibm.com, aneesh.kumar@kernel.org, naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-powerVM hypervisor updates the VPA fields with stolen time data.
-It currently reports enqueue_dispatch_tb and ready_enqueue_tb for
-this purpose. In linux these two fields are used to report the stolen time.
-
-The VPA fields are updated at the TB frequency. On powerPC its mostly
-set at 512Mhz. Hence this needs a conversion to ns when reporting it
-back as rest of the kernel timings are in ns. This conversion is already
-handled in tb_to_ns function. So use that function to report accurate
-stolen time.
-
-Observed this issue and used an Capped Shared Processor LPAR(SPLPAR) to
-simplify the experiments. In all these cases, 100% VP Load is run using
-stress-ng workload. Values of stolen time is in percentages as reported
-by mpstat. With the patch values are close to expected.
-
-		6.8.rc1		+Patch
-12EC/12VP	   0.0		   0.0
-12EC/24VP	  25.7		  50.2
-12EC/36VP	  37.3		  69.2
-12EC/48VP	  38.5		  78.3
 
 
-Fixes: 0e8a63132800 ("powerpc/pseries: Implement CONFIG_PARAVIRT_TIME_ACCOUNTING")
-Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
----
- arch/powerpc/platforms/pseries/lpar.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+----- Original Message -----
+> From: "Michael Ellerman" <mpe@ellerman.id.au>
+> To: "Timothy Pearson" <tpearson@raptorengineering.com>, "Segher Boessenkool" <segher@kernel.crashing.org>
+> Cc: "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>
+> Sent: Monday, February 12, 2024 11:23:30 PM
+> Subject: Re: [PATCH] powerpc: Add gpr1 and fpu save/restore functions
 
-diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-index 4561667832ed..bdcc428e1c2b 100644
---- a/arch/powerpc/platforms/pseries/lpar.c
-+++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -662,8 +662,12 @@ u64 pseries_paravirt_steal_clock(int cpu)
- {
- 	struct lppaca *lppaca = &lppaca_of(cpu);
+> Timothy Pearson <tpearson@raptorengineering.com> writes:
+>> ----- Original Message -----
+>>> From: "Segher Boessenkool" <segher@kernel.crashing.org>
+>>> To: "Timothy Pearson" <tpearson@raptorengineering.com>
+>>> Cc: "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>
+>>> Sent: Monday, February 12, 2024 12:23:22 PM
+>>> Subject: Re: [PATCH] powerpc: Add gpr1 and fpu save/restore functions
+>>
+>>> On Mon, Feb 12, 2024 at 12:07:03PM -0600, Timothy Pearson wrote:
+>>>> > I have done it for *all* architectures some ten years ago.  Never found
+>>>> > any problem.
+>>>> 
+>>>> That makes sense, what I mean by invasive is that we'd need buy-in from the
+>>>> other
+>>>> maintainers across all of the affected architectures.  Is that likely to occur?
+>>> 
+>>> I don't know.  Here is my PowerPC-specific patch, it's a bit older, it
+>>> might not apply cleanly anymore, the changes needed should be obvious
+>>> though:
+>>> 
+>>> 
+>>> === 8< ===
+>>> commit f16dfa5257eb14549ce22243fb2b465615085134
+>>> Author: Segher Boessenkool <segher@kernel.crashing.org>
+>>> Date:   Sat May 3 03:48:06 2008 +0200
+>>> 
+>>>    powerpc: Link vmlinux against libgcc.a
+>>> 
+>>> diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+>>> index b7212b619c52..0a2fac6ffc1c 100644
+>>> --- a/arch/powerpc/Makefile
+>>> +++ b/arch/powerpc/Makefile
+>>> @@ -158,6 +158,9 @@ core-y                              += arch/powerpc/kernel/
+>>> core-$(CONFIG_XMON)            += arch/powerpc/xmon/
+>>> core-$(CONFIG_KVM)             += arch/powerpc/kvm/
+>>> 
+>>> +LIBGCC := $(shell $(CC) $(KBUILD_CFLAGS) -print-libgcc-file-name)
+>>> +libs-y += $(LIBGCC)
+>>> +
+>>> drivers-$(CONFIG_OPROFILE)     += arch/powerpc/oprofile/
+>>> 
+>>> # Default to zImage, override when needed
+>>> === 8< ===
+>>
+>> OK.  PowerPC maintainers, how would you prefer to handle this?
+> 
+> I'll take the patch to add the functions for now. We can look into
+> linking against libgcc as a future cleanup.
 
--	return be64_to_cpu(READ_ONCE(lppaca->enqueue_dispatch_tb)) +
--		be64_to_cpu(READ_ONCE(lppaca->ready_enqueue_tb));
-+	/*
-+	 * VPA steal time counters are reported at TB frequency. Hence do a
-+	 * conversion to ns before returning
-+	 */
-+	return tb_to_ns(be64_to_cpu(READ_ONCE(lppaca->enqueue_dispatch_tb)) +
-+			 be64_to_cpu(READ_ONCE(lppaca->ready_enqueue_tb)));
- }
- #endif
+Sounds good.
 
---
-2.39.3
+>>>> > There are better options than -Os, fwiw.  Some --param's give smaller
+>>>> > *and* faster kernels.  What exactly is best is heavily arch-dependent
+>>>> > though (as well as dependent on the application code, the kernel code in
+>>>> > this case) :-(
+>>>> 
+>>>> I've been through this a few times, and -Os is the only option that makes
+>>>> things (just barely) fit unfortunately.
+>>> 
+>>> -O2 with appropriate inlining tuning beats -Os every day of the week,
+>>> in my experience.
+>>
+>> On 6.6 it's 24MiB vs 40MiB, O2 vs. Os. :(
+> 
+> What compiler/config etc. are you using for that?
 
+It's the kernel config that buildroot generates for skiroot -- I think a lot of the size difference is in some of the modules that we enable such as amdgpu, but haven't dug too deeply.  Once this firmware release is in beta (and therefore published publicly) I'll send over a link to the configs.
+
+Thanks!
