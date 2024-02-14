@@ -1,73 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC6AA855460
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Feb 2024 21:52:12 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cE2lImJR;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cE2lImJR;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BA1385550C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Feb 2024 22:42:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TZr3Z4m8qz3vsC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 07:52:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TZs9w16mVz3dWC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 08:42:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cE2lImJR;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cE2lImJR;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=etezian.org (client-ip=188.165.52.147; helo=8.mo560.mail-out.ovh.net; envelope-from=andi@etezian.org; receiver=lists.ozlabs.org)
+Received: from 8.mo560.mail-out.ovh.net (8.mo560.mail-out.ovh.net [188.165.52.147])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TZqvt0gMlz3vXM
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Feb 2024 07:45:29 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707943527;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MyxDp/8zupvql86OoDnfzfcwBZWGRlpds50qO6uo6X4=;
-	b=cE2lImJR1nycmbWzPDCzUGSfciDDuVOc74/NsbmOeLfBJAVRuiR24a0TWBg9FmqWD4aqOX
-	b4Ftyhi3fLG/joVLAK4DD6o5Nte3BxgHDnPauLV0sP1R2CWlETRM3hPqRouQZ8nRht7WpN
-	qAOPInMZr67lH1qRMXiUH3nV9RPr3ZU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707943527;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MyxDp/8zupvql86OoDnfzfcwBZWGRlpds50qO6uo6X4=;
-	b=cE2lImJR1nycmbWzPDCzUGSfciDDuVOc74/NsbmOeLfBJAVRuiR24a0TWBg9FmqWD4aqOX
-	b4Ftyhi3fLG/joVLAK4DD6o5Nte3BxgHDnPauLV0sP1R2CWlETRM3hPqRouQZ8nRht7WpN
-	qAOPInMZr67lH1qRMXiUH3nV9RPr3ZU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-588-wHfYfIO7M6uwQlj4FVq0Rg-1; Wed, 14 Feb 2024 15:45:22 -0500
-X-MC-Unique: wHfYfIO7M6uwQlj4FVq0Rg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 96991811E79;
-	Wed, 14 Feb 2024 20:45:21 +0000 (UTC)
-Received: from t14s.fritz.box (unknown [10.39.194.174])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 8E8091C066A9;
-	Wed, 14 Feb 2024 20:45:17 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v3 10/10] mm/memory: optimize unmap/zap with PTE-mapped THP
-Date: Wed, 14 Feb 2024 21:44:35 +0100
-Message-ID: <20240214204435.167852-11-david@redhat.com>
-In-Reply-To: <20240214204435.167852-1-david@redhat.com>
-References: <20240214204435.167852-1-david@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TZs9R68swz3bmq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Feb 2024 08:42:16 +1100 (AEDT)
+Received: from director5.ghost.mail-out.ovh.net (unknown [10.109.176.103])
+	by mo560.mail-out.ovh.net (Postfix) with ESMTP id 4TZs9H0Wytz1Fc7
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Feb 2024 21:42:10 +0000 (UTC)
+Received: from ghost-submission-6684bf9d7b-62rx8 (unknown [10.108.54.171])
+	by director5.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 58D4F1FD57;
+	Wed, 14 Feb 2024 21:42:04 +0000 (UTC)
+Received: from etezian.org ([37.59.142.103])
+	by ghost-submission-6684bf9d7b-62rx8 with ESMTPSA
+	id pzx8A6wzzWWJKwIAfHX53g
+	(envelope-from <andi@etezian.org>); Wed, 14 Feb 2024 21:42:04 +0000
+Authentication-Results: garm.ovh; auth=pass (GARM-103G00581a402d0-df4d-43c0-80f3-f5461175c724,
+                    C0FC2E5C6A7315DD97BDDE4B9606AB6EEADB6D9F) smtp.auth=andi@etezian.org
+X-OVh-ClientIp: 89.217.109.169
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Arnd Bergmann <arnd@kernel.org>
+In-Reply-To: <20240212111933.963985-1-arnd@kernel.org>
+References: <20240212111933.963985-1-arnd@kernel.org>
+Subject: Re: [PATCH] i2c: pasemi: split driver into two separate modules
+Message-Id: <170794692308.4040459.7350373390928340229.b4-ty@kernel.org>
+Date: Wed, 14 Feb 2024 22:42:03 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.4
+X-Ovh-Tracer-Id: 3725039842831960594
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrudejgdduheefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvegjfhfukfffgggtgffosehtjeertdertdejnecuhfhrohhmpeetnhguihcuufhhhihtihcuoegrnhguihdrshhhhihtiheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpeffteehudffvdfhudfgffdugfejjeduheehgeefgeeuhfeiuefghffgueffvdfgfeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppeduvdejrddtrddtrddupdekledrvddujedruddtledrudeiledpfeejrdehledrudegvddruddtfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepoegrnhguihesvghtvgiiihgrnhdrohhrgheqpdhnsggprhgtphhtthhopedupdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghdpoffvtefjohhsthepmhhoheeitddpmhhouggvpehsmhhtphhouhht
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,304 +55,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>, Matthew Wilcox <willy@infradead.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Ryan Roberts <ryan.roberts@arm.com>, Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>, Nick Piggin <npiggin@gmail.com>, Yin Fengwei <fengwei.yin@intel.com>, Sven Schnelle <svens@linux.ibm.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arm-kernel@lists.infradead.org, Wolfram Sang <wsa@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Sven Peter <sven@svenpeter.dev>, Hector Martin <marcan@marcan.st>, linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Olof Johansson <olof@lixom.net>, Nicholas Piggin <npiggin@gmail.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, asahi@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, Alyssa Rosenzweig <alyssa@rosenzweig.io>, linux-i2c@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Similar to how we optimized fork(), let's implement PTE batching when
-consecutive (present) PTEs map consecutive pages of the same large
-folio.
+Hi
 
-Most infrastructure we need for batching (mmu gather, rmap) is already
-there. We only have to add get_and_clear_full_ptes() and
-clear_full_ptes(). Similarly, extend zap_install_uffd_wp_if_needed() to
-process a PTE range.
+On Mon, 12 Feb 2024 12:19:04 +0100, Arnd Bergmann wrote:
+> On powerpc, it is possible to compile test both the new apple (arm) and
+> old pasemi (powerpc) drivers for the i2c hardware at the same time,
+> which leads to a warning about linking the same object file twice:
+> 
+> scripts/Makefile.build:244: drivers/i2c/busses/Makefile: i2c-pasemi-core.o is added to multiple modules: i2c-apple i2c-pasemi
+> 
+> Rework the driver to have an explicit helper module, letting Kbuild
+> take care of whether this should be built-in or a loadable driver.
+> 
+> [...]
 
-We won't bother sanity-checking the mapcount of all subpages, but only
-check the mapcount of the first subpage we process. If there is a real
-problem hiding somewhere, we can trigger it simply by using small
-folios, or when we zap single pages of a large folio. Ideally, we had
-that check in rmap code (including for delayed rmap), but then we cannot
-print the PTE. Let's keep it simple for now. If we ever have a cheap
-folio_mapcount(), we might just want to check for underflows there.
+Applied to i2c/i2c-host-fixes on
 
-To keep small folios as fast as possible force inlining of a specialized
-variant using __always_inline with nr=1.
+git://git.kernel.org/pub/scm/linux/kernel/git/andi.shyti/linux.git
 
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- include/linux/pgtable.h | 70 +++++++++++++++++++++++++++++++
- mm/memory.c             | 92 +++++++++++++++++++++++++++++------------
- 2 files changed, 136 insertions(+), 26 deletions(-)
+Thank you,
+Andi
 
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index aab227e12493..49ab1f73b5c2 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -580,6 +580,76 @@ static inline pte_t ptep_get_and_clear_full(struct mm_struct *mm,
- }
- #endif
- 
-+#ifndef get_and_clear_full_ptes
-+/**
-+ * get_and_clear_full_ptes - Clear present PTEs that map consecutive pages of
-+ *			     the same folio, collecting dirty/accessed bits.
-+ * @mm: Address space the pages are mapped into.
-+ * @addr: Address the first page is mapped at.
-+ * @ptep: Page table pointer for the first entry.
-+ * @nr: Number of entries to clear.
-+ * @full: Whether we are clearing a full mm.
-+ *
-+ * May be overridden by the architecture; otherwise, implemented as a simple
-+ * loop over ptep_get_and_clear_full(), merging dirty/accessed bits into the
-+ * returned PTE.
-+ *
-+ * Note that PTE bits in the PTE range besides the PFN can differ. For example,
-+ * some PTEs might be write-protected.
-+ *
-+ * Context: The caller holds the page table lock.  The PTEs map consecutive
-+ * pages that belong to the same folio.  The PTEs are all in the same PMD.
-+ */
-+static inline pte_t get_and_clear_full_ptes(struct mm_struct *mm,
-+		unsigned long addr, pte_t *ptep, unsigned int nr, int full)
-+{
-+	pte_t pte, tmp_pte;
-+
-+	pte = ptep_get_and_clear_full(mm, addr, ptep, full);
-+	while (--nr) {
-+		ptep++;
-+		addr += PAGE_SIZE;
-+		tmp_pte = ptep_get_and_clear_full(mm, addr, ptep, full);
-+		if (pte_dirty(tmp_pte))
-+			pte = pte_mkdirty(pte);
-+		if (pte_young(tmp_pte))
-+			pte = pte_mkyoung(pte);
-+	}
-+	return pte;
-+}
-+#endif
-+
-+#ifndef clear_full_ptes
-+/**
-+ * clear_full_ptes - Clear present PTEs that map consecutive pages of the same
-+ *		     folio.
-+ * @mm: Address space the pages are mapped into.
-+ * @addr: Address the first page is mapped at.
-+ * @ptep: Page table pointer for the first entry.
-+ * @nr: Number of entries to clear.
-+ * @full: Whether we are clearing a full mm.
-+ *
-+ * May be overridden by the architecture; otherwise, implemented as a simple
-+ * loop over ptep_get_and_clear_full().
-+ *
-+ * Note that PTE bits in the PTE range besides the PFN can differ. For example,
-+ * some PTEs might be write-protected.
-+ *
-+ * Context: The caller holds the page table lock.  The PTEs map consecutive
-+ * pages that belong to the same folio.  The PTEs are all in the same PMD.
-+ */
-+static inline void clear_full_ptes(struct mm_struct *mm, unsigned long addr,
-+		pte_t *ptep, unsigned int nr, int full)
-+{
-+	for (;;) {
-+		ptep_get_and_clear_full(mm, addr, ptep, full);
-+		if (--nr == 0)
-+			break;
-+		ptep++;
-+		addr += PAGE_SIZE;
-+	}
-+}
-+#endif
- 
- /*
-  * If two threads concurrently fault at the same page, the thread that
-diff --git a/mm/memory.c b/mm/memory.c
-index a3efc4da258a..3b8e56eb08a3 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1515,7 +1515,7 @@ static inline bool zap_drop_file_uffd_wp(struct zap_details *details)
-  */
- static inline void
- zap_install_uffd_wp_if_needed(struct vm_area_struct *vma,
--			      unsigned long addr, pte_t *pte,
-+			      unsigned long addr, pte_t *pte, int nr,
- 			      struct zap_details *details, pte_t pteval)
- {
- 	/* Zap on anonymous always means dropping everything */
-@@ -1525,20 +1525,27 @@ zap_install_uffd_wp_if_needed(struct vm_area_struct *vma,
- 	if (zap_drop_file_uffd_wp(details))
- 		return;
- 
--	pte_install_uffd_wp_if_needed(vma, addr, pte, pteval);
-+	for (;;) {
-+		/* the PFN in the PTE is irrelevant. */
-+		pte_install_uffd_wp_if_needed(vma, addr, pte, pteval);
-+		if (--nr == 0)
-+			break;
-+		pte++;
-+		addr += PAGE_SIZE;
-+	}
- }
- 
--static inline void zap_present_folio_pte(struct mmu_gather *tlb,
-+static __always_inline void zap_present_folio_ptes(struct mmu_gather *tlb,
- 		struct vm_area_struct *vma, struct folio *folio,
--		struct page *page, pte_t *pte, pte_t ptent, unsigned long addr,
--		struct zap_details *details, int *rss, bool *force_flush,
--		bool *force_break)
-+		struct page *page, pte_t *pte, pte_t ptent, unsigned int nr,
-+		unsigned long addr, struct zap_details *details, int *rss,
-+		bool *force_flush, bool *force_break)
- {
- 	struct mm_struct *mm = tlb->mm;
- 	bool delay_rmap = false;
- 
- 	if (!folio_test_anon(folio)) {
--		ptent = ptep_get_and_clear_full(mm, addr, pte, tlb->fullmm);
-+		ptent = get_and_clear_full_ptes(mm, addr, pte, nr, tlb->fullmm);
- 		if (pte_dirty(ptent)) {
- 			folio_mark_dirty(folio);
- 			if (tlb_delay_rmap(tlb)) {
-@@ -1548,36 +1555,49 @@ static inline void zap_present_folio_pte(struct mmu_gather *tlb,
- 		}
- 		if (pte_young(ptent) && likely(vma_has_recency(vma)))
- 			folio_mark_accessed(folio);
--		rss[mm_counter(folio)]--;
-+		rss[mm_counter(folio)] -= nr;
- 	} else {
- 		/* We don't need up-to-date accessed/dirty bits. */
--		ptep_get_and_clear_full(mm, addr, pte, tlb->fullmm);
--		rss[MM_ANONPAGES]--;
-+		clear_full_ptes(mm, addr, pte, nr, tlb->fullmm);
-+		rss[MM_ANONPAGES] -= nr;
- 	}
-+	/* Checking a single PTE in a batch is sufficient. */
- 	arch_check_zapped_pte(vma, ptent);
--	tlb_remove_tlb_entry(tlb, pte, addr);
-+	tlb_remove_tlb_entries(tlb, pte, nr, addr);
- 	if (unlikely(userfaultfd_pte_wp(vma, ptent)))
--		zap_install_uffd_wp_if_needed(vma, addr, pte, details, ptent);
-+		zap_install_uffd_wp_if_needed(vma, addr, pte, nr, details,
-+					      ptent);
- 
- 	if (!delay_rmap) {
--		folio_remove_rmap_pte(folio, page, vma);
-+		folio_remove_rmap_ptes(folio, page, nr, vma);
-+
-+		/* Only sanity-check the first page in a batch. */
- 		if (unlikely(page_mapcount(page) < 0))
- 			print_bad_pte(vma, addr, ptent, page);
- 	}
--	if (unlikely(__tlb_remove_page(tlb, page, delay_rmap))) {
-+	if (unlikely(__tlb_remove_folio_pages(tlb, page, nr, delay_rmap))) {
- 		*force_flush = true;
- 		*force_break = true;
- 	}
- }
- 
--static inline void zap_present_pte(struct mmu_gather *tlb,
-+/*
-+ * Zap or skip at least one present PTE, trying to batch-process subsequent
-+ * PTEs that map consecutive pages of the same folio.
-+ *
-+ * Returns the number of processed (skipped or zapped) PTEs (at least 1).
-+ */
-+static inline int zap_present_ptes(struct mmu_gather *tlb,
- 		struct vm_area_struct *vma, pte_t *pte, pte_t ptent,
--		unsigned long addr, struct zap_details *details,
--		int *rss, bool *force_flush, bool *force_break)
-+		unsigned int max_nr, unsigned long addr,
-+		struct zap_details *details, int *rss, bool *force_flush,
-+		bool *force_break)
- {
-+	const fpb_t fpb_flags = FPB_IGNORE_DIRTY | FPB_IGNORE_SOFT_DIRTY;
- 	struct mm_struct *mm = tlb->mm;
- 	struct folio *folio;
- 	struct page *page;
-+	int nr;
- 
- 	page = vm_normal_page(vma, addr, ptent);
- 	if (!page) {
-@@ -1587,14 +1607,29 @@ static inline void zap_present_pte(struct mmu_gather *tlb,
- 		tlb_remove_tlb_entry(tlb, pte, addr);
- 		VM_WARN_ON_ONCE(userfaultfd_wp(vma));
- 		ksm_might_unmap_zero_page(mm, ptent);
--		return;
-+		return 1;
- 	}
- 
- 	folio = page_folio(page);
- 	if (unlikely(!should_zap_folio(details, folio)))
--		return;
--	zap_present_folio_pte(tlb, vma, folio, page, pte, ptent, addr, details,
--			      rss, force_flush, force_break);
-+		return 1;
-+
-+	/*
-+	 * Make sure that the common "small folio" case is as fast as possible
-+	 * by keeping the batching logic separate.
-+	 */
-+	if (unlikely(folio_test_large(folio) && max_nr != 1)) {
-+		nr = folio_pte_batch(folio, addr, pte, ptent, max_nr, fpb_flags,
-+				     NULL);
-+
-+		zap_present_folio_ptes(tlb, vma, folio, page, pte, ptent, nr,
-+				       addr, details, rss, force_flush,
-+				       force_break);
-+		return nr;
-+	}
-+	zap_present_folio_ptes(tlb, vma, folio, page, pte, ptent, 1, addr,
-+			       details, rss, force_flush, force_break);
-+	return 1;
- }
- 
- static unsigned long zap_pte_range(struct mmu_gather *tlb,
-@@ -1609,6 +1644,7 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
- 	pte_t *start_pte;
- 	pte_t *pte;
- 	swp_entry_t entry;
-+	int nr;
- 
- 	tlb_change_page_size(tlb, PAGE_SIZE);
- 	init_rss_vec(rss);
-@@ -1622,7 +1658,9 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
- 		pte_t ptent = ptep_get(pte);
- 		struct folio *folio;
- 		struct page *page;
-+		int max_nr;
- 
-+		nr = 1;
- 		if (pte_none(ptent))
- 			continue;
- 
-@@ -1630,10 +1668,12 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
- 			break;
- 
- 		if (pte_present(ptent)) {
--			zap_present_pte(tlb, vma, pte, ptent, addr, details,
--					rss, &force_flush, &force_break);
-+			max_nr = (end - addr) / PAGE_SIZE;
-+			nr = zap_present_ptes(tlb, vma, pte, ptent, max_nr,
-+					      addr, details, rss, &force_flush,
-+					      &force_break);
- 			if (unlikely(force_break)) {
--				addr += PAGE_SIZE;
-+				addr += nr * PAGE_SIZE;
- 				break;
- 			}
- 			continue;
-@@ -1687,8 +1727,8 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
- 			WARN_ON_ONCE(1);
- 		}
- 		pte_clear_not_present_full(mm, addr, pte, tlb->fullmm);
--		zap_install_uffd_wp_if_needed(vma, addr, pte, details, ptent);
--	} while (pte++, addr += PAGE_SIZE, addr != end);
-+		zap_install_uffd_wp_if_needed(vma, addr, pte, 1, details, ptent);
-+	} while (pte += nr, addr += PAGE_SIZE * nr, addr != end);
- 
- 	add_mm_rss_vec(mm, rss);
- 	arch_leave_lazy_mmu_mode();
--- 
-2.43.0
+Patches applied
+===============
+[1/1] i2c: pasemi: split driver into two separate modules
+      commit: 3fab8a74c71a4ba32b2fa1dca7340f9107ff8dfc
 
