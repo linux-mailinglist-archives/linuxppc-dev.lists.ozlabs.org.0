@@ -1,86 +1,141 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F032E854079
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Feb 2024 00:57:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66DC1854239
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Feb 2024 06:00:30 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=uuLW/pe3;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=RNty4yVv;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TZJCr0yjzz3dXh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Feb 2024 10:57:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TZQxS2gl7z3c1J
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Feb 2024 16:00:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=uuLW/pe3;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=RNty4yVv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=salutedevices.com (client-ip=37.18.73.165; helo=mx1.sberdevices.ru; envelope-from=gnstark@salutedevices.com; receiver=lists.ozlabs.org)
-Received: from mx1.sberdevices.ru (mx1.sberdevices.ru [37.18.73.165])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f403:2416::601; helo=nam11-co1-obe.outbound.protection.outlook.com; envelope-from=kishon.vijayabraham@amd.com; receiver=lists.ozlabs.org)
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on20601.outbound.protection.outlook.com [IPv6:2a01:111:f403:2416::601])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TZJC22mmPz30Pp
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Feb 2024 10:56:43 +1100 (AEDT)
-Received: from p-infra-ksmg-sc-msk01 (localhost [127.0.0.1])
-	by mx1.sberdevices.ru (Postfix) with ESMTP id 74FC3100023;
-	Wed, 14 Feb 2024 02:56:37 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 74FC3100023
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
-	s=mail; t=1707868597;
-	bh=MneQ42GgAU5vgtOcPdxnj5Z60/emGjKe574AXsZSEg4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
-	b=uuLW/pe39MciOvtdWrCCCfvYcjKM1IMJVRlBFGZQ+2S33Z4NFLWjwgbaRD7+MOm5X
-	 8tF8dQMspP3kJGdJYhS+JxXPe576os0eALhtFs1wO7RLYA5jhcEbRDBHHzupAjBzy2
-	 CDK3UkIuaoTiIjymZyFCjiUTRwPR7gJy/HdzazgFBwdPlpegLkDMDeFfXvDBoHEQ0z
-	 VOiWbSAzsvSKC/39eO6bVSt0n5Un4mJqrqTGuRlGLeJ+D4l0rgmt4riPt8YXOv57Zz
-	 SIX+Gnqtx9tUlZd1Cg0gLj4U2PwCg+NrCWOqyiBQxYq1xezA40CZ2ImSXjtAi9yOIJ
-	 EC/+6L8chOBJA==
-Received: from smtp.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.sberdevices.ru (Postfix) with ESMTPS;
-	Wed, 14 Feb 2024 02:56:37 +0300 (MSK)
-Received: from [192.168.1.143] (100.64.160.123) by
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Wed, 14 Feb 2024 02:56:36 +0300
-Message-ID: <03dde247-44c1-4ba6-b5e8-bc9c68b7a294@salutedevices.com>
-Date: Wed, 14 Feb 2024 02:56:31 +0300
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TZQ184Pjdz30h8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Feb 2024 15:18:32 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mAq3YX+7DTY279auwMnj27kVSt2pzDBC8/iswqv+br/ZMdxmNHwl2+KQQKbiATKMAAEuUAAkeqrGB0tmsAo85rvftxB6LRhMjsqJ64ZLXqQGxWdMkcl4HDVEoCFJex2AznXi/hn0vxWDcS8lwfBb5BjRnLsw9Lmsp+GpfvoJFc1df/m4KPNMYpjzz6uTKBJYFrGkcbZ0K9QIED4KFQVzHt4WppQNKmBVgFp9IFOuslKt9EP0XMQ/05i8FHhawjEaywEr9BFC0NyJim2hH9kh+9Bfb/HlccrEeaFJODDdtzo1VAXlE24ddC/1JlIL0twp6ABzPmrFh691zYqMHinlNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rU2uQsJE00ho6XA6t1IulkKkiovT1fk000EV0BbvKbs=;
+ b=Mkk+BTBzSitbPRVpwAub09X9aRruVzUsBNiZHj12X2gV7zDFRjrMPP+yOzEWVc7BibegPO2me5XvbuBBnvLmvuHCBbuF601W9OFeMLljgQ2rnLKe5Ce+k+vuQBtNSoHnDvUOJ+uv1xpWWc0c3IaITH5TGFUheXAReP14h5NgM/FyU5wmoTK/Rom4KFGjdrCs+fw0+Z6XXBQzgvFsEWTugjCzc8cnzsH7qRJk/b0yt1Ac4lV+3nXpkMQHBpyFp1Lb2slRFzHgla6XLXvL2cgocx+SefgFFvspESKG6aG9OiKIwj0wtyMKoRNm/n5Sko07BmlDKDYZfwmzAAFxy1yifQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rU2uQsJE00ho6XA6t1IulkKkiovT1fk000EV0BbvKbs=;
+ b=RNty4yVvKxHeoyinQ258+wDNWeQ2RQHy3aKgpYmYxMWyPIrVfJh1l86sVY0lySC78P15wig1hdaEkP8WkAP9drs3+hyg0fNJzZ3r2AYBRiuoXGbKUhembYYHGQi1E0YIBPSvx2lRfujGBFBjsZdRcmLk+hH830dziEHy+32WDCo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5827.namprd12.prod.outlook.com (2603:10b6:208:396::19)
+ by MW3PR12MB4412.namprd12.prod.outlook.com (2603:10b6:303:58::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.25; Wed, 14 Feb
+ 2024 04:18:10 +0000
+Received: from BL1PR12MB5827.namprd12.prod.outlook.com
+ ([fe80::6bd9:3cc9:6012:5517]) by BL1PR12MB5827.namprd12.prod.outlook.com
+ ([fe80::6bd9:3cc9:6012:5517%5]) with mapi id 15.20.7292.010; Wed, 14 Feb 2024
+ 04:18:10 +0000
+Message-ID: <7a243a1e-6b47-bc2f-c538-b57db1c9c580@amd.com>
+Date: Wed, 14 Feb 2024 09:47:54 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [DMARC error][SPF error] Re: [PATCH v4 00/10]
- devm_led_classdev_register() usage problem
+Subject: Re: [PATCH 0/2] PCI endpoint BAR hardware description cleanup
+To: Niklas Cassel <cassel@kernel.org>, Richard Zhu <hongxing.zhu@nxp.com>,
+ Lucas Stach <l.stach@pengutronix.de>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
+ Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>,
+ Minghuan Lian <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>,
+ Roy Zang <roy.zang@nxp.com>, Srikanth Thokala <srikanth.thokala@intel.com>,
+ Marek Vasut <marek.vasut+renesas@gmail.com>,
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Jon Mason <jdmason@kudzu.us>,
+ Dave Jiang <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>,
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+ Kishon Vijay Abraham I <kishon@kernel.org>
+References: <20240210012634.600301-1-cassel@kernel.org>
 Content-Language: en-US
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-References: <20231214173614.2820929-1-gnstark@salutedevices.com>
- <20231221151111.GJ10102@google.com> <ZcZcpUHygltD2ETa@smile.fi.intel.com>
- <d844862e-1d1c-4c9a-b7fe-e0ac44f4126e@salutedevices.com>
- <CAHp75VfQd9e4fLAYkYrMajnJfPQqno6s_aiTarErPiqP-Z6ydg@mail.gmail.com>
- <ae5bf6bc-5f7f-4fe9-a833-c1bfa31ff534@salutedevices.com>
- <CAHp75Vd1FRz9=Q7NRXsbkBu_K0+zRC6uf5nPM1Q+QnJum+74tg@mail.gmail.com>
-From: George Stark <gnstark@salutedevices.com>
-In-Reply-To: <CAHp75Vd1FRz9=Q7NRXsbkBu_K0+zRC6uf5nPM1Q+QnJum+74tg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [100.64.160.123]
-X-ClientProxiedBy: p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) To
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107)
-X-KSMG-Rule-ID: 10
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 183417 [Feb 14 2024]
-X-KSMG-AntiSpam-Version: 6.1.0.3
-X-KSMG-AntiSpam-Envelope-From: gnstark@salutedevices.com
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 7 0.3.7 6d6bf5bd8eea7373134f756a2fd73e9456bb7d1a, {Tracking_uf_ne_domains}, {Tracking_urls_end_caps}, {Tracking_from_domain_doesnt_match_to}, 100.64.160.123:7.1.2;lore.kernel.org:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;smtp.sberdevices.ru:7.1.1,5.0.1;salutedevices.com:7.1.1, FromAlignment: s, ApMailHostAddress: 100.64.160.123
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean, bases: 2024/02/13 23:08:00
-X-KSMG-LinksScanning: Clean, bases: 2024/02/13 23:08:00
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2024/02/13 21:49:00 #23589640
-X-KSMG-AntiVirus-Status: Clean, skipped
+From: Kishon Vijay Abraham I <kvijayab@amd.com>
+In-Reply-To: <20240210012634.600301-1-cassel@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN2P287CA0011.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:c01:21b::18) To BL1PR12MB5827.namprd12.prod.outlook.com
+ (2603:10b6:208:396::19)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5827:EE_|MW3PR12MB4412:EE_
+X-MS-Office365-Filtering-Correlation-Id: e9a49421-e5b3-4755-5cfd-08dc2d13f3d6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	cdaub462hYD/s3XhuV1zRhqm5LbaYSJyedNpVPKjkL/X7Df3DpxWLrwdSeOb1WGB6SOQ1f4wnd9lSRC8EkjIe43V5hZatibk21PBJ7VHGtj77lhxisryMus0YA3HL/O5yjedLHJaDPKWNp+LH4tmlTOX9nrWkvTfyEq4gLA++F8kLNROBpG56pOfYOYdsab9Xdc4J031iHv1c+EJHq2fB4cmlNfn2s7Els4qVGgAu8lLaVgcWJiJSPQpvvcbJk8RDgsDN/w7GGAFmtk83EXoqHjQMMrExo2FT+et0s/smPMR2CC6UUvFXkFwSHdKz1ydUCTIm71jzC7soJ7Bk03WClzyQuMkEK1E3xJ+RB1OY8j7QkC76HmzxC3HD70xDhS5F/LxsOEymjHr/lepqB6gsXx1P/4DIQJc94q+U2qrCBoN1DtiUVN7BMBdf/c3Rjx9TBIJKaCZl9hcUrM9EQqAI5vergApVHq0gXyvAwyM5J5LQ32NWlSB4WchfuLIEF6+pcFaM/igtbI3+4E6a3gqztCkZ+Czwutr1qWLBPoY4ujr+WyZHeAE7bF+/QNlGVivTTKXItkl+btSZbHQlM/N8Q==
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5827.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(39860400002)(366004)(136003)(396003)(376002)(230922051799003)(451199024)(186009)(64100799003)(1800799012)(2906002)(7416002)(7406005)(6666004)(6486002)(36756003)(26005)(6512007)(6506007)(53546011)(966005)(478600001)(8936002)(38100700002)(2616005)(31696002)(66946007)(66476007)(4326008)(8676002)(66556008)(83380400001)(5660300002)(921011)(54906003)(110136005)(316002)(31686004)(41300700001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?MmsvdU1LOU01WU5JTDVuK1hoYUpiRkkyTzQycTBnMExCdGltd2VUVTZVekFM?=
+ =?utf-8?B?eU8xQzhQTzZjUERvamUrTi9qZDJQRy91U1VrTER0ZFpzbDg2b3g1YlJIVERx?=
+ =?utf-8?B?Mkx6WGlWbVdFUmt3ZC8rMTQvZ3haeGp4R2ppSjFZdE5xZWg3U2lTK1c5RFVq?=
+ =?utf-8?B?eFRsbExIdllvTzNUK2ZHR1dNQ3FvWFlEVkFzUzI1WHNNME1POUFjR2xZSU1T?=
+ =?utf-8?B?RnRaZ1N1alVGWHFuYVdkeFJ1akF4NzdwNWptcFRJZEhGWWpZYWs1aForZDB1?=
+ =?utf-8?B?VHJDdGdMeEhhWTFNeWJKenJJNU9GYy85UGdwNVNmU0dFSGNnVnMxcWY5YThv?=
+ =?utf-8?B?Z3hNcjFzbXhMeFlweFI3YmkyeVo3V2hVaU4xVmZORnA2dDl4UFI3QUZSVlpr?=
+ =?utf-8?B?NzZhQzFuRi9lbTZqd05JRVpPdXVJbDZvVGRYSUNLM2xqdEczZEpWSTRJbDFT?=
+ =?utf-8?B?RS9aTHpKbDNyWm4yMzU5T0FzbjNtb2hjMUc2aDdNcFoxckNOamZ1YjlldUtJ?=
+ =?utf-8?B?ZVJiZjhscDJTbGkrSkpjWnVDZVdFNW1hZnIxQjNlc3A5Rm82b0EyblJVNCtY?=
+ =?utf-8?B?b2xGWWkyMnZkU3dHenRveWhsWm9YRWRKSUpVdlYrQSt5K2V2V1JrSE5DcUl1?=
+ =?utf-8?B?dFA3d2FuY2tKeVErbFBNZ2JKOG1ETjlCSVN3RE5aVUpiSmlBSXkyc3czUnVE?=
+ =?utf-8?B?d1F0SENxY2RDcTlVZmVTZFo2eFhDRTdycUxuSjNlOUJmT05nL1d1bTAyTFB2?=
+ =?utf-8?B?WkdsWDQ3UHR0ZW1XU2Nua3BSZ1JIclA4OVkyQThsS2pZc3lLblg5VmFCRHRk?=
+ =?utf-8?B?QXIrTzFKNXlmbFFoUG50emRoMC9jVzFuMHBPYzJMVUlGNEowdFU1azZlK3Ja?=
+ =?utf-8?B?UGw3cjg2ZHFkaXFLVUxVTnVSdGRuSWVXaUwyOWR1eVBnQmtrUkorVURMbHlw?=
+ =?utf-8?B?dXZjMytHN0V2V0dweHNrckRxSVdxNERkZ0xDNGpGdS9mc0dQOTZSMmRrbjVG?=
+ =?utf-8?B?MDJCWm9iQUFxanZqMmEwbGRETGZsOWdTeUdsdWV2YlgrN0tXeGtSUHRMa1hj?=
+ =?utf-8?B?NWxCYkFPdm55cDhJRDZGZGpVYkE5NzM5WjVHWko2UTJyYlcxSnR1cEtDMk5U?=
+ =?utf-8?B?ZXA3bXo1T0UvVnMzTW5aVlVmeHFvM2dYckY2YWFMbXZLcDdycWVtS1BKR2lj?=
+ =?utf-8?B?WW5TUDMyTVhDY1JXUTU1a1JoQ2VDVXRxOG9JbDliamxvOWhpQkNGVU5hU2F1?=
+ =?utf-8?B?c1VvdDJiRFBVcVJQY2FNSzVBclI3dEVyUkxtWFE5czAzV1JVOUtLbUFTSkc2?=
+ =?utf-8?B?amZuSzBVbmhwdDZpdllUZmxSYWlJTis3eWNBSm1KRE11OFR0MHd3cHBwemFF?=
+ =?utf-8?B?aFI4TXNYR3RTdktsQmFpaElVclc1R1JZVVl4WEhYQ3JyRnpVUzBKTlF3STZp?=
+ =?utf-8?B?MTlQMjFoRXQyT0xydW1ndEovYVBXZUJ1MzBlb2dab0JuSU95dGZOR2t6MmxY?=
+ =?utf-8?B?WGtNdHVJeTVXb3RHNGR2VVlHUFpoNXROdWFKWGgzZ1p2T2FDUzBibmQ3WFI4?=
+ =?utf-8?B?dVY1ZDNraElrSWFWTW1mTFM3NkVyNlVJSklEblZFckdxVnl6RFRKVGk4Z2Zs?=
+ =?utf-8?B?ODVyMjNpSFJrNEZrUG1Id3V0cFhlOWhuZVFoNldEMS9kMTVNMzNCWWZoYXUx?=
+ =?utf-8?B?dUtOVWJxamk4Z1hUbEs4TFBkZXFLNHk2WFZhOGFzUnpmbWlwRG01anNPU0M3?=
+ =?utf-8?B?bGsrTzg4cmE3Qk9hQmJkR1NiSUdYTk82ais0OXhzOTlPdDJZSkVMc1FIWSth?=
+ =?utf-8?B?OGZvRjYzRzRXc0hKWmREeXdyRmhpTGRjYjFIZFd5d2U0WXhoQmJiZTdveW44?=
+ =?utf-8?B?TXEyMWhrbHQzR3oxNXJWYUhIVTBCZUxFeFhhcG0yY0RicVRUejFNcVBMeFk5?=
+ =?utf-8?B?anIyZ2RwTlQxL21GVFhKRUc0T3IrMTZxMW9CeEFlZXR0UDN2eFFLUzNFdzdp?=
+ =?utf-8?B?UDVKc2VOZERSNnNmVy9sZHBaZWcwREN0MUJ6cEswMkNEbXZxL2V5dzNkbUpz?=
+ =?utf-8?B?OEQxNzhCOVpNNzJndVFzZWUvMXE3QmRQNitrb3Uwd0dzbXlSR1FZaDliY1Bn?=
+ =?utf-8?Q?4WoiQdno9LmL13786n56rUw14?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e9a49421-e5b3-4755-5cfd-08dc2d13f3d6
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5827.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2024 04:18:10.1135
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bl0UgFGDon3aNRDMqfzIhy9ciAWw6SL7J0vQleU7dlchoOOBCSAG+s0HP5W6V42fytiHisWJX06th5ujNiW8fw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4412
+X-Mailman-Approved-At: Wed, 14 Feb 2024 15:59:49 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,64 +147,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel@salutedevices.com, vadimp@nvidia.com, mazziesaccount@gmail.com, "peterz@infradead.org" <peterz@infradead.org>, "boqun.feng@gmail.com" <boqun.feng@gmail.com>, Lee Jones <lee@kernel.org>, linux-kernel@vger.kernel.org, hdegoede@redhat.com, "will@kernel.org" <will@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, npiggin@gmail.com, pavel@ucw.cz, Waiman Long <longman@redhat.com>, nikitos.tr@gmail.com, linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>, linux-leds@vger.kernel.org
+Cc: linux-pci@vger.kernel.org, ntb@lists.linux.dev, Frank Li <Frank.Li@nxp.com>, linux-renesas-soc@vger.kernel.org, Damien Le Moal <dlemoal@kernel.org>, linux-tegra@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Andy
+Hi Niklas,
 
-On 2/13/24 13:55, Andy Shevchenko wrote:
-> On Tue, Feb 13, 2024 at 2:14 AM George Stark <gnstark@salutedevices.com> wrote:
->>
->> Hello Andy
->>
->> On 2/12/24 12:53, Andy Shevchenko wrote:
->>> On Mon, Feb 12, 2024 at 1:52 AM George Stark <gnstark@salutedevices.com> wrote:
->>>> I haven't lose hope for the devm_mutex thing and keep pinging those guys
->>>> from time to time.
->>>
->>> I don't understand. According to v4 thread Christophe proposed on how
->>> the patch should look like. What you need is to incorporate an updated
->>> version into your series. Am I wrong?
->>
->> We agreed that the effective way of implementing devm_mutex_init() is in
->> mutex.h using forward declaration of struct device.
->> The only inconvenient thing is that in the mutex.h mutex_init() declared
->> after mutex_destroy() so we'll have to use condition #ifdef
->> CONFIG_DEBUG_MUTEXES twice. Waiman Long proposed great cleanup patch [1]
->> that eliminates the need of doubling #ifdef. That patch was reviewed a
->> bit but it's still unapplied (near 2 months). I'm still trying to
->> contact mutex.h guys but there're no any feedback yet.
-> 
-> So the roadmap (as I see it) is:
-> - convince Lee to take the first patch while waiting for the others
-> - incorporate the above mentioned patch into your series
-> - make an ultimatum in case there is no reaction to get it applied on
-> deadline, let's say within next cycle (if Lee is okay with a such, but
-> this is normal practice when some maintainers are non-responsive)
-
-Well, it was interesting to know that there is such a practice.
-
-Waiman Long has just updated his patches with mutex.h cleanup [1] so I
-think we can wait for that series to be merged than I'll prepare may
-patchseries with or w\o the first patch.
-
-[1] 
-https://lore.kernel.org/all/20240213031656.1375951-4-longman@redhat.com/T/
-
-> 
-> P.S. In case Lee doesn't want to take the first patch separately
-> (let's say this week), send a new version with amended patches
-> included.
-
-Ok
-
-> 
->> [1]
->> https://lore.kernel.org/lkml/20231216013656.1382213-2-longman@redhat.com/T/#m795b230d662c1debb28463ad721ddba5b384340a
+On 2/10/2024 6:56 AM, Niklas Cassel wrote:
+> The series is based on top of:
+> https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/log/?h=endpoint
 > 
 > 
+> Hello all,
+> 
+> This series cleans up the hardware description for PCI endpoint BARs.
+> 
+> The problems with the existing hardware description:
+> -The documentation is lackluster.
+> -Some of the names are confusingly similar, e.g. fixed_64bit and
+>   fixed_size, even though these are for completely unrelated things.
+> -The way that the BARs are defined in the endpoint controller drivers
+>   is messy, because the left hand side is not a BAR, so you can mark a
+>   BAR as e.g. both fixed size and reserved.
+> 
+> This series tries to address all the problems above.
+> 
+> Personally, I think that the code is more readable, both the endpoint
+> controller drivers, but also pci-epc-core.c.
 
--- 
-Best regards
-George
+Thank you for cleaning this up!
+
+FWIW:
+Reviewed-by: Kishon Vijay Abraham I <kishon@kernel.org>
+> 
+> (Oh, and as you can probably guess, I will be sending out a patch series
+> that adds BAR_RESIZABLE to enum pci_epc_bar_type in the coming week(s).)
+> 
+> 
+> Kind regards,
+> Niklas
+> 
+> 
+> Niklas Cassel (2):
+>    PCI: endpoint: Clean up hardware description for BARs
+>    PCI: endpoint: Drop only_64bit on reserved BARs
+> 
+>   drivers/pci/controller/dwc/pci-imx6.c         |  3 +-
+>   drivers/pci/controller/dwc/pci-keystone.c     | 12 +++---
+>   .../pci/controller/dwc/pci-layerscape-ep.c    |  5 ++-
+>   drivers/pci/controller/dwc/pcie-keembay.c     |  8 +++-
+>   drivers/pci/controller/dwc/pcie-rcar-gen4.c   |  4 +-
+>   drivers/pci/controller/dwc/pcie-tegra194.c    | 10 +++--
+>   drivers/pci/controller/dwc/pcie-uniphier-ep.c | 15 ++++++--
+>   drivers/pci/controller/pcie-rcar-ep.c         | 14 ++++---
+>   drivers/pci/endpoint/functions/pci-epf-ntb.c  |  4 +-
+>   drivers/pci/endpoint/functions/pci-epf-test.c |  8 ++--
+>   drivers/pci/endpoint/functions/pci-epf-vntb.c |  2 +-
+>   drivers/pci/endpoint/pci-epc-core.c           | 25 +++++-------
+>   drivers/pci/endpoint/pci-epf-core.c           | 15 ++++----
+>   include/linux/pci-epc.h                       | 38 ++++++++++++++++---
+>   14 files changed, 105 insertions(+), 58 deletions(-)
+> 
