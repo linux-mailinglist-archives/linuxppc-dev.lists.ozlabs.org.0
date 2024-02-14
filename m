@@ -2,52 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89228854D70
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Feb 2024 16:55:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 851BC8551AB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Feb 2024 19:10:40 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lvqkGmDf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BxqTUWGh;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TZjTX3PyZz3fQH
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 02:55:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TZmTB3Ktnz3dVh
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 05:10:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lvqkGmDf;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BxqTUWGh;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=conor@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sbhat@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TZjSp0M0Bz3c55
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Feb 2024 02:55:05 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 8F7B261A6D;
-	Wed, 14 Feb 2024 15:55:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00213C43399;
-	Wed, 14 Feb 2024 15:54:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707926102;
-	bh=I5QmVlSxsPE/Gk4+HnD06ucKGeusZCkAT0pMy1rJFdk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lvqkGmDfiWK0/udDnfCBRaDRe2kArttC6QTkDsM1BxGHPZTBnbzWYTP4veP3ZargP
-	 aa80u28eGTmb3HYZ6oGtKR65HcpjxycM1VMzPS4fYFTC0EbeI+rblhYH5Pxe8kkoTk
-	 piWqBbRlZ3WUN8Ur08uVW+pleZvBCYBuFxtDvJH0kTxKRxdrLHSaweAq9p/Ya8HFOM
-	 sD0nomU3aUbzp3g/hO/j9ABxNQ+PevDhv8jT7tFPC+GjPBI0HImRZV6jPzw3axLIAC
-	 CzUwM/eHkXlHKHd9XW1i4L3SQ30mWBeGeaEFgIOQeI9Ks+AjSmvK9B5bf7NlwGMfJr
-	 fmbaBGfW564vw==
-Date: Wed, 14 Feb 2024 15:54:57 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Palmer Dabbelt <palmer@rivosinc.com>
-Subject: Re: [PATCH] tty: hvc: Don't enable the RISC-V SBI console by default
-Message-ID: <20240214-impound-gumdrop-230d0725f5ce@spud>
-References: <20240214153429.16484-2-palmer@rivosinc.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TZmSK4rqpz30N8
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Feb 2024 05:09:53 +1100 (AEDT)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41EHkDgg016535;
+	Wed, 14 Feb 2024 18:09:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : from : to : cc
+ : date : message-id : content-type : content-transfer-encoding :
+ mime-version; s=pp1; bh=0MNYMA6KLlVTYGcvolZmqodIbFxalz9bJACvWswK3C4=;
+ b=BxqTUWGhZFAFbjyPC7aeP0dPjZJNqcClY5j53rHLqn53n53kUjHPIMVyZkOCrUlUbaZd
+ VPtlUS/IPd1S1Jn5pQYJz7rXaH+OO7J2mF/U6ebPKR5A3VXprztSP5OEcglBup2Mob0L
+ hxjM5OdxAmFjcpVTq0mNvOtSPtj0U6vz+az3qUD9iBJzhXNjq05bDLfu0tX492+mlMg5
+ D0FYAKlWH6FHi0qH5VqI1MkLqbmDKbFSNak2JsxH/mYUdASjifQyDT942U2W6d1ZXF6Q
+ iePDOU6azqZJWqbbFS2ZAP+RYMkUeYnNYKJRM94Wb3+8gAiw46SWq5RgjUOgP2bFjimh nQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w91x3s73g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 14 Feb 2024 18:09:35 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41EHkGOW016939;
+	Wed, 14 Feb 2024 18:09:35 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w91x3s72r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 14 Feb 2024 18:09:35 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41EG867l004297;
+	Wed, 14 Feb 2024 18:09:34 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3w6kv0fqfv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 14 Feb 2024 18:09:33 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41EI9Sam3801784
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 14 Feb 2024 18:09:30 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 390422004B;
+	Wed, 14 Feb 2024 18:09:28 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7792B20040;
+	Wed, 14 Feb 2024 18:09:25 +0000 (GMT)
+Received: from ltcd48-lp2.aus.stglabs.ibm.com (unknown [9.3.101.175])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 14 Feb 2024 18:09:25 +0000 (GMT)
+Subject: [PATCH v2] powerpc/iommu: Fix the iommu group reference leak during
+ platform domain attach
+From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+To: iommu@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
+Date: Wed, 14 Feb 2024 12:09:24 -0600
+Message-ID: <170793401503.7491.9431631474642074097.stgit@linux.ibm.com>
+User-Agent: StGit/1.5
+Content-Type: text/plain; charset="utf-8"
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: uKSBjRdBPic4mU_8n_1yN31m-92kmjP8
+X-Proofpoint-ORIG-GUID: R82hzjgUCCuYFy8M9RyhMOEcsUjR9CnV
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ZpSavjsIcxHJ5llO"
-Content-Disposition: inline
-In-Reply-To: <20240214153429.16484-2-palmer@rivosinc.com>
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-14_10,2024-02-14_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ bulkscore=0 mlxlogscore=269 spamscore=0 priorityscore=1501 malwarescore=0
+ mlxscore=0 clxscore=1015 impostorscore=0 phishscore=0 adultscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402140142
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,87 +96,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: apatel@ventanamicro.com, Emil Renner Berthing <kernel@esmil.dk>, Greg KH <gregkh@linuxfoundation.org>, Atish Patra <atishp@rivosinc.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, linux-riscv@lists.infradead.org, jirislaby@kernel.org, ajones@ventanamicro.com
+Cc: venkat88@linux.vnet.ibm.com, jroedel@suse.de, gbatra@linux.vnet.ibm.com, sbhat@linux.ibm.com, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, aneesh.kumar@kernel.org, jgg@ziepe.ca, tpearson@raptorengineering.com, npiggin@gmail.com, bgray@linux.ibm.com, naveen.n.rao@linux.ibm.com, vaibhav@linux.ibm.com, aik@amd.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The function spapr_tce_platform_iommu_attach_dev() is missing to call
+iommu_group_put() when the domain is already set. This refcount leak
+shows up with BUG_ON() during DLPAR remove operation as,
 
---ZpSavjsIcxHJ5llO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+  KernelBug: Kernel bug in state 'None': kernel BUG at arch/powerpc/platforms/pseries/iommu.c:100!
+  Oops: Exception in kernel mode, sig: 5 [#1]
+  LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=8192 NUMA pSeries
+  <snip>
+  Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1060.00 (NH1060_016) hv:phyp pSeries
+  NIP:  c0000000000ff4d4 LR: c0000000000ff4cc CTR: 0000000000000000
+  REGS: c0000013aed5f840 TRAP: 0700   Tainted: G          I         (6.8.0-rc3-autotest-g99bd3cb0d12e)
+  MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 44002402  XER: 20040000
+  CFAR: c000000000a0d170 IRQMASK: 0
+  GPR00: c0000000000ff4cc c0000013aed5fae0 c000000001512700 c0000013aa362138
+  GPR04: 0000000000000000 0000000000000000 0000000000000000 0000000119c8afd0
+  GPR08: 0000000000000000 c000001284442b00 0000000000000001 0000000000001003
+  GPR12: 0000000300000000 c0000018ffff2f00 0000000000000000 0000000000000000
+  GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+  GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+  GPR24: c0000013aed5fc40 0000000000000002 0000000000000000 c000000002757d90
+  GPR28: c0000000000ff440 c000000002757cb8 c00000183799c1a0 c0000013aa362b00
+  NIP [c0000000000ff4d4] iommu_reconfig_notifier+0x94/0x200
+  LR [c0000000000ff4cc] iommu_reconfig_notifier+0x8c/0x200
+  Call Trace:
+  [c0000013aed5fae0] [c0000000000ff4cc] iommu_reconfig_notifier+0x8c/0x200 (unreliable)
+  [c0000013aed5fb10] [c0000000001a27b0] notifier_call_chain+0xb8/0x19c
+  [c0000013aed5fb70] [c0000000001a2a78] blocking_notifier_call_chain+0x64/0x98
+  [c0000013aed5fbb0] [c000000000c4a898] of_reconfig_notify+0x44/0xdc
+  [c0000013aed5fc20] [c000000000c4add4] of_detach_node+0x78/0xb0
+  [c0000013aed5fc70] [c0000000000f96a8] ofdt_write.part.0+0x86c/0xbb8
+  [c0000013aed5fce0] [c00000000069b4bc] proc_reg_write+0xf4/0x150
+  [c0000013aed5fd10] [c0000000005bfeb4] vfs_write+0xf8/0x488
+  [c0000013aed5fdc0] [c0000000005c0570] ksys_write+0x84/0x140
+  [c0000013aed5fe10] [c000000000033358] system_call_exception+0x138/0x330
+  [c0000013aed5fe50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
+  --- interrupt: 3000 at 0x20000433acb4
+  <snip>
+  ---[ end trace 0000000000000000 ]---
 
-On Wed, Feb 14, 2024 at 07:34:30AM -0800, Palmer Dabbelt wrote:
-> From: Palmer Dabbelt <palmer@rivosinc.com>
->=20
-> The new SBI console has the same problem as the old one: there's only
-> one shared backing hardware and no synchronization, so the two drivers
-> end up stepping on each other.  This was the same issue the old SBI-0.1
-> console drivers had, but that was disabled by default when SBI-0.1 was.
->=20
-> So just mark the new driver as nonportable.
->=20
-> Reported-by: Emil Renner Berthing <kernel@esmil.dk>
-> Fixes: 88ead68e764c ("tty: Add SBI debug console support to HVC SBI drive=
-r")
-> Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+The patch makes the iommu_group_get() call only when using it there by
+avoiding the leak.
 
-As was brought up when we covered this earlier today, if you're going to
-probe a driver based on an ecall, the same hardware should not remain
-enabled in the DT passed to the kernel.
-If you want to enable this driver in a multiplatform kernel alongside
-"real" drivers, then the solution is simple, firmware needs implementation
-needs to patch the DT and, at least, mark the uart as reserved if it is
-using it to provide the debug console. Marking this nonportable so that
-people only walk into this with their eyes open seems like a reasonable
-action to me.
+Fixes: a8ca9fc9134c ("powerpc/iommu: Do not do platform domain attach atctions after probe")
+Reported-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
+Closes: https://lore.kernel.org/all/274e0d2b-b5cc-475e-94e6-8427e88e271d@linux.vnet.ibm.com
+Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+---
+Changelog:
+v1: https://lore.kernel.org/all/170784021983.6249.10039296655906636112.stgit@linux.ibm.com/
+ - Minor refactor to call the iommu_group_get() only if required.
+ - Updated the title, description and signature(Closes/Reported-by).
 
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+ arch/powerpc/kernel/iommu.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Cheers,
-Conor.
+diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
+index d71eac3b2887..37fae3bd89c6 100644
+--- a/arch/powerpc/kernel/iommu.c
++++ b/arch/powerpc/kernel/iommu.c
+@@ -1285,13 +1285,14 @@ spapr_tce_platform_iommu_attach_dev(struct iommu_domain *platform_domain,
+ 				    struct device *dev)
+ {
+ 	struct iommu_domain *domain = iommu_get_domain_for_dev(dev);
+-	struct iommu_group *grp = iommu_group_get(dev);
+ 	struct iommu_table_group *table_group;
++	struct iommu_group *grp;
 
-> ---
->  drivers/tty/hvc/Kconfig | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/tty/hvc/Kconfig b/drivers/tty/hvc/Kconfig
-> index 6e05c5c7bca1..c2a4e88b328f 100644
-> --- a/drivers/tty/hvc/Kconfig
-> +++ b/drivers/tty/hvc/Kconfig
-> @@ -108,13 +108,15 @@ config HVC_DCC_SERIALIZE_SMP
-> =20
->  config HVC_RISCV_SBI
->  	bool "RISC-V SBI console support"
-> -	depends on RISCV_SBI
-> +	depends on RISCV_SBI && NONPORTABLE
->  	select HVC_DRIVER
->  	help
->  	  This enables support for console output via RISC-V SBI calls, which
-> -	  is normally used only during boot to output printk.
-> +	  is normally used only during boot to output printk.  This driver
-> +	  conflicts with real console drivers and should not be enabled on
-> +	  systems that directly access the console.
-> =20
-> -	  If you don't know what do to here, say Y.
-> +	  If you don't know what do to here, say N.
-> =20
->  config HVCS
->  	tristate "IBM Hypervisor Virtual Console Server support"
-> --=20
-> 2.43.0
->=20
->=20
+ 	/* At first attach the ownership is already set */
+ 	if (!domain)
+ 		return 0;
 
---ZpSavjsIcxHJ5llO
-Content-Type: application/pgp-signature; name="signature.asc"
++	grp = iommu_group_get(dev);
+ 	table_group = iommu_group_get_iommudata(grp);
+ 	/*
+ 	 * The domain being set to PLATFORM from earlier
 
------BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZcziUQAKCRB4tDGHoIJi
-0ha2AP4h37dfZJEi2Ma4Nfwx6PGVD0xADFSNtFYCxflzdgLW7AD+OawAfKCLrXnJ
-5fR1lKUHo+712HP3zmc1aJ6D2m0LTg8=
-=3+DZ
------END PGP SIGNATURE-----
-
---ZpSavjsIcxHJ5llO--
