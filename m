@@ -2,50 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 832E585473F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Feb 2024 11:38:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E5FF85474F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Feb 2024 11:39:40 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=yAdiU5Zg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NM4tcHce;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TZZR43B0Pz3dXG
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Feb 2024 21:38:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TZZSp1Xcnz3dXD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Feb 2024 21:39:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=yAdiU5Zg;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NM4tcHce;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TZZQM31Q5z3bWH
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Feb 2024 21:37:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TZZS52zXpz3bWH
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Feb 2024 21:39:01 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 54D21618C9;
-	Wed, 14 Feb 2024 10:37:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C309C433F1;
-	Wed, 14 Feb 2024 10:37:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707907047;
-	bh=cxED5YPWgHhSBwJHo1owowGzFn88/peBM/syHypcwGY=;
+	by dfw.source.kernel.org (Postfix) with ESMTP id 86E53618B6;
+	Wed, 14 Feb 2024 10:38:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55909C433C7;
+	Wed, 14 Feb 2024 10:38:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707907139;
+	bh=eslzQormGDUUKR6M3wUfA/wR65g2VVIMI2OcUV5+luQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=yAdiU5ZgI53hqY9FwXIbYtEU1neJBgYWFVbQJYJQwKXuydESuXEAkxtgQ1Doj7u+i
-	 cWtV6GEl8rnlmooZ4HfX5YgYMbwAoMxyqATdC1vH4siqe7TubRvZGjMd0jFL5pEv2P
-	 BM0MlKnjrrgvHqS9R/ysZy5aq4ai9YmWWeaP6ePU=
-Date: Wed, 14 Feb 2024 11:37:21 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: David Laight <David.Laight@aculab.com>
-Subject: Re: [PATCH] tty: hvc-iucv: fix function pointer casts
-Message-ID: <2024021426-unleveled-unhearing-8021@gregkh>
-References: <20240213101756.461701-1-arnd@kernel.org>
- <20240213191254.GA19790@gate.crashing.org>
- <57d72e2ccc8245fe99982613a11c461c@AcuMS.aculab.com>
+	b=NM4tcHcenWq1MQ46lCcjZguB2y0u9a08wBEfpVvvyTs7aHG6ltzW76Dp3veftpT3j
+	 i1Z8OUTTxKwVUAmyDMA+HXFG+VHMfUSpBXFYQKnXtfp4zAw9tSsPC4LsKRiXuq2zAg
+	 HvqopQ1KrOMmaeAddUivvw1SPeSBFS4rs/JYB6OWbu8LyMbywWfLlGHwIwSoPCUba+
+	 CR/KZxC/S7C6BvcQ6xEq1ZAT/XwXhgiHFAmVMnZNvfQpiBQ54hkBW5XE+iCSel8XF/
+	 fPXVUiky2QMlDUFAJiVqHbMLhldLNckU/yM4uw7ip+kHMlzdMUBZ1fj64JKT3Rpf6g
+	 dEPOCUfNAx76A==
+Date: Wed, 14 Feb 2024 11:38:47 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Kishon Vijay Abraham I <kvijayab@amd.com>
+Subject: Re: [PATCH 0/2] PCI endpoint BAR hardware description cleanup
+Message-ID: <ZcyYNzYo9HiQi4DY@x1-carbon>
+References: <20240210012634.600301-1-cassel@kernel.org>
+ <7a243a1e-6b47-bc2f-c538-b57db1c9c580@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <57d72e2ccc8245fe99982613a11c461c@AcuMS.aculab.com>
+In-Reply-To: <7a243a1e-6b47-bc2f-c538-b57db1c9c580@amd.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,36 +59,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Jiri Slaby <jirislaby@kernel.org>, "llvm@lists.linux.dev" <llvm@lists.linux.dev>, Nick Desaulniers <ndesaulniers@google.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nathan Chancellor <nathan@kernel.org>, Bill Wendling <morbo@google.com>, "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>, Justin Stitt <justinstitt@google.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Frank Li <Frank.Li@nxp.com>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>, linux-tegra@vger.kernel.org, Jonathan Hunter <jonathanh@nvidia.com>, NXP Linux Team <linux-imx@nxp.com>, Allen Hubbe <allenbh@gmail.com>, Richard Zhu <hongxing.zhu@nxp.com>, Srikanth Thokala <srikanth.thokala@intel.com>, Sascha Hauer <s.hauer@pengutronix.de>, Damien Le Moal <dlemoal@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Mingkai Hu <mingkai.hu@nxp.com>, linux-arm-kernel@lists.infradead.org, Roy Zang <roy.zang@nxp.com>, linuxppc-dev@lists.ozlabs
+ .org, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, linux-renesas-soc@vger.kernel.org, ntb@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Jon Mason <jdmason@kudzu.us>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Feb 14, 2024 at 09:46:33AM +0000, David Laight wrote:
-> From: Segher Boessenkool
-> > Sent: 13 February 2024 19:13
-> > 
-> > On Tue, Feb 13, 2024 at 11:17:49AM +0100, Arnd Bergmann wrote:
-> > > clang warns about explicitly casting between incompatible function
-> > > pointers:
-> > >
-> > > drivers/tty/hvc/hvc_iucv.c:1100:23: error: cast from 'void (*)(const void *)' to 'void (*)(struct
-> > device *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
-> > >  1100 |         priv->dev->release = (void (*)(struct device *)) kfree;
-> > >       |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > 
-> > Such a cast of course is explicitly allowed by 6.3.2.3/8, only calling a
-> > function using a non-compatible type is UB.  This warning message is
-> > quite misleading.  Doubly so because of the -Werror, as always.
+On Wed, Feb 14, 2024 at 09:47:54AM +0530, Kishon Vijay Abraham I wrote:
+> Hi Niklas,
 > 
-> But it will get called using the wrong type.
-> And (is it) fine-ibt will reject the incorrect call.
+> On 2/10/2024 6:56 AM, Niklas Cassel wrote:
+> > The series is based on top of:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/log/?h=endpoint
+> > 
+> > 
+> > Hello all,
+> > 
+> > This series cleans up the hardware description for PCI endpoint BARs.
+> > 
+> > The problems with the existing hardware description:
+> > -The documentation is lackluster.
+> > -Some of the names are confusingly similar, e.g. fixed_64bit and
+> >   fixed_size, even though these are for completely unrelated things.
+> > -The way that the BARs are defined in the endpoint controller drivers
+> >   is messy, because the left hand side is not a BAR, so you can mark a
+> >   BAR as e.g. both fixed size and reserved.
+> > 
+> > This series tries to address all the problems above.
+> > 
+> > Personally, I think that the code is more readable, both the endpoint
+> > controller drivers, but also pci-epc-core.c.
+> 
+> Thank you for cleaning this up!
+> 
+> FWIW:
+> Reviewed-by: Kishon Vijay Abraham I <kishon@kernel.org>
 
-And rightfully so, this type of casting abuse is just that, abuse.
+IMHO, a FWIW is quite the undersell here, as there is no R-b I would value
+higher than the R-b from the original author or the pci endpoint subsystem :)
 
-Almost no one should be just calling kfree() on a device pointer, I'll
-look at the surrounding code as odds are something odd is going on.  But
-for now, this patch is correct.
 
-thanks,
-
-greg k-h
+Kind regards,
+Niklas
