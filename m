@@ -2,48 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BA1385550C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Feb 2024 22:42:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 355C1855531
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Feb 2024 22:57:48 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=EGrvNimn;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TZs9w16mVz3dWC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 08:42:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TZsWD28CSz3dWg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 08:57:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=etezian.org (client-ip=188.165.52.147; helo=8.mo560.mail-out.ovh.net; envelope-from=andi@etezian.org; receiver=lists.ozlabs.org)
-Received: from 8.mo560.mail-out.ovh.net (8.mo560.mail-out.ovh.net [188.165.52.147])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=EGrvNimn;
+	dkim-atps=neutral
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TZs9R68swz3bmq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Feb 2024 08:42:16 +1100 (AEDT)
-Received: from director5.ghost.mail-out.ovh.net (unknown [10.109.176.103])
-	by mo560.mail-out.ovh.net (Postfix) with ESMTP id 4TZs9H0Wytz1Fc7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Feb 2024 21:42:10 +0000 (UTC)
-Received: from ghost-submission-6684bf9d7b-62rx8 (unknown [10.108.54.171])
-	by director5.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 58D4F1FD57;
-	Wed, 14 Feb 2024 21:42:04 +0000 (UTC)
-Received: from etezian.org ([37.59.142.103])
-	by ghost-submission-6684bf9d7b-62rx8 with ESMTPSA
-	id pzx8A6wzzWWJKwIAfHX53g
-	(envelope-from <andi@etezian.org>); Wed, 14 Feb 2024 21:42:04 +0000
-Authentication-Results: garm.ovh; auth=pass (GARM-103G00581a402d0-df4d-43c0-80f3-f5461175c724,
-                    C0FC2E5C6A7315DD97BDDE4B9606AB6EEADB6D9F) smtp.auth=andi@etezian.org
-X-OVh-ClientIp: 89.217.109.169
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Arnd Bergmann <arnd@kernel.org>
-In-Reply-To: <20240212111933.963985-1-arnd@kernel.org>
-References: <20240212111933.963985-1-arnd@kernel.org>
-Subject: Re: [PATCH] i2c: pasemi: split driver into two separate modules
-Message-Id: <170794692308.4040459.7350373390928340229.b4-ty@kernel.org>
-Date: Wed, 14 Feb 2024 22:42:03 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TZsVV2P7Xz3btQ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Feb 2024 08:57:06 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1707947821;
+	bh=ptVY8+ctsEMPdzQdMVEcEaylbr4N9FMoA+0k/Zm7vvI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=EGrvNimnx3BgExLs+6EE6sBnci2Wyn1SmyHYST8YoKmsjteL24VJ1RqdGiuvUJeLn
+	 urHV4WCzxmFQbyh/4ecwRbZBROvSzbRhSXj/uVhWJDupWoYClulsQOtz/QavCw2kUI
+	 +1agm6/2zUxzdaaO90cQESACk/IeqZ5WWu+SgAGu89qz/IipGnoSg0+6Cw34ss/Lgg
+	 Stpl97P/OrKl47x2zE/UuqcquMI8/mfO0QOixENxDblJiLZpvK1uMI+Nloz0ngrJZv
+	 N3LeXGLRvjxaFJ6u86npcfuX13XR9pYsrlzKfn55vAPN4XK4OtILfeM/sQ80caoHhE
+	 RVgwW+JtWteZQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4TZsVN6WXmz4wcb;
+	Thu, 15 Feb 2024 08:57:00 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Subject: Re: [PATCH] powerpc/64s: Increase default stack size to 32KB
+In-Reply-To: <87ttmau5mg.fsf@nvidia.com>
+References: <20231215124449.317597-1-mpe@ellerman.id.au>
+ <87ttmau5mg.fsf@nvidia.com>
+Date: Thu, 15 Feb 2024 08:56:59 +1100
+Message-ID: <87cysy7lqs.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.4
-X-Ovh-Tracer-Id: 3725039842831960594
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrudejgdduheefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvegjfhfukfffgggtgffosehtjeertdertdejnecuhfhrohhmpeetnhguihcuufhhhihtihcuoegrnhguihdrshhhhihtiheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpeffteehudffvdfhudfgffdugfejjeduheehgeefgeeuhfeiuefghffgueffvdfgfeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppeduvdejrddtrddtrddupdekledrvddujedruddtledrudeiledpfeejrdehledrudegvddruddtfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepoegrnhguihesvghtvgiiihgrnhdrohhrgheqpdhnsggprhgtphhtthhopedupdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghdpoffvtefjohhsthepmhhoheeitddpmhhouggvpehsmhhtphhouhht
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,33 +58,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arm-kernel@lists.infradead.org, Wolfram Sang <wsa@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Sven Peter <sven@svenpeter.dev>, Hector Martin <marcan@marcan.st>, linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Olof Johansson <olof@lixom.net>, Nicholas Piggin <npiggin@gmail.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, asahi@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, Alyssa Rosenzweig <alyssa@rosenzweig.io>, linux-i2c@vger.kernel.org
+Cc: Gal Pressman <gal@nvidia.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi
+Rahul Rameshbabu <rrameshbabu@nvidia.com> writes:
+> On Fri, 15 Dec, 2023 23:44:49 +1100 Michael Ellerman <mpe@ellerman.id.au> wrote:
+>> There are reports of kernels crashing due to stack overflow while
+>> running OpenShift (Kubernetes). The primary contributor to the stack
+>> usage seems to be openvswitch, which is used by OVN-Kubernetes (based on
+>> OVN (Open Virtual Network)), but NFS also contributes in some stack
+>> traces.
+>>
+>> There may be some opportunities to reduce stack usage in the openvswitch
+>> code, but doing so potentially require tradeoffs vs performance, and
+>> also requires testing across architectures.
+>>
+>> Looking at stack usage across the kernel (using -fstack-usage), shows
+>> that ppc64le stack frames are on average 50-100% larger than the
+>> equivalent function built for x86-64. Which is not surprising given the
+>> minimum stack frame size is 32 bytes on ppc64le vs 16 bytes on x86-64.
+>>
+>> So increase the default stack size to 32KB for the modern 64-bit Book3S
+>> platforms, ie. pseries (virtualised) and powernv (bare metal). That
+>> leaves the older systems like G5s, and the AmigaOne (pasemi) with a 16KB
+>> stack which should be sufficient on those machines.
+>>
+>> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+>> ---
+>
+> We noticed this change is causing assembler issues for us when building
+> the kernel.
+>
+>   make ARCH=powerpc KERNELRELEASE=6.8.0-rc2_for_upstream_debug_2024_02_06_20_01 KBUILD_BUILD_VERSION=1
+>   arch/powerpc/kernel/switch.S: Assembler messages:
+>   arch/powerpc/kernel/switch.S:249: Error: operand out of range (0x000000000000fe50 is not between 0xffffffffffff8000 and 0x0000000000007fff)
+>   make[6]: *** [scripts/Makefile.build:361: arch/powerpc/kernel/switch.o] Error 1
+>   make[5]: *** [scripts/Makefile.build:481: arch/powerpc/kernel] Error 2
+>   make[5]: *** Waiting for unfinished jobs....
+>   make[4]: *** [scripts/Makefile.build:481: arch/powerpc] Error 2
+>   make[4]: *** Waiting for unfinished jobs....
+>   make[3]: *** [Makefile:1921: .] Error 2
 
-On Mon, 12 Feb 2024 12:19:04 +0100, Arnd Bergmann wrote:
-> On powerpc, it is possible to compile test both the new apple (arm) and
-> old pasemi (powerpc) drivers for the i2c hardware at the same time,
-> which leads to a warning about linking the same object file twice:
-> 
-> scripts/Makefile.build:244: drivers/i2c/busses/Makefile: i2c-pasemi-core.o is added to multiple modules: i2c-apple i2c-pasemi
-> 
-> Rework the driver to have an explicit helper module, letting Kbuild
-> take care of whether this should be built-in or a loadable driver.
-> 
-> [...]
+There's a fix in my fixes branch:
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/commit/?h=fixes&id=f1acb109505d983779bbb7e20a1ee6244d2b5736
 
-Applied to i2c/i2c-host-fixes on
+I'll send it to Linus this week.
 
-git://git.kernel.org/pub/scm/linux/kernel/git/andi.shyti/linux.git
-
-Thank you,
-Andi
-
-Patches applied
-===============
-[1/1] i2c: pasemi: split driver into two separate modules
-      commit: 3fab8a74c71a4ba32b2fa1dca7340f9107ff8dfc
-
+cheers
