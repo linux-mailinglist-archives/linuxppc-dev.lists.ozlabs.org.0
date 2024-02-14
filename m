@@ -1,90 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F40F855336
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Feb 2024 20:29:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B455B85533A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Feb 2024 20:30:07 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=marliere.net header.i=@marliere.net header.a=rsa-sha256 header.s=2024 header.b=SCw6gFnF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=marliere.net header.i=@marliere.net header.a=rsa-sha256 header.s=2024 header.b=ExxGDG4H;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TZpD401nsz3dX6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 06:29:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TZpDs4WQsz3vc7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 06:30:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=marliere.net header.i=@marliere.net header.a=rsa-sha256 header.s=2024 header.b=SCw6gFnF;
+	dkim=pass (2048-bit key; unprotected) header.d=marliere.net header.i=@marliere.net header.a=rsa-sha256 header.s=2024 header.b=ExxGDG4H;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::32e; helo=mail-ot1-x32e.google.com; envelope-from=rbmarliere@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=rbmarliere@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TZpBV3xkWz3cP7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Feb 2024 06:28:02 +1100 (AEDT)
-Received: by mail-ot1-x32e.google.com with SMTP id 46e09a7af769-6dc36e501e1so48582a34.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Feb 2024 11:28:02 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TZpBY1CFzz3cP7
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Feb 2024 06:28:04 +1100 (AEDT)
+Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1db5212e2f6so1009855ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Feb 2024 11:28:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707938879; x=1708543679;
+        d=1e100.net; s=20230601; t=1707938882; x=1708543682;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:dkim-signature:from:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=jf14ZoO/nmlBr52xH16f4QtzbmUF7I3TiNIRIuzv/38=;
-        b=RbA12DBE96fVbfrGJZEVFvgW6FmkwksNxJbIWXHeMi9c1Bxor0vWF2IYLqAhGL+fkM
-         PE/qzLjWLfMQ2nYQwlUq5COeIfNZmpoE4zBlSHx9nU8qBY/EXkx5KMUpm0RML0bSdzu9
-         ok3Fq5RnHRQmR6+mP+XDN6FsXtBTF0f5EWdpgCqDQLrr4/zDPs6a7c1XEpeoGl9oEbu2
-         oNR9PndEThomuJepaD4pMLXsNIj1rayqyfDv0QAt+aInFdl0EFdOQ63tvPIzglZLSxa5
-         a/9DsDx2dFGtFdZNFyBaIbF4/hvTaEJvi91p+GDfXf0dUYY/NbJL5Cbnf356FgLntaM5
-         rvSw==
-X-Gm-Message-State: AOJu0YxzsIcYfKvnV3nzXvYkG8MgdLrHslLl4PHeVLbHj/OidIK6qwMH
-	DlNUIlOCIzNQ6V6YraVIaTG3Pwx1J46wS24WQqKuqPjbbgZuCc8l
-X-Google-Smtp-Source: AGHT+IEAYhq6gDI+wfjGNpVE+rgP71R6IJWQwTaB4Pvado9bg6PRnPO8hd9fVaRstKBYiI5d1bhUkw==
-X-Received: by 2002:a05:6358:7e94:b0:176:5a5e:4b7c with SMTP id o20-20020a0563587e9400b001765a5e4b7cmr4334094rwn.6.1707938878920;
-        Wed, 14 Feb 2024 11:27:58 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVR9u5eZkHuCGi5ouHd+f0g8NQQ4YHOm8cA1VMP51BbkhHt1JThb7MruHfBbp2jOqzY3XMlD5Np4SblYOAzR1eT/GlxGl27xiJBxkJ3DXV7BdB+CZa9jHyphsomO0b9enJZlVrQB3f0xpjnnXghR2Vfe+GzaoSW4vh6zSdbvGe80sbDUcgvZZKawa5fhWNiYy72gTdl+n7QfMmLZ9pxqjoXacya+Fk3ttY/sEZbWcGPZKtooyKgE0Go0IaZm/nsILUBsA==
+        bh=SW2EVXlkBr3rgXstlJZO0zqxkNTOtfGuPtYbWFp/giM=;
+        b=a3tOeRtbV4evNorZVi0K41iWs7Io/mVLbZQtYj1H2AYzUVFuquu5wYjWq+wiukyfHV
+         z/M4k6+INrd/qPL9UgAQpyBP9vLD+/4zGBVMERDO4z14ev/D9foCj4uM25JAT132/AtU
+         E20YEl4rEdby7IEQSVMOou6TzoijNI5B2DgurDcJ3k0V/wj88TYCNRO17jgBO1/upssa
+         +r98+6SQKNjWljcoNiy/z7i3yxyFbh6W/a1E2jkqgKFJxN6lyKAhMhYvtZSlo+HB5ynz
+         m3xMSYyqqNw8QptEX0OMxjShT+EvpG0Fp0tMf8ySIw8ARfj2hvVO/PFGbjH4ZU3cv8PI
+         fr2g==
+X-Gm-Message-State: AOJu0YxejugJPPt5zRZtwXWpOPQFjnnJ4geBF1nT7KDRumnkG0xWJLkI
+	fKa0n8Gk791yM0lXCJ/9TKqzOs/TBRI+duRLMcDhsXt7xKqsH7k7
+X-Google-Smtp-Source: AGHT+IFfGbZuAKSoIipQ/AuSt4XRcAoPLUj2tmOBYt6LOxRikAJhgLvwB5Ih9ElCDzXfq8dY46oA7g==
+X-Received: by 2002:a17:903:32c6:b0:1d9:adc9:2962 with SMTP id i6-20020a17090332c600b001d9adc92962mr4216641plr.20.1707938882014;
+        Wed, 14 Feb 2024 11:28:02 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVNr2uJ9kjnrGCOQC9BNLwWgg0FTNhR81r3mhUOmcxEJOT46yMDQ2YE9PySMXH9JejYyLfBYad23Xt/qtP4pPO7VaCiW5o6cRBaLbImdxN8Ea1NBJL/n/vkMXS+JbXWFt4TGJQbxO8QSVNbOlI0qMyY8fs9rdBzMpEusKyCRENQa2meTvVnw65ziaJRTjSACAWZOqJbCLVARgAiekH+t3uAQ08tn0XAp8sd9nu7H5VACcHMwU9UDTqQnBR4BeAtg5VErA==
 Received: from mail.marliere.net ([24.199.118.162])
-        by smtp.gmail.com with ESMTPSA id m20-20020a637d54000000b005dc4b562f6csm4610547pgn.3.2024.02.14.11.27.58
+        by smtp.gmail.com with ESMTPSA id kk11-20020a170903070b00b001d8a93fa5b1sm2269628plb.131.2024.02.14.11.28.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Feb 2024 11:27:58 -0800 (PST)
+        Wed, 14 Feb 2024 11:28:01 -0800 (PST)
 From: "Ricardo B. Marliere" <ricardo@marliere.net>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
-	s=2024; t=1707938877;
+	s=2024; t=1707938880;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jf14ZoO/nmlBr52xH16f4QtzbmUF7I3TiNIRIuzv/38=;
-	b=SCw6gFnFMVEuGi9m9kdpWg/G/byrUWhUoaJNVFytbqm08dkL3TNLUCrp5yeU4nk3kH6IKG
-	Q2ajsm7fuEGflTqeD6hhPkKqh7otTX5jGTxYS07WwodUuT+emH9TWpwYHF5qqNXYscGk9I
-	KFebSrYePXpv5MtXEMJgTv46KBz5NV7GSQpxE4aimnaIwfeCfvA9KAsLL52o9ZwRa2sply
-	7FiOY/ZOkr/c2XDxShAFyyXxuEOw51xdbA9jaK3r1H7Eit5zCVM/BBfUi3bsGjsHE0/FPt
-	pmidWrok5yRwV2yjYdL2zs+NncOuDqxvjBwlYfRXrkrrsw7lnF82t/zcRv9JCg==
+	bh=SW2EVXlkBr3rgXstlJZO0zqxkNTOtfGuPtYbWFp/giM=;
+	b=ExxGDG4HkIj1oisfc/xBYlb83uf+EJVkHyY++SDgkc95zRxC5dMn62sB0ubUZ9MmGZ//Ve
+	lIF/ReQzCklcu8k5GEkXFg8Et4Oyf8JMeuqB3qJDimH9K+Zjzb6y6TWjvbbln2aQLXkSjo
+	9a82NqA3wef3FOOC/DioCZN13IuEG+DQcl1aHqC1Dmh7BSbeVJz39Nk8PBDTUEXX0elzk2
+	BLpIxKjaxPDeaMxBSmX++g6iWbO5mf0bDTZYMrw76JUkqShALd/iWaiRQpGN2KqbN3moMP
+	Z+jYdDVMOGEbXWEo/bmczCW9woQefjvDnjsUueUdWw9Z0HF0Br0IUu23wasUig==
 Authentication-Results: ORIGINATING;
 	auth=pass smtp.auth=ricardo@marliere.net smtp.mailfrom=ricardo@marliere.net
-Date: Wed, 14 Feb 2024 16:28:28 -0300
-Subject: [PATCH 1/2] ALSA: aoa: make soundbus_bus_type const
+Date: Wed, 14 Feb 2024 16:28:29 -0300
+Subject: [PATCH 2/2] ALSA: seq: make snd_seq_bus_type const
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240214-bus_cleanup-alsa-v1-1-8fedbb4afa94@marliere.net>
+Message-Id: <20240214-bus_cleanup-alsa-v1-2-8fedbb4afa94@marliere.net>
 References: <20240214-bus_cleanup-alsa-v1-0-8fedbb4afa94@marliere.net>
 In-Reply-To: <20240214-bus_cleanup-alsa-v1-0-8fedbb4afa94@marliere.net>
 To: Johannes Berg <johannes@sipsolutions.net>, 
  Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1105; i=ricardo@marliere.net;
- h=from:subject:message-id; bh=Xx9qKGdssRAp5mo/Ka75lHZUssh4sDREhVlfbYK5MNo=;
- b=owEBbQKS/ZANAwAKAckLinxjhlimAcsmYgBlzRRg2+8TMjUIfbvPUXenySoAjgJXgm7QBin3p
- RuofTG2WeqJAjMEAAEKAB0WIQQDCo6eQk7jwGVXh+HJC4p8Y4ZYpgUCZc0UYAAKCRDJC4p8Y4ZY
- piFQD/9ZfnDZxcp/IDe9X1ChNa7pjG9eIbYI5mUhOc0Zc6KRmLJ9g7A4IYS+kCOLoFsvVlBkE7t
- 6iVQCjTvPi84Kn1tqqV7xnD1SqT3wHWIcLgsTmnYzAZm84HBMeawypWsRFlPgKtosS2aF0TEUz5
- 9T+aA3whcNkEru0JDutdtJ9OVwSC0FjnzTbu7xn7UT6yEk52bo9wXKP8P9jpHfABQMwpjHHxr7e
- 5bePOHNZ60MbjJZjbLYWANuprwfb77QuFkz+707XTvT00f2dj/WU9/kio0JCXwHge5ByskhQnuy
- NubuAsnmWCzutX4VZFIQoik2lTr5uGIjGFKIfS5NDmgFh7bN1hnyHqUoyo6yoDW/NwkB04lu7p2
- BIB1/EVZSLaj7YXXEoJ+UGEsjahRsI9s1Pz5AqL4JpHX/9JxVQkjUMDlp40MecUDkQA8iG/8oHc
- C/LXnxkomcncgrlQ67GVWTpjOG7v2V2QbYQIA+sz/RriOA6Gn65JZ2CXGLRM36xkK2co36/vZ1Y
- i2lzXIiLtC17GZPcaVd7pxBPwNI4jeNKcRdZ5oReR49HGo/Urq/HI1hHn5mUojaQTnYlrO5NKQA
- 0EyWfXjPdN5BVaHaHip4HeiZoP+6CyDDy1L2AGTH4qS+cFaVVh7DS1Cnfv2u4FOYCpXW0W8EXn+
- 0h2JDPc+V71skoQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1035; i=ricardo@marliere.net;
+ h=from:subject:message-id; bh=krKW6FufyrqnEsJjvhkOclRGG5wwZHLlEbv96z5uKcQ=;
+ b=owEBbQKS/ZANAwAKAckLinxjhlimAcsmYgBlzRRhl5Veu7uhBrVI+1uU+rR4q9IbJhifdb9TU
+ N+d17t0QdmJAjMEAAEKAB0WIQQDCo6eQk7jwGVXh+HJC4p8Y4ZYpgUCZc0UYQAKCRDJC4p8Y4ZY
+ pua5EACuVYFKzDW/TNKVRiEKvBIwgkmSnbmvzLYBd//6zcN/EAmhfhvISk2n9yBPuubxPSZaaxn
+ RqRssHLBSRa1iXhKOvZXLcO6w4JAvMSpsQItJWa1JjBhBbiCyGvFqjzT1nMR7UIJ9ygrJxm5sin
+ BpR/KI9reM1gxTPJwDCt3TubQKaaH8CkcX9uMDP2bchSDnQ5209TEhdocOZ3NReMxnm2ry5Szce
+ 0x63cr2s6aAKiETtlrjTDMYIIcjFmH7ZSArvFGGcjxijIDBfb2sj3yxF9e2xKBL9RyDBY5xS3rW
+ B7JHq6CngM/y0FV8xzlF7Dt7SoW5eEZKVFQBdMwRwQFfjA+5hc1eVSHXCyKVYM02dKvYUtKw1Z9
+ xf2JfFQicxO2BJlDyGq0XUj3yNxEo0TXIeWjCKsDLOWD/cLS6LsSlZuUkwPFbyZrxQmfuTrwAWu
+ 44agkqrnN0TkX8NggIw2mYTOULjDWAFuRups2m4TfBhd+G/Rf3KqRoJzKfqb8XETovkNlHCt/GP
+ nouPP+s1xHBga6enpHkwe1geOAkFmtvCPkLM7ZEnGSLRiE/neQExxHJJ9+ZRK4fclXGpADPv2b/
+ +LFqX9LvwU2qa5tcINF5yMW6AEOFCheXlE/15rHjKff8s5MkkAz4ZI8mMsDDFoRTTNPuz18gIn9
+ IyMwkxY0ce06jZQ==
 X-Developer-Key: i=ricardo@marliere.net; a=openpgp;
  fpr=030A8E9E424EE3C0655787E1C90B8A7C638658A6
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -104,7 +104,7 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 Since commit d492cc2573a0 ("driver core: device.h: make struct
 bus_type a const *"), the driver core can properly handle constant
-struct bus_type, move the soundbus_bus_type variable to be a constant
+struct bus_type, move the snd_seq_bus_type variable to be a constant
 structure as well, placing it into read-only memory which can not be
 modified at runtime.
 
@@ -112,22 +112,22 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
 ---
- sound/aoa/soundbus/core.c | 2 +-
+ sound/core/seq_device.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/aoa/soundbus/core.c b/sound/aoa/soundbus/core.c
-index 8f24a3eea16b..2a295f610594 100644
---- a/sound/aoa/soundbus/core.c
-+++ b/sound/aoa/soundbus/core.c
-@@ -127,7 +127,7 @@ static void soundbus_device_shutdown(struct device *dev)
+diff --git a/sound/core/seq_device.c b/sound/core/seq_device.c
+index 7f3fd8eb016f..654d620d0199 100644
+--- a/sound/core/seq_device.c
++++ b/sound/core/seq_device.c
+@@ -49,7 +49,7 @@ static int snd_seq_bus_match(struct device *dev, struct device_driver *drv)
+ 		sdrv->argsize == sdev->argsize;
+ }
  
- /* soundbus_dev_attrs is declared in sysfs.c */
- ATTRIBUTE_GROUPS(soundbus_dev);
--static struct bus_type soundbus_bus_type = {
-+static const struct bus_type soundbus_bus_type = {
- 	.name		= "aoa-soundbus",
- 	.probe		= soundbus_probe,
- 	.uevent		= soundbus_uevent,
+-static struct bus_type snd_seq_bus_type = {
++static const struct bus_type snd_seq_bus_type = {
+ 	.name = "snd_seq",
+ 	.match = snd_seq_bus_match,
+ };
 
 -- 
 2.43.0
