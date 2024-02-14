@@ -1,97 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 682DF8551D6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Feb 2024 19:14:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E05D1855334
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Feb 2024 20:28:43 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CZCczcjL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=marliere.net header.i=@marliere.net header.a=rsa-sha256 header.s=2024 header.b=maPFus1q;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TZmYj2cPTz3d2c
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 05:14:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TZpCF5w0jz3dWn
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 06:28:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CZCczcjL;
+	dkim=pass (2048-bit key; unprotected) header.d=marliere.net header.i=@marliere.net header.a=rsa-sha256 header.s=2024 header.b=maPFus1q;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sbhat@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::433; helo=mail-pf1-x433.google.com; envelope-from=rbmarliere@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TZmXy45Knz3cDr
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Feb 2024 05:13:54 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41EI2G3o027548;
-	Wed, 14 Feb 2024 18:13:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=d/KbLmi+nBD4mrD2m/5GEPKn/dBx91j9UFtWVJsZHbY=;
- b=CZCczcjLTNCsDzNjriXciofWvVF76lsAjbUWndecqHVnBQ71yq9VAoIVZtoCHtmrKaLa
- BXTjwm1qFV+Yt0aB/Zuyv5ghdOLAv5gFdtNR9Tnw8F09DTBpqOCSAzOzLwcaBKQGB11I
- phLp7l0tp7umNF+2I28MO8Q/TbnWAv/udS23iWiJURnkTIuFJhEB+08VlsHzd9oBAaD6
- 9IuBAsfG7vr/T19ru/I90O9b9njqyMo8xSfuo7THLbWFyRlLgGZQZ29JWcGaa3qlR2DW
- OxiV+shwTVUI0nb1ZqOU6KsuOVJSiCG81pI9LsC3aoy/+mGn3OAYOexVqsmjBhNBeSK4 4g== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w92eq8awe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 Feb 2024 18:13:40 +0000
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41EI2fr9029078;
-	Wed, 14 Feb 2024 18:13:40 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w92eq8aw2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 Feb 2024 18:13:40 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41EHsElB009920;
-	Wed, 14 Feb 2024 18:13:39 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3w6p62y32u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 Feb 2024 18:13:39 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41EIDXl362783962
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 14 Feb 2024 18:13:35 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A66D520071;
-	Wed, 14 Feb 2024 18:13:33 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E93BF2006A;
-	Wed, 14 Feb 2024 18:13:29 +0000 (GMT)
-Received: from [9.43.53.225] (unknown [9.43.53.225])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 14 Feb 2024 18:13:29 +0000 (GMT)
-Message-ID: <0abafe3e-7dfd-4067-8a47-fa8eea00b232@linux.ibm.com>
-Date: Wed, 14 Feb 2024 23:43:28 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc/iommu: Fix the missing iommu_group_put() during
- platform domain attach
-Content-Language: en-US
-To: Jason Gunthorpe <jgg@ziepe.ca>
-References: <170784021983.6249.10039296655906636112.stgit@linux.ibm.com>
- <20240213172128.GM765010@ziepe.ca>
- <4f5e638d-30a2-4207-b515-d07c20b0fb47@linux.vnet.ibm.com>
- <87le7n6wcf.fsf@mail.lhotse> <20240214125819.GA1299735@ziepe.ca>
-From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-In-Reply-To: <20240214125819.GA1299735@ziepe.ca>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Ayh_vcvCY-br2aPjrm37jCvWW48SBiVu
-X-Proofpoint-ORIG-GUID: W9AtKL8zdxS3o3scSejlP-3MJfG_6ZpM
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TZpBR42kGz3cP7
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Feb 2024 06:27:58 +1100 (AEDT)
+Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-6e0f4e3bc59so156143b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Feb 2024 11:27:58 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707938876; x=1708543676;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:dkim-signature:from:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=KnjRLwW6qeAAWQgWTvjpbNM3OaTV5ZKjGAIc59AkD9c=;
+        b=Cw+d7IKPBRDJ29p1L8nqUkCkYT1egg0442qOQ2nIBIKMVmKLveqpQ+Xc2VfDJJcR7U
+         nvZP3sMDGs6SEqwDcUqlBNyW9U2ATsbGMAO8Pt60PsLETbI6E5pueytukImHaxmhxvZI
+         vsxCB/bvrS11Wha9A509SWS7fA90YwawmD0Yuy9fq2sos7z7oLJDh1vlO9xFSG5tUK2U
+         cBM+P+UoCp3gL4Z0G5Dqua0MwPcr3faHVwxIx9n7ymAmT/imajgAoO5x+bL141EY5T6S
+         cmt4Q0VS6rx9SD1c8uqvV4Fg2kCkARubSRbXj8N97vaihkofgyMwDY1H2ehTZrfh5N7D
+         rNng==
+X-Gm-Message-State: AOJu0YxgGUiopQRGyW1RCdhohOIc+tvuV/QXI5IJRHiTCrmtZQDrF2BO
+	l9C9iXSY6KvBOw+srAZ6bjS1/8ZLNuB/uB84esrFiNWHGABCCVeU
+X-Google-Smtp-Source: AGHT+IHegGu1Lc6JHujte9HWk+U849QrRHwoSPJSqWXl8c+HXhJmNQ+qoZKZb3gAFc+W2fsg/d5Lhw==
+X-Received: by 2002:a05:6a20:93aa:b0:19a:fa19:23e7 with SMTP id x42-20020a056a2093aa00b0019afa1923e7mr4662887pzh.55.1707938875745;
+        Wed, 14 Feb 2024 11:27:55 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUa34KWh09rSYQyE9nF7fJS3F2IPd03THcCf9aU6FQa3IAiDx1LsWllRCgEoniJtv6tsGHfNIO0J5zRs4HHxiXtfuO9TRPplBhygbzpf3W1S417xhgXdaxak/bluiAQCC+BEUqkffVilz9bdq2CvrThtjeRQvhINJOjZOQVpnZ8ycw8ED62RTnUoUNr8R9Fx/74p4zsKsu+ZRRbF6LfSZFgEsj8SrOFgBOVuY1GkZ6eM1U43plxZeDsTM59OBmUJBVFwQ==
+Received: from mail.marliere.net ([24.199.118.162])
+        by smtp.gmail.com with ESMTPSA id ei52-20020a056a0080f400b006e0e4b9b7e6sm5566104pfb.212.2024.02.14.11.27.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Feb 2024 11:27:55 -0800 (PST)
+From: "Ricardo B. Marliere" <ricardo@marliere.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
+	s=2024; t=1707938873;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=KnjRLwW6qeAAWQgWTvjpbNM3OaTV5ZKjGAIc59AkD9c=;
+	b=maPFus1qp9Xv5h9LhLO+NfqqYYnwQda7r95wUFaLGv+wjMlY//L1rO5mAM6+NuhKi900w+
+	Lf5zn4iwdVvNADXICzlFQiYMjZttHE3P20l+6DMp6IPvf/VhZEh7A7NiTtGPASS2aAkMGe
+	TrAERZ6ibNQcJkNcxOeT1N5ZNTVPay7LVnGz2rffqx04lf3yZ5I/8H1I8Ueq4EVbM4hqP1
+	TToN3I7P0vSlPM7R9mdo/8bHDD/BljTvAywkAYlKB0zy8cGEHEQDreR9SXYfAH6Zp8roGy
+	iYj+fS6ZmfupGcZmd1seEa+P4SjvDtvoL1WYG8GdzG3n3qYiGwK+OSDy0ongtA==
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=ricardo@marliere.net smtp.mailfrom=ricardo@marliere.net
+Subject: [PATCH 0/2] ALSA: struct bus_type cleanup
+Date: Wed, 14 Feb 2024 16:28:27 -0300
+Message-Id: <20240214-bus_cleanup-alsa-v1-0-8fedbb4afa94@marliere.net>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-14_10,2024-02-14_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
- mlxscore=0 bulkscore=0 lowpriorityscore=0 impostorscore=0 adultscore=0
- suspectscore=0 priorityscore=1501 spamscore=0 mlxlogscore=744
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402140142
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFwUzWUC/x3MQQqAIBBA0avErBNUsqCrRITZWANi4VAE4t2Tl
+ m/xfwbGRMgwNhkSPsR0xgrVNuAOG3cUtFWDlrqTWnVivXlxAW28L2EDW6E2abx3vZHDCjW7Enp
+ 6/+U0l/IBlrASWWIAAAA=
+To: Johannes Berg <johannes@sipsolutions.net>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1080; i=ricardo@marliere.net;
+ h=from:subject:message-id; bh=X6od+QN5zi3KBcLvJ2WmLsxhFSgPUZijlXB3ig3ROOk=;
+ b=owEBbQKS/ZANAwAKAckLinxjhlimAcsmYgBlzRRgqD50Kjh/z7zUDRvFGQ5rgpOi5V2O2AYGX
+ hIUhjfS3WCJAjMEAAEKAB0WIQQDCo6eQk7jwGVXh+HJC4p8Y4ZYpgUCZc0UYAAKCRDJC4p8Y4ZY
+ pmcbEACD0T5RsUDq6fWHxNRzwotB+m1utHfTeWp77RvfXLKoZZIAHgmzUfz9dS3PErdHFheGoL0
+ xKFWgt7H4f0/0/Yo3BJjY8Tw76AwIM7o2bGowLqAeFhJWdY12hSKPUPwI2IWTA4lVuXhm9nlSxP
+ VQ5d8P6ISLYq71oVht5jOQmryblOVTmJ+IUoV81ELF/lFFIaQHM8nUsMtlKhls5m3U0nqpdA9Qn
+ B1yvd6yIInkH2xrlR8LXpIwUaCnkmycURdEiwVNTxEKu0vNcnk0RXGB6361bsP7WYiZkAIP6EsP
+ iBDMvJA4w8B+m39Rtvr0N837wC51+FmezpSNFXcd45iyIes4y4UMt0Cn258Xqlwkk8fZJlGFfqI
+ BpTtlvAV5H4SnFovK3tpFGB9kaUQtlmiWriE82PYlrgppFS608qDCc8VTFUefNpLl+63MlTf7bU
+ eUtVvA1eSMoS1TjO1D78+AX+0rwTr1SyO8cWnf5NFWjmr2wfEUWIC96OGYMBwmPC2FkKTAf85+z
+ Hl/TbRFhpy+tW4dImZ1e7nO9rSN3ytLFR8cgUuTgD79cMBmV/08exealAOZHHV3tGm982wreRXJ
+ mlTdedLshYOHDS3IEnMt3cNEcgznRJkKX1fcUXs2MbvZT/tkAgD5Sz4Q4kd4FP4AAQvc6EEC56/
+ oVLkY93fN75xWWg==
+X-Developer-Key: i=ricardo@marliere.net; a=openpgp;
+ fpr=030A8E9E424EE3C0655787E1C90B8A7C638658A6
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,50 +98,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>, jroedel@suse.de, gbatra@linux.vnet.ibm.com, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, aneesh.kumar@kernel.org, tpearson@raptorengineering.com, iommu@lists.linux.dev, npiggin@gmail.com, bgray@linux.ibm.com, naveen.n.rao@linux.ibm.com, vaibhav@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, aik@amd.com
+Cc: alsa-devel@alsa-project.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, "Ricardo B. Marliere" <ricardo@marliere.net>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This series is part of an effort to cleanup the users of the driver
+core, as can be seen in many recent patches authored by Greg across the
+tree (e.g. [1]).
 
-On 2/14/24 18:28, Jason Gunthorpe wrote:
-> On Wed, Feb 14, 2024 at 11:53:20PM +1100, Michael Ellerman wrote:
->> Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com> writes:
->>> Thanks for the patch. Applied this patch and verified and issue is fixed.
->>>
->>> This issue way originally reported in the below mail.
->>>
->>> https://marc.info/?l=linux-kernel&m=170737160630106&w=2
->> Please use lore for links, in this case:
->>
->> https://lore.kernel.org/all/274e0d2b-b5cc-475e-94e6-8427e88e271d@linux.vnet.ibm.com/
-> Also if you are respinning you may prefer this
->
-> @@ -1285,14 +1285,15 @@ spapr_tce_platform_iommu_attach_dev(struct iommu_domain *platform_domain,
->                                      struct device *dev)
->   {
->          struct iommu_domain *domain = iommu_get_domain_for_dev(dev);
-> -       struct iommu_group *grp = iommu_group_get(dev);
->          struct iommu_table_group *table_group;
-> +       struct iommu_group *grp;
->          int ret = -EINVAL;
->   
->          /* At first attach the ownership is already set */
->          if (!domain)
->                  return 0;
->   
-> +       grp = iommu_group_get(dev);
->          if (!grp)
->                  return -ENODEV;
->
-> Which is sort of why this happened in the first place :)
+---
+[1]: https://lore.kernel.org/lkml/?q=f%3Agregkh%40linuxfoundation.org+s%3A%22make%22+and+s%3A%22const%22
 
-Right! Posted the v2 here
+To: Johannes Berg <johannes@sipsolutions.net>
+To: Jaroslav Kysela <perex@perex.cz>
+To: Takashi Iwai <tiwai@suse.com>
+Cc:  <linuxppc-dev@lists.ozlabs.org>
+Cc:  <alsa-devel@alsa-project.org>
+Cc:  <linux-sound@vger.kernel.org>
+Cc:  <linux-kernel@vger.kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
 
-https://lore.kernel.org/linux-iommu/170793401503.7491.9431631474642074097.stgit@linux.ibm.com/
+---
+Ricardo B. Marliere (2):
+      ALSA: aoa: make soundbus_bus_type const
+      ALSA: seq: make snd_seq_bus_type const
 
+ sound/aoa/soundbus/core.c | 2 +-
+ sound/core/seq_device.c   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+---
+base-commit: d7bf73809849463f76de42aad62c850305dd6c5d
+change-id: 20240214-bus_cleanup-alsa-1d05ffc6507b
 
-Thanks,
+Best regards,
+-- 
+Ricardo B. Marliere <ricardo@marliere.net>
 
-Shivaprasad
-
-> Jason
