@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85EA98563F1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 14:04:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04EE08563F4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 14:04:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TbFd43Rqwz3wF5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Feb 2024 00:04:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TbFdx6swDz3dXf
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Feb 2024 00:04:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TbFXB2lFcz3dT4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Feb 2024 23:59:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TbFYX13yGz3vkr
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Feb 2024 00:01:04 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4TbFX94csjz4x0t;
-	Thu, 15 Feb 2024 23:59:53 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4TbFYW71SYz4wcl;
+	Fri, 16 Feb 2024 00:01:03 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: npiggin@gmail.com, aneesh.kumar@kernel.org, naveen.n.rao@linux.ibm.com, christophe.leroy@csgroup.eu, christophe.leroy@c-s.fr, Jiangfeng Xiao <xiaojiangfeng@huawei.com>
-In-Reply-To: <1705974359-43790-1-git-send-email-xiaojiangfeng@huawei.com>
-References: <1705974359-43790-1-git-send-email-xiaojiangfeng@huawei.com>
-Subject: Re: [PING PATCH] powerpc/kasan: Fix addr error caused by page alignment
-Message-Id: <170800185784.599237.15590850355904015757.b4-ty@ellerman.id.au>
-Date: Thu, 15 Feb 2024 23:57:37 +1100
+To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
+In-Reply-To: <20231229120107.2281153-1-mpe@ellerman.id.au>
+References: <20231229120107.2281153-1-mpe@ellerman.id.au>
+Subject: Re: [RFC PATCH 1/5] powerpc/smp: Adjust nr_cpu_ids to cover all threads of a core
+Message-Id: <170800202447.601034.7290612623478478380.b4-ty@ellerman.id.au>
+Date: Fri, 16 Feb 2024 00:00:24 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -42,24 +42,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: douzhaolei@huawei.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, wangbing6@huawei.com, wangfangpeng1@huawei.com, nixiaoming@huawei.com
+Cc: Pingfan Liu <kernelfans@gmail.com>, Pingfan Liu <piliu@redhat.com>, Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 23 Jan 2024 09:45:59 +0800, Jiangfeng Xiao wrote:
-> In kasan_init_region, when k_start is not page aligned,
-> at the begin of for loop, k_cur = k_start & PAGE_MASK
-> is less than k_start, and then va = block + k_cur - k_start
-> is less than block, the addr va is invalid, because the
-> memory address space from va to block is not alloced by
-> memblock_alloc, which will not be reserved
-> by memblock_reserve later, it will be used by other places.
+On Fri, 29 Dec 2023 23:01:03 +1100, Michael Ellerman wrote:
+> If nr_cpu_ids is too low to include at least all the threads of a single
+> core adjust nr_cpu_ids upwards. This avoids triggering odd bugs in code
+> that assumes all threads of a core are available.
 > 
-> [...]
+> 
 
-Applied to powerpc/fixes.
+Applied to powerpc/next.
 
-[1/1] powerpc/kasan: Fix addr error caused by page alignment
-      https://git.kernel.org/powerpc/c/4a7aee96200ad281a5cc4cf5c7a2e2a49d2b97b0
+[1/5] powerpc/smp: Adjust nr_cpu_ids to cover all threads of a core
+      https://git.kernel.org/powerpc/c/5580e96dad5a439d561d9648ffcbccb739c2a120
+[2/5] powerpc/smp: Increase nr_cpu_ids to include the boot CPU
+      https://git.kernel.org/powerpc/c/777f81f0a9c780a6443bcf2c7785f0cc2e87c1ef
+[3/5] powerpc/smp: Lookup avail once per device tree node
+      https://git.kernel.org/powerpc/c/dca79603fbc592ec7ea8bd7ba274052d3984e882
+[4/5] powerpc/smp: Factor out assign_threads()
+      https://git.kernel.org/powerpc/c/9832de654499f0bf797a3719c4d4c5bd401f18f5
+[5/5] powerpc/smp: Remap boot CPU onto core 0 if >= nr_cpu_ids
+      https://git.kernel.org/powerpc/c/0875f1ceba974042069f04946aa8f1d4d1e688da
 
 cheers
