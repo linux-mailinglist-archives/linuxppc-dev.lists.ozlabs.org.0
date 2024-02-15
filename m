@@ -1,55 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7F38855986
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 04:37:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3F59855BD4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 08:49:41 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=cjQTs2Lu;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=qajf8PZ6;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tb13C3nK6z3vXM
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 14:37:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tb6fC4L2Mz3cS3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 18:49:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=cjQTs2Lu;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=qajf8PZ6;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tb12Q0tJJz3bw9
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Feb 2024 14:36:46 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1707968201;
-	bh=s71VglVzXMHExQHV0flXdlMkL0Er5JOLuJrclNyZ2YU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=cjQTs2LumNQvps0w1v9ahJISdsxPzj0e6mQz9zzTwySFqnU8I+6KL4Q/lm609CWco
-	 /71QVSEkdXue7HIPavkyUqbFSTskV3H32oYe8Fw2xFlwSe/8gdtDf3QidhKtPwVqz5
-	 DQjGPi8tRyygya1FfuaPpxDs2N4v2Lgu9ulVOOHzx/F2UrpaZEN+NIgHkoq5Vz7Zs0
-	 J2566AhsAZOR0kre8HKjn1OxEOmd8Y7iniRdfcWfTQ4ED30GRX/iW+iXM/4OMavMyp
-	 HKwobuQXiN8IxYHYIy7GpK1P9NCb6plTcoPwXYTog8Nb2IG3+r+MnBXk4RXbCu+iRj
-	 Fg10tpZIFsqxA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Tb12K1Jrjz4wcN;
-	Thu, 15 Feb 2024 14:36:41 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Randy Dunlap <rdunlap@infradead.org>, Stephen Rothwell
- <sfr@canb.auug.org.au>, Linux Next Mailing List
- <linux-next@vger.kernel.org>
-Subject: Re: linux-next: Tree for Feb 14
- (arch/powerpc/platforms/pseries/pci_dlpar.o)
-In-Reply-To: <c501ff0a-170b-42a8-a5b7-623ebb6c7fba@infradead.org>
-References: <20240214151426.0a398cf0@canb.auug.org.au>
- <c501ff0a-170b-42a8-a5b7-623ebb6c7fba@infradead.org>
-Date: Thu, 15 Feb 2024 14:36:41 +1100
-Message-ID: <8734tu760m.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tb6dQ56m0z3cB0
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Feb 2024 18:48:57 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 94A6361C55;
+	Thu, 15 Feb 2024 07:48:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6981C433C7;
+	Thu, 15 Feb 2024 07:48:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1707983332;
+	bh=gahLnnsNTqmUik4SdEeXvaqgZ4vCmG45RsllVXdj/mE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qajf8PZ65kKGyotnqyIUZ3vlSkpstKVFTdqCpNtt11yZc3WQx0TBIeEixG38eBjtF
+	 dQqDmJTsG/G5wsnuGVF8KapV2qoQO5WOO8TzkkTkg7Dn5t3dStmcx0CXS5nF0PGms9
+	 s3OFz8TRzd2nuSJQYkDvFpQtkCeofc/Pulf3+EIQ=
+Date: Thu, 15 Feb 2024 08:48:49 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: "Ricardo B. Marliere" <ricardo@marliere.net>
+Subject: Re: [PATCH 0/2] ALSA: struct bus_type cleanup
+Message-ID: <2024021539-boxcar-shown-c829@gregkh>
+References: <20240214-bus_cleanup-alsa-v1-0-8fedbb4afa94@marliere.net>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240214-bus_cleanup-alsa-v1-0-8fedbb4afa94@marliere.net>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,27 +55,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Gaurav Batra <gbatra@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org, Takashi Iwai <tiwai@suse.com>, linux-sound@vger.kernel.org, Jaroslav Kysela <perex@perex.cz>, Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Randy Dunlap <rdunlap@infradead.org> writes:
-> On 2/13/24 20:14, Stephen Rothwell wrote:
->> Hi all,
->> 
->> Changes since 20240213:
->> 
->
-> on powerpc64:
-> when CONFIG_IOMMU_API is not set.
->
->
-> powerpc64-linux-ld: arch/powerpc/platforms/pseries/pci_dlpar.o: in function `init_phb_dynamic':
-> pci_dlpar.c:(.text+0xc4): undefined reference to `ppc_iommu_register_device'
-> powerpc64-linux-ld: arch/powerpc/platforms/pseries/pci_dlpar.o: in function `remove_phb_dynamic':
-> pci_dlpar.c:(.text+0x248): undefined reference to `ppc_iommu_unregister_device'
+On Wed, Feb 14, 2024 at 04:28:27PM -0300, Ricardo B. Marliere wrote:
+> This series is part of an effort to cleanup the users of the driver
+> core, as can be seen in many recent patches authored by Greg across the
+> tree (e.g. [1]).
+> 
+> ---
+> [1]: https://lore.kernel.org/lkml/?q=f%3Agregkh%40linuxfoundation.org+s%3A%22make%22+and+s%3A%22const%22
+> 
+> To: Johannes Berg <johannes@sipsolutions.net>
+> To: Jaroslav Kysela <perex@perex.cz>
+> To: Takashi Iwai <tiwai@suse.com>
+> Cc:  <linuxppc-dev@lists.ozlabs.org>
+> Cc:  <alsa-devel@alsa-project.org>
+> Cc:  <linux-sound@vger.kernel.org>
+> Cc:  <linux-kernel@vger.kernel.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
 
-I'm pretty sure I reverted the commit causing that, the revert will be
-in today's linux-next.
-
-cheers
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
