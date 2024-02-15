@@ -2,87 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16436855FD9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 11:45:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F700855FE3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 11:46:15 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NSfPG17y;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NSfPG17y;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a1ZhDd4/;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cm/RCUrB;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TbBY571wQz86X3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 21:45:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TbBYw6nHVz86Z7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 21:46:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NSfPG17y;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NSfPG17y;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a1ZhDd4/;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cm/RCUrB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TbBVR3tzJz86TL
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Feb 2024 21:43:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TbBVy06G4z3w85
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Feb 2024 21:43:37 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707993788;
+	s=mimecast20190719; t=1707993814;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=zKRa0yC+0MiLHkj8ok+qOeouxMk5BBGoR5MWSe6wX3I=;
-	b=NSfPG17yIqjiliyvE/gR7IcSlSO7Ubcro7B17BiCxk+30f7IXVFAdnDKp6XlgsOgIsTmxX
-	EABzRFBPqvUBKoU/u9qF2fJZoZ+byXyabNxSclJyrUUbVhwmM9djld2F8J4lIZ9S1e0oqd
-	VXCOv36AtZmDqzMC/Q8oX9z5Hdp86+o=
+	bh=9s31E6Mq5aIvde8oGi3wYEyTZeK5CoMIgMhF7GJXA6U=;
+	b=a1ZhDd4/e7BTCdmebmomFqMLtO/xzZe1oBgjAdvbwHC+JWpDkNTEZaO3cLrptHYHCGtGXK
+	eBWfjP9MzbWhTVrqmF2qI7aFls2DesCi+jdRZ2MGpIZYgTSNJFQXjB4R/BrAoXfMd2g5TL
+	metSjA/LpuBta3Swwr44Id00trtOe7o=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707993788;
+	s=mimecast20190719; t=1707993815;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=zKRa0yC+0MiLHkj8ok+qOeouxMk5BBGoR5MWSe6wX3I=;
-	b=NSfPG17yIqjiliyvE/gR7IcSlSO7Ubcro7B17BiCxk+30f7IXVFAdnDKp6XlgsOgIsTmxX
-	EABzRFBPqvUBKoU/u9qF2fJZoZ+byXyabNxSclJyrUUbVhwmM9djld2F8J4lIZ9S1e0oqd
-	VXCOv36AtZmDqzMC/Q8oX9z5Hdp86+o=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=9s31E6Mq5aIvde8oGi3wYEyTZeK5CoMIgMhF7GJXA6U=;
+	b=cm/RCUrBCpksogU/6/hOxGIaQ4StFoGm4ioWHtqswt9eKR10yq9dCFEMjZMM8cIO+Ly85G
+	hczCZ/PyLEcFZSLHT/PFPKVEo0F1BJBEkjUdz1Oljj17nMVj10Kmo58pC3zA6Y6avmzphN
+	GXRajU7piok0IduKs65iCYBwimIf2Ns=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-63-Je0B7ZagNRSSMeoe3H3K6A-1; Thu, 15 Feb 2024 05:43:06 -0500
-X-MC-Unique: Je0B7ZagNRSSMeoe3H3K6A-1
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-68c52361422so9181046d6.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Feb 2024 02:43:06 -0800 (PST)
+ us-mta-464-uiETbjOVObSbKi8LTbyapQ-1; Thu, 15 Feb 2024 05:43:30 -0500
+X-MC-Unique: uiETbjOVObSbKi8LTbyapQ-1
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-78346521232so87723685a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Feb 2024 02:43:30 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707993786; x=1708598586;
+        d=1e100.net; s=20230601; t=1707993810; x=1708598610;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
          :references:cc:to:content-language:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zKRa0yC+0MiLHkj8ok+qOeouxMk5BBGoR5MWSe6wX3I=;
-        b=tNOMXzZjxqZroEI81vx9ODg+dzGtz37VaFySO1FZ6/7PpmJGjD9Uz4H/yorPJ0epwG
-         mEUmfM3ssCeyf4BQl43pZAiOT6JCQM5Tpl0fK86Rc0w6OM0UaZsYvTxnGb33yHAJXr66
-         p2YtdBDoS1FekeZIGjBzvrvVeDHTBkxaOicXCOvZEjGIcdNQXlkeoC1XWEnWNw41krgk
-         x7npaOwQARUbWTzIt63PrSxUNwzv5ZAHvyutg1HeJB3UzKU6qKM/y37jyYniiUL4woI0
-         +G3oY6VQm16m80SPQ7oWaKLmxq9Kyotk33P5pU1GRBC6kteRZfNM7sEnL2PdMzO8YTlQ
-         FISA==
-X-Forwarded-Encrypted: i=1; AJvYcCWZDJ7d66cHCDaKk0VJvkabVfxBwPgnvYp7m6FkVWHzFXJMz96yykdvmLc4bpRNZasWUUO8QHuB3oWeC0Fint05yYIY4gqDKzkPeT7uHw==
-X-Gm-Message-State: AOJu0YymfihPuqLtrPzYc/Z9MciA2cqksTIEoMvFcbHZqTAjWzgOjaq8
-	M/OA0e5akDhNTsDdwCiaduw79KANBIRxTQES3ZvzMyMNBZIjr1rujwOQHO1fXSKUKYMV3gio/0Z
-	26lqU/2kIpHlcxWuNxVNxGAVETMVdxNKdD0F68eYTh5hB0DHD5z+2F5KYiWhlF8U=
-X-Received: by 2002:a0c:f3d4:0:b0:68f:a59:1216 with SMTP id f20-20020a0cf3d4000000b0068f0a591216mr1190722qvm.50.1707993786025;
-        Thu, 15 Feb 2024 02:43:06 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFte3jUXgsQjEwGNjWUY1CBYrm9xQ6Kr/3wAjZMWIx5O2ISAeI1pj/H170QLB8FxdTao4yy5w==
-X-Received: by 2002:a0c:f3d4:0:b0:68f:a59:1216 with SMTP id f20-20020a0cf3d4000000b0068f0a591216mr1190707qvm.50.1707993785672;
-        Thu, 15 Feb 2024 02:43:05 -0800 (PST)
+        bh=9s31E6Mq5aIvde8oGi3wYEyTZeK5CoMIgMhF7GJXA6U=;
+        b=dRetShRbUQ/lRHVJs6mqOtQLebm+0oe5uQBkDOrkMPJycQhEQZqojQ5wAQSXNdZy4Q
+         Pfsm4E3wiOa8mysmmGMCTD7lUHsYsgfkJZnxA+xomAWS5S5rXPyJxmGtbF0VCE7Yb95j
+         C+W2f9hosFkAKZgOooj/h/0VTJmVNQlnp2mKffGs4NtWhXNhcluKbnmOaSN2MgJTKsyi
+         JVryXu7Fhcoc5KWOvz32tpe4KFErBZ7ITsh7vzlYT7cQ2AKP4DGCM5GfFULzqkmIKGJu
+         IVr0FEFgk9rzGuXcMcptGub5kiSLrdCIUSvsrlmYlxjlALbVt7vbu2pk8LsfjbK1OsAB
+         Gp2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVbTd7+qv7rS6wHJ2lZey1pqrFS/tgPuKAFqQjMXG/ep3oR/6N0bCQEA3j1RdtwqPTN9ChMz8rjdQBYbIs6AiV4kErhZXZE4zTKmG5ZcA==
+X-Gm-Message-State: AOJu0YyXZEzL9C67faErtSQqnbMAeQzk8J7UqyFdiDORDVPjO7z49KE1
+	4BgUV26zpvSEuf04A9c9JbCCqH3zw4JUfk2Mirptl7I3UKKS/9jWR13quIfTVzzZasTm6vGgCXr
+	IoBBhNeB3DR+UVR7OSdXsHbe1B3QoIlL/6gl1ODdr64qWsWb/8wYbVnofYiA0XN4=
+X-Received: by 2002:ad4:5bca:0:b0:68c:bbb8:7b5b with SMTP id t10-20020ad45bca000000b0068cbbb87b5bmr1434244qvt.32.1707993809830;
+        Thu, 15 Feb 2024 02:43:29 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF5H/zRi11bkj5uzU7XPORXiVCqTWZ4w0qR956GKlSvrZASPF3G5Ijgb6Eigj5w0Tt9EZhPag==
+X-Received: by 2002:ad4:5bca:0:b0:68c:bbb8:7b5b with SMTP id t10-20020ad45bca000000b0068cbbb87b5bmr1434228qvt.32.1707993809518;
+        Thu, 15 Feb 2024 02:43:29 -0800 (PST)
 Received: from ?IPV6:2003:d8:2f3c:3f00:7177:eb0c:d3d2:4b0e? (p200300d82f3c3f007177eb0cd3d24b0e.dip0.t-ipconnect.de. [2003:d8:2f3c:3f00:7177:eb0c:d3d2:4b0e])
-        by smtp.gmail.com with ESMTPSA id lu7-20020a0562145a0700b0068efbe2235asm535657qvb.54.2024.02.15.02.43.01
+        by smtp.gmail.com with ESMTPSA id lu7-20020a0562145a0700b0068efbe2235asm535657qvb.54.2024.02.15.02.43.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Feb 2024 02:43:05 -0800 (PST)
-Message-ID: <6ff877c4-dc97-4572-b45c-2384c1d40fba@redhat.com>
-Date: Thu, 15 Feb 2024 11:43:01 +0100
+        Thu, 15 Feb 2024 02:43:29 -0800 (PST)
+Message-ID: <b956a94f-8731-4b14-b8c2-ed6b33a67182@redhat.com>
+Date: Thu, 15 Feb 2024 11:43:25 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 05/18] x86/mm: Convert pte_next_pfn() to
- pte_advance_pfn()
+Subject: Re: [PATCH v6 06/18] mm: Tidy up pte_next_pfn() definition
 To: Ryan Roberts <ryan.roberts@arm.com>,
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>,
@@ -96,7 +95,7 @@ To: Ryan Roberts <ryan.roberts@arm.com>,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
  Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>
 References: <20240215103205.2607016-1-ryan.roberts@arm.com>
- <20240215103205.2607016-6-ryan.roberts@arm.com>
+ <20240215103205.2607016-7-ryan.roberts@arm.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -143,7 +142,7 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20240215103205.2607016-6-ryan.roberts@arm.com>
+In-Reply-To: <20240215103205.2607016-7-ryan.roberts@arm.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -165,38 +164,37 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 15.02.24 11:31, Ryan Roberts wrote:
-> Core-mm needs to be able to advance the pfn by an arbitrary amount, so
-> override the new pte_advance_pfn() API to do so.
+> Now that the all architecture overrides of pte_next_pfn() have been
+> replaced with pte_advance_pfn(), we can simplify the definition of the
+> generic pte_next_pfn() macro so that it is unconditionally defined.
 > 
 > Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 > ---
->   arch/x86/include/asm/pgtable.h | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
+>   include/linux/pgtable.h | 2 --
+>   1 file changed, 2 deletions(-)
 > 
-> diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-> index b50b2ef63672..69ed0ea0641b 100644
-> --- a/arch/x86/include/asm/pgtable.h
-> +++ b/arch/x86/include/asm/pgtable.h
-> @@ -955,13 +955,13 @@ static inline int pte_same(pte_t a, pte_t b)
->   	return a.pte == b.pte;
->   }
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index b7ac8358f2aa..bc005d84f764 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -212,7 +212,6 @@ static inline int pmd_dirty(pmd_t pmd)
+>   #define arch_flush_lazy_mmu_mode()	do {} while (0)
+>   #endif
 >   
-> -static inline pte_t pte_next_pfn(pte_t pte)
-> +static inline pte_t pte_advance_pfn(pte_t pte, unsigned long nr)
+> -#ifndef pte_next_pfn
+>   #ifndef pte_advance_pfn
+>   static inline pte_t pte_advance_pfn(pte_t pte, unsigned long nr)
 >   {
->   	if (__pte_needs_invert(pte_val(pte)))
-> -		return __pte(pte_val(pte) - (1UL << PFN_PTE_SHIFT));
-> -	return __pte(pte_val(pte) + (1UL << PFN_PTE_SHIFT));
-> +		return __pte(pte_val(pte) - (nr << PFN_PTE_SHIFT));
-> +	return __pte(pte_val(pte) + (nr << PFN_PTE_SHIFT));
->   }
-> -#define pte_next_pfn	pte_next_pfn
-> +#define pte_advance_pfn	pte_advance_pfn
+> @@ -221,7 +220,6 @@ static inline pte_t pte_advance_pfn(pte_t pte, unsigned long nr)
+>   #endif
 >   
->   static inline int pte_present(pte_t a)
->   {
+>   #define pte_next_pfn(pte) pte_advance_pfn(pte, 1)
+> -#endif
+>   
+>   #ifndef set_ptes
+>   /**
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers,
