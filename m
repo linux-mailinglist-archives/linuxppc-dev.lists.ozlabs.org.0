@@ -1,24 +1,24 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17DB0855F48
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 11:33:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA61D855F4F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 11:34:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TbBH723fWz3vZ8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 21:33:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TbBJ153gvz3dng
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 21:34:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TbBGc5VjTz3c96
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Feb 2024 21:32:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TbBGf3Fxlz3bwd
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Feb 2024 21:32:58 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 40DFDDA7;
-	Thu, 15 Feb 2024 02:33:04 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A52231480;
+	Thu, 15 Feb 2024 02:33:07 -0800 (PST)
 Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.26])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3722C3F7B4;
-	Thu, 15 Feb 2024 02:32:20 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9BFF83F7B4;
+	Thu, 15 Feb 2024 02:32:23 -0800 (PST)
 From: Ryan Roberts <ryan.roberts@arm.com>
 To: Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>,
@@ -41,9 +41,9 @@ To: Catalin Marinas <catalin.marinas@arm.com>,
 	Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v6 01/18] mm: Clarify the spec for set_ptes()
-Date: Thu, 15 Feb 2024 10:31:48 +0000
-Message-Id: <20240215103205.2607016-2-ryan.roberts@arm.com>
+Subject: [PATCH v6 02/18] mm: thp: Batch-collapse PMD with set_ptes()
+Date: Thu, 15 Feb 2024 10:31:49 +0000
+Message-Id: <20240215103205.2607016-3-ryan.roberts@arm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240215103205.2607016-1-ryan.roberts@arm.com>
 References: <20240215103205.2607016-1-ryan.roberts@arm.com>
@@ -64,42 +64,101 @@ Cc: Ryan Roberts <ryan.roberts@arm.com>, x86@kernel.org, linux-kernel@vger.kerne
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-set_ptes() spec implies that it can only be used to set a present pte
-because it interprets the PFN field to increment it. However,
-set_pte_at() has been implemented on top of set_ptes() since set_ptes()
-was introduced, and set_pte_at() allows setting a pte to a not-present
-state. So clarify the spec to state that when nr==1, new state of pte
-may be present or not present. When nr>1, new state of all ptes must be
-present.
+Refactor __split_huge_pmd_locked() so that a present PMD can be
+collapsed to PTEs in a single batch using set_ptes().
 
-While we are at it, tighten the spec to set requirements around the
-initial state of ptes; when nr==1 it may be either present or
-not-present. But when nr>1 all ptes must initially be not-present. All
-set_ptes() callsites already conform to this requirement. Stating it
-explicitly is useful because it allows for a simplification to the
-upcoming arm64 contpte implementation.
+This should improve performance a little bit, but the real motivation is
+to remove the need for the arm64 backend to have to fold the contpte
+entries. Instead, since the ptes are set as a batch, the contpte blocks
+can be initially set up pre-folded (once the arm64 contpte support is
+added in the next few patches). This leads to noticeable performance
+improvement during split.
 
 Acked-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 ---
- include/linux/pgtable.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ mm/huge_memory.c | 58 +++++++++++++++++++++++++++---------------------
+ 1 file changed, 33 insertions(+), 25 deletions(-)
 
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 49ab1f73b5c2..231370e1b80f 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -229,6 +229,10 @@ static inline pte_t pte_next_pfn(pte_t pte)
-  * @pte: Page table entry for the first page.
-  * @nr: Number of pages to map.
-  *
-+ * When nr==1, initial state of pte may be present or not present, and new state
-+ * may be present or not present. When nr>1, initial state of all ptes must be
-+ * not present, and new state must be present.
-+ *
-  * May be overridden by the architecture, or the architecture can define
-  * set_pte() and PFN_PTE_SHIFT.
-  *
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 016e20bd813e..14888b15121e 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2579,15 +2579,16 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ 
+ 	pte = pte_offset_map(&_pmd, haddr);
+ 	VM_BUG_ON(!pte);
+-	for (i = 0, addr = haddr; i < HPAGE_PMD_NR; i++, addr += PAGE_SIZE) {
+-		pte_t entry;
+-		/*
+-		 * Note that NUMA hinting access restrictions are not
+-		 * transferred to avoid any possibility of altering
+-		 * permissions across VMAs.
+-		 */
+-		if (freeze || pmd_migration) {
++
++	/*
++	 * Note that NUMA hinting access restrictions are not transferred to
++	 * avoid any possibility of altering permissions across VMAs.
++	 */
++	if (freeze || pmd_migration) {
++		for (i = 0, addr = haddr; i < HPAGE_PMD_NR; i++, addr += PAGE_SIZE) {
++			pte_t entry;
+ 			swp_entry_t swp_entry;
++
+ 			if (write)
+ 				swp_entry = make_writable_migration_entry(
+ 							page_to_pfn(page + i));
+@@ -2606,25 +2607,32 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ 				entry = pte_swp_mksoft_dirty(entry);
+ 			if (uffd_wp)
+ 				entry = pte_swp_mkuffd_wp(entry);
+-		} else {
+-			entry = mk_pte(page + i, READ_ONCE(vma->vm_page_prot));
+-			if (write)
+-				entry = pte_mkwrite(entry, vma);
+-			if (!young)
+-				entry = pte_mkold(entry);
+-			/* NOTE: this may set soft-dirty too on some archs */
+-			if (dirty)
+-				entry = pte_mkdirty(entry);
+-			if (soft_dirty)
+-				entry = pte_mksoft_dirty(entry);
+-			if (uffd_wp)
+-				entry = pte_mkuffd_wp(entry);
++
++			VM_WARN_ON(!pte_none(ptep_get(pte + i)));
++			set_pte_at(mm, addr, pte + i, entry);
+ 		}
+-		VM_BUG_ON(!pte_none(ptep_get(pte)));
+-		set_pte_at(mm, addr, pte, entry);
+-		pte++;
++	} else {
++		pte_t entry;
++
++		entry = mk_pte(page, READ_ONCE(vma->vm_page_prot));
++		if (write)
++			entry = pte_mkwrite(entry, vma);
++		if (!young)
++			entry = pte_mkold(entry);
++		/* NOTE: this may set soft-dirty too on some archs */
++		if (dirty)
++			entry = pte_mkdirty(entry);
++		if (soft_dirty)
++			entry = pte_mksoft_dirty(entry);
++		if (uffd_wp)
++			entry = pte_mkuffd_wp(entry);
++
++		for (i = 0; i < HPAGE_PMD_NR; i++)
++			VM_WARN_ON(!pte_none(ptep_get(pte + i)));
++
++		set_ptes(mm, haddr, pte, entry, HPAGE_PMD_NR);
+ 	}
+-	pte_unmap(pte - 1);
++	pte_unmap(pte);
+ 
+ 	if (!pmd_migration)
+ 		folio_remove_rmap_pmd(folio, page, vma);
 -- 
 2.25.1
 
