@@ -1,54 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9958E856D73
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 20:15:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15323856D72
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 20:14:34 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=KcGlo1nP;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Wl0Wu+6x;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TbPsF3zQrz3vZT
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Feb 2024 06:15:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TbPrR72BFz3vYM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Feb 2024 06:14:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=KcGlo1nP;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Wl0Wu+6x;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.181; helo=out-181.mta0.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TbPqq1XTDz3dlY
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Feb 2024 06:13:56 +1100 (AEDT)
-Date: Thu, 15 Feb 2024 20:13:30 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1708024415;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+sM3XuJbo/imwLbmrYIvBwXd4yxReBWwfCSoEs0rupM=;
-	b=KcGlo1nPfVAJTNCWIozLp9o1WacJwy2+q4qL5TI39E572kA1yum8gibQzOeDIt4S3m0L9K
-	AO16faP/P32D3nwchObpTbH95lbSluFZjkM2ognP472qS0mPc7gwiKBVMSnHUmTSpYm+GK
-	D4NiqzXqoZAJv1AF4Z0mYzOs94ox/lo=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Andrew Jones <andrew.jones@linux.dev>
-To: Alexandru Elisei <alexandru.elisei@arm.com>
-Subject: Re: [kvm-unit-tests PATCH v1 01/18] Makefile: Define __ASSEMBLY__
- for assembly files
-Message-ID: <20240215-8527d5fd0c830d5d8d07f668@orel>
-References: <20231130090722.2897974-1-shahuang@redhat.com>
- <20231130090722.2897974-2-shahuang@redhat.com>
- <20240115-0c41f7d4aa09b7b82613faa8@orel>
- <Zc42ZJYMFpXpM4mD@raptor>
- <20240215-f2a2e3798b1f64923417df00@orel>
- <Zc5G0Uu1QxJ1Qt36@raptor>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TbPqg2J53z3cT2
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Feb 2024 06:13:50 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41FIU18f025950;
+	Thu, 15 Feb 2024 19:13:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=qQdOnaUP5H9DK70UwFji6brSoUJN3Qo/OYN31JKGHwY=;
+ b=Wl0Wu+6x35mDOkc83bi+Amtgh008rwnJJSnUYMUV5895f2ysPdv3KpIe07v158nlbV/g
+ ghb5h3dypB+QxeTz6oQivPaKLPfltf/5Elok1D6zkA1Hfp4bFN96im0NTNvoz+b34xJP
+ 4ir85AInn1pbwp9E37WyYiWAYNmuelPff/RUUn4IgkXEwLdeiuwiz6H6C3xanSei5Xk2
+ chkLhJaGn4ykO/KJpaUBQnK0GICdoN5rTGYE9VZvRHNuthH18wBOKQ6KkkcoFGIPXg1t
+ I6aRy9YcJA4EK/Tiwpm5lL+Pw4AWa+Kr04SdOj+/3f/pJB0Atl/MjLKBcV7r9Brh7oHD hw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w9nj9n82v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 15 Feb 2024 19:13:39 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41FIuIDO011290;
+	Thu, 15 Feb 2024 19:13:38 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w9nj9n82d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 15 Feb 2024 19:13:38 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41FIi5TU032600;
+	Thu, 15 Feb 2024 19:13:37 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3w6kfty0ej-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 15 Feb 2024 19:13:37 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41FJDZxQ4850360
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 15 Feb 2024 19:13:37 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 55E7558061;
+	Thu, 15 Feb 2024 19:13:35 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3F4E458058;
+	Thu, 15 Feb 2024 19:13:35 +0000 (GMT)
+Received: from localhost (unknown [9.41.178.242])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 15 Feb 2024 19:13:35 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Michal Suchanek <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] selftests: powerpc: Add header symlinks for building
+ papr character device tests
+In-Reply-To: <20240215165527.23684-1-msuchanek@suse.de>
+References: <20240215165527.23684-1-msuchanek@suse.de>
+Date: Thu, 15 Feb 2024 13:13:34 -0600
+Message-ID: <87cysxilr5.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zc5G0Uu1QxJ1Qt36@raptor>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: WNSDgHdCHwYeiyh7cahTZ6b9lx-jyrNw
+X-Proofpoint-GUID: aLWAHrReJkp_p3mBfLgYuXMvh5u07EJ1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-15_18,2024-02-14_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=432
+ malwarescore=0 priorityscore=1501 mlxscore=0 lowpriorityscore=0
+ spamscore=0 phishscore=0 adultscore=0 clxscore=1011 impostorscore=0
+ bulkscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402150154
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,81 +95,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, Nico Boehr <nrb@linux.ibm.com>, kvm@vger.kernel.org, Shaoqin Huang <shahuang@redhat.com>, Nikos Nikoleris <nikos.nikoleris@arm.com>, Eric Auger <eric.auger@redhat.com>, Nadav Amit <namit@vmware.com>, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, David Woodhouse <dwmw@amazon.co.uk>
+Cc: linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, linux-kselftest@vger.kernel.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Michal Suchanek <msuchanek@suse.de>, Shuah Khan <shuah@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Feb 15, 2024 at 05:16:01PM +0000, Alexandru Elisei wrote:
-> Hi Drew,
-> 
-> On Thu, Feb 15, 2024 at 05:32:22PM +0100, Andrew Jones wrote:
-> > On Thu, Feb 15, 2024 at 04:05:56PM +0000, Alexandru Elisei wrote:
-> > > Hi Drew,
-> > > 
-> > > On Mon, Jan 15, 2024 at 01:44:17PM +0100, Andrew Jones wrote:
-> > > > On Thu, Nov 30, 2023 at 04:07:03AM -0500, Shaoqin Huang wrote:
-> > > > > From: Alexandru Elisei <alexandru.elisei@arm.com>
-> > > > > 
-> > > > > There are 25 header files today (found with grep -r "#ifndef __ASSEMBLY__)
-> > > > > with functionality relies on the __ASSEMBLY__ prepocessor constant being
-> > > > > correctly defined to work correctly. So far, kvm-unit-tests has relied on
-> > > > > the assembly files to define the constant before including any header
-> > > > > files which depend on it.
-> > > > > 
-> > > > > Let's make sure that nobody gets this wrong and define it as a compiler
-> > > > > constant when compiling assembly files. __ASSEMBLY__ is now defined for all
-> > > > > .S files, even those that didn't set it explicitely before.
-> > > > > 
-> > > > > Reviewed-by: Nikos Nikoleris <nikos.nikoleris@arm.com>
-> > > > > Reviewed-by: Andrew Jones <andrew.jones@linux.dev>
-> > > > > Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
-> > > > > Signed-off-by: Shaoqin Huang <shahuang@redhat.com>
-> > > > > ---
-> > > > >  Makefile           | 5 ++++-
-> > > > >  arm/cstart.S       | 1 -
-> > > > >  arm/cstart64.S     | 1 -
-> > > > >  powerpc/cstart64.S | 1 -
-> > > > >  4 files changed, 4 insertions(+), 4 deletions(-)
-> > > > > 
-> > > > > diff --git a/Makefile b/Makefile
-> > > > > index 602910dd..27ed14e6 100644
-> > > > > --- a/Makefile
-> > > > > +++ b/Makefile
-> > > > > @@ -92,6 +92,9 @@ CFLAGS += -Woverride-init -Wmissing-prototypes -Wstrict-prototypes
-> > > > >  
-> > > > >  autodepend-flags = -MMD -MP -MF $(dir $*).$(notdir $*).d
-> > > > >  
-> > > > > +AFLAGS  = $(CFLAGS)
-> > > > > +AFLAGS += -D__ASSEMBLY__
-> > > > > +
-> > > > >  LDFLAGS += -nostdlib $(no_pie) -z noexecstack
-> > > > >  
-> > > > >  $(libcflat): $(cflatobjs)
-> > > > > @@ -113,7 +116,7 @@ directories:
-> > > > >  	@mkdir -p $(OBJDIRS)
-> > > > >  
-> > > > >  %.o: %.S
-> > > > > -	$(CC) $(CFLAGS) -c -nostdlib -o $@ $<
-> > > > > +	$(CC) $(AFLAGS) -c -nostdlib -o $@ $<
-> > > > 
-> > > > I think we can drop the two hunks above from this patch and just rely on
-> > > > the compiler to add __ASSEMBLY__ for us when compiling assembly files.
-> > > 
-> > > I think the precompiler adds __ASSEMBLER__, not __ASSEMBLY__ [1]. Am I
-> > > missing something?
-> > > 
-> > > [1] https://gcc.gnu.org/onlinedocs/cpp/macros/predefined-macros.html#c.__ASSEMBLER__
-> > 
-> > You're right. I'm not opposed to changing all the __ASSEMBLY__ references
-> > to __ASSEMBLER__. I'll try to do that at some point unless you beat me to
-> > it.
-> 
-> Actually, I quite prefer the Linux style of using __ASSEMBLY__ instead of
-> __ASSEMBLER__, because it makes reusing Linux files easier. That, and the
-> habit formed by staring at Linux assembly files.
+Michal Suchanek <msuchanek@suse.de> writes:
+>
+> Without the headers the tests don't build.
+>
+> Fixes: 9118c5d32bdd ("powerpc/selftests: Add test for papr-vpd")
+> Fixes: 76b2ec3faeaa ("powerpc/selftests: Add test for papr-sysparm")
+> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+> ---
+>  tools/testing/selftests/powerpc/include/asm/papr-miscdev.h | 1 +
+>  tools/testing/selftests/powerpc/include/asm/papr-sysparm.h | 1 +
+>  tools/testing/selftests/powerpc/include/asm/papr-vpd.h     | 1 +
+>  3 files changed, 3 insertions(+)
+>  create mode 120000 tools/testing/selftests/powerpc/include/asm/papr-miscdev.h
+>  create mode 120000 tools/testing/selftests/powerpc/include/asm/papr-sysparm.h
+>  create mode 120000
+> tools/testing/selftests/powerpc/include/asm/papr-vpd.h
 
-Those are good arguments and also saves the churn. OK, let's keep this
-patch and __ASSEMBLY__
+I really hope making symlinks into the kernel source isn't necessary. I
+haven't experienced build failures with these tests. How are you
+building them?
 
-Thanks,
-drew
+I usually do something like (on a x86 build host):
+
+$ make ARCH=powerpc CROSS_COMPILE=powerpc64le-linux- ppc64le_defconfig
+$ make ARCH=powerpc CROSS_COMPILE=powerpc64le-linux- headers
+$ make ARCH=powerpc CROSS_COMPILE=powerpc64le-linux- -C tools/testing/selftests/powerpc/
+
+without issue.
