@@ -1,59 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00F0B8565B5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 15:16:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2287F85661F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 15:40:22 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hDwLjHDn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jsRvp+7k;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TbHD66SkBz3vYm
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Feb 2024 01:16:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TbHm405Lwz3dWQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Feb 2024 01:40:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hDwLjHDn;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jsRvp+7k;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bergner@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TbHCM0Qbnz3bw9
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Feb 2024 01:15:26 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708006527; x=1739542527;
-  h=date:from:to:cc:subject:message-id;
-  bh=suPh3xyTBjWp+croGAD8zpxVguBMUmb6XG1Hj4gn1OU=;
-  b=hDwLjHDnCZca4iqlduWgADTrEj0B5jNljWOkuTBj0vVD5ZNV5LSxMSt0
-   YfzCTrI0R5SUVcWGd1uGTyeAULWxGBqhcGmL+T4DPGicMKp6ncVnq72k3
-   C67GPNZZpTiabtVIqTpSl4ABXxr6mguTrNr+oWK9QznhCe2StE1LcRtC7
-   EBpSLrBNTiaAbQmBlujIqfOBcF4GknpTk7Yi4pm4mYYwMh95NKT6quY/A
-   ZLjOTPYgwhSNd1s3nIBPJ4KhdsdWX6oYg/0Pu2HTLyff7HMTqKlyShyPG
-   gGRErkNBFX02pGSh+Z/g8Wk0mUW8luD2d+bYKmdZgaTJENrAPx+WP5KHQ
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="13484109"
-X-IronPort-AV: E=Sophos;i="6.06,161,1705392000"; 
-   d="scan'208";a="13484109"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2024 06:15:23 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,161,1705392000"; 
-   d="scan'208";a="3621015"
-Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
-  by orviesa010.jf.intel.com with ESMTP; 15 Feb 2024 06:15:22 -0800
-Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1racWG-0000Ym-0Z;
-	Thu, 15 Feb 2024 14:15:20 +0000
-Date: Thu, 15 Feb 2024 22:14:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- 0846dd77c8349ec92ca0079c9c71d130f34cb192
-Message-ID: <202402152202.U1ymSq6T-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TbHlK5Nxkz30f8
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Feb 2024 01:39:41 +1100 (AEDT)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41FEa0Td022512;
+	Thu, 15 Feb 2024 14:39:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=zZurr08+4rCmi2p87VmKajNXUbdSQeh/Ml+DyrXsBJY=;
+ b=jsRvp+7kedzUhComLQF4tv0eXIaGM2RShLJ2AHhUnsUehPlEmIrFeKtHeBQz5x8W2Woo
+ dszYEPUFXpbSvpkkEnusY9IZnLt8SdUFDybty+7BFnq7nFNLDdij9O5wT7PW4iQxl5wJ
+ jp9yj+4qezufi7RtUIuh+N9PUHQvAhD7SEnm1MrDp0apd7Q2iIcNuRqfm7Oe1xGRawf8
+ 5WOS4yk2pCniZ6WtFpuM1ZfEUvQVLWlTmeWJZNF/J/XymUhEFE6pFgwnQSM3aVuUkoDW
+ 8x67oTWrjzw2PjJXN/HMdxiPLNqd6u15Aoo4kmmLmLcnPx4If9PYhvsiLs2NhZVS/5JM 8A== 
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w9m1991pk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 15 Feb 2024 14:39:32 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41FDqAda004297;
+	Thu, 15 Feb 2024 14:39:30 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3w6kv0ng2w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 15 Feb 2024 14:39:30 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41FEdR8s24511196
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 15 Feb 2024 14:39:29 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 829C658062;
+	Thu, 15 Feb 2024 14:39:27 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CD1825805A;
+	Thu, 15 Feb 2024 14:39:26 +0000 (GMT)
+Received: from [9.61.99.202] (unknown [9.61.99.202])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 15 Feb 2024 14:39:26 +0000 (GMT)
+Message-ID: <a50cf258-b861-40e5-8ca9-dec7721400ec@linux.ibm.com>
+Date: Thu, 15 Feb 2024 08:39:26 -0600
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] uapi/auxvec: Define AT_HWCAP3 and AT_HWCAP4 aux
+ vector, entries
+Content-Language: en-US
+To: Arnd Bergmann <arnd@kernel.org>, linux-api@vger.kernel.org,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <a406b535-dc55-4856-8ae9-5a063644a1af@linux.ibm.com>
+ <aa657f01-7cb1-43f4-947e-173fc8a53f1f@app.fastmail.com>
+From: Peter Bergner <bergner@linux.ibm.com>
+In-Reply-To: <aa657f01-7cb1-43f4-947e-173fc8a53f1f@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: U0zh-cXg3ppxx8BiWtZDI9TVoSkYhrAq
+X-Proofpoint-GUID: U0zh-cXg3ppxx8BiWtZDI9TVoSkYhrAq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-15_13,2024-02-14_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
+ impostorscore=0 spamscore=0 priorityscore=1501 mlxlogscore=319
+ phishscore=0 malwarescore=0 suspectscore=0 bulkscore=0 lowpriorityscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402150117
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,132 +96,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Szabolcs Nagy <szabolcs.nagy@arm.com>, Nick Piggin <npiggin@au1.ibm.com>, Adhemerval Zanella Netto <adhemerval.zanella@linaro.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: 0846dd77c8349ec92ca0079c9c71d130f34cb192  powerpc/iommu: Fix the missing iommu_group_put() during platform domain attach
+On 2/15/24 2:16 AM, Arnd Bergmann wrote:
+> On Wed, Feb 14, 2024, at 23:34, Peter Bergner wrote:
+>> The powerpc toolchain keeps a copy of the HWCAP bit masks in our TCB for fast
+>> access by the __builtin_cpu_supports built-in function.  The TCB space for
+>> the HWCAP entries - which are created in pairs - is an ABI extension, so
+>> waiting to create the space for HWCAP3 and HWCAP4 until we need them is
+>> problematical.  Define AT_HWCAP3 and AT_HWCAP4 in the generic uapi header
+>> so they can be used in glibc to reserve space in the powerpc TCB for their
+>> future use.
+>>
+>> I scanned through the Linux and GLIBC source codes looking for unused AT_*
+>> values and 29 and 30 did not seem to be used, so they are what I went
+>> with.  This has received Acked-by's from both GLIBC and Linux kernel
+>> developers and no reservations or Nacks from anyone.
+>>
+>> Arnd, we seem to have consensus on the patch below.  Is this something
+>> you could take and apply to your tree? 
+>>
+> 
+> I don't mind taking it, but it may be better to use the
+> powerpc tree if that is where it's actually being used.
 
-elapsed time: 1459m
+So this is not a powerpc only patch, but we may be the first arch
+to use it.  Szabolcs mentioned that aarch64 was pretty quickly filling
+up their AT_HWCAP2 and that they will eventually require using AT_HWCAP3
+as well.  If you still think this should go through the powerpc tree,
+I can check on that.
 
-configs tested: 109
-configs skipped: 3
+Peter
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                          ep93xx_defconfig   clang
-arm                           imxrt_defconfig   clang
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-i386                              allnoconfig   gcc  
-i386         buildonly-randconfig-001-20240215   clang
-i386         buildonly-randconfig-002-20240215   clang
-i386         buildonly-randconfig-003-20240215   clang
-i386         buildonly-randconfig-004-20240215   clang
-i386         buildonly-randconfig-005-20240215   clang
-i386         buildonly-randconfig-006-20240215   clang
-i386                                defconfig   clang
-i386                  randconfig-001-20240215   gcc  
-i386                  randconfig-002-20240215   gcc  
-i386                  randconfig-003-20240215   clang
-i386                  randconfig-004-20240215   gcc  
-i386                  randconfig-005-20240215   gcc  
-i386                  randconfig-006-20240215   gcc  
-i386                  randconfig-011-20240215   clang
-i386                  randconfig-012-20240215   clang
-i386                  randconfig-013-20240215   gcc  
-i386                  randconfig-014-20240215   gcc  
-i386                  randconfig-015-20240215   clang
-i386                  randconfig-016-20240215   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                        maltaup_defconfig   clang
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-riscv                    nommu_k210_defconfig   clang
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               alldefconfig   clang
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64                              defconfig   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                            allnoconfig   gcc  
-xtensa                           allyesconfig   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
