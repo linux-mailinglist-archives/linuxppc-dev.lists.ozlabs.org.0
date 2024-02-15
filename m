@@ -1,93 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC78F856DE1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 20:40:23 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZRbNisLR;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 643DD856F21
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Feb 2024 22:13:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TbQQF6Q2Rz3vX2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Feb 2024 06:40:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TbST70lcBz3cS3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Feb 2024 08:12:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZRbNisLR;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1027 seconds by postgrey-1.37 at boromir; Fri, 16 Feb 2024 08:12:35 AEDT
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TbQPX4r8Nz30Dg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Feb 2024 06:39:44 +1100 (AEDT)
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41FJUpJQ015076;
-	Thu, 15 Feb 2024 19:39:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=DXx62xEDkMDtVYwwGpGO1K+w7sxZBu7HWpCPYxFwSME=;
- b=ZRbNisLRs5PgAS9akFbugwMk+p9Cv+kM0W32tY4ERnlpjGu/RTRtsifIa9LENIgyYGkl
- dd4ws0WbdFgFbV2JW99s4W87iphobojyv88g6PFJBkpVC6NFbg3njS7akTyeG8TcelIP
- RgJWiD3YX+vfugBWVMWSjeiF2VePyyqSw7tXpE3AC1ISgXWB4mV0d0EL06aqBR1J8Xz9
- qWmUbwK2u9atsJ+hVWB4w2C+h6J21u7l2laIUOiO+5xBImiwRhw51wBjRRsRfXO8R34Y
- kT+wY9RRjNVAlqbcQiTWHEZU/ymFluQVhS61nzmByC28awWjFmGm2gYGpbXYDVyUidKI mQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w9qfaj90q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 15 Feb 2024 19:39:32 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41FJXRkv026056;
-	Thu, 15 Feb 2024 19:39:31 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w9qfaj90h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 15 Feb 2024 19:39:31 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41FJAQnG032596;
-	Thu, 15 Feb 2024 19:39:30 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3w6kfty4m9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 15 Feb 2024 19:39:30 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41FJdRmP15073858
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 15 Feb 2024 19:39:30 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E1CAE5805A;
-	Thu, 15 Feb 2024 19:39:27 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C0C615805D;
-	Thu, 15 Feb 2024 19:39:27 +0000 (GMT)
-Received: from localhost (unknown [9.41.178.242])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 15 Feb 2024 19:39:27 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>
-Subject: Re: [PATCH] selftests: powerpc: Add header symlinks for building
- papr character device tests
-In-Reply-To: <20240215192334.GT9696@kitsune.suse.cz>
-References: <20240215165527.23684-1-msuchanek@suse.de>
- <87cysxilr5.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
- <20240215192334.GT9696@kitsune.suse.cz>
-Date: Thu, 15 Feb 2024 13:39:27 -0600
-Message-ID: <87a5o1ikk0.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TbSSg01hZz2ygZ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Feb 2024 08:12:34 +1100 (AEDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1railD-0007mC-Jx; Thu, 15 Feb 2024 21:55:11 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1railC-000wwp-9Z; Thu, 15 Feb 2024 21:55:10 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1railC-005dsj-0g;
+	Thu, 15 Feb 2024 21:55:10 +0100
+Date: Thu, 15 Feb 2024 21:55:09 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH 0/7] macintosh: Convert to platform remove callback
+ returning void
+Message-ID: <mdq5k6lq54c5t5yffjotkovrvzfh4uvt4qt4n6rwddmo26neqr@au5s5u3mkoet>
+References: <cover.1704900449.git.u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: dHZjoht_l3SplpnpVfgfYytwe__CGZEi
-X-Proofpoint-ORIG-GUID: 7KiZXsiChIvbg2Gq05Gqu7fVP_3aUuIx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-15_18,2024-02-14_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
- lowpriorityscore=0 adultscore=0 priorityscore=1501 mlxscore=0
- suspectscore=0 impostorscore=0 mlxlogscore=541 bulkscore=0 phishscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402150158
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="zse4sep35aklq4pu"
+Content-Disposition: inline
+In-Reply-To: <cover.1704900449.git.u.kleine-koenig@pengutronix.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,67 +58,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, linux-kselftest@vger.kernel.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Rob Herring <robh@kernel.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Jean Delvare <jdelvare@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michal Such=C3=A1nek <msuchanek@suse.de> writes:
-> On Thu, Feb 15, 2024 at 01:13:34PM -0600, Nathan Lynch wrote:
->> Michal Suchanek <msuchanek@suse.de> writes:
->> >
->> > Without the headers the tests don't build.
->> >
->> > Fixes: 9118c5d32bdd ("powerpc/selftests: Add test for papr-vpd")
->> > Fixes: 76b2ec3faeaa ("powerpc/selftests: Add test for papr-sysparm")
->> > Signed-off-by: Michal Suchanek <msuchanek@suse.de>
->> > ---
->> >  tools/testing/selftests/powerpc/include/asm/papr-miscdev.h | 1 +
->> >  tools/testing/selftests/powerpc/include/asm/papr-sysparm.h | 1 +
->> >  tools/testing/selftests/powerpc/include/asm/papr-vpd.h     | 1 +
->> >  3 files changed, 3 insertions(+)
->> >  create mode 120000 tools/testing/selftests/powerpc/include/asm/papr-m=
-iscdev.h
->> >  create mode 120000 tools/testing/selftests/powerpc/include/asm/papr-s=
-ysparm.h
->> >  create mode 120000
->> > tools/testing/selftests/powerpc/include/asm/papr-vpd.h
->>=20
->> I really hope making symlinks into the kernel source isn't necessary. I
->> haven't experienced build failures with these tests. How are you
->> building them?
->>=20
->> I usually do something like (on a x86 build host):
->>=20
->> $ make ARCH=3Dpowerpc CROSS_COMPILE=3Dpowerpc64le-linux- ppc64le_defconf=
-ig
->> $ make ARCH=3Dpowerpc CROSS_COMPILE=3Dpowerpc64le-linux- headers
->> $ make ARCH=3Dpowerpc CROSS_COMPILE=3Dpowerpc64le-linux- -C tools/testin=
-g/selftests/powerpc/
->>=20
->> without issue.
->
-> I am not configuring the kernel, only building the tests, and certainly
-> not installing headers on the system.
 
-OK, but again: how do you provoke the build errors, exactly? Don't make
-us guess please.
+--zse4sep35aklq4pu
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Apparently this is what people aim to do, and report bugs when it does
-> not work: build the kselftests as self-contained testsuite that relies
-> only on standard libc, and whatever it brought in the sources.
->
-> That said, the target to install headers is headers_install, not
-> headers. The headers target is not documented, it's probably meant to be
-> internal to the build system. Yet it is not enforced that it is built
-> before building the selftests.
+Hello,
 
-<shrug> the headers target is used in Documentation/dev-tools/kselftest.rst:
+On Wed, Jan 10, 2024 at 04:42:47PM +0100, Uwe Kleine-K=F6nig wrote:
+> Hello,
+>=20
+> this series converts all drivers below drivers/macintosh to use
+> .remove_new(). See commit 5c5a7680e67b ("platform: Provide a remove
+> callback that returns no value") for an extended explanation and the
+> eventual goal. The TL;DR; is to make it harder for driver authors to
+> leak resources without noticing.
+>=20
+> This is merge window material. All patches are pairwise independent of
+> each other so they can be applied individually. There isn't a maintainer
+> for drivers/macintosh, I'm still sending this as a series in the hope
+> Michael feels repsonsible and applies it completely.
 
-"""
-To build the tests::
+this didn't happen yet. Michael, is this still on your radar? Or is
+there someone more suiteable to take these patches?
 
-  $ make headers
-  $ make -C tools/testing/selftests
-"""
+Best regards
+Uwe
 
-This is what I've been following.
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--zse4sep35aklq4pu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmXOei0ACgkQj4D7WH0S
+/k7Fhwf+NuS2VaUpbMrqUXSluHIMtZYy5acc235Gl6RrOPhOFsQiQHrZ5IHA39XT
+C9ZZBaMBqtLUn5jSFA14l6ykQfWLwrubXNh531f6kzXa10ybh5zfJAI4T/53jBt5
+Swk8OOwOXE/tvhRZuzsTUwwswWPloKEz953KIxHLaNp05L4Qq7WpIW7OOlVsCjM+
+w+t1bHBfHpmhM9Rsaf5JiPXd4PXzpPAH1KeU5m6QhPw47CxrrcLuGxkF+VEs65+5
+YGoDrpsbvgWCqmkvfFGb45yFYQn/4KgZtLcWpGSxHu8MHlwMu3EBJidxZNxl+rr/
+H7BA9zyVjn2EBo2khLNl6R/TdBe+1Q==
+=bXaU
+-----END PGP SIGNATURE-----
+
+--zse4sep35aklq4pu--
