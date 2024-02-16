@@ -1,37 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3FE7857CAC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Feb 2024 13:34:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC80E857CB2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Feb 2024 13:35:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tbrwt6v1nz3vkR
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Feb 2024 23:34:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tbrxc6RWGz3vmw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Feb 2024 23:35:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
 Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TbrwS4Bwjz3vfD
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Feb 2024 23:34:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TbrxD30NCz3dWd
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Feb 2024 23:35:12 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id D755ECE2920;
-	Fri, 16 Feb 2024 12:34:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9663DC433C7;
-	Fri, 16 Feb 2024 12:34:25 +0000 (UTC)
-Date: Fri, 16 Feb 2024 12:34:23 +0000
+	by sin.source.kernel.org (Postfix) with ESMTP id 0D6E5CE2B32;
+	Fri, 16 Feb 2024 12:35:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F79C43394;
+	Fri, 16 Feb 2024 12:35:05 +0000 (UTC)
+Date: Fri, 16 Feb 2024 12:35:03 +0000
 From: Catalin Marinas <catalin.marinas@arm.com>
 To: Ryan Roberts <ryan.roberts@arm.com>
-Subject: Re: [PATCH v6 17/18] arm64/mm: __always_inline to improve fork() perf
-Message-ID: <Zc9WT8Wit4HkIsD2@arm.com>
+Subject: Re: [PATCH v6 18/18] arm64/mm: Automatically fold contpte mappings
+Message-ID: <Zc9Wd0N03pPY5Nq5@arm.com>
 References: <20240215103205.2607016-1-ryan.roberts@arm.com>
- <20240215103205.2607016-18-ryan.roberts@arm.com>
+ <20240215103205.2607016-19-ryan.roberts@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240215103205.2607016-18-ryan.roberts@arm.com>
+In-Reply-To: <20240215103205.2607016-19-ryan.roberts@arm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,14 +47,19 @@ Cc: Mark Rutland <mark.rutland@arm.com>, Kefeng Wang <wangkefeng.wang@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Feb 15, 2024 at 10:32:04AM +0000, Ryan Roberts wrote:
-> As set_ptes() and wrprotect_ptes() become a bit more complex, the
-> compiler may choose not to inline them. But this is critical for fork()
-> performance. So mark the functions, along with contpte_try_unfold()
-> which is called by them, as __always_inline. This is worth ~1% on the
-> fork() microbenchmark with order-0 folios (the common case).
+On Thu, Feb 15, 2024 at 10:32:05AM +0000, Ryan Roberts wrote:
+> There are situations where a change to a single PTE could cause the
+> contpte block in which it resides to become foldable (i.e. could be
+> repainted with the contiguous bit). Such situations arise, for example,
+> when user space temporarily changes protections, via mprotect, for
+> individual pages, such can be the case for certain garbage collectors.
 > 
-> Acked-by: Mark Rutland <mark.rutland@arm.com>
+> We would like to detect when such a PTE change occurs. However this can
+> be expensive due to the amount of checking required. Therefore only
+> perform the checks when an indiviual PTE is modified via mprotect
+> (ptep_modify_prot_commit() -> set_pte_at() -> set_ptes(nr=1)) and only
+> when we are setting the final PTE in a contpte-aligned block.
+> 
 > Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 
 Acked-by: Catalin Marinas <catalin.marinas@arm.com>
