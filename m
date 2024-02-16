@@ -1,127 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A2DE8580DA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Feb 2024 16:26:29 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=HxCqj7vS;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C0DB8581B0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Feb 2024 16:48:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tbwkq0DQVz3vbx
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Feb 2024 02:26:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TbxDX26Wbz3vct
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Feb 2024 02:48:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=HxCqj7vS;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:261c::700; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20700.outbound.protection.outlook.com [IPv6:2a01:111:f403:261c::700])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tbwk30zCrz3dXf
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Feb 2024 02:25:45 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=H6qq+LbWKt9z/EyMvUG/XHAb3mdTXeQXQ5RRPxiEctyBKLtdyEzT1jgQwK+oXmnXXb3QnmFzcdq0h80gWPChNn3TMhBlvGOegAA5Jp/FXQrhqcsD5fFxZZmPr7yySg6bXCoIoy65DvQc73tKyEm5avLvJalYpJC7UAbcTl2J7SMzuufusa5YAVdiS2mxcK3wCfT89XEW5O+zAsREPaVfxaSSJKBs/s8wIopWpCWuq/To1QXVtmi/4/GGXshixpvfE5+EPtBQmnspTXSH0KmqFXKIt/LbDfGNITh5b1xOG7DIFUUFiARiff8Vuu9vaqr1BJSLb6JIYnzwcKm3UWnUPA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Gux1Xu6tmzPAPNlr/UDLjOhuC4ag+3HGClxOmeDCfjM=;
- b=DcNRQndLvx0ETTzuOI1F9bfDPtMrEMToF4GxFR+CPcgKXlFQ6y6993DW7IMsOF6R9kkyOqT26Cx6WRp5Rw/V3Q4Q6QCjaYW45rNbSP0KsOmtY/0+IJaH74DDKuNj+JAS1A/oIFCJX12tONSGJnQAjAmedSN7KNDKfnJ3RvtGeLM452UF2YjRvmPStYj1kv32pTLT0cbkpI21S5X3mrtUCKCurzPmlYs2hzH1dFycT6QS9JF74SFHr9YAuLLkLMQO2tJGjnLeG7RblxNkzfIS+Sxq8h6iIth6UHtvbYAdn66xyjy/ZLBkpmVpdk/g+obo4YQN0wJ6VMzieKoL6cuhMA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Gux1Xu6tmzPAPNlr/UDLjOhuC4ag+3HGClxOmeDCfjM=;
- b=HxCqj7vSNg+NmP3ahJlb5c/QeV4AufpD79PbK3M2/G0zJfpy9SHcoaj6uqof/byumYWyYEFX90S5v7dw4eaKNFtZS7HNrRXsnluMzdcmzDc/wvcbNhJqiSLS4ArcWSnpm0wwpKglt9J7NEHSGBbIqFkatW48ipmgCMuieRsEmKsNsCA3WgWeYf4RclRanBanvmmzPSX+QAq4MXN9B+JPjIIhWI7rj9kIeAykU5f7Y+CzWEzej2Eb29IBSQPjQIhZEm+HzFf4YlMEf77CPxDl+8IxjrQlijkhdpmmPDE9YhAhF6wNDmv8/2unzVEv0XN34pTd7//LaFVOXmtiZcv8jA==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MRZP264MB1879.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:9::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7292.31; Fri, 16 Feb 2024 15:25:22 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::64a9:9a73:652c:1589]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::64a9:9a73:652c:1589%7]) with mapi id 15.20.7292.029; Fri, 16 Feb 2024
- 15:25:22 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v1 4/5] powerpc: Remove cpu-as-y completely
-Thread-Topic: [PATCH v1 4/5] powerpc: Remove cpu-as-y completely
-Thread-Index: AQHZFFcew88y4g+eo0KJSsqBMOfNja7XuKuAgjf3XQA=
-Date: Fri, 16 Feb 2024 15:25:22 +0000
-Message-ID: <94d19157-a343-425f-906f-546b1f4def6f@csgroup.eu>
-References:  <38a8d765ed9149bc6b5484a7142e3bc59ffa3b1a.1671475543.git.christophe.leroy@csgroup.eu>
- <9e43ad8b173c2fdb540e2555a8ba3e375419f3cf.1671475543.git.christophe.leroy@csgroup.eu>
- <873570zxio.fsf@mpe.ellerman.id.au>
-In-Reply-To: <873570zxio.fsf@mpe.ellerman.id.au>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla Thunderbird
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|MRZP264MB1879:EE_
-x-ms-office365-filtering-correlation-id: 8a0ff17d-ac7b-4318-e31f-08dc2f037e0a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  VEUaqb7/l2xteYDbseZ5OMu/xON7DzNn3HTDXrf4daWCnjIN8ebwVmUZDfNMSXA43Mw21Nrnn/h21luiSQ9uGl2tNFIm/3vsTMDAPCRcLvgKZQ1sVcHCknhsqQxlctcxaqLeP3f8aoiJCDgylSTferAgSa/13fhUpPfsS5SxqNej6zLzXWaH9hLdYT7gDAJtFN3wOuFlrKWEbXyPwX0Oo404MHbLeP3BPB6Lb7OG6M4Vw4k4kur0SQ/F1iMIe6gY+kliAi2bPvgOyNZgFtWFR0J+4iiA4APpWKZWWZMP4OTpOBeI3sxfcNbkyWMV2mLddymp34MUhh9hklkc8INzUsm9n8x7h7jy15oNsVjBZEfhkoJ5Eodn1FSTZCzGWavqEjpmA0tAR+zgiqM3mJ3RNvvfoxtvvMZmlOz0cOXSOvPRcow0MTAIKrZXrIrmnpeMOZ2+AyN6tE5F/J16l1WXBoyP9FSM70j4Yf73iC19x7XWgaMIAiqiFVtHXwWz5jDOhWPdLXP6cAB38/lBe+M8r/tDhUoG94UIU1bzKusSvwEjJWIUMUbtShl+1wNoyJEdsn0u4j1o7GM4m9bHhUxAuuTMa/z+JTa7wXSRSwl3v+yrqkPpPVLcV029ePUBAIWM
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(136003)(346002)(376002)(396003)(366004)(39850400004)(230922051799003)(451199024)(1800799012)(64100799003)(186009)(38070700009)(4326008)(2616005)(8936002)(8676002)(66446008)(83380400001)(66574015)(6916009)(66946007)(76116006)(66476007)(66556008)(64756008)(6512007)(316002)(71200400001)(6506007)(478600001)(54906003)(6486002)(122000001)(38100700002)(36756003)(31696002)(86362001)(41300700001)(26005)(5660300002)(2906002)(44832011)(31686004);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?STVrS01RUVVCQTR1a09UODhxcENMUUdGRmo5em9KZkhDdXdjSWpjL3U5NEt5?=
- =?utf-8?B?WEtRYTRKV3ZKYXl3cEZoZTM4VEQrYnJCRWhOWVQ3VlBPcVd3eHd0S2dXbkFQ?=
- =?utf-8?B?Y0cwK0tUUFk1ZjNMcXgxQXZHaWdtVUVDc0VCNjNxaUJPb09zQnpWdjUyKzJT?=
- =?utf-8?B?MEV4Q3oxMU1aelk3TWpIUDB5ekFVT3hpWnFxUzFsa1ZWY0M3Z1hYcVkveGFj?=
- =?utf-8?B?TXAra3pTZWJZU3dyWW1wOWNSTEZpcUNrb1Rqc3R3MGdYN1NaZVh0QjlaZHJt?=
- =?utf-8?B?cnZVWlBBSDZ4L3ZhME9Zb25lS3Jwelhldi91REJIWGtyNHY0RVZlV3VrbDBM?=
- =?utf-8?B?N0srV3NGVUV6Uk4xUUpLK1NyWkk3dTJiRWJpR0xNdTA2SHFiUHlPSVl0dmtr?=
- =?utf-8?B?eGVGRFA3WVZVUjVpUUtsb1R6SHpJT0p0SmlRRG4xNTJUY003aWQ1cDdPQm0z?=
- =?utf-8?B?eFJOTmlYRTBnK2h3djJQcm92K3JWSWI0aXF3UDVqWi9YN051NFNwN0didFc5?=
- =?utf-8?B?OGRKbENrb2RlUTNwTFBNQnMyVTJvWUZuN0FGcnFmcHUxejhPbmpXZHpCWnhm?=
- =?utf-8?B?NlNOcjFYNCtkb0NXL2g3STlMTkNDbDlhVXQwRDJtSWh0bzBDWis4amZBbGgz?=
- =?utf-8?B?ODNUc0hxWEJEWmdzZFR2L3ZONVZObjFTODJPK1RjN0tycmtETjZPdnBkQXhh?=
- =?utf-8?B?K2IxM0tmNi90N2xUSmVaOHhqc0MzK3VtSFprNmRxVUZBZGRQamNPaUFXMnNz?=
- =?utf-8?B?SHkvcTdoeTJpdlZOQkdpVlJqQ1VHekhYWGtQTVBlazh3RVIzQ3lSZjhMeW9B?=
- =?utf-8?B?QnA2N0VrSWtmaWRqdTRzQlplWWJDb0ZNMDhPRlR1T1g0cU5Hb3gzMk5TdHhG?=
- =?utf-8?B?TDg1K2ZudGVTbzBXaHA4cW0xNzBhTFdYamZaYUcwZk14RWE1UTJhRXd6NExX?=
- =?utf-8?B?TW1PZWR4YTNudTZhcytjUDJ1c09GMCt3UHdESTNNUVBtaWV5MnJ3dVArdmds?=
- =?utf-8?B?Sm5vclVyTWs2MzRMNmdyWWVEckU2VXl2WERwMUFtMm8yYmRzQ0gxT3RCWW84?=
- =?utf-8?B?T2RtaDhWWitmMVh5cFRhUWZYcjFtem9yTFkwSG5CYk5NVjgwbkJWTEZuYllt?=
- =?utf-8?B?Y0pob1Q1NitxS2tkbVE4aThmbEI5OG56eHhET0d5dVI0LzVkbFBsWTJFNk5w?=
- =?utf-8?B?eGRxVVVwZUgzd004NlRLcFl6MW1LRDlKekI1a29SVEdDbnNoSHNCV1VZUy9k?=
- =?utf-8?B?NThmdEJvWURkZld6VWNralZmc25vbW9rTjcwbGNqZVp3RWh1WUs3VDZpaVJT?=
- =?utf-8?B?YkVZdXJZWGZIRUo1V0U0amhKU050TXgzYmZmbEkvTWhsUklaYS9yRkMzenhH?=
- =?utf-8?B?UlRKZ2FoOFFBeUdValdCWHNYR1dDbUpMVXhnVFQ0Rmh6a0VDcjVQUzJaUklj?=
- =?utf-8?B?ckR0ZFM2Rm5RcTlCbUJ6emFUL3VwdXJ2OEZYbENqelFVR0k5Tm1GVnRiQ1ly?=
- =?utf-8?B?UVgyWXpwaUpOS0ZqMW4wYVU5aHpEQ2JMMTd3L042QlBoZ3hzSEY5ZjBkckZu?=
- =?utf-8?B?UmpPRWpCMWxnMXRnN2ZwZ2FjbWI4TmgrY3VCcDZwN0Q5K0xRYm1vYWJsSnor?=
- =?utf-8?B?dDF1WkZNSytzUlN6eW1BOW96NTNzVXc1UUVwSlR5V0ZnejV4b0pFSTJhbGV5?=
- =?utf-8?B?ZGVwWkt3NDl3ZktxQnROOVY3eXNhaThkRXhnekhiS0ZCdGp2TFBKMVJFRUg1?=
- =?utf-8?B?cVhvVE1PVWY2YXpsbkRJenlGQXF0SjhDSTAyT29VTmg0Y2xSRm1QaXB1N3hw?=
- =?utf-8?B?dERzWVY3SDNDYTFvNjJncU1sSm5yWlhuWUVzMHo1ZTVwR2xrL09PbHpUOHZJ?=
- =?utf-8?B?dzBoU2Q1c3hXNmtjNE9RRHhFb0tDaG5Wai91SHV0d0hvMGpBZmlreUN3NnF0?=
- =?utf-8?B?R3o2eS9ITUpIeUlVL1RySEZ3d01LaHQxaVVZbG0xQTZBUnhFNGtycUZoaGE0?=
- =?utf-8?B?WlZiV3pqR0ZLV0NGTlJtUnZuYXBMWVV5U1lNTGpxU0drUUpaY0Q0RTh6UUhQ?=
- =?utf-8?B?SFJabCtHRU80SUM2SlpYalB1ekVQd0YrQTNxcVAvelV4ZWVCQk9zR0trckpk?=
- =?utf-8?Q?16HTLLVxIYEUyMrQq1ga5E0Mo?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <FAE9344643E31640964F3D2C268FC68A@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TbxD64l4bz3bqB
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Feb 2024 02:48:19 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D3050DA7;
+	Fri, 16 Feb 2024 07:48:27 -0800 (PST)
+Received: from raptor (unknown [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EC7BE3F694;
+	Fri, 16 Feb 2024 07:47:44 -0800 (PST)
+Date: Fri, 16 Feb 2024 15:47:41 +0000
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: Shaoqin Huang <shahuang@redhat.com>
+Subject: Re: [kvm-unit-tests PATCH v1 00/18] arm/arm64: Rework cache
+ maintenance at boot
+Message-ID: <Zc-DnSvmJbT4Lk73@raptor>
+References: <20231130090722.2897974-1-shahuang@redhat.com>
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8a0ff17d-ac7b-4318-e31f-08dc2f037e0a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Feb 2024 15:25:22.5377
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: +35M3L4Vuxdp1B7TXHTDNjAFlu/i7vX6jE1MQuN2//X7X6eYQuyWiZKp9tF+1CW+8u+qqnXLlVh04gG+IhuW1UqbMu0qRWitVQSr1wIzOmU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB1879
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231130090722.2897974-1-shahuang@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -133,28 +41,167 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "jbglaw@lug-owl.de" <jbglaw@lug-owl.de>
+Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, Nico Boehr <nrb@linux.ibm.com>, kvm@vger.kernel.org, Andrew Jones <andrew.jones@linux.dev>, Nikos Nikoleris <nikos.nikoleris@arm.com>, Eric Auger <eric.auger@redhat.com>, Nadav Amit <namit@vmware.com>, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, David Woodhouse <dwmw@amazon.co.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDIwLzAyLzIwMjMgw6AgMDc6MDAsIE1pY2hhZWwgRWxsZXJtYW4gYSDDqWNyaXTCoDoN
-Cj4gQ2hyaXN0b3BoZSBMZXJveSA8Y2hyaXN0b3BoZS5sZXJveUBjc2dyb3VwLmV1PiB3cml0ZXM6
-DQo+PiBjcHUtYXMteSBpcyB0aGVyZSB0byBmb3JjZSBhc3NlbWJsZXIgYnVpbGRpbmcgb3B0aW9u
-cy4NCj4+IEJ1dCB0aGVyZSBpcyBubyBuZWVkIGZvciB0aGF0LiBHY2MgaXMgcGFzc2VkIHRoZSBu
-ZWNlc3NhcnkNCj4+IG9wdGlvbnMgYW5kIGl0IGF1dG9tYXRpY2FsbHkgcGFzcyB0aGUgYXBwcm9w
-cmlhdGUgb3B0aW9uIHRvDQo+PiBHQVMuDQo+Pg0KPj4gR0NDIGlzIGdpdmVuIC1tYWx0aXZlYyB3
-aGVuIHJlbGV2YW50LCBzbyBubyBuZWVkDQo+PiBmb3IgLVdhLC1tYWx0aXZlYyBpbiBhZGRpdGlv
-bg0KPj4NCj4+IEFuZCAtV2EsLW1hbnkgaXMgd3JvbmcgYXMgaXQgd2lsbCBoaWRlIGlubmFwcm9w
-cmlhdGUNCj4+IGluc3RydWN0aW9ucy4gQmV0dGVyIHRvIGRldGVjdCB0aGVtIGFuZCBoYW5kbGUg
-dGhlbSBvbiBhDQo+PiBjYXNlIGJ5IGNhc2UgYmFzaXMuDQo+PiAtV2EsLW1hbnkgd2FzIGFkZGVk
-IGJ5IGNvbW1pdCA5NjBlMzAwMjk4NjMgKCJwb3dlcnBjL01ha2VmaWxlOg0KPj4gRml4IFBQQ19C
-T09LM1NfNjQgQVNGTEFHUyIpIGluIG9yZGVyIHRvIGZpeCBhbiBpc3N1ZSB3aXRoDQo+PiBjbGFu
-ZyBhbmQgdGhlIHBhc3NlZCAtV2EsLW1wb3dlcjQgb3B0aW9uLiBCdXQgd2UgaGF2ZSBub3cNCj4+
-IHJlbW92ZWQgaXQgZXhwZWN0aW5nIHRoZSBjb21waWxlciB0byBhdXRvbWF0aWNhbGx5IHBhc3Mg
-dGhlDQo+PiBwcm9wZXIgb3B0aW9ucyBhbmQgaW5zdHJ1Y3Rpb25zIGJhc2VkIG9uIC1tY3B1PXBv
-d2VyNA0KPiANCj4gSSB3YW50ZWQgdG8gYXBwbHkgdGhpcyBvbmUsIGJ1dCBpdCBjYXVzZWQgYSBs
-b3Qgb2YgYnJlYWthZ2UgZm9yIGJpZw0KPiBlbmRpYW4gQm9vazNTLTY0IGJ1aWxkcyAtIHdoZXJl
-IHdlIGJ1aWxkIGZvciBwb3dlcjQgYnV0IGhhdmUgbG90cyBvZg0KPiBjb2RlIHRoYXQgdXNlcyA+
-PSBwb3dlcjUgaW5zdHJ1Y3Rpb25zLg0KPiANCj4gSSdsbCB0cnkgYW5kIGdldCB0aG9zZSBhbGwg
-Zml4ZWQgYW5kIHBpY2sgdGhpcyB1cCBmb3IgdGhlIG5leHQgbWVyZ2UNCj4gd2luZG93Lg0KPiAN
-Cg0KcGluZyA/DQo=
+Hi,
+
+On Thu, Nov 30, 2023 at 04:07:02AM -0500, Shaoqin Huang wrote:
+> Hi,
+> 
+> I'm posting Alexandru's patch set[1] rebased on the latest branch with the
+> conflicts being resolved. No big changes compare to its original code.
+> 
+> As this version 1 of this series was posted one years ago, I would first let you
+> recall it, what's the intention of this series and what this series do. You can
+> view it by click the link[2] and view the cover-letter.
+> 
+> Since when writing the series[1], the efi support for arm64[3] hasn't been
+> merged into the kvm-unit-tests, but now the efi support for arm64 has been
+> merged. Directly rebase the series[1] onto the latest branch will break the efi
+> tests. This is mainly because the Patch #15 ("arm/arm64: Enable the MMU early")
+> moves the mmu_enable() out of the setup_mmu(), which causes the efi test will
+> not enable the mmu. So I do a small change in the efi_mem_init() which makes the
+> efi test also enable the MMU early, and make it works.
+> 
+> And another change should be noticed is in the Patch #17 ("arm/arm64: Perform
+> dcache maintenance"). In the efi_mem_init(), it will disable the mmu, and build
+> a new pagetable and re-enable the mmu, if the asm_mmu_disable clean and
+> invalidate the data caches for entire memory, we don't need to care the dcache
+> and after mmu disabled, we use the mmu_setup_early() to re-enable the mmu, which
+> takes care all the cache maintenance. But the situation changes since the Patch
+> #18 ("arm/arm64: Rework the cache maintenance in asm_mmu_disable") only clean
+> and invalidate the data caches for the stack memory area. So we need to clean
+> and invalidate the data caches manually before disable the mmu, I'm not
+> confident about current cache maintenance at the efi setup patch, so I ask for
+> your help to review it if it's right or not.
+> 
+> And I also drop one patch ("s390: Do not use the physical allocator") from[1]
+> since this cause s390 test to fail.
+
+This is unfortunate. What tests do you see failing?
+
+I wrote the s390x patch so I can justify dropping the locking in the
+physical allocator. And I wanted to drop the locking so I wouldn't have to
+do maintenance operation on the spinlock.
+
+Because of how kvm-unit-tests implements spinlocks for arm/arm64, they
+don't protect against concurrent accesses when the MMU is turned off. And
+because arm and arm64 use the physical allocator during the test boot
+sequence, not during a test, using a spin lock is also useless since there
+will be no concurrent accesses (the boot phase is done on a single CPU).
+
+But since replacing the physical allocator causes test failures for s390x,
+looks like the physical will still be needed to tests, and that requires
+having the spinlock.
+
+I guess the best approach would be to teach the physical allocator to do
+cache maintenance on the spinlock. We might as well, since the UART needs
+it too, and I don't think this series addresses that.
+
+Thanks,
+Alex
+
+> 
+> This series may include bug, so I really appreciate your review to improve this
+> series together.
+> 
+> You can get the code from:
+> 
+> $ git clone https://gitlab.com/shahuang/kvm-unit-tests.git \
+> 	-b arm-arm64-rework-cache-maintenance-at-boot-v1
+> 
+> [1] https://gitlab.arm.com/linux-arm/kvm-unit-tests-ae/-/tree/arm-arm64-rework-cache-maintenance-at-boot-v2-wip2
+> [2] https://lore.kernel.org/all/20220809091558.14379-1-alexandru.elisei@arm.com/
+> [3] https://patchwork.kernel.org/project/kvm/cover/20230530160924.82158-1-nikos.nikoleris@arm.com/
+> 
+> Changelog:
+> ----------
+> RFC->v1:
+>   - Gathered Reviewed-by tags.
+>   - Various changes to commit messages and comments to hopefully make the code
+>     easier to understand.
+>   - Patches #8 ("lib/alloc_phys: Expand documentation with usage and limitations")
+>     are new.
+>   - Folded patch "arm: page.h: Add missing libcflat.h include" into #17
+>     ("arm/arm64: Perform dcache maintenance at boot").
+>   - Reordered the series to group patches that touch aproximately the same code
+>     together - the patches that change the physical allocator are now first,
+>     followed come the patches that change how the secondaries are brought online.
+>   - Fixed several nasty bugs where the r4 register was being clobbered in the arm
+>     assembly.
+>   - Unmap the early UART address if the DTB address does not match the early
+>     address.
+>   - Added dcache maintenance when a page table is modified with the MMU disabled.
+>   - Moved the cache maintenance when disabling the MMU to be executed before the
+>     MMU is disabled.
+>   - Rebase it on lasted branch which efi support has been merged.
+>   - Make the efi test also enable MMU early.
+>   - Add cache maintenance on efi setup path especially before mmu_disable.
+> 
+> RFC: https://lore.kernel.org/all/20220809091558.14379-1-alexandru.elisei@arm.com/
+> 
+> Alexandru Elisei (18):
+>   Makefile: Define __ASSEMBLY__ for assembly files
+>   powerpc: Replace the physical allocator with the page allocator
+>   lib/alloc_phys: Initialize align_min
+>   lib/alloc_phys: Consolidate allocate functions into memalign_early()
+>   lib/alloc_phys: Remove locking
+>   lib/alloc_phys: Remove allocation accounting
+>   lib/alloc_phys: Add callback to perform cache maintenance
+>   lib/alloc_phys: Expand documentation with usage and limitations
+>   arm/arm64: Zero secondary CPUs' stack
+>   arm/arm64: Allocate secondaries' stack using the page allocator
+>   arm/arm64: assembler.h: Replace size with end address for
+>     dcache_by_line_op
+>   arm/arm64: Add C functions for doing cache maintenance
+>   arm/arm64: Configure secondaries' stack before enabling the MMU
+>   arm/arm64: Use pgd_alloc() to allocate mmu_idmap
+>   arm/arm64: Enable the MMU early
+>   arm/arm64: Map the UART when creating the translation tables
+>   arm/arm64: Perform dcache maintenance at boot
+>   arm/arm64: Rework the cache maintenance in asm_mmu_disable
+> 
+>  Makefile                   |   5 +-
+>  arm/Makefile.arm           |   4 +-
+>  arm/Makefile.arm64         |   4 +-
+>  arm/Makefile.common        |   6 +-
+>  arm/cstart.S               |  71 +++++++++++++++------
+>  arm/cstart64.S             |  76 +++++++++++++++++------
+>  lib/alloc_phys.c           | 122 ++++++++++++-------------------------
+>  lib/alloc_phys.h           |  28 ++++++---
+>  lib/arm/asm/assembler.h    |  15 ++---
+>  lib/arm/asm/cacheflush.h   |   1 +
+>  lib/arm/asm/mmu-api.h      |   1 +
+>  lib/arm/asm/mmu.h          |   6 --
+>  lib/arm/asm/page.h         |   2 +
+>  lib/arm/asm/pgtable.h      |  39 ++++++++++--
+>  lib/arm/asm/thread_info.h  |   3 +-
+>  lib/arm/cache.S            |  89 +++++++++++++++++++++++++++
+>  lib/arm/io.c               |  31 ++++++++++
+>  lib/arm/io.h               |   3 +
+>  lib/arm/mmu.c              |  37 ++++++++---
+>  lib/arm/processor.c        |   1 -
+>  lib/arm/setup.c            |  82 +++++++++++++++++++++----
+>  lib/arm/smp.c              |   5 ++
+>  lib/arm64/asm/assembler.h  |  11 ++--
+>  lib/arm64/asm/cacheflush.h |  37 +++++++++++
+>  lib/arm64/asm/mmu.h        |   5 --
+>  lib/arm64/asm/pgtable.h    |  50 +++++++++++++--
+>  lib/arm64/cache.S          |  85 ++++++++++++++++++++++++++
+>  lib/arm64/processor.c      |   1 -
+>  lib/devicetree.c           |   2 +-
+>  lib/powerpc/setup.c        |   9 ++-
+>  powerpc/Makefile.common    |   1 +
+>  powerpc/cstart64.S         |   1 -
+>  powerpc/spapr_hcall.c      |   5 +-
+>  33 files changed, 642 insertions(+), 196 deletions(-)
+>  create mode 100644 lib/arm/asm/cacheflush.h
+>  create mode 100644 lib/arm/cache.S
+>  create mode 100644 lib/arm64/asm/cacheflush.h
+>  create mode 100644 lib/arm64/cache.S
+> 
+> -- 
+> 2.40.1
+> 
