@@ -1,55 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C456857B97
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Feb 2024 12:26:27 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f9Hr8kSp;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F9AA857C81
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Feb 2024 13:26:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TbqPs1H1pz3brB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Feb 2024 22:26:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tbrks3yxLz3vcr
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Feb 2024 23:26:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f9Hr8kSp;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TbqP702hKz30f5
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Feb 2024 22:25:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TbrkR35gWz3bX9
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Feb 2024 23:25:51 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 437D061DE0;
-	Fri, 16 Feb 2024 11:25:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD0AC433C7;
-	Fri, 16 Feb 2024 11:25:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708082743;
-	bh=irTs/3hjqvC4IGIEj4U/Sb544ZHhGyYlJaKX6Qhdn+M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=f9Hr8kSpQ3k1fF39QRvvME6Mk2/doRfaMNhgqWXiMfU9/dYZViGnmhMlYTTEi/S3D
-	 p/NhBnh86rSKu5V11Ip5AEbIESUFOIj0NyTXjbHojGGCt940e8sC7jAMfJGWA0aQBy
-	 LlRoSTch0Bh6lCeBocKAqycKpcnVX+NTVr7JstIwF1Fc5t7KhAQpkcMVry3Ieax+u6
-	 HNYcf8/PV5dHGuGii7+hF0UNNwSA78XFZuQ81z/wY1JMJlkqeF8lDyMEv2ATmvAbd9
-	 fq5CEnqBhPLLlXOrdMUhTZMe9d3dRuNpPsMi0iIJQgn+fWItYZxeUWIz236g2QEj08
-	 S9BMhiNUAT4bg==
-Date: Fri, 16 Feb 2024 16:55:31 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Niklas Cassel <cassel@kernel.org>
-Subject: Re: [PATCH 1/2] PCI: endpoint: Clean up hardware description for BARs
-Message-ID: <20240216112531.GD2559@thinkpad>
-References: <20240210012634.600301-1-cassel@kernel.org>
- <20240210012634.600301-2-cassel@kernel.org>
- <20240216111908.GC2559@thinkpad>
+	by dfw.source.kernel.org (Postfix) with ESMTP id 64A1F61F6F;
+	Fri, 16 Feb 2024 12:25:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0177C433C7;
+	Fri, 16 Feb 2024 12:25:41 +0000 (UTC)
+Date: Fri, 16 Feb 2024 12:25:39 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Subject: Re: [PATCH v6 12/18] arm64/mm: Wire up PTE_CONT for user mappings
+Message-ID: <Zc9UQy-mtYAzNWm2@arm.com>
+References: <20240215103205.2607016-1-ryan.roberts@arm.com>
+ <20240215103205.2607016-13-ryan.roberts@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240216111908.GC2559@thinkpad>
+In-Reply-To: <20240215103205.2607016-13-ryan.roberts@arm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,95 +43,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Frank Li <Frank.Li@nxp.com>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>, linux-tegra@vger.kernel.org, Jonathan Hunter <jonathanh@nvidia.com>, NXP Linux Team <linux-imx@nxp.com>, Allen Hubbe <allenbh@gmail.com>, Richard Zhu <hongxing.zhu@nxp.com>, Srikanth Thokala <srikanth.thokala@intel.com>, Sascha Hauer <s.hauer@pengutronix.de>, Damien Le Moal <dlemoal@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Mingkai Hu <mingkai.hu@nxp.com>, linux-arm-kernel@lists.infradead.org, Roy Zang <roy.zang@nxp.com>, linuxppc-dev@lists.ozlabs
- .org, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, linux-renesas-soc@vger.kernel.org, ntb@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Jon Mason <jdmason@kudzu.us>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
+Cc: Mark Rutland <mark.rutland@arm.com>, Kefeng Wang <wangkefeng.wang@huawei.com>, x86@kernel.org, David Hildenbrand <david@redhat.com>, Yang Shi <shy828301@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, Andrey Ryabinin <ryabinin.a.a@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>, Alistair Popple <apopple@nvidia.com>, Barry Song <21cnbao@gmail.com>, Matthew Wilcox <willy@infradead.org>, Ingo Molnar <mingo@redhat.com>, Zi Yan <ziy@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Feb 16, 2024 at 04:49:08PM +0530, Manivannan Sadhasivam wrote:
-> On Sat, Feb 10, 2024 at 02:26:25AM +0100, Niklas Cassel wrote:
-> > The hardware description for BARs is scattered in many different variables
-> > in pci_epc_features. Some of these things are mutually exclusive, so it
-> > can create confusion over which variable that has precedence over another.
-> > 
-> > Improve the situation by creating a struct pci_epc_bar_desc, and a new
-> > enum pci_epc_bar_type, and convert the endpoint controller drivers to use
-> > this more well defined format.
-> > 
-> > Signed-off-by: Niklas Cassel <cassel@kernel.org>
-> > ---
-> >  drivers/pci/controller/dwc/pci-imx6.c         |  3 +-
-> >  drivers/pci/controller/dwc/pci-keystone.c     | 12 +++----
-> >  .../pci/controller/dwc/pci-layerscape-ep.c    |  5 ++-
-> >  drivers/pci/controller/dwc/pcie-keembay.c     |  8 +++--
-> >  drivers/pci/controller/dwc/pcie-rcar-gen4.c   |  4 ++-
-> >  drivers/pci/controller/dwc/pcie-tegra194.c    | 10 ++++--
-> >  drivers/pci/controller/dwc/pcie-uniphier-ep.c | 15 ++++++--
-> >  drivers/pci/controller/pcie-rcar-ep.c         | 14 +++++---
-> >  drivers/pci/endpoint/functions/pci-epf-ntb.c  |  4 +--
-> >  drivers/pci/endpoint/functions/pci-epf-test.c |  8 ++---
-> >  drivers/pci/endpoint/functions/pci-epf-vntb.c |  2 +-
-> >  drivers/pci/endpoint/pci-epc-core.c           | 32 +++++++++--------
-> >  drivers/pci/endpoint/pci-epf-core.c           | 15 ++++----
-> >  include/linux/pci-epc.h                       | 34 +++++++++++++++----
-> >  14 files changed, 108 insertions(+), 58 deletions(-)
-> > 
-> > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> > index dc2c036ab28c..47a9a96484ed 100644
-> > --- a/drivers/pci/controller/dwc/pci-imx6.c
-> > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> > @@ -1081,7 +1081,8 @@ static const struct pci_epc_features imx8m_pcie_epc_features = {
-> >  	.linkup_notifier = false,
-> >  	.msi_capable = true,
-> >  	.msix_capable = false,
-> > -	.reserved_bar = 1 << BAR_1 | 1 << BAR_3,
-> > +	.bar[BAR_1] = { .type = BAR_RESERVED, },
-> > +	.bar[BAR_3] = { .type = BAR_RESERVED, },
-> >  	.align = SZ_64K,
-> >  };
-> >  
-> > diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
-> > index c0c62533a3f1..b2b93b4fa82d 100644
-> > --- a/drivers/pci/controller/dwc/pci-keystone.c
-> > +++ b/drivers/pci/controller/dwc/pci-keystone.c
-> > @@ -924,12 +924,12 @@ static const struct pci_epc_features ks_pcie_am654_epc_features = {
-> >  	.linkup_notifier = false,
-> >  	.msi_capable = true,
-> >  	.msix_capable = true,
-> > -	.reserved_bar = 1 << BAR_0 | 1 << BAR_1,
-> > -	.bar_fixed_64bit = 1 << BAR_0,
-> > -	.bar_fixed_size[2] = SZ_1M,
-> > -	.bar_fixed_size[3] = SZ_64K,
-> > -	.bar_fixed_size[4] = 256,
-> > -	.bar_fixed_size[5] = SZ_1M,
-> > +	.bar[BAR_0] = { .type = BAR_RESERVED, .only_64bit = true, },
-> > +	.bar[BAR_1] = { .type = BAR_RESERVED, },
-> > +	.bar[BAR_2] = { .type = BAR_FIXED, .fixed_size = SZ_1M, },
-> > +	.bar[BAR_3] = { .type = BAR_FIXED, .fixed_size = SZ_64K, },
-> > +	.bar[BAR_4] = { .type = BAR_FIXED, .fixed_size = 256, },
-> > +	.bar[BAR_5] = { .type = BAR_FIXED, .fixed_size = SZ_1M, },
-> >  	.align = SZ_1M,
-> >  };
-> >  
-> > diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > index 2e398494e7c0..1f6ee1460ec2 100644
-> > --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > @@ -250,7 +250,10 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
-> >  	pci->dev = dev;
-> >  	pci->ops = pcie->drvdata->dw_pcie_ops;
-> >  
-> > -	ls_epc->bar_fixed_64bit = (1 << BAR_2) | (1 << BAR_4);
-> > +	ls_epc->bar[BAR_2].only_64bit = true;
-> > +	ls_epc->bar[BAR_3].type = BAR_RESERVED;
-> 
-> BAR_3 and BAR_4 were not reserved previously.
-> 
+On Thu, Feb 15, 2024 at 10:31:59AM +0000, Ryan Roberts wrote:
+>  arch/arm64/mm/contpte.c          | 285 +++++++++++++++++++++++++++++++
 
-Okay, looking at patch 2 makes it clear why you have marked it as such. But it
-should've been mentioned in the commit message.
+Nitpick: I think most symbols in contpte.c can be EXPORT_SYMBOL_GPL().
+We don't expect them to be used by random out of tree modules. In fact,
+do we expect them to end up in modules at all? Most seem to be called
+from the core mm code.
 
-- Mani
+> +#define ptep_get_lockless ptep_get_lockless
+> +static inline pte_t ptep_get_lockless(pte_t *ptep)
+> +{
+> +	pte_t pte = __ptep_get(ptep);
+> +
+> +	if (likely(!pte_valid_cont(pte)))
+> +		return pte;
+> +
+> +	return contpte_ptep_get_lockless(ptep);
+> +}
+[...]
+> +pte_t contpte_ptep_get_lockless(pte_t *orig_ptep)
+> +{
+> +	/*
+> +	 * Gather access/dirty bits, which may be populated in any of the ptes
+> +	 * of the contig range. We may not be holding the PTL, so any contiguous
+> +	 * range may be unfolded/modified/refolded under our feet. Therefore we
+> +	 * ensure we read a _consistent_ contpte range by checking that all ptes
+> +	 * in the range are valid and have CONT_PTE set, that all pfns are
+> +	 * contiguous and that all pgprots are the same (ignoring access/dirty).
+> +	 * If we find a pte that is not consistent, then we must be racing with
+> +	 * an update so start again. If the target pte does not have CONT_PTE
+> +	 * set then that is considered consistent on its own because it is not
+> +	 * part of a contpte range.
+> +*/
+
+I can't get my head around this lockless API. Maybe it works fine (and
+may have been discussed already) but we should document what the races
+are, why it works, what the memory ordering requirements are. For
+example, the generic (well, x86 PAE) ptep_get_lockless() only needs to
+ensure that the low/high 32 bits of a pte are consistent and there are
+some ordering rules on how these are updated.
+
+Does the arm64 implementation only need to be correct w.r.t. the
+access/dirty bits? Since we can read orig_ptep atomically, I assume the
+only other updates from unfolding would set the dirty/access bits.
+
+> +
+> +	pgprot_t orig_prot;
+> +	unsigned long pfn;
+> +	pte_t orig_pte;
+> +	pgprot_t prot;
+> +	pte_t *ptep;
+> +	pte_t pte;
+> +	int i;
+> +
+> +retry:
+> +	orig_pte = __ptep_get(orig_ptep);
+> +
+> +	if (!pte_valid_cont(orig_pte))
+> +		return orig_pte;
+> +
+> +	orig_prot = pte_pgprot(pte_mkold(pte_mkclean(orig_pte)));
+> +	ptep = contpte_align_down(orig_ptep);
+> +	pfn = pte_pfn(orig_pte) - (orig_ptep - ptep);
+> +
+> +	for (i = 0; i < CONT_PTES; i++, ptep++, pfn++) {
+> +		pte = __ptep_get(ptep);
+> +		prot = pte_pgprot(pte_mkold(pte_mkclean(pte)));
+
+We don't have any ordering guarantees in how the ptes in this range are
+read or written in the contpte_set_ptes() and the fold/unfold functions.
+We might not need them given all the other checks below but it's worth
+adding a comment.
+
+> +
+> +		if (!pte_valid_cont(pte) ||
+> +		   pte_pfn(pte) != pfn ||
+> +		   pgprot_val(prot) != pgprot_val(orig_prot))
+> +			goto retry;
+
+I think this also needs some comment. I get the !pte_valid_cont() check
+to attempt retrying when racing with unfolding. Are the other checks
+needed to detect re-folding with different protection or pfn?
+
+> +
+> +		if (pte_dirty(pte))
+> +			orig_pte = pte_mkdirty(orig_pte);
+> +
+> +		if (pte_young(pte))
+> +			orig_pte = pte_mkyoung(orig_pte);
+> +	}
+
+After writing the comments above, I think I figured out that the whole
+point of this loop is to check that the ptes in the contig range are
+still consistent and the only variation allowed is the dirty/young
+state to be passed to the orig_pte returned. The original pte may have
+been updated by the time this loop finishes but I don't think it
+matters, it wouldn't be any different than reading a single pte and
+returning it while it is being updated.
+
+If you can make this easier to parse (in a few years time) with an
+additional patch adding some more comments, that would be great. For
+this patch:
+
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
 
 -- 
-மணிவண்ணன் சதாசிவம்
+Catalin
