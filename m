@@ -1,138 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D490B857B58
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Feb 2024 12:16:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30F79857B6E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Feb 2024 12:20:09 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ie4NRcpw;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ie4NRcpw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G2M+M8ZU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TbqBQ4tpKz3vYF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Feb 2024 22:16:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TbqGZ5tpDz3vYC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Feb 2024 22:20:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ie4NRcpw;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ie4NRcpw;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G2M+M8ZU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tbq9c0ZGcz3dSv
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Feb 2024 22:15:46 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1708082143;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/s3C1cUAyzspO2KamjiBckwGQ/BxXA5BPUSfaBDl1Bw=;
-	b=ie4NRcpw2cey7zAHhO2sizO3cayauf/cpkq50H//hNgX7epo+QwypeViwq1MWukcrxouOf
-	tewifr4kox4V5rC1dV2nMRoIuqBWSaKNi4VIkeY71swMqqiLgAl3w9d0ZzsVYQ3jfK27ks
-	fHFjqvyTmxvEHVY5FiwcYVLtC+5k1m8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1708082143;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/s3C1cUAyzspO2KamjiBckwGQ/BxXA5BPUSfaBDl1Bw=;
-	b=ie4NRcpw2cey7zAHhO2sizO3cayauf/cpkq50H//hNgX7epo+QwypeViwq1MWukcrxouOf
-	tewifr4kox4V5rC1dV2nMRoIuqBWSaKNi4VIkeY71swMqqiLgAl3w9d0ZzsVYQ3jfK27ks
-	fHFjqvyTmxvEHVY5FiwcYVLtC+5k1m8=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-613-NDoVfIm_NrmL-f-zv2Ulhg-1; Fri, 16 Feb 2024 06:15:40 -0500
-X-MC-Unique: NDoVfIm_NrmL-f-zv2Ulhg-1
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-787407587easo46753785a.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Feb 2024 03:15:40 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708082140; x=1708686940;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/s3C1cUAyzspO2KamjiBckwGQ/BxXA5BPUSfaBDl1Bw=;
-        b=pB6/00UxHmJraSRcUnXzOjswv347tY1Z8pwHuFlNHA0Ys361YEA1HMO5ycE5wnXxIl
-         GoNEBkPP2HCC0MNiEpXl3D5YF0tLWi2Y6ZClgjvH9ukpwICdkFxJdJ+0wVKxIiHYc4w9
-         k3ByV27RePtIF+L00LLPaHbVmQDLoOWjHHG0AYIlid7vwu7XEzOimDdmh8Wb+qlPWGyR
-         X4lu5sWQ739wE6qrTKcIsQeUZXIHDuXldYjPwI2IPBftUnnVIiR/g9qLsCLEaDf/2pMc
-         U1+LG7PA1XH4CnRQN8vDnpTC9HNogTAbAXvF0dqgguZEJSqCiaVE6qBO4idgVlyrThpt
-         BRZg==
-X-Forwarded-Encrypted: i=1; AJvYcCXPwVIeOkghre36gKpP8bAuZ+Iprs8oJFSl9DDFxoCpC/5QS9L4UtoVjbFjLkzPNBcvwvrol/Lv0heMuLxtXqyXYmWig1ejOdAWdryGyg==
-X-Gm-Message-State: AOJu0Yypg07LbYOwZ6Bv3ugSvD/Mzj0CthbDvA64JpQjv+dXveCnY2VJ
-	P6GC/+6J7N9lLMS9H1UleC3VevfOGVhYzl98fpT5vLeOy6qIsMnHr5Jj+76hkH4/nHXiUKnK7Ih
-	EkZSSekJXl67srcfgamPckq+i1US8hfFTuc3jVuDzHu6nkHfVCff5jEhWtQcwN9o=
-X-Received: by 2002:a05:620a:4105:b0:787:3fb9:462c with SMTP id j5-20020a05620a410500b007873fb9462cmr2374689qko.3.1708082140173;
-        Fri, 16 Feb 2024 03:15:40 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEMTE1ejp91icRMQM02RGExipp6FfGbxObIK6+nAErQiLKH+DVYHZjOJjFd3rVCWeeaeMQMOg==
-X-Received: by 2002:a05:620a:4105:b0:787:3fb9:462c with SMTP id j5-20020a05620a410500b007873fb9462cmr2374665qko.3.1708082139916;
-        Fri, 16 Feb 2024 03:15:39 -0800 (PST)
-Received: from [192.168.0.9] (ip-109-43-177-178.web.vodafone.de. [109.43.177.178])
-        by smtp.gmail.com with ESMTPSA id oq27-20020a05620a611b00b007873ee07d53sm662235qkn.3.2024.02.16.03.15.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 Feb 2024 03:15:39 -0800 (PST)
-Message-ID: <abbcbb47-1ae7-4793-a918-dede8dcaf07f@redhat.com>
-Date: Fri, 16 Feb 2024 12:15:35 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TbqFn0bcrz3dSv
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Feb 2024 22:19:25 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id D3ED5CE2AA0;
+	Fri, 16 Feb 2024 11:19:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FB9C433C7;
+	Fri, 16 Feb 2024 11:19:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708082360;
+	bh=KbiyK3bvGuFNTKYJJHAnEbGXH9z7NGmmzn+I+PaPUz0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=G2M+M8ZUQhDqvRup5p9TlZYwfHP6CXltKW0DLJJzXwugtd4/H1nl86/IGFPjVQBr7
+	 GCRemr582U0WH8hsjXa8e1U3s9b0Vl5yvGiqgI+fNcKVHuFDGHm7bPL4RGnQl3hFV0
+	 cFWFdueXaG7/OjmB2SXtaC58pFYqaz053ojcdCGeZyjeXXjQcwbX7bhmTOGSqfCKAb
+	 7mWtrvsPRDLrl5xI4ab5+bkNpl53Csknw7fcEchqTgt680PFUJO/jQRKvrP+jZvQrk
+	 6AdJ1aVr+xyff4pRh2vw8Qc4coAE6C3qwV+TksfzuED4Cku5IveQ6lBc2Q+DFJkrMR
+	 9pfzSd3QakT3A==
+Date: Fri, 16 Feb 2024 16:49:08 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Niklas Cassel <cassel@kernel.org>
+Subject: Re: [PATCH 1/2] PCI: endpoint: Clean up hardware description for BARs
+Message-ID: <20240216111908.GC2559@thinkpad>
+References: <20240210012634.600301-1-cassel@kernel.org>
+ <20240210012634.600301-2-cassel@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v4 8/8] migration: add a migration selftest
-To: Nicholas Piggin <npiggin@gmail.com>
-References: <20240209091134.600228-1-npiggin@gmail.com>
- <20240209091134.600228-9-npiggin@gmail.com>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240209091134.600228-9-npiggin@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240210012634.600301-2-cassel@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -144,33 +60,185 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, linux-s390@vger.kernel.org, Nico Boehr <nrb@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org, Shaoqin Huang <shahuang@redhat.com>, Andrew Jones <andrew.jones@linux.dev>, Eric Auger <eric.auger@redhat.com>, Marc Hartmayer <mhartmay@linux.ibm.com>, kvm-riscv@lists.infradead.org, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Frank Li <Frank.Li@nxp.com>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>, linux-tegra@vger.kernel.org, Jonathan Hunter <jonathanh@nvidia.com>, NXP Linux Team <linux-imx@nxp.com>, Allen Hubbe <allenbh@gmail.com>, Richard Zhu <hongxing.zhu@nxp.com>, Srikanth Thokala <srikanth.thokala@intel.com>, Sascha Hauer <s.hauer@pengutronix.de>, Damien Le Moal <dlemoal@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Mingkai Hu <mingkai.hu@nxp.com>, linux-arm-kernel@lists.infradead.org, Roy Zang <roy.zang@nxp.com>, linuxppc-dev@lists.ozlabs
+ .org, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, linux-renesas-soc@vger.kernel.org, ntb@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Jon Mason <jdmason@kudzu.us>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 09/02/2024 10.11, Nicholas Piggin wrote:
-> Add a selftest for migration support in  guest library and test harness
-> code. It performs migrations in a tight loop to irritate races and bugs
-> in the test harness code.
+On Sat, Feb 10, 2024 at 02:26:25AM +0100, Niklas Cassel wrote:
+> The hardware description for BARs is scattered in many different variables
+> in pci_epc_features. Some of these things are mutually exclusive, so it
+> can create confusion over which variable that has precedence over another.
 > 
-> Include the test in arm, s390, powerpc.
+> Improve the situation by creating a struct pci_epc_bar_desc, and a new
+> enum pci_epc_bar_type, and convert the endpoint controller drivers to use
+> this more well defined format.
 > 
-> Acked-by: Claudio Imbrenda <imbrenda@linux.ibm.com> (s390x)
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> Signed-off-by: Niklas Cassel <cassel@kernel.org>
 > ---
->   arm/Makefile.common          |  1 +
->   arm/selftest-migration.c     |  1 +
->   arm/unittests.cfg            |  6 ++++++
+>  drivers/pci/controller/dwc/pci-imx6.c         |  3 +-
+>  drivers/pci/controller/dwc/pci-keystone.c     | 12 +++----
+>  .../pci/controller/dwc/pci-layerscape-ep.c    |  5 ++-
+>  drivers/pci/controller/dwc/pcie-keembay.c     |  8 +++--
+>  drivers/pci/controller/dwc/pcie-rcar-gen4.c   |  4 ++-
+>  drivers/pci/controller/dwc/pcie-tegra194.c    | 10 ++++--
+>  drivers/pci/controller/dwc/pcie-uniphier-ep.c | 15 ++++++--
+>  drivers/pci/controller/pcie-rcar-ep.c         | 14 +++++---
+>  drivers/pci/endpoint/functions/pci-epf-ntb.c  |  4 +--
+>  drivers/pci/endpoint/functions/pci-epf-test.c |  8 ++---
+>  drivers/pci/endpoint/functions/pci-epf-vntb.c |  2 +-
+>  drivers/pci/endpoint/pci-epc-core.c           | 32 +++++++++--------
+>  drivers/pci/endpoint/pci-epf-core.c           | 15 ++++----
+>  include/linux/pci-epc.h                       | 34 +++++++++++++++----
+>  14 files changed, 108 insertions(+), 58 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index dc2c036ab28c..47a9a96484ed 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -1081,7 +1081,8 @@ static const struct pci_epc_features imx8m_pcie_epc_features = {
+>  	.linkup_notifier = false,
+>  	.msi_capable = true,
+>  	.msix_capable = false,
+> -	.reserved_bar = 1 << BAR_1 | 1 << BAR_3,
+> +	.bar[BAR_1] = { .type = BAR_RESERVED, },
+> +	.bar[BAR_3] = { .type = BAR_RESERVED, },
+>  	.align = SZ_64K,
+>  };
+>  
+> diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
+> index c0c62533a3f1..b2b93b4fa82d 100644
+> --- a/drivers/pci/controller/dwc/pci-keystone.c
+> +++ b/drivers/pci/controller/dwc/pci-keystone.c
+> @@ -924,12 +924,12 @@ static const struct pci_epc_features ks_pcie_am654_epc_features = {
+>  	.linkup_notifier = false,
+>  	.msi_capable = true,
+>  	.msix_capable = true,
+> -	.reserved_bar = 1 << BAR_0 | 1 << BAR_1,
+> -	.bar_fixed_64bit = 1 << BAR_0,
+> -	.bar_fixed_size[2] = SZ_1M,
+> -	.bar_fixed_size[3] = SZ_64K,
+> -	.bar_fixed_size[4] = 256,
+> -	.bar_fixed_size[5] = SZ_1M,
+> +	.bar[BAR_0] = { .type = BAR_RESERVED, .only_64bit = true, },
+> +	.bar[BAR_1] = { .type = BAR_RESERVED, },
+> +	.bar[BAR_2] = { .type = BAR_FIXED, .fixed_size = SZ_1M, },
+> +	.bar[BAR_3] = { .type = BAR_FIXED, .fixed_size = SZ_64K, },
+> +	.bar[BAR_4] = { .type = BAR_FIXED, .fixed_size = 256, },
+> +	.bar[BAR_5] = { .type = BAR_FIXED, .fixed_size = SZ_1M, },
+>  	.align = SZ_1M,
+>  };
+>  
+> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> index 2e398494e7c0..1f6ee1460ec2 100644
+> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> @@ -250,7 +250,10 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+>  	pci->dev = dev;
+>  	pci->ops = pcie->drvdata->dw_pcie_ops;
+>  
+> -	ls_epc->bar_fixed_64bit = (1 << BAR_2) | (1 << BAR_4);
+> +	ls_epc->bar[BAR_2].only_64bit = true;
+> +	ls_epc->bar[BAR_3].type = BAR_RESERVED;
 
-  Hi Nicholas,
+BAR_3 and BAR_4 were not reserved previously.
 
-I just gave the patches a try, but the arm test seems to fail for me: Only 
-the first getchar() seems to wait for a character, all the subsequent ones 
-don't wait anymore and just continue immediately ... is this working for 
-you? Or do I need another patch on top?
+> +	ls_epc->bar[BAR_4].only_64bit = true;
+> +	ls_epc->bar[BAR_5].type = BAR_RESERVED;
+>  	ls_epc->linkup_notifier = true;
+>  
+>  	pcie->pci = pci;
+> diff --git a/drivers/pci/controller/dwc/pcie-keembay.c b/drivers/pci/controller/dwc/pcie-keembay.c
+> index 208d3b0ba196..5e8e54f597dd 100644
+> --- a/drivers/pci/controller/dwc/pcie-keembay.c
+> +++ b/drivers/pci/controller/dwc/pcie-keembay.c
+> @@ -312,8 +312,12 @@ static const struct pci_epc_features keembay_pcie_epc_features = {
+>  	.linkup_notifier	= false,
+>  	.msi_capable		= true,
+>  	.msix_capable		= true,
+> -	.reserved_bar		= BIT(BAR_1) | BIT(BAR_3) | BIT(BAR_5),
+> -	.bar_fixed_64bit	= BIT(BAR_0) | BIT(BAR_2) | BIT(BAR_4),
+> +	.bar[BAR_0]		= { .only_64bit = true, },
+> +	.bar[BAR_1]		= { .type = BAR_RESERVED, },
+> +	.bar[BAR_2]		= { .only_64bit = true, },
+> +	.bar[BAR_3]		= { .type = BAR_RESERVED, },
+> +	.bar[BAR_4]		= { .only_64bit = true, },
+> +	.bar[BAR_5]		= { .type = BAR_RESERVED, },
+>  	.align			= SZ_16K,
+>  };
+>  
+> diff --git a/drivers/pci/controller/dwc/pcie-rcar-gen4.c b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
+> index e9166619b1f9..0be760ed420b 100644
+> --- a/drivers/pci/controller/dwc/pcie-rcar-gen4.c
+> +++ b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
+> @@ -383,7 +383,9 @@ static const struct pci_epc_features rcar_gen4_pcie_epc_features = {
+>  	.linkup_notifier = false,
+>  	.msi_capable = true,
+>  	.msix_capable = false,
+> -	.reserved_bar = 1 << BAR_1 | 1 << BAR_3 | 1 << BAR_5,
+> +	.bar[BAR_1] = { .type = BAR_RESERVED, },
+> +	.bar[BAR_3] = { .type = BAR_RESERVED, },
+> +	.bar[BAR_5] = { .type = BAR_RESERVED, },
+>  	.align = SZ_1M,
+>  };
+>  
+> diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+> index 7afa9e9aabe2..1f7b662cb8e1 100644
+> --- a/drivers/pci/controller/dwc/pcie-tegra194.c
+> +++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+> @@ -2007,9 +2007,13 @@ static const struct pci_epc_features tegra_pcie_epc_features = {
+>  	.core_init_notifier = true,
+>  	.msi_capable = false,
+>  	.msix_capable = false,
+> -	.reserved_bar = 1 << BAR_2 | 1 << BAR_3 | 1 << BAR_4 | 1 << BAR_5,
+> -	.bar_fixed_64bit = 1 << BAR_0,
+> -	.bar_fixed_size[0] = SZ_1M,
+> +	.bar[BAR_0] = { .type = BAR_FIXED, .fixed_size = SZ_1M,
+> +			.only_64bit = true, },
+> +	.bar[BAR_1] = { .type = BAR_RESERVED, },
 
-  Thanks,
-   Thomas
+Same, BAR_1 was not reserved.
 
+> +	.bar[BAR_2] = { .type = BAR_RESERVED, },
+> +	.bar[BAR_3] = { .type = BAR_RESERVED, },
+> +	.bar[BAR_4] = { .type = BAR_RESERVED, },
+> +	.bar[BAR_5] = { .type = BAR_RESERVED, },
+>  };
+>  
+>  static const struct pci_epc_features*
+> diff --git a/drivers/pci/controller/dwc/pcie-uniphier-ep.c b/drivers/pci/controller/dwc/pcie-uniphier-ep.c
+> index 3fced0d3e851..265f65fc673f 100644
+> --- a/drivers/pci/controller/dwc/pcie-uniphier-ep.c
+> +++ b/drivers/pci/controller/dwc/pcie-uniphier-ep.c
+> @@ -411,8 +411,12 @@ static const struct uniphier_pcie_ep_soc_data uniphier_pro5_data = {
+>  		.msi_capable = true,
+>  		.msix_capable = false,
+>  		.align = 1 << 16,
+> -		.bar_fixed_64bit = BIT(BAR_0) | BIT(BAR_2) | BIT(BAR_4),
+> -		.reserved_bar =  BIT(BAR_4),
+> +		.bar[BAR_0] = { .only_64bit = true, },
+> +		.bar[BAR_1] = { .type = BAR_RESERVED, },
 
+Same as above.
+
+> +		.bar[BAR_2] = { .only_64bit = true, },
+> +		.bar[BAR_3] = { .type = BAR_RESERVED, },
+> +		.bar[BAR_4] = { .type = BAR_RESERVED, .only_64bit = true, },
+> +		.bar[BAR_5] = { .type = BAR_RESERVED, },
+>  	},
+>  };
+>  
+> @@ -425,7 +429,12 @@ static const struct uniphier_pcie_ep_soc_data uniphier_nx1_data = {
+>  		.msi_capable = true,
+>  		.msix_capable = false,
+>  		.align = 1 << 12,
+> -		.bar_fixed_64bit = BIT(BAR_0) | BIT(BAR_2) | BIT(BAR_4),
+> +		.bar[BAR_0] = { .only_64bit = true, },
+> +		.bar[BAR_1] = { .type = BAR_RESERVED, },
+
+Same as above.
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
