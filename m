@@ -2,62 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E367C8592F4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Feb 2024 22:24:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F41F98593AA
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Feb 2024 01:16:59 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=QpzN84Zz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=LG4x3dES;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tchds1cdbz3bqQ
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Feb 2024 08:24:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TcmST6Pv7z3dWF
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Feb 2024 11:16:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=QpzN84Zz;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=LG4x3dES;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org)
-Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tchd20W1vz2yk7
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Feb 2024 08:24:05 +1100 (AEDT)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id 2B1978285AD4;
-	Sat, 17 Feb 2024 15:24:01 -0600 (CST)
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id dViB4qD38NAx; Sat, 17 Feb 2024 15:24:00 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id F3CB88286A60;
-	Sat, 17 Feb 2024 15:23:59 -0600 (CST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com F3CB88286A60
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
-	t=1708205040; bh=uHqsQNWIrmcOAMCrqHr0c6QjQvVJmSElQ/5GCW42mp0=;
-	h=Date:From:To:Message-ID:MIME-Version;
-	b=QpzN84ZzzEX5AsIpanW56RhyCup2P0jGQB1wUpQVreQ77W63idN+00KDQ/R6f+ghz
-	 BQSIf8IZycHSIeWrm69Sy48hhwn+MxZYLtNIfBKPS8QjQ7GgVXWzLStsELnt764iwC
-	 A+NFdBF/y4CA9GA9xfKq2PSO6sXffuJUzbgrlOWw=
-X-Virus-Scanned: amavisd-new at rptsys.com
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id dzg64Fn2TMaB; Sat, 17 Feb 2024 15:23:59 -0600 (CST)
-Received: from vali.starlink.edu (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id D2E298285AD4;
-	Sat, 17 Feb 2024 15:23:59 -0600 (CST)
-Date: Sat, 17 Feb 2024 15:23:57 -0600 (CST)
-From: Timothy Pearson <tpearson@raptorengineering.com>
-To: christophe leroy <christophe.leroy@csgroup.eu>
-Message-ID: <1009493415.16246318.1708205037656.JavaMail.zimbra@raptorengineeringinc.com>
-In-Reply-To: <d065cc14-cda8-4e90-83a4-6a6e9314fa80@csgroup.eu>
-References: <375482960.15931139.1708104247383.JavaMail.zimbra@raptorengineeringinc.com> <d065cc14-cda8-4e90-83a4-6a6e9314fa80@csgroup.eu>
-Subject: Re: [PATCH v3] powerpc: Add gpr1 and fpu save/restore functions
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TcmRl4TP4z30NP
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Feb 2024 11:16:19 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1708215378;
+	bh=SdDVeMmt6qwYZT3yLAbV+2fQAihanKI9PnpnYBAS1jE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=LG4x3dES9eOlPN2p3bw8wWtkrR+ILZTxq1KyW46qrJ3fdq9WR4mV/jMgz89Qo83T+
+	 ZaKc+E7VBMXosEOs64iq8RZwmYQ8Ye7pF5bMTHEjTWcy+XImNPl8VDK7ZzGJcLyYRq
+	 wdsKDJXSucROkwnRWIrclrbioms76c6DqarBNS03A8ntdKD7gHCzqjXPwJwFTuJegt
+	 Ip3nkpfzbAk69mUl/8xBedpbTJxeSNks2Y3Mde4jHfZ0UcQp3wfm3tzN7fXD4tsj5I
+	 +NeaiT7w+KVQJpGGp7sNskYh2HZOIA7R/yFZjqbNDa7iHqC+NuCKZQK8iDEp9QzCMV
+	 OmGyI8ZNgYEJw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4TcmRg5l0Rz4wc7;
+	Sun, 18 Feb 2024 11:16:15 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.8-3 tag
+Date: Sun, 18 Feb 2024 11:16:14 +1100
+Message-ID: <87cysu1vap.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Zimbra 8.5.0_GA_3042 (ZimbraWebClient - GC121 (Linux)/8.5.0_GA_3042)
-Thread-Topic: powerpc: Add gpr1 and fpu save/restore functions
-Thread-Index: RzhnDO+u/VfR89Ekq2zyrQml5pwnTMP1ZcUAC1egtLk=
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,41 +55,135 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: nathanl@linux.ibm.com, matthias.schiffer@ew.tq-group.com, sbhat@linux.ibm.com, arnd@arndb.de, rnsastry@linux.ibm.com, linux-kernel@vger.kernel.org, xiaojiangfeng@huawei.com, naveen@kernel.org, gbatra@linux.ibm.com, sshegde@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, david.engraf@sysgo.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Hi Linus,
+
+Please pull some more powerpc fixes for 6.8.
+
+This is a bit of a big batch for rc4, but just due to holiday hangover and
+because I didn't send any fixes last week due to a late revert request. I think
+next week should be back to normal.
+
+cheers
+
+The following changes since commit 41bccc98fb7931d63d03f326a746ac4d429c1dd3:
+
+  Linux 6.8-rc2 (2024-01-28 17:01:12 -0800)
+
+are available in the git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.8-3
+
+for you to fetch changes up to 0846dd77c8349ec92ca0079c9c71d130f34cb192:
+
+  powerpc/iommu: Fix the missing iommu_group_put() during platform domain attach (2024-02-14 23:59:23 +1100)
+
+- ------------------------------------------------------------------
+powerpc fixes for 6.8 #3
+
+ - Fix ftrace bug on boot caused by exit text sections with -fpatchable-function-entry.
+
+ - Fix accuracy of stolen time on pseries since the switch to VIRT_CPU_ACCOUNTING_GEN.
+
+ - Fix a crash in the IOMMU code when doing DLPAR remove.
+
+ - Set pt_regs->link on scv entry to fix BPF stack unwinding.
+
+ - Add missing PPC_FEATURE_BOOKE on 64-bit e5500/e6500, which broke gdb.
+
+ - Fix boot on some 6xx platforms with STRICT_KERNEL_RWX enabled.
+
+ - Fix build failures with KASAN enabled and 32KB stack size.
+
+ - Some other minor fixes.
+
+Thanks to: Arnd Bergmann, Benjamin Gray, Christophe Leroy, David Engraf, Gaurav
+Batra, Jason Gunthorpe, Jiangfeng Xiao, Matthias Schiffer, Nathan Lynch, Naveen
+N Rao, Nicholas Piggin, Nysal Jan K.A, R Nageswara Sastry, Shivaprasad G Bhat,
+Shrikanth Hegde, Spoorthy, Srikar Dronamraju, Venkat Rao Bagalkote.
+
+- ------------------------------------------------------------------
+Arnd Bergmann (2):
+      powerpc: udbg_memcons: mark functions static
+      powerpc: 85xx: mark local functions static
+
+David Engraf (1):
+      powerpc/cputable: Add missing PPC_FEATURE_BOOKE on PPC64 Book-E
+
+Gaurav Batra (1):
+      powerpc/pseries/iommu: Fix iommu initialisation during DLPAR add
+
+Jiangfeng Xiao (1):
+      powerpc/kasan: Fix addr error caused by page alignment
+
+Matthias Schiffer (1):
+      powerpc/6xx: set High BAT Enable flag on G2_LE cores
+
+Michael Ellerman (2):
+      Revert "powerpc/pseries/iommu: Fix iommu initialisation during DLPAR add"
+      powerpc/kasan: Limit KASAN thread size increase to 32KB
+
+Nathan Lynch (1):
+      powerpc/pseries/papr-sysparm: use u8 arrays for payloads
+
+Naveen N Rao (2):
+      powerpc/64: Set task pt_regs->link to the LR value on scv entry
+      powerpc/ftrace: Ignore ftrace locations in exit text sections
+
+R Nageswara Sastry (1):
+      selftests/powerpc/papr_vpd: Check devfd before get_system_loc_code()
+
+Shivaprasad G Bhat (1):
+      powerpc/iommu: Fix the missing iommu_group_put() during platform domain attach
+
+Shrikanth Hegde (1):
+      powerpc/pseries: fix accuracy of stolen time
 
 
------ Original Message -----
-> From: "christophe leroy" <christophe.leroy@csgroup.eu>
-> To: "Timothy Pearson" <tpearson@raptorengineering.com>
-> Cc: "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>
-> Sent: Saturday, February 17, 2024 10:39:06 AM
-> Subject: Re: [PATCH v3] powerpc: Add gpr1 and fpu save/restore functions
+ arch/powerpc/include/asm/ftrace.h                   | 10 ++--------
+ arch/powerpc/include/asm/papr-sysparm.h             |  2 +-
+ arch/powerpc/include/asm/reg.h                      |  2 ++
+ arch/powerpc/include/asm/sections.h                 |  1 +
+ arch/powerpc/include/asm/thread_info.h              |  2 +-
+ arch/powerpc/include/uapi/asm/papr-sysparm.h        |  2 +-
+ arch/powerpc/kernel/cpu_setup_6xx.S                 | 20 +++++++++++++++++++-
+ arch/powerpc/kernel/cpu_specs_e500mc.h              |  3 ++-
+ arch/powerpc/kernel/interrupt_64.S                  |  4 ++--
+ arch/powerpc/kernel/iommu.c                         |  4 +++-
+ arch/powerpc/kernel/trace/ftrace.c                  | 12 ++++++++++++
+ arch/powerpc/kernel/trace/ftrace_64_pg.c            |  5 +++++
+ arch/powerpc/kernel/vmlinux.lds.S                   |  2 ++
+ arch/powerpc/mm/kasan/init_32.c                     |  1 +
+ arch/powerpc/platforms/85xx/mpc8536_ds.c            |  2 +-
+ arch/powerpc/platforms/85xx/mvme2500.c              |  2 +-
+ arch/powerpc/platforms/85xx/p1010rdb.c              |  2 +-
+ arch/powerpc/platforms/85xx/p1022_ds.c              |  6 +++---
+ arch/powerpc/platforms/85xx/p1022_rdk.c             |  6 +++---
+ arch/powerpc/platforms/85xx/socrates_fpga_pic.c     |  2 ++
+ arch/powerpc/platforms/85xx/xes_mpc85xx.c           |  2 +-
+ arch/powerpc/platforms/pseries/lpar.c               |  8 ++++++--
+ arch/powerpc/sysdev/udbg_memcons.c                  |  6 +++---
+ tools/testing/selftests/powerpc/papr_vpd/papr_vpd.c |  4 ++--
+ 24 files changed, 77 insertions(+), 33 deletions(-)
+-----BEGIN PGP SIGNATURE-----
 
-> Le 16/02/2024 =C3=A0 18:24, Timothy Pearson a =C3=A9crit=C2=A0:
->> When building the kernel in size optimized mode with the amdgpu module e=
-nabled,
->> gcc will begin referencing external gpr1 and fpu save/restore functions.=
-  This
->> will then cause a linker failure as we do not link against libgcc which
->> normally contains those builtin functions.
->=20
-> Right, but modules are linked with --save-restore-funcs when using gcc
-> so crtsavres.o is not used and only your change to scripts/mod/modpost.c
-> seems to be required to be able to build amdgpu module with GCC.
->=20
-> Maybe that's different with clang, but maybe worth a test and then a
-> second patch ?
-
-It looks to be gated on ld, specifically if we're CONFIG_PPC64 && CONFIG_LD=
-_IS_BFD.  I can update the patch to match that gate if desired.
-
-> Nevertheless, see comments below, you can do even shorter and more
-> readable using GAS macros.
-
-That's true, but my goal was to get this working, not refactor the entire f=
-ile. :)  Any chance we can merge and do a fine polish later, especially if =
-there's a distinct possibility of the entire file going away in the near fu=
-ture?
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmXRS0wACgkQUevqPMjh
+pYBS2hAAuHWg/zSRifvkc10YwFJPMjufaGvN7/H49VPipVDqjEq8OsPWFpTC4WrK
+7giDvvcR9udoNQKX9wismvHAG3zWfmmshGYozpH/+V+/ZNhf3bQAnrpx+cshB1q7
+dhDEAQneNBw9q5EYY7HvXrBcXiuvFoldVOIfIbSx70wRGCHatkZAn8TSY7JVQNLj
+AkbFXqoGk8mTKrL1LIRB5jSUMadXvEzFiXaaz8P9WVrC9lFTmv/o/8VcWu070j4s
+NzTNJZi/ToIRrHPIOiEWjuku/Z61rakBg2XXcZbr6c9mY5BKqsdJ4RSb2sNr+/xw
+DxTZF19M94aqiElAot/asV+amVpcTqz3DZNgX46QNENoGawuilT8SKH2ZdrDNgRX
+vl7FTNLi9UR18kQFG84pNTQXMZEFqtapnbtvLysejfC8FTttPtcLdh9LnZBGxMmU
+l7G3l7T1uisW4lnSrgI4t6d1Kq7vR4/T1TkvgGIEHVufa0R+CXdbppIRzIfokOyd
+p9c4UKjWXypwACqXfhqovg6H7IwUaor1b1sr3Oyd1J8PliTgFL5q6AA2okCdx6uM
+urzRgcqA6++PsZfxQSSPBlmhAAt6UrsUPO4qQa/ZKSuYTIeqX2Ucdn2T/3f7apoN
+Av4ip3vtSdfJ3nQf3DiDYvNIH2TnjTa0PPFQZy7veC7NxhHEjiw=
+=fGhO
+-----END PGP SIGNATURE-----
