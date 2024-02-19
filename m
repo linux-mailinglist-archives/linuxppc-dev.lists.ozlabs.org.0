@@ -1,129 +1,105 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84DF3859D68
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Feb 2024 08:48:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD8A685A10C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Feb 2024 11:33:28 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=lXSs+F2n;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MrZKWm79;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TdZRF3KYqz3d42
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Feb 2024 18:48:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tdf5L53tPz3d42
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Feb 2024 21:33:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=lXSs+F2n;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MrZKWm79;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:261d::701; helo=fra01-pr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-pr2fra01on20701.outbound.protection.outlook.com [IPv6:2a01:111:f403:261d::701])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tdf4c5kc6z2yst
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Feb 2024 21:32:48 +1100 (AEDT)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4Tdf4c29dkz4wcs
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Feb 2024 21:32:48 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4Tdf4c25nJz4wcy; Mon, 19 Feb 2024 21:32:48 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MrZKWm79;
+	dkim-atps=neutral
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TdZQS3dRFz3bWn
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Feb 2024 18:47:58 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=An3jxC2XSkYvJxmd7vSQVh8nb7teKA8Gaxk9IalAmrB8LS3gkYDQxL7ec6+F9qxNvwvGD7MwnriWR1SxeXpGvLGnaCnWjbx7kHIULwZAIjANNTVovmgNDbUKEv3u4w/aRVdYNA728okuGJKmye2Sh/xuMlUeF9SpPgs4XChBVvR2vWRryrHiJb8oDaxrWAIzHOUu8e/sxKVn0fwl+i4Pr0YEm2FtI3BCPcKzbEvsEkyDWIFPZREYDTNhjY6UQBNi+83gDam01BbWDzTpuorF8H5d3WYJu1HXqPrXqiPzuKRlVK7nda04Fk6KkYMRLgJcOgQ/GEpsxHQyCfYxV6g4UA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=e8vNSGozdqeLYGbcg1SFpwXo+haNiCge5E5NLSHG5hQ=;
- b=KpMRzbueS/VORz5ApoCwDxuw+Em48TyZPSbOP3UC5INVFmtS3Jtr2otOtkIp7Hdb3a0gfGBT0OYwd9PkqfnCKbddXs3faGREgwNU/pEm/WBXnHE8UasnzsJgrAH8TcjwK6HU+wS086svlWKczdcA3BJwt4XxET5PVnGz+UzVU8Qzx6R6dw+8BQSuSifsh/E+ihI4zvc6NihxVQb3Y+LL5ZpYIJL0cVFk5N/JmcbSfsypJMZM5JHmSaQO3zzRBuEbbTzQLhZp197D4OKvCchB+2APK5BpEvpNuNO6zgGEvuILuNcVHzHoLH7scF+mRXwnxcFqvz5dXJpT3IJI4q7wcw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=e8vNSGozdqeLYGbcg1SFpwXo+haNiCge5E5NLSHG5hQ=;
- b=lXSs+F2n0vpm3hb9TQP9/KUoHczTgYf1xRjR6v1qxZtLKEapzvhtseafaJe3LRkG34+jrG3AQ2A5ei/6T7hNtyU1g9LXlHsizWjpp1ClvKbpMYHupa0TmTRnwi1FuLM1PbvTOffPlR+r+cvTnFs+plKMFP6ClgxVvjlkaBrxefBnQvUt0LM7fiYRzEVIMBLIT5LiABnwYP9o3qg2BA/4OZQbdLQEA5x7uLWvV6kq6RtJgVew9jsK2O7QGhS/78OUDmcQQcUiU+Qruedr6GOHDNpl7vzOGJivWIQdlEGMDSK8wtpxJTQAS/O0vftIrQu12a2nH1/GnCjsdzps1TdewA==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MRZP264MB1638.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:9::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.38; Mon, 19 Feb
- 2024 07:47:34 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::64a9:9a73:652c:1589]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::64a9:9a73:652c:1589%7]) with mapi id 15.20.7292.036; Mon, 19 Feb 2024
- 07:47:34 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Gray <bgray@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH] powerpc/code-patching: Disable KASAN in
- __patch_instructions()
-Thread-Topic: [PATCH] powerpc/code-patching: Disable KASAN in
- __patch_instructions()
-Thread-Index: AQHaXjZGsoEzlVCOb02F9EoPDzrV4bERU16A
-Date: Mon, 19 Feb 2024 07:47:34 +0000
-Message-ID: <671c06fb-c053-4fbe-b011-6f4b8e8dd618@csgroup.eu>
-References: <20240213043638.168048-1-bgray@linux.ibm.com>
-In-Reply-To: <20240213043638.168048-1-bgray@linux.ibm.com>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla Thunderbird
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|MRZP264MB1638:EE_
-x-ms-office365-filtering-correlation-id: cefe5c5b-58c7-4058-8bb6-08dc311f08e5
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  9v8iMMLCdpbWzKXWckhO22HXJancylLUtbqdhWHEVNDZZZus15X/SDsPn/e7CFaP27LFX2EFFPtPLLqZABi1j3Q36T7LsGOtW5bKRTkV8Z7SnkLwfEallyuLot429q7SWnARWlkwnj0XlP31fx3l/td6u07xgJ/sxaXU2jLxrOpNuj1KFfhXLY3eBFJZ776KDwlFMgk/8F98iMCJukEOUv+xRQoFH5tVJo5He2hyoAjhXy42Yv6zg4JcaaKeNpsPl/4aiutua2CcxuGkTIltaPRiNd8VYE+E6w/WQO4HhC/kXYSGdQLiIzWrHRbjy5AjFIbGYWWL6962sIAkwKWQe8gf04YX8E5kUac/53aEYWdSIFYUyl/ika3MkTwNBLJ5T5zad3TqkhbhjTge6gx+qk40EH2c/m1ZHkCEZH0rmQ2rsA4H6jDp/gi165VG2v83buf4T+3J5+Vghx+JrSQZiptObhK5vlsTPm9bcBXtNIh1y8qaUfvUx3jIcyoLHXUKtXrjsyQ91j7vTAfIOzvlDIcH2rIgjHqcyHrNnZSfOKw665OOXfDXy5m8rD2jQfhKLs3Am/y091vR8jPBZonEROgDZdyA+WY2gELalq3zJQs=
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(39850400004)(376002)(396003)(346002)(136003)(366004)(230922051799003)(451199024)(1800799012)(186009)(64100799003)(31696002)(86362001)(36756003)(122000001)(38100700002)(966005)(6486002)(6506007)(6512007)(478600001)(316002)(54906003)(110136005)(71200400001)(66574015)(83380400001)(41300700001)(2616005)(26005)(38070700009)(31686004)(2906002)(44832011)(4326008)(5660300002)(66476007)(66946007)(66446008)(64756008)(66556008)(91956017)(76116006)(8936002)(8676002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?RjJ1NmxmZ0VoaGpnRkZYYlA0ZGZlcnRvaExnUnhjL28xcUpjcWFEZ2JSN08r?=
- =?utf-8?B?WmhLdHdGR2VmeUQ4TDdzUGFlUS80Nmx1cTdUOG52b3NQOXhvZ2Fscm1UYVNY?=
- =?utf-8?B?eGgxNWtXT2FPa1VFMEJRZ2NudkhiYkpsaGNwZWliTEJWY09BKzRjdXpnWWhm?=
- =?utf-8?B?NWZtQ0VMTy9IU1lQZElHT00yRC9BU2pWbXNGbTJjUURUaXMxTC96NmFLTDJS?=
- =?utf-8?B?TllXV3g0bHNVTzJjbEhmV0llVEw3LzAxeWE3OXRrQ0NjMW51R1hwUFNUYUNY?=
- =?utf-8?B?RTZXelUrOCtLZ0Fla1JoYStxZkZDY1kzaFhySEJ0SzdXeVJzRmZ6WmVjTnJ4?=
- =?utf-8?B?OFdMWHhpdTFxaWJQYzdPWCtnL3JDWGd5VEFhcENabEdWT3RmN3FjN0Jjb2Rm?=
- =?utf-8?B?Rmw1NXVpY3hKak9HaFh0VEhsTU85dUZpY0Viampxb08xT0o3Ylg3SlFNK2J1?=
- =?utf-8?B?Z21Wc1c1cTdQVkpXL0V5TithT2FIYWFCMzdkYjk2cEd0YnRKeE8vaEg4WGpP?=
- =?utf-8?B?YUlHTDViN3JZVFBUUnJybEx3eHdnbTVRRlhyemJacXhaQ2NXNlBGL2tNWm1q?=
- =?utf-8?B?Sjc5cndMOEtINEZhU0lsUlRCc284TWozcnhPZGVONFpXU0c2S2ZpRVJJYnJV?=
- =?utf-8?B?ZWNwRllWMlVKTmJuYkx2UER3WTFiTHBoanFQV0FPU1o0K0FFTmQvSnVNYWVK?=
- =?utf-8?B?aGdlU2F1VE1JQVJtS0VzeVlJM1JsNCtkdnhvNjVWOXNrK3E2MkdhajVadm1D?=
- =?utf-8?B?dzNxWEtCTWp3WHR6OFJucnFtQzllNmZQMlZUNDY5WDF6TUxaa3ZqVDBXMEtn?=
- =?utf-8?B?ZVZ2ZHpZMldXZUlkODVCWEFLWFpOOG90MFZSZWd4TFZBUEZvS0lLMU9TY05l?=
- =?utf-8?B?NlpmNWtQQTNXTW90S3ZxN1AvV3RzeHNWdHhuMXRWQzlvTHBFVXNmNDRabVZW?=
- =?utf-8?B?S3NpeGE1WmlhbnBRUDhyT3JzTWVLRHdZY1F6Y0NlcU9mZzRSQkYwcGhGbktX?=
- =?utf-8?B?RUpDSHhwMGJIbGN6UWFxTGpXd2YzYlJmSGFvNHdsYStNbWRuS3pJSkIxL3Iw?=
- =?utf-8?B?RVZtUzRQV1VNMU1RbUFGRjZvN1V6ejVmc0NoL1ZPQ09DcnZ4ZE16Z1Eya1VG?=
- =?utf-8?B?RGtZV0VBN3F2aUlDWXc4azI0WkdvOUNTKzhqeFFTTWE0QUgzcHFqNVRjNEFH?=
- =?utf-8?B?eHRPL2EyTWtOK0hKVVRJdVJlanJiYzk2OXZPY21zVEdpUmRuSW1BaTVLeHEy?=
- =?utf-8?B?SUxFQ1c2dlBuQ0ExdGs3cCt0RUhsaHRnRWV6bGVreVZjTTBHbjVCaFBTd3pz?=
- =?utf-8?B?dEdRUHdkQWttcDlNZU83SDQrSjk3ajkwM2hreXA2NVpHWlFJakZrNSs4QTRt?=
- =?utf-8?B?dWFZalpyR3l0WUY3RWZKL1JLVHl5TXVhd3U5bXdOeVo3Zks2dUhBY3hkSmFy?=
- =?utf-8?B?R255S0lsMnJiTVBhUUxkMWRpa09yZjlTcUlCSmI0S2YzSjU4cDdPWTlYWHBu?=
- =?utf-8?B?WWZYRWIwZ0FiMEh5dnJoZk5KMU9xbk5PcHZKd0ZyaHJLcFEzS2dWYW5ITWVa?=
- =?utf-8?B?WUdudHpOQ3MvdGpJVlBia2hzT2hOSWtIMzIyWmxxNXZ1VXVWR204azVDMmw2?=
- =?utf-8?B?cnBHUjg3L01hTDBDUkl3L2hKQWZLMHlaamovTDdWRVJPSEJCMVY5eTRORS9F?=
- =?utf-8?B?aTZBNjhRNkFieDVyUlNEblcxT2xrbnc1cTNUTUZybWs3OFJNWWVSWDNRSXJN?=
- =?utf-8?B?bXdveHY0N3J1VkQvK2VYYU5leEVvRlkwZXg5KzVqZmlrMlFIWEZYTFZkOFBQ?=
- =?utf-8?B?R0l5TWRJVXhkNzFjeSt1M1JJMGU3NHRNeHdnQVE3N3hJQy9OOEwxQXdKNDJv?=
- =?utf-8?B?M24zUXQrZTBBeVRVMk45OUtXc24vZjNBeVU2QUdwMjZMTzBVK3pwSGxDZ3hF?=
- =?utf-8?B?b3NqeS9hbUVKT21wUTJka1FxQkx3M1dFZlU5T0RuajZmWnNZcEtWRXJyTnZu?=
- =?utf-8?B?SHhGT1VlV3FMUzgwdWNBSjBMMzJDRDI5UWVudTlSaEc3Y0pHUGcwTnpldEJm?=
- =?utf-8?B?ckdkcEEwdTVkbFNaaCs0Q0FXOUhoL2JXOGVsTHg0aXNFendMU2F6ak1jeHhi?=
- =?utf-8?Q?X5+DFvOEpONnBymMg/iqCxPu4?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <ED3BC56CAC8B694F9C0C0D0399A28E54@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4Tdf4b5zBRz4wcs
+	for <linuxppc-dev@ozlabs.org>; Mon, 19 Feb 2024 21:32:47 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41JAV7EC022943;
+	Mon, 19 Feb 2024 10:32:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=l8upNAqQmBCSeuVc4LW1BEI9kgEN/cbxkhP9+sVlKvc=;
+ b=MrZKWm79Qr0kmE9r308eLe0YbORYBuLbH96RhxnW6juabUEKyBTGSW+QxMIJC/SiGDNN
+ 1JG8EUbhN0fqvWjx4Dg8Le6Kfnvko2zDWA5pxVKd+k9NbyWS24yIFzUbNBsGQ+WrMmsb
+ a76Hpj2KbivL6FFSDkDQgRrd4ggX8ecmGMME1834zG9c9CaletokrotJDU1KLDuEYggo
+ YnfRno5y1adU6M55c8s02gEzRGv0Jbqyo0IgnfCFYaVkeOrGjKbgyNQ8dyFlweBHYtQ6
+ T0eVxQcm9mbRGtzEbqQWIo7YHFAmatMTyNkabQQmOH/fhM8yrEVdCmdi0mO9ITPKk//a YQ== 
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wc40ea5hr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Feb 2024 10:32:37 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41J8JsXW009627;
+	Mon, 19 Feb 2024 10:32:35 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wb84p0k6j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Feb 2024 10:32:35 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41JAWUgD44957952
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 19 Feb 2024 10:32:32 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0265F2004B;
+	Mon, 19 Feb 2024 10:32:30 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C19FC2004D;
+	Mon, 19 Feb 2024 10:32:26 +0000 (GMT)
+Received: from [9.61.140.65] (unknown [9.61.140.65])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 19 Feb 2024 10:32:26 +0000 (GMT)
+Message-ID: <425f4366-cb7d-4783-bbf8-53c55f2a0430@linux.ibm.com>
+Date: Mon, 19 Feb 2024 16:02:24 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/3] powerpc: make fadump resilient with memory
+ add/remove events
+Content-Language: en-US
+To: Hari Bathini <hbathini@linux.ibm.com>, linuxppc-dev@ozlabs.org
+References: <20240111140943.297501-1-sourabhjain@linux.ibm.com>
+ <20240111140943.297501-2-sourabhjain@linux.ibm.com>
+ <41a0647e-8a8a-40ca-9a07-3e97f02cc369@linux.ibm.com>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <41a0647e-8a8a-40ca-9a07-3e97f02cc369@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ENhlctLvmT-oNTXIRFPNVeKGQHwa3hMa
+X-Proofpoint-ORIG-GUID: ENhlctLvmT-oNTXIRFPNVeKGQHwa3hMa
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: cefe5c5b-58c7-4058-8bb6-08dc311f08e5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Feb 2024 07:47:34.2503
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 4HOeUz2dXddnotUgWvrx1fklHGoj607z+Vmye6UUqRjztd93e1fC8ZkX1JC9IFH/3b626BE31GOubeloFYHbQeqUiSBsOMPg1LizSXQ/MY4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB1638
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-19_07,2024-02-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ impostorscore=0 malwarescore=0 phishscore=0 adultscore=0
+ priorityscore=1501 lowpriorityscore=0 suspectscore=0 spamscore=0
+ clxscore=1015 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311290000 definitions=main-2402190079
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -135,51 +111,197 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "hbathini@linux.ibm.com" <hbathini@linux.ibm.com>
+Cc: "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Aditya Gupta <adityag@linux.ibm.com>, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Naveen N Rao <naveen@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDEzLzAyLzIwMjQgw6AgMDU6MzYsIEJlbmphbWluIEdyYXkgYSDDqWNyaXTCoDoNCj4g
-VGhlIG1lbXNldC9tZW1jcHkgZnVuY3Rpb25zIGFyZSBieSBkZWZhdWx0IGluc3RydW1lbnRlZCBi
-eSBLQVNBTiwgd2hpY2gNCj4gY29tcGxhaW5zIGFib3V0IHVzZXIgbWVtb3J5IGFjY2VzcyB3aGVu
-IHVzaW5nIGEgcG9raW5nIHBhZ2UgaW4NCj4gdXNlcnNwYWNlLg0KPiANCj4gVXNpbmcgYSB1c2Vy
-c3BhY2UgYWRkcmVzcyBpcyBleHBlY3RlZCB0aG91Z2gsIHNvIGRvbid0IGluc3RydW1lbnQgd2l0
-aA0KPiBLQVNBTiBmb3IgdGhpcyBmdW5jdGlvbi4NCg0KbWVtY3B5L21lbXNldCBzaG91bGQgbmV2
-ZXIgYmUgdXNlZCB0byBhY2Nlc3MgdXNlciBtZW1vcnksIHdlIGhhdmUgDQpjb3B5X3RvX3VzZXIo
-KSBhbmQgY2xlYXJfdXNlcigpIGZvciB0aGF0Lg0KDQpBIGZldyB3ZWVrcyBhZ2UgSSBzZW50IGEg
-S0FTQU4gcmVwb3J0IEkgZ290IGZyb20gdGhlIHNhbWUgZnVuY3Rpb24uIEJ1dCANCkkgZ290IGl0
-IG9uIFBQQzMyIHdoaWNoIGRvZXNuJ3QgdXNlIHVzZXJzcGFjZSBmb3IgdGhhdC4gU2VlIA0KaHR0
-cHM6Ly9sb3JlLmtlcm5lbC5vcmcvYWxsLzIwMDBhMzBmLTIxNGEtNGIyMC1iMGI1LTM0OGU5ODdk
-NmEwZUBjc2dyb3VwLmV1L1QvI3UNCg0KU28gSSBoYXZlIHRoZSBmZWVsaW5nIHRoYXQgeW91ciBw
-YXRjaCBtYXkgYmUgaGlkZGluZyBhbm90aGVyIHByb2JsZW0uIA0KVGhlIFBQQzMyIHJlcG9ydCBm
-b3Igc3VyZSB3aWxsIGJlIGhpZGRlbiBpZiB5b3VyIHBhdGNoIGdldHMgYXBwbGllZCwgDQphbGx0
-aG91Z2ggeW91ciBleHBsYW5hdGlvbiBkb2Vzbid0IGZpdC4NCg0KQ2hyaXN0b3BoZQ0KDQo+IA0K
-PiBTaWduZWQtb2ZmLWJ5OiBCZW5qYW1pbiBHcmF5IDxiZ3JheUBsaW51eC5pYm0uY29tPg0KPiAN
-Cj4gLS0tDQo+IA0KPiBJIHRyaWVkIHRvIHJlcGxhY2UgdGhlIG1lbXNldE4gY2FsbHMgd2l0aCBf
-X21lbXNldE4sIGJ1dCB3ZSBhcHBlYXIgdG8NCj4gZGlzYWJsZSB0aGUgbm9uLWluc3RydW1lbnRl
-ZCB2YXJpYW50cyBvZiB0aGVzZSB3aGVuIEtBU0FOIGlzIGVuYWJsZWQuDQo+IENocmlzdG9waGUg
-bWlnaHQgeW91IGtub3cgbW9yZSBoZXJlPw0KPiANCj4gVGhlIGNvc3Qgb2YganVzdCBzdXBwcmVz
-c2luZyByZXBvcnRzIGZvciB0aGlzIHNlY3Rpb24gc2hvdWxkbid0IGJlIHRvbw0KPiByZWxldmFu
-dDsgS0FTQU4gZGV0ZWN0cyB0aGUgYWNjZXNzLCBidXQgZXhpdHMgYmVmb3JlIGl0IHN0YXJ0cyBw
-cmVwYXJpbmcNCj4gdGhlIHJlcG9ydCBpdHNlbGYuIFNvIGl0J3MganVzdCBsaWtlIGFueSBvdGhl
-ciBLQVNBTiBpbnN0cnVtZW50ZWQNCj4gZnVuY3Rpb24gZm9yIHRoZSBtb3N0IHBhcnQuDQo+IC0t
-LQ0KPiAgIGFyY2gvcG93ZXJwYy9saWIvY29kZS1wYXRjaGluZy5jIHwgMyArKysNCj4gICAxIGZp
-bGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspDQo+IA0KPiBkaWZmIC0tZ2l0IGEvYXJjaC9wb3dl
-cnBjL2xpYi9jb2RlLXBhdGNoaW5nLmMgYi9hcmNoL3Bvd2VycGMvbGliL2NvZGUtcGF0Y2hpbmcu
-Yw0KPiBpbmRleCBjNmFiNDYxNTZjZGEuLjI0OTg5NTk0NTc4YSAxMDA2NDQNCj4gLS0tIGEvYXJj
-aC9wb3dlcnBjL2xpYi9jb2RlLXBhdGNoaW5nLmMNCj4gKysrIGIvYXJjaC9wb3dlcnBjL2xpYi9j
-b2RlLXBhdGNoaW5nLmMNCj4gQEAgLTMsNiArMyw3IEBADQo+ICAgICogIENvcHlyaWdodCAyMDA4
-IE1pY2hhZWwgRWxsZXJtYW4sIElCTSBDb3Jwb3JhdGlvbi4NCj4gICAgKi8NCj4gICANCj4gKyNp
-bmNsdWRlIDxsaW51eC9rYXNhbi5oPg0KPiAgICNpbmNsdWRlIDxsaW51eC9rcHJvYmVzLmg+DQo+
-ICAgI2luY2x1ZGUgPGxpbnV4L21tdV9jb250ZXh0Lmg+DQo+ICAgI2luY2x1ZGUgPGxpbnV4L3Jh
-bmRvbS5oPg0KPiBAQCAtMzc3LDYgKzM3OCw3IEBAIHN0YXRpYyBpbnQgX19wYXRjaF9pbnN0cnVj
-dGlvbnModTMyICpwYXRjaF9hZGRyLCB1MzIgKmNvZGUsIHNpemVfdCBsZW4sIGJvb2wgcmVwDQo+
-ICAgCXVuc2lnbmVkIGxvbmcgc3RhcnQgPSAodW5zaWduZWQgbG9uZylwYXRjaF9hZGRyOw0KPiAg
-IA0KPiAgIAkvKiBSZXBlYXQgaW5zdHJ1Y3Rpb24gKi8NCj4gKwlrYXNhbl9kaXNhYmxlX2N1cnJl
-bnQoKTsNCj4gICAJaWYgKHJlcGVhdF9pbnN0cikgew0KPiAgIAkJcHBjX2luc3RfdCBpbnN0ciA9
-IHBwY19pbnN0X3JlYWQoY29kZSk7DQo+ICAgDQo+IEBAIC0zOTIsNiArMzk0LDcgQEAgc3RhdGlj
-IGludCBfX3BhdGNoX2luc3RydWN0aW9ucyh1MzIgKnBhdGNoX2FkZHIsIHUzMiAqY29kZSwgc2l6
-ZV90IGxlbiwgYm9vbCByZXANCj4gICAJfSBlbHNlIHsNCj4gICAJCW1lbWNweShwYXRjaF9hZGRy
-LCBjb2RlLCBsZW4pOw0KPiAgIAl9DQo+ICsJa2FzYW5fZW5hYmxlX2N1cnJlbnQoKTsNCj4gICAN
-Cj4gICAJc21wX3dtYigpOwkvKiBzbXAgd3JpdGUgYmFycmllciAqLw0KPiAgIAlmbHVzaF9pY2Fj
-aGVfcmFuZ2Uoc3RhcnQsIHN0YXJ0ICsgbGVuKTsNCg==
+Hello Hari,
+
+On 23/01/24 15:39, Hari Bathini wrote:
+>
+>
+> On 11/01/24 7:39 pm, Sourabh Jain wrote:
+>> Due to changes in memory resources caused by either memory hotplug or
+>> online/offline events, the elfcorehdr, which describes the CPUs and
+>> memory of the crashed kernel to the kernel that collects the dump (known
+>> as second/fadump kernel), becomes outdated. Consequently, attempting
+>> dump collection with an outdated elfcorehdr can lead to failed or
+>> inaccurate dump collection.
+>>
+>> Memory hotplug or online/offline events is referred as memory add/remove
+>> events in reset of the commit message.
+>>
+>> The current solution to address the aforementioned issue is as follows:
+>> Monitor memory add/remove events in userspace using udev rules, and
+>> re-register fadump whenever there are changes in memory resources. This
+>> leads to the creation of a new elfcorehdr with updated system memory
+>> information.
+>>
+>> There are several notable issues associated with re-registering fadump
+>> for every memory add/remove events.
+>>
+>> 1. Bulk memory add/remove events with udev-based fadump re-registration
+>>     can lead to race conditions and, more importantly, it creates a wide
+>>     window during which fadump is inactive until all memory add/remove
+>>     events are settled.
+>> 2. Re-registering fadump for every memory add/remove event is
+>>     inefficient.
+>> 3. The memory for elfcorehdr is allocated based on the memblock regions
+>>     available during early boot and remains fixed thereafter. 
+>> However, if
+>>     elfcorehdr is later recreated with additional memblock regions, its
+>>     size will increase, potentially leading to memory corruption.
+>>
+>> Address the aforementioned challenges by shifting the creation of
+>> elfcorehdr from the first kernel (also referred as the crashed kernel),
+>> where it was created and frequently recreated for every memory
+>> add/remove event, to the fadump kernel. As a result, the elfcorehdr only
+>> needs to be created once, thus eliminating the necessity to re-register
+>> fadump during memory add/remove events.
+>>
+>> At present, the first kernel prepares the fadump header and stores it in
+>> the fadump reserved area. The fadump header contains start address of
+>> the elfcorehd, crashing CPU details, etc.  In the event of first kernel
+>
+> "elfcorehd" used instead of "elfcorehdr" at a couple of places..
+
+Fixed it now. Thanks.
+
+>
+>> crash, the second/fadump boots and access the fadump header prepared by
+>> first kernel and do the following in a platform-specific function
+>> [rtas|opal]_fadump_process:
+>>
+>> At present, the first kernel is responsible for preparing the fadump
+>> header and storing it in the fadump reserved area. The fadump header
+>> includes the start address of the elfcorehd, crashing CPU details, and
+>> other relevant information. In the event of a crash in the first kernel,
+>> the second/fadump boots and accesses the fadump header prepared by the
+>> first kernel. It then performs the following steps in a
+>> platform-specific function [rtas|opal]_fadump_process:
+>>
+>> 1. Sanity check for fadump header
+>> 2. Update CPU notes in elfcorehdr
+>> 3. Set the global variable elfcorehdr_addr to the address of the
+>>     fadump header's elfcorehdr. For vmcore module to process it later 
+>> on.
+>>
+>> Along with the above, update the setup_fadump()/fadump.c to create
+>> elfcorehdr in second/fadump kernel.
+>>
+>> Section below outlines the information required to create the elfcorehdr
+>> and the changes made to make it available to the fadump kernel if it's
+>> not already.
+>>
+>> To create elfcorehdr, the following crashed kernel information is
+>> required: CPU notes, vmcoreinfo, and memory ranges.
+>>
+>> At present, the CPU notes are already prepared in the fadump kernel, so
+>> no changes are needed in that regard. The fadump kernel has access to
+>> all crashed kernel memory regions, including boot memory regions that
+>> are relocated by firmware to fadump reserved areas, so no changes for
+>> that either. However, it is necessary to add new members to the fadump
+>> header, i.e., the 'fadump_crash_info_header' structure, in order to pass
+>> the crashed kernel's vmcoreinfo address and its size to fadump kernel.
+>>
+>> In addition to the vmcoreinfo address and size, there are a few other
+>> attributes also added to the fadump_crash_info_header structure.
+>>
+>> 1. version:
+>>     It stores the fadump header version, which is currently set to 1.
+>>     This provides flexibility to update the fadump crash info header in
+>>     the future without changing the magic number. For each change in the
+>>     fadump header, the version will be increased. This will help the
+>>     updated kernel determine how to handle kernel dumps from older
+>>     kernels. The magic number remains relevant for checking fadump 
+>> header
+>>     corruption.
+>>
+>> 2. elfcorehdr_size:
+>>     since elfcorehdr is now prepared in the fadump/second kernel and
+>>     it is not part of the reserved area, this attribute is needed to
+>>     track the memory allocated for elfcorehdr to do the deallocation
+>>     properly.
+>>
+>> 3. pt_regs_sz/cpu_mask_sz:
+>>     Store size of pt_regs and cpu_mask strucutre in first kernel. These
+>>     attributes are used avoid processing the dump if the sizes of 
+>> pt_regs
+>>     and cpu_mask are not the same across the crashed and fadump kernel.
+>>
+>> Note: if either first/crashed kernel or second/fadump kernel do not have
+>> the changes introduced here then kernel fail to collect the dump and
+>> prints relevant error message on the console.
+>>
+>> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+>> Cc: Aditya Gupta <adityag@linux.ibm.com>
+>> Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+>> Cc: Hari Bathini <hbathini@linux.ibm.com>
+>> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Cc: Naveen N Rao <naveen@kernel.org>
+>> ---
+>>   arch/powerpc/include/asm/fadump-internal.h   |  31 +-
+>>   arch/powerpc/kernel/fadump.c                 | 355 +++++++++++--------
+>>   arch/powerpc/platforms/powernv/opal-fadump.c |  18 +-
+>>   arch/powerpc/platforms/pseries/rtas-fadump.c |  23 +-
+>>   4 files changed, 242 insertions(+), 185 deletions(-)
+>>
+>> diff --git a/arch/powerpc/include/asm/fadump-internal.h 
+>> b/arch/powerpc/include/asm/fadump-internal.h
+>> index 27f9e11eda28..a632e9708610 100644
+>> --- a/arch/powerpc/include/asm/fadump-internal.h
+>> +++ b/arch/powerpc/include/asm/fadump-internal.h
+>> @@ -42,13 +42,40 @@ static inline u64 fadump_str_to_u64(const char *str)
+>>     #define FADUMP_CPU_UNKNOWN        (~((u32)0))
+>>   -#define FADUMP_CRASH_INFO_MAGIC fadump_str_to_u64("FADMPINF")
+>> +/*
+>> + * The introduction of new fields in the fadump crash info header has
+>> + * led to a change in the magic key from `FADMPINF` to `FADMPSIG` for
+>> + * identifying a kernel crash from an old kernel.
+>> + *
+>> + * To prevent the need for further changes to the magic number in the
+>> + * event of future modifications to the fadump crash info header, a
+>> + * version field has been introduced to track the fadump crash info
+>> + * header version.
+>> + *
+>> + * Consider a few points before adding new members to the fadump 
+>> crash info
+>> + * header structure:
+>> + *
+>> + *  - Append new members; avoid adding them in between.
+>> + *  - Non-primitive members should have a size member as well.
+>> + *  - For every change in the fadump header, increment the
+>> + *    fadump header version. This helps the updated kernel decide 
+>> how to
+>> + *    handle kernel dumps from older kernels.
+>> + */
+>> +#define FADUMP_CRASH_INFO_MAGIC_OLD fadump_str_to_u64("FADMPINF")
+>> +#define FADUMP_CRASH_INFO_MAGIC fadump_str_to_u64("FADMPSIG")
+>> +#define FADUMP_HEADER_VERSION        1
+>>     /* fadump crash info structure */
+>>   struct fadump_crash_info_header {
+>>       u64        magic_number;
+>> -    u64        elfcorehdr_addr;
+>> +    u32        version;
+>>       u32        crashing_cpu;
+>
+>> +    u64        elfcorehdr_addr;
+>> +    u64        elfcorehdr_size;
+>
+> fadump_crash_info_header structure is to share info across reboots.
+> Now that elfcorehdr is prepared in second kernel and also dump capture
+> of older kernel is not supported, get rid of elfcorehdr_addr &
+> elfcorehdr_size from fadump_crash_info_header structure and put them
+> in fw_dump structure instead..
+
+Including elfcorehdr_addr and elfcorehdr_size in the fw_dump structure 
+removes the
+dependency on address translation from physical to virtual."
+
+I have included the above suggestion in v8.
+https://lore.kernel.org/all/20240217072004.148293-1-sourabhjain@linux.ibm.com/
+
+Thanks for the suggestion.
+
+- Sourabh
