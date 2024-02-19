@@ -2,51 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BFDB85A307
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Feb 2024 13:17:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BC9B85A3F9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Feb 2024 13:57:10 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gl5Ire7i;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IaC62Hw3;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TdhPY6cRjz3cZ8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Feb 2024 23:17:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TdjH81jTXz3dS4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Feb 2024 23:57:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gl5Ire7i;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IaC62Hw3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=mchehab@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=mchehab@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TdhNq1hNFz3cCK
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Feb 2024 23:16:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TdjGQ2gr2z3by8
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Feb 2024 23:56:30 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 791D260C84;
-	Mon, 19 Feb 2024 12:16:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF6EDC433C7;
-	Mon, 19 Feb 2024 12:16:52 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id C28B7CE0159;
+	Mon, 19 Feb 2024 12:56:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AC8C433C7;
+	Mon, 19 Feb 2024 12:56:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708345016;
-	bh=Fo7gWX+fN3KK0l+fgHET85/r8KC+eGTLo1tNhMAG3fM=;
+	s=k20201202; t=1708347385;
+	bh=ccbHakWFMPqKyo56fEKpc8aAf3Wb4VQoRZfLVnlY020=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gl5Ire7ih1If26CRdbDqceoxp+UT1T+0n8EEUKShBqS3jL61ggxtzzWxM91FaQR89
-	 NluyzJL22D8zdCSvqSChzLd2o+g7HJyJXmsad55aYpwDVOF1i/k/4EqYS4376T4VLl
-	 SyD1vb/7dqKpWKoBHoYfjeXaZkN4PnfPIOvQpXVp2PLNcFI+9u5PopnikQbcn8Zmr0
-	 yG/8Vfz25UbYxWKp3uB28K7m9l9/X58Q7H8pUZW6wXxXhtOQs9GJzWvAFUZ6UBETqg
-	 Jy4Z5XlUcui/Lk7k8+bsNgaqr0py7jCh+uuXOYk7ez2obX1Kzy89dmqUuz9c8F3fj1
-	 vrWQ+Sx7tzI8A==
-Date: Mon, 19 Feb 2024 13:16:49 +0100
+	b=IaC62Hw3yjK1/flPQhxsuk0O4OdKFtG83Nn2lk244OGiDCxR6rKWUuaIKZ7/t7BGf
+	 jcZ4sk87QdlBUQyW+B0eTFWUJqh7KWkUxhHmL6ecneCUylAn7cjjSKL2XBdbdy3RLl
+	 luWHN2toOrZvmPvGb5Q9qjdgM64Vw50ntuXtUpwPGQpqFW5I/Bbvjedgt+/lYXvXns
+	 llJFV31k0n50KPsX8E49DfrCARvcDerNAopvgQZ3uvWHBBwI9WKL6UtN5XLZU83/kQ
+	 40kwgeSzuu9EeBatmrJQUzesPW9bepQxFLwCM9L5vwIJEvs1iln+7drGvgDeAF6M/j
+	 h6OP4j6RmhfZA==
+Date: Mon, 19 Feb 2024 13:56:18 +0100
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 To: Shengjiu Wang <shengjiu.wang@gmail.com>
-Subject: Re: [PATCH v12 10/15] media: uapi: Add audio rate controls support
-Message-ID: <20240219131649.1a26769d@coco.lan>
-In-Reply-To: <CAA+D8APQy0NaZH44zgoHfMJ1pFS3TporVZZt7zV=Yy-edWacdg@mail.gmail.com>
+Subject: Re: [PATCH v12 08/15] media: uapi: Define audio sample format
+ fourcc type
+Message-ID: <20240219135618.5c557e66@coco.lan>
+In-Reply-To: <CAA+D8APD+zL0xYkf6FxPNfM3Y3O8+PhT7WEXO7XCLAmBjoMmUA@mail.gmail.com>
 References: <1705581128-4604-1-git-send-email-shengjiu.wang@nxp.com>
-	<1705581128-4604-11-git-send-email-shengjiu.wang@nxp.com>
-	<20240217105708.53c81b04@coco.lan>
-	<CAA+D8APQy0NaZH44zgoHfMJ1pFS3TporVZZt7zV=Yy-edWacdg@mail.gmail.com>
+	<1705581128-4604-9-git-send-email-shengjiu.wang@nxp.com>
+	<20240217101926.3f1d2452@coco.lan>
+	<CAA+D8APD+zL0xYkf6FxPNfM3Y3O8+PhT7WEXO7XCLAmBjoMmUA@mail.gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -66,163 +67,138 @@ Cc: nicoleotsuka@gmail.com, alsa-devel@alsa-project.org, linuxppc-dev@lists.ozla
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Em Mon, 19 Feb 2024 14:03:37 +0800
+Em Mon, 19 Feb 2024 12:05:02 +0800
 Shengjiu Wang <shengjiu.wang@gmail.com> escreveu:
 
-> On Sat, Feb 17, 2024 at 5:57=E2=80=AFPM Mauro Carvalho Chehab
+> Hi Mauro
+>=20
+> On Sat, Feb 17, 2024 at 5:19=E2=80=AFPM Mauro Carvalho Chehab
 > <mchehab@kernel.org> wrote:
 > >
-> > Em Thu, 18 Jan 2024 20:32:03 +0800
+> > Em Thu, 18 Jan 2024 20:32:01 +0800
 > > Shengjiu Wang <shengjiu.wang@nxp.com> escreveu:
 > > =20
-> > > Add V4L2_CID_M2M_AUDIO_SOURCE_RATE and V4L2_CID_M2M_AUDIO_DEST_RATE
-> > > new IDs for rate control.
+> > > The audio sample format definition is from alsa,
+> > > the header file is include/uapi/sound/asound.h, but
+> > > don't include this header file directly, because in
+> > > user space, there is another copy in alsa-lib.
+> > > There will be conflict in userspace for include
+> > > videodev2.h & asound.h and asoundlib.h
 > > >
-> > > Add V4L2_CID_M2M_AUDIO_SOURCE_RATE_OFFSET and
-> > > V4L2_CID_M2M_AUDIO_DEST_RATE_OFFSET for clock drift.
+> > > Here still use the fourcc format.
 > > >
 > > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 > > > ---
-> > >  .../media/v4l/ext-ctrls-audio-m2m.rst         | 20 +++++++++++++++++=
+> > >  .../userspace-api/media/v4l/pixfmt-audio.rst  | 87 +++++++++++++++++=
 ++
-> > >  drivers/media/v4l2-core/v4l2-ctrls-defs.c     |  6 ++++++
-> > >  include/uapi/linux/v4l2-controls.h            |  5 +++++
-> > >  3 files changed, 31 insertions(+)
+> > >  .../userspace-api/media/v4l/pixfmt.rst        |  1 +
+> > >  drivers/media/v4l2-core/v4l2-ioctl.c          | 13 +++
+> > >  include/uapi/linux/videodev2.h                | 23 +++++
+> > >  4 files changed, 124 insertions(+)
+> > >  create mode 100644 Documentation/userspace-api/media/v4l/pixfmt-audi=
+o.rst
 > > >
-> > > diff --git a/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2=
-m.rst b/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
-> > > index 82d2ecedbfee..de579ab8fb94 100644
-> > > --- a/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
-> > > +++ b/Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
-> > > @@ -19,3 +19,23 @@ Audio M2M Control IDs
-> > >      The Audio M2M class descriptor. Calling
-> > >      :ref:`VIDIOC_QUERYCTRL` for this control will
-> > >      return a description of this control class.
+> > > diff --git a/Documentation/userspace-api/media/v4l/pixfmt-audio.rst b=
+/Documentation/userspace-api/media/v4l/pixfmt-audio.rst
+> > > new file mode 100644
+> > > index 000000000000..04b4a7fbd8f4
+> > > --- /dev/null
+> > > +++ b/Documentation/userspace-api/media/v4l/pixfmt-audio.rst
+> > > @@ -0,0 +1,87 @@
+> > > +.. SPDX-License-Identifier: GFDL-1.1-no-invariants-or-later
 > > > +
-> > > +.. _v4l2-audio-asrc:
+> > > +.. _pixfmt-audio:
 > > > +
-> > > +``V4L2_CID_M2M_AUDIO_SOURCE_RATE (integer menu)``
-> > > +    Sets the audio source sample rate, unit is Hz
+> > > +*************
+> > > +Audio Formats
+> > > +*************
 > > > +
-> > > +``V4L2_CID_M2M_AUDIO_DEST_RATE (integer menu)``
-> > > +    Sets the audio destination sample rate, unit is Hz
+> > > +These formats are used for :ref:`audiomem2mem` interface only.
 > > > +
-> > > +``V4L2_CID_M2M_AUDIO_SOURCE_RATE_OFFSET (fixed point)``
-> > > +    Sets the offset from the audio source sample rate, unit is Hz.
-> > > +    The offset compensates for any clock drift. The actual source au=
-dio
-> > > +    sample rate is the ideal source audio sample rate from
-> > > +    ``V4L2_CID_M2M_AUDIO_SOURCE_RATE`` plus this fixed point offset.
+> > > +.. tabularcolumns:: |p{5.8cm}|p{1.2cm}|p{10.3cm}|
 > > > +
-> > > +``V4L2_CID_M2M_AUDIO_DEST_RATE_OFFSET (fixed point)``
-> > > +    Sets the offset from the audio destination sample rate, unit is =
-Hz.
-> > > +    The offset compensates for any clock drift. The actual destinati=
-on audio
-> > > +    sample rate is the ideal source audio sample rate from
-> > > +    ``V4L2_CID_M2M_AUDIO_DEST_RATE`` plus this fixed point offset. =
-=20
+> > > +.. cssclass:: longtable
+> > > +
+> > > +.. flat-table:: Audio Format
+> > > +    :header-rows:  1
+> > > +    :stub-columns: 0
+> > > +    :widths:       3 1 4
+> > > +
+> > > +    * - Identifier
+> > > +      - Code
+> > > +      - Details
+> > > +    * .. _V4L2-AUDIO-FMT-S8:
+> > > +
+> > > +      - ``V4L2_AUDIO_FMT_S8``
+> > > +      - 'S8'
+> > > +      - Corresponds to SNDRV_PCM_FORMAT_S8 in ALSA
+> > > +    * .. _V4L2-AUDIO-FMT-S16-LE: =20
 > >
-> > Hmm... first of all, controls on V4L2 API can either be get or set.
-> > So, starting the sentence with "Set" sounds an assumption that may
-> > be wrong. =20
->=20
-> Ok, will update the description.
-> >
-> > Also, I would explain a little bit more about the frequency offset valu=
-es,
-> > as clock drift adjustment on PCM streams is something that can be done
-> > using different approaches.
-> >
-> > I'm assuming that what you wanted here is to use it to check if the
-> > video and audio clocks have some drift, and reducing or increasing
-> > the audio sample rate dynamically to ensure that such drift will
-> > stay constraint to a maximum allowed drift measured in mili or nano
-> > seconds. So, userspace would be expected to be monitoring such drift
-> > and increasing/decreasing the sample frequency as needed to maintain
-> > such constraint.
-> >
-> > Is that the way such uAPI is expected to work? =20
->=20
-> Yes. Userspace should monitor the drift, get the offset based on the
-> common sample rate (8k, 44.1k, 48k...) then send it to the driver.
-> The offset is a fixed point. it is base on the patch:
-> https://patchwork.kernel.org/project/linux-media/patch/cec82507-ced9-4e7d=
--802c-04a40f84a4b4@xs4all.nl/
-
-Ok, so write a description about how this should be used (like the
-test I written),to help userspace developers to better understand
-how this uAPI should be used.
-
-See, one of the main goals of the uAPI documentation is to ensure that
-userspace programs will implement the uAPI bits the right way, behaving
-the right way when using it. That's why we even have some userspace code=20
-examples for some ioctls. IMO frequence drift is one of such cases
-where more explanation is needed.
-
-
->=20
-> Best regards
-> Shengjiu Wang
+> > Hmm... why can't we just use SNDRV_*_FORMAT_*? Those are already part of
+> > an uAPI header. No need to add any abstraction here and/or redefine
+> > what is there already at include/uapi/sound/asound.h.
 > > =20
-> > > diff --git a/drivers/media/v4l2-core/v4l2-ctrls-defs.c b/drivers/medi=
-a/v4l2-core/v4l2-ctrls-defs.c
-> > > index 2a85ea3dc92f..91e1f5348c23 100644
-> > > --- a/drivers/media/v4l2-core/v4l2-ctrls-defs.c
-> > > +++ b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
-> > > @@ -1245,6 +1245,8 @@ const char *v4l2_ctrl_get_name(u32 id)
-> > >
-> > >       /* Audio M2M controls */
-> > >       case V4L2_CID_M2M_AUDIO_CLASS:  return "Audio M2M Controls";
-> > > +     case V4L2_CID_M2M_AUDIO_SOURCE_RATE:    return "Audio Source Sa=
-mple Rate";
-> > > +     case V4L2_CID_M2M_AUDIO_DEST_RATE:      return "Audio Destinati=
-on Sample Rate";
-> > >       default:
-> > >               return NULL;
-> > >       }
-> > > @@ -1606,6 +1608,10 @@ void v4l2_ctrl_fill(u32 id, const char **name,=
- enum v4l2_ctrl_type *type,
-> > >       case V4L2_CID_COLORIMETRY_HDR10_MASTERING_DISPLAY:
-> > >               *type =3D V4L2_CTRL_TYPE_HDR10_MASTERING_DISPLAY;
-> > >               break;
-> > > +     case V4L2_CID_M2M_AUDIO_SOURCE_RATE:
-> > > +     case V4L2_CID_M2M_AUDIO_DEST_RATE:
-> > > +             *type =3D V4L2_CTRL_TYPE_INTEGER_MENU;
-> > > +             break;
-> > >       default:
-> > >               *type =3D V4L2_CTRL_TYPE_INTEGER;
-> > >               break;
-> > > diff --git a/include/uapi/linux/v4l2-controls.h b/include/uapi/linux/=
-v4l2-controls.h
-> > > index a8b4b830c757..30129ccdc282 100644
-> > > --- a/include/uapi/linux/v4l2-controls.h
-> > > +++ b/include/uapi/linux/v4l2-controls.h
-> > > @@ -3495,6 +3495,11 @@ struct v4l2_ctrl_av1_film_grain {
-> > >  #define V4L2_CID_M2M_AUDIO_CLASS_BASE  (V4L2_CTRL_CLASS_M2M_AUDIO | =
-0x900)
-> > >  #define V4L2_CID_M2M_AUDIO_CLASS       (V4L2_CTRL_CLASS_M2M_AUDIO | =
-1)
-> > >
-> > > +#define V4L2_CID_M2M_AUDIO_SOURCE_RATE       (V4L2_CID_M2M_AUDIO_CLA=
-SS_BASE + 0)
-> > > +#define V4L2_CID_M2M_AUDIO_DEST_RATE (V4L2_CID_M2M_AUDIO_CLASS_BASE =
-+ 1)
-> > > +#define V4L2_CID_M2M_AUDIO_SOURCE_RATE_OFFSET        (V4L2_CID_M2M_A=
-UDIO_CLASS_BASE + 2)
-> > > +#define V4L2_CID_M2M_AUDIO_DEST_RATE_OFFSET  (V4L2_CID_M2M_AUDIO_CLA=
-SS_BASE + 3)
-> > > +
-> > >  /* MPEG-compression definitions kept for backwards compatibility */
-> > >  #ifndef __KERNEL__
-> > >  #define V4L2_CTRL_CLASS_MPEG            V4L2_CTRL_CLASS_CODEC =20
-> >
-> >
-> >
-> > Thanks,
-> > Mauro =20
+> Actually I try to avoid including the include/uapi/sound/asound.h.
+> Because in user space, there is another copy in alsa-lib (asoundlib.h).
+> There will be conflict in userspace when including videodev2.h and
+> asoundlib.h.
 
+Well, alsasoundlib.h seems to be using the same definitions:
+	https://github.com/michaelwu/alsa-lib/blob/master/include/pcm.h
 
+So, I can't see what would be the actual issue, as both userspace library
+and ALSA internal headers use the same magic numbers.
+
+You can still do things like:
+
+	#ifdef __KERNEL__
+	#  include <sound/asound.h>
+	#else
+	#  include <asoundlib.h>
+	#endif
+
+To avoid such kind of conflicts, if you need to have it included on
+some header file. Yet, I can't see why you would need that.
+
+IMO, at uAPI headers, you just need to declare the uAPI audiofmt field
+to be either __u32 or __u64, pointing it to where this value comes from
+(on both userspace and Kernelspace. E. g.:
+
+/**
+ * struct v4l2_audio_format - audio data format definition
+ * @audioformat:
+ *	an integer number matching the fields inside
+ *	enum snd_pcm_format_t (e. g. `SNDRV_PCM_FORMAT_*`), as defined
+ *	in include/uapi/sound/asound.h and
+ *      https://www.alsa-project.org/alsa-doc/alsa-lib/group___p_c_m.html#g=
+aa14b7f26877a812acbb39811364177f8.
+ * @channels:		channel numbers
+ * @buffersize:		maximum size in bytes required for data
+ */
+struct v4l2_audio_format {
+	__u32				audioformat;
+	__u32				channels;
+	__u32				buffersize;
+} __attribute__ ((packed));
+
+Then, at documentation you just need to point to where the
+possible values for SNDRV_PCM_FORMAT_ are defined. No need to
+document them one by one.
+
+With such definition, you'll only need to include sound/asound.h
+within the kAPI scope.
+
+>=20
+> And in the V4l framework, the fourcc type is commonly used in other
+> cases (video, radio, touch, meta....), to avoid changing common code
+> a lot, so I think using fourcc definition for audio may be simpler.
+
+Those are real video streams (or a video-related streams, in the case
+of metadata) where fourcc is widely used. There, it makes sense.
+However, ALSA format definitions are already being used for a long time.
+There's no sense on trying to reinvent it - or having an abstract layer
+to convert from/to fourcc <=3D=3D> enum snd_pcm_format_t. Just use what is
+there already.
 
 Thanks,
 Mauro
