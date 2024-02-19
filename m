@@ -1,71 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC36E859B3A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Feb 2024 05:05:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D907859B69
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Feb 2024 05:30:25 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=cVEnFbTG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ny0cysA8;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TdTVD43ygz3d40
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Feb 2024 15:05:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TdV2R473xz3d32
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Feb 2024 15:30:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=cVEnFbTG;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ny0cysA8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::130; helo=mail-il1-x130.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-x130.google.com (mail-il1-x130.google.com [IPv6:2607:f8b0:4864:20::130])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TdTTV2mlXz3c2K
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Feb 2024 15:05:16 +1100 (AEDT)
-Received: by mail-il1-x130.google.com with SMTP id e9e14a558f8ab-363b37b6799so11304885ab.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Feb 2024 20:05:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708315513; x=1708920313; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Nna+GUj9CQ2WZrxvQX42Zjl9ya+Rgw72c7b/L2nye4Y=;
-        b=cVEnFbTGLwSw/f3zGAVRakSNWlrKuc6fAybwaKmkbsJS2zTVED8vSMTa10ZiyOLgdO
-         JnXc2rQa5DMCc4EeFeORHS1JjCARoBXtvDa53o2F3TCupoLRg7R7PuZU/zxWBAEasZT5
-         gYRsyQOziAF4PtV21HuMF2ykplkKi/83p6HR5JhIP5UlQucKNoUZeboHetaAZEmPdlHZ
-         C3r/zC69/F0HiPu9bA9YX+QBDrjXqLfN/Rrz4wiP5Y74jIldlUmrJL6JeEqIUcN7keTI
-         u2l2iL8t1+OzxSNue1KNgZ1OIAnI1Yx/eYHceEjWnqq9XYDxicy3+xvp5wplmEJXVtCE
-         qW8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708315513; x=1708920313;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Nna+GUj9CQ2WZrxvQX42Zjl9ya+Rgw72c7b/L2nye4Y=;
-        b=UEsO6N30qWbNw9QO54HUwXUxY6qd6aWjUKMiqWWej4NZtWWY2T66XLxyc0xpsXLYzE
-         QinGzJKSYmhQMpfsMOFAwnWk0o0Iwy2miklzZqtgJOkWBnRYO8Si0eP2arc1EGWHfC09
-         Z2ApvdHCccclUQqYQv95T8ntPWrGcXqYKjw5xi5TQCC20onAwyqdD6cHEnVxKQFSg7v1
-         cQJ/1isodm+0J7IdEQ7WeSvC7EPuPh8teZCos94uqlwf+OsAH8rX4N05sDjm32qlp0Qs
-         9Oa8S1lVS5KW/C1GzuQhGQkRs0eS4JoIroGXRilQbEwMMew6njIP3OhboBFrdgw8cBv5
-         02+g==
-X-Forwarded-Encrypted: i=1; AJvYcCVFQ5SS/cg8loLSS0XJH5zBXhNtjhAKByxnqcBYW6eXWUsYa1UZpb2FXK+JagBcH8Bv53k7u/MEoDRpPsh7eVm1f4nL5kGSfR2VqtRQag==
-X-Gm-Message-State: AOJu0Ywavog7c7luXMlzOFDi3rgr3mEMtr961bYEzqCWWtVuIXtFVt5q
-	//PUgxLOwqFZOIaX16I+CP/Fb6yJxfxIlM/BAcHVeW07KFI9iYg5pPqRK04LTfbvhyHkf4o7xBZ
-	1S0rJ74s5AUaqc76dN/AWAX7Pb9g=
-X-Google-Smtp-Source: AGHT+IFQWSfphwrdCpDlSHfIm999z2WafX/W5AQCf8lo0hMoTfctrWBIvXyD3UbQ4B6TlRI0mbwQoS6T/QusE/aP/ng=
-X-Received: by 2002:a05:6e02:1d88:b0:365:6:b56b with SMTP id
- h8-20020a056e021d8800b003650006b56bmr9547570ila.8.1708315513621; Sun, 18 Feb
- 2024 20:05:13 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TdV1h6lSqz30YR
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Feb 2024 15:29:44 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1708316984;
+	bh=NHz/ml8wR7rRyzCrjA+ja5j9Xr/oV+FlgsSVvKeDt4k=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=ny0cysA8UOOXVNACuhPZDYckWEMfXe68/Nus80D26osTI/maRanNzo3ISD3oM62Mn
+	 APa4sdFb9dT0VET6oZ+MTMGTK6c10xlBDx1YjnvETdCFA+5nh4zQ2hzZIoJ+lLWks8
+	 4wA6L0uoqnR2ajYBkjQ+Ttfn0OUtUYmcYWxfDj4/XcDwaeIli0XlTHcO2O+h56YR0f
+	 ey2Sq49ZF4k15QzdzgxJDoUZtr9mtJk+EgLcRl5997KGV+k4QUrDDPLdXl0PCpQhft
+	 5AucMPIc5ukmFzyxADSRqzfIE0Wf9PqSp4R1QbY3UGWW1WJT8wN5iMQUMuRbv4pk+3
+	 nEL3CCqc2dYBQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4TdV1h4kDzz4wcH;
+	Mon, 19 Feb 2024 15:29:44 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>, Nathan Lynch
+ <nathanl@linux.ibm.com>
+Subject: Re: [PATCH] selftests: powerpc: Add header symlinks for building
+ papr character device tests
+In-Reply-To: <20240215215045.GU9696@kitsune.suse.cz>
+References: <20240215165527.23684-1-msuchanek@suse.de>
+ <87cysxilr5.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+ <20240215192334.GT9696@kitsune.suse.cz>
+ <87a5o1ikk0.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+ <20240215215045.GU9696@kitsune.suse.cz>
+Date: Mon, 19 Feb 2024 15:29:44 +1100
+Message-ID: <877cj113gn.fsf@mail.lhotse>
 MIME-Version: 1.0
-References: <1705581128-4604-1-git-send-email-shengjiu.wang@nxp.com>
- <1705581128-4604-9-git-send-email-shengjiu.wang@nxp.com> <20240217101926.3f1d2452@coco.lan>
-In-Reply-To: <20240217101926.3f1d2452@coco.lan>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Mon, 19 Feb 2024 12:05:02 +0800
-Message-ID: <CAA+D8APD+zL0xYkf6FxPNfM3Y3O8+PhT7WEXO7XCLAmBjoMmUA@mail.gmail.com>
-Subject: Re: [PATCH v12 08/15] media: uapi: Define audio sample format fourcc type
-To: Mauro Carvalho Chehab <mchehab@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -78,85 +64,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nicoleotsuka@gmail.com, alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, Xiubo.Lee@gmail.com, lgirdwood@gmail.com, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-kernel@vger.kernel.org, tfiga@chromium.org, hverkuil@xs4all.nl, broonie@kernel.org, sakari.ailus@iki.fi, perex@perex.cz, linux-media@vger.kernel.org, festevam@gmail.com, m.szyprowski@samsung.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, linux-kselftest@vger.kernel.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Shuah Khan <shuah@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Mauro
+Michal Such=C3=A1nek <msuchanek@suse.de> writes:
+> On Thu, Feb 15, 2024 at 01:39:27PM -0600, Nathan Lynch wrote:
+>> Michal Such=C3=A1nek <msuchanek@suse.de> writes:
+>> > On Thu, Feb 15, 2024 at 01:13:34PM -0600, Nathan Lynch wrote:
+>> >> Michal Suchanek <msuchanek@suse.de> writes:
+>> >> >
+>> >> > Without the headers the tests don't build.
+>> >> >
+>> >> > Fixes: 9118c5d32bdd ("powerpc/selftests: Add test for papr-vpd")
+>> >> > Fixes: 76b2ec3faeaa ("powerpc/selftests: Add test for papr-sysparm")
+>> >> > Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+>> >> > ---
+>> >> >  tools/testing/selftests/powerpc/include/asm/papr-miscdev.h | 1 +
+>> >> >  tools/testing/selftests/powerpc/include/asm/papr-sysparm.h | 1 +
+>> >> >  tools/testing/selftests/powerpc/include/asm/papr-vpd.h     | 1 +
+>> >> >  3 files changed, 3 insertions(+)
+>> >> >  create mode 120000 tools/testing/selftests/powerpc/include/asm/pap=
+r-miscdev.h
+>> >> >  create mode 120000 tools/testing/selftests/powerpc/include/asm/pap=
+r-sysparm.h
+>> >> >  create mode 120000
+>> >> > tools/testing/selftests/powerpc/include/asm/papr-vpd.h
+>> >>=20
+>> >> I really hope making symlinks into the kernel source isn't necessary.=
+ I
+>> >> haven't experienced build failures with these tests. How are you
+>> >> building them?
+>> >>=20
+>> >> I usually do something like (on a x86 build host):
+>> >>=20
+>> >> $ make ARCH=3Dpowerpc CROSS_COMPILE=3Dpowerpc64le-linux- ppc64le_defc=
+onfig
+>> >> $ make ARCH=3Dpowerpc CROSS_COMPILE=3Dpowerpc64le-linux- headers
+>> >> $ make ARCH=3Dpowerpc CROSS_COMPILE=3Dpowerpc64le-linux- -C tools/tes=
+ting/selftests/powerpc/
+>> >>=20
+>> >> without issue.
+>> >
+>> > I am not configuring the kernel, only building the tests, and certainly
+>> > not installing headers on the system.
+>>=20
+>> OK, but again: how do you provoke the build errors, exactly? Don't make
+>> us guess please.
+>
+> cd tools/testing/selftests/powerpc/
+>
+> make -k
+>
+>> > Apparently this is what people aim to do, and report bugs when it does
+>> > not work: build the kselftests as self-contained testsuite that relies
+>> > only on standard libc, and whatever it brought in the sources.
+>> >
+>> > That said, the target to install headers is headers_install, not
+>> > headers. The headers target is not documented, it's probably meant to =
+be
+>> > internal to the build system. Yet it is not enforced that it is built
+>> > before building the selftests.
+>>=20
+>> <shrug> the headers target is used in Documentation/dev-tools/kselftest.=
+rst:
+>>=20
+>> """
+>> To build the tests::
+>>=20
+>>   $ make headers
+>>   $ make -C tools/testing/selftests
+>> """
+>
+> Indeed so it's not supposed to work otherwise. It would be nice if it
+> did but might be difficult to achieve with plain makefiles.
 
-On Sat, Feb 17, 2024 at 5:19=E2=80=AFPM Mauro Carvalho Chehab
-<mchehab@kernel.org> wrote:
->
-> Em Thu, 18 Jan 2024 20:32:01 +0800
-> Shengjiu Wang <shengjiu.wang@nxp.com> escreveu:
->
-> > The audio sample format definition is from alsa,
-> > the header file is include/uapi/sound/asound.h, but
-> > don't include this header file directly, because in
-> > user space, there is another copy in alsa-lib.
-> > There will be conflict in userspace for include
-> > videodev2.h & asound.h and asoundlib.h
-> >
-> > Here still use the fourcc format.
-> >
-> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > ---
-> >  .../userspace-api/media/v4l/pixfmt-audio.rst  | 87 +++++++++++++++++++
-> >  .../userspace-api/media/v4l/pixfmt.rst        |  1 +
-> >  drivers/media/v4l2-core/v4l2-ioctl.c          | 13 +++
-> >  include/uapi/linux/videodev2.h                | 23 +++++
-> >  4 files changed, 124 insertions(+)
-> >  create mode 100644 Documentation/userspace-api/media/v4l/pixfmt-audio.=
-rst
-> >
-> > diff --git a/Documentation/userspace-api/media/v4l/pixfmt-audio.rst b/D=
-ocumentation/userspace-api/media/v4l/pixfmt-audio.rst
-> > new file mode 100644
-> > index 000000000000..04b4a7fbd8f4
-> > --- /dev/null
-> > +++ b/Documentation/userspace-api/media/v4l/pixfmt-audio.rst
-> > @@ -0,0 +1,87 @@
-> > +.. SPDX-License-Identifier: GFDL-1.1-no-invariants-or-later
-> > +
-> > +.. _pixfmt-audio:
-> > +
-> > +*************
-> > +Audio Formats
-> > +*************
-> > +
-> > +These formats are used for :ref:`audiomem2mem` interface only.
-> > +
-> > +.. tabularcolumns:: |p{5.8cm}|p{1.2cm}|p{10.3cm}|
-> > +
-> > +.. cssclass:: longtable
-> > +
-> > +.. flat-table:: Audio Format
-> > +    :header-rows:  1
-> > +    :stub-columns: 0
-> > +    :widths:       3 1 4
-> > +
-> > +    * - Identifier
-> > +      - Code
-> > +      - Details
-> > +    * .. _V4L2-AUDIO-FMT-S8:
-> > +
-> > +      - ``V4L2_AUDIO_FMT_S8``
-> > +      - 'S8'
-> > +      - Corresponds to SNDRV_PCM_FORMAT_S8 in ALSA
-> > +    * .. _V4L2-AUDIO-FMT-S16-LE:
->
-> Hmm... why can't we just use SNDRV_*_FORMAT_*? Those are already part of
-> an uAPI header. No need to add any abstraction here and/or redefine
-> what is there already at include/uapi/sound/asound.h.
->
-Actually I try to avoid including the include/uapi/sound/asound.h.
-Because in user space, there is another copy in alsa-lib (asoundlib.h).
-There will be conflict in userspace when including videodev2.h and
-asoundlib.h.
+It used to work without the headers, but at some point folks decided it
+was causing too many problems and building the headers was made mandatory.
 
-And in the V4l framework, the fourcc type is commonly used in other
-cases (video, radio, touch, meta....), to avoid changing common code
-a lot, so I think using fourcc definition for audio may be simpler.
+Note that by default they aren't installed globally, they just end up in
+$KBUILD_OUTPUT/usr/include. So it shouldn't affect the host system.
 
-Best regards
-Shengjiu Wang
+cheers
