@@ -1,69 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABA6C85CAB2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Feb 2024 23:26:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED05685CABA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Feb 2024 23:27:37 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=motorola.com header.i=@motorola.com header.a=rsa-sha256 header.s=DKIM202306 header.b=TCM9V8XE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=motorola.com header.i=@motorola.com header.a=rsa-sha256 header.s=DKIM202306 header.b=ElSgGv+K;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TfYt24Dv9z3vYV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 09:26:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TfYtv60M6z3vgk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 09:27:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=motorola.com header.i=@motorola.com header.a=rsa-sha256 header.s=DKIM202306 header.b=TCM9V8XE;
+	dkim=pass (2048-bit key; unprotected) header.d=motorola.com header.i=@motorola.com header.a=rsa-sha256 header.s=DKIM202306 header.b=ElSgGv+K;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=motorola.com (client-ip=148.163.148.104; helo=mx0a-00823401.pphosted.com; envelope-from=mbland@motorola.com; receiver=lists.ozlabs.org)
 Received: from mx0a-00823401.pphosted.com (mx0a-00823401.pphosted.com [148.163.148.104])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TfXvY6CT1z2yk7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Feb 2024 08:43:03 +1100 (AEDT)
-Received: from pps.filterd (m0355086.ppops.net [127.0.0.1])
-	by mx0a-00823401.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41KJDXCa003915;
-	Tue, 20 Feb 2024 20:33:15 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TfYHs6972z30fm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Feb 2024 09:00:40 +1100 (AEDT)
+Received: from pps.filterd (m0355087.ppops.net [127.0.0.1])
+	by mx0a-00823401.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41KJD95s024286;
+	Tue, 20 Feb 2024 20:33:20 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=motorola.com; h=
-	from:to:cc:subject:date:message-id; s=DKIM202306; bh=apTduRvBWpk
-	BsoALNYmwCiUzyclrqb5Qqfle8axRCBQ=; b=TCM9V8XExFWvbGVqBcf32wkNxb+
-	BrfAh7wITVBSxO18Poqt5IgDbcjXMCl/VaVDbZwOEwbvOj7EeUlK1f/xMJAq6Sdc
-	U8QWrc+4tRL0xT+xN/vq8GeuVulsDE7m4je2OFTbm2gRlF/OPCrOB74ewg75HmSq
-	KStzACWZEXUh7ExFSOYMLkmXAzp0vHx6eSCSNPVrTlGhW9oCqqspLFSNQARFJ3MJ
-	b/ucayKYZxdIAU6650Bjwzwsehfvo+FtpOaVoAzEMD8elDEbBgTzG2f0TlICEgen
-	HJ/O8kdJxYrtUK9S/mJWn97aDSgo4e3PxZM/wYKwKpMNdV1HTjda54mLMvQ==
+	from:to:cc:subject:date:message-id:in-reply-to:references; s=
+	DKIM202306; bh=lwi3HRNY78hVZA0tkjf7HxRAkL6o9c683flfMjEmlDw=; b=E
+	lSgGv+KqoOf5uoj86cmnKJHlpO8dh3somQfJMLfScSNqsu6w2yerKMo4dfeFFdjc
+	ac0NUN5+TdUJgTX/l98WxBM2B2g9h4agUt2h5xsTdnQM3W5+KVeo4VL+5TT1Ih/A
+	28MoIHA57HPmOmTXO2DDqDVDP/tktkt/rWfWggdoPMwsl1gv/kFDWTT8Lmmu8h8E
+	4WSK0ZZkUD0mbRcWeNuLl5MTFmyj4fWznK/5Z8Fs6+RzBDvb9vO+uhnPmXpO5bWZ
+	Wpec6+tkdY03l9oWiYDuUUeH70qYhoL90l7Yg9SbclAwfFkO/NUPP8i9FbLKVX4k
+	wF0RW4+b/UsQdUbrND77w==
 Received: from ilclpfpp01.lenovo.com ([144.188.128.67])
-	by mx0a-00823401.pphosted.com (PPS) with ESMTPS id 3wd21w05e0-1
+	by mx0a-00823401.pphosted.com (PPS) with ESMTPS id 3wd22085c8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 20 Feb 2024 20:33:15 +0000 (GMT)
+	Tue, 20 Feb 2024 20:33:20 +0000 (GMT)
 Received: from ilclmmrp01.lenovo.com (ilclmmrp01.mot.com [100.65.83.165])
 	(using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ilclpfpp01.lenovo.com (Postfix) with ESMTPS id 4TfWLy1rvZzdDsy;
-	Tue, 20 Feb 2024 20:33:14 +0000 (UTC)
+	by ilclpfpp01.lenovo.com (Postfix) with ESMTPS id 4TfWM34D5FzfBZq;
+	Tue, 20 Feb 2024 20:33:19 +0000 (UTC)
 Received: from ilclasset01.mot.com (ilclasset01.mot.com [100.64.7.105])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: mbland)
-	by ilclmmrp01.lenovo.com (Postfix) with ESMTPSA id 4TfWLy0zLHz3n3fr;
-	Tue, 20 Feb 2024 20:33:14 +0000 (UTC)
+	by ilclmmrp01.lenovo.com (Postfix) with ESMTPSA id 4TfWM33V0nz3n3fr;
+	Tue, 20 Feb 2024 20:33:19 +0000 (UTC)
 From: Maxwell Bland <mbland@motorola.com>
 To: linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 0/4] arm64: mm: support dynamic vmalloc/pmd configuration
-Date: Tue, 20 Feb 2024 14:32:52 -0600
-Message-Id: <20240220203256.31153-1-mbland@motorola.com>
+Subject: [PATCH 2/4] mm: pgalloc: support address-conditional pmd allocation
+Date: Tue, 20 Feb 2024 14:32:54 -0600
+Message-Id: <20240220203256.31153-3-mbland@motorola.com>
 X-Mailer: git-send-email 2.17.1
-X-Proofpoint-GUID: doXRsqZ8zYPmc1DRvfdxdFLT0EPlBuO3
-X-Proofpoint-ORIG-GUID: doXRsqZ8zYPmc1DRvfdxdFLT0EPlBuO3
+In-Reply-To: <20240220203256.31153-1-mbland@motorola.com>
+References: <20240220203256.31153-1-mbland@motorola.com>
+X-Proofpoint-GUID: 2FTPwLLxVF_PmOE_sZo-Tr78eaAtLsFQ
+X-Proofpoint-ORIG-GUID: 2FTPwLLxVF_PmOE_sZo-Tr78eaAtLsFQ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-02-20_06,2024-02-20_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1011
- spamscore=0 mlxscore=0 priorityscore=1501 mlxlogscore=509 phishscore=0
- bulkscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2402120000
- definitions=main-2402200146
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ priorityscore=1501 bulkscore=0 phishscore=0 lowpriorityscore=0
+ malwarescore=0 mlxlogscore=781 spamscore=0 clxscore=1015 impostorscore=0
+ adultscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2402120000 definitions=main-2402200146
 X-Mailman-Approved-At: Wed, 21 Feb 2024 09:21:41 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -81,142 +84,233 @@ Cc: mark.rutland@arm.com, linux-efi@vger.kernel.org, david@redhat.com, catalin.m
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Reworks ARM's virtual memory allocation infrastructure to support
-dynamic enforcement of page middle directory PXNTable restrictions
-rather than only during the initial memory mapping. Runtime enforcement
-of this bit prevents write-then-execute attacks, where malicious code is
-staged in vmalloc'd data regions, and later the page table is changed to
-make this code executable.
+While other descriptors (e.g. pud) allow allocations conditional on
+which virtual address is allocated, pmd descriptor allocations do not.
+However, adding support for this is straightforward and is beneficial to
+future kernel development targeting the PMD memory granularity.
 
-Previously the entire region from VMALLOC_START to VMALLOC_END was
-vulnerable, but now the vulnerable region is restricted to the 2GB
-reserved by module_alloc, a region which is generally read-only and more
-difficult to inject staging code into, e.g., data must pass the BPF
-verifier. These changes also set the stage for other systems, such as
-KVM-level (EL2) changes to mark page tables immutable and code page
-verification changes, forging a path toward complete mitigation of
-kernel exploits on ARM.
+As many architectures already implement pmd_populate_kernel in an
+address-generic manner, it is necessary to roll out support
+incrementally. For this purpose a preprocessor flag,
+__HAVE_ARCH_ADDR_COND_PMD is introduced to capture whether the
+architecture supports some feature requiring PMD allocation conditional
+on virtual address. Some microarchitectures (e.g. arm64) support
+configurations for table descriptors, for example to enforce Privilege
+eXecute Never, which benefit from knowing the virtual memory addresses
+referenced by PMDs.
 
-Implementing this required minimal changes to the generic vmalloc
-interface in the kernel to allow architecture overrides of some vmalloc
-wrapper functions, refactoring vmalloc calls to use a standard interface
-in the generic kernel, and passing the address parameter already passed
-into PTE allocation to the pte_allocate child function call.
-
-The new arm64 vmalloc wrapper functions ensure vmalloc data is not
-allocated into the region reserved for module_alloc. arm64 BPF and
-kprobe code also see a two-line-change ensuring their allocations abide
-by the segmentation of code from data. Finally, arm64's pmd_populate
-function is modified to set the PXNTable bit appropriately.
+Thus two major arguments in favor of this change are (1) unformity of
+allocation between PMD and other table descriptor types and (2) the
+capability of address-specific PMD allocation.
 
 Signed-off-by: Maxwell Bland <mbland@motorola.com>
-
 ---
+ include/asm-generic/pgalloc.h | 18 ++++++++++++++++++
+ include/linux/mm.h            |  4 ++--
+ mm/hugetlb_vmemmap.c          |  4 ++--
+ mm/kasan/init.c               | 22 +++++++++++++---------
+ mm/memory.c                   |  4 ++--
+ mm/percpu.c                   |  2 +-
+ mm/pgalloc-track.h            |  3 ++-
+ mm/sparse-vmemmap.c           |  2 +-
+ 8 files changed, 41 insertions(+), 18 deletions(-)
 
-After Mark Rutland's feedback last week on my more minimal patch, see
-
-<CAP5Mv+ydhk=Ob4b40ZahGMgT-5+-VEHxtmA=-LkJiEOOU+K6hw@mail.gmail.com>
-
-I adopted a more sweeping and more correct overhaul of ARM's virtual
-memory allocation infrastructure to support these changes. This patch
-guarantees our ability to write future systems with a strong and
-accessible distinction between code and data at the page allocation
-layer, bolstering the guarantees of complementary contributions, i.e.
-W^X and kCFI.
-
-The current patch minimally reduces available vmalloc space, removing
-the 2GB that should be reserved for code allocations regardless, and I
-feel really benefits the kernel by making several memory allocation
-interfaces more uniform, and providing hooks for non-ARM architectures
-to follow suit.
-
-I have done some minimal runtime testing using Torvald's test-tlb script
-on a QEMU VM, but maybe more extensive benchmarking is needed?
-
-Size: Before Patch -> After Patch
-4k: 4.09ns  4.15ns  4.41ns  4.43ns -> 3.68ns  3.73ns  3.67ns  3.73ns 
-8k: 4.22ns  4.19ns  4.30ns  4.15ns -> 3.99ns  3.89ns  4.12ns  4.04ns 
-16k: 3.97ns  4.31ns  4.30ns  4.28ns -> 4.03ns  3.98ns  4.06ns  4.06ns 
-32k: 3.82ns  4.51ns  4.25ns  4.31ns -> 3.99ns  4.09ns  4.07ns  5.17ns 
-64k: 4.50ns  5.59ns  6.13ns  6.14ns -> 4.23ns  4.26ns  5.91ns  5.93ns 
-128k: 5.06ns  4.47ns  6.75ns  6.69ns -> 4.47ns  4.71ns  6.54ns  6.44ns 
-256k: 4.83ns  4.43ns  6.62ns  6.21ns -> 4.39ns  4.62ns  6.71ns  6.65ns 
-512k: 4.45ns  4.75ns  6.19ns  6.65ns -> 4.86ns  5.26ns  7.77ns  6.68ns 
-1M: 4.72ns  4.73ns  6.74ns  6.47ns -> 4.29ns  4.45ns  6.87ns  6.59ns 
-2M: 4.66ns  4.86ns  14.49ns  15.00ns -> 4.53ns  4.57ns  15.91ns  15.90ns 
-4M: 4.85ns  4.95ns  15.90ns  15.98ns -> 4.48ns  4.74ns  17.27ns  17.36ns 
-6M: 4.94ns  5.03ns  17.19ns  17.31ns -> 4.70ns  4.93ns  18.02ns  18.23ns 
-8M: 5.05ns  5.18ns  17.49ns  17.64ns -> 4.96ns  5.07ns  18.84ns  18.72ns 
-16M: 5.55ns  5.79ns  20.99ns  23.70ns -> 5.46ns  5.72ns  22.76ns  26.51ns
-32M: 8.54ns  9.06ns  124.61ns 125.07ns -> 8.43ns  8.59ns  116.83ns 138.83ns
-64M: 8.42ns  8.63ns  196.17ns 204.52ns -> 8.26ns  8.43ns  193.49ns 203.85ns
-128M: 8.31ns  8.58ns  230.46ns 242.63ns -> 8.22ns  8.39ns  227.99ns 240.29ns
-256M: 8.80ns  8.80ns  248.24ns 261.68ns -> 8.35ns  8.55ns  250.18ns 262.20ns
-
-Note I also chose to enforce PXNTable at the PMD layer only (for now),
-since the 194 descriptors which are affected by this change on my
-testing setup are not sufficient to warrant enforcement at a coarser
-granularity.
-
-The architecture-independent changes (I term "generic") can be
-classified only as refactoring, but I feel are also major improvements
-in that they standardize most uses of the vmalloc interface across the
-kernel.
-
-Note this patch reduces the arm64 allocated region for BPF and kprobes,
-but only to match with the existing allocation choices made by the
-generic kernel. I will admit I do not understand why BPF JIT allocation
-code was duplicated into arm64, but I also feel that this was either an
-artifact or that these overrides for generic allocation should require a
-specific KConfig as they trade off between security and space. That
-said, I have chosen not to wrap this patch in a KConfig interface, as I
-feel the changes provide significant benefit to the arm64 kernel's
-baseline security, though a KConfig could certainly be added if the
-maintainers see the need.
-
-Maxwell Bland (4):
-  mm/vmalloc: allow arch-specific vmalloc_node overrides
-  mm: pgalloc: support address-conditional pmd allocation
-  arm64: separate code and data virtual memory allocation
-  arm64: dynamic enforcement of pmd-level PXNTable
-
- arch/arm/kernel/irq.c               |  2 +-
- arch/arm64/include/asm/pgalloc.h    | 11 +++++-
- arch/arm64/include/asm/vmalloc.h    |  8 ++++
- arch/arm64/include/asm/vmap_stack.h |  2 +-
- arch/arm64/kernel/efi.c             |  2 +-
- arch/arm64/kernel/module.c          |  7 ++++
- arch/arm64/kernel/probes/kprobes.c  |  2 +-
- arch/arm64/mm/Makefile              |  3 +-
- arch/arm64/mm/trans_pgd.c           |  2 +-
- arch/arm64/mm/vmalloc.c             | 57 +++++++++++++++++++++++++++++
- arch/arm64/net/bpf_jit_comp.c       |  5 ++-
- arch/powerpc/kernel/irq.c           |  2 +-
- arch/riscv/include/asm/irq_stack.h  |  2 +-
- arch/s390/hypfs/hypfs_diag.c        |  2 +-
- arch/s390/kernel/setup.c            |  6 +--
- arch/s390/kernel/sthyi.c            |  2 +-
- include/asm-generic/pgalloc.h       | 18 +++++++++
- include/linux/mm.h                  |  4 +-
- include/linux/vmalloc.h             | 15 +++++++-
- kernel/bpf/syscall.c                |  4 +-
- kernel/fork.c                       |  4 +-
- kernel/scs.c                        |  3 +-
- lib/objpool.c                       |  2 +-
- lib/test_vmalloc.c                  |  6 +--
- mm/hugetlb_vmemmap.c                |  4 +-
- mm/kasan/init.c                     | 22 ++++++-----
- mm/memory.c                         |  4 +-
- mm/percpu.c                         |  2 +-
- mm/pgalloc-track.h                  |  3 +-
- mm/sparse-vmemmap.c                 |  2 +-
- mm/util.c                           |  3 +-
- mm/vmalloc.c                        | 39 +++++++-------------
- 32 files changed, 176 insertions(+), 74 deletions(-)
- create mode 100644 arch/arm64/mm/vmalloc.c
-
-
-base-commit: b401b621758e46812da61fa58a67c3fd8d91de0d
+diff --git a/include/asm-generic/pgalloc.h b/include/asm-generic/pgalloc.h
+index 879e5f8aa5e9..e5cdce77c6e4 100644
+--- a/include/asm-generic/pgalloc.h
++++ b/include/asm-generic/pgalloc.h
+@@ -142,6 +142,24 @@ static inline pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long addr)
+ }
+ #endif
+ 
++#ifdef __HAVE_ARCH_ADDR_COND_PMD
++static inline void pmd_populate_kernel(struct mm_struct *mm, pmd_t *pmdp,
++			pte_t *ptep, unsigned long address);
++#else
++static inline void pmd_populate_kernel(struct mm_struct *mm, pmd_t *pmdp,
++			pte_t *ptep);
++#endif
++
++static inline void pmd_populate_kernel_at(struct mm_struct *mm, pmd_t *pmdp,
++			pte_t *ptep, unsigned long address)
++{
++#ifdef __HAVE_ARCH_ADDR_COND_PMD
++	pmd_populate_kernel(mm, pmdp, ptep, address);
++#else
++	pmd_populate_kernel(mm, pmdp, ptep);
++#endif
++}
++
+ #ifndef __HAVE_ARCH_PMD_FREE
+ static inline void pmd_free(struct mm_struct *mm, pmd_t *pmd)
+ {
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index f5a97dec5169..6a9d5ded428d 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2782,7 +2782,7 @@ static inline void mm_dec_nr_ptes(struct mm_struct *mm) {}
+ #endif
+ 
+ int __pte_alloc(struct mm_struct *mm, pmd_t *pmd);
+-int __pte_alloc_kernel(pmd_t *pmd);
++int __pte_alloc_kernel(pmd_t *pmd, unsigned long address);
+ 
+ #if defined(CONFIG_MMU)
+ 
+@@ -2977,7 +2977,7 @@ pte_t *pte_offset_map_nolock(struct mm_struct *mm, pmd_t *pmd,
+ 		 NULL : pte_offset_map_lock(mm, pmd, address, ptlp))
+ 
+ #define pte_alloc_kernel(pmd, address)			\
+-	((unlikely(pmd_none(*(pmd))) && __pte_alloc_kernel(pmd))? \
++	((unlikely(pmd_none(*(pmd))) && __pte_alloc_kernel(pmd, address)) ? \
+ 		NULL: pte_offset_kernel(pmd, address))
+ 
+ #if USE_SPLIT_PMD_PTLOCKS
+diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+index da177e49d956..1f5664b656f1 100644
+--- a/mm/hugetlb_vmemmap.c
++++ b/mm/hugetlb_vmemmap.c
+@@ -58,7 +58,7 @@ static int vmemmap_split_pmd(pmd_t *pmd, struct page *head, unsigned long start,
+ 	if (!pgtable)
+ 		return -ENOMEM;
+ 
+-	pmd_populate_kernel(&init_mm, &__pmd, pgtable);
++	pmd_populate_kernel_at(&init_mm, &__pmd, pgtable, addr);
+ 
+ 	for (i = 0; i < PTRS_PER_PTE; i++, addr += PAGE_SIZE) {
+ 		pte_t entry, *pte;
+@@ -81,7 +81,7 @@ static int vmemmap_split_pmd(pmd_t *pmd, struct page *head, unsigned long start,
+ 
+ 		/* Make pte visible before pmd. See comment in pmd_install(). */
+ 		smp_wmb();
+-		pmd_populate_kernel(&init_mm, pmd, pgtable);
++		pmd_populate_kernel_at(&init_mm, pmd, pgtable, addr);
+ 		if (!(walk->flags & VMEMMAP_SPLIT_NO_TLB_FLUSH))
+ 			flush_tlb_kernel_range(start, start + PMD_SIZE);
+ 	} else {
+diff --git a/mm/kasan/init.c b/mm/kasan/init.c
+index 89895f38f722..1e31d965a14e 100644
+--- a/mm/kasan/init.c
++++ b/mm/kasan/init.c
+@@ -116,8 +116,9 @@ static int __ref zero_pmd_populate(pud_t *pud, unsigned long addr,
+ 		next = pmd_addr_end(addr, end);
+ 
+ 		if (IS_ALIGNED(addr, PMD_SIZE) && end - addr >= PMD_SIZE) {
+-			pmd_populate_kernel(&init_mm, pmd,
+-					lm_alias(kasan_early_shadow_pte));
++			pmd_populate_kernel_at(&init_mm, pmd,
++					lm_alias(kasan_early_shadow_pte),
++					addr);
+ 			continue;
+ 		}
+ 
+@@ -131,7 +132,7 @@ static int __ref zero_pmd_populate(pud_t *pud, unsigned long addr,
+ 			if (!p)
+ 				return -ENOMEM;
+ 
+-			pmd_populate_kernel(&init_mm, pmd, p);
++			pmd_populate_kernel_at(&init_mm, pmd, p, addr);
+ 		}
+ 		zero_pte_populate(pmd, addr, next);
+ 	} while (pmd++, addr = next, addr != end);
+@@ -157,8 +158,9 @@ static int __ref zero_pud_populate(p4d_t *p4d, unsigned long addr,
+ 			pud_populate(&init_mm, pud,
+ 					lm_alias(kasan_early_shadow_pmd));
+ 			pmd = pmd_offset(pud, addr);
+-			pmd_populate_kernel(&init_mm, pmd,
+-					lm_alias(kasan_early_shadow_pte));
++			pmd_populate_kernel_at(&init_mm, pmd,
++					lm_alias(kasan_early_shadow_pte),
++					addr);
+ 			continue;
+ 		}
+ 
+@@ -203,8 +205,9 @@ static int __ref zero_p4d_populate(pgd_t *pgd, unsigned long addr,
+ 			pud_populate(&init_mm, pud,
+ 					lm_alias(kasan_early_shadow_pmd));
+ 			pmd = pmd_offset(pud, addr);
+-			pmd_populate_kernel(&init_mm, pmd,
+-					lm_alias(kasan_early_shadow_pte));
++			pmd_populate_kernel_at(&init_mm, pmd,
++					lm_alias(kasan_early_shadow_pte),
++					addr);
+ 			continue;
+ 		}
+ 
+@@ -266,8 +269,9 @@ int __ref kasan_populate_early_shadow(const void *shadow_start,
+ 			pud_populate(&init_mm, pud,
+ 					lm_alias(kasan_early_shadow_pmd));
+ 			pmd = pmd_offset(pud, addr);
+-			pmd_populate_kernel(&init_mm, pmd,
+-					lm_alias(kasan_early_shadow_pte));
++			pmd_populate_kernel_at(&init_mm, pmd,
++					lm_alias(kasan_early_shadow_pte),
++					addr);
+ 			continue;
+ 		}
+ 
+diff --git a/mm/memory.c b/mm/memory.c
+index 15f8b10ea17c..15702822d904 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -447,7 +447,7 @@ int __pte_alloc(struct mm_struct *mm, pmd_t *pmd)
+ 	return 0;
+ }
+ 
+-int __pte_alloc_kernel(pmd_t *pmd)
++int __pte_alloc_kernel(pmd_t *pmd, unsigned long address)
+ {
+ 	pte_t *new = pte_alloc_one_kernel(&init_mm);
+ 	if (!new)
+@@ -456,7 +456,7 @@ int __pte_alloc_kernel(pmd_t *pmd)
+ 	spin_lock(&init_mm.page_table_lock);
+ 	if (likely(pmd_none(*pmd))) {	/* Has another populated it ? */
+ 		smp_wmb(); /* See comment in pmd_install() */
+-		pmd_populate_kernel(&init_mm, pmd, new);
++		pmd_populate_kernel_at(&init_mm, pmd, new, address);
+ 		new = NULL;
+ 	}
+ 	spin_unlock(&init_mm.page_table_lock);
+diff --git a/mm/percpu.c b/mm/percpu.c
+index 4e11fc1e6def..7312e584c1b5 100644
+--- a/mm/percpu.c
++++ b/mm/percpu.c
+@@ -3238,7 +3238,7 @@ void __init __weak pcpu_populate_pte(unsigned long addr)
+ 		new = memblock_alloc(PTE_TABLE_SIZE, PTE_TABLE_SIZE);
+ 		if (!new)
+ 			goto err_alloc;
+-		pmd_populate_kernel(&init_mm, pmd, new);
++		pmd_populate_kernel_at(&init_mm, pmd, new, addr);
+ 	}
+ 
+ 	return;
+diff --git a/mm/pgalloc-track.h b/mm/pgalloc-track.h
+index e9e879de8649..0984681c03d4 100644
+--- a/mm/pgalloc-track.h
++++ b/mm/pgalloc-track.h
+@@ -45,7 +45,8 @@ static inline pmd_t *pmd_alloc_track(struct mm_struct *mm, pud_t *pud,
+ 
+ #define pte_alloc_kernel_track(pmd, address, mask)			\
+ 	((unlikely(pmd_none(*(pmd))) &&					\
+-	  (__pte_alloc_kernel(pmd) || ({*(mask)|=PGTBL_PMD_MODIFIED;0;})))?\
++	  (__pte_alloc_kernel(pmd, address) ||				\
++		({*(mask) |= PGTBL_PMD_MODIFIED; 0; }))) ?		\
+ 		NULL: pte_offset_kernel(pmd, address))
+ 
+ #endif /* _LINUX_PGALLOC_TRACK_H */
+diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+index a2cbe44c48e1..d876cc4dc700 100644
+--- a/mm/sparse-vmemmap.c
++++ b/mm/sparse-vmemmap.c
+@@ -191,7 +191,7 @@ pmd_t * __meminit vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node)
+ 		void *p = vmemmap_alloc_block_zero(PAGE_SIZE, node);
+ 		if (!p)
+ 			return NULL;
+-		pmd_populate_kernel(&init_mm, pmd, p);
++		pmd_populate_kernel_at(&init_mm, pmd, p, addr);
+ 	}
+ 	return pmd;
+ }
 -- 
 2.39.2
 
