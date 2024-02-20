@@ -2,50 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A464685CAA4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Feb 2024 23:23:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B08485CAA7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Feb 2024 23:23:51 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=nua/yKas;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=R4B8JA2I;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TfYnj49swz3dX8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 09:23:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TfYpY3Rp5z3dTB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 09:23:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=nua/yKas;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=R4B8JA2I;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f403:2415::600; helo=nam11-dm6-obe.outbound.protection.outlook.com; envelope-from=kprateek.nayak@amd.com; receiver=lists.ozlabs.org)
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on20600.outbound.protection.outlook.com [IPv6:2a01:111:f403:2415::600])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f403:2418::600; helo=nam12-bn8-obe.outbound.protection.outlook.com; envelope-from=kprateek.nayak@amd.com; receiver=lists.ozlabs.org)
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on20600.outbound.protection.outlook.com [IPv6:2a01:111:f403:2418::600])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TfR066Q6Jz3bc2
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Feb 2024 04:16:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TfR0q4kT6z3brm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Feb 2024 04:17:13 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AKm0qV1ViYO6k6xFAms8GJXCIGavzaCUXjmiV9tWZ7KJBIyHo80lSsMv3Oj/JDPsKsIuTWb15z9PalzkR9qi0bdbz6dFitDX8H/s0pndj9GsLT007qc1YhJRjBjN97jLu7sAAlCAfUsUzNXAKXq9ZR2+AeCWhwszQ2EjVVXFlaAkJKLWoVcRjxrbx6zJbPW9jiiDrapHKjT2LNBwUifos4WXpOSIRX7TMusLU5X2g2xN6EjpsbM0tKzrZes9qLUfIsSWX0gyl6nywe1LTmKprqXfngXQMgCidG2OKDDH+2C8TCmXXsYskuipA74TlV+kZjWb++/LYVi9TcxC/kswvw==
+ b=IGkWBz2TPnDVod1/AewZap0NV7EfFsj7N1ZIRbBQMupcwSWZyQY7DCSP2nDtpK2FjxQ2gk3AW68tsTB5gxao+3Hz44Zm7KPZjLVP4di0DxkDwu56Q1xCIff22pGHolXIm2g4yjLy/BZ29fx/DSb/cmjdQ33mW5EpL9BrWhY4TQwozZUtab4kYXHL6T0heiCV25PdT2F/QzUhNRaJJDHsiK51lVGPH9s/PM48/zoh7x9A3fnHiuKM43NWjMeUQ39KJmDT4u26RyGVDXCJF4HyCts10skuMag5rqM63COt+y7z/cQEF8UOpAMcYX/iKXO5fpPUp5GuomYPii0ixGGFqA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=quZsNkcGT9Wh6N0HLP1+7TfKAtPtAmacaj9LCgxfhHo=;
- b=TtrPS13UocYReYInoQ7ETK56+ROfF2KmZgJQGP8V+njL2FZzY1s+mkXP4PnGnLU2M1jnLQLRvQD5MCTBoNYKluu9z9sJOr6L+G/n+bKaGjkNsujH6N8qTyEfJbMEKsC9g1nko9LNXOu+fBX0+SFiVcyNpX0esdcMAX5jxSng0N0SgZlwF2jwX+O0U0AxSQGvmH6xqvWacXY77GU8ceb3UJhYinYiMZ23Ksibl33qjo1BM6UJAJdsoQh80HhilZREAXz0PmyL1lUaCZO0sEE2C4D4rS2KlksXVfjRP7Gfjnp1t6qBueRJ4mGA6nLNz413WMfXcnj+FLo/a7ollb9zGA==
+ bh=OQ5Bg8ms8TlJV83NKqR3M1spyrSm2VyPoRqbg+vdDVY=;
+ b=GWA85CBg4a47oZAYm1aACfr+K8T8GG3esui1scEJNak5FeUVCSOp2zIO0Gg9Sp4cZ5xaoGTgFDF36dt7sfgdt43R/ypRKHPSIA5BjbzzmY1BYP7abU4Ejco5H2vIZ337VEORC2uijPfoYHjGazkXZ++lAffByDt8pZ/4MgmfFsuyIxxXIvZ8F7T36VmKw47bZegrXhPwkXLrvS0eUbSWTllwunrO0WqUUV7Q84Fr67Qfdr7mTsKataBnF+3Mq6mgnX2eOG/+Gz4XMtJe+WTm3DVeYvcIBbJzqx0L+k4mv5Tcl4QKHiWZ6s7oUXsKCjnfEdYcYgvbMnMq71lf0QqiYg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=quZsNkcGT9Wh6N0HLP1+7TfKAtPtAmacaj9LCgxfhHo=;
- b=nua/yKasOTvHORFHiCb8vPsLqQkRZbyQAw6eOv3VPG4Ixw1lLRCx/Et9aMU8Z4CVKRl4SKEdXULH0bArx9Z8OzLi2KLYRGj09tA0MruO8pUHTQSjKQbohhEHM8f8sF0ZXCl+iC5fi5R3ez/ECs0BiEljAvjseUapeek90khZ7jc=
-Received: from DS7PR03CA0081.namprd03.prod.outlook.com (2603:10b6:5:3bb::26)
- by DM6PR12MB4203.namprd12.prod.outlook.com (2603:10b6:5:21f::21) with
+ bh=OQ5Bg8ms8TlJV83NKqR3M1spyrSm2VyPoRqbg+vdDVY=;
+ b=R4B8JA2IbzadnZHtnXAd6+wqwGR6xeo/wqY7So7qk+0A8FAGJbw0V2T7/TaKSJVDTCvV3AoVl6LQWiJdYE/VGmdRtZrBQS6xTKn8GOG8pF3MpdgPGm+p9c/MvtWAihm5AKqYncuS3g2dcfbqAM2ySd7x/DR4j115en5y4I9CYKo=
+Received: from DM6PR07CA0057.namprd07.prod.outlook.com (2603:10b6:5:74::34) by
+ IA0PR12MB8973.namprd12.prod.outlook.com (2603:10b6:208:48e::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.20; Tue, 20 Feb
- 2024 17:16:17 +0000
-Received: from DS1PEPF00017095.namprd03.prod.outlook.com
- (2603:10b6:5:3bb:cafe::f6) by DS7PR03CA0081.outlook.office365.com
- (2603:10b6:5:3bb::26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.19; Tue, 20 Feb
+ 2024 17:16:53 +0000
+Received: from DS1PEPF00017091.namprd03.prod.outlook.com
+ (2603:10b6:5:74:cafe::d) by DM6PR07CA0057.outlook.office365.com
+ (2603:10b6:5:74::34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.40 via Frontend
- Transport; Tue, 20 Feb 2024 17:16:17 +0000
+ Transport; Tue, 20 Feb 2024 17:16:53 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -53,18 +53,18 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS1PEPF00017095.mail.protection.outlook.com (10.167.17.138) with Microsoft
+ DS1PEPF00017091.mail.protection.outlook.com (10.167.17.133) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7292.25 via Frontend Transport; Tue, 20 Feb 2024 17:16:17 +0000
+ 15.20.7292.25 via Frontend Transport; Tue, 20 Feb 2024 17:16:53 +0000
 Received: from BLR5CG134614W.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 20 Feb
- 2024 11:15:57 -0600
+ 2024 11:16:32 -0600
 From: K Prateek Nayak <kprateek.nayak@amd.com>
 To: <linux-kernel@vger.kernel.org>
-Subject: [RFC PATCH 01/14] thread_info: Add helpers to test and clear TIF_NOTIFY_IPI
-Date: Tue, 20 Feb 2024 22:44:44 +0530
-Message-ID: <20240220171457.703-2-kprateek.nayak@amd.com>
+Subject: [RFC PATCH 02/14] sched: Define a need_resched_or_ipi() helper and use it treewide
+Date: Tue, 20 Feb 2024 22:44:45 +0530
+Message-ID: <20240220171457.703-3-kprateek.nayak@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240220171457.703-1-kprateek.nayak@amd.com>
 References: <20240220171457.703-1-kprateek.nayak@amd.com>
@@ -76,23 +76,23 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF00017095:EE_|DM6PR12MB4203:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4eb4d987-a812-4cdb-a2a9-08dc3237a66d
+X-MS-TrafficTypeDiagnostic: DS1PEPF00017091:EE_|IA0PR12MB8973:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4538b806-c25a-4501-e9cd-08dc3237bba1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	1PHn4rdjZx5dckahSzNyAtyE18pz/wuCdYswBnjZz1uMl4IiK+vmnleg7VvbcXv77L1F4csYu0PQ0Ilp2/XNyu/5Kf9Uq6vqq4nd/XMhPb4Gltv1tPxeCyS5VEwgfFotO/sqM3JuGIAVKPCLNnc8ZPzMueNUBPiX+owSc3i5fHS7y/mXLURcHsJgwwwrVdKWV6j6gZq3msDpBnSHiYhtEFpLN3/7gWXGME9KM55UmFz8q8cfnk8GfBOLdpelGurI1edhTrFCsnmWszgG51CaDbP+EMr3ZsfMOkJQ7xof4OijH8Rs3hQtEx0ruIXGx/nNORVnZdLIZEtwEAVN49v1ofSeMJ7opno+P+edqOFIcAZ5IJ5yn0hBuOl7K906C4iTFUMD1MdYCwveMuEzGTuyDcm0hHFHAYeJaEmDe1ANpnVqb3okggp8N2Je61UIT8SMfVMdOgYlyjJAYbeTbORjirKp4tSjwwAmUEquVGJGLiH4EJCT3N7v7Ldv8919lxsjPOKFEGpshHDhJfU/Rnh1HpHGPEfObiTtPJSzoa8XWjk9uwIdztWGe+tM78VbYLENjm7ysS6PSjp+SfSbfehlLJGv/LQRJ2Ds6Y9WvKLtsKg1MT34YAAWacAALNbZb25mESyfKuZpcpNMCDZyQuWMpETkG2WFMbJmbTVIFZ0Ldk4=
-X-Forefront-Antispam-Report: 	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(36860700004)(40470700004)(46966006);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 	gb3AWsI9V6f7lyIRtbyfoEfeN8iiv3gh+6Rll8d3JYM2FzPIuZpBaUItICl59D5B4OKr824hL7zcbvB5ZGm50UhhsD/Ihhl9eRrP8zPzbhYYV0eQ2hz3ooNM+XwXMmV87douEQtUUlZ5DpJTxR1mplG0P/eURhdzY9+6mXCF5ClNEMdsgWMuKjckxwnKb3pbaGxmOIOgYpmaPyLbqyJfW7MbJvrDqfyWY5+7drXpebbW6qx/eMi6uEs01WEXil3RAeIVNIKL+wDZb5d6+0bM+05SewSJ+Y8PCajl9GmOtVECXGljCte3j9IU2w4TIJBmr2rKlJBWMlpwOHQq7C5Fo5238bLvcsjSNSRCfzmgHcH8fNQ9Kfp0hpT3pHORb8+sUfvvKARD3L9VYH5sBBIG9E90mbOq+ZRzh77kFNmB6IF8j7PpCv9YrNp3uwfv8pk7ukRiGoG8s5ioE/NhNxx126uvmf1f2RokXKh/qeXczd7gwy/2kbiDghldUiNltwCUWJ0VXp8cGuRS/SrFcdH//f/RsDbvHc3imNHQha38CWMwF3diofli8wx4VDJaVHnXSL4SAOEqlvgfinoD2zNoDuMxs7zHl25Ckjp2JvtwLQtnJSb0bs4AzuF8Rb8U9LnvydUAiqiJjOAdDa6yVvZNAJhs1R1VAOmkF/g7aI7RoUs=
+X-Forefront-Antispam-Report: 	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(36860700004)(46966006)(40470700004);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2024 17:16:17.5310
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2024 17:16:53.1214
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4eb4d987-a812-4cdb-a2a9-08dc3237a66d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4538b806-c25a-4501-e9cd-08dc3237bba1
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: 	DS1PEPF00017095.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: 	DS1PEPF00017091.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4203
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8973
 X-Mailman-Approved-At: Wed, 21 Feb 2024 09:21:41 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -118,28 +118,23 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Gautham R. Shenoy" <gautham.shenoy@amd.com>
 
-Introduce the notion of TIF_NOTIFY_IPI flag. When a processor in
-TIF_POLLING mode needs to process an IPI, the sender sets NEED_RESCHED
-bit in idle task's thread_info to pull the target out of idle and avoids
-sending an interrupt to the idle CPU. When NEED_RESCHED is set, the
-scheduler assumes that a new task has been queued on the idle CPU and
-calls schedule_idle(), however, it is not necessary that an IPI on an
-idle CPU will necessarily end up waking a task on the said CPU. To avoid
-spurious calls to schedule_idle() assuming an IPI on an idle CPU will
-always wake a task on the said CPU, TIF_NOTIFY_IPI will be used to pull
-a TIF_POLLING CPU out of idle.
+Currently TIF_NEED_RESCHED is being overloaded, to wakeup an idle CPU in
+TIF_POLLING mode to service an IPI even if there are no new tasks being
+woken up on the said CPU.
 
-Since the IPI handlers are processed before the call to schedule_idle(),
-schedule_idle() will be called only if one of the handlers have woken up
-a new task on the CPU and has set NEED_RESCHED.
+In preparation of a proper fix, introduce a new helper
+"need_resched_or_ipi()" which is intended to return true if either
+the TIF_NEED_RESCHED flag or if TIF_NOTIFY_IPI flag is set. Use this
+helper function in place of need_resched() in idle loops where
+TIF_POLLING_NRFLAG is set.
 
-Add tif_notify_ipi() and current_clr_notify_ipi() helpers to test if
-TIF_NOTIFY_IPI is set in the current task's thread_info, and to clear it
-respectively. These interfaces will be used in subsequent patches as
-TIF_NOTIFY_IPI notion is integrated in the scheduler and in the idle
-path.
+To preserve bisectibility and avoid unbreakable idle loops, all the
+need_resched() checks within TIF_POLLING_NRFLAGS sections, have been
+replaced tree-wide with the need_resched_or_ipi() check.
 
-[ prateek: Split the changes into a separate patch, add commit log ]
+[ prateek: Replaced some of the missed out occurrences of
+  need_resched() within a TIF_POLLING sections with
+  need_resched_or_ipi() ]
 
 Cc: Richard Henderson <richard.henderson@linaro.org>
 Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
@@ -207,63 +202,158 @@ Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
 Co-developed-by: K Prateek Nayak <kprateek.nayak@amd.com>
 Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
 ---
- include/linux/thread_info.h | 43 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+ arch/x86/include/asm/mwait.h      | 2 +-
+ arch/x86/kernel/process.c         | 2 +-
+ drivers/cpuidle/cpuidle-powernv.c | 2 +-
+ drivers/cpuidle/cpuidle-pseries.c | 2 +-
+ drivers/cpuidle/poll_state.c      | 2 +-
+ include/linux/sched.h             | 5 +++++
+ include/linux/sched/idle.h        | 4 ++--
+ kernel/sched/idle.c               | 7 ++++---
+ 8 files changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/thread_info.h b/include/linux/thread_info.h
-index 9ea0b28068f4..1e10dd8c0227 100644
---- a/include/linux/thread_info.h
-+++ b/include/linux/thread_info.h
-@@ -195,6 +195,49 @@ static __always_inline bool tif_need_resched(void)
+diff --git a/arch/x86/include/asm/mwait.h b/arch/x86/include/asm/mwait.h
+index 778df05f8539..ac1370143407 100644
+--- a/arch/x86/include/asm/mwait.h
++++ b/arch/x86/include/asm/mwait.h
+@@ -115,7 +115,7 @@ static __always_inline void mwait_idle_with_hints(unsigned long eax, unsigned lo
+ 		}
  
- #endif /* _ASM_GENERIC_BITOPS_INSTRUMENTED_NON_ATOMIC_H */
+ 		__monitor((void *)&current_thread_info()->flags, 0, 0);
+-		if (!need_resched())
++		if (!need_resched_or_ipi())
+ 			__mwait(eax, ecx);
+ 	}
+ 	current_clr_polling();
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index b6f4e8399fca..ca6cb7e28cba 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -925,7 +925,7 @@ static __cpuidle void mwait_idle(void)
+ 		}
  
-+#ifdef TIF_NOTIFY_IPI
-+
-+#ifdef _ASM_GENERIC_BITOPS_INSTRUMENTED_NON_ATOMIC_H
-+
-+static __always_inline bool tif_notify_ipi(void)
+ 		__monitor((void *)&current_thread_info()->flags, 0, 0);
+-		if (!need_resched()) {
++		if (!need_resched_or_ipi()) {
+ 			__sti_mwait(0, 0);
+ 			raw_local_irq_disable();
+ 		}
+diff --git a/drivers/cpuidle/cpuidle-powernv.c b/drivers/cpuidle/cpuidle-powernv.c
+index 9ebedd972df0..77c3bb371f56 100644
+--- a/drivers/cpuidle/cpuidle-powernv.c
++++ b/drivers/cpuidle/cpuidle-powernv.c
+@@ -79,7 +79,7 @@ static int snooze_loop(struct cpuidle_device *dev,
+ 	dev->poll_time_limit = false;
+ 	ppc64_runlatch_off();
+ 	HMT_very_low();
+-	while (!need_resched()) {
++	while (!need_resched_or_ipi()) {
+ 		if (likely(snooze_timeout_en) && get_tb() > snooze_exit_time) {
+ 			/*
+ 			 * Task has not woken up but we are exiting the polling
+diff --git a/drivers/cpuidle/cpuidle-pseries.c b/drivers/cpuidle/cpuidle-pseries.c
+index 14db9b7d985d..4f2b490f8b73 100644
+--- a/drivers/cpuidle/cpuidle-pseries.c
++++ b/drivers/cpuidle/cpuidle-pseries.c
+@@ -46,7 +46,7 @@ int snooze_loop(struct cpuidle_device *dev, struct cpuidle_driver *drv,
+ 	snooze_exit_time = get_tb() + snooze_timeout;
+ 	dev->poll_time_limit = false;
+ 
+-	while (!need_resched()) {
++	while (!need_resched_or_ipi()) {
+ 		HMT_low();
+ 		HMT_very_low();
+ 		if (likely(snooze_timeout_en) && get_tb() > snooze_exit_time) {
+diff --git a/drivers/cpuidle/poll_state.c b/drivers/cpuidle/poll_state.c
+index 9b6d90a72601..225f37897e45 100644
+--- a/drivers/cpuidle/poll_state.c
++++ b/drivers/cpuidle/poll_state.c
+@@ -26,7 +26,7 @@ static int __cpuidle poll_idle(struct cpuidle_device *dev,
+ 
+ 		limit = cpuidle_poll_time(drv, dev);
+ 
+-		while (!need_resched()) {
++		while (!need_resched_or_ipi()) {
+ 			cpu_relax();
+ 			if (loop_count++ < POLL_IDLE_RELAX_COUNT)
+ 				continue;
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 03bfe9ab2951..63451f6f25b9 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -2258,6 +2258,11 @@ static __always_inline bool need_resched(void)
+ 	return unlikely(tif_need_resched());
+ }
+ 
++static __always_inline bool need_resched_or_ipi(void)
 +{
-+	return arch_test_bit(TIF_NOTIFY_IPI,
-+			     (unsigned long *)(&current_thread_info()->flags));
++	return unlikely(tif_need_resched() || tif_notify_ipi());
 +}
 +
-+static __always_inline void current_clr_notify_ipi(void)
-+{
-+	arch_clear_bit(TIF_NOTIFY_IPI,
-+		       (unsigned long *)(&current_thread_info()->flags));
-+}
-+
-+#else
-+
-+static __always_inline bool tif_notify_ipi(void)
-+{
-+	return test_bit(TIF_NOTIFY_IPI,
-+			(unsigned long *)(&current_thread_info()->flags));
-+}
-+
-+static __always_inline void current_clr_notify_ipi(void)
-+{
-+	clear_bit(TIF_NOTIFY_IPI,
-+		  (unsigned long *)(&current_thread_info()->flags));
-+}
-+
-+#endif /* _ASM_GENERIC_BITOPS_INSTRUMENTED_NON_ATOMIC_H */
-+
-+#else /* !TIF_NOTIFY_IPI */
-+
-+static __always_inline bool tif_notify_ipi(void)
-+{
-+	return false;
-+}
-+
-+static __always_inline void current_clr_notify_ipi(void) { }
-+
-+#endif /* TIF_NOTIFY_IPI */
-+
- #ifndef CONFIG_HAVE_ARCH_WITHIN_STACK_FRAMES
- static inline int arch_within_stack_frames(const void * const stack,
- 					   const void * const stackend,
+ /*
+  * Wrappers for p->thread_info->cpu access. No-op on UP.
+  */
+diff --git a/include/linux/sched/idle.h b/include/linux/sched/idle.h
+index 478084f9105e..d739ab810e00 100644
+--- a/include/linux/sched/idle.h
++++ b/include/linux/sched/idle.h
+@@ -63,7 +63,7 @@ static __always_inline bool __must_check current_set_polling_and_test(void)
+ 	 */
+ 	smp_mb__after_atomic();
+ 
+-	return unlikely(tif_need_resched());
++	return unlikely(need_resched_or_ipi());
+ }
+ 
+ static __always_inline bool __must_check current_clr_polling_and_test(void)
+@@ -76,7 +76,7 @@ static __always_inline bool __must_check current_clr_polling_and_test(void)
+ 	 */
+ 	smp_mb__after_atomic();
+ 
+-	return unlikely(tif_need_resched());
++	return unlikely(need_resched_or_ipi());
+ }
+ 
+ #else
+diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
+index 31231925f1ec..fcc734f45a2a 100644
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
+@@ -57,7 +57,7 @@ static noinline int __cpuidle cpu_idle_poll(void)
+ 	ct_cpuidle_enter();
+ 
+ 	raw_local_irq_enable();
+-	while (!tif_need_resched() &&
++	while (!need_resched_or_ipi() &&
+ 	       (cpu_idle_force_poll || tick_check_broadcast_expired()))
+ 		cpu_relax();
+ 	raw_local_irq_disable();
+@@ -153,7 +153,7 @@ static void cpuidle_idle_call(void)
+ 	 * Check if the idle task must be rescheduled. If it is the
+ 	 * case, exit the function after re-enabling the local irq.
+ 	 */
+-	if (need_resched()) {
++	if (need_resched_or_ipi()) {
+ 		local_irq_enable();
+ 		return;
+ 	}
+@@ -255,7 +255,7 @@ static void do_idle(void)
+ 	__current_set_polling();
+ 	tick_nohz_idle_enter();
+ 
+-	while (!need_resched()) {
++	while (!need_resched_or_ipi()) {
+ 		rmb();
+ 
+ 		/*
+@@ -336,6 +336,7 @@ static void do_idle(void)
+ 	 * RCU relies on this call to be done outside of an RCU read-side
+ 	 * critical section.
+ 	 */
++	current_clr_notify_ipi();
+ 	flush_smp_call_function_queue();
+ 	schedule_idle();
+ 
 -- 
 2.34.1
 
