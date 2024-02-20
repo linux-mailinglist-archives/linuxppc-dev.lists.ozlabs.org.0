@@ -2,58 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2F0085B180
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Feb 2024 04:34:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77DF685B263
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Feb 2024 06:44:48 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Cd6QO36K;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=UIdQfx83;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tf4ls4CP0z3cZM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Feb 2024 14:34:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tf7dp2zkDz3cnv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Feb 2024 16:44:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Cd6QO36K;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=UIdQfx83;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=aneesh.kumar@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tf4l450rkz3bYc
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Feb 2024 14:34:08 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 1676ACE1720;
-	Tue, 20 Feb 2024 03:34:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D91C433F1;
-	Tue, 20 Feb 2024 03:34:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708400045;
-	bh=QTizz13ocUNCbUJS+bH8ogvkXd3AY/hRCYf1inxvxLg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Cd6QO36KOPleyqZk7LlnDGFB3pHTDha34Md4nD3q+khCtUNV0TSzvNmWbfmODDUnF
-	 OuaCdEE/whvUsSsYdM9883uPJkgKNY3BiU5GtUpSBcY0JjFX9ZNOu1Wt6XmF7vKGx8
-	 QrBCjEQNislU2mszCZTQv1j6pMwI0dp6YKhwoO4xpTfvLzFEAGOYAztPam8t9k/2rr
-	 U/VP5tCmnzKDOqJrlwCpSc4AcT2f/c1H3MdhCV1qYZs2HWe52+UIh1JKCjjccGe7z8
-	 VLWlAEWMpxn6X788BQl+YnLaaoRqSs/twiMeXTQ4+QZQXDlv/u3LhBJydFXm7Y5vRz
-	 F/4FPXJqjKm+Q==
-Message-ID: <1579f759-8106-4f2b-ba8f-93c10fdf36ad@kernel.org>
-Date: Tue, 20 Feb 2024 09:03:59 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tf7d21N3Yz3bYx
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Feb 2024 16:44:06 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1708407839;
+	bh=rfmp0MQ0Ux6RuAaBFyTJq/JUhVdDupJU+ukLbInK8Cg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=UIdQfx83ta4KwNnjdsUHHnolD9mS7hxnJ3jK8vioxN7IGtMKNm4GQ0CBzFmg54fm9
+	 aoAfzUvq+Kyj9hkDAnzsZoXAlXy+5uL163T6JOBMh5tt92286PRVgKG20wVnxjpr0J
+	 8TCUqpissJgjktgxVkwGnPGuCfH7FebtRelbqb4V5IrWXjZYv9my2piVMXn3+72O87
+	 cVmzpx87TjuwAyorVlZB6q9XpiU/GQQVxmMj38n313L00uL8i32i9x0RO00rK9ezNQ
+	 fZ30//lAYPYdfvdD3tMDvYgfPGZlIXAMB95Hrww5mkLaVQ1O6YRDPmMRQf64AWXjoK
+	 rb5tPARdVQzFQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Tf7cv0lWkz4wby;
+	Tue, 20 Feb 2024 16:43:59 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Masahiro Yamada <masahiroy@kernel.org>, Nicholas Piggin
+ <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, "Naveen N . Rao"
+ <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Daniel Axtens
+ <dja@axtens.net>
+Subject: Re: [PATCH] powerpc: remove unused *_syscall_64.o variables in
+ Makefile
+In-Reply-To: <CAK7LNARFNoAUUiGMP95pTi_rSxSi5Z0HJo2kBC472f0koMr2mA@mail.gmail.com>
+References: <20240216135517.2002749-1-masahiroy@kernel.org>
+ <CAK7LNARFNoAUUiGMP95pTi_rSxSi5Z0HJo2kBC472f0koMr2mA@mail.gmail.com>
+Date: Tue, 20 Feb 2024 16:43:56 +1100
+Message-ID: <874je31yhv.fsf@mail.lhotse>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/debug_vm_pgtable: Fix BUG_ON with pud advanced test
-To: Andrew Morton <akpm@linux-foundation.org>
-References: <20240129060022.68044-1-aneesh.kumar@kernel.org>
- <1b3c1513-826d-4908-93c3-212a6f1b2d74@arm.com>
- <504f70be-deca-4f7f-b28c-d1ec2cf5a348@kernel.org>
- <cfb64ca7-e754-4671-b1d5-e9c3bee5f091@arm.com>
- <105963ed-b489-4b82-973a-9024d74c6e87@kernel.org>
- <20240219184647.66ca5f8a1a38156b61e43b9c@linux-foundation.org>
-Content-Language: en-US
-From: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-In-Reply-To: <20240219184647.66ca5f8a1a38156b61e43b9c@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,56 +64,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2/20/24 8:16 AM, Andrew Morton wrote:
-> On Mon, 29 Jan 2024 13:43:39 +0530 "Aneesh Kumar K.V" <aneesh.kumar@kernel.org> wrote:
-> 
->>>         return (pud_val(pud) & (_PAGE_PSE|_PAGE_DEVMAP)) == _PAGE_PSE;
->>> }
->>> #endif
->>>
->>> #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
->>> static inline int pud_devmap(pud_t pud)
->>> {
->>>         return !!(pud_val(pud) & _PAGE_DEVMAP);
->>> }
->>> #else
->>> static inline int pud_devmap(pud_t pud)
->>> {
->>>         return 0;
->>> }
->>> #endif
->>>
->>> We might need some more clarity on this regarding x86 platform's pud huge
->>> page implementation.
->>>
+Masahiro Yamada <masahiroy@kernel.org> writes:
+> +To: Daniel Axtens
+
+Unfortunately dja doesn't work on the kernel anymore.
+
+> Maybe, we should check if the issue fixed by
+> 2f26ed1764b42a8c40d9c48441c73a70d805decf
+> came back.
+
+That crash is specific to Power8, which probably no one is running
+syzkaller on anymore.
+
+If I enable KCOV and boot with 1T segments disabled (to make it easier
+to trigger the bug) it crashes similarly to the report in that commit.
+
+> On Fri, Feb 16, 2024 at 10:55=E2=80=AFPM Masahiro Yamada <masahiroy@kerne=
+l.org> wrote:
+...
+>> To restore the original behavior, we could replace them with:
 >>
->> static vm_fault_t create_huge_pud(struct vm_fault *vmf)
->> {
->> #if defined(CONFIG_TRANSPARENT_HUGEPAGE) &&			\
->> 	defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
->> 	struct vm_area_struct *vma = vmf->vma;
->> 	/* No support for anonymous transparent PUD pages yet */
->> 	if (vma_is_anonymous(vma))
->> 		return VM_FAULT_FALLBACK;
->> 	if (vma->vm_ops->huge_fault)
->> 		return vma->vm_ops->huge_fault(vmf, PUD_ORDER);
->> #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
->> 	return VM_FAULT_FALLBACK;
->> }
-> 
-> cryptic reply, unreplied to.
-> 
-> What's the thinking here?  Should we proceed with the patch as-is, or
-> are changes needed?
-> 
+>>   GCOV_PROFILE_interrupt.o :=3D n
+>>   KCOV_INSTRUMENT_interrupt.o :=3D n
+>>   UBSAN_SANITIZE_interrupt.o :=3D n
 
-Sorry for the confusion. What i wanted to update with the code was to reiterate
-that no architectures currently does anonymous pud hugepage. So restricting
-debug_vm_pgtable pud hugepage test to devmap pte entries should be ok w.r.t
-these tests.
+But just putting those back isn't actually enough to fix it, the code
+has changed and there are other places that need KCOV disabled on P8.
 
--aneesh
+So I'm not sure how to handle this one. I guess I might just take it and
+then make a todo to fix the KCOV problems later.
+
+cheers
