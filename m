@@ -2,35 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3134985BCA2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Feb 2024 13:55:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B3F885BCA1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Feb 2024 13:54:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TfKBC63vfz3vZp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Feb 2024 23:54:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TfK9n426cz3cgk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Feb 2024 23:54:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TfK9Q3PW4z3bX3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Feb 2024 23:54:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TfK9P5Rpvz3bX3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Feb 2024 23:54:17 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4TfK9N0vp6z4wnr;
-	Tue, 20 Feb 2024 23:54:16 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4TfK9P0wgHz4wxX;
+	Tue, 20 Feb 2024 23:54:17 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Peter Bergner <bergner@linux.ibm.com>
-In-Reply-To: <a406b535-dc55-4856-8ae9-5a063644a1af@linux.ibm.com>
-References: <a406b535-dc55-4856-8ae9-5a063644a1af@linux.ibm.com>
-Subject: Re: [PATCH v2] uapi/auxvec: Define AT_HWCAP3 and AT_HWCAP4 aux vector, entries
-Message-Id: <170843363898.1291121.4882822831062369983.b4-ty@ellerman.id.au>
+To: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+In-Reply-To: <cover.1704900449.git.u.kleine-koenig@pengutronix.de>
+References: <cover.1704900449.git.u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH 0/7] macintosh: Convert to platform remove callback returning void
+Message-Id: <170843363897.1291121.16845812107659928983.b4-ty@ellerman.id.au>
 Date: Tue, 20 Feb 2024 23:53:58 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,27 +42,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Szabolcs Nagy <szabolcs.nagy@arm.com>, Arnd Bergmann <arnd@kernel.org>, Nick Piggin <npiggin@au1.ibm.com>, Adhemerval Zanella <adhemerval.zanella@linaro.org>
+Cc: Rob Herring <robh@kernel.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Jean Delvare <jdelvare@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 14 Feb 2024 16:34:06 -0600, Peter Bergner wrote:
-> Changes from v1:
-> - Add Acked-by lines.
+On Wed, 10 Jan 2024 16:42:47 +0100, Uwe Kleine-König wrote:
+> this series converts all drivers below drivers/macintosh to use
+> .remove_new(). See commit 5c5a7680e67b ("platform: Provide a remove
+> callback that returns no value") for an extended explanation and the
+> eventual goal. The TL;DR; is to make it harder for driver authors to
+> leak resources without noticing.
 > 
-> The powerpc toolchain keeps a copy of the HWCAP bit masks in our TCB for fast
-> access by the __builtin_cpu_supports built-in function.  The TCB space for
-> the HWCAP entries - which are created in pairs - is an ABI extension, so
-> waiting to create the space for HWCAP3 and HWCAP4 until we need them is
-> problematical.  Define AT_HWCAP3 and AT_HWCAP4 in the generic uapi header
-> so they can be used in glibc to reserve space in the powerpc TCB for their
-> future use.
+> This is merge window material. All patches are pairwise independent of
+> each other so they can be applied individually. There isn't a maintainer
+> for drivers/macintosh, I'm still sending this as a series in the hope
+> Michael feels repsonsible and applies it completely.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] uapi/auxvec: Define AT_HWCAP3 and AT_HWCAP4 aux vector, entries
-      https://git.kernel.org/powerpc/c/3281366a8e79a512956382885091565db1036b64
+[1/7] macintosh: therm_windtunnel: Convert to platform remove callback returning void
+      https://git.kernel.org/powerpc/c/bd6d99b70b2ffa96119826f22e96a5b77e6f90d6
+[2/7] macintosh: windfarm_pm112: Convert to platform remove callback returning void
+      https://git.kernel.org/powerpc/c/839cf59b5596abcdfbcdc4278a7bd4f8da32e1b2
+[3/7] macintosh: windfarm_pm121: Convert to platform remove callback returning void
+      https://git.kernel.org/powerpc/c/2e7e64c8427c2385bf47456a612d908f827bbbbf
+[4/7] macintosh: windfarm_pm72: Convert to platform remove callback returning void
+      https://git.kernel.org/powerpc/c/057894a40e973c829baacce0b9de6bdf6c8ec1da
+[5/7] macintosh: windfarm_pm81: Convert to platform remove callback returning void
+      https://git.kernel.org/powerpc/c/fb0217d79d77f1092929bae1137ac0f586c29fec
+[6/7] macintosh: windfarm_pm91: Convert to platform remove callback returning void
+      https://git.kernel.org/powerpc/c/7cfe99872c711ffa727db85c608a0897955a2758
+[7/7] macintosh: windfarm_rm31: Convert to platform remove callback returning void
+      https://git.kernel.org/powerpc/c/4b26558415d628ad2c0d3d4ec65156a0c99eaf02
 
 cheers
