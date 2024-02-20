@@ -2,133 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7AC985B680
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Feb 2024 10:03:04 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=jwvlKsNs;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D65685B6FE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Feb 2024 10:16:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TfD2Z60bTz3dTt
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Feb 2024 20:03:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TfDLZ3gWZz3cN4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Feb 2024 20:16:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=jwvlKsNs;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:261c::700; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20700.outbound.protection.outlook.com [IPv6:2a01:111:f403:261c::700])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=lists.ozlabs.org)
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TfD1s1lM8z3cB0
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Feb 2024 20:02:24 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=A5fayIoMEgL1Z9iimcpZ4qdGZcvRBdFDwsVLcu67CDRkB5Qxt7pMe3aHlsjnwv6Sw03I5KN6Q398zZ3MIRlYN24nTcL2jPh56QXkKD4iTIIXnWFKy7ipK+b+TKkXEus6bZCsjN4zs6QUcy6cbnc9qqp4nvucAW0TZDU3pCoh3VCmahg/sjfoQzgmrGrlCUoucreTz+TNiMuU6Jc/puoowjgoLVHbb2rbU/TCXr4EXpxeor3LpHDCUoVmoBtwSOpfVVy5XkGRI/hUmsstL/gFPaLEnS2OJgNw6JS9+E3NhfFlaf73P4qshk0W8rlugE8HatuMda8vYG8LjIybcvczFA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Uu++52cts8NMNgUucE0wPJ4q6rv4jYjqnsRV/rrvm0M=;
- b=jxH2Jwx+sKOMgF5qA8KNNZTNDfSwXOPTQHzvZpu7LpTko2jwvmtE88QpFcw/tDdziPxCTAQkTm+1QrtNFQhpfE1BLA3hVQeoM57GOW3e0bJljBvMYALA36ZIyzppFNcz601jooXy4T5Vw7CJrUzFwye00rPEal3mkNMC50BX3a5ViJG6CO23tPJ1g9JiX7zTlXmhcplslTuRFFD5efjP6CIQq9YTp7Uwwr0ueQtlpPr/N2TRsg+9OqVSiuiyTTQlFhSr/EdQKCNkxNhOy757gxrKs4p1R6EWrfUoq/pTLsF8+iwL37dT8btQ3H54n6L1bU+7S0BsjF6ehUx/AcxAjA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Uu++52cts8NMNgUucE0wPJ4q6rv4jYjqnsRV/rrvm0M=;
- b=jwvlKsNsKK+OkCey9OQn8qiQbEOnayoFFdlcoZFZ13uEw+Cdf+qlbRHnz7Dy0ibOvrdp6tucfIDyqUzwAo1BgDKlFv1M6oNungxD6DTuPobC4ehLWAe2NbscvcqLx0Le7xs39p2a2mNPIVFSmtChrgGLB1fMzP6xh+LkgWGif9KK02saHVqtFh+oJhH5FS47U13BV2mz+o5SzTwSyK+FofkovUIe6aSkwKRMaMrDkrWFVBCttZLgG/jEhhHXOID9LIIomK3TDH3gblBodXif10dai2UtmSn7Vk+AoIUjsJCX7NlkeTDVhCKykhVwSWok1NH8tmtw5GRd6BXQrSfy7Q==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR0P264MB2519.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1e2::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.39; Tue, 20 Feb
- 2024 09:02:02 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::64a9:9a73:652c:1589]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::64a9:9a73:652c:1589%7]) with mapi id 15.20.7292.036; Tue, 20 Feb 2024
- 09:02:02 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>, Aneesh Kumar K.V
-	<aneesh.kumar@kernel.org>, Luming Yu <luming.yu@shingroup.cn>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"npiggin@gmail.com" <npiggin@gmail.com>
-Subject: Re: [PATCH v1 2/2] powerpc/debug: hook to user return notifier
- infrastructure
-Thread-Topic: [PATCH v1 2/2] powerpc/debug: hook to user return notifier
- infrastructure
-Thread-Index: AQHaMWA8BiP7gdISFEqfwH/9reLJhrCuxVyAgAFidoCAYylJgIAAAxKA
-Date: Tue, 20 Feb 2024 09:02:02 +0000
-Message-ID: <0638f0a2-782b-411f-9937-c62d99e9562b@csgroup.eu>
-References: <B375A36C9C4D73FF+20231218031338.2084-1-luming.yu@shingroup.cn>
- <8734vzsw0q.fsf@kernel.org> <8734vyn1ky.fsf@mail.lhotse>
- <2acd6623-952b-4659-bc26-c632e94560a8@csgroup.eu>
-In-Reply-To: <2acd6623-952b-4659-bc26-c632e94560a8@csgroup.eu>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla Thunderbird
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR0P264MB2519:EE_
-x-ms-office365-filtering-correlation-id: 2c091d81-e98e-4b7a-4951-08dc31f29a74
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  RCNs87YRuZ95ixvflTqScytJiIaHjLACVraVeGuUvQ+7jgmEM+QXe59nQ+pXD8Gvo1SRcu61fJjLE2DBRQmS7csbuUcG405L1kGVBNCgCMdd11u49Gk5bOsp8qeZzqYkHAKHHn1HDQE5Gs61HBFu3A5R/u7b0w2U1fBstRTs7bvLK2e5prOK/tpMotL+8x5moOYqht6oIGgY/ZE3m4D26JXjVsaZt2C5MG2b2R47c+X5ggut9xGCsvbeP+Q9cMg23oABcDdYt58GErLGSXh6zCOYnTxm2SDrNH8JfDXf7932z9nTT3u8b9wAJv49LNdQi2nU6U3Axps9wv0NFBnTeKy8YCE+/jaIrJY6kkuyVFOVTGPr5wEXMca9RnE7dFcx0cxrg5nWDD3E8OrxU/Us9qc6f/0gYlghWZgKROdrfx7Cv+QmzglZokY/faqktjEi2oJDJ26/EXHmAXZMaHEx5T1ydIr15fJgXtFtFG2iCmRpBuHQYyUOqtrZmaeM2KxpAoOY+U/2bUFwxxD273Gh95WCX6XsRwP7cUFBcuvBMZuUfqy81LE1fDI9tGG2a0yJEe/2dLYdah3fj7rnJd5ZeUfBAVwS9viWKLoQnHwVdX0=
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(38070700009);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?aDJkaXB4MWtZZnI0T2JNWDZIRnEwcHR0MDRkdExua2tEQndWOUdac1RXTE9F?=
- =?utf-8?B?a0xHT1k1OFYzV3hJMG43YWxpamtEMWJTSU9XamdUWE51VWp3ajZESlZ5Y0ZC?=
- =?utf-8?B?NC9lb1RrVjUvZFFTcm9BM3JtbDVHWWdDOXdsakxPZGlvWFlxVE5SVEMxQ1Nn?=
- =?utf-8?B?OWhSeFhxS2dodlZXZkFQMk1yMU1pQXVDZThSNThodVJhRXp6ZURFM0ovdHNP?=
- =?utf-8?B?STh6TmV3cGFOVFh6bUd1ZndNeDB5U09BejJPdyt1VXpjWE9aUkwrRmNmMGYz?=
- =?utf-8?B?TW5hcDJRa3lZZ3FZQkt6ZFFWNUVqYjc3SkxkTmNmcm92WGE3M3ZGOXluQmp0?=
- =?utf-8?B?ZThIeU90RXYzNUttZ3dPb2l3REhTWU03czM5TTk4bEFtamRIWitpYjEzYVNH?=
- =?utf-8?B?Z0Q0N3NJVGVaZ3N4cTZSR3ErcFJXK08yejQrOUxFZEFJd285NzRHaDkvQjV2?=
- =?utf-8?B?cVJYRkt6VlpGTlBZdDNSTVpkRERkRGJ6NHpyRnY1QkU2cFAzTVh2VmdGMDhC?=
- =?utf-8?B?SnJKUFZFdUVWcGVzbUtZYkhKNHRnaFM0Ky9GUlpUZGtPZXlKRlJNOHo1TnJj?=
- =?utf-8?B?Q3UrOW1QeGlwaXEwMDIzNUlqbjBqS2RGN2NnS3kxRm40Q0VYM2dZdjhPN0FJ?=
- =?utf-8?B?L1c4eDFDTXhCc1hISFhaMjJIR3RFYWZGdDlyVDdFRmNMbHh2bWw5SkFiMXM1?=
- =?utf-8?B?YjFTbFNwUFg1d2xrTEoyUU1sMFJHdGxMck5DUUFwVWRWRkRLNllzbGNINlhS?=
- =?utf-8?B?d1YvR3ExcWpYMStZNjhUQUFVWnFwNDZoQ09BL1VPSG9tUnlFTk5FZ3ArRm5l?=
- =?utf-8?B?cG1nWUQ2MWNzSWxHR3NMck1vL1p5ZFdWVFhvQmtIQWlUaUs4WU0yczZYSW9N?=
- =?utf-8?B?QkZtVmZuSjNMK2tVWDRpL1UzdWp2MzhnNXNHcmV5OWpTamtYTEttZTMxNTZ6?=
- =?utf-8?B?NThsdzNWSUhPeHVKSDZocWQ3RWpxbGZoQ3QwNjE4SFpHR0dXYWo5dDFmLzhU?=
- =?utf-8?B?M2U0TTF5ak1YY1d0cUxxRFJ3M3FVYUhmWGdtc0hWKytNYnhFajd5ekNveE9Q?=
- =?utf-8?B?SHdWWjdnaFBscmtJcmt3TkFTUGJwVTJIOFozTGV2c0VNV21mcGhpUGVCR1Nv?=
- =?utf-8?B?YldBRWZXbXJqK1IzSU5VVnNIWDVjYldTUVZDRzNva1NuZW5zRTBER1J4bTRz?=
- =?utf-8?B?Tm4vbllqZmU1azlKK3I2NDljODU0Znk0bXd5M2tSR0VSQloyamNWVGhLWStZ?=
- =?utf-8?B?dnBPSi9ZTEM2RVQyblpnaG5oaG84bVpLdDZORWJ5d2JTclQrWkYwcjFTbDJa?=
- =?utf-8?B?ZG5FNkJxRDZweXVvWEEvSG5sUU5RS0VLQ1hWN1RjbzY2THVyV0s3MmZCTE00?=
- =?utf-8?B?Sk95QkhzK0l0SFpuZkhZc3h1OGdYYUlUU0Y5NnFOQkJqSWhGT0l5WWpRTzZH?=
- =?utf-8?B?OXJRMlB2WnJNczhHOWZDdUFoekZyUk1zUnY5WjdKZmNoSmtkVm5hUG1FWXRJ?=
- =?utf-8?B?VkNJNHJTN3VXaDk3NjZDNXEvQUIvWEhxK3VxWjYrby9KdldOMmFJdWdkR2hy?=
- =?utf-8?B?ZDlWRDZBamF6eW1vbTJCMjhFNkJBMzltYUVJVDd3ZGlKTVRJdWdhMmxydThD?=
- =?utf-8?B?K3l1QU5IZ0sxOXI5YmpoeWNxaWxvbGxHY1hBSWhrQnBwWVFnRDVkcy9Ibjd0?=
- =?utf-8?B?dzlkRGNaeVlHUFcvQWlhaVhGL2lVbjZ2d09OYWY1YzNhNTZSR0drVnRoUHNK?=
- =?utf-8?B?VzFBcDFzcGxEbHdlZkdSR3RVQ3E5aXphYk1QSkQ4Y0NMZHVIMndoQk1tNWVl?=
- =?utf-8?B?UkFlRUV5eGhHV1g4T2I2bUY5MGFrRWNvTng1cEp4M0xNWndaTmhzTW9aWDNN?=
- =?utf-8?B?MzVKcS8yaDU0bzJuQSswSGtaZWVoUGJkRG9KWERYdzJ4WVNkWW9uajNoZTB4?=
- =?utf-8?B?SXJEWE83QTI0NXA1L1BOdUdxOVU3YTlLaGtGTW5tMDcyVXRMdWh6dTArYkdN?=
- =?utf-8?B?MjZ4YjBndFNnYTliSElyWGM4M1VFREFqR2J1QTZiRXQvL2lqQUMrZkZmcHFw?=
- =?utf-8?B?bzFrWmJQa3BYSVUxNlg2b25uUlJLQ3RBcHBXR1RUZm5LRkR6cjlOY2FYMzVh?=
- =?utf-8?Q?TM4H10TfM0fyNpWAUD5qYKxL/?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <8EFDC99635108449BE63643802B20C28@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TfDL729qrz3bx0
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Feb 2024 20:16:29 +1100 (AEDT)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.97)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1rcMEi-000000015Fp-1B8o; Tue, 20 Feb 2024 10:16:24 +0100
+Received: from p5b13a6ce.dip0.t-ipconnect.de ([91.19.166.206] helo=[192.168.178.20])
+          by inpost2.zedat.fu-berlin.de (Exim 4.97)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1rcMEi-000000031OJ-0EO8; Tue, 20 Feb 2024 10:16:24 +0100
+Message-ID: <42e9a15f6733dd48c64cbceeb3ad27349ca8c3e4.camel@physik.fu-berlin.de>
+Subject: Re: Boot failure with ppc64 port on iMacs G5
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: tuxayo <victor@tuxayo.net>
+Date: Tue, 20 Feb 2024 10:16:23 +0100
+In-Reply-To: <fc93d03b-581d-40cd-8ab1-762a9ee2c20c@tuxayo.net>
+References: <fc93d03b-581d-40cd-8ab1-762a9ee2c20c@tuxayo.net>
+Autocrypt: addr=glaubitz@physik.fu-berlin.de; prefer-encrypt=mutual;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2c091d81-e98e-4b7a-4951-08dc31f29a74
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Feb 2024 09:02:02.2889
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: MgPuC99U8M6p1Jc9A6pSCMXzjouEzHXb+yC0YlVAAEDj5onqwib8jCW6f//1ymWlUDtksvfczV2jDYOfGuAhP1OFWvtwJMTHqS8ZqSKcVM4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB2519
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 91.19.166.206
+X-ZEDAT-Hint: PO
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -140,33 +59,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "shenghui.qu@shingroup.cn" <shenghui.qu@shingroup.cn>, "dawei.li@shingroup.cn" <dawei.li@shingroup.cn>, "luming.yu@gmail.com" <luming.yu@gmail.com>, "ke.zhao@shingroup.cn" <ke.zhao@shingroup.cn>
+Cc: debian-powerpc@lists.debian.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Claudia Neumann <dr.claudia.neumann@gmx.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDIwLzAyLzIwMjQgw6AgMDk6NTEsIENocmlzdG9waGUgTGVyb3kgYSDDqWNyaXTCoDoN
-Cj4gDQo+IA0KPiBMZSAxOS8xMi8yMDIzIMOgIDA3OjMzLCBNaWNoYWVsIEVsbGVybWFuIGEgw6lj
-cml0wqA6DQo+PiBBbmVlc2ggS3VtYXIgSy5WIDxhbmVlc2gua3VtYXJAa2VybmVsLm9yZz4gd3Jp
-dGVzOg0KPj4+IEx1bWluZyBZdSA8bHVtaW5nLnl1QHNoaW5ncm91cC5jbj4gd3JpdGVzOg0KPj4+
-DQo+Pj4+IEJlZm9yZSB3ZSBoYXZlIHBvd2VycGMgdG8gdXNlIHRoZSBnZW5lcmljIGVudHJ5IGlu
-ZnJhc3RydWN0dXJlLA0KPj4+PiB0aGUgY2FsbCB0byBmaXJlIHVzZXIgcmV0dXJuIG5vdGlmaWVy
-IGlzIG1hZGUgdGVtcG9yYXJpbHkgaW4gcG93ZXJwYw0KPj4+PiBlbnRyeSBjb2RlLg0KPj4+Pg0K
-Pj4+DQo+Pj4gSXQgaXMgc3RpbGwgbm90IGNsZWFyIHdoYXQgd2lsbCBiZSByZWdpc3RlcmVkIGFz
-IHVzZXIgcmV0dXJuIG5vdGlmaWVyLg0KPj4+IENhbiB5b3Ugc3VtbWFyaXplIHRoYXQgaGVyZT8N
-Cj4+DQo+PiBmaXJlX3VzZXJfcmV0dXJuX25vdGlmaWVycygpIGlzIGRlZmluZWQgaW4ga2VybmVs
-L3VzZXItcmV0dXJuLW5vdGlmaWVyLmMNCj4+DQo+PiBUaGF0J3MgYnVpbHQgd2hlbiBDT05GSUdf
-VVNFUl9SRVRVUk5fTk9USUZJRVI9eS4NCj4+DQo+PiBUaGF0IGlzIG5vdCB1c2VyIHNlbGVjdGFi
-bGUsIGl0J3Mgb25seSBlbmFibGVkIGJ5Og0KPj4NCj4+IGFyY2gveDg2L2t2bS9LY29uZmlnOiAg
-ICAgICAgc2VsZWN0IFVTRVJfUkVUVVJOX05PVElGSUVSDQo+Pg0KPj4gU28gaXQgbG9va3MgdG8g
-bWUgbGlrZSAoY3VycmVudGx5KSBpdCdzIGFsd2F5cyBhIG5vcCBhbmQgZG9lcyBub3RoaW5nLg0K
-Pj4NCj4+IFdoaWNoIG1ha2VzIG1lIHdvbmRlciB3aGF0IHRoZSBwb2ludCBvZiB3aXJpbmcgdGhp
-cyBmZWF0dXJlIHVwIGlzIDopDQo+PiBNYXliZSBpdCdzIG5lZWRlZCBmb3Igc29tZSBvdGhlciBm
-ZWF0dXJlIEkgZG9uJ3Qga25vdyBhYm91dD8NCj4+DQo+PiBBcmd1YWJseSB3ZSBjb3VsZCBqdXN0
-IGVuYWJsZSBpdCBiZWNhdXNlIHdlIGNhbiwgYW5kIGl0IGN1cnJlbnRseSBkb2VzDQo+PiBub3Ro
-aW5nIHNvIGl0J3MgdW5saWtlbHkgdG8gYnJlYWsgYW55dGhpbmcuIEJ1dCB0aGF0IGFsc28gbWFr
-ZXMgaXQNCj4+IGltcG9zc2libGUgdG8gdGVzdCB0aGUgaW1wbGVtZW50YXRpb24gaXMgY29ycmVj
-dCwgYW5kIHJ1bnMgdGhlIHJpc2sgdGhhdA0KPj4gb25lIGRheSBpbiB0aGUgZnV0dXJlIHdoZW4g
-aXQgZG9lcyBnZXQgZW5hYmxlZCBvbmx5IHRoZW4gZG8gd2UgZGlzY292ZXINCj4+IGl0IGRvZXNu
-J3Qgd29yay4NCj4gDQo+IE9wZW5lZCBhbiAiaXNzdWUiIGZvciB0aGUgZGF5IHdlIG5lZWQgaXQ6
-DQo+IGh0dHBzOi8vZ2l0aHViLmNvbS9LU1BQL2xpbnV4L2lzc3Vlcy8zNDgNCg0KQ29ycmVjdCBv
-bmUgaXMgaHR0cHM6Ly9naXRodWIuY29tL2xpbnV4cHBjL2lzc3Vlcy9pc3N1ZXMvNDc3DQo=
+Hello,
+
+On Tue, 2024-02-20 at 04:16 +0100, tuxayo wrote:
+> I tried snapshots/2024-01-31/debian-12.0.0-ppc64-NETINST-1.iso
+>=20
+> And was able to start booting from usb with:
+> boot usb0/disk@1:,\boot\grub\powerpc.elf
+> (typed in Open Firmware shell)
+> (usb0 is the top port)
+>=20
+> Grub worked, and then I tried default install (the 1st option) and it=20
+> started loading during like 2 minutes.
+> And then it got stuck with some superposition of the messages
+> smp_core99_probe
+> and
+> the stuff before
+> DO-QUIESCE finisedBooting Linux via __start() @ 0x0000000002090000 ...
+
+There seems to be a regression in the kernel which affects PowerPC 970 mach=
+ines,
+i.e. PowerMac G5 CPUs. The issue needs to be bisected and reported upstream=
+.
+
+If you have the time, I would really appreciate if you could test the vario=
+us
+snapshots and let me know which kernel is the first to not work. I expect t=
+hat
+the breakage occurred somewhere around kernel 6.3 or so.
+
+CC'ing Claudia Neumann who observed this bug before and can maybe share som=
+e
+additional information.
+
+> Full message of the two iMacs G5 =E2=86=93=E2=86=93=E2=86=93
+> https://transfert.facil.services/r/Ksfq_2VM9_#tDATBcLXzB0zkAEaiqm9gfLfsaX=
+liVJ13rQxKUHgUmA=3D
+> https://transfert.facil.services/r/Zs1h1jEtb2#jufjxv6+1DfHnO3TSfhmYD+teOv=
+Y46sGClHyz7SiXd4=3D
+
+Adrian
+
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
