@@ -1,52 +1,115 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C40085E199
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 16:42:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E55785E2CF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 17:15:20 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=K4c1qufh;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=gq7+qRqW;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Q9nFb8Eu;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=GdeXJknD;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tg0rt0NGNz3vmV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 02:42:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tg1Zt2vR9z3dRV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 03:15:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=lists.ozlabs.org)
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=K4c1qufh;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=gq7+qRqW;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Q9nFb8Eu;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=GdeXJknD;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tg0q40wB4z3cV3
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Feb 2024 02:40:47 +1100 (AEDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rcoi4-0003mR-Rd; Wed, 21 Feb 2024 16:40:36 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rcoi4-0024BB-EE; Wed, 21 Feb 2024 16:40:36 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rcoi4-008uvC-16;
-	Wed, 21 Feb 2024 16:40:36 +0100
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6/6] powerpc: pmi: Convert to platform remove callback returning void
-Date: Wed, 21 Feb 2024 16:40:20 +0100
-Message-ID: <3201daed6d19c01ee0ee72e0f9302a38ecef3577.1708529736.git.u.kleine-koenig@pengutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tg1Z53tcFz2xFk
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Feb 2024 03:14:37 +1100 (AEDT)
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id F16731F385;
+	Wed, 21 Feb 2024 16:14:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1708532074; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=EgGwYwoUx6YDOWZG1HKfUUV7VxHDb+AJql0GQNOyHnU=;
+	b=K4c1qufhD6s+8vEKRFBcGPuhZaooIHP5JVv/R70hQBQnWFQmZLVgKoR6wUnOvSqLL0dNzQ
+	83RQA3PpAPej+vsL1dVBXats/1NiCgwnq/F7hmqsO0R5iOhVvJ67IDFv8LBrauP8uKgUxN
+	1fWrawf4HekLum0vvQmAcqrxIIHQUDU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1708532074;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=EgGwYwoUx6YDOWZG1HKfUUV7VxHDb+AJql0GQNOyHnU=;
+	b=gq7+qRqW4mhSKBM34sGn26zECQEVC6pSvREbpp5Jei0oMUOQSnEB7x1UhK969UnhA0rAPx
+	Vwh6Z9986t7h9fCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1708532073; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=EgGwYwoUx6YDOWZG1HKfUUV7VxHDb+AJql0GQNOyHnU=;
+	b=Q9nFb8EusLfDMaJ6Vy9tIxZYVNcW7UNpaAgEANWDDedikIbybSdDo3xhI6D9WvuF3k6YVb
+	YHqQTMrS0InVDhKhfr62Sh/aA3sw35jDt5rmISjBY8WMjQJ888tbSp1sHhSkUhhEEBXJgd
+	J8gF3TIKI2vAv/m+Pbq/AsAr+v1vMx8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1708532073;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=EgGwYwoUx6YDOWZG1HKfUUV7VxHDb+AJql0GQNOyHnU=;
+	b=GdeXJknDCBw3muabgHw4pX7ne5UnhhoTNfGJdrFXHhoRufe57Pn5uXskMNSW7E9yozO4Vl
+	SS7AaBFeqjoDA9Cg==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 7FD47139D1;
+	Wed, 21 Feb 2024 16:14:33 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id 5fjcHWkh1mVrYwAAn2gu4w
+	(envelope-from <tzimmermann@suse.de>); Wed, 21 Feb 2024 16:14:33 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: arnd@arndb.de,
+	javierm@redhat.com,
+	deller@gmx.de,
+	suijingfeng@loongson.cn
+Subject: [PATCH 0/3] arch: Remove fbdev dependency from video helpers
+Date: Wed, 21 Feb 2024 17:05:23 +0100
+Message-ID: <20240221161431.8245-1-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1708529736.git.u.kleine-koenig@pengutronix.de>
-References: <cover.1708529736.git.u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1632; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=XZZ0u1HpHZgtvd38c/qPcUUjJJhYkQUV4tNWievFkIQ=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBl1hlmpkDFEhj9U+HQkWwMjneYJmJZy/s0e10wT bmcdDmVTEiJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZdYZZgAKCRCPgPtYfRL+ TrrFB/9maiOkXKmgvla036IwAEM+s/J15RyXfTg5oSAHkF4DDGKONdhHyL5xadkjOKHbdL3BJVl KZJuin4ZQrBrwb48G/rCMaeWiTSfRbDicbf/+fnpZuvBOpAPNHeim2v5ZR6bhh3zuaNsxcOshtH MCbmIyZMeAnx0jazFUrLugg3eg2tfKtzjY0R9QBJ0Kkpb7A2bh7kUGLChBQinB5RRYV9JVV76Qq zD8uHzmhvV+SvPJeZt5R7Coj2zDp15KB29CaxEuQJNQWVKsBuVV9T2/DPknodzW+6JPsCAISl0W dFoqiVIH6cFb+/fseCwqbI+nyM5HGUW5n2qIDv/Vgz4uUsoV
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Level: ********
+X-Spam-Score: 8.80
+X-Spamd-Result: default: False [8.80 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 BAYES_SPAM(5.10)[99.99%];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 R_MISSING_CHARSET(2.50)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmx.de];
+	 MIME_GOOD(-0.10)[text/plain];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 BROKEN_CONTENT_TYPE(1.50)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 RCPT_COUNT_TWELVE(0.00)[18];
+	 MID_CONTAINS_FROM(1.00)[];
+	 FREEMAIL_TO(0.00)[arndb.de,redhat.com,gmx.de,loongson.cn];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_ALL(0.00)[]
+X-Spam-Flag: NO
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,56 +121,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rob Herring <robh@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, kernel@pengutronix.de, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, linux-fbdev@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org, linux-mips@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
+Make architecture helpers for display functionality depend on general
+video functionality instead of fbdev. This avoid the dependency on
+fbdev and makes the functionality available for non-fbdev code.
 
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new(), which already returns void. Eventually after all drivers
-are converted, .remove_new() will be renamed to .remove().
+Patch 1 replaces the variety of Kconfig options that control the
+Makefiles with CONFIG_VIDEO. More fine-grained control of the build
+can then be done within each video/ directory; see sparc for an
+example.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+Patch 2 replaces fb_is_primary_device() with video_is_primary_device(),
+which has no dependencies on fbdev. The implementation remains identical
+on all affected platforms. There's one minor change in fbcon, which is
+the only caller of fb_is_primary_device().
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- arch/powerpc/sysdev/pmi.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+Patch 3 renames the source and files from fbdev to video.
 
-diff --git a/arch/powerpc/sysdev/pmi.c b/arch/powerpc/sysdev/pmi.c
-index fcf8d1516210..737f97fd67d7 100644
---- a/arch/powerpc/sysdev/pmi.c
-+++ b/arch/powerpc/sysdev/pmi.c
-@@ -173,7 +173,7 @@ static int pmi_of_probe(struct platform_device *dev)
- 	return rc;
- }
- 
--static int pmi_of_remove(struct platform_device *dev)
-+static void pmi_of_remove(struct platform_device *dev)
- {
- 	struct pmi_handler *handler, *tmp;
- 
-@@ -189,13 +189,11 @@ static int pmi_of_remove(struct platform_device *dev)
- 
- 	kfree(data);
- 	data = NULL;
--
--	return 0;
- }
- 
- static struct platform_driver pmi_of_platform_driver = {
- 	.probe		= pmi_of_probe,
--	.remove		= pmi_of_remove,
-+	.remove_new	= pmi_of_remove,
- 	.driver = {
- 		.name = "pmi",
- 		.of_match_table = pmi_match,
+Thomas Zimmermann (3):
+  arch: Select fbdev helpers with CONFIG_VIDEO
+  arch: Remove struct fb_info from video helpers
+  arch: Rename fbdev header and source files
+
+ arch/arc/include/asm/fb.h                    |  8 ------
+ arch/arc/include/asm/video.h                 |  8 ++++++
+ arch/arm/include/asm/fb.h                    |  6 -----
+ arch/arm/include/asm/video.h                 |  6 +++++
+ arch/arm64/include/asm/fb.h                  | 10 --------
+ arch/arm64/include/asm/video.h               | 10 ++++++++
+ arch/loongarch/include/asm/{fb.h => video.h} |  8 +++---
+ arch/m68k/include/asm/{fb.h => video.h}      |  8 +++---
+ arch/mips/include/asm/{fb.h => video.h}      | 12 ++++-----
+ arch/parisc/Makefile                         |  2 +-
+ arch/parisc/include/asm/fb.h                 | 14 -----------
+ arch/parisc/include/asm/video.h              | 16 ++++++++++++
+ arch/parisc/video/Makefile                   |  2 +-
+ arch/parisc/video/{fbdev.c => video-sti.c}   |  9 ++++---
+ arch/powerpc/include/asm/{fb.h => video.h}   |  8 +++---
+ arch/powerpc/kernel/pci-common.c             |  2 +-
+ arch/sh/include/asm/fb.h                     |  7 ------
+ arch/sh/include/asm/video.h                  |  7 ++++++
+ arch/sparc/Makefile                          |  4 +--
+ arch/sparc/include/asm/{fb.h => video.h}     | 15 +++++------
+ arch/sparc/video/Makefile                    |  2 +-
+ arch/sparc/video/fbdev.c                     | 26 --------------------
+ arch/sparc/video/video.c                     | 25 +++++++++++++++++++
+ arch/x86/Makefile                            |  2 +-
+ arch/x86/include/asm/fb.h                    | 19 --------------
+ arch/x86/include/asm/video.h                 | 21 ++++++++++++++++
+ arch/x86/video/Makefile                      |  3 ++-
+ arch/x86/video/{fbdev.c => video.c}          | 21 +++++++---------
+ drivers/video/fbdev/core/fbcon.c             |  2 +-
+ include/asm-generic/Kbuild                   |  2 +-
+ include/asm-generic/{fb.h => video.h}        | 17 +++++++------
+ include/linux/fb.h                           |  2 +-
+ 32 files changed, 154 insertions(+), 150 deletions(-)
+ delete mode 100644 arch/arc/include/asm/fb.h
+ create mode 100644 arch/arc/include/asm/video.h
+ delete mode 100644 arch/arm/include/asm/fb.h
+ create mode 100644 arch/arm/include/asm/video.h
+ delete mode 100644 arch/arm64/include/asm/fb.h
+ create mode 100644 arch/arm64/include/asm/video.h
+ rename arch/loongarch/include/asm/{fb.h => video.h} (86%)
+ rename arch/m68k/include/asm/{fb.h => video.h} (86%)
+ rename arch/mips/include/asm/{fb.h => video.h} (76%)
+ delete mode 100644 arch/parisc/include/asm/fb.h
+ create mode 100644 arch/parisc/include/asm/video.h
+ rename arch/parisc/video/{fbdev.c => video-sti.c} (78%)
+ rename arch/powerpc/include/asm/{fb.h => video.h} (76%)
+ delete mode 100644 arch/sh/include/asm/fb.h
+ create mode 100644 arch/sh/include/asm/video.h
+ rename arch/sparc/include/asm/{fb.h => video.h} (75%)
+ delete mode 100644 arch/sparc/video/fbdev.c
+ create mode 100644 arch/sparc/video/video.c
+ delete mode 100644 arch/x86/include/asm/fb.h
+ create mode 100644 arch/x86/include/asm/video.h
+ rename arch/x86/video/{fbdev.c => video.c} (66%)
+ rename include/asm-generic/{fb.h => video.h} (89%)
+
 -- 
 2.43.0
 
