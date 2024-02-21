@@ -1,130 +1,115 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6AC585D875
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 13:56:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC16D85D882
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 13:58:57 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=lN7G9R9G;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=AaxCUU8c;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tfx905KJTz3cy9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 23:56:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TfxDH59tmz3dfM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 23:58:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=lN7G9R9G;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=AaxCUU8c;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:261c::700; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20700.outbound.protection.outlook.com [IPv6:2a01:111:f403:261c::700])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2408::601; helo=nam04-bn8-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on20601.outbound.protection.outlook.com [IPv6:2a01:111:f403:2408::601])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tfx8F3Xy7z30Pp
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Feb 2024 23:55:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TfxCY3MM5z2yhZ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Feb 2024 23:58:15 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XEa4CDKQJzMMh6P6ggeqfhSZCXeXioyWdA4MpR+HEecqiG5feaDNMYSz+SpBywK614cXQfo1N5LYE6P5+1wsN2Pbr+1xGk34ni8iu8qttytadIHJmls8BhE1ovxfJ6KCCldsOYXX0yiFCcfcLnsmdg6YTANS1e8CrOu/t5MH8/cOY3ERGxSY/XqArdWLLd5cLrbDDrjKTcQIHcKeB3xiYC5AVPyfyEbd0IOTyxPGPKMcQF8rCsEHH/wf2HXkS2vhPFl3mI5y6wRrtDN/UvgXPw4Yl4GXolVcB88eqb+RMSIok6JaJWVUtGPcfC5SOlde5m8amUgKYDcSmaXx8EZLqg==
+ b=FSGguMYZElE8k+NeCDAFY4Q6dQFB5lcpTVRiDJwsyRsVrfenWOdhRWgG9ypzdrgeh2lehnuUotC62jISAr4dpGymVREqgWqQZKsRNrBWVjDNU5RqydZVp8/VpsT2MXGSYpuxxwN/cqMTOfcWDwi2FxYyXKLuMEiDR6PHf19gDo/Vw97dr3HX92QxRponITg6+vhkJDTFAh+b8qbSJnwAbCY3tlQghhvYzgBgixYD3U8QoYBWO546NSmQfm5dzERdB+9kZg+7PSwojsdr4deSuDf04zYZhBSO01ItAbh4pUh8ihVutIuCbJ9Uh0PKdqJy01vcPi37we9Dh3TEjPKz7w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bCMnmjjxQZvsMfTFd0+u5eFer7WLn4D+mLCNf7FgdQk=;
- b=QMmsW7nukCKw2tRPS2voL+qfYyG4q4YcBlnDMJmZXeZXZWTh8N+s+RiJ/sTjpsb+bl5uOFneJmV7ID2A5oqEtv0uepybCazFonpfpGTSA4T/pSn3aNj8krLdRalZNlE/5gVtmYtiTow9U+A3rEaeKVhf4gYbrerZnHV4X+xqVL4Vp6//VAq1aavEmJLb9NjueB9EjM/eMYMJVVn0MIR0XG+ZMj03GJ+9ict56g37Uk/qfezFB7Duv1SmtObohnYF4bt4VxHwNRTy5obF0anDOyIgIMLMNM0U545KoT2CXQnpmz6hPPJhtoDvlj1Vf2IkkOvyT9Cv2vgltjP6FiGJLw==
+ bh=W5dAw+ES3ad0FTa85GSy2DHmJ5PXxznyWj5Yf8rGxs4=;
+ b=L0ESUvRUkIOF0E+ogHWvdPsn59YhVLz47vS0Pxfh7e7MHn9CRe18bfRNsr/vEt9y+32hk+72iR6x/0vspYWNSQ3nsYRfrNpzaH36U+kmC8qLQ1XYY9oe1A3RFqk617obKtGl3lt/YJbWowEsMPfbOr0pUXAAH0f9Kv+9FlgbkOgbxdUJJe8cv/tp6jGk5ienTBX4S5bPv3vp9zTbGYVXGbWMR1QvdfcgOu9/zJhBKgj+Es6AEAFnKTXmemYn/2Wc8lKhDm4Lz/snvrUp2vX+pvLPqsIbDWCzpkQgAEW/EfBMOK51qwLclRHq+k7CuujMW3H+M0x+ItsJgXI/+WGElQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bCMnmjjxQZvsMfTFd0+u5eFer7WLn4D+mLCNf7FgdQk=;
- b=lN7G9R9GyWcfR8E0GAfTURkW4iiQe58DvSIMUdD2ba5fftUBG5MBqTXiK8Vgg7s1wC3rle3rcyBbEq1HOXHcLWRvrH79W21RsZ75QgjeP+6GykOkxYAEbpOD3fBGikc3Rn/uPUpj5aAqsYo03lW6czvLJbiGxYGlxfw5r8G7PhqBhj2InzzXpWbik9iGjpaapjD5/PCtoo/T6e4E/s0bczxS4qCR8iCHMYiCpdFekLzhQcqNw59nNtkMXLgXSl4IQvtMVip1RHkTMQgxiyYUe5RDnAdhPiegdx7bkLL6hxn7oe4cVoGjpR5klsmHrqsD9h4Bsx2Yb5JxIWxifh81XQ==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR0P264MB2920.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1d3::14) with
+ bh=W5dAw+ES3ad0FTa85GSy2DHmJ5PXxznyWj5Yf8rGxs4=;
+ b=AaxCUU8cy2XbWBVnQfEpWmODAheC9zSR4nHnRcfuct28+Xb4UloRZ7ZHKPDWB9vu0yaGT/myuCCCBmM93WJskYQkCu+hNdLi68wm/kcjHDPE8YUjQRx4/Y9E/a7B0YYU8XK9AKIqwYl8bc0b8q+slvWyVW9qtYMUzbrEwlRIlaTRbOSZctDSTrocrShFjwvNlFZ81bpQYZvPNl5AaLu3FTAVBsG2FFxtePiBBYilyue6N3qq5L0Ia8n5aICcM8dbjXHaTfdEZm6eomV7Ngjt7XkX4eXHD8IcSlt/6eX64iLrptUr5Hi5QM34JD+FJo/P0CkWCTIPWLbYKfTiNaG6xw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by DM4PR12MB6352.namprd12.prod.outlook.com (2603:10b6:8:a0::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.22; Wed, 21 Feb
- 2024 12:55:04 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::64a9:9a73:652c:1589]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::64a9:9a73:652c:1589%7]) with mapi id 15.20.7292.036; Wed, 21 Feb 2024
- 12:55:04 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 2/2] powerpc: Don't ignore errors from set_memory_{n}p()
- in __kernel_map_pages()
-Thread-Topic: [PATCH 2/2] powerpc: Don't ignore errors from set_memory_{n}p()
- in __kernel_map_pages()
-Thread-Index: AQHaYMFgEY7XRkHGtEax26FM0Hg11bEUvDGAgAAMrAA=
-Date: Wed, 21 Feb 2024 12:55:04 +0000
-Message-ID: <eefeb056-bc71-46ad-90b3-b07c392f5903@csgroup.eu>
-References:  <3656d47c53bff577739dac536dbae31fff52f6d8.1708078640.git.christophe.leroy@csgroup.eu>
- <20ef75884aa6a636e8298736f3d1056b0793d3d9.1708078640.git.christophe.leroy@csgroup.eu>
- <878r3eauig.fsf@mail.lhotse>
-In-Reply-To: <878r3eauig.fsf@mail.lhotse>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla Thunderbird
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR0P264MB2920:EE_
-x-ms-office365-filtering-correlation-id: c90cb76d-7018-4c05-4456-08dc32dc5308
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  dTaXlL2X8udJSTMa5+2hA5l0gwCSE1CHYj/lvCPp6C/2o7x7YO8iGKPi9aKvbh2B9odgj9kIbSq/4RYmDFwh0vFUfT+mHgxKI9yM+HvN46Oj+NfhfJaDFl+moU9HG4P8l0fAlbORA6EK8J0x2f9hPI9uRX8eZoQg+/zAlrGrxE9kVGoS5f+q4HFy9eSNDM1vM/jmtaF0wejtx9M+Pbk0FO3vroElFAjw4PZN/EdCu1w665inWG7g2Ye8KTcI8dXNtxaIXbcHPCegXvexTDnZyViV1XplfT7CnY/SP0TwKBHgafv89ABt0Gxtm6vi6NaQF/4jQodVys2R4BSnvmUUXxgifLlej5AfHbP2BRB8wuXjNP5liZ6cNlrr1xQaVVA5Fo+QWHSLF3uCfT25NlSnQeCSo5+joWYZhhfZkct3Ax72AHis6feZQtMzlCZE4H19hrpW1mcKgWOBiOL1kMpgJz5QJiwC4WBkug1kzu9tV2n9stSSq0HZF9FCFDm8NMvxK90knOenVj1ej+Wkpm4nUdnQWauk6vG7XGurcobj+AX1JSkdF7grwdM9DhEIvGVz7erFd09PqzspBRKvu95/N9a9ZbEvc77ZyXPQLtsOQT0=
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(38070700009);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?c2RiZ1E4TStlcndmcnZJWHc3YUJiMFhDa0xnbUVjWlNTa1VNejlncTM3TGNz?=
- =?utf-8?B?aHRzOXFNdXZGT1BObURWbHkyTTEzSkJZYW9VNTNtcTFucXZvUXZXa0FyS0cw?=
- =?utf-8?B?bjQvVzdMMENEWGFJWkI3T3p3M0VoeDdNUlRNR2R1OVVvcHRsem5GSzhod0Ru?=
- =?utf-8?B?VE5MYm9YZHB3MG90azMyNHo2NjVlUDBCUVFDK1UrRWRHZ0xCWHVzSlVCbVQx?=
- =?utf-8?B?aHQ4RGRIRDc3dkpPRVh1YmdkVzMzMmppT0lqbU1hckdIOXF1bG9UUmgwaFUx?=
- =?utf-8?B?aG1IdkVkRTVQa2poQllEcTBRL09yWitRNlM3S2M2alJYbTQvNzZINktMRE01?=
- =?utf-8?B?NEl2dEhnWTJXR1ErMmhHTTVyR2lFTmdqcEx6OGJNRnZJK0ZYMWtiMmg3NTZx?=
- =?utf-8?B?T08yazJmeDBhWHJTNDV1dFF6OVgrblUwa1pNTmhoSklEaTVnK3kwNkdtVlVa?=
- =?utf-8?B?NHJtWGNXWkJQMWVTZzJlVjJCZEp6WWNqbURVL0pFT3FVeWwxTjhLTUE5K0dl?=
- =?utf-8?B?dExVQlJHdDZLamxHV25kdDF2Wm9kZXR3UDBJZkh6TEtOY3AzeWx3dmhMZUlK?=
- =?utf-8?B?Q1hpVnRESGpLV1RvRkVPWDkxTUZjOGtXR0U1aFVodzNkTmpid3RIbldMNnB4?=
- =?utf-8?B?L3UwWTIrdzdEL2ZPeDVqZ0IyTW84cUFWbkI4c1BERzk1bzdRc1hHSjJYb1pX?=
- =?utf-8?B?NkpDeHpFamkveG4xWjllV2k5WWxkWm1VSVhwa0tlVE1iVVJ5QUQwdEI4WmxY?=
- =?utf-8?B?Z0VpMDRZNTg1R0Z5NDJnWGMrTWMrdUtqTm1NMHhHV3ZHcEo1WWpjcGpxT2RP?=
- =?utf-8?B?bzRuLyswSXNaWjUwRkpnT3grSThrcFpPdm9ycHMwRW1SVnhRcTRDdkZicklL?=
- =?utf-8?B?U3NNdmtnN25Rd1krdGFpSTJDL1hLK2Z0WHhZYVIxQ0NpNSsrZW9aT0Niemph?=
- =?utf-8?B?RUw4ZnNVWjh5TmtES2RScjZrVE9raElyT2RzQWw2YkhnZUtVZ0UvQlR1MWd4?=
- =?utf-8?B?NGRtMFZjZmxKZndqRFJsZ2Z5aWh1ekdFQjRaTGJrSVpUYW5zRWpvdkd4MFlJ?=
- =?utf-8?B?dlJka0RCWnIvYnB1TlUxMGFXbmNJTkFNd2tyeGR4Q1FRUU91ZFB3cy9nT1BL?=
- =?utf-8?B?Y3VYNVBFYVdyWFVlZ200RnRNNGRNb0RLNlBhU2wxL2F3MzRzT0R5cEZLVFc3?=
- =?utf-8?B?NnpiVTFROXl4cy8ycnZJYkZWNmdBVjRWcEQvK0JXNUUyL0pxYlNZbUlpMGZN?=
- =?utf-8?B?R05nZUZqT1YyUzRUcDFLRHZYMVBqWXJWVnVtaG1CQjRKaHJFNjBuWmVCRlNx?=
- =?utf-8?B?WTc5RTY5V2JEU0ExUnl0dThPTmxvMC9vUVdkcThxVTUwQmJiNklXZk1jV25T?=
- =?utf-8?B?bGVsRks0NHA5ZkRqZExpQzRkQ3ZMck9hUWxjL1FuOTN3ZDhSUTc4S2tJMDg2?=
- =?utf-8?B?ZmhCOHVLRjUzeldNWGFiRWNYamhHaTlyVU01TjZwWUs5cVhnMXRqaDlYaVRI?=
- =?utf-8?B?SDhyU1RDN2hTVVFoY21aNmo3N1ZyQUFYN2tyZTNCanFIWC9wak13R0RoVldm?=
- =?utf-8?B?SUtwL2FEUmt3TDlWNXhoOEpwWE90RUxsRXV2V1hoYXN5WSsrTWpvRXBwRkw5?=
- =?utf-8?B?cEt6b2lQNW5WZ3dscE55eERhYmZrK1VIOStPL0ZEbWZRVlhmU1haNkdPQmpH?=
- =?utf-8?B?bzZadmE1YTYxcXdLTVdrNURhaXdGSFk2WFd5MUVHK2JDVFRmOXV2dXBLcG96?=
- =?utf-8?B?TXdRU3dsMTNKaFhxaG9ZdDBMY0lkT2R6b0t2UUlyeW5mRWt4dzcySFVBNHJu?=
- =?utf-8?B?K3I1SHBQajQvRnd4LzFvME8wNDVFYWpnTEJuUTNGeEkwbE1nenlydGNsenp3?=
- =?utf-8?B?bjdVTm9lc2p4VmVydG9PMUx2aXZFMWQxTFhZMXlWTW8rRGM5OHhDYisxcUhu?=
- =?utf-8?B?dmp5M05OcWJTLzZDQko1K3ZOMXFFdlU1N2hhU2xNWHFSMTAxRWFpRFFqeVlr?=
- =?utf-8?B?d2RTYjI3VUZ6bWV3NzFoNVk4Z3d2M2VLNWNVWWtoVFNha0tnT3YyaTMyUUpL?=
- =?utf-8?B?TGFaUGhXbk5mZ3FVaHlnZnA4eUpOMjJGK08wMjRWVGRENm5OY09uUFlIMVFh?=
- =?utf-8?Q?SLMlfgHhak+o6iDO6XTsglhoC?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <DE633E0A3BE3B04F9C5BB2C181D837C6@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.32; Wed, 21 Feb
+ 2024 12:57:55 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::96dd:1160:6472:9873]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::96dd:1160:6472:9873%6]) with mapi id 15.20.7316.023; Wed, 21 Feb 2024
+ 12:57:54 +0000
+Date: Wed, 21 Feb 2024 08:57:53 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Peter Xu <peterx@redhat.com>
+Subject: Re: [PATCH v2 03/13] mm: Provide generic pmd_thp_or_huge()
+Message-ID: <20240221125753.GQ13330@nvidia.com>
+References: <20240103091423.400294-1-peterx@redhat.com>
+ <20240103091423.400294-4-peterx@redhat.com>
+ <20240115175551.GP734935@nvidia.com>
+ <ZdXEYfs_xhS_9gRo@x1n>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZdXEYfs_xhS_9gRo@x1n>
+X-ClientProxiedBy: MN2PR20CA0054.namprd20.prod.outlook.com
+ (2603:10b6:208:235::23) To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|DM4PR12MB6352:EE_
+X-MS-Office365-Filtering-Correlation-Id: 02b3e37a-b0e3-4016-2909-08dc32dcb853
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	cf83V4BwjQNrLAqQg/8GR2pDO7J8FKrL6eeZEre27bQPXSxb7D1D0crjCXv9mT5Aaan1Vatf2O13VMVEqRG8sSF0CvWl38sMm71hLpJMT9RT9/hZQeT8H3UWtxyQT8SszpB6Bza16Gp8nsFc6h/t/Mnl9jQaLEhM+tm/tlhMwS/5QX5Ab9AikNOM6b5nD94aqav93+KvJN43ZSDsur6OQYq7iXHTH80w2xD7UYJjNXgA/242VTNi82pDck5frRKY8c9ViiavX7oko0pDPmiOlAo46HxL1+M80wu9jNsMfHQAkpGWNaRY4fPF6fBEfpxGT2Mf69HNpUVQrXLWXXVWavAUeWBMG98U5ILIKZWfhr5YrSpbWdlwkIL/NBzYD0158MRWBj2yOq6Y1l+shGg5oNMlrXbSegZ5QyEKTb0pMIzNLmFclnINuclKpdfxnYzijqs/6LpOrGsYWzxYdUXgivv0bcLhIWh/NV96xSV7A8XZwu+82HysR3v+dp1Vlh1WdLvfcNV06ctBMp1664/VuGVQWH2BLYz0zg2PSwL3nWM=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5869.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?uKmRp6ioKBLVCDALBLLX4U8RQXnaZVRq3V46RQHO13mSaf35Z3OQJJj6J2cX?=
+ =?us-ascii?Q?x7mOoQI3p/o+5plex6Kr1AErXpliKkyXBWsN6PD7pcACGLtcg2hnhypz/N3a?=
+ =?us-ascii?Q?2La/zOHOvApgWeVM1KT85muGyW4SgmUPvmhOYoMo6xOZwS5k5Vxxma4jbB4W?=
+ =?us-ascii?Q?ENLRWr0UO/W8lf/K/7TQ2ALQdxh732AtxGb67uwqHv1YBoFz5PRHiaGnyWVT?=
+ =?us-ascii?Q?NHDu6U7/v8kGSWbgp9ytnFttZcuyvVgCUctxAW/Pt5B7R5RZ14nCjvQO5VPa?=
+ =?us-ascii?Q?5/Lj41mrsgQq5W8kIYUUc6h+TyV7ZB59WLwzziliLnIGLtowq1sogc8bcYFk?=
+ =?us-ascii?Q?agI95yGVWWjA1ov2i2YEt9HBAW8knKvNkKCQrrhmekDrU6dCpM17ceVGkcgO?=
+ =?us-ascii?Q?aTvUrN5u1jGburBhOxJNR3ZZEzabR2p8H0QbfT0shvOJo+bHAm2N91r4kBvD?=
+ =?us-ascii?Q?M9Rb9ubZiMVWr44gzNdt3wcFaSVWmn3XKBl4LEWXZGCnhdQsyGZEi87y1VL9?=
+ =?us-ascii?Q?w+K0IpzWDOSU0B8hNclMtU81rPevpY896+AG5Mh25B9Wlbvx7R8eU/8idMFg?=
+ =?us-ascii?Q?msspHj862q++8+sYsG5Z+LI4XwGS2nMSENAUxixjbvQlmwM+Gi/LPb/3N4I1?=
+ =?us-ascii?Q?PA+mu1XQn2x4aRR8O2p2D5aHxjdU/OU8txNjkNaVEvd41B4WyaOhqqR98rMj?=
+ =?us-ascii?Q?qKou10OLXgxJLxHRD/eFnpQ6yEmDk5t15VH/kS8HCbJkvSNefte2IPA1BB1Y?=
+ =?us-ascii?Q?UxG9QLxxf1OPQE/bKJgHdpgMAgRhx2vFGnuAaKaQKhJhSukMbS3xFTMRI2wb?=
+ =?us-ascii?Q?gkW11HmK4cj+U9Vwu1ow7Cr64AYrB48+OwBZXoYRaRStvonR2BSkSDQcVm6p?=
+ =?us-ascii?Q?jIqlxlpVsikv8RVYMpN8/RsWsaHrbzLkhk6ua7TTjGKe0GQ6Fh7xSmd4Mp0Q?=
+ =?us-ascii?Q?8PDdPSUmpnsqkmaa42gI5E2b87pgcO6cih6nwFI+BgxihA3K60TQnRRc8ex7?=
+ =?us-ascii?Q?7o/RNRQIilhLOenRBEJap34KgQOBp/FijpcuVKcwRM6ftvx3iiQkk0oJ+rOF?=
+ =?us-ascii?Q?DucRYSjkT4F1MicOh/o4mN6zgtvaCDjtX/zCnrvEekUZRRbHakkMVaOrYj/y?=
+ =?us-ascii?Q?fILpC1UoWiYUs6ALV/O0kZtg3PyOpbXKkClrjPygYig8GI20HdMBaHdESJjp?=
+ =?us-ascii?Q?rga0Rv0AoesxNRdNUrRYzHdSHomQCAx8RPtja8Pcnn8ntvhB4MRqBMOquNjI?=
+ =?us-ascii?Q?emyJMVIYMBJP0QyBEASm1nZDxZdfFrQ+MwmIEe4AtDPJhVyO+ug+XEIpTpuH?=
+ =?us-ascii?Q?rSD4rva2OHxod7FCOP4uppRSZ3pKIfscC4YRL9fPEF0sZ1l8ZZKhQb7rwdfF?=
+ =?us-ascii?Q?R2YKvUbWWvKmC+bcMOwd8NM/caKGjOI+2T64+g30cZTZdHrRhWTeU9qHOJqC?=
+ =?us-ascii?Q?eUfJNHQduKlSeshypO47EVa3iUDzbLAIja85Cwd3ncA2Rkf9NVme+s7PRle2?=
+ =?us-ascii?Q?oO+/x9QVVoZY8OhGtK+cJ4II/2wLYvgWIAsD71sWznWI5UR1UftlZqeKkNam?=
+ =?us-ascii?Q?MIqt+MIKT0U/PXBS+cmLXhCWyEU0ghhl6Yv2sCwH?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 02b3e37a-b0e3-4016-2909-08dc32dcb853
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: c90cb76d-7018-4c05-4456-08dc32dc5308
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Feb 2024 12:55:04.6391
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2024 12:57:54.7937
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: PWGpQkvIk23UmaV5jEjLsOQ99u8+p7b/tK6qGjHe9iB2W0GftuhVuC+77pm9fsfkwiuGraIHOyQ6rZt5u12+p2G2vizGAwk3sKp/HMTakEA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB2920
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: i8/Xd1zMnvDEyAOKAf5NgLdYM6Jr9DqoY3pf6upYC/bKylb4BXYmTMkLHYMf1HJb
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6352
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -136,47 +121,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: James Houghton <jthoughton@google.com>, David Hildenbrand <david@redhat.com>, Yang Shi <shy828301@gmail.com>, Andrew Jones <andrew.jones@linux.dev>, linux-mm@kvack.org, Matthew Wilcox <willy@infradead.org>, linux-riscv@lists.infradead.org, Andrea Arcangeli <aarcange@redhat.com>, Christoph Hellwig <hch@infradead.org>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Axel Rasmussen <axelrasmussen@google.com>, Rik van Riel <riel@surriel.com>, John Hubbard <jhubbard@nvidia.com>, "Kirill A . Shutemov" <kirill@shutemov.name>, linux-arm-kernel@lists.infradead.org, Lorenzo Stoakes <lstoakes@gmail.com>, Muchun Song <muchun.song@linux.dev>, linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDIxLzAyLzIwMjQgw6AgMTM6MDksIE1pY2hhZWwgRWxsZXJtYW4gYSDDqWNyaXTCoDoN
-Cj4gQ2hyaXN0b3BoZSBMZXJveSA8Y2hyaXN0b3BoZS5sZXJveUBjc2dyb3VwLmV1PiB3cml0ZXM6
-DQo+PiBzZXRfbWVtb3J5X3AoKSBhbmQgc2V0X21lbW9yeV9ucCgpIGNhbiBmYWlsLg0KPj4NCj4+
-IEFzIG1lbnRpb25lZCBpbiBsaW51eC9tbS5oOg0KPj4NCj4+IC8qDQo+PiAgICogVG8gc3VwcG9y
-dCBERUJVR19QQUdFQUxMT0MgYXJjaGl0ZWN0dXJlIG11c3QgZW5zdXJlIHRoYXQNCj4+ICAgKiBf
-X2tlcm5lbF9tYXBfcGFnZXMoKSBuZXZlciBmYWlscw0KPj4gICAqLw0KPj4NCj4+IFNvIHBhbmlj
-IGluIGNhc2Ugc2V0X21lbW9yeV9wKCkgb3Igc2V0X21lbW9yeV9ucCgpIGZhaWwNCj4+IGluIF9f
-a2VybmVsX21hcF9wYWdlcygpLg0KPj4NCj4+IExpbms6IGh0dHBzOi8vZ2l0aHViLmNvbS9LU1BQ
-L2xpbnV4L2lzc3Vlcy83DQo+PiBTaWduZWQtb2ZmLWJ5OiBDaHJpc3RvcGhlIExlcm95IDxjaHJp
-c3RvcGhlLmxlcm95QGNzZ3JvdXAuZXU+DQo+PiAtLS0NCj4+ICAgYXJjaC9wb3dlcnBjL2luY2x1
-ZGUvYXNtL2Jvb2szcy82NC9oYXNoLmggfCAgMiArLQ0KPj4gICBhcmNoL3Bvd2VycGMvbW0vYm9v
-azNzNjQvaGFzaF91dGlscy5jICAgICB8ICAzICsrLQ0KPj4gICBhcmNoL3Bvd2VycGMvbW0vcGFn
-ZWF0dHIuYyAgICAgICAgICAgICAgICB8IDEwICsrKysrKystLS0NCj4+ICAgMyBmaWxlcyBjaGFu
-Z2VkLCAxMCBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQ0KPj4NCj4gLi4uDQo+PiBkaWZm
-IC0tZ2l0IGEvYXJjaC9wb3dlcnBjL21tL3BhZ2VhdHRyLmMgYi9hcmNoL3Bvd2VycGMvbW0vcGFn
-ZWF0dHIuYw0KPj4gaW5kZXggMTZiOGQyMGQ2Y2E4Li42MmI2Nzg1ODU4NzggMTAwNjQ0DQo+PiAt
-LS0gYS9hcmNoL3Bvd2VycGMvbW0vcGFnZWF0dHIuYw0KPj4gKysrIGIvYXJjaC9wb3dlcnBjL21t
-L3BhZ2VhdHRyLmMNCj4+IEBAIC0xMDYsMTcgKzEwNiwyMSBAQCBpbnQgY2hhbmdlX21lbW9yeV9h
-dHRyKHVuc2lnbmVkIGxvbmcgYWRkciwgaW50IG51bXBhZ2VzLCBsb25nIGFjdGlvbikNCj4+ICAg
-I2lmZGVmIENPTkZJR19BUkNIX1NVUFBPUlRTX0RFQlVHX1BBR0VBTExPQw0KPj4gICB2b2lkIF9f
-a2VybmVsX21hcF9wYWdlcyhzdHJ1Y3QgcGFnZSAqcGFnZSwgaW50IG51bXBhZ2VzLCBpbnQgZW5h
-YmxlKQ0KPj4gICB7DQo+PiArCWludCBlcnI7DQo+PiAgIAl1bnNpZ25lZCBsb25nIGFkZHIgPSAo
-dW5zaWduZWQgbG9uZylwYWdlX2FkZHJlc3MocGFnZSk7DQo+PiAgIA0KPj4gICAJaWYgKFBhZ2VI
-aWdoTWVtKHBhZ2UpKQ0KPj4gICAJCXJldHVybjsNCj4+ICAgDQo+PiAgIAlpZiAoSVNfRU5BQkxF
-RChDT05GSUdfUFBDX0JPT0szU182NCkgJiYgIXJhZGl4X2VuYWJsZWQoKSkNCj4+IC0JCWhhc2hf
-X2tlcm5lbF9tYXBfcGFnZXMocGFnZSwgbnVtcGFnZXMsIGVuYWJsZSk7DQo+PiArCQllcnIgPSBo
-YXNoX19rZXJuZWxfbWFwX3BhZ2VzKHBhZ2UsIG51bXBhZ2VzLCBlbmFibGUpOw0KPj4gICAJZWxz
-ZSBpZiAoZW5hYmxlKQ0KPj4gLQkJc2V0X21lbW9yeV9wKGFkZHIsIG51bXBhZ2VzKTsNCj4+ICsJ
-CWVyciA9IHNldF9tZW1vcnlfcChhZGRyLCBudW1wYWdlcyk7DQo+PiAgIAllbHNlDQo+PiAtCQlz
-ZXRfbWVtb3J5X25wKGFkZHIsIG51bXBhZ2VzKTsNCj4+ICsJCWVyciA9IHNldF9tZW1vcnlfbnAo
-YWRkciwgbnVtcGFnZXMpOw0KPj4gKw0KPj4gKwlpZiAoZXJyKQ0KPj4gKwkJcGFuaWMoIiVzOiBz
-ZXRfbWVtb3J5XyVzcCgpIGZhaWxlZFxuIiwgZW5hYmxlID8gIiIgOiAibiIpOw0KPiANCj4gVGhp
-cyBkb2Vzbid0IGNvbXBpbGUsIGl0J3MgbWlzc2luZyBfX2Z1bmNfXyBJIGd1ZXNzLg0KDQpEYW1u
-LCBJIHdhcyB0b28gcXVpY2sgd2hlbiBJIHRvb2sgaW50byBhY2NvdW50IGNoZWNrcGF0Y2gncyBm
-ZWVkYmFjaywgDQpzb3JyeSBmb3IgdGhhdC4NCg0KPiANCj4gU2VlbXMgbGlrZSB3ZSBjb3VsZCBr
-ZWVwIGl0IHNpbXBsZXIgdGhvdWdoLCBpdCBzaG91bGQgaG9wZWZ1bGx5IG5ldmVyDQo+IGhhcHBl
-biBhbnl3YXksIGVnOg0KPiANCj4gICAgcGFuaWMoIiVzOiBjaGFuZ2luZyBtZW1vcnkgcHJvdGVj
-dGlvbnMgZmFpbGVkXG4iLCBfX2Z1bmNfXyk7DQoNClN1cmUsIGxldCdzIGRvIHRoYXQuIERvIHlv
-dSB3YW50IGEgdjIgb3IgeW91IGRvIHRoZSBjaGFuZ2UgZGlyZWN0bHkgPw0KDQpUaGFua3MNCkNo
-cmlzdG9waGUNCg==
+On Wed, Feb 21, 2024 at 05:37:37PM +0800, Peter Xu wrote:
+> On Mon, Jan 15, 2024 at 01:55:51PM -0400, Jason Gunthorpe wrote:
+> > On Wed, Jan 03, 2024 at 05:14:13PM +0800, peterx@redhat.com wrote:
+> > > From: Peter Xu <peterx@redhat.com>
+> > > 
+> > > ARM defines pmd_thp_or_huge(), detecting either a THP or a huge PMD.  It
+> > > can be a helpful helper if we want to merge more THP and hugetlb code
+> > > paths.  Make it a generic default implementation, only exist when
+> > > CONFIG_MMU.  Arch can overwrite it by defining its own version.
+> > > 
+> > > For example, ARM's pgtable-2level.h defines it to always return false.
+> > > 
+> > > Keep the macro declared with all config, it should be optimized to a false
+> > > anyway if !THP && !HUGETLB.
+> > > 
+> > > Signed-off-by: Peter Xu <peterx@redhat.com>
+> > > ---
+> > >  include/linux/pgtable.h | 4 ++++
+> > >  mm/gup.c                | 3 +--
+> > >  2 files changed, 5 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> > > index 466cf477551a..2b42e95a4e3a 100644
+> > > --- a/include/linux/pgtable.h
+> > > +++ b/include/linux/pgtable.h
+> > > @@ -1362,6 +1362,10 @@ static inline int pmd_write(pmd_t pmd)
+> > >  #endif /* pmd_write */
+> > >  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+> > >  
+> > > +#ifndef pmd_thp_or_huge
+> > > +#define pmd_thp_or_huge(pmd)	(pmd_huge(pmd) || pmd_trans_huge(pmd))
+> > > +#endif
+> > 
+> > Why not just use pmd_leaf() ?
+> > 
+> > This GUP case seems to me exactly like what pmd_leaf() should really
+> > do and be used for..
+> 
+> I think I mostly agree with you, and these APIs are indeed confusing.  IMHO
+> the challenge is about the risk of breaking others on small changes in the
+> details where evil resides.
+
+These APIs are super confusing, which is why I brought it up.. Adding
+even more subtly different variations is not helping.
+
+I think pmd_leaf means the entry is present and refers to a physical
+page not another radix level.
+
+> > eg x86 does:
+> > 
+> > #define pmd_leaf	pmd_large
+> > static inline int pmd_large(pmd_t pte)
+> > 	return pmd_flags(pte) & _PAGE_PSE;
+> > 
+> > static inline int pmd_trans_huge(pmd_t pmd)
+> > 	return (pmd_val(pmd) & (_PAGE_PSE|_PAGE_DEVMAP)) == _PAGE_PSE;
+> > 
+> > int pmd_huge(pmd_t pmd)
+> >         return !pmd_none(pmd) &&
+> >                 (pmd_val(pmd) & (_PAGE_PRESENT|_PAGE_PSE)) != _PAGE_PRESENT;
+> 
+> For example, here I don't think it's strictly pmd_leaf()? As pmd_huge()
+> will return true if PRESENT=0 && PSE=0 (as long as none pte ruled out
+> first), while pmd_leaf() will return false; I think that came from
+> cbef8478bee5. 
+
+Yikes, but do you even want to handle non-present entries in GUP
+world? Isn't everything gated by !present in the first place?
+
+> Besides that, there're also other cases where it's not clear of such direct
+> replacement, not until further investigated.  E.g., arm-3level has:
+> 
+> #define pmd_leaf(pmd)		pmd_sect(pmd)
+> #define pmd_sect(pmd)		((pmd_val(pmd) & PMD_TYPE_MASK) == \
+> 						 PMD_TYPE_SECT)
+> #define PMD_TYPE_SECT		(_AT(pmdval_t, 1) << 0)
+> 
+> While pmd_huge() there relies on PMD_TABLE_BIT ()
+
+I looked at tht, it looked OK.. 
+
+#define PMD_TYPE_MASK               (_AT(pmdval_t, 3) << 0)
+#define PMD_TABLE_BIT               (_AT(pmdval_t, 1) << 1)
+
+It is the same stuff, just a little confusingly written
+
+Jason
