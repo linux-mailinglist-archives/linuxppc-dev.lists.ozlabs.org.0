@@ -1,75 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7AE185DFAE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 15:31:05 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Y137kzra;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A18A885E19D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 16:42:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TfzGb65ryz3ckj
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 01:31:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tg0sJ4Jsmz3vrS
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 02:42:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Y137kzra;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=lists.ozlabs.org)
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TfzFs0jM1z3cBx
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Feb 2024 01:30:23 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708525825; x=1740061825;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=AnVfYPg9QLlMiSY5zHzUg1A2vSHWhrEptn7kKIChBoo=;
-  b=Y137kzrahKjLKTq4+MbZBIu8MZ1+hiwbrH5pi8e0xa+GEBCByKSIcip7
-   3JU3+psrW64C3jhc2fpLNmqfmUK6GBqM2hSyS7g+BdcoMLaTEU9AW6Tas
-   /sRpWhjeTOHh0tX9tsGgew+sKyQ+fWfb1Is9UqmXcF1rVd56CRj198aks
-   w4WCfXf8kmur1vum9Dk5CGGfhBNSV2GMVpCC/nVDgQEtMp9/cX0QSDsvF
-   M0tQf9velw7gh/++K8mx+GCXenWsVocN8JVN2XuyHcQJ7Lw02mYgm/jYf
-   91u8GskpPqNbD9AE7egzeAvQUtLCiEyjwMq9Xhu5utGkdlBlQUiDWR0lY
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="2549602"
-X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
-   d="scan'208";a="2549602"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 06:30:20 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="913314388"
-X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
-   d="scan'208";a="913314388"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 06:30:15 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rcnbv-00000006N3D-3zA2;
-	Wed, 21 Feb 2024 16:30:11 +0200
-Date: Wed, 21 Feb 2024 16:30:11 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Herve Codina <herve.codina@bootlin.com>
-Subject: Re: [PATCH v3 RESEND 3/6] bitmap: Make bitmap_onto() available to
- users
-Message-ID: <ZdYI81yKNisoLR7Y@smile.fi.intel.com>
-References: <20240212075646.19114-4-herve.codina@bootlin.com>
- <ZcoOpPb9HfXOYmAr@smile.fi.intel.com>
- <20240212143753.620ddd6e@bootlin.com>
- <ZcokwpMb6SFWhLBB@smile.fi.intel.com>
- <20240212152022.75b10268@bootlin.com>
- <Zcos9F3ZCX5c936p@smile.fi.intel.com>
- <Zcptyd/AWrDD3EAL@yury-ThinkPad>
- <20240215184612.438bd4f2@bootlin.com>
- <Zc5jQ3zR51MDIovB@smile.fi.intel.com>
- <20240221144431.149c3a16@bootlin.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tg0q412lPz3cVG
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Feb 2024 02:40:47 +1100 (AEDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rcoi6-0003mK-6m; Wed, 21 Feb 2024 16:40:38 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rcoi3-0024At-Ma; Wed, 21 Feb 2024 16:40:35 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rcoi3-008uup-1v;
+	Wed, 21 Feb 2024 16:40:35 +0100
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 0/6] powerpc: Convert to platform remove callback returning void
+Date: Wed, 21 Feb 2024 16:40:14 +0100
+Message-ID: <cover.1708529736.git.u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240221144431.149c3a16@bootlin.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1447; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=w8CaxvQLULcfUJpsIW0+aJBqjXR+zdf4QWfaDFYGJ08=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBl1hlfocsfT70ct6cBDzCF8Wfk9vStaN7qHm2Kw QniGPI3oROJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZdYZXwAKCRCPgPtYfRL+ TofnCACCqo11ATTRPxgXEZbecXIFVgSQfAQ1oPtAAfPNaEsHrHjAypQ+82lEz7Ln5nZ4gKJXrAI OCvaxa7RNxcheIM62ItAszL7J1ey+SoY5RD4Et/E1jPFlqtDIv/i6c6iprv0NZklWSv4mUdfsBj uEAIhL9fc2ZVgItUDbZc48Pm8MWD92mkJolUtghtIzIFcL9aqJucUFYMh1Ka0oXOzQCQreCNJG9 r2Dd+Sgbuto+/9oC6khlchybzuzTqJI67S0jfClicOFglSpBipQtkquf3g9bDab4bnvaXSYbowk oVdGxLeT/a9euVHgcKPz55c0/K8vmm78UyLWBhTSlNvuwcAa
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,45 +56,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, Yury Norov <yury.norov@gmail.com>, netdev@vger.kernel.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Mark Brown <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Haoran Liu <liuhaoran14@163.com>, Rob Herring <robh@kernel.org>, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Scott Wood <oss@buserror.net>, Nicholas Piggin <npiggin@gmail.com>, kernel@pengutronix.de, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Feb 21, 2024 at 02:44:31PM +0100, Herve Codina wrote:
-> On Thu, 15 Feb 2024 21:17:23 +0200
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+Hello,
 
-[...]
+this series converts all platform drivers below drivers/powerpc to
+struct platform_driver::remove_new(). See commit 5c5a7680e67b
+("platform: Provide a remove callback that returns no value") for an
+extended explanation and the eventual goal.
 
-> > > Now what's the plan ?
-> > > Andy, do you want to send a v2 of this patch or may I get the patch, modify it
-> > > according to reviews already present in v1 and integrate it in my current
-> > > series ?  
-> > 
-> > I would like to do that, but under pile of different things.
-> > I would try my best but if you have enough time and motivation feel free
-> > to take over, address the comments and integrate in your series.
-> > 
-> > I dunno what to do with bitmap_onto(), perhaps in a separate patch we can
-> > replace it with bitmap_scatter() (IIUC) with explanation that the former
-> > 1) uses atomic ops while being non-atomic as a whole, and b) having quite
-> > hard to get documentation. At least that's how I see it, I mean that I would
-> > like to leave bitmap_onto() alone and address it separately.
-> 
-> I will take the Andy's bitmap_{scatter,gather}() patch in my next iteration.
-> And use bitmap_{scatter,gather}() in my code.
+All conversations are trivial, because their .remove() callbacks
+returned zero unconditionally.
 
-Thank you and sorry that I have no time to finish that. I will be happy to help
-reviewing if you Cc me.
+There are no interdependencies between these patches, so they could be
+picked up individually. But I'd hope that Michael picks them up all
+together.
 
-> For bitmap_onto() replacement, nothing will be done in my next iteration as
-> it is out of this series scope.
+Best regards
+Uwe
 
-I agree on this. This will be a separate logical change related to NUMA with
-explanation and replacement of all callers at once.
+Uwe Kleine-König (6):
+  powerpc: sgy_cts1000: Convert to platform remove callback returning void
+  powerpc: gpio_mdio: Convert to platform remove callback returning void
+  powerpc: opal-prd: Convert to platform remove callback returning void
+  powerpc: papr_scm: Convert to platform remove callback returning void
+  powerpc: fsl_msi: Convert to platform remove callback returning void
+  powerpc: pmi: Convert to platform remove callback returning void
 
+ arch/powerpc/platforms/85xx/sgy_cts1000.c | 6 ++----
+ arch/powerpc/platforms/pasemi/gpio_mdio.c | 6 ++----
+ arch/powerpc/platforms/powernv/opal-prd.c | 5 ++---
+ arch/powerpc/platforms/pseries/papr_scm.c | 6 ++----
+ arch/powerpc/sysdev/fsl_msi.c             | 6 ++----
+ arch/powerpc/sysdev/pmi.c                 | 6 ++----
+ 6 files changed, 12 insertions(+), 23 deletions(-)
+
+base-commit: 4893c639cc3659cefaa675bf1e59f4e7571afb5c
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.43.0
 
