@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7575785D4A6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 10:54:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D4B885D4AE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 10:55:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tfs7r31f0z3cGw
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 20:54:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tfs8H0x6Qz3dT4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 20:55:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=lists.ozlabs.org)
@@ -14,32 +14,34 @@ Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de 
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tfs7Q1gQkz2xgw
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Feb 2024 20:54:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tfs7Q1jCLz30Pp
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Feb 2024 20:54:24 +1100 (AEDT)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rcjIq-0007GT-3K; Wed, 21 Feb 2024 10:54:12 +0100
+	id 1rcjIp-0007GV-Kv; Wed, 21 Feb 2024 10:54:11 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rcjIo-0020pI-8r; Wed, 21 Feb 2024 10:54:10 +0100
+	id 1rcjIo-0020pO-Go; Wed, 21 Feb 2024 10:54:10 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ukl@pengutronix.de>)
-	id 1rcjIo-008mZ2-0W;
+	id 1rcjIo-008mZ9-1N;
 	Wed, 21 Feb 2024 10:54:10 +0100
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 To: Arnd Bergmann <arnd@arndb.de>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH 00/11] misc: Convert to platform remove callback returning void
-Date: Wed, 21 Feb 2024 10:53:44 +0100
-Message-ID: <cover.1708508896.git.u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 02/11] cxl: Convert to platform remove callback returning void
+Date: Wed, 21 Feb 2024 10:53:46 +0100
+Message-ID: <add08320eef9ea20ceca78648370590a4bd447b0.1708508896.git.u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1708508896.git.u.kleine-koenig@pengutronix.de>
+References: <cover.1708508896.git.u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2007; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=4jrgDTIItOaqzUueSGfkLHel//P9YB1P9vaM2W3h81k=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBl1cgqTOtIAO8z59oSIx/sIvhuKH1+b51NAFFWR 3bkknjc77KJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZdXIKgAKCRCPgPtYfRL+ Tk2MCACCKkCdjbNZyc29xxFm4VWa+DhS4+htkcYrw+AdxDNVtW4qk33M6GeSdZmSv2NHyRXr6/e eN0IlmfFp1fVqxEGMnYT8GDi23GMW10uOku+Lfn67lM0aeNnpY7zfosgREfEoNKbM/i5vWpoZHp brAQt+3AmSOat2+Ti1HlNfBW6HUGna/AG7Ymg44ojVw57dZg5/zrML+ZNcq0Z8aKVkDMojJ117Y NKTYvX4AR5Cq4ed/0UoJUPGi+OrhYSbO9+mj6sj298JriIeXAhhVaO7iRejCq4N53L4tXaePU3P Y1hef+xmfdWUvxcS+rNEwgwOHiSwDgSg4f56iCTdzP8ZN9FP
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1743; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=ceIfAJGD21yqrCu3pRBnl7qS6woYhZWPmCbj1WktHEw=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBl1cgt8CRj7FyjoliavbQtoyeJoVa/eIfWpBiD0 I22MkayPfCJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZdXILQAKCRCPgPtYfRL+ TnmxCACPUIWrtGTTucmi+16fEgSXVpRrmtRZyFotM2Ky/2rMpHxG8L4jWkle7RHMSm/JWMEfQnt EzSNutI6wb4kZP9bn1ibHhzzlybBmqXY40SYB3BMmzIL9WxTe5egQdEHO2zbIdAiLkhLwmu3+zn moPHodSmLV/tgalWnDiuSvzXnGlDFLRB2vvlhE7LetAFQ55i1v4HDxEJdInctDklrzdk83aHfuY qq8v0u7lTym/HSHvuUSvE4UyR0PIdYBO3kcMaykO4H8AoYAVJl7eA3STIiq8HeY8v73Wf/nA4e2 G3Db7C6soCl7+vZAQXisdhDfNfd7MIRdO6gGSw0T54bnDAxR
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -57,59 +59,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Derek Kiernan <derek.kiernan@amd.com>, Andrew Donnellan <ajd@linux.ibm.com>, "Jiri Slaby \(SUSE\)" <jirislaby@kernel.org>, linux-arm-msm@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>, linux-kernel@vger.kernel.org, Claudiu Beznea <claudiu.beznea@tuxon.dev>, Michal Simek <michal.simek@amd.com>, Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, Dragan Cvetic <dragan.cvetic@amd.com>, kernel@pengutronix.de, Justin Stitt <justinstitt@google.com>, Frederic Barrat <fbarrat@linux.ibm.com>, John Stultz <jstultz@google.com>, Tomas Winkler <tomas.winkler@intel.com>, Amol Maheshwari <amahesh@qti.qualcomm.com>, linuxppc-dev@lists.ozlabs.org, Appana Durga Kedareswara rao <appana.durga.kedareswara.rao@amd.com>, linux-arm-kernel@lists.infradead.org, Kees Cook <keescook@chromium.org>
+Cc: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Andrew Donnellan <ajd@linux.ibm.com>, kernel@pengutronix.de, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is ignored (apart
+from emitting a warning) and this typically results in resource leaks.
 
-this series converts all drivers below drivers/misc to struct
-platform_driver::remove_new(). See commit 5c5a7680e67b ("platform:
-Provide a remove callback that returns no value") for an extended
-explanation and the eventual goal.
+To improve here there is a quest to make the remove callback return
+void. In the first step of this quest all drivers are converted to
+.remove_new(), which already returns void. Eventually after all drivers
+are converted, .remove_new() will be renamed to .remove().
 
-All conversations are trivial, because their .remove() callbacks
-returned zero unconditionally.
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
 
-There are no interdependencies between these patches, so they could be
-picked up individually. But I'd hope that Greg or Arnd picks them up all
-together.
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/misc/cxl/of.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-Best regards
-Uwe
-
-Uwe Kleine-König (11):
-  misc: atmel-ssc: Convert to platform remove callback returning void
-  cxl: Convert to platform remove callback returning void
-  misc: fastrpc: Convert to platform remove callback returning void
-  misc: hisi_hikey_usb: Convert to platform remove callback returning
-    void
-  mei: vsc: Convert to platform remove callback returning void
-  misc: open-dice: Convert to platform remove callback returning void
-  misc: sram: Convert to platform remove callback returning void
-  misc: ti-st: st_kim: Convert to platform remove callback returning
-    void
-  misc: vcpu_stall_detector: Convert to platform remove callback
-    returning void
-  misc: xilinx_sdfec: Convert to platform remove callback returning void
-  misc: xilinx_tmr_inject: Convert to platform remove callback returning
-    void
-
- drivers/misc/atmel-ssc.c           | 6 ++----
- drivers/misc/cxl/of.c              | 5 ++---
- drivers/misc/fastrpc.c             | 6 ++----
- drivers/misc/hisi_hikey_usb.c      | 6 ++----
- drivers/misc/mei/platform-vsc.c    | 6 ++----
- drivers/misc/open-dice.c           | 5 ++---
- drivers/misc/sram.c                | 6 ++----
- drivers/misc/ti-st/st_kim.c        | 5 ++---
- drivers/misc/vcpu_stall_detector.c | 6 ++----
- drivers/misc/xilinx_sdfec.c        | 5 ++---
- drivers/misc/xilinx_tmr_inject.c   | 5 ++---
- 11 files changed, 22 insertions(+), 39 deletions(-)
-
-
-base-commit: 4893c639cc3659cefaa675bf1e59f4e7571afb5c
+diff --git a/drivers/misc/cxl/of.c b/drivers/misc/cxl/of.c
+index 25ce725035e7..bcc005dff1c0 100644
+--- a/drivers/misc/cxl/of.c
++++ b/drivers/misc/cxl/of.c
+@@ -431,7 +431,7 @@ int cxl_of_read_adapter_properties(struct cxl *adapter, struct device_node *np)
+ 	return 0;
+ }
+ 
+-static int cxl_of_remove(struct platform_device *pdev)
++static void cxl_of_remove(struct platform_device *pdev)
+ {
+ 	struct cxl *adapter;
+ 	int afu;
+@@ -441,7 +441,6 @@ static int cxl_of_remove(struct platform_device *pdev)
+ 		cxl_guest_remove_afu(adapter->afu[afu]);
+ 
+ 	cxl_guest_remove_adapter(adapter);
+-	return 0;
+ }
+ 
+ static void cxl_of_shutdown(struct platform_device *pdev)
+@@ -501,6 +500,6 @@ struct platform_driver cxl_of_driver = {
+ 		.owner = THIS_MODULE
+ 	},
+ 	.probe = cxl_of_probe,
+-	.remove = cxl_of_remove,
++	.remove_new = cxl_of_remove,
+ 	.shutdown = cxl_of_shutdown,
+ };
 -- 
 2.43.0
 
