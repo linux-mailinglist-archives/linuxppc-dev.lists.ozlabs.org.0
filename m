@@ -1,76 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B06185DBBE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 14:45:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A408185DBD2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 14:45:52 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WWA+wJgn;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aIZnljk+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=kdesK/7Y;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TfyFS3YS8z3dVD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 00:45:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TfyGQ4Gqhz3vbl
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 00:45:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WWA+wJgn;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aIZnljk+;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=kdesK/7Y;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.195; helo=relay3-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TfyDd34rRz3d4H
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Feb 2024 00:44:15 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1708523052;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TfyF66xJhz3dWQ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Feb 2024 00:44:39 +1100 (AEDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5980660002;
+	Wed, 21 Feb 2024 13:44:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1708523074;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kjg3ALQw4zFfCtoxrqU3mC8VARBMiLwWXwoSwpKkxVk=;
-	b=WWA+wJgnLDUk370kmYH/LehaT5Ve7heAzmR4VSiu2MrpVJh8BmRE2z/UFKzKRiaOfZgGtD
-	A/fOipeYFFzCZGG08IJSMpx57l2knMjOJF0GsqISk6o0vLD1LvuCY7T8cIa5CPRlYZkjeH
-	oeEW8XEwxGs2SJZzs2Yr9i27QBSchLo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1708523053;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kjg3ALQw4zFfCtoxrqU3mC8VARBMiLwWXwoSwpKkxVk=;
-	b=aIZnljk+vCSqxeaIpaz961ukZJJY3VJEN+npldyYvFBM8HGTodESI0NY5l56qx1muyIDw9
-	MWebFQR6n933SSo2PVaxbohVeDhFsJPtA/bbHftb7Ng/ErufnyAZqRtZjPmdC0GbeBPiEP
-	oBGIvxMspu7ca6QU7lsisLKpF2L06A0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-583-viBCBzv1MZWeE0zNlD0FTQ-1; Wed, 21 Feb 2024 08:44:09 -0500
-X-MC-Unique: viBCBzv1MZWeE0zNlD0FTQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1712C867943;
-	Wed, 21 Feb 2024 13:44:08 +0000 (UTC)
-Received: from localhost (unknown [10.72.116.2])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 21A5F2166B36;
-	Wed, 21 Feb 2024 13:44:06 +0000 (UTC)
-Date: Wed, 21 Feb 2024 21:44:04 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Hari Bathini <hbathini@linux.ibm.com>
-Subject: Re: [PATCH v2 00/14] Split crash out from kexec and clean up related
- config items
-Message-ID: <ZdX+JMKsQWheE0B0@MiWiFi-R3L-srv>
-References: <20240119145241.769622-1-bhe@redhat.com>
- <9101bb07-70f1-476c-bec9-ec67e9899744@linux.ibm.com>
- <Zb8D1ASrgX0qVm9z@MiWiFi-R3L-srv>
- <559f2595-1477-4ef0-80e4-85ae8b426de7@linux.ibm.com>
+	bh=jrp+YmUU+v0EhVwMHcIQvcwO/VqJPYfeVs/EWjoSXJA=;
+	b=kdesK/7Y8qVDLsCghR0aipV1MYMOWBJevJpEdYlrmc+vqk331xncXZaKQoDfbTKsCCgSY4
+	pFkpEI4J2SsnRORd0MParLYiqNXZEC0a3TnwNaqQy/0YWUbt+Tq47dTm+couH/C06schmB
+	ydviN/SiZmK85C5VpjWmT8eZImWf0aZqcjg3/r0+a9W/sFC/IbYkakP5vMepKmLSsKfJFx
+	s42dEoJyKi2pBT/xce43VCQsZDEyc8Qc6JToSDqcToxLTiFiLAJbQ7NiJpSbD6ZzQ64ov1
+	QG0Jsv2yr0Ect/roDJsitO0mbz/6jScd4Mnbg7Y/Zm4Fn/90vLBKjJ/ueMtQqw==
+Date: Wed, 21 Feb 2024 14:44:31 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v3 RESEND 3/6] bitmap: Make bitmap_onto() available to
+ users
+Message-ID: <20240221144431.149c3a16@bootlin.com>
+In-Reply-To: <Zc5jQ3zR51MDIovB@smile.fi.intel.com>
+References: <20240212075646.19114-1-herve.codina@bootlin.com>
+	<20240212075646.19114-4-herve.codina@bootlin.com>
+	<ZcoOpPb9HfXOYmAr@smile.fi.intel.com>
+	<20240212143753.620ddd6e@bootlin.com>
+	<ZcokwpMb6SFWhLBB@smile.fi.intel.com>
+	<20240212152022.75b10268@bootlin.com>
+	<Zcos9F3ZCX5c936p@smile.fi.intel.com>
+	<Zcptyd/AWrDD3EAL@yury-ThinkPad>
+	<20240215184612.438bd4f2@bootlin.com>
+	<Zc5jQ3zR51MDIovB@smile.fi.intel.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <559f2595-1477-4ef0-80e4-85ae8b426de7@linux.ibm.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,34 +69,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, piliu@redhat.com, linux-sh@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, ebiederm@xmission.com, loongarch@lists.linux.dev, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org, viro@zeniv.linux.org.uk
+Cc: Andrew Lunn <andrew@lunn.ch>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, Yury Norov <yury.norov@gmail.com>, netdev@vger.kernel.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Mark Brown <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 02/21/24 at 11:15am, Hari Bathini wrote:
-> Hi Baoquan,
-> 
-> On 04/02/24 8:56 am, Baoquan He wrote:
-> > > > Hope Hari and Pingfan can help have a look, see if
-> > > > it's doable. Now, I make it either have both kexec and crash enabled, or
-> > > > disable both of them altogether.
-> > > 
-> > > Sure. I will take a closer look...
-> > Thanks a lot. Please feel free to post patches to make that, or I can do
-> > it with your support or suggestion.
-> 
-> Tested your changes and on top of these changes, came up with the below
-> changes to get it working for powerpc:
-> 
-> 
-> https://lore.kernel.org/all/20240213113150.1148276-1-hbathini@linux.ibm.com/
-> 
-> Please take a look.
+Hi Andy, Yury,
 
-I added a comment to the patch 1 consulting if the "struct crash_mem" is
-appropriate to cover other cases except of kdump memory regions. I am
-wondering if its name need be adjusted, or other kind of memory you
-mentioned can use other structures or create a new one.
+On Thu, 15 Feb 2024 21:17:23 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-If it's has to be done like that, it's fine. 
+[...]
 
+> > Now what's the plan ?
+> > Andy, do you want to send a v2 of this patch or may I get the patch, modify it
+> > according to reviews already present in v1 and integrate it in my current
+> > series ?  
+> 
+> I would like to do that, but under pile of different things.
+> I would try my best but if you have enough time and motivation feel free
+> to take over, address the comments and integrate in your series.
+> 
+> I dunno what to do with bitmap_onto(), perhaps in a separate patch we can
+> replace it with bitmap_scatter() (IIUC) with explanation that the former
+> 1) uses atomic ops while being non-atomic as a whole, and b) having quite
+> hard to get documentation. At least that's how I see it, I mean that I would
+> like to leave bitmap_onto() alone and address it separately.
+> 
+
+I will take the Andy's bitmap_{scatter,gather}() patch in my next iteration.
+And use bitmap_{scatter,gather}() in my code.
+
+For bitmap_onto() replacement, nothing will be done in my next iteration as
+it is out of this series scope.
+
+Hervé
