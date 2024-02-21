@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4841785CECB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 04:33:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8216385CECD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 04:34:14 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=iIJ7IIiR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=BTSO+CQU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tfhgs1LC8z3vh2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 14:33:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tfhhh3FClz3vcn
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 14:34:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=iIJ7IIiR;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=BTSO+CQU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42a; helo=mail-pf1-x42a.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TfhZp4nf8z3dHV
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Feb 2024 14:29:06 +1100 (AEDT)
-Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1dc1ff58fe4so9192055ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Feb 2024 19:29:06 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TfhZx1t4fz3dRd
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Feb 2024 14:29:13 +1100 (AEDT)
+Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-6e0a37751cbso163776b3a.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Feb 2024 19:29:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708486144; x=1709090944; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1708486150; x=1709090950; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IIo+YCQIpcqZZQl5SQPpBtKwaaGVQawpmU1ARg6aVZc=;
-        b=iIJ7IIiRxY/4rJ9dN0EtoMM+cYedYPTtPxX9OR8snohsVtuTV5buLaiVqHHX3kJZu4
-         /V1KsAu0ryES3vPbC8uf1qXYhKp+tZRsofuBzmRMrtPhpinjNwvArpPLJ6/8WfkWNo6k
-         ObSoSG9wIjGwemUi7IJitSNUl2CflnbLY+Xr9IZFTrTr+d5MIBR3QdASN+rX+X61K3/w
-         U96RIJwIOyVnwD01+aDs8q0mFEifcFDzI57nLpEMMB9WRIEACoDcNaUJattHrrEAzSjY
-         IYkkoKCfNa8s+M906ElQly/hg7h6BJyG5Hx8JG/91lYpFBfl49+bS+csPpkFSdHW7hHz
-         YT8g==
+        bh=nuBjCwoeaNr8AGy/7SQu2RQwLY1MBjVxyn5YkQsjDDI=;
+        b=BTSO+CQUpYONlPUnObhVbU8BQcXBOhgoldc4+i3wzsn6sVnxuh0sFroRPl889LR5TY
+         2x5nBGV7qlQJ4NqAemW9AGt74QBVQfnz9SMVYc2swsM0Nofi/2nuAn0+1CN71RC2G9mC
+         TAYWNG4TqrjdH/jQ1X11GxoJ9HS+XfyvuOs4gAbgdxPCtW6DeGPpjc7CWGhTRd22HL42
+         EY1er09ftn82XsvULiqedxnZ678b2XhLbmdsv+kT4GzOs2zLgpRB41bS2scIe4z//1mG
+         nz15DOBJUvqou13MW3dcADBmqiIrXWxflM5Whs6LdLvpMZdwklqbrcUZtWJdgnPoPxx5
+         /Zaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708486144; x=1709090944;
+        d=1e100.net; s=20230601; t=1708486150; x=1709090950;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=IIo+YCQIpcqZZQl5SQPpBtKwaaGVQawpmU1ARg6aVZc=;
-        b=wgHJP/MH4qnaHwP/uatUabAnfX6yVc9qP9svmBbJZ8iv6jqxbUU1Ds4KpQfMRcqyq9
-         21JF1MwF0+N4FDfkBWeGL2Z4/qRqlhpE3EdJaRh9D0+1FlGLmw829DQ/W1CsMyDUTD+P
-         Uau1vPyHNbKg5P1UpWu1gMOQu88KxIohPqN15/cSDZ+OOHKZqCuQCGm89SYKkvCsaOq4
-         N0fJHDcBNxu7h+dRfQRYCwoDhR2njtN1xEA5MzIfVjqwfXMstyC78z6913pl0ZQcBjWv
-         dbvDnvwKOKhxGqgWhoRn/Lyt4q7DPDfKDS0VlFWS9BlGnULdjgUdCHaITprLrJtV/mUi
-         hzTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXBmCGtNNVYbZppnlObthRxDKHlwBU1nRVybJwZs+tYiW1EzmEdodklLivJukBtV/UFK1/4nvi08pM4IhmJG0J4A5sYDpPQXXc10j91UQ==
-X-Gm-Message-State: AOJu0YzgDMw/n/x0CNurX9L1/M0RTe3PlEXm6sQcfxTsTXFIHepzjE+n
-	SFGeWjOdX60mtsz6eyfv20S0eo9usTKw22fT7SxpG6R26V6i4hL1OjkUTOCx
-X-Google-Smtp-Source: AGHT+IGkE2tXMoP+uu2dMPF9yafXmDF1WYeLW14EiA+DBNvKy9Jy7TtJJX6AdHjI0vAVunFoMBALqg==
-X-Received: by 2002:a17:903:1211:b0:1d9:a609:dd7e with SMTP id l17-20020a170903121100b001d9a609dd7emr19873074plh.55.1708486143769;
-        Tue, 20 Feb 2024 19:29:03 -0800 (PST)
+        bh=nuBjCwoeaNr8AGy/7SQu2RQwLY1MBjVxyn5YkQsjDDI=;
+        b=i2i+o/dHAUPrN8lsjjMObw1aHcAtqltrMXxd/BRUYC+dUb0sGW3N0UUhGtGl2vF5qJ
+         TytL7l3iCggJXblsid2GtAen3LZTGEvNfv0lfs8LNitAMbA/oGj5dbrQwTX+Gm17um9q
+         /nRaoHylWGVvHf0lT5YF9v/Ix0oCSD2+AMqhatXp2bTomuz5mKSmL83B4nsKOCnAhPHU
+         uM0F8CJA4xD7Za5dD+BsYaGg02Tb0vaUMOlj2oAfb8p8UVIlSzhpwj5SjnglayDliiYO
+         sc7HJXwfm9l62Z+B/UDMweHNm6ZTuXM+hNEcykRSORV88cDaR5WKDjDECKUZyKVjn5RZ
+         kW0w==
+X-Forwarded-Encrypted: i=1; AJvYcCUy9Enf4n6eoPDgqUZJPGzkYquSJTPoybTzqvdQTMCff4//kfkeAElwIXLmJBd5QTJDN4Maed8ari7649tbDO+MLrIGG8st4BUDcbAzIA==
+X-Gm-Message-State: AOJu0Yy8RhWj9e6xdXLlC8yNU2A5V44Lzya413BZ+QnKb3fc5TBeSmlN
+	Ty22qsFtj5ir73lN4btQklfCT7lTOnmp5f6NEbCP5QzN9+NBkBCr
+X-Google-Smtp-Source: AGHT+IFMU4gzIndebrpd/hVeeR/Ex4Y3al2xaliSFhhET1KuVUMyOzj4zCCOyaTOOsv8L4D8Foc82g==
+X-Received: by 2002:a05:6a20:d703:b0:19c:6fb0:2b02 with SMTP id iz3-20020a056a20d70300b0019c6fb02b02mr17269437pzb.61.1708486150696;
+        Tue, 20 Feb 2024 19:29:10 -0800 (PST)
 Received: from wheely.local0.net (220-235-194-103.tpgi.com.au. [220.235.194.103])
-        by smtp.gmail.com with ESMTPSA id q7-20020a170902b10700b001dc214f7353sm1246457plr.249.2024.02.20.19.28.56
+        by smtp.gmail.com with ESMTPSA id q7-20020a170902b10700b001dc214f7353sm1246457plr.249.2024.02.20.19.29.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Feb 2024 19:29:03 -0800 (PST)
+        Tue, 20 Feb 2024 19:29:10 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Thomas Huth <thuth@redhat.com>
-Subject: [kvm-unit-tests PATCH v5 6/8] migration: Add quiet migration support
-Date: Wed, 21 Feb 2024 13:27:55 +1000
-Message-ID: <20240221032757.454524-7-npiggin@gmail.com>
+Subject: [kvm-unit-tests PATCH v5 7/8] Add common/ directory for architecture-independent tests
+Date: Wed, 21 Feb 2024 13:27:56 +1000
+Message-ID: <20240221032757.454524-8-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240221032757.454524-1-npiggin@gmail.com>
 References: <20240221032757.454524-1-npiggin@gmail.com>
@@ -83,72 +83,171 @@ Cc: Laurent Vivier <lvivier@redhat.com>, linux-s390@vger.kernel.org, Nico Boehr 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Console output required to support migration becomes quite noisy
-when doing lots of migrations. Provide a migrate_quiet() call that
-suppresses console output and doesn't log a message.
+x86/sieve.c is used by s390x, arm, and riscv via symbolic link. Make a
+new directory common/ for architecture-independent tests and move
+sieve.c here.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- lib/migrate.c         | 11 +++++++++++
- lib/migrate.h         |  1 +
- scripts/arch-run.bash |  4 ++--
- 3 files changed, 14 insertions(+), 2 deletions(-)
+ arm/sieve.c    |  2 +-
+ common/sieve.c | 51 +++++++++++++++++++++++++++++++++++++++++++++++++
+ riscv/sieve.c  |  2 +-
+ s390x/sieve.c  |  2 +-
+ x86/sieve.c    | 52 +-------------------------------------------------
+ 5 files changed, 55 insertions(+), 54 deletions(-)
+ create mode 100644 common/sieve.c
+ mode change 100644 => 120000 x86/sieve.c
 
-diff --git a/lib/migrate.c b/lib/migrate.c
-index b77216594..92d1d957d 100644
---- a/lib/migrate.c
-+++ b/lib/migrate.c
-@@ -18,6 +18,17 @@ void migrate(void)
- 	report_info("Migration complete");
- }
- 
-+/*
-+ * Like migrate() but suppress output and logs, useful for intensive
-+ * migration stress testing without polluting logs. Test cases should
-+ * provide relevant information about migration in failure reports.
-+ */
-+void migrate_quiet(void)
+diff --git a/arm/sieve.c b/arm/sieve.c
+index 8f14a5c3d..fe299f309 120000
+--- a/arm/sieve.c
++++ b/arm/sieve.c
+@@ -1 +1 @@
+-../x86/sieve.c
+\ No newline at end of file
++../common/sieve.c
+\ No newline at end of file
+diff --git a/common/sieve.c b/common/sieve.c
+new file mode 100644
+index 000000000..8150f2d98
+--- /dev/null
++++ b/common/sieve.c
+@@ -0,0 +1,51 @@
++#include "alloc.h"
++#include "libcflat.h"
++
++static int sieve(char* data, int size)
 +{
-+	puts("Now migrate the VM (quiet)\n");
-+	(void)getchar();
++    int i, j, r = 0;
++
++    for (i = 0; i < size; ++i)
++	data[i] = 1;
++
++    data[0] = data[1] = 0;
++
++    for (i = 2; i < size; ++i)
++	if (data[i]) {
++	    ++r;
++	    for (j = i*2; j < size; j += i)
++		data[j] = 0;
++	}
++    return r;
 +}
 +
- /*
-  * Initiate migration and wait for it to complete.
-  * If this function is called more than once, it is a no-op.
-diff --git a/lib/migrate.h b/lib/migrate.h
-index 2af06a72d..95b9102b0 100644
---- a/lib/migrate.h
-+++ b/lib/migrate.h
-@@ -7,4 +7,5 @@
-  */
- 
- void migrate(void);
-+void migrate_quiet(void);
- void migrate_once(void);
-diff --git a/scripts/arch-run.bash b/scripts/arch-run.bash
-index c98429e8c..0a98e5127 100644
---- a/scripts/arch-run.bash
-+++ b/scripts/arch-run.bash
-@@ -152,7 +152,7 @@ run_migration ()
- 		-chardev socket,id=mon,path=${src_qmp},server=on,wait=off \
- 		-mon chardev=mon,mode=control > ${src_outfifo} &
- 	live_pid=$!
--	cat ${src_outfifo} | tee ${src_out} &
-+	cat ${src_outfifo} | tee ${src_out} | grep -v "Now migrate the VM (quiet)" &
- 
- 	# Start the first destination QEMU machine in advance of the test
- 	# reaching the migration point, since we expect at least one migration.
-@@ -190,7 +190,7 @@ do_migration ()
- 		-mon chardev=mon,mode=control -incoming unix:${dst_incoming} \
- 		< <(cat ${dst_infifo}) > ${dst_outfifo} &
- 	incoming_pid=$!
--	cat ${dst_outfifo} | tee ${dst_out} &
-+	cat ${dst_outfifo} | tee ${dst_out} | grep -v "Now migrate the VM (quiet)" &
- 
- 	# The test must prompt the user to migrate, so wait for the
- 	# "Now migrate VM" console message.
++static void test_sieve(const char *msg, char *data, int size)
++{
++    int r;
++
++    printf("%s:", msg);
++    r = sieve(data, size);
++    printf("%d out of %d\n", r, size);
++}
++
++#define STATIC_SIZE 1000000
++#define VSIZE 100000000
++char static_data[STATIC_SIZE];
++
++int main(void)
++{
++    void *v;
++    int i;
++
++    printf("starting sieve\n");
++    test_sieve("static", static_data, STATIC_SIZE);
++    setup_vm();
++    test_sieve("mapped", static_data, STATIC_SIZE);
++    for (i = 0; i < 3; ++i) {
++	v = malloc(VSIZE);
++	test_sieve("virtual", v, VSIZE);
++	free(v);
++    }
++
++    return 0;
++}
+diff --git a/riscv/sieve.c b/riscv/sieve.c
+index 8f14a5c3d..fe299f309 120000
+--- a/riscv/sieve.c
++++ b/riscv/sieve.c
+@@ -1 +1 @@
+-../x86/sieve.c
+\ No newline at end of file
++../common/sieve.c
+\ No newline at end of file
+diff --git a/s390x/sieve.c b/s390x/sieve.c
+index 8f14a5c3d..fe299f309 120000
+--- a/s390x/sieve.c
++++ b/s390x/sieve.c
+@@ -1 +1 @@
+-../x86/sieve.c
+\ No newline at end of file
++../common/sieve.c
+\ No newline at end of file
+diff --git a/x86/sieve.c b/x86/sieve.c
+deleted file mode 100644
+index 8150f2d98..000000000
+--- a/x86/sieve.c
++++ /dev/null
+@@ -1,51 +0,0 @@
+-#include "alloc.h"
+-#include "libcflat.h"
+-
+-static int sieve(char* data, int size)
+-{
+-    int i, j, r = 0;
+-
+-    for (i = 0; i < size; ++i)
+-	data[i] = 1;
+-
+-    data[0] = data[1] = 0;
+-
+-    for (i = 2; i < size; ++i)
+-	if (data[i]) {
+-	    ++r;
+-	    for (j = i*2; j < size; j += i)
+-		data[j] = 0;
+-	}
+-    return r;
+-}
+-
+-static void test_sieve(const char *msg, char *data, int size)
+-{
+-    int r;
+-
+-    printf("%s:", msg);
+-    r = sieve(data, size);
+-    printf("%d out of %d\n", r, size);
+-}
+-
+-#define STATIC_SIZE 1000000
+-#define VSIZE 100000000
+-char static_data[STATIC_SIZE];
+-
+-int main(void)
+-{
+-    void *v;
+-    int i;
+-
+-    printf("starting sieve\n");
+-    test_sieve("static", static_data, STATIC_SIZE);
+-    setup_vm();
+-    test_sieve("mapped", static_data, STATIC_SIZE);
+-    for (i = 0; i < 3; ++i) {
+-	v = malloc(VSIZE);
+-	test_sieve("virtual", v, VSIZE);
+-	free(v);
+-    }
+-
+-    return 0;
+-}
+diff --git a/x86/sieve.c b/x86/sieve.c
+new file mode 120000
+index 000000000..fe299f309
+--- /dev/null
++++ b/x86/sieve.c
+@@ -0,0 +1 @@
++../common/sieve.c
+\ No newline at end of file
 -- 
 2.42.0
 
