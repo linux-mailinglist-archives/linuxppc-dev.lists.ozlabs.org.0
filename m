@@ -2,146 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72BCD85EBA2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 23:11:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3837485EC6C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 00:00:30 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=motorola.com header.i=@motorola.com header.a=rsa-sha256 header.s=DKIM202306 header.b=fdTtH0q3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=eKrBFqsl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tg9VN2cdvz3vhn
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 09:11:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TgBZN0MfRz3cDT
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 10:00:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=motorola.com header.i=@motorola.com header.a=rsa-sha256 header.s=DKIM202306 header.b=fdTtH0q3;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=eKrBFqsl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=motorola.com (client-ip=148.163.152.46; helo=mx0b-00823401.pphosted.com; envelope-from=mbland@motorola.com; receiver=lists.ozlabs.org)
-Received: from mx0b-00823401.pphosted.com (mx0b-00823401.pphosted.com [148.163.152.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tg3rc6rN4z2xnK
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Feb 2024 04:57:19 +1100 (AEDT)
-Received: from pps.filterd (m0355091.ppops.net [127.0.0.1])
-	by mx0b-00823401.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41LEiEDV020144;
-	Wed, 21 Feb 2024 17:57:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=motorola.com; h=
-	from:to:cc:subject:date:message-id:references:in-reply-to
-	:content-type:content-transfer-encoding:mime-version; s=
-	DKIM202306; bh=ohdBdAmRjzn/ur1B1BUK4Ux1Xy+rpyuKbSwdnqUhuWg=; b=f
-	dTtH0q3ZY6IpYl5V8g81DtyXM5ei4YERSVSOS1+fsGhjlfeCrz1/y7KiLTOCToSe
-	5rmC6CFAXjSCpUjoXkRdliy0C/9R2+2USBc7URGI5w4e0rfRFhtVgVsexUxEGX4L
-	2HjljtwFxswLb/K/HlDeZJf+E9oaJyEB2W7JwRqMnhJAycXWO+sVAw2f391PZ9yh
-	P23nUl7CdX3FxC3ezA3FVWGJ8pSskHYl3AumrneFlam6B/FEUK3sx/gxr0cvngcS
-	Ddr6bIT/mBtf4Hv3UuyeptEKCLm+hjHEvaJDVigVm1qvPWIfMYQreDa3BxupHLtr
-	5MJ1f5acZ34YwLdL96oAA==
-Received: from apc01-psa-obe.outbound.protection.outlook.com (mail-psaapc01lp2040.outbound.protection.outlook.com [104.47.26.40])
-	by mx0b-00823401.pphosted.com (PPS) with ESMTPS id 3wda6dt3hf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 Feb 2024 17:57:09 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FJAqPp7I2/x0U7z/WH+JEVKGhZw21OoDA5H70BsaDTOh/XQk7lRx0S0CljPBqDKkvTT9R0zU+gXOemIayv6/Nf+mgNIeeWXU9EXu0c9cxK0/qZnbkSaTt9R44ApQesSFbe5AxMUicwj93kfj2lDvAT62qUZ3XYYS/qV+Kptw9Xn9su0XnMBy1N9SipzgVI117OZfJSuoe5WGTRvh179C+0/tBV7W4xgRHi/TJwwChejeNo8Hwkm4QP55AyXH1HFgpPuBF174ogisfXCF41Y2PQfuSc6EHFCQprKKr4lwRhNcc/4lutGfAXCHfThiBqwcg7Kf6H3aQt+mnGbhtpzBfA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ohdBdAmRjzn/ur1B1BUK4Ux1Xy+rpyuKbSwdnqUhuWg=;
- b=TfIzPVOLga6zuLvOhHK5d2HTkHgVFYQE/Buuwy31BV4y6I3C111MRnhRRwwnNZ/gRuyzbcgVMcL69fxfY86Iwt6BDYrzar+1830HS/cuJULcHGJmlV4X3D2jVumNqmWrv0esiyWWrR9mBgziO6iHzSgZ5GHK5Gm0X2i2E9RBnWRJdsay6C4If4+Ji6ZrYAfvpHfUYxoYaUjnpFB5763efQLgM9PH1Hbw5gfnMEKBfhisHJhfw4Z3WAWeKbhyCqDa6wK5BCpZD5tqC37RIFXP9X/Pi87AUzmnZBVLhD7fQUWbxA2+1Sl1Mwpx4VoAdjhWuThutveyCKS9frhvu0vcog==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=motorola.com; dmarc=pass action=none header.from=motorola.com;
- dkim=pass header.d=motorola.com; arc=none
-Received: from SEZPR03MB6786.apcprd03.prod.outlook.com (2603:1096:101:66::5)
- by PUZPR03MB6101.apcprd03.prod.outlook.com (2603:1096:301:b8::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.21; Wed, 21 Feb
- 2024 17:57:05 +0000
-Received: from SEZPR03MB6786.apcprd03.prod.outlook.com
- ([fe80::dbc8:b80e:efaf:2d74]) by SEZPR03MB6786.apcprd03.prod.outlook.com
- ([fe80::dbc8:b80e:efaf:2d74%6]) with mapi id 15.20.7292.036; Wed, 21 Feb 2024
- 17:57:05 +0000
-From: Maxwell Bland <mbland@motorola.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH 0/4] arm64: mm: support dynamic vmalloc/pmd configuration
-Thread-Topic: [PATCH 0/4] arm64: mm: support dynamic vmalloc/pmd configuration
-Thread-Index: AQHaZO9h6psKGO7SGk25OSRe9qGB2A==
-Date: Wed, 21 Feb 2024 17:57:05 +0000
-Message-ID:  <SEZPR03MB6786142493B476B96F46081BB4572@SEZPR03MB6786.apcprd03.prod.outlook.com>
-References: <20240220203256.31153-1-mbland@motorola.com>
- <4368e86f-d6aa-4db8-b4cf-42174191dcf9@csgroup.eu>
-In-Reply-To: <4368e86f-d6aa-4db8-b4cf-42174191dcf9@csgroup.eu>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SEZPR03MB6786:EE_|PUZPR03MB6101:EE_
-x-ms-office365-filtering-correlation-id: 9d9aa498-b3b2-4238-42ef-08dc330683e8
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  EHZlv0SDyyBCswKHz8QhE6+fKjEQfTEOEOnsfEw8WEdafdcTxkcxZBO2/vj6FFUY2v9/9trYiQ6ovPZrHiLJRt0AYlbyDtvArwJM8Pfm8CQ5jYEjeE1tZwtXD05V5CIw5SHjSlz1Yy3e9xCLSCB0AXbwDq6ZJEdTY2XRxV9DwabpXTcJTE6s9SM3szosTeRI4kH/l9HiEoPpq6l3XOMqylPfo1GnRoNxPyb03Amwn2a8RlHgbQUG694iehl8XtHLPjP7S6BVy6mVilX7MgyDk+u47GjmaC4xNnCbrLfAG5p9MKDnXYsFXuej2a69o4viRvs2xDrjQ3z+uSAfX8hG43l/7pT5F9UQ+oNptrSSiJgD9KQFRV4Z+/Be/hcwGm0dgXQ7AIj4DzbYdms/ea+d58bFLMg5QDMT993ljeu9kyj+EBq/ycwVZSpMx9aU2wPkYtQzAcaeot9XMivuQSmQPoDjEnZj1IANgS91tY27ATWnzHCaESeO8t6Z7Cag88jsqB3Wvb0ZswuW9YMal2BkUKTfkZARtarjcU8/Fj56yIBqDDmAMxNmZjwqTHo/TvqPbvCPRMSp2P47w3npSvC4MkqC5aKgl3+sYOSY+Bro06Q=
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SEZPR03MB6786.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?RDJlSTlhVzdGcnRNVC9PdWlqSTl1R2JlQi9BcW5LTW9sME51VG94SmtpdkdF?=
- =?utf-8?B?azRDOHRvSHI5VS96b1Jld1lEcTZRZitZTndxaUZDS29ueFk5RWg1SEFleU9K?=
- =?utf-8?B?WE9MZUVBTGdDZm9qSDdSUHV5QnhDeGgrTDM5STRyR1JzSGFURm8wN0lOYnpM?=
- =?utf-8?B?SEZCSGIrZUJtS2dUaHhYZ0JqVk40ZnNrcTRUd29CQUNpckY2TmpTdHJTTkh1?=
- =?utf-8?B?YzlyU1AzdnZaUGlaMXdXTllEc0xOWE5laUM2aDZPVDYxOThlM1hmbFJ0NWIw?=
- =?utf-8?B?Y3JCU000NkZBMTVnM0FHaWIzVDd4aUtqRWxKdFJsWmN1cWV0Q1BYQlFBOUth?=
- =?utf-8?B?M29iaFFQbUhKYnh3c04rK20xc1I2U3BFdXdvbUIrYU1oV3I1akU0eW1odFQ2?=
- =?utf-8?B?Q3F0dEZERk44M2xjQ0FoN0hxeFc2YUE4ZkFKOG9IYnNBUll5bVBRNVZVTmN6?=
- =?utf-8?B?Tkh1UW5XRUVXZkF3Y3hwZkd3MjNUOWJHdldDUG13Q3lmZy9aL2tkSEdOb2tK?=
- =?utf-8?B?M3U5bnpZNnRyZVRadzY3c29TT2lCTU9HYjA1OWxRS0lUZFpHM2dvVE9ZSklH?=
- =?utf-8?B?eTBPd21EQ0xjZC9IQkpPUVZ5elduZVpnejFIUFJKNXlFQ2xmRW5YclBtN09N?=
- =?utf-8?B?aDRxdGlzMzZ0MVZERU1tZzVFTERnMXhQbVNoODRocU05cEZZbXBXcDJXTi8x?=
- =?utf-8?B?dnJuZFQzYmNBb3J2U0c0S3lBeG4wMEhmNzM5ZThlYmNscVR4eUF0aVh4M3hV?=
- =?utf-8?B?M0cvUExwZmp1eE55VEJ4NUlsTWpqcjB5U1M1V1NVZ2V2dHpVb3NBMjlXQTh5?=
- =?utf-8?B?NkxvOUdjK280Z2pYakF3VE5jL3JxYUJjNTF4U0dickhwM3JRRjcxVktkTUFW?=
- =?utf-8?B?R1MyTU53T0E3MFdUeXRRaWxMNXR6ekRhNnBLVHZVZ1pkMG0wNXlURnk5YnJq?=
- =?utf-8?B?N0hlM1YzNEVNNTUyNDM3N1NZV2hUNlNTaS90eE5EZXdBNVRIY043aFgwQTBk?=
- =?utf-8?B?VkhkRVV0cnJZcm8wQkZuMTZnWE5aUzJjZmhwcjUyRm9EMDFwQ2N0QUFMc2dv?=
- =?utf-8?B?bUhvNHZkc2N3OXR6VXFkVnFRZ1k0YlR6SnFEZzF3WkVYU1N1WTk4U3B0U2Zk?=
- =?utf-8?B?aW9kdjB4RGFqd1pPTVJkeDVmSmJiVnR1UTl3UWY1WmpOZGNSQ0cvNW9xUzJ3?=
- =?utf-8?B?S0FrZmJVUko1UHdaTXBCZUY0ZDlPS2M5eVB0Q2hQdDZnNGhOcTUwTDdHcEkr?=
- =?utf-8?B?NlVkMll6QTQwTk83TWU3QVk0SE9nTjByWk52c0FUQmVZcURuYTh5MXptODda?=
- =?utf-8?B?WkRFd3JsdkFUQ3FkQmlUSkpsUGRYSU5RODNoM29pQmFLUDNaTS9xY3hlSEJK?=
- =?utf-8?B?NUR5U2lVU1ZHVU5tZTBITGp2WWlINTNnTnpoY0dqODRhSHlHcGVBMERQQ3R1?=
- =?utf-8?B?UEthYWpVRmZxMkI5MXhJNWlMZHYyd0VSMldmeGNlOXd4ZUFjQk5DUkVGNmUy?=
- =?utf-8?B?THpkL1FLU29VOEpPMmlralQ2VUdGTkl4R0JvK3Yva20rLzltWmtnbFdyZFdI?=
- =?utf-8?B?WXFLRElwMkZRKzI4TDZITjU4UWh2MnhOWmVSNkNMZ1UwNXlCNjdYRXdmb3Zl?=
- =?utf-8?B?cnVxaUtJbk45WlVVcm14N2paQlN4VHZxbWFCTzFpbncxRE1USzgxVWFNNHZt?=
- =?utf-8?B?VDdjaXl6Q1lQbzJqMWF2Z0dBdmxDcVY5eUdGTHdlZW1GWlZBNHVoMFlvcU45?=
- =?utf-8?B?Wm5wRjVLSFZ3VkxaeDZuOGwxOHBVK3pyTjBZL2NMYjdXUWFzT1F3OWtiWjJT?=
- =?utf-8?B?ZDgrbWNlWmZ3OWlmOTdmS29vcG5kS2UxTlV6SUpvMzBBN05TRlRIQ1loZjBz?=
- =?utf-8?B?SGw2cmE0LzFnMCtTcXVRZjlTYWJIK0lZZlBvbnM1aGNDN2d1aXRIT3hwMy8x?=
- =?utf-8?B?NFlkN202b25UQjFINm1qckJpQitZMS9zb2dhUzhNUlcrTXg0RXFnSE9pUjZO?=
- =?utf-8?B?WTFaazdVR29zSkJXMTRqSER0MVhQZ1l5Slg3dEs1Vk9yek16Zlh5OElxLy9l?=
- =?utf-8?B?amZ0UHJlSWlyYmtMQkdVeGhWSTBSSElzcmt1Z1UyMmFnQnc0a0Z1bUR3eEJk?=
- =?utf-8?Q?KjjA=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TgBYY2Kykz3bNs
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Feb 2024 09:59:45 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1708556379;
+	bh=sGtAVvOhr+9YWRX0MUJYc+8lN19QTjbhe6EnVbTovgQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=eKrBFqslLC+n39jMi9oV22xQ7FzN8GPPmvghWrsvnUUfbR58woEy6Qia27+WgLBQl
+	 WhaZcoBfpPYXio0nt/iEqBjH95RLww/1DYXgKPwiGiNJXWr2kIukMnw3MWdJj2i671
+	 KMS19Fgup8rTA0Kuy6XlYUhfYSqoGAmAgHWIBTKPj8bZRWCJLFBW+7vtT3GCXL3Q7X
+	 epnJ6TpbIzRklKIdP7PWeHxz/R3ZtaiWrBNDJaCpaeaCPkifGvHQC6m7MsEXt80X//
+	 E3UxFKL/PbQe5u6LaRvKQMo5OqcSP+gBGfyqOLH0EU8wQLUoUoSwUSd9LpisedcXv2
+	 uZTfr6yPA7wKw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4TgBYR48KJz4wyY;
+	Thu, 22 Feb 2024 09:59:39 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin
+ <npiggin@gmail.com>
+Subject: Re: [PATCH 2/2] powerpc: Don't ignore errors from set_memory_{n}p()
+ in __kernel_map_pages()
+In-Reply-To: <eefeb056-bc71-46ad-90b3-b07c392f5903@csgroup.eu>
+References: <3656d47c53bff577739dac536dbae31fff52f6d8.1708078640.git.christophe.leroy@csgroup.eu>
+ <20ef75884aa6a636e8298736f3d1056b0793d3d9.1708078640.git.christophe.leroy@csgroup.eu>
+ <878r3eauig.fsf@mail.lhotse>
+ <eefeb056-bc71-46ad-90b3-b07c392f5903@csgroup.eu>
+Date: Thu, 22 Feb 2024 09:59:35 +1100
+Message-ID: <875xyhbezs.fsf@mail.lhotse>
 MIME-Version: 1.0
-X-OriginatorOrg: motorola.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SEZPR03MB6786.apcprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9d9aa498-b3b2-4238-42ef-08dc330683e8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Feb 2024 17:57:05.5478
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 5c7d0b28-bdf8-410c-aa93-4df372b16203
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: YPFU8MGPpDCKjjZb95ddjheCAP3uJp6GUxYh1ARNI5BJGmk2nK4mXgKhdZbUBsjkzKFz3ru8xaW7USi2mSF6QA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PUZPR03MB6101
-X-Proofpoint-GUID: t_vz-c102zLvZ-9DS63pGkPli8NM-ato
-X-Proofpoint-ORIG-GUID: t_vz-c102zLvZ-9DS63pGkPli8NM-ato
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-21_05,2024-02-21_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- suspectscore=0 phishscore=0 spamscore=0 clxscore=1015 bulkscore=0
- mlxscore=0 priorityscore=1501 adultscore=0 impostorscore=0 mlxlogscore=999
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2402210139
-X-Mailman-Approved-At: Thu, 22 Feb 2024 09:07:37 +1100
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -153,35 +63,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>, "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>, "david@redhat.com" <david@redhat.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "ast@kernel.org" <ast@kernel.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "ryabinin.a.a@gmail.com" <ryabinin.a.a@gmail.com>, "glider@google.com" <glider@google.com>, "sdf@google.com" <sdf@google.com>, "yonghong.song@linux.dev" <yonghong.song@linux.dev>, "wuqiang.matt@bytedance.com" <wuqiang.matt@bytedance.com>, "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>, "vincenzo.frascino@arm.com" <vincenzo.frascino@arm.com>, "will@kernel.org" <will@kernel.org>, "ardb@kernel.org" <ardb@kernel.org>, "michael.christie@oracle.com" <michael.christie@oracle.com>, "quic_nprakash@quicinc.com" <quic_nprakash@quicinc.com>, "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>, "hch@infrade
- ad.org" <hch@infradead.org>, "arnd@arndb.de" <arnd@arndb.de>, "daniel@iogearbox.net" <daniel@iogearbox.net>, "mst@redhat.com" <mst@redhat.com>, "john.fastabend@gmail.com" <john.fastabend@gmail.com>, "andrii@kernel.org" <andrii@kernel.org>, "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>, "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, "urezki@gmail.com" <urezki@gmail.com>, "samitolvanen@google.com" <samitolvanen@google.com>, "zlim.lnx@gmail.com" <zlim.lnx@gmail.com>, "naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>, "dennis@kernel.org" <dennis@kernel.org>, "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, "cl@linux.com" <cl@linux.com>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>, "gor@linux.ibm.com" <gor@linux.ibm.com>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "hca@linux.ibm.com" <hca@linux.ibm.com>, "npiggin@gmail.com" <npiggin@gmail.com>, "kpsingh@kernel.org" <kpsingh@kernel.org>, "
- meted@linux.ibm.com" <meted@linux.ibm.com>, "quic_pkondeti@quicinc.com" <quic_pkondeti@quicinc.com>, "paul.walmsley@sifive.com" <paul.walmsley@sifive.com>, "surenb@google.com" <surenb@google.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "dvyukov@google.com" <dvyukov@google.com>, "andreyknvl@gmail.com" <andreyknvl@gmail.com>, "haoluo@google.com" <haoluo@google.com>, "brauner@kernel.org" <brauner@kernel.org>, "mjguzik@gmail.com" <mjguzik@gmail.com>, "lstoakes@gmail.com" <lstoakes@gmail.com>, "song@kernel.org" <song@kernel.org>, "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "muchun.song@linux.dev" <muchun.song@linux.dev>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Andrew Wheeler <awheeler@motorola.com>, "martin.lau@linux.dev" <martin.lau@linux.dev>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "svens@linux.ibm.com" <svens@linux.ibm.com>, "jolsa@kernel.org" <jolsa@kernel.
- org>, "tj@kernel.org" <tj@kernel.org>, "guoren@kernel.org" <guoren@kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>, "rick.p.edgecombe@intel.com" <rick.p.edgecombe@intel.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PiBPbiBXZWRuZXNkYXksIEZlYnJ1YXJ5IDIxLCAyMDI0IGF0IDE6MzIgQU0sIENocmlzdG9waGUg
-TGVyb3kgd3JvdGU6DQo+IA0KPiBPbiBwb3dlcnBjIChib29rM3MvMzIpIHdlIGhhdmUgbW9yZSBv
-ciBsZXNzIHRoZSBzYW1lIGFsdGhvdWdoIGl0IGlzIG5vdA0KPiBkaXJlY3RseSBsaW5rZWQgdG8g
-UE1EczogdGhlIHZpcnR1YWwgNEcgYWRkcmVzcyBzcGFjZSBpcyBzcGxpdCBpbg0KPiBzZWdtZW50
-cyBvZiAyNTZNLiBPbiBlYWNoIHNlZ21lbnQgdGhlcmUncyBhIGJpdCBjYWxsZWQgTlggdG8gZm9y
-Yml0DQo+IGV4ZWN1dGlvbi4gVm1hbGxvYyBzcGFjZSBpcyBhbGxvY2F0ZWQgaW4gYSBzZWdtZW50
-IHdpdGggTlggYml0IHNldCB3aGlsZQ0KPiBNb2R1bGUgc3BhcmUgaXMgYWxsb2NhdGVkIGluIGEg
-c2VnbWVudCB3aXRoIE5YIGJpdCB1bnNldC4gV2UgbmV2ZXIgaGF2ZQ0KPiB0byBvdmVycmlkZSB2
-bWFsbG9jIHdyYXBwZXJzLiBBbGwgY29uc3VtZXJzIG9mIGV4ZWMgbWVtb3J5IGFsbG9jYXRlIGl0
-DQo+IHVzaW5nIG1vZHVsZV9hbGxvYygpIHdoaWxlIHZtYWxsb2MoKSBwcm92aWRlcyBub24tZXhl
-YyBtZW1vcnkuDQo+IA0KPiBGb3IgbW9kdWxlcywgYWxsIHlvdSBoYXZlIHRvIGRvIGlzIHNlbGVj
-dA0KPiBBUkNIX1dBTlRTX01PRFVMRVNfREFUQV9JTl9WTUFMTE9DIGFuZCBtb2R1bGUgZGF0YSB3
-aWxsIGJlIGFsbG9jYXRlZA0KPiB1c2luZyB2bWFsbG9jKCkgaGVuY2Ugbm9uLWV4ZWMgbWVtb3J5
-IGluIG91ciBjYXNlLg0KDQpUaGlzIGNyaXRpcXVlIGhhcyBsZWQgbWUgdG8gc29tZSB2YWx1YWJs
-ZSBpZGVhcywgYW5kIEkgY2FuIGRlZmluaXRlbHkgZmluZCBhIHNpbXBsZXINCmFwcHJvYWNoIHdp
-dGhvdXQgb3ZlcnJpZGVzLg0KDQpJIGRvIHdhbnQgdG8gbWVudGlvbiBjaGFuZ2VzIHRvIGhvdyBW
-TUFMTE9DXyogYW5kIE1PRFVMRV8qIGNvbnN0YW50cw0KYXJlIHVzZWQgb24gYXJtNjQgbWF5IGlu
-dHJvZHVjZSBvdGhlciBpc3N1ZXMuIFNlZSBkaXNjdXNzaW9uL2NvZGUgb24gdGhlIHBhdGNoDQp0
-aGF0IG1vdGl2YXRlZCB0aGlzIHBhdGNoIGF0Og0KDQpodHRwczovL2xvcmUua2VybmVsLm9yZy9h
-bGwvQ0FQNU12K3lkaGs9T2I0YjQwWmFoR01nVC01Ky1WRUh4dG1BPS1Ma0ppRU9PVStLNmh3QG1h
-aWwuZ21haWwuY29tLw0KDQpJbiBzaG9ydCwgbWF5YmUgdGhlIGlzc3VlIG9mIGNvZGUvZGF0YSBp
-bnRlcm1peGluZyByZXF1aXJlcyBhIHJld29yayBvZiBhcm02NA0KbWVtb3J5IGluZnJhc3RydWN0
-dXJlLCBidXQgSSBzZWUgYSBwb3RlbnRpYWxseSBlbGVnYW50IHNvbHV0aW9uIGhlcmUgYmFzZWQg
-b24gdGhlDQpjb21tZW50cyBnaXZlbiBvbiB0aGlzIHBhdGNoLg0KDQpUaGFua3MsDQpNYXh3ZWxs
-DQoNCg==
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 21/02/2024 =C3=A0 13:09, Michael Ellerman a =C3=A9crit=C2=A0:
+>> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>>> set_memory_p() and set_memory_np() can fail.
+>>>
+>>> As mentioned in linux/mm.h:
+>>>
+>>> /*
+>>>   * To support DEBUG_PAGEALLOC architecture must ensure that
+>>>   * __kernel_map_pages() never fails
+>>>   */
+>>>
+>>> So panic in case set_memory_p() or set_memory_np() fail
+>>> in __kernel_map_pages().
+>>>
+>>> Link: https://github.com/KSPP/linux/issues/7
+>>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>>> ---
+>>>   arch/powerpc/include/asm/book3s/64/hash.h |  2 +-
+>>>   arch/powerpc/mm/book3s64/hash_utils.c     |  3 ++-
+>>>   arch/powerpc/mm/pageattr.c                | 10 +++++++---
+>>>   3 files changed, 10 insertions(+), 5 deletions(-)
+>>>
+>> ...
+>>> diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
+>>> index 16b8d20d6ca8..62b678585878 100644
+>>> --- a/arch/powerpc/mm/pageattr.c
+>>> +++ b/arch/powerpc/mm/pageattr.c
+>>> @@ -106,17 +106,21 @@ int change_memory_attr(unsigned long addr, int nu=
+mpages, long action)
+>>>   #ifdef CONFIG_ARCH_SUPPORTS_DEBUG_PAGEALLOC
+>>>   void __kernel_map_pages(struct page *page, int numpages, int enable)
+>>>   {
+>>> +	int err;
+>>>   	unsigned long addr =3D (unsigned long)page_address(page);
+>>>=20=20=20
+>>>   	if (PageHighMem(page))
+>>>   		return;
+>>>=20=20=20
+>>>   	if (IS_ENABLED(CONFIG_PPC_BOOK3S_64) && !radix_enabled())
+>>> -		hash__kernel_map_pages(page, numpages, enable);
+>>> +		err =3D hash__kernel_map_pages(page, numpages, enable);
+>>>   	else if (enable)
+>>> -		set_memory_p(addr, numpages);
+>>> +		err =3D set_memory_p(addr, numpages);
+>>>   	else
+>>> -		set_memory_np(addr, numpages);
+>>> +		err =3D set_memory_np(addr, numpages);
+>>> +
+>>> +	if (err)
+>>> +		panic("%s: set_memory_%sp() failed\n", enable ? "" : "n");
+>>=20
+>> This doesn't compile, it's missing __func__ I guess.
+>
+> Damn, I was too quick when I took into account checkpatch's feedback,=20
+> sorry for that.
+>
+>>=20
+>> Seems like we could keep it simpler though, it should hopefully never
+>> happen anyway, eg:
+>>=20
+>>    panic("%s: changing memory protections failed\n", __func__);
+>
+> Sure, let's do that. Do you want a v2 or you do the change directly ?
+
+No need for a v2, I'll just fix it up when applying.
+
+cheers
