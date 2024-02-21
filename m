@@ -1,73 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F050985CCB7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 01:27:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20D9385CEBC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 04:29:10 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=motorola.com header.i=@motorola.com header.a=rsa-sha256 header.s=DKIM202306 header.b=3DviofDb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=cHOnRZxM;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TfcYD6C6bz3dLQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 11:27:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TfhZq1rqrz3cb5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 14:29:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=motorola.com header.i=@motorola.com header.a=rsa-sha256 header.s=DKIM202306 header.b=3DviofDb;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=cHOnRZxM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=motorola.com (client-ip=148.163.152.46; helo=mx0b-00823401.pphosted.com; envelope-from=mbland@motorola.com; receiver=lists.ozlabs.org)
-Received: from mx0b-00823401.pphosted.com (mx0b-00823401.pphosted.com [148.163.152.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tfbyg571Dz2ydW
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Feb 2024 11:00:58 +1100 (AEDT)
-Received: from pps.filterd (m0355089.ppops.net [127.0.0.1])
-	by mx0b-00823401.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41KJFBgl020507;
-	Tue, 20 Feb 2024 20:33:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=motorola.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references; s=
-	DKIM202306; bh=yYaZ6KkZCfPgvE7ldRLRah8LlOxOAhyoW4Oo9vMYLI4=; b=3
-	DviofDb9pzniwChbEs283Q/nhrnZBOGxIjIbYC1Xij4+lyhygZxJPN3GIzERfFUn
-	FRqnViLZyoLn8VtqSCE6yax3k1cyJkMzduys1f9K06sujdOQdyJ5v8X4aLSf7YQv
-	DJpHBVfe55tafJqy9d0n6/2snEve64mdY1j6Ao9A4r/vZEWTvqGph4TEb0IydBJV
-	29uSUIr0Bz33FEtALIf1RFGASoSx7cTH2Mlm/csy1VwndF+H5rvB0gZI1BGaao9K
-	uo4ExG1esCF3SuXWz284KarBuUKzF8ywJu6hJwimy2/BNJtTjQCKyOnRt9V1ibg4
-	196bpTuBMlRupJNonffFg==
-Received: from va32lpfpp02.lenovo.com ([104.232.228.22])
-	by mx0b-00823401.pphosted.com (PPS) with ESMTPS id 3wd22x86fy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 20 Feb 2024 20:33:23 +0000 (GMT)
-Received: from ilclmmrp01.lenovo.com (ilclmmrp01.mot.com [100.65.83.165])
-	(using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by va32lpfpp02.lenovo.com (Postfix) with ESMTPS id 4TfWM709tKz50TkW;
-	Tue, 20 Feb 2024 20:33:23 +0000 (UTC)
-Received: from ilclasset01.mot.com (ilclasset01.mot.com [100.64.7.105])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: mbland)
-	by ilclmmrp01.lenovo.com (Postfix) with ESMTPSA id 4TfWM65bfHz3n3fr;
-	Tue, 20 Feb 2024 20:33:22 +0000 (UTC)
-From: Maxwell Bland <mbland@motorola.com>
-To: linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 4/4] arm64: dynamic enforcement of pmd-level PXNTable
-Date: Tue, 20 Feb 2024 14:32:56 -0600
-Message-Id: <20240220203256.31153-5-mbland@motorola.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20240220203256.31153-1-mbland@motorola.com>
-References: <20240220203256.31153-1-mbland@motorola.com>
-X-Proofpoint-ORIG-GUID: IdOVOSFTH5OwTQnHH7fAIQBlI2JoJAu-
-X-Proofpoint-GUID: IdOVOSFTH5OwTQnHH7fAIQBlI2JoJAu-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-20_06,2024-02-20_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- phishscore=0 mlxlogscore=766 spamscore=0 malwarescore=0 adultscore=0
- suspectscore=0 impostorscore=0 priorityscore=1501 bulkscore=0 mlxscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2402200146
-X-Mailman-Approved-At: Wed, 21 Feb 2024 11:26:10 +1100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TfhZ237nfz2yq4
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Feb 2024 14:28:24 +1100 (AEDT)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1dc13fb0133so1087415ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Feb 2024 19:28:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708486101; x=1709090901; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ig+g0BUZSXifjVBy73OzZ9fIB5v/6NjxVeJ9J0qwojE=;
+        b=cHOnRZxMig1N/Rncsgv2CBWW7lcGwsCb3leCZ8peJrREjrUdYyr4spi+XjwGimQo3g
+         PCP9NuzfVXL1VwIsHzfbQ7Z+xnU28kIOr42EisGxjSPvQiiSvns1fbrAxU6ZyR25Cf7V
+         XLLz4J6jY6mjn7TAxvPoMH1+8S/a5Ku6pwAeavHfju974WWsgiSxRTW2E1L3auqVlop5
+         eLhjxIu/iTmkW8KlvJM//x+14vc9orfngyH/QmT6sXzC/KQSiMYbwqsOAyTC9/+NKPcL
+         cmX1TswX7Za2xGYnVwcEv3oWfI0FFm78wzs68dBV2wb8gLJwFleeARbzTj5bvjvVuofQ
+         py8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708486101; x=1709090901;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ig+g0BUZSXifjVBy73OzZ9fIB5v/6NjxVeJ9J0qwojE=;
+        b=UNRI+V0GAXhvNo8IZBSoCazI6Zn8kzKiTaLzpkmbCJ+KxYneSMgq9hqMc+taJ1ezoE
+         5nnybfpFQsD8P5eiicGv8/wXDnZ1kgUm2tc8h/f5fOyteNpcnm9eAVRYLQNqFPQNSeA5
+         G5oyyIoXbs7ZLwaVN9INyhzw7pqOAjvtjOF/UxYPyLk52TzXCPbzoSLyO6ZlZTg3+EvQ
+         fxZRZF1Mh7HtTuD96dI2ufPvz+2DpPkv8hC1oP+VOtxPfU+HBplL3l7A2f54YAnVqZJB
+         /dG9CFTluCdd1Wg4AOzv/cbEoeaOnuWuOafArvc7o99/VY1yOOcT5GalfBfedz2TEkT5
+         bNqg==
+X-Forwarded-Encrypted: i=1; AJvYcCX6ajDBWJ9SvY3V9a6Jaa35hLMx1BgZq8BsKdx86gCIabggpzMZgtP6bwTdgQ97UNpIPmEkpjRvxa04+Dr430e8leTJSVtGyJi8GwrNgQ==
+X-Gm-Message-State: AOJu0YxbrVVXf9Q2oCFVbOXSlr5gTk3ohT6xAvldNtuL3JFBM5BkgJvX
+	4qZre9Rm2VrGQTC4oIf6BRvuWwQJN6mfsXxT4zRRTEdHfuUIvq4U
+X-Google-Smtp-Source: AGHT+IENcbmlmxPUUYa5IPoB3qyzTiAzkVoX3rrNvUBxi29LRyMCLlj6+/WkLPi+Nhs8BmfBMPXIdQ==
+X-Received: by 2002:a17:902:b902:b0:1d9:8ddf:5fa0 with SMTP id bf2-20020a170902b90200b001d98ddf5fa0mr14621025plb.62.1708486100817;
+        Tue, 20 Feb 2024 19:28:20 -0800 (PST)
+Received: from wheely.local0.net (220-235-194-103.tpgi.com.au. [220.235.194.103])
+        by smtp.gmail.com with ESMTPSA id q7-20020a170902b10700b001dc214f7353sm1246457plr.249.2024.02.20.19.28.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Feb 2024 19:28:20 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: Thomas Huth <thuth@redhat.com>
+Subject: [kvm-unit-tests PATCH v5 0/8] Multi-migration support
+Date: Wed, 21 Feb 2024 13:27:49 +1000
+Message-ID: <20240221032757.454524-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.42.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,95 +76,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, linux-efi@vger.kernel.org, david@redhat.com, catalin.marinas@arm.com, dave.hansen@linux.intel.com, ast@kernel.org, linux@armlinux.org.uk, linux-mm@kvack.org, ryabinin.a.a@gmail.com, glider@google.com, kasan-dev@googlegroups.com, yonghong.song@linux.dev, wuqiang.matt@bytedance.com, agordeev@linux.ibm.com, vincenzo.frascino@arm.com, will@kernel.org, ardb@kernel.org, michael.christie@oracle.com, quic_nprakash@quicinc.com, linux-arch@vger.kernel.org, hch@infradead.org, gor@linux.ibm.com, daniel@iogearbox.net, mst@redhat.com, john.fastabend@gmail.com, andrii@kernel.org, aneesh.kumar@kernel.org, urezki@gmail.com, samitolvanen@google.com, zlim.lnx@gmail.com, naveen.n.rao@linux.ibm.com, dennis@kernel.org, borntraeger@linux.ibm.com, cl@linux.com, aou@eecs.berkeley.edu, ryan.roberts@arm.com, arnd@arndb.de, linux-s390@vger.kernel.org, hca@linux.ibm.com, mbland@motorola.com, npiggin@gmail.com, kpsingh@kernel.org, meted@linux.ibm.com, quic_pkondeti@quicinc.com, paul.walm
- sley@sifive.com, surenb@google.com, akpm@linux-foundation.org, dvyukov@google.com, andreyknvl@gmail.com, haoluo@google.com, brauner@kernel.org, mjguzik@gmail.com, lstoakes@gmail.com, song@kernel.org, gregkh@linuxfoundation.org, muchun.song@linux.dev, linux-kernel@vger.kernel.org, awheeler@motorola.com, martin.lau@linux.dev, linux-riscv@lists.infradead.org, palmer@dabbelt.com, svens@linux.ibm.com, jolsa@kernel.org, tj@kernel.org, guoren@kernel.org, bpf@vger.kernel.org, rick.p.edgecombe@intel.com, linuxppc-dev@lists.ozlabs.org, sdf@google.com
+Cc: Laurent Vivier <lvivier@redhat.com>, linux-s390@vger.kernel.org, Nico Boehr <nrb@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org, Shaoqin Huang <shahuang@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, Andrew Jones <andrew.jones@linux.dev>, Eric Auger <eric.auger@redhat.com>, Marc Hartmayer <mhartmay@linux.ibm.com>, kvm-riscv@lists.infradead.org, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexandru Elisei <alexandru.elisei@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In an attempt to protect against write-then-execute attacks wherein an
-adversary stages malicious code into a data page and then later uses a
-write gadget to mark the data page executable, arm64 enforces PXNTable
-when allocating pmd descriptors during the init process. However, these
-protections are not maintained for dynamic memory allocations, creating
-an extensive threat surface to write-then-execute attacks targeting
-pages allocated through the vmalloc interface.
+Now that strange arm64 hang is found to be QEMU bug, I'll repost.
+Since arm64 requires Thomas's uart patch and it is worse affected
+by the QEMU bug, I will just not build it on arm. The QEMU bug
+still affects powerpc (and presumably s390x) but it's not causing
+so much trouble for this test case.
 
-Straightforward modifications to the pgalloc interface allow for the
-dynamic enforcement of PXNTable, restricting writable and
-privileged-executable code pages to known kernel text, bpf-allocated
-programs, and kprobe-allocated pages, all of which have more extensive
-verification interfaces than the generic vmalloc region.
+I have another test case that can hit it reliably and doesn't
+cause crashes but that takes some harness and common lib work so
+I'll send that another time.
 
-This patch adds a preprocessor define to check whether a pmd is
-allocated by vmalloc and exists outside of a known code region, and if
-so, marks the pmd as PXNTable, protecting over 100 last-level page
-tables from manipulation in the process.
+Since v4:
+- Don't build selftest-migration on arm.
+- Reduce selftest-migration iterations from 100 to 30 to make the
+  test run faster (it's ~0.5s per migration).
 
-Signed-off-by: Maxwell Bland <mbland@motorola.com>
----
- arch/arm64/include/asm/pgalloc.h | 11 +++++++++--
- arch/arm64/include/asm/vmalloc.h |  5 +++++
- arch/arm64/mm/trans_pgd.c        |  2 +-
- 3 files changed, 15 insertions(+), 3 deletions(-)
+Since v3:
+- Addressed Thomas's review comments:
+- Patch 2 initrd cleanup unset the old variable in the correct place.
+- Patch 4 multi migration removed the extra wait for "Now migrate the
+  VM" message, and updated comments around it.
+- Patch 6 fix typo and whitespace in quiet migration support.
+- Patch 8 fix typo and whitespace in migration selftest.
 
-diff --git a/arch/arm64/include/asm/pgalloc.h b/arch/arm64/include/asm/pgalloc.h
-index 237224484d0f..5e9262241e8b 100644
---- a/arch/arm64/include/asm/pgalloc.h
-+++ b/arch/arm64/include/asm/pgalloc.h
-@@ -13,6 +13,7 @@
- #include <asm/cacheflush.h>
- #include <asm/tlbflush.h>
- 
-+#define __HAVE_ARCH_ADDR_COND_PMD
- #define __HAVE_ARCH_PGD_FREE
- #include <asm-generic/pgalloc.h>
- 
-@@ -74,10 +75,16 @@ static inline void __pmd_populate(pmd_t *pmdp, phys_addr_t ptep,
-  * of the mm address space.
-  */
- static inline void
--pmd_populate_kernel(struct mm_struct *mm, pmd_t *pmdp, pte_t *ptep)
-+pmd_populate_kernel(struct mm_struct *mm, pmd_t *pmdp, pte_t *ptep,
-+			unsigned long address)
- {
-+	pmdval_t pmd = PMD_TYPE_TABLE | PMD_TABLE_UXN;
- 	VM_BUG_ON(mm && mm != &init_mm);
--	__pmd_populate(pmdp, __pa(ptep), PMD_TYPE_TABLE | PMD_TABLE_UXN);
-+	if (IS_DATA_VMALLOC_ADDR(address) &&
-+		IS_DATA_VMALLOC_ADDR(address + PMD_SIZE)) {
-+		pmd |= PMD_TABLE_PXN;
-+	}
-+	__pmd_populate(pmdp, __pa(ptep), pmd);
- }
- 
- static inline void
-diff --git a/arch/arm64/include/asm/vmalloc.h b/arch/arm64/include/asm/vmalloc.h
-index dbcf8ad20265..6f254ab83f4a 100644
---- a/arch/arm64/include/asm/vmalloc.h
-+++ b/arch/arm64/include/asm/vmalloc.h
-@@ -34,4 +34,9 @@ static inline pgprot_t arch_vmap_pgprot_tagged(pgprot_t prot)
- extern unsigned long code_region_start __ro_after_init;
- extern unsigned long code_region_end __ro_after_init;
- 
-+#define IS_DATA_VMALLOC_ADDR(vaddr) (((vaddr) < code_region_start || \
-+				      (vaddr) > code_region_end) && \
-+				      ((vaddr) >= VMALLOC_START && \
-+				       (vaddr) < VMALLOC_END))
-+
- #endif /* _ASM_ARM64_VMALLOC_H */
-diff --git a/arch/arm64/mm/trans_pgd.c b/arch/arm64/mm/trans_pgd.c
-index 7b14df3c6477..7f903c51e1eb 100644
---- a/arch/arm64/mm/trans_pgd.c
-+++ b/arch/arm64/mm/trans_pgd.c
-@@ -69,7 +69,7 @@ static int copy_pte(struct trans_pgd_info *info, pmd_t *dst_pmdp,
- 	dst_ptep = trans_alloc(info);
- 	if (!dst_ptep)
- 		return -ENOMEM;
--	pmd_populate_kernel(NULL, dst_pmdp, dst_ptep);
-+	pmd_populate_kernel_at(NULL, dst_pmdp, dst_ptep, addr);
- 	dst_ptep = pte_offset_kernel(dst_pmdp, start);
- 
- 	src_ptep = pte_offset_kernel(src_pmdp, start);
+Since v2:
+- Rebase on riscv port and auxvinfo fix was merged.
+- Clean up initrd cleanup moves more commands into the new cleanup
+  function from the trap handler comands (suggested by Thomas).
+- "arch-run: Clean up temporary files properly" patch is now renamed
+  to "arch-run: Fix TRAP handler..."
+- Fix TRAP handler patch has redone changelog to be more precise about
+  the problem and including recipe to recreate it.
+- Fix TRAP handler patch reworked slightly to remove the theoretical
+  race rather than just adding a comment about it.
+- Patch 3 was missing a couple of fixes that leaked into patch 4,
+  those are moved into patch 3.
+
+Thanks,
+Nick
+
+Nicholas Piggin (8):
+  arch-run: Fix TRAP handler recursion to remove temporary files
+    properly
+  arch-run: Clean up initrd cleanup
+  migration: use a more robust way to wait for background job
+  migration: Support multiple migrations
+  arch-run: rename migration variables
+  migration: Add quiet migration support
+  Add common/ directory for architecture-independent tests
+  migration: add a migration selftest
+
+ arm/sieve.c                  |   2 +-
+ common/selftest-migration.c  |  29 ++++++
+ common/sieve.c               |  51 ++++++++++
+ lib/migrate.c                |  19 +++-
+ lib/migrate.h                |   2 +
+ powerpc/Makefile.common      |   1 +
+ powerpc/selftest-migration.c |   1 +
+ powerpc/unittests.cfg        |   4 +
+ riscv/sieve.c                |   2 +-
+ s390x/Makefile               |   1 +
+ s390x/selftest-migration.c   |   1 +
+ s390x/sieve.c                |   2 +-
+ s390x/unittests.cfg          |   4 +
+ scripts/arch-run.bash        | 177 +++++++++++++++++++++++++----------
+ x86/sieve.c                  |  52 +---------
+ 15 files changed, 240 insertions(+), 108 deletions(-)
+ create mode 100644 common/selftest-migration.c
+ create mode 100644 common/sieve.c
+ create mode 120000 powerpc/selftest-migration.c
+ create mode 120000 s390x/selftest-migration.c
+ mode change 100644 => 120000 x86/sieve.c
+
 -- 
-2.39.2
+2.42.0
 
