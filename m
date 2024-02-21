@@ -1,73 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D08D485CECE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 04:34:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77C1885CF4E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 05:31:47 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=SM4r+fPA;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=LO1uyMoO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TfhjV5K98z3vlD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 14:34:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tfjz30FnFz3cDr
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Feb 2024 15:31:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=SM4r+fPA;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=LO1uyMoO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2a00:1450:4864:20::530; helo=mail-ed1-x530.google.com; envelope-from=tfiga@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tfhb46wQZz3dTg
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Feb 2024 14:29:20 +1100 (AEDT)
-Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1dbae7b8ff2so25853405ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Feb 2024 19:29:20 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TfjyC4YSwz30Qk
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Feb 2024 15:30:57 +1100 (AEDT)
+Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-563e330351dso5511898a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Feb 2024 20:30:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708486158; x=1709090958; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=chromium.org; s=google; t=1708489849; x=1709094649; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rKTDdfNq5MGrQ+0iUWX57avIL8YHWFp0YDpAZCY+Suc=;
-        b=SM4r+fPA4Sto4gMPuEGqbn1WJxH/Lapfx9+0T/OdFWJRXzTu3AjTTplRwRsXbm903b
-         zajltEgmSGYDstWWRTUzOLM0IKtm2h7y+t4Zje80h8BrmgjQ20ZgMzLilehsbHBBgnAe
-         CJvoOLZC6bvWVZ19A4Jiq2xGctnSdMgWWyciA8/ph6kT/ELzByGssEMByNAHOGeTKhhK
-         1g6ZYVGekYmyILkKqpmM3II2Xa8GjOVLcJnhFnHDNM6tJMuW0J9p04qGl4hQZchuU0UB
-         c5bwZZ/NFiq4FLprkCUwCshjXq7wOM8nw3nfo/9estY+aNKEVlxCx3gAbnVa+BLj5bal
-         DGWA==
+        bh=aTLF+9/86+3ZrNqwWCAt6rY4IvAqp7zzJB3AKM6ztK4=;
+        b=LO1uyMoONLRfAekll6EUHFGTswktL5vaZ5sd5j37wJE2bctw0iWAqYbAAt7fBgV8Wo
+         uqTVhH7Ls1yTLPjLf256vCoHivDbrf0OUvFarMNLxduH5fe1VFqQFR6WVDB2CM2FV9x9
+         5SvJ2hIuW8wStFXrj8XqrBdZA2IuDCF9pYgbg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708486158; x=1709090958;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1708489849; x=1709094649;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rKTDdfNq5MGrQ+0iUWX57avIL8YHWFp0YDpAZCY+Suc=;
-        b=jhBWqlY6EWVCr2WlM6oi6QVCWHUH9lenC7/P+Lcd1tJHO/amddnLmylw/yv7qlv+MJ
-         84aky5Z9yZKZSUhz3fM9rSzfFGxfjl/yV4dDCGJGkESCeEkqwUn6xnpb9yWsJX+ZHeGb
-         9h1Hn4pHkKChh/IbbmbNkuSUS2gK2SqzQXnHvqVZApElqR+VDdsMayElPGbHAGeRoh+u
-         hl2HcV0wjrurHcXdod5c/u4hXsqZQvjvCuBNz/6tkSqME+6ExPLP78LM3Qx8TjNbkyPR
-         btvoEn+q3bIg+M+th6czc001wwv6rO5R3tBLenBOuU9/Ye8hxpEqrmlYcJEMDg8l52QG
-         fSpA==
-X-Forwarded-Encrypted: i=1; AJvYcCUDvGudIpTeejpuE1hGUjvrg+2FAWzz3x/tkAxDMNZdsjZAW5HKtB/anSIBin/Hm4yVQPtdAlsAyIoGKVyQIMUXCv5edpkaxAHB3FooqQ==
-X-Gm-Message-State: AOJu0YxhtFjaeJefyd1Eljcjuw/Xc1i6EZPZ5ud/iDhgdaxmZ8Yjge6n
-	TozPdlz6MH+7A8zDsNwfHe6nZssbBAFB+FPY0nWbyFeJjRhBN1SC
-X-Google-Smtp-Source: AGHT+IH1x5xMI9uoPg2lnHlSiQRJh3IyeLPtdt/kc7CIoeguyY7MUFojlqvGni7okVmY4JK8i1uByQ==
-X-Received: by 2002:a17:902:ccce:b0:1dc:30bb:b5cf with SMTP id z14-20020a170902ccce00b001dc30bbb5cfmr558973ple.59.1708486158130;
-        Tue, 20 Feb 2024 19:29:18 -0800 (PST)
-Received: from wheely.local0.net (220-235-194-103.tpgi.com.au. [220.235.194.103])
-        by smtp.gmail.com with ESMTPSA id q7-20020a170902b10700b001dc214f7353sm1246457plr.249.2024.02.20.19.29.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Feb 2024 19:29:17 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: Thomas Huth <thuth@redhat.com>
-Subject: [kvm-unit-tests PATCH v5 8/8] migration: add a migration selftest
-Date: Wed, 21 Feb 2024 13:27:57 +1000
-Message-ID: <20240221032757.454524-9-npiggin@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240221032757.454524-1-npiggin@gmail.com>
-References: <20240221032757.454524-1-npiggin@gmail.com>
+        bh=aTLF+9/86+3ZrNqwWCAt6rY4IvAqp7zzJB3AKM6ztK4=;
+        b=erpvqKt/8loVJ8TaZAe6sriV8dbQpRvmHTISzkxLJBx4fEB1hL3hs9h6omV8iVIlvD
+         bbiJGbVUBnfkOl5/+vz4sev729MHA73sp67GtOMCzP+1Go8tmwCYoH+p/jg/GEgysp03
+         +0x372DxNMJSyRRVJKVwbcv2+PBuRPrf5gfi5pwa/HntIG6jJao3SCbzo7svonb91Bwo
+         bvSVEc1RsOnCdDRvS1HdZYb8+AFxtu8M7J8JxMyKVElC12534MclvOgvtRj2O8iS7EwV
+         t7IgmFRsPTkKm7FCkXqiwgYQVyUXW0pMP3zgdEIufK2RU+waLY3hfy+O3dTp09dKvjIj
+         Sw0A==
+X-Forwarded-Encrypted: i=1; AJvYcCX98G3FgwFMquNybT7CrJkEWIFy3n5mSgSIOLoRLvNtKYRru9eup7y/peu0XTj4Hjz/bzs6afkMpyeFyRwUAg+2P7zTLKYYVF2+gfnGGw==
+X-Gm-Message-State: AOJu0YwTEeaqywdbta9qnRahtRNvLUAPv7KMn35K1DZVxtns6Ks+8WA5
+	w479X0MJUuK+2zPcIV8b14A2FtvcD1JxdLr6DL5WDpwBta9ElYkp99bsXIcU5OLbUIoFIxsouUZ
+	xVg==
+X-Google-Smtp-Source: AGHT+IE8bSmaoi4lBzfsjFcx5REg982sXS1yzXOu/UNZOQJj68WuvFe7+AHdzlCS6ujb7xIJ3y2ERQ==
+X-Received: by 2002:aa7:d409:0:b0:563:e961:98a9 with SMTP id z9-20020aa7d409000000b00563e96198a9mr9196225edq.13.1708489849144;
+        Tue, 20 Feb 2024 20:30:49 -0800 (PST)
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com. [209.85.221.45])
+        by smtp.gmail.com with ESMTPSA id da16-20020a056402177000b00564e4debe29sm531919edb.78.2024.02.20.20.30.47
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 Feb 2024 20:30:47 -0800 (PST)
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-33d3b72f710so2076125f8f.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Feb 2024 20:30:47 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVnv0NcvukpEK0BqBW5jOuwu7Cgwpgv+ICt8chP+XKDtifgTLgcOtbaml3t+tzXJ9SBRXK4+QmUA/lHjJTF+5rLiy3wL1dTe7YiSKe5Nw==
+X-Received: by 2002:adf:ef8f:0:b0:33d:2775:1e63 with SMTP id
+ d15-20020adfef8f000000b0033d27751e63mr9141684wro.41.1708489847044; Tue, 20
+ Feb 2024 20:30:47 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <1705581128-4604-1-git-send-email-shengjiu.wang@nxp.com>
+ <1705581128-4604-8-git-send-email-shengjiu.wang@nxp.com> <20240217104212.32f07e3a@coco.lan>
+In-Reply-To: <20240217104212.32f07e3a@coco.lan>
+From: Tomasz Figa <tfiga@chromium.org>
+Date: Wed, 21 Feb 2024 13:30:29 +0900
+X-Gmail-Original-Message-ID: <CAAFQd5CY731HRhFHpmwzGxAZ-BFV_pT7NNGwNGy4ZOA=qz8ntg@mail.gmail.com>
+Message-ID: <CAAFQd5CY731HRhFHpmwzGxAZ-BFV_pT7NNGwNGy4ZOA=qz8ntg@mail.gmail.com>
+Subject: Re: [PATCH v12 07/15] media: v4l2: Add audio capture and output support
+To: Mauro Carvalho Chehab <mchehab@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,135 +86,199 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, linux-s390@vger.kernel.org, Nico Boehr <nrb@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org, Shaoqin Huang <shahuang@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, Andrew Jones <andrew.jones@linux.dev>, Eric Auger <eric.auger@redhat.com>, Marc Hartmayer <mhartmay@linux.ibm.com>, kvm-riscv@lists.infradead.org, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: nicoleotsuka@gmail.com, alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, Xiubo.Lee@gmail.com, festevam@gmail.com, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-kernel@vger.kernel.org, lgirdwood@gmail.com, hverkuil@xs4all.nl, broonie@kernel.org, sakari.ailus@iki.fi, perex@perex.cz, m.szyprowski@samsung.com, shengjiu.wang@gmail.com, linux-media@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a selftest for migration support in  guest library and test harness
-code. It performs migrations in a tight loop to irritate races and bugs
-in the test harness code.
+On Sat, Feb 17, 2024 at 6:42=E2=80=AFPM Mauro Carvalho Chehab
+<mchehab@kernel.org> wrote:
+>
+> Em Thu, 18 Jan 2024 20:32:00 +0800
+> Shengjiu Wang <shengjiu.wang@nxp.com> escreveu:
+>
+> > Audio signal processing has the requirement for memory to
+> > memory similar as Video.
+> >
+> > This patch is to add this support in v4l2 framework, defined
+> > new buffer type V4L2_BUF_TYPE_AUDIO_CAPTURE and
+> > V4L2_BUF_TYPE_AUDIO_OUTPUT, defined new format v4l2_audio_format
+> > for audio case usage.
+> >
+> > The created audio device is named "/dev/v4l-audioX".
+> >
+> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > ---
+> >  .../userspace-api/media/v4l/buffer.rst        |  6 ++
+> >  .../media/v4l/dev-audio-mem2mem.rst           | 71 +++++++++++++++++++
+> >  .../userspace-api/media/v4l/devices.rst       |  1 +
+> >  .../media/v4l/vidioc-enum-fmt.rst             |  2 +
+> >  .../userspace-api/media/v4l/vidioc-g-fmt.rst  |  4 ++
+> >  .../media/videodev2.h.rst.exceptions          |  2 +
+> >  .../media/common/videobuf2/videobuf2-v4l2.c   |  4 ++
+> >  drivers/media/v4l2-core/v4l2-compat-ioctl32.c |  9 +++
+> >  drivers/media/v4l2-core/v4l2-dev.c            | 17 +++++
+> >  drivers/media/v4l2-core/v4l2-ioctl.c          | 53 ++++++++++++++
+> >  include/media/v4l2-dev.h                      |  2 +
+> >  include/media/v4l2-ioctl.h                    | 34 +++++++++
+> >  include/uapi/linux/videodev2.h                | 17 +++++
+> >  13 files changed, 222 insertions(+)
+> >  create mode 100644 Documentation/userspace-api/media/v4l/dev-audio-mem=
+2mem.rst
+> >
+> > diff --git a/Documentation/userspace-api/media/v4l/buffer.rst b/Documen=
+tation/userspace-api/media/v4l/buffer.rst
+> > index 52bbee81c080..a3754ca6f0d6 100644
+> > --- a/Documentation/userspace-api/media/v4l/buffer.rst
+> > +++ b/Documentation/userspace-api/media/v4l/buffer.rst
+> > @@ -438,6 +438,12 @@ enum v4l2_buf_type
+> >      * - ``V4L2_BUF_TYPE_META_OUTPUT``
+> >        - 14
+>
+> >        - Buffer for metadata output, see :ref:`metadata`.
+> > +    * - ``V4L2_BUF_TYPE_AUDIO_CAPTURE``
+> > +      - 15
+> > +      - Buffer for audio capture, see :ref:`audio`.
+> > +    * - ``V4L2_BUF_TYPE_AUDIO_OUTPUT``
+> > +      - 16
+>
+> Hmm... alsa APi define input/output as:
+>         enum {
+>                 SNDRV_PCM_STREAM_PLAYBACK =3D 0,
+>                 SNDRV_PCM_STREAM_CAPTURE,
+>                 SNDRV_PCM_STREAM_LAST =3D SNDRV_PCM_STREAM_CAPTURE,
+>         };
+>
+>
+> I would use a namespace as close as possible to the
+> ALSA API. Also, we're not talking about V4L2, but, instead
+> audio. so, not sure if I like the prefix to start with
+> V4L2_. Maybe ALSA_?
+>
+> So, a better namespace would be:
+>
+>         ${prefix}_BUF_TYPE_PCM_STREAM_PLAYBACK
+> and
+>         ${prefix}_BUF_TYPE_PCM_STREAM_CAPTURE
+>
 
-Include the test in s390, powerpc.
+The API is still V4L2, and all the other non-video buf types also use
+the V4L2_ prefix, so perhaps that's good here as well?
 
-Acked-by: Claudio Imbrenda <imbrenda@linux.ibm.com> (s390x)
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- common/selftest-migration.c  | 29 +++++++++++++++++++++++++++++
- powerpc/Makefile.common      |  1 +
- powerpc/selftest-migration.c |  1 +
- powerpc/unittests.cfg        |  4 ++++
- s390x/Makefile               |  1 +
- s390x/selftest-migration.c   |  1 +
- s390x/unittests.cfg          |  4 ++++
- 7 files changed, 41 insertions(+)
- create mode 100644 common/selftest-migration.c
- create mode 120000 powerpc/selftest-migration.c
- create mode 120000 s390x/selftest-migration.c
+Whether AUDIO or PCM_STREAM makes more sense goes outside of my
+expertise. Subjectively, a PCM stream sounds more specific than an
+audio stream. Do those buf types also support non-PCM audio streams?
 
-diff --git a/common/selftest-migration.c b/common/selftest-migration.c
-new file mode 100644
-index 000000000..54b5d6b2d
---- /dev/null
-+++ b/common/selftest-migration.c
-@@ -0,0 +1,29 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Machine independent migration tests
-+ *
-+ * This is just a very simple test that is intended to stress the migration
-+ * support in the test harness. This could be expanded to test more guest
-+ * library code, but architecture-specific tests should be used to test
-+ * migration of tricky machine state.
-+ */
-+#include <libcflat.h>
-+#include <migrate.h>
-+
-+#define NR_MIGRATIONS 30
-+
-+int main(int argc, char **argv)
-+{
-+	int i = 0;
-+
-+	report_prefix_push("migration");
-+
-+	for (i = 0; i < NR_MIGRATIONS; i++)
-+		migrate_quiet();
-+
-+	report(true, "simple harness stress test");
-+
-+	report_prefix_pop();
-+
-+	return report_summary();
-+}
-diff --git a/powerpc/Makefile.common b/powerpc/Makefile.common
-index eb88398d8..da4a7bbb8 100644
---- a/powerpc/Makefile.common
-+++ b/powerpc/Makefile.common
-@@ -6,6 +6,7 @@
- 
- tests-common = \
- 	$(TEST_DIR)/selftest.elf \
-+	$(TEST_DIR)/selftest-migration.elf \
- 	$(TEST_DIR)/spapr_hcall.elf \
- 	$(TEST_DIR)/rtas.elf \
- 	$(TEST_DIR)/emulator.elf \
-diff --git a/powerpc/selftest-migration.c b/powerpc/selftest-migration.c
-new file mode 120000
-index 000000000..bd1eb266d
---- /dev/null
-+++ b/powerpc/selftest-migration.c
-@@ -0,0 +1 @@
-+../common/selftest-migration.c
-\ No newline at end of file
-diff --git a/powerpc/unittests.cfg b/powerpc/unittests.cfg
-index e71140aa5..7ce57de02 100644
---- a/powerpc/unittests.cfg
-+++ b/powerpc/unittests.cfg
-@@ -36,6 +36,10 @@ smp = 2
- extra_params = -m 256 -append 'setup smp=2 mem=256'
- groups = selftest
- 
-+[selftest-migration]
-+file = selftest-migration.elf
-+groups = selftest migration
-+
- [spapr_hcall]
- file = spapr_hcall.elf
- 
-diff --git a/s390x/Makefile b/s390x/Makefile
-index b72f7578f..344d46d68 100644
---- a/s390x/Makefile
-+++ b/s390x/Makefile
-@@ -1,4 +1,5 @@
- tests = $(TEST_DIR)/selftest.elf
-+tests += $(TEST_DIR)/selftest-migration.elf
- tests += $(TEST_DIR)/intercept.elf
- tests += $(TEST_DIR)/emulator.elf
- tests += $(TEST_DIR)/sieve.elf
-diff --git a/s390x/selftest-migration.c b/s390x/selftest-migration.c
-new file mode 120000
-index 000000000..bd1eb266d
---- /dev/null
-+++ b/s390x/selftest-migration.c
-@@ -0,0 +1 @@
-+../common/selftest-migration.c
-\ No newline at end of file
-diff --git a/s390x/unittests.cfg b/s390x/unittests.cfg
-index f5024b6ee..a7ad522ca 100644
---- a/s390x/unittests.cfg
-+++ b/s390x/unittests.cfg
-@@ -24,6 +24,10 @@ groups = selftest
- # please keep the kernel cmdline in sync with $(TEST_DIR)/selftest.parmfile
- extra_params = -append 'test 123'
- 
-+[selftest-migration]
-+file = selftest-migration.elf
-+groups = selftest migration
-+
- [intercept]
- file = intercept.elf
- 
--- 
-2.42.0
+> > +      - Buffer for audio output, see :ref:`audio`.
+> >
+> >
+> >  .. _buffer-flags:
+> > diff --git a/Documentation/userspace-api/media/v4l/dev-audio-mem2mem.rs=
+t b/Documentation/userspace-api/media/v4l/dev-audio-mem2mem.rst
+> > new file mode 100644
+> > index 000000000000..68faecfe3a02
+> > --- /dev/null
+> > +++ b/Documentation/userspace-api/media/v4l/dev-audio-mem2mem.rst
+> > @@ -0,0 +1,71 @@
+> > +.. SPDX-License-Identifier: GFDL-1.1-no-invariants-or-later
+> > +
+> > +.. _audiomem2mem:
+> > +
+> > +********************************
+> > +Audio Memory-To-Memory Interface
+> > +********************************
+> > +
+> > +An audio memory-to-memory device can compress, decompress, transform, =
+or
+> > +otherwise convert audio data from one format into another format, in m=
+emory.
+> > +Such memory-to-memory devices set the ``V4L2_CAP_AUDIO_M2M`` capabilit=
+y.
+> > +Examples of memory-to-memory devices are audio codecs, audio preproces=
+sing,
+> > +audio postprocessing.
+> > +
+> > +A memory-to-memory audio node supports both output (sending audio fram=
+es from
+> > +memory to the hardware) and capture (receiving the processed audio fra=
+mes
+> > +from the hardware into memory) stream I/O. An application will have to
+> > +setup the stream I/O for both sides and finally call
+> > +:ref:`VIDIOC_STREAMON <VIDIOC_STREAMON>` for both capture and output t=
+o
+> > +start the hardware.
+> > +
+> > +Memory-to-memory devices function as a shared resource: you can
+> > +open the audio node multiple times, each application setting up their
+> > +own properties that are local to the file handle, and each can use
+> > +it independently from the others. The driver will arbitrate access to
+> > +the hardware and reprogram it whenever another file handler gets acces=
+s.
+> > +
+> > +Audio memory-to-memory devices are accessed through character device
+> > +special files named ``/dev/v4l-audio``
+> > +
+> > +Querying Capabilities
+> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > +
+> > +Device nodes supporting the audio memory-to-memory interface set the
+> > +``V4L2_CAP_AUDIO_M2M`` flag in the ``device_caps`` field of the
+> > +:c:type:`v4l2_capability` structure returned by the :c:func:`VIDIOC_QU=
+ERYCAP`
+> > +ioctl.
+> > +
+> > +Data Format Negotiation
+> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > +
+> > +The audio device uses the :ref:`format` ioctls to select the capture f=
+ormat.
+> > +The audio buffer content format is bound to that selected format. In a=
+ddition
+> > +to the basic :ref:`format` ioctls, the :c:func:`VIDIOC_ENUM_FMT` ioctl=
+ must be
+> > +supported as well.
+> > +
+> > +To use the :ref:`format` ioctls applications set the ``type`` field of=
+ the
+> > +:c:type:`v4l2_format` structure to ``V4L2_BUF_TYPE_AUDIO_CAPTURE`` or =
+to
+> > +``V4L2_BUF_TYPE_AUDIO_OUTPUT``. Both drivers and applications must set=
+ the
+> > +remainder of the :c:type:`v4l2_format` structure to 0.
+> > +
+> > +.. c:type:: v4l2_audio_format
+> > +
+> > +.. tabularcolumns:: |p{1.4cm}|p{2.4cm}|p{13.5cm}|
+> > +
+> > +.. flat-table:: struct v4l2_audio_format
+> > +    :header-rows:  0
+> > +    :stub-columns: 0
+> > +    :widths:       1 1 2
+> > +
+> > +    * - __u32
+> > +      - ``pixelformat``
+> > +      - The sample format, set by the application. see :ref:`pixfmt-au=
+dio`
+>
+> pixelformat doesn't make any sense for audio: there are no pixels on a
+> PCM stream. Please use call it, instead: `snd_pcm_format`, making it matc=
+h
+> the values for snd_pcm_format_t.
+>
 
++1
+
+FWIW v4l2_meta_format uses the name "dataformat".
+
+Actually, I just realized that the C code actually uses the name
+"audioformat". Tbh., after reading the kerneldoc comment, my
+subjective preference would be on "sample_format", since that's
+exactly what it is.
+
+> Yet, I would keep defining it as u32 (or u64?) instead of using a
+> typedef int field there (snd_pcm_format_t), as the size of integer
+> is different on 32 and 64 bit kernels.
+
++1
+
+Best regards,
+Tomasz
