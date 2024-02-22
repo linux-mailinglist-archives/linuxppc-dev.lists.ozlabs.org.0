@@ -1,63 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6331685F363
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 09:46:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C108285F47A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 10:35:17 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=DRWFVe0T;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TgRZG2SPRz3dV6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 19:46:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TgSfq2mGnz3cy9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 20:35:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.171; helo=mail-yb1-f171.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=DRWFVe0T;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.131; helo=out30-131.freemail.mail.aliyun.com; envelope-from=yaoma@linux.alibaba.com; receiver=lists.ozlabs.org)
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TgRYp6sFMz30QJ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Feb 2024 19:45:50 +1100 (AEDT)
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-dcc80d6006aso6464410276.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Feb 2024 00:45:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708591546; x=1709196346;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=D6Kahe0OhfDh8S9J/Rqow+4MQwXRJQIenHOLMamoIBc=;
-        b=OCWn0G8bdWXScp6ebq1uq10+0wTCyrdZOvHXDIvNE+2c2mhTG8SiQTIY3MJitrNh1J
-         j77BJ6p3ws6TmDm1jalvwA1Eb5Gl09wqTFfNJM1crcGZnfyd4J7IQ3tImUYuXQn89LlS
-         YKYyCDrmMqwxr8IJv/kTyYliS/P2oXZd6MF1kbXRJ2/6YsGx99I0ZrkhbHktySvELZrx
-         iEgBYHSsmErELP63LOHWDp/rF/9YNAMU1nXEAF/Ma2vog5LnE47QKrgaifupbXPRCEYT
-         qwm6z7OILA5ckNXwkhO387h7aYrO00vm9yXJ16bmBrVLZTBDwekh5Dn7ZWS0iKfkZurl
-         HdZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXRTd7Gm1mmH2+Mm1NCRPaPGWhsHrBO2kubwD6IJInqdNWLXqm/pAosnqw/0bPXq8WgmzkrWHfw/qbc5hCyvQz2PuBoStjykmpzPp4q0w==
-X-Gm-Message-State: AOJu0YxYvO/Kwk21fsoWOgmxDQt/f23v9M766Q9L00DVJiBtevhofXKt
-	rX6PSVZei5G4h5p2rLye214diO1niQuYUxV5j58qhN18tMTkkDO4SxPKxLBtYwE=
-X-Google-Smtp-Source: AGHT+IE+CmqNYeyc6HgwckV53VoRZtGtYylx/ew9mgFXrdrbRLhAs2cX8laOWT2giOzTaQn9sHXwlg==
-X-Received: by 2002:a25:9b83:0:b0:dc7:4639:55d1 with SMTP id v3-20020a259b83000000b00dc7463955d1mr1633732ybo.18.1708591545118;
-        Thu, 22 Feb 2024 00:45:45 -0800 (PST)
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com. [209.85.128.173])
-        by smtp.gmail.com with ESMTPSA id t34-20020a25f622000000b00dc73705ec59sm2715580ybd.0.2024.02.22.00.45.43
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Feb 2024 00:45:44 -0800 (PST)
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-60821136c5aso33171997b3.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Feb 2024 00:45:43 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWr7bZFXmc7LYZH43NabigN5UeODrb5UC5hdC3lIF1CmZ1rsLq9px+so6OWRWse7klKkbIz3ERUOBRS/0RTC8x7kctBx/QIAxeBCOGPIQ==
-X-Received: by 2002:a81:6d8b:0:b0:608:7a3f:d0a4 with SMTP id
- i133-20020a816d8b000000b006087a3fd0a4mr4680838ywc.24.1708591543772; Thu, 22
- Feb 2024 00:45:43 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TgSf506Gdz2ykZ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Feb 2024 20:34:33 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1708594469; h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type;
+	bh=aPig5fqEBfNoG36h6uMeosrEa0k4/Htbh0JalMplPlo=;
+	b=DRWFVe0T2IMLYgbFG3O9Gt6z9Ah/Qoi+WshReEuHvKf+dShsr+AzE+9W1GPHxEeniSGiqDAEQzjYJv8iKilrRtKrGPgxAmtIM/TSGNugHsn8ieHDtZlL8ECJ1V6BSNtoknCkKi7RmDbSg0Dy3zg1l+i6lkPar5uDsnjFats72dE=
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046050;MF=yaoma@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0W10inwv_1708594464;
+Received: from localhost.localdomain(mailfrom:yaoma@linux.alibaba.com fp:SMTPD_---0W10inwv_1708594464)
+          by smtp.aliyun-inc.com;
+          Thu, 22 Feb 2024 17:34:26 +0800
+From: Bitao Hu <yaoma@linux.alibaba.com>
+To: dianders@chromium.org,
+	akpm@linux-foundation.org,
+	liusong@linux.alibaba.com,
+	tglx@linutronix.de,
+	pmladek@suse.com,
+	kernelfans@gmail.com,
+	deller@gmx.de,
+	npiggin@gmail.com,
+	tsbogend@alpha.franken.de,
+	James.Bottomley@HansenPartnership.com,
+	jan.kiszka@siemens.com
+Subject: [PATCHv9 0/3] *** Detect interrupt storm in softlockup ***
+Date: Thu, 22 Feb 2024 17:34:17 +0800
+Message-Id: <20240222093420.13956-1-yaoma@linux.alibaba.com>
+X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
 MIME-Version: 1.0
-References: <20240221-ps3-gelic-null-deref-v1-1-f4fe159c7cb0@kernel.org>
-In-Reply-To: <20240221-ps3-gelic-null-deref-v1-1-f4fe159c7cb0@kernel.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 22 Feb 2024 09:45:31 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXSmf6cKxzzXBYC5Zrkj6QR+2EhB4346d3g-RNTS+W7AQ@mail.gmail.com>
-Message-ID: <CAMuHMdXSmf6cKxzzXBYC5Zrkj6QR+2EhB4346d3g-RNTS+W7AQ@mail.gmail.com>
-Subject: Re: [PATCH RFC net] ps3/gelic: Fix possible NULL pointer dereference
-To: Simon Horman <horms@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,49 +61,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jeff Garzik <jeff@garzik.org>, Geoff Levand <geoff@infradead.org>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Dan Carpenter <dan.carpenter@linaro.org>
+Cc: yaoma@linux.alibaba.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Simon,
+Hi, guys.
+I have implemented a low-overhead method for detecting interrupt
+storm in softlockup. Please review it, all comments are welcome.
 
-On Wed, Feb 21, 2024 at 5:57=E2=80=AFPM Simon Horman <horms@kernel.org> wro=
-te:
-> Fix possible NULL pointer dereference in gelic_card_release_tx_chain()
->
-> The cited commit introduced a netdev variable to
-> gelic_card_release_tx_chain() which is set unconditionally on each
-> iteration of a for loop.
->
-> It is set to the value of tx_chain->tail->skb->dev.  However, in some
-> cases it is assumed that tx_chain->tail->skb may be NULL. And if that
-> occurs, setting netdev will cause a NULl pointer dereference.
+Changes from v8 to v9:
 
-Thanks for your patch!
+- Patch #1 remains unchanged.
 
-> Given the age of this code I do wonder if this can occur in practice.
-> But to be on the safe side this patch assumes that it can and aims to
-> avoid the dereference in the case where tx_chain->tail->skb may be NULL.
+- From Thomas Gleixner, split patch #2 into two patches. Interrupt
+infrastructure first and then the actual usage site in the
+watchdog code.
 
-The compiler may also lazy-load netdev until it's actually used,
-avoiding the crash?
+Changes from v7 to v8:
 
-> Fixes: 589866f9f1cb ("PS3: gelic: Add support for dual network interface"=
-)
-> Signed-off-by: Simon Horman <horms@kernel.org>
+- From Thomas Gleixner, implement statistics within the interrupt
+core code and provide sensible interfaces for the watchdog code.
 
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+- Patch #1 remains unchanged. Patch #2 has significant changes
+based on Thomas's suggestions, which is why I have removed
+Liu Song and Douglas's Reviewed-by from patch #2. Please review
+it again, and all comments are welcome.
 
-Gr{oetje,eeting}s,
+Changes from v6 to v7:
 
-                        Geert
+- Remove "READ_ONCE" in "start_counting_irqs"
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+- Replace the hard-coded 5 with "NUM_SAMPLE_PERIODS" macro in
+"set_sample_period".
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+- Add empty lines to help with reading the code.
+
+- Remove the branch that processes IRQs where "counts_diff = 0".
+
+- Add the Reviewed-by of Liu Song and Douglas.
+
+Changes from v5 to v6:
+
+- Use "./scripts/checkpatch.pl --strict" to get a few extra
+style nits and fix them.
+
+- Squash patch #3 into patch #1, and wrapp the help text to
+80 columns.
+
+- Sort existing headers alphabetically in watchdog.c
+
+- Drop "softlockup_hardirq_cpus", just read "hardirq_counts"
+and see if it's non-NULL.
+
+- Store "nr_irqs" in a local variable.
+
+- Simplify the calculation of "cpu_diff".
+
+Changes from v4 to v5:
+
+- Rearranging variable placement to make code look neater.
+
+Changes from v3 to v4:
+
+- Renaming some variable and function names to make the code logic
+more readable.
+
+- Change the code location to avoid predeclaring.
+
+- Just swap rather than a double loop in tabulate_irq_count.
+
+- Since nr_irqs has the potential to grow at runtime, bounds-check
+logic has been implemented.
+
+- Add SOFTLOCKUP_DETECTOR_INTR_STORM Kconfig knob.
+
+Changes from v2 to v3:
+
+- From Liu Song, using enum instead of macro for cpu_stats, shortening
+the name 'idx_to_stat' to 'stats', adding 'get_16bit_precesion' instead
+of using right shift operations, and using 'struct irq_counts'.
+
+- From kernel robot test, using '__this_cpu_read' and '__this_cpu_write'
+instead of accessing to an per-cpu array directly, in order to avoid
+this warning.
+'sparse: incorrect type in initializer (different modifiers)'
+
+Changes from v1 to v2:
+
+- From Douglas, optimize the memory of cpustats. With the maximum number
+of CPUs, that's now this.
+2 * 8192 * 4 + 1 * 8192 * 5 * 4 + 1 * 8192 = 237,568 bytes.
+
+- From Liu Song, refactor the code format and add necessary comments.
+
+- From Douglas, use interrupt counts instead of interrupt time to
+determine the cause of softlockup.
+
+- Remove the cmdline parameter added in PATCHv1.
+
+Bitao Hu (3):
+  watchdog/softlockup: low-overhead detection of interrupt storm
+  irq: use a struct for the kstat_irqs in the interrupt descriptor
+  watchdog/softlockup: report the most frequent interrupts
+
+ arch/mips/dec/setup.c                |   2 +-
+ arch/parisc/kernel/smp.c             |   2 +-
+ arch/powerpc/kvm/book3s_hv_rm_xics.c |   2 +-
+ include/linux/irqdesc.h              |   9 +-
+ include/linux/kernel_stat.h          |   3 +
+ kernel/irq/internals.h               |   2 +-
+ kernel/irq/irqdesc.c                 |  34 ++++-
+ kernel/irq/proc.c                    |   9 +-
+ kernel/watchdog.c                    | 213 ++++++++++++++++++++++++++-
+ lib/Kconfig.debug                    |  13 ++
+ scripts/gdb/linux/interrupts.py      |   6 +-
+ 11 files changed, 268 insertions(+), 27 deletions(-)
+
+-- 
+2.37.1 (Apple Git-137.1)
+
