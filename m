@@ -1,76 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EEEB860526
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 22:51:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74734860593
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 23:20:08 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ZBAv4oL4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YcIIOTCs;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tgn0R43v5z3dTx
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 08:51:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TgndL2fmqz3dW2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 09:20:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ZBAv4oL4;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YcIIOTCs;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b29; helo=mail-yb1-xb29.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tgmzh14G2z3bsw
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Feb 2024 08:50:55 +1100 (AEDT)
-Received: by mail-yb1-xb29.google.com with SMTP id 3f1490d57ef6-dcbd1d4904dso186086276.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Feb 2024 13:50:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708638650; x=1709243450; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GbRtgjzmc+Ky8Y7MGw/x7vZn3ys1w90kiZLMg7mLUbQ=;
-        b=ZBAv4oL4tz4MG7lRgUEBx/s0RE8EAw9OwL4M788fYevAv2aqebUEaUrevL4hrZE+WJ
-         L9H8kst8nNogKe3m4Rui2I/GfMCOzjA4A5Ld5aXIT4fmfiPC1Garrj8VUpLWnRgC8xS3
-         L7CHnVFDHofcI3rNycmCbcvgfSntINpSBf3Cp44J+nw014FyMyzQDjuYwY4ieJry8hYW
-         DhjmMcJfkaYdN0TbWNphQ41ykE5J5c91BDtHDvJziHnQHrndrIHtUXOxZoEviLdoFOGM
-         IHS/YqZ7Bm2OJLnzAw2188orUvBaQo1VTnoRgOiyp/2MMOkYqnr/HqwVy2tx5I2kwyE5
-         XPIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708638650; x=1709243450;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GbRtgjzmc+Ky8Y7MGw/x7vZn3ys1w90kiZLMg7mLUbQ=;
-        b=MHXThsk5vybtpNjt+LgQreSPGlnkVebVP47owZHmdVfsq8hBndHy9uQ32pfgFbnYkq
-         vmB+QzQ+wKNy4E2GwX52INslda90hFYDUWplt+tQwytPcO9tPgF7QiBpSJLdQBwENZ70
-         4ofPbHp7X3DFMLBhrQ9B5TOEtKiKgzF6zgFc7zl0Lu0WYHumR15IfTj4JCqTaaOOlNIA
-         bPynMH1OqTEYiBypCqX2ydH05gJ+q5Q3JzZzOcIfVI6mM8eRYg5lJlQ+nAirZ0unK6ck
-         Gby/0+0nihSjOumlKd6HUEle9/UpYAS1vexWhWL6b8Fq5E6LipeQw4TJUL9Oad0eZOf8
-         hSjA==
-X-Forwarded-Encrypted: i=1; AJvYcCUD8WSokIZAntz10F3+dkIVmhq69IOzFxxYktA6UjRACHBv8os0WjwaZGb+BkognilSIAq6eFF4wqxqrpZceHAINkfWDt0is5U/FXyPCQ==
-X-Gm-Message-State: AOJu0Yxfjh48qy6sBSPW/yImoylMYL5HoDUcmXmdCalIV34Tv8FkUOj7
-	Fj7CnF5SrO8fDZ+op9oslg+S4d/iuGjsNkvr9J41AMRvmjdqfD6v
-X-Google-Smtp-Source: AGHT+IEOh/Eyrxx3el8K1WT+YisZ+iESYEunMTfd0wrXySo4XFeTPixQN4F9T1qBJSrkKfSjcPdP4Q==
-X-Received: by 2002:a05:6902:543:b0:dcf:3f11:633a with SMTP id z3-20020a056902054300b00dcf3f11633amr152678ybs.35.1708638649689;
-        Thu, 22 Feb 2024 13:50:49 -0800 (PST)
-Received: from localhost ([2601:344:8301:57f0:6d56:5106:b1c5:46d5])
-        by smtp.gmail.com with ESMTPSA id e2-20020a256902000000b00dc6e5ea9152sm3072361ybc.29.2024.02.22.13.50.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Feb 2024 13:50:49 -0800 (PST)
-Date: Thu, 22 Feb 2024 13:50:48 -0800
-From: Yury Norov <yury.norov@gmail.com>
-To: Herve Codina <herve.codina@bootlin.com>
-Subject: Re: [PATCH v4 3/5] lib/bitmap: Introduce bitmap_scatter() and
- bitmap_gather() helpers
-Message-ID: <ZdfBuFZ7tf4b+3n8@yury-ThinkPad>
-References: <20240222142219.441767-1-herve.codina@bootlin.com>
- <20240222142219.441767-4-herve.codina@bootlin.com>
- <Zddqr3aN4rU-upai@smile.fi.intel.com>
- <20240222174959.7097c29b@bootlin.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TgncX4r1xz3cb5
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Feb 2024 09:19:24 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 98375CE28BD;
+	Thu, 22 Feb 2024 22:19:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D0BA1C433F1;
+	Thu, 22 Feb 2024 22:19:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708640360;
+	bh=NI7zQTk513arbEk34dSwLfykYV+WkJGJ0cVI/ha6fok=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=YcIIOTCsNJZ1MoOnwAs0dN3kTL+1+uOKYsuEx8bzmbwVyCp7drSsUm8V3TAi5+h3Q
+	 ZBmNtZ/bxDIdxmfgIBUXqRGgtyo3g/USfgWac+R1gfwNPykDRz5jK1LxIIGyFh/t25
+	 BKw6YVJs9AxE+SFOB31cmyJmFD8lMNw0hO7yBxc1uhoiscxhaOcc4oeveeYxc0gYST
+	 pgT7S5Bik4gUUh5ZjqXZo4s31UV1aPzlzwUO+ghAsRL73L3LLTar2aedyXhBKdfRpK
+	 pubfXbPtKhlEohDoxNTt7qesek4AHSDhvfoUsj5mTADvPL7hnPyfVLIx2Qjd+OzWXV
+	 NmMYVPFgO1v6g==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BAAB5C5478C;
+	Thu, 22 Feb 2024 22:19:20 +0000 (UTC)
+From: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
+Date: Thu, 22 Feb 2024 16:19:14 -0600
+Subject: [PATCH] powerpc/rtas: use correct function name for resetting TCE
+ tables
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240222174959.7097c29b@bootlin.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id:  <20240222-rtas-fix-ibm-reset-pe-dma-window-v1-1-7aaf235ac63c@linux.ibm.com>
+X-B4-Tracking: v=1; b=H4sIAGHI12UC/x2NQQrCUAwFr1Ky9kF/qCheRVx8TdQs+luSYoXSu
+ xtcDgwzG4W6adCl28j1Y2FTSyiHjh7v2l4Kk2TinoeemeFLDTztC7uPcA1dMCtkrFitybTiNBx
+ Fyjn1Uigzs2vq/8X1tu8/aDe7LnIAAAA=
+To: Michael Ellerman <mpe@ellerman.id.au>, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1708640360; l=4584;
+ i=nathanl@linux.ibm.com; s=20230817; h=from:subject:message-id;
+ bh=BfV+jHCvDs2FuYu/IFjfmREm6RrDgEy35K5MlxEWdgI=;
+ b=L7H7lySU0gQuGBEXKqo0Q/wPikh41NbCXKvuCXN33+k+f3PgFytQMTxe2ZgPCy3knnJWZoe1M
+ j0Xm7VqmHWuC6tH4TlZZSyRG1smRl2+1W63DLMePalLWYfzZMbtAoFC
+X-Developer-Key: i=nathanl@linux.ibm.com; a=ed25519;
+ pk=jPDF44RvT+9DGFOH3NGoIu1xN9dF+82pjdpnKjXfoJ0=
+X-Endpoint-Received:  by B4 Relay for nathanl@linux.ibm.com/20230817 with auth_id=78
+X-Original-From: Nathan Lynch <nathanl@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,45 +76,120 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, netdev@vger.kernel.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Mark Brown <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Reply-To: nathanl@linux.ibm.com
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, Gaurav Batra <gbatra@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Feb 22, 2024 at 05:49:59PM +0100, Herve Codina wrote:
-> Hi Andy, Yury,
-> 
-> On Thu, 22 Feb 2024 17:39:27 +0200
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> 
-> ...
-> > > + * bitmap_scatter() for the bitmap scatter detailed operations).  
-> > 
-> > > + * Suppose scattered computed using bitmap_scatter(scattered, src, mask, n).
-> > > + * The operation bitmap_gather(result, scattered, mask, n) leads to a result
-> > > + * equal or equivalent to src.  
-> > 
-> > This paragraph...
-> > 
-> > > + * The result can be 'equivalent' because bitmap_scatter() and bitmap_gather()
-> > > + * are not bijective.  
-> > 
-> > 
-> > > + * The result and src values are equivalent in that sense that a call to
-> > > + * bitmap_scatter(res, src, mask, n) and a call to bitmap_scatter(res, result,
-> > > + * mask, n) will lead to the same res value.  
-> > 
-> > ...seems duplicating this one.
-> > 
-> > I would drop the latter one.
-> 
-> I would like to give details about the 'equivalent' in this scatter/gather case.
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-If you would like - please do! :)
- 
-> If Yury is ok, I can drop this last paragraph.
+The PAPR spec spells the function name as
 
-The original bitmap_onto() description is 3 times longer, and barely
-that descriptive. I'm OK with your working and especially pictures.
+  "ibm,reset-pe-dma-windows"
 
-Thanks,
-Yury
+but in practice firmware uses the singular form:
+
+  "ibm,reset-pe-dma-window"
+
+in the device tree. Since we have the wrong spelling in the RTAS
+function table, reverse lookups (token -> name) fail and warn:
+
+  unexpected failed lookup for token 86
+  WARNING: CPU: 1 PID: 545 at arch/powerpc/kernel/rtas.c:659 __do_enter_rtas_trace+0x2a4/0x2b4
+  CPU: 1 PID: 545 Comm: systemd-udevd Not tainted 6.8.0-rc4 #30
+  Hardware name: IBM,9105-22A POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1060.00 (NL1060_028) hv:phyp pSeries
+  NIP [c0000000000417f0] __do_enter_rtas_trace+0x2a4/0x2b4
+  LR [c0000000000417ec] __do_enter_rtas_trace+0x2a0/0x2b4
+  Call Trace:
+   __do_enter_rtas_trace+0x2a0/0x2b4 (unreliable)
+   rtas_call+0x1f8/0x3e0
+   enable_ddw.constprop.0+0x4d0/0xc84
+   dma_iommu_dma_supported+0xe8/0x24c
+   dma_set_mask+0x5c/0xd8
+   mlx5_pci_init.constprop.0+0xf0/0x46c [mlx5_core]
+   probe_one+0xfc/0x32c [mlx5_core]
+   local_pci_probe+0x68/0x12c
+   pci_call_probe+0x68/0x1ec
+   pci_device_probe+0xbc/0x1a8
+   really_probe+0x104/0x570
+   __driver_probe_device+0xb8/0x224
+   driver_probe_device+0x54/0x130
+   __driver_attach+0x158/0x2b0
+   bus_for_each_dev+0xa8/0x120
+   driver_attach+0x34/0x48
+   bus_add_driver+0x174/0x304
+   driver_register+0x8c/0x1c4
+   __pci_register_driver+0x68/0x7c
+   mlx5_init+0xb8/0x118 [mlx5_core]
+   do_one_initcall+0x60/0x388
+   do_init_module+0x7c/0x2a4
+   init_module_from_file+0xb4/0x108
+   idempotent_init_module+0x184/0x34c
+   sys_finit_module+0x90/0x114
+
+And oopses are possible when lockdep is enabled or the RTAS
+tracepoints are active, since those paths dereference the result of
+the lookup.
+
+Use the correct spelling to match firmware's behavior, adjusting the
+related constants to match.
+
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Reported-by: Gaurav Batra <gbatra@linux.ibm.com>
+Fixes: 8252b88294d2 ("powerpc/rtas: improve function information lookups")
+---
+ arch/powerpc/include/asm/rtas.h | 4 ++--
+ arch/powerpc/kernel/rtas.c      | 9 +++++++--
+ 2 files changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
+index 9bb2210c8d44..065ffd1b2f8a 100644
+--- a/arch/powerpc/include/asm/rtas.h
++++ b/arch/powerpc/include/asm/rtas.h
+@@ -69,7 +69,7 @@ enum rtas_function_index {
+ 	RTAS_FNIDX__IBM_READ_SLOT_RESET_STATE,
+ 	RTAS_FNIDX__IBM_READ_SLOT_RESET_STATE2,
+ 	RTAS_FNIDX__IBM_REMOVE_PE_DMA_WINDOW,
+-	RTAS_FNIDX__IBM_RESET_PE_DMA_WINDOWS,
++	RTAS_FNIDX__IBM_RESET_PE_DMA_WINDOW,
+ 	RTAS_FNIDX__IBM_SCAN_LOG_DUMP,
+ 	RTAS_FNIDX__IBM_SET_DYNAMIC_INDICATOR,
+ 	RTAS_FNIDX__IBM_SET_EEH_OPTION,
+@@ -164,7 +164,7 @@ typedef struct {
+ #define RTAS_FN_IBM_READ_SLOT_RESET_STATE         rtas_fn_handle(RTAS_FNIDX__IBM_READ_SLOT_RESET_STATE)
+ #define RTAS_FN_IBM_READ_SLOT_RESET_STATE2        rtas_fn_handle(RTAS_FNIDX__IBM_READ_SLOT_RESET_STATE2)
+ #define RTAS_FN_IBM_REMOVE_PE_DMA_WINDOW          rtas_fn_handle(RTAS_FNIDX__IBM_REMOVE_PE_DMA_WINDOW)
+-#define RTAS_FN_IBM_RESET_PE_DMA_WINDOWS          rtas_fn_handle(RTAS_FNIDX__IBM_RESET_PE_DMA_WINDOWS)
++#define RTAS_FN_IBM_RESET_PE_DMA_WINDOW           rtas_fn_handle(RTAS_FNIDX__IBM_RESET_PE_DMA_WINDOW)
+ #define RTAS_FN_IBM_SCAN_LOG_DUMP                 rtas_fn_handle(RTAS_FNIDX__IBM_SCAN_LOG_DUMP)
+ #define RTAS_FN_IBM_SET_DYNAMIC_INDICATOR         rtas_fn_handle(RTAS_FNIDX__IBM_SET_DYNAMIC_INDICATOR)
+ #define RTAS_FN_IBM_SET_EEH_OPTION                rtas_fn_handle(RTAS_FNIDX__IBM_SET_EEH_OPTION)
+diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+index 7e793b503e29..8064d9c3de86 100644
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -375,8 +375,13 @@ static struct rtas_function rtas_function_table[] __ro_after_init = {
+ 	[RTAS_FNIDX__IBM_REMOVE_PE_DMA_WINDOW] = {
+ 		.name = "ibm,remove-pe-dma-window",
+ 	},
+-	[RTAS_FNIDX__IBM_RESET_PE_DMA_WINDOWS] = {
+-		.name = "ibm,reset-pe-dma-windows",
++	[RTAS_FNIDX__IBM_RESET_PE_DMA_WINDOW] = {
++		/*
++		 * Note: PAPR+ v2.13 7.3.31.4.1 spells this as
++		 * "ibm,reset-pe-dma-windows" (plural), but RTAS
++		 * implementations use the singular form in practice.
++		 */
++		.name = "ibm,reset-pe-dma-window",
+ 	},
+ 	[RTAS_FNIDX__IBM_SCAN_LOG_DUMP] = {
+ 		.name = "ibm,scan-log-dump",
+
+---
+base-commit: b22ea627225b53ec7ce25c19d6df9fa8217d1643
+change-id: 20240222-rtas-fix-ibm-reset-pe-dma-window-745dd1824011
+
+Best regards,
+-- 
+Nathan Lynch <nathanl@linux.ibm.com>
+
