@@ -1,94 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CE9585FB5C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 15:35:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E94185FC60
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 16:30:04 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KJ7w91tF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=a8pUn9Du;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TgbKF06Y0z3vXQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 01:35:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TgcXB1558z3dV1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 02:30:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KJ7w91tF;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=a8pUn9Du;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.15; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TgbHd4kJMz2ykZ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Feb 2024 01:34:05 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41MEW6YY022584;
-	Thu, 22 Feb 2024 14:33:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=Zx1bK32W6TAbYPYJEc5GfShqv+HBx8ibIf0/tgpNitQ=;
- b=KJ7w91tF+WF6cOE2ntpY8SxVFYRox4aKBTvqaxdwUUyKSMrtQ6k7xYm1rt4OUfYkh8dg
- VEdx6OHn/VOkNErJ2wRRbFe9IS4/O8EvQ/Q/twmIOf790dQlBOtQk4DBYahJ3vwQz6hN
- ebUr/JGQthM6kN39HdwMBG51LSASNxRtScRK+7V2JEeTdfsj+LGlKOIxYS7U7GrT1NY2
- BtNeck+XkgosFLw/UEtWOm2h9LV19VBzX3uN5HzYwRVd/vPG/EZuUJZf06UOnGpb6Abn
- Lh7CPu6yzDG8+gjkdO+gj+d6JQOLvL+wY0X2KRb6nfGSo1h7AWLxwJtnXb3Y9bQqnOnu Gw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3we843r2a0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 22 Feb 2024 14:33:49 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41MEWhrL024669;
-	Thu, 22 Feb 2024 14:33:49 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3we843r293-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 22 Feb 2024 14:33:48 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41MEDsxp003623;
-	Thu, 22 Feb 2024 14:33:47 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3wb74ty0xp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 22 Feb 2024 14:33:47 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41MEXgn327132480
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 22 Feb 2024 14:33:44 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 787822004F;
-	Thu, 22 Feb 2024 14:33:42 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 65B222004B;
-	Thu, 22 Feb 2024 14:33:42 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 22 Feb 2024 14:33:42 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
-	id DED5CE0375; Thu, 22 Feb 2024 15:33:41 +0100 (CET)
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>
-Subject: [PATCH v2 RESEND 5/5] sched/vtime: do not include <asm/vtime.h> header
-Date: Thu, 22 Feb 2024 15:33:41 +0100
-Message-Id: <a1d6ac49eb8fe5529dee184e8d62da4a7dedc461.1708612016.git.agordeev@linux.ibm.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <cover.1708612016.git.agordeev@linux.ibm.com>
-References: <cover.1708612016.git.agordeev@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TgcWP0f3dz3btP
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Feb 2024 02:29:19 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708615761; x=1740151761;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=UMGrEK87Ud+pMVRA+mW3KlN70QQqpXNjVjwMAipmIVY=;
+  b=a8pUn9Dua814JysiMB4IKKV4abVul6XP4hHpudKoXYmhLzAY/xbvrEHy
+   mmfx02s8tP0SArhXkXjJ9ROhDEL5cSEbKjGRYQBHnlLOWQirH1sBnIOh1
+   xJeK2Paws3NB5mYqWvK79KvvqgZjq9amtTtdn4huI8LZuOECCqoj+/4oP
+   +icFOoH3TdRd+sfnHE7M0uTR2jhDVWXb/g1I4hgRQAFzU2GRL/VhN9jYP
+   6vrOjEG4cCG44AKcuFvdxHPCJd+kWKb9gKB8ygzWcTqhUtQ4ekLSukw/h
+   9GnUVhV6gTRJOUUU4EqUzlFfxJNL91o/LJdV6PxtvVm7V91Xm3gE5YPMq
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="2984395"
+X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
+   d="scan'208";a="2984395"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 07:29:14 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="913543141"
+X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
+   d="scan'208";a="913543141"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 07:29:09 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rdB0U-00000006fE8-0mA7;
+	Thu, 22 Feb 2024 17:29:06 +0200
+Date: Thu, 22 Feb 2024 17:29:05 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Herve Codina <herve.codina@bootlin.com>
+Subject: Re: [PATCH v4 1/5] net: wan: Add support for QMC HDLC
+Message-ID: <ZddoQTg32unJJ_qP@smile.fi.intel.com>
+References: <20240222142219.441767-1-herve.codina@bootlin.com>
+ <20240222142219.441767-2-herve.codina@bootlin.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: aOz7Fjqea4Byyh_gockVFzsERdL-DRGs
-X-Proofpoint-ORIG-GUID: BE-CQrDmRMYPIaCK-n7uGJL0aCkmOCUf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-22_11,2024-02-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
- priorityscore=1501 impostorscore=0 mlxscore=0 lowpriorityscore=0
- mlxlogscore=451 clxscore=1015 malwarescore=0 bulkscore=0 suspectscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402220116
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240222142219.441767-2-herve.codina@bootlin.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,56 +72,195 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, Frederic Weisbecker <frederic@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, Yury Norov <yury.norov@gmail.com>, netdev@vger.kernel.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Mark Brown <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There is no architecture-specific code or data left
-that generic <linux/vtime.h> needs to know about.
-Thus, avoid the inclusion of <asm/vtime.h> header.
+On Thu, Feb 22, 2024 at 03:22:14PM +0100, Herve Codina wrote:
+> The QMC HDLC driver provides support for HDLC using the QMC (QUICC
+> Multichannel Controller) to transfer the HDLC data.
 
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Acked-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
----
- arch/powerpc/include/asm/Kbuild | 1 -
- include/asm-generic/vtime.h     | 1 -
- include/linux/vtime.h           | 4 ----
- 3 files changed, 6 deletions(-)
- delete mode 100644 include/asm-generic/vtime.h
+...
 
-diff --git a/arch/powerpc/include/asm/Kbuild b/arch/powerpc/include/asm/Kbuild
-index 61a8d5555cd7..e5fdc336c9b2 100644
---- a/arch/powerpc/include/asm/Kbuild
-+++ b/arch/powerpc/include/asm/Kbuild
-@@ -6,5 +6,4 @@ generic-y += agp.h
- generic-y += kvm_types.h
- generic-y += mcs_spinlock.h
- generic-y += qrwlock.h
--generic-y += vtime.h
- generic-y += early_ioremap.h
-diff --git a/include/asm-generic/vtime.h b/include/asm-generic/vtime.h
-deleted file mode 100644
-index b1a49677fe25..000000000000
---- a/include/asm-generic/vtime.h
-+++ /dev/null
-@@ -1 +0,0 @@
--/* no content, but patch(1) dislikes empty files */
-diff --git a/include/linux/vtime.h b/include/linux/vtime.h
-index 593466ceebed..29dd5b91dd7d 100644
---- a/include/linux/vtime.h
-+++ b/include/linux/vtime.h
-@@ -5,10 +5,6 @@
- #include <linux/context_tracking_state.h>
- #include <linux/sched.h>
- 
--#ifdef CONFIG_VIRT_CPU_ACCOUNTING_NATIVE
--#include <asm/vtime.h>
--#endif
--
- /*
-  * Common vtime APIs
-  */
+> +struct qmc_hdlc {
+> +	struct device *dev;
+> +	struct qmc_chan *qmc_chan;
+> +	struct net_device *netdev;
+> +	bool is_crc32;
+> +	spinlock_t tx_lock; /* Protect tx descriptors */
+
+Just wondering if above tx/rx descriptors should be aligned on a cacheline
+for DMA?
+
+> +	struct qmc_hdlc_desc tx_descs[8];
+> +	unsigned int tx_out;
+> +	struct qmc_hdlc_desc rx_descs[4];
+> +};
+
+...
+
+> +#define QMC_HDLC_RX_ERROR_FLAGS (QMC_RX_FLAG_HDLC_OVF | \
+> +				 QMC_RX_FLAG_HDLC_UNA | \
+> +				 QMC_RX_FLAG_HDLC_ABORT | \
+> +				 QMC_RX_FLAG_HDLC_CRC)
+
+Wouldn't be slightly better to have it as
+
+#define QMC_HDLC_RX_ERROR_FLAGS				\
+	(QMC_RX_FLAG_HDLC_OVF | QMC_RX_FLAG_HDLC_UNA |	\
+	 QMC_RX_FLAG_HDLC_CRC | QMC_RX_FLAG_HDLC_ABORT)
+
+?
+
+...
+
+> +	ret = qmc_chan_write_submit(qmc_hdlc->qmc_chan, desc->dma_addr, desc->dma_size,
+> +				    qmc_hdlc_xmit_complete, desc);
+> +	if (ret) {
+
+> +		dev_err(qmc_hdlc->dev, "qmc chan write returns %d\n", ret);
+> +		dma_unmap_single(qmc_hdlc->dev, desc->dma_addr, desc->dma_size, DMA_TO_DEVICE);
+> +		return ret;
+
+I would do other way around, i.e. release resource followed up by printing
+a message. Printing a message is a slow operation and may prevent the (soon
+freed) resources to be re-used earlier.
+
+> +	}
+
+...
+
+> +	spin_lock_irqsave(&qmc_hdlc->tx_lock, flags);
+
+Why not using cleanup.h from day 1?
+
+> +end:
+
+This label, in particular, will not be needed with above in place.
+
+> +	spin_unlock_irqrestore(&qmc_hdlc->tx_lock, flags);
+> +	return ret;
+> +}
+
+...
+
+> +	/* Queue as many recv descriptors as possible */
+> +	for (i = 0; i < ARRAY_SIZE(qmc_hdlc->rx_descs); i++) {
+> +		desc = &qmc_hdlc->rx_descs[i];
+> +
+> +		desc->netdev = netdev;
+> +		ret = qmc_hdlc_recv_queue(qmc_hdlc, desc, chan_param.hdlc.max_rx_buf_size);
+
+> +		if (ret) {
+> +			if (ret == -EBUSY && i != 0)
+> +				break; /* We use all the QMC chan capability */
+> +			goto free_desc;
+> +		}
+
+Can be unfolded to
+
+		if (ret == -EBUSY && i)
+			break; /* We use all the QMC chan capability */
+		if (ret)
+			goto free_desc;
+
+Easy to read and understand.
+
+> +	}
+
+...
+
+> +static int qmc_hdlc_probe(struct platform_device *pdev)
+> +{
+
+With
+
+	struct device *dev = &pdev->dev;
+
+the below code will be neater (see other comments for the examples).
+
+> +	struct device_node *np = pdev->dev.of_node;
+
+It is used only once, drop it (see below).
+
+> +	struct qmc_hdlc *qmc_hdlc;
+> +	struct qmc_chan_info info;
+> +	hdlc_device *hdlc;
+> +	int ret;
+> +
+> +	qmc_hdlc = devm_kzalloc(&pdev->dev, sizeof(*qmc_hdlc), GFP_KERNEL);
+> +	if (!qmc_hdlc)
+> +		return -ENOMEM;
+> +
+> +	qmc_hdlc->dev = &pdev->dev;
+> +	spin_lock_init(&qmc_hdlc->tx_lock);
+> +
+> +	qmc_hdlc->qmc_chan = devm_qmc_chan_get_bychild(qmc_hdlc->dev, np);
+
+	qmc_hdlc->qmc_chan = devm_qmc_chan_get_bychild(dev, dev->of_node);
+
+> +	if (IS_ERR(qmc_hdlc->qmc_chan)) {
+> +		ret = PTR_ERR(qmc_hdlc->qmc_chan);
+> +		return dev_err_probe(qmc_hdlc->dev, ret, "get QMC channel failed\n");
+
+		return dev_err_probe(dev, PTR_ERR(qmc_hdlc->qmc_chan), "get QMC channel failed\n");
+
+> +	}
+> +
+> +	ret = qmc_chan_get_info(qmc_hdlc->qmc_chan, &info);
+> +	if (ret) {
+
+> +		dev_err(qmc_hdlc->dev, "get QMC channel info failed %d\n", ret);
+> +		return ret;
+
+Why not using same message pattern everywhere, i.e. dev_err_probe()?
+
+		return dev_err_probe(dev, ret, "get QMC channel info failed\n");
+
+(and so on...)
+
+> +	}
+> +
+> +	if (info.mode != QMC_HDLC) {
+> +		dev_err(qmc_hdlc->dev, "QMC chan mode %d is not QMC_HDLC\n",
+> +			info.mode);
+> +		return -EINVAL;
+> +	}
+> +
+> +	qmc_hdlc->netdev = alloc_hdlcdev(qmc_hdlc);
+> +	if (!qmc_hdlc->netdev) {
+
+> +		dev_err(qmc_hdlc->dev, "failed to alloc hdlc dev\n");
+> +		return -ENOMEM;
+
+We do not issue a message for -ENOMEM.
+
+> +	}
+> +
+> +	hdlc = dev_to_hdlc(qmc_hdlc->netdev);
+> +	hdlc->attach = qmc_hdlc_attach;
+> +	hdlc->xmit = qmc_hdlc_xmit;
+> +	SET_NETDEV_DEV(qmc_hdlc->netdev, qmc_hdlc->dev);
+> +	qmc_hdlc->netdev->tx_queue_len = ARRAY_SIZE(qmc_hdlc->tx_descs);
+> +	qmc_hdlc->netdev->netdev_ops = &qmc_hdlc_netdev_ops;
+> +	ret = register_hdlc_device(qmc_hdlc->netdev);
+> +	if (ret) {
+> +		dev_err(qmc_hdlc->dev, "failed to register hdlc device (%d)\n", ret);
+> +		goto free_netdev;
+> +	}
+> +
+> +	platform_set_drvdata(pdev, qmc_hdlc);
+> +
+> +	return 0;
+> +
+> +free_netdev:
+> +	free_netdev(qmc_hdlc->netdev);
+> +	return ret;
+> +}
+
+
 -- 
-2.40.1
+With Best Regards,
+Andy Shevchenko
+
 
