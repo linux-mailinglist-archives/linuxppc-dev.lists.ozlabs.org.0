@@ -2,54 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BF8585F1A4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 07:51:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA89585F1C1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 08:08:03 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ePb7Nmjd;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=B9ugx0Mp;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=B9ugx0Mp;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TgP1z2QQhz3ccV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 17:51:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TgPNx4qxBz3dVf
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 18:08:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ePb7Nmjd;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=B9ugx0Mp;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=B9ugx0Mp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=geoff@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TgP1F1jFwz2xm3
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Feb 2024 17:50:57 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description;
-	bh=BpvOMzy9ulC+09MeE8dtVU205P+hnczqUIcLjP1sEAc=; b=ePb7NmjdTof88AD4C557Y8s1E6
-	nMYQHhmw1/yyLWaHGWz7n0DhlxQsmLy2f2rmXBs+8+1oIw0Ok4fL1ft7dMr4wQEpKFzE21fl/MR2p
-	CxBcR0d0jL+3yNzXnQSH043qMIccCsPyZNwQPkZnY56fgzM8s+73f8BBLAS2iIpOg+JM0Gw8XY+Mk
-	vaVvVI9WbFMc/2FfnmgAaBeEsdCvjw42rSxmKMbEVY+zu5xJuaTtB+ie/PDy0HqqX38gib3roCaUY
-	JFZz+1UVIfggyrtR6zYC9oXobnOihdQS93Q2yta9TgM9oT9rF26+C7mQp05pTBBtS7tjbTCEOKgAv
-	vh2rcPVg==;
-Received: from 124x35x135x198.ap124.ftth.ucom.ne.jp ([124.35.135.198] helo=[192.168.2.109])
-	by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rd2uw-00000002qhp-27nM;
-	Thu, 22 Feb 2024 06:50:50 +0000
-Message-ID: <5548b3f0-437c-4792-ad6a-d08ffe1ba873@infradead.org>
-Date: Thu, 22 Feb 2024 15:50:44 +0900
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TgPNB0lC6z30f5
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Feb 2024 18:07:21 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1708585638;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=j88KzvyAQZThT6aCL8ZS+o2FWYKBFq83FjUT4vcsoNg=;
+	b=B9ugx0MpEasDd67LOczyvByVAl/04JUMBNirx3qJ+wiYAovAgKRinnnXoSvHGXZWPD26IA
+	OtoV2jAkF36OExzz8QBnjgwXhennlf/cX213UBLqYetLHjqE29sioQCjVqyQGGAwAVqwaD
+	1O6JyIymwm0ImOECNKsPi1ApKxRq1II=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1708585638;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=j88KzvyAQZThT6aCL8ZS+o2FWYKBFq83FjUT4vcsoNg=;
+	b=B9ugx0MpEasDd67LOczyvByVAl/04JUMBNirx3qJ+wiYAovAgKRinnnXoSvHGXZWPD26IA
+	OtoV2jAkF36OExzz8QBnjgwXhennlf/cX213UBLqYetLHjqE29sioQCjVqyQGGAwAVqwaD
+	1O6JyIymwm0ImOECNKsPi1ApKxRq1II=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-374-MaV-uow3NFqRm-_MOPABCw-1; Thu, 22 Feb 2024 02:07:12 -0500
+X-MC-Unique: MaV-uow3NFqRm-_MOPABCw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7B19A185A787;
+	Thu, 22 Feb 2024 07:07:11 +0000 (UTC)
+Received: from localhost (unknown [10.72.116.2])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id A8B5A492BC8;
+	Thu, 22 Feb 2024 07:07:08 +0000 (UTC)
+Date: Thu, 22 Feb 2024 15:07:05 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v2 00/14] Split crash out from kexec and clean up related
+ config items
+Message-ID: <Zdbymex3ABImSwI3@MiWiFi-R3L-srv>
+References: <20240119145241.769622-1-bhe@redhat.com>
+ <9101bb07-70f1-476c-bec9-ec67e9899744@linux.ibm.com>
+ <Zb8D1ASrgX0qVm9z@MiWiFi-R3L-srv>
+ <559f2595-1477-4ef0-80e4-85ae8b426de7@linux.ibm.com>
+ <20240221125752.36fbfe9c307496313198b60f@linux-foundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] ps3/gelic: minor Kernel Doc corrections
-Content-Language: en-US
-To: Simon Horman <horms@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-References: <20240221-ps3-gelic-kdoc-v1-1-7629216d1340@kernel.org>
-From: Geoff Levand <geoff@infradead.org>
-In-Reply-To: <20240221-ps3-gelic-kdoc-v1-1-7629216d1340@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240221125752.36fbfe9c307496313198b60f@linux-foundation.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,79 +83,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, netdev@vger.kernel.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org, piliu@redhat.com, linux-sh@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, ebiederm@xmission.com, loongarch@lists.linux.dev, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Hari Bathini <hbathini@linux.ibm.com>, viro@zeniv.linux.org.uk
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Simon,
+On 02/21/24 at 12:57pm, Andrew Morton wrote:
+> On Wed, 21 Feb 2024 11:15:00 +0530 Hari Bathini <hbathini@linux.ibm.com> wrote:
+> 
+> > On 04/02/24 8:56 am, Baoquan He wrote:
+> > >>> Hope Hari and Pingfan can help have a look, see if
+> > >>> it's doable. Now, I make it either have both kexec and crash enabled, or
+> > >>> disable both of them altogether.
+> > >>
+> > >> Sure. I will take a closer look...
+> > > Thanks a lot. Please feel free to post patches to make that, or I can do
+> > > it with your support or suggestion.
+> > 
+> > Tested your changes and on top of these changes, came up with the below
+> > changes to get it working for powerpc:
+> > 
+> >  
+> > https://lore.kernel.org/all/20240213113150.1148276-1-hbathini@linux.ibm.com/
+> 
+> So can we take it that you're OK with Baoquan's series as-is?
+> 
+> Baoquan, do you believe the patches in mm-unstable are ready for moving
+> into mm-stable in preparation for an upstream merge?
 
-On 2/22/24 02:46, Simon Horman wrote:
-> * Update the Kernel Doc for gelic_descr_set_tx_cmdstat()
->   and gelic_net_setup_netdev() so that documented name
->   and the actual name of the function match.
-> 
-> * Move define of GELIC_ALIGN() so that it is no longer
->   between gelic_alloc_card_net() and it's Kernel Doc.
-> 
-> * Document netdev parameter of gelic_alloc_card_net()
->   in a way consistent to the documentation of other netdev parameters
->   in this file.
-> 
-> Addresses the following warnings flagged by ./scripts/kernel-doc -none:
-> 
->   .../ps3_gelic_net.c:711: warning: expecting prototype for gelic_net_set_txdescr_cmdstat(). Prototype was for gelic_descr_set_tx_cmdstat() instead
->   .../ps3_gelic_net.c:1474: warning: expecting prototype for gelic_ether_setup_netdev(). Prototype was for gelic_net_setup_netdev() instead
->   .../ps3_gelic_net.c:1528: warning: expecting prototype for gelic_alloc_card_net(). Prototype was for GELIC_ALIGN() instead
->   .../ps3_gelic_net.c:1531: warning: Function parameter or struct member 'netdev' not described in 'gelic_alloc_card_net'
-> 
-> Signed-off-by: Simon Horman <horms@kernel.org>
-> ---
->  drivers/net/ethernet/toshiba/ps3_gelic_net.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/toshiba/ps3_gelic_net.c b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-> index d5b75af163d3..12b96ca66877 100644
-> --- a/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-> +++ b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-> @@ -698,7 +698,7 @@ gelic_card_get_next_tx_descr(struct gelic_card *card)
->  }
->  
->  /**
-> - * gelic_net_set_txdescr_cmdstat - sets the tx descriptor command field
-> + * gelic_descr_set_tx_cmdstat - sets the tx descriptor command field
->   * @descr: descriptor structure to fill out
->   * @skb: packet to consider
->   *
-> @@ -1461,7 +1461,7 @@ static void gelic_ether_setup_netdev_ops(struct net_device *netdev,
->  }
->  
->  /**
-> - * gelic_ether_setup_netdev - initialization of net_device
-> + * gelic_net_setup_netdev - initialization of net_device
->   * @netdev: net_device structure
->   * @card: card structure
->   *
-> @@ -1518,14 +1518,16 @@ int gelic_net_setup_netdev(struct net_device *netdev, struct gelic_card *card)
->  	return 0;
->  }
->  
-> +#define GELIC_ALIGN (32)
-> +
->  /**
->   * gelic_alloc_card_net - allocates net_device and card structure
-> + * @netdev: interface device structure
->   *
->   * returns the card structure or NULL in case of errors
->   *
->   * the card and net_device structures are linked to each other
->   */
-> -#define GELIC_ALIGN (32)
->  static struct gelic_card *gelic_alloc_card_net(struct net_device **netdev)
->  {
->  	struct gelic_card *card;
-> 
+Yeah, I think they are ready to go for merging.
 
-Looks good.  Thanks for taking care of it.
-
-Acked-by: Geoff Levand <geoff@infradead.org>
+For Hari's patchset, the main part was planned before. And I am not
+familiar with fadump in powerpc, the Kconfig fix from Hari is a good
+guarantee with the expertise. Surely, I will await Hari's comment on
+that.
 
