@@ -1,52 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35D9285ED0D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 00:34:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B40B585EF49
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 03:47:02 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bnHNLGYi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pBQMNP78;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TgCKK0lcTz3d3M
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 10:34:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TgHbm4lRBz3dWH
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 13:47:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bnHNLGYi;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pBQMNP78;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TgCJX1rPZz301f
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Feb 2024 10:33:32 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 940C5CE20A7;
-	Wed, 21 Feb 2024 23:33:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 799B6C433F1;
-	Wed, 21 Feb 2024 23:33:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708558407;
-	bh=oek7yMxAZVYzST3tZKKbzp+4bnsbv669D9ZZTh7z9Nk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=bnHNLGYihBqBfQLCEfd3GjCg/Qa1C8D3xFhquSzSeBzw/lhnDDcAG6VSzIerwfMTO
-	 HA17D0lKg73tkJJm9ohoD1+vra3S0DuJsXZgtyCQ56WfkLh0CjXd1WJq5Bl5wCdUjV
-	 PZDhHyK1UJ7kYjOssyZ4A79x9q7GF4xq2YFBNw6sQtSK/j4rGyCbZDpfCj2BAEh8tj
-	 KzqpeY+7Y9Ds743TtbPPAmyd67oCEkGtyDv35jy6S3oSDEu1JPJc6ljd9dSug+ueWA
-	 8yoY1wosHzOW9ZJ+oauZMW0fnuS41MnUHpQyLyUQSYw0fjH5BxodgNkSrspQwkagC8
-	 yrWW3rj6m6UGQ==
-Date: Wed, 21 Feb 2024 17:33:25 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: Re: [PATCH 1/1] PCI/portdrv: Allow DPC if the OS controls AER
- natively.
-Message-ID: <20240221233325.GA1595083@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TgHZz2qqCz3bv3
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Feb 2024 13:46:18 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41M2QNfT024206;
+	Thu, 22 Feb 2024 02:46:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=GiP2adjLMmN5GvecuJnVYayKGHJPA6hHp9FtGDCdvEs=;
+ b=pBQMNP78gU/tv30U9sEbIHj1o1xiodEM3p74o+gSjIaAw4qbQMUI53ARy8ALxrtwAkn+
+ AcOYyW5VBBzGGLign2a3cE7SAKzQwkNqQltslYTPejVnEZbstG/+52BxKbrzfwFhnFXT
+ pVa9YEa+SJHk4Do0KIjiwjkoTNoJfgLKWFJz0XHATcItna7QOEswOBa3EKpJbDAZato/
+ v9PMn+r1EEXekOm6yAbyPxEtfsYU61n3Q2edB/PiZbf1swJMPPHeCM8P3LmJr4xSQxk6
+ CTjsH7ytNHbLKFKDFEaLyQtwIrb95xei3VPT3g3o9VchRJ+10U7Ogycia//14XyaO6fP RA== 
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wdurbj7km-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 22 Feb 2024 02:46:13 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41M2U7kX009551;
+	Thu, 22 Feb 2024 02:46:12 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wb84pkdae-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 22 Feb 2024 02:46:12 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41M2k8xu20447886
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 22 Feb 2024 02:46:10 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 70AF72004D;
+	Thu, 22 Feb 2024 02:46:08 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 018EF20040;
+	Thu, 22 Feb 2024 02:46:08 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 22 Feb 2024 02:46:07 +0000 (GMT)
+Received: from jarvis.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 10B6C60170;
+	Thu, 22 Feb 2024 13:46:06 +1100 (AEDT)
+Message-ID: <d8bb9ce729404068315d5f5087470bf5d741bc87.camel@linux.ibm.com>
+Subject: Re: [PATCH 02/11] cxl: Convert to platform remove callback
+ returning void
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
+        Arnd Bergmann
+	 <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Date: Thu, 22 Feb 2024 13:46:00 +1100
+In-Reply-To: <add08320eef9ea20ceca78648370590a4bd447b0.1708508896.git.u.kleine-koenig@pengutronix.de>
+References: <cover.1708508896.git.u.kleine-koenig@pengutronix.de>
+	 <add08320eef9ea20ceca78648370590a4bd447b0.1708508896.git.u.kleine-koenig@pengutronix.de>
+Autocrypt: addr=ajd@linux.ibm.com; prefer-encrypt=mutual;
+ keydata=mDMEZPaWfhYJKwYBBAHaRw8BAQdAAuMUoxVRwqphnsFua1W+WBz6I2cIn0+Ox4YypJSdBJ+0MEFuZHJldyBEb25uZWxsYW4gKElCTSBzdHVmZikgPGFqZEBsaW51eC5pYm0uY29tPoiTBBMWCgA7FiEE01kE3s9shZVYLX1Aj1Qx8QRYRqAFAmT2ln4CGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQj1Qx8QRYRqAdswD8DhIh4trRQYiPe+7LaM7q+0+Thz+CwUJCW3UFOf0SEO0BAPNdsi7aVV+4Oah6nYzqzH5Zbs4Tz5RY+Vsf+DD/EzUKuDgEZPaWfhIKKwYBBAGXVQEFAQEHQLN9moJRqN8Zop/kcyIjga+2qzLoVaNAL6+4diGnlr1xAwEIB4h4BBgWCgAgFiEE01kE3s9shZVYLX1Aj1Qx8QRYRqAFAmT2ln4CGwwACgkQj1Qx8QRYRqCYkwD/W+gIP9kITfU4wnLtueFUThxA0T/LF49M7k31Qb8rPCwBALeEYAlX648lzjSA07pJB68Jt39FuUno444dSVmhYtoH
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240221231102.GA1547668@bhelgaas>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: d8tGGwje4Ct3BQNX-E9e0RdHXMvkGTHZ
+X-Proofpoint-ORIG-GUID: d8tGGwje4Ct3BQNX-E9e0RdHXMvkGTHZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-22_01,2024-02-21_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 malwarescore=0
+ mlxscore=0 bulkscore=0 mlxlogscore=999 phishscore=0 lowpriorityscore=0
+ priorityscore=1501 clxscore=1011 spamscore=0 adultscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2402220020
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,105 +102,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, kbusch@kernel.org, bhelgaas@google.com, lukas@wunner.de, Oliver O'Halloran <oohall@gmail.com>, Matthew W Carlis <mattc@purestorage.com>, mika.westerberg@linux.intel.com
+Cc: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, kernel@pengutronix.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[+cc Mahesh, Oliver, linuxppc-dev, since I mentioned powerpc below.
-Probably not of interest since this is about the ACPI EDR feature, but
-just FYI]
+On Wed, 2024-02-21 at 10:53 +0100, Uwe Kleine-K=C3=B6nig wrote:
+> The .remove() callback for a platform driver returns an int which
+> makes
+> many driver authors wrongly assume it's possible to do error handling
+> by
+> returning an error code. However the value returned is ignored (apart
+> from emitting a warning) and this typically results in resource
+> leaks.
+>=20
+> To improve here there is a quest to make the remove callback return
+> void. In the first step of this quest all drivers are converted to
+> .remove_new(), which already returns void. Eventually after all
+> drivers
+> are converted, .remove_new() will be renamed to .remove().
+>=20
+> Trivially convert this driver from always returning zero in the
+> remove
+> callback to the void returning variant.
+>=20
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
 
-On Wed, Feb 21, 2024 at 05:11:04PM -0600, Bjorn Helgaas wrote:
-> On Tue, Jan 23, 2024 at 09:59:21AM -0600, Bjorn Helgaas wrote:
-> > On Mon, Jan 22, 2024 at 06:37:48PM -0800, Kuppuswamy Sathyanarayanan wrote:
-> > > On 1/22/24 11:32 AM, Bjorn Helgaas wrote:
-> > > > On Mon, Jan 08, 2024 at 05:15:08PM -0700, Matthew W Carlis wrote:
-> > > >> A small part is probably historical; we've been using DPC on PCIe
-> > > >> switches since before there was any EDR support in the kernel. It
-> > > >> looks like there was a PCIe DPC ECN as early as Feb 2012, but this
-> > > >> EDR/DPC fw ECN didn't come in till Jan 2019 & kernel support for ECN
-> > > >> was even later. Its not immediately clear I would want to use EDR in
-> > > >> my newer architecures & then there are also the older architecures
-> > > >> still requiring support. When I submitted this patch I came at it
-> > > >> with the approach of trying to keep the old behavior & still support
-> > > >> the newer EDR behavior. Bjorns patch from Dec 28 2023 would seem to
-> > > >> change the behavior for both root ports & switch ports, requiring
-> > > >> them to set _OSC Control Field bit 7 (DPC) and _OSC Support Field
-> > > >> bit 7 (EDR) or a kernel command line value. I think no matter what,
-> > > >> we want to ensure that PCIe Root Ports and PCIe switches arrive at
-> > > >> the same policy here.
-> > > > Is there an approved DPC ECN to the PCI Firmware spec that adds DPC
-> > > > control negotiation, but does *not* add the EDR requirement?
-> > > >
-> > > > I'm looking at
-> > > > https://members.pcisig.com/wg/PCI-SIG/document/previewpdf/12888, which
-> > > > seems to be the final "Downstream Port Containment Related
-> > > > Enhancements" ECN, which is dated 1/28/2019 and applies to the PCI
-> > > > Firmware spec r3.2.
-> > > >
-> > > > It adds bit 7, "PCI Express Downstream Port Containment Configuration
-> > > > control", to the passed-in _OSC Control field, which indicates that
-> > > > the OS supports both "native OS control and firmware ownership models
-> > > > (i.e. Error Disconnect Recover notification) of Downstream Port
-> > > > Containment."
-> > > >
-> > > > It also adds the dependency that "If the OS sets bit 7 of the Control
-> > > > field, it must set bit 7 of the Support field, indicating support for
-> > > > the Error Disconnect Recover event."
-> > > >
-> > > > So I'm trying to figure out if the "support DPC but not EDR" situation
-> > > > was ever a valid place to be.  Maybe it's a mistake to have separate
-> > > > CONFIG_PCIE_DPC and CONFIG_PCIE_EDR options.
-> > > 
-> > > My understanding is also similar. I have raised the same point in
-> > > https://lore.kernel.org/all/3c02a6d6-917e-486c-ad41-bdf176639ff2@linux.intel.com/
-> > 
-> > Ah, sorry, I missed that.
-> > 
-> > > IMO, we don't need a separate config for EDR. I don't think user can
-> > > gain anything with disabling EDR and enabling DPC. As long as
-> > > firmware does not user EDR support, just compiling the code should
-> > > be harmless.
-> > > 
-> > > So we can either remove it, or select it by default if user selects
-> > > DPC config.
-> > > 
-> > > > CONFIG_PCIE_EDR depends on CONFIG_ACPI, so the situation is a little
-> > > > bit murky on non-ACPI systems that support DPC.
-> > > 
-> > > If we are going to remove the EDR config, it might need #ifdef
-> > > CONFIG_ACPI changes in edr.c to not compile ACPI specific code.
-> > > Alternative choice is to compile edr.c with CONFIG_ACPI.
-> > 
-> > Right.  I think we should probably remove CONFIG_PCIE_EDR completely
-> > and make everything controlled by CONFIG_PCIE_DPC.
-> 
-> In the PCI Firmware spec, r3.3, sec 4.5.1, table 4-4, the description
-> of "Error Disconnect Recover Supported" hints at the possibility for
-> an OS to support EDR but not DPC:
-> 
->   In the context of PCIe, support for Error Disconnect Recover implies
->   that the operating system will invalidate the software state
->   associated with child devices of the port without attempting to
->   access the child device hardware. *If* the operating system supports
->   Downstream Port Containment (DPC), ..., the operating system shall
->   attempt to recover the child devices if the port implements the
->   Downstream Port Containment Extended Capability.
-> 
-> On the other hand, sec 4.6.12 and the implementation note there with
-> the EDR flow seem to assume the OS *does* support DPC and can clear
-> error status and bring ports out of DPC even if the OS hasn't been
-> granted control of DPC.
-> 
-> EDR is an ACPI feature, and I guess it might be theoretically possible
-> to use EDR on an ACPI system with some non-DPC error containment
-> feature like powerpc EEH.  But obviously powerpc doesn't use ACPI, and
-> a hypothetical ACPI system with non-DPC error containment would have
-> to add support for that containment in edr_handle_event().
-> 
-> So while I'm not 100% sure that making CONFIG_PCIE_DPC control both
-> DPC and EDR is completely correct, I guess for now I still think using
-> CONFIG_PCIE_DPC for both DPC and EDR seems like a reasonable plan
-> because we have no support for EDR *without* DPC.
-> 
-> Bjorn
+Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
+
+> ---
+> =C2=A0drivers/misc/cxl/of.c | 5 ++---
+> =C2=A01 file changed, 2 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/misc/cxl/of.c b/drivers/misc/cxl/of.c
+> index 25ce725035e7..bcc005dff1c0 100644
+> --- a/drivers/misc/cxl/of.c
+> +++ b/drivers/misc/cxl/of.c
+> @@ -431,7 +431,7 @@ int cxl_of_read_adapter_properties(struct cxl
+> *adapter, struct device_node *np)
+> =C2=A0	return 0;
+> =C2=A0}
+> =C2=A0
+> -static int cxl_of_remove(struct platform_device *pdev)
+> +static void cxl_of_remove(struct platform_device *pdev)
+> =C2=A0{
+> =C2=A0	struct cxl *adapter;
+> =C2=A0	int afu;
+> @@ -441,7 +441,6 @@ static int cxl_of_remove(struct platform_device
+> *pdev)
+> =C2=A0		cxl_guest_remove_afu(adapter->afu[afu]);
+> =C2=A0
+> =C2=A0	cxl_guest_remove_adapter(adapter);
+> -	return 0;
+> =C2=A0}
+> =C2=A0
+> =C2=A0static void cxl_of_shutdown(struct platform_device *pdev)
+> @@ -501,6 +500,6 @@ struct platform_driver cxl_of_driver =3D {
+> =C2=A0		.owner =3D THIS_MODULE
+> =C2=A0	},
+> =C2=A0	.probe =3D cxl_of_probe,
+> -	.remove =3D cxl_of_remove,
+> +	.remove_new =3D cxl_of_remove,
+> =C2=A0	.shutdown =3D cxl_of_shutdown,
+> =C2=A0};
+
+--=20
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
