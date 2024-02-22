@@ -1,63 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F12D85F998
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 14:23:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 935DC85FB1B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 15:23:56 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=xJ/aRi9G;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=vZiRjwR+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=bkB7s9nP;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TgYkc3742z2yN3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 00:23:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tgb3t3qSRz3dTt
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 01:23:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=xJ/aRi9G;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=vZiRjwR+;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=bkB7s9nP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::228; helo=relay8-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::228])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TgYjs3w9vz2xFk
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Feb 2024 00:23:13 +1100 (AEDT)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708608179;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tgb2K5xlnz3cS3
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Feb 2024 01:22:31 +1100 (AEDT)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 1F5181BF20A;
+	Thu, 22 Feb 2024 14:22:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1708611748;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vf5dvD6c9m5aF5XZpNNQqDW+xIF8f6dZ9wpf3QuuKjg=;
-	b=xJ/aRi9Gob5dP6fvvpiv3zn7PZE9HFQr94NPdSMrY4AzE6pDg8n0L+2vR0M28Mo6inozlm
-	XtuNX5M3axqYfryju9DgSEnvEXVE8HbWSCW/X4tdKvRzb6QEYoP8uqntJOm2OYc4HfJHtu
-	xjt+aZhGw9XUSr9MHEphDXnvi+KLMBg7e+0iJUrQYVR2aOcGTuzr2WEcsU/7L8er0u1dzu
-	/sHlTd81mVhPurNKGTm+yhiGi9F6qwX0XoJWzrrIsFRuAMb9Ij67/wYRJFJn10aOGH+kNc
-	bybA7AJsephj7eHNyHWkHzGKRePVN8g7nRDE99IYCUJACRsns9er6rQ62nK7Bg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708608179;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vf5dvD6c9m5aF5XZpNNQqDW+xIF8f6dZ9wpf3QuuKjg=;
-	b=vZiRjwR+O+KEUdSoAq9a5bC4DugVLuX4J9+mRlpoGBM0/Mb5+vfuYr4/7HNl5mbun2GsY7
-	N0SXEJdk6CjzaIDw==
-To: Bitao Hu <yaoma@linux.alibaba.com>, dianders@chromium.org,
- akpm@linux-foundation.org, liusong@linux.alibaba.com, pmladek@suse.com,
- kernelfans@gmail.com, deller@gmx.de, npiggin@gmail.com,
- tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
- jan.kiszka@siemens.com
-Subject: Re: [PATCHv9 2/3] irq: use a struct for the kstat_irqs in the
- interrupt descriptor
-In-Reply-To: <20240222093420.13956-3-yaoma@linux.alibaba.com>
-References: <20240222093420.13956-1-yaoma@linux.alibaba.com>
- <20240222093420.13956-3-yaoma@linux.alibaba.com>
-Date: Thu, 22 Feb 2024 14:22:59 +0100
-Message-ID: <87jzmwfxak.ffs@tglx>
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Zhx1gNduZdrAxbKpizueNk61Hz1DSX29IWeNJrNnfCE=;
+	b=bkB7s9nPVSNwrpQTUYlLCMUPWFqLWWsOmeePeDdlyKL1je+UibdaL0z7bYSPHxJxdl5RWf
+	9HKteaQ8KZS6weJep/vs/4A5JPJhIcJ6YRJtyRXP3/5Dmpw0XS5ZkKm81dDPhRWrMGNP4Q
+	3cm7sHJowVnyykPmQCc9wtFWroiIlGO+oCAsaVIVJPVHcQNgHin9oTBasWEZJY+QptH+ym
+	7z/E6uw/fwdX3eN22cg9iiPhETsg9yaR0nhleF9Jzt0mLBhVvZ56qDejtBSlMinlJFPRUS
+	EZwZCd1PdTehxHeF837cN7DArKwOkzMOPC+XNiOr5kk/kOMBXHiSKjc8C0w2nw==
+From: Herve Codina <herve.codina@bootlin.com>
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Subject: [PATCH v4 0/5] Add support for QMC HDLC
+Date: Thu, 22 Feb 2024 15:22:13 +0100
+Message-ID: <20240222142219.441767-1-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,75 +63,135 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: yaoma@linux.alibaba.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org
+Cc: Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Feb 22 2024 at 17:34, Bitao Hu wrote:
+Hi,
 
-First of all the subsystem prefix is 'genirq:'. 'git log kernel/irq/'
-gives you a pretty good hint. It's documented....
+This series introduces the QMC HDLC support.
 
-Secondly the subject line does not match what this patch is about. It's
-not about using a struct, it's about providing a snapshot mechanism, no?
+Patches were previously sent as part of a full feature series and were
+previously reviewed in that context:
+"Add support for QMC HDLC, framer infrastructure and PEF2256 framer" [1]
 
-> The current implementation uses an int for the kstat_irqs in the
-> interrupt descriptor.
->
-> However, we need to know the number of interrupts which happened
-> since softlockup detection took a snapshot in order to analyze
-> the problem caused by an interrupt storm.
->
-> Replacing an int with a struct and providing sensible interfaces
-> for the watchdog code can keep it self contained to the interrupt
-> core code.
+In order to ease the merge, the full feature series has been split and
+needed parts were merged in v6.8-rc1:
+ - "Prepare the PowerQUICC QMC and TSA for the HDLC QMC driver" [2]
+ - "Add support for framer infrastructure and PEF2256 framer" [3]
 
-So something like this makes a useful change log for this:
+This series contains patches related to the QMC HDLC part (QMC HDLC
+driver):
+ - Introduce the QMC HDLC driver (patches 1 and 2)
+ - Add timeslots change support in QMC HDLC (patch 3)
+ - Add framer support as a framer consumer in QMC HDLC (patch 4)
 
- Subject: genirq: Provide a snapshot mechanism for interrupt statistics
+Compare to the original full feature series, a modification was done on
+patch 3 in order to use a coherent prefix in the commit title.
 
- The soft lockup detector lacks a mechanism to identify interrupt storms
- as root cause of a lockup. To enable this the detector needs a
- mechanism to snapshot the interrupt count statistics on a CPU when the
- detector observes a potential lockup scenario and compare that against
- the interrupt count when it warns about the lockup later on. The number
- of interrupts in that period give a hint whether the lockup might be
- caused by an interrupt storm.
+I kept the patches unsquashed as they were previously sent and reviewed.
+Of course, I can squash them if needed.
 
- Instead of having extra storage in the lockup detector and accessing
- the internals of the interrupt descriptor directly, convert the per CPU
- irq_desc::kstat_irq member to a data structure which contains the
- counter plus a snapshot member and provide interfaces to take a
- snapshot of all interrupts on the current CPU and to retrieve the delta
- of a specific interrupt later on.
+Compared to the previous iteration:
+  https://lore.kernel.org/linux-kernel/20240212075646.19114-1-herve.codina@bootlin.com/
+this v4 series mainly:
+- Introduces and use bitmap_{scatter,gather}().
 
-Hmm?
+Best regards,
+Hervé
 
-> Signed-off-by: Bitao Hu <yaoma@linux.alibaba.com>
+[1]: https://lore.kernel.org/linux-kernel/20231115144007.478111-1-herve.codina@bootlin.com/
+[2]: https://lore.kernel.org/linux-kernel/20231205152116.122512-1-herve.codina@bootlin.com/
+[3]: https://lore.kernel.org/linux-kernel/20231128132534.258459-1-herve.codina@bootlin.com/
 
-Interesting. You fully authored the patch?
+Changes v3 -> v4
+  - Patch 1
+    Remove of.h and of_platform.h includes, add mod_devicetable.h.
+    Add a blank line in the includes list.
 
-That's not how it works. You cannot take work from others and claim that
-it is yours. The minimal courtesy is to add a 'Originally-by:' tag.
+  - Path 2
+    No changes.
 
-> diff --git a/kernel/irq/proc.c b/kernel/irq/proc.c
-> index 623b8136e9af..3ad40cf30c66 100644
-> --- a/kernel/irq/proc.c
-> +++ b/kernel/irq/proc.c
-> @@ -488,18 +488,15 @@ int show_interrupts(struct seq_file *p, void *v)
->  	if (!desc || irq_settings_is_hidden(desc))
->  		goto outsparse;
->  
-> -	if (desc->kstat_irqs) {
-> -		for_each_online_cpu(j)
-> -			any_count |= data_race(*per_cpu_ptr(desc->kstat_irqs, j));
-> -	}
-> +	if (desc->kstat_irqs)
-> +		any_count = data_race(desc->tot_count);
+  - v3 patches 3 and 4 removed
 
-This is an unrelated change and needs to be split out into a separate
-patch with a proper changelog which explains why this is equivalent.
-  
-Thanks,
+  - Patch 3 (new patch in v4)
+    Introduce bitmap_{scatter,gather}() based on the original patch done
+    by Andy Shevchenko.
+    Address comments already done on the original patch:
+    https://lore.kernel.org/lkml/20230926052007.3917389-3-andriy.shevchenko@linux.intel.com/
+      - Removed the returned values.
+      - Used 'unsigned int' for all indexes.
+      - Added a 'visual' description of the operations in kernel-doc.
+      - Described the relationship between bitmap_scatter() and
+        bitmap_gather().
+      - Moved bitmap_{scatter,gather}() to the bitmap.h file.
+      - Improved bitmap_{scatter,gather}() test.
+      - Reworked the commit log.
 
-        tglx
+  - Patch 4 (v3 patch 5)
+    Use bitmap_{scatter,gather}()
+
+  - Patches 5 (v3 patch 6)
+    No changes.
+
+Changes v2 -> v3
+  - Patch 1
+    Remove 'inline' function specifier from .c file.
+    Fix a bug introduced when added WARN_ONCE(). The warn condition must
+    be desc->skb (descriptor used) instead of !desc->skb.
+    Remove a lock/unlock section locking the entire qmc_hdlc_xmit()
+    function.
+
+  - Patch 5
+    Use bitmap_from_u64() everywhere instead of bitmap_from_arr32() and
+    bitmap_from_arr64().
+
+Changes v1 -> v2
+  - Patch 1
+    Use the same qmc_hdlc initialisation in qmc_hcld_recv_complete()
+    than the one present in qmc_hcld_xmit_complete().
+    Use WARN_ONCE()
+
+  - Patch 3 (new patch in v2)
+    Make bitmap_onto() available to users
+
+  - Patch 4 (new patch in v2)
+    Introduce bitmap_off()
+
+  - Patch 5 (patch 3 in v1)
+    Use bitmap_*() functions
+
+  - Patch 6 (patch 4 in v1)
+    No changes
+
+Changes compare to the full feature series:
+  - Patch 3
+    Use 'net: wan: fsl_qmc_hdlc:' as commit title prefix
+
+Patches extracted:
+  - Patch 1 : full feature series patch 7
+  - Patch 2 : full feature series patch 8
+  - Patch 3 : full feature series patch 20
+  - Patch 4 : full feature series patch 27
+
+Andy Shevchenko (1):
+  lib/bitmap: Introduce bitmap_scatter() and bitmap_gather() helpers
+
+Herve Codina (4):
+  net: wan: Add support for QMC HDLC
+  MAINTAINERS: Add the Freescale QMC HDLC driver entry
+  net: wan: fsl_qmc_hdlc: Add runtime timeslots changes support
+  net: wan: fsl_qmc_hdlc: Add framer support
+
+ MAINTAINERS                    |   7 +
+ drivers/net/wan/Kconfig        |  12 +
+ drivers/net/wan/Makefile       |   1 +
+ drivers/net/wan/fsl_qmc_hdlc.c | 807 +++++++++++++++++++++++++++++++++
+ include/linux/bitmap.h         | 101 +++++
+ lib/test_bitmap.c              |  42 ++
+ 6 files changed, 970 insertions(+)
+ create mode 100644 drivers/net/wan/fsl_qmc_hdlc.c
+
+-- 
+2.43.0
+
