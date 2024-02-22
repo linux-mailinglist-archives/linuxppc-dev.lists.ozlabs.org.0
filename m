@@ -2,67 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E102385F978
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 14:20:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B05C85F987
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Feb 2024 14:22:05 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CXzXZ6c5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=PGAUTrbI;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TgYfG5z3rz3dRY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 00:20:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TgYhW00PPz3dVG
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 00:22:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CXzXZ6c5;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=PGAUTrbI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::224; helo=relay4-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TgYdV3qGTz3bx2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Feb 2024 00:19:24 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708607967; x=1740143967;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rM+QYYYxCsdPj+BR4nYWbptpIkJSRUn3xXx4ABpm30o=;
-  b=CXzXZ6c582qsUvtIvK9/cErWeUtaHUQqDk2TEfDJ2dibcKPEwcqlpcLQ
-   YXL21Qo1pOjQZAmYxvpSYNDiToUShg3gLXbW+gKwNfvx9+Rt3DASzZ6Bz
-   cwj+izpmb6Id91cz51ewY99SMwpEvRS1gSQra3i/rMCDwx5Z5NX9kjDWF
-   NPGLo1Hm3uJcWj4NcWtp+KjOY19Z97ts+brIxISihAPYmNH8kTcezrbO7
-   a3ljrPcxCyXiRNFIln68GFXlouZ3JeQjM9nJvWWOC3tgFE41e27jgzJPW
-   jSCO2uNk/OMKK79YWL/ITEVhKWuVbdToZoHgXAZjILrI/oB2pq5IscLWi
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="25291526"
-X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
-   d="scan'208";a="25291526"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 05:19:20 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="913522881"
-X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
-   d="scan'208";a="913522881"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 05:19:15 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rd8yl-00000006dTP-2xKh;
-	Thu, 22 Feb 2024 15:19:11 +0200
-Date: Thu, 22 Feb 2024 15:19:11 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Herve Codina <herve.codina@bootlin.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TgYgl126Rz2xFk
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Feb 2024 00:21:20 +1100 (AEDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4F83EE000F;
+	Thu, 22 Feb 2024 13:21:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1708608069;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KIJQOiwsnPIHMQCuDyLqsDgu6VLT3hR2HUacNiT4rNQ=;
+	b=PGAUTrbI2eCYfRgeudmxg+COgy/tQuE6n14TZt2RLEpK77Qn6/l4pRGeVzsKhRCvSu0Hjo
+	zL3KLbt/+cwhZEit8wBneRi3vehint6IiHprNwGQARsvgWsYM4rqENtPGohGy89BC84pGJ
+	azWoL4sUK6aTyxhnnQUk6SaQYCaQscLAd65eBMko37g0lRn0QvuXr7fFzlM3X68ocaVFaj
+	ut6tv/vkqOhlVqKv132PEs1EGJibbSa+9AesvPwsSv0WJ4uFIzouV/jyLx67IRW9BasKWV
+	424JPQWzD8YHW7CwJT6alnw4PISPHnPm8oZ45x3LIvCSejBVOT7yw3QDBukCCg==
+Date: Thu, 22 Feb 2024 14:21:06 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Subject: Re: [PATCH v3 RESEND 1/6] net: wan: Add support for QMC HDLC
-Message-ID: <ZddJz9msz1ACmw_k@smile.fi.intel.com>
+Message-ID: <20240222142106.35dfa03d@bootlin.com>
+In-Reply-To: <ZddJz9msz1ACmw_k@smile.fi.intel.com>
 References: <20240212075646.19114-1-herve.codina@bootlin.com>
- <20240212075646.19114-2-herve.codina@bootlin.com>
- <ZcoNoDRF6h2C7TQd@smile.fi.intel.com>
- <20240222130516.5e139612@bootlin.com>
+	<20240212075646.19114-2-herve.codina@bootlin.com>
+	<ZcoNoDRF6h2C7TQd@smile.fi.intel.com>
+	<20240222130516.5e139612@bootlin.com>
+	<ZddJz9msz1ACmw_k@smile.fi.intel.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240222130516.5e139612@bootlin.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,32 +67,34 @@ Cc: Andrew Lunn <andrew@lunn.ch>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, Y
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Feb 22, 2024 at 01:05:16PM +0100, Herve Codina wrote:
-> On Mon, 12 Feb 2024 14:22:56 +0200
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Thu, 22 Feb 2024 15:19:11 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-...
-
-> > > +#include <linux/dma-mapping.h>
-> > > +#include <linux/hdlc.h>
-> > > +#include <linux/module.h>  
-> > 
-> > > +#include <linux/of.h>
-> > > +#include <linux/of_platform.h>  
-> > 
-> > I do not see how these are being used, am I right?
-> > What's is missing OTOH is the mod_devicetable.h.
+> On Thu, Feb 22, 2024 at 01:05:16PM +0100, Herve Codina wrote:
+> > On Mon, 12 Feb 2024 14:22:56 +0200
+> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:  
 > 
-> Agree for removing of.h and of_platform.h.
+> ...
 > 
-> Why do I need mod_devicetable.h ?
-> Isn't including module.h enough ?
+> > > > +#include <linux/dma-mapping.h>
+> > > > +#include <linux/hdlc.h>
+> > > > +#include <linux/module.h>    
+> > >   
+> > > > +#include <linux/of.h>
+> > > > +#include <linux/of_platform.h>    
+> > > 
+> > > I do not see how these are being used, am I right?
+> > > What's is missing OTOH is the mod_devicetable.h.  
+> > 
+> > Agree for removing of.h and of_platform.h.
+> > 
+> > Why do I need mod_devicetable.h ?
+> > Isn't including module.h enough ?  
+> 
+> In that header the definitions of many of ID table data structures are located.
+> You are using that in the code.
+> 
 
-In that header the definitions of many of ID table data structures are located.
-You are using that in the code.
+Ok, thanks.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Hervé
