@@ -2,59 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE3ED86153C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 16:08:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A66B98615E1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 16:32:56 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IKcDUuWF;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fEUFeLJy;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fEUFeLJy;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ThD0y513wz3vY7
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Feb 2024 02:08:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ThDY248Y4z3dXM
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Feb 2024 02:32:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IKcDUuWF;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fEUFeLJy;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fEUFeLJy;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=lee@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ThD0D2PK5z3dVx
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Feb 2024 02:07:56 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id DCBDC63526;
-	Fri, 23 Feb 2024 15:07:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEADCC43394;
-	Fri, 23 Feb 2024 15:07:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708700871;
-	bh=46B9fXDJG233uKQHkYve91+ux45hfkkJQhoIKZSUOkU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=IKcDUuWFMbW8KAoY3FoYKiWWzPiQPmZ7eygPygHSRAhGZ64alNTOjpExJ5nkH4wZ8
-	 HDcm+9JCBoCqBjVIZ1nh36/lKxpcrJk66Gualzc0E39SZ5zRhjG25lqF3t/qeSuidx
-	 10hkukveSd0UTZWmjmsPCSgdsZIpDiUbr/qEdYrwk1++unyfjtHgzoR6wzE57AzHa5
-	 cGGyoIZom4siyK6vfbkLh07+h9xDcO5XENldpCJYg/ruTavwximHkzbJaPYqWCUtMG
-	 OIy/Zpak+lX2e7qqNVwUtOsD5+y3vINVFT0dbkI8c5Tsqf4Cq4eBIzRwNhz1TvZzNq
-	 GOIEYUCLy2v/A==
-From: Lee Jones <lee@kernel.org>
-To: andy.shevchenko@gmail.com, pavel@ucw.cz, lee@kernel.org, 
- vadimp@nvidia.com, mpe@ellerman.id.au, npiggin@gmail.com, 
- christophe.leroy@csgroup.eu, hdegoede@redhat.com, mazziesaccount@gmail.com, 
- peterz@infradead.org, mingo@redhat.com, will@kernel.org, longman@redhat.com, 
- boqun.feng@gmail.com, nikitos.tr@gmail.com, 
- George Stark <gnstark@salutedevices.com>
-In-Reply-To: <20231214173614.2820929-2-gnstark@salutedevices.com>
-References: <20231214173614.2820929-1-gnstark@salutedevices.com>
- <20231214173614.2820929-2-gnstark@salutedevices.com>
-Subject: Re: (subset) [PATCH v4 01/10] leds: aw2013: unlock mutex before
- destroying it
-Message-Id: <170870086764.1691019.14397200556333161730.b4-ty@kernel.org>
-Date: Fri, 23 Feb 2024 15:07:47 +0000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ThDXJ1DWvz3dTw
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Feb 2024 02:32:15 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1708702330;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ltXfiFuoTEtZlQ375zaRTODYeS+HobqFtlM+RXnHddQ=;
+	b=fEUFeLJy7wWCGpsIiw44ytq1MxrQn95Q8qS+X9SfrvuWRe09YCVAmK+wOeulUp2jRM+VmD
+	wO9W+Hh+Y+4yDpJgbRlzyDVDDJ2HME5w+r4iCliYoMzQjCgnIw6RD3aC1iEKITUMz0lF9A
+	5klySqb5NbQZTkujA+CmSs52nZDzW4E=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1708702330;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ltXfiFuoTEtZlQ375zaRTODYeS+HobqFtlM+RXnHddQ=;
+	b=fEUFeLJy7wWCGpsIiw44ytq1MxrQn95Q8qS+X9SfrvuWRe09YCVAmK+wOeulUp2jRM+VmD
+	wO9W+Hh+Y+4yDpJgbRlzyDVDDJ2HME5w+r4iCliYoMzQjCgnIw6RD3aC1iEKITUMz0lF9A
+	5klySqb5NbQZTkujA+CmSs52nZDzW4E=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-423-Axm70zb5N1WHtWgtndwTrg-1; Fri, 23 Feb 2024 10:32:08 -0500
+X-MC-Unique: Axm70zb5N1WHtWgtndwTrg-1
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-33d9fe87c4aso473721f8f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Feb 2024 07:32:08 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708702327; x=1709307127;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ltXfiFuoTEtZlQ375zaRTODYeS+HobqFtlM+RXnHddQ=;
+        b=PHJ4N1hH8Uqq4xjovIWtEKqf/YW5iks7dHBHkLlWeXx9LJaljZGxAOktkVUjnllpXF
+         JX4IV+UZTYqsH8298HLpNOB65HxhzN4Pl/u6t4tEkh9BL5gni/KvpSF/GSAihQjN8wgH
+         cOSmGqJjEMXjyO3hd3d6mR3piUdTv6mKnaUTr+kDsFpfYrG9v2kXGlZgpGumJraph1rG
+         ngmKKKcYWrCp1q//0metrdsepuqhin9SDkU00v5FWhysJPVrZurp4ftECgqk9wfKJESj
+         wUtNzgN4G8CtgDNxLQcUBJK+9oesSiTwSbav9M+gUrTDZDg4/vvc/rZUP1esescTj31z
+         dMvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU9BZabWI7GpFXmYnPahrRgpMfM/K/M0tPy5/CZoYIoP2C2bjYBgn4bJmeUFdlQhwkFQHDlOCe7iCVN9iILfP1PPjAqAVLlAcMfxb1TfQ==
+X-Gm-Message-State: AOJu0YzlNnIfrb4uD7p2F1P/ZwKYpV6ds3kKOOWdK0E84kZ3Fc440REy
+	XFBH7MqxtNCf9JJf5QihofWs1mfP0Z8ltHS4A6jy6tj11r5lGohBd0IT8v+1Z2qM+BHJOyx2Iqd
+	AXK/drEvuFc2okuyAE8r5RGnPuvFem5TBtBjXoYAC9Mqc081G92ePJl/xzeCFgv5IyIg/jVnvly
+	MrNgAgrIy5rvnogGCwTf+qCXJr8g5SMwZCTpbNbA==
+X-Received: by 2002:adf:e511:0:b0:33d:5ae5:f356 with SMTP id j17-20020adfe511000000b0033d5ae5f356mr94669wrm.20.1708702327608;
+        Fri, 23 Feb 2024 07:32:07 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGLm2G66Tw4sgodVUIb9Jzv+TjNHaof3FgriahBQfesSvJsXof4hqEVZ82kEIdVUXv/1jq4kYYkRea+6qJNwbM=
+X-Received: by 2002:adf:e511:0:b0:33d:5ae5:f356 with SMTP id
+ j17-20020adfe511000000b0033d5ae5f356mr94647wrm.20.1708702327323; Fri, 23 Feb
+ 2024 07:32:07 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.12.4
+References: <20240216155941.2029458-1-oliver.upton@linux.dev>
+In-Reply-To: <20240216155941.2029458-1-oliver.upton@linux.dev>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Fri, 23 Feb 2024 16:31:55 +0100
+Message-ID: <CABgObfYZBnTjXh4TqH77HjO3zTMRfekaorTUVqQoFOMPJLjJTg@mail.gmail.com>
+Subject: Re: [PATCH] KVM: Get rid of return value from kvm_arch_create_vm_debugfs()
+To: Oliver Upton <oliver.upton@linux.dev>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,21 +97,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel@salutedevices.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org
+Cc: Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org, Sebastian Ene <sebastianene@google.com>, linux-kernel@vger.kernel.org, aneesh.kumar@kernel.org, kvmarm@lists.linux.dev, Nicholas Piggin <npiggin@gmail.com>, Sean Christopherson <seanjc@google.com>, naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 14 Dec 2023 20:36:05 +0300, George Stark wrote:
-> In the probe() callback in case of error mutex is destroyed being locked
-> which is not allowed so unlock the mutex before destroying.
-> 
-> 
+On Fri, Feb 16, 2024 at 5:00=E2=80=AFPM Oliver Upton <oliver.upton@linux.de=
+v> wrote:
+>
+> The general expectation with debugfs is that any initialization failure
+> is nonfatal. Nevertheless, kvm_arch_create_vm_debugfs() allows
+> implementations to return an error and kvm_create_vm_debugfs() allows
+> that to fail VM creation.
+>
+> Change to a void return to discourage architectures from making debugfs
+> failures fatal for the VM. Seems like everyone already had the right
+> idea, as all implementations already return 0 unconditionally.
+>
+> Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 
-Applied, thanks!
+Acked-by: Paolo Bonzini <pbonzini@redhat.com>
 
-[01/10] leds: aw2013: unlock mutex before destroying it
-        commit: eb0f0a751c8e26b212f78fe7325fa2506c5cbb4b
+Feel free to place it in kvm-arm.
 
---
-Lee Jones [李琼斯]
+Paolo
 
