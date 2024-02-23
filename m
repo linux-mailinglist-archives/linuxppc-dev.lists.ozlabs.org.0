@@ -1,96 +1,132 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E11C860B69
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 08:42:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 820E7860D91
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 10:08:03 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SXiDEkhN;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=S32W4FZm;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Th25r475Hz3vXJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 18:42:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Th40x2RpYz3vZ4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 20:08:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SXiDEkhN;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=S32W4FZm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:261c::701; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20701.outbound.protection.outlook.com [IPv6:2a01:111:f403:261c::701])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Th2574FdCz3cb5
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Feb 2024 18:41:31 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41N7VbEi023110;
-	Fri, 23 Feb 2024 07:41:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=+VNlTVCoA3ELfSb4sVXw1+LCVDdS6YUsrflN5NLQ+H8=;
- b=SXiDEkhN/SmXY2mXk6maVAXo0G8r6S8+w9tYUXByqxxzTGgYdy0NuC1dRwDRQKbPnDeZ
- TMZQm6f41D+O7mYrK2GXDJo+rpXOirrHWnljpbCxiQUmePHbcr69382uhyWs/JkKvCPa
- kOtYxMH1YNzH5eDzGcc682ObqtBMaCaUAw4hnsZvsj3HFCrrHA3zUyeidWqSp6LrP/MH
- M/HLlFigO0ttW7mGvoX9dqXHIYU+kuMbTG44knpeJO6q375cwupZF22/Nj4sN3xT6FeT
- SADLBvl8a2guXqvlM0aLhyu5T0GshsQ5i4jG489Sfd0adT5XWde7MzVM5QB67BpriBUB /A== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wepj58wxg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 23 Feb 2024 07:41:12 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41N7VmOT024152;
-	Fri, 23 Feb 2024 07:41:12 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wepj58wx5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 23 Feb 2024 07:41:12 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41N6r8p8014427;
-	Fri, 23 Feb 2024 07:36:11 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3wb9u33a6e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 23 Feb 2024 07:36:11 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41N7a5nh38011138
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 23 Feb 2024 07:36:07 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C713220049;
-	Fri, 23 Feb 2024 07:36:05 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E8DB220040;
-	Fri, 23 Feb 2024 07:35:58 +0000 (GMT)
-Received: from [9.61.96.239] (unknown [9.61.96.239])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 23 Feb 2024 07:35:58 +0000 (GMT)
-Message-ID: <d6d42acb-6913-4c39-a21a-f91b05894fa6@linux.ibm.com>
-Date: Fri, 23 Feb 2024 13:05:56 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Th4076fM4z3dTw
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Feb 2024 20:07:18 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=D+XWIsmdMByNwWF213PW1L/NvyjH+Re507uPXHaOj6MDKCs1vt15hcM8/jcuJtbIUNzODfZywIivu255TUsR6uf+1RCbL2E+76K+YmGwlRogbhtRFKvV0MkzUdQsESuGxHbW9s1Uc5t+c8DG+hLPtMJKMbvbJSJY7zZk/jXb5VlxX0Tk7QHzjTsS4caQgrCD7vWUjc6eqR0q+5JeRANWmYKpZnb29dLJ/ho54I5xoIvye4WdQmg+qF8L3RR/lurTK39sxJCmceLxnhk9TmBon9uCj+b3SaZ4MxY2P0fNTSpKKv3Ua8551wKuXiuoLuJrJ9cpT6d4fwFx/lqrk09AhA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sQjtT0VZDggVzx590cCuH+clkRq/Uv6PgBITtdutGW0=;
+ b=nlZ5uL0PzIapB0auHkcBBPA8A380NN33KArUUnSbaovyPnT+5bT5J94xSoOLvWz6eh9XzEx0BG6B2kO/3Je4sBfQtxf0Hg7oDFQH7k+e4uapExTir0Io7IMvrnslTzzbsWjQIo9INjgqJyhpu0RaloHSkyE7VdegJIqHdiK7s8B4YH/zSgK7gWTTA6HXxtZs6aBuzuMIuDiNsSk3a+Z6tv1C/tHpuuPuDscz8ur2+0pjXvTeCiaAceIaC/HGs+4m1vYCbPTXTbUe6QulOgMhZGWmjxUpxnbOm/UfVDR8+0yOMyZk4KkSLCI7yi2jfplFUO9xg4+xRR25MIgylYmipw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sQjtT0VZDggVzx590cCuH+clkRq/Uv6PgBITtdutGW0=;
+ b=S32W4FZm4K/2S7XTkAhiEVDDj4NgU84PTl5one7dt9Df6uDjXTAOmcOMP9dyMUZUJrQGyDLa/ril17OsKjx4tU4Bi+w/tzpyBx+4PdUEBpm5HODgZpUlM8hJH6UOlxaWqCiQ4q5hQpqQlTAoisla9qVpo/yaL7YqeBNCcvJlZhVcKp74wGWr7oukJTua9woeBDrE3Vom95iPRHbrF4Rr99AVYkLWXvljBnmZsXZ0YeUlurZuZgzJyJkCP19qWAA6+1AL92JXciVkwj8YqkCXN/SM3bGptAdc4Nb/dQ3HoMlo9aO/Ur6pX57+RyFtywFXJpm67HPNJs/wV6zdACeXpA==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MRZP264MB2586.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:7::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.24; Fri, 23 Feb
+ 2024 09:06:56 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::46af:917d:3bb2:167e]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::46af:917d:3bb2:167e%6]) with mapi id 15.20.7316.023; Fri, 23 Feb 2024
+ 09:06:56 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Charlie Jenkins <charlie@rivosinc.com>
+Subject: Re: "test_ip_fast_csum: ASSERTION FAILED at lib/checksum_kunit.c:589"
+ at boot with CONFIG_CHECKSUM_KUNIT=y enabled on a Talos II, kernel 6.8-rc5
+Thread-Topic: "test_ip_fast_csum: ASSERTION FAILED at
+ lib/checksum_kunit.c:589" at boot with CONFIG_CHECKSUM_KUNIT=y enabled on a
+ Talos II, kernel 6.8-rc5
+Thread-Index: AQHaZfhWXT9lyHlHz0yak8SbuUgrx7EXbt+AgAAD1ICAAAyygIAAALYAgAAjP4A=
+Date: Fri, 23 Feb 2024 09:06:56 +0000
+Message-ID: <b2a7b678-fc59-4d12-acc3-696866cfd7c2@csgroup.eu>
+References: <20240223022654.625bef62@yea>
+ <528c6abf-e5ef-42cd-a5d7-6ede3254523d@csgroup.eu> <Zdg3X4A1eJsJ+ACh@ghost>
+ <6c37ffa2-8642-46c0-89ba-1f1e29b094d9@csgroup.eu> <ZdhCnoRu3i1Cnwks@ghost>
+In-Reply-To: <ZdhCnoRu3i1Cnwks@ghost>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla Thunderbird
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|MRZP264MB2586:EE_
+x-ms-office365-filtering-correlation-id: ecb9ea9d-7801-4cc4-e4e2-08dc344ec934
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  v5RQEYzc/CTq12iq3hBBdZYzHOYeql/E9yM2+d2XZlSVdNPo0hkuGwGjFKMVNH679APsf6xaAdE6qkJZFvbdUZkbvzAqBne2zWLq6PC2Y6+hmQ5EDoZPwf4wT5OcGADRlYlh63qH6Ylsim18IFcLAHdPp+GA/R3BsPwJddaH7cNrNwk0MXToVJGjsk9v4ythWekwI+5IU4kWcWJmLU7HIhCeNtw9j7MD8OykYX+fAlKJTBJjkefdj5Z+1n6l8BmdHcGvhJXb0+pO26z9G3Fw3imhR4qv56+CZgJjEa0Cvb/MKUYvT41z1ZaXmE9WmeEn7Mj0XgfuiF+ZC5P+fdzQuMbWAp4EIWiVsqXDQSMneJYOyzSPXpe/aZ/kkjBvcnq9d36C/ewdsH0EEOBFmvp9vtLQ/JxjcxlCqtmWMjZSp143C5xNKff8oiI/D9DHgFrNROjnGgXYkxHGAD4zerNyk7YF2GbZ152mo5/voaAe9zfEZSui138Tgb/egzwlJ0vbo7FvP6RBY7rJr0ZrXZY+R1w++mjOCruw+q4WV/+7F87gQuPPitQCLWoTlvXPgPv5dRmbhsCe5VF9YeSL4mg4h3FX64nhYZPNUpYVnoFnOJU=
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(230273577357003)(38070700009);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?STZ4UmlzR1FlOWt1MElWUGptNG4rYlRsc3JmUHJLMXhWS2VyYnl4c1FLQ2Rz?=
+ =?utf-8?B?aCtBak9aMlE0TDBQNDhHWkdnT3FaMDJ0cnE1dVJUb295UjJhNkRSOFRWbXgr?=
+ =?utf-8?B?QUYwT0MvWE1EMEwzR2ZKVDk3TnFkVkw1YUNJMWk3MjJpY29LWlZKSW9IckpY?=
+ =?utf-8?B?OXFYMXNxNHllUGdoMC9HVGVoWTRudXAycU41T1BQMld6ZzFoeHVUWUhkSFdY?=
+ =?utf-8?B?aGIxaitmRkxyaHpNbFNNT25KL3J0cjFtcHpaZzkrOWUxQnZsL3ZtVGdNc1lk?=
+ =?utf-8?B?NWZrOG9ybmliL3hEa2gxSnBaUjh0bG1MMmNZamxVRTRnQk01VnA3SDBrRE5i?=
+ =?utf-8?B?dmE4ZVRnaU5Ob2crdFVJZTlvNVo4YkhiNkJ0MUZic0ZnUTFMK0RvWm43QTEw?=
+ =?utf-8?B?YVRXV0JDY0lRaTFOMzk4Nk85bnd5UXQrR3dScDJIRVVWRnpEZXlzeVFFa2VG?=
+ =?utf-8?B?amd6RHNIU3dqSUpqQ1RRejM5dktMd1ZuTWFnckRBUi9lMTlhNmFtc3NqRUll?=
+ =?utf-8?B?QXE2MnNCOTN6WCtjZUQyY0NTSzB2SFh6TndXb2NnMzVHUldyeDU2blZwRE5a?=
+ =?utf-8?B?UGRoY2MxdVN6WGR3dFdiZjJHTHRZa2xNUUJ5cWRzZjBueVQ3UmROZ1E3T0k3?=
+ =?utf-8?B?Z0s4WkZGRXB3RU0rZEdXbmV1VjAwajZ4SXBBZkVuMW1JdHFZU3RkZFZsY1Jo?=
+ =?utf-8?B?WmJ5d3VPV2h2V0kxMDArME5laHI0RzA0SDhOVjYwMU9EbVpId0VKRlhQaUps?=
+ =?utf-8?B?MmFrcURXRENQc2JGNzFiV2xXajBmMXd6YWtQcXZ5azk2K0ozMmlwc0Nha0N5?=
+ =?utf-8?B?dkdJSzFHMHYxTFo1eEgzdWJpaEZGTE91clBVanp0UVh3dmo3YnNWTUc2UGgz?=
+ =?utf-8?B?Y2ppTnJEbEsyY0NSbTJmcGVWNm9UZ2Z3Y1dlcCs3UVJzK3VxbHZBQ0RMeWU4?=
+ =?utf-8?B?aWV6K20rR2hVaEVpdzNMeFZ3OW1nMzFsS1JuS2hvaEMrMy9qTHRZeXlTU0Zt?=
+ =?utf-8?B?V1BUd0FqN1hac1dzVGp5S2R4dEdSNXRQeE9BNkdXTXFNZ01zczBSTkpzK2Jr?=
+ =?utf-8?B?aWl2YTd1MmJhS2w4SUhaU1pMVjNNOEplWnRuU29MYVZEZ3Q1czI5N0ttWnla?=
+ =?utf-8?B?bEs4bmFTWjJISmU4ckJLbUZrb1NmalMwa1N2Wm9JUlJST2Y2aXVDK2FoN1Zx?=
+ =?utf-8?B?VGxNMGxpQi96TG8xeDh6eEt4OXl6cXkrMnV6cjdEU3BMRnNRZ3F6UnBXK3dv?=
+ =?utf-8?B?QjIxWnFVWVJYbU1DYTlmcS84TTNRd2NoNWNpbnZBWjRxUUxiOGlqNnNhZEN5?=
+ =?utf-8?B?ZmtJVUF1REVSWUUvNjJyWW9mWDZVdXgwT1BrTEVXbWZZTzNOMGNZbVpPOGM4?=
+ =?utf-8?B?dm54Nzl4SllhWW1NWHJKU0QyenJ1dTB6TGpOSXJqeHBHZno0MXNtRmx3eGVs?=
+ =?utf-8?B?MkdNSXg5MEFZVThDTnJuYi9sMFZPUTJSZ25ES0xGdkJWM1FkQ1R4TU01Q1JP?=
+ =?utf-8?B?VU5MbnFhaFBpMjhXMlI3NHp1M21JRzI3anBTZ29KdTl5dDQ2bUgvVXVCK3NB?=
+ =?utf-8?B?QUNaQmcxYVptdzNVK0xlR2QrdlUwWFpwdytKQXc0UERvdzRxZjhEcHVHbTlN?=
+ =?utf-8?B?ZDdtZTNhaFdDYlZHSVBrUXRXSGIvclZaNXhSN2RuMnpSQ3VRa05pdzRpODdo?=
+ =?utf-8?B?VHZkMC9yS3R3cElVZVVtTEtLeWFOc0lrQmZUai82cE1CWTNua3VERlNGajVs?=
+ =?utf-8?B?NVFyWXRNU0JQN2JWOVhIbjZqTTBjMTlhTE02aFJ5U3JET0cxTFhOTXFFUDF2?=
+ =?utf-8?B?NXhmLzQxQWIxMXNnNzg0WW9ocE8zWkp1WFJiRmY0cDJGdXF4MG9RNExaMENS?=
+ =?utf-8?B?eFhIekdiaGZkZDhoMHM1azU2amkxUTNQdVh3cnpHdy9mRkdVcnZiNVJMbVkr?=
+ =?utf-8?B?eU5ScTR5MnNJcEZjTEFIM0k1M3ZlRUdWTUR6U1RYcUdxZ0V4bzQxalJ4TGJu?=
+ =?utf-8?B?Q3RDcm5reUFTYWM3VVc4ZkFBRTNxcFl2WmlqcUQ0ZXFkY0JITWdMc2FYQ2N2?=
+ =?utf-8?B?UkRIWkQ4ZUNzZHZsYWRuSERMbGpCYXp2em9MT2VPRGxpZ1dkdFZVWi84QUZy?=
+ =?utf-8?B?UjNhZkxURDFJeFBqNXJ6bjZUUG1iZE96dmRVbTJlQlMwVmVnY3VqbmtlaTJE?=
+ =?utf-8?B?QUE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E4D039533190B84B921D157FFFD98467@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH linux-next 3/3] powerpc/kdump: Split KEXEC_CORE and
- CRASH_DUMP dependency
-To: Hari Bathini <hbathini@linux.ibm.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Kexec-ml <kexec@lists.infradead.org>
-References: <20240213113150.1148276-1-hbathini@linux.ibm.com>
- <20240213113150.1148276-4-hbathini@linux.ibm.com>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <20240213113150.1148276-4-hbathini@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: jY1oSkEEQaqky1jNNn5yIZeftNSe0VLW
-X-Proofpoint-GUID: xvdH9agm_garpfnQObmPlgVO4w6BZO0f
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-22_15,2024-02-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- priorityscore=1501 suspectscore=0 bulkscore=0 impostorscore=0
- clxscore=1015 lowpriorityscore=0 phishscore=0 spamscore=0 mlxlogscore=999
- malwarescore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402230052
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: ecb9ea9d-7801-4cc4-e4e2-08dc344ec934
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Feb 2024 09:06:56.7420
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: TOfdlWcHp148BP5uYJ4Iu12OREMTOjBH1SXxzAdTHfA5dsdORveXMo6FN9ecASyVmIStgf/pf9Kcdc2jAQnNlzej5XfTlCO5th0MX17nptU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB2586
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,342 +138,140 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Baoquan He <bhe@redhat.com>, lkml <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, Dave Young <dyoung@redhat.com>
+Cc: Erhard Furtner <erhard_f@mailbox.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Palmer Dabbelt <palmer@rivosinc.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Hari,
-
-Build failure detected.
-
-On 13/02/24 17:01, Hari Bathini wrote:
-> Remove CONFIG_CRASH_DUMP dependency on CONFIG_KEXEC. CONFIG_KEXEC_CORE
-> was used at places where CONFIG_CRASH_DUMP or CONFIG_CRASH_RESERVE was
-> appropriate. Replace with appropriate #ifdefs to support CONFIG_KEXEC
-> and !CONFIG_CRASH_DUMP configuration option. Also, make CONFIG_FA_DUMP
-> dependent on CONFIG_CRASH_DUMP to avoid unmet dependencies for FA_DUMP
-> with !CONFIG_KEXEC_CORE configuration option.
->
-> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-> ---
->   arch/powerpc/Kconfig               |  9 +--
->   arch/powerpc/include/asm/kexec.h   | 98 +++++++++++++++---------------
->   arch/powerpc/kernel/prom.c         |  2 +-
->   arch/powerpc/kernel/setup-common.c |  2 +-
->   arch/powerpc/kernel/smp.c          |  4 +-
->   arch/powerpc/kexec/Makefile        |  3 +-
->   arch/powerpc/kexec/core.c          |  4 ++
->   7 files changed, 60 insertions(+), 62 deletions(-)
->
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 5cf8ad8d7e8e..e377deefa2dc 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -607,11 +607,6 @@ config PPC64_SUPPORTS_MEMORY_FAILURE
->   config ARCH_SUPPORTS_KEXEC
->   	def_bool PPC_BOOK3S || PPC_E500 || (44x && !SMP)
->   
-> -config ARCH_SELECTS_KEXEC
-> -	def_bool y
-> -	depends on KEXEC
-> -	select CRASH_DUMP
-> -
->   config ARCH_SUPPORTS_KEXEC_FILE
->   	def_bool PPC64
->   
-> @@ -622,7 +617,6 @@ config ARCH_SELECTS_KEXEC_FILE
->   	def_bool y
->   	depends on KEXEC_FILE
->   	select KEXEC_ELF
-> -	select CRASH_DUMP
->   	select HAVE_IMA_KEXEC if IMA
->   
->   config PPC64_BIG_ENDIAN_ELF_ABI_V2
-> @@ -694,8 +688,7 @@ config ARCH_SELECTS_CRASH_DUMP
->   
->   config FA_DUMP
->   	bool "Firmware-assisted dump"
-> -	depends on PPC64 && (PPC_RTAS || PPC_POWERNV)
-> -	select CRASH_DUMP
-> +	depends on CRASH_DUMP && PPC64 && (PPC_RTAS || PPC_POWERNV)
->   	help
->   	  A robust mechanism to get reliable kernel crash dump with
->   	  assistance from firmware. This approach does not use kexec,
-> diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
-> index e1b43aa12175..fdb90e24dc74 100644
-> --- a/arch/powerpc/include/asm/kexec.h
-> +++ b/arch/powerpc/include/asm/kexec.h
-> @@ -55,59 +55,18 @@
->   typedef void (*crash_shutdown_t)(void);
->   
->   #ifdef CONFIG_KEXEC_CORE
-> -
-> -/*
-> - * This function is responsible for capturing register states if coming
-> - * via panic or invoking dump using sysrq-trigger.
-> - */
-> -static inline void crash_setup_regs(struct pt_regs *newregs,
-> -					struct pt_regs *oldregs)
-> -{
-> -	if (oldregs)
-> -		memcpy(newregs, oldregs, sizeof(*newregs));
-> -	else
-> -		ppc_save_regs(newregs);
-> -}
-> +struct kimage;
-> +struct pt_regs;
->   
->   extern void kexec_smp_wait(void);	/* get and clear naca physid, wait for
->   					  master to copy new code to 0 */
-> -extern int crashing_cpu;
-> -extern void crash_send_ipi(void (*crash_ipi_callback)(struct pt_regs *));
-> -extern void crash_ipi_callback(struct pt_regs *);
-> -extern int crash_wake_offline;
-> -
-> -struct kimage;
-> -struct pt_regs;
->   extern void default_machine_kexec(struct kimage *image);
-> -extern void default_machine_crash_shutdown(struct pt_regs *regs);
-> -extern int crash_shutdown_register(crash_shutdown_t handler);
-> -extern int crash_shutdown_unregister(crash_shutdown_t handler);
-> -
-> -extern void crash_kexec_prepare(void);
-> -extern void crash_kexec_secondary(struct pt_regs *regs);
-> -int __init overlaps_crashkernel(unsigned long start, unsigned long size);
-> -extern void reserve_crashkernel(void);
->   extern void machine_kexec_mask_interrupts(void);
->   
-> -static inline bool kdump_in_progress(void)
-> -{
-> -	return crashing_cpu >= 0;
-> -}
-> -
->   void relocate_new_kernel(unsigned long indirection_page, unsigned long reboot_code_buffer,
->   			 unsigned long start_address) __noreturn;
-> -
->   void kexec_copy_flush(struct kimage *image);
->   
-> -#if defined(CONFIG_CRASH_DUMP)
-> -bool is_kdump_kernel(void);
-> -#define is_kdump_kernel			is_kdump_kernel
-> -#if defined(CONFIG_PPC_RTAS)
-> -void crash_free_reserved_phys_range(unsigned long begin, unsigned long end);
-> -#define crash_free_reserved_phys_range crash_free_reserved_phys_range
-> -#endif /* CONFIG_PPC_RTAS */
-> -#endif /* CONFIG_CRASH_DUMP */
-> -
->   #ifdef CONFIG_KEXEC_FILE
->   extern const struct kexec_file_ops kexec_elf64_ops;
->   
-> @@ -152,15 +111,56 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
->   
->   #endif /* CONFIG_KEXEC_FILE */
->   
-> -#else /* !CONFIG_KEXEC_CORE */
-> -static inline void crash_kexec_secondary(struct pt_regs *regs) { }
-> +#endif /* CONFIG_KEXEC_CORE */
-> +
-> +#ifdef CONFIG_CRASH_RESERVE
-> +int __init overlaps_crashkernel(unsigned long start, unsigned long size);
-> +extern void reserve_crashkernel(void);
-> +#else
-> +static inline void reserve_crashkernel(void) {}
-> +static inline int overlaps_crashkernel(unsigned long start, unsigned long size) { return 0; }
-> +#endif
->   
-> -static inline int overlaps_crashkernel(unsigned long start, unsigned long size)
-> +#if defined(CONFIG_CRASH_DUMP)
-> +/*
-> + * This function is responsible for capturing register states if coming
-> + * via panic or invoking dump using sysrq-trigger.
-> + */
-> +static inline void crash_setup_regs(struct pt_regs *newregs,
-> +					struct pt_regs *oldregs)
->   {
-> -	return 0;
-> +	if (oldregs)
-> +		memcpy(newregs, oldregs, sizeof(*newregs));
-> +	else
-> +		ppc_save_regs(newregs);
-> +}
-> +
-> +extern int crashing_cpu;
-> +extern void crash_send_ipi(void (*crash_ipi_callback)(struct pt_regs *));
-> +extern void crash_ipi_callback(struct pt_regs *regs);
-> +extern int crash_wake_offline;
-> +
-> +extern int crash_shutdown_register(crash_shutdown_t handler);
-> +extern int crash_shutdown_unregister(crash_shutdown_t handler);
-> +extern void default_machine_crash_shutdown(struct pt_regs *regs);
-> +
-> +extern void crash_kexec_prepare(void);
-> +extern void crash_kexec_secondary(struct pt_regs *regs);
-> +
-> +static inline bool kdump_in_progress(void)
-> +{
-> +	return crashing_cpu >= 0;
->   }
->   
-> -static inline void reserve_crashkernel(void) { ; }
-> +bool is_kdump_kernel(void);
-> +#define is_kdump_kernel			is_kdump_kernel
-> +#if defined(CONFIG_PPC_RTAS)
-> +void crash_free_reserved_phys_range(unsigned long begin, unsigned long end);
-> +#define crash_free_reserved_phys_range crash_free_reserved_phys_range
-> +#endif /* CONFIG_PPC_RTAS */
-> +
-> +#else /* !CONFIG_CRASH_DUMP */
-> +static inline void crash_kexec_secondary(struct pt_regs *regs) { }
->   
->   static inline int crash_shutdown_register(crash_shutdown_t handler)
->   {
-> @@ -183,7 +183,7 @@ static inline void crash_send_ipi(void (*crash_ipi_callback)(struct pt_regs *))
->   {
->   }
->   
-> -#endif /* CONFIG_KEXEC_CORE */
-> +#endif /* CONFIG_CRASH_DUMP */
->   
->   #ifdef CONFIG_PPC_BOOK3S_64
->   #include <asm/book3s/64/kexec.h>
-> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-> index 0b5878c3125b..1edc34b711ba 100644
-> --- a/arch/powerpc/kernel/prom.c
-> +++ b/arch/powerpc/kernel/prom.c
-> @@ -453,7 +453,7 @@ static int __init early_init_dt_scan_chosen_ppc(unsigned long node,
->   		tce_alloc_end = *lprop;
->   #endif
->   
-> -#ifdef CONFIG_KEXEC_CORE
-> +#ifdef CONFIG_CRASH_RESERVE
->   	lprop = of_get_flat_dt_prop(node, "linux,crashkernel-base", NULL);
->   	if (lprop)
->   		crashk_res.start = *lprop;
-> diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-> index 733f210ffda1..35cac3eaaf75 100644
-> --- a/arch/powerpc/kernel/setup-common.c
-> +++ b/arch/powerpc/kernel/setup-common.c
-> @@ -109,7 +109,7 @@ int ppc_do_canonicalize_irqs;
->   EXPORT_SYMBOL(ppc_do_canonicalize_irqs);
->   #endif
->   
-> -#ifdef CONFIG_VMCORE_INFO
-> +#ifdef CONFIG_CRASH_DUMP
->   /* This keeps a track of which one is the crashing cpu. */
->   int crashing_cpu = -1;
->   #endif
-> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-> index 693334c20d07..aa81c95c73a4 100644
-> --- a/arch/powerpc/kernel/smp.c
-> +++ b/arch/powerpc/kernel/smp.c
-> @@ -588,7 +588,7 @@ void smp_send_debugger_break(void)
->   }
->   #endif
->   
-> -#ifdef CONFIG_KEXEC_CORE
-> +#ifdef CONFIG_CRASH_DUMP
->   void crash_send_ipi(void (*crash_ipi_callback)(struct pt_regs *))
->   {
->   	int cpu;
-> @@ -631,7 +631,7 @@ void crash_smp_send_stop(void)
->   
->   	stopped = true;
->   
-> -#ifdef CONFIG_KEXEC_CORE
-> +#ifdef CONFIG_CRASH_DUMP
->   	if (kexec_crash_image) {
->   		crash_kexec_prepare();
->   		return;
-> diff --git a/arch/powerpc/kexec/Makefile b/arch/powerpc/kexec/Makefile
-> index 91e96f5168b7..8e469c4da3f8 100644
-> --- a/arch/powerpc/kexec/Makefile
-> +++ b/arch/powerpc/kexec/Makefile
-> @@ -3,12 +3,13 @@
->   # Makefile for the linux kernel.
->   #
->   
-> -obj-y				+= core.o crash.o core_$(BITS).o
-> +obj-y				+= core.o core_$(BITS).o
->   
->   obj-$(CONFIG_PPC32)		+= relocate_32.o
->   
->   obj-$(CONFIG_KEXEC_FILE)	+= file_load.o ranges.o file_load_$(BITS).o elf_$(BITS).o
->   obj-$(CONFIG_VMCORE_INFO)	+= vmcore_info.o
-> +obj-$(CONFIG_CRASH_DUMP)	+= crash.o
-
-
-Observed a build failure with this patch.
-
-arch/powerpc/platforms/powernv/smp.c: In function ‘pnv_smp_init’:
-arch/powerpc/platforms/powernv/smp.c:438:2: error: ‘crash_wake_offline’ 
-undeclared (first use in this function); did you mean ‘cpu_is_offline’?
-   crash_wake_offline = 1;
-   ^~~~~~~~~~~~~~~~~~
-   cpu_is_offline
-arch/powerpc/platforms/powernv/smp.c:438:2: note: each undeclared 
-identifier is reported only once for each function it appears in
-make[5]: *** [scripts/Makefile.build:244: 
-arch/powerpc/platforms/powernv/smp.o] Error 1
-
-CONFIG:
-
-CONFIG_KEXEC=y
-CONFIG_KEXEC_FILE=y
-# CONFIG_CRASH_DUMP is not set
-
-Below changes fixes the above issue:
-
-diff --git a/arch/powerpc/platforms/powernv/smp.c 
-b/arch/powerpc/platforms/powernv/smp.c
-index 9e1a25398f98..8f14f0581a21 100644
---- a/arch/powerpc/platforms/powernv/smp.c
-+++ b/arch/powerpc/platforms/powernv/smp.c
-@@ -434,7 +434,7 @@ void __init pnv_smp_init(void)
-         smp_ops = &pnv_smp_ops;
-
-  #ifdef CONFIG_HOTPLUG_CPU
--#ifdef CONFIG_KEXEC_CORE
-+#ifdef CONFIG_CRASH_DUMP
-         crash_wake_offline = 1;
-  #endif
-  #endif
-
-Thanks,
-Sourabh
-
-
-
->   
->   # Disable GCOV, KCOV & sanitizers in odd or sensitive code
->   GCOV_PROFILE_core_$(BITS).o := n
-> diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
-> index 3ff4411ed496..b8333a49ea5d 100644
-> --- a/arch/powerpc/kexec/core.c
-> +++ b/arch/powerpc/kexec/core.c
-> @@ -44,10 +44,12 @@ void machine_kexec_mask_interrupts(void) {
->   	}
->   }
->   
-> +#ifdef CONFIG_CRASH_DUMP
->   void machine_crash_shutdown(struct pt_regs *regs)
->   {
->   	default_machine_crash_shutdown(regs);
->   }
-> +#endif
->   
->   void machine_kexec_cleanup(struct kimage *image)
->   {
-> @@ -77,6 +79,7 @@ void machine_kexec(struct kimage *image)
->   	for(;;);
->   }
->   
-> +#ifdef CONFIG_CRASH_RESERVE
->   void __init reserve_crashkernel(void)
->   {
->   	unsigned long long crash_size, crash_base, total_mem_sz;
-> @@ -251,3 +254,4 @@ static int __init kexec_setup(void)
->   	return 0;
->   }
->   late_initcall(kexec_setup);
-> +#endif /* CONFIG_CRASH_RESERVE */
-
+DQoNCkxlIDIzLzAyLzIwMjQgw6AgMDg6MDAsIENoYXJsaWUgSmVua2lucyBhIMOpY3JpdMKgOg0K
+PiBPbiBGcmksIEZlYiAyMywgMjAyNCBhdCAwNjo1ODoxNEFNICswMDAwLCBDaHJpc3RvcGhlIExl
+cm95IHdyb3RlOg0KPj4NCj4+DQo+PiBMZSAyMy8wMi8yMDI0IMOgIDA3OjEyLCBDaGFybGllIEpl
+bmtpbnMgYSDDqWNyaXTCoDoNCj4+PiBPbiBGcmksIEZlYiAyMywgMjAyNCBhdCAwNTo1OTowN0FN
+ICswMDAwLCBDaHJpc3RvcGhlIExlcm95IHdyb3RlOg0KPj4+PiBIaSBFcmhhcmQsIGhpIENoYXJs
+aWUsDQo+Pj4+DQo+Pj4+IExlIDIzLzAyLzIwMjQgw6AgMDI6MjYsIEVyaGFyZCBGdXJ0bmVyIGEg
+w6ljcml0wqA6DQo+Pj4+PiBHcmVldGluZ3MhDQo+Pj4+Pg0KPj4+Pj4gTG9va3MgbGlrZSBteSBU
+YWxvcyBJSSAocnVubmluZyBhIEJFIGtlcm5lbCtzeXN0ZW0pIGZhaWxzIHNvbWUgb2YgdGhlIGtl
+cm5lbHMgaW50ZXJuYWwgdW5pdCB0ZXN0cy4gT25lIG9mIHRoZSBmYWlsaW5nIHRlc3RzIGlzIGNo
+ZWNrc3VtX2t1bml0LCBlbmFibGVkIHZpYSBDT05GSUdfQ0hFQ0tTVU1fS1VOSVQ9eToNCj4+Pj4+
+DQo+Pj4+PiBbLi4uXQ0KPj4+Pj4gICAgICAgS1RBUCB2ZXJzaW9uIDENCj4+Pj4+ICAgICAgICAj
+IFN1YnRlc3Q6IGNoZWNrc3VtDQo+Pj4+PiAgICAgICAgIyBtb2R1bGU6IGNoZWNrc3VtX2t1bml0
+DQo+Pj4+PiAgICAgICAgMS4uNQ0KPj4+Pj4gZW50cnktZmx1c2g6IGRpc2FibGVkIG9uIGNvbW1h
+bmQgbGluZS4NCj4+Pj4+ICAgICAgICBvayAxIHRlc3RfY3N1bV9maXhlZF9yYW5kb21faW5wdXRz
+DQo+Pj4+PiAgICAgICAgb2sgMiB0ZXN0X2NzdW1fYWxsX2NhcnJ5X2lucHV0cw0KPj4+Pj4gICAg
+ICAgIG9rIDMgdGVzdF9jc3VtX25vX2NhcnJ5X2lucHV0cw0KPj4+Pj4gICAgICAgICMgdGVzdF9p
+cF9mYXN0X2NzdW06IEFTU0VSVElPTiBGQUlMRUQgYXQgbGliL2NoZWNrc3VtX2t1bml0LmM6NTg5
+DQo+Pj4+PiAgICAgICAgRXhwZWN0ZWQgKCB1NjQpZXhwZWN0ZWQgPT0gKCB1NjQpY3N1bV9yZXN1
+bHQsIGJ1dA0KPj4+Pj4gICAgICAgICAgICAoIHU2NClleHBlY3RlZCA9PSA1NTkzOSAoMHhkYTgz
+KQ0KPj4+Pj4gICAgICAgICAgICAoIHU2NCljc3VtX3Jlc3VsdCA9PSAzMzc1NCAoMHg4M2RhKQ0K
+Pj4+Pj4gICAgICAgIG5vdCBvayA0IHRlc3RfaXBfZmFzdF9jc3VtDQo+Pj4+PiAgICAgICAgIyB0
+ZXN0X2NzdW1faXB2Nl9tYWdpYzogQVNTRVJUSU9OIEZBSUxFRCBhdCBsaWIvY2hlY2tzdW1fa3Vu
+aXQuYzo2MTcNCj4+Pj4+ICAgICAgICBFeHBlY3RlZCAoIHU2NClleHBlY3RlZF9jc3VtX2lwdjZf
+bWFnaWNbaV0gPT0gKCB1NjQpY3N1bV9pcHY2X21hZ2ljKHNhZGRyLCBkYWRkciwgbGVuLCBwcm90
+bywgY3N1bSksIGJ1dA0KPj4+Pj4gICAgICAgICAgICAoIHU2NClleHBlY3RlZF9jc3VtX2lwdjZf
+bWFnaWNbaV0gPT0gNjM1NiAoMHgxOGQ0KQ0KPj4+Pj4gICAgICAgICAgICAoIHU2NCljc3VtX2lw
+djZfbWFnaWMoc2FkZHIsIGRhZGRyLCBsZW4sIHByb3RvLCBjc3VtKSA9PSA0MzU4NiAoMHhhYTQy
+KQ0KPj4+Pj4gICAgICAgIG5vdCBvayA1IHRlc3RfY3N1bV9pcHY2X21hZ2ljDQo+Pj4+PiAjIGNo
+ZWNrc3VtOiBwYXNzOjMgZmFpbDoyIHNraXA6MCB0b3RhbDo1DQo+Pj4+PiAjIFRvdGFsczogcGFz
+czozIGZhaWw6MiBza2lwOjAgdG90YWw6NQ0KPj4+Pj4gbm90IG9rIDQgY2hlY2tzdW0NCj4+Pj4+
+IFsuLi5dDQo+Pj4+Pg0KPj4+Pj4gRnVsbCBkbWVzZyArIGtlcm5lbCAuY29uZmlnIGF0dGFjaGVk
+Lg0KPj4+Pg0KPj4+PiBMb29rcyBsaWtlIHRoZSBzYW1lIHByb2JsZW0gYXMgdGhlIG9uZSBJIGZp
+eGVkIHdpdGggY29tbWl0IGIzODQ2MGJjNDYzYw0KPj4+PiAoImt1bml0OiBGaXggY2hlY2tzdW0g
+dGVzdHMgb24gYmlnIGVuZGlhbiBDUFVzIikNCj4+Pj4NCj4+Pj4gVGhlIG5ldyB0ZXN0cyBpbXBs
+ZW1lbnRlZCB0aHJvdWdoIGNvbW1pdCA2ZjRjNDVjYmNiMDAgKCJrdW5pdDogQWRkIHRlc3RzDQo+
+Pj4+IGZvciBjc3VtX2lwdjZfbWFnaWMgYW5kIGlwX2Zhc3RfY3N1bSIpIGNyZWF0ZSBhIGxvdCBv
+ZiB0eXBlIGlzc3VlcyBhcw0KPj4+PiByZXBvcnRlZCBieSBzcGFyc2Ugd2hlbiBidWlsdCB3aXRo
+IEM9MiAoc2VlIGJlbG93KS4NCj4+Pj4NCj4+Pj4gT25jZSB0aG9zZSBpc3N1ZXMgYXJlIGZpeGVk
+LCBpdCBzaG91bGQgd29yay4NCj4+Pj4NCj4+Pj4gQ2hhcmxpZSwgY2FuIHlvdSBwcm92aWRlIGEg
+Zml4ID8NCj4+Pj4NCj4+Pj4gVGhhbmtzLA0KPj4+PiBDaHJpc3RvcGhlDQo+Pj4NCj4+PiBUaGUg
+ImxpYjogY2hlY2tzdW06IEZpeCBpc3N1ZXMgd2l0aCBjaGVja3N1bSB0ZXN0cyIgcGF0Y2ggc2hv
+dWxkIGZpeCBhbGwgb2YgdGhlc2UgaXNzdWVzIFsxXS4NCj4+Pg0KPj4+IFsxXSBodHRwczovL2xv
+cmUua2VybmVsLm9yZy9hbGwvMjAyNDAyMjEtZml4X3NwYXJzZV9lcnJvcnNfY2hlY2tzdW1fdGVz
+dHMtdjktMS1iZmY0ZDczYWI5ZDFAcml2b3NpbmMuY29tL1QvI20xODk3ODNhOWIyYTdkMTJlM2Mz
+NGM0YTQxMmU2NTQwODY1OGRiMmM5DQo+Pg0KPj4gSXQgZG9lc24ndCBmaXggdGhlIGlzc3Vlcywg
+SSBzdGlsbCBnZXQgdGhlIGZvbGxvd2luZyB3aXRoIHlvdXIgcGF0Y2ggMS8yDQo+PiBhcHBsaWVk
+Og0KPj4NCj4+IFsgICAgNi44OTMxNDFdIEtUQVAgdmVyc2lvbiAxDQo+PiBbICAgIDYuODk2MTE4
+XSAxLi4xDQo+PiBbICAgIDYuODk3NzY0XSAgICAgS1RBUCB2ZXJzaW9uIDENCj4+IFsgICAgNi45
+MDA4MDBdICAgICAjIFN1YnRlc3Q6IGNoZWNrc3VtDQo+PiBbICAgIDYuOTA0NTE4XSAgICAgIyBt
+b2R1bGU6IGNoZWNrc3VtX2t1bml0DQo+PiBbICAgIDYuOTA0NjAxXSAgICAgMS4uNQ0KPj4gWyAg
+ICA3LjEzOTc4NF0gICAgIG9rIDEgdGVzdF9jc3VtX2ZpeGVkX3JhbmRvbV9pbnB1dHMNCj4+IFsg
+ICAgNy41OTAwNTZdICAgICBvayAyIHRlc3RfY3N1bV9hbGxfY2FycnlfaW5wdXRzDQo+PiBbICAg
+IDguMDY0NDE1XSAgICAgb2sgMyB0ZXN0X2NzdW1fbm9fY2FycnlfaW5wdXRzDQo+PiBbICAgIDgu
+MDcwMDY1XSAgICAgIyB0ZXN0X2lwX2Zhc3RfY3N1bTogQVNTRVJUSU9OIEZBSUxFRCBhdA0KPj4g
+bGliL2NoZWNrc3VtX2t1bml0LmM6NTg5DQo+PiBbICAgIDguMDcwMDY1XSAgICAgRXhwZWN0ZWQg
+KCB1NjQpZXhwZWN0ZWQgPT0gKCB1NjQpY3N1bV9yZXN1bHQsIGJ1dA0KPj4gWyAgICA4LjA3MDA2
+NV0gICAgICAgICAoIHU2NClleHBlY3RlZCA9PSA1NTkzOSAoMHhkYTgzKQ0KPj4gWyAgICA4LjA3
+MDA2NV0gICAgICAgICAoIHU2NCljc3VtX3Jlc3VsdCA9PSAzMzc1NCAoMHg4M2RhKQ0KPj4gWyAg
+ICA4LjA3NTgzNl0gICAgIG5vdCBvayA0IHRlc3RfaXBfZmFzdF9jc3VtDQo+PiBbICAgIDguMTAx
+MDM5XSAgICAgIyB0ZXN0X2NzdW1faXB2Nl9tYWdpYzogQVNTRVJUSU9OIEZBSUxFRCBhdA0KPj4g
+bGliL2NoZWNrc3VtX2t1bml0LmM6NjE3DQo+PiBbICAgIDguMTAxMDM5XSAgICAgRXhwZWN0ZWQg
+KCB1NjQpKCBfX3N1bTE2KWV4cGVjdGVkX2NzdW1faXB2Nl9tYWdpY1tpXQ0KPj4gPT0gKCB1NjQp
+Y3N1bV9pcHY2X21hZ2ljKHNhZGRyLCBkYWRkciwgbGVuLCBwcm90bywgKCBfX3dzdW0pY3N1bSks
+IGJ1dA0KPj4gWyAgICA4LjEwMTAzOV0gICAgICAgICAoIHU2NCkoIF9fc3VtMTYpZXhwZWN0ZWRf
+Y3N1bV9pcHY2X21hZ2ljW2ldID09DQo+PiA2MzU2ICgweDE4ZDQpDQo+PiBbICAgIDguMTAxMDM5
+XSAgICAgICAgICggdTY0KWNzdW1faXB2Nl9tYWdpYyhzYWRkciwgZGFkZHIsIGxlbiwgcHJvdG8s
+ICgNCj4+IF9fd3N1bSljc3VtKSA9PSA0MzU4NiAoMHhhYTQyKQ0KPj4gWyAgICA4LjEwNjQ0Nl0g
+ICAgIG5vdCBvayA1IHRlc3RfY3N1bV9pcHY2X21hZ2ljDQo+PiBbICAgIDguMTQzODI5XSAjIGNo
+ZWNrc3VtOiBwYXNzOjMgZmFpbDoyIHNraXA6MCB0b3RhbDo1DQo+PiBbICAgIDguMTQ4MzM0XSAj
+IFRvdGFsczogcGFzczozIGZhaWw6MiBza2lwOjAgdG90YWw6NQ0KPj4gWyAgICA4LjE1MzE3M10g
+bm90IG9rIDEgY2hlY2tzdW0NCj4+DQo+PiBBbGwgeW91ciBwYXRjaCBkb2VzIGlzIHRvIGhpZGUg
+dGhlIHNwYXJzZSB3YXJuaW5ncy4gQnV0IGZvcmNpbmcgYSBjYXN0DQo+PiBkb2Vzbid0IGZpeCBi
+eXRlIG9yZGVycy4NCj4+DQo+PiBQbGVhc2UgaGF2ZSBhIGxvb2sgYXQgY29tbWl0IGIzODQ2MGJj
+NDYzYyAoImt1bml0OiBGaXggY2hlY2tzdW0gdGVzdHMgb24NCj4+IGJpZyBlbmRpYW4gQ1BVcyIp
+LCB0aGVyZSBhcmUgaGVscGVycyB0byBwdXQgY2hlY2tzdW1zIGluIHRoZSBjb3JyZWN0DQo+PiBi
+eXRlIG9yZGVyLg0KPj4NCj4+IENocmlzdG9waGUNCj4gDQo+IFdlbGwgdGhhdCdzIHdoYXQgdGhl
+IHNlY29uZCBwYXRjaCBpcyBmb3IuIElzIGl0IGZhaWxpbmcgd2l0aCB0aGUgc2Vjb25kDQo+IHBh
+dGNoIGFwcGxpZWQ/DQo+IA0KDQpZZXMsIHdpdGggc2Vjb25kIHBhdGNoIGlzIG1hZ2ljYWxseSB3
+b3JrcywgbWVhbmluZyB0aGUgcGF0Y2ggZGVzY3JpcHRpb24gDQppcyBub3QgY29ycmVjdCBiZWNh
+dXNlIHRoZSBwcm9ibGVtIGZvciBwb3dlcnBjIGl0IG5vdCBhdCBhbGwgcmVsYXRlZCB0byANCm1l
+bW9yeSBhbGlnbm1lbnQgYnV0IHRvIGVuZGlhbm5lc3MuIEFuZCBlbmRpYW5uZXNzIHNob3VsZCBo
+YXZlIGJlZW4gDQpmaXhlZCBieSBwYXRjaCAxLCBidXQgaW5zdGVhZCBvZiBpdCwgcGF0Y2ggMSBq
+dXN0IGhpZGVzIHRoZSBwcm9ibGVtIGJ5IA0KZm9yY2luZyBjYXN0cy4NCg0KVGhlIHJlYWwgZml4
+IGZvciBlbmRpYW5uZXNzIHdoaWNoIHNob3VsZCBiZSB5b3VyIHBhdGNoIDEgaXMgdGhlIA0KZm9s
+bG93aW5nIGNoYW5nZS4gV2l0aCB0aGF0IGNoYW5nZSBpdCB3b3JrcyBwZXJmZWN0bHkgd2VsbCB3
+aXRob3V0IGFueSANCmZvcmNlZCBjYXN0Og0KDQpkaWZmIC0tZ2l0IGEvbGliL2NoZWNrc3VtX2t1
+bml0LmMgYi9saWIvY2hlY2tzdW1fa3VuaXQuYw0KaW5kZXggMjI1YmI3NzAxNDYwLi5iZjcwODUw
+MDM1YzcgMTAwNjQ0DQotLS0gYS9saWIvY2hlY2tzdW1fa3VuaXQuYw0KKysrIGIvbGliL2NoZWNr
+c3VtX2t1bml0LmMNCkBAIC0yMTUsNyArMjE1LDcgQEAgc3RhdGljIGNvbnN0IHUzMiBpbml0X3N1
+bXNfbm9fb3ZlcmZsb3dbXSA9IHsNCiAgCTB4ZmZmZjAwMDAsIDB4ZmZmZmZmZmIsDQogIH07DQoN
+Ci1zdGF0aWMgY29uc3QgX19zdW0xNiBleHBlY3RlZF9jc3VtX2lwdjZfbWFnaWNbXSA9IHsNCitz
+dGF0aWMgY29uc3QgdTE2IGV4cGVjdGVkX2NzdW1faXB2Nl9tYWdpY1tdID0gew0KICAJMHgxOGQ0
+LCAweDMwODUsIDB4MmU0YiwgMHhkOWY0LCAweGJkYzgsIDB4NzhmLAkweDEwMzQsIDB4ODQyMiwg
+MHg2ZmMwLA0KICAJMHhkMmY2LCAweGJlYjUsIDB4OWQzLAkweDdlMmEsIDB4MzEyZSwgMHg3Nzhl
+LCAweGMxYmIsIDB4N2NmMiwgMHg5ZDFlLA0KICAJMHhjYTIxLCAweGYzZmYsIDB4NzU2OSwgMHhi
+MDJlLCAweGNhODYsIDB4N2U3NiwgMHg0NTM5LCAweDQ1ZTMsIDB4ZjI4ZCwNCkBAIC0yNDEsNyAr
+MjQxLDcgQEAgc3RhdGljIGNvbnN0IF9fc3VtMTYgZXhwZWN0ZWRfY3N1bV9pcHY2X21hZ2ljW10g
+PSB7DQogIAkweDM4NDUsIDB4MTAxNA0KICB9Ow0KDQotc3RhdGljIGNvbnN0IF9fc3VtMTYgZXhw
+ZWN0ZWRfZmFzdF9jc3VtW10gPSB7DQorc3RhdGljIGNvbnN0IHUxNiBleHBlY3RlZF9mYXN0X2Nz
+dW1bXSA9IHsNCiAgCTB4ZGE4MywgMHg0NWRhLCAweDRmNDYsIDB4NGU0ZiwgMHgzNGUsCTB4ZTkw
+MiwgMHhhNWU5LCAweDg3YTUsIDB4NzE4NywNCiAgCTB4NTY3MSwgMHhmNTU2LCAweDZkZjUsIDB4
+ODE2ZCwgMHg4ZjgxLCAweGJiOGYsIDB4ZmJiYSwgMHg1YWZiLCAweGJlNWEsDQogIAkweGVkYmUs
+IDB4YWJlZSwgMHg2YWFjLCAweGU2YiwJMHhlYTBkLCAweDY3ZWEsIDB4N2U2OCwgMHg4YTdlLCAw
+eDZmOGEsDQpAQCAtNTc3LDcgKzU3Nyw4IEBAIHN0YXRpYyB2b2lkIHRlc3RfY3N1bV9ub19jYXJy
+eV9pbnB1dHMoc3RydWN0IGt1bml0IA0KKnRlc3QpDQoNCiAgc3RhdGljIHZvaWQgdGVzdF9pcF9m
+YXN0X2NzdW0oc3RydWN0IGt1bml0ICp0ZXN0KQ0KICB7DQotCV9fc3VtMTYgY3N1bV9yZXN1bHQs
+IGV4cGVjdGVkOw0KKwlfX3N1bTE2IGNzdW1fcmVzdWx0Ow0KKwl1MTYgZXhwZWN0ZWQ7DQoNCiAg
+CWZvciAoaW50IGxlbiA9IElQdjRfTUlOX1dPUkRTOyBsZW4gPCBJUHY0X01BWF9XT1JEUzsgbGVu
+KyspIHsNCiAgCQlmb3IgKGludCBpbmRleCA9IDA7IGluZGV4IDwgTlVNX0lQX0ZBU1RfQ1NVTV9U
+RVNUUzsgaW5kZXgrKykgew0KQEAgLTU4Niw3ICs1ODcsNyBAQCBzdGF0aWMgdm9pZCB0ZXN0X2lw
+X2Zhc3RfY3N1bShzdHJ1Y3Qga3VuaXQgKnRlc3QpDQogIAkJCQlleHBlY3RlZF9mYXN0X2NzdW1b
+KGxlbiAtIElQdjRfTUlOX1dPUkRTKSAqDQogIAkJCQkJCSAgIE5VTV9JUF9GQVNUX0NTVU1fVEVT
+VFMgKw0KICAJCQkJCQkgICBpbmRleF07DQotCQkJQ0hFQ0tfRVEoZXhwZWN0ZWQsIGNzdW1fcmVz
+dWx0KTsNCisJCQlDSEVDS19FUSh0b19zdW0xNihleHBlY3RlZCksIGNzdW1fcmVzdWx0KTsNCiAg
+CQl9DQogIAl9DQogIH0NCkBAIC01OTgsNyArNTk5LDcgQEAgc3RhdGljIHZvaWQgdGVzdF9jc3Vt
+X2lwdjZfbWFnaWMoc3RydWN0IGt1bml0ICp0ZXN0KQ0KICAJY29uc3Qgc3RydWN0IGluNl9hZGRy
+ICpkYWRkcjsNCiAgCXVuc2lnbmVkIGludCBsZW47DQogIAl1bnNpZ25lZCBjaGFyIHByb3RvOw0K
+LQl1bnNpZ25lZCBpbnQgY3N1bTsNCisJX193c3VtIGNzdW07DQoNCiAgCWNvbnN0IGludCBkYWRk
+cl9vZmZzZXQgPSBzaXplb2Yoc3RydWN0IGluNl9hZGRyKTsNCiAgCWNvbnN0IGludCBsZW5fb2Zm
+c2V0ID0gc2l6ZW9mKHN0cnVjdCBpbjZfYWRkcikgKyBzaXplb2Yoc3RydWN0IGluNl9hZGRyKTsN
+CkBAIC02MTEsMTAgKzYxMiwxMCBAQCBzdGF0aWMgdm9pZCB0ZXN0X2NzdW1faXB2Nl9tYWdpYyhz
+dHJ1Y3Qga3VuaXQgKnRlc3QpDQogIAkJc2FkZHIgPSAoY29uc3Qgc3RydWN0IGluNl9hZGRyICop
+KHJhbmRvbV9idWYgKyBpKTsNCiAgCQlkYWRkciA9IChjb25zdCBzdHJ1Y3QgaW42X2FkZHIgKiko
+cmFuZG9tX2J1ZiArIGkgKw0KICAJCQkJCQkgIGRhZGRyX29mZnNldCk7DQotCQlsZW4gPSAqKHVu
+c2lnbmVkIGludCAqKShyYW5kb21fYnVmICsgaSArIGxlbl9vZmZzZXQpOw0KKwkJbGVuID0gbGUz
+Ml90b19jcHUoKihfX2xlMzIgKikocmFuZG9tX2J1ZiArIGkgKyBsZW5fb2Zmc2V0KSk7DQogIAkJ
+cHJvdG8gPSAqKHJhbmRvbV9idWYgKyBpICsgcHJvdG9fb2Zmc2V0KTsNCi0JCWNzdW0gPSAqKHVu
+c2lnbmVkIGludCAqKShyYW5kb21fYnVmICsgaSArIGNzdW1fb2Zmc2V0KTsNCi0JCUNIRUNLX0VR
+KGV4cGVjdGVkX2NzdW1faXB2Nl9tYWdpY1tpXSwNCisJCWNzdW0gPSAqKF9fd3N1bSAqKShyYW5k
+b21fYnVmICsgaSArIGNzdW1fb2Zmc2V0KTsNCisJCUNIRUNLX0VRKHRvX3N1bTE2KGV4cGVjdGVk
+X2NzdW1faXB2Nl9tYWdpY1tpXSksDQogIAkJCSBjc3VtX2lwdjZfbWFnaWMoc2FkZHIsIGRhZGRy
+LCBsZW4sIHByb3RvLCBjc3VtKSk7DQogIAl9DQogICNlbmRpZiAvKiAhQ09ORklHX05FVCAqLw0K
+LS0tDQoNCkNocmlzdG9waGUNCg==
