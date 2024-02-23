@@ -2,134 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4645860B22
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 08:07:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E191860B43
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 08:19:42 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CwTQs/2U;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CwTQs/2U;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=A+Pah8dO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Th1KW5Lf5z3vYj
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 18:07:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Th1bw2mBCz3dvs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 18:19:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CwTQs/2U;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CwTQs/2U;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=A+Pah8dO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.118; helo=out30-118.freemail.mail.aliyun.com; envelope-from=yaoma@linux.alibaba.com; receiver=lists.ozlabs.org)
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Th1Jn1QYNz3bx2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Feb 2024 18:06:32 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1708671988;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=BRHsJbNJikGXBIx8gHv6naumiMpOU3Z17cOC43xcz8U=;
-	b=CwTQs/2UFU7geIo/RYIfSrJc+LRlDJE54v1zdLZKhkwy5zSqzv7N0ubj5xTn47K5VvPqPg
-	sUxUkUA3+4LTATGDyT81LiMsyijNwyufC9VC4hTdTF5qG+d+21tG+o1fDrKyQrLbEjerzr
-	42ka1KE+3vGnlDE8ZYL1NtbO3/D+TDw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1708671988;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=BRHsJbNJikGXBIx8gHv6naumiMpOU3Z17cOC43xcz8U=;
-	b=CwTQs/2UFU7geIo/RYIfSrJc+LRlDJE54v1zdLZKhkwy5zSqzv7N0ubj5xTn47K5VvPqPg
-	sUxUkUA3+4LTATGDyT81LiMsyijNwyufC9VC4hTdTF5qG+d+21tG+o1fDrKyQrLbEjerzr
-	42ka1KE+3vGnlDE8ZYL1NtbO3/D+TDw=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-612-YgzyvIiHOuWg_yVYBg7j1A-1; Fri, 23 Feb 2024 02:06:25 -0500
-X-MC-Unique: YgzyvIiHOuWg_yVYBg7j1A-1
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-33d19eea6c3so204342f8f.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Feb 2024 23:06:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708671985; x=1709276785;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BRHsJbNJikGXBIx8gHv6naumiMpOU3Z17cOC43xcz8U=;
-        b=uY2AkMD81HgMLBKyvPUdd++HmEb14al3a/pS5Br5iVMea0rHTQskXlkATwdvY/awK7
-         hPXnyYNJeMctd1g4rZbO7zia/qH3vcasuQfJ4ObCV4oMnSrhlplZNd0aL3PQThjHlz1A
-         912TnwRVo1CFnmk/eQZ2050H2HjCWIusl5buAVmi6dLOti5ig3Efvk/ASwwts5Qzkjtd
-         TIFJNo/DbAaCbjNrw/JutvfF0u7p9Yyd3p/Zz0geyuiW6tTD38sqblFtc+/UELScl/v+
-         BDegMH+ZJhKpcuPTUq+tkF3rZ0HI9ntI7a7LdGzVeXuDR9anMQ4TikIYwHmDWcQCax5f
-         Sc6w==
-X-Forwarded-Encrypted: i=1; AJvYcCVpuGemNE+3qazMeQsES5ZGRUgY0TjUVnUyMV4Ij06c4rPNP6I/AG9bYoEHfLghojhE0RV4xWOTQHzrh9OXx3niauY8T38KqCeDxTBT1w==
-X-Gm-Message-State: AOJu0YyJRW6WpzPHAnh7t0eQX7441xLWh1dlwnnP6WE3xisHBzgrntx7
-	MbXZuqzuYhF5bmAp9Ugd5oiL8vWAIqIcH1rRAVf7XdxLrN2ygiY4gHIyG6KFxeiRsl7QhaJtA9H
-	G8XXTHplbZ8RKkFRNfXAk+Nb1MrYma96GiCjogvQAbL1OHAiZ6ZWpAJZuu9zpdJc=
-X-Received: by 2002:adf:db46:0:b0:33d:1d94:cd58 with SMTP id f6-20020adfdb46000000b0033d1d94cd58mr755798wrj.31.1708671984940;
-        Thu, 22 Feb 2024 23:06:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHvalV/mlPmxxuta0pv2rPSMKjBHyQZ4hLhmTogmzrMTWSxsy7nviVQ+FZm/pm87v/fSkTEWw==
-X-Received: by 2002:adf:db46:0:b0:33d:1d94:cd58 with SMTP id f6-20020adfdb46000000b0033d1d94cd58mr755780wrj.31.1708671984569;
-        Thu, 22 Feb 2024 23:06:24 -0800 (PST)
-Received: from [192.168.0.9] (ip-109-43-178-100.web.vodafone.de. [109.43.178.100])
-        by smtp.gmail.com with ESMTPSA id bx9-20020a5d5b09000000b0033d568f8310sm1655586wrb.89.2024.02.22.23.06.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Feb 2024 23:06:24 -0800 (PST)
-Message-ID: <5383a1b2-20ca-4d07-9729-e9d5115948dc@redhat.com>
-Date: Fri, 23 Feb 2024 08:06:21 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Th1b859jvz3dTt
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Feb 2024 18:18:58 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1708672733; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=4R2wwRGv9r0ABt36T9MYvpDosxNOFhHAa6Gib5GsXfA=;
+	b=A+Pah8dOONowtv+jy55rnPZghER9WvTEo74iQ229R4YEa7EAEXZrHwZfiNPHg0dQjKJP+UBnE8tSUi11zV+rvbMk7Z8FnrtHajbYV23fU1gX89eOsVKEnPaYo7vs2lCR/lJ3T/nY83SElIll9H5my+At98WX5HeWYQ7b61e2kO8=
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R801e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045168;MF=yaoma@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0W13KKaF_1708672729;
+Received: from 30.178.67.167(mailfrom:yaoma@linux.alibaba.com fp:SMTPD_---0W13KKaF_1708672729)
+          by smtp.aliyun-inc.com;
+          Fri, 23 Feb 2024 15:18:51 +0800
+Message-ID: <3f4b7dbe-93c1-4cb0-8233-18e8432409f8@linux.alibaba.com>
+Date: Fri, 23 Feb 2024 15:18:48 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v5 0/8] Multi-migration support
-To: Nicholas Piggin <npiggin@gmail.com>
-References: <20240221032757.454524-1-npiggin@gmail.com>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240221032757.454524-1-npiggin@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCHv9 2/3] irq: use a struct for the kstat_irqs in the
+ interrupt descriptor
 Content-Language: en-US
+To: Thomas Gleixner <tglx@linutronix.de>, dianders@chromium.org,
+ akpm@linux-foundation.org, liusong@linux.alibaba.com, pmladek@suse.com,
+ kernelfans@gmail.com, deller@gmx.de, npiggin@gmail.com,
+ tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
+ jan.kiszka@siemens.com
+References: <20240222093420.13956-1-yaoma@linux.alibaba.com>
+ <20240222093420.13956-3-yaoma@linux.alibaba.com> <87jzmwfxak.ffs@tglx>
+From: Bitao Hu <yaoma@linux.alibaba.com>
+In-Reply-To: <87jzmwfxak.ffs@tglx>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -143,31 +60,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, linux-s390@vger.kernel.org, Nico Boehr <nrb@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org, Shaoqin Huang <shahuang@redhat.com>, Andrew Jones <andrew.jones@linux.dev>, Eric Auger <eric.auger@redhat.com>, Marc Hartmayer <mhartmay@linux.ibm.com>, kvm-riscv@lists.infradead.org, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: yaoma@linux.alibaba.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 21/02/2024 04.27, Nicholas Piggin wrote:
-> Now that strange arm64 hang is found to be QEMU bug, I'll repost.
-> Since arm64 requires Thomas's uart patch and it is worse affected
-> by the QEMU bug, I will just not build it on arm. The QEMU bug
-> still affects powerpc (and presumably s390x) but it's not causing
-> so much trouble for this test case.
+Hi,
+
+On 2024/2/22 21:22, Thomas Gleixner wrote:
+> On Thu, Feb 22 2024 at 17:34, Bitao Hu wrote:
 > 
-> I have another test case that can hit it reliably and doesn't
-> cause crashes but that takes some harness and common lib work so
-> I'll send that another time.
+> First of all the subsystem prefix is 'genirq:'. 'git log kernel/irq/'
+> gives you a pretty good hint. It's documented....
 > 
-> Since v4:
-> - Don't build selftest-migration on arm.
-> - Reduce selftest-migration iterations from 100 to 30 to make the
->    test run faster (it's ~0.5s per migration).
+> Secondly the subject line does not match what this patch is about. It's
+> not about using a struct, it's about providing a snapshot mechanism, no?
+> 
+>> The current implementation uses an int for the kstat_irqs in the
+>> interrupt descriptor.
+>>
+>> However, we need to know the number of interrupts which happened
+>> since softlockup detection took a snapshot in order to analyze
+>> the problem caused by an interrupt storm.
+>>
+>> Replacing an int with a struct and providing sensible interfaces
+>> for the watchdog code can keep it self contained to the interrupt
+>> core code.
+> 
+> So something like this makes a useful change log for this:
+> 
+>   Subject: genirq: Provide a snapshot mechanism for interrupt statistics
+> 
+>   The soft lockup detector lacks a mechanism to identify interrupt storms
+>   as root cause of a lockup. To enable this the detector needs a
+>   mechanism to snapshot the interrupt count statistics on a CPU when the
+>   detector observes a potential lockup scenario and compare that against
+>   the interrupt count when it warns about the lockup later on. The number
+>   of interrupts in that period give a hint whether the lockup might be
+>   caused by an interrupt storm.
+> 
+>   Instead of having extra storage in the lockup detector and accessing
+>   the internals of the interrupt descriptor directly, convert the per CPU
+>   irq_desc::kstat_irq member to a data structure which contains the
+>   counter plus a snapshot member and provide interfaces to take a
+>   snapshot of all interrupts on the current CPU and to retrieve the delta
+>   of a specific interrupt later on.
+> 
+Thanks, the changelog you wrote very clearly articulates the purpose of
+this patch.
 
-Thanks, I think the series is ready to go now ... we just have to wait for 
-your QEMU TCG migration fix to get merged first. Or should we maybe mark the 
-selftest-migration with "accel = kvm" for now and remove that line later 
-once QEMU has been fixed?
+> Hmm?
+> 
+>> Signed-off-by: Bitao Hu <yaoma@linux.alibaba.com>
+> 
+> Interesting. You fully authored the patch?
+> 
+> That's not how it works. You cannot take work from others and claim that
+> it is yours. The minimal courtesy is to add a 'Originally-by:' tag.
+> 
+I'm very sorry, the majority of this patch is your work, I will add an
+'Originally-by:' tag.
 
-  Thomas
+>> diff --git a/kernel/irq/proc.c b/kernel/irq/proc.c
+>> index 623b8136e9af..3ad40cf30c66 100644
+>> --- a/kernel/irq/proc.c
+>> +++ b/kernel/irq/proc.c
+>> @@ -488,18 +488,15 @@ int show_interrupts(struct seq_file *p, void *v)
+>>   	if (!desc || irq_settings_is_hidden(desc))
+>>   		goto outsparse;
+>>   
+>> -	if (desc->kstat_irqs) {
+>> -		for_each_online_cpu(j)
+>> -			any_count |= data_race(*per_cpu_ptr(desc->kstat_irqs, j));
+>> -	}
+>> +	if (desc->kstat_irqs)
+>> +		any_count = data_race(desc->tot_count);
+> 
+> This is an unrelated change and needs to be split out into a separate
+> patch with a proper changelog which explains why this is equivalent.
+> 
 
+Alright, I will remove this change witch is not related to the purpose
+of this patch.
 
+I guess that the purpose of suggesting this change in your V1 response
+was to speedup the 'show_interrupts'. However, after reviewing the
+usage of 'desc->tot_count' in 'unsigned int kstat_irqs(unsigned int 
+irq)', I think the change might be as follows:
+
+diff --git a/kernel/irq/proc.c b/kernel/irq/proc.c
+index 623b8136e9af..53b8d6edd7ac 100644
+--- a/kernel/irq/proc.c
++++ b/kernel/irq/proc.c
+@@ -489,8 +489,13 @@ int show_interrupts(struct seq_file *p, void *v)
+                 goto outsparse;
+
+         if (desc->kstat_irqs) {
+-               for_each_online_cpu(j)
+-                       any_count |= 
+data_race(per_cpu(desc->kstat_irqs->cnt, j));
++               if (!irq_settings_is_per_cpu_devid(desc) &&
++                   !irq_settings_is_per_cpu(desc) &&
++                   !irq_is_nmi(desc))
++                       any_count = data_race(desc->tot_count);
++               else
++                       for_each_online_cpu(j)
++                               any_count |= 
+data_race(per_cpu(desc->kstat_irqs->cnt, j));
+         }
+
+         if ((!desc->action || irq_desc_is_chained(desc)) && !any_count)
+
+Is my idea correct?
+
+Best Regards,
+	Bitao
