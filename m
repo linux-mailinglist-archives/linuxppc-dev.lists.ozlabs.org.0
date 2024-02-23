@@ -1,128 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD3D386149A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 15:50:33 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Kh/VDUyF;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9293C8614A3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 15:51:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ThCc74TcJz3dwr
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Feb 2024 01:50:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ThCcn43z4z3vdr
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Feb 2024 01:51:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Kh/VDUyF;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42d; helo=mail-pf1-x42d.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=srs0=gjt8=ka=xs4all.nl=hverkuil@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ThCbM1xmMz3cFf
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Feb 2024 01:49:49 +1100 (AEDT)
-Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-6e4670921a4so243158b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Feb 2024 06:49:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708699784; x=1709304584; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=TlbnQOwYBlYMMApmGJ1zXcjNw0sZnUEDXVdJU5fMhSo=;
-        b=Kh/VDUyFmVZWumRcn1ZnBLPKMkM2cP5V0irqrb4kNRiHpkJSFVoKHNLTrSf9F/RNnd
-         LCCxjAvfpYtMbRo5BadJVHelW/SUW7agLXF5SnQqnk8n9dMckqCLe0GGFNVJSIpf3hbb
-         xojLzU6Ce+rgJbdBUjia90nb9OLNvuUp/yAcu74NQaVB44FxBwDFS6kQ4eiSAp1nMy2J
-         3X1ibrqp1OEWEE+cu2WSCato3gCAfaxJ1TVamHCxYjMG6+WnihD9LlwnxQvpCEjalcTt
-         2EZodri5PGNMlD2a0hzZdU7W4w98UxQcXS5MFFkzYvtJYeQmRDAtypYxxZk5g39XUtAJ
-         he4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708699784; x=1709304584;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TlbnQOwYBlYMMApmGJ1zXcjNw0sZnUEDXVdJU5fMhSo=;
-        b=EfKolQf0EDR1MHiz9Ej1devagk5ZkOc+v2w9ePnK/NazuyyDIw+QhxQogqRSb/fn/8
-         pp+2DY0Hu9EVOyrAoBCwAt0WYYQuULfJ4xsOj7ZxbCVUoJoa4bylExRyJSCQQwFQYwIe
-         UfCIFKsol8u5MW61yiwYqb4+jSTsc72rG4mr6Sr5O1gMMrpFY43XcNkh3ITqYeyJfXMA
-         +neM7y+9TKzUquPQQU092G5sHJvppf1R8gQH10iyf9lnrQYb2l5eMlM+jonn5aU+UZ4t
-         FPAGz+dmdjxT0g/AzbLMl1XBUDvAzmPsioqRLK7Hg9V1+XQ/tJySopwXHODru7AutCLY
-         vtAg==
-X-Forwarded-Encrypted: i=1; AJvYcCWNQ3dZ6Fn+BQOH/Uz4cG85aHwbuXT8+dOjbyQcbJGBkNhlIq0lwDKCRBzj97egRGBs1gHIQ1Ju1eUn/tFttzewz86XqRiMB3OrIIMxRA==
-X-Gm-Message-State: AOJu0YyF2RYrNrtR7dIqm5tm/cWUvoTMsqDQQNtzgdG0ffT44JrXulyn
-	QYMIhwDQsjIlo7212ROXTvoWAdNW4KWUHpJV7YGdj1A5pGVUMCCx
-X-Google-Smtp-Source: AGHT+IHwwM8ZjVhLIm1URxzOa4ElRrjB93TN/rJA8UCGM8wc7dzxf2kcSSNBGIoOuite1Am+Tu6LLg==
-X-Received: by 2002:a05:6a20:bd01:b0:19e:a36c:36ef with SMTP id fy1-20020a056a20bd0100b0019ea36c36efmr39948pzb.48.1708699783637;
-        Fri, 23 Feb 2024 06:49:43 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id y5-20020a056a00180500b006e45daf9e89sm10599500pfa.131.2024.02.23.06.49.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 23 Feb 2024 06:49:42 -0800 (PST)
-Message-ID: <7ee8130c-e27f-42c7-af8e-a0a89bcf78a4@roeck-us.net>
-Date: Fri, 23 Feb 2024 06:49:41 -0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ThCc96yNVz3vXR
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Feb 2024 01:50:33 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 096C9CE2C65;
+	Fri, 23 Feb 2024 14:50:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7432FC433C7;
+	Fri, 23 Feb 2024 14:50:26 +0000 (UTC)
+Message-ID: <fdd67bc5-53aa-425b-8b8e-a34c3aa9c96e@xs4all.nl>
+Date: Fri, 23 Feb 2024 15:50:24 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 2/2] lib: checksum: Use aligned accesses for
- ip_fast_csum and csum_ipv6_magic tests
-Content-Language: en-US
-To: David Laight <David.Laight@ACULAB.COM>,
- 'Christophe Leroy' <christophe.leroy@csgroup.eu>,
- Charlie Jenkins <charlie@rivosinc.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Andrew Morton <akpm@linux-foundation.org>, Helge Deller <deller@gmx.de>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Parisc List <linux-parisc@vger.kernel.org>, Al Viro <viro@zeniv.linux.org.uk>
-References: <20240221-fix_sparse_errors_checksum_tests-v9-0-bff4d73ab9d1@rivosinc.com>
- <20240221-fix_sparse_errors_checksum_tests-v9-2-bff4d73ab9d1@rivosinc.com>
- <30e4f267-86c2-4df6-9f33-d6f5fc77c4db@csgroup.eu>
- <fa37be6a8c014d39ab75978e10995ca8@AcuMS.aculab.com>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <fa37be6a8c014d39ab75978e10995ca8@AcuMS.aculab.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v12 08/15] media: uapi: Define audio sample format fourcc
+ type
+Content-Language: en-US, nl
+To: Shengjiu Wang <shengjiu.wang@gmail.com>
+References: <1705581128-4604-1-git-send-email-shengjiu.wang@nxp.com>
+ <1705581128-4604-9-git-send-email-shengjiu.wang@nxp.com>
+ <20240217101926.3f1d2452@coco.lan>
+ <CAA+D8APD+zL0xYkf6FxPNfM3Y3O8+PhT7WEXO7XCLAmBjoMmUA@mail.gmail.com>
+ <20240219135618.5c557e66@coco.lan>
+ <e98a23c6-a35d-422b-be8a-1179392215c1@xs4all.nl>
+ <CAA+D8AN1KEjmb7f5dzMn1EV=UB5QqA4q__y2mTOW8-CH_7gchQ@mail.gmail.com>
+From: Hans Verkuil <hverkuil@xs4all.nl>
+Autocrypt: addr=hverkuil@xs4all.nl; keydata=
+ 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
+In-Reply-To: <CAA+D8AN1KEjmb7f5dzMn1EV=UB5QqA4q__y2mTOW8-CH_7gchQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -134,28 +94,189 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, nicoleotsuka@gmail.com, linuxppc-dev@lists.ozlabs.org, broonie@kernel.org, sakari.ailus@iki.fi, perex@perex.cz, Mauro Carvalho Chehab <mchehab@kernel.org>, festevam@gmail.com, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2/23/24 02:28, David Laight wrote:
-> From: Christophe Leroy
->> Sent: 23 February 2024 10:07
-> ...
->>> +/* Ethernet headers are 14 bytes and NET_IP_ALIGN is used to align them */
->>> +#define IP_ALIGNMENT (14 + NET_IP_ALIGN)
+On 22/02/2024 04:50, Shengjiu Wang wrote:
+> On Wed, Feb 21, 2024 at 7:10 PM Hans Verkuil <hverkuil@xs4all.nl> wrote:
 >>
->> Only if no VLAN.
+>> On 19/02/2024 13:56, Mauro Carvalho Chehab wrote:
+>>> Em Mon, 19 Feb 2024 12:05:02 +0800
+>>> Shengjiu Wang <shengjiu.wang@gmail.com> escreveu:
+>>>
+>>>> Hi Mauro
+>>>>
+>>>> On Sat, Feb 17, 2024 at 5:19 PM Mauro Carvalho Chehab
+>>>> <mchehab@kernel.org> wrote:
+>>>>>
+>>>>> Em Thu, 18 Jan 2024 20:32:01 +0800
+>>>>> Shengjiu Wang <shengjiu.wang@nxp.com> escreveu:
+>>>>>
+>>>>>> The audio sample format definition is from alsa,
+>>>>>> the header file is include/uapi/sound/asound.h, but
+>>>>>> don't include this header file directly, because in
+>>>>>> user space, there is another copy in alsa-lib.
+>>>>>> There will be conflict in userspace for include
+>>>>>> videodev2.h & asound.h and asoundlib.h
+>>>>>>
+>>>>>> Here still use the fourcc format.
+>>>>>>
+>>>>>> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+>>>>>> ---
+>>>>>>  .../userspace-api/media/v4l/pixfmt-audio.rst  | 87 +++++++++++++++++++
+>>>>>>  .../userspace-api/media/v4l/pixfmt.rst        |  1 +
+>>>>>>  drivers/media/v4l2-core/v4l2-ioctl.c          | 13 +++
+>>>>>>  include/uapi/linux/videodev2.h                | 23 +++++
+>>>>>>  4 files changed, 124 insertions(+)
+>>>>>>  create mode 100644 Documentation/userspace-api/media/v4l/pixfmt-audio.rst
+>>>>>>
+>>>>>> diff --git a/Documentation/userspace-api/media/v4l/pixfmt-audio.rst b/Documentation/userspace-api/media/v4l/pixfmt-audio.rst
+>>>>>> new file mode 100644
+>>>>>> index 000000000000..04b4a7fbd8f4
+>>>>>> --- /dev/null
+>>>>>> +++ b/Documentation/userspace-api/media/v4l/pixfmt-audio.rst
+>>>>>> @@ -0,0 +1,87 @@
+>>>>>> +.. SPDX-License-Identifier: GFDL-1.1-no-invariants-or-later
+>>>>>> +
+>>>>>> +.. _pixfmt-audio:
+>>>>>> +
+>>>>>> +*************
+>>>>>> +Audio Formats
+>>>>>> +*************
+>>>>>> +
+>>>>>> +These formats are used for :ref:`audiomem2mem` interface only.
+>>>>>> +
+>>>>>> +.. tabularcolumns:: |p{5.8cm}|p{1.2cm}|p{10.3cm}|
+>>>>>> +
+>>>>>> +.. cssclass:: longtable
+>>>>>> +
+>>>>>> +.. flat-table:: Audio Format
+>>>>>> +    :header-rows:  1
+>>>>>> +    :stub-columns: 0
+>>>>>> +    :widths:       3 1 4
+>>>>>> +
+>>>>>> +    * - Identifier
+>>>>>> +      - Code
+>>>>>> +      - Details
+>>>>>> +    * .. _V4L2-AUDIO-FMT-S8:
+>>>>>> +
+>>>>>> +      - ``V4L2_AUDIO_FMT_S8``
+>>>>>> +      - 'S8'
+>>>>>> +      - Corresponds to SNDRV_PCM_FORMAT_S8 in ALSA
+>>>>>> +    * .. _V4L2-AUDIO-FMT-S16-LE:
+>>>>>
+>>>>> Hmm... why can't we just use SNDRV_*_FORMAT_*? Those are already part of
+>>>>> an uAPI header. No need to add any abstraction here and/or redefine
+>>>>> what is there already at include/uapi/sound/asound.h.
+>>>>>
+>>>> Actually I try to avoid including the include/uapi/sound/asound.h.
+>>>> Because in user space, there is another copy in alsa-lib (asoundlib.h).
+>>>> There will be conflict in userspace when including videodev2.h and
+>>>> asoundlib.h.
+>>>
+>>> Well, alsasoundlib.h seems to be using the same definitions:
+>>>       https://github.com/michaelwu/alsa-lib/blob/master/include/pcm.h
+>>>
+>>> So, I can't see what would be the actual issue, as both userspace library
+>>> and ALSA internal headers use the same magic numbers.
+>>>
+>>> You can still do things like:
+>>>
+>>>       #ifdef __KERNEL__
+>>>       #  include <sound/asound.h>
+>>>       #else
+>>>       #  include <asoundlib.h>
+>>>       #endif
+>>>
+>>> To avoid such kind of conflicts, if you need to have it included on
+>>> some header file. Yet, I can't see why you would need that.
+>>>
+>>> IMO, at uAPI headers, you just need to declare the uAPI audiofmt field
+>>> to be either __u32 or __u64, pointing it to where this value comes from
+>>> (on both userspace and Kernelspace. E. g.:
+>>>
+>>> /**
+>>>  * struct v4l2_audio_format - audio data format definition
+>>>  * @audioformat:
+>>>  *    an integer number matching the fields inside
+>>>  *    enum snd_pcm_format_t (e. g. `SNDRV_PCM_FORMAT_*`), as defined
+>>>  *    in include/uapi/sound/asound.h and
+>>>  *      https://www.alsa-project.org/alsa-doc/alsa-lib/group___p_c_m.html#gaa14b7f26877a812acbb39811364177f8.
+>>>  * @channels:         channel numbers
+>>>  * @buffersize:               maximum size in bytes required for data
+>>>  */
+>>> struct v4l2_audio_format {
+>>>       __u32                           audioformat;
+>>>       __u32                           channels;
+>>>       __u32                           buffersize;
+>>> } __attribute__ ((packed));
+>>>
+>>> Then, at documentation you just need to point to where the
+>>> possible values for SNDRV_PCM_FORMAT_ are defined. No need to
+>>> document them one by one.
+>>>
+>>> With such definition, you'll only need to include sound/asound.h
+>>> within the kAPI scope.
+>>>
+>>>>
+>>>> And in the V4l framework, the fourcc type is commonly used in other
+>>>> cases (video, radio, touch, meta....), to avoid changing common code
+>>>> a lot, so I think using fourcc definition for audio may be simpler.
+>>>
+>>> Those are real video streams (or a video-related streams, in the case
+>>> of metadata) where fourcc is widely used. There, it makes sense.
+>>> However, ALSA format definitions are already being used for a long time.
+>>> There's no sense on trying to reinvent it - or having an abstract layer
+>>> to convert from/to fourcc <==> enum snd_pcm_format_t. Just use what is
+>>> there already.
 >>
->> When using VLANs it is 4 bytes more. But why do you mind that at all ?
+>> The problem is that within V4L2 we use fourcc consistently to describe a
+>> format, including in VIDIOC_ENUM_FMT. And the expectation is that the fourcc
+>> can be printed to a human readable string (there is even a printk format for
+>> that these days).
+>>
+>> But the pcm values are all small integers (and can even be 0!), and
+>> printing the fourcc will give garbage. It doesn't work well at all
+>> with the V4L2 API. But by having a straightforward conversion between the
+>> pcm identifier and a fourcc it was really easy to deal with this.
+>>
+>> There might even be applications today that call VIDIOC_ENUM_FMT to see
+>> what is supported and fail if it is not a proper fourcc is returned.
+>>
+>> It will certainly report nonsense in v4l_print_fmtdesc() (v4l2-ioctl.c).
+>>
+>> One of the early versions of this patch series did precisely what you request,
+>> but it just doesn't work well within the V4L2 uAPI.
+>>
 > 
-> Wasn't one architecture faulting on a double-register read?
-> Where that had to be aligned (probably 8 bytes) but a normal
-> memory read could be misaligned?
+> Thanks all.
 > 
+> So can I reach the conclusion below?
+> 1. Keep using the fourcc definition for v4l2_audio_format.audioformat.
+> 2. Keep the name V4L2_BUF_TYPE_AUDIO_CAPTURE and
+>     V4L2_BUF_TYPE_AUDIO_OUTPUT.
+> 3. Fix Documentation/userspace-api/media/v4l/dev-audio-mem2mem.rst
+>     to change 'pixelformat' to 'audioformat'.
+> 4. Update Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
+>     to add more description for clock drift.
 
-That was hppa64, and the problem was with its qemu emulation,
-not with this code.
+Yes, let's go with that.
 
-Guenter
+Regards,
+
+	Hans
+
+> 
+> Best Regards
+> Shengjiu Wang
+> 
+>> Regards,
+>>
+>>         Hans
+>>
+>>>
+>>> Thanks,
+>>> Mauro
+>>
 
