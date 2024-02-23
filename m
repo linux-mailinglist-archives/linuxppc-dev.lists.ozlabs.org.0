@@ -1,87 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9293C8614A3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 15:51:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 064BE8614CC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 15:54:17 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=R4Yn9mTo;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ThCcn43z4z3vdr
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Feb 2024 01:51:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ThChQ6hJ9z3vZF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Feb 2024 01:54:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=srs0=gjt8=ka=xs4all.nl=hverkuil@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=R4Yn9mTo;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::32e; helo=mail-wm1-x32e.google.com; envelope-from=colin.i.king@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ThCc96yNVz3vXR
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Feb 2024 01:50:33 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 096C9CE2C65;
-	Fri, 23 Feb 2024 14:50:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7432FC433C7;
-	Fri, 23 Feb 2024 14:50:26 +0000 (UTC)
-Message-ID: <fdd67bc5-53aa-425b-8b8e-a34c3aa9c96e@xs4all.nl>
-Date: Fri, 23 Feb 2024 15:50:24 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ThCgh5GgWz3cFf
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Feb 2024 01:53:36 +1100 (AEDT)
+Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-4129833e069so565975e9.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Feb 2024 06:53:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708700011; x=1709304811; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=s/a+7Lbr7oxAEnMW9lRS2BPIWRChV9WXDE8CQg9Hrfk=;
+        b=R4Yn9mToPcJXTZ9NikG1FyFoH4WbMqMm4XFxaEdEfjTaDAsG8SKug5cFOrp/HB//D8
+         zHqCJtQFkoFTmPcimHKIi6eqR4x02qgfQOM9vRBqwat5W/8NionZ1g+dC2tHWg+lHBXB
+         B0e3un9GkaUMmn7XxcZTqE+PnpSb90zZG04B7D3q03/mObcDm6mbVVDq3v+AWDQlpnbU
+         qJd7scRWF6WPbY4dZphnkvMPSC9LMHUXvO5yuEHIvKKHDotwnI8Ww12IFa4pQsIfgVzR
+         MF6KgCxNCLFgUmplkTXyE1HuS1+/LHI1fT1OUQ3RKWOeFVlAYowMihp+9Fm9lGsR1df5
+         Xd/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708700011; x=1709304811;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=s/a+7Lbr7oxAEnMW9lRS2BPIWRChV9WXDE8CQg9Hrfk=;
+        b=oNPTs4ANIOvIHPSRT/GNBN74aUNXGlHiXaOKkvCQBs41LJGc4sH9wuL09PRHOcmQoq
+         24OL080z52swWIBZSaj/4CfY5MD6kBjHidDQbtT3K5eYXIdzgwhr2r8+RY0jpZs/K4XU
+         a5zhgwwjf777atdoH7TNC2apvv9j3QYfOiA9Cvq/bs/HJ16teJie+fMWQy/0/LntZ5Xu
+         OWwiHi3LDdpVkDvW8yOqnXkarkMcvHQDixXOpYQ3+qEyAbpUSrdZu+64rb6iGr6baB9U
+         MxIVr/SX3ncdx/58YpB/DUgPIqkzxkh+YKKf6rYDYFTGpAM21lRq5qAmNDEjkIbDvuaW
+         dNIw==
+X-Forwarded-Encrypted: i=1; AJvYcCXUFtrlDxCgLEBs4oiOg9ThpZYYx3dh2Sc5PYVA+5CJXdqTwBs/EO/tOS3q97DrjWsTFKNkXFNc9/UFScL6TRosAOdpzv9UZpoBcwQbJg==
+X-Gm-Message-State: AOJu0YylMd2uHzMhGIPrZ6EJMKDssqyiFAIZvxVTIlHc9+Y/EUXm/EUM
+	4oJ2ysMMhrYE8XVTHL9nKcMi/u0vgxNFX7AQSfLH1Wbe5bTPdcMQ
+X-Google-Smtp-Source: AGHT+IF35jagaTTZ5yDNpFhVTYaG+pRkNtNOoRROuGdHT169YIqL9YMhI6h0l9YJGvPC1RWOYJUXyw==
+X-Received: by 2002:a05:600c:1389:b0:412:952d:3c6a with SMTP id u9-20020a05600c138900b00412952d3c6amr44821wmf.13.1708700009287;
+        Fri, 23 Feb 2024 06:53:29 -0800 (PST)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id t6-20020a05600c450600b0040fdf5e6d40sm2686953wmo.20.2024.02.23.06.53.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Feb 2024 06:53:28 -0800 (PST)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Roy Pledge <Roy.Pledge@nxp.com>,
+	Li Yang <leoyang.li@nxp.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH][next] soc: fsl: dpio: remove redundant assignment to pointer p
+Date: Fri, 23 Feb 2024 14:53:27 +0000
+Message-Id: <20240223145327.3909835-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 08/15] media: uapi: Define audio sample format fourcc
- type
-Content-Language: en-US, nl
-To: Shengjiu Wang <shengjiu.wang@gmail.com>
-References: <1705581128-4604-1-git-send-email-shengjiu.wang@nxp.com>
- <1705581128-4604-9-git-send-email-shengjiu.wang@nxp.com>
- <20240217101926.3f1d2452@coco.lan>
- <CAA+D8APD+zL0xYkf6FxPNfM3Y3O8+PhT7WEXO7XCLAmBjoMmUA@mail.gmail.com>
- <20240219135618.5c557e66@coco.lan>
- <e98a23c6-a35d-422b-be8a-1179392215c1@xs4all.nl>
- <CAA+D8AN1KEjmb7f5dzMn1EV=UB5QqA4q__y2mTOW8-CH_7gchQ@mail.gmail.com>
-From: Hans Verkuil <hverkuil@xs4all.nl>
-Autocrypt: addr=hverkuil@xs4all.nl; keydata=
- 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
-In-Reply-To: <CAA+D8AN1KEjmb7f5dzMn1EV=UB5QqA4q__y2mTOW8-CH_7gchQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -94,189 +80,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, nicoleotsuka@gmail.com, linuxppc-dev@lists.ozlabs.org, broonie@kernel.org, sakari.ailus@iki.fi, perex@perex.cz, Mauro Carvalho Chehab <mchehab@kernel.org>, festevam@gmail.com, m.szyprowski@samsung.com
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 22/02/2024 04:50, Shengjiu Wang wrote:
-> On Wed, Feb 21, 2024 at 7:10 PM Hans Verkuil <hverkuil@xs4all.nl> wrote:
->>
->> On 19/02/2024 13:56, Mauro Carvalho Chehab wrote:
->>> Em Mon, 19 Feb 2024 12:05:02 +0800
->>> Shengjiu Wang <shengjiu.wang@gmail.com> escreveu:
->>>
->>>> Hi Mauro
->>>>
->>>> On Sat, Feb 17, 2024 at 5:19 PM Mauro Carvalho Chehab
->>>> <mchehab@kernel.org> wrote:
->>>>>
->>>>> Em Thu, 18 Jan 2024 20:32:01 +0800
->>>>> Shengjiu Wang <shengjiu.wang@nxp.com> escreveu:
->>>>>
->>>>>> The audio sample format definition is from alsa,
->>>>>> the header file is include/uapi/sound/asound.h, but
->>>>>> don't include this header file directly, because in
->>>>>> user space, there is another copy in alsa-lib.
->>>>>> There will be conflict in userspace for include
->>>>>> videodev2.h & asound.h and asoundlib.h
->>>>>>
->>>>>> Here still use the fourcc format.
->>>>>>
->>>>>> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
->>>>>> ---
->>>>>>  .../userspace-api/media/v4l/pixfmt-audio.rst  | 87 +++++++++++++++++++
->>>>>>  .../userspace-api/media/v4l/pixfmt.rst        |  1 +
->>>>>>  drivers/media/v4l2-core/v4l2-ioctl.c          | 13 +++
->>>>>>  include/uapi/linux/videodev2.h                | 23 +++++
->>>>>>  4 files changed, 124 insertions(+)
->>>>>>  create mode 100644 Documentation/userspace-api/media/v4l/pixfmt-audio.rst
->>>>>>
->>>>>> diff --git a/Documentation/userspace-api/media/v4l/pixfmt-audio.rst b/Documentation/userspace-api/media/v4l/pixfmt-audio.rst
->>>>>> new file mode 100644
->>>>>> index 000000000000..04b4a7fbd8f4
->>>>>> --- /dev/null
->>>>>> +++ b/Documentation/userspace-api/media/v4l/pixfmt-audio.rst
->>>>>> @@ -0,0 +1,87 @@
->>>>>> +.. SPDX-License-Identifier: GFDL-1.1-no-invariants-or-later
->>>>>> +
->>>>>> +.. _pixfmt-audio:
->>>>>> +
->>>>>> +*************
->>>>>> +Audio Formats
->>>>>> +*************
->>>>>> +
->>>>>> +These formats are used for :ref:`audiomem2mem` interface only.
->>>>>> +
->>>>>> +.. tabularcolumns:: |p{5.8cm}|p{1.2cm}|p{10.3cm}|
->>>>>> +
->>>>>> +.. cssclass:: longtable
->>>>>> +
->>>>>> +.. flat-table:: Audio Format
->>>>>> +    :header-rows:  1
->>>>>> +    :stub-columns: 0
->>>>>> +    :widths:       3 1 4
->>>>>> +
->>>>>> +    * - Identifier
->>>>>> +      - Code
->>>>>> +      - Details
->>>>>> +    * .. _V4L2-AUDIO-FMT-S8:
->>>>>> +
->>>>>> +      - ``V4L2_AUDIO_FMT_S8``
->>>>>> +      - 'S8'
->>>>>> +      - Corresponds to SNDRV_PCM_FORMAT_S8 in ALSA
->>>>>> +    * .. _V4L2-AUDIO-FMT-S16-LE:
->>>>>
->>>>> Hmm... why can't we just use SNDRV_*_FORMAT_*? Those are already part of
->>>>> an uAPI header. No need to add any abstraction here and/or redefine
->>>>> what is there already at include/uapi/sound/asound.h.
->>>>>
->>>> Actually I try to avoid including the include/uapi/sound/asound.h.
->>>> Because in user space, there is another copy in alsa-lib (asoundlib.h).
->>>> There will be conflict in userspace when including videodev2.h and
->>>> asoundlib.h.
->>>
->>> Well, alsasoundlib.h seems to be using the same definitions:
->>>       https://github.com/michaelwu/alsa-lib/blob/master/include/pcm.h
->>>
->>> So, I can't see what would be the actual issue, as both userspace library
->>> and ALSA internal headers use the same magic numbers.
->>>
->>> You can still do things like:
->>>
->>>       #ifdef __KERNEL__
->>>       #  include <sound/asound.h>
->>>       #else
->>>       #  include <asoundlib.h>
->>>       #endif
->>>
->>> To avoid such kind of conflicts, if you need to have it included on
->>> some header file. Yet, I can't see why you would need that.
->>>
->>> IMO, at uAPI headers, you just need to declare the uAPI audiofmt field
->>> to be either __u32 or __u64, pointing it to where this value comes from
->>> (on both userspace and Kernelspace. E. g.:
->>>
->>> /**
->>>  * struct v4l2_audio_format - audio data format definition
->>>  * @audioformat:
->>>  *    an integer number matching the fields inside
->>>  *    enum snd_pcm_format_t (e. g. `SNDRV_PCM_FORMAT_*`), as defined
->>>  *    in include/uapi/sound/asound.h and
->>>  *      https://www.alsa-project.org/alsa-doc/alsa-lib/group___p_c_m.html#gaa14b7f26877a812acbb39811364177f8.
->>>  * @channels:         channel numbers
->>>  * @buffersize:               maximum size in bytes required for data
->>>  */
->>> struct v4l2_audio_format {
->>>       __u32                           audioformat;
->>>       __u32                           channels;
->>>       __u32                           buffersize;
->>> } __attribute__ ((packed));
->>>
->>> Then, at documentation you just need to point to where the
->>> possible values for SNDRV_PCM_FORMAT_ are defined. No need to
->>> document them one by one.
->>>
->>> With such definition, you'll only need to include sound/asound.h
->>> within the kAPI scope.
->>>
->>>>
->>>> And in the V4l framework, the fourcc type is commonly used in other
->>>> cases (video, radio, touch, meta....), to avoid changing common code
->>>> a lot, so I think using fourcc definition for audio may be simpler.
->>>
->>> Those are real video streams (or a video-related streams, in the case
->>> of metadata) where fourcc is widely used. There, it makes sense.
->>> However, ALSA format definitions are already being used for a long time.
->>> There's no sense on trying to reinvent it - or having an abstract layer
->>> to convert from/to fourcc <==> enum snd_pcm_format_t. Just use what is
->>> there already.
->>
->> The problem is that within V4L2 we use fourcc consistently to describe a
->> format, including in VIDIOC_ENUM_FMT. And the expectation is that the fourcc
->> can be printed to a human readable string (there is even a printk format for
->> that these days).
->>
->> But the pcm values are all small integers (and can even be 0!), and
->> printing the fourcc will give garbage. It doesn't work well at all
->> with the V4L2 API. But by having a straightforward conversion between the
->> pcm identifier and a fourcc it was really easy to deal with this.
->>
->> There might even be applications today that call VIDIOC_ENUM_FMT to see
->> what is supported and fail if it is not a proper fourcc is returned.
->>
->> It will certainly report nonsense in v4l_print_fmtdesc() (v4l2-ioctl.c).
->>
->> One of the early versions of this patch series did precisely what you request,
->> but it just doesn't work well within the V4L2 uAPI.
->>
-> 
-> Thanks all.
-> 
-> So can I reach the conclusion below?
-> 1. Keep using the fourcc definition for v4l2_audio_format.audioformat.
-> 2. Keep the name V4L2_BUF_TYPE_AUDIO_CAPTURE and
->     V4L2_BUF_TYPE_AUDIO_OUTPUT.
-> 3. Fix Documentation/userspace-api/media/v4l/dev-audio-mem2mem.rst
->     to change 'pixelformat' to 'audioformat'.
-> 4. Update Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
->     to add more description for clock drift.
+There are two places where pointer p is being assigned a value that
+is never read, the pointer is re-assingned later. The assignments
+are redundant and can be removed.
 
-Yes, let's go with that.
+Cleans up two clang scan build warnings:
+drivers/soc/fsl/dpio/qbman-portal.c:662:3: warning: Value stored to 'p'
+is never read [deadcode.DeadStores]
+drivers/soc/fsl/dpio/qbman-portal.c:820:3: warning: Value stored to 'p'
+is never read [deadcode.DeadStores]
 
-Regards,
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/soc/fsl/dpio/qbman-portal.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-	Hans
-
-> 
-> Best Regards
-> Shengjiu Wang
-> 
->> Regards,
->>
->>         Hans
->>
->>>
->>> Thanks,
->>> Mauro
->>
+diff --git a/drivers/soc/fsl/dpio/qbman-portal.c b/drivers/soc/fsl/dpio/qbman-portal.c
+index 0a3fb6c115f4..03cc374f11d7 100644
+--- a/drivers/soc/fsl/dpio/qbman-portal.c
++++ b/drivers/soc/fsl/dpio/qbman-portal.c
+@@ -659,7 +659,6 @@ int qbman_swp_enqueue_multiple_direct(struct qbman_swp *s,
+ 
+ 	if (!s->eqcr.available) {
+ 		eqcr_ci = s->eqcr.ci;
+-		p = s->addr_cena + QBMAN_CENA_SWP_EQCR_CI;
+ 		s->eqcr.ci = qbman_read_register(s, QBMAN_CINH_SWP_EQCR_CI);
+ 		s->eqcr.ci &= full_mask;
+ 
+@@ -817,7 +816,6 @@ int qbman_swp_enqueue_multiple_desc_direct(struct qbman_swp *s,
+ 	full_mask = s->eqcr.pi_ci_mask;
+ 	if (!s->eqcr.available) {
+ 		eqcr_ci = s->eqcr.ci;
+-		p = s->addr_cena + QBMAN_CENA_SWP_EQCR_CI;
+ 		s->eqcr.ci = qbman_read_register(s, QBMAN_CINH_SWP_EQCR_CI);
+ 		s->eqcr.available = qm_cyc_diff(s->eqcr.pi_ring_size,
+ 					eqcr_ci, s->eqcr.ci);
+-- 
+2.39.2
 
