@@ -1,52 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5E37861D04
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 20:53:36 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=uWxPu15j;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD807861D32
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 21:02:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ThLKp2j2Fz3vb8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Feb 2024 06:53:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ThLWx579pz3vbb
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Feb 2024 07:02:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=uWxPu15j;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.181; helo=out-181.mta1.migadu.com; envelope-from=kent.overstreet@linux.dev; receiver=lists.ozlabs.org)
-X-Greylist: delayed 69 seconds by postgrey-1.37 at boromir; Sat, 24 Feb 2024 06:52:51 AEDT
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=srs0=wkxo=ka=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ThLJz0G24z3f0P
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Feb 2024 06:52:50 +1100 (AEDT)
-Date: Fri, 23 Feb 2024 14:50:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1708717865;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G9nEEkfFGj8WFYt7yvHDxsoouHxXt+6aC7E5xhimc9A=;
-	b=uWxPu15jxbBy5Qv8sUU4/FKz9vhwMVdq24ex7AxwdBDTkpdTty7N4oFt5H+WpItVhn5h2q
-	QhDNbk6QMiXNrrlkBl7kMfsoV81d2NhOFvXWC0sVWqoHMtRJN5Tm42Zzvb2Qci9w4QIV6Q
-	wpkGE4FwRbb7rZDimmKQkBl02FYhYXk=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Steven Rostedt <rostedt@goodmis.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ThLWR3WzQz3dlY;
+	Sat, 24 Feb 2024 07:01:55 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 8B5A9CE2E7B;
+	Fri, 23 Feb 2024 20:01:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C71C433F1;
+	Fri, 23 Feb 2024 20:01:46 +0000 (UTC)
+Date: Fri, 23 Feb 2024 15:03:39 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Kent Overstreet <kent.overstreet@linux.dev>
 Subject: Re: [FYI][PATCH] tracing/treewide: Remove second parameter of
  __assign_str()
-Message-ID: <qsksxrdinia3cxr52tfe4p3pafsy4biktnodlfn4vyzud73p2j@6ycnhrhzwsv6>
+Message-ID: <20240223150339.2249bc95@gandalf.local.home>
+In-Reply-To: <qsksxrdinia3cxr52tfe4p3pafsy4biktnodlfn4vyzud73p2j@6ycnhrhzwsv6>
 References: <20240223125634.2888c973@gandalf.local.home>
- <0aed6cf2-17ae-45aa-b7ff-03da932ea4e0@quicinc.com>
- <20240223134653.524a5c9e@gandalf.local.home>
+	<0aed6cf2-17ae-45aa-b7ff-03da932ea4e0@quicinc.com>
+	<20240223134653.524a5c9e@gandalf.local.home>
+	<qsksxrdinia3cxr52tfe4p3pafsy4biktnodlfn4vyzud73p2j@6ycnhrhzwsv6>
+X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240223134653.524a5c9e@gandalf.local.home>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,45 +52,49 @@ Cc: linux-hyperv@vger.kernel.org, kvm@vger.kernel.org, dri-devel@lists.freedeskt
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Feb 23, 2024 at 01:46:53PM -0500, Steven Rostedt wrote:
-> On Fri, 23 Feb 2024 10:30:45 -0800
-> Jeff Johnson <quic_jjohnson@quicinc.com> wrote:
-> 
-> > On 2/23/2024 9:56 AM, Steven Rostedt wrote:
-> > > From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
-> > > 
-> > > [
-> > >    This is a treewide change. I will likely re-create this patch again in
-> > >    the second week of the merge window of v6.9 and submit it then. Hoping
-> > >    to keep the conflicts that it will cause to a minimum.
-> > > ]
-> > > 
-> > > With the rework of how the __string() handles dynamic strings where it
-> > > saves off the source string in field in the helper structure[1], the
-> > > assignment of that value to the trace event field is stored in the helper
-> > > value and does not need to be passed in again.  
-> > 
-> > Just curious if this could be done piecemeal by first changing the
-> > macros to be variadic macros which allows you to ignore the extra
-> > argument. The callers could then be modified in their separate trees.
-> > And then once all the callers have be merged, the macros could be
-> > changed to no longer be variadic.
-> 
-> I weighed doing that, but I think ripping off the band-aid is a better
-> approach. One thing I found is that leaving unused parameters in the macros
-> can cause bugs itself. I found one case doing my clean up, where an unused
-> parameter in one of the macros was bogus, and when I made it a used
-> parameter, it broke the build.
-> 
-> I think for tree-wide changes, the preferred approach is to do one big
-> patch at once. And since this only affects TRACE_EVENT() macros, it
-> hopefully would not be too much of a burden (although out of tree users may
-> suffer from this, but do we care?)
+On Fri, 23 Feb 2024 14:50:49 -0500
+Kent Overstreet <kent.overstreet@linux.dev> wrote:
 
-Agreed on doing it all at once, it'll be way less spam for people to
-deal with.
+> Tangentially related though, what would make me really happy is if we
+> could create the string with in the TP__fast_assign() section. I have to
+> have a bunch of annoying wrappers right now because the string length
+> has to be known when we invoke the tracepoint.
 
-Tangentially related though, what would make me really happy is if we
-could create the string with in the TP__fast_assign() section. I have to
-have a bunch of annoying wrappers right now because the string length
-has to be known when we invoke the tracepoint.
+You can use __string_len() to determine the string length in the tracepoint
+(which is executed in the TP_fast_assign() section).
+
+My clean up patches will make __assign_str_len() obsolete too (I'm working
+on them now), and you can just use __assign_str().
+
+I noticed that I don't have a string_len example in the sample code and I'm
+actually writing it now.
+
+// cutting out everything else:
+
+TRACE_EVENT(foo_bar,
+
+	TP_PROTO(const char *foo, int bar),
+
+	TP_ARGS(foo, bar),
+
+	TP_STRUCT__entry(
+		__string_len(	lstr,	foo,	bar < strlen(foo) ? bar : strlen(foo) )
+	),
+
+	TP_fast_assign(
+		__assign_str(lstr, foo);
+
+// Note, the above is with my updates, without them, you need to duplicate the logic
+
+//		__assign_str_len(lstr, foo, bar < strlen(foo) ? bar : strlen(foo));
+	),
+
+	TP_printk("%s", __get_str(lstr))
+);
+
+
+The above will allocate "bar < strlen(foo) ? bar : strlen(foo)" size on the
+ring buffer. As the size is already stored, my clean up code uses that
+instead of requiring duplicating the logic again.
+
+-- Steve
