@@ -2,70 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34455862322
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Feb 2024 07:56:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FADA862337
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Feb 2024 07:57:33 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=r9K82lQ0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=bUTUq6+5;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Thd2w6jCKz3vd6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Feb 2024 17:56:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Thd3v0fLKz3vb6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Feb 2024 17:57:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=r9K82lQ0;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=bUTUq6+5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::234; helo=mail-oi1-x234.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::52e; helo=mail-pg1-x52e.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Thd0j2RrBz3dng
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Feb 2024 17:54:45 +1100 (AEDT)
-Received: by mail-oi1-x234.google.com with SMTP id 5614622812f47-3bbbc6bcc78so1054026b6e.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Feb 2024 22:54:44 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Thd0s5ZnDz3vYB
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Feb 2024 17:54:53 +1100 (AEDT)
+Received: by mail-pg1-x52e.google.com with SMTP id 41be03b00d2f7-5ca29c131ebso1233767a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Feb 2024 22:54:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1708757682; x=1709362482; darn=lists.ozlabs.org;
+        d=linaro.org; s=google; t=1708757691; x=1709362491; darn=lists.ozlabs.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=PrRq1/AvWfoH6zIGVeIk1jFST0MUBywtAymy8iGNyNo=;
-        b=r9K82lQ0/bUK4P7mNjVNcKvXo/SzR91Yq9rghgn7qKYyPNvvAQR8h4sXhFFZkraRf0
-         UqAAV50F3HlH8rdI1umaX9CDZfO6YbCvV23L32wCrR1qTaAfJLKaKG7KRUfO8nCV66za
-         05Iyql3V09AvzEiWlpfje8QNlRB5hApiLh9P3ld01qqrZRYulEG7T+GqV1r07aQDVbeb
-         VJxSxL9cNDOdSJRIZUKlg5BIu1LZW2IA8zYwo3O4sD5IjSlNetFm+RWD53mBrxh7/SSZ
-         JhKj4RrjDQq81FpfNAYWyylEgbkrwwH8qEEkEXkctfl1kF6Ji46N2FY9/BMFG5YEZ1sK
-         5v8Q==
+        bh=Gm7BOWCebEzto6pQtqllLk3GIjiAQNALfrviMiZ/ywU=;
+        b=bUTUq6+5SdRS7ahtk65XNLHL8XbsfTkiOg0gPD/n3Y/e16bQOB4WAnEwA0aAJu39uk
+         rM0ULbl/DBkETH92iL5LfA/5wc/tKlPg/e/Ra7L3WB6DfQ3tqxksexBbfP5SmzaDhMl1
+         +8vSapazcx2dGrrqGlu8Skxe0dODQHS8FkCuCdSuR/qslOD52SpV8WCLSDBOn9mTk4Yg
+         QBJHEf/LdskMVCnBi3GaDdrK2zJULfdBlZJjkff3/0uNEhiJ7H3YSMjq8A1jpit0fnb8
+         fgqpbEtSiKVWmPLgmCBp5wx0XPBCyzSlpDrZUqoevnWrIfYif9M04gTH4mPSGcgZy+Hq
+         wcAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708757682; x=1709362482;
+        d=1e100.net; s=20230601; t=1708757691; x=1709362491;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PrRq1/AvWfoH6zIGVeIk1jFST0MUBywtAymy8iGNyNo=;
-        b=mLT4ZQuZIjq2VK41ENa9TT9eaVuLTioSvFTpVHT2Z865ZxQxE5QhrC7jmJdKOl9QrZ
-         cDbYF2oKri+hzHifzE3lMSeJU7mP9xZ3HPPezNN6l/6yyi+QB7UASITRRpGY5UHUr+CZ
-         f8FbTUA9B5PB6QsDojIZE0JonvP9xUooaSnCLcjgdf8idA6/HT4kKuHRjsmYLzc7E9tv
-         L9gEahWxvVx1o+4zAW92ipOJTYlmcwJ+Nggnc+nrfzBt1WY2z8iPHdhvq+Ii8/CEnpSP
-         FXcFI6rWRzgqH8u8PxXPmhx+m6kUWI/IPt/NvvIv15Qhr9jBtwfdwvJQpXD4Odghi5J2
-         +DSw==
-X-Forwarded-Encrypted: i=1; AJvYcCViF/Ra+v1l3JYLHjh9PIc1UD7TEokyC5/Hz1QvKXswhpHAIUkH5Z8SAAHbEMIglszD8nfM9H9bhCAAGQ6bMj6gtvU8XQlCw6vQrYVPWw==
-X-Gm-Message-State: AOJu0YwHq0r1VzPWX/ZXKmT5Yz3i7+r6LFokMuvemKBqdfOBvEx+R9aY
-	tEPyQu20ayV/fMHY4MI9nIbuXzkj9pCEEXSahTn9mR9Xnfy+12yPupMrqtZnmA==
-X-Google-Smtp-Source: AGHT+IFibM5pzclLgfVnWQ4q04YXZMJ7dUMTwZy1iwdyXNkxIyosF3kkQlye3pmzcpuyS0AlJbR0Dw==
-X-Received: by 2002:a05:6808:2a8d:b0:3c1:823c:b1bd with SMTP id fc13-20020a0568082a8d00b003c1823cb1bdmr1832555oib.45.1708757682265;
-        Fri, 23 Feb 2024 22:54:42 -0800 (PST)
+        bh=Gm7BOWCebEzto6pQtqllLk3GIjiAQNALfrviMiZ/ywU=;
+        b=l3VKEcylsaTbZJ0+r6EBzbM5aVjQaSfjDQYMmG3t4EAe7L9m0Sam8B/zLF8VC/bC6f
+         3AOBjNsTUOW89uIY1CvNWkMPg3BLl2G76M8cYsT/ukUQnuR4lDPV74ouCbiyD2okoPE+
+         N1PHWT09SoFiQhjDTPHLVSxA0D8lTKK8ignzttkmWk5L8E6K6VZETgWXCx2OEHnBDxNK
+         G0o+NZaDVwcwqu2Za3MDAXgLZb6vB25Skow9dsUV2KsEn4Um4OWdJR6S8HG9rLEGuz4L
+         2CeJf9XAwK/NuJmcIRE2otvAKda0CmoyhBR7M5wrS2Ax2ZAuJErq/K/DzeRtw2bP/M9a
+         cf4g==
+X-Forwarded-Encrypted: i=1; AJvYcCUgvPe+yWec0tMQY3AK6I+Ei7SDhQeeMSr6o7XSw8qDwrRXwwGLtexe7EALMTVoBAf8vuwwraGcLbiUlEkI0Ke0GaqGEcY4uIwfi8u2Pg==
+X-Gm-Message-State: AOJu0YwPmeTE2YQymdfk3Fs/yC37W/kLq0U53d0kmTFjvAET+erIeoCj
+	N1Q8qh8TbD8ttTA94wO34ty3Vo6vfKQlP87vTfDpxOa1P8jq1VhWoVEN3mmC9w==
+X-Google-Smtp-Source: AGHT+IHWxIkDhPJyduioril8hiji11X7d7va4hiErOPNmMZew2cA9RMTzz/cgWgTY7GV8ZXijlFlZQ==
+X-Received: by 2002:a05:6a20:c995:b0:1a0:d04a:8485 with SMTP id gy21-20020a056a20c99500b001a0d04a8485mr2121214pzb.22.1708757691194;
+        Fri, 23 Feb 2024 22:54:51 -0800 (PST)
 Received: from [127.0.1.1] ([120.138.12.46])
-        by smtp.gmail.com with ESMTPSA id r5-20020aa78b85000000b006e4cb7f4393sm502932pfd.165.2024.02.23.22.54.33
+        by smtp.gmail.com with ESMTPSA id r5-20020aa78b85000000b006e4cb7f4393sm502932pfd.165.2024.02.23.22.54.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Feb 2024 22:54:41 -0800 (PST)
+        Fri, 23 Feb 2024 22:54:50 -0800 (PST)
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Date: Sat, 24 Feb 2024 12:24:08 +0530
-Subject: [PATCH v8 02/10] PCI: dwc: ep: Rename dw_pcie_ep_exit() to
- dw_pcie_ep_deinit()
+Date: Sat, 24 Feb 2024 12:24:09 +0530
+Subject: [PATCH v8 03/10] PCI: dwc: ep: Introduce dw_pcie_ep_cleanup() API
+ for drivers supporting PERST#
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240224-pci-dbi-rework-v8-2-64c7fd0cfe64@linaro.org>
+Message-Id: <20240224-pci-dbi-rework-v8-3-64c7fd0cfe64@linaro.org>
 References: <20240224-pci-dbi-rework-v8-0-64c7fd0cfe64@linaro.org>
 In-Reply-To: <20240224-pci-dbi-rework-v8-0-64c7fd0cfe64@linaro.org>
 To: Jingoo Han <jingoohan1@gmail.com>, 
@@ -89,16 +89,16 @@ To: Jingoo Han <jingoohan1@gmail.com>,
  Masami Hiramatsu <mhiramat@kernel.org>, 
  Kishon Vijay Abraham I <kishon@kernel.org>
 X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2918;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3640;
  i=manivannan.sadhasivam@linaro.org; h=from:subject:message-id;
- bh=CvKJcI2GoHpQh51Boj5towsTve0nBMUjEP2Ds5TPKjI=;
- b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBl2ZKWG4loyEX1PEXJOdKId2sdqeLbJUkwZLok2
- Moo1uGlljqJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCZdmSlgAKCRBVnxHm/pHO
- 9brkCACCV3ENWKeo83c0pKegS+iCQkTVUm7uxJuMA4icLm9vKffetGG+G1medZQ6vUtnp+xYgM8
- jtr/r51Dpdvf/+tKOfvW4IfFsHykbamiHO0EN5/hNph48t8h4ieskst7PY1fFBtS4np9OCr4uok
- 2H1aAYLQ7au5Qj39kSKXI1o1cG5U7d/0Y+Y7Ybq9nXIAJxMG4KlVOd5yQBd3U8HhJ9kkQ8mK6S5
- V2pdxgQ4+hLFmuLuSKFaHvhqXoBqmlzWvOkfrjprSZcR8R9suy6B2U9nEIDPsEj8y+xWBmaOevz
- tv7BLVrXYcdUd9VpmP7rtLOYndcgCDhDE45aRvv3dp1KZXTa
+ bh=AMzVel+mzNPZDu5rNOshxFrNbNGmTb5cvr1qXK6YD5c=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBl2ZKWN5s7yp9FVQGAuReNe7g8yseCdV9BNHSCP
+ Zrav+1vZ/2JATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCZdmSlgAKCRBVnxHm/pHO
+ 9UFMB/9QN232kQi2reuocmy2tE//cMRFTozpfDoIA92osFCOoy0Cer23LiZEAcJeSGrpC5C49sC
+ mgA1ZnNS7iSCH4PCISxuQiI86G73z/enEIpqSklDziO4mv0OyumLih98yNqum7HVp67XWtw3Vm9
+ fGzA5s/htyFJnXZvvsTAIRUlBSyCkENUFLZZjR9X9iDCUeUWzWxKXHC+0E066ZOGDZdEuohlxNg
+ TB5ZqF4hSHZaz18Uai4MAw0p+JFaIfZIfAcZwz67LBb5w4MFCIagUxuZfhWlQJ9M5tV6rpAzERJ
+ tdNfrJDsEPY/efpFhDlwrXfYiKuRtY+jzlQqn6wXjmIuQe5/
 X-Developer-Key: i=manivannan.sadhasivam@linaro.org; a=openpgp;
  fpr=C668AEC3C3188E4C611465E7488550E901166008
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -116,75 +116,98 @@ Cc: linux-pci@vger.kernel.org, Manivannan Sadhasivam <manivannan.sadhasivam@lina
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-dw_pcie_ep_exit() API is undoing what the dw_pcie_ep_init() API has done
-already (at least partly). But the API name dw_pcie_ep_exit() is not quite
-reflecting that. So let's rename it to dw_pcie_ep_deinit() to make the
-purpose of this API clear. This also aligns with the DWC host driver.
+For DWC glue drivers supporting PERST# (currently Qcom and Tegra194), some
+of the DWC resources like eDMA should be cleaned up during the PERST#
+assert time.
 
+So let's introduce a dw_pcie_ep_cleanup() API that could be called by these
+drivers to cleanup the DWC specific resources. Currently, it just removes
+eDMA.
+
+Reported-by: Niklas Cassel <cassel@kernel.org>
+Closes: https://lore.kernel.org/linux-pci/ZWYmX8Y%2F7Q9WMxES@x1-carbon
 Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c | 4 ++--
- drivers/pci/controller/dwc/pcie-designware.h    | 4 ++--
- drivers/pci/controller/dwc/pcie-rcar-gen4.c     | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/pci/controller/dwc/pcie-designware-ep.c | 11 +++++++++--
+ drivers/pci/controller/dwc/pcie-designware.h    |  5 +++++
+ drivers/pci/controller/dwc/pcie-qcom-ep.c       |  1 +
+ drivers/pci/controller/dwc/pcie-tegra194.c      |  2 ++
+ 4 files changed, 17 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index d305f9b4cdfe..2b11290aab4c 100644
+index 2b11290aab4c..1205bfba8310 100644
 --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
 +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -564,7 +564,7 @@ int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
+@@ -564,12 +564,19 @@ int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
  	return 0;
  }
  
--void dw_pcie_ep_exit(struct dw_pcie_ep *ep)
-+void dw_pcie_ep_deinit(struct dw_pcie_ep *ep)
+-void dw_pcie_ep_deinit(struct dw_pcie_ep *ep)
++void dw_pcie_ep_cleanup(struct dw_pcie_ep *ep)
  {
  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
- 	struct pci_epc *epc = ep->epc;
-@@ -576,7 +576,7 @@ void dw_pcie_ep_exit(struct dw_pcie_ep *ep)
+-	struct pci_epc *epc = ep->epc;
  
- 	pci_epc_mem_exit(epc);
- }
--EXPORT_SYMBOL_GPL(dw_pcie_ep_exit);
-+EXPORT_SYMBOL_GPL(dw_pcie_ep_deinit);
+ 	dw_pcie_edma_remove(pci);
++}
++EXPORT_SYMBOL_GPL(dw_pcie_ep_cleanup);
++
++void dw_pcie_ep_deinit(struct dw_pcie_ep *ep)
++{
++	struct pci_epc *epc = ep->epc;
++
++	dw_pcie_ep_cleanup(ep);
  
- static unsigned int dw_pcie_ep_find_ext_capability(struct dw_pcie *pci, int cap)
- {
+ 	pci_epc_mem_free_addr(epc, ep->msi_mem_phys, ep->msi_mem,
+ 			      epc->mem->window.page_size);
 diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-index ab7431a37209..61465203bb60 100644
+index 61465203bb60..351d2fe3ea4d 100644
 --- a/drivers/pci/controller/dwc/pcie-designware.h
 +++ b/drivers/pci/controller/dwc/pcie-designware.h
-@@ -671,7 +671,7 @@ void dw_pcie_ep_linkup(struct dw_pcie_ep *ep);
- int dw_pcie_ep_init(struct dw_pcie_ep *ep);
+@@ -672,6 +672,7 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep);
  int dw_pcie_ep_init_complete(struct dw_pcie_ep *ep);
  void dw_pcie_ep_init_notify(struct dw_pcie_ep *ep);
--void dw_pcie_ep_exit(struct dw_pcie_ep *ep);
-+void dw_pcie_ep_deinit(struct dw_pcie_ep *ep);
+ void dw_pcie_ep_deinit(struct dw_pcie_ep *ep);
++void dw_pcie_ep_cleanup(struct dw_pcie_ep *ep);
  int dw_pcie_ep_raise_intx_irq(struct dw_pcie_ep *ep, u8 func_no);
  int dw_pcie_ep_raise_msi_irq(struct dw_pcie_ep *ep, u8 func_no,
  			     u8 interrupt_num);
-@@ -701,7 +701,7 @@ static inline void dw_pcie_ep_init_notify(struct dw_pcie_ep *ep)
+@@ -705,6 +706,10 @@ static inline void dw_pcie_ep_deinit(struct dw_pcie_ep *ep)
  {
  }
  
--static inline void dw_pcie_ep_exit(struct dw_pcie_ep *ep)
-+static inline void dw_pcie_ep_deinit(struct dw_pcie_ep *ep)
++static inline void dw_pcie_ep_cleanup(struct dw_pcie_ep *ep)
++{
++}
++
+ static inline int dw_pcie_ep_raise_intx_irq(struct dw_pcie_ep *ep, u8 func_no)
  {
+ 	return 0;
+diff --git a/drivers/pci/controller/dwc/pcie-qcom-ep.c b/drivers/pci/controller/dwc/pcie-qcom-ep.c
+index 36e5e80cd22f..59b1c0110288 100644
+--- a/drivers/pci/controller/dwc/pcie-qcom-ep.c
++++ b/drivers/pci/controller/dwc/pcie-qcom-ep.c
+@@ -507,6 +507,7 @@ static void qcom_pcie_perst_assert(struct dw_pcie *pci)
+ 		return;
+ 	}
+ 
++	dw_pcie_ep_cleanup(&pci->ep);
+ 	qcom_pcie_disable_resources(pcie_ep);
+ 	pcie_ep->link_status = QCOM_PCIE_EP_LINK_DISABLED;
  }
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index 7afa9e9aabe2..68bfeed3429b 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -1715,6 +1715,8 @@ static void pex_ep_event_pex_rst_assert(struct tegra_pcie_dw *pcie)
+ 	if (ret)
+ 		dev_err(pcie->dev, "Failed to go Detect state: %d\n", ret);
  
-diff --git a/drivers/pci/controller/dwc/pcie-rcar-gen4.c b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-index ac97d594ea47..9d9d22e367bb 100644
---- a/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-+++ b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-@@ -430,7 +430,7 @@ static int rcar_gen4_add_dw_pcie_ep(struct rcar_gen4_pcie *rcar)
++	dw_pcie_ep_cleanup(&pcie->pci.ep);
++
+ 	reset_control_assert(pcie->core_rst);
  
- static void rcar_gen4_remove_dw_pcie_ep(struct rcar_gen4_pcie *rcar)
- {
--	dw_pcie_ep_exit(&rcar->dw.ep);
-+	dw_pcie_ep_deinit(&rcar->dw.ep);
- 	rcar_gen4_pcie_ep_deinit(rcar);
- }
- 
+ 	tegra_pcie_disable_phy(pcie);
 
 -- 
 2.25.1
