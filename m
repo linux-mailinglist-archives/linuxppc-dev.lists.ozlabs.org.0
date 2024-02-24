@@ -1,51 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFB8A861F4A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Feb 2024 22:58:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33F8786223A
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Feb 2024 03:11:20 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=H+lI+Rj8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lhp21QS+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ThP615z66z3vZ5
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Feb 2024 08:58:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ThVjf142Dz3vXY
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Feb 2024 13:11:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=H+lI+Rj8;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lhp21QS+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::ba; helo=out-186.mta1.migadu.com; envelope-from=oliver.upton@linux.dev; receiver=lists.ozlabs.org)
-X-Greylist: delayed 356 seconds by postgrey-1.37 at boromir; Sat, 24 Feb 2024 08:57:53 AEDT
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [IPv6:2001:41d0:203:375::ba])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ThP5F5pblz3dTm
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Feb 2024 08:57:53 +1100 (AEDT)
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1708725085;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jUtHteZepb4z50jTNHYGGTGy3lyvRj0SCUA4OkqA8eU=;
-	b=H+lI+Rj8l5nTGp5sBTzGuzdI5khJ9NsvrJ3HNWZCOgT40yuj3u48TDv3nLLpO2T8PtfRp/
-	YQZBCLCcnw3Pnx5Pqvq7c0TEDoBv1IPwSEDUGIz5MhmRHrQ1Yb9dgp9qA5DNgz/i/+QCeL
-	QNq6wIZM3TtiE5phWqnapfnpWDCsG9g=
-From: Oliver Upton <oliver.upton@linux.dev>
-To: Oliver Upton <oliver.upton@linux.dev>,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH] KVM: Get rid of return value from kvm_arch_create_vm_debugfs()
-Date: Fri, 23 Feb 2024 21:51:12 +0000
-Message-ID: <170872506304.206263.3199862434632781431.b4-ty@linux.dev>
-In-Reply-To: <20240216155941.2029458-1-oliver.upton@linux.dev>
-References: <20240216155941.2029458-1-oliver.upton@linux.dev>
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ThVhr4PZlz3cDg
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Feb 2024 13:10:36 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id B59B7CE2F76;
+	Sat, 24 Feb 2024 02:10:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 981C7C433B1;
+	Sat, 24 Feb 2024 02:10:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708740629;
+	bh=e3awmqg9DuvQucPvgIH+uPzPjXjLUPXMLUcPP7URmYg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=lhp21QS+4BnuICE7ZhAiXzVD7eNcy3Pn9GzyE1nC+PEBrbKOX6WF7vIiTwORgjBBs
+	 tKV9PgJNJv5IbKvn2T4MHkrfIqwhAt6Kdgi0aimFXwOk/daPfaXJv1bg/Cimhbo2JT
+	 wVD4PBNg06HRejU07WYitoedfe09/QQ+s9EqC8s5XxxYRk69QGvL/FMjhZRNF2uowb
+	 8kngcfSgcbZq//M+HvpQ08LVkTH7o0P8xOL2r44D7g5yLmmL7S2zh17/5vbhd2cc+2
+	 DuLQxcL4rqgL+0BRiKnrlZfjtTh2Sk4KyMkr11t+WjcTR0n/aeHXF+xBAi93mW5kwl
+	 3Je2Ttjz5aDhw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 74E20C59A4C;
+	Sat, 24 Feb 2024 02:10:29 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Subject: Re: [PATCH net-next] ps3/gelic: minor Kernel Doc corrections
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id:  <170874062946.5601.16694725773526396855.git-patchwork-notify@kernel.org>
+Date: Sat, 24 Feb 2024 02:10:29 +0000
+References: <20240221-ps3-gelic-kdoc-v1-1-7629216d1340@kernel.org>
+In-Reply-To: <20240221-ps3-gelic-kdoc-v1-1-7629216d1340@kernel.org>
+To: Simon Horman <horms@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,27 +61,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Marc Zyngier <maz@kernel.org>, Sean Christopherson <seanjc@google.com>, Sebastian Ene <sebastianene@google.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, aneesh.kumar@kernel.org, naveen.n.rao@linux.ibm.com, kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: geoff@infradead.org, npiggin@gmail.com, aneesh.kumar@kernel.org, edumazet@google.com, netdev@vger.kernel.org, naveen.n.rao@linux.ibm.com, kuba@kernel.org, pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 16 Feb 2024 15:59:41 +0000, Oliver Upton wrote:
-> The general expectation with debugfs is that any initialization failure
-> is nonfatal. Nevertheless, kvm_arch_create_vm_debugfs() allows
-> implementations to return an error and kvm_create_vm_debugfs() allows
-> that to fail VM creation.
+Hello:
+
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed, 21 Feb 2024 17:46:21 +0000 you wrote:
+> * Update the Kernel Doc for gelic_descr_set_tx_cmdstat()
+>   and gelic_net_setup_netdev() so that documented name
+>   and the actual name of the function match.
 > 
-> Change to a void return to discourage architectures from making debugfs
-> failures fatal for the VM. Seems like everyone already had the right
-> idea, as all implementations already return 0 unconditionally.
+> * Move define of GELIC_ALIGN() so that it is no longer
+>   between gelic_alloc_card_net() and it's Kernel Doc.
 > 
 > [...]
 
-Applied to kvmarm/next, thanks!
+Here is the summary with links:
+  - [net-next] ps3/gelic: minor Kernel Doc corrections
+    https://git.kernel.org/netdev/net-next/c/3e596599372e
 
-[1/1] KVM: Get rid of return value from kvm_arch_create_vm_debugfs()
-      https://git.kernel.org/kvmarm/kvmarm/c/284851ee5cae
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
---
-Best,
-Oliver
+
