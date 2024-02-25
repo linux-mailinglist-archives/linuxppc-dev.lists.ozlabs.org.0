@@ -2,54 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DAB8862883
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Feb 2024 00:53:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 389CC862893
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Feb 2024 01:35:56 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=QJl9jSue;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=TP4xKcBB;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tj3cZ5kRPz3dWF
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Feb 2024 10:53:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tj4Y605lCz3vYQ
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Feb 2024 11:35:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=QJl9jSue;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=TP4xKcBB;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tj3bh352rz3bqB
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Feb 2024 10:53:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tj4XN3KhRz3bnv
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Feb 2024 11:35:16 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1708818781;
-	bh=1nyHqj0QOBXadNL1hyU/ColE1K5lSLjIwFZkoy6rtag=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=QJl9jSuexI8C7+aTFRi4Uw3JVm/OzPKx0XyDV4jzYQ5bpBMXjczt1ClZljxOfF4Ik
-	 srsogx7TfrD/T0zSjTW1cbU5tAitE6G+eqhAuNYBxrpbqSMfigcsr5KqSsBJng9W8J
-	 0+4Wq2O6c/6wyMdoJ6futCIzZC7xIg9YLGsEZegDUZAFH5I6zApLSSEp0D0L4ETpEr
-	 l2YNvJgsngE7EmCM7kLJT5IRXDbhZLBEuwLzUhbH4R6362It5/InBWPKnnXudXmOdP
-	 5bgDUiVXJ4ilpMy5qr2hYBR8mrzDhk6lLExiZYOh2x3JcX5hG2gsOFtuuWqN2nm4l7
-	 8UnXfG7bI+vNQ==
+	s=201909; t=1708821315;
+	bh=tLvA27IywCqmPJdmZJrtx88ptnr/tpk26DDMKilY+sg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=TP4xKcBBXil+pgij8AERokUut70iOOLjx59dCdVtoSuxu8fXDPZzFDKAD5Io0LvCN
+	 iPNap4A15QAWQpUQ3FPRrslmaDkRwABIC56eDHTJn4QviAUfv1r9d5QzmbOVqybGbT
+	 N3fSAlRJO7GZ/v6r+ICjVMHQOTYa7lz30nPxs9Pym8m7mV3ZR2/AmaHgOGyN+7X+6x
+	 afxWpRsRE1yoW6SUE0zHJu3ttll0lztp+Wfcw2IAgKzJO5RvPv8gHX3uKomEnxchMp
+	 xBoJKetVL6fn7U7jX1CrwI5XAWIDqjhX1sv/lnPgZqDnpOU8giL0+dQlm6akfKGaJV
+	 Xlx+n2dG19a5w==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Tj3bc4br7z4wc6;
-	Sun, 25 Feb 2024 10:52:58 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Tj4XL6BNkz4wcT;
+	Sun, 25 Feb 2024 11:35:14 +1100 (AEDT)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v1 4/5] powerpc: Remove cpu-as-y completely
-In-Reply-To: <94d19157-a343-425f-906f-546b1f4def6f@csgroup.eu>
-References: <38a8d765ed9149bc6b5484a7142e3bc59ffa3b1a.1671475543.git.christophe.leroy@csgroup.eu>
- <9e43ad8b173c2fdb540e2555a8ba3e375419f3cf.1671475543.git.christophe.leroy@csgroup.eu>
- <873570zxio.fsf@mpe.ellerman.id.au>
- <94d19157-a343-425f-906f-546b1f4def6f@csgroup.eu>
-Date: Sun, 25 Feb 2024 10:52:58 +1100
-Message-ID: <87msrpa085.fsf@mail.lhotse>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.8-4 tag
+Date: Sun, 25 Feb 2024 11:35:14 +1100
+Message-ID: <87jzmt9y9p.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,42 +55,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "jbglaw@lug-owl.de" <jbglaw@lug-owl.de>
+Cc: gbatra@linux.ibm.com, amachhiw@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 20/02/2023 =C3=A0 07:00, Michael Ellerman a =C3=A9crit=C2=A0:
->> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->>> cpu-as-y is there to force assembler building options.
->>> But there is no need for that. Gcc is passed the necessary
->>> options and it automatically pass the appropriate option to
->>> GAS.
->>>
->>> GCC is given -maltivec when relevant, so no need
->>> for -Wa,-maltivec in addition
->>>
->>> And -Wa,-many is wrong as it will hide innapropriate
->>> instructions. Better to detect them and handle them on a
->>> case by case basis.
->>> -Wa,-many was added by commit 960e30029863 ("powerpc/Makefile:
->>> Fix PPC_BOOK3S_64 ASFLAGS") in order to fix an issue with
->>> clang and the passed -Wa,-mpower4 option. But we have now
->>> removed it expecting the compiler to automatically pass the
->>> proper options and instructions based on -mcpu=3Dpower4
->>=20
->> I wanted to apply this one, but it caused a lot of breakage for big
->> endian Book3S-64 builds - where we build for power4 but have lots of
->> code that uses >=3D power5 instructions.
->>=20
->> I'll try and get those all fixed and pick this up for the next merge
->> window.
->
-> ping ?
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-Brutal :)
+Hi Linus,
 
-There's still a few issues, I have patches for most of them I think.
-Will post this week.
+Please pull some more powerpc fixes for 6.8:
 
-cheers
+The following changes since commit 0846dd77c8349ec92ca0079c9c71d130f34cb192:
+
+  powerpc/iommu: Fix the missing iommu_group_put() during platform domain attach (2024-02-14 23:59:23 +1100)
+
+are available in the git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.8-4
+
+for you to fetch changes up to 20c8c4dafe93e82441583e93bd68c0d256d7bed4:
+
+  KVM: PPC: Book3S HV: Fix L2 guest reboot failure due to empty 'arch_compat' (2024-02-20 22:32:20 +1100)
+
+- ------------------------------------------------------------------
+powerpc fixes for 6.8 #4
+
+ - Fix a crash when hot adding a PCI device to an LPAR since recent changes.
+
+ - Fix nested KVM level-2 guest reboot failure due to empty 'arch_compat'.
+
+Thanks to: Amit Machhiwal, Aneesh Kumar K.V (IBM), Brian King, Gaurav Batra,
+Vaibhav Jain.
+
+- ------------------------------------------------------------------
+Amit Machhiwal (1):
+      KVM: PPC: Book3S HV: Fix L2 guest reboot failure due to empty 'arch_compat'
+
+Gaurav Batra (1):
+      powerpc/pseries/iommu: DLPAR add doesn't completely initialize pci_controller
+
+
+ arch/powerpc/include/asm/ppc-pci.h         | 10 ++++++++
+ arch/powerpc/kernel/iommu.c                | 23 ++++++++++++-----
+ arch/powerpc/kvm/book3s_hv.c               | 26 ++++++++++++++++++--
+ arch/powerpc/kvm/book3s_hv_nestedv2.c      | 20 +++++++++++++--
+ arch/powerpc/platforms/pseries/pci_dlpar.c |  4 +++
+ 5 files changed, 73 insertions(+), 10 deletions(-)
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmXaiwcACgkQUevqPMjh
+pYA7WQ//X2oU8721KN9VjHyeEjMS31bqBW2VqIOhqONDZu374sbwrOxb0gfGQXGX
+0BQK/YWC96BO1JShfswMYgH8zaya0DzggwFPoFxjsiS9DYY9fR4xX4mR1eFUMJ1a
+Q6yDKulx1pNDe5plLqkSbAAeZoCpJPVfnNgel2YV1BiySxgZd2b/tMgxbrhyUcl4
+ZZSZGQsMLVzOyllGQba0Wu87D9uJYd5mpsy5pRGeSG2nQ0fvEdjUGlQlPqOAJk4D
+w8z4ukBQypFfq+XAjOeJ1Vq8lwTdtvGnSEB1VrHe1sq2jLboVDin0dSWypuOSvx8
+/aO9bzOSiB+JAlGlvECEZJYvlCjXIVHXN5HpbGBI33PB6kNyq67GNmVa3JvsWtmC
+3mzHH2l6PbMmaeunp8c8I/8GvaUZuADfA5dac1FU/2vCLIBYt0UXP2vOsw0dPnLF
+zb4iNEPmweZC/+bVQSY1PMU+ovUqa/nVKcMcU1NAPynQVRzC8kigkvwhsbnPKmhD
+o/6JmX9t7RFVLVDi8AylzATNLf0NyztDBXUE4d1eJk0Eek7EqbEyCaswqUzX2dXA
+42Kq8TjEjBVV7RtanW9/IFGunpRCbyqWXM66R0AXb8lhG9WOnLdE5amlUZD2jgm9
+SmTtef1sPlQJV/CBVTCEV6ASNj7wo5tZpRJSb5ON4fSq6d1nP/U=
+=0p8Z
+-----END PGP SIGNATURE-----
