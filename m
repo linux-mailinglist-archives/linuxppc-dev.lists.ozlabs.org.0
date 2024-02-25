@@ -1,88 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15B61862BCD
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Feb 2024 17:40:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B497862D68
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Feb 2024 23:21:31 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=avh5QqUi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=qsBhLclX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TjTyC6RnZz3dwr
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 03:40:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TjdWY0ThWz3cWB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 09:21:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=avh5QqUi;
+	dkim=pass (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=qsBhLclX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sigma-star.at (client-ip=2a00:1450:4864:20::52a; helo=mail-ed1-x52a.google.com; envelope-from=richard@sigma-star.at; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TjTxV0Zxgz30dn
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 03:39:57 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41PCsqFB026625;
-	Sun, 25 Feb 2024 16:39:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=Alr2FSLYzKuixWhlv26hCq87x1hyAye/urFhf7yXrso=;
- b=avh5QqUiMoDPa7kv6vaHBjKNSDFyZwWYcMxath6IWi6ThyI5uGHXfKaVocGtaZPtsiNJ
- xnr85hXeIxfaHP1j0phEu1IuBg0Yh5eUVIh8Jqcw0vC793XOYxeeCHv5eYYh1b8xF7a4
- KX9OzJUldbbHuF50RBbvqCkj3qbZrcawQCz69KJ4PC2zo+6VZhDAV9UBqaCSOgDkDldY
- yw549QbCJNB+VuHVr12h018xYRCj6BEtkCzcxDy2/frQUeh/f9nahWmMYY1lkocB01BX
- J54iKFVsbs6WdlGeWsbWZ7Ct566LQVBE4xzp62GsOpTrZBHReEb4ZGCwrJROsGfL2XCX GA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wfxgjyfgw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 25 Feb 2024 16:39:40 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41PGdeaC012337;
-	Sun, 25 Feb 2024 16:39:40 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wfxgjyfgt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 25 Feb 2024 16:39:40 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41PDZ9hp024122;
-	Sun, 25 Feb 2024 16:39:39 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3wfw0jucdd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 25 Feb 2024 16:39:39 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41PGdXgA21955102
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 25 Feb 2024 16:39:36 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D465120043;
-	Sun, 25 Feb 2024 16:39:33 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8701D20040;
-	Sun, 25 Feb 2024 16:39:30 +0000 (GMT)
-Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.ibm.com.com (unknown [9.171.84.39])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 25 Feb 2024 16:39:30 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        aneesh.kumar@kernel.org, naveen.n.rao@linux.ibm.com, shuah@kernel.org
-Subject: [RFC PATCH] selftest/powerpc: Add rule file to address sub-folder test fail
-Date: Sun, 25 Feb 2024 22:09:26 +0530
-Message-ID: <20240225163926.264286-1-maddy@linux.ibm.com>
-X-Mailer: git-send-email 2.43.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TjdVh6wQ8z3bnV
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 09:20:41 +1100 (AEDT)
+Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-55a8fd60af0so2945299a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Feb 2024 14:20:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sigma-star.at; s=google; t=1708899634; x=1709504434; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vcAAMbo5fPSeSlUc+G3Ds0RoWmjIC7d5lnGAqCLP7+0=;
+        b=qsBhLclXFBuDPif9VBhxrXiUqjl5lxr4GIifLKyhXj4zvNH3XZoUvR8FCBkfAmfyQs
+         C0nohXRB6DJJPVLyK2eVS76czvptlPMrgvrGOMYTO5Hu5ckCrwdfPxC5StMmiLdKQz6/
+         1fe5tAfxjpUliEAud8ElIW0Jd1zi4v/6FPcUp3N5Z1IqNwA8A1dVcHNmrseMA8CoV4RF
+         hytPi7FnvkviKVSTMWXvE5JM2Anw0Oh/A92uaKgYOV8jxTD8+nmTDEoXubwP/cG2tR/o
+         0AvaCygmzEGQ30mS3KqNcygpw93DXjbWXmuo/0LkEe3w//hM3GbiFxlpj83BMypS0QoL
+         8OXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708899634; x=1709504434;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vcAAMbo5fPSeSlUc+G3Ds0RoWmjIC7d5lnGAqCLP7+0=;
+        b=bhoaxv/uYwMWL332JYW28GyJG/y7X000nBWg/1mbpmKyvIrill8UwQqk2Be1pvnWfw
+         LaRjzargf+7yxzLHPUl/qpABklClTPBXgZHIYgsytNL0CwkS9m9FNvSjcAnbCpwPAmlX
+         /GGmgxtvb7MR1fiCZlxyAYNvt7g2Av5zyqVV4Vc3NtWryJsQPnhtf1dMPQBkUZVTNYKv
+         KKZgMov26uwXE0GgKurLQtgiGG1t6BPogt/KVGD2en5DQYjbaD4kr7bu/EXfXpH8U5hK
+         d96aqXoY8+LpeSY26mmjxtMQ8Wpm1pC+KReWQ0gz/qlx0ri1WMc18SFLJ2H39KERNjGt
+         bmMA==
+X-Forwarded-Encrypted: i=1; AJvYcCVD70qdr1VG0IToyRzbTfAGmCiX1Iy+99CiMD6UYRKOUvOjmNTDiKJ6wwjDcPwzqnzBCbFlPDaNYlgMB/gblKvYvxRxOWHBlGsyKlekUA==
+X-Gm-Message-State: AOJu0Yyek09bZYi4MIGWnAZS303Vng7IpL7PqAFHGva8xjuFr3RFtD83
+	sB81h/izVmoqieri2UVA0oMquLuQ2G0ExF0RWX1TvjwCrNDquSUgn7IM/jaUhhM=
+X-Google-Smtp-Source: AGHT+IG5bJ/fK8sFX2rG8b+VDYEkiBFr76ZXZ4JyDKWlPw45GhDGbdPCrTlUaWepqwiGPkAAQmeUww==
+X-Received: by 2002:a17:906:3c18:b0:a3e:d5ac:9995 with SMTP id h24-20020a1709063c1800b00a3ed5ac9995mr3150880ejg.59.1708899633957;
+        Sun, 25 Feb 2024 14:20:33 -0800 (PST)
+Received: from blindfold.localnet (84-115-239-180.cable.dynamic.surfer.at. [84.115.239.180])
+        by smtp.gmail.com with ESMTPSA id h4-20020a1709062dc400b00a3f355aeb0bsm1828968eji.131.2024.02.25.14.20.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Feb 2024 14:20:33 -0800 (PST)
+From: Richard Weinberger <richard@sigma-star.at>
+To: Mimi Zohar <zohar@linux.ibm.com>, James Bottomley <jejb@linux.ibm.com>, Jarkko Sakkinen <jarkko@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, upstream@sigma-star.at, David Howells <dhowells@redhat.com>
+Subject: Re: [PATCH v5 0/6] DCP as trusted keys backend
+Date: Sun, 25 Feb 2024 23:20:31 +0100
+Message-ID: <1733761.uacIGzncQW@somecomputer>
+In-Reply-To: <47439997.XUcTiDjVJD@somecomputer>
+References: <20231215110639.45522-1-david@sigma-star.at> <7AED262F-9387-446D-B11A-C549C02542F9@sigma-star.at> <47439997.XUcTiDjVJD@somecomputer>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 48zzZjXAcKAznlOdz8lmZq2fXa91lTv3
-X-Proofpoint-GUID: B5D43aV3fZ3BWHePxa2Cel17nRBvLgNk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-25_18,2024-02-23_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- impostorscore=0 phishscore=0 mlxscore=0 malwarescore=0 mlxlogscore=999
- adultscore=0 bulkscore=0 lowpriorityscore=0 suspectscore=0 spamscore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402250133
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,104 +79,136 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org
+Cc: David Gstir <david@sigma-star.at>, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>, Fabio Estevam <festevam@gmail.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Paul Moore <paul@paul-moore.com>, Jonathan Corbet <corbet@lwn.net>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, James Morris <jmorris@namei.org>, NXP Linux Team <linux-imx@nxp.com>, "Serge E. Hallyn" <serge@hallyn.com>, "Paul E. McKenney" <paulmck@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, sigma star Kernel Team <upstream+dcp@sigma-star.at>, "Steven Rostedt \(Google\)" <rostedt@goodmis.org>, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Li Yang <leoyang.li@nxp.com>, "linux-security-module@vger.kernel.org" <linux-security-module@vger.kernel.org>, "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, "ker
+ nel@pengutronix.de" <kernel@pengutronix.de>, Tejun Heo <tj@kernel.org>, "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>, Shawn Guo <shawnguo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When running `make -C powerpc/pmu run_tests` from top level selftests
-directory, currently this error is being reported
+Mimi, James, Jarkko, David,
 
-make: Entering directory '/home/maddy/linux/tools/testing/selftests/powerpc/pmu'
-Makefile:40: warning: overriding recipe for target 'emit_tests'
-../../lib.mk:111: warning: ignoring old recipe for target 'emit_tests'
-gcc -m64    count_instructions.c ../harness.c event.c lib.c ../utils.c loop.S  -o /home/maddy/selftest_output//count_instructions
-In file included from count_instructions.c:13:
-event.h:12:10: fatal error: utils.h: No such file or directory
-   12 | #include "utils.h"
-      |          ^~~~~~~~~
-compilation terminated.
+you remained silent for a whole release cycle.
+Is there anything we can do to get this forward?
 
-This is due to missing of include path in CFLAGS. That is, CFLAGS and
-GIT_VERSION macros are defined in the powerpc/ folder Makefile which
-in this case not involved.
+Thanks,
+//richard
 
-To address the failure incase of executing specific sub-folder test directly,
-a new rule file has been addded by the patch called "include.mk" under
-selftest/powerpc/ folder and is linked to all Makefile of powerpc/pmu
-sub-folders.
+Am Dienstag, 13. Februar 2024, 10:59:56 CET schrieb Richard Weinberger:
+> Am Montag, 5. Februar 2024, 09:39:07 CET schrieb David Gstir:
+> > Hi,
+> >=20
+> > > On 15.12.2023, at 12:06, David Gstir <david@sigma-star.at> wrote:
+> > >=20
+> > > This is a revival of the previous patch set submitted by Richard Wein=
+berger:
+> > > https://lore.kernel.org/linux-integrity/20210614201620.30451-1-richar=
+d@nod.at/
+> > >=20
+> > > v4 is here:
+> > > https://lore.kernel.org/keyrings/20231024162024.51260-1-david@sigma-s=
+tar.at/
+> > >=20
+> > > v4 -> v5:
+> > > - Make Kconfig for trust source check scalable as suggested by Jarkko=
+ Sakkinen
+> > > - Add Acked-By from Herbert Xu to patch #1 - thanks!
+> > > v3 -> v4:
+> > > - Split changes on MAINTAINERS and documentation into dedicated patch=
+es
+> > > - Use more concise wording in commit messages as suggested by Jarkko =
+Sakkinen
+> > > v2 -> v3:
+> > > - Addressed review comments from Jarkko Sakkinen
+> > > v1 -> v2:
+> > > - Revive and rebase to latest version
+> > > - Include review comments from Ahmad Fatoum
+> > >=20
+> > > The Data CoProcessor (DCP) is an IP core built into many NXP SoCs such
+> > > as i.mx6ull.
+> > >=20
+> > > Similar to the CAAM engine used in more powerful SoCs, DCP can AES-
+> > > encrypt/decrypt user data using a unique, never-disclosed,
+> > > device-specific key. Unlike CAAM though, it cannot directly wrap and
+> > > unwrap blobs in hardware. As DCP offers only the bare minimum feature
+> > > set and a blob mechanism needs aid from software. A blob in this case
+> > > is a piece of sensitive data (e.g. a key) that is encrypted and
+> > > authenticated using the device-specific key so that unwrapping can on=
+ly
+> > > be done on the hardware where the blob was wrapped.
+> > >=20
+> > > This patch series adds a DCP based, trusted-key backend and is similar
+> > > in spirit to the one by Ahmad Fatoum [0] that does the same for CAAM.
+> > > It is of interest for similar use cases as the CAAM patch set, but for
+> > > lower end devices, where CAAM is not available.
+> > >=20
+> > > Because constructing and parsing the blob has to happen in software,
+> > > we needed to decide on a blob format and chose the following:
+> > >=20
+> > > struct dcp_blob_fmt {
+> > > __u8 fmt_version;
+> > > __u8 blob_key[AES_KEYSIZE_128];
+> > > __u8 nonce[AES_KEYSIZE_128];
+> > > __le32 payload_len;
+> > > __u8 payload[];
+> > > } __packed;
+> > >=20
+> > > The `fmt_version` is currently 1.
+> > >=20
+> > > The encrypted key is stored in the payload area. It is AES-128-GCM
+> > > encrypted using `blob_key` and `nonce`, GCM auth tag is attached at
+> > > the end of the payload (`payload_len` does not include the size of
+> > > the auth tag).
+> > >=20
+> > > The `blob_key` itself is encrypted in AES-128-ECB mode by DCP using
+> > > the OTP or UNIQUE device key. A new `blob_key` and `nonce` are genera=
+ted
+> > > randomly, when sealing/exporting the DCP blob.
+> > >=20
+> > > This patchset was tested with dm-crypt on an i.MX6ULL board.
+> > >=20
+> > > [0] https://lore.kernel.org/keyrings/20220513145705.2080323-1-a.fatou=
+m@pengutronix.de/
+> > >=20
+> > > David Gstir (6):
+> > >  crypto: mxs-dcp: Add support for hardware-bound keys
+> > >  KEYS: trusted: improve scalability of trust source config
+> > >  KEYS: trusted: Introduce NXP DCP-backed trusted keys
+> > >  MAINTAINERS: add entry for DCP-based trusted keys
+> > >  docs: document DCP-backed trusted keys kernel params
+> > >  docs: trusted-encrypted: add DCP as new trust source
+> > >=20
+> > > .../admin-guide/kernel-parameters.txt         |  13 +
+> > > .../security/keys/trusted-encrypted.rst       |  85 +++++
+> > > MAINTAINERS                                   |   9 +
+> > > drivers/crypto/mxs-dcp.c                      | 104 +++++-
+> > > include/keys/trusted_dcp.h                    |  11 +
+> > > include/soc/fsl/dcp.h                         |  17 +
+> > > security/keys/trusted-keys/Kconfig            |  18 +-
+> > > security/keys/trusted-keys/Makefile           |   2 +
+> > > security/keys/trusted-keys/trusted_core.c     |   6 +-
+> > > security/keys/trusted-keys/trusted_dcp.c      | 311 ++++++++++++++++++
+> > > 10 files changed, 562 insertions(+), 14 deletions(-)
+> > > create mode 100644 include/keys/trusted_dcp.h
+> > > create mode 100644 include/soc/fsl/dcp.h
+> > > create mode 100644 security/keys/trusted-keys/trusted_dcp.c
+> >=20
+> > Jarkko, Mimi, David do you need anything from my side for these patches=
+ to get them merged?
+>=20
+> Friendly ping also from my side. :-)
+>=20
+> Thanks,
+> //richard
+>=20
+> --=20
+> =E2=80=8B=E2=80=8B=E2=80=8B=E2=80=8B=E2=80=8Bsigma star gmbh | Eduard-Bod=
+em-Gasse 6, 6020 Innsbruck, AUT
+> UID/VAT Nr: ATU 66964118 | FN: 374287y
+>=20
 
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
----
- tools/testing/selftests/powerpc/include.mk             | 10 ++++++++++
- tools/testing/selftests/powerpc/pmu/Makefile           |  1 +
- tools/testing/selftests/powerpc/pmu/ebb/Makefile       |  1 +
- .../selftests/powerpc/pmu/event_code_tests/Makefile    |  1 +
- .../selftests/powerpc/pmu/sampling_tests/Makefile      |  1 +
- 5 files changed, 14 insertions(+)
- create mode 100644 tools/testing/selftests/powerpc/include.mk
 
-diff --git a/tools/testing/selftests/powerpc/include.mk b/tools/testing/selftests/powerpc/include.mk
-new file mode 100644
-index 000000000000..18db36b94f36
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/include.mk
-@@ -0,0 +1,10 @@
-+#This checks for any specific ENV variables missing and add those.
-+
-+ifeq ($(GIT_VERSION),)
-+GIT_VERSION = $(shell git describe --always --long --dirty || echo "unknown")
-+endif
-+
-+ifeq ($(CFLAGS),)
-+CFLAGS := -std=gnu99 -O2 -Wall -Werror -DGIT_VERSION='"$(GIT_VERSION)"' -I$(CURDIR)/../include $(CFLAGS)
-+export CFLAGS
-+endif
-diff --git a/tools/testing/selftests/powerpc/pmu/Makefile b/tools/testing/selftests/powerpc/pmu/Makefile
-index a284fa874a9f..93672f322027 100644
---- a/tools/testing/selftests/powerpc/pmu/Makefile
-+++ b/tools/testing/selftests/powerpc/pmu/Makefile
-@@ -7,6 +7,7 @@ EXTRA_SOURCES := ../harness.c event.c lib.c ../utils.c
- 
- top_srcdir = ../../../../..
- include ../../lib.mk
-+include ../include.mk
- 
- all: $(TEST_GEN_PROGS) ebb sampling_tests event_code_tests
- 
-diff --git a/tools/testing/selftests/powerpc/pmu/ebb/Makefile b/tools/testing/selftests/powerpc/pmu/ebb/Makefile
-index 010160690227..2faadb7fd3ad 100644
---- a/tools/testing/selftests/powerpc/pmu/ebb/Makefile
-+++ b/tools/testing/selftests/powerpc/pmu/ebb/Makefile
-@@ -28,6 +28,7 @@ TEST_GEN_PROGS := reg_access_test event_attributes_test cycles_test	\
- 
- top_srcdir = ../../../../../..
- include ../../../lib.mk
-+include ../../include.mk
- 
- $(TEST_GEN_PROGS): ../../harness.c ../../utils.c ../event.c ../lib.c \
- 	       ebb.c ebb_handler.S trace.c busy_loop.S
-diff --git a/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile b/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile
-index 4e07d7046457..7c7dd4cf9769 100644
---- a/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile
-+++ b/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile
-@@ -11,5 +11,6 @@ TEST_GEN_PROGS := group_constraint_pmc56_test group_pmc56_exclude_constraints_te
- 
- top_srcdir = ../../../../../..
- include ../../../lib.mk
-+include ../../include.mk
- 
- $(TEST_GEN_PROGS): ../../harness.c ../../utils.c ../event.c ../lib.c ../sampling_tests/misc.h ../sampling_tests/misc.c
-diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile b/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile
-index 9e67351fb252..51b02fe2c8ad 100644
---- a/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile
-+++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile
-@@ -11,5 +11,6 @@ TEST_GEN_PROGS := mmcr0_exceptionbits_test mmcr0_cc56run_test mmcr0_pmccext_test
- 
- top_srcdir = ../../../../../..
- include ../../../lib.mk
-+include ../../include.mk
- 
- $(TEST_GEN_PROGS): ../../harness.c ../../utils.c ../event.c ../lib.c misc.c misc.h ../loop.S ../branch_loops.S
--- 
-2.43.2
+=2D-=20
+=E2=80=8B=E2=80=8B=E2=80=8B=E2=80=8B=E2=80=8Bsigma star gmbh | Eduard-Bodem=
+=2DGasse 6, 6020 Innsbruck, AUT
+UID/VAT Nr: ATU 66964118 | FN: 374287y
+
 
