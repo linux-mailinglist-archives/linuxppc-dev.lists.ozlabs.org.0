@@ -2,57 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 699E6862BBC
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Feb 2024 17:30:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4905F862BC6
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Feb 2024 17:31:23 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Utw4K4zv;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OcedYGij;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TjTkQ1lnvz3vX9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 03:30:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TjTlY00L6z3cF4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 03:31:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Utw4K4zv;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OcedYGij;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TjTjf02Hwz2yk7
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 03:29:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TjTkn732Gz2yk7
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 03:30:41 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708878582; x=1740414582;
+  t=1708878643; x=1740414643;
   h=date:from:to:cc:subject:message-id;
-  bh=h+ZemLqlYo4nGC+B3jR4RGQs/fRzauG/sBc/i945ZwA=;
-  b=Utw4K4zvnp8g++QXyGmJSlNeZag+34ASeXbH24UlTl8nIcaEQ7XqCWVe
-   aLXnoY7SdoeKlHBoLtmtvfpMx6IPQ9ahxoIFrXNa3iVBa+qBdVLiAqFZJ
-   LDVxs1B5H8kq6updO2Nc1wpyHIZrp8ynrt/2fNGvb9C3VRwrX2osvZHIF
-   6nY4vrHIACsxVSv22nDfMGfy7Yc1XRwK1HmLra4BL3qKufbqacJ/sA2LF
-   R8OFVn0XJ3GOSMJFCwyl8Qf47R0qI5NhRQjdX6bCvLXrZlC4bgyXHraG5
-   dygfuRE8Tf1zWzfYbcUZKrdKpfhfBin5vq4ZE5PwHx5tmctrGc7okde8r
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="6945245"
+  bh=gPPHJTY6ONPQgguh/jJ/67hzbjdGLUmFE9AnO3doAwA=;
+  b=OcedYGijU810Xxez1uPXGs9mu3U3pPGsKVyQ3GaNphYhtm6j4Z8b5+QI
+   5OS5w3kMqubXl9fbk2UY/1JY1fGQA7EcNOQETHbKjxevXXVPvsqWX3ePH
+   0fR02wQNM9xx0I+YSmW1ADGDZUCkRuiJMA4TWDb2hQjIAdlJbE5MOzWVX
+   9IbKpbAe3s/wiv/5g+DAh6IKqP1kATd21/EjUaR/7ITB7cd0eDGmQcX1Q
+   ZnH633RNHflDUL6nzWSibq6OzEXcm5c1sj8Xz1w94Lg6yZUFDThxx79mu
+   zWJbu/yF99gbdE1Ay5RpMt5QvcfyCfPd0Xy4m+rXpmITJQInAxmgto2pv
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="6976201"
 X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="6945245"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2024 08:29:36 -0800
+   d="scan'208";a="6976201"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2024 08:30:38 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="6304459"
+   d="scan'208";a="6424118"
 Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
-  by fmviesa007.fm.intel.com with ESMTP; 25 Feb 2024 08:29:35 -0800
+  by orviesa010.jf.intel.com with ESMTP; 25 Feb 2024 08:30:36 -0800
 Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1reHNd-0009eG-1F;
-	Sun, 25 Feb 2024 16:29:33 +0000
-Date: Mon, 26 Feb 2024 00:29:30 +0800
+	id 1reHOb-0009eW-1h;
+	Sun, 25 Feb 2024 16:30:33 +0000
+Date: Mon, 26 Feb 2024 00:30:17 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- fad87dbd48156ab940538f052f1820f4b6ed2819
-Message-ID: <202402260027.lUj3Ubgm-lkp@intel.com>
+Subject: [powerpc:next] BUILD SUCCESS
+ a3e1820186b5ed3703e690eb064ad7c6c7477cfb
+Message-ID: <202402260014.9ipGgSsf-lkp@intel.com>
 User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -69,8 +69,8 @@ Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: fad87dbd48156ab940538f052f1820f4b6ed2819  powerpc/rtas: use correct function name for resetting TCE tables
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+branch HEAD: a3e1820186b5ed3703e690eb064ad7c6c7477cfb  powerpc: pmi: Convert to platform remove callback returning void
 
 elapsed time: 940m
 
