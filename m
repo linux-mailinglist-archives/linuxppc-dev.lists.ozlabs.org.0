@@ -1,50 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B008867B7D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 17:16:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E784A867B89
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 17:16:51 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dclg19yy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Robqk32g;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tk5MX1XBmz3vjt
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 03:16:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tk5NK59Sqz3vlw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 03:16:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dclg19yy;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Robqk32g;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tk5Kz0kcpz3byl
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 03:14:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tk5L715vXz3vdv
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 03:14:55 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 39033610A3;
+	by dfw.source.kernel.org (Postfix) with ESMTP id 7923E6120C;
+	Mon, 26 Feb 2024 16:14:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 565C5C433C7;
 	Mon, 26 Feb 2024 16:14:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20479C433A6;
-	Mon, 26 Feb 2024 16:14:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708964082;
-	bh=Y6bQisNlMKsyiwGTrahyZKKTp5p3U6SDkFSGwdGG0nA=;
+	s=k20201202; t=1708964092;
+	bh=qjY2NCX9i4UqetW/bEbVCVlj4izzQYZK2cdya1GVrY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dclg19yy1mByCFXiGg1ZoCgY2CRIajR7i+X3gRizQJQwrFKaiFlrSKBit8AT44VEL
-	 6ZrCAR5pKuF2k+mSeLQb+y6JnYIg/WDELhF2T/bWBXFzOGI310tHGWLvaSotfRe+1c
-	 m0LAoFqd6ztHe9qczJy1qlFYY4zzh7TrbRxP8W3kjIXb6OEwhKcWIC8SdUTwO3xSmD
-	 Ica6lldxd1dL4Wbc2jy0qop8ESNqLdv0MKKDguj0qiKwarfa7+rAIn98CZT6d0NQvp
-	 mOI5EYpV9/qNg6Pj6uDQbf6x+NADoXPSKdPEV9mswZHsE3kjY8ha1QIRdks3GDMeJ9
-	 jN8Qe6YBNqCIA==
+	b=Robqk32gwIvv8h/sRnXiFkbLvOHH9Vv+oN4LQIw5KMNGJwsXRkB4JQFdIkfEZNIaX
+	 dpXletxBw0Sq7rBUyueEeahyTCqmJsROanCnrqRDOQvstta6UGoXeu0pyX1VKZXYy/
+	 J5y2Ydw3J2iznCN/2oaeOWAc6HdIqKdSmP1Au6cWsSM3QI+DNBqWHE5K5hWAXo/E/4
+	 Nsprt/istA8B5B/GcDa7g27dlOcVvR7lzHtQed/daiAVw1s84vcZb1LJKziZeP+pt/
+	 /v/VIpUvB1R+nvuUmeLfx8QJkG3Vcs2oiCMm6EAzK/RTVAkJx4suZ2Si+fGxNcld+i
+	 CQaGDGfmYVN9w==
 From: Arnd Bergmann <arnd@kernel.org>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Vincenzo Frascino <vincenzo.frascino@arm.com>,
 	Kees Cook <keescook@chromium.org>,
 	Anna-Maria Behnsen <anna-maria@linutronix.de>
-Subject: [PATCH 1/4] arch: consolidate existing CONFIG_PAGE_SIZE_*KB definitions
-Date: Mon, 26 Feb 2024 17:14:11 +0100
-Message-Id: <20240226161414.2316610-2-arnd@kernel.org>
+Subject: [PATCH 2/4] arch: simplify architecture specific page size configuration
+Date: Mon, 26 Feb 2024 17:14:12 +0100
+Message-Id: <20240226161414.2316610-3-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240226161414.2316610-1-arnd@kernel.org>
 References: <20240226161414.2316610-1-arnd@kernel.org>
@@ -68,480 +68,323 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-These four architectures define the same Kconfig symbols for configuring
-the page size. Move the logic into a common place where it can be shared
-with all other architectures.
+arc, arm64, parisc and powerpc all have their own Kconfig symbols
+in place of the common CONFIG_PAGE_SIZE_4KB symbols. Change these
+so the common symbols are the ones that are actually used, while
+leaving the arhcitecture specific ones as the user visible
+place for configuring it, to avoid breaking user configs.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/Kconfig                      | 58 +++++++++++++++++++++++++++++--
- arch/hexagon/Kconfig              | 25 +++----------
- arch/hexagon/include/asm/page.h   |  6 +---
- arch/loongarch/Kconfig            | 21 ++++-------
- arch/loongarch/include/asm/page.h | 10 +-----
- arch/mips/Kconfig                 | 58 +++----------------------------
- arch/mips/include/asm/page.h      | 16 +--------
- arch/sh/include/asm/page.h        | 13 +------
- arch/sh/mm/Kconfig                | 42 +++++++---------------
- 9 files changed, 88 insertions(+), 161 deletions(-)
+ arch/arc/Kconfig                  |  3 +++
+ arch/arc/include/uapi/asm/page.h  |  6 ++----
+ arch/arm64/Kconfig                | 29 +++++++++++++----------------
+ arch/arm64/include/asm/page-def.h |  2 +-
+ arch/parisc/Kconfig               |  3 +++
+ arch/parisc/include/asm/page.h    | 10 +---------
+ arch/powerpc/Kconfig              | 31 ++++++-------------------------
+ arch/powerpc/include/asm/page.h   |  2 +-
+ scripts/gdb/linux/constants.py.in |  2 +-
+ scripts/gdb/linux/mm.py           |  2 +-
+ 10 files changed, 32 insertions(+), 58 deletions(-)
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index a5af0edd3eb8..237cea01ed9b 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -1078,17 +1078,71 @@ config HAVE_ARCH_COMPAT_MMAP_BASES
- 	  and vice-versa 32-bit applications to call 64-bit mmap().
- 	  Required for applications doing different bitness syscalls.
+diff --git a/arch/arc/Kconfig b/arch/arc/Kconfig
+index 1b0483c51cc1..4092bec198be 100644
+--- a/arch/arc/Kconfig
++++ b/arch/arc/Kconfig
+@@ -284,14 +284,17 @@ choice
  
-+config HAVE_PAGE_SIZE_4KB
-+	bool
-+
-+config HAVE_PAGE_SIZE_8KB
-+	bool
-+
-+config HAVE_PAGE_SIZE_16KB
-+	bool
-+
-+config HAVE_PAGE_SIZE_32KB
-+	bool
-+
-+config HAVE_PAGE_SIZE_64KB
-+	bool
-+
-+config HAVE_PAGE_SIZE_256KB
-+	bool
-+
-+choice
-+	prompt "MMU page size"
-+
-+config PAGE_SIZE_4KB
-+	bool "4KB pages"
-+	depends on HAVE_PAGE_SIZE_4KB
-+
-+config PAGE_SIZE_8KB
-+	bool "8KB pages"
-+	depends on HAVE_PAGE_SIZE_8KB
-+
-+config PAGE_SIZE_16KB
-+	bool "16KB pages"
-+	depends on HAVE_PAGE_SIZE_16KB
-+
-+config PAGE_SIZE_32KB
-+	bool "32KB pages"
-+	depends on HAVE_PAGE_SIZE_32KB
-+
-+config PAGE_SIZE_64KB
-+	bool "64KB pages"
-+	depends on HAVE_PAGE_SIZE_64KB
-+
-+config PAGE_SIZE_256KB
-+	bool "256KB pages"
-+	depends on HAVE_PAGE_SIZE_256KB
-+
-+endchoice
-+
- config PAGE_SIZE_LESS_THAN_64KB
- 	def_bool y
--	depends on !ARM64_64K_PAGES
- 	depends on !PAGE_SIZE_64KB
--	depends on !PARISC_PAGE_SIZE_64KB
- 	depends on PAGE_SIZE_LESS_THAN_256KB
+ config ARC_PAGE_SIZE_8K
+ 	bool "8KB"
++	select HAVE_PAGE_SIZE_8KB
+ 	help
+ 	  Choose between 8k vs 16k
  
- config PAGE_SIZE_LESS_THAN_256KB
- 	def_bool y
- 	depends on !PAGE_SIZE_256KB
- 
-+config PAGE_SHIFT
-+	int
-+	default 12 if PAGE_SIZE_4KB
-+	default 13 if PAGE_SIZE_8KB
-+	default 14 if PAGE_SIZE_16KB
-+	default 15 if PAGE_SIZE_32KB
-+	default 16 if PAGE_SIZE_64KB
-+	default 18 if PAGE_SIZE_256KB
-+
- # This allows to use a set of generic functions to determine mmap base
- # address by giving priority to top-down scheme only if the process
- # is not in legacy mode (compat task, unlimited stack size or
-diff --git a/arch/hexagon/Kconfig b/arch/hexagon/Kconfig
-index a880ee067d2e..aac46ee1a000 100644
---- a/arch/hexagon/Kconfig
-+++ b/arch/hexagon/Kconfig
-@@ -8,6 +8,11 @@ config HEXAGON
- 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
- 	select ARCH_NO_PREEMPT
- 	select DMA_GLOBAL_POOL
-+	select FRAME_POINTER
-+	select HAVE_PAGE_SIZE_4KB
+ config ARC_PAGE_SIZE_16K
 +	select HAVE_PAGE_SIZE_16KB
-+	select HAVE_PAGE_SIZE_64KB
-+	select HAVE_PAGE_SIZE_256KB
- 	# Other pending projects/to-do items.
- 	# select HAVE_REGS_AND_STACK_ACCESS_API
- 	# select HAVE_HW_BREAKPOINT if PERF_EVENTS
-@@ -120,26 +125,6 @@ config NR_CPUS
- 	  This is purely to save memory - each supported CPU adds
- 	  approximately eight kilobytes to the kernel image.
+ 	bool "16KB"
  
--choice
--	prompt "Kernel page size"
--	default PAGE_SIZE_4KB
--	help
--	  Changes the default page size; use with caution.
--
--config PAGE_SIZE_4KB
--	bool "4KB"
--
--config PAGE_SIZE_16KB
--	bool "16KB"
--
--config PAGE_SIZE_64KB
--	bool "64KB"
--
--config PAGE_SIZE_256KB
--	bool "256KB"
--
--endchoice
--
- source "kernel/Kconfig.hz"
- 
- endmenu
-diff --git a/arch/hexagon/include/asm/page.h b/arch/hexagon/include/asm/page.h
-index 10f1bc07423c..65c9bac639fa 100644
---- a/arch/hexagon/include/asm/page.h
-+++ b/arch/hexagon/include/asm/page.h
-@@ -13,27 +13,22 @@
- /*  This is probably not the most graceful way to handle this.  */
- 
- #ifdef CONFIG_PAGE_SIZE_4KB
--#define PAGE_SHIFT 12
- #define HEXAGON_L1_PTE_SIZE __HVM_PDE_S_4KB
- #endif
- 
- #ifdef CONFIG_PAGE_SIZE_16KB
--#define PAGE_SHIFT 14
- #define HEXAGON_L1_PTE_SIZE __HVM_PDE_S_16KB
- #endif
- 
- #ifdef CONFIG_PAGE_SIZE_64KB
--#define PAGE_SHIFT 16
- #define HEXAGON_L1_PTE_SIZE __HVM_PDE_S_64KB
- #endif
- 
- #ifdef CONFIG_PAGE_SIZE_256KB
--#define PAGE_SHIFT 18
- #define HEXAGON_L1_PTE_SIZE __HVM_PDE_S_256KB
- #endif
- 
- #ifdef CONFIG_PAGE_SIZE_1MB
--#define PAGE_SHIFT 20
- #define HEXAGON_L1_PTE_SIZE __HVM_PDE_S_1MB
- #endif
- 
-@@ -50,6 +45,7 @@
- #define HVM_HUGEPAGE_SIZE 0x5
- #endif
- 
-+#define PAGE_SHIFT CONFIG_PAGE_SHIFT
- #define PAGE_SIZE  (1UL << PAGE_SHIFT)
- #define PAGE_MASK  (~((1 << PAGE_SHIFT) - 1))
- 
-diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-index 929f68926b34..b274784c2e26 100644
---- a/arch/loongarch/Kconfig
-+++ b/arch/loongarch/Kconfig
-@@ -227,15 +227,6 @@ config MACH_LOONGSON64
- config FIX_EARLYCON_MEM
- 	def_bool y
- 
--config PAGE_SIZE_4KB
--	bool
--
--config PAGE_SIZE_16KB
--	bool
--
--config PAGE_SIZE_64KB
--	bool
--
- config PGTABLE_2LEVEL
- 	bool
- 
-@@ -288,7 +279,7 @@ choice
- 
- config 4KB_3LEVEL
- 	bool "4KB with 3 levels"
--	select PAGE_SIZE_4KB
+ config ARC_PAGE_SIZE_4K
+ 	bool "4KB"
 +	select HAVE_PAGE_SIZE_4KB
- 	select PGTABLE_3LEVEL
- 	help
- 	  This option selects 4KB page size with 3 level page tables, which
-@@ -296,7 +287,7 @@ config 4KB_3LEVEL
+ 	depends on ARC_MMU_V3 || ARC_MMU_V4
  
- config 4KB_4LEVEL
- 	bool "4KB with 4 levels"
--	select PAGE_SIZE_4KB
-+	select HAVE_PAGE_SIZE_4KB
- 	select PGTABLE_4LEVEL
- 	help
- 	  This option selects 4KB page size with 4 level page tables, which
-@@ -304,7 +295,7 @@ config 4KB_4LEVEL
- 
- config 16KB_2LEVEL
- 	bool "16KB with 2 levels"
--	select PAGE_SIZE_16KB
-+	select HAVE_PAGE_SIZE_16KB
- 	select PGTABLE_2LEVEL
- 	help
- 	  This option selects 16KB page size with 2 level page tables, which
-@@ -312,7 +303,7 @@ config 16KB_2LEVEL
- 
- config 16KB_3LEVEL
- 	bool "16KB with 3 levels"
--	select PAGE_SIZE_16KB
-+	select HAVE_PAGE_SIZE_16KB
- 	select PGTABLE_3LEVEL
- 	help
- 	  This option selects 16KB page size with 3 level page tables, which
-@@ -320,7 +311,7 @@ config 16KB_3LEVEL
- 
- config 64KB_2LEVEL
- 	bool "64KB with 2 levels"
--	select PAGE_SIZE_64KB
-+	select HAVE_PAGE_SIZE_64KB
- 	select PGTABLE_2LEVEL
- 	help
- 	  This option selects 64KB page size with 2 level page tables, which
-@@ -328,7 +319,7 @@ config 64KB_2LEVEL
- 
- config 64KB_3LEVEL
- 	bool "64KB with 3 levels"
--	select PAGE_SIZE_64KB
-+	select HAVE_PAGE_SIZE_64KB
- 	select PGTABLE_3LEVEL
- 	help
- 	  This option selects 64KB page size with 3 level page tables, which
-diff --git a/arch/loongarch/include/asm/page.h b/arch/loongarch/include/asm/page.h
-index 63f137ce82a4..afb6fa16b826 100644
---- a/arch/loongarch/include/asm/page.h
-+++ b/arch/loongarch/include/asm/page.h
-@@ -11,15 +11,7 @@
- /*
-  * PAGE_SHIFT determines the page size
-  */
--#ifdef CONFIG_PAGE_SIZE_4KB
--#define PAGE_SHIFT	12
--#endif
--#ifdef CONFIG_PAGE_SIZE_16KB
--#define PAGE_SHIFT	14
--#endif
--#ifdef CONFIG_PAGE_SIZE_64KB
--#define PAGE_SHIFT	16
--#endif
-+#define PAGE_SHIFT	CONFIG_PAGE_SHIFT
- #define PAGE_SIZE	(_AC(1, UL) << PAGE_SHIFT)
- #define PAGE_MASK	(~(PAGE_SIZE - 1))
- 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 797ae590ebdb..24bac93affee 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -81,6 +81,9 @@ config MIPS
- 	select HAVE_LD_DEAD_CODE_DATA_ELIMINATION
- 	select HAVE_MOD_ARCH_SPECIFIC
- 	select HAVE_NMI
-+	select HAVE_PAGE_SIZE_4KB if !CPU_LOONGSON2EF && !CPU_LOONGSON64
-+	select HAVE_PAGE_SIZE_16KB if !CPU_R3000
-+	select HAVE_PAGE_SIZE_64KB if !CPU_R3000
- 	select HAVE_PERF_EVENTS
- 	select HAVE_PERF_REGS
- 	select HAVE_PERF_USER_STACK_DUMP
-@@ -1608,6 +1611,8 @@ config CPU_CAVIUM_OCTEON
- 	depends on SYS_HAS_CPU_CAVIUM_OCTEON
- 	select CPU_HAS_PREFETCH
- 	select CPU_SUPPORTS_64BIT_KERNEL
-+	select HAVE_PAGE_SIZE_8KB if !MIPS_VA_BITS_48
-+	select HAVE_PAGE_SIZE_32KB if !MIPS_VA_BITS_48
- 	select WEAK_ORDERING
- 	select CPU_SUPPORTS_HIGHMEM
- 	select CPU_SUPPORTS_HUGEPAGES
-@@ -2029,59 +2034,6 @@ config ZBOOT_LOAD_ADDRESS
- 
- 	  This is only used if non-zero.
- 
--choice
--	prompt "Kernel page size"
--	default PAGE_SIZE_4KB
--
--config PAGE_SIZE_4KB
--	bool "4kB"
--	depends on !CPU_LOONGSON2EF && !CPU_LOONGSON64
--	help
--	  This option select the standard 4kB Linux page size.  On some
--	  R3000-family processors this is the only available page size.  Using
--	  4kB page size will minimize memory consumption and is therefore
--	  recommended for low memory systems.
--
--config PAGE_SIZE_8KB
--	bool "8kB"
--	depends on CPU_CAVIUM_OCTEON
--	depends on !MIPS_VA_BITS_48
--	help
--	  Using 8kB page size will result in higher performance kernel at
--	  the price of higher memory consumption.  This option is available
--	  only on cnMIPS processors.  Note that you will need a suitable Linux
--	  distribution to support this.
--
--config PAGE_SIZE_16KB
--	bool "16kB"
--	depends on !CPU_R3000
--	help
--	  Using 16kB page size will result in higher performance kernel at
--	  the price of higher memory consumption.  This option is available on
--	  all non-R3000 family processors.  Note that you will need a suitable
--	  Linux distribution to support this.
--
--config PAGE_SIZE_32KB
--	bool "32kB"
--	depends on CPU_CAVIUM_OCTEON
--	depends on !MIPS_VA_BITS_48
--	help
--	  Using 32kB page size will result in higher performance kernel at
--	  the price of higher memory consumption.  This option is available
--	  only on cnMIPS cores.  Note that you will need a suitable Linux
--	  distribution to support this.
--
--config PAGE_SIZE_64KB
--	bool "64kB"
--	depends on !CPU_R3000
--	help
--	  Using 64kB page size will result in higher performance kernel at
--	  the price of higher memory consumption.  This option is available on
--	  all non-R3000 family processor.  Not that at the time of this
--	  writing this option is still high experimental.
--
--endchoice
--
- config ARCH_FORCE_MAX_ORDER
- 	int "Maximum zone order"
- 	default "13" if MIPS_HUGE_TLB_SUPPORT && PAGE_SIZE_64KB
-diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
-index ef9585d96f6b..4609cb0326cf 100644
---- a/arch/mips/include/asm/page.h
-+++ b/arch/mips/include/asm/page.h
-@@ -17,21 +17,7 @@
- /*
-  * PAGE_SHIFT determines the page size
-  */
--#ifdef CONFIG_PAGE_SIZE_4KB
--#define PAGE_SHIFT	12
--#endif
--#ifdef CONFIG_PAGE_SIZE_8KB
--#define PAGE_SHIFT	13
--#endif
--#ifdef CONFIG_PAGE_SIZE_16KB
--#define PAGE_SHIFT	14
--#endif
--#ifdef CONFIG_PAGE_SIZE_32KB
--#define PAGE_SHIFT	15
--#endif
--#ifdef CONFIG_PAGE_SIZE_64KB
--#define PAGE_SHIFT	16
--#endif
-+#define PAGE_SHIFT	CONFIG_PAGE_SHIFT
- #define PAGE_SIZE	(_AC(1,UL) << PAGE_SHIFT)
- #define PAGE_MASK	(~((1 << PAGE_SHIFT) - 1))
- 
-diff --git a/arch/sh/include/asm/page.h b/arch/sh/include/asm/page.h
-index 62f4b9edcb98..f780b467e75d 100644
---- a/arch/sh/include/asm/page.h
-+++ b/arch/sh/include/asm/page.h
-@@ -9,18 +9,7 @@
+ endchoice
+diff --git a/arch/arc/include/uapi/asm/page.h b/arch/arc/include/uapi/asm/page.h
+index 2a4ad619abfb..7fd9e741b527 100644
+--- a/arch/arc/include/uapi/asm/page.h
++++ b/arch/arc/include/uapi/asm/page.h
+@@ -13,10 +13,8 @@
  #include <linux/const.h>
  
  /* PAGE_SHIFT determines the page size */
--#if defined(CONFIG_PAGE_SIZE_4KB)
+-#if defined(CONFIG_ARC_PAGE_SIZE_16K)
+-#define PAGE_SHIFT 14
+-#elif defined(CONFIG_ARC_PAGE_SIZE_4K)
+-#define PAGE_SHIFT 12
++#ifdef __KERNEL__
++#define PAGE_SHIFT CONFIG_PAGE_SHIFT
+ #else
+ /*
+  * Default 8k
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index aa7c1d435139..29290b8cb36d 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -277,27 +277,21 @@ config 64BIT
+ config MMU
+ 	def_bool y
+ 
+-config ARM64_PAGE_SHIFT
+-	int
+-	default 16 if ARM64_64K_PAGES
+-	default 14 if ARM64_16K_PAGES
+-	default 12
+-
+ config ARM64_CONT_PTE_SHIFT
+ 	int
+-	default 5 if ARM64_64K_PAGES
+-	default 7 if ARM64_16K_PAGES
++	default 5 if PAGE_SIZE_64KB
++	default 7 if PAGE_SIZE_16KB
+ 	default 4
+ 
+ config ARM64_CONT_PMD_SHIFT
+ 	int
+-	default 5 if ARM64_64K_PAGES
+-	default 5 if ARM64_16K_PAGES
++	default 5 if PAGE_SIZE_64KB
++	default 5 if PAGE_SIZE_16KB
+ 	default 4
+ 
+ config ARCH_MMAP_RND_BITS_MIN
+-	default 14 if ARM64_64K_PAGES
+-	default 16 if ARM64_16K_PAGES
++	default 14 if PAGE_SIZE_64KB
++	default 16 if PAGE_SIZE_16KB
+ 	default 18
+ 
+ # max bits determined by the following formula:
+@@ -1259,11 +1253,13 @@ choice
+ 
+ config ARM64_4K_PAGES
+ 	bool "4KB"
++	select HAVE_PAGE_SIZE_4KB
+ 	help
+ 	  This feature enables 4KB pages support.
+ 
+ config ARM64_16K_PAGES
+ 	bool "16KB"
++	select HAVE_PAGE_SIZE_16KB
+ 	help
+ 	  The system will use 16KB pages support. AArch32 emulation
+ 	  requires applications compiled with 16K (or a multiple of 16K)
+@@ -1271,6 +1267,7 @@ config ARM64_16K_PAGES
+ 
+ config ARM64_64K_PAGES
+ 	bool "64KB"
++	select HAVE_PAGE_SIZE_64KB
+ 	help
+ 	  This feature enables 64KB pages support (4KB by default)
+ 	  allowing only two levels of page tables and faster TLB
+@@ -1291,19 +1288,19 @@ choice
+ 
+ config ARM64_VA_BITS_36
+ 	bool "36-bit" if EXPERT
+-	depends on ARM64_16K_PAGES
++	depends on PAGE_SIZE_16KB
+ 
+ config ARM64_VA_BITS_39
+ 	bool "39-bit"
+-	depends on ARM64_4K_PAGES
++	depends on PAGE_SIZE_4KB
+ 
+ config ARM64_VA_BITS_42
+ 	bool "42-bit"
+-	depends on ARM64_64K_PAGES
++	depends on PAGE_SIZE_64KB
+ 
+ config ARM64_VA_BITS_47
+ 	bool "47-bit"
+-	depends on ARM64_16K_PAGES
++	depends on PAGE_SIZE_16KB
+ 
+ config ARM64_VA_BITS_48
+ 	bool "48-bit"
+diff --git a/arch/arm64/include/asm/page-def.h b/arch/arm64/include/asm/page-def.h
+index 2403f7b4cdbf..792e9fe881dc 100644
+--- a/arch/arm64/include/asm/page-def.h
++++ b/arch/arm64/include/asm/page-def.h
+@@ -11,7 +11,7 @@
+ #include <linux/const.h>
+ 
+ /* PAGE_SHIFT determines the page size */
+-#define PAGE_SHIFT		CONFIG_ARM64_PAGE_SHIFT
++#define PAGE_SHIFT		CONFIG_PAGE_SHIFT
+ #define PAGE_SIZE		(_AC(1, UL) << PAGE_SHIFT)
+ #define PAGE_MASK		(~(PAGE_SIZE-1))
+ 
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 5c845e8d59d9..b180e684fa0d 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -273,6 +273,7 @@ choice
+ 
+ config PARISC_PAGE_SIZE_4KB
+ 	bool "4KB"
++	select HAVE_PAGE_SIZE_4KB
+ 	help
+ 	  This lets you select the page size of the kernel.  For best
+ 	  performance, a page size of 16KB is recommended.  For best
+@@ -288,10 +289,12 @@ config PARISC_PAGE_SIZE_4KB
+ 
+ config PARISC_PAGE_SIZE_16KB
+ 	bool "16KB"
++	select HAVE_PAGE_SIZE_16KB
+ 	depends on PA8X00 && BROKEN && !KFENCE
+ 
+ config PARISC_PAGE_SIZE_64KB
+ 	bool "64KB"
++	select HAVE_PAGE_SIZE_64KB
+ 	depends on PA8X00 && BROKEN && !KFENCE
+ 
+ endchoice
+diff --git a/arch/parisc/include/asm/page.h b/arch/parisc/include/asm/page.h
+index 667e703c0e8f..ad4e15d12ed1 100644
+--- a/arch/parisc/include/asm/page.h
++++ b/arch/parisc/include/asm/page.h
+@@ -4,15 +4,7 @@
+ 
+ #include <linux/const.h>
+ 
+-#if defined(CONFIG_PARISC_PAGE_SIZE_4KB)
 -# define PAGE_SHIFT	12
--#elif defined(CONFIG_PAGE_SIZE_8KB)
--# define PAGE_SHIFT	13
--#elif defined(CONFIG_PAGE_SIZE_16KB)
+-#elif defined(CONFIG_PARISC_PAGE_SIZE_16KB)
 -# define PAGE_SHIFT	14
--#elif defined(CONFIG_PAGE_SIZE_64KB)
+-#elif defined(CONFIG_PARISC_PAGE_SIZE_64KB)
 -# define PAGE_SHIFT	16
 -#else
--# error "Bogus kernel page size?"
+-# error "unknown default kernel page size"
 -#endif
--
 +#define PAGE_SHIFT	CONFIG_PAGE_SHIFT
- #define PAGE_SIZE	(_AC(1, UL) << PAGE_SHIFT)
+ #define PAGE_SIZE	(_AC(1,UL) << PAGE_SHIFT)
  #define PAGE_MASK	(~(PAGE_SIZE-1))
- #define PTE_MASK	PAGE_MASK
-diff --git a/arch/sh/mm/Kconfig b/arch/sh/mm/Kconfig
-index 455311d9a5e9..f32a1963ff0c 100644
---- a/arch/sh/mm/Kconfig
-+++ b/arch/sh/mm/Kconfig
-@@ -4,6 +4,9 @@ menu "Memory management options"
- config MMU
-         bool "Support for memory management hardware"
- 	depends on !CPU_SH2
-+	select HAVE_PAGE_SIZE_4KB
-+	select HAVE_PAGE_SIZE_8KB if X2TLB
-+	select HAVE_PAGE_SIZE_64KB if CPU_SH4
- 	default y
- 	help
- 	  Some SH processors (such as SH-2/SH-2A) lack an MMU. In order to
-@@ -13,6 +16,15 @@ config MMU
- 	  turning this off will boot the kernel on these machines with the
- 	  MMU implicitly switched off.
  
-+config NOMMU
-+	def_bool !MMU
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index b9fc064d38d2..8fad4e5d7ad5 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -212,7 +212,7 @@ config PPC
+ 	select HAVE_ARCH_HUGE_VMAP		if PPC_RADIX_MMU || PPC_8xx
+ 	select HAVE_ARCH_JUMP_LABEL
+ 	select HAVE_ARCH_JUMP_LABEL_RELATIVE
+-	select HAVE_ARCH_KASAN			if PPC32 && PPC_PAGE_SHIFT <= 14
++	select HAVE_ARCH_KASAN			if PPC32 && PAGE_SHIFT <= 14
+ 	select HAVE_ARCH_KASAN			if PPC_RADIX_MMU
+ 	select HAVE_ARCH_KASAN			if PPC_BOOK3E_64
+ 	select HAVE_ARCH_KASAN_VMALLOC		if HAVE_ARCH_KASAN
+@@ -809,19 +809,23 @@ choice
+ config PPC_4K_PAGES
+ 	bool "4k page size"
+ 	select HAVE_ARCH_SOFT_DIRTY if PPC_BOOK3S_64
 +	select HAVE_PAGE_SIZE_4KB
-+	select HAVE_PAGE_SIZE_8KB
+ 
+ config PPC_16K_PAGES
+ 	bool "16k page size"
+ 	depends on 44x || PPC_8xx
 +	select HAVE_PAGE_SIZE_16KB
-+	select HAVE_PAGE_SIZE_64KB
-+	help
-+	  On MMU-less systems, any of these page sizes can be selected
-+
- config PAGE_OFFSET
- 	hex
- 	default "0x80000000" if MMU
-@@ -147,36 +159,6 @@ config HAVE_SRAM_POOL
- 	bool
- 	select GENERIC_ALLOCATOR
  
--choice
--	prompt "Kernel page size"
--	default PAGE_SIZE_4KB
--
+ config PPC_64K_PAGES
+ 	bool "64k page size"
+ 	depends on 44x || PPC_BOOK3S_64
+ 	select HAVE_ARCH_SOFT_DIRTY if PPC_BOOK3S_64
++	select HAVE_PAGE_SIZE_64KB
+ 
+ config PPC_256K_PAGES
+ 	bool "256k page size (Requires non-standard binutils settings)"
+ 	depends on 44x && !PPC_47x
++	select HAVE_PAGE_SIZE_256KB
+ 	help
+ 	  Make the page size 256k.
+ 
+@@ -832,29 +836,6 @@ config PPC_256K_PAGES
+ 
+ endchoice
+ 
 -config PAGE_SIZE_4KB
--	bool "4kB"
--	help
--	  This is the default page size used by all SuperH CPUs.
--
--config PAGE_SIZE_8KB
--	bool "8kB"
--	depends on !MMU || X2TLB
--	help
--	  This enables 8kB pages as supported by SH-X2 and later MMUs.
+-	def_bool y
+-	depends on PPC_4K_PAGES
 -
 -config PAGE_SIZE_16KB
--	bool "16kB"
--	depends on !MMU
--	help
--	  This enables 16kB pages on MMU-less SH systems.
+-	def_bool y
+-	depends on PPC_16K_PAGES
 -
 -config PAGE_SIZE_64KB
--	bool "64kB"
--	depends on !MMU || CPU_SH4
--	help
--	  This enables support for 64kB pages, possible on all SH-4
--	  CPUs and later.
+-	def_bool y
+-	depends on PPC_64K_PAGES
 -
--endchoice
+-config PAGE_SIZE_256KB
+-	def_bool y
+-	depends on PPC_256K_PAGES
 -
- choice
- 	prompt "HugeTLB page size"
- 	depends on HUGETLB_PAGE
+-config PPC_PAGE_SHIFT
+-	int
+-	default 18 if PPC_256K_PAGES
+-	default 16 if PPC_64K_PAGES
+-	default 14 if PPC_16K_PAGES
+-	default 12
+-
+ config THREAD_SHIFT
+ 	int "Thread shift" if EXPERT
+ 	range 13 15
+@@ -891,7 +872,7 @@ config DATA_SHIFT
+ 	default 23 if (DEBUG_PAGEALLOC || KFENCE) && PPC_8xx && PIN_TLB_DATA
+ 	default 19 if (DEBUG_PAGEALLOC || KFENCE) && PPC_8xx
+ 	default 24 if STRICT_KERNEL_RWX && PPC_85xx
+-	default PPC_PAGE_SHIFT
++	default PAGE_SHIFT
+ 	help
+ 	  On Book3S 32 (603+), DBATs are used to map kernel text and rodata RO.
+ 	  Smaller is the alignment, greater is the number of necessary DBATs.
+diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
+index e5fcc79b5bfb..e411e5a70ea3 100644
+--- a/arch/powerpc/include/asm/page.h
++++ b/arch/powerpc/include/asm/page.h
+@@ -21,7 +21,7 @@
+  * page size. When using 64K pages however, whether we are really supporting
+  * 64K pages in HW or not is irrelevant to those definitions.
+  */
+-#define PAGE_SHIFT		CONFIG_PPC_PAGE_SHIFT
++#define PAGE_SHIFT		CONFIG_PAGE_SHIFT
+ #define PAGE_SIZE		(ASM_CONST(1) << PAGE_SHIFT)
+ 
+ #ifndef __ASSEMBLY__
+diff --git a/scripts/gdb/linux/constants.py.in b/scripts/gdb/linux/constants.py.in
+index e810e0c27ff1..10fadc238719 100644
+--- a/scripts/gdb/linux/constants.py.in
++++ b/scripts/gdb/linux/constants.py.in
+@@ -139,7 +139,7 @@ LX_CONFIG(CONFIG_ARM64_64K_PAGES)
+ if IS_BUILTIN(CONFIG_ARM64):
+     LX_VALUE(CONFIG_ARM64_PA_BITS)
+     LX_VALUE(CONFIG_ARM64_VA_BITS)
+-    LX_VALUE(CONFIG_ARM64_PAGE_SHIFT)
++    LX_VALUE(CONFIG_PAGE_SHIFT)
+     LX_VALUE(CONFIG_ARCH_FORCE_MAX_ORDER)
+ LX_CONFIG(CONFIG_SPARSEMEM)
+ LX_CONFIG(CONFIG_SPARSEMEM_EXTREME)
+diff --git a/scripts/gdb/linux/mm.py b/scripts/gdb/linux/mm.py
+index ad5641dcb068..515730fd4c9d 100644
+--- a/scripts/gdb/linux/mm.py
++++ b/scripts/gdb/linux/mm.py
+@@ -41,7 +41,7 @@ class aarch64_page_ops():
+             self.SECTION_SIZE_BITS = 27
+         self.MAX_PHYSMEM_BITS = constants.LX_CONFIG_ARM64_VA_BITS
+ 
+-        self.PAGE_SHIFT = constants.LX_CONFIG_ARM64_PAGE_SHIFT
++        self.PAGE_SHIFT = constants.LX_CONFIG_PAGE_SHIFT
+         self.PAGE_SIZE = 1 << self.PAGE_SHIFT
+         self.PAGE_MASK = (~(self.PAGE_SIZE - 1)) & ((1 << 64) - 1)
+ 
 -- 
 2.39.2
 
