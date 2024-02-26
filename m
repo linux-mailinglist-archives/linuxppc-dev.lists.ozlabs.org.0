@@ -1,90 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCA92867331
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 12:34:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EAB6867344
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 12:36:41 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PN0ic6+N;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QpsGPLQ3;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fD8m1rPj;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JLr3twC1;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tjz6z564Gz3fFT
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 22:34:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tjz930c48z3dng
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 22:36:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PN0ic6+N;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QpsGPLQ3;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fD8m1rPj;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JLr3twC1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tjz6C0PHwz3bwX
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 22:34:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tjz8K4qRLz3bX5
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 22:36:01 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1708947245;
+	s=mimecast20190719; t=1708947358;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ZOaJdE8PeYEjIrCUWsmLxfgMZZ6msDvRYam8ZbRXslw=;
-	b=PN0ic6+Nm/Y+rivjEwF4sPvbImC0T7Ysnp+of9BJnY7slvhO3T5wefyqnzQWujKFdfaX2V
-	hwTl5CdxpzdkP+9Xae4PTjoBouFAHf1gnpMubMLNfTlHNkOwDbKO3SqJSUi/LqlYUOdn7l
-	HLctU/u16rGYY7/o5hmU9Q/JJrqBVzw=
+	bh=nLV9mtpVkZr3zVwNful7hoIpZ+cz6YUR/Wsl1FJnKmc=;
+	b=fD8m1rPjUvY0tbONzcZBqAM8BASWnu55Ve3m7upz+fwQKkHrWlPSAr6jk/NPLHPq3zKLgZ
+	DnKWhbwz8dkGJPVW2W6zM+aeRWH4olVoT2C+B6T0dkfsr9vUX0ykKjfuxKeEmy2edIbRDg
+	kXuoELLfTscepfIT5hd+38KD6wXEKn8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1708947246;
+	s=mimecast20190719; t=1708947359;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ZOaJdE8PeYEjIrCUWsmLxfgMZZ6msDvRYam8ZbRXslw=;
-	b=QpsGPLQ3XiGGwqPVBcePT53/kr+tP+TiOg+paAeXA1nCxRTyR5l82Okgw3qr8axLF4S4yA
-	DCMtuNDZ0o/5SCjqOR5/rEj+gKTufGOZLKYKBFp+v4TdZXdVFLejIMRwg5IPeU9IJGAtcj
-	995yePRGdyi/JrAfoAAF8bAfAk//KKc=
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=nLV9mtpVkZr3zVwNful7hoIpZ+cz6YUR/Wsl1FJnKmc=;
+	b=JLr3twC1tiiWB5Pw7ejNxeFjHSMcqnvI17IXbil6DlwZUqsKrgir9RzhC5XgxIr7K8Bito
+	yf3naHnOQfN5fSOUvQ/nY5MC91rEyMObLstq5YSNQ7NSo994GjdB4fDl+7YsxCSIcOZpp2
+	ReoJN9m8BxnIwU5JsanZPKHE5F0iruA=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-386-8683f82YPZys7-SFbwV1iQ-1; Mon, 26 Feb 2024 06:34:03 -0500
-X-MC-Unique: 8683f82YPZys7-SFbwV1iQ-1
-Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-608cf88048eso32873957b3.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 03:34:03 -0800 (PST)
+ us-mta-641-I40t6XAgM220HikTl49UTQ-1; Mon, 26 Feb 2024 06:35:57 -0500
+X-MC-Unique: I40t6XAgM220HikTl49UTQ-1
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-68fff28bec7so14454376d6.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 03:35:57 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708947243; x=1709552043;
+        d=1e100.net; s=20230601; t=1708947356; x=1709552156;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZOaJdE8PeYEjIrCUWsmLxfgMZZ6msDvRYam8ZbRXslw=;
-        b=FLav8nfOcREn/G1PHmzL0jRcNwJUcKyrG8883wyYnwUC+rr/ug5eNq1TwWHOewxiLr
-         Apmb25IJe2sdC/u1TBXB4Zj8DnVqdnM559sDbxPmWuDP+1USvBuDB7QPfGGOQcWXrAsj
-         CbcDmEsr7Jd208qYGG74Vf0sNtKLOZaLG6ybL+tsEcuIkekkf5dPjc5bZ3REzN7K5J01
-         PBoEvqec5Ty0aOb8rV37IRC+kptR/HJ8TSrTPeWG6wwKuRQmoDQ4MhFfGQ9uy/6mLuEt
-         gMhZpXa/6nXAxe/m9cta/dBGLGCGUFLdPSEW9ElUFfPEIHrCG7FkHrJ6ur57AgQh6b9E
-         4cEw==
-X-Forwarded-Encrypted: i=1; AJvYcCX79aik+EDHuXeTe3SlC62WsW946JlvX7b0tiBYEDYPwOBwXhj9LvyNEa3Z6czBcOmLfztVVlFXdMmOgmrXg36/a94RB5t5Wd20WXx7BQ==
-X-Gm-Message-State: AOJu0YzRYfBP56QjJzlUUkyTPvY4HbcK7eR2zUa8CGlHj2JLqW4xkN1z
-	bJc6wjCVwDzJSlXj7Fg1cP3/jtXA5VhWQHsB+EemYH24uS1S7e2YjU0kpAgZDjncCkainhhcVe4
-	QWmeuuBJMl7XaU52iZXj50hZ1NXA/kpEXiEKBxBT0UqowRGa5KHku9KOQvwdom7s=
-X-Received: by 2002:a25:f306:0:b0:dcc:693e:b396 with SMTP id c6-20020a25f306000000b00dcc693eb396mr4104824ybs.2.1708947243391;
-        Mon, 26 Feb 2024 03:34:03 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHVfqVKS4F7BNE8Uq25y4OH59TTel/eaKivzXTgKLUGXdDfhzOnbhVGquOdGmRVkT2ExNTCUQ==
-X-Received: by 2002:a25:f306:0:b0:dcc:693e:b396 with SMTP id c6-20020a25f306000000b00dcc693eb396mr4104813ybs.2.1708947243129;
-        Mon, 26 Feb 2024 03:34:03 -0800 (PST)
+        bh=nLV9mtpVkZr3zVwNful7hoIpZ+cz6YUR/Wsl1FJnKmc=;
+        b=GUoTWwioWUpnKcZPwNqJbVDaOOwPJ9ROD8Lhy2e4HEL8ZsrJer8skuAoJfdu3xBMZU
+         E8yYXZ0We+5kP+6OVfYS17CVLSB5vpiXwP+l0QgAuW399kWLT5TxcdEFx/CjsK1mZQBF
+         iB/485MWpzKZr/FTwXhR/Y1sacn2jq4BB7PZj88k03MsDedxengDuF7UPy9iXQLx0VTg
+         ziibva7Wkg++g0OzfRGZdupIyw7TwEFmz7Phc4XIrCz/0gTToZH2DvVHv7sJ/050nPRl
+         R3maGF9OhRbs4627fD+foLZhoW/+bMW2Chk8yDhO30z49/f0rXnTaWIli231cZR0B4uP
+         SCZA==
+X-Forwarded-Encrypted: i=1; AJvYcCV6DZsKm1FHAE+F+L6AvGMCOCUeG3zj8bA4bM9Lb8FEy215gccUdIGl6HdyMiYVA2Jdi3la/UUQsOKozR0eGTigSl5vFAvvOgzSnPX6pQ==
+X-Gm-Message-State: AOJu0YwxgHpp65kpOXtjyfMNeQAdE9Xsx59UTbbs8lv33XATpTLvQwfj
+	E5QZ61K3/mNIVb/Wg8VBSKicazMCFtJabs5oWeG71hFnn3RSOHDTh26DQzTzCsl+ui0t2gDlo8q
+	k15fnhNq7Thqo/mp94cUgK8UnDPno2RdkBjaBfZjmebtDzpgsX8sHIYjGlYGQp+w=
+X-Received: by 2002:a0c:f2ca:0:b0:68f:ab60:785d with SMTP id c10-20020a0cf2ca000000b0068fab60785dmr6480372qvm.11.1708947356781;
+        Mon, 26 Feb 2024 03:35:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFjuwtmpBRlPkgdcmp7lRxEx7lALjlGE01hfMLKCdUwKk5bHL1lesfeK5TI+OaaKLBbJR0jlQ==
+X-Received: by 2002:a0c:f2ca:0:b0:68f:ab60:785d with SMTP id c10-20020a0cf2ca000000b0068fab60785dmr6480363qvm.11.1708947356524;
+        Mon, 26 Feb 2024 03:35:56 -0800 (PST)
 Received: from [192.168.0.9] (ip-109-43-176-215.web.vodafone.de. [109.43.176.215])
-        by smtp.gmail.com with ESMTPSA id a13-20020a05622a02cd00b0042dac47e9b4sm2344880qtx.5.2024.02.26.03.34.00
+        by smtp.gmail.com with ESMTPSA id f30-20020a0caa9e000000b0068fc83bb48fsm2817441qvb.105.2024.02.26.03.35.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Feb 2024 03:34:02 -0800 (PST)
-Message-ID: <c05354c4-4130-4a55-8725-86fe9b676d75@redhat.com>
-Date: Mon, 26 Feb 2024 12:33:59 +0100
+        Mon, 26 Feb 2024 03:35:56 -0800 (PST)
+Message-ID: <269ec33f-e2ad-4f55-b3e8-52ce88f966c5@redhat.com>
+Date: Mon, 26 Feb 2024 12:35:52 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH 01/32] powerpc: Fix KVM caps on POWER9
- hosts
+Subject: Re: [kvm-unit-tests PATCH 02/32] powerpc: Fix pseries getchar return
+ value
 To: Nicholas Piggin <npiggin@gmail.com>
 References: <20240226101218.1472843-1-npiggin@gmail.com>
- <20240226101218.1472843-2-npiggin@gmail.com>
+ <20240226101218.1472843-3-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -128,7 +128,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240226101218.1472843-2-npiggin@gmail.com>
+In-Reply-To: <20240226101218.1472843-3-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -150,28 +150,27 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 26/02/2024 11.11, Nicholas Piggin wrote:
-> KVM does not like to run on POWER9 hosts without cap-ccf-assist=off.
+> getchar() didn't get the shift value correct and never returned the
+> first character. This never really mattered since it was only ever
+> used for press-a-key-to-continue prompts. but it tripped me up when
+> debugging a QEMU console output problem.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   powerpc/run | 2 ++
->   1 file changed, 2 insertions(+)
+>   lib/powerpc/hcall.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/powerpc/run b/powerpc/run
-> index e469f1eb3..5cdb94194 100755
-> --- a/powerpc/run
-> +++ b/powerpc/run
-> @@ -24,6 +24,8 @@ M+=",accel=$ACCEL$ACCEL_PROPS"
+> diff --git a/lib/powerpc/hcall.c b/lib/powerpc/hcall.c
+> index 711cb1b0f..b4d39ac65 100644
+> --- a/lib/powerpc/hcall.c
+> +++ b/lib/powerpc/hcall.c
+> @@ -43,5 +43,5 @@ int __getchar(void)
+>   	asm volatile (" sc 1 "  : "+r"(r3), "+r"(r4), "=r"(r5)
+>   				: "r"(r3),  "r"(r4));
 >   
->   if [[ "$ACCEL" == "tcg" ]] ; then
->   	M+=",cap-cfpc=broken,cap-sbbc=broken,cap-ibs=broken,cap-ccf-assist=off"
-> +elif [[ "$ACCEL" == "kvm" ]] ; then
-> +	M+=",cap-ccf-assist=off"
->   fi
+> -	return r3 == H_SUCCESS && r4 > 0 ? r5 >> 48 : -1;
+> +	return r3 == H_SUCCESS && r4 > 0 ? r5 >> 56 : -1;
+>   }
 
-Since it is needed in both cases, you could also move it out of the 
-if-statement and remove it from the tcg part.
-
-Anyway,
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
