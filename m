@@ -1,113 +1,113 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E83F9867D25
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 18:00:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 982B8867D5F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 18:05:53 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=BQXNqjLC;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=K1RwleFT;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tk6LK5PRXz3vj9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 04:00:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tk6Sv2Jvzz3vZd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 04:05:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=BQXNqjLC;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=K1RwleFT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:260e::600; helo=eur03-am7-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on20600.outbound.protection.outlook.com [IPv6:2a01:111:f403:260e::600])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:260f::600; helo=eur04-he1-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on20600.outbound.protection.outlook.com [IPv6:2a01:111:f403:260f::600])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tk6KY07Nnz2y1Y
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 03:59:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tk6S32Np2z2ykt
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 04:05:06 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XQC1BiONsbiIYgKbj8tQy5vekQ39D8rkTvHsYDKPvkH1B2VpN5VPaHh0wX3iCLBJd7ILWPB5JnAbMKoeGs5B3v6AzLCO2rllf+e4MX7cr1o8c9mU0dPcrav5p7xIvI4mled1qN/pUZm1pRl0USqDZiPFUWcnrROBlc7FtEbOaYoO0/4nAwsKK/DS03PY5jufAHrotql0CxCEeifb4/T8cPZIA7VUEHFH8ysVfZGdZlDxTxAB5nU14zyNESX+MiaHWYvEJAsv91AaI+15F6ogM+ducgOw5DxgUqktwAonvSsXxzMwJx3YVYdA1y4/mI3iF7SAx8KSEv/UinLvQpOsdA==
+ b=JNvLMVDAeTU5xGpk6JdeFq+5+AZLYuX9vdmC+HzS4CVX2Zs0TvK6/C9cD/6cHcqNvMimvricIeWLxwv2iGzvJVixIguWUlDe1U6UYNxWu1KM+rM2ZEdlEt/8PKZWTaLc8eWFIxGM8L7Iw56duFAMFCDVRzvaH0KWkvzKfMyra/3FjodSbgZCSIg9EYiKc38ieT1hqBGhHQifU+qpqPe6UBmp50zQzvbPxsibrmhyR1ZMulOpsZz4MB4cjoh4sU5CZKilTb7FFA+wzE8zhh+7VsZjpf6dCpbdVRbgHUF99C2JKKL+mVowwIB3UTIFpJ4wfRWroHKTOLludbTLMVGj5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RxnYoO6KlKEWzfj5f/hxd6meXhnIb0JaVQ0DTNRBz0E=;
- b=i+wtkTyhoC3xsEvKGt+a4k+oqA+ghCtXamPUqMn4wJj1sWDmNI/78gj8HIPD7mtDKaArmKF6vn0eRhdsjQdrNxnqM98wOCk/4RaS1XgA2C7cVa+mPB7lfeHIxPIKzezj5Fp5gXZ2sJA1lmRU3O099TqI1/SIf05yLylDOk067bUj8GB3yquEGv6y4vPTutQRujWrLdsi5rVLNouPjk/0z01ZyG+OVpcC0B5D7L6BY7rPyh8b3l/PDXY52xQA3L314tPS7V4f4mxcQJ9oWOr1hk88bmsyeLPUygXB8aCCPLC7j5dDdEpBpvfF4ffTHk4iWT9cs9ZltWkrOEe2nqoUyw==
+ bh=lgnUFmJUrI0cHdJ6noOvxgaagPsRUL2bYYKbrhtmtFM=;
+ b=nHRolmB/XCLObfliar1A6kRV49e22KLr9phTkavPBT3DlzgLgzWwQbQoDCpEn6/pa8UNbUWM407Q3Yrz5b1OppnYSxREyOd6uyAa0tTSClnmAee2a1BN5CO5NuYZT9MaOazEv/UrGeFmL4TE0hnWExn4tNPPKXTyOaKpucvousvI6lTpKgHceCAR8WdjC80m0cxifFx+WeukpMj14SP0482+OhRtZVpGWMQviHx2+BQoVDX1qQR1mfuMAu80+by9bKcGXeFUOItjjoK5aFFuHua+jMro0PRfx7p/e5hTI72h0U1LFCrDfZ/vWCy2P9OqbVoiL+9jIRZNEx32VC1Ohg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RxnYoO6KlKEWzfj5f/hxd6meXhnIb0JaVQ0DTNRBz0E=;
- b=BQXNqjLC061hvL+stn8QElu19ZPCZEhtR9iVk5Po2sNI5rTPKXGZlSImsNwdCmrglNkOAFBwvPr3BghQdDwbl1F69VUST1Fcjm4q057yVKlSqbzjDtUFm0O6atq+4KiEqzezqdzvBoCHCVNn37x8k8vIEIH8uwKnj6MNFdCUNfM=
+ bh=lgnUFmJUrI0cHdJ6noOvxgaagPsRUL2bYYKbrhtmtFM=;
+ b=K1RwleFTPk66pJwWZV/GRqxShdcdtt239htycRhQBsiKFCmzs2XkI6nOkfHDqzOoU2Idc4wj+bV4Y/YQUDQDx09XOSZFr1geuY8fezvy/Cwm0V8e4obwVOBimv84HiLLq97qrgnNvfmXeUPkmTYPcmu7rrnYZOZg+EbwCKAYjRE=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DBBPR04MB7867.eurprd04.prod.outlook.com (2603:10a6:10:1e5::6) with
+ by AM7PR04MB6984.eurprd04.prod.outlook.com (2603:10a6:20b:de::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.31; Mon, 26 Feb
- 2024 16:59:10 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.33; Mon, 26 Feb
+ 2024 17:04:45 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9af4:87e:d74:94aa]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9af4:87e:d74:94aa%7]) with mapi id 15.20.7316.032; Mon, 26 Feb 2024
- 16:59:09 +0000
-Date: Mon, 26 Feb 2024 11:58:58 -0500
+ 17:04:45 +0000
+Date: Mon, 26 Feb 2024 12:04:33 -0500
 From: Frank Li <Frank.li@nxp.com>
 To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: Re: [PATCH v8 05/10] PCI: dwc: ep: Rename dw_pcie_ep_init_complete()
- to dw_pcie_ep_init_registers()
-Message-ID: <ZdzDUq8vWUTnoHnd@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH v8 06/10] PCI: dwc: ep: Call dw_pcie_ep_init_registers()
+ API directly from all glue drivers
+Message-ID: <ZdzEoXwU42rFCF/W@lizhi-Precision-Tower-5810>
 References: <20240224-pci-dbi-rework-v8-0-64c7fd0cfe64@linaro.org>
- <20240224-pci-dbi-rework-v8-5-64c7fd0cfe64@linaro.org>
+ <20240224-pci-dbi-rework-v8-6-64c7fd0cfe64@linaro.org>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240224-pci-dbi-rework-v8-5-64c7fd0cfe64@linaro.org>
-X-ClientProxiedBy: BYAPR05CA0063.namprd05.prod.outlook.com
- (2603:10b6:a03:74::40) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <20240224-pci-dbi-rework-v8-6-64c7fd0cfe64@linaro.org>
+X-ClientProxiedBy: BY5PR03CA0024.namprd03.prod.outlook.com
+ (2603:10b6:a03:1e0::34) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DBBPR04MB7867:EE_
-X-MS-Office365-Filtering-Correlation-Id: c1336876-c741-4897-abfa-08dc36ec4043
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM7PR04MB6984:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4b35674a-bd2d-414e-3435-08dc36ed083e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	lECJoM4lDQaxlNkQTuxADwUO3YRl7GTmsRW+jS1cC3Ec3wX0tn9VEYtByKKkJdb7WRcrT+2UR9GzbcobaZjUUR4cwSf3iOiEiNUf8TYDfy+w+H0SArW4CxZx3ERtxJjnVzi2/C2RCYSt9LAmt/hyo0dhKznKdugG8Iw0oor7K1es4GaqVSP/1+aj/UktIL5WN/DAm/pLnStUAIWonsuafKH36e+bQa0arnOGHpbX99b87d3QqzFTFm/Inzt8+XJP4wwW/tvOgC5XzFmSniJNdjMb3m9MWwlKq/DSC0y3RcqGTsrd4vlUN1A+1m74HJF9UhooI2D3+too1n85UkGdrtFz3uDJ03IAOQJqdj3mwK61TkrkH/uUyrrF+yfW9lYU9XyIakY32hDRzDTdpemw0smUhkqxbaF0ZuSD0SCNdDgkeTVuuboKroVsX711DRq85S8oVZuTLLuyMqFcd8qPR6onnyXbVw2J2duw4UUkkvqrSF1VH1q7Ys0W0TXFyLeVgBt4WjCMupUcPDQpC7SeoFDT8GcV54eE8YOpDDTEzhy9MoFZReWc3yxGH+1nEM+gcyGByesU5nwga2aMpoP8BQDhM/rUsbN4QK6m4efjJ630CQtzkoxx4woUPVCWwf5bWfaho/jp5H/Dxi3mOjwNcznNgHlKNbT8O31ygjnmJHBFejaQoUB0MtAopFgfPxleEI68tvActuFfDnqU+3GZs3H90uQABXV3Q51miS9Nu3I=
+X-Microsoft-Antispam-Message-Info: 	jc9/K57ZKWRTpFiuv8fhEVO3cSozRbz0Mdr0143sxCfzjjNl1HCeke1mOquhRG+yA0CyD+rocsu7nhMmlXGWa8rEICLtGEnJQOsualgYJBdmQYaX9xqJLccF/a8eOMH+deGlNEYCpDSso31fowIDU7aeblzruZBim7OIMJID6PHZ7aSGUHMFBb98k6j4+VpjDuTISLERTSDD45ZiEiDGF27cYuE9obpkZ6k/y7h5cCeYr5E9tr/4A1ssL0/B4Rg9mxD0I8KvInqK8TIRnVAxb2e80m0VgycPxTr5B3gMvIsE/d7TU/VqVAoTvp0WMxL10iCHEfKd81SZQUQFuxZXxrcW10CLHNFEphd3GtAliVyJcTEAq1IhJER4IueSjnP0H3PICzDwjJAnwKtcYImfYnehZ0Wvdr/OC6uictf/2A2RTqIZiMryjtiXjVIEMNMTc+do/cIkKGU16VClQqadW81VTVFjGUkNhk/lEEwVK+nAFvxcDYxMMWfdMt53kLJPhPWOmPhDTdrMR56UUQFiV/DwtaK03uRJWHQZD6ZMCSBuTmSRIaDUjQZLEXPZwJJQeomYPe1vEbNomZiuZZ1GBzSqu+Z/o1WE39WJhgDSutC9bEHa6OmmRbJ2kx35cVqb9SUWfRLpOC25RDHYHpnoT2hyjTGzUgaB06FlWWQZNs0fIsqih2ZOXturda/XwXTddujLapmaZwtgw0BIBxXIVlsTvNhCaP4vJfnoWb8u91M=
 X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(38350700005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?k7uWCshUUwsT+lM871dGjnuvMOYM2f+Gblr1Avt9fY8ZaQE66k4o3Wz8Bei0?=
- =?us-ascii?Q?fHRJg4ygePvW6R8/gfhZZW46AnnQ9BDrajyq4o8FDDoYYS4MHJydw6XXsrr+?=
- =?us-ascii?Q?rADYVkguh/ikWrtdpIKB5ZDgIaaqXh8G7VKfwnCgIGGTmnuJMBz42mRw6+wj?=
- =?us-ascii?Q?Ahusy7XY6ed1EerCpKnmFK2jIEcNv+mDWZGjIxFK2BFQAkhwyQ7p0rswwdbN?=
- =?us-ascii?Q?Z5LGk1kzr3xAEYG5qZ+qUXH1A3lyUh2by+CTCtkkg/pe0QRpMQKCXChv1te6?=
- =?us-ascii?Q?jvi68rSPLtNnLj6OH5Fh8bB0UeKECm7ylnkfm1M09fXdgjtpk82wzugNRfOk?=
- =?us-ascii?Q?LK5g/4JdlVuae8lPQkowTo8KaDcEJVf//orwiCFhdRRyc/0f8vObhZ1xmuEM?=
- =?us-ascii?Q?q4q77XklJlyTStBMZFvBks+7mN6f7SIGpjRkWQ54Jdv8U3G9QpWOTX9Yo6th?=
- =?us-ascii?Q?A8D6OWGTC+2RZZkDm4NK1OT12LUKYGEUgD7kMfy8wTwA2Iyc3DHLG0L0wiKJ?=
- =?us-ascii?Q?Xg4Rjn2H1XVMZWMONPSL5wQ9M2aExqr4i/zpdz9RH6dBjltTWZeOOQOtcW/S?=
- =?us-ascii?Q?9CpaCEs7Tf/lbJW6XAcQpX3HFpkQQszqZc1lerXi900djck3OqJw/uZ+QY7E?=
- =?us-ascii?Q?0wdMye+cqws62aHty3cggyDZdo8sV0uwj2g7pWUcdtm/zi5fi4pCELBWStnX?=
- =?us-ascii?Q?9vQTLiQLHEXa/jPSBq4kYB+zz3ukcDLT4bC6nqgy4FLqZNc6kxVwCounnynu?=
- =?us-ascii?Q?jzzy5DgXJAfnbNJgwE3zYtjzN2KjUcz0XOJMjNBjqjMK2y6RDX7noRLxId6N?=
- =?us-ascii?Q?+savGe1dGiOyDsi6UgZWv50xYB7qDyzeCi+TsOp43Hc5M7tndqMQNg58AOTt?=
- =?us-ascii?Q?gz0usMP6dHadFU8KvFYPrh/dRE98xZ6FT8ILJisBJSRuAfkuOzckO4TEHjLD?=
- =?us-ascii?Q?zepmFDLe9rsSdmchby1EWXCrGfofjBDbFV5EwDbvIhoFOwiQWqJATsDKhzmV?=
- =?us-ascii?Q?hA2XMTRDD3J0VZMik5tf6qaKwFJqh1yLvNl+2OPznATwyeWhq4AEiXl89Ijg?=
- =?us-ascii?Q?b8Qe+mRErrWRPyVjaPE+VB1v9XVXxeKDnIKYJpR6X6zMw9u1MIfiO3CRHDTC?=
- =?us-ascii?Q?7FhOktRijiINKE+rHSwjtDZZotsMrT8Nz5HvCCSQNojTagEgSHaphEK119s1?=
- =?us-ascii?Q?p9dHcUeXND9tv7R2/ipIJlaOr75NRrOhaHjuZoyCehn5AgeRHilrS9VYBit4?=
- =?us-ascii?Q?ih5M2w8NbvFNDHgT2kqJqzQv6JvZR5MlGjj3gwdSOK8F7+alwniwEDaLX2O5?=
- =?us-ascii?Q?Vc3wTwonJkPFvTJNtnbE61cKXmrkB5MrAjWqQHVIWaAEx9R7YbHItoRf02JA?=
- =?us-ascii?Q?gsGu5u0/EXCu8GStOhSnl7BYZChW1QFm+r6LWrbVbeXRqwHnKNdtM7C+N6vl?=
- =?us-ascii?Q?1u1kjxVbAgtBMWvdQx3w2kD3dhIST5/PeryYFpXRw3+fJV9pMGBrhGwtLpgv?=
- =?us-ascii?Q?sD3g2Gwa7EyV0waQqhwBbH+Tz93VDTbBvx9sqN7YgbcQdvyi1vBv82NsB5tI?=
- =?us-ascii?Q?1a8jWAxCWZw+YV8zM3Z4Ddp3ugnWqUzBQqc1HsJs?=
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?/9yaYU6SJQYw813z1EFQXJcz7YwBAxV8T6mbei1uEpItEl3B1jwmEVF0bYBa?=
+ =?us-ascii?Q?qY7eEWIjq59++7HEDIVu95eE3SchxKAO2ITxNznzJXknXRt8SUezGmjSnPmM?=
+ =?us-ascii?Q?vkXdAksQBc+AeJRQzsURfcrKUYDmZ1nzYFX0RjlKIhjIsaNxl8J5pj5NzyVn?=
+ =?us-ascii?Q?uwnVK9u0VCY/J+fwr+YZe89cIQrKzk00MHnN6Y9itBvct+vQI3XS1kAMntSI?=
+ =?us-ascii?Q?XSQiFabN6glBkGH/RH6tBatKRHibvJJoZp2GCw6yvnoUUkdM7fA9gxy0YAp0?=
+ =?us-ascii?Q?mK7CtXRgKMDJNcugz/JDSnrGCzzrmaAgWK6wuhQO/vDlPnk6MndsJmeqRXaU?=
+ =?us-ascii?Q?Rf6n09BXGYUbDoTvan7U+d/kTr/U4SQ6j/d93O/7/HRhBLIySh/Pvtz+J1rW?=
+ =?us-ascii?Q?eU2flXngOurn1sCxhfnhmzZ095DxNN73wgg20+6TBmTpmtKqaqOljAMRM66v?=
+ =?us-ascii?Q?W+bmI3A4op6WLemx8gCnHaT6o7g9Tc+rFsTEnFMJ1Vx5XToovq7mCLpjwa3d?=
+ =?us-ascii?Q?Lvt0qSVNTNzNWDuT5yWxsHW/XBQ4KGUZYLP5uXqMHTeSYQu12TXbDoL96wj7?=
+ =?us-ascii?Q?6EyZj6bycwbKnYZRBBPsN0+tE5FnOmg3NNZe62bl9h+b9bdN/LkNubklQlef?=
+ =?us-ascii?Q?x14irtGcQeU6nGMAIluoWBZK6LxKHzXZ/pIY4jSrc6iqD2iR79CXK5QkELuw?=
+ =?us-ascii?Q?qhqQiE2idNTdRElREJhn2SCavOZcr2KvsEfh75d6qY4b5oEa/ukbhpxEmQg/?=
+ =?us-ascii?Q?DP0RuEpqBkcnyTm/Le6z9VsnNxaxFz/txVDfZtFNSTxURhoSS1uw8+IfC2u1?=
+ =?us-ascii?Q?uSyGapOWPWa+Hh/L4yY6BCRAA6ZfMvf+8PKL+s2lIyO811963bvzKqwUvToo?=
+ =?us-ascii?Q?cgyNrFXhfEH/oDOhvQ3M6joYsp75zQutY88o0e3s1hhlZbFqpeSrrUaKygB8?=
+ =?us-ascii?Q?vInci+kkj6MoRNkbG8Clj3ZYd8x2IcFi3rihcz4hwu86MjHJHC22MfVR3sV/?=
+ =?us-ascii?Q?h2UMeM0Le0bFQI07nD4MrLqOc4pmPEsWGgHCf3D+tyy67iadcRycRbYAyxRe?=
+ =?us-ascii?Q?CExKn/pXeV7uYOm603GzbEH0RpZN+ukt8BSqrFxiV+cGUnMr6e/HQa8W4UAF?=
+ =?us-ascii?Q?R94uITB4DulfgkO5rn8ohMUC7ZWdQ7g+jtuRxyVVkLl+Z2kBgMKlgh3Cv/Gn?=
+ =?us-ascii?Q?328okaV/VygjBqej+VGZ37ElcOkOJZtMYLvluucJEm2orol4RbOVFOruB/ZM?=
+ =?us-ascii?Q?gumKOuNMA+X11t3vzquX42ASGh75fMEzzBpcy140+ln09PVjQN09xf/ScEBb?=
+ =?us-ascii?Q?od+w+AHd9NyxoEtialhPsyVAyMvld/LcK2xEiH0/KS92Lxx9AHp50JCRC3Zn?=
+ =?us-ascii?Q?c3HVLSeiz2ubdmzCyaKZsfyzuahywldVzK1sWCnhTpM+iUzJ3J2KOylOVi8b?=
+ =?us-ascii?Q?DrG7f7ixncAvHp4s8VP4Uu1Wl0XjyxCgVXFYcOeWt9p2HZWxv2vJus+A1Ab/?=
+ =?us-ascii?Q?HHeTf2W+Y1oPz4cj4dz74V4izxZu2z1qRMyPLi5NrEchX4RbkpaxUhYW/sPF?=
+ =?us-ascii?Q?eXrEI9xaksW7JbCIObV2owU8kKbVGv357uhv/4a+?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c1336876-c741-4897-abfa-08dc36ec4043
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4b35674a-bd2d-414e-3435-08dc36ed083e
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2024 16:59:09.9246
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2024 17:04:45.5891
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6ba0TCFmi0oRbHexaowphp9Cm40fQ6z85CzdO2mLS1Oc5aUpqPZXCgUIYHAczA3YLY7llbg6gjHghrAB5EeAdg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7867
+X-MS-Exchange-CrossTenant-UserPrincipalName: sQMDPBYlrIQxWwmHHrWIW7/L2vSfF9H9qVxKTDqwOKDNCcRdywmfx+umBvpnHVRN5dGlvBRRlVM1+dJuFVc/wg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6984
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -124,104 +124,239 @@ Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <v
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Feb 24, 2024 at 12:24:11PM +0530, Manivannan Sadhasivam wrote:
-> The goal of the dw_pcie_ep_init_complete() API is to initialize the DWC
-> specific registers post registering the controller with the EP framework.
+On Sat, Feb 24, 2024 at 12:24:12PM +0530, Manivannan Sadhasivam wrote:
+> Currently, dw_pcie_ep_init_registers() API is directly called by the glue
+> drivers requiring active refclk from host. But for the other drivers, it is
+> getting called implicitly by dw_pcie_ep_init(). This is due to the fact
+> that this API initializes DWC EP specific registers and that requires an
+> active refclk (either from host or generated locally by endpoint itsef).
 > 
-> But the naming doesn't reflect its functionality and causes confusion. So,
-> let's rename it to dw_pcie_ep_init_registers() to make it clear that it
-> initializes the DWC specific registers.
+> But, this causes a discrepancy among the glue drivers. So to avoid this
+> confusion, let's call this API directly from all glue drivers irrespective
+> of refclk dependency. Only difference here is that the drivers requiring
+> refclk from host will call this API only after the refclk is received and
+> other drivers without refclk dependency will call this API right after
+> dw_pcie_ep_init().
+> 
+> This change will also allow us to remove the "core_init_notifier" flag in
+> the later commits.
 > 
 > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-
 > ---
->  drivers/pci/controller/dwc/pcie-designware-ep.c | 6 +++---
->  drivers/pci/controller/dwc/pcie-designware.h    | 4 ++--
->  drivers/pci/controller/dwc/pcie-qcom-ep.c       | 2 +-
->  drivers/pci/controller/dwc/pcie-tegra194.c      | 2 +-
->  4 files changed, 7 insertions(+), 7 deletions(-)
+>  drivers/pci/controller/dwc/pci-dra7xx.c           |  7 +++++++
+>  drivers/pci/controller/dwc/pci-imx6.c             |  8 ++++++++
+>  drivers/pci/controller/dwc/pci-keystone.c         |  9 +++++++++
+>  drivers/pci/controller/dwc/pci-layerscape-ep.c    |  7 +++++++
+>  drivers/pci/controller/dwc/pcie-designware-ep.c   | 22 ----------------------
+>  drivers/pci/controller/dwc/pcie-designware-plat.c |  9 +++++++++
+>  drivers/pci/controller/dwc/pcie-rcar-gen4.c       | 12 +++++++++++-
+>  drivers/pci/controller/dwc/pcie-uniphier-ep.c     | 13 ++++++++++++-
+>  8 files changed, 63 insertions(+), 24 deletions(-)
 > 
-> diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> index 99d66b0fa59b..ed1f2afd830a 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> @@ -603,7 +603,7 @@ static unsigned int dw_pcie_ep_find_ext_capability(struct dw_pcie *pci, int cap)
+> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+> index 0e406677060d..395042b29ffc 100644
+> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
+> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+> @@ -467,6 +467,13 @@ static int dra7xx_add_pcie_ep(struct dra7xx_pcie *dra7xx,
+>  		return ret;
+>  	}
+>  
+> +	ret = dw_pcie_ep_init_registers(ep);
+> +	if (ret) {
+> +		dev_err(dev, "Failed to initialize DWC endpoint registers\n");
+> +		dw_pcie_ep_deinit(ep);
+> +		return ret;
+> +	}
+> +
 >  	return 0;
 >  }
 >  
-> -int dw_pcie_ep_init_complete(struct dw_pcie_ep *ep)
-> +int dw_pcie_ep_init_registers(struct dw_pcie_ep *ep)
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index dc2c036ab28c..bfcafa440ddb 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -1136,6 +1136,14 @@ static int imx6_add_pcie_ep(struct imx6_pcie *imx6_pcie,
+>  		dev_err(dev, "failed to initialize endpoint\n");
+>  		return ret;
+>  	}
+> +
+> +	ret = dw_pcie_ep_init_registers(ep);
+> +	if (ret) {
+> +		dev_err(dev, "Failed to initialize DWC endpoint registers\n");
+> +		dw_pcie_ep_deinit(ep);
+> +		return ret;
+> +	}
+> +
+>  	/* Start LTSSM. */
+>  	imx6_pcie_ltssm_enable(dev);
+>  
+> diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
+> index c0c62533a3f1..8392894ed286 100644
+> --- a/drivers/pci/controller/dwc/pci-keystone.c
+> +++ b/drivers/pci/controller/dwc/pci-keystone.c
+> @@ -1286,6 +1286,13 @@ static int ks_pcie_probe(struct platform_device *pdev)
+>  		ret = dw_pcie_ep_init(&pci->ep);
+>  		if (ret < 0)
+>  			goto err_get_sync;
+> +
+> +		ret = dw_pcie_ep_init_registers(&pci->ep);
+> +		if (ret < 0) {
+> +			dev_err(dev, "Failed to initialize DWC endpoint registers\n");
+> +			goto err_ep_init;
+> +		}
+> +
+>  		break;
+>  	default:
+>  		dev_err(dev, "INVALID device type %d\n", mode);
+> @@ -1295,6 +1302,8 @@ static int ks_pcie_probe(struct platform_device *pdev)
+>  
+>  	return 0;
+>  
+> +err_ep_init:
+> +	dw_pcie_ep_deinit(&pci->ep);
+>  err_get_sync:
+>  	pm_runtime_put(dev);
+>  	pm_runtime_disable(dev);
+> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> index 2e398494e7c0..b712fdd06549 100644
+> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> @@ -276,6 +276,13 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+>  	if (ret)
+>  		return ret;
+>  
+> +	ret = dw_pcie_ep_init_registers(&pci->ep);
+> +	if (ret) {
+> +		dev_err(dev, "Failed to initialize DWC endpoint registers\n");
+> +		dw_pcie_ep_deinit(&pci->ep);
+> +		return ret;
+> +	}
+> +
+>  	return ls_pcie_ep_interrupt_init(pcie, pdev);
+>  }
+>  
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> index ed1f2afd830a..278bdc9b2269 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> @@ -729,7 +729,6 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
+>  	struct device *dev = pci->dev;
+>  	struct platform_device *pdev = to_platform_device(dev);
+>  	struct device_node *np = dev->of_node;
+> -	const struct pci_epc_features *epc_features;
+>  
+>  	INIT_LIST_HEAD(&ep->func_list);
+>  
+> @@ -775,29 +774,8 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
+>  		goto err_exit_epc_mem;
+>  	}
+>  
+> -	if (ep->ops->get_features) {
+> -		epc_features = ep->ops->get_features(ep);
+> -		if (epc_features->core_init_notifier)
+> -			return 0;
+> -	}
+
+why remove this check?
+
+Frank
+
+> -
+> -	/*
+> -	 * NOTE:- Avoid accessing the hardware (Ex:- DBI space) before this
+> -	 * step as platforms that implement 'core_init_notifier' feature may
+> -	 * not have the hardware ready (i.e. core initialized) for access
+> -	 * (Ex: tegra194). Any hardware access on such platforms result
+> -	 * in system hang.
+> -	 */
+> -	ret = dw_pcie_ep_init_registers(ep);
+> -	if (ret)
+> -		goto err_free_epc_mem;
+> -
+>  	return 0;
+>  
+> -err_free_epc_mem:
+> -	pci_epc_mem_free_addr(epc, ep->msi_mem_phys, ep->msi_mem,
+> -			      epc->mem->window.page_size);
+> -
+>  err_exit_epc_mem:
+>  	pci_epc_mem_exit(epc);
+>  
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-plat.c b/drivers/pci/controller/dwc/pcie-designware-plat.c
+> index 778588b4be70..ca9b22e654cd 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-plat.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-plat.c
+> @@ -145,6 +145,15 @@ static int dw_plat_pcie_probe(struct platform_device *pdev)
+>  
+>  		pci->ep.ops = &pcie_ep_ops;
+>  		ret = dw_pcie_ep_init(&pci->ep);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = dw_pcie_ep_init_registers(&pci->ep);
+> +		if (ret) {
+> +			dev_err(dev, "Failed to initialize DWC endpoint registers\n");
+> +			dw_pcie_ep_deinit(&pci->ep);
+> +		}
+> +
+>  		break;
+>  	default:
+>  		dev_err(dev, "INVALID device type %d\n", dw_plat_pcie->mode);
+> diff --git a/drivers/pci/controller/dwc/pcie-rcar-gen4.c b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
+> index 9d9d22e367bb..fb7c03639a53 100644
+> --- a/drivers/pci/controller/dwc/pcie-rcar-gen4.c
+> +++ b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
+> @@ -414,6 +414,7 @@ static const struct dw_pcie_ep_ops pcie_ep_ops = {
+>  static int rcar_gen4_add_dw_pcie_ep(struct rcar_gen4_pcie *rcar)
 >  {
->  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
->  	struct dw_pcie_ep_func *ep_func;
-> @@ -718,7 +718,7 @@ int dw_pcie_ep_init_complete(struct dw_pcie_ep *ep)
+>  	struct dw_pcie_ep *ep = &rcar->dw.ep;
+> +	struct device *dev = rcar->dw.dev;
+>  	int ret;
+>  
+>  	if (!IS_ENABLED(CONFIG_PCIE_RCAR_GEN4_EP))
+> @@ -422,8 +423,17 @@ static int rcar_gen4_add_dw_pcie_ep(struct rcar_gen4_pcie *rcar)
+>  	ep->ops = &pcie_ep_ops;
+>  
+>  	ret = dw_pcie_ep_init(ep);
+> -	if (ret)
+> +	if (ret) {
+>  		rcar_gen4_pcie_ep_deinit(rcar);
+> +		return ret;
+> +	}
+> +
+> +	ret = dw_pcie_ep_init_registers(ep);
+> +	if (ret) {
+> +		dev_err(dev, "Failed to initialize DWC endpoint registers\n");
+> +		dw_pcie_ep_deinit(ep);
+> +		rcar_gen4_pcie_ep_deinit(rcar);
+> +	}
 >  
 >  	return ret;
 >  }
-> -EXPORT_SYMBOL_GPL(dw_pcie_ep_init_complete);
-> +EXPORT_SYMBOL_GPL(dw_pcie_ep_init_registers);
+> diff --git a/drivers/pci/controller/dwc/pcie-uniphier-ep.c b/drivers/pci/controller/dwc/pcie-uniphier-ep.c
+> index 3fced0d3e851..82ccaea089be 100644
+> --- a/drivers/pci/controller/dwc/pcie-uniphier-ep.c
+> +++ b/drivers/pci/controller/dwc/pcie-uniphier-ep.c
+> @@ -399,7 +399,18 @@ static int uniphier_pcie_ep_probe(struct platform_device *pdev)
+>  		return ret;
 >  
->  int dw_pcie_ep_init(struct dw_pcie_ep *ep)
->  {
-> @@ -788,7 +788,7 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
->  	 * (Ex: tegra194). Any hardware access on such platforms result
->  	 * in system hang.
->  	 */
-> -	ret = dw_pcie_ep_init_complete(ep);
-> +	ret = dw_pcie_ep_init_registers(ep);
->  	if (ret)
->  		goto err_free_epc_mem;
->  
-> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-> index 351d2fe3ea4d..f8e5431a207b 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware.h
-> +++ b/drivers/pci/controller/dwc/pcie-designware.h
-> @@ -669,7 +669,7 @@ static inline void __iomem *dw_pcie_own_conf_map_bus(struct pci_bus *bus,
->  #ifdef CONFIG_PCIE_DW_EP
->  void dw_pcie_ep_linkup(struct dw_pcie_ep *ep);
->  int dw_pcie_ep_init(struct dw_pcie_ep *ep);
-> -int dw_pcie_ep_init_complete(struct dw_pcie_ep *ep);
-> +int dw_pcie_ep_init_registers(struct dw_pcie_ep *ep);
->  void dw_pcie_ep_init_notify(struct dw_pcie_ep *ep);
->  void dw_pcie_ep_deinit(struct dw_pcie_ep *ep);
->  void dw_pcie_ep_cleanup(struct dw_pcie_ep *ep);
-> @@ -693,7 +693,7 @@ static inline int dw_pcie_ep_init(struct dw_pcie_ep *ep)
->  	return 0;
+>  	priv->pci.ep.ops = &uniphier_pcie_ep_ops;
+> -	return dw_pcie_ep_init(&priv->pci.ep);
+> +	ret = dw_pcie_ep_init(&priv->pci.ep);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = dw_pcie_ep_init_registers(&priv->pci.ep);
+> +	if (ret) {
+> +		dev_err(dev, "Failed to initialize DWC endpoint registers\n");
+> +		dw_pcie_ep_deinit(&priv->pci.ep);
+> +		return ret;
+> +	}
+> +
+> +	return 0;
 >  }
 >  
-> -static inline int dw_pcie_ep_init_complete(struct dw_pcie_ep *ep)
-> +static inline int dw_pcie_ep_init_registers(struct dw_pcie_ep *ep)
->  {
->  	return 0;
->  }
-> diff --git a/drivers/pci/controller/dwc/pcie-qcom-ep.c b/drivers/pci/controller/dwc/pcie-qcom-ep.c
-> index 59b1c0110288..3697b4a944cc 100644
-> --- a/drivers/pci/controller/dwc/pcie-qcom-ep.c
-> +++ b/drivers/pci/controller/dwc/pcie-qcom-ep.c
-> @@ -463,7 +463,7 @@ static int qcom_pcie_perst_deassert(struct dw_pcie *pci)
->  	      PARF_INT_ALL_LINK_UP | PARF_INT_ALL_EDMA;
->  	writel_relaxed(val, pcie_ep->parf + PARF_INT_ALL_MASK);
->  
-> -	ret = dw_pcie_ep_init_complete(&pcie_ep->pci.ep);
-> +	ret = dw_pcie_ep_init_registers(&pcie_ep->pci.ep);
->  	if (ret) {
->  		dev_err(dev, "Failed to complete initialization: %d\n", ret);
->  		goto err_disable_resources;
-> diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-> index 68bfeed3429b..264ee76bf008 100644
-> --- a/drivers/pci/controller/dwc/pcie-tegra194.c
-> +++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-> @@ -1897,7 +1897,7 @@ static void pex_ep_event_pex_rst_deassert(struct tegra_pcie_dw *pcie)
->  	val = (upper_32_bits(ep->msi_mem_phys) & MSIX_ADDR_MATCH_HIGH_OFF_MASK);
->  	dw_pcie_writel_dbi(pci, MSIX_ADDR_MATCH_HIGH_OFF, val);
->  
-> -	ret = dw_pcie_ep_init_complete(ep);
-> +	ret = dw_pcie_ep_init_registers(ep);
->  	if (ret) {
->  		dev_err(dev, "Failed to complete initialization: %d\n", ret);
->  		goto fail_init_complete;
+>  static const struct uniphier_pcie_ep_soc_data uniphier_pro5_data = {
 > 
 > -- 
 > 2.25.1
