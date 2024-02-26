@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C2BF867126
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 11:33:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1021A86712B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 11:34:03 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=LzA7n4V6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Wy8iUY2G;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tjxlq24Lsz3wRJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 21:33:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tjxmm5br9z86Vq
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 21:34:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=LzA7n4V6;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Wy8iUY2G;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TjxLD6wxvz3vcB
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 21:14:28 +1100 (AEDT)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-6e4f5e84abeso448423b3a.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 02:14:28 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TjxLL52Ktz3cDg
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 21:14:34 +1100 (AEDT)
+Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-6e45bd5014dso672364b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 02:14:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708942467; x=1709547267; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1708942471; x=1709547271; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=x9fqZM1HjgMhnvdX9i/83KImMUDpC7gY5LwA4oHSYi8=;
-        b=LzA7n4V6MQElMxZvfyyOY+6QXIMWbS7yBkvvs/nI8tWsWaJTOFbshlTxuzVpIJOjPS
-         8G1Abp1ZMYpRQCVUfyXYx6gkNtTOJ58KVA7IvX7arf1FxKPhvRolAEIGIS7ntuhw/H7D
-         RqIWBFznMKPmhUAPMqJ/nX5axnAOAnMEg8SfCyYrRYDnn/rkKegV6bWd+An+7f1W6dZ7
-         x8FDMkFQJnk6lOt/Vg3yuIPNgBJIMVDJ5XiVNHvM628YAnaLqHw5de/ggKc7l6cMsSJX
-         UOITGhyAtVJa0C4lZNg7DmE2zghpV1GCWxHuz1whzF24hygLrwn3gJbQ+sJKhBUbUZN0
-         KAnQ==
+        bh=8tv/kXqrnoFTw/TnTTsGzI0TWplZw4JHWFfpjZCgs80=;
+        b=Wy8iUY2GTG3m06OcBKO/s2wEsIYkAMj1oILC/Z9gCGM18bI3AitUP6Chgzf3OblEay
+         JGp1batDryWkGZFA8jcdJxyjhNiJ0jZDDKmfT4627tbklnCCFveOVQ/cKz0PbxeTlgRS
+         hMOLndB/ptGRmly0fKwBIyn7soVQMpEsG/qBQTH1Eho12m0fmcTWkyLYO+GR/jAJnFVj
+         sSZ8/Zjot326BvS/sfBnvvuJ94XJkpDKUEg3BvhrNjRiFhp2LKKGaqGT7LGXivIQT5I1
+         QPTDY559chPu7gnqORQS02Hx+e+XzYG0q1RWDis0ynZxqsRpnY0jtx90LkdFlqoRlZfa
+         mowQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708942467; x=1709547267;
+        d=1e100.net; s=20230601; t=1708942471; x=1709547271;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=x9fqZM1HjgMhnvdX9i/83KImMUDpC7gY5LwA4oHSYi8=;
-        b=TXJ1SdIjlJwMffuMPjTLaWv4djB7BZ3uPCfAsnMdLiWqenwQg2qQTY2uZou1Lp1/vp
-         6Ok8QFx94Dt+FKmLEaWtpi62iT+WlCXFTEmUg5K1quiJYvsPq5raVcYnUr8TJ0xLXrNc
-         qkA5Oxge2czhdY0vEeJPhSlx3AozEV4FUjMpxOP7ujplv022HCtbdINrEW7XifIVXX2Z
-         8P925+IluEgUIkCc2aJ2b7S/6kYeMjCf01WR26LTZr8rDp6svPMJ3PS98DqY5pCNDrvd
-         UrxfaES9kGyUAd79+aBvoGiP2wqC1Ml/bBxNFBty0APJx12+dV1z2uGM4RK95Nwijtr2
-         e9og==
-X-Forwarded-Encrypted: i=1; AJvYcCVfd1IBH9WU26U/mt3EPjt3UcVyKSKcOqaziBZDj1E8w1gBTdRquIfgqnVyh13S5bgtL+hyAVZYa7TWdESuIILayOmbNS0LxrUcTOlS3w==
-X-Gm-Message-State: AOJu0Yx3T11L54rFtF8Pk0X5tgUTg4+eb01Epye1X6CJiJATfTe28gvO
-	h/6dqpbhK7I84SrNVrFoRlRs2gtfXHaMbGR9gd4gr1wpPBpuBTrM
-X-Google-Smtp-Source: AGHT+IE5TwZZ/SvnCc5VuH70NTT9y/dfzmTVfHBIKIkrrWmivfBVpHAxivyOg8Fq47nc4bd9XU1rHQ==
-X-Received: by 2002:aa7:8a54:0:b0:6e3:d201:3f87 with SMTP id n20-20020aa78a54000000b006e3d2013f87mr5294276pfa.28.1708942467166;
-        Mon, 26 Feb 2024 02:14:27 -0800 (PST)
+        bh=8tv/kXqrnoFTw/TnTTsGzI0TWplZw4JHWFfpjZCgs80=;
+        b=vXHWjTgNKK2CT+25d7ca0x4801J/oRMZavQ2Kn1ct6ZRc48o2MY/8TAEJ78+U3gOYL
+         Yvw6ZJxNb8LTZ07xwApwr92eREy+GlpDNFlgrAcYD+ZJoBKN5+vCZS2H2gUG2TtfqwM7
+         jgSmmWmzPXKnAuiwGlHK8p2Y5pWBJMSAzb1tKVvdbZgaoTbonT2B1Wihfcjio3OHWcDy
+         P2RQLy06459gwEVWJ2V64uWW4EPxuOUnJjDLGuOO3FNdbJZvPbE5I9Ynje+bPVv63mKX
+         t0EDw2RJjo+26KT0bvL//nEymMRCc2tbZR1HUy3k5xl4zb8xTvBjLcAUXTQJqNyxpXzP
+         oZDw==
+X-Forwarded-Encrypted: i=1; AJvYcCUt6PHd0mkox2DGyU28jzxmqJEg1iAZX53l4DADTVheTgMERQ+UxJexP7k+so3KlaEl85YXncRGJ2NYAq5T/UKPFpU5jrr+Nx9GmIsK0g==
+X-Gm-Message-State: AOJu0YxtppcYolYV7uz/cXUNYg0PTFyWPkUJT9XJ8+q9pceE9381fYfP
+	7e1tfHEd8eedseMNLt0UphDgNBIZSxnkBnjQnAxYVaJtxQpmnrrS
+X-Google-Smtp-Source: AGHT+IGWqtkNGYnc2kI6J5A8XZlY8AKErEsxe5mKk5e0+MPM7HC/Axr4slt10H3kxWF6oSmSTf/evw==
+X-Received: by 2002:a05:6a00:1817:b0:6e4:5a0f:b87a with SMTP id y23-20020a056a00181700b006e45a0fb87amr7716556pfa.12.1708942471540;
+        Mon, 26 Feb 2024 02:14:31 -0800 (PST)
 Received: from wheely.local0.net (220-235-194-103.tpgi.com.au. [220.235.194.103])
-        by smtp.gmail.com with ESMTPSA id x24-20020aa784d8000000b006e463414493sm3626693pfn.105.2024.02.26.02.14.23
+        by smtp.gmail.com with ESMTPSA id x24-20020aa784d8000000b006e463414493sm3626693pfn.105.2024.02.26.02.14.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Feb 2024 02:14:26 -0800 (PST)
+        Mon, 26 Feb 2024 02:14:31 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Thomas Huth <thuth@redhat.com>
-Subject: [kvm-unit-tests PATCH 27/32] powerpc: add usermode support
-Date: Mon, 26 Feb 2024 20:12:13 +1000
-Message-ID: <20240226101218.1472843-28-npiggin@gmail.com>
+Subject: [kvm-unit-tests PATCH 28/32] powerpc: add pmu tests
+Date: Mon, 26 Feb 2024 20:12:14 +1000
+Message-ID: <20240226101218.1472843-29-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240226101218.1472843-1-npiggin@gmail.com>
 References: <20240226101218.1472843-1-npiggin@gmail.com>
@@ -83,329 +83,519 @@ Cc: Laurent Vivier <lvivier@redhat.com>, kvm@vger.kernel.org, Nicholas Piggin <n
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The biggest difficulty for user mode is MMU support. Otherwise it is
-a simple matter of setting and clearing MSR[PR] with rfid and sc
-respectively.
+Add some initial PMU testing.
 
-Some common harness operations will fail in usermode, so some workarounds
-are reqiured (e.g., puts() can't be used directly).
-
-A usermode privileged instruction interrupt test is added.
+- PMC5/6 tests
+- PMAE / PMI test
+- BHRB basic tests
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- lib/powerpc/asm/processor.h |  9 +++++++++
- lib/powerpc/asm/reg.h       |  1 +
- lib/powerpc/asm/smp.h       |  1 +
- lib/powerpc/io.c            |  7 +++++++
- lib/powerpc/processor.c     | 38 +++++++++++++++++++++++++++++++++++++
- lib/powerpc/rtas.c          |  3 +++
- lib/powerpc/setup.c         |  8 ++++++--
- lib/powerpc/spinlock.c      |  4 ++++
- lib/ppc64/mmu.c             |  2 ++
- powerpc/interrupts.c        | 28 +++++++++++++++++++++++++++
- 10 files changed, 99 insertions(+), 2 deletions(-)
+ lib/powerpc/asm/processor.h |   2 +
+ lib/powerpc/asm/reg.h       |   9 +
+ lib/powerpc/asm/setup.h     |   1 +
+ lib/powerpc/setup.c         |  23 +++
+ powerpc/Makefile.common     |   3 +-
+ powerpc/pmu.c               | 337 ++++++++++++++++++++++++++++++++++++
+ powerpc/unittests.cfg       |   3 +
+ 7 files changed, 377 insertions(+), 1 deletion(-)
+ create mode 100644 powerpc/pmu.c
 
 diff --git a/lib/powerpc/asm/processor.h b/lib/powerpc/asm/processor.h
-index d348239c5..749155696 100644
+index 749155696..28239c610 100644
 --- a/lib/powerpc/asm/processor.h
 +++ b/lib/powerpc/asm/processor.h
-@@ -19,6 +19,8 @@ extern bool cpu_has_prefix;
+@@ -14,6 +14,8 @@ extern bool cpu_has_hv;
+ extern bool cpu_has_power_mce;
+ extern bool cpu_has_siar;
+ extern bool cpu_has_heai;
++extern bool cpu_has_bhrb;
++extern bool cpu_has_p10_bhrb;
+ extern bool cpu_has_radix;
+ extern bool cpu_has_prefix;
  extern bool cpu_has_sc_lev;
- extern bool cpu_has_pause_short;
- 
-+bool in_usermode(void);
-+
- static inline uint64_t mfspr(int nr)
- {
- 	uint64_t ret;
-@@ -51,6 +53,8 @@ static inline void local_irq_enable(void)
- {
- 	unsigned long msr;
- 
-+	assert(!in_usermode());
-+
- 	asm volatile(
- "		mfmsr	%0		\n \
- 		ori	%0,%0,%1	\n \
-@@ -62,6 +66,8 @@ static inline void local_irq_disable(void)
- {
- 	unsigned long msr;
- 
-+	assert(!in_usermode());
-+
- 	asm volatile(
- "		mfmsr	%0		\n \
- 		andc	%0,%0,%1	\n \
-@@ -90,4 +96,7 @@ static inline bool machine_is_pseries(void)
- void enable_mcheck(void);
- void disable_mcheck(void);
- 
-+void enter_usermode(void);
-+void exit_usermode(void);
-+
- #endif /* _ASMPOWERPC_PROCESSOR_H_ */
 diff --git a/lib/powerpc/asm/reg.h b/lib/powerpc/asm/reg.h
-index b2fab4313..69ef21adb 100644
+index 69ef21adb..602fba1b6 100644
 --- a/lib/powerpc/asm/reg.h
 +++ b/lib/powerpc/asm/reg.h
-@@ -58,5 +58,6 @@
- #define MSR_SE		UL(0x0400)		/* Single Step Enable */
- #define MSR_EE		UL(0x8000)
- #define MSR_ME		UL(0x1000)
-+#define MSR_PR		UL(0x4000)
+@@ -40,10 +40,19 @@
+ #define SPR_LPIDR	0x13f
+ #define SPR_HEIR	0x153
+ #define SPR_PTCR	0x1d0
++#define SPR_MMCRA	0x312
++#define   MMCRA_BHRBRD		UL(0x0000002000000000)
++#define   MMCRA_IFM_MASK	UL(0x00000000c0000000)
++#define SPR_PMC5	0x317
++#define SPR_PMC6	0x318
+ #define SPR_MMCR0	0x31b
+ #define   MMCR0_FC		UL(0x80000000)
++#define   MMCR0_FCP		UL(0x20000000)
+ #define   MMCR0_PMAE		UL(0x04000000)
++#define   MMCR0_BHRBA		UL(0x00200000)
++#define   MMCR0_FCPC		UL(0x00001000)
+ #define   MMCR0_PMAO		UL(0x00000080)
++#define   MMCR0_FC56		UL(0x00000010)
+ #define SPR_SIAR	0x31c
  
- #endif
-diff --git a/lib/powerpc/asm/smp.h b/lib/powerpc/asm/smp.h
-index 820c05e9e..b96a55903 100644
---- a/lib/powerpc/asm/smp.h
-+++ b/lib/powerpc/asm/smp.h
-@@ -11,6 +11,7 @@ struct cpu {
- 	unsigned long server_no;
- 	unsigned long stack;
- 	unsigned long exception_stack;
-+	bool in_user;
- 	secondary_entry_fn entry;
- 	pgd_t *pgtable;
- } __attribute__((packed)); /* used by asm */
-diff --git a/lib/powerpc/io.c b/lib/powerpc/io.c
-index cb7f2f050..5c2810884 100644
---- a/lib/powerpc/io.c
-+++ b/lib/powerpc/io.c
-@@ -11,6 +11,7 @@
- #include <asm/setup.h>
- #include <asm/processor.h>
- #include <asm/atomic.h>
-+#include <asm/smp.h>
- #include "io.h"
+ /* Machine State Register definitions: */
+diff --git a/lib/powerpc/asm/setup.h b/lib/powerpc/asm/setup.h
+index 9ca318ce6..8f0b58ed0 100644
+--- a/lib/powerpc/asm/setup.h
++++ b/lib/powerpc/asm/setup.h
+@@ -10,6 +10,7 @@
+ #define NR_CPUS			8	/* arbitrarily set for now */
  
- static struct spinlock print_lock;
-@@ -41,10 +42,16 @@ void io_init(void)
+ extern uint64_t tb_hz;
++extern uint64_t cpu_hz;
  
- void puts(const char *s)
- {
-+	bool user = in_usermode();
-+
-+	if (user)
-+		exit_usermode();
- 	spin_lock(&print_lock);
- 	while (*s)
- 		putchar(*s++);
- 	spin_unlock(&print_lock);
-+	if (user)
-+		enter_usermode();
- }
- 
- /*
-diff --git a/lib/powerpc/processor.c b/lib/powerpc/processor.c
-index 09f6bb9d8..6c3000d5c 100644
---- a/lib/powerpc/processor.c
-+++ b/lib/powerpc/processor.c
-@@ -47,6 +47,8 @@ void do_handle_exception(struct pt_regs *regs)
- 	unsigned char v;
- 
- 	__current_cpu = (struct cpu *)mfspr(SPR_SPRG0);
-+	if (in_usermode())
-+		current_cpu()->in_user = false;
- 
- 	/*
- 	 * We run with AIL=0, so interrupts taken with MMU disabled.
-@@ -60,6 +62,8 @@ void do_handle_exception(struct pt_regs *regs)
- 
- 	if (v < 128 && handlers[v].func) {
- 		handlers[v].func(regs, handlers[v].data);
-+		if (regs->msr & MSR_PR)
-+			current_cpu()->in_user = true;
- 		return;
- 	}
- 
-@@ -169,3 +173,37 @@ void disable_mcheck(void)
- {
- 	rfid_msr(mfmsr() & ~MSR_ME);
- }
-+
-+bool in_usermode(void)
-+{
-+	return current_cpu()->in_user;
-+}
-+
-+static void usermode_sc_handler(struct pt_regs *regs, void *data)
-+{
-+	regs->msr &= ~(MSR_PR|MSR_EE);
-+	/* Interrupt return handler will keep in_user clear */
-+}
-+
-+void enter_usermode(void)
-+{
-+	assert_msg(!in_usermode(), "enter_usermode called with in_usermode");
-+	/* mfmsr would fault in usermode anyway */
-+	assert_msg(!(mfmsr() & MSR_PR), "enter_usermode called from user mode");
-+	assert_msg(!(mfmsr() & MSR_EE), "enter_usermode called with interrupts enabled");
-+	assert_msg((mfmsr() & (MSR_IR|MSR_DR)) == (MSR_IR|MSR_DR),
-+		"enter_usermode called with virtual memory disabled");
-+
-+	handle_exception(0xc00, usermode_sc_handler, NULL);
-+	rfid_msr(mfmsr() | (MSR_PR|MSR_IR|MSR_DR|MSR_EE));
-+	current_cpu()->in_user = true;
-+}
-+
-+void exit_usermode(void)
-+{
-+	assert_msg(in_usermode(), "enter_usermode called with !in_usermode");
-+	asm volatile("sc 0" ::: "memory");
-+	handle_exception(0xc00, NULL, NULL);
-+	assert(!in_usermode());
-+	assert(!(mfmsr() & MSR_PR));
-+}
-diff --git a/lib/powerpc/rtas.c b/lib/powerpc/rtas.c
-index b477a38e0..9c1e0affc 100644
---- a/lib/powerpc/rtas.c
-+++ b/lib/powerpc/rtas.c
-@@ -9,6 +9,7 @@
- #include <libfdt/libfdt.h>
- #include <devicetree.h>
- #include <asm/spinlock.h>
-+#include <asm/smp.h>
- #include <asm/hcall.h>
- #include <asm/io.h>
- #include <asm/rtas.h>
-@@ -137,6 +138,8 @@ int rtas_call(int token, int nargs, int nret, int *outputs, ...)
- 	va_list list;
- 	int ret;
- 
-+	assert_msg(!in_usermode(), "May not make RTAS call from user mode\n");
-+
- 	spin_lock(&rtas_lock);
- 
- 	va_start(list, outputs);
+ #define NR_MEM_REGIONS		8
+ #define MR_F_PRIMARY		(1U << 0)
 diff --git a/lib/powerpc/setup.c b/lib/powerpc/setup.c
-index ba659cc2b..30b988a5c 100644
+index 30b988a5c..42ba06ad1 100644
 --- a/lib/powerpc/setup.c
 +++ b/lib/powerpc/setup.c
-@@ -201,8 +201,11 @@ void cpu_init(struct cpu *cpu, int cpu_id)
- 	cpu->exception_stack = (unsigned long)memalign(SZ_4K, SZ_64K);
- 	cpu->exception_stack += SZ_64K - 64;
- 	cpu->pgtable = NULL;
-+	cpu->in_user = false;
- }
+@@ -32,6 +32,7 @@ u32 initrd_size;
+ u32 cpu_to_hwid[NR_CPUS] = { [0 ... NR_CPUS-1] = (~0U) };
+ int nr_cpus_present;
+ uint64_t tb_hz;
++uint64_t cpu_hz;
  
-+bool is_hvmode;
+ struct mem_region mem_regions[NR_MEM_REGIONS];
+ phys_addr_t __physical_start, __physical_end;
+@@ -41,6 +42,7 @@ struct cpu_set_params {
+ 	unsigned icache_bytes;
+ 	unsigned dcache_bytes;
+ 	uint64_t tb_hz;
++	uint64_t cpu_hz;
+ };
+ 
+ static void cpu_set(int fdtnode, u64 regval, void *info)
+@@ -94,6 +96,22 @@ static void cpu_set(int fdtnode, u64 regval, void *info)
+ 		data = (u32 *)prop->data;
+ 		params->tb_hz = fdt32_to_cpu(*data);
+ 
++		prop = fdt_get_property(dt_fdt(), fdtnode,
++					"ibm,extended-clock-frequency", NULL);
++		if (prop) {
++			data = (u32 *)prop->data;
++			params->cpu_hz = fdt32_to_cpu(*data);
++			params->cpu_hz <<= 32;
++			data = (u32 *)prop->data + 1;
++			params->cpu_hz |= fdt32_to_cpu(*data);
++		} else {
++			prop = fdt_get_property(dt_fdt(), fdtnode,
++						"clock-frequency", NULL);
++			assert(prop != NULL);
++			data = (u32 *)prop->data;
++			params->cpu_hz = fdt32_to_cpu(*data);
++		}
 +
- void setup(const void *fdt)
- {
- 	void *freemem = &stacktop;
-@@ -211,8 +214,6 @@ void setup(const void *fdt)
- 	u32 fdt_size;
- 	int ret;
- 
--	cpu_has_hv = !!(mfmsr() & (1ULL << MSR_HV_BIT));
--
- 	memset(cpus, 0xff, sizeof(cpus));
- 
- 	cpu = &cpus[0];
-@@ -220,10 +221,13 @@ void setup(const void *fdt)
- 	cpu->exception_stack = (unsigned long)boot_exception_stack;
- 	cpu->exception_stack += SZ_64K - 64;
- 	cpu->pgtable = NULL;
-+	cpu->in_user = false;
- 
- 	mtspr(SPR_SPRG0, (unsigned long)cpu);
- 	__current_cpu = cpu;
- 
-+	cpu_has_hv = !!(mfmsr() & (1ULL << MSR_HV_BIT));
-+
- 	enable_mcheck();
- 
- 	/*
-diff --git a/lib/powerpc/spinlock.c b/lib/powerpc/spinlock.c
-index 238549f12..59dc4fbb5 100644
---- a/lib/powerpc/spinlock.c
-+++ b/lib/powerpc/spinlock.c
-@@ -8,6 +8,8 @@
-  */
- void spin_lock(struct spinlock *lock)
- {
-+	assert(!in_usermode());
-+
- 	if (!multithreaded) {
- 		assert(lock->v == 0);
- 		lock->v = 1;
-@@ -19,7 +21,9 @@ void spin_lock(struct spinlock *lock)
- 
- void spin_unlock(struct spinlock *lock)
- {
-+	assert(!in_usermode());
- 	assert(lock->v == 1);
-+
- 	if (!multithreaded) {
- 		lock->v = 0;
- 	} else {
-diff --git a/lib/ppc64/mmu.c b/lib/ppc64/mmu.c
-index f1219033a..313da6e78 100644
---- a/lib/ppc64/mmu.c
-+++ b/lib/ppc64/mmu.c
-@@ -43,6 +43,7 @@ void mmu_enable(pgd_t *pgtable)
- 
- 	cpu->pgtable = pgtable;
- 
-+	assert(!in_usermode());
- 	mtmsr(mfmsr() | (MSR_IR|MSR_DR));
+ 		read_common_info = true;
+ 	}
  }
+@@ -102,6 +120,8 @@ bool cpu_has_hv;
+ bool cpu_has_power_mce; /* POWER CPU machine checks */
+ bool cpu_has_siar;
+ bool cpu_has_heai;
++bool cpu_has_bhrb;
++bool cpu_has_p10_bhrb;
+ bool cpu_has_radix;
+ bool cpu_has_prefix;
+ bool cpu_has_sc_lev; /* sc interrupt has LEV field in SRR1 */
+@@ -118,12 +138,14 @@ static void cpu_init_params(void)
+ 	__icache_bytes = params.icache_bytes;
+ 	__dcache_bytes = params.dcache_bytes;
+ 	tb_hz = params.tb_hz;
++	cpu_hz = params.cpu_hz;
  
-@@ -52,6 +53,7 @@ void mmu_disable(void)
+ 	switch (mfspr(SPR_PVR) & PVR_VERSION_MASK) {
+ 	case PVR_VER_POWER10:
+ 		cpu_has_prefix = true;
+ 		cpu_has_sc_lev = true;
+ 		cpu_has_pause_short = true;
++		cpu_has_p10_bhrb = true;
+ 	case PVR_VER_POWER9:
+ 		cpu_has_radix = true;
+ 	case PVR_VER_POWER8E:
+@@ -132,6 +154,7 @@ static void cpu_init_params(void)
+ 		cpu_has_power_mce = true;
+ 		cpu_has_heai = true;
+ 		cpu_has_siar = true;
++		cpu_has_bhrb = true;
+ 		break;
+ 	default:
+ 		break;
+diff --git a/powerpc/Makefile.common b/powerpc/Makefile.common
+index 410a675d9..64a3d93e4 100644
+--- a/powerpc/Makefile.common
++++ b/powerpc/Makefile.common
+@@ -17,7 +17,8 @@ tests-common = \
+ 	$(TEST_DIR)/smp.elf \
+ 	$(TEST_DIR)/sprs.elf \
+ 	$(TEST_DIR)/timebase.elf \
+-	$(TEST_DIR)/interrupts.elf
++	$(TEST_DIR)/interrupts.elf \
++	$(TEST_DIR)/pmu.elf
  
- 	cpu->pgtable = NULL;
- 
-+	assert(!in_usermode());
- 	mtmsr(mfmsr() & ~(MSR_IR|MSR_DR));
- }
- 
-diff --git a/powerpc/interrupts.c b/powerpc/interrupts.c
-index 35a47581c..1f5f7cfcd 100644
---- a/powerpc/interrupts.c
-+++ b/powerpc/interrupts.c
-@@ -327,6 +327,33 @@ static void test_illegal(void)
- 	report_prefix_pop();
- }
- 
+ tests-all = $(tests-common) $(tests)
+ all: directories $(TEST_DIR)/boot_rom.bin $(tests-all)
+diff --git a/powerpc/pmu.c b/powerpc/pmu.c
+new file mode 100644
+index 000000000..df0604261
+--- /dev/null
++++ b/powerpc/pmu.c
+@@ -0,0 +1,337 @@
++/*
++ * Test PMU
++ *
++ * Copyright 2024 Nicholas Piggin, IBM Corp.
++ *
++ * This work is licensed under the terms of the GNU LGPL, version 2.
++ */
++#include <libcflat.h>
++#include <util.h>
++#include <migrate.h>
++#include <alloc.h>
++#include <asm/setup.h>
++#include <asm/handlers.h>
++#include <asm/hcall.h>
++#include <asm/processor.h>
++#include <asm/time.h>
++#include <asm/barrier.h>
++#include <asm/mmu.h>
++#include "alloc_phys.h"
++#include "vmalloc.h"
++
++static volatile bool got_interrupt;
++static volatile struct pt_regs recorded_regs;
++static volatile unsigned long recorded_mmcr0;
++
++static void reset_mmcr0(void)
++{
++	mtspr(SPR_MMCR0, mfspr(SPR_MMCR0) | (MMCR0_FC | MMCR0_FC56));
++	mtspr(SPR_MMCR0, mfspr(SPR_MMCR0) & ~(MMCR0_PMAE | MMCR0_PMAO));
++}
++
++static __attribute__((__noinline__)) unsigned long pmc5_count_nr_insns(unsigned long nr)
++{
++	reset_mmcr0();
++	mtspr(SPR_PMC5, 0);
++	mtspr(SPR_MMCR0, mfspr(SPR_MMCR0) & ~(MMCR0_FC | MMCR0_FC56));
++	asm volatile("mtctr %0 ; 1: bdnz 1b" :: "r"(nr) : "ctr");
++	mtspr(SPR_MMCR0, mfspr(SPR_MMCR0) | (MMCR0_FC | MMCR0_FC56));
++
++	return mfspr(SPR_PMC5);
++}
++
++static void test_pmc56(void)
++{
++	unsigned long tmp;
++
++	report_prefix_push("pmc56");
++
++	reset_mmcr0();
++	mtspr(SPR_PMC5, 0);
++	mtspr(SPR_PMC6, 0);
++	report(mfspr(SPR_PMC5) == 0, "PMC5 zeroed");
++	report(mfspr(SPR_PMC6) == 0, "PMC6 zeroed");
++	mtspr(SPR_MMCR0, mfspr(SPR_MMCR0) & ~MMCR0_FC);
++	msleep(100);
++	report(mfspr(SPR_PMC5) == 0, "PMC5 frozen");
++	report(mfspr(SPR_PMC6) == 0, "PMC6 frozen");
++	mtspr(SPR_MMCR0, mfspr(SPR_MMCR0) & ~MMCR0_FC56);
++	mdelay(100);
++	mtspr(SPR_MMCR0, mfspr(SPR_MMCR0) | (MMCR0_FC | MMCR0_FC56));
++	report(mfspr(SPR_PMC5) != 0, "PMC5 counting");
++	report(mfspr(SPR_PMC6) != 0, "PMC6 counting");
++
++	/* Dynamic frequency scaling could cause to be out, so don't fail. */
++	tmp = mfspr(SPR_PMC6);
++	report(true, "PMC6 ratio to reported clock frequency is %ld%%", tmp * 1000 / cpu_hz);
++
++	tmp = pmc5_count_nr_insns(100);
++	tmp = pmc5_count_nr_insns(1000) - tmp;
++	report(tmp == 900, "PMC5 counts instructions precisely");
++
++	report_prefix_pop();
++}
++
 +static void dec_ignore_handler(struct pt_regs *regs, void *data)
 +{
 +	mtspr(SPR_DEC, 0x7fffffff);
 +}
 +
-+static void test_privileged(void)
++static void pmi_handler(struct pt_regs *regs, void *data)
 +{
-+	unsigned long msr;
++	got_interrupt = true;
++	memcpy((void *)&recorded_regs, regs, sizeof(struct pt_regs));
++	recorded_mmcr0 = mfspr(SPR_MMCR0);
++	if (mfspr(SPR_MMCR0) & MMCR0_PMAO) {
++		/* This may cause infinite interrupts, so clear it. */
++		mtspr(SPR_MMCR0, mfspr(SPR_MMCR0) & ~MMCR0_PMAO);
++	}
++}
 +
-+	if (!mmu_enabled())
++static void test_pmi(void)
++{
++	report_prefix_push("pmi");
++	handle_exception(0x900, &dec_ignore_handler, NULL);
++	handle_exception(0xf00, &pmi_handler, NULL);
++	reset_mmcr0();
++	mtspr(SPR_MMCR0, mfspr(SPR_MMCR0) | MMCR0_PMAO);
++	mtmsr(mfmsr() | MSR_EE);
++	mtmsr(mfmsr() & ~MSR_EE);
++	report(got_interrupt, "PMAO caused interrupt");
++	handle_exception(0xf00, NULL, NULL);
++	handle_exception(0x900, NULL, NULL);
++	report_prefix_pop();
++}
++
++static void clrbhrb(void)
++{
++	asm volatile("clrbhrb" ::: "memory");
++}
++
++static inline unsigned long mfbhrbe(int nr)
++{
++	unsigned long e;
++
++	asm volatile("mfbhrbe %0,%1" : "=r"(e) : "i"(nr) : "memory");
++
++	return e;
++}
++
++extern unsigned char dummy_branch_1[];
++extern unsigned char dummy_branch_2[];
++
++static __attribute__((__noinline__)) void bhrb_dummy(int i)
++{
++	asm volatile(
++	"	cmpdi %0,1	\n\t"
++	"	beq 1f		\n\t"
++	".global dummy_branch_1	\n\t"
++	"dummy_branch_1:	\n\t"
++	"	b 2f		\n\t"
++	"1:	trap		\n\t"
++	".global dummy_branch_2	\n\t"
++	"dummy_branch_2:	\n\t"
++	"2:	bne 3f		\n\t"
++	"	trap		\n\t"
++	"3:	nop		\n\t"
++	: : "r"(i));
++}
++
++#define NR_BHRBE 16
++static unsigned long bhrbe[NR_BHRBE];
++static int nr_bhrbe;
++
++static void run_and_load_bhrb(void)
++{
++	int i;
++
++	mtspr(SPR_MMCR0, mfspr(SPR_MMCR0) & ~MMCR0_PMAE);
++	clrbhrb();
++	mtspr(SPR_MMCR0, mfspr(SPR_MMCR0) | MMCR0_BHRBA);
++	mtspr(SPR_MMCR0, mfspr(SPR_MMCR0) & ~(MMCR0_FC | MMCR0_FCP | MMCR0_FCPC));
++	mtspr(SPR_MMCRA, mfspr(SPR_MMCRA) & ~(MMCRA_BHRBRD | MMCRA_IFM_MASK));
++
++	if (cpu_has_p10_bhrb) {
++		mtspr(SPR_MMCR0, mfspr(SPR_MMCR0) | MMCR0_PMAE);
++		asm volatile("isync" ::: "memory");
++		enter_usermode();
++		bhrb_dummy(0);
++		exit_usermode();
++		mtspr(SPR_MMCR0, mfspr(SPR_MMCR0) & ~MMCR0_PMAE);
++		asm volatile("isync" ::: "memory");
++	} else {
++		mtspr(SPR_MMCR0, mfspr(SPR_MMCR0) | MMCR0_PMAE);
++		asm volatile("isync" ::: "memory");
++		mtmsr(mfmsr());
++		asm volatile(".rept 100 ; nop ; .endr");
++		bhrb_dummy(0);
++		mtspr(SPR_MMCR0, mfspr(SPR_MMCR0) & ~MMCR0_PMAE);
++		asm volatile("isync" ::: "memory");
++	}
++
++	bhrbe[0] = mfbhrbe(0);
++	bhrbe[1] = mfbhrbe(1);
++	bhrbe[2] = mfbhrbe(2);
++	bhrbe[3] = mfbhrbe(3);
++	bhrbe[4] = mfbhrbe(4);
++	bhrbe[5] = mfbhrbe(5);
++	bhrbe[6] = mfbhrbe(6);
++	bhrbe[7] = mfbhrbe(7);
++	bhrbe[8] = mfbhrbe(8);
++	bhrbe[9] = mfbhrbe(9);
++	bhrbe[10] = mfbhrbe(10);
++	bhrbe[11] = mfbhrbe(11);
++	bhrbe[12] = mfbhrbe(12);
++	bhrbe[13] = mfbhrbe(13);
++	bhrbe[14] = mfbhrbe(14);
++	bhrbe[15] = mfbhrbe(15);
++
++	for (i = 0; i < NR_BHRBE; i++) {
++		bhrbe[i] &= ~0x1UL; /* remove prediction bit */
++		if (!bhrbe[i])
++			break;
++	}
++	nr_bhrbe = i;
++}
++
++static void illegal_handler(struct pt_regs *regs, void *data)
++{
++	got_interrupt = true;
++	regs_advance_insn(regs);
++}
++
++static void test_bhrb(void)
++{
++	int i;
++
++	if (cpu_has_p10_bhrb && !vm_available())
 +		return;
 +
-+	report_prefix_push("privileged instruction");
++	report_prefix_push("bhrb");
 +
-+	handle_exception(0x700, &program_handler, NULL);
-+	handle_exception(0x900, &dec_ignore_handler, NULL);
-+	enter_usermode();
-+	asm volatile("mfmsr %0" : "=r"(msr) :: "memory");
-+	exit_usermode();
-+	report(got_interrupt, "interrupt on privileged instruction");
-+	got_interrupt = false;
-+	handle_exception(0x900, NULL, NULL);
++	/* TCG doesn't impelment BHRB yet */
++	handle_exception(0x700, &illegal_handler, NULL);
++	handle_exception(0xe40, &illegal_handler, NULL);
++	clrbhrb();
 +	handle_exception(0x700, NULL, NULL);
++	handle_exception(0xe40, NULL, NULL);
++	if (got_interrupt) {
++		got_interrupt = false;
++		report_skip("BHRB support missing");
++		report_prefix_pop();
++		return;
++	}
++
++	handle_exception(0x900, &illegal_handler, NULL);
++
++	if (vm_available()) {
++		handle_exception(0x900, &dec_ignore_handler, NULL);
++		setup_vm();
++	}
++	reset_mmcr0();
++	clrbhrb();
++	if (cpu_has_p10_bhrb) {
++		enter_usermode();
++		bhrb_dummy(0);
++		exit_usermode();
++	} else {
++		bhrb_dummy(0);
++	}
++	report(mfbhrbe(0) == 0, "BHRB is frozen");
++
++	/*
++	 * BHRB may be cleared at any time (e.g., by OS or hypervisor)
++	 * so this test could be occasionally incorrect. Try several
++	 * times before giving up...
++	 */
++
++	if (cpu_has_p10_bhrb) {
++		/*
++		 * BHRB should have 8 entries:
++		 * 1. enter_usermode blr
++		 * 2. enter_usermode blr target
++		 * 3. bl dummy
++		 * 4. dummy unconditional
++		 * 5. dummy conditional
++		 * 6. dummy blr
++		 * 7. dummy blr target
++		 * 8. exit_usermode bl
++		 *
++		 * POWER10 often gives 4 entries, if other threads are
++		 * running on the core, it seems to struggle.
++		 */
++		for (i = 0; i < 200; i++) {
++			run_and_load_bhrb();
++			if (nr_bhrbe == 8)
++				break;
++			if (i > 100 && nr_bhrbe == 4)
++				break;
++		}
++		if (nr_bhrbe != 8)
++			printf("nr_bhrbe=%d\n", nr_bhrbe);
++		report(nr_bhrbe, "BHRB has been written");
++		if (nr_bhrbe == 8) {
++			report(nr_bhrbe == 8, "BHRB has written 8 entries");
++			report(bhrbe[4] == (unsigned long)dummy_branch_1,
++					"correct unconditional branch address");
++			report(bhrbe[3] == (unsigned long)dummy_branch_2,
++					"correct conditional branch address");
++		} else if (nr_bhrbe == 4) {
++			/* POWER10 workaround */
++			report(nr_bhrbe == 4, "BHRB has written 4 entries");
++			report(bhrbe[3] == (unsigned long)dummy_branch_2,
++					"correct conditional branch address");
++		}
++	} else {
++		/*
++		 * BHRB should have 6 entries:
++		 * 1. bl dummy
++		 * 2. dummy unconditional
++		 * 3. dummy conditional
++		 * 4. dummy blr
++		 * 5. dummy blr target
++		 * 6. Final b loop before disabled.
++		 *
++		 * POWER9 often gives 4 entries, if other threads are
++		 * running on the core, it seems to struggle.
++		 */
++		for (i = 0; i < 200; i++) {
++			run_and_load_bhrb();
++			if (nr_bhrbe == 6)
++				break;
++			if (i > 100 && nr_bhrbe == 4)
++				break;
++		}
++		report(nr_bhrbe, "BHRB has been written");
++		report(nr_bhrbe == 6, "BHRB has written 6 entries");
++		if (nr_bhrbe == 6) {
++			report(bhrbe[4] == (unsigned long)dummy_branch_1,
++					"correct unconditional branch address");
++			report(bhrbe[3] == (unsigned long)dummy_branch_2,
++					"correct conditional branch address");
++		} else if (nr_bhrbe == 4) {
++			/* POWER9 workaround */
++			report(nr_bhrbe == 4, "BHRB has written 4 entries");
++			report(bhrbe[3] == (unsigned long)dummy_branch_2,
++					"correct conditional branch address");
++		}
++	}
++
++	handle_exception(0x900, NULL, NULL);
 +
 +	report_prefix_pop();
 +}
 +
- static void sc_handler(struct pt_regs *regs, void *data)
- {
- 	got_interrupt = true;
-@@ -479,6 +506,7 @@ int main(int argc, char **argv)
- 		test_mce();
- 	test_mmu();
- 	test_illegal();
-+	test_privileged();
- 	test_dec();
- 	test_sc();
- 	test_trace();
++int main(int argc, char **argv)
++{
++	report_prefix_push("pmu");
++
++	test_pmc56();
++	test_pmi();
++	if (cpu_has_bhrb)
++		test_bhrb();
++
++	report_prefix_pop();
++
++	return report_summary();
++}
+diff --git a/powerpc/unittests.cfg b/powerpc/unittests.cfg
+index 008559b43..e275f389b 100644
+--- a/powerpc/unittests.cfg
++++ b/powerpc/unittests.cfg
+@@ -89,6 +89,9 @@ file = emulator.elf
+ [interrupts]
+ file = interrupts.elf
+ 
++[pmu]
++file = pmu.elf
++
+ [smp]
+ file = smp.elf
+ smp = 2
 -- 
 2.42.0
 
