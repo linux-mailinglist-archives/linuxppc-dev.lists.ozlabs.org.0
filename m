@@ -1,53 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DFC78671E8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 11:50:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C62E2867214
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 11:52:53 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Rd4/QsRv;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fhn14t9y;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tjy7L2X4Xz3vd8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 21:50:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TjyBW43vkz3vj6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 21:52:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Rd4/QsRv;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fhn14t9y;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tjy6Y4Gjfz2xFq
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 21:49:25 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1708944565;
-	bh=Cn2xDNXWkCC0F1GWz1ZczujdAI4K+h1xeT2o4u1IWRk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Rd4/QsRvWBtrdProZoplXO/fbUiLEUJKHTsbbyYxAegHsyDyVD7+xOv4qwSpsqTEb
-	 1LeCy3bDWRmPoLx/BSPpeeLFYwxmPrxo2+tgzNffX6BqObbGWscmyG6hS5U/n9g+8c
-	 RRvUElATM4M5/UY+ue1FbbBWOLE+tsez1dHqcacQQPHgcdrHvw2TgJPBFfeSvUYBkl
-	 XWVh/JS8VtyI1h8Tx4Su9uCJ5gLXoiYgCDxNUzdXMWCFJE9oiIMMVJZEU3y71/tOzM
-	 atNcg08onRU/BEuP3mp3DUpFaODQ6jTacU6m4Ydwpn61Z019BmQUE7xUdyW5VNwubY
-	 Fgt/1Z+fOMbDg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Tjy6Y2gCnz4wcQ;
-	Mon, 26 Feb 2024 21:49:24 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Kunwu Chan <chentao@kylinos.cn>, npiggin@gmail.com,
- christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org,
- naveen.n.rao@linux.ibm.com
-Subject: Re: [PATCH] powerpc/mm: Code cleanup for __hash_page_thp
-In-Reply-To: <20240125092624.537564-1-chentao@kylinos.cn>
-References: <20240125092624.537564-1-chentao@kylinos.cn>
-Date: Mon, 26 Feb 2024 21:49:23 +1100
-Message-ID: <87h6hva4b0.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tjy9m3x7kz3bT8
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 21:52:12 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id EFF8260FFC
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 10:52:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A72E7C43390
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 10:52:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708944728;
+	bh=MAvGCIcGYX+uF4iYeHglrmwmRW4O3tXlJTqGTph1Sgg=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=fhn14t9ySCpl7hRIW/rQ8txYt1zhGmzXdDzx0gCNY4kGSY3NdJ8qI3HGh5TOdmS7k
+	 g1wNokQV24UTmvpX22EHhdusouCruHxPB9QRgMnM7NkPaU92j8I0eMY0jGDDaNsLAO
+	 UTNimgjQVwuMEPaYdmEONEOrI6QruhEm7+VCHjRBfRu+2QX/hjwYpz1G3HXf9XgKYq
+	 Y6f7gk/5HS+TZsI/e2wL6tq75Ip974xszaKjhXQEcYtplweWstADZOhotNE2845lh0
+	 VjuXjM23aCsGjCkixhQ0BYOyiy5BfEWJ869wXHC7yNoW09E7lBc95Rs1ApyQh9mFOz
+	 /CF8au8s0lMIw==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 8FF2EC4332E; Mon, 26 Feb 2024 10:52:08 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 155231] powerpc : native aslr vdso randomization is not working
+ in powerpc platform
+Date: Mon, 26 Feb 2024 10:52:08 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: michael@ellerman.id.au
+X-Bugzilla-Status: RESOLVED
+X-Bugzilla-Resolution: CODE_FIX
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_status resolution
+Message-ID: <bug-155231-206035-SCafzbd2qP@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-155231-206035@https.bugzilla.kernel.org/>
+References: <bug-155231-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,43 +78,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Kunwu Chan <chentao@kylinos.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Kunwu Chan <chentao@kylinos.cn> writes:
-> This part was commented from commit 6d492ecc6489
-> ("powerpc/THP: Add code to handle HPTE faults for hugepages")
-> in about 11 years before.
->
-> If there are no plans to enable this part code in the future,
-> we can remove this dead code.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D155231
 
-I agree the code can go. But I'd like it to be replaced with a comment
-explaining what the dead code was trying to say.
+Michael Ellerman (michael@ellerman.id.au) changed:
 
-cheers
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+             Status|NEEDINFO                    |RESOLVED
+         Resolution|---                         |CODE_FIX
 
-> diff --git a/arch/powerpc/mm/book3s64/hash_hugepage.c b/arch/powerpc/mm/book3s64/hash_hugepage.c
-> index c0fabe6c5a12..127a3a2c174b 100644
-> --- a/arch/powerpc/mm/book3s64/hash_hugepage.c
-> +++ b/arch/powerpc/mm/book3s64/hash_hugepage.c
-> @@ -59,16 +59,6 @@ int __hash_page_thp(unsigned long ea, unsigned long access, unsigned long vsid,
->  
->  	rflags = htab_convert_pte_flags(new_pmd, flags);
->  
-> -#if 0
-> -	if (!cpu_has_feature(CPU_FTR_COHERENT_ICACHE)) {
-> -
-> -		/*
-> -		 * No CPU has hugepages but lacks no execute, so we
-> -		 * don't need to worry about that case
-> -		 */
-> -		rflags = hash_page_do_lazy_icache(rflags, __pte(old_pte), trap);
-> -	}
-> -#endif
->  	/*
->  	 * Find the slot index details for this ea, using base page size.
->  	 */
-> -- 
-> 2.39.2
+--- Comment #3 from Michael Ellerman (michael@ellerman.id.au) ---
+This was fixed in v6.1, see:
+
+https://github.com/torvalds/linux/commit/8a8f7866663588b162031a5348c24e4216=
+1461cd
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
