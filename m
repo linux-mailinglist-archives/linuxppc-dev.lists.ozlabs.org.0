@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54D2F86711F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 11:32:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C2BF867126
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 11:33:13 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=CfA9dYgU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=LzA7n4V6;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tjxl10xQGz3wTN
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 21:32:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tjxlq24Lsz3wRJ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 21:33:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=CfA9dYgU;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=LzA7n4V6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TjxL84sF1z3vZT
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 21:14:24 +1100 (AEDT)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6e0f803d9dfso1876402b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 02:14:24 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TjxLD6wxvz3vcB
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 21:14:28 +1100 (AEDT)
+Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-6e4f5e84abeso448423b3a.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 02:14:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708942463; x=1709547263; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1708942467; x=1709547267; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WD4EgWO6jWpsny8sTO916nRWmkEIJB0yBQp0dWHoO/A=;
-        b=CfA9dYgUmyQ2MelOfLaDXJh8rimfzkXhxLycfQ2x97h6KHeDQGOZDsiNO2oi+b8+pS
-         lEOTwi9scvi6YB8Vn0ooQ9g8rCJVkWrFH/V0w1VCyjZsSRxFuo0amZmNxCpCwXxJau4z
-         ao1aYU1qeaOy7ndbQ90fVLjHUhe5e9XA7ZsVsIrQdNRNt5bowXD2lSi7VHeYOEB+aZXk
-         BmNA+NUp1vx0r554/F9iC9t5ENGwAcrKkHU5UspgkJgsUNWj7UDbAxJs0UfmiYXHeWWS
-         pIi2AZOfDXPpaBE3USTJPyaUpElqWRRIEjl+yOwlP8KFDuD7W0arRIDXwHwv4gxd5sWm
-         IpDg==
+        bh=x9fqZM1HjgMhnvdX9i/83KImMUDpC7gY5LwA4oHSYi8=;
+        b=LzA7n4V6MQElMxZvfyyOY+6QXIMWbS7yBkvvs/nI8tWsWaJTOFbshlTxuzVpIJOjPS
+         8G1Abp1ZMYpRQCVUfyXYx6gkNtTOJ58KVA7IvX7arf1FxKPhvRolAEIGIS7ntuhw/H7D
+         RqIWBFznMKPmhUAPMqJ/nX5axnAOAnMEg8SfCyYrRYDnn/rkKegV6bWd+An+7f1W6dZ7
+         x8FDMkFQJnk6lOt/Vg3yuIPNgBJIMVDJ5XiVNHvM628YAnaLqHw5de/ggKc7l6cMsSJX
+         UOITGhyAtVJa0C4lZNg7DmE2zghpV1GCWxHuz1whzF24hygLrwn3gJbQ+sJKhBUbUZN0
+         KAnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708942463; x=1709547263;
+        d=1e100.net; s=20230601; t=1708942467; x=1709547267;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WD4EgWO6jWpsny8sTO916nRWmkEIJB0yBQp0dWHoO/A=;
-        b=KGhy+l8Et7eh10mNg2gCo6Shz+1IKTXwB+sFYnhR0rUgL1d+p5s8NxvExFo4bBNpU9
-         CW3tAdPglL25Elju33CWQO9lpHrVw4lNxA08yW+Sp/oibeSHNro8DVd2hl92tpayqMEy
-         OjgD2ikxW0FCMHPKOshXjot/gX2XW9vdS141SVpgBdLyQt1JBpYKz0dqbZriguShRx7N
-         Tbz2cH0MqgGLWw1ZhJeiYsEqBO4ZMG4DSQByaQGoIVZaLjMxdfJRgRVXv4xglfp+T5CB
-         8don0vjemw9jyjZqA2itwlu9riV1ilclAvaeJUQebXb6DC+XS4gnd46n77596n/f04nM
-         QeGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW7r65iBBBkpim83ZQwfwN4EPT6jpXTkdlHnWPVxLvtwECftLVGmS0O7DRx/FQHoQ/n1Z8LVAWYnM4WwqOIDX6KRwZGu1aYqYWf9FrH9g==
-X-Gm-Message-State: AOJu0YyJcr/zeFW7OHDz/M3LO5gBnmasp660awREx/hnUvt1mR4/v2ZZ
-	heq2udNMIDhEQkBIyx8r8Vg0kw6aFZfX4/QvWXLoDHxuX5fj/x9Y
-X-Google-Smtp-Source: AGHT+IHa8gV23iRmCxzjDwE6B3Lo408Yo9xJnued9ZFME7J/7f6BXEdaCNTXLkFlJXnHIDSxz4g17A==
-X-Received: by 2002:a05:6a00:b0d:b0:6e4:84db:e30e with SMTP id f13-20020a056a000b0d00b006e484dbe30emr6346753pfu.32.1708942463024;
-        Mon, 26 Feb 2024 02:14:23 -0800 (PST)
+        bh=x9fqZM1HjgMhnvdX9i/83KImMUDpC7gY5LwA4oHSYi8=;
+        b=TXJ1SdIjlJwMffuMPjTLaWv4djB7BZ3uPCfAsnMdLiWqenwQg2qQTY2uZou1Lp1/vp
+         6Ok8QFx94Dt+FKmLEaWtpi62iT+WlCXFTEmUg5K1quiJYvsPq5raVcYnUr8TJ0xLXrNc
+         qkA5Oxge2czhdY0vEeJPhSlx3AozEV4FUjMpxOP7ujplv022HCtbdINrEW7XifIVXX2Z
+         8P925+IluEgUIkCc2aJ2b7S/6kYeMjCf01WR26LTZr8rDp6svPMJ3PS98DqY5pCNDrvd
+         UrxfaES9kGyUAd79+aBvoGiP2wqC1Ml/bBxNFBty0APJx12+dV1z2uGM4RK95Nwijtr2
+         e9og==
+X-Forwarded-Encrypted: i=1; AJvYcCVfd1IBH9WU26U/mt3EPjt3UcVyKSKcOqaziBZDj1E8w1gBTdRquIfgqnVyh13S5bgtL+hyAVZYa7TWdESuIILayOmbNS0LxrUcTOlS3w==
+X-Gm-Message-State: AOJu0Yx3T11L54rFtF8Pk0X5tgUTg4+eb01Epye1X6CJiJATfTe28gvO
+	h/6dqpbhK7I84SrNVrFoRlRs2gtfXHaMbGR9gd4gr1wpPBpuBTrM
+X-Google-Smtp-Source: AGHT+IE5TwZZ/SvnCc5VuH70NTT9y/dfzmTVfHBIKIkrrWmivfBVpHAxivyOg8Fq47nc4bd9XU1rHQ==
+X-Received: by 2002:aa7:8a54:0:b0:6e3:d201:3f87 with SMTP id n20-20020aa78a54000000b006e3d2013f87mr5294276pfa.28.1708942467166;
+        Mon, 26 Feb 2024 02:14:27 -0800 (PST)
 Received: from wheely.local0.net (220-235-194-103.tpgi.com.au. [220.235.194.103])
-        by smtp.gmail.com with ESMTPSA id x24-20020aa784d8000000b006e463414493sm3626693pfn.105.2024.02.26.02.14.19
+        by smtp.gmail.com with ESMTPSA id x24-20020aa784d8000000b006e463414493sm3626693pfn.105.2024.02.26.02.14.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Feb 2024 02:14:22 -0800 (PST)
+        Mon, 26 Feb 2024 02:14:26 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Thomas Huth <thuth@redhat.com>
-Subject: [kvm-unit-tests PATCH 26/32] powerpc: Add sieve.c common test
-Date: Mon, 26 Feb 2024 20:12:12 +1000
-Message-ID: <20240226101218.1472843-27-npiggin@gmail.com>
+Subject: [kvm-unit-tests PATCH 27/32] powerpc: add usermode support
+Date: Mon, 26 Feb 2024 20:12:13 +1000
+Message-ID: <20240226101218.1472843-28-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240226101218.1472843-1-npiggin@gmail.com>
 References: <20240226101218.1472843-1-npiggin@gmail.com>
@@ -83,48 +83,329 @@ Cc: Laurent Vivier <lvivier@redhat.com>, kvm@vger.kernel.org, Nicholas Piggin <n
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that sieve copes with lack of MMU support, it can be run by
-powerpc.
+The biggest difficulty for user mode is MMU support. Otherwise it is
+a simple matter of setting and clearing MSR[PR] with rfid and sc
+respectively.
+
+Some common harness operations will fail in usermode, so some workarounds
+are reqiured (e.g., puts() can't be used directly).
+
+A usermode privileged instruction interrupt test is added.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- powerpc/Makefile.common | 1 +
- powerpc/sieve.c         | 1 +
- powerpc/unittests.cfg   | 3 +++
- 3 files changed, 5 insertions(+)
- create mode 120000 powerpc/sieve.c
+ lib/powerpc/asm/processor.h |  9 +++++++++
+ lib/powerpc/asm/reg.h       |  1 +
+ lib/powerpc/asm/smp.h       |  1 +
+ lib/powerpc/io.c            |  7 +++++++
+ lib/powerpc/processor.c     | 38 +++++++++++++++++++++++++++++++++++++
+ lib/powerpc/rtas.c          |  3 +++
+ lib/powerpc/setup.c         |  8 ++++++--
+ lib/powerpc/spinlock.c      |  4 ++++
+ lib/ppc64/mmu.c             |  2 ++
+ powerpc/interrupts.c        | 28 +++++++++++++++++++++++++++
+ 10 files changed, 99 insertions(+), 2 deletions(-)
 
-diff --git a/powerpc/Makefile.common b/powerpc/Makefile.common
-index 5871da47a..410a675d9 100644
---- a/powerpc/Makefile.common
-+++ b/powerpc/Makefile.common
-@@ -8,6 +8,7 @@ tests-common = \
- 	$(TEST_DIR)/selftest.elf \
- 	$(TEST_DIR)/selftest-migration.elf \
- 	$(TEST_DIR)/memory-verify.elf \
-+	$(TEST_DIR)/sieve.elf \
- 	$(TEST_DIR)/spapr_hcall.elf \
- 	$(TEST_DIR)/rtas.elf \
- 	$(TEST_DIR)/emulator.elf \
-diff --git a/powerpc/sieve.c b/powerpc/sieve.c
-new file mode 120000
-index 000000000..fe299f309
---- /dev/null
-+++ b/powerpc/sieve.c
-@@ -0,0 +1 @@
-+../common/sieve.c
-\ No newline at end of file
-diff --git a/powerpc/unittests.cfg b/powerpc/unittests.cfg
-index 3ebdf9dd3..008559b43 100644
---- a/powerpc/unittests.cfg
-+++ b/powerpc/unittests.cfg
-@@ -136,3 +136,6 @@ file = sprs.elf
- machine = pseries
- extra_params = -append '-w'
- groups = migration
+diff --git a/lib/powerpc/asm/processor.h b/lib/powerpc/asm/processor.h
+index d348239c5..749155696 100644
+--- a/lib/powerpc/asm/processor.h
++++ b/lib/powerpc/asm/processor.h
+@@ -19,6 +19,8 @@ extern bool cpu_has_prefix;
+ extern bool cpu_has_sc_lev;
+ extern bool cpu_has_pause_short;
+ 
++bool in_usermode(void);
 +
-+[sieve]
-+file = sieve.elf
+ static inline uint64_t mfspr(int nr)
+ {
+ 	uint64_t ret;
+@@ -51,6 +53,8 @@ static inline void local_irq_enable(void)
+ {
+ 	unsigned long msr;
+ 
++	assert(!in_usermode());
++
+ 	asm volatile(
+ "		mfmsr	%0		\n \
+ 		ori	%0,%0,%1	\n \
+@@ -62,6 +66,8 @@ static inline void local_irq_disable(void)
+ {
+ 	unsigned long msr;
+ 
++	assert(!in_usermode());
++
+ 	asm volatile(
+ "		mfmsr	%0		\n \
+ 		andc	%0,%0,%1	\n \
+@@ -90,4 +96,7 @@ static inline bool machine_is_pseries(void)
+ void enable_mcheck(void);
+ void disable_mcheck(void);
+ 
++void enter_usermode(void);
++void exit_usermode(void);
++
+ #endif /* _ASMPOWERPC_PROCESSOR_H_ */
+diff --git a/lib/powerpc/asm/reg.h b/lib/powerpc/asm/reg.h
+index b2fab4313..69ef21adb 100644
+--- a/lib/powerpc/asm/reg.h
++++ b/lib/powerpc/asm/reg.h
+@@ -58,5 +58,6 @@
+ #define MSR_SE		UL(0x0400)		/* Single Step Enable */
+ #define MSR_EE		UL(0x8000)
+ #define MSR_ME		UL(0x1000)
++#define MSR_PR		UL(0x4000)
+ 
+ #endif
+diff --git a/lib/powerpc/asm/smp.h b/lib/powerpc/asm/smp.h
+index 820c05e9e..b96a55903 100644
+--- a/lib/powerpc/asm/smp.h
++++ b/lib/powerpc/asm/smp.h
+@@ -11,6 +11,7 @@ struct cpu {
+ 	unsigned long server_no;
+ 	unsigned long stack;
+ 	unsigned long exception_stack;
++	bool in_user;
+ 	secondary_entry_fn entry;
+ 	pgd_t *pgtable;
+ } __attribute__((packed)); /* used by asm */
+diff --git a/lib/powerpc/io.c b/lib/powerpc/io.c
+index cb7f2f050..5c2810884 100644
+--- a/lib/powerpc/io.c
++++ b/lib/powerpc/io.c
+@@ -11,6 +11,7 @@
+ #include <asm/setup.h>
+ #include <asm/processor.h>
+ #include <asm/atomic.h>
++#include <asm/smp.h>
+ #include "io.h"
+ 
+ static struct spinlock print_lock;
+@@ -41,10 +42,16 @@ void io_init(void)
+ 
+ void puts(const char *s)
+ {
++	bool user = in_usermode();
++
++	if (user)
++		exit_usermode();
+ 	spin_lock(&print_lock);
+ 	while (*s)
+ 		putchar(*s++);
+ 	spin_unlock(&print_lock);
++	if (user)
++		enter_usermode();
+ }
+ 
+ /*
+diff --git a/lib/powerpc/processor.c b/lib/powerpc/processor.c
+index 09f6bb9d8..6c3000d5c 100644
+--- a/lib/powerpc/processor.c
++++ b/lib/powerpc/processor.c
+@@ -47,6 +47,8 @@ void do_handle_exception(struct pt_regs *regs)
+ 	unsigned char v;
+ 
+ 	__current_cpu = (struct cpu *)mfspr(SPR_SPRG0);
++	if (in_usermode())
++		current_cpu()->in_user = false;
+ 
+ 	/*
+ 	 * We run with AIL=0, so interrupts taken with MMU disabled.
+@@ -60,6 +62,8 @@ void do_handle_exception(struct pt_regs *regs)
+ 
+ 	if (v < 128 && handlers[v].func) {
+ 		handlers[v].func(regs, handlers[v].data);
++		if (regs->msr & MSR_PR)
++			current_cpu()->in_user = true;
+ 		return;
+ 	}
+ 
+@@ -169,3 +173,37 @@ void disable_mcheck(void)
+ {
+ 	rfid_msr(mfmsr() & ~MSR_ME);
+ }
++
++bool in_usermode(void)
++{
++	return current_cpu()->in_user;
++}
++
++static void usermode_sc_handler(struct pt_regs *regs, void *data)
++{
++	regs->msr &= ~(MSR_PR|MSR_EE);
++	/* Interrupt return handler will keep in_user clear */
++}
++
++void enter_usermode(void)
++{
++	assert_msg(!in_usermode(), "enter_usermode called with in_usermode");
++	/* mfmsr would fault in usermode anyway */
++	assert_msg(!(mfmsr() & MSR_PR), "enter_usermode called from user mode");
++	assert_msg(!(mfmsr() & MSR_EE), "enter_usermode called with interrupts enabled");
++	assert_msg((mfmsr() & (MSR_IR|MSR_DR)) == (MSR_IR|MSR_DR),
++		"enter_usermode called with virtual memory disabled");
++
++	handle_exception(0xc00, usermode_sc_handler, NULL);
++	rfid_msr(mfmsr() | (MSR_PR|MSR_IR|MSR_DR|MSR_EE));
++	current_cpu()->in_user = true;
++}
++
++void exit_usermode(void)
++{
++	assert_msg(in_usermode(), "enter_usermode called with !in_usermode");
++	asm volatile("sc 0" ::: "memory");
++	handle_exception(0xc00, NULL, NULL);
++	assert(!in_usermode());
++	assert(!(mfmsr() & MSR_PR));
++}
+diff --git a/lib/powerpc/rtas.c b/lib/powerpc/rtas.c
+index b477a38e0..9c1e0affc 100644
+--- a/lib/powerpc/rtas.c
++++ b/lib/powerpc/rtas.c
+@@ -9,6 +9,7 @@
+ #include <libfdt/libfdt.h>
+ #include <devicetree.h>
+ #include <asm/spinlock.h>
++#include <asm/smp.h>
+ #include <asm/hcall.h>
+ #include <asm/io.h>
+ #include <asm/rtas.h>
+@@ -137,6 +138,8 @@ int rtas_call(int token, int nargs, int nret, int *outputs, ...)
+ 	va_list list;
+ 	int ret;
+ 
++	assert_msg(!in_usermode(), "May not make RTAS call from user mode\n");
++
+ 	spin_lock(&rtas_lock);
+ 
+ 	va_start(list, outputs);
+diff --git a/lib/powerpc/setup.c b/lib/powerpc/setup.c
+index ba659cc2b..30b988a5c 100644
+--- a/lib/powerpc/setup.c
++++ b/lib/powerpc/setup.c
+@@ -201,8 +201,11 @@ void cpu_init(struct cpu *cpu, int cpu_id)
+ 	cpu->exception_stack = (unsigned long)memalign(SZ_4K, SZ_64K);
+ 	cpu->exception_stack += SZ_64K - 64;
+ 	cpu->pgtable = NULL;
++	cpu->in_user = false;
+ }
+ 
++bool is_hvmode;
++
+ void setup(const void *fdt)
+ {
+ 	void *freemem = &stacktop;
+@@ -211,8 +214,6 @@ void setup(const void *fdt)
+ 	u32 fdt_size;
+ 	int ret;
+ 
+-	cpu_has_hv = !!(mfmsr() & (1ULL << MSR_HV_BIT));
+-
+ 	memset(cpus, 0xff, sizeof(cpus));
+ 
+ 	cpu = &cpus[0];
+@@ -220,10 +221,13 @@ void setup(const void *fdt)
+ 	cpu->exception_stack = (unsigned long)boot_exception_stack;
+ 	cpu->exception_stack += SZ_64K - 64;
+ 	cpu->pgtable = NULL;
++	cpu->in_user = false;
+ 
+ 	mtspr(SPR_SPRG0, (unsigned long)cpu);
+ 	__current_cpu = cpu;
+ 
++	cpu_has_hv = !!(mfmsr() & (1ULL << MSR_HV_BIT));
++
+ 	enable_mcheck();
+ 
+ 	/*
+diff --git a/lib/powerpc/spinlock.c b/lib/powerpc/spinlock.c
+index 238549f12..59dc4fbb5 100644
+--- a/lib/powerpc/spinlock.c
++++ b/lib/powerpc/spinlock.c
+@@ -8,6 +8,8 @@
+  */
+ void spin_lock(struct spinlock *lock)
+ {
++	assert(!in_usermode());
++
+ 	if (!multithreaded) {
+ 		assert(lock->v == 0);
+ 		lock->v = 1;
+@@ -19,7 +21,9 @@ void spin_lock(struct spinlock *lock)
+ 
+ void spin_unlock(struct spinlock *lock)
+ {
++	assert(!in_usermode());
+ 	assert(lock->v == 1);
++
+ 	if (!multithreaded) {
+ 		lock->v = 0;
+ 	} else {
+diff --git a/lib/ppc64/mmu.c b/lib/ppc64/mmu.c
+index f1219033a..313da6e78 100644
+--- a/lib/ppc64/mmu.c
++++ b/lib/ppc64/mmu.c
+@@ -43,6 +43,7 @@ void mmu_enable(pgd_t *pgtable)
+ 
+ 	cpu->pgtable = pgtable;
+ 
++	assert(!in_usermode());
+ 	mtmsr(mfmsr() | (MSR_IR|MSR_DR));
+ }
+ 
+@@ -52,6 +53,7 @@ void mmu_disable(void)
+ 
+ 	cpu->pgtable = NULL;
+ 
++	assert(!in_usermode());
+ 	mtmsr(mfmsr() & ~(MSR_IR|MSR_DR));
+ }
+ 
+diff --git a/powerpc/interrupts.c b/powerpc/interrupts.c
+index 35a47581c..1f5f7cfcd 100644
+--- a/powerpc/interrupts.c
++++ b/powerpc/interrupts.c
+@@ -327,6 +327,33 @@ static void test_illegal(void)
+ 	report_prefix_pop();
+ }
+ 
++static void dec_ignore_handler(struct pt_regs *regs, void *data)
++{
++	mtspr(SPR_DEC, 0x7fffffff);
++}
++
++static void test_privileged(void)
++{
++	unsigned long msr;
++
++	if (!mmu_enabled())
++		return;
++
++	report_prefix_push("privileged instruction");
++
++	handle_exception(0x700, &program_handler, NULL);
++	handle_exception(0x900, &dec_ignore_handler, NULL);
++	enter_usermode();
++	asm volatile("mfmsr %0" : "=r"(msr) :: "memory");
++	exit_usermode();
++	report(got_interrupt, "interrupt on privileged instruction");
++	got_interrupt = false;
++	handle_exception(0x900, NULL, NULL);
++	handle_exception(0x700, NULL, NULL);
++
++	report_prefix_pop();
++}
++
+ static void sc_handler(struct pt_regs *regs, void *data)
+ {
+ 	got_interrupt = true;
+@@ -479,6 +506,7 @@ int main(int argc, char **argv)
+ 		test_mce();
+ 	test_mmu();
+ 	test_illegal();
++	test_privileged();
+ 	test_dec();
+ 	test_sc();
+ 	test_trace();
 -- 
 2.42.0
 
