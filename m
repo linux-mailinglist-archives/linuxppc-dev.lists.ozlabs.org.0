@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB26D8670BC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 11:25:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 018178670C9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 11:25:50 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Ew1ru9Cn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gTiScaFn;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TjxZS3cc4z3w9w
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 21:25:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TjxbH59nPz3vxv
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 21:25:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Ew1ru9Cn;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gTiScaFn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52f; helo=mail-pg1-x52f.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TjxKK3LcKz3fFT
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 21:13:41 +1100 (AEDT)
-Received: by mail-pg1-x52f.google.com with SMTP id 41be03b00d2f7-5ce9555d42eso2527350a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 02:13:41 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TjxKP3MJDz3vZc
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 21:13:45 +1100 (AEDT)
+Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-6e53f19f407so12794b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 02:13:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708942420; x=1709547220; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1708942424; x=1709547224; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GGo+1arrsYAVXsfTP4gQ2EL+vABqvISnH52kVRdFyBU=;
-        b=Ew1ru9CnbpAUDAZYo6SqOt2YrYstpzstcaBIka0OFFGrxfsvpiOZA2Qyb+W6bDHiqA
-         fcPnl/vAcUtudaNBCH9XLKKsutMnWhoo0UUfHqbI43r0cVGOHKWzxPESzFpUnWXcSdBU
-         6r9fgnTC4R/v14xON8Gb06nWEDf+D78/Jr9PgwZmdSiQhckBEJGZa5tLMWJEQ0skPbc/
-         QbA8dvEXQ2hElJ5ha6aNjEy0yfpj6SdOs170N14285JQqM+hgQWuGsv4z4eYjJOuYvJ6
-         uUYKqCiMx92unByaXa36Ec9LjV5l0pCH35L9Gt3pgzAsV5lUnlDz2XD4JIEuF4jkiZuy
-         Gm2w==
+        bh=mYxWqQyihqZ/xKRwoD0QjakwL6RSMHUw8t/Bhqm9gTk=;
+        b=gTiScaFnMbpglFsUHI9Z1KZoCQL3CY1jEboIjmEgBi6uZioEfB9NYWJW79X08KdJqL
+         e844QfaW9oDO7SwxVLmXCF0LqsMxZiCYEyOQwMkTkk1XKk80ryrTyrmoyOi4YG3UZDpq
+         XPCWN6pnm5RSTrCFTCzr4NdHZQ82i3oF05FDY77p9veIGVLOCS/UP8lezQbwdtJz2unx
+         +Rq1U51EbwY22iPuu38SsgCaRaORl1vl2Cnzb/fPtgI151xT+kv7mkNJ72pIgn5/j8cF
+         5aHpSpaVaFqsY58lG49/oC0nImtozakN5XBoQzJMhZv99FOBuhSAW95pI7W36xyfPADM
+         mjNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708942420; x=1709547220;
+        d=1e100.net; s=20230601; t=1708942424; x=1709547224;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GGo+1arrsYAVXsfTP4gQ2EL+vABqvISnH52kVRdFyBU=;
-        b=anU6W2GQU6gvN2eyUX7LNSd+aeWPPtlZGFqGoBiG/lt7aoip1z76oxRPXTMSHrHCth
-         8W8jmmyit/JVIeCMqHcH0qfkZGPidjPlIJjfJmd1/xoSPFnjY7aRUOQrmr+SYri23i4/
-         7sdewvWbMFTQsWo3taRpWXGFBoSoVSs2EgoN5vWn5UHlt9mkWGdDAB0ELrMmsOYyZW7p
-         q9WpzArEh4LY59rzjWrlyJtXlnfwHb31x6JqcW5mA5tLlVr8Z4X/oGqtbreFhmF6cP2W
-         AwW7q1nkL63air+be1dCFkDWrqoOn3DaIv/gIi06UueuKkq9PRJLTrNPkC5CjNPCxU9v
-         q5Mg==
-X-Forwarded-Encrypted: i=1; AJvYcCXyIE5B5YhMjekThiqgG4BVjMwsIGAP2y4ScWDOdwJduXelreNzRbnnBb64w8YhhZ71pWvLj0TFaxRChRMBi2PUUIyjAw51K0ODs7ihYg==
-X-Gm-Message-State: AOJu0Yzps79nTPk3BjrLDAxtlVcqigBWg8cKccijGZ/q/9xEWTLNsdC+
-	I+jC8twffOSxIbdPn00nx2YOYNThJAvS6ofpIxF/+EIp4h+a8kli
-X-Google-Smtp-Source: AGHT+IGmdxxayQXgJvWM0G91cEodyIXuZQEu0yL5dXAiDbtmtpAhynPpesxFSZ24zZJ/kBp/aQ6TSA==
-X-Received: by 2002:a05:6a20:9c8b:b0:1a0:e4af:3c12 with SMTP id mj11-20020a056a209c8b00b001a0e4af3c12mr10054112pzb.48.1708942419825;
-        Mon, 26 Feb 2024 02:13:39 -0800 (PST)
+        bh=mYxWqQyihqZ/xKRwoD0QjakwL6RSMHUw8t/Bhqm9gTk=;
+        b=bdAyffsqygj1nT50N7JAusf9v0LEzFXyJmIOyUUMyOxaxhx/aZub8C9JjLtfcUZd3b
+         /5rmA4lUevE8lRhgdG6RQlt43+BpGW4IR7Y5A3kooUOBKnF1MJCz0pRyDKU7rDFla8sr
+         /AL3UAKKD6tOZt54DFeuT1qv7Woxsupbd56GlaIWID9AklicAn+FRbrc2w3hDHfZYp2G
+         e2ZKY25Vl1HYDFPz0Xl2xZ2dGDWR6gD9We7mMVeSP+kR3zsLpMpxIBQgzWzDsdb/Sa8H
+         C34Yt2Ns0JDKnfKPqjNeOy0HXQdlSSPDJjO1wYfjFMrmrxrIF+DJSNDth9kExI0DDFGn
+         2P1g==
+X-Forwarded-Encrypted: i=1; AJvYcCUp4dX9ZwBNqGyi+ACMrZbQEYJ5oycxFEYNWFTh4oMApHhN69WLg2pKzrLuDOQ66EM59NvR8RHsuG4fV9LnPIaKrRCDqJm96PbWawUtKA==
+X-Gm-Message-State: AOJu0YwRqmanZLuuHqvRUkYjPFLosSSsDprl9pMo3ghs23JeAvjFHvAT
+	DA9xkosvflMoZrykuEEDVHkdCYtpzzEuNgVksFBblvbpkTeqM7xw
+X-Google-Smtp-Source: AGHT+IF+aElZ5vCFE85E+S1Tlkgpap6+INIPVdRCZ/aeWMo6oorSbE8xMpmhMtAwtEdFoYVKCrmUlg==
+X-Received: by 2002:aa7:8a54:0:b0:6e1:3dd3:3c89 with SMTP id n20-20020aa78a54000000b006e13dd33c89mr5073901pfa.11.1708942423783;
+        Mon, 26 Feb 2024 02:13:43 -0800 (PST)
 Received: from wheely.local0.net (220-235-194-103.tpgi.com.au. [220.235.194.103])
-        by smtp.gmail.com with ESMTPSA id x24-20020aa784d8000000b006e463414493sm3626693pfn.105.2024.02.26.02.13.36
+        by smtp.gmail.com with ESMTPSA id x24-20020aa784d8000000b006e463414493sm3626693pfn.105.2024.02.26.02.13.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Feb 2024 02:13:39 -0800 (PST)
+        Mon, 26 Feb 2024 02:13:43 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Thomas Huth <thuth@redhat.com>
-Subject: [kvm-unit-tests PATCH 16/32] powerpc: Remove broken SMP exception stack setup
-Date: Mon, 26 Feb 2024 20:12:02 +1000
-Message-ID: <20240226101218.1472843-17-npiggin@gmail.com>
+Subject: [kvm-unit-tests PATCH 17/32] arch-run: Fix handling multiple exit status messages
+Date: Mon, 26 Feb 2024 20:12:03 +1000
+Message-ID: <20240226101218.1472843-18-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240226101218.1472843-1-npiggin@gmail.com>
 References: <20240226101218.1472843-1-npiggin@gmail.com>
@@ -83,68 +83,41 @@ Cc: Laurent Vivier <lvivier@redhat.com>, kvm@vger.kernel.org, Nicholas Piggin <n
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The exception stack setup does not work correctly for SMP, because
-it is the boot processor that calls cpu_set() which sets SPRG2 to
-the exception stack, not the target CPU itself. So secondaries
-never got their SPRG2 set to a valid exception stack.
+In SMP tests, it's possible for multiple CPUs to print an exit
+message if they abort concurrently, confusing the harness:
 
-Remove the SMP code and just set an exception stack for the boot
-processor. Make the stack 64kB while we're here, to match the
-size of the regular stack.
+  EXIT: STATUS=127
 
+  EXIT: STATUS=127
+  scripts/arch-run.bash: line 85: [: too many arguments
+  scripts/arch-run.bash: line 93: return: too many arguments
+
+lib/arch code should probably serialise this to prevent it, but
+at the moment not all do. So make the parser handle this by
+just looking at the first EXIT.
+
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>
+Cc: Andrew Jones <andrew.jones@linux.dev>
+Cc: kvm@vger.kernel.org
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- lib/powerpc/setup.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ scripts/arch-run.bash | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/powerpc/setup.c b/lib/powerpc/setup.c
-index 9b665f59c..496af40f8 100644
---- a/lib/powerpc/setup.c
-+++ b/lib/powerpc/setup.c
-@@ -42,10 +42,6 @@ struct cpu_set_params {
- 	uint64_t tb_hz;
- };
+diff --git a/scripts/arch-run.bash b/scripts/arch-run.bash
+index 5c7e72036..4af670f1c 100644
+--- a/scripts/arch-run.bash
++++ b/scripts/arch-run.bash
+@@ -79,7 +79,7 @@ run_qemu_status ()
+ 	exec {stdout}>&-
  
--#define EXCEPTION_STACK_SIZE	(32*1024) /* 32kB */
--
--static char exception_stack[NR_CPUS][EXCEPTION_STACK_SIZE];
--
- static void cpu_set(int fdtnode, u64 regval, void *info)
- {
- 	static bool read_common_info = false;
-@@ -56,10 +52,6 @@ static void cpu_set(int fdtnode, u64 regval, void *info)
- 
- 	cpus[cpu] = regval;
- 
--	/* set exception stack address for this CPU (in SPGR0) */
--	asm volatile ("mtsprg0 %[addr]" ::
--		      [addr] "r" (exception_stack[cpu + 1]));
--
- 	if (!read_common_info) {
- 		const struct fdt_property *prop;
- 		u32 *data;
-@@ -180,6 +172,10 @@ static void mem_init(phys_addr_t freemem_start)
- 					 ? __icache_bytes : __dcache_bytes);
- }
- 
-+#define EXCEPTION_STACK_SIZE	SZ_64K
-+
-+static char boot_exception_stack[EXCEPTION_STACK_SIZE];
-+
- void setup(const void *fdt)
- {
- 	void *freemem = &stacktop;
-@@ -189,6 +185,10 @@ void setup(const void *fdt)
- 
- 	cpu_has_hv = !!(mfmsr() & (1ULL << MSR_HV_BIT));
- 
-+	/* set exception stack address for this CPU (in SPGR0) */
-+	asm volatile ("mtsprg0 %[addr]" ::
-+		      [addr] "r" (boot_exception_stack));
-+
- 	enable_mcheck();
- 
- 	/*
+ 	if [ $ret -eq 1 ]; then
+-		testret=$(grep '^EXIT: ' <<<"$lines" | sed 's/.*STATUS=\([0-9][0-9]*\).*/\1/')
++		testret=$(grep '^EXIT: ' <<<"$lines" | head -n1 | sed 's/.*STATUS=\([0-9][0-9]*\).*/\1/')
+ 		if [ "$testret" ]; then
+ 			if [ $testret -eq 1 ]; then
+ 				ret=0
 -- 
 2.42.0
 
