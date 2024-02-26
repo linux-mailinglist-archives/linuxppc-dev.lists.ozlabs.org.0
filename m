@@ -1,112 +1,38 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F79867E31
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 18:23:11 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=ju41FPsq;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEDBF867E0E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 18:20:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tk6rs54LTz3vYb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 04:23:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tk6nw3Vtwz3vds
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 04:20:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=ju41FPsq;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2612::600; helo=eur05-am6-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on20600.outbound.protection.outlook.com [IPv6:2a01:111:f403:2612::600])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=nkce=kd=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tk6r75Lm0z2xPd
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 04:22:31 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YmN1PzcyKxjmVqoSagKGby86YmYheDPVLAqYo+YOyKwUDwkrmQL3qsgbp7IMgBnNrpogTwg92JY4FV8xMCiBcv01mfz62gc7h0gjFMuTjrrNRiL/U2mP123kwfzSQdrlnF/HaqKqDjBm7HxtliC8+sA/JrY/t1vAO7pdkhzJ8fNa9z2gG8CrOi8n3y/EvtqaRNolp58vaikO2ptJETENdhJvPSTq4c+CkZXAYFBMf9+mhj3tByQMnxShf8L97PC3sSwZKX4sLWdRJTNYKrZb6A12qhV5gzECzwcIVESvK5KvOElHW7jPutwMvqz1HxJZCsUoCrReu2prE0sXkxPxGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YfDX1Cbt8721jRgx5yD3L/XZ3IW87b0Rj5sOby8pE1A=;
- b=mZTy8CumcQu/2MyG79kKaiGlIUWiNaszF8eTofuwTDtvkLbbVNRiPvF5rsnTiBZsCcWqK23Cgi6dCMRxjipyf4jIDj5NWdPRPS7ns7wGw5eGzYzFOvcIygTHXG2hCIJAfPp8PcT4xGgiZPv70bzwC1IK+QoSiBoJyO6mJDEmkNvXru/rohFdyuJlVRcgxFMatcBYWy/jO66OQNCOshZMD3MhSf8NJw/vJpNJYUp0F5UAycirx+HOAGPsZbT+nMsbauiJvSghiqvrz8iA/X2OL1wHQwN0UgeRT0FiQZFGt14+B1t8wHwg1oWbz3iEFBtG5EG6Wq8RKuYM7GuBGfi25A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YfDX1Cbt8721jRgx5yD3L/XZ3IW87b0Rj5sOby8pE1A=;
- b=ju41FPsqxiq9MrbjXLjaa+Lab4ggn72AbaL7VPhAV1nw6UxOz1UIptE/Z3Ul0i7/8rR1z3krfFb88x4zgQh1tL9dqf1HmznMco5/VyXrTiIYNMbGObtmV8rwLRC1hIQOu0LcIxZQAGqDQNAJyglLDZue5Q3nToS4sxVv2lJxUq8=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PA4PR04MB8032.eurprd04.prod.outlook.com (2603:10a6:102:ba::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.34; Mon, 26 Feb
- 2024 17:22:11 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9af4:87e:d74:94aa]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9af4:87e:d74:94aa%7]) with mapi id 15.20.7316.032; Mon, 26 Feb 2024
- 17:22:11 +0000
-Date: Mon, 26 Feb 2024 12:21:59 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: Re: [PATCH v8 10/10] PCI: dwc: ep: Add Kernel-doc comments for APIs
-Message-ID: <ZdzIt8aqogaoW22Y@lizhi-Precision-Tower-5810>
-References: <20240224-pci-dbi-rework-v8-0-64c7fd0cfe64@linaro.org>
- <20240224-pci-dbi-rework-v8-10-64c7fd0cfe64@linaro.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240224-pci-dbi-rework-v8-10-64c7fd0cfe64@linaro.org>
-X-ClientProxiedBy: BYAPR21CA0004.namprd21.prod.outlook.com
- (2603:10b6:a03:114::14) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tk6nR2XQjz2xPd
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 04:20:11 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 6292D60DBF;
+	Mon, 26 Feb 2024 17:20:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C68C433C7;
+	Mon, 26 Feb 2024 17:20:08 +0000 (UTC)
+Date: Mon, 26 Feb 2024 12:22:08 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Sachin Sant <sachinp@linux.ibm.com>
+Subject: Re: Kernel WARNING at lib/vsprintf.c:2721 while running ftrace
+ kernel selftests
+Message-ID: <20240226122208.344447f1@gandalf.local.home>
+In-Reply-To: <C7E7AF1A-D30F-4D18-B8E5-AF1EF58004F5@linux.ibm.com>
+References: <C7E7AF1A-D30F-4D18-B8E5-AF1EF58004F5@linux.ibm.com>
+X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA4PR04MB8032:EE_
-X-MS-Office365-Filtering-Correlation-Id: afb1a931-4667-40e2-d5fc-08dc36ef77de
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	r1B56Cm/QPCi/CAMl4C3WTfEJIbcnE9szgjFw1iCgXR+CPBNMcj6h83GEaLrtIy5dbD4poJdikOBkF4AqpqWOfptpUpgc2TZNiRAvP6N5HsNM1qzECvElL/05vlGP+IHSqayZuMj7LHEUcMgURO/82DdnwzFkoJ8o6+9w+kmPJFzPFZryih+Sd9p7pWBWMLFjFRkXNal0EgTea3gzN8zXvjONprotVQJ3McSqLi4VjpMDVnOX1/9PM+hUG9Jf+eM9BiuWgOmPfumI1oSLA7cM5UTJ3rZOPLv0VbL3FsCtt1sptZ4qoeUAOtY4v23ih4sn+qda6AreCMG/PJG4+Oo9nw2ugcG+4hnsVSitSLiuF/pk9BjGqa+yNocRXGiSDaQHvNbtGg2jazFgzUxiSF12NAkPsga8qI7cNlATgFh1TwbQb+2QDchJXrdkyl9SQ1pkvtuec9GJYMFZM/mq8tPNATuyasrvvUaOh1/XSnbSYfdV569P4lSwULup1HldzrOxEftinU5ZwOFdl8cK+04ptVx6f7f24NiGn51xszBrk+0RxA4QnluRNDqV9dCIxxEcvKm1Z1p2fRIDvNqxOw59O14eAxVqqY2yfRUQBUHrWcRdRJokRnnqhTj+Zu441yAj1KXlM+kegFbkkFj5Kmirfyu32NlnwkfhihZUFDxVy2vArAy0OPwGrYx2GNdE9LnXUXbnpEOGTlnRWGVAoBxjA==
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?4EkRx0h2QDVyJW0jk5xLsgvFnKdqQp1FW8bxoskEIAlSPCBRQJ9mH7V+BQ87?=
- =?us-ascii?Q?e9i+j5Pnm910PbmxI4390yOzQOMRI9Ochj6x5Bn/PsSeyhLPDut83JolMHEg?=
- =?us-ascii?Q?lj3EHHrp7zK7UWuqvZn2MecBqSwGUaIqA7p9FeeNuHQ0qNdAMMStiF6G40zr?=
- =?us-ascii?Q?E3mJfJ4t89lJoWLAFNYLhDLROYwC6RItjnBN9kfX598TTpVDZWiTBTI/OObb?=
- =?us-ascii?Q?PofLYXRTSP623n8WZvt/Ne9FB410c4DpgmxoeOGafQI/0mEdHJGCCkrS9uWI?=
- =?us-ascii?Q?y+LCIH8q8Kx8T+tuozZ1kfWjoBnvdb9dLkJrhWyNxSXqEiBTFJX1jcufRsEI?=
- =?us-ascii?Q?hvERSLfD0eZK/Es3saVkvyGJwhw0JNL9j/oLy/rbvGc4gc8mSAqu9MoP0tkh?=
- =?us-ascii?Q?JC9Sla+tLIBV8n9wUqC7j+UF8jqxzYelHc2GPr5YNDX8oYJHtnvwfohopW4z?=
- =?us-ascii?Q?EZKM8Ba+DEln/AOrPSGac4QeQazg/06KNuK0GN1YbNdMRlck2tGjLoybEOe5?=
- =?us-ascii?Q?2wd1v2gvktgJ9vQuxgOoAYN+1gl3hTiKhv6KjD9nyZnYu0wpL8aDrLKaqh81?=
- =?us-ascii?Q?aF1p7t8fv0tQfr5pmmvFBFAZ1NangO7MJ0jqlzhfYL4yIG/g4kD+wg4EsjNX?=
- =?us-ascii?Q?A4zx8/lttovgHvDF2Uhj3LSJNwEW3MNUWfeUItb2dF/owVwfYrIKKcfQUhWJ?=
- =?us-ascii?Q?lbayPb3+ThAChQmHgDXk6eSApDxnJsizb8QB1oVe3jSZx1nigFz95r02/dQB?=
- =?us-ascii?Q?S4nQcnvLHix+5DKfM2GsjhOZEkH451N2M8qiqKuXq8PL6Fpy8MIBzAoyQXX7?=
- =?us-ascii?Q?K5DONb49hVz3NZMe86WFxYFt5S6D0gmB1mZrM6YPM0kSHj5JK5a+NNUErqQ5?=
- =?us-ascii?Q?loZFdPEqyBJNt3VkhdsFV1X5wQostZnTA9kjq5cwVR0+yeL5wVf4r3V4xn7n?=
- =?us-ascii?Q?NXVZ0PT+ombUg9L81Xs/RabLQHsGqXbN1x+P3VKQ/AlX5YIulA/jaXmR83Gk?=
- =?us-ascii?Q?o+yOw4bYU2hWpnyvbX/iHHWHTRbsdnsIlVxe3L9KrSiKNAGvZAMVE9VlvilA?=
- =?us-ascii?Q?O+fVkdsQCTX7kyfNLZVn0TRYaBxqxn4jApeMf9zYLJN39xgD7GwMu1SoYRQp?=
- =?us-ascii?Q?NnL9dbhjL5H3Br+OfNN63V1phv5s4zg9FKUjyXF66C9DnFY4u5geg50R3gDw?=
- =?us-ascii?Q?St5vOJTq/ZaJ/YiyS7sKCCdtzR9b4TxOBVsD9lIL3ldh0KgMGchNTwCeFw4v?=
- =?us-ascii?Q?gVO0H8drMMp8+ps06ESjoy5nPX69QRn4DAa6NYBbN4lX6zcJED6aUkt3pipQ?=
- =?us-ascii?Q?vn5KdUG9sPZqekw+hXVN0Y+CP+PYKEqnVJTWmhBnd3u9MMO2DtRux02ywubo?=
- =?us-ascii?Q?pIKp1JrlYPNYgDU/Vm3vmkV1hUPOAuq7h5Ujn898x/X3mjKFN/mOUAT39Soq?=
- =?us-ascii?Q?y8LceudKH4pklf1BO+hNw4hBLrYdNPP2saxPYDhVngOscQsLKWLcM9+sk4rQ?=
- =?us-ascii?Q?1sMsjEULxssBX0YvwABdNmEGDF2XucCtH9g/uepuNTRgfx4jZGDX1qtCkkGW?=
- =?us-ascii?Q?qO/hOTbl1UyWGygbMi+a2ZLDlL2ZkV/pwxbvQ8Ej?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: afb1a931-4667-40e2-d5fc-08dc36ef77de
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2024 17:22:11.8313
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Uq6Y0kGoQtT0O+mgwXrnShRwO1YvxbFtD9DA/mx7+gxpARnHIfpr7gZvwfzUGXAlgqs6WpTroVEbrfZvT5GgZw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB8032
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -118,210 +44,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <vigneshr@ti.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Kishon Vijay Abraham I <kishon@ti.com>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, linux-tegra@vger.kernel.org, Jonathan Hunter <jonathanh@nvidia.com>, NXP Linux Team <linux-imx@nxp.com>, Richard Zhu <hongxing.zhu@nxp.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org, Mingkai Hu <mingkai.hu@nxp.com>, linux-arm-kernel@lists.infradead.org, Roy Zang <roy.zang@nxp.com>, Niklas Cassel <cassel@kernel.org>, Jingoo Han <jingoohan1@gmail.com>, Yoshihiro Shimoda <yoshih
- iro.shimoda.uh@renesas.com>, linux-kernel@vger.kernel.org, Vidya Sagar <vidyas@nvidia.com>, linux-renesas-soc@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Gustavo Pimentel <gustavo.pimentel@synopsys.com>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Feb 24, 2024 at 12:24:16PM +0530, Manivannan Sadhasivam wrote:
-> All of the APIs are missing the Kernel-doc comments. Hence, add them.
-> 
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+On Sun, 25 Feb 2024 22:01:50 +0530
+Sachin Sant <sachinp@linux.ibm.com> wrote:
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> While running ftrace specific kernel selftests following warning
+> is seen on a Power10 logical partition (LPAR) booted with
+> latest mainline kernel.
+>=20
+> ------------[ cut here ]------------
+> precision 63492 too large
+> WARNING: CPU: 15 PID: 2538829 at lib/vsprintf.c:2721 set_precision+0x68/0=
+xa4
 
-> ---
->  drivers/pci/controller/dwc/pcie-designware-ep.c | 92 +++++++++++++++++++++++++
->  1 file changed, 92 insertions(+)
-> 
-> diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> index fed4c2936c78..cdcb33a279db 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> @@ -14,6 +14,11 @@
->  #include <linux/pci-epc.h>
->  #include <linux/pci-epf.h>
->  
-> +/**
-> + * dw_pcie_ep_init_notify - Notify EPF drivers about EPC initialization
-> + *			    complete
-> + * @ep: DWC EP device
-> + */
->  void dw_pcie_ep_init_notify(struct dw_pcie_ep *ep)
->  {
->  	struct pci_epc *epc = ep->epc;
-> @@ -22,6 +27,14 @@ void dw_pcie_ep_init_notify(struct dw_pcie_ep *ep)
->  }
->  EXPORT_SYMBOL_GPL(dw_pcie_ep_init_notify);
->  
-> +/**
-> + * dw_pcie_ep_get_func_from_ep - Get the struct dw_pcie_ep_func corresponding to
-> + *				 the endpoint function
-> + * @ep: DWC EP device
-> + * @func_no: Function number of the endpoint device
-> + *
-> + * Return: struct dw_pcie_ep_func if success, NULL otherwise.
-> + */
->  struct dw_pcie_ep_func *
->  dw_pcie_ep_get_func_from_ep(struct dw_pcie_ep *ep, u8 func_no)
->  {
-> @@ -52,6 +65,11 @@ static void __dw_pcie_ep_reset_bar(struct dw_pcie *pci, u8 func_no,
->  	dw_pcie_dbi_ro_wr_dis(pci);
->  }
->  
-> +/**
-> + * dw_pcie_ep_reset_bar - Reset endpoint BAR
-> + * @pci: DWC PCI device
-> + * @bar: BAR number of the endpoint
-> + */
->  void dw_pcie_ep_reset_bar(struct dw_pcie *pci, enum pci_barno bar)
->  {
->  	u8 func_no, funcs;
-> @@ -431,6 +449,13 @@ static const struct pci_epc_ops epc_ops = {
->  	.get_features		= dw_pcie_ep_get_features,
->  };
->  
-> +/**
-> + * dw_pcie_ep_raise_intx_irq - Raise INTx IRQ to the host
-> + * @ep: DWC EP device
-> + * @func_no: Function number of the endpoint
-> + *
-> + * Return: 0 if success, errono otherwise.
-> + */
->  int dw_pcie_ep_raise_intx_irq(struct dw_pcie_ep *ep, u8 func_no)
->  {
->  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-> @@ -442,6 +467,14 @@ int dw_pcie_ep_raise_intx_irq(struct dw_pcie_ep *ep, u8 func_no)
->  }
->  EXPORT_SYMBOL_GPL(dw_pcie_ep_raise_intx_irq);
->  
-> +/**
-> + * dw_pcie_ep_raise_msi_irq - Raise MSI IRQ to the host
-> + * @ep: DWC EP device
-> + * @func_no: Function number of the endpoint
-> + * @interrupt_num: Interrupt number to be raised
-> + *
-> + * Return: 0 if success, errono otherwise.
-> + */
->  int dw_pcie_ep_raise_msi_irq(struct dw_pcie_ep *ep, u8 func_no,
->  			     u8 interrupt_num)
->  {
-> @@ -490,6 +523,15 @@ int dw_pcie_ep_raise_msi_irq(struct dw_pcie_ep *ep, u8 func_no,
->  }
->  EXPORT_SYMBOL_GPL(dw_pcie_ep_raise_msi_irq);
->  
-> +/**
-> + * dw_pcie_ep_raise_msix_irq_doorbell - Raise MSIX to the host using Doorbell
-> + *					method
-> + * @ep: DWC EP device
-> + * @func_no: Function number of the endpoint device
-> + * @interrupt_num: Interrupt number to be raised
-> + *
-> + * Return: 0 if success, errno otherwise.
-> + */
->  int dw_pcie_ep_raise_msix_irq_doorbell(struct dw_pcie_ep *ep, u8 func_no,
->  				       u16 interrupt_num)
->  {
-> @@ -509,6 +551,14 @@ int dw_pcie_ep_raise_msix_irq_doorbell(struct dw_pcie_ep *ep, u8 func_no,
->  	return 0;
->  }
->  
-> +/**
-> + * dw_pcie_ep_raise_msix_irq - Raise MSIX to the host
-> + * @ep: DWC EP device
-> + * @func_no: Function number of the endpoint device
-> + * @interrupt_num: Interrupt number to be raised
-> + *
-> + * Return: 0 if success, errno otherwise.
-> + */
->  int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
->  			      u16 interrupt_num)
->  {
-> @@ -556,6 +606,12 @@ int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
->  	return 0;
->  }
->  
-> +/**
-> + * dw_pcie_ep_cleanup - Cleanup DWC EP resources
-> + * @ep: DWC EP device
-> + *
-> + * Cleans up the DWC EP specific resources like eDMA etc...
-> + */
->  void dw_pcie_ep_cleanup(struct dw_pcie_ep *ep)
->  {
->  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-> @@ -564,6 +620,13 @@ void dw_pcie_ep_cleanup(struct dw_pcie_ep *ep)
->  }
->  EXPORT_SYMBOL_GPL(dw_pcie_ep_cleanup);
->  
-> +/**
-> + * dw_pcie_ep_deinit - Deinitialize the endpoint device
-> + * @ep: DWC EP device
-> + *
-> + * Deinitialize the endpoint device. EPC device is not destroyed since that will
-> + * taken care by Devres.
-> + */
->  void dw_pcie_ep_deinit(struct dw_pcie_ep *ep)
->  {
->  	struct pci_epc *epc = ep->epc;
-> @@ -635,6 +698,14 @@ static void dw_pcie_ep_init_non_sticky_registers(struct dw_pcie *pci)
->  	dw_pcie_dbi_ro_wr_dis(pci);
->  }
->  
-> +/**
-> + * dw_pcie_ep_init_registers - Initialize DWC EP specific registers
-> + * @ep: DWC EP device
-> + *
-> + * Initialize the registers (CSRs) specific to DWC EP. This API should be called
-> + * only when the endpoint receives an active refclk (either from host or
-> + * generated locally).
-> + */
->  int dw_pcie_ep_init_registers(struct dw_pcie_ep *ep)
->  {
->  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-> @@ -718,6 +789,10 @@ int dw_pcie_ep_init_registers(struct dw_pcie_ep *ep)
->  }
->  EXPORT_SYMBOL_GPL(dw_pcie_ep_init_registers);
->  
-> +/**
-> + * dw_pcie_ep_linkup - Notify EPF drivers about link up event
-> + * @ep: DWC EP device
-> + */
->  void dw_pcie_ep_linkup(struct dw_pcie_ep *ep)
->  {
->  	struct pci_epc *epc = ep->epc;
-> @@ -726,6 +801,14 @@ void dw_pcie_ep_linkup(struct dw_pcie_ep *ep)
->  }
->  EXPORT_SYMBOL_GPL(dw_pcie_ep_linkup);
->  
-> +/**
-> + * dw_pcie_ep_linkdown - Notify EPF drivers about link down event
-> + * @ep: DWC EP device
-> + *
-> + * Non-sticky registers are also initialized before sending the notification to
-> + * the EPF drivers. This is needed since the registers need to be initialized
-> + * before the link comes back again.
-> + */
->  void dw_pcie_ep_linkdown(struct dw_pcie_ep *ep)
->  {
->  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-> @@ -743,6 +826,15 @@ void dw_pcie_ep_linkdown(struct dw_pcie_ep *ep)
->  }
->  EXPORT_SYMBOL_GPL(dw_pcie_ep_linkdown);
->  
-> +/**
-> + * dw_pcie_ep_init - Initialize the endpoint device
-> + * @ep: DWC EP device
-> + *
-> + * Initialize the endpoint device. Allocate resources and create the EPC
-> + * device with the endpoint framework.
-> + *
-> + * Return: 0 if success, errno otherwise.
-> + */
->  int dw_pcie_ep_init(struct dw_pcie_ep *ep)
->  {
->  	int ret;
-> 
-> -- 
-> 2.25.1
-> 
+Interesting. I'm guessing something went negative.
+
+> Modules linked in: nvram rpadlpar_io rpaphp uinput torture vmac poly1305_=
+generic chacha_generic chacha20poly1305 n_gsm pps_ldisc ppp_synctty ppp_asy=
+nc ppp_generic serport slcan can_dev slip slhc snd_hrtimer snd_seq snd_seq_=
+device snd_timer snd soundcore pcrypt crypto_user n_hdlc dummy veth tun nfs=
+v3 nfs netfs brd overlay exfat vfat fat btrfs blake2b_generic xor raid6_pq =
+zstd_compress xfs loop sctp ip6_udp_tunnel udp_tunnel nfsd auth_rpcgss nfs_=
+acl lockd grace configs dm_mod nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_f=
+ib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chai=
+n_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 bonding rfkill tls =
+ip_set nf_tables libcrc32c nfnetlink sunrpc pseries_rng vmx_crypto ext4 mbc=
+ache jbd2 sd_mod t10_pi crc64_rocksoft crc64 sg ibmvscsi ibmveth scsi_trans=
+port_srp fuse [last unloaded: test_cpuidle_latency(O)]
+> CPU: 15 PID: 2538829 Comm: awk Tainted: G M O K 6.8.0-rc5-gfca7526b7d89 #1
+> Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 0xf000006 of:IBM,FW106=
+0.00 (NH1060_018) hv:phyp pSeries
+> NIP: c000000000f57c34 LR: c000000000f57c30 CTR: c000000000f5cdf0
+> REGS: c000000a58e4f5f0 TRAP: 0700 Tainted: G M O K (6.8.0-rc5-gfca7526b7d=
+89)
+> MSR: 8000000002029033 <SF,VEC,EE,ME,IR,DR,RI,LE> CR: 48000824 XER: 000000=
+05
+> CFAR: c00000000016154c IRQMASK: 0=20
+> GPR00: c000000000f57c30 c000000a58e4f890 c000000001482800 000000000000001=
+9=20
+> GPR04: 0000000100011559 c000000a58e4f660 c000000a58e4f658 000000000000002=
+7=20
+> GPR08: c000000e84e37c10 0000000000000001 0000000000000027 c000000002a47e5=
+0=20
+> GPR12: 0000000000000000 c000000e87bf7300 0000000000000000 000000000000000=
+0=20
+> GPR16: 0000000000000000 0000000000000000 0000000000000000 000000000000000=
+0=20
+> GPR20: c0000004a43ec590 0000000000400cc0 0000000000000003 c0000000012c3e6=
+5=20
+> GPR24: c000000a58e4fa18 0000000000000025 0000000000000020 000000000001ff9=
+7=20
+> GPR28: c0000001168a00dd c0000001168c0074 c000000a58e4f920 000000000000f80=
+4=20
+> NIP [c000000000f57c34] set_precision+0x68/0xa4
+> LR [c000000000f57c30] set_precision+0x64/0xa4
+> Call Trace:
+> [c000000a58e4f890] [c000000000f57c30] set_precision+0x64/0xa4 (unreliable)
+> [c000000a58e4f900] [c000000000f5ccc4] vsnprintf+0x198/0x4c8
+> [c000000a58e4f980] [c000000000f53228] seq_buf_vprintf+0x50/0xa0
+> [c000000a58e4f9b0] [c00000000031cec0] trace_seq_printf+0x60/0xe0
+> [c000000a58e4f9e0] [c00000000031b5f0] trace_print_print+0x78/0xa4
+> [c000000a58e4fa60] [c0000000003133a4] print_trace_line+0x2ac/0x6d8
+> [c000000a58e4fb20] [c0000000003145c0] s_show+0x58/0x2c0
+> [c000000a58e4fba0] [c0000000005dfb2c] seq_read_iter+0x448/0x618
+> [c000000a58e4fc70] [c0000000005dfe08] seq_read+0x10c/0x174
+> [c000000a58e4fd10] [c00000000059a7e0] vfs_read+0xe0/0x39c
+> [c000000a58e4fdc0] [c00000000059b59c] ksys_read+0x7c/0x140
+> [c000000a58e4fe10] [c000000000035d74] system_call_exception+0x134/0x330
+> [c000000a58e4fe50] [c00000000000d6a0] system_call_common+0x160/0x2e4
+> --- interrupt: c00 at 0x7fff84521684
+> NIP: 00007fff84521684 LR: 00000001252f0dc4 CTR: 0000000000000000
+> REGS: c000000a58e4fe80 TRAP: 0c00 Tainted: G M O K (6.8.0-rc5-gfca7526b7d=
+89)
+> MSR: 800000000000f033 <SF,EE,PR,FP,ME,IR,DR,RI,LE> CR: 22000202 XER: 0000=
+0000
+> IRQMASK: 0=20
+> GPR00: 0000000000000003 00007fffcd076c30 00007fff84607300 000000000000000=
+5=20
+> GPR04: 000000012a8a1a20 0000000000010000 fffffffffffffff5 000000012a9bcce=
+6=20
+> GPR08: 0000000000000001 0000000000000000 0000000000000000 000000000000000=
+0=20
+> GPR12: 0000000000000000 00007fff84a5d2a0 0000000000000001 000000012a8851d=
+8=20
+> GPR16: 000000012a884268 00007fff84601888 0000000125377f50 00007fff8460188=
+0=20
+> GPR20: 0000000000000044 000000000000000f ffffffffffffffff 000000000000000=
+0=20
+> GPR24: 00007fffcd076e48 00007fffcd076d98 0000000000000000 000000000000000=
+0=20
+> GPR28: 00007fffcd076e48 0000000000000000 00007fffcd076da0 000000012a8a190=
+0=20
+> NIP [00007fff84521684] 0x7fff84521684
+> LR [00000001252f0dc4] 0x1252f0dc4
+> --- interrupt: c00
+> Code: f821ff91 2f890000 409e0034 7c0802a6 3c62fff0 39200001 3d420177 3863=
+e310 992ad6db f8010080 4b209899 60000000 <0fe00000> e8010080 7c0803a6 2f9f0=
+000=20
+> ---[ end trace 0000000000000000 ]=E2=80=94
+>=20
+> This warning is seen while running test that was added by
+> following commit:
+>=20
+> commit 3bf7009251f0f41cdd0188ab7b3879df81810703
+>      tracing/selftests: Add test to test the trace_marker
+
+This adds the user space selftest that triggered this warning, but it is
+not the cause of it. Could you run this test against kernel builds before
+this commit. Does this test cause this to trigger on older versions of the
+kernel?
+
+-- Steve
