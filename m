@@ -1,112 +1,111 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8856F867E20
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 18:21:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F79867E31
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 18:23:11 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=VZ3z/tnf;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=ju41FPsq;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tk6qG2PZZz3vg9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 04:21:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tk6rs54LTz3vYb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 04:23:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=VZ3z/tnf;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=ju41FPsq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2612::601; helo=eur05-am6-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on20601.outbound.protection.outlook.com [IPv6:2a01:111:f403:2612::601])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2612::600; helo=eur05-am6-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on20600.outbound.protection.outlook.com [IPv6:2a01:111:f403:2612::600])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tk6pY5RPjz30YR
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 04:21:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tk6r75Lm0z2xPd
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 04:22:31 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Nqf/dc6XYPzG5qnovIL561zxXwoxyHj+BXAWC3gPkXKCqkJs7Q1pSvQEOHjtGpFevai6Xhb4m8OFC7nxwOuGi+j3yWP/QBDnltsG6kJIvcltNOf4+0D0x4y9xReUfXzDpAjec0qT+5LCahiKC6SBlGfyTJYuIVOw0RwOTN13oMPKzX5ujSDFeMdILnoY0kduW+Gx8xBLwOSp7NKtoS8JT24U/AkFhUdVh0/XyKeFGVn+VctY6w3a12zYwp7rLln5oehJknXO2slM++W1CRJLxsd1fkEhQDdJ5o4mLw7uhiA9e/BnoVAHJ7NM3vFYLaHjs76IIBr5ip3BYHU9rVVkkw==
+ b=YmN1PzcyKxjmVqoSagKGby86YmYheDPVLAqYo+YOyKwUDwkrmQL3qsgbp7IMgBnNrpogTwg92JY4FV8xMCiBcv01mfz62gc7h0gjFMuTjrrNRiL/U2mP123kwfzSQdrlnF/HaqKqDjBm7HxtliC8+sA/JrY/t1vAO7pdkhzJ8fNa9z2gG8CrOi8n3y/EvtqaRNolp58vaikO2ptJETENdhJvPSTq4c+CkZXAYFBMf9+mhj3tByQMnxShf8L97PC3sSwZKX4sLWdRJTNYKrZb6A12qhV5gzECzwcIVESvK5KvOElHW7jPutwMvqz1HxJZCsUoCrReu2prE0sXkxPxGw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WBxHNZuKo1Y2iV2CuKr4O2uc6J5H171VqLwqHaS1cro=;
- b=DHkWbFj5R+r9HbEKeSWHS150RtA2lumGxXgpup1jPrsnZNBvwzilhKSGS8Aqa0xai6Ej/nxMZn6lzPwkkV8Ysl6+rP6vEkqhelrGh/K65Tc3CubGupgv0lmt9TGQ+6LaJNE6v4DtSz7sEeSWwohoDhRQ3BSKr7xwSYeKpcqy5kKrBP9nP1fE+JOCTu4WNuCGbsSlkqGwflacqvtl6EkIQnwRZFf62Uv+Uqtxdm4fC7vC2jxz/QoSTHQMTCXXxZfbFEJqw63PqEi0xKP8RYiD4LBp7RdgwKXiNNvd624vWXZysTIfcIJl7EPqTOpBr7riRVFwvcWJ/tWtcz9pCjyPOg==
+ bh=YfDX1Cbt8721jRgx5yD3L/XZ3IW87b0Rj5sOby8pE1A=;
+ b=mZTy8CumcQu/2MyG79kKaiGlIUWiNaszF8eTofuwTDtvkLbbVNRiPvF5rsnTiBZsCcWqK23Cgi6dCMRxjipyf4jIDj5NWdPRPS7ns7wGw5eGzYzFOvcIygTHXG2hCIJAfPp8PcT4xGgiZPv70bzwC1IK+QoSiBoJyO6mJDEmkNvXru/rohFdyuJlVRcgxFMatcBYWy/jO66OQNCOshZMD3MhSf8NJw/vJpNJYUp0F5UAycirx+HOAGPsZbT+nMsbauiJvSghiqvrz8iA/X2OL1wHQwN0UgeRT0FiQZFGt14+B1t8wHwg1oWbz3iEFBtG5EG6Wq8RKuYM7GuBGfi25A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WBxHNZuKo1Y2iV2CuKr4O2uc6J5H171VqLwqHaS1cro=;
- b=VZ3z/tnfGughzppcodSHrLSnfVjmVZuqHasVHFp+nUq9cuNRpoNGfuV7rzMX515/WUWdrtsCDb2JWGhk+EU/YnZwFlX3IglMLorJ4CVbzBkgwSvZBUPrnME8iMFl+a6GoXTE5AXZk45RwEPfQQrXUOAKn7B7UWiPxaVq0WiEF6c=
+ bh=YfDX1Cbt8721jRgx5yD3L/XZ3IW87b0Rj5sOby8pE1A=;
+ b=ju41FPsqxiq9MrbjXLjaa+Lab4ggn72AbaL7VPhAV1nw6UxOz1UIptE/Z3Ul0i7/8rR1z3krfFb88x4zgQh1tL9dqf1HmznMco5/VyXrTiIYNMbGObtmV8rwLRC1hIQOu0LcIxZQAGqDQNAJyglLDZue5Q3nToS4sxVv2lJxUq8=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
  by PA4PR04MB8032.eurprd04.prod.outlook.com (2603:10a6:102:ba::22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.34; Mon, 26 Feb
- 2024 17:20:51 +0000
+ 2024 17:22:11 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9af4:87e:d74:94aa]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9af4:87e:d74:94aa%7]) with mapi id 15.20.7316.032; Mon, 26 Feb 2024
- 17:20:50 +0000
-Date: Mon, 26 Feb 2024 12:20:41 -0500
+ 17:22:11 +0000
+Date: Mon, 26 Feb 2024 12:21:59 -0500
 From: Frank Li <Frank.li@nxp.com>
 To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: Re: [PATCH v8 09/10] PCI: qcom-ep: Use the generic
- dw_pcie_ep_linkdown() API to handle LINK_DOWN event
-Message-ID: <ZdzIada1H95ike0t@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH v8 10/10] PCI: dwc: ep: Add Kernel-doc comments for APIs
+Message-ID: <ZdzIt8aqogaoW22Y@lizhi-Precision-Tower-5810>
 References: <20240224-pci-dbi-rework-v8-0-64c7fd0cfe64@linaro.org>
- <20240224-pci-dbi-rework-v8-9-64c7fd0cfe64@linaro.org>
+ <20240224-pci-dbi-rework-v8-10-64c7fd0cfe64@linaro.org>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240224-pci-dbi-rework-v8-9-64c7fd0cfe64@linaro.org>
-X-ClientProxiedBy: SN7PR18CA0024.namprd18.prod.outlook.com
- (2603:10b6:806:f3::33) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <20240224-pci-dbi-rework-v8-10-64c7fd0cfe64@linaro.org>
+X-ClientProxiedBy: BYAPR21CA0004.namprd21.prod.outlook.com
+ (2603:10b6:a03:114::14) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA4PR04MB8032:EE_
-X-MS-Office365-Filtering-Correlation-Id: d231346e-b3db-442b-2a29-08dc36ef47a7
+X-MS-Office365-Filtering-Correlation-Id: afb1a931-4667-40e2-d5fc-08dc36ef77de
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	d5cynMEtaZ8M4A9H4At3WKsqLgsu7Kgb0+oMF+d7MA4g2fmugaK7J/46l20jEf3ewtVvvm5JfsleTDq0x7J65uWxYdUxw3JM9WpCM4yRQfcJ8hkCfhFJ4rO0ffz48XNvUAPpaJtS/dsYi5cdb1wt28bZwvxjQgqwiJ6R2AIBtvnPnQ21JxMVRE1Dx9d66sAnXAtp6FgLuyzzWTGT1sThrDelKIfnHovtXMjxD4h17223LNEW9Su7H/F9qNkLHRGNmhJYg8a9vmdYy3RMXolxMfhI4/wpPZdA0PzuZbMxvkdUyRTgyyDH69ghXeQiQYBEgBkl5URK7Q7iRThvWE0yI04PfX/zLZ3FCNkbdUj7PefOPWM8bnbKsMfB6G3DVOYuAWCEj0rGuR1k03lNKXAsD0CZELzUI7jQ+q1GvIOtMv07lIOLSKgcCudHlY+D1gSi9NpsH053Fd1pEc3G0Z311jC7M77ZJI4DbxVxCWqKXX9NsUFMWxJSg7Rsj7wW/HRmbJViJUBEuAbm26ty7qBogL9VbzvR1OJG8y5vhna5UPB+JJfCk7wx5sHodiNh0AtoyZLF9lYaiWzvGQDPy7Q1IGPFatEckvZMEgPsXmoJPynoS2UrbDPjJc99Kg+vySmYFQ25RH/pNNQdVcQnxVzAgn/YGYAGpVNEJtFDPrxy17jXEQf/4gaab5qAaOTQJ5XoUDx08VmJv4h3SP9qenJxrjdwjzMS9dblOzCzOQEgNNE=
+X-Microsoft-Antispam-Message-Info: 	r1B56Cm/QPCi/CAMl4C3WTfEJIbcnE9szgjFw1iCgXR+CPBNMcj6h83GEaLrtIy5dbD4poJdikOBkF4AqpqWOfptpUpgc2TZNiRAvP6N5HsNM1qzECvElL/05vlGP+IHSqayZuMj7LHEUcMgURO/82DdnwzFkoJ8o6+9w+kmPJFzPFZryih+Sd9p7pWBWMLFjFRkXNal0EgTea3gzN8zXvjONprotVQJ3McSqLi4VjpMDVnOX1/9PM+hUG9Jf+eM9BiuWgOmPfumI1oSLA7cM5UTJ3rZOPLv0VbL3FsCtt1sptZ4qoeUAOtY4v23ih4sn+qda6AreCMG/PJG4+Oo9nw2ugcG+4hnsVSitSLiuF/pk9BjGqa+yNocRXGiSDaQHvNbtGg2jazFgzUxiSF12NAkPsga8qI7cNlATgFh1TwbQb+2QDchJXrdkyl9SQ1pkvtuec9GJYMFZM/mq8tPNATuyasrvvUaOh1/XSnbSYfdV569P4lSwULup1HldzrOxEftinU5ZwOFdl8cK+04ptVx6f7f24NiGn51xszBrk+0RxA4QnluRNDqV9dCIxxEcvKm1Z1p2fRIDvNqxOw59O14eAxVqqY2yfRUQBUHrWcRdRJokRnnqhTj+Zu441yAj1KXlM+kegFbkkFj5Kmirfyu32NlnwkfhihZUFDxVy2vArAy0OPwGrYx2GNdE9LnXUXbnpEOGTlnRWGVAoBxjA==
 X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(38350700005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?huUkPVnpUyh0aM7Vpj2zyAhlYXP9oDGxLgnQakr5kwp6+PrtNJcZgr9X23pK?=
- =?us-ascii?Q?hVnA25mASHnuFlwCgKl6JSSwNEZ1d1yO0swFP4MkFnJLtzdPbphNU5e2PyAm?=
- =?us-ascii?Q?h+hDDV16wtTNLGHanPczqU48HCwpvr3d5Mg3zKEHRqLvmjLaJVHyIUa6VzTj?=
- =?us-ascii?Q?IIE1RqJd6Z2FbxoriEifwaKAaDcVh/8yhKRNjg7wr4zSxu4B5NCbGUH9b/m3?=
- =?us-ascii?Q?1OPkFypFd1hM8XAqrmE/65b0XJm05iz8SQoyJieJBxuPdnwvo+Id9fd3nl1Y?=
- =?us-ascii?Q?q7mx0SHLmnyW2l/UXIhfSOUmkXUxVI0yS7ydFtLwPEJzdJDJr4LBwK/LYfLg?=
- =?us-ascii?Q?0THzYQhdr+WTJh4+NO8Hva0x76dJCjrkPGtT39Swufnne6bgv8ir4VflqIOj?=
- =?us-ascii?Q?3e+Wah4YZoolwqk+OAnQSD3AHAbJ3NP6exM01Geg5QgKZFp/pibIrQHlMf0d?=
- =?us-ascii?Q?6ogPbEcH3MSo8gIuSAblZ9cQg5AeE6NEe1cCIXHqECVjcpZmPq+bz6eBN67z?=
- =?us-ascii?Q?XhP5Ob86xDYh4L32olVwaFGydJWzBqjnwsvR5mIGp0v7NB1dpPyOrmS+RdDa?=
- =?us-ascii?Q?KJfmIZ5EL4gVwH0SNQ5rs2YDh84dmOmWpmIjpW8SW2/h60fP5VWLyH52EES7?=
- =?us-ascii?Q?xUSrqgDKCe/u00J7pzbcBksepMNmcu8HkDEMiuC+ohw5+oqWveOcCrmAN4tQ?=
- =?us-ascii?Q?/HknUCE2p+KGgMpw1dDQAb5XbEywwLT+yCtaZG7U/VxYAS1fbLL6J/P9jdz0?=
- =?us-ascii?Q?codhTa9biX2PQGs+7i3wl94pWo5e8IvioX/wH1RNstFzCE5IFQPcmrkpPy1O?=
- =?us-ascii?Q?avFmBFGCUdmn011Z+/pJaHFViMe6JQltyk4j+kdSJRsCyyaQ7yLyLHPdoq6z?=
- =?us-ascii?Q?a3xaZ104PuGgNXN8/ccS3+Nnxi0babGJHqkE5j8cqudraGT57HM2BQ3MZ0GI?=
- =?us-ascii?Q?kPT+4LfRtLJbjXptcYUs4TxFjRVrUmngjnajzJEirGJYnCTE++Wk1JULwyLR?=
- =?us-ascii?Q?TwK6BLf/a/5KKPRscvDT6kzidXm4PtifEIcJworBd8CU4Mro6nfc0bUY9v4m?=
- =?us-ascii?Q?r2JOHMq4uxnIehng/ptQJotqzb0H7rXKpGT2j8cLTPFFGvA/72bYVqDnc+9Q?=
- =?us-ascii?Q?y7uLOQB1A3efwQWhNbRni2JvfSXo4HYqwsVDnLdXBe19kqAJID90ZV53Pwy1?=
- =?us-ascii?Q?40h4BEhLwowiJb2Uz0nDNYHUJhpGbZNbBGt+m/cFJBCwIImOQAF+onMG7O2G?=
- =?us-ascii?Q?Ctm1um6iIi3HIEb87CCF6BbXR1AEY4UcNxi+F/8a4caQiXPCQh593AJox2E+?=
- =?us-ascii?Q?UzyapEuOd6Wxsf5c3uLXt/OlARWh5BamX9x4PQlA9K1+UQrgAifwTWA2GCgq?=
- =?us-ascii?Q?B6UnL14AM2v7s9hNrnzzpfOw/97oVRJ4GHkzaj/y2qvQE9ZZ4mkkopTDaNyf?=
- =?us-ascii?Q?7Z00WNmLQLpJQJajl2F21gwI2waxzfrBYzD71yc70CSt9AG9TahFvUpk0EO4?=
- =?us-ascii?Q?ycbdqbePzWz+RDpf3rYMOEViStEJjbOoQegDkzRblO0mC7tvCeZAmutqhpV4?=
- =?us-ascii?Q?jNayz6POCTBY252sc+vQzviT/YYU5NqzV6GtZtoh?=
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?4EkRx0h2QDVyJW0jk5xLsgvFnKdqQp1FW8bxoskEIAlSPCBRQJ9mH7V+BQ87?=
+ =?us-ascii?Q?e9i+j5Pnm910PbmxI4390yOzQOMRI9Ochj6x5Bn/PsSeyhLPDut83JolMHEg?=
+ =?us-ascii?Q?lj3EHHrp7zK7UWuqvZn2MecBqSwGUaIqA7p9FeeNuHQ0qNdAMMStiF6G40zr?=
+ =?us-ascii?Q?E3mJfJ4t89lJoWLAFNYLhDLROYwC6RItjnBN9kfX598TTpVDZWiTBTI/OObb?=
+ =?us-ascii?Q?PofLYXRTSP623n8WZvt/Ne9FB410c4DpgmxoeOGafQI/0mEdHJGCCkrS9uWI?=
+ =?us-ascii?Q?y+LCIH8q8Kx8T+tuozZ1kfWjoBnvdb9dLkJrhWyNxSXqEiBTFJX1jcufRsEI?=
+ =?us-ascii?Q?hvERSLfD0eZK/Es3saVkvyGJwhw0JNL9j/oLy/rbvGc4gc8mSAqu9MoP0tkh?=
+ =?us-ascii?Q?JC9Sla+tLIBV8n9wUqC7j+UF8jqxzYelHc2GPr5YNDX8oYJHtnvwfohopW4z?=
+ =?us-ascii?Q?EZKM8Ba+DEln/AOrPSGac4QeQazg/06KNuK0GN1YbNdMRlck2tGjLoybEOe5?=
+ =?us-ascii?Q?2wd1v2gvktgJ9vQuxgOoAYN+1gl3hTiKhv6KjD9nyZnYu0wpL8aDrLKaqh81?=
+ =?us-ascii?Q?aF1p7t8fv0tQfr5pmmvFBFAZ1NangO7MJ0jqlzhfYL4yIG/g4kD+wg4EsjNX?=
+ =?us-ascii?Q?A4zx8/lttovgHvDF2Uhj3LSJNwEW3MNUWfeUItb2dF/owVwfYrIKKcfQUhWJ?=
+ =?us-ascii?Q?lbayPb3+ThAChQmHgDXk6eSApDxnJsizb8QB1oVe3jSZx1nigFz95r02/dQB?=
+ =?us-ascii?Q?S4nQcnvLHix+5DKfM2GsjhOZEkH451N2M8qiqKuXq8PL6Fpy8MIBzAoyQXX7?=
+ =?us-ascii?Q?K5DONb49hVz3NZMe86WFxYFt5S6D0gmB1mZrM6YPM0kSHj5JK5a+NNUErqQ5?=
+ =?us-ascii?Q?loZFdPEqyBJNt3VkhdsFV1X5wQostZnTA9kjq5cwVR0+yeL5wVf4r3V4xn7n?=
+ =?us-ascii?Q?NXVZ0PT+ombUg9L81Xs/RabLQHsGqXbN1x+P3VKQ/AlX5YIulA/jaXmR83Gk?=
+ =?us-ascii?Q?o+yOw4bYU2hWpnyvbX/iHHWHTRbsdnsIlVxe3L9KrSiKNAGvZAMVE9VlvilA?=
+ =?us-ascii?Q?O+fVkdsQCTX7kyfNLZVn0TRYaBxqxn4jApeMf9zYLJN39xgD7GwMu1SoYRQp?=
+ =?us-ascii?Q?NnL9dbhjL5H3Br+OfNN63V1phv5s4zg9FKUjyXF66C9DnFY4u5geg50R3gDw?=
+ =?us-ascii?Q?St5vOJTq/ZaJ/YiyS7sKCCdtzR9b4TxOBVsD9lIL3ldh0KgMGchNTwCeFw4v?=
+ =?us-ascii?Q?gVO0H8drMMp8+ps06ESjoy5nPX69QRn4DAa6NYBbN4lX6zcJED6aUkt3pipQ?=
+ =?us-ascii?Q?vn5KdUG9sPZqekw+hXVN0Y+CP+PYKEqnVJTWmhBnd3u9MMO2DtRux02ywubo?=
+ =?us-ascii?Q?pIKp1JrlYPNYgDU/Vm3vmkV1hUPOAuq7h5Ujn898x/X3mjKFN/mOUAT39Soq?=
+ =?us-ascii?Q?y8LceudKH4pklf1BO+hNw4hBLrYdNPP2saxPYDhVngOscQsLKWLcM9+sk4rQ?=
+ =?us-ascii?Q?1sMsjEULxssBX0YvwABdNmEGDF2XucCtH9g/uepuNTRgfx4jZGDX1qtCkkGW?=
+ =?us-ascii?Q?qO/hOTbl1UyWGygbMi+a2ZLDlL2ZkV/pwxbvQ8Ej?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d231346e-b3db-442b-2a29-08dc36ef47a7
+X-MS-Exchange-CrossTenant-Network-Message-Id: afb1a931-4667-40e2-d5fc-08dc36ef77de
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2024 17:20:50.9066
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2024 17:22:11.8313
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5qpDnloZGEdT1Wvh/qeTeurLfC/mYowsPCz603QEEtOFGsmbZQgZKFm+rZtpqnHIk4xKO/0F/OTenSFpkrx0pw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: Uq6Y0kGoQtT0O+mgwXrnShRwO1YvxbFtD9DA/mx7+gxpARnHIfpr7gZvwfzUGXAlgqs6WpTroVEbrfZvT5GgZw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB8032
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -124,35 +123,204 @@ Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <v
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Feb 24, 2024 at 12:24:15PM +0530, Manivannan Sadhasivam wrote:
-> Now that the API is available, let's make use of it. It also handles the
-> reinitialization of DWC non-sticky registers in addition to sending the
-> notification to EPF drivers.
+On Sat, Feb 24, 2024 at 12:24:16PM +0530, Manivannan Sadhasivam wrote:
+> All of the APIs are missing the Kernel-doc comments. Hence, add them.
 > 
 > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+
 > ---
->  drivers/pci/controller/dwc/pcie-qcom-ep.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/pci/controller/dwc/pcie-designware-ep.c | 92 +++++++++++++++++++++++++
+>  1 file changed, 92 insertions(+)
 > 
-> diff --git a/drivers/pci/controller/dwc/pcie-qcom-ep.c b/drivers/pci/controller/dwc/pcie-qcom-ep.c
-> index 2fb8c15e7a91..4e45bc4bca45 100644
-> --- a/drivers/pci/controller/dwc/pcie-qcom-ep.c
-> +++ b/drivers/pci/controller/dwc/pcie-qcom-ep.c
-> @@ -640,7 +640,7 @@ static irqreturn_t qcom_pcie_ep_global_irq_thread(int irq, void *data)
->  	if (FIELD_GET(PARF_INT_ALL_LINK_DOWN, status)) {
->  		dev_dbg(dev, "Received Linkdown event\n");
->  		pcie_ep->link_status = QCOM_PCIE_EP_LINK_DOWN;
-> -		pci_epc_linkdown(pci->ep.epc);
-> +		dw_pcie_ep_linkdown(&pci->ep);
-
-Suppose pci_epc_linkdown() will call dw_pcie_ep_linkdown() ?
-why need direct call dw_pcie_ep_linkdown() here?
-
-Frank
-
->  	} else if (FIELD_GET(PARF_INT_ALL_BME, status)) {
->  		dev_dbg(dev, "Received BME event. Link is enabled!\n");
->  		pcie_ep->link_status = QCOM_PCIE_EP_LINK_ENABLED;
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> index fed4c2936c78..cdcb33a279db 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> @@ -14,6 +14,11 @@
+>  #include <linux/pci-epc.h>
+>  #include <linux/pci-epf.h>
+>  
+> +/**
+> + * dw_pcie_ep_init_notify - Notify EPF drivers about EPC initialization
+> + *			    complete
+> + * @ep: DWC EP device
+> + */
+>  void dw_pcie_ep_init_notify(struct dw_pcie_ep *ep)
+>  {
+>  	struct pci_epc *epc = ep->epc;
+> @@ -22,6 +27,14 @@ void dw_pcie_ep_init_notify(struct dw_pcie_ep *ep)
+>  }
+>  EXPORT_SYMBOL_GPL(dw_pcie_ep_init_notify);
+>  
+> +/**
+> + * dw_pcie_ep_get_func_from_ep - Get the struct dw_pcie_ep_func corresponding to
+> + *				 the endpoint function
+> + * @ep: DWC EP device
+> + * @func_no: Function number of the endpoint device
+> + *
+> + * Return: struct dw_pcie_ep_func if success, NULL otherwise.
+> + */
+>  struct dw_pcie_ep_func *
+>  dw_pcie_ep_get_func_from_ep(struct dw_pcie_ep *ep, u8 func_no)
+>  {
+> @@ -52,6 +65,11 @@ static void __dw_pcie_ep_reset_bar(struct dw_pcie *pci, u8 func_no,
+>  	dw_pcie_dbi_ro_wr_dis(pci);
+>  }
+>  
+> +/**
+> + * dw_pcie_ep_reset_bar - Reset endpoint BAR
+> + * @pci: DWC PCI device
+> + * @bar: BAR number of the endpoint
+> + */
+>  void dw_pcie_ep_reset_bar(struct dw_pcie *pci, enum pci_barno bar)
+>  {
+>  	u8 func_no, funcs;
+> @@ -431,6 +449,13 @@ static const struct pci_epc_ops epc_ops = {
+>  	.get_features		= dw_pcie_ep_get_features,
+>  };
+>  
+> +/**
+> + * dw_pcie_ep_raise_intx_irq - Raise INTx IRQ to the host
+> + * @ep: DWC EP device
+> + * @func_no: Function number of the endpoint
+> + *
+> + * Return: 0 if success, errono otherwise.
+> + */
+>  int dw_pcie_ep_raise_intx_irq(struct dw_pcie_ep *ep, u8 func_no)
+>  {
+>  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+> @@ -442,6 +467,14 @@ int dw_pcie_ep_raise_intx_irq(struct dw_pcie_ep *ep, u8 func_no)
+>  }
+>  EXPORT_SYMBOL_GPL(dw_pcie_ep_raise_intx_irq);
+>  
+> +/**
+> + * dw_pcie_ep_raise_msi_irq - Raise MSI IRQ to the host
+> + * @ep: DWC EP device
+> + * @func_no: Function number of the endpoint
+> + * @interrupt_num: Interrupt number to be raised
+> + *
+> + * Return: 0 if success, errono otherwise.
+> + */
+>  int dw_pcie_ep_raise_msi_irq(struct dw_pcie_ep *ep, u8 func_no,
+>  			     u8 interrupt_num)
+>  {
+> @@ -490,6 +523,15 @@ int dw_pcie_ep_raise_msi_irq(struct dw_pcie_ep *ep, u8 func_no,
+>  }
+>  EXPORT_SYMBOL_GPL(dw_pcie_ep_raise_msi_irq);
+>  
+> +/**
+> + * dw_pcie_ep_raise_msix_irq_doorbell - Raise MSIX to the host using Doorbell
+> + *					method
+> + * @ep: DWC EP device
+> + * @func_no: Function number of the endpoint device
+> + * @interrupt_num: Interrupt number to be raised
+> + *
+> + * Return: 0 if success, errno otherwise.
+> + */
+>  int dw_pcie_ep_raise_msix_irq_doorbell(struct dw_pcie_ep *ep, u8 func_no,
+>  				       u16 interrupt_num)
+>  {
+> @@ -509,6 +551,14 @@ int dw_pcie_ep_raise_msix_irq_doorbell(struct dw_pcie_ep *ep, u8 func_no,
+>  	return 0;
+>  }
+>  
+> +/**
+> + * dw_pcie_ep_raise_msix_irq - Raise MSIX to the host
+> + * @ep: DWC EP device
+> + * @func_no: Function number of the endpoint device
+> + * @interrupt_num: Interrupt number to be raised
+> + *
+> + * Return: 0 if success, errno otherwise.
+> + */
+>  int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
+>  			      u16 interrupt_num)
+>  {
+> @@ -556,6 +606,12 @@ int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
+>  	return 0;
+>  }
+>  
+> +/**
+> + * dw_pcie_ep_cleanup - Cleanup DWC EP resources
+> + * @ep: DWC EP device
+> + *
+> + * Cleans up the DWC EP specific resources like eDMA etc...
+> + */
+>  void dw_pcie_ep_cleanup(struct dw_pcie_ep *ep)
+>  {
+>  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+> @@ -564,6 +620,13 @@ void dw_pcie_ep_cleanup(struct dw_pcie_ep *ep)
+>  }
+>  EXPORT_SYMBOL_GPL(dw_pcie_ep_cleanup);
+>  
+> +/**
+> + * dw_pcie_ep_deinit - Deinitialize the endpoint device
+> + * @ep: DWC EP device
+> + *
+> + * Deinitialize the endpoint device. EPC device is not destroyed since that will
+> + * taken care by Devres.
+> + */
+>  void dw_pcie_ep_deinit(struct dw_pcie_ep *ep)
+>  {
+>  	struct pci_epc *epc = ep->epc;
+> @@ -635,6 +698,14 @@ static void dw_pcie_ep_init_non_sticky_registers(struct dw_pcie *pci)
+>  	dw_pcie_dbi_ro_wr_dis(pci);
+>  }
+>  
+> +/**
+> + * dw_pcie_ep_init_registers - Initialize DWC EP specific registers
+> + * @ep: DWC EP device
+> + *
+> + * Initialize the registers (CSRs) specific to DWC EP. This API should be called
+> + * only when the endpoint receives an active refclk (either from host or
+> + * generated locally).
+> + */
+>  int dw_pcie_ep_init_registers(struct dw_pcie_ep *ep)
+>  {
+>  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+> @@ -718,6 +789,10 @@ int dw_pcie_ep_init_registers(struct dw_pcie_ep *ep)
+>  }
+>  EXPORT_SYMBOL_GPL(dw_pcie_ep_init_registers);
+>  
+> +/**
+> + * dw_pcie_ep_linkup - Notify EPF drivers about link up event
+> + * @ep: DWC EP device
+> + */
+>  void dw_pcie_ep_linkup(struct dw_pcie_ep *ep)
+>  {
+>  	struct pci_epc *epc = ep->epc;
+> @@ -726,6 +801,14 @@ void dw_pcie_ep_linkup(struct dw_pcie_ep *ep)
+>  }
+>  EXPORT_SYMBOL_GPL(dw_pcie_ep_linkup);
+>  
+> +/**
+> + * dw_pcie_ep_linkdown - Notify EPF drivers about link down event
+> + * @ep: DWC EP device
+> + *
+> + * Non-sticky registers are also initialized before sending the notification to
+> + * the EPF drivers. This is needed since the registers need to be initialized
+> + * before the link comes back again.
+> + */
+>  void dw_pcie_ep_linkdown(struct dw_pcie_ep *ep)
+>  {
+>  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+> @@ -743,6 +826,15 @@ void dw_pcie_ep_linkdown(struct dw_pcie_ep *ep)
+>  }
+>  EXPORT_SYMBOL_GPL(dw_pcie_ep_linkdown);
+>  
+> +/**
+> + * dw_pcie_ep_init - Initialize the endpoint device
+> + * @ep: DWC EP device
+> + *
+> + * Initialize the endpoint device. Allocate resources and create the EPC
+> + * device with the endpoint framework.
+> + *
+> + * Return: 0 if success, errno otherwise.
+> + */
+>  int dw_pcie_ep_init(struct dw_pcie_ep *ep)
+>  {
+>  	int ret;
 > 
 > -- 
 > 2.25.1
