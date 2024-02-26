@@ -2,67 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B98A6866EC9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 10:39:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAC22866ED1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 10:40:17 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jDW92R9V;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=mkZOUH7i;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TjwYx3y2Bz3dTG
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 20:39:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TjwZl4gzfz3vXQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 20:40:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jDW92R9V;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=mkZOUH7i;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::534; helo=mail-pg1-x534.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52f; helo=mail-pg1-x52f.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TjwY93NPCz2xPd
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 20:38:51 +1100 (AEDT)
-Received: by mail-pg1-x534.google.com with SMTP id 41be03b00d2f7-5cfd95130c6so1569245a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 01:38:51 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TjwYD1x79z2xPd
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 20:38:56 +1100 (AEDT)
+Received: by mail-pg1-x52f.google.com with SMTP id 41be03b00d2f7-5dc949f998fso1889231a12.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 01:38:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708940327; x=1709545127; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=E3G/NyHHNl3Usb0b+rbhE6Rkccfmxj4qh+DyqPiks1E=;
-        b=jDW92R9V/XtgdC7qM2d77TXYLa7qn+Wlq6mVywqxAyIhYaeUyoWty/hMxvYlJT0a1O
-         xMzxcVJNj8QLElTIQubAwh3NPcoMvJHtlNcQJJMCPR+bjx62ztK/dhqFU+ZQw2s6lDa8
-         zr738/8kNeDp1LRKCd//6ZXMKCtVx7OONWXqvaGwn2if4hOWO3k2EN5Xc7WXxr41MG8t
-         rCxcFHj2TGzjcXPHDFDVCvdkpMSxJ3dL15hgD1cviLR2FSYd0kTMbLltRXUjOt+Z0S04
-         ve9C8ZLOn1s6rblSBgH9uBhGdyV8GcPc5daf6XFXt1fyIsK7DtdnKp6xtW9WngEK/XEI
-         wNTg==
+        d=gmail.com; s=20230601; t=1708940333; x=1709545133; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6vnjHCFtfaL9mXwWGPHpDHfEXciN5WUW1+wFbKGrPaI=;
+        b=mkZOUH7iht9PZy8P/meemUblPGXlZmnva8NsSR+3uBoAt0WF+YbfUD/UZL/QTF0vDa
+         sE/Qz4/DUIwSkLIHEFxrIwQXy29RbVPgwjcrzKN7pb4fdj4ppEGTu49ThM92XFz87dva
+         sBrgsKw2wmxGvWUUtvw+Rg5cqrfmr2D02DBYagm4k1hdSV8M4wvnEFOx78c/9S/xiaHN
+         b2Rw76R+GpeWmgEL1+Jmwxeapxq+7SyLMpeBDYLbb8OwqPBwmmK90WPJvc/l+50KEA7T
+         VT85BUKPpBeeF6K7g5aI+u/161MHBRY2NDtlCn0IA6JXeiAqZABF+DoQBolDN3gmpgdL
+         N+kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708940327; x=1709545127;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E3G/NyHHNl3Usb0b+rbhE6Rkccfmxj4qh+DyqPiks1E=;
-        b=uTpm+6WeQK+a5dS6Th2tiGL4hK5mLDSgXgWG1+vz7ToFqSczGrGv5B6yqbmvPS3lsg
-         VP+T+Ecxpj1Qy9evP0YXlM6nlnF5jZbLfs6L0YTReT0tSCrnqydivxAy2QaGP/3MLG0j
-         eOJNTiT8GSkruOCmhwZBV/bz+pWvPyMZvDe740y2KgmjgXQyQ3wORoDYtcZD9m5eiSCc
-         TWlywcJKbfUE++NjPYZdkSDoc3gPjf54cYvk+H3lsB3aNqTVqqWSbhF56GtvHJl8LJ08
-         cl3g7O+6Ix0jiTio7N1XuZVNLBeFJkiOcgeUzVV5roDA7OsIojM/SEIs4ax+jC/zWhV4
-         W0Uw==
-X-Forwarded-Encrypted: i=1; AJvYcCXfG5zCmWAzFDP9BqxDhyj2LVlWmcYSkDUwAKq7Keyp4Yx3IRsC+wZENWX0/UuIsY328/SElb6cROAMcLmeRJdlFgbcg0oZOTViVAXlgQ==
-X-Gm-Message-State: AOJu0YxdSdhxgQH9ctgNGBEdwhdU9amxTNuFTJtIeDxm0gwMRM99iVXl
-	qppxxn8iGUAim5iKlFzv4b4c6KFntSuYtT3j1/m9XARb/AU5voiO
-X-Google-Smtp-Source: AGHT+IGMwqjc4MYINbePOp82r8OWn0Ybag/WhoYmigaBPWKyvko3+xObzrZwGy7/pnjt3jaEplP3kA==
-X-Received: by 2002:a17:90b:4f47:b0:29a:cbde:7607 with SMTP id pj7-20020a17090b4f4700b0029acbde7607mr950982pjb.21.1708940326863;
-        Mon, 26 Feb 2024 01:38:46 -0800 (PST)
+        d=1e100.net; s=20230601; t=1708940333; x=1709545133;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6vnjHCFtfaL9mXwWGPHpDHfEXciN5WUW1+wFbKGrPaI=;
+        b=gZJOccQvt5/YrGifZ01PEYa6dIAofB+9PW7sm44RNTxUCQj1k98GmZ3u32ulKBaMGP
+         OrLJPlcybngWvqW648C1J01gbNCP/dM6O0qw+5VFv8Pd3jTejGQzdaceuzoeFyavebjl
+         jtHsnY/upB3l9fV2ES7C11wJM1iWOPNJtevgCkI2XpSFIE288hOY5Eyp44cIcpW2uh9N
+         OqjhzMdH0x3zHPhfnmW/IjusMdBj+QtM2y1qDdTm4EV0Q7hF4F6NPWpEvDn1x+gJPF0g
+         pKuPrcVnxOBmE35tBAjTM077F/sghR1W1Gv8QVaX+Jmt6z/YL3tT/zQajAa8eU/DL9qi
+         HRQA==
+X-Forwarded-Encrypted: i=1; AJvYcCULW1Q2O243CBebEwbmehTj5dfkNmUvzfeYST0ZxjSbpm5rBqvZWWMwgm/kQh+fcbE7XgXlPguMpZZEuRFeyAvvWHhBzbAq6d46NLFdCA==
+X-Gm-Message-State: AOJu0YyNGJpEeXGygryqUURRc9gqZ8aKfBeUAMBcKVc8zw58EOc6oBKw
+	54YxNX+AYhxVmNkHPrd9DoDGaAZpXXTabF0YgQ4qphuVSImeFcV/
+X-Google-Smtp-Source: AGHT+IG2EnUxjMz0a/WUt7Yj1hLPi5khQWrO2IMM+XfUlR+14mHZyrTHTnCdcYQxIaN+sjSzMymj9g==
+X-Received: by 2002:a17:90a:9913:b0:29a:11b6:a333 with SMTP id b19-20020a17090a991300b0029a11b6a333mr4192571pjp.15.1708940333437;
+        Mon, 26 Feb 2024 01:38:53 -0800 (PST)
 Received: from wheely.local0.net (220-235-194-103.tpgi.com.au. [220.235.194.103])
-        by smtp.gmail.com with ESMTPSA id pa3-20020a17090b264300b0029929ec25fesm6036782pjb.27.2024.02.26.01.38.41
+        by smtp.gmail.com with ESMTPSA id pa3-20020a17090b264300b0029929ec25fesm6036782pjb.27.2024.02.26.01.38.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Feb 2024 01:38:46 -0800 (PST)
+        Mon, 26 Feb 2024 01:38:53 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Thomas Huth <thuth@redhat.com>
-Subject: [kvm-unit-tests PATCH 0/7] more migration enhancements and tests
-Date: Mon, 26 Feb 2024 19:38:25 +1000
-Message-ID: <20240226093832.1468383-1-npiggin@gmail.com>
+Subject: [kvm-unit-tests PATCH 1/7] arch-run: Keep infifo open
+Date: Mon, 26 Feb 2024 19:38:26 +1000
+Message-ID: <20240226093832.1468383-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20240226093832.1468383-1-npiggin@gmail.com>
+References: <20240226093832.1468383-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -80,57 +83,59 @@ Cc: Laurent Vivier <lvivier@redhat.com>, linux-s390@vger.kernel.org, Nico Boehr 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This series applies on top of the multi-migration patches and just
-has assorted things I've been collecting.
+The infifo fifo that is used to send characters to QEMU console is
+only able to receive one character before the cat process exits.
+Supporting interactions between test and harness involving multiple
+characters requires the fifo to remain open.
 
-- New migrate_skip() command that tidies up the wart of using
-  migrate_once() to skip migration.
-- New "continuous migration" mode where the harness just
-  migrates the test contually while it is running.
-- Put some migration tests in gitlab CI for powerpc and s390.
-- Add a test case that can reproduce the QEMU TCG dirty bitmap
-  migration bug.
+This also allows us to let the cat out of the bag, simplifying the
+input pipeline.
 
-Nicholas Piggin (7):
-  arch-run: Keep infifo open
-  migration: Add a migrate_skip command
-  (arm|s390): Use migrate_skip in test cases
-  powerpc: add asm/time.h header with delay and get_clock_us/ms
-  arch-run: Add a "continuous" migration option for tests
-  gitlab-ci: Run migration selftest on s390x and powerpc
-  common: add memory dirtying vs migration test
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ scripts/arch-run.bash | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
- .gitlab-ci.yml              |  18 ++++---
- arm/gic.c                   |  21 ++++----
- common/memory-verify.c      |  48 +++++++++++++++++
- common/selftest-migration.c |  26 ++++++---
- lib/migrate.c               |  37 ++++++++++++-
- lib/migrate.h               |   5 ++
- lib/powerpc/asm/processor.h |  21 --------
- lib/powerpc/asm/time.h      |  30 +++++++++++
- lib/powerpc/processor.c     |  11 ++++
- lib/powerpc/smp.c           |   1 +
- lib/ppc64/asm/time.h        |   1 +
- powerpc/Makefile.common     |   1 +
- powerpc/memory-verify.c     |   1 +
- powerpc/spapr_vpa.c         |   1 +
- powerpc/sprs.c              |   1 +
- powerpc/tm.c                |   1 +
- powerpc/unittests.cfg       |  13 +++++
- s390x/Makefile              |   1 +
- s390x/memory-verify.c       |   1 +
- s390x/migration-cmm.c       |   8 +--
- s390x/migration-skey.c      |   4 +-
- s390x/migration.c           |   1 +
- s390x/unittests.cfg         |  11 ++++
- scripts/arch-run.bash       | 104 +++++++++++++++++++++++++++++-------
- 24 files changed, 299 insertions(+), 68 deletions(-)
- create mode 100644 common/memory-verify.c
- create mode 100644 lib/powerpc/asm/time.h
- create mode 100644 lib/ppc64/asm/time.h
- create mode 120000 powerpc/memory-verify.c
- create mode 120000 s390x/memory-verify.c
-
+diff --git a/scripts/arch-run.bash b/scripts/arch-run.bash
+index 6daef3218..e5b36a07b 100644
+--- a/scripts/arch-run.bash
++++ b/scripts/arch-run.bash
+@@ -158,6 +158,11 @@ run_migration ()
+ 	mkfifo ${src_outfifo}
+ 	mkfifo ${dst_outfifo}
+ 
++	# Holding both ends of the input fifo open prevents opens from
++	# blocking and readers getting EOF when a writer closes it.
++	mkfifo ${dst_infifo}
++	exec {dst_infifo_fd}<>${dst_infifo}
++
+ 	eval "$migcmdline" \
+ 		-chardev socket,id=mon,path=${src_qmp},server=on,wait=off \
+ 		-mon chardev=mon,mode=control > ${src_outfifo} &
+@@ -191,14 +196,10 @@ run_migration ()
+ 
+ do_migration ()
+ {
+-	# We have to use cat to open the named FIFO, because named FIFO's,
+-	# unlike pipes, will block on open() until the other end is also
+-	# opened, and that totally breaks QEMU...
+-	mkfifo ${dst_infifo}
+ 	eval "$migcmdline" \
+ 		-chardev socket,id=mon,path=${dst_qmp},server=on,wait=off \
+ 		-mon chardev=mon,mode=control -incoming unix:${dst_incoming} \
+-		< <(cat ${dst_infifo}) > ${dst_outfifo} &
++		< ${dst_infifo} > ${dst_outfifo} &
+ 	incoming_pid=$!
+ 	cat ${dst_outfifo} | tee ${dst_out} | filter_quiet_msgs &
+ 
+@@ -245,7 +246,6 @@ do_migration ()
+ 
+ 	# keypress to dst so getchar completes and test continues
+ 	echo > ${dst_infifo}
+-	rm ${dst_infifo}
+ 
+ 	# Ensure the incoming socket is removed, ready for next destination
+ 	if [ -S ${dst_incoming} ] ; then
 -- 
 2.42.0
 
