@@ -1,54 +1,104 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2440866D4C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 09:57:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0922866CB3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 09:44:15 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QiiD84JD;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TjvdP3xK3z3wVl
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 19:57:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TjvL54G8bz3vYy
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 19:44:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QiiD84JD;
+	dkim-atps=neutral
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TjvJY0BQCz3bYx
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 19:42:53 +1100 (AEDT)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4TjvJS2rFxz4wcQ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 19:42:48 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4TjvJS2lzzz4wcT; Mon, 26 Feb 2024 19:42:48 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QiiD84JD;
+	dkim-atps=neutral
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TjvY575Swz3cxn
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 19:53:45 +1100 (AEDT)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 5D8D9201101;
-	Mon, 26 Feb 2024 09:44:35 +0100 (CET)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id EABF42010FC;
-	Mon, 26 Feb 2024 09:44:34 +0100 (CET)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 8C7D1183AC0B;
-	Mon, 26 Feb 2024 16:44:32 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: hverkuil@xs4all.nl,
-	sakari.ailus@iki.fi,
-	tfiga@chromium.org,
-	m.szyprowski@samsung.com,
-	mchehab@kernel.org,
-	linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v13 16/16] media: vim2m-audio: add virtual driver for audio memory to memory
-Date: Mon, 26 Feb 2024 16:28:29 +0800
-Message-Id: <1708936109-11587-17-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1708936109-11587-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1708936109-11587-1-git-send-email-shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4TjvJR6q8tz4wcQ
+	for <linuxppc-dev@ozlabs.org>; Mon, 26 Feb 2024 19:42:47 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41Q6Jmeu029897;
+	Mon, 26 Feb 2024 08:42:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=V85z6SA5lrBB+F4dDJi7eC4aWmHuXG+pklj+xcUQoTs=;
+ b=QiiD84JDXmSGjp1JnOwxFzS2RS7FWdixMo7JEl8da6BWDuM0PCBEHcE9YVH4CgBucX3a
+ A0A06Pyx6cdLTNf9EqvnJK36yzF4mz69MVdY/3i3WixTooVo4HGrHlf0KDsmZSL428RF
+ CszTu5+t4o3c67a2Tz9bI3+3X+vl4ejqgQXpox46qzmfhrrIND9E+mqB1jBD6FrXmYL3
+ k75aAfP0TVaP7gkjYtml7s8/WVO1AcYuZ31298i1yscGitg7JYYB9UCLkUQ8wPYgse2c
+ oNkU4llDHVQMRQZUfAsDGt5RSs2BVyJzategDCyIi/39qB4EpSjV7MxsNYr8IHHnH+0S Wg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wg0bh36yu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 Feb 2024 08:42:11 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41Q8g803018757;
+	Mon, 26 Feb 2024 08:42:08 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wg0bh36wd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 Feb 2024 08:42:08 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41Q5oE9t021278;
+	Mon, 26 Feb 2024 08:41:56 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wfusnquuk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 Feb 2024 08:41:56 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41Q8fpaB10027542
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 26 Feb 2024 08:41:53 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EDE102004B;
+	Mon, 26 Feb 2024 08:41:50 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 33DE120043;
+	Mon, 26 Feb 2024 08:41:43 +0000 (GMT)
+Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.43.72.108])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 26 Feb 2024 08:41:42 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH v17 0/6] powerpc/crash: Kernel handling of CPU and memory hotplug
+Date: Mon, 26 Feb 2024 14:11:11 +0530
+Message-ID: <20240226084118.16310-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: zDh3bF8zD4z940IRZkhoguT0l0FNpokO
+X-Proofpoint-GUID: AjP4Zxdjo1QhMC4WUUrw2JYBJEEgMoy8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-26_05,2024-02-23_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ priorityscore=1501 mlxscore=0 adultscore=0 clxscore=1015
+ lowpriorityscore=0 malwarescore=0 spamscore=0 mlxlogscore=999 phishscore=0
+ impostorscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311290000 definitions=main-2402260065
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,856 +110,243 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: David Hildenbrand <david@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, Mimi Zohar <zohar@linux.ibm.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Valentin Schneider <vschneid@redhat.com>, Baoquan He <bhe@redhat.com>, x86@kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Laurent Dufour <laurent.dufour@fr.ibm.com>, Dave Young <dyoung@redhat.com>, Vivek Goyal <vgoyal@redhat.com>, Naveen N Rao <naveen@kernel.org>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, Hari Bathini <hbathini@linux.ibm.com>, Oscar Salvador <osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, kexec@lists.infradead.org, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>, Akhil Raj <lf32.dev@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Audio memory to memory virtual driver use video memory to memory
-virtual driver vim2m.c as example. The main difference is
-device type is VFL_TYPE_AUDIO and device cap type is V4L2_CAP_AUDIO_M2M.
+Commit 247262756121 ("crash: add generic infrastructure for crash
+hotplug support") added a generic infrastructure that allows
+architectures to selectively update the kdump image component during CPU
+or memory add/remove events within the kernel itself.
 
-The device_run function is a dummy function, which is simply
-copy the data from input buffer to output buffer.
+This patch series adds crash hotplug handler for PowerPC and enable
+support to update the kdump image on CPU/Memory add/remove events.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- drivers/media/test-drivers/Kconfig       |  10 +
- drivers/media/test-drivers/Makefile      |   1 +
- drivers/media/test-drivers/vim2m-audio.c | 793 +++++++++++++++++++++++
- 3 files changed, 804 insertions(+)
- create mode 100644 drivers/media/test-drivers/vim2m-audio.c
+Among the 5 patches in this series, the first two patches make changes
+to the generic crash hotplug handler to assist PowerPC in adding support
+for this feature. The last three patches add support for this feature.
 
-diff --git a/drivers/media/test-drivers/Kconfig b/drivers/media/test-drivers/Kconfig
-index 5a5379524bde..b6b52a7ca042 100644
---- a/drivers/media/test-drivers/Kconfig
-+++ b/drivers/media/test-drivers/Kconfig
-@@ -16,6 +16,16 @@ config VIDEO_VIM2M
- 	  This is a virtual test device for the memory-to-memory driver
- 	  framework.
- 
-+config VIDEO_VIM2M_AUDIO
-+	tristate "Virtual Memory-to-Memory Driver For Audio"
-+	depends on VIDEO_DEV
-+	select VIDEOBUF2_VMALLOC
-+	select V4L2_MEM2MEM_DEV
-+	select MEDIA_CONTROLLER
-+	help
-+	  This is a virtual audio test device for the memory-to-memory driver
-+	  framework.
-+
- source "drivers/media/test-drivers/vicodec/Kconfig"
- source "drivers/media/test-drivers/vimc/Kconfig"
- source "drivers/media/test-drivers/vivid/Kconfig"
-diff --git a/drivers/media/test-drivers/Makefile b/drivers/media/test-drivers/Makefile
-index 740714a4584d..0c61c9ada3e1 100644
---- a/drivers/media/test-drivers/Makefile
-+++ b/drivers/media/test-drivers/Makefile
-@@ -10,6 +10,7 @@ obj-$(CONFIG_DVB_VIDTV) += vidtv/
- 
- obj-$(CONFIG_VIDEO_VICODEC) += vicodec/
- obj-$(CONFIG_VIDEO_VIM2M) += vim2m.o
-+obj-$(CONFIG_VIDEO_VIM2M_AUDIO) += vim2m-audio.o
- obj-$(CONFIG_VIDEO_VIMC) += vimc/
- obj-$(CONFIG_VIDEO_VIVID) += vivid/
- obj-$(CONFIG_VIDEO_VISL) += visl/
-diff --git a/drivers/media/test-drivers/vim2m-audio.c b/drivers/media/test-drivers/vim2m-audio.c
-new file mode 100644
-index 000000000000..6361df6320b3
---- /dev/null
-+++ b/drivers/media/test-drivers/vim2m-audio.c
-@@ -0,0 +1,793 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * A virtual v4l2-mem2mem example for audio device.
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/delay.h>
-+#include <linux/fs.h>
-+#include <linux/sched.h>
-+#include <linux/slab.h>
-+
-+#include <linux/platform_device.h>
-+#include <media/v4l2-mem2mem.h>
-+#include <media/v4l2-device.h>
-+#include <media/v4l2-ioctl.h>
-+#include <media/v4l2-ctrls.h>
-+#include <media/v4l2-event.h>
-+#include <media/videobuf2-vmalloc.h>
-+#include <sound/dmaengine_pcm.h>
-+
-+MODULE_DESCRIPTION("Virtual device for audio mem2mem testing");
-+MODULE_LICENSE("GPL");
-+
-+static unsigned int debug;
-+module_param(debug, uint, 0644);
-+MODULE_PARM_DESC(debug, "debug level");
-+
-+#define MEM2MEM_NAME "vim2m-audio"
-+
-+#define dprintk(dev, lvl, fmt, arg...) \
-+	v4l2_dbg(lvl, debug, &(dev)->v4l2_dev, "%s: " fmt, __func__, ## arg)
-+
-+#define SAMPLE_NUM 4096
-+
-+static void audm2m_dev_release(struct device *dev)
-+{}
-+
-+static struct platform_device audm2m_pdev = {
-+	.name		= MEM2MEM_NAME,
-+	.dev.release	= audm2m_dev_release,
-+};
-+
-+static u32 formats[] = {
-+	V4L2_AUDIO_FMT_S16_LE,
-+};
-+
-+#define NUM_FORMATS ARRAY_SIZE(formats)
-+
-+/* Per-queue, driver-specific private data */
-+struct audm2m_q_data {
-+	unsigned int		rate;
-+	unsigned int		channels;
-+	unsigned int		buffersize;
-+	unsigned int		sequence;
-+	u32			fourcc;
-+};
-+
-+enum {
-+	V4L2_M2M_SRC = 0,
-+	V4L2_M2M_DST = 1,
-+};
-+
-+static snd_pcm_format_t find_format(u32 fourcc)
-+{
-+	snd_pcm_format_t fmt;
-+	unsigned int k;
-+
-+	for (k = 0; k < NUM_FORMATS; k++) {
-+		if (formats[k] == fourcc)
-+			break;
-+	}
-+
-+	if (k == NUM_FORMATS)
-+		return 0;
-+
-+	fmt = v4l2_fourcc_to_audfmt(formats[k]);
-+
-+	return fmt;
-+}
-+
-+struct audm2m_dev {
-+	struct v4l2_device	v4l2_dev;
-+	struct video_device	vfd;
-+
-+	struct mutex		dev_mutex;
-+
-+	struct v4l2_m2m_dev	*m2m_dev;
-+#ifdef CONFIG_MEDIA_CONTROLLER
-+	struct media_device	mdev;
-+#endif
-+};
-+
-+struct audm2m_ctx {
-+	struct v4l2_fh		fh;
-+	struct v4l2_ctrl_handler	ctrl_handler;
-+	struct audm2m_dev	*dev;
-+
-+	struct mutex		vb_mutex;
-+
-+	/* Source and destination queue data */
-+	struct audm2m_q_data   q_data[2];
-+};
-+
-+static inline struct audm2m_ctx *file2ctx(struct file *file)
-+{
-+	return container_of(file->private_data, struct audm2m_ctx, fh);
-+}
-+
-+static struct audm2m_q_data *get_q_data(struct audm2m_ctx *ctx,
-+					enum v4l2_buf_type type)
-+{
-+	if (type == V4L2_BUF_TYPE_AUDIO_OUTPUT)
-+		return &ctx->q_data[V4L2_M2M_SRC];
-+	return &ctx->q_data[V4L2_M2M_DST];
-+}
-+
-+static const char *type_name(enum v4l2_buf_type type)
-+{
-+	if (type == V4L2_BUF_TYPE_AUDIO_OUTPUT)
-+		return "Output";
-+	return "Capture";
-+}
-+
-+/*
-+ * mem2mem callbacks
-+ */
-+
-+/*
-+ * device_run() - prepares and starts the device
-+ */
-+static void device_run(void *priv)
-+{
-+	struct audm2m_ctx *ctx = priv;
-+	struct audm2m_dev *audm2m_dev;
-+	struct vb2_v4l2_buffer *src_buf, *dst_buf;
-+	struct audm2m_q_data *q_data_src, *q_data_dst;
-+	int src_size, dst_size = 0;
-+	short *src_addr, *dst_addr;
-+	int i;
-+
-+	audm2m_dev = ctx->dev;
-+
-+	q_data_src = get_q_data(ctx, V4L2_BUF_TYPE_AUDIO_OUTPUT);
-+	if (!q_data_src)
-+		return;
-+
-+	q_data_dst = get_q_data(ctx, V4L2_BUF_TYPE_AUDIO_CAPTURE);
-+	if (!q_data_dst)
-+		return;
-+
-+	src_buf = v4l2_m2m_next_src_buf(ctx->fh.m2m_ctx);
-+	dst_buf = v4l2_m2m_next_dst_buf(ctx->fh.m2m_ctx);
-+	src_buf->sequence = q_data_src->sequence++;
-+	dst_buf->sequence = q_data_dst->sequence++;
-+	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, false);
-+
-+	/* Process the conversion */
-+	src_size = vb2_get_plane_payload(&src_buf->vb2_buf, 0);
-+
-+	src_addr = vb2_plane_vaddr(&src_buf->vb2_buf, 0);
-+	dst_addr = vb2_plane_vaddr(&dst_buf->vb2_buf, 0);
-+
-+	if (q_data_src->rate == q_data_dst->rate) {
-+		memcpy(dst_addr, src_addr, src_size);
-+		dst_size = src_size;
-+	} else if (q_data_src->rate == 2 * q_data_dst->rate) {
-+		/* 8k to 16k */
-+		for (i = 0; i < src_size / 2; i++) {
-+			*dst_addr++ = *src_addr++;
-+			src_addr++;
-+		}
-+
-+		dst_size = src_size / 2;
-+	} else if (q_data_src->rate * 2 == q_data_dst->rate) {
-+		/* 16k to 8k */
-+		for (i = 0; i < src_size / 2; i++) {
-+			*dst_addr++ = *src_addr;
-+			*dst_addr++ = *src_addr++;
-+		}
-+
-+		dst_size = src_size * 2;
-+	}
-+
-+	vb2_set_plane_payload(&dst_buf->vb2_buf, 0, dst_size);
-+
-+	src_buf = v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
-+	dst_buf = v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
-+
-+	v4l2_m2m_buf_done(src_buf, VB2_BUF_STATE_DONE);
-+	v4l2_m2m_buf_done(dst_buf, VB2_BUF_STATE_DONE);
-+	v4l2_m2m_job_finish(audm2m_dev->m2m_dev, ctx->fh.m2m_ctx);
-+}
-+
-+static int audm2m_querycap(struct file *file, void *priv,
-+			   struct v4l2_capability *cap)
-+{
-+	strscpy(cap->driver, MEM2MEM_NAME, sizeof(cap->driver));
-+	strscpy(cap->card, MEM2MEM_NAME, sizeof(cap->card));
-+
-+	return 0;
-+}
-+
-+static int enum_fmt(struct v4l2_fmtdesc *f)
-+{
-+	int i, num;
-+
-+	num = 0;
-+
-+	for (i = 0; i < NUM_FORMATS; ++i) {
-+		if (num == f->index)
-+			break;
-+		/*
-+		 * Correct type but haven't reached our index yet,
-+		 * just increment per-type index
-+		 */
-+		++num;
-+	}
-+
-+	if (i < NUM_FORMATS) {
-+		/* Format found */
-+		f->pixelformat = formats[i];
-+		return 0;
-+	}
-+
-+	/* Format not found */
-+	return -EINVAL;
-+}
-+
-+static int audm2m_enum_fmt_audio_cap(struct file *file, void *priv,
-+				     struct v4l2_fmtdesc *f)
-+{
-+	return enum_fmt(f);
-+}
-+
-+static int audm2m_enum_fmt_audio_out(struct file *file, void *priv,
-+				     struct v4l2_fmtdesc *f)
-+{
-+	return enum_fmt(f);
-+}
-+
-+static int audm2m_g_fmt(struct audm2m_ctx *ctx, struct v4l2_format *f)
-+{
-+	struct vb2_queue *vq;
-+	struct audm2m_q_data *q_data;
-+
-+	vq = v4l2_m2m_get_vq(ctx->fh.m2m_ctx, f->type);
-+	if (!vq)
-+		return -EINVAL;
-+
-+	q_data = get_q_data(ctx, f->type);
-+	if (!q_data)
-+		return -EINVAL;
-+
-+	f->fmt.audio.audioformat = q_data->fourcc;
-+	f->fmt.audio.channels	= q_data->channels;
-+	f->fmt.audio.buffersize = q_data->buffersize;
-+
-+	return 0;
-+}
-+
-+static int audm2m_g_fmt_audio_out(struct file *file, void *priv,
-+				  struct v4l2_format *f)
-+{
-+	return audm2m_g_fmt(file2ctx(file), f);
-+}
-+
-+static int audm2m_g_fmt_audio_cap(struct file *file, void *priv,
-+				  struct v4l2_format *f)
-+{
-+	return audm2m_g_fmt(file2ctx(file), f);
-+}
-+
-+static int audm2m_try_fmt(struct v4l2_format *f, snd_pcm_format_t fmt)
-+{
-+	f->fmt.audio.channels = 1;
-+	f->fmt.audio.buffersize = f->fmt.audio.channels *
-+				  snd_pcm_format_physical_width(fmt) *
-+				  SAMPLE_NUM;
-+	return 0;
-+}
-+
-+static int audm2m_try_fmt_audio_cap(struct file *file, void *priv,
-+				    struct v4l2_format *f)
-+{
-+	snd_pcm_format_t fmt;
-+
-+	fmt = find_format(f->fmt.audio.audioformat);
-+	if (!fmt) {
-+		f->fmt.audio.audioformat = formats[0];
-+		fmt = find_format(f->fmt.audio.audioformat);
-+	}
-+
-+	return audm2m_try_fmt(f, fmt);
-+}
-+
-+static int audm2m_try_fmt_audio_out(struct file *file, void *priv,
-+				    struct v4l2_format *f)
-+{
-+	snd_pcm_format_t fmt;
-+
-+	fmt = find_format(f->fmt.audio.audioformat);
-+	if (!fmt) {
-+		f->fmt.audio.audioformat = formats[0];
-+		fmt = find_format(f->fmt.audio.audioformat);
-+	}
-+
-+	return audm2m_try_fmt(f, fmt);
-+}
-+
-+static int audm2m_s_fmt(struct audm2m_ctx *ctx, struct v4l2_format *f)
-+{
-+	struct audm2m_q_data *q_data;
-+	struct vb2_queue *vq;
-+	snd_pcm_format_t fmt;
-+
-+	vq = v4l2_m2m_get_vq(ctx->fh.m2m_ctx, f->type);
-+	if (!vq)
-+		return -EINVAL;
-+
-+	q_data = get_q_data(ctx, f->type);
-+	if (!q_data)
-+		return -EINVAL;
-+
-+	if (vb2_is_busy(vq)) {
-+		v4l2_err(&ctx->dev->v4l2_dev, "%s queue busy\n", __func__);
-+		return -EBUSY;
-+	}
-+
-+	q_data->fourcc	= f->fmt.audio.audioformat;
-+	q_data->channels = f->fmt.audio.channels;
-+
-+	fmt = find_format(f->fmt.audio.audioformat);
-+	q_data->buffersize = q_data->channels *
-+			     snd_pcm_format_physical_width(fmt) *
-+			     SAMPLE_NUM;
-+
-+	dprintk(ctx->dev, 1,
-+		"Format for type %s: %d/%d, fmt: %c%c%c%c\n",
-+		type_name(f->type), q_data->rate,
-+		q_data->channels,
-+		(q_data->fourcc & 0xff),
-+		(q_data->fourcc >>  8) & 0xff,
-+		(q_data->fourcc >> 16) & 0xff,
-+		(q_data->fourcc >> 24) & 0xff);
-+
-+	return 0;
-+}
-+
-+static int audm2m_s_fmt_audio_cap(struct file *file, void *priv,
-+				  struct v4l2_format *f)
-+{
-+	int ret;
-+
-+	ret = audm2m_try_fmt_audio_cap(file, priv, f);
-+	if (ret)
-+		return ret;
-+
-+	return audm2m_s_fmt(file2ctx(file), f);
-+}
-+
-+static int audm2m_s_fmt_audio_out(struct file *file, void *priv,
-+				  struct v4l2_format *f)
-+{
-+	int ret;
-+
-+	ret = audm2m_try_fmt_audio_out(file, priv, f);
-+	if (ret)
-+		return ret;
-+
-+	return audm2m_s_fmt(file2ctx(file), f);
-+}
-+
-+static const struct v4l2_ioctl_ops audm2m_ioctl_ops = {
-+	.vidioc_querycap		= audm2m_querycap,
-+
-+	.vidioc_enum_fmt_audio_cap	= audm2m_enum_fmt_audio_cap,
-+	.vidioc_g_fmt_audio_cap		= audm2m_g_fmt_audio_cap,
-+	.vidioc_try_fmt_audio_cap	= audm2m_try_fmt_audio_cap,
-+	.vidioc_s_fmt_audio_cap		= audm2m_s_fmt_audio_cap,
-+
-+	.vidioc_enum_fmt_audio_out	= audm2m_enum_fmt_audio_out,
-+	.vidioc_g_fmt_audio_out		= audm2m_g_fmt_audio_out,
-+	.vidioc_try_fmt_audio_out	= audm2m_try_fmt_audio_out,
-+	.vidioc_s_fmt_audio_out		= audm2m_s_fmt_audio_out,
-+
-+	.vidioc_reqbufs			= v4l2_m2m_ioctl_reqbufs,
-+	.vidioc_querybuf		= v4l2_m2m_ioctl_querybuf,
-+	.vidioc_qbuf			= v4l2_m2m_ioctl_qbuf,
-+	.vidioc_dqbuf			= v4l2_m2m_ioctl_dqbuf,
-+	.vidioc_prepare_buf		= v4l2_m2m_ioctl_prepare_buf,
-+	.vidioc_create_bufs		= v4l2_m2m_ioctl_create_bufs,
-+	.vidioc_expbuf			= v4l2_m2m_ioctl_expbuf,
-+
-+	.vidioc_streamon		= v4l2_m2m_ioctl_streamon,
-+	.vidioc_streamoff		= v4l2_m2m_ioctl_streamoff,
-+
-+	.vidioc_subscribe_event		= v4l2_ctrl_subscribe_event,
-+	.vidioc_unsubscribe_event	= v4l2_event_unsubscribe,
-+};
-+
-+/*
-+ * Queue operations
-+ */
-+static int audm2m_queue_setup(struct vb2_queue *vq,
-+			      unsigned int *nbuffers,
-+			      unsigned int *nplanes,
-+			      unsigned int sizes[],
-+			      struct device *alloc_devs[])
-+{
-+	struct audm2m_ctx *ctx = vb2_get_drv_priv(vq);
-+	struct audm2m_q_data *q_data;
-+
-+	q_data = get_q_data(ctx, vq->type);
-+
-+	if (*nplanes)
-+		return sizes[0] < q_data->buffersize ? -EINVAL : 0;
-+
-+	*nplanes = 1;
-+	sizes[0] = q_data->buffersize;
-+
-+	dprintk(ctx->dev, 1, "%s: get %d buffer(s) of size %d each.\n",
-+		type_name(vq->type), *nplanes, sizes[0]);
-+
-+	return 0;
-+}
-+
-+static void audm2m_buf_queue(struct vb2_buffer *vb)
-+{
-+	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb);
-+	struct audm2m_ctx *ctx = vb2_get_drv_priv(vb->vb2_queue);
-+
-+	v4l2_m2m_buf_queue(ctx->fh.m2m_ctx, vbuf);
-+}
-+
-+static int audm2m_start_streaming(struct vb2_queue *q, unsigned int count)
-+{
-+	struct audm2m_ctx *ctx = vb2_get_drv_priv(q);
-+	struct audm2m_q_data *q_data = get_q_data(ctx, q->type);
-+
-+	q_data->sequence = 0;
-+	return 0;
-+}
-+
-+static void audm2m_stop_streaming(struct vb2_queue *q)
-+{
-+	struct audm2m_ctx *ctx = vb2_get_drv_priv(q);
-+	struct vb2_v4l2_buffer *vbuf;
-+
-+	for (;;) {
-+		if (V4L2_TYPE_IS_OUTPUT(q->type))
-+			vbuf = v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
-+		else
-+			vbuf = v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
-+		if (!vbuf)
-+			return;
-+		v4l2_m2m_buf_done(vbuf, VB2_BUF_STATE_ERROR);
-+	}
-+}
-+
-+static const struct vb2_ops audm2m_qops = {
-+	.queue_setup	 = audm2m_queue_setup,
-+	.buf_queue	 = audm2m_buf_queue,
-+	.start_streaming = audm2m_start_streaming,
-+	.stop_streaming  = audm2m_stop_streaming,
-+	.wait_prepare	 = vb2_ops_wait_prepare,
-+	.wait_finish	 = vb2_ops_wait_finish,
-+};
-+
-+static int queue_init(void *priv, struct vb2_queue *src_vq,
-+		      struct vb2_queue *dst_vq)
-+{
-+	struct audm2m_ctx *ctx = priv;
-+	int ret;
-+
-+	src_vq->type = V4L2_BUF_TYPE_AUDIO_OUTPUT;
-+	src_vq->io_modes = VB2_MMAP | VB2_DMABUF;
-+	src_vq->drv_priv = ctx;
-+	src_vq->buf_struct_size = sizeof(struct v4l2_m2m_buffer);
-+	src_vq->ops = &audm2m_qops;
-+	src_vq->mem_ops = &vb2_vmalloc_memops;
-+	src_vq->timestamp_flags = V4L2_BUF_FLAG_TIMESTAMP_COPY;
-+	src_vq->lock = &ctx->vb_mutex;
-+
-+	ret = vb2_queue_init(src_vq);
-+	if (ret)
-+		return ret;
-+
-+	dst_vq->type = V4L2_BUF_TYPE_AUDIO_CAPTURE;
-+	dst_vq->io_modes = VB2_MMAP | VB2_DMABUF;
-+	dst_vq->drv_priv = ctx;
-+	dst_vq->buf_struct_size = sizeof(struct v4l2_m2m_buffer);
-+	dst_vq->ops = &audm2m_qops;
-+	dst_vq->mem_ops = &vb2_vmalloc_memops;
-+	dst_vq->timestamp_flags = V4L2_BUF_FLAG_TIMESTAMP_COPY;
-+	dst_vq->lock = &ctx->vb_mutex;
-+
-+	return vb2_queue_init(dst_vq);
-+}
-+
-+static const s64 audm2m_rates[] = {
-+	8000, 16000,
-+};
-+
-+static int audm2m_op_s_ctrl(struct v4l2_ctrl *ctrl)
-+{
-+	struct audm2m_ctx *ctx =
-+		container_of(ctrl->handler, struct audm2m_ctx, ctrl_handler);
-+	int ret = 0;
-+
-+	switch (ctrl->id) {
-+	case V4L2_CID_M2M_AUDIO_SOURCE_RATE:
-+		ctx->q_data[V4L2_M2M_SRC].rate = ctrl->qmenu_int[ctrl->val];
-+		break;
-+	case V4L2_CID_M2M_AUDIO_DEST_RATE:
-+		ctx->q_data[V4L2_M2M_DST].rate = ctrl->qmenu_int[ctrl->val];
-+		break;
-+	default:
-+		ret = -EINVAL;
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+static const struct v4l2_ctrl_ops audm2m_ctrl_ops = {
-+	.s_ctrl = audm2m_op_s_ctrl,
-+};
-+
-+/*
-+ * File operations
-+ */
-+static int audm2m_open(struct file *file)
-+{
-+	struct audm2m_dev *dev = video_drvdata(file);
-+	struct audm2m_ctx *ctx = NULL;
-+	snd_pcm_format_t fmt;
-+	int width;
-+	int rc = 0;
-+
-+	if (mutex_lock_interruptible(&dev->dev_mutex))
-+		return -ERESTARTSYS;
-+	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
-+	if (!ctx) {
-+		rc = -ENOMEM;
-+		goto open_unlock;
-+	}
-+
-+	v4l2_fh_init(&ctx->fh, video_devdata(file));
-+	file->private_data = &ctx->fh;
-+	ctx->dev = dev;
-+
-+	ctx->q_data[V4L2_M2M_SRC].fourcc = formats[0];
-+	ctx->q_data[V4L2_M2M_SRC].rate = 8000;
-+	ctx->q_data[V4L2_M2M_SRC].channels = 1;
-+
-+	/* Fix to 4096 samples */
-+	fmt = find_format(formats[0]);
-+	width = snd_pcm_format_physical_width(fmt);
-+	ctx->q_data[V4L2_M2M_SRC].buffersize = SAMPLE_NUM * width;
-+	ctx->q_data[V4L2_M2M_DST] = ctx->q_data[V4L2_M2M_SRC];
-+
-+	ctx->fh.m2m_ctx = v4l2_m2m_ctx_init(dev->m2m_dev, ctx, &queue_init);
-+
-+	mutex_init(&ctx->vb_mutex);
-+
-+	if (IS_ERR(ctx->fh.m2m_ctx)) {
-+		rc = PTR_ERR(ctx->fh.m2m_ctx);
-+
-+		v4l2_fh_exit(&ctx->fh);
-+		kfree(ctx);
-+		goto open_unlock;
-+	}
-+
-+	v4l2_fh_add(&ctx->fh);
-+
-+	dprintk(dev, 1, "Created instance: %p, m2m_ctx: %p\n",
-+		ctx, ctx->fh.m2m_ctx);
-+
-+	v4l2_ctrl_handler_init(&ctx->ctrl_handler, 2);
-+
-+	v4l2_ctrl_new_int_menu(&ctx->ctrl_handler, &audm2m_ctrl_ops,
-+			       V4L2_CID_M2M_AUDIO_SOURCE_RATE,
-+			       ARRAY_SIZE(audm2m_rates) - 1, 0, audm2m_rates);
-+	v4l2_ctrl_new_int_menu(&ctx->ctrl_handler, &audm2m_ctrl_ops,
-+			       V4L2_CID_M2M_AUDIO_DEST_RATE,
-+			       ARRAY_SIZE(audm2m_rates) - 1, 0, audm2m_rates);
-+
-+	if (ctx->ctrl_handler.error) {
-+		rc = ctx->ctrl_handler.error;
-+		v4l2_ctrl_handler_free(&ctx->ctrl_handler);
-+		goto err_ctrl_handler;
-+	}
-+
-+	ctx->fh.ctrl_handler = &ctx->ctrl_handler;
-+
-+	mutex_unlock(&dev->dev_mutex);
-+
-+	return 0;
-+
-+err_ctrl_handler:
-+	v4l2_m2m_ctx_release(ctx->fh.m2m_ctx);
-+open_unlock:
-+	mutex_unlock(&dev->dev_mutex);
-+	return rc;
-+}
-+
-+static int audm2m_release(struct file *file)
-+{
-+	struct audm2m_dev *dev = video_drvdata(file);
-+	struct audm2m_ctx *ctx = file2ctx(file);
-+
-+	dprintk(dev, 1, "Releasing instance %p\n", ctx);
-+
-+	v4l2_ctrl_handler_free(&ctx->ctrl_handler);
-+	v4l2_fh_del(&ctx->fh);
-+	v4l2_fh_exit(&ctx->fh);
-+	mutex_lock(&dev->dev_mutex);
-+	v4l2_m2m_ctx_release(ctx->fh.m2m_ctx);
-+	mutex_unlock(&dev->dev_mutex);
-+	kfree(ctx);
-+
-+	return 0;
-+}
-+
-+static void audm2m_device_release(struct video_device *vdev)
-+{
-+	struct audm2m_dev *dev = container_of(vdev, struct audm2m_dev, vfd);
-+
-+	v4l2_device_unregister(&dev->v4l2_dev);
-+	v4l2_m2m_release(dev->m2m_dev);
-+
-+#ifdef CONFIG_MEDIA_CONTROLLER
-+	media_device_cleanup(&dev->mdev);
-+#endif
-+	kfree(dev);
-+}
-+
-+static const struct v4l2_file_operations audm2m_fops = {
-+	.owner		= THIS_MODULE,
-+	.open		= audm2m_open,
-+	.release	= audm2m_release,
-+	.poll		= v4l2_m2m_fop_poll,
-+	.unlocked_ioctl	= video_ioctl2,
-+	.mmap		= v4l2_m2m_fop_mmap,
-+};
-+
-+static const struct video_device audm2m_videodev = {
-+	.name		= MEM2MEM_NAME,
-+	.vfl_dir	= VFL_DIR_M2M,
-+	.fops		= &audm2m_fops,
-+	.ioctl_ops	= &audm2m_ioctl_ops,
-+	.minor		= -1,
-+	.release	= audm2m_device_release,
-+	.device_caps	= V4L2_CAP_AUDIO_M2M | V4L2_CAP_STREAMING,
-+};
-+
-+static const struct v4l2_m2m_ops m2m_ops = {
-+	.device_run	= device_run,
-+};
-+
-+static const struct media_device_ops audm2m_media_ops = {
-+	.req_validate = vb2_request_validate,
-+	.req_queue = v4l2_m2m_request_queue,
-+};
-+
-+static int audm2m_probe(struct platform_device *pdev)
-+{
-+	struct audm2m_dev *dev;
-+	struct video_device *vfd;
-+	int ret;
-+
-+	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
-+	if (!dev)
-+		return -ENOMEM;
-+
-+	ret = v4l2_device_register(&pdev->dev, &dev->v4l2_dev);
-+	if (ret)
-+		goto error_free;
-+
-+	mutex_init(&dev->dev_mutex);
-+
-+	dev->vfd = audm2m_videodev;
-+	vfd = &dev->vfd;
-+	vfd->lock = &dev->dev_mutex;
-+	vfd->v4l2_dev = &dev->v4l2_dev;
-+
-+	video_set_drvdata(vfd, dev);
-+	platform_set_drvdata(pdev, dev);
-+
-+	dev->m2m_dev = v4l2_m2m_init(&m2m_ops);
-+	if (IS_ERR(dev->m2m_dev)) {
-+		v4l2_err(&dev->v4l2_dev, "Failed to init mem2mem device\n");
-+		ret = PTR_ERR(dev->m2m_dev);
-+		dev->m2m_dev = NULL;
-+		goto error_dev;
-+	}
-+
-+#ifdef CONFIG_MEDIA_CONTROLLER
-+	dev->mdev.dev = &pdev->dev;
-+	strscpy(dev->mdev.model, MEM2MEM_NAME, sizeof(dev->mdev.model));
-+	media_device_init(&dev->mdev);
-+	dev->mdev.ops = &audm2m_media_ops;
-+	dev->v4l2_dev.mdev = &dev->mdev;
-+#endif
-+
-+	ret = video_register_device(vfd, VFL_TYPE_AUDIO, 0);
-+	if (ret) {
-+		v4l2_err(&dev->v4l2_dev, "Failed to register video device\n");
-+		goto error_m2m;
-+	}
-+
-+#ifdef CONFIG_MEDIA_CONTROLLER
-+	ret = v4l2_m2m_register_media_controller(dev->m2m_dev, vfd,
-+						 MEDIA_ENT_F_PROC_AUDIO_RESAMPLER);
-+	if (ret) {
-+		v4l2_err(&dev->v4l2_dev, "Failed to init mem2mem media controller\n");
-+		goto error_v4l2;
-+	}
-+
-+	ret = media_device_register(&dev->mdev);
-+	if (ret) {
-+		v4l2_err(&dev->v4l2_dev, "Failed to register mem2mem media device\n");
-+		goto error_m2m_mc;
-+	}
-+#endif
-+
-+	v4l2_info(&dev->v4l2_dev,
-+		  "Device registered as /dev/v4l-audio%d\n", vfd->num);
-+
-+	return 0;
-+
-+#ifdef CONFIG_MEDIA_CONTROLLER
-+error_m2m_mc:
-+	v4l2_m2m_unregister_media_controller(dev->m2m_dev);
-+#endif
-+error_v4l2:
-+	video_unregister_device(&dev->vfd);
-+	/* audm2m_device_release called by video_unregister_device to release various objects */
-+	return ret;
-+error_m2m:
-+	v4l2_m2m_release(dev->m2m_dev);
-+error_dev:
-+	v4l2_device_unregister(&dev->v4l2_dev);
-+error_free:
-+	kfree(dev);
-+
-+	return ret;
-+}
-+
-+static void audm2m_remove(struct platform_device *pdev)
-+{
-+	struct audm2m_dev *dev = platform_get_drvdata(pdev);
-+
-+	v4l2_info(&dev->v4l2_dev, "Removing " MEM2MEM_NAME);
-+
-+#ifdef CONFIG_MEDIA_CONTROLLER
-+	media_device_unregister(&dev->mdev);
-+	v4l2_m2m_unregister_media_controller(dev->m2m_dev);
-+#endif
-+	video_unregister_device(&dev->vfd);
-+}
-+
-+static struct platform_driver audm2m_pdrv = {
-+	.probe		= audm2m_probe,
-+	.remove_new	= audm2m_remove,
-+	.driver		= {
-+		.name	= MEM2MEM_NAME,
-+	},
-+};
-+
-+static void __exit audm2m_exit(void)
-+{
-+	platform_driver_unregister(&audm2m_pdrv);
-+	platform_device_unregister(&audm2m_pdev);
-+}
-+
-+static int __init audm2m_init(void)
-+{
-+	int ret;
-+
-+	ret = platform_device_register(&audm2m_pdev);
-+	if (ret)
-+		return ret;
-+
-+	ret = platform_driver_register(&audm2m_pdrv);
-+	if (ret)
-+		platform_device_unregister(&audm2m_pdev);
-+
-+	return ret;
-+}
-+
-+module_init(audm2m_init);
-+module_exit(audm2m_exit);
+The following section outlines the problem addressed by this patch
+series, along with the current solution, its shortcomings, and the
+proposed resolution.
+
+Problem:
+========
+Due to CPU/Memory hotplug or online/offline events the elfcorehdr
+(which describes the CPUs and memory of the crashed kernel) and FDT
+(Flattened Device Tree) of kdump image becomes outdated. Consequently,
+attempting dump collection with an outdated elfcorehdr or FDT can lead
+to failed or inaccurate dump collection.
+
+Going forward CPU hotplug or online/offline events are referred as
+CPU/Memory add/remove events.
+
+Existing solution and its shortcoming:
+======================================
+The current solution to address the above issue involves monitoring the
+CPU/memory add/remove events in userspace using udev rules and whenever
+there are changes in CPU and memory resources, the entire kdump image
+is loaded again. The kdump image includes kernel, initrd, elfcorehdr,
+FDT, purgatory. Given that only elfcorehdr and FDT get outdated due to
+CPU/Memory add/remove events, reloading the entire kdump image is
+inefficient. More importantly, kdump remains inactive for a substantial
+amount of time until the kdump reload completes.
+
+Proposed solution:
+==================
+Instead of initiating a full kdump image reload from userspace on
+CPU/Memory hotplug and online/offline events, the proposed solution aims
+to update only the necessary kdump image component within the kernel
+itself.
+
+Git tree for testing:
+=====================
+https://github.com/sourabhjains/linux/tree/kdump-in-kernel-crash-update-v17
+
+Above tree is rebased on top of linux-next and the below patch series:
+https://lore.kernel.org/all/20240213113150.1148276-1-hbathini@linux.ibm.com/
+
+To realize this feature, the kdump udev rule must be updated. On RHEL,
+add the following two lines at the top of the
+"/usr/lib/udev/rules.d/98-kexec.rules" file.
+
+SUBSYSTEM=="cpu", ATTRS{crash_hotplug}=="1", GOTO="kdump_reload_end"
+SUBSYSTEM=="memory", ATTRS{crash_hotplug}=="1", GOTO="kdump_reload_end"
+
+With the above change to the kdump udev rule, kdump reload is avoided
+during CPU/Memory add/remove events if this feature is enabled in the
+kernel.
+
+Note: only kexec_file_load syscall will work. For kexec_load minor changes
+are required in kexec tool.
+
+Changelog:
+----------
+v17:
+  - Rebase the patch series on top linux-next tree and below patch series
+    https://lore.kernel.org/all/20240213113150.1148276-1-hbathini@linux.ibm.com/
+  - Split 0003 patch from v16 into two patches
+       1. Move get_crash_memory_ranges() along with other *_memory_ranges()
+          functions to ranges.c and make them public.
+       2. Make update_cpus_node function public and take this function
+          out of file_load_64.c
+  - Keep arch_crash_hotplug_support in crash.c instead of core_64.c [05/06]
+  - Use CONFIG_CRASH_MAX_MEMORY_RANGES to find extra elfcorehdr size [06/06]
+
+v16: [https://lore.kernel.org/all/20240217081452.164571-1-sourabhjain@linux.ibm.com/]
+  - Remove the unused #define `crash_hotplug_cpu_support`
+    and `crash_hotplug_memory_support` in `arch/x86/include/asm/kexec.h`.
+  - Document why two kexec flag bits are used in
+    `arch_crash_hotplug_memory_support` (x86).
+  - Use a switch case to handle different hotplug operations
+    in `arch_crash_handle_hotplug_event` for PowerPC.
+  - Fix a typo in 4/5.
+
+v15:
+  - Remove the patch that adds a new kexec flag for FDT update.
+  - Introduce a generic kexec flag bit to share hotplug support
+    intent between the kexec tool and the kernel for the kexec_load
+    syscall. (2/5)
+  - Introduce an architecture-specific handler to process the kexec
+    flag for crash hotplug support. (2/5)
+  - Rename the @update_elfcorehdr member of the struct kimage to
+    @hotplug_support. (2/5)
+  - Use a common function to advertise hotplug support for both CPU
+    and Memory. (2/5)
+
+v14:
+  - Fix build warnings by including necessary header files
+  - Rebase to v6.7-rc5
+
+v13:
+  - Fix a build warning, take ranges.c out of CONFIG_KEXEC_FILE
+  - Rebase to v6.7-rc4
+
+v12:
+  - A patch to add new kexec flags to support this feature on kexec_load
+    system call
+  - Change in the way this feature is advertise to userspace for both
+    kexec_load syscall
+  - Rebase to v6.6-rc7
+
+v11:
+  - Rebase to v6.4-rc6
+  - The patch that introduced CONFIG_CRASH_HOTPLUG for PowerPC has been
+    removed. The config is now part of common configuration:
+    https://lore.kernel.org/all/87ilbpflsk.fsf@mail.lhotse/
+
+v10:
+  - Drop the patch that adds fdt_index attribute to struct kimage_arch
+    Find the fdt segment index when needed.
+  - Added more details into commits messages.
+  - Rebased onto 6.3.0-rc5
+
+v9:
+  - Removed patch to prepare elfcorehdr crash notes for possible CPUs.
+    The patch is moved to generic patch series that introduces generic
+    infrastructure for in kernel crash update.
+  - Removed patch to pass the hotplug action type to the arch crash
+    hotplug handler function. The generic patch series has introduced
+    the hotplug action type in kimage struct.
+  - Add detail commit message for better understanding.
+
+v8:
+  - Restrict fdt_index initialization to machine_kexec_post_load
+    it work for both kexec_load and kexec_file_load.[3/8] Laurent Dufour
+
+  - Updated the logic to find the number of offline core. [6/8]
+
+  - Changed the logic to find the elfcore program header to accommodate
+    future memory ranges due memory hotplug events. [8/8]
+
+v7
+  - added a new config to configure this feature
+  - pass hotplug action type to arch specific handler
+
+v6
+  - Added crash memory hotplug support
+
+v5:
+  - Replace COFNIG_CRASH_HOTPLUG with CONFIG_HOTPLUG_CPU.
+  - Move fdt segment identification for kexec_load case to load path
+    instead of crash hotplug handler
+  - Keep new attribute defined under kimage_arch to track FDT segment
+    under CONFIG_HOTPLUG_CPU config.
+
+v4:
+  - Update the logic to find the additional space needed for hotadd CPUs
+    post kexec load. Refer "[RFC v4 PATCH 4/5] powerpc/crash hp: add crash
+    hotplug support for kexec_file_load" patch to know more about the
+    change.
+  - Fix a couple of typo.
+  - Replace pr_err to pr_info_once to warn user about memory hotplug
+    support.
+  - In crash hotplug handle exit the for loop if FDT segment is found.
+
+v3
+  - Move fdt_index and fdt_index_vaild variables to kimage_arch struct.
+  - Rebase patche on top of
+    https://lore.kernel.org/lkml/20220303162725.49640-1-eric.devolder@oracle.com/
+  - Fixed warning reported by checpatch script
+
+v2:
+  - Use generic hotplug handler introduced by
+    https://lore.kernel.org/lkml/20220209195706.51522-1-eric.devolder@oracle.com/
+    a significant change from v1.
+
+Cc: Akhil Raj <lf32.dev@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Hari Bathini <hbathini@linux.ibm.com>
+Cc: Laurent Dufour <laurent.dufour@fr.ibm.com>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Mimi Zohar <zohar@linux.ibm.com>
+Cc: Naveen N Rao <naveen@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Valentin Schneider <vschneid@redhat.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
+Cc: kexec@lists.infradead.org
+Cc: x86@kernel.org
+
+Sourabh Jain (6):
+  crash: forward memory_notify arg to arch crash hotplug handler
+  crash: add a new kexec flag for hotplug support
+  powerpc/kexec: move *_memory_ranges functions to ranges.c
+  PowerPC/kexec: make the update_cpus_node() function public
+  powerpc/crash: add crash CPU hotplug support
+  powerpc/crash: add crash memory hotplug support
+
+ arch/powerpc/Kconfig                    |   4 +
+ arch/powerpc/include/asm/kexec.h        |  15 ++
+ arch/powerpc/include/asm/kexec_ranges.h |  20 +-
+ arch/powerpc/kexec/Makefile             |   4 +-
+ arch/powerpc/kexec/core_64.c            |  91 +++++++
+ arch/powerpc/kexec/crash.c              | 196 +++++++++++++++
+ arch/powerpc/kexec/elf_64.c             |   3 +-
+ arch/powerpc/kexec/file_load_64.c       | 314 +++---------------------
+ arch/powerpc/kexec/ranges.c             | 312 ++++++++++++++++++++++-
+ arch/x86/include/asm/kexec.h            |  13 +-
+ arch/x86/kernel/crash.c                 |  32 ++-
+ drivers/base/cpu.c                      |   2 +-
+ drivers/base/memory.c                   |   2 +-
+ include/linux/crash_core.h              |  15 +-
+ include/linux/kexec.h                   |  11 +-
+ include/uapi/linux/kexec.h              |   1 +
+ kernel/crash_core.c                     |  25 +-
+ kernel/kexec.c                          |   4 +-
+ kernel/kexec_file.c                     |   5 +
+ 19 files changed, 712 insertions(+), 357 deletions(-)
+
 -- 
-2.34.1
+2.43.0
 
