@@ -1,73 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44D2786714E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 11:36:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50AAF86715E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 11:38:31 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=RfOYw9tJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SzwyDB/r;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tjxr90MZvz3w2w
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 21:36:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tjxsx036gz86kw
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 21:38:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=RfOYw9tJ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SzwyDB/r;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::434; helo=mail-pf1-x434.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TjxLl4tDrz3vf6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 21:14:55 +1100 (AEDT)
-Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-6e4f5e84abeso448768b3a.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 02:14:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708942494; x=1709547294; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8oiwxTGWU6IUJhXbPXi9jlCFl9jNsVOAORO/dFL4KH8=;
-        b=RfOYw9tJb0DptRmbzzVxpCJQnWGkljy2ffr5Lu4B9oxBu8fLd2J5M2BWP0+rbfP7aZ
-         KskvZirnw64vo2T1p35pMZ00ZdGEL/niscOrow+LoeZ6BiRTTgmR9rMBpl7gttElKO6w
-         uNvMjLYdpzgDLFpaBwfhZKKnDoYoKhT8N+0819/WcoVXtx9bGO+6qYJ9tSBoG4ZTrrCG
-         yWyYbNH1OVHgfCjOD7r6TQw+bENQAIDQNab7jJHUsr2M4/9IP7q/2p6csDoA5ASuLOkq
-         6tqODE41j4hpmCAiB/ZTv1UoR7JrG5fw5ZkK44NVHRZlT/jsfShYCxUt4zVx7EF2oYfI
-         xlHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708942494; x=1709547294;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8oiwxTGWU6IUJhXbPXi9jlCFl9jNsVOAORO/dFL4KH8=;
-        b=Vm/WDL6xbKyguEt6NpbOuv6OjjiuTPBcwuX+vkhtz3gQr1v5+R+GNnxfcbN5LQcG/o
-         8FjppMuN3ToyaSWq9b3chTnyhNpu8/16Ay8wLnLXCbQ9Ca+YYT1uhIuRniK9fjpO02rt
-         RBG2cexrXLl8/d1G4P1/9tYzDrmhQmwYGNJY1F9HweJqkGT4fEuCIa6molWUtcNZbTUh
-         X/twqXo8dMZ8x7NhWrLCke00hBRK9ay2Rf9zgzdG7Y03onOhsT9RoyXfNlMfZyWzPRw1
-         fyH5t0egK0Ap8ZKm8Gg3mgVfoPOtJDVIn7UQFqxXiZ0OYCemPHc9CAPpR7QPP/i+zsWz
-         YLtg==
-X-Forwarded-Encrypted: i=1; AJvYcCW5jjlasdwWwCT3fdcFAM4gdprIqzYmyFDQPLl3wp7OjMQwfTQGsFEShI8a/eqCZ1AUhokLa0Ql3fk6Re+ZG5AgXmKAZwDS045bjrqVnw==
-X-Gm-Message-State: AOJu0YwjT9XsQhEk7KNr7niKWvd4DOSnVml2aOCYUQbaM/Pk7AvcBzGL
-	Qcdr4pbql1ToO32LMLsI//WH1Qh3akL3hF1TS4ujWQlOva46yJaX
-X-Google-Smtp-Source: AGHT+IEdmNJCAyNnb0OHlETxiDPkAQRNZ6Rj92dODzdJv+fmEZif4N25wNv6OUOT4lP8rkt8ITdgiA==
-X-Received: by 2002:a05:6a00:3c86:b0:6e1:3cdb:76f1 with SMTP id lm6-20020a056a003c8600b006e13cdb76f1mr9030138pfb.20.1708942493857;
-        Mon, 26 Feb 2024 02:14:53 -0800 (PST)
-Received: from wheely.local0.net (220-235-194-103.tpgi.com.au. [220.235.194.103])
-        by smtp.gmail.com with ESMTPSA id x24-20020aa784d8000000b006e463414493sm3626693pfn.105.2024.02.26.02.14.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Feb 2024 02:14:53 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: Thomas Huth <thuth@redhat.com>
-Subject: [kvm-unit-tests PATCH 32/32] powerpc: gitlab CI update
-Date: Mon, 26 Feb 2024 20:12:18 +1000
-Message-ID: <20240226101218.1472843-33-npiggin@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240226101218.1472843-1-npiggin@gmail.com>
-References: <20240226101218.1472843-1-npiggin@gmail.com>
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tjxjz54zZz3wWj
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 21:31:35 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41Q9JLf3018413;
+	Mon, 26 Feb 2024 10:31:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=le4LCgrgl0rQAQk2X8xwPeGpze2aZA5cLCkLShXKXyo=;
+ b=SzwyDB/rjwukVAMs8+qo23oDKO17zsG+Aj96YibLhgzof29rVjCRBwt6wt/RisC44t4A
+ e3igHRR12L1uEzq3/yrlNMUoAmVmvOssZGsQR+39SyVZ+DsNcOxJGuLhppZ0OCjdAtoR
+ VGkyo6LDfrCfM0CPg8sekNqE6O6mR5/63G4suv8s7BarF0p0r/T0SE6iwvBrlkGF0oHq
+ IWv8+HmYnHJKOUfivo5cjxnu8FbsFLJG/2Q8EHiGz+qD5UsafSAmKKGbgZbDVrlD8VNz
+ zDC1lrBQsok6scnj3nLW+zEowvVhYhaB626ik4SmDJD7cU11pPGvJ2Gr89DaWEXlD8Ld Jw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wg0bh5atn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 Feb 2024 10:31:24 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41QAVEJZ006271;
+	Mon, 26 Feb 2024 10:31:20 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wg0bh5adx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 Feb 2024 10:31:20 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41Q95gUl008147;
+	Mon, 26 Feb 2024 10:30:20 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wfv9m08q1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 Feb 2024 10:30:20 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41QAUEUr13435474
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 26 Feb 2024 10:30:16 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7746D20063;
+	Mon, 26 Feb 2024 10:30:14 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 061DD20040;
+	Mon, 26 Feb 2024 10:30:12 +0000 (GMT)
+Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.in.ibm.com (unknown [9.203.115.195])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 26 Feb 2024 10:30:11 +0000 (GMT)
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Kexec-ml <kexec@lists.infradead.org>
+Subject: [PATCH linux-next v2 0/3] powerpc/kexec: split CONFIG_CRASH_DUMP out from CONFIG_KEXEC_CORE
+Date: Mon, 26 Feb 2024 16:00:07 +0530
+Message-ID: <20240226103010.589537-1-hbathini@linux.ibm.com>
+X-Mailer: git-send-email 2.43.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: nTwYa3cQ1v0eiyh8TCyR0naNdMplF2k2
+X-Proofpoint-GUID: edVtaD2Y3it8A-0l1Pshl5wXE-nEVdPN
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-26_07,2024-02-26_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ priorityscore=1501 mlxscore=0 adultscore=0 clxscore=1015
+ lowpriorityscore=0 malwarescore=0 spamscore=0 mlxlogscore=999 phishscore=0
+ impostorscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311290000 definitions=main-2402260079
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,116 +95,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, kvm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Andrew Jones <andrew.jones@linux.dev>, Joel Stanley <joel@jms.id.au>, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Baoquan He <bhe@redhat.com>, lkml <linux-kernel@vger.kernel.org>, Sourabh Jain <sourabhjain@linux.ibm.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, Dave Young <dyoung@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This adds testing for the powernv machine, and adds a gitlab-ci test
-group instead of specifying all tests in .gitlab-ci.yml.
+This patch series is a follow-up to [1] based on discussions at [2]
+about additional work needed to get it working on powerpc.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- .gitlab-ci.yml        | 16 ++++++----------
- powerpc/unittests.cfg | 15 ++++++++-------
- 2 files changed, 14 insertions(+), 17 deletions(-)
+The first patch in the series makes struct crash_mem available with or
+without CONFIG_CRASH_DUMP enabled. The next patch moves kdump specific
+code for kexec_file_load syscall under CONFIG_CRASH_DUMP and the last
+patch splits other kdump specific code under CONFIG_CRASH_DUMP and
+removes dependency with CONFIG_CRASH_DUMP for CONFIG_KEXEC_CORE.
 
-diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
-index 61f196d5d..51a593021 100644
---- a/.gitlab-ci.yml
-+++ b/.gitlab-ci.yml
-@@ -69,11 +69,9 @@ build-ppc64be:
-  - cd build
-  - ../configure --arch=ppc64 --endian=big --cross-prefix=powerpc64-linux-gnu-
-  - make -j2
-- - ACCEL=tcg ./run_tests.sh
--     selftest-setup selftest-migration selftest-migration-skip spapr_hcall
--     rtas-get-time-of-day rtas-get-time-of-day-base rtas-set-time-of-day
--     emulator
--     | tee results.txt
-+ - ACCEL=tcg MAX_SMP=8 ./run_tests.sh -g gitlab-ci | tee results.txt
-+ - if grep -q FAIL results.txt ; then exit 1 ; fi
-+ - ACCEL=tcg MAX_SMP=8 MACHINE=powernv ./run_tests.sh -g gitlab-ci | tee results.txt
-  - if grep -q FAIL results.txt ; then exit 1 ; fi
- 
- build-ppc64le:
-@@ -82,11 +80,9 @@ build-ppc64le:
-  - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu nmap-ncat
-  - ./configure --arch=ppc64 --endian=little --cross-prefix=powerpc64-linux-gnu-
-  - make -j2
-- - ACCEL=tcg ./run_tests.sh
--     selftest-setup selftest-migration selftest-migration-skip spapr_hcall
--     rtas-get-time-of-day rtas-get-time-of-day-base rtas-set-time-of-day
--     emulator
--     | tee results.txt
-+ - ACCEL=tcg MAX_SMP=8 ./run_tests.sh -g gitlab-ci | tee results.txt
-+ - if grep -q FAIL results.txt ; then exit 1 ; fi
-+ - ACCEL=tcg MAX_SMP=8 MACHINE=powernv ./run_tests.sh -g gitlab-ci | tee results.txt
-  - if grep -q FAIL results.txt ; then exit 1 ; fi
- 
- # build-riscv32:
-diff --git a/powerpc/unittests.cfg b/powerpc/unittests.cfg
-index e275f389b..21071a1a1 100644
---- a/powerpc/unittests.cfg
-+++ b/powerpc/unittests.cfg
-@@ -34,17 +34,17 @@
- file = selftest.elf
- smp = 2
- extra_params = -m 1g -append 'setup smp=2 mem=1024'
--groups = selftest
-+groups = selftest gitlab-ci
- 
- [selftest-migration]
- file = selftest-migration.elf
- machine = pseries
--groups = selftest migration
-+groups = selftest migration gitlab-ci
- 
- [selftest-migration-skip]
- file = selftest-migration.elf
- machine = pseries
--groups = selftest migration
-+groups = selftest migration gitlab-ci
- extra_params = -append "skip"
- 
- # This fails due to a QEMU TCG bug so KVM-only until QEMU is fixed upstream
-@@ -56,7 +56,7 @@ groups = migration
- 
- [spapr_hcall]
- file = spapr_hcall.elf
--machine = pseries
-+machine = pseries gitlab-ci
- 
- [spapr_vpa]
- file = spapr_vpa.elf
-@@ -67,24 +67,25 @@ file = rtas.elf
- machine = pseries
- timeout = 5
- extra_params = -append "get-time-of-day date=$(date +%s)"
--groups = rtas
-+groups = rtas gitlab-ci
- 
- [rtas-get-time-of-day-base]
- file = rtas.elf
- machine = pseries
- timeout = 5
- extra_params = -rtc base="2006-06-17" -append "get-time-of-day date=$(date --date="2006-06-17 UTC" +%s)"
--groups = rtas
-+groups = rtas gitlab-ci
- 
- [rtas-set-time-of-day]
- file = rtas.elf
- machine = pseries
- extra_params = -append "set-time-of-day"
- timeout = 5
--groups = rtas
-+groups = rtas gitlab-ci
- 
- [emulator]
- file = emulator.elf
-+groups = gitlab-ci
- 
- [interrupts]
- file = interrupts.elf
+[1] https://lore.kernel.org/all/20240124051254.67105-1-bhe@redhat.com/
+[2] https://lore.kernel.org/all/9101bb07-70f1-476c-bec9-ec67e9899744@linux.ibm.com/
+
+Changes in v2:
+* Fixed a compile error for POWERNV build reported by Sourabh.
+
+Hari Bathini (3):
+  kexec/kdump: make struct crash_mem available without CONFIG_CRASH_DUMP
+  powerpc/kexec: split CONFIG_KEXEC_FILE and CONFIG_CRASH_DUMP
+  powerpc/kdump: Split KEXEC_CORE and CRASH_DUMP dependency
+
+ arch/powerpc/Kconfig                 |   9 +-
+ arch/powerpc/include/asm/kexec.h     |  98 +++++-----
+ arch/powerpc/kernel/prom.c           |   2 +-
+ arch/powerpc/kernel/setup-common.c   |   2 +-
+ arch/powerpc/kernel/smp.c            |   4 +-
+ arch/powerpc/kexec/Makefile          |   3 +-
+ arch/powerpc/kexec/core.c            |   4 +
+ arch/powerpc/kexec/elf_64.c          |   4 +-
+ arch/powerpc/kexec/file_load_64.c    | 269 ++++++++++++++-------------
+ arch/powerpc/platforms/powernv/smp.c |   2 +-
+ include/linux/crash_core.h           |  12 +-
+ 11 files changed, 209 insertions(+), 200 deletions(-)
+
 -- 
-2.42.0
+2.43.2
 
