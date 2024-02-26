@@ -1,36 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0680F8667E0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 03:12:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D00E4866811
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 03:12:41 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=tCbHcFm0;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=XIvyROOh;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TjkdT5nqGz3cGD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 13:11:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TjkfH3pMPz3vdy
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Feb 2024 13:12:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=tCbHcFm0;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=XIvyROOh;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.133; helo=out30-133.freemail.mail.aliyun.com; envelope-from=yaoma@linux.alibaba.com; receiver=lists.ozlabs.org)
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.97; helo=out30-97.freemail.mail.aliyun.com; envelope-from=yaoma@linux.alibaba.com; receiver=lists.ozlabs.org)
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tjkb767Qnz3bq0
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 13:09:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tjkb93mssz3bq0
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Feb 2024 13:09:57 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1708913391; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=rokaxWqv/MdZ8t3IFNR+0laqS7w3anfYZO9pGZw0yQ8=;
-	b=tCbHcFm00nrjpvU0RL4aUjZF4EkmKh5k0k6vecAshFnPhwz2TWul8/bpX8jQpwTstB3thZjVTWpYBAXhCAdwBqrj3g6OTrNqBlvJjuxMU9yfc6zJkUUr774/Msd9CUkm9lirmQOAPHG+3BDikIV2FsCjroyugvhpHWd67O+6kXo=
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R211e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045168;MF=yaoma@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0W1A1Hbl_1708913387;
-Received: from localhost.localdomain(mailfrom:yaoma@linux.alibaba.com fp:SMTPD_---0W1A1Hbl_1708913387)
+	t=1708913393; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=uN6ubd7T7BDgKGYOOcoXXMe2toDXWaMbHm9pDjI4o+Y=;
+	b=XIvyROOhSxK91wwUVMK+jpvHP1KDOSyC4gzrMSzUSJaH/hWd7ljCbUlZWGYFCopMWLHT40brMp8zNEkLDIljRz7PUiaRJ2LLHvpgOfotccsduQsc9aEbkWGuaYqHiAno3K4CknCjWsn4G4sk4E6jfi/JZCh5HIcakBIGpvCcD/U=
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046049;MF=yaoma@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0W1A1HdQ_1708913390;
+Received: from localhost.localdomain(mailfrom:yaoma@linux.alibaba.com fp:SMTPD_---0W1A1HdQ_1708913390)
           by smtp.aliyun-inc.com;
-          Mon, 26 Feb 2024 10:09:49 +0800
+          Mon, 26 Feb 2024 10:09:52 +0800
 From: Bitao Hu <yaoma@linux.alibaba.com>
 To: dianders@chromium.org,
 	tglx@linutronix.de,
@@ -43,9 +43,9 @@ To: dianders@chromium.org,
 	tsbogend@alpha.franken.de,
 	James.Bottomley@HansenPartnership.com,
 	jan.kiszka@siemens.com
-Subject: [PATCHv10 2/4] genirq: Provide a snapshot mechanism for interrupt statistics
-Date: Mon, 26 Feb 2024 10:09:37 +0800
-Message-Id: <20240226020939.45264-3-yaoma@linux.alibaba.com>
+Subject: [PATCHv10 3/4] genirq: Avoid summation loops for /proc/interrupts
+Date: Mon, 26 Feb 2024 10:09:38 +0800
+Message-Id: <20240226020939.45264-4-yaoma@linux.alibaba.com>
 X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
 In-Reply-To: <20240226020939.45264-1-yaoma@linux.alibaba.com>
 References: <20240226020939.45264-1-yaoma@linux.alibaba.com>
@@ -66,265 +66,65 @@ Cc: yaoma@linux.alibaba.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.ke
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The soft lockup detector lacks a mechanism to identify interrupt storms
-as root cause of a lockup. To enable this the detector needs a
-mechanism to snapshot the interrupt count statistics on a CPU when the
-detector observes a potential lockup scenario and compare that against
-the interrupt count when it warns about the lockup later on. The number
-of interrupts in that period give a hint whether the lockup might be
-caused by an interrupt storm.
-
-Instead of having extra storage in the lockup detector and accessing
-the internals of the interrupt descriptor directly, convert the per CPU
-irq_desc::kstat_irq member to a data structure which contains the
-counter plus a snapshot member and provide interfaces to take a
-snapshot of all interrupts on the current CPU and to retrieve the delta
-of a specific interrupt later on.
+We could use the irq_desc::tot_count member to avoid the summation
+loop for interrupts which are not marked as 'PER_CPU' interrupts in
+'show_interrupts'. This could reduce the time overhead of reading
+/proc/interrupts.
 
 Originally-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Bitao Hu <yaoma@linux.alibaba.com>
 ---
- arch/mips/dec/setup.c                |  2 +-
- arch/parisc/kernel/smp.c             |  2 +-
- arch/powerpc/kvm/book3s_hv_rm_xics.c |  2 +-
- include/linux/irqdesc.h              |  9 ++++++--
- include/linux/kernel_stat.h          |  3 +++
- kernel/irq/internals.h               |  2 +-
- kernel/irq/irqdesc.c                 | 34 ++++++++++++++++++++++------
- kernel/irq/proc.c                    |  5 ++--
- scripts/gdb/linux/interrupts.py      |  6 ++---
- 9 files changed, 46 insertions(+), 19 deletions(-)
+ include/linux/irqdesc.h | 2 ++
+ kernel/irq/irqdesc.c    | 2 +-
+ kernel/irq/proc.c       | 9 +++++++--
+ 3 files changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/dec/setup.c b/arch/mips/dec/setup.c
-index 6c3704f51d0d..87f0a1436bf9 100644
---- a/arch/mips/dec/setup.c
-+++ b/arch/mips/dec/setup.c
-@@ -756,7 +756,7 @@ void __init arch_init_irq(void)
- 				NULL))
- 			pr_err("Failed to register fpu interrupt\n");
- 		desc_fpu = irq_to_desc(irq_fpu);
--		fpu_kstat_irq = this_cpu_ptr(desc_fpu->kstat_irqs);
-+		fpu_kstat_irq = this_cpu_ptr(&desc_fpu->kstat_irqs->cnt);
- 	}
- 	if (dec_interrupt[DEC_IRQ_CASCADE] >= 0) {
- 		if (request_irq(dec_interrupt[DEC_IRQ_CASCADE], no_action,
-diff --git a/arch/parisc/kernel/smp.c b/arch/parisc/kernel/smp.c
-index 444154271f23..800eb64e91ad 100644
---- a/arch/parisc/kernel/smp.c
-+++ b/arch/parisc/kernel/smp.c
-@@ -344,7 +344,7 @@ static int smp_boot_one_cpu(int cpuid, struct task_struct *idle)
- 		struct irq_desc *desc = irq_to_desc(i);
- 
- 		if (desc && desc->kstat_irqs)
--			*per_cpu_ptr(desc->kstat_irqs, cpuid) = 0;
-+			*per_cpu_ptr(desc->kstat_irqs, cpuid) = (struct irqstat) { };
- 	}
- #endif
- 
-diff --git a/arch/powerpc/kvm/book3s_hv_rm_xics.c b/arch/powerpc/kvm/book3s_hv_rm_xics.c
-index e42984878503..f2636414d82a 100644
---- a/arch/powerpc/kvm/book3s_hv_rm_xics.c
-+++ b/arch/powerpc/kvm/book3s_hv_rm_xics.c
-@@ -837,7 +837,7 @@ static inline void this_cpu_inc_rm(unsigned int __percpu *addr)
-  */
- static void kvmppc_rm_handle_irq_desc(struct irq_desc *desc)
- {
--	this_cpu_inc_rm(desc->kstat_irqs);
-+	this_cpu_inc_rm(&desc->kstat_irqs->cnt);
- 	__this_cpu_inc(kstat.irqs_sum);
- }
- 
 diff --git a/include/linux/irqdesc.h b/include/linux/irqdesc.h
-index d9451d456a73..2912b1998670 100644
+index 2912b1998670..1ee96d7232b4 100644
 --- a/include/linux/irqdesc.h
 +++ b/include/linux/irqdesc.h
-@@ -17,6 +17,11 @@ struct irq_desc;
- struct irq_domain;
- struct pt_regs;
+@@ -121,6 +121,8 @@ static inline void irq_unlock_sparse(void) { }
+ extern struct irq_desc irq_desc[NR_IRQS];
+ #endif
  
-+struct irqstat {
-+	unsigned int	cnt;
-+	unsigned int	ref;
-+};
++extern bool irq_is_nmi(struct irq_desc *desc);
 +
- /**
-  * struct irq_desc - interrupt descriptor
-  * @irq_common_data:	per irq and chip data passed down to chip functions
-@@ -55,7 +60,7 @@ struct pt_regs;
- struct irq_desc {
- 	struct irq_common_data	irq_common_data;
- 	struct irq_data		irq_data;
--	unsigned int __percpu	*kstat_irqs;
-+	struct irqstat __percpu	*kstat_irqs;
- 	irq_flow_handler_t	handle_irq;
- 	struct irqaction	*action;	/* IRQ action list */
- 	unsigned int		status_use_accessors;
-@@ -119,7 +124,7 @@ extern struct irq_desc irq_desc[NR_IRQS];
  static inline unsigned int irq_desc_kstat_cpu(struct irq_desc *desc,
  					      unsigned int cpu)
  {
--	return desc->kstat_irqs ? *per_cpu_ptr(desc->kstat_irqs, cpu) : 0;
-+	return desc->kstat_irqs ? per_cpu(desc->kstat_irqs->cnt, cpu) : 0;
- }
- 
- static inline struct irq_desc *irq_data_to_desc(struct irq_data *data)
-diff --git a/include/linux/kernel_stat.h b/include/linux/kernel_stat.h
-index 9935f7ecbfb9..98b3043ea5e6 100644
---- a/include/linux/kernel_stat.h
-+++ b/include/linux/kernel_stat.h
-@@ -79,6 +79,9 @@ static inline unsigned int kstat_cpu_softirqs_sum(int cpu)
- 	return sum;
- }
- 
-+extern void kstat_snapshot_irqs(void);
-+extern unsigned int kstat_get_irq_since_snapshot(unsigned int irq);
-+
- /*
-  * Number of interrupts per specific IRQ source, since bootup
-  */
-diff --git a/kernel/irq/internals.h b/kernel/irq/internals.h
-index bcc7f21db9ee..1d92532c2aae 100644
---- a/kernel/irq/internals.h
-+++ b/kernel/irq/internals.h
-@@ -258,7 +258,7 @@ static inline void irq_state_set_masked(struct irq_desc *desc)
- 
- static inline void __kstat_incr_irqs_this_cpu(struct irq_desc *desc)
- {
--	__this_cpu_inc(*desc->kstat_irqs);
-+	__this_cpu_inc(desc->kstat_irqs->cnt);
- 	__this_cpu_inc(kstat.irqs_sum);
- }
- 
 diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
-index 27ca1c866f29..9cd17080b2d8 100644
+index 9cd17080b2d8..56a767957a9d 100644
 --- a/kernel/irq/irqdesc.c
 +++ b/kernel/irq/irqdesc.c
-@@ -122,7 +122,7 @@ static void desc_set_defaults(unsigned int irq, struct irq_desc *desc, int node,
- 	desc->name = NULL;
- 	desc->owner = owner;
- 	for_each_possible_cpu(cpu)
--		*per_cpu_ptr(desc->kstat_irqs, cpu) = 0;
-+		*per_cpu_ptr(desc->kstat_irqs, cpu) = (struct irqstat) { };
- 	desc_smp_init(desc, node, affinity);
+@@ -955,7 +955,7 @@ unsigned int kstat_irqs_cpu(unsigned int irq, int cpu)
+ 	return desc && desc->kstat_irqs ? per_cpu(desc->kstat_irqs->cnt, cpu) : 0;
  }
  
-@@ -418,8 +418,8 @@ static struct irq_desc *alloc_desc(int irq, int node, unsigned int flags,
- 	desc = kzalloc_node(sizeof(*desc), GFP_KERNEL, node);
- 	if (!desc)
- 		return NULL;
--	/* allocate based on nr_cpu_ids */
--	desc->kstat_irqs = alloc_percpu(unsigned int);
-+
-+	desc->kstat_irqs = alloc_percpu(struct irqstat);
- 	if (!desc->kstat_irqs)
- 		goto err_desc;
- 
-@@ -593,7 +593,7 @@ int __init early_irq_init(void)
- 	count = ARRAY_SIZE(irq_desc);
- 
- 	for (i = 0; i < count; i++) {
--		desc[i].kstat_irqs = alloc_percpu(unsigned int);
-+		desc[i].kstat_irqs = alloc_percpu(struct irqstat);
- 		alloc_masks(&desc[i], node);
- 		raw_spin_lock_init(&desc[i].lock);
- 		lockdep_set_class(&desc[i].lock, &irq_desc_lock_class);
-@@ -952,8 +952,7 @@ unsigned int kstat_irqs_cpu(unsigned int irq, int cpu)
+-static bool irq_is_nmi(struct irq_desc *desc)
++bool irq_is_nmi(struct irq_desc *desc)
  {
- 	struct irq_desc *desc = irq_to_desc(irq);
- 
--	return desc && desc->kstat_irqs ?
--			*per_cpu_ptr(desc->kstat_irqs, cpu) : 0;
-+	return desc && desc->kstat_irqs ? per_cpu(desc->kstat_irqs->cnt, cpu) : 0;
+ 	return desc->istate & IRQS_NMI;
  }
- 
- static bool irq_is_nmi(struct irq_desc *desc)
-@@ -975,10 +974,31 @@ static unsigned int kstat_irqs(unsigned int irq)
- 		return data_race(desc->tot_count);
- 
- 	for_each_possible_cpu(cpu)
--		sum += data_race(*per_cpu_ptr(desc->kstat_irqs, cpu));
-+		sum += data_race(per_cpu(desc->kstat_irqs->cnt, cpu));
- 	return sum;
- }
- 
-+void kstat_snapshot_irqs(void)
-+{
-+	struct irq_desc *desc;
-+	unsigned int irq;
-+
-+	for_each_irq_desc(irq, desc) {
-+		if (!desc->kstat_irqs)
-+			continue;
-+		this_cpu_write(desc->kstat_irqs->ref, this_cpu_read(desc->kstat_irqs->cnt));
-+	}
-+}
-+
-+unsigned int kstat_get_irq_since_snapshot(unsigned int irq)
-+{
-+	struct irq_desc *desc = irq_to_desc(irq);
-+
-+	if (!desc || !desc->kstat_irqs)
-+		return 0;
-+	return this_cpu_read(desc->kstat_irqs->cnt) - this_cpu_read(desc->kstat_irqs->ref);
-+}
-+
- /**
-  * kstat_irqs_usr - Get the statistics for an interrupt from thread context
-  * @irq:	The interrupt number
 diff --git a/kernel/irq/proc.c b/kernel/irq/proc.c
-index 623b8136e9af..6954e0a02047 100644
+index 6954e0a02047..b3b1b93f0410 100644
 --- a/kernel/irq/proc.c
 +++ b/kernel/irq/proc.c
-@@ -490,7 +490,7 @@ int show_interrupts(struct seq_file *p, void *v)
+@@ -489,8 +489,13 @@ int show_interrupts(struct seq_file *p, void *v)
+ 		goto outsparse;
  
  	if (desc->kstat_irqs) {
- 		for_each_online_cpu(j)
--			any_count |= data_race(*per_cpu_ptr(desc->kstat_irqs, j));
-+			any_count |= data_race(per_cpu(desc->kstat_irqs->cnt, j));
+-		for_each_online_cpu(j)
+-			any_count |= data_race(per_cpu(desc->kstat_irqs->cnt, j));
++		if (!irq_settings_is_per_cpu_devid(desc) &&
++		    !irq_settings_is_per_cpu(desc) &&
++		    !irq_is_nmi(desc))
++			any_count = data_race(desc->tot_count);
++		else
++			for_each_online_cpu(j)
++				any_count |= data_race(per_cpu(desc->kstat_irqs->cnt, j));
  	}
  
  	if ((!desc->action || irq_desc_is_chained(desc)) && !any_count)
-@@ -498,8 +498,7 @@ int show_interrupts(struct seq_file *p, void *v)
- 
- 	seq_printf(p, "%*d: ", prec, i);
- 	for_each_online_cpu(j)
--		seq_printf(p, "%10u ", desc->kstat_irqs ?
--					*per_cpu_ptr(desc->kstat_irqs, j) : 0);
-+		seq_printf(p, "%10u ", desc->kstat_irqs ? per_cpu(desc->kstat_irqs->cnt, j) : 0);
- 
- 	raw_spin_lock_irqsave(&desc->lock, flags);
- 	if (desc->irq_data.chip) {
-diff --git a/scripts/gdb/linux/interrupts.py b/scripts/gdb/linux/interrupts.py
-index ef478e273791..7e50f3b9dfad 100644
---- a/scripts/gdb/linux/interrupts.py
-+++ b/scripts/gdb/linux/interrupts.py
-@@ -37,7 +37,7 @@ def show_irq_desc(prec, irq):
-     any_count = 0
-     if desc['kstat_irqs']:
-         for cpu in cpus.each_online_cpu():
--            any_count += cpus.per_cpu(desc['kstat_irqs'], cpu)
-+            any_count += cpus.per_cpu(desc['kstat_irqs'], cpu)['cnt']
- 
-     if (desc['action'] == 0 or irq_desc_is_chained(desc)) and any_count == 0:
-         return text;
-@@ -45,7 +45,7 @@ def show_irq_desc(prec, irq):
-     text += "%*d: " % (prec, irq)
-     for cpu in cpus.each_online_cpu():
-         if desc['kstat_irqs']:
--            count = cpus.per_cpu(desc['kstat_irqs'], cpu)
-+            count = cpus.per_cpu(desc['kstat_irqs'], cpu)['cnt']
-         else:
-             count = 0
-         text += "%10u" % (count)
-@@ -177,7 +177,7 @@ def arm_common_show_interrupts(prec):
-         if desc == 0:
-             continue
-         for cpu in cpus.each_online_cpu():
--            text += "%10u" % (cpus.per_cpu(desc['kstat_irqs'], cpu))
-+            text += "%10u" % (cpus.per_cpu(desc['kstat_irqs'], cpu)['cnt'])
-         text += "      %s" % (ipi_types[ipi].string())
-         text += "\n"
-     return text
 -- 
 2.37.1 (Apple Git-137.1)
 
