@@ -1,53 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B515D869558
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 15:01:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBDC4869746
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 15:19:51 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=lPUTGKxS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=NPNMT8iD;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TkfKP3mDtz3vdQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Feb 2024 01:01:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tkfks5Hb8z3vb5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Feb 2024 01:19:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=lists.ozlabs.org)
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=lPUTGKxS;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=NPNMT8iD;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.224; helo=new2-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from new2-smtp.messagingengine.com (new2-smtp.messagingengine.com [66.111.4.224])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TkfJw5PGLz3d3Q
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Feb 2024 01:00:46 +1100 (AEDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rey0V-0008Gl-Vq; Tue, 27 Feb 2024 15:00:31 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rey0U-003DCm-J2; Tue, 27 Feb 2024 15:00:30 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rey0U-00CUXz-1d;
-	Tue, 27 Feb 2024 15:00:30 +0100
-Date: Tue, 27 Feb 2024 15:00:30 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: Increasing build coverage for drivers/spi/spi-ppc4xx.c
-Message-ID: <645ngchmigftlvbvquprqqjcn2frogkihdplbmngnz6hvywefo@rvthwy2epwg3>
-References: <qvuhez7vrcoui7i6s4yohd4ednneuoejcp6tw6iwzeefgpyvd6@fkwwtwozhakf>
- <6fab09e0-1f21-4ada-b5ae-472bf71a1225@csgroup.eu>
- <7ah7rzijbwkvr3hmtqfjh7syxave756usevumrypqspn27wgyv@ln42tyqxo5ai>
- <2fe58bc5-2f1b-4f51-8f01-fa397a1c9291@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tkfk11zBcz2yNf
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Feb 2024 01:19:04 +1100 (AEDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailnew.nyi.internal (Postfix) with ESMTP id 8717758176A;
+	Tue, 27 Feb 2024 09:19:00 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Tue, 27 Feb 2024 09:19:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1709043540;
+	 x=1709050740; bh=lgwXV027qrMgBZRGGg484htOjeaxN2ck0Zcve0Dmzhs=; b=
+	lPUTGKxSZWT3KviA8nwQtQixUNSRKDoofN2NivSWKtva1+uopGcYEEr4RC46c0a4
+	vwDyryLlG3/SO1o0IgHaIAKElGDgOIftHdg/t1LowfBfp6kWJ/02DSeWOd9gO01Y
+	i2xNDAt65lcr61a9rbStiacnnPLSzVXxNfz+qirJEOwE6l4Mjsb9FPSq6beDfONs
+	IfFnZ9bxqqqY3xHHTJ0xelGfB0mkN5vK/R1PlQWSfAeazO2LUPLczof7Is+mk4YY
+	dS7xeAUB8mFbzZwvSoSrgsd+tbYj/Jm83Sm5bzumIEzMe8eZVlLb2zqJj5ACbn1Q
+	xHdhr1utw0PFFSmpN8T17A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1709043540; x=
+	1709050740; bh=lgwXV027qrMgBZRGGg484htOjeaxN2ck0Zcve0Dmzhs=; b=N
+	PNMT8iDaqBhcmripVnSD6nS3Lv42kN3UYBW99FRUWa3TpEGbwqC5etBXkzZPJQ97
+	b46+HgX1sO+sVYOqI7WWoftMMpP1d6mFgSc+COHXzownsJ7ep9c7luzipVKN/JSm
+	WvBS91t32eqhnz4okM6kGJHX7ja6nxAsDWD2f8/n1iyXi5CXN1O8cRQmzdP0MN3P
+	lXLGSaSOyRMNG2Klv5JGjNbEL+jZ99PzUXZkK0dRYXnY7Sh9tCeVVIPOdKairDq/
+	hVJllB8wVwsQCnLlNf4DWkeeaaUPJ42yyj0cK8PqRkYPiog+0wCNiowoUDAfMSZ0
+	TxOSo3YO5XIRZlykzYViQ==
+X-ME-Sender: <xms:Uu_dZWjk9CPDDtuHUq0spRBOyt_ieWSB_NQxrFGLmr24EkUFHc8YHg>
+    <xme:Uu_dZXDMUFx8ZF-9sPWppPSzjc83i6I1db9CmveKWGMIeJFPSdAeNSa88BpcqoNFB
+    jVJuLbK_PRbbcnDDkw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrgeehgdefkecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepgeefjeehvdelvdffieejieejiedvvdfhleeivdelveehjeelteegudektdfg
+    jeevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:Uu_dZeEDtHRL9UWe85NwoKrx0otX3SNqDfDiZ5hOf70Z6GsgUqDdIw>
+    <xmx:Uu_dZfQ4cWIo6G3rC1HFzafsQ2XymenYLV7MaNYtE0ltPhY45Lm3AA>
+    <xmx:Uu_dZTw8lPg-bwLBWej0tpp3R0mNAVRklOB_4I0L7nRbPx69459aug>
+    <xmx:VO_dZbOruGZOL_Pr3S4l_raiy6WMSNlORBuJgrWys66FFVcptlS8dQ>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 8FBCAB6008D; Tue, 27 Feb 2024 09:18:58 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-153-g7e3bb84806-fm-20240215.007-g7e3bb848
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="yofmhws4bjeessoi"
-Content-Disposition: inline
-In-Reply-To: <2fe58bc5-2f1b-4f51-8f01-fa397a1c9291@csgroup.eu>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+Message-Id: <7b62e73d-d3fa-4432-807d-c2e667814b17@app.fastmail.com>
+In-Reply-To:  <CAMuHMdXQYPtL0J4Phm81S1qWpi7no=1r4uStbLd8zbjn7fcWQw@mail.gmail.com>
+References: <20240226161414.2316610-1-arnd@kernel.org>
+ <20240226161414.2316610-4-arnd@kernel.org>
+ <CAMuHMdWRBQF95fJ+NkPUdvpu5VfRm2WyTnvdqB1Xe7d4vsvY2g@mail.gmail.com>
+ <164616c2-94f6-40e8-86e0-850dc8da212e@app.fastmail.com>
+ <CAMuHMdXQYPtL0J4Phm81S1qWpi7no=1r4uStbLd8zbjn7fcWQw@mail.gmail.com>
+Date: Tue, 27 Feb 2024 15:18:38 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Geert Uytterhoeven" <geert@linux-m68k.org>
+Subject: Re: [PATCH 3/4] arch: define CONFIG_PAGE_SIZE_*KB on all architectures
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,148 +98,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>, "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Mark Brown <broonie@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: x86@kernel.org, loongarch@lists.linux.dev, Andreas Larsson <andreas@gaisler.com>, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, guoren <guoren@kernel.org>, "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, Vincenzo Frascino <vincenzo.frascino@arm.com>, Greg Ungerer <gerg@linux-m68k.org>, Jan Kiszka <jan.kiszka@siemens.com>, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, Richard Weinberger <richard@nod.at>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, Vineet Gupta <vgupta@kernel.org>, Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org, linux-alpha@vger.kernel.org, Kees Cook <keescook@chromium.org>, Brian Cain <bcain@quicinc.com>, Kieran Bingham <kbingham@kernel.org>, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, Andy Lutom
+ irski <luto@kernel.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Gleixner <anna-maria@linutronix.de>, linux-arm-kernel@lists.infradead.org, Arnd Bergmann <arnd@kernel.org>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, Feb 27, 2024, at 12:12, Geert Uytterhoeven wrote:
+> On Tue, Feb 27, 2024 at 11:59=E2=80=AFAM Arnd Bergmann <arnd@arndb.de>=
+ wrote:
+>> On Tue, Feb 27, 2024, at 09:54, Geert Uytterhoeven wrote:
+>> I was a bit unsure about how to best do this since there
+>> is not really a need for a fixed page size on nommu kernels,
+>> whereas the three MMU configs clearly tie the page size to
+>> the MMU rather than the platform.
+>>
+>> There should be no reason for coldfire to have a different
+>> page size from dragonball if neither of them actually uses
+>> hardware pages, so one of them could be changed later.
+>
+> Indeed, in theory, PAGE_SIZE doesn't matter for nommu, but the concept
+> of pages is used all over the place in Linux.
+>
+> I'm mostly worried about some Coldfire code relying on the actual value
+> of PAGE_SIZE in some other context. e.g. for configuring non-cacheable
+> regions.
 
---yofmhws4bjeessoi
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Right, any change here would have to be carefully tested. I would
+expect that a 4K page size would reduce memory consumption even on
+NOMMU systems that should have the same tradeoffs for representing
+files in the page cache and in mem_map[].
 
-On Tue, Feb 27, 2024 at 01:52:07PM +0000, Christophe Leroy wrote:
->=20
->=20
-> Le 27/02/2024 =E0 11:58, Uwe Kleine-K=F6nig a =E9crit=A0:
-> > Hello Christophe,
-> >=20
-> > On Tue, Feb 27, 2024 at 10:25:15AM +0000, Christophe Leroy wrote:
-> >> Le 27/02/2024 =E0 09:46, Uwe Kleine-K=F6nig a =E9crit=A0:
-> >>> recently the spi-ppc4xx.c driver suffered from build errors and warni=
-ngs
-> >>> that were undetected for longer than I expected. I think it would be
-> >>> very beneficial if this driver was enabled in (at least) a powerpc
-> >>> allmodconfig build.
-> >>>
-> >>> The challenge to do so is that spi-ppc4xx.c uses dcri_clrset() which =
-is
-> >>> only defined for 4xx (as these select PPC_DCR_NATIVE).
-> >>>
-> >>> I wonder if dcri_clrset() could be defined for the PPC_DCR_MMIO case,
-> >>> too. I tried and failed. The best I came up without extensive doc
-> >>> reading is:
-> >>>
-> >>> diff --git a/arch/powerpc/include/asm/dcr-native.h b/arch/powerpc/inc=
-lude/asm/dcr-native.h
-> >>> index a92059964579..159ab7abfe46 100644
-> >>> --- a/arch/powerpc/include/asm/dcr-native.h
-> >>> +++ b/arch/powerpc/include/asm/dcr-native.h
-> >>> @@ -115,15 +115,11 @@ static inline void __dcri_clrset(int base_addr,=
- int base_data, int reg,
-> >>>    	unsigned int val;
-> >>>   =20
-> >>>    	spin_lock_irqsave(&dcr_ind_lock, flags);
-> >>> -	if (cpu_has_feature(CPU_FTR_INDEXED_DCR)) {
-> >>> -		mtdcrx(base_addr, reg);
-> >>> -		val =3D (mfdcrx(base_data) & ~clr) | set;
-> >>> -		mtdcrx(base_data, val);
-> >>> -	} else {
-> >>> -		__mtdcr(base_addr, reg);
-> >>> -		val =3D (__mfdcr(base_data) & ~clr) | set;
-> >>> -		__mtdcr(base_data, val);
-> >>> -	}
-> >>> +
-> >>> +	mtdcr(base_addr, reg);
-> >>> +	val =3D (mfdcr(base_data) & ~clr) | set;
-> >>> +	mtdcr(base_data, val);
-> >>> +
-> >>>    	spin_unlock_irqrestore(&dcr_ind_lock, flags);
-> >>>    }
-> >>>   =20
-> >>> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> >>> index bc7021da2fe9..9a0a5e8c70c8 100644
-> >>> --- a/drivers/spi/Kconfig
-> >>> +++ b/drivers/spi/Kconfig
-> >>> @@ -810,7 +810,8 @@ config SPI_PL022
-> >>>   =20
-> >>>    config SPI_PPC4xx
-> >>>    	tristate "PPC4xx SPI Controller"
-> >>> -	depends on PPC32 && 4xx
-> >>> +	depends on 4xx || COMPILE_TEST
-> >>> +	depends on PPC32 || PPC64
-> >>>    	select SPI_BITBANG
-> >>>    	help
-> >>>    	  This selects a driver for the PPC4xx SPI Controller.
-> >>>
-> >>> While this is a step in the right direction (I think) it's not enough=
- to
-> >>> make the driver build (but maybe make it easier to define
-> >>> dcri_clrset()?)
-> >>>
-> >>> Could someone with more powerpc knowledge jump in and help (for the
-> >>> benefit of better compile coverage of the spi driver and so less
-> >>> breakage)? (If you do so based on my changes above, you don't need to
-> >>> credit me for my effort, claim it as your's. I'm happy enough if the
-> >>> situation improves.)
-> >>
-> >> What about this ?
-> >>
-> >> diff --git a/arch/powerpc/include/asm/dcr-mmio.h
-> >> b/arch/powerpc/include/asm/dcr-mmio.h
-> >> index fc6d93ef4a13..38b515afbffc 100644
-> >> --- a/arch/powerpc/include/asm/dcr-mmio.h
-> >> +++ b/arch/powerpc/include/asm/dcr-mmio.h
-> >> @@ -38,6 +38,11 @@ static inline void dcr_write_mmio(dcr_host_mmio_t h=
-ost,
-> >>    	out_be32(host.token + ((host.base + dcr_n) * host.stride), value);
-> >>    }
-> >>
-> >> +static inline void __dcri_clrset(int base_addr, int base_data, int re=
-g,
-> >> +				 unsigned clr, unsigned set)
-> >> +{
-> >> +}
-> >> +
-> >=20
-> > The downside of that one is that if we find a matching device where
-> > dcr-mmio is used, the driver claims to work but silently fails. Is this
-> > good enough?
->=20
-> I don't know the details of DCR, but it looks like this spi-ppc4xx=20
-> driver is really specific to 4xx, which is PPC32.
->=20
-> Do you really need/want it to be built with allmodconfig ?
->=20
-> Maybe it would be easier to have it work with ppc32_allmodconfig ?
->=20
-> Or even easier with ppc44x_defconfig ?
+> And does this impact running nommu binaries on a system with MMU?
+> I.e. if nommu binaries were built with a 4 KiB PAGE_SIZE, do they
+> still run on MMU systems with an 8 KiB PAGE_SIZE (coldfire and sun3),
+> or are there some subtleties to take into account?
 
-The reason I'd like to see it in allmodconfig is that testing
-allmodconfig on several archs is the check I do for my patch series.
-Also I assume I'm not the only one relying on allmodconfig for this
-purpose. So in my eyes every driver that is built there is a net win.
+As far as I understand, binaries have to be built and linked for
+the largest page size they can run on, so running them on a kernel
+with smaller page size usually works.
 
-Best regards
-Uwe
+One notable exception is sys_mmap2(), which on most architectures
+takes units of 4KiB but on m68k is actually written to take
+PAGE_SIZE units. As Al pointed out in f8b7256096a2 ("Unify
+sys_mmap*"), it has always been wrong on sun3, presumably
+because users of that predate modern glibc. Running coldfire
+nommu binaries on coldfire mmu kernels would run into the same
+bug if either of them changes PAGE_SIZE. If you can run
+coldfire nommu binaries on classic m68k, that is already
+broken in the same way.
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---yofmhws4bjeessoi
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmXd6v0ACgkQj4D7WH0S
-/k7yEgf/Tz157az3FVESUBdN2ilY0Teefm0nbWyCzS5sUxh2ppmaB6c9HQmu1nK/
-zy4BS9L2c5chIbzOcwTE8anMvfVAVuqF3MuNSCa+Yau6OKL6pE8qyPMYTV6tWlKJ
-WRP59kwZsQw+BVms96Oo336/knSmapitLLixbYXvNn13eC2FZVM8PR7WvJPSm86G
-PFimEGz+sJoEfSs8yRTSP5a7CBgEGES90yxs3sxoj/WELpGER5xkTMU6axeZdpY5
-tG4LfR3HbSuNiA5+/yY4INKOcPoFbe4nzmi4tjb41S3+clUYvEvKhrMahxPXrJ2P
-2ajDfO+3zjz1dRKEs32WZaqb0GzhWw==
-=bkOz
------END PGP SIGNATURE-----
-
---yofmhws4bjeessoi--
+      Arnd
