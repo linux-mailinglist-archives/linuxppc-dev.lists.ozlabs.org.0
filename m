@@ -1,53 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBAD8868EA7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 12:20:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55912869049
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 13:22:42 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=x1yqMzDr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=FZRPD9sy;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TkZmN4GRPz3dBn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 22:20:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tkc7h0rd3z3dS4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 23:22:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=x1yqMzDr;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=FZRPD9sy;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.113; helo=out30-113.freemail.mail.aliyun.com; envelope-from=yaoma@linux.alibaba.com; receiver=lists.ozlabs.org)
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TkZlc0fgyz3c7s
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 22:20:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tkc6v473kz2xPW
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 23:21:57 +1100 (AEDT)
+Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1dc49afb495so35171505ad.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 04:21:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1709032804; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Ep8dMZzmk15xqlqQL7RaK3mkeF/5/DFYGYZbEAf2sXs=;
-	b=x1yqMzDr2lT01JeB/L60w3/wEY6ufBlomdmj+d59DifYCmNlub89c5m1CCjlrzRp7evZCpYfau5ZulZpsVtifU3V/uHteJSTY6aDNIGnsSqLW01GTIgGoZRV7HuDS8+/5qY3VhND0Fqbm4nsrShoKxdbr9+jS5Qce3rcLHwJXoM=
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R421e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046060;MF=yaoma@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0W1MauK8_1709032801;
-Received: from 30.178.67.122(mailfrom:yaoma@linux.alibaba.com fp:SMTPD_---0W1MauK8_1709032801)
-          by smtp.aliyun-inc.com;
-          Tue, 27 Feb 2024 19:20:02 +0800
-Message-ID: <e78357ae-7b00-446c-b010-3bd770892c9e@linux.alibaba.com>
-Date: Tue, 27 Feb 2024 19:20:00 +0800
+        d=linaro.org; s=google; t=1709036515; x=1709641315; darn=lists.ozlabs.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Fox2FOTrnn7H7ARtUpilsDQjBFro1sbb1UtQfPOSFHk=;
+        b=FZRPD9sySwuoIY8NLPLF07AtjTdeNEprsGWQ1dQFj7ZNhWAHFcSl8J5ZxL89rFabY5
+         n1uDLeSn5fNtEWD+X6N9J/FgpdJ5Kqib/MVfSDjuL5ntYxbGlt5D7oTJMBkLLaYns66I
+         Ie6gOiuJE2C8nJwdC3UoYyyWER07DngfYvg5s4yNpeP2CMeS025x2Y+XJKx9NizusQrP
+         RNovRh8bJfsBetvCXcCO7G2b+YLL8uQqhnod+kAvI10NndNn+ImIQj9VITM2ByiT4uE1
+         MeSlAVivIvnU+c/xUTjRt+5Nd7HDlJJuy9vKZjX6E8Q3uqa1q25ck0EzWzUEvvqVW688
+         N6wQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709036515; x=1709641315;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Fox2FOTrnn7H7ARtUpilsDQjBFro1sbb1UtQfPOSFHk=;
+        b=vhkXQgKiz7KbNBRoAhq7elg4AhFHBexNw0NMFgZe8xa0ZPPEn19z2SbFDnprPTwzAF
+         +I1L9NjsNcmetw2nDo/lvdc0yuc9i2BXMmb3y1hy0FW8zEw7XzgOjg3RbS/vWtwH3u5b
+         kMxBLoMAzFlqiZFrdbCyPa+1as6ldW/QOk9feOC2UM7ita7wx9y+cqizaJKt0Y4nmSrA
+         oQBspuHQZePchA8MdyKvGa655fxAqSzKgkf9uj/OxA4txUoqtxO3cSAiTqIW7KHIoY6M
+         gpOy4Cq9FRZT31ifv5oMQrS+ge8k/1N8pyld1Uqvs/1/P3b1s5U8F695ekj/JMOhTaj7
+         0uaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV1webC1xcH8NYQnZqhd9Ezr/kFoHJYmegrI6vKK6+BU5RbiwkypylROjOCTlb98DLgLd+zVWCIscS+II2Z4QjER+l3oKMXDlqA6awWkA==
+X-Gm-Message-State: AOJu0YyJfjpeMmvJBlJo+DZ3UZ5lyE5rQCwQ8nRSNkxBZJjfISaTaDnV
+	gkTFzpAOQnLvTrs5lKHXYw1RtoUieuAqqprCtBW7qMZstqE9nsNJGC7M65S57w==
+X-Google-Smtp-Source: AGHT+IHOZyIvtu9udPjddxeRBkjckef05G60ZrgUBTNS/Hn/UgLmDOmQzD5ShaYiOTnnINlgtxpJEw==
+X-Received: by 2002:a17:903:181:b0:1dc:b173:f27b with SMTP id z1-20020a170903018100b001dcb173f27bmr4528891plg.32.1709036515334;
+        Tue, 27 Feb 2024 04:21:55 -0800 (PST)
+Received: from thinkpad ([117.213.97.177])
+        by smtp.gmail.com with ESMTPSA id h8-20020a170902b94800b001dba356b96esm1406270pls.306.2024.02.27.04.21.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Feb 2024 04:21:54 -0800 (PST)
+Date: Tue, 27 Feb 2024 17:51:41 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Frank Li <Frank.li@nxp.com>
+Subject: Re: [PATCH v8 06/10] PCI: dwc: ep: Call dw_pcie_ep_init_registers()
+ API directly from all glue drivers
+Message-ID: <20240227122141.GN2587@thinkpad>
+References: <20240224-pci-dbi-rework-v8-0-64c7fd0cfe64@linaro.org>
+ <20240224-pci-dbi-rework-v8-6-64c7fd0cfe64@linaro.org>
+ <ZdzEoXwU42rFCF/W@lizhi-Precision-Tower-5810>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv10 3/4] genirq: Avoid summation loops for /proc/interrupts
-Content-Language: en-US
-To: Thomas Gleixner <tglx@linutronix.de>, dianders@chromium.org,
- liusong@linux.alibaba.com, akpm@linux-foundation.org, pmladek@suse.com,
- kernelfans@gmail.com, deller@gmx.de, npiggin@gmail.com,
- tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
- jan.kiszka@siemens.com
-References: <20240226020939.45264-1-yaoma@linux.alibaba.com>
- <20240226020939.45264-4-yaoma@linux.alibaba.com> <87le769s0w.ffs@tglx>
-From: Bitao Hu <yaoma@linux.alibaba.com>
-In-Reply-To: <87le769s0w.ffs@tglx>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZdzEoXwU42rFCF/W@lizhi-Precision-Tower-5810>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,88 +83,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org
+Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <vigneshr@ti.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Kishon Vijay Abraham I <kishon@ti.com>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, linux-tegra@vger.kernel.org, Jonathan Hunter <jonathanh@nvidia.com>, NXP Linux Team <linux-imx@nxp.com>, Richard Zhu <hongxing.zhu@nxp.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org, Mingkai Hu <mingkai.hu@nxp.com>, linux-arm-kernel@lists.infradead.org, Roy Zang <roy.zang@nxp.com>, Niklas Cassel <cassel@kernel.org>, Jingoo Han <jingoohan1@gmail.com>, Yoshihiro Shimoda <yoshih
+ iro.shimoda.uh@renesas.com>, linux-kernel@vger.kernel.org, Vidya Sagar <vidyas@nvidia.com>, linux-renesas-soc@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Gustavo Pimentel <gustavo.pimentel@synopsys.com>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+On Mon, Feb 26, 2024 at 12:04:33PM -0500, Frank Li wrote:
+> On Sat, Feb 24, 2024 at 12:24:12PM +0530, Manivannan Sadhasivam wrote:
+> > Currently, dw_pcie_ep_init_registers() API is directly called by the glue
+> > drivers requiring active refclk from host. But for the other drivers, it is
+> > getting called implicitly by dw_pcie_ep_init(). This is due to the fact
+> > that this API initializes DWC EP specific registers and that requires an
+> > active refclk (either from host or generated locally by endpoint itsef).
+> > 
+> > But, this causes a discrepancy among the glue drivers. So to avoid this
+> > confusion, let's call this API directly from all glue drivers irrespective
+> > of refclk dependency. Only difference here is that the drivers requiring
+> > refclk from host will call this API only after the refclk is received and
+> > other drivers without refclk dependency will call this API right after
+> > dw_pcie_ep_init().
+> > 
+> > This change will also allow us to remove the "core_init_notifier" flag in
+> > the later commits.
+> > 
+> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > ---
+> >  drivers/pci/controller/dwc/pci-dra7xx.c           |  7 +++++++
+> >  drivers/pci/controller/dwc/pci-imx6.c             |  8 ++++++++
+> >  drivers/pci/controller/dwc/pci-keystone.c         |  9 +++++++++
+> >  drivers/pci/controller/dwc/pci-layerscape-ep.c    |  7 +++++++
+> >  drivers/pci/controller/dwc/pcie-designware-ep.c   | 22 ----------------------
+> >  drivers/pci/controller/dwc/pcie-designware-plat.c |  9 +++++++++
+> >  drivers/pci/controller/dwc/pcie-rcar-gen4.c       | 12 +++++++++++-
+> >  drivers/pci/controller/dwc/pcie-uniphier-ep.c     | 13 ++++++++++++-
+> >  8 files changed, 63 insertions(+), 24 deletions(-)
 
-On 2024/2/27 17:26, Thomas Gleixner wrote:
-> On Mon, Feb 26 2024 at 10:09, Bitao Hu wrote:
->> We could use the irq_desc::tot_count member to avoid the summation
->> loop for interrupts which are not marked as 'PER_CPU' interrupts in
->> 'show_interrupts'. This could reduce the time overhead of reading
->> /proc/interrupts.
-> 
-> "Could" is not really a technical term. Either we do or we do not. Also
-> please provide context for your change and avoid the 'We'.
-OK.
-> 
->> --- a/include/linux/irqdesc.h
->> +++ b/include/linux/irqdesc.h
->> @@ -121,6 +121,8 @@ static inline void irq_unlock_sparse(void) { }
->>   extern struct irq_desc irq_desc[NR_IRQS];
->>   #endif
->>
->> +extern bool irq_is_nmi(struct irq_desc *desc);
->> +
-> 
-> If at all this wants to be in kernel/irq/internal.h. There is zero
-> reason to expose this globally.
-> 
->> -static bool irq_is_nmi(struct irq_desc *desc)
->> +bool irq_is_nmi(struct irq_desc *desc)
->>   {
->>   	return desc->istate & IRQS_NMI;
->>   }
-> 
-> If at all this really wants to be a static inline in internals.h, but
-> instead of blindly copying code this can be done smarter:
-> 
-> unsigned int kstat_irq_desc(struct irq_desc *desc)
-> {
-> 	unsigned int sum = 0;
-> 	int cpu;
-> 
-> 	if (!irq_settings_is_per_cpu_devid(desc) &&
-> 	    !irq_settings_is_per_cpu(desc) &&
-> 	    !irq_is_nmi(desc))
-> 		return data_race(desc->tot_count);
-> 
-> 	for_each_possible_cpu(cpu)
-> 		sum += data_race(*per_cpu_ptr(desc->kstat_irqs, cpu));
-> 	return sum;
-> }
-> 
-> and then let kstat_irqs() and show_interrupts() use it. See?
+[...]
 
-I have a concern. kstat_irqs() uses for_each_possible_cpu() for
-summation. However, show_interrupts() uses for_each_online_cpu(),
-which means it only outputs interrupt statistics for online cpus.
-If we use for_each_possible_cpu() in show_interrupts() to calculate
-'any_count', there could be a problem with the following scenario:
-If an interrupt has a count of zero on online cpus but a non-zero
-count on possible cpus, then 'any_count' would not be zero, and the
-statistics for that interrupt would be output, which is not the
-desired behavior for show_interrupts(). Therefore, I think it's not
-good to have kstat_irqs() and show_interrupts() both use the same
-logic. What do you think?
-
+> > diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> > index ed1f2afd830a..278bdc9b2269 100644
+> > --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
+> > +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> > @@ -729,7 +729,6 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
+> >  	struct device *dev = pci->dev;
+> >  	struct platform_device *pdev = to_platform_device(dev);
+> >  	struct device_node *np = dev->of_node;
+> > -	const struct pci_epc_features *epc_features;
+> >  
+> >  	INIT_LIST_HEAD(&ep->func_list);
+> >  
+> > @@ -775,29 +774,8 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
+> >  		goto err_exit_epc_mem;
+> >  	}
+> >  
+> > -	if (ep->ops->get_features) {
+> > -		epc_features = ep->ops->get_features(ep);
+> > -		if (epc_features->core_init_notifier)
+> > -			return 0;
+> > -	}
 > 
-> With that a proper changelog would be:
-> 
->     show_interrupts() unconditionally accumulates the per CPU interrupt
->     statistics to determine whether an interrupt was ever raised.
-> 
->     This can be avoided for all interrupts which are not strictly per CPU
->     and not of type NMI because those interrupts provide already an
->     accumulated counter. The required logic is already implemented in
->     kstat_irqs().
-> 
->     Split the inner access logic out of kstat_irqs() and use it for
->     kstat_irqs() and show_interrupts() to avoid the accumulation loop
->     when possible.
+> why remove this check?
 > 
 
-Best Regards,
-	Bitao Hu
+There is no point in keeping this check since we are removing the call to
+dw_pcie_ep_init_registers() below. But I should've described this change in the
+commit message.
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
