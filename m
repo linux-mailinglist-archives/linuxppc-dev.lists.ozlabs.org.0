@@ -1,94 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E5C6869DD9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 18:37:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 212D9869E9C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 19:08:17 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kqP4E4Rb;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=R37LDvvc;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tkl7N6qv4z3dWg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Feb 2024 04:37:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TklpQ6Xrlz3vYS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Feb 2024 05:08:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kqP4E4Rb;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=R37LDvvc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::d2c; helo=mail-io1-xd2c.google.com; envelope-from=keescook@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tkl6h4kSSz2ykn
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Feb 2024 04:37:16 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41RHHHqW015676;
-	Tue, 27 Feb 2024 17:37:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=F+orPlb7sL76QAM7MCRm1kNb9leUjjvRJjF3oh//XTM=;
- b=kqP4E4RbIpUf2ycrkhO12VdLCQREUXFhdIs64tAXpWEGY3XYZ+vRgwKugQKcxKx646fR
- WM6Sh6kuoThxHpj7BsJukZLcx3HzLTcuPah6w2bdtv4yN/7dTno3+dpfD0Qe+2wgmJ6a
- pz2FUB7wOJ7YHmpxfFw4UiEMyW2rTIjYNxNF7NDJ/zsTRd1kR6AGxB5NLmjpfwCyl3E5
- yZ4EzM5iqBdInwyH9pqfj0hv+GMPTT8DDbNkTHojzXpwJuOGub92yGeR+qafYEBt3h3z
- Za/WMJ/gYl78/yVjSjeNuF0FEKFxMsKsGZl0NVCGg1JvCHtgtCrLtsx/dDMebdy5MiRl 1w== 
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3whm0ggkkp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Feb 2024 17:37:12 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41RFNfmH021756;
-	Tue, 27 Feb 2024 17:37:11 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wfu601b7x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Feb 2024 17:37:11 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41RHb7Px16712386
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 27 Feb 2024 17:37:09 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 220D92004F;
-	Tue, 27 Feb 2024 17:37:07 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6932F20043;
-	Tue, 27 Feb 2024 17:37:06 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.112.249])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 27 Feb 2024 17:37:06 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.300.61.1.2\))
-Subject: Re: Kernel WARNING at lib/vsprintf.c:2721 while running ftrace kernel
- selftests
-From: Sachin Sant <sachinp@linux.ibm.com>
-In-Reply-To: <20240227120842.0d5ffb46@gandalf.local.home>
-Date: Tue, 27 Feb 2024 23:06:55 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <A881D5E8-77E1-4881-AF47-3CA535AFFAC3@linux.ibm.com>
-References: <C7E7AF1A-D30F-4D18-B8E5-AF1EF58004F5@linux.ibm.com>
- <20240226122208.344447f1@gandalf.local.home>
- <129D90CC-6DEB-4953-8061-EAA89F1ED514@linux.ibm.com>
- <20240227091858.7b66f8cc@gandalf.local.home>
- <1F8D4E65-4E23-49FD-B092-980BB1203E19@linux.ibm.com>
- <20240227112443.0bd9f4b8@gandalf.local.home>
- <4A3F2F8E-15D2-48F3-8D59-C11EB0BC7F14@linux.ibm.com>
- <20240227115614.3572872e@gandalf.local.home>
- <20240227120842.0d5ffb46@gandalf.local.home>
-To: Steven Rostedt <rostedt@goodmis.org>
-X-Mailer: Apple Mail (2.3774.300.61.1.2)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: U39RMU67VH3OLjmwPBxIvRWEpWsYZ33I
-X-Proofpoint-ORIG-GUID: U39RMU67VH3OLjmwPBxIvRWEpWsYZ33I
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-27_05,2024-02-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- lowpriorityscore=0 adultscore=0 malwarescore=0 suspectscore=0 spamscore=0
- impostorscore=0 phishscore=0 mlxscore=0 bulkscore=0 priorityscore=1501
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402270136
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tklnf633cz3cnt
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Feb 2024 05:07:32 +1100 (AEDT)
+Received: by mail-io1-xd2c.google.com with SMTP id ca18e2360f4ac-7c48fc56752so147134039f.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 10:07:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1709057248; x=1709662048; darn=lists.ozlabs.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=mgrI9FN30eAJ2XZAfY9sJBg3TkLiivRBpbDR17SPpEo=;
+        b=R37LDvvct7Zin/I8So/le+vgh28M+YfOPZLP9gOBeY+/GB04BtWL5a4Vtjj9NY7bcr
+         dhkAg4jmJUpisIXj+DPVpGlKrGYmypn9l5qIbRlss8374/Cme92g6tdC6XHMgjnNf2EQ
+         pNbYbpZt+K3EMJoD4aOa15OnOjKioZaLYVk8E=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709057248; x=1709662048;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mgrI9FN30eAJ2XZAfY9sJBg3TkLiivRBpbDR17SPpEo=;
+        b=kG1RED9pWJJMsEIUpnqrEkK7/lYF2L5m6xSHe/0hmTLgUTxOw97CiwmzGQN5Hc1s3B
+         3Me0DO4sMBtyajV6feEtlFBDwsT6pRMkFD3dtZUS9xeqgsCO2WMRluBghediF4XxyxQ4
+         NCYYFxtCfx7SbeaZZUtWOGiEhegIHWQRiiuBeps7xQdaEOAYeYT7czDIjwRBggq8FgSu
+         CKanWodRIhuzsfTgaA6cGhKcRKXz1zjjAlfTPRPes+OdaWL6tx25uJp3FDFeEK32rGVN
+         AsYzhinrXqoSF1Igo2fYpbyy8g1bO4IiF9VVC2FLotZxyXR6/QmQzML/1X28g3Y6Vm0q
+         O0QA==
+X-Forwarded-Encrypted: i=1; AJvYcCWZhawiaI/0TnekegJyTEaMKYVYEfWkFf6+nLwdTSvrzVGsQfb29y2Sq+vJFtD5IH3H0fUsRRQLx5TewKXF2DaPtYulhumHLqdbKB0Vng==
+X-Gm-Message-State: AOJu0Yw5j++r/EfD8Dv8LxKGQa/RN41n0uqRNK0+SOvcHAB9uR+nCgPO
+	98NNyHYWlyL6GOh3bpoZo63g/f4n83PvWt+GVJsifJcTawigWTWeVOLV/1Y7ww==
+X-Google-Smtp-Source: AGHT+IFpahrVJDe+RkqjDhxBgm48d+nhk6O3nvQnCIgFv/bhnbFyY12knPOFjwYUx9hP01B6x+R36g==
+X-Received: by 2002:a05:6e02:522:b0:363:bb5a:3329 with SMTP id h2-20020a056e02052200b00363bb5a3329mr11593022ils.1.1709057247927;
+        Tue, 27 Feb 2024 10:07:27 -0800 (PST)
+Received: from www.outflux.net ([198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id fa42-20020a056a002d2a00b006e55b674e66sm10411pfb.171.2024.02.27.10.07.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Feb 2024 10:07:27 -0800 (PST)
+Date: Tue, 27 Feb 2024 10:07:26 -0800
+From: Kees Cook <keescook@chromium.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2 5/9] mm: Initialize struct vm_unmapped_area_info
+Message-ID: <202402271004.7145FDB53F@keescook>
+References: <20240226190951.3240433-1-rick.p.edgecombe@intel.com>
+ <20240226190951.3240433-6-rick.p.edgecombe@intel.com>
+ <94a2b919-e03b-4ade-b13e-7774849dc02b@csgroup.eu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <94a2b919-e03b-4ade-b13e-7774849dc02b@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,60 +79,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: "luto@kernel.org" <luto@kernel.org>, "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>, "peterz@infradead.org" <peterz@infradead.org>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "hpa@zytor.com" <hpa@zytor.com>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>, "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "broonie@kernel.org" <broonie@kernel.org>, "bp@alien8.de" <bp@alien8.de>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, "tglx@linutronix.de" <tglx@linutronix.de>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "debug@rivosinc.com" <debug
+ @rivosinc.com>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, Feb 27, 2024 at 07:02:59AM +0000, Christophe Leroy wrote:
+> 
+> 
+> Le 26/02/2024 à 20:09, Rick Edgecombe a écrit :
+> > Future changes will need to add a field to struct vm_unmapped_area_info.
+> > This would cause trouble for any archs that don't initialize the
+> > struct. Currently every user sets each field, so if new fields are
+> > added, the core code parsing the struct will see garbage in the new
+> > field.
+> > 
+> > It could be possible to initialize the new field for each arch to 0, but
+> > instead simply inialize the field with a C99 struct inializing syntax.
+> 
+> Why doing a full init of the struct when all fields are re-written a few 
+> lines after ?
 
+It's a nice change for robustness and makes future changes easier. It's
+not actually wasteful since the compiler will throw away all redundant
+stores.
 
-> On 27-Feb-2024, at 10:38=E2=80=AFPM, Steven Rostedt =
-<rostedt@goodmis.org> wrote:
->=20
-> On Tue, 27 Feb 2024 11:56:14 -0500
-> Steven Rostedt <rostedt@goodmis.org> wrote:
->=20
->> On Tue, 27 Feb 2024 22:08:18 +0530
->> Sachin Sant <sachinp@linux.ibm.com> wrote:
->>=20
->>>> Can you apply this, and see if it triggers and if it does, print =
-the line
->>>> that has the max size?
->>>>=20
->>>=20
->>> With this I see following trace
->>>=20
->>> [   61.327138] ------------[ cut here ]------------
->>> [   61.327159] MAX OUT OF RANGE 63492 =20
->>=20
->> Well I guess there you have it ;-)
->>=20
->> vsprintf() doesn't like a precision of 63492!
->>=20
->> I'll look to see what the best way to deal with this is.
->=20
-> Does this fix it?
->=20
-Thank You. Yup this fixes the reported problem.
+> If I take the exemple of powerpc function slice_find_area_bottomup():
+> 
+> 	struct vm_unmapped_area_info info;
+> 
+> 	info.flags = 0;
+> 	info.length = len;
+> 	info.align_mask = PAGE_MASK & ((1ul << pshift) - 1);
+> 	info.align_offset = 0;
 
-# ./ftracetest test.d/00basic/trace_marker.tc=20
-=3D=3D=3D Ftrace unit tests =3D=3D=3D
-[1] Basic tests on writing to trace_marker [PASS]
-[2] (instance)  Basic tests on writing to trace_marker [PASS]
+But one cleanup that is possible from explicitly zero-initializing the
+whole structure would be dropping all the individual "= 0" assignments.
+:)
 
-
-# of passed:  2
-# of failed:  0
-# of unresolved:  0
-# of untested:  0
-# of unsupported:  0
-# of xfailed:  0
-# of undefined(test bug):  0
-#=20
-
-Remaining test also completed without any issues. Based on the test =
-results
-
-Tested-by: Sachin Sant <sachinp@linux.ibm.com>
-
-Thanks
-=E2=80=94 Sachin
+-- 
+Kees Cook
