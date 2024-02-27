@@ -2,52 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3573868594
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 02:10:48 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=FgCAthic;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id BC3258687A4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 04:16:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TkKDQ56Z9z3d2S
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 12:10:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TkN153s9Fz3vZf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 14:16:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=FgCAthic;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=chentao@kylinos.cn; receiver=lists.ozlabs.org)
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TkKCZ6K44z3bc2
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 12:10:02 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=gwiXT85stAdWTOUd6txuILwVivp2eGJBqmUEFcS5o58=; b=FgCAthicwmPNlQ+DMbEELBmK/I
-	qUAzdjuLcWA2Bys4HwHthcbpwBzlNPwaS/tovAfOoew9JrEZFYjESxt+zGf8GkFapHxP9/SO/esq9
-	bHcF/VwthH48hoKJXxy0LWHTdE9TbOnF3bJGbQkXPrKGnVbI83gQmS7rAZ+UCvS+MTjuKDVqPWq7L
-	6H023rd4HQlenEZ+ZGEIPQvCzTnNks64kjPFKDR1Fk3MSf2LLPo/wY2dO1IMuuj+Ffy/jw98te5qy
-	uxfagMnu+cQOjpgWnSf3CSb/QQb3G83xIV4aotv3un7jMKOheFwwVwCguDPGSOq/EvcNaNR/DoSr6
-	eX/RJ77w==;
-Received: from [50.53.50.0] (helo=[192.168.254.15])
-	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1relyf-00000003Dq6-1hGA;
-	Tue, 27 Feb 2024 01:09:59 +0000
-Message-ID: <7624c14e-0f5c-435c-9f6e-3d59b4e27aa2@infradead.org>
-Date: Mon, 26 Feb 2024 17:09:49 -0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TkN0f0txLz3c5Y
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 14:15:44 +1100 (AEDT)
+X-UUID: c8ede15c63dc4319b205f5b6728f9dcf-20240227
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.37,REQID:c3c17bce-c308-4406-879d-1df336acef54,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:-5
+X-CID-INFO: VERSION:1.1.37,REQID:c3c17bce-c308-4406-879d-1df336acef54,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:6f543d0,CLOUDID:8a4cda80-4f93-4875-95e7-8c66ea833d57,B
+	ulkID:240227111434QEHVDYUI,BulkQuantity:0,Recheck:0,SF:24|17|19|44|64|66|3
+	8|102,TC:nil,Content:0,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,
+	BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI,TF_CID_SPAM_SNR
+X-UUID: c8ede15c63dc4319b205f5b6728f9dcf-20240227
+Received: from mail.kylinos.cn [(39.156.73.10)] by mailgw
+	(envelope-from <chentao@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1125639519; Tue, 27 Feb 2024 11:14:32 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 4A023E000EBC;
+	Tue, 27 Feb 2024 11:14:32 +0800 (CST)
+X-ns-mid: postfix-65DD5398-216374431
+Received: from [172.20.15.254] (unknown [172.20.15.254])
+	by mail.kylinos.cn (NSMail) with ESMTPA id E330FE000EBC;
+	Tue, 27 Feb 2024 11:14:28 +0800 (CST)
+Message-ID: <f3b53f0e-58ce-4b2d-ba91-f347da73f9f3@kylinos.cn>
+Date: Tue, 27 Feb 2024 11:14:27 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: linux-next: Tree for Feb 26 (drivers/mtd/ubi/nvmem.c)
+Subject: Re: [PATCH] powerpc/mm: Code cleanup for __hash_page_thp
 Content-Language: en-US
-To: Stephen Rothwell <sfr@canb.auug.org.au>,
- Linux Next Mailing List <linux-next@vger.kernel.org>
-References: <20240226175509.37fa57da@canb.auug.org.au>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20240226175509.37fa57da@canb.auug.org.au>
-Content-Type: text/plain; charset=UTF-8
+To: Michael Ellerman <mpe@ellerman.id.au>, npiggin@gmail.com,
+ christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org,
+ naveen.n.rao@linux.ibm.com
+References: <20240125092624.537564-1-chentao@kylinos.cn>
+ <87h6hva4b0.fsf@mail.lhotse>
+From: Kunwu Chan <chentao@kylinos.cn>
+In-Reply-To: <87h6hva4b0.fsf@mail.lhotse>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -60,72 +68,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mtd@lists.infradead.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Thanks for the reply.
 
-
-On 2/25/24 22:55, Stephen Rothwell wrote:
-> Hi all,
+On 2024/2/26 18:49, Michael Ellerman wrote:
+> Kunwu Chan <chentao@kylinos.cn> writes:
+>> This part was commented from commit 6d492ecc6489
+>> ("powerpc/THP: Add code to handle HPTE faults for hugepages")
+>> in about 11 years before.
+>>
+>> If there are no plans to enable this part code in the future,
+>> we can remove this dead code.
 > 
-> Changes since 20240223:
+> I agree the code can go. But I'd like it to be replaced with a comment
+> explaining what the dead code was trying to say.
+Thanks, i'll update a new patch with the following comment:
+     /*
+     * No CPU has hugepages but lacks no execute, so we
+     * don't need to worry about cpu no CPU_FTR_COHERENT_ICACHE feature case
+     */
+
 > 
-
-on powerpc32:
-
-In file included from ./arch/powerpc/include/generated/asm/div64.h:1,
-                 from ../include/linux/math.h:6,
-                 from ../include/linux/kernel.h:27,
-                 from ../arch/powerpc/include/asm/page.h:11,
-                 from ../arch/powerpc/include/asm/thread_info.h:13,
-                 from ../include/linux/thread_info.h:60,
-                 from ../arch/powerpc/include/asm/ptrace.h:342,
-                 from ../arch/powerpc/include/asm/hw_irq.h:12,
-                 from ../arch/powerpc/include/asm/irqflags.h:12,
-                 from ../include/linux/irqflags.h:18,
-                 from ../include/asm-generic/cmpxchg-local.h:6,
-                 from ../arch/powerpc/include/asm/cmpxchg.h:755,
-                 from ../arch/powerpc/include/asm/atomic.h:11,
-                 from ../include/linux/atomic.h:7,
-                 from ../include/linux/rcupdate.h:25,
-                 from ../include/linux/rbtree.h:24,
-                 from ../drivers/mtd/ubi/ubi.h:14,
-                 from ../drivers/mtd/ubi/nvmem.c:7:
-../drivers/mtd/ubi/nvmem.c: In function 'ubi_nvmem_reg_read':
-../include/asm-generic/div64.h:222:35: warning: comparison of distinct pointer types lacks a cast
-  222 |         (void)(((typeof((n)) *)0) == ((uint64_t *)0));  \
-      |                                   ^~
-../drivers/mtd/ubi/nvmem.c:34:16: note: in expansion of macro 'do_div'
-   34 |         offs = do_div(lnum, unv->usable_leb_size);
-      |                ^~~~~~
-In file included from ../include/linux/build_bug.h:5,
-                 from ../include/linux/container_of.h:5,
-                 from ../include/linux/list.h:5,
-                 from ../drivers/mtd/ubi/ubi.h:13:
-../include/asm-generic/div64.h:234:32: warning: right shift count >= width of type [-Wshift-count-overflow]
-  234 |         } else if (likely(((n) >> 32) == 0)) {          \
-      |                                ^~
-../include/linux/compiler.h:76:45: note: in definition of macro 'likely'
-   76 | # define likely(x)      __builtin_expect(!!(x), 1)
-      |                                             ^
-../drivers/mtd/ubi/nvmem.c:34:16: note: in expansion of macro 'do_div'
-   34 |         offs = do_div(lnum, unv->usable_leb_size);
-      |                ^~~~~~
-../include/asm-generic/div64.h:238:36: error: passing argument 1 of '__div64_32' from incompatible pointer type [-Werror=incompatible-pointer-types]
-  238 |                 __rem = __div64_32(&(n), __base);       \
-      |                                    ^~~~
-      |                                    |
-      |                                    int *
-../drivers/mtd/ubi/nvmem.c:34:16: note: in expansion of macro 'do_div'
-   34 |         offs = do_div(lnum, unv->usable_leb_size);
-      |                ^~~~~~
-../include/asm-generic/div64.h:213:38: note: expected 'uint64_t *' {aka 'long long unsigned int *'} but argument is of type 'int *'
-  213 | extern uint32_t __div64_32(uint64_t *dividend, uint32_t divisor);
-      |                            ~~~~~~~~~~^~~~~~~~
-
-
-
-
+> cheers
+> 
+>> diff --git a/arch/powerpc/mm/book3s64/hash_hugepage.c b/arch/powerpc/mm/book3s64/hash_hugepage.c
+>> index c0fabe6c5a12..127a3a2c174b 100644
+>> --- a/arch/powerpc/mm/book3s64/hash_hugepage.c
+>> +++ b/arch/powerpc/mm/book3s64/hash_hugepage.c
+>> @@ -59,16 +59,6 @@ int __hash_page_thp(unsigned long ea, unsigned long access, unsigned long vsid,
+>>   
+>>   	rflags = htab_convert_pte_flags(new_pmd, flags);
+>>   
+>> -#if 0
+>> -	if (!cpu_has_feature(CPU_FTR_COHERENT_ICACHE)) {
+>> -
+>> -		/*
+>> -		 * No CPU has hugepages but lacks no execute, so we
+>> -		 * don't need to worry about that case
+>> -		 */
+>> -		rflags = hash_page_do_lazy_icache(rflags, __pte(old_pte), trap);
+>> -	}
+>> -#endif
+>>   	/*
+>>   	 * Find the slot index details for this ea, using base page size.
+>>   	 */
+>> -- 
+>> 2.39.2
 -- 
-#Randy
+Thanks,
+   Kunwu
+
