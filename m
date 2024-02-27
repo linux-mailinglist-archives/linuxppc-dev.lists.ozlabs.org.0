@@ -2,76 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B39178690A6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 13:33:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A86B38690BE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 13:39:42 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=zD5kCXkn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UV74+i2Q;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TkcN539rpz3vZ1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 23:33:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TkcWJ3Fymz3d2S
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 23:39:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=zD5kCXkn;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UV74+i2Q;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::42f; helo=mail-pf1-x42f.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TkcMM2s16z3cQj
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 23:32:47 +1100 (AEDT)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6e4ca46ab04so2497996b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 04:32:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709037165; x=1709641965; darn=lists.ozlabs.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=r6McJiuv+h7AyXeU5mDp5gY4ceOSplSmKT9ljaBZAeI=;
-        b=zD5kCXknWqO+ujdzIa7kV1i73RfiiPV9GKvJzIWOqQOcefGdVs1QOTDrJktTGmGIZy
-         effRgB58DRwsa6gJyY1sZdQo9aNCSGr+GOyhjFvp63qH19RoD7WAaPF9BRIhIXg38kbQ
-         jU4uiwx7AMv4aHEQgr5ou4NZJxAHAESkIoXLScLnlqTHN4OfRsyU5dQXCTQd2Nw+2c0r
-         uoxakCCrlfKw4ku4L/h7IPJu/x4AG+MFGZIarK4qI6UdH0H23yqzUB0o49XCH3g7PAhW
-         5JPDjkRA9RjWAqW5O3mA9rYTG4dRXUC3ONOMtPWlPuiUgE1lTegCK7GV/DjLYrCjXAx/
-         7Y0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709037165; x=1709641965;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=r6McJiuv+h7AyXeU5mDp5gY4ceOSplSmKT9ljaBZAeI=;
-        b=QrWtHyafqY0Zg8IgBFIjuJAObblGTTOvm3zCNQ7BHJn2GcqiTBXqu+0MFnE1cNKRiU
-         HpRTRMiwu9U+hwwOn34fg61w/lMqLds7+i2VFBTrUEJBZ8x/81j7uDF+Vs/FQUogl4Ir
-         /Pb83dDYfu1IwyNHfZpr6EucVVgU0JVJmdTCVPWmUQQrI64ll0jk3Z+jX0unosneCiiN
-         NFp9XMQ0SFm2/XzHaR9ZNTGMBspXGqYeNJL+0nRSjsIplth0p+B0wMrOthcr0/r26/K7
-         z/7CUdoI1Y98y+fmLVy5bjgy8RYQO+8UsmmX6zYmqZv89aHLw3BTmVhMGgbypm4qzrRn
-         sYZA==
-X-Forwarded-Encrypted: i=1; AJvYcCW2MVM9sXoHpfRpacc6kfYyvyfpw6YFiAImbGyHIs9xA3uTJtrZhl/Vd8i62+6ZL7nVBPN2d+yl+upeq9WancMudq34rMikaGCJlGgpag==
-X-Gm-Message-State: AOJu0YxWTTuhvClNA3myGnh4JJ3X3vAGAO5FW8/ICCsLFiz2USKD+lmn
-	bLRZxTQyz8fg95/9ipzMe9LhExE7pig3CsP9RWv8FeaYTRJpH7UqMHGB8lFWmA==
-X-Google-Smtp-Source: AGHT+IEFhhrIt7Yi0/j6C6WifjMm92/qMQnfNrHB04A6+0UV4a2UVc5t/CmWxX+vY2RC+MyJMs/Upg==
-X-Received: by 2002:a05:6a21:910c:b0:1a0:cce6:d526 with SMTP id tn12-20020a056a21910c00b001a0cce6d526mr2594508pzb.41.1709037164773;
-        Tue, 27 Feb 2024 04:32:44 -0800 (PST)
-Received: from thinkpad ([117.213.97.177])
-        by smtp.gmail.com with ESMTPSA id fn11-20020a056a002fcb00b006e0737f2bafsm5775175pfb.45.2024.02.27.04.32.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Feb 2024 04:32:44 -0800 (PST)
-Date: Tue, 27 Feb 2024 18:02:30 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Frank Li <Frank.li@nxp.com>
-Subject: Re: [PATCH v8 09/10] PCI: qcom-ep: Use the generic
- dw_pcie_ep_linkdown() API to handle LINK_DOWN event
-Message-ID: <20240227123230.GP2587@thinkpad>
-References: <20240224-pci-dbi-rework-v8-0-64c7fd0cfe64@linaro.org>
- <20240224-pci-dbi-rework-v8-9-64c7fd0cfe64@linaro.org>
- <ZdzIada1H95ike0t@lizhi-Precision-Tower-5810>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZdzIada1H95ike0t@lizhi-Precision-Tower-5810>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TkcVb1Rt0z3cRc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 23:39:02 +1100 (AEDT)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41RCHViA006252;
+	Tue, 27 Feb 2024 12:38:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=b928xqbPLuWZeWemVeMhSuZ04GMXi6apGDQECkQ6APY=;
+ b=UV74+i2QSvzidOPysLPByYq1ckc9ZtShO0BjGbkCyzfP76IBoinx3etFv1wqHQQt1baH
+ j4RAZCzLPl30R2xV4aV39dU8FwT31Zbarso8+sLO6arxxkBB7Q5awYyUe23bak8lg19F
+ W3rPV5HOiJ1KQsPDoTQHVHlJP6k5/61qZug2CuOOnRr0kixkbkkNZ3V9r7QfPgvadUrt
+ BCtCxRhGpdeEg1qtl4hdGOjpPbi1Cg3ev/L/4Wx3P1YaZBTeqx+P4wt6spWkW6PNTONO
+ p7iag6w3GtaLX5LqoImC6JF31YgPI/h+p+1ht9uEGfRmGXaYcHQNr4Uz4DK0aHqhqNtr uA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3whfkw8gy7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Feb 2024 12:38:47 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41RCUScs010671;
+	Tue, 27 Feb 2024 12:38:46 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3whfkw8gxv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Feb 2024 12:38:46 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41RCPGrK021792;
+	Tue, 27 Feb 2024 12:38:45 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wfu5yys5w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Feb 2024 12:38:45 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41RCcdsd21496464
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 27 Feb 2024 12:38:41 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8F05320043;
+	Tue, 27 Feb 2024 12:38:39 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 92C8920040;
+	Tue, 27 Feb 2024 12:38:36 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.0.228])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 27 Feb 2024 12:38:36 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.300.61.1.2\))
+Subject: Re: [RFC PATCH] selftest/powerpc: Add rule file to address sub-folder
+ test fail
+From: Sachin Sant <sachinp@linux.ibm.com>
+In-Reply-To: <20240225163926.264286-1-maddy@linux.ibm.com>
+Date: Tue, 27 Feb 2024 18:08:24 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <955703B5-578C-4189-A6D4-34AC56DC264C@linux.ibm.com>
+References: <20240225163926.264286-1-maddy@linux.ibm.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+X-Mailer: Apple Mail (2.3774.300.61.1.2)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: gPWmQ56CeLUPpoGOTsta0n8WYXz_El07
+X-Proofpoint-ORIG-GUID: 3e3wpgc3H3UBFcYpgkt5FasdULpCACFB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-26_11,2024-02-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ priorityscore=1501 spamscore=0 mlxscore=0 adultscore=0 phishscore=0
+ bulkscore=0 mlxlogscore=999 malwarescore=0 impostorscore=0 clxscore=1011
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402270098
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,43 +99,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <vigneshr@ti.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Kishon Vijay Abraham I <kishon@ti.com>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, linux-tegra@vger.kernel.org, Jonathan Hunter <jonathanh@nvidia.com>, NXP Linux Team <linux-imx@nxp.com>, Richard Zhu <hongxing.zhu@nxp.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org, Mingkai Hu <mingkai.hu@nxp.com>, linux-arm-kernel@lists.infradead.org, Roy Zang <roy.zang@nxp.com>, Niklas Cassel <cassel@kernel.org>, Jingoo Han <jingoohan1@gmail.com>, Yoshihiro Shimoda <yoshih
- iro.shimoda.uh@renesas.com>, linux-kernel@vger.kernel.org, Vidya Sagar <vidyas@nvidia.com>, linux-renesas-soc@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Gustavo Pimentel <gustavo.pimentel@synopsys.com>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
+Cc: linuxppc-dev@lists.ozlabs.org, aneesh.kumar@kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-kselftest@vger.kernel.org, naveen.n.rao@linux.ibm.com, shuah@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Feb 26, 2024 at 12:20:41PM -0500, Frank Li wrote:
-> On Sat, Feb 24, 2024 at 12:24:15PM +0530, Manivannan Sadhasivam wrote:
-> > Now that the API is available, let's make use of it. It also handles the
-> > reinitialization of DWC non-sticky registers in addition to sending the
-> > notification to EPF drivers.
-> > 
-> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > ---
-> >  drivers/pci/controller/dwc/pcie-qcom-ep.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/pci/controller/dwc/pcie-qcom-ep.c b/drivers/pci/controller/dwc/pcie-qcom-ep.c
-> > index 2fb8c15e7a91..4e45bc4bca45 100644
-> > --- a/drivers/pci/controller/dwc/pcie-qcom-ep.c
-> > +++ b/drivers/pci/controller/dwc/pcie-qcom-ep.c
-> > @@ -640,7 +640,7 @@ static irqreturn_t qcom_pcie_ep_global_irq_thread(int irq, void *data)
-> >  	if (FIELD_GET(PARF_INT_ALL_LINK_DOWN, status)) {
-> >  		dev_dbg(dev, "Received Linkdown event\n");
-> >  		pcie_ep->link_status = QCOM_PCIE_EP_LINK_DOWN;
-> > -		pci_epc_linkdown(pci->ep.epc);
-> > +		dw_pcie_ep_linkdown(&pci->ep);
-> 
-> Suppose pci_epc_linkdown() will call dw_pcie_ep_linkdown() ?
-> why need direct call dw_pcie_ep_linkdown() here?
-> 
 
-I've already justified this in the commit message. Here is the excerpt:
 
-"It also handles the reinitialization of DWC non-sticky registers in addition
-to sending the notification to EPF drivers."
+> On 25-Feb-2024, at 10:09=E2=80=AFPM, Madhavan Srinivasan =
+<maddy@linux.ibm.com> wrote:
+>=20
+> When running `make -C powerpc/pmu run_tests` from top level selftests
+> directory, currently this error is being reported
+>=20
+> make: Entering directory =
+'/home/maddy/linux/tools/testing/selftests/powerpc/pmu'
+> Makefile:40: warning: overriding recipe for target 'emit_tests'
+> ../../lib.mk:111: warning: ignoring old recipe for target 'emit_tests'
+> gcc -m64    count_instructions.c ../harness.c event.c lib.c ../utils.c =
+loop.S  -o /home/maddy/selftest_output//count_instructions
+> In file included from count_instructions.c:13:
+> event.h:12:10: fatal error: utils.h: No such file or directory
+>   12 | #include "utils.h"
+>      |          ^~~~~~~~~
+> compilation terminated.
+>=20
+> This is due to missing of include path in CFLAGS. That is, CFLAGS and
+> GIT_VERSION macros are defined in the powerpc/ folder Makefile which
+> in this case not involved.
+>=20
+> To address the failure incase of executing specific sub-folder test =
+directly,
+> a new rule file has been addded by the patch called "include.mk" under
+> selftest/powerpc/ folder and is linked to all Makefile of powerpc/pmu
+> sub-folders.
+>=20
+> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+> ---
 
-- Mani
+Thanks for the fix Maddy. The patch fixes the reported problem
+for me.
 
--- 
-மணிவண்ணன் சதாசிவம்
+=E2=80=94 Sachin
+
