@@ -2,62 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E81A868B21
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 09:46:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2B87868B2C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 09:47:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TkWKk6gdnz3vc9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 19:46:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TkWMN3xxHz3vcH
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 19:47:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.210.44; helo=mail-ot1-f44.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=lists.ozlabs.org)
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TkWKF6t4Mz3c1C
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 19:45:37 +1100 (AEDT)
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-6e497a1481cso639518a34.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 00:45:37 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709023534; x=1709628334;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uzwNvfzqcMx0O3hVp46LgRJMNTPfRBstut9NEe744kY=;
-        b=fCSLYaOgL86HUSKbSGnlhGuLfLa6qE0thN1FJ9ekkYwfFrOIzYTK2wYoUA/9tY0Ql1
-         Vukn8ejbvp13sndyoZHFk5wx8cxU17g7t/5d/cRZq9hvMv7hQEY95GSIs3z4MWPIX/n2
-         VN03uZx2c5v3GY+CI9d9RR7S09W66dQ6ogzLteeM7MDmDhv2iwAd+Ptb1HJYwLRAdBtG
-         xazWw9qW9UwReF9M7xmccQCZEbm9TzRY0/l5bTIbcP5ZYrc3tlZQKmmRzWrljTUfnu7B
-         Rhj+K9JhKkSpjBxdMpVgQqIPfnRNJ4jf1987FFyGcW9rqpsYDW9UYFoQ1/UT+Irxcdbw
-         SUmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXqLzUOu/yBzv0C57K3h30QtWr9Nwf21qUFELxcN4pCiRVP5J61Ao/8xjBdSdJdMyhaQuDS1JNnOjopTtGN1jUdEA0VpS28X4kBe2qn8A==
-X-Gm-Message-State: AOJu0Yy1SlZ05LDws5m202t3ZglfIJpb1gg0hghEYli7g001rNw4pdEN
-	zIEaOyoi3jZb3GAcea9iyzcvv1R14Hf+fxAVyAOeRoNNkH5wKKd3xeaUQ7xyQWkgBg==
-X-Google-Smtp-Source: AGHT+IFfoBSlnjZRbAFJa/IsGJQlI0HeH6mgd1OnK6SpfodmXzF+gUnE5irYR3+phhb4nHiGM68Zog==
-X-Received: by 2002:a9d:73c8:0:b0:6e2:e92e:4d6 with SMTP id m8-20020a9d73c8000000b006e2e92e04d6mr10663395otk.4.1709023533873;
-        Tue, 27 Feb 2024 00:45:33 -0800 (PST)
-Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com. [209.85.161.52])
-        by smtp.gmail.com with ESMTPSA id j22-20020a056830015600b006e4878962ddsm1452444otp.12.2024.02.27.00.45.33
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Feb 2024 00:45:33 -0800 (PST)
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-5a058b9bd2dso1858532eaf.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 00:45:33 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCX0PPTgXi6MWxty+f8bN3u6YPgS0OIFd10+ULsOMwoBvbZsi4OHUfgO5vpW7E3ACQEmyXPZRKasjmVnGk0bGzCwB3ImmVKozxlhzUFAPA==
-X-Received: by 2002:a25:84c7:0:b0:dc7:496e:42e1 with SMTP id
- x7-20020a2584c7000000b00dc7496e42e1mr1414712ybm.51.1709023513209; Tue, 27 Feb
- 2024 00:45:13 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TkWLy37vZz30dx
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 19:47:04 +1100 (AEDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1ret6v-0003DI-OB; Tue, 27 Feb 2024 09:46:49 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1ret6u-0039kQ-3P; Tue, 27 Feb 2024 09:46:48 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1ret6u-00CL29-02;
+	Tue, 27 Feb 2024 09:46:48 +0100
+Date: Tue, 27 Feb 2024 09:46:47 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Increasing build coverage for drivers/spi/spi-ppc4xx.c
+Message-ID: <qvuhez7vrcoui7i6s4yohd4ednneuoejcp6tw6iwzeefgpyvd6@fkwwtwozhakf>
 MIME-Version: 1.0
-References: <20240226161414.2316610-1-arnd@kernel.org> <20240226161414.2316610-2-arnd@kernel.org>
-In-Reply-To: <20240226161414.2316610-2-arnd@kernel.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 27 Feb 2024 09:45:01 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdVCWF50SO1TK5F5Q8sN08THKJ+F6gt9u5pD05gJUZ+E9w@mail.gmail.com>
-Message-ID: <CAMuHMdVCWF50SO1TK5F5Q8sN08THKJ+F6gt9u5pD05gJUZ+E9w@mail.gmail.com>
-Subject: Re: [PATCH 1/4] arch: consolidate existing CONFIG_PAGE_SIZE_*KB definitions
-To: Arnd Bergmann <arnd@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="pdqtf3l5nbfguqt3"
+Content-Disposition: inline
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,47 +54,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, loongarch@lists.linux.dev, Andreas Larsson <andreas@gaisler.com>, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, Vincenzo Frascino <vincenzo.frascino@arm.com>, Jan Kiszka <jan.kiszka@siemens.com>, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, Richard Weinberger <richard@nod.at>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, Vineet Gupta <vgupta@kernel.org>, Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org, linux-alpha@vger.kernel.org, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Kieran Bingham <kbingham@kernel.org>, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, Andy Lutomirski <luto@kernel.org>, John Paul Adrian Glaubitz <glaubitz@physik
- .fu-berlin.de>, Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Behnsen <anna-maria@linutronix.de>, linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-spi@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Mark Brown <broonie@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Arnd,
 
-On Mon, Feb 26, 2024 at 5:14=E2=80=AFPM Arnd Bergmann <arnd@kernel.org> wro=
-te:
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> These four architectures define the same Kconfig symbols for configuring
-> the page size. Move the logic into a common place where it can be shared
-> with all other architectures.
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+--pdqtf3l5nbfguqt3
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for your patch!
+Hello,
 
-> --- a/arch/Kconfig
-> +++ b/arch/Kconfig
+recently the spi-ppc4xx.c driver suffered from build errors and warnings
+that were undetected for longer than I expected. I think it would be
+very beneficial if this driver was enabled in (at least) a powerpc
+allmodconfig build.
 
-> +config PAGE_SIZE_4KB
-> +       bool "4KB pages"
+The challenge to do so is that spi-ppc4xx.c uses dcri_clrset() which is
+only defined for 4xx (as these select PPC_DCR_NATIVE).
 
-Now you got rid of the 4000-byte ("4kB") pages and friends, please
-do not replace these by Kelvin-bytes, and use the official binary
-prefixes =3D> "4 KiB".
+I wonder if dcri_clrset() could be defined for the PPC_DCR_MMIO case,
+too. I tried and failed. The best I came up without extensive doc
+reading is:
 
-> +       depends on HAVE_PAGE_SIZE_4KB
+diff --git a/arch/powerpc/include/asm/dcr-native.h b/arch/powerpc/include/a=
+sm/dcr-native.h
+index a92059964579..159ab7abfe46 100644
+--- a/arch/powerpc/include/asm/dcr-native.h
++++ b/arch/powerpc/include/asm/dcr-native.h
+@@ -115,15 +115,11 @@ static inline void __dcri_clrset(int base_addr, int b=
+ase_data, int reg,
+ 	unsigned int val;
+=20
+ 	spin_lock_irqsave(&dcr_ind_lock, flags);
+-	if (cpu_has_feature(CPU_FTR_INDEXED_DCR)) {
+-		mtdcrx(base_addr, reg);
+-		val =3D (mfdcrx(base_data) & ~clr) | set;
+-		mtdcrx(base_data, val);
+-	} else {
+-		__mtdcr(base_addr, reg);
+-		val =3D (__mfdcr(base_data) & ~clr) | set;
+-		__mtdcr(base_data, val);
+-	}
++
++	mtdcr(base_addr, reg);
++	val =3D (mfdcr(base_data) & ~clr) | set;
++	mtdcr(base_data, val);
++
+ 	spin_unlock_irqrestore(&dcr_ind_lock, flags);
+ }
+=20
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index bc7021da2fe9..9a0a5e8c70c8 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -810,7 +810,8 @@ config SPI_PL022
+=20
+ config SPI_PPC4xx
+ 	tristate "PPC4xx SPI Controller"
+-	depends on PPC32 && 4xx
++	depends on 4xx || COMPILE_TEST
++	depends on PPC32 || PPC64
+ 	select SPI_BITBANG
+ 	help
+ 	  This selects a driver for the PPC4xx SPI Controller.
 
-Gr{oetje,eeting}s,
+While this is a step in the right direction (I think) it's not enough to
+make the driver build (but maybe make it easier to define
+dcri_clrset()?)
 
-                        Geert
+Could someone with more powerpc knowledge jump in and help (for the
+benefit of better compile coverage of the spi driver and so less
+breakage)? (If you do so based on my changes above, you don't need to
+credit me for my effort, claim it as your's. I'm happy enough if the
+situation improves.)
+
+Thanks
+Uwe
 
 --=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+--pdqtf3l5nbfguqt3
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmXdoXcACgkQj4D7WH0S
+/k7vXQf6AkXGI7iH3aBjJ9XLOaapu4lrYQh0OTChbwICyvaJm2IF4w5DxEcHrlkn
+Eb99x993wMGR9NgL0unwgwsaMyFe4dwk244Syy6FYYDuhxime67J4XOIs3XXV9GL
+rUxW5EAZFU3RWL1QkaVE81ZMsn3OCrKd5eCFtE5nwSneNRcFsbclXYe8qD2MSeKI
+x9zhvaQYK3CcYQVUgyqW5NWyHFNXee7XiZHq16M/sthfzNlA2xYZwPY3A76DqVMB
+ayFxhR0QJBpsjZwlsjAxU8OgY1lDd9KZ6LsSP0CyQ4f8WDLv9fQN+rxu2JRLAiOL
+KLPe9WbnXfN9jS9m5PuCekpVBtIqyA==
+=Ij2S
+-----END PGP SIGNATURE-----
+
+--pdqtf3l5nbfguqt3--
