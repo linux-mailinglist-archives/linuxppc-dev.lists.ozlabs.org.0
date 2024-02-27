@@ -2,75 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39429868B51
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 09:54:49 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=qkOjZPgv;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id BED4C868B62
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 09:55:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TkWWp6pDqz3d4F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 19:54:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TkWXv4GmGz3vcL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 19:55:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=qkOjZPgv;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::62c; helo=mail-ej1-x62c.google.com; envelope-from=tudor.ambarus@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.167.170; helo=mail-oi1-f170.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TkWW5532kz30gM
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 19:54:08 +1100 (AEDT)
-Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-a36126ee41eso473046666b.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 00:54:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709024046; x=1709628846; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/R2gt8FfMfgy+vk+46mAFR8jEJEX98suuabTB+H5F6I=;
-        b=qkOjZPgvr3hNtZ2gcKjkqaB4DO7mT7T10YbBSt2wOFzB31kFa7c6jMBEa9efI8vlOt
-         g/ECmTH0fFURoA/Zphv7j96VpzWT37VbGTTSK7/NkewMg8ckDd7TFfMFqdHQveU4bQ02
-         88zxgilPwSY/Zwzi6p6eV+U16h9iLlu3JXeAcozSTvR0eegqmCpSXuUFwcUJHUzjHsgG
-         Yn6PiZm5exfGODk5n8olbKOVRSeG3oSRy5QkuwpJU+0gUyQ4EhZkCbLetoZbbp51mKrX
-         UPS/j5dXOGHfdFr243+G9E9Y7zIhIqvIXeqdilHZs2+G5ywy8NtRR5IjgmqUQlSGfx5J
-         Pv1g==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TkWXV6d5jz2ykt
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 19:55:22 +1100 (AEDT)
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3c19dd9ade5so875777b6e.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 00:55:22 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709024046; x=1709628846;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/R2gt8FfMfgy+vk+46mAFR8jEJEX98suuabTB+H5F6I=;
-        b=ZEBEdMeh215B+VC9eSkyJrhse1iOuNtZhFVuGZm6x++zImO89jnE1OLIRnJ6sml10M
-         9MAy7hA9cErdM4/mLjgJRmiisR6FzTNbgo9kwUCOrnCz6BBx7svrcDirleKxLNl3iJk9
-         eHhKVkQtR2JfYaNbEhTaudUt5SqcOb2E/PnfCQ8IHqVTOEX7lnFlxAJuI8zAGgUUR26F
-         CUG+XmnsXVsh4JA7H+UD9xi1h1zOczxxDEBYhNXtpuwhtmwzGBLysHb3i6Q9MunIA1cc
-         8BzrZROgJEJlAQ/PwtNM8Z1XqR027cXJZl5kQHlN0J6Ay3r6HR5/lMCzjqDDF1c0BdxK
-         G8nA==
-X-Forwarded-Encrypted: i=1; AJvYcCW60p5dvmo+tevyxZ04PaoPvxF8Vrlp1Nu9fIT92DK9BIHVc0s7b9/IHr7wLvZh1M4RIV8eJGwr0/OUvY3vWeK1Jn7PvcVXRVDNGZUBHw==
-X-Gm-Message-State: AOJu0YzKZpXMs65PSKCiuAPPsFLU4S+lizGI7vY0WTUcV1aZcLu+G2xt
-	JqZVD7wlErLqhigCnfF5f8O8mneHRpjzrYr+c+Q2H9WCcy6wtXU8dBOu+MPSuZ4=
-X-Google-Smtp-Source: AGHT+IGfbz+zIwvGhump2k6nxmb7eLS31X0yw5cokND+hQ1oEsVFKJwBygsFR+WovIqEMi1tyrEUxA==
-X-Received: by 2002:a17:906:6d8b:b0:a3f:dae9:1e88 with SMTP id h11-20020a1709066d8b00b00a3fdae91e88mr6406985ejt.37.1709024045603;
-        Tue, 27 Feb 2024 00:54:05 -0800 (PST)
-Received: from [192.168.2.107] ([79.115.63.202])
-        by smtp.gmail.com with ESMTPSA id i25-20020a1709063c5900b00a3f596aaf9dsm552002ejg.26.2024.02.27.00.54.04
+        d=1e100.net; s=20230601; t=1709024119; x=1709628919;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LF4kXg8LPe/h8pV/74EqYHGgPgOEfsUWLG6ibzoE1S0=;
+        b=t+D9DYK8wvy4SdJNQuke5WmMo0KWNNzGtLmmaWvloYjZrAuyJ7LX8GvKCazxWvQIbx
+         g+WcMFO6OAVOuzLVOm5BXiZHmFc9pDj9cpsJnr+k1Sp1lSdTrnM2Z/UIJsqj+OujWqgk
+         V1iek9f2AY6SQeykzu80dRJcW9qeoKFLWXh49lmHpENYqtzPaaYCNYUJAST/Z8LM39OS
+         tMZ6lxlaG6r0shP3YaMldSniqRMYlm66Htj9KGKtdgA1NDq/zSmpvcH1U6aMik3FxyUc
+         mNXoVPrEhTygLIQKXoRzQsjwiPuHBIpHBuS1n66eolcJ7B0EyWyb9u4inJmqTneN9KhY
+         Jw+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV6z/IFjwpmKLDli5pi1VE/Ci7yE3dnTArRhgkMVQT8sj+DblD9QmYPQIxepNd4Us7IafQ1i56/q91TDKUkPEmaRlohnTwxCEbKQrq10w==
+X-Gm-Message-State: AOJu0YzB8ls/Jv5bRP7LKLx4SkpQlKVngDeKcR+lAUHXHLgZMzRhLUuv
+	RbTe45b+N9uFmsxGL2HTNz7nrXMjwzj2VPI9BchhHKADKMd5RusH+b5WpGmpNKJHWQ==
+X-Google-Smtp-Source: AGHT+IFhD3mG0pSI0vz9DyeLGep+G9ChA7EkjzGYp8/UQ9vT6bJQE/Jil/vyf4X1Qg92u6624LCDCA==
+X-Received: by 2002:a05:6808:f94:b0:3c1:b289:f8d2 with SMTP id o20-20020a0568080f9400b003c1b289f8d2mr156201oiw.4.1709024119234;
+        Tue, 27 Feb 2024 00:55:19 -0800 (PST)
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com. [209.85.215.181])
+        by smtp.gmail.com with ESMTPSA id h10-20020a056a00230a00b006e363ca24dcsm5362726pfh.67.2024.02.27.00.55.18
+        for <linuxppc-dev@lists.ozlabs.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Feb 2024 00:54:05 -0800 (PST)
-Message-ID: <0b29d980-b3b4-4437-be24-19f54b473224@linaro.org>
-Date: Tue, 27 Feb 2024 08:54:03 +0000
+        Tue, 27 Feb 2024 00:55:18 -0800 (PST)
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-517ab9a4a13so3426707a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 00:55:18 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCV1IJoFAR4C0+UtzBAPZ4ysydSABAIojlK07zxAeBkEr3fL5Mt3b2spdxItcAfmMNFpPko2pECt0XTBZlxeI+hlJCb4ZXi0AHIeAv+1Lw==
+X-Received: by 2002:a25:71c3:0:b0:dcf:2b44:f38d with SMTP id
+ m186-20020a2571c3000000b00dcf2b44f38dmr1589302ybc.49.1709024097788; Tue, 27
+ Feb 2024 00:54:57 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Increasing build coverage for drivers/spi/spi-ppc4xx.c
-Content-Language: en-US
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <qvuhez7vrcoui7i6s4yohd4ednneuoejcp6tw6iwzeefgpyvd6@fkwwtwozhakf>
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
-In-Reply-To: <qvuhez7vrcoui7i6s4yohd4ednneuoejcp6tw6iwzeefgpyvd6@fkwwtwozhakf>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20240226161414.2316610-1-arnd@kernel.org> <20240226161414.2316610-4-arnd@kernel.org>
+In-Reply-To: <20240226161414.2316610-4-arnd@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 27 Feb 2024 09:54:46 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdWRBQF95fJ+NkPUdvpu5VfRm2WyTnvdqB1Xe7d4vsvY2g@mail.gmail.com>
+Message-ID: <CAMuHMdWRBQF95fJ+NkPUdvpu5VfRm2WyTnvdqB1Xe7d4vsvY2g@mail.gmail.com>
+Subject: Re: [PATCH 3/4] arch: define CONFIG_PAGE_SIZE_*KB on all architectures
+To: Arnd Bergmann <arnd@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,14 +69,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-spi@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Mark Brown <broonie@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: x86@kernel.org, loongarch@lists.linux.dev, Andreas Larsson <andreas@gaisler.com>, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, Vincenzo Frascino <vincenzo.frascino@arm.com>, Jan Kiszka <jan.kiszka@siemens.com>, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, Richard Weinberger <richard@nod.at>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, Vineet Gupta <vgupta@kernel.org>, Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org, linux-alpha@vger.kernel.org, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Kieran Bingham <kbingham@kernel.org>, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, Andy Lutomirski <luto@kernel.org>, John Paul Adrian Glaubitz <glaubitz@physik
+ .fu-berlin.de>, Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Behnsen <anna-maria@linutronix.de>, linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Arnd,
 
+On Mon, Feb 26, 2024 at 5:15=E2=80=AFPM Arnd Bergmann <arnd@kernel.org> wro=
+te:
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> Most architectures only support a single hardcoded page size. In order
+> to ensure that each one of these sets the corresponding Kconfig symbols,
+> change over the PAGE_SHIFT definition to the common one and allow
+> only the hardware page size to be selected.
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-On 2/27/24 08:46, Uwe Kleine-König wrote:
-> recently the spi-ppc4xx.c driver suffered from build errors and warnings
-> that were undetected for longer than I expected. I think it would be
+Thanks for your patch!
 
-long enough so that we remove the driver altogether?
+> --- a/arch/m68k/Kconfig
+> +++ b/arch/m68k/Kconfig
+> @@ -84,12 +84,15 @@ config MMU
+>
+>  config MMU_MOTOROLA
+>         bool
+> +       select HAVE_PAGE_SIZE_4KB
+>
+>  config MMU_COLDFIRE
+> +       select HAVE_PAGE_SIZE_8KB
+
+I think you can do without this...
+
+>         bool
+>
+>  config MMU_SUN3
+>         bool
+> +       select HAVE_PAGE_SIZE_8KB
+>         depends on MMU && !MMU_MOTOROLA && !MMU_COLDFIRE
+>
+>  config ARCH_SUPPORTS_KEXEC
+> diff --git a/arch/m68k/Kconfig.cpu b/arch/m68k/Kconfig.cpu
+> index 9dcf245c9cbf..c777a129768a 100644
+> --- a/arch/m68k/Kconfig.cpu
+> +++ b/arch/m68k/Kconfig.cpu
+> @@ -30,6 +30,7 @@ config COLDFIRE
+>         select GENERIC_CSUM
+>         select GPIOLIB
+>         select HAVE_LEGACY_CLK
+> +       select HAVE_PAGE_SIZE_8KB if !MMU
+
+.... if you would drop the !MMU-dependency here.
+
+>
+>  endchoice
+>
+> @@ -45,6 +46,7 @@ config M68000
+>         select GENERIC_CSUM
+>         select CPU_NO_EFFICIENT_FFS
+>         select HAVE_ARCH_HASH
+> +       select HAVE_PAGE_SIZE_4KB
+
+Perhaps replace this by
+
+    config M68KCLASSIC
+            bool "Classic M68K CPU family support"
+            select HAVE_ARCH_PFN_VALID
+  +         select HAVE_PAGE_SIZE_4KB if !MMU
+
+so it covers all 680x0 CPUs without MMU?
+
+>         select LEGACY_TIMER_TICK
+>         help
+>           The Freescale (was Motorola) 68000 CPU is the first generation =
+of
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
