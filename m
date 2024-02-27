@@ -2,78 +2,166 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBC0C869F87
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 19:51:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9579F86A0CF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 21:26:34 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=SHljwKuH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QBW+KCly;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tkmml1znsz3vfJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Feb 2024 05:51:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tkpt01dPFz3vXX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Feb 2024 07:26:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=SHljwKuH;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QBW+KCly;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=rick.p.edgecombe@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tkmm046bcz3vYC
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Feb 2024 05:51:12 +1100 (AEDT)
-Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1dc1ff697f9so37763565ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 10:51:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709059870; x=1709664670; darn=lists.ozlabs.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ZzsUzPaeQV0xVaYYOa5fkl+D3bB3KmqWtFdIBMocqZs=;
-        b=SHljwKuHgMMhSZ2/VOiSHJNV+emyQOWylhxPJHi6oWf1bJazrpo0qnHX35HHLM9p7m
-         y3aj+5K5AKwJd7UomRPA9BRu+FQXZtEuIM0bfvdZ2HzxppezhZGxm4WWz0EL/B8pl2FY
-         t6PH7V+UXCHt+V5bfMQF6b256UJo4LKxkOKNxtvMK6MrilGLuXWPKS47llGwOMFn3r9X
-         kwOU/joypnKp78POnW2ir4baYSvQC66gOpip1TauAsdNcefqPyLyS6DKysVhYiGqJ+m2
-         kFBUdf3T3LYKYEtL7FpmyQ56vOnEr06Q6fPtyR0EQlzeUHjxfW9E2ug9+s6xuh/grqoa
-         TkTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709059870; x=1709664670;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZzsUzPaeQV0xVaYYOa5fkl+D3bB3KmqWtFdIBMocqZs=;
-        b=OuwSz79V+tRqQvmNZChfyREUWqlfc1ytHFJ6RinX0kEN0GjbwJm9oMLHxasbhpfTVF
-         Q9lvnPdIslHtXYUFWVymEr6YLGDJBH3I7Xc7v+ansfwurto0efg3WQr7GFAIsg5wUA0F
-         Qs3r3bE1xdDq3Lk0ne5BaM+kAftL+zQH/4m1cxropIIe+ZPIs56eDkHJMaE29c4127zG
-         3EvkQ9pxcHZEBSVDDI0ktAsvUOX51AivvZU02VWE8q/urOke13vRsB5xiiEctr8X1xMN
-         qcY2x5AUZE55CIDLdGnUW8iUei4bLjO14OaS6PB7MEKguIbz35BYEYdUI88i418G/+e5
-         gHzw==
-X-Forwarded-Encrypted: i=1; AJvYcCXrxY1Dv75YGI2BoWyAzatT2DN2X9aNPqbGDdLRSZV3j7nkPha336c1rGi3Ry8VyOjDqOHVgELgCGFDXYYrPHmJgvBI652pwL6zFwjdKA==
-X-Gm-Message-State: AOJu0Yzc2nI5mtVwyvNnP0L1MUsfFUXLEO5nwQcu+FfOsfBd8AvRDy5E
-	AmV2nKeofZbZLQa8cUKWAQgBAlgTp1hHUnuFjqKDjqLbF7z+V43FH6kyDF8BnQ==
-X-Google-Smtp-Source: AGHT+IFMrquxHELSuk64r8EzaLnPYxdhtlQPf9g7u2EtEZHnTxtPf52KDLuAlSX+ap+F1qbMBmUq7w==
-X-Received: by 2002:a17:903:449:b0:1da:2c01:fef5 with SMTP id iw9-20020a170903044900b001da2c01fef5mr10095757plb.56.1709059869792;
-        Tue, 27 Feb 2024 10:51:09 -0800 (PST)
-Received: from thinkpad ([117.213.97.177])
-        by smtp.gmail.com with ESMTPSA id c3-20020a170902d90300b001db93340f9bsm1828147plz.205.2024.02.27.10.50.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Feb 2024 10:51:09 -0800 (PST)
-Date: Wed, 28 Feb 2024 00:20:50 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Frank Li <Frank.li@nxp.com>
-Subject: Re: [PATCH v8 08/10] PCI: dwc: ep: Add a generic
- dw_pcie_ep_linkdown() API to handle LINK_DOWN event
-Message-ID: <20240227185050.GV2587@thinkpad>
-References: <20240224-pci-dbi-rework-v8-0-64c7fd0cfe64@linaro.org>
- <20240224-pci-dbi-rework-v8-8-64c7fd0cfe64@linaro.org>
- <ZdzH2lOSwBsIp/Jc@lizhi-Precision-Tower-5810>
- <20240227123024.GO2587@thinkpad>
- <Zd4bLZb2z4TEoR1a@lizhi-Precision-Tower-5810>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tkps94Q7Qz3dWS
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Feb 2024 07:25:47 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709065549; x=1740601549;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=r1ifcatoiUsd+Xh1ttZqzMtffywVmMZdBueEkc6NyxY=;
+  b=QBW+KClyBP6tzHfM0D4A+HeDycAxJOhBQLEYlT45RCokU5xBLOFLLQX7
+   SfyRjDgf6B5rUOZQTbqASwP2HgOa1lAPC0sON/lU9wSoWfy0vK2aApJES
+   LHSvXmunDHq8Mu4rGcPcQP8WbfVlf8rqc1Kl6M6vafCOFi+GO17UoLvdc
+   CX323hOtHOCdcXXrNbH8UuKpQ3HykhaPithUPGO4E5lvWN4da4mXJCPYf
+   dsUVNYtokTiK3gsZIBE9UgpR7pfdBNlmkqMYrToYLj3q7oUmm7KZwNxqO
+   dBGr7/hswG71LdB2pJwgVX/QFiYcgZF7DpbwkpinHjFR6gYtSTVBwSM2f
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="25900228"
+X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
+   d="scan'208";a="25900228"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2024 12:25:42 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,188,1705392000"; 
+   d="scan'208";a="11834764"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by orviesa004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 27 Feb 2024 12:25:43 -0800
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 27 Feb 2024 12:25:42 -0800
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 27 Feb 2024 12:25:42 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Tue, 27 Feb 2024 12:25:42 -0800
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.169)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 27 Feb 2024 12:25:41 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MDUkeKD7a/FadVaGoSAfNwNG/XsUVoGG8zJkfEEzyxYgHDNMQCDpquST7bkOInhko1WyMBBjl2ZXBv9pg7htt+h11jR+Sbhva6YKVfj/mXYXtx/P2pXMUFKDJbDMRQBoyoFPKP+RXZhth/2MHwVx/b3Tdj9DkKDtrhWFQ5qt1Xh01YydRimqkWLD77A8U0O+SFXqoCrOhODebQ5NuEkXSAC2gl1VXtS0M2xP0XDrvCEjVwPCP6yk8Qm/4Jg4yM3fnA/rLCyEk/70FUh/PnUJ/Laq/hBfJ2o4XC0my1FBVokQgNfF8MnZaFH2IZLSj0VG/1c1qF18zxri01pQbVfdSg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=r1ifcatoiUsd+Xh1ttZqzMtffywVmMZdBueEkc6NyxY=;
+ b=Az3uyDtD6hMps40M/GhuqMItCdIbZwgeQRxLvmjajj/KAxRRtvLgXX9sSPDO3RpblPvzUCSoGGhbT9ZaLVQpDcg2CkZwY2t+98O2WBzoVOMelVaCBX9OMFTatzvXt6KVbfVHC/8ZW8G65TGTtG5rQyLDkik9R7AxqCbJx6Yyk+gOws5MMvok8oGVzK0v2Tc7FT0QgRt2b7JzIEwnPHc20L6g4CO0XmDBc94X8HlJAKt+Ns7V4BsSUosxnlmHbKkU8iHrZ8PBopY3WsaLgvHS7zxO3xSHhKvd58PMQi+W2kK2BNglxNASowInEhiwlqnMREIA75du+S6FIrmY9E7KJQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MN0PR11MB5963.namprd11.prod.outlook.com (2603:10b6:208:372::10)
+ by PH8PR11MB8260.namprd11.prod.outlook.com (2603:10b6:510:1c3::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.25; Tue, 27 Feb
+ 2024 20:25:39 +0000
+Received: from MN0PR11MB5963.namprd11.prod.outlook.com
+ ([fe80::fc9e:b72f:eeb5:6c7b]) by MN0PR11MB5963.namprd11.prod.outlook.com
+ ([fe80::fc9e:b72f:eeb5:6c7b%5]) with mapi id 15.20.7339.022; Tue, 27 Feb 2024
+ 20:25:38 +0000
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: "keescook@chromium.org" <keescook@chromium.org>,
+	"christophe.leroy@csgroup.eu" <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2 5/9] mm: Initialize struct vm_unmapped_area_info
+Thread-Topic: [PATCH v2 5/9] mm: Initialize struct vm_unmapped_area_info
+Thread-Index: AQHaaOdsOIuf9v8cz0SXVaOI9gIdJbEdxC+AgAC5pQCAAAKPgIAAJA2A
+Date: Tue, 27 Feb 2024 20:25:38 +0000
+Message-ID: <91384b505cb78b9d9b71ad58e037c1ed8dfb10d1.camel@intel.com>
+References: <20240226190951.3240433-1-rick.p.edgecombe@intel.com>
+	 <20240226190951.3240433-6-rick.p.edgecombe@intel.com>
+	 <94a2b919-e03b-4ade-b13e-7774849dc02b@csgroup.eu>
+	 <202402271004.7145FDB53F@keescook>
+	 <8265f804-4540-4858-adc3-a09c11a677eb@csgroup.eu>
+In-Reply-To: <8265f804-4540-4858-adc3-a09c11a677eb@csgroup.eu>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.44.4-0ubuntu2 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN0PR11MB5963:EE_|PH8PR11MB8260:EE_
+x-ms-office365-filtering-correlation-id: eb1ef6ea-d7c0-4fe5-8e10-08dc37d24329
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 0NTGFaDF3AnskwLwCUCcJ8N0/zZKaZUncC0PBTMkOc1/+C8Cv5uHaBOu/0Q6tj6L6OnYUoZ0IhpkhITJFTl9N28pMoNiArVQKRjr0aNKPsegKnP6SodL+rm1GrHAofKWFb3NTYH3pRdQDcxZmRAzWD/OO9INDb0toBE+rOWwZg5BTl7GwTo2kbHVaw72vrSwI52Jw05h2SEswUm44BBQFE5p4Lla31bEXG2o/FpfLEORugA55MTt2HXfDcekXKYTZXXKvlDGraQzFDD5TE+ojj/J1x9kVffHjhjFsCZaFfSweA5kRSKvIaFVGc3KjGc2oKPuK3zDFBYwj9dtT1VTrkM4kEKdpywbitWmzMO1CgoRsX9IzTcrE1lF81Jo91eSY/kOdWqe/uwMCUo/MTmj1YTwyCxQuirL0Qm/qTYxzkj4ztrgyNslC+Ng48JKLBJR0HhCRo0GV7MwOTuDcvXic3RNhla+GHbZHDDiZikr8IqCRl45qmi6m5CHniLGaB7knp8+q8+mEWK0yK/Xguz/9IXc0tcON942bJyG7esXH2+DRyJpA5I45weyfLp0rcrIODH9D0z9TW8BDZxa2NazPz61jMAgM8xWAoIpbtvyjTBP++XlkIw5VDsBiFLPyeO2DYstnM+y7qlYhGRSQA7eAGXlZrRzcLFUDFcxPNjt2HMZ9elDc1dELnLY39p829qizFDVyDdynQJDY2JYYhBNNzklaQWiq+eRrsKTiNm1Rjc=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB5963.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(230273577357003)(38070700009);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?R3BpWXVyVTNIa1h2Y1RGZEJkQUdSMHVhZUd4OEF2S0xaTjBBMk1nRk1aVDUz?=
+ =?utf-8?B?dmE1VkZMMXF0Um1CS3kyWEtoTHhCeGxDK2ZzOWw3bXdyU0dZdjJjbUdSNTR5?=
+ =?utf-8?B?QnhySExJVWF5amF1TVM3YjNBdThMcVc3cXBibnVybjk0WVhLVWV3c29ZQmlo?=
+ =?utf-8?B?aVNoVlUyazdDUURWVitCejl0NkdCZzExL3ZrWmdSMlhaU1d0cWw4Q3NyMk42?=
+ =?utf-8?B?aDNKb2owUmdQZmpLTzV1YkgvYnBOdElERTFpUmQ4djdMOU01djdaNDJiaVJ4?=
+ =?utf-8?B?akhOSTJoUzNzZGtuV3BNZE1JU1FTK0x0UVBYMzROSTR4NmZiZFVoUDRnOFRP?=
+ =?utf-8?B?QmVjeG9DYzEvVmlzOXJTY2RMcUh4dlhHcWg0cGdvVUtzTk14R2N5djVhMm1P?=
+ =?utf-8?B?NXZEcC81WlNzdisrV1BTY0dwbndyQXg4K3dtTWJsSU5SS0JKSkI3SHRhcnBy?=
+ =?utf-8?B?L2cwNmhwNng5NXgxWnhSWXdXK3E5V1VmUmJaVjJHZDdwRGM1WE5TTHd6OC9H?=
+ =?utf-8?B?bG8wMmxZZlIvYUwyR0VmOVdIWjFvMnczMmw2N0pEbjh0alpkT0JBMWs4aXJp?=
+ =?utf-8?B?Y3BOVmphcmdBVEtsQ2NMZnZyQ3RUenVGRHM4YTdIU0ZlRSs5WFRnQWZ5RUMx?=
+ =?utf-8?B?OWF3OTJyMHkxUEs5N0V1VFZOenFHYTJybzZpUlVzUWdPTFhHRlcyQTdJZlJQ?=
+ =?utf-8?B?OHErMXpVd3c5ajNzOTdoaVBubWczck5Gd3BMci8zbkdFV0xvN0Z1TnNPMVBN?=
+ =?utf-8?B?d0t3bEMxNHA4amFvYk1ENFJRcldjemhnMjNvSU1OUUtySjNrbHYyTllKdTl1?=
+ =?utf-8?B?WUNJNHllQWhZQ0I3SnI5VXo1TWVZUTl5WnZ3dk9kOFlYeXZuSXRDN2NaMnFH?=
+ =?utf-8?B?Qm1Ub2NUejl0ampLMXRySERieUV4YUVxNXNUT2oyZTdwVHFQUWFQazdyeDhy?=
+ =?utf-8?B?dGExNG5ja3hFNE5CZXNKODMxUjFkWWhRd1YyRmVHbHlBNkVxNnl4ZUJ4NUhx?=
+ =?utf-8?B?WnN2Snk1OHZFYWFOa3llZ3c1OEZ2L0Y2VVpuTlpGRFNIaWZRL3dWaUJPaEo3?=
+ =?utf-8?B?QklqWmxBVTlHNEt5eThFTFM3QXA2aW54QTBVMm9qSVpwK1h1ekQ0Z1lSZ0dr?=
+ =?utf-8?B?dWN0S1E4eTdNMUMvemlGYncvdHViTm0zOGd4cVl1dGdxR0hsek9qMzFiWjNE?=
+ =?utf-8?B?RVRDaG53ZXdYTE5rQmZpWTc0aXI3OGg5UHZoTzhkZ0hubW91UDZlZHNFeDlK?=
+ =?utf-8?B?bGp6QlN4YmNmSjlOMUZxY3Y4U28rajBLT2xNNWE5cTJEaE1qRVd4NjQzOVE3?=
+ =?utf-8?B?QUk4M21wT0kvLy9sclpuaDRlWmdyaG1VcC9KWG8yNnU2R09Ed1d0U21FVDRO?=
+ =?utf-8?B?bDQ2WDFzYzBSVnFCZEpoRnF4ZjJmck54R05HcVlpL1habW9uZWlDR0Fpak1H?=
+ =?utf-8?B?dVpRTWZDUGJPK2Y5OFI2YjYrT0dFNDB3ZDZPdWV2RXUyM01VTmtBNHFWM3hs?=
+ =?utf-8?B?R3R4eGo0MlhzTjBnejBPeTNPNXRpMzBnSjM5YjlMd1graXp1Q21iQUlKL0tB?=
+ =?utf-8?B?a3RWRDJHZjRGaGhmdTBLNG1yYittOEZ2OForemNJR01WbFZKSWFFY0xFeks1?=
+ =?utf-8?B?b2Z1UXhUVXJKb1ZFK3JwWXpjTktrY3BuNmtKaEg5NXBycDd0ZVZzR25vRDF0?=
+ =?utf-8?B?WHUwMXNjaG8ySTNKdHd0d1NFQ1lhNmp6QzBLOFhhREJHVmNRMFJ2TnB1YzdF?=
+ =?utf-8?B?STZuWUZzbFVNTytyRDh4anZFMG9hK2pNZ0VINUUxamdzV3FJTFozOXpHcUlE?=
+ =?utf-8?B?WC9OTHpMNGVLcENGS2pUNUU2a2tqV0FSUjN6UjJrYTU2NDk3dTlhUUkyRWhv?=
+ =?utf-8?B?dnBWbVlsUkpPZ0ZCZ0N5TU9HSldhNkl3ZW1udWxvMFBCRHlzYzBmVHVQbDBj?=
+ =?utf-8?B?d3VZZS8reVVWRDJnUGJsTEJHV3ZKTFF3b0FXNzZ5K2M4SmNXSzdUWnZkQ0ZH?=
+ =?utf-8?B?SmtIcCtMYit6cU5sUFB0VmdoeVRsNEJiVVdsVXhuZHNhZ1Rha0lIY3NpS1ZC?=
+ =?utf-8?B?UWkzU3ZPK1h4YTdkdE94T1VWRTFnRVhqWVI4TlowR1dvVG5VTm9xUjl0Umxy?=
+ =?utf-8?B?L3Y4UDh4S1I5YnY2OVNvYS9oaHVoeExqdDVrOCtaNWdMSG00SDZmRWFUZkZB?=
+ =?utf-8?B?ZVE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <64F24BEF83BF4C48A11FEA975D7F6246@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Zd4bLZb2z4TEoR1a@lizhi-Precision-Tower-5810>
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB5963.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: eb1ef6ea-d7c0-4fe5-8e10-08dc37d24329
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Feb 2024 20:25:38.9160
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: alyDoEOTBDOL/uZHfXWW+JI2if0b7ra4RHspdeUPmWcysp7Uwk7OnuVYMG6DZLlWIgoM1QzJvIhlhEfWfKQXg55gvR+u8ebmb52Ti2XnUlY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB8260
+X-OriginatorOrg: intel.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,252 +173,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <vigneshr@ti.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Kishon Vijay Abraham I <kishon@ti.com>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, linux-tegra@vger.kernel.org, Jonathan Hunter <jonathanh@nvidia.com>, NXP Linux Team <linux-imx@nxp.com>, Richard Zhu <hongxing.zhu@nxp.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org, Mingkai Hu <mingkai.hu@nxp.com>, linux-arm-kernel@lists.infradead.org, Roy Zang <roy.zang@nxp.com>, Niklas Cassel <cassel@kernel.org>, Jingoo Han <jingoohan1@gmail.com>, Yoshihiro Shimoda <yoshih
- iro.shimoda.uh@renesas.com>, linux-kernel@vger.kernel.org, Vidya Sagar <vidyas@nvidia.com>, linux-renesas-soc@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Gustavo Pimentel <gustavo.pimentel@synopsys.com>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
+Cc: "luto@kernel.org" <luto@kernel.org>, "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>, "peterz@infradead.org" <peterz@infradead.org>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "hpa@zytor.com" <hpa@zytor.com>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>, "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "broonie@kernel.org" <broonie@kernel.org>, "bp@alien8.de" <bp@alien8.de>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, "tglx@linutronix.de" <tglx@linutronix.de>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "debug@rivosinc.com" <debug
+ @rivosinc.com>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Feb 27, 2024 at 12:26:05PM -0500, Frank Li wrote:
-> On Tue, Feb 27, 2024 at 06:00:24PM +0530, Manivannan Sadhasivam wrote:
-> > On Mon, Feb 26, 2024 at 12:18:18PM -0500, Frank Li wrote:
-> > > On Sat, Feb 24, 2024 at 12:24:14PM +0530, Manivannan Sadhasivam wrote:
-> > > > The PCIe link can go to LINK_DOWN state in one of the following scenarios:
-> > > > 
-> > > > 1. Fundamental (PERST#)/hot/warm reset
-> > > > 2. Link transition from L2/L3 to L0
-> > > 
-> > > From L0 to L2/l3
-> > > 
-> > 
-> > I don't understand what you mean here. Link down won't happen while moving from
-> > L0 to L2/L3, it is the opposite.
-> 
-> Strange, why there are not linkdown from L0 to L2/l3. But have linkdown
-> from L2/l3 to L0? when linkup happen? Any document show these?
-> 
-
-Refer PCIe Spec 5.0, Figure 5-1 Link Power Management State Flow Diagram.
-
-- Mani
-
-> Frank
-> 
-> > 
-> > > > 
-> > > > In those cases, LINK_DOWN causes some non-sticky DWC registers to loose the
-> > > > state (like REBAR, PTM_CAP etc...). So the drivers need to reinitialize
-> > > > them to function properly once the link comes back again.
-> > > > 
-> > > > This is not a problem for drivers supporting PERST# IRQ, since they can
-> > > > reinitialize the registers in the PERST# IRQ callback. But for the drivers
-> > > > not supporting PERST#, there is no way they can reinitialize the registers
-> > > > other than relying on LINK_DOWN IRQ received when the link goes down. So
-> > > > let's add a DWC generic API dw_pcie_ep_linkdown() that reinitializes the
-> > > > non-sticky registers and also notifies the EPF drivers about link going
-> > > > down.
-> > > > 
-> > > > This API can also be used by the drivers supporting PERST# to handle the
-> > > > scenario (2) mentioned above.
-> > > > 
-> > > > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > > > ---
-> > > >  drivers/pci/controller/dwc/pcie-designware-ep.c | 111 ++++++++++++++----------
-> > > >  drivers/pci/controller/dwc/pcie-designware.h    |   5 ++
-> > > >  2 files changed, 72 insertions(+), 44 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> > > > index 278bdc9b2269..fed4c2936c78 100644
-> > > > --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-> > > > +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> > > > @@ -14,14 +14,6 @@
-> > > >  #include <linux/pci-epc.h>
-> > > >  #include <linux/pci-epf.h>
-> > > >  
-> > > > -void dw_pcie_ep_linkup(struct dw_pcie_ep *ep)
-> > > > -{
-> > > > -	struct pci_epc *epc = ep->epc;
-> > > > -
-> > > > -	pci_epc_linkup(epc);
-> > > > -}
-> > > > -EXPORT_SYMBOL_GPL(dw_pcie_ep_linkup);
-> > > > -
-> > > 
-> > > No sure why git remove this block and add these back.
-> > > 
-> > 
-> > Because, we are adding dw_pcie_ep_linkdown() API way below and it makes sense to
-> > move this API also to keep it ordered. Maybe I should've described it in commit
-> > message.
-> > 
-> > - Mani
-> > 
-> > > 
-> > > >  void dw_pcie_ep_init_notify(struct dw_pcie_ep *ep)
-> > > >  {
-> > > >  	struct pci_epc *epc = ep->epc;
-> > > > @@ -603,19 +595,56 @@ static unsigned int dw_pcie_ep_find_ext_capability(struct dw_pcie *pci, int cap)
-> > > >  	return 0;
-> > > >  }
-> > > >  
-> > > > +static void dw_pcie_ep_init_non_sticky_registers(struct dw_pcie *pci)
-> > > > +{
-> > > > +	unsigned int offset, ptm_cap_base;
-> > > > +	unsigned int nbars;
-> > > > +	u32 reg, i;
-> > > > +
-> > > > +	offset = dw_pcie_ep_find_ext_capability(pci, PCI_EXT_CAP_ID_REBAR);
-> > > > +	ptm_cap_base = dw_pcie_ep_find_ext_capability(pci, PCI_EXT_CAP_ID_PTM);
-> > > > +
-> > > > +	dw_pcie_dbi_ro_wr_en(pci);
-> > > > +
-> > > > +	if (offset) {
-> > > > +		reg = dw_pcie_readl_dbi(pci, offset + PCI_REBAR_CTRL);
-> > > > +		nbars = (reg & PCI_REBAR_CTRL_NBAR_MASK) >>
-> > > > +			PCI_REBAR_CTRL_NBAR_SHIFT;
-> > > > +
-> > > > +		for (i = 0; i < nbars; i++, offset += PCI_REBAR_CTRL)
-> > > > +			dw_pcie_writel_dbi(pci, offset + PCI_REBAR_CAP, 0x0);
-> > > > +	}
-> > > > +
-> > > > +	/*
-> > > > +	 * PTM responder capability can be disabled only after disabling
-> > > > +	 * PTM root capability.
-> > > > +	 */
-> > > > +	if (ptm_cap_base) {
-> > > > +		dw_pcie_dbi_ro_wr_en(pci);
-> > > > +		reg = dw_pcie_readl_dbi(pci, ptm_cap_base + PCI_PTM_CAP);
-> > > > +		reg &= ~PCI_PTM_CAP_ROOT;
-> > > > +		dw_pcie_writel_dbi(pci, ptm_cap_base + PCI_PTM_CAP, reg);
-> > > > +
-> > > > +		reg = dw_pcie_readl_dbi(pci, ptm_cap_base + PCI_PTM_CAP);
-> > > > +		reg &= ~(PCI_PTM_CAP_RES | PCI_PTM_GRANULARITY_MASK);
-> > > > +		dw_pcie_writel_dbi(pci, ptm_cap_base + PCI_PTM_CAP, reg);
-> > > > +		dw_pcie_dbi_ro_wr_dis(pci);
-> > > > +	}
-> > > > +
-> > > > +	dw_pcie_setup(pci);
-> > > > +	dw_pcie_dbi_ro_wr_dis(pci);
-> > > > +}
-> > > > +
-> > > >  int dw_pcie_ep_init_registers(struct dw_pcie_ep *ep)
-> > > >  {
-> > > >  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-> > > >  	struct dw_pcie_ep_func *ep_func;
-> > > >  	struct device *dev = pci->dev;
-> > > >  	struct pci_epc *epc = ep->epc;
-> > > > -	unsigned int offset, ptm_cap_base;
-> > > > -	unsigned int nbars;
-> > > >  	u8 hdr_type;
-> > > >  	u8 func_no;
-> > > > -	int i, ret;
-> > > >  	void *addr;
-> > > > -	u32 reg;
-> > > > +	int ret;
-> > > >  
-> > > >  	hdr_type = dw_pcie_readb_dbi(pci, PCI_HEADER_TYPE) &
-> > > >  		   PCI_HEADER_TYPE_MASK;
-> > > > @@ -678,38 +707,7 @@ int dw_pcie_ep_init_registers(struct dw_pcie_ep *ep)
-> > > >  	if (ep->ops->init)
-> > > >  		ep->ops->init(ep);
-> > > >  
-> > > > -	offset = dw_pcie_ep_find_ext_capability(pci, PCI_EXT_CAP_ID_REBAR);
-> > > > -	ptm_cap_base = dw_pcie_ep_find_ext_capability(pci, PCI_EXT_CAP_ID_PTM);
-> > > > -
-> > > > -	dw_pcie_dbi_ro_wr_en(pci);
-> > > > -
-> > > > -	if (offset) {
-> > > > -		reg = dw_pcie_readl_dbi(pci, offset + PCI_REBAR_CTRL);
-> > > > -		nbars = (reg & PCI_REBAR_CTRL_NBAR_MASK) >>
-> > > > -			PCI_REBAR_CTRL_NBAR_SHIFT;
-> > > > -
-> > > > -		for (i = 0; i < nbars; i++, offset += PCI_REBAR_CTRL)
-> > > > -			dw_pcie_writel_dbi(pci, offset + PCI_REBAR_CAP, 0x0);
-> > > > -	}
-> > > > -
-> > > > -	/*
-> > > > -	 * PTM responder capability can be disabled only after disabling
-> > > > -	 * PTM root capability.
-> > > > -	 */
-> > > > -	if (ptm_cap_base) {
-> > > > -		dw_pcie_dbi_ro_wr_en(pci);
-> > > > -		reg = dw_pcie_readl_dbi(pci, ptm_cap_base + PCI_PTM_CAP);
-> > > > -		reg &= ~PCI_PTM_CAP_ROOT;
-> > > > -		dw_pcie_writel_dbi(pci, ptm_cap_base + PCI_PTM_CAP, reg);
-> > > > -
-> > > > -		reg = dw_pcie_readl_dbi(pci, ptm_cap_base + PCI_PTM_CAP);
-> > > > -		reg &= ~(PCI_PTM_CAP_RES | PCI_PTM_GRANULARITY_MASK);
-> > > > -		dw_pcie_writel_dbi(pci, ptm_cap_base + PCI_PTM_CAP, reg);
-> > > > -		dw_pcie_dbi_ro_wr_dis(pci);
-> > > > -	}
-> > > > -
-> > > > -	dw_pcie_setup(pci);
-> > > > -	dw_pcie_dbi_ro_wr_dis(pci);
-> > > > +	dw_pcie_ep_init_non_sticky_registers(pci);
-> > > >  
-> > > >  	return 0;
-> > > >  
-> > > > @@ -720,6 +718,31 @@ int dw_pcie_ep_init_registers(struct dw_pcie_ep *ep)
-> > > >  }
-> > > >  EXPORT_SYMBOL_GPL(dw_pcie_ep_init_registers);
-> > > >  
-> > > > +void dw_pcie_ep_linkup(struct dw_pcie_ep *ep)
-> > > > +{
-> > > > +	struct pci_epc *epc = ep->epc;
-> > > > +
-> > > > +	pci_epc_linkup(epc);
-> > > > +}
-> > > > +EXPORT_SYMBOL_GPL(dw_pcie_ep_linkup);
-> > > > +
-> > > > +void dw_pcie_ep_linkdown(struct dw_pcie_ep *ep)
-> > > > +{
-> > > > +	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-> > > > +	struct pci_epc *epc = ep->epc;
-> > > > +
-> > > > +	/*
-> > > > +	 * Initialize the non-sticky DWC registers as they would've reset post
-> > > > +	 * LINK_DOWN. This is specifically needed for drivers not supporting
-> > > > +	 * PERST# as they have no way to reinitialize the registers before the
-> > > > +	 * link comes back again.
-> > > > +	 */
-> > > > +	dw_pcie_ep_init_non_sticky_registers(pci);
-> > > > +
-> > > > +	pci_epc_linkdown(epc);
-> > > > +}
-> > > > +EXPORT_SYMBOL_GPL(dw_pcie_ep_linkdown);
-> > > > +
-> > > >  int dw_pcie_ep_init(struct dw_pcie_ep *ep)
-> > > >  {
-> > > >  	int ret;
-> > > > diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-> > > > index f8e5431a207b..152969545b0a 100644
-> > > > --- a/drivers/pci/controller/dwc/pcie-designware.h
-> > > > +++ b/drivers/pci/controller/dwc/pcie-designware.h
-> > > > @@ -668,6 +668,7 @@ static inline void __iomem *dw_pcie_own_conf_map_bus(struct pci_bus *bus,
-> > > >  
-> > > >  #ifdef CONFIG_PCIE_DW_EP
-> > > >  void dw_pcie_ep_linkup(struct dw_pcie_ep *ep);
-> > > > +void dw_pcie_ep_linkdown(struct dw_pcie_ep *ep);
-> > > >  int dw_pcie_ep_init(struct dw_pcie_ep *ep);
-> > > >  int dw_pcie_ep_init_registers(struct dw_pcie_ep *ep);
-> > > >  void dw_pcie_ep_init_notify(struct dw_pcie_ep *ep);
-> > > > @@ -688,6 +689,10 @@ static inline void dw_pcie_ep_linkup(struct dw_pcie_ep *ep)
-> > > >  {
-> > > >  }
-> > > >  
-> > > > +static inline void dw_pcie_ep_linkdown(struct dw_pcie_ep *ep)
-> > > > +{
-> > > > +}
-> > > > +
-> > > >  static inline int dw_pcie_ep_init(struct dw_pcie_ep *ep)
-> > > >  {
-> > > >  	return 0;
-> > > > 
-> > > > -- 
-> > > > 2.25.1
-> > > > 
-> > 
-> > -- 
-> > மணிவண்ணன் சதாசிவம்
-
--- 
-மணிவண்ணன் சதாசிவம்
+T24gVHVlLCAyMDI0LTAyLTI3IGF0IDE4OjE2ICswMDAwLCBDaHJpc3RvcGhlIExlcm95IHdyb3Rl
+Og0KPiA+ID4gV2h5IGRvaW5nIGEgZnVsbCBpbml0IG9mIHRoZSBzdHJ1Y3Qgd2hlbiBhbGwgZmll
+bGRzIGFyZSByZS0NCj4gPiA+IHdyaXR0ZW4gYSBmZXcNCj4gPiA+IGxpbmVzIGFmdGVyID8NCj4g
+PiANCj4gPiBJdCdzIGEgbmljZSBjaGFuZ2UgZm9yIHJvYnVzdG5lc3MgYW5kIG1ha2VzIGZ1dHVy
+ZSBjaGFuZ2VzIGVhc2llci4NCj4gPiBJdCdzDQo+ID4gbm90IGFjdHVhbGx5IHdhc3RlZnVsIHNp
+bmNlIHRoZSBjb21waWxlciB3aWxsIHRocm93IGF3YXkgYWxsDQo+ID4gcmVkdW5kYW50DQo+ID4g
+c3RvcmVzLg0KPiANCj4gV2VsbCwgSSB0ZW5kIHRvIGRpc2xpa2UgZGVmYXVsdCBpbml0IGF0IGRl
+Y2xhcmF0aW9uIGJlY2F1c2UgaXQgb2Z0ZW4gDQo+IGhpZGVzIG1pc3NlZCByZWFsIGluaXQuIFdo
+ZW4gYSBmaWVsZCBpcyBub3QgaW5pdGlhbGl6ZWQgR0NDIHNob3VsZA0KPiBlbWl0IA0KPiBhIFdh
+cm5pbmcsIGF0IGxlYXN0IHdoZW4gYnVpbHQgd2l0aCBXPTIgd2hpY2ggc2V0cyANCj4gLVdtaXNz
+aW5nLWZpZWxkLWluaXRpYWxpemVycyA/DQoNClNvcnJ5LCBJJ20gbm90IGZvbGxvd2luZyB3aGVy
+ZSB5b3UgYXJlIGdvaW5nIHdpdGggdGhpcy4gVGhlcmUgYXJlbid0DQphbnkgc3RydWN0IHZtX3Vu
+bWFwcGVkX2FyZWFfaW5mbyB1c2VycyB0aGF0IHVzZSBpbml0aWFsaXplcnMgdG9kYXksIHNvDQp0
+aGF0IHdhcm5pbmcgd29uJ3QgYXBwbHkgaW4gdGhpcyBjYXNlLiBNZWFud2hpbGUsIGRlc2lnbmF0
+ZWQgc3R5bGUNCnN0cnVjdCBpbml0aWFsaXphdGlvbiAod2hpY2ggd291bGQgemVybyBuZXcgbWVt
+YmVycykgaXMgdmVyeSBjb21tb24sIGFzDQp3ZWxsIGFzIG5vdCBnZXQgYW55dGhpbmcgY2hlY2tl
+ZCBieSB0aGF0IHdhcm5pbmcuIEFueXRoaW5nIHdpdGggdGhpcw0KbWFueSBtZW1iZXJzIGlzIHBy
+b2JhYmx5IGdvaW5nIHRvIHVzZSB0aGUgZGVzaWduYXRlZCBzdHlsZS4NCg0KSWYgd2UgYXJlIG9w
+dGltaXppbmcgdG8gYXZvaWQgYnVncywgdGhlIHdheSB0aGlzIHN0cnVjdCBpcyB1c2VkIHRvZGF5
+DQppcyBub3QgZ3JlYXQuIEl0IGlzIGVzc2VudGlhbGx5IGJlaW5nIHVzZWQgYXMgYW4gYXJndW1l
+bnQgcGFzc2VyLg0KTm9ybWFsbHkgd2hlbiBhIGZ1bmN0aW9uIHNpZ25hdHVyZSBjaGFuZ2VzLCBi
+dXQgYSBjYWxsZXIgaXMgbWlzc2VkLCBvZg0KY291cnNlIHRoZSBjb21waWxlciB3aWxsIG5vdGlj
+ZSBsb3VkbHkuIEJ1dCBub3QgaGVyZS4gU28gSSB0aGluaw0KcHJvYmFibHkgemVybyBpbml0aWFs
+aXppbmcgaXQgaXMgc2FmZXIgdGhhbiBiZWluZyBzZXR1cCB0byBwYXNzDQpnYXJiYWdlLg0KDQpJ
+J20gdHJ5aW5nIHRvIGZpZ3VyZSBvdXQgd2hhdCB0byBkbyBoZXJlLiBJZiBJIGNoYW5nZWQgaXQg
+c28gdGhhdCBqdXN0DQpwb3dlcnBjIHNldCB0aGUgbmV3IGZpZWxkIG1hbnVhbGx5LCB0aGVuIHRo
+ZSBjb252ZW50aW9uIGFjcm9zcyB0aGUNCmtlcm5lbCB3b3VsZCBiZSBmb3IgZXZlcnl0aGluZyB0
+byBiZSBkZWZhdWx0IHplcm8sIGFuZCBmdXR1cmUgb3RoZXIgbmV3DQpwYXJhbWV0ZXJzIGNvdWxk
+IGhhdmUgYSBncmVhdGVyIGNoYW5jZSBvZiB0dXJuaW5nIGludG8gZ2FyYmFnZSBvbg0KcG93ZXJw
+Yy4gU2luY2UgaXQgY291bGQgYmUgZWFzeSB0byBtaXNzIHRoYXQgcG93ZXJwYyB3YXMgc3BlY2lh
+bC4gV291bGQNCnlvdSBwcmVmZXIgaXQ/DQoNCk9yIG1heWJlIEkgY291bGQgdHJ5IGEgbmV3IHZt
+X3VubWFwcGVkX2FyZWEoKSB0aGF0IHRha2VzIHRoZSBleHRyYQ0KYXJndW1lbnQgc2VwYXJhdGVs
+eT8gVGhlIG9sZCBjYWxsZXJzIGNvdWxkIGNhbGwgdGhlIG9sZCBmdW5jdGlvbiBhbmQNCm5vdCBu
+ZWVkIGFueSBhcmNoIHVwZGF0ZXMuIEl0IGFsbCBzZWVtcyBzdHJhbmdlIHRob3VnaCwgYmVjYXVz
+ZQ0KYXV0b21hdGljIHplcm8gaW5pdGlhbGl6aW5nIHN0cnVjdCBtZW1iZXJzIGlzIHNvIGNvbW1v
+biBpbiB0aGUga2VybmVsLg0KQnV0IGl0IGFsc28gd291bGRuJ3QgYWRkIHRoZSBjbGVhbnVwIEtl
+ZXMgd2FzIHBvaW50aW5nIG91dC4gSG1tLg0KDQpBbnkgcHJlZmVyZW5jZT8gT3IgbWF5YmUgYW0g
+SSBtaXNzaW5nIHlvdXIgcG9pbnQgYW5kIHRhbGtpbmcgbm9uc2Vuc2U/DQoNCg==
