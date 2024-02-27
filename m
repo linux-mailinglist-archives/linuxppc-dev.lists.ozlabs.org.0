@@ -1,53 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E1EF868B88
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 10:03:35 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=rzlV55dA;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7F75868B9E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 10:05:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TkWjw6Mr8z3vZ1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 20:03:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TkWmF5T0Mz3dW3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Feb 2024 20:05:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=rzlV55dA;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.124; helo=out30-124.freemail.mail.aliyun.com; envelope-from=liusong@linux.alibaba.com; receiver=lists.ozlabs.org)
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=lists.ozlabs.org)
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TkWj8459Tz3c5J
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 20:02:50 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1709024565; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=bKyExLaJsMJFtDGzvQca2erL9AyFIbFelzMrpVgTicU=;
-	b=rzlV55dA/EulHOyzrz+tKIVP/GSIUV5b5wsi3x62+7/vlLRTp0R5+AOujcj0MTbXU/IbbX+RAnUNwYfLbzCYihy9bffR23tuPwGJ6b5Odfkf7R7sGNbEeN4D2Jt/RBhvF9S6UqzOiePdPz4MYefYcMxOPvDrviPaL4aGJG+33OA=
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R311e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046059;MF=liusong@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0W1M9Gjj_1709024562;
-Received: from 30.178.80.107(mailfrom:liusong@linux.alibaba.com fp:SMTPD_---0W1M9Gjj_1709024562)
-          by smtp.aliyun-inc.com;
-          Tue, 27 Feb 2024 17:02:44 +0800
-Message-ID: <49144bb6-dd90-44ef-965a-aa5af8d568b1@linux.alibaba.com>
-Date: Tue, 27 Feb 2024 17:02:41 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TkWlr4hj8z3bYc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Feb 2024 20:05:12 +1100 (AEDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1retOc-00065e-SA; Tue, 27 Feb 2024 10:05:06 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1retOc-003A8L-6j; Tue, 27 Feb 2024 10:05:06 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1retOc-00CLjC-0N;
+	Tue, 27 Feb 2024 10:05:06 +0100
+Date: Tue, 27 Feb 2024 10:05:05 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Tudor Ambarus <tudor.ambarus@linaro.org>
+Subject: Re: Increasing build coverage for drivers/spi/spi-ppc4xx.c
+Message-ID: <p6jiwwqxq5tkqgpipve46l6gyckjunaopmcbjo7h6da2taif2l@nuhpuagodhlz>
+References: <qvuhez7vrcoui7i6s4yohd4ednneuoejcp6tw6iwzeefgpyvd6@fkwwtwozhakf>
+ <0b29d980-b3b4-4437-be24-19f54b473224@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv10 4/4] watchdog/softlockup: report the most frequent
- interrupts
-To: Bitao Hu <yaoma@linux.alibaba.com>, dianders@chromium.org,
- tglx@linutronix.de, akpm@linux-foundation.org, pmladek@suse.com,
- kernelfans@gmail.com, deller@gmx.de, npiggin@gmail.com,
- tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
- jan.kiszka@siemens.com
-References: <20240226020939.45264-1-yaoma@linux.alibaba.com>
- <20240226020939.45264-5-yaoma@linux.alibaba.com>
-From: Liu Song <liusong@linux.alibaba.com>
-In-Reply-To: <20240226020939.45264-5-yaoma@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="rfhmgqw7ekafbys3"
+Content-Disposition: inline
+In-Reply-To: <0b29d980-b3b4-4437-be24-19f54b473224@linaro.org>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,211 +57,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org
+Cc: linux-spi@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Mark Brown <broonie@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-在 2024/2/26 10:09, Bitao Hu 写道:
-> When the watchdog determines that the current soft lockup is due
-> to an interrupt storm based on CPU utilization, reporting the
-> most frequent interrupts could be good enough for further
-> troubleshooting.
->
-> Below is an example of interrupt storm. The call tree does not
-> provide useful information, but we can analyze which interrupt
-> caused the soft lockup by comparing the counts of interrupts.
->
-> [  638.870231] watchdog: BUG: soft lockup - CPU#9 stuck for 26s! [swapper/9:0]
-> [  638.870825] CPU#9 Utilization every 4s during lockup:
-> [  638.871194]  #1:   0% system,          0% softirq,   100% hardirq,     0% idle
-> [  638.871652]  #2:   0% system,          0% softirq,   100% hardirq,     0% idle
-> [  638.872107]  #3:   0% system,          0% softirq,   100% hardirq,     0% idle
-> [  638.872563]  #4:   0% system,          0% softirq,   100% hardirq,     0% idle
-> [  638.873018]  #5:   0% system,          0% softirq,   100% hardirq,     0% idle
-> [  638.873494] CPU#9 Detect HardIRQ Time exceeds 50%. Most frequent HardIRQs:
-> [  638.873994]  #1: 330945      irq#7
-> [  638.874236]  #2: 31          irq#82
-> [  638.874493]  #3: 10          irq#10
-> [  638.874744]  #4: 2           irq#89
-> [  638.874992]  #5: 1           irq#102
-> ...
-> [  638.875313] Call trace:
-> [  638.875315]  __do_softirq+0xa8/0x364
->
-> Signed-off-by: Bitao Hu <yaoma@linux.alibaba.com>
-> ---
->   kernel/watchdog.c | 115 ++++++++++++++++++++++++++++++++++++++++++++--
->   1 file changed, 111 insertions(+), 4 deletions(-)
->
-> diff --git a/kernel/watchdog.c b/kernel/watchdog.c
-> index 69e72d7e461d..c9d49ae8d045 100644
-> --- a/kernel/watchdog.c
-> +++ b/kernel/watchdog.c
-> @@ -12,22 +12,25 @@
->   
->   #define pr_fmt(fmt) "watchdog: " fmt
->   
-> -#include <linux/mm.h>
->   #include <linux/cpu.h>
-> -#include <linux/nmi.h>
->   #include <linux/init.h>
-> +#include <linux/irq.h>
-> +#include <linux/irqdesc.h>
->   #include <linux/kernel_stat.h>
-> +#include <linux/kvm_para.h>
->   #include <linux/math64.h>
-> +#include <linux/mm.h>
->   #include <linux/module.h>
-> +#include <linux/nmi.h>
-> +#include <linux/stop_machine.h>
->   #include <linux/sysctl.h>
->   #include <linux/tick.h>
-> +
->   #include <linux/sched/clock.h>
->   #include <linux/sched/debug.h>
->   #include <linux/sched/isolation.h>
-> -#include <linux/stop_machine.h>
->   
->   #include <asm/irq_regs.h>
-> -#include <linux/kvm_para.h>
->   
->   static DEFINE_MUTEX(watchdog_mutex);
->   
-> @@ -417,13 +420,104 @@ static void print_cpustat(void)
->   	}
->   }
->   
-> +#define HARDIRQ_PERCENT_THRESH          50
-> +#define NUM_HARDIRQ_REPORT              5
-> +struct irq_counts {
-> +	int irq;
-> +	u32 counts;
-> +};
-> +
-> +static DEFINE_PER_CPU(bool, snapshot_taken);
-> +
-> +/* Tabulate the most frequent interrupts. */
-> +static void tabulate_irq_count(struct irq_counts *irq_counts, int irq, u32 counts, int rank)
-> +{
-> +	int i;
-> +	struct irq_counts new_count = {irq, counts};
-> +
-> +	for (i = 0; i < rank; i++) {
-> +		if (counts > irq_counts[i].counts)
-> +			swap(new_count, irq_counts[i]);
-> +	}
-> +}
-> +
-> +/*
-> + * If the hardirq time exceeds HARDIRQ_PERCENT_THRESH% of the sample_period,
-> + * then the cause of softlockup might be interrupt storm. In this case, it
-> + * would be useful to start interrupt counting.
-> + */
-> +static bool need_counting_irqs(void)
-> +{
-> +	u8 util;
-> +	int tail = __this_cpu_read(cpustat_tail);
-> +
-> +	tail = (tail + NUM_HARDIRQ_REPORT - 1) % NUM_HARDIRQ_REPORT;
-> +	util = __this_cpu_read(cpustat_util[tail][STATS_HARDIRQ]);
-> +	return util > HARDIRQ_PERCENT_THRESH;
-> +}
-> +
-> +static void start_counting_irqs(void)
-> +{
-> +	if (!__this_cpu_read(snapshot_taken)) {
-> +		kstat_snapshot_irqs();
-> +		__this_cpu_write(snapshot_taken, true);
-> +	}
-> +}
-> +
-> +static void stop_counting_irqs(void)
-> +{
-> +	__this_cpu_write(snapshot_taken, false);
-> +}
-> +
-> +static void print_irq_counts(void)
-> +{
-> +	unsigned int i, count;
-> +	struct irq_counts irq_counts_sorted[NUM_HARDIRQ_REPORT] = {
-> +		{-1, 0}, {-1, 0}, {-1, 0}, {-1, 0}, {-1, 0}
-> +	};
-> +
-> +	if (__this_cpu_read(snapshot_taken)) {
-> +		for_each_active_irq(i) {
-> +			count = kstat_get_irq_since_snapshot(i);
-> +			tabulate_irq_count(irq_counts_sorted, i, count, NUM_HARDIRQ_REPORT);
-> +		}
-> +
-> +		/*
-> +		 * We do not want the "watchdog: " prefix on every line,
-> +		 * hence we use "printk" instead of "pr_crit".
-> +		 */
-> +		printk(KERN_CRIT "CPU#%d Detect HardIRQ Time exceeds %d%%. Most frequent HardIRQs:\n",
-> +		       smp_processor_id(), HARDIRQ_PERCENT_THRESH);
-> +
-> +		for (i = 0; i < NUM_HARDIRQ_REPORT; i++) {
-> +			if (irq_counts_sorted[i].irq == -1)
-> +				break;
-> +
-> +			printk(KERN_CRIT "\t#%u: %-10u\tirq#%d\n",
-> +			       i + 1, irq_counts_sorted[i].counts,
-> +			       irq_counts_sorted[i].irq);
-> +		}
-> +
-> +		/*
-> +		 * If the hardirq time is less than HARDIRQ_PERCENT_THRESH% in the last
-> +		 * sample_period, then we suspect the interrupt storm might be subsiding.
-> +		 */
-> +		if (!need_counting_irqs())
-> +			stop_counting_irqs();
-> +	}
-> +}
-> +
->   static void report_cpu_status(void)
->   {
->   	print_cpustat();
-> +	print_irq_counts();
->   }
->   #else
->   static inline void update_cpustat(void) { }
->   static inline void report_cpu_status(void) { }
-> +static inline bool need_counting_irqs(void) { return false; }
-> +static inline void start_counting_irqs(void) { }
-> +static inline void stop_counting_irqs(void) { }
->   #endif
->   
->   /*
-> @@ -527,6 +621,18 @@ static int is_softlockup(unsigned long touch_ts,
->   			 unsigned long now)
->   {
->   	if ((watchdog_enabled & WATCHDOG_SOFTOCKUP_ENABLED) && watchdog_thresh) {
-> +		/*
-> +		 * If period_ts has not been updated during a sample_period, then
-> +		 * in the subsequent few sample_periods, period_ts might also not
-> +		 * be updated, which could indicate a potential softlockup. In
-> +		 * this case, if we suspect the cause of the potential softlockup
-> +		 * might be interrupt storm, then we need to count the interrupts
-> +		 * to find which interrupt is storming.
-> +		 */
-> +		if (time_after_eq(now, period_ts + get_softlockup_thresh() / NUM_SAMPLE_PERIODS) &&
-> +		    need_counting_irqs())
-> +			start_counting_irqs();
-> +
->   		/* Warn about unreasonable delays. */
->   		if (time_after(now, period_ts + get_softlockup_thresh()))
->   			return now - touch_ts;
-> @@ -549,6 +655,7 @@ static DEFINE_PER_CPU(struct cpu_stop_work, softlockup_stop_work);
->   static int softlockup_fn(void *data)
->   {
->   	update_touch_ts();
-> +	stop_counting_irqs();
->   	complete(this_cpu_ptr(&softlockup_completion));
->   
->   	return 0;
+--rfhmgqw7ekafbys3
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Looks good.
+Hello,
 
-Reviewed-by: Liu Song <liusong@linux.alibaba.com>
+On Tue, Feb 27, 2024 at 08:54:03AM +0000, Tudor Ambarus wrote:
+> On 2/27/24 08:46, Uwe Kleine-K=F6nig wrote:
+> > recently the spi-ppc4xx.c driver suffered from build errors and warnings
+> > that were undetected for longer than I expected. I think it would be
+>=20
+> long enough so that we remove the driver altogether?
 
+I know at least one user who noticed the driver being broken because he
+needs it and not because a build bot stumbled.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--rfhmgqw7ekafbys3
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmXdpcEACgkQj4D7WH0S
+/k40+Qf+McTNZyqk8elCNTKJEmtaH3li2C4DEQO+7AtfPhiLVsQVPAxDcO6QKt6z
+ON64F4KzMK8LdBxBmi3a3I3zceBJxvF8zlyj6X6xTRq2fmaUGm4axOZNliSvqPzo
++tJ3Dm9GKa0cEPX31xYt+2JVsN3KLBxqMdT62XqpUp1nzvRwLC0DjNUujpfljE7f
+n8MsLRrPQXHwrVQRKYGmJtxjUG0U4rY0FG4t/t7tO3XTOsrsIPm7oGbMcVNRPT+t
+7MC8NJUdGHkfXL6il/pid2C/BP7Div/e/rU8aConqvkuG/38ruaCYAYl/YI17+iN
+nkSDgHAltp5JO3Y06QoOqwMUIjNaTg==
+=GKeb
+-----END PGP SIGNATURE-----
+
+--rfhmgqw7ekafbys3--
