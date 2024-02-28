@@ -1,72 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE4A86BA25
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Feb 2024 22:45:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBC2886BAE7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Feb 2024 23:45:59 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Eg55CQf2;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=lrR0Guoc;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TlSZf6Brpz3dWw
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 08:45:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TlTwP3WRJz3c7s
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 09:45:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Eg55CQf2;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=lrR0Guoc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2a00:1450:4864:20::632; helo=mail-ej1-x632.google.com; envelope-from=dianders@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlSYx43qmz30fp
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 08:44:53 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 288C2CE1BB2
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Feb 2024 21:44:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 651D6C433F1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Feb 2024 21:44:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709156690;
-	bh=9btjwjDXQdzK9y/kYmZxO7THmAaeTwf9mBu08Kaot1Q=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=Eg55CQf2DKidt139wzmlk2tH3B7Mkt4CJymHKpfF5qkAUBLiBvXXxf+uwT3IF3HKi
-	 EWMmwuJgxANXQtXzz/pXZeoh6snDE4jfVGwUSQh5Rw1/xiXMBL3SAEeSBgZVrBFCFy
-	 uYMxEQcUzlY88hocNBRBFEFNBOadwyDlB/rIFfKHSip7tHVt2v8wzExMoofeBvuR/R
-	 pX2Pkacrrc8CgZS/pe+UOeGDwipiAzU1cvOIYZLPGQ16ztMTGwwaqCZGdja/ufLsOx
-	 +8dySlKeiIqH+eFIxe/gHhCMu7q3+81fgWPTV7VruGb41EI0iwMzrx5+8ZDUrnyZAv
-	 koYgaiChBbn+g==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 48666C4332E; Wed, 28 Feb 2024 21:44:50 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 207129] PowerMac G4 DP (5.6.2 debug kernel + inline KASAN)
- freezes shortly after booting with "do_IRQ: stack overflow: 1760"
-Date: Wed, 28 Feb 2024 21:44:50 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: RESOLVED
-X-Bugzilla-Resolution: CODE_FIX
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_status resolution
-Message-ID: <bug-207129-206035-GsfDsOnAGU@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-207129-206035@https.bugzilla.kernel.org/>
-References: <bug-207129-206035@https.bugzilla.kernel.org/>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlTvW1Ptkz3bqC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 09:45:08 +1100 (AEDT)
+Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-a44360a8b9dso18126266b.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Feb 2024 14:45:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1709160302; x=1709765102; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uaIW3mETQDzZhGMK3PRFUOCtdSx2PTiCbd1xUJLaJyo=;
+        b=lrR0Guocd4t6sQe/WbmLpRi8xSN0oe1RfCt2wkBV9Xj38skOBaQY1V+T3JQfknG830
+         ESMLGycHkFGMwKjq7+V2srJFB2cWzG4E4gZL+iaNc2m76OuiJ1O6n+02So1QCSLcviHR
+         jCRQVGxqQ5xoLTM9w1wagGwlRQ8zhkAD4nnhQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709160302; x=1709765102;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uaIW3mETQDzZhGMK3PRFUOCtdSx2PTiCbd1xUJLaJyo=;
+        b=nBrnBM/M4A+7pjaWOXWxvKOLYQcujg5ue5yr4omYhjovHveNLtRThK85fpn7L/BZCd
+         v/GcZPnAv/4KG39vhBJqdB1SP4ZBHNqSEFDGo2RuS9qt8puZ7s58d6+9REitMzvBKBkL
+         PsgZ79UfHGLuJRCVlUzfjgRQGMOSIwyncrvMAUzmSzUkAL9XqTaVfHNsDySay8lB5usz
+         jEWt5Ug/r/8CwPeviJitV0cu6ALujdHQeUWU1VwZjCU+fVG1TQ7cg8UYJqaclIYfYq/n
+         kvzuqpMggO0frh0uEuqiGy1xc+KMciTMyLTvAbfkrqVIUNnFW4ZXey4Oz9VC9/YY/x5a
+         cIsg==
+X-Forwarded-Encrypted: i=1; AJvYcCXknDQBMnhSb9kCICMSBKeKTKj0g4Lo2KyPHuipQb6LMfAIfi3B0G1KmqmkCj3eQ2tKKDWSVjCRfdBa8VhGAsAtbTZvV/cDwWuCnNSxoA==
+X-Gm-Message-State: AOJu0Yx+rPY7JMOcI3SuLvR10TuXmuXI/Fbc812k9Lx8dMsfj8ZK8WuF
+	aBQ0ar+nfzccMFqqOY9zHvfzM8K7Kv3kIYPRAQqj1gI1cO9cC1LxOfKP/pulShP9VUPG0cbOOaH
+	/wz+d
+X-Google-Smtp-Source: AGHT+IFhT9sYF5O6DdFhKgwTWiIRQ95OegTbKAXaTN069Upo22CHAz6Lyhgx8Io6DNxLaWTmdwnSOQ==
+X-Received: by 2002:a17:906:4152:b0:a3d:2243:29da with SMTP id l18-20020a170906415200b00a3d224329damr167211ejk.36.1709160302337;
+        Wed, 28 Feb 2024 14:45:02 -0800 (PST)
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com. [209.85.128.47])
+        by smtp.gmail.com with ESMTPSA id vk7-20020a170907cbc700b00a3f6466ba85sm2302633ejc.35.2024.02.28.14.45.00
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 28 Feb 2024 14:45:01 -0800 (PST)
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4129a748420so29255e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Feb 2024 14:45:00 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUFLaXGaWs6hFJHA8X/gwy1+i4eRmKyfVYupqDMvD4cdVgQvlDfIFsA15fmDCLXmi7x8p35z1rsn/p50C4EbU+J/J7+tqMsznwSbUoVoA==
+X-Received: by 2002:a05:600c:4e16:b0:412:b66f:3d0a with SMTP id
+ b22-20020a05600c4e1600b00412b66f3d0amr20561wmq.6.1709160300349; Wed, 28 Feb
+ 2024 14:45:00 -0800 (PST)
+MIME-Version: 1.0
+References: <20240228072216.95130-1-yaoma@linux.alibaba.com> <20240228072216.95130-3-yaoma@linux.alibaba.com>
+In-Reply-To: <20240228072216.95130-3-yaoma@linux.alibaba.com>
+From: Doug Anderson <dianders@chromium.org>
+Date: Wed, 28 Feb 2024 14:44:44 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=U1b+8atmju_w4eRmVKmSqjj6WCsy5EawYqj31fQ1kvrw@mail.gmail.com>
+Message-ID: <CAD=FV=U1b+8atmju_w4eRmVKmSqjj6WCsy5EawYqj31fQ1kvrw@mail.gmail.com>
+Subject: Re: [PATCHv11 2/4] genirq: Provide a snapshot mechanism for interrupt statistics
+To: Bitao Hu <yaoma@linux.alibaba.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
-MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,43 +85,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: pmladek@suse.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, jan.kiszka@siemens.com, deller@gmx.de, liusong@linux.alibaba.com, kernelfans@gmail.com, linux-kernel@vger.kernel.org, James.Bottomley@hansenpartnership.com, npiggin@gmail.com, tglx@linutronix.de, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, akpm@linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D207129
+Hi,
 
-Erhard F. (erhard_f@mailbox.org) changed:
+On Tue, Feb 27, 2024 at 11:22=E2=80=AFPM Bitao Hu <yaoma@linux.alibaba.com>=
+ wrote:
+>
+> The soft lockup detector lacks a mechanism to identify interrupt storms
+> as root cause of a lockup. To enable this the detector needs a
+> mechanism to snapshot the interrupt count statistics on a CPU when the
+> detector observes a potential lockup scenario and compare that against
+> the interrupt count when it warns about the lockup later on. The number
+> of interrupts in that period give a hint whether the lockup might be
+> caused by an interrupt storm.
+>
+> Instead of having extra storage in the lockup detector and accessing
+> the internals of the interrupt descriptor directly, convert the per CPU
+> irq_desc::kstat_irq member to a data structure which contains the
+> counter plus a snapshot member and provide interfaces to take a
+> snapshot of all interrupts on the current CPU and to retrieve the delta
+> of a specific interrupt later on.
+>
+> Originally-by: Thomas Gleixner <tglx@linutronix.de>
+> Signed-off-by: Bitao Hu <yaoma@linux.alibaba.com>
+> Reviewed-by: Liu Song <liusong@linux.alibaba.com>
+> ---
+>  arch/mips/dec/setup.c                |  2 +-
+>  arch/parisc/kernel/smp.c             |  2 +-
+>  arch/powerpc/kvm/book3s_hv_rm_xics.c |  2 +-
+>  include/linux/irqdesc.h              | 14 ++++++++++--
+>  include/linux/kernel_stat.h          |  3 +++
+>  kernel/irq/internals.h               |  2 +-
+>  kernel/irq/irqdesc.c                 | 34 ++++++++++++++++++++++------
+>  kernel/irq/proc.c                    |  5 ++--
+>  scripts/gdb/linux/interrupts.py      |  6 ++---
+>  9 files changed, 51 insertions(+), 19 deletions(-)
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-             Status|REOPENED                    |RESOLVED
-         Resolution|---                         |CODE_FIX
+I won't insist on it, but I continue to worry about memory
+implications with large numbers of CPUs. With a 4-byte int, 8192 max
+CPUs, and 100 IRQs the extra "ref" value takes up over 3MB of memory
+(8192 * 4 bytes * 100).
 
---- Comment #11 from Erhard F. (erhard_f@mailbox.org) ---
-You were correct! I forgot about that...
+Technically, you could add a new symbol like "config
+NEED_IRQ_SNAPSHOTS". This wouldn't be a symbol selectable by the end
+user but would automatically be selected by "config
+SOFTLOCKUP_DETECTOR_INTR_STORM". If the config wasn't defined then the
+struct wouldn't contain "ref" and the snapshot routines would just be
+static inline stubs.
 
-I shrunk the size by using -Os and disabling some debugging stuff and chang=
-ing
-some statically built-in stuff to 'M' without sacrificing debugging
-capabilities too much until it fit < 32 MiB:
+Maybe Thomas has an opinion about whether this is something to worry
+about. Worst case it wouldn't be hard to do in a follow-up patch.
 
-KASAN_OUTLINE vs.
- # size vmlinux-6.8.0-rc6-PMacG4=20
-   text    data     bss     dec     hex filename
-12367737 6652440 426336 19446513 128baf1 vmlinux-6.8.0-rc6-PMacG4
+Everything else looks good to me. Given that I'm not insisting on
+adding the extra CONFIG, I'm OK w/:
 
-KASAN_INLINE
- # size vmlinux-6.8.0-rc6-PMacG4=20
-   text    data     bss     dec     hex filename
-24660169 6652440  426336 31738945 1e44c41 vmlinux-6.8.0-rc6-PMacG4
-
-
-Apart from that I can confirm inline KASAN runs fine now and I really no lo=
-nger
-get this stack overflow when using it.
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
