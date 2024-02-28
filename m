@@ -1,129 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA9286B38F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Feb 2024 16:45:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6910886B443
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Feb 2024 17:11:21 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=NnQnpny3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FE13DZ76;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TlJb21bPwz3vZd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 02:45:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TlK930568z3dWc
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 03:11:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=NnQnpny3;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FE13DZ76;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:261c::700; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20700.outbound.protection.outlook.com [IPv6:2a01:111:f403:261c::700])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=huschle@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlJZH3Phhz3bZ1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 02:44:37 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=I+lKkzUgiT28zuxxjj7VCP1mTgz9av7kywkvH7DKkQeSPO7r6CIfkKBrN/OKAPWPHW4Ls8lCIrLhgiuucUWTqHW4l21XvY1haaUOjOVnBGMlHtxSag3akKDlG1wmBRkRmjZOUGEP+kAH5ou4gL9yX1gHWKs2GTXzprspj+vR6S8zwHQ6Q4BdCWYGdz0V/bjLACP0oygBHnlWGrYH9Ex2yfip/PebFAYB2QVf7OA6jZnyiw3XChKd4s7WAvWU5tfF6UbeQDo/Ntd4772qWiVxEpJv85lU5/Mz01NnG3Ojk4YvwRm2LO/8A2ML9YENcXQXLH278K2yM1exhk4l6CmyIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3CENs7gSpryXGKee86mfDA0ussYio97rqoQhbB4ptrE=;
- b=LlqCzv7QYPFFnDlDGnTY/6D31H6IkzS6gLU3GbCl09jWlbdvaLOSzepuyTNNH6qgpPJVthh+f6f3D8OIvUsFqXFRjUcQZbku5A0jS5H4ZkeIje3lMVVyDlFGxNan6bKzRwI82bmPB3fKOw6hlyNWlDsRVbNDyn6zYK0cDCnF4mdzpaukjntTp0hMFE8eRrt/I4amjLNinbJCV1R5GaXUv0is8Q+b0IxdTsTIgZuKKf2ZpC9Qq0H0AQvpZQRMOtBoEgfA/UEe6sTsUVbZgk2nA7CZLxOt3/pxvbxg9jQlC2BNkHlrALbr0E1aFi8Oosx0sS4fHNCb9vzYF04s3A/d5A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3CENs7gSpryXGKee86mfDA0ussYio97rqoQhbB4ptrE=;
- b=NnQnpny3+s4D+qqSyscdJguu931ZkAxqJeOokKa0xKkSrS/bSZPF6vEfWqFrqcBJ3S64bVHagmbWHesCXWLPRh6e6QvTZqe7EHkFW7sOUerEJmBs6ESa38BmkiKm/gFLBk1iRdZX+KZrzTgDbvn+SD9uFhGPKaEf1pI5hPRMmF18r6bYlRcEQnfGKSdPZD+nuOrpFICMRKOj4TknGUT6rr/DbyOKSr+W1509QAObOL9FGSx/LtN2gKAx2hujrkc/fQM2KEOz7Y9iX7GgPAbirR4aspXPWHmVP4oc/O351JDmnElVxBXKyWr+9kKRxo7Pzb2EOOz/MqmLX+yXT7LvlA==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PAZP264MB3118.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1e7::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.39; Wed, 28 Feb
- 2024 15:44:14 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::c192:d40f:1c33:1f4e]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::c192:d40f:1c33:1f4e%6]) with mapi id 15.20.7316.037; Wed, 28 Feb 2024
- 15:44:14 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Eric Dumazet <edumazet@google.com>, Vadim Fedorenko
-	<vadim.fedorenko@linux.dev>
-Subject: Re: [revert 0d60d8df6f49] [net/net-next] [6.8-rc5] Build Failure
-Thread-Topic: [revert 0d60d8df6f49] [net/net-next] [6.8-rc5] Build Failure
-Thread-Index: AQHaajbPzM0q4kW/m0SFUzTmZzl0P7EfynaAgAAKIQCAABDwgA==
-Date: Wed, 28 Feb 2024 15:44:14 +0000
-Message-ID: <ad84ba42-2555-47dc-ba6b-66ce0eb0b1db@csgroup.eu>
-References: <3fcf3a2c-1c1b-42c1-bacb-78fdcd700389@linux.vnet.ibm.com>
- <85b78dad-affa-47c3-9cd0-79a4321460b8@linux.dev>
- <CANn89iJEzTjwxF7wXSnUR+NyDu-S-zEOYVXA+fEaYs_1o1g5HQ@mail.gmail.com>
-In-Reply-To:  <CANn89iJEzTjwxF7wXSnUR+NyDu-S-zEOYVXA+fEaYs_1o1g5HQ@mail.gmail.com>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla Thunderbird
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PAZP264MB3118:EE_
-x-ms-office365-filtering-correlation-id: 3e94b9ed-6a82-4a38-2555-08dc38741d8b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  +/f0brVt/tYbOs9mJDOnY7awi9aujNucyEWy8gmaI0gMO9N6mOTs0RFjyhQnlXJsOsLzYNZL2giUhOIFvoI1WIYSe40zAXkYejFKQFOImhvWhTLJjjwMARPwD8AKOIFQQpctDQe/GA8Pi8aUuoXm5v7/9l/XIczKEuR/fI1I3X5MMchAZhAUBwOSVFWSdvsRJ1ltqYaMVul9XvHj9AGWCvz/Zwedcm2zAKKmNss+PVOoQEsbGLLqdOWgvSQC7Q2zsm1ULGISyRvf0Me99w3bn1Lxq3g1iJSh3Al1uvh3O1VFNC/+iIcyLRPgAGtQZ5YOCFfTcbmbaBTYN+BTMBEV2Iji1YqNXQw6t41Lqo1synLU6cBt8mNplUNf2IIjMc4YqnOB7WACn50k0fQx9VJc5nEGdu+IFKXqjBVQWk3rUmTaELuymO9EcuVAUOpk+9/k8JQyBa/zg5JAgpLE1FW6ONfQIxM3VHUZK0l2u/5CdB6DKa0LfgGvZLGol6s+r9b1ouWoZ5Z0RpRC12GRQ5W771Ewa08s8kt04Li3/pbrnwWkbTNL9tAc+Yja19k3k968QmKpNkjxU98H9LC7HBjYNObWLTs2WmfLJ70yt2d0kLZK14Tj6kWLaeISHH7ZiAW4lrdvtZKBngzRlv9zXLZyhv50utRnLTJ/jkCsimbfmnkC6OZypYm/rjXRjH9Z48zrF/PhFy0njUm5qxO9Sh0P7T2MFnVpZM5/+T8IKGF1ZYk=
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(38070700009);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?cSs4S1M5Vm5rOEpmMkU5QmtUWlZSd2NBcm83ZmJna3VNRWtMbGRyVEVlRWpO?=
- =?utf-8?B?c3A4clNVV3dlKzRCVVFKUTJ4QjE2OEZ3R3VPRzhZb1Nvc3dTTGluZWNla3dv?=
- =?utf-8?B?WUg4TU9kQmtVcTBEV3h4VHlLZy9CK0QzUlZXenlVelF3cHNHNmpWZGdQL081?=
- =?utf-8?B?L2djMlFMbTNkN0tYdWluaGEzWGo2elVsQ3dpSXpwVGZYeEtrTkN4UldqSkND?=
- =?utf-8?B?OVJEdldFcVZiOGFaOTRCZDZWV2N3ekg2Mzd3dGdVN1JPQlVPYm5VMWdTaXhN?=
- =?utf-8?B?azJNNjkvQ092ZlJvOE5tbTFsVVNreDNIWkxTcGh2bEhaTXlxdHY0WWQweEVk?=
- =?utf-8?B?c2JJSFRGLzZOazFlZW13NkRWV2FqNlpmSHZKcnV4cG9lVzg1L1hHcEVtSDgz?=
- =?utf-8?B?QUxGRGYvU0RtK2xJOWZHM2dqWFhENFJINzFTMmFIdFBpRW9pSzlVRUNUd1pH?=
- =?utf-8?B?bXBjeGVSZEM0WmRCZU0zTVovUjJUTWU5QWFXeGozbEVVTHVGRXRBeTV0RHlG?=
- =?utf-8?B?bDlERDRsUk94ZFlSb1ZycnF5NTZFNlZQVkpRb0ZRcVZpKzR4dHBYbEc5QWpw?=
- =?utf-8?B?VVpqTVdJZVU0NWNzUVlDR2tSN0NZbTFIdDRRZ3BUa2NGTWdUaHZlbXI2WHBB?=
- =?utf-8?B?b09BNUc0eUlvVm43UzhDbEllRldMVVFkVllUSkpobjdWcGh1MGd5OHZFT1dh?=
- =?utf-8?B?bThTaUs4VDJFM0lRUndHK3lSREoyUTZQVmVuejJERExGVlE3ay9TQVdnTGtl?=
- =?utf-8?B?Mk9rUEM1eWtaeUJ3Z0YwaFpGM2plR0FlMDdjNngycFVEWGdhWitVZHZleS9v?=
- =?utf-8?B?Q01EZFVJUndrN0lUNUtPV1NZVXNlMzd3cE1FUWRHYmZGcnhaZ2ZOOUYrUjlo?=
- =?utf-8?B?akk5MkF6OWIyY0RlZlVibUFkTEV6UkgvWGNpWmJDTUFsUSttS0w5Ui9jVkNI?=
- =?utf-8?B?RVluZGhrZkhOWEFUL3ZVYi9XWnBGTTBzR3JqMWkvWTlkalF1c2ovSGhaWS9w?=
- =?utf-8?B?SDhSaXlhVnRzbG5ldmtSNWs4WnVSdVhmUFBYMEwwK0RFblNDekkyd2dMS0Mv?=
- =?utf-8?B?RDAwQzZxck9sYnVpQVliWkVYcElTQXczWWhhOWJUcmNEOXpLaFVkSjBzNDVq?=
- =?utf-8?B?STh0YUVPV0pWMmVDajBQYWlLcStFRlJnOUNmUFpQNHlJTlhyTkRlbzlzWEtm?=
- =?utf-8?B?MlF3NTZsWHh3elFZTDQ4d0tGaFRzWjVhSFJGZzRUWmpZRWlvdlIzcFNsU3hX?=
- =?utf-8?B?QzlEMkRHSS8xeUZPSXNQZFJKRnJ3OUVVSmJBSzRtNlptOUMya2VDRWJBeHZ2?=
- =?utf-8?B?ZVkrM0V5T1dVV25Mc1Vkd2pNQ1ByeXZBYnRFdGRGa2h2QkxsQnllVy9nUG54?=
- =?utf-8?B?U3JOb09Ra2toN0ZwdVlONGVmK0ZabEZWd1o5V0ZNYlJySjcvaExLb3BxWVhB?=
- =?utf-8?B?VkR6MVI3d0pkMlJLdDhtWFlNSHJmNTVlSkZaeENpRDZJd0lYUm01QzdWeUQv?=
- =?utf-8?B?QlBqUjFtYzZGTWp6UVZPRzJhTG9NczRhd1h2WnR5bjZodE5DQ0FJUXl2OUNr?=
- =?utf-8?B?NVp4WWhzUHhYLzlZMTVDVlZUeWx0TUZIRVowN1Q1K1Y0TEJZQitaQXM1bVRO?=
- =?utf-8?B?OGIyRU9zRkFOM0JvMmhtTElSa0ZPV0NLSll2dTNtTk9jay8rTjFJb2Jzci9w?=
- =?utf-8?B?d0NJaEsrSkJzcTZYRjJNUEdpd3M2YkRsbjZjUy9RNmd5QXlyc2N5R2JJcklJ?=
- =?utf-8?B?Kzd1SlBubERXbEhOY2VXblQvS09XWjBzeDdpR085dDM5TWhnVUozUkFWWk9Y?=
- =?utf-8?B?UjEyUFhuMU9zN09rYVpDVDNYUTlHSUM5LzA5SUovTjZ3ME5HNU00NG1DNDVi?=
- =?utf-8?B?cFJQUVFSd3gwc3dXR2VDbTRzMVBtaitQR2pXWVRucUNKQnppdE4zNnRZSmQv?=
- =?utf-8?B?WFNxaXpxWFpPY1B3Q3FzZUMwcSszaTMrWDkxZG85dnZnMllHcmkzMmtHQXBz?=
- =?utf-8?B?c1RsbWUzaVY0K1JjdXpjUzBFcnJmRm8zdXVuRGRCUzFRVE5xYXUzQ1pOeVNz?=
- =?utf-8?B?QTNRWi9kcHFwSmFtRUsveFFwRDlTejZFZGs2QVIvRDdaUTJsWFJKN25BcUNv?=
- =?utf-8?Q?uKkZwYpblm3RrT+o0PxkFk/Dm?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <0864BC955030D8438CBD8578674EBBB2@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlK8G4LDNz30NY
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 03:10:38 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41SG00j7011011;
+	Wed, 28 Feb 2024 16:10:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=lFzZ+uKK9jWdHGRqBfOIQfaRRz7nH+OApMLXZqmSw38=;
+ b=FE13DZ76EJt6cOMeazEmd3luq6vjhV1izqWqqFILHjRq7J+wPBPkU41f7W/i/duxxU6O
+ F2SyR82gdgLu5XjEBovjTiT3myUYOwsML3tqYv8baQLPqhXVU71w3B4e+MlaZ0zBUrYu
+ V+3Cad3XXKgLGF1i5hT0AUODMncaYo4+4Akv+GAU5+2REpdRhXCakcyHb8FVXBdyeXaU
+ Thlx5qYEh3ORDsYFaNZbK4MGXqWmcLD0jpAfmRk9Z4c7clnFtjpdebhdAkZLeW8Gq/q7
+ 7wZHpZGxMpc/e6QzHbpH5qkgE3AxYap9ckUrFD+b5XCFXVv+eXhnYdQciZuMwVSUPGhx Jg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wj7ybge9w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 28 Feb 2024 16:10:25 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41SFxwRa010832;
+	Wed, 28 Feb 2024 16:10:25 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wj7ybge9b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 28 Feb 2024 16:10:25 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41SDe9qQ008782;
+	Wed, 28 Feb 2024 16:10:24 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3wftstqkd1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 28 Feb 2024 16:10:24 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41SGAKGt28574014
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 28 Feb 2024 16:10:22 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 80D3C2005A;
+	Wed, 28 Feb 2024 16:10:20 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3FF9D2004F;
+	Wed, 28 Feb 2024 16:10:20 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.171.184.61])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 28 Feb 2024 16:10:20 +0000 (GMT)
+From: Tobias Huschle <huschle@linux.ibm.com>
+To: linux-kernel@vger.kernel.org
+Subject: [RFC] sched/eevdf: sched feature to dismiss lag on wakeup
+Date: Wed, 28 Feb 2024 17:10:18 +0100
+Message-Id: <20240228161018.14253-1-huschle@linux.ibm.com>
+X-Mailer: git-send-email 2.34.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: U_5Hm9dPXdMRVcUqEwgF8Jr34BZT4MAW
+X-Proofpoint-ORIG-GUID: htKPM3LVBjGR6p1vhcpzqx_CsnXtnahg
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3e94b9ed-6a82-4a38-2555-08dc38741d8b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Feb 2024 15:44:14.2485
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 8b/cbpOLEy1XZnrhh+75qAcGe8DJ9HF1K/UHxUXwjF3TDIfVPEDL0BeWU3kvOxZeiuAzznI5YIeh+JTNyHVvurSjeSw97dOhGAOtsFc6UBo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAZP264MB3118
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-28_08,2024-02-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
+ lowpriorityscore=0 mlxlogscore=999 adultscore=0 clxscore=1011
+ suspectscore=0 phishscore=0 impostorscore=0 mlxscore=0 spamscore=0
+ malwarescore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311290000 definitions=main-2402280126
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -135,134 +94,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "venkat88@linux.vnet.ibm.com" <venkat88@linux.vnet.ibm.com>, "mputtash@linux.vnet.com" <mputtash@linux.vnet.com>, Tasmiya Nalatwad <tasmiya@linux.vnet.ibm.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "arkadiusz.kubalewski@intel.com" <arkadiusz.kubalewski@intel.com>, "sachinp@linux.vnet.com" <sachinp@linux.vnet.com>, "abdhalee@linux.vnet.ibm.com" <abdhalee@linux.vnet.ibm.com>, "jiri@nvidia.com" <jiri@nvidia.com>, "kuba@kernel.org" <kuba@kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: juri.lelli@redhat.com, vschneid@redhat.com, vincent.guittot@linaro.org, srikar@linux.vnet.ibm.com, peterz@infradead.org, sshegde@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, rostedt@goodmis.org, bsegall@google.com, mingo@redhat.com, mgorman@suse.de, bristot@redhat.com, dietmar.eggemann@arm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDI4LzAyLzIwMjQgw6AgMTU6NDMsIEVyaWMgRHVtYXpldCBhIMOpY3JpdMKgOg0KPiBP
-biBXZWQsIEZlYiAyOCwgMjAyNCBhdCAzOjA34oCvUE0gVmFkaW0gRmVkb3JlbmtvDQo+IDx2YWRp
-bS5mZWRvcmVua29AbGludXguZGV2PiB3cm90ZToNCj4+DQo+PiBPbiAyOC8wMi8yMDI0IDExOjA5
-LCBUYXNtaXlhIE5hbGF0d2FkIHdyb3RlOg0KPj4+IEdyZWV0aW5ncywNCj4+Pg0KPj4+IFtyZXZl
-cnQgMGQ2MGQ4ZGY2ZjQ5XSBbbmV0L25ldC1uZXh0XSBbNi44LXJjNV0gQnVpbGQgRmFpbHVyZQ0K
-Pj4+DQo+Pj4gUmV2ZXJ0aW5nIGJlbG93IGNvbW1pdCBmaXhlcyB0aGUgaXNzdWUNCj4+Pg0KPj4+
-IGNvbW1pdCAwZDYwZDhkZjZmNDkzYmI0NmJmNWRiNDBkMzlkZDYwYTFiYWZkZDRlDQo+Pj4gICAg
-ICAgZHBsbDogcmVseSBvbiByY3UgZm9yIG5ldGRldl9kcGxsX3BpbigpDQo+Pj4NCj4+PiAtLS0g
-VHJhY2VzIC0tLQ0KPj4+DQo+Pj4gLi9pbmNsdWRlL2xpbnV4L2RwbGwuaDogSW4gZnVuY3Rpb24g
-4oCYbmV0ZGV2X2RwbGxfcGlu4oCZOg0KPj4+IC4vaW5jbHVkZS9saW51eC9yY3VwZGF0ZS5oOjQz
-OTo5OiBlcnJvcjogZGVyZWZlcmVuY2luZyBwb2ludGVyIHRvDQo+Pj4gaW5jb21wbGV0ZSB0eXBl
-IOKAmHN0cnVjdCBkcGxsX3BpbuKAmQ0KPj4+ICAgICB0eXBlb2YoKnApICpsb2NhbCA9ICh0eXBl
-b2YoKnApICpfX2ZvcmNlKVJFQURfT05DRShwKTsgXA0KPj4+ICAgICAgICAgICAgXg0KPj4+IC4v
-aW5jbHVkZS9saW51eC9yY3VwZGF0ZS5oOjU4NzoyOiBub3RlOiBpbiBleHBhbnNpb24gb2YgbWFj
-cm8NCj4+PiDigJhfX3JjdV9kZXJlZmVyZW5jZV9jaGVja+KAmQ0KPj4+ICAgICBfX3JjdV9kZXJl
-ZmVyZW5jZV9jaGVjaygocCksIF9fVU5JUVVFX0lEKHJjdSksIFwNCj4+PiAgICAgXn5+fn5+fn5+
-fn5+fn5+fn5+fn5+fn4NCj4+PiAuL2luY2x1ZGUvbGludXgvcnRuZXRsaW5rLmg6NzA6Mjogbm90
-ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvDQo+Pj4g4oCYcmN1X2RlcmVmZXJlbmNlX2NoZWNr4oCZ
-DQo+Pj4gICAgIHJjdV9kZXJlZmVyZW5jZV9jaGVjayhwLCBsb2NrZGVwX3J0bmxfaXNfaGVsZCgp
-KQ0KPj4+ICAgICBefn5+fn5+fn5+fn5+fn5+fn5+fn4NCj4+PiAuL2luY2x1ZGUvbGludXgvZHBs
-bC5oOjE3NTo5OiBub3RlOiBpbiBleHBhbnNpb24gb2YgbWFjcm8NCj4+PiDigJhyY3VfZGVyZWZl
-cmVuY2VfcnRubOKAmQ0KPj4+ICAgICByZXR1cm4gcmN1X2RlcmVmZXJlbmNlX3J0bmwoZGV2LT5k
-cGxsX3Bpbik7DQo+Pj4gICAgICAgICAgICBefn5+fn5+fn5+fn5+fn5+fn5+fg0KPj4+IG1ha2Vb
-NF06ICoqKiBbc2NyaXB0cy9NYWtlZmlsZS5idWlsZDoyNDM6IGRyaXZlcnMvZHBsbC9kcGxsX2Nv
-cmUub10gRXJyb3IgMQ0KPj4+IG1ha2VbNF06ICoqKiBXYWl0aW5nIGZvciB1bmZpbmlzaGVkIGpv
-YnMuLi4uDQo+Pj4gICAgIEFSICAgICAgbmV0L21wbHMvYnVpbHQtaW4uYQ0KPj4+ICAgICBBUiAg
-ICAgIG5ldC9sM21kZXYvYnVpbHQtaW4uYQ0KPj4+IEluIGZpbGUgaW5jbHVkZWQgZnJvbSAuL2lu
-Y2x1ZGUvbGludXgvcmJ0cmVlLmg6MjQsDQo+Pj4gICAgICAgICAgICAgICAgICAgIGZyb20gLi9p
-bmNsdWRlL2xpbnV4L21tX3R5cGVzLmg6MTEsDQo+Pj4gICAgICAgICAgICAgICAgICAgIGZyb20g
-Li9pbmNsdWRlL2xpbnV4L21tem9uZS5oOjIyLA0KPj4+ICAgICAgICAgICAgICAgICAgICBmcm9t
-IC4vaW5jbHVkZS9saW51eC9nZnAuaDo3LA0KPj4+ICAgICAgICAgICAgICAgICAgICBmcm9tIC4v
-aW5jbHVkZS9saW51eC91bWguaDo0LA0KPj4+ICAgICAgICAgICAgICAgICAgICBmcm9tIC4vaW5j
-bHVkZS9saW51eC9rbW9kLmg6OSwNCj4+PiAgICAgICAgICAgICAgICAgICAgZnJvbSAuL2luY2x1
-ZGUvbGludXgvbW9kdWxlLmg6MTcsDQo+Pj4gICAgICAgICAgICAgICAgICAgIGZyb20gZHJpdmVy
-cy9kcGxsL2RwbGxfbmV0bGluay5jOjk6DQo+Pj4gLi9pbmNsdWRlL2xpbnV4L2RwbGwuaDogSW4g
-ZnVuY3Rpb24g4oCYbmV0ZGV2X2RwbGxfcGlu4oCZOg0KPj4+IC4vaW5jbHVkZS9saW51eC9yY3Vw
-ZGF0ZS5oOjQzOTo5OiBlcnJvcjogZGVyZWZlcmVuY2luZyBwb2ludGVyIHRvDQo+Pj4gaW5jb21w
-bGV0ZSB0eXBlIOKAmHN0cnVjdCBkcGxsX3BpbuKAmQ0KPj4+ICAgICB0eXBlb2YoKnApICpsb2Nh
-bCA9ICh0eXBlb2YoKnApICpfX2ZvcmNlKVJFQURfT05DRShwKTsgXA0KPj4+ICAgICAgICAgICAg
-Xg0KPj4+IC4vaW5jbHVkZS9saW51eC9yY3VwZGF0ZS5oOjU4NzoyOiBub3RlOiBpbiBleHBhbnNp
-b24gb2YgbWFjcm8NCj4+PiDigJhfX3JjdV9kZXJlZmVyZW5jZV9jaGVja+KAmQ0KPj4+ICAgICBf
-X3JjdV9kZXJlZmVyZW5jZV9jaGVjaygocCksIF9fVU5JUVVFX0lEKHJjdSksIFwNCj4+PiAgICAg
-Xn5+fn5+fn5+fn5+fn5+fn5+fn5+fn4NCj4+PiAuL2luY2x1ZGUvbGludXgvcnRuZXRsaW5rLmg6
-NzA6Mjogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvDQo+Pj4g4oCYcmN1X2RlcmVmZXJlbmNl
-X2NoZWNr4oCZDQo+Pj4gICAgIHJjdV9kZXJlZmVyZW5jZV9jaGVjayhwLCBsb2NrZGVwX3J0bmxf
-aXNfaGVsZCgpKQ0KPj4+ICAgICBefn5+fn5+fn5+fn5+fn5+fn5+fn4NCj4+PiAuL2luY2x1ZGUv
-bGludXgvZHBsbC5oOjE3NTo5OiBub3RlOiBpbiBleHBhbnNpb24gb2YgbWFjcm8NCj4+PiDigJhy
-Y3VfZGVyZWZlcmVuY2VfcnRubOKAmQ0KPj4+ICAgICByZXR1cm4gcmN1X2RlcmVmZXJlbmNlX3J0
-bmwoZGV2LT5kcGxsX3Bpbik7DQo+Pj4gICAgICAgICAgICBefn5+fn5+fn5+fn5+fn5+fn5+fg0K
-Pj4+IG1ha2VbNF06ICoqKiBbc2NyaXB0cy9NYWtlZmlsZS5idWlsZDoyNDM6IGRyaXZlcnMvZHBs
-bC9kcGxsX25ldGxpbmsub10NCj4+PiBFcnJvciAxDQo+Pj4gbWFrZVszXTogKioqIFtzY3JpcHRz
-L01ha2VmaWxlLmJ1aWxkOjQ4MTogZHJpdmVycy9kcGxsXSBFcnJvciAyDQo+Pj4gbWFrZVszXTog
-KioqIFdhaXRpbmcgZm9yIHVuZmluaXNoZWQgam9icy4uLi4NCj4+PiBJbiBmaWxlIGluY2x1ZGVk
-IGZyb20gLi9hcmNoL3Bvd2VycGMvaW5jbHVkZS9nZW5lcmF0ZWQvYXNtL3J3b25jZS5oOjEsDQo+
-Pj4gICAgICAgICAgICAgICAgICAgIGZyb20gLi9pbmNsdWRlL2xpbnV4L2NvbXBpbGVyLmg6MjUx
-LA0KPj4+ICAgICAgICAgICAgICAgICAgICBmcm9tIC4vaW5jbHVkZS9saW51eC9pbnN0cnVtZW50
-ZWQuaDoxMCwNCj4+PiAgICAgICAgICAgICAgICAgICAgZnJvbSAuL2luY2x1ZGUvbGludXgvdWFj
-Y2Vzcy5oOjYsDQo+Pj4gICAgICAgICAgICAgICAgICAgIGZyb20gbmV0L2NvcmUvZGV2LmM6NzE6
-DQo+Pj4gbmV0L2NvcmUvZGV2LmM6IEluIGZ1bmN0aW9uIOKAmG5ldGRldl9kcGxsX3Bpbl9hc3Np
-Z27igJk6DQo+Pj4gLi9pbmNsdWRlL2xpbnV4L3JjdXBkYXRlLmg6NDYyOjM2OiBlcnJvcjogZGVy
-ZWZlcmVuY2luZyBwb2ludGVyIHRvDQo+Pj4gaW5jb21wbGV0ZSB0eXBlIOKAmHN0cnVjdCBkcGxs
-X3BpbuKAmQ0KPj4+ICAgICNkZWZpbmUgUkNVX0lOSVRJQUxJWkVSKHYpICh0eXBlb2YoKih2KSkg
-X19mb3JjZSBfX3JjdSAqKSh2KQ0KPj4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgXn5+fg0KPj4+IC4vaW5jbHVkZS9hc20tZ2VuZXJpYy9yd29uY2UuaDo1NTozMzogbm90
-ZTogaW4gZGVmaW5pdGlvbiBvZiBtYWNybw0KPj4+IOKAmF9fV1JJVEVfT05DReKAmQ0KPj4+ICAg
-ICAqKHZvbGF0aWxlIHR5cGVvZih4KSAqKSYoeCkgPSAodmFsKTsgICAgXA0KPj4+ICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgXn5+DQo+Pj4gLi9hcmNoL3Bvd2VycGMvaW5jbHVk
-ZS9hc20vYmFycmllci5oOjc2OjI6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybw0KPj4+IOKA
-mFdSSVRFX09OQ0XigJkNCj4+PiAgICAgV1JJVEVfT05DRSgqcCwgdik7ICAgICAgXA0KPj4+ICAg
-ICBefn5+fn5+fn5+DQo+Pj4gLi9pbmNsdWRlL2FzbS1nZW5lcmljL2JhcnJpZXIuaDoxNzI6NTU6
-IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybw0KPj4+IOKAmF9fc21wX3N0b3JlX3JlbGVhc2Xi
-gJkNCj4+PiAgICAjZGVmaW5lIHNtcF9zdG9yZV9yZWxlYXNlKHAsIHYpIGRvIHsga2NzYW5fcmVs
-ZWFzZSgpOw0KPj4+IF9fc21wX3N0b3JlX3JlbGVhc2UocCwgdik7IH0gd2hpbGUgKDApDQo+Pj4g
-Xn5+fn5+fn5+fn5+fn5+fn5+fg0KPj4+IC4vaW5jbHVkZS9saW51eC9yY3VwZGF0ZS5oOjUwMzoz
-OiBub3RlOiBpbiBleHBhbnNpb24gb2YgbWFjcm8NCj4+PiDigJhzbXBfc3RvcmVfcmVsZWFzZeKA
-mQ0KPj4+ICAgICAgc21wX3N0b3JlX3JlbGVhc2UoJnAsIFJDVV9JTklUSUFMSVpFUigodHlwZW9m
-KHApKV9yX2FfcF9fdikpOyBcDQo+Pj4gICAgICBefn5+fn5+fn5+fn5+fn5+fg0KPj4+IC4vaW5j
-bHVkZS9saW51eC9yY3VwZGF0ZS5oOjUwMzoyNTogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3Jv
-DQo+Pj4g4oCYUkNVX0lOSVRJQUxJWkVS4oCZDQo+Pj4gICAgICBzbXBfc3RvcmVfcmVsZWFzZSgm
-cCwgUkNVX0lOSVRJQUxJWkVSKCh0eXBlb2YocCkpX3JfYV9wX192KSk7IFwNCj4+PiAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICBefn5+fn5+fn5+fn5+fn4NCj4+PiBuZXQvY29yZS9kZXYuYzo5
-MDgxOjI6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybyDigJhyY3VfYXNzaWduX3BvaW50ZXLi
-gJkNCj4+PiAgICAgcmN1X2Fzc2lnbl9wb2ludGVyKGRldi0+ZHBsbF9waW4sIGRwbGxfcGluKTsN
-Cj4+PiAgICAgXn5+fn5+fn5+fn5+fn5+fn5+DQo+Pj4gbWFrZVs0XTogKioqIFtzY3JpcHRzL01h
-a2VmaWxlLmJ1aWxkOjI0MzogbmV0L2NvcmUvZGV2Lm9dIEVycm9yIDENCj4+PiBtYWtlWzRdOiAq
-KiogV2FpdGluZyBmb3IgdW5maW5pc2hlZCBqb2JzLi4uLg0KPj4+ICAgICBBUiAgICAgIGRyaXZl
-cnMvbmV0L2V0aGVybmV0L2J1aWx0LWluLmENCj4+PiAgICAgQVIgICAgICBkcml2ZXJzL25ldC9i
-dWlsdC1pbi5hDQo+Pj4gICAgIEFSICAgICAgbmV0L2RjYi9idWlsdC1pbi5hDQo+Pj4gICAgIEFS
-ICAgICAgbmV0L25ldGxhYmVsL2J1aWx0LWluLmENCj4+PiAgICAgQVIgICAgICBuZXQvc3RycGFy
-c2VyL2J1aWx0LWluLmENCj4+PiAgICAgQVIgICAgICBuZXQvaGFuZHNoYWtlL2J1aWx0LWluLmEN
-Cj4+PiAgICAgR0VOICAgICBsaWIvdGVzdF9mb3J0aWZ5LmxvZw0KPj4+ICAgICBBUiAgICAgIG5l
-dC84MDIxcS9idWlsdC1pbi5hDQo+Pj4gICAgIEFSICAgICAgbmV0L25zaC9idWlsdC1pbi5hDQo+
-Pj4gICAgIEFSICAgICAgbmV0L3VuaXgvYnVpbHQtaW4uYQ0KPj4+ICAgICBDQyAgICAgIGxpYi9z
-dHJpbmcubw0KPj4+ICAgICBBUiAgICAgIG5ldC9wYWNrZXQvYnVpbHQtaW4uYQ0KPj4+ICAgICBB
-UiAgICAgIG5ldC9zd2l0Y2hkZXYvYnVpbHQtaW4uYQ0KPj4+ICAgICBBUiAgICAgIGxpYi9saWIu
-YQ0KPj4+ICAgICBBUiAgICAgIG5ldC9tcHRjcC9idWlsdC1pbi5hDQo+Pj4gICAgIEFSICAgICAg
-bmV0L2RldmxpbmsvYnVpbHQtaW4uYQ0KPj4+IEluIGZpbGUgaW5jbHVkZWQgZnJvbSAuL2luY2x1
-ZGUvbGludXgvcmJ0cmVlLmg6MjQsDQo+Pj4gICAgICAgICAgICAgICAgICAgIGZyb20gLi9pbmNs
-dWRlL2xpbnV4L21tX3R5cGVzLmg6MTEsDQo+Pj4gICAgICAgICAgICAgICAgICAgIGZyb20gLi9p
-bmNsdWRlL2xpbnV4L21tem9uZS5oOjIyLA0KPj4+ICAgICAgICAgICAgICAgICAgICBmcm9tIC4v
-aW5jbHVkZS9saW51eC9nZnAuaDo3LA0KPj4+ICAgICAgICAgICAgICAgICAgICBmcm9tIC4vaW5j
-bHVkZS9saW51eC91bWguaDo0LA0KPj4+ICAgICAgICAgICAgICAgICAgICBmcm9tIC4vaW5jbHVk
-ZS9saW51eC9rbW9kLmg6OSwNCj4+PiAgICAgICAgICAgICAgICAgICAgZnJvbSAuL2luY2x1ZGUv
-bGludXgvbW9kdWxlLmg6MTcsDQo+Pj4gICAgICAgICAgICAgICAgICAgIGZyb20gbmV0L2NvcmUv
-cnRuZXRsaW5rLmM6MTc6DQo+Pj4gLi9pbmNsdWRlL2xpbnV4L2RwbGwuaDogSW4gZnVuY3Rpb24g
-4oCYbmV0ZGV2X2RwbGxfcGlu4oCZOg0KPj4+IC4vaW5jbHVkZS9saW51eC9yY3VwZGF0ZS5oOjQz
-OTo5OiBlcnJvcjogZGVyZWZlcmVuY2luZyBwb2ludGVyIHRvDQo+Pj4gaW5jb21wbGV0ZSB0eXBl
-IOKAmHN0cnVjdCBkcGxsX3BpbuKAmQ0KPj4+ICAgICB0eXBlb2YoKnApICpsb2NhbCA9ICh0eXBl
-b2YoKnApICpfX2ZvcmNlKVJFQURfT05DRShwKTsgXA0KPj4+ICAgICAgICAgICAgXg0KPj4+IC4v
-aW5jbHVkZS9saW51eC9yY3VwZGF0ZS5oOjU4NzoyOiBub3RlOiBpbiBleHBhbnNpb24gb2YgbWFj
-cm8NCj4+PiDigJhfX3JjdV9kZXJlZmVyZW5jZV9jaGVja+KAmQ0KPj4+ICAgICBfX3JjdV9kZXJl
-ZmVyZW5jZV9jaGVjaygocCksIF9fVU5JUVVFX0lEKHJjdSksIFwNCj4+PiAgICAgXn5+fn5+fn5+
-fn5+fn5+fn5+fn5+fn4NCj4+PiAuL2luY2x1ZGUvbGludXgvcnRuZXRsaW5rLmg6NzA6Mjogbm90
-ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvDQo+Pj4g4oCYcmN1X2RlcmVmZXJlbmNlX2NoZWNr4oCZ
-DQo+Pj4gICAgIHJjdV9kZXJlZmVyZW5jZV9jaGVjayhwLCBsb2NrZGVwX3J0bmxfaXNfaGVsZCgp
-KQ0KPj4+ICAgICBefn5+fn5+fn5+fn5+fn5+fn5+fn4NCj4+PiAuL2luY2x1ZGUvbGludXgvZHBs
-bC5oOjE3NTo5OiBub3RlOiBpbiBleHBhbnNpb24gb2YgbWFjcm8NCj4+PiDigJhyY3VfZGVyZWZl
-cmVuY2VfcnRubOKAmQ0KPj4+ICAgICByZXR1cm4gcmN1X2RlcmVmZXJlbmNlX3J0bmwoZGV2LT5k
-cGxsX3Bpbik7DQo+Pj4gICAgICAgICAgICBefn5+fn5+fn5+fn5+fn5+fn5+fg0KPj4+IEluIGZp
-bGUgaW5jbHVkZWQgZnJvbSBuZXQvY29yZS9ydG5ldGxpbmsuYzo2MDoNCj4+PiAuL2luY2x1ZGUv
-bGludXgvZHBsbC5oOjE3OToxOiBlcnJvcjogY29udHJvbCByZWFjaGVzIGVuZCBvZiBub24tdm9p
-ZA0KPj4+IGZ1bmN0aW9uIFstV2Vycm9yPXJldHVybi10eXBlXQ0KPj4+ICAgIH0NCj4+Pg0KPj4N
-Cj4+IEhpLCBFcmljIQ0KPj4NCj4+IExvb2tzIGxpa2Ugd2UgaGF2ZSB0byBtb3ZlIHN0cnVjdCBk
-cGxsX3BpbiBkZWZpbml0aW9uIHRvDQo+PiBpbmNsdWRlL2xpbnV4L2RwbGwuaCB0byBoYXZlIHRo
-aXMgZml4ZWQsIHJpZ2h0Pw0KPj4NCj4gDQo+IE5vIGlkZWEgd2hhdCBpcyB3cm9uZy4gSXMgaXQg
-cG93ZXJwYyBzcGVjaWZpYyA/IFNvbWUgY29tcGlsZXIgdmVyc2lvbiA/DQoNCk1pZ2h0IGJlIGEg
-Y2lyY3VsYXIgaGVhZGVyIGluY2x1c2lvbi4NCg0KQ2hyaXN0b3BoZQ0K
+The previously used CFS scheduler gave tasks that were woken up an
+enhanced chance to see runtime immediately by deducting a certain value
+from its vruntime on runqueue placement during wakeup.
+
+This property was used by some, at least vhost, to ensure, that certain
+kworkers are scheduled immediately after being woken up. The EEVDF
+scheduler, does not support this so far. Instead, if such a woken up
+entitiy carries a negative lag from its previous execution, it will have
+to wait for the current time slice to finish, which affects the
+performance of the process expecting the immediate execution negatively.
+
+To address this issue, implement EEVDF strategy #2 for rejoining
+entities, which dismisses the lag from previous execution and allows
+the woken up task to run immediately (if no other entities are deemed
+to be preferred for scheduling by EEVDF).
+
+The vruntime is decremented by an additional value of 1 to make sure,
+that the woken up tasks gets to actually run. This is of course not
+following strategy #2 in an exact manner but guarantees the expected
+behavior for the scenario described above. Without the additional
+decrement, the performance goes south even more. So there are some
+side effects I could not get my head around yet.
+
+Questions:
+1. The kworker getting its negative lag occurs in the following scenario
+   - kworker and a cgroup are supposed to execute on the same CPU
+   - one task within the cgroup is executing and wakes up the kworker
+   - kworker with 0 lag, gets picked immediately and finishes its
+     execution within ~5000ns
+   - on dequeue, kworker gets assigned a negative lag
+   Is this expected behavior? With this short execution time, I would
+   expect the kworker to be fine.
+   For a more detailed discussion on this symptom, please see:
+   https://lore.kernel.org/netdev/ZWbapeL34Z8AMR5f@DESKTOP-2CCOB1S./T/
+2. The proposed code change of course only addresses the symptom. Am I
+   assuming correctly that this is in general the exepected behavior and
+   that the task waking up the kworker should rather do an explicit
+   reschedule of itself to grant the kworker time to execute?
+   In the vhost case, this is currently attempted through a cond_resched
+   which is not doing anything because the need_resched flag is not set.
+
+Feedback and opinions would be highly appreciated.
+
+Signed-off-by: Tobias Huschle <huschle@linux.ibm.com>
+---
+ kernel/sched/fair.c     | 5 +++++
+ kernel/sched/features.h | 1 +
+ 2 files changed, 6 insertions(+)
+
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 533547e3c90a..c20ae6d62961 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -5239,6 +5239,11 @@ place_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
+ 		lag = div_s64(lag, load);
+ 	}
+ 
++	if (sched_feat(NOLAG_WAKEUP) && (flags & ENQUEUE_WAKEUP)) {
++		se->vlag = 0;
++		lag = 1;
++	}
++
+ 	se->vruntime = vruntime - lag;
+ 
+ 	/*
+diff --git a/kernel/sched/features.h b/kernel/sched/features.h
+index 143f55df890b..d3118e7568b4 100644
+--- a/kernel/sched/features.h
++++ b/kernel/sched/features.h
+@@ -7,6 +7,7 @@
+ SCHED_FEAT(PLACE_LAG, true)
+ SCHED_FEAT(PLACE_DEADLINE_INITIAL, true)
+ SCHED_FEAT(RUN_TO_PARITY, true)
++SCHED_FEAT(NOLAG_WAKEUP, true)
+ 
+ /*
+  * Prefer to schedule the task we woke last (assuming it failed
+-- 
+2.34.1
+
