@@ -2,49 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B725586AE0D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Feb 2024 12:49:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB7F486AE3D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Feb 2024 12:54:17 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=SlEmAVBK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nLD9Q0mj;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TlCLQ2Ywhz3dTr
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Feb 2024 22:49:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TlCSR21cYz3vcW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Feb 2024 22:54:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=SlEmAVBK;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nLD9Q0mj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.183; helo=out-183.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.14; helo=mgamail.intel.com; envelope-from=kirill.shutemov@linux.intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Wed, 28 Feb 2024 22:52:58 AEDT
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlCKg5yTVz30PD
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Feb 2024 22:48:23 +1100 (AEDT)
-Date: Wed, 28 Feb 2024 12:47:52 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1709120874;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Au6hwmd26uHWeon8xSbDYZG4pXatYbizYk+xmJMEcsA=;
-	b=SlEmAVBKKFKRJDwYiU0Un070dqwwQCQ0bIWzjNGbgDc0nhtIdnyfPA9NvcEm5mYYQknXF1
-	ngFKFTYiiJBUgc3i/1Fg6HU8LnJdaklbfb2W6uL0YOgljJGoh5SM0LFtKbRfkDGwM5R6+Y
-	8jyGT86VTQzbB9HrOBvn6p4cv+mIg7Y=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Andrew Jones <andrew.jones@linux.dev>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [kvm-unit-tests PATCH 09/32] scripts: allow machine option to be
- specified in unittests.cfg
-Message-ID: <20240228-386d106a6ef0bc0430edad1a@orel>
-References: <20240226101218.1472843-1-npiggin@gmail.com>
- <20240226101218.1472843-10-npiggin@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlCQy4mcPz3ccC
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Feb 2024 22:52:58 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709121179; x=1740657179;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=UOHYABj412OrOe9R32rHntZ5qCSK4fekgltl0v2LzuA=;
+  b=nLD9Q0mjAjiTCXVeTf38B8E6EmDv09rzjyb261B6jQ1Hk9GR7/4aQfuw
+   9v7Cs50L3M7xSoVLJnguN1e9dgUjeQOtKsl5aN7FUtJIyOVS/6O0EGW3M
+   qwOc/9ta/T8QRbBm/8TkPOkHQyatnKFPWkSR571Um7CVJjbyzjJOIjnz+
+   mmeps38Nez6icwMR491c+5XnDW+Opqnn1Li85atBKzPWltUJppEA5pF0Y
+   HeEl41Qd6zNxLbbyaeua5hKvDQpWrjYG7D8p/HVSRmGWWEz7m1jSivmXq
+   oALPNNf8SEiOWR5L71tlYccU6xkTSilP4h6RzqL3TCo/dqlgmRCs6W5B8
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="7337747"
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; 
+   d="scan'208";a="7337747"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2024 03:51:50 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="937034059"
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; 
+   d="scan'208";a="937034059"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 28 Feb 2024 03:51:44 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id B730928A; Wed, 28 Feb 2024 13:51:42 +0200 (EET)
+Date: Wed, 28 Feb 2024 13:51:42 +0200
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Subject: Re: [PATCH v2 5/9] mm: Initialize struct vm_unmapped_area_info
+Message-ID: <j7bfvig3gew3qruouxrh7z7ehjjafrgkbcmg6tcghhfh3rhmzi@wzlcoecgy5rs>
+References: <20240226190951.3240433-1-rick.p.edgecombe@intel.com>
+ <20240226190951.3240433-6-rick.p.edgecombe@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240226101218.1472843-10-npiggin@gmail.com>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <20240226190951.3240433-6-rick.p.edgecombe@intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,26 +70,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, kvm@vger.kernel.org, Joel Stanley <joel@jms.id.au>, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: luto@kernel.org, linux-sh@vger.kernel.org, peterz@infradead.org, dave.hansen@linux.intel.com, linux-mips@vger.kernel.org, linux-mm@kvack.org, hpa@zytor.com, sparclinux@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org, linux-csky@vger.kernel.org, mingo@redhat.com, linux-snps-arc@lists.infradead.org, keescook@chromium.org, Liam.Howlett@oracle.com, broonie@kernel.org, bp@alien8.de, loongarch@lists.linux.dev, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, debug@rivosinc.com, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Feb 26, 2024 at 08:11:55PM +1000, Nicholas Piggin wrote:
-> This allows different machines with different requirements to be
-> supported by run_tests.sh, similarly to how different accelerators
-> are handled.
-> 
-> Acked-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  scripts/common.bash  |  8 ++++++--
->  scripts/runtime.bash | 16 ++++++++++++----
->  2 files changed, 18 insertions(+), 6 deletions(-)
+On Mon, Feb 26, 2024 at 11:09:47AM -0800, Rick Edgecombe wrote:
+> diff --git a/arch/alpha/kernel/osf_sys.c b/arch/alpha/kernel/osf_sys.c
+> index 5db88b627439..dd6801bb9240 100644
+> --- a/arch/alpha/kernel/osf_sys.c
+> +++ b/arch/alpha/kernel/osf_sys.c
+> @@ -1218,7 +1218,7 @@ static unsigned long
+>  arch_get_unmapped_area_1(unsigned long addr, unsigned long len,
+>  		         unsigned long limit)
+>  {
+> -	struct vm_unmapped_area_info info;
+> +	struct vm_unmapped_area_info info = {};
+>  
+>  	info.flags = 0;
+>  	info.length = len;
 
-Please also update the unittests.cfg documentation. Currently that
-documentation lives in the header of each unittests.cfg file, but
-we could maybe change each file to have a single line which points
-at a single document.
+Can we make a step forward and actually move initialization inside the
+initializator? Something like below.
 
-Thanks,
-drew
+I understand that it is substantially more work, but I think it is useful.
+
+diff --git a/arch/alpha/kernel/osf_sys.c b/arch/alpha/kernel/osf_sys.c
+index 5db88b627439..c40ddede3b13 100644
+--- a/arch/alpha/kernel/osf_sys.c
++++ b/arch/alpha/kernel/osf_sys.c
+@@ -1218,14 +1218,12 @@ static unsigned long
+ arch_get_unmapped_area_1(unsigned long addr, unsigned long len,
+ 		         unsigned long limit)
+ {
+-	struct vm_unmapped_area_info info;
++	struct vm_unmapped_area_info info = {
++		.length = len;
++		.low_limit = addr,
++		.high_limit = limit,
++	};
+
+-	info.flags = 0;
+-	info.length = len;
+-	info.low_limit = addr;
+-	info.high_limit = limit;
+-	info.align_mask = 0;
+-	info.align_offset = 0;
+ 	return vm_unmapped_area(&info);
+ }
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
