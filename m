@@ -1,74 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8D7386B9A4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Feb 2024 22:07:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BE4A86BA25
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Feb 2024 22:45:34 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IxaCg5UT;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Eg55CQf2;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TlRkS24WWz3bTt
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 08:07:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TlSZf6Brpz3dWw
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 08:45:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IxaCg5UT;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Eg55CQf2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::334; helo=mail-wm1-x334.google.com; envelope-from=shorne@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlRjf1XTyz30YS
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 08:06:28 +1100 (AEDT)
-Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-412a9ea61adso1435975e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Feb 2024 13:06:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709154383; x=1709759183; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0a8qBD6vozPIAISnQHJRWdPKOWiVN4p5/6pJZQ2dXnQ=;
-        b=IxaCg5UThptr2IGsuD62PDJNKHHws3pWS0aB4D998moErH3NG2n8nsuqN8zls08rxm
-         gr6dpFFmYnffHTN8k26VkdAs5H1io92FLlTnKa4xTtz0t4rzE2+nEukkmDyOMdfMGGoF
-         PMGp1LpOeF68RvxFeNx2qUfsplpGNWocy83U/ckKW8+wHAe/ACUjpGjs1uJ1Cfzry8V4
-         czlietCES4PTLjjukG/4YXiFITPk2rkT0XZojDCqEWl16cuBYWx1B543Bnxw92WF6PSm
-         0Dv/Ju6AH9TsG2zFSOKFRB4P8ZQnDIghvau6pH892FDNt4tVUyWB2u+8/mTZSTv1AK2z
-         6NJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709154383; x=1709759183;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0a8qBD6vozPIAISnQHJRWdPKOWiVN4p5/6pJZQ2dXnQ=;
-        b=nVjkOzZzm4sZDO2AUnjj1MAMnMSZrjl6Vt2k/oC60c3AWnwXFjfs4tvmjYtJM+JrS/
-         3lorZ2QvjBfLn3kTtqga9n1KAsSXugf+u+sHFUugGGme8oK11bhhvRpyHvLv1ww9aP4t
-         CM9xCyU7M9komaKYFUPsNVIm3qeFloqqVvaO2oOQRs58T3ayXHfWJ2GJVmouUzmCatdM
-         a2sovQuwyVK4fJ1uWLy2V4m9itzmnz/o1KVfN4biX76sbhmO3xdPQ1m0cjvnAZfPghj9
-         SgemGm6xNTAA6mjzdnp2fr/v1KgZpRZlwvtYxPFa9CLCkjEDKXLh8QMrdRBKOjoy+dZj
-         qlvw==
-X-Forwarded-Encrypted: i=1; AJvYcCVQ4nTX4d9Bx8M0XvJKIqhtIzZ6CPaBV+U3MyJSTNZLjC62gw+XxOxcroL8v/9GovAHE+ZCaCtKFuchyeUmqE0bp+frhLU2OBmbqjzW7A==
-X-Gm-Message-State: AOJu0YznYPYx51IvRJgts11uP4lzZCzQfeFaRTczeJ8CzBNkoWew2Qkm
-	xvdZaHgI8javNhjQ+aTsO3X590SaFeENNLgWsVcNzbJitkXfZLt8
-X-Google-Smtp-Source: AGHT+IHczATb7A8ZRTaH383CIQ4ejybI9MzL/yjlqycOyBbx2+IYQRI3gE2POfqlKMAC8LKmr3GeXg==
-X-Received: by 2002:a5d:618d:0:b0:33d:f51f:2da5 with SMTP id j13-20020a5d618d000000b0033df51f2da5mr46406wru.7.1709154383088;
-        Wed, 28 Feb 2024 13:06:23 -0800 (PST)
-Received: from localhost (cpc1-brnt4-2-0-cust862.4-2.cable.virginm.net. [86.9.131.95])
-        by smtp.gmail.com with ESMTPSA id m1-20020adfa3c1000000b0033d67791dc0sm15568132wrb.43.2024.02.28.13.06.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Feb 2024 13:06:21 -0800 (PST)
-Date: Wed, 28 Feb 2024 21:06:21 +0000
-From: Stafford Horne <shorne@gmail.com>
-To: Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH 3/4] arch: define CONFIG_PAGE_SIZE_*KB on all
- architectures
-Message-ID: <Zd-gTf6mvVdPEovO@antec>
-References: <20240226161414.2316610-1-arnd@kernel.org>
- <20240226161414.2316610-4-arnd@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlSYx43qmz30fp
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 08:44:53 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 288C2CE1BB2
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Feb 2024 21:44:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 651D6C433F1
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Feb 2024 21:44:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709156690;
+	bh=9btjwjDXQdzK9y/kYmZxO7THmAaeTwf9mBu08Kaot1Q=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=Eg55CQf2DKidt139wzmlk2tH3B7Mkt4CJymHKpfF5qkAUBLiBvXXxf+uwT3IF3HKi
+	 EWMmwuJgxANXQtXzz/pXZeoh6snDE4jfVGwUSQh5Rw1/xiXMBL3SAEeSBgZVrBFCFy
+	 uYMxEQcUzlY88hocNBRBFEFNBOadwyDlB/rIFfKHSip7tHVt2v8wzExMoofeBvuR/R
+	 pX2Pkacrrc8CgZS/pe+UOeGDwipiAzU1cvOIYZLPGQ16ztMTGwwaqCZGdja/ufLsOx
+	 +8dySlKeiIqH+eFIxe/gHhCMu7q3+81fgWPTV7VruGb41EI0iwMzrx5+8ZDUrnyZAv
+	 koYgaiChBbn+g==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 48666C4332E; Wed, 28 Feb 2024 21:44:50 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 207129] PowerMac G4 DP (5.6.2 debug kernel + inline KASAN)
+ freezes shortly after booting with "do_IRQ: stack overflow: 1760"
+Date: Wed, 28 Feb 2024 21:44:50 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: RESOLVED
+X-Bugzilla-Resolution: CODE_FIX
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_status resolution
+Message-ID: <bug-207129-206035-GsfDsOnAGU@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-207129-206035@https.bugzilla.kernel.org/>
+References: <bug-207129-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240226161414.2316610-4-arnd@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,77 +78,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, loongarch@lists.linux.dev, Andreas Larsson <andreas@gaisler.com>, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, Vincenzo Frascino <vincenzo.frascino@arm.com>, Jan Kiszka <jan.kiszka@siemens.com>, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, Richard Weinberger <richard@nod.at>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org, linux-alpha@vger.kernel.org, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Kieran Bingham <kbingham@kernel.org>, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, Andy Lutomirski <luto@kernel.org>,
-  John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Behnsen <anna-maria@linutronix.de>, linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Feb 26, 2024 at 05:14:13PM +0100, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> Most architectures only support a single hardcoded page size. In order
-> to ensure that each one of these sets the corresponding Kconfig symbols,
-> change over the PAGE_SHIFT definition to the common one and allow
-> only the hardware page size to be selected.
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  arch/alpha/Kconfig                 | 1 +
->  arch/alpha/include/asm/page.h      | 2 +-
->  arch/arm/Kconfig                   | 1 +
->  arch/arm/include/asm/page.h        | 2 +-
->  arch/csky/Kconfig                  | 1 +
->  arch/csky/include/asm/page.h       | 2 +-
->  arch/m68k/Kconfig                  | 3 +++
->  arch/m68k/Kconfig.cpu              | 2 ++
->  arch/m68k/include/asm/page.h       | 6 +-----
->  arch/microblaze/Kconfig            | 1 +
->  arch/microblaze/include/asm/page.h | 2 +-
->  arch/nios2/Kconfig                 | 1 +
->  arch/nios2/include/asm/page.h      | 2 +-
->  arch/openrisc/Kconfig              | 1 +
->  arch/openrisc/include/asm/page.h   | 2 +-
->  arch/riscv/Kconfig                 | 1 +
->  arch/riscv/include/asm/page.h      | 2 +-
->  arch/s390/Kconfig                  | 1 +
->  arch/s390/include/asm/page.h       | 2 +-
->  arch/sparc/Kconfig                 | 2 ++
->  arch/sparc/include/asm/page_32.h   | 2 +-
->  arch/sparc/include/asm/page_64.h   | 3 +--
->  arch/um/Kconfig                    | 1 +
->  arch/um/include/asm/page.h         | 2 +-
->  arch/x86/Kconfig                   | 1 +
->  arch/x86/include/asm/page_types.h  | 2 +-
->  arch/xtensa/Kconfig                | 1 +
->  arch/xtensa/include/asm/page.h     | 2 +-
->  28 files changed, 32 insertions(+), 19 deletions(-)
-....
-> diff --git a/arch/openrisc/Kconfig b/arch/openrisc/Kconfig
-> index fd9bb76a610b..3586cda55bde 100644
-> --- a/arch/openrisc/Kconfig
-> +++ b/arch/openrisc/Kconfig
-> @@ -25,6 +25,7 @@ config OPENRISC
->  	select GENERIC_CPU_DEVICES
->  	select HAVE_PCI
->  	select HAVE_UID16
-> +	select HAVE_PAGE_SIZE_8KB
->  	select GENERIC_ATOMIC64
->  	select GENERIC_CLOCKEVENTS_BROADCAST
->  	select GENERIC_SMP_IDLE_THREAD
-> diff --git a/arch/openrisc/include/asm/page.h b/arch/openrisc/include/asm/page.h
-> index 44fc1fd56717..7925ce09ab5a 100644
-> --- a/arch/openrisc/include/asm/page.h
-> +++ b/arch/openrisc/include/asm/page.h
-> @@ -18,7 +18,7 @@
->  
->  /* PAGE_SHIFT determines the page size */
->  
-> -#define PAGE_SHIFT      13
-> +#define PAGE_SHIFT      CONFIG_PAGE_SHIFT
->  #ifdef __ASSEMBLY__
->  #define PAGE_SIZE       (1 << PAGE_SHIFT)
->  #else
+https://bugzilla.kernel.org/show_bug.cgi?id=3D207129
 
-For the openrisc bits,
+Erhard F. (erhard_f@mailbox.org) changed:
 
-Acked-by: Stafford Horne <shorne@gmail.com>
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+             Status|REOPENED                    |RESOLVED
+         Resolution|---                         |CODE_FIX
+
+--- Comment #11 from Erhard F. (erhard_f@mailbox.org) ---
+You were correct! I forgot about that...
+
+I shrunk the size by using -Os and disabling some debugging stuff and chang=
+ing
+some statically built-in stuff to 'M' without sacrificing debugging
+capabilities too much until it fit < 32 MiB:
+
+KASAN_OUTLINE vs.
+ # size vmlinux-6.8.0-rc6-PMacG4=20
+   text    data     bss     dec     hex filename
+12367737 6652440 426336 19446513 128baf1 vmlinux-6.8.0-rc6-PMacG4
+
+KASAN_INLINE
+ # size vmlinux-6.8.0-rc6-PMacG4=20
+   text    data     bss     dec     hex filename
+24660169 6652440  426336 31738945 1e44c41 vmlinux-6.8.0-rc6-PMacG4
+
+
+Apart from that I can confirm inline KASAN runs fine now and I really no lo=
+nger
+get this stack overflow when using it.
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
