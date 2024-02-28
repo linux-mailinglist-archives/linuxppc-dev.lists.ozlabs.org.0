@@ -1,64 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB7F486AE3D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Feb 2024 12:54:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F39F86AE2C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Feb 2024 12:52:50 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nLD9Q0mj;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=F/H2xG2n;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TlCSR21cYz3vcW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Feb 2024 22:54:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TlCQl568Jz3dfM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Feb 2024 22:52:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nLD9Q0mj;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=F/H2xG2n;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.14; helo=mgamail.intel.com; envelope-from=kirill.shutemov@linux.intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Wed, 28 Feb 2024 22:52:58 AEDT
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::b4; helo=out-180.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
+X-Greylist: delayed 230 seconds by postgrey-1.37 at boromir; Wed, 28 Feb 2024 22:52:09 AEDT
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [IPv6:2001:41d0:203:375::b4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlCQy4mcPz3ccC
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Feb 2024 22:52:58 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709121179; x=1740657179;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=UOHYABj412OrOe9R32rHntZ5qCSK4fekgltl0v2LzuA=;
-  b=nLD9Q0mjAjiTCXVeTf38B8E6EmDv09rzjyb261B6jQ1Hk9GR7/4aQfuw
-   9v7Cs50L3M7xSoVLJnguN1e9dgUjeQOtKsl5aN7FUtJIyOVS/6O0EGW3M
-   qwOc/9ta/T8QRbBm/8TkPOkHQyatnKFPWkSR571Um7CVJjbyzjJOIjnz+
-   mmeps38Nez6icwMR491c+5XnDW+Opqnn1Li85atBKzPWltUJppEA5pF0Y
-   HeEl41Qd6zNxLbbyaeua5hKvDQpWrjYG7D8p/HVSRmGWWEz7m1jSivmXq
-   oALPNNf8SEiOWR5L71tlYccU6xkTSilP4h6RzqL3TCo/dqlgmRCs6W5B8
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="7337747"
-X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; 
-   d="scan'208";a="7337747"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2024 03:51:50 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="937034059"
-X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; 
-   d="scan'208";a="937034059"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 28 Feb 2024 03:51:44 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id B730928A; Wed, 28 Feb 2024 13:51:42 +0200 (EET)
-Date: Wed, 28 Feb 2024 13:51:42 +0200
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH v2 5/9] mm: Initialize struct vm_unmapped_area_info
-Message-ID: <j7bfvig3gew3qruouxrh7z7ehjjafrgkbcmg6tcghhfh3rhmzi@wzlcoecgy5rs>
-References: <20240226190951.3240433-1-rick.p.edgecombe@intel.com>
- <20240226190951.3240433-6-rick.p.edgecombe@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlCQ16wDSz30hG
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Feb 2024 22:52:09 +1100 (AEDT)
+Date: Wed, 28 Feb 2024 12:51:42 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1709121105;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jZX06/t/vObxlUd3rjMifnJudTyaWwmVSmqsij++4PU=;
+	b=F/H2xG2n0r3jJlW3sDq2LpzjP4WdPViUuTXqSdCcbnx+WBhS5OA0kRreYiOyJd0iiooxDf
+	NPKmuHxZ/+twtmxBkxnl9oXxVU5jHMMgjf6vB+vWAlIOcHCPteHoIFkEDWPozBz3ZqFIbe
+	ynwSv4Vs2JNRatJJhPalYj+vFYLuxB0=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Andrew Jones <andrew.jones@linux.dev>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [kvm-unit-tests PATCH 17/32] arch-run: Fix handling multiple
+ exit status messages
+Message-ID: <20240228-046d6f84483d096b669d1203@orel>
+References: <20240226101218.1472843-1-npiggin@gmail.com>
+ <20240226101218.1472843-18-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240226190951.3240433-6-rick.p.edgecombe@intel.com>
+In-Reply-To: <20240226101218.1472843-18-npiggin@gmail.com>
+X-Migadu-Flow: FLOW_OUT
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,53 +57,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: luto@kernel.org, linux-sh@vger.kernel.org, peterz@infradead.org, dave.hansen@linux.intel.com, linux-mips@vger.kernel.org, linux-mm@kvack.org, hpa@zytor.com, sparclinux@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org, linux-csky@vger.kernel.org, mingo@redhat.com, linux-snps-arc@lists.infradead.org, keescook@chromium.org, Liam.Howlett@oracle.com, broonie@kernel.org, bp@alien8.de, loongarch@lists.linux.dev, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, debug@rivosinc.com, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, kvm@vger.kernel.org, Joel Stanley <joel@jms.id.au>, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Feb 26, 2024 at 11:09:47AM -0800, Rick Edgecombe wrote:
-> diff --git a/arch/alpha/kernel/osf_sys.c b/arch/alpha/kernel/osf_sys.c
-> index 5db88b627439..dd6801bb9240 100644
-> --- a/arch/alpha/kernel/osf_sys.c
-> +++ b/arch/alpha/kernel/osf_sys.c
-> @@ -1218,7 +1218,7 @@ static unsigned long
->  arch_get_unmapped_area_1(unsigned long addr, unsigned long len,
->  		         unsigned long limit)
->  {
-> -	struct vm_unmapped_area_info info;
-> +	struct vm_unmapped_area_info info = {};
+On Mon, Feb 26, 2024 at 08:12:03PM +1000, Nicholas Piggin wrote:
+> In SMP tests, it's possible for multiple CPUs to print an exit
+> message if they abort concurrently, confusing the harness:
+> 
+>   EXIT: STATUS=127
+> 
+>   EXIT: STATUS=127
+>   scripts/arch-run.bash: line 85: [: too many arguments
+>   scripts/arch-run.bash: line 93: return: too many arguments
+> 
+> lib/arch code should probably serialise this to prevent it, but
+> at the moment not all do. So make the parser handle this by
+> just looking at the first EXIT.
+> 
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Thomas Huth <thuth@redhat.com>
+> Cc: Andrew Jones <andrew.jones@linux.dev>
+> Cc: kvm@vger.kernel.org
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  scripts/arch-run.bash | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/scripts/arch-run.bash b/scripts/arch-run.bash
+> index 5c7e72036..4af670f1c 100644
+> --- a/scripts/arch-run.bash
+> +++ b/scripts/arch-run.bash
+> @@ -79,7 +79,7 @@ run_qemu_status ()
+>  	exec {stdout}>&-
 >  
->  	info.flags = 0;
->  	info.length = len;
+>  	if [ $ret -eq 1 ]; then
+> -		testret=$(grep '^EXIT: ' <<<"$lines" | sed 's/.*STATUS=\([0-9][0-9]*\).*/\1/')
+> +		testret=$(grep '^EXIT: ' <<<"$lines" | head -n1 | sed 's/.*STATUS=\([0-9][0-9]*\).*/\1/')
+>  		if [ "$testret" ]; then
+>  			if [ $testret -eq 1 ]; then
+>  				ret=0
+> -- 
+> 2.42.0
+>
 
-Can we make a step forward and actually move initialization inside the
-initializator? Something like below.
-
-I understand that it is substantially more work, but I think it is useful.
-
-diff --git a/arch/alpha/kernel/osf_sys.c b/arch/alpha/kernel/osf_sys.c
-index 5db88b627439..c40ddede3b13 100644
---- a/arch/alpha/kernel/osf_sys.c
-+++ b/arch/alpha/kernel/osf_sys.c
-@@ -1218,14 +1218,12 @@ static unsigned long
- arch_get_unmapped_area_1(unsigned long addr, unsigned long len,
- 		         unsigned long limit)
- {
--	struct vm_unmapped_area_info info;
-+	struct vm_unmapped_area_info info = {
-+		.length = len;
-+		.low_limit = addr,
-+		.high_limit = limit,
-+	};
-
--	info.flags = 0;
--	info.length = len;
--	info.low_limit = addr;
--	info.high_limit = limit;
--	info.align_mask = 0;
--	info.align_offset = 0;
- 	return vm_unmapped_area(&info);
- }
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Acked-by: Andrew Jones <andrew.jones@linux.dev>
