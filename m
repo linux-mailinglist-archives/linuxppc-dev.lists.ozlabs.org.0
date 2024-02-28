@@ -1,76 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C669C86BAEB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Feb 2024 23:46:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8D9C86BB04
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Feb 2024 23:53:34 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=XeHVI3r0;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=LLtvZnM3;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TlTxK2xGWz3vYd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 09:46:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TlV5832Wwz3vXP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 09:53:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=XeHVI3r0;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=LLtvZnM3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2a00:1450:4864:20::635; helo=mail-ej1-x635.google.com; envelope-from=dianders@chromium.org; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2a00:1450:4864:20::62e; helo=mail-ej1-x62e.google.com; envelope-from=dianders@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlTvX73J3z3bqC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 09:45:12 +1100 (AEDT)
-Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-a34c5ca2537so53705166b.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Feb 2024 14:45:12 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlV4L0thZz3br5
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 09:52:48 +1100 (AEDT)
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-a3f4464c48dso38618166b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Feb 2024 14:52:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1709160306; x=1709765106; darn=lists.ozlabs.org;
+        d=chromium.org; s=google; t=1709160764; x=1709765564; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=d+Wb6NhI/vtCiU6t546gnwmXs9J3vtrwxtAXa2CAncw=;
-        b=XeHVI3r0tCegUO96R/N2SiTJqIu5gv8qwNaCEOVx45Xe4mPVmuICp1atB213beRrD9
-         ehkj1nA2xKtMdWNFcUBcgRYhjQqeeNodVgK70Af9EfjKefY+D8zjxmwtxTEnpW8pxdRk
-         y5WL4uWgdKq7OjI68l3U2XwemY08xZVcv1VhU=
+        bh=VxABPZ28o1U9eMcO7y1qUMLxndBrASNoz0KbMJJ/fIg=;
+        b=LLtvZnM3Y0Rcz+Cif0Y9XuIGQYACWgWGKOfBXq67BdyHIHeXw5nEfyeoj1oXLt3ld9
+         XjTiAzYyYb6FK0NzrdrvQ4gU9fthhVmTdlmy3m1h5gDixHuXvVik1+PYsfQVFixOgQjF
+         OGa6vU62nD9dDq+/DJjs1O5nfNPFvsqwoW2hI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709160306; x=1709765106;
+        d=1e100.net; s=20230601; t=1709160764; x=1709765564;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=d+Wb6NhI/vtCiU6t546gnwmXs9J3vtrwxtAXa2CAncw=;
-        b=UGpixQSvO+l75g34U2DKUC5peBlvhAtSTx5+8dg2mgBKjc+PAWvSjRN8zy77D6QZZ1
-         Kod6lLsxxo2nZ/5benf1O4nU44a9iPFaoNmebcVwVGf4s2lDZqWdnVIrCk2yFd3R6wMG
-         RfgxDUnMY9T29QFgZGTp5Cjssa0catKUeFZOH55WczN+dUQ9L9S0gerRLFH4E0U6MNJF
-         TrLpDTePmnT0n/mvIXcuVZeKmpL3b5NqCk0UV/6egZPWbnMkN5M2BGK6+3axi76ifuz5
-         JeGhE6NxSCUSo50FwNtXTZMhEvxg+TkmWyir3BDeJ09pYfwdv4gs0XR0evFdPZTDkg4C
-         zVJg==
-X-Forwarded-Encrypted: i=1; AJvYcCVTNswKwvKABvjOe1m2O7LeS/Dpvr3nzqoDWrVQxG3py2XykaRsoazqXGOJUR3+6Xwd3UdsV3tsPCaHq1J+vqeHc9kfil8Kqu5Th5P4Cw==
-X-Gm-Message-State: AOJu0YyVWOFhJQPsQiwZjIJqU79Dc+sOZTpQhqaF1vdoKkRyLRSgP7uX
-	mtGnxSqqbm10XPhDESFUh1/rJ+hfYhRS+nt2h2Yikx5J0g2ZL1yC9EXG76mvAd2TDJNLuYw+pmJ
-	1M0AI
-X-Google-Smtp-Source: AGHT+IEDb0RZuxFn1jT4ggvWS0lo1lg/IdJbsYLXmfdXDGnLqrp/S55kp39fgE6tGTZb+5m3AWEhHw==
-X-Received: by 2002:a17:906:2bd4:b0:a3d:482f:3fc4 with SMTP id n20-20020a1709062bd400b00a3d482f3fc4mr170649ejg.70.1709160306649;
-        Wed, 28 Feb 2024 14:45:06 -0800 (PST)
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com. [209.85.208.53])
-        by smtp.gmail.com with ESMTPSA id ts7-20020a170907c5c700b00a43f4722eaesm1171450ejc.103.2024.02.28.14.45.06
+        bh=VxABPZ28o1U9eMcO7y1qUMLxndBrASNoz0KbMJJ/fIg=;
+        b=dwVMX6IJOxX3oeT4yRkuKuZB7m39IO8juxVjnSWdRb14ESo2ofizqtLFed9oWlU0sH
+         /PckeLdAh1bhs6kgo6WkRm4Mh9N3M1L2p8fap7qwlUZMe3iG8IrTwdl9nFT/HzWdHNir
+         wYYCnrfOB2nLMir3FzmxLUEP8lTd51JTHXDvhZ6dsUHdCWdmtWlEqQfUd3jMhtR6u4kF
+         spIx+OcZsNqfTFMHg1VtsyfFpie8fYOlBLkbADVe51wzMnR9E0c9oxjCVcHQlWDqUVML
+         RlL41FnHJ6RaH6PgtgLsbP2m9frNqBgHE+APbGnJ0Fd1D9zIcsHYRMa1/Cx6N+7ETKjQ
+         vvPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXf8rqdWzplPqLng5mC/bwoJ7sh5h+qH3hYuhh78XufplQJkn1+cG8bdpC8zfBzOYHarFD59hyu9SCZoni3GKzAaMB48khWxkt70Bf4bQ==
+X-Gm-Message-State: AOJu0YxMiSWxxoOWlu7VIW7YI6oCA4iA+5nx3oNk+Afoms1aaqGLJ4Kd
+	643je0NDp25Q9UlEHTmTcy2cYY35Q7F4TSc7vA1ZBwhl0JYxMJvdo8jM6FJ05PSwr2+5Q0JTeKY
+	Hnnwu
+X-Google-Smtp-Source: AGHT+IGy+4HnM2Pn2AFGn+qmbkXvHPEk/QCT+ulUoiLuck9dGDRDsWvGgvoM7N46jYfA0w3W7rNiRg==
+X-Received: by 2002:a17:906:134a:b0:a43:efcd:c7c2 with SMTP id x10-20020a170906134a00b00a43efcdc7c2mr215981ejb.40.1709160764402;
+        Wed, 28 Feb 2024 14:52:44 -0800 (PST)
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com. [209.85.208.48])
+        by smtp.gmail.com with ESMTPSA id cd14-20020a170906b34e00b00a4412406741sm817012ejb.131.2024.02.28.14.52.44
         for <linuxppc-dev@lists.ozlabs.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Feb 2024 14:45:06 -0800 (PST)
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-565223fd7d9so1875a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Feb 2024 14:45:06 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCW7ZsbCAtDWs5vMWcu2xmHZIXJiFXdMdUhO5vKtos4nGvedTuo48MLUYrSyOVfaNz7oVjECsu9dyxBMqP42dl5yjxaog40dymrSkfNzAw==
-X-Received: by 2002:a50:8aca:0:b0:561:a93:49af with SMTP id
- k10-20020a508aca000000b005610a9349afmr11944edk.7.1709160305919; Wed, 28 Feb
- 2024 14:45:05 -0800 (PST)
+        Wed, 28 Feb 2024 14:52:44 -0800 (PST)
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-565223fd7d9so1926a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Feb 2024 14:52:44 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVExm/wO12iFrSaxkZ4cXZoe81pGr/A0e9sdbNTJoIlw88SRXXFJQADcXuhNpGXuAbUiCn64Fuje82mX9Xc64gcaKqSoueNJlYf36QXbw==
+X-Received: by 2002:a05:600c:538f:b0:412:b689:5d88 with SMTP id
+ hg15-20020a05600c538f00b00412b6895d88mr18372wmb.3.1709160314368; Wed, 28 Feb
+ 2024 14:45:14 -0800 (PST)
 MIME-Version: 1.0
-References: <20240228072216.95130-1-yaoma@linux.alibaba.com> <20240228072216.95130-4-yaoma@linux.alibaba.com>
-In-Reply-To: <20240228072216.95130-4-yaoma@linux.alibaba.com>
+References: <20240228072216.95130-1-yaoma@linux.alibaba.com> <20240228072216.95130-5-yaoma@linux.alibaba.com>
+In-Reply-To: <20240228072216.95130-5-yaoma@linux.alibaba.com>
 From: Doug Anderson <dianders@chromium.org>
-Date: Wed, 28 Feb 2024 14:44:50 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=W7gOpLw2VwRO7EwwNoqSJFM8iC0-R1GC4RHtz4=fwa5A@mail.gmail.com>
-Message-ID: <CAD=FV=W7gOpLw2VwRO7EwwNoqSJFM8iC0-R1GC4RHtz4=fwa5A@mail.gmail.com>
-Subject: Re: [PATCHv11 3/4] genirq: Avoid summation loops for /proc/interrupts
+Date: Wed, 28 Feb 2024 14:44:58 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=Xgr4--NJ3dAh2ggxbFUV9-QR6rW+YXyMHZYXPVSkmaAw@mail.gmail.com>
+Message-ID: <CAD=FV=Xgr4--NJ3dAh2ggxbFUV9-QR6rW+YXyMHZYXPVSkmaAw@mail.gmail.com>
+Subject: Re: [PATCHv11 4/4] watchdog/softlockup: report the most frequent interrupts
 To: Bitao Hu <yaoma@linux.alibaba.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -94,25 +94,43 @@ Hi,
 On Tue, Feb 27, 2024 at 11:22=E2=80=AFPM Bitao Hu <yaoma@linux.alibaba.com>=
  wrote:
 >
-> show_interrupts() unconditionally accumulates the per CPU interrupt
-> statistics to determine whether an interrupt was ever raised.
+> When the watchdog determines that the current soft lockup is due
+> to an interrupt storm based on CPU utilization, reporting the
+> most frequent interrupts could be good enough for further
+> troubleshooting.
 >
-> This can be avoided for all interrupts which are not strictly per CPU
-> and not of type NMI because those interrupts provide already an
-> accumulated counter. The required logic is already implemented in
-> kstat_irqs().
+> Below is an example of interrupt storm. The call tree does not
+> provide useful information, but we can analyze which interrupt
+> caused the soft lockup by comparing the counts of interrupts.
 >
-> Split the inner access logic out of kstat_irqs() and use it for
-> kstat_irqs() and show_interrupts() to avoid the accumulation loop
-> when possible.
+> [  638.870231] watchdog: BUG: soft lockup - CPU#9 stuck for 26s! [swapper=
+/9:0]
+> [  638.870825] CPU#9 Utilization every 4s during lockup:
+> [  638.871194]  #1:   0% system,          0% softirq,   100% hardirq,    =
+ 0% idle
+> [  638.871652]  #2:   0% system,          0% softirq,   100% hardirq,    =
+ 0% idle
+> [  638.872107]  #3:   0% system,          0% softirq,   100% hardirq,    =
+ 0% idle
+> [  638.872563]  #4:   0% system,          0% softirq,   100% hardirq,    =
+ 0% idle
+> [  638.873018]  #5:   0% system,          0% softirq,   100% hardirq,    =
+ 0% idle
+> [  638.873494] CPU#9 Detect HardIRQ Time exceeds 50%. Most frequent HardI=
+RQs:
+> [  638.873994]  #1: 330945      irq#7
+> [  638.874236]  #2: 31          irq#82
+> [  638.874493]  #3: 10          irq#10
+> [  638.874744]  #4: 2           irq#89
+> [  638.874992]  #5: 1           irq#102
+> ...
+> [  638.875313] Call trace:
+> [  638.875315]  __do_softirq+0xa8/0x364
 >
-> Originally-by: Thomas Gleixner <tglx@linutronix.de>
 > Signed-off-by: Bitao Hu <yaoma@linux.alibaba.com>
 > Reviewed-by: Liu Song <liusong@linux.alibaba.com>
 > ---
->  kernel/irq/internals.h |  2 ++
->  kernel/irq/irqdesc.c   | 16 +++++++++++-----
->  kernel/irq/proc.c      |  6 ++----
->  3 files changed, 15 insertions(+), 9 deletions(-)
+>  kernel/watchdog.c | 115 ++++++++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 111 insertions(+), 4 deletions(-)
 
 Reviewed-by: Douglas Anderson <dianders@chromium.org>
