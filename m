@@ -2,49 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EE4286CE78
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 17:14:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B8E86CF35
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 17:31:34 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=EW77o+6R;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TlxB46nHJz3vdd
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 03:14:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TlxYw0PNTz3vZ9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 03:31:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=lists.ozlabs.org)
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=EW77o+6R;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.198; helo=relay6-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tlx9c05BXz3bqD
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Mar 2024 03:13:53 +1100 (AEDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rfj2U-0006SE-V8; Thu, 29 Feb 2024 17:13:42 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rfj2T-003ceH-Pn; Thu, 29 Feb 2024 17:13:41 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rfj2T-00E292-2J;
-	Thu, 29 Feb 2024 17:13:41 +0100
-Date: Thu, 29 Feb 2024 17:13:41 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc: Add allmodconfig for all 32-bit sub-arches
-Message-ID: <yji7lf3sa54olbeegkjtwkta3edfxpbcg2bzzzs4htlmuntzpp@irrvdebrmb52>
-References: <20240229114108.743810-1-mpe@ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlxY72kxQz3dRp
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Mar 2024 03:30:49 +1100 (AEDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4B303C000D;
+	Thu, 29 Feb 2024 16:30:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1709224246;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RDGt+EA7hkCFccMGYrVs2zoZyoxmiDzvNkKrfbOvX+E=;
+	b=EW77o+6R6+tU3vtpYuza6yzR1k55eFiv3f2qtwo20rqmjPP5AeMUOmCIAsbt+6GAu+z3j/
+	/4nGFkCoCmPeA2hsE+ACxc4Me+Uusd/z3j9bn2Wg5XAg6YxQsOdnmOL0a3NZizgiw5HG2E
+	/5SS1B/WgSSSsG7E7Z+fMVxnyoT6KT8yy2B7/SERUqvhrR27hivzhBpxef2hj1K9xShYxJ
+	dpIDb8GpNhq4GocYrkZDTKki1UQRhGK8dCJMZEMmAwmqULU0U3By/kdvGAcskpVrAhOEmd
+	dMhQTouPzTeFBDXgqk5Liy8k1884JUfhtV+dOfuBWE15SrmId5NdYR9hQjdYhA==
+Date: Thu, 29 Feb 2024 17:30:43 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v5 4/5] net: wan: fsl_qmc_hdlc: Add runtime timeslots
+ changes support
+Message-ID: <20240229173043.3dc5decf@bootlin.com>
+In-Reply-To: <ZeCg24Iv8qDmxNV9@smile.fi.intel.com>
+References: <20240229141554.836867-1-herve.codina@bootlin.com>
+	<20240229141554.836867-5-herve.codina@bootlin.com>
+	<ZeCg24Iv8qDmxNV9@smile.fi.intel.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="iujfugwdwh5k5zum"
-Content-Disposition: inline
-In-Reply-To: <20240229114108.743810-1-mpe@ellerman.id.au>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,64 +62,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Andrew Lunn <andrew@lunn.ch>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, Yury Norov <yury.norov@gmail.com>, netdev@vger.kernel.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Mark Brown <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Andy,
 
---iujfugwdwh5k5zum
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Thu, 29 Feb 2024 17:20:59 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-On Thu, Feb 29, 2024 at 10:41:08PM +1100, Michael Ellerman wrote:
-> 32-bit powerpc kernels can be built for one of 5 sub-arches, see
-> Kconfig.cputype:
->=20
->   PPC_BOOK3S_32: "512x/52xx/6xx/7xx/74xx/82xx/83xx/86xx"
->   PPC_85xx: "Freescale 85xx"
->   PPC_8xx: "Freescale 8xx"
->   40x: "AMCC 40x"
->   44x: "AMCC 44x, 46x or 47x"
->=20
-> By default none of these are built for a plain allmodconfig build,
-> because it selects PPC64 which builds a 64-bit kernel.
->=20
-> There is already a ppc32_allmodconfig, which enables PPC_BOOK3S_32.
->=20
-> Add similar targets for the other 32-bit sub-arches to increase build
-> coverage:
->   ppc40x_allmodconfig
->   ppc44x_allmodconfig
->   ppc8xx_allmodconfig
->   ppc85xx_allmodconfig
->=20
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> On Thu, Feb 29, 2024 at 03:15:52PM +0100, Herve Codina wrote:
+> > QMC channels support runtime timeslots changes but nothing is done at
+> > the QMC HDLC driver to handle these changes.
+> > 
+> > Use existing IFACE ioctl in order to configure the timeslots to use.  
+> 
+> ...
+> 
+> > +	bitmap_scatter(ts_mask, map, ts_mask_avail, 64);  
+> 
+> Wondering if we may have returned value more useful and hence having something like
+> 
+> 	n = bitmap_scatter(...);
 
-\o/
+I thought about it.
 
-Acked-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+In bitmap_{scatter,gather}(dst, src, mask, nbits), only returning the
+weight of the third parameter (i.e. mask) can be efficient regarding to the
+for_each_set_bit() loop done in the functions.
+For dst parameter, we need to add a counter in the loop to count the number
+of bit set depending on the test_bit() result. Will this be more efficient
+than a call to bitmap_weight() ?
 
-Thanks
-Uwe
+Also, in my case, the third parameter is ts_mask_avail and I don't need
+its weight.
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+I thing users that need to have the dst or src weight should call
+bitmap_weight() themselves as this is users context dependent.
 
---iujfugwdwh5k5zum
-Content-Type: application/pgp-signature; name="signature.asc"
+bitmap_{scatter,gather}(dst, src, mask, nbits) can be improved later with
+no impact to current users (except performance).
 
------BEGIN PGP SIGNATURE-----
+That's why I concluded to return nothing from bitmap_{scatter,gather} when
+I took the old existing patches.
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmXgrTQACgkQj4D7WH0S
-/k4AGwf9Ef5yOMqfqDKRPwcW1zYXUNlNAxjPV06SvXSbAuYstTNtRyZ/X7Bww3lY
-dwgzIXZEQIi00GEdrNJulGQSEuLWwMIAZvWi8jJUirmfGss51KCWtK3Eiz+kZ4BI
-VGBBYbYF8QhXZQZMQmhuv9hdrscUh2SscTCVMImqqPcXt00rSoT2cy9WTkltu7Wk
-kz42Peh5NeNQy2prM2P+2kvGusFyUX14absFqBOFdhkBA1rXd7hlTrdKsh4EXkHd
-opnAHQAjVnO7N7Oy6Otj2LGZZlTduLzw/tLXUgqts30XG1lncdK3nozKiCjnHC1a
-PTptqduoY/NKJMm0AKe5Us/D665nEg==
-=c34t
------END PGP SIGNATURE-----
+> 
+> > +	if (bitmap_weight(ts_mask, 64) != bitmap_weight(map, 64)) {  
+> 
+> 	if (n != ...) {
+> 
+> ?
+> 
+> > +		dev_err(qmc_hdlc->dev, "Cannot translate timeslots %64pb -> (%64pb, %64pb)\n",
+> > +			map, ts_mask_avail, ts_mask);
+> > +		return -EINVAL;
+> > +	}  
+> 
+> ...
+> 
+> > +	bitmap_gather(map, ts_mask, ts_mask_avail, 64);
+> > +
+> > +	if (bitmap_weight(ts_mask, 64) != bitmap_weight(map, 64)) {
+> > +		dev_err(qmc_hdlc->dev, "Cannot translate timeslots (%64pb, %64pb) -> %64pb\n",
+> > +			ts_mask_avail, ts_mask, map);
+> > +		return -EINVAL;
+> > +	}  
+> 
+> Ditto.
+> 
 
---iujfugwdwh5k5zum--
+Best regards,
+Hervé
