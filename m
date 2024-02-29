@@ -1,88 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31BDA86C580
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 10:38:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2FF586C587
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 10:39:08 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R/A5BK18;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XEX7amAJ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TlmPD5hT3z3vXn
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 20:38:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TlmQ22y3Dz3vZZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 20:39:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R/A5BK18;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XEX7amAJ;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlmNV3F8xz3cBx
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 20:37:46 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41T9WnEB006733;
-	Thu, 29 Feb 2024 09:37:35 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlmNf3ws4z3ddR
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 20:37:54 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41T9BPwV011400;
+	Thu, 29 Feb 2024 09:37:45 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=xF/Jh+HYUZ374FWeLpWsIv90kysG6gsx0WncJ5q1Q/8=;
- b=R/A5BK183Ma2QH9uv+PJlyc+45RcSszxG+prsqbOr7C0eHSGa/t9hkLzBjfFl+Wt73zN
- O/Ot03Bhq2heL2zDVne7i/PnNWkJf/M26eSP3kphCgG1xLdZqZh2E4WzPJPYFotggtjj
- g1pgdHasTwQ6vtDW/Eqfhfq8/05O5MMBcXc1P+XP4gdlbGQ005vJcApXGyNTKz12VX8U
- iKq6wSZJ0VXETIf1++Q+q4GUH8yAq1kCdMLPcGhKowSIs0SS/k3YahbRjq5vZA8MVTVO
- Ekmzr9htsccNv9Yh1pcFMRLFPS8eQSgdFGNCmGMU9EydXRH0/20yLwqf+hkqF9dbLwGg aA== 
+ : date : message-id : in-reply-to : references : content-transfer-encoding
+ : mime-version; s=pp1; bh=bQYEGg4BSG0fVHOhIF1UXJr4cERBP6o9JirBT7VNhwA=;
+ b=XEX7amAJ0+PemvabDOC/g3Dod9tUCYyvIprwMdQp+baNpdiDWeljKFSSNSWa1yrNY3BO
+ Ry1ORpV68h1H3ZigC+sWmfSmbtIaBl6mLIuqkB//13rZizaMAREg8pV1m5uRtiHlxj9N
+ w8ylzlZNy7RGBhfg+xISoLzVxe+i4HrHkNNHQ2F8WV4YjR20huCqLKZG29ka+Dn2tPWY
+ 2Q2NoAx4TfAZ+u6UA84oymm735r4iQj4yBIuTZgbM4uSyMBE7br18wDXV2kjAnpaRmwV
+ NhDCx0QyTiPd2yaa5Tno09kOiDMMZldOprWkbgiyrzHDKcrfuxp7Nkeh0vlx5y5QYWRr rQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wjqcwr4ff-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wjpxg0wx4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Feb 2024 09:37:35 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41T9XDge007906;
-	Thu, 29 Feb 2024 09:37:34 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wjqcwr4f8-1
+	Thu, 29 Feb 2024 09:37:44 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41T9V3J5016832;
+	Thu, 29 Feb 2024 09:37:44 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wjpxg0wwu-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Feb 2024 09:37:34 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41T8iXi7021306;
-	Thu, 29 Feb 2024 09:37:34 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wfuspccbe-1
+	Thu, 29 Feb 2024 09:37:44 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41T8KGmh008154;
+	Thu, 29 Feb 2024 09:37:43 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wfv9mm7mk-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Feb 2024 09:37:33 +0000
+	Thu, 29 Feb 2024 09:37:43 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41T9bSrI20644500
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41T9bbri20513406
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 29 Feb 2024 09:37:30 GMT
+	Thu, 29 Feb 2024 09:37:39 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 25C052004B;
-	Thu, 29 Feb 2024 09:37:28 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 6F6CF20049;
+	Thu, 29 Feb 2024 09:37:37 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4FBDF20040;
-	Thu, 29 Feb 2024 09:37:24 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 6B58420040;
+	Thu, 29 Feb 2024 09:37:33 +0000 (GMT)
 Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.ibm.com.com (unknown [9.171.62.154])
 	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 29 Feb 2024 09:37:24 +0000 (GMT)
+	Thu, 29 Feb 2024 09:37:33 +0000 (GMT)
 From: Madhavan Srinivasan <maddy@linux.ibm.com>
 To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
         aneesh.kumar@kernel.org, naveen.n.rao@linux.ibm.com, shuah@kernel.org
-Subject: [PATCH 1/3] selftest/powerpc: Re-order *FLAGS to follow lib.mk
-Date: Thu, 29 Feb 2024 15:07:09 +0530
-Message-ID: <20240229093711.581230-1-maddy@linux.ibm.com>
+Subject: [PATCH 2/3] selftest/powerpc: Add flags.mk to support pmu buildable   
+Date: Thu, 29 Feb 2024 15:07:10 +0530
+Message-ID: <20240229093711.581230-2-maddy@linux.ibm.com>
 X-Mailer: git-send-email 2.43.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240229093711.581230-1-maddy@linux.ibm.com>
+References: <20240229093711.581230-1-maddy@linux.ibm.com>
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ScYIhtXtuKEkJSbTX9mRCbPcipizPbXC
-X-Proofpoint-ORIG-GUID: rp8F1SgO_bWW6nKUGIibT3cZADc1sG0S
+X-Proofpoint-GUID: O-m48-A08bYtultpa9sObrbqQ88L5ES9
+X-Proofpoint-ORIG-GUID: 682EoOb3zdUY5nZtDHuQrmcFBhnkv_Sm
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-02-29_01,2024-02-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- mlxlogscore=999 mlxscore=0 phishscore=0 adultscore=0 bulkscore=0
- spamscore=0 clxscore=1015 priorityscore=1501 malwarescore=0
- impostorscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2311290000 definitions=main-2402290072
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ mlxlogscore=999 clxscore=1015 mlxscore=0 phishscore=0 adultscore=0
+ suspectscore=0 lowpriorityscore=0 bulkscore=0 impostorscore=0
+ malwarescore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402290072
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,307 +97,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Sachin Sant <sachinp@linux.ibm.com>, linux-kselftest@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In some powerpc/ sub-folder Makefiles, CFLAGS are
-defined before lib.mk include. Clean it up by
-re-ordering it to follow after the mk include.
-This is needed to support sub-folders in powerpc/
-buildable on its own.
+When running `make -C powerpc/pmu run_tests` from top level selftests
+directory, currently this error is being reported
 
+make: Entering directory '/home/maddy/linux/tools/testing/selftests/powerpc/pmu'
+Makefile:40: warning: overriding recipe for target 'emit_tests'
+../../lib.mk:111: warning: ignoring old recipe for target 'emit_tests'
+gcc -m64    count_instructions.c ../harness.c event.c lib.c ../utils.c loop.S  -o /home/maddy/selftest_output//count_instructions
+In file included from count_instructions.c:13:
+event.h:12:10: fatal error: utils.h: No such file or directory
+12 | #include "utils.h"
+  |          ^~~~~~~~~
+compilation terminated.
+
+This is due to missing of include path in CFLAGS. That is, CFLAGS and
+GIT_VERSION macros are defined in the powerpc/ folder Makefile which
+in this case not involved.
+
+To address the failure incase of executing specific sub-folder test directly,
+a new rule file has been addded by the patch called "flags.mk" under
+selftest/powerpc/ folder and is linked to all the Makefile of powerpc/pmu
+sub-folders.
+
+Reported-by: Sachin Sant <sachinp@linux.ibm.com>
 Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
 ---
- .../selftests/powerpc/benchmarks/Makefile     |  4 ++--
- .../selftests/powerpc/copyloops/Makefile      | 20 +++++++++----------
- .../selftests/powerpc/nx-gzip/Makefile        |  4 ++--
- .../selftests/powerpc/pmu/ebb/Makefile        | 20 +++++++++----------
- .../powerpc/pmu/event_code_tests/Makefile     |  4 ++--
- .../powerpc/pmu/sampling_tests/Makefile       |  4 ++--
- .../selftests/powerpc/primitives/Makefile     |  4 ++--
- .../selftests/powerpc/security/Makefile       |  4 ++--
- .../testing/selftests/powerpc/signal/Makefile |  3 ++-
- .../selftests/powerpc/stringloops/Makefile    | 10 +++++-----
- .../selftests/powerpc/switch_endian/Makefile  |  4 ++--
- .../selftests/powerpc/syscalls/Makefile       |  4 ++--
- tools/testing/selftests/powerpc/vphn/Makefile |  4 ++--
- 13 files changed, 45 insertions(+), 44 deletions(-)
+Changelog RFC:
+- Rename the rule file as flags.mk
+- Added additional patches to support other sub-folders
+  under powerpc/ to be buildable on it own.
+link to RFC:
+  https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20240225163926.264286-1-maddy@linux.ibm.com/
+  
+ tools/testing/selftests/powerpc/flags.mk             | 12 ++++++++++++
+ tools/testing/selftests/powerpc/pmu/Makefile         |  1 +
+ tools/testing/selftests/powerpc/pmu/ebb/Makefile     |  1 +
+ .../selftests/powerpc/pmu/event_code_tests/Makefile  |  1 +
+ .../selftests/powerpc/pmu/sampling_tests/Makefile    |  1 +
+ 5 files changed, 16 insertions(+)
+ create mode 100644 tools/testing/selftests/powerpc/flags.mk
 
-diff --git a/tools/testing/selftests/powerpc/benchmarks/Makefile b/tools/testing/selftests/powerpc/benchmarks/Makefile
-index a32a6ab89914..75f5232c3aec 100644
---- a/tools/testing/selftests/powerpc/benchmarks/Makefile
-+++ b/tools/testing/selftests/powerpc/benchmarks/Makefile
-@@ -4,11 +4,11 @@ TEST_GEN_FILES := exec_target
+diff --git a/tools/testing/selftests/powerpc/flags.mk b/tools/testing/selftests/powerpc/flags.mk
+new file mode 100644
+index 000000000000..28374f470126
+--- /dev/null
++++ b/tools/testing/selftests/powerpc/flags.mk
+@@ -0,0 +1,12 @@
++#This checks for any ENV variables and add those.
++
++#ifeq ($(GIT_VERSION),)
++GIT_VERSION = $(shell git describe --always --long --dirty || echo "unknown")
++export GIT_VERSION
++#endif
++
++#ifeq ($(CFLAGS),)
++CFLAGS := -std=gnu99 -O2 -Wall -Werror -DGIT_VERSION='"$(GIT_VERSION)"' -I$(selfdir)/powerpc/include $(CFLAGS)
++export CFLAGS
++#endif
++
+diff --git a/tools/testing/selftests/powerpc/pmu/Makefile b/tools/testing/selftests/powerpc/pmu/Makefile
+index a284fa874a9f..1fcacae1b188 100644
+--- a/tools/testing/selftests/powerpc/pmu/Makefile
++++ b/tools/testing/selftests/powerpc/pmu/Makefile
+@@ -7,6 +7,7 @@ EXTRA_SOURCES := ../harness.c event.c lib.c ../utils.c
  
- TEST_FILES := settings
- 
--CFLAGS += -O2
--
  top_srcdir = ../../../../..
  include ../../lib.mk
++include ../flags.mk
  
-+CFLAGS += -O2
-+
- $(TEST_GEN_PROGS): ../harness.c
+ all: $(TEST_GEN_PROGS) ebb sampling_tests event_code_tests
  
- $(OUTPUT)/context_switch: ../utils.c
-diff --git a/tools/testing/selftests/powerpc/copyloops/Makefile b/tools/testing/selftests/powerpc/copyloops/Makefile
-index 77594e697f2f..72684ed589c0 100644
---- a/tools/testing/selftests/powerpc/copyloops/Makefile
-+++ b/tools/testing/selftests/powerpc/copyloops/Makefile
-@@ -1,14 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0
--# The loops are all 64-bit code
--CFLAGS += -m64
--CFLAGS += -I$(CURDIR)
--CFLAGS += -D SELFTEST
--CFLAGS += -maltivec
--CFLAGS += -mcpu=power4
--
--# Use our CFLAGS for the implicit .S rule & set the asm machine type
--ASFLAGS = $(CFLAGS) -Wa,-mpower4
--
- TEST_GEN_PROGS := copyuser_64_t0 copyuser_64_t1 copyuser_64_t2 \
- 		copyuser_p7_t0 copyuser_p7_t1 \
- 		memcpy_64_t0 memcpy_64_t1 memcpy_64_t2 \
-@@ -21,6 +11,16 @@ EXTRA_SOURCES := validate.c ../harness.c stubs.S
- top_srcdir = ../../../../..
- include ../../lib.mk
- 
-+# The loops are all 64-bit code
-+CFLAGS += -m64
-+CFLAGS += -I$(CURDIR)
-+CFLAGS += -D SELFTEST
-+CFLAGS += -maltivec
-+CFLAGS += -mcpu=power4
-+
-+# Use our CFLAGS for the implicit .S rule & set the asm machine type
-+ASFLAGS = $(CFLAGS) -Wa,-mpower4
-+
- $(OUTPUT)/copyuser_64_t%:	copyuser_64.S $(EXTRA_SOURCES)
- 	$(CC) $(CPPFLAGS) $(CFLAGS) \
- 		-D COPY_LOOP=test___copy_tofrom_user_base \
-diff --git a/tools/testing/selftests/powerpc/nx-gzip/Makefile b/tools/testing/selftests/powerpc/nx-gzip/Makefile
-index 0785c2e99d40..b40991f902b2 100644
---- a/tools/testing/selftests/powerpc/nx-gzip/Makefile
-+++ b/tools/testing/selftests/powerpc/nx-gzip/Makefile
-@@ -1,8 +1,8 @@
--CFLAGS = -O3 -m64 -I./include -I../include
--
- TEST_GEN_FILES := gzfht_test gunz_test
- TEST_PROGS := nx-gzip-test.sh
- 
- include ../../lib.mk
- 
-+CFLAGS = -O3 -m64 -I./include -I../include
-+
- $(TEST_GEN_FILES): gzip_vas.c ../utils.c
 diff --git a/tools/testing/selftests/powerpc/pmu/ebb/Makefile b/tools/testing/selftests/powerpc/pmu/ebb/Makefile
-index 010160690227..b3946ce17e0c 100644
+index b3946ce17e0c..1b39af7c10db 100644
 --- a/tools/testing/selftests/powerpc/pmu/ebb/Makefile
 +++ b/tools/testing/selftests/powerpc/pmu/ebb/Makefile
-@@ -4,16 +4,6 @@ include ../../../../../build/Build.include
- noarg:
- 	$(MAKE) -C ../../
+@@ -18,6 +18,7 @@ TEST_GEN_PROGS := reg_access_test event_attributes_test cycles_test	\
  
--# The EBB handler is 64-bit code and everything links against it
--CFLAGS += -m64
--
--TMPOUT = $(OUTPUT)/TMPDIR/
--# Toolchains may build PIE by default which breaks the assembly
--no-pie-option := $(call try-run, echo 'int main() { return 0; }' | \
--        $(CC) -Werror $(KBUILD_CPPFLAGS) $(CC_OPTION_CFLAGS) -no-pie -x c - -o "$$TMP", -no-pie)
--
--LDFLAGS += $(no-pie-option)
--
- TEST_GEN_PROGS := reg_access_test event_attributes_test cycles_test	\
- 	 cycles_with_freeze_test pmc56_overflow_test		\
- 	 ebb_vs_cpu_event_test cpu_event_vs_ebb_test		\
-@@ -29,6 +19,16 @@ TEST_GEN_PROGS := reg_access_test event_attributes_test cycles_test	\
  top_srcdir = ../../../../../..
  include ../../../lib.mk
++include ../../flags.mk
  
-+# The EBB handler is 64-bit code and everything links against it
-+CFLAGS += -m64
-+
-+TMPOUT = $(OUTPUT)/TMPDIR/
-+# Toolchains may build PIE by default which breaks the assembly
-+no-pie-option := $(call try-run, echo 'int main() { return 0; }' | \
-+        $(CC) -Werror $(KBUILD_CPPFLAGS) $(CC_OPTION_CFLAGS) -no-pie -x c - -o "$$TMP", -no-pie)
-+
-+LDFLAGS += $(no-pie-option)
-+
- $(TEST_GEN_PROGS): ../../harness.c ../../utils.c ../event.c ../lib.c \
- 	       ebb.c ebb_handler.S trace.c busy_loop.S
- 
+ # The EBB handler is 64-bit code and everything links against it
+ CFLAGS += -m64
 diff --git a/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile b/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile
-index 4e07d7046457..509d4b235b9e 100644
+index 509d4b235b9e..fdb080b3fa65 100644
 --- a/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile
 +++ b/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile
-@@ -1,6 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0
--CFLAGS += -m64
--
- TEST_GEN_PROGS := group_constraint_pmc56_test group_pmc56_exclude_constraints_test group_constraint_pmc_count_test \
- 	group_constraint_repeat_test group_constraint_radix_scope_qual_test reserved_bits_mmcra_sample_elig_mode_test \
- 	group_constraint_mmcra_sample_test invalid_event_code_test reserved_bits_mmcra_thresh_ctl_test \
-@@ -12,4 +10,6 @@ TEST_GEN_PROGS := group_constraint_pmc56_test group_pmc56_exclude_constraints_te
+@@ -9,6 +9,7 @@ TEST_GEN_PROGS := group_constraint_pmc56_test group_pmc56_exclude_constraints_te
+ 
  top_srcdir = ../../../../../..
  include ../../../lib.mk
++include ../../flags.mk
  
-+CFLAGS += -m64
-+
- $(TEST_GEN_PROGS): ../../harness.c ../../utils.c ../event.c ../lib.c ../sampling_tests/misc.h ../sampling_tests/misc.c
+ CFLAGS += -m64
+ 
 diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile b/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile
-index 9e67351fb252..d45892151e05 100644
+index d45892151e05..9f79bec5fce7 100644
 --- a/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile
 +++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile
-@@ -1,6 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0
--CFLAGS += -m64
--
- TEST_GEN_PROGS := mmcr0_exceptionbits_test mmcr0_cc56run_test mmcr0_pmccext_test \
- 		   mmcr0_pmcjce_test mmcr0_fc56_pmc1ce_test mmcr0_fc56_pmc56_test \
- 		   mmcr1_comb_test mmcr2_l2l3_test mmcr2_fcs_fch_test \
-@@ -12,4 +10,6 @@ TEST_GEN_PROGS := mmcr0_exceptionbits_test mmcr0_cc56run_test mmcr0_pmccext_test
+@@ -9,6 +9,7 @@ TEST_GEN_PROGS := mmcr0_exceptionbits_test mmcr0_cc56run_test mmcr0_pmccext_test
+ 
  top_srcdir = ../../../../../..
  include ../../../lib.mk
++include ../../flags.mk
  
-+CFLAGS += -m64
-+
- $(TEST_GEN_PROGS): ../../harness.c ../../utils.c ../event.c ../lib.c misc.c misc.h ../loop.S ../branch_loops.S
-diff --git a/tools/testing/selftests/powerpc/primitives/Makefile b/tools/testing/selftests/powerpc/primitives/Makefile
-index 9b9491a63213..6dc5c5a42ca9 100644
---- a/tools/testing/selftests/powerpc/primitives/Makefile
-+++ b/tools/testing/selftests/powerpc/primitives/Makefile
-@@ -1,9 +1,9 @@
- # SPDX-License-Identifier: GPL-2.0-only
--CFLAGS += -I$(CURDIR)
--
- TEST_GEN_PROGS := load_unaligned_zeropad
- 
- top_srcdir = ../../../../..
- include ../../lib.mk
- 
-+CFLAGS += -I$(CURDIR)
-+
- $(TEST_GEN_PROGS): ../harness.c
-diff --git a/tools/testing/selftests/powerpc/security/Makefile b/tools/testing/selftests/powerpc/security/Makefile
-index e0d979ab0204..0a08386be969 100644
---- a/tools/testing/selftests/powerpc/security/Makefile
-+++ b/tools/testing/selftests/powerpc/security/Makefile
-@@ -5,10 +5,10 @@ TEST_PROGS := mitigation-patching.sh
- 
- top_srcdir = ../../../../..
- 
--CFLAGS += $(KHDR_INCLUDES)
--
- include ../../lib.mk
- 
-+CFLAGS += $(KHDR_INCLUDES)
-+
- $(TEST_GEN_PROGS): ../harness.c ../utils.c
- 
- $(OUTPUT)/spectre_v2: CFLAGS += -m64
-diff --git a/tools/testing/selftests/powerpc/signal/Makefile b/tools/testing/selftests/powerpc/signal/Makefile
-index f679d260afc8..b15d5dbccc24 100644
---- a/tools/testing/selftests/powerpc/signal/Makefile
-+++ b/tools/testing/selftests/powerpc/signal/Makefile
-@@ -3,7 +3,6 @@ TEST_GEN_PROGS := signal signal_tm sigfuz sigreturn_vdso sig_sc_double_restart
- TEST_GEN_PROGS += sigreturn_kernel
- TEST_GEN_PROGS += sigreturn_unaligned
- 
--CFLAGS += -maltivec
- $(OUTPUT)/signal_tm: CFLAGS += -mhtm
- $(OUTPUT)/sigfuz: CFLAGS += -pthread -m64
- 
-@@ -12,4 +11,6 @@ TEST_FILES := settings
- top_srcdir = ../../../../..
- include ../../lib.mk
- 
-+CFLAGS += -maltivec
-+
- $(TEST_GEN_PROGS): ../harness.c ../utils.c signal.S
-diff --git a/tools/testing/selftests/powerpc/stringloops/Makefile b/tools/testing/selftests/powerpc/stringloops/Makefile
-index 9c39f55a58ff..87c8c8f238da 100644
---- a/tools/testing/selftests/powerpc/stringloops/Makefile
-+++ b/tools/testing/selftests/powerpc/stringloops/Makefile
-@@ -1,7 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0
--# The loops are all 64-bit code
--CFLAGS += -I$(CURDIR)
--
- EXTRA_SOURCES := ../harness.c
- 
- build_32bit = $(shell if ($(CC) $(CFLAGS) -m32 -o /dev/null memcmp.c >/dev/null 2>&1) then echo "1"; fi)
-@@ -27,9 +24,12 @@ $(OUTPUT)/strlen_32: CFLAGS += -m32
- TEST_GEN_PROGS += strlen_32
- endif
- 
--ASFLAGS = $(CFLAGS)
--
- top_srcdir = ../../../../..
- include ../../lib.mk
- 
-+# The loops are all 64-bit code
-+CFLAGS += -I$(CURDIR)
-+
-+ASFLAGS = $(CFLAGS)
-+
- $(TEST_GEN_PROGS): $(EXTRA_SOURCES)
-diff --git a/tools/testing/selftests/powerpc/switch_endian/Makefile b/tools/testing/selftests/powerpc/switch_endian/Makefile
-index bdc081afedb0..8f0c2a1d3333 100644
---- a/tools/testing/selftests/powerpc/switch_endian/Makefile
-+++ b/tools/testing/selftests/powerpc/switch_endian/Makefile
-@@ -1,13 +1,13 @@
- # SPDX-License-Identifier: GPL-2.0
- TEST_GEN_PROGS := switch_endian_test
- 
--ASFLAGS += -O2 -Wall -g -nostdlib -m64
--
- EXTRA_CLEAN = $(OUTPUT)/*.o $(OUTPUT)/check-reversed.S
- 
- top_srcdir = ../../../../..
- include ../../lib.mk
- 
-+ASFLAGS += -O2 -Wall -g -nostdlib -m64
-+
- $(OUTPUT)/switch_endian_test: ASFLAGS += -I $(OUTPUT)
- $(OUTPUT)/switch_endian_test: $(OUTPUT)/check-reversed.S
- 
-diff --git a/tools/testing/selftests/powerpc/syscalls/Makefile b/tools/testing/selftests/powerpc/syscalls/Makefile
-index ee1740ddfb0c..83dc33500773 100644
---- a/tools/testing/selftests/powerpc/syscalls/Makefile
-+++ b/tools/testing/selftests/powerpc/syscalls/Makefile
-@@ -1,9 +1,9 @@
- # SPDX-License-Identifier: GPL-2.0-only
- TEST_GEN_PROGS := ipc_unmuxed rtas_filter
- 
--CFLAGS += $(KHDR_INCLUDES)
--
- top_srcdir = ../../../../..
- include ../../lib.mk
- 
-+CFLAGS += $(KHDR_INCLUDES)
-+
- $(TEST_GEN_PROGS): ../harness.c ../utils.c
-diff --git a/tools/testing/selftests/powerpc/vphn/Makefile b/tools/testing/selftests/powerpc/vphn/Makefile
-index cf65cbf33085..ddc09a20b80f 100644
---- a/tools/testing/selftests/powerpc/vphn/Makefile
-+++ b/tools/testing/selftests/powerpc/vphn/Makefile
-@@ -1,10 +1,10 @@
- # SPDX-License-Identifier: GPL-2.0-only
- TEST_GEN_PROGS := test-vphn
- 
--CFLAGS += -m64 -I$(CURDIR)
--
- top_srcdir = ../../../../..
- include ../../lib.mk
- 
-+CFLAGS += -m64 -I$(CURDIR)
-+
- $(TEST_GEN_PROGS): ../harness.c
+ CFLAGS += -m64
  
 -- 
 2.43.2
