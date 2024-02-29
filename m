@@ -2,94 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3744086C304
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 09:05:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3171086C331
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 09:12:02 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YXEhbrYi;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=J4DaNmzG;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TlkKn5f28z3vZs
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 19:05:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TlkTW5p2Cz3vX5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 19:11:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YXEhbrYi;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=J4DaNmzG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=tasmiya@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlkK36Kz7z30fp
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 19:04:39 +1100 (AEDT)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41T82PjR025147;
-	Thu, 29 Feb 2024 08:04:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=vNCloWa9rpkjDgB/cpjEFdYXPVzWq/UH1dD4hpZWK10=;
- b=YXEhbrYiYumGo0s0+qq3gTKDgMd5p5DmHMJx/g4YedGydPVZPC8k6BOHkAc4rvZIGZfu
- W4uAXTg9u714wGCRXFhK5M6tDLbOVGUo9JKCON5KTooPlumbOygUwVA/7QLfuMYB1AzZ
- SFIrW2KqR9A6dO47KgNwoANSGcVT00bAW2D5pSLtqpGfEJdEpLZ2nThEeNCcQ8YUWbDf
- gZsKOJctpWGWD0FgLTP4rQTHDzHzeOfMGSQ1J0WDjp2swiPGk+XEzBLciZMCKlNiWXVR
- RlZqJAzz86rtsFzumNentGL9mHqrJOizxkpOcTR7l0Nb04R/weRlfgZIbenB/OVkFnRe 9w== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wjp2hr44e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Feb 2024 08:04:26 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41T83DM8031184;
-	Thu, 29 Feb 2024 08:04:26 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wjp2hr43e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Feb 2024 08:04:25 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41T5UpL8021316;
-	Thu, 29 Feb 2024 08:04:25 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wfuspbwfy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Feb 2024 08:04:25 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41T84Mnh40042988
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 29 Feb 2024 08:04:24 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1B18C5805C;
-	Thu, 29 Feb 2024 08:04:22 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8EB9958079;
-	Thu, 29 Feb 2024 08:04:17 +0000 (GMT)
-Received: from [9.43.32.108] (unknown [9.43.32.108])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 29 Feb 2024 08:04:17 +0000 (GMT)
-Message-ID: <a1fdd2c2-4443-458e-86db-280e7cbd4a36@linux.vnet.ibm.com>
-Date: Thu, 29 Feb 2024 13:34:15 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlkSk2S8Gz3bs0
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 19:11:18 +1100 (AEDT)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4TlkSk202Gz4wyj
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 19:11:18 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4TlkSk1wbvz4wp0; Thu, 29 Feb 2024 19:11:18 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=J4DaNmzG;
+	dkim-atps=neutral
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4TlkSj5HgRz4wyq
+	for <linuxppc-dev@ozlabs.org>; Thu, 29 Feb 2024 19:11:17 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1709194275;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KKgPV4KlmoWInRghtoexaD0eJgXp81WWMaJOZh2q7qI=;
+	b=J4DaNmzGb75ZNF/dkZ372ZtiTpDnQz6Totpy7L1DeEZkZ3u9R7auFxr1uei62aoe5TePxV
+	dq0LGVqKbGa2zK0NoGVkdpmRavVX061VLeJVhDouyk3qyJQiXNpApWOMgq0PY40oM9pGFK
+	bNChCcBmVtebIYDgwBMl36Jpheski8U=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-222-RSprWW3hOl-Jg7EwQH2YYw-1; Thu, 29 Feb 2024 03:11:09 -0500
+X-MC-Unique: RSprWW3hOl-Jg7EwQH2YYw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A411C106D102;
+	Thu, 29 Feb 2024 08:11:08 +0000 (UTC)
+Received: from localhost (unknown [10.72.116.6])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 93616112C5;
+	Thu, 29 Feb 2024 08:11:06 +0000 (UTC)
+Date: Thu, 29 Feb 2024 16:11:02 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>
+Subject: Re: [PATCH v17 3/6] powerpc/kexec: move *_memory_ranges functions to
+ ranges.c
+Message-ID: <ZeA8Fl7xVHly4Ma+@MiWiFi-R3L-srv>
+References: <20240226084118.16310-1-sourabhjain@linux.ibm.com>
+ <20240226084118.16310-4-sourabhjain@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [revert 0d60d8df6f49] [net/net-next] [6.8-rc5] Build Failure
-To: Eric Dumazet <edumazet@google.com>,
-        Vadim Fedorenko <vadim.fedorenko@linux.dev>
-References: <3fcf3a2c-1c1b-42c1-bacb-78fdcd700389@linux.vnet.ibm.com>
- <85b78dad-affa-47c3-9cd0-79a4321460b8@linux.dev>
- <CANn89iJEzTjwxF7wXSnUR+NyDu-S-zEOYVXA+fEaYs_1o1g5HQ@mail.gmail.com>
-Content-Language: en-US
-From: Tasmiya Nalatwad <tasmiya@linux.vnet.ibm.com>
-In-Reply-To: <CANn89iJEzTjwxF7wXSnUR+NyDu-S-zEOYVXA+fEaYs_1o1g5HQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: OTJnR3xJPU91ToZ0GLSBpYQPlyNp7TsS
-X-Proofpoint-ORIG-GUID: oWDAQZrahUGh0cNSPpMnHqHdCbHr77Qj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-28_08,2024-02-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 phishscore=0
- impostorscore=0 malwarescore=0 suspectscore=0 lowpriorityscore=0
- bulkscore=0 adultscore=0 priorityscore=1501 clxscore=1015 mlxscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402290062
+In-Reply-To: <20240226084118.16310-4-sourabhjain@linux.ibm.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,302 +87,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: venkat88@linux.vnet.ibm.com, "mputtash@linux.vnet.com" <mputtash@linux.vnet.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, arkadiusz.kubalewski@intel.com, "sachinp@linux.vnet.com" <sachinp@linux.vnet.com>, "abdhalee@linux.vnet.ibm.com" <abdhalee@linux.vnet.ibm.com>, jiri@nvidia.com, kuba@kernel.org, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: David Hildenbrand <david@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, Mimi Zohar <zohar@linux.ibm.com>, linuxppc-dev@ozlabs.org, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Valentin Schneider <vschneid@redhat.com>, x86@kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Laurent Dufour <laurent.dufour@fr.ibm.com>, Dave Young <dyoung@redhat.com>, Vivek Goyal <vgoyal@redhat.com>, Naveen N Rao <naveen@kernel.org>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, Hari Bathini <hbathini@linux.ibm.com>, Oscar Salvador <osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, kexec@lists.infradead.org, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Akhil Raj <lf32.dev@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Greetings,
-
-I have tried the patch provided below. Moving struct to file 
-"net/core/rtnetlink.c" is not resolving the problem. Please find the 
-below traces.
-
---- Traces ---
-
-In file included from ./include/linux/rbtree.h:24,
-                  from ./include/linux/mm_types.h:11,
-                  from ./include/linux/mmzone.h:22,
-                  from ./include/linux/gfp.h:7,
-                  from ./include/linux/umh.h:4,
-                  from ./include/linux/kmod.h:9,
-                  from ./include/linux/module.h:17,
-                  from net/core/rtnetlink.c:17:
-net/core/rtnetlink.c: In function ‘netdev_dpll_pin’:
-./include/linux/rcupdate.h:439:9: error: dereferencing pointer to 
-incomplete type ‘struct dpll_pin’
-   typeof(*p) *local = (typeof(*p) *__force)READ_ONCE(p); \
-          ^
-./include/linux/rcupdate.h:587:2: note: in expansion of macro 
-‘__rcu_dereference_check’
-   __rcu_dereference_check((p), __UNIQUE_ID(rcu), \
-   ^~~~~~~~~~~~~~~~~~~~~~~
-./include/linux/rtnetlink.h:70:2: note: in expansion of macro 
-‘rcu_dereference_check’
-   rcu_dereference_check(p, lockdep_rtnl_is_held())
-   ^~~~~~~~~~~~~~~~~~~~~
-net/core/rtnetlink.c:1059:15: note: in expansion of macro 
-‘rcu_dereference_rtnl’
-         return rcu_dereference_rtnl(dev->dpll_pin);
-                ^~~~~~~~~~~~~~~~~~~~
-   CC      crypto/algboss.o
-net/core/rtnetlink.c:1063:1: error: control reaches end of non-void 
-function [-Werror=return-type]
-  }
-  ^
-   CC      crypto/authenc.o
-   CC      crypto/authencesn.o
-   CC      crypto/af_alg.o
-   CC      crypto/algif_hash.o
-   CC      crypto/algif_skcipher.o
-   CC      crypto/algif_rng.o
-   CC      crypto/algif_aead.o
-   AR      arch/powerpc/kernel/built-in.a
-cc1: some warnings being treated as errors
-make[4]: *** [scripts/Makefile.build:243: net/core/rtnetlink.o] Error 1
-make[4]: *** Waiting for unfinished jobs....
-   CC      lib/kobject_uevent.o
-   AR      drivers/net/mdio/built-in.a
-   AR      net/802/built-in.a
-   AR      drivers/connector/built-in.a
-   CC      lib/vsprintf.o
-   AR      ipc/built-in.a
-   AR      net/nsh/built-in.a
-   CC      lib/dynamic_debug.o
-In file included from ./arch/powerpc/include/generated/asm/rwonce.h:1,
-                  from ./include/linux/compiler.h:251,
-                  from ./include/linux/instrumented.h:10,
-                  from ./include/linux/uaccess.h:6,
-                  from net/core/dev.c:71:
-net/core/dev.c: In function ‘netdev_dpll_pin_assign’:
-./include/linux/rcupdate.h:462:36: error: dereferencing pointer to 
-incomplete type ‘struct dpll_pin’
-  #define RCU_INITIALIZER(v) (typeof(*(v)) __force __rcu *)(v)
-                                     ^~~~
-./include/asm-generic/rwonce.h:55:33: note: in definition of macro 
-‘__WRITE_ONCE’
-   *(volatile typeof(x) *)&(x) = (val);    \
-                                  ^~~
-./arch/powerpc/include/asm/barrier.h:76:2: note: in expansion of macro 
-‘WRITE_ONCE’
-   WRITE_ONCE(*p, v);      \
-   ^~~~~~~~~~
-./include/asm-generic/barrier.h:172:55: note: in expansion of macro 
-‘__smp_store_release’
-  #define smp_store_release(p, v) do { kcsan_release(); 
-__smp_store_release(p, v); } while (0)
-^~~~~~~~~~~~~~~~~~~
-./include/linux/rcupdate.h:503:3: note: in expansion of macro 
-‘smp_store_release’
-    smp_store_release(&p, RCU_INITIALIZER((typeof(p))_r_a_p__v)); \
-    ^~~~~~~~~~~~~~~~~
-./include/linux/rcupdate.h:503:25: note: in expansion of macro 
-‘RCU_INITIALIZER’
-    smp_store_release(&p, RCU_INITIALIZER((typeof(p))_r_a_p__v)); \
-                          ^~~~~~~~~~~~~~~
-net/core/dev.c:9081:2: note: in expansion of macro ‘rcu_assign_pointer’
-   rcu_assign_pointer(dev->dpll_pin, dpll_pin);
-   ^~~~~~~~~~~~~~~~~~
-
-On 2/28/24 20:13, Eric Dumazet wrote:
-> On Wed, Feb 28, 2024 at 3:07 PM Vadim Fedorenko
-> <vadim.fedorenko@linux.dev> wrote:
->> On 28/02/2024 11:09, Tasmiya Nalatwad wrote:
->>> Greetings,
->>>
->>> [revert 0d60d8df6f49] [net/net-next] [6.8-rc5] Build Failure
->>>
->>> Reverting below commit fixes the issue
->>>
->>> commit 0d60d8df6f493bb46bf5db40d39dd60a1bafdd4e
->>>       dpll: rely on rcu for netdev_dpll_pin()
->>>
->>> --- Traces ---
->>>
->>> ./include/linux/dpll.h: In function ‘netdev_dpll_pin’:
->>> ./include/linux/rcupdate.h:439:9: error: dereferencing pointer to
->>> incomplete type ‘struct dpll_pin’
->>>     typeof(*p) *local = (typeof(*p) *__force)READ_ONCE(p); \
->>>            ^
->>> ./include/linux/rcupdate.h:587:2: note: in expansion of macro
->>> ‘__rcu_dereference_check’
->>>     __rcu_dereference_check((p), __UNIQUE_ID(rcu), \
->>>     ^~~~~~~~~~~~~~~~~~~~~~~
->>> ./include/linux/rtnetlink.h:70:2: note: in expansion of macro
->>> ‘rcu_dereference_check’
->>>     rcu_dereference_check(p, lockdep_rtnl_is_held())
->>>     ^~~~~~~~~~~~~~~~~~~~~
->>> ./include/linux/dpll.h:175:9: note: in expansion of macro
->>> ‘rcu_dereference_rtnl’
->>>     return rcu_dereference_rtnl(dev->dpll_pin);
->>>            ^~~~~~~~~~~~~~~~~~~~
->>> make[4]: *** [scripts/Makefile.build:243: drivers/dpll/dpll_core.o] Error 1
->>> make[4]: *** Waiting for unfinished jobs....
->>>     AR      net/mpls/built-in.a
->>>     AR      net/l3mdev/built-in.a
->>> In file included from ./include/linux/rbtree.h:24,
->>>                    from ./include/linux/mm_types.h:11,
->>>                    from ./include/linux/mmzone.h:22,
->>>                    from ./include/linux/gfp.h:7,
->>>                    from ./include/linux/umh.h:4,
->>>                    from ./include/linux/kmod.h:9,
->>>                    from ./include/linux/module.h:17,
->>>                    from drivers/dpll/dpll_netlink.c:9:
->>> ./include/linux/dpll.h: In function ‘netdev_dpll_pin’:
->>> ./include/linux/rcupdate.h:439:9: error: dereferencing pointer to
->>> incomplete type ‘struct dpll_pin’
->>>     typeof(*p) *local = (typeof(*p) *__force)READ_ONCE(p); \
->>>            ^
->>> ./include/linux/rcupdate.h:587:2: note: in expansion of macro
->>> ‘__rcu_dereference_check’
->>>     __rcu_dereference_check((p), __UNIQUE_ID(rcu), \
->>>     ^~~~~~~~~~~~~~~~~~~~~~~
->>> ./include/linux/rtnetlink.h:70:2: note: in expansion of macro
->>> ‘rcu_dereference_check’
->>>     rcu_dereference_check(p, lockdep_rtnl_is_held())
->>>     ^~~~~~~~~~~~~~~~~~~~~
->>> ./include/linux/dpll.h:175:9: note: in expansion of macro
->>> ‘rcu_dereference_rtnl’
->>>     return rcu_dereference_rtnl(dev->dpll_pin);
->>>            ^~~~~~~~~~~~~~~~~~~~
->>> make[4]: *** [scripts/Makefile.build:243: drivers/dpll/dpll_netlink.o]
->>> Error 1
->>> make[3]: *** [scripts/Makefile.build:481: drivers/dpll] Error 2
->>> make[3]: *** Waiting for unfinished jobs....
->>> In file included from ./arch/powerpc/include/generated/asm/rwonce.h:1,
->>>                    from ./include/linux/compiler.h:251,
->>>                    from ./include/linux/instrumented.h:10,
->>>                    from ./include/linux/uaccess.h:6,
->>>                    from net/core/dev.c:71:
->>> net/core/dev.c: In function ‘netdev_dpll_pin_assign’:
->>> ./include/linux/rcupdate.h:462:36: error: dereferencing pointer to
->>> incomplete type ‘struct dpll_pin’
->>>    #define RCU_INITIALIZER(v) (typeof(*(v)) __force __rcu *)(v)
->>>                                       ^~~~
->>> ./include/asm-generic/rwonce.h:55:33: note: in definition of macro
->>> ‘__WRITE_ONCE’
->>>     *(volatile typeof(x) *)&(x) = (val);    \
->>>                                    ^~~
->>> ./arch/powerpc/include/asm/barrier.h:76:2: note: in expansion of macro
->>> ‘WRITE_ONCE’
->>>     WRITE_ONCE(*p, v);      \
->>>     ^~~~~~~~~~
->>> ./include/asm-generic/barrier.h:172:55: note: in expansion of macro
->>> ‘__smp_store_release’
->>>    #define smp_store_release(p, v) do { kcsan_release();
->>> __smp_store_release(p, v); } while (0)
->>> ^~~~~~~~~~~~~~~~~~~
->>> ./include/linux/rcupdate.h:503:3: note: in expansion of macro
->>> ‘smp_store_release’
->>>      smp_store_release(&p, RCU_INITIALIZER((typeof(p))_r_a_p__v)); \
->>>      ^~~~~~~~~~~~~~~~~
->>> ./include/linux/rcupdate.h:503:25: note: in expansion of macro
->>> ‘RCU_INITIALIZER’
->>>      smp_store_release(&p, RCU_INITIALIZER((typeof(p))_r_a_p__v)); \
->>>                            ^~~~~~~~~~~~~~~
->>> net/core/dev.c:9081:2: note: in expansion of macro ‘rcu_assign_pointer’
->>>     rcu_assign_pointer(dev->dpll_pin, dpll_pin);
->>>     ^~~~~~~~~~~~~~~~~~
->>> make[4]: *** [scripts/Makefile.build:243: net/core/dev.o] Error 1
->>> make[4]: *** Waiting for unfinished jobs....
->>>     AR      drivers/net/ethernet/built-in.a
->>>     AR      drivers/net/built-in.a
->>>     AR      net/dcb/built-in.a
->>>     AR      net/netlabel/built-in.a
->>>     AR      net/strparser/built-in.a
->>>     AR      net/handshake/built-in.a
->>>     GEN     lib/test_fortify.log
->>>     AR      net/8021q/built-in.a
->>>     AR      net/nsh/built-in.a
->>>     AR      net/unix/built-in.a
->>>     CC      lib/string.o
->>>     AR      net/packet/built-in.a
->>>     AR      net/switchdev/built-in.a
->>>     AR      lib/lib.a
->>>     AR      net/mptcp/built-in.a
->>>     AR      net/devlink/built-in.a
->>> In file included from ./include/linux/rbtree.h:24,
->>>                    from ./include/linux/mm_types.h:11,
->>>                    from ./include/linux/mmzone.h:22,
->>>                    from ./include/linux/gfp.h:7,
->>>                    from ./include/linux/umh.h:4,
->>>                    from ./include/linux/kmod.h:9,
->>>                    from ./include/linux/module.h:17,
->>>                    from net/core/rtnetlink.c:17:
->>> ./include/linux/dpll.h: In function ‘netdev_dpll_pin’:
->>> ./include/linux/rcupdate.h:439:9: error: dereferencing pointer to
->>> incomplete type ‘struct dpll_pin’
->>>     typeof(*p) *local = (typeof(*p) *__force)READ_ONCE(p); \
->>>            ^
->>> ./include/linux/rcupdate.h:587:2: note: in expansion of macro
->>> ‘__rcu_dereference_check’
->>>     __rcu_dereference_check((p), __UNIQUE_ID(rcu), \
->>>     ^~~~~~~~~~~~~~~~~~~~~~~
->>> ./include/linux/rtnetlink.h:70:2: note: in expansion of macro
->>> ‘rcu_dereference_check’
->>>     rcu_dereference_check(p, lockdep_rtnl_is_held())
->>>     ^~~~~~~~~~~~~~~~~~~~~
->>> ./include/linux/dpll.h:175:9: note: in expansion of macro
->>> ‘rcu_dereference_rtnl’
->>>     return rcu_dereference_rtnl(dev->dpll_pin);
->>>            ^~~~~~~~~~~~~~~~~~~~
->>> In file included from net/core/rtnetlink.c:60:
->>> ./include/linux/dpll.h:179:1: error: control reaches end of non-void
->>> function [-Werror=return-type]
->>>    }
->>>
->> Hi, Eric!
->>
->> Looks like we have to move struct dpll_pin definition to
->> include/linux/dpll.h to have this fixed, right?
->>
-> No idea what is wrong. Is it powerpc specific ? Some compiler version ?
->
-> netdev_dpll_pin() could be moved to net/core/rtnetlink.c, this is the only user.
->
-> diff --git a/include/linux/dpll.h b/include/linux/dpll.h
-> index 4ec2fe9caf5a3f284afd0cfe4fc7c2bf42cbbc60..72d21e710d7f201d2fc57bb3a32b4bc0ff2b1749
-> 100644
-> --- a/include/linux/dpll.h
-> +++ b/include/linux/dpll.h
-> @@ -169,13 +169,4 @@ int dpll_device_change_ntf(struct dpll_device *dpll);
->
->   int dpll_pin_change_ntf(struct dpll_pin *pin);
->
-> -static inline struct dpll_pin *netdev_dpll_pin(const struct net_device *dev)
-> -{
-> -#if IS_ENABLED(CONFIG_DPLL)
-> -       return rcu_dereference_rtnl(dev->dpll_pin);
-> -#else
-> -       return NULL;
-> -#endif
-> -}
-> -
->   #endif
-> diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-> index 9c4f427f3a5057b52ec05405e8b15b8ca2246b4b..32dc601fd8ca66dfcd3cb8f38b533314de02d1d2
-> 100644
-> --- a/net/core/rtnetlink.c
-> +++ b/net/core/rtnetlink.c
-> @@ -1053,6 +1053,15 @@ static size_t rtnl_devlink_port_size(const
-> struct net_device *dev)
->          return size;
->   }
->
-> +static struct dpll_pin *netdev_dpll_pin(const struct net_device *dev)
-> +{
-> +#if IS_ENABLED(CONFIG_DPLL)
-> +       return rcu_dereference_rtnl(dev->dpll_pin);
-> +#else
-> +       return NULL;
-> +#endif
-> +}
-> +
->   static size_t rtnl_dpll_pin_size(const struct net_device *dev)
->   {
->          size_t size = nla_total_size(0); /* nest IFLA_DPLL_PIN */
-
--- 
-Regards,
-Tasmiya Nalatwad
-IBM Linux Technology Center
+On 02/26/24 at 02:11pm, Sourabh Jain wrote:
+> Move the following functions form kexec/{file_load_64.c => ranges.c} and
+> make them public so that components other KEXEC_FILE can also use these
+                                           ^
+                                          'than' missed?
+> functions.
+> 1. get_exclude_memory_ranges
+> 2. get_reserved_memory_ranges
+> 3. get_crash_memory_ranges
+> 4. get_usable_memory_ranges
+> 
+> Later in the series get_crash_memory_ranges function is utilized for
+> in-kernel updates to kdump image during CPU/Memory hotplug or
+> online/offline events for both kexec_load and kexec_file_load syscalls.
+> 
+> Since the above functions are moved to ranges.c, some of the helper
+> functions in ranges.c are no longer required to be public. Mark them as
+> static and removed them from kexec_ranges.h header file.
+> 
+> Finally, remove the CONFIG_KEXEC_FILE build dependency for range.c
+> because it is required for other config, such as CONFIG_CRASH_DUMP.
+> 
+> No functional changes are intended.
+......snip
 
