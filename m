@@ -2,75 +2,122 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B372086BF7E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 04:32:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 615A386BF84
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 04:37:31 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=M5qY+g35;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=QJVh8MXs;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TlcHL2HDhz3vY2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 14:32:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TlcNm74czz3vXw
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 14:37:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=M5qY+g35;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=QJVh8MXs;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::34; helo=mail-oa1-x34.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f403:2417::600; helo=nam12-dm6-obe.outbound.protection.outlook.com; envelope-from=kprateek.nayak@amd.com; receiver=lists.ozlabs.org)
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on20600.outbound.protection.outlook.com [IPv6:2a01:111:f403:2417::600])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlcGc2lP9z3bsn
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 14:32:07 +1100 (AEDT)
-Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-22007fe465bso262117fac.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Feb 2024 19:32:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709177519; x=1709782319; darn=lists.ozlabs.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4CoFW6OKdyVFW2sqEZWn71FgR7RIK3QxGugFdW/eOQs=;
-        b=M5qY+g35XzJ+BR6eYVNrxRSX7bXfhMhuHm5M6DgoaYKvAmp8/7mTHpwaFeXpHXHW3g
-         GSBRIyCvWA9mva1nLXdx9jNmLjXVrlQNxgXOEKu2ZF5AQy0vi6Cz3HDzSoB1vGZCZgsh
-         bZ9OgoeyKcLu7l5FaQ9JN3KZQcTsVGHMJkBtenS+wT/6a9eMkIFQMd3/7iPhBp2sly31
-         i/zxMvMT9sPF9eh1n+B1qbDLtoeVLXahdhWAUPPkV4AZW3ggwNXv5ekrVALVnS5w8hCx
-         2rLea0/xC2j/Sz+JECq+AgCRIqyOtt8SyukWp+/yAv76Fh2wiZHmgWKyDQpVx94qflJ5
-         LkBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709177519; x=1709782319;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=4CoFW6OKdyVFW2sqEZWn71FgR7RIK3QxGugFdW/eOQs=;
-        b=ZPFjHe3mly6mVNy79Ek8km6xaUQMrmrQaiQ9d6sFQziTh/BFT572cRwR7T3HhHRupF
-         Iq7Mftw3mN06qy4I91PRnKEr0nvLg6YU+kTpPTUKC0/gWEE1XawUNGQcus+xrsjXJeiB
-         LmAjVAFE/Y0Awk+vyR6fyucpAMoCI5SKI31rDV3wM3DiWnwNpgg7hjUQtbA+2zov6TOw
-         kNxxI7WM8BowJw8zU5o54Z9za1Kd8zqsgnbHgMnFxN8blwsmI3cyjnNCrFYtgKUj4QKn
-         7E6GGTWnHDk4zM9PZacKoQym73Zveq9ucUNXbXPXWJXY5xOqH5d8PtN3p3lNKggotqMG
-         v07g==
-X-Forwarded-Encrypted: i=1; AJvYcCVC1LFVXL6ewMiec69cbwUH5mR3cZNtuiShkJvAN+tVTApekgyEYxpUV2r9/KswslrmFVoNhwfiCuewquzZGr5b5dqXXbsionGIaUMn5w==
-X-Gm-Message-State: AOJu0YwzEnifa972Bsmc+OsasfHdXfqjfqv2aNWBZSLpt6b2nxXN0HA5
-	8jstbwwtTjCrC2ICBqMaq8ANq5780RQKi9DXPhogd9IeNfYY7QoB
-X-Google-Smtp-Source: AGHT+IFB9PEwchGQbbJVMouwlE0FuOhB6jELVU4WqBvhZ3nzeCZtjl/MpeNpD6vcpNdJ4Et8AtDDpw==
-X-Received: by 2002:a05:6870:40d5:b0:21f:df18:349b with SMTP id l21-20020a05687040d500b0021fdf18349bmr837242oal.35.1709177519588;
-        Wed, 28 Feb 2024 19:31:59 -0800 (PST)
-Received: from localhost (220-235-220-130.tpgi.com.au. [220.235.220.130])
-        by smtp.gmail.com with ESMTPSA id u23-20020aa78497000000b006e5092fb3efsm183625pfn.159.2024.02.28.19.31.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Feb 2024 19:31:59 -0800 (PST)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlcN211jfz3bsT
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 14:36:47 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=INn9TVpYzRjjPcBG+NyM7R6jq4XRC6gwB1I5ZGL4spBA8RNpYDtQc6SA50Xby8ROg2oZGY6pWgGOX0j5NaPxok7A08i46eWYXaSN6k3FqXLEvryljzLYU9AtJY4vY7H+qtuneE4dW5aAR5aRo1dqzQu18Drfb3EOWgWlTejCmOTGErzuEjTjJ4QUa1NF1UjrgeWCrAcGvYz3S+24CPxx+h+NRf3DIh9yEkvJJFnz5XV7BxDxIYlTHBYrrUgIP0h0c369Ms868IWmEJuqUCPPHdJwjn/KxHPlnwNBcYOrgSt/ZGUZYuw1T2vngKzZ+5U30Hid0hKgdtOJJ3b8xeKFdQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lVKELm0svmed5Q2fQ+aTFh3AoUo0NACKlnkaBecJiiI=;
+ b=FVk5P8lKmqhqHq1YWhV2IYyFoPsryZuEoo+J/FCCRhS45M/EvBtdvU9v4jK7RxBXvQeFMtlHEQJoHAU5Mev7f2rqwm+GmTAU7QqMo785D8Sh6rmi/wXQ4vrKYX2ZGponurT+NAuGegdq3OKtlTwuMd5vl+btc4KbntNRrpykE9EnLQeTH+BfEU1Wm8ZtXl6yzP/PVh32uYbOl/lySwlruJU8ZyY6aIMvAgYtmOjLadLIFdEd9yxYhHfDE/Pb+n3CFfeew+6kHcBugpdpO8frcoWndHE6x9nZgGb2WdDpEmoeqJf0buCrXmguzZKgN7URRSfY6khoBFwYaUH/sxpQ0g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lVKELm0svmed5Q2fQ+aTFh3AoUo0NACKlnkaBecJiiI=;
+ b=QJVh8MXsRn6eLaTVuOEVDBG4bC9AfkYeV0A6siKrf65q6bgWlqimka+UkdZhDpB+DSkNKpUHx740ArCQGZePrU9gmkBmSNvhugetMIY/QENddH83Jje7oNQVnpquuCiytZqVwOKJmdUqI9CmmTK14U45wXHTfaedEzw7gThazIk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MW2PR12MB2379.namprd12.prod.outlook.com (2603:10b6:907:9::24)
+ by SJ0PR12MB7068.namprd12.prod.outlook.com (2603:10b6:a03:4ae::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.39; Thu, 29 Feb
+ 2024 03:36:27 +0000
+Received: from MW2PR12MB2379.namprd12.prod.outlook.com
+ ([fe80::3150:d50f:7411:e6bb]) by MW2PR12MB2379.namprd12.prod.outlook.com
+ ([fe80::3150:d50f:7411:e6bb%4]) with mapi id 15.20.7316.037; Thu, 29 Feb 2024
+ 03:36:27 +0000
+Message-ID: <fe8462ae-9144-6925-1679-a5079e5b0556@amd.com>
+Date: Thu, 29 Feb 2024 09:06:16 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.1
+Subject: Re: [RFC] sched/eevdf: sched feature to dismiss lag on wakeup
+Content-Language: en-US
+To: Tobias Huschle <huschle@linux.ibm.com>, linux-kernel@vger.kernel.org
+References: <20240228161018.14253-1-huschle@linux.ibm.com>
+From: K Prateek Nayak <kprateek.nayak@amd.com>
+In-Reply-To: <20240228161018.14253-1-huschle@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 29 Feb 2024 13:31:52 +1000
-Message-Id: <CZH8V1T0Z3QN.1ZVFAXR4B96BZ@wheely>
-Subject: Re: [kvm-unit-tests PATCH 03/13] treewide: lib/stack: Fix backtrace
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Andrew Jones" <andrew.jones@linux.dev>, <kvm@vger.kernel.org>,
- <kvm-riscv@lists.infradead.org>
-X-Mailer: aerc 0.15.2
-References: <20240228150416.248948-15-andrew.jones@linux.dev>
- <20240228150416.248948-18-andrew.jones@linux.dev>
-In-Reply-To: <20240228150416.248948-18-andrew.jones@linux.dev>
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN3PR01CA0153.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:c8::18) To MW2PR12MB2379.namprd12.prod.outlook.com
+ (2603:10b6:907:9::24)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW2PR12MB2379:EE_|SJ0PR12MB7068:EE_
+X-MS-Office365-Filtering-Correlation-Id: 524c8ea6-0f7c-41bd-bc93-08dc38d79c60
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	kXLw7ySy6EqNCvRS8RfIJD2j8M7x7VgpI8R+xzJ0cJlKWUd0SrhtGMI3yVk3sMU58gqUQR6+qvitVIzCSUHVGGhKsPQSmvUp//6qsK21z83lHGA7bctN+bG4hiFPDdhH5zJMBjxBCGQjcLX/trJIyYLlsUlhJ1lPsNAf57QDNGOpRceYfFAAlEXN333ktRfO0PgqPTuo31mNPZItBpWEbA+ao1RSQjEgqEybJhZ4uMS+igtJY3hA6jj0XcMPHPVb7Z/Imc7CF4IQa3ayIjzAhraJvarVz0j6WYHmmXwQj8LoyK3AhqKXSA4G+xpKnGaTtiqsYJvlEKQVcKJSpLHoiW+sjxGpr+lO+UhhqXZ5goTNLzsvD1WoQowkum0NPLBWKfwpq0FsyCBAGi5ZDWtM75uYXscd00/2jGQMaW2jB0rbn8kpU1ttyeOtH8q0L9ew/Xke/hpCZz78Du3hnePCJRJuHvDSi7Qpgv5wmBxd2OaCT6OLD6bdQFyC0dVUYCD1ddTW6cSVMTkMGCN+WqXmYd+MVx8hfx9y57WTaPUJZN7gb4OXfQKrfu6cjME8URPjr5YQ0VneVLLDQUXE7UHhxN98lKomx5Gw6ei6CtvkqhcP5nW/Wo23XjRi+6oZA/7Z
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW2PR12MB2379.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?Z1JRbmk3RUUvYzdOZU1yYzMzNXd4KzFrS2hua05HcEhBNWRLWmdabjB2M3po?=
+ =?utf-8?B?OFpOaVB1OElNT2ducGFmODdUcy9KbkQ2NjNDelVLdWF6c3pBOFJsNVFmWkVL?=
+ =?utf-8?B?R3J6TGt5MVNtZFRYUzhFTDYvaW1uaFdOR2hiQzBwV1hPV0g5cGI1TG0rM3BJ?=
+ =?utf-8?B?WGcwMStPKzYzRVNqVVloOGorOHVFWS91c00yUXRjYW9QSkpGLytoemJOS3lE?=
+ =?utf-8?B?dDQ1cWdnR3NOUVdiZ1psc3l6M3FWSTdnRGF5TmtldWxudmgvUWdtL25LVWxa?=
+ =?utf-8?B?TzVka1NQZlNEM0RrOWR5RU16d2dXcmM3SnduUFlYRkNhd0xHL0JCenBGQWZF?=
+ =?utf-8?B?SFUrNlRMQXA1ZUtqZHN0YTg3TDlHbFlhUjVHY2dIQzRUVTJrQnovUENpalBW?=
+ =?utf-8?B?SkJaV0lrZGZrQ2cxRVpIczlJTzAveXlCdk1yRjNpemU0Q083aDZuMmMyRkM5?=
+ =?utf-8?B?NXEvbldVdi9BcEtnWEZGa3dZSWNOMDY3ZDZMYzd5OXFyM3FGZWRjSDNhc2M4?=
+ =?utf-8?B?TFd5VlBFdVZCVGpUWXlZamRmUERjVXo0RVk4cjhvT1JONVlBVVI2Y1NpS2px?=
+ =?utf-8?B?NENkZWtGY3M5aUEvUEk3VS9uR2s4cWJqYzlrU2pTOENiQk9aMVJTWEtXQmdY?=
+ =?utf-8?B?cHhJTGo3ODJURU5qRjl6eVRDL24vU0NmRVNjL1V5WGErN1UvV3JKS3AzZzMr?=
+ =?utf-8?B?VlJQMk9ITTZXMmdUKzR3ZTkwSS82bVFMNGZCQ0JIZHlTOWRSdEJZSngwSHJu?=
+ =?utf-8?B?aGZJcFhUY2Y0TWZFYUEyN2pvdkRJRkRtU2pMeFh1aDRNMXhBS28xRnhtM0pQ?=
+ =?utf-8?B?a0hhcmhGNGNkSDBUMzBjZnEzWUhSOTlhLy9SRDhrcFFOS2ltcFBlbDNXeDdq?=
+ =?utf-8?B?ME5qR05wWjczTm9kQmp6UzhDTUFoY3NwTHcyTnZhWm01TWdYamI4ZXJ4Vzkx?=
+ =?utf-8?B?dnpDOWgzc2lEbHJtQUtkeldpalgyV3JuYmdKWjdjMzNmTmRCcnNaNnY5c2Ux?=
+ =?utf-8?B?OGc5SGdRaHVPbmt5OXdYWXFqdTFtOUFLUEhYZkJWTlpsNEVHVzc2RzBiVnhi?=
+ =?utf-8?B?d082MGYyQWh6TzJYa2hURnZUQkIvb1Y2N3dZZVZQNHBEVTVXYzlXUlBhK1Ay?=
+ =?utf-8?B?S01sVnA5VCsvUFZDSVB4Yjh1RFcyZDUyaHZ5SkJ6OERFRTkzY3orTTEvV0VE?=
+ =?utf-8?B?L0xNL2xOMkdaKzE0SDJFVDc0K1M0WmJMb2QyZGxnUWhna1BVRnhWT2xwNitw?=
+ =?utf-8?B?TzZlaWJYYmNVRkhId2JlQUZ6QWFtS1p2clp1SW5JWkZaNy9FbEg0MFNSb3Z0?=
+ =?utf-8?B?UU9MaitRSTRBM0tKRTkwaUVHR2ZnZTFhWHhMTkZnMEloM25aV2xtU1lsM01k?=
+ =?utf-8?B?VEtaWXdKUlFjR3JIWDE1Z3Q3QXc2NGh2ZXJjQ041dDF4Q2JIYTZuK0plcGNW?=
+ =?utf-8?B?aVBSR2lLUExrQkVIVU5VTmErTmNrMGFzb1FSYVQxaGNCZmcxUnhpd3U1WDVt?=
+ =?utf-8?B?MUJPZEFpQlJDeEtQU0tBUUZ1M2NWa25MMWtVdU1KdlhQcHJRejlGNWxOTS9j?=
+ =?utf-8?B?L09qRGMxeDM0eW9OZkhKbFN6UEUzUHNwOXNLS3MreXRsZFZXVXJTczhOSDJk?=
+ =?utf-8?B?NUhwMVFScmVKZlNYU3huMXpvVGI4QUZSejhuTVltY1J1K20wYWplT25FU3Bn?=
+ =?utf-8?B?N0hKekdCUUphU255NHNFUzlZOWZVMDI4dUtYRjVueXdvMEJNTDM1VFhMUkl1?=
+ =?utf-8?B?N1VnLzJqOWVSSVBBZjNCbGYzMTVJNTJjUVVIeDduQ1lTZVI0czdDdnJzWlRn?=
+ =?utf-8?B?Ny9CenpaK25zdlFhQjBxOVRpYTlwUnE0dmt2TzVUMG5wUldBcWhYc3VQNmpq?=
+ =?utf-8?B?YTI2QlM0ZnFUelNJTkY2VVRDb3Z6NXhsdHJFUFk3N095TnpjQzRjZ0UwblJB?=
+ =?utf-8?B?YlVldXowRzl1REpmbGlsNTlNbjV0dTl0SU9XQVY4RU1EWlhrSFFudUREa1Vy?=
+ =?utf-8?B?a0FXVEpMR25IckNKckFmTW5hS3JWbmwvem1vSUd5enpCWFhTTjhXTEVaS3JF?=
+ =?utf-8?B?bW8rdTdBZEc0TVphSTlvVnZLRWNQSFFpajMxNzdHOVhOL3VWeVA5bGJiYjFK?=
+ =?utf-8?Q?QLBDU5fZaxTIovayJvY93x2XI?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 524c8ea6-0f7c-41bd-bc93-08dc38d79c60
+X-MS-Exchange-CrossTenant-AuthSource: MW2PR12MB2379.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Feb 2024 03:36:27.6458
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CxLJhGRd/SlOpg/Dc7ToKkfx8IZ1nMMo2sr/JXaRy566MHDRcxGCDE1oVjoQkp9lHtJ/Q5Ttk+SByX3xTgPFOA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7068
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,224 +129,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: lvivier@redhat.com, linux-s390@vger.kernel.org, thuth@redhat.com, nrb@linux.ibm.com, frankja@linux.ibm.com, kvmarm@lists.linux.dev, pbonzini@redhat.com, imbrenda@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: juri.lelli@redhat.com, vschneid@redhat.com, vincent.guittot@linaro.org, srikar@linux.vnet.ibm.com, peterz@infradead.org, sshegde@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, rostedt@goodmis.org, bsegall@google.com, mingo@redhat.com, xuewen.yan94@gmail.com, mgorman@suse.de, ke.wang@unisoc.com, Xuewen Yan <xuewen.yan@unisoc.com>, bristot@redhat.com, dietmar.eggemann@arm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu Feb 29, 2024 at 1:04 AM AEST, Andrew Jones wrote:
-> We should never pass the result of __builtin_frame_address(0) to
-> another function since the compiler is within its rights to pop the
-> frame to which it points before making the function call, as may be
-> done for tail calls. Nobody has complained about backtrace(), so
-> likely all compilations have been inlining backtrace_frame(), not
-> dropping the frame on the tail call, or nobody is looking at traces.
-> However, for riscv, when built for EFI, it does drop the frame on the
-> tail call, and it was noticed. Preemptively fix backtrace() for all
-> architectures.
->
-> Fixes: 52266791750d ("lib: backtrace printing")
-> Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
+(+ Xuewen Yan, Ke Wang)
+
+Hello Tobias,
+
+On 2/28/2024 9:40 PM, Tobias Huschle wrote:
+> The previously used CFS scheduler gave tasks that were woken up an
+> enhanced chance to see runtime immediately by deducting a certain value
+> from its vruntime on runqueue placement during wakeup.
+> 
+> This property was used by some, at least vhost, to ensure, that certain
+> kworkers are scheduled immediately after being woken up. The EEVDF
+> scheduler, does not support this so far. Instead, if such a woken up
+> entitiy carries a negative lag from its previous execution, it will have
+> to wait for the current time slice to finish, which affects the
+> performance of the process expecting the immediate execution negatively.
+> 
+> To address this issue, implement EEVDF strategy #2 for rejoining
+> entities, which dismisses the lag from previous execution and allows
+> the woken up task to run immediately (if no other entities are deemed
+> to be preferred for scheduling by EEVDF).
+> 
+> The vruntime is decremented by an additional value of 1 to make sure,
+> that the woken up tasks gets to actually run. This is of course not
+> following strategy #2 in an exact manner but guarantees the expected
+> behavior for the scenario described above. Without the additional
+> decrement, the performance goes south even more. So there are some
+> side effects I could not get my head around yet.
+> 
+> Questions:
+> 1. The kworker getting its negative lag occurs in the following scenario
+>    - kworker and a cgroup are supposed to execute on the same CPU
+>    - one task within the cgroup is executing and wakes up the kworker
+>    - kworker with 0 lag, gets picked immediately and finishes its
+>      execution within ~5000ns
+>    - on dequeue, kworker gets assigned a negative lag
+>    Is this expected behavior? With this short execution time, I would
+>    expect the kworker to be fine.
+>    For a more detailed discussion on this symptom, please see:
+>    https://lore.kernel.org/netdev/ZWbapeL34Z8AMR5f@DESKTOP-2CCOB1S./T/
+
+Does the lag clamping path from Xuewen Yan [1] work for the vhost case
+mentioned in the thread? Instead of placing the task just behind the
+0-lag point, clamping the lag seems to be more principled approach since
+EEVDF already does it in update_entity_lag().
+
+If the lag is still too large, maybe the above coupled with Peter's
+delayed dequeue patch can help [2] (Note: tree is prone to force
+updates)
+
+[1] https://lore.kernel.org/lkml/20240130080643.1828-1-xuewen.yan@unisoc.com/
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/peterz/queue.git/commit/?h=sched/eevdf&id=e62ef63a888c97188a977daddb72b61548da8417
+
+> 2. The proposed code change of course only addresses the symptom. Am I
+>    assuming correctly that this is in general the exepected behavior and
+>    that the task waking up the kworker should rather do an explicit
+>    reschedule of itself to grant the kworker time to execute?
+>    In the vhost case, this is currently attempted through a cond_resched
+>    which is not doing anything because the need_resched flag is not set.
+> 
+> Feedback and opinions would be highly appreciated.
+> 
+> Signed-off-by: Tobias Huschle <huschle@linux.ibm.com>
 > ---
->  lib/arm/stack.c   | 13 +++++--------
->  lib/arm64/stack.c | 12 +++++-------
->  lib/riscv/stack.c | 12 +++++-------
->  lib/s390x/stack.c | 12 +++++-------
->  lib/stack.h       | 24 +++++++++++++++++-------
->  lib/x86/stack.c   | 12 +++++-------
->  6 files changed, 42 insertions(+), 43 deletions(-)
->
-> diff --git a/lib/arm/stack.c b/lib/arm/stack.c
-> index 7d081be7c6d0..66d18b47ea53 100644
-> --- a/lib/arm/stack.c
-> +++ b/lib/arm/stack.c
-> @@ -8,13 +8,16 @@
->  #include <libcflat.h>
->  #include <stack.h>
-> =20
-> -int backtrace_frame(const void *frame, const void **return_addrs,
-> -		    int max_depth)
-> +int arch_backtrace_frame(const void *frame, const void **return_addrs,
-> +			 int max_depth, bool current_frame)
->  {
->  	static int walking;
->  	int depth;
->  	const unsigned long *fp =3D (unsigned long *)frame;
-> =20
-> +	if (current_frame)
-> +		fp =3D __builtin_frame_address(0);
+>  kernel/sched/fair.c     | 5 +++++
+>  kernel/sched/features.h | 1 +
+>  2 files changed, 6 insertions(+)
+> 
+> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+> index 533547e3c90a..c20ae6d62961 100644
+> --- a/kernel/sched/fair.c
+> +++ b/kernel/sched/fair.c
+> @@ -5239,6 +5239,11 @@ place_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
+>  		lag = div_s64(lag, load);
+>  	}
+>  
+> +	if (sched_feat(NOLAG_WAKEUP) && (flags & ENQUEUE_WAKEUP)) {
+> +		se->vlag = 0;
+> +		lag = 1;
+> +	}
 > +
->  	if (walking) {
->  		printf("RECURSIVE STACK WALK!!!\n");
->  		return 0;
-> @@ -33,9 +36,3 @@ int backtrace_frame(const void *frame, const void **ret=
-urn_addrs,
->  	walking =3D 0;
->  	return depth;
->  }
-> -
-> -int backtrace(const void **return_addrs, int max_depth)
-> -{
-> -	return backtrace_frame(__builtin_frame_address(0),
-> -			       return_addrs, max_depth);
-> -}
-> diff --git a/lib/arm64/stack.c b/lib/arm64/stack.c
-> index 82611f4b1815..f5eb57fd8892 100644
-> --- a/lib/arm64/stack.c
-> +++ b/lib/arm64/stack.c
-> @@ -8,7 +8,8 @@
-> =20
->  extern char vector_stub_start, vector_stub_end;
-> =20
-> -int backtrace_frame(const void *frame, const void **return_addrs, int ma=
-x_depth)
-> +int arch_backtrace_frame(const void *frame, const void **return_addrs,
-> +			 int max_depth, bool current_frame)
->  {
->  	const void *fp =3D frame;
->  	static bool walking;
-> @@ -17,6 +18,9 @@ int backtrace_frame(const void *frame, const void **ret=
-urn_addrs, int max_depth)
->  	bool is_exception =3D false;
->  	unsigned long addr;
-> =20
-> +	if (current_frame)
-> +		fp =3D __builtin_frame_address(0);
-> +
->  	if (walking) {
->  		printf("RECURSIVE STACK WALK!!!\n");
->  		return 0;
-> @@ -54,9 +58,3 @@ int backtrace_frame(const void *frame, const void **ret=
-urn_addrs, int max_depth)
->  	walking =3D false;
->  	return depth;
->  }
-> -
-> -int backtrace(const void **return_addrs, int max_depth)
-> -{
-> -	return backtrace_frame(__builtin_frame_address(0),
-> -			       return_addrs, max_depth);
-> -}
-> diff --git a/lib/riscv/stack.c b/lib/riscv/stack.c
-> index 712a5478d547..d865594b9671 100644
-> --- a/lib/riscv/stack.c
-> +++ b/lib/riscv/stack.c
-> @@ -2,12 +2,16 @@
->  #include <libcflat.h>
->  #include <stack.h>
-> =20
-> -int backtrace_frame(const void *frame, const void **return_addrs, int ma=
-x_depth)
-> +int arch_backtrace_frame(const void *frame, const void **return_addrs,
-> +			 int max_depth, bool current_frame)
->  {
->  	static bool walking;
->  	const unsigned long *fp =3D (unsigned long *)frame;
->  	int depth;
-> =20
-> +	if (current_frame)
-> +		fp =3D __builtin_frame_address(0);
-> +
->  	if (walking) {
->  		printf("RECURSIVE STACK WALK!!!\n");
->  		return 0;
-> @@ -24,9 +28,3 @@ int backtrace_frame(const void *frame, const void **ret=
-urn_addrs, int max_depth)
->  	walking =3D false;
->  	return depth;
->  }
-> -
-> -int backtrace(const void **return_addrs, int max_depth)
-> -{
-> -	return backtrace_frame(__builtin_frame_address(0),
-> -			       return_addrs, max_depth);
-> -}
-> diff --git a/lib/s390x/stack.c b/lib/s390x/stack.c
-> index 9f234a12adf6..d194f654e94d 100644
-> --- a/lib/s390x/stack.c
-> +++ b/lib/s390x/stack.c
-> @@ -14,11 +14,15 @@
->  #include <stack.h>
->  #include <asm/arch_def.h>
-> =20
-> -int backtrace_frame(const void *frame, const void **return_addrs, int ma=
-x_depth)
-> +int arch_backtrace_frame(const void *frame, const void **return_addrs,
-> +			 int max_depth, bool current_frame)
->  {
->  	int depth =3D 0;
->  	struct stack_frame *stack =3D (struct stack_frame *)frame;
-> =20
-> +	if (current_frame)
-> +		stack =3D __builtin_frame_address(0);
-> +
->  	for (depth =3D 0; stack && depth < max_depth; depth++) {
->  		return_addrs[depth] =3D (void *)stack->grs[8];
->  		stack =3D stack->back_chain;
-> @@ -28,9 +32,3 @@ int backtrace_frame(const void *frame, const void **ret=
-urn_addrs, int max_depth)
-> =20
->  	return depth;
->  }
-> -
-> -int backtrace(const void **return_addrs, int max_depth)
-> -{
-> -	return backtrace_frame(__builtin_frame_address(0),
-> -			       return_addrs, max_depth);
-> -}
-> diff --git a/lib/stack.h b/lib/stack.h
-> index 10fc2f793354..6edc84344b51 100644
-> --- a/lib/stack.h
-> +++ b/lib/stack.h
-> @@ -11,17 +11,27 @@
->  #include <asm/stack.h>
-> =20
->  #ifdef HAVE_ARCH_BACKTRACE_FRAME
-> -extern int backtrace_frame(const void *frame, const void **return_addrs,
-> -			   int max_depth);
-> +extern int arch_backtrace_frame(const void *frame, const void **return_a=
-ddrs,
-> +				int max_depth, bool current_frame);
-> +
-> +static inline int backtrace_frame(const void *frame, const void **return=
-_addrs,
-> +				  int max_depth)
-> +{
-> +	return arch_backtrace_frame(frame, return_addrs, max_depth, false);
-> +}
-> +
-> +static inline int backtrace(const void **return_addrs, int max_depth)
-> +{
-> +	return arch_backtrace_frame(NULL, return_addrs, max_depth, true);
-> +}
->  #else
-> -static inline int
-> -backtrace_frame(const void *frame __unused, const void **return_addrs __=
-unused,
-> -		int max_depth __unused)
-> +extern int backtrace(const void **return_addrs, int max_depth);
-> +
-> +static inline int backtrace_frame(const void *frame, const void **return=
-_addrs,
-> +				  int max_depth)
->  {
->  	return 0;
->  }
->  #endif
-> =20
-> -extern int backtrace(const void **return_addrs, int max_depth);
-> -
->  #endif
+>  	se->vruntime = vruntime - lag;
+>  
+>  	/*
+> diff --git a/kernel/sched/features.h b/kernel/sched/features.h
+> index 143f55df890b..d3118e7568b4 100644
+> --- a/kernel/sched/features.h
+> +++ b/kernel/sched/features.h
+> @@ -7,6 +7,7 @@
+>  SCHED_FEAT(PLACE_LAG, true)
+>  SCHED_FEAT(PLACE_DEADLINE_INITIAL, true)
+>  SCHED_FEAT(RUN_TO_PARITY, true)
+> +SCHED_FEAT(NOLAG_WAKEUP, true)
+>  
+>  /*
+>   * Prefer to schedule the task we woke last (assuming it failed
 
-Is there a reason to add the inline wrappers rather than just externs
-and drop the arch_ prefix?
-
-Do we want to just generally have all arch specific functions have an
-arch_ prefix? Fine by me.
-
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-
-I'm fine to rebase the powerpc patch on top of this if it goes in first.
-Thanks for the heads up.
-
-Thanks,
-Nick
+--
+Thanks and Regards,
+Prateek
