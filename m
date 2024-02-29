@@ -2,68 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C24CA86C3FA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 09:44:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1815386C3FE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 09:45:15 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dQhYYM36;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dQhYYM36;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fp6cuxDq;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FvQg12Tl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TllC32jSYz3vd4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 19:44:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TllCr4xQ4z3d2N
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 19:45:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dQhYYM36;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dQhYYM36;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fp6cuxDq;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FvQg12Tl;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tll9j4C0cz3dVZ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 19:43:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tll9q5bQTz3dV9
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 19:43:27 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709196199;
+	s=mimecast20190719; t=1709196204;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZJJ0eqDZ1S0vUv+Nro3fA2Y1PjBXchWPHo5qT9tenrk=;
-	b=dQhYYM36D8ExffPi3iVU8jAqDiYUYaVR6nK3A93bsvLMwJS35ZIUd+q7p4lebqgBKgaTn7
-	L6C7ZY8lyp9l4bYCKiFqY2vPrQB+IyktZ1rtDn/5aUcUmBstGmpTT5BchHCDCu8Jl0N1+u
-	7YBpGRRcWlEzQcko7DbaS/SMQSbsd44=
+	bh=zEIsgpr2yLoy4elJT8aXcINQKUFxaL7Rf0iNOo8Hn4s=;
+	b=fp6cuxDq3TSfD0jgBGKXsBGFn5rmR1Z1+Gc9URES86FWibkVHZMv5IY/eytmPZbgq8GXfu
+	WVSKWst5IPq3cmRcj61gn8C+Qk+XwbZiGc9mdSLKhl7wAvN7ai8LPi0MAd9pF0AXgVx/Ep
+	kc2VlZE1qL73ceCXjgkMPFLu3K15o6s=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709196199;
+	s=mimecast20190719; t=1709196205;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZJJ0eqDZ1S0vUv+Nro3fA2Y1PjBXchWPHo5qT9tenrk=;
-	b=dQhYYM36D8ExffPi3iVU8jAqDiYUYaVR6nK3A93bsvLMwJS35ZIUd+q7p4lebqgBKgaTn7
-	L6C7ZY8lyp9l4bYCKiFqY2vPrQB+IyktZ1rtDn/5aUcUmBstGmpTT5BchHCDCu8Jl0N1+u
-	7YBpGRRcWlEzQcko7DbaS/SMQSbsd44=
+	bh=zEIsgpr2yLoy4elJT8aXcINQKUFxaL7Rf0iNOo8Hn4s=;
+	b=FvQg12Tlgf2UQWAchHkw/yx4Bq3H+dkz1+OZHv4QHbh7s6hmeGcWUGEolWqs6wXtQIUyzf
+	mn2J/ahZe1JE9zq968okubR4LRQwTQWlbHkKTagAvXPkY2q/ruYpC4EbKIYr+AGkFJ6jsY
+	p/BgYBE4k0Oyln84YjJ7Xw67Gw/yY/I=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-160-nrzUiLqfPF6NDPYG9jg0YA-1; Thu, 29 Feb 2024 03:43:15 -0500
-X-MC-Unique: nrzUiLqfPF6NDPYG9jg0YA-1
+ us-mta-528-ZGrhDu18OWup79m2yW0rKA-1; Thu, 29 Feb 2024 03:43:22 -0500
+X-MC-Unique: ZGrhDu18OWup79m2yW0rKA-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7393383BA86;
-	Thu, 29 Feb 2024 08:43:14 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0DEB184AC60;
+	Thu, 29 Feb 2024 08:43:22 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.12])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 7863E28D;
-	Thu, 29 Feb 2024 08:43:07 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 436911807;
+	Thu, 29 Feb 2024 08:43:14 +0000 (UTC)
 From: peterx@redhat.com
 To: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/7] mm/ppc: Define pXd_large() with pXd_leaf()
-Date: Thu, 29 Feb 2024 16:42:52 +0800
-Message-ID: <20240229084258.599774-2-peterx@redhat.com>
+Subject: [PATCH v2 2/7] mm/ppc: Replace pXd_is_leaf() with pXd_leaf()
+Date: Thu, 29 Feb 2024 16:42:53 +0800
+Message-ID: <20240229084258.599774-3-peterx@redhat.com>
 In-Reply-To: <20240229084258.599774-1-peterx@redhat.com>
 References: <20240229084258.599774-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -86,79 +86,307 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Peter Xu <peterx@redhat.com>
 
-The two definitions are the same.  The only difference is that pXd_large()
-is only defined with THP selected, and only on book3s 64bits.
+They're the same macros underneath.  Drop pXd_is_leaf(), instead always use
+pXd_leaf().
 
-Instead of implementing it twice, make pXd_large() a macro to pXd_leaf().
-Define it unconditionally just like pXd_leaf().  This helps to prepare
-merging the two APIs.
+At the meantime, instead of renames, drop the pXd_is_leaf() fallback
+definitions directly in arch/powerpc/include/asm/pgtable.h. because similar
+fallback macros for pXd_leaf() are already defined in
+include/linux/pgtable.h.
 
 Cc: Michael Ellerman <mpe@ellerman.id.au>
 Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
 Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
 Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
 Cc: linuxppc-dev@lists.ozlabs.org
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- arch/powerpc/include/asm/book3s/64/pgtable.h | 16 ++--------------
- arch/powerpc/include/asm/pgtable.h           |  2 +-
- 2 files changed, 3 insertions(+), 15 deletions(-)
+ arch/powerpc/include/asm/book3s/64/pgtable.h | 10 ++++----
+ arch/powerpc/include/asm/pgtable.h           | 24 --------------------
+ arch/powerpc/kvm/book3s_64_mmu_radix.c       | 12 +++++-----
+ arch/powerpc/mm/book3s64/radix_pgtable.c     | 14 ++++++------
+ arch/powerpc/mm/pgtable.c                    |  6 ++---
+ arch/powerpc/mm/pgtable_64.c                 |  6 ++---
+ arch/powerpc/xmon/xmon.c                     |  6 ++---
+ 7 files changed, 26 insertions(+), 52 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index 927d585652bc..d1318e8582ac 100644
+index d1318e8582ac..3e99e409774a 100644
 --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
 +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -1157,20 +1157,6 @@ pud_hugepage_update(struct mm_struct *mm, unsigned long addr, pud_t *pudp,
- 	return pud_val(*pudp);
- }
- 
--/*
-- * returns true for pmd migration entries, THP, devmap, hugetlb
-- * But compile time dependent on THP config
-- */
--static inline int pmd_large(pmd_t pmd)
--{
--	return !!(pmd_raw(pmd) & cpu_to_be64(_PAGE_PTE));
--}
--
--static inline int pud_large(pud_t pud)
--{
--	return !!(pud_raw(pud) & cpu_to_be64(_PAGE_PTE));
--}
--
+@@ -1439,18 +1439,16 @@ static inline bool is_pte_rw_upgrade(unsigned long old_val, unsigned long new_va
  /*
-  * For radix we should always find H_PAGE_HASHPTE zero. Hence
-  * the below will work for radix too
-@@ -1455,6 +1441,7 @@ static inline bool is_pte_rw_upgrade(unsigned long old_val, unsigned long new_va
+  * Like pmd_huge() and pmd_large(), but works regardless of config options
   */
- #define pmd_is_leaf pmd_is_leaf
- #define pmd_leaf pmd_is_leaf
-+#define pmd_large pmd_leaf
- static inline bool pmd_is_leaf(pmd_t pmd)
+-#define pmd_is_leaf pmd_is_leaf
+-#define pmd_leaf pmd_is_leaf
++#define pmd_leaf pmd_leaf
+ #define pmd_large pmd_leaf
+-static inline bool pmd_is_leaf(pmd_t pmd)
++static inline bool pmd_leaf(pmd_t pmd)
  {
  	return !!(pmd_raw(pmd) & cpu_to_be64(_PAGE_PTE));
-@@ -1462,6 +1449,7 @@ static inline bool pmd_is_leaf(pmd_t pmd)
+ }
  
- #define pud_is_leaf pud_is_leaf
- #define pud_leaf pud_is_leaf
-+#define pud_large pud_leaf
- static inline bool pud_is_leaf(pud_t pud)
+-#define pud_is_leaf pud_is_leaf
+-#define pud_leaf pud_is_leaf
++#define pud_leaf pud_leaf
+ #define pud_large pud_leaf
+-static inline bool pud_is_leaf(pud_t pud)
++static inline bool pud_leaf(pud_t pud)
  {
  	return !!(pud_raw(pud) & cpu_to_be64(_PAGE_PTE));
+ }
 diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
-index 7a1ba8889aea..5928b3c1458d 100644
+index 5928b3c1458d..e6edf1cdbc5b 100644
 --- a/arch/powerpc/include/asm/pgtable.h
 +++ b/arch/powerpc/include/asm/pgtable.h
-@@ -101,7 +101,7 @@ void poking_init(void);
- extern unsigned long ioremap_bot;
- extern const pgprot_t protection_map[16];
- 
--#ifndef CONFIG_TRANSPARENT_HUGEPAGE
-+#ifndef pmd_large
- #define pmd_large(pmd)		0
+@@ -182,30 +182,6 @@ static inline void pte_frag_set(mm_context_t *ctx, void *p)
+ }
  #endif
  
+-#ifndef pmd_is_leaf
+-#define pmd_is_leaf pmd_is_leaf
+-static inline bool pmd_is_leaf(pmd_t pmd)
+-{
+-	return false;
+-}
+-#endif
+-
+-#ifndef pud_is_leaf
+-#define pud_is_leaf pud_is_leaf
+-static inline bool pud_is_leaf(pud_t pud)
+-{
+-	return false;
+-}
+-#endif
+-
+-#ifndef p4d_is_leaf
+-#define p4d_is_leaf p4d_is_leaf
+-static inline bool p4d_is_leaf(p4d_t p4d)
+-{
+-	return false;
+-}
+-#endif
+-
+ #define pmd_pgtable pmd_pgtable
+ static inline pgtable_t pmd_pgtable(pmd_t pmd)
+ {
+diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+index 4a1abb9f7c05..408d98f8a514 100644
+--- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
++++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+@@ -503,7 +503,7 @@ static void kvmppc_unmap_free_pmd(struct kvm *kvm, pmd_t *pmd, bool full,
+ 	for (im = 0; im < PTRS_PER_PMD; ++im, ++p) {
+ 		if (!pmd_present(*p))
+ 			continue;
+-		if (pmd_is_leaf(*p)) {
++		if (pmd_leaf(*p)) {
+ 			if (full) {
+ 				pmd_clear(p);
+ 			} else {
+@@ -532,7 +532,7 @@ static void kvmppc_unmap_free_pud(struct kvm *kvm, pud_t *pud,
+ 	for (iu = 0; iu < PTRS_PER_PUD; ++iu, ++p) {
+ 		if (!pud_present(*p))
+ 			continue;
+-		if (pud_is_leaf(*p)) {
++		if (pud_leaf(*p)) {
+ 			pud_clear(p);
+ 		} else {
+ 			pmd_t *pmd;
+@@ -635,12 +635,12 @@ int kvmppc_create_pte(struct kvm *kvm, pgd_t *pgtable, pte_t pte,
+ 		new_pud = pud_alloc_one(kvm->mm, gpa);
+ 
+ 	pmd = NULL;
+-	if (pud && pud_present(*pud) && !pud_is_leaf(*pud))
++	if (pud && pud_present(*pud) && !pud_leaf(*pud))
+ 		pmd = pmd_offset(pud, gpa);
+ 	else if (level <= 1)
+ 		new_pmd = kvmppc_pmd_alloc();
+ 
+-	if (level == 0 && !(pmd && pmd_present(*pmd) && !pmd_is_leaf(*pmd)))
++	if (level == 0 && !(pmd && pmd_present(*pmd) && !pmd_leaf(*pmd)))
+ 		new_ptep = kvmppc_pte_alloc();
+ 
+ 	/* Check if we might have been invalidated; let the guest retry if so */
+@@ -658,7 +658,7 @@ int kvmppc_create_pte(struct kvm *kvm, pgd_t *pgtable, pte_t pte,
+ 		new_pud = NULL;
+ 	}
+ 	pud = pud_offset(p4d, gpa);
+-	if (pud_is_leaf(*pud)) {
++	if (pud_leaf(*pud)) {
+ 		unsigned long hgpa = gpa & PUD_MASK;
+ 
+ 		/* Check if we raced and someone else has set the same thing */
+@@ -709,7 +709,7 @@ int kvmppc_create_pte(struct kvm *kvm, pgd_t *pgtable, pte_t pte,
+ 		new_pmd = NULL;
+ 	}
+ 	pmd = pmd_offset(pud, gpa);
+-	if (pmd_is_leaf(*pmd)) {
++	if (pmd_leaf(*pmd)) {
+ 		unsigned long lgpa = gpa & PMD_MASK;
+ 
+ 		/* Check if we raced and someone else has set the same thing */
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index c6a4ac766b2b..1f8db10693e3 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -204,14 +204,14 @@ static void radix__change_memory_range(unsigned long start, unsigned long end,
+ 		pudp = pud_alloc(&init_mm, p4dp, idx);
+ 		if (!pudp)
+ 			continue;
+-		if (pud_is_leaf(*pudp)) {
++		if (pud_leaf(*pudp)) {
+ 			ptep = (pte_t *)pudp;
+ 			goto update_the_pte;
+ 		}
+ 		pmdp = pmd_alloc(&init_mm, pudp, idx);
+ 		if (!pmdp)
+ 			continue;
+-		if (pmd_is_leaf(*pmdp)) {
++		if (pmd_leaf(*pmdp)) {
+ 			ptep = pmdp_ptep(pmdp);
+ 			goto update_the_pte;
+ 		}
+@@ -767,7 +767,7 @@ static void __meminit remove_pmd_table(pmd_t *pmd_start, unsigned long addr,
+ 		if (!pmd_present(*pmd))
+ 			continue;
+ 
+-		if (pmd_is_leaf(*pmd)) {
++		if (pmd_leaf(*pmd)) {
+ 			if (IS_ALIGNED(addr, PMD_SIZE) &&
+ 			    IS_ALIGNED(next, PMD_SIZE)) {
+ 				if (!direct)
+@@ -807,7 +807,7 @@ static void __meminit remove_pud_table(pud_t *pud_start, unsigned long addr,
+ 		if (!pud_present(*pud))
+ 			continue;
+ 
+-		if (pud_is_leaf(*pud)) {
++		if (pud_leaf(*pud)) {
+ 			if (!IS_ALIGNED(addr, PUD_SIZE) ||
+ 			    !IS_ALIGNED(next, PUD_SIZE)) {
+ 				WARN_ONCE(1, "%s: unaligned range\n", __func__);
+@@ -845,7 +845,7 @@ remove_pagetable(unsigned long start, unsigned long end, bool direct,
+ 		if (!p4d_present(*p4d))
+ 			continue;
+ 
+-		if (p4d_is_leaf(*p4d)) {
++		if (p4d_leaf(*p4d)) {
+ 			if (!IS_ALIGNED(addr, P4D_SIZE) ||
+ 			    !IS_ALIGNED(next, P4D_SIZE)) {
+ 				WARN_ONCE(1, "%s: unaligned range\n", __func__);
+@@ -1554,7 +1554,7 @@ int pud_set_huge(pud_t *pud, phys_addr_t addr, pgprot_t prot)
+ 
+ int pud_clear_huge(pud_t *pud)
+ {
+-	if (pud_is_leaf(*pud)) {
++	if (pud_leaf(*pud)) {
+ 		pud_clear(pud);
+ 		return 1;
+ 	}
+@@ -1601,7 +1601,7 @@ int pmd_set_huge(pmd_t *pmd, phys_addr_t addr, pgprot_t prot)
+ 
+ int pmd_clear_huge(pmd_t *pmd)
+ {
+-	if (pmd_is_leaf(*pmd)) {
++	if (pmd_leaf(*pmd)) {
+ 		pmd_clear(pmd);
+ 		return 1;
+ 	}
+diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
+index 549a440ed7f6..9e7ba9c3851f 100644
+--- a/arch/powerpc/mm/pgtable.c
++++ b/arch/powerpc/mm/pgtable.c
+@@ -410,7 +410,7 @@ pte_t *__find_linux_pte(pgd_t *pgdir, unsigned long ea,
+ 	if (p4d_none(p4d))
+ 		return NULL;
+ 
+-	if (p4d_is_leaf(p4d)) {
++	if (p4d_leaf(p4d)) {
+ 		ret_pte = (pte_t *)p4dp;
+ 		goto out;
+ 	}
+@@ -432,7 +432,7 @@ pte_t *__find_linux_pte(pgd_t *pgdir, unsigned long ea,
+ 	if (pud_none(pud))
+ 		return NULL;
+ 
+-	if (pud_is_leaf(pud)) {
++	if (pud_leaf(pud)) {
+ 		ret_pte = (pte_t *)pudp;
+ 		goto out;
+ 	}
+@@ -471,7 +471,7 @@ pte_t *__find_linux_pte(pgd_t *pgdir, unsigned long ea,
+ 		goto out;
+ 	}
+ 
+-	if (pmd_is_leaf(pmd)) {
++	if (pmd_leaf(pmd)) {
+ 		ret_pte = (pte_t *)pmdp;
+ 		goto out;
+ 	}
+diff --git a/arch/powerpc/mm/pgtable_64.c b/arch/powerpc/mm/pgtable_64.c
+index 1b366526f4f2..386c6b06eab7 100644
+--- a/arch/powerpc/mm/pgtable_64.c
++++ b/arch/powerpc/mm/pgtable_64.c
+@@ -100,7 +100,7 @@ EXPORT_SYMBOL(__pte_frag_size_shift);
+ /* 4 level page table */
+ struct page *p4d_page(p4d_t p4d)
+ {
+-	if (p4d_is_leaf(p4d)) {
++	if (p4d_leaf(p4d)) {
+ 		if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
+ 			VM_WARN_ON(!p4d_huge(p4d));
+ 		return pte_page(p4d_pte(p4d));
+@@ -111,7 +111,7 @@ struct page *p4d_page(p4d_t p4d)
+ 
+ struct page *pud_page(pud_t pud)
+ {
+-	if (pud_is_leaf(pud)) {
++	if (pud_leaf(pud)) {
+ 		if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
+ 			VM_WARN_ON(!pud_huge(pud));
+ 		return pte_page(pud_pte(pud));
+@@ -125,7 +125,7 @@ struct page *pud_page(pud_t pud)
+  */
+ struct page *pmd_page(pmd_t pmd)
+ {
+-	if (pmd_is_leaf(pmd)) {
++	if (pmd_leaf(pmd)) {
+ 		/*
+ 		 * vmalloc_to_page may be called on any vmap address (not only
+ 		 * vmalloc), and it uses pmd_page() etc., when huge vmap is
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index b3b94cd37713..9669c9925225 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -3342,7 +3342,7 @@ static void show_pte(unsigned long addr)
+ 		return;
+ 	}
+ 
+-	if (p4d_is_leaf(*p4dp)) {
++	if (p4d_leaf(*p4dp)) {
+ 		format_pte(p4dp, p4d_val(*p4dp));
+ 		return;
+ 	}
+@@ -3356,7 +3356,7 @@ static void show_pte(unsigned long addr)
+ 		return;
+ 	}
+ 
+-	if (pud_is_leaf(*pudp)) {
++	if (pud_leaf(*pudp)) {
+ 		format_pte(pudp, pud_val(*pudp));
+ 		return;
+ 	}
+@@ -3370,7 +3370,7 @@ static void show_pte(unsigned long addr)
+ 		return;
+ 	}
+ 
+-	if (pmd_is_leaf(*pmdp)) {
++	if (pmd_leaf(*pmdp)) {
+ 		format_pte(pmdp, pmd_val(*pmdp));
+ 		return;
+ 	}
 -- 
 2.43.0
 
