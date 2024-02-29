@@ -1,50 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B006F86C872
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 12:49:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AD2B86C878
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 12:51:06 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=iuZEuTxf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VYvhkL3J;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TlqJB2F3Hz3vXb
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 22:49:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TlqLJ1XBJz3vZp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 22:51:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=iuZEuTxf;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VYvhkL3J;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.182; helo=out-182.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlqHS5rbNz3cZN
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 22:48:36 +1100 (AEDT)
-Date: Thu, 29 Feb 2024 12:48:11 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1709207294;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3fynTQbCj+0+8gxWXP+vb+6EeWzkaGPfZJFyS35W4s4=;
-	b=iuZEuTxfseoZp4UQoXwPwaJ0a3iWv9B5ZmYjolE1PWpkuPgM0k2tb4r+KsGxNXibCaqSMX
-	28xc8TdmgZEjmtE7rA6HjPrfkc5ixF9DXIXKhREpQkx1Bsj671uDxFM1mVEkY7E3EFscsy
-	mT5j0z0J3eZ3dlXLE5t1Tns+yX/3RBw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Andrew Jones <andrew.jones@linux.dev>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [kvm-unit-tests PATCH 03/13] treewide: lib/stack: Fix backtrace
-Message-ID: <20240229-b470bcfe6538d0fea44ab3e3@orel>
-References: <20240228150416.248948-15-andrew.jones@linux.dev>
- <20240228150416.248948-18-andrew.jones@linux.dev>
- <CZH8V1T0Z3QN.1ZVFAXR4B96BZ@wheely>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlqKZ6bzcz3cZN
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 22:50:26 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1709207421;
+	bh=x+0nc01xdaOOxQkjy8kCF42KJK2qMmYg+0do84sBsXw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=VYvhkL3Jm56fK/CvMOyFKfZ4D7k+7hWiGHJDfESphFJbtmEsfd/lq+SchAFZqiSfP
+	 mr9ITa9qsfgb+zJb9wwe11KEmDNVIgns83xTRcsq51+zRsqDQVkHNpHwhoakybK6pv
+	 vKBDq1vvGgbEhW+LX8s2DypL5VC5z6ORY9liNzoclC+ycGKZjhVoPpORAfOyzwF3Wo
+	 O/Lz4LN/KI9qyHov8qUiv6CO+vrgBCGg7u5EVYGMGX0t5tByIxcvLNVmbeB7R58fW5
+	 tc/vMwBl1IofFs9Q9P2iVtYaszlahQNfPZ9tt1dh6TvLSyPGR+dLTX2RHjS1esUsNs
+	 eOpLFeZsjnPVQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4TlqKR62hgz4wbh;
+	Thu, 29 Feb 2024 22:50:19 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	deller@gmx.de
+Subject: [PATCH] fbdev/mb862xxfb: Fix defined but not used error
+Date: Thu, 29 Feb 2024 22:50:10 +1100
+Message-ID: <20240229115010.748435-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CZH8V1T0Z3QN.1ZVFAXR4B96BZ@wheely>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,75 +59,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: lvivier@redhat.com, linux-s390@vger.kernel.org, thuth@redhat.com, nrb@linux.ibm.com, frankja@linux.ibm.com, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, kvmarm@lists.linux.dev, pbonzini@redhat.com, imbrenda@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, tzimmermann@suse.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Feb 29, 2024 at 01:31:52PM +1000, Nicholas Piggin wrote:
-> On Thu Feb 29, 2024 at 1:04 AM AEST, Andrew Jones wrote:
-...
-> > diff --git a/lib/stack.h b/lib/stack.h
-> > index 10fc2f793354..6edc84344b51 100644
-> > --- a/lib/stack.h
-> > +++ b/lib/stack.h
-> > @@ -11,17 +11,27 @@
-> >  #include <asm/stack.h>
-> >  
-> >  #ifdef HAVE_ARCH_BACKTRACE_FRAME
-> > -extern int backtrace_frame(const void *frame, const void **return_addrs,
-> > -			   int max_depth);
-> > +extern int arch_backtrace_frame(const void *frame, const void **return_addrs,
-> > +				int max_depth, bool current_frame);
-> > +
-> > +static inline int backtrace_frame(const void *frame, const void **return_addrs,
-> > +				  int max_depth)
-> > +{
-> > +	return arch_backtrace_frame(frame, return_addrs, max_depth, false);
-> > +}
-> > +
-> > +static inline int backtrace(const void **return_addrs, int max_depth)
-> > +{
-> > +	return arch_backtrace_frame(NULL, return_addrs, max_depth, true);
-> > +}
-> >  #else
-> > -static inline int
-> > -backtrace_frame(const void *frame __unused, const void **return_addrs __unused,
-> > -		int max_depth __unused)
-> > +extern int backtrace(const void **return_addrs, int max_depth);
-> > +
-> > +static inline int backtrace_frame(const void *frame, const void **return_addrs,
-> > +				  int max_depth)
-> >  {
-> >  	return 0;
-> >  }
-> >  #endif
-> >  
-> > -extern int backtrace(const void **return_addrs, int max_depth);
-> > -
-> >  #endif
-> 
-> Is there a reason to add the inline wrappers rather than just externs
-> and drop the arch_ prefix?
+socrates_gc_mode is defined at the top-level but then only used inside
+an #ifdef CONFIG_FB_MB862XX_LIME, leading to an error with some configs:
 
-Only reason is to avoid duplicating the functions in each arch, but
-since they're oneliners which won't likely change, then we could
-duplicate them instead, if preferred, but I'm not sure what the
-benefit of that over the static inlines would be.
+  drivers/video/fbdev/mb862xx/mb862xxfbdrv.c:36:31: error: ‘socrates_gc_mode’ defined but not used
+     36 | static struct mb862xx_gc_mode socrates_gc_mode = {
 
-> 
-> Do we want to just generally have all arch specific functions have an
-> arch_ prefix? Fine by me.
+Fix it by moving socrates_gc_mode inside that ifdef, immediately prior
+to the only function where it's used.
 
-We've been slowly doing that over in 'KVM selftests', which has improved
-readability, so slowly adopting it here too in kvm-unit-tests would be
-nice.
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ drivers/video/fbdev/mb862xx/mb862xxfbdrv.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-> 
-> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-> 
-> I'm fine to rebase the powerpc patch on top of this if it goes in first.
-> Thanks for the heads up.
-> 
+diff --git a/drivers/video/fbdev/mb862xx/mb862xxfbdrv.c b/drivers/video/fbdev/mb862xx/mb862xxfbdrv.c
+index 7c402e9fd7a9..baec312d7b33 100644
+--- a/drivers/video/fbdev/mb862xx/mb862xxfbdrv.c
++++ b/drivers/video/fbdev/mb862xx/mb862xxfbdrv.c
+@@ -32,15 +32,6 @@
+ #define CARMINE_MEM_SIZE	0x8000000
+ #define DRV_NAME		"mb862xxfb"
+ 
+-#if defined(CONFIG_SOCRATES)
+-static struct mb862xx_gc_mode socrates_gc_mode = {
+-	/* Mode for Prime View PM070WL4 TFT LCD Panel */
+-	{ "800x480", 45, 800, 480, 40000, 86, 42, 33, 10, 128, 2, 0, 0, 0 },
+-	/* 16 bits/pixel, 16MB, 133MHz, SDRAM memory mode value */
+-	16, 0x1000000, GC_CCF_COT_133, 0x4157ba63
+-};
+-#endif
+-
+ /* Helpers */
+ static inline int h_total(struct fb_var_screeninfo *var)
+ {
+@@ -666,6 +657,15 @@ static int mb862xx_gdc_init(struct mb862xxfb_par *par)
+ 	return 0;
+ }
+ 
++#if defined(CONFIG_SOCRATES)
++static struct mb862xx_gc_mode socrates_gc_mode = {
++	/* Mode for Prime View PM070WL4 TFT LCD Panel */
++	{ "800x480", 45, 800, 480, 40000, 86, 42, 33, 10, 128, 2, 0, 0, 0 },
++	/* 16 bits/pixel, 16MB, 133MHz, SDRAM memory mode value */
++	16, 0x1000000, GC_CCF_COT_133, 0x4157ba63
++};
++#endif
++
+ static int of_platform_mb862xx_probe(struct platform_device *ofdev)
+ {
+ 	struct device_node *np = ofdev->dev.of_node;
+-- 
+2.43.2
 
-Thanks,
-drew
