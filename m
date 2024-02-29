@@ -2,54 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A7E86C993
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 13:57:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BE2686C997
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 13:57:41 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=MQ4HaOTu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=C+K5ELdx;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TlrpK5ytJz3vZd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 23:56:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tlrq71XTyz3vYc
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 23:57:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=MQ4HaOTu;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=C+K5ELdx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.199; helo=relay9-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlrnX4sj1z3cGb
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 23:56:13 +1100 (AEDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 457DAFF805;
-	Thu, 29 Feb 2024 12:56:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1709211367;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yFgfKts7peO9Nva4G0PStusKwNhitcOIDLM2QDrk96U=;
-	b=MQ4HaOTui8vfXdZ+ZvRDbuyYi6vSV+lfKsOePfRY+o0aPlihIKi5U54Y+tk5OQq4CdsWPl
-	Zr50cTLFos3Pj/NB0cofKt4iAnyXsMDWOXFFV5l6O3tM7KoBKCAtNYL7767VA8sum5j6FP
-	Iw92ZGNr6SU/hob4i2ZZoEQ9pEcMg6b+fVlG0Meb3sgaSD6unR7zIXWRnyfnh9iqLvx6TH
-	fdD+hslgUX5LmwnGuHgDzJ6ZYDpj0xqhgMg7Y8cnQ7dMdOWFamAi49V4RubRxk1bsmMpyu
-	MXdVshF+upQ10l4Vh3PDJLrkinmdSPK5AsUnxTjyrCkzIYMc/toTFNuDTuYZoQ==
-Date: Thu, 29 Feb 2024 13:56:05 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v4 5/5] net: wan: fsl_qmc_hdlc: Add framer support
-Message-ID: <20240229135605.6454052f@bootlin.com>
-In-Reply-To: <ZddtFG4bvCX-lsn3@smile.fi.intel.com>
-References: <20240222142219.441767-1-herve.codina@bootlin.com>
-	<20240222142219.441767-6-herve.codina@bootlin.com>
-	<ZddtFG4bvCX-lsn3@smile.fi.intel.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tlrnw3kpZz3vX2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 23:56:36 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 8C10ACE1020;
+	Thu, 29 Feb 2024 12:56:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4621EC433F1;
+	Thu, 29 Feb 2024 12:56:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709211393;
+	bh=FH+JdudMBgehU68hfBDKn6/fbrAreS/wl1YC0HPz/Tg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=C+K5ELdxqti6l+X3XyprWkioDJDWESK1Q8aUt7ODmuCvs+B1SkleCGS2eEqKuvXhc
+	 QexaZ6oN8rwRdtzMCWk5hwhKaAp7YhoymoN8DvRIanJgaj90GMn1Ca3MbwYy2CygBW
+	 odHLaxPs6AoXzDLZTk8XNgsv5e9HzgUV6/jt7F0kU0NSKDa7TcHHUS2XzwcsPssFbY
+	 yyTfzN2vjbzjAV/RY4utg2ANfWB2XcDg7jBIBgwr3ZVoXrfOvihwUylOGhb0xI4tIh
+	 joL7P9t4siWvMU3aFWlo9KSxQEMDCpcIs+vCy7QH9HFbq0VPuv2Gx4sqzIN8C8ym1q
+	 +gtgrcmRWnWFw==
+Date: Thu, 29 Feb 2024 13:56:23 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: Re: [PATCH v8 10/10] PCI: dwc: ep: Add Kernel-doc comments for APIs
+Message-ID: <ZeB-93jiX31cLJyP@fedora>
+References: <20240224-pci-dbi-rework-v8-0-64c7fd0cfe64@linaro.org>
+ <20240224-pci-dbi-rework-v8-10-64c7fd0cfe64@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240224-pci-dbi-rework-v8-10-64c7fd0cfe64@linaro.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,88 +59,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, Yury Norov <yury.norov@gmail.com>, netdev@vger.kernel.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Mark Brown <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <vigneshr@ti.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Kishon Vijay Abraham I <kishon@ti.com>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, linux-tegra@vger.kernel.org, Jonathan Hunter <jonathanh@nvidia.com>, NXP Linux Team <linux-imx@nxp.com>, Richard Zhu <hongxing.zhu@nxp.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org, Mingkai Hu <mingkai.hu@nxp.com>, linux-arm-kernel@lists.infradead.org, Roy Zang <roy.zang@nxp.com>, Jingoo Han <jingoohan1@gmail.com>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, linux-
+ kernel@vger.kernel.org, Vidya Sagar <vidyas@nvidia.com>, linux-renesas-soc@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Gustavo Pimentel <gustavo.pimentel@synopsys.com>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Andy,
+Hello Mani,
 
-On Thu, 22 Feb 2024 17:49:40 +0200
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-
-> On Thu, Feb 22, 2024 at 03:22:18PM +0100, Herve Codina wrote:
-> > Add framer support in the fsl_qmc_hdlc driver in order to be able to
-> > signal carrier changes to the network stack based on the framer status
-> > Also use this framer to provide information related to the E1/T1 line
-> > interface on IF_GET_IFACE and configure the line interface according to
-> > IF_IFACE_{E1,T1} information.  
+On Sat, Feb 24, 2024 at 12:24:16PM +0530, Manivannan Sadhasivam wrote:
+> All of the APIs are missing the Kernel-doc comments. Hence, add them.
 > 
-> ...
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> ---
+>  drivers/pci/controller/dwc/pcie-designware-ep.c | 92 +++++++++++++++++++++++++
+>  1 file changed, 92 insertions(+)
 > 
-> > +static int qmc_hdlc_framer_set_carrier(struct qmc_hdlc *qmc_hdlc)
-> > +{
-> > +	struct framer_status framer_status;
-> > +	unsigned long flags;
-> > +	int ret;
-> > +
-> > +	if (!qmc_hdlc->framer)
-> > +		return 0;  
-> 
-> > +	spin_lock_irqsave(&qmc_hdlc->carrier_lock, flags);  
-> 
-> cleanup.h ?
-> 
-> > +	ret = framer_get_status(qmc_hdlc->framer, &framer_status);
-> > +	if (ret) {
-> > +		dev_err(qmc_hdlc->dev, "get framer status failed (%d)\n", ret);
-> > +		goto end;
-> > +	}
-> > +	if (framer_status.link_is_on)
-> > +		netif_carrier_on(qmc_hdlc->netdev);
-> > +	else
-> > +		netif_carrier_off(qmc_hdlc->netdev);
-> > +
-> > +end:
-> > +	spin_unlock_irqrestore(&qmc_hdlc->carrier_lock, flags);
-> > +	return ret;
-> > +}  
-> 
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> index fed4c2936c78..cdcb33a279db 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
 
-I've got an issue with guard(spinlock_irqsave).
+(snip)
 
-I changed this code to:
---- 8< ---
-static int qmc_hdlc_framer_set_carrier(struct qmc_hdlc *qmc_hdlc)
-{
-	struct framer_status framer_status;
-	int ret;
+> @@ -556,6 +606,12 @@ int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
+>  	return 0;
+>  }
+>  
+> +/**
+> + * dw_pcie_ep_cleanup - Cleanup DWC EP resources
+> + * @ep: DWC EP device
+> + *
+> + * Cleans up the DWC EP specific resources like eDMA etc...
 
-	if (!qmc_hdlc->framer)
-		return 0;
+I think that you should mention that this is only for glue drivers that
+use PERST# handling, so that other glue drivers do no start using it :)
 
-	guard(spinlock_irqsave)(&qmc_hdlc->carrier_lock);
 
-	ret = framer_get_status(qmc_hdlc->framer, &framer_status);
-	if (ret) {
-		dev_err(qmc_hdlc->dev, "get framer status failed (%d)\n", ret);
-		return ret;
-	}
-	if (framer_status.link_is_on)
-		netif_carrier_on(qmc_hdlc->netdev);
-	else
-		netif_carrier_off(qmc_hdlc->netdev);
+> + */
+>  void dw_pcie_ep_cleanup(struct dw_pcie_ep *ep)
+>  {
+>  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+> @@ -564,6 +620,13 @@ void dw_pcie_ep_cleanup(struct dw_pcie_ep *ep)
+>  }
+>  EXPORT_SYMBOL_GPL(dw_pcie_ep_cleanup);
 
-	return 0;
-}
---- 8< ---
 
-I have the following warning (make C=1):
-drivers/net/wan/fsl_qmc_hdlc.c:49:12: warning: context imbalance in 'qmc_hdlc_framer_set_carrier' - wrong count at exit
-
-I also tried to call guard(spinlock_irqsave) before 'if (!qmc_hdlc->framer)'
-but it does not change anything.
-
-Did I miss something in the guard(spinlock_irqsave) usage ?
-
-Best regards,
-Hervé
+Kind regards,
+Niklas
